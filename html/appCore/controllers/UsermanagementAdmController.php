@@ -16,91 +16,107 @@ define("GROUP_FIELD_NORMAL", "Normal");
 define("GROUP_FIELD_DESCEND", "Descend");
 define("GROUP_FIELD_INHERIT", "Inherit");
 
-class UsermanagementAdmController extends AdmController {
+class UsermanagementAdmController extends AdmController
+{
 
 	protected $model;
 	protected $json;
 	protected $numVarFields;
 	protected $sessionPrefix;
 	protected $permissions;
-	protected $reached_max_user_created=false;
+	protected $reached_max_user_created = false;
 
 	public $link = 'adm/usermanagement';
 
-	public function init() {
+	public function init()
+	{
 		parent::init();
-		require_once(_base_.'/lib/lib.json.php');
+		require_once(_base_ . '/lib/lib.json.php');
 		$this->model = new UsermanagementAdm();
 		$this->json = new Services_JSON(SERVICES_JSON_LOOSE_TYPE);
 		$this->numVarFields = 3;
 		$this->sessionPrefix = 'usermanagement';
 		$this->permissions = array(
-			'view'					=> checkPerm('view', true, 'usermanagement'),					//view the module
-			'view_user'				=> checkPerm('view', true, 'usermanagement'),					//view the users list
-			'add_user'				=> checkPerm('add', true, 'usermanagement'),					//create users
-			'mod_user'				=> checkPerm('mod', true, 'usermanagement'),					//edit users
-			'del_user'				=> checkPerm('del', true, 'usermanagement'),					//remove users
-			'approve_waiting_user'	=> checkPerm('approve_waiting_user', true, 'usermanagement'),	//approve waiting users
-			'view_org'				=> checkPerm('view', true, 'usermanagement'),					//view orgchart tree
-			'add_org'				=> checkPerm('add_org', true, 'usermanagement'),					//create orgchart branches
-			'mod_org'				=> checkPerm('mod_org', true, 'usermanagement'),					//edit orgchart branches
-			'del_org'				=> checkPerm('del_org', true, 'usermanagement'),					//remove orgchart branches
-			'associate_user'		=> checkPerm('associate_user', true, 'usermanagement')
+			'view' => checkPerm('view', true, 'usermanagement'),                    //view the module
+			'view_user' => checkPerm('view', true, 'usermanagement'),                    //view the users list
+			'add_user' => checkPerm('add', true, 'usermanagement'),                    //create users
+			'mod_user' => checkPerm('mod', true, 'usermanagement'),                    //edit users
+			'del_user' => checkPerm('del', true, 'usermanagement'),                    //remove users
+			'approve_waiting_user' => checkPerm('approve_waiting_user', true, 'usermanagement'),    //approve waiting users
+			'view_org' => checkPerm('view', true, 'usermanagement'),                    //view orgchart tree
+			'add_org' => checkPerm('add_org', true, 'usermanagement'),                    //create orgchart branches
+			'mod_org' => checkPerm('mod_org', true, 'usermanagement'),                    //edit orgchart branches
+			'del_org' => checkPerm('del_org', true, 'usermanagement'),                    //remove orgchart branches
+			'associate_user' => checkPerm('associate_user', true, 'usermanagement')
 		);
 
 
 		// Check if the user admin has reached the max number of users he can create
 		if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
-			$admin_pref =new AdminPreference();
-			$pref =$admin_pref->getAdminRules(Docebo::user()->getIdSt());
+			$admin_pref = new AdminPreference();
+			$pref = $admin_pref->getAdminRules(Docebo::user()->getIdSt());
 			if ($pref['admin_rules.limit_user_insert'] == 'on') {
-				$user_pref =new UserPreferences(Docebo::user()->getIdSt());
+				$user_pref = new UserPreferences(Docebo::user()->getIdSt());
 				if ($user_pref->getPreference('user_created_count') >= $pref['admin_rules.max_user_insert']) {
-					$this->permissions['add_user']=false;
-					$this->reached_max_user_created =true;
+					$this->permissions['add_user'] = false;
+					$this->reached_max_user_created = true;
 				}
 			}
 		}
 	}
 
-	protected function _setSessionValue($index, $value) {
+	protected function _setSessionValue($index, $value)
+	{
 		$_SESSION[$this->sessionPrefix][$index] = $value;
 	}
 
-	protected function _getSessionValue($index, $default = false) {
+	protected function _getSessionValue($index, $default = false)
+	{
 		if (!isset($_SESSION[$this->sessionPrefix][$index])) $_SESSION[$this->sessionPrefix][$index] = $default;
 		return $_SESSION[$this->sessionPrefix][$index];
 	}
 
-	protected function _issetSessionValue($index) {
+	protected function _issetSessionValue($index)
+	{
 		return (isset($_SESSION[$this->sessionPrefix]) && isset($_SESSION[$this->sessionPrefix][$index]));
 	}
 
 
-	protected function _getErrorMessage($code) {
+	protected function _getErrorMessage($code)
+	{
 		$message = "";
 
 		switch ($code) {
-			case "no permission":		$message = "You don't have permission to do this."; break;
-			case "cannot self delete":	$message = ""; break;
-			case "password mismatch":	$message = Lang::t('PASSWRONG', 'register');
+			case "no permission":
+				$message = "You don't have permission to do this.";
+				break;
+			case "cannot self delete":
+				$message = "";
+				break;
+			case "password mismatch":
+				$message = Lang::t('PASSWRONG', 'register');
 			//...
-			case "": $message = ""; break;
-			default: $message = Lang::t('_OPERATION_FAILURE', 'standard'); break;
+			case "":
+				$message = "";
+				break;
+			default:
+				$message = Lang::t('_OPERATION_FAILURE', 'standard');
+				break;
 		}
 
 		return $message;
 	}
 
-	public function show() {
-		require_once(_adm_.'/lib/lib.field.php');
+	public function show()
+	{
+		require_once(_adm_ . '/lib/lib.field.php');
 
 		$fman = new FieldList();
 		$fields = $fman->getFlatAllFields(array('framework', 'lms'));
 
 		$f_list = array(
-			'email'			=> Lang::t('_EMAIL', 'standard'),
-			'lastenter'		=> Lang::t('_DATE_LAST_ACCESS', 'profile'),
+			'email' => Lang::t('_EMAIL', 'standard'),
+			'lastenter' => Lang::t('_DATE_LAST_ACCESS', 'profile'),
 			'register_date' => Lang::t('_DIRECTORY_FILTER_register_date', 'admin_directory'),
 			'language' => Lang::t('_LANGUAGE', 'standard'),
 			'level' => Lang::t('_LEVEL', 'standard')
@@ -125,45 +141,59 @@ class UsermanagementAdmController extends AdmController {
 		}
 
 		$js_arr = array();
-		foreach ($f_list as $key=>$value) $js_arr[] = $key.': '.$this->json->encode($value);
-		$f_list_js = '{'.implode(',', $js_arr).'}';
+		foreach ($f_list as $key => $value) $js_arr[] = $key . ': ' . $this->json->encode($value);
+		$f_list_js = '{' . implode(',', $js_arr) . '}';
 
 		if ($this->permissions['add_user'] == false && $this->reached_max_user_created) {
-			$message =getInfoUi(Lang::t('_USER_CREATION_LIMIT_REACHED', 'admin_directory'));
+			$message = getInfoUi(Lang::t('_USER_CREATION_LIMIT_REACHED', 'admin_directory'));
 		}
 
 		$res = Get::req('res', DOTY_STRING, '');
 		switch ($res) {
-			case 'ok_assignuser': $message = getResultUi(Lang::t('_OPERATION_SUCCESSFUL', 'standard')); break;
-			case 'err_assignuser': $message = getErrorUi(Lang::t('_GROUP_USERASSIGN_ERROR', 'admin_directory')); break;
-			case 'no_file': $message = getErrorUi(Lang::t('_NO_FILE', 'user_managment')); break;
-			case 'need_to_alert': $message = getErrorUi(Lang::t('_NEED_TO_ALERT', 'user_managment')); break;
-			case 'userid_needed': $message = getErrorUi(Lang::t('_USERID_NEEDED', 'user_managment')); break;
-			case 'field_repeated': $message = getErrorUi(Lang::t('_FIELD_REPEATED', 'user_managment')); break;
-
-			case 'err_alreadyassigned': {
-				$countassigned = Get::req('count', DOTY_STRING, '');
-				$id_first = Get::req('id_first', DOTY_STRING, '');
-				$profile_user = $this->model->getProfileData($id_first);
-
-				if($countassigned == 1) {
-					$message = getErrorUi(Lang::t('_USER').' '.$profile_user->firstname.' '.$profile_user->lastname.' '.Lang::t('_ALREADY_ASSIGNED', 'admin_directory'));
-				} else {
-					$message = getErrorUi($countassigned.' '.Lang::t('_USERS_ALREADY_ASSIGNED', 'admin_directory').' ('.$profile_user->firstname.' '.$profile_user->lastname.'...)');
-				}
+			case 'ok_assignuser':
+				$message = getResultUi(Lang::t('_OPERATION_SUCCESSFUL', 'standard'));
 				break;
-			}
-			default: $message = "";
+			case 'err_assignuser':
+				$message = getErrorUi(Lang::t('_GROUP_USERASSIGN_ERROR', 'admin_directory'));
+				break;
+			case 'no_file':
+				$message = getErrorUi(Lang::t('_NO_FILE', 'user_managment'));
+				break;
+			case 'need_to_alert':
+				$message = getErrorUi(Lang::t('_NEED_TO_ALERT', 'user_managment'));
+				break;
+			case 'userid_needed':
+				$message = getErrorUi(Lang::t('_USERID_NEEDED', 'user_managment'));
+				break;
+			case 'field_repeated':
+				$message = getErrorUi(Lang::t('_FIELD_REPEATED', 'user_managment'));
+				break;
+
+			case 'err_alreadyassigned':
+				{
+					$countassigned = Get::req('count', DOTY_STRING, '');
+					$id_first = Get::req('id_first', DOTY_STRING, '');
+					$profile_user = $this->model->getProfileData($id_first);
+
+					if ($countassigned == 1) {
+						$message = getErrorUi(Lang::t('_USER') . ' ' . $profile_user->firstname . ' ' . $profile_user->lastname . ' ' . Lang::t('_ALREADY_ASSIGNED', 'admin_directory'));
+					} else {
+						$message = getErrorUi($countassigned . ' ' . Lang::t('_USERS_ALREADY_ASSIGNED', 'admin_directory') . ' (' . $profile_user->firstname . ' ' . $profile_user->lastname . '...)');
+					}
+					break;
+				}
+			default:
+				$message = "";
 		}
 
 		$root_node_actions = $this->_getNodeActions(0);
 
-		require_once(_adm_.'/lib/user_selector/lib.dynamicuserfilter.php');
+		require_once(_adm_ . '/lib/user_selector/lib.dynamicuserfilter.php');
 		$dyn_filter = new DynamicUserFilter("user_dyn_filter");
 		$dyn_filter->init();
 
-		Util::get_js(Get::rel_path('base').'/lib/js_utils.js', true, true);
-		Util::get_js(Get::rel_path('adm').'/views/usermanagement/usermanagement.js', true, true);
+		Util::get_js(Get::rel_path('base') . '/lib/js_utils.js', true, true);
+		Util::get_js(Get::rel_path('adm') . '/views/usermanagement/usermanagement.js', true, true);
 
 		if (!$this->_issetSessionValue('selected_node') && Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
 			//select the first folder of the sub admin
@@ -189,7 +219,8 @@ class UsermanagementAdmController extends AdmController {
 		));
 	}
 
-	protected function _getDynamicFilter($input) {
+	protected function _getDynamicFilter($input)
+	{
 		$output = false;
 		if (is_string($input) && $input != "") {
 			$dyn_data = $this->json->decode(urldecode(stripslashes($input))); //decode the filter json string
@@ -200,7 +231,8 @@ class UsermanagementAdmController extends AdmController {
 		return $output;
 	}
 
-	public function gettabledata() {
+	public function gettabledata()
+	{
 		//check permissions
 		if (!$this->permissions['view_user']) {
 			$output = array('success' => false, 'message' => $this->_getErrorMessage('no permission'));
@@ -210,10 +242,12 @@ class UsermanagementAdmController extends AdmController {
 
 		$op = Get::req('op', DOTY_MIXED, false);
 		switch ($op) {
-			case "selectall": {
-				$this->selectall();
-				return;
-			} break;
+			case "selectall":
+				{
+					$this->selectall();
+					return;
+				}
+				break;
 		}
 
 		$idOrg = Get::req('id_org', DOTY_INT, 0);
@@ -234,7 +268,7 @@ class UsermanagementAdmController extends AdmController {
 
 		$searchFilter = array(
 			'text' => $filter_text,
-			'suspended' => (Get::req('suspended', DOTY_INT, 1)>0 ? true : false)
+			'suspended' => (Get::req('suspended', DOTY_INT, 1) > 0 ? true : false)
 		);
 
 		$dyn_filter = $this->_getDynamicFilter(Get::req('dyn_filter', DOTY_STRING, ''));
@@ -244,7 +278,7 @@ class UsermanagementAdmController extends AdmController {
 
 		$total = $this->model->getTotalUsers($idOrg, $descendants, $searchFilter, true);
 		if ($startIndex >= $total) {
-			if ($total<$results) {
+			if ($total < $results) {
 				$startIndex = 0;
 			} else {
 				$startIndex = $total - $results;
@@ -263,32 +297,32 @@ class UsermanagementAdmController extends AdmController {
 		//prepare the data for sending
 		$acl_man = Docebo::user()->getAclManager();
 
-		require_once(_adm_.'/lib/lib.field.php');
+		require_once(_adm_ . '/lib/lib.field.php');
 		$fman = new FieldList();
 		$date_fields = $fman->getFieldsByType("date");
 
 		$output_results = array();
-		if (is_array($list) && count($list)>0) {
+		if (is_array($list) && count($list) > 0) {
 			$current_user = Docebo::user()->getIdSt();
-            $user_entry_data = $fman->getUsersFieldEntryData(array_keys($list));
-			foreach ($list as $idst=>$record) {
+			$user_entry_data = $fman->getUsersFieldEntryData(array_keys($list));
+			foreach ($list as $idst => $record) {
 				$record_row = array(
-					'id'		=> (int)$record['idst'],
-					'userid'	=> Layout::highlight($acl_man->relativeId( $record['userid']), $filter_text),
+					'id' => (int)$record['idst'],
+					'userid' => Layout::highlight($acl_man->relativeId($record['userid']), $filter_text),
 					'firstname' => Layout::highlight($record['firstname'], $filter_text),
-					'lastname'	=> Layout::highlight($record['lastname'], $filter_text),
-					'email'		=> Layout::highlight($record['email'], $filter_text),
+					'lastname' => Layout::highlight($record['lastname'], $filter_text),
+					'email' => Layout::highlight($record['email'], $filter_text),
 					'register_date' => Format::date($record['register_date'], "datetime"),
 					'lastenter' => Format::date($record['lastenter'], "datetime"),
-					'unassoc'	=> $idOrg > 0 ? (!empty($record['is_descendant']) ? 0 : 1) : -1,
-					'valid'		=> (int)$record['valid'] > 0 ? 1 : 0,
-					'mod'		=> 'ajax.adm_server.php?r='.$this->link.'/moduser&id='.(int)$idst,
-					'del'		=> ($idst != $current_user) ? 'ajax.adm_server.php?r='.$this->link.'/deluser&id='.(int)$idst : false,
+					'unassoc' => $idOrg > 0 ? (!empty($record['is_descendant']) ? 0 : 1) : -1,
+					'valid' => (int)$record['valid'] > 0 ? 1 : 0,
+					'mod' => 'ajax.adm_server.php?r=' . $this->link . '/moduser&id=' . (int)$idst,
+					'del' => ($idst != $current_user) ? 'ajax.adm_server.php?r=' . $this->link . '/deluser&id=' . (int)$idst : false,
 				);
 
-				foreach ($var_fields as $i=>$value) {
+				foreach ($var_fields as $i => $value) {
 					if (is_numeric($value)) {
-						$name = '_custom_'.$value;
+						$name = '_custom_' . $value;
 					} else {
 						$name = $value;
 					}
@@ -297,10 +331,10 @@ class UsermanagementAdmController extends AdmController {
 					$content = (isset($record[$name]) ? $record[$name] : '');
 					if ($name == 'register_date') $content = Format::date($content, 'datetime');
 					if ($name == 'lastenter') $content = Format::date($content, 'datetime');
-					if ($name == 'level' && $content != '') $content = Lang::t('_DIRECTORY_'.$content, 'admin_directory');
+					if ($name == 'level' && $content != '') $content = Lang::t('_DIRECTORY_' . $content, 'admin_directory');
 					if (!empty($date_fields) && in_array($value, $date_fields)) $content = Format::date(substr($content, 0, 10), 'date');
-					if ($name == '_custom_'.$value) $content = $user_entry_data[(int)$record['idst']][$value];
-					$record_row['_dyn_field_'.$i] = $content;
+					if ($name == '_custom_' . $value) $content = $user_entry_data[(int)$record['idst']][$value];
+					$record_row['_dyn_field_' . $i] = $content;
 				}
 
 				$output_results[] = $record_row;
@@ -325,8 +359,9 @@ class UsermanagementAdmController extends AdmController {
 		echo $this->json->encode($output);
 	}
 
-	protected function _getUserEditMask($idst = false) {
-		require_once(_adm_.'/lib/lib.field.php');
+	protected function _getUserEditMask($idst = false)
+	{
+		require_once(_adm_ . '/lib/lib.field.php');
 		require_once(Forma::inc(_base_ . '/lib/lib.platform.php'));
 
 		$mask = "";
@@ -335,11 +370,11 @@ class UsermanagementAdmController extends AdmController {
 		$level = ADMIN_GROUP_USER;
 
 		$is_editing = false;
-		if (is_numeric($idst) && $idst>0) {
+		if (is_numeric($idst) && $idst > 0) {
 			//set form for editing and not for creating
 			$is_editing = true;
 			$form_id = 'edit_user_form';
-			$form_url = 'ajax.adm_server.php?r='.$this->link.'/moduser_action';
+			$form_url = 'ajax.adm_server.php?r=' . $this->link . '/moduser_action';
 			$user_info = $acl_man->getUser($idst, false);
 
 			$info_userid = $acl_man->relativeId($user_info[ACL_INFO_USERID]);
@@ -353,15 +388,15 @@ class UsermanagementAdmController extends AdmController {
 
 		} else {
 			$form_id = 'create_user_form';
-			$form_url = 'ajax.adm_server.php?r='.$this->link.'/createuser_action';
+			$form_url = 'ajax.adm_server.php?r=' . $this->link . '/createuser_action';
 			$info_userid = $info_firstname = $info_lastname = $info_email = "";
 		}
 
 		$arr_levels = $acl_man->getAdminLevels();//index = idst; value = groupid;
 		$levels = array();
-		foreach ($arr_levels as $groupid_level=>$idst_level) {
+		foreach ($arr_levels as $groupid_level => $idst_level) {
 			if ($this->_canUseLevel($groupid_level))
-				$levels[ $groupid_level ] = Lang::t('_DIRECTORY_'.$groupid_level, 'admin_directory');
+				$levels[$groupid_level] = Lang::t('_DIRECTORY_' . $groupid_level, 'admin_directory');
 		}
 
 		$language = getDefaultLanguage();
@@ -375,12 +410,11 @@ class UsermanagementAdmController extends AdmController {
 		$modify_mask = $preference->getModifyMask('ui.');
 
 		$arr_idst = false;
-		if(isset($_SESSION['usermanagement']['selected_node']) && $_SESSION['usermanagement']['selected_node'] != 0 && !$is_editing)
-		{
+		if (isset($_SESSION['usermanagement']['selected_node']) && $_SESSION['usermanagement']['selected_node'] != 0 && !$is_editing) {
 			$arr_idst = array();
-			$tmp = $acl_man->getGroup(false, '/oc_'.$_SESSION['usermanagement']['selected_node']);
+			$tmp = $acl_man->getGroup(false, '/oc_' . $_SESSION['usermanagement']['selected_node']);
 			$arr_idst[] = $tmp[0];
-			$tmp = $acl_man->getGroup(false, '/ocd_'.$_SESSION['usermanagement']['selected_node']);
+			$tmp = $acl_man->getGroup(false, '/ocd_' . $_SESSION['usermanagement']['selected_node']);
 			$arr_idst[] = $tmp[0];
 			$acl =& Docebo::user()->getACL();
 			$arr_idst = $acl->getArrSTGroupsST($arr_idst);
@@ -412,7 +446,8 @@ class UsermanagementAdmController extends AdmController {
 		return $mask;
 	}
 
-	function create() {
+	function create()
+	{
 		//check permissions
 		if (!$this->permissions['add_user']) {
 			$output = array('success' => false, 'message' => $this->_getErrorMessage('no permission'));
@@ -430,22 +465,20 @@ class UsermanagementAdmController extends AdmController {
 	}
 
 
-	protected function echoResult($output) {
+	protected function echoResult($output)
+	{
 
 		if (Util::getIsAjaxRequest()) {
 			if ($output['success']) {
 				$output['message'] = UIFeedback::pinfo($output['message']);
-			}
-			else {
+			} else {
 				$output['message'] = UIFeedback::perror($output['message']);
 			}
-		}
-		else { // We're in a POST call due to YUI upload via iframe..
+		} else { // We're in a POST call due to YUI upload via iframe..
 			if ($output['success']) {
-				$output['feedback_type']='info';
-			}
-			else {
-				$output['feedback_type']='notice';
+				$output['feedback_type'] = 'info';
+			} else {
+				$output['feedback_type'] = 'notice';
 			}
 		}
 
@@ -453,7 +486,8 @@ class UsermanagementAdmController extends AdmController {
 	}
 
 
-	function createuser_action() {
+	function createuser_action()
+	{
 		//check permissions
 		if (!$this->permissions['add_user']) {
 			$output = array('success' => false, 'message' => $this->_getErrorMessage('no permission'));
@@ -490,8 +524,7 @@ class UsermanagementAdmController extends AdmController {
 		$userdata->force_change = trim(Get::Req('force_changepwd', DOTY_INT, 0));
 		if (Docebo::user()->user_level == ADMIN_GROUP_GODADMIN) {
 			$userdata->level = Get::req('level', DOTY_STRING, ADMIN_GROUP_USER);
-		}
-		else {
+		} else {
 			$userdata->level = ADMIN_GROUP_USER;
 		}
 
@@ -519,15 +552,15 @@ class UsermanagementAdmController extends AdmController {
 		$folders = Get::req('sel', DOTY_MIXED, false);
 
 		$idst = $this->model->createUser($userdata, $folders);
-		if (is_numeric($idst) && $idst>0) {
+		if (is_numeric($idst) && $idst > 0) {
 			$output['success'] = true;
 			$output['idst'] = $idst;
 			$output['total_users'] = $this->model->getUsersCount();
-			$output['message'] = Lang::t('_OPERATION_SUCCESSFUL', 'standard').': '.$userid;
+			$output['message'] = Lang::t('_OPERATION_SUCCESSFUL', 'standard') . ': ' . $userid;
 
 
 			// Send alert:
-			require_once(_base_.'/lib/lib.eventmanager.php');
+			require_once(_base_ . '/lib/lib.eventmanager.php');
 			$acl_man = Docebo::user()->getAclManager();
 
 			$array_subst = array(
@@ -539,31 +572,31 @@ class UsermanagementAdmController extends AdmController {
 			$e_msg = new EventMessageComposer();
 
 			$e_msg->setSubjectLangText('email', '_REGISTERED_USER_SBJ', false);
-			$e_msg->setBodyLangText('email', '_REGISTERED_USER_TEXT', $array_subst );
+			$e_msg->setBodyLangText('email', '_REGISTERED_USER_TEXT', $array_subst);
 
-			$e_msg->setBodyLangText('sms', '_REGISTERED_USER_TEXT_SMS', $array_subst );
+			$e_msg->setBodyLangText('sms', '_REGISTERED_USER_TEXT_SMS', $array_subst);
 
 			$recipients = array($idst);
 
-			if(!empty($recipients)) {
-				createNewAlert(	'UserNew', 'directory', 'edit', '1', 'New user created',
-					$recipients, $e_msg  );
+			if (!empty($recipients)) {
+				createNewAlert('UserNew', 'directory', 'edit', '1', 'New user created',
+					$recipients, $e_msg);
 				ob_clean();
 			}
 
 
 			// Increment the counter for users created by this admin:
 			if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
-				$admin_pref =new AdminPreference();
-				$pref =$admin_pref->getAdminRules(Docebo::user()->getIdSt());
+				$admin_pref = new AdminPreference();
+				$pref = $admin_pref->getAdminRules(Docebo::user()->getIdSt());
 				if ($pref['admin_rules.limit_user_insert'] == 'on') {
-					$user_pref =new UserPreferences(Docebo::user()->getIdSt());
-					$user_created_count =(int)$user_pref->getPreference('user_created_count');
+					$user_pref = new UserPreferences(Docebo::user()->getIdSt());
+					$user_created_count = (int)$user_pref->getPreference('user_created_count');
 					$user_created_count++;
 					$user_pref->setPreference('user_created_count', $user_created_count);
 					if ($user_created_count >= $pref['admin_rules.max_user_insert']) {
-						$output['force_page_refresh'] =true;
-						$output['message'] =Lang::t('_USER_CREATED_MAX_REACHED', 'admin_directory');
+						$output['force_page_refresh'] = true;
+						$output['message'] = Lang::t('_USER_CREATED_MAX_REACHED', 'admin_directory');
 					}
 				}
 			}
@@ -576,7 +609,8 @@ class UsermanagementAdmController extends AdmController {
 		$this->echoResult($output);
 	}
 
-	function moduser() {
+	function moduser()
+	{
 		//check permissions
 		if (!$this->permissions['mod_user']) {
 			$output = array('success' => false, 'message' => $this->_getErrorMessage('no permission'));
@@ -598,7 +632,8 @@ class UsermanagementAdmController extends AdmController {
 		echo $this->json->encode($output);
 	}
 
-	function moduser_action() {
+	function moduser_action()
+	{
 		//check permissions
 		if (!$this->permissions['mod_user']) {
 			$output = array('success' => false, 'message' => $this->_getErrorMessage('no permission'));
@@ -608,7 +643,7 @@ class UsermanagementAdmController extends AdmController {
 
 		$idst = Get::req('idst', DOTY_INT, -1);
 		if ($idst <= 0) {
-			echo $this->json->encode(array('success'=>false, 'message'=>'invalid user id'));
+			echo $this->json->encode(array('success' => false, 'message' => 'invalid user id'));
 			return;
 		}
 
@@ -626,7 +661,7 @@ class UsermanagementAdmController extends AdmController {
 		}
 
 		if (!$check_pwd) {
-			echo $this->json->encode(array('success'=>false, 'message'=>'invalid password'));
+			echo $this->json->encode(array('success' => false, 'message' => 'invalid password'));
 			return;
 		}
 
@@ -638,8 +673,7 @@ class UsermanagementAdmController extends AdmController {
 		if ($check_pwd && !Get::cfg('demo_mode')) $userdata->password = $new_password;
 		if (Docebo::user()->user_level == ADMIN_GROUP_GODADMIN) {
 			$userdata->level = Get::req('level', DOTY_STRING, ADMIN_GROUP_USER);
-		}
-		else {
+		} else {
 			$userdata->level = false;
 		}
 		$userdata->force_change = Get::req('force_changepwd', DOTY_INT, 0);
@@ -689,15 +723,16 @@ class UsermanagementAdmController extends AdmController {
 		$permission_admin = $acl_manager->getGroupST(ADMIN_GROUP_ADMIN);
 
 		$recipients = $acl_manager->getGroupAllUser($permission_godadmin);
-		$recipients = array_merge($recipients,$acl_manager->getGroupAllUser($permission_admin));
+		$recipients = array_merge($recipients, $acl_manager->getGroupAllUser($permission_admin));
 
-		createNewAlert(	'UserModSuperAdmin', 'directory', 'edit', '1', 'User '.$userid.' was modified',
-			$recipients, $msg_composer );
+		createNewAlert('UserModSuperAdmin', 'directory', 'edit', '1', 'User ' . $userid . ' was modified',
+			$recipients, $msg_composer);
 
 		echo $this->json->encode($output);
 	}
 
-	function deluser() {
+	function deluser()
+	{
 		//check permissions
 		if (!$this->permissions['del_user']) {
 			$output = array('success' => false, 'message' => $this->_getErrorMessage('no permission'));
@@ -705,12 +740,12 @@ class UsermanagementAdmController extends AdmController {
 			return;
 		}
 
-		if(Get::cfg('demo_mode'))
+		if (Get::cfg('demo_mode'))
 			die('Cannot del user during demo mode.');
 
 		$acl_man = Docebo::user()->getAclManager();
 		$id_user = Get::req('id', DOTY_INT, -1);
-		if ($id_user>0) {
+		if ($id_user > 0) {
 
 			if ($id_user == Docebo::user()->getIdSt()) {
 				$output = array('success' => false, 'message' => $this->_getErrorMessage('cannot self delete'));
@@ -724,18 +759,18 @@ class UsermanagementAdmController extends AdmController {
 			$user = $model->getProfileData($id_user);
 
 			if ($acl_man->deleteUser($id_user)) {
-				$output = array('success'=>true);
+				$output = array('success' => true);
 				if (Get::sett('register_deleted_user', "off") == "on")
 					$output['total_deleted_users'] = $this->model->getDeletedUsersTotal();
 
 				// Increment the counter for users created by this admin:
 				if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
-					$admin_pref =new AdminPreference();
-					$pref =$admin_pref->getAdminRules(Docebo::user()->getIdSt());
+					$admin_pref = new AdminPreference();
+					$pref = $admin_pref->getAdminRules(Docebo::user()->getIdSt());
 					if ($pref['admin_rules.limit_user_insert'] == 'on') {
-						$user_pref =new UserPreferences(Docebo::user()->getIdSt());
-						$user_created_count =(int)$user_pref->getPreference('user_created_count');
-						$user_created_count = $user_created_count-1;
+						$user_pref = new UserPreferences(Docebo::user()->getIdSt());
+						$user_created_count = (int)$user_pref->getPreference('user_created_count');
+						$user_created_count = $user_created_count - 1;
 						$user_pref->setPreference('user_created_count', $user_created_count);
 					}
 				}
@@ -745,15 +780,16 @@ class UsermanagementAdmController extends AdmController {
 				$event->setUser($user);
 				\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementDeleteEvent::EVENT_NAME, $event);
 			} else {
-				$output = array('success'=>false, 'message'=>'Error: unable to delete user #'.$id_user.'.');
+				$output = array('success' => false, 'message' => 'Error: unable to delete user #' . $id_user . '.');
 			}
 		} else {
-			$output = array('success'=>false, 'message'=>'invalid input');
+			$output = array('success' => false, 'message' => 'invalid input');
 		}
 		echo $this->json->encode($output);
 	}
 
-	function delmultiuser() {
+	function delmultiuser()
+	{
 		//check permissions
 		if (!$this->permissions['del_user']) {
 			$output = array('success' => false, 'message' => $this->_getErrorMessage('no permission'));
@@ -795,12 +831,12 @@ class UsermanagementAdmController extends AdmController {
 
 				// Increment the counter for users created by this admin:
 				if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
-					$admin_pref =new AdminPreference();
-					$pref =$admin_pref->getAdminRules(Docebo::user()->getIdSt());
+					$admin_pref = new AdminPreference();
+					$pref = $admin_pref->getAdminRules(Docebo::user()->getIdSt());
 					if ($pref['admin_rules.limit_user_insert'] == 'on') {
-						$user_pref =new UserPreferences(Docebo::user()->getIdSt());
-						$user_created_count =(int)$user_pref->getPreference('user_created_count');
-						$user_created_count = $user_created_count-$count_users;
+						$user_pref = new UserPreferences(Docebo::user()->getIdSt());
+						$user_created_count = (int)$user_pref->getPreference('user_created_count');
+						$user_created_count = $user_created_count - $count_users;
 						$user_pref->setPreference('user_created_count', $user_created_count);
 					}
 				}
@@ -816,7 +852,8 @@ class UsermanagementAdmController extends AdmController {
 		echo $this->json->encode($output);
 	}
 
-	function suspend() {
+	function suspend()
+	{
 		//check permissions
 		if (!$this->permissions['mod_user']) {
 			$output = array('success' => false, 'message' => $this->_getErrorMessage('no permission'));
@@ -828,16 +865,16 @@ class UsermanagementAdmController extends AdmController {
 		$output = array();
 		$action = Get::req('action', DOTY_INT, -1);
 
-		if ($idst>0 && ($action==0 || $action==1)) {
+		if ($idst > 0 && ($action == 0 || $action == 1)) {
 			$model = new UsermanagementAdm();
 			$user = $model->getProfileData($idst);
 
-			if ($action==0) {
+			if ($action == 0) {
 				$output['success'] = $this->model->suspendUsers($idst);
 				$output['message'] = UIFeedback::pinfo(Lang::t('_OPERATION_SUCCESSFUL', 'standard'));
 
 
-				require_once(Forma::inc(_base_.'/lib/lib.eventmanager.php'));
+				require_once(Forma::inc(_base_ . '/lib/lib.eventmanager.php'));
 
 
 				$uinfo = Docebo::aclm()->getUser($idst, false);
@@ -865,18 +902,17 @@ class UsermanagementAdmController extends AdmController {
 				$permission_admin = $acl_manager->getGroupST(ADMIN_GROUP_ADMIN);
 
 				$recipients = $acl_manager->getGroupAllUser($permission_godadmin);
-				$recipients = array_merge($recipients,$acl_manager->getGroupAllUser($permission_admin));
+				$recipients = array_merge($recipients, $acl_manager->getGroupAllUser($permission_admin));
 
-				createNewAlert(	'UserSuspendedSuperAdmin', 'directory', 'edit', '1', 'User '.$userid.' was suspended',
-					$recipients, $msg_composer );
+				createNewAlert('UserSuspendedSuperAdmin', 'directory', 'edit', '1', 'User ' . $userid . ' was suspended',
+					$recipients, $msg_composer);
 
 
 				// SET SUSPAND USER EVENT
 				$event = new \appCore\Events\Core\User\UsersManagementSuspendEvent();
 				$event->setUser($user);
 				\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementSuspendEvent::EVENT_NAME, $event);
-			}
-			else {
+			} else {
 				$output['success'] = $this->model->unsuspendUsers($idst);
 				$output['message'] = UIFeedback::pinfo(Lang::t('_OPERATION_SUCCESSFUL', 'standard'));
 
@@ -892,7 +928,8 @@ class UsermanagementAdmController extends AdmController {
 		echo $this->json->encode($output);
 	}
 
-	function multisuspend() {
+	function multisuspend()
+	{
 		//check permissions
 		if (!$this->permissions['mod_user']) {
 			$output = array('success' => false, 'message' => $this->_getErrorMessage('no permission'));
@@ -903,7 +940,7 @@ class UsermanagementAdmController extends AdmController {
 		$users = Get::req('users', DOTY_STRING, "");
 		$output = array();
 		$action = Get::req('action', DOTY_INT, -1);
-		if ($users!="" && ($action==0 || $action==1)) {
+		if ($users != "" && ($action == 0 || $action == 1)) {
 			$arr_users = explode(',', $users);
 
 			$model = new UsermanagementAdm();
@@ -912,7 +949,7 @@ class UsermanagementAdmController extends AdmController {
 				$users[] = $model->getProfileData($idst);
 			}
 
-			if ($action==0) {
+			if ($action == 0) {
 				$output['success'] = $this->model->suspendUsers($arr_users);
 
 				$acl_manager = \Docebo::user()->getAclManager();
@@ -921,10 +958,10 @@ class UsermanagementAdmController extends AdmController {
 				$permission_admin = $acl_manager->getGroupST(ADMIN_GROUP_ADMIN);
 
 				$recipients = $acl_manager->getGroupAllUser($permission_godadmin);
-				$recipients = array_merge($recipients,$acl_manager->getGroupAllUser($permission_admin));
+				$recipients = array_merge($recipients, $acl_manager->getGroupAllUser($permission_admin));
 
-				foreach ($arr_users as $idst){
-					require_once(Forma::inc(_base_.'/lib/lib.eventmanager.php'));
+				foreach ($arr_users as $idst) {
+					require_once(Forma::inc(_base_ . '/lib/lib.eventmanager.php'));
 
 					$uinfo = Docebo::aclm()->getUser($idst, false);
 
@@ -945,16 +982,15 @@ class UsermanagementAdmController extends AdmController {
 
 					$msg_composer->setBodyLangText('sms', '_EVENT_SUSPENDED_USER_TEXT_SMS', $array_subst);
 
-					createNewAlert(	'UserSuspendedSuperAdmin', 'directory', 'edit', '1', 'User '.$userid.' was suspended',
-						$recipients, $msg_composer );
+					createNewAlert('UserSuspendedSuperAdmin', 'directory', 'edit', '1', 'User ' . $userid . ' was suspended',
+						$recipients, $msg_composer);
 				}
 
 				// SET SUSPAND USERS MULTIPLE EVENT
 				$event = new \appCore\Events\Core\User\UsersManagementSuspendEvent();
 				$event->setUsers($users);
 				\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementSuspendEvent::EVENT_NAME, $event);
-			}
-			else {
+			} else {
 				$output['success'] = $this->model->unsuspendUsers($arr_users);
 
 				// SET UNSUSPAND USERS MULTIPLE EVENT
@@ -969,7 +1005,8 @@ class UsermanagementAdmController extends AdmController {
 		echo $this->json->encode($output);
 	}
 
-	function multigenpwd() {
+	function multigenpwd()
+	{
 		//check permissions
 		if (!$this->permissions['mod_user']) {
 			$output = array('success' => false, 'message' => $this->_getErrorMessage('no permission'));
@@ -979,15 +1016,15 @@ class UsermanagementAdmController extends AdmController {
 
 		$users = Get::req('users', DOTY_STRING, "");
 		$output = array();
-		if ($users!="") {
+		if ($users != "") {
 			$arr_users = explode(',', $users);
 			$output['success'] = true;
-			foreach ($arr_users AS $user){
-				if(!$this->model->randomPassword($user)){
+			foreach ($arr_users AS $user) {
+				if (!$this->model->randomPassword($user)) {
 					$output['success'] = false;
 				}
 			}
-			if (!$output['success']){
+			if (!$output['success']) {
 				$output['message'] = Lang::t('_OPERATION_FAILURE', 'standard');
 			}
 		} else {
@@ -997,13 +1034,14 @@ class UsermanagementAdmController extends AdmController {
 		echo $this->json->encode($output);
 	}
 
-	function selectall() {
+	function selectall()
+	{
 		$idOrg = Get::req('id_org', DOTY_INT, 0);
 		$descendants = (Get::req('descendants', DOTY_INT, 0) > 0 ? true : false);
 		$filter_text = Get::req('filter_text', DOTY_STRING, '');
 		$searchFilter = array(
 			'text' => $filter_text,
-			'suspended' => (Get::req('suspended', DOTY_INT, 1)>0 ? true : false)
+			'suspended' => (Get::req('suspended', DOTY_INT, 1) > 0 ? true : false)
 		);
 		$dyn_filter = $this->_getDynamicFilter(Get::req('dyn_filter', DOTY_STRING, ''));
 		if ($dyn_filter !== false) {
@@ -1013,9 +1051,10 @@ class UsermanagementAdmController extends AdmController {
 		echo $this->json->encode($output);
 	}
 
-	protected function _assignActions(&$nodes) {
+	protected function _assignActions(&$nodes)
+	{
 		if (!is_array($nodes)) return;
-		for ($i=0; $i<count($nodes); $i++) {
+		for ($i = 0; $i < count($nodes); $i++) {
 			$nodes[$i]['node']['options'] = $this->_getNodeActions($nodes[$i]['node']);
 			if (isset($nodes[$i]['children']) && count($nodes[$i]['children']) > 0) {
 				$this->_assignActions($nodes[$i]['children']);
@@ -1023,216 +1062,233 @@ class UsermanagementAdmController extends AdmController {
 		}
 	}
 
-	public function gettreedata() {
+	public function gettreedata()
+	{
 		$command = Get::req('command', DOTY_ALPHANUM, "");
 
 		switch ($command) {
 
-			case "expand": {
-				//check permissions
-				if (!$this->permissions['view_org']) {
-					$output = array('success' => false, 'message' => $this->_getErrorMessage('no permission'));
-					echo $this->json->encode($output);
-					return;
-				}
+			case "expand":
+				{
+					//check permissions
+					if (!$this->permissions['view_org']) {
+						$output = array('success' => false, 'message' => $this->_getErrorMessage('no permission'));
+						echo $this->json->encode($output);
+						return;
+					}
 
-				$idOrg = Get::req('node_id', DOTY_INT, -1);
-				$initial = (Get::req('initial', DOTY_INT, 0) > 0 ? true : false);
+					$idOrg = Get::req('node_id', DOTY_INT, -1);
+					$initial = (Get::req('initial', DOTY_INT, 0) > 0 ? true : false);
 
-				if ($initial) {
-					//get selected node from session and set the expanded tree
-					$idOrg = $this->_getSessionValue('selected_node', 0);//$this->_getSelectedNode();
-					$nodes = $this->model->getOrgChartInitialNodes($idOrg, true);
-					//create actions for every node
-					$this->_assignActions($nodes);
-					//set output
-					if (is_array($nodes)) {
+					if ($initial) {
+						//get selected node from session and set the expanded tree
+						$idOrg = $this->_getSessionValue('selected_node', 0);//$this->_getSelectedNode();
+						$nodes = $this->model->getOrgChartInitialNodes($idOrg, true);
+						//create actions for every node
+						$this->_assignActions($nodes);
+						//set output
+						if (is_array($nodes)) {
+							$output = array(
+								'success' => true,
+								'nodes' => $nodes,
+								'initial' => $initial
+							);
+						} else {
+							$output = array('success' => false);
+						}
+					} else {
+						//extract node data
+						$nodes = $this->model->getOrgChartNodes($idOrg, false, false, true);
+						//create actions for every node
+						for ($i = 0; $i < count($nodes); $i++) {
+							$nodes[$i]['options'] = $this->_getNodeActions($nodes[$i]);
+						}
+						//set output
 						$output = array(
 							'success' => true,
 							'nodes' => $nodes,
 							'initial' => $initial
 						);
-					} else {
-						$output = array('success' => false);
 					}
-				} else {
-					//extract node data
-					$nodes = $this->model->getOrgChartNodes($idOrg, false, false, true);
-					//create actions for every node
-					for ($i=0; $i<count($nodes); $i++) {
-						$nodes[$i]['options'] = $this->_getNodeActions($nodes[$i]);
+					echo $this->json->encode($output);
+				}
+				break;
+
+			case "set_selected_node":
+				{
+					$idOrg = Get::req('node_id', DOTY_INT, -1);
+					$this->_setSessionValue('selected_node', $idOrg);//_setSelectedNode($idOrg);
+				}
+				break;
+
+			case "delete":
+				{
+					//check permissions
+					if (!$this->permissions['del_org']) {
+						$output = array('success' => false, 'message' => $this->_getErrorMessage('no permission'));
+						echo $this->json->encode($output);
+						return;
 					}
-					//set output
-					$output = array(
-						'success' => true,
-						'nodes' => $nodes,
-						'initial' => $initial
-					);
+
+					$this->delfolder();
 				}
-				echo $this->json->encode($output);
-			} break;
+				break;
 
-			case "set_selected_node": {
-				$idOrg = Get::req('node_id', DOTY_INT, -1);
-				$this->_setSessionValue('selected_node', $idOrg);//_setSelectedNode($idOrg);
-			} break;
+			case "getmodform":
+				{
+					//check permissions
+					if (!$this->permissions['mod_org']) {
+						$output = array('success' => false, 'message' => $this->_getErrorMessage('no permission'));
+						echo $this->json->encode($output);
+						return;
+					}
 
-			case "delete": {
-				//check permissions
-				if (!$this->permissions['del_org']) {
-					$output = array('success' => false, 'message' => $this->_getErrorMessage('no permission'));
-					echo $this->json->encode($output);
-					return;
-				}
-
-				$this->delfolder();
-			} break;
-
-			case "getmodform": {
-				//check permissions
-				if (!$this->permissions['mod_org']) {
-					$output = array('success' => false, 'message' => $this->_getErrorMessage('no permission'));
-					echo $this->json->encode($output);
-					return;
-				}
-
-				$output = array();
-				$id = Get::req('node_id', DOTY_INT, -1);
-				if ($id < 0) {
-					$output = array(
-						'success' => false,
-						'message' => Lang::t('_INVALID_INPUT')
-					);
-				} else {
-					if ($id == 0) {
-						$root_name = Get::sett('title_organigram_chart', Lang::t('_ORG_CHART', 'organization_chart'));
-						$body = Form::openForm('modfolder_form', "ajax.adm_server.php?r=".$this->link."/modrootfolder")
-							.'<p id="addfolder_error_message"></p>'
-							.Form::getTextfield(Lang::t('_ROOT_RENAME', 'organization_chart'), 'modfolder_root', 'modfolder_root', 50, $root_name)
-							.Form::closeForm();
+					$output = array();
+					$id = Get::req('node_id', DOTY_INT, -1);
+					if ($id < 0) {
+						$output = array(
+							'success' => false,
+							'message' => Lang::t('_INVALID_INPUT')
+						);
 					} else {
-						$folder_info = $this->model->getFolderById($id);
-						$languages = Docebo::langManager()->getAllLanguages(true);//getAllLangCode();
-						$std_lang = getLanguage();
+						if ($id == 0) {
+							$root_name = Get::sett('title_organigram_chart', Lang::t('_ORG_CHART', 'organization_chart'));
+							$body = Form::openForm('modfolder_form', "ajax.adm_server.php?r=" . $this->link . "/modrootfolder")
+								. '<p id="addfolder_error_message"></p>'
+								. Form::getTextfield(Lang::t('_ROOT_RENAME', 'organization_chart'), 'modfolder_root', 'modfolder_root', 50, $root_name)
+								. Form::closeForm();
+						} else {
+							$folder_info = $this->model->getFolderById($id);
+							$languages = Docebo::langManager()->getAllLanguages(true);//getAllLangCode();
+							$std_lang = getLanguage();
 
-						$template =(!empty($folder_info->associated_template) ? $folder_info->associated_template : getDefaultTemplate());
-						$template_arr =getTemplateList();
-						$template_tmp_arr =array_flip($template_arr);
-						$template_id =$template_tmp_arr[$template];
-						unset($template_tmp_arr);
+							$template = (!empty($folder_info->associated_template) ? $folder_info->associated_template : getDefaultTemplate());
+							$template_arr = getTemplateList();
+							$template_tmp_arr = array_flip($template_arr);
+							$template_id = $template_tmp_arr[$template];
+							unset($template_tmp_arr);
 
-						$form_content = Form::getHidden('modfolder_id', 'node_id', $id);
-						$form_content .= Form::getTextfield(Lang::t('_CODE', 'organization_chart'), 'org_code', 'org_code', 50, $folder_info->code);
-						$form_content .= Form::getDropdown(Lang::t('_DEFAULTTEMPLATE', 'configuration'), 'associated_template', 'associated_template', $template_arr, $template_id);
-						$form_content .= Form::getBreakRow();
+							$form_content = Form::getHidden('modfolder_id', 'node_id', $id);
+							$form_content .= Form::getTextfield(Lang::t('_CODE', 'organization_chart'), 'org_code', 'org_code', 50, $folder_info->code);
+							$form_content .= Form::getDropdown(Lang::t('_DEFAULTTEMPLATE', 'configuration'), 'associated_template', 'associated_template', $template_arr, $template_id);
+							$form_content .= Form::getBreakRow();
 
-						$translations = $this->model->getFolderTranslations($id, true);
-						foreach ($languages as $language) {
-							$lang_code = $language['code'];
-							$lang_name = $language['description'];
-							$translation = (isset($translations[$lang_code]) ? $translations[$lang_code] : "");
-							$form_content .= Form::getTextfield($lang_name, 'modfolder_'.$lang_code, 'modfolder['.$lang_code.']', 255, $translation);
+							$translations = $this->model->getFolderTranslations($id, true);
+							foreach ($languages as $language) {
+								$lang_code = $language['code'];
+								$lang_name = $language['description'];
+								$translation = (isset($translations[$lang_code]) ? $translations[$lang_code] : "");
+								$form_content .= Form::getTextfield($lang_name, 'modfolder_' . $lang_code, 'modfolder[' . $lang_code . ']', 255, $translation);
+							}
+							// LRZ
+							// Add custom fiels for org chart tree
+							$form_content .= Form::getLineBox();
+							$form_content .= '<hr>';
+							$vett_custom_org = $this->model->getCustomFieldOrg($id);
+							foreach ($vett_custom_org as $key => $value) {
+								$valueField = $this->model->getValueCustom($id, $value['id_field']);
+								if ($value['type_field'] == 'dropdown') {
+									// recover field son of id_field
+									$vett_value_custom = $this->model->getLO_Custom_Value_Array($value['id_field']);
+									$form_content .= Form::getDropdown($value['translation'], 'custom_' . $value['id_field'], 'custom_' . $value['id_field'], $vett_value_custom, $valueField);
+								}
+								if ($value['type_field'] == 'textfield') {
+									$form_content .= Form::getTextfield($value['translation'], 'custom_' . $value['id_field'], 'custom_' . $value['id_field'], 50, $valueField);
+								}
+							}
+							$body = Form::openForm('modfolder_form', "ajax.adm_server.php?r=" . $this->link . "/modfolder")
+								. '<p id="addfolder_error_message"></p>'
+								. $form_content
+								. Form::closeForm();
 						}
-                        // LRZ
-                        // Add custom fiels for org chart tree
-                        $form_content .= Form::getLineBox();
-                        $form_content .= '<hr>';
-                        $vett_custom_org = $this->model->getCustomFieldOrg($id);
-                        foreach ($vett_custom_org as $key => $value) {
-                            $valueField = $this->model->getValueCustom($id ,$value['id_field']);
-                            if($value['type_field']=='dropdown'){
-                                // recover field son of id_field
-                                $vett_value_custom = $this->model->getLO_Custom_Value_Array($value['id_field']);
-                                $form_content .= Form::getDropdown($value['translation'], 'custom_'.$value['id_field'], 'custom_'.$value['id_field'], $vett_value_custom,$valueField);
-                            }
-                            if($value['type_field']=='textfield'){
-                                $form_content .= Form::getTextfield($value['translation'], 'custom_'.$value['id_field'], 'custom_'.$value['id_field'], 50,$valueField);
-                            }
-                        }
-						$body = Form::openForm('modfolder_form', "ajax.adm_server.php?r=".$this->link."/modfolder")
-							.'<p id="addfolder_error_message"></p>'
-							.$form_content
-							.Form::closeForm();
+
+						$output = array(
+							'success' => true,
+							'body' => $body
+						);
 					}
 
-					$output = array(
-						'success' => true,
-						'body' => $body
-					);
-				}
-
-				echo $this->json->encode($output);
-			} break;
-
-			case "assignfields": {
-				//check permissions
-				if (!$this->permissions['mod_org']) {
-					$output = array('success' => false, 'message' => $this->_getErrorMessage('no permission'));
 					echo $this->json->encode($output);
-					return;
 				}
+				break;
 
-				$this->assignfields();
-			} break;
+			case "assignfields":
+				{
+					//check permissions
+					if (!$this->permissions['mod_org']) {
+						$output = array('success' => false, 'message' => $this->_getErrorMessage('no permission'));
+						echo $this->json->encode($output);
+						return;
+					}
 
-			case "options": {
-				//check permissions
-				if (!$this->permissions['view_org']) {
-					$output = array('success' => false, 'message' => $this->_getErrorMessage('no permission'));
+					$this->assignfields();
+				}
+				break;
+
+			case "options":
+				{
+					//check permissions
+					if (!$this->permissions['view_org']) {
+						$output = array('success' => false, 'message' => $this->_getErrorMessage('no permission'));
+						echo $this->json->encode($output);
+						return;
+					}
+
+					$id = Get::req('node_id', DOTY_INT, -1);
+					$output = array();
+					if ($id <= 0) {
+						$output['success'] = false;
+					} else {
+						$output['success'] = true;
+						$output['options'] = $this->_getNodeActions($id);
+					}
 					echo $this->json->encode($output);
-					return;
 				}
+				break;
 
-				$id = Get::req('node_id', DOTY_INT, -1);
-				$output = array();
-				if ($id <= 0) {
+			case "movefolder":
+				{
+					//check permissions
+					if (!$this->permissions['mod_org']) {
+						$output = array('success' => false, 'message' => $this->_getErrorMessage('no permission'));
+						echo $this->json->encode($output);
+						return;
+					}
+
+					$src_folder = Get::req('src', DOTY_INT, -1);
+					$dest_folder = Get::req('dest', DOTY_INT, -1);
+
+					$output = array();
+					if ($this->model->moveFolder($src_folder, $dest_folder)) {
+						$output['success'] = true;
+					} else {
+						$output['success'] = false;
+					}
+					echo $this->json->encode($output);
+				}
+				break;
+
+			default:
+				{
+					$output = array();
 					$output['success'] = false;
-				} else {
-					$output['success'] = true;
-					$output['options'] = $this->_getNodeActions($id);
-				}
-				echo $this->json->encode($output);
-			} break;
-
-			case "movefolder": {
-				//check permissions
-				if (!$this->permissions['mod_org']) {
-					$output = array('success' => false, 'message' => $this->_getErrorMessage('no permission'));
 					echo $this->json->encode($output);
-					return;
 				}
-
-				$src_folder = Get::req('src', DOTY_INT, -1);
-				$dest_folder = Get::req('dest', DOTY_INT, -1);
-
-				$output = array();
-				if ($this->model->moveFolder($src_folder, $dest_folder)) {
-					$output['success'] = true;
-				} else {
-					$output['success'] = false;
-				}
-				echo $this->json->encode($output);
-			} break;
-
-			default: {
-				$output = array();
-				$output['success'] = false;
-				echo $this->json->encode($output);
-			}
 		} // end switch
 
 	}
 
-	protected function _getNodeActions($node) {
+	protected function _getNodeActions($node)
+	{
 		if (is_numeric($node)) { //if we have the id of the node, extract data
-			require_once(_base_.'/lib/lib.json.php');
+			require_once(_base_ . '/lib/lib.json.php');
 			$model = new UsermanagementAdm();
 			$nodedata = $model->getFolderById($node);
 			$node = array(
 				'id' => $nodedata->idOrg,
 				'label' => $model->getFolderTranslation($nodedata->idOrg, getLanguage()),
-				'is_leaf' => (($nodedata->iRight-$nodedata->iLeft) == 1),
-				'count_content' => (int)(($nodedata->iRight-$nodedata->iLeft-1)/2)
+				'is_leaf' => (($nodedata->iRight - $nodedata->iLeft) == 1),
+				'count_content' => (int)(($nodedata->iRight - $nodedata->iLeft - 1) / 2)
 			);
 		}
 		if (!is_array($node)) return false; //unrecognized type for node data
@@ -1246,15 +1302,15 @@ class UsermanagementAdmController extends AdmController {
 		if ($this->permissions['associate_user']) {
 			if (!$is_root) {
 				$actions[] = array(
-					'id' => 'moduser_'.$id_action,
+					'id' => 'moduser_' . $id_action,
 					'command' => 'moduser',
 					'icon' => 'standard/moduser.png',
-					'href' => 'index.php?r='.$this->link.'/assignuser&id='.$id_action,
+					'href' => 'index.php?r=' . $this->link . '/assignuser&id=' . $id_action,
 					'alt' => Lang::t('_ASSIGN_USERS', 'organization_chart')
 				);
 			} else {
 				$actions[] = array(
-					'id' => 'moduser_'.$id_action,
+					'id' => 'moduser_' . $id_action,
 					'command' => false,
 					'icon' => 'blank.png'
 				);
@@ -1264,7 +1320,7 @@ class UsermanagementAdmController extends AdmController {
 		//assign custom fields action
 		if ($this->permissions['mod_org']) {
 			$actions[] = array(
-				'id' => 'assignfields_'.$id_action,
+				'id' => 'assignfields_' . $id_action,
 				'command' => 'assignfields',
 				'icon' => 'standard/database.png',
 				'alt' => Lang::t('_ASSIGNED_EXTRAFIELD', 'organization_chart')
@@ -1274,7 +1330,7 @@ class UsermanagementAdmController extends AdmController {
 		//rename action
 		if ($this->permissions['mod_org']) {
 			$actions[] = array(
-				'id' => 'mod_'.$id_action,
+				'id' => 'mod_' . $id_action,
 				'command' => 'modify',
 				'icon' => 'standard/edit.png',
 				'alt' => Lang::t('_MOD', 'standard')
@@ -1285,14 +1341,14 @@ class UsermanagementAdmController extends AdmController {
 		if ($this->permissions['del_org']) {
 			if ($node['is_leaf'] && !$is_root) {
 				$actions[] = array(
-					'id' => 'del_'.$id_action,
+					'id' => 'del_' . $id_action,
 					'command' => 'delete',
 					'icon' => 'standard/delete.png',
 					'alt' => Lang::t('_DEL', 'standard')
 				);
 			} else {
 				$actions[] = array(
-					'id' => 'del_'.$id_action,
+					'id' => 'del_' . $id_action,
 					'command' => false,
 					'icon' => 'blank.png'
 				);
@@ -1302,7 +1358,7 @@ class UsermanagementAdmController extends AdmController {
 		//add action
 		if ($this->permissions['add_org']) {
 			$actions[] = array(
-				'id' => 'add_'.$id_action,
+				'id' => 'add_' . $id_action,
 				'command' => 'add',
 				'icon' => 'blank.png',
 				'alt' => ''
@@ -1312,7 +1368,8 @@ class UsermanagementAdmController extends AdmController {
 		return $actions;
 	}
 
-	public function addfolder_dialog() {
+	public function addfolder_dialog()
+	{
 		//check permissions
 		if (!$this->permissions['add_org']) {
 			$output = array('success' => false, 'message' => $this->_getErrorMessage('no permission'));
@@ -1323,21 +1380,22 @@ class UsermanagementAdmController extends AdmController {
 		$id_parent = Get::req('id', DOTY_INT, 0);
 		if ($id_parent < 0) $id_parent = 0;
 
-		$template =getDefaultTemplate();
-		$template_arr =getTemplateList();
-		$template_tmp_arr =array_flip($template_arr);
-		$template_id =$template_tmp_arr[$template];
+		$template = getDefaultTemplate();
+		$template_arr = getTemplateList();
+		$template_tmp_arr = array_flip($template_arr);
+		$template_id = $template_tmp_arr[$template];
 		unset($template_tmp_arr);
 
 		$this->render('add_folder', array(
 			'id_parent' => $id_parent,
 			'title' => Lang::t('_ORGCHART_ADDNODE', 'organization_chart'),
 			'json' => $this->json,
-			'default_template'=>$template_id,
+			'default_template' => $template_id,
 		));
 	}
 
-	function createfolder() {
+	function createfolder()
+	{
 		//check permissions
 		if (!$this->permissions['add_org']) {
 			$output = array('success' => false, 'message' => $this->_getErrorMessage('no permission'));
@@ -1359,7 +1417,7 @@ class UsermanagementAdmController extends AdmController {
 				$output['success'] = true;
 				$nodedata = array(
 					'id' => $id,
-					'label' => ($code != "" ? '['.$code.'] ' : '').$this->model->getFolderTranslation($id, getLanguage()),
+					'label' => ($code != "" ? '[' . $code . '] ' : '') . $this->model->getFolderTranslation($id, getLanguage()),
 					'is_leaf' => true,
 					'count_content' => 0
 				);
@@ -1371,14 +1429,14 @@ class UsermanagementAdmController extends AdmController {
 				$event->setNode($nodedata);
 				\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementOrgChartCreateNodeEvent::EVENT_NAME, $event);
 
-                // adding custom fields (if any)
-                $vett_custom_org = $this->model->getCustomOrg();
-                foreach($vett_custom_org as $key => $value){
-                    $name_custom_field = "custom_".$key;
-                    $org_chart = Get::req($name_custom_field, DOTY_STRING, -1);
-                    $id_field = $key ;
-                    $res =$this->model->addCustomFieldValue($id,$id_field, $org_chart);
-                }
+				// adding custom fields (if any)
+				$vett_custom_org = $this->model->getCustomOrg();
+				foreach ($vett_custom_org as $key => $value) {
+					$name_custom_field = "custom_" . $key;
+					$org_chart = Get::req($name_custom_field, DOTY_STRING, -1);
+					$id_field = $key;
+					$res = $this->model->addCustomFieldValue($id, $id_field, $org_chart);
+				}
 
 			} else {
 				$output['success'] = false;
@@ -1389,7 +1447,8 @@ class UsermanagementAdmController extends AdmController {
 		echo $this->json->encode($output);
 	}
 
-	function delfolder() {
+	function delfolder()
+	{
 		//check permissions
 		if (!$this->permissions['del_org']) {
 			$output = array('success' => false, 'message' => $this->_getErrorMessage('no permission'));
@@ -1410,12 +1469,14 @@ class UsermanagementAdmController extends AdmController {
 		echo $this->json->encode($output);
 	}
 
-	protected function _formatFolderCode($id, $code) {
+	protected function _formatFolderCode($id, $code)
+	{
 		if (!$code || $id <= 0) return "";
-		return '<span id="orgchart_code_'.(int)$id.'">['.$code.']&nbsp;</span>';
+		return '<span id="orgchart_code_' . (int)$id . '">[' . $code . ']&nbsp;</span>';
 	}
 
-	public function modfolder() {
+	public function modfolder()
+	{
 		//check permissions
 		if (!$this->permissions['mod_org']) {
 			$output = array('success' => false, 'message' => $this->_getErrorMessage('no permission'));
@@ -1427,24 +1488,24 @@ class UsermanagementAdmController extends AdmController {
 		$id = Get::req('node_id', DOTY_INT, -1);
 		$code = Get::req('org_code', DOTY_STRING, '');
 		$template_id = Get::req('associated_template', DOTY_INT, '');
-		$template_arr =getTemplateList();
+		$template_arr = getTemplateList();
 		$langs = Get::req('modfolder', DOTY_MIXED, false);
 		$old_node = $this->model->getFolderById($id);
 		$res = $this->model->modFolderCodeAndTemplate($id, $code, $template_arr[$template_id]);
 		$res = $this->model->renameFolder($id, $langs);
-        // update custom field for org LRZ
-        // cicle for each custom for ORG_CHARRT
-        $vett_custom_org = $this->model->getCustomOrg();
-        foreach($vett_custom_org as $key => $value){
-            $name_custom_field = "custom_".$key;
-            $org_chart = Get::req($name_custom_field, DOTY_STRING, -1);
-            $id_field = $key ;
-            $res =$this->model->addCustomFieldValue($id,$id_field, $org_chart);
-        }
+		// update custom field for org LRZ
+		// cicle for each custom for ORG_CHARRT
+		$vett_custom_org = $this->model->getCustomOrg();
+		foreach ($vett_custom_org as $key => $value) {
+			$name_custom_field = "custom_" . $key;
+			$org_chart = Get::req($name_custom_field, DOTY_STRING, -1);
+			$id_field = $key;
+			$res = $this->model->addCustomFieldValue($id, $id_field, $org_chart);
+		}
 		if ($res) {
 			$output['success'] = true;
 			//$output['new_name'] = ($code != "" ? '['.$code.'] ' : '').$langs[getLanguage()];
-			$output['new_name'] = $this->_formatFolderCode($id, $code).$langs[getLanguage()];
+			$output['new_name'] = $this->_formatFolderCode($id, $code) . $langs[getLanguage()];
 
 			$event = new \appCore\Events\Core\User\UsersManagementOrgChartEditNodeEvent();
 			$event->setOldNode($old_node);
@@ -1457,7 +1518,8 @@ class UsermanagementAdmController extends AdmController {
 		echo $this->json->encode($output);
 	}
 
-	public function modrootfolder() {
+	public function modrootfolder()
+	{
 		//check permissions
 		if (!$this->permissions['mod_org']) {
 			$output = array('success' => false, 'message' => $this->_getErrorMessage('no permission'));
@@ -1478,20 +1540,21 @@ class UsermanagementAdmController extends AdmController {
 		echo $this->json->encode($output);
 	}
 
-	function assignuser() {
+	function assignuser()
+	{
 		$id = Get::req('id', DOTY_INT, -1);
 
-		$base_url = 'index.php?r='.$this->link.'/';
-		$back_url = $base_url.'show';
-		$jump_url = $base_url.'assignuser';
-		$next_url = $base_url.'show';
+		$base_url = 'index.php?r=' . $this->link . '/';
+		$back_url = $base_url . 'show';
+		$jump_url = $base_url . 'assignuser';
+		$next_url = $base_url . 'show';
 
 		//check permissions
 		if (!$this->permissions['associate_user']) Util::jump_to($back_url);
 
 		if ($id > 0) {
-			require_once(_adm_.'/lib/lib.directory.php');
-			require_once(_adm_.'/class.module/class.directory.php');
+			require_once(_adm_ . '/lib/lib.directory.php');
+			require_once(_adm_ . '/class.module/class.directory.php');
 
 			$aclm = Docebo::user()->getAclManager();
 			$selector = new UserSelector();
@@ -1505,21 +1568,22 @@ class UsermanagementAdmController extends AdmController {
 			} elseif ($save) {
 				$selection = $selector->getSelection($_POST);
 
-				if ( Get::sett('orgchart_singlenode', 'off') == 'on' ){
-					require_once(Forma::inc(_base_ . '/lib/lib.user_profile.php'));
-					require_once(_adm_.'/modules/org_chart/tree.org_chart.php');
+				require_once(Forma::inc(_base_ . '/lib/lib.user_profile.php'));
+				require_once(_adm_ . '/modules/org_chart/tree.org_chart.php');
+				$treedborgdb = new TreeDb_OrgDb();
 
-					$treedborgdb = new TreeDb_OrgDb();
+				if (Get::sett('orgchart_singlenode', 'off') == 'on') {
+
 					$alreadyassigned = array();
-					foreach ($selection as $sel_user){
+					foreach ($selection as $sel_user) {
 						$user_org = $this->model->getUserFolders($sel_user);
 						$folder_id = $treedborgdb->getFoldersIdFromIdst(array_keys($user_org));
-						if(count($folder_id) && (count($folder_id) > 1 || $id != reset($folder_id))){
+						if (count($folder_id) && (count($folder_id) > 1 || $id != reset($folder_id))) {
 							$alreadyassigned[] = $sel_user;
 						}
 					}
-					if(count($alreadyassigned)) {
-						Util::jump_to($next_url.'&res=err_alreadyassigned&count='.count($alreadyassigned).'&id_first='.$alreadyassigned[0]);
+					if (count($alreadyassigned)) {
+						Util::jump_to($next_url . '&res=err_alreadyassigned&count=' . count($alreadyassigned) . '&id_first=' . $alreadyassigned[0]);
 					}
 				}
 
@@ -1543,39 +1607,44 @@ class UsermanagementAdmController extends AdmController {
 				$permission_admin = $acl_manager->getGroupST(ADMIN_GROUP_ADMIN);
 
 				$recipients = $acl_manager->getGroupAllUser($permission_godadmin);
-				$recipients = array_merge($recipients,$acl_manager->getGroupAllUser($permission_admin));
+				$recipients = array_merge($recipients, $acl_manager->getGroupAllUser($permission_admin));
 
-				foreach ($selection as $idst){
+				foreach ($selection as $idst) {
 
-					require_once(_base_ . '/lib/lib.eventmanager.php');
+					$user_org = $this->model->getUserFolders($idst);
+					$folder_id = $treedborgdb->getFoldersIdFromIdst(array_keys($user_org));
+					if (!(count($folder_id) && (count($folder_id) > 1 || $id != reset($folder_id)))) {
 
-					$uinfo = Docebo::aclm()->getUser($idst, false);
+						require_once(_base_ . '/lib/lib.eventmanager.php');
 
-					$array_subst = array(
-						'[url]' => Get::site_url(),
-						'[firstname]' => $uinfo[ACL_INFO_FIRSTNAME],
-						'[lastname]' => $uinfo[ACL_INFO_LASTNAME],
-						'[username]' => $uinfo[ACL_INFO_USERID]
-					);
+						$uinfo = Docebo::aclm()->getUser($idst, false);
 
-					// message to user that is odified
-					$msg_composer = new EventMessageComposer();
+						$array_subst = array(
+							'[url]' => Get::site_url(),
+							'[firstname]' => $uinfo[ACL_INFO_FIRSTNAME],
+							'[lastname]' => $uinfo[ACL_INFO_LASTNAME],
+							'[username]' => $uinfo[ACL_INFO_USERID]
+						);
 
-					$msg_composer->setSubjectLangText('email', '_EVENT_CHANGE_NODE_USER_SBJ', false);
-					$msg_composer->setBodyLangText('email', '_EVENT_CHANGE_NODE_USER_SBJ', $array_subst);
+						// message to user that is odified
+						$msg_composer = new EventMessageComposer();
 
-					$msg_composer->setBodyLangText('sms', '_EVENT_CHANGE_NODE_USER_SBJ_SMS', $array_subst);
+						$msg_composer->setSubjectLangText('email', '_EVENT_CHANGE_NODE_USER_SBJ', false);
+						$msg_composer->setBodyLangText('email', '_EVENT_CHANGE_NODE_USER_TEXT', $array_subst);
 
-					createNewAlert('UserModNodeSuperAdmin', 'directory', 'edit', '1', 'User ' . $idst . ' was modified',
-						$recipients, $msg_composer);
+						$msg_composer->setBodyLangText('sms', '_EVENT_CHANGE_NODE_USER_SBJ_SMS', $array_subst);
+
+						createNewAlert('UserModNodeSuperAdmin', 'directory', 'edit', '1', 'User ' . $idst . ' was modified',
+							$recipients, $msg_composer);
+					}
 				}
 
-				if($res) {
+				if ($res) {
 					$enrollrules = new EnrollrulesAlms();
 					$enrollrules->applyRulesMultiLang('_LOG_USERS_TO_ORGCHART', $selection, $id);
 				}
 
-				Util::jump_to($next_url.($res ? '&res=ok_assignuser' : '&res=err_assignuser'));
+				Util::jump_to($next_url . ($res ? '&res=ok_assignuser' : '&res=err_assignuser'));
 			} else {
 				$selector->show_user_selector = true;
 				$selector->show_group_selector = false;
@@ -1590,12 +1659,12 @@ class UsermanagementAdmController extends AdmController {
 					$selector->resetSelection($members);
 				}
 				$selector->addFormInfo(
-					Form::getHidden('is_updating', 'is_updating', 1).
+					Form::getHidden('is_updating', 'is_updating', 1) .
 					Form::getHidden('id', 'id', $id)
 				);
 				$selector->loadSelector(Util::str_replace_once('&', '&amp;', $jump_url),
-					array( 'index.php?r='.$this->link.'/show' => Lang::t('_ORG_CHART', 'organization_chart'),
-						Lang::t('_ASSIGN_USERS', 'organization_chart') ),
+					array('index.php?r=' . $this->link . '/show' => Lang::t('_ORG_CHART', 'organization_chart'),
+						Lang::t('_ASSIGN_USERS', 'organization_chart')),
 					false,
 					true);
 
@@ -1606,12 +1675,13 @@ class UsermanagementAdmController extends AdmController {
 		}
 	}
 
-	function assignfields() {
+	function assignfields()
+	{
 		//check permissions
-		if (!$this->permissions['mod_org']) Util::jump_to('index.php?r='.$this->link.'/show');
+		if (!$this->permissions['mod_org']) Util::jump_to('index.php?r=' . $this->link . '/show');
 
-		require_once(_base_.'/lib/lib.table.php');
-		require_once(_adm_.'/lib/lib.field.php');
+		require_once(_base_ . '/lib/lib.table.php');
+		require_once(_adm_ . '/lib/lib.field.php');
 
 		$id_org = Get::req('id_node', DOTY_INT, 0);
 		$table = new Table();
@@ -1633,17 +1703,17 @@ class UsermanagementAdmController extends AdmController {
 		$acl_man = Docebo::user()->getAclManager();
 
 		$body = "";
-		$body .= Form::openForm('assignfieldgroup', 'ajax.adm_server.php?r='.$this->link.'/assignfields_action');
-		$body .= Form::getLineBox(Lang::t('_ORG_CHART_LIST_FIELDS', 'organization_chart').':&nbsp;', $this->model->getOrgPath($id_org));
+		$body .= Form::openForm('assignfieldgroup', 'ajax.adm_server.php?r=' . $this->link . '/assignfields_action');
+		$body .= Form::getLineBox(Lang::t('_ORG_CHART_LIST_FIELDS', 'organization_chart') . ':&nbsp;', $this->model->getOrgPath($id_org));
 		$body .= Form::getHidden('idst_group', 'idst_group', $id_org);
 
 		$arr_all_fields = $fl->getAllFields();
-		$arr_fields_normal = $fl->getFieldsFromIdst(array($acl_man->getGroupST('oc_'.$id_org)));
-		$arr_fields_inherit = $fl->getFieldsFromIdst(array($acl_man->getGroupST('ocd_'.$id_org)));
+		$arr_fields_normal = $fl->getFieldsFromIdst(array($acl_man->getGroupST('oc_' . $id_org)));
+		$arr_fields_inherit = $fl->getFieldsFromIdst(array($acl_man->getGroupST('ocd_' . $id_org)));
 
 		//$body .= '<pre>'.print_r($arr_fields_normal, true).print_r($arr_fields_inherit, true).'</pre>';
 
-		foreach ($arr_all_fields as $field ) {
+		foreach ($arr_all_fields as $field) {
 			$id_field = $field[FIELD_INFO_ID];
 
 			$def_value = GROUP_FIELD_NO;
@@ -1653,23 +1723,28 @@ class UsermanagementAdmController extends AdmController {
 				$def_value = GROUP_FIELD_INHERIT;
 
 			switch ($def_value) {
-				case GROUP_FIELD_NORMAL: {
-					$is_mandatory = isset($arr_fields_normal[$id_field]) && $arr_fields_normal[$id_field][FIELD_INFO_MANDATORY] == 'true';
-					$is_invisible = isset($arr_fields_normal[$id_field]) && $arr_fields_normal[$id_field][FIELD_INFO_USERACCESS] == 'readwrite';
-					$is_userinherit = isset($arr_fields_normal[$id_field]) && $arr_fields_normal[$id_field][FIELD_INFO_USERINHERIT] == '1';
-				} break;
+				case GROUP_FIELD_NORMAL:
+					{
+						$is_mandatory = isset($arr_fields_normal[$id_field]) && $arr_fields_normal[$id_field][FIELD_INFO_MANDATORY] == 'true';
+						$is_invisible = isset($arr_fields_normal[$id_field]) && $arr_fields_normal[$id_field][FIELD_INFO_USERACCESS] == 'readwrite';
+						$is_userinherit = isset($arr_fields_normal[$id_field]) && $arr_fields_normal[$id_field][FIELD_INFO_USERINHERIT] == '1';
+					}
+					break;
 
-				case GROUP_FIELD_INHERIT: {
-					$is_mandatory = isset($arr_fields_inherit[$id_field]) && $arr_fields_inherit[$id_field][FIELD_INFO_MANDATORY] == 'true';
-					$is_invisible = isset($arr_fields_inherit[$id_field]) && $arr_fields_inherit[$id_field][FIELD_INFO_USERACCESS] == 'readwrite';
-					$is_userinherit = isset($arr_fields_inherit[$id_field]) && $arr_fields_inherit[$id_field][FIELD_INFO_USERINHERIT] == '1';
-				} break;
+				case GROUP_FIELD_INHERIT:
+					{
+						$is_mandatory = isset($arr_fields_inherit[$id_field]) && $arr_fields_inherit[$id_field][FIELD_INFO_MANDATORY] == 'true';
+						$is_invisible = isset($arr_fields_inherit[$id_field]) && $arr_fields_inherit[$id_field][FIELD_INFO_USERACCESS] == 'readwrite';
+						$is_userinherit = isset($arr_fields_inherit[$id_field]) && $arr_fields_inherit[$id_field][FIELD_INFO_USERINHERIT] == '1';
+					}
+					break;
 
-				default: {
-					$is_mandatory = false;
-					$is_invisible = false;
-					$is_userinherit = false;
-				}
+				default:
+					{
+						$is_mandatory = false;
+						$is_invisible = false;
+						$is_userinherit = false;
+					}
 			}
 
 			$selected = $def_value != GROUP_FIELD_NO;
@@ -1677,11 +1752,11 @@ class UsermanagementAdmController extends AdmController {
 
 			$line = array();
 			$line[] = $field[FIELD_INFO_TRANSLATION];
-			$line[] = Form::getInputCheckbox('fields_use_'.$id_field, 'fields_use['.$id_field.']', 1, $selected, '');
-			$line[] = Form::getInputCheckbox('fields_inherit_'.$id_field, 'fields_inherit['.$id_field.']', 1, $def_value == GROUP_FIELD_INHERIT, $selected ? '' : $disabled);
-			$line[] = Form::getInputCheckbox('fields_mandatory_'.$id_field, 'fields_mandatory['.$id_field.']', 1, $is_mandatory, $selected ? '' : $disabled);
-			$line[] = Form::getInputCheckbox('fields_invisible_'.$id_field, 'fields_invisible['.$id_field.']', 1, $is_invisible, $selected ? '' : $disabled);
-			$line[] = Form::getInputCheckbox('fields_userinherit_'.$id_field, 'fields_userinherit['.$id_field.']', 1, $is_userinherit, $selected ? '' : $disabled);
+			$line[] = Form::getInputCheckbox('fields_use_' . $id_field, 'fields_use[' . $id_field . ']', 1, $selected, '');
+			$line[] = Form::getInputCheckbox('fields_inherit_' . $id_field, 'fields_inherit[' . $id_field . ']', 1, $def_value == GROUP_FIELD_INHERIT, $selected ? '' : $disabled);
+			$line[] = Form::getInputCheckbox('fields_mandatory_' . $id_field, 'fields_mandatory[' . $id_field . ']', 1, $is_mandatory, $selected ? '' : $disabled);
+			$line[] = Form::getInputCheckbox('fields_invisible_' . $id_field, 'fields_invisible[' . $id_field . ']', 1, $is_invisible, $selected ? '' : $disabled);
+			$line[] = Form::getInputCheckbox('fields_userinherit_' . $id_field, 'fields_userinherit[' . $id_field . ']', 1, $is_userinherit, $selected ? '' : $disabled);
 
 			$table->addBody($line);
 		}
@@ -1699,11 +1774,12 @@ class UsermanagementAdmController extends AdmController {
 		echo $this->json->encode($output);
 	}
 
-	public function assignfields_action() {
+	public function assignfields_action()
+	{
 		//check permissions
-		if (!$this->permissions['mod_org']) Util::jump_to('index.php?r='.$this->link.'/show');
+		if (!$this->permissions['mod_org']) Util::jump_to('index.php?r=' . $this->link . '/show');
 
-		require_once(_adm_.'/lib/lib.field.php');
+		require_once(_adm_ . '/lib/lib.field.php');
 
 		$id_org = Get::req('idst_group', DOTY_INT, 0);
 		$fields_use = Get::req('fields_use', DOTY_MIXED, array());
@@ -1731,11 +1807,11 @@ class UsermanagementAdmController extends AdmController {
 					//$arr_idorgs = $acl_man->getGroupGDescendants($id_org);
 					//$arr_idorgs[] = $id_org;
 					//$arr_idorgs = array_unique($arr_idorgs);
-					$arr_idgroups[] = $acl_man->getGroupST('oc_'.$id_org);
-					$arr_idgroups[] = $acl_man->getGroupST('ocd_'.$id_org);
+					$arr_idgroups[] = $acl_man->getGroupST('oc_' . $id_org);
+					$arr_idgroups[] = $acl_man->getGroupST('ocd_' . $id_org);
 				} else {
-					$arr_idgroups[] = $acl_man->getGroupST('oc_'.$id_org);
-					$fl->removeFieldFromGroup($id_field, $acl_man->getGroupST('ocd_'.$id_org));
+					$arr_idgroups[] = $acl_man->getGroupST('oc_' . $id_org);
+					$fl->removeFieldFromGroup($id_field, $acl_man->getGroupST('ocd_' . $id_org));
 				}
 
 				foreach ($arr_idgroups as $idst_group) {
@@ -1749,8 +1825,8 @@ class UsermanagementAdmController extends AdmController {
 					if ($res) $count++;
 				}
 			} else {
-				$res = $fl->removeFieldFromGroup($id_field, $acl_man->getGroupST('oc_'.$id_org));
-				$res = $fl->removeFieldFromGroup($id_field, $acl_man->getGroupST('ocd_'.$id_org));
+				$res = $fl->removeFieldFromGroup($id_field, $acl_man->getGroupST('oc_' . $id_org));
+				$res = $fl->removeFieldFromGroup($id_field, $acl_man->getGroupST('ocd_' . $id_org));
 				if ($res) $count++;
 			}
 		}
@@ -1767,7 +1843,8 @@ class UsermanagementAdmController extends AdmController {
 		echo $this->json->encode($output);
 	}
 
-	public function assoc() {
+	public function assoc()
+	{
 		//check permissions
 		if (!$this->permissions['associate_user']) {
 			$output = array('success' => false, 'message' => $this->_getErrorMessage('no permission'));
@@ -1780,8 +1857,8 @@ class UsermanagementAdmController extends AdmController {
 		$success = false;
 		if ($id_user > 0 && $id_org > 0) { //idst of the user must be valid and the orgbranch must not be the root
 			$acl_man = Docebo::user()->getAclManager();
-			$idst_org = $acl_man->getGroupST('oc_'.$id_org);
-			$idst_orgd = $acl_man->getGroupST('ocd_'.$id_org);
+			$idst_org = $acl_man->getGroupST('oc_' . $id_org);
+			$idst_orgd = $acl_man->getGroupST('ocd_' . $id_org);
 			//add to group
 			$acl_man->addToGroup($idst_org, $id_user);
 			$acl_man->addToGroup($idst_orgd, $id_user);
@@ -1789,7 +1866,7 @@ class UsermanagementAdmController extends AdmController {
 
 			// apply enroll rules
 			$lang_code = $acl_man->getSettingValueOfUsers('ui.language', array($id_user));
-			$lang_code = ( $lang_code ? $lang_code : getDefaultLanguage() );
+			$lang_code = ($lang_code ? $lang_code : getDefaultLanguage());
 
 			$enrollrules = new EnrollrulesAlms();
 			$enrollrules->applyRules(array($id_user), $lang_code, $id_org);
@@ -1807,7 +1884,8 @@ class UsermanagementAdmController extends AdmController {
 		return sql_fetch_object($query);
 	}
 
-	public function unassoc() {
+	public function unassoc()
+	{
 		//check permissions
 		if (!$this->permissions['associate_user']) {
 			$output = array('success' => false, 'message' => $this->_getErrorMessage('no permission'));
@@ -1821,8 +1899,8 @@ class UsermanagementAdmController extends AdmController {
 		if ($id_org == 0) $success = true;
 		if ($id_user > 0 && $id_org > 0) { //idst of the user must be valid and the orgbranch must not be the root
 			$acl_man = Docebo::user()->getAclManager();
-			$idst_org = $acl_man->getGroupST('oc_'.$id_org);
-			$idst_orgd = $acl_man->getGroupST('ocd_'.$id_org);
+			$idst_org = $acl_man->getGroupST('oc_' . $id_org);
+			$idst_orgd = $acl_man->getGroupST('ocd_' . $id_org);
 			//cancel from group
 			$acl_man->removeFromGroup($idst_org, $id_user);
 			$acl_man->removeFromGroup($idst_orgd, $id_user);
@@ -1868,7 +1946,8 @@ class UsermanagementAdmController extends AdmController {
 		echo $this->json->encode($output);
 	}
 
-	public function multiunassoc() {
+	public function multiunassoc()
+	{
 		//check permissions
 		if (!$this->permissions['associate_user']) {
 			$output = array('success' => false, 'message' => $this->_getErrorMessage('no permission'));
@@ -1886,8 +1965,8 @@ class UsermanagementAdmController extends AdmController {
 		}
 		if ($users != "" && $id_org >= 0) {
 			$acl_man = Docebo::user()->getAclManager();
-			$idst_org = $acl_man->getGroupST('oc_'.$id_org);
-			$idst_orgd = $acl_man->getGroupST('ocd_'.$id_org);
+			$idst_org = $acl_man->getGroupST('oc_' . $id_org);
+			$idst_orgd = $acl_man->getGroupST('ocd_' . $id_org);
 			$arr_users = explode(",", $users);
 
 			$arr_members = $acl_man->getGroupUMembers(array($idst_org, $idst_orgd));
@@ -1944,7 +2023,8 @@ class UsermanagementAdmController extends AdmController {
 		echo $this->json->encode($output);
 	}
 
-	function movefolder() {
+	function movefolder()
+	{
 		//check permissions
 		if (!$this->permissions['mod_org']) {
 			$output = array('success' => false, 'message' => $this->_getErrorMessage('no permission'));
@@ -1957,12 +2037,12 @@ class UsermanagementAdmController extends AdmController {
 		//&$folder, &$parentFolder, $newfoldername = FALSE
 
 		$success = false;
-		if ($src>0 && $dest>=0) {
-			$idst_src = $acl_man->getGroupST('/oc_'.$src);
-			$idst_src_d = $acl_man->getGroupST('/ocd_'.$src);
+		if ($src > 0 && $dest >= 0) {
+			$idst_src = $acl_man->getGroupST('/oc_' . $src);
+			$idst_src_d = $acl_man->getGroupST('/ocd_' . $src);
 
-			$idst_dest = $acl_man->getGroupST('/oc_'.$dest);
-			$idst_dest_d = $acl_man->getGroupST('/ocd_'.$dest);
+			$idst_dest = $acl_man->getGroupST('/oc_' . $dest);
+			$idst_dest_d = $acl_man->getGroupST('/ocd_' . $dest);
 
 			//...
 		}
@@ -1971,7 +2051,8 @@ class UsermanagementAdmController extends AdmController {
 		echo $this->json->encode($output);
 	}
 
-	public function changepwdTask() {
+	public function changepwdTask()
+	{
 		//check permissions
 		if (!$this->permissions['mod_user']) {
 			$output = array('success' => false, 'message' => $this->_getErrorMessage('no permission'));
@@ -1979,8 +2060,7 @@ class UsermanagementAdmController extends AdmController {
 			return;
 		}
 
-		if(Get::cfg('demo_mode'))
-		{
+		if (Get::cfg('demo_mode')) {
 			$output['success'] = false;
 			$output['message'] = UIFeedback::perror('Cannot mod password during demo mode.');
 			echo $this->json->encode($output);
@@ -1993,7 +2073,8 @@ class UsermanagementAdmController extends AdmController {
 		));
 	}
 
-	public function changepwd_actionTask() {
+	public function changepwd_actionTask()
+	{
 		//check permissions
 		if (!$this->permissions['mod_user']) {
 			$output = array('success' => false, 'message' => $this->_getErrorMessage('no permission'));
@@ -2001,8 +2082,7 @@ class UsermanagementAdmController extends AdmController {
 			return;
 		}
 
-		if(Get::cfg('demo_mode'))
-		{
+		if (Get::cfg('demo_mode')) {
 			$output['success'] = false;
 			$output['message'] = UIFeedback::perror('Cannot mod password during demo mode.');
 			echo $this->json->encode($output);
@@ -2064,12 +2144,13 @@ class UsermanagementAdmController extends AdmController {
 			$output['message'] = UIFeedback::pinfo(Lang::t('_OPERATION_SUCCESSFUL', 'standard'));
 		} else {
 			$output['success'] = false;
-			$output['message'] = UIFeedback::perror(Lang::t('_OPERATION_FAILURE', 'standard').': <b>'.$userid.'</b>');
+			$output['message'] = UIFeedback::perror(Lang::t('_OPERATION_FAILURE', 'standard') . ': <b>' . $userid . '</b>');
 		}
 		echo $this->json->encode($output);
 	}
 
-	public function users_autocompleteTask() {
+	public function users_autocompleteTask()
+	{
 		$query = Get::req('query', DOTY_STRING, '');
 		$results = Get::Req('results', DOTY_INT, Get::sett('visuItem', 25));
 		$output = array('users' => array());
@@ -2082,21 +2163,22 @@ class UsermanagementAdmController extends AdmController {
 					'idst' => $user->idst,
 					'userid' => $_userid,
 					'userid_highlight' => Layout::highlight($_userid, $query),
-					'name' => $user->lastname.' '.$user->firstname
+					'name' => $user->lastname . ' ' . $user->firstname
 				);
 			}
 		}
 		echo $this->json->encode($output);
 	}
 
-	public function importusers() {
-		$base_url = 'index.php?r='.$this->link.'/show';
+	public function importusers()
+	{
+		$base_url = 'index.php?r=' . $this->link . '/show';
 
 		//check permissions
 		if (!$this->permissions['add_user']) Util::jump_to($base_url);
 
 		$idOrg = Get::req('id', DOTY_INT, -1);
-		if ($idOrg<0) return false;
+		if ($idOrg < 0) return false;
 		$step = Get::req('step', DOTY_INT, 1);
 		$params = array('id_org' => $idOrg, 'step' => $step);
 
@@ -2105,206 +2187,220 @@ class UsermanagementAdmController extends AdmController {
 
 		switch ($step) {
 
-			case 1: {
-			} break;
+			case 1:
+				{
+				}
+				break;
 
-			case 2: {
-				$params['orgchart_list'] = $this->model->getOrgChartDropdownList(Docebo::user()->getIdSt());
+			case 2:
+				{
+					$params['orgchart_list'] = $this->model->getOrgChartDropdownList(Docebo::user()->getIdSt());
 
-				require_once(Forma::inc(_base_ . '/lib/lib.upload.php'));
+					require_once(Forma::inc(_base_ . '/lib/lib.upload.php'));
 
-				// ----------- file upload -----------------------------------------
-				if($_FILES['file_import']['name'] == '') {
-					//$_SESSION['last_error'] = Lang::t('_FILEUNSPECIFIED');
-					Util::jump_to($base_url.'&res=no_file' );
-				} else {
-					$path = '/appCore/';
-					$savefile = mt_rand(0,100).'_'.time().'_'.$_FILES['file_import']['name'];
-					if (!file_exists(Get::rel_path('base').'/files'.$path.$savefile )) {
-						sl_open_fileoperations();
-						if (!sl_upload($_FILES['file_import']['tmp_name'], $path.$savefile)) {
-							sl_close_fileoperations();
-							//$_SESSION['last_error'] = Lang::t('_ERROR_UPLOAD');
-							Util::jump_to($base_url.'&err=no_upload');
-						}
-						sl_close_fileoperations();
+					// ----------- file upload -----------------------------------------
+					if ($_FILES['file_import']['name'] == '') {
+						//$_SESSION['last_error'] = Lang::t('_FILEUNSPECIFIED');
+						Util::jump_to($base_url . '&res=no_file');
 					} else {
-						$_SESSION['last_error'] = Lang::t('_ERROR_UPLOAD');
-						Util::jump_to($base_url.'&err=no_upload');
+						$path = '/appCore/';
+						$savefile = mt_rand(0, 100) . '_' . time() . '_' . $_FILES['file_import']['name'];
+						if (!file_exists(Get::rel_path('base') . '/files' . $path . $savefile)) {
+							sl_open_fileoperations();
+							if (!sl_upload($_FILES['file_import']['tmp_name'], $path . $savefile)) {
+								sl_close_fileoperations();
+								//$_SESSION['last_error'] = Lang::t('_ERROR_UPLOAD');
+								Util::jump_to($base_url . '&err=no_upload');
+							}
+							sl_close_fileoperations();
+						} else {
+							$_SESSION['last_error'] = Lang::t('_ERROR_UPLOAD');
+							Util::jump_to($base_url . '&err=no_upload');
+						}
 					}
-				}
 
-				require_once(_adm_.'/modules/org_chart/import.org_chart.php');
-				$separator_info = Get::req('import_separator', DOTY_STRING, ',');
-				$separator = false;
-				switch ($separator_info) {
-					case "comma": $separator = ","; break;
-					case "dotcomma": $separator = ";"; break;
-					case "manual": $separator = Get::req('import_separator_manual', DOTY_STRING, ""); break;
-				}
-				$first_row_header = (Get::req('import_first_row_header', DOTY_STRING, 'false') == 'true');
-				$import_charset = Get::req('import_charset', DOTY_STRING, 'UTF-8');
-				if (trim($import_charset) === '') $import_charset = 'UTF-8';
-
-				$pwd_force_change_policy = Get::req('pwd_force_change_policy', DOTY_STRING, 'do_nothing');
-				$set_password = Get::req('set_password', DOTY_STRING, 'no_action');
-				$use_manual_password = Get::req('use_manual_password', DOTY_BOOL, false);
-				$manual_password = Get::req('manual_password', DOTY_STRING, '');
-
-				$src = new DeceboImport_SourceCSV(array(
-					'filename' => $GLOBALS['where_files_relative'].$path.$savefile,
-					'separator' => $separator,
-					'first_row_header' => $first_row_header,
-					'import_charset' => $import_charset
-				));
-				$dst = new ImportUser(array(
-					'dbconn'=>$GLOBALS['dbConn'],
-					'tree' => $idOrg,
-					'pwd_force_change_policy' => $pwd_force_change_policy,
-					'set_password' => $set_password,
-					'use_manual_password' => false,
-					'manual_password' => NULL,
-					'send_alert' => 0,
-					'action_on_users' => 'create_and_update'
-				));
-
-				$src->connect();
-				$dst->connect();
-
-				$importer = new DoceboImport();
-				$importer->setSource( $src );
-				$importer->setDestination( $dst );
-
-				$params['UIMap'] = $importer->getUIMap();
-				$params['tot_row'] = $importer->getTotRow();
-				$params['filename'] = $GLOBALS['where_files_relative'].$path.$savefile;
-				$params['first_row_header'] = $first_row_header;
-				$params['separator'] = $separator;
-				$params['import_charset'] = $import_charset;
-			} break;
-
-			case 3: {
-				//if (!Get::pReq('send_alert', DOTY_INT, 0) && Get::req('set_password', DOTY_STRING, 'from_file') != 'from_file') {
-				//    Util::jump_to($base_url.'&res=need_to_alert' );
-				//}
-
-				$filename = Get::req('filename', DOTY_STRING, "");
-				if ($filename == "") return false;
-				$separator = Get::req('import_separator', DOTY_STRING, ',');
-				$first_row_header = Get::req('import_first_row_header', DOTY_STRING, 'false') == 'true';
-				$import_charset = Get::req('import_charset', DOTY_STRING, 'UTF-8');
-				if (trim($import_charset) === '') $import_charset = 'UTF-8';
-
-				require_once(_adm_.'/modules/org_chart/import.org_chart.php');
-				$src = new DeceboImport_SourceCSV(array(
-					'filename'=>$filename,
-					'separator'=>$separator,
-					'first_row_header'=>$first_row_header,
-					'import_charset' => $import_charset
-				));
-				$dst = new ImportUser(array(
-					'dbconn'=>$GLOBALS['dbConn'],
-					'tree' => $idOrg,
-					'pwd_force_change_policy' => Get::req('pwd_force_change_policy', DOTY_STRING, 'do_nothing'),
-					'set_password' => Get::req('set_password', DOTY_STRING, 'from_file'),
-					'manual_password' => Get::req('password_to_insert', DOTY_STRING, 'automatic_password') == 'use_manual_password'? Get::req('manual_password', DOTY_STRING, NULL) : NULL,
-					'send_alert' => Get::pReq('send_alert', DOTY_INT, 0),
-					'action_on_users' => Get::pReq('action_on_users', DOTY_STRING, 'create_and_update')
-				));
-				$src->connect();
-				$dst->connect();
-
-				$importer = new DoceboImport();
-				$importer->setSource( $src );
-				$importer->setDestination( $dst );
-
-				$importer->parseMap();
-				if (!in_array('userid', $importer->import_map)
-					|| !in_array(array_search('userid', $importer->import_map), array_keys($importer->import_tocompare))) {
-					Util::jump_to($base_url.'&res=userid_needed' );
-				}
-
-				foreach($importer->import_map AS $im){
-					if($im != DOCEBOIMPORT_IGNORE && count(array_keys($importer->import_map, $im)) > 1){
-						Util::jump_to($base_url.'&res=field_repeated' );
+					require_once(_adm_ . '/modules/org_chart/import.org_chart.php');
+					$separator_info = Get::req('import_separator', DOTY_STRING, ',');
+					$separator = false;
+					switch ($separator_info) {
+						case "comma":
+							$separator = ",";
+							break;
+						case "dotcomma":
+							$separator = ";";
+							break;
+						case "manual":
+							$separator = Get::req('import_separator_manual', DOTY_STRING, "");
+							break;
 					}
-				}
+					$first_row_header = (Get::req('import_first_row_header', DOTY_STRING, 'false') == 'true');
+					$import_charset = Get::req('import_charset', DOTY_STRING, 'UTF-8');
+					if (trim($import_charset) === '') $import_charset = 'UTF-8';
 
-				$results = $importer->doImport();
+					$pwd_force_change_policy = Get::req('pwd_force_change_policy', DOTY_STRING, 'do_nothing');
+					$set_password = Get::req('set_password', DOTY_STRING, 'no_action');
+					$use_manual_password = Get::req('use_manual_password', DOTY_BOOL, false);
+					$manual_password = Get::req('manual_password', DOTY_STRING, '');
 
-				$users = $dst->getNewImportedIdst();
-				//apply enroll rules
-				if(!empty($users)) {
-					$model = new UsermanagementAdm();
-					$arr_users = [];
-					foreach ($users as $idst) {
-						$arr_users[] = $model->getProfileData($idst);
-					}
-					$event = new \appCore\Events\Core\User\UsersManagementCSVimportEvent();
-					$event->setUsers($arr_users);
-					\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementCSVimportEvent::EVENT_NAME, $event);
-
-					$enrollrules = new EnrollrulesAlms();
-					$enrollrules->newRules('_NEW_IMPORTED_USER', $users, 'all', $idOrg);
-				}
-
-				$src->close();
-				$dst->close();
-
-				$buffer = "";
-				if (count($results) > 1) {
-					require_once(_base_.'/lib/lib.table.php');
-					$buffer .= Lang::t('_ERRORS', 'admin_directory').': <b>'.(count($results)-1).'</b><br/>';
-					$table = new Table(
-						Get::sett('visuItem', 25),
-						Lang::t('_ERRORS', 'admin_directory'),
-						Lang::t('_ERRORS', 'admin_directory')
-					);
-					$table->setColsStyle(array('',''));
-					$table->addHead(array(
-						Lang::t('_ROW', 'admin_directory'),
-						Lang::t('_DESCRIPTION', 'admin_directory')
+					$src = new DeceboImport_SourceCSV(array(
+						'filename' => $GLOBALS['where_files_relative'] . $path . $savefile,
+						'separator' => $separator,
+						'first_row_header' => $first_row_header,
+						'import_charset' => $import_charset
+					));
+					$dst = new ImportUser(array(
+						'dbconn' => $GLOBALS['dbConn'],
+						'tree' => $idOrg,
+						'pwd_force_change_policy' => $pwd_force_change_policy,
+						'set_password' => $set_password,
+						'use_manual_password' => false,
+						'manual_password' => NULL,
+						'send_alert' => 0,
+						'action_on_users' => 'create_and_update'
 					));
 
-					foreach ($results as $key=>$err_val) {
-						if ($key != 0) {
-							$table->addBody(array($key, $err_val));
+					$src->connect();
+					$dst->connect();
+
+					$importer = new DoceboImport();
+					$importer->setSource($src);
+					$importer->setDestination($dst);
+
+					$params['UIMap'] = $importer->getUIMap();
+					$params['tot_row'] = $importer->getTotRow();
+					$params['filename'] = $GLOBALS['where_files_relative'] . $path . $savefile;
+					$params['first_row_header'] = $first_row_header;
+					$params['separator'] = $separator;
+					$params['import_charset'] = $import_charset;
+				}
+				break;
+
+			case 3:
+				{
+					//if (!Get::pReq('send_alert', DOTY_INT, 0) && Get::req('set_password', DOTY_STRING, 'from_file') != 'from_file') {
+					//    Util::jump_to($base_url.'&res=need_to_alert' );
+					//}
+
+					$filename = Get::req('filename', DOTY_STRING, "");
+					if ($filename == "") return false;
+					$separator = Get::req('import_separator', DOTY_STRING, ',');
+					$first_row_header = Get::req('import_first_row_header', DOTY_STRING, 'false') == 'true';
+					$import_charset = Get::req('import_charset', DOTY_STRING, 'UTF-8');
+					if (trim($import_charset) === '') $import_charset = 'UTF-8';
+
+					require_once(_adm_ . '/modules/org_chart/import.org_chart.php');
+					$src = new DeceboImport_SourceCSV(array(
+						'filename' => $filename,
+						'separator' => $separator,
+						'first_row_header' => $first_row_header,
+						'import_charset' => $import_charset
+					));
+					$dst = new ImportUser(array(
+						'dbconn' => $GLOBALS['dbConn'],
+						'tree' => $idOrg,
+						'pwd_force_change_policy' => Get::req('pwd_force_change_policy', DOTY_STRING, 'do_nothing'),
+						'set_password' => Get::req('set_password', DOTY_STRING, 'from_file'),
+						'manual_password' => Get::req('password_to_insert', DOTY_STRING, 'automatic_password') == 'use_manual_password' ? Get::req('manual_password', DOTY_STRING, NULL) : NULL,
+						'send_alert' => Get::pReq('send_alert', DOTY_INT, 0),
+						'action_on_users' => Get::pReq('action_on_users', DOTY_STRING, 'create_and_update')
+					));
+					$src->connect();
+					$dst->connect();
+
+					$importer = new DoceboImport();
+					$importer->setSource($src);
+					$importer->setDestination($dst);
+
+					$importer->parseMap();
+					if (!in_array('userid', $importer->import_map)
+						|| !in_array(array_search('userid', $importer->import_map), array_keys($importer->import_tocompare))) {
+						Util::jump_to($base_url . '&res=userid_needed');
+					}
+
+					foreach ($importer->import_map AS $im) {
+						if ($im != DOCEBOIMPORT_IGNORE && count(array_keys($importer->import_map, $im)) > 1) {
+							Util::jump_to($base_url . '&res=field_repeated');
 						}
 					}
-					$buffer .= $table->getTable();
+
+					$results = $importer->doImport();
+
+					$users = $dst->getNewImportedIdst();
+					//apply enroll rules
+					if (!empty($users)) {
+						$model = new UsermanagementAdm();
+						$arr_users = [];
+						foreach ($users as $idst) {
+							$arr_users[] = $model->getProfileData($idst);
+						}
+						$event = new \appCore\Events\Core\User\UsersManagementCSVimportEvent();
+						$event->setUsers($arr_users);
+						\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementCSVimportEvent::EVENT_NAME, $event);
+
+						$enrollrules = new EnrollrulesAlms();
+						$enrollrules->newRules('_NEW_IMPORTED_USER', $users, 'all', $idOrg);
+					}
+
+					$src->close();
+					$dst->close();
+
+					$buffer = "";
+					if (count($results) > 1) {
+						require_once(_base_ . '/lib/lib.table.php');
+						$buffer .= Lang::t('_ERRORS', 'admin_directory') . ': <b>' . (count($results) - 1) . '</b><br/>';
+						$table = new Table(
+							Get::sett('visuItem', 25),
+							Lang::t('_ERRORS', 'admin_directory'),
+							Lang::t('_ERRORS', 'admin_directory')
+						);
+						$table->setColsStyle(array('', ''));
+						$table->addHead(array(
+							Lang::t('_ROW', 'admin_directory'),
+							Lang::t('_DESCRIPTION', 'admin_directory')
+						));
+
+						foreach ($results as $key => $err_val) {
+							if ($key != 0) {
+								$table->addBody(array($key, $err_val));
+							}
+						}
+						$buffer .= $table->getTable();
+					}
+
+					if ($buffer === '')
+						$buffer = '<br/><br/>';
+
+					$params['backUi'] = getBackUi($base_url, Lang::t('_BACK', 'standard'));
+					$params['resultUi'] = Lang::t('_IMPORT', 'standard') . ': <b>' . ($first_row_header ? $results[0] - 1 : $results[0]) . '</b><br />';
+					$params['results'] = $results;
+					$params['table'] = $buffer;
+
+					// remove uploaded file:
+					require_once(Forma::inc(_base_ . '/lib/lib.upload.php'));
+					sl_open_fileoperations();
+					unlink($filename);
+					sl_close_fileoperations();
 				}
-
-				if($buffer === '')
-					$buffer = '<br/><br/>';
-
-				$params['backUi'] = getBackUi($base_url, Lang::t('_BACK', 'standard'));
-				$params['resultUi'] = Lang::t('_IMPORT', 'standard').': <b>'.( $first_row_header ? $results[0] - 1 : $results[0] ).'</b><br />';
-				$params['results'] = $results;
-				$params['table'] = $buffer;
-
-				// remove uploaded file:
-				require_once(Forma::inc(_base_ . '/lib/lib.upload.php'));
-				sl_open_fileoperations();
-				unlink($filename);
-				sl_close_fileoperations();
-			} break;
+				break;
 
 		}
 
 		$this->render('importusers', $params);
 	}
 
-	protected function _formatCsvValue($value, $delimiter) {
-		$formatted_value = str_replace($delimiter, '\\'.$delimiter, $value);
-		return $delimiter.$formatted_value.$delimiter;
+	protected function _formatCsvValue($value, $delimiter)
+	{
+		$formatted_value = str_replace($delimiter, '\\' . $delimiter, $value);
+		return $delimiter . $formatted_value . $delimiter;
 	}
 
-	public function csvexport() {
+	public function csvexport()
+	{
 		//check permissions
-		if (!$this->permissions['view_user']) Util::jump_to('index.php?r='.$this->link.'/show');
+		if (!$this->permissions['view_user']) Util::jump_to('index.php?r=' . $this->link . '/show');
 
-		require_once(_base_.'/lib/lib.download.php');
-		require_once(_adm_.'/lib/lib.field.php');
+		require_once(_base_ . '/lib/lib.download.php');
+		require_once(_adm_ . '/lib/lib.field.php');
 
 		$users = Get::req('users', DOTY_STRING, "");
 		$separator = ',';
@@ -2323,10 +2419,10 @@ class UsermanagementAdmController extends AdmController {
 		$head[] = $this->_formatCsvValue(Lang::t('_SIGNATURE', 'standard'), $delimiter);
 		$head[] = $this->_formatCsvValue(Lang::t('_REGISTER_DATE', 'standard'), $delimiter);
 		$head[] = $this->_formatCsvValue(Lang::t('_LAST_ENTER', 'standard'), $delimiter);
-		foreach ($field_list as $id_field=>$field_translation) {
+		foreach ($field_list as $id_field => $field_translation) {
 			$head[] = $this->_formatCsvValue($field_translation, $delimiter);
 		}
-		$output .= implode($separator, $head).$line_end;
+		$output .= implode($separator, $head) . $line_end;
 
 		if ($users != "") {
 			$acl_man = Docebo::user()->getAclManager();
@@ -2344,7 +2440,7 @@ class UsermanagementAdmController extends AdmController {
 					$row[] = $detail->register_date;
 					$row[] = $detail->lastenter;
 
-					foreach ($field_list as $id_field=>$field_translation) {
+					foreach ($field_list as $id_field => $field_translation) {
 						$row[] = isset($detail->_custom_fields[$id_field]) ? $detail->_custom_fields[$id_field] : "";
 					}
 
@@ -2354,15 +2450,16 @@ class UsermanagementAdmController extends AdmController {
 						$csv_row[] = $this->_formatCsvValue($row_data, $delimiter);
 					}
 
-					$output .= implode($separator, $csv_row).$line_end;
+					$output .= implode($separator, $csv_row) . $line_end;
 				}
 			}
 		}
 
-		sendStrAsFile($output, 'users_export_'.date("Ymd").'.csv');
+		sendStrAsFile($output, 'users_export_' . date("Ymd") . '.csv');
 	}
 
-	public function profile_dialog() {
+	public function profile_dialog()
+	{
 		//check permissions
 		if (!$this->permissions['view_user']) {
 			$output = array('success' => false, 'message' => $this->_getErrorMessage('no permission'));
@@ -2392,7 +2489,7 @@ class UsermanagementAdmController extends AdmController {
 		}
 
 		$profile = new UserProfile($id_user);
-		$profile->init('profile', 'framework', 'r='.$this->link.'/editprofile&id_user='.(int)$id_user, 'ap');
+		$profile->init('profile', 'framework', 'r=' . $this->link . '/editprofile&id_user=' . (int)$id_user, 'ap');
 		if (Docebo::user()->getUserLevelId() == ADMIN_GROUP_GODADMIN) $profile->enableGodMode();
 		//$profile->setEndUrl('index.php?modname=directory&op=org_chart#user_row_'.$id_user);
 
@@ -2403,17 +2500,17 @@ class UsermanagementAdmController extends AdmController {
 		\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementShowDetailsEvent::EVENT_NAME, $event);
 
 
-
 		$this->render('user_profile', array(
 			'id_user' => $id_user,
-			'title' => Lang::t('_DETAILS', 'standard').': '.$this->model->getUserId($id_user),
+			'title' => Lang::t('_DETAILS', 'standard') . ': ' . $this->model->getUserId($id_user),
 			'profile' => $profile,
 			'model' => $this->model,
 			'json' => $this->json
 		));
 	}
 
-	public function editprofile() {
+	public function editprofile()
+	{
 		//check permissions
 		if (!$this->permissions['mod_user']) {
 			$output = array('success' => false, 'message' => $this->_getErrorMessage('no permission'));
@@ -2426,40 +2523,43 @@ class UsermanagementAdmController extends AdmController {
 		$id_user = Get::req('id_user', DOTY_INT, -1);
 		if ($id_user > 0) {
 			$profile = new UserProfile($id_user);
-			$profile->init('profile', 'framework', 'r='.$this->link.'/editprofile&id_user='.(int)$id_user, 'ap');
+			$profile->init('profile', 'framework', 'r=' . $this->link . '/editprofile&id_user=' . (int)$id_user, 'ap');
 			if (Docebo::user()->getUserLevelId() == ADMIN_GROUP_GODADMIN) $profile->enableGodMode();
 
 			echo '<br />'
-				.'<div class="std_block">'
-				.getBackUi('index.php?r='.$this->link.'/show', Lang::t('_BACK', 'standard') )
+				. '<div class="std_block">'
+				. getBackUi('index.php?r=' . $this->link . '/show', Lang::t('_BACK', 'standard'))
 
-				.$profile->performAction()
+				. $profile->performAction()
 
-				.'</div>';
+				. '</div>';
 		}
 	}
 
-	public function show_waitingTask() {
+	public function show_waitingTask()
+	{
 		//check permissions
-		if (!$this->permissions['approve_waiting_user']) Util::jump_to('index.php?r='.$this->link.'/show');
+		if (!$this->permissions['approve_waiting_user']) Util::jump_to('index.php?r=' . $this->link . '/show');
 
-		Util::get_js(Get::rel_path('base').'/lib/js_utils.js', true, true);
-		Util::get_js(Get::rel_path('adm').'/views/usermanagement/waiting_users.js', true, true);
+		Util::get_js(Get::rel_path('base') . '/lib/js_utils.js', true, true);
+		Util::get_js(Get::rel_path('adm') . '/views/usermanagement/waiting_users.js', true, true);
 		$this->render('show_waiting', array(
 			'filter_text' => ""
 		));
 	}
 
-	public function show_deletedTask() {
+	public function show_deletedTask()
+	{
 		//check permissions
-		if (!$this->permissions['view_user']) Util::jump_to('index.php?r='.$this->link.'/show');
+		if (!$this->permissions['view_user']) Util::jump_to('index.php?r=' . $this->link . '/show');
 
 		$this->render('show_deleted', array(
 			'filter_text' => ""
 		));
 	}
 
-	public function waiting_user_detailsTask() {
+	public function waiting_user_detailsTask()
+	{
 		//check permissions
 		if (!$this->permissions['view_user']) {
 			$output = array('success' => false, 'message' => $this->_getErrorMessage('no permission'));
@@ -2467,7 +2567,7 @@ class UsermanagementAdmController extends AdmController {
 			return;
 		}
 
-		require_once(_adm_.'/lib/lib.field.php');
+		require_once(_adm_ . '/lib/lib.field.php');
 		$fman = new FieldList();
 
 		$acl_man = Docebo::user()->getACLManager();
@@ -2476,14 +2576,15 @@ class UsermanagementAdmController extends AdmController {
 
 		$this->render('waiting_user_details', array(
 			'id_user' => $id_user,
-			'title' => Lang::t('_DETAILS', 'standard').': '.$userid,
+			'title' => Lang::t('_DETAILS', 'standard') . ': ' . $userid,
 			'fields' => $fman,
 			'json' => $this->json
 		));
 	}
 
 
-	public function getdeleteduserstabledataTask() {
+	public function getdeleteduserstabledataTask()
+	{
 		//check permissions
 		if (!$this->permissions['view_user']) {
 			$output = array('success' => false, 'message' => $this->_getErrorMessage('no permission'));
@@ -2500,7 +2601,7 @@ class UsermanagementAdmController extends AdmController {
 
 		$total = $this->model->getDeletedUsersTotal($filter);
 		if ($startIndex >= $total) {
-			if ($total<$results) {
+			if ($total < $results) {
 				$startIndex = 0;
 			} else {
 				$startIndex = $total - $results;
@@ -2547,7 +2648,8 @@ class UsermanagementAdmController extends AdmController {
 		echo $this->json->encode($output);
 	}
 
-	public function getwaitinguserstabledataTask() {
+	public function getwaitinguserstabledataTask()
+	{
 		//check permissions
 		if (!$this->permissions['approve_waiting_user']) {
 			$output = array('success' => false, 'message' => $this->_getErrorMessage('no permission'));
@@ -2572,7 +2674,7 @@ class UsermanagementAdmController extends AdmController {
 
 		$total = $this->model->getWaitingUsersTotal($filter);
 		if ($startIndex >= $total) {
-			if ($total<$results) {
+			if ($total < $results) {
 				$startIndex = 0;
 			} else {
 				$startIndex = $total - $results;
@@ -2604,7 +2706,7 @@ class UsermanagementAdmController extends AdmController {
 					'confirmed' => Layout::highlight($record->confirmed, $filter),
 					'insert_date' => Format::date($record->insert_date, 'datetime'),
 					'inserted_by' => $_inserted_by,
-					'del' => 'ajax.adm_server.php?r='.$this->link.'/delete_waiting&id_user='.(int)$record->idst
+					'del' => 'ajax.adm_server.php?r=' . $this->link . '/delete_waiting&id_user=' . (int)$record->idst
 				);
 			}
 		}
@@ -2623,7 +2725,8 @@ class UsermanagementAdmController extends AdmController {
 	}
 
 
-	public function confirm_waitingTask() {
+	public function confirm_waitingTask()
+	{
 		//check permissions
 		if (!$this->permissions['approve_waiting_user']) {
 			$output = array('success' => false, 'message' => $this->_getErrorMessage('no permission'));
@@ -2658,7 +2761,8 @@ class UsermanagementAdmController extends AdmController {
 		echo $this->json->encode($output);
 	}
 
-	public function delete_waitingTask() {
+	public function delete_waitingTask()
+	{
 		//check permissions
 		if (!$this->permissions['approve_waiting_user']) {
 			$output = array('success' => false, 'message' => $this->_getErrorMessage('no permission'));
@@ -2694,7 +2798,8 @@ class UsermanagementAdmController extends AdmController {
 	}
 
 
-	public function multimodTask() {
+	public function multimodTask()
+	{
 		if (!$this->permissions['mod_user']) {
 			$output = array('success' => false, 'message' => $this->_getErrorMessage('no permission'));
 			echo $this->json->encode($output);
@@ -2719,8 +2824,8 @@ class UsermanagementAdmController extends AdmController {
 
 		$arr_levels = $acl_man->getAdminLevels();//index = idst; value = groupid;
 		$levels = array();
-		foreach ($arr_levels as $groupid_level=>$idst_level) {
-			$levels[ $groupid_level ] = Lang::t('_DIRECTORY_'.$groupid_level, 'admin_directory');
+		foreach ($arr_levels as $groupid_level => $idst_level) {
+			$levels[$groupid_level] = Lang::t('_DIRECTORY_' . $groupid_level, 'admin_directory');
 		}
 
 		$info = array(
@@ -2737,7 +2842,7 @@ class UsermanagementAdmController extends AdmController {
 		$pman =& PlatformManager::createInstance();// = new PlatformManager();
 		$platforms = $pman->getPlatformList();
 
-		require_once(_adm_.'/lib/lib.field.php');
+		require_once(_adm_ . '/lib/lib.field.php');
 		$fman = new FieldList();
 		$field_list = $fman->getFlatAllFields(array_keys($platforms));
 		$fields_to_exclude = $fman->getFieldsByType('upload');
@@ -2760,7 +2865,8 @@ class UsermanagementAdmController extends AdmController {
 		));
 	}
 
-	public function multimod_actionTask() {
+	public function multimod_actionTask()
+	{
 		if (!$this->permissions['mod_user']) {
 			$output = array('success' => false, 'message' => $this->_getErrorMessage('no permission'));
 			echo $this->json->encode($output);
@@ -2820,7 +2926,7 @@ class UsermanagementAdmController extends AdmController {
 		if (isset($sel_properties['level'])) $info->level = Get::req('level', DOTY_STRING, "");
 
 		if (!empty($field_properties)) {
-			require_once(_adm_.'/lib/lib.field.php');
+			require_once(_adm_ . '/lib/lib.field.php');
 			$fields = new FieldList();
 
 			$selected_fields = array_keys($field_properties);
@@ -2828,12 +2934,15 @@ class UsermanagementAdmController extends AdmController {
 
 			$field_info = array();
 			foreach ($finfo as $id_field => $data) {
-				$input_data = Get::req('field_'.$data[FIELD_INFO_TYPE], DOTY_MIXED, array());
+				$input_data = Get::req('field_' . $data[FIELD_INFO_TYPE], DOTY_MIXED, array());
 				if (isset($input_data[$id_field])) {
 					$value_to_set = "";
 					switch ($data[FIELD_INFO_TYPE]) {
-						case "": $value_to_set = Format::dateDb($input_data[$id_field], 'date'); break;
-						default: $value_to_set = $input_data[$id_field];
+						case "":
+							$value_to_set = Format::dateDb($input_data[$id_field], 'date');
+							break;
+						default:
+							$value_to_set = $input_data[$id_field];
 					}
 					$field_info[$id_field] = $value_to_set;
 				}
@@ -2855,9 +2964,9 @@ class UsermanagementAdmController extends AdmController {
 		$acl_man =& Docebo::user()->getAclManager();
 
 		//send email alert
-		if(isset($sel_properties['send_alert']) && isset($sel_properties['password']) &&  $info->password != "" ) {
+		if (isset($sel_properties['send_alert']) && isset($sel_properties['password']) && $info->password != "") {
 
-			for ($i=0; $i<count($users); $i++) {
+			for ($i = 0; $i < count($users); $i++) {
 
 				$array_subst = array(
 					'[url]' => Get::site_url(),
@@ -2865,26 +2974,26 @@ class UsermanagementAdmController extends AdmController {
 					'[password]' => $info->password
 				);
 
-				require_once(_base_.'/lib/lib.eventmanager.php');
+				require_once(_base_ . '/lib/lib.eventmanager.php');
 				$e_msg = new EventMessageComposer();
 
 				$e_msg->setSubjectLangText('email', '_REGISTERED_USER_SBJ', false);
-				$e_msg->setBodyLangText('email', '_REGISTERED_USER_TEXT', $array_subst );
+				$e_msg->setBodyLangText('email', '_REGISTERED_USER_TEXT', $array_subst);
 
-				$e_msg->setBodyLangText('sms', '_REGISTERED_USER_TEXT_SMS', $array_subst );
+				$e_msg->setBodyLangText('sms', '_REGISTERED_USER_TEXT_SMS', $array_subst);
 
 				$recipients = array($users[$i]);
-				createNewAlert(	'UserNew', 'directory', 'edit', '1', 'New user created', $recipients, $e_msg, true );
+				createNewAlert('UserNew', 'directory', 'edit', '1', 'New user created', $recipients, $e_msg, true);
 
 			}
 
 		}
 
 		//send email link change password
-		if(isset($sel_properties['link_reset_password'])) {
-			require_once(_base_.'/appCore/models/HomepageAdm.php');
+		if (isset($sel_properties['link_reset_password'])) {
+			require_once(_base_ . '/appCore/models/HomepageAdm.php');
 			$homepageAdmModel = new HomepageAdm();
-			for ($i=0; $i<count($users); $i++) {
+			for ($i = 0; $i < count($users); $i++) {
 				$res = $homepageAdmModel->sendLostPwd($acl_man->getUserid($users[$i]));
 			}
 		}
@@ -2900,60 +3009,65 @@ class UsermanagementAdmController extends AdmController {
 	}
 
 
-
-	public function gettreedata_create() {
+	public function gettreedata_create()
+	{
 		$command = Get::req('command', DOTY_ALPHANUM, "");
 
 		switch ($command) {
 
-			case "expand": {
-				//check permissions
-				if (!$this->permissions['view_org']) {
-					$output = array('success' => false, 'message' => $this->_getErrorMessage('no permission'));
-					echo $this->json->encode($output);
-					return;
-				}
+			case "expand":
+				{
+					//check permissions
+					if (!$this->permissions['view_org']) {
+						$output = array('success' => false, 'message' => $this->_getErrorMessage('no permission'));
+						echo $this->json->encode($output);
+						return;
+					}
 
-				$idOrg = Get::req('node_id', DOTY_INT, -1);
-				$initial = (Get::req('initial', DOTY_INT, 0) > 0 ? true : false);
+					$idOrg = Get::req('node_id', DOTY_INT, -1);
+					$initial = (Get::req('initial', DOTY_INT, 0) > 0 ? true : false);
 
-				if ($initial) {
-					//get selected node from session and set the expanded tree
-					$idOrg = $this->_getSessionValue('selected_node', 0);//$this->_getSelectedNode();
-					$nodes = $this->model->getOrgChartInitialNodes($idOrg, true);
+					if ($initial) {
+						//get selected node from session and set the expanded tree
+						$idOrg = $this->_getSessionValue('selected_node', 0);//$this->_getSelectedNode();
+						$nodes = $this->model->getOrgChartInitialNodes($idOrg, true);
 
-					//set output
-					if (is_array($nodes)) {
+						//set output
+						if (is_array($nodes)) {
+							$output = array(
+								'success' => true,
+								'nodes' => $nodes,
+								'initial' => $initial
+							);
+						} else {
+							$output = array('success' => false);
+						}
+					} else {
+						//extract node data
+						$nodes = $this->model->getOrgChartNodes($idOrg, false, false, true);
+
+						//set output
 						$output = array(
 							'success' => true,
 							'nodes' => $nodes,
 							'initial' => $initial
 						);
-					} else {
-						$output = array('success' => false);
 					}
-				} else {
-					//extract node data
-					$nodes = $this->model->getOrgChartNodes($idOrg, false, false, true);
-
-					//set output
-					$output = array(
-						'success' => true,
-						'nodes' => $nodes,
-						'initial' => $initial
-					);
+					echo $this->json->encode($output);
 				}
-				echo $this->json->encode($output);
-			} break;
+				break;
 
-			case "set_selected_node": {
-			} break;
+			case "set_selected_node":
+				{
+				}
+				break;
 
-			default: {
-				$output = array();
-				$output['success'] = false;
-				echo $this->json->encode($output);
-			}
+			default:
+				{
+					$output = array();
+					$output['success'] = false;
+					echo $this->json->encode($output);
+				}
 		} // end switch
 
 	}
@@ -2964,11 +3078,12 @@ class UsermanagementAdmController extends AdmController {
 	 * @param string $level_to_check
 	 * @return boolean
 	 */
-	protected function _canUseLevel($level_to_check) {
+	protected function _canUseLevel($level_to_check)
+	{
 		$my_level = Docebo::user()->getUserLevelId();
 		if ($my_level == ADMIN_GROUP_GODADMIN) return TRUE;
 		if ($my_level == ADMIN_GROUP_USER) return FALSE;
-		if ($my_level == ADMIN_GROUP_ADMIN ) {
+		if ($my_level == ADMIN_GROUP_ADMIN) {
 			if ($level_to_check == ADMIN_GROUP_USER) return TRUE;
 		}
 		return FALSE;

@@ -444,7 +444,7 @@
         <key id="configuration&amp;_COURSE_QUOTA" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Raja kurssille ladatun sisäällön kokonaiskoolle (MB)]]></key>
         <key id="configuration&amp;_CURRENCY_SYMBOL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Valuuttasymboli (näytetään käyttäjän vierellä)]]></key>
         <key id="configuration&amp;_CUSTOMER_HELP_EMAIL" attributes="" save_date="2017-05-18 13:43:25"><![CDATA[Tuen sähköposti]]></key>
-        <key id="configuration&amp;_CUSTOMER_HELP_SUBJ_PFX" attributes="" save_date="2017-05-18 13:43:53"><![CDATA[Tuen sähköpostin aiheen etuliite]]></key>
+        <key id="configuration&amp;_CUSTOMER_HELP_SUBJ_PLACEHOLDER" attributes="" save_date="2017-05-18 13:43:53"><![CDATA[Tuen sähköpostin aiheen etuliite]]></key>
         <key id="configuration&amp;_CUSTOM_FIELDS_MANDATORY_FOR_ADMIN" attributes="" save_date="2017-05-18 13:44:12"><![CDATA[Pakolliset muokatut kentät]]></key>
         <key id="configuration&amp;_DEBUG" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Debug vaihtoehdot]]></key>
         <key id="configuration&amp;_DEFAULTTEMPLATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Oletusmalli]]></key>

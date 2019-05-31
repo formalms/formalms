@@ -451,7 +451,7 @@
         <key id="configuration&amp;_COURSE_QUOTA" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Límite para el tamaño máximo de contenidos subidos por el usuario al curso (MB)]]></key>
         <key id="configuration&amp;_CURRENCY_SYMBOL" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Símbolo de moneda (será mostrado en la parte del usuario)]]></key>
         <key id="configuration&amp;_CUSTOMER_HELP_EMAIL" attributes="" save_date="2017-05-26 10:01:04"><![CDATA[Mail de soporte]]></key>
-        <key id="configuration&amp;_CUSTOMER_HELP_SUBJ_PFX" attributes="" save_date="2016-12-01 09:41:10"><![CDATA[Prefijo del asunto de soporte]]></key>
+        <key id="configuration&amp;_CUSTOMER_HELP_SUBJ_PLACEHOLDER" attributes="" save_date="2016-12-01 09:41:10"><![CDATA[Prefijo del asunto de soporte]]></key>
         <key id="configuration&amp;_CUSTOM_FIELDS_MANDATORY_FOR_ADMIN" attributes="" save_date="2017-05-26 09:57:17"><![CDATA[Campos adicionales obligatorios]]></key>
         <key id="configuration&amp;_DEBUG" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Opciones de debugueo]]></key>
         <key id="configuration&amp;_DEFAULTTEMPLATE" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Plantilla por defecto]]></key>

@@ -96,7 +96,7 @@ SET @lastID = LAST_INSERT_ID();
 INSERT INTO core_lang_translation ( id_text,lang_code,  translation_text, save_date ) VALUES  (@lastID, 'english','User has been change node', now());
 INSERT INTO core_lang_translation ( id_text,lang_code,  translation_text, save_date ) VALUES  (@lastID, 'italian','User has been change node', now());
 
-INSERT INTO core_lang_text (id_text, text_key, text_module, text_attributes) VALUES (NULL, '_EVENT_CHANGE_NODE_USER_SBJ', 'email', '');
+INSERT INTO core_lang_text (id_text, text_key, text_module, text_attributes) VALUES (NULL, '_EVENT_CHANGE_NODE_USER_TEXT', 'email', '');
 SET @lastID = LAST_INSERT_ID();
 
 INSERT INTO core_lang_translation ( id_text,lang_code,  translation_text, save_date ) VALUES  (@lastID, 'english','User with name and surname : [firstname] [lastname] and userId : [username] has been change node in platform : [url]', now());
