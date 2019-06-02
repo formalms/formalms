@@ -1445,12 +1445,13 @@ Class CourseAlms extends Model
         return $row;
     }
 
-   // controllare con function view_report_certificate contenuto in modules/certificate/certificate.php
   public function getListTototalUserCertificate($id_course, $id_certificate, $cf){
         
         
         require_once(Forma::inc(_lms_.'/lib/lib.certificate.php'));
-   
+        $regset = Format::instance();
+        $date_format = $regset->date_token;
+
 
         $tc  = $GLOBALS['prefix_lms']."_certificate as c";
         $tca = $GLOBALS['prefix_lms']."_certificate_assign as ca";
@@ -1460,7 +1461,7 @@ Class CourseAlms extends Model
 
 
         $query = "SELECT u.idst, u.userid, u.firstname, u.lastname,
-                         cu.date_complete, ca.on_date, cu.idUser as id_user,
+                         DATE_FORMAT(cu.date_complete,'".$date_format."'), DATE_FORMAT(ca.on_date,'".$date_format."'), cu.idUser as id_user,
                          cu.status , cu.idCourse, cc.id_certificate,
                          c.name as name_certificate"
             ." FROM ( ".$tu." JOIN ".$tcu." ON (u.idst = cu.idUser) ) "
