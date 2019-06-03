@@ -39,9 +39,23 @@ INSERT INTO core_lang_translation ( id_text,lang_code,  translation_text, save_d
 -- User subscribed in a course --
 INSERT INTO core_lang_text (id_text, text_key, text_module, text_attributes) VALUES (NULL, '_EVENT_CLASS_UserCourseInsertedModerators', 'event_manager', '');
 SET @lastID = LAST_INSERT_ID();
+INSERT INTO core_lang_translation ( id_text,lang_code,  translation_text, save_date ) VALUES  (@lastID, 'english','User subscribed in a course - moderators', now());
+INSERT INTO core_lang_translation ( id_text,lang_code,  translation_text, save_date ) VALUES  (@lastID, 'italian','Utente inserito in un corso - moderatori', now());
 
+INSERT INTO core_lang_text (id_text, text_key, text_module, text_attributes) VALUES (NULL, '_NEW_USER_SUBSCRIBED_SUBJECT_MODERATORS', 'email', '');
+SET @lastID = LAST_INSERT_ID();
+INSERT INTO core_lang_translation ( id_text,lang_code,  translation_text, save_date ) VALUES  (@lastID, 'english','A new user has been subscribed in a course', now());
+INSERT INTO core_lang_translation ( id_text,lang_code,  translation_text, save_date ) VALUES  (@lastID, 'italian','Un nuovo utente si è iscritto ad un corso', now());
+
+INSERT INTO core_lang_text (id_text, text_key, text_module, text_attributes) VALUES (NULL, '_NEW_USER_SUBSCRIBED_TEXT_MODERATORS', 'email', '');
+SET @lastID = LAST_INSERT_ID();
 INSERT INTO core_lang_translation ( id_text,lang_code,  translation_text, save_date ) VALUES  (@lastID, 'english','User with name and surname : [firstname] [lastname] and userId : [username] has been subscribed in the course : [course] in platform : [url]', now());
-INSERT INTO core_lang_translation ( id_text,lang_code,  translation_text, save_date ) VALUES  (@lastID, 'italian','User with name and surname : [firstname] [lastname] and userId : [username] has been subscribed in the course : [course] in platform : [url]', now());
+INSERT INTO core_lang_translation ( id_text,lang_code,  translation_text, save_date ) VALUES  (@lastID, 'italian','L\'utente con nome e cognome : [firstname] [lastname] e username : [username] è stato iscritto al corso : [course] sulla piattaforma : [url]', now());
+
+INSERT INTO core_lang_text (id_text, text_key, text_module, text_attributes) VALUES (NULL, '_NEW_USER_SUBSCRIBED_TEXT_SMS_MODERATORS', 'email', '');
+SET @lastID = LAST_INSERT_ID();
+INSERT INTO core_lang_translation ( id_text,lang_code,  translation_text, save_date ) VALUES  (@lastID, 'english','User with name and surname : [firstname] [lastname] and userId : [username] has been subscribed in the course : [course] in platform : [url]', now());
+INSERT INTO core_lang_translation ( id_text,lang_code,  translation_text, save_date ) VALUES  (@lastID, 'italian','L\'utente con nome e cognome : [firstname] [lastname] e username : [username] è stato iscritto al corso : [course] sulla piattaforma : [url]', now());
 
 INSERT INTO `core_event_class` (`class`, `platform`, `description`) VALUES ('UserCourseInsertedModerators', 'lms-a', '');
 set @lastID=LAST_INSERT_ID();
