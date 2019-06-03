@@ -592,6 +592,43 @@ class SubscriptionAlmsController extends AlmsController
 				createNewAlert('UserCourseInserted', 'subscribe', 'insert', '1', 'User subscribed', array_keys($user_selected), $msg_composer, $send_alert, true);
 			}
 
+			$user_selected = array();
+			if ($_POST['subs']) {
+				$subs = $_POST['subs'];
+				$subs = explode(",", $_POST['subs']);
+				foreach ($subs AS $sub) {
+					list($user_id, $level) = explode(":", $sub);
+					$user_selected[$user] = $level;
+
+					// Moderator notification
+					$userData = $userModel->getProfileData($user_id);
+					$username = str_replace('/', '', $userData->userid);
+
+					$array_subst = array(
+						'[url]' => Get::site_url(),
+						'[firstname]' => $userData->firstname,
+						'[lastname]' => $userData->lastname,
+						'[course]' => $course_info['name'],
+						'[username]' => $username,
+					);
+
+					// message to user that is odified
+					$msg_composer = new EventMessageComposer();
+
+					$msg_composer->setSubjectLangText('email', '_NEW_USER_SUBSCRIBED_SUBJECT_MODERATORS', false);
+					$msg_composer->setBodyLangText('email', '_NEW_USER_SUBSCRIBED_TEXT_MODERATORS', $array_subst);
+					$msg_composer->setBodyLangText('sms', '_NEW_USER_SUBSCRIBED_TEXT_SMS_MODERATORS', $array_subst);
+
+					$recipients = [];
+					$sql = "SELECT idUser FROM learning_courseuser WHERE idCourse = $id_course AND (level = 6 OR level = 7)";
+					$query = sql_query($sql);
+					while ($row = sql_fetch_object($query)) {
+						$recipients[] = $row->idUser;
+					}
+
+					createNewAlert(	'UserCourseInsertedModerators', 'directory', 'edit', '1', 'User '.$username.' was modified', $recipients, $msg_composer );
+				}
+			}
 		}
 
 		Util::jump_to('index.php?r=' . $this->link . '/show&id_course=' . $id_course . '&id_edition=' . $id_edition . '&id_date=' . $id_date . '&res=_operation_successful');
