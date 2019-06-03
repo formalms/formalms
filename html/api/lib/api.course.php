@@ -23,7 +23,7 @@ class Course_API extends API {
 		$output['success']=true;
         
         
-
+        //die(count($params));
         
 
 		$id_category =(isset($params['category']) ? (int)$params['category'] : false);
@@ -659,9 +659,9 @@ class Course_API extends API {
 	   
     
     
-        // user info 
+        // recupera info utente 
         $db = DbConn::getInstance();
-		$qtxt ="SELECT idst, firstname, lastname  FROM  %adm_user 
+		$qtxt ="SELECT idst, firstname, lastname  FROM core_user 
 				WHERE userid='/".$username."' ";
 		$q =$db->query($qtxt);
 		$user_info =$db->fetch_assoc($q);        
@@ -672,9 +672,9 @@ class Course_API extends API {
         $output['userid'] = $username;
         if($output['idst']==0)  $output['message']="User not found";
     
-        // gets certificate information
-        // course title, certification link, issued data, course IDo
-        $qcert = "select id_course, name, code, on_date, cert_file from  %lms_certificate_assign, %lms_course  where id_user=".$output['idst']." and idCourse=id_course";
+        // recupera info certificati
+        // titolo corso, link attestato, data , id_corso
+        $qcert = "select id_course, name, code, on_date, cert_file from  learning_certificate_assign, learning_course  where id_user=".$output['idst']." and idCourse=id_course";
         if($id_course>0) $qcert = $qcert." and id_course=".$id_course; 
         $qcert = $qcert." order by on_date desc";
     
@@ -711,7 +711,9 @@ class Course_API extends API {
     public function getCertificateByCourse($params){
     	require_once(_lms_.'/lib/lib.subscribe.php');
 		require_once(_lms_.'/lib/lib.course.php');
-		$output =array();
+		require_once(_adm_.'/lib/lib.field.php');
+        
+        $output =array();
 
 		$output['success']=true;
         
@@ -725,9 +727,9 @@ class Course_API extends API {
     
 		if (!empty($params['username']))  $username = $params['username'];
     
-         
+        // recupera info corso 
         $db = DbConn::getInstance();
-		$qtxt ="SELECT idCourse, code, name, box_description  FROM %lms_course 
+		$qtxt ="SELECT idCourse, code, name, box_description  FROM learning_course 
 				WHERE idCourse=".(int)$id_course;
 		$q =$db->query($qtxt);
 		$course_info =$db->fetch_assoc($q);        
@@ -741,8 +743,8 @@ class Course_API extends API {
     
     
     
-        // get certificate and user information
-        $qcert = "select id_course, firstname, lastname, userid, idst, on_date, cert_file from  %lms_certificate_assign, %adm_user   where id_course=".$output['course_id']." and id_user=idst";
+        // recupera info certificati sugli utenti
+        $qcert = "select id_course, firstname, lastname, userid, idst, on_date, cert_file from  learning_certificate_assign, %adm_user   where id_course=".$output['course_id']." and id_user=idst";
         if($username !='' ) $qcert = $qcert." and userid = '/".$username."'"; 
         $qcert = $qcert." order by on_date desc";
     
@@ -752,6 +754,17 @@ class Course_API extends API {
             $qc =$db->query($qcert);
         	while($row = $db->fetch_assoc($qc)) {
             
+            
+ 			        $field_man = new FieldList();
+          			$field_data = $field_man->getFieldsAndValueFromUser($row['idst'], false, true);
+          
+          			$fields = array();
+          			foreach($field_data as $field_id => $value) {
+          				$fields[] = array('id'=>$field_id, 'name'=>$value[0], 'value'=>$value[1]);
+          			}            
+            
+            
+            
                 	$output['certificate_list'][] = array(
                                                           'idst' => $row['idst'],
                                                           'firstname' => $row['firstname'],
@@ -759,7 +772,10 @@ class Course_API extends API {
                                                           'userid' =>  $row['userid'],
                                                           'date_generate' =>  $row['on_date'],
                                                           
-                                                          'cert_file' => Get::site_url()."files/appLms/certificate/".$row['cert_file']
+                                                          'cert_file' => Get::site_url()."files/appLms/certificate/".$row['cert_file'],
+                                                        
+                                                		   'custom_fields' => $fields                                                          
+                                                          
                                                           
                                                           );
 
