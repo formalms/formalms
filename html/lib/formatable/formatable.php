@@ -90,7 +90,11 @@ function formaTable(dom, options) {
                     if(this.edit.type === 'date') {
                         this.render = function(data, type, row, meta) {
                             if(type === 'display') {
-                                return $.datepicker.formatDate(_thisColumn.edit.format || ($.datepicker.regional[document.documentElement.lang] || $.datepicker.regional['']).dateFormat, new Date(data));
+                                if(data) {
+                                    return $.datepicker.formatDate(_thisColumn.edit.format || ($.datepicker.regional[document.documentElement.lang] || $.datepicker.regional['']).dateFormat, new Date(data));
+                                } else {
+                                    return data;
+                                }
                             } else {
                                 return data;
                             }
@@ -129,7 +133,7 @@ function formaTable(dom, options) {
                                 edit_form.append(edit_form_select);
                             } else if(_thisColumn.edit.type === 'date') {
                                 var edit_form_date = $('<input type="hidden" name="new_value" value="' + cell.data() + '" />');
-                                var edit_form_date_view = $('<input name="new_value_view" value="' + $.datepicker.formatDate(_thisColumn.edit.format || ($.datepicker.regional[document.documentElement.lang] || $.datepicker.regional['']).dateFormat, new Date(cell.data())) + '" readonly />');
+                                var edit_form_date_view = $('<input name="new_value_view" value="' + $.datepicker.formatDate(_thisColumn.edit.format || ($.datepicker.regional[document.documentElement.lang] || $.datepicker.regional['']).dateFormat, cell.data() ? new Date(cell.data()) : new Date()) + '" readonly />');
                                 edit_form_date.datepicker({ 
                                     dateFormat: 'yy-mm-dd',
                                     altField: edit_form_date_view,
