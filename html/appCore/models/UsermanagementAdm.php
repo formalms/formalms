@@ -1571,14 +1571,23 @@ class UsermanagementAdm extends Model {
 			'id_org' => array(),
 			'idst' => array()
 		);
+
+		$groups = [];
+		foreach ($id_groups as $id_group) {
+			if ($id_group) {
+				$groups[] = $id_group;
+			}
+		}
+
 		if($language == false) $language = getLanguage();
 		if(!is_array($id_groups) || empty($id_groups)) return $folders;
 		$result = $this->db->query("SELECT ot.idOrg, oc.translation, ot.idst_oc, ot.idst_ocd "
 			."FROM %adm_org_chart_tree AS ot JOIN %adm_org_chart AS oc ON (ot.idOrg = oc.id_dir)"
-			."WHERE oc.lang_code = '".$language."' AND ( "
-				." idst_oc IN (".implode(',', $id_groups).") "
-				." OR idst_ocd IN (".implode(',', $id_groups).") "
+			." WHERE oc.lang_code = '".$language."' AND ( "
+				." idst_oc IN (".implode(',', $groups).") "
+				." OR idst_ocd IN (".implode(',', $groups).") "
 			.")");
+
 		while(list($id_dir, $dir_name, $oc, $ocd) = $this->db->fetch_row($result)) {
 
 			$folders['id_org'][$id_dir] = $dir_name;
