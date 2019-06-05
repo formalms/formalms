@@ -462,7 +462,7 @@ La chat si aprirà in una finestra di pop-up]]></key>
         <key id="configuration&amp;_COURSE_QUOTA" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Limite per il massimo di contenuti caricabili nel corso (in MB)]]></key>
         <key id="configuration&amp;_CURRENCY_SYMBOL" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Simbolo valuta (sarà mostrato all'utente)]]></key>
         <key id="configuration&amp;_CUSTOMER_HELP_EMAIL" attributes="" save_date="2017-03-15 12:09:35"><![CDATA[Email Help Desk]]></key>
-        <key id="configuration&amp;_CUSTOMER_HELP_SUBJ_PFX" attributes="" save_date="2017-03-15 12:09:48"><![CDATA[Oggetto email Help Desk]]></key>
+        <key id="configuration&amp;_CUSTOMER_HELP_SUBJ_PLACEHOLDER" attributes="" save_date="2017-03-15 12:09:48"><![CDATA[Oggetto email Help Desk]]></key>
         <key id="configuration&amp;_CUSTOM_FIELDS_MANDATORY_FOR_ADMIN" attributes="" save_date="2017-05-05 12:02:48"><![CDATA[Campi supplementari obbligatori]]></key>
         <key id="configuration&amp;_DEBUG" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Opzioni di debug]]></key>
         <key id="configuration&amp;_DEFAULTTEMPLATE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Template predefinito]]></key>

@@ -1196,6 +1196,20 @@ VALUES ('smtp_user', '', 'string', 255, 'Smtp User', 14, 5, 1, 0, '');
 INSERT IGNORE INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size`, `pack`, `regroup`, `sequence`, `param_load`, `hide_in_modify`, `extra_info`)
 VALUES ('smtp_pwd', '', 'string', 255, 'Smtp Password', 14, 6, 1, 0, '');
 
+
+
+DELETE FROM `core_setting` WHERE `core_setting`.`param_name` = 'social_fb_active';
+DELETE FROM `core_setting` WHERE `core_setting`.`param_name` = 'social_fb_api';
+DELETE FROM `core_setting` WHERE `core_setting`.`param_name` = 'social_fb_secret';
+DELETE FROM `core_setting` WHERE `core_setting`.`param_name` = 'social_google_active';
+DELETE FROM `core_setting` WHERE `core_setting`.`param_name` = 'social_google_client_id';
+DELETE FROM `core_setting` WHERE `core_setting`.`param_name` = 'social_google_secret';
+DELETE FROM `core_setting` WHERE `core_setting`.`param_name` = 'social_linkedin_access';
+DELETE FROM `core_setting` WHERE `core_setting`.`param_name` = 'social_linkedin_active';
+DELETE FROM `core_setting` WHERE `core_setting`.`param_name` = 'social_linkedin_secret';
+DELETE FROM `core_setting` WHERE `core_setting`.`param_name` = 'social_twitter_active';
+DELETE FROM `core_setting` WHERE `core_setting`.`param_name` = 'social_twitter_consumer';
+DELETE FROM `core_setting` WHERE `core_setting`.`param_name` = 'social_twitter_secret';
 -- ------------------------------------------------------------------
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

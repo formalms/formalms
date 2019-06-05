@@ -350,8 +350,11 @@ class Boot {
 		// ip coerency check
 		self::log( "Ip coerency check.");
 		if(Get::sett('session_ip_control', 'on') == 'on') {
-
-			if(Docebo::user()->isLoggedIn() && (Docebo::user()->getLogIp() != $_SERVER['REMOTE_ADDR']))
+            $ip = $_SERVER['HTTP_X_FORWARDED_FOR'] ? $_SERVER['HTTP_X_FORWARDED_FOR'] : $_SERVER['REMOTE_ADDR'];
+            if (strpos($ip, ',') !== false) {
+                $ip = substr($ip, 0, strpos($ip, ','));
+            }
+			if(Docebo::user()->isLoggedIn() && (Docebo::user()->getLogIp() != $ip))
 			{
 				session_destroy();
 				Util::jump_to(Get::rel_path('base').'/index.php?msg=104');

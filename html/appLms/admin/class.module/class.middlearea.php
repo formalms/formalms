@@ -23,7 +23,7 @@ class Module_MiddleArea extends LmsAdminModule {
 	
 	function loadBody() {
 		
-		require_once(dirname(__FILE__).'/../modules/middlearea/middlearea.php');
+		require_once(Forma::inc('appLms/admin/modules/middlearea/middlearea.php'));
 		MiddleAreaDispatch($GLOBALS['op']);
 	}
 	

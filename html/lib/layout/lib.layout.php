@@ -618,7 +618,7 @@ class Layout
     {
         if (Get::sett('google_stat_in_lms', '0') == '1' && Get::sett('google_stat_code', '') != '') {
 
-            echo Get::sett('google_stat_code');
+            return Get::sett('google_stat_code');
         }
     }
 

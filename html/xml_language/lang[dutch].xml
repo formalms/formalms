@@ -451,7 +451,7 @@
         <key id="configuration&amp;_COURSE_QUOTA" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Limiteer de totale grote van bestanden die een gebruiker kan uploaden voor een cursus (MB)]]></key>
         <key id="configuration&amp;_CURRENCY_SYMBOL" attributes="" save_date="2017-07-12 12:11:28"><![CDATA[Symbool voor valuta (zal aan de gebruikers kant zichtbaar zijn)]]></key>
         <key id="configuration&amp;_CUSTOMER_HELP_EMAIL" attributes="" save_date="2017-07-10 10:33:47"><![CDATA[Helpdesk e-mail]]></key>
-        <key id="configuration&amp;_CUSTOMER_HELP_SUBJ_PFX" attributes="" save_date="2017-07-10 10:33:51"><![CDATA[Helpdesk e-mail onderwerp]]></key>
+        <key id="configuration&amp;_CUSTOMER_HELP_SUBJ_PLACEHOLDER" attributes="" save_date="2017-07-10 10:33:51"><![CDATA[Helpdesk e-mail onderwerp]]></key>
         <key id="configuration&amp;_CUSTOM_FIELDS_MANDATORY_FOR_ADMIN" attributes="" save_date="2017-07-05 16:04:00"><![CDATA[Verplichtte extra velden]]></key>
         <key id="configuration&amp;_DEBUG" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Debug opties]]></key>
         <key id="configuration&amp;_DEFAULTTEMPLATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Standaard template]]></key>

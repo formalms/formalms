@@ -200,7 +200,13 @@ class DoceboMailer extends PHPMailer
             }
 			$this->SMTPSecure = SmtpAdm::getInstance()->getSecure();	// secure: '' , 'ssl', 'tsl'
 	        $this->SMTPAutoTLS = SmtpAdm::getInstance()->isAutoTLS();
-			$this->SMTPDebug = SmtpAdm::getInstance()->getDebug();	// debug level 0,1,2,3,...
+            $this->SMTPDebug = SmtpAdm::getInstance()->getDebug();	// debug level 0,1,2,3,...
+            // Add To in mail header SMTP
+            if (is_string($recipients)) {
+                $this->addCustomHeader("To", $recipients);
+            } elseif (is_array($recipients)) {
+                $this->addCustomHeader("To", $recipients[0]);
+            }
 		} else {
             $this->IsMail();
         }
