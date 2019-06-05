@@ -406,7 +406,8 @@ class CatalogLmsController extends LmsController {
 			$idst_admin = $acl_man->getGroupMembers($idst_group_admin);
 
 			require_once(_adm_.'/lib/lib.adminmanager.php');
-				foreach($idst_admin as $id_user) {
+
+			foreach($idst_admin as $id_user) {
 				$adminManager = new AdminManager();
 				$acl_manager = & $acl_man;
 
@@ -467,8 +468,35 @@ class CatalogLmsController extends LmsController {
 
 			$recipients = array_unique($recipients);
 
-			createNewAlert(	'UserCourseInsertModerate', 'subscribe', 'insert', '1', 'User subscribed with moderation',
-						$recipients, $msg_composer  );
+			createNewAlert(	'UserCourseInsertModerate', 'subscribe', 'insert', '1', 'User subscribed with moderation', $recipients, $msg_composer );
+
+			// SuperAdmins notification
+			$acl_manager = \Docebo::user()->getAclManager();
+  			$permission_godadmin = $acl_manager->getGroupST(ADMIN_GROUP_GODADMIN);
+  			$recipients = $acl_manager->getGroupAllUser($permission_godadmin);
+
+			$userModel = new UsermanagementAdm();
+			$id_user = Docebo::user()->getIdSt();
+			$user = $userModel->getProfileData($id_user);
+
+			$username = str_replace('/', '', $user->userid);
+
+			$array_subst = array(
+				'[url]' => Get::site_url(),
+				'[firstname]' => $user->firstname,
+				'[lastname]' => $user->lastname,
+				'[course]' => $course_info['name'],
+				'[username]' => $username,
+			);
+
+			// message to user that is odified
+			$msg_composer = new EventMessageComposer();
+
+			$msg_composer->setSubjectLangText('email', '_NEW_USER_SUBSCRIBED_SUBJECT_SUPERADMINS', false);
+			$msg_composer->setBodyLangText('email', '_NEW_USER_SUBSCRIBED_TEXT_SUPERADMINS', $array_subst);
+			$msg_composer->setBodyLangText('sms', '_NEW_USER_SUBSCRIBED_TEXT_SMS_SUPERADMINS', $array_subst);
+
+			createNewAlert(	'UserCourseSubscribedSuperadmins', 'directory', 'edit', '1', 'User '.$username.' subscribed', $recipients, $msg_composer );
 
 			$res['message'] = UIFeedback::info(Lang::t('_SUBSCRIPTION_CORRECT', 'catalogue'), true);
 		}
