@@ -70,7 +70,7 @@ version: 2.8.0r4
 }
 
 .yui-skin-sam .yui-panel-container.shadow .underlay {
-    box-shadow: 4px 15px 20px 0px rgba(0,0,0,1);
+    box-shadow: 4px 0px 20px 0px rgba(0,0,0,1);
     background: transparent;
     top: 0;
     left: 0;
@@ -134,5 +134,8 @@ version: 2.8.0r4
     text-align: center;
     display: block;
     font-weight: bold;
+}
 
+.yui-skin-sam .yui-panel .bd{
+    padding:20px;
 }

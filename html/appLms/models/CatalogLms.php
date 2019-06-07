@@ -534,7 +534,8 @@ class CatalogLms extends Model
 		if($selling ==1)
 			$res['title'] = Lang::t('_ADD_TO_CHART', 'catalogue');
 		else
-			$res['title'] = Lang::t('_SUBSCRIBE', 'catalogue');
+			//$res['title'] = Lang::t('_SUBSCRIBE', 'catalogue');
+            $res['title'] = 'Titolo corso'; //TODO @Peppe: dinamicizzare
 
 		$res['body'] = '';
 
@@ -548,7 +549,8 @@ class CatalogLms extends Model
 			$overbooking_classroom = $this->classroom_man->getOverbookingDateForCourse($id_course);
             
             // cutting not confirmed classrooms
-            $available_classrooms = array_diff_key($classrooms, $classroom_not_confirmed);            
+            $available_classrooms = array_diff_key($classrooms, $classroom_not_confirmed);
+            $index = 1;
 
 			foreach($available_classrooms as $classroom_info)
 			{
@@ -566,16 +568,53 @@ class CatalogLms extends Model
 					$action = ($selling == 1	? '<a href="javascript:;" onclick="subscriptionPopUp(\''.$id_course.'\', \''.$classroom_info['id_date'].'\', \'0\', \''.$selling.'\');"><span class="can_subscribe">'.Lang::t('_ADD_TO_CART', 'catalogue').' ('.$classroom_info['price'].' '.Get::sett('currency_symbol', '&euro;').')'.'</span></a>'
 												: '<a href="javascript:;" onclick="subscriptionPopUp(\''.$id_course.'\', \''.$classroom_info['id_date'].'\', \'0\', \''.$selling.'\');"><span class="can_subscribe">'.Lang::t('_SUBSCRIBE', 'catalogue').'</span></a>');
 
-				$res['body'] .=	'<div class="edition_container">'
-								.'<b>'.Lang::t('_NAME', 'catalogue').'</b>: '.$classroom_info['name'].'<br/>'
-								.($classroom_info['code'] !== '' ? '<b>'.Lang::t('_CODE', 'catalogue').'</b>: '.$classroom_info['code'].'<br/>' : '')
-								.($classroom_info['date_begin'] !== '0000-00-00 00:00:00' ? '<b>'.Lang::t('_DATE_BEGIN', 'course').'</b>: '.Format::date($classroom_info['date_begin'], 'datetime').'<br/>' : '')
-								.($classroom_info['date_end'] !== '0000-00-00 00:00:00' ? '<b>'.Lang::t('_DATE_END', 'course').'</b>: '.Format::date($classroom_info['date_end'], 'datetime').'<br/>' : '')
-								.($classroom_info['classroom'] !== '' ? '<b>'.Lang::t('_LOCATION', 'classroom').'</b>: '.$classroom_info['classroom'].'<br />' : '')
-								.'<div class="edition_subscribe">'
-								.$action
-								.'</div>'
+				$res['body'] .= '<div class="edition__title js-edition-accordion" data-target="target-' . $index . '"><div class="edition__icon"><i class="fa fa-angle-right"></i></div>' . $classroom_info['name']
+                                .'<div class="edition_subscribe">'
+                                    .$action
+                                .'</div></div>';
+				$res['body'] .=	'<div id="target-' . $index . '" class="edition_container">'
+                                .'<div class="edition__body">'
+								.($classroom_info['code'] !== '' ? '<b>'.Lang::t('_CODE', 'catalogue').'</b>: '.$classroom_info['code'].'<br/><br/>' : '')
+                                .'<div class="edition__twocol">'
+                                .(($classroom_info['date_begin'] !== '0000-00-00 00:00:00' || $classroom_info['date_end'] !== '0000-00-00 00:00:00') ? '<div class="edition__col"><b>'.Lang::t('PERIODO', 'catalogue').'</b><br />'.Format::date($classroom_info['date_begin'], 'datetime').' <span class="edition_arrow"></span> '. Format::date($classroom_info['date_end'], 'datetime') . '</div>' : '')
+                                .'<div class="edition__col"><b>Durata</b><br />5 giorni</div>' //TODO @Peppe: dinamicizzare
+                                .'</div>'
+                                .'<b>Docenti</b><br />Mario Rossi, Giuseppe Verdi, Luca Neri<br /><br />' //TODO @Peppe: dinamicizzare
+                                .($classroom_info['classroom'] !== '' ? '<b>'.Lang::t('_LOCATION', 'classroom').'</b><br /> '.$classroom_info['classroom'].'<br />' : '')
+                                .'</div>'
+                                .'<table class="edition_table">
+                                        <thead>
+                                            <tr>
+                                                <th>Data</th>
+                                                <th>Inizio</th>
+                                                <th>Fine</th>
+                                                <th>Location</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>10/06/2019</td>
+                                                <td>09:00</td>
+                                                <td>17:00</td>
+                                                <td>Aula Magna</td>
+                                            </tr>
+                                            <tr>
+                                                <td>10/06/2019</td>
+                                                <td>09:00</td>
+                                                <td>17:00</td>
+                                                <td>Aula Magna</td>
+                                            </tr>
+                                            <tr>
+                                                <td>10/06/2019</td>
+                                                <td>09:00</td>
+                                                <td>17:00</td>
+                                                <td>Aula Magna</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>' //TODO @Peppe: dinamicizzare
 								.'</div>';
+
+                $index++;
 			}
 
 			$res['footer'] = '<a href="javascript:;" onclick="hideDialog();"><p class="close_dialog">'.Lang::t('_UNDO', 'catalogue').'</p></a>';
