@@ -63,7 +63,7 @@ class CoursestatsLms extends Model {
 		
 		$output = array();
 		$query = "SELECT * FROM ".$this->tables['organization']." "
-			." WHERE idCourse=".(int)$id_course." ORDER BY title"; //or path?
+			." WHERE idCourse=".(int)$id_course." ORDER BY path ASC";
 		$res = $this->db->query($query);
 		if ($res) {
 			while ($obj = $this->db->fetch_obj($res)) {
@@ -194,13 +194,14 @@ class CoursestatsLms extends Model {
 
 
 	public function getCourseUserStatsList($pagination, $id_course, $id_user) {
+		// Default order
+		$sort = 'o.path';
+		$dir = 'ASC';
+
 		if (is_array($pagination)) {
 			$startIndex = (isset($pagination['startIndex']) ? $pagination['startIndex'] : 0);
 			$rowsPerPage = (isset($pagination['rowsPerPage']) ? $pagination['rowsPerPage'] : Get::sett('visuItem', 10));
 
-			// Default order
-			$sort = 'o.path';
-			$dir = 'ASC';
 			if (isset($pagination['order_column'])) {
 				switch ($pagination['order_column']) {
 					case 1: $sort = 'o.path'; break;
@@ -232,11 +233,10 @@ class CoursestatsLms extends Model {
 			." ON (c.idReference = o.idOrg AND c.idUser=".(int)$id_user.") "
 			." WHERE o.idCourse=".(int)$id_course.$where;
 
+		$query .= " ORDER BY ".$sort." ".$dir." ";
 		if (is_array($pagination)) {
-			$query .= " ORDER BY ".$sort." ".$dir." ";
 			$query .= "LIMIT ".$startIndex.", ".$rowsPerPage;
 		}
-		//echo $query."\n";
 		$output = array();
 		$res = $this->db->query($query);
 

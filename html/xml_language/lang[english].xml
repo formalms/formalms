@@ -842,6 +842,7 @@ Otherwise, you must register in our system, following this link: <br />
         <key id="course&amp;_THEACER_LIST" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Teachers:]]></key>
         <key id="course&amp;_TITLE_CATEGORY_JUMP" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Go to the content of]]></key>
         <key id="course&amp;_TITLE_CERTIFICATE_TO_COURSE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Association of certificates to course]]></key>
+        <key id="course&amp;_TOTAL_ACCESS_TIME" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Total access time]]></key>
         <key id="course&amp;_T_USER_STATUS_BEGIN" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[You are attending this course]]></key>
         <key id="course&amp;_T_USER_STATUS_CONFIRMED" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Confirmed]]></key>
         <key id="course&amp;_T_USER_STATUS_END" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[You have completed this course]]></key>
@@ -2184,6 +2185,7 @@ Password: [password]]]></key>
         <key id="standard&amp;passed" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Passed]]></key>
         <key id="standard&amp;PREV_B_" attributes="" save_date="2017-04-11 18:36:22"><![CDATA[Previous]]></key>
         <key id="standard&amp;_ACCESSES" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Accesses]]></key>
+        <key id="standard&amp;_ACCESS_IN_DETAIL" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Access in detail]]></key>
         <key id="standard&amp;_ACTIVATE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Activate]]></key>
         <key id="standard&amp;_ACTIVE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Active]]></key>
         <key id="standard&amp;_ACTIVE_TAB" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[(Current area)]]></key>
@@ -2466,6 +2468,7 @@ Password: [password]]]></key>
         <key id="standard&amp;_ORGCHART" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Organization chart]]></key>
         <key id="standard&amp;_ORGCHART_ADDNODE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Add node]]></key>
         <key id="standard&amp;_PAGES" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Pages]]></key>
+        <key id="standard&amp;_PARTICIPANT_DATA" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Participant data]]></key>
         <key id="standard&amp;_PASSWORD" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Password]]></key>
         <key id="standard&amp;_PERCENTAGE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Percentage]]></key>
         <key id="standard&amp;_PLANNED" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Planned]]></key>
@@ -2541,6 +2544,7 @@ Password: [password]]]></key>
         <key id="standard&amp;_SUBSCRIBE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Subscribe]]></key>
         <key id="standard&amp;_SUBSCRIBED_BY" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Subscribed by]]></key>
         <key id="standard&amp;_SUBSCRIBE_COURSE" attributes="" save_date="2017-04-14 12:10:09"><![CDATA[Course subscription]]></key>
+        <key id="standard&amp;_SUBJECT_NAME" attributes="" save_date="2017-04-14 12:10:01"><![CDATA[Subject name]]></key>
         <key id="standard&amp;_SUSPEND" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Suspend]]></key>
         <key id="standard&amp;_SUSPENDED" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Suspended]]></key>
         <key id="standard&amp;_TABS" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Tabs]]></key>
