@@ -169,3 +169,27 @@ div.coursepath_details{background-color:#f7f7f7;border-top:3px solid #d1d1d1;bor
 .ui-dialog-content.ui-widget-content {
     min-height: 36px !important;
 }
+
+/* RESTYLING MODALE CORSI */
+
+.yui-skin-sam .yui-panel .edition_container .edition_subscribe a {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.yui-skin-sam .yui-panel .edition_container .edition_subscribe a .can_subscribe {
+    background: transparent;
+    font-size: 10px;
+    color: #70D800;
+    border-radius: 4px;
+    border: 1px solid #70D800;
+    width: 80px;
+    line-height: 20px;
+    margin: 0;
+    padding: 0;
+}
+
+.yui-skin-sam .yui-panel .edition_container .edition_subscribe a .can_subscribe:before {
+    display: none;
+}

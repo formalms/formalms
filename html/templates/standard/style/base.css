@@ -1804,11 +1804,6 @@ ul.tabs li.current{
     display: block;
 }
 
-/* FIX WIDTH POPUP CONTAINER SUBSCRIBE COURSE */
-
-#pop_up_container {
-    width: 100%!important;
-}
 
 /* FIX POPUP USER AREA */
 
@@ -1819,4 +1814,5 @@ ul.tabs li.current{
     transform: none;
     border: none;
 }
+
 
