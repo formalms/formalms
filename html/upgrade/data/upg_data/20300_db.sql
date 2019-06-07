@@ -36,36 +36,36 @@ SET @lastID = LAST_INSERT_ID();
 
 INSERT INTO core_lang_translation ( id_text,lang_code,  translation_text, save_date ) VALUES  (@lastID, 'english','User with name and surname : [firstname] [lastname] and userId : [username] has been modified in platform : [url]', now());
 
--- User subscribed from front-office in a course for super admins --
-INSERT INTO core_lang_text (id_text, text_key, text_module, text_attributes) VALUES (NULL, '_EVENT_CLASS_UserCourseSubscribedSuperadmins', 'event_manager', '');
+-- User registration from front-office to super admins --
+/*INSERT INTO core_lang_text (id_text, text_key, text_module, text_attributes) VALUES (NULL, '_EVENT_CLASS_UserRegistrationSuperadmins', 'event_manager', '');
 SET @lastID = LAST_INSERT_ID();
-INSERT INTO core_lang_translation ( id_text,lang_code,  translation_text, save_date ) VALUES  (@lastID, 'english','User subscribed in a course - superadmins', now());
-INSERT INTO core_lang_translation ( id_text,lang_code,  translation_text, save_date ) VALUES  (@lastID, 'italian','Utente inserito in un corso - superadmins', now());
+INSERT INTO core_lang_translation ( id_text,lang_code,  translation_text, save_date ) VALUES  (@lastID, 'english','User registered - superadmins', now());
+INSERT INTO core_lang_translation ( id_text,lang_code,  translation_text, save_date ) VALUES  (@lastID, 'italian','Utente registrato - superadmins', now());
 
 INSERT INTO core_lang_text (id_text, text_key, text_module, text_attributes) VALUES (NULL, '_NEW_USER_SUBSCRIBED_SUBJECT_SUPERADMINS', 'email', '');
 SET @lastID = LAST_INSERT_ID();
-INSERT INTO core_lang_translation ( id_text,lang_code,  translation_text, save_date ) VALUES  (@lastID, 'english','A new user has subscribed in a course', now());
-INSERT INTO core_lang_translation ( id_text,lang_code,  translation_text, save_date ) VALUES  (@lastID, 'italian','Un nuovo utente si è iscritto ad un corso', now());
+INSERT INTO core_lang_translation ( id_text,lang_code,  translation_text, save_date ) VALUES  (@lastID, 'english','A new user has registered', now());
+INSERT INTO core_lang_translation ( id_text,lang_code,  translation_text, save_date ) VALUES  (@lastID, 'italian','Un nuovo utente si è registrato', now());
 
 INSERT INTO core_lang_text (id_text, text_key, text_module, text_attributes) VALUES (NULL, '_NEW_USER_SUBSCRIBED_TEXT_SUPERADMINS', 'email', '');
 SET @lastID = LAST_INSERT_ID();
-INSERT INTO core_lang_translation ( id_text,lang_code,  translation_text, save_date ) VALUES  (@lastID, 'english','User with name and surname : [firstname] [lastname] and userId : [username] has subscribed in the course : [course] in platform : [url]', now());
-INSERT INTO core_lang_translation ( id_text,lang_code,  translation_text, save_date ) VALUES  (@lastID, 'italian','L\'utente con nome e cognome : [firstname] [lastname] e username : [username] si è iscritto al corso : [course] sulla piattaforma : [url]', now());
+INSERT INTO core_lang_translation ( id_text,lang_code,  translation_text, save_date ) VALUES  (@lastID, 'english','User with name and surname : [firstname] [lastname] and userId : [username] has registered in platform : [url]', now());
+INSERT INTO core_lang_translation ( id_text,lang_code,  translation_text, save_date ) VALUES  (@lastID, 'italian','L\'utente con nome e cognome : [firstname] [lastname] e username : [username] si è registrato sulla piattaforma : [url]', now());
 
 INSERT INTO core_lang_text (id_text, text_key, text_module, text_attributes) VALUES (NULL, '_NEW_USER_SUBSCRIBED_TEXT_SMS_SUPERADMINS', 'email', '');
 SET @lastID = LAST_INSERT_ID();
-INSERT INTO core_lang_translation ( id_text,lang_code,  translation_text, save_date ) VALUES  (@lastID, 'english','User with name and surname : [firstname] [lastname] and userId : [username] has subscribed in the course : [course] in platform : [url]', now());
-INSERT INTO core_lang_translation ( id_text,lang_code,  translation_text, save_date ) VALUES  (@lastID, 'italian','L\'utente con nome e cognome : [firstname] [lastname] e username : [username] si è iscritto al corso : [course] sulla piattaforma : [url]', now());
+INSERT INTO core_lang_translation ( id_text,lang_code,  translation_text, save_date ) VALUES  (@lastID, 'english','User with name and surname : [firstname] [lastname] and userId : [username] has registered in platform : [url]', now());
+INSERT INTO core_lang_translation ( id_text,lang_code,  translation_text, save_date ) VALUES  (@lastID, 'italian','L\'utente con nome e cognome : [firstname] [lastname] e username : [username] si è registrato sulla piattaforma : [url]', now());
 
-INSERT INTO `core_event_class` (`class`, `platform`, `description`) VALUES ('UserCourseSubscribedSuperadmins', 'lms-a', '');
+INSERT INTO `core_event_class` (`class`, `platform`, `description`) VALUES ('UserRegistrationSuperadmins', 'lms-a', '');
 set @lastID=LAST_INSERT_ID();
 
 INSERT INTO `core_event_consumer_class` (`idConsumer`, `idClass`) VALUES (1, @lastID);
 
 INSERT INTO `core_event_manager` (`idClass`, `permission`, `channel`, `recipients`, `show_level`) 
-VALUES (@lastID, 'mandatory', 'email', '_EVENT_RECIPIENTS_MODERATORS_GOD', 'godadmin');
+VALUES (@lastID, 'mandatory', 'email', '_EVENT_RECIPIENTS_MODERATORS_GOD', 'godadmin');*/
 
--- User subscribed in a course for moderators --
+-- User subscribed in a course to moderators --
 INSERT INTO core_lang_text (id_text, text_key, text_module, text_attributes) VALUES (NULL, '_EVENT_CLASS_UserCourseInsertedModerators', 'event_manager', '');
 SET @lastID = LAST_INSERT_ID();
 INSERT INTO core_lang_translation ( id_text,lang_code,  translation_text, save_date ) VALUES  (@lastID, 'english','User subscribed in a course - moderators', now());
@@ -92,7 +92,7 @@ set @lastID=LAST_INSERT_ID();
 INSERT INTO `core_event_consumer_class` (`idConsumer`, `idClass`) VALUES (1, @lastID);
 
 INSERT INTO `core_event_manager` (`idClass`, `permission`, `channel`, `recipients`, `show_level`) 
-VALUES (@lastID, 'mandatory', 'email', '_EVENT_RECIPIENTS_MODERATORS_GOD', 'godadmin,admin');
+VALUES (@lastID, 'mandatory', 'email', '_EVENT_RECIPIENTS_MODERATORS_GOD', 'admin');
 
 -- User suspended in forma --
 SET @max = (SELECT MAX(idClass)+1 FROM `core_event_class`);
