@@ -1503,10 +1503,6 @@ Class CourseAlmsController extends AlmsController
         } 
 
         
-        /*
-        *  GESTIRE MEGLIO I CAMPI AGGIUNTIVI E LA FORMATTAZIONE
-        *
-        */
         
         $course_info = $this->model->getCourseModDetails($id_course);
         $this->render(

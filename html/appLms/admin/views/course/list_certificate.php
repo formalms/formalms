@@ -133,7 +133,7 @@ echo getTitleArea(array(
             buttons:[ {
                         extend: 'colvis',
                         text: '<?=Lang::t('_CHANGEPOLICY', 'profile')?>',
-                        columns: '<?=implode(",",$hidden_fields_array)?>',
+                        columns: '<?=implode(",",$hidden_fields_array)?>', 
                       },
                       {
                         text: '<?=Lang::t('_ADVANCED_SEARCH', 'standard')?>',
@@ -147,11 +147,10 @@ echo getTitleArea(array(
         })
         cert_table.searchBar.init('#table_certificate');
         $('#table_certificate').on( 'column-visibility.dt', function ( e, settings, column, state ) {
-            // if search bar is visible force redraw
-           if (cert_table.searchBar.isvisible())
-                cert_table.searchBar.redraw() 
+            // if adding or remove fields, force redraw
+            cert_table.searchBar.redraw() 
         });
-        
+
 
 
 

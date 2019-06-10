@@ -665,14 +665,16 @@ formaTable.prototype.reload = function() {
 formaTable.prototype.searchBar = {
     
     init: function(dt){
-        this.visible = false;
         this.instance = $(dt).DataTable();
+        this.searchBar =  '.dataTables_scrollHeadInner tr:eq(1)';
+        this.initSearchBar()
+        $(this.searchBar).hide()
     },
     search_string: function(ix){
         html_tag = '<select id="selString_' + ix + '" name="selString_' + ix + '">'+
-                   '<option selected value="0">Inizia</option>'+
-                   '<option value="1">Contiene</option>'+
-                    '<option value="2">Uguale</option>'+
+                   '<option selected value="0"><?=Lang::t('_STARTS_WITH', 'standard')?></option>'+
+                   '<option value="1"><?=Lang::t('_CONTAINS', 'standard')?></option>'+
+                    '<option value="2">Uguale a</option>'+
                     '</select>' +
                     '<input id="inputString_' + ix + '" name="inputString_' + ix + '" type="text"  placeholder=""  />' 
         return html_tag
@@ -713,60 +715,56 @@ formaTable.prototype.searchBar = {
                  return html_tag        
          
     },             
-    isvisible: function(){
-        return this.visible        
+    show:function(){
+       if ($(this.searchBar).is(":visible") ) {
+            $(this.searchBar).hide()
+       } else {
+            $(this.searchBar).show()
+            table.columns.adjust().draw('page');
+       }    
     },
-    redraw: function(){
-        $('.dataTables_scrollHeadInner tr:eq(1)').remove()
-        this.visible = false
-        this.show()
+    redraw:function(){
+        is_visible = $(this.searchBar).is(":visible")
+        $(this.searchBar).remove() 
+        this.initSearchBar()
+        if (!is_visible) $(this.searchBar).hide() 
     },
-    show: function() {
+    initSearchBar: function() {
        try {
             table = this.instance.table()
-            if (this.visible) {
-                 $('.dataTables_scrollHeadInner tr:eq(1)').remove()
-                 this.visible = false
-            }  else {
-                $('.dataTables_scrollHeadInner thead tr').clone().appendTo( '.dataTables_scrollHeadInner thead' );
-                c = ((table.selectable_row()) ? 0 : 1)
-                i = 0
-                _parent = this
-                table.columns().every(function() {
-                    s_searchable = this.searchable();
-                    s_type = this.type();
-                    s_name = this.title(); 
-                    s_visible = this.visible();
-                    if (s_visible) {
-                        $('.dataTables_scrollHeadInner tr:eq(1) th:eq('+c+')').removeClass() 
-                        if (s_searchable) {
-                            switch(s_type) {
-                                case 'date':
-                                    $('.dataTables_scrollHeadInner tr:eq(1) th:eq('+c+')').html(_parent.search_date(i))  
-                                    break
-                                case 'num':
-                                    $('.dataTables_scrollHeadInner tr:eq(1) th:eq('+c+')').html(_parent.search_num(i))  
-                                    break
-                                default:
-                                    $('.dataTables_scrollHeadInner tr:eq(1) th:eq('+c+')').html(_parent.search_string(i))  
-                            }
-                           
+            $('.dataTables_scrollHeadInner thead tr').clone().appendTo( '.dataTables_scrollHeadInner thead' );
+            c = ((table.selectable_row()) ? 0 : 1)
+            i = 0
+            _parent = this
+            table.columns().every(function() {
+                s_searchable = this.searchable();
+                s_type = this.type();
+                s_name = this.title(); 
+                s_visible = this.visible();
+                if (s_visible) {
+                    $('.dataTables_scrollHeadInner tr:eq(1) th:eq('+c+')').removeClass() 
+                    if (s_searchable) {
+                        switch(s_type) {
+                            case 'date':
+                                $('.dataTables_scrollHeadInner tr:eq(1) th:eq('+c+')').html(_parent.search_date(i))
+                                break
+                            case 'num':
+                                $('.dataTables_scrollHeadInner tr:eq(1) th:eq('+c+')').html(_parent.search_num(i))  
+                                break
+                            default:
+                                $('.dataTables_scrollHeadInner tr:eq(1) th:eq('+c+')').html(_parent.search_string(i))  
                         }
-                        c++
                     }
-                    i++
-                })
-                $('.dataTables_scrollHeadInner tr:eq(1)').show()                 
-                this.visible = true;
-                this.addSearchListener()
-
-            }   
-            table.draw('page');                     
+                    c++
+                }
+                i++
+            })
+            this.addSearchListener()
         } catch (e) {
            console.log(e.message) 
         }             
         
-    },
+    },    
     addSearchListener: function(){
         the_table = this.instance
         $("input[id^='inputString_']").on("keyup change", function(){
@@ -788,7 +786,9 @@ formaTable.prototype.searchBar = {
                     break
                     
             }
-           the_table.column(id_column).search( str_search ,true, false).draw()
+         console.log("id_column="+id_column)
+         console.log("str_search="+str_search)
+         the_table.column(id_column).search( str_search ,true, false).draw()
         });
         $("select[id^='selString_']").on("change", function(){
             id_column = $(this).attr('id').split('_')[1]
