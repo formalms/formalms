@@ -676,7 +676,7 @@ formaTable.prototype.searchBar = {
                    '<option value="1"><?=Lang::t('_CONTAINS', 'standard')?></option>'+
                     '<option value="2">Uguale a</option>'+
                     '</select>' +
-                    '<input id="inputString_' + ix + '" name="inputString_' + ix + '" type="text"  placeholder=""  />' 
+                    '<input id="inputString_' + ix + '" name="inputString_' + ix + '" type="text"  />' 
         return html_tag
         
     },
@@ -727,7 +727,10 @@ formaTable.prototype.searchBar = {
         is_visible = $(this.searchBar).is(":visible")
         $(this.searchBar).remove() 
         this.initSearchBar()
-        if (!is_visible) $(this.searchBar).hide() 
+        if (!is_visible) 
+            $(this.searchBar).hide()    
+        // clearing current search filter, if any        
+        this.instance.search('').columns().search('').draw('')
     },
     initSearchBar: function() {
        try {
@@ -749,11 +752,12 @@ formaTable.prototype.searchBar = {
                                 $('.dataTables_scrollHeadInner tr:eq(1) th:eq('+c+')').html(_parent.search_date(i))
                                 break
                             case 'num':
-                                $('.dataTables_scrollHeadInner tr:eq(1) th:eq('+c+')').html(_parent.search_num(i))  
+                                $('.dataTables_scrollHeadInner tr:eq(1) th:eq('+c+')').html(_parent.search_num(i))
                                 break
                             default:
-                                $('.dataTables_scrollHeadInner tr:eq(1) th:eq('+c+')').html(_parent.search_string(i))  
-                        }
+                                $('.dataTables_scrollHeadInner tr:eq(1) th:eq('+c+')').html(_parent.search_string(i)) 
+                        }       
+                        
                     }
                     c++
                 }
@@ -786,8 +790,6 @@ formaTable.prototype.searchBar = {
                     break
                     
             }
-         console.log("id_column="+id_column)
-         console.log("str_search="+str_search)
          the_table.column(id_column).search( str_search ,true, false).draw()
         });
         $("select[id^='selString_']").on("change", function(){
