@@ -661,3 +661,71 @@ i + .course-box__date-box {
     padding-right: 7.5px;
   }
 }
+
+.course-box__extraInfo {
+  width: calc(100% - 30px);
+  margin-left: 15px;
+  padding-top: 15px;
+  margin-top: 15px;
+  border-top: 1px solid #ECECEC;
+  clear: both;
+  font-size: 0;
+}
+
+.course-box__next,
+.course-box__allDates {
+  width: 50%;
+  display: inline-block;
+}
+
+.course-box__next {
+  font-size: 12px;
+  color: #999999;
+  position: relative;
+  padding-left: 20px;
+}
+
+.course-box__next:before,
+.course-box__allDates:after,
+.course-box__allDates:before {
+  content:'';
+  display: block;
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 8.5px 0 8.5px 9px;
+  border-color: transparent transparent transparent #979797;
+  opacity: .6;
+}
+
+.course-box__allDates:after,
+.course-box__allDates:before {
+  top: 18px;
+}
+
+.course-box__allDates:before {
+  left: 10px;
+}
+
+.course-box__next div {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.course-box__allDates {
+  font-size: 13px;
+  font-weight: bold;
+  vertical-align: top;
+  position: relative;
+  padding-left: 23px;
+  padding-top: 10px;
+}
+
+.course-box__allDates a {
+  color: #C84000;
+  text-decoration: underline;
+}

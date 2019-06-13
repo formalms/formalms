@@ -199,6 +199,30 @@ div.coursepath_details{background-color:#f7f7f7;border-top:3px solid #d1d1d1;bor
     padding: 0;
 }
 
+.yui-skin-sam .yui-panel .edition_subscribe a .can_subscribe_moderation {
+    color: #F6A623;
+    border: 1px solid #F6A623;
+    float: right;
+}
+
+.yui-skin-sam .yui-panel .edition_subscribe a .alert_subscribe {
+    clear: both;
+    color: #F6A623;
+    position: relative;
+    top: 4px;
+    display: none;
+}
+
+@media screen and (max-width: 600px){
+
+    .yui-skin-sam .yui-panel .edition_subscribe a .alert_subscribe {
+        width: 109px;
+        text-align: right;
+        font-size: 10px;
+        line-height: 12px;
+    }
+}
+
 .yui-skin-sam .yui-panel .edition_subscribe a .cannot_subscribe {
     background: transparent;
     font-size: 10px;
@@ -210,6 +234,35 @@ div.coursepath_details{background-color:#f7f7f7;border-top:3px solid #d1d1d1;bor
     margin: 0;
     padding: 0;
     display: block;
+}
+
+.moderation-course:before,
+.moderation-alert:before {
+    content:'';
+    display: block;
+    position: absolute;
+    right: 85px;
+    top: 4px;
+    border-radius: 50%;
+    background-color: #F6A623;
+    width: 14px;
+    height: 14px;
+    background-image: url('../static/images/icons/icon--info.svg');
+    background-position: center;
+    background-size: 5px auto;
+    background-repeat: no-repeat;
+}
+
+.moderation-alert {
+    position: relative;
+    color: #F6A623;
+    padding-left: 20px;
+    line-height: 24px;
+}
+
+.moderation-alert:before {
+    left: 0;
+    top: 4px;
 }
 
 .yui-skin-sam .yui-panel .edition_subscribe a .can_subscribe:before {
@@ -227,14 +280,18 @@ div.coursepath_details{background-color:#f7f7f7;border-top:3px solid #d1d1d1;bor
     line-height: 22px;
     font-family: "Open Sans", sans-serif;
     padding-right: 100px;
-    padding-bottom: 10px;
-    margin-bottom: 10px;
+    padding-bottom: 8px;
+    margin-bottom: 8px;
     cursor: pointer;
     border-bottom: 1px solid #cccccc;
 }
 
 .edition__title.is-open {
     border-bottom: 0;
+}
+
+.edition__title.is-open .alert_subscribe {
+    display: block !important;
 }
 
 .edition__title.is-open .edition__icon {

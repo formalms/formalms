@@ -181,7 +181,11 @@ class CatalogLms extends Model
 			break;
 		}
 
-		$bq = "SELECT *"
+		
+   
+        
+        
+		$query =	"SELECT *"
 					." FROM %lms_course"
 					." WHERE status NOT IN (".CST_PREPARATION.", ".CST_CONCLUDED.", ".CST_CANCELLED.")"
 					." AND course_type <> 'assessment'"
@@ -189,39 +193,17 @@ class CatalogLms extends Model
 						(can_subscribe=2 AND (sub_end_date = '0000-00-00' OR sub_end_date >= '".date('Y-m-d')."') AND
                          (sub_start_date = '0000-00-00' OR '".date('Y-m-d')."' >= sub_start_date)) OR
                         (can_subscribe=1)
-					) ";
-
-		$query =	$bq
+					) "
 					.$filter
                     .$category_filter
                     .$cat_list_filter
 					." ORDER BY name";
+
                     
 		$result = sql_query($query);
-
-		$not_in = [];
-		while ($course = sql_fetch_object($result)) {
-			if ($course->show_rules == 2) {
-				$sql = "SELECT COUNT(*) AS count FROM %lms_courseuser WHERE idCourse = {$course->idCourse} AND idUser = ".Docebo::user()->getIdSt();
-				$q = sql_fetch_object(sql_query($sql));
-				if(!$q->count) {
-					$not_in[] = $course->idCourse;
-				}
-			}
-		}
-                    
-		if ($not_in) {
-			$filter.= " AND idCourse NOT IN (".implode(',', $not_in).")";
-		}
-
-		$query =	$bq
-					.$filter
-                    .$category_filter
-                    .$cat_list_filter
-					." ORDER BY name";
-		$result = sql_query($query);
-
         return $result; 
+        
+      
 	}
 
 	public function getTotalCourseNumber($type = '')
@@ -468,6 +450,7 @@ class CatalogLms extends Model
                 .'<div class="edition__col"><b>Durata</b><br />5 giorni</div>' //TODO @Peppe: dinamicizzare
                 .'</div>'
                 .'<b>Docenti</b><br />Mario Rossi, Giuseppe Verdi, Luca Neri<br /><br />' //TODO @Peppe: dinamicizzare
+                .'<div class="moderation-alert">Corso con iscrizioni soggette a moderazione</div><br /><br />' //TODO @Peppe: dinamicizzare
                 .'</div>'
                 .'</div>';
 
@@ -499,6 +482,7 @@ class CatalogLms extends Model
                 .'<div class="edition__col"><b>Durata</b><br />5 giorni</div>' //TODO @Peppe: dinamicizzare
                 .'</div>'
                 .'<b>Docenti</b><br />Mario Rossi, Giuseppe Verdi, Luca Neri<br /><br />' //TODO @Peppe: dinamicizzare
+                .'<div class="moderation-alert">Corso con iscrizioni soggette a moderazione</div><br /><br />' //TODO @Peppe: dinamicizzare
                 .'</div>'
                 .'</div>';
 			$res['footer'] = ($selling == 1 ? '<div class="edition__buttonContainer"><a href="javascript:;" class="subscribe-button" onclick="subscribeToCourse(\''.$id_course.'\', \''.$id_date.'\', \''.$id_edition.'\', \''.$selling.'\');"><span class="close_dialog">'.Lang::t('_CONFIRM', 'catalogue').' ('.$edition_info['price'].' '.Get::sett('currency_symbol', '&euro;').')'.'</span></a>'
@@ -529,6 +513,7 @@ class CatalogLms extends Model
                 .'<div class="edition__col"><b>Durata</b><br />5 giorni</div>' //TODO @Peppe: dinamicizzare
                 .'</div>'
                 .'<b>Docenti</b><br />Mario Rossi, Giuseppe Verdi, Luca Neri<br /><br />' //TODO @Peppe: dinamicizzare
+                .'<div class="moderation-alert">Corso con iscrizioni soggette a moderazione</div><br /><br />' //TODO @Peppe: dinamicizzare
                 .'</div>'
                 .'</div>';
 			$res['footer'] = ($selling == 1 ? '<div class="edition__buttonContainer"><a href="javascript:;" class="subscribe-button" onclick="subscribeToCourse(\''.$id_course.'\', \''.$id_date.'\', \''.$id_edition.'\', \''.$selling.'\');"><span class="confirm_dialog">'.Lang::t('_CONFIRM', 'catalogue').' ('.$row['prize'].' '.Get::sett('currency_symbol', '&euro;').')'.'</span></a>'
@@ -583,7 +568,8 @@ class CatalogLms extends Model
 					}
 				} else
 					$action = ($selling == 1	? '<a href="javascript:;" onclick="subscriptionPopUp(\''.$id_course.'\', \''.$classroom_info['id_date'].'\', \'0\', \''.$selling.'\');"><span class="can_subscribe">'.Lang::t('_ADD_TO_CART', 'catalogue').' ('.$classroom_info['price'].' '.Get::sett('currency_symbol', '&euro;').')'.'</span></a>'
-												: '<a href="javascript:;" onclick="subscriptionPopUp(\''.$id_course.'\', \''.$classroom_info['id_date'].'\', \'0\', \''.$selling.'\');"><span class="can_subscribe">'.Lang::t('_SUBSCRIBE', 'catalogue').'</span></a>');
+                                                : '<a href="javascript:;" onclick="subscriptionPopUp(\''.$id_course.'\', \''.$classroom_info['id_date'].'\', \'0\', \''.$selling.'\');"><span class="can_subscribe">'.Lang::t('_SUBSCRIBE', 'catalogue').'</span></a>');
+												//'<a href="javascript:;" class="moderation-course" onclick="subscriptionPopUp(\''.$id_course.'\', \''.$classroom_info['id_date'].'\', \'0\', \''.$selling.'\');"><span class="can_subscribe can_subscribe_moderation">'.Lang::t('_SUBSCRIBE', 'catalogue').'</span><div class="alert_subscribe">'.Lang::t('iscrizioni soggette a moderazione', 'catalogue').'</div></a>'); TODO @Peppe: dinamicizzare - va gestito il nuovo stato
 
 				$res['body'] .= '<div class="edition__title js-edition-accordion" data-target="target-' . $index . '"><div class="edition__icon"><i class="fa fa-angle-right"></i></div>' . $classroom_info['name']
                                 .'<div class="edition_subscribe">'
@@ -795,23 +781,32 @@ class CatalogLms extends Model
 
      	//echo  "idCourse:".$idCourse."<br>id_path: ".$id_path."<br>countCourseCompleted:".$countCourseCompleted."<br>output:".$output;
 
-   		return $output;
-   	}
+   	return $output;
+   }
+
+   
+   
+
+
 
     public function GetGlobalJsonTree($id_catalogue){
-        $this->current_catalogue = $id_catalogue;
-        $top_category = $this->getMajorCategory();
-        $global_tree = [];       
-        foreach ($top_category as $a_top_cat_key=>$val) {
-            $this->children = $this->getMinorCategoryTree($a_top_cat_key);
-           	if (count($this->children)) {
-                $global_tree[] = array('text'=>$val, "id_cat" => 0, 'nodes'=>$this->children);
-            } else if ($this->CategoryHasCourse($a_top_cat_key)) {
-                $global_tree[] = array('text'=>$val,  "id_cat" => 0);
+            $this->current_catalogue = $id_catalogue;
+            $top_category = $this->getMajorCategory();
+            $global_tree = [];       
+            foreach ($top_category as $a_top_cat_key=>$val) {
+                $this->children = $this->getMinorCategoryTree($a_top_cat_key);
+               if (count($this->children)) {
+                        $global_tree[] = array('text'=>$val, "id_cat" => $a_top_cat_key, 'nodes'=>$this->children);
+                } else {
+                        if ($this->CategoryHasCourse($a_top_cat_key))
+                            $global_tree[] = array('text'=>$val,  "id_cat" => $a_top_cat_key);
+                }    
             }
-        }
-        return $global_tree;
+            return $global_tree;              
+              
     }
+    
+
         
     public function getMajorCategory($std_link = false, $only_son = false)
     {
@@ -846,7 +841,7 @@ class CatalogLms extends Model
             ." FROM %lms_category"
             ." WHERE iLeft > ".(int)$i_left
             ." AND iRight < ".$i_right
-            ." ORDER BY lev desc, path ASC";
+            ." ORDER BY lev desc";
             $result = sql_query($query);
             $res = array();
 

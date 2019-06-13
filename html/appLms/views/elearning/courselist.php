@@ -453,6 +453,15 @@ function userCanUnsubscribe($course)
                             </a>
                         <?php } ?>
                     </div>
+                    <div class="course-box__extraInfo">
+                        <div class="course-box__next"> <!-- TODO @Peppe: dinamicizzare -->
+                            Prossima lezione
+                            <div>10 Giugno 2019</div>
+                        </div>
+                        <div class="course-box__allDates">  <!-- TODO @Peppe: dinamicizzare -->
+                            <a href="">Vedi tutte le date</a>
+                        </div>
+                    </div>
                 </div>
             </div>
             <?php } // end foreach ?>
