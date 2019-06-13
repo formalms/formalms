@@ -459,20 +459,26 @@ class CatalogLms extends Model
 			else
 				$res['title'] = Lang::t('_CONFIRM_SUBSCRIPTION', 'catalogue');
 
-			$res['body'] =	Lang::t('_NAME', 'catalogue').': '.$classroom_info['name'].'<br/>'
-							.($classroom_info['code'] !== '' ? Lang::t('_CODE', 'catalogue').': '.$classroom_info['code'].'<br/>' : '')
-							.($classroom_info['date_begin'] !== '0000-00-00' ? Lang::t('_DATE_BEGIN', 'course').': '.Format::date($classroom_info['date_begin'], 'date').'<br/>' : '')
-							.($classroom_info['date_end'] !== '0000-00-00' ? Lang::t('_DATE_END', 'course').': '.Format::date($classroom_info['date_end'], 'date').'<br/>' : '');
-							//.'<a href="javascript:;" onclick="hideDialog();"><p class="close_dialog">'.Lang::t('_UNDO', 'catalogue').'</p></a>'
+            $res['body'] .=	'<div class="edition_container">'
+                .'<div class="edition__body">'
+                .'<b>'. Lang::t('_NAME', 'catalogue').'</b>: '.$classroom_info['name'].'<br/><br/>'
+                .($classroom_info['code'] !== '' ? '<b>'.Lang::t('_CODE', 'catalogue').'</b>: '.$classroom_info['code'].'<br/><br/>' : '')
+                .'<div class="edition__twocol">'
+                .(($classroom_info['date_begin'] !== '0000-00-00 00:00:00' || $classroom_info['date_end'] !== '0000-00-00 00:00:00') ? '<div class="edition__col"><b>'.Lang::t('PERIODO', 'catalogue').'</b><br />'.Format::date($classroom_info['date_begin'], 'datetime').' <span class="edition_arrow"></span> '. Format::date($classroom_info['date_end'], 'datetime') . '</div>' : '')
+                .'<div class="edition__col"><b>Durata</b><br />5 giorni</div>' //TODO @Peppe: dinamicizzare
+                .'</div>'
+                .'<b>Docenti</b><br />Mario Rossi, Giuseppe Verdi, Luca Neri<br /><br />' //TODO @Peppe: dinamicizzare
+                .'</div>'
+                .'</div>';
 
 			$is_in_overbooking = $classroom_info['max_par'] <= $classroom_info['user_subscribed'] && $classroom_info['overbooking'] > 0;
 			if ($is_in_overbooking) {
 				$res['body'] .= '<br /><p class="red"><b>'.Lang::t('_OVERBOOKING_WARNING', 'catalogue').'</b></p><br />';
 			}
 
-			$res['footer'] = ($selling == 1 ? '<a href="javascript:;" onclick="subscribeToCourse(\''.$id_course.'\', \''.$id_date.'\', \''.$id_edition.'\', \''.$selling.'\');"><span class="close_dialog">'.Lang::t('_CONFIRM', 'catalogue').' ('.$classroom_info['price'].' '.Get::sett('currency_symbol', '&euro;').')'.'</span></a>'
-								: '<a href="javascript:;" onclick="subscribeToCourse(\''.$id_course.'\', \''.$id_date.'\', \''.$id_edition.'\', \''.$selling.'\');"><span class="close_dialog">'.Lang::t('_SUBSCRIBE', 'catalogue').'</span></a>')
-							.'&nbsp;&nbsp;<a href="javascript:;" onclick="hideDialog();"><span class="close_dialog">'.Lang::t('_UNDO', 'catalogue').'</span></a>';
+			$res['footer'] = ($selling == 1 ? '<div class="edition__buttonContainer"><a href="javascript:;" class="subscribe-button" onclick="subscribeToCourse(\''.$id_course.'\', \''.$id_date.'\', \''.$id_edition.'\', \''.$selling.'\');"><span class="close_dialog">'.Lang::t('_CONFIRM', 'catalogue').' ('.$classroom_info['price'].' '.Get::sett('currency_symbol', '&euro;').')'.'</span></a>'
+								: '<div class="edition__buttonContainer"><a href="javascript:;" class="subscribe-button" onclick="subscribeToCourse(\''.$id_course.'\', \''.$id_date.'\', \''.$id_edition.'\', \''.$selling.'\');"><span class="close_dialog">'.Lang::t('_SUBSCRIBE', 'catalogue').'</span></a>')
+							.'&nbsp;&nbsp;<a href="javascript:;" class="undo-button" onclick="hideDialog();"><span class="close_dialog">'.Lang::t('_UNDO', 'catalogue').'</span></a></div>';
 		}
 		elseif($id_edition != 0)
 		{
@@ -484,14 +490,20 @@ class CatalogLms extends Model
 			else
 				$res['title'] = Lang::t('_CONFIRM_SUBSCRIPTION', 'catalogue');
 
-			$res['body'] =	Lang::t('_NAME', 'catalogue').': '.$edition_info['name'].'<br/>'
-							.($edition_info['code'] !== '' ? Lang::t('_CODE', 'catalogue').': '.$edition_info['code'].'<br/>' : '')
-							.($edition_info['date_begin'] !== '0000-00-00' ? Lang::t('_DATE_BEGIN', 'course').': '.Format::date($edition_info['date_begin'], 'date').'<br/>' : '')
-							.($edition_info['date_end'] !== '0000-00-00' ? Lang::t('_DATE_END', 'course').': '.Format::date($edition_info['date_end'], 'date').'<br/>' : '');
-							//.'<a href="javascript:;" onclick="hideDialog();"><p class="close_dialog">'.Lang::t('_UNDO', 'catalogue').'</p></a>';
-			$res['footer'] = ($selling == 1 ? '<a href="javascript:;" onclick="subscribeToCourse(\''.$id_course.'\', \''.$id_date.'\', \''.$id_edition.'\', \''.$selling.'\');"><span class="close_dialog">'.Lang::t('_CONFIRM', 'catalogue').' ('.$edition_info['price'].' '.Get::sett('currency_symbol', '&euro;').')'.'</span></a>'
-											: '<a href="javascript:;" onclick="subscribeToCourse(\''.$id_course.'\', \''.$id_date.'\', \''.$id_edition.'\', \''.$selling.'\');"><span class="close_dialog">'.Lang::t('_CONFIRM', 'catalogue').'</span></a>')
-							.'&nbsp;&nbsp;<a href="javascript:;" onclick="hideDialog();"><span class="close_dialog">'.Lang::t('_UNDO', 'catalogue').'</span></a>';
+            $res['body'] .=	'<div class="edition_container">'
+                .'<div class="edition__body">'
+                .'<b>'. Lang::t('_NAME', 'catalogue').'</b>: '.$edition_info['name'].'<br/><br/>'
+                .($edition_info['code'] !== '' ? '<b>'.Lang::t('_CODE', 'catalogue').'</b>: '.$edition_info['code'].'<br/><br/>' : '')
+                .'<div class="edition__twocol">'
+                .(($edition_info['date_begin'] !== '0000-00-00 00:00:00' || $edition_info['date_end'] !== '0000-00-00 00:00:00') ? '<div class="edition__col"><b>'.Lang::t('PERIODO', 'catalogue').'</b><br />'.Format::date($edition_info['date_begin'], 'datetime').' <span class="edition_arrow"></span> '. Format::date($edition_info['date_end'], 'datetime') . '</div>' : '')
+                .'<div class="edition__col"><b>Durata</b><br />5 giorni</div>' //TODO @Peppe: dinamicizzare
+                .'</div>'
+                .'<b>Docenti</b><br />Mario Rossi, Giuseppe Verdi, Luca Neri<br /><br />' //TODO @Peppe: dinamicizzare
+                .'</div>'
+                .'</div>';
+			$res['footer'] = ($selling == 1 ? '<div class="edition__buttonContainer"><a href="javascript:;" class="subscribe-button" onclick="subscribeToCourse(\''.$id_course.'\', \''.$id_date.'\', \''.$id_edition.'\', \''.$selling.'\');"><span class="close_dialog">'.Lang::t('_CONFIRM', 'catalogue').' ('.$edition_info['price'].' '.Get::sett('currency_symbol', '&euro;').')'.'</span></a>'
+											: '<div class="edition__buttonContainer"><a href="javascript:;" class="subscribe-button" onclick="subscribeToCourse(\''.$id_course.'\', \''.$id_date.'\', \''.$id_edition.'\', \''.$selling.'\');"><span class="close_dialog">'.Lang::t('_CONFIRM', 'catalogue').'</span></a>')
+							.'&nbsp;&nbsp;<a href="javascript:;" class="undo-button" onclick="hideDialog();"><span class="close_dialog">'.Lang::t('_UNDO', 'catalogue').'</span></a></div>';
 
 		}
 		else
@@ -509,14 +521,19 @@ class CatalogLms extends Model
 			else
 				$res['title'] = Lang::t('_CONFIRM_SUBSCRIPTION', 'catalogue');
 
-			$res['body'] =	Lang::t('_NAME', 'catalogue').': '.$row['name'].'<br/>'
-							.($row['code'] !== '' ? Lang::t('_CODE', 'catalogue').': '.$row['code'].'<br/>' : '')
-							.($row['date_begin'] !== '0000-00-00' ? Lang::t('_DATE_BEGIN', 'course').': '.Format::date($row['date_begin'], 'date').'<br/>' : '')
-							.($row['date_end'] !== '0000-00-00' ? Lang::t('_DATE_END', 'course').': '.Format::date($row['date_end'], 'date').'<br/>' : '');
-							//.'<a href="javascript:;" onclick="hideDialog();"><p class="close_dialog">'.Lang::t('UNDO', 'catalogue').'</p></a>';
-			$res['footer'] = ($selling == 1 ? '<a href="javascript:;" onclick="subscribeToCourse(\''.$id_course.'\', \''.$id_date.'\', \''.$id_edition.'\', \''.$selling.'\');"><span class="confirm_dialog">'.Lang::t('_CONFIRM', 'catalogue').' ('.$row['prize'].' '.Get::sett('currency_symbol', '&euro;').')'.'</span></a>'
-											: '<a href="javascript:;" onclick="subscribeToCourse(\''.$id_course.'\', \''.$id_date.'\', \''.$id_edition.'\', \''.$selling.'\');"><span class="confirm_dialog">'.Lang::t('_CONFIRM', 'catalogue').'</span></a>')
-					.'&nbsp;&nbsp;<a href="javascript:;" onclick="hideDialog();"><span class="close_dialog">'.Lang::t('_UNDO', 'catalogue').'</span></a>';
+            $res['body'] .=	'<div class="edition_container">'
+                .'<div class="edition__body">'
+                .($row['code'] !== '' ? '<b>'.Lang::t('_CODE', 'catalogue').'</b>: '.$row['code'].'<br/><br/>' : '')
+                .'<div class="edition__twocol">'
+                .(($row['date_begin'] !== '0000-00-00 00:00:00' || $row['date_end'] !== '0000-00-00 00:00:00') ? '<div class="edition__col"><b>'.Lang::t('PERIODO', 'catalogue').'</b><br />'.Format::date($row['date_begin'], 'datetime').' <span class="edition_arrow"></span> '. Format::date($row['date_end'], 'datetime') . '</div>' : '')
+                .'<div class="edition__col"><b>Durata</b><br />5 giorni</div>' //TODO @Peppe: dinamicizzare
+                .'</div>'
+                .'<b>Docenti</b><br />Mario Rossi, Giuseppe Verdi, Luca Neri<br /><br />' //TODO @Peppe: dinamicizzare
+                .'</div>'
+                .'</div>';
+			$res['footer'] = ($selling == 1 ? '<div class="edition__buttonContainer"><a href="javascript:;" class="subscribe-button" onclick="subscribeToCourse(\''.$id_course.'\', \''.$id_date.'\', \''.$id_edition.'\', \''.$selling.'\');"><span class="confirm_dialog">'.Lang::t('_CONFIRM', 'catalogue').' ('.$row['prize'].' '.Get::sett('currency_symbol', '&euro;').')'.'</span></a>'
+											: '<div class="edition__buttonContainer"><a href="javascript:;" class="subscribe-button" onclick="subscribeToCourse(\''.$id_course.'\', \''.$id_date.'\', \''.$id_edition.'\', \''.$selling.'\');"><span class="confirm_dialog">'.Lang::t('_CONFIRM', 'catalogue').'</span></a>')
+					.'&nbsp;&nbsp;<a href="javascript:;" class="undo-button" onclick="hideDialog();"><span class="close_dialog">'.Lang::t('_UNDO', 'catalogue').'</span></a></div>';
 		}
 
 		return $res;
@@ -572,8 +589,8 @@ class CatalogLms extends Model
                                 .'<div class="edition_subscribe">'
                                     .$action
                                 .'</div></div>';
-				$res['body'] .=	'<div id="target-' . $index . '" class="edition_container">'
-                                .'<div class="edition__body">'
+				$res['body'] .=	'<div id="target-' . $index . '" class="edition_container edition_container--hide">'
+                                .'<div class="edition__body edition__body--left">'
 								.($classroom_info['code'] !== '' ? '<b>'.Lang::t('_CODE', 'catalogue').'</b>: '.$classroom_info['code'].'<br/><br/>' : '')
                                 .'<div class="edition__twocol">'
                                 .(($classroom_info['date_begin'] !== '0000-00-00 00:00:00' || $classroom_info['date_end'] !== '0000-00-00 00:00:00') ? '<div class="edition__col"><b>'.Lang::t('PERIODO', 'catalogue').'</b><br />'.Format::date($classroom_info['date_begin'], 'datetime').' <span class="edition_arrow"></span> '. Format::date($classroom_info['date_end'], 'datetime') . '</div>' : '')
@@ -617,7 +634,7 @@ class CatalogLms extends Model
                 $index++;
 			}
 
-			$res['footer'] = '<a href="javascript:;" onclick="hideDialog();"><p class="close_dialog">'.Lang::t('_UNDO', 'catalogue').'</p></a>';
+			$res['footer'] = '<div class="edition__buttonMainContainer"><a href="javascript:;" class="undo-button" onclick="hideDialog();"><p class="close_dialog">'.Lang::t('_UNDO', 'catalogue').'</p></a></div>';
 		}
 		else
 		{

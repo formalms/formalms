@@ -115,8 +115,12 @@ version: 2.8.0r4
 
 .yui-skin-sam .yui-panel .ft {
     background: transparent;
-    padding: 40px 0 20px 0;
     margin: 0 20px;
+    padding: 0;
+}
+
+.edition__buttonMainContainer {
+    padding: 40px 0 20px 0;
 }
 
 .yui-skin-sam .yui-panel .ft .align-right {
@@ -128,12 +132,21 @@ version: 2.8.0r4
     height: 40px;
     line-height: 40px;
     font-size: 14px;
-    color: #fff;
-    background-color: #C2C2C2;
     border-radius: 5px;
     text-align: center;
-    display: block;
+    display: inline-block;
     font-weight: bold;
+}
+
+.yui-skin-sam .yui-panel .ft .align-right a.undo-button {
+    color: #fff;
+    background-color: #C2C2C2;
+}
+
+.yui-skin-sam .yui-panel .ft .align-right a.subscribe-button {
+    background-color: transparent;
+    color: #F6A623;
+    border: solid 1px #F6A623;
 }
 
 .yui-skin-sam .yui-panel .bd{

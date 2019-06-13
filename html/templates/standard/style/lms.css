@@ -247,12 +247,15 @@ div.coursepath_details{background-color:#f7f7f7;border-top:3px solid #d1d1d1;bor
     font-size: 12px;
     margin-left: 0;
     min-height: auto;
-    display: none;
     margin-bottom: 10px;
     margin-right: 0;
 }
 
-.edition__body {
+.edition_container--hide {
+    display: none;
+}
+
+.edition__body--left {
     padding-left: 20px;
 }
 
@@ -338,6 +341,13 @@ div.coursepath_details{background-color:#f7f7f7;border-top:3px solid #d1d1d1;bor
 
 .edition__col:first-child {
     padding-right: 20px;
+}
+
+.edition__buttonContainer {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    padding-bottom: 20px;
 }
 
 @media screen and (max-width: 767px) {
