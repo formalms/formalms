@@ -4,6 +4,7 @@
     $tab = array(
         'tb_elearning' => Lang::t('_ELEARNING', 'middlearea'),
         'tb_home' => Lang::t('_HOME', 'middlearea'),
+	    'tb_dashboard' => Lang::t('_DASHBOARD', 'middlearea'),
         'tb_label' => Lang::t('_LABELS', 'label'),
         'tb_classroom' => Lang::t('_CLASSROOM', 'middlearea'),
         'tb_calendar' => Lang::t('_CALENDAR', 'middlearea'),

@@ -94,6 +94,7 @@ class Man_MiddleArea {
         $array_tab['tb_elearning']  = 'elearning/show';
         $array_tab['tb_games']  = 'games/show';
         $array_tab['tb_home']  = 'home/show';
+	    $array_tab['tb_dashboard']  = 'dashboard/show';
         $array_tab['tb_kb']  = 'kb/show';
         $array_tab['tb_label']  = 'label/show';
         $array_tab['tb_videoconference']  = 'videoconference/show'; 
