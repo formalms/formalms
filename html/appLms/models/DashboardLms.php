@@ -28,6 +28,7 @@ class DashboardLms extends Model
 		parent::__construct();
 		$blocks = [
 			DashboardBlockWelcomeLms::class,
+			DashboardBlockNewsLms::class,
 			DashboardBlockCalendarLms::class,
 			DashboardBlockCoursesLms::class,
 			DashboardBlockCertificatesLms::class,
