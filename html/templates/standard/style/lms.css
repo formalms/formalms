@@ -13,7 +13,7 @@
 .layout_header .left_logo{margin:0;vertical-align:middle;}
 .layout_menu_over{zoom:1; min-height: 73px;}
 @media screen and (min-width: 768px) {
-    .layout_menu_over{min-height: 87px;}
+    .layout_menu_over{min-height: 71px;}
 }
 #lms_main_container{background:#ffffff;padding: 1em 0;}
 #lms_main_container .std_block {padding: 1em 0;}

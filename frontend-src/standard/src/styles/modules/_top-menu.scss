@@ -70,8 +70,8 @@ header.header {
   position: fixed;
 
   @include breakpoint($tablet) {
-    padding: 18px 15px;
-    height: 87px;
+    padding: 10px 15px;
+    height: 71px;
   }
 
   .row-fluid {
