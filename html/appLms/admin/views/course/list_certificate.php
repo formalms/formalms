@@ -78,21 +78,21 @@ echo getTitleArea(array(
                 all: true   
             },            
             columns:[
-             { title: 'id_user', sortable: false, visible: false, searchable: false },
-             { title: 'id_certificate', sortable: false, visible: false, searchable: false },
-             { title: '<?php echo Lang::t('_EDITION', 'standard'); ?>', sortable: true, visible: <?php echo (($course_type == 'classroom') ? 'true' :'false') ?>  },              
-             { title: '<?php echo Lang::t('_USERNAME', 'standard'); ?>', sortable: true },
-             { title: '<?php echo Lang::t('_LASTNAME', 'standard'); ?>', sortable: true },
-             { title: '<?php echo Lang::t('_NAME', 'standard'); ?>', sortable: true },
+             { data: 'id_user', title: 'id_user', sortable: false, visible: false, searchable: false },
+             { data: 'id_certificate', title: 'id_certificate', sortable: false, visible: false, searchable: false },
+             { data: 'edition', title: '<?php echo Lang::t('_EDITION', 'standard'); ?>', sortable: true, visible: <?php echo (($course_type == 'classroom') ? 'true' :'false') ?>  },              
+             { data: 'username', title: '<?php echo Lang::t('_USERNAME', 'standard'); ?>', sortable: true },
+             { data: 'lastname', title: '<?php echo Lang::t('_LASTNAME', 'standard'); ?>', sortable: true },
+             { data: 'firstname', title: '<?php echo Lang::t('_NAME', 'standard'); ?>', sortable: true },
              <?php
                $hidden_fields_n = 6;
                foreach($custom_fields as $key=>$value) {
                    $hidden_fields_n++;
                    $hidden_fields_array[] = $hidden_fields_n;
-                   echo "{title:'".$value."', sortable:true, visible: false},".PHP_EOL;
+                   echo "{data:'cf_$key', title:'".$value."', sortable:true, visible: false},".PHP_EOL;
                }
              ?>               
-             { title: '<?php echo Lang::t('_STATUS', 'standard'); ?>', sortable: true,  
+             { data:'status', title: '<?php echo Lang::t('_STATUS', 'standard'); ?>', sortable: true,  
                 render: function ( data, type, row ) { 
                     
                     switch (data){
@@ -117,11 +117,11 @@ echo getTitleArea(array(
                 
                 }
              },
-             { title: '<?php echo Lang::t('_CERTIFICATE_REPORT', 'certificate'); ?>', sortable: true },
-             { title: '<?php echo Lang::t('_DATE_END', 'standard'); ?>', sortable: true, type: 'date' },  // TBD converting to local time                      
-             { title: '<?php echo Lang::t('_RELASE_DATE', 'certificate'); ?>', sortable: true, type: 'date' }, // TBD converting to local time
-             { title: '<?php echo Get::sprite('subs_pdf', Lang::t('_TITLE_VIEW_CERT', 'certificate')) ?>', sortable: true, searchable: false },
-             { title: '<?php echo Get::sprite('subs_del', Lang::t('_DEL', 'certificate')); ?>', sortable: false, searchable: false }
+             { data: 'name_certificate', title: '<?php echo Lang::t('_CERTIFICATE_REPORT', 'certificate'); ?>', sortable: true },
+             { data: 'date_complete', title: '<?php echo Lang::t('_DATE_END', 'standard'); ?>', sortable: true, type: 'date' },  // TBD converting to local time                      
+             { data: 'on_date', title: '<?php echo Lang::t('_RELASE_DATE', 'certificate'); ?>', sortable: true, type: 'date' }, // TBD converting to local time
+             { data: 'cell_down_gen', title: '<?php echo Get::sprite('subs_pdf', Lang::t('_TITLE_VIEW_CERT', 'certificate')) ?>', sortable: true, searchable: false },
+             { data: 'cell_del_cert', title: '<?php echo Get::sprite('subs_del', Lang::t('_DEL', 'certificate')); ?>', sortable: false, searchable: false }
             ],
             pagingType: 'full_numbers',
             language : {

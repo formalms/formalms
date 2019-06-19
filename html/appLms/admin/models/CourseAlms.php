@@ -1500,12 +1500,16 @@ Class CourseAlms extends Model
               $cell_del_cert = '';
           }     
 
-          $user1 = [$id_user, $id_certificate , $this->getInfoClassroom($id_user, $id_course), substr( $userid,1) ,
-                    $lastname, $firstname]  ;
+          $user1 = ['id_user' => $id_user, 'id_certificate' => $id_certificate , 'edition' => $this->getInfoClassroom($id_user, $id_course), 'username' => substr( $userid,1) ,
+                    'lastname'=> $lastname, 'firstname' => $firstname]  ;
           // getting custom fields values
           $cf_values = $umodel->getCustomFieldUserValues(intval($id_user));
-          $user2 = array_replace($cf, $cf_values);
-          $user3 =  [$status, $name_certificate, $date_complete, $on_date, $cell_down_gen, $cell_del_cert];
+          $cf = array_replace($cf, $cf_values);
+          $user2 = array();
+          foreach($cf as $key => $value) {
+              $user2["cf_$key"] = $value;
+          }
+          $user3 =  ['status' => $status, 'name_certificate' => $name_certificate, 'date_complete' => $date_complete, 'on_date' => $on_date, 'cell_down_gen' => $cell_down_gen, 'cell_del_cert' => $cell_del_cert];
           
                     
           $users[] = array_merge($user1, $user2, $user3);
