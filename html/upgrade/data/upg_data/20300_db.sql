@@ -63,7 +63,7 @@ set @lastID=LAST_INSERT_ID();
 INSERT INTO `core_event_consumer_class` (`idConsumer`, `idClass`) VALUES (1, @lastID);
 
 INSERT INTO `core_event_manager` (`idClass`, `permission`, `channel`, `recipients`, `show_level`) 
-VALUES (@lastID, 'mandatory', 'email', '_EVENT_RECIPIENTS_MODERATORS_GOD', 'godadmin');*/
+VALUES (@lastID, 'mandatory', 'email', '_EVENT_RECIPIENTS_TEACHER', 'godadmin');*/
 
 -- User subscribed in a course to moderators --
 INSERT INTO core_lang_text (id_text, text_key, text_module, text_attributes) VALUES (NULL, '_EVENT_CLASS_UserCourseInsertedModerators', 'event_manager', '');
@@ -92,7 +92,7 @@ set @lastID=LAST_INSERT_ID();
 INSERT INTO `core_event_consumer_class` (`idConsumer`, `idClass`) VALUES (1, @lastID);
 
 INSERT INTO `core_event_manager` (`idClass`, `permission`, `channel`, `recipients`, `show_level`) 
-VALUES (@lastID, 'mandatory', 'email', '_EVENT_RECIPIENTS_MODERATORS_GOD', 'admin');
+VALUES (@lastID, 'mandatory', 'email', '_EVENT_RECIPIENTS_TEACHER', 'admin');
 
 -- User suspended in forma --
 SET @max = (SELECT MAX(idClass)+1 FROM `core_event_class`);
