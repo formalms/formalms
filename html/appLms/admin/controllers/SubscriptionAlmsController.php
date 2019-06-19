@@ -1079,9 +1079,9 @@ class SubscriptionAlmsController extends AlmsController
 
 				require_once(_base_ . '/lib/lib.eventmanager.php');
 
+				$course_info = $docebo_course->getAllInfo();
 				if ($send_alert) {
 					$uinfo = Docebo::aclm()->getUser($id_user, false);
-					$course_info = $docebo_course->getAllInfo();
 					$array_subst = array(
 						'[url]' => Get::site_url(),
 						'[course]' => $course_info['name'],
