@@ -29,6 +29,7 @@ class SubscriptionAlmsController extends AlmsController
 	{
 		checkPerm('subscribe', false, 'course', 'lms');
 		require_once(_base_ . '/lib/lib.json.php');
+		require_once(Forma::inc(_base_ . '/lib/lib.eventmanager.php'));
 
 		//Course info
 		$this->id_course = Get::req('id_course', DOTY_INT, 0);
