@@ -192,4 +192,4 @@ INSERT INTO `core_role` (idst, roleid) VALUES (@max, '/lms/admin/certificate_ass
 SET @idMenu = (SELECT MAX(idMenu)+1 FROM `core_menu`);
 SET @manCertId = (SELECT idMenu FROM `core_menu` WHERE name = '_MAN_CERTIFICATE');
 INSERT INTO `core_menu` (idMenu, name, image, sequence, is_active, collapse, idParent, of_platform) VALUES (@idMenu, '_CERTIFICATE_ASSIGN_STATUS', '', 3, 1, 1, @manCertId, 'framework');
-INSERT INTO `core_menu_under` (idUnder, idMenu, module_name, default_name, default_op, associated_token, of_platform, sequence, class_file, class_name) VALUES (@idMenu, @idMenu, 'certificate_assign', '_CERTIFICATE_ASSIGN_STATUS', 'certificate_assign', 'view', 'alms', 3, 'class.certificate_assign.php', 'Module_Certificate_Assign');
+INSERT INTO `core_menu_under` (idUnder, idMenu, module_name, default_name, default_op, associated_token, of_platform, sequence, class_file, class_name, mvc_path) VALUES (@idMenu, @idMenu, 'certificate_assign', '_CERTIFICATE_ASSIGN_STATUS', 'certificate_assign', 'view', 'alms', 3, 'class.certificate_assign.php', 'Module_Certificate_Assign', '');
