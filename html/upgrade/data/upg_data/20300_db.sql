@@ -183,3 +183,13 @@ INSERT INTO core_lang_text (id_text, text_key, text_module, text_attributes) VAL
 SET @lastID = LAST_INSERT_ID();
 
 INSERT INTO core_lang_translation ( id_text,lang_code,  translation_text, save_date ) VALUES  (@lastID, 'english','User with name and surname : [firstname] [lastname] and userId : [username] has been suspended from course : [course] in platform : [url]', now());
+
+-- Certificate Assign permissions --
+UPDATE core_menu_under SET associated_token = 'mod' WHERE default_name = '_CERTIFICATE' AND of_platform = 'alms';
+
+SET @max = (SELECT MAX(idst)+1 FROM `core_role`);
+INSERT INTO `core_role` (idst, roleid) VALUES (@max, '/lms/admin/certificate_assign/mod');
+SET @idMenu = (SELECT MAX(idMenu)+1 FROM `core_menu`);
+SET @manCertId = (SELECT idMenu FROM `core_menu` WHERE name = '_MAN_CERTIFICATE');
+INSERT INTO `core_menu` (idMenu, name, image, sequence, is_active, collapse, idParent, of_platform) VALUES (@idMenu, '_CERTIFICATE_ASSIGN_STATUS', '', 3, 1, 1, @manCertId, 'framework');
+INSERT INTO `core_menu_under` (idUnder, idMenu, module_name, default_name, default_op, associated_token, of_platform, sequence, class_file, class_name) VALUES (@idMenu, @idMenu, 'certificate_assign', '_CERTIFICATE_ASSIGN_STATUS', 'certificate_assign', 'view', 'alms', 3, 'class.certificate_assign.php', 'Module_Certificate_Assign');
