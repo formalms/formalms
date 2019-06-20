@@ -28,11 +28,12 @@ class DashboardLms extends Model
 		parent::__construct();
 		$blocks = [
 			DashboardBlockWelcomeLms::class,
-			DashboardBlockNewsLms::class,
+			DashboardBlockProfileLms::class,
+			DashboardBlockCertificatesLms::class,
+			DashboardBlockMessagesLms::class,
 			DashboardBlockCalendarLms::class,
 			DashboardBlockCoursesLms::class,
-			DashboardBlockCertificatesLms::class,
-			DashboardBlockAnnouncementsLms::class
+			DashboardBlockCourseNewsLms::class,
 		];
 
 		foreach ($blocks as $block) {

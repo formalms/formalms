@@ -16,18 +16,16 @@ defined("IN_FORMA") or die('Direct access is forbidden.');
 
 
 /**
- * Class DashboardBlockCertificatesLms
+ * Class DashboardBlockAnnouncementLms
  */
-class DashboardBlockCertificatesLms extends DashboardBlockLms
+class DashboardBlockMessagesLms extends DashboardBlockLms
 {
-
 	public function __construct()
 	{
 		parent::__construct();
 		$this->setEnabled(true);
 		$this->setType(DashboardBlockLms::TYPE_BUTTON);
 	}
-
 
 	public function getViewData(): array
 	{

@@ -16,20 +16,25 @@ defined("IN_FORMA") or die('Direct access is forbidden.');
 
 
 /**
- * Class DashboardBlockAnnouncementLms
+ * Class DashboardBlockWelcomeLms
  */
-class DashboardBlockAnnouncementsLms extends DashboardBlockLms
+class DashboardBlockProfileLms extends DashboardBlockLms
 {
+
 	public function __construct()
 	{
 		parent::__construct();
 		$this->setEnabled(true);
-		$this->setType(DashboardBlockLms::TYPE_BIG);
+		$this->setType(DashboardBlockLms::TYPE_BUTTON);
 	}
 
 	public function getViewData(): array
 	{
-		return $this->getCommonViewData();
+
+		$data = $this->getCommonViewData();
+		$data['user'] = $this->getUser();
+
+		return $data;
 	}
 
 	/**
@@ -46,5 +51,17 @@ class DashboardBlockAnnouncementsLms extends DashboardBlockLms
 	public function getViewFile(): string
 	{
 		return $this->viewFile;
+	}
+
+	private function getUser(){
+		$user = Docebo::user();
+
+		echo json_encode($user);
+		die();
+
+		return [
+			'userId' => $user->getIdSt(),
+			'user' => $user
+		];
 	}
 }

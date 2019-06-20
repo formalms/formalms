@@ -22,9 +22,11 @@ abstract class DashboardBlockLms extends Model
 {
 	const TYPE_BIG = 'big';
 	const TYPE_MEDIUM = 'medium';
+	const TYPE_SMALL = 'small';
+	const TYPE_BUTTON = 'button';
 	const TYPE_BANNER = 'banner';
 
-	const ALLOWED_TYPES = [self::TYPE_BIG, self::TYPE_MEDIUM, self::TYPE_BANNER];
+	const ALLOWED_TYPES = [self::TYPE_BIG, self::TYPE_MEDIUM, self::TYPE_SMALL, self::TYPE_BUTTON, self::TYPE_BANNER];
 
 	abstract public function getViewPath(): string;
 
@@ -56,8 +58,8 @@ abstract class DashboardBlockLms extends Model
 	public function __construct()
 	{
 		parent::__construct();
-		$this->viewPath = str_replace('DashboardBlock', '',str_replace('Lms', '', get_class($this)));
-		$this->viewFile = strtolower(str_replace('DashboardBlock', '',str_replace('Lms', '', get_class($this))));
+		$this->viewPath = str_replace('DashboardBlock', '', str_replace('Lms', '', get_class($this)));
+		$this->viewFile = strtolower(str_replace('DashboardBlock', '', str_replace('Lms', '', get_class($this))));
 	}
 
 	/**
