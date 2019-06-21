@@ -1096,6 +1096,7 @@ class CoursereportLmsController extends LmsController
 
 		foreach ($id_students as $id_user) {
             $user_score = 0;
+            $scorm_score = 0;
 
             foreach ($reports as $info_report) {
                 switch ($info_report->getSourceOf()) {
@@ -1115,12 +1116,20 @@ class CoursereportLmsController extends LmsController
                         }
                     };
                         break;
+                    case CoursereportLms::SOURCE_OF_SCOITEM : {
+                    	$idscorm_item = $info_report->getIdSource();
+                    	$query = sql_query("SELECT score_raw FROM learning_scorm_tracking WHERE idscorm_item = $idscorm_item");
+                    	if ($result = sql_fetch_object($query)) {
+                        	$scorm_score += $result->score_raw;
+                    	}
+                    };
+                        break;
                 }
             }
 
             // user final score
             if ($sum_max_score != 0) {
-                $final_score[$id_user] = round(($user_score / $sum_max_score) * $info_final[0]->getMaxScore(), 2);
+                $final_score[$id_user] = round(($user_score / $sum_max_score) * $info_final[0]->getMaxScore(), 2) + $scorm_score;
             } else {
 
                 $final_score[$id_user] = 0;
