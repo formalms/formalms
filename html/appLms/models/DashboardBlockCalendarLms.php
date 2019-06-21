@@ -48,4 +48,9 @@ class DashboardBlockCalendarLms extends DashboardBlockLms
 	{
 		return $this->viewFile;
 	}
+
+	public function getLink(): string
+	{
+		return '#';
+	}
 }

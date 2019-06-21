@@ -29,7 +29,10 @@ class DashboardBlockMessagesLms extends DashboardBlockLms
 
 	public function getViewData(): array
 	{
-		return $this->getCommonViewData();
+		$data = $this->getCommonViewData();
+		$data['messages'] = $this->getMessages();
+
+		return $data;
 	}
 
 	/**
@@ -47,4 +50,19 @@ class DashboardBlockMessagesLms extends DashboardBlockLms
 	{
 		return $this->viewFile;
 	}
+
+	private function getMessages(){
+
+		$data = [];
+
+
+
+		return $data;
+	}
+
+	public function getLink(): string
+	{
+		return 'index.php?r=message/show';
+	}
+
 }

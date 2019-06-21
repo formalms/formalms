@@ -31,7 +31,9 @@ class DashboardBlockCertificatesLms extends DashboardBlockLms
 
 	public function getViewData(): array
 	{
-		return $this->getCommonViewData();
+		$data = $this->getCommonViewData();
+		$data['certifcates'] = $this->getCertificates();
+		return $data;
 	}
 
 	/**
@@ -48,5 +50,18 @@ class DashboardBlockCertificatesLms extends DashboardBlockLms
 	public function getViewFile(): string
 	{
 		return $this->viewFile;
+	}
+
+	private function getCertificates(){
+		$data = [];
+
+		return $data;
+	}
+
+
+
+	public function getLink(): string
+	{
+		return 'index.php?r=lms/mycertificate/show';
 	}
 }

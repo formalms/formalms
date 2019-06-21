@@ -86,4 +86,10 @@ class DashboardBlockNewsLms extends DashboardBlockLms
 		}
 		return $news;
 	}
+
+
+	public function getLink(): string
+	{
+		return '#';
+	}
 }

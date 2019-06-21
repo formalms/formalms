@@ -49,4 +49,10 @@ class DashboardBlockWelcomeLms extends DashboardBlockLms
 	{
 		return $this->viewFile;
 	}
+
+
+	public function getLink(): string
+	{
+		return '#';
+	}
 }

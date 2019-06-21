@@ -34,6 +34,8 @@ abstract class DashboardBlockLms extends Model
 
 	abstract public function getViewData(): array;
 
+	abstract public function getLink(): string;
+
 	/**
 	 * @var string
 	 */
@@ -128,7 +130,8 @@ abstract class DashboardBlockLms extends Model
 			'view' => $this->getViewName(),
 			'order' => $this->getOrder(),
 			'type' => $this->getType(),
-			'enabled' => $this->isEnabled()
+			'enabled' => $this->isEnabled(),
+			'link' => $this->getLink()
 		];
 	}
 

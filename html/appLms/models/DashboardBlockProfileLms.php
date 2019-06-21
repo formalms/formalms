@@ -53,15 +53,23 @@ class DashboardBlockProfileLms extends DashboardBlockLms
 		return $this->viewFile;
 	}
 
-	private function getUser(){
+	private function getUser()
+	{
 		$user = Docebo::user();
-
-		echo json_encode($user);
-		die();
+		$acl_man = Docebo::user()->getAclManager();
+		$user_info = $acl_man->getUser($user->getIdSt(), false);
 
 		return [
 			'userId' => $user->getIdSt(),
-			'user' => $user
+			'firstname' => $user_info[ACL_INFO_FIRSTNAME],
+			'lastname' => $user_info[ACL_INFO_LASTNAME],
+			'email' => $user_info[ACL_INFO_EMAIL],
+			'avatar' => $user_info[ACL_INFO_AVATAR]
 		];
+	}
+
+	public function getLink(): string
+	{
+		return 'index.php?r=lms/profile/show';
 	}
 }
