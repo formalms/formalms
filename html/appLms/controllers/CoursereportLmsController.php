@@ -1070,6 +1070,7 @@ class CoursereportLmsController extends LmsController
 		$sum_max_score = 0;
 		$included_test = array ();
 		$other_source = array ();
+		$scorm_source = array ();
 
 		foreach ($reports as $info_report) {
 
@@ -1081,6 +1082,9 @@ class CoursereportLmsController extends LmsController
 					break;
 				case CoursereportLms::SOURCE_OF_TEST :
 					$included_test[ $info_report->getIdSource () ] = $info_report->getIdSource ();
+					break;
+				case CoursereportLms::SOURCE_OF_SCOITEM :
+					$scorm_source[ $info_report->getIdSource () ] = $info_report->getIdSource ();
 					break;
 			}
 		}
@@ -1118,10 +1122,13 @@ class CoursereportLmsController extends LmsController
                         break;
                     case CoursereportLms::SOURCE_OF_SCOITEM : {
                     	$idscorm_item = $info_report->getIdSource();
-                    	$query = sql_query("SELECT score_raw FROM learning_scorm_tracking WHERE idscorm_item = $idscorm_item");
+                    	$query = sql_query("SELECT score_raw, score_max FROM learning_scorm_tracking WHERE idscorm_item = $idscorm_item");
                     	if ($result = sql_fetch_object($query)) {
-                        	$scorm_score += $result->score_raw;
-                    	}
+                    		$sum_max_score += $result->score_max * $info_report->getWeight();
+                        	$user_score += $result->score_raw * $info_report->getWeight();
+                    	} else {
+                            $user_score += 0;
+                        }
                     };
                         break;
                 }
@@ -1129,7 +1136,7 @@ class CoursereportLmsController extends LmsController
 
             // user final score
             if ($sum_max_score != 0) {
-                $final_score[$id_user] = round(($user_score / $sum_max_score) * $info_final[0]->getMaxScore(), 2) + $scorm_score;
+                $final_score[$id_user] = round(($user_score / $sum_max_score) * $info_final[0]->getMaxScore(), 2);
             } else {
 
                 $final_score[$id_user] = 0;
