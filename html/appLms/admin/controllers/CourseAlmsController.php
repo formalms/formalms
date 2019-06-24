@@ -1084,7 +1084,15 @@ Class CourseAlmsController extends AlmsController
 
 	public function certificate()
 	{
-		if (!$this->permissions['mod']) {
+		$user_id = Docebo::user()->getIdST();
+		$query = "SELECT * FROM core_role_members  AS rm 
+			INNER JOIN core_role r ON r.idst = rm.idst 
+			INNER JOIN core_group_members gm ON gm.idst = rm.idstMember 
+			WHERE (r.roleid = '/lms/admin/certificate/mod' OR r.roleid = '/lms/admin/certificate_assign/mod') AND gm.idstMember = $user_id";
+
+		$result = sql_query($query);
+
+		if (!$result->num_rows && !$this->permissions['mod']) {
 			$this->render('invalid', array(
 				'message' => $this->_getErrorMessage('no permission'),
 				'back_url' => 'index.php?r='.$this->base_link_course.'/show'
