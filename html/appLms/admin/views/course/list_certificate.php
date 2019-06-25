@@ -167,22 +167,24 @@ echo getTitleArea(array(
                         }
                     );
                     posting.done(function (responseText) { 
+                      // alert("OK generating certificate: " + id_certificate + " - " + id_course + " - " + id_user);
                         location.reload();    
                     });
                     posting.fail(function () {
-                        alert("Error generating certificate");
+                      //  alert("Error generating certificate: " + id_certificate + " - " + id_course + " - " + id_user);
                     })      
           }
           
           
            function getRowsSelected(){
                 the_table = $('#table_certificate').DataTable();
-                var data = the_table.rows('.selected').data();
+                var data = the_table.rows('.selected').data().toArray();
                 var newarray=[];       
-                for (var i=0; i < data.length ;i++){
-                   newarray.push(data[i][1] + "-" + data[i][2]+"-"+id_course);          
+                data.forEach (function (item){
+                  newarray.push(item.id_user + "-" + item.id_certificate+"-"+id_course);  
                 }
-                var sData = newarray.join();                    
+                )
+                var sData = newarray.join();                
                 return sData;      
            }
           // generate  selected certificates
