@@ -2487,7 +2487,6 @@ INSERT INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size
 ('Clear_Twig_Cache', 'index.php?r=adm/setting/clearTwigCache', 'button', 2, 'twig_cache', 8, 27, 0, 0, ''),
 ('common_admin_session', 'on', 'enum', 3, 'security', 8, 24, 1, 0, ''),
 ('conference_creation_limit_per_user', '99999999999', 'string', 255, '0', 6, 0, 1, 0, ''),
--- ('core_version', '2.2', 'string', 255, '0', 1, 0, 1, 1, ''), // insert in import_db.php
 ('course_block', 'off', 'enum', 3, '0', 4, 15, 1, 0, ''),
 ('course_quota', '500', 'string', 255, '0', 4, 9, 1, 0, ''),
 ('currency_symbol', '€', 'string', 10, 'ecommerce', 4, 18, 1, 0, ''),
