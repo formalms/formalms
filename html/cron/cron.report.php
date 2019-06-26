@@ -23,11 +23,15 @@ ob_start();
 require(_base_.'/lib/lib.bootstrap.php');
 Boot::init(BOOT_DATETIME);
 
-// not a pagewriter but something similar
-$GLOBALS['operation_result'] = '';
-if(!function_exists("docebo_out")) {
-	function docebo_cout($string) { $GLOBALS['operation_result'] .= $string; }
+if(!function_exists("report_log")){
+	function report_log($string){
+		ob_end_flush();
+		$curtime = date("d-m-Y G:i:s");
+		echo "[$curtime] $string".PHP_EOL;
+		ob_start();
+	}
 }
+
 require_once(_adm_.'/lib/lib.permission.php');
 require_once(_base_.'/lib/lib.pagewriter.php');
 
@@ -164,11 +168,21 @@ $path = _base_.'/files/tmp/';
 $qry = "SELECT * FROM %lms_report_filter";
 $res = sql_query($qry);
 sl_open_fileoperations();
+
+
+$log_opened = false;
+
+
 while ($row = sql_fetch_assoc($res)) {
 
 	$recipients = getReportRecipients($row['id_filter']);
 
 	if (count($recipients)>0) {
+		
+		if(!$log_opened){
+			report_log("STARTING REPORT EXECUTION ...");
+			$log_opened = true;
+		}
 
 		$data = unserialize( $row['filter_data'] ) ;
 
@@ -185,11 +199,17 @@ while ($row = sql_fetch_assoc($res)) {
 			$temp->author = $row['author'];
 
 			$tmpfile = adaptFileName($row['filter_name']).'.xls';//rand(0, 9).rand(0, 9).rand(0, 9).rand(0, 9).rand(0, 9).rand(0, 9).'';
-
+			
+			$start_time = microtime(true);
 			$file = sl_fopen('/tmp/'.$tmpfile, "w");
 			fwrite($file, $temp->getXLS($data['columns_filter_category'], $data));
 			fclose($file);
-
+			$execution_time_secs = round(microtime(true) - $start_time, 0);
+			$execution_time_secs = ltrim(sprintf('%02dh%02dm%02ds', floor($execution_time_secs / 3600), floor(($execution_time_secs / 60) % 60), ($execution_time_secs % 60)), '0hm');
+			if($execution_time_secs == 's') $execution_time_secs = '0s';
+			report_log($row['filter_name'] . ': Report generated in ' . $execution_time_secs);
+			
+			
 			$mailer->Subject = 'Sending scheduled report : '.$row['filter_name'];
 
 			$subject = 'Sending scheduled report : '.$row['filter_name'];
@@ -203,15 +223,13 @@ while ($row = sql_fetch_assoc($res)) {
 					$path.$tmpfile, $row['filter_name'].'.xls', //
 					false	//params
 				)) {
-				docebo_cout('<b>'.$row['filter_name'].'</b> Error while sending mail.'.$mailer->ErrorInfo.'<br />' ); //: '.$mailer->getError?
+				report_log($row['filter_name'] . ': Error while sending mail.' . $mailer->ErrorInfo);
 			} else {
-				docebo_cout('<b>'.$row['filter_name'].'</b> Mail sent to : '.implode(',', $recipients).'<br />' );
+				report_log($row['filter_name'] . ': Mail sent to ' . implode(',', $recipients));
 			}
 
 			//delete temp file
 			unlink($path.$tmpfile.'');
-		} else {
-			docebo_cout('"'.$row['id_report'].'" '.'<br />');
 		}
 	}
 
@@ -225,14 +243,5 @@ sl_close_fileoperations();
 
 // finalize
 Boot::finalize();
-
-// remove all the echo
-ob_clean();
-
-// Print out the page
-echo $GLOBALS['operation_result'];
-
-// flush buffer
-ob_end_flush();
 
 ?>
