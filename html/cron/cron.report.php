@@ -194,128 +194,135 @@ sl_open_fileoperations();
 
 $log_opened = false;
 
+//apply an execution lock by occupying port 9999
+$lock_stream = @stream_socket_server('tcp://0.0.0.0:9999', $errno, $errmsg);
+if($lock_stream){
 
-while ($row = sql_fetch_assoc($res)) {
-
-	$recipients = getReportRecipients($row['id_filter']);
-
-	if (count($recipients)>0) {
-		
-		if(!$log_opened){
-			report_log("STARTING REPORT EXECUTION ...");
-			$log_opened = true;
-		}
-
-		$data = unserialize( $row['filter_data'] ) ;
-
-		$query_report = "SELECT class_name, file_name, report_name "
-			." FROM %lms_report "
-			." WHERE id_report = '".$data['id_report']."'";
-		$re_report = sql_query($query_report);
-		if($re_report && sql_num_rows($re_report)) {
-
-			list($class_name, $file_name, $report_name) = sql_fetch_row($re_report);
-
-			require_once(_lms_.'/admin/modules/report/'.$file_name);
-			$temp = new $class_name( $data['id_report'] );
-			$temp->author = $row['author'];
-
-			$tmpfile = adaptFileName($row['filter_name']).'.xls';
+	while ($row = sql_fetch_assoc($res)) {
+	
+		$recipients = getReportRecipients($row['id_filter']);
+	
+		if (count($recipients)>0) {
 			
-			$start_time = microtime(true);
-			$file = sl_fopen('/tmp/'.$tmpfile, "w");
-			fwrite($file, $temp->getXLS($data['columns_filter_category'], $data));
-			fclose($file);
-			$execution_time_secs = round(microtime(true) - $start_time, 0);
-			$execution_time_secs = ltrim(sprintf('%02dh%02dm%02ds', floor($execution_time_secs / 3600), floor(($execution_time_secs / 60) % 60), ($execution_time_secs % 60)), '0hm');
-			if($execution_time_secs == 's') $execution_time_secs = '0s';
-			report_log($row['filter_name'] . ': Report generated in ' . $execution_time_secs);
-			
-			//Gets XLS size in MB
-			clearstatcache($path . $tmpfile);
-			$report_size = filesize($path . $tmpfile);
-			
-			//Checks if report should be sent by link or attachment
-			if($report_size > $report_max_email_size * 1048576){
+			if(!$log_opened){
+				report_log("STARTING REPORT EXECUTION ...");
+				$log_opened = true;
+			}
+	
+			$data = unserialize( $row['filter_data'] ) ;
+	
+			$query_report = "SELECT class_name, file_name, report_name "
+				." FROM %lms_report "
+				." WHERE id_report = '".$data['id_report']."'";
+			$re_report = sql_query($query_report);
+			if($re_report && sql_num_rows($re_report)) {
+	
+				list($class_name, $file_name, $report_name) = sql_fetch_row($re_report);
+	
+				require_once(_lms_.'/admin/modules/report/'.$file_name);
+				$temp = new $class_name( $data['id_report'] );
+				$temp->author = $row['author'];
+	
+				$tmpfile = adaptFileName($row['filter_name']).'.xls';
 				
-				$abs_report_folder = _base_ . $report_store_folder;
-				$report_url = trim($base_url, '/') . "/$report_store_folder";
+				$start_time = microtime(true);
+				$file = sl_fopen('/tmp/'.$tmpfile, "w");
+				fwrite($file, $temp->getXLS($data['columns_filter_category'], $data));
+				fclose($file);
+				$execution_time_secs = round(microtime(true) - $start_time, 0);
+				$execution_time_secs = ltrim(sprintf('%02dh%02dm%02ds', floor($execution_time_secs / 3600), floor(($execution_time_secs / 60) % 60), ($execution_time_secs % 60)), '0hm');
+				if($execution_time_secs == 's') $execution_time_secs = '0s';
+				report_log($row['filter_name'] . ': Report generated in ' . $execution_time_secs);
 				
-				//Create report storage folder if not exists
-				if(!file_exists($abs_report_folder) || !is_dir($abs_report_folder)){
-					mkdir($abs_report_folder, '0777', true);
-				}
+				//Gets XLS size in MB
+				clearstatcache($path . $tmpfile);
+				$report_size = filesize($path . $tmpfile);
 				
-				//Cleans report storage folder from expired reports
-				$now = time();
-				$uuid_folders = glob($abs_report_folder . "$report_uuid_prefix*");
-				foreach($uuid_folders as $uuid_folder){
-					if(is_dir($uuid_folder)){
-						$uuid_folder_time = filemtime($uuid_folder);
-						$creation_time = $now - $uuid_folder_time;
-						if($creation_time > $report_persistence_days * 24 * 60 * 60){
-							$rm_result = recursive_delete_directory($uuid_folder);
-						}
+				//Checks if report should be sent by link or attachment
+				if($report_size > $report_max_email_size * 1048576){
+					
+					$abs_report_folder = _base_ . $report_store_folder;
+					$report_url = trim($base_url, '/') . "/$report_store_folder";
+					
+					//Create report storage folder if not exists
+					if(!file_exists($abs_report_folder) || !is_dir($abs_report_folder)){
+						mkdir($abs_report_folder, '0777', true);
 					}
 					
+					//Cleans report storage folder from expired reports
+					$now = time();
+					$uuid_folders = glob($abs_report_folder . "$report_uuid_prefix*");
+					foreach($uuid_folders as $uuid_folder){
+						if(is_dir($uuid_folder)){
+							$uuid_folder_time = filemtime($uuid_folder);
+							$creation_time = $now - $uuid_folder_time;
+							if($creation_time > $report_persistence_days * 24 * 60 * 60){
+								$rm_result = recursive_delete_directory($uuid_folder);
+							}
+						}
+						
+					}
+					
+					//Computes an unique progressive ID and a token
+					$uuid = uniqid($report_uuid_prefix . time());
+					$token = uniqid();
+					
+					//Computes report filename
+					$abs_report_folder .= "$uuid/$token/";
+					$report_url .= "$uuid/$token/";
+					mkdir($abs_report_folder, 0777, true);
+					
+					$async_report = $abs_report_folder . $tmpfile;
+					$report_url .= rawurlencode($tmpfile);
+					
+					copy($path . $tmpfile, $async_report);
+					
+					//Sends an email containing the report link
+					$subject = 'Sending scheduled report : ' . $row['filter_name'];
+					$body = "You can download this report from <a href='$report_url'>here</a><br><br>
+								WARNING: This report will be available for $report_persistence_days days, after that it will be deleted from our system and it will not be accessible anymore.";
+					
+					
+					if(!$mailer->SendMail(Get::sett('sender_event'), //sender
+						$recipients, //recipients
+						$subject, //subject
+						$body //body
+					)){
+						report_log($row['filter_name'] . ': Error while sending mail.' . $mailer->ErrorInfo);
+					} else{
+						report_log($row['filter_name'] . ': Mail sent to ' . implode(',', $recipients));
+					}
+					
+					
+				}else{
+					$mailer->Subject = 'Sending scheduled report : ' . $row['filter_name'];
+					
+					$subject = 'Sending scheduled report : ' . $row['filter_name'];
+					$body = date('Y-m-d H:i:s');
+					
+					if(!$mailer->SendMail(Get::sett('sender_event'), //sender
+						$recipients, //recipients
+						$subject, //subject
+						$body, //body
+						$path . $tmpfile, $row['filter_name'] . '.xls', //
+						false    //params
+					)){
+						report_log($row['filter_name'] . ': Error while sending mail.' . $mailer->ErrorInfo);
+					} else{
+						report_log($row['filter_name'] . ': Mail sent to ' . implode(',', $recipients));
+					}
 				}
-				
-				//Computes an unique progressive ID and a token
-				$uuid = uniqid($report_uuid_prefix . time());
-				$token = uniqid();
-				
-				//Computes report filename
-				$abs_report_folder .= "$uuid/$token/";
-				$report_url .= "$uuid/$token/";
-				mkdir($abs_report_folder, 0777, true);
-				
-				$async_report = $abs_report_folder . $tmpfile;
-				$report_url .= rawurlencode($tmpfile);
-				
-				copy($path . $tmpfile, $async_report);
-				
-				//Sends an email containing the report link
-				$subject = 'Sending scheduled report : ' . $row['filter_name'];
-				$body = "You can download this report from <a href='$report_url'>here</a><br><br>
-							WARNING: This report will be available for $report_persistence_days days, after that it will be deleted from our system and it will not be accessible anymore.";
-				
-				
-				if(!$mailer->SendMail(Get::sett('sender_event'), //sender
-					$recipients, //recipients
-					$subject, //subject
-					$body //body
-				)){
-					report_log($row['filter_name'] . ': Error while sending mail.' . $mailer->ErrorInfo);
-				} else{
-					report_log($row['filter_name'] . ': Mail sent to ' . implode(',', $recipients));
-				}
-				
-				
-			}else{
-				$mailer->Subject = 'Sending scheduled report : ' . $row['filter_name'];
-				
-				$subject = 'Sending scheduled report : ' . $row['filter_name'];
-				$body = date('Y-m-d H:i:s');
-				
-				if(!$mailer->SendMail(Get::sett('sender_event'), //sender
-					$recipients, //recipients
-					$subject, //subject
-					$body, //body
-					$path . $tmpfile, $row['filter_name'] . '.xls', //
-					false    //params
-				)){
-					report_log($row['filter_name'] . ': Error while sending mail.' . $mailer->ErrorInfo);
-				} else{
-					report_log($row['filter_name'] . ': Mail sent to ' . implode(',', $recipients));
-				}
+	
+				//delete temp file
+				unlink($path.$tmpfile.'');
 			}
-
-			//delete temp file
-			unlink($path.$tmpfile.'');
 		}
+	
+	
 	}
-
-
+	
+} else{
+	report_log('There is an active lock, execution aborted');
 }
 sl_close_fileoperations();
 //output log data
@@ -325,5 +332,8 @@ sl_close_fileoperations();
 
 // finalize
 Boot::finalize();
+
+//Removes lock file
+fclose($lock_stream);
 
 ?>
