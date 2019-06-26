@@ -178,13 +178,13 @@ function schedule_set($idrep) {
 		
 		$lang_days =& DoceboLanguage::createInstance('calendar', 'lms');
 		$week_days = array(
-			'0' => $lang_days->def('_MONDAY'),
-			'1' => $lang_days->def('_TUESDAY'),
-			'2' => $lang_days->def('_WEDNESDAY'),
-			'3' => $lang_days->def('_THURSDAY'),
-			'4' => $lang_days->def('_FRIDAY'),
-			'5' => $lang_days->def('_SATURDAY'),
-			'6' => $lang_days->def('_SUNDAY')
+			'0' => $lang_days->def('_SUNDAY'),
+			'1' => $lang_days->def('_MONDAY'),
+			'2' => $lang_days->def('_TUESDAY'),
+			'3' => $lang_days->def('_WEDNESDAY'),
+			'4' => $lang_days->def('_THURSDAY'),
+			'5' => $lang_days->def('_FRIDAY'),
+			'6' => $lang_days->def('_SATURDAY')
 		);
 		
 		
@@ -314,13 +314,13 @@ function get_period_text($period) {
 	
 	$lang_days =& DoceboLanguage::createInstance('calendar', 'lms');
 	$week_days = array(
-		'0' => $lang_days->def('_MONDAY'),
-		'1' => $lang_days->def('_TUESDAY'),
-		'2' => $lang_days->def('_WEDNESDAY'),
-		'3' => $lang_days->def('_THURSDAY'),
-		'4' => $lang_days->def('_FRIDAY'),
-		'5' => $lang_days->def('_SATURDAY'),
-		'6' => $lang_days->def('_SUNDAY')
+		'0' => $lang_days->def('_SUNDAY'),
+		'1' => $lang_days->def('_MONDAY'),
+		'2' => $lang_days->def('_TUESDAY'),
+		'3' => $lang_days->def('_WEDNESDAY'),
+		'4' => $lang_days->def('_THURSDAY'),
+		'5' => $lang_days->def('_FRIDAY'),
+		'6' => $lang_days->def('_SATURDAY')
 	);
 	
 	$parts = explode(',', $period);
