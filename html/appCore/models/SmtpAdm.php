@@ -39,6 +39,11 @@ final class SmtpAdm extends Model
     protected $secure;
 
     /**
+     * @var bool
+     */
+    protected $autoTls = true;
+
+    /**
      * @var string
      */
     protected $user;
@@ -47,6 +52,11 @@ final class SmtpAdm extends Model
      * @var string
      */
     protected $pwd;
+
+    /**
+     * @var string
+     */
+    protected $debug = 0;
 
     const SMTP_GROUP = 14;
 
@@ -113,6 +123,14 @@ final class SmtpAdm extends Model
     }
 
     /**
+     * @return bool
+     */
+    public function isAutoTls()
+    {
+        return $this->autoTls === 'on';
+    }
+
+    /**
      * @return string
      */
     public function getUser()
@@ -127,6 +145,15 @@ final class SmtpAdm extends Model
     {
         return $this->pwd;
     }
+
+    /**
+     * @return string
+     */
+    public function getDebug()
+    {
+        return $this->debug;
+    }
+
 
     public static function isEnabledDatabase()
     {
@@ -174,8 +201,11 @@ final class SmtpAdm extends Model
             $this->host = Get::cfg('smtp_host');
             $this->port = Get::cfg('smtp_port');
             $this->secure = Get::cfg('smtp_secure');
+            $this->autoTls = Get::cfg('smtp_auto_tls');
             $this->user = Get::cfg('smtp_user');
             $this->pwd = Get::cfg('smtp_pwd');
+            $this->debug = Get::cfg('smtp_debug', 0);
+
 
         }
     }

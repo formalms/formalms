@@ -1,7 +1,4 @@
 <?php defined("IN_FORMA") or die('Direct access is forbidden.');
-use OAuth\OAuth2\Service\Facebook;
-use OAuth\Common\Storage\Session;
-use OAuth\Common\Consumer\Credentials;
 
 /* ======================================================================== \
 |   FORMA - The E-Learning Suite                                            |
@@ -426,6 +423,37 @@ class UserProfile {
 						$event->setUser($model->getProfileData($this->_id_user));
 						$event->setOldUser($oldUserdata);
 						\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementEditEvent::EVENT_NAME, $event);
+
+
+						require_once(Forma::inc(_base_ . '/lib/lib.eventmanager.php'));
+
+						$uinfo = Docebo::aclm()->getUser($this->_id_user, false);
+
+						$array_subst = array(
+							'[url]' => Get::site_url(),
+							'[firstname]' => $uinfo[ACL_INFO_FIRSTNAME],
+							'[lastname]' => $uinfo[ACL_INFO_LASTNAME],
+							'[username]' => $uinfo[ACL_INFO_USERID]
+						);
+
+						// message to user that is odified
+						$msg_composer = new EventMessageComposer();
+
+						$msg_composer->setSubjectLangText('email', '_EVENT_MOD_USER_SBJ', false);
+						$msg_composer->setBodyLangText('email', '_EVENT_MOD_USER_TEXT', $array_subst);
+
+						$msg_composer->setBodyLangText('sms', '_EVENT_MOD_USER_TEXT_SMS', $array_subst);
+
+						$acl_manager = \Docebo::user()->getAclManager();
+
+						$permission_godadmin = $acl_manager->getGroupST(ADMIN_GROUP_GODADMIN);
+						$permission_admin = $acl_manager->getGroupST(ADMIN_GROUP_ADMIN);
+
+						$recipients = $acl_manager->getGroupAllUser($permission_godadmin);
+						$users = array_merge($users,$acl_manager->getGroupAllUser($permission_admin));
+
+						createNewAlert(	'UserModSuperAdmin', 'directory', 'edit', '1', 'User '.$uinfo[ACL_INFO_USERID].' was modified',
+							$users, $msg_composer );
 
 						return getResultUi($this->_lang->def('_OPERATION_SUCCESSFULPROFILE')).$this->getProfile();
 					}
@@ -1869,95 +1897,6 @@ class UserProfileViewer {
 
         $html .= '</div>'; // /row
 
-        //TODO check per il layout
-        $social = new Social();
-        if ($social->enabled()) {
-            if (!$social->allConnected()) {
-                $html .= '<div class="row social">';
-                $html .= '<div class="col-xs-12">';
-                $html .= '<b class="social-accounts-title">' . Lang::t('_CONNECT_YOUR_ACCOUNT_WITH', 'social') . '</b>';
-                $html .= '<ul class="social-accounts">';
-                if ($social->isActive('facebook') && !$social->connectedToUser('facebook')) {
-                    $social = new Social();
-                    $social->includeFacebookLib();
-
-                    $client_id = Get::sett('social_fb_api');
-                    $client_secret = Get::sett('social_fb_secret');
-                    $redirect_uri = Get::site_url() . 'index.php?modname=login&op=facebook_login';
-
-                    $serviceFactory = new \OAuth\ServiceFactory();
-                    $storage = new Session(false);
-                    $credentials = new Credentials(
-                        $client_id,
-                        $client_secret,
-                        $redirect_uri
-                    );
-
-                    $facebookService = $serviceFactory->createService('facebook', $credentials, $storage, array()); //, 'userinfo_profile'
-                    $loginUrl = $facebookService->getAuthorizationUri();
-                    $html .= '<li>
-                                  <a class="facebook" href="' . $loginUrl . '" title="' . Lang::t('_CONNECT', 'social') . ': ' . Lang::t('_FACEBOOK', 'social') . '">
-                                      <i class="fa fa-facebook"></i>
-                                  </a>
-                              </li>';
-                }
-                if ($social->isActive('twitter') && !$social->connectedToUser('twitter')) {
-                    $html .= '<li>
-                                  <a class="titter" href="' . Get::site_url() . 'index.php?modname=login&amp;op=twitter_login&amp;connect=1" ' . 'title="' . Lang::t('_CONNECT', 'social') . ': ' . Lang::t('_TWITTER', 'social') . '">
-                                      <i class="fa fa-twitter"></i>
-                                  </a>
-                              </li>';
-                }
-                if ($social->isActive('linkedin') && !$social->connectedToUser('linkedin')) {
-                    $html .= '<li>
-                                  <a class="linkedin" href="' . Get::site_url() . 'index.php?modname=login&amp;op=linkedin_login&amp;connect=1" ' . 'title="' . Lang::t('_CONNECT', 'social') . ': ' . Lang::t('_LINKEDIN', 'social') . '">
-                                      <i class="fa fa-linkedin"></i>
-                                  </a>
-                              </li>';
-                }
-                if ($social->isActive('google') && !$social->connectedToUser('google')) {
-                    $html .= '<li>
-                                  <a class="google" href="' . Get::site_url() . 'index.php?modname=login&amp;op=google_login&amp;connect=1" ' . 'title="' . Lang::t('_CONNECT', 'social') . ': ' . Lang::t('_GOOGLE', 'social') . '">
-                                      <i class="fa fa-google"></i>
-                                  </a>
-                              </li>';
-                }
-                $html .= '</ul>
-                        </div>
-                        </div>'; // ./col-xs-12 ./row
-            }
-
-            if ($social->someConnected()) {
-                $html .= '<div class="row social">';
-                $html .= '<div class="col-xs-12">';
-                $html .= '<b class="social-accounts-title">' . Lang::t('_CONNECTED_ACCOUNTS', 'social') . '</b>';
-                $html .= '<ul class="social-accounts">';
-                if ($social->connectedToUser('facebook')) {
-                    $html .= '<li><a id="disconnect_facebook" href="index.php?r=SocialConnect/disconnect&amp;network=facebook" ' .
-                        'title="' . Lang::t('_DISCONNECT', 'social') . ': ' . Lang::t('_FACEBOOK', 'social') . '"> </a></li>';
-                }
-                if ($social->connectedToUser('twitter')) {
-                    $html .= '<li><a id="disconnect_twitter" href="index.php?r=SocialConnect/disconnect&amp;network=twitter" ' .
-                        'title="' . Lang::t('_DISCONNECT', 'social') . ': ' . Lang::t('_TWITTER', 'social') . '"><span>' .
-                        Get::img('social/twitter.png', Lang::t('_TWITTER', 'social')) . '</span></a></li>';
-                }
-                if ($social->connectedToUser('linkedin')) {
-                    $html .= '<li><a id="disconnect_linkedin" href="index.php?r=SocialConnect/disconnect&amp;network=linkedin" ' .
-                        'title="' . Lang::t('_DISCONNECT', 'social') . ': ' . Lang::t('_LINKEDIN', 'social') . '"><span>' .
-                        Get::img('social/linkedin.png', Lang::t('_LINKEDIN', 'social')) . '</span></a></li>';
-                }
-                if ($social->connectedToUser('google')) {
-                    $html .= '<li><a id="disconnect_google" href="index.php?r=SocialConnect/disconnect&amp;network=google" ' .
-                        'title="' . Lang::t('_DISCONNECT', 'social') . ': ' . Lang::t('_GOOGLE', 'social') . '"><span>' .
-                        Get::img('social/google.png', $this->user_info[ACL_INFO_GOOGLE_ID]) . '</span></a></li>';
-                }
-                $html .= '</ul>
-                        </div>
-                        </div>'; // ./col-xs-12 ./row
-            }
-
-        }
-
         $html .= '<div class="row comunication">'; //pulsanti certificati-messaggi
 
         if ($perm_certificate) $html .= '<div class="col-xs-4"><a class="btn btn-default" href="index.php?r=lms/mycertificate/show&sop=unregistercourse">' . Lang::t('_MY_CERTIFICATE', 'menu_over') . '</a></div>';
@@ -2180,34 +2119,8 @@ class UserProfileViewer {
 									'up_level',
 									$level_list,
 									$acl_man->getUserLevelId($this->_user_profile->getIdUser()) );
-		}
-
-		// Social ------------------------------------------------------------------
-
-		/* $html.=Form::getTextfield(	$this->_lang->def('_FACEBOOK_ID'),
-										'facebook_id',
-										'facebook_id',
-										'255',
-										Get::req('facebook_id', DOTY_MIXED, $this->user_info[ACL_INFO_FACEBOOK_ID], true ) );
-
-		$html.=Form::getTextfield(	$this->_lang->def('_TWITTER_ID'),
-										'twitter_id',
-										'twitter_id',
-										'255',
-										Get::req('twitter_id', DOTY_MIXED, $this->user_info[ACL_INFO_TWITTER_ID], true ) );
-
-		$html.=Form::getTextfield(	$this->_lang->def('_LINKEDIN_ID'),
-										'linkedin_id',
-										'linkedin_id',
-										'255',
-										Get::req('linkedin_id', DOTY_MIXED, $this->user_info[ACL_INFO_LINKEDIN_ID], true ) );
-
-		$html.=Form::getTextfield(	$this->_lang->def('_GOOGLE_ID'),
-										'google_id',
-										'google_id',
-										'255',
-										Get::req('google_id', DOTY_MIXED, $this->user_info[ACL_INFO_GOOGLE_ID], true ) ); */
-
+        }
+        
 		//signature --------------------------------------------------------------------------
 
 		$html .= Form::getTextarea(	$this->_lang->def('_SIGNATURE'),

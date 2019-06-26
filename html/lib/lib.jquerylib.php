@@ -54,6 +54,10 @@ class JQueryLib
         $jquery_core_lib = "/addons/" . self::_path . "/core/ui/js/jquery-ui-" . self::_jquery_ui_version . $which_version . ".js";
         $local_link .= Util::get_js($jquery_core_lib);
         $local_link .= self::initJQueryAjax();
+        
+        $lang = DoceboLangManager::getInstance()->getLanguageBrowsercode(Lang::get());
+        $jquery_core_lang = "/addons/" . self::_path . "/core/ui/js/i18n/datepicker-$lang.js";
+        $local_link .= Util::get_js($jquery_core_lang);
 
         // load css
         $jquery_ui_css = "/addons/" . self::_path . "/core/ui/css/jquery-ui-" . self::_jquery_ui_version . $which_version . ".css";

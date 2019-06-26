@@ -14,6 +14,10 @@
 class SettingAdmController extends AdmController {
 
 	public function showTask() {
+        switch (Get::req('result', DOTY_ALPHANUM, "")) {
+            case 'ok': UIFeedback::info(Lang::t('_OPERATION_SUCCESSFUL', 'standard')); break;
+            case 'err': UIFeedback::error(Lang::t('_OPERATION_FAILURE', 'standard')); break;
+        }
 
 		$model = new SettingAdm();
 		$regroup = $model->getRegroupUnit();
@@ -60,7 +64,7 @@ class SettingAdmController extends AdmController {
 
         $this->rrmdir($twigCacheDir);
 
-        Util::jump_to('index.php?r=adm/setting/show');
+        Util::jump_to('index.php?r=adm/setting/show&result=ok');
     }
 
     function rrmdir($dir) {

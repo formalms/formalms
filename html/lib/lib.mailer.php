@@ -187,7 +187,7 @@ class DoceboMailer extends PHPMailer
             $this->IsSMTP();
             $this->Hostname = SmtpAdm::getInstance()->getHost();
             $this->Host = SmtpAdm::getInstance()->getHost();
-            if (SmtpAdm::getInstance()->getPort() != '') {
+            if (SmtpAdm::getInstance()->getPort() !== '') {
                 $this->Port = SmtpAdm::getInstance()->getPort();
             }
             $smtp_user = SmtpAdm::getInstance()->getUser();
@@ -199,7 +199,14 @@ class DoceboMailer extends PHPMailer
                 $this->SMTPAuth = false;
             }
 			$this->SMTPSecure = SmtpAdm::getInstance()->getSecure();	// secure: '' , 'ssl', 'tsl'
-			$this->SMTPDebug = Get::cfg('smtp_debug', 0);	// debug level 0,1,2,3,...
+	        $this->SMTPAutoTLS = SmtpAdm::getInstance()->isAutoTLS();
+            $this->SMTPDebug = SmtpAdm::getInstance()->getDebug();	// debug level 0,1,2,3,...
+            // Add To in mail header SMTP
+            if (is_string($recipients)) {
+                $this->addCustomHeader("To", $recipients);
+            } elseif (is_array($recipients)) {
+                $this->addCustomHeader("To", $recipients[0]);
+            }
 		} else {
             $this->IsMail();
         }

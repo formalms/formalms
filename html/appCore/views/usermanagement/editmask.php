@@ -38,20 +38,6 @@ if (Docebo::user()->user_level == ADMIN_GROUP_GODADMIN) {
 echo $modify_mask;
 echo $fields_mask;
 
-/* $social =new Social();
-if ($social->isActive('facebook')) {
-	echo Form::getTextField(Lang::t('_FACEBOOK_ID', 'standard'), 'facebook_id', 'facebook_id', 255, $info->facebook_id);
-}
-if ($social->isActive('twitter')) {
-	echo Form::getTextField(Lang::t('_TWITTER_ID', 'standard'), 'twitter_id', 'twitter_id', 255, $info->twitter_id);
-}
-if ($social->isActive('linkedin')) {
-	echo Form::getTextField(Lang::t('_LINKEDIN_ID', 'standard'), 'linkedin_id', 'linkedin_id', 255, $info->linkedin_id);
-}
-if ($social->isActive('google')) {
-	echo Form::getTextField(Lang::t('_GOOGLE_ID', 'standard'), 'google_id', 'google_id', 255, $info->google_id);
-} */
-
 if (!$is_editing) {
 	echo '</div>';
 	echo '<div class="user-tab user-tab--tab2" id="create_user_tab2">'; // class="little_table"

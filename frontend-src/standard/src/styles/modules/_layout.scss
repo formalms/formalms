@@ -98,7 +98,11 @@ body {
 
 #middlearea.yui-navset,
 .middlearea_container--margintop-small {
-  margin-top: 20px;
+  margin-top: 0;
+
+  @include breakpoint($tablet) {
+    margin-top: 20px;
+  }
 }
 
 .header--external-catalogue {

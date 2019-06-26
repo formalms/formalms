@@ -35,9 +35,9 @@ class TextEntry_Question extends Question {
 		require_once(_base_.'/lib/lib.form.php');
 		$url_encode = htmlentities(urlencode($back_test));
 		
-		if(isset($_POST['add_question'])) {
+		if(isset($_REQUEST['add_question'])) {
 			//insert question
-			if(substr_count($_POST['title_quest'], '[answer]') != 1) {
+			if(substr_count($_REQUEST['title_quest'], '[answer]') != 1) {
 				errorCommunication($lang->def('_OPERATION_FAILURE')
 					.getBackUi('index.php?modname=question&amp;op=create&amp;type_quest='
 					.$this->getQuestionType().'&amp;idTest='.$idTest.'&amp;back_test='.$url_encode, $lang->def('_BACK')));
@@ -46,11 +46,11 @@ class TextEntry_Question extends Question {
 			INSERT INTO ".$GLOBALS['prefix_lms']	."_testquest 
 			( idTest, idCategory, type_quest, title_quest, difficult, time_assigned, sequence, page ) VALUES 
 			( 	'".(int)$idTest."', 
-				'".(int)$_POST['idCategory']."', 
+				'".(int)$_REQUEST['idCategory']."', 
 				'".$this->getQuestionType()."', 
-				'".$_POST['title_quest']."',
-				'".(int)$_POST['difficult']."', 
-				'".(int)$_POST['time_assigned']."', 
+				'".$_REQUEST['title_quest']."',
+				'".(int)$_REQUEST['difficult']."', 
+				'".(int)$_REQUEST['time_assigned']."', 
 				'".$this->_getNextSequence($idTest)."', 
 				'".$this->_getPageNumber($idTest)."' ) ";
 			if(!sql_query($ins_query)) {
@@ -73,10 +73,10 @@ class TextEntry_Question extends Question {
 			( idQuest, is_correct, answer, comment, score_correct, score_incorrect ) VALUES 
 			( 	'".$idQuest."', 
 				'1', 
-				'".strtolower($_POST['answer'])."', 
-				'".$_POST['comment']."', 
-				'".$this->_checkScore($_POST['score_correct'])."', 
-				'".$this->_checkScore($_POST['score_incorrect'])."' ) ";
+				'".strtolower($_REQUEST['answer'])."', 
+				'".$_REQUEST['comment']."', 
+				'".$this->_checkScore($_REQUEST['score_correct'])."', 
+				'".$this->_checkScore($_REQUEST['score_incorrect'])."' ) ";
 			if(!sql_query($ins_answer_query)) {
 				
 				errorCommunication($lang->def('_OPERATION_FAILURE')
@@ -111,7 +111,7 @@ class TextEntry_Question extends Question {
 		
 		$GLOBALS['page']->add(Form::getDropdown( $lang->def('_DIFFICULTY'), 'difficult', 'difficult', $arr_dufficult, 3)
 			.Form::getTextfield( $lang->def('_TEST_QUEST_TIMEASS'), 'time_assigned', 'time_assigned', 5, 
-			( isset($_POST['time_assigned']) ? $_POST['time_assigned'] : '00000' ), $lang->def('_TEST_QUEST_TIMEASS'),
+			( isset($_REQUEST['time_assigned']) ? $_REQUEST['time_assigned'] : '00000' ), $lang->def('_TEST_QUEST_TIMEASS'),
 			$lang->def('_SECONDS') )
 			.'<div class="nofloat"></div><br />'
 			.'<table class="test_answer"  summary="'.$lang->def('_TEST_ANSWER').'">'."\n"
@@ -175,9 +175,9 @@ class TextEntry_Question extends Question {
 		require_once(_base_.'/lib/lib.form.php');
 		$url_encode = htmlentities(urlencode($back_test));
 		
-		if(isset($_POST['add_question'])) {
+		if(isset($_REQUEST['add_question'])) {
 			//modify question
-			if(substr_count($_POST['title_quest'], '[answer]') != 1) {
+			if(substr_count($_REQUEST['title_quest'], '[answer]') != 1) {
 				errorCommunication($lang->def('_OPERATION_FAILURE')
 					.getBackUi('index.php?modname=question&amp;op=create&amp;type_quest='
 					.$this->getQuestionType().'&amp;idQuest='.$this->id.'&amp;back_test='.$url_encode, $lang->def('_BACK')));
@@ -185,11 +185,11 @@ class TextEntry_Question extends Question {
 			
 			$mod_query = "
 			UPDATE ".$GLOBALS['prefix_lms']	."_testquest 
-			SET idCategory = '".$_POST['idCategory']."', 
+			SET idCategory = '".$_REQUEST['idCategory']."', 
 				type_quest = '".$this->getQuestionType()."', 
-				title_quest = '".$_POST['title_quest']."', 
-				difficult = '".$_POST['difficult']."',
-				time_assigned = '".$_POST['time_assigned']."'
+				title_quest = '".$_REQUEST['title_quest']."', 
+				difficult = '".$_REQUEST['difficult']."',
+				time_assigned = '".$_REQUEST['time_assigned']."'
 			WHERE idQuest = '".(int)$this->id."'";
 			if(!sql_query($mod_query)) {
 				
@@ -200,10 +200,10 @@ class TextEntry_Question extends Question {
 			//modify answer
 			$mod_answer_query = "
 			UPDATE ".$GLOBALS['prefix_lms']	."_testquestanswer 
-			SET answer = '".strtolower($_POST['answer'])."',
-				comment = '".$_POST['comment']."',
-				score_correct = '".$this->_checkScore($_POST['score_correct'])."', 
-				score_incorrect = '".$this->_checkScore($_POST['score_incorrect'])."'
+			SET answer = '".strtolower($_REQUEST['answer'])."',
+				comment = '".$_REQUEST['comment']."',
+				score_correct = '".$this->_checkScore($_REQUEST['score_correct'])."', 
+				score_incorrect = '".$this->_checkScore($_REQUEST['score_incorrect'])."'
 			WHERE idQuest = '".(int)$this->id."'";
 			if(!sql_query($mod_answer_query)) {
 				
@@ -247,11 +247,11 @@ class TextEntry_Question extends Question {
 			.Form::getTextarea($lang->def('_QUESTION'), 'title_quest', 'title_quest', $title_quest), 'content');
 		if (count($categories) > 1)
 			$GLOBALS['page']->add(Form::getDropdown( $lang->def('_TEST_QUEST_CATEGORY'), 'idCategory', 'idCategory', $categories,
-				( isset($_POST['idCategory']) ? $_POST['idCategory'] : $cat_sel )), 'content');
+				( isset($_REQUEST['idCategory']) ? $_REQUEST['idCategory'] : $cat_sel )), 'content');
 		
 		$GLOBALS['page']->add(Form::getDropdown( $lang->def('_DIFFICULTY'), 'difficult', 'difficult', $arr_dufficult, $diff_sel)
 			.Form::getTextfield( $lang->def('_TEST_QUEST_TIMEASS'), 'time_assigned', 'time_assigned', 5, 
-				( isset($_POST['time_assigned']) ? $_POST['time_assigned'] : $sel_time ), $lang->def('_TEST_QUEST_TIMEASS'),
+				( isset($_REQUEST['time_assigned']) ? $_REQUEST['time_assigned'] : $sel_time ), $lang->def('_TEST_QUEST_TIMEASS'),
 			$lang->def('_SECONDS') )
 			.'<div class="nofloat"></div><br />'
 			.'<table class="test_answer"  summary="'.$lang->def('_TEST_ANSWER').'">'."\n"

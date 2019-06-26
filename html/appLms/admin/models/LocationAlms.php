@@ -89,8 +89,18 @@ class LocationAlms extends Model {
 				. " (location) VALUES ("
 				. " '" . $location . "' "
 				. ")";
-		if (!$this->db->query($query))
+		if (!$res = $this->db->query($query))
 			return false;
+
+		if(Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+			$id_entry = sql_insert_id();
+
+			$re = sql_query("
+				INSERT INTO ".$GLOBALS['prefix_fw']."_admin_course 
+				( id_entry, type_of_entry, idst_user ) VALUES 
+				( '".$id_entry."', 'classlocation', '".getLogUserId()."') ");
+		}
+
 		return true;
 	}
 

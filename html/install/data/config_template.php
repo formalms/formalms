@@ -69,11 +69,13 @@ $cfg['ftppath'] 	= '[%-FTP_PATH-%]';
  */
 $cfg['use_smtp_database']   = '[%-SMTP_USE_DATABASE-%]';
 $cfg['use_smtp']            = '[%-SMTP_USE_SMTP-%]';
-$cfg['smtp_host']           = '[%-SMTP_HOST-%]';				// Options: hostname;hostname:port;...
+$cfg['smtp_host']           = '[%-SMTP_HOST-%]';			// Options: hostname;hostname:port;...
 $cfg['smtp_port']           = '[%-SMTP_PORT-%]';			// Options: '' (default port) , port number
 $cfg['smtp_secure']         = '[%-SMTP_SECURE-%]';			// Options: "", "ssl", "tls"
+$cfg['smtp_auto_tls']       = '[%-SMTP_AUTO_TLS-%]';		// Options: true, false
 $cfg['smtp_user']           = '[%-SMTP_USER-%]';
 $cfg['smtp_pwd']            = '[%-SMTP_PWD-%]';
+$cfg['smtp_debug']          = '[%-SMTP_DEBUG-%]';           // Options: debug level 0,1,2,3,...
 
 /**
  * Other params
@@ -141,11 +143,3 @@ $cfg['mail_br'] 	= "\r\n";
  */
 //$cfg['certificate_encryption'] = true;
 //$cfg['certificate_password']  = "12345678901234567890123456789012";
-
-
-/**
- * Social Google Options
- * -------------------------------------------------------------------------
- * use_google_login_oauth2: boolean to set whether to enable or not the oauth2 login in google connection instead of openid (default is TRUE)
- */
-//$cfg['use_google_login_oauth2'] = false;

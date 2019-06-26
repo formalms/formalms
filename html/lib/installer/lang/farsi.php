@@ -98,8 +98,10 @@ define("_USE_SMTP", "Usa SMTP");
 define("_SMTP_HOST", "Host SMTP");
 define("_SMTP_PORT", "Porta SMTP");
 define("_SMTP_SECURE", "Tipo di sicurezza");
+define("_SMTP_AUTO_TLS", "Impostazione Auto TLS SMTP");
 define("_SMTP_USER", "User SMTP");
 define("_SMTP_PWD", "Password SMTP");
+define("_SMTP_DEBUG", "Debug SMTP");
 define("_CANT_CONNECT_SMTP", "impossibile connettersi al server SMTP selezionato");
 // -----------------------------------------
 define("_TITLE_STEP8", "مرحله 8: نصب انجام شد");

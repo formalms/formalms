@@ -41,22 +41,37 @@ class MycertificateLmsController extends LmsController
     {
         checkPerm('view', false, self::mod_name);
 
-        $startIndex = Get::req('startIndex', DOTY_INT, 0);
-        $results = Get::req('results', DOTY_INT, Get::sett('visuItem', 25));
+        $startIndex = Get::req('start', DOTY_INT, 0);
+        $results = Get::req('results', DOTY_INT, Get::sett('visuItem', 10));
+        $rowsPerPage = Get::req('length', DOTY_INT, $results);
         $sort = Get::req('sort', DOTY_MIXED, 'year');
-        $dir = Get::req('dir', DOTY_MIXED, 'desc');
+        $dir = Get::req('dir', DOTY_STRING, "asc");
 
+        $pagination = array(
+            'startIndex' => $startIndex,
+            'rowsPerPage' => $rowsPerPage,
+            'results' => $results,
+            'sort' => $sort,
+            'dir' => $dir
+        );
+
+        if ($search = $_REQUEST['search']) {
+            $pagination['search'] = $search['value'];
+        } else {
+            $pagination['search'] = null;
+        }
         $totalCertificates = $this->model->countMyCertificates();
-        $certificates = $this->model->loadMyCertificates();
+        $certificates = $this->model->loadMyCertificates($pagination, false);
+        $total_filtered = $this->model->loadMyCertificates($pagination, true);
 
         $result = array(
-            'totalRecords' => $totalCertificates,
+            'recordsTotal' => $totalCertificates,
             'startIndex' => $startIndex,
             'sort' => $sort,
             'dir' => $dir,
-            'rowsPerPage' => $results,
-            'results' => count($certificates),
-            'records' => $certificates
+            'rowsPerPage' => $rowsPerPage,
+            'recordsFiltered' => $total_filtered,
+            'data' => $certificates,
         );
 
         echo $this->json->encode($result);
@@ -66,18 +81,30 @@ class MycertificateLmsController extends LmsController
     {
         checkPerm('view', false, self::mod_name);
 
-        $startIndex = Get::req('startIndex', DOTY_INT, 0);
-        $results = Get::req('results', DOTY_INT, Get::sett('visuItem', 25));
+        $startIndex = Get::req('start', DOTY_INT, 0);
+        $results = Get::req('results', DOTY_INT, Get::sett('visuItem', 10));
+        $rowsPerPage = Get::req('length', DOTY_INT, $results);
 
+        $pagination = array(
+            'startIndex' => $startIndex,
+            'rowsPerPage' => $rowsPerPage,
+            'results' => $results,
+        );
+
+        if ($search = $_REQUEST['search']) {
+            $pagination['search'] = $search['value'];
+        } else {
+            $pagination['search'] = null;
+        }
         $totalMetaCertificates = $this->model->countMyMetaCertificates();
         $metaCertificates = $this->model->loadMyMetaCertificates();
 
         $result = array(
-            'totalRecords' => $totalMetaCertificates,
+            'recordsTotal' => $totalMetaCertificates,
             'startIndex' => $startIndex,
-            'rowsPerPage' => $results,
-            'results' => count($metaCertificates),
-            'records' => $metaCertificates
+            'rowsPerPage' => $rowsPerPage,
+            'recordsFiltered' => $totalMetaCertificates,
+            'data' => $metaCertificates,
         );
 
         echo $this->json->encode($result);

@@ -141,6 +141,23 @@ class SOAPLMS {
 		return $xmldoc->saveXML();
 		
 	}
+
+	function updateCommonTrack($trackobj) {
+		$query = sql_query("SELECT idReference FROM %lms_scorm_tracking WHERE idscorm_tracking = ".$trackobj->idtrack);
+		list($idReference) = sql_fetch_row($query);
+
+		$query = "SELECT first_complete, last_complete FROM %lms_commontrack WHERE idReference=".(int)$idReference;
+		$res = sql_query($query);
+		if ($res && sql_num_rows($res)>0) {
+			$now = date("Y-m-d H:i:s");
+			list($first_complete, $last_complete) = sql_fetch_row($res);
+			$query = "UPDATE %lms_commontrack SET last_complete='".$now."'";
+			if (!$first_complete) $query .= ", first_complete='".$now."'";
+			$query .= " WHERE idReference=".(int)$idReference;
+			$res = sql_query($query);
+			return $res;
+		}
+	}
 	
 	function Finish( $idUser, $idReference, $idscorm_item, $environment = 'course_lo' ) {
 		soap__dbgOut("+Finish($idUser, $idReference, $idscorm_item )");
@@ -166,6 +183,9 @@ class SOAPLMS {
 		}
 		/* if it's not for credit don't evaluate lesson_staus/completion_status */
 		
+		// Update Common Track
+		$this->updateCommonTrack($trackobj);
+
 		if( $trackobj->getParam(SCORM_RTE_CREDIT, false) == 'credit' ) {
 			soap__dbgOut("Finish: evaluate ".SCORM_RTE_COMPLETIONSTATUS);
 			$itemobj = new Scorm_Item( NULL, FALSE, NULL, $dbconn, false, $arrItemTrackData['idscorm_item'] );

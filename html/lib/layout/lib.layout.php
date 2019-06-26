@@ -300,7 +300,7 @@ class Layout
 
     public static function render($layout)
     {
-        if ($_SESSION['template'] != getTemplate() && Docebo::user()->getUserLevelId() == ADMIN_GROUP_GODADMIN && CORE === true) {
+        if ($_SESSION['template'] != NULL && $_SESSION['template'] != getTemplate() && Docebo::user()->getUserLevelId() == ADMIN_GROUP_GODADMIN && CORE === true) {
             $msgChangeTemplate = Lang::t('_MSG_CHANGE_TEMPLATE', 'standard');
             $msgChangeTemplate = str_replace('[template_name]', $_SESSION['template'], $msgChangeTemplate);
             $msgChangeTemplate = str_replace('[template_min_version]', _template_min_version_, $msgChangeTemplate);
@@ -359,7 +359,6 @@ class Layout
                 if ($GLOBALS['maintenance'] != "on") {
                     $retArray['changeLanguage_text'] = Lang::t('_CHANGELANG', 'register');
                     $retArray['changeLanguageBox'] = self::change_lang();
-                    $retArray['social_login'] = LoginLayout:: social_login();
                     $retArray['login_form'] = LoginLayout:: login_form();
                     $retArray['service_msg'] = LoginLayout:: service_msg();
                     $retArray['layout_zone_footer'] = self::zone('footer');
@@ -369,11 +368,7 @@ class Layout
                     $retArray['login_maintenance_text'] = Lang::t('_MAINTENANCE', 'login');
                 }
 
-                if (LoginLayout::isSocialActive()) {
-                    $retArray['login_box_css'] = 'login-box-social';
-                } else {
-                    $retArray['login_box_css'] = 'login-box';
-                }
+                $retArray['login_box_css'] = 'login-box';
 
                 if ($GLOBALS['framework']['course_block'] == "on" and $GLOBALS['maintenance'] != "on") {
                     $retArray['catalogue'] = self::get_catalogue();
@@ -623,7 +618,7 @@ class Layout
     {
         if (Get::sett('google_stat_in_lms', '0') == '1' && Get::sett('google_stat_code', '') != '') {
 
-            echo Get::sett('google_stat_code');
+            return Get::sett('google_stat_code');
         }
     }
 

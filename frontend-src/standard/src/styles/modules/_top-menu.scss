@@ -63,14 +63,15 @@
 //
 // Style guide: 6.1
 header.header {
-  height: 60px;
+  height: 73px;
   //padding: 0 36px 0 30px;
   padding: 0;
   border-bottom: 2px solid $dark-orange;
   position: fixed;
 
   @include breakpoint($tablet) {
-    padding: 8px 15px;
+    padding: 10px 15px;
+    height: 71px;
   }
 
   .row-fluid {
@@ -80,8 +81,12 @@ header.header {
       }
 
       .navbar-brand {
-        padding: 15px 0 0 30px;
+        padding: 15px 0 0 15px;
         position: relative;
+
+        @include breakpoint($tablet) {
+          padding-left: 30px;
+        }
 
         img {
           height: 100%;
@@ -99,6 +104,8 @@ header.header {
 
       .navbar-toggle {
         position: relative;
+        margin-top: 15px;
+        margin-right: 5px;
         transition: $transition-base;
 
         @media (min-width: 768px) and (max-width: 1023px) {
@@ -144,7 +151,7 @@ header.header {
       }
 
       li {
-        padding: 14px 10px;
+        padding: 14px 10px 10px 6px;
         font-family: $font;
         font-size: 14px;
 
@@ -234,6 +241,17 @@ header.header {
 
               &:before {
                 background-image: url('#{$assets}images/icons/top-menu/icon--admin.svg');
+              }
+            }
+
+            &.glyphicon-bell {
+              &:hover {
+                &:before {
+                  background-image: url("images/icons/top-menu/icon--bell-hover.svg");
+                }
+              }
+              &:before {
+                background-image: url("images/icons/top-menu/icon--bell.svg");
               }
             }
 
@@ -369,7 +387,7 @@ header.header {
       &.collapse.in {
         width: 100%;
         float: left;
-        margin-top: 5px;
+        margin-top: 10px;
         padding: 20px;
         background-color: $gray-4;
 

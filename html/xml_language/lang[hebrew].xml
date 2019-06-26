@@ -408,7 +408,7 @@
         <key id="configuration&amp;_COURSE_QUOTA" attributes="" save_date="2016-12-14 20:46:20"><![CDATA[הגבלת גודל מקסימלי  של תכולה אותה מעלים לתוך הקורס (MB)]]></key>
         <key id="configuration&amp;_CURRENCY_SYMBOL" attributes="" save_date="2016-12-14 20:29:44"><![CDATA[סמל מטבע (יוצג בצד המשתמש)]]></key>
         <key id="configuration&amp;_CUSTOMER_HELP_EMAIL" attributes="" save_date="2016-12-12 21:00:44"><![CDATA[דואל שליחה של התמיכה]]></key>
-        <key id="configuration&amp;_CUSTOMER_HELP_SUBJ_PFX" attributes="" save_date="2016-12-12 21:00:56"><![CDATA[קידומת עבור נושא הדואל]]></key>
+        <key id="configuration&amp;_CUSTOMER_HELP_SUBJ_PLACEHOLDER" attributes="" save_date="2016-12-12 21:00:56"><![CDATA[קידומת עבור נושא הדואל]]></key>
         <key id="configuration&amp;_DEBUG" attributes="" save_date="2016-12-14 20:30:20"><![CDATA[אפשרויות איתור תקלות]]></key>
         <key id="configuration&amp;_DEFAULTTEMPLATE" attributes="" save_date="2016-12-15 14:17:13"><![CDATA[תבנית ברירת המחדל]]></key>
         <key id="configuration&amp;_DIMDIM_MAX_MIKES" attributes="" save_date="2016-12-14 20:48:03"><![CDATA[מקסימום משתמשי שמע]]></key>

@@ -64,35 +64,20 @@ function validateEmail(email) {
             var emailval  = $("#email").val();
             var msgval    = $("#msg").val();
             var msglen    = msgval.length;
+            var oggettoval    = $("#oggetto").val();
+            var oggettolen    = oggettoval.length;
             var mailvalid = validateEmail(emailval);
             var msg_ok    = $("#msg_ok").val();
             
-      var sendtoval  = $("#sendto").val();
-      var sendtovalid = validateEmail(sendtoval);
+            var sendtoval  = $("#sendto").val();
+            var sendtovalid = validateEmail(sendtoval);
       
-            if(mailvalid == false) {
-                $("#email").addClass("error");
-            }
-            else if(mailvalid == true){
-                $("#email").removeClass("error");
-            }
+            mailvalid ? $("#alphaemail").removeClass("error") : $("#alphaemail").addClass("error");
+            sendtovalid ? $("#alphasendto").removeClass("error") : $("#alphasendto").addClass("error");
+            msglen >= 4 ? $("#alphamsg").removeClass("error") : $("#alphamsg").addClass("error");
+            oggettolen >= 1 ? $("#alphaoggetto").removeClass("error") : $("#alphaoggetto").addClass("error");
             
-      
-            if(sendtovalid == false) {
-                $("#sendto").addClass("error");
-            }
-            else if(sendtovalid == true){
-                $("#sendto").removeClass("error");
-            }      
-      
-            if(msglen < 4) {
-                $("#msg").addClass("error");
-            }
-            else if(msglen >= 4){
-                $("#msg").removeClass("error");
-            }
-            
-            if(mailvalid == true && msglen >= 4 && sendtovalid==true) {
+            if(mailvalid == true && msglen >= 4 && oggettolen >= 1 && sendtovalid == true) {
                 // if both validate we attempt to send the e-mail
                 // first we hide the submit btn so the user doesnt click twice
                 $("#send").replaceWith("<em><img src=../templates/standard/images/tree/loading.gif ></em>");
@@ -108,7 +93,6 @@ function validateEmail(email) {
                 
                 document.getElementById('help_req_resolution').value = 'width: '+screen_size.width+' height: '+screen_size.height;
                 document.getElementById('help_req_flash_installed').value = flash_installed;                
-                
                 
                 $.ajax({
                     type: 'POST',

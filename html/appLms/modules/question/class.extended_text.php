@@ -51,16 +51,16 @@ class ExtendedText_Question extends Question {
 		require_once(_base_.'/lib/lib.form.php');
 		$url_encode = htmlentities(urlencode($back_test));
 		
-		if(isset($_POST['add_question'])) {
+		if(isset($_REQUEST['add_question'])) {
 			if(!sql_query("
 			INSERT INTO ".$GLOBALS['prefix_lms']	."_testquest 
 			( idTest, idCategory, type_quest, title_quest, difficult, time_assigned, sequence, page ) VALUES 
 			( 	'".$idTest."', 
-				'".(int)$_POST['idCategory']."', 
+				'".(int)$_REQUEST['idCategory']."', 
 				'".$this->getQuestionType()."', 
-				'".$_POST['title_quest']."',
-				'".(int)$_POST['difficult']."', 
-				'".(int)$_POST['time_assigned']."', 
+				'".$_REQUEST['title_quest']."',
+				'".(int)$_REQUEST['difficult']."', 
+				'".(int)$_REQUEST['time_assigned']."', 
 				'".$this->_getNextSequence($idTest)."', 
 				'".$this->_getPageNumber($idTest)."') ")) {
 				errorCommunication($lang->def('_OPERATION_FAILURE')
@@ -73,7 +73,7 @@ class ExtendedText_Question extends Question {
 			INSERT INTO ".$GLOBALS['prefix_lms']	."_testquestanswer 
 			( idQuest, score_correct, is_correct ) VALUES 
 			( 	'".$id_quest."', 
-				'".$this->_checkScore($_POST['max_score'])."',
+				'".$this->_checkScore($_REQUEST['max_score'])."',
 				'1') ")) {
 				errorCommunication($lang->def('_OPERATION_FAILURE')
 					.getBackUi('index.php?modname=question&amp;op=create&amp;type_quest='
@@ -107,12 +107,12 @@ class ExtendedText_Question extends Question {
 			$GLOBALS['page']->add(Form::getDropdown( $lang->def('_TEST_QUEST_CATEGORY'), 'idCategory', 'idCategory', $categories), 'content');
 		$GLOBALS['page']->add(Form::getDropdown( $lang->def('_DIFFICULTY'), 'difficult', 'difficult', $arr_dufficult, 3)
 			.Form::getTextfield( $lang->def('_TEST_QUEST_TIMEASS'), 'time_assigned', 'time_assigned', 5, 
-			( isset($_POST['time_assigned']) ? $_POST['time_assigned'] : '00000' ), $lang->def('_TEST_QUEST_TIMEASS'),
+			( isset($_REQUEST['time_assigned']) ? $_REQUEST['time_assigned'] : '00000' ), $lang->def('_TEST_QUEST_TIMEASS'),
 			$lang->def('_SECONDS') )
 		
 			.Form::getBreakRow()
 			.Form::getTextfield( $lang->def('_MAX_SCORE'), 'max_score', 'max_score', 255,
-			( isset($_POST['max_score']) ? $_POST['max_score'] : '0.0' ), $lang->def('_MAX_SCORE') )
+			( isset($_REQUEST['max_score']) ? $_REQUEST['max_score'] : '0.0' ), $lang->def('_MAX_SCORE') )
 		
 			.Form::getBreakRow()
 			.Form::closeElementSpace()
@@ -132,13 +132,13 @@ class ExtendedText_Question extends Question {
 		require_once(_base_.'/lib/lib.form.php');
 		$url_encode = htmlentities(urlencode($back_test));
 		
-		if(isset($_POST['add_question'])) {
+		if(isset($_REQUEST['add_question'])) {
 			if(!sql_query("
 			UPDATE ".$GLOBALS['prefix_lms']	."_testquest 
-			SET idCategory = '".(int)$_POST['idCategory']."', 
-				title_quest = '".$_POST['title_quest']."', 
-				difficult = '".(int)$_POST['difficult']."', 
-				time_assigned = '".(int)$_POST['time_assigned']."' 
+			SET idCategory = '".(int)$_REQUEST['idCategory']."', 
+				title_quest = '".$_REQUEST['title_quest']."', 
+				difficult = '".(int)$_REQUEST['difficult']."', 
+				time_assigned = '".(int)$_REQUEST['time_assigned']."' 
 			WHERE idQuest = '".$this->id."'")) {
 				errorCommunication($lang->def('_ERR_INS_QUEST')
 					.getBackUi('index.php?modname=question&amp;op=edit&amp;type_quest='
@@ -147,7 +147,7 @@ class ExtendedText_Question extends Question {
 			
 			if(!sql_query("
 			UPDATE ".$GLOBALS['prefix_lms']	."_testquestanswer 
-			SET score_correct = '".$this->_checkScore($_POST['max_score'])."'
+			SET score_correct = '".$this->_checkScore($_REQUEST['max_score'])."'
 			WHERE idQuest = '".$this->id."'")) {
 				errorCommunication($lang->def('_ERR_INS_QUEST')
 					.getBackUi('index.php?modname=question&amp;op=edit&amp;type_quest='
@@ -190,14 +190,14 @@ class ExtendedText_Question extends Question {
 			.Form::getTextarea($lang->def('_QUESTION'), 'title_quest', 'title_quest', $title_quest), 'content');
 		if (count($categories) > 1)
 			$GLOBALS['page']->add(Form::getDropdown( $lang->def('_TEST_QUEST_CATEGORY'), 'idCategory', 'idCategory', $categories,
-				( isset($_POST['idCategory']) ? $_POST['idCategory'] : $cat_sel )), 'content');
+				( isset($_REQUEST['idCategory']) ? $_REQUEST['idCategory'] : $cat_sel )), 'content');
 		$GLOBALS['page']->add(Form::getDropdown( $lang->def('_DIFFICULTY'), 'difficult', 'difficult', $arr_dufficult, $diff_sel)
 			.Form::getTextfield( $lang->def('_TEST_QUEST_TIMEASS'), 'time_assigned', 'time_assigned', 5, 
-			( isset($_POST['time_assigned']) ? $_POST['time_assigned'] : $sel_time ), $lang->def('_TEST_QUEST_TIMEASS'),
+			( isset($_REQUEST['time_assigned']) ? $_REQUEST['time_assigned'] : $sel_time ), $lang->def('_TEST_QUEST_TIMEASS'),
 			$lang->def('_SECONDS') )
 			.Form::getBreakRow()
 			.Form::getTextfield( $lang->def('_MAX_SCORE'), 'max_score', 'max_score', 255,
-			( isset($_POST['max_score']) ? $_POST['max_score'] : $max_score ), $lang->def('_MAX_SCORE') )
+			( isset($_REQUEST['max_score']) ? $_REQUEST['max_score'] : $max_score ), $lang->def('_MAX_SCORE') )
 		
 			.Form::getBreakRow()
 			.Form::closeElementSpace()
