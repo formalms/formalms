@@ -125,7 +125,50 @@ class Form {
 	public static function getHidden( $id, $name, $value, $other_param = '' ) {
 		return '<input type="hidden" id="'.$id.'" name="'.$name.'" value="'.$value.'"'.( $other_param != '' ? ' '.$other_param : '' ).' />'."\n";
 	}
-
+	
+	/**
+	 * Outputs an input element of type="time"
+	 * @param string $class additional classe for the input element
+	 * @param string $id ID of the element
+	 * @param string $name name of the element
+	 * @param string $value value to be displayed in the input element (format hh:mm)
+	 * @param string $alt_name alt name for the field
+	 * @param string $min_time minimum value that can be selected (default 00:00)
+	 * @param string $max_time maximum value that can be selected (default 23:59)
+	 * @param string $other_param other attributes for the tag
+	 * @return string returns the html code for the input type="time" element
+	 */
+	public static function getInputTimeSelectorField($class, $id, $name, $value, $alt_name, $min_time='00:00', $max_time='23:59', $other_param = ''){
+		$name_attribute = $name==false?'':"name='$name'";
+		return "<input type='time' class='$class' id='$id' $name_attribute value='$value' min='$min_time' max='$max_time' alt='$alt_name' $other_param>";
+	}
+	
+	/**
+	 * Outputs a div containing an input element of type="time" and its label
+	 * @param string $line_class additional class for the div container
+	 * @param string $label_class additional class for the label element
+	 * @param string $label_text text to be displayed in label
+	 * @param string $input_class additional class for the input element
+	 * @param string $id ID of the element
+	 * @param string $name name of the element
+	 * @param string $value value to be displayed in the input element (format hh:mm)
+	 * @param string $alt_name alt name for the field
+	 * @param string $min_time minimum value that can be selected (default 00:00)
+	 * @param string $max_time maximum value that can be selected (default 23:59)
+	 * @param string $other_param other attributes for the tag
+	 * @param string $other_after html code to show after the input element
+	 * @param string $other_before html code to show before the input element
+	 * @return string with the html code produced
+	 */
+	public static function getLineTimeSelectorField($line_class, $label_class, $label_text, $input_class, $id, $name, $value, $alt_name, $min_time='00:00', $max_time='23:59', $other_param, $other_after, $other_before){
+		return "<div class='$line_class'>"
+			.$other_before
+			."<p><label for='$id' class='$label_class'>$label_text</label></p>"
+			.Form::getInputTimeSelectorField($input_class, $id, $name, $value, $alt_name, $min_time, $max_time, $other_param)
+			.$other_after
+			."</div>";
+	}
+	
 	/**
 	 * public static function getTextfield( $css_text, $id, $name, $value, $alt_name, $maxlenght, $other_param )
 	 *
@@ -152,7 +195,7 @@ class Form {
 		."\n\t".'maxlength="'.$maxlenght.'" '
 		."\n\t".'alt="'.$alt_name.'"'.( $other_param != '' ? ' '.$other_param : '' ).' />';
 	}
-
+	
 	/**
 	 * public static function getTextfield( $css_text, $id, $name, $value, $alt_name, $maxlenght, $other_param )
 	 *

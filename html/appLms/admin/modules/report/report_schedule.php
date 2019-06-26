@@ -48,13 +48,29 @@ function schedule_recipients($idrep) {
 			}
 			
 			switch ($_POST['cron_radio']) {
-				case 'day'   : $sched_info = ''; break;
-				case 'week'  : $sched_info = $_POST['cron_weekly']; break;
-				case 'month' : $sched_info = $_POST['cron_monthly']; break;
-				default : $sched_info = ''; break;
+				case 'day'   :
+					$sched_info = '';
+					$sched_time = $_POST['cron_daily_time'];
+					break;
+				case 'now'   :
+					$sched_info = '';
+					$sched_time = '';
+					break;
+				case 'week'  :
+					$sched_info = $_POST['cron_weekly'];
+					$sched_time = $_POST['cron_weekly_time'];
+					break;
+				case 'month' :
+					$sched_info = $_POST['cron_monthly'];
+					$sched_time = $_POST['cron_monthly_time'];
+					break;
+				default :
+					$sched_info = '';
+					$sched_time = '';
+					break;
 			}
 			
-			$sched_time = '';//$_POST['cron_hours'].':'.$_POST['cron_minutes'].':00';
+			
 						
 			$ref =& $_SESSION['schedule_tempdata'];
 			
@@ -142,7 +158,7 @@ function schedule_set($idrep) {
 				'name' => '',
 				'period' => 'day',
 				'period_info' => '',
-				'time' => '', //eliminate this
+				'time' => '',
 				'recipients' => array()
 			);
 		}
@@ -189,8 +205,19 @@ function schedule_set($idrep) {
 		
 		
 		$body .=
-		
-			Form::getRadio($lang->def('_REPORT_DAILY'), 'cron_radio_1', 'cron_radio', 'day', ($ref['period']=='day' ? true : false)).
+			
+			'<div class="form_line_l">'.
+			Form::getInputRadio( 'cron_radio_1',
+				'cron_radio',
+				'day',
+				($ref['period']=='day' ? true : false),
+				'' ).
+			' <label class="label_normal" for="cron_radio_1">'.$lang->def('_REPORT_DAILY').', ' . $lang->def('_AT_HOUR') . '</label> '.
+			Form::getInputTimeSelectorField('', 'cron_daily_time', 'cron_daily_time', $ref['period']=='day'? $ref['time'] : '00:00', '').
+			'</div>'.
+			
+			
+			Form::getRadio($lang->def('_REPORT_NOW'), 'cron_radio_4', 'cron_radio', 'now', ($ref['period']=='now' ? true : false)).
 			
 			'<div class="form_line_l">'.
 			Form::getInputRadio( 'cron_radio_2',
@@ -200,8 +227,10 @@ function schedule_set($idrep) {
 				'' ).
 			' <label class="label_normal" for="cron_radio_2">'.$lang->def('_REPORT_WEEKLY').'</label> '.
 			Form::getInputDropdown('', 'cron_weekly', 'cron_weekly', $week_days, ($ref['period']=='week' ? $ref['period_info'] : ''), '').
+			' <label class="label_normal" for="cron_weekly_time">, '.$lang->def('_AT_HOUR').'</label> '.
+			Form::getInputTimeSelectorField('', 'cron_weekly_time', 'cron_weekly_time', $ref['period']=='week'? $ref['time'] : '00:00', '').
 			'</div>'.
-
+			
 			'<div class="form_line_l">'.
 			Form::getInputRadio( 'cron_radio_3',
 				'cron_radio',
@@ -210,9 +239,11 @@ function schedule_set($idrep) {
 				'' ).
 			' <label class="label_normal" for="cron_radio_3">'.$lang->def('_REPORT_MONTHLY').'</label> '.
 			Form::getInputDropdown('', 'cron_monthly', 'cron_monthly', $month_days, ($ref['period']=='month' ? $ref['period_info'] : ''), '').
+			' <label class="label_normal" for="cron_monthly_time">, '.$lang->def('_AT_HOUR').'</label> '.
+			Form::getInputTimeSelectorField('', 'cron_monthly_time', 'cron_monthly_time', $ref['period']=='month'? $ref['time'] : '00:00', '').
 			'</div>'.
-
-
+			
+			
 			Form::getHidden('idrep', 'idrep', $idrep);
 			
 		$body .=
@@ -260,7 +291,7 @@ function modify_schedulation() {
 			'name' => $row['name'],
 			'period' => $period[0],
 			'period_info' => $period[1],
-			'time' => '', //eliminate this
+			'time' => '',
 			'recipients' => $recipients
 		);
 		
@@ -268,7 +299,7 @@ function modify_schedulation() {
 		$_SESSION['report_saved'] = true;
 		$_SESSION['report_saved_data'] = array('id'=>$rid, 'name'=>getReportNameById($rid));
 	
-		schedule_report(Get::req('idrep', DOTY_INT, false));
+		schedule_report();
 	} else {
 		Util::jump_to('index.php?modname=report&op=schedulelist'); //if error jump to start page
 	}
@@ -326,9 +357,10 @@ function get_period_text($period) {
 	$parts = explode(',', $period);
 	
 	$output .= $texts[ $parts[0] ];
-
-	if ($parts[0]=='week') $output .= ' '.strtolower($week_days[ $parts[1] ]);
-	if ($parts[0]=='month') $output .= ' '.$parts[1];
+	
+	if ($parts[0]=='week') $output .= ' '.strtolower($week_days[ $parts[1] ]) . ', ' . $lang->def('_AT_HOUR') . ' '. $time;
+	if ($parts[0]=='month') $output .= ' '.$parts[1] . ', ' . $lang->def('_AT_HOUR') . ' '. $time;
+	if ($parts[0]=='day') $output .=  ', ' . $lang->def('_AT_HOUR') . ' '.$time;
 	
 	return $output;
 }
@@ -355,15 +387,15 @@ function get_schedulations_table($idrep=false) {
 		default : $admin_cond .= " AND t1.id_creator=".getLogUserId(); break;
 	}
 	
-	$query = "SELECT t1.*, t3.userid as report_owner, t2.filter_name as report_name, ".
-		"COUNT(t4.id_user) as num_users FROM ".
-		$GLOBALS['prefix_lms']."_report_schedule as t1, ".
-		$GLOBALS['prefix_lms']."_report_filter as t2, ".$GLOBALS['prefix_fw']."_user as t3, ".
-		$GLOBALS['prefix_lms']."_report_schedule_recipient as t4 ".
-		"WHERE t1.id_report_filter=t2.id_filter AND t3.idst=t1.id_creator ".
-		"AND t4.id_report_schedule=t1.id_report_schedule ".$admin_cond." ".
-		($idrep ? "AND t1.id_report_filter=$idrep " : '').
-		"GROUP BY t1.id_report_schedule";
+	$query = "SELECT schedule.*, user.userid as report_owner, report_filter.filter_name as report_name, ".
+		"COUNT(recipients.id_user) as num_users FROM ".
+		$GLOBALS['prefix_lms']."_report_schedule as schedule, ".
+		$GLOBALS['prefix_lms']."_report_filter as report_filter, ".$GLOBALS['prefix_fw']."_user as user, ".
+		$GLOBALS['prefix_lms']."_report_schedule_recipient as recipients ".
+		"WHERE schedule.id_report_filter=report_filter.id_filter AND user.idst=schedule.id_creator ".
+		"AND recipients.id_report_schedule=schedule.id_report_schedule ".$admin_cond." ".
+		($idrep ? "AND schedule.id_report_filter=$idrep " : '').
+		"GROUP BY schedule.id_report_schedule";
 
 
 	$lang =& DoceboLanguage::createInstance('report', 'framework');

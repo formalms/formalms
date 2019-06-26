@@ -45,102 +45,170 @@ $GLOBALS['user_roles'][$roleid] = true;
 setLanguage('english');
 
 function getReportRecipients($id_rep) {
-	//get month, day
-	$arr_days = array();
-	$arr_months = array();
-
-	$output = array();
-
+	$output = [];
+	$selected_schedules = [];
+	$current_time = date('H:i');
+	
 	//check for daily
-
-	$recipients = array();
-
-	$qry = "SELECT * FROM %lms_report_schedule WHERE period LIKE '%day%' AND id_report_filter=$id_rep AND enabled = 1";
+	$recipients = [];
+	$qry = "
+			SELECT * FROM %lms_report_schedule
+			WHERE period LIKE '%day%'
+			AND id_report_filter=$id_rep
+			AND time < '$current_time'
+			AND enabled = 1
+			AND (last_execution is null OR last_execution < CURDATE())
+		";
 	$res = sql_query($qry);
-
-	while ($row = sql_fetch_assoc($res)) {
-
-		$qry2 = "SELECT id_user FROM %lms_report_schedule_recipient WHERE id_report_schedule=".$row['id_report_schedule'];
+	
+	while($row = sql_fetch_assoc($res)){
+		
+		$qry2 = "SELECT id_user FROM %lms_report_schedule_recipient WHERE id_report_schedule=" . $row['id_report_schedule'];
 		$res2 = sql_query($qry2);
-
-		while(list($recipient) = sql_fetch_row($res2)) {
+		
+		while(list($recipient) = sql_fetch_row($res2)){
 			$recipients[] = $recipient; //idst of the recipients
 		}
-
+		
 		$recipients_flat = Docebo::aclm()->getAllUsersFromSelection($recipients);
-		if (!empty($recipients_flat)) {
-			$qry3 = "SELECT email FROM %adm_user WHERE idst IN (".implode(',', $recipients_flat).") AND email<>'' AND valid = 1";
+		if(!empty($recipients_flat)){
+			$qry3 = "SELECT email FROM %adm_user WHERE idst IN (" . implode(',', $recipients_flat) . ") AND email<>'' AND valid = 1";
 			$res3 = sql_query($qry3);
-			while (list($email) = sql_fetch_row($res3))
-				$output[] = $email;
+			while(list($email) = sql_fetch_row($res3)) $output[] = $email;
+			
+			//registra la pianificazione tra quelle da eseguire
+			$selected_schedules[] = [
+				'id_report_schedule' => $row['id_report_schedule'],
+				'period' => 'day'
+			];
 		}
 	}
-
-
+	
+	
+	//cerca i report da eseguire prima possibile
+	
+	$recipients = [];
+	$qry = "
+				SELECT * FROM %lms_report_schedule
+				WHERE period LIKE '%now%'
+				AND id_report_filter=$id_rep
+				AND enabled = 1
+			";
+	$res = sql_query($qry);
+	
+	while($row = sql_fetch_assoc($res)){
+		
+		$qry2 = "SELECT id_user FROM %lms_report_schedule_recipient WHERE id_report_schedule=" . $row['id_report_schedule'];
+		$res2 = sql_query($qry2);
+		
+		while(list($recipient) = sql_fetch_row($res2)){
+			$recipients[] = $recipient; //idst of the recipients
+		}
+		
+		$recipients_flat = Docebo::aclm()->getAllUsersFromSelection($recipients);
+		if(!empty($recipients_flat)){
+			$qry3 = "SELECT email FROM %adm_user WHERE idst IN (" . implode(',', $recipients_flat) . ") AND email<>'' AND valid = 1";
+			$res3 = sql_query($qry3);
+			while(list($email) = sql_fetch_row($res3)) $output[] = $email;
+			
+			//registra la pianificazione tra quelle da eseguire
+			$selected_schedules[] = [
+				'id_report_schedule' => $row['id_report_schedule'],
+				'period' => 'now'
+			];
+		}
+	}
+	
+	
 	//check for weekly
 	$daynumber = date('w');
-	$recipients = array();
-
-	$qry = "SELECT * FROM %lms_report_schedule WHERE period LIKE '%week,$daynumber%' AND id_report_filter=$id_rep AND enabled = 1";
+	$recipients = [];
+	
+	$qry = "
+				SELECT * FROM %lms_report_schedule
+				WHERE period LIKE '%week,$daynumber%'
+				AND id_report_filter=$id_rep
+				AND time < '$current_time'
+				AND enabled = 1
+				AND (last_execution is null OR last_execution < CURDATE())
+			";
 	$res = sql_query($qry);
-
-	while ($row = sql_fetch_assoc($res)) {
-
-		$qry2 = "SELECT id_user FROM %lms_report_schedule_recipient WHERE id_report_schedule=".$row['id_report_schedule'];
+	
+	while($row = sql_fetch_assoc($res)){
+		
+		$qry2 = "SELECT id_user FROM %lms_report_schedule_recipient WHERE id_report_schedule=" . $row['id_report_schedule'];
 		$res2 = sql_query($qry2);
-
-		while(list($recipient) = sql_fetch_row($res2)) {
+		
+		while(list($recipient) = sql_fetch_row($res2)){
 			$recipients[] = $recipient;
 		}
-
+		
 		$recipients_flat = Docebo::aclm()->getAllUsersFromSelection($recipients);
-		if (!empty($recipients_flat)) {
-			$qry3 = "SELECT email FROM %adm_user WHERE idst IN (".implode(',', $recipients_flat).") AND email<>'' AND valid = 1";
+		if(!empty($recipients_flat)){
+			$qry3 = "SELECT email FROM %adm_user WHERE idst IN (" . implode(',', $recipients_flat) . ") AND email<>'' AND valid = 1";
 			$res3 = sql_query($qry3);
-			while (list($email) = sql_fetch_row($res3))
-				$output[] = $email;
+			while(list($email) = sql_fetch_row($res3)) $output[] = $email;
+			
+			//registra la pianificazione tra quelle da eseguire
+			$selected_schedules[] = [
+				'id_report_schedule' => $row['id_report_schedule'],
+				'period' => 'week'
+			];
 		}
 	}
-
+	
 	//check for monthly
 	$monthdaynumber = date('j'); //today's day of the month, 1-31
 	$monthdays = date('t'); //amount of days in current month 28-31
-	$recipients = array();
-
-	$options = array();
-	if ($monthdays<31 && $monthdaynumber==$monthdays) { //if it's the last day of tehe month
-		for ($i=31; $i>=$monthdays; $i--) {
+	$recipients = [];
+	
+	$options = [];
+	if($monthdays < 31 && $monthdaynumber == $monthdays){ //if it's the last day of tehe month
+		for($i = 31; $i >= $monthdays; $i--){
 			$options[] = "'month,$i'";
 		}
-	} else {
+	} else{
 		$options[] = "'month,$monthdaynumber'";
 	}
-
-	$qry = "SELECT * FROM %lms_report_schedule WHERE period IN (".implode(',', $options).") AND id_report_filter=$id_rep AND enabled = 1";
+	
+	$qry = "
+			SELECT * FROM %lms_report_schedule
+			WHERE period IN (" . implode(',', $options) . ")
+			AND id_report_filter=$id_rep
+			AND time < '$current_time'
+			AND enabled = 1
+			AND (last_execution is null OR last_execution < CURDATE())
+		";
 	$res = sql_query($qry);
-
-
-	while ($row = sql_fetch_assoc($res)) {
-
-		$qry2 = "SELECT id_user FROM %lms_report_schedule_recipient WHERE id_report_schedule=".$row['id_report_schedule'];
+	
+	
+	while($row = sql_fetch_assoc($res)){
+		
+		$qry2 = "SELECT id_user FROM %lms_report_schedule_recipient WHERE id_report_schedule=" . $row['id_report_schedule'];
 		$res2 = sql_query($qry2);
-
-		while(list($recipient) = sql_fetch_row($res2)) {
+		
+		while(list($recipient) = sql_fetch_row($res2)){
 			$recipients[] = $recipient;
 		}
-
+		
 		$recipients_flat = Docebo::aclm()->getAllUsersFromSelection($recipients);
-		if (!empty($recipients_flat)) {
-			$qry3 = "SELECT email FROM %adm_user WHERE idst IN (".implode(',', $recipients_flat).") AND email<>'' AND valid = 1";
+		if(!empty($recipients_flat)){
+			$qry3 = "SELECT email FROM %adm_user WHERE idst IN (" . implode(',', $recipients_flat) . ") AND email<>'' AND valid = 1";
 			$res3 = sql_query($qry3);
-			while (list($email) = sql_fetch_row($res3))
-				$output[] = $email;
+			while(list($email) = sql_fetch_row($res3)) $output[] = $email;
+			
+			//registra la pianificazione tra quelle da eseguire
+			$selected_schedules[] = [
+				'id_report_schedule' => $row['id_report_schedule'],
+				'period' => 'month'
+			];
 		}
 	}
-
-	//die(print_r($output, true));
-	//prepare output
-	return array_unique($output);
+	
+	return [
+		'recipients' => array_unique($output),
+		'schedules' => $selected_schedules
+	];
 
 }
 
@@ -163,6 +231,29 @@ function recursive_delete_directory($dir){
 	return rmdir($dir);
 }
 
+/**
+ * Updates executed schedules: deletes one shot schedules and updates the value of last_execution for others
+ * @param array $schedules array of schedule ids to be updated
+ */
+function update_schedules($schedules){
+		
+		foreach($schedules as $schedule){
+			$id_report_schedule = $schedule['id_report_schedule'];
+			$period = $schedule['period'];
+			switch($period){
+				case 'now':
+					$qry = "DELETE FROM %lms_report_schedule WHERE id_report_schedule = $id_report_schedule";
+					sql_query($qry);
+					$qry = "DELETE FROM %lms_report_schedule_recipient WHERE id_report_schedule = $id_report_schedule";
+					sql_query($qry);
+					break;
+				default:
+					$qry = "UPDATE %lms_report_schedule SET last_execution = now() WHERE id_report_schedule = $id_report_schedule";
+					sql_query($qry);
+					break;
+			}
+		}
+	}
 
 //******************************************************************************
 
@@ -199,8 +290,9 @@ $lock_stream = @stream_socket_server('tcp://0.0.0.0:9999', $errno, $errmsg);
 if($lock_stream){
 
 	while ($row = sql_fetch_assoc($res)) {
-	
-		$recipients = getReportRecipients($row['id_filter']);
+		
+		$recipients_data = getReportRecipients($row['id_filter']);
+		$recipients = $recipients_data['recipients'];
 	
 		if (count($recipients)>0) {
 			
@@ -208,6 +300,8 @@ if($lock_stream){
 				report_log("STARTING REPORT EXECUTION ...");
 				$log_opened = true;
 			}
+			
+			$schedules = $recipients_data['schedules'];
 	
 			$data = unserialize( $row['filter_data'] ) ;
 	
@@ -291,6 +385,10 @@ if($lock_stream){
 						report_log($row['filter_name'] . ': Error while sending mail.' . $mailer->ErrorInfo);
 					} else{
 						report_log($row['filter_name'] . ': Mail sent to ' . implode(',', $recipients));
+						
+						update_schedules($schedules);
+						
+						report_log($row['filter_name'] . ': Schedule info updated');
 					}
 					
 					
@@ -310,6 +408,10 @@ if($lock_stream){
 						report_log($row['filter_name'] . ': Error while sending mail.' . $mailer->ErrorInfo);
 					} else{
 						report_log($row['filter_name'] . ': Mail sent to ' . implode(',', $recipients));
+						
+						update_schedules($schedules);
+						
+						report_log($row['filter_name'] . ': Schedule info updated');
 					}
 				}
 	
