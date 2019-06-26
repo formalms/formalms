@@ -89,7 +89,7 @@ function schedule_recipients($idrep) {
 			//Util::jump_to($back_url);
 			Util::jump_to('index.php?modname=report&op=schedulelist&idrep='.$idrep);
 			
-		} elseif(isset($_POST['okselector'])) {
+		} else if(isset($_POST['okselector'])) {
 			$ref =& $_SESSION['schedule_tempdata'];
 
 			$entity_selected 	= $user_select->getSelection($_POST);
@@ -333,12 +333,13 @@ define('_SCHED_KEY_MOD',      '_modify');
 define('_SCHED_KEY_REM',      '_remove');
 
 
-function get_period_text($period) {
+function get_period_text($period, $time) {
 	$output = '';
 	
 	$lang =& DoceboLanguage::createInstance('report', 'framework');
 	$texts = array(
 		'day'   => $lang->def('_REPORT_DAILY'),
+		'now'   => $lang->def('_REPORT_NOW'),
 		'week'  => $lang->def('_SCHED_TEXT_WEEK'),
 		'month' => $lang->def('_REPORT_MONTHLY')
 	);
@@ -384,7 +385,7 @@ function get_schedulations_table($idrep=false) {
 		case ADMIN_GROUP_GODADMIN :;
 		case ADMIN_GROUP_ADMIN : break;
 		case ADMIN_GROUP_USER :; 
-		default : $admin_cond .= " AND t1.id_creator=".getLogUserId(); break;
+		default : $admin_cond .= " AND schedule.id_creator=".getLogUserId(); break;
 	}
 	
 	$query = "SELECT schedule.*, user.userid as report_owner, report_filter.filter_name as report_name, ".
@@ -457,7 +458,7 @@ function get_schedulations_table($idrep=false) {
 				_SCHED_KEY_NAME     => $row['name'],
 				_SCHED_KEY_CREATOR  => $acl_man->relativeId($row['report_owner']),
 				_SCHED_KEY_CREATION => Format::date($row['creation_date']),
-				_SCHED_KEY_PERIOD   => get_period_text($row['period']),
+				_SCHED_KEY_PERIOD   => get_period_text($row['period'], $row['time']),
 				_SCHED_KEY_NUMUSER  => $num_users,
 				_SCHED_KEY_ENABLED  => $enabled
 			);

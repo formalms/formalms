@@ -320,7 +320,7 @@ if($lock_stream){
 				$tmpfile = adaptFileName($row['filter_name']).'.xls';
 				
 				$start_time = microtime(true);
-				$file = sl_fopen('/tmp/'.$tmpfile, "w");
+				$file = fopen($path . $tmpfile, "w");
 				fwrite($file, $temp->getXLS($data['columns_filter_category'], $data));
 				fclose($file);
 				$execution_time_secs = round(microtime(true) - $start_time, 0);
