@@ -262,6 +262,7 @@ function get_report_table($url='') {
 		$lang->def('_CREATION_DATE'),
 		$lang->def('_TAB_REP_PUBLIC'),
 		'<img src="'.getPathImage().'standard/view.png" alt="'.$lang->def('_VIEW').'" title="'.$lang->def('_VIEW').'" />',
+		'<img src="'.getPathImage().'standard/msg_unread.png" alt="'.$lang->def('_SEND_EMAIL').'" title="'.$lang->def('_SEND_EMAIL').'" />',
 		'<span class="ico-sprite subs_csv"><span>'.Lang::t('_EXPORT_CSV', 'report').'</span></span>',
 		'<span class="ico-sprite subs_xls"><span>'.Lang::t('_EXPORT_XLS', 'report').'</span></span>',
 		'<img src="'.getPathImage().'standard/wait_alarm.png" alt="'.$lang->def('_SCHEDULE').'" title="'.$lang->def('_SCHEDULE').'" />'/*,
@@ -314,6 +315,27 @@ function get_report_table($url='') {
 			$export_link_csv = '<a class="ico-sprite subs_csv" href="'.$export_url.'&dl=csv" title="'.Lang::t('_EXPORT_CSV', 'report').'"><span></span>'.Lang::t('_EXPORT_CSV', 'report').'</a>';
 			$export_link_xls = '<a class="ico-sprite subs_xls" href="'.$export_url.'&dl=xls" title="'.Lang::t('_EXPORT_XLS', 'report').'"><span></span>'.Lang::t('_EXPORT_XLS', 'report').'</a>';
 
+			
+			
+			
+			//Check if user has already a send mail request for current report
+			$user_id = Docebo::User()->getId();
+			$qry = "
+				SELECT * FROM %lms_report_schedule schedules
+				JOIN %lms_report_schedule_recipient recipients ON recipients.id_report_schedule = schedules.id_report_schedule AND recipients.id_user = $user_id
+				WHERE schedules.period LIKE '%now%'
+				AND schedules.id_report_filter=$id
+				AND schedules.enabled = 1
+			";
+			$background_task_search = sql_query($qry);
+			if($background_task_search->num_rows>0){
+				$background_execution_link = '<img src="'.getPathImage().'standard/move.png" alt="'.$lang->def('_EXECUTING').'" title="'.$lang->def('_EXECUTING').'" />';
+			}else{
+				$background_execution_link = '<a href="index.php?modname=report&op=reportlist&action=send_email&idrep='.(int)$id.'"><img src="'.getPathImage().'standard/msg_unread.png" alt="'.$lang->def('_SEND_EMAIL').'" title="'.$lang->def('_SEND_EMAIL').'" /></a>';
+			}
+			
+			
+			
 			$_name = ($row['author'] == 0 ? $lang->def($row['filter_name']) : $row['filter_name']);
 			if (trim($_SESSION['report_admin_filter']['name']) != "") { $_name = Layout::highlight($_name, $_SESSION['report_admin_filter']['name']); }
 
@@ -323,6 +345,7 @@ function get_report_table($url='') {
 				_REP_KEY_CREATION => Format::date($row['creation_date']),
 				_REP_KEY_PUBLIC   => $public,//$row['report_name'],
 				_REP_KEY_OPEN     => $opn_link,
+				$background_execution_link,
 				$export_link_csv,
 				$export_link_xls,
 				_REP_KEY_SCHED    => $sch_link/*,
@@ -961,6 +984,29 @@ function report_modify_columns() {
 	}
 }
 
+
+function send_email($idrep){
+	//Verifica se esiste una pianificazione one shot attiva per l'utente
+	$user_id = Docebo::User()->getId();
+	$qry = "	SELECT * FROM %lms_report_schedule schedules
+				JOIN %lms_report_schedule_recipient recipients ON recipients.id_report_schedule = schedules.id_report_schedule AND recipients.id_user = $user_id
+				WHERE schedules.period LIKE '%now%'
+				AND schedules.id_report_filter=$idrep
+				AND schedules.enabled = 1
+			";
+	$background_task_search = sql_query($qry);
+	if($background_task_search->num_rows==0){
+		$recipients = [$user_id];
+		report_save_schedulation($idrep, "Send report email", 'now,', '', $recipients);
+	}
+	
+	Util::jump_to('index.php?modname=report&op=reportlist');
+	
+}
+
+
+
+
 // switch
 function reportDispatch($op) {
 
@@ -969,6 +1015,8 @@ function reportDispatch($op) {
 
 	switch($op) {
 		case "reportlist" : {
+			if(isset($_GET['action']) && isset($_GET['idrep']) && $_GET['action']=='send_email')
+				send_email($_GET['idrep']);
 			reportlist();
 		};break;
 
