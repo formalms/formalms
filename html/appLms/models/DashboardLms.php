@@ -33,7 +33,7 @@ class DashboardLms extends Model
 			DashboardBlockMessagesLms::class,
 			DashboardBlockCalendarLms::class,
 			DashboardBlockCoursesLms::class,
-			DashboardBlockCourseNewsLms::class,
+			DashboardBlockCourseAdviceLms::class,
 		];
 
 		foreach ($blocks as $block) {
