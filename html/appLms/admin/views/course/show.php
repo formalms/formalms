@@ -132,7 +132,13 @@ if ($result->num_rows) {
 	$columns_arr[] = array('key' => 'certificate', 'label' => Get::sprite('subs_pdf', Lang::t('_CERTIFICATE_ASSIGN_STATUS', 'course')), 'className' => 'img-cell1');
 }
 
-if ($permissions['view_cert']) {
+$query = "SELECT * FROM core_role_members  AS rm 
+			INNER JOIN core_role r ON r.idst = rm.idst 
+			INNER JOIN core_group_members gm ON gm.idst = rm.idstMember 
+			WHERE r.roleid = '/lms/admin/certificate_release/mod' AND gm.idstMember = $user_id";
+$result = sql_query($query);
+
+if ($permissions['view_cert'] && $result->num_rows) {
 	$columns_arr[] = array('key' => 'certreleased', 'label' => Get::sprite('subs_print', Lang::t('_CERTIFICATE_RELEASE', 'course')), 'className' => 'img-cell1');
 }
 
