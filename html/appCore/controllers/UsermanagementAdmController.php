@@ -115,16 +115,17 @@ class UsermanagementAdmController extends AdmController
 		$fields = $fman->getFlatAllFields(array('framework', 'lms'));
 
 		$f_list = array(
+            'level' => Lang::t('_LEVEL', 'standard'),
 			'email' => Lang::t('_EMAIL', 'standard'),
 			'lastenter' => Lang::t('_DATE_LAST_ACCESS', 'profile'),
 			'register_date' => Lang::t('_DIRECTORY_FILTER_register_date', 'admin_directory'),
-			'language' => Lang::t('_LANGUAGE', 'standard'),
-			'level' => Lang::t('_LEVEL', 'standard')
+			'language' => Lang::t('_LANGUAGE', 'standard')
+			
 		);
 		$f_list = $f_list + $fields;
 		$f_selected = $this->json->decode(Docebo::user()->getPreference('ui.directory.custom_columns'));
 		if ($f_selected == false) {
-			$f_selected = array('email', 'lastenter', 'register_date');
+			$f_selected = array('level','email', 'lastenter', 'register_date');
 			/*$k_list = array_keys($f_list);
 			$counter = 0;
 			$lastkey = !empty($k_list) ? $k_list[0] : false;
