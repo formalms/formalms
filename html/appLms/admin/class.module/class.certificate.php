@@ -37,7 +37,13 @@ class Module_Certificate extends LmsAdminModule {
 								'image' => 'standard/view.png'),
 			'mod' => array( 	'code' => 'mod',
 								'name' => '_MOD',
-								'image' => 'standard/edit.png')
+								'image' => 'standard/edit.png'),
+			'assign' => array( 	'code' => 'assign',
+								'name' => '_ASSIGN',
+								'image' => 'standard/assign.png'),
+			'release' => array( 	'code' => 'release',
+								'name' => '_RELEASE',
+								'image' => 'standard/release.png')
 		);
 	}
 }

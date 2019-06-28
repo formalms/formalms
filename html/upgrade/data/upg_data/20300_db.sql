@@ -188,15 +188,7 @@ INSERT INTO core_lang_translation ( id_text,lang_code,  translation_text, save_d
 UPDATE core_menu_under SET associated_token = 'mod' WHERE default_name = '_CERTIFICATE' AND of_platform = 'alms';
 
 SET @max = (SELECT MAX(idst)+1 FROM `core_role`);
-INSERT INTO `core_role` (idst, roleid) VALUES (@max, '/lms/admin/certificate_assign/mod');
-SET @idMenu = (SELECT MAX(idMenu)+1 FROM `core_menu`);
-SET @manCertId = (SELECT idMenu FROM `core_menu` WHERE name = '_MAN_CERTIFICATE');
-INSERT INTO `core_menu` (idMenu, name, image, sequence, is_active, collapse, idParent, of_platform) VALUES (@idMenu, '_CERTIFICATE_ASSIGN_STATUS', '', 3, 1, 1, @manCertId, 'framework');
-INSERT INTO `core_menu_under` (idUnder, idMenu, module_name, default_name, default_op, associated_token, of_platform, sequence, class_file, class_name, mvc_path) VALUES (@idMenu, @idMenu, 'certificate_assign', '_CERTIFICATE_ASSIGN_STATUS', 'certificate_assign', 'view', 'alms', 3, 'class.certificate_assign.php', 'Module_Certificate_Assign', '');
+INSERT INTO `core_role` (idst, roleid) VALUES (@max, '/lms/admin/certificate/assign');
 
-SET @max = (SELECT MAX(idst)+1 FROM `core_role`);
-INSERT INTO `core_role` (idst, roleid) VALUES (@max, '/lms/admin/certificate_release/mod');
-SET @idMenu = (SELECT MAX(idMenu)+1 FROM `core_menu`);
-SET @manCertId = (SELECT idMenu FROM `core_menu` WHERE name = '_MAN_CERTIFICATE');
-INSERT INTO `core_menu` (idMenu, name, image, sequence, is_active, collapse, idParent, of_platform) VALUES (@idMenu, '_CERTIFICATE_RELEASE', '', 3, 1, 1, @manCertId, 'framework');
-INSERT INTO `core_menu_under` (idUnder, idMenu, module_name, default_name, default_op, associated_token, of_platform, sequence, class_file, class_name, mvc_path) VALUES (@idMenu, @idMenu, 'certificate_release', '_CERTIFICATE_RELEASE', 'certificate_release', 'view', 'alms', 3, 'class.certificate_release.php', 'Module_Certificate_Release', '');
+SET @max = (SELECT MAX(idst)+2 FROM `core_role`);
+INSERT INTO `core_role` (idst, roleid) VALUES (@max, '/lms/admin/certificate/release');

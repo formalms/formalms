@@ -121,24 +121,14 @@ if ($permissions['subscribe'])//if(checkPerm('subscribe', true, 'course', 'lms')
 if ($permissions['view'])
 	$columns_arr[] = array('key' => 'edition', 'label' =>  Get::sprite('subs_date', Lang::t('_CLASSROOM_EDITION', 'course') ), 'className' => 'img-cel1l');
 
-$user_id = Docebo::user()->getIdST();
-$query = "SELECT * FROM core_role_members  AS rm 
-			INNER JOIN core_role r ON r.idst = rm.idst 
-			INNER JOIN core_group_members gm ON gm.idst = rm.idstMember 
-			WHERE (r.roleid = '/lms/admin/certificate/mod' OR r.roleid = '/lms/admin/certificate_assign/mod') AND gm.idstMember = $user_id";
-$result = sql_query($query);
+$perm_assign = checkPerm('assign', true, 'certificate', 'lms');
+$perm_release = checkPerm('release', true, 'certificate', 'lms');
 
-if ($result->num_rows) {
+if ($perm_assign) {
 	$columns_arr[] = array('key' => 'certificate', 'label' => Get::sprite('subs_pdf', Lang::t('_CERTIFICATE_ASSIGN_STATUS', 'course')), 'className' => 'img-cell1');
 }
 
-$query = "SELECT * FROM core_role_members  AS rm 
-			INNER JOIN core_role r ON r.idst = rm.idst 
-			INNER JOIN core_group_members gm ON gm.idst = rm.idstMember 
-			WHERE r.roleid = '/lms/admin/certificate_release/mod' AND gm.idstMember = $user_id";
-$result = sql_query($query);
-
-if ($permissions['view_cert'] && $result->num_rows) {
+if ($permissions['view_cert'] && $perm_release) {
 	$columns_arr[] = array('key' => 'certreleased', 'label' => Get::sprite('subs_print', Lang::t('_CERTIFICATE_RELEASE', 'course')), 'className' => 'img-cell1');
 }
 

@@ -489,24 +489,14 @@ Class CourseAlmsController extends AlmsController
 						: '')),
 			);
 
-			$user_id = Docebo::user()->getIdST();
-			$query = "SELECT * FROM core_role_members  AS rm 
-						INNER JOIN core_role r ON r.idst = rm.idst 
-						INNER JOIN core_group_members gm ON gm.idst = rm.idstMember 
-						WHERE (r.roleid = '/lms/admin/certificate/mod' OR r.roleid = '/lms/admin/certificate_assign/mod') AND gm.idstMember = $user_id";
-			$result = sql_query($query);
+			$perm_assign = checkPerm('assign', true, 'certificate', 'lms');
+			$perm_release = checkPerm('release', true, 'certificate', 'lms');
 
-			if ($result->num_rows) {
+			if ($perm_assign) {
 				$list[ $row['idCourse'] ]['certificate'] = '<a href="index.php?r='.$this->base_link_course.'/certificate&amp;id_course='.$row['idCourse'].'">'.Get::sprite('subs_pdf'.(!isset($course_with_cert[$row['idCourse']]) ? '_grey' : ''), Lang::t('_CERTIFICATE_ASSIGN_STATUS', 'course')).'</a>';
 			}
 
-			$query = "SELECT * FROM core_role_members  AS rm 
-						INNER JOIN core_role r ON r.idst = rm.idst 
-						INNER JOIN core_group_members gm ON gm.idst = rm.idstMember 
-						WHERE r.roleid = '/lms/admin/certificate_release/mod' AND gm.idstMember = $user_id";
-			$result = sql_query($query);
-
-			if ($result->num_rows) {
+			if ($perm_release) {
 				$list[ $row['idCourse'] ]['certreleased'] = '<a href="index.php?modname=certificate&op=view_report_certificate&amp;id_course='.$row['idCourse'].'&from=courselist&of_platform=lms">'.Get::sprite('subs_print'.(!isset($course_with_cert[$row['idCourse']]) ? '_grey' : ''), Lang::t('_CERTIFICATE_RELEASE', 'course')).'</a>';
                 $list[ $row['idCourse'] ]['certreleased'] = '<a href="index.php?r=alms/course/list_certificate&amp;id_course='.$row['idCourse'].'&amp;from=courselist">'.Get::sprite('subs_print'.(!isset($course_with_cert[$row['idCourse']]) ? '_grey' : ''), Lang::t('_CERTIFICATE_RELEASE', 'course')).'</a>';
 			}
@@ -1093,15 +1083,9 @@ Class CourseAlmsController extends AlmsController
 
 	public function certificate()
 	{
-		$user_id = Docebo::user()->getIdST();
-		$query = "SELECT * FROM core_role_members  AS rm 
-			INNER JOIN core_role r ON r.idst = rm.idst 
-			INNER JOIN core_group_members gm ON gm.idst = rm.idstMember 
-			WHERE (r.roleid = '/lms/admin/certificate/mod' OR r.roleid = '/lms/admin/certificate_assign/mod') AND gm.idstMember = $user_id";
+		$perm_assign = checkPerm('assign', true, 'certificate', 'lms');
 
-		$result = sql_query($query);
-
-		if (!$result->num_rows && !$this->permissions['mod']) {
+		if (!$perm_assign && !$this->permissions['mod']) {
 			$this->render('invalid', array(
 				'message' => $this->_getErrorMessage('no permission'),
 				'back_url' => 'index.php?r='.$this->base_link_course.'/show'
