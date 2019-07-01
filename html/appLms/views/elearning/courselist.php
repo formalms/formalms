@@ -6,7 +6,10 @@ function GetCategory($the_course)
     if ($ret_val == "") {
         $ret_val = Lang::t('_NO_CATEGORY', 'standard');
     } else {
-        $ret_val = substr($the_course['nameCategory'], 6);
+        //$ret_val = substr($the_course['nameCategory'], 6);
+     $ret_val = explode("/", $the_course['nameCategory']);
+     $ret_val = array_pop($ret_val);          
+        
     }
     return $ret_val;
 }
