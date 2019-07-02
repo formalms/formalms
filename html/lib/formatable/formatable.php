@@ -382,7 +382,7 @@ function formaTable(dom, options) {
                         _thisObj._selection.rows = [];
                     }
                     _thisObj._selection.all = true;
-                    dt.rows().select();
+                    dt.rows({ search: 'applied' }).select();
                 }
             }, {
                 extend: 'selectNone',
@@ -652,6 +652,17 @@ function formaTable(dom, options) {
  */
 formaTable.prototype.getSelection = function() {
     return this._selection;
+}
+
+/**
+ * Retrive the full list of rows selected (only working correctly with non server-based data).
+ */
+formaTable.prototype.getFlatSelection = function() {
+    if(this._selection.all) {
+        return $(this._datatable.rows({ search: 'applied' }).ids()).not(this._selection.rows).get();
+    } else {
+        return this._selection.rows;
+    }
 }
 
 /**

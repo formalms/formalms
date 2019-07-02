@@ -70,7 +70,9 @@ echo getTitleArea(array(
         var cert_table = $('#table_certificate').FormaTable({
             margin: '0 auto',
             scrollX: true,
-            rowId: 'id_user',
+            rowId: function(row) {
+              return row.id_user + '-' + row.id_certificate;
+            },
             deferRender: true,
             data:  <?php echo json_encode($data_certificate) ?>,
             select: {
@@ -187,20 +189,17 @@ echo getTitleArea(array(
                 var sData = newarray.join();                
                 return sData;      
            }
+
           // generate  selected certificates
           function generate_all_certificate(){
-          
-            var all_selected_Array =  getRowsSelected().split(',');
-            if(all_selected_Array.length==0) return 
-            $.each(all_selected_Array, function( index, value ) {
-                
-                var this_user = value.split("-");
-                var id_user = this_user[0];
-                var id_certificate = this_user[1];
-                var the_course = this_user[2]
-                print_certificate(id_user, the_course, id_certificate) ;
-                
-            });
+                if(cert_table.getFlatSelection().length==0) return 
+                $.each(cert_table.getFlatSelection(), function( index, value ) {
+                    var this_row = value.split("-");
+                    var id_user = this_row[0];
+                    var id_certificate = this_row[1];
+                    print_certificate(id_user, id_course, id_certificate) ;
+                    
+                });
           }
           
           function download_all_certificate(){
