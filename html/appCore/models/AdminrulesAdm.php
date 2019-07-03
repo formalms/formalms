@@ -136,6 +136,8 @@ class AdminrulesAdm extends Model
 			'del_category' => 'ico-sprite subs_view',
 			'view' => 'ico-sprite subs_view',
 			'add' => 'ico-sprite subs_add',
+			'assign' => 'ico-sprite subs_add',
+			'release' => 'ico-sprite subs_actv',
 			'mod' => 'ico-sprite subs_mod',
 			'del' => 'ico-sprite subs_del',
 			'associate_user' => 'ico-sprite subs_users',
