@@ -114,7 +114,7 @@ function certificate() {
         $tb->addBody($cont);
     }
 
-    require_once(_base_.'/lib/lib.dialog.php');
+    require_once(Forma::inc(_base_ . '/lib/lib.dialog.php'));
     setupHrefDialogBox('a[href*=delcertificate]');
 
     if($mod_perm) {
