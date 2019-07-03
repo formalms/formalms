@@ -176,19 +176,6 @@ echo getTitleArea(array(
                       //  alert("Error generating certificate: " + id_certificate + " - " + id_course + " - " + id_user);
                     })      
           }
-          
-          
-           function getRowsSelected(){
-                the_table = $('#table_certificate').DataTable();
-                var data = the_table.rows('.selected').data().toArray();
-                var newarray=[];       
-                data.forEach (function (item){
-                  newarray.push(item.id_user + "-" + item.id_certificate+"-"+id_course);  
-                }
-                )
-                var sData = newarray.join();                
-                return sData;      
-           }
 
           // generate  selected certificates
           function generate_all_certificate(){
@@ -203,12 +190,16 @@ echo getTitleArea(array(
           }
           
           function download_all_certificate(){
-              
-            strRows =   getRowsSelected();
+            var newarray=[];     
+            $.each(cert_table.getFlatSelection(), function( index, value ) {
+                    var this_row = value.split("-");
+                    var id_user = this_row[0];
+                    var id_certificate = this_row[1];
+                    newarray.push(id_user + "-" + id_certificate + "-" + id_course);  
+            });
+            var strRows = newarray.join();
             if(strRows=="") return 
-            var arr_users = strRows.split(',');
             document.location.href = "index.php?modname=certificate&of_platform=lms&op=download_all&str_rows=" + strRows;
-              
           }          
           
                      
