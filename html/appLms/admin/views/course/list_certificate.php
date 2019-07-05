@@ -5,7 +5,7 @@ thead input {
     }
  
  
-.custom{
+.custom {  
   background-color:yellow;
 } 
 
@@ -16,10 +16,22 @@ thead input {
 
 
 require_once(Forma::inc(_lms_.'/lib/lib.subscribe.php'));
-require_once(Forma::inc(_lib_ . '/formatable/include.php'));
+require_once(Forma::inc(_lib_.'/formatable/include.php'));
+                                                      
+$lang =& DoceboLanguage::createInstance('certificate', 'lms');
+
 
 Util::get_js('../addons/jquery/datatables/Buttons-1.5.4/js/buttons.colVis.min.js',true, true);
-    
+Util::get_js('../appLms/admin/modules/certificate/certificate.js',true, true);
+// Aggiungere la chiave _CLOSE
+$vars = 'var ajax_url="ajax.adm_server.php?plf=lms&mn=certificate"; var _CLOSE="'.$lang->def('_CLOSE').'"; var _STOP="'.$lang->def('_STOP').'"; '
+    .'var glob_id_certificate = 0, glob_id_course = '.(int)$id_course.';'
+    .'var single_list = ['.(count($downloadables) ? '"'.implode('","', $downloadables).'"' : '').']; '
+    .'var reload_url = "'.str_replace('&amp;', '&', (isset(/*$form_url*/$submit_url) ? /*$form_url*/$submit_url : '')).'", '
+    .'_ERROR_PARSE = "'.$lang->def('_OPERATION_FAILURE').'", _SUCCESS = "'.$lang->def('_OPERATION_SUCCESSFUL').'", '
+    .'_AREYOUSURE="'.Lang::t('_AREYOUSURE', 'standard').'";';
+cout('<script type="text/javascript">'.$vars.'</script>',"page_head");
+
 $back_label =  Lang::t('_CERTIFICATE_ASSIGN_STATUS', 'course');   
     
 echo getTitleArea(array(
@@ -28,17 +40,21 @@ echo getTitleArea(array(
 ));
 
 
-  $print_button = '<div>'
-        .'<a id="print_selected_button_1" href="javascript:generate_all_certificate();">'
-        .Get::img('course/certificate.png', Lang::t('_GENERATE_ALL_SELECTED', 'certificate'))
-        .Lang::t('_GENERATE_ALL_SELECTED', 'certificate')
-        .'</a>'
-        .'&nbsp;&nbsp;&nbsp;<a id="download_selected_button_1" href="javascript:download_all_certificate();">'
-        .Get::img('course/certificate.png', Lang::t('_DOWNLOAD_ALL_SELECTED', 'certificate'))
-        .Lang::t('_DOWNLOAD_ALL_SELECTED', 'certificate')
-        .'</a>'
+$print_button = '<div>'
+                    .'<a id="print_selected_button_1" href="javascript:generate_all_certificate();">'
+                        .Get::img('course/certificate.png', Lang::t('_GENERATE_ALL_SELECTED', 'certificate'))
+                        .Lang::t('_GENERATE_ALL_SELECTED', 'certificate')
+                    .'</a>'
+                    .'&nbsp;&nbsp;&nbsp;'
+                    .'<a id="download_selected_button_1" href="javascript:download_all_certificate();">'
+                        .Get::img('course/certificate.png', Lang::t('_DOWNLOAD_ALL_SELECTED', 'certificate'))
+                        .Lang::t('_DOWNLOAD_ALL_SELECTED', 'certificate')
+                    .'</a>'
+                    .'<a id="greg" href="javascript:test();">'
+                        .Get::img('course/certificate.png', Lang::t('_GENERATE_ALL_SELECTED', 'certificate'))
+                        .Lang::t('_GENERATE_ALL_SELECTED', 'certificate')
+                    .'</a>'
         .'</div>';
-
 
   echo $print_button.'<br />';
   echo "<div class='container-back'>";
@@ -70,9 +86,7 @@ echo getTitleArea(array(
         var cert_table = $('#table_certificate').FormaTable({
             margin: '0 auto',
             scrollX: true,
-            rowId: function(row) {
-              return row.id_user + '-' + row.id_certificate;
-            },
+            rowId: 'id_user',
             deferRender: true,
             data:  <?php echo json_encode($data_certificate) ?>,
             select: {
@@ -80,21 +94,21 @@ echo getTitleArea(array(
                 all: true   
             },            
             columns:[
-             { data: 'id_user', title: 'id_user', sortable: false, visible: false, searchable: false },
-             { data: 'id_certificate', title: 'id_certificate', sortable: false, visible: false, searchable: false },
-             { data: 'edition', title: '<?php echo Lang::t('_EDITION', 'standard'); ?>', sortable: true, visible: <?php echo (($course_type == 'classroom') ? 'true' :'false') ?>  },              
-             { data: 'username', title: '<?php echo Lang::t('_USERNAME', 'standard'); ?>', sortable: true },
-             { data: 'lastname', title: '<?php echo Lang::t('_LASTNAME', 'standard'); ?>', sortable: true },
-             { data: 'firstname', title: '<?php echo Lang::t('_NAME', 'standard'); ?>', sortable: true },
+             { title: 'id_user', sortable: false, visible: false, searchable: false },
+             { title: 'id_certificate', sortable: false, visible: false, searchable: false },
+             { title: '<?php echo Lang::t('_EDITION', 'standard'); ?>', sortable: true, visible: <?php echo (($course_type == 'classroom') ? 'true' :'false') ?>  },              
+             { title: '<?php echo Lang::t('_USERNAME', 'standard'); ?>', sortable: true },
+             { title: '<?php echo Lang::t('_LASTNAME', 'standard'); ?>', sortable: true },
+             { title: '<?php echo Lang::t('_NAME', 'standard'); ?>', sortable: true },
              <?php
                $hidden_fields_n = 6;
                foreach($custom_fields as $key=>$value) {
                    $hidden_fields_n++;
                    $hidden_fields_array[] = $hidden_fields_n;
-                   echo "{data:'cf_$key', title:'".$value."', sortable:true, visible: false},".PHP_EOL;
+                   echo "{title:'".$value."', sortable:true, visible: false},".PHP_EOL;
                }
              ?>               
-             { data:'status', title: '<?php echo Lang::t('_STATUS', 'standard'); ?>', sortable: true,  
+             { title: '<?php echo Lang::t('_STATUS', 'standard'); ?>', sortable: true,  
                 render: function ( data, type, row ) { 
                     
                     switch (data){
@@ -119,11 +133,11 @@ echo getTitleArea(array(
                 
                 }
              },
-             { data: 'name_certificate', title: '<?php echo Lang::t('_CERTIFICATE_REPORT', 'certificate'); ?>', sortable: true },
-             { data: 'date_complete', title: '<?php echo Lang::t('_DATE_END', 'standard'); ?>', sortable: true, type: 'date' },  // TBD converting to local time                      
-             { data: 'on_date', title: '<?php echo Lang::t('_RELASE_DATE', 'certificate'); ?>', sortable: true, type: 'date' }, // TBD converting to local time
-             { data: 'cell_down_gen', title: '<?php echo Get::sprite('subs_pdf', Lang::t('_TITLE_VIEW_CERT', 'certificate')) ?>', sortable: true, searchable: false },
-             { data: 'cell_del_cert', title: '<?php echo Get::sprite('subs_del', Lang::t('_DEL', 'certificate')); ?>', sortable: false, searchable: false }
+             { title: '<?php echo Lang::t('_CERTIFICATE_REPORT', 'certificate'); ?>', sortable: true },
+             { title: '<?php echo Lang::t('_DATE_END', 'standard'); ?>', sortable: true, type: 'date' },  // TBD converting to local time                      
+             { title: '<?php echo Lang::t('_RELASE_DATE', 'certificate'); ?>', sortable: true, type: 'date' }, // TBD converting to local time
+             { title: '<?php echo Get::sprite('subs_pdf', Lang::t('_TITLE_VIEW_CERT', 'certificate')) ?>', sortable: true, searchable: false },
+             { title: '<?php echo Get::sprite('subs_del', Lang::t('_DEL', 'certificate')); ?>', sortable: false, searchable: false }
             ],
             pagingType: 'full_numbers',
             language : {
@@ -147,18 +161,19 @@ echo getTitleArea(array(
             
             ]
         })
+        
         cert_table.searchBar.init('#table_certificate');
         $('#table_certificate').on( 'column-visibility.dt', function ( e, settings, column, state ) {
             // if adding or remove fields, force redraw
             cert_table.searchBar.redraw() 
         });
 
-
-
-
-          function print_certificate(id_user, id_course, id_certificate){
-              var posting = $.get(
-                        'index.php',
+        function print_certificate(id_user, id_course, id_certificate){
+              
+           
+            var posting = $.get(
+            
+                    'index.php',
                         {
                             modname:'certificate',
                             of_platform:'lms',
@@ -168,53 +183,110 @@ echo getTitleArea(array(
                             user_id: id_user
                         }
                     );
+                    
+                    
                     posting.done(function (responseText) { 
-                      // alert("OK generating certificate: " + id_certificate + " - " + id_course + " - " + id_user);
                         location.reload();    
                     });
                     posting.fail(function () {
-                      //  alert("Error generating certificate: " + id_certificate + " - " + id_course + " - " + id_user);
+                        alert("Error generating certificate");
                     })      
-          }
-
-          // generate  selected certificates
-          function generate_all_certificate(){
-                if(cert_table.getFlatSelection().length==0) return 
-                $.each(cert_table.getFlatSelection(), function( index, value ) {
-                    var this_row = value.split("-");
-                    var id_user = this_row[0];
-                    var id_certificate = this_row[1];
-                    print_certificate(id_user, id_course, id_certificate) ;
-                    
-                });
-          }
+        }
           
-          function download_all_certificate(){
-            var newarray=[];     
-            $.each(cert_table.getFlatSelection(), function( index, value ) {
-                    var this_row = value.split("-");
-                    var id_user = this_row[0];
-                    var id_certificate = this_row[1];
-                    newarray.push(id_user + "-" + id_certificate + "-" + id_course);  
-            });
-            var strRows = newarray.join();
+        function getRowsSelected(){
+                the_table = $('#table_certificate').DataTable();
+                var data = the_table.rows('.selected').data();
+                var newarray=[];       
+                for (var i=0; i < data.length ;i++){
+                   newarray.push(data[i][1] + "-" + data[i][2]+"-"+id_course);          
+                }
+                var sData = newarray.join();                    
+                return sData;      
+        }
+       
+        /**
+        * 
+        * Starting from selected rows, it create an array (only if there's something in) and print the certificate for each of the user - certificate.
+        * 
+        */
+        
+        function generate_all_certificate(){
+          
+            var all_selected_Array =  getRowsSelected().split(',');
+            //if(all_selected_Array.length==0) return 
+            if(all_selected_Array.length==1 && all_selected_Array[0] == ""){
+               //alert("Seleziona prima degli elementi!"); //aggiungere lang t per multilingue!
+               return;  
+            }
+               
+            else{
+               $.each(all_selected_Array, function( index, value ) {
+                    
+                    var this_user = value.split("-");
+                    var id_user = this_user[0];
+                    var id_certificate = this_user[1];
+                    var the_course = this_user[2]
+                    print_certificate(id_user, the_course, id_certificate) ;
+                    
+                }); 
+            }
+                
+        }
+          
+         // Greg test 
+          
+        function test() {
+        
+            var all_selected_Array =  getRowsSelected().split(',');
+            //if(all_selected_Array.length==0) return 
+            
+            if(all_selected_Array.length==1 && all_selected_Array[0] == ""){
+            
+                alert("Seleziona prima degli elementi!"); //aggiungere lang t per multilingue!
+                return;
+           
+            } else {
+                
+               $.each(all_selected_Array, function( index, value ) {
+                    
+               var this_user = value.split("-");
+                  // arr_id_users[index] = this_user[0];
+                  push_arr_id_users(this_user[0]);
+                   //arr_id_certificates[index] = this_user[1];
+                  push_arr_id_certificates(this_user[1]);
+                   //arr_course_id[index] = this_user[2];
+                  push_arr_course_id(this_user[2]);
+                    
+               }); 
+             
+              
+             set_signature('<?php echo Util::getSignature(); ?>');
+                                     // Serve un array degli id dei certificati, l'id del corso, e un array degli id degli utenti
+             send_print(null, { scope: null, type: "total"} );
+            
+            }
+        }  
+          
+        function download_all_certificate(){
+              
+            strRows = getRowsSelected();
             if(strRows=="") return 
+            var arr_users = strRows.split(',');
             document.location.href = "index.php?modname=certificate&of_platform=lms&op=download_all&str_rows=" + strRows;
-          }          
+              
+        }          
           
                      
                     
           
           
-          
+      
 </script>
 
-<?php
+<?php                         
 
     require_once(_base_.'/lib/lib.dialog.php');
     setupHrefDialogBox('a[href*=del_report_certificate]',Lang::t('_CONFIRM_DELETION', 'iotask'),Lang::t('_YES', 'standard'),Lang::t('_NO', 'standard'));    
-
-
 
     echo $print_button.'<br />';    
 
