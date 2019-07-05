@@ -59,6 +59,11 @@ class DashboardBlockCoursesLms extends DashboardBlockLms
 		return '#';
 	}
 
+	public function getRegisteredActions(): array
+	{
+		return [];
+	}
+
 	private function getCourses()
 	{
 

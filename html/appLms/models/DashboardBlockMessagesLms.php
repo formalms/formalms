@@ -51,18 +51,20 @@ class DashboardBlockMessagesLms extends DashboardBlockLms
 		return $this->viewFile;
 	}
 
-	private function getMessages(){
-
-		$data = [];
-
-
-
-		return $data;
-	}
-
 	public function getLink(): string
 	{
 		return 'index.php?r=message/show';
 	}
 
+	public function getRegisteredActions(): array
+	{
+		return [];
+	}
+
+	private function getMessages(){
+
+		$data = [];
+
+		return $data;
+	}
 }

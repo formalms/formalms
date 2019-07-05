@@ -62,4 +62,19 @@ class DashboardLms extends Model
 
 		return $data;
 	}
+
+	/**
+	 * @param string $block
+	 * @return bool|DashboardBlockLms
+	 */
+	public function getRegisteredBlock(string $block)
+	{
+		foreach ($this->registeredblocks as $registeredblock) {
+
+			if (get_class($registeredblock) === $block) {
+				return $registeredblock;
+			}
+		}
+		return null;
+	}
 }

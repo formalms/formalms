@@ -52,6 +52,16 @@ class DashboardBlockCourseAdviceLms extends DashboardBlockLms
 		return $this->viewFile;
 	}
 
+	public function getLink(): string
+	{
+		return '#';
+	}
+
+	public function getRegisteredActions(): array
+	{
+		return [];
+	}
+
 	private function getCourseAdvices()
 	{
 		$courseAdvices = [];
@@ -63,11 +73,6 @@ class DashboardBlockCourseAdviceLms extends DashboardBlockLms
 		}
 
 		return $courseAdvices;
-	}
-
-	public function getLink(): string
-	{
-		return '#';
 	}
 
 	private function findEnrolledCourses()

@@ -55,4 +55,9 @@ class DashboardBlockWelcomeLms extends DashboardBlockLms
 	{
 		return '#';
 	}
+
+	public function getRegisteredActions(): array
+	{
+		return [];
+	}
 }

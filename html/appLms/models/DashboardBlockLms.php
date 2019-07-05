@@ -36,6 +36,8 @@ abstract class DashboardBlockLms extends Model
 
 	abstract public function getLink(): string;
 
+	abstract public function getRegisteredActions(): array;
+
 	/**
 	 * @var string
 	 */
@@ -131,7 +133,9 @@ abstract class DashboardBlockLms extends Model
 			'order' => $this->getOrder(),
 			'type' => $this->getType(),
 			'enabled' => $this->isEnabled(),
-			'link' => $this->getLink()
+			'link' => $this->getLink(),
+			'ajaxUrl' => 'ajax.adm_server.php?r=lms/dashboard/ajaxAction&block=' . get_class($this),
+			'registeredActions' => $this->getRegisteredActions()
 		];
 	}
 

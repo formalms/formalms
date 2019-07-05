@@ -52,6 +52,16 @@ class DashboardBlockNewsLms extends DashboardBlockLms
 		return $this->viewFile;
 	}
 
+	public function getLink(): string
+	{
+		return '#';
+	}
+
+	public function getRegisteredActions(): array
+	{
+		return [];
+	}
+
 	private function getNews()
 	{
 		$news = [];
@@ -88,8 +98,4 @@ class DashboardBlockNewsLms extends DashboardBlockLms
 	}
 
 
-	public function getLink(): string
-	{
-		return '#';
-	}
 }

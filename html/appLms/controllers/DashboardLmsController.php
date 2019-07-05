@@ -41,4 +41,28 @@ class DashboardLmsController extends LmsController
 			'blocks' => $blocks
 		]);
 	}
+
+	public function ajaxAction()
+	{
+
+		$result = ['status' => 200];
+		$blockParameter = Get::gReq('block', DOTY_STRING, false);
+		$actionParameter = Get::pReq('blockAction', DOTY_STRING, 'getElearningCalendar');
+
+		$block = $this->model->getRegisteredBlock($blockParameter);
+		if (null !== $block) {
+			if (method_exists($block, $actionParameter)) {
+
+				$result['response'] = $block->$actionParameter();
+			}
+			else {
+				$result['status'] = 400;
+			}
+		} else {
+			$result['status'] = 400;
+		}
+
+		echo json_encode($result);
+		die();
+	}
 }

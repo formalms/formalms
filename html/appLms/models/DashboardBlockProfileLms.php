@@ -53,6 +53,16 @@ class DashboardBlockProfileLms extends DashboardBlockLms
 		return $this->viewFile;
 	}
 
+	public function getLink(): string
+	{
+		return 'index.php?r=lms/profile/show';
+	}
+
+	public function getRegisteredActions(): array
+	{
+		return [];
+	}
+
 	private function getUser()
 	{
 		$user = Docebo::user();
@@ -66,10 +76,5 @@ class DashboardBlockProfileLms extends DashboardBlockLms
 			'email' => $user_info[ACL_INFO_EMAIL],
 			'avatar' => $user_info[ACL_INFO_AVATAR]
 		];
-	}
-
-	public function getLink(): string
-	{
-		return 'index.php?r=lms/profile/show';
 	}
 }

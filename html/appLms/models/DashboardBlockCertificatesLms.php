@@ -52,6 +52,16 @@ class DashboardBlockCertificatesLms extends DashboardBlockLms
 		return $this->viewFile;
 	}
 
+	public function getLink(): string
+	{
+		return 'index.php?r=lms/mycertificate/show';
+	}
+
+	public function getRegisteredActions(): array
+	{
+		return [];
+	}
+
 	private function getCertificates(){
 		$data = [];
 
@@ -60,8 +70,5 @@ class DashboardBlockCertificatesLms extends DashboardBlockLms
 
 
 
-	public function getLink(): string
-	{
-		return 'index.php?r=lms/mycertificate/show';
-	}
+
 }
