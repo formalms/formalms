@@ -2,6 +2,7 @@ require('../modules/course-box');
 require('../modules/folder-view');
 require('../modules/slider-menu');
 require('../modules/modal-accordion');
+import DashboardCalendar from '../modules/DashboardCalendar';
 import { InfoCourse } from '../modules/InfoCourse';
 
 var Page = (function() {
@@ -23,12 +24,14 @@ var Page = (function() {
     });
 
     $(document).ready(function() {
+      new DashboardCalendar();
+
       if ($('.js-tabnav').length) {
         setTabnavHeight();
 
         if ($('.js-infocourse').length) {
           InfoCourse();
-        }  
+        }
 
         $('.tabnav__label').on('click', function() {
           var _target = $(this).attr('data-tab');
