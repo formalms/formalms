@@ -183,3 +183,12 @@ INSERT INTO core_lang_text (id_text, text_key, text_module, text_attributes) VAL
 SET @lastID = LAST_INSERT_ID();
 
 INSERT INTO core_lang_translation ( id_text,lang_code,  translation_text, save_date ) VALUES  (@lastID, 'english','User with name and surname : [firstname] [lastname] and userId : [username] has been suspended from course : [course] in platform : [url]', now());
+
+-- Certificate Assign permissions --
+UPDATE core_menu_under SET associated_token = 'mod' WHERE default_name = '_CERTIFICATE' AND of_platform = 'alms';
+
+SET @max = (SELECT MAX(idst)+1 FROM `core_role`);
+INSERT INTO `core_role` (idst, roleid) VALUES (@max, '/lms/admin/certificate/assign');
+
+SET @max = (SELECT MAX(idst)+2 FROM `core_role`);
+INSERT INTO `core_role` (idst, roleid) VALUES (@max, '/lms/admin/certificate/release');
