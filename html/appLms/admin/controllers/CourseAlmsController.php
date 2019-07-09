@@ -498,7 +498,6 @@ Class CourseAlmsController extends AlmsController
 
 			if ($perm_release) {
 				$list[ $row['idCourse'] ]['certreleased'] = '<a href="index.php?modname=certificate&op=view_report_certificate&amp;id_course='.$row['idCourse'].'&from=courselist&of_platform=lms">'.Get::sprite('subs_print'.(!isset($course_with_cert[$row['idCourse']]) ? '_grey' : ''), Lang::t('_CERTIFICATE_RELEASE', 'course')).'</a>';
-                $list[ $row['idCourse'] ]['certreleased'] = '<a href="index.php?r=alms/course/list_certificate&amp;id_course='.$row['idCourse'].'&amp;from=courselist">'.Get::sprite('subs_print'.(!isset($course_with_cert[$row['idCourse']]) ? '_grey' : ''), Lang::t('_CERTIFICATE_RELEASE', 'course')).'</a>';
 			}
 			
 			$list[ $row['idCourse'] ] = array_merge($list[ $row['idCourse'] ], [
