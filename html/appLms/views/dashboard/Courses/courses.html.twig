@@ -16,7 +16,7 @@
             <div class="d-courses__type">
               {{ translate(course.course_type,'standard') }}
             </div>
-            <div class="d-courses__date-wrapper">
+            <div class="d-courses__date-wrapper status--{{ course.course_status }}">
               {% if course.date_begin != '0000-00-00' %}
                 <span class="d-courses__date d-courses__date--start">
                   {{ course.date_begin }}
