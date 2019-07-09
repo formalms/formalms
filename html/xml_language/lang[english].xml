@@ -796,6 +796,7 @@
         <key id="course&amp;_MIN_SUBSCRIBE_FOR_COURSE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Minimum number of subscribed students allowed is <b>[min_subscribe]</b>]]></key>
         <key id="course&amp;_MULTIPLE_SUBSCRIPTION" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Multiple subscriptions]]></key>
         <key id="course&amp;_MY_CERTIFICATE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[My certificates]]></key>
+        <key id="course&amp;_NEXT_LESSON" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Next lesson]]></key>
         <key id="course&amp;_NEW_USER_SUBS_WAITING_TEXT" attributes="accessibility" save_date="2017-03-14 16:10:41"><![CDATA[User is waiting at [url]]]></key>
         <key id="course&amp;_NOACTIVE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Waiting for activation]]></key>
         <key id="course&amp;_NOENTER" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Access denied]]></key>
@@ -824,6 +825,7 @@
         <key id="course&amp;_SELECT_DAYS_COURSE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Select course's days]]></key>
         <key id="course&amp;_SELF_UNSUBSCRIBE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Unsubscribe from the course]]></key>
         <key id="course&amp;_SHOW_ADVANCED_INFO" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Advanced course info]]></key>
+        <key id="course&amp;_SHOW_ALL_DATES" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Show all dates]]></key>
         <key id="course&amp;_SHOW_COUNT" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Show only number of connected users, but don't use Instant Messenger]]></key>
         <key id="course&amp;_SHOW_DEMO" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Demo]]></key>
         <key id="course&amp;_SHOW_INSTMSG" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Show Instant Messenger]]></key>

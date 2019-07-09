@@ -455,11 +455,11 @@ function userCanUnsubscribe($course)
                     </div>
                     <div class="course-box__extraInfo">
                         <div class="course-box__next"> <!-- TODO @Peppe: dinamicizzare -->
-                            Prossima lezione
+	                        <?php echo Lang::t('_NEXT_LESSON', 'course'); ?>
                             <div>10 Giugno 2019</div>
                         </div>
                         <div class="course-box__allDates">  <!-- TODO @Peppe: dinamicizzare -->
-                            <a href="">Vedi tutte le date</a>
+                            <a href=""><?php echo Lang::t('_SHOW_ALL_DATES', 'course'); ?></a>
                         </div>
                     </div>
                 </div>

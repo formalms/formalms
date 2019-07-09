@@ -19,6 +19,7 @@ class CatalogLmsController extends LmsController {
 
 	protected $_default_action = 'show';
 
+	/** @var CatalogLms */
 	var $model;
 	var $json;
 	var $acl_man;

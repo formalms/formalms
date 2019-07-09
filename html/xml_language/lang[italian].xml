@@ -758,6 +758,9 @@ http://server/path/index.php?modname=login) \]]></key>
         <key id="course&amp;_CUSTOM_OPTIONS" attributes="" save_date="0000-00-00 00:00:00"><![CDATA[Opzioni Personalizzate]]></key>
         <key id="course&amp;_DATE_END" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Data fine]]></key>
         <key id="course&amp;_DATE_START" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Data inizio]]></key>
+        <key id="course&amp;_DATE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Data]]></key>
+        <key id="course&amp;_DAY" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Giorno]]></key>
+        <key id="course&amp;_DAYS" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Giorni]]></key>
         <key id="course&amp;_DAY_OF_VALIDITY" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Giorni di validità]]></key>
         <key id="course&amp;_DEMO" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Vedi demo]]></key>
         <key id="course&amp;_DIRECT_PLAY" attributes="" save_date="2017-07-05 13:01:58"><![CDATA[Esecuzione diretta del primo oggetto didattico nel player]]></key>
@@ -827,6 +830,7 @@ http://server/path/index.php?modname=login) \]]></key>
         <key id="course&amp;_SELECT_DAYS_COURSE" attributes="" save_date="2017-03-15 16:38:24"><![CDATA[Seleziona i giorni del corso]]></key>
         <key id="course&amp;_SELF_UNSUBSCRIBE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Disiscrivimi dal corso]]></key>
         <key id="course&amp;_SHOW_ADVANCED_INFO" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Informazioni avanzate sul corso]]></key>
+        <key id="course&amp;_SHOW_ALL_DATES" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Vedi tutte le date]]></key>
         <key id="course&amp;_SHOW_COUNT" attributes="" save_date="2017-03-15 17:56:56"><![CDATA[Mostra solo il numero di utenti collegati ma non mostrare l'Instant Messenger]]></key>
         <key id="course&amp;_SHOW_DEMO" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Demo]]></key>
         <key id="course&amp;_SHOW_INSTMSG" attributes="" save_date="2017-03-15 17:56:39"><![CDATA[Mostra Instant Messenger]]></key>
