@@ -74,24 +74,6 @@ function send_print(e, args) {
 
 
 function initializeTotalSelection(skipDialog, lenght_id_users) {
-    //set selection of elements
-   // var sel = [];       // Array di id utente selezionati
-   // var sel_cert = [];  // Array di id certificati selezionati
-
-/*    var i, actual_sel = YAHOO.util.Selector.query('tr[class*=selected]');
-
-    for (i=0; i<actual_sel.length; i++) {
-        if (actual_sel[i].checked) {
-            sel.push(actual_sel[i].value);
-            sel_cert.push(actual_sel[i].getAttribute("id_certificate"));       // Inserisce nell'array sel[] l'id utente e nell'array sel_cert gli id dei certificati
-        }
-    }
-*/
-    
-    
-    // list = sel;
-   // list_cert = sel_cert;
-
   
     counter = 0;
 
@@ -132,8 +114,8 @@ function array_contains(value, arr) {
 }
 
 function updateDialogNums(counter, totnum) {
-    YAHOO.util.Dom.get('actual_num').innerHTML = counter+'';
-    YAHOO.util.Dom.get('total_num').innerHTML = totnum+'';
+        YAHOO.util.Dom.get('actual_num').innerHTML = counter+'';
+        YAHOO.util.Dom.get('total_num').innerHTML = totnum+'';  
 }
 
 function handleStopEvent() {
@@ -204,33 +186,14 @@ function force_reload() {
         tform.method = "POST";
         tform.action = reload_url;
 
-          // Dava errore. Non trova il valore di active_text_filter nel documento.. ??
         var authentic_request = document.createElement("INPUT");
         authentic_request.type = "hidden";
         authentic_request.name = "authentic_request";
         //authentic_request.value = YAHOO.util.Dom.get("authentic_request_certificates_emission").value;
         authentic_request.value = signature;
         
-       /* var filter = document.createElement("INPUT");
-        filter.type = "hidden";
-        filter.name = "filter";
-        filter.value = YAHOO.util.Dom.get("active_text_filter").value;
-
-        var only_released = document.createElement("INPUT");
-        only_released.type = "hidden";
-        only_released.name = "only_released";
-        only_released.value = YAHOO.util.Dom.get("active_only_released").value;
-
-        var active_ini = YAHOO.util.Dom.get("active_ini").value;
-        var ini = document.createElement("INPUT");
-        ini.type = "hidden";
-        ini.name = "ini[" + active_ini + "]";
-        ini.value = active_ini;    */
 
         tform.appendChild(authentic_request);
-       // tform.appendChild(filter);
-       // tform.appendChild(only_released);     
-       // tform.appendChild(ini);
 
 
         document.body.appendChild(tform);
@@ -242,36 +205,5 @@ function force_reload() {
 function reload() {
     if (all_ok) {
         force_reload();
-    } else {
-        //...
     }
 }
-
-YAHOO.util.Event.onDOMReady(function() {
-    YAHOO.util.Event.addListener(["print_selected_button_1", "print_selected_button_2","test_greg"], "click", send_print, { scope: null, type: "total" });
-  /*  for (var i=0; i<single_list.length; i++) {
-        YAHOO.util.Event.addListener(single_list[i], "click", send_print, { scope: YAHOO.util.Dom.get(single_list[i]), type: "single" } );
-    }
-*/
-   /* YAHOO.util.Event.addListener(["download_selected_button_1", "download_selected_button_2"], "click", send_download, { scope: null, type: "total" });
-
-    YAHOO.util.Event.addListener(["select_all_1","select_all_2"], "click", function() {
-        var i, list = YAHOO.util.Selector.query("input[id^=selected_]");
-        for (i=0; i<list.length; i++) {
-            list[i].checked = true;
-        }
-        old_el = YAHOO.util.Dom.get("old_selection");
-        all_el = YAHOO.util.Dom.get("all_selection");
-        var old_sel = old_el.value, all_sel = all_el.value;
-        old_el.value = all_sel;
-    });
-    YAHOO.util.Event.addListener(["unselect_all_1","unselect_all_2"], "click", function() {
-        var i, list = YAHOO.util.Selector.query("input[id^=selected_]");
-        for (i=0; i<list.length; i++) {
-            list[i].checked = false;
-        }
-        old_el = YAHOO.util.Dom.get("old_selection");
-        old_el.value = "";
-    });   */
-
-});
