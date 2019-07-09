@@ -1,9 +1,39 @@
-var list = [];
-var list_cert = [];
+//var list = [];
+//var list_cert = [];
 var totnum = 0;
 var glob_dialog = null;
 var successful_printed = [];
 var all_ok = true, all_finished = false;
+
+var signature;
+
+var arr_id_users = [];
+var arr_id_certificates = [];
+var arr_course_id = [];
+
+function push_arr_id_users(elem) {
+    
+    arr_id_users.push(elem);
+    
+}
+
+function push_arr_id_certificates(elem) {
+    
+    arr_id_certificates.push(elem);
+    
+}
+
+function push_arr_course_id(elem) {
+    
+    arr_course_id.push(elem);
+    
+} 
+
+function set_signature(sig){
+    
+    signature = sig;
+    
+}          
 
 function send_download(e, args) {
     if (args.type=="total") initializeTotalSelection(true);
@@ -32,40 +62,26 @@ function send_print(e, args) {
             glob_dialog.render(document.body);
             glob_dialog.show();
 
-            if (args.type=="total") initializeTotalSelection(false);
+            if (args.type=="total") initializeTotalSelection(false, arr_id_certificates.length);
             if (args.type=="single") initializeSingleSelection(args.scope, false);
-            do_printing(list_cert[counter], glob_id_course, list[counter]);
+           // do_printing(list_cert[counter], glob_id_course, list[counter]);
+           
+            do_printing(arr_id_certificates[counter], arr_course_id[counter], arr_id_users[counter], arr_id_certificates.length);
         }
     }, 'op=getpopup');
 
 }
 
 
-function initializeTotalSelection(skipDialog) {
-    //set selection of elements
-    var sel = [];
-    var sel_cert = [];
-
-    var i, actual_sel = YAHOO.util.Selector.query('input[id^=selected_]');
-
-    for (i=0; i<actual_sel.length; i++) {
-        if (actual_sel[i].checked) {
-            sel.push(actual_sel[i].value);
-            sel_cert.push(actual_sel[i].getAttribute("id_certificate"));
-        }
-    }
-
-    list = sel;
-    list_cert = sel_cert;
-
-    totnum = sel.length;
+function initializeTotalSelection(skipDialog, lenght_id_users) {
+  
     counter = 0;
 
     if (skipDialog) {return;}
-    if (totnum <= 0) {
+    if (lenght_id_users <= 0) {
         glob_dialog.destroy();
     } else {
-        updateDialogNums(counter, totnum);
+        updateDialogNums(counter, lenght_id_users);
     }
 }
 
@@ -97,10 +113,9 @@ function array_contains(value, arr) {
     return false;
 }
 
-
 function updateDialogNums(counter, totnum) {
-    YAHOO.util.Dom.get('actual_num').innerHTML = counter+'';
-    YAHOO.util.Dom.get('total_num').innerHTML = totnum+'';
+        YAHOO.util.Dom.get('actual_num').innerHTML = counter+'';
+        YAHOO.util.Dom.get('total_num').innerHTML = totnum+'';  
 }
 
 function handleStopEvent() {
@@ -108,7 +123,7 @@ function handleStopEvent() {
     if (all_finished) force_reload();
 }
 
-function do_printing(id_certificate, id_course, id_user)
+function do_printing(id_certificate, id_course, id_user, totnum)
 {
     if (totnum <= 0) return;
     var res_el = YAHOO.util.Dom.get('print_result');
@@ -156,7 +171,7 @@ function do_printing(id_certificate, id_course, id_user)
                     updateDialogNums(counter,totnum);
 
                     if (counter<totnum)
-                        do_printing(list_cert[counter], glob_id_course, list[counter]);
+                        do_printing(arr_id_certificates[counter], arr_course_id[counter], arr_id_users[counter], totnum);
                     else
                         finalizeSelection();
                 }
@@ -174,28 +189,12 @@ function force_reload() {
         var authentic_request = document.createElement("INPUT");
         authentic_request.type = "hidden";
         authentic_request.name = "authentic_request";
-        authentic_request.value = YAHOO.util.Dom.get("authentic_request_certificates_emission").value;
+        //authentic_request.value = YAHOO.util.Dom.get("authentic_request_certificates_emission").value;
+        authentic_request.value = signature;
+        
 
-        var filter = document.createElement("INPUT");
-        filter.type = "hidden";
-        filter.name = "filter";
-        filter.value = YAHOO.util.Dom.get("active_text_filter").value;
-
-        var only_released = document.createElement("INPUT");
-        only_released.type = "hidden";
-        only_released.name = "only_released";
-        only_released.value = YAHOO.util.Dom.get("active_only_released").value;
-
-        var active_ini = YAHOO.util.Dom.get("active_ini").value;
-        var ini = document.createElement("INPUT");
-        ini.type = "hidden";
-        ini.name = "ini[" + active_ini + "]";
-        ini.value = active_ini;
-
-        tform.appendChild(filter);
         tform.appendChild(authentic_request);
-        tform.appendChild(only_released);
-        tform.appendChild(ini);
+
 
         document.body.appendChild(tform);
 
@@ -206,36 +205,5 @@ function force_reload() {
 function reload() {
     if (all_ok) {
         force_reload();
-    } else {
-        //...
     }
 }
-
-YAHOO.util.Event.onDOMReady(function() {
-    YAHOO.util.Event.addListener(["print_selected_button_1", "print_selected_button_2"], "click", send_print, { scope: null, type: "total" });
-    for (var i=0; i<single_list.length; i++) {
-        YAHOO.util.Event.addListener(single_list[i], "click", send_print, { scope: YAHOO.util.Dom.get(single_list[i]), type: "single" } );
-    }
-
-    YAHOO.util.Event.addListener(["download_selected_button_1", "download_selected_button_2"], "click", send_download, { scope: null, type: "total" });
-
-    YAHOO.util.Event.addListener(["select_all_1","select_all_2"], "click", function() {
-        var i, list = YAHOO.util.Selector.query("input[id^=selected_]");
-        for (i=0; i<list.length; i++) {
-            list[i].checked = true;
-        }
-        old_el = YAHOO.util.Dom.get("old_selection");
-        all_el = YAHOO.util.Dom.get("all_selection");
-        var old_sel = old_el.value, all_sel = all_el.value;
-        old_el.value = all_sel;
-    });
-    YAHOO.util.Event.addListener(["unselect_all_1","unselect_all_2"], "click", function() {
-        var i, list = YAHOO.util.Selector.query("input[id^=selected_]");
-        for (i=0; i<list.length; i++) {
-            list[i].checked = false;
-        }
-        old_el = YAHOO.util.Dom.get("old_selection");
-        old_el.value = "";
-    });
-
-});

@@ -1445,6 +1445,105 @@ Class CourseAlms extends Model
         return $row;
     }
 
+  public function getListTototalUserCertificate($id_course, $id_certificate, $cf){
+        
+        
+        require_once(Forma::inc(_lms_.'/lib/lib.certificate.php'));
+        $regset = Format::instance();
+        $date_format = $regset->date_token;
+
+
+        $tc  = $GLOBALS['prefix_lms']."_certificate as c";
+        $tca = $GLOBALS['prefix_lms']."_certificate_assign as ca";
+        $tcc = $GLOBALS['prefix_lms']."_certificate_course as cc";
+        $tcu = $GLOBALS['prefix_lms']."_courseuser as cu";
+        $tu = $GLOBALS['prefix_fw']."_user as u";
+
+
+        $query = "SELECT u.idst, u.userid, u.firstname, u.lastname,
+                         DATE_FORMAT(cu.date_complete,'".$date_format."'), DATE_FORMAT(ca.on_date,'".$date_format."'), cu.idUser as id_user,
+                         cu.status , cu.idCourse, cc.id_certificate,
+                         c.name as name_certificate"
+            ." FROM ( ".$tu." JOIN ".$tcu." ON (u.idst = cu.idUser) ) "
+            ." JOIN ".$tcc." ON cc.id_course = cu.idCourse "
+            ." JOIN ".$tc." ON c.id_certificate = cc.id_certificate"
+            ." LEFT JOIN ".$tca." ON ( ca.id_course = cu.idCourse AND ca.id_user=cu.idUser AND ca.id_certificate = cc.id_certificate ) "
+            ." LEFT JOIN (SELECT iduser, idcourse, SUM( (UNIX_TIMESTAMP( lastTime ) - UNIX_TIMESTAMP( enterTime ) ) ) elapsed from learning_tracksession group by iduser, idcourse) t_elapsed on t_elapsed.idcourse=cu.idCourse and cu.idUser = t_elapsed.idUser "
+            ." WHERE 1 "
+            . ($id_certificate != 0 ? " AND cc.id_certificate = ".$id_certificate : "")
+            ." AND coalesce(elapsed,0) >= coalesce(cc.minutes_required,0)*60 "
+            ." AND cu.idCourse='".(int)$id_course."'";       
+           
+        $res = sql_query($query);   
+
+
+           
+           
+       foreach ($cf as $i => $value) {
+            $cf[$i] = '';
+        }      
+       $users = array();   
+
+       
+       $umodel = new UsermanagementAdm();          
+       while (list($idst, $userid, $firstname, $lastname, $date_complete, $on_date, $id_user, $status,  $id_course, $id_certificate, $name_certificate ) = sql_fetch_row ($res)) {
+               
+          $url = 'index.php?modname=certificate&amp;certificate_id='.$id_certificate.'&amp;course_id='.$id_course.'&amp;user_id='.$id_user.'&amp;of_platform=lms';
+          if($on_date!= null) {
+              $operation_url = $url."&amp;op=send_certificate"; 
+              $cell_down_gen = "<a href='".$operation_url."' class='ico-wt-sprite subs_pdf'>".Lang::t('_DOWNLOAD', 'certificate')."</a>";          
+              $cell_del_cert =  Get::sprite_link('subs_del', $url.'&op=del_report_certificate&from='.Get::req('from'), Lang::t('_DEL', 'certificate')) ;                                    
+          } else {
+              $operation_url = $url."&amp;op=print_certificate"; 
+              $generate = 'javascript:print_certificate('.$id_user.','.$id_course.','.$id_certificate.')' ;
+              $cell_down_gen = "<a href='".$generate."' class='ico-wt-sprite subs_pdf'>".Lang::t('_GENERATE', 'certificate')."</a>";
+              $cell_del_cert = '';
+          }     
+
+          $user1 = ['id_user' => $id_user, 'id_certificate' => $id_certificate , 'edition' => $this->getInfoClassroom($id_user, $id_course), 'username' => substr( $userid,1) ,
+                    'lastname'=> $lastname, 'firstname' => $firstname]  ;
+          // getting custom fields values
+          $cf_values = $umodel->getCustomFieldUserValues(intval($id_user));
+          $cf = array_replace($cf, $cf_values);
+          $user2 = array();
+          foreach($cf as $key => $value) {
+              $user2["cf_$key"] = $value;
+          }
+          $user3 =  ['status' => $status, 'name_certificate' => $name_certificate, 'date_complete' => $date_complete, 'on_date' => $on_date, 'cell_down_gen' => $cell_down_gen, 'cell_del_cert' => $cell_del_cert];
+          
+                    
+          $users[] = array_merge($user1, $user2, $user3);
+                        
+          
+        }
+        
+                                        
+       return $users;         
+        
+        
+  
+    }
+
+    
+    
+    private function getInfoClassroom($id_user, $id_course){
+        
+        $query =    "SELECT code, name"
+                        ." FROM %lms_course_date, %lms_course_date_user
+                         WHERE id_course = '".$id_course."' and %lms_course_date_user.id_date=%lms_course_date.id_date and id_user=".$id_user;
+           
+           
+           
+            $date = sql_fetch_row(sql_query($query));        
+            if ($date==false) $date = '';
+
+            return $date;
+        
+    }
+   
+   
+   
+    
 }
 
 ?>
