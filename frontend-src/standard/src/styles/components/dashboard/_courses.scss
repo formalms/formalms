@@ -78,6 +78,32 @@
 .d-courses__date-wrapper {
   min-height: 17px;
   margin-bottom: 5px;
+
+  position: relative;
+  
+  &.status--red {
+    &:before {
+      content: '';
+      width: 9px;
+      height: 9px;
+      @include center-object(y, absolute);
+      background-color: $orange;
+      border-radius: 50%;
+      left: -12px; 
+    }
+  }
+
+  &.status--green {
+    &:before {
+      content: '';
+      width: 9px;
+      height: 9px;
+      @include center-object(y, absolute);
+      background-color: $green;
+      border-radius: 50%;
+      left: -12px; 
+    }
+  }
 }
 
 .d-courses__date {
