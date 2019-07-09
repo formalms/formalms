@@ -62,6 +62,10 @@
     padding-left: 15px;
   }
 
+  .d-user-profile & {
+    font-size: 16px;
+  }
+
   &.is-hidden {
     opacity: 0;
     visibility: hidden;
@@ -288,6 +292,38 @@
     font-size: inherit;
     color: rgba(255, 255, 255, 0.7);
     margin-left: 6px;
+
+    .d-user-profile & {
+      display: none;
+    }
+  }
+
+  &:before {
+    .d-user-profile & {
+      content: '';
+      width: 24px;
+      height: 24px;
+      @include center-object(y, absolute);
+      left: -30px;
+    }
+
+    .d-button--cert & {
+      background-image: url(#{$assets}images/icons/icon--file.svg);
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+  
+    .d-button--mess & {
+      background-image: url(#{$assets}images/icons/icon--envelope.svg);
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+  }
+
+  .d-user-profile & { 
+    position: relative;
   }
 }
 

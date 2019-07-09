@@ -2,5 +2,40 @@
 
 {% block content %}
     {#profile#}
-    {#{{ dump(block) }}#}
+  <div class="d-col d-col--12 d-col--4--desktop">
+    <div class="d-user-profile">
+      <div class="d-grid">
+        <div class="d-row d-user-profile__padder">
+          <div class="d-col d-col--12">
+            <div class="d-user-profile__avatar-wrapper">
+              <img src="https://via.placeholder.com/56x56" alt="" class="d-user-profile__img">
+            </div>
+            <div class="d-user-profile__content-wrapper">
+              <p class="d-user-profile__text">
+                Ciao,
+              </p>
+              <p class="d-user-profile__text">
+                {{ block.user.firstname ~ ' ' ~  block.user.lastname }}
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="d-row d-user-profile__padder">
+          <div class="d-col d-col--6">
+            <a class="forma-button forma-button--orange-hover forma-button--full  " title="" href="">
+              <span class="forma-button__label">Certificati</span>
+            </a>
+          </div>
+          <div class="d-col d-col--6">
+            <a class="forma-button forma-button--orange-hover forma-button--full d-button--mess" title="" href="">
+              <span class="forma-button__label">Messaggi</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {# <pre>
+    {{ dump(block) }}
+  </pre> #}
 {% endblock %}
