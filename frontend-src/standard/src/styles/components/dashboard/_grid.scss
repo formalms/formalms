@@ -29,6 +29,9 @@
     right: -8px;
   }
   overflow: hidden;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
 }
 
 .d-col {
@@ -46,6 +49,7 @@
 @for $i from 0 through 12 {
   .d-col--#{$i} {
     width: grid(12, $i);
+    flex-basis: grid(12, $i);
   }
 
   .d-col-gap--#{$i} {
@@ -55,6 +59,8 @@
   .d-col--#{$i}--desktop {
     @include breakpoint($ipad) {
       width: grid(12, $i)!important;
+      flex: grid(12, $i)!important;
+      max-width: grid(12, $i)!important;
     }
   }
 

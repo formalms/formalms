@@ -2,5 +2,42 @@
 
 {% block content %}
   {#courses#}
-  {{ dump(block) }}
+  <div class="d-col d-col--12 d-col--4--desktop">
+    <div class="d-courses">
+      <h3 class="d-title">
+        {{ translate('_COURSES','standard') }}
+      </h3>
+      {% for course in block.courses %}
+        <div class="d-courses__item has-icon--{{ course.course_type }}">
+          <div class="d-courses__img-wrapper">
+            <img class="d-courses__img" src="https://via.placeholder.com/130x85"/>
+          </div>
+          <div class="d-courses__content-wrapper">
+            <div class="d-courses__type">
+              {{ translate(course.course_type,'standard') }}
+            </div>
+            <div class="d-courses__date-wrapper">
+              {% if course.date_begin != '0000-00-00' %}
+                <span class="d-courses__date d-courses__date--start">
+                  {{ course.date_begin }}
+                </span>
+                {% if course.date_end != '0000-00-00' %}
+                  <span class="d-courses__date d-courses__date--end">
+                    {{ course.date_end }}
+                  </span>
+                {% endif %}
+              {% endif %}
+            </div>
+            <div class="d-courses__desc js-d-dotdotdot">
+              {{ course.box_description }}
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  {# <pre>
+    {{ dump(block) }}
+  </pre> #}
 {% endblock %}
