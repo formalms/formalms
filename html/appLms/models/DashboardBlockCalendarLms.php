@@ -132,7 +132,7 @@ class DashboardBlockCalendarLms extends DashboardBlockLms
 			$exclude_pathcourse = " and c.idCourse not in (" . implode(',', $excl) . " )";
 		}
 
-		$query = 'SELECT c.idCourse AS course_id, c.idCategory AS course_category_id, c.name AS course_name, c.status AS course_status, c.date_begin AS course_date_begin, c.date_end AS course_date_end, c.hour_begin AS course_hour_begin, c.hour_begin AS course_hour_begin, c.course_type AS course_type, c.box_description AS course_box_description, '
+		$query = 'SELECT c.idCourse AS course_id, c.idCategory AS course_category_id, c.name AS course_name, c.status AS course_status, c.date_begin AS course_date_begin, c.date_end AS course_date_end, c.hour_begin AS course_hour_begin, c.hour_end AS course_hour_end, c.course_type AS course_type, c.box_description AS course_box_description, '
 			. ' cu.status AS user_status, cu.level AS user_level, cu.date_inscr AS user_date_inscr, cu.date_first_access AS user_date_first_access, cu.date_complete AS user_date_complete, cu.waiting AS user_waiting'
 			. ' FROM %lms_course AS c '
 			. ' JOIN %lms_courseuser AS cu ON (c.idCourse = cu.idCourse) '
@@ -153,7 +153,7 @@ class DashboardBlockCalendarLms extends DashboardBlockLms
 		$result = array();
 		while ($data = $db->fetch_assoc($rs)) {
 
-			$courseData = $this->getDataFromCourse($data, $startDate, $endDate);
+			$courseData = $this->getDataFromCourse($data);
 			
 			$result[] = $courseData;
 		}
@@ -177,9 +177,9 @@ class DashboardBlockCalendarLms extends DashboardBlockLms
 			$exclude_pathcourse = " and c.idCourse not in (" . implode(',', $excl) . " )";
 		}
 
-		$query = 'SELECT c.idCourse AS course_id, c.idCategory AS course_category_id, c.name AS course_name, c.status AS course_status, c.date_begin AS course_date_begin, c.date_end AS course_date_end, c.hour_begin AS course_hour_begin, c.hour_begin AS course_hour_begin, c.course_type AS course_type, c.box_description AS course_box_description, '
+		$query = 'SELECT c.idCourse AS course_id, c.idCategory AS course_category_id, c.name AS course_name, c.status AS course_status, c.date_begin AS course_date_begin, c.date_end AS course_date_end, c.hour_begin AS course_hour_begin, c.hour_end AS course_hour_end, c.course_type AS course_type, c.box_description AS course_box_description, '
 			. ' cu.status AS user_status, cu.level AS user_level, cu.date_inscr AS user_date_inscr, cu.date_first_access AS user_date_first_access, cu.date_complete AS user_date_complete, cu.waiting AS user_waiting, '
-			. ' re.*'
+			. ' re.idEvent AS reservation_event_id, re.idLaboratory AAS reservation_laboratory_id, re.idCategory AS reservation_category_id, re.title AS reservation_title, re.description AS reservation_description, re.date AS reservation_date, re.maxUser AS reservation_max_user, re.deadLine AS reservation_dead_line, re.fromTime AS reservation_from_time, re.toTime AS reservation_tiTime'
 			. ' FROM %lms_course AS c '
 			. ' JOIN %lms_courseuser AS cu ON (c.idCourse = cu.idCourse) '
 			. ' JOIN %lms_reservation_events AS re ON (c.idCourse = re.idCourse) '
@@ -200,7 +200,7 @@ class DashboardBlockCalendarLms extends DashboardBlockLms
 		$result = array();
 		while ($data = $db->fetch_assoc($rs)) {
 
-			$reservationData = $this->getDataFromReservation($data, $startDate, $endDate);
+			$reservationData = $this->getDataFromReservation($data);
 
 			$result[] = $reservationData;
 		}

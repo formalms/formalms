@@ -20,8 +20,8 @@ defined("IN_FORMA") or die('Direct access is forbidden.');
  */
 class DashboardBlockCoursesLms extends DashboardBlockLms
 {
-	const MAX_COURSES = 3;
-	const COURSE_TYPE_LIMIT = 3;
+	const MAX_COURSES = 10;
+	const COURSE_TYPE_LIMIT = 10;
 
 	public function __construct()
 	{
@@ -76,7 +76,7 @@ class DashboardBlockCoursesLms extends DashboardBlockLms
 		];
 
 		// course status : all status, new, completed, in progress
-		$conditions[] = '(c.status <> 3 )';
+		$conditions[] = '(c.status <> 3)';
 
 		$elearningConditions = $conditions;
 		$elearningConditions[] = "c.course_type = ':course_type'";
@@ -85,13 +85,12 @@ class DashboardBlockCoursesLms extends DashboardBlockLms
 		$elearningParams = $params;
 		$elearningParams[':course_type'] = 'elearning';
 
-		$courselist = [];//$this->findAll($elearningConditions, $elearningParams, self::COURSE_TYPE_LIMIT);
+		$courselist = []; //$this->findAll($elearningConditions, $elearningParams, self::COURSE_TYPE_LIMIT);
 
 		if (count($courselist) < self::COURSE_TYPE_LIMIT) {
 
 			$classRoomConditions = $conditions;
 			$classRoomConditions[] = "c.course_type = ':course_type'";
-
 
 			$classRoomParams = $params;
 			$classRoomParams[':course_type'] = 'classroom';
@@ -122,13 +121,13 @@ class DashboardBlockCoursesLms extends DashboardBlockLms
 			$exclude_pathcourse = " and c.idCourse not in (" . implode(',', $excl) . " )";
 		}
 
-
-		$query = "SELECT c.*, c.status AS course_status, cu.status AS user_status, cu.level, cu.date_inscr, cu.date_first_access, cu.date_complete, cu.waiting"
-			. " FROM %lms_course AS c "
-			. " JOIN %lms_courseuser AS cu ON (c.idCourse = cu.idCourse)  "
-			. " WHERE " . $this->compileWhere($conditions, $params)
+		$query = 'SELECT c.idCourse AS course_id, c.idCategory AS course_category_id, c.name AS course_name, c.status AS course_status, c.date_begin AS course_date_begin, c.date_end AS course_date_end, c.hour_begin AS course_hour_begin, c.hour_end AS course_hour_end, c.course_type AS course_type, c.box_description AS course_box_description '
+			. ' ,cu.status AS user_status, cu.level AS user_level, cu.date_inscr AS user_date_inscr, cu.date_first_access AS user_date_first_access, cu.date_complete AS user_date_complete, cu.waiting AS user_waiting '
+			. ' FROM %lms_course AS c '
+			. ' JOIN %lms_courseuser AS cu ON (c.idCourse = cu.idCourse) '
+			. ' WHERE ' . $this->compileWhere($conditions, $params)
 			. $exclude_pathcourse
-			. " ORDER BY c.idCourse";
+			. ' ORDER BY c.idCourse';
 
 		if ($limit > 0) {
 			$query .= " LIMIT $limit";
@@ -137,13 +136,21 @@ class DashboardBlockCoursesLms extends DashboardBlockLms
 			$query .= " OFFSET $offset";
 		}
 
-
 		$rs = $db->query($query);
 
 		$result = [];
 		while ($course = $db->fetch_assoc($rs)) {
 
-			$result[$course['idCourse']] = $this->getDataFromCourse($course);
+			$courseData = $this->getDataFromCourse($course);
+
+			if ($courseData['type'] === 'classroom') {
+
+				$dates = $this->getDatesForCourse($course, $conditions, $params, $exclude_pathcourse);
+
+				$courseData['dates'] = $dates;
+			}
+
+			$result[$course['course_id']] = $courseData;
 		}
 
 		return $result;
@@ -174,5 +181,49 @@ class DashboardBlockCoursesLms extends DashboardBlockLms
 			$where[] = str_replace($find, $params, $value);
 		}
 		return implode(" AND ", $where);
+	}
+
+	private function getDatesForCourse($course)
+	{
+		$db = DbConn::getInstance();
+
+		$query = 'SELECT cd.id_date AS date_id ,cd.code AS date_code ,cd.name AS date_name ,cd.description AS date_description ,cd.status AS date_status ,cd.sub_start_date AS date_start_date ,cd.sub_end_date AS date_end_date'
+			. ' FROM %lms_course_date AS cd '
+			. ' WHERE cd.id_course = ' . $course['course_id']
+			. ' AND cd.status <>3 '
+			. ' ORDER BY cd.id_date';
+
+		$rs = $db->query($query);
+
+		$dates = [];
+		while ($date = $db->fetch_assoc($rs)) {
+
+			if ($date['date_start_date'] !== '0000-00-00 00:00:00') {
+				$startDate = new DateTime($date['date_start_date']);
+				$startDateString = $startDate->format('d/m/Y');
+			} else {
+				$startDateString = '';
+			}
+
+			if ($date['date_end_date'] !== '0000-00-00 00:00:00') {
+				$endDate = new DateTime($date['date_end_date']);
+				$endDateString = $endDate->format('d/m/Y');
+			} else {
+				$endDateString = '';
+			}
+
+			$dates[] = [
+				'id' => $date['date_id'],
+				'code' => $date['date_code'],
+				'name' => $date['date_name'],
+				'description' => $date['date_description'],
+				'status' => $date['date_status'],
+				'startDate' => $date['date_start_date'],
+				'endDate' => $date['date_end_date'],
+				'startDateString' => $startDateString,
+				'endDateString' => $endDateString,
+			];
+		}
+		return $dates;
 	}
 }

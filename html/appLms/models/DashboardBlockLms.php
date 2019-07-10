@@ -144,7 +144,7 @@ abstract class DashboardBlockLms extends Model
 		return sprintf('%s/%s.html.twig', $this->getViewPath(), $this->getViewFile());
 	}
 
-	protected function getDataFromCourse($course, $startDate, $endDate)
+	protected function getDataFromCourse($course)
 	{
 		$status_list = [
 			0 => Lang::t('_CST_PREPARATION', 'course'),
@@ -156,26 +156,25 @@ abstract class DashboardBlockLms extends Model
 
 		$dateBegin = $course['course_date_begin'];
 		if ($dateBegin === '0000-00-00') {
-			$dateBegin = $startDate;
+			$dateBegin = '';
 		}
-
 
 		$dateEnd = $course['course_date_end'];
 		if ($dateEnd === '0000-00-00') {
-			$dateEnd = $endDate;
+			$dateEnd = '';
 		}
 
-		$hourBebing = $course['course_hour_begin'];
-		$hourBebingString = '';
-		if ($hourBebing === '-1') {
-			$hourBebing = '00:00:00';
+		$hourBegin = $course['course_hour_begin'];
+		$hourBeginString = '';
+		if ($hourBegin === '-1' || $hourBegin === null) {
+			$hourBegin = '00:00:00';
 		} else {
-			$hourBebing .= ':00';
-			$hourBebingString = $course['course_hour_begin'];
+			$hourBegin .= ':00';
+			$hourBeginString = $course['course_hour_begin'];
 		}
 		$hourEnd = $course['course_hour_end'];
 		$hourEndString = '';
-		if ($hourEnd === '-1') {
+		if ($hourEnd === '-1' || $hourEnd === null) {
 			$hourEnd = '23:59:59';
 		} else {
 			$hourEnd .= ':00';
@@ -185,39 +184,39 @@ abstract class DashboardBlockLms extends Model
 		$courseData = [
 			'id' => $course['course_id'],
 			'title' => $course['course_name'],
-			'start' => $dateBegin . 'T' . $hourBebing,
-			'end' => $dateEnd . 'T' . $hourEnd,
+			'start' => !empty($dateBegin) ? $dateBegin . 'T' . $hourBegin : '',
+			'end' => !empty($dateEnd) ? $dateEnd . 'T' . $hourEnd : '',
 			'type' => $course['course_type'],
 			'status' => $this->calculateCourseStatus($course),
 			'nameCategory' => $this->getCategory($course['course_category_id']),
 			'courseStatus' => $course['course_status'],
 			'courseStatusString' => $status_list[(int)$course['course_status']],
 			'description' => $course['course_box_description'],
-			'hours' => $hourBebingString . ' ' . $hourEndString,
+			'hours' => $hourBeginString . ' ' . $hourEndString,
 		];
 
 		return $courseData;
 	}
 
-	protected function getDataFromReservation($reservation, $startDate, $endDate)
+	protected function getDataFromReservation($reservation)
 	{
 		$dateBegin = $reservation['date_begin'];
 		if ($dateBegin === '0000-00-00') {
-			$dateBegin = $startDate;
+			$dateBegin = '';
 		}
 
 		$dateEnd = $reservation['date_end'];
 		if ($dateEnd === '0000-00-00') {
-			$dateEnd = $endDate;
+			$dateEnd = '';
 		}
 
-		$hourBebing = $reservation['hour_begin'];
-		$hourBebingString = '';
-		if ($hourBebing === '-1') {
-			$hourBebing = '00:00:00';
+		$hourBegin = $reservation['hour_begin'];
+		$hourBeginString = '';
+		if ($hourBegin === '-1') {
+			$hourBegin = '00:00:00';
 		} else {
-			$hourBebing .= ':00';
-			$hourBebingString = $reservation['hour_begin'];
+			$hourBegin .= ':00';
+			$hourBeginString = $reservation['hour_begin'];
 		}
 		$hourEnd = $reservation['hour_end'];
 		$hourEndString = '';
@@ -230,12 +229,12 @@ abstract class DashboardBlockLms extends Model
 
 		$reservationData = [
 			'title' => $reservation['name'],
-			'start' => $dateBegin . 'T' . $hourBebing,
+			'start' => $dateBegin . 'T' . $hourBegin,
 			'end' => $dateEnd . 'T' . $hourEnd,
 			'type' => $reservation['course_type'],
 			'status' => true,
 			'description' => $reservation['box_description'],
-			'hours' => $hourBebingString . ' ' . $hourEndString,
+			'hours' => $hourBeginString . ' ' . $hourEndString,
 		];
 
 		$reservationData['course'] = $this->getCalendarDataFromCourse($reservation);
