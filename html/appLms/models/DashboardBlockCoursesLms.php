@@ -20,8 +20,8 @@ defined("IN_FORMA") or die('Direct access is forbidden.');
  */
 class DashboardBlockCoursesLms extends DashboardBlockLms
 {
-	const MAX_COURSES = 10;
-	const COURSE_TYPE_LIMIT = 10;
+	const MAX_COURSES = 3;
+	const COURSE_TYPE_LIMIT = 3;
 
 	public function __construct()
 	{
@@ -85,7 +85,7 @@ class DashboardBlockCoursesLms extends DashboardBlockLms
 		$elearningParams = $params;
 		$elearningParams[':course_type'] = 'elearning';
 
-		$courselist = []; //$this->findAll($elearningConditions, $elearningParams, self::COURSE_TYPE_LIMIT);
+		$courselist = $this->findAll($elearningConditions, $elearningParams, self::COURSE_TYPE_LIMIT);
 
 		if (count($courselist) < self::COURSE_TYPE_LIMIT) {
 
