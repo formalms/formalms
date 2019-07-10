@@ -1,3 +1,17 @@
 .d-calendar {
 
+  .fc-button-primary {
+    background-color: transparent!important;
+    border: none!important;
+  }
+
+  .fc-icon-chevron-left,
+  .fc-icon-chevron-right {
+    color: $orange;
+  }
 }
+
+.d-calendar__item  {
+  margin-top: 38px;
+}
+

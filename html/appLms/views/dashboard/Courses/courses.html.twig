@@ -14,7 +14,7 @@
           {% set status_class = 'red' %}
         {% endif %}
 
-        <a class="d-courses__item has-icon--{{ course.course_type }}" target="_self" href="/">
+        <a class="d-courses__item has-icon--{{ course.type }}" target="_self" href="/">
           <div class="d-courses__img-wrapper">
             <img class="d-courses__img" src="https://via.placeholder.com/130x85"/>
           </div>
@@ -23,15 +23,15 @@
               TITOLO CORSO YEAH YEAH
             </div>
             <div class="d-courses__date-wrapper status--{{ status_class }}">
-              {% if course.date_begin != '00-00-0000' %}
+              {% if course.start != '00-00-0000' %}
                 <span class="d-courses__date d-courses__date--start">
-                  {{ course.date_begin }}
-                  11/22/1234
+                  {{ course.start }}
+                  {# 11/22/1234 #}
                 </span>
-                {% if course.date_end != '00-00-0000' %}
+                {% if course.end != '00-00-0000' %}
                   <span class="d-courses__date d-courses__date--end">
-                    {{ course.date_end }}
-                    11/22/1234
+                    {{ course.end }}
+                    {# 11/22/1234 #}
                   </span>
                 {% endif %}
               {% endif %}
