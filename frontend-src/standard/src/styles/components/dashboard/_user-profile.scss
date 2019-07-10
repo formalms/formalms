@@ -1,5 +1,11 @@
 .d-user-profile {
+  height: 100%;
 
+  > .d-grid {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
 }
 
 .d-user-profile__avatar-wrapper {

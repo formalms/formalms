@@ -1,6 +1,5 @@
 .d-courses {
-  color: $anthracite;
-  padding: 0 14px;
+  
 }
 
 .d-courses__item {
@@ -69,12 +68,6 @@
   line-height: 17px;
 }
 
-.d-courses__type {
-  margin-bottom: 3px;
-  font-weight: $bold;
-  text-transform: uppercase;
-}
-
 .d-courses__date-wrapper {
   min-height: 17px;
   margin-bottom: 5px;
@@ -115,7 +108,7 @@
 }
 
 .d-courses__date--end {
-  padding-left: 30px;
+  padding-left: 22px;
   position: relative;
 
   &:before {
@@ -127,7 +120,7 @@
     background-position: center;
     background-repeat: no-repeat;
     @include center-object(y, absolute);
-    left: 8px;
+    left: 3px;
   }
 }
 

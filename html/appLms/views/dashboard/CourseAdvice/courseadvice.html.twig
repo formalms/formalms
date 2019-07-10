@@ -2,5 +2,27 @@
 
 {% block content %}
     {#Course news#}
-    {# {{ dump(block) }} #}
+    <div class="d-col d-col--12 d-col--3--desktop">
+      <div class="d-advise d-widget">
+        <h3 class="d-title">
+          {{ translate('_NEWS','standard') }}
+        </h3>
+        {% for advise in block.courseAdvices %}
+          <div class="d-advise__item">
+            <div class="d-advise__date">
+              12/12/1212
+            </div>
+            <div class="d-advise__title">
+              advise title yeah
+            </div>
+            <div class="d-advise__desc">
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna.
+            </div>
+          </div> 
+        {% endfor %}
+      </div>
+    </div>  
+    {# <pre>
+      {{ dump(block) }}
+    </pre> #}
 {% endblock %}
