@@ -1,11 +1,13 @@
 import { Calendar } from '@fullcalendar/core';
+import itLocale from '@fullcalendar/core/locales/it';
 import dayGridPlugin from '@fullcalendar/daygrid';
 
 export default class DashboardCalendar {
 	constructor() {
 		this.el = document.querySelector('.js-calendar')
 		this.calendar = new Calendar(this.el, {
-			plugins: [dayGridPlugin],
+      plugins: [dayGridPlugin],
+      locale: itLocale,
 			events: [
 				{
 					title  : 'event1',
