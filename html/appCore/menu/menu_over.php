@@ -24,7 +24,7 @@ function GetAdminPanel(){
                         <a href="index.php?r=lms/profile/show">'.Lang::t('_PROFILE', 'profile').'</a>   
                   </li>
                   <li> 
-                    <a id="logout"  href='.Get::rel_path('base').'/index.php?r='. _logout_ .' ">                
+                    <a id="logout"  href="'.Get::rel_path('base').'/index.php?r='. _logout_ .'">                
                         <i class="fa fa-power-off" aria-hidden="true"></i>&nbsp;'.Lang::t('_LOGOUT', 'standard').'</span>
                     </a>
                   </li>

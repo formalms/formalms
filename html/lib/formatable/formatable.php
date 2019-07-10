@@ -1,7 +1,134 @@
+<?php 
+
+    
+    // date picker localization
+    $regset = Format::instance();
+    $date_format = $regset->date_token;
+    $date_sep = $regset->date_sep;
+    $date_format = str_replace(['%d', '%m', '%Y', '-'], ['dd', 'mm', 'yyyy', '-'], $date_format);
+    $_lang = Docebo::user()->getPreference('ui.lang_code'); 
+    $date_picker_param = 'data-provide="datepicker" data-date-autoclose=true data-date-language="'.$_lang.'" data-date-format="'.$date_format.'"'; 
+    
+    
+
+?>
 <script type="text/javascript">
                                    
 $.fn.dataTable.ext.errMode = 'none';
 $.fn.datepicker.noConflict();
+
+$.fn.dataTable.Api.register( 'column().title()', function () {
+    var colheader = this.header();
+    return $(colheader).text().trim();
+} );
+
+                 
+$.fn.dataTable.Api.register( 'column().type()', function () {
+    var colnumber =  this.index()
+    return this.settings()[0].aoColumns[colnumber].sType
+} );
+
+
+$.fn.dataTable.Api.register( 'column().searchable()', function () {
+    var colnumber =  this.index()
+    return this.settings()[0].aoColumns[colnumber].bSearchable
+} );
+
+
+$.fn.dataTable.Api.register( 'selectable_row()', function () {
+    return this.column('.select-checkbox')[0].length == 1
+} );
+
+
+// date comparison
+$.fn.dataTable.ext.search.push(
+    function( settings, data, dataIndex ) {
+         var ret_val = true   
+         date_sep  = '<?=$date_sep?>'
+         date_format_array =  '<?=$date_format?>'.split(date_sep)
+         day_position =  date_format_array.indexOf("dd")
+         month_position =  date_format_array.indexOf("mm")
+         year_position = date_format_array.indexOf("yyyy")
+         $("select[id^='selDate']").each(function(){
+               id_column = $(this).attr('id').split('_')[1]
+               cell_date_str = data[id_column]
+               selected_date_str = $('#search_input_DateA_'+id_column).val()
+               operator = parseInt($('#selDateA_'+id_column).val())
+               if (selected_date_str != '') {
+                   cell_date_array = cell_date_str.split(date_sep)
+                   cell_date_d =  new Date(cell_date_array[year_position],
+                                          cell_date_array[month_position],                     
+                                          cell_date_array[day_position]).getTime()
+                   selected_date_array = selected_date_str.split(date_sep)
+                   selected_date_d = new Date(selected_date_array[year_position],
+                                          selected_date_array[month_position],                     
+                                          selected_date_array[day_position]).getTime()
+                   switch (operator) {
+                       case 0:  // equal
+                        ret_val = (selected_date_d == cell_date_d)
+                        break;
+                       case 1: // greater
+                        ret_val =  ( cell_date_d > selected_date_d)
+                        break;
+                       case 2: //  minor
+                        ret_val =  ( cell_date_d < selected_date_d)
+                        break;
+                       case 3: // greater equal
+                        ret_val =  ( cell_date_d >= selected_date_d)
+                        break;
+                       case 4: //  minor equal
+                        ret_val =  ( cell_date_d <= selected_date_d)
+                        break;
+                   }
+               } 
+               
+             }
+        )
+        return ret_val;
+    }
+);
+
+// number comparison
+
+$.fn.dataTable.ext.search.push(
+    function( settings, data, dataIndex ) {
+         var ret_val = true
+         $("select[id^='selNum']").each(function(){
+               id_column = $(this).attr('id').split('_')[1]
+               cell_num = parseInt(data[id_column])
+               selected_num = parseInt($('#search_input_NumA_'+id_column).val())
+               operator = parseInt($('#selNumA_'+id_column).val())
+               if (!isNaN(selected_num)) {
+                   switch (operator) {
+                       case 0:  // equal
+                        ret_val = (cell_num == selected_num)
+                        break;
+                       case 1: // greater
+                        ret_val =  ( cell_num > selected_num)
+                        break;
+                       case 2: //  minor
+                        ret_val =  ( cell_num < selected_num)
+                        break;
+                       case 3: // greater equal
+                        ret_val =  ( cell_num >= selected_num)
+                        break;
+                       case 4: //  minor equal
+                        ret_val =  ( cell_num <= selected_num)
+                        break;
+                   }
+               } 
+               
+             }
+        )
+        return ret_val;
+    }
+);
+
+
+
+
+                 
+
 
 /**
  * forma.lms DataTable wrapper.
@@ -252,16 +379,18 @@ function formaTable(dom, options) {
          */
         if(options.select.all === true) {
             _options.buttons = $.merge(_options.buttons, [{
-                extend: 'selectAll'
+                extend: 'selectAll',
+                text: '<?=Lang::t('_SELECT_ALL', 'standard') ?>'
               , action: function(e, dt, node, config) {
                     if(!_thisObj._selection.all) {
                         _thisObj._selection.rows = [];
                     }
                     _thisObj._selection.all = true;
-                    dt.rows().select();
+                    dt.rows({ search: 'applied' }).select();
                 }
             }, {
-                extend: 'selectNone'
+                extend: 'selectNone',
+                text: '<?=Lang::t('_UNSELECT_ALL', 'standard') ?>'
               , action: function(e, dt, node, config) {
                     if(_thisObj._selection.all) {
                         _thisObj._selection.rows = [];
@@ -426,12 +555,12 @@ function formaTable(dom, options) {
     * Language translation
     */
    _options.language = {
-                        'sSearch'  :  '<?php echo Lang::t('_SEARCH', 'standard') ?>',
+                        'sSearch'  :  '<?=Lang::t('_SEARCH', 'standard')?>',
                         'oPaginate': {
-                               'sFirst': '<?php echo Lang::t('_START', 'standard') ?>',
-                               'sPrevious' : '<?php echo Lang::t('_PREV_B', 'standard') ?>',
-                               'sNext': '<?php echo Lang::t('_NEXT', 'standard') ?>',
-                               'sLast' : '<?php echo Lang::t('_END', 'standard') ?>'
+                               'sFirst': '<?=Lang::t('_START', 'standard')?>',
+                               'sPrevious' : '<?=Lang::t('_PREV_B', 'standard')?>',
+                               'sNext': '<?=Lang::t('_NEXT', 'standard')?>',
+                               'sLast' : '<?=Lang::t('_END', 'standard')?>'
                               }
                     }    
     
@@ -530,17 +659,184 @@ formaTable.prototype.getSelection = function() {
 }
 
 /**
+ * Retrive the full list of rows selected (only working correctly with non server-based data).
+ */
+formaTable.prototype.getFlatSelection = function() {
+    if(this._selection.all) {
+        return $(this._datatable.rows({ search: 'applied' }).ids()).not(this._selection.rows).get();
+    } else {
+        return this._selection.rows;
+    }
+}
+
+/**
  * Reload table data.
  */
 formaTable.prototype.reload = function() {
     return this._datatable.ajax.reload();
 };
 
+
+formaTable.prototype.searchBar = {
+    
+    init: function(dt){
+        this.instance = $(dt).DataTable();
+        this.searchBar =  '.dataTables_scrollHeadInner tr:eq(1)';
+        this.initSearchBar()
+        $(this.searchBar).hide()
+    },
+    search_string: function(ix){
+        html_tag = '<select id="selString_' + ix + '" name="selString_' + ix + '">'+
+                   '<option selected value="0"><?=Lang::t('_STARTS_WITH', 'standard')?></option>'+
+                   '<option value="1"><?=Lang::t('_CONTAINS', 'standard')?></option>'+
+                    '<option value="2">Uguale a</option>'+
+                    '</select>' +
+                    '<input id="inputString_' + ix + '" name="inputString_' + ix + '" type="text"  />' 
+        return html_tag
+        
+    },
+    search_num: function(ix){
+        html_tag = '<select id="selNumA_' + ix + '" name="selNumA_' + ix + '">'+
+                   '<option selected value="0">=</option>'+
+                   '<option value="1">></option>'+
+                   '<option value="2"><</option>'+
+                   '<option value="3">>=</option>'+
+                   '<option value="4"><=</option>'+                   
+                    '</select>' +
+                    '<input style="width:50px" id="search_input_NumA_' + ix + '" name="search_input_NumA_' + ix + '"  onkeypress="return event.charCode >= 48 && event.charCode <= 57" onpaste="return false"/><br>' //+
+/*                    '<select id="selNumB_' + ix + '" name="selNumB_' + ix + '">'+
+                   '<option selected value="0">=</option>'+
+                   '<option value="1">></option>'+
+                   '<option value="2"><</option>'+
+                    '</select>' +
+                    '<input style="width:50px" id="search_input_NumB_' + ix + '" name="search_input_NumB_' + ix + '" type="text" />'  */
+        return html_tag
+    },
+    search_date: function(ix) {
+        html_tag = '<select id="selDateA_' + ix + '" name="selDateA_' + ix + '">'+
+                   '<option selected value="0">=</option>'+
+                   '<option value="1">></option>'+
+                   '<option value="2"><</option>'+
+                   '<option value="3">>=</option>'+
+                   '<option value="4"><=</option>'+                   
+                    '</select>' +
+                    '<input style="width:80px" id="search_input_DateA_' + ix + '" name="search_input_DateA_' + ix + '" type="text"  <?=$date_picker_param?>/><br>' //+
+                    /*'<select id="selDateB_' + ix + '" name="selDateB_' + ix + '">'+
+                   '<option selected value="0">=</option>'+
+                   '<option value="1">></option>'+
+                   '<option value="2"><</option>'+
+                    '</select>' +
+                    '<input style="width:80px" id="search_input_DateB_' + ix + '" name="search_input_DateB_' + ix + '" type="text"  <?=$date_picker_param?>/><br>' */
+                 return html_tag        
+         
+    },             
+    show:function(){
+       if ($(this.searchBar).is(":visible") ) {
+            $(this.searchBar).hide()
+       } else {
+            $(this.searchBar).show()
+            table.columns.adjust().draw('page');
+       }    
+    },
+    redraw:function(){
+        is_visible = $(this.searchBar).is(":visible")
+        $(this.searchBar).remove() 
+        this.initSearchBar()
+        if (!is_visible) 
+            $(this.searchBar).hide()    
+        // clearing current search filter, if any        
+        this.instance.search('').columns().search('').draw('')
+    },
+    initSearchBar: function() {
+       try {
+            table = this.instance.table()
+            $('.dataTables_scrollHeadInner thead tr').clone().appendTo( '.dataTables_scrollHeadInner thead' );
+            c = ((table.selectable_row()) ? 0 : 1)
+            i = 0
+            _parent = this
+            table.columns().every(function() {
+                s_searchable = this.searchable();
+                s_type = this.type();
+                s_name = this.title(); 
+                s_visible = this.visible();
+                if (s_visible) {
+                    $('.dataTables_scrollHeadInner tr:eq(1) th:eq('+c+')').removeClass() 
+                    if (s_searchable) {
+                        switch(s_type) {
+                            case 'date':
+                                $('.dataTables_scrollHeadInner tr:eq(1) th:eq('+c+')').html(_parent.search_date(i))
+                                break
+                            case 'num':
+                                $('.dataTables_scrollHeadInner tr:eq(1) th:eq('+c+')').html(_parent.search_num(i))
+                                break
+                            default:
+                                $('.dataTables_scrollHeadInner tr:eq(1) th:eq('+c+')').html(_parent.search_string(i)) 
+                        }       
+                        
+                    }
+                    c++
+                }
+                i++
+            })
+            this.addSearchListener()
+        } catch (e) {
+           console.log(e.message) 
+        }             
+        
+    },    
+    addSearchListener: function(){
+        the_table = this.instance
+        $("input[id^='inputString_']").on("keyup change", function(){
+            
+            id_column = $(this).attr('id').split('_')[1]
+            var cond = $('#selString_'+id_column).val()    
+            var str_search = this.value 
+            if (str_search == '')
+                    cond = 0
+            switch (parseInt(cond)) {
+                case 0:
+                    str_search = "^" + str_search
+                    break
+                case 1:
+                    str_search = "^.*" + str_search + ".*$" 
+                    break
+                case 2:
+                    str_search = "^" + str_search + "$" 
+                    break
+                    
+            }
+         the_table.column(id_column).search( str_search ,true, false).draw()
+        });
+        $("select[id^='selString_']").on("change", function(){
+            id_column = $(this).attr('id').split('_')[1]
+            $('#inputString_'+id_column).trigger("keyup")
+        })       
+        $("select[id^='selDate'], input[id^='search_input_Date']").on("change", function(){
+            the_table.draw();
+        })
+        
+        $("select[id^='selNum']").on("change", function(){
+            the_table.draw();
+        })
+        
+        $("input[id^='search_input_Num']").on("keyup change", function(){
+            the_table.draw();
+        });
+        
+        
+        
+
+    }
+    
+}
+   
+ 
 /**
  * Add FormaTable to jQuery.
  */
 $.fn.FormaTable = function(options) {
     return new formaTable(this, options);
 };
+
 
 </script>

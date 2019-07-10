@@ -486,22 +486,14 @@ Class CourseAlmsController extends AlmsController
 					</a>',
 				'edition' => ($row['course_type'] === 'classroom' 
 						? '<a href="index.php?r='.$this->base_link_classroom.'/classroom&amp;id_course='.$row['idCourse'].'" title="'.Lang::t('_CLASSROOM_EDITION', 'course').'">'.$this->model->classroom_man->getDateNumber($row['idCourse'], true).'</a>' : ($row['course_edition'] == 1 ? '<a href="index.php?r='.$this->base_link_edition.'/show&amp;id_course='.$row['idCourse'].'" title="'.Lang::t('_EDITIONS', 'course').'">'.$this->model->edition_man->getEditionNumber($row['idCourse']).'</a>'
-						: '')),
-			);
-
-			$perm_assign = checkPerm('assign', true, 'certificate', 'lms');
-			$perm_release = checkPerm('release', true, 'certificate', 'lms');
-
-			if ($perm_assign) {
-				$list[ $row['idCourse'] ]['certificate'] = '<a href="index.php?r='.$this->base_link_course.'/certificate&amp;id_course='.$row['idCourse'].'">'.Get::sprite('subs_pdf'.(!isset($course_with_cert[$row['idCourse']]) ? '_grey' : ''), Lang::t('_CERTIFICATE_ASSIGN_STATUS', 'course')).'</a>';
-			}
-
-			if ($perm_release) {
-				$list[ $row['idCourse'] ]['certreleased'] = '<a href="index.php?modname=certificate&op=view_report_certificate&amp;id_course='.$row['idCourse'].'&from=courselist&of_platform=lms">'.Get::sprite('subs_print'.(!isset($course_with_cert[$row['idCourse']]) ? '_grey' : ''), Lang::t('_CERTIFICATE_RELEASE', 'course')).'</a>';
-			}
-			
-			$list[ $row['idCourse'] ] = array_merge($list[ $row['idCourse'] ], [
-                'competences' => '<a href="index.php?r='.$this->base_link_competence.'/man_course&amp;id_course='.$row['idCourse'].'">'.Get::sprite('subs_competence'.(!isset($course_with_competence[$row['idCourse']]) ? '_grey' : ''), Lang::t('_COMPETENCES', 'course')).'</a>',
+						: '')),        
+				'certificate' => '<a href="index.php?r='.$this->base_link_course.'/certificate&amp;id_course='.$row['idCourse'].'">'.Get::sprite('subs_pdf'.(!isset($course_with_cert[$row['idCourse']]) ? '_grey' : ''), Lang::t('_CERTIFICATE_ASSIGN_STATUS', 'course')).'</a>',
+                
+                
+                'certreleased' => '<a href="index.php?r=alms/course/list_certificate&amp;id_course='.$row['idCourse'].'&amp;from=courselist">'.Get::sprite('subs_print'.(!isset($course_with_cert[$row['idCourse']]) ? '_grey' : ''), Lang::t('_CERTIFICATE_RELEASE', 'course')).'</a>',
+				
+                
+				'competences' => '<a href="index.php?r='.$this->base_link_competence.'/man_course&amp;id_course='.$row['idCourse'].'">'.Get::sprite('subs_competence'.(!isset($course_with_competence[$row['idCourse']]) ? '_grey' : ''), Lang::t('_COMPETENCES', 'course')).'</a>',
 				'menu' => '<a href="index.php?r='.$this->base_link_course.'/menu&amp;id_course='.$row['idCourse'].'">'.Get::sprite('subs_menu', Lang::t('_ASSIGN_MENU', 'course')).'</a>',
 				'dup' => 'ajax.adm_server.php?r='.$this->base_link_course.'/dupcourse&id_course='.$row['idCourse'],
 				'mod' => '<a href="index.php?r='.$this->base_link_course.'/modcourse&amp;id_course='.$row['idCourse'].'">'.Get::sprite('subs_mod', Lang::t('_MOD', 'standard')).'</a>',
@@ -1184,7 +1176,7 @@ Class CourseAlmsController extends AlmsController
 													$possible_status,
 													( isset($course_ex_cert[$id_cert]) ? $course_ex_cert[$id_cert] : 0 ),
 													'' );
-				$cont[] = (isset($course_cert[$id_cert]) && $course_cert[$id_cert] != 0 && $view_cert ? '<a href="index.php?modname=certificate&amp;op=view_report_certificate&amp;id_certificate='.$id_cert.'&amp;id_course='.$id_course.'&amp;from=course&amp;of_platform=lms"><b><u>' : '').( isset($released[$id_cert]) ? $released[$id_cert] : '0' ).(isset($course_cert[$id_cert]) && $course_cert[$id_cert] != 0  ? '</b></u></a>' : '');
+                $cont[] = (isset($course_cert[$id_cert]) && $course_cert[$id_cert] != 0 && $view_cert ? '<a href="index.php?r=alms/course/list_certificate&amp;id_certificate='.$id_cert.'&amp;id_course='.$id_course.'&amp;from=course&amp;of_platform=lms"><b><u>' : '').( isset($released[$id_cert]) ? $released[$id_cert] : '0' ).(isset($course_cert[$id_cert]) && $course_cert[$id_cert] != 0  ? '</b></u></a>' : '');
 
 				$tb->addBody($cont);
 			}
@@ -1203,6 +1195,7 @@ Class CourseAlmsController extends AlmsController
 		}
 	}
 
+    
 	public function menu()
 	{
 		if (!$this->permissions['mod']) {
@@ -1493,5 +1486,45 @@ Class CourseAlmsController extends AlmsController
 
 		$this->render('maskcourse', $params);
 	}
+    
+    
+
+    public function list_certificate(){
+        
+        $id_course = Get::req('id_course', DOTY_INT, 0);
+        $id_certificate = Get::req('id_certificate', DOTY_INT, 0);
+        $from = Get::req('from');
+        $op = Get::req('op');
+        
+        
+        require_once(Forma::inc(_adm_.'/lib/lib.field.php'));
+        $fman = new FieldList();
+        $custom_field_array = $fman->getFlatAllFields();        
+ 
+        $data_certificate = $this->model->getListTototalUserCertificate($id_course, $id_certificate, $custom_field_array);
+        // pushing empty element at the top of array  
+        foreach ($data_certificate as $key => $value) {
+            array_unshift($data_certificate[$key], '');
+        } 
+
+        
+        
+        $course_info = $this->model->getCourseModDetails($id_course);
+        $this->render(
+                    'list_certificate', array(
+                    'id_course' => $id_course,
+                    'id_certificate' => $id_certificate,
+                    'course_type' => $course_info['course_type'],
+                    'course_name' => $course_info['name'],
+                    'from' => $from ,
+                    'data_certificate' => $data_certificate  ,
+                    'custom_fields' =>$custom_field_array,
+                    'op' => $op
+                    
+        ));        
+        
+    }
+
+    
 }
 ?>
