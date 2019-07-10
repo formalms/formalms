@@ -20,7 +20,7 @@ require_once(Forma::inc(_lib_ . '/formatable/include.php'));
 
 Util::get_js('../addons/jquery/datatables/Buttons-1.5.4/js/buttons.colVis.min.js',true, true);
 Util::get_js('../appLms/admin/modules/certificate/certificate.js',true, true);
-// Aggiungere la chiave _CLOSE
+
 $vars = 'var ajax_url="ajax.adm_server.php?plf=lms&mn=certificate"; var _CLOSE="'.Lang::t('_CLOSE').'"; var _STOP="'.Lang::t('_STOP').'"; '
     .'var glob_id_certificate = 0, glob_id_course = '.(int)$id_course.';'
     .'var single_list = ['.(count($downloadables) ? '"'.implode('","', $downloadables).'"' : '').']; '
@@ -164,28 +164,7 @@ echo getTitleArea(array(
 
 
 
-
-         /* function print_certificate(id_user, id_course, id_certificate){
-              var posting = $.get(
-                        'index.php',
-                        {
-                            modname:'certificate',
-                            of_platform:'lms',
-                            op:'print_certificate',
-                            certificate_id: id_certificate,
-                            course_id: id_course,
-                            user_id: id_user
-                        }
-                    );
-                    posting.done(function (responseText) { 
-                        location.reload();    
-                    });
-                    posting.fail(function () {
-                      //  alert("Error generating certificate: " + id_certificate + " - " + id_course + " - " + id_user);
-                    })      
-          }      */
-
-		
+	
 		   function generate_all_certificate() {
         
             if(cert_table.getFlatSelection().length==0) return 
