@@ -1,9 +1,21 @@
 .d-calendar {
   font-family: $font;
 
-  .fc-button-primary {
-    background: transparent!important;
+  .fc-button{
+    background-color: $white!important;
     border: none!important;
+  }
+
+  .fc-today-button {
+    color: $anthracite;
+  }
+  
+  .fc-day-top {
+    padding-top: 5px;
+  }
+
+  .fc-sun {
+    color: $orange;
   }
 
   .fc-icon-chevron-left,

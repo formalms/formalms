@@ -8,17 +8,31 @@ export default class DashboardCalendar {
 		this.calendar = new Calendar(this.el, {
       plugins: [dayGridPlugin],
       locale: itLocale,
-			events: [
-				{
-					title  : 'event1',
-					start  : '2019-06-29',
-					type: 'classroom'
-				},
-				{
-					title: 'new event',
-					start: '2019-09-28',
-					type: 'yeah'
-				},
+      eventSources: [
+        {
+          url: window.dashboardCalendarAjaxUrl,
+          method: 'POST',
+          extraParams: {
+            blockAction: 'getElearningCalendar'
+          },
+          failure: function(err) {
+            console.log(err);
+          },
+          color: 'purple',
+          textColor: 'white'
+        }
+      ]
+			// events: [
+				// {
+				// 	title  : 'event1',
+				// 	start  : '2019-06-29',
+				// 	type: 'classroom'
+				// },
+				// {
+				// 	title: 'new event',
+				// 	start: '2019-09-28',
+				// 	type: 'yeah'
+				// },
 				// {
 				// 	title: 'Corso lorem ipsum',
 				// 	start: '2019-06-29T12:30:00', //l'orario è opzionale
@@ -28,7 +42,7 @@ export default class DashboardCalendar {
 				// 	description: '',
 				//  hours: '15:30 - 18:30'
 				// }
-			],
+			// ],
 		})
 
 		this.calendar.render()

@@ -13,8 +13,12 @@
     </div>
   </div>
 
-  {# <pre>
+  <pre>
     {{ dump(block) }}
-  </pre> #}
+  </pre>
+  
+  <script>
+    window.dashboardCalendarAjaxUrl = {{ block.ajaxUrl }}
+  </script>
 
 {% endblock %}
