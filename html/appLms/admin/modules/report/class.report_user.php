@@ -1855,7 +1855,7 @@ class Report_User extends Report {
                     $tot_compl_sup = $this->getPercLO($id_user,$id_course); 
                     $per_compl = round(($tot_compl_sup/$tot_lo)*100)  ;                    
                     
-                    $row[] =  $per_compl."%";
+                    $row[] = $per_compl."%";
                 
                 }                
                         
@@ -1981,13 +1981,12 @@ class Report_User extends Report {
     
    // Luca
     function getTotLO($idUser, $idCourse){    
-          $query = "select count(*) as tot_lo from learning_organization where idCourse=".$idCourse." " ;
+          $query = "select count(*) as tot_lo from learning_organization where idCourse=".$idCourse." AND (objectType <> '' OR objectType IS NULL)" ;
                                           
           $res = $this->db->query($query);
           list($tot_lo) = $this->db->fetch_row($res)  ;
           
           return $tot_lo;
-
     }
     
     function getPercLO($idUser, $idCourse){
@@ -2002,7 +2001,6 @@ class Report_User extends Report {
           list($tot_lo) = $this->db->fetch_row($res)  ;
           
           return $tot_lo;
-
     }    
     
     
@@ -2023,7 +2021,6 @@ class Report_User extends Report {
         $str_lo = $str_lo."</ul>";
         
         return  $str_lo;
-        
     }    
     
     

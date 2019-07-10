@@ -906,8 +906,8 @@ class CoursestatsLmsController extends LmsController {
 				foreach ($records as $record) {
 					// Dati anagrafici partecipante
 					$rowa = array();
-					$rowa[] =  "Dati Partecipante :";
-					$rowa[] = "Username : ".$acl_man->relativeId($record->userid);
+					$rowa[] = Lang::t('_PARTICIPANT_DATA', 'standard')." :";
+					$rowa[] = Lang::t('_USERNAME', 'standard')." : ".$acl_man->relativeId($record->userid);
 					$rowa[] = Lang::t('_FULLNAME', 'standard')." : ".$record->firstname.' '.$record->lastname;
 					$rowa[] = Lang::t('_LEVEL', 'standard')." : ";
 					$rowa[] = isset($arr_level[$record->level]) ? $arr_level[$record->level] : "";
@@ -927,17 +927,17 @@ class CoursestatsLmsController extends LmsController {
 					$output .= implode($separator, $csv_row).$line_end;
 					//Intestazione  LO
 					$head = array();
-					$head[] = $this->_formatCsvValue('Nome oggetto', $delimiter);
-					$head[] = $this->_formatCsvValue('Tipo', $delimiter);
-					$head[] = $this->_formatCsvValue('Stato', $delimiter);
-					$head[] = $this->_formatCsvValue('Primo Accesso', $delimiter);
-					$head[] = $this->_formatCsvValue('Data Ultimo Accesso', $delimiter);
-					$head[] = $this->_formatCsvValue('Accessi in dettaglio', $delimiter);
-					$head[] = $this->_formatCsvValue('Data', $delimiter);
-					$head[] = $this->_formatCsvValue('Durata', $delimiter);
-					$head[] = $this->_formatCsvValue('Esito', $delimiter);
-					$head[] = $this->_formatCsvValue('Tempo totale accessi', $delimiter);
-					$head[] = $this->_formatCsvValue('Punteggio', $delimiter);
+					$head[] = $this->_formatCsvValue(Lang::t('_SUBJECT_NAME', 'standard'), $delimiter);
+					$head[] = $this->_formatCsvValue(Lang::t('_TYPE', 'standard'), $delimiter);
+					$head[] = $this->_formatCsvValue(Lang::t('_STATUS', 'standard'), $delimiter);
+					$head[] = $this->_formatCsvValue(Lang::t('_DATE_FIRST_ACCESS', 'standard'), $delimiter);
+					$head[] = $this->_formatCsvValue(Lang::t('_DATE_LAST_ACCESS', 'standard'), $delimiter);
+					$head[] = $this->_formatCsvValue(Lang::t('_ACCESS_IN_DETAIL', 'standard'), $delimiter);
+					$head[] = $this->_formatCsvValue(Lang::t('_DATE', 'standard'), $delimiter);
+					$head[] = $this->_formatCsvValue(Lang::t('_DURATION', 'course'), $delimiter);
+					$head[] = $this->_formatCsvValue(Lang::t('_RESULT', 'course'), $delimiter);
+					$head[] = $this->_formatCsvValue(Lang::t('_TOTAL_ACCESS_TIME', 'course'), $delimiter);
+					$head[] = $this->_formatCsvValue(Lang::t('_SCORE', 'standard'), $delimiter);
 		
 
 					$output .= implode($separator, $head).$line_end;
@@ -1051,8 +1051,8 @@ class CoursestatsLmsController extends LmsController {
 					// Dati anagrafici partecipante
 					$output .= '<tr>';
 					$rowa = array();
-					$rowa[] =  "Dati Partecipante :";
-					$rowa[] = "Username : ".$acl_man->relativeId($record->userid);
+					$rowa[] = Lang::t('_PARTICIPANT_DATA', 'standard')." :";
+					$rowa[] = Lang::t('_USERNAME', 'standard')." : ".$acl_man->relativeId($record->userid);
 					$rowa[] = Lang::t('_FULLNAME', 'standard')." : ".$record->firstname.' '.$record->lastname;
 					$rowa[] = Lang::t('_LEVEL', 'standard')." : ";
 					$rowa[] = isset($arr_level[$record->level]) ? $arr_level[$record->level] : "";
@@ -1071,14 +1071,14 @@ class CoursestatsLmsController extends LmsController {
 					//Intestazione  LO
 					$output .= '<tr>';
 					$head = array();
-					$head[] = 'Nome oggetto';
-					$head[] = 'Tipo';
-					$head[] = 'Stato';
-					$head[] = 'Primo Accesso';
-					$head[] = 'Data Ultimo Accesso';
-					$head[] = 'Accessi in dettaglio';
-					$head[] = 'Tempo totale accessi';
-					$head[] ='Punteggio';
+					$head[] = Lang::t('_SUBJECT_NAME', 'standard');
+					$head[] = Lang::t('_TYPE', 'standard');
+					$head[] = Lang::t('_STATUS', 'standard');
+					$head[] = Lang::t('_DATE_FIRST_ACCESS', 'standard');
+					$head[] = Lang::t('_DATE_LAST_ACCESS', 'standard');
+					$head[] = Lang::t('_ACCESS_IN_DETAIL', 'standard');
+					$head[] = Lang::t('_TOTAL_ACCESS_TIME', 'course');
+					$head[] = Lang::t('_SCORE', 'standard');
 					foreach ($head as $row_data) {
 						$output .= '<th>'.$row_data.'</th>';
 					}
@@ -1130,13 +1130,13 @@ class CoursestatsLmsController extends LmsController {
 		// Dati anagrafici partecipante
 		$output .= '<tr>';
 		$rowa = array();
-		$rowa[] =  "Dati Partecipante ";
-		$rowa[] = "Username : ".$acl_man->relativeId($info->userid);
+		$rowa[] =  Lang::t('_PARTICIPANT_DATA', 'standard');
+		$rowa[] = Lang::t('_USERNAME', 'standard')." : ".$acl_man->relativeId($info->userid);
 		$rowa[] = Lang::t('_FULLNAME', 'standard')." : ".$info->firstname.' '.$info->lastname;
 		$rowa[] = "";
 		$rowa[] = "";
-		$rowa[] = "Primo accesso : ".$info->first_access;
-		$rowa[] = "Stato : ".$info->course_status;
+		$rowa[] = Lang::t('_DATE_FIRST_ACCESS', 'standard')." : ".$info->first_access;
+		$rowa[] = Lang::t('_STATUS', 'standard')." : ".$info->course_status;
 		$rowa[] =  "";
 		
 		$num_completed = 0;
@@ -1148,14 +1148,14 @@ class CoursestatsLmsController extends LmsController {
 		//Intestazione  LO
 		$output .= '<tr>';
 		$head = array();
-		$head[] = 'Nome oggetto';
-		$head[] = 'Tipo';
-		$head[] = 'Stato';
-		$head[] = 'Primo Accesso';
-		$head[] = 'Data Ultimo Accesso';
-		$head[] = 'Accessi in dettaglio';
-		$head[] = 'Tempo totale accessi';
-		$head[] ='Punteggio';
+		$head[] = Lang::t('_SUBJECT_NAME', 'standard');
+		$head[] = Lang::t('_TYPE', 'standard');
+		$head[] = Lang::t('_STATUS', 'standard');
+		$head[] = Lang::t('_DATE_FIRST_ACCESS', 'standard');
+		$head[] = Lang::t('_DATE_LAST_ACCESS', 'standard');
+		$head[] = Lang::t('_ACCESS_IN_DETAIL', 'standard');
+		$head[] = Lang::t('_TOTAL_ACCESS_TIME', 'course');
+		$head[] = Lang::t('_SCORE', 'standard');
 		foreach ($head as $row_data) {
 			$output .= '<th>'.$row_data.'</th>';
 		}
@@ -1208,8 +1208,8 @@ class CoursestatsLmsController extends LmsController {
 				foreach ($records as $record) {
 					// Dati anagrafici partecipante
 					$rowa = array();
-					$rowa[] =  "Dati Partecipante :";
-					$rowa[] = "Username : ".$acl_man->relativeId($record->userid);
+					$rowa[] = Lang::t('_PARTICIPANT_DATA', 'standard')." :";
+					$rowa[] = Lang::t('_USERNAME', 'standard')." : ".$acl_man->relativeId($record->userid);
 					$rowa[] = Lang::t('_FULLNAME', 'standard')." : ".$record->firstname.' '.$record->lastname;
 					$rowa[] = Lang::t('_LEVEL', 'standard')." : ";
 					$rowa[] = isset($arr_level[$record->level]) ? $arr_level[$record->level] : "";
@@ -1229,17 +1229,17 @@ class CoursestatsLmsController extends LmsController {
 					$output .= implode($separator, $csv_row).$line_end;
 					//Intestazione  LO
 					$head = array();
-					$head[] = 'Nome oggetto';
-					$head[] = 'Tipo';
-					$head[] = 'Stato';
-					$head[] = 'Primo Accesso';
-					$head[] = 'Data Ultimo Accesso';
-					$head[] = 'Accessi in dettaglio';
-					$head[] = 'Data';
-					$head[] = 'Durata';
-					$head[] = 'Esito';
-					$head[] = 'Tempo totale accessi';
-					$head[] = 'Punteggio';
+					$head[] = Lang::t('_SUBJECT_NAME', 'standard');
+					$head[] = Lang::t('_TYPE', 'standard');
+					$head[] = Lang::t('_STATUS', 'standard');
+					$head[] = Lang::t('_DATE_FIRST_ACCESS', 'standard');
+					$head[] = Lang::t('_DATE_LAST_ACCESS', 'standard');
+					$head[] = Lang::t('_ACCESS_IN_DETAIL', 'standard');
+					$head[] = Lang::t('_DATE', 'standard');
+					$head[] = Lang::t('_DURATION', 'course');
+					$head[] = Lang::t('_RESULT', 'course');
+					$head[] = Lang::t('_TOTAL_ACCESS_TIME', 'course');
+					$head[] = Lang::t('_SCORE', 'standard');
 
 					$output .= implode($separator, $head).$line_end;
 					// dettaglio LO
@@ -1344,17 +1344,17 @@ class CoursestatsLmsController extends LmsController {
 		$output = "";
 		
 		$head = array();
-		$head[] = $this->_formatCsvValue('Nome', $delimiter);
-		$head[] = $this->_formatCsvValue('Tipo', $delimiter);
-		$head[] = $this->_formatCsvValue('Stato', $delimiter);
-		$head[] = $this->_formatCsvValue('Primo Accesso', $delimiter);
-		$head[] = $this->_formatCsvValue('Data Ultimo Accesso', $delimiter);
-		$head[] = $this->_formatCsvValue('Accessi in dettaglio', $delimiter);
-		$head[] = $this->_formatCsvValue('Data', $delimiter);
-		$head[] = $this->_formatCsvValue('Durata', $delimiter);
-		$head[] = $this->_formatCsvValue('Esito', $delimiter);
-		$head[] = $this->_formatCsvValue('Tempo totale accessi', $delimiter);
-		$head[] = $this->_formatCsvValue('Punteggio', $delimiter);
+		$head[] = $this->_formatCsvValue(Lang::t('_NAME', 'standard'), $delimiter);
+		$head[] = $this->_formatCsvValue(Lang::t('_TYPE', 'standard'), $delimiter);
+		$head[] = $this->_formatCsvValue(Lang::t('_STATUS', 'standard'), $delimiter);
+		$head[] = $this->_formatCsvValue(Lang::t('_DATE_FIRST_ACCESS', 'standard'), $delimiter);
+		$head[] = $this->_formatCsvValue(Lang::t('_DATE_LAST_ACCESS', 'standard'), $delimiter);
+		$head[] = $this->_formatCsvValue(Lang::t('_ACCESS_IN_DETAIL', 'standard'), $delimiter);
+		$head[] = $this->_formatCsvValue(Lang::t('_DATE', 'standard'), $delimiter);
+		$head[] = $this->_formatCsvValue(Lang::t('_DURATION', 'course'), $delimiter);
+		$head[] = $this->_formatCsvValue(Lang::t('_RESULT', 'course'), $delimiter);
+		$head[] = $this->_formatCsvValue(Lang::t('_TOTAL_ACCESS_TIME', 'course'), $delimiter);
+		$head[] = $this->_formatCsvValue(Lang::t('_SCORE', 'standard'), $delimiter);
 		
 		$output .= implode($separator, $head).$line_end;
 

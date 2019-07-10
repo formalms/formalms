@@ -628,23 +628,24 @@ class PluginmanagerAdm extends Model
         if ($online) {
             $this->downloadPlugin($plugin_id);
         }
-        $plugin_db = $this->getPluginFromDB($plugin_id, 'name');
-        $plugin_info = $this->readPluginManifest($plugin_id);
-        $query = "UPDATE " . $this->table . "
-                SET 
-                    title = '" . addslashes($plugin_info['title']) . "',
-                    category = '" . addslashes($plugin_info['category']) . "',
-                    version = '" . addslashes($plugin_info['version']) . "',
-                    author = '" . addslashes($plugin_info['author']) . "',
-                    link = '" . addslashes($plugin_info['link']) . "',
-                    description = '" . addslashes($plugin_info['description']) . "'
-                WHERE
-                    plugin_id = " . $plugin_db['plugin_id'];
-        $result = sql_query($query);
-        if ($result) {
-            $this->callPluginMethod($plugin_id, 'update');
-            $this->installTranslations($plugin_id);
-            return true;
+        if ($this->callPluginMethod($plugin_id, 'update') !== false) {
+            $plugin_db = $this->getPluginFromDB($plugin_id, 'name');
+            $plugin_info = $this->readPluginManifest($plugin_id);
+            $query = "UPDATE " . $this->table . "
+                    SET 
+                        title = '" . addslashes($plugin_info['title']) . "',
+                        category = '" . addslashes($plugin_info['category']) . "',
+                        version = '" . addslashes($plugin_info['version']) . "',
+                        author = '" . addslashes($plugin_info['author']) . "',
+                        link = '" . addslashes($plugin_info['link']) . "',
+                        description = '" . addslashes($plugin_info['description']) . "'
+                    WHERE
+                        plugin_id = " . $plugin_db['plugin_id'];
+            $result = sql_query($query);
+            if ($result) {
+                $this->installTranslations($plugin_id);
+                return true;
+            }
         }
         return false;
     }

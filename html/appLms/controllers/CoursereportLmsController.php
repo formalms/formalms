@@ -1070,6 +1070,7 @@ class CoursereportLmsController extends LmsController
 		$sum_max_score = 0;
 		$included_test = array ();
 		$other_source = array ();
+		$scorm_source = array ();
 
 		foreach ($reports as $info_report) {
 
@@ -1081,6 +1082,9 @@ class CoursereportLmsController extends LmsController
 					break;
 				case CoursereportLms::SOURCE_OF_TEST :
 					$included_test[ $info_report->getIdSource () ] = $info_report->getIdSource ();
+					break;
+				case CoursereportLms::SOURCE_OF_SCOITEM :
+					$scorm_source[ $info_report->getIdSource () ] = $info_report->getIdSource ();
 					break;
 			}
 		}
@@ -1096,6 +1100,7 @@ class CoursereportLmsController extends LmsController
 
 		foreach ($id_students as $id_user) {
             $user_score = 0;
+            $scorm_score = 0;
 
             foreach ($reports as $info_report) {
                 switch ($info_report->getSourceOf()) {
@@ -1111,6 +1116,17 @@ class CoursereportLmsController extends LmsController
                         if (isset($tests_score[$info_report->getIdSource()][$id_user]) && ($tests_score[$info_report->getIdSource()][$id_user]['score_status'] === CoursereportLms::TEST_STATUS_VALID)) {
                             $user_score += ($tests_score[$info_report->getIdSource()][$id_user]['score'] * $info_report->getWeight());
                         } else {
+                            $user_score += 0;
+                        }
+                    };
+                        break;
+                    case CoursereportLms::SOURCE_OF_SCOITEM : {
+                    	$idscorm_item = $info_report->getIdSource();
+                    	$query = sql_query("SELECT score_raw, score_max FROM learning_scorm_tracking WHERE idscorm_item = $idscorm_item");
+                    	if ($result = sql_fetch_object($query)) {
+                    		$sum_max_score += $result->score_max * $info_report->getWeight();
+                        	$user_score += $result->score_raw * $info_report->getWeight();
+                    	} else {
                             $user_score += 0;
                         }
                     };

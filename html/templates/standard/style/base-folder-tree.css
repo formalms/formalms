@@ -4,7 +4,7 @@ Code licensed under the BSD License:
 http://developer.yahoo.net/yui/license.txt
 version: 2.6.0
 */
-.folder_tree {border: 1px solid #cccccc;color:#333333;background:#ffffff;/*height:100%;*/overflow:auto;}
+.folder_tree {border: 1px solid #cccccc;color:#333333;background:#ffffff;/*height:100%;*/overflow:auto; max-height: 300px;}
 .folder_tree a {text-decoration:none;}
 .folder_tree .ygtvitem table{width:100%;}
 .folder_tree .ygtvtn{background:url(../images/tree/tn.png) 0 0 no-repeat;width:46px;height:26px;}

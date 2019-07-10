@@ -843,6 +843,7 @@ Per poterlo fare devi loggarti nella piattaforma se sei un utente registarto, al
         <key id="course&amp;_THEACER_LIST" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Docenti:]]></key>
         <key id="course&amp;_TITLE_CATEGORY_JUMP" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Vai al contenuto di]]></key>
         <key id="course&amp;_TITLE_CERTIFICATE_TO_COURSE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Associazione dei certificati ai corsi]]></key>
+        <key id="course&amp;_TOTAL_ACCESS_TIME" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Tempo totale accessi]]></key>
         <key id="course&amp;_T_USER_STATUS_BEGIN" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Stai frequentando questo corso]]></key>
         <key id="course&amp;_T_USER_STATUS_CONFIRMED" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Confermato]]></key>
         <key id="course&amp;_T_USER_STATUS_END" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Hai completato questo corso]]></key>
@@ -2178,6 +2179,7 @@ Password: [password]]]></key>
         <key id="standard&amp;passed" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Passato]]></key>
         <key id="standard&amp;PREV_B_" attributes="" save_date="2017-04-11 18:46:09"><![CDATA[Precedente]]></key>
         <key id="standard&amp;_ACCESSES" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Accessi]]></key>
+        <key id="standard&amp;_ACCESS_IN_DETAIL" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Accessi in dettaglio]]></key>
         <key id="standard&amp;_ACTIVATE" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Attiva]]></key>
         <key id="standard&amp;_ACTIVE" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Attivo]]></key>
         <key id="standard&amp;_ACTIVE_TAB" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[(Area attualmente selezionata)]]></key>
@@ -2456,6 +2458,7 @@ Password: [password]]]></key>
         <key id="standard&amp;_ORGCHART" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Organigramma]]></key>
         <key id="standard&amp;_ORGCHART_ADDNODE" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Aggiungi nodo]]></key>
         <key id="standard&amp;_PAGES" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Pagine]]></key>
+        <key id="standard&amp;_PARTICIPANT_DATA" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Dati partecipante]]></key>
         <key id="standard&amp;_PASSWORD" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Password]]></key>
         <key id="standard&amp;_PERCENTAGE" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Percentuale]]></key>
         <key id="standard&amp;_PLANNED" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Pianificato]]></key>
@@ -2531,6 +2534,7 @@ Password: [password]]]></key>
         <key id="standard&amp;_SUBSCRIBE" attributes="" save_date="2017-06-23 12:59:15"><![CDATA[Iscrizione]]></key>
         <key id="standard&amp;_SUBSCRIBED_BY" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Iscritto da]]></key>
         <key id="standard&amp;_SUBSCRIBE_COURSE" attributes="" save_date="2017-04-14 12:10:01"><![CDATA[Iscrizione corso]]></key>
+        <key id="standard&amp;_SUBJECT_NAME" attributes="" save_date="2017-04-14 12:10:01"><![CDATA[Nome oggetto]]></key>
         <key id="standard&amp;_SUSPEND" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Sospendi]]></key>
         <key id="standard&amp;_SUSPENDED" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Sospeso]]></key>
         <key id="standard&amp;_TABS" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Etichette]]></key>

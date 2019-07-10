@@ -33,6 +33,30 @@ class User_API extends API {
 			return false;
 	}
 
+    // calcola idOrg attraverso il codice organigramma
+    protected function _getBranchByCode($like, $parent = false, $lang_code = false) {
+        if (!$like) return false;
+        
+        $query = "SELECT oct.idOrg FROM %adm_org_chart as oc JOIN %adm_org_chart_tree as oct "
+            ." ON (oct.idOrg = oc.id_dir) WHERE oct.code LIKE '".addslashes($like)."'";
+        if ($lang_code !== false) { //TO DO: check if lang_code is valid
+            $query .= " AND oc.lang_code = '".$lang_code."'";
+        }
+        if ($parent !== false) {
+            $query .= " AND oct.idParent = ".(int)$parent;
+        }
+
+        
+        $res = $this->db->query($query);
+        if ($this->db->num_rows($res) > 0) {
+            list($output) = $this->db->fetch_row($res);
+            return $output;
+        } else
+            return false;
+    }       
+    
+    
+    
 	public function checkUserIdst($idst) {
 		$output = false;
 		if (is_numeric($idst)) {
@@ -160,7 +184,7 @@ class User_API extends API {
 				if (is_array($branches)) {
 					foreach ($branches as $branch) {
 						$idOrg = $this->_getBranch($branch);
-
+                        
 						if ($idOrg !== false) {
 							$oc = $this->aclManager->getGroupST('/oc_'.$idOrg);
 							$ocd = $this->aclManager->getGroupST('/ocd_'.$idOrg);
@@ -173,6 +197,28 @@ class User_API extends API {
 				}
 			}
 			
+            
+            if (isset($userdata['orgchart_code'])) {
+
+                $branches = explode(";", $userdata['orgchart_code']);
+                if (is_array($branches)) {
+                    foreach ($branches as $branch) {                        
+                        $idOrg = $this->_getBranchByCode($branch);
+
+                        if ($idOrg !== false) {
+                            $oc = $this->aclManager->getGroupST('/oc_'.$idOrg);
+                            $ocd = $this->aclManager->getGroupST('/ocd_'.$idOrg);
+                            $this->aclManager->addToGroup($oc, $id_user);
+                            $this->aclManager->addToGroup($ocd, $id_user);
+                            $entities[$oc] = $oc;
+                            $entities[$ocd] = $ocd;
+                        }
+                    }
+                }
+            }            
+            
+            
+            
 			$enrollrules = new EnrollrulesAlms();
 			$enrollrules->newRules('_NEW_USER',
 				array($id_user),

@@ -29,6 +29,7 @@ class SubscriptionAlmsController extends AlmsController
 	{
 		checkPerm('subscribe', false, 'course', 'lms');
 		require_once(_base_ . '/lib/lib.json.php');
+		require_once(Forma::inc(_base_ . '/lib/lib.eventmanager.php'));
 
 		//Course info
 		$this->id_course = Get::req('id_course', DOTY_INT, 0);
@@ -1079,9 +1080,9 @@ class SubscriptionAlmsController extends AlmsController
 
 				require_once(_base_ . '/lib/lib.eventmanager.php');
 
+				$course_info = $docebo_course->getAllInfo();
 				if ($send_alert) {
 					$uinfo = Docebo::aclm()->getUser($id_user, false);
-					$course_info = $docebo_course->getAllInfo();
 					$array_subst = array(
 						'[url]' => Get::site_url(),
 						'[course]' => $course_info['name'],

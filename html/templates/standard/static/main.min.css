@@ -4588,8 +4588,8 @@ header.header {
   position: fixed; }
   @media (min-width: 768px) {
     header.header {
-      padding: 18px 15px;
-      height: 87px; } }
+      padding: 10px 15px;
+      height: 71px; } }
   @media (min-width: 768px) and (max-width: 1023px) {
     header.header .row-fluid .navbar-header {
       width: 100%; } }

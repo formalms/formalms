@@ -94,7 +94,7 @@ function getCompilationTable($id_user, $id_test)
         {
             cout('<div id="hystoric">', 'content');
 
-            $tb = new Table(0, Lang::t('_HYSTORIC_TABLE', 'organization'), Lang::t('_HYSTORIC_TABLE', 'organization'));
+            $tb = new Table(0, Lang::t('_HISTORIC_TABLE', 'organization'), Lang::t('_HISTORIC_TABLE', 'organization'));
 
             $tb_h = array(Lang::t('_DATE', 'organization'), Lang::t('_SCORE', 'organization'));
             $tb_s = array('align-center', 'align-center');

@@ -481,6 +481,9 @@ Class CourseAlmsController extends AlmsController
 				'user' => ($row['course_type'] !== 'classroom' && $row['course_edition'] != 1 
 						? '<a class="nounder" href="index.php?r='.$this->base_link_subscription.'/show&amp;id_course='.$row['idCourse'].'" title="'.Lang::t('_SUBSCRIPTION', 'course').'">'.$num_subscribed.' '.Get::img('standard/moduser.png', Lang::t('_SUBSCRIPTION', 'course')).'</a>'
 						: ''),
+				'course_alert' => '<a href="index.php?r='.$this->base_link_coursealert.'/show&amp;id_course='.$row['idCourse'].'" title="'.Lang::t('_COURSE_ALERT', 'course').'">
+						'.Get::sprite('subs_unread', Lang::t('_COURSE_ALERT', 'course') ).'
+					</a>',
 				'edition' => ($row['course_type'] === 'classroom' 
 						? '<a href="index.php?r='.$this->base_link_classroom.'/classroom&amp;id_course='.$row['idCourse'].'" title="'.Lang::t('_CLASSROOM_EDITION', 'course').'">'.$this->model->classroom_man->getDateNumber($row['idCourse'], true).'</a>' : ($row['course_edition'] == 1 ? '<a href="index.php?r='.$this->base_link_edition.'/show&amp;id_course='.$row['idCourse'].'" title="'.Lang::t('_EDITIONS', 'course').'">'.$this->model->edition_man->getEditionNumber($row['idCourse']).'</a>'
 						: '')),        
@@ -494,8 +497,8 @@ Class CourseAlmsController extends AlmsController
 				'menu' => '<a href="index.php?r='.$this->base_link_course.'/menu&amp;id_course='.$row['idCourse'].'">'.Get::sprite('subs_menu', Lang::t('_ASSIGN_MENU', 'course')).'</a>',
 				'dup' => 'ajax.adm_server.php?r='.$this->base_link_course.'/dupcourse&id_course='.$row['idCourse'],
 				'mod' => '<a href="index.php?r='.$this->base_link_course.'/modcourse&amp;id_course='.$row['idCourse'].'">'.Get::sprite('subs_mod', Lang::t('_MOD', 'standard')).'</a>',
-				'del' => 'ajax.adm_server.php?r='.$this->base_link_course.'/delcourse&id_course='.$row['idCourse'].'&confirm=1'
-			);
+				'del' => 'ajax.adm_server.php?r='.$this->base_link_course.'/delcourse&id_course='.$row['idCourse'].'&confirm=1',
+			]);
 		}
 
 		if (!empty($list)) {
@@ -1071,7 +1074,9 @@ Class CourseAlmsController extends AlmsController
 
 	public function certificate()
 	{
-		if (!$this->permissions['mod']) {
+		$perm_assign = checkPerm('assign', true, 'certificate', 'lms');
+
+		if (!$perm_assign && !$this->permissions['mod']) {
 			$this->render('invalid', array(
 				'message' => $this->_getErrorMessage('no permission'),
 				'back_url' => 'index.php?r='.$this->base_link_course.'/show'
