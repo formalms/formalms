@@ -9,6 +9,45 @@
 
 FORMA LMS
 RELEASE CHANGELOG
+---------------------------------------------------------------------------------------
+forma.lms 2.3
+---------------------------------------------------------------------------------------
+Release date: 2019 July 11
+
+#19176 | CR IMPROVED  | NEW CERTIFICATE ALERT ICON
+#19315 | CR IMPROVED  | MYCERTIFICATES - View refactoring with DATATABLES
+#19370 | CR IMPROVED  | CERTIFICATES - IMPROVED ADMIN PERMISSIONS
+#multi | CR IMPROVED  | CERTIFICATES - RELEASE MANAGEMENT PAGE REFACTORED
+#19364 | CR IMPROVED  | EVENTS - ADDED NEW NOTIFICATION EVENTS
+#19298 | CR IMPROVED  | GRADEBOOK - Views refactoring with datatables
+#19274 | CR IMPROVED  | MASSIVE USER EDIT AND UPDATE IMPROVEMENTS
+#19393 | CR IMPROVED  | IO TASKS - Improved user connector
+#19395 | CR IMPROVED  | IO TASK - New connectors for editions and ed. subscriptions
+#multi | CR IMPROVED  | API - Added new APIs for certificates retrieve
+#19311 | CR IMPROVED  | CONFIG - Added option to set smtp ttls false
+#19365 | BUG | HIDE DATE IF FIELD EMPTY
+#19287 | BUG | KB - LO table not shown
+#3675  | BUG | SCORM RESULTS HISTORY DO NOT SHOW
+#19165 | BUG | Controllo privacy e campi obbligatori (19165)
+#19311 | BUG | PROBLEMA INVIO EMAIL IN APPLMS/CONTROLLERS/HELPDESKLMSCONTROLLER: 
+#19354 | BUG | TEST - FINAL SCORE STILL VISIBLE WITH OPTION OFF
+#19358 | BUG | U/O GRID: INCORRECT DATA IN SCORM DETAILS PAGE
+#19360 | BUG | BUG REGISTRO VALUTAZIONI CON OGGETTI SCORM - NON FUNZIONA IL CALCOLO
+#19362 | BUG | GRADEBOOK - ERROR IN CSV EXPORT IF SCORE MISSING
+#19335 | BUG | NEW CUSTOM FIELDS MISSING ON CLEAN INSTALLATIONS
+#19370 | BUG | Improve admin permissions for certificates management
+#19371 | BUG | HTML PAGE WON'T SAVE IF CONTAIN APEX
+#19373 | BUG | GOOGLE ANALYTICS code breaks template
+#19375 | BUG | Courses for sale
+#1938  | BUG | HELPDESK FIXES
+#19389 | BUG | ENROLL POLICIES - Orgchart nodes not shown
+#19385 | BUG | User Catalog - Long category list not scrolling
+#19394 | BUG | ERROR ON USER SUBSCRIPTION
+#19398 | BUG | Now using HTTP_HOST instead of SERVER_NAME
+#19396 | BUG | Report utenti - progress conteggia le cartelle
+#19299 | BUG | Code optimization - Removed old social references
+
+Plus many other minor improvements and bugfixes
 
 ---------------------------------------------------------------------------------------
 forma.lms 2.2.1
