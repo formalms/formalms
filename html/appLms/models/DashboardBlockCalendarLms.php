@@ -66,49 +66,57 @@ class DashboardBlockCalendarLms extends DashboardBlockLms
 		];
 	}
 
-	public function getElearningCalendar($month = null)
+	private function getStartAndEndDatesFromRequest()
 	{
+		$month = Get::pReq('month', DOTY_STRING, '');
+		if (!empty($month)) {
+			$startDate = date('Y-' . $month . '-01');
+			$endDate = date('Y-' . $month . '-' . date('t', strtotime($startDate)));
+		} else {
+			$startDate = Get::pReq('startDate', DOTY_STRING, '2011-01-01');
+			$endDate = Get::pReq('endDate', DOTY_STRING, '2020-01-01');
 
-		if (null === $month) {
-			//$month = date('m');
-			$month = 5;
+			if (empty($startDate) || empty($endDate)) {
+				return false;
+			}
 		}
-
-		$startDate = date('Y-' . $month . '-01');
-		$endDate = date('Y-' . $month . '-' . date('t', strtotime($startDate)));
-
-		return $this->findCourses($startDate, $endDate, self::COURSE_TYPE_ELEARNING);
+		return [
+			'startDate' => $startDate,
+			'endDate' => $endDate
+		];
 	}
 
-	public function getClassroomCalendar($month = null)
+	public function getElearningCalendar()
 	{
-
-		if (null === $month) {
-			//$month = date('m');
-			$month = 5;
+		$dates = $this->getStartAndEndDatesFromRequest();
+		if(!$dates){
+			return [];
 		}
 
-		$startDate = date('Y-' . $month . '-01');
-		$endDate = date('Y-' . $month . '-' . date('t', strtotime($startDate)));
-
-		return $this->findCourses($startDate, $endDate, self::COURSE_TYPE_CLASSROOM);
+		return $this->findCourses($dates['startDate'], $dates['endDate'], self::COURSE_TYPE_ELEARNING);
 	}
 
-	public function getReservationCalendar($month = null)
+	public function getClassroomCalendar()
 	{
-
-		if (null === $month) {
-			//$month = date('m');
-			$month = 5;
+		$dates = $this->getStartAndEndDatesFromRequest();
+		if(!$dates){
+			return [];
 		}
 
-		$startDate = date('Y-' . $month . '-01');
-		$endDate = date('Y-' . $month . '-' . date('t', strtotime($startDate)));
-
-		return $this->findReservations($startDate, $endDate);
+		return $this->findCourses($dates['startDate'], $dates['endDate'], self::COURSE_TYPE_CLASSROOM);
 	}
 
-	private function findCourses($startDate, $endDate, $courseType)
+	public function getReservationCalendar()
+	{
+		$dates = $this->getStartAndEndDatesFromRequest();
+		if(!$dates){
+			return [];
+		}
+
+		return $this->findReservations($dates['startDate'], $dates['endDate']);
+	}
+
+	private function findCourses($startDate, $endDate, $courseType, $showCourseWithoutDates = false)
 	{
 		$db = DbConn::getInstance();
 
@@ -124,30 +132,36 @@ class DashboardBlockCalendarLms extends DashboardBlockLms
 			$exclude_pathcourse = " and c.idCourse not in (" . implode(',', $excl) . " )";
 		}
 
-
-		$query = 'SELECT c.*, cu.status AS user_status, cu.level, cu.date_inscr, cu.date_first_access, cu.date_complete, cu.waiting'
+		$query = 'SELECT c.idCourse AS course_id, c.idCategory AS course_category_id, c.name AS course_name, c.status AS course_status, c.date_begin AS course_date_begin, c.date_end AS course_date_end, c.hour_begin AS course_hour_begin, c.hour_begin AS course_hour_begin, c.course_type AS course_type, c.box_description AS course_box_description, '
+			. ' cu.status AS user_status, cu.level AS user_level, cu.date_inscr AS user_date_inscr, cu.date_first_access AS user_date_first_access, cu.date_complete AS user_date_complete, cu.waiting AS user_waiting'
 			. ' FROM %lms_course AS c '
 			. ' JOIN %lms_courseuser AS cu ON (c.idCourse = cu.idCourse) '
 			. ' WHERE cu.iduser = ' . Docebo::user()->getId()
 			. ' AND c.course_type = "' . $courseType . '"'
-			. ' AND ( c.date_begin BETWEEN CAST("' . $startDate . '" AS DATE) AND CAST("' . $endDate . '" AS DATE) OR c.date_begin = 0000-00-00)';
+			. ' AND ( c.date_begin BETWEEN CAST("' . $startDate . '" AS DATE) AND CAST("' . $endDate . '" AS DATE)';
 
+		if ($showCourseWithoutDates) {
+			$query .= ' OR c.date_begin = 0000-00-00';
+		}
 
-		$query .= $exclude_pathcourse
-			. " ORDER BY c.date_begin";
+		$query .= ')';
+
+		$query .= $exclude_pathcourse . " ORDER BY c.date_begin";
 
 		$rs = $db->query($query);
 
 		$result = array();
 		while ($data = $db->fetch_assoc($rs)) {
 
-			$result[] = $this->getCalendarDataFromCourse($data, $startDate, $endDate);
+			$courseData = $this->getDataFromCourse($data, $startDate, $endDate);
+			
+			$result[] = $courseData;
 		}
 
 		return $result;
 	}
 
-	private function findReservations($startDate, $endDate)
+	private function findReservations($startDate, $endDate, $showCourseWithoutDates = false)
 	{
 		$db = DbConn::getInstance();
 
@@ -163,23 +177,32 @@ class DashboardBlockCalendarLms extends DashboardBlockLms
 			$exclude_pathcourse = " and c.idCourse not in (" . implode(',', $excl) . " )";
 		}
 
-
-		$query = 'SELECT c.*, cu.status AS user_status, cu.level, cu.date_inscr, cu.date_first_access, cu.date_complete, cu.waiting'
+		$query = 'SELECT c.idCourse AS course_id, c.idCategory AS course_category_id, c.name AS course_name, c.status AS course_status, c.date_begin AS course_date_begin, c.date_end AS course_date_end, c.hour_begin AS course_hour_begin, c.hour_begin AS course_hour_begin, c.course_type AS course_type, c.box_description AS course_box_description, '
+			. ' cu.status AS user_status, cu.level AS user_level, cu.date_inscr AS user_date_inscr, cu.date_first_access AS user_date_first_access, cu.date_complete AS user_date_complete, cu.waiting AS user_waiting, '
+			. ' re.*'
 			. ' FROM %lms_course AS c '
 			. ' JOIN %lms_courseuser AS cu ON (c.idCourse = cu.idCourse) '
+			. ' JOIN %lms_reservation_events AS re ON (c.idCourse = re.idCourse) '
+			. ' JOIN %lms_reservation_subscribed AS rs ON (cu.iduser = rs.idstUser) '
 			. ' WHERE cu.iduser = ' . Docebo::user()->getId()
-			. ' AND ( c.date_begin BETWEEN CAST("' . $startDate . '" AS DATE) AND CAST("' . $endDate . '" AS DATE) OR c.date_begin = 0000-00-00)';
+			. ' AND ( c.date_begin BETWEEN CAST("' . $startDate . '" AS DATE) AND CAST("' . $endDate . '" AS DATE)';
 
+		if ($showCourseWithoutDates) {
+			$query .= ' OR c.date_begin = 0000-00-00';
+		}
 
-		$query .= $exclude_pathcourse
-			. " ORDER BY c.date_begin";
+		$query .= ')';
+
+		$query .= $exclude_pathcourse . " ORDER BY c.date_begin";
 
 		$rs = $db->query($query);
 
 		$result = array();
 		while ($data = $db->fetch_assoc($rs)) {
 
-			$result[] = $this->getCalendarDataFromReservation($data, $startDate, $endDate);
+			$reservationData = $this->getDataFromReservation($data, $startDate, $endDate);
+
+			$result[] = $reservationData;
 		}
 
 		return $result;
@@ -196,101 +219,5 @@ class DashboardBlockCalendarLms extends DashboardBlockLms
 			$output = $cp_man->getAllCourses($cp_list);
 		}
 		return $output;
-	}
-
-	private function getCalendarDataFromCourse($course, $startDate, $endDate)
-	{
-		$status_list = [
-			0 => Lang::t('_CST_PREPARATION', 'course'),
-			1 => Lang::t('_CST_AVAILABLE', 'course'),
-			2 => Lang::t('_CST_CONFIRMED', 'course'),
-			3 => Lang::t('_CST_CONCLUDED', 'course'),
-			4 => Lang::t('_CST_CANCELLED', 'course')
-		];
-
-		$dateBegin = $course['date_begin'];
-		if ($dateBegin === '0000-00-00') {
-			$dateBegin = $startDate;
-		}
-
-
-		$dateEnd = $course['date_end'];
-		if ($dateEnd === '0000-00-00') {
-			$dateEnd = $endDate;
-		}
-
-		$hourBebing = $course['hour_begin'];
-		$hourBebingString = '';
-		if ($hourBebing === '-1') {
-			$hourBebing = '00:00:00';
-		} else {
-			$hourBebing .= ':00';
-			$hourBebingString = $course['hour_begin'];
-		}
-		$hourEnd = $course['hour_end'];
-		$hourEndString = '';
-		if ($hourEnd === '-1') {
-			$hourEnd = '23:59:59';
-		} else {
-			$hourEnd .= ':00';
-			$hourEndString = $course['hour_end'];
-		}
-
-		$calendarData = [
-			'title' => $course['name'],
-			'start' => $dateBegin . 'T' . $hourBebing,
-			'end' => $dateEnd . 'T' . $hourEnd,
-			'type' => $course['course_type'],
-			'status' => $status_list[(int)$course['status']],
-			'description' => $course['box_description'],
-			'hours' => $hourBebingString . ' ' . $hourEndString,
-		];
-
-		return $calendarData;
-	}
-
-	private function getCalendarDataFromReservation($reservation, $reservationCourse, $startDate, $endDate)
-	{
-		$dateBegin = $reservation['date_begin'];
-		if ($dateBegin === '0000-00-00') {
-			$dateBegin = $startDate;
-		}
-
-
-		$dateEnd = $reservation['date_end'];
-		if ($dateEnd === '0000-00-00') {
-			$dateEnd = $endDate;
-		}
-
-		$hourBebing = $reservation['hour_begin'];
-		$hourBebingString = '';
-		if ($hourBebing === '-1') {
-			$hourBebing = '00:00:00';
-		} else {
-			$hourBebing .= ':00';
-			$hourBebingString = $reservation['hour_begin'];
-		}
-		$hourEnd = $reservation['hour_end'];
-		$hourEndString = '';
-		if ($hourEnd === '-1') {
-			$hourEnd = '23:59:59';
-		} else {
-			$hourEnd .= ':00';
-			$hourEndString = $reservation['hour_end'];
-		}
-
-		$calendarData = [
-			'title' => $reservation['name'],
-			'start' => $dateBegin . 'T' . $hourBebing,
-			'end' => $dateEnd . 'T' . $hourEnd,
-			'type' => $reservation['course_type'],
-			'status' => true,
-			'description' => $reservation['box_description'],
-			'hours' => $hourBebingString . ' ' . $hourEndString,
-		];
-
-		$calendarData['course'] = $this->getCalendarDataFromCourse($reservationCourse);
-
-		return $calendarData;
 	}
 }

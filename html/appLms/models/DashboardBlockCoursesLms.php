@@ -85,7 +85,7 @@ class DashboardBlockCoursesLms extends DashboardBlockLms
 		$elearningParams = $params;
 		$elearningParams[':course_type'] = 'elearning';
 
-		$courselist = $this->findAll($elearningConditions, $elearningParams, self::COURSE_TYPE_LIMIT);
+		$courselist = [];//$this->findAll($elearningConditions, $elearningParams, self::COURSE_TYPE_LIMIT);
 
 		if (count($courselist) < self::COURSE_TYPE_LIMIT) {
 
@@ -143,16 +143,7 @@ class DashboardBlockCoursesLms extends DashboardBlockLms
 		$result = [];
 		while ($course = $db->fetch_assoc($rs)) {
 
-			$course['enrolled'] = 0;
-			$course['numof_waiting'] = 0;
-			$course['first_lo_type'] = FALSE;
-
-
-			//** name category
-			$course['nameCategory'] = $this->getCategory($course['idCategory']);
-			$course['status'] = $this->calculateStatus($course);
-
-			$result[$course['idCourse']] = $course;
+			$result[$course['idCourse']] = $this->getDataFromCourse($course);
 		}
 
 		return $result;
@@ -183,33 +174,5 @@ class DashboardBlockCoursesLms extends DashboardBlockLms
 			$where[] = str_replace($find, $params, $value);
 		}
 		return implode(" AND ", $where);
-	}
-
-	private function getCategory($idCat)
-	{
-		$db = DbConn::getInstance();
-		$query = "select path from %lms_category where idCategory=" . $idCat;
-		$res = $db->query($query);
-		$path = "";
-		if ($res && $db->num_rows($res) > 0) {
-			list($path) = $db->fetch_row($res);
-		}
-		return $path;
-	}
-
-	private function calculateStatus($course)
-	{
-		if ($course['date_end'] !== '0000-00-00' &&  $course['date_end'] !== '0000-00-00 00:00:00') {
-			
-			$earlier = new DateTime();
-			$later = new DateTime($course['date_end']);
-
-			$days = $later->diff($earlier)->format("%a");
-			
-			if($days === 0){
-				return false;
-			}
-		}
-		return true;
 	}
 }

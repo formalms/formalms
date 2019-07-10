@@ -127,7 +127,7 @@ class DashboardBlockCourseAdviceLms extends DashboardBlockLms
 	{
 		$db = DbConn::getInstance();
 
-		$query = "SELECT idAdvice, posted, title, description, important, author
+		$query = "SELECT idAdvice, title, description, important, author, posted 
 					FROM " . $GLOBALS['prefix_lms'] . "_advice
 					WHERE idCourse IN (" . implode(',', $courses) . ")
 					ORDER BY posted DESC ";
@@ -142,9 +142,26 @@ class DashboardBlockCourseAdviceLms extends DashboardBlockLms
 		$rs = $db->query($query);
 
 		while ($data = $db->fetch_assoc($rs)) {
-			$result[] = $data;
+			$result[] = $this->getAdviceData($data);
 		}
 
 		return $result;
+	}
+
+	private function getAdviceData($advice){
+
+		$date = new DateTime($advice['posted']);
+
+		$adviceData = [
+			'idAdvice' => $advice['idAdvice'],
+			'title' => $advice['title'],
+			'description' => $advice['description'],
+			'important' => $advice['important'],
+			'author' => $advice['author'],
+			'posted' => $advice['posted'],
+			'date' => $date->format('d/m/Y')
+		];
+
+		return $adviceData;
 	}
 }

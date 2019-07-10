@@ -143,4 +143,131 @@ abstract class DashboardBlockLms extends Model
 	{
 		return sprintf('%s/%s.html.twig', $this->getViewPath(), $this->getViewFile());
 	}
+
+	protected function getDataFromCourse($course, $startDate, $endDate)
+	{
+		$status_list = [
+			0 => Lang::t('_CST_PREPARATION', 'course'),
+			1 => Lang::t('_CST_AVAILABLE', 'course'),
+			2 => Lang::t('_CST_CONFIRMED', 'course'),
+			3 => Lang::t('_CST_CONCLUDED', 'course'),
+			4 => Lang::t('_CST_CANCELLED', 'course')
+		];
+
+		$dateBegin = $course['course_date_begin'];
+		if ($dateBegin === '0000-00-00') {
+			$dateBegin = $startDate;
+		}
+
+
+		$dateEnd = $course['course_date_end'];
+		if ($dateEnd === '0000-00-00') {
+			$dateEnd = $endDate;
+		}
+
+		$hourBebing = $course['course_hour_begin'];
+		$hourBebingString = '';
+		if ($hourBebing === '-1') {
+			$hourBebing = '00:00:00';
+		} else {
+			$hourBebing .= ':00';
+			$hourBebingString = $course['course_hour_begin'];
+		}
+		$hourEnd = $course['course_hour_end'];
+		$hourEndString = '';
+		if ($hourEnd === '-1') {
+			$hourEnd = '23:59:59';
+		} else {
+			$hourEnd .= ':00';
+			$hourEndString = $course['course_hour_end'];
+		}
+
+		$courseData = [
+			'id' => $course['course_id'],
+			'title' => $course['course_name'],
+			'start' => $dateBegin . 'T' . $hourBebing,
+			'end' => $dateEnd . 'T' . $hourEnd,
+			'type' => $course['course_type'],
+			'status' => $this->calculateCourseStatus($course),
+			'nameCategory' => $this->getCategory($course['course_category_id']),
+			'courseStatus' => $course['course_status'],
+			'courseStatusString' => $status_list[(int)$course['course_status']],
+			'description' => $course['course_box_description'],
+			'hours' => $hourBebingString . ' ' . $hourEndString,
+		];
+
+		return $courseData;
+	}
+
+	protected function getDataFromReservation($reservation, $startDate, $endDate)
+	{
+		$dateBegin = $reservation['date_begin'];
+		if ($dateBegin === '0000-00-00') {
+			$dateBegin = $startDate;
+		}
+
+		$dateEnd = $reservation['date_end'];
+		if ($dateEnd === '0000-00-00') {
+			$dateEnd = $endDate;
+		}
+
+		$hourBebing = $reservation['hour_begin'];
+		$hourBebingString = '';
+		if ($hourBebing === '-1') {
+			$hourBebing = '00:00:00';
+		} else {
+			$hourBebing .= ':00';
+			$hourBebingString = $reservation['hour_begin'];
+		}
+		$hourEnd = $reservation['hour_end'];
+		$hourEndString = '';
+		if ($hourEnd === '-1') {
+			$hourEnd = '23:59:59';
+		} else {
+			$hourEnd .= ':00';
+			$hourEndString = $reservation['hour_end'];
+		}
+
+		$reservationData = [
+			'title' => $reservation['name'],
+			'start' => $dateBegin . 'T' . $hourBebing,
+			'end' => $dateEnd . 'T' . $hourEnd,
+			'type' => $reservation['course_type'],
+			'status' => true,
+			'description' => $reservation['box_description'],
+			'hours' => $hourBebingString . ' ' . $hourEndString,
+		];
+
+		$reservationData['course'] = $this->getCalendarDataFromCourse($reservation);
+
+		return $reservationData;
+	}
+
+	protected function calculateCourseStatus($course)
+	{
+		if ($course['date_end'] !== '0000-00-00' &&  $course['date_end'] !== '0000-00-00 00:00:00') {
+
+			$earlier = new DateTime();
+			$later = new DateTime($course['date_end']);
+
+			$days = $later->diff($earlier)->format("%a");
+			
+			if($days === 0){
+				return false;
+			}
+		}
+		return true;
+	}
+
+	protected function getCategory($idCat)
+	{
+		$db = DbConn::getInstance();
+		$query = "select path from %lms_category where idCategory=" . $idCat;
+		$res = $db->query($query);
+		$path = "";
+		if ($res && $db->num_rows($res) > 0) {
+			list($path) = $db->fetch_row($res);
+		}
+		return $path;
+	}
 }
