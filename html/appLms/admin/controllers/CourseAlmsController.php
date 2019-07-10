@@ -497,8 +497,8 @@ Class CourseAlmsController extends AlmsController
 				'menu' => '<a href="index.php?r='.$this->base_link_course.'/menu&amp;id_course='.$row['idCourse'].'">'.Get::sprite('subs_menu', Lang::t('_ASSIGN_MENU', 'course')).'</a>',
 				'dup' => 'ajax.adm_server.php?r='.$this->base_link_course.'/dupcourse&id_course='.$row['idCourse'],
 				'mod' => '<a href="index.php?r='.$this->base_link_course.'/modcourse&amp;id_course='.$row['idCourse'].'">'.Get::sprite('subs_mod', Lang::t('_MOD', 'standard')).'</a>',
-				'del' => 'ajax.adm_server.php?r='.$this->base_link_course.'/delcourse&id_course='.$row['idCourse'].'&confirm=1',
-			]);
+				'del' => 'ajax.adm_server.php?r='.$this->base_link_course.'/delcourse&id_course='.$row['idCourse'].'&confirm=1'
+			);
 		}
 
 		if (!empty($list)) {
