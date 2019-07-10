@@ -158,10 +158,16 @@ abstract class DashboardBlockLms extends Model
 		if ($dateBegin === '0000-00-00') {
 			$dateBegin = '';
 		}
+		else {
+			$startDate = new DateTime($course['course_date_begin']);
+		}
 
 		$dateEnd = $course['course_date_end'];
 		if ($dateEnd === '0000-00-00') {
 			$dateEnd = '';
+		}
+		else {
+			$endDate = new DateTime($course['course_date_end']);
 		}
 
 		$hourBegin = $course['course_hour_begin'];
@@ -184,8 +190,10 @@ abstract class DashboardBlockLms extends Model
 		$courseData = [
 			'id' => $course['course_id'],
 			'title' => $course['course_name'],
-			'start' => !empty($dateBegin) ? $dateBegin . 'T' . $hourBegin : '',
-			'end' => !empty($dateEnd) ? $dateEnd . 'T' . $hourEnd : '',
+			'startDate' => !empty($dateBegin) ? $dateBegin . 'T' . $hourBegin : '',
+			'endDate' => !empty($dateEnd) ? $dateEnd . 'T' . $hourEnd : '',
+			'startDateString' => !empty($dateBegin) ? $startDate->format('d/m/Y') : '',
+			'endDateString' => !empty($dateEnd) ? $endDate->format('d/m/Y') : '',
 			'type' => $course['course_type'],
 			'status' => $this->calculateCourseStatus($course),
 			'nameCategory' => $this->getCategory($course['course_category_id']),
