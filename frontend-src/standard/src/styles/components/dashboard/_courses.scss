@@ -11,6 +11,10 @@
   position: relative;
   overflow: hidden;
 
+  &:hover {
+    color: initial;
+  }
+
   &.has-icon--elearning {
     &:before {
       content: '';
@@ -62,16 +66,22 @@
     top: 6px;
     bottom: 6px;
     left: 15px;
-    right: 25px;
+    right: 15px;
   }
   font-size: 12px;
   line-height: 17px;
 }
 
+.d-course__title {
+  height: 34px;
+  font-weight: $bold;
+  color: $orange;
+  line-height: 17px;
+  overflow: hidden;
+}
+
 .d-courses__date-wrapper {
   min-height: 17px;
-  margin-bottom: 5px;
-
   position: relative;
   
   &.status--red {
@@ -121,6 +131,23 @@
     background-repeat: no-repeat;
     @include center-object(y, absolute);
     left: 3px;
+  }
+}
+
+.d-courses__next-course {
+  font-weight: $regular;
+  font-size: 12px;
+  position: relative;
+
+  &:before {
+    content: '';
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 6px 0 6px 10px;
+    border-color: transparent transparent transparent $green;
+    @include center-object(y, absolute);
+    left: -11px;
   }
 }
 

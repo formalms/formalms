@@ -10,13 +10,13 @@
         {% for advise in block.courseAdvices %}
           <div class="d-advise__item">
             <div class="d-advise__date">
-              12/12/1212
+              {{ advise.date }}
             </div>
             <div class="d-advise__title">
-              advise title yeah
+              {{ advise.title }}
             </div>
             <div class="d-advise__desc">
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna.
+              {{ advise.description }}
             </div>
           </div> 
         {% endfor %}

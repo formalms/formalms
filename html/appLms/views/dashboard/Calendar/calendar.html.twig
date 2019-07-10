@@ -3,8 +3,18 @@
 
 {% block content %}
     {#calendar#}
-    {#{{ dump(block) }}#}
+  
+  <div class="d-col d-col--12 d-col--6--desktop">
+    <div class="d-calendar d-widget">
+      <h3 class="d-title">
+        {{ translate('_CALENDAR','standard') }}
+      </h3>
+      <div class="js-calendar"></div>
+    </div>
+  </div>
 
-  {#<div class="js-calendar"></div>#}
+  {# <pre>
+    {{ dump(block) }}
+  </pre> #}
 
 {% endblock %}
