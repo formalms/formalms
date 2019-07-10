@@ -155,7 +155,7 @@ class DashboardBlockCourseAdviceLms extends DashboardBlockLms
 		$adviceData = [
 			'idAdvice' => $advice['idAdvice'],
 			'title' => $advice['title'],
-			'description' => $advice['description'],
+			'description' => strip_tags($advice['description']),
 			'important' => $advice['important'],
 			'author' => $advice['author'],
 			'posted' => $advice['posted'],
