@@ -2,50 +2,133 @@ import { Calendar } from '@fullcalendar/core';
 import itLocale from '@fullcalendar/core/locales/it';
 import dayGridPlugin from '@fullcalendar/daygrid';
 
-export default class DashboardCalendar {
-	constructor() {
-		this.el = document.querySelector('.js-dashboard-calendar')
-		this.calendar = new Calendar(this.el, {
+export const RenderDashBoardCalendar = () => {
+  const el = document.querySelector('.js-dashboard-calendar')
+		const calendar = new Calendar(el, {
       plugins: [dayGridPlugin],
       locale: itLocale,
+      height: 'auto',
       eventSources: [
+        // {
+        //   events: (fetchInfo, successCallback, failureCallback) => {
+        //     $.ajax({
+        //       type: 'post',
+        //       url: window.dashboardCalendarAjaxUrl,
+        //       data: {
+        //         blockAction: 'getElearningCalendar',
+        //         authentic_request: window.dashboardCalendarAjaxSignature,
+        //         block: 'DashboardBlockCalendarLms'
+        //       },
+        //       beforeSend: function () {
+        //         // $('.loading').html(_loadingSnippet);
+        //       },
+        //       success: function (data) {
+        //         const parsedData = JSON.parse(data);
+        //         console.log(parsedData.response)
+        //         successCallback(
+        //           parsedData.response.map((item) => {
+        //             return {
+        //               title: item.title,
+        //               start: item.startDate,
+        //               type: item.type,
+        //               status: item.status,
+        //               description: item.description,
+        //               hours: item.hours
+        //             }
+        //           })
+        //         )
+        //       },
+        //       error: function (e) {
+        //         failureCallback(
+        //           () => console.log(e)
+        //         )
+        //       }
+        //     });
+        //   },
+        //   color: '#A478EA'
+        // },
+        // {
+        //   events: (fetchInfo, successCallback, failureCallback) => {
+        //     $.ajax({
+        //       type: 'post',
+        //       url: window.dashboardCalendarAjaxUrl,
+        //       data: {
+        //         blockAction: 'getClassroomCalendar',
+        //         authentic_request: window.dashboardCalendarAjaxSignature,
+        //         block: 'DashboardBlockCalendarLms'
+        //       },
+        //       beforeSend: function () {
+        //         // $('.loading').html(_loadingSnippet);
+        //       },
+        //       success: function (data) {
+        //         const parsedData = JSON.parse(data);
+        //         console.log(parsedData.response)
+        //         successCallback(
+        //           parsedData.response.map((item) => {
+        //             return {
+        //               title: item.title,
+        //               start: item.startDate,
+        //               type: item.type,
+        //               status: item.status,
+        //               description: item.description,
+        //               hours: item.hours
+        //             }
+        //           })
+        //         )
+        //       },
+        //       error: function (e) {
+        //         failureCallback(
+        //           () => console.log(e)
+        //         )
+        //       }
+        //     });
+        //   },
+        //   color: '#007CC8'
+        // },
         {
-          url: window.dashboardCalendarAjaxUrl,
-          method: 'POST',
-          extraParams: {
-            blockAction: 'getElearningCalendar',
-            authentic_request: window.dashboardCalendarAjaxSignature
-          },
-          failure: function(err) {
-            console.log(err);
-          },
-          color: 'purple',
-          textColor: 'white'
-        }
-      ],
-			// events: [
-				// {
-				// 	title  : 'event1',
-				// 	start  : '2019-06-29',
-				// 	type: 'classroom'
-				// },
-				// {
-				// 	title: 'new event',
-				// 	start: '2019-09-28',
-				// 	type: 'yeah'
-				// },
-				// {
-				// 	title: 'Corso lorem ipsum',
-				// 	start: '2019-06-29T12:30:00', //l'orario è opzionale
-				// 	end: '2019-06-29T16:30:00', // se il corso è di un solo giorno l'end è opzionale
-				// 	type: 'classroom etcetc',
-				// 	status: '', //rosso - verde
-				// 	description: '',
-				//  hours: '15:30 - 18:30'
-				// }
-			// ],
+          events: [
+            {
+              title: 'Corso lorem ipsum',
+              start: '2019-07-09', //l'orario è opzionale
+              type: 'elearning',
+              status: true, //rosso - verde
+              description: 'Testo testo testo',
+              hours: '15:30 - 18:30'
+            }
+            ],
+            color: '#A478EA'
+          }
+        ],
+      eventClick: function(event) {
+        // renderPopup(event);
+        console.log(event)
+      },
+      eventRender: function(event) {
+        console.log(event);
+        renderPopup(event);
+      }
 		})
 
-		this.calendar.render()
-	}
+		calendar.render()
+}
+
+const renderPopup = (item) => {
+  let el = '';
+  const type = item.event.extendedProps.type === 'classroom' ? 'classroom' : 'elearning';
+  const desc = item.event.extendedProps.description;
+  const hours = item.event.extendedProps.hours;
+  const title = item.event.title;
+  console.log(item.event)
+  
+  el += '<div class="d-popup">';
+  el += '<div class="d-popup__item is-' + type + '">';
+  el += '<div class="d-popup__type">' + type + '</div>';
+  el += '<div class="d-popup__desc">' + desc + '</div>';
+  el += '<div class="d-popup__hours">' + hours + '</div>';
+  el += '<div class="d-popup__title">' + title + '</div>';
+  el += '<div class="d-popup__triangle"></div>';
+  el += '</div>';
+  el += '</div>';
+
+  $(item.el).append(el);
 }

@@ -12,14 +12,15 @@
       <div class="d-calendar__item js-dashboard-calendar"></div>
     </div>
   </div>
-
+{# 
   <pre>
     {{ dump(block) }}
-  </pre>
+  </pre> #}
   
   <script>
     window.dashboardCalendarAjaxUrl = '{{ block.ajaxUrl }}';
     window.dashboardCalendarAjaxSignature = '{{ block.signature }}';
+    window.dashboardCalendarAjaxPostData = '{{ block.postData.block }}';
   </script>
 
 {% endblock %}

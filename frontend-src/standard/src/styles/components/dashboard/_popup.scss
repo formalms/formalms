@@ -1,0 +1,107 @@
+.d-popup {
+  padding-top: 25px;
+  @include center-object(x, absolute);
+  z-index: 999999;
+  transition: all .2s ease-in-out 0s;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.d-popup__item {
+  width: 130px;
+  height: 146px;
+  padding: 7px;
+  background-color: $dashboard-popup-bg;
+  border-radius: 6px;
+  position: relative;
+
+  &.is-elearning {
+    &:before {
+      content: '';
+      width: 20px;
+      height: 17px;
+      background-image: url(#{$assets}images/icons/icon--elearning.svg);
+      background-size: contain;
+      background-position: center;
+      background-repeat: no-repeat;
+      position: absolute;
+      top: 7px;
+      right: 7px;
+    }
+  }
+
+  &.is-classroom {
+    &:before {
+      content: '';
+      width: 20px;
+      height: 17px;
+      background-image: url(#{$assets}images/icons/icon--classroom.svg);
+      background-size: contain;
+      background-position: center;
+      background-repeat: no-repeat;
+      position: absolute;
+      top: 7px;
+      right: 7px;
+    }
+  }
+
+    
+}
+
+.d-popup__type {
+  font-weight: $bold;
+  font-size: 14px;
+  line-height: 19px;
+  text-transform: uppercase;  
+
+  .is-elearning & {
+    color: $elearning-color;
+  }
+
+  .is-classroom & {
+    color: $classroom-color;
+  }
+}
+
+.d-popup__desc {
+  height: 28px;
+  margin-bottom: 2px;
+  font-size: 10px;
+  font-weight: $bold;
+  line-height: 14px;
+  overflow: hidden;
+  color: $dashboard-popup-desc;
+}
+
+.d-popup__hours {
+  margin-bottom: 5px;
+  font-size: 12px;
+  font-weight: $regular;
+  line-height: 17px; 
+  color: $dashboard-popup-desc;
+}
+
+.d-popup__title {
+  height: 28px;
+  margin-bottom: 2px;
+  padding: {
+    left: 13px;
+    top: 8px;
+  }
+  font-size: 10px;
+  font-weight: $bold;
+  line-height: 14px;
+  overflow: hidden;
+  color: $dashboard-popup-title;
+  border-top: 1px solid #D8D8D8;
+}
+
+.d-popup__triangle {
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0 12px 12px 12px;
+  border-color: transparent transparent $dashboard-popup-bg transparent;
+  @include center-object(x, absolute);
+  top: -12px;
+}

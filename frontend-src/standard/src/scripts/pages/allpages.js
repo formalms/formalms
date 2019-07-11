@@ -24,7 +24,10 @@ var Page = (function() {
     });
 
     $(document).ready(function() {
-      new DashboardCalendar();
+      if ($('.js-dashboard-calendar').length) {
+        RenderDashBoardCalendar();
+      }
+      // new DashboardDotDotDot();
 
       if ($('.js-tabnav').length) {
         setTabnavHeight();
