@@ -26,12 +26,12 @@
               {% if course.start != '00-00-0000' %}
                 <span class="d-courses__date d-courses__date--start">
                   {{ course.start }}
-                  {# 11/22/1234 #}
+                  11/22/1234
                 </span>
                 {% if course.end != '00-00-0000' %}
                   <span class="d-courses__date d-courses__date--end">
                     {{ course.end }}
-                    {# 11/22/1234 #}
+                    11/22/1234
                   </span>
                 {% endif %}
               {% endif %}
@@ -44,26 +44,8 @@
       {% endfor %}
     </div>
   </div>
-
-  {# <div class="d-popup">
-    <div class="d-popup__type">
-
-    </div>
-    <div class="d-popup__desc">
-
-    </div>
-    <div class="d-popup__hours">
-
-    </div>
-    <div class="d-popup__title">
-
-    </div>
-    <div class="d-popup__triangle">
-
-    </div>
-  </div>
-   #}
-   {#<pre>
+{# 
+   <pre>
     {{ dump(block.courses) }}
   </pre>  #}
 {% endblock %}

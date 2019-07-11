@@ -22,12 +22,12 @@
         </div>
         <div class="d-row d-user-profile__padder">
           <div class="d-col d-col--6">
-            <a class="forma-button forma-button--orange-hover forma-button--full d-button--cert" title="" href="">
+            <a class="forma-button forma-button--orange-hover forma-button--full d-button--cert" title="" href="{{ blocks[2].link }}">
               <span class="forma-button__label">Certificati</span>
             </a>
           </div>
           <div class="d-col d-col--6">
-            <a class="forma-button forma-button--orange-hover forma-button--full d-button--mess" title="" href="">
+            <a class="forma-button forma-button--orange-hover forma-button--full d-button--mess" title="" href="{{ blocks[3].link }}">
               <span class="forma-button__label">Messaggi</span>
             </a>
           </div>
@@ -36,6 +36,6 @@
     </div>
   </div>
   {# <pre>
-    {{ dump(block) }}
+    {{ dump() }}
   </pre> #}
 {% endblock %}
