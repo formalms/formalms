@@ -11,12 +11,10 @@ export default class DashboardCalendar {
       eventSources: [
         {
           url: window.dashboardCalendarAjaxUrl,
-          headers: {
-            'signature': window.dashboardCalendarAjaxSignature
-          },
           method: 'POST',
           extraParams: {
             blockAction: 'getElearningCalendar',
+            authentic_request: window.dashboardCalendarAjaxSignature
           },
           failure: function(err) {
             console.log(err);

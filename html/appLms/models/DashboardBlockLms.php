@@ -134,7 +134,7 @@ abstract class DashboardBlockLms extends Model
 			'type' => $this->getType(),
 			'enabled' => $this->isEnabled(),
 			'link' => $this->getLink(),
-			'ajaxUrl' => 'ajax.adm_server.php?r=lms/dashboard/ajaxAction?block=' . get_class($this),
+			'ajaxUrl' => 'ajax.adm_server.php?r=lms/dashboard/ajaxAction&block=' . get_class($this),
 			'registeredActions' => $this->getRegisteredActions(),
 			'signature' => Util::getSignature()
 		];
