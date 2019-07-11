@@ -481,24 +481,30 @@ Class CourseAlmsController extends AlmsController
 				'user' => ($row['course_type'] !== 'classroom' && $row['course_edition'] != 1 
 						? '<a class="nounder" href="index.php?r='.$this->base_link_subscription.'/show&amp;id_course='.$row['idCourse'].'" title="'.Lang::t('_SUBSCRIPTION', 'course').'">'.$num_subscribed.' '.Get::img('standard/moduser.png', Lang::t('_SUBSCRIPTION', 'course')).'</a>'
 						: ''),
-				'course_alert' => '<a href="index.php?r='.$this->base_link_coursealert.'/show&amp;id_course='.$row['idCourse'].'" title="'.Lang::t('_COURSE_ALERT', 'course').'">
-						'.Get::sprite('subs_unread', Lang::t('_COURSE_ALERT', 'course') ).'
-					</a>',
 				'edition' => ($row['course_type'] === 'classroom' 
 						? '<a href="index.php?r='.$this->base_link_classroom.'/classroom&amp;id_course='.$row['idCourse'].'" title="'.Lang::t('_CLASSROOM_EDITION', 'course').'">'.$this->model->classroom_man->getDateNumber($row['idCourse'], true).'</a>' : ($row['course_edition'] == 1 ? '<a href="index.php?r='.$this->base_link_edition.'/show&amp;id_course='.$row['idCourse'].'" title="'.Lang::t('_EDITIONS', 'course').'">'.$this->model->edition_man->getEditionNumber($row['idCourse']).'</a>'
-						: '')),        
-				'certificate' => '<a href="index.php?r='.$this->base_link_course.'/certificate&amp;id_course='.$row['idCourse'].'">'.Get::sprite('subs_pdf'.(!isset($course_with_cert[$row['idCourse']]) ? '_grey' : ''), Lang::t('_CERTIFICATE_ASSIGN_STATUS', 'course')).'</a>',
-                
-                
-                'certreleased' => '<a href="index.php?r=alms/course/list_certificate&amp;id_course='.$row['idCourse'].'&amp;from=courselist">'.Get::sprite('subs_print'.(!isset($course_with_cert[$row['idCourse']]) ? '_grey' : ''), Lang::t('_CERTIFICATE_RELEASE', 'course')).'</a>',
-				
-                
-				'competences' => '<a href="index.php?r='.$this->base_link_competence.'/man_course&amp;id_course='.$row['idCourse'].'">'.Get::sprite('subs_competence'.(!isset($course_with_competence[$row['idCourse']]) ? '_grey' : ''), Lang::t('_COMPETENCES', 'course')).'</a>',
+						: '')),
+			);
+
+			$perm_assign = checkPerm('assign', true, 'certificate', 'lms');
+			$perm_release = checkPerm('release', true, 'certificate', 'lms');
+
+			if ($perm_assign) {
+				$list[ $row['idCourse'] ]['certificate'] = '<a href="index.php?r='.$this->base_link_course.'/certificate&amp;id_course='.$row['idCourse'].'">'.Get::sprite('subs_pdf'.(!isset($course_with_cert[$row['idCourse']]) ? '_grey' : ''), Lang::t('_CERTIFICATE_ASSIGN_STATUS', 'course')).'</a>';
+			}
+
+			if ($perm_release) {
+				$list[ $row['idCourse'] ]['certreleased'] = '<a href="index.php?modname=certificate&op=view_report_certificate&amp;id_course='.$row['idCourse'].'&from=courselist&of_platform=lms">'.Get::sprite('subs_print'.(!isset($course_with_cert[$row['idCourse']]) ? '_grey' : ''), Lang::t('_CERTIFICATE_RELEASE', 'course')).'</a>';
+                $list[ $row['idCourse'] ]['certreleased'] = '<a href="index.php?r=alms/course/list_certificate&amp;id_course='.$row['idCourse'].'&amp;from=courselist">'.Get::sprite('subs_print'.(!isset($course_with_cert[$row['idCourse']]) ? '_grey' : ''), Lang::t('_CERTIFICATE_RELEASE', 'course')).'</a>';
+			}
+			
+			$list[ $row['idCourse'] ] = array_merge($list[ $row['idCourse'] ], [
+                'competences' => '<a href="index.php?r='.$this->base_link_competence.'/man_course&amp;id_course='.$row['idCourse'].'">'.Get::sprite('subs_competence'.(!isset($course_with_competence[$row['idCourse']]) ? '_grey' : ''), Lang::t('_COMPETENCES', 'course')).'</a>',
 				'menu' => '<a href="index.php?r='.$this->base_link_course.'/menu&amp;id_course='.$row['idCourse'].'">'.Get::sprite('subs_menu', Lang::t('_ASSIGN_MENU', 'course')).'</a>',
 				'dup' => 'ajax.adm_server.php?r='.$this->base_link_course.'/dupcourse&id_course='.$row['idCourse'],
 				'mod' => '<a href="index.php?r='.$this->base_link_course.'/modcourse&amp;id_course='.$row['idCourse'].'">'.Get::sprite('subs_mod', Lang::t('_MOD', 'standard')).'</a>',
-				'del' => 'ajax.adm_server.php?r='.$this->base_link_course.'/delcourse&id_course='.$row['idCourse'].'&confirm=1'
-			);
+				'del' => 'ajax.adm_server.php?r='.$this->base_link_course.'/delcourse&id_course='.$row['idCourse'].'&confirm=1',
+			]);
 		}
 
 		if (!empty($list)) {
@@ -521,9 +527,6 @@ Class CourseAlmsController extends AlmsController
 
 		echo $this->json->encode($result);
 	}
-
-
-
 
 	protected function _createLO( $objectType, $idResource = NULL ) {
 		if ($this->lo_types_cache === false) {
