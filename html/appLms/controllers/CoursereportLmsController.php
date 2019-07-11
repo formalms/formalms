@@ -23,6 +23,7 @@ class CoursereportLmsController extends LmsController
 	public function init ()
 	{
 		require_once (_adm_ . '/lib/lib.field.php');
+		require_once(_lms_.'/lib/lib.course.php');
 
 		/** @var Services_JSON json */
 		$this->json = new Services_JSON();
