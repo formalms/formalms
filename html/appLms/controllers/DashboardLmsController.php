@@ -10,13 +10,13 @@
 |   from docebo 4.0.5 CE 2008-2012 (c) docebo                               |
 |   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
+require_once (_base_ . '/lib/lib.json.php');
 
 /**
  * Class DashboardLmsController
  */
 class DashboardLmsController extends LmsController
 {
-
 	public $name = '';
 
 	/** @var DashboardLms */
@@ -26,15 +26,21 @@ class DashboardLmsController extends LmsController
 	 * DashboardLmsController constructor.
 	 * @param $mvc_name
 	 */
-	public function __construct($mvc_name)
+	public function init ()
 	{
-		parent::__construct($mvc_name);
-
+		$this->_mvc_name = "dashboard";
+		$this->permissions = array (
+			'view' => true ,
+			'mod' => true
+		);
+		/** @var Services_JSON json */
+		$this->json = new Services_JSON();
 		$this->model = new DashboardLms();
 	}
 
 	public function show()
 	{
+		checkPerm ('view' , true , $this->_mvc_name);
 		$blocks = $this->model->getBlocksViewData();
 
 		$this->render('dashboard', [
@@ -44,7 +50,6 @@ class DashboardLmsController extends LmsController
 
 	public function ajaxAction()
 	{
-
 		$result = ['status' => 200];
 		$blockParameter = Get::gReq('block', DOTY_STRING, false);
 		$actionParameter = Get::pReq('blockAction', DOTY_STRING, 'getElearningCalendar');
