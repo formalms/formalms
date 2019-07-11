@@ -4,16 +4,19 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 
 export default class DashboardCalendar {
 	constructor() {
-		this.el = document.querySelector('.js-calendar')
+		this.el = document.querySelector('.js-dashboard-calendar')
 		this.calendar = new Calendar(this.el, {
       plugins: [dayGridPlugin],
       locale: itLocale,
       eventSources: [
         {
           url: window.dashboardCalendarAjaxUrl,
+          headers: {
+            'signature': window.dashboardCalendarAjaxSignature
+          },
           method: 'POST',
           extraParams: {
-            blockAction: 'getElearningCalendar'
+            blockAction: 'getElearningCalendar',
           },
           failure: function(err) {
             console.log(err);
