@@ -22,7 +22,7 @@ export default class DashboardCalendar {
           color: 'purple',
           textColor: 'white'
         }
-      ]
+      ],
 			// events: [
 				// {
 				// 	title  : 'event1',
