@@ -94,6 +94,26 @@
   overflow: hidden;
   color: $dashboard-popup-title;
   border-top: 1px solid #D8D8D8;
+  position: relative;
+  
+  &:before {
+    content: '';
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    position: absolute;
+    top: 11px;
+    left: 0;
+
+    .is-open & {
+      background-color: $green;
+    }
+    
+    .is-closed & {
+      background-color: $orange;
+    }
+  }
+
 }
 
 .d-popup__triangle {

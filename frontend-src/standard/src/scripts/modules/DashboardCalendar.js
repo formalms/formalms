@@ -24,7 +24,94 @@ export const RenderDashBoardCalendar = () => {
               },
               success: function (data) {
                 const parsedData = JSON.parse(data);
-                console.log(parsedData.response)
+
+                successCallback(
+                  parsedData.response.map((item) => {
+                    if (item.endDate !== '') {
+                      return {
+                        title: item.title,
+                        start: item.endDate,
+                        type: item.type,
+                        status: false,
+                        description: item.description,
+                        hours: item.hours
+                      }
+                    } else {
+                      return {
+                        title: item.title,
+                        start: item.startDate,
+                        type: item.type,
+                        status: true,
+                        description: item.description,
+                        hours: item.hours
+                      }
+                    }
+                  })
+                )
+              },
+              error: function (e) {
+                failureCallback(
+                  () => console.log(e)
+                )
+              }
+            });
+          },
+          color: '#A478EA'
+        },
+        {
+          events: (fetchInfo, successCallback, failureCallback) => {
+            $.ajax({
+              type: 'post',
+              url: window.dashboardCalendarAjaxUrl,
+              data: {
+                blockAction: 'getClassroomCalendar',
+                authentic_request: window.dashboardCalendarAjaxSignature,
+                block: 'DashboardBlockCalendarLms'
+              },
+              beforeSend: function () {
+                // $('.loading').html(_loadingSnippet);
+              },
+              success: function (data) {
+                const parsedData = JSON.parse(data);
+
+                successCallback(
+                  parsedData.response.map((item) => {
+                    return {
+                      title: item.title,
+                      start: item.startDate,
+                      type: item.type,
+                      status: item.status,
+                      description: item.description,
+                      hours: item.hours
+                    }
+                  })
+                )
+              },
+              error: function (e) {
+                failureCallback(
+                  () => console.log(e)
+                )
+              }
+            });
+          },
+          color: '#007CC8'
+        },
+        {
+          events: (fetchInfo, successCallback, failureCallback) => {
+            $.ajax({
+              type: 'post',
+              url: window.dashboardCalendarAjaxUrl,
+              data: {
+                blockAction: 'getReservationCalendar',
+                authentic_request: window.dashboardCalendarAjaxSignature,
+                block: 'DashboardBlockCalendarLms'
+              },
+              beforeSend: function () {
+                // $('.loading').html(_loadingSnippet);
+              },
+              success: function (data) {
+                const parsedData = JSON.parse(data);
+
                 successCallback(
                   parsedData.response.map((item) => {
                     return {
@@ -47,65 +134,32 @@ export const RenderDashBoardCalendar = () => {
           },
           color: '#A478EA'
         },
-        // {
-        //   events: (fetchInfo, successCallback, failureCallback) => {
-        //     $.ajax({
-        //       type: 'post',
-        //       url: window.dashboardCalendarAjaxUrl,
-        //       data: {
-        //         blockAction: 'getClassroomCalendar',
-        //         authentic_request: window.dashboardCalendarAjaxSignature,
-        //         block: 'DashboardBlockCalendarLms'
-        //       },
-        //       beforeSend: function () {
-        //         // $('.loading').html(_loadingSnippet);
-        //       },
-        //       success: function (data) {
-        //         const parsedData = JSON.parse(data);
-        //         console.log(parsedData.response)
-        //         successCallback(
-        //           parsedData.response.map((item) => {
-        //             return {
-        //               title: item.title,
-        //               start: item.startDate,
-        //               type: item.type,
-        //               status: item.status,
-        //               description: item.description,
-        //               hours: item.hours
-        //             }
-        //           })
-        //         )
-        //       },
-        //       error: function (e) {
-        //         failureCallback(
-        //           () => console.log(e)
-        //         )
-        //       }
-        //     });
-        //   },
-        //   color: '#007CC8'
-        // },
-        // {
-        //   events: [
-        //     {
-        //       title: 'Corso lorem ipsum',
-        //       start: '2019-07-09', //l'orario è opzionale
-        //       type: 'elearning',
-        //       status: true, //rosso - verde
-        //       description: 'Testo testo testo',
-        //       hours: '15:30 - 18:30'
-        //     }
-        //     ],
-        //     color: '#A478EA'
-        //   }
+        {
+          events: [
+            {
+              title: 'Corso lorem ipsum',
+              start: '2019-07-09', //l'orario è opzionale
+              type: 'elearning',
+              status: true, //rosso - verde
+              description: 'Testo testo testo',
+              hours: '15:30 - 18:30'
+            }
+            ],
+            color: '#A478EA'
+          }
         ],
-      eventClick: function(event) {
+      eventClick: function(item) {
         // renderPopup(event);
-        console.log(event)
+        console.log(item)
       },
-      eventRender: function(event) {
-        console.log(event);
-        renderPopup(event);
+      eventRender: function(item) {
+        console.log(item);
+        if (item.event.extendedProps.status) {
+          item.el.classList.add('is-open');
+        } else {
+          item.el.classList.add('is-closed');
+        }
+        renderPopup(item);
       }
 		})
 

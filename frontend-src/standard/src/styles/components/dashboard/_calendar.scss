@@ -47,12 +47,23 @@
     position: relative;
     cursor: pointer;
     border-radius: 0!important;
+    
+    &.is-open {
+      &:before {
+        background-color: $green;
+      }
+    }
+    
+    &.is-closed {
+      &:before {
+        background-color: $orange;
+      }
+    }
 
     &:before {
       content: '';
       width: 5px;
       height: 5px;
-      background-color: $green;
       border-radius: 50%;
       @include center-object(y, absolute);
       left: -10px;
@@ -72,6 +83,10 @@
         opacity: 1;
         visibility: visible;
       }
+    }
+
+    .fc-time {
+      display: none;
     }
   }
 
