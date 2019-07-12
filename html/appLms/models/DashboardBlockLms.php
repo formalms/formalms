@@ -190,8 +190,6 @@ abstract class DashboardBlockLms extends Model
 			$hourEndString = $course['course_hour_end'];
 		}
 
-
-
 		$courseData = [
 			'id' => $course['course_id'],
 			'title' => $course['course_name'],

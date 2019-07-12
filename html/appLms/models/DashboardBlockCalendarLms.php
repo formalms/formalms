@@ -141,7 +141,10 @@ class DashboardBlockCalendarLms extends DashboardBlockLms
 			. ' AND ( c.date_begin BETWEEN CAST("' . $startDate . '" AS DATE) AND CAST("' . $endDate . '" AS DATE)';
 
 		if ($showCourseWithoutDates) {
-			$query .= ' OR c.date_begin = 0000-00-00';
+			$query .= ' OR c.date_begin = 0000-00-00 OR c.date_end = 0000-00-00';
+		}
+		else {
+			$query .= ' AND c.date_begin != 0000-00-00 AND  c.date_end != 0000-00-00';
 		}
 
 		$query .= ')';
@@ -190,7 +193,10 @@ class DashboardBlockCalendarLms extends DashboardBlockLms
 			. ' AND ( c.date_begin BETWEEN CAST("' . $startDate . '" AS DATE) AND CAST("' . $endDate . '" AS DATE)';
 
 		if ($showCourseWithoutDates) {
-			$query .= ' OR c.date_begin = 0000-00-00';
+			$query .= ' OR c.date_begin = 0000-00-00 OR c.date_end = 0000-00-00';
+		}
+		else {
+			$query .= ' AND c.date_begin != 0000-00-00 AND c.date_end != 0000-00-00';
 		}
 
 		$query .= ')';
