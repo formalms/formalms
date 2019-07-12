@@ -25,29 +25,18 @@ export const RenderDashBoardCalendar = () => {
               success: function (data) {
                 const parsedData = JSON.parse(data);
 
-                successCallback(
+                successCallback(() => {
                   parsedData.response.map((item) => {
-                    if (item.endDate !== '') {
-                      return {
-                        title: item.title,
-                        start: item.endDate,
-                        type: item.type,
-                        status: false,
-                        description: item.description,
-                        hours: item.hours
-                      }
-                    } else {
-                      return {
-                        title: item.title,
-                        start: item.startDate,
-                        type: item.type,
-                        status: true,
-                        description: item.description,
-                        hours: item.hours
-                      }
+                    return {
+                      title: item.title,
+                      start: item.startDate,
+                      type: item.type,
+                      status: true,
+                      description: item.description,
+                      hours: item.hours
                     }
                   })
-                )
+                })
               },
               error: function (e) {
                 failureCallback(
