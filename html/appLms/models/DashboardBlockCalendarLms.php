@@ -73,8 +73,8 @@ class DashboardBlockCalendarLms extends DashboardBlockLms
 			$startDate = date('Y-' . $month . '-01');
 			$endDate = date('Y-' . $month . '-' . date('t', strtotime($startDate)));
 		} else {
-			$startDate = Get::pReq('startDate', DOTY_STRING, '2011-01-01');
-			$endDate = Get::pReq('endDate', DOTY_STRING, '2020-01-01');
+			$startDate = Get::pReq('startDate', DOTY_STRING, '2000-01-01');
+			$endDate = Get::pReq('endDate', DOTY_STRING, '2050-01-01');
 
 			if (empty($startDate) || empty($endDate)) {
 				return false;
