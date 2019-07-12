@@ -89,7 +89,7 @@ class DashboardBlockCalendarLms extends DashboardBlockLms
 	public function getElearningCalendar()
 	{
 		$dates = $this->getStartAndEndDatesFromRequest();
-		if(!$dates){
+		if (!$dates) {
 			return [];
 		}
 
@@ -99,7 +99,7 @@ class DashboardBlockCalendarLms extends DashboardBlockLms
 	public function getClassroomCalendar()
 	{
 		$dates = $this->getStartAndEndDatesFromRequest();
-		if(!$dates){
+		if (!$dates) {
 			return [];
 		}
 
@@ -109,7 +109,7 @@ class DashboardBlockCalendarLms extends DashboardBlockLms
 	public function getReservationCalendar()
 	{
 		$dates = $this->getStartAndEndDatesFromRequest();
-		if(!$dates){
+		if (!$dates) {
 			return [];
 		}
 
@@ -153,9 +153,11 @@ class DashboardBlockCalendarLms extends DashboardBlockLms
 		$result = array();
 		while ($data = $db->fetch_assoc($rs)) {
 
-			$courseData = $this->getDataFromCourse($data);
-			
-			$result[] = $courseData;
+			$courseDates = $this->getDatasFromCourse($data);
+
+			foreach ($courseDates as $courseDate) {
+				$result[] = $courseDate;
+			}
 		}
 
 		return $result;
@@ -219,5 +221,22 @@ class DashboardBlockCalendarLms extends DashboardBlockLms
 			$output = $cp_man->getAllCourses($cp_list);
 		}
 		return $output;
+	}
+
+	protected function getDatasFromCourse($course)
+	{
+		$dates = [];
+		$courseData = $this->getDataFromCourse($course, true);
+
+		$dates[] = $courseData;
+	
+		if ($course['course_date_begin'] !== $course['course_date_end']) {
+
+			$courseData = $this->getDataFromCourse($course, false);
+
+			$dates[] = $courseData;
+		}
+
+		return $dates;
 	}
 }

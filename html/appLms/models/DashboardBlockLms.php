@@ -148,7 +148,7 @@ abstract class DashboardBlockLms extends Model
 		return sprintf('%s/%s.html.twig', $this->getViewPath(), $this->getViewFile());
 	}
 
-	protected function getDataFromCourse($course)
+	protected function getDataFromCourse($course, $status = true)
 	{
 		$status_list = [
 			0 => Lang::t('_CST_PREPARATION', 'course'),
@@ -158,20 +158,18 @@ abstract class DashboardBlockLms extends Model
 			4 => Lang::t('_CST_CANCELLED', 'course')
 		];
 
-		$dateBegin = $course['course_date_begin'];
+		$dateBegin = ($status ? $course['course_date_begin'] : $course['course_date_end']);
 		if ($dateBegin === '0000-00-00') {
 			$dateBegin = '';
-		}
-		else {
-			$startDate = new DateTime($course['course_date_begin']);
+		} else {
+			$startDate = new DateTime($dateBegin);
 		}
 
-		$dateEnd = $course['course_date_end'];
+		$dateEnd = ($status ? $course['course_date_begin'] : $course['course_date_end']);
 		if ($dateEnd === '0000-00-00') {
 			$dateEnd = '';
-		}
-		else {
-			$endDate = new DateTime($course['course_date_end']);
+		} else {
+			$endDate = new DateTime($dateEnd);
 		}
 
 		$hourBegin = $course['course_hour_begin'];
@@ -180,8 +178,9 @@ abstract class DashboardBlockLms extends Model
 			$hourBegin = '00:00:00';
 		} else {
 			$hourBegin .= ':00';
-			$hourBeginString = $course['course_hour_begin'];
+			$hourBeginString = $hourBegin;
 		}
+
 		$hourEnd = $course['course_hour_end'];
 		$hourEndString = '';
 		if ($hourEnd === '-1' || $hourEnd === null) {
@@ -190,6 +189,8 @@ abstract class DashboardBlockLms extends Model
 			$hourEnd .= ':00';
 			$hourEndString = $course['course_hour_end'];
 		}
+
+
 
 		$courseData = [
 			'id' => $course['course_id'],
@@ -201,12 +202,12 @@ abstract class DashboardBlockLms extends Model
 			'hourBegin' => !empty($dateBegin) ? $hourBegin : '',
 			'hourEnd' => !empty($dateEnd) ? $hourEnd : '',
 			'type' => $course['course_type'],
-			'status' => $this->calculateCourseStatus($course),
+			'status' => $status,
 			'nameCategory' => $this->getCategory($course['course_category_id']),
 			'courseStatus' => $course['course_status'],
-			'courseStatusString' => $status_list[(int)$course['course_status']],
+			'courseStatusString' => $status_list[(int) $course['course_status']],
 			'description' => $course['course_box_description'],
-			'hours' => $hourBeginString . ' ' . $hourEndString,
+			'hours' => $hourBeginString . (!empty($hourEndString) ? ' ' . $hourEndString : ''),
 		];
 
 		return $courseData;
@@ -254,22 +255,6 @@ abstract class DashboardBlockLms extends Model
 		$reservationData['course'] = $this->getCalendarDataFromCourse($reservation);
 
 		return $reservationData;
-	}
-
-	protected function calculateCourseStatus($course)
-	{
-		if ($course['date_end'] !== '0000-00-00' &&  $course['date_end'] !== '0000-00-00 00:00:00') {
-
-			$earlier = new DateTime();
-			$later = new DateTime($course['date_end']);
-
-			$days = $later->diff($earlier)->format("%a");
-			
-			if($days === 0){
-				return false;
-			}
-		}
-		return true;
 	}
 
 	protected function getCategory($idCat)
