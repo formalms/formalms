@@ -85,19 +85,19 @@ export const RenderDashBoardCalendar = () => {
         //   },
         //   color: '#007CC8'
         // },
-        {
-          events: [
-            {
-              title: 'Corso lorem ipsum',
-              start: '2019-07-09', //l'orario è opzionale
-              type: 'elearning',
-              status: true, //rosso - verde
-              description: 'Testo testo testo',
-              hours: '15:30 - 18:30'
-            }
-            ],
-            color: '#A478EA'
-          }
+        // {
+        //   events: [
+        //     {
+        //       title: 'Corso lorem ipsum',
+        //       start: '2019-07-09', //l'orario è opzionale
+        //       type: 'elearning',
+        //       status: true, //rosso - verde
+        //       description: 'Testo testo testo',
+        //       hours: '15:30 - 18:30'
+        //     }
+        //     ],
+        //     color: '#A478EA'
+        //   }
         ],
       eventClick: function(event) {
         // renderPopup(event);
