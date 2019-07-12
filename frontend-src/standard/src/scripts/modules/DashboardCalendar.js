@@ -19,24 +19,20 @@ export const RenderDashBoardCalendar = () => {
                 authentic_request: window.dashboardCalendarAjaxSignature,
                 block: 'DashboardBlockCalendarLms'
               },
-              beforeSend: function () {
-                // $('.loading').html(_loadingSnippet);
-              },
               success: function (data) {
                 const parsedData = JSON.parse(data);
-
-                successCallback(() => {
+                successCallback(
                   parsedData.response.map((item) => {
                     return {
                       title: item.title,
                       start: item.startDate,
                       type: item.type,
-                      status: true,
+                      status: item.status,
                       description: item.description,
                       hours: item.hours
                     }
                   })
-                })
+                )
               },
               error: function (e) {
                 failureCallback(
@@ -56,9 +52,6 @@ export const RenderDashBoardCalendar = () => {
                 blockAction: 'getClassroomCalendar',
                 authentic_request: window.dashboardCalendarAjaxSignature,
                 block: 'DashboardBlockCalendarLms'
-              },
-              beforeSend: function () {
-                // $('.loading').html(_loadingSnippet);
               },
               success: function (data) {
                 const parsedData = JSON.parse(data);
@@ -94,9 +87,6 @@ export const RenderDashBoardCalendar = () => {
                 blockAction: 'getReservationCalendar',
                 authentic_request: window.dashboardCalendarAjaxSignature,
                 block: 'DashboardBlockCalendarLms'
-              },
-              beforeSend: function () {
-                // $('.loading').html(_loadingSnippet);
               },
               success: function (data) {
                 const parsedData = JSON.parse(data);
