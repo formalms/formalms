@@ -9,44 +9,44 @@ export const RenderDashBoardCalendar = () => {
       locale: itLocale,
       height: 'auto',
       eventSources: [
-        // {
-        //   events: (fetchInfo, successCallback, failureCallback) => {
-        //     $.ajax({
-        //       type: 'post',
-        //       url: window.dashboardCalendarAjaxUrl,
-        //       data: {
-        //         blockAction: 'getElearningCalendar',
-        //         authentic_request: window.dashboardCalendarAjaxSignature,
-        //         block: 'DashboardBlockCalendarLms'
-        //       },
-        //       beforeSend: function () {
-        //         // $('.loading').html(_loadingSnippet);
-        //       },
-        //       success: function (data) {
-        //         const parsedData = JSON.parse(data);
-        //         console.log(parsedData.response)
-        //         successCallback(
-        //           parsedData.response.map((item) => {
-        //             return {
-        //               title: item.title,
-        //               start: item.startDate,
-        //               type: item.type,
-        //               status: item.status,
-        //               description: item.description,
-        //               hours: item.hours
-        //             }
-        //           })
-        //         )
-        //       },
-        //       error: function (e) {
-        //         failureCallback(
-        //           () => console.log(e)
-        //         )
-        //       }
-        //     });
-        //   },
-        //   color: '#A478EA'
-        // },
+        {
+          events: (fetchInfo, successCallback, failureCallback) => {
+            $.ajax({
+              type: 'post',
+              url: window.dashboardCalendarAjaxUrl,
+              data: {
+                blockAction: 'getElearningCalendar',
+                authentic_request: window.dashboardCalendarAjaxSignature,
+                block: 'DashboardBlockCalendarLms'
+              },
+              beforeSend: function () {
+                // $('.loading').html(_loadingSnippet);
+              },
+              success: function (data) {
+                const parsedData = JSON.parse(data);
+                console.log(parsedData.response)
+                successCallback(
+                  parsedData.response.map((item) => {
+                    return {
+                      title: item.title,
+                      start: item.startDate,
+                      type: item.type,
+                      status: item.status,
+                      description: item.description,
+                      hours: item.hours
+                    }
+                  })
+                )
+              },
+              error: function (e) {
+                failureCallback(
+                  () => console.log(e)
+                )
+              }
+            });
+          },
+          color: '#A478EA'
+        },
         // {
         //   events: (fetchInfo, successCallback, failureCallback) => {
         //     $.ajax({

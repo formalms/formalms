@@ -51,8 +51,8 @@ class DashboardLmsController extends LmsController
 	public function ajaxAction()
 	{
 		$result = ['status' => 200];
-		$blockParameter = Get::req(‘block’, DOTY_STRING, false);
-    $actionParameter = Get::pReq(‘blockAction’, DOTY_STRING, ‘getClassroomCalendar’);
+		$blockParameter = Get::pReq(‘block’, DOTY_STRING, false);
+    $actionParameter = Get::pReq(‘blockAction’, DOTY_STRING, ‘getElearningCalendar’);
 
 		$block = $this->model->getRegisteredBlock($blockParameter);
 		if (null !== $block) {
