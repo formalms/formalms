@@ -111,7 +111,7 @@ export const RenderDashBoardCalendar = () => {
               }
             });
           },
-          color: '#A478EA'
+          color: '#007CC8'
         },
         {
           events: [

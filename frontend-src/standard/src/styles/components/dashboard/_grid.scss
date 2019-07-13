@@ -8,7 +8,7 @@
   max-width: 1288px;
   margin: 0 auto;
   padding: 0;
-  overflow: hidden;
+  // overflow: hidden;
 }
 
 .d-grid--no-overflow {
@@ -29,7 +29,7 @@
     left: -8px;
     right: -8px;
   }
-  overflow: hidden;
+  // overflow: hidden;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
