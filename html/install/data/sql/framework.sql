@@ -1369,7 +1369,7 @@ INSERT INTO `core_menu_under` (`idUnder`, `idMenu`, `module_name`, `default_name
 INSERT INTO `core_menu_under` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES(211, 211, 'course', '_COURSES', '', 'view', 'alms', 1, '', '', 'alms/course/show');
 INSERT INTO `core_menu_under` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES(212, 212, 'coursepath', '_COURSEPATH', 'pathlist', 'view', 'alms', 2, 'class.coursepath.php', 'Module_Coursepath', '');
 INSERT INTO `core_menu_under` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES(213, 213, 'catalogue', '_CATALOGUE', 'catlist', 'view', 'alms', 3, 'class.catalogue.php', 'Module_Catalogue', '');
-INSERT INTO `core_menu_under` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES(241, 241, 'certificate', '_CERTIFICATE', 'certificate', 'view', 'alms', 1, 'class.certificate.php', 'Module_Certificate', '');
+INSERT INTO `core_menu_under` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES(241, 241, 'certificate', '_CERTIFICATE', 'certificate', 'mod', 'alms', 1, 'class.certificate.php', 'Module_Certificate', '');
 INSERT INTO `core_menu_under` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES(242, 242, 'meta_certificate', '_META_CERTIFICATE', 'meta_certificate', 'view', 'alms', 2, 'class.meta_certificate.php', 'Module_Meta_Certificate', '');
 INSERT INTO `core_menu_under` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES(251, 251, 'reservation', '_EVENTS', 'view_event', 'view', 'alms', 1, 'class.reservation.php', 'Module_Reservation', '');
 INSERT INTO `core_menu_under` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES(252, 252, 'reservation', '_CATEGORY', 'view_category', 'view', 'alms', 2, 'class.reservation.php', 'Module_Reservation', '');
@@ -2514,7 +2514,7 @@ INSERT INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size
 ('ldap_server', '192.168.0.1', 'string', 255, '0', 9, 3, 1, 0, ''),
 ('ldap_used', 'off', 'enum', 3, '0', 9, 2, 1, 0, ''),
 ('ldap_user_string', '$user@domain2.domain1', 'string', 255, '0', 9, 4, 1, 0, ''),
-('mail_sender', 'sample@localhost.net', 'string', 255, 'email_settings', 1, 8, 0, 0, ''),
+('mail_sender', 'sample@localhost.localdomain', 'string', 255, 'email_settings', 1, 8, 0, 0, ''),
 ('maintenance', 'off', 'enum', 3, 'security', 8, 25, 0, 0, ''),
 ('maintenance_pw', 'manutenzione', 'string', 16, 'security', 8, 26, 0, 0, ''),
 ('mandatory_code', 'off', 'enum', 3, 'register', 3, 18, 1, 0, ''),
@@ -2562,7 +2562,7 @@ INSERT INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size
 ('rest_auth_update', 'off', 'enum', 3, 'api', 9, 10, 1, 0, ''),
 ('save_log_attempt', 'no', 'save_log_attempt', 255, '0', 3, 5, 0, 0, ''),
 ('sco_direct_play', 'on', 'enum', 3, '0', 8, 3, 1, 0, ''),
-('sender_event', 'sample@localhost.net', 'string', 255, '0', 1, 5, 1, 0, ''),
+('sender_event', 'sample@localhost.localdomain', 'string', 255, '0', 1, 5, 1, 0, ''),
 ('send_cc_for_system_emails', '', 'string', 255, 'email_settings', 1, 11, 1, 0, ''),
 ('session_ip_control', 'off', 'enum', 3, 'security', 8, 22, 1, 0, ''),
 ('sms_cell_num_field', '1', 'field_select', 5, '0', 11, 6, 1, 0, ''),
@@ -2765,9 +2765,10 @@ CREATE TABLE IF NOT EXISTS `core_task` (
   `import_type` varchar(50) NOT NULL DEFAULT '',
   `map` text NOT NULL,
   `last_execution` datetime DEFAULT NULL,
-  `sequence` int(3) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`name`)
+  `sequence` int(3) NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`sequence`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 
 --
 -- Dump dei dati per la tabella `core_task`

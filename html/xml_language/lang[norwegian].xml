@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20190215</DATE>
+  <DATE>20190711</DATE>
   <LANG id="norwegian">
     <lang_code>norwegian</lang_code>
     <lang_description>Norsk</lang_description>
@@ -455,6 +455,7 @@
         <key id="configuration&amp;_CONF_GLOBAL" attributes="" save_date="2018-11-26 15:20:36"><![CDATA[Felles]]></key>
         <key id="configuration&amp;_CONF_LMS" attributes="" save_date="2018-11-19 09:10:11"><![CDATA[E-læring]]></key>
         <key id="configuration&amp;_COURSE_BLOCK" attributes="" save_date="2018-11-19 09:10:25"><![CDATA[Vis kurskatalog på innloggingssiden]]></key>
+        <key id="configuration&amp;_CUSTOMER_HELP_SUBJ_PLACEHOLDER" attributes="" save_date="2019-05-29 10:31:20"><![CDATA[Oggetto email Help Desk]]></key>
         <key id="configuration&amp;_CUSTOM_FIELDS_MANDATORY_FOR_ADMIN" attributes="" save_date="2018-11-26 15:26:43"><![CDATA[Obligatoriske egendefinerte felt]]></key>
         <key id="configuration&amp;_DEFAULTTEMPLATE" attributes="" save_date="2018-11-26 15:25:23"><![CDATA[Standardmal]]></key>
         <key id="configuration&amp;_DIMDIM_MAX_MIKES" attributes="" save_date="2018-11-26 15:25:30"><![CDATA[Maks audiobrukere]]></key>
@@ -1510,7 +1511,6 @@
         <key id="standard&amp;_FILE_MANAGER" attributes="" save_date="2018-11-20 09:01:24"><![CDATA[Filbehandler]]></key>
         <key id="standard&amp;_FILTER" attributes="" save_date="2018-11-20 09:09:15"><![CDATA[Filtrer etter]]></key>
         <key id="standard&amp;_FILTER_ALL_CONDS" attributes="" save_date="2018-11-20 09:09:26"><![CDATA[Alle betingelser må være oppfylt]]></key>
-        <key id="standard&amp;_FILTER_APPLY" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Bruk filtre]]></key>
         <key id="standard&amp;_FILTER_ONE_COND" attributes="" save_date="2018-11-20 09:09:39"><![CDATA[Minst en betingelse må¨være oppfylt]]></key>
         <key id="standard&amp;_FINAL_SCORE" attributes="" save_date="2018-11-21 14:33:01"><![CDATA[Endelig resultat]]></key>
         <key id="standard&amp;_FIRSTNAME" attributes="" save_date="2018-11-20 09:01:31"><![CDATA[Fornavn]]></key>
@@ -1519,7 +1519,6 @@
         <key id="standard&amp;_FULLNAME" attributes="" save_date="2018-11-20 09:01:44"><![CDATA[Fullt navn]]></key>
         <key id="standard&amp;_GAP" attributes="" save_date="2018-11-20 09:01:48"><![CDATA[Gap]]></key>
         <key id="standard&amp;_GOOGLE" attributes="" save_date="2018-11-20 09:01:52"><![CDATA[Google]]></key>
-        <key id="standard&amp;_GO_TO_HOME" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Gå til hjemmesiden]]></key>
         <key id="standard&amp;_GROUPS" attributes="" save_date="2018-11-20 09:01:57"><![CDATA[Grupper]]></key>
         <key id="standard&amp;_HEIGHT" attributes="" save_date="2018-11-20 09:02:01"><![CDATA[Høyde]]></key>
         <key id="standard&amp;_HELP" attributes="" save_date="2018-11-20 09:02:05"><![CDATA[Hjelp]]></key>

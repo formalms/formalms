@@ -121,11 +121,14 @@ if ($permissions['subscribe'])//if(checkPerm('subscribe', true, 'course', 'lms')
 if ($permissions['view'])
 	$columns_arr[] = array('key' => 'edition', 'label' =>  Get::sprite('subs_date', Lang::t('_CLASSROOM_EDITION', 'course') ), 'className' => 'img-cel1l');
 
-if ($permissions['mod']) {
+$perm_assign = checkPerm('assign', true, 'certificate', 'lms');
+$perm_release = checkPerm('release', true, 'certificate', 'lms');
+
+if ($perm_assign) {
 	$columns_arr[] = array('key' => 'certificate', 'label' => Get::sprite('subs_pdf', Lang::t('_CERTIFICATE_ASSIGN_STATUS', 'course')), 'className' => 'img-cell1');
 }
 
-if ($permissions['view_cert']) {
+if ($permissions['view_cert'] && $perm_release) {
 	$columns_arr[] = array('key' => 'certreleased', 'label' => Get::sprite('subs_print', Lang::t('_CERTIFICATE_RELEASE', 'course')), 'className' => 'img-cell1');
 }
 

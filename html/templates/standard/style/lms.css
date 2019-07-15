@@ -11,7 +11,10 @@
 
 .layout_header{padding:5px 0;background:#ffffff;}
 .layout_header .left_logo{margin:0;vertical-align:middle;}
-.layout_menu_over{zoom:1; min-height: 60px;}
+.layout_menu_over{zoom:1; min-height: 73px;}
+@media screen and (min-width: 768px) {
+    .layout_menu_over{min-height: 71px;}
+}
 #lms_main_container{background:#ffffff;padding: 1em 0;}
 #lms_main_container .std_block {padding: 1em 0;}
 .layout_colum_container{padding: 1em 0; min-height:350px;}

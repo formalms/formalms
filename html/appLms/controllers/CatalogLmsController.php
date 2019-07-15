@@ -406,7 +406,8 @@ class CatalogLmsController extends LmsController {
 			$idst_admin = $acl_man->getGroupMembers($idst_group_admin);
 
 			require_once(_adm_.'/lib/lib.adminmanager.php');
-				foreach($idst_admin as $id_user) {
+
+			foreach($idst_admin as $id_user) {
 				$adminManager = new AdminManager();
 				$acl_manager = & $acl_man;
 
@@ -467,8 +468,7 @@ class CatalogLmsController extends LmsController {
 
 			$recipients = array_unique($recipients);
 
-			createNewAlert(	'UserCourseInsertModerate', 'subscribe', 'insert', '1', 'User subscribed with moderation',
-						$recipients, $msg_composer  );
+			createNewAlert(	'UserCourseInsertModerate', 'subscribe', 'insert', '1', 'User subscribed with moderation', $recipients, $msg_composer );
 
 			$res['message'] = UIFeedback::info(Lang::t('_SUBSCRIPTION_CORRECT', 'catalogue'), true);
 		}

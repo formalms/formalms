@@ -1753,7 +1753,7 @@ ul.tabs li.current{
 		
 .glyphicon.cat {font-size:20px}
 
-#treeview1 {margin:15px 0}
+#treeview1 {margin:15px 0; background-color: #fff;}
 
 @media (min-width: 992px){
 .col-md-12 {
@@ -1819,3 +1819,4 @@ ul.tabs li.current{
     transform: none;
     border: none;
 }
+

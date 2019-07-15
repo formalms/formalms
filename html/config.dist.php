@@ -72,8 +72,10 @@ $cfg['use_smtp'] = 'on';            // Options: on,off
 $cfg['smtp_host'] ='';				// Options: hostname;hostname:port;...
 //$cfg['smtp_port'] ='';			// Options: '' (default port) , port number
 //$cfg['smtp_secure'] = '';			// Options: "", "ssl", "tls"
+$cfg['smtp_auto_tls'] = true;		// Options: true, false
 $cfg['smtp_user'] ='';
 $cfg['smtp_pwd'] ='';
+$cfg['smtp_debug'] = 0;             // Options: debug level 0,1,2,3,...
 
 /**
  * Other params
@@ -141,11 +143,3 @@ $cfg['mail_br']  = "\r\n";
  */
 //$cfg['certificate_encryption'] = true;
 //$cfg['certificate_password']  = "12345678901234567890123456789012";
-
-
-/**
- * Social Google Options
- * -------------------------------------------------------------------------
- * use_google_login_oauth2: boolean to set whether to enable or not the oauth2 login in google connection instead of openid (default is TRUE)
- */
-//$cfg['use_google_login_oauth2'] = false;

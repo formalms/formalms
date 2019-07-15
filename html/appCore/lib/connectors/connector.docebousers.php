@@ -60,6 +60,7 @@ class DoceboConnectorDoceboUsers extends DoceboConnector {
 	var $tree_ocd = NULL;
 	
 	var $org_chart_name = array();
+    var $org_chart_code = array();
 	var $org_chart_group = array();
 	var $user_org_chart = array();
 	
@@ -211,21 +212,52 @@ class DoceboConnectorDoceboUsers extends DoceboConnector {
 		
 		$this->index = 0;
 		$this->eof = true;
+        $this->org_chart_code = array();            
+        $match = array();
+        $this->org_chart_name = array();
+        $this->org_chart_group = array();
+        $this->user_org_chart = array();
+        // cache org_chart group
+        $this->org_chart_group = $aclManager->getBasePathGroupST('/oc');
+        
+        
 		
 		if ($this->org_chart_destination == 0) {
-            $q = "SELECT idst from core_user";
-            $r =  sql_query($q);
-             while(list($idstMember) = sql_fetch_row($r)) {
-                    $this->user_org_chart[$idstMember][0] = 0;
-             }
-        } else {
-            $match = array();
-		    $this->org_chart_name = array();
-		    $this->org_chart_group = array();
-		    $this->user_org_chart = array();
+              $this->org_chart_code['root'] = 0;
+              $idst_group = $this->org_chart_group['/oc_0'];
+              $query_idstMember = "SELECT idstMember"
+                                ." FROM ".$GLOBALS['prefix_fw']."_group_members "
+                                ." WHERE idst = '".$idst_group."'";
+              $re = sql_query($query_idstMember);
+            while(list($idstMember) = sql_fetch_row($re)) {
 
-		    // cache org_chart group
-		    $this->org_chart_group = $aclManager->getBasePathGroupST('/oc');
+                if(!isset($this->user_org_chart[$idstMember])) $this->user_org_chart[$idstMember] = array();
+                $this->user_org_chart[$idstMember][0] = 0;
+            }        
+
+            $query = " SELECT idOrg, code "
+                    ." FROM ".$GLOBALS['prefix_fw']."_org_chart_tree";
+            $result = sql_query($query);
+            while(list($id_dir, $dir_code) = sql_fetch_row($result)) {
+            
+                $valid = preg_match('/'.$this->preg_match_folder.'/i', $dir_code, $match);
+                if($valid) $dir_code = $match[1];
+            
+                $this->org_chart_code[$dir_code] = $id_dir;
+                $idst_group = $this->org_chart_group['/oc_'.$id_dir];
+                            
+                $query_idstMember = "SELECT idstMember"
+                                    ." FROM ".$GLOBALS['prefix_fw']."_group_members "
+                                    ." WHERE idst = '".$idst_group."'";
+                $re = sql_query($query_idstMember);
+                while(list($idstMember) = sql_fetch_row($re)) {
+                    
+                    if(!isset($this->user_org_chart[$idstMember])) $this->user_org_chart[$idstMember] = array();
+                    $this->user_org_chart[$idstMember][$id_dir] = $id_dir;
+                }
+            }       
+        } else {
+
 
 		    $query = " SELECT id_dir, translation "
 				    ." FROM ".$GLOBALS['prefix_fw']."_org_chart"
@@ -235,7 +267,7 @@ class DoceboConnectorDoceboUsers extends DoceboConnector {
                 if ($id_dir == $this->org_chart_destination) {		
 			        $valid = preg_match('/'.$this->preg_match_folder.'/i', $dir_name, $match);
 			        if($valid) $dir_name = $match[1];
-		        
+		             
 			        $this->org_chart_name[$dir_name] = $id_dir;
 			        $idst_group = $this->org_chart_group['/oc_'.$id_dir];
 						        
@@ -489,10 +521,10 @@ class DoceboConnectorDoceboUsers extends DoceboConnector {
 				$readed_folders = array();
 				while(list(, $tree_code)= each($tree_codes)) {
 					
-					$dir_name = stripslashes($tree_code);
-					if(isset($this->org_chart_name[$dir_name])) {
+					$dir_code = stripslashes($tree_code);
+					if(isset($this->org_chart_code[$dir_code])) {
 						
-						$readed_folders[] = $this->org_chart_name[$dir_name];
+						$readed_folders[] = $this->org_chart_code[$dir_code];
 					}
 				}
 				if(!isset($this->user_org_chart[$idst])) $this->user_org_chart[$idst] = array();

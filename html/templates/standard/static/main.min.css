@@ -3303,6 +3303,7 @@ p {
   position: absolute;
   top: 0;
   left: 50%;
+  z-index: 99;
   transform: translate(-50%, -100%) translateY(-45px);
   transform: translate3d(-50%, -100%, 0) translateY(-45px);
   border-radius: 5px;
@@ -3326,6 +3327,9 @@ p {
     border-right: solid 6px transparent;
     border-bottom: none;
     border-left: solid 6px transparent; }
+  .forma-tooltip.down:after {
+    transform: translate(-50%, 100%) translateY(-285px);
+    transform: translate3d(-50%, -100%) translateY(-285px); }
   .has-forma-tooltip:hover .forma-tooltip {
     transform: translate(-50%, -100%) translateY(-15px);
     transform: translate3d(-50%, -100%, 0) translateY(-15px);
@@ -3334,6 +3338,15 @@ p {
 
 .has-forma-tooltip {
   overflow: visible !important; }
+  .has-forma-tooltip:hover .forma-tooltip.down {
+    transform: translate(-50%, -100%) translateY(105px);
+    transform: translate3d(-50%, -100%, 0) translateY(105px); }
+    .has-forma-tooltip:hover .forma-tooltip.down:after {
+      transform: translate(-50%, -100%) translateY(-115px);
+      transform: translate3d(-50%, -100%, 0) translateY(-115px);
+      border-top: none;
+      border-right: solid 6px transparent;
+      border-left: solid 6px transparent; }
 
 .tabnav {
   overflow: hidden;
@@ -3672,7 +3685,11 @@ body {
 
 #middlearea.yui-navset,
 .middlearea_container--margintop-small {
-  margin-top: 20px; }
+  margin-top: 0; }
+  @media (min-width: 768px) {
+    #middlearea.yui-navset,
+    .middlearea_container--margintop-small {
+      margin-top: 20px; } }
 
 .header--external-catalogue {
   top: 0; }
@@ -4565,19 +4582,23 @@ i + .course-box__date-box {
       text-decoration: none; }
 
 header.header {
-  height: 60px;
+  height: 73px;
   padding: 0;
   border-bottom: 2px solid #c84000;
   position: fixed; }
   @media (min-width: 768px) {
     header.header {
-      padding: 8px 15px; } }
+      padding: 10px 15px;
+      height: 71px; } }
   @media (min-width: 768px) and (max-width: 1023px) {
     header.header .row-fluid .navbar-header {
       width: 100%; } }
   header.header .row-fluid .navbar-header .navbar-brand {
-    padding: 15px 0 0 30px;
+    padding: 15px 0 0 15px;
     position: relative; }
+    @media (min-width: 768px) {
+      header.header .row-fluid .navbar-header .navbar-brand {
+        padding-left: 30px; } }
     header.header .row-fluid .navbar-header .navbar-brand img {
       height: 100%;
       position: relative;
@@ -4590,6 +4611,8 @@ header.header {
         padding: 0; } }
   header.header .row-fluid .navbar-header .navbar-toggle {
     position: relative;
+    margin-top: 15px;
+    margin-right: 5px;
     transition: all 0.2s ease-in 0s; }
     @media (min-width: 768px) and (max-width: 1023px) {
       header.header .row-fluid .navbar-header .navbar-toggle {
@@ -4619,7 +4642,7 @@ header.header {
       header.header .row-fluid .navbar-collapse {
         margin-top: 1px !important; } }
     header.header .row-fluid .navbar-collapse li {
-      padding: 14px 10px;
+      padding: 14px 10px 10px 6px;
       font-family: "Open-sans", Arial;
       font-size: 14px; }
       @media (min-width: 768px) {
@@ -4676,6 +4699,10 @@ header.header {
             background-image: url("images/icons/top-menu/icon--admin-hover.svg"); }
           header.header .row-fluid .navbar-collapse li a .glyphicon.glyphicon-cog:before {
             background-image: url("images/icons/top-menu/icon--admin.svg"); }
+          header.header .row-fluid .navbar-collapse li a .glyphicon.glyphicon-bell:hover:before {
+            background-image: url("images/icons/top-menu/icon--bell-hover.svg"); }
+          header.header .row-fluid .navbar-collapse li a .glyphicon.glyphicon-bell:before {
+            background-image: url("images/icons/top-menu/icon--bell.svg"); }
           header.header .row-fluid .navbar-collapse li a .glyphicon.glyphicon-shopping-cart:hover:before {
             background-image: url("images/icons/top-menu/icon--cart-hover.svg"); }
           header.header .row-fluid .navbar-collapse li a .glyphicon.glyphicon-shopping-cart:before {
@@ -4762,7 +4789,7 @@ header.header {
     header.header .row-fluid .navbar-collapse.collapsing, header.header .row-fluid .navbar-collapse.collapse.in {
       width: 100%;
       float: left;
-      margin-top: 5px;
+      margin-top: 10px;
       padding: 20px;
       background-color: #ececec; }
       @media (min-width: 768px) and (max-width: 1023px) {
@@ -5010,6 +5037,8 @@ header.header {
             background-color: transparent; } }
         .user-panel .container-fluid .row.comunication .col-xs-4 {
           padding: 0 9px 0 9px; }
+          .user-panel .container-fluid .row.comunication .col-xs-4 a.btn.btn-default {
+            margin-bottom: 9px; }
           .user-panel .container-fluid .row.comunication .col-xs-4 a {
             padding: 0; }
       .user-panel .container-fluid .row.career {

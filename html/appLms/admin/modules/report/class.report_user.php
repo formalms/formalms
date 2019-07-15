@@ -1725,8 +1725,9 @@ class Report_User extends Report {
 
 			//cout('<div>'.($condition ? 'true' : 'false').'</div>');
 			if ($condition) {
-
-
+                
+                require_once($GLOBALS['where_framework'].'/lib/lib.customfield.php');
+                $fman = new CustomFieldList();
 				$row = array();
 				$row[] =  Docebo::aclm()->relativeId($userid);
 				if (in_array('_TH_LASTNAME', $cols)) $row[] =  $lastname;
@@ -1755,9 +1756,6 @@ class Report_User extends Report {
                     }
                     $row[] = $folder_name;
                 
-                
-                    require_once($GLOBALS['where_framework'].'/lib/lib.customfield.php');
-                    $fman = new CustomFieldList();
 
                     if (count($folders)>1) {
                         foreach ($customcols_org as $val) {
@@ -1857,7 +1855,7 @@ class Report_User extends Report {
                     $tot_compl_sup = $this->getPercLO($id_user,$id_course); 
                     $per_compl = round(($tot_compl_sup/$tot_lo)*100)  ;                    
                     
-                    $row[] =  $per_compl."%";
+                    $row[] = $per_compl."%";
                 
                 }                
                         
@@ -1983,13 +1981,12 @@ class Report_User extends Report {
     
    // Luca
     function getTotLO($idUser, $idCourse){    
-          $query = "select count(*) as tot_lo from learning_organization where idCourse=".$idCourse." " ;
+          $query = "select count(*) as tot_lo from learning_organization where idCourse=".$idCourse." AND (objectType <> '' OR objectType IS NULL)" ;
                                           
           $res = $this->db->query($query);
           list($tot_lo) = $this->db->fetch_row($res)  ;
           
           return $tot_lo;
-
     }
     
     function getPercLO($idUser, $idCourse){
@@ -2004,7 +2001,6 @@ class Report_User extends Report {
           list($tot_lo) = $this->db->fetch_row($res)  ;
           
           return $tot_lo;
-
     }    
     
     
@@ -2025,7 +2021,6 @@ class Report_User extends Report {
         $str_lo = $str_lo."</ul>";
         
         return  $str_lo;
-        
     }    
     
     
@@ -3096,7 +3091,7 @@ class Report_User extends Report {
 				}
 			} else {
 				if ($val['key'] == '_CUSTOM_FIELDS_') {
-					//custom fields
+                    //custom fields
 					if (count($ref['custom_fields']) > 0) {
                         foreach ($ref['custom_fields'] as $key=>$val) {
 							$arr_fieldset['user'] .= Form::getCheckBox($val['label'], 'col_custom_'.$val['id'], 'custom['.$val['id'].']', $val['id'], $val['selected']);

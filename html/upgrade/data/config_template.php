@@ -141,11 +141,3 @@ $cfg['mail_br'] 	= "\r\n";
  */
 //$cfg['certificate_encryption'] = true;
 //$cfg['certificate_password']  = "12345678901234567890123456789012";
-
-
-/**
- * Social Google Options
- * -------------------------------------------------------------------------
- * use_google_login_oauth2: boolean to set whether to enable or not the oauth2 login in google connection instead of openid (default is TRUE)
- */
-//$cfg['use_google_login_oauth2'] = false;

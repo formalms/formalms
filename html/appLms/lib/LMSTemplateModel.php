@@ -72,7 +72,7 @@ class LMSTemplateModel {
 
         $profile = null;
         if($ma->currentCanAccessObj('user_details_full')) {
-            require_once(_lib_ . '/lib.user_profile.php');
+            require_once(Forma::inc(_lib_ . '/lib.user_profile.php'));
             $profile = new UserProfile(getLogUserId());
             $profile->init('profile', 'framework', 'index.php?' . Get::home_page_query(), 'ap');
         }

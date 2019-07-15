@@ -207,7 +207,7 @@ html, body {}
     background: transparent;
   }
   .sm-forma a, .sm-forma a:hover, .sm-forma a:focus, .sm-forma a:active, .sm-forma a.highlighted {
-    padding: 11px 20px;
+    padding: 15px 20px;
     color: #333333;
     -webkit-border-radius: 4px 4px 0 0;
     -moz-border-radius: 4px 4px 0 0;
@@ -465,6 +465,26 @@ html, body {}
   .nav-brand {
     float: left;
     margin: 0;
+  }
+
+  /* FIX ADMIN LOGO */
+
+  .sm-forma a.forma-admin-logo {
+    padding: 6px;
+    margin-left: 25px;
+    background-color: #c84000;
+    border-radius: 0;
+  }
+
+  .sm-forma a.forma-admin-logo:hover {
+    background-color: #c84000;
+    border-radius: 0;
+    padding: 6px;
+  }
+
+  .forma-admin-logo img {
+    height: 35px;
+    width: auto;
   }
   
 

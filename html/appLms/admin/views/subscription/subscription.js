@@ -298,6 +298,10 @@ E.onAvailable("multimod_date_complete", function() {
 					+"&id_date="+S.idDate
 					+"&send_alert="+(YAHOO.util.Dom.get('fast_subscribe_send_alert').checked ? '1' : '0');
 
+				$("#fast_subscribe").attr('disabled', true);
+				$("#fast_subscribe").val('Loading...');
+				$("#fast_subscribe_b").attr('disabled', true);
+
 				YAHOO.util.Connect.asyncRequest("POST", "ajax.adm_server.php?r="+S.baseLink+"/fastsubscribe", {
 					success: function(o) {
 						var res = YAHOO.lang.JSON.parse(o.responseText), res_el = YAHOO.util.Dom.get('fast_subscribe_result');
@@ -311,8 +315,15 @@ E.onAvailable("multimod_date_complete", function() {
 							res_el.firstChild.innerHTML = res.message ? res.message : S.oLangs.get('_OPERATION_FAILURE');
 							res_el.style.visibility = 'visible';
 						}
+						$("#fast_subscribe").attr('disabled', false);
+						$("#fast_subscribe").val('');
+						$("#fast_subscribe_b").attr('disabled', false);
 					},
-					failure: function() {}
+					failure: function() {
+						$("#fast_subscribe").attr('disabled', false);
+						$("#fast_subscribe").val('');
+						$("#fast_subscribe_b").attr('disabled', false);
+					}
 				}, postdata);
 			}
 

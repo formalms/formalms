@@ -1,0 +1,52 @@
+td.ft-edit {
+    position: relative;
+}
+
+td.ft-edit:not(.ft-edit-open):hover {
+    background-color: rgba(0, 0, 0, 0.05);
+    cursor: pointer;
+}
+
+form.ft-edit-popup {
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 10;
+    background: #CCCCCC;
+    box-shadow: #808080 0 0 5px 1px;
+    padding: 10px;
+    white-space: nowrap;
+    min-width: 100%;
+}
+
+form.ft-edit-popup select, form.ft-edit-popup input {
+    box-sizing: border-box;
+    width: 100%;
+    margin-bottom: 10px;
+    display: block;
+}
+
+form.ft-edit-popup button {
+    display: inline-block;
+    width: 80px;
+}
+
+form.ft-edit-popup button:first-of-type {
+    margin-right: 10px;
+}
+
+.ui-widget-header {
+    color: #000000;
+}
+
+table.dataTable tbody>tr.selected, table.dataTable tbody>tr>.selected {
+    background-color: unset;
+}
+
+table.dataTable tbody tr.selected, table.dataTable tbody th.selected, table.dataTable tbody td.selected {
+    color: unset;
+}
+
+table.dataTable tbody tr.selected a, table.dataTable tbody th.selected a, table.dataTable tbody td.selected a {
+    color: unset;
+}

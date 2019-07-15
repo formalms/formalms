@@ -374,3 +374,11 @@ img.course_logo.sponsor {
     background-color: #eeeeee;
     
   }
+
+.green_menu .badge {
+  position: absolute;
+  right: 4px;
+  top: 4px;
+  background-color: #ee0000;
+  z-index: 1;
+}

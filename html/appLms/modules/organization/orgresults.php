@@ -78,8 +78,11 @@ function getCompilationTable($id_user, $id_test)
             $show_solution = true;
         elseif($test_info['show_solution'] == 2 && !$incomplete )
             $show_solution = true;
-        cout(   '<b>'.Lang::t('_DATE', 'organization').':</b> '.Format::date($track_info['date_end_attempt'], 'datetime').'<br/>'
-                .'<b>'.Lang::t('_SCORE', 'organization').':</b> '.($track_info['score'] == '' ? '0' : $track_info['score']).'<br/>', 'content');
+        cout(   '<b>'.Lang::t('_DATE', 'organization').':</b> '.Format::date($track_info['date_end_attempt'], 'datetime').'<br/>', 'content');
+
+        if($test_info['show_score'] == 1) {
+        	cout(   '<b>'.Lang::t('_SCORE', 'organization').':</b> '.($track_info['score'] == '' ? '0' : $track_info['score']).'<br/>', 'content');
+    	}
 
         $query =    "SELECT date_attempt, score"
                     ." FROM %lms_testtrack_times"
@@ -91,7 +94,7 @@ function getCompilationTable($id_user, $id_test)
         {
             cout('<div id="hystoric">', 'content');
 
-            $tb = new Table(0, Lang::t('_HYSTORIC_TABLE', 'organization'), Lang::t('_HYSTORIC_TABLE', 'organization'));
+            $tb = new Table(0, Lang::t('_HISTORIC_TABLE', 'organization'), Lang::t('_HISTORIC_TABLE', 'organization'));
 
             $tb_h = array(Lang::t('_DATE', 'organization'), Lang::t('_SCORE', 'organization'));
             $tb_s = array('align-center', 'align-center');

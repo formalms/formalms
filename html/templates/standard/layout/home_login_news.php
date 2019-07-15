@@ -34,9 +34,8 @@
 			<div class="nofloat"></div>
 		</div>
 		<div class="content">
-			<div class="login-box<?php echo LoginLayout::isSocialActive() ? '-social': ''; ?>">
+			<div class="login-box">
 			<h2>LOGIN</h2>
-				<?php echo LoginLayout::social_login(); ?>
 				<?php echo LoginLayout::login_form(); ?>
 				<?php echo LoginLayout::service_msg(); ?>
 			</div>

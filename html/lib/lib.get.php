@@ -384,8 +384,10 @@ class Get {
      * @return string server_name
      */    
     public static function server_name() {
-        if(isset($_SERVER['HTTP_X_FORWARDED_SERVER'])) {
-            return $_SERVER['HTTP_X_FORWARDED_SERVER'];
+        if(isset($_SERVER['HTTP_X_FORWARDED_HOST'])) {
+            return $_SERVER['HTTP_X_FORWARDED_HOST'];
+        } elseif(isset($_SERVER['HTTP_HOST'])) {
+            return $_SERVER['HTTP_HOST'];
         } else {
             return $_SERVER['SERVER_NAME'];
         }

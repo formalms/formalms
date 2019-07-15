@@ -24,7 +24,7 @@ function GetAdminPanel(){
                         <a href="index.php?r=lms/profile/show">'.Lang::t('_PROFILE', 'profile').'</a>   
                   </li>
                   <li> 
-                    <a id="logout"  href='.Get::rel_path('base').'/index.php?r='. _logout_ .' ">                
+                    <a id="logout"  href="'.Get::rel_path('base').'/index.php?r='. _logout_ .'">                
                         <i class="fa fa-power-off" aria-hidden="true"></i>&nbsp;'.Lang::t('_LOGOUT', 'standard').'</span>
                     </a>
                   </li>
@@ -38,8 +38,8 @@ function GetAdminPanel(){
  */
 function GetCompanyLogo(){
     
-    return  '<a href="index.php?r=adm/dashboard/show">
-            <img width=100px src="'.Layout::path().'images/company_logo.png" alt="Left logo" />
+    return  '<a href="index.php?r=adm/dashboard/show" class="forma-admin-logo">
+                <img src="'.Layout::path().'images/company_logo_admin.png" alt="Left logo" />
             </a>';
 }
 
