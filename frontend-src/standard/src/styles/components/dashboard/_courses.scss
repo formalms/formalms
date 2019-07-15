@@ -139,9 +139,11 @@
 }
 
 .d-courses__next-course {
+  min-height: 17px;
   font-weight: $regular;
   font-size: 12px;
   position: relative;
+  line-height: 17px;
 
   &:before {
     content: '';
