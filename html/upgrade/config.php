@@ -55,6 +55,6 @@ $GLOBALS['cfg']['docebo_versions'] = array(
 	'4050' => '4.0.5',
 );
 
-$GLOBALS['cfg']['endversion'] = '20201';
+$GLOBALS['cfg']['endversion'] = '20300';
 
 ?>
