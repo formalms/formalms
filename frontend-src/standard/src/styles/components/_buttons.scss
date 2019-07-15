@@ -62,6 +62,7 @@
     padding-left: 15px;
   }
 
+  .d-courses &,
   .d-user-profile & {
     font-size: 16px;
   }
@@ -293,6 +294,7 @@
     color: rgba(255, 255, 255, 0.7);
     margin-left: 6px;
 
+    .d-courses &,
     .d-user-profile & {
       display: none;
     }

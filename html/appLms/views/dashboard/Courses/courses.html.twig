@@ -14,24 +14,22 @@
           {% set status_class = 'red' %}
         {% endif %}
 
-        <a class="d-courses__item has-icon--{{ course.type }}" target="_self" href="/">
+        <a class="d-courses__item has-icon--{{ course.type }}" target="_self" href="/appLms/index.php?modname=course&op=aula&idCourse={{ course.id }}">
           <div class="d-courses__img-wrapper">
-            <img class="d-courses__img" src="https://via.placeholder.com/130x85"/>
+            <img class="d-courses__img" src="/templates/standard/static/images/course-placeholder.png"/>
           </div>
           <div class="d-courses__content-wrapper">
             <div class="d-course__title">
               {{ course.title }}
             </div>
             <div class="d-courses__date-wrapper status--{{ status_class }}">
-              {% if course.start != '00-00-0000' %}
+              {% if course.start != '' %}
                 <span class="d-courses__date d-courses__date--start">
                   {{ course.start }}
-                  11/22/1234
                 </span>
-                {% if course.end != '00-00-0000' %}
+                {% if course.end != '' %}
                   <span class="d-courses__date d-courses__date--end">
                     {{ course.end }}
-                    11/22/1234
                   </span>
                 {% endif %}
               {% endif %}
@@ -42,10 +40,16 @@
           </div>
         </a>
       {% endfor %}
+      
+      <div class="d-courses__cta-wrapper">
+        <a class="forma-button forma-button--orange-hover forma-button--full d-button--cert" title="" href="/appLms/index.php?r=elearning/show&sop=unregistercourse">
+          <span class="forma-button__label">TUTTI I CORSI</span>
+        </a>
+      </div>
     </div>
   </div>
-{# 
-   <pre>
-    {{ dump(block.courses) }}
+
+   {# <pre>
+    {{ dump(block) }}
   </pre>  #}
 {% endblock %}

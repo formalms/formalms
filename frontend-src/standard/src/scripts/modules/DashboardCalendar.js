@@ -127,12 +127,12 @@ export const RenderDashBoardCalendar = () => {
             color: '#A478EA'
           }
         ],
-      eventClick: function(item) {
+      eventClick: function() {
         // renderPopup(event);
-        console.log(item)
+        // console.log(item)
       },
       eventRender: function(item) {
-        console.log(item);
+        // console.log(item);
         if (item.event.extendedProps.status) {
           item.el.classList.add('is-open');
         } else {
@@ -151,7 +151,7 @@ const renderPopup = (item) => {
   const desc = item.event.extendedProps.description;
   const hours = item.event.extendedProps.hours;
   const title = item.event.title;
-  console.log(item.event)
+  // console.log(item.event)
   
   el += '<div class="d-popup">';
   el += '<div class="d-popup__item is-' + type + '">';

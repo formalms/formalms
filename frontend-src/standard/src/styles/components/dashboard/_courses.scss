@@ -1,5 +1,9 @@
 .d-courses {
-  
+  padding-bottom: 90px!important;
+
+  @include breakpoint($ipad) {
+    padding-bottom: 0!important;
+  }
 }
 
 .d-courses__item {
@@ -156,4 +160,18 @@
   font-weight: $bold;
   height: 34px;
   overflow: hidden;
+}
+
+.d-courses__cta-wrapper {
+  width: 200px;
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+
+  @include breakpoint($ipad) {
+    right: 0;
+    left: initial;
+    transform: none;
+  }
 }
