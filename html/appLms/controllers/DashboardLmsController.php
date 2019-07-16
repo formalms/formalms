@@ -43,6 +43,8 @@ class DashboardLmsController extends LmsController
 		checkPerm ('view' , true , $this->_mvc_name);
 		$blocks = $this->model->getBlocksViewData();
 
+		var_dump($blocks);
+
 		$this->render('dashboard', [
 			'blocks' => $blocks
 		]);
