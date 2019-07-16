@@ -80,6 +80,8 @@ class DashboardBlockCoursesLms extends DashboardBlockLms
 
 		$elearningConditions = $conditions;
 		$elearningConditions[] = "c.course_type = ':course_type'";
+		$elearningConditions[] = 'c.date_begin != 0000-00-00';
+		$elearningConditions[] = 'c.date_end != 0000-00-00';
 
 
 		$elearningParams = $params;
@@ -191,6 +193,8 @@ class DashboardBlockCoursesLms extends DashboardBlockLms
 			. ' FROM %lms_course_date AS cd '
 			. ' WHERE cd.id_course = ' . $course['course_id']
 			. ' AND cd.status <>3 '
+            . ' AND cd.sub_end_date <> \'0000-00-00 00:00:00\' '
+            . ' AND cd.sub_start_date <> \'0000-00-00 00:00:00\' '
 			. ' ORDER BY cd.id_date';
 
 		$rs = $db->query($query);

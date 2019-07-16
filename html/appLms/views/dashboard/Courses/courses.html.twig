@@ -1,55 +1,61 @@
 {% extends "Base/base.html.twig" %}
 
 {% block content %}
-  {#courses#}
-  <div class="d-col d-col--12 d-col--3--desktop">
-    <div class="d-courses d-widget">
-      <h3 class="d-title">
-        {{ translate('_COURSES','standard') }}
-      </h3>
-      {% for course in block.courses %}
-        {% if status > 0 %}
-          {% set status_class = 'green' %}
-        {% else %}
-          {% set status_class = 'red' %}
-        {% endif %}
-
-        <a class="d-courses__item has-icon--{{ course.type }}" target="_self" href="/appLms/index.php?modname=course&op=aula&idCourse={{ course.id }}">
-          <div class="d-courses__img-wrapper">
-            <img class="d-courses__img" src="/templates/standard/static/images/course-placeholder.png"/>
-          </div>
-          <div class="d-courses__content-wrapper">
-            <div class="d-course__title">
-              {{ course.title }}
-            </div>
-            <div class="d-courses__date-wrapper status--{{ status_class }}">
-              {% if course.start != '' %}
-                <span class="d-courses__date d-courses__date--start">
-                  {{ course.start }}
-                </span>
-                {% if course.end != '' %}
-                  <span class="d-courses__date d-courses__date--end">
-                    {{ course.end }}
-                  </span>
+    {#courses#}
+    <div class="d-col d-col--12 d-col--3--desktop">
+        <div class="d-courses d-widget">
+            <h3 class="d-title">
+                {{ translate('_COURSES','standard') }}
+            </h3>
+            {% for course in block.courses %}
+                {% if status > 0 %}
+                    {% set status_class = 'green' %}
+                {% else %}
+                    {% set status_class = 'red' %}
                 {% endif %}
-              {% endif %}
-            </div>
-            <div class="d-courses__next-course">
-              {{ course.dates[0] }}
-            </div>
-          </div>
-        </a>
-      {% endfor %}
-      
-      <div class="d-courses__cta-wrapper">
-        <a class="forma-button forma-button--orange-hover forma-button--full d-button--cert" title="" href="/appLms/index.php?r=elearning/show&sop=unregistercourse">
-          <span class="forma-button__label">TUTTI I CORSI</span>
-        </a>
-      </div>
-    </div>
-  </div>
 
-   {# <pre>
-    {{ dump(block) }}
-  </pre>  #}
+                <a class="d-courses__item has-icon--{{ course.type }}" target="_self"
+                   href="/appLms/index.php?modname=course&op=aula&idCourse={{ course.id }}">
+                    <div class="d-courses__img-wrapper">
+                        <img class="d-courses__img"
+                             src="{% if course.img != '' %} {{ course.img }} {% else %}/templates/standard/static/images/course-placeholder.png {% endif %}"/>
+                    </div>
+                    <div class="d-courses__content-wrapper">
+                        <div class="d-course__title">
+                            {{ course.title }}
+                        </div>
+                        <div class="d-courses__date-wrapper status--{{ status_class }}">
+                            {% if course.startDateString != '' %}
+                                <span class="d-courses__date d-courses__date--start">
+                                {{ course.startDateString }}
+                                </span>
+                                {% if course.endDateString != '' %}
+                                    <span class="d-courses__date d-courses__date--end">
+                                    {{ course.endDateString }}
+                                  </span>
+                                {% endif %}
+                            {% endif %}
+                        </div>
+                        {% if course.dates is not empty %}
+                            <div class="d-courses__next-course">
+
+                                {{ course.dates[0].startDate }}
+                            </div>
+                        {% endif %}
+                    </div>
+                </a>
+            {% endfor %}
+
+            <div class="d-courses__cta-wrapper">
+                <a class="forma-button forma-button--orange-hover forma-button--full d-button--cert" title=""
+                   href="/appLms/index.php?r=elearning/show&sop=unregistercourse">
+                    <span class="forma-button__label">TUTTI I CORSI</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    {#<pre>
+     {{ dump(block.courses) }}
+   </pre>#}
 {% endblock %}
