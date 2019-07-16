@@ -12,3 +12,5 @@ VALUES ((SELECT id_text FROM core_lang_text where text_key = '_DASHBOARD ' and t
 INSERT IGNORE INTO core_lang_translation (id_text, lang_code, translation_text)
 VALUES ((SELECT id_text FROM core_lang_text where text_key = '_DASHBOARD ' and text_module = ' middlearea '),
         'italian', 'Dashboard');
+
+INSERT INTO `learning_module` VALUES (47, 'dashboard', 'show', '_DASHBOARD', 'view', '', '', 'all', 'lms/dashboard/show');
