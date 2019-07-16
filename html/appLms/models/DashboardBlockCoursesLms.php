@@ -87,7 +87,7 @@ class DashboardBlockCoursesLms extends DashboardBlockLms
 
 		$courselist = $this->findAll($elearningConditions, $elearningParams, self::COURSE_TYPE_LIMIT);
 
-		if (count($courselist) < self::COURSE_TYPE_LIMIT) {
+		if (count($courselist) < self::COURSE_TYPE_LIMIT || count($courselist) < self::MAX_COURSES) {
 
 			$classRoomConditions = $conditions;
 			$classRoomConditions[] = "c.course_type = ':course_type'";
@@ -121,7 +121,7 @@ class DashboardBlockCoursesLms extends DashboardBlockLms
 			$exclude_pathcourse = " and c.idCourse not in (" . implode(',', $excl) . " )";
 		}
 
-		$query = 'SELECT c.idCourse AS course_id, c.idCategory AS course_category_id, c.name AS course_name, c.status AS course_status, c.date_begin AS course_date_begin, c.date_end AS course_date_end, c.hour_begin AS course_hour_begin, c.hour_end AS course_hour_end, c.course_type AS course_type, c.box_description AS course_box_description '
+		$query = 'SELECT c.idCourse AS course_id, c.idCategory AS course_category_id, c.name AS course_name, c.status AS course_status, c.date_begin AS course_date_begin, c.date_end AS course_date_end, c.hour_begin AS course_hour_begin, c.hour_end AS course_hour_end, c.course_type AS course_type, c.box_description AS course_box_description, c.img_course AS course_img_course '
 			. ' ,cu.status AS user_status, cu.level AS user_level, cu.date_inscr AS user_date_inscr, cu.date_first_access AS user_date_first_access, cu.date_complete AS user_date_complete, cu.waiting AS user_waiting '
 			. ' FROM %lms_course AS c '
 			. ' JOIN %lms_courseuser AS cu ON (c.idCourse = cu.idCourse) '
@@ -145,7 +145,7 @@ class DashboardBlockCoursesLms extends DashboardBlockLms
 
 			if ($courseData['type'] === 'classroom') {
 
-				$dates = $this->getDatesForCourse($course, $conditions, $params, $exclude_pathcourse);
+				$dates = $this->getDatesForCourse($course);
 
 				$courseData['dates'] = $dates;
 			}
