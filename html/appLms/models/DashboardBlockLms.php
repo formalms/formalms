@@ -62,7 +62,7 @@ abstract class DashboardBlockLms extends Model
 	public function __construct()
 	{
 		parent::__construct();
-		$this->viewPath = str_replace('DashboardBlock', '', str_replace('Lms', '', get_class($this)));
+		$this->viewPath = strtolower(str_replace('DashboardBlock', '', str_replace('Lms', '', get_class($this))));
 		$this->viewFile = strtolower(str_replace('DashboardBlock', '', str_replace('Lms', '', get_class($this))));
 	}
 
