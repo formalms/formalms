@@ -14,8 +14,20 @@
   background-color: $dashboard-popup-bg;
   border-radius: 6px;
   position: relative;
+}
 
-  &.is-elearning {
+.d-popup__type {
+  padding-top: 8px;
+  font-weight: $bold;
+  font-size: 12px;
+  line-height: 19px;
+  text-transform: uppercase;
+  border-top: 1px solid #D8D8D8;
+  position: relative;
+
+  .is-elearning & {
+    color: $elearning-color;
+
     &:before {
       content: '';
       width: 20px;
@@ -30,7 +42,9 @@
     }
   }
 
-  &.is-classroom {
+  .is-classroom & {
+    color: $classroom-color;
+
     &:before {
       content: '';
       width: 20px;
@@ -43,23 +57,6 @@
       top: 7px;
       right: 7px;
     }
-  }
-
-    
-}
-
-.d-popup__type {
-  font-weight: $bold;
-  font-size: 14px;
-  line-height: 19px;
-  text-transform: uppercase;  
-
-  .is-elearning & {
-    color: $elearning-color;
-  }
-
-  .is-classroom & {
-    color: $classroom-color;
   }
 }
 
@@ -86,14 +83,12 @@
   margin-bottom: 2px;
   padding: {
     left: 13px;
-    top: 8px;
   }
-  font-size: 10px;
+  font-size: 12px;
   font-weight: $bold;
   line-height: 14px;
   overflow: hidden;
   color: $dashboard-popup-title;
-  border-top: 1px solid #D8D8D8;
   position: relative;
   
   &:before {
@@ -102,7 +97,7 @@
     height: 9px;
     border-radius: 50%;
     position: absolute;
-    top: 11px;
+    top: 2px;
     left: 0;
 
     .is-open & {
