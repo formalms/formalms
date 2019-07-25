@@ -194,7 +194,7 @@ function intro ($object_test , $id_param , $deleteLastTrack = false)
 	$score_status = $play_man->getScoreStatus ();
 	$show_result = $test_info[ 'show_score' ] || $test_info[ 'show_score_cat' ] || $test_info[ 'show_solution' ];
 	$is_end = $score_status == 'valid' || $score_status == 'not_checked' || $score_status == 'passed' || $score_status == 'not_passed';
-	
+	$last_page_seen = $play_man->getLastPageSeen();
 	
 	$GLOBALS[ 'page' ]->add (
 		Form::openForm ('test_intro' , 'index.php?modname=test&amp;op=play')
@@ -338,7 +338,7 @@ function intro ($object_test , $id_param , $deleteLastTrack = false)
 		$GLOBALS[ 'page' ]->add (Form::getHidden ('show_result' , 'show_result' , 1) , 'content');
 	}
 	
-	if ($test_info[ 'save_keep' ] && $score_status == 'not_complete') {
+	if ($test_info[ 'save_keep' ] && $score_status == 'not_complete' && $last_page_seen) {
 		$GLOBALS[ 'page' ]->add ('<span class="text_bold">' . $lang->def ('_TEST_SAVED') . '</span><br /><br />' , 'content');
 	}
 	
@@ -346,7 +346,7 @@ function intro ($object_test , $id_param , $deleteLastTrack = false)
 	
 	if ($is_end && $show_result) {
 		$GLOBALS[ 'page' ]->add (Form::getButton ('show_review' , 'show_review' , $lang->def ('_TEST_SHOW_REVIEW')) , 'content');
-	} else if ($test_info[ 'save_keep' ] && $score_status == 'not_complete') {
+	} else if ($test_info[ 'save_keep' ] && $score_status == 'not_complete' && $last_page_seen) {
 		$GLOBALS[ 'page' ]->add (Form::getButton ('continue' , 'continue' , $lang->def ('_TEST_CONTINUE')) , 'content');
 	}
 	
