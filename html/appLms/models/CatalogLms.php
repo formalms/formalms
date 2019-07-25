@@ -181,11 +181,7 @@ class CatalogLms extends Model
 			break;
 		}
 
-		
-   
-        
-        
-		$query =	"SELECT *"
+		$bq = "SELECT *"
 					." FROM %lms_course"
 					." WHERE status NOT IN (".CST_PREPARATION.", ".CST_CONCLUDED.", ".CST_CANCELLED.")"
 					." AND course_type <> 'assessment'"
@@ -193,17 +189,39 @@ class CatalogLms extends Model
 						(can_subscribe=2 AND (sub_end_date = '0000-00-00' OR sub_end_date >= '".date('Y-m-d')."') AND
                          (sub_start_date = '0000-00-00' OR '".date('Y-m-d')."' >= sub_start_date)) OR
                         (can_subscribe=1)
-					) "
+					) ";
+
+		$query =	$bq
 					.$filter
                     .$category_filter
                     .$cat_list_filter
 					." ORDER BY name";
-
                     
 		$result = sql_query($query);
+
+		$not_in = [];
+		while ($course = sql_fetch_object($result)) {
+			if ($course->show_rules == 2) {
+				$sql = "SELECT COUNT(*) AS count FROM %lms_courseuser WHERE idCourse = {$course->idCourse} AND idUser = ".Docebo::user()->getIdSt();
+				$q = sql_fetch_object(sql_query($sql));
+				if(!$q->count) {
+					$not_in[] = $course->idCourse;
+				}
+			}
+		}
+                    
+		if ($not_in) {
+			$filter.= " AND idCourse NOT IN (".implode(',', $not_in).")";
+		}
+
+		$query =	$bq
+					.$filter
+                    .$category_filter
+                    .$cat_list_filter
+					." ORDER BY name";
+		$result = sql_query($query);
+
         return $result; 
-        
-      
 	}
 
 	public function getTotalCourseNumber($type = '')
