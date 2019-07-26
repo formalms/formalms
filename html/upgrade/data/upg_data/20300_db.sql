@@ -45,6 +45,15 @@ INSERT IGNORE INTO core_event_consumer_class (idConsumer, idClass) VALUES ('1', 
 
 INSERT IGNORE INTO core_event_manager (idEventMgr, idClass, permission, channel, recipients, show_level) VALUES (@max, @max, 'not_used', 'email', '_EVENT_RECIPIENTS_TEACHER_GOD', 'godadmin,admin,user');
 
+-- User registration SuperAdmins --
+SET @max = (SELECT MAX(idClass)+1 FROM `core_event_class`);
+
+INSERT IGNORE INTO `core_event_class` (`idClass`, `class`, `platform`, `description`) VALUES (@max, 'UserRegistrationSuperadmins', 'lms-a', '');
+
+INSERT IGNORE INTO core_event_consumer_class (idConsumer, idClass) VALUES ('1', @max);
+
+INSERT IGNORE INTO core_event_manager (idEventMgr, idClass, permission, channel, recipients, show_level) VALUES (@max, @max, 'mandatory', 'email', '_EVENT_RECIPIENTS_MODERATORS_GOD', 'admin');
+
 -- Certificate Assign permissions --
 UPDATE core_menu_under SET associated_token = 'mod' WHERE default_name = '_CERTIFICATE' AND of_platform = 'alms';
 
