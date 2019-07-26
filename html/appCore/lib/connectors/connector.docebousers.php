@@ -24,18 +24,60 @@ require_once( dirname(__FILE__) . '/lib.connector.php' );
 class DoceboConnectorDoceboUsers extends DoceboConnector {
   
   var $last_error = "";
- 	var $all_cols = array(	'idst','userid','firstname','lastname','pass',
-							'email','avatar',
-							'signature','templatename',
-							'language', 'valid','tree_code');
+  
+  var $all_cols = array(    'idst',
+                            'userid',
+                            'firstname',
+                            'lastname',
+                            'pass',
+							'email',
+                            'avatar',
+                            'signature',
+                            'templatename',
+							'language', 
+                            'valid',
+                            'tree_code' );
+                            
 	var $mandatory_cols = array('userid');
-	var $default_cols = array(	'firstname'=>'','lastname'=>'','pass'=>'',
-								'email'=>'','avatar'=>'',
-								'signature'=>'','templatename'=>'',
-								'language'=>'', 'tree_code'=>'');
-	var $ignore_cols = array( 'idst', 'avatar', 'lastenter', 'valid', 'pwd_expire_at', 'level','register_date' );
+	
+    /**
+    * 
+    * Array containing all the default value for inserting rows in db, if there
+    *       are any problems or the field retrieved isn't set.
+    *     
+    * @var array  default_cols 
+    * 
+    */
+    var $default_cols = array(	'firstname'=>'',
+                                'lastname'=>'',
+                                'pass'=>'',
+								'email'=>'',
+                                'avatar'=>'',
+								'signature'=>'',
+                                'templatename'=>'',
+								'language'=>'',
+                                'tree_code'=>'' );
+                                
+	var $ignore_cols = array(   'idst',
+                                'avatar',
+                                'lastenter',
+                                'valid',
+                                'pwd_expire_at',
+                                'level',
+                                'register_date' );
+                                
 	var $valid_filed_type = array( 'textfield','date','dropdown','yesno', 'upload', 'freetext', 'country');
-	var $cols_descriptor = NULL;
+	
+    /**
+    * 
+    * Array of arrays, that contains all the fields that will be added in the UI
+    * select html field, in the creation of a task
+    * 
+    * @var array  $cols_descriptor
+    * 
+    */
+    var $cols_descriptor = NULL;
+    
 	var $dbconn = NULL;
 	var $tree = 0;
 	var $tree_desc = 0;
@@ -201,13 +243,22 @@ class DoceboConnectorDoceboUsers extends DoceboConnector {
 									);
 			}
 		}
-		
+	
+    //Added tree_code field
 		$this->cols_descriptor[] =
 			array(  DOCEBOIMPORT_COLNAME => 'tree_code',
 				DOCEBOIMPORT_COLID => 'tree_code',
 				DOCEBOIMPORT_COLMANDATORY => FALSE,
 				DOCEBOIMPORT_DATATYPE => 'text');
 		
+    //Added language field
+        $this->cols_descriptor[] =
+            array(  DOCEBOIMPORT_COLNAME => Lang::t("_LANGUAGE"),
+                    DOCEBOIMPORT_COLID => 'language',
+                    DOCEBOIMPORT_COLMANDATORY => FALSE,
+                    DOCEBOIMPORT_DATATYPE => 'text'
+                    );
+        
 		$this->arr_fields = $arr_fields;
 		
 		$this->index = 0;
@@ -413,23 +464,36 @@ class DoceboConnectorDoceboUsers extends DoceboConnector {
 		return $arr_result;
 	}
 
+    /**
+    * 
+    * Adds a "row", that is an array with the field retrieved by the connection
+    * in the db, registering a new user
+    * 
+    * @param mixed $row
+    * @param mixed $pk
+    * 
+    */
+    
 	function add_row( $row, $pk ) {
 		
-		foreach($pk as $key => $val) {
+		foreach($pk as $key => $val) {        // Creating array of pk
 			if($val !== false)
 				$pk[$key] = addslashes(trim($val));
 		}
-		foreach($row as $key => $val) {
+		foreach($row as $key => $val) {       // Creating array of fields in row
 			if($val !== false)
 				$row[$key] = addslashes(trim($val));
 		}
 		
+        // All fields retrieved thanks to the csv.
+        
 		$userid 	= $row['userid'];
 		$firstname 	= $row['firstname'];
 		$lastname 	= $row['lastname'];
 		$pass 		= $row['pass'];
 		$email 		= $row['email'];
 		$tree_code 	= $row['tree_code'];
+        $language   = $row['language'];
 		
 		$force_change = '';
 		switch ($this->pwd_force_change_policy) {
@@ -440,7 +504,7 @@ class DoceboConnectorDoceboUsers extends DoceboConnector {
 		
 		$arr_user = $this->get_row_bypk($pk);
 
-		if( $arr_user === FALSE ) {
+		if( $arr_user === FALSE ) {  // User doesn't exist
 			if( $firstname === NULL || $firstname === '') 	$firstname 	= $this->default_cols['firstname'];
 			if( $lastname === NULL || $lastname === '') 	$lastname 	= $this->default_cols['lastname'];
 			if( $pass === NULL || $pass === '')				$pass 		= $this->default_cols['pass'];
@@ -463,8 +527,19 @@ class DoceboConnectorDoceboUsers extends DoceboConnector {
 				FALSE, //linkedin_id
 				FALSE //google_id
 			);
+               
+           if($language !== '') { // language set in csv...
+           
+               // Add language to the user
+               
+               $language = $this->return_valid_language_from_csv_row($language);
+               
+               if ($language !== NULL)  // It's a valid and recognized and in platform language.
+                      $this->add_language_to_user_by_idst($idst, $language);
+           
+           }    
 
-		} else {
+		} else {    // Updating user that already exist
 			$idst = $arr_user['idst'];
 			if( $firstname === NULL || $firstname === '') 	$firstname = FALSE;
 			if( $lastname === NULL || $lastname === '') 	$lastname = FALSE;
@@ -491,6 +566,27 @@ class DoceboConnectorDoceboUsers extends DoceboConnector {
 				$this->last_error = 'error on update user<br />';
 				return FALSE;				
 			}
+            
+             if($language !== '') { // language set in csv...
+           
+               // Update language to the user only if it's different compared to 
+               // the actual.
+              
+               // check if language is valid, otherwise NULL 
+               $language = $this->return_valid_language_from_csv_row($language);
+               
+               // If lang_in_db is null, the user has default language.
+               $lang_in_db = $this->get_lang_user_from_db($idst);
+               
+               if($language != NULL && $lang_in_db != NULL && $language != $lang_in_db)  // if language is different from the default, it means that it already exists a row in the db
+              
+                    $this->update_language_if_different($idst, $language);   
+                else if($lang_in_db == NULL && ($language != NULL && $language != Lang::get()) ) // It's been added a language since the user has never been one (it has the def.).
+                    
+                    $this->add_language_to_user_by_idst($idst,$language); // a language has never been set  to the user.
+              
+              }
+            
 		}
 		if($idst !== false) {
 
@@ -581,6 +677,97 @@ class DoceboConnectorDoceboUsers extends DoceboConnector {
 			return FALSE;
 		}		
 	}
+    
+     /**
+        *  This func. resolve the name of the lang_browsercode, returning
+        *        the language name only if it's recognised, otherwise it will 
+        *        return a null value
+        * 
+        * @param mixed $language
+        */
+        function return_valid_language_from_csv_row($language){
+            
+            $q_lang = "SELECT lang_code FROM " . $GLOBALS['prefix_fw'] . "_lang_language WHERE lang_browsercode LIKE '%$language%' ";
+            $rs = sql_query( $q_lang, $this->dbconn );
+            
+            return (($language = sql_fetch_row($rs)) != NULL) ? $language[0] : NULL;
+            
+            
+        }
+        
+        /**
+        * 
+        * This func. return the last language set manually for the user or a 
+        * language setted by csv
+        * 
+        */
+        function get_lang_user_from_db($idst){
+            
+            if($idst != null || $idst != '') {
+                
+                $path_name = "ui.language";
+                $q = "SELECT value FROM " . $GLOBALS['prefix_fw'] . "_setting_user WHERE id_user = " . $idst . "  AND path_name = '" . $path_name . "'";
+                
+                $rs = sql_query( $q, $this->dbconn );
+               
+                             
+               return (($language = sql_fetch_row($rs)) != NULL) ? $language[count($language) - 1] : NULL;
+
+            }
+            
+        }
+        
+        /**
+        * Adding a row in core_setting_user, with the path_name, id user and
+        * language that he use
+        * 
+        * @param int $idst
+        * @param string $language
+        */
+        function add_language_to_user_by_idst($idst, $language){
+            
+           // Check the language var
+           
+           // Executing query for adding language in core_setting_user
+            
+           $path_name = "ui.language"; // ???
+            
+            
+            // Check if is only an import with connector.
+            // Check if it's not a value accepted
+            // TO add remove query from this table - why isn't working?
+            $q_lang = "INSERT INTO " . $GLOBALS['prefix_fw'] . "_setting_user (path_name, id_user, value) "
+                . "VALUES ('" . $path_name . "', "
+                . (int)$idst . ", '"
+               . $language
+                . "' )"; 
+               
+            $rs = sql_query( $q_lang, $this->dbconn );
+            if( $rs === FALSE ) {
+                $this->last_error = Lang::t('_OPERATION_FAILURE', 'standard').$query.' ['.sql_error().']';
+                return FALSE;
+            }
+            
+        }
+        
+        function update_language_if_different($idst, $language){
+                      
+        // Executing query for updating language in core_setting_user
+            
+           $path_name = "ui.language"; // ???
+            
+           $q_lang = "UPDATE " . $GLOBALS['prefix_fw'] . "_setting_user SET value = '" . $language . "' WHERE path_name = '" . $path_name 
+                . "' AND id_user = ". (int)$idst;
+                 
+               
+            $rs = sql_query( $q_lang, $this->dbconn );
+            
+            if( $rs === FALSE ) {
+                $this->last_error = Lang::t('_OPERATION_FAILURE', 'standard').$query.' ['.sql_error().']';
+                return FALSE;
+            }
+
+        }
 	
 	function delete_bypk( $pk ) {
 		$arr_people = $this->get_row_bypk($pk);
@@ -863,11 +1050,11 @@ class DoceboConnectorDoceboUsersUI extends DoceboConnectorUI {
 											$this->post_params['group']);
 		return $out;
 	}
-	
-}
+}	
 
 function docebousers_factory() {
-	return new DoceboConnectorDoceboUsers(array());
+  return new DoceboConnectorDoceboUsers(array());
 }
+
 
 ?>
