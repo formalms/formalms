@@ -732,7 +732,10 @@ INSERT INTO `core_event_class` (`idClass`, `class`, `platform`, `description`) V
 (40, 'SettingUpdate', 'framework', ''),
 (41, 'UserNewWaiting', 'framework', ''),
 (42, 'UserNewApi', 'framework', ''),
-(43, 'UserCourseInsertedApi', 'lms-a', '');
+(43, 'UserCourseInsertedApi', 'lms-a', ''),
+(44, 'UserCourseInsertedModerators', 'lms-a', ''),
+(45, 'UserCourseSuspendedSuperAdmin', 'framework', ''),
+(46, 'UserRegistrationSuperadmins', 'lms-a', '');
 
 -- --------------------------------------------------------
 
@@ -801,7 +804,10 @@ INSERT INTO `core_event_consumer_class` (`idConsumer`, `idClass`) VALUES
 (3, 3),
 (5, 40),
 (1, 42),
-(1, 43);
+(1, 43),
+(1, 44),
+(1, 45),
+(1, 46);
 
 -- --------------------------------------------------------
 
@@ -848,7 +854,10 @@ INSERT INTO `core_event_manager` (`idEventMgr`, `idClass`, `permission`, `channe
 (39, 39, 'not_used', 'email', '_EVENT_RECIPIENTS_USER', 'godadmin,admin,user'),
 (41, 41, 'mandatory', 'email', '_EVENT_RECIPIENTS_MODERATORS_GOD', 'godadmin,admin'),
 (42, 42, 'mandatory', 'email', '_EVENT_RECIPIENTS_USER', 'godadmin,admin,user'),
-(43, 43, 'mandatory', 'email', '_EVENT_RECIPIENTS_USER', 'godadmin,admin,user');
+(43, 43, 'mandatory', 'email', '_EVENT_RECIPIENTS_USER', 'godadmin,admin,user'),
+(44, 44, 'mandatory', 'email', '_EVENT_RECIPIENTS_TEACHER', 'admin'),
+(45, 45, 'not_used', 'email', '_EVENT_RECIPIENTS_TEACHER_GOD', 'godadmin,admin,user'),
+(46, 46, 'mandatory', 'email', '_EVENT_RECIPIENTS_MODERATORS_GOD', 'admin');
 
 -- --------------------------------------------------------
 

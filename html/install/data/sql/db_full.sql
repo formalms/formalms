@@ -931,7 +931,8 @@ INSERT INTO `core_event_class` (`idClass`, `class`, `platform`, `description`) V
 (42, 'UserModSuperAdmin', 'framework', ''),
 (43, 'UserSuspendedSuperAdmin', 'framework', ''),
 (44, 'UserModNodeSuperAdmin', 'framework', ''),
-(45, 'UserCourseSuspendedSuperAdmin', 'framework', '');
+(45, 'UserCourseSuspendedSuperAdmin', 'lms-a', ''),
+(46, 'UserRegistrationSuperadmins', 'lms-a', '');
 
 -- --------------------------------------------------------
 
@@ -1002,6 +1003,7 @@ INSERT INTO `core_event_consumer_class` (`idConsumer`, `idClass`) VALUES
 (1, 42),
 (1, 43),
 (1, 44),
+(1, 46),
 (1, 45);
 
 
@@ -1052,7 +1054,8 @@ INSERT INTO `core_event_manager` (`idEventMgr`, `idClass`, `permission`, `channe
 (42, 42, 'not_used', 'email', '_EVENT_RECIPIENTS_GOD', 'godadmin'),
 (43, 43, 'not_used', 'email', '_EVENT_RECIPIENTS_GOD', 'godadmin'),
 (44, 44, 'not_used', 'email', '_EVENT_RECIPIENTS_GOD', 'godadmin'),
-(45, 45, 'not_used', 'email', '_EVENT_RECIPIENTS_TEACHER_GOD', 'godadmin,admin,user');
+(45, 45, 'not_used', 'email', '_EVENT_RECIPIENTS_TEACHER_GOD', 'godadmin,admin,user'),
+(46, 46, 'mandatory', 'email', '_EVENT_RECIPIENTS_MODERATORS_GOD', 'admin');
 
 
 -- --------------------------------------------------------
