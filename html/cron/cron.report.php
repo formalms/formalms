@@ -286,7 +286,9 @@ sl_open_fileoperations();
 $log_opened = false;
 
 //apply an execution lock by occupying port 9999
-$lock_stream = @stream_socket_server('tcp://0.0.0.0:9999', $errno, $errmsg);
+/** @var resource|bool $lock_stream */
+$lock_stream = !Get::cfg('CRON_SOCKET_SEMAPHORES', false) || @stream_socket_server('tcp://0.0.0.0:9999', $errno, $errmsg);
+
 if($lock_stream){
 
 	while ($row = sql_fetch_assoc($res)) {
@@ -446,7 +448,7 @@ sl_close_fileoperations();
 // finalize
 Boot::finalize();
 
-//Removes lock file
-fclose($lock_stream);
+//Removes lock file, if set
+  if($lock_stream)
+    fclose($lock_stream);
 
-?>
