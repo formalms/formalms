@@ -312,9 +312,20 @@ if($lock_stream){
 			if($re_report && sql_num_rows($re_report)) {
 	
 				list($class_name, $file_name, $report_name) = sql_fetch_row($re_report);
-	
-				require_once(_lms_.'/admin/modules/report/'.$file_name);
-				$temp = new $class_name( $data['id_report'] );
+                
+                if ($file_name) {
+                    if (file_exists(_base_ . '/customscripts/' . _folder_lms_ . '/admin/modules/report/' . $file_name) && Get::cfg('enable_customscripts', false) == true) {
+                        require_once(_base_ . '/customscripts/' . _folder_lms_ . '/admin/modules/report/' . $file_name);
+                    } else {
+                        require_once(_lms_ . '/admin/modules/report/' . $file_name);
+                    }
+                    $temp = new $class_name($data['id_report']);
+                } else {
+                    $pg = new PluginManager('Report');
+                    $temp = $pg->get_plugin(strtolower($class_name), array($data['id_report']));
+                }
+				
+				
 				$temp->author = $row['author'];
 	
 				$tmpfile = adaptFileName($row['filter_name']).'.xls';
