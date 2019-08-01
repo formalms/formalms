@@ -128,11 +128,31 @@ class DashboardBlockCalendarLms extends DashboardBlockLms
             $exclude_pathcourse = " and c.idCourse not in (" . implode(',', $excl) . " )";
         }
 
-        $query = 'SELECT c.idCourse AS course_id, c.idCategory AS course_category_id, c.name AS course_name, c.status AS course_status, c.date_begin AS course_date_begin, c.date_end AS course_date_end, c.hour_begin AS course_hour_begin, c.hour_end AS course_hour_end, c.course_type AS course_type, c.box_description AS course_box_description, '
-            . ' cu.status AS user_status, cu.level AS user_level, cu.date_inscr AS user_date_inscr, cu.date_first_access AS user_date_first_access, cu.date_complete AS user_date_complete, cu.waiting AS user_waiting'
-            . ' FROM %lms_course AS c '
-            . ' JOIN %lms_courseuser AS cu ON (c.idCourse = cu.idCourse) '
-            . ' WHERE cu.iduser = ' . Docebo::user()->getId()
+        switch ($courseType) {
+            case self::COURSE_TYPE_CLASSROOM:
+                $query = 'SELECT c.idCourse AS course_id, c.idCategory AS course_category_id, cd.name AS course_name, cd.status AS course_status, cd.sub_start_date AS course_date_begin, cd.sub_end_date AS course_date_end, c.hour_begin AS course_hour_begin, c.hour_end AS course_hour_end, c.course_type AS course_type, c.box_description AS course_box_description, '
+                    . ' cu.status AS user_status, cu.level AS user_level, cu.date_inscr AS user_date_inscr, cu.date_first_access AS user_date_first_access, cu.date_complete AS user_date_complete, cu.waiting AS user_waiting';
+                break;
+            case self::COURSE_TYPE_ELEARNING:
+            default:
+                $query = 'SELECT c.idCourse AS course_id, c.idCategory AS course_category_id, c.name AS course_name, c.status AS course_status, c.date_begin AS course_date_begin, c.date_end AS course_date_end, c.hour_begin AS course_hour_begin, c.hour_end AS course_hour_end, c.course_type AS course_type, c.box_description AS course_box_description, '
+                    . ' cu.status AS user_status, cu.level AS user_level, cu.date_inscr AS user_date_inscr, cu.date_first_access AS user_date_first_access, cu.date_complete AS user_date_complete, cu.waiting AS user_waiting';
+                break;
+
+        }
+        $query .= ' FROM %lms_course AS c '
+            . ' JOIN %lms_courseuser AS cu ON (c.idCourse = cu.idCourse) ';
+
+        switch ($courseType) {
+            case self::COURSE_TYPE_CLASSROOM:
+                $query .= ' JOIN %lms_course_date AS cd ON (c.idCourse = cd.id_course) ';
+                break;
+            case self::COURSE_TYPE_ELEARNING:
+            default:
+                break;
+        }
+
+        $query .= ' WHERE cu.iduser = ' . Docebo::user()->getId()
             . ' AND c.course_type = "' . $courseType . '"';
 
         if (null !== $startDate && !empty($startDate) && null !== $endDate && !empty($endDate)) {
@@ -142,11 +162,30 @@ class DashboardBlockCalendarLms extends DashboardBlockLms
         if ($showCourseWithoutDates) {
             $query .= ' OR c.date_begin = 0000-00-00 OR c.date_end = 0000-00-00';
         } else {
-            $query .= ' AND c.date_begin != 0000-00-00 AND  c.date_end != 0000-00-00';
+            switch ($courseType) {
+                case self::COURSE_TYPE_CLASSROOM:
+                    $query .= ' AND cd.sub_start_date != 0000-00-00 AND  cd.sub_end_date != 0000-00-00';
+                    break;
+                case self::COURSE_TYPE_ELEARNING:
+                default:
+                    $query .= ' AND c.date_begin != 0000-00-00 AND  c.date_end != 0000-00-00';
+                    break;
+            }
+
         }
 
-        $query .= $exclude_pathcourse . " ORDER BY c.date_begin";
+        $query .= $exclude_pathcourse;
 
+        switch ($courseType) {
+            case self::COURSE_TYPE_CLASSROOM:
+                $query .= ' ORDER BY cd.sub_start_date';
+                break;
+            case self::COURSE_TYPE_ELEARNING:
+            default:
+                $query .= ' ORDER BY c.date_begin';
+                break;
+        }
+        
         $rs = $db->query($query);
 
         $result = array();
@@ -162,7 +201,8 @@ class DashboardBlockCalendarLms extends DashboardBlockLms
         return $result;
     }
 
-    private function findReservations($startDate, $endDate, $showCourseWithoutDates = false)
+    private
+    function findReservations($startDate, $endDate, $showCourseWithoutDates = false)
     {
         $db = DbConn::getInstance();
 
@@ -211,7 +251,8 @@ class DashboardBlockCalendarLms extends DashboardBlockLms
         return $result;
     }
 
-    private function getUserCoursePathCourses($id_user)
+    private
+    function getUserCoursePathCourses($id_user)
     {
         require_once(_lms_ . '/lib/lib.coursepath.php');
         $cp_man = new Coursepath_Manager();
@@ -224,7 +265,8 @@ class DashboardBlockCalendarLms extends DashboardBlockLms
         return $output;
     }
 
-    protected function getDatasFromCourse($course)
+    protected
+    function getDatasFromCourse($course)
     {
         $dates = [];
         $courseData = $this->getDataFromCourse($course, true);
