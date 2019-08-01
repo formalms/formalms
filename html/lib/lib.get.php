@@ -65,7 +65,7 @@ class Get {
 		else if ($only_from == 'request' && isset($_REQUEST[$var_name])) {
 			$value = $_REQUEST[$var_name];
 		}
-		
+
 		return self::filter($value, $typeof);
 	}
 
@@ -144,14 +144,14 @@ class Get {
 	 */
 	public static function cfg($cfg_name, $default = false) {
 
-        if(!isset($GLOBALS['cfg'][$cfg_name])) 
+        if(!isset($GLOBALS['cfg'][$cfg_name]))
                     $value = $default;
                 else {
                     $value = $GLOBALS['cfg'][$cfg_name];
                 }
         return $value;
     }
-	
+
 	/**
 	 * Return the value of a plugin configuration
 	 * @param string $plugin_name The plugin name
@@ -169,16 +169,16 @@ class Get {
 
 	/**
 	 * Return the value of a platform setting
-	 * @param string $sett_name 
+	 * @param string $sett_name
 	 * @param string $default
-	 * @return mixed the value of the setting or the default value 
+	 * @return mixed the value of the setting or the default value
 	 */
 	public static function sett($sett_name, $default = false) {
 		$platform = 'framework';
 		if(!isset($GLOBALS[$platform][$sett_name])) return $default;
 		return $GLOBALS[$platform][$sett_name];
 	}
-	
+
 	/**
 	 * Return the current platform code
 	 * @return <string> the platform path
@@ -310,13 +310,13 @@ class Get {
 			'</a>'.
 			"\n";
 	}
-	
+
 	/**
 	 * This function try to evaluate the current site address
 	 * @return <string> (i.e. http://localhost)
 	 */
 	public static function site_url() {
-		
+
         $url = "";
         if(self::cfg('url_from_db', false)) {
             $url .= self::sett('url');
@@ -328,21 +328,26 @@ class Get {
         return rtrim($url, '/') . '/';
     }
 
-	public static function home_page_req() {
-        
-		$home_page = Get::sett('home_page');
-		if (!$home_page){
-			$home_page_option = Get::sett('home_page_option');
-			switch($home_page_option){
-				case 'my_courses':
-					$home_page = 'lms/mycourses/home'; 
-				break;
-				case 'catalogue':
-					$home_page = 'lms/catalog/show'; 
-				break;
-			}
-		}
-		return $home_page;
+    public static function home_page_req()
+    {
+        $home_page = Get::sett('home_page');
+
+        if (!$home_page) {
+            $home_page_option = Get::sett('home_page_option');
+            switch ($home_page_option) {
+                case 'my_courses':
+                    $home_page = 'lms/mycourses/home';
+                    break;
+                case 'dashboard':
+                    $home_page = 'lms/dashboard/show';
+                    break;
+                case 'catalogue':
+                default:
+                    $home_page = 'lms/catalog/show';
+                    break;
+            }
+        }
+        return $home_page;
     }
 
     public static function home_page_query() {
@@ -351,13 +356,13 @@ class Get {
         $query = "r=$req&sop=unregistercourse";
         return $query;
     }
-    
+
 	public static function home_page_abs_path() {
 
 		$home_page = self::abs_path('lms') . '?' . self::home_page_query();
 		return $home_page;
 	}
-    
+
 	public static function home_page_rel_path() {
 
 		$home_page = self::rel_path('lms') . '?' . self::home_page_query();
@@ -367,7 +372,7 @@ class Get {
     /**
      * Return the scheme to use
      * @return string scheme
-     */    
+     */
     public static function scheme() {
         if( (isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) == 'on') ||
             (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && strtolower($_SERVER['HTTP_X_FORWARDED_PROTO']) == 'https') ||
@@ -382,7 +387,7 @@ class Get {
     /**
      * Return the server name
      * @return string server_name
-     */    
+     */
     public static function server_name() {
         if(isset($_SERVER['HTTP_X_FORWARDED_HOST'])) {
             return $_SERVER['HTTP_X_FORWARDED_HOST'];
@@ -392,11 +397,11 @@ class Get {
             return $_SERVER['SERVER_NAME'];
         }
     }
-    
+
     /**
      * Return installation subdirectory
      * @return string subdirectory
-     */    
+     */
     public static function subdirectory() {
         $script_arr = explode('/', ltrim(dirname($_SERVER['SCRIPT_NAME']), '\/'));
         $deeppath_arr = explode('/', trim(_deeppath_, '/'));
