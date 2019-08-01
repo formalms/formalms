@@ -156,9 +156,9 @@ const renderPopup = (item) => {
   el += '<div class="d-popup">';
   el += '<div class="d-popup__item is-' + type + '">';
   el += '<div class="d-popup__title">' + title + '</div>';
+  el += '<div class="d-popup__type">' + type + '</div>';
   el += '<div class="d-popup__desc">' + desc + '</div>';
   el += '<div class="d-popup__hours">' + hours + '</div>';
-  el += '<div class="d-popup__type">' + type + '</div>';
   el += '<div class="d-popup__triangle"></div>';
   el += '</div>';
   el += '</div>';
