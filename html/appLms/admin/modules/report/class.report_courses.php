@@ -412,14 +412,16 @@ class Report_Courses extends Report {
 				//$user_select->show_orgchart_simple_selector = FALSE;
 				//$user_select->multi_choice = TRUE;
 
-				$user_select->addFormInfo(
-					Form::getCheckbox($lang->def('_REPORT_FOR_ALL'), 'all_users', 'all_users', 1, ($ref['all_users'] ? 1 : 0)).
-					Form::getBreakRow().
-					Form::getHidden('org_chart_subdivision', 'org_chart_subdivision', $org_chart_subdivision).
-					Form::getHidden('is_updating', 'is_updating', 1).
-					Form::getHidden('substep', 'substep', 'user_selection').
-					Form::getHidden('second_step', 'second_step', 1)
-				);
+				if(Docebo::user()->getUserLevelId() == ADMIN_GROUP_GODADMIN && !Docebo::user()->isAnonymous()) {
+					$user_select->addFormInfo(
+						Form::getCheckbox($lang->def('_REPORT_FOR_ALL'), 'all_users', 'all_users', 1, ($ref['all_users'] ? 1 : 0)).
+						Form::getBreakRow().
+						Form::getHidden('org_chart_subdivision', 'org_chart_subdivision', $org_chart_subdivision).
+						Form::getHidden('is_updating', 'is_updating', 1).
+						Form::getHidden('substep', 'substep', 'user_selection').
+						Form::getHidden('second_step', 'second_step', 1)
+					);
+				}
 
 				cout($this->page_title, 'content');
 

@@ -109,7 +109,8 @@ define('_REP_KEY_REM',      'rem');
 
 function get_report_table($url='') {
 	checkPerm('view');
-	$can_mod = checkPerm('mod'  , true);
+	$can_mod = checkPerm('mod', true);
+	$can_schedule = checkPerm('schedule', true);
 
 	require_once(_base_.'/lib/lib.table.php');
 	require_once(_base_.'/lib/lib.form.php');
@@ -203,8 +204,8 @@ function get_report_table($url='') {
 	$dropdown_onclick = 'onchange="javascript:setReportFilter();"';
 
 	$output .= Form::openForm('report_searchbox_form', 'index.php?modname=report&op=reportlist&of_platform=lms', false, 'POST');
-  $output .= Form::getHidden('op', 'op', 'reportlist');
-  $output .= Form::getHidden('modname', 'modname', 'report');
+  	$output .= Form::getHidden('op', 'op', 'reportlist');
+  	$output .= Form::getHidden('modname', 'modname', 'report');
 	$output .= '<div class="quick_search_form">
 			<div>
 				<div class="simple_search_box" id="report_searchbox_simple_filter_options" style="display: block;">'
@@ -263,11 +264,14 @@ function get_report_table($url='') {
 		$lang->def('_TAB_REP_PUBLIC'),
 		'<img src="'.getPathImage().'standard/view.png" alt="'.$lang->def('_VIEW').'" title="'.$lang->def('_VIEW').'" />',
 		'<span class="ico-sprite subs_csv"><span>'.Lang::t('_EXPORT_CSV', 'report').'</span></span>',
-		'<span class="ico-sprite subs_xls"><span>'.Lang::t('_EXPORT_XLS', 'report').'</span></span>',
-		'<img src="'.getPathImage().'standard/wait_alarm.png" alt="'.$lang->def('_SCHEDULE').'" title="'.$lang->def('_SCHEDULE').'" />'/*,
+		'<span class="ico-sprite subs_xls"><span>'.Lang::t('_EXPORT_XLS', 'report').'</span></span>',/*,
 		'<img src="'.getPathImage().'standard/edit.png" alt="'.$lang->def('_REP_TITLE_MOD').'" title="'.$lang->def('_MOD').'" />',
 		'<img src="'.getPathImage().'standard/delete.png" alt="'.$lang->def('_DEL').'" title="'.$lang->def('_DEL').'" />'	*/
 	);
+
+	if ($level==ADMIN_GROUP_GODADMIN || $can_schedule) {
+		$col_content[] = '<img src="'.getPathImage().'standard/wait_alarm.png" alt="'.$lang->def('_SCHEDULE').'" title="'.$lang->def('_SCHEDULE').'" />';
+	}
 
 	if ($level==ADMIN_GROUP_GODADMIN || $can_mod) {
 		$col_type[]='image';
@@ -288,7 +292,6 @@ function get_report_table($url='') {
 				'<img src="'.getPathImage().'standard/view.png" alt="'.$lang->def('_VIEW').'" />'.
 				'</a>';
 			$sch_link =
-			//'<a href="'.$url.'&amp;action=schedule&amp;idrep='.$id.'" '.
 				'<a href="index.php?modname=report&amp;op=schedulelist&amp;idrep='.$id.'" '.
 				' title="'.$lang->def('_SCHEDULE').'">'.
 				'<img src="'.getPathImage().'standard/wait_alarm.png" alt="'.$lang->def('_SCHEDULE').'" />'.
@@ -324,11 +327,15 @@ function get_report_table($url='') {
 				_REP_KEY_PUBLIC   => $public,//$row['report_name'],
 				_REP_KEY_OPEN     => $opn_link,
 				$export_link_csv,
-				$export_link_xls,
-				_REP_KEY_SCHED    => $sch_link/*,
+				$export_link_xls,/*,
 				_REP_KEY_MOD    => $mod_link,
 				_REP_KEY_REM    => $rem_link*/
 			);
+
+			if ($level==ADMIN_GROUP_GODADMIN || $can_schedule) {
+				$tb_content[_REP_KEY_SCHED] = $sch_link;
+			}
+
 			if ($level==ADMIN_GROUP_GODADMIN || $can_mod) {
 				if ($row['author']==Docebo::user()->getIdst() || $can_mod) {
 					$tb_content[_REP_KEY_MOD] = $mod_link;
@@ -772,6 +779,8 @@ function report_open_filter() {
 }
 
 function schedulelist() {
+	checkPerm('schedule');
+
 	require_once(_lms_.'/admin/modules/report/report_schedule.php');
 	require_once(_base_.'/lib/lib.form.php');
 	require_once(_lms_.'/lib/lib.report.php');
