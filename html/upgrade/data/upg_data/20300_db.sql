@@ -62,6 +62,3 @@ INSERT IGNORE INTO `core_role` (idst, roleid) VALUES (@max, '/lms/admin/certific
 
 SET @max = (SELECT MAX(idst)+2 FROM `core_role`);
 INSERT IGNORE INTO `core_role` (idst, roleid) VALUES (@max, '/lms/admin/certificate/release');
-
-SET @max = (SELECT MAX(idst)+3 FROM `core_role`);
-INSERT IGNORE INTO `core_role` (idst, roleid) VALUES (@max, '/lms/admin/report/schedule');
