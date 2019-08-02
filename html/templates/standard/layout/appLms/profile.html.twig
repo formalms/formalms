@@ -36,7 +36,7 @@
             <div class="tabnav__content tabnav__content--profile is-visible">{{ profile.homeUserProfile('normal', false, false)|raw }}</div>
         {% endif %}
         {% if credits %}
-            <div class="tabnav__content tabnav__content--profile{% if not profile %} is-visible{% endif %}">
+            <div class="tabnav__content tabnav__content--credits{% if not profile %} is-visible{% endif %}">
                 <div class="row credits">
                     <div class="col-xs-12">
                         <div class="js-credits-ajax-container">{{ credits|raw }}</div>
