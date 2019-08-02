@@ -161,8 +161,8 @@ LightBox.prototype = {
 					draggable: false,
 					close: false,
 					zIndex:9000,
-					width:(YAHOO.util.Dom.getViewportWidth()-30+62)+'px',
-					height:(YAHOO.util.Dom.getViewportHeight()-16+32)+'px',
+					width:(YAHOO.util.Dom.getViewportWidth()-30)+'px',
+					height:(YAHOO.util.Dom.getViewportHeight()-16)+'px',
 					effect:[{effect:YAHOO.widget.ContainerEffect.FADE,duration:0.5}]
 				} );
 			}
