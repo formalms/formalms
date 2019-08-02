@@ -398,9 +398,9 @@ window.CourseReport = (function ($) {
 	var clearDetailTable = function () {
 
 		$('.js-details-table').empty();
-		$('.js-activity-name').each(function (i, elem) {
+		/* $('.js-activity-name').each(function (i, elem) {
 			elem.remove();
-		});
+		}); */
 
 		$('.js-user-level-filter').attr('disabled', true);
 		$('.js-user-level-filter').addClass('is-disabled');
