@@ -46,8 +46,10 @@ Release date: 2019 July 11
 #19398 | BUG | Now using HTTP_HOST instead of SERVER_NAME
 #19396 | BUG | Report utenti - progress conteggia le cartelle
 #19299 | BUG | Code optimization - Removed old social references
+#19428 | BUG | Course Config - Option <Show only users subscribed> not working properly
 
 Plus many other minor improvements and bugfixes
+
 
 ---------------------------------------------------------------------------------------
 forma.lms 2.2.1
