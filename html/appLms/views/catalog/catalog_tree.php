@@ -67,7 +67,7 @@
 
       <?php if ($catalogue_todisplay) { ?>
         <script type="text/javascript">
-			var $treeview = $("#treeview1");
+            var $treeview = $("#treeview1");
 
             function callAjaxCatalog(id_category) {
 
@@ -93,22 +93,29 @@
             }
 
             function checkSticky() {
-				if (window.innerWidth >= 768 && $('#div_course').offset().top - $(window).scrollTop() <= 60) {
-				    var windowHeight = window.innerHeight - 70;
-				    var treeviewHeight = $treeview.innerHeight();
-
-				    if (treeviewHeight > windowHeight) {
-                        $treeview.css({ maxHeight: treeviewHeight, overflowY: 'auto'});
-                    }
-
-					$treeview.css({width: $treeview.parent().width(), position: 'fixed', top: '60px'});
-				} else {
-					$treeview.attr('style', '');
-				}
-			}
+                if (window.innerWidth >= 768 && $('#div_course').offset().top - $(window).scrollTop() <= 60) {
+                    $treeview.css({width: $treeview.parent().width(), position: 'fixed', top: '60px'});
+                } else {
+                    $treeview.attr('style', '');
+                }
+            }
 
             $(function () {
                 callAjaxCatalog(0);
+                a_node = <?php echo $a_node ?>;
+
+                // Alphabetical sort
+                $.each(a_node, function(k, cat) {
+                    if (cat.nodes) {
+                        var result = Object.keys(cat.nodes).map(function(key) {
+                            return cat.nodes[key];
+                        });
+                        result = result.sort(function(a, b) {
+                            return (a['text'] < b['text']) ? -1 : (a['text'] > b['text']) ? 1 : 0;
+                        })
+                        cat.nodes = result;
+                    }
+                })
                 var category_tree = [
                     {
                         text: "&nbsp;&nbsp;<?php echo Lang::t('_ALL_COURSES') ?>",
@@ -119,10 +126,10 @@
                             selected: true
                         },
                         showIcon: true,
-                        nodes:<?php echo $a_node ?>
+                        nodes:a_node
                     }
                 ];
-				$treeview.treeview({
+                $treeview.treeview({
                     data: category_tree,
                     enableLinks: false,
                     backColor: "#ffffff",
@@ -140,10 +147,10 @@
                     }
                 });
 
-				// sticky feature
-				checkSticky();
-				window.addEventListener('scroll', checkSticky, true);
-				window.addEventListener('resize', checkSticky, true);
+                // sticky feature
+                checkSticky();
+                window.addEventListener('scroll', checkSticky, true);
+                window.addEventListener('resize', checkSticky, true);
             });
         </script>
         <?php } else { ?> 

@@ -739,32 +739,23 @@ class CatalogLms extends Model
 
      	//echo  "idCourse:".$idCourse."<br>id_path: ".$id_path."<br>countCourseCompleted:".$countCourseCompleted."<br>output:".$output;
 
-   	return $output;
-   }
-
-   
-   
-
-
+   		return $output;
+   	}
 
     public function GetGlobalJsonTree($id_catalogue){
-            $this->current_catalogue = $id_catalogue;
-            $top_category = $this->getMajorCategory();
-            $global_tree = [];       
-            foreach ($top_category as $a_top_cat_key=>$val) {
-                $this->children = $this->getMinorCategoryTree($a_top_cat_key);
-               if (count($this->children)) {
-                        $global_tree[] = array('text'=>$val, "id_cat" => $a_top_cat_key, 'nodes'=>$this->children);
-                } else {
-                        if ($this->CategoryHasCourse($a_top_cat_key))
-                            $global_tree[] = array('text'=>$val,  "id_cat" => $a_top_cat_key);
-                }    
+        $this->current_catalogue = $id_catalogue;
+        $top_category = $this->getMajorCategory();
+        $global_tree = [];       
+        foreach ($top_category as $a_top_cat_key=>$val) {
+            $this->children = $this->getMinorCategoryTree($a_top_cat_key);
+           	if (count($this->children)) {
+                $global_tree[] = array('text'=>$val, "id_cat" => 0, 'nodes'=>$this->children);
+            } else if ($this->CategoryHasCourse($a_top_cat_key)) {
+                $global_tree[] = array('text'=>$val,  "id_cat" => 0);
             }
-            return $global_tree;              
-              
+        }
+        return $global_tree;
     }
-    
-
         
     public function getMajorCategory($std_link = false, $only_son = false)
     {
@@ -799,7 +790,7 @@ class CatalogLms extends Model
             ." FROM %lms_category"
             ." WHERE iLeft > ".(int)$i_left
             ." AND iRight < ".$i_right
-            ." ORDER BY lev desc";
+            ." ORDER BY lev desc, path ASC";
             $result = sql_query($query);
             $res = array();
 
