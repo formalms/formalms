@@ -311,12 +311,15 @@ class Report extends \ReportPlugin
                 $user_select->requested_tab = PEOPLEVIEW_TAB;
                 $user_select->resetSelection($_SESSION['report_tempdata']['rows_filter']['users']);
             }
-            $user_select->addFormInfo(
-                Form::getCheckbox($lang->def('_REPORT_FOR_ALL'), 'all_users', 'all_users', 1, $_SESSION['report_tempdata']['rows_filter']['all_users']) .//($_SESSION['report_tempdata']['rows_filter']['all_users'] ? 1 : 0)).
-                Form::getBreakRow() .
-                Form::getHidden('org_chart_subdivision', 'org_chart_subdivision', $org_chart_subdivision) .
-                Form::getHidden('is_updating', 'is_updating', 1)
-            );
+
+            if(Docebo::user()->getUserLevelId() == ADMIN_GROUP_GODADMIN && !Docebo::user()->isAnonymous()) {
+                $user_select->addFormInfo(
+                    Form::getCheckbox($lang->def('_REPORT_FOR_ALL'), 'all_users', 'all_users', 1, $_SESSION['report_tempdata']['rows_filter']['all_users']) .//($_SESSION['report_tempdata']['rows_filter']['all_users'] ? 1 : 0)).
+                    Form::getBreakRow() .
+                    Form::getHidden('org_chart_subdivision', 'org_chart_subdivision', $org_chart_subdivision) .
+                    Form::getHidden('is_updating', 'is_updating', 1)
+                );
+            }
             //$user_select->setPageTitle($this->page_title);
             cout($this->page_title, 'content');
             //$user_select->resetSelection($_SESSION['report_tempdata']['rows_filter']['users']);
