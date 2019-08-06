@@ -94,6 +94,13 @@
 
             function checkSticky() {
                 if (window.innerWidth >= 768 && $('#div_course').offset().top - $(window).scrollTop() <= 60) {
+                    var windowHeight = window.innerHeight - 70;
+                    var treeviewHeight = $treeview.innerHeight();
+
+                    if (treeviewHeight > windowHeight) {
+                        $treeview.css({ maxHeight: treeviewHeight, overflowY: 'auto'});
+                    }
+
                     $treeview.css({width: $treeview.parent().width(), position: 'fixed', top: '60px'});
                 } else {
                     $treeview.attr('style', '');
