@@ -46,6 +46,7 @@ class CertificateSubs_UserStat extends CertificateSubstitution {
 			$subs['[test_score_final_max]'] = $lang->def('_TEST_SCORE_FINAL_MAX');
 			$subs['[course_score_final]'] 	= $lang->def('_FINAL_SCORE');
 			$subs['[course_score_final_max]'] = $lang->def('_COURSE_SCORE_FINAL_MAX');
+			$subs['[meta_assoc]'] = $lang->def('_META_ASSOC');
 		}
 		return $subs;
 	}
@@ -199,6 +200,14 @@ class CertificateSubs_UserStat extends CertificateSubstitution {
 			$subs['[meta_complete]'] = $array_meta_complete[0];
 			$subs['[meta_inscr]'] = $array_meta_inscr[0];
 			$subs['[meta_access]'] = $array_meta_access[0];
+
+			$sql = "
+				SELECT title FROM %lms_certificate_meta AS cm 
+				INNER JOIN %lms_certificate_meta_course cmc ON cm.idMetaCertificate = cmc.idMetaCertificate
+				WHERE cmc.idUser = {$this->id_user} AND cm.idMetaCertificate = {$this->id_meta}";
+			$q = sql_query($sql);
+			$meta = sql_fetch_object($q);
+			$subs['[meta_assoc]'] = $meta->title ?: '-';
                         
                        // $subs['[meta_level]'] = $lang->def('_LEVEL_'.$array_meta_level[0],'levels');
                         

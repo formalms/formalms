@@ -20,6 +20,7 @@ class CertificateSubs_User extends CertificateSubstitution {
 		$lang =& DoceboLanguage::createInstance('certificate', 'lms');
 		
 		$subs = array();
+		$subs['[meta_assoc]'] = $lang->def('_META_ASSOC');
 		$subs['[display_name]'] = $lang->def('_DISPLAY_NAME');
 		$subs['[username]'] 	= $lang->def('_USERNAME');
 		$subs['[firstname]'] 	= $lang->def('_FIRSTNAME');
