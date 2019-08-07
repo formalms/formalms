@@ -125,7 +125,7 @@ function report_delete_schedulation($id_sched) {
 function report_update_schedulation($id_sched, $name, $period, $time, &$recipients) {
 	$output = true;
 	$qry = "UPDATE %lms_report_schedule ".
-		"SET name='$name', period='$period' ".
+		"SET name='$name', period='$period', time='$time', last_execution=null ".
 		"WHERE id_report_schedule=$id_sched";
 	$output = sql_query($qry);
 
