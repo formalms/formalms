@@ -2556,6 +2556,7 @@ CREATE TABLE IF NOT EXISTS `learning_report` (
   `file_name` varchar(255) NOT NULL DEFAULT '',
   `use_user_selection` enum('true','false') NOT NULL DEFAULT 'true',
   `enabled` tinyint(1) unsigned NOT NULL DEFAULT '0',
+   
   PRIMARY KEY (`id_report`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
 
@@ -2611,6 +2612,7 @@ CREATE TABLE IF NOT EXISTS `learning_report_schedule` (
   `time` time NOT NULL DEFAULT '00:00:00',
   `creation_date` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `enabled` tinyint(1) unsigned NOT NULL DEFAULT '1',
+  `last_execution` DATETIME NULL DEFAULT NULL,
   PRIMARY KEY (`id_report_schedule`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
 
