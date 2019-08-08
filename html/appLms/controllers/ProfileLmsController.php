@@ -78,7 +78,7 @@ class ProfileLmsController extends LmsController {
 		\appCore\Events\DispatcherManager::dispatch(\appLms\Events\Lms\UserProfileShowEvent::EVENT_NAME, $event);
 
 		//view part
-		if(Get::sett('profile_only_pwd') == 'on') {
+		if(Get::sett('profile_modify') == 'limit') {
 
 			echo $profile->getTitleArea();
 			echo $profile->getHead();
@@ -86,7 +86,7 @@ class ProfileLmsController extends LmsController {
 			echo $this->_profileBackUrl();
 			echo $profile->getFooter();
 
-		} else {
+		} else if(Get::sett('profile_modify') == 'allow') {
 
 			echo $profile->getTitleArea();
 			echo $profile->getHead();

@@ -367,6 +367,19 @@ class SettingAdm extends Model
                         . Form::getCloseCombo($i_after);
                 };
                     break;
+				case "profile_modify" : {
+                    echo Form::getOpenCombo(Lang::t('_' . strtoupper($var_name), 'configuration'))
+                        . Form::getLineRadio('', 'label_bold', Lang::t('_ALLOW_FULL_EDIT_PROFILE', 'configuration'), $var_name . '_allow', 'option[' . $var_name . ']',
+								'allow', ($var_value == 'allow'))
+                        . Form::getLineRadio('', 'label_bold', Lang::t('_MOD_LIMIT_PROFILE', 'configuration'), $var_name . '_limit', 'option[' . $var_name . ']',
+								'limit', ($var_value == 'limit'))
+                        . Form::getLineRadio('', 'label_bold', Lang::t('_DISALLOW_EDIT_PROFILE', 'configuration'), $var_name . '_disallow', 'option[' . $var_name . ']',
+								'disallow', ($var_value == 'disallow'))
+                        . Form::getLineRadio('', 'label_bold', Lang::t('_REDIRECT_URL_PROFILE', 'configuration'), $var_name . '_redirect', 'option[' . $var_name . ']',
+								'redirect', ($var_value == 'redirect'))
+                        . Form::getCloseCombo($i_after);
+                };
+                    break;
 				case "language" : {
 					//drop down language
 					$langs = Docebo::langManager()->getAllLangCode();
