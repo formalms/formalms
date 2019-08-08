@@ -3168,8 +3168,6 @@ VALUES ('report_max_email_size_MB', '0', 'int', '4', 'report_settings', '1', '99
 INSERT IGNORE INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size`, `pack`, `regroup`, `sequence`, `param_load`, `hide_in_modify`, `extra_info`)
 VALUES ('report_storage_folder', '/files/common/report/', 'string', '255', 'report_settings', '1', '992', '1', '0', '');
 
-ALTER TABLE `learning_report_schedule`
-  ADD COLUMN last_execution DATETIME NULL DEFAULT NULL;
 
 
 
