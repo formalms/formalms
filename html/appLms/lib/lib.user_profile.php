@@ -455,10 +455,10 @@ class UserProfile {
 
 					$out =  getResultUi($this->_lang->def('_OPERATION_SUCCESSFULPWD'));
 
-					if(Get::sett('profile_only_pwd') == 'on') {
+					if(Get::sett('profile_modify') == 'limit') {
 						// maybe is better if we display only the confirmation message if all is ok, but if you
 						// want something else add the code here
-					} else {
+					} else if(Get::sett('profile_modify') == 'allow') {
 						$out .= $this->getProfile();
 					}
 					return $out;
@@ -1853,11 +1853,19 @@ class UserProfileViewer {
         $html .= '<div class="col-xs-5">'
                     . (($this->user_info[ACL_INFO_AVATAR] != "") ? $this->getPASrc($this->user_info[ACL_INFO_AVATAR], $this->_lang->def('_AVATAR'), 'boxed') : '<div class="boxed" style="background-image: url(' . getPathRestylingImage() . ')images/icons/user-panel/icon--up-photo-placeholder.png"></div>')
                 . '</div>
-                   <div class="col-xs-7">
-                      <a href="index.php?r=lms/profile/show" title="'.Lang::t('_PROFILE', 'profile').'">
+                   <div class="col-xs-7">';
+
+       	if (Get::sett('profile_modify') == 'redirect' && Get::sett('profile_modify_url')) {
+       		$html .= '<a href="'.Get::sett('profile_modify_url').'" target="_blank" title="'.Lang::t('_PROFILE', 'profile').'">
                           <span class="glyphicon glyphicon-pencil">'.Lang::t('_PROFILE', 'profile').'</span>
-                      </a>
-                      <a href="index.php?r=lms/profile/show">'
+                      </a>';
+       	} else if (Get::sett('profile_modify') != 'disallow') {
+       		$html .= '<a href="index.php?r=lms/profile/show" title="'.Lang::t('_PROFILE', 'profile').'">
+                          <span class="glyphicon glyphicon-pencil">'.Lang::t('_PROFILE', 'profile').'</span>
+                      </a>';
+       	}
+                      
+		$html .= '<a href="index.php?r=lms/profile/show">'
                           . $this->acl_man->relativeId($this->user_info[ACL_INFO_LASTNAME]) . ' ' . $this->acl_man->relativeId($this->user_info[ACL_INFO_FIRSTNAME])
                       . '</a>
                       <a href="mailto:' . $this->user_info[ACL_INFO_EMAIL] . '">' . $this->user_info[ACL_INFO_EMAIL] . '</a>
@@ -2196,7 +2204,7 @@ class UserProfileViewer {
 
 		$html .= Form::openButtonSpace()
 				.Form::getButton('save', 'save', $this->_lang->def('_SAVE'));
-		if(Get::sett('profile_only_pwd') == 'off') {
+		if(Get::sett('profile_modify') == 'limit') {
 			$html .= Form::getButton('undo', 'undo', $this->_lang->def('_UNDO'));
 		}
 		$html .= Form::closeButtonSpace();

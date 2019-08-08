@@ -104,7 +104,7 @@ INSERT INTO `core_setting_default` (`param_name`, `param_value`, `value_type`, `
 ('paypal_mail', '', 'string', 255, '0', 5, 0, 1, 0, ''),
 ('paypal_sandbox', 'on', 'enum', 3, '0', 5, 3, 1, 0, ''),
 ('privacy_policy', 'on', 'enum', 3, 'register', 3, 15, 0, 0, ''),
-('profile_only_pwd', 'on', 'enum', 3, '0', 3, 1, 1, 0, ''),
+('profile_modify', 'allow', 'profile_modify', 16, '0', 3, 1, 1, 0, ''),
 ('register_deleted_user', 'off', 'enum', 3, '0', 3, 3, 1, 0, ''),
 ('register_type', 'admin', 'register_type', 10, 'register', 3, 11, 0, 0, ''),
 ('registration_code_type', '0', 'registration_code_type', 3, 'register', 3, 17, 1, 0, ''),
