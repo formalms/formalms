@@ -625,3 +625,23 @@
 #course_search_filter_set1 ~ br {
   display: none;
 }
+#global_conf {
+  .tab-content .tab-pane {
+    h2 {
+      font-size: 20px;
+      font-weight: bold;
+      color: #666;
+      display: block;
+      margin-bottom: 20px;
+    }
+    h3 {
+      font-size: 16px;
+      font-weight: bold;
+      color: #666;
+      margin-bottom: 20px;
+      display: block;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #666;
+    }
+  }
+}
