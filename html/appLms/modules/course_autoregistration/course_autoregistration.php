@@ -55,7 +55,6 @@ function subscribe()
 
 		$code = $_POST['course_autoregistration_code'];
 		$code = strtoupper($code);
-		$code = str_replace('-', '', $code);
 		
 		$registration_code_type = Get::sett('registration_code_type', '0');
 		if($registration_code_type == 'tree_course') $code = substr($code, 10, 10);
