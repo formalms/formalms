@@ -23,7 +23,6 @@ class CoursereportLmsController extends LmsController
 	public function init ()
 	{
 		require_once (_adm_ . '/lib/lib.field.php');
-		require_once(_lms_.'/lib/lib.course.php');
 
 		/** @var Services_JSON json */
 		$this->json = new Services_JSON();
@@ -1067,14 +1066,12 @@ class CoursereportLmsController extends LmsController
 
 		$reports = $this->model->getReportsForFinal ();
 
-
 		$sum_max_score = 0;
 		$included_test = array ();
 		$other_source = array ();
 		$scorm_source = array ();
 
 		foreach ($reports as $info_report) {
-
 			$sum_max_score += $info_report->getMaxScore () * $info_report->getWeight ();
 
 			switch ($info_report->getSourceOf ()) {
@@ -1102,44 +1099,55 @@ class CoursereportLmsController extends LmsController
 		foreach ($id_students as $id_user) {
             $user_score = 0;
             $scorm_score = 0;
+            $sum_max_score_scorm = 0;
 
             foreach ($reports as $info_report) {
                 switch ($info_report->getSourceOf()) {
                     case CoursereportLms::SOURCE_OF_ACTIVITY : {
                         if (isset($other_score[$info_report->getIdReport()][$id_user]) && ($other_score[$info_report->getIdReport()][$id_user]['score_status'] === CoursereportLms::TEST_STATUS_VALID)) {
                             $user_score += ($other_score[$info_report->getIdReport()][$id_user]['score'] * $info_report->getWeight());
-                        } else {
-                            $user_score += 0;
                         }
                     };
                         break;
                     case CoursereportLms::SOURCE_OF_TEST : {
                         if (isset($tests_score[$info_report->getIdSource()][$id_user]) && ($tests_score[$info_report->getIdSource()][$id_user]['score_status'] === CoursereportLms::TEST_STATUS_VALID)) {
                             $user_score += ($tests_score[$info_report->getIdSource()][$id_user]['score'] * $info_report->getWeight());
-                        } else {
-                            $user_score += 0;
                         }
                     };
                         break;
                     case CoursereportLms::SOURCE_OF_SCOITEM : {
                     	$idscorm_item = $info_report->getIdSource();
-                    	$query = sql_query("SELECT score_raw, score_max FROM learning_scorm_tracking WHERE idscorm_item = $idscorm_item");
+                    	$query = sql_query("SELECT score_raw, score_max FROM learning_scorm_tracking WHERE idscorm_item = $idscorm_item AND idUser = $id_user");
                     	if ($result = sql_fetch_object($query)) {
-                    		$sum_max_score += $result->score_max * $info_report->getWeight();
+                    		$sum_max_score_scorm += $result->score_max * $info_report->getWeight();
                         	$user_score += $result->score_raw * $info_report->getWeight();
-                    	} else {
-                            $user_score += 0;
-                        }
+                    	}
                     };
                         break;
                 }
             }
 
             // user final score
-            if ($sum_max_score != 0) {
-                $final_score[$id_user] = round(($user_score / $sum_max_score) * $info_final[0]->getMaxScore(), 2);
-            } else {
+            if (($sum_max_score + $sum_max_score_scorm) > 0) {
+                $final_score[$id_user] = round(($user_score / ($sum_max_score + $sum_max_score_scorm)) * $info_final[0]->getMaxScore(), 2);
+				$sql = "
+					SELECT score FROM learning_coursereport_score
+					WHERE id_user = $id_user 
+					AND id_report = ".$info_final[ 0 ]->getIdReport ()."
+					ORDER BY date_attempt DESC LIMIT 1
+				";
+				$q = sql_query($sql);
 
+				list($score) = sql_fetch_array($q);
+
+				if (Get::req('round_report') || Get::req('redo_final') || !$score) {
+					$c = new CourseReportManager;
+					$users_scores = [$id_user => $final_score[$id_user]];
+					$c->saveReportScore($info_final[ 0 ]->getIdReport (), $users_scores, [$id_user => date('d-m-Y H:i:s')], '');
+				} else if ($score && $final_score[$id_user] != $score) {
+					$final_score[$id_user].= " (".(float)$score.")";
+				}
+            } else {
                 $final_score[$id_user] = 0;
             }
 		}
@@ -3215,8 +3223,6 @@ class CoursereportLmsController extends LmsController
 										$csv .= ';"-"';
 									}
 								}
-							} else {
-								$csv .= ';"-"';
 							}
 						}
 							break;
