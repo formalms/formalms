@@ -69,7 +69,7 @@ function inspage() {
 		
 	$insert_query = "
 	INSERT INTO ".$GLOBALS['prefix_lms']."_htmlpage
-	SET title = '".( (trim($_REQUEST['title']) == '') ? Lang::t('_NOTITLE', 'htmlpage', 'lms') : $_REQUEST['title'] )."',
+	SET title = '".( (trim(addslashes($_REQUEST['title'])) == '') ? addslashes(Lang::t('_NOTITLE', 'htmlpage', 'lms')) : addslashes($_REQUEST['title'] ))."',
 		textof = '".addslashes($_REQUEST['textof'])."',
 		author = '".(int)getLogUserId()."'";
 	if(!sql_query($insert_query)) {
@@ -182,7 +182,7 @@ function uppage() {
 	
 	$insert_query = "
 	UPDATE ".$GLOBALS['prefix_lms']."_htmlpage
-	SET title = '".( (trim($_REQUEST['title']) == '') ? Lang::t('_NOTITLE', 'htmlpage', 'lms') : $_REQUEST['title'] )."',
+	SET title = '".( (trim(addslashes($_REQUEST['title'])) == '') ? addslashes(Lang::t('_NOTITLE', 'htmlpage', 'lms')) : addslashes($_REQUEST['title'] ))."',
 		textof = '".addslashes($_REQUEST['textof'])."'
 	WHERE idPage = '".(int)$_REQUEST['idPage']."'";
 	if(!sql_query($insert_query)) {
