@@ -172,7 +172,7 @@ class Numerical_Question extends Question {
 			( 	'".$idTest."', 
 				'".(int)$_POST['idCategory']."', 
 				'".$this->getQuestionType()."', 
-				'".$_POST['title_quest']."',
+				'".addslashes($_POST['title_quest'])."',
 				'".(int)$_POST['difficult']."', 
 				'".(int)$_POST['time_assigned']."', 
 				'".(int)$this->_getNextSequence($idTest)."', 
@@ -200,8 +200,8 @@ class Numerical_Question extends Question {
 				( idQuest, is_correct, answer, comment, score_correct, score_incorrect ) VALUES
 				( 	'".$idQuest."', 
 					'0', 
-					'".$coded_answer."', 
-					'".$_POST['comment'][$i]."', 
+					'".addslashes($coded_answer)."', 
+					'".addslashes($_POST['comment'][$i])."', 
 					'".$this->_checkScore($_POST['score_correct'][$i])."', 
 					'0') ";
 				if(!sql_query($ins_answer_query)) {
@@ -301,7 +301,7 @@ class Numerical_Question extends Question {
 			UPDATE ".$GLOBALS['prefix_lms']."_testquest
 			SET idCategory = '".(int)$_POST['idCategory']."', 
 				type_quest = '".$this->getQuestionType()."', 
-				title_quest = '".$_POST['title_quest']."', 
+				title_quest = '".addslashes($_POST['title_quest'])."', 
 				difficult = '".(int)$_POST['difficult']."', 
 				time_assigned = '".(int)$_POST['time_assigned']."',
 				shuffle = '".(isset($_POST['shuffle']) ? 1 : 0)."'
@@ -334,8 +334,8 @@ class Numerical_Question extends Question {
 					$upd_ans_query = "
 					UPDATE ".$GLOBALS['prefix_lms']."_testquestanswer 
 					SET is_correct = '0',
-						answer = '".$coded_answer."',
-						comment = '".$_POST['comment'][$i]."',
+						answer = '".addslashes($coded_answer)."',
+						comment = '".addslashes($_POST['comment'][$i])."',
 						score_correct = '".$this->_checkScore($_POST['score_correct'][$i])."', 
 						score_incorrect = '0'
 					WHERE idAnswer = '".(int)$idAnswer."'";
@@ -353,8 +353,8 @@ class Numerical_Question extends Question {
 					( idQuest, is_correct, answer, comment, score_correct, score_incorrect ) VALUES
 					( 	'".$this->id."', 
 						'0', 
-						'".$coded_answer."', 
-						'".$_POST['comment'][$i]."', 
+						'".addslashes($coded_answer)."', 
+						'".addslashes($_POST['comment'][$i])."', 
 						'".$this->_checkScore($_POST['score_correct'][$i])."', 
 						'0' )";
 					if(!sql_query($ins_answer_query)) {
@@ -526,7 +526,7 @@ class Numerical_Question extends Question {
 		( 	'".(int)$new_id_test."', 
 			'".(int)$sel_cat."', 
 			'".$this->getQuestionType()."', 
-			'".sql_escape_string($quest)."',
+			'".sql_escape_string(addslashes($quest))."',
 			'".(int)$sel_diff."', 
 			'".$time_ass."',
 			'".(int)$sequence."',
@@ -551,8 +551,8 @@ class Numerical_Question extends Question {
 			( idQuest, is_correct, answer, comment, score_correct, score_incorrect ) VALUES
 			( 	'".(int)$new_id_quest."', 
 				'".(int)$is_correct."', 
-				'".sql_escape_string($answer)."', 
-				'".sql_escape_string($comment)."',
+				'".sql_escape_string(addslashes($answer))."', 
+				'".sql_escape_string(addslashes($comment))."',
 				'".$this->_checkScore($score_c)."', 
 				'".$this->_checkScore($score_inc)."') ";
 			if(!sql_query($ins_answer_query)) return false;

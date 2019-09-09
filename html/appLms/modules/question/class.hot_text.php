@@ -305,7 +305,7 @@ class HotText_Question extends Question {
 			( 	'".$idTest."', 
 				'".(int)$_POST['idCategory']."', 
 				'".$this->getQuestionType()."', 
-				'".$_POST['title_quest']."',
+				'".addslashes($_POST['title_quest'])."',
 				'".(int)$_POST['difficult']."', 
 				'".(int)$_POST['time_assigned']."', 
 				'".(int)$this->_getNextSequence($idTest)."', 
@@ -331,8 +331,8 @@ class HotText_Question extends Question {
 				( 	'".$idQuest."',
 					'".$i."', 
 					'".( $_POST['is_correct'] == $i ? 1 : 0 )."', 
-					'".$_POST['answer'][$i]."', 
-					'".$_POST['comment'][$i]."', 
+					'".addslashes($_POST['answer'][$i])."', 
+					'".addslashes($_POST['comment'][$i])."', 
 					'".$this->_checkScore($_POST['score_correct'][$i])."', 
 					'".$this->_checkScore($_POST['score_incorrect'][$i])."') ";
 				if(!sql_query($ins_answer_query)) {
@@ -454,7 +454,7 @@ class HotText_Question extends Question {
 			UPDATE ".$GLOBALS['prefix_lms']."_testquest
 			SET idCategory = '".(int)$_POST['idCategory']."', 
 				type_quest = '".$this->getQuestionType()."', 
-				title_quest = '".$_POST['title_quest']."', 
+				title_quest = '".addslashes($_POST['title_quest'])."', 
 				difficult = '".(int)$_POST['difficult']."', 
 				time_assigned = '".(int)$_POST['time_assigned']."'
 			WHERE idQuest = '".(int)$this->id."'";
@@ -490,8 +490,8 @@ class HotText_Question extends Question {
 					$upd_ans_query = "
 					UPDATE ".$GLOBALS['prefix_lms']."_testquestanswer 
 					SET is_correct = '".( $_POST['is_correct'] == $i ? 1 : 0 )."',
-						answer = '".$_POST['answer'][$i]."',
-						comment = '".$_POST['comment'][$i]."',
+						answer = '".addslashes($_POST['answer'][$i])."',
+						comment = '".addslashes($_POST['comment'][$i])."',
 						score_correct = '".$this->_checkScore($_POST['score_correct'][$i])."', 
 						score_incorrect = '".$this->_checkScore($_POST['score_incorrect'][$i])."'
 					WHERE idAnswer = '".(int)$idAnswer."'";
@@ -507,8 +507,8 @@ class HotText_Question extends Question {
 					( 	'".$this->id."', 
 						'".$seq."', 
 						'".( $_POST['is_correct'] == $i ? 1 : 0 )."', 
-						'".$_POST['answer'][$i]."', 
-						'".$_POST['comment'][$i]."', 
+						'".addslashes($_POST['answer'][$i])."', 
+						'".addslashes($_POST['comment'][$i])."', 
 						'".$this->_checkScore($_POST['score_correct'][$i])."', 
 						'".$this->_checkScore($_POST['score_incorrect'][$i])."') ";
 					if(!sql_query($ins_answer_query)) {

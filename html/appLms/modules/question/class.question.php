@@ -295,7 +295,7 @@ class Question {
 		( 	'".(int)$new_id_test."', 
 			'".(int)$idCategory."', 
 			'".$this->getQuestionType()."', 
-			'".sql_escape_string($title_quest)."',
+			'".sql_escape_string(addslashes($title_quest))."',
 			'".(int)$difficult."', 
 			'".$time_assigned."',
 			'".(int)$sequence."',
@@ -324,8 +324,8 @@ class Question {
 			( 	'".(int)$new_id_quest."', 
 				'".(int)$seq."', 
 				'".(int)$is_correct."', 
-				'".sql_escape_string($answer)."', 
-				'".sql_escape_string($comment)."',
+				'".sql_escape_string(addslashes($answer))."', 
+				'".sql_escape_string(addslashes($comment))."',
 				'".$this->_checkScore($score_c)."', 
 				'".$this->_checkScore($score_inc)."') ";
 			if(!sql_query($ins_answer_query)) return false;
@@ -680,8 +680,8 @@ class Question {
 			( idQuest, is_correct, answer, comment, score_correct, score_incorrect ) VALUES
 			( 	'".(int)$new_id_quest."', 
 				'".(int)$raw_answer->is_correct."', 
-				'".$raw_answer->text."', 
-				'".$raw_answer->comment."',
+				'".addslashes($raw_answer->text)."', 
+				'".addslashes($raw_answer->comment)."',
 				'".$this->_checkScore($raw_answer->score_correct)."', 
 				'".$this->_checkScore($raw_answer->score_penalty)."') ";
 			if(!sql_query($ins_answer_query)) return false;
