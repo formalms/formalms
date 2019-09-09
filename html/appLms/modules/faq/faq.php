@@ -60,7 +60,7 @@ function modfaqgui( $object_faq ) {
 	$tableCat->addHead($contentH);
 	$i = 1;
 	while(list($idFaq, $title, $seq) = sql_fetch_row($result)) {
-		$rowContent = array($seq.') '.$title);
+		$rowContent = array($seq.') '.stripslashes($title));
 		if($i != $num_faq) {
 			$rowContent[] = '<a href="index.php?modname=faq&amp;op=movedown&amp;idFaq='
 				.$idFaq.'&amp;back_url='.$back_coded.'">'
@@ -132,8 +132,8 @@ function insfaqcat() {
 	
 	$query_ins = "
 	INSERT INTO ".$GLOBALS['prefix_lms']."_faq_cat
-	SET title = '".( (trim($_REQUEST['title']) == '') ? Lang::t('_NOTITLE', 'faq', 'lms') : $_REQUEST['title'])."',
-		description = '".$_REQUEST['description']."',
+	SET title = '".(addslashes(trim($_REQUEST['title'])) == '' ? addslashes(Lang::t('_NOTITLE', 'faq', 'lms')) : addslashes($_REQUEST['title']))."',
+		description = '".addslashes($_REQUEST['description'])."',
 		author = '".(int)getLogUserId()."'";
 	if(!sql_query($query_ins)) {
 		
@@ -190,8 +190,8 @@ function upfaqcat() {
 	
 	$query_ins = "
 	UPDATE ".$GLOBALS['prefix_lms']."_faq_cat
-	SET title = '".( (trim($_REQUEST['title']) == '') ? Lang::t('_NOTITLE', 'faq') : $_REQUEST['title'])."',
-		description = '".$_REQUEST['description']."' 
+	SET title = '".( (trim(addslashes($_REQUEST['title'])) == '') ? addslashes(Lang::t('_NOTITLE', 'faq')) : addslashes($_REQUEST['title']))."',
+		description = '".addslashes($_REQUEST['description'])."' 
 	WHERE idCategory = '".(int)$_REQUEST['idCategory']."'";
 	if(!sql_query($query_ins)) {
 		
@@ -320,10 +320,10 @@ function insfaq() {
 	$query_ins = "
 	INSERT INTO ".$GLOBALS['prefix_lms']."_faq
 	SET idCategory = '".$idCategory."',
-		question = '".$_REQUEST['question']."',
-		title = '".$_REQUEST['title']."',
-		keyword = '".$_REQUEST['keyword']."',
-		answer = '".$_REQUEST['answer']."',
+		question = '".addslashes($_REQUEST['question'])."',
+		title = '".addslashes($_REQUEST['title'])."',
+		keyword = '".addslashes($_REQUEST['keyword'])."',
+		answer = '".addslashes($_REQUEST['answer'])."',
 		sequence = '".($seq + 1)."'";
 	if(!sql_query($query_ins)) {
 		$GLOBALS['page']->add(getErrorUi(def('_OPERATION_FAILURE', 'faq').getBackUi('index.php?modname=faq&op=modfaqgui&idCategory='
@@ -359,12 +359,12 @@ function modfaq() {
 		.Form::getHidden('idFaq', 'idFaq', $_GET['idFaq'])
 		.Form::getHidden('back_url', 'back_url', $back_coded)
 		
-		.Form::getTextfield($lang->def('_QUESTION'), 'question', 'question', 255, $question)
-		.Form::getTextfield($lang->def('_TITLE'), 'title', 'title', 255, $title)
+		.Form::getTextfield($lang->def('_QUESTION'), 'question', 'question', 255, stripslashes($question))
+		.Form::getTextfield($lang->def('_TITLE'), 'title', 'title', 255, stripslashes($title))
 		
-		.Form::getSimpleTextarea($lang->def('_KEYWORD'), 'keyword', 'keyword', $keyword)
+		.Form::getSimpleTextarea($lang->def('_KEYWORD'), 'keyword', 'keyword', stripslashes($keyword))
 		
-		.Form::getTextarea($lang->def('_ANSWER'), 'answer', 'answer', $answer)
+		.Form::getTextarea($lang->def('_ANSWER'), 'answer', 'answer', stripslashes($answer))
 		
 		.Form::closeElementSpace()
 		.Form::openButtonSpace()
@@ -388,10 +388,10 @@ function upfaq() {
 	
 	$query_ins = "
 	UPDATE ".$GLOBALS['prefix_lms']."_faq
-	SET question = '".$_POST['question']."',
-		title = '".$_POST['title']."',
-		keyword = '".$_POST['keyword']."',
-		answer = '".$_POST['answer']."'
+	SET question = '".addslashes($_POST['question'])."',
+		title = '".addslashes($_POST['title'])."',
+		keyword = '".addslashes($_POST['keyword'])."',
+		answer = '".addslashes($_POST['answer'])."'
 	WHERE idFaq = '".(int)$_POST['idFaq']."'";
 	if(!sql_query($query_ins)) {
 		$GLOBALS['page']->add(getErrorUi(def('_OPERATION_FAILURE', 'faq').getBackUi('index.php?modname=faq&op=modfaqgui&idCategory='
