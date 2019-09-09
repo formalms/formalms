@@ -196,7 +196,7 @@ class ChoiceMultiple_Question extends Question {
 			( 	'".(int)$idTest."', 
 				'".(int)$_REQUEST['idCategory']."', 
 				'".$this->getQuestionType()."', 
-				'".$_REQUEST['title_quest']."',
+				'".addslashes($_REQUEST['title_quest'])."',
 				'".(int)$_REQUEST['difficult']."',
 				'".(int)$_REQUEST['time_assigned']."', 
 				'".$this->_getNextSequence($idTest)."', 
@@ -221,8 +221,8 @@ class ChoiceMultiple_Question extends Question {
 				( idQuest, is_correct, answer, comment, score_correct, score_incorrect ) VALUES
 				( 	'".$idQuest."', 
 					'".( isset($_REQUEST['is_correct'][$i]) ? 1 : 0 )."', 
-					'".$_REQUEST['answer'][$i]."', 
-					'".$_REQUEST['comment'][$i]."', 
+					'".addslashes($_REQUEST['answer'][$i])."', 
+					'".addslashes($_REQUEST['comment'][$i])."', 
 					'".$this->_checkScore($_REQUEST['score_correct'][$i])."', 
 					'".$this->_checkScore($_REQUEST['score_incorrect'][$i])."') ";
 				if(!sql_query($ins_answer_query)) {
@@ -318,7 +318,7 @@ class ChoiceMultiple_Question extends Question {
 			UPDATE ".$GLOBALS['prefix_lms']."_testquest
 			SET idCategory = '".(int)$_REQUEST['idCategory']."', 
 				type_quest = '".$this->getQuestionType()."', 
-				title_quest = '".$_REQUEST['title_quest']."', 
+				title_quest = '".addslashes($_REQUEST['title_quest'])."', 
 				difficult = '".(int)$_REQUEST['difficult']."', 
 				time_assigned = '".(int)$_REQUEST['time_assigned']."',
 				shuffle = '".(isset($_REQUEST['shuffle']) ? 1 : 0)."'
@@ -349,8 +349,8 @@ class ChoiceMultiple_Question extends Question {
 					$upd_ans_query = "
 					UPDATE ".$GLOBALS['prefix_lms']."_testquestanswer 
 					SET is_correct = '".( isset($_REQUEST['is_correct'][$i]) ? 1 : 0 )."',
-						answer = '".$_REQUEST['answer'][$i]."',
-						comment = '".$_REQUEST['comment'][$i]."',
+						answer = '".addslashes($_REQUEST['answer'][$i])."',
+						comment = '".addslashes($_REQUEST['comment'][$i])."',
 						score_correct = '".$this->_checkScore($_REQUEST['score_correct'][$i])."', 
 						score_incorrect = '".$this->_checkScore($_REQUEST['score_incorrect'][$i])."'
 					WHERE idAnswer = '".(int)$idAnswer."'";
@@ -366,7 +366,7 @@ class ChoiceMultiple_Question extends Question {
 						answer, comment,
 						score_correct, score_incorrect ) VALUES
 					( '".$this->id."', '".( isset($_REQUEST['is_correct'][$i]) ? 1 : 0 )."', 
-						'".$_REQUEST['answer'][$i]."', '".$_REQUEST['comment'][$i]."', 
+						'".addslashes($_REQUEST['answer'][$i])."', '".addslashes($_REQUEST['comment'][$i])."', 
 						'".$this->_checkScore($_REQUEST['score_correct'][$i])."', 
 						'".$this->_checkScore($_REQUEST['score_incorrect'][$i])."') ";
 					if(!sql_query($ins_answer_query)) {

@@ -83,7 +83,7 @@ function instest ()
     INSERT INTO " . $GLOBALS[ 'prefix_lms' ] . "_test
     ( author, title, description, obj_type)
         VALUES 
-    ( '" . (int) getLogUserId () . "', '" . $_REQUEST[ 'title' ] . "', '" . $_REQUEST[ 'textof' ] . "', '" . $_REQUEST[ 'obj_type' ] . "' )";
+    ( '" . (int) getLogUserId () . "', '" . addslashes($_REQUEST[ 'title' ]) . "', '" . addslashes($_REQUEST[ 'textof' ]) . "', '" . $_REQUEST[ 'obj_type' ] . "' )";
 
 
     if (! sql_query ($ins_query)) {
@@ -157,8 +157,8 @@ function uptest (Learning_Test $obj_test = null)
 
         $mod_query = "
             UPDATE " . $GLOBALS[ 'prefix_lms' ] . "_test
-            SET title = '" . $_REQUEST[ 'title' ] . "',
-                description = '" . $_REQUEST[ 'textof' ] . "'
+            SET title = '" . addslashes($_REQUEST[ 'title' ]) . "',
+                description = '" . addslashes($_REQUEST[ 'textof' ]) . "'
             WHERE idTest = '" . $id_test . "'";
 
         if (! sql_query ($mod_query)) {

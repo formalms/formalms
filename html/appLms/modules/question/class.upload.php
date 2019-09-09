@@ -58,7 +58,7 @@ class Upload_Question extends Question {
 			( 	'".$idTest."', 
 				'".$_POST['idCategory']."', 
 				'".$this->getQuestionType()."', 
-				'".$_POST['title_quest']."',
+				'".addslashes($_POST['title_quest'])."',
 				'".$_POST['difficult']."', 
 				'".$_POST['time_assigned']."', 
 				'".$this->_getNextSequence($idTest)."', 
@@ -136,7 +136,7 @@ class Upload_Question extends Question {
 			if(!sql_query("
 			UPDATE ".$GLOBALS['prefix_lms']."_testquest 
 			SET idCategory = '".(int)$_POST['idCategory']."',
-				title_quest = '".$_POST['title_quest']."',
+				title_quest = '".addslashes($_POST['title_quest'])."',
 				difficult = '".(int)$_POST['difficult']."',
 				time_assigned = '".(int)$_POST['time_assigned']."'
 			WHERE idQuest = '".$this->id."'")) {
