@@ -83,7 +83,7 @@ abstract class FormaPlugin {
      */
     public static function addRole($role) {
         $am = Docebo::user()->getACLManager();
-        if($role_info = $am->getRole($role)) {
+        if($role_info = $am->getRole($role, FALSE)) {
             $idst = $role_info[ACL_INFO_IDST];
         } else {
             $idst = $am->registerRole($role, '', self::getID());

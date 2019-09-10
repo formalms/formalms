@@ -75,7 +75,7 @@ HTML;
 
     
  if(Get::cfg('enable_plugins', false)){
-        $pl = new PluginManager();
+        $pl = new PluginManager('');
         $list_pl = $pl->get_all_plugins();
         
         foreach ($list_pl as $key){
