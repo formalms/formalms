@@ -594,10 +594,11 @@ class Choice_Question extends Question {
 		
 		//insert customfields
 		$re_customfields = sql_query("
-		SELECT  id_field, id_obj, obj_entry  
-		FROM ".$GLOBALS['prefix_fw']."_customfield_entry
-		WHERE id_obj = '".(int)$this->id."'
-		ORDER BY id_field");
+		SELECT ce.id_field, ce.id_obj, ce.obj_entry  
+		FROM ".$GLOBALS['prefix_fw']."_customfield_entry AS ce
+		INNER JOIN ".$GLOBALS['prefix_fw']."_customfield c ON c.id_field = ce.id_field
+		WHERE ce.id_obj = ".(int)$this->id." AND c.area_code IN ('LO_OBJECT', 'LO_TEST')
+		ORDER BY ce.id_field");
 		while(list($id_field, $id_obj, $obj_entry) = sql_fetch_row($re_customfields)) {
 			//insert customfields
 			$ins_customfields_query = "
@@ -607,7 +608,7 @@ class Choice_Question extends Question {
 				'".(int)$new_id_quest."', 
 				'".(int)$obj_entry."' ) ";
 			if(!sql_query($ins_customfields_query)) return false;
-                }
+        }
                 
 		//retriving new answer
 		$re_answer = sql_query("
