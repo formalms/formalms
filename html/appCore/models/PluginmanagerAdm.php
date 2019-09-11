@@ -18,6 +18,7 @@ class PluginmanagerAdm extends Model
     protected $db;
     protected $table;
     protected $plugin_core;
+    static $plugins_active;
 
     public function __construct()
     {
@@ -210,31 +211,35 @@ class PluginmanagerAdm extends Model
 
     public function getActivePlugins()
     {
-        if ($GLOBALS['notuse_plugin'] == true || $_SESSION['notuse_plugin'] == true){
-            $query = "SELECT * FROM ".$this->table." WHERE core=1 ORDER BY priority ASC";
-        } else {    
-            $query = "SELECT * FROM ".$this->table." WHERE  active=1 or core=1 ORDER BY priority ASC";
-        }
-        $re = $this->db->query($query);
-        $plugins = array();
-        while ($row = sql_fetch_assoc($re)) {
-            if ($row['core'] == 1) {
-                if ($row['active'] == 1) {
-                    $plugins[$row['name']] = $row;
+        if (!isset(self::$plugins_active)) {
+            if ($GLOBALS['notuse_plugin'] == true || $_SESSION['notuse_plugin'] == true){
+                $query = "SELECT * FROM ".$this->table." WHERE core=1 ORDER BY priority ASC";
+            } else {    
+                $query = "SELECT * FROM ".$this->table." WHERE  active=1 or core=1 ORDER BY priority ASC";
+            }
+            $re = $this->db->query($query);
+            $plugins = array();
+            while ($row = sql_fetch_assoc($re)) {
+                if ($row['core'] == 1) {
+                    if ($row['active'] == 1) {
+                        $plugins[$row['name']] = $row;
+                    } else {
+                        $plugins[$row['name']] = false;
+                    }
                 } else {
-                    $plugins[$row['name']] = false;
+                    $plugins[$row['name']] = $row;
                 }
-            } else {
-                $plugins[$row['name']] = $row;
+                $plugins[$row['name']]['missing'] = !file_exists(_base_ . "/plugins/" . $row['name']);
             }
-        }
-        foreach ($this->plugin_core as $core_name) {
-            if (!key_exists($core_name, $plugins)) {
-                $manifest = $this->readPluginManifest($core_name);
-                $plugins[$manifest['name']] = $manifest;
+            foreach ($this->plugin_core as $core_name) {
+                if (!key_exists($core_name, $plugins)) {
+                    $manifest = $this->readPluginManifest($core_name);
+                    $plugins[$manifest['name']] = $manifest;
+                }
             }
+            self::$plugins_active = array_filter($plugins);
         }
-        return array_filter($plugins);
+        return self::$plugins_active;
     }
 
     /**
