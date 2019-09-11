@@ -40,14 +40,15 @@ foreach ($plugins as $info){
                     }
                     $install.='<div style="color: grey; cursor: help;" title="'.Lang::t('_PLUGIN_ERROR_UNINSTALL_DEPENDENCE', 'configuration').' '.$dependencies.'">'.Lang::t('_PLUGIN_UNINSTALL', 'configuration').'</div>';
                     $activate = '<div style="color: grey;cursor: help;" title="'.Lang::t('_PLUGIN_ERROR_DEACTIVATE_DEPENDENCE', 'configuration').' '.$dependencies.'">'.Lang::t('_PLUGIN_DEACTIVATE', 'configuration').'</div>';
-                } else if ($info['update']){
-                    $error="";
-                    if (!class_exists('ZipArchive')){
-                        $error.= Lang::t('_PLUGIN_ERROR_NOT_ONLINE_UPDATE', 'configuration')."<br>";
-                    }
-                    $install.= '<a title="'.$error.'" style="color: #006d07;" href="index.php?r=adm/pluginmanager/update'.'&plugin='.$info['name'].'&online='.$info['online'].'">'.Lang::t('_PLUGIN_UPDATE', 'configuration').'</a>';
                 } else {
                     $install.='<a style="color: #C84000;" href="javascript:askUninstall(\'index.php?r=adm/pluginmanager/uninstall'.'&plugin='.$info['name'].'\');">'.Lang::t('_PLUGIN_UNINSTALL', 'configuration').'</a>';
+                    if ($info['update']){
+                        $error="";
+                        if (!class_exists('ZipArchive')){
+                            $error.= Lang::t('_PLUGIN_ERROR_NOT_ONLINE_UPDATE', 'configuration')."<br>";
+                        }
+                        $install.= ' <a title="'.$error.'" style="color: #006d07;" href="index.php?r=adm/pluginmanager/update'.'&plugin='.$info['name'].'&online='.$info['online'].'">'.Lang::t('_PLUGIN_UPDATE', 'configuration').'</a>';
+                    }
                     //if active
                     if ($info['active']=="1"){
                         $activate.=' <a style="color: #C84000;" href="index.php?r=adm/pluginmanager/deactivate'.'&plugin='.$info['name'].'">'.Lang::t('_PLUGIN_DEACTIVATE', 'configuration').'</a>';
