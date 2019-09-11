@@ -87,6 +87,18 @@ class PluginmanagerAdmController extends AdmController {
         }
     }
 
+    public function set_priority() {
+        $model = new PluginmanagerAdm();
+        $plugin = Get::req('plugin');
+        $priority = Get::req('priority', DOTY_INT, 0);
+        $res=$model->setPriority($plugin, $priority);
+        if($res) {
+            Util::jump_to('index.php?r=adm/pluginmanager/show&active_tab='.$plugin.'&result=ok');
+        } else {
+            Util::jump_to('index.php?r=adm/pluginmanager/show&active_tab='.$plugin.'&result=err');
+        }
+    }
+
     public function showSettings(){
         $plugin = Get::req('plugin');
         $settingAdm=new SettingAdm();

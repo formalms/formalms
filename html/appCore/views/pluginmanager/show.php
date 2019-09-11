@@ -15,6 +15,7 @@ $cont_h = array(
     Lang::t('_PLUGIN_DESCRIPTION', 'configuration'),
     "",
     "",
+    "",
     ""
 );
 
@@ -29,6 +30,7 @@ foreach ($plugins as $info){
     $settings="";
     $install="";
     $activate="";
+    $priority="";
     //if already in database
     if (isset($info['plugin_id'])){
         if ($info['core']==="0"){
@@ -64,6 +66,15 @@ foreach ($plugins as $info){
             $install.='<div style="color: grey;cursor: help;"title="'.Lang::t('_PLUGIN_ERROR_CORE_UNINSTALL', 'configuration').'">'.Lang::t('_PLUGIN_UNINSTALL', 'configuration').'</div>';
             $activate = '<div style="color: grey;cursor: help;" title="'.Lang::t('_PLUGIN_ERROR_CORE_DEACTIVATE', 'configuration').'">'.Lang::t('_PLUGIN_DEACTIVATE', 'configuration').'</div>';
         }
+        $priority.='
+            <form>
+                <input type="hidden" name="r" value="adm/pluginmanager/set_priority"/>
+                <input type="hidden" name="plugin" value="'.$info['name'].'"/>
+                <input type="number" name="priority" value="'.$info['priority'].'"/>
+                <button submit>'.Lang::t('_PLUGIN_SET_PRIORITY', 'configuration').'</button>
+            </form>
+        ';
+        // <a style="color: #C84000;" href="index.php?r=adm/pluginmanager/set_priority'.'&plugin='.$info['name'].'&priority='. 1 .'">'.Lang::t('_PLUGIN_SET_PRIORITY', 'configuration').'</a>
         $settings=' <a style="color: #C84000;" href="index.php?r=adm/pluginmanager/showSettings'.'&plugin='.$info['name'].'">'.Lang::t('_PLUGIN_SETTINGS', 'configuration').'</a>';
         //if not in database
     } else {
@@ -86,7 +97,8 @@ foreach ($plugins as $info){
         $info['description'],
         $settings,
         $install,
-        $activate
+        $activate,
+        $priority
     ));
 }
 echo "<h2>".Lang::t('_PLUGIN_UPLOAD', 'configuration')."</h2><br/><br/>";

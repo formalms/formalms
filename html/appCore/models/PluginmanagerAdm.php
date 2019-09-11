@@ -472,6 +472,25 @@ class PluginmanagerAdm extends Model
         }
     }
 
+        /**
+     * Set specified priority for specified plugin
+     * @param $plugin_name
+     * @param int $priority
+     * @return bool
+     */
+    function setPriority($plugin_name, $priority = 0)
+    {
+        $updateQuery = sql_query("
+        UPDATE " . $this->table . "
+        SET priority=" . (int)$priority . "
+        WHERE name = '" . $plugin_name . "'");
+        if($updateQuery) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     /**
      * Uninstall specified plugin
      * @param $plugin_id
