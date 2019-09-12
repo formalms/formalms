@@ -703,7 +703,8 @@ class DateManager
 
         // LRZ: 
         // ticket: #19465
-        //if the call is made by ws, id_subscribe was null and the insert into query was mistaken              
+        //if the call is made by ws, id_subscribe was null and the insert into query was mistaken  
+        $id_subscriber = intval($id_subscriber);             
             
 		$query =	"INSERT INTO ".$this->user_date_table
 					." (id_date, id_user, date_subscription, subscribed_by, overbooking)"
