@@ -1404,6 +1404,17 @@ function showResult ($object_test , $id_param)
 		$suspend_info = array ();
 		if ($next_status == 'failed') {
 			$suspend_info[ 'attempts_for_suspension' ] = $track_info[ 'attempts_for_suspension' ] + 1;
+
+			if ($suspend_info[ 'attempts_for_suspension' ] >= $test_info[ 'suspension_num_attempts' ]) {
+				$sql = "DELETE FROM %lms_materials_track WHERE idReference IN ($prerequisite) AND idUser = " . Docebo::user()->getIdst();
+				$q = sql_query($sql);
+
+				$sql = "DELETE FROM %lms_commontrack WHERE idReference IN ($prerequisite) AND idUser = " . Docebo::user()->getIdst();
+				$q = sql_query($sql);
+
+				$sql = "UPDATE %lms_testtrack SET number_of_save = 0, number_of_attempt = 0, attempts_for_suspension = 0 WHERE idTest = ".$test_info['idTest']." AND idUser = " . Docebo::user()->getIdst();
+				$q = sql_query($sql);
+			}
 			if ($suspend_info[ 'attempts_for_suspension' ] >= $test_info[ 'suspension_num_attempts' ] && $test_info[ 'suspension_num_hours' ] > 0) {
 				//should we reset learning_test.suspension_num_attempts ??
 				$suspend_info[ 'attempts_for_suspension' ] = 0; //from now on, it uses the suspended_until parameter, so only the date is needed, we can reset the attempts count
