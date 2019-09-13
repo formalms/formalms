@@ -822,6 +822,7 @@ class Man_Course {
 	function canEnterCourse(&$course, $id_path = 0) {
 
 		$db = DbConn::getInstance();
+		$level_id = Docebo::user()->getUserLevelId();
 
 		// control if the user is in a status that cannot enter
 		$now = time();
@@ -858,6 +859,24 @@ class Man_Course {
                 return array('can' => false, 'reason' => 'course_edition_date_begin', 'expiring_in' => 1);
             }                
         }
+
+		if($level_id != ADMIN_GROUP_GODADMIN && $course['sub_start_date'] != '0000-00-00') {
+			$date01=new DateTime($course['sub_start_date']);
+			$exp_time = $date01->format('U') - $now;
+
+			if ($exp_time > 0) {
+				return array('can' => false, 'reason' => 'course_sub_start_date', 'expiring_in' => $exp_time);
+			}
+		}
+        
+		if($level_id != ADMIN_GROUP_GODADMIN && $course['sub_end_date'] != '0000-00-00') {
+			$date01=new DateTime($course['sub_end_date']);
+			$exp_time = $now - $date01->format('U');
+
+			if ($exp_time > 0) {
+				return array('can' => false, 'reason' => 'course_sub_end_date', 'expiring_in' => $exp_time);
+			}
+		}
         
 		if($course['date_end'] != '0000-00-00') {
 			$date01=new DateTime($course['date_end']);
