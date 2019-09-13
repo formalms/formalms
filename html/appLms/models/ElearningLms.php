@@ -90,7 +90,8 @@ class ElearningLms extends Model {
         
         
         
-        $query =             "SELECT c.idCourse, c.course_type, c.idCategory, c.code, c.name, c.description, c.box_description, c.difficult, c.status AS course_status, c.level_show_user, c.course_edition, "
+        $query = "SELECT c.idCourse, c.course_type, c.idCategory, c.code, c.name, c.description, c.box_description, c.difficult, c.status AS course_status, c.level_show_user, "
+        	."	  c.course_edition, c.sub_start_date, c.sub_end_date, "
             ."    c.max_num_subscribe, c.create_date, "
             ."    c.direct_play, c.img_othermaterial, c.course_demo, c.use_logo_in_courselist, c.img_course, c.lang_code, "
 			."	  c.course_vote, c.hour_end , "
@@ -104,7 +105,6 @@ class ElearningLms extends Model {
             .($_SESSION['id_common_label'] > 0 ? " AND c.idCourse IN (SELECT id_course FROM %lms_label_course WHERE id_common_label = '".$_SESSION['id_common_label']."')" : "")
             .$exclude_pathcourse 
             ." ORDER BY ".$this->_resolveOrder(array('cu', 'c'));
-
 
 		$rs = $db->query($query);
 
