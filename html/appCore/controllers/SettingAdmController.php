@@ -39,11 +39,14 @@ class SettingAdmController extends AdmController {
 		$active_tab = importVar('active_tab', false, 1);
         $plugin = Get::req('plugin');
 
-        if ($plugin){
-
-        }
-		if($model->saveElement($active_tab)) {
-            if ($plugin){
+        if (isset($_POST['undo'])) {
+            if ($plugin) {
+                Util::jump_to('index.php?r=adm/pluginmanager/showSettings&plugin='.$plugin);
+            } else {
+                Util::jump_to('index.php?r=adm/setting/show&active_tab='.$active_tab);
+            }
+        } else if($model->saveElement($active_tab)) {
+            if ($plugin) {
                 Util::jump_to('index.php?r=adm/pluginmanager/showSettings&plugin='.$plugin.'&result=ok');
             } else {
                 Util::jump_to('index.php?r=adm/setting/show&active_tab='.$active_tab.'&result=ok');
