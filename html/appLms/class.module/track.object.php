@@ -333,14 +333,20 @@ class Track_Object {
 		$query = "SELECT status "
 				." FROM ".self::getEnvironmentTable($environment).""
 				." WHERE (idReference = ".(int)$idReference.")"
-				."   AND (idUser = '".(int)$idUser."')";
+				."   AND (idUser = '".(int)$idUser."')"
+				." ORDER BY `dateAttempt` DESC";
 		$rs = sql_query( $query )
 			or die( "Error in query=[ $query ] ". sql_error() );
 			
 		if( sql_num_rows( $rs ) == 0 )
 			return 'not attempted';
 		else {
-			list( $status ) = sql_fetch_row( $rs );
+			while(list( $status ) = sql_fetch_row( $rs )) {
+				if ($status == 'passed' || $status == 'completed') {
+					break;
+				}
+			}
+			
 			return $status;
 		}				
 	}
