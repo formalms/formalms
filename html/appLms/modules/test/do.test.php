@@ -1412,6 +1412,21 @@ function showResult ($object_test , $id_param)
 
 					$sql = "DELETE FROM %lms_commontrack WHERE idReference IN ($prerequisite) AND idUser = " . Docebo::user()->getIdst();
 					$q = sql_query($sql);
+
+					$sql = "SELECT idscorm_tracking FROM %lms_scorm_tracking WHERE idReference IN ($prerequisite) AND idUser = " . Docebo::user()->getIdst();
+					$q = sql_query($sql);
+
+					while ($row = sql_fetch_row($q)) {
+						$idscorm_tracking = $row[0];
+						$sql = "DELETE FROM %lms_scorm_tracking WHERE idscorm_tracking = $idscorm_tracking AND idUser = " . Docebo::user()->getIdst();
+						$q = sql_query($sql);
+						$sql = "DELETE FROM %lms_scorm_tracking_history WHERE idscorm_tracking = $idscorm_tracking AND idUser = " . Docebo::user()->getIdst();
+						$q = sql_query($sql);
+					}
+					$sql = "DELETE FROM %lms_scorm_items_track WHERE idReference IN ($prerequisite) AND idUser = " . Docebo::user()->getIdst();
+					$q = sql_query($sql);
+					$sql = "DELETE FROM %lms_testtrack WHERE idTest = ".$test_info['idTest']." AND idUser = " . Docebo::user()->getIdst();
+					$q = sql_query($sql);
 				}
 
 				$sql = "UPDATE %lms_testtrack SET number_of_save = 0, number_of_attempt = 0, attempts_for_suspension = 0 WHERE idTest = ".$test_info['idTest']." AND idUser = " . Docebo::user()->getIdst();
