@@ -1301,7 +1301,9 @@ function showResult ($object_test , $id_param)
 	}
 	$test_track = new Track_Test($id_track);
 	$test_track->setDate ($now);
-	$test_track->status = $next_status;
+	if (!in_array($test_track->status, ['passed', 'completed'])) {
+		$test_track->status = $next_status;
+	}
 	$test_track->update ();
 	
 	// --
