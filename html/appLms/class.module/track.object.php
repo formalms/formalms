@@ -341,14 +341,14 @@ class Track_Object {
 		if( sql_num_rows( $rs ) == 0 )
 			return 'not attempted';
 		else {
-			while(list( $status ) = sql_fetch_row( $rs )) {
+			for($i = 0; $i < sql_num_rows( $rs ); $i++) {
+				list($status) = sql_fetch_row( $rs );
 				if ($status == 'passed' || $status == 'completed') {
 					break;
 				}
 			}
-			
 			return $status;
-		}				
+		}
 	}
 	/**
 	 * @return idTrack if found else false
