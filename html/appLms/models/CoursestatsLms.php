@@ -233,17 +233,21 @@ class CoursestatsLms extends Model {
 			." ON (c.idReference = o.idOrg AND c.idUser=".(int)$id_user.") "
 			." WHERE o.idCourse=".(int)$id_course.$where;
 
-		$query .= " ORDER BY ".$sort." ".$dir." ";
+		$query .= " GROUP BY o.path ORDER BY ".$sort." ".$dir." ";
 		if (is_array($pagination)) {
 			$query .= "LIMIT ".$startIndex.", ".$rowsPerPage;
 		}
+		//echo $query."\n";
 		$output = array();
 		$res = $this->db->query($query);
 
 		if ($res) {
 			$scores = $this->getLOScores($id_course, $id_user); //actually only tests can be scored
 			
+			require_once(_lms_.'/class.module/track.object.php' );
+
 			while ($obj = $this->db->fetch_obj($res)) {
+				$obj->status = Track_Object::getStatusFromId($obj->idOrg, $id_user);
 				$history = $this->getUserScormHistoryTrackInfo($id_user, $obj->idOrg);
 				$history_table_html = '<table class="timesDetail table table-striped table-bordered">';
 				
