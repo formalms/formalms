@@ -273,7 +273,9 @@ class TreeView {
 
 
 	/**
-	 * retrieve data from elements of array
+	 * Set treeview obj datas
+	 *
+	 * retrieve data from array of elements
 	 * Normally $arrayState is $_POST
 	 * $arrayExpand is $_GET
 	 * $arrayCompress id $_GET
@@ -282,14 +284,12 @@ class TreeView {
 		// optimistic prevision :-P
 
 		$this->refresh = FALSE;
-		if( isSet( $arrayState[$this->_getCancelId()] ) )
-			$this->cancel = TRUE;
-		else
-			$this->cancel = FALSE;
+		$this->cancel = isset($arrayState[$this->_getCancelId()]);
 
 		if( isSet( $arrayState[$this->_getSelectedId()] ) ) {
 			$this->selectedFolder = $arrayState[$this->_getSelectedId()];
 		}
+
 		if( isSet( $arrayState[$this->_getIdPlayItemId()] ) ) {
 			$this->itemToPlay = (int)$arrayState[$this->_getIdPlayItemId()];
 		}
@@ -300,6 +300,7 @@ class TreeView {
 		if( isSet( $arrayCompress[$this->_getCompressId()] ) ) {
 			$this->compressList = explode( ',', $arrayCompress[$this->_getCompressId()]);
 		}
+
 		// remove elements present in both lists
 		$arrayIntersect = array_intersect( $this->expandList, $this->compressList);
 		$this->expandList = array_diff( $this->expandList, $arrayIntersect );

@@ -75,7 +75,7 @@ echo getTitleArea(array(
            <table id='table_certificate'  data-id_course='<?=$id_course?>' data-id_certificate='<?php echo $id_certificate ?>' class='table table-striped table-bordered' style='width:100%'></table>            
 <script type="text/javascript">
 
-        var id_course=$('#table_certificate').data('id_course');
+        var id_course = $('#table_certificate').data('id_course');
         var cert_table = $('#table_certificate').FormaTable({
             margin: '0 auto',
             scrollX: true,

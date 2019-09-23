@@ -18,39 +18,76 @@
  * @version  $Id: lib.course_managment.php 573 2006-08-23 09:38:54Z fabio $
  */
 
- /**
-  * This class is mindede to be userd for course managment and include the function for load a course 
-  * selector that includes 'course', 'coursepath' and 'catalogue' 
-  * Other function is the copy of a course menu and the retriving of info about it
-  */
+
 class Course_Manager {
-	
+    /**
+     *
+     * Including all functions for managing courses
+     *
+     * This class is minded to be used for course management, and it includes functions for load a course
+     * selector that includes 'course', 'coursepath' and 'catalogue'.
+     * Another function is the copy of a course menu and the retrieving of info about it
+     */
+
+    /** @var string $ref_link Link for the tab creation */
 	var $ref_link = '';
-	
+
+    /** @var boolean Flag that indicates if the filter will be shown */
 	var $show_filter = true;
-	
-	var $tab = NULL;
-	
-	/* Selector instances */
+
+
+    /**
+     * @var TabElemDefault[] Array of tabs
+     */
+    var $tab = NULL;
+
+    /**
+     * @var Selector_Course|null
+     *
+     */
 	var $course_selector = NULL;
-	
-	var $coursepath_selector = NULL;
-	
-	var $catalogue_selector = NULL;
+
+    /**
+     * @var Selector_CoursePath|null
+     */
+    var $coursepath_selector = NULL;
+
+    /**
+     * @var Selector_Catalogue|null
+     */
+    var $catalogue_selector = NULL;
 	
 	/* What to show */
-	var $show_course_selector = true;
-	
-	var $show_coursepath_selector = true;
-	
-	var $show_catalogue_selector = true;
+    /**
+     * @var bool
+     */
+    var $show_course_selector = true;
+
+    /**
+     * @var bool
+     */
+    var $show_coursepath_selector = true;
+
+    /**
+     * @var bool
+     */
+    var $show_catalogue_selector = true;
 	
 	/* Save Status */
-	var $status_course_selector = NULL;
-	
-	var $status_coursepath_selector = NULL;
-	
-	var $status_catalogue_selector = NULL;
+    /**
+     * @var null
+     */
+    var $status_course_selector = NULL;
+
+    /**
+     * @var null
+     */
+    var $status_coursepath_selector = NULL;
+
+    /**
+     * @var null
+     */
+    var $status_catalogue_selector = NULL;
 	
 	/**
 	 * Class constructor
@@ -64,32 +101,48 @@ class Course_Manager {
 		require_once($GLOBALS['where_lms'].'/lib/lib.catalogue.php');
 		
 		$this->show_filter 			= true;
+
 		$this->course_selector 		= new Selector_Course();
 		$this->coursepath_selector 	= new Selector_CoursePath();
 		$this->catalogue_selector 	= new Selector_Catalogue();
+
 	}
-	
-	function setLink($link) {
+
+    /** @param $ref_link Reference link */
+    function setLink($ref_link) {
 		
-		$this->ref_link = $link;
+		$this->ref_link = $ref_link;
 	}
-	
-	function resetCourseSelection($new_selection) {
+
+    /**
+     * @param $new_selection
+     */
+    function resetCourseSelection($new_selection) {
 		
 		$this->course_selector->resetSelection($new_selection);
 	}
-	
-	function resetCoursePathSelection($new_selection) {
+
+    /**
+     * @param $new_selection
+     */
+    function resetCoursePathSelection($new_selection) {
 		
 		$this->coursepath_selector->resetSelection($new_selection);
 	}
-	
-	function resetCatalogueSelection($new_selection) {
+
+    /**
+     * @param $new_selection
+     */
+    function resetCatalogueSelection($new_selection) {
 		
 		$this->catalogue_selector->resetSelection($new_selection);
 	}
-	
-	function getCourseSelection($array_state) {
+
+    /**
+     * @param $array_state
+     * @return array
+     */
+    function getCourseSelection($array_state) {
 		
 		$old_tab = importVar('old_tab');
 		if($old_tab == 'tab_course') {
@@ -100,13 +153,21 @@ class Course_Manager {
 		}
 		return $this->course_selector->getSelection();
 	}
-	
-	function loadCourseSelector($noprint = false) {
+
+    /**
+     * @param bool $noprint
+     * @return string
+     */
+    function loadCourseSelector($noprint = false) {
 		
 		return $this->course_selector->loadCourseSelector($noprint);
 	}
-	
-	function getCoursePathSelection($array_state) {
+
+    /**
+     * @param $array_state
+     * @return array
+     */
+    function getCoursePathSelection($array_state) {
 		
 		$old_tab = importVar('old_tab');
 		if($old_tab == 'tab_coursepath') {
@@ -117,13 +178,21 @@ class Course_Manager {
 		}
 		return $this->coursepath_selector->getSelection();
 	}
-	
-	function loadCoursePathSelector($noprint = false) {
+
+    /**
+     * @param bool $noprint
+     * @return string
+     */
+    function loadCoursePathSelector($noprint = false) {
 		
 		return $this->coursepath_selector->loadCoursePathSelector($noprint);
 	}
-	
-	function getCatalogueSelection($array_state) {
+
+    /**
+     * @param $array_state
+     * @return array
+     */
+    function getCatalogueSelection($array_state) {
 		
 		$old_tab = importVar('old_tab');
 		if($old_tab == 'tab_catalogue') {
@@ -134,30 +203,42 @@ class Course_Manager {
 		}
 		return $this->catalogue_selector->getSelection();
 	}
-	
-	function loadCatalogueSelector($noprint = false) {
+
+    /**
+     * @param bool $noprint
+     * @return string
+     */
+    function loadCatalogueSelector($noprint = false) {
 		
 		return $this->catalogue_selector->loadCatalogueSelector($noprint);
 	}
-	
-	function _loadCourseStatus($new_tab, $old_tab) {
+
+    /**
+     * @param $new_tab string
+     * @param $old_tab string
+     */
+    function _loadCourseStatus($new_tab, $old_tab) {
 		
 		$my_tab = 'tab_course';
 		$my_var = 'sel_course_selected';
 		$out = '';
 		
-		if($old_tab != $my_tab && $new_tab == $my_tab) {
+		if($old_tab != $my_tab && $new_tab == $my_tab) { // Se la tab selezionata è quella dei corsi allora...
 			
-			if(isset($_POST[$my_var])) {
-				$this->status_course_selector = urldecode(importVar($my_var));
+			if(isset($_POST[$my_var])) { // Vengono presi i dati precedenti, se settati...
+				$this->status_course_selector = urldecode(importVar($my_var));  //
 				$this->course_selector->loadStatus( $this->status_course_selector );
-			} else $this->course_selector->parseForState($_POST);
+			} else $this->course_selector->parseForState($_POST); // Altrimenti vengono presi dalla richiesta post.
 		} else {
 			$this->course_selector->parseForState($_POST);
 		}
 	}
-	
-	function _loadCoursePathStatus($new_tab, $old_tab) {
+
+    /**
+     * @param $new_tab
+     * @param $old_tab
+     */
+    function _loadCoursePathStatus($new_tab, $old_tab) {
 		
 		$my_tab = 'tab_coursepath';
 		$my_var = 'sel_coursepath_selected';
@@ -173,8 +254,12 @@ class Course_Manager {
 			$this->coursepath_selector->parseForState($_POST);
 		}
 	}
-	
-	function _loadCatalogueStatus($new_tab, $old_tab) {
+
+    /**
+     * @param $new_tab
+     * @param $old_tab
+     */
+    function _loadCatalogueStatus($new_tab, $old_tab) {
 		
 		$my_tab = 'tab_catalogue';
 		$my_var = 'sel_catalogue_selected';
@@ -190,8 +275,14 @@ class Course_Manager {
 			$this->catalogue_selector->parseForState($_POST);
 		}
 	}
-	
-	function _saveCourseStatus($new_tab, $old_tab) {
+
+    /**
+     * @param $new_tab
+     * @param $old_tab
+     *
+     * @return string
+     */
+    function _saveCourseStatus($new_tab, $old_tab) {
 		
 		$my_tab = 'tab_course';
 		$my_var = 'sel_course_selected';
@@ -210,8 +301,13 @@ class Course_Manager {
 		}
 		return $out."\n";
 	}
-	
-	function _saveCoursePathStatus($new_tab, $old_tab) {
+
+    /**
+     * @param $new_tab
+     * @param $old_tab
+     * @return string
+     */
+    function _saveCoursePathStatus($new_tab, $old_tab) {
 		
 		$my_tab = 'tab_coursepath';
 		$my_var = 'sel_coursepath_selected';
@@ -231,8 +327,13 @@ class Course_Manager {
 		}
 		return $out."\n";
 	}
-	
-	function _saveCatalogueStatus($new_tab, $old_tab) {
+
+    /**
+     * @param $new_tab
+     * @param $old_tab
+     * @return string
+     */
+    function _saveCatalogueStatus($new_tab, $old_tab) {
 		
 		$my_tab = 'tab_catalogue';
 		$my_var = 'sel_catalogue_selected';
@@ -251,8 +352,14 @@ class Course_Manager {
 		}
 		return $out."\n";
 	}
-	
-	function loadSelector($show_tabs = true, $noprint = false) {
+
+
+    /**
+     * @param bool $show_tabs
+     * @param bool $noprint
+     * @return string
+     */
+    function loadSelector($show_tabs = true, $noprint = false) {
 		
 		$this->tab = new TabView('course_management', $this->ref_link);
 		$lang =& DoceboLanguage::createInstance('course_selector', 'lms');
@@ -261,11 +368,15 @@ class Course_Manager {
 		if(!checkPerm('view', true, 'course' ,'lms')) 		$this->show_course_selector 		= false;
 		if(!checkPerm('view', true, 'coursepath' ,'lms')) 	$this->show_coursepath_selector 	= false;
 		if(!checkPerm('view', true, 'catalogue' ,'lms')) 	$this->show_catalogue_selector		= false;
-		
-		// previous tab
+
+
+        // The active tab initially, is empty ('').
+        // The active tab will be by default tab_course, because old_tab is not set.
+
 		$old_tab 		= importVar('old_tab');
 		$active_tab 	= importVar('old_tab', false, 'tab_course');
-		// now display tab
+
+        // Switching correct active tab
 		if(isset($_POST['tabelem_tab_course_status'])) 			$active_tab = 'tab_course';
 		elseif(isset($_POST['tabelem_tab_coursepath_status'])) 	$active_tab = 'tab_coursepath';
 		elseif(isset($_POST['tabelem_tab_catalogue_status'])) 	$active_tab = 'tab_catalogue';
@@ -276,7 +387,7 @@ class Course_Manager {
 			if($this->show_course_selector !== false) {
 				$course_tab 		= new TabElemDefault(	'tab_course', 
 															$lang->def('_SEL_COURSE'), 
-															getPathImage('lms').'area_title/course.gif');
+															getPathImage('lms').'area_title/course.gif'); // IMG NON ESISTE.
 				$this->tab->addTab($course_tab);
 			}
 			if($this->show_coursepath_selector !== false) {
@@ -297,24 +408,38 @@ class Course_Manager {
 		$this->tab->setActiveTab($active_tab);
 		
 		$output = $this->tab->printTabView_Begin('', false);
-		
-		if($old_tab != $active_tab) {
+
+		if($old_tab != $active_tab) { // Tab changed, getting datas from selection
 			switch($old_tab) {
-				case "tab_course": {
+
+                case "":
+                    break;
+
+				case "tab_course":
 					$this->course_selector->parseForState($_POST);
-				};break;
-				case "tab_coursepath": {
+				    break;
+
+				case "tab_coursepath":
 					$this->coursepath_selector->parseForState($_POST);
-				};break;
-				case "tab_catalogue": {
+				    break;
+
+				case "tab_catalogue":
 					$this->catalogue_selector->parseForState($_POST);
-				};break;
+				    break;
+
+                default:
+
 			}
 		}
+
 		switch($active_tab) {
 			case "tab_course": {
-				$this->_loadCourseStatus($active_tab, $old_tab);
+                $output .= $this->loadTreeSelector();
+
+                $this->_loadCourseStatus($active_tab, $old_tab);
 				$output .= $this->loadCourseSelector($noprint);
+
+
 			};break;
 			case "tab_coursepath": {
 				$this->_loadCoursePathStatus($active_tab, $old_tab);
@@ -325,6 +450,7 @@ class Course_Manager {
 				$output .= $this->loadCatalogueSelector($noprint);
 			};break;
 		}
+
 		$output .= $this->_saveCourseStatus($active_tab, $old_tab)
 			.$this->_saveCoursePathStatus($active_tab, $old_tab)
 			.$this->_saveCatalogueStatus($active_tab, $old_tab)
@@ -334,24 +460,59 @@ class Course_Manager {
 
 		if($noprint) return $output; else cout($output, 'content');
 	}
+
+
+	/**
+     *
+     *
+     */
+    function loadTreeSelector(){
+
+        return '<div id="ilmiotree"></div>';
+
+    }
+
 }
 
 
+/**
+ * Class AdminCourseManagment
+ */
 class AdminCourseManagment {
-	
-	var $course 		= array();
-	var $coursepath 	= array();
-	var $catalogues 	= array();
-	
-	function Admin_Course() {}
-	
-	function _executeQuery($text_query) {
+
+    /**
+     * @var array
+     */
+    var $course 		= array();
+    /**
+     * @var array
+     */
+    var $coursepath 	= array();
+    /**
+     * @var array
+     */
+    var $catalogues 	= array();
+
+    /**
+     *
+     */
+    function Admin_Course() {}
+
+    /**
+     * @param $text_query
+     * @return reouce_id
+     */
+    function _executeQuery($text_query) {
 		
 		$rs = sql_query($text_query);
 		return $rs;
 	}
-	
-	function &getUserCourses($id_user) {
+
+    /**
+     * @param $id_user
+     * @return array
+     */
+    function &getUserCourses($id_user) {
 		
 		$courses = array();
 		$query_course = "
@@ -365,8 +526,12 @@ class AdminCourseManagment {
 		}
 		return $courses;
 	}
-	
-	function &getUserPathCourses($id_user) {
+
+    /**
+     * @param $id_user
+     * @return array
+     */
+    function &getUserPathCourses($id_user) {
 		
 		$coursepaths = array();
 		$query_coursepath = "
@@ -380,8 +545,12 @@ class AdminCourseManagment {
 		}
 		return $coursepaths;
 	}
-	
-	function &getUserCatalogues($id_user) {
+
+    /**
+     * @param $id_user
+     * @return array
+     */
+    function &getUserCatalogues($id_user) {
 		
 		$catalogues = array();
 		$query_catalogue = "
@@ -395,8 +564,12 @@ class AdminCourseManagment {
 		}
 		return $catalogues;
 	}
-	
-	function &getUserAllCourses($id_user) {
+
+    /**
+     * @param $id_user
+     * @return array
+     */
+    function &getUserAllCourses($id_user) {
 		
 		require_once($GLOBALS['where_lms'].'/lib/lib.catalogue.php');
 		require_once($GLOBALS['where_lms'].'/lib/lib.coursepath.php');
@@ -416,8 +589,12 @@ class AdminCourseManagment {
 		$courses = array_merge($courses, $course_from_catalogue, $course_from_coursepath);
 		return $courses;
 	}
-	
-	function &getUserAllCoursePaths($id_user) {
+
+    /**
+     * @param $id_user
+     * @return array
+     */
+    function &getUserAllCoursePaths($id_user) {
 		
 		require_once($GLOBALS['where_lms'].'/lib/lib.catalogue.php');
 		require_once($GLOBALS['where_lms'].'/lib/lib.coursepath.php');
@@ -430,8 +607,12 @@ class AdminCourseManagment {
 		$coursepath = array_merge($coursepath, $coursepath_from_catalogue);
 		return $coursepath;
 	}
-	
-	function getCoursesStats($manual_filter = false) {
+
+    /**
+     * @param bool $manual_filter
+     * @return array
+     */
+    function getCoursesStats($manual_filter = false) {
 
 		$course_stats = array();
 		$course_stats['total'] = 0;

@@ -1544,33 +1544,36 @@ function create()
     require_once(_base_.'/lib/lib.form.php');
 
 	$lang =& DoceboLanguage::createInstance('certificate', 'lms');
-
 	$id_certificate = importVar('id_certificate', true, 0);
-	$id_meta = array();
-
-	$acl_man =& Docebo::user()->getAclManager();
-
-	$first = true;
-
-	$tot_element = 0;
+    $acl_man =& Docebo::user()->getAclManager();
+    $first = true;
+   	$tot_element = 0;
 
 	$out =& $GLOBALS['page'];
 	$out->setWorkingZone('content');
 
+    
 	$tb	= new Table(Get::sett('visuItem'), $lang->def('_META_CERTIFICATE_CREATE_CAPTION'), $lang->def('_META_CERTIFICATE_CREATE_CAPTION'));
 	$tb->initNavBar('ini', 'button');
 	$ini = $tb->getSelectedElement();
-
-	$query =	"SELECT idMetaCertificate"
+   
+   // Getting an array of all metacerts belonging to the current certificate
+   $query =	"SELECT idMetaCertificate"
 				." FROM ".$GLOBALS['prefix_lms']."_certificate_meta"
 				." WHERE idCertificate = '".$id_certificate."'";
 
 	$result = sql_query($query);
-
+    
+    
+    $id_meta = array();
 	while(list($id_meta_temp) = sql_fetch_row($result))
 		$id_meta[] = $id_meta_temp;
-
-	$query =	"SELECT idCourse, idUser"
+    
+    
+    
+   
+   // Building array [idUser] => array( id_courses_completed )
+   $query =	"SELECT idCourse, idUser"
 				." FROM ".$GLOBALS['prefix_lms']."_courseuser"
 				." WHERE status = '"._CUS_END."'";
 
@@ -1579,7 +1582,12 @@ function create()
 
 	while(list($id_course_t, $id_user_t) = sql_fetch_row($result))
 		$user_course_completed[$id_user_t][$id_course_t] = $id_course_t;
+     
 
+
+
+     // Getting array of associations titles 
+  
 	$query =	"SELECT idMetaCertificate, title"
 				." FROM ".$GLOBALS['prefix_lms']."_certificate_meta";
 
@@ -1589,6 +1597,10 @@ function create()
 	while(list($id_meta_t, $title_t) = sql_fetch_row($result))
 		$array_title[$id_meta_t] = $title_t;
 
+        
+        
+    // Getting control array
+    
 	$query =	"SELECT idUser, idMetaCertificate, COUNT(*)"
 				." FROM ".$GLOBALS['prefix_lms']."_certificate_meta_course"
 				." GROUP BY idUser, idMetaCertificate";
@@ -1599,6 +1611,8 @@ function create()
 	while(list($id_user_t, $id_meta_t, $control_t) = sql_fetch_row($result))
 		$array_control[$id_user_t][$id_meta_t] = $control_t;
 
+        
+        
     if(isset($_POST['undo_filter_create']))
 	{
 		unset($_POST['filter_username']);
@@ -1607,6 +1621,9 @@ function create()
         unset($_POST['filter_release_status']);
 	}
 
+    
+    
+    
 	$query =	"SELECT m.idUser, u.lastname, u.firstname, u.userid"
 				." FROM ".$GLOBALS['prefix_lms']."_certificate_meta_course as m"
 				." JOIN ".$GLOBALS['prefix_fw']."_user as u ON u.idst = m.idUser"

@@ -79,7 +79,8 @@ div.divider{border-bottom: 1px solid #cccccc; margin-top: 5px; margin-bottom: 10
 .container-back{text-align:right;/*
 font-size: 115%;position: absolute;right: 10px;text-align: right;text-decoration: none;top: -22px;
 */}
-.nofloat{float:none !important; clear:both; overflow:hidden; height:1px; margin:0 !important; padding:0 !important;}
+/* Perchè veniva usato overflow hidden? Veniva cancellata la scritta "Cancella file" nel caricamento dei metacertificati, questa classe viene usata dalla lib.form */
+.nofloat{float:none !important; clear:both; overflow:unset; height:1px; margin:0 !important; padding:0 !important;}
 .valing-middle{vertical-align:middle;}
 .red{color:#EE1111;}
 .green{color:#118811;}

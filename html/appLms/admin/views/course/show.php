@@ -2,10 +2,8 @@
 <div class="std_block">
 <?php
 
-
-
-//Categories tree
-$languages = array(
+    //Categories tree
+    $languages = array(
     '_ROOT' => $root_name,
     '_NEW_FOLDER_NAME' => Lang::t('_NEW_CATEGORY', 'course'),
     '_MOD' => Lang::t('_MOD', 'course'),
@@ -26,11 +24,10 @@ $languages = array(
     '_AJAX_FAILURE' => Lang::t('_CONNECTION_ERROR', 'standard')
 );
 
-
-      //** CR : LR TABLE OF COURSE , RESPONSIVE **
-      $modifica = $languages['_MOD'];
-      $cancella = $languages['_DEL'];
-      $nome = $languages['_NAME'];
+    //** CR : LR TABLE OF COURSE , RESPONSIVE **
+    $modifica = $languages['_MOD'];
+    $cancella = $languages['_DEL'];
+    $nome = $languages['_NAME'];
       
       
      $info_course ='<style>
@@ -56,13 +53,8 @@ $languages = array(
                     </style>
                 ';   
     
-     echo  $info_course;
+     echo $info_course;
     //*********************** 
-
-                      
-
-
-
 
 
 $_tree_params = array(

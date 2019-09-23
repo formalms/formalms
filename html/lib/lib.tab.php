@@ -101,9 +101,15 @@ class TabElemDefault extends TabElem {
 		$this->imgsrc = $imgsrc;
 	}
 
-	function isVisible() { return TRUE; }
+    /**
+     * @return bool|TRUE
+     */
+    function isVisible() { return TRUE; }
 
-	function printLabel() {
+    /**
+     * @return HTML|string
+     */
+    function printLabel() {
 		$lout = '<li class="';
 		if( $this->isActive() )
 			$lout .= 'TabElemDefault_active';
@@ -131,16 +137,23 @@ class TabElemDefault extends TabElem {
  *	The class TabView represent a tabbed UI
 **/
 class TabView {
+
 	/** @var string $id the id of the TabView */
 	var $id;
+
 	/** @var array $arrTab array of tab elements*/
 	var $arrTab = array();
+
 	/** @var int $activeId id of the active tab in the array */
 	var $activeId = NULL;
+
 	/** @var string $url for post tab click requests */
 	var $post_url = FALSE;
 
-	var $method = 'post';
+    /**
+     * @var string
+     */
+    var $method = 'post'; 
 
 
 	/** return the name of the data used to store status
@@ -156,8 +169,10 @@ class TabView {
 		$this->post_url = $post_url;
 	}
 
-	/** This function add a tab to list of managed tab
-	 * @param TabElem $tab tab element to add
+    /**
+     *  This function add a tab to list of managed tab
+     *
+	 *  @param TabElem $tab tab element to add
 	**/
 	function addTab( $tab ) {
 		$this->arrTab[$tab->id] = $tab;
@@ -216,9 +231,9 @@ class TabView {
 	}
 
 	/* ********************************** PRINT OUT FUNCTIONS ************************/
-	/** This function return a string with start output for print
-	 *	tabview and related content
-	 *	@return string the output of the TabView
+	/** This function return a string with start output for print tabview and related content
+     *  @param $url_param string Unique string containing all the parameters to be set in the form.
+     *  @return string the output of the TabView
 	**/
 	function printTabView_Begin( $url_param = "", $print_form = TRUE ) {
 
