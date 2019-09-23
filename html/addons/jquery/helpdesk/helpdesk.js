@@ -59,6 +59,7 @@ function validateEmail(email) {
         $(".modalbox").fancybox();
         $("#contact").submit(function() { return false; });
 
+        $("#send").before('<em id="send-loading" style="display: none;"><img src="../templates/standard/images/tree/loading.gif"></em>');
         
         $("#send").on("click", function(){
             var emailval  = $("#email").val();
@@ -80,7 +81,8 @@ function validateEmail(email) {
             if(mailvalid == true && msglen >= 4 && oggettolen >= 1 && sendtovalid == true) {
                 // if both validate we attempt to send the e-mail
                 // first we hide the submit btn so the user doesnt click twice
-                $("#send").replaceWith("<em><img src=../templates/standard/images/tree/loading.gif ></em>");
+                $("#send").fadeOut();
+                $("#send-loading").fadeIn();
                 
                 //** INFO CLIENT **
                 flash_installed = ((typeof navigator.plugins != "undefined" && typeof navigator.plugins["Shockwave Flash"] == "object") || (window.ActiveXObject && (new ActiveXObject("ShockwaveFlash.ShockwaveFlash")) != false));
@@ -101,8 +103,14 @@ function validateEmail(email) {
                     success: function(data) {
                         if(data == "true") {
                             $("#contact").fadeOut("fast", function(){
-                                $(this).before("<p><strong>" + msg_ok + "</strong></p>");
-                                setTimeout("$.fancybox.close()", 3000);
+                                $(this).before("<p id=\"success-hd-message\"><strong>" + msg_ok + "</strong></p>");
+                                setTimeout(function() {
+                                    $.fancybox.close();
+                                    $("#contact").fadeIn();
+                                    $("#success-hd-message").remove();
+                                    $("#send-loading").fadeOut();
+                                    $("#send").fadeIn();
+                                }, 3000);
                             });
                         }
                     }
