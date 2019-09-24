@@ -13,5 +13,12 @@ VALUES ('profile_modify', 'allow', 'profile_modify', '16', '0', '3', '1', '1', '
 INSERT IGNORE INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size`, `pack`, `regroup`, `sequence`, `param_load`, `hide_in_modify`, `extra_info`)
 VALUES ('profile_modify_url', '', 'string', '255', '0', '3', '2', '1', '0', '');
 
+UPDATE core_menu_under 
+SET  	default_op = '',
+		class_file = '',
+		class_name = '',
+		mvc_path = 'alms/metacertificate/show'
+WHERE idUnder = 242 ;
+
 ALTER TABLE `learning_report_schedule`
 	ADD COLUMN last_execution DATETIME NULL DEFAULT NULL;
