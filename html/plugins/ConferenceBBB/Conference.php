@@ -19,18 +19,15 @@ define("_BBB_AUTH_DATA", 'bbb_login_data');
 
 include_once(dirname(__FILE__)."/../lib.bbb.api.php");
 
-class Conference extends \FormaPluginConference implements \FormaPluginConferenceInterface{
+class Conference extends \PluginConference {
 
     public static $can_mod = false;
 
     function name(){
-        return self::getName();
+        return Plugin::getName();
     }
 
-    function Conference(){
-        //self::server = Get::sett('ConferenceBBB_server');
-        //self::port = Get::sett('ConferenceBBB_port');
-    }
+    function __construct() { }
 
     static function _getRoomTable() {
 

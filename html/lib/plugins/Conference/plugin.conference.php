@@ -1,11 +1,10 @@
-<?php 
+<?php
+
 /* 
  * Interface to implement for plugin conference type
  * 
  */
-
-interface FormaPluginConferenceInterface {	
-	
+interface PluginConferenceInterface {
 	
 	/*
 	 * Function to add new room for make a conference.
@@ -54,13 +53,21 @@ interface FormaPluginConferenceInterface {
 	);
 }
 
+/**
+ * Base class of plugin conference.
+ * The plugin must implement the FormaPluginConferenceInterface interface.
+ *
+ */	
+abstract class PluginConference implements PluginConferenceInterface {}
 
+/**
+ * @deprecated
+ */
+interface FormaPluginConferenceInterface extends PluginConferenceInterface {}
 
-	/*
-	 * Base class of plugin conference.
-	 * The plugin must implement the FormaPluginConferenceInterface interface.
-	 *
-	 */	
-class FormaPluginConference extends FormaPlugin{
-}
+/**
+ * @deprecated
+ */
+abstract class FormaPluginConference extends PluginConference {}
+
 ?>
