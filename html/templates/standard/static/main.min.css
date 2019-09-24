@@ -2342,11 +2342,11 @@
   width: auto;
   margin: 0 auto; }
 
-/* .icon { */
-  /* transition: all 0.2s ease-in 0s; } */
-  /* .icon:before { */
-    /* content: ''; */
-    /* position: absolute; } */
+ .icon { 
+   transition: all 0.2s ease-in 0s; } 
+   .icon:before { 
+     content: ''; 
+     position: absolute; } 
 
 .course-box__owner--1:before {
   background-image: url("images/icons/users/icon--1.svg"); }
