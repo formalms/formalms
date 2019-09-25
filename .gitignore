@@ -38,3 +38,5 @@ html/plugins/**
 html/config.php
 test/behat/behat_config.yml
 courselist.php.bkp
+html/.htaccess
+html/dbg-wizard.php
