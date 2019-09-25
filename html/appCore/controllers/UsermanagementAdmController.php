@@ -2429,6 +2429,10 @@ class UsermanagementAdmController extends AdmController
 			$acl_man = Docebo::user()->getAclManager();
 			$arr_users = explode(',', $users);
 			$arr_users = array_unique($arr_users);
+			$arr_users = array_map(
+				function($value) { return (int)$value; },
+				$arr_users
+			);
 			$details = $this->model->getUsersDetails($arr_users, true, true);
 			if (is_array($details)) {
 				foreach ($details as $id_user => $detail) {
