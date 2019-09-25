@@ -49,7 +49,9 @@ class EnrollrulesAlmsController extends AlmsController {
 		$results = Get::req('results', DOTY_MIXED, Get::sett('visuItem', 25));
 		$sort = Get::req('sort', DOTY_MIXED, 'title');
 		$dir = Get::req('dir', DOTY_MIXED, 'asc');
-
+		if ($dir != 'asc' && $dir != 'desc') {
+			$dir = 'asd';
+		}
 		$rules = $this->model->getRules($start_index, $results, $sort, $dir);
 		$total_rules = $this->model->getTotalRulesCount();
 		$types = $this->model->ruleTypes();
