@@ -9,6 +9,21 @@
 
 FORMA LMS
 RELEASE CHANGELOG
+
+---------------------------------------------------------------------------------------
+forma.lms 2.4.3
+---------------------------------------------------------------------------------------
+Release date: 2020 october
+
+#19760 - RISOLTO mettendo class_exist in librerie - Fatal error in creazione oggetto con customfield Fatal error se in oggetto ci sono 2 customfield
+#19705 - Filtro lista tentativi in registro valutazioni
+#19753 corso disabilitato se fuori dal range di tempo di iscrizione
+#19745 - 1111 nel box di conferma iscrizioneFix campi in registro valutazioni dettaglio
+#19731 - root/nodes fields selector
+
+
+Plus other minor fixes and improvements
+
 ---------------------------------------------------------------------------------------
 forma.lms 2.4.2
 ---------------------------------------------------------------------------------------
