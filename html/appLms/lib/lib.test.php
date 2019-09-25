@@ -114,7 +114,7 @@ class GroupTestManagement {
 		while($test_data = sql_fetch_assoc($re_scores)) {
 
             $times_sql = "SELECT idReference FROM ".$GLOBALS['prefix_lms']."_testtrack_times
-                        WHERE idTrack = ".$test_data['idTrack']." AND idTest = ".$test_data['idTest'];
+                        WHERE idTest = ".$test_data['idTest'];// idTrack = ".$test_data['idTrack']." AND 
                         $re_times = sql_query($times_sql);
                         $test_data['times'] = sql_num_rows($re_times);
 

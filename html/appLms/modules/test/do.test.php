@@ -256,6 +256,7 @@ function intro ($object_test , $id_param , $deleteLastTrack = false)
 		
 		//check remaining attempts
 		$diff_attempts = $test_info[ 'suspension_num_attempts' ] - $attempts_until_now;
+
 		if ($diff_attempts > 0 && ($last_suspension_date < $now || $test_info[ 'suspension_num_hours' ] <= 0)) {
 			//warning: $diff_attempts remaining before suspesion
 			cout (UIFeedback::pnotice ($lang->def ('_ATTEMPTS_REMAINING_BEFORE_SUSPENSION') . ' : ' . $diff_attempts) . '<br /><br />' , 'content');
@@ -1422,17 +1423,11 @@ function showResult ($object_test , $id_param)
 						$idscorm_tracking = $row[0];
 						$sql = "DELETE FROM %lms_scorm_tracking WHERE idscorm_tracking = $idscorm_tracking AND idUser = " . Docebo::user()->getIdst();
 						$q = sql_query($sql);
-						/*$sql = "DELETE FROM %lms_scorm_tracking_history WHERE idscorm_tracking = $idscorm_tracking AND idUser = " . Docebo::user()->getIdst();
-						$q = sql_query($sql);*/
 					}
 					$sql = "DELETE FROM %lms_scorm_items_track WHERE idReference IN ($prerequisite) AND idUser = " . Docebo::user()->getIdst();
 					$q = sql_query($sql);
 				}
-				$sql = "DELETE FROM %lms_testtrack WHERE idTest = ".$test_info['idTest']." AND idUser = " . Docebo::user()->getIdst();
-				$q = sql_query($sql);
-
-				/*$sql = "UPDATE %lms_testtrack SET number_of_save = 0, number_of_attempt = 0, attempts_for_suspension = 0 WHERE idTest = ".$test_info['idTest']." AND idUser = " . Docebo::user()->getIdst();
-				$q = sql_query($sql);*/
+				$suspend_info[ 'attempts_for_suspension' ] = 0;
 			}
 			if ($suspend_info[ 'attempts_for_suspension' ] >= $test_info[ 'suspension_num_attempts' ] && $test_info[ 'suspension_num_hours' ] > 0) {
 				//should we reset learning_test.suspension_num_attempts ??

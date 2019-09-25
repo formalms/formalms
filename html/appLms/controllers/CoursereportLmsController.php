@@ -1235,7 +1235,7 @@ class CoursereportLmsController extends LmsController
         SELECT DATE_FORMAT(tt.date_attempt, '%d/%m/%Y %H:%i'), tt.score, tt.idTest, t.idUser, tt.number_time
         FROM " . $GLOBALS[ 'prefix_lms' ] . "_testtrack_times AS tt
         LEFT JOIN " . $GLOBALS[ 'prefix_lms' ] . "_testtrack AS t ON tt.idTrack=t.idTrack
-        WHERE tt.idTrack = '" . $idTrack . "' AND tt.idTest = '" . $idTest . "' ORDER BY tt.date_attempt";
+        WHERE tt.idTest = '" . $idTest . "' ORDER BY tt.date_attempt";// tt.idTrack = '" . $idTrack . "' AND 
 		$re_testreport = sql_query ($query_testreport);
 
 		$test_man = new GroupTestManagement();
