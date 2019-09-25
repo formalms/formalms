@@ -297,7 +297,13 @@ class ElearningLmsController extends LmsController
 
         if (!empty($filter_cat) && $filter_cat != '0') {
             $conditions[] = "(c.idCategory in (:filter_category) )";
-            $params[':filter_category'] = $filter_cat;
+            $arr_cat = explode(',', $filter_cat);
+			$arr_cat = array_map(
+				function($value) { return (int)$value; },
+				$arr_cat
+            );
+            $arr_cat = array_unique($arr_cat);
+            $params[':filter_category'] = implode(",", $arr_cat);
         }
 
         // course status : all status, new, completed, in progress
