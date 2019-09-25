@@ -116,6 +116,9 @@ class EnrollrulesAlmsController extends AlmsController {
 		$results = Get::req('results', DOTY_MIXED, Get::sett('visuItem', 25));
 		$sort = Get::req('sort', DOTY_MIXED, 'log_time');
 		$dir = Get::req('dir', DOTY_MIXED, 'asc');
+		if ($dir != 'asc' && $dir != 'desc') {
+			$dir = 'asd';
+		}
 
 		$filter_text = Get::req('filter_text', DOTY_STRING, '');
 
