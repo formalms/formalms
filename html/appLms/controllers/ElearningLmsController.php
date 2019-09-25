@@ -308,7 +308,13 @@ class ElearningLmsController extends LmsController
 
         // course status : all status, new, completed, in progress
         if ($filter_status !== '' && $filter_status !== 'all') {
-            $conditions[] = '(cu.status in (' . $filter_status . ') )';
+            $arr_status = explode(',', $filter_status);
+			$arr_status = array_map(
+				function($value) { return (int)$value; },
+				$arr_status
+            );
+            $arr_status = array_unique($arr_status);
+            $conditions[] = '(cu.status in (' . implode(",", $arr_status) . ') )';
         }
         else if ($filter_status == 'all') {
             $conditions[] = '(c.status <> 3 )';
