@@ -25,12 +25,13 @@
             <div class="col-sm-9">
                 <h1 class="section-coourse__title">{{ course_name }}</h1>
                 <div class="section-coourse__progress-container">
-                    <div class="progress section-coourse__progress">
+                    <div class="progress section-coourse__progress" style="position: relative;">
                         <div class="progress-bar progress-bar-warning{% if stats.perc_completed < 25 %} progress-bar-warning--black{% endif %}" role="progressbar" aria-valuenow="{{ stats.perc_completed }}"
-                             aria-valuemin="0" aria-valuemax="100" style="width: {{ stats.perc_completed }}%;">
+                             aria-valuemin="0" aria-valuemax="100" style="width: {{ stats.perc_completed }}%; cursor: pointer;"
+                             data-toggle="modal" data-target="#myModal">
                             <span>{{ stats.perc_completed }}%</span>
                         </div>
-                        <span class="glyphicon glyphicon-signal pull-right" aria-hidden="true" data-toggle="modal" data-target="#myModal"></span>
+                        <span class="glyphicon glyphicon-signal pull-right" style="position: absolute; right: 0;" aria-hidden="true" data-toggle="modal" data-target="#myModal"></span>
                     </div>
                 </div>
             </div>
