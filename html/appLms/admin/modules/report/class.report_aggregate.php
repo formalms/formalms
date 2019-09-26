@@ -133,14 +133,16 @@ class Report_Aggregate extends Report {
 				//$user_select->show_orgchart_simple_selector = FALSE;
 				//$user_select->multi_choice = TRUE;
 
-				$user_select->addFormInfo(
-					($type=='users' ? Form::getCheckbox($lang->def('_REPORT_FOR_ALL'), 'select_all', 'select_all', 1, $ref['rows_filter']['select_all']) : '').
-					Form::getBreakRow().
-					Form::getHidden('selection_type', 'selection_type', $type).
-					Form::getHidden('step', 'step', 'sel_data').
-					Form::getHidden('is_updating', 'is_updating', 1).
-					Form::getHidden('substep', 'substep', 'user_selection').
-					Form::getHidden('second_step', 'second_step', 1));
+				if(Docebo::user()->getUserLevelId() == ADMIN_GROUP_GODADMIN && !Docebo::user()->isAnonymous()) {
+					$user_select->addFormInfo(
+						($type=='users' ? Form::getCheckbox($lang->def('_REPORT_FOR_ALL'), 'select_all', 'select_all', 1, $ref['rows_filter']['select_all']) : '').
+						Form::getBreakRow().
+						Form::getHidden('selection_type', 'selection_type', $type).
+						Form::getHidden('step', 'step', 'sel_data').
+						Form::getHidden('is_updating', 'is_updating', 1).
+						Form::getHidden('substep', 'substep', 'user_selection').
+						Form::getHidden('second_step', 'second_step', 1));
+				}
 				$user_select->setPageTitle('');
 				$user_select->loadSelector(Util::str_replace_once('&', '&amp;', $jump_url),
 					false,
