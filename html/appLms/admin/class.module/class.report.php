@@ -38,7 +38,11 @@ class Module_Report extends LmsAdminModule {
 			
 			'mod' => array( 'code' => 'mod',
 							'name' => '_MOD',
-							'image' => 'standard/edit.png')
+							'image' => 'standard/edit.png'),
+			
+			'schedule' => array( 'code' => 'schedule',
+							'name' => '_SCHEDULE',
+							'image' => 'standard/schedule.png'),
 		);
 	}
 }

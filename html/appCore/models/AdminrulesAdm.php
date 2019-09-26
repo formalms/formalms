@@ -138,6 +138,7 @@ class AdminrulesAdm extends Model
 			'add' => 'ico-sprite subs_add',
 			'assign' => 'ico-sprite subs_add',
 			'release' => 'ico-sprite subs_actv',
+			'schedule' => 'ico-sprite subs_wait',
 			'mod' => 'ico-sprite subs_mod',
 			'del' => 'ico-sprite subs_del',
 			'associate_user' => 'ico-sprite subs_users',
