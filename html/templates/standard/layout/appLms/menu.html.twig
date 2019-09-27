@@ -15,7 +15,7 @@
                 </ul>
             </li>
         {% else %}
-            <li{% if ((currentPage.isMVC == true and item.mvc_path == currentPage.MVC) or (currentPage.isMVC == false and item.module_name == currentPage.modname and item.default_op == currentPage.op)) %} class="active"{% endif %}>{{item.module_name}} {{currentPage.modname}}
+            <li{% if ((currentPage.isMVC == true and item.mvc_path == currentPage.MVC) or (currentPage.isMVC == false and item.module_name == currentPage.modname and item.default_op == currentPage.op)) %} class="active"{% endif %}>
                 <a href="{{ item.url }}" title="{{ translate(item.name, 'menu_over') }}">
                     {% if item.image %}{{ item.image|raw }}{% else %}{{ translate(item.name, 'menu_over') }}{% endif %}
                 </a>
