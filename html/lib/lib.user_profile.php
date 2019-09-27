@@ -1370,7 +1370,7 @@ class UserProfileViewer {
 			}
 
 
-            // GRIFO - LRZ  - add prifile admin name
+            // GRIFO - LRZ  - add admin profile name
             $stato_admin = $acl_man->getUserLevelId($this->_user_profile->getIdUser());
             $str_admin = ' ';
             $name_admin_profile = '';
