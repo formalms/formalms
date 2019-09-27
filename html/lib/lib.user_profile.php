@@ -2132,18 +2132,22 @@ class UserProfileViewer {
        	if (Get::sett('profile_modify') == 'redirect' && Get::sett('profile_modify_url')) {
        		$html .= '<a href="'.Get::sett('profile_modify_url').'" target="_blank" title="'.Lang::t('_PROFILE', 'profile').'">
                           <span class="glyphicon glyphicon-pencil">'.Lang::t('_PROFILE', 'profile').'</span>
-                      </a>';
+                      </a>
+                      <a href="'.Get::sett('profile_modify_url').'" target="_blank">'
+                      . $this->acl_man->relativeId($this->user_info[ACL_INFO_LASTNAME]) . ' ' . $this->acl_man->relativeId($this->user_info[ACL_INFO_FIRSTNAME])
+                      . '</a>
+                      <a href="mailto:' . $this->user_info[ACL_INFO_EMAIL] . '">' . $this->user_info[ACL_INFO_EMAIL] . '</a>
+                   </div>';
        	} else if (Get::sett('profile_modify') != 'disallow') {
        		$html .= '<a href="index.php?r=lms/profile/show" title="'.Lang::t('_PROFILE', 'profile').'">
                           <span class="glyphicon glyphicon-pencil">'.Lang::t('_PROFILE', 'profile').'</span>
-                      </a>';
-       	}
-                      
-		$html .= '<a href="index.php?r=lms/profile/show">'
-                          . $this->acl_man->relativeId($this->user_info[ACL_INFO_LASTNAME]) . ' ' . $this->acl_man->relativeId($this->user_info[ACL_INFO_FIRSTNAME])
+                      </a>
+                      <a href="index.php?r=lms/profile/show">'
+                      . $this->acl_man->relativeId($this->user_info[ACL_INFO_LASTNAME]) . ' ' . $this->acl_man->relativeId($this->user_info[ACL_INFO_FIRSTNAME])
                       . '</a>
                       <a href="mailto:' . $this->user_info[ACL_INFO_EMAIL] . '">' . $this->user_info[ACL_INFO_EMAIL] . '</a>
-                   </div>'; // /col-xs-7
+                   </div>';
+       	}
 
         $html .= '</div>'; // /row
 

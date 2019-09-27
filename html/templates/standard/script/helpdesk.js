@@ -93,7 +93,6 @@ $(document).ready(function () {
     else if (msglen >= 4) {
       $("#msg").removeClass("error");
     }
-console.log("AAA")
     if (mailvalid == true && msglen >= 4 && sendtovalid == true) {
       // if both validate we attempt to send the e-mail
       // first we hide the submit btn so the user doesnt click twice
