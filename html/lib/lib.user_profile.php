@@ -1368,8 +1368,47 @@ class UserProfileViewer {
 				case ADMIN_GROUP_USER 		: $user_level_string = $lv_lang->def('_DIRECTORY_'.ADMIN_GROUP_USER);break;
 				default :$user_level_string = $acl_man->getUserLevelId($this->_user_profile->getIdUser());
 			}
-			$html .= $this->getUIRowCode($this->_lang->def('_LEVEL'), $user_level_string);
+
+
+            // GRIFO - LRZ - add admin profile name
+            $stato_admin = $acl_man->getUserLevelId($this->_user_profile->getIdUser());
+            $str_admin = ' ';
+            $name_admin_profile = '';
+            if(
+               $stato_admin  == ADMIN_GROUP_GODADMIN ||
+               $stato_admin  == ADMIN_GROUP_ADMIN             
+            ){               
+                $name_admin_profile = $this->getRoleAdmin($this->_user_profile->getIdUser());
+                if($name_admin_profile!="")  $str_admin = "&nbsp; (".$this->_lang->def('_TYPE','standard').": ".$name_admin_profile.")";
+            }    
+            
+            
+            
+			$html .= $this->getUIRowCode($this->_lang->def('_LEVEL'), $user_level_string.$str_admin);
+
 		}
+        
+        
+        //Grifo: ticket #19467 
+        $html .= '<tr><th scope="col" colspan="2" id="up_type2">Gestito da:</th></tr>';        
+        $str_manage_org_by = $this->getManagerOrgBy($this->_user_profile->getIdUser());
+        $str_manage_group_by = $this->getManagerGroupBy($this->_user_profile->getIdUser());
+        $str_manage_role_by = $this->getMaganerRoleBy($this->_user_profile->getIdUser());
+        $str_manage_user = $this->getManageUser($this->_user_profile->getIdUser());
+        
+        
+        $no_admin = true;
+        if($str_manage_org_by['cont']>0)           { $html .= $this->getUIRowCode($lv_lang->def('_ORGCHART'), substr($str_manage_org_by['content'], 0, -3) );  $no_admin = false;};
+        if($str_manage_role_by['cont']>0) { $html .= $this->getUIRowCode($lv_lang->def('_FUNCTIONAL_ROLE'),substr($str_manage_role_by['content'], 0, -3) ); $no_admin = false;}
+        if($str_manage_group_by['cont']>0){ $html .= $this->getUIRowCode($lv_lang->def('_GROUPS'),substr($str_manage_group_by['content'], 0, -3) ); $no_admin = false;}        
+        if($str_manage_user['cont']>0)             { $html .= $this->getUIRowCode("Direttamente da", substr($str_manage_user['content'], 0, -3) ); $no_admin = false;}
+        
+        if($no_admin == true) $html .= '<tr><td colspan=2 align=center>- Nessun amministratore -</td></tr>';  
+        
+        $html .= '<tr><td ></td></tr>';          
+        
+        
+        
 		if($viewer == $this->_id_user) {
 
 			// convert from bytes in mbytes
@@ -1459,6 +1498,209 @@ class UserProfileViewer {
 		$html .= '</div>';
 		return $html;
 	}
+
+
+
+   // calcola gli amministratori diretti dell'utente 
+    function getManageUser($id_user){
+        
+        $sql = "select idstAdmin, firstname, lastname 
+                from core_admin_tree, core_user
+                where core_admin_tree.idst=".$id_user." and core_admin_tree.idstAdmin = core_user.idst";
+                
+        $re = sql_query($sql);
+        $out1 = "<ul>";
+        $out = "";
+        $cont=0;
+        while(list($idstAdmin, $firstname, $lastname) = sql_fetch_row($re)) {      
+            $out .= "<li><b>".$firstname." ".$lastname."</b>,";
+            $cont++;
+        }
+        $out2 ="</ul>";        
+                
+        if($out!=""){        
+            $out = substr($out, 0, -1);
+            $out = $out1.$out.$out2."-".$cont ;
+        }         
+        
+        $array_out = array();
+        $array_out['cont']=$cont;
+        $array_out['content']=$out;
+        
+        
+        return $array_out;        
+        
+    }
+    
+    
+    // calcola da chi è gestito l'utente corrente
+    function getManagerOrgBy($id_user){
+        // calcola organigrammi di appartenenza  
+        
+        require_once(_adm_.'/models/UsermanagementAdm.php');
+        
+        $modelUser = new UsermanagementAdm();
+        
+        $vett_org = $modelUser->getUserFolders($id_user);
+        $out = "<ul>";
+        $cont=0;
+        foreach($vett_org as $key => $value){            
+            $manager = $this->getManagerFolder($key);
+            $vett_manager = explode("#",$manager);
+            if($vett_manager[1]>0){
+                $out .= "<li>" .$value . " ".$vett_manager[0];               
+                $cont++;
+            }
+        }
+        $out .="</ul>";
+
+        
+        
+        $array_out = array();
+        $array_out['cont']=$cont;
+        $array_out['content']=$out;
+        
+        
+        return $array_out;
+                
+    }
+    
+    
+    
+    // calcola gruppi di appartenenza, e relativi admin
+    function getManagerGroupBy($id_user){
+        //
+        require_once(_adm_.'/models/UsermanagementAdm.php');
+        
+        $modelUser = new UsermanagementAdm();
+        
+        $vett_gruop = $modelUser->getUserGroups($id_user);        
+        $out = "<ul>";
+        $cont=0;
+        foreach($vett_gruop as $key => $value){            
+            $manager = $this->getManagerGroup($key);
+            $vett_manager = explode("#",$manager);
+            if($vett_manager[1]>0){
+                $out .= "<li>" .$value ." ".$vett_manager[0];   
+                $cont++;
+            }
+        }
+        $out .="</ul>";    
+                    
+        $array_out = array();
+        $array_out['cont']=$cont;
+        $array_out['content']=$out;
+        
+        //return $out."-".$cont;
+        return $array_out;
+        
+        
+    }
+    
+    
+    // calcola ruoli di appartenenza e relativ admin
+    function getMaganerRoleBy($id_user){
+        
+         require_once(_adm_.'/models/FunctionalrolesAdm.php');
+         $modelRole = new FunctionalrolesAdm();
+         
+         $user_fncroles = $this->_up_data_man->getUserFunctionalRoles($id_user);
+        
+         $vett_role = $modelRole->getUserFunctionalRoles($user_fncroles);         
+        
+         $out = "<ul>";
+         $cont=0;
+         foreach($user_fncroles as $key => $value){      
+            $manager = $this->getManagerGroup($key);
+            $vett_manager = explode("#",$manager);
+            if($vett_manager[1]>0){
+                $out .= "<li>".$value->name . " ".$vett_manager[0];   
+                $cont++;
+            }
+         }
+         $out .="</ul>";              
+        
+        $array_out = array();
+        $array_out['cont']=$cont;
+        $array_out['content']=$out;
+        
+        //return $out."-".$cont;
+        return $array_out;
+        
+    }
+    
+    
+    
+    // calcola admin del gruppo
+    function getManagerGroup($id_group){
+        $sql = "select idstAdmin, firstname, lastname 
+                from core_admin_tree, core_user
+                where core_admin_tree.idst=".$id_group." and core_admin_tree.idstAdmin = core_user.idst";
+                
+        $re = sql_query($sql);
+        $out = "";
+        $cont=0;
+        while(list($idstAdmin, $firstname, $lastname) = sql_fetch_row($re)) {      
+            $out .= $firstname." ".$lastname.",";
+            $cont++;
+        }
+                
+        if($out!=""){        
+            $out = substr($out, 0, -1);
+            return " <b>(".$out.")</b>#".$cont ;
+        }else{
+            return "#0";
+        } 
+        
+    }
+    
+    
+    
+    // calcola admin dell'organigramma
+    function getManagerFolder($id_oc){
+        $sql = "select idstAdmin , firstname, lastname
+                from core_admin_tree, core_org_chart_tree , core_user 
+                where idst_oc=".$id_oc." and idst_ocd=core_admin_tree.idst
+                and
+                core_admin_tree.idstAdmin = core_user.idst
+                ";
+    
+
+  
+        $re = sql_query($sql);
+        $out = "";
+        $cont=0;
+        while(list($idstAdmin, $firstname, $lastname) = sql_fetch_row($re)) {      
+            $out .= $firstname." ".$lastname.",";
+            $cont++;
+        }
+                
+        if($out!=""){        
+            $out = substr($out, 0, -1);
+            return " <b>(".$out.")</b>#".$cont ;
+        }else{
+            return "#0";
+        }    
+        
+    }
+    
+    
+    
+    // calcola stringa ruolo amministrativo
+    function getRoleAdmin($id_user){
+        
+      $sql = "select groupid from core_group , core_group_members where idstMember=".$id_user." and core_group.idst=core_group_members.idst and groupid like '%adminrules%'";
+      $re_query = sql_query($sql);
+      $row = sql_fetch_row($re_query);
+      
+      $vett = explode("/",$row[0]); 
+      return $vett[3];
+      
+    }
+    
+
+
+
 
 	function getViewUserFiles() {
 
