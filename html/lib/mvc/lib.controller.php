@@ -16,9 +16,9 @@ class Controller {
 	protected $_mvc_name = 'controller';
 
 	protected $_default_action = 'show';
-	
+
 	public function  __construct($mvc_name) {
-		
+
 		$this->_mvc_name = $mvc_name;
 
 		$this->init();
@@ -133,8 +133,10 @@ class Controller {
 				include( Forma::inc($path . '/' . $this->_mvc_name . '/' . $view_name . $extension));
 				break;
 			case "twig":
-				echo \appCore\Template\TwigManager::getInstance()->render($view_name.$extension, $data_for_view, $path. '/' . $this->_mvc_name);
-				break;
+                $path = Forma::inc($path . '/' . $this->_mvc_name . '/' . $view_name . $extension);
+                $view_path = str_ireplace('/' . $view_name . $extension, '', $path);
+                echo \appCore\Template\TwigManager::getInstance()->render($view_name.$extension, $data_for_view, $view_path);
+                break;
 			default:
 				//die( 'FILENOTFOUND');
 				include( Forma::inc($this->viewPath() . '/' . $this->_mvc_name . '/' . $view_name . $extension) );
@@ -159,7 +161,7 @@ class Controller {
 
 		$widget_name = strtolower($widget_name);
 		require_once(_base_.'/widget/'.$widget_name.'/lib.'.$widget_name.'.php');
-		
+
 		$widget_class = ucfirst($widget_name.'Widget');
 		// Instantiate the widget class
 		$widget_obj = new $widget_class();
