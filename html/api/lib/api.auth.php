@@ -107,13 +107,12 @@ class Auth_API extends API {
 	}
 
 	public function authenticate($params) {
-		
+
 		$auth_method = Get::sett('rest_auth_method', 'none');
-		if($auth_method != _REST_AUTH_TOKEN) {
-		
+		if($auth_method != _REST_AUTH_TOKEN && $auth_method != _REST_AUTH_CODE) {
 			return array('success'=>false, 'message'=>'Error: Tokens are not used on this installation.');
 		}
-        
+
     //** BUG 2466 FIXED - SOAP  AUTHENTICATION ERROR WITH GENERATED TOKEN **
     if (isset($params['username']) && isset($params['password']) ) {
         $username = $params['username']; //params[0] should contain username
@@ -122,9 +121,9 @@ class Auth_API extends API {
     }else{
         $username = Get::req('username', DOTY_STRING, false);
         $password = Get::req('password', DOTY_STRING, false);
-        $third_party = Get::req('third_party', DOTY_STRING, false);            
-    }       
-               
+        $third_party = Get::req('third_party', DOTY_STRING, false);
+    }
+
 		if ($username == false || $password === false) {
 			//error: no login data provided
 			return array('success'=>false, 'message'=>'Error: invalid login data provided.');
