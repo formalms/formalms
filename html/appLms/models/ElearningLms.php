@@ -101,6 +101,7 @@ class ElearningLms extends Model {
 
             ." FROM %lms_course AS c "
             ." JOIN %lms_courseuser AS cu ON (c.idCourse = cu.idCourse)  "
+            ." LEFT JOIN %lms_course_date AS dt ON (dt.id_course = c.idCourse)  "
             ." WHERE ".$this->compileWhere($conditions, $params)
             .($_SESSION['id_common_label'] > 0 ? " AND c.idCourse IN (SELECT id_course FROM %lms_label_course WHERE id_common_label = '".$_SESSION['id_common_label']."')" : "")
             .$exclude_pathcourse 
