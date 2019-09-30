@@ -36,6 +36,19 @@ class MycoursesLms extends Model {
             default:                    $req = null;                    break;
         }
 
+        // checking plugin tab
+        if(Get::cfg('enable_plugins', false)){
+             $pl = new PluginManager();
+             $list_pl = $pl->get_all_plugins();
+            
+             foreach ($list_pl as $key){
+                $plugin_name = strtolower ($key['name']);
+                if($tab=='tb_'.$plugin_name) $req = 'lms/'.$plugin_name.'/show';
+             }             
+             
+         } 
+        
+
         return $req;
     }
 
