@@ -317,7 +317,9 @@ class ElearningLmsController extends LmsController
             $conditions[] = '(cu.status in (' . implode(",", $arr_status) . ') )';
         }
         else if ($filter_status == 'all') {
-            $conditions[] = '(c.status <> 3 )';
+            $conditions[] = '(c.status <> 3 ) AND c.idCourse NOT IN (
+                SELECT id_course FROM learning_course_date AS dt WHERE dt.id_course = c.idCourse AND status IN (1,2)
+            ) ';
         }
 
         // course type: elearning, all, classroom 
