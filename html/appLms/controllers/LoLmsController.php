@@ -23,6 +23,10 @@ class LoLmsController extends LmsController
         $this->model = new LoLms();
     }
 
+    public function show() {
+        addJs($GLOBALS['where_lms_relative'].'/../addons/owlcarousel_dynamic/', 'lib.tree_window.js');
+        $this->render('show', array());
+    }
     
     public function get(){
         $id_course = Get::req('id_course', DOTY_INT, false);
