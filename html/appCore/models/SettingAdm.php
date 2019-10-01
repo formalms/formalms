@@ -238,410 +238,395 @@ class SettingAdm extends Model
 
         require_once(_base_ . '/lib/lib.form.php');
 
-		//if($regroup == 'templ_man') return $this->_maskTemplateManager();
-
         if ($regroup == 'suite_man') return $this->_maskSuiteManager();
 
-		$reSetting = sql_query("
-		SELECT pack, param_name, param_value, value_type, max_size
-		FROM " . $this->table . "
-		WHERE regroup = '" . $regroup . "' AND
-			hide_in_modify = '0'
-		ORDER BY sequence, pack");
+		$groups = sql_query("SELECT DISTINCT(pack) FROM core_setting WHERE regroup = '$regroup' AND hide_in_modify = '0' ORDER BY pack");
+		echo '<div class="row">';
+		while (list($groupPack) = sql_fetch_row($groups)) {
+			echo '<div class="col-sm-6">';
+			if ($groupPack)
+				echo '<h3>' . Lang::t('_' . strtoupper($groupPack), 'configuration') . '</h3>';
 
-		$prev_pack = '';
-        while (list($pack, $var_name, $var_value, $value_type, $max_size) = sql_fetch_row($reSetting)) {
+			$reSetting = sql_query("
+			SELECT pack, param_name, param_value, value_type, max_size
+			FROM " . $this->table . "
+			WHERE pack = '$groupPack' AND regroup = '$regroup' AND hide_in_modify = '0'
+			ORDER BY sequence");
 
-            if ($prev_pack != $pack && $pack != 'main' && $pack != '0') {
-                echo '<br/><h3>' . Lang::t('_' . strtoupper($pack), 'configuration') . '</h3>';
-			}
-			$prev_pack = $pack;
-			$i_after = '';
-			//$i_after = ' <span class="ico-tooltip" id="tt_target_'.$var_name.'" title="'.$lang->def('_CONF_DESCR_'.strtoupper($var_name)).'">info</span>';
-            switch ($value_type) {
-				case "register_type" : {
-                   /* echo Form::getOpenCombo($lang->def('_' . strtoupper($var_name)))
-                        . Form::getLineRadio('', 'label_bold', $lang->def('_REGISTER_TYPE_SELF'), $var_name . '_self', 'option[' . $var_name . ']',
-								'self', ($var_value == 'self'))
-                        . Form::getLineRadio('', 'label_bold', $lang->def('_REGISTER_TYPE_SELF_OPTIN'), $var_name . '_self_optin', 'option[' . $var_name . ']',
-								'self_optin', ($var_value == 'self_optin'))
-                        . Form::getLineRadio('', 'label_bold', $lang->def('_REGISTER_TYPE_MODERATE'), $var_name . '_moderate', 'option[' . $var_name . ']',
-								'moderate', ($var_value == 'moderate'))
-                        . Form::getLineRadio('', 'label_bold', $lang->def('_REGISTER_TYPE_ADMIN'), $var_name . '_admin', 'option[' . $var_name . ']',
-								'admin', ($var_value == 'admin'))
+	        while (list($pack, $var_name, $var_value, $value_type, $max_size) = sql_fetch_row($reSetting)) {
+	            switch ($value_type) {
+					case "register_type" : {
+	                   /* echo Form::getOpenCombo($lang->def('_' . strtoupper($var_name)))
+	                        . Form::getLineRadio('', 'label_bold', $lang->def('_REGISTER_TYPE_SELF'), $var_name . '_self', 'option[' . $var_name . ']',
+									'self', ($var_value == 'self'))
+	                        . Form::getLineRadio('', 'label_bold', $lang->def('_REGISTER_TYPE_SELF_OPTIN'), $var_name . '_self_optin', 'option[' . $var_name . ']',
+									'self_optin', ($var_value == 'self_optin'))
+	                        . Form::getLineRadio('', 'label_bold', $lang->def('_REGISTER_TYPE_MODERATE'), $var_name . '_moderate', 'option[' . $var_name . ']',
+									'moderate', ($var_value == 'moderate'))
+	                        . Form::getLineRadio('', 'label_bold', $lang->def('_REGISTER_TYPE_ADMIN'), $var_name . '_admin', 'option[' . $var_name . ']',
+									'admin', ($var_value == 'admin'))
 
-                        . Form::getCloseCombo($i_after);*/
+	                        . Form::getCloseCombo($i_after);*/
 
-                    //drop down
-                    $layout = array(
-                        "self" => Lang::t('_REGISTER_TYPE_SELF'),
-						"self_optin" => Lang::t('_REGISTER_TYPE_SELF_OPTIN'),
-						"moderate" => Lang::t('_REGISTER_TYPE_MODERATE'),
-                        "admin" => Lang::t('_REGISTER_TYPE_ADMIN'),
-                    );
-                    echo Form::getDropdown( Lang::t('_'.strtoupper($var_name), 'configuration'),
-                        $var_name,
-                        'option['.$var_name.']',
-                        $layout,
-                        $var_value);
-                };
-                    break;
-				case "registration_code_type" : {
-					//on off
+	                    //drop down
+	                    $layout = array(
+	                        "self" => Lang::t('_REGISTER_TYPE_SELF'),
+							"self_optin" => Lang::t('_REGISTER_TYPE_SELF_OPTIN'),
+							"moderate" => Lang::t('_REGISTER_TYPE_MODERATE'),
+	                        "admin" => Lang::t('_REGISTER_TYPE_ADMIN'),
+	                    );
+	                    echo Form::getDropdown( Lang::t('_'.strtoupper($var_name), 'configuration'),
+	                        $var_name,
+	                        'option['.$var_name.']',
+	                        $layout,
+	                        $var_value);
+	                };
+	                    break;
+					case "registration_code_type" : {
+						//on off
 
-                    /*echo Form::getOpenCombo($lang->def('_' . strtoupper($var_name)))
+	                    /*echo Form::getOpenCombo($lang->def('_' . strtoupper($var_name)))
 
-                        . Form::getLineRadio('', 'label_bold', $lang->def('_NONE'), $var_name . '_0', 'option[' . $var_name . ']',
-								'0', ($var_value == '0'))
-                        . Form::getLineRadio('', 'label_bold', $lang->def('_ASK_FOR_MANUAL_TREE_CODE'), $var_name . '_tree_man', 'option[' . $var_name . ']',
-								'tree_man', ($var_value == 'tree_man'))
-                        . Form::getLineRadio('', 'label_bold', $lang->def('_ASK_FOR_DROPDOWN_TREE_CODE'), $var_name . '_tree_drop', 'option[' . $var_name . ']',
-								'tree_drop', ($var_value == 'tree_drop'))
-                        . Form::getLineRadio('', 'label_bold', $lang->def('_ASK_FOR_TREE_COURSE_CODE'), $var_name . '_tree_course', 'option[' . $var_name . ']',
-								'tree_course', ($var_value == 'tree_course'))
-                        . Form::getLineRadio('', 'label_bold', $lang->def('_ASK_FOR_CODE_MODULE'), $var_name . '_code_module', 'option[' . $var_name . ']',
-								'code_module', ($var_value == 'code_module'))
-							//Uncomment for the custom folder association during user registration
-							//.Form::getLineRadio('', 'label_bold', $lang->def('_CUSTOM_CODE'), $var_name.'_custom', 'option['.$var_name.']',
-							//	'custom', ($var_value == 'custom'))
+	                        . Form::getLineRadio('', 'label_bold', $lang->def('_NONE'), $var_name . '_0', 'option[' . $var_name . ']',
+									'0', ($var_value == '0'))
+	                        . Form::getLineRadio('', 'label_bold', $lang->def('_ASK_FOR_MANUAL_TREE_CODE'), $var_name . '_tree_man', 'option[' . $var_name . ']',
+									'tree_man', ($var_value == 'tree_man'))
+	                        . Form::getLineRadio('', 'label_bold', $lang->def('_ASK_FOR_DROPDOWN_TREE_CODE'), $var_name . '_tree_drop', 'option[' . $var_name . ']',
+									'tree_drop', ($var_value == 'tree_drop'))
+	                        . Form::getLineRadio('', 'label_bold', $lang->def('_ASK_FOR_TREE_COURSE_CODE'), $var_name . '_tree_course', 'option[' . $var_name . ']',
+									'tree_course', ($var_value == 'tree_course'))
+	                        . Form::getLineRadio('', 'label_bold', $lang->def('_ASK_FOR_CODE_MODULE'), $var_name . '_code_module', 'option[' . $var_name . ']',
+									'code_module', ($var_value == 'code_module'))
+								//Uncomment for the custom folder association during user registration
+								//.Form::getLineRadio('', 'label_bold', $lang->def('_CUSTOM_CODE'), $var_name.'_custom', 'option['.$var_name.']',
+								//	'custom', ($var_value == 'custom'))
 
-                        . Form::getCloseCombo($i_after);*/
+	                        . Form::getCloseCombo($i_after);*/
 
-                    $layout = array(
-                        "0" => Lang::t('_NONE'),
-                        "tree_man" => Lang::t('_ASK_FOR_MANUAL_TREE_CODE'),
-                        "tree_drop" => Lang::t('_ASK_FOR_DROPDOWN_TREE_CODE'),
-                        // "tree_course" => Lang::t('_ASK_FOR_TREE_COURSE_CODE'),
-                        "code_module" => Lang::t('_ASK_FOR_CODE_MODULE'),
-                    );
-                    echo Form::getDropdown( Lang::t('_'.strtoupper($var_name), 'configuration'),
-                        $var_name,
-                        'option['.$var_name.']',
-                        $layout,
-                        $var_value);
-                };
-                    break;
-				/*
-				case "register_tree" :{
+	                    $layout = array(
+	                        "0" => Lang::t('_NONE'),
+	                        "tree_man" => Lang::t('_ASK_FOR_MANUAL_TREE_CODE'),
+	                        "tree_drop" => Lang::t('_ASK_FOR_DROPDOWN_TREE_CODE'),
+	                        // "tree_course" => Lang::t('_ASK_FOR_TREE_COURSE_CODE'),
+	                        "code_module" => Lang::t('_ASK_FOR_CODE_MODULE'),
+	                    );
+	                    echo Form::getDropdown( Lang::t('_'.strtoupper($var_name), 'configuration'),
+	                        $var_name,
+	                        'option['.$var_name.']',
+	                        $layout,
+	                        $var_value);
+	                };
+	                    break;
+					/*
+					case "register_tree" :{
 
-					$register_possible_option = array(
-						'off' => $lang->def('_DONT_USE_TREE_REGISTRATION'),
-						'manual_insert' => $lang->def('_USE_WITH_MANUALEINSERT'),
-						'selection' => $lang->def('_USE_WITH_SELECTION')
-					);
+						$register_possible_option = array(
+							'off' => $lang->def('_DONT_USE_TREE_REGISTRATION'),
+							'manual_insert' => $lang->def('_USE_WITH_MANUALEINSERT'),
+							'selection' => $lang->def('_USE_WITH_SELECTION')
+						);
 
-					echo Form::getDropdown( $lang->def('_'.strtoupper($var_name)),
-												$var_name,
-												'option['.$var_name.']',
-												$register_possible_option,
-												$var_value,
-												$i_after);
-				};break;
-				case "field_tree" : {
+						echo Form::getDropdown( $lang->def('_'.strtoupper($var_name)),
+													$var_name,
+													'option['.$var_name.']',
+													$register_possible_option,
+													$var_value,
+													$i_after);
+					};break;
+					case "field_tree" : {
 
-					require_once($GLOBALS['where_framework'].'/lib/lib.field.php');
+						require_once($GLOBALS['where_framework'].'/lib/lib.field.php');
 
-					$fl = new FieldList();
-					$all_fields = $fl->getAllFields(false);
-					$fields[0] = $lang->def('_NO_VALUE');
-					foreach($all_fields as $key=>$val) {
-						$fields[$val[FIELD_INFO_ID]] = $val[FIELD_INFO_TRANSLATION];
+						$fl = new FieldList();
+						$all_fields = $fl->getAllFields(false);
+						$fields[0] = $lang->def('_NO_VALUE');
+						foreach($all_fields as $key=>$val) {
+							$fields[$val[FIELD_INFO_ID]] = $val[FIELD_INFO_TRANSLATION];
+						}
+						echo Form::getDropdown( $lang->def('_'.strtoupper($var_name)),
+													$var_name,
+													'option['.$var_name.']',
+													$fields,
+													$var_value,
+													$i_after);
+					} break;*/
+					case "save_log_attempt" : {
+						//on off
+
+	                    echo Form::getOpenCombo(Lang::t('_' . strtoupper($var_name), 'configuration'))
+	                        . Form::getLineRadio('', 'label_bold', Lang::t('_SAVE_LA_ALL', 'configuration'), $var_name . '_all', 'option[' . $var_name . ']',
+									'all', ($var_value == 'all'))
+	                        . Form::getLineRadio('', 'label_bold', Lang::t('_SAVE_LA_AFTER_MAX', 'configuration'), $var_name . '_after_max', 'option[' . $var_name . ']',
+									'after_max', ($var_value == 'after_max'))
+	                        . Form::getLineRadio('', 'label_bold', Lang::t('_NO', 'configuration'), $var_name . '_no', 'option[' . $var_name . ']',
+									'no', ($var_value == 'no'))
+	                        . Form::getCloseCombo($i_after);
+	                };
+	                    break;
+					case "language" : {
+						//drop down language
+						$langs = Docebo::langManager()->getAllLangCode();
+	                    echo Form::getDropdown(Lang::t('_' . strtoupper($var_name), 'configuration'),
+													$var_name,
+	                        'option[' . $var_name . ']',
+													$langs,
+													array_search($var_value, $langs),
+													$i_after);
+
+	                };
+	                    break;
+					case "template" : {
+						//drop down template
+						$templ = getTemplateList();
+	                    echo Form::getDropdown(Lang::t('_' . strtoupper($var_name), 'configuration'),
+													$var_name,
+	                        'option[' . $var_name . ']',
+													$templ,
+													array_search($var_value, $templ),
+													$i_after);
+	                };
+	                    break;
+					case "hteditor" : {
+						//drop down hteditor
+						$ht_edit = getHTMLEditorList();
+	                    echo Form::getDropdown(Lang::t('_' . strtoupper($var_name), 'configuration'),
+													$var_name,
+	                        'option[' . $var_name . ']',
+													$ht_edit,
+													$var_value,
+													$i_after);
+	                };
+	                    break;
+					case "layout_chooser" : {
+						//drop down hteditor
+						$layout = array(
+							'left' => Lang::t('_LAYOUT_LEFT'),
+							'over' => Lang::t('_LAYOUT_OVER'),
+							'right' => Lang::t('_LAYOUT_RIGHT'));
+	                    echo Form::getDropdown(Lang::t('_' . strtoupper($var_name), 'configuration'),
+													$var_name,
+	                        'option[' . $var_name . ']',
+													$layout,
+													$var_value,
+													$i_after);
+	                };
+	                    break;
+					case "pubflow_method_chooser" : {
+						//drop down hteditor
+						$options = array(
+							'onestate' => Lang::t('_PUBFLOW_ONESTATE'),
+							'twostate' => Lang::t('_PUBFLOW_TWOSTATE'),
+							'advanced' => Lang::t('_PUBFLOW_ADVANCED'));
+	                    echo Form::getDropdown(Lang::t('_' . strtoupper($var_name), 'configuration'),
+													$var_name,
+	                        'option[' . $var_name . ']',
+													$options,
+													$var_value,
+													$i_after);
+	                };
+	                    break;
+					case "field_select" : {
+	                    require_once($GLOBALS['where_framework'] . '/lib/lib.field.php');
+
+	                    $fl = new FieldList();
+	                    $all_fields = $fl->getAllFields();
+	                    $fields = array();
+	                    foreach ($all_fields as $key => $val) {
+	                        $fields[$val[FIELD_INFO_ID]] = $val[FIELD_INFO_TRANSLATION];
+						}
+	                    echo Form::getDropdown(Lang::t('_' . strtoupper($var_name), 'configuration'),
+													$var_name,
+	                        'option[' . $var_name . ']',
+													$fields,
+													$var_value,
+													$i_after);
+	                }
+	                    break;
+					case "sel_sms_gateway" : {
+						$options = array(
+							'0' => Lang::t('_SMS_GATEWAY_AUTO'),
+							'1' => Lang::t('_SMS_GATEWAY_1'),
+							'2' => Lang::t('_SMS_GATEWAY_2'),
+							'3' => Lang::t('_SMS_GATEWAY_3'),
+							'4' => Lang::t('_SMS_GATEWAY_4'));
+	                    echo Form::getDropdown(Lang::t('_' . strtoupper($var_name), 'configuration'),
+													$var_name,
+	                        'option[' . $var_name . ']',
+													$options,
+													$var_value,
+													$i_after);
+	                }
+	                    break;
+					case "layout_chooser" : {
+						//drop down hteditor
+						$layout = array(
+							'left' => Lang::t('_LAYOUT_LEFT'),
+							'over' => Lang::t('_LAYOUT_OVER'),
+							'right' => Lang::t('_LAYOUT_RIGHT'));
+	                    echo Form::getDropdown(Lang::t('_' . strtoupper($var_name), 'configuration'),
+													$var_name,
+	                        'option[' . $var_name . ']',
+													$layout,
+													$var_value,
+													$i_after);
+	                };
+	                    break;
+					case "grpsel_chooser" : {
+						$layout = array(
+							'group' => Lang::t('_GROUPS', 'configuration'),
+							'orgchart' => Lang::t('_ORGCHART', 'configuration'));
+	                    echo Form::getDropdown(Lang::t('_' . strtoupper($var_name), 'configuration'),
+													$var_name,
+	                        'option[' . $var_name . ']',
+													$layout,
+													$var_value,
+													$i_after);
+	                };
+	                    break;
+					case "tablist_mycourses" : {
+	                    $arr_value = explode(',', $var_value);
+	                    $tab_list = array();
+	                  $tab_list['status'] = Lang::t('_STATUS');
+	                  $tab_list['name'] = Lang::t('_NAME');
+	                  $tab_list['code'] = Lang::t('_CODE');
+
+	                  echo '<div class="form_line_l"><p>' .
+	                       '<label class="floating">' . Lang::t('_' . strtoupper($var_name), 'configuration') . '</label></p>';
+	                  for ($i = 0; $i < 3; $i++) {
+	                        echo Form::getInputDropdown('dropdown', $var_name . '_' . $i,
+	                                                    "mycourses[$i]", $tab_list,
+	                                                    (isset($arr_value[$i]) ? $arr_value[$i] : ''), '');
+	                  }
+	                  echo $i_after. '</div>';
+	                };
+	                    break;
+					case "point_field" : {
+	                    require_once($GLOBALS['where_framework'] . '/lib/lib.field.php');
+	                    $fl = new FieldList();
+	                    $all_fields = $fl->getAllFields();
+	                    $fields[0] = Lang::t('_NO_VALUE', 'configuration');
+	                    foreach ($all_fields as $key => $val) {
+	                        $fields[$val[FIELD_INFO_ID]] = $val[FIELD_INFO_TRANSLATION];
+						}
+	                    echo Form::getDropdown(Lang::t('_' . strtoupper($var_name), 'configuration'),
+													$var_name,
+	                        'option[' . $var_name . ']',
+													$fields,
+													$var_value,
+													$i_after);
+	                }
+	                    break;
+					case "rest_auth_sel_method": {
+						$value_set = array(
+	                        Lang::t('_REST_AUTH_CODE', 'configuration') => 0,
+	                        Lang::t('_REST_AUTH_TOKEN', 'configuration') => 1,
+	                        Lang::t('_REST_AUTH_SECRET_KEY', 'configuration') => 2
+						);
+	                    echo Form::getRadioSet(Lang::t('_REST_AUTH_METHOD', 'configuration'), $var_name, 'option[' . $var_name . ']', $value_set, $var_value, $i_after);
+	                }
+	                    break;
+
+	                case "home_page_option": {
+	                  $tab_list = array();
+	                  $tab_list['my_courses'] = Lang::t('_MY_COURSES');
+	                  $tab_list['catalogue'] = Lang::t('_CATALOGUE');
+	                  $which_home = $var_value;
+
+	                    echo '<div class="form_line_l"><p><b>' .
+	                        Lang::t('_HOME_PAGE').'</b></p>';
+	                    echo Form::getInputDropdown('dropdown', $var_name, $var_name, $tab_list, $var_value, '')
+	                    . '</div><p>&nbsp;</p>';
+
+	                }
+	                    break;
+					// Common types
+					case "password" : {
+	                    echo Form::getPassword(Lang::t('_' . strtoupper($var_name), 'configuration'),
+													$var_name,
+	                        'option[' . $var_name . ']',
+													$max_size,
+													$var_value,
+	                        $i_after);
+	                }
+	                    break;
+					case "textarea" : {
+	                    echo Form::getSimpletextarea(Lang::t('_' . strtoupper($var_name), 'configuration'),
+													$var_name,
+	                        'option[' . $var_name . ']',
+													$var_value,
+													false,
+													false,
+													false,
+													5,
+													22,
+	                        $i_after);
+
+	                }
+	                    break;
+
+	                case "on_usercourse_empty": {
+	                    if ($which_home == 'my_courses') {
+	                        echo Form::getCheckbox(Lang::t('_' . strtoupper($var_name), 'configuration'), $var_name . '_on', 'option[' . $var_name . ']', 'on', ($var_value == 'on'), '', ' ' . $i_after);
+	                    } else {
+	                        echo Form::getCheckbox(Lang::t('_' . strtoupper($var_name), 'configuration'), $var_name . '_on', 'option[' . $var_name . ']', 'on', false, 'disabled', '', ' ' . $i_after);
+	                    }                           
+	                }
+	                    break;
+
+	                case "menuvoice" :
+					case "menuvoice_course_public" :
+
+					case "check" : {
+	                    echo Form::getCheckbox(Lang::t('_' . strtoupper($var_name), 'configuration'), $var_name, 'option[' . $var_name . ']', 1, ($var_value == 1), '', ' ' . $i_after);
+	                };
+	                    break;
+					case "enum" : {
+	                    echo Form::getCheckbox(Lang::t('_' . strtoupper($var_name), 'configuration'), $var_name . '_on', 'option[' . $var_name . ']', 'on', ($var_value == 'on'), '', ' ' . $i_after);
+	                };
+	                    break;
+	                case "button" : {
+	                    echo '<br/><a class="btn btn-default" role="button" href="'.$var_value.'">'.Lang::t('_' . strtoupper($var_name), 'configuration').'</a>';//($var_name,Lang::t('_' . strtoupper($var_name)),Lang::t('_' . strtoupper($var_name)));//Lang::t('_' . strtoupper($var_name)), $var_name . '_on', 'option[' . $var_name . ']', 'on', ($var_value == 'on'), '', ' ' . $i_after);
+	                };
+	                    break;
+	                case "password_algorithms" : {
+	                    //drop down hteditor
+	                    $layout = array(
+	                        1 => Lang::t('PASSWORD_BCRYPT'),
+	                        0 => Lang::t('PASSWORD_MD5')
+	                    );
+	                    echo Form::getDropdown( Lang::t('_'.strtoupper($var_name), 'configuration'),
+	                        $var_name,
+	                        'option['.$var_name.']',
+	                        $layout,
+	                        $var_value);
+	                };
+	                    break;
+					case 'on_off':{
+	                    $layout = array(
+	                        'on' => Lang::t('ON'),
+	                        'off' => Lang::t('OFF')
+	                    );
+	                    echo Form::getDropdown( Lang::t('_'.strtoupper($var_name), 'configuration'),
+	                        $var_name,
+	                        'option['.$var_name.']',
+	                        $layout,
+	                        $var_value);
 					}
-					echo Form::getDropdown( $lang->def('_'.strtoupper($var_name)),
-												$var_name,
-												'option['.$var_name.']',
-												$fields,
-												$var_value,
-												$i_after);
-				} break;*/
-				case "save_log_attempt" : {
-					//on off
+					break;
 
-                    echo Form::getOpenCombo(Lang::t('_' . strtoupper($var_name), 'configuration'))
-                        . Form::getLineRadio('', 'label_bold', Lang::t('_SAVE_LA_ALL', 'configuration'), $var_name . '_all', 'option[' . $var_name . ']',
-								'all', ($var_value == 'all'))
-                        . Form::getLineRadio('', 'label_bold', Lang::t('_SAVE_LA_AFTER_MAX', 'configuration'), $var_name . '_after_max', 'option[' . $var_name . ']',
-								'after_max', ($var_value == 'after_max'))
-                        . Form::getLineRadio('', 'label_bold', Lang::t('_NO', 'configuration'), $var_name . '_no', 'option[' . $var_name . ']',
-								'no', ($var_value == 'no'))
-                        . Form::getCloseCombo($i_after);
-                };
-                    break;
-				case "profile_modify" : {
-                    echo Form::getOpenCombo(Lang::t('_' . strtoupper($var_name), 'configuration'))
-                        . Form::getLineRadio('', 'label_bold', Lang::t('_ALLOW_FULL_EDIT_PROFILE', 'configuration'), $var_name . '_allow', 'option[' . $var_name . ']',
-								'allow', ($var_value == 'allow'))
-                        . Form::getLineRadio('', 'label_bold', Lang::t('_MOD_LIMIT_PROFILE', 'configuration'), $var_name . '_limit', 'option[' . $var_name . ']',
-								'limit', ($var_value == 'limit'))
-                        . Form::getLineRadio('', 'label_bold', Lang::t('_DISALLOW_EDIT_PROFILE', 'configuration'), $var_name . '_disallow', 'option[' . $var_name . ']',
-								'disallow', ($var_value == 'disallow'))
-                        . Form::getLineRadio('', 'label_bold', Lang::t('_REDIRECT_URL_PROFILE', 'configuration'), $var_name . '_redirect', 'option[' . $var_name . ']',
-								'redirect', ($var_value == 'redirect'))
-                        . Form::getCloseCombo($i_after);
-                };
-                    break;
-				case "language" : {
-					//drop down language
-					$langs = Docebo::langManager()->getAllLangCode();
-                    echo Form::getDropdown(Lang::t('_' . strtoupper($var_name), 'configuration'),
-												$var_name,
-                        'option[' . $var_name . ']',
-												$langs,
-												array_search($var_value, $langs),
-												$i_after);
-
-                };
-                    break;
-				case "template" : {
-					//drop down template
-					$templ = getTemplateList();
-                    echo Form::getDropdown(Lang::t('_' . strtoupper($var_name), 'configuration'),
-												$var_name,
-                        'option[' . $var_name . ']',
-												$templ,
-												array_search($var_value, $templ),
-												$i_after);
-                };
-                    break;
-				case "hteditor" : {
-					//drop down hteditor
-					$ht_edit = getHTMLEditorList();
-                    echo Form::getDropdown(Lang::t('_' . strtoupper($var_name), 'configuration'),
-												$var_name,
-                        'option[' . $var_name . ']',
-												$ht_edit,
-												$var_value,
-												$i_after);
-                };
-                    break;
-				case "layout_chooser" : {
-					//drop down hteditor
-					$layout = array(
-						'left' => Lang::t('_LAYOUT_LEFT'),
-						'over' => Lang::t('_LAYOUT_OVER'),
-						'right' => Lang::t('_LAYOUT_RIGHT'));
-                    echo Form::getDropdown(Lang::t('_' . strtoupper($var_name), 'configuration'),
-												$var_name,
-                        'option[' . $var_name . ']',
-												$layout,
-												$var_value,
-												$i_after);
-                };
-                    break;
-				case "pubflow_method_chooser" : {
-					//drop down hteditor
-					$options = array(
-						'onestate' => Lang::t('_PUBFLOW_ONESTATE'),
-						'twostate' => Lang::t('_PUBFLOW_TWOSTATE'),
-						'advanced' => Lang::t('_PUBFLOW_ADVANCED'));
-                    echo Form::getDropdown(Lang::t('_' . strtoupper($var_name), 'configuration'),
-												$var_name,
-                        'option[' . $var_name . ']',
-												$options,
-												$var_value,
-												$i_after);
-                };
-                    break;
-				case "field_select" : {
-                    require_once($GLOBALS['where_framework'] . '/lib/lib.field.php');
-
-                    $fl = new FieldList();
-                    $all_fields = $fl->getAllFields();
-                    $fields = array();
-                    foreach ($all_fields as $key => $val) {
-                        $fields[$val[FIELD_INFO_ID]] = $val[FIELD_INFO_TRANSLATION];
+					default : {
+						//string or int
+	                    echo Form::getTextfield(Lang::t('_' . strtoupper($var_name), 'configuration'),
+													$var_name,
+	                        'option[' . $var_name . ']',
+													$max_size,
+													$var_value,
+													false,
+	                        $i_after);
 					}
-                    echo Form::getDropdown(Lang::t('_' . strtoupper($var_name), 'configuration'),
-												$var_name,
-                        'option[' . $var_name . ']',
-												$fields,
-												$var_value,
-												$i_after);
-                }
-                    break;
-				case "sel_sms_gateway" : {
-					$options = array(
-						'0' => Lang::t('_SMS_GATEWAY_AUTO'),
-						'1' => Lang::t('_SMS_GATEWAY_1'),
-						'2' => Lang::t('_SMS_GATEWAY_2'),
-						'3' => Lang::t('_SMS_GATEWAY_3'),
-						'4' => Lang::t('_SMS_GATEWAY_4'));
-                    echo Form::getDropdown(Lang::t('_' . strtoupper($var_name), 'configuration'),
-												$var_name,
-                        'option[' . $var_name . ']',
-												$options,
-												$var_value,
-												$i_after);
-                }
-                    break;
-				case "layout_chooser" : {
-					//drop down hteditor
-					$layout = array(
-						'left' => Lang::t('_LAYOUT_LEFT'),
-						'over' => Lang::t('_LAYOUT_OVER'),
-						'right' => Lang::t('_LAYOUT_RIGHT'));
-                    echo Form::getDropdown(Lang::t('_' . strtoupper($var_name), 'configuration'),
-												$var_name,
-                        'option[' . $var_name . ']',
-												$layout,
-												$var_value,
-												$i_after);
-                };
-                    break;
-				case "grpsel_chooser" : {
-					$layout = array(
-						'group' => Lang::t('_GROUPS', 'configuration'),
-						'orgchart' => Lang::t('_ORGCHART', 'configuration'));
-                    echo Form::getDropdown(Lang::t('_' . strtoupper($var_name), 'configuration'),
-												$var_name,
-                        'option[' . $var_name . ']',
-												$layout,
-												$var_value,
-												$i_after);
-                };
-                    break;
-				case "tablist_mycourses" : {
-                    $arr_value = explode(',', $var_value);
-                    $tab_list = array();
-                  $tab_list['status'] = Lang::t('_STATUS');
-                  $tab_list['name'] = Lang::t('_NAME');
-                  $tab_list['code'] = Lang::t('_CODE');
-
-                  echo '<div class="form_line_l"><p>' .
-                       '<label class="floating">' . Lang::t('_' . strtoupper($var_name), 'configuration') . '</label></p>';
-                  for ($i = 0; $i < 3; $i++) {
-                        echo Form::getInputDropdown('dropdown', $var_name . '_' . $i,
-                                                    "mycourses[$i]", $tab_list,
-                                                    (isset($arr_value[$i]) ? $arr_value[$i] : ''), '');
-                  }
-                  echo $i_after. '</div>';
-                };
-                    break;
-				case "point_field" : {
-                    require_once($GLOBALS['where_framework'] . '/lib/lib.field.php');
-                    $fl = new FieldList();
-                    $all_fields = $fl->getAllFields();
-                    $fields[0] = Lang::t('_NO_VALUE', 'configuration');
-                    foreach ($all_fields as $key => $val) {
-                        $fields[$val[FIELD_INFO_ID]] = $val[FIELD_INFO_TRANSLATION];
-					}
-                    echo Form::getDropdown(Lang::t('_' . strtoupper($var_name), 'configuration'),
-												$var_name,
-                        'option[' . $var_name . ']',
-												$fields,
-												$var_value,
-												$i_after);
-                }
-                    break;
-				case "rest_auth_sel_method": {
-					$value_set = array(
-                        Lang::t('_REST_AUTH_CODE', 'configuration') => 0,
-                        Lang::t('_REST_AUTH_TOKEN', 'configuration') => 1,
-                        Lang::t('_REST_AUTH_SECRET_KEY', 'configuration') => 2
-					);
-                    echo Form::getRadioSet(Lang::t('_REST_AUTH_METHOD', 'configuration'), $var_name, 'option[' . $var_name . ']', $value_set, $var_value, $i_after);
-                }
-                    break;
-
-                case "home_page_option": {
-                  $tab_list = array();
-                  $tab_list['my_courses'] = Lang::t('_MY_COURSES');
-                  $tab_list['catalogue'] = Lang::t('_CATALOGUE');
-                  $which_home = $var_value;
-
-                    echo '<div class="form_line_l"><p><b>' .
-                        Lang::t('_HOME_PAGE').'</b></p>';
-                    echo Form::getInputDropdown('dropdown', $var_name, $var_name, $tab_list, $var_value, '')
-                    . '</div><p>&nbsp;</p>';
-
-                }
-                    break;
-				// Common types
-				case "password" : {
-                    echo Form::getPassword(Lang::t('_' . strtoupper($var_name), 'configuration'),
-												$var_name,
-                        'option[' . $var_name . ']',
-												$max_size,
-												$var_value,
-                        $i_after);
-                }
-                    break;
-				case "textarea" : {
-                    echo Form::getSimpletextarea(Lang::t('_' . strtoupper($var_name), 'configuration'),
-												$var_name,
-                        'option[' . $var_name . ']',
-												$var_value,
-												false,
-												false,
-												false,
-												5,
-												22,
-                        $i_after);
-
-                }
-                    break;
-
-                case "on_usercourse_empty": {
-                    if ($which_home == 'my_courses') {
-                        echo Form::getCheckbox(Lang::t('_' . strtoupper($var_name), 'configuration'), $var_name . '_on', 'option[' . $var_name . ']', 'on', ($var_value == 'on'), '', ' ' . $i_after);
-                    } else {
-                        echo Form::getCheckbox(Lang::t('_' . strtoupper($var_name), 'configuration'), $var_name . '_on', 'option[' . $var_name . ']', 'on', false, 'disabled', '', ' ' . $i_after);
-                    }                           
-                }
-                    break;
-
-                case "menuvoice" :
-				case "menuvoice_course_public" :
-
-				case "check" : {
-                    echo Form::getCheckbox(Lang::t('_' . strtoupper($var_name), 'configuration'), $var_name, 'option[' . $var_name . ']', 1, ($var_value == 1), '', ' ' . $i_after);
-                };
-                    break;
-				case "enum" : {
-                    echo Form::getCheckbox(Lang::t('_' . strtoupper($var_name), 'configuration'), $var_name . '_on', 'option[' . $var_name . ']', 'on', ($var_value == 'on'), '', ' ' . $i_after);
-                };
-                    break;
-                case "button" : {
-                    echo '<br/><a class="btn btn-default" role="button" href="'.$var_value.'">'.Lang::t('_' . strtoupper($var_name), 'configuration').'</a>';//($var_name,Lang::t('_' . strtoupper($var_name)),Lang::t('_' . strtoupper($var_name)));//Lang::t('_' . strtoupper($var_name)), $var_name . '_on', 'option[' . $var_name . ']', 'on', ($var_value == 'on'), '', ' ' . $i_after);
-                };
-                    break;
-                case "password_algorithms" : {
-                    //drop down hteditor
-                    $layout = array(
-                        1 => Lang::t('PASSWORD_BCRYPT'),
-                        0 => Lang::t('PASSWORD_MD5')
-                    );
-                    echo Form::getDropdown( Lang::t('_'.strtoupper($var_name), 'configuration'),
-                        $var_name,
-                        'option['.$var_name.']',
-                        $layout,
-                        $var_value);
-                };
-                    break;
-				case 'on_off':{
-                    $layout = array(
-                        'on' => Lang::t('ON'),
-                        'off' => Lang::t('OFF')
-                    );
-                    echo Form::getDropdown( Lang::t('_'.strtoupper($var_name), 'configuration'),
-                        $var_name,
-                        'option['.$var_name.']',
-                        $layout,
-                        $var_value);
-				}
-				break;
-
-				default : {
-					//string or int
-                    echo Form::getTextfield(Lang::t('_' . strtoupper($var_name), 'configuration'),
-												$var_name,
-                        'option[' . $var_name . ']',
-												$max_size,
-												$var_value,
-												false,
-                        $i_after);
 				}
 			}
+			echo '<br></div>';
 		}
 		echo '</div>';
 		return;
