@@ -14,7 +14,7 @@ html/files/**
 !html/files/appLms/label/label_image.png
 # Sezione html/templates
 html/templates/**
-!html/templates/standard/**
+# !html/templates/standard/**
 html/templates/standard/style/custom.css
 
 # Sezione Plugin
@@ -23,6 +23,7 @@ html/plugins/**
 !html/plugins/report_course
 !html/plugins/report_aggregate
 !html/plugins/report_user
+
 # Authentication
 !html/plugins/FacebookAuth
 !html/plugins/FormaAuth
