@@ -2601,7 +2601,7 @@ INSERT INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size
 ('user_pwd_history_length', '3', 'int', 3, 'password', 3, 10, 1, 0, ''),
 ('user_quota', '50', 'string', 255, '0', 8, 6, 1, 0, ''),
 ('use_advanced_form', 'off', 'enum', 3, 'register', 3, 16, 1, 0, ''),
-('use_course_label', 'off', 'enum', 3, 'main', 4, 7, 1, 0, ''),
+('use_course_label', 'off', 'enum', 3, '0', 4, 7, 1, 0, ''),
 ('use_rest_api', 'off', 'enum', 3, 'api', 9, 7, 1, 0, ''),
 ('use_tag', 'on', 'enum', 3, '0', 4, 8, 1, 0, ''),
 ('visuItem', '25', 'int', 3, '0', 2, 1, 1, 1, ''),
@@ -3161,13 +3161,13 @@ UPDATE `core_setting` SET `sequence` = '13' WHERE `core_setting`.`param_name` = 
 -- Nuove configurazioni e colonne per la gestione avanzata della reportistica
 --
 INSERT IGNORE INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size`, `pack`, `regroup`, `sequence`, `param_load`, `hide_in_modify`, `extra_info`)
-VALUES ('report_persistence_days', '30', 'int', '4', 'report_settings', '1', '990', '1', '0', '');
+VALUES ('report_persistence_days', '30', 'int', '4', 'report_settings', '8', '990', '1', '0', '');
 
 INSERT IGNORE INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size`, `pack`, `regroup`, `sequence`, `param_load`, `hide_in_modify`, `extra_info`)
-VALUES ('report_max_email_size_MB', '0', 'int', '4', 'report_settings', '1', '991', '1', '0', '');
+VALUES ('report_max_email_size_MB', '0', 'int', '4', 'report_settings', '8', '991', '1', '0', '');
 
 INSERT IGNORE INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size`, `pack`, `regroup`, `sequence`, `param_load`, `hide_in_modify`, `extra_info`)
-VALUES ('report_storage_folder', '/files/common/report/', 'string', '255', 'report_settings', '1', '992', '1', '0', '');
+VALUES ('report_storage_folder', '/files/common/report/', 'string', '255', 'report_settings', '8', '992', '1', '0', '');
 
 
 

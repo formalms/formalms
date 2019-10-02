@@ -246,6 +246,8 @@ class SettingAdm extends Model
 			echo '<div class="col-sm-6">';
 			if ($groupPack)
 				echo '<h3>' . Lang::t('_' . strtoupper($groupPack), 'configuration') . '</h3>';
+			else 
+				echo '<h3>' . Lang::t('MAIN_SET_' . strtoupper($regroup), 'configuration') . '</h3>';
 
 			$reSetting = sql_query("
 			SELECT pack, param_name, param_value, value_type, max_size
@@ -360,6 +362,19 @@ class SettingAdm extends Model
 									'after_max', ($var_value == 'after_max'))
 	                        . Form::getLineRadio('', 'label_bold', Lang::t('_NO', 'configuration'), $var_name . '_no', 'option[' . $var_name . ']',
 									'no', ($var_value == 'no'))
+	                        . Form::getCloseCombo($i_after);
+	                };
+	                    break;
+					case "profile_modify" : {
+	                    echo Form::getOpenCombo(Lang::t('_' . strtoupper($var_name), 'configuration'))
+	                        . Form::getLineRadio('', 'label_bold', Lang::t('_ALLOW_FULL_EDIT_PROFILE', 'configuration'), $var_name . '_allow', 'option[' . $var_name . ']',
+									'allow', ($var_value == 'allow'))
+	                        . Form::getLineRadio('', 'label_bold', Lang::t('_MOD_LIMIT_PROFILE', 'configuration'), $var_name . '_limit', 'option[' . $var_name . ']',
+									'limit', ($var_value == 'limit'))
+	                        . Form::getLineRadio('', 'label_bold', Lang::t('_DISALLOW_EDIT_PROFILE', 'configuration'), $var_name . '_disallow', 'option[' . $var_name . ']',
+									'disallow', ($var_value == 'disallow'))
+	                        . Form::getLineRadio('', 'label_bold', Lang::t('_REDIRECT_URL_PROFILE', 'configuration'), $var_name . '_redirect', 'option[' . $var_name . ']',
+									'redirect', ($var_value == 'redirect'))
 	                        . Form::getCloseCombo($i_after);
 	                };
 	                    break;
