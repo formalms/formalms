@@ -4568,20 +4568,23 @@ i + .course-box__date-box {
   display: none; }
 
 #global_conf .tab-content .tab-pane h2 {
-  font-size: 20px;
+  font-size: 24px;
   font-weight: bold;
   color: #666;
   display: block;
   margin-bottom: 20px; }
 
 #global_conf .tab-content .tab-pane h3 {
-  font-size: 16px;
+  font-size: 20px;
   font-weight: bold;
   color: #666;
+  text-transform: capitalize;
   margin-bottom: 20px;
   display: block;
   padding-bottom: 10px;
   border-bottom: 1px solid #666; }
+
+#global_conf .tab-content .tab-pane select { display: block; }
 
 .layout_footer {
   padding-top: 30px;

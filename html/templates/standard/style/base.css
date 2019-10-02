@@ -338,7 +338,7 @@ ul.flat-categories li a{color: #C84000;font-weight:bold;}
 ul.style_none li{list-style:none; }
 /* Form */
 .form_elem{padding:0px 6px;}
-.form_line_l, .form-line{display:block; margin:1px 0;line-height:1.8em;}
+.form_line_l, .form-line{display:block; margin:6px 0;line-height:1.8em;}
 /*.form_line_l p, .form-line p{display:inline;margin:0 8px 0 0;padding:2px 0 2px 0;vertical-align:top;}*/
 .form_line_l p, .form-line p{display:inline-block;max-width:100%;margin:0 8px 0 0;padding:2px 0 2px 0;vertical-align:middle;}
 .form_line_l .form-control {display:inline-block;vertical-align:middle;}
