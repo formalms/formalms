@@ -31,6 +31,7 @@ cout(
     var data = '';
     
     <?php 
+        // Printing initially all the courses if i'm editing the assoc.
         if(isset($idsCourses)) 
             echo "var idsCourseArr = " . json_encode($idsCourses); 
         else if(isset($idsCoursePath))
@@ -340,12 +341,20 @@ cout(
              
               var form = this;
 
+              
+              
               if(typeof idsCourseArr !== 'undefined'){
                  $(form).append(
                      $('<input>')
                         .attr('type', 'hidden')
                         .attr('name', 'idsCourse')
                         .val(idsCourseArr)
+                 );
+                 $(form).append(
+                     $('<input>')
+                        .attr('type', 'hidden')
+                        .attr('name', 'oldestCourses')
+                        .val(<?= json_encode($idsCourses) ?>)
                  ); 
               } else if(typeof idsCoursePathArr !== 'undefined'){
                 
@@ -413,18 +422,39 @@ cout(
 
 <?php
 
+    // Setting static table with all courses
+    if(isset($edit)){
+    
+        $tb_courses = new Table();
+    
+        $cont_h = array( Lang::t('_CODE'), Lang::t('_COURSE_NAME'), Lang::t('_CATEGORY') );
+        $type_h = array('', '', '');
+        
+        $tb_courses->addHead($cont_h);
+        $tb_courses->setColsStyle($type_h);
+        
+        foreach($coursesArr as $course){
+            $tb_courses->addBody($course);
+        }
+    } 
+   
+   
     $arrTab = array(
               array(
               "title"     => (isset($idsCourses) ? Lang::t("_COURSES") : Lang::t("_COURSEPATH")),
-              "content"   => "
-            <div id='treecategory'></div>
+              "content"   => 
+              
+              (isset($edit) ? $tb_courses->getTable() : '')
+              . " <div id='treecategory'></div>
                 <table class='table table-striped table-bordered' style='width:100%' id='".(isset($idsCourses) ? 'course_ft' : 'coursepath_ft')."'>
                 </table>
-             "             //. $tb->getTable()
+             "             
           )
     );
 
-
+    
+    
+    
 
     TabContainer::printStartHeader();
     TabContainer::printNewTabHeader($arrTab);

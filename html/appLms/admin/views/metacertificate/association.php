@@ -15,7 +15,10 @@
                                          'type_course',
                                          'type_course', 
                                          $assoc_types,
-                                         COURSE)
+                                         COURSE,
+                                         '',
+                                         '',
+                                         $html_before_select)
                 .Form::closeElementSpace()
                 .Form::openButtonSpace()
                     .Form::getButton('next', 'next', Lang::t('_NEXT'))

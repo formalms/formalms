@@ -485,6 +485,28 @@ public function getUserAndCourseFromIdMeta($id_meta){
 
     }
 
+    function deleteAssociationsUsers($usersIdsArr, $idMeta) {   
+        
+        $query2 = "DELETE FROM ".$GLOBALS['prefix_lms']."_certificate_meta_course"
+        . " WHERE idMetaCertificate = " . $idMeta
+        . " AND idUser IN (" . implode(",", $usersIdsArr) . ")";
+        
+        $rs = sql_query($query2);
+        return $rs;
+        
+    }
+    
+    function deleteAssociationsCourses($coursesIdsArr, $idMeta) {   
+        
+        $query2 = "DELETE FROM ".$GLOBALS['prefix_lms']."_certificate_meta_course"
+        . " WHERE idMetaCertificate = " . $idMeta
+        . " AND idCourse IN (" . implode(",", $coursesIdsArr) . ")";
+        
+        $rs = sql_query($query2);
+        return $rs;
+        
+    }
+    
     public function getPathsFromIdParent($idParent)
     {
         $q = "SELECT path,idCategory,lev, iLeft, iRight FROM ". $GLOBALS["prefix_lms"] ."_category"
@@ -533,13 +555,36 @@ public function getUserAndCourseFromIdMeta($id_meta){
         return $nodesArr;
     }
 
+     public function getCoursesArrFromId($idsArr) {
+
+        $q = "SELECT  cour.code, cour.name, cat.path "
+            . "FROM " . $GLOBALS["prefix_lms"] . "_course AS cour " 
+            . "JOIN " . $GLOBALS["prefix_lms"] . "_category AS cat "
+            . "WHERE cour.idCourse IN (" . str_replace(array( "[", "]" ) , "" , $idsArr) . ") "
+            . "AND cour.idCategory = cat.idCategory "; 
+
+        $rs = sql_query($q);
+        $i = 0;
+        while($rows = sql_fetch_assoc($rs)) {
+    
+            $coursesList[$i]["codeCourse"]  = $rows["code"];
+            $coursesList[$i]["nameCourse"]  = $rows["name"];
+            $coursesList[$i]["pathCourse"]  = substr($rows["path"], 6); // deleting '/root/' string part
+                   
+            $i += 1;
+        }
+
+        return $coursesList;
+
+    }
+    
     public function getCourseListFromIdCat($idCategoryArr) {
 
         $q = "SELECT cour.name, cat.path, cour.idCourse, cour.code, cour.description, cour.status "
             . "FROM " . $GLOBALS["prefix_lms"] . "_course AS cour "
             . "JOIN " . $GLOBALS["prefix_lms"] . "_category AS cat "
             . "WHERE cour.idCategory = cat.idCategory " 
-            . "AND cour.idCategory IN (" . str_replace(array("[","]"),"", $idCategoryArr) . ")";
+            . "AND cour.idCategory IN (" . str_replace(array( "[", "]" ) , "" , $idCategoryArr) . ")";
 
 
         $rs = sql_query($q);
@@ -842,7 +887,7 @@ public function getUserAndCourseFromIdMeta($id_meta){
         return $usersArr;  
     }
 
-    function getTypeCourse($id_metacert){
+    function getTypeMetacert($id_metacert){
         
         $found = 0;
         
