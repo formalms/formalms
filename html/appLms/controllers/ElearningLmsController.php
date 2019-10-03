@@ -318,7 +318,9 @@ class ElearningLmsController extends LmsController
         }
         else if ($filter_status == 'all') {
             $conditions[] = '(c.status <> 3 ) AND c.idCourse NOT IN (
-                SELECT id_course FROM learning_course_date AS dt WHERE dt.id_course = c.idCourse AND status IN (1,2)
+                SELECT id_course FROM learning_course_date AS dt 
+                INNER JOIN learning_course_date_user du ON dt.id_date = du.id_date
+                WHERE dt.id_course = c.idCourse AND status IN (1,2) AND du.id_user = '.$params[':id_user'].'
             ) ';
         }
 
