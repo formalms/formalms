@@ -148,7 +148,9 @@
                     selectedBackColor: "#C84000",
 
                     onNodeSelected: function (event, node) {
-                        callAjaxCatalog(node.id_cat);
+                        var id_cat = node.id_cat ? node.id_cat : node.nodeId;
+
+                        callAjaxCatalog(id_cat);
                     },
                     onNodeUnselected: function (event, node) {
                     }
