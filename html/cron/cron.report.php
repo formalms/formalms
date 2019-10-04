@@ -277,7 +277,7 @@ require_once(_base_.'/lib/lib.json.php');
 $json = new Services_JSON();
 
 
-$path = _base_.'/'._folder_files_.'/tmp/';
+$path = _files_.'/tmp/';
 $qry = "SELECT * FROM %lms_report_filter";
 $res = sql_query($qry);
 sl_open_fileoperations();
