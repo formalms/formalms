@@ -2206,7 +2206,7 @@ class UsermanagementAdmController extends AdmController
 					} else {
 						$path = '/appCore/';
 						$savefile = mt_rand(0, 100) . '_' . time() . '_' . $_FILES['file_import']['name'];
-						if (!file_exists(Get::rel_path('base') . '/files' . $path . $savefile)) {
+						if (!file_exists(_files_ . $path . $savefile)) {
 							sl_open_fileoperations();
 							if (!sl_upload($_FILES['file_import']['tmp_name'], $path . $savefile)) {
 								sl_close_fileoperations();

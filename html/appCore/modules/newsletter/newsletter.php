@@ -128,7 +128,7 @@ function send_newsletter($send_id) {
 	$attach = array();
 	
 	foreach($file_array as $file)
-		$attach[] = '../files'.$path.$file;
+		$attach[] = '../'._folder_files_.$path.$file;
 
 	$cycle=Get::gReq("cycle", DOTY_INT, 0);
 
@@ -219,7 +219,7 @@ function send_newsletter($send_id) {
 			{
 				sl_open_fileoperations();
 				
-				sl_unlink(str_replace('../files', '', $file));
+				sl_unlink(str_replace('../'._folder_files_, '', $file));
 				
 				sl_close_fileoperations();
 			}
