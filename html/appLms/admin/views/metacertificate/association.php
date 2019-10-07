@@ -7,7 +7,7 @@
             .Form::openForm('new_assign_step_0', 'index.php?r=alms/'.$controller_name.'/'. $arrOps['saveMetadataAssoc'])
                 .Form::getHidden('id_certificate', 'id_certificate',  $id_certificate)
                 .(isset($edit) ? Form::getHidden('edit', 'edit',  $edit) : '')
-                .Form::getHidden('id_metacertificate', 'id_metacertificate',  $id_metacertificate)
+                .(isset($id_metacertificate) ? Form::getHidden('id_metacertificate', 'id_metacertificate',  $id_metacertificate) : '')
                 .Form::openElementSpace()
                     .Form::getTextfield(Lang::t('_NAME'), 'title', 'title', '255', isset($associationMetadataArr['title']) ? $associationMetadataArr['title'] : '')
                     .Form::getSimpleTextarea(Lang::t('_DESCRIPTION'), 'description', 'description', isset($associationMetadataArr['description']) ? $associationMetadataArr['description'] : '')
@@ -15,7 +15,7 @@
                                          'type_course',
                                          'type_course', 
                                          $assoc_types,
-                                         COURSE,
+                                         $type_course,
                                          '',
                                          '',
                                          $html_before_select)

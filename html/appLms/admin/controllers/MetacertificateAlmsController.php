@@ -629,10 +629,7 @@ Class MetacertificateAlmsController extends AlmsController
     public function association() {
 
         $id_certificate = Get::req('id_certificate');
-        
-        // If the certificate has no metacertificate, the id_metacert will be 0
-        $id_metacertificate = Get::req('id_metacertificate',DOTY_INT, 0);
-        
+
         // If the user is modifying the metadata of the assoc. edit will be 1.
         $edit = Get::req('edit', DOTY_INT, 0);
        
@@ -641,18 +638,28 @@ Class MetacertificateAlmsController extends AlmsController
         
         $params['html_before_select'] = ''; 
         
-        if($id_metacertificate !== 0) { // Metacert already found
-          
-            if ($edit) { // If i'm editing a metacertAssoc, i need to get all datas.
-               
+
+        if ($edit) { // If i'm editing a metacertAssoc, i need to get all datas.
+
+            // If the certificate has no metacertificate, the id_metacert will be 0
+            $id_metacertificate = Get::req('id_metacertificate',DOTY_INT, 0);
+            if ($id_metacertificate !== 0 ){
+
                 $associationMetadataArr = $this->model->getAssociationMetadata($id_metacertificate);
+
                 $params['associationMetadataArr'] = $associationMetadataArr;
                 $params['html_before_select'] = 'disabled';
+
+                $params['type_course'] = Get::req('type_course',DOTY_INT, '');
+
+                $params['id_metacertificate'] = $id_metacertificate;
                 $params['edit'] = $edit;
-                
-           }
+            }
+
+
+       }
             
-        } 
+
              
         $assoc_types = array(
             COURSE => Lang::t('_COURSE'),
@@ -661,7 +668,7 @@ Class MetacertificateAlmsController extends AlmsController
         
         
         $params['id_certificate'] = $id_certificate;
-        $params['id_metacertificate'] = $id_metacertificate;
+
         $params['assoc_types'] = $assoc_types;
 
         $params["controller_name"] = $this->controller_name;
@@ -692,13 +699,14 @@ Class MetacertificateAlmsController extends AlmsController
             $metadataAssocArr["id_metacertificate"] = $_POST['id_metacertificate'];
         else {
              $type_course = Get::req('type_course', DOTY_INT, -1);
-            
         }
         
         $res = $this->model->insertMetadataAssoc($metadataAssocArr);
          
         if($isModifyingMetadataAssoc !== 0)
-            Util::jump_to('index.php?r=alms/'.$this->controller_name.'/'.$this->op['assignment'].'&result='. ($res ? 'ok' : 'err'));
+            Util::jump_to('index.php?r=alms/'.$this->controller_name.'/'.$this->op['assignment']
+                .'&id_certificate='. $metadataAssocArr['id_certificate']
+                .'&res='. ($res ? 'ok' : 'err'));
         else
             Util::jump_to(  'index.php?r=alms/'.$this->controller_name.'/'.$this->op['associationusers']
                             .'&amp;id_certificate='.$_POST["id_certificate"]
@@ -721,8 +729,15 @@ Class MetacertificateAlmsController extends AlmsController
        
         $user_selection = new UserSelector();
 
+
         $edit = Get::req('edit', DOTY_INT, 0);
         if($edit == 1 && $type_course != -1) {
+
+            /*
+             * Editing assoc.
+             *
+             * Need to compare old users and new, to add or to remove users from assoc.
+             */
             $usersArr = $this->model->getUsersBelongsMeta($id_metacertificate, $type_course);
             $user_selection->resetSelection($usersArr);
             $user_selection->addFormInfo('<input type="hidden" name="old_users" value=' . json_encode($usersArr) . ' />');
@@ -740,7 +755,10 @@ Class MetacertificateAlmsController extends AlmsController
         $user_selection->addFormInfo('<input type="hidden" name="edit" value=' . $edit . ' />');
 
         // Modifying association certificate <-> users
-       
+
+        $user_selection->setUserFilter('user', [11836,11855,11856]);
+
+
         $params = array(
             "user_selection" => $user_selection,
             
@@ -762,7 +780,8 @@ Class MetacertificateAlmsController extends AlmsController
 
         if(isset($_POST['cancelselector']))
             Util::jump_to('index.php?r=alms/'.$this->controller_name.'/'.$this->op['assignment'].'&amp;id_certificate='.Get::req('id_certificate', DOTY_INT, 0));
-        
+
+
         $user_selection = new UserSelector();
         $userSelectionArr = $user_selection->getSelection($_POST);
         
@@ -772,25 +791,26 @@ Class MetacertificateAlmsController extends AlmsController
         $course_manager->setLink('index.php?r=alms/'.$this->controller_name.'/'.$this->op['associationCourses']);         
 
         $treeCat = $this->getTreeCategoryAsArray();
-        
+
+        $id_meta = Get::req('id_metacertificate', DOTY_INT, 0);
+
         $params = array(
 
             "course_manager" => $course_manager,
             "treeCat" => $treeCat,
             
             "id_certificate" => Get::req("id_certificate"),
-            "id_metacertificate" => Get::req("id_metacertificate"),
+            "id_metacertificate" => $id_meta,
             
             "opsArr" => $this->op,
-            
             "controller_name" => $this->controller_name,
 
         );
         
-        $id_meta = Get::req('id_metacertificate', DOTY_INT, 0);
-        
+
         $type_course = Get::req('type_course', DOTY_INT, -1);
-        
+
+        // If type course is course, then get all courses ids from the assoc. passing meta_assoc id
         $coursesIdsArr = $this->model->getIdsCourse($id_meta);
         
         $edit = Get::req('edit', DOTY_INT, 0);

@@ -208,9 +208,15 @@ cout(
             ],
             rowCallback: function( row, data) {
             
-                if (idsCoursePathArr.indexOf(parseInt(data.idCoursePath)) !== -1){
-                   this._datatable.row.select();
-                }
+                // if (idsCoursePathArr.indexOf(parseInt(data.idCoursePath)) !== -1){
+                //    coursepath_ft._datatable.row.select();
+                // }
+
+                coursepath_ft._datatable.rows( function (idx, data, node){
+
+                    return idsCoursePathArr.indexOf(parseInt(data.idCoursePath)) !== -1;
+
+                }).select()
             
             },
             columns:[

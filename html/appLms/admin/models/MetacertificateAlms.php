@@ -724,7 +724,7 @@ public function getUserAndCourseFromIdMeta($id_meta){
             
             ON DUPLICATE KEY UPDATE
                 title = '". $metadataAssocArr['title']. "',
-                description = '". $metadataAssocArr['descr']. "'
+                description = '". $metadataAssocArr['description']. "'
                 
             ";
         
