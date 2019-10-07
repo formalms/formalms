@@ -595,7 +595,7 @@ class Man_Eportfolio {
 		require_once(_base_.'/lib/lib.upload.php');
 		
 		$curriculum_file = $id_user.'_'.mt_rand(0,100).'_'.time().'_'.$file_descriptor['name'];
-		if(!file_exists($GLOBALS['where_files_relative'].$this->getCurriculumPath().$curriculum_file)) {
+		if(!file_exists(_files_.$this->getCurriculumPath().$curriculum_file)) {
 					
 			sl_open_fileoperations();
 			$upload = sl_upload($file_descriptor['tmp_name'], $this->getCurriculumPath().$curriculum_file);

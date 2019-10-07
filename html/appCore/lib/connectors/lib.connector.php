@@ -19,7 +19,7 @@
 **/
 
 /** base directory for search io files **/
-define( 'DOCEBOIMPORT_BASEDIR', $GLOBALS['where_files_relative'].'/common/iofiles/');
+define( 'DOCEBOIMPORT_BASEDIR', _files_.'/common/iofiles/');
 
 /** Index for column name */
 define( 'DOCEBOIMPORT_COLNAME', 0 );

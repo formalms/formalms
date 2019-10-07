@@ -2244,7 +2244,7 @@ class UsermanagementAdmController extends AdmController
 					$manual_password = Get::req('manual_password', DOTY_STRING, '');
 
 					$src = new DeceboImport_SourceCSV(array(
-						'filename' => $GLOBALS['where_files_relative'] . $path . $savefile,
+						'filename' => _files_ . $path . $savefile,
 						'separator' => $separator,
 						'first_row_header' => $first_row_header,
 						'import_charset' => $import_charset
@@ -2269,7 +2269,7 @@ class UsermanagementAdmController extends AdmController
 
 					$params['UIMap'] = $importer->getUIMap();
 					$params['tot_row'] = $importer->getTotRow();
-					$params['filename'] = $GLOBALS['where_files_relative'] . $path . $savefile;
+					$params['filename'] = _files_ . $path . $savefile;
 					$params['first_row_header'] = $first_row_header;
 					$params['separator'] = $separator;
 					$params['import_charset'] = $import_charset;

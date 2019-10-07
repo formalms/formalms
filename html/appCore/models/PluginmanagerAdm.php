@@ -573,7 +573,7 @@ class PluginmanagerAdm extends Model
         } else {
             $path = "/../plugins/";
             $savefile = $file_uploaded['name'];
-            if (!file_exists($GLOBALS['where_files_relative'] . $path . $savefile)) {
+            if (!file_exists(_files_ . $path . $savefile)) {
                 sl_open_fileoperations();
                 if (!sl_upload($file_uploaded['tmp_name'], $path . $savefile)) {
                     sl_close_fileoperations();

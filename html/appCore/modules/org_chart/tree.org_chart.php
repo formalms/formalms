@@ -1779,7 +1779,7 @@ class TreeView_OrgView extends TreeView {
 		} else {
 			$path = '/appCore/';
 			$savefile = mt_rand(0,100).'_'.time().'_'.$_FILES['file_import']['name'];
-			if(!file_exists( $GLOBALS['where_files_relative'].$path.$savefile )) {
+			if(!file_exists( _files_.$path.$savefile )) {
 				sl_open_fileoperations();
 				if(!sl_upload($_FILES['file_import']['tmp_name'], $path.$savefile)) {
 					
@@ -1809,7 +1809,7 @@ class TreeView_OrgView extends TreeView {
 		$import_charset = isset($_POST['import_charset'])?$_POST['import_charset']:'UTF-8';
 		if( trim($import_charset) === '') $import_charset = 'UTF-8';
 		
-		$src = new DeceboImport_SourceCSV(array('filename'=>$GLOBALS['where_files_relative'].$path.$savefile,
+		$src = new DeceboImport_SourceCSV(array('filename'=>_files_.$path.$savefile,
 												'separator'=>$separator,
 												'first_row_header'=>$first_row_header,
 												'import_charset'=>$import_charset
@@ -1824,7 +1824,7 @@ class TreeView_OrgView extends TreeView {
 		$importer->setDestination( $dst );
 		
 		$tree .= $importer->getUIMap();
-		$tree .= $form->getHidden( $this->id.'_filename',  $this->id.'[filename]', $GLOBALS['where_files_relative'].$path.$savefile);
+		$tree .= $form->getHidden( $this->id.'_filename',  $this->id.'[filename]', _files_.$path.$savefile);
 		$tree .= $form->getHidden( 'import_first_row_header', 'import_first_row_header', ($first_row_header?'true':'false'));
 		$tree .= $form->getHidden( 'import_separator', 'import_separator', $separator);
 		$tree .= $form->getHidden( 'import_charset', 'import_charset', $import_charset);

@@ -69,7 +69,7 @@ function insitem() {
 		$path = '/appLms/'.Get::sett('pathlesson');
 		$savefile = ( isset($_SESSION['idCourse']) ? $_SESSION['idCourse'] : '0' ).'_'.mt_rand(0,100).'_'.time().'_'.$_FILES['attach']['name'];
 		$savefile = str_replace("'", "\'", $savefile);//Patch file con apostrofo
-		if(!file_exists( $GLOBALS['where_files_relative'].$path.$savefile )) {
+		if(!file_exists( _files_.$path.$savefile )) {
 			sl_open_fileoperations();
 			if(!sl_upload($_FILES['attach']['tmp_name'], $path.$savefile)) {
 				sl_close_fileoperations();
@@ -95,7 +95,7 @@ function insitem() {
 		$_SESSION['last_error'] = Lang::t('_OPERATION_FAILURE');
 		Util::jump_to( $back_url.'&create_result=0' );
 	}
-	if(isset($_SESSION['idCourse']) && defined("LMS")) $GLOBALS['course_descriptor']->addFileToUsedSpace($GLOBALS['where_files_relative'].$path.$savefile);
+	if(isset($_SESSION['idCourse']) && defined("LMS")) $GLOBALS['course_descriptor']->addFileToUsedSpace(_files_.$path.$savefile);
 	list($idLesson) = sql_fetch_row(sql_query("SELECT LAST_INSERT_ID()"));
 	Util::jump_to( $back_url.'&id_lo='.$idLesson.'&create_result=1' );
 }
@@ -159,7 +159,7 @@ function upitem() {
 		FROM ".$GLOBALS['prefix_lms']."_materials_lesson 
 		WHERE idLesson = '".(int)$_POST['idItem']."'"));
 		
-		$size = Get::file_size($GLOBALS['where_files_relative'].$path.$old_file);
+		$size = Get::file_size(_files_.$path.$old_file);
 		if(!sl_unlink( $path.$old_file )) {
 			
 			sl_close_fileoperations();
@@ -183,7 +183,7 @@ function upitem() {
 		
 		sl_open_fileoperations();
 		$savefile = $_SESSION['idCourse'].'_'.mt_rand(0,100).'_'.time().'_'.$_FILES['attach']['name'];
-		if(!file_exists($GLOBALS['where_files_relative'].$path.$savefile )) {
+		if(!file_exists(_files_.$path.$savefile )) {
 			if(!sl_upload($_FILES['attach']['tmp_name'], $path.$savefile)) {
 				
 				sl_close_fileoperations();
@@ -212,7 +212,7 @@ function upitem() {
 		Util::jump_to($back_url.'&id_lo='.(int)$_POST['idItem'].'&mod_result=0');
 	}
 	if(isset($_SESSION['idCourse']) && defined("LMS")) {
-		$GLOBALS['course_descriptor']->addFileToUsedSpace($GLOBALS['where_files_relative'].$path.$savefile);
+		$GLOBALS['course_descriptor']->addFileToUsedSpace(_files_.$path.$savefile);
 		require_once($GLOBALS['where_lms'].'/class.module/track.object.php');
 		Track_Object::updateObjectTitle($_POST['idItem'], 'item', $_POST['title']);
 	}

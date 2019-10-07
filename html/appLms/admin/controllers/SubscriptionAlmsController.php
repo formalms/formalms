@@ -1820,7 +1820,7 @@ class SubscriptionAlmsController extends AlmsController
 					$path = '/appCore/';
 					$savefile = mt_rand(0, 100) . '_' . time() . '_' . $_FILES['file_import']['name'];
 
-					if (!file_exists($GLOBALS['where_files_relative'] . $path . $savefile)) {
+					if (!file_exists(_files_ . $path . $savefile)) {
 						sl_open_fileoperations();
 
 						if (!sl_upload($_FILES['file_import']['tmp_name'], $path . $savefile)) {
@@ -1836,7 +1836,7 @@ class SubscriptionAlmsController extends AlmsController
 					}
 				}
 
-				$src = new DeceboImport_SourceCSV(array('filename' => $GLOBALS['where_files_relative'] . $path . $savefile,
+				$src = new DeceboImport_SourceCSV(array('filename' => _files_ . $path . $savefile,
 					'separator' => $separator,
 					'first_row_header' => $first_row_header,
 					'import_charset' => $import_charset));
@@ -2027,7 +2027,7 @@ class SubscriptionAlmsController extends AlmsController
 
 				sl_open_fileoperations();
 
-				sl_unlink($GLOBALS['where_files_relative'] . $path . $savefile);
+				sl_unlink(_files_ . $path . $savefile);
 
 				sl_close_fileoperations();
 

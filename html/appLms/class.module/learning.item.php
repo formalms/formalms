@@ -89,7 +89,7 @@ class Learning_Item extends Learning_Object {
 		FROM ".$GLOBALS['prefix_lms']."_materials_lesson 
 		WHERE idLesson = '".$id."'"));
 		
-		$size = Get::file_size($GLOBALS['where_files_relative'].$path_to_file.$old_file);
+		$size = Get::file_size(_files_.$path_to_file.$old_file);
 		if($old_file != '') {
 			
 			sl_open_fileoperations();

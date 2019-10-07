@@ -459,7 +459,7 @@ class DoceboConnectorCsvUI extends DoceboConnectorUI {
 	  	$out .= $this->form->getLineBox(	$this->lang->def('_FIELD_ENCLOSURE'),
 		  									$enclosure );
 		if( $this->post_params['field_def_type'] == '2' ) {
-			$path = $GLOBALS['where_files_relative'].'/common/iofiles/'.$this->post_params['subpattern'];
+			$path = _files_.'/common/iofiles/'.$this->post_params['subpattern'];
 			$pat = str_replace(array("*","?"),array(".*",".{1}"),$this->post_params['filepattern']);
 			$arr_files = preg_ls ($path, false, '/'.$pat.'/');
 			if( count( $arr_files ) == 0 ) {

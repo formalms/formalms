@@ -537,7 +537,7 @@ function insfiles() {
 			return;
 		}
 		$savefile = $_SESSION['idCourse'].'_'.mt_rand(0,100).'_'.time().'_'.$_FILES['attach']['name'];
-		if(!file_exists($GLOBALS['where_files_relative']._PATH_COURSE.$savefile)) {
+		if(!file_exists(_files_._PATH_COURSE.$savefile)) {
 			
 			sl_open_fileoperations();
 			if(!sl_upload($_FILES['attach']['tmp_name'], _PATH_COURSE.$savefile)){
@@ -562,7 +562,7 @@ function insfiles() {
 		$GLOBALS['page']->add(getErrorUi($lang->def('_OPERATION_FAILURE')));
 		return;
 	}
-	$GLOBALS['course_descriptor']->addFileToUsedSpace($GLOBALS['where_files_relative']._PATH_COURSE.$savefile);
+	$GLOBALS['course_descriptor']->addFileToUsedSpace(_files_._PATH_COURSE.$savefile);
 	Util::jump_to( 'index.php?modname=course&op=infocourse');
 }
 
@@ -619,7 +619,7 @@ function upfiles() {
 		WHERE id_course='".$_SESSION['idCourse']."' AND id_file='".(int)$_POST['id_file']."'"));
 		
 		
-		$GLOBALS['course_descriptor']->subFileToUsedSpace($GLOBALS['where_files_relative']._PATH_COURSE.$old_file);
+		$GLOBALS['course_descriptor']->subFileToUsedSpace(_files_._PATH_COURSE.$old_file);
 		
 		$quota = $GLOBALS['course_descriptor']->getQuotaLimit();
 		$used = $GLOBALS['course_descriptor']->getUsedSpace();
@@ -630,7 +630,7 @@ function upfiles() {
 			return;
 		}
 		$savefile = $_SESSION['idCourse'].'_'.mt_rand(0,100).'_'.time().'_'.$_FILES['attach']['name'];
-		if(!file_exists($GLOBALS['where_files_relative']._PATH_COURSE.$savefile)) {
+		if(!file_exists(_files_._PATH_COURSE.$savefile)) {
 			
 			sl_open_fileoperations();
 			if(!sl_upload($_FILES['attach']['tmp_name'], _PATH_COURSE.$savefile)){
@@ -660,7 +660,7 @@ function upfiles() {
 		sl_unlink(_PATH_COURSE.$savefile);
 		return;
 	}
-	$GLOBALS['course_descriptor']->addFileToUsedSpace($GLOBALS['where_files_relative']._PATH_COURSE.$savefile);
+	$GLOBALS['course_descriptor']->addFileToUsedSpace(_files_._PATH_COURSE.$savefile);
 	Util::jump_to( 'index.php?modname=course&op=infocourse');
 }
 
@@ -676,7 +676,7 @@ function remfiles() {
 		FROM ".$GLOBALS['prefix_lms']."_course_file 
 		WHERE id_course='".$_SESSION['idCourse']."' AND id_file='".(int)$_GET['id_file']."'"));
 		
-		$size = Get::file_size($GLOBALS['where_files_relative']._PATH_COURSE.$old_file);
+		$size = Get::file_size(_files_._PATH_COURSE.$old_file);
 		if(!sl_unlink(_PATH_COURSE.$old_file)) {
 			
 			$GLOBALS['page']->add(getErrorUi($lang->def('_OPERATION_FAILURE')));

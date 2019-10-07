@@ -210,7 +210,7 @@ class MyFile {
 			default : {
 				
 				$savefile = $this->id_user.'_'.mt_rand(0,100).'_'.time().'_'.$file_descriptor['name'];
-				if(!file_exists($GLOBALS['where_files_relative'].$this->getFilePath().$savefile)) {
+				if(!file_exists(_files_.$this->getFilePath().$savefile)) {
 					
 					sl_open_fileoperations();
 					if(sl_upload($file_descriptor['tmp_name'], $this->getFilePath().$savefile)) {
@@ -236,7 +236,7 @@ class MyFile {
 			// save file
 			$file_name = $this->saveFile($area, $file_descriptor);
 		}
-		$file_size = Get::file_size($GLOBALS['where_files_relative'].$this->getFilePath().$file_name);
+		$file_size = Get::file_size(_files_.$this->getFilePath().$file_name);
 		if (!$file_size)
 			$file_size = 0;
 		$total_used_quota = $file_size + $user_profile_data->getUsedQuota(getLogUserId());

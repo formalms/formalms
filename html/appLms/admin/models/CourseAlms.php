@@ -1048,7 +1048,7 @@ Class CourseAlms extends Model
 
         if (($delete_old || $arr_new_file !== false) && $old_file != '') {
             // the flag for file delete is checked or a new file was uploaded ---------------------
-            $return['old_size'] = Get::file_size($GLOBALS['where_files_relative'] . $path . $old_file);
+            $return['old_size'] = Get::file_size(_files_ . $path . $old_file);
             if ($quota_available !== false) {
                 $quota_available -= $return['old_size'];
             }
@@ -1072,7 +1072,7 @@ Class CourseAlms extends Model
                 else {
 
                     // after resize check size ------------------------------------------------------------
-                    $size = Get::file_size($GLOBALS['where_files_relative'] . $path . $filename);
+                    $size = Get::file_size(_files_ . $path . $filename);
                     if ($quota_available != 0 && $size > $quota_available) {
                         $return['quota_exceeded'] = true;
                         sl_unlink($path . $filename);

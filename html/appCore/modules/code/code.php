@@ -555,7 +555,7 @@ function importCode_step2() {
 
 		$savefile = mt_rand(0, 100).'_'.time().'_'.$_FILES['file_import']['name'];
 
-		if (!file_exists($GLOBALS['where_files_relative'].$path.$savefile)) {
+		if (!file_exists(_files_.$path.$savefile)) {
 			sl_open_fileoperations();
 
 			if (!sl_upload($_FILES['file_import']['tmp_name'], $path.$savefile)) {
@@ -585,7 +585,7 @@ function importCode_step2() {
 	if (trim($import_charset) === '')
 		$import_charset = 'UTF-8';
 
-	$src = new DeceboImport_SourceCSV(array('filename' => $GLOBALS['where_files_relative'].$path.$savefile,
+	$src = new DeceboImport_SourceCSV(array('filename' => _files_.$path.$savefile,
 				'separator' => $separator,
 				'first_row_header' => $first_row_header,
 				'import_charset' => $import_charset));

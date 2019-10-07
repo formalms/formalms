@@ -50,7 +50,7 @@ function sl_mkdir( $path, $mode ) {
 	} elseif( $uploadType == "cgi" ) {
 		return FALSE;
 	} else {
-		$result = mkdir( $GLOBALS['where_files_relative'].$path, $mode );
+		$result = mkdir( _files_.$path, $mode );
 		return $result;
 	}
 }
@@ -67,7 +67,7 @@ function sl_fopen( $filename, $mode ) {
         if (substr($filename,0,1) != '/') {
             return fopen($filename, $mode);
         }     
-		return fopen( $GLOBALS['where_files_relative'].$filename, $mode);
+		return fopen( _files_.$filename, $mode);
 	}
 }
 
@@ -129,50 +129,50 @@ function sl_touch( $filename, $time ) {
 	} elseif( $uploadType == "cgi" ) {
 		return TRUE;
 	} else {
-		return touch( $GLOBALS['where_files_relative'].$filename, $time );
+		return touch( _files_.$filename, $time );
 	}
 }
 
 function sl_is_file( $filename ) {
-	return @is_file($GLOBALS['where_files_relative'].$filename);
+	return @is_file(_files_.$filename);
 }
 
 function sl_is_dir( $path ) {
-	return @is_dir($GLOBALS['where_files_relative'].$path);
+	return @is_dir(_files_.$path);
 }
 
 function sl_is_readable( $filename ) {
-	return is_readable( $GLOBALS['where_files_relative'].$filename );
+	return is_readable( _files_.$filename );
 }
 
 function sl_is_writeable( $filename ) {
-	return is_writeable( $GLOBALS['where_files_relative'].$filename );
+	return is_writeable( _files_.$filename );
 }
 
 function sl_filesize( $filename ) {
-	return filesize( $GLOBALS['where_files_relative'].$filename );
+	return filesize( _files_.$filename );
 }
 
 function sl_filemtime($filename ) {
-	return filemtime( $GLOBALS['where_files_relative'].$filename );
+	return filemtime( _files_.$filename );
 }
 
 function sl_file_exists( $filename ) {
-	return file_exists( $GLOBALS['where_files_relative'].$filename );
+	return file_exists( _files_.$filename );
 }
 
 function sl_chmod( $filename, $mode ) {
-	return chmod( $GLOBALS['where_files_relative'].$filename, $mode );
+	return chmod( _files_.$filename, $mode );
 }
 
 function sl_copy( $srcFile, $dstFile ) {
 	$uploadType = Get::cfg('uploadType');
 	if( $uploadType == "ftp" ) {
-		return sl_upload_ftp( $GLOBALS['where_files_relative'].$srcFile, $dstFile );
+		return sl_upload_ftp( _files_.$srcFile, $dstFile );
 	} elseif( $uploadType == "cgi" ) {
 		return sl_upload_cgi( $srcFile, $dstFile );
 	} elseif( $uploadType == "fs" || $uploadType == null ) {
-		return copy($GLOBALS['where_files_relative'].$srcFile, $GLOBALS['where_files_relative'].$dstFile);
+		return copy(_files_.$srcFile, _files_.$dstFile);
 	} else {
         $event = new \appCore\Events\Core\FileSystem\CopyEvent($srcFile, $dstFile);
         \appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\FileSystem\UploadEvent::EVENT_NAME, $event);
@@ -202,17 +202,17 @@ function sl_upload_fs( $srcFile, $dstFile ) {
 function sl_copyr($source, $dest)
 {
     // Simple copy for a file
-    if (is_file($GLOBALS['where_files_relative'].$source)) {
+    if (is_file(_files_.$source)) {
         return sl_copy($source, $dest);
     }
 
     // Make destination directory
-    if (!is_dir($GLOBALS['where_files_relative'].$dest)) {
+    if (!is_dir(_files_.$dest)) {
         sl_mkdir($dest);
     }
 
     // Loop through the folder
-    $dir = dir($GLOBALS['where_files_relative'].$source);
+    $dir = dir(_files_.$source);
     while (false !== $entry = $dir->read()) {
         // Skip pointers
         if ($entry == '.' || $entry == '..') {
@@ -302,7 +302,7 @@ function sl_fopen_ftp( $file, $mode ) {
  	// only create file then open it with fopen
 	$ftppath = Get::cfg('ftppath')._folder_files_;
 	$ftpConn = $GLOBALS['ftpConn'];
-	if( !file_exists( $GLOBALS['where_files_relative'].$file ) ) {
+	if( !file_exists( _files_.$file ) ) {
    		if( !ftp_put( $ftpConn, $ftppath.$file, dirname(__FILE__)."/nullfile", FTP_BINARY ) ) {
   			return FALSE;
   		} else {
@@ -310,7 +310,7 @@ function sl_fopen_ftp( $file, $mode ) {
       			return FALSE;
 	 	}
   	}
-	$ret = @fopen( $GLOBALS['where_files_relative'].$file, $mode );
+	$ret = @fopen( _files_.$file, $mode );
 	return $ret;
 }
 
@@ -347,8 +347,8 @@ function sl_upload_cgi( $srcFile, $dstFile ) {
      $uploadType = Get::cfg('uploadType', null);
 
      if( $uploadType == "fs" || $uploadType == "ftp" || $uploadType == null ) {
-         if( !file_exists($GLOBALS['where_files_relative'].$path) ) return true;
-         return @unlink($GLOBALS['where_files_relative'].$path);
+         if( !file_exists(_files_.$path) ) return true;
+         return @unlink(_files_.$path);
      } else {
          $event = new \appCore\Events\Core\FileSystem\UnlinkEvent($path);
          \appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\FileSystem\UnlinkEvent::EVENT_NAME, $event);
