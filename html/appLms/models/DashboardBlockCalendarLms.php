@@ -272,7 +272,15 @@ class DashboardBlockCalendarLms extends DashboardBlockLms
         $courseData = $this->getDataFromCourse($course, true);
 
         if ($course['course_type'] == self::COURSE_TYPE_CLASSROOM) {
-            $q = sql_query("SELECT date_begin, date_end FROM %lms_course_date_day cdd INNER JOIN %lms_course_date cd ON cdd.id_date = cd.id_date WHERE cd.id_course = ".$course['course_id']);
+            $q = sql_query("
+                SELECT date_begin, date_end 
+                FROM %lms_course_date_day cdd 
+                INNER JOIN %lms_course_date cd ON cdd.id_date = cd.id_date 
+                INNER JOIN learning_course_date_user cdu ON cd.id_date = cdu.id_date 
+                WHERE cd.id_course = ".$course['course_id']."
+                AND cdu.id_user = ".Docebo::user()->getId()
+            );
+
             while ($row = sql_fetch_object($q)) {
                 $courseData['endDate'] = $courseData['startDate'] = $row->date_begin;
                 $courseData['hourBegin'] = substr(explode(' ', $row->date_begin)[1], 0, 5);

@@ -22,6 +22,8 @@ class DashboardBlockCoursesLms extends DashboardBlockLms
 {
 	const MAX_COURSES = 3;
 	const COURSE_TYPE_LIMIT = 3;
+    const COURSE_TYPE_ELEARNING = 'elearning';
+    const COURSE_TYPE_CLASSROOM = 'classroom';
 
 	public function __construct()
 	{
@@ -100,6 +102,21 @@ class DashboardBlockCoursesLms extends DashboardBlockLms
 			$classRoomCourseList = $this->findAll($classRoomConditions, $classRoomParams, self::MAX_COURSES - count($courselist));
 
 			foreach ($classRoomCourseList as $id => $course) {
+				if ($course['type'] == self::COURSE_TYPE_CLASSROOM) {
+		            $q = sql_query("
+		            	SELECT date_begin, date_end FROM %lms_course_date_day cdd 
+		            	INNER JOIN %lms_course_date cd ON cdd.id_date = cd.id_date 
+		            	WHERE cd.id_course = $id
+		            	ORDER BY date_begin ASC
+		            	LIMIT 1
+	            	");
+		            $row = sql_fetch_object($q);
+	                $course['endDateString'] = $course['endDate'] = $row->date_begin;
+	                $course['startDateString'] = $course['startDate'] = $row->date_end;
+	                if (isset($course['dates']))
+	                	unset($course['dates']);
+                }
+
 				$courselist[$id] = $course;
 			}
 		}
