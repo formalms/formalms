@@ -184,8 +184,8 @@ function sl_copy( $srcFile, $dstFile ) {
 /** file system implementation **/
 
 function sl_upload_fs( $srcFile, $dstFile ) {
-	if ($srcFile == _files_.$dstFile) return true;
-	$re = move_uploaded_file($srcFile, _files_.$dstFile);
+	if ($srcFile == $dstFile) return true;
+	$re = move_uploaded_file($srcFile, $dstFile);
 	if(!$re) die("Error on move_uploaded_file from: $srcFile to ".$dstFile);
 	return $re;
 }
