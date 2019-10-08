@@ -82,7 +82,7 @@ class DashboardBlockCoursesLms extends DashboardBlockLms
 
 		$elearningConditions = $conditions;
 		$elearningConditions[] = "c.course_type = ':course_type'";
-		$elearningConditions[] = 'c.date_begin != 0000-00-00';
+		$elearningConditions[] = 'c.date_begin >= NOW()';
 		$elearningConditions[] = 'c.date_end != 0000-00-00';
 
 
@@ -106,7 +106,10 @@ class DashboardBlockCoursesLms extends DashboardBlockLms
 		            $q = sql_query("
 		            	SELECT date_begin, date_end FROM %lms_course_date_day cdd 
 		            	INNER JOIN %lms_course_date cd ON cdd.id_date = cd.id_date 
+						INNER JOIN %lms_course_date_user cdu ON cdd.id_date = cdu.id_date
 		            	WHERE cd.id_course = $id
+		            	AND cdu.id_user = ".Docebo::user()->getId()."
+		            	AND date_begin >= NOW()
 		            	ORDER BY date_begin ASC
 		            	LIMIT 1
 	            	");
