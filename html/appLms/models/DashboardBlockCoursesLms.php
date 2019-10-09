@@ -115,14 +115,13 @@ class DashboardBlockCoursesLms extends DashboardBlockLms
 	            	");
 
 		            while($row = sql_fetch_object($q)) {
-						$tot_courses++;
-
 			            if (!$row->date_begin || !$row->date_end) {
 			            	break;
 		            	}
 
-		                $course['endDateString'] = $course['endDate'] = $row->date_begin ? date("d-m-Y H:i", strtotime($row->date_begin)) : null;
-		                $course['startDateString'] = $course['startDate'] = $row->date_end ? date("d-m-Y H:i", strtotime($row->date_end)) : null;
+		                $course['startDateString'] = $course['startDate'] = date("d-m-Y", strtotime($row->date_begin));
+		                $course['endDateString'] = $course['endDate'] = date("H:i", strtotime($row->date_begin)).' '.date("H:i", strtotime($row->date_end));
+
 		                if (isset($course['dates'])) {
 		                	unset($course['dates']);
 		                }
