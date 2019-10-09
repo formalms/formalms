@@ -575,7 +575,7 @@ class PluginmanagerAdm extends Model
             $savefile = $file_uploaded['name'];
             if (!file_exists(_plugins_  . "/" .  $savefile)) {
                 sl_open_fileoperations();
-                if (!sl_upload($file_uploaded['tmp_name'], str_replace("\\", "/", _plugins_)  . "/" .  $savefile)) {
+                if (!sl_upload($file_uploaded['tmp_name'], "/../" . _folder_plugins_ . "/" .  $savefile)) {
                     sl_close_fileoperations();
                     return false;
                 }

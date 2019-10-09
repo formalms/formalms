@@ -83,7 +83,7 @@ function insitem() {
 		$_SESSION['last_error'] = _FILEUNSPECIFIED;
 		Util::jump_to( ''.$back_url.'&create_result=0' );
 	}
-	$path = str_replace ( '\\', '/', '/appLms/'.Get::sett('pathscorm'));
+	$path = str_replace ( '\\', '/', '/'._folder_lms_.'/'.Get::sett('pathscorm'));
 	$savefile = getLogUserId().'_'.rand(0,100).'_'.time().'_'.$_FILES['attach']['name'];
 	if(!file_exists (_files_.$path.$savefile)) {
 		sl_open_fileoperations();
