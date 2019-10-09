@@ -103,6 +103,7 @@ class DashboardBlockCoursesLms extends DashboardBlockLms
 
 			foreach ($classRoomCourseList as $id => $course) {
 				if ($course['type'] == self::COURSE_TYPE_CLASSROOM) {
+
 		            $q = sql_query("
 		            	SELECT date_begin, date_end FROM %lms_course_date_day cdd 
 		            	INNER JOIN %lms_course_date cd ON cdd.id_date = cd.id_date 
@@ -111,18 +112,42 @@ class DashboardBlockCoursesLms extends DashboardBlockLms
 		            	AND cdu.id_user = ".Docebo::user()->getId()."
 		            	AND date_begin >= NOW()
 		            	ORDER BY date_begin ASC
-		            	LIMIT 1
 	            	");
-		            $row = sql_fetch_object($q);
-	                $course['endDateString'] = $course['endDate'] = $row->date_begin;
-	                $course['startDateString'] = $course['startDate'] = $row->date_end;
-	                if (isset($course['dates']))
-	                	unset($course['dates']);
-                }
 
-				$courselist[$id] = $course;
+		            while($row = sql_fetch_object($q)) {
+						$tot_courses++;
+
+			            if (!$row->date_begin || !$row->date_end) {
+			            	break;
+		            	}
+
+		                $course['endDateString'] = $course['endDate'] = $row->date_begin ? date("d-m-Y H:i", strtotime($row->date_begin)) : null;
+		                $course['startDateString'] = $course['startDate'] = $row->date_end ? date("d-m-Y H:i", strtotime($row->date_end)) : null;
+		                if (isset($course['dates'])) {
+		                	unset($course['dates']);
+		                }
+
+						$courselist[] = $course;
+
+						if (count($courselist) >= self::COURSE_TYPE_LIMIT) {
+							break 2;
+						}
+	                }
+                } else {
+					$courselist[] = $course;
+
+					if (count($courselist) >= self::COURSE_TYPE_LIMIT) {
+						break 1;
+					}
+				}
 			}
 		}
+
+		usort($courselist, function($element1, $element2) {
+		    $datetime1 = strtotime($element1['startDate']);
+		    $datetime2 = strtotime($element2['startDate']);
+		    return $datetime1 - $datetime2;
+		});
 
 		return $courselist;
 	}
