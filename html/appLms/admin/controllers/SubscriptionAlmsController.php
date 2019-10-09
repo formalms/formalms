@@ -13,7 +13,7 @@
 
 class SubscriptionAlmsController extends AlmsController
 {
-
+    /** @var SubscriptionAlms $model */
 	protected $model;
 	protected $json;
 	protected $acl_man;
