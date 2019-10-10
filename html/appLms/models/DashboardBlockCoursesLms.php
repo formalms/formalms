@@ -99,7 +99,7 @@ class DashboardBlockCoursesLms extends DashboardBlockLms
 			$classRoomParams = $params;
 			$classRoomParams[':course_type'] = 'classroom';
 
-			$classRoomCourseList = $this->findAll($classRoomConditions, $classRoomParams, self::MAX_COURSES - count($courselist));
+			$classRoomCourseList = $this->findAll($classRoomConditions, $classRoomParams, 0);
 
 			foreach ($classRoomCourseList as $id => $course) {
 				if ($course['type'] == self::COURSE_TYPE_CLASSROOM) {
@@ -127,28 +127,31 @@ class DashboardBlockCoursesLms extends DashboardBlockLms
 		                }
 
 						$courselist[] = $course;
-
-						if (count($courselist) >= self::COURSE_TYPE_LIMIT) {
-							break 2;
-						}
 	                }
                 } else {
 					$courselist[] = $course;
-
-					if (count($courselist) >= self::COURSE_TYPE_LIMIT) {
-						break 1;
-					}
 				}
 			}
 		}
 
+		// Order by startDate
 		usort($courselist, function($element1, $element2) {
 		    $datetime1 = strtotime($element1['startDate']);
 		    $datetime2 = strtotime($element2['startDate']);
 		    return $datetime1 - $datetime2;
 		});
 
-		return $courselist;
+		// Limit to self::COURSE_TYPE_LIMIT
+		$i = 0;
+		foreach ($courselist as $cl) {
+			if ($i >= self::COURSE_TYPE_LIMIT) {
+				break;
+			}
+			$res[] = $cl;
+			$i++;
+		}
+
+		return $res;
 	}
 
 	private function findAll($conditions, $params, $limit = 0, $offset = 0)
