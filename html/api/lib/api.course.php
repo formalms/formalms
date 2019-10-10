@@ -790,7 +790,7 @@ class Course_API extends API {
         $category_name =(isset($params['name']) ? $params['name'] : false);
         
         
-        if ( $node_name == false){
+        if ( $category_name == false){
             $output = array('success'=>false, 'message'=>'Wrong parameters');
         }
         else{
