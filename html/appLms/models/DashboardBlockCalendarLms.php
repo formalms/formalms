@@ -164,7 +164,7 @@ class DashboardBlockCalendarLms extends DashboardBlockLms
         } else {
             switch ($courseType) {
                 case self::COURSE_TYPE_CLASSROOM:
-                    $query .= ' AND cd.sub_start_date != 0000-00-00 AND  cd.sub_end_date != 0000-00-00';
+                    // $query .= ' AND cd.sub_start_date != 0000-00-00 AND  cd.sub_end_date != 0000-00-00';
                     break;
                 case self::COURSE_TYPE_ELEARNING:
                 default:
