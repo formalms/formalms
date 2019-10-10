@@ -2761,6 +2761,11 @@ class UserManagerRenderer
             return array('error' => true,
                 'msg' => getErrorUi($lang->def('_ERR_PASSWORD_NO_MATCH')));
         }
+        if ($_POST['oldpwd'] == $_POST['newpwd']) {
+
+            return array('error' => true,
+                'msg' => getErrorUi($lang->def('_ERR_PWD_SAME_OLD')));
+        }
         if ($options['pass_alfanumeric'] == 'on') {
             if (!preg_match('/[a-z]/i', $_POST['newpwd']) || !preg_match('/[0-9]/', $_POST['newpwd'])) {
 
