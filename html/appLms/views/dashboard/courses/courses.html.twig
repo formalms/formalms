@@ -26,13 +26,13 @@
                         </div>
                         <div class="d-courses__date-wrapper status--{{ status_class }}">
                             {% if course.startDateString != '' %}
-                                <span class="d-courses__date d-courses__date--start">
+                                <div class="d-courses__date d-courses__date--start">
                                 {{ course.startDateString }}
-                                </span>
+                                </div>
                                 {% if course.endDateString != '' %}
-                                    <span class="d-courses__date d-courses__date--end">
+                                    <div class="d-courses__date d-courses__date--endx">
                                     {{ course.endDateString }}
-                                  </span>
+                                  </div>
                                 {% endif %}
                             {% endif %}
                         </div>
@@ -49,7 +49,7 @@
             <div class="d-courses__cta-wrapper">
                 <a class="forma-button forma-button--orange-hover forma-button--full d-button--cert" title=""
                    href="/appLms/index.php?r=elearning/show&sop=unregistercourse">
-                    <span class="forma-button__label">TUTTI I CORSI</span>
+                    <span class="forma-button__label">{{ translate('_ALL_COURSES', 'standard') }}</span>
                 </a>
             </div>
         </div>
