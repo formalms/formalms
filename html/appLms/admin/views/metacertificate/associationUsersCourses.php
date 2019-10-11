@@ -1,6 +1,6 @@
 <?php
 
-     cout(    getTitleArea(Lang::t('_TITLE_META_CERTIFICATE_ASSIGN', 'certificate'), 'certificate')
+     cout(    getTitleArea(Lang::t('_AGGRETATE_CERTIFICATES_ASSOCIATION_CAPTION', 'certificate'), 'certificate')
                     .'<div class="std_block">'
                     .$form->openForm('new_assign_step_3', 'index.php?r=alms/'.$this->controller_name.'/'.$opsArr['saveAssignment'])
                     .$form->getHidden('id_certificate', 'id_certificate', $id_certificate)

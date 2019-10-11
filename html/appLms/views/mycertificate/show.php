@@ -20,30 +20,40 @@ $tabs .= '</ul>
         <div class="tab-content">';
 
 echo $tabs;
-
 // certificate tab
-echo '<div role="tabpanel" class="tab-pane fade in active" id="cert">';
 
-$cert_columns = array(
-    array('key' => 'year', 'label' => Lang::t('_YEAR', 'certificate'), 'className' => 'min-cell', 'sortable' => true),
-    array('key' => 'code', 'label' => Lang::t('_COURSE_CODE', 'certificate')),
-    array('key' => 'course_name', 'label' => Lang::t('_COURSE', 'certificate')),
-    array('key' => 'cert_name', 'label' => Lang::t('_CERTIFICATE_NAME', 'course')),
-    array('key' => 'date_complete', 'label' => Lang::t('_DATE_COMPLETE', 'certificate')),
-    array('key' => 'download', 'label' => $icon_download, 'className' => 'img-cell'),
-);?>
+?>
 
-<table class="table table-striped table-bordered display" style="width:100%" id="mycertificates">
-  <thead>
-    <tr><?php
-      foreach ($cert_columns as $column) {?>
-        <th scope="col"><b><?php echo $column['label'];?></b></th><?php
-      }?>
-    </tr>
-  </thead>
-</table><?php
+<div role="tabpanel" class="tab-pane fade in active" id="cert">
 
-echo '</div>'; // close certificate tab 
+<?php
+    
+
+    $cert_columns = array(
+        array('key' => 'year', 'label' => Lang::t('_YEAR', 'certificate'), 'className' => 'min-cell', 'sortable' => true),
+        array('key' => 'code', 'label' => Lang::t('_COURSE_CODE', 'certificate')),
+        array('key' => 'course_name', 'label' => Lang::t('_COURSE', 'certificate')),
+        array('key' => 'cert_name', 'label' => Lang::t('_CERTIFICATE_NAME', 'course')),
+        array('key' => 'date_complete', 'label' => Lang::t('_DATE_COMPLETE', 'certificate')),
+        array('key' => 'download', 'label' => $icon_download, 'className' => 'img-cell'),
+    );
+    
+?>
+
+    <table class="table table-striped table-bordered display" style="width:100%" id="mycertificates">
+      <thead>
+        <tr><?php
+          foreach ($cert_columns as $column) {?>
+            <th scope="col"><b><?php echo $column['label'];?></b></th><?php
+          }?>
+        </tr>
+      </thead>
+    </table>
+
+</div>
+ 
+<?php
+
 
 // metacertificate tab
 $meta_columns = array(
@@ -65,17 +75,19 @@ $meta_columns = array(
       }?>
     </tr>
   </thead>
-</table><?php
+</table>
 
-echo '</div>'; // close tabs
-echo '</div>'; //close std_block div
+    </div> <!-- close tabs -->
+</div> <!-- close std_blocks -->
 
-cout('<script type="text/javascript">
-$("body").on("click", ".subs_pdf", function () {
-        $(this).attr("title", "'.Lang::t('_DOWNLOAD', 'certificate').'");
-        $(this).children("span").text("'.Lang::t('_DOWNLOAD', 'certificate').'");
-    });
-</script>', 'scripts');
+
+<?php
+    cout('<script type="text/javascript">
+    $("body").on("click", ".subs_pdf", function () {
+            $(this).attr("title", "'.Lang::t('_DOWNLOAD', 'certificate').'");
+            $(this).children("span").text("'.Lang::t('_DOWNLOAD', 'certificate').'");
+        });
+    </script>', 'scripts');
 ?>
 
 <script>

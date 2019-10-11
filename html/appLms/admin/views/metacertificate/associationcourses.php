@@ -18,9 +18,9 @@ include Forma::inc(_lib_ . '/formatable/include.php');
     
 
 cout(
-    getTitleArea(Lang::t('_TITLE_META_CERTIFICATE_ASSIGN','certificate'), 'certificate')
+    getTitleArea(Lang::t('_AGGRETATE_CERTIFICATES_ASSOCIATION_CAPTION'), 'certificate')
     .'<div class="std_block">'
-    .Form::openForm('new_assign_step_2', 'index.php?r=alms/'.$this->controller_name.'/'.$opsArr['assignmentUsersCourses'])
+    .Form::openForm('new_assign_step_2', 'index.php?r=alms/'.$this->controller_name.'/'.$opsArr['associationUsersCourses'])
 );
 
 ?>
@@ -43,11 +43,19 @@ cout(
     $(document).ready(function () {    
            
         if(typeof idsCourseArr !== 'undefined') {
-          
+         
+
             var course_ft = $('#course_ft').FormaTable({
                 // processing: true,
-                // serverSide: true,
-                data: null, 
+                // serverSide: true, 
+                'ajax': {
+                     type: 'POST',                  
+                     data: {
+                        "nodesArr" : "0",
+                     },
+                     url: 'ajax.adm_server.php?r=alms/metacertificate/getCourseList',
+                     "dataSrc": "",
+                }, 
                 language: {       //TODO: Aggiungere lingue
                     "emptyTable": "<?= Lang::t('_NO_COURSE_FOUND','catalogue'); ?>",
                     "info": "<?= Lang::t('_INFO','datatable'); ?>",
@@ -103,6 +111,7 @@ cout(
                 },     
                 'order': [[1, 'asc']]
             });   
+            
                 
             course_ft._datatable.on( 'select.dt', function ( e, dt, type, indexes ) {
                  if ( type === 'row' ) {

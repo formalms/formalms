@@ -10,30 +10,7 @@ class MetacertificateAlms extends Model
 
     }
 
-    public function getAllmetacerts($ini) {
-        //search query of certificates
-        $query_certificate = "
-            SELECT id_certificate, code, name, description
-            FROM ".$GLOBALS['prefix_lms']."_certificate"
-            ." WHERE meta = 1";
-
-        if (isset($_POST['filter'])) {
-            if ($_POST['filter_text'] !== '')
-                $query_certificate .=    " AND ( name LIKE '%".$_POST['filter_text']."%'"
-                                        ." OR code LIKE '%".$_POST['filter_text']."%' )";
-        }
-        
-        $query_certificate .= " ORDER BY id_certificate
-        LIMIT $ini,".Get::sett('visuItem');
-        
-        $rs = sql_query($query_certificate);
-        
-        while($rows = sql_fetch_assoc($rs)) {
-            $arr_metacert[] = $rows;
-        }
-        
-        return $arr_metacert;
-    }
+    
     
     /**
      *
@@ -78,19 +55,7 @@ class MetacertificateAlms extends Model
     }
     
     
-    public function getMetacertificates($id_cert) {
-        
-        $query = "SELECT idMetaCertificate, title, description"
-                ." FROM ".$GLOBALS['prefix_lms']."_certificate_meta"
-                ." WHERE idCertificate = '".$id_cert."'";
-
-        $rs = sql_query($query);
-        
-        while($rows = sql_fetch_assoc($rs)) {
-            $arr_metacert[] = $rows;
-        }
-        return $arr_metacert; 
-    }
+    
 
        public function getCoursesFromIdMeta($id_meta){
       
@@ -151,47 +116,8 @@ public function getUserAndCourseFromIdMeta($id_meta){
         return $status;
     }
     
-
-    public function getMetadata($id_cert){
-        
-        $query =    "SELECT code, name, base_language, description, user_release
-                    FROM ".$GLOBALS['prefix_lms']."_certificate
-                    WHERE id_certificate = '".$id_cert."'";
     
-        $rs = sql_query($query);
-        
-        while($rows = sql_fetch_assoc($rs)) {
-            $arr_cert = $rows;
-        }
-        return $arr_cert;
-    }
-    
-    public function getLayoutMetacert($id_cert) {
-     
-        $query = "
-            SELECT cert_structure, orientation, bgimage
-            FROM ".$GLOBALS['prefix_lms']."_certificate
-            WHERE id_certificate = '".$id_cert."'";
-        
-        $rs = sql_query($query);
-        
-        return sql_fetch_assoc($rs);    
-        
-    }
-    
-    //GENERALIZZARE QUESTA QUERY!!!
-    public function getCertificateTags(){
-       
-        $query = "SELECT file_name, class_name FROM ".$GLOBALS['prefix_lms']."_certificate_tags";
-        
-        $rs = sql_query($query);
-        
-        while($rows = sql_fetch_assoc($rs)) {
-             $certificate_tags[] = $rows;
-        }
-        return $certificate_tags;
-    }
-    
+   
     public function getIdsMetaCertificate($idCert) { // get all associations.
         
         $query =    "SELECT idMetaCertificate"
@@ -328,7 +254,7 @@ public function getUserAndCourseFromIdMeta($id_meta){
         
     }
     
-    public function getTotalCoursesAssign($idUser,$idMeta){
+    public function getCertReleased($idUser,$idMeta){
         
         $query =    "SELECT COUNT(*) FROM ".$GLOBALS['prefix_lms']."_certificate_meta_assign"
                     ." WHERE idUser = '".$idUser."'"
@@ -374,116 +300,7 @@ public function getUserAndCourseFromIdMeta($id_meta){
         return $rs;
     }
 
-    public function insertMetaData($metaDataArr)
-    {
-        $query = "INSERT INTO ".$GLOBALS['prefix_lms']."_certificate (";
-        
-        $query .= isset($metaDataArr['id_certificate']) ? "id_certificate," : ""; 
-        
-        $query .= "
-            code,
-            name,
-            base_language,
-            description,
-            meta,
-            user_release
-            ) VALUES (";
-        
-        $query .= isset($metaDataArr['id_certificate']) ? $metaDataArr['id_certificate'] . ',' : '';
-        
-        $query .= "
-            '".$metaDataArr['code']."',
-            '".$metaDataArr['name']."',
-            '".$metaDataArr['base_language']."',
-            '".$metaDataArr['descr']."',
-            '1',
-            '".(isset($metaDataArr['user_release']) ? 1 : 0)."'
-        )";
-        
-        if(isset($metaDataArr['id_certificate']))
-        $query .= "
-            
-            ON DUPLICATE KEY UPDATE
-                code = '". $metaDataArr['code']. "',
-                name = '". $metaDataArr['name']. "',
-                base_language = '". $metaDataArr['base_language']. "',
-                description = '". $metaDataArr['descr']. "',
-                user_release = ". $metaDataArr['user_release']. "
-                
-            ";
-        
-        $query .= ";";
-       
-        $rs = sql_query($query);
-        return $rs;
-
-    }
     
-    public function updateLayout($templ_cert)
-    {
-        $query = "
-		UPDATE ".$GLOBALS['prefix_lms']."_certificate SET
-		cert_structure = '".$templ_cert['structure']."',
-		orientation = '".$templ_cert['orientation']."',
-		bgimage = " . ( $templ_cert['bgimage'] != '' && !isset($_POST['file_to_del']['bgimage']) ? "'".$templ_cert['bgimage']."'" : "''" ) .  "
-        WHERE id_certificate = " . $templ_cert['id_certificate'];
-
-        $rs = sql_query($query);
-        return $rs;
-
-    }
-
-    public function deleteCert($idCert)
-    {
-        $query = "
-		DELETE FROM ".$GLOBALS['prefix_lms']."_certificate
-		WHERE id_certificate = '".$idCert."'";
-
-        if (!sql_query($query))
-            return false;
-
-        return true;
-    }
-
-    public function getIdsMetaCerts($idCert)
-    {
-        $query = "SELECT idMetaCertificate FROM ".$GLOBALS['prefix_lms']."_certificate_meta"
-            ." WHERE idCertificate = '".$idCert."'";
-
-        $rs = sql_query($query);
-
-        $dataStringified = "";
-
-        while($rows = sql_fetch_assoc($rs)) {
-
-            $idsArr[] = $rows['idMetaCertificate'];
-
-        }
-        $dataStringified .= implode("," , $idsArr);
-
-        return $dataStringified;
-
-    }
-    
-    public function deleteMetaCertDatas($idsArr)
-    {
-        $query = "DELETE FROM ".$GLOBALS['prefix_lms']."_certificate_meta
-        WHERE idMetaCertificate IN (".$idsArr.")";
-        
-        $rs = sql_query($query);
-        
-        if($rs) {
-            $query2 = "DELETE FROM ".$GLOBALS['prefix_lms']."_certificate_meta_course
-        WHERE idMetaCertificate IN (".$idsArr.")";
-            $rs = sql_query($query2);
-            
-        }
-       
-
-        $rs = sql_query($query);
-        return $rs;
-
-    }
 
     function deleteAssociationsUsers($usersIdsArr, $idMeta) {   
         
@@ -580,11 +397,15 @@ public function getUserAndCourseFromIdMeta($id_meta){
     
     public function getCourseListFromIdCat($idCategoryArr) {
 
-        $q = "SELECT cour.name, cat.path, cour.idCourse, cour.code, cour.description, cour.status "
+        // Need to know if i'm requesting courses from the root category (idParent 0)
+        $req_root = ($idCategoryArr == "0");
+        
+        $q = "SELECT cour.name, cour.idCourse, cour.code, cour.description, cour.status "
+            . (($req_root) ? '' : ",cat_path ") 
             . "FROM " . $GLOBALS["prefix_lms"] . "_course AS cour "
-            . "JOIN " . $GLOBALS["prefix_lms"] . "_category AS cat "
-            . "WHERE cour.idCategory = cat.idCategory " 
-            . "AND cour.idCategory IN (" . str_replace(array( "[", "]" ) , "" , $idCategoryArr) . ")";
+            . (($req_root) ? '' : "JOIN " . $GLOBALS["prefix_lms"] . "_category AS cat ") 
+            . "WHERE cour.idCategory IN (" . str_replace(array( "[", "]" ) , "" , $idCategoryArr) . ")"
+            . (($req_root) ? '' : "AND cour.idCategory = cat.idCategory ");
 
 
         $rs = sql_query($q);
@@ -594,7 +415,7 @@ public function getUserAndCourseFromIdMeta($id_meta){
             $coursesList[$i]["idCourse"]    = $rows["idCourse"];
             $coursesList[$i]["codeCourse"]  = $rows["code"];
             $coursesList[$i]["nameCourse"]  = $rows["name"];
-            $coursesList[$i]["pathCourse"]  = substr($rows["path"], 6); // deleting '/root/' string part
+            $coursesList[$i]["pathCourse"]  = ($req_root ? Lang::t('_ALT_ROOT') : substr($rows["path"], 6)); // deleting '/root/' string part
                    
             switch ($rows["status"]) {  // SOSTITUIRE ASSOLUTAMENTE CON qualche
             // riferimento al db o con un unico entry point
@@ -699,41 +520,7 @@ public function getUserAndCourseFromIdMeta($id_meta){
  
     }
     
-     public function insertMetadataAssoc($metadataAssocArr)
-    {
-        $query = "INSERT INTO ".$GLOBALS['prefix_lms']."_certificate_meta (";
-        
-        $query .= isset($metadataAssocArr['id_metacertificate']) ? "idMetaCertificate," : ""; 
-        
-        $query .= "
-            idCertificate,
-            title,
-            description
-            ) VALUES (";
-        
-        $query .= isset($metadataAssocArr['id_metacertificate']) ? $metadataAssocArr['id_metacertificate'] . ',' : '';
-        
-        $query .= "
-            ".$metadataAssocArr['id_certificate'].",
-            '".$metadataAssocArr['title']."',
-            '".$metadataAssocArr['description']."'
-        )";
-        
-        if(isset($metadataAssocArr['id_metacertificate']))
-        $query .= "
-            
-            ON DUPLICATE KEY UPDATE
-                title = '". $metadataAssocArr['title']. "',
-                description = '". $metadataAssocArr['description']. "'
-                
-            ";
-        
-        $query .= ";";
-       
-        $rs = sql_query($query);
-        return $rs;
-
-    }
+    
     
     public function getAssociationMetadata($id_metacertificate){
         
@@ -758,10 +545,7 @@ public function getUserAndCourseFromIdMeta($id_meta){
         
     }
     
-    public function getLastInsertedIdCertificate()
-    {
-        return sql_fetch_row(sql_query("SELECT LAST_INSERT_ID()FROM ".$GLOBALS['prefix_lms']."_certificate"))[0];
-    }
+   
 
     
     /**
@@ -836,6 +620,71 @@ public function getUserAndCourseFromIdMeta($id_meta){
         
     }   
     
+    function getCoursesInAssociationFromUser($idMeta, $idUser, $type_course){
+        
+         switch($type_course) {
+            case COURSE:
+                $table = 'course';
+                $field = 'idCourse';
+                break;
+            case COURSE_PATH:
+                $table = 'coursepath';
+                $field = 'idCoursePath';
+
+                break;
+            default:
+                return;
+        }
+        
+        $q = "SELECT " . $field . " FROM "
+            . $GLOBALS['prefix_lms'] . "_certificate_meta_" . $table
+            . " WHERE idMetaCertificate = " . $idMeta
+            . " AND idUser = " . $idUser;
+            
+        $idsArr = array();  // They can be from courses or coursepath
+        $rs = sql_query($q); 
+         while($row = sql_fetch_array($rs)){
+            
+            $idsArr[] = (int) $row[$field];
+            
+         }
+        
+        return $idsArr; 
+        
+    }
+    
+     function getUserCoursesFromIdsMeta($idUser, $idsMetacertArr, $type_course){
+        
+         switch($type_course) {
+            case COURSE:
+                $table = 'course';
+                $field = 'idCourse';
+                break;
+            case COURSE_PATH:
+                $table = 'coursepath';
+                $field = 'idCoursePath';
+
+                break;
+            default:
+                return;
+        }
+        
+        $q = "SELECT " . $field . " FROM "
+            . $GLOBALS['prefix_lms'] . "_certificate_meta_" . $table
+            . " WHERE idUser = " . $idUser
+            . " AND idMetaCertificate IN (" . implode( ', ', $idsMetacertArr ) . ")" ;
+            
+        $idsArr = array();  // They can be from courses or coursepath
+        $rs = sql_query($q); 
+         while($row = sql_fetch_array($rs)){
+            
+            $idsArr[] = (int) $row[$field];
+            
+         }
+        
+        return $idsArr; 
+        
+    }
     
     function getCoursesFromPath($idCoursePath) {
         
@@ -857,9 +706,19 @@ public function getUserAndCourseFromIdMeta($id_meta){
                         
     }
     
+    
+    /**
+    * Returning an array of 0 or more users belonging to the association (idMetacert)
+    * 
+    * @param mixed $idMetaCert
+    * @param mixed $type_course
+    * 
+    * @return array $usersArr
+    */
+ 
     function getUsersBelongsMeta($idMetaCert, $type_course){
         
-        switch($type_course){
+        switch($type_course) {
             case COURSE:
                 $table = 'course';
                 break;
@@ -886,11 +745,34 @@ public function getUserAndCourseFromIdMeta($id_meta){
         
         return $usersArr;  
     }
+    
+    function getUsersInIdsMetaArr($idsMetaCertArr){
+               
+        $q = "SELECT DISTINCT idUser "
+            . "FROM " 
+            . $GLOBALS['prefix_lms'] . "_certificate_meta_course "
+            . " WHERE idMetaCertificate IN (".implode(', ',$idsMetaCertArr).")"
+            . " UNION "
+            . "SELECT DISTINCT idUser "
+            . "FROM " 
+            . $GLOBALS['prefix_lms'] . "_certificate_meta_coursepath "
+            . " WHERE idMetaCertificate IN (".implode(', ',$idsMetaCertArr).")";
+        
+        $rs = sql_query($q);
+        
+        $usersArr = array();
+         
+             while($row = sql_fetch_array($rs)){
+                
+                $usersArr[] = (int) $row['idUser'];
+                
+             }
+        
+        return $usersArr;            
+    }
 
     function getTypeMetacert($id_metacert){
-        
-        $found = 0;
-        
+                
         $coursesTypeArr = array(
         COURSE => "course",
         COURSE_PATH => "coursepath"

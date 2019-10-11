@@ -320,6 +320,25 @@ CREATE TABLE IF NOT EXISTS `learning_certificate_meta_course` (
 -- --------------------------------------------------------
 
 --
+-- Struttura della tabella `learning_certificate_meta_course`
+--
+
+CREATE TABLE IF NOT EXISTS `learning_certificate_meta_coursepath` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `idMetaCertificate` int(11) NOT NULL DEFAULT '0',
+  `idUser` int(11) NOT NULL DEFAULT '0',
+  `idCoursePath` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
+
+--
+-- Dump dei dati per la tabella `learning_certificate_meta_course`
+--
+
+
+-- --------------------------------------------------------
+
+--
 -- Struttura della tabella `learning_certificate_tags`
 --
 

@@ -1,7 +1,7 @@
 <?php
     
 
-    cout(    getTitleArea(Lang::t('_TITLE_META_CERTIFICATE_ASSIGN', 'certificate'), 'certificate')
+    cout(    getTitleArea(Lang::t('_AGGRETATE_CERTIFICATES_ASSOCIATION_CAPTION'), 'certificate')
                 .'<div class="std_block">');
 
     

@@ -2,7 +2,7 @@
 
 
     cout(
-        getTitleArea(Lang::t('_TITLE_META_CERTIFICATE_ASSIGN','certificate'), 'certificate')
+        getTitleArea(Lang::t('_AGGRETATE_CERTIFICATES_ASSOCIATION_CAPTION'), 'certificate')
         .'<div class="std_block">'
             .Form::openForm('new_assign_step_0', 'index.php?r=alms/'.$controller_name.'/'. $arrOps['saveMetadataAssoc'])
                 .Form::getHidden('id_certificate', 'id_certificate',  $id_certificate)

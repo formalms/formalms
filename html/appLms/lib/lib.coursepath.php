@@ -503,7 +503,7 @@ class CoursePath_Manager {
 	function getPathCourses($id_path) {
 
 		$courses = array();
-		if(empty($coursepaths)) return array();
+
 		$query = "
 		SELECT id_item, prerequisites, sequence
 		FROM ".$this->_getPathCourseTable()."
