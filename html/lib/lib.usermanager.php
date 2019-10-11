@@ -1463,7 +1463,7 @@ class UserManagerRenderer
             INNER JOIN %adm_rules r ON r.id_rule = re.id_rule
             LEFT JOIN %adm_org_chart_tree AS oct
             ON (oct.idst_oc = re.id_entity) 
-            WHERE r.rule_type = 'orgchart' AND oct.idOrg = ".$reg_code;
+            WHERE r.rule_type = 'orgchart' AND oct.code = '".$reg_code."'";
         $result = sql_query($query);
         $entity = sql_fetch_array($result);
 
@@ -1530,7 +1530,11 @@ class UserManagerRenderer
                 case "tree_man" : {
                     // resolving the tree_man
                     $array_course = $this->getCodeCourses($reg_code);
-                    $array_folder = array($reg_code => $reg_code);
+
+                    $org = sql_fetch_object(sql_query("SELECT idOrg FROM %adm_org_chart_tree WHERE code = '".$reg_code."'"));
+                    $reg_id = $org->idOrg;
+
+                    $array_folder = array($reg_code => $reg_id);
 
                     if (empty($array_folder) && $code_is_mandatory) {
 
@@ -2760,6 +2764,11 @@ class UserManagerRenderer
 
             return array('error' => true,
                 'msg' => getErrorUi($lang->def('_ERR_PASSWORD_NO_MATCH')));
+        }
+        if ($_POST['oldpwd'] == $_POST['newpwd']) {
+
+            return array('error' => true,
+                'msg' => getErrorUi($lang->def('_ERR_PWD_SAME_OLD')));
         }
         if ($options['pass_alfanumeric'] == 'on') {
             if (!preg_match('/[a-z]/i', $_POST['newpwd']) || !preg_match('/[0-9]/', $_POST['newpwd'])) {

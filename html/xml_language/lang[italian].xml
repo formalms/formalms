@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20190711</DATE>
+  <DATE>20191009</DATE>
   <LANG id="italian">
     <lang_code>italian</lang_code>
     <lang_description>Italiano</lang_description>
@@ -431,6 +431,13 @@ La chat si aprirà in una finestra di pop-up]]></key>
         <key id="conference&amp;_SUMMARY_ROOM_AVAILABLE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Elenco stanze disponibili]]></key>
       </module>
       <module id="configuration">
+        <key id="configuration&amp;MAIN_SET_1" attributes="" save_date="2019-10-02 11:36:35"><![CDATA[Opzioni generali]]></key>
+        <key id="configuration&amp;MAIN_SET_11" attributes="" save_date="2019-10-02 11:41:52"><![CDATA[Opzioni Skebby]]></key>
+        <key id="configuration&amp;MAIN_SET_3" attributes="" save_date="2019-10-02 11:38:21"><![CDATA[Opzioni generali]]></key>
+        <key id="configuration&amp;MAIN_SET_4" attributes="" save_date="2019-10-02 11:39:01"><![CDATA[Opzioni generali]]></key>
+        <key id="configuration&amp;MAIN_SET_6" attributes="" save_date="2019-10-02 11:39:14"><![CDATA[Opzioni generali]]></key>
+        <key id="configuration&amp;MAIN_SET_8" attributes="" save_date="2019-10-02 11:39:27"><![CDATA[Opzioni generali]]></key>
+        <key id="configuration&amp;MAIN_SET_9" attributes="" save_date="2019-10-02 11:39:53"><![CDATA[LDAP]]></key>
         <key id="configuration&amp;_ACCESSIBILITY" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Attiva tutte le feature per l'accessibilità]]></key>
         <key id="configuration&amp;_ALLOW_URL_FOPEN" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Configurazione di "allow_url_fopen"]]></key>
         <key id="configuration&amp;_ALLOW_URL_INCLUDE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Configurazione di "allow_url_include"]]></key>
@@ -1097,6 +1104,7 @@ Titolo: [thread_title]]]></key>
         <key id="event_manager&amp;_EVENT_CLASS_UserNew2" attributes="" save_date="2017-04-11 18:45:27"><![CDATA[Un nuovo utente si è registrato con registrazione automatica libera o registrazione automatica libera con doppio opt-in]]></key>
         <key id="event_manager&amp;_EVENT_CLASS_UserNewModerated" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Utente da moderare in creazione]]></key>
         <key id="event_manager&amp;_EVENT_CLASS_UserNewWaiting" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Un nuovo utente è in attesa di essere approvato]]></key>
+        <key id="event_manager&amp;_EVENT_CLASS_UserRegistrationSuperadmins" attributes="" save_date="2019-07-26 12:10:23"><![CDATA[Utente registrato - superadmins]]></key>
         <key id="event_manager&amp;_EVENT_CLASS_UserSuspendedSuperAdmin" attributes="" save_date="2019-04-17 15:25:20"><![CDATA[User has been suspended]]></key>
         <key id="event_manager&amp;_EVENT_COURSE_EVENT_SUSPENDED_USER_SBJ" attributes="" save_date="2019-04-17 15:25:20"><![CDATA[User has been suspended]]></key>
         <key id="event_manager&amp;_EVENT_COURSE_EVENT_SUSPENDED_USER_TEXT" attributes="" save_date="2019-04-17 15:25:20"><![CDATA[User with [firstname] [lastname] and userId : [username] has been suspended from course : [course] in platform : [url]]]></key>
@@ -1532,7 +1540,7 @@ Nella conservazione dei dati verranno osservate accuratezza e precisione per gar
         <key id="menu_course&amp;Stat Area" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Area Statistiche]]></key>
         <key id="menu_course&amp;Statistiche" attributes="" save_date="2017-03-17 17:47:31"><![CDATA[Statistiche]]></key>
         <key id="menu_course&amp;Student Area" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Area Studenti]]></key>
-        <key id="menu_course&amp;Teacher Area" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Area Docenti]]></key>
+        <key id="menu_course&amp;Teacher Area" attributes="" save_date="2019-10-02 11:31:32"><![CDATA[Area Docenti]]></key>
         <key id="menu_course&amp;_ADVICE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Avvisi]]></key>
         <key id="menu_course&amp;_COURSECHART" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Grafici corso]]></key>
         <key id="menu_course&amp;_COURSEREPORT" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Registro valutazioni]]></key>
@@ -2428,6 +2436,7 @@ Password: [password]]]></key>
         <key id="standard&amp;_NEW_USER" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Nuovo utente]]></key>
         <key id="standard&amp;_NEXT" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Successivi]]></key>
         <key id="standard&amp;_NEXT_B" attributes="" save_date="2017-04-11 18:47:28"><![CDATA[Prossimo >>]]></key>
+        <key id="standard&amp;_NEXT_COURSES" attributes="" save_date="2019-10-09 11:07:10"><![CDATA[Prossimi corsi]]></key>
         <key id="standard&amp;_NO" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[No]]></key>
         <key id="standard&amp;_NONE" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Nessuno]]></key>
         <key id="standard&amp;_NOTES" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Blocco note]]></key>

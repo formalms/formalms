@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20190711</DATE>
+  <DATE>20191009</DATE>
   <LANG id="english">
     <lang_code>english</lang_code>
     <lang_description>English</lang_description>
     <lang_charset>utf-8</lang_charset>
-    <lang_browsercode>en; en-us</lang_browsercode>
+    <lang_browsercode>en</lang_browsercode>
     <lang_direction>ltr</lang_direction>
     <platform id="all">
       <module id="adminrules">
@@ -429,6 +429,13 @@
         <key id="conference&amp;_SUMMARY_ROOM_AVAILABLE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Available rooms list]]></key>
       </module>
       <module id="configuration">
+        <key id="configuration&amp;MAIN_SET_1" attributes="" save_date="2019-10-02 11:36:35"><![CDATA[General settings]]></key>
+        <key id="configuration&amp;MAIN_SET_11" attributes="" save_date="2019-10-02 11:41:52"><![CDATA[Skebby Settings]]></key>
+        <key id="configuration&amp;MAIN_SET_3" attributes="" save_date="2019-10-02 11:38:21"><![CDATA[General settings]]></key>
+        <key id="configuration&amp;MAIN_SET_4" attributes="" save_date="2019-10-02 11:39:01"><![CDATA[General settings]]></key>
+        <key id="configuration&amp;MAIN_SET_6" attributes="" save_date="2019-10-02 11:39:14"><![CDATA[General settings]]></key>
+        <key id="configuration&amp;MAIN_SET_8" attributes="" save_date="2019-10-02 11:39:27"><![CDATA[General settings]]></key>
+        <key id="configuration&amp;MAIN_SET_9" attributes="" save_date="2019-10-02 11:39:53"><![CDATA[LDAP]]></key>
         <key id="configuration&amp;_ACCESSIBILITY" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Activate accessibility features]]></key>
         <key id="configuration&amp;_ALLOW_URL_FOPEN" attributes="" save_date="2015-09-30 15:32:22"><![CDATA[Configuration of "allow_url_fopen"]]></key>
         <key id="configuration&amp;_ALLOW_URL_INCLUDE" attributes="" save_date="2015-09-30 15:32:22"><![CDATA[Configuration of "allow_url_include"]]></key>
@@ -1099,6 +1106,7 @@ Password: [password]]]></key>
         <key id="event_manager&amp;_EVENT_CLASS_UserNew2" attributes="" save_date="2017-04-11 18:34:28"><![CDATA[A new user is registered via "free automatic registration" or "free automatic registration with double opt-in "]]></key>
         <key id="event_manager&amp;_EVENT_CLASS_UserNewModerated" attributes="" save_date="2017-04-10 18:29:59"><![CDATA[User subscription waiting to be approved in platform]]></key>
         <key id="event_manager&amp;_EVENT_CLASS_UserNewWaiting" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[New user waiting to be approved]]></key>
+        <key id="event_manager&amp;_EVENT_CLASS_UserRegistrationSuperadmins" attributes="" save_date="2019-07-26 12:10:53"><![CDATA[User registered - superadmins]]></key>
         <key id="event_manager&amp;_EVENT_CLASS_UserSuspendedSuperAdmin" attributes="" save_date="2019-04-17 12:10:37"><![CDATA[User has been suspended]]></key>
         <key id="event_manager&amp;_EVENT_COURSE_EVENT_SUSPENDED_USER_SBJ" attributes="" save_date="2019-04-17 12:10:37"><![CDATA[User has been suspended]]></key>
         <key id="event_manager&amp;_EVENT_COURSE_EVENT_SUSPENDED_USER_TEXT" attributes="" save_date="2019-04-17 12:10:37"><![CDATA[User with [firstname] [lastname] and userId : [username] has been suspended from course : [course] in platform : [url]]]></key>
@@ -1529,6 +1537,7 @@ In handling this information, accuracy and precision shall be met to ensure the 
         <key id="menu&amp;_WEBPAGES" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Web pages]]></key>
       </module>
       <module id="menu_course">
+        <key id="menu_course&amp;&#9; _TEACHER_AREA" attributes="" save_date="2019-08-08 16:16:58"><![CDATA[Teacher area]]></key>
         <key id="menu_course&amp;Area social" attributes="" save_date="2017-03-17 17:48:06"><![CDATA[Social area]]></key>
         <key id="menu_course&amp;Area studenti" attributes="" save_date="2017-03-17 17:45:44"><![CDATA[Student area]]></key>
         <key id="menu_course&amp;Collaborative Area" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Collaborative Area]]></key>
@@ -1536,7 +1545,6 @@ In handling this information, accuracy and precision shall be met to ensure the 
         <key id="menu_course&amp;Stat Area" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Stat Area]]></key>
         <key id="menu_course&amp;Statistiche" attributes="" save_date="2017-03-17 17:47:31"><![CDATA[Statistics]]></key>
         <key id="menu_course&amp;Student Area" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Student Area]]></key>
-        <key id="menu_course&amp;Teacher Area" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Teacher Area]]></key>
         <key id="menu_course&amp;_ADVICE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Announcements]]></key>
         <key id="menu_course&amp;_COURSECHART" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Course charts]]></key>
         <key id="menu_course&amp;_COURSEREPORT" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Grade book]]></key>

@@ -15,3 +15,7 @@ VALUES ('profile_modify_url', '', 'string', '255', '0', '3', '11', '1', '0', '')
 
 ALTER TABLE `learning_report_schedule`
 	ADD COLUMN last_execution DATETIME NULL DEFAULT NULL;
+
+ALTER TABLE `learning_courseuser` ADD INDEX `courseuser_course_idx` (`idCourse`);
+
+ALTER TABLE `core_field_userentry` CHANGE COLUMN `id_common` `id_common` INT(11) NOT NULL DEFAULT '0' ;

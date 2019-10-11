@@ -95,17 +95,20 @@ class ElearningLms extends Model {
             ."    c.max_num_subscribe, c.create_date, "
             ."    c.direct_play, c.img_othermaterial, c.course_demo, c.use_logo_in_courselist, c.img_course, c.lang_code, "
 			."	  c.course_vote, c.hour_end , "
-            ."    c.date_begin, c.date_end, c.valid_time, c.show_result, c.userStatusOp, c.auto_unsubscribe, c.unsubscribe_date_limit, "
+            ."    c.date_begin, c.date_end, c.valid_time, c.show_result, c.userStatusOp, c.auto_unsubscribe, c.unsubscribe_date_limit as course_unsubscribe_date_limit, "
 
-            ."    cu.status AS user_status, cu.level, cu.date_inscr, cu.date_first_access, cu.date_complete, cu.waiting"
+            ."    cu.status AS user_status, cu.level, cu.date_inscr, cu.date_first_access, cu.date_complete, cu.waiting,"
+
+            ."    cd.unsubscribe_date_limit as date_unsubscribe_date_limit"
 
             ." FROM %lms_course AS c "
             ." JOIN %lms_courseuser AS cu ON (c.idCourse = cu.idCourse)  "
-            ." LEFT JOIN %lms_course_date AS dt ON (dt.id_course = c.idCourse)  "
+            ." left JOIN %lms_course_date AS cd ON (c.idCourse = cd.id_course)  "
             ." WHERE ".$this->compileWhere($conditions, $params)
             .($_SESSION['id_common_label'] > 0 ? " AND c.idCourse IN (SELECT id_course FROM %lms_label_course WHERE id_common_label = '".$_SESSION['id_common_label']."')" : "")
             .$exclude_pathcourse 
             ." ORDER BY ".$this->_resolveOrder(array('cu', 'c'));
+
 
 		$rs = $db->query($query);
 

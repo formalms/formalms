@@ -977,7 +977,7 @@ INSERT INTO `core_field_type` (`type_field`, `type_file`, `type_class`, `type_ca
 --
 
 CREATE TABLE IF NOT EXISTS `core_field_userentry` (
-  `id_common` varchar(11) NOT NULL DEFAULT '',
+  `id_common` int(11) NOT NULL DEFAULT '0',
   `id_common_son` int(11) NOT NULL DEFAULT '0',
   `id_user` int(11) NOT NULL DEFAULT '0',
   `user_entry` text NOT NULL,
