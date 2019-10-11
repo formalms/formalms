@@ -1463,7 +1463,7 @@ class UserManagerRenderer
             INNER JOIN %adm_rules r ON r.id_rule = re.id_rule
             LEFT JOIN %adm_org_chart_tree AS oct
             ON (oct.idst_oc = re.id_entity) 
-            WHERE r.rule_type = 'orgchart' AND oct.idOrg = ".$reg_code;
+            WHERE r.rule_type = 'orgchart' AND oct.code = '".$reg_code."'";
         $result = sql_query($query);
         $entity = sql_fetch_array($result);
 
