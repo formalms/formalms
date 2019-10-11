@@ -1530,7 +1530,11 @@ class UserManagerRenderer
                 case "tree_man" : {
                     // resolving the tree_man
                     $array_course = $this->getCodeCourses($reg_code);
-                    $array_folder = array($reg_code => $reg_code);
+
+                    $org = sql_fetch_object(sql_query("SELECT idOrg FROM %adm_org_chart_tree WHERE code = '".$reg_code."'"));
+                    $reg_id = $org->idOrg;
+
+                    $array_folder = array($reg_code => $reg_id);
 
                     if (empty($array_folder) && $code_is_mandatory) {
 
