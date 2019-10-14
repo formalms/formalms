@@ -60,7 +60,7 @@
             $userCourses = array();
             
             // what type is the association? 
-            if ( !empty($usersIdArr = $this->model->getUsersBelongsMeta($id_meta, COURSE) ) ){ // Type assoc. : course
+            if ( !empty($usersIdArr = $this->model->getAssociationLink($id_meta, COURSE) ) ){ // Type assoc. : course
                 
                 // Getting all the courses from the user in the assoc.
                 foreach($usersIdArr as $idUser) {

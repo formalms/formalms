@@ -4,7 +4,8 @@
                     .'<div class="std_block">'
                     .$form->openForm('new_assign_step_3', 'index.php?r=alms/'.$this->controller_name.'/'.$opsArr['saveAssignment'])
                     .$form->getHidden('id_certificate', 'id_certificate', $id_certificate)
-                    .$form->getHidden('id_metacertificate', 'id_metacertificate', $id_metacertificate)
+                    .$form->getHidden('id_assoc', 'id_assoc', $id_association)
+                    .$form->getHidden('type_assoc', 'type_assoc', $type_assoc)
                     );
              
         cout(    

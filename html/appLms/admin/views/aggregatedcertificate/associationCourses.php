@@ -1,6 +1,6 @@
 <?php
 
-Util::get_js(Get::rel_path('lms').'/admin/views/metacertificate/tabbedcontent.min.js', true, true);
+Util::get_js(Get::rel_path('lms').'/admin/views/'.$controller_name.'/tabbedcontent.min.js', true, true);
 Util::get_css(Get::rel_path('base').'/addons/jquery/bootstrap-treeview/bootstrap-treeview.min.css', true, true);
 
 include Forma::inc(_lib_ . '/formatable/include.php');
@@ -33,9 +33,9 @@ cout(
     <?php 
         // Printing initially all the courses if i'm editing the assoc.
         if(isset($idsCourses)) 
-            echo "var idsCourseArr = " . json_encode($idsCourses); 
+            echo "var idsCourseArr = " . json_encode($idsCourses) . ";";
         else if(isset($idsCoursePath))
-            echo "var idsCoursePathArr = " . json_encode($idsCoursePath);
+            echo "var idsCoursePathArr = " . json_encode($idsCoursePath) . ";";
     ?>
    
     
@@ -53,7 +53,7 @@ cout(
                      data: {
                         "nodesArr" : "0",
                      },
-                     url: 'ajax.adm_server.php?r=alms/metacertificate/getCourseList',
+                     url: "<?= 'ajax.adm_server.php?r=alms/' . $controller_name . '/getCourseList'?>",
                      "dataSrc": "",
                 }, 
                 language: {       //TODO: Aggiungere lingue
@@ -158,22 +158,9 @@ cout(
                     "nodesArr" : nodesIdArr.join(","),
                 },
                 "dataType": "json",
-                url: 'ajax.adm_server.php?r=alms/metacertificate/getCourseList',
+                url: "<?= 'ajax.adm_server.php?r=alms/' . $controller_name . '/getCourseList'?>",
                 success: function(res){
 
-                    // Iterate over all selected checkboxes
-                
-          /*      var rows_selected = course_ft._datatable.rows( { selected: true } ).data();  // FORMATABLE
-                  //var rows_selected = course_ft.rows( { selected: true } ).data();
-
-                $.each(rows_selected, function(index, rowId) {
-                  
-                        if( idsCourseArr.indexOf(rowId) === -1 )
-                            idsCourseArr.push(rowId[0]);
- 
-                });*/
-                   
-                  
                   if(res !== null) {
                       
                       course_ft._datatable.clear().rows.add(res).draw(); 
@@ -185,7 +172,6 @@ cout(
                       
                   } else
                       course_ft._datatable.clear().draw();
-
 
                 },
                 
@@ -199,8 +185,10 @@ cout(
             
             processing: true,
             serverSide: true,
-            ajax: "ajax.adm_server.php?r=alms/metacertificate/getCoursePathList",
-          
+            'ajax': {
+                type: 'POST',
+                url: "<?= 'ajax.adm_server.php?r=alms/' . $controller_name . '/getCoursePathList'?>",
+            },
             rowId: function(row) {
               return row.idCoursePath;
             },
@@ -293,70 +281,11 @@ cout(
   
         });
           
-      }  
-      /*
-        // Course catalog
-        coursecatalog_ft = $('#coursecatalog_ft').FormaTable({
-             
-            processing: true,
-            serverSide: true,
-            ajax: "ajax.adm_server.php?r=alms/metacertificate/getCatalogCourseList",
-            
-            rowId: function(row) {
-                return row.idCatalogue;
-                },
-            language: {       //TODO: Aggiungere lingue
+      }
 
-                "emptyTable": "<?= Lang::t('_NO_COURSE_FOUND','catalogue'); ?>",
-                "info": "<?= Lang::t('_INFO','datatable'); ?>",
-                "infoEmpty": "<?= Lang::t('_INFOEMPTY','datatable'); ?>",
-                select: {
-                    rows: {
-                        0: "<?= Lang::t('_NO_ROWS_SELECTED','datatable'); ?>",
-                        1: "<?= Lang::t('_ONE_ROW_SELECTED','datatable'); ?>",
-                        _: "<?= Lang::t('_ROWS_SELECTED','datatable'); ?>",
-
-                    }
-                }
-            },
-
-            columns:[
-                {
-                    data: 'idCatalogue',
-                    sortable: false,
-                    visible: false,
-                    searchable: false,
-
-                },
-                { 
-                    data: 'nameCatalog',
-                    title: "<?= Lang::t('_NAME') ?>",
-                },
-                { 
-                    data: 'descriptionCatalog',
-                    title: "<?= Lang::t('_DESCRIPTION') ?>",
-                    searchable: false 
-                }
-            ],
-            columnDefs: [ {
-                className: 'select-checkbox',
-                
-                targets:   0,
-
-            } ],
-            select: {
-                    style: 'multi',
-                    all: true   
-            }, 
-            'order': [[1, 'asc']]
-
-        });*/
-   
         $('#new_assign_step_2').on('submit', function(e){
              
               var form = this;
-
-              
               
               if(typeof idsCourseArr !== 'undefined'){
                  $(form).append(
@@ -371,25 +300,16 @@ cout(
                         .attr('name', 'oldestCourses')
                         .val(<?= json_encode($idsCourses) ?>)
                  ); 
-              } else if(typeof idsCoursePathArr !== 'undefined'){
-                
-                 $(form).append(
-                     $('<input>')
-                        .attr('type', 'hidden')
-                        .attr('name', 'idsCoursePath')
-                        .val(idsCoursePathArr)
-                 );
-                  
+              } else if(typeof idsCoursePathArr !== 'undefined') {
+
+                  $(form).append(
+                      $('<input>')
+                          .attr('type', 'hidden')
+                          .attr('name', 'idsCoursePath')
+                          .val(idsCoursePathArr)
+                  );
+
               }
-              
-                 
-             /*
-              $(form).append(
-                     $('<input>')
-                        .attr('type', 'hidden')
-                        .attr('name', 'idsCourseCatalogArr')
-                        .val(idsCourseCatalogArr)
-                 );  */
                          
            });
 
@@ -413,7 +333,6 @@ cout(
     }
 
 
-
 </script>
 
 <?php
@@ -421,17 +340,7 @@ cout(
     require_once($GLOBALS["where_lms"].'/lib/tab/lib.tab.php');
     require_once(_base_.'/lib/lib.table.php');
 
-   /* $tb = new Table(Get::sett("visuItem"), Lang::t("_COURSE_LIST"));
-    $tb->addHead(
-            array('',
-                Lang::t("_CODE"),
-                Lang::t("_COURSE_NAME"),
-                Lang::t("_STATUS"),
-                )
-    );
-    $tb->addBody(array("Test","test 2", "test 3", "test 4")); */
-
-    ?>
+?>
 
     <input type="hidden" value="" id="nodesArr" />
 
@@ -448,7 +357,7 @@ cout(
         $tb_courses->addHead($cont_h);
         $tb_courses->setColsStyle($type_h);
         
-        foreach($coursesArr as $course){
+        foreach($coursesArr as $course) {
             $tb_courses->addBody($course);
         }
     } 
@@ -481,7 +390,8 @@ cout(
 
    cout(
     Form::getHidden("id_certificate","id_certificate",$id_certificate)
-    .Form::getHidden("id_metacertificate","id_metacertificate",$id_metacertificate)
+    .Form::getHidden("id_association","id_association",$id_association)
+    .Form::getHidden("type_assoc","type_assoc",$type_assoc)
     );
 
     cout(
