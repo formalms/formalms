@@ -80,11 +80,13 @@ class DashboardBlockCoursesLms extends DashboardBlockLms
 		// course status : all status, new, completed, in progress
 		$conditions[] = '(c.status <> 3)';
 
+		$midnight = new DateTime('midnight');
+		$midnight = date_format($midnight, 'Y-m-d H:i:s');
+
 		$elearningConditions = $conditions;
 		$elearningConditions[] = "c.course_type = ':course_type'";
-		$elearningConditions[] = 'c.date_begin >= NOW()';
+		$elearningConditions[] = 'c.date_begin >= '.$midnight;
 		$elearningConditions[] = 'c.date_end != 0000-00-00';
-
 
 		$elearningParams = $params;
 		$elearningParams[':course_type'] = 'elearning';
