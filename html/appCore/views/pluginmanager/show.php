@@ -35,6 +35,11 @@ $(function() {
             { data: 'author', title: '<?php echo Lang::t('_PLUGIN_AUTHOR', 'configuration'); ?>', sortable: true, width: '10%' },
             { data: 'category', title: '<?php echo Lang::t('_PLUGIN_CATEGORY', 'configuration'); ?>', sortable: true, width: '10%' },
             { data: 'description', title: '<?php echo Lang::t('_PLUGIN_DESCRIPTION', 'configuration'); ?>', sortable: false },
+            { title: '<?php echo Lang::t('_PLUGIN_SETTINGS', 'configuration')?>', width: '5%', sortable: false, searchable: false, render: function(data, type, row, meta) {
+                if (row['plugin_id']){
+                    return ' <a class="forma-button forma-button--orange-hover"  href="index.php?r=adm/pluginmanager/showSettings'+'&plugin=' + row['name'] + '"><?php echo Lang::t('_PLUGIN_SETTINGS', 'configuration')?></a>';
+                }
+            }},
             { title: '<?php echo Lang::t('_PLUGIN_INSTALL', 'configuration'); ?>', width: '5%', sortable: false, searchable: false, render: function(data, type, row, meta) {
                 $info = row
                 $install = ""
@@ -49,22 +54,22 @@ $(function() {
                                 }
                                 $install+='<div style="color: grey; cursor: help;" title=" <?php echo Lang::t('_PLUGIN_ERROR_UNINSTALL_DEPENDENCE', 'configuration')?>' + $dependencies + '"><?php echo Lang::t('_PLUGIN_UNINSTALL', 'configuration')?></div>';
                             } else {
-                                $install+='<a style="color: #C84000;" href="javascript:askUninstall(\'index.php?r=adm/pluginmanager/uninstall'+'&plugin=' + $info['name'] + '\');"><?php echo Lang::t('_PLUGIN_UNINSTALL', 'configuration')?></a>';
+                                $install+='<a class="forma-button forma-button--orange-hover"  href="javascript:askUninstall(\'index.php?r=adm/pluginmanager/uninstall'+'&plugin=' + $info['name'] + '\');"><?php echo Lang::t('_PLUGIN_UNINSTALL', 'configuration')?></a>';
                                 if ($info['update']){
                                     $error="";
                                     <?php if (!class_exists('ZipArchive')): ?>
                                         $error+= '<?php echo Lang::t('_PLUGIN_ERROR_NOT_ONLINE_UPDATE', 'configuration')?><br>';
                                     <?php endif; ?>
-                                    $install+= ' <a title="' + $error + '" style="color: #006d07;" href="index.php?r=adm/pluginmanager/update' + '&plugin=' + $info['name'] + '&online=' + $info['online'] + '"><?php echo Lang::t('_PLUGIN_UPDATE', 'configuration')?></a>';
+                                    $install+= ' <a class="forma-button forma-button--orange-hover" title="' + $error + '" style="color: #006d07;" href="index.php?r=adm/pluginmanager/update' + '&plugin=' + $info['name'] + '&online=' + $info['online'] + '"><?php echo Lang::t('_PLUGIN_UPDATE', 'configuration')?></a>';
                                 }
                             }
                         }else {
-                            $errors+= '<a style="color: #c80014;" href="javascript:;"><?php echo Lang::t('_PLUGIN_ERROR_OLD_VERSION', 'configuration')?></a>';
+                            $errors+= '<a class="forma-button forma-button--orange-hover" style="color: #c80014;" href="javascript:;"><?php echo Lang::t('_PLUGIN_ERROR_OLD_VERSION', 'configuration')?></a>';
                         }
                     }
                 } else {
                     if (!$info['dependencies_unsatisfied']){
-                        $install+='<a style="color: #C84000;" href="index.php?r=adm/pluginmanager/install&plugin=' + $info['name'] + '"><?php echo Lang::t('_PLUGIN_INSTALL', 'configuration')?></a>';
+                        $install+='<a class="forma-button forma-button--orange-hover"  href="index.php?r=adm/pluginmanager/install&plugin=' + $info['name'] + '"><?php echo Lang::t('_PLUGIN_INSTALL', 'configuration')?></a>';
                     } else {
                         $dependencies = "";
                         for (var $k = 0; $k < $info['dependencies_unsatisfied'].length; $k++) {
@@ -75,11 +80,9 @@ $(function() {
                 }
                 return $install + $errors
             }},
-            { width: '5%', sortable: false, searchable: false, render: function(data, type, row, meta) {
-                if (row['plugin_id']){
-                    return ' <a style="color: #C84000;" href="index.php?r=adm/pluginmanager/showSettings'+'&plugin=' + row['name'] + '"><?php echo Lang::t('_PLUGIN_SETTINGS', 'configuration')?></a>';
-                } else {
-                    return '<a style="color: red;" href="javascript:askPurge(\'index.php?r=adm/pluginmanager/purge'+'&plugin=' + $info['name'] + '\');"><?php echo Lang::t('_PLUGIN_PURGE', 'configuration')?></a>';
+            { title: '<?php echo Lang::t('_PLUGIN_PURGE', 'configuration')?>', width: '80', sortable: false, searchable: false, render: function(data, type, row, meta) {
+                if (!row['plugin_id']){
+                    return '<a class="forma-button purge-button" href="javascript:askPurge(\'index.php?r=adm/pluginmanager/purge'+'&plugin=' + $info['name'] + '\');"><span class="ico-sprite subs_del"/></a>';
                 }
             }},
             { title: '<?php echo Lang::t('_PLUGIN_ACTIVATE', 'configuration'); ?>', width: '5%', sortable: false, searchable: false, render: function(data, type, row, meta) {
@@ -97,10 +100,10 @@ $(function() {
                             } else {
                                 //if active
                                 if ($info['active']=="1"){
-                                    $activate+=' <a style="color: #C84000;" href="index.php?r=adm/pluginmanager/deactivate'+'&plugin=' + $info['name'] + '"><?php echo Lang::t('_PLUGIN_DEACTIVATE', 'configuration')?></a>';
+                                    $activate+=' <a class="forma-button forma-button--orange-hover"  href="index.php?r=adm/pluginmanager/deactivate'+'&plugin=' + $info['name'] + '"><?php echo Lang::t('_PLUGIN_DEACTIVATE', 'configuration')?></a>';
                                     //if not active
                                 } else {
-                                    $activate+=' <a style="color: #C84000;" href="index.php?r=adm/pluginmanager/activate'+'&plugin=' + $info['name'] + '"><?php echo Lang::t('_PLUGIN_ACTIVATE', 'configuration')?></a>';
+                                    $activate+=' <a class="forma-button forma-button--orange-hover"  href="index.php?r=adm/pluginmanager/activate'+'&plugin=' + $info['name'] + '"><?php echo Lang::t('_PLUGIN_ACTIVATE', 'configuration')?></a>';
                                 }
                             }
                         }
@@ -115,8 +118,8 @@ $(function() {
                     '<form>' +
                         '<input type="hidden" name="r" value="adm/pluginmanager/set_priority"/>' +
                         '<input type="hidden" name="plugin" value="' + $info['name'] + '"/>' +
-                        '<input style="height: 25px; max-width: 70px; font-size: 13px;" class="form-control" type="number" name="priority" value="' + $info['priority'] + '"/>' +
-                        '<button style="display: inline-block; width: auto; margin-left: 10px; height: 25px; line-height: 20px; padding-left: 10px; padding-right:10px;" class="forma-button forma-button--orange-hover" submit><?php echo Lang::t('_SET', 'configuration')?></button>' +
+                        '<input style="height: 28px; max-width: 70px; font-size: 13px;" class="form-control" type="number" name="priority" value="' + $info['priority'] + '"/>' +
+                        '<button style="display: inline-block; width: auto; margin-left: 10px; height: 28px; line-height: 20px; padding-left: 10px; padding-right:10px;" class="forma-button forma-button--orange-hover" submit><?php echo Lang::t('_SET', 'configuration')?></button>' +
                     '</form>'+
                 '';
             }
@@ -133,5 +136,12 @@ $(function() {
 <style>
     #plugins tr td{
         height: 28px;
+    }
+    #plugins tr td .forma-button {
+        display: inline-block; width: auto; margin-left: 10px; height: 28px; line-height: 20px; padding-left: 10px; padding-right:10px;
+    }
+    #plugins tr td .purge-button {
+        background-color: white;
+        border: 2px solid #900;
     }
 </style>
