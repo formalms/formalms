@@ -161,16 +161,16 @@ class Lang {
 	 * @param string $module the module to load
 	 * @param string $lang_code the lang code
 	 */
-	public static function load_module($module, $lang_code = false) {
+	public static function load_module($module, $lang_code = false, $includeDisabledPlugins = false) {
 
                 if(!$lang_code) $lang_code = self::lang_code();
 		//$lang_code = self::lang_code($lang_code);
-		if(isset(self::$_loaded_modules[$lang_code][$module])) return true;
+		if(isset(self::$_loaded_modules[$lang_code][$module]) && $includeDisabledPlugins===false ) return true;
 		else self::$_loaded_modules[$lang_code][$module] = $module;
 
 		// load module translations
 		if(!self::$_lang) self::$_lang = new LangAdm();
-		self::$translations[$lang_code][$module] = self::$_lang->getTranslation($module, $lang_code);
+		self::$translations[$lang_code][$module] = self::$_lang->getTranslation($module, $lang_code, $includeDisabledPlugins);
 	}
 
 	/**
@@ -208,14 +208,14 @@ class Lang {
 	 * @param string $default the default value if a translation is not found
 	 * @return string 
 	 */
-	public static function t($key, $module = false, $substitution = array(), $lang_code = false, $default = false) {
+	public static function t($key, $module = false, $substitution = array(), $lang_code = false, $default = false, $includeDisabledPlugins = false) {
 
 		if($key == '') return '';
 		if(self::$_lang == false) self::init('standard');
 		if(!$module) $module = self::$_module;
 		if(!$lang_code)$lang_code = self::lang_code();
                 //$lang_code = self::lang_code($lang_code);
-		self::load_module($module, $lang_code);
+		self::load_module($module, $lang_code, $includeDisabledPlugins);
 
 		$translation = '';
 		if (Get::cfg('log_missing_translation_level', (int)0) > 0 ) {
