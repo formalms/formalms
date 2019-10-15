@@ -233,7 +233,7 @@ class SettingAdm extends Model
 	 * REturnes the displayable information for a selected group
 	 * @return string
 	 */
-    function printPageWithElement($regroup)
+    function printPageWithElement($regroup, $includeDisabledPlugins = false)
     {
 
         require_once(_base_ . '/lib/lib.form.php');
@@ -631,7 +631,7 @@ class SettingAdm extends Model
 
 					default : {
 						//string or int
-	                    echo Form::getTextfield(Lang::t('_' . strtoupper($var_name), 'configuration'),
+	                    echo Form::getTextfield(Lang::t('_' . strtoupper($var_name), 'configuration', array(), false, false, $includeDisabledPlugins),
 													$var_name,
 	                        'option[' . $var_name . ']',
 													$max_size,

@@ -13,28 +13,41 @@
 
 class PluginmanagerAdmController extends AdmController {
 
+    public function init() {
+		$this->model = new PluginmanagerAdm();
+		$this->json = new Services_JSON();
+	}
+
     public function showTask() {
-        $model = new PluginmanagerAdm();
-        $plugins = $model->getPlugins();
+        $plugins = $this->model->getPlugins();
         $feedback = "";
         switch (Get::req('result', DOTY_ALPHANUM, "")) {
-			case 'ok': $feedback = UIFeedback::info(Lang::t('_OPERATION_SUCCESSFUL', 'standard')); break;
-			case 'err': $feedback = UIFeedback::error(Lang::t('_OPERATION_FAILURE', 'standard')); break;
+			case 'ok': $feedback = Lang::t('_OPERATION_SUCCESSFUL', 'standard'); break;
+			case 'err': $feedback = Lang::t('_OPERATION_FAILURE', 'standard'); break;
             default:
 
 		}
         $this->render('show', array(
-                'model' => $model,
                 'plugins' => $plugins,
                 'feedback' => $feedback
             )
         );
     }
 
+    // nuova
+    public function getTableData() {
+        $plugins = $this->model->getPlugins();
+        echo $this->json->encode([
+			'data' => array_values($plugins),
+			'recordsTotal' => count($plugins),
+			'recordsFiltered' => count($plugins),
+        ]);
+        exit;
+    }
+
     public function install() {
-        $model = new PluginmanagerAdm();
         $plugin = Get::req('plugin');
-        $res=$model->installPlugin($plugin,0);
+        $res=$this->model->installPlugin($plugin,0);
         if($res) {
             Util::jump_to('index.php?r=adm/pluginmanager/show&active_tab='.$plugin.'&result=ok');
         } else {
@@ -43,9 +56,8 @@ class PluginmanagerAdmController extends AdmController {
     }
 
     public function uninstall() {
-        $model = new PluginmanagerAdm();
         $plugin = Get::req('plugin');
-        $res=$model->uninstallPlugin($plugin);
+        $res=$this->model->uninstallPlugin($plugin);
         if($res) {
             Util::jump_to('index.php?r=adm/pluginmanager/show&active_tab='.$plugin.'&result=ok');
         } else {
@@ -54,10 +66,9 @@ class PluginmanagerAdmController extends AdmController {
     }
 
     public function update() {
-        $model = new PluginmanagerAdm();
         $plugin = Get::req('plugin');
         $online = Get::req('online');
-        $res=$model->updatePlugin($plugin,$online);
+        $res=$this->model->updatePlugin($plugin,$online);
         if($res) {
             Util::jump_to('index.php?r=adm/pluginmanager/show&active_tab='.$plugin.'&result=ok');
         } else {
@@ -66,9 +77,8 @@ class PluginmanagerAdmController extends AdmController {
     }
 
     public function activate() {
-        $model = new PluginmanagerAdm();
         $plugin = Get::req('plugin');
-        $res=$model->setupPlugin($plugin, 1);
+        $res=$this->model->setupPlugin($plugin, 1);
         if($res) {
             Util::jump_to('index.php?r=adm/pluginmanager/show&active_tab='.$plugin.'&result=ok');
         } else {
@@ -77,9 +87,19 @@ class PluginmanagerAdmController extends AdmController {
     }
 
     public function deactivate() {
-        $model = new PluginmanagerAdm();
         $plugin = Get::req('plugin');
-        $res=$model->setupPlugin($plugin, 0);
+        $res=$this->model->setupPlugin($plugin, 0);
+        if($res) {
+            Util::jump_to('index.php?r=adm/pluginmanager/show&active_tab='.$plugin.'&result=ok');
+        } else {
+            Util::jump_to('index.php?r=adm/pluginmanager/show&active_tab='.$plugin.'&result=err');
+        }
+    }
+
+    public function set_priority() {
+        $plugin = Get::req('plugin');
+        $priority = Get::req('priority', DOTY_INT, 0);
+        $res=$this->model->setPriority($plugin, $priority);
         if($res) {
             Util::jump_to('index.php?r=adm/pluginmanager/show&active_tab='.$plugin.'&result=ok');
         } else {
