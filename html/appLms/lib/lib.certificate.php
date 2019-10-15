@@ -864,9 +864,16 @@ class Certificate {
 
 	function send_certificate($id_certificate, $id_user, $id_course, $array_substituton = false, $download = true, $from_multi = false)
 	{
-		$id_meta = Get::req('id_meta', DOTY_INT, 0);
+		$isAggregatedCert = Get::req('aggCert', DOTY_INT, 0);
+        if( $isAggregatedCert){
+            require_once(_files_lms_.'/'._folder_lib_.'/lib.aggregated_certificate.php');
+            $aggCertLib = new AggregatedCertificate();
+        }
 
-		if(!isset($_GET['id_meta']))
+
+
+		// funct. not called not by aggregated cert.
+		if( ! $isAggregatedCert)
 			$query_certificate = "
 			SELECT cert_file
 			FROM ".$GLOBALS['prefix_lms']."_certificate_assign
@@ -874,11 +881,14 @@ class Certificate {
 				 AND id_course = '".$id_course."'
 				 AND id_user = '".$id_user."' ";
 		else
-			$query_certificate = "
-			SELECT cert_file
-			FROM ".$GLOBALS['prefix_lms']."_certificate_meta_assign
-			WHERE idUser = '".$id_user."'
-			AND idMetaCertificate = '".$id_meta."'";
+            $query_certificate = "SELECT cert_file"
+			." FROM ".$GLOBALS['prefix_lms'].$aggCertLib->table_assign_agg_cert
+			." WHERE idUser = ".$id_user
+            ." AND idCertificate = ".$id_certificate;
+
+
+
+
 
 		$re = sql_query($query_certificate);
 		echo sql_error();
@@ -913,16 +923,16 @@ class Certificate {
 		sl_close_fileoperations();
 
 		//save the generated file in database
-		if(!isset($_GET['id_meta']))
+        if(!$isAggregatedCert)
 			$query = "INSERT INTO ".$GLOBALS['prefix_lms']."_certificate_assign "
 			." ( id_certificate, id_course, id_user, on_date, cert_file ) "
 			." VALUES "
 			." ( '".$id_certificate."', '".$id_course."', '".$id_user."', '".date("Y-m-d H:i:s")."', '".addslashes($cert_file)."' ) ";
 		else
-			$query = "INSERT INTO ".$GLOBALS['prefix_lms']."_certificate_meta_assign "
-			." ( idUser, idMetaCertificate, idCertificate, on_date, cert_file ) "
-			." VALUES "
-			." ('".$id_user."', '".$id_meta."', '".$id_certificate."', '".date("Y-m-d H:i:s")."', '".addslashes($cert_file)."' ) ";
+			$query = "INSERT INTO ".$GLOBALS['prefix_lms'].$aggCertLib->table_assign_agg_cert
+			        ." ( idUser, idAssociation, idCertificate, on_date, cert_file ) "
+			        ." VALUES "
+			        ." ('".$id_user."', '".$isAggregatedCert."', '".$id_certificate."', '".date("Y-m-d H:i:s")."', '".addslashes($cert_file)."' ) ";
 
 		if(!sql_query($query)) return false;
 

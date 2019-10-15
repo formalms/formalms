@@ -5,7 +5,9 @@
         .  '<div class="std_block">'
         .getBackUi( 'index.php?r=alms/'.$controller_name.'/'.$opsArr['home'], Lang::t('_BACK') )
         .  $tb->getTable()
-          . '</div>'
+        .getBackUi( 'index.php?r=alms/'.$controller_name.'/'.$opsArr['home'], Lang::t('_BACK') )
+
+        . '</div>'
 
       );
 

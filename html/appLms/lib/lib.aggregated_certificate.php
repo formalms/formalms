@@ -222,7 +222,7 @@ class AggregatedCertificate {
         $q =      "SELECT "
                 . $field_link
                 . " FROM ". $GLOBALS['prefix_lms'] . $table
-                . " WHERE idAssociation ". ( (is_array($id_association) && count($id_association) > 1) ? " IN (" . implode(", ", $id_association) . ")" : " = " . $id_association)
+                . " WHERE idAssociation ". ( is_array($id_association) ? " IN (" . implode(", ", $id_association) . ")" : " = " . $id_association)
                 . (!empty($userIdsArr) ? " AND idUser ". ( is_array($userIdsArr) ? " IN (" . implode( ", ", $userIdsArr) . ") " : " = " . $userIdsArr) : "");
 
         $rs = sql_query($q);
@@ -360,9 +360,9 @@ class AggregatedCertificate {
 
         $query =    "SELECT COUNT(*)"
             ." FROM ".$GLOBALS['prefix_lms']."_courseuser"
-            ." WHERE idCourse = '".$id_course."'"
-            ." AND idUser = '".$id_user."'"
-            ." AND status = '"._CUS_END."'";
+            ." WHERE idCourse = ".$id_course
+            ." AND idUser = ".$id_user
+            ." AND status = "._CUS_END;
 
         $rs = sql_query($query);
 
@@ -462,6 +462,16 @@ class AggregatedCertificate {
 
     }
 
+    function getAggregatedCertFileName($idUser, $idCertificate){
+
+        $query = "SELECT cert_file"
+                ." FROM ".$GLOBALS['prefix_lms'].$this->table_assign_agg_cert
+                ." WHERE idUser = ".$idUser
+                ." AND idCertificate = ".$idCertificate;
+
+        return sql_fetch_row(sql_query($query));
+
+    }
 
     function getCourseListFromIdCat($idCategoryArr) {
 
@@ -793,6 +803,14 @@ class AggregatedCertificate {
         
     }
 
+    function deleteReleasedCert($id_user, $id_cert){
+        $query =    "DELETE FROM ".$GLOBALS['prefix_lms']. $this->table_assign_agg_cert
+            ." WHERE idUser = ".$id_user
+            ." AND idCertificate = ".$id_cert;
+
+        return sql_query($query);
+    }
+
     /**
      * @param $idsArr can be single int or array of int ids
      *
@@ -817,12 +835,19 @@ class AggregatedCertificate {
      *
      * @return reouce_id
      */
-    function deleteAssociations($idsArr, $idLinksArr = []) {
+    function deleteAssociations($idsArr, $type_assoc = -1, $idLinksArr = []) {
 
        $rs = $this->deleteAssociationsMetadata($idsArr);
         
        if($rs) {
 
+           if($type_assoc != -1){
+
+               $rs = $this->deleteAssociationLinks($idsArr, $type_assoc);
+
+           } else {
+
+           }
            foreach ($idsArr as $id_assoc) {
 
                $type_association = $this->getTypeAssoc($id_assoc);
