@@ -2028,9 +2028,9 @@ class Man_CourseUser {
             
             $query =    "SELECT COUNT(*)"
                     ." FROM " . $this->_table_user_subscription
-                    ." WHERE idCourse = '" . $id_course . "'"
-                    ." AND idUser = '" . $id_user . "'"
-                    ." AND status = '" . _CUS_END . "'";
+                    ." WHERE idCourse = " . $id_course
+                    ." AND idUser = " . $id_user
+                    ." AND status = " . _CUS_END ;
                     
             $rs = sql_query($query);
     

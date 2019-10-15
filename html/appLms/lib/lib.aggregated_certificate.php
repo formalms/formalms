@@ -13,7 +13,7 @@ class AggregatedCertificate {
         $this->table_cert_meta_association = '_aggregated_certificate_metadata_association';
         $this->table_cert_meta_association_courses = '_aggregated_certificate_association_course';
         $this->table_cert_meta_association_coursepath = '_aggregated_certificate_association_coursepath';
-
+        $this->table_assign_agg_cert = '_aggregated_certificate_assign';
     }
     
     
@@ -172,7 +172,7 @@ class AggregatedCertificate {
     /**
      * Returns an array of id/s associations (object)
      *
-     * @param mixed $idCert
+     * @param int $idCert
      */
     function getIdAssociations($idCert) {
 
@@ -194,15 +194,17 @@ class AggregatedCertificate {
 
 
     /**
-     * Returning an array of 0 or more users belonging to the association
+     * Returning all associations between idAssociation or,
+     * if i pass an array of user, the ids of the link whom the users belong
      *
-     * @param mixed $id_association
+     * @param array | int $id_association
      * @param mixed $type_assoc
+     * @param mixed $userIdsArr optional (for filtering query with users)
      *
-     * @return array $usersArr
+     * @return array $usersArr an array of 0 or more rows with the link ids
      */
 
-    function getAssociationLink($id_association, $type_assoc, $userIdsArr = [], $linkIdsArr = [] ){
+    function getAssociationLink($id_association, $type_assoc, $userIdsArr = [] ){
 
         switch($type_assoc) {
             case COURSE:
@@ -217,41 +219,30 @@ class AggregatedCertificate {
                 return;
         }
 
-        $q =    "SELECT "
-            .   (!empty($userIdsArr) && !empty($linkIdsArr) ? " *" : " DISTINCT idUser") // If i'm passing array of id user and array of links, i want to check if there are any assoc
-            .   " FROM ". $GLOBALS['prefix_lms'] . $table
-            .   " WHERE idAssociation = ".$id_association
-            .   (!empty($userIdsArr) ? " AND idUser ". ( is_array($userIdsArr) ? " IN (" . implode( ", ", $userIdsArr) . ") " : " = " . $userIdsArr) : "")
-            .   (!empty($linkIdsArr) ? " AND " . $field_link . ( is_array($linkIdsArr) ? " IN (" . implode( ", ", $linkIdsArr) . ")" : " = " . $linkIdsArr ) : "");
-
+        $q =      "SELECT "
+                . $field_link
+                . " FROM ". $GLOBALS['prefix_lms'] . $table
+                . " WHERE idAssociation ". ( (is_array($id_association) && count($id_association) > 1) ? " IN (" . implode(", ", $id_association) . ")" : " = " . $id_association)
+                . (!empty($userIdsArr) ? " AND idUser ". ( is_array($userIdsArr) ? " IN (" . implode( ", ", $userIdsArr) . ") " : " = " . $userIdsArr) : "");
 
         $rs = sql_query($q);
 
         $assocArr = array();
 
-        $k = 0;
-        while($row = sql_fetch_array($rs)){
 
-            if(empty($userIdsArr) && empty($linkIdsArr))
-                $assocArr[$k] = (int) $row['idUser']; // Creating user array belonging to the assoc.
+        while($row = sql_fetch_array($rs))
+            $assocArr[] = (int) $row[$field_link];
 
-            if(!empty($userIdsArr)){
-                $assocArr[$k] = (int) $row['idUser'];
-                $assocArr[$k] = (int) $row[$field_link];
-
-            }
-            if(!empty($linkIdsArr)){
-
-                $assocArr[$k] = (int) $row['idUser'];
-
-            }
-            $k++;
-
-        }
 
         return $assocArr;
     }
 
+    /**
+     * @param array | int $id_assoc
+     * @param $type_assoc
+     *
+     * @return array|void
+     */
     function getAllUsersFromIdAssoc($id_assoc, $type_assoc) {
 
         switch($type_assoc) {
@@ -268,13 +259,13 @@ class AggregatedCertificate {
         $q =    "SELECT "
             .   "DISTINCT idUser" // If i'm passing array of id user and array of links, i want to check if there are any assoc
             .   " FROM ". $GLOBALS['prefix_lms'] . $table
-            .   " WHERE idAssociation = ".$id_assoc;
+            .   " WHERE idAssociation ". ( is_array($id_assoc) ? " IN (" . implode(", ", $id_assoc) . ")" : " = " . $id_assoc);
 
 
         $rs = sql_query($q);
 
         while($rows = sql_fetch_assoc($rs)) {
-            $id_users[] = $rows['idUser'];
+            $id_users[] = (int) $rows['idUser'];
         }
         return $id_users;
 
@@ -384,6 +375,18 @@ class AggregatedCertificate {
         return $count;
     }
 
+    function hasUserAggCertsReleased($id_user, $id_cert){
+
+
+            $q = "SELECT * "
+                ." FROM ". $GLOBALS['prefix_lms']. $this->table_assign_agg_cert
+                ." WHERE idUser = ".$id_user
+                ." AND idCertificate = ".$id_cert;
+
+           return sql_num_rows(sql_query($q));
+
+
+        }
 
     /**
      *
@@ -510,29 +513,34 @@ class AggregatedCertificate {
 
     }
 
-
-    function getTypeMetacert($id_assoc){
+    /**
+     *  Return type of association (if the assoc. is btw courses, coursepath...
+     *
+     * @param $id_assoc
+     *
+     * @return int|string
+     */
+    function getTypeAssoc($id_assoc){
 
         $assocTypesArr = array(
             COURSE => $this->table_cert_meta_association_courses,
             COURSE_PATH =>  $this->table_cert_meta_association_coursepath
         );
 
+        $type_assoc = -1; // Assoc. not found.
 
         foreach($assocTypesArr as $key => $table) {
 
             $q = "SELECT * 
                 FROM ". $GLOBALS['prefix_lms']. $table ."
-                WHERE idAssociation = ".$id_assoc
-                ." LIMIT 1";
+                WHERE idAssociation = ".$id_assoc;
 
-            $rs = sql_query($q);
-
-            if(sql_fetch_array($rs)) {
-                return $key;
-            }
+            if(sql_num_rows(sql_query($q)))
+                $type_assoc = $key;
 
         }
+
+        return $type_assoc;
 
     }
 
@@ -804,27 +812,29 @@ class AggregatedCertificate {
     /**
      * Deleting associations from cert_table_meta_assoc_course or coursepath
      *
-     * @param $idsArr
-     * @param $type_assoc
+     * @param array of integer | int $idsArr
      * @param $idLinksArr
      *
      * @return reouce_id
      */
-    function deleteAssociations($idsArr, $type_assoc, $idLinksArr = []) {
-       
-       $idsArr .= implode(", " , $idsArr);
+    function deleteAssociations($idsArr, $idLinksArr = []) {
 
-      $rs = $this->deleteAssociationsMetadata($idsArr);
+       $rs = $this->deleteAssociationsMetadata($idsArr);
         
        if($rs) {
-       
-         $rs = $this->deleteAssociationLinks($idsArr, $type_assoc, $idLinksArr);
-            
+
+           foreach ($idsArr as $id_assoc) {
+
+               $type_association = $this->getTypeAssoc($id_assoc);
+
+                if($type_association != -1) // Exists at least one link assoc.
+                    $rs = $this->deleteAssociationLinks($id_assoc, $type_association, $idLinksArr);
+
+           }
+
         }
-       
 
         return $rs;
-
     }
 
     /**
@@ -867,21 +877,18 @@ class AggregatedCertificate {
     
     function updateLayout($templateArr) {
         
-        $lastElement = end($templateArr);
-        
+
         $query =    "UPDATE ".$GLOBALS['prefix_lms'].$this->table_cert
                     ." SET ";
                     foreach($templateArr as $column_header => $value){
-                       
-                        if($column_header != "id_certificate"){
-                            
-                            $query .= $column_header . " = " . $value; 
-                            if( $value != $lastElement ) $query .= ', ';   
-                        
-                        }
-                      
+
+                            $query .= $column_header . " = " . $value .",";
+
                     }
-        
+
+        $query = substr($query, 0, -1); //Removing last comma
+
+
         $query .=  " WHERE id_certificate = " . $templateArr['id_certificate'];            
        
 
