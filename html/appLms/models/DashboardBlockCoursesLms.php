@@ -25,12 +25,20 @@ class DashboardBlockCoursesLms extends DashboardBlockLms
     const COURSE_TYPE_ELEARNING = 'elearning';
     const COURSE_TYPE_CLASSROOM = 'classroom';
 
-	public function __construct()
-	{
-		parent::__construct();
-		$this->setEnabled(true);
-		$this->setType(DashboardBlockLms::TYPE_MEDIUM);
+    public function __construct($jsonConfig)
+    {
+        parent::__construct($jsonConfig);
 	}
+
+    public function parseConfig($jsonConfig) {
+
+    }
+
+    public function getAvailableTypesForBlock(): array {
+        return [
+            DashboardBlockLms::TYPE_MEDIUM
+        ];
+    }
 
 	public function getViewData(): array
 	{
@@ -158,15 +166,13 @@ class DashboardBlockCoursesLms extends DashboardBlockLms
 
 	private function findAll($conditions, $params, $limit = 0, $offset = 0)
 	{
-		$db = DbConn::getInstance();
-
 		// exclude course belonging to pathcourse in which the user is enrolled as a student
 		$learning_path_enroll = $this->getUserCoursePathCourses($params[':id_user']);
 		$exclude_pathcourse = '';
 		if (count($learning_path_enroll) > 1 && Get::sett('on_path_in_mycourses') == 'off') {
 			$exclude_path_course = "select idCourse from learning_courseuser where idUser=" . $params[':id_user'] . " and level <= 3 and idCourse in (" . implode(',', $learning_path_enroll) . ")";
-			$rs = $db->query($exclude_path_course);
-			while ($d = $db->fetch_assoc($rs)) {
+			$rs = $this->db->query($exclude_path_course);
+			while ($d = $this->db->fetch_assoc($rs)) {
 				$excl[] = $d['idCourse'];
 			}
 			$exclude_pathcourse = " and c.idCourse not in (" . implode(',', $excl) . " )";
@@ -187,10 +193,10 @@ class DashboardBlockCoursesLms extends DashboardBlockLms
 			$query .= " OFFSET $offset";
 		}
 
-		$rs = $db->query($query);
+		$rs = $this->db->query($query);
 
 		$result = [];
-		while ($course = $db->fetch_assoc($rs)) {
+		while ($course = $this->db->fetch_assoc($rs)) {
 
 			$courseData = $this->getDataFromCourse($course);
 
@@ -236,8 +242,6 @@ class DashboardBlockCoursesLms extends DashboardBlockLms
 
 	private function getDatesForCourse($course)
 	{
-		$db = DbConn::getInstance();
-
 		$query = 'SELECT cd.id_date AS date_id ,cd.code AS date_code ,cd.name AS date_name ,cd.description AS date_description ,cd.status AS date_status ,cd.sub_start_date AS date_start_date ,cd.sub_end_date AS date_end_date'
 			. ' FROM %lms_course_date AS cd '
 			. ' WHERE cd.id_course = ' . $course['course_id']
@@ -246,10 +250,10 @@ class DashboardBlockCoursesLms extends DashboardBlockLms
             . ' AND cd.sub_start_date <> \'0000-00-00 00:00:00\' '
 			. ' ORDER BY cd.id_date';
 
-		$rs = $db->query($query);
+		$rs = $this->db->query($query);
 
 		$dates = [];
-		while ($date = $db->fetch_assoc($rs)) {
+		while ($date = $this->db->fetch_assoc($rs)) {
 
 			if ($date['date_start_date'] !== '0000-00-00 00:00:00') {
 				$startDate = new DateTime($date['date_start_date']);

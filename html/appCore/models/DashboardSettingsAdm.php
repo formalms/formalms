@@ -1,7 +1,4 @@
-<?php
-
-
-defined("IN_FORMA") or die('Direct access is forbidden.');
+<?php defined("IN_FORMA") or die('Direct access is forbidden.');
 
 /* ======================================================================== \
 |   FORMA - The E-Learning Suite                                            |
@@ -14,25 +11,22 @@ defined("IN_FORMA") or die('Direct access is forbidden.');
 |   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
-
-/**
- * Class DashboardLms
- */
-class DashboardLms extends Model
+class DashboardSettingsAdm extends Model
 {
-    /** @var bool|DbConn */
-    private $db;
+    protected $db;
 
-    private $enabledBlocks;
+    protected $enabledBlocks;
 
-    public function  __construct() {
+    protected $installedBlocks;
 
-        parent::__construct();
+    public function __construct()
+    {
         $this->db = DbConn::getInstance();
-        $this->loadBlocks();
+        $this->loadInstalledBlocks();
+        $this->loadEnabledBlocks();
     }
 
-    private function loadBlocks()
+    public function loadEnabledBlocks()
     {
         $query_blocks = "SELECT `id`, `block_class`, `block_config`, `position` FROM `dashboard_block_config` ORDER BY `position` ASC";
 
@@ -47,6 +41,21 @@ class DashboardLms extends Model
         }
     }
 
+    public function loadInstalledBlocks()
+    {
+
+        $query_blocks = "SELECT `id`, `block_class` FROM `dashboard_blocks`";
+
+        $result = $this->db->query($query_blocks);
+
+        while ($block = $this->db->fetch_assoc($result)) {
+            /** @var DashboardBlockLms $blockObj */
+            $blockObj = new $block['block_class']('');
+
+            $this->installedBlocks[] = $blockObj;
+        }
+    }
+
     /**
      * @return mixed
      */
@@ -55,31 +64,33 @@ class DashboardLms extends Model
         return $this->enabledBlocks;
     }
 
-    public function getBlocksViewData()
+    /**
+     * @return mixed
+     */
+    public function getInstalledBlocks()
+    {
+        return $this->installedBlocks;
+    }
+
+    public function getEnabledBlocksCommonViewData()
     {
         $data = [];
-        /** @var DashboardBlockLms $enabledBlock */
-        foreach ($this->enabledBlocks as $enabledBlock) {
-            if ($enabledBlock->isEnabled()) {
-                $data[] = $enabledBlock->getViewData();
-            }
+        /** @var DashboardBlockLms $enabledBlocks */
+        foreach ($this->enabledBlocks as $enabledBlocks) {
+            $data[] = $enabledBlocks->getCommonViewData();
         }
 
         return $data;
     }
 
-    /**
-     * @param string $block
-     * @return bool|DashboardBlockLms
-     */
-    public function getRegisteredBlock(string $block)
+    public function getInstalleddBlocksCommonViewData()
     {
-        foreach ($this->enabledBlocks as $enabledBlock) {
-
-            if (get_class($enabledBlock) === $block) {
-                return $enabledBlock;
-            }
+        $data = [];
+        /** @var DashboardBlockLms $enabledBlocks */
+        foreach ($this->installedBlocks as $installedBlock) {
+            $data[] = $installedBlock->getCommonViewData();
         }
-        return null;
+
+        return $data;
     }
 }

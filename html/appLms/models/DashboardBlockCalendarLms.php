@@ -23,11 +23,21 @@ class DashboardBlockCalendarLms extends DashboardBlockLms
     const COURSE_TYPE_ELEARNING = 'elearning';
     const COURSE_TYPE_CLASSROOM = 'classroom';
 
-    public function __construct()
+    public function __construct($jsonConfig)
     {
-        parent::__construct();
-        $this->setEnabled(true);
-        $this->setType(DashboardBlockLms::TYPE_BUTTON);
+        parent::__construct($jsonConfig);
+
+    }
+
+    public function parseConfig($jsonConfig) {
+
+    }
+
+    public function getAvailableTypesForBlock(): array
+    {
+        return [
+            DashboardBlockLms::TYPE_BIG
+        ];
     }
 
 
@@ -114,15 +124,14 @@ class DashboardBlockCalendarLms extends DashboardBlockLms
 
     private function findCourses($startDate = null, $endDate = null, $courseType, $showCourseWithoutDates = false)
     {
-        $db = DbConn::getInstance();
 
         // exclude course belonging to pathcourse in which the user is enrolled as a student
         $learning_path_enroll = $this->getUserCoursePathCourses(Docebo::user()->getId());
         $exclude_pathcourse = '';
         if (count($learning_path_enroll) > 1 && Get::sett('on_path_in_mycourses') == 'off') {
             $exclude_path_course = "select idCourse from learning_courseuser where idUser=" . Docebo::user()->getId() . " and level <= 3 and idCourse in (" . implode(',', $learning_path_enroll) . ")";
-            $rs = $db->query($exclude_path_course);
-            while ($d = $db->fetch_assoc($rs)) {
+            $rs = $this->db->query($exclude_path_course);
+            while ($d = $this->db->fetch_assoc($rs)) {
                 $excl[] = $d['idCourse'];
             }
             $exclude_pathcourse = " and c.idCourse not in (" . implode(',', $excl) . " )";
@@ -186,10 +195,10 @@ class DashboardBlockCalendarLms extends DashboardBlockLms
                 break;
         }
         
-        $rs = $db->query($query);
+        $rs = $this->db->query($query);
 
         $result = array();
-        while ($data = $db->fetch_assoc($rs)) {
+        while ($data = $this->db->fetch_assoc($rs)) {
 
             $courseDates = $this->getDatasFromCourse($data);
 
@@ -201,8 +210,7 @@ class DashboardBlockCalendarLms extends DashboardBlockLms
         return $result;
     }
 
-    private
-    function findReservations($startDate, $endDate, $showCourseWithoutDates = false)
+    private function findReservations($startDate, $endDate, $showCourseWithoutDates = false)
     {
         $db = DbConn::getInstance();
 
@@ -211,8 +219,8 @@ class DashboardBlockCalendarLms extends DashboardBlockLms
         $exclude_pathcourse = '';
         if (count($learning_path_enroll) > 1 && Get::sett('on_path_in_mycourses') == 'off') {
             $exclude_path_course = "select idCourse from learning_courseuser where idUser=" . Docebo::user()->getId() . " and level <= 3 and idCourse in (" . implode(',', $learning_path_enroll) . ")";
-            $rs = $db->query($exclude_path_course);
-            while ($d = $db->fetch_assoc($rs)) {
+            $rs = $this->db->query($exclude_path_course);
+            while ($d = $this->db->fetch_assoc($rs)) {
                 $excl[] = $d['idCourse'];
             }
             $exclude_pathcourse = " and c.idCourse not in (" . implode(',', $excl) . " )";
@@ -238,10 +246,10 @@ class DashboardBlockCalendarLms extends DashboardBlockLms
 
         $query .= $exclude_pathcourse . " ORDER BY c.date_begin";
 
-        $rs = $db->query($query);
+        $rs = $this->db->query($query);
 
         $result = array();
-        while ($data = $db->fetch_assoc($rs)) {
+        while ($data = $this->db->fetch_assoc($rs)) {
 
             $reservationData = $this->getDataFromReservation($data);
 
@@ -251,8 +259,7 @@ class DashboardBlockCalendarLms extends DashboardBlockLms
         return $result;
     }
 
-    private
-    function getUserCoursePathCourses($id_user)
+    private function getUserCoursePathCourses($id_user)
     {
         require_once(_lms_ . '/lib/lib.coursepath.php');
         $cp_man = new Coursepath_Manager();
@@ -265,14 +272,13 @@ class DashboardBlockCalendarLms extends DashboardBlockLms
         return $output;
     }
 
-    protected
-    function getDatasFromCourse($course)
+    protected function getDatasFromCourse($course)
     {
         $dates = [];
         $courseData = $this->getDataFromCourse($course, true);
 
         if ($course['course_type'] == self::COURSE_TYPE_CLASSROOM) {
-            $q = sql_query("
+            $q = $this->db->query("
                 SELECT cr.name AS class, cl.location, cdd.date_begin, cdd.date_end, c.name 
                 FROM %lms_course_date_day cdd 
                 INNER JOIN %lms_course_date cd ON cdd.id_date = cd.id_date 
@@ -284,7 +290,7 @@ class DashboardBlockCalendarLms extends DashboardBlockLms
                 AND cdu.id_user = ".Docebo::user()->getId()
             );
 
-            while ($row = sql_fetch_object($q)) {
+            while ($row = $this->db->fetch_obj($q)) {
                 $courseData['endDate'] = $courseData['startDate'] = $row->date_begin;
                 $courseData['hourBegin'] = substr(explode(' ', $row->date_begin)[1], 0, 5);
                 $courseData['hourEnd'] = substr(explode(' ', $row->date_end)[1], 0, 5);

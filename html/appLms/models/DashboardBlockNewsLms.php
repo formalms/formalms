@@ -21,12 +21,20 @@ defined("IN_FORMA") or die('Direct access is forbidden.');
 class DashboardBlockNewsLms extends DashboardBlockLms
 {
 
-	public function __construct()
-	{
-		parent::__construct();
-		$this->setEnabled(true);
-		$this->setType(DashboardBlockLms::TYPE_BANNER);
+    public function __construct($jsonConfig)
+    {
+        parent::__construct($jsonConfig);
 	}
+
+    public function parseConfig($jsonConfig) {
+
+    }
+
+    public function getAvailableTypesForBlock(): array {
+        return [
+            DashboardBlockLms::TYPE_MEDIUM
+        ];
+    }
 
 	public function getViewData(): array
 	{

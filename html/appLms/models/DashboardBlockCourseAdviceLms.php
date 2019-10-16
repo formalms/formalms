@@ -21,12 +21,21 @@ defined("IN_FORMA") or die('Direct access is forbidden.');
 class DashboardBlockCourseAdviceLms extends DashboardBlockLms
 {
 
-	public function __construct()
-	{
-		parent::__construct();
-		$this->setEnabled(true);
-		$this->setType(DashboardBlockLms::TYPE_MEDIUM);
+    public function __construct($jsonConfig)
+    {
+        parent::__construct($jsonConfig);
 	}
+
+    public function parseConfig($jsonConfig) {
+
+    }
+
+    public function getAvailableTypesForBlock(): array
+    {
+        return [
+            DashboardBlockLms::TYPE_MEDIUM
+        ];
+    }
 
 	public function getViewData(): array
 	{
@@ -77,15 +86,13 @@ class DashboardBlockCourseAdviceLms extends DashboardBlockLms
 
 	private function findEnrolledCourses()
 	{
-		$db = DbConn::getInstance();
-
 		// exclude course belonging to pathcourse in which the user is enrolled as a student
 		$learning_path_enroll = $this->getUserCoursePathCourses(Docebo::user()->getId());
 		$exclude_pathcourse = '';
 		if (count($learning_path_enroll) > 1 && Get::sett('on_path_in_mycourses') == 'off') {
 			$exclude_path_course = "select idCourse from learning_courseuser where idUser=" . Docebo::user()->getId() . " and level <= 3 and idCourse in (" . implode(',', $learning_path_enroll) . ")";
-			$rs = $db->query($exclude_path_course);
-			while ($d = $db->fetch_assoc($rs)) {
+			$rs = $this->db->query($exclude_path_course);
+			while ($d = $this->db->fetch_assoc($rs)) {
 				$excl[] = $d['idCourse'];
 			}
 			$exclude_pathcourse = " and c.idCourse not in (" . implode(',', $excl) . " )";
@@ -100,10 +107,10 @@ class DashboardBlockCourseAdviceLms extends DashboardBlockLms
 			. " ORDER BY c.idCourse";
 
 
-		$rs = $db->query($query);
+		$rs = $this->db->query($query);
 
 		$result = array();
-		while ($data = $db->fetch_assoc($rs)) {
+		while ($data = $this->db->fetch_assoc($rs)) {
 			$result[] = $data['idCourse'];
 		}
 
@@ -125,8 +132,6 @@ class DashboardBlockCourseAdviceLms extends DashboardBlockLms
 
 	private function getAdvicesForCourses($courses, $limit = 0, $offset = 0)
 	{
-		$db = DbConn::getInstance();
-
 		$query = "SELECT idAdvice, title, description, important, author, posted 
 					FROM " . $GLOBALS['prefix_lms'] . "_advice
 					WHERE idCourse IN (" . implode(',', $courses) . ")
@@ -139,9 +144,9 @@ class DashboardBlockCourseAdviceLms extends DashboardBlockLms
 			$query .= " OFFSET $offset";
 		}
 
-		$rs = $db->query($query);
+		$rs = $this->db->query($query);
 
-		while ($data = $db->fetch_assoc($rs)) {
+		while ($data = $this->db->fetch_assoc($rs)) {
 			$result[] = $this->getAdviceData($data);
 		}
 

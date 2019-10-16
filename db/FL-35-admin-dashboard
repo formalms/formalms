@@ -1,0 +1,26 @@
+
+INSERT INTO `core_menu` (`idMenu`, `name`, `image`, `sequence`, `is_active`, `collapse`, `idParent`, `idPlugin`, `of_platform`) VALUES (NULL, '_DASHBOARD_CONFIGURATION', '<i class=\"fa fa-cogs fa-fw\"></i>', '6', 'true', 'true', NULL, NULL, 'framework');
+
+set @v_idst=LAST_INSERT_ID();
+
+INSERT INTO `core_menu_under` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES (NULL, @v_idst, 'dashboardsettings', '_DASHBOARD_CONFIGURATION', '', 'view', 'framework', '1', '', '', 'adm/dashboardsettings/show');
+
+CREATE TABLE `dashboard_blocks` ( `id` BIGINT NOT NULL AUTO_INCREMENT , `block_class` VARCHAR(255) NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+
+ALTER TABLE `dashboard_blocks` ADD UNIQUE `block_class_unique` (`block_class`);
+
+INSERT INTO `dashboard_blocks` (`id`, `block_class`)
+VALUES
+(1, 'DashboardBlockWelcomeLms'),
+(2, 'DashboardBlockProfileLms'),
+(3, 'DashboardBlockCertificatesLms'),
+(4, 'DashboardBlockMessagesLms'),
+(5, 'DashboardBlockCoursesLms'),
+(6, 'DashboardBlockCourseAdviceLms'),
+(7, 'DashboardBlockCalendarLms');
+
+CREATE TABLE `dashboard_block_config` ( `id` BIGINT NOT NULL AUTO_INCREMENT , `block_class` VARCHAR(255) NOT NULL , `block_config` JSON NOT NULL , `position` BIGINT NOT NULL DEFAULT '999' , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+
+ALTER TABLE `dashboard_block_config` ADD INDEX `block_class_idx` (`block_class`);
+
+
