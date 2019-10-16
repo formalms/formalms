@@ -278,7 +278,7 @@ class Course_API extends API {
 				}
 				else { // edition not found
 					return false;
-				
+				}	
 			}
 			else if (!empty($edition_id)) {
 
