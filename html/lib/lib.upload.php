@@ -71,7 +71,7 @@ function sl_fopen( $filename, $mode ) {
 	}
 }
 
-function sl_upload( $srcFile, $dstFile, $file_ext) {
+function sl_upload( $srcFile, $dstFile, $file_ext, $root = false) {
 	$uploadType = Get::cfg('uploadType', null);
 
 	// check if the mime type is allowed by the whitelist
@@ -109,11 +109,11 @@ function sl_upload( $srcFile, $dstFile, $file_ext) {
 	}
 	$dstFile =stripslashes($dstFile);
 	if( $uploadType == "ftp" ) {
-		return sl_upload_ftp( $srcFile, $dstFile );
+		return sl_upload_ftp( $srcFile, $dstFile, $root ? $root : _folder_files_ );
 	} elseif( $uploadType == "cgi" ) {
 		return sl_upload_cgi( $srcFile, $dstFile );
 	} elseif( $uploadType == "fs" || $uploadType == null ) {
-		return sl_upload_fs( $srcFile, $dstFile );
+		return sl_upload_fs( $srcFile, $dstFile, $root ? $root : _files_ );
 	} else {
         $event = new \appCore\Events\Core\FileSystem\UploadEvent($srcFile, $dstFile);
         \appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\FileSystem\UploadEvent::EVENT_NAME, $event);
@@ -183,9 +183,9 @@ function sl_copy( $srcFile, $dstFile ) {
 
 /** file system implementation **/
 
-function sl_upload_fs( $srcFile, $dstFile ) {
+function sl_upload_fs( $srcFile, $dstFile, $root=_files_ ) {
 	if ($srcFile == _files_.$dstFile) return true;
-	$re = move_uploaded_file($srcFile, _files_.$dstFile);
+	$re = move_uploaded_file($srcFile, $root.$dstFile);
 	if(!$re) die("Error on move_uploaded_file from: $srcFile to ".$dstFile);
 	return $re;
 }
@@ -267,8 +267,8 @@ function sl_close_fileoperations_ftp() {
 	if($GLOBALS['ftpConn'] !== false) ftp_close($GLOBALS['ftpConn']);
 }
 
-function sl_upload_ftp( $srcFile, $dstFile ) {
-	$ftppath = Get::cfg('ftppath')._folder_files_;
+function sl_upload_ftp( $srcFile, $dstFile, $root=_folder_files_ ) {
+	$ftppath = Get::cfg('ftppath').$root;
 	$ftpConn = $GLOBALS['ftpConn'];
 	if( !ftp_put( $ftpConn, $ftppath.$dstFile, $srcFile, FTP_BINARY) ) {
 		return FALSE;
