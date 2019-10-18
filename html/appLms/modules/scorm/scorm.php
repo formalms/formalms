@@ -146,7 +146,7 @@ function insitem() {
 	
 	$cpm = new CPManager();
 	// try to open content package
-	if( !$cpm->Open( $GLOBALS['where_files_relative'].$filepath ) ) {
+	if( !$cpm->Open( _files_.$filepath ) ) {
 		$_SESSION['last_error'] = 'Error: '. $cpm->errText . ' [' . $cpm->errCode .']';
 		Util::jump_to( ''.$back_url.'&create_result=0' );
 	}
@@ -343,7 +343,7 @@ function _scorm_copyitem( $idscorm_package, $idscorm_organization ) {
 	}
 
 	list($path) = sql_fetch_row($rs);
-	$scopath = str_replace ( '\\', '/', $GLOBALS['where_files_relative'].'/appLms/'.Get::sett('pathscorm'));
+	$scopath = str_replace ( '\\', '/', _files_.'/appLms/'.Get::sett('pathscorm'));
 	
 	/* copy all zip directory */
 	/* remove copy - use same files 
