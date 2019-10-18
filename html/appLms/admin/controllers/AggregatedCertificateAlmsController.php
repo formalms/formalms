@@ -13,8 +13,7 @@
 
 // Defining Constants necessaries in creation of a new assoc.
            
-define('COURSE', 0);
-define('COURSE_PATH', 1);
+
           
            
 /**
@@ -91,7 +90,6 @@ Class AggregatedCertificateAlmsController extends AlmsController
         'delmetacert' => 'delcertificate',
                    
     );
-    protected $assocTypesArr = array();
 
     function init() {
         parent::init();
@@ -140,12 +138,6 @@ Class AggregatedCertificateAlmsController extends AlmsController
         require_once(_files_lms_.'/'._folder_lib_.'/lib.aggregated_certificate.php');
         $this->aggCertLib = new AggregatedCertificate();
 
-
-        $this->assocTypesArr[COURSE] = $this->aggCertLib->table_cert_meta_association_courses;
-        $this->assocTypesArr[COURSE_PATH] = $this->aggCertLib->table_cert_meta_association_coursepath;
-
-
-
         $this->model = new AggregatedCertificateAlms();
     }
 
@@ -161,17 +153,25 @@ Class AggregatedCertificateAlmsController extends AlmsController
     */ 
     function show() {
 
+        $params = array();
+        
         checkPerm('view');
 
         $tb    = new Table(Get::sett('visuItem'), Lang::t('_AGGREGATE_CERTIFICATE_LIST'), Lang::t('_AGGREGATE_CERTIFICATE_LIST'));
         $tb->initNavBar('ini', 'link');
         $ini = $tb->getSelectedElement();
 
-
-        if (isset($_POST['toggle_filter']))
-                unset($_POST['filter_text']);
-
         
+        $filter_text = Get::req('filter_text', DOTY_STRING, '');
+        
+        if (Get::req('toggle_filter', DOTY_STRING, '') != '')
+                unset($filter_text);
+
+        if ( $filter_text != '' ){
+            $filter['filter_text'] = $filter_text;
+            $params['filter_text'] = $filter_text;
+        }
+               
 
         // Type for all columns
         $type_h = array('', '', '', 'image', 'image');
@@ -211,7 +211,7 @@ Class AggregatedCertificateAlmsController extends AlmsController
 
 
         // Array of all metacertificates to display in the main admin panel
-        $aggregateCertsArr = $this->aggCertLib->getAllAggregatedCerts($ini);
+        $aggregateCertsArr = $this->aggCertLib->getAllAggregatedCerts($ini, false, $filter);
 
             foreach ($aggregateCertsArr as $aggregate_cert) {
                 $title = strip_tags($aggregate_cert["name"]);
@@ -281,13 +281,15 @@ Class AggregatedCertificateAlmsController extends AlmsController
             
         }
         
-        $params = array(
+       
         
-            "tb" => $tb,
-            "countMetacert" => (int) $this->aggCertLib->getAllAggregatedCerts($ini, true),
-            "ini" => $ini,
-        );
-
+            $params["tb"] = $tb;
+            $params["countMetacert"] = (int) $this->aggCertLib->getAllAggregatedCerts($ini, true);
+            $params["ini"] = $ini;
+            
+            $params["controller_name"] = $this->controller_name;
+            $params["opsArr"] = $this->op;
+       
         $this->render($this->op['home'], $params);
 
     }
@@ -429,7 +431,7 @@ Class AggregatedCertificateAlmsController extends AlmsController
                     $flagDeleteOldImage); 
 
                 if(!$bgimage)
-                    $bgimage = "''";
+                    $bgimage = "";
             }
             
             $layoutArr = array(
@@ -460,7 +462,7 @@ Class AggregatedCertificateAlmsController extends AlmsController
     * 
     */
     function associationsManagement() {
-       
+    
         checkPerm('mod');
         require_once(_base_.'/lib/lib.table.php');
 
@@ -522,9 +524,9 @@ Class AggregatedCertificateAlmsController extends AlmsController
                         .'&amp;type_assoc='. COURSE
                         .'&amp;edit=1'
                         .'">
-                        <img src="'.getPathImage().'standard/course.png"
-                             alt="'.Lang::t( '_COURSE' ).'" 
-                             title="'.Lang::t( '_COURSE' ).'" />
+                        <img src="'.getPathImage().'standard/course_active.png"
+                             alt="'.Lang::t( '_MODIFY_COURSE_ASSOCIATIONS' ).'" 
+                             title="'.Lang::t( '_MODIFY_COURSE_ASSOCIATIONS' ).'" />
                     </a>' : '<img src="'.getPathImage().'standard/course.png"
                                   alt="'.Lang::t( '_COURSE' ).'" 
                                   title="'.Lang::t( '_COURSE' ).'" />'; 
@@ -537,14 +539,14 @@ Class AggregatedCertificateAlmsController extends AlmsController
                         .'&amp;edit=1'
                         .'">
                         <img 
-                            src="'.getPathImage().'standard/coursepath.png" 
-                            alt="'.Lang::t( '_COURSEPATH' ).'" 
-                            title="'.Lang::t( '_COURSEPATH' ).'" />
+                            src="'.getPathImage().'standard/coursepath_active.png" 
+                            alt="'.Lang::t( '_MODIFY_COURSEPATH_ASSOCIATIONS' ).'" 
+                            title="'.Lang::t( '_MODIFY_COURSEPATH_ASSOCIATIONS' ).'" />
                     </a>' :  
                         '<img 
                             src="'.getPathImage().'standard/coursepath.png" 
-                            alt="'.Lang::t( '_COURSEPATH' ).'" 
-                            title="'.Lang::t( '_COURSEPATH' ).'" />';
+                            alt="'.Lang::t( '_MODIFY_COURSEPATH_ASSOCIATIONS' ).'" 
+                            title="'.Lang::t( '_MODIFY_COURSEPATH_ASSOCIATIONS' ).'" />';
             
             
             $rows[] = Get::sprite_link( 
@@ -829,9 +831,23 @@ Class AggregatedCertificateAlmsController extends AlmsController
                     $params['coursesArr'] = (!empty($coursesIdsArr) ? $this->aggCertLib->getCoursesArrFromId($coursesIdsArr) : []);
 
                     break;
+                    
                 case COURSE_PATH:
-                    $params['idsCoursePath'] = ($id_association !== 0) ? $this->aggCertLib->getIdsCoursePath($id_association) : '';
+
+                    require_once($GLOBALS['where_lms'].'/lib/lib.coursepath.php');
+                    
+                    $coursePath_man = new CoursePath_Manager();
+                    
+                    $coursePathIdsArr = $this->aggCertLib->getIdsCoursePath($id_association);
+                        if(!empty($coursePathIdsArr)){
+                          
+                            $params['idsCoursePath'] = ($id_association !== 0) ? $coursePathIdsArr : '';
+                            $params['coursePathsArr'] = $coursePath_man->getCoursepathAllInfo($coursePathIdsArr);
+                        
+                        }
+                        
                     break;
+                    
                 default:
                     break;
             }
@@ -848,11 +864,13 @@ Class AggregatedCertificateAlmsController extends AlmsController
                 $old_users = array_map('intval', explode(",", str_replace(array("[", "]"), "", $old_users_req)));
                 $to_add_users = array_diff($userSelectionArr, $old_users );
                 $to_delete_users = array_diff($old_users, $userSelectionArr);
-                if (count($to_delete_users))
-                    $res = $this->aggCertLib->deleteAssociationLinks($id_association, $type_association, $to_delete_users);
+                if (!empty($to_delete_users)){
+                     $res = $this->aggCertLib->deleteAssociationLinks($id_association, $type_association, $to_delete_users);
                     //TODO: add error message, can't delete deselected users.
-                    if(!$res) return;
-                if (count($to_add_users)) {
+                    if(!$res) return; 
+                }
+                  
+                if (!empty($to_add_users)) {
 
                     $userCourses = array();
                     foreach ($to_add_users as $user) {
@@ -865,7 +883,7 @@ Class AggregatedCertificateAlmsController extends AlmsController
                     );
 
                     $res = $this->aggCertLib->insertAssociationLink($type_association, $assocArr);
-                    if(!$res) return;  //TODO: add error message, can't add new selected users.
+                    if(!$res) cout(getErrorUi(Lang::t('Error adding association')));;  //TODO: add error message, can't add new selected users.
 
 
                 }
@@ -936,7 +954,7 @@ Class AggregatedCertificateAlmsController extends AlmsController
 
                     if(!empty($todeleteArr)) {
                        $res = $this->aggCertLib->deleteAssociationLinks($id_association, $type_assoc, [], $todeleteArr);
-                        if (!$res) return; //TODO: add error message
+                        if (!$res) cout(getErrorUi(Lang::t("Error deleting associations"))); 
                     }
 
                /*     if(!empty($toAddCoursesArr)) {
@@ -1376,11 +1394,11 @@ Class AggregatedCertificateAlmsController extends AlmsController
                     } else
                         $cont[] = Lang::t('_NOT_ENDED', 'certificate');
 
-                    $cont[] = $total_course_ended . ' / ' . $total_course_assigned;
-
-                }
+                }    
             }
-            $tb->addBody($cont);
+
+           $cont[] = $total_course_ended . ' / ' . $total_course_assigned; 
+           $tb->addBody($cont);
 
         }
 
@@ -1486,7 +1504,7 @@ Class AggregatedCertificateAlmsController extends AlmsController
 
         $usersInAssociationArr = array();
 
-        foreach ($this->assocTypesArr as $type_assoc => $name_tab) { // getting all user ids from all the assoc.
+        foreach ($this->aggCertLib->assocTypesArr as $type_assoc => $name_tab) { // getting all user ids from all the assoc.
             $tempArrUser = $this->aggCertLib->getAllUsersFromIdAssoc($assocIdsArr, $type_assoc);
             foreach ($tempArrUser as $idUser) {
 
@@ -1652,7 +1670,12 @@ Class AggregatedCertificateAlmsController extends AlmsController
 
             $cert = new Certificate();
             $subs = $cert->getSubstitutionArray($id_user, $id_course, $id_association);
-            $cert->send_certificate($id_certificate, $id_user, $id_course, $subs);
+            $rs = $cert->send_certificate($id_certificate, $id_user, $id_course, $subs);
+            
+            if($rs)
+                Util::jump_to('index.php?r=alms/'.$this->controller_name.'/'.$this->op['assignmentManagement']
+                .'&amp;id_certificate='.$id_certificate);
+
         }
        
         function delReleased() {

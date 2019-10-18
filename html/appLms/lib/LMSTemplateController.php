@@ -53,13 +53,23 @@ final class LMSTemplateController extends TemplateController {
 
       $certificates = $model->loadMyCertificates(false, false);
 
+      
+      
       $availables = 0;
       foreach ($certificates as $cert) {
         if (!$cert[6]) { // $cert['on_date']
           $availables++;
         }
       }
-
+      
+      $aggregated_certs = $model->loadMyMetaCertificates(false, true);
+      foreach ($aggregated_certs as $aggr_cert) {
+        if (!$aggr_cert['isReleased']) { 
+          $availables++;
+        }
+      }
+      
+      
       return $availables;
     }
 

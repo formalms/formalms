@@ -351,15 +351,63 @@ cout(
     
         $tb_courses = new Table();
     
-        $cont_h = array( Lang::t('_CODE'), Lang::t('_COURSE_NAME'), Lang::t('_CATEGORY') );
-        $type_h = array('', '', '');
+        switch($type_assoc){
+            
+            case COURSE:
+            
+                $cont_h = array( Lang::t('_CODE'), Lang::t('_COURSE_NAME'), Lang::t('_CATEGORY') );
+                $type_h = array('', '', '');
+
+                break;
+            
+            case COURSE_PATH:
+                
+                $cont_h = array( Lang::t('_CODE'), Lang::t('_COURSE_PATH_NAME'), Lang::t('_COURSE_PATH_DESCR') );
+                $type_h = array('', '', '');
+
+                
+                break;
+            
+            default:
+                break;
+            
+        }
         
         $tb_courses->addHead($cont_h);
         $tb_courses->setColsStyle($type_h);
-        
-        foreach($coursesArr as $course) {
-            $tb_courses->addBody($course);
+     
+        switch($type_assoc){
+                
+                case COURSE:
+                
+                     foreach($coursesArr as $course) 
+                        $tb_courses->addBody($course);
+                
+
+                    break;
+                
+                case COURSE_PATH:
+
+                    require_once($GLOBALS['where_lms'].'/lib/lib.coursepath.php');
+
+                    
+                    foreach($coursePathsArr as $coursePathInfo)
+                        $tb_courses->addBody(
+                           [ 
+                            $coursePathInfo[COURSEPATH_CODE], 
+                            $coursePathInfo[COURSEPATH_NAME],
+                            $coursePathInfo[COURSEPATH_DESCR],
+                             ]
+                             );    
+                    
+                    break;
+                
+                default:
+                    break;
+                
         }
+        
+       
     } 
    
    

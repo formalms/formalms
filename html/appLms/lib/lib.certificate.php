@@ -38,8 +38,7 @@ define("ASSIGN_CERT_SENDNAME", 		5);
 
 class Certificate {
 
-    public function findAll($filter, $pagination)
-    {
+    public function findAll($filter, $pagination) {
         list($aval_status, $minutes_required) = sql_fetch_row(
             sql_query(
                 "SELECT available_for_status, minutes_required FROM %lms_certificate_course as cc"
@@ -129,11 +128,11 @@ class Certificate {
         return array($assignment, $totalrows);
     }
 
-        function countAssignment($filter){
+    function countAssignment($filter){
             return count($this->getAssignment($filter));
         }
 
-        function getAssignment($filter, $pagination = false, $count = null) {
+    function getAssignment($filter, $pagination = false, $count = null) {
             if ($pagination && isset($pagination['search'])) {
                 $filter['search'] = $pagination['search'];
             }
@@ -165,7 +164,7 @@ class Certificate {
             return $pagination ? $paginated_assignment : $assignment;
         }
 
-        function getAssigned($filter) {
+    function getAssigned($filter) {
                 $query = "SELECT ca.id_certificate, ca.id_course,"
                             ."	ca.id_user, SUBSTRING(u.userid, 2) AS username,"
                             ."	u.lastname, u.firstname, co.code, cc.available_for_status,"
@@ -240,7 +239,7 @@ class Certificate {
                 return $assigned;
         }
 
-        function getAssignable($filter) {
+    function getAssignable($filter) {
                 $query = "	SELECT ce.id_certificate, co.idCourse AS id_course,"
                             ."	u.idst AS id_user, SUBSTRING(u.userid, 2) AS username,"
                             ."	u.lastname, u.firstname, co.code, cc.available_for_status,"
@@ -327,48 +326,77 @@ class Certificate {
     }
     
     function getMetaAssignment($filter) {
-        $metaAssigned = $this->getMetaAssigned($filter);
-        $metaAssignable = $this->getMetaAssignable($filter);
+        //$metaAssigned = $this->getMetaAssigned($filter);
+        //$metaAssignable = $this->getMetaAssignable($filter);
 
-        return array_merge($metaAssigned, $metaAssignable);        
+        require_once(_files_lms_.'/'._folder_lib_.'/lib.aggregated_certificate.php');
+        $aggCertLib = new AggregatedCertificate();
+        
+        
+        $aggrCertsArr = array();
+        
+        $associationsUser = $aggCertLib->getIdsAssociationUser( (int) $filter['id_user']);
+            
+            // $coursesArr = $aggCertLib->getAssociationLink(-1, COURSE, $filter['idUser']);
+        $linkIdsArr = array();
+       
+        foreach($associationsUser as $assoc_type => $id_assoc) {
+        
+            $showAggrCert = true;
+            
+            foreach($aggCertLib->getAssociationLink($id_assoc, $assoc_type, $filter['id_user']) as $idLink){
+                
+                if($assoc_type == COURSE_PATH){
+                    
+                    require_once($GLOBALS['where_lms'].'/lib/lib.coursepath.php');
+                    $cp_m = new CoursePath_Manager();
+
+                    $courseIdsFromPath = array_map('intval', $cp_m->getPathCourses($idLink));
+
+                    foreach($courseIdsFromPath as $coursefrompath)
+                        $linkIdsArr[] = $coursefrompath;
+
+                    
+
+                } else $linkIdsArr[] = $idLink;    
+            }
+            
+            foreach ($linkIdsArr as $courseId) {
+                
+                if($aggCertLib->getCountCoursesCompleted($courseId, $filter['id_user']) == 0)
+                   {
+                     $showAggrCert = false;                                               
+                     return;  
+                   } 
+                
+                
+            }
+            
+             
+            
+            if ($showAggrCert)
+                foreach($aggCertLib->getIdCertificate($id_assoc) as $id_cert) {
+                
+                    $cert = $aggCertLib->getMetadata($id_cert);
+                    $aggrCertsArr[$id_cert]["id_certificate"] = $id_cert;
+                    $aggrCertsArr[$id_cert]["cert_code"] = $cert['code'];
+                    $aggrCertsArr[$id_cert]["cert_name"] = $cert['name'];
+                    $aggrCertsArr[$id_cert]["isReleased"] = ($aggCertLib->hasUserAggCertsReleased((int) $filter['id_user'], $id_cert) > 0) ;
+                        
+                }
+        }   
+        
+      
+        
+        return $aggrCertsArr;       
     }
     
     function getMetaAssigned($filter) {
-        $query = "  SELECT cma.idCertificate AS id_certificate, cma.idMetaCertificate AS id_meta, cmc.idUser AS id_user,"
-               . "      ce.code AS cert_code, ce.name AS cert_name, cma.on_date,"
-               . "      GROUP_CONCAT(DISTINCT CONCAT('(', co.code, ') - ', co.name) SEPARATOR '<br>') AS courses"
-               . "  FROM %lms_certificate_meta_course as cmc"
-               . "      JOIN %lms_certificate_meta_assign as cma"
-               . "      ON cmc.idMetaCertificate = cma.idMetaCertificate"
-               . "      JOIN %lms_certificate AS ce"
-               . "      ON cma.idCertificate = ce.id_certificate"
-               . "      JOIN %lms_course AS co"
-               . "      ON cmc.idCourse = co.idCourse"
-               . "      WHERE 1 = 1";
+    
         
-        if (isset($filter['id_certificate'])) {
-            $query .= " AND cma.idCertificate = " . $filter['id_certificate'];
-        }
-        if (isset($filter['id_course'])) {
-            $query .= " AND cmc.idCourse = " . $filter['id_course'];
-        }
-        if (isset($filter['id_user'])) {
-            $query .= " AND cma.idUser = " . $filter['id_user'];
-        }
-        if (!isset($filter['id_user'])) {
-            if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
-                require_once(_base_ . '/lib/lib.preference.php');
-                $adminManager = new AdminPreference();
-                $query .= " AND " . $adminManager->getAdminUsersQuery(Docebo::user()->getIdSt(), 'idUser');
-            }
-        }
-        $query .= " GROUP BY cmc.idMetaCertificate";
-
-        $res = sql_query($query);
-        while ($row = sql_fetch_assoc($res)) {
-            $metaAssigned[] = $row;
-        }
-        return $metaAssigned;
+        
+        return $aggCertLib->getAssignedAggCerts($filter);
+        
     }
     
     function getMetaAssignable($filter) {

@@ -110,23 +110,40 @@ class MycertificateLms extends Model {
         return $this->certificate->countAssignment($filter);
     }
     
-    public function loadMyMetaCertificates() {
+    /**
+    * In this funct. we need to select all the aggr. certs that has been released or not.
+    * The cert. has been released -> there's an entry in the aggr. certs. assignment with the user and id cert.
+    * 
+    */
+    public function loadMyMetaCertificates($pagination = false, $count = false) {
+        require_once($GLOBALS['where_lms'].'/lib/lib.course.php');
         $startIndex = Get::req('startIndex', DOTY_INT, 0);
         $results = Get::req('results', DOTY_INT, Get::sett('visuItem', 25));
         
         $filter = array('id_user' => $this->id_user);
         $myMetaCertificates = $this->certificate->getMetaAssignment($filter);
+        
+        if($count) {
+            return $myMetaCertificates;
+        }
                 
         $data = array();
         foreach ($myMetaCertificates AS $meta) {
-            $preview    = '<a class="ico-wt-sprite subs_view" href="?r=mycertificate/'
-                        . 'preview&id_certificate='.$meta['id_certificate'].'&id_meta='.$meta['id_meta'].'" '
-                        .' title="'.Lang::t('_PREVIEW', 'certificate').'"><span>'.Lang::t('_PREVIEW', 'certificate').'</span></a>';
-            $download    = '<a class="ico-wt-sprite subs_pdf" href="?r=mycertificate/'
-                        . 'download&id_certificate='.$meta['id_certificate'].'&id_meta='.$meta['id_meta'].'" '
+           
+            $preview    = '<a class="ico-wt-sprite subs_view"'
+                        . ' href="?r=mycertificate/preview'
+                        . '&id_certificate='.$meta['id_certificate']
+                        . '&id_meta='.$meta['id_meta'].'" '
+                        . ' title="'.Lang::t('_PREVIEW', 'certificate').'"><span>'.Lang::t('_PREVIEW', 'certificate').'</span></a>';
+            $download   = '<a class="ico-wt-sprite subs_pdf"' 
+                        . ' href="?r=mycertificate/download'
+                        . '&id_certificate='.$meta['id_certificate'].'&id_meta='.$meta['id_meta'].'" '
                         .' title="'.Lang::t('_DOWNLOAD', 'certificate').'"><span>'.Lang::t('_DOWNLOAD', 'certificate').'</span></a>';
             $generate    = '<a class="ico-wt-sprite subs_pdf" href="?r=mycertificate/'
-                        . 'download&id_certificate='.$meta['id_certificate'].'&id_meta='.$meta['id_meta'].'" '
+                        . 'release_cert'
+                        .'&id_certificate='.$meta['id_certificate']
+                        .'&aggCert=1'
+                        .'&id_meta='.$meta['id_meta'].'" '
                         .' title="'.Lang::t('_GENERATE', 'certificate').'"><span>'.Lang::t('_GENERATE', 'certificate').'</span></a>';
 					
             $row = array(
@@ -134,7 +151,7 @@ class MycertificateLms extends Model {
                 'cert_name'         => $meta['cert_name'], 
                 'courses'           => $meta['courses'],
                 // 'preview'           => isset($meta['on_date']) ? '' : $preview,
-                'download'          => isset($meta['on_date']) ? $download : $generate
+                'download'          => ($meta['isReleased']) ? $download : $generate
             );
             
             $data[] = array_values($row);

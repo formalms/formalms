@@ -6,13 +6,13 @@ cout(	getTitleArea(Lang::t('_TITLE_META_CERTIFICATE','certificate'), 'certificat
 $form = new Form();
 
 cout(	
-        $form->openForm('certificate_filter', 'index.php?r=alms/'.$controller_name.'/meta_certificate')
+        $form->openForm('certificate_filter', 'index.php?r=alms/'.$controller_name.'/'.$opsArr['home'])
         .'<div class="quick_search_form">
                 <div>
                     <div class="simple_search_box">'
-                    .Form::getInputTextfield("search_t", "filter_text", "filter_text", Get::req('filter_text', DOTY_MIXED, ''), '', 255, '' )
-                    .Form::getButton("filter", "filter", Lang::t('_SEARCH', 'standard'), "search_b")
-                    .Form::getButton("toggle_filter", "toggle_filter", Lang::t('_RESET', 'standard'), "reset_b")
+                        .Form::getInputTextfield("search_t", "filter_text", "filter_text", (isset($filter_text) ? $filter_text : ''), '', 255, '' )
+                        .Form::getButton("filter", "filter", Lang::t('_SEARCH', 'standard'), "search_b")
+                        .Form::getButton("toggle_filter", "toggle_filter", Lang::t('_RESET', 'standard'), "reset_b")
                     .'</div>
                 </div>
         </div>'

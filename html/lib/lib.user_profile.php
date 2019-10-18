@@ -3812,7 +3812,7 @@ class UserProfileData {
 	/**
 	 * save the user new password
 	 */
-	function saveUserPwd($id_user, $new_pwd) {
+    function saveUserPwd($id_user, $new_pwd) {
 
 		if(!$this->acl_man->updateUser( 	$id_user,
 											FALSE,

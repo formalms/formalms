@@ -1,19 +1,31 @@
 <?php defined("IN_FORMA") or die("Direct access is forbidden");
+ 
+define('COURSE', 0);
+define('COURSE_PATH', 1); 
   
 class AggregatedCertificate {
 
+    
+   
     protected $db;
 
     public function AggregatedCertificate(){
 
         $this->db = DbConn::getInstance();
-        $this->table_cert = '_certificate';
+        $this->table_cert = '_certificate';  // TODO: remove, inserting appropriate libraries
         $this->table_cert_tags = '_certificate_tags';
 
-        $this->table_cert_meta_association = '_aggregated_certificate_metadata_association';
-        $this->table_cert_meta_association_courses = '_aggregated_certificate_association_course';
-        $this->table_cert_meta_association_coursepath = '_aggregated_certificate_association_coursepath';
-        $this->table_assign_agg_cert = '_aggregated_certificate_assign';
+        $this->table_cert_meta_association = '_aggregated_cert_metadata';
+        $this->table_cert_meta_association_courses = '_aggregated_cert_course';
+        $this->table_cert_meta_association_coursepath = '_aggregated_cert_coursepath';
+        $this->table_assign_agg_cert = '_aggregated_cert_assign';
+    
+    
+    
+        $this->assocTypesArr = array(
+            COURSE => $this->table_cert_meta_association_courses,
+            COURSE_PATH =>  $this->table_cert_meta_association_coursepath
+        );
     }
     
     
@@ -31,7 +43,7 @@ class AggregatedCertificate {
     * @return array $aggCertArr
     *           
     */
-    function getAllAggregatedCerts($ini = 0, $count = false) {
+    function getAllAggregatedCerts($ini = 0, $count = false, $filter = []) {
         //search query of certificates
         $query_certificate = "SELECT ";
                             if ($count) {
@@ -50,11 +62,11 @@ class AggregatedCertificate {
         $query_certificate .= "FROM ".$GLOBALS['prefix_lms']. $this->table_cert
                             . " WHERE meta = 1";
 
-      /*  if (isset($_POST['filter'])) { // Generalize with a filter variable
-            if ($_POST['filter_text'] !== '')
-                $query_certificate .=    " AND ( name LIKE '%".$_POST['filter_text']."%'"
-                                        ." OR code LIKE '%".$_POST['filter_text']."%' )";
-        }  */
+        if (!empty($filter)) { // Generalize with a filter variable
+            if (isset($filter['filter_text']))
+                $query_certificate .=    " AND ( name LIKE '%".$filter['filter_text']."%'"
+                                        ." OR code LIKE '%".$filter['filter_text']."%' )";
+        }  
         
         if(!$count)
             $query_certificate .= " ORDER BY id_certificate"
@@ -73,9 +85,7 @@ class AggregatedCertificate {
                 
         return $aggCertArr;
     }
-    
-    
-    
+      
     /**
         * Returns all metadata of aggr. cert
         *    
@@ -109,10 +119,7 @@ class AggregatedCertificate {
             }
             return $arr_cert;
         }  
-      
-    
-    
-    
+        
     /**
     * Returns all the metadata on associations related to a cert.
     * If i'm passing the id of the cert., i will get all associations metadata associated on the cert.
@@ -168,6 +175,31 @@ class AggregatedCertificate {
 
     }
 
+    
+    /**
+    * Return an array of 1 or more certs id depending on the idAssociation passed
+    * 
+    * @param int | array $idAssociation
+    */
+    
+    function getIdCertificate($idAssociation) {
+        
+        $q = "SELECT idCertificate "
+            ." FROM %lms".$this->table_cert_meta_association
+            ." WHERE idAssociation " . (is_array($idAssociation) ? "IN " . implode(", ", $idAssociation) : " = " . $idAssociation);
+        
+            $rs = $this->db->query($q);
+                    
+            while($row = $this->db->fetch_assoc($rs)) {
+            
+                $idCertsArr[] = (int) $row['idCertificate'];
+
+            }
+            
+            return $idCertsArr;
+            
+        
+    }
 
     /**
      * Returns an array of id/s associations (object)
@@ -201,10 +233,9 @@ class AggregatedCertificate {
      * @param mixed $type_assoc
      * @param mixed $userIdsArr optional (for filtering query with users)
      *
-     * @return array $usersArr an array of 0 or more rows with the link ids
+     * @return array $linksArr an array of 0 or more rows with the link ids
      */
-
-    function getAssociationLink($id_association, $type_assoc, $userIdsArr = [] ){
+    function getAssociationLink($id_association = -1, $type_assoc, $userIdsArr = [] ){
 
         switch($type_assoc) {
             case COURSE:
@@ -221,8 +252,9 @@ class AggregatedCertificate {
 
         $q =      "SELECT "
                 . $field_link
-                . " FROM ". $GLOBALS['prefix_lms'] . $table
-                . " WHERE idAssociation ". ( is_array($id_association) ? " IN (" . implode(", ", $id_association) . ")" : " = " . $id_association)
+                . " FROM %lms" . $table
+                . " WHERE 1 = 1 " 
+                . ($id_association != -1 ? " AND idAssociation ". ( is_array($id_association) ? " IN (" . implode(", ", $id_association) . ")" : " = " . $id_association) : "") 
                 . (!empty($userIdsArr) ? " AND idUser ". ( is_array($userIdsArr) ? " IN (" . implode( ", ", $userIdsArr) . ") " : " = " . $userIdsArr) : "");
 
         $rs = sql_query($q);
@@ -237,6 +269,40 @@ class AggregatedCertificate {
         return $assocArr;
     }
 
+    /**
+    * Returns in each type assoc all the assoc. ids that belongs to user
+    * 
+    * @param int
+    * 
+    * @return array $idsAssocArr[$association_type] = $idAssociation
+    */
+    function getIdsAssociationUser($user) {
+        
+        if(!isset($user)) return;
+
+        $idsAssocArr = array();
+
+        foreach($this->assocTypesArr as $association_type => $table_name){
+            
+            $q =      "SELECT DISTINCT idAssociation"
+                    . " FROM %lms" . $table_name
+                    . " WHERE 1 = 1 "
+                    . " AND idUser = ".$user;
+                            
+                    $rs = $this->db->query($q);
+                    
+            while($row = $this->db->fetch_assoc($rs)){
+             
+                $idsAssocArr[$association_type] = (int) $row['idAssociation'];
+            
+            }
+        }   
+
+        return $idsAssocArr; 
+              
+        
+    }
+    
     /**
      * @param array | int $id_assoc
      * @param $type_assoc
@@ -377,7 +443,6 @@ class AggregatedCertificate {
 
     function hasUserAggCertsReleased($id_user, $id_cert){
 
-
             $q = "SELECT * "
                 ." FROM ". $GLOBALS['prefix_lms']. $this->table_assign_agg_cert
                 ." WHERE idUser = ".$id_user
@@ -387,6 +452,70 @@ class AggregatedCertificate {
 
 
         }
+        
+    /**
+    * 
+    *     $filter['id_certificate'] int
+    *     $filter['id_course'] int
+    *     $filter['id_user'] int
+    * 
+    * @param array $filter
+    */
+    function getAssignedAggCerts($filter) {
+       
+        /* Steps:
+        
+            query for all type assoc.
+                type course
+                if is set filter user, then get all courses associated to the user
+                type course_path
+            then query if the user has some course path associated, then get if the user has completed all the courses in the coursepath
+        
+        
+        */
+        
+        
+        $query = " SELECT   cma.idCertificate AS id_certificate "
+                ."         ,cma.idMetaCertificate AS id_meta "
+                ."         ,cmc.idUser AS id_user "
+                ."         ,ce.code AS cert_code "
+                ."         ,ce.name AS cert_name "
+                ."         ,cma.on_date"
+                ." GROUP_CONCAT(DISTINCT CONCAT( '(', co.code, ') - ', co.name) SEPARATOR '<br>') AS courses"
+                ." FROM %lms_certificate_meta_course as cmc"  //??
+                ." JOIN %lms" . $this->table_assign_agg_cert . " as cma ON cmc.idAssociation = cma.idMetaCertificate"
+                ." JOIN %lms_certificate AS ce ON cma.idCertificate = ce.id_certificate"
+                ." JOIN %lms_course AS co ON cmc.idCourse = co.idCourse"
+                ." WHERE 1 = 1";
+        
+        if (isset($filter['id_certificate'])) {
+            $query .= " AND cma.idCertificate = " . $filter['id_certificate'];
+        }
+        if (isset($filter['id_course'])) {
+            $query .= " AND cmc.idCourse = " . $filter['id_course'];
+        }
+        if (isset($filter['id_user'])) {
+            $query .= " AND cma.idUser = " . $filter['id_user'];
+        }
+        if (!isset($filter['id_user'])) {
+            if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+                require_once(_base_ . '/lib/lib.preference.php');
+                $adminManager = new AdminPreference();
+                $query .= " AND " . $adminManager->getAdminUsersQuery(Docebo::user()->getIdSt(), 'idUser');
+            }
+        }
+        $query .= " GROUP BY cmc.idMetaCertificate";
+
+        $res = sql_query($query);
+        
+        while ($row = sql_fetch_assoc($res)) {
+            $metaAssigned[] = $row;
+        }
+        
+        return $metaAssigned;
+    }
+    
+    
 
     /**
      *
@@ -532,14 +661,9 @@ class AggregatedCertificate {
      */
     function getTypeAssoc($id_assoc){
 
-        $assocTypesArr = array(
-            COURSE => $this->table_cert_meta_association_courses,
-            COURSE_PATH =>  $this->table_cert_meta_association_coursepath
-        );
-
         $type_assoc = -1; // Assoc. not found.
 
-        foreach($assocTypesArr as $key => $table) {
+        foreach($this->assocTypesArr as $key => $table) {
 
             $q = "SELECT * 
                 FROM ". $GLOBALS['prefix_lms']. $table ."
@@ -747,7 +871,15 @@ class AggregatedCertificate {
 
     }  
       
-
+    /**
+    * Inserting association
+    * 
+    * @param mixed $type_assoc
+    * @param array $assocArr
+    * 
+    * assocArr[]
+    * @return reouce_id
+    */
     function insertAssociationLink($type_assoc, $assocArr){
 
         switch($type_assoc) {

@@ -96,7 +96,11 @@ class MycertificateLmsController extends LmsController
         } else {
             $pagination['search'] = null;
         }
+        
+        // query for the relation between user and certificates associated to it
+        // all the assoc. with the user, for all the user get id cert.
         $totalMetaCertificates = $this->model->countMyMetaCertificates();
+        
         $metaCertificates = $this->model->loadMyMetaCertificates();
 
         $result = array(
@@ -116,11 +120,29 @@ class MycertificateLmsController extends LmsController
 
         $id_certificate = importVar('id_certificate', true, 0);
         $id_course = importVar('id_course', true, 0);
-        $id_meta = Get::req('idmeta', DOTY_INT, 0);
+        $idAssociation = Get::req('idAssociation', DOTY_INT, 0);
 
-        $subs = $this->certificate->getSubstitutionArray($this->id_user, $id_course, $id_meta);
+        $subs = $this->certificate->getSubstitutionArray($this->id_user, $id_course, $idAssociation);
         $this->certificate->send_facsimile_certificate($id_certificate, $this->id_user, $id_course, $subs);
     }
+    
+    function release_cert() {
+            checkPerm('view');
+
+            require_once(Forma::inc(_lms_.'/lib/lib.certificate.php'));
+
+            
+            $id_certificate =  Get::req('id_certificate', DOTY_INT, 0);
+            $id_association = Get::req('id_association', DOTY_INT, 0);
+
+            $id_course =  Get::req('id_course', true, 0);
+            $id_user = (int) $this->id_user;
+
+
+            
+            $subs = $this->certificate->getSubstitutionArray($id_user, $id_course, $id_association);
+            $this->certificate->send_certificate($id_certificate, $id_user, $id_course, $subs);
+        }
 
     public function download()
     {
@@ -128,10 +150,10 @@ class MycertificateLmsController extends LmsController
 
         $id_certificate = importVar('id_certificate', true, 0);
         $id_course = importVar('id_course', true, 0);
-        $id_meta = Get::req('id_meta', DOTY_INT, 0);
+        $idAssociation = Get::req('idAssociation', DOTY_INT, 0);
 
         if($this->certificate->certificateAvailableForUser($id_certificate, $id_course, $this->id_user) ) {
-            $subs = $this->certificate->getSubstitutionArray($this->id_user, $id_course, $id_meta);
+            $subs = $this->certificate->getSubstitutionArray($this->id_user, $id_course, $idAssociation);
             $this->certificate->send_certificate($id_certificate, $this->id_user, $id_course, $subs);
         }
     }

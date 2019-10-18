@@ -264,7 +264,7 @@ CREATE TABLE IF NOT EXISTS `learning_certificate_course` (
 -- Struttura della tabella `learning_aggregated_certificate_metadata_association`
 --
 
-CREATE TABLE IF NOT EXISTS `learning_aggregated_certificate_metadata_association` (
+CREATE TABLE IF NOT EXISTS `learning_aggregated_cert_metadata` (
   `idAssociation` int(11) NOT NULL AUTO_INCREMENT,
   `idCertificate` int(11) NOT NULL DEFAULT '0',
   `title` varchar(255) NOT NULL DEFAULT '',
@@ -283,7 +283,7 @@ CREATE TABLE IF NOT EXISTS `learning_aggregated_certificate_metadata_association
 -- Struttura della tabella `learning_aggregated_certificate_association`
 --
 
-CREATE TABLE IF NOT EXISTS `learning_aggregated_certificate_assign` (
+CREATE TABLE IF NOT EXISTS `learning_aggregated_cert_assign` (
   `idUser` int(11) NOT NULL DEFAULT '0',
   `idAssociation` int(11) NOT NULL DEFAULT '0',
   `idCertificate` int(11) NOT NULL DEFAULT '0',
@@ -303,7 +303,7 @@ CREATE TABLE IF NOT EXISTS `learning_aggregated_certificate_assign` (
 -- Struttura della tabella `learning_aggregated_certificate_association_course`
 --
 
-CREATE TABLE IF NOT EXISTS `learning_aggregated_certificate_association_course` (
+CREATE TABLE IF NOT EXISTS `learning_aggregated_cert_course` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `idAssociation` int(11) NOT NULL DEFAULT '0',
   `idUser` int(11) NOT NULL DEFAULT '0',
@@ -323,8 +323,8 @@ CREATE TABLE IF NOT EXISTS `learning_aggregated_certificate_association_course` 
 -- Struttura della tabella `learning_aggregated_certificate_association_coursepath`
 --
 
-CREATE TABLE IF NOT EXISTS `learning_aggregated_certificate_association_coursepath` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE IF NOT EXISTS `learning_aggregated_cert_coursepath` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,             
   `idAssociation` int(11) NOT NULL DEFAULT '0',
   `idUser` int(11) NOT NULL DEFAULT '0',
   `idCoursePath` int(11) NOT NULL DEFAULT '0',

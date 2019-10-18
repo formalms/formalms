@@ -24,31 +24,31 @@ WHERE idUnder = 242 ;
 
 
 ALTER TABLE learning_certificate_meta
-    RENAME TO learning_aggregated_certificate_metadata_association;
-ALTER TABLE learning_aggregated_certificate_metadata_association
+    RENAME TO learning_aggregated_cert_metadata;
+ALTER TABLE learning_aggregated_cert_metadata
     CHANGE idMetaCertificate idAssociation INT(11) NOT NULL AUTO_INCREMENT;
 
 
 
 
 ALTER TABLE learning_certificate_meta_assign
-    RENAME TO learning_aggregated_certificate_assign;
-ALTER TABLE learning_aggregated_certificate_assign
+    RENAME TO learning_aggregated_cert_assign;
+ALTER TABLE learning_aggregated_cert_assign
     CHANGE idMetaCertificate idAssociation INT(11) NOT NULL;
 
 
 
 ALTER TABLE learning_certificate_meta_course
-    RENAME TO learning_aggregated_certificate_association_course;
-ALTER TABLE learning_aggregated_certificate_association_course
+    RENAME TO learning_aggregated_cert_course;
+ALTER TABLE learning_aggregated_cert_course
     CHANGE idMetaCertificate idAssociation INT(11) NOT NULL ;
 
 
 --
--- Struttura della tabella `learning_aggregated_certificate_association_coursepath`
+-- Struttura della tabella `learning_aggregated_cert_coursepath`
 --
 
-CREATE TABLE IF NOT EXISTS `learning_aggregated_certificate_association_coursepath` (
+CREATE TABLE IF NOT EXISTS `learning_aggregated_cert_coursepath` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `idAssociation` int(11) NOT NULL DEFAULT '0',
   `idUser` int(11) NOT NULL DEFAULT '0',
@@ -57,7 +57,7 @@ CREATE TABLE IF NOT EXISTS `learning_aggregated_certificate_association_coursepa
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
 
 --
--- Dump dei dati per la tabella `learning_aggregated_certificate_association_coursepath`
+-- Dump dei dati per la tabella `learning_aggregated_cert_coursepath`
 --
 
 
