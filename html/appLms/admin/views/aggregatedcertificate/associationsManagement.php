@@ -7,6 +7,6 @@
     
 
     cout(    $tb->getTable()
-                .$tb->getNavBar($ini, sql_num_rows($result))
+                .$tb->getNavBar($ini, $countAssociations)
                 .getBackUi('index.php?r=alms/'.$controller_name.'/'. $arrOps['home'], Lang::t('_BACK'))
                 .'</div>');

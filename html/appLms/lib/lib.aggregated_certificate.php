@@ -44,20 +44,13 @@ class AggregatedCertificate {
     *           
     */
     function getAllAggregatedCerts($ini = 0, $count = false, $filter = []) {
-        //search query of certificates
+        //search query of certificates 
         $query_certificate = "SELECT ";
-                            if ($count) {
+        $query_certificate .= "id_certificate, "
+                            . "code, "
+                            . "name, "
+                            . "description ";
 
-                                $query_certificate .= "CAST( COUNT(*) AS UNSIGNED) AS count ";
-
-                           } else {
-
-                                $query_certificate .= "id_certificate, "
-                                    . "code, "
-                                    . "name, "
-                                    . "description ";
-
-                            }
 
         $query_certificate .= "FROM ".$GLOBALS['prefix_lms']. $this->table_cert
                             . " WHERE meta = 1";
@@ -68,14 +61,16 @@ class AggregatedCertificate {
                                         ." OR code LIKE '%".$filter['filter_text']."%' )";
         }  
         
-        if(!$count)
+       if(!$count){
             $query_certificate .= " ORDER BY id_certificate"
-                . " LIMIT $ini,".Get::sett('visuItem');
+                . " LIMIT $ini,".Get::sett('visuItem');  
+       }
+       
         
         $rs = sql_query($query_certificate);
+        
         $k = 0;
         while($rows = sql_fetch_assoc($rs)) {
-            $aggCertArr[$k]['count'] = (int) $rows['count'];
             $aggCertArr[$k]['id_certificate'] = (int) $rows['id_certificate'];
             $aggCertArr[$k]['code'] = $rows['code'];
             $aggCertArr[$k]['name'] = $rows['name'];
@@ -135,13 +130,20 @@ class AggregatedCertificate {
     * 
     * @return array $associationsMetadataArr 
     */
-    function getAssociationsMetadata($id_cert = 0, $id_association = 0) {
+    function getAssociationsMetadata($id_cert = 0, $id_association = 0, $ini = -1) {
         
         $query = "SELECT idAssociation, title, description"
                 ." FROM ".$GLOBALS['prefix_lms'].$this->table_cert_meta_association
                 . ($id_cert != 0 ? " WHERE idCertificate = ".$id_cert : '')
                 . ($id_association != 0 ? " WHERE idAssociation = ".$id_association : '');
 
+        if($ini != -1) { // Setting offset for pagination 
+            
+             $query .= " ORDER BY idAssociation"
+                     . " LIMIT $ini,".Get::sett('visuItem');  
+            
+        }        
+                
         $rs = sql_query($query);
         
         $k = 0;
@@ -293,7 +295,7 @@ class AggregatedCertificate {
                     
             while($row = $this->db->fetch_assoc($rs)){
              
-                $idsAssocArr[$association_type] = (int) $row['idAssociation'];
+                $idsAssocArr[$association_type][] = (int) $row['idAssociation'];
             
             }
         }   

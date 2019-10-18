@@ -132,6 +132,13 @@ class Certificate {
             return count($this->getAssignment($filter));
         }
 
+    /**
+    * put your comment there...
+    * 
+    * @param mixed $filter
+    * @param mixed $pagination
+    * @param mixed $count
+    */
     function getAssignment($filter, $pagination = false, $count = null) {
             if ($pagination && isset($pagination['search'])) {
                 $filter['search'] = $pagination['search'];
@@ -322,15 +329,36 @@ class Certificate {
         }
         
     function countMetaAssignment($filter) {
-        return count($this->getMetaAssignment($filter));
+        return $this->getMetaAssignment($filter,false,true);
     }
     
-    function getMetaAssignment($filter) {
+    /**
+    * Returns meta assignment (released or not)
+    * 
+    * @param mixed $filter
+    * @param mixed $pagination
+    * @param mixed $count
+    * 
+    * Expecting an array 
+    * 
+    * $aggrCertsArr[{id_certificate}]['id_certificate']
+    * $aggrCertsArr[{id_certificate}]['cert_code']
+    * $aggrCertsArr[{id_certificate}]['cert_name']
+    * $aggrCertsArr[{id_certificate}]['is_released']
+    * 
+    * @return $aggrCertsArr
+    */
+    
+    function getMetaAssignment($filter, $pagination = false, $count = null) {
         //$metaAssigned = $this->getMetaAssigned($filter);
         //$metaAssignable = $this->getMetaAssignable($filter);
 
         require_once(_files_lms_.'/'._folder_lib_.'/lib.aggregated_certificate.php');
         $aggCertLib = new AggregatedCertificate();
+       
+        //Setting text if it's setted 
+        if ($pagination && isset($pagination['search'])) 
+                $filter['search'] = $pagination['search'];
         
         
         $aggrCertsArr = array();
@@ -340,9 +368,11 @@ class Certificate {
             // $coursesArr = $aggCertLib->getAssociationLink(-1, COURSE, $filter['idUser']);
         $linkIdsArr = array();
        
-        foreach($associationsUser as $assoc_type => $id_assoc) {
+        foreach($associationsUser as $assoc_type => $assocArrOfType) {
         
-            $showAggrCert = true;
+            foreach($assocArrOfType as $id_assoc) {
+             
+                $showAggrCert = true;
             
             foreach($aggCertLib->getAssociationLink($id_assoc, $assoc_type, $filter['id_user']) as $idLink){
                 
@@ -366,7 +396,7 @@ class Certificate {
                 if($aggCertLib->getCountCoursesCompleted($courseId, $filter['id_user']) == 0)
                    {
                      $showAggrCert = false;                                               
-                     return;  
+                     exit;
                    } 
                 
                 
@@ -384,11 +414,25 @@ class Certificate {
                     $aggrCertsArr[$id_cert]["isReleased"] = ($aggCertLib->hasUserAggCertsReleased((int) $filter['id_user'], $id_cert) > 0) ;
                         
                 }
+                
+            }
+            
         }   
         
-      
+        if($count)
+            return count($aggrCertsArr); 
         
-        return $aggrCertsArr;       
+        $paginated_assignment = array();
+        if($pagination) {
+                $offset = $pagination["startIndex"];
+                $limit = $offset + $pagination["rowsPerPage"];
+                $limit = ($limit <= count($aggrCertsArr) ? $limit : count($aggrCertsArr));
+                for($i = $offset; $i < $limit; $i++) {
+                    $paginated_assignment[] = $aggrCertsArr[array_keys($aggrCertsArr)[$i]];
+                }
+            }
+        
+        return $pagination ? $paginated_assignment : $aggrCertsArr;
     }
     
     function getMetaAssigned($filter) {

@@ -445,6 +445,12 @@ class NavBar {
 		}
 	}
 
+    /**
+    * Return the page selected, or 1 if there aren't any pages
+    * 
+    * @param mixed $var_name
+    * @param mixed $kind_of
+    */
 	function getSelectedPage($var_name = false, $kind_of = false) {
 
 		if($kind_of === false) $kind_of = $this->kind_of;
@@ -461,7 +467,13 @@ class NavBar {
 		}
 		return $page;
 	}
-
+    
+    /**
+    * Returns an integer indicating the elements selected by the query (LIMIT? )
+    * 
+    * @param mixed $var_name
+    * @param mixed $kind_of
+    */
 	function getSelectedElement($var_name = false, $kind_of = false) {
 
 		$page = NavBar::getSelectedPage($var_name, $kind_of);

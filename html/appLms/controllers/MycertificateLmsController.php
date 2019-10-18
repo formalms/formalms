@@ -32,9 +32,8 @@ class MycertificateLmsController extends LmsController
     public function show()
     {
         checkPerm('view', false, self::mod_name);
-        $totalMetaCertificates = $this->model->countMyMetaCertificates();
 
-        $this->render('show', ['totalMetaCertificates' => $totalMetaCertificates]);
+        $this->render('show');
     }
 
     public function getMyCertificates()
@@ -60,8 +59,15 @@ class MycertificateLmsController extends LmsController
         } else {
             $pagination['search'] = null;
         }
+        
+        //Return total of all assignment / certs. available for the user filtered only by user id
         $totalCertificates = $this->model->countMyCertificates();
+        
+        // returns all the certs. datas with the pagination option and count to false (I.E. )
+        // return the rows for the rendering in the view
         $certificates = $this->model->loadMyCertificates($pagination, false);
+        
+        // return the number of certs released and not
         $total_filtered = $this->model->loadMyCertificates($pagination, true);
 
         $result = array(
@@ -77,8 +83,8 @@ class MycertificateLmsController extends LmsController
         echo $this->json->encode($result);
     }
 
-    public function getMyMetaCertificates()
-    {
+    public function getMyMetaCertificates() {
+        
         checkPerm('view', false, self::mod_name);
 
         $startIndex = Get::req('start', DOTY_INT, 0);
@@ -101,13 +107,15 @@ class MycertificateLmsController extends LmsController
         // all the assoc. with the user, for all the user get id cert.
         $totalMetaCertificates = $this->model->countMyMetaCertificates();
         
-        $metaCertificates = $this->model->loadMyMetaCertificates();
+        $metaCertificates = $this->model->loadMyMetaCertificates($pagination);
+       
+        $metaCertificatesFiltered = $this->model->loadMyMetaCertificates($pagination, true);
 
         $result = array(
             'recordsTotal' => $totalMetaCertificates,
             'startIndex' => $startIndex,
             'rowsPerPage' => $rowsPerPage,
-            'recordsFiltered' => $totalMetaCertificates,
+            'recordsFiltered' => $metaCertificatesFiltered,
             'data' => $metaCertificates,
         );
 

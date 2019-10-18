@@ -35,4 +35,4 @@ if(isset($_GET['result']))
     }
 }
 
-cout($tb->getTable().$tb->getNavBar($ini, $countMetacert).'</div>');
+cout($tb->getTable().$tb->getNavBar($ini, $countAggrCerts).'</div>');

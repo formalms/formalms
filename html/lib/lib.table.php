@@ -329,7 +329,9 @@ class Table {
 	 * Construct the table drawer class
 	 * @param <type> $max_rows the maximum number of rows per page
 	 * @param <type> $caption the table caption
-	 * @param <type> $summary the tabel summary
+     * @param <type> $summary the tabel summary
+	 * @param <type> $class class name for adding style (css) to the forma table
+     * 
 	 */
 	public function  __construct($max_rows = 10, $caption = '', $summary = '', $class = '') {
 
@@ -670,8 +672,6 @@ class Table {
 
 		return $table;
 	}
-
-
 
 
 	public function initNavBar($public_name, $kind_of = false) {

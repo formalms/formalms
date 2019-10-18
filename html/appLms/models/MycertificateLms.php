@@ -121,11 +121,9 @@ class MycertificateLms extends Model {
         $results = Get::req('results', DOTY_INT, Get::sett('visuItem', 25));
         
         $filter = array('id_user' => $this->id_user);
-        $myMetaCertificates = $this->certificate->getMetaAssignment($filter);
+        $myMetaCertificates = $this->certificate->getMetaAssignment($filter, $pagination, $count);
         
-        if($count) {
-            return $myMetaCertificates;
-        }
+     
                 
         $data = array();
         foreach ($myMetaCertificates AS $meta) {
@@ -167,7 +165,8 @@ class MycertificateLms extends Model {
     
     public function countMyMetaCertificates() {        
         $filter = array('id_user' => $this->id_user);
-        return $this->certificate->countMetaAssignment($filter);
+     
+       return $this->certificate->getMetaAssignment($filter,false,true);
     }
 }
 

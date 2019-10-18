@@ -159,6 +159,7 @@ Class AggregatedCertificateAlmsController extends AlmsController
 
         $tb    = new Table(Get::sett('visuItem'), Lang::t('_AGGREGATE_CERTIFICATE_LIST'), Lang::t('_AGGREGATE_CERTIFICATE_LIST'));
         $tb->initNavBar('ini', 'link');
+        $tb->setLink("index.php?r=alms/".$this->controller_name."/".$this->op['home']);        
         $ini = $tb->getSelectedElement();
 
         
@@ -211,7 +212,7 @@ Class AggregatedCertificateAlmsController extends AlmsController
 
 
         // Array of all metacertificates to display in the main admin panel
-        $aggregateCertsArr = $this->aggCertLib->getAllAggregatedCerts($ini, false, $filter);
+        $aggregateCertsArr = $this->aggCertLib->getAllAggregatedCerts($ini, $filter);
 
             foreach ($aggregateCertsArr as $aggregate_cert) {
                 $title = strip_tags($aggregate_cert["name"]);
@@ -281,11 +282,12 @@ Class AggregatedCertificateAlmsController extends AlmsController
             
         }
         
+      
        
         
             $params["tb"] = $tb;
-            $params["countMetacert"] = (int) $this->aggCertLib->getAllAggregatedCerts($ini, true);
             $params["ini"] = $ini;
+            $params["countAggrCerts"] = count($this->aggCertLib->getAllAggregatedCerts($ini, true, $filter));
             
             $params["controller_name"] = $this->controller_name;
             $params["opsArr"] = $this->op;
@@ -294,8 +296,6 @@ Class AggregatedCertificateAlmsController extends AlmsController
 
     }
 
-    
-    
     function metadata() {
         
         checkPerm('mod');
@@ -471,11 +471,11 @@ Class AggregatedCertificateAlmsController extends AlmsController
         // Creating table...
         $tb = new Table(Get::sett('visuItem'), Lang::t('_AGGRETATE_CERTIFICATES_ASSOCIATION_CAPTION'), Lang::t('_AGGRETATE_CERTIFICATES_ASSOCIATION_CAPTION'));
         $tb->initNavBar('ini', 'link');
-        $tb->setLink('index.php?r=alms/'.$this->controller_name.'/'.$this->op['associationsManagement']);
+        $tb->setLink('index.php?r=alms/'.$this->controller_name.'/'.$this->op['associationsManagement'].'&id_certificate='.$id_certificate);
         $ini = $tb->getSelectedElement();
 
         // Getting all metacerts belonging to the certificate
-        $associationsMetadataArr = $this->aggCertLib->getAssociationsMetadata($id_certificate);
+        $associationsMetadataArr = $this->aggCertLib->getAssociationsMetadata($id_certificate, 0, $ini);
 
         $type_h = array('',  // Name
                         '',  // Description
@@ -614,6 +614,9 @@ Class AggregatedCertificateAlmsController extends AlmsController
         
         $params = array(
             "id_certificate" => $id_certificate,
+            "countAssociations" => count($this->aggCertLib->getAssociationsMetadata($id_certificate)),
+            "ini" => $ini,
+            
             "arrOps" => $this->op,
             "controller_name" => $this->controller_name,
             "tb" => $tb,
@@ -883,7 +886,7 @@ Class AggregatedCertificateAlmsController extends AlmsController
                     );
 
                     $res = $this->aggCertLib->insertAssociationLink($type_association, $assocArr);
-                    if(!$res) cout(getErrorUi(Lang::t('Error adding association')));;  //TODO: add error message, can't add new selected users.
+                    if(!$res) cout(getErrorUi(Lang::t('Error adding association')));  //TODO: add error message, can't add new selected users.
 
 
                 }
