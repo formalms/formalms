@@ -2296,6 +2296,16 @@ public function addClassroom($params) {
                 $query_meta = "INSERT INTO %lms_certificate_meta ( idCertificate, title, description) 
                                  VALUES (".$meta_cert_id.",'".$name_ass."','".$descr_ass."')";                                     
                 $result_meta = sql_query($query_meta);
+                
+                
+                // get id new association
+                $query_association = "select max(idMetaCertificate) as id_meta from %lms_certificate_meta";
+                $qres = sql_query($query_association);
+                list($id_meta) = sql_fetch_row($qres);                
+                
+                $output['id_new_association'] = $id_meta;
+                
+                
             } catch(Exception $e) {
               $output['success']=false;
             }           
