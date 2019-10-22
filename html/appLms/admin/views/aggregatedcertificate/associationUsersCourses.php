@@ -1,4 +1,7 @@
+
+
 <?php
+
 
      cout(    getTitleArea(Lang::t('_AGGRETATE_CERTIFICATES_ASSOCIATION_CAPTION', 'certificate'), 'certificate')
                     .'<div class="std_block">'
@@ -14,9 +17,20 @@
                     .$form->closeElementSpace()
                     .$form->openButtonSpace()
                    // .$form->getButton('select_all', 'select_all', Lang::t('_SELECT_ALL', false, null, false, ))
-                    .Form::getButton('select_all', 'select_all', Lang::t('_SELECT_ALL'),false,'',true,true)
+                    .Form::getButton('select_all', 'select_all', Lang::t('_SELECT_ALL'),false,'',true,false)
                     .$form->getButton('insert', 'insert', Lang::t('_INSERT'))
                     .$form->getButton('undo_assign', 'undo_assign', Lang::t('_UNDO'))
                     .$form->closeButtonSpace()
                     .$form->closeForm()
         );
+
+        ?>
+
+
+<script>
+    $("#select_all").click(function () {
+
+        $("#tb_AssocLinks input:checkbox").prop('checked',true);
+
+    });
+</script>

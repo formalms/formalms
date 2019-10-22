@@ -9,7 +9,7 @@ class AggregatedCertificate {
    
     protected $db;
 
-    public function AggregatedCertificate(){
+    public function __construct(){
 
         $this->db = DbConn::getInstance();
         $this->table_cert = '_certificate';  // TODO: remove, inserting appropriate libraries
@@ -903,11 +903,10 @@ class AggregatedCertificate {
 
 
         foreach ($assocArr as $associationId => $user) {
-            foreach ($user as $idUser => $field) {
-                foreach ($field as $fieldId => $fieldIdd) {
+            foreach ($user as $idUser => $fieldId) {
 
-                    $query .= "({$associationId}, {$idUser}, {$fieldIdd}),";
-                }
+                    $query .= "({$associationId}, {$idUser}, {$fieldId}),";
+
             }
         }
 

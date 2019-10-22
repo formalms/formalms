@@ -278,8 +278,7 @@ Class AggregatedCertificateAlmsController extends AlmsController
                     title="'.Lang::t('_NEW_AGGREGATE_CERTIFICATE').'">
                     <span>'.Lang::t('_NEW_AGGREGATE_CERTIFICATE').'</span>
                </a>
-           ');  
-            
+           ');
         }
         
       
@@ -469,7 +468,7 @@ Class AggregatedCertificateAlmsController extends AlmsController
         $id_certificate = Get::req('id_certificate',DOTY_INT,0);
 
         // Creating table...
-        $tb = new Table(Get::sett('visuItem'), Lang::t('_AGGRETATE_CERTIFICATES_ASSOCIATION_CAPTION'), Lang::t('_AGGRETATE_CERTIFICATES_ASSOCIATION_CAPTION'));
+        $tb = new Table(Get::sett('visuItem'), Lang::t('_AGGREGATE_CERTIFICATES_ASSOCIATION_CAPTION'), Lang::t('_AGGREGATE_CERTIFICATES_ASSOCIATION_CAPTION'));
         $tb->initNavBar('ini', 'link');
         $tb->setLink('index.php?r=alms/'.$this->controller_name.'/'.$this->op['associationsManagement'].'&id_certificate='.$id_certificate);
         $ini = $tb->getSelectedElement();
@@ -518,7 +517,7 @@ Class AggregatedCertificateAlmsController extends AlmsController
                     );
             // Depending on the type of the course
             $rows[] = ($type_association == COURSE) ? 
-                    '<a href="index.php?r=alms/'.$this->controller_name.'/'.$this->op["associationusers"]
+                    '<a href="index.php?r=alms/'.$this->controller_name.'/'.$this->op["associationCourses"]
                         .'&amp;id_certificate='.$id_certificate
                         .'&amp;id_association='.$association["idAssociation"]
                         .'&amp;type_assoc='. COURSE
@@ -532,7 +531,7 @@ Class AggregatedCertificateAlmsController extends AlmsController
                                   title="'.Lang::t( '_COURSE' ).'" />'; 
             
             $rows[] = ($type_association == COURSE_PATH) ?  
-                    '<a href="index.php?r=alms/'.$this->controller_name.'/'.$this->op["associationusers"]
+                    '<a href="index.php?r=alms/'.$this->controller_name.'/'.$this->op["associationCourses"]
                         .'&amp;id_certificate='.$id_certificate
                         .'&amp;id_association='.$association["idAssociation"]
                         .'&amp;type_assoc='. COURSE_PATH
@@ -579,8 +578,8 @@ Class AggregatedCertificateAlmsController extends AlmsController
         $tb->addActionAdd(    
             '<a class="new_element_link" 
             href="index.php?r=alms/'.$this->controller_name.'/'.$this->op['metaDataAssoc'].'&amp;id_certificate='.$id_certificate.'"
-            title="'.Lang::t('_NEW_ASSOCIATION_AGGRETATE_CERTIFICATE').'">'
-            .Lang::t('_NEW_ASSOCIATION_AGGRETATE_CERTIFICATE')
+            title="'.Lang::t('_NEW_ASSOCIATION_AGGREGATE_CERTIFICATE').'">'
+            .Lang::t('_NEW_ASSOCIATION_AGGREGATE_CERTIFICATE')
             .'</a>'
         );
         
@@ -677,12 +676,7 @@ Class AggregatedCertificateAlmsController extends AlmsController
        $this->render($this->op['metaDataAssoc'], $params);
     }
 
-    
-        /**
-        * I can save the assoc. metadata if i'm creating a new assoc
-        * or if i'm editing an already created.
-        * 
-        */
+
         function saveMetaDataAssoc(){
            
             checkPerm('mod');
@@ -714,29 +708,197 @@ Class AggregatedCertificateAlmsController extends AlmsController
                     .'&id_certificate='. $association['id_certificate']
                     .'&res='. ($res ? 'ok' : 'err'));
             else
-                Util::jump_to(  'index.php?r=alms/'.$this->controller_name.'/'.$this->op['associationusers']
+                Util::jump_to(  'index.php?r=alms/'.$this->controller_name.'/'.$this->op['associationCourses']
                                 .'&amp;id_certificate='.$_POST["id_certificate"]
                                 .'&amp;id_association='.$this->aggCertLib->getLastInsertedAssociationId()
                                 .'&amp;type_assoc='.$type_assoc);
                  
+    }
+
+    /**
+     * Creating an association between users and courses
+     *
+     * Selecting the courses/coursepaths for the association
+     *
+     */
+
+    function associationCourses() {
+
+        require_once($GLOBALS['where_lms'].'/lib/lib.course.php');
+        require_once($GLOBALS['where_lms'].'/lib/lib.course_managment.php');
+
+        if(isset($_POST['cancelselector']))
+            Util::jump_to('index.php?r=alms/'.$this->controller_name.'/'.$this->op['associationsManagement'].'&amp;id_certificate='.Get::req('id_certificate', DOTY_INT, 0));
+
+
+        $id_association = Get::req('id_association', DOTY_INT, 0);
+        $type_association = Get::req('type_assoc', DOTY_INT, -1);
+
+        $params = array(
+
+            "id_certificate" => Get::req("id_certificate", DOTY_INT),
+            "id_association" => $id_association,
+            "type_assoc" => $type_association,
+
+            "opsArr" => $this->op,
+            "controller_name" => $this->controller_name,
+
+        );
+
+        $edit = Get::req('edit', DOTY_INT, 0);
+        if($edit != 1)
+            $edit = 0;
+        $params['edit'] = $edit;
+
+        // loading courses tree / course path list
+        switch ($type_association) {
+
+            case COURSE:
+
+                $treeCat = $this->getTreeCategoryAsArray();
+
+                //$course_manager = new Course_Manager();
+                //$course_manager->setLink('index.php?r=alms/'.$this->controller_name.'/'.$this->op['associationCourses']);
+
+                // If type association is course, then get all course ids from the assoc
+              //  $coursesIdsArr =
+
+                $params['idsCourses'] = $this->aggCertLib->getIdsCourse($id_association);
+
+
+                //$params["course_manager"] = $course_manager;
+                $params['treeCat'] = $treeCat;
+
+                if($edit){
+
+                    $params['coursesArr'] = (!empty($params['idsCourses']) ? $this->aggCertLib->getCoursesArrFromId($params['idsCourses']) : []);
+
+                }
+
+                break;
+
+            case COURSE_PATH:
+
+
+                $coursePathIdsArr = $this->aggCertLib->getIdsCoursePath($id_association);
+                $params['idsCoursePath'] = ($id_association !== 0) ? $coursePathIdsArr : '';
+
+                if($edit) {
+                    if(!empty($coursePathIdsArr)) {
+
+                        require_once($GLOBALS['where_lms'].'/lib/lib.coursepath.php');
+                        $coursePath_man = new CoursePath_Manager();
+                        $params['coursePathsArr'] = $coursePath_man->getCoursepathAllInfo($coursePathIdsArr);
+
+                    }
+                }
+
+                break;
+
+            default:
+                break;
         }
+
+        $this->render( $this->op['associationCourses'], $params);
+    }
     
     function associationUsers() {
 
         require_once(_base_.'/lib/lib.userselector.php');
         require_once(_base_.'/lib/lib.form.php');
-        
+
+
+
         $id_certificate = Get::req('id_certificate', DOTY_INT, -1);
         $id_association = Get::req('id_association', DOTY_INT, 0);
-      
         $type_assoc = Get::req('type_assoc', DOTY_INT, -1);
-        
-        if($type_assoc == -1) return; // TODO: Add error message
-       
-        $user_selection = new UserSelector();
+
+        if(isset($_POST["undo"]) || isset($_POST["undo_filter"]) || isset($_POST["cancelselector"]))
+            Util::jump_to('index.php?r=alms/'.$this->controller_name.'/'.$this->op['associationsManagement'].'&amp;id_certificate='.$id_certificate);
 
 
         $edit = Get::req('edit', DOTY_INT, 0);
+
+        if($type_assoc == -1) cout(getErrorUi(Lang::t('Association Type not recognized'))); // TODO: Add error message
+
+        $user_selection = new UserSelector();
+
+
+        // Getting link ids selected
+        switch($type_assoc) {
+
+            case COURSE:
+
+                // Arr. of courses sent by form
+                $new_courses = array_map('intval', explode(",", Get::req("idsCourse")));
+
+                // Already selected courses
+                $alreadySelectedCourses = array_map('intval', explode(",", Get::req("alreadySelCourses", DOTY_JSONENCODE, "")));
+
+                $todeleteArr = array_diff($alreadySelectedCourses, $new_courses);
+                $toAddCoursesArr = array_diff($new_courses, $alreadySelectedCourses);
+
+                if(!empty($todeleteArr)) {
+                        $res = $this->aggCertLib->deleteAssociationLinks($id_association, $type_assoc, [], $todeleteArr);
+                        if (!$res) cout(getErrorUi(Lang::t("Error deleting associations")));
+                }
+
+                //if(!empty($toAddCoursesArr))
+                    //  $user_selection->addFormInfo('<input type="hidden" name="toAddCourses" value=' . json_encode($toAddCoursesArr) . ' />');
+
+
+                /*if(!empty($toAddCoursesArr)) {
+
+                            $userCourses = array();
+                            foreach ($array_user as $user_id) {
+                                $userCourses[(int) $user_id] = $toAddCoursesArr;
+                            }
+
+                            $assocArr = array(
+
+                                $id_association => $userCourses
+
+                            );
+
+                            $res = $this->aggCertLib->insertAssociationLink($type_assoc, $assocArr );
+                            if (!$res) return; //TODO: add error message
+                }*/
+
+                unset($_SESSION['meta_certificate']['courses']);
+                $_SESSION['meta_certificate']['courses'] = $new_courses;
+
+                // $_SESSION['meta_certificate']['course'] = explode(",", Get::req("idscourses"));
+
+
+                break;
+
+            case COURSE_PATH:
+                
+                // Arr. of coursepaths sent by form
+                $new_coursepaths = array_map('intval', explode(",", Get::req("idsCoursePaths")));
+
+                // Already selected courses
+                $alreadySelCoursepaths = array_map('intval', explode(",", Get::req("alreadySelCoursepaths", DOTY_JSONENCODE, "")));
+
+                $todeleteArr = array_diff($alreadySelCoursepaths, $new_coursepaths);
+                //$toAddCoursesArr = array_diff($new_coursepaths, $alreadySelCoursepaths);
+
+                if(!empty($todeleteArr)) {
+                    $res = $this->aggCertLib->deleteAssociationLinks($id_association, $type_assoc, [], $todeleteArr);
+                    if (!$res) cout(getErrorUi(Lang::t("Error deleting associations")));
+                }
+                
+                unset($_SESSION['meta_certificate']['coursepaths']);
+                $_SESSION['meta_certificate']['coursepaths'] = array_map('intval', explode(",", Get::req("idsCoursePath")));
+
+
+                break;
+
+            default:
+                break;
+
+        }
+
         if($edit == 1 && $type_assoc != -1) {
 
             /*
@@ -747,7 +909,6 @@ Class AggregatedCertificateAlmsController extends AlmsController
             $usersArr = $this->aggCertLib->getAllUsersFromIdAssoc($id_association, $type_assoc);
             $user_selection->resetSelection($usersArr);
             $user_selection->addFormInfo('<input type="hidden" name="old_users" value=' . json_encode($usersArr) . ' />');
-
 
         }
         
@@ -761,7 +922,8 @@ Class AggregatedCertificateAlmsController extends AlmsController
         $user_selection->addFormInfo('<input type="hidden" name="type_assoc" value=' . $type_assoc . ' />');
         $user_selection->addFormInfo('<input type="hidden" name="edit" value=' . $edit . ' />');
 
-        // Modifying association certificate <-> users
+
+
 
 
         $params = array(
@@ -772,129 +934,6 @@ Class AggregatedCertificateAlmsController extends AlmsController
         );
         
         $this->render($this->op['associationusers'], $params);
-    }
-
-    /**
-     * Creating an association between users and courses
-     *
-     * Selecting the courses/coursepaths for the association
-     *
-     */
-    function associationCourses() {
-
-        require_once($GLOBALS['where_lms'].'/lib/lib.course.php');
-        require_once($GLOBALS['where_lms'].'/lib/lib.course_managment.php');
-
-        if(isset($_POST['cancelselector']))
-            Util::jump_to('index.php?r=alms/'.$this->controller_name.'/'.$this->op['associationsManagement'].'&amp;id_certificate='.Get::req('id_certificate', DOTY_INT, 0));
-
-
-        $user_selection = new UserSelector();
-        $userSelectionArr = array_map('intval',$user_selection->getSelection($_POST));
-        
-        $_SESSION['meta_certificate']['userSelectionArr'] = $userSelectionArr;
-        
-        $course_manager = new Course_Manager();
-        $course_manager->setLink('index.php?r=alms/'.$this->controller_name.'/'.$this->op['associationCourses']);         
-
-        $treeCat = $this->getTreeCategoryAsArray();
-
-        $id_association = Get::req('id_association', DOTY_INT, 0);
-
-        $type_association = Get::req('type_assoc', DOTY_INT, -1);
-
-        $params = array(
-
-            "course_manager" => $course_manager,
-            "treeCat" => $treeCat,
-            
-            "id_certificate" => Get::req("id_certificate", DOTY_INT),
-            "id_association" => $id_association,
-            "type_assoc" => $type_association,
-
-            "opsArr" => $this->op,
-            "controller_name" => $this->controller_name,
-
-        );
-        
-
-        $edit = Get::req('edit', DOTY_INT, 0);
-
-            switch ($type_association) {
-
-                case COURSE:
-
-
-                    // If type association is course, then get all course ids from the assoc. passing association id
-                    // Necessary for creating table to show the already selected courses
-                    $coursesIdsArr = $this->aggCertLib->getIdsCourse($id_association);
-
-                    $params['idsCourses'] = (!empty($coursesIdsArr) ? $coursesIdsArr : []);
-
-                    $params['coursesArr'] = (!empty($coursesIdsArr) ? $this->aggCertLib->getCoursesArrFromId($coursesIdsArr) : []);
-
-                    break;
-                    
-                case COURSE_PATH:
-
-                    require_once($GLOBALS['where_lms'].'/lib/lib.coursepath.php');
-                    
-                    $coursePath_man = new CoursePath_Manager();
-                    
-                    $coursePathIdsArr = $this->aggCertLib->getIdsCoursePath($id_association);
-                        if(!empty($coursePathIdsArr)){
-                          
-                            $params['idsCoursePath'] = ($id_association !== 0) ? $coursePathIdsArr : '';
-                            $params['coursePathsArr'] = $coursePath_man->getCoursepathAllInfo($coursePathIdsArr);
-                        
-                        }
-                        
-                    break;
-                    
-                default:
-                    break;
-            }
-
-        if($edit == 1 && $type_association != -1) {
-
-            // $usersArr = $this->model->getUsersBelongsMeta($id_association, $type_assoc);
-            $params['edit'] = $edit;
-
-            $old_users_req = Get::req('old_users', DOTY_JSONENCODE, '');
-
-            if ($old_users_req != '') { // Already selected users
-
-                $old_users = array_map('intval', explode(",", str_replace(array("[", "]"), "", $old_users_req)));
-                $to_add_users = array_diff($userSelectionArr, $old_users );
-                $to_delete_users = array_diff($old_users, $userSelectionArr);
-                if (!empty($to_delete_users)){
-                     $res = $this->aggCertLib->deleteAssociationLinks($id_association, $type_association, $to_delete_users);
-                    //TODO: add error message, can't delete deselected users.
-                    if(!$res) return; 
-                }
-                  
-                if (!empty($to_add_users)) {
-
-                    $userCourses = array();
-                    foreach ($to_add_users as $user) {
-                        $userCourses[$user] = $coursesIdsArr;
-                    }
-
-
-                    $assocArr = array(
-                        $id_association => $userCourses
-                    );
-
-                    $res = $this->aggCertLib->insertAssociationLink($type_association, $assocArr);
-                    if(!$res) cout(getErrorUi(Lang::t('Error adding association')));  //TODO: add error message, can't add new selected users.
-
-
-                }
-            }
-        }
-
-       
-       $this->render( $this->op['associationCourses'], $params);
     }
     
     function associationUsersCourses() {
@@ -907,16 +946,60 @@ Class AggregatedCertificateAlmsController extends AlmsController
 
         YuiLib::load();
         Util::get_js(Get::rel_path('base').'/lib/js_utils.js', true, true);
-       
-        $id_certificate = Get::req("id_certificate", DOTY_INT);
 
-        if(isset($_POST["undo"]) || isset($_POST["undo_filter"]))
+
+        $id_certificate = Get::req("id_certificate", DOTY_INT);
+        $id_association = Get::req("id_association", DOTY_INT);
+        $type_assoc = Get::req('type_assoc', DOTY_INT, -1);
+
+        if(isset($_POST["undo"]) || isset($_POST["undo_filter"]) || isset($_POST["cancelselector"]))
             Util::jump_to('index.php?r=alms/'.$this->controller_name.'/'.$this->op['associationsManagement'].'&amp;id_certificate='.$id_certificate);
 
 
-        $id_association = Get::req("id_association", DOTY_INT);
+        // Users selected on loading of page assoc. users
+        $old_users = array_map('intval', explode(",", str_replace(array("[", "]"), "", Get::req('old_users', DOTY_JSONENCODE, ''))));
 
-        $type_assoc = Get::req('type_assoc', DOTY_INT, -1);
+        // Users after editing (there may be the same users, new users added, or user to delete)
+
+        $user_selection = new UserSelector();
+        $userSelectionArr = array_map('intval',$user_selection->getSelection($_POST));
+
+
+        $_SESSION['meta_certificate']['userSelectionArr'] = $userSelectionArr;
+
+        sort($old_users);
+        sort($userSelectionArr);
+
+        if($old_users != $userSelectionArr){ // There are some changes with the users...
+
+            $to_delete_users = array_diff($old_users, $userSelectionArr);
+            if (!empty($to_delete_users)) {
+                $res = $this->aggCertLib->deleteAssociationLinks($id_association, $type_assoc, $to_delete_users);
+                //TODO: add error message, can't delete deselected users.
+                if(!$res) cout(getErrorUi(Lang::t('Can\'t delete deselected users')));
+            }
+
+            $to_add_users = array_diff($userSelectionArr, $old_users );
+            /*if (!empty($to_add_users)) {
+
+                $userCourses = array();
+                foreach ($to_add_users as $user) {
+                    $userCourses[$user] = $coursesIdsArr;
+                }
+
+
+                $assocArr = array(
+                    $id_association => $userCourses
+                );
+
+                $res = $this->aggCertLib->insertAssociationLink($type_assoc, $assocArr);
+                if(!$res) cout(getErrorUi(Lang::t('Error adding association')));  //TODO: add error message, can't add new selected users.
+
+
+            }*/
+        }
+
+
 
         $form = new Form();
         $form_name = 'new_assign_step_3';
@@ -924,7 +1007,7 @@ Class AggregatedCertificateAlmsController extends AlmsController
 
         $tb    = new Table(0, Lang::t('_META_CERTIFICATE_NEW_ASSIGN_CAPTION','certificate'), Lang::t('_META_CERTIFICATE_NEW_ASSIGN_SUMMARY'));
         $tb->setLink('index.php?r=alms/'.$this->controller_name.'/'.$this->op['home']);
-
+        $tb->setTableId("tb_AssocLinks");
 
         // Setting table header
 
@@ -945,7 +1028,7 @@ Class AggregatedCertificateAlmsController extends AlmsController
 
             case COURSE:
 
-                $new_courses = array_map('intval', explode(",", Get::req("idsCourse")));
+              /*  $new_courses = array_map('intval', explode(",", Get::req("idsCourse")));
 
                 $oldselectedCourses = Get::req("oldestCourses", DOTY_JSONENCODE, "");
                 if(!empty($oldselectedCourses)) { // I've changed the courses in the assoc.
@@ -975,7 +1058,7 @@ Class AggregatedCertificateAlmsController extends AlmsController
 
                         $res = $this->aggCertLib->insertAssociationLink($type_assoc, $assocArr );
                         if (!$res) return; //TODO: add error message
-                    }*/
+                    }
 
 
 
@@ -984,6 +1067,7 @@ Class AggregatedCertificateAlmsController extends AlmsController
 
                 unset($_SESSION['meta_certificate']['courses']);
                 $_SESSION['meta_certificate']['courses'] = $new_courses;
+              */
 
                 // $_SESSION['meta_certificate']['course'] = explode(",", Get::req("idscourses"));
                 foreach($_SESSION['meta_certificate']['courses'] as $id_course) {
@@ -1009,8 +1093,8 @@ Class AggregatedCertificateAlmsController extends AlmsController
 
             case COURSE_PATH:
 
-                unset($_SESSION['meta_certificate']['coursepaths']);
-                $_SESSION['meta_certificate']['coursepaths'] = explode(",", Get::req("idsCoursePath"));
+              /*  unset($_SESSION['meta_certificate']['coursepaths']);
+                $_SESSION['meta_certificate']['coursepaths'] = explode(",", Get::req("idsCoursePath"));*/
 
                 $coursePath_man = new CoursePath_Manager();
                 $coursePathInfoArr = $coursePath_man->getCoursepathAllInfo($_SESSION['meta_certificate']['coursepaths']);
@@ -1047,9 +1131,6 @@ Class AggregatedCertificateAlmsController extends AlmsController
 
         reset($_SESSION['meta_certificate']['courses']);
         reset($_SESSION['meta_certificate']['coursepaths']);
-
-
-
 
 
         foreach($array_user as $username =>  $id_user)  {
@@ -1155,8 +1236,7 @@ Class AggregatedCertificateAlmsController extends AlmsController
         $this->render($this->op['associationUsersCourses'], $params);
     
     }
-    
-    
+
         function saveAssignment() {
         
         if(isset($_POST["undo_assign"]))
@@ -1232,7 +1312,7 @@ Class AggregatedCertificateAlmsController extends AlmsController
                         foreach($_SESSION['meta_certificate']['courses'] as $id_course){
                             if(isset($_POST['_'.$id_user.'_'.$id_course.'_'])) {
 
-                                $associationsArr[$id_assoc][$id_user][$id_course] = $id_course;
+                                $associationsArr[$id_assoc][$id_user] = $id_course;
                             }
 
                         }
@@ -1245,7 +1325,7 @@ Class AggregatedCertificateAlmsController extends AlmsController
                         foreach($_SESSION['meta_certificate']['coursepaths'] as $id_coursepath){
                             if(isset($_POST['_'.$id_user.'_'.$id_coursepath.'_'])){
 
-                                $associationsArr[$id_assoc][$id_user][$id_coursepath] = $id_coursepath;
+                                $associationsArr[$id_assoc][$id_user] = $id_coursepath;
 
                             }
 
@@ -1386,7 +1466,8 @@ Class AggregatedCertificateAlmsController extends AlmsController
                             break;
 
                         default;
-                            return;
+
+                            break;
                     }
 
                     if ($control) {
@@ -1476,7 +1557,7 @@ Class AggregatedCertificateAlmsController extends AlmsController
         $tot_element = 0;
  
         $id_cert = Get::req('id_certificate', DOTY_INT, 0);
-        if($id_cert == 0) return; // you'll never know.. TODO: Add error message
+        if($id_cert == 0) cout(getErrorUi(Lang::t('Id certificate not valid')));; // you'll never know.. TODO: Add error message
 
         $certificate = $this->aggCertLib->getMetadata($id_cert);
 
@@ -1502,7 +1583,7 @@ Class AggregatedCertificateAlmsController extends AlmsController
         // Getting an array of all associations belonging to the cert.
         $assocIdsArr = $this->aggCertLib->getIdAssociations($id_cert);
 
-        if(empty($assocIdsArr)) return; // TODO: add error message, there aren't any assoc.
+        if(empty($assocIdsArr)) cout(getErrorUi(Lang::t('There aren\'t any association'))); // TODO: add error message, there aren't any assoc.
 
 
         $usersInAssociationArr = array();

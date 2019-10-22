@@ -2,7 +2,7 @@
 
 cout('<div class="std_block">');
 
-    $user_selection->loadSelector('index.php?r=alms/'.$controller_name.'/'. $opsArr['associationCourses'] 
+    $user_selection->loadSelector('index.php?r=alms/'.$controller_name.'/'. $opsArr['associationUsersCourses']
        // .'&amp;type_course='.$type_assoc
         ,
         false,

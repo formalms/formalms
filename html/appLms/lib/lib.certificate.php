@@ -396,7 +396,7 @@ class Certificate {
                 if($aggCertLib->getCountCoursesCompleted($courseId, $filter['id_user']) == 0)
                    {
                      $showAggrCert = false;                                               
-                     exit;
+                     break;
                    } 
                 
                 

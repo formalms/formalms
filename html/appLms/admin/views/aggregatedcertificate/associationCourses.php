@@ -19,26 +19,32 @@ include Forma::inc(_lib_ . '/formatable/include.php');
 
 cout(
     getTitleArea(Lang::t('_AGGRETATE_CERTIFICATES_ASSOCIATION_CAPTION'), 'certificate')
-    .'<div class="std_block">'
-    .Form::openForm('new_assign_step_2', 'index.php?r=alms/'.$this->controller_name.'/'.$opsArr['associationUsersCourses'])
 );
 
 ?>
 
-<script>
+<div class="std_block">
+
+<?php cout(
+        Form::openForm('new_assign_step_2',
+                    'index.php?r=alms/'.$this->controller_name.'/'.$opsArr['associationusers'])
+); ?>
+
+    <script>
 
     var nodesIdArr = [];
     var data = '';
     
-    <?php 
-        // Printing initially all the courses if i'm editing the assoc.
-        if(isset($idsCourses)) 
-            echo "var idsCourseArr = " . json_encode($idsCourses) . ";";
-        else if(isset($idsCoursePath))
-            echo "var idsCoursePathArr = " . json_encode($idsCoursePath) . ";";
-    ?>
-   
-    
+<?php
+    switch($type_assoc){
+        case COURSE:
+            echo "var idsCourseArr = " . json_encode($idsCourses)   . ";";
+            break;
+        case COURSE_PATH:
+            echo "var idsCoursePathArr = " .(isset($idsCoursePath) ? json_encode($idsCoursePath) : "[]")  . ";";
+            break;
+    }
+?>
 
     $(document).ready(function () {    
            
@@ -71,6 +77,8 @@ cout(
                 rowId: function(row) {
                   return row.idCourse;
                 },
+
+
                 columnDefs: [ 
                     {  
                         className: 'select-checkbox',
@@ -104,12 +112,17 @@ cout(
                         data: 'stateCourse',
                         title: "<?= Lang::t('_STATUS') ?>",
                     } 
-                ],                    
+                ],
                 select: {
                         style: 'multi',
-                        all: true   
-                },     
-                'order': [[1, 'asc']]
+
+                },
+                'order': [[1, 'asc']],
+                dom: 'Bfrtip',
+                buttons: [
+                    'selectAll',
+                    'selectNone'
+                ],
             });   
             
                 
@@ -118,26 +131,42 @@ cout(
                  
                        // getting data from the row selected
                        var rowData = course_ft._datatable.rows( indexes ).data().toArray();
-                 
-                       var index = idsCourseArr.indexOf(parseInt(rowData[0]['idCourse']));
-                       if (index === -1)
-                            
-                            idsCourseArr.push(parseInt(rowData[0]['idCourse']));
 
+                       if (rowData.lenght != 0){
+                           rowData.forEach(function (row) {
+                               var index = idsCourseArr.indexOf(parseInt(row['idCourse']));
+                               if (index === -1)
+                                   idsCourseArr.push(parseInt(row['idCourse']));
+                           });
+
+
+                       }
                  }
-            } );    
+
+            } );
+
+
             course_ft._datatable.on( 'deselect.dt', function ( e, dt, type, indexes ) {
                 
                 // getting data from the row selected
                 var rowData = course_ft._datatable.rows( indexes ).data().toArray();
-                 
-                var index = idsCourseArr.indexOf(parseInt(rowData[0]['idCourse']));
-                if (index !== -1) // Found
-                    idsCourseArr.splice(index, 1); // Deleting
-      
+
+                if (rowData.lenght != 0){
+                    rowData.forEach(function (row) {
+                        var index = idsCourseArr.indexOf(parseInt(row['idCourse']));
+                        if (index !== -1) // Found
+                            idsCourseArr.splice(index, 1); // Deleting
+                    });
+                }
             });
-            
-            
+
+            course_ft._datatable.on('draw', function () {
+
+ //                if(!course_ft._datatable.data().any()) console.log("non ci sono dati.");
+                course_ft._datatable.button(0).enable(course_ft._datatable.data().any());
+
+            });
+
        var treecat = $('#treecategory').treeview({
             data: <?php echo json_encode($treeCat); ?>,
             levels: 1,
@@ -178,6 +207,7 @@ cout(
                     });
                 }
         });
+
       } else if(typeof idsCoursePathArr !== 'undefined') {
 
         // Course Path
@@ -237,8 +267,7 @@ cout(
             ],                    
             select: {
                     style: 'multi',
-                    all: true   
-            },     
+            },
             'order': [[1, 'asc']],
             language: {       //TODO: Aggiungere lingue
 
@@ -254,6 +283,11 @@ cout(
                     }
                 }
             },
+            dom: 'Bfrtip',
+            buttons: [
+                'selectAll',
+                'selectNone'
+            ],
         });
 
            
@@ -261,12 +295,14 @@ cout(
              if ( type === 'row' ) {
              
                    // getting data from the row selected
-                   var rowData = coursepath_ft._datatable.rows( indexes ).data().toArray();
-             
-                   var index = idsCoursePathArr.indexOf(parseInt(rowData[0]['idCoursePath']));
-                   if (index === -1)
-                        idsCoursePathArr.push(parseInt(rowData[0]['idCoursePath']));
-
+                    var rowData = coursepath_ft._datatable.rows( indexes ).data().toArray();
+                    if (rowData.lenght != 0){
+                        rowData.forEach(function (row) {
+                            var index = idsCoursePathArr.indexOf(parseInt(row['idCoursePath']));
+                            if (index === -1)
+                                idsCoursePathArr.push(parseInt(row['idCoursePath']));
+                        });
+                    }
              }
         } );    
              
@@ -274,13 +310,24 @@ cout(
             
             // getting data from the row selected
             var rowData = coursepath_ft._datatable.rows( indexes ).data().toArray();
-             
-            var index = idsCoursePathArr.indexOf(parseInt(rowData[0]['idCourse']));
-            if (index !== -1) // Found
-                idsCoursePathArr.splice(index, 1); // Deleting
-  
+
+            if (rowData.lenght != 0){
+                rowData.forEach(function (row) {
+                    var index = idsCoursePathArr.indexOf(parseInt(row['idCoursePath']));
+                    if (index !== -1) // Found
+                        idsCoursePathArr.splice(index, 1); // Deleting
+                });
+            }
+
         });
-          
+
+        coursepath_ft._datatable.on('draw', function () {
+
+            //                if(!course_ft._datatable.data().any()) console.log("non ci sono dati.");
+            coursepath_ft._datatable.button(0).enable(coursepath_ft._datatable.data().any());
+
+        });
+
       }
 
         $('#new_assign_step_2').on('submit', function(e){
@@ -297,7 +344,7 @@ cout(
                  $(form).append(
                      $('<input>')
                         .attr('type', 'hidden')
-                        .attr('name', 'oldestCourses')
+                        .attr('name', 'alreadySelCourses')
                         .val(<?= json_encode($idsCourses) ?>)
                  ); 
               } else if(typeof idsCoursePathArr !== 'undefined') {
@@ -308,7 +355,12 @@ cout(
                           .attr('name', 'idsCoursePath')
                           .val(idsCoursePathArr)
                   );
-
+                  $(form).append(
+                      $('<input>')
+                          .attr('type', 'hidden')
+                          .attr('name', 'alreadySelCoursepaths')
+                          .val(<?= json_encode($idsCoursePath) ?>)
+                  );
               }
                          
            });
@@ -347,7 +399,7 @@ cout(
 <?php
 
     // Setting static table with all courses
-    if(isset($edit)){
+    if($edit){
     
         $tb_courses = new Table();
     
@@ -382,7 +434,6 @@ cout(
                 
                      foreach($coursesArr as $course) 
                         $tb_courses->addBody($course);
-                
 
                     break;
                 
@@ -402,31 +453,42 @@ cout(
                     
                     break;
                 
-                default:
-                    break;
+
                 
         }
         
        
     } 
-   
+
+    switch ($type_assoc) {
+
+        case COURSE:
+            $title =  Lang::t("_COURSES");
+            $id_table = "course_ft";
+            break;
+
+        case COURSE_PATH:
+            $title =  Lang::t("_COURSEPATH");
+            $id_table = "coursepath_ft";
+            break;
+
+        default:
+            $title = "Type_assoc_not_valid";
+            break;
+    }
    
     $arrTab = array(
               array(
-              "title"     => (isset($idsCourses) ? Lang::t("_COURSES") : Lang::t("_COURSEPATH")),
+              "title"     => $title,
               "content"   => 
               
-              (isset($edit) ? $tb_courses->getTable() : '')
-              . " <div id='treecategory'></div>
-                <table class='table table-striped table-bordered' style='width:100%' id='".(isset($idsCourses) ? 'course_ft' : 'coursepath_ft')."'>
+              ($edit ? $tb_courses->getTable() : '')
+              . ($type_assoc == COURSE ? " <div id='treecategory'></div> " : "")
+              . "<table class='table table-striped table-bordered' style='width:100%' id='{$id_table}'>
                 </table>
              "             
           )
     );
-
-    
-    
-    
 
     TabContainer::printStartHeader();
     TabContainer::printNewTabHeader($arrTab);
@@ -440,6 +502,7 @@ cout(
     Form::getHidden("id_certificate","id_certificate",$id_certificate)
     .Form::getHidden("id_association","id_association",$id_association)
     .Form::getHidden("type_assoc","type_assoc",$type_assoc)
+    .Form::getHidden("edit","edit",$edit)
     );
 
     cout(
@@ -449,6 +512,7 @@ cout(
         .Form::getButton('undo_filter', 'undo_filter', Lang::t('_UNDO'))
         .Form::closeButtonSpace()
         .Form::closeForm()
-        .'</div>'
     );
+?>
 
+</div>

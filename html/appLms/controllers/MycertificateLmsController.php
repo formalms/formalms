@@ -97,30 +97,99 @@ class MycertificateLmsController extends LmsController
             'results' => $results,
         );
 
-        if ($search = $_REQUEST['search']) {
+      /*  if ($search = $_REQUEST['search']) {
             $pagination['search'] = $search['value'];
         } else {
             $pagination['search'] = null;
         }
-        
+        */
+
         // query for the relation between user and certificates associated to it
         // all the assoc. with the user, for all the user get id cert.
         $totalMetaCertificates = $this->model->countMyMetaCertificates();
         
-        $metaCertificates = $this->model->loadMyMetaCertificates($pagination);
-       
-        $metaCertificatesFiltered = $this->model->loadMyMetaCertificates($pagination, true);
+      //  $metaCertificates = $this->model->loadMyMetaCertificates($pagination);
+        $metaCertificates = $this->getAggrCertsForView($pagination);
+
+       // $metaCertificatesFiltered = $this->model->loadMyMetaCertificates($pagination, true);
 
         $result = array(
             'recordsTotal' => $totalMetaCertificates,
             'startIndex' => $startIndex,
             'rowsPerPage' => $rowsPerPage,
-            'recordsFiltered' => $metaCertificatesFiltered,
+          //  'recordsFiltered' => $metaCertificatesFiltered,
             'data' => $metaCertificates,
         );
 
         echo $this->json->encode($result);
     }
+
+
+    /**
+     * Expect array of array
+     *  each inner array contains all the rows of the table.
+     *
+     * @param $pagination
+     *
+     * @return array
+     */
+    function getAggrCertsForView($pagination){
+
+        if($pagination) {
+            $paginated_assignment = array();
+
+            $offset = $pagination["startIndex"];
+            $limit = $offset + $pagination["rowsPerPage"];
+            $limit = ($limit <= $this->model->countMyMetaCertificates() ? $limit : $this->model->countMyMetaCertificates());
+            for($i = $offset; $i < $limit; $i++) {
+
+                $meta = $this->model->getAggregatedCerts()[$i];
+
+                $preview    = '<a class="ico-wt-sprite subs_view"'
+                    . ' href="?r=mycertificate/preview'
+                    . '&id_certificate='.$meta['id_certificate']
+                    . '&id_meta='.$meta['id_meta'].'" '
+                    . ' title="'.Lang::t('_PREVIEW', 'certificate').'"><span>'.Lang::t('_PREVIEW', 'certificate').'</span></a>';
+                $download   = '<a class="ico-wt-sprite subs_pdf"'
+                    . ' href="?r=mycertificate/download'
+                    . '&id_certificate='.$meta['id_certificate'].'&id_meta='.$meta['id_meta'].'" '
+                    .' title="'.Lang::t('_DOWNLOAD', 'certificate').'"><span>'.Lang::t('_DOWNLOAD', 'certificate').'</span></a>';
+                $generate    = '<a class="ico-wt-sprite subs_pdf" href="?r=mycertificate/'
+                    . 'release_cert'
+                    .'&id_certificate='.$meta['id_certificate']
+                    .'&aggCert=1'
+                    .'&id_meta='.$meta['id_meta'].'" '
+                    .' title="'.Lang::t('_GENERATE', 'certificate').'"><span>'.Lang::t('_GENERATE', 'certificate').'</span></a>';
+
+                $row = array(
+                    $meta['cert_code'],
+                    $meta['cert_name'],
+                    $meta['courses'],
+                    // 'preview'           => isset($meta['on_date']) ? '' : $preview,
+                    ($meta['isReleased']) ? $download : $generate
+                );
+
+                $paginated_assignment[] = $row;
+                // $paginated_assignment[] = $this->model->getAggregatedCerts[$i];
+
+            }
+
+            return $paginated_assignment;
+
+        }
+
+
+ /*       $data_to_display = array();
+        for ($i = $pagination['startIndex']; $i < ($pagination['startIndex'] + $pagination['results']) && $i < count($data); $i++)
+            $data_to_display[] = $data[$i];
+
+
+
+
+        return $data_to_display;*/
+    }
+
+
 
     public function preview()
     {
@@ -165,6 +234,8 @@ class MycertificateLmsController extends LmsController
             $this->certificate->send_certificate($id_certificate, $this->id_user, $id_course, $subs);
         }
     }
+
+
+
 }
 
-?>

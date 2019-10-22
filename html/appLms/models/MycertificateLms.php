@@ -9,6 +9,7 @@
 \ ======================================================================== */
 
 require_once(Forma::inc(_lms_.'/lib/lib.certificate.php'));
+require_once(Forma::inc(_lms_.'/lib/lib.aggregated_certificate.php'));
 
 class MycertificateLms extends Model {
 
@@ -16,9 +17,16 @@ class MycertificateLms extends Model {
     
     public $id_user;
 
+    protected $aggCertLib;
+    protected $aggrCertsArr;
+
     public function __construct($id_user) {
+        $this->id_user = (int) $id_user;
+
         $this->certificate = new Certificate();
-        $this->id_user = $id_user;
+        $this->aggCertLib = new AggregatedCertificate();
+
+        $this->aggrCertsArr = $this->loadMyMetaCertificates();
     }
     
     public function loadMyCertificates($pagination = false, $count = false) {
@@ -109,18 +117,20 @@ class MycertificateLms extends Model {
         $filter = array('id_user' => $this->id_user);
         return $this->certificate->countAssignment($filter);
     }
-    
+
+
     /**
     * In this funct. we need to select all the aggr. certs that has been released or not.
     * The cert. has been released -> there's an entry in the aggr. certs. assignment with the user and id cert.
     * 
     */
-    public function loadMyMetaCertificates($pagination = false, $count = false) {
-        require_once($GLOBALS['where_lms'].'/lib/lib.course.php');
+    public function loadMyMetaCertificates() {
+
+      /*  require_once($GLOBALS['where_lms'].'/lib/lib.course.php');
         $startIndex = Get::req('startIndex', DOTY_INT, 0);
         $results = Get::req('results', DOTY_INT, Get::sett('visuItem', 25));
         
-        $filter = array('id_user' => $this->id_user);
+        $filter = array('id_user' => (int) $this->id_user);
         $myMetaCertificates = $this->certificate->getMetaAssignment($filter, $pagination, $count);
         
      
@@ -160,14 +170,116 @@ class MycertificateLms extends Model {
             $data_to_display[] = $data[$i];
         }
         
-        return $data_to_display;
+        return $data_to_display;*/
+
+
+
+        //Setting text if it's setted
+       /* if ($pagination && isset($pagination['search']))
+            $filter['search'] = $pagination['search'];*/
+
+        require_once($GLOBALS['where_lms'].'/lib/lib.course.php');
+        $associationsUser = $this->aggCertLib->getIdsAssociationUser( $this->id_user);
+
+        $linkIdsArr = array();
+
+        foreach($associationsUser as $assoc_type => $assocArrOfType) {
+
+            foreach($assocArrOfType as $id_assoc) {
+
+                $showAggrCert = true;
+
+                foreach($this->aggCertLib->getAssociationLink($id_assoc, $assoc_type, $this->id_user) as $idLink){
+
+                    if($assoc_type == COURSE_PATH){
+
+                        require_once($GLOBALS['where_lms'].'/lib/lib.coursepath.php');
+                        $cp_m = new CoursePath_Manager();
+
+                        $courseIdsFromPath = array_map('intval', $cp_m->getPathCourses($idLink));
+
+                        foreach($courseIdsFromPath as $coursefrompath)
+                            $linkIdsArr[] = $coursefrompath;
+
+
+
+                    } else $linkIdsArr[] = $idLink;
+
+                }
+
+                foreach ($linkIdsArr as $courseId) {
+
+                    if($this->aggCertLib->getCountCoursesCompleted($courseId, $this->id_user) == 0)
+                    {
+                        $showAggrCert = false;
+                        continue;
+                    }
+
+                }
+
+
+                if ($showAggrCert){
+
+                    $k = 0;
+                    foreach($this->aggCertLib->getIdCertificate($id_assoc) as $id_cert) {
+
+                        $cert = $this->aggCertLib->getMetadata($id_cert);
+                        $aggrCertsArr[$k]["id_certificate"] = $id_cert;
+                        $aggrCertsArr[$k]["cert_code"] = $cert['code'];
+                        $aggrCertsArr[$k]["cert_name"] = $cert['name'];
+                        $aggrCertsArr[$k]["isReleased"] = ($this->aggCertLib->hasUserAggCertsReleased( $this->id_user, $id_cert) > 0) ;
+
+                        $k += 1;
+                    }
+                }
+
+
+            }
+
+        }
+
+
+
+
+
+       return $aggrCertsArr;
+
     }
-    
-    public function countMyMetaCertificates() {        
-        $filter = array('id_user' => $this->id_user);
-     
-       return $this->certificate->getMetaAssignment($filter,false,true);
+
+    function getAggregatedCerts(){
+
+        return $this->aggrCertsArr;
+
     }
+
+    public function countMyMetaCertificates() {
+
+       return count($this->aggrCertsArr);
+
+    }
+
+    function countAggrCertsReleased() {
+
+        $k = 0;
+
+        foreach ($this->aggrCertsArr as $aggrCert)
+            if($aggrCert['isReleased']) $k += 1;
+
+        return $k;
+
+    }
+
+    function countAggrCertsToRelease() {
+
+        $k = 0;
+
+        foreach ($this->aggrCertsArr as $aggrCert)
+            if(!$aggrCert['isReleased']) $k += 1;
+
+        return $k;
+
+    }
+
 }
 
 ?>

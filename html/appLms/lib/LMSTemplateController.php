@@ -61,13 +61,9 @@ final class LMSTemplateController extends TemplateController {
           $availables++;
         }
       }
-      
-      $aggregated_certs = $model->loadMyMetaCertificates(false, true);
-      foreach ($aggregated_certs as $aggr_cert) {
-        if (!$aggr_cert['isReleased']) { 
-          $availables++;
-        }
-      }
+
+      // Adding aggr. certs
+        $availables += $model->countAggrCertsToRelease();
       
       
       return $availables;

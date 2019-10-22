@@ -107,19 +107,28 @@ $(function() {
 
   var tableMetaId = '#mymetacertificates';
 
-  $(tableMetaId).FormaTable({
+  var metacert_tb = $(tableMetaId).FormaTable({
     processing: true,
     serverSide: true,
-    pagingType: 'full_numbers',
-    // searching: false,
+      searching: false,
     ordering: false,
     scrollX: true,
     order: [[ 0, "asc" ]],
     ajax: {
       url: 'ajax.server.php?r=mycertificate/getMyMetaCertificates',
       type: "POST",
-      complete: function(json) {},
+      complete: function(json) {
+      },
     },
   });
+
+  $('a[href="#meta"]').click(function(){
+          metacert_tb._datatable.columns.adjust();
+  });
+
+
 });
+
+
+
 </script>
