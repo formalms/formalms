@@ -40,6 +40,7 @@ $GLOBALS['cfg']['versions'] = array(
    '20200' => '2.2',
    '20201' => '2.2.1',
    '20300' => '2.3.0',
+   '20400' => '2.4.0',
 );
 
 // for reference old docebo ce versions
@@ -55,6 +56,6 @@ $GLOBALS['cfg']['docebo_versions'] = array(
 	'4050' => '4.0.5',
 );
 
-$GLOBALS['cfg']['endversion'] = '20300';
+$GLOBALS['cfg']['endversion'] = '20400';
 
 ?>
