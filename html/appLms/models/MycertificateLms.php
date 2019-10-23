@@ -123,6 +123,11 @@ class MycertificateLms extends Model {
     * In this funct. we need to select all the aggr. certs that has been released or not.
     * The cert. has been released -> there's an entry in the aggr. certs. assignment with the user and id cert.
     * 
+    * From the user, get all assoc. -> from all assoc, get ids of cert. distinct
+    * from the id cert., get all courses and see if they are completed
+    * 
+    * 
+    * Return an array of all certs available
     */
     public function loadMyMetaCertificates() {
 
@@ -153,7 +158,7 @@ class MycertificateLms extends Model {
                         .'&aggCert=1'
                         .'&id_meta='.$meta['id_meta'].'" '
                         .' title="'.Lang::t('_GENERATE', 'certificate').'"><span>'.Lang::t('_GENERATE', 'certificate').'</span></a>';
-					
+                    
             $row = array(
                 'cert_code'         => $meta['cert_code'], 
                 'cert_name'         => $meta['cert_name'], 
@@ -171,78 +176,77 @@ class MycertificateLms extends Model {
         }
         
         return $data_to_display;*/
-
-
-
-        //Setting text if it's setted
-       /* if ($pagination && isset($pagination['search']))
+      /* if ($pagination && isset($pagination['search']))
             $filter['search'] = $pagination['search'];*/
 
-        require_once($GLOBALS['where_lms'].'/lib/lib.course.php');
-        $associationsUser = $this->aggCertLib->getIdsAssociationUser( $this->id_user);
+      require_once($GLOBALS['where_lms'].'/lib/lib.course.php');
 
-        $linkIdsArr = array();
+      $associationsUser = $this->aggCertLib->getIdsAssociationUser( $this->id_user);
 
-        foreach($associationsUser as $assoc_type => $assocArrOfType) {
+      $arrAssoc = array_unique(
+        array_merge(
+            $associationsUser[COURSE], $associationsUser[COURSE_PATH]
+            )
+        );  
 
-            foreach($assocArrOfType as $id_assoc) {
+      $arrIdsCert = array_unique($this->aggCertLib->getIdCertificate($arrAssoc));
+        
+       foreach($arrIdsCert as $id_cert) {
+           
+           $showAggrCert = true;
+           
+           $arrIdsAssoc = $this->aggCertLib->getIdAssociationsWithType($id_cert);
+           
+           foreach($arrIdsAssoc as $association){
+           
+               $courseIdsArr = array();
 
-                $showAggrCert = true;
+               $arrLinks = $this->aggCertLib->getAssociationLink($association["id"], $association["type"], $this->id_user);
+               
+               foreach($arrLinks as $idLink){
+                 
+                      if($association["type"] == COURSE_PATH){
 
-                foreach($this->aggCertLib->getAssociationLink($id_assoc, $assoc_type, $this->id_user) as $idLink){
+                            require_once($GLOBALS['where_lms'].'/lib/lib.coursepath.php');
+                            $cp_m = new CoursePath_Manager();
+                            
+                                $courseIdsFromPath = array_map('intval', $cp_m->getPathCourses($idLink));
 
-                    if($assoc_type == COURSE_PATH){
-
-                        require_once($GLOBALS['where_lms'].'/lib/lib.coursepath.php');
-                        $cp_m = new CoursePath_Manager();
-
-                        $courseIdsFromPath = array_map('intval', $cp_m->getPathCourses($idLink));
-
-                        foreach($courseIdsFromPath as $coursefrompath)
-                            $linkIdsArr[] = $coursefrompath;
-
-
-
-                    } else $linkIdsArr[] = $idLink;
-
-                }
-
-                foreach ($linkIdsArr as $courseId) {
-
-                    if($this->aggCertLib->getCountCoursesCompleted($courseId, $this->id_user) == 0)
-                    {
-                        $showAggrCert = false;
-                        continue;
-                    }
-
-                }
-
-
-                if ($showAggrCert){
-
-                    $k = 0;
-                    foreach($this->aggCertLib->getIdCertificate($id_assoc) as $id_cert) {
-
-                        $cert = $this->aggCertLib->getMetadata($id_cert);
-                        $aggrCertsArr[$k]["id_certificate"] = $id_cert;
-                        $aggrCertsArr[$k]["cert_code"] = $cert['code'];
-                        $aggrCertsArr[$k]["cert_name"] = $cert['name'];
-                        $aggrCertsArr[$k]["isReleased"] = ($this->aggCertLib->hasUserAggCertsReleased( $this->id_user, $id_cert) > 0) ;
-
-                        $k += 1;
-                    }
-                }
-
-
-            }
-
-        }
+                            foreach($courseIdsFromPath as $coursefrompath)
+                                $courseIdsArr[] = $coursefrompath;
 
 
 
+                     } else $courseIdsArr[] = $idLink;  
+               }
+               
+               if($this->aggCertLib->getCountCoursesCompleted($courseIdsArr, $this->id_user) != count($courseIdsArr)) {
+                    $showAggrCert = false;
+                    break 1;
+               } 
+           }
+           
+           if ($showAggrCert) 
+                    // User has completed all the courses in the assoc.
+                    $arrCertUser[] = $id_cert;
+                
+       }
+           $arrCertUser = array_unique($arrCertUser);
 
-
-       return $aggrCertsArr;
+           $arrAggregatedCerts = array();
+           
+           $k = 0;
+           foreach($this->aggCertLib->getMetadata($arrCertUser) as $cert){
+            
+                $arrAggregatedCerts[$k]["id_certificate"] = $cert["id_certificate"];
+                $arrAggregatedCerts[$k]["code"] = $cert["code"];
+                $arrAggregatedCerts[$k]["name"] = $cert["name"];
+                $arrAggregatedCerts[$k]["released"] = $this->aggCertLib->hasUserAggCertsReleased($this->id_user, $cert["id_certificate"]);
+               
+               $k += 1;
+           }
+    
+        return $arrAggregatedCerts;
 
     }
 
@@ -263,18 +267,17 @@ class MycertificateLms extends Model {
         $k = 0;
 
         foreach ($this->aggrCertsArr as $aggrCert)
-            if($aggrCert['isReleased']) $k += 1;
+            if($aggrCert['released']) $k += 1;
 
         return $k;
 
     }
-
+    // TODO: passare nella aggregated_certificate
     function countAggrCertsToRelease() {
 
         $k = 0;
-
         foreach ($this->aggrCertsArr as $aggrCert)
-            if(!$aggrCert['isReleased']) $k += 1;
+            if(!$aggrCert['released']) $k += 1;
 
         return $k;
 

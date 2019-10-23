@@ -99,19 +99,21 @@ class AggregatedCertificate {
     function getMetadata($id_cert){
             
             $query =      "SELECT "
+                        . "id_certificate, "
                         . "code, "
                         . "name, "
                         . "base_language, "
                         . "description, "
                         . "user_release "
                         . "FROM ".$GLOBALS['prefix_lms'].$this->table_cert
-                        . " WHERE id_certificate = '".$id_cert."'";
+                        . " WHERE id_certificate ". ( is_array($id_cert) ? "IN (" . implode(", ", $id_cert) . ") ": " = " . $id_cert);
         
             $rs = sql_query($query);
             
             while($rows = sql_fetch_assoc($rs)) {
-                $arr_cert = $rows;
+                $arr_cert[] = $rows;
             }
+            
             return $arr_cert;
         }  
         
@@ -188,7 +190,7 @@ class AggregatedCertificate {
         
         $q = "SELECT idCertificate "
             ." FROM %lms".$this->table_cert_meta_association
-            ." WHERE idAssociation " . (is_array($idAssociation) ? "IN " . implode(", ", $idAssociation) : " = " . $idAssociation);
+            ." WHERE idAssociation " . (is_array($idAssociation) ? "IN (" . implode(", ", $idAssociation) .")" : " = " . $idAssociation);
         
             $rs = $this->db->query($q);
                     
@@ -219,13 +221,38 @@ class AggregatedCertificate {
         while($rows = sql_fetch_assoc($rs)) {
 
             $idsArr[] = (int) $rows['idAssociation'];
-
+            
+            
         }
 
         return $idsArr;
 
     }
 
+    /**
+     * Returns an array of id/s associations (object) with the type of the assoc.
+     *
+     * @param int $idCert
+     */
+    function getIdAssociationsWithType($idCert) {
+
+        $query = "SELECT idAssociation FROM ".$GLOBALS['prefix_lms'].$this->table_cert_meta_association
+            ." WHERE idCertificate = ".$idCert;
+
+        $rs = sql_query($query);
+
+        $k = 0;
+        while($rows = sql_fetch_assoc($rs)) {
+
+            $idsArr[$k]["id"] = (int) $rows['idAssociation'];
+            $idsArr[$k]["type"] = $this->getTypeAssoc((int) $rows['idAssociation']);
+            
+            $k += 1;
+        }
+
+        return $idsArr;
+
+    }
 
     /**
      * Returning all associations between idAssociation or,
@@ -282,6 +309,33 @@ class AggregatedCertificate {
         
         if(!isset($user)) return;
 
+        $idsAssocArr = array();
+
+        foreach($this->assocTypesArr as $association_type => $table_name){
+            
+            $q =      "SELECT DISTINCT idAssociation"
+                    . " FROM %lms" . $table_name
+                    . " WHERE 1 = 1 "
+                    . " AND idUser = ".$user;
+                            
+                    $rs = $this->db->query($q);
+                    
+            while($row = $this->db->fetch_assoc($rs)){
+             
+                $idsAssocArr[$association_type][] = (int) $row['idAssociation'];
+            
+            }
+        }   
+
+        return $idsAssocArr; 
+              
+    }
+    
+    function getIdsAssociationCertUser($user) {
+        
+        if(!isset($user)) return;
+
+        // Will contain id cert -> id assocs. -> idCourse
         $idsAssocArr = array();
 
         foreach($this->assocTypesArr as $association_type => $table_name){
@@ -424,11 +478,11 @@ class AggregatedCertificate {
         return $status;
     }
 
-    function getCountCoursesCompleted($id_course, $id_user){
+    function getCountCoursesCompleted($coursesIdsArr, $id_user){
 
         $query =    "SELECT COUNT(*)"
             ." FROM ".$GLOBALS['prefix_lms']."_courseuser"
-            ." WHERE idCourse = ".$id_course
+            ." WHERE idCourse " . ( is_array($coursesIdsArr) ? " IN (" . implode(", ", $coursesIdsArr) . ")" : " = " . $coursesIdsArr) 
             ." AND idUser = ".$id_user
             ." AND status = "._CUS_END;
 
@@ -903,9 +957,11 @@ class AggregatedCertificate {
 
 
         foreach ($assocArr as $associationId => $user) {
-            foreach ($user as $idUser => $fieldId) {
-
-                    $query .= "({$associationId}, {$idUser}, {$fieldId}),";
+            foreach ($user as $idUser => $linkIdArr) {
+                foreach($linkIdArr as $link){
+                     $query .= "({$associationId}, {$idUser}, {$link}),";
+                }
+                   
 
             }
         }

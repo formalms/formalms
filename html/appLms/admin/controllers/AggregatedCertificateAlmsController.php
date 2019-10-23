@@ -212,7 +212,7 @@ Class AggregatedCertificateAlmsController extends AlmsController
 
 
         // Array of all metacertificates to display in the main admin panel
-        $aggregateCertsArr = $this->aggCertLib->getAllAggregatedCerts($ini, $filter);
+        $aggregateCertsArr = $this->aggCertLib->getAllAggregatedCerts($ini, false, $filter);
 
             foreach ($aggregateCertsArr as $aggregate_cert) {
                 $title = strip_tags($aggregate_cert["name"]);
@@ -323,7 +323,7 @@ Class AggregatedCertificateAlmsController extends AlmsController
         
         if($isModifyingMetaData) {
             
-            $params['metacert'] = $this->aggCertLib->getMetadata($id_cert);
+            $params['metacert'] = $this->aggCertLib->getMetadata($id_cert)[0];
             $params['id_certificate'] = $id_cert;
             
         }
@@ -816,6 +816,9 @@ Class AggregatedCertificateAlmsController extends AlmsController
         if(isset($_POST["undo"]) || isset($_POST["undo_filter"]) || isset($_POST["cancelselector"]))
             Util::jump_to('index.php?r=alms/'.$this->controller_name.'/'.$this->op['associationsManagement'].'&amp;id_certificate='.$id_certificate);
 
+            
+        
+            
 
         $edit = Get::req('edit', DOTY_INT, 0);
 
@@ -907,12 +910,21 @@ Class AggregatedCertificateAlmsController extends AlmsController
              * Need to compare old users and new, to add or to remove users from assoc.
              */
             $usersArr = $this->aggCertLib->getAllUsersFromIdAssoc($id_association, $type_assoc);
+            
+            // Need to pass all the idst of the users / groups / org_chart
             $user_selection->resetSelection($usersArr);
+            $user_selection->resetSelection([11905]);
+          
+            
             $user_selection->addFormInfo('<input type="hidden" name="old_users" value=' . json_encode($usersArr) . ' />');
 
         }
         
         $user_selection->show_orgchart_simple_selector = FALSE;
+        $user_selection->show_user_selector = TRUE;
+        $user_selection->show_group_selector = TRUE;
+        $user_selection->show_orgchart_selector = TRUE;
+        $user_selection->show_fncrole_selector = FALSE;
         $user_selection->multi_choice = TRUE;
 
         $user_selection->setPageTitle(getTitleArea(Lang::t('_TITLE_META_CERTIFICATE_ASSIGN','certificate'), 'certificate'));
@@ -962,7 +974,7 @@ Class AggregatedCertificateAlmsController extends AlmsController
         // Users after editing (there may be the same users, new users added, or user to delete)
 
         $user_selection = new UserSelector();
-        $userSelectionArr = array_map('intval',$user_selection->getSelection($_POST));
+        $userSelectionArr = array_map('intval',$user_selection->getSelection($_POST, "main_selector_orgchart_tab"));
 
 
         $_SESSION['meta_certificate']['userSelectionArr'] = $userSelectionArr;
@@ -1312,7 +1324,7 @@ Class AggregatedCertificateAlmsController extends AlmsController
                         foreach($_SESSION['meta_certificate']['courses'] as $id_course){
                             if(isset($_POST['_'.$id_user.'_'.$id_course.'_'])) {
 
-                                $associationsArr[$id_assoc][$id_user] = $id_course;
+                                $associationsArr[$id_assoc][$id_user][] = $id_course;
                             }
 
                         }
@@ -1325,7 +1337,7 @@ Class AggregatedCertificateAlmsController extends AlmsController
                         foreach($_SESSION['meta_certificate']['coursepaths'] as $id_coursepath){
                             if(isset($_POST['_'.$id_user.'_'.$id_coursepath.'_'])){
 
-                                $associationsArr[$id_assoc][$id_user] = $id_coursepath;
+                                $associationsArr[$id_assoc][$id_user][] = $id_coursepath;
 
                             }
 

@@ -117,7 +117,7 @@ class MycertificateLmsController extends LmsController
             'recordsTotal' => $totalMetaCertificates,
             'startIndex' => $startIndex,
             'rowsPerPage' => $rowsPerPage,
-          //  'recordsFiltered' => $metaCertificatesFiltered,
+            'recordsFiltered' => $totalMetaCertificates, // TODO: insert filtered rows
             'data' => $metaCertificates,
         );
 
@@ -162,15 +162,14 @@ class MycertificateLmsController extends LmsController
                     .' title="'.Lang::t('_GENERATE', 'certificate').'"><span>'.Lang::t('_GENERATE', 'certificate').'</span></a>';
 
                 $row = array(
-                    $meta['cert_code'],
-                    $meta['cert_name'],
+                    $meta['code'],
+                    $meta['name'],
                     $meta['courses'],
                     // 'preview'           => isset($meta['on_date']) ? '' : $preview,
-                    ($meta['isReleased']) ? $download : $generate
+                    ($meta['released']) ? $download : $generate
                 );
 
                 $paginated_assignment[] = $row;
-                // $paginated_assignment[] = $this->model->getAggregatedCerts[$i];
 
             }
 

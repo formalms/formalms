@@ -1002,9 +1002,15 @@ class Certificate {
 			." ( '".$id_certificate."', '".$id_course."', '".$id_user."', '".date("Y-m-d H:i:s")."', '".addslashes($cert_file)."' ) ";
 		else
 			$query = "INSERT INTO ".$GLOBALS['prefix_lms'].$aggCertLib->table_assign_agg_cert
-			        ." ( idUser, idAssociation, idCertificate, on_date, cert_file ) "
+			        ." ( idUser, idCertificate, on_date, cert_file ) "
 			        ." VALUES "
-			        ." ('".$id_user."', '".$isAggregatedCert."', '".$id_certificate."', '".date("Y-m-d H:i:s")."', '".addslashes($cert_file)."' ) ";
+			        ." ( "
+                        . "'".$id_user."',"
+                    //."      '".$isAggregatedCert."',"
+                        ."'".$id_certificate."', "
+                        ."'".date("Y-m-d H:i:s")."',"
+                        ."'".addslashes($cert_file)."' "
+                    . ") ";
 
 		if(!sql_query($query)) return false;
 

@@ -1971,7 +1971,10 @@ class UserProfileViewer {
             $cert = new Certificate();
 
             $filter['id_user'] = $this->_id_user;
-            $tot_cert = $cert->countAssignment($filter) + $cert->countMetaAssignment($filter);
+            
+            $modelMyCertLMS = new MycertificateLms($this->_id_user);
+
+            $tot_cert = $cert->countAssignment($filter) + $modelMyCertLMS->countMyMetaCertificates();
 
             $html .= ''
 
