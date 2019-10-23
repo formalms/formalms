@@ -19,43 +19,48 @@ require_once _lib_.'/lib.pluginmanager.php';
 
 class Forma {
 
+    public static function usePlugins() {
+
+        return empty($GLOBALS['notuse_plugin']) && empty($_SESSION['notuse_plugin']);
+    }
+
+    public static function useCustomScripts() {
+
+        return Get::cfg('enable_customscripts', false) && empty($GLOBALS['notuse_customscript']) && empty($_SESSION['notuse_customscript']);
+    }
+
     /**
      * @param $file
      * @return string
      */
     public static function inc($file) {
+        
+        $file = str_replace(['\\', '/'], DIRECTORY_SEPARATOR, $file);
+        $_file = $file;
 
-        $file = str_replace(_base_.'/', '', $file);
-        $file = str_replace(_base_.'\\', '', $file);
-
-        if ($GLOBALS['notuse_plugin'] == true || $_SESSION['notuse_plugin'] == true){
-            $use_plugin = false;
-        } else {
-            $use_plugin = true;
+        if(substr($file, 0, strlen(_base_)) === _base_) {
+            $_file = substr($file, strlen(_base_ . '/'));
         }
-
-        if($use_plugin == true){
-
-	        $plugins = PluginManager::get_all_plugins();
-
-            foreach ($plugins as $plugin){
-                if (file_exists(_base_.'/plugins/'.$plugin['name'].'/Features/'.$file)){
-                    include_once(_base_.'/plugins/'.$plugin['name'].'/Plugin.php');
-                    return _base_.'/plugins/'.$plugin['name'].'/Features/'.$file;
+        
+        if(self::usePlugins()) {
+            $plugins = PluginManager::get_all_plugins();
+            foreach($plugins as $plugin) {
+                $plugin_folder = _plugins_ . '/' . $plugin['name'];
+                $plugin_file = "$plugin_folder/Features/$_file";
+                if(file_exists($plugin_file)) {
+                    require_once "$plugin_folder/Plugin.php";
+                    return $plugin_file;
                 }
             }
         }
-
-        if ($GLOBALS['notuse_customscript'] == true || $_SESSION['notuse_customscript'] == true){
-            $use_customscript = false;
-        } else {
-            $use_customscript = true;
+        
+        if(self::useCustomScripts()) {
+            $customscript_file = _base_ . "/customscripts/$_file";
+            if(file_exists($customscript_file)) {
+                return $customscript_file;
+            }
         }
 
-        if (file_exists(_base_.'/customscripts'.'/'.$file) && Get::cfg('enable_customscripts', false) == true && $use_customscript == true) {
-            return _base_.'/customscripts'.'/'.$file;
-        } else {
-            return _base_.'/'.$file;
-        }
+        return $file;
     }
 }
