@@ -35,6 +35,7 @@ ALTER TABLE learning_certificate_meta_assign
     RENAME TO learning_aggregated_cert_assign;
 ALTER TABLE learning_aggregated_cert_assign
     CHANGE idMetaCertificate idAssociation INT(11) NOT NULL;
+ALTER TABLE `learning_aggregated_cert_assign` DROP PRIMARY KEY, ADD PRIMARY KEY (`idUser`, `idCertificate`) USING BTREE;
 
 
 

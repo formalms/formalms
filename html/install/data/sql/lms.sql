@@ -285,11 +285,10 @@ CREATE TABLE IF NOT EXISTS `learning_aggregated_cert_metadata` (
 
 CREATE TABLE IF NOT EXISTS `learning_aggregated_cert_assign` (
   `idUser` int(11) NOT NULL DEFAULT '0',
-  `idAssociation` int(11) NOT NULL DEFAULT '0',
   `idCertificate` int(11) NOT NULL DEFAULT '0',
   `on_date` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `cert_file` varchar(255) NOT NULL DEFAULT '',
-  PRIMARY KEY (`idUser`,`idAssociation`)
+  PRIMARY KEY (`idUser`,`idCertificate`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
