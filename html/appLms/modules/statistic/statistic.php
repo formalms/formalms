@@ -124,6 +124,9 @@ function outPageView($link)
     if (!$view_all_perm && Docebo::user()->getUserLevelId() == '/framework/level/admin') {
         $query_stat .= " AND idUser IN (" . implode($course_user, ',') . ") ";
     }
+    if ($_REQUEST['op'] == 'userdetails' && isset($_REQUEST['id'])) {
+        $query_stat .= " AND idUser = ".$_REQUEST['id'];
+    }
     $query_stat .= " AND timeof >= '$dateinit' AND timeof <= '$dateend' 
 	GROUP BY " . $group_by . "
 	ORDER BY timeof";
@@ -354,7 +357,7 @@ function userdetails()
 
     $GLOBALS['page']->add(
         getTitleArea($page_title, 'statistic')
-        . '<div class="std_block">'
+        //. '<div class="std_block">'
         . getBackUi('index.php?modname=statistic&amp;op=statistic', $lang->def('_BACK')), 'content');
 
     $tb = new Table(0, $lang->def('_USERS_LIST_DETAILS_CAPTION'), $lang->def('_USERS_LIST_DETAILS_SUMMARY'));
@@ -374,6 +377,8 @@ function userdetails()
         $cont_h[] = '<img src="' . getPathImage() . 'standard/view.png" title="' . $lang->def('_VIEW_SESSION_DETAILS') . '" '
             . 'alt="' . $lang->def('_VIEW_SESSION_DETAILS_ALT') . '" />';
         $type_h[] = 'image';
+
+        outPageView($link);
     };
     $tb->setColsStyle($type_h);
     $tb->addHead($cont_h);
@@ -417,30 +422,54 @@ function userdetails()
     if ($minutes < 10) $minutes = '0' . $minutes;
     if ($seconds < 10) $seconds = '0' . $seconds;
 
+    $table_head = '';
+    foreach ($tb->table_head as $row) {
+        $table_head.= '<tr>';
+        foreach ($row->cells as $cell) {
+            $table_head.='<th>'.$cell->label.'</th>';
+        }
+        $table_head.= '</tr>';
+    }
+
+    $table_body = '';
+    foreach ($tb->table_body as $row) {
+        $table_body.= '<tr>';
+        foreach ($row->cells as $cell) {
+            $table_body.='<td>'.$cell->label.'</td>';
+        }
+        $table_body.= '</tr>';
+    }
+
+    $table = '
+        <table class="table table-striped table-bordered display" style="width:100%" id="stats_user_details">
+          <thead>
+            <tr>
+                <th colspan="6"><b>'.Lang::t('_USERS_LIST_DETAILS_CAPTION', 'statistic').'</b></th>
+            </tr>'.
+            $table_head
+          .'</thead>
+          <tbody>'.
+            $table_body
+          .'</tbody>
+        </table>'
+
+        .'<script>
+        $(function() {
+          var tableId = "#stats_user_details";
+
+          $(tableId).FormaTable({
+            processing: true,
+            serverSide: false,
+            scrollX: true,
+            order: [[ 0, "asc" ]],
+          });
+        </script>';
+
     $json = new Services_JSON();
     cout(
         '<div>'
         . '<span class="text_bold">' . $lang->def('_USER_TOTAL_TIME') . ' : </span>' . $hours . 'h ' . $minutes . 'm ' . $seconds . 's '
-        . '</div>'
-        . '<div id="statistic_chart">Unable to load Flash content. Required Flash Player 9.0.45 or higher. You can download the latest version of Flash Player from the <a href="http://www.adobe.com/go/getflashplayer">Adobe Flash Player Download Center</a>.</div>
-		<script type="text/javascript">
-			var dataSource = new YAHOO.util.DataSource( ' . $json->encode(array_values($chart_data)) . ' );
-			dataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
-			dataSource.responseSchema = {fields: [ "x_axis", "y_axis" ]};
-
-			var getDataTipText = function(item, index, series) {
-				var toolTipText = Math.floor(item.y_axis/3600) +"h "+ Math.floor((item.y_axis%3600)/60) + "m";
-				return toolTipText;
-			};
-			
-			var myChart = new YAHOO.widget.ColumnChart( "statistic_chart", dataSource, {
-				xField: "x_axis",
-				yField: "y_axis",
-				wmode: "opaque",
-			dataTipFunction: getDataTipText
-			});
-		</script>'
-        . $tb->getTable()
+        . $table
         . $nav_bar->getNavBar($ini)
         . getBackUi('index.php?modname=statistic&amp;op=statistic', $lang->def('_BACK'))
         . '</div>', 'content');
