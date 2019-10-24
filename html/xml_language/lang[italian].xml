@@ -469,6 +469,7 @@ La chat si aprirà in una finestra di pop-up]]></key>
         <key id="configuration&amp;_COURSE_QUOTA" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Limite per il massimo di contenuti caricabili nel corso (in MB)]]></key>
         <key id="configuration&amp;_CURRENCY_SYMBOL" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Simbolo valuta (sarà mostrato all'utente)]]></key>
         <key id="configuration&amp;_CUSTOMER_HELP_EMAIL" attributes="" save_date="2017-03-15 12:09:35"><![CDATA[Email Help Desk]]></key>
+        <key id="configuration&amp;_CUSTOMER_HELP_SUBJ_PFX" attributes="" save_date="2019-10-22 18:17:41"><![CDATA[Prefisso per oggetto email di help]]></key>
         <key id="configuration&amp;_CUSTOMER_HELP_SUBJ_PLACEHOLDER" attributes="" save_date="2019-05-29 10:31:20"><![CDATA[Oggetto email Help Desk]]></key>
         <key id="configuration&amp;_CUSTOM_FIELDS_MANDATORY_FOR_ADMIN" attributes="" save_date="2017-05-05 12:02:48"><![CDATA[Campi supplementari obbligatori]]></key>
         <key id="configuration&amp;_DEBUG" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Opzioni di debug]]></key>
@@ -588,6 +589,9 @@ La chat si aprirà in una finestra di pop-up]]></key>
         <key id="configuration&amp;_REGISTER_TYPE_SELF" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Autoregistrazione libera]]></key>
         <key id="configuration&amp;_REGISTER_TYPE_SELF_OPTIN" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Autoregistrazione libera con double opt-in]]></key>
         <key id="configuration&amp;_REGISTRATION_CODE_TYPE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Tipo di utilizzo del codice registrazione]]></key>
+        <key id="configuration&amp;_REPORT_MAX_EMAIL_SIZE_MB" attributes="" save_date="2019-10-22 18:16:51"><![CDATA[Dimensione massima del report allegato (MB)]]></key>
+        <key id="configuration&amp;_REPORT_PERSISTENCE_DAYS" attributes="" save_date="2019-10-22 18:04:37"><![CDATA[Disponibilità download report (espressa in giorni)]]></key>
+        <key id="configuration&amp;_REPORT_STORAGE_FOLDER" attributes="" save_date="2019-10-22 18:16:44"><![CDATA[Percorso di memorizzazione report]]></key>
         <key id="configuration&amp;_REQUEST_MANDATORY_FIELDS_COMPILATION" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Al login all'utente verranno proposti i campi obbligatori da compilare relativi al suo profilo]]></key>
         <key id="configuration&amp;_REST_AUTH_API_KEY" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Aut. Chiave API]]></key>
         <key id="configuration&amp;_REST_AUTH_API_SECRET" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Aut. Codice segreto API]]></key>
@@ -669,6 +673,7 @@ http://server/path/index.php?modname=login) \]]></key>
         <key id="configuration&amp;_USE_ADVANCED_FORM" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Usa il form di registrazione in modalità "avanzata"]]></key>
         <key id="configuration&amp;_USE_COURSE_LABEL" attributes="" save_date="2018-12-14 11:43:29"><![CDATA[Utilizza etichette nei corsi]]></key>
         <key id="configuration&amp;_USE_DIMDIM_API" attributes="" save_date="2017-03-15 17:49:33"><![CDATA[Utilizza l'API DimDim al posto dell'interfacciamento tramite URL]]></key>
+        <key id="configuration&amp;_USE_IMMEDIATE_REPORT" attributes="" save_date="2019-10-22 19:16:06"><![CDATA[Calcola il report ed invialo per email appena pronto (deve essere attivato l'esecuzione report in crontab)]]></key>
         <key id="configuration&amp;_USE_REST_API" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Abilita le funzionalità delle API]]></key>
         <key id="configuration&amp;_USE_TAG" attributes="" save_date="2017-04-10 16:17:08"><![CDATA[Attiva l'uso dei tag nei forum]]></key>
         <key id="configuration&amp;_WARINNG_SOCIAL" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Attenzione senza questi settaggi la login social non funzioner&agrave;]]></key>
@@ -936,6 +941,9 @@ Per poterlo fare devi loggarti nella piattaforma se sei un utente registarto, al
         <key id="coursereport&amp;_TQ_LINK" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Statistiche per il test "[test]"]]></key>
         <key id="coursereport&amp;_USE_FOR_FINAL" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Considera per voto finale]]></key>
         <key id="coursereport&amp;_WEIGHT" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Peso]]></key>
+      </module>
+      <module id="courses">
+        <key id="courses&amp;_ADDITIONAL_FIELDS_COURSES" attributes="" save_date="2019-10-23 12:06:57"><![CDATA[campi aggiuntivi per corsi]]></key>
       </module>
       <module id="course_autoregistration">
         <key id="course_autoregistration&amp;_AUTOREGISTRATION" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Aggiungi nuovo corso]]></key>
@@ -1892,6 +1900,7 @@ L'immagine non deve avere contenuti offensivi e/o che violano il regolamento.]]>
         <key id="register&amp;_ERR_PASSWORD_NO_MATCH" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[La password non corrisponde alla sua ripetizione]]></key>
         <key id="register&amp;_ERR_POLICY_NOT_CHECKED" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Devi accettare la privacy policy per poterti registare]]></key>
         <key id="register&amp;_ERR_PWD_OLD" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[La vecchia password è sbagliata]]></key>
+        <key id="register&amp;_ERR_PWD_SAME_OLD" attributes="" save_date="2019-10-10 11:40:13"><![CDATA[La nuova password deve essere diversa da quella precedente]]></key>
         <key id="register&amp;_FIRST_ACCESS" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Questa è la prima volta che accedi al sistema. Ti invitiamo a cambiare la tua password temporanea.]]></key>
         <key id="register&amp;_FORCE_CHANGE" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[E' necessario scegliere una nuova password]]></key>
         <key id="register&amp;_GOTO_LOGIN" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Torna alla pagina di login]]></key>
@@ -2201,6 +2210,7 @@ Password: [password]]]></key>
         <key id="standard&amp;_ADVANCED" attributes="" save_date="2017-04-10 14:09:27"><![CDATA[Avanzata]]></key>
         <key id="standard&amp;_ADVANCED_SEARCH" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Ricerca avanzata]]></key>
         <key id="standard&amp;_ALL" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Tutti]]></key>
+        <key id="standard&amp;_ALLOW_FULL_EDIT_PROFILE" attributes="" save_date="2019-10-11 10:35:14"><![CDATA[Consenti la modifica completa]]></key>
         <key id="standard&amp;_ALL_CATEGORIES" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Tutte le categorie]]></key>
         <key id="standard&amp;_ALL_COURSES" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Tutti i corsi]]></key>
         <key id="standard&amp;_ALL_PAGES" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Tutte le pagine]]></key>
@@ -2224,6 +2234,7 @@ Password: [password]]]></key>
         <key id="standard&amp;_AVATAR" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Avatar]]></key>
         <key id="standard&amp;_AVERANGE" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Media]]></key>
         <key id="standard&amp;_BACK" attributes="" save_date="2017-10-20 11:25:27"><![CDATA[Indietro]]></key>
+        <key id="standard&amp;_BACK_TO_LABEL" attributes="" save_date="2019-10-24 09:29:34"><![CDATA[Indietro]]></key>
         <key id="standard&amp;_BASIC_SEARCH" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Ricerca standard]]></key>
         <key id="standard&amp;_BBB" attributes="" save_date="2017-04-05 12:44:31"><![CDATA[BigBlueButton]]></key>
         <key id="standard&amp;_BY" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[da]]></key>
@@ -2279,6 +2290,7 @@ Password: [password]]]></key>
         <key id="standard&amp;_DATE_FIRST_ACCESS" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Primo accesso]]></key>
         <key id="standard&amp;_DATE_FORMAT" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Formato data]]></key>
         <key id="standard&amp;_DATE_LAST_ACCESS" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Data ultimo accesso]]></key>
+        <key id="standard&amp;_DATE_LAST_TEST" attributes="" save_date="2019-10-24 10:38:53"><![CDATA[Data dell'ultimo test]]></key>
         <key id="standard&amp;_DAY" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Giorno]]></key>
         <key id="standard&amp;_DAYS" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Giorni]]></key>
         <key id="standard&amp;_DEACTIVATE" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Disattiva]]></key>
@@ -2297,6 +2309,7 @@ Password: [password]]]></key>
         <key id="standard&amp;_DIFFICULT_VERYDIFFICULT" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Molto difficile]]></key>
         <key id="standard&amp;_DIFFICULT_VERYEASY" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Molto facile]]></key>
         <key id="standard&amp;_DIMDIM" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[DimDim]]></key>
+        <key id="standard&amp;_DISALLOW_EDIT_PROFILE" attributes="" save_date="2019-10-11 10:36:50"><![CDATA[Disabilita modifiche del profilo]]></key>
         <key id="standard&amp;_DISCONNECT" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Disconnetti]]></key>
         <key id="standard&amp;_DOWN" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Giù]]></key>
         <key id="standard&amp;_DOWNLOAD" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Download]]></key>
@@ -2338,6 +2351,8 @@ Password: [password]]]></key>
         <key id="standard&amp;_FILTER_APPLY" attributes="" save_date="2019-01-11 11:18:06"><![CDATA[Applica filtro]]></key>
         <key id="standard&amp;_FILTER_ONE_COND" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Almeno una condizione deve essere soddisfatta]]></key>
         <key id="standard&amp;_FILTER_RESET" attributes="" save_date="2019-01-11 11:18:18"><![CDATA[Azzera filtro]]></key>
+        <key id="standard&amp;_FILTER_TAB_CLOSE" attributes="" save_date="2019-10-24 10:40:18"><![CDATA[Chiudi scheda filtro]]></key>
+        <key id="standard&amp;_FILTER_TAB_OPEN" attributes="" save_date="2019-10-24 10:40:28"><![CDATA[Apri scheda filtro]]></key>
         <key id="standard&amp;_FINAL_SCORE" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Punteggio finale]]></key>
         <key id="standard&amp;_FIRSTNAME" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Nome]]></key>
         <key id="standard&amp;_FIX_SEQUENCE" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Correggi errori di sequenza]]></key>
@@ -2400,6 +2415,7 @@ Password: [password]]]></key>
         <key id="standard&amp;_MIN_SCORE" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Punteggio minimo]]></key>
         <key id="standard&amp;_MOD" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Modifica]]></key>
         <key id="standard&amp;_MODERATE" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Modera]]></key>
+        <key id="standard&amp;_MOD_LIMIT_PROFILE" attributes="" save_date="2019-10-11 10:36:12"><![CDATA[Consenti solo di modificare la password]]></key>
         <key id="standard&amp;_MOD_SELECTED" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Modifica selezionati]]></key>
         <key id="standard&amp;_MOD_TITLE" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Modifica titolo]]></key>
         <key id="standard&amp;_MONTH_01" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Gennaio]]></key>
@@ -2483,6 +2499,8 @@ Password: [password]]]></key>
         <key id="standard&amp;_PREVIEW" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Anteprima]]></key>
         <key id="standard&amp;_PREV_B" attributes="" save_date="2017-04-11 18:47:42"><![CDATA[Precedente]]></key>
         <key id="standard&amp;_PREV_STEP" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Precedente]]></key>
+        <key id="standard&amp;_PROFILE_MODIFY" attributes="" save_date="2019-10-11 10:33:15"><![CDATA[Modifica profilo]]></key>
+        <key id="standard&amp;_PROFILE_MODIFY_URL" attributes="" save_date="2019-10-11 10:38:13"><![CDATA[Url per la modifica del profilo:]]></key>
         <key id="standard&amp;_PROGRESS" attributes="" save_date="2017-10-25 15:36:11"><![CDATA[Progresso]]></key>
         <key id="standard&amp;_PROPERTIES" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Proprietà]]></key>
         <key id="standard&amp;_PUBLIC_ADMIN_USER" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Amministratore pubblico]]></key>
@@ -2492,6 +2510,7 @@ Password: [password]]]></key>
         <key id="standard&amp;_REACTIVATE" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Riattiva]]></key>
         <key id="standard&amp;_READ" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Letto]]></key>
         <key id="standard&amp;_RECIPIENTS" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Destinatari]]></key>
+        <key id="standard&amp;_REDIRECT_URL_PROFILE" attributes="" save_date="2019-10-11 10:37:27"><![CDATA[Reindirizza a pagina esterna]]></key>
         <key id="standard&amp;_REGISTER" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Registrati]]></key>
         <key id="standard&amp;_REGISTER_DATE" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Data di registrazione]]></key>
         <key id="standard&amp;_REMEMBER_ME" attributes="" save_date="2017-04-11 18:47:47"><![CDATA[Ricordami]]></key>
