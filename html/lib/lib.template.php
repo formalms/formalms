@@ -102,7 +102,7 @@ function parseTemplateDomain($curr_domain = false) {
  */
 function setTemplate($new_template) {
 
-	if(is_dir(_base_.'/templates/'.$new_template)) {
+	if(is_dir(_templates_ . "/".$new_template)) {
 		$_SESSION['template'] = $new_template;
 	}
 	else {
@@ -127,7 +127,7 @@ function resetTemplate() {
      */
 	 function readTemplateManifest($template_name, $key = false)
 	 {
-		 $template_file = _base_ . "/templates/" . $template_name . "/manifest.xml";
+		 $template_file = _templates_ . "/" . $template_name . "/manifest.xml";
 		 if (!file_exists($template_file)) {
 			 return false;
 		 }
@@ -166,10 +166,10 @@ function checkTemplateVersion($template_name) {
  */
 function getTemplateList($set_keys = FALSE, $platform = FALSE) {
 
-	$templ = dir(_base_.'/templates/');
+	$templ = dir(_templates_ . "/");
 	while($elem = $templ->read()) {
 
-		if((is_dir(_base_.'/templates/'.$elem)) && ($elem != ".") && ($elem != "..") && ($elem != ".svn") && $elem{0} != '_' && checkTemplateVersion($elem)) {
+		if((is_dir(_templates_ . "/".$elem)) && ($elem != ".") && ($elem != "..") && ($elem != ".svn") && $elem{0} != '_' && checkTemplateVersion($elem)) {
 
 			if (!$set_keys) $templArray[] = $elem;
 			else $templArray[$elem] = $elem;
@@ -191,7 +191,7 @@ function getTemplateList($set_keys = FALSE, $platform = FALSE) {
 function getDefaultTemplate( $platform = false ) {
 
 	$plat_templ = Get::sett('defaultTemplate');
-	if(is_dir(_base_.'/templates/'.$plat_templ)) return $plat_templ;
+	if(is_dir(_templates_ . "/".$plat_templ)) return $plat_templ;
 	else return array_pop(getTemplateList());
 }
 

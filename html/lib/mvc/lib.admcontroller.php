@@ -30,7 +30,7 @@ class AdmController extends Controller {
 	}
 
     public function templatePath(){
-        return _base_."/templates/".getTemplate()."/layout/appCore";
+        return _templates_ . "/".getTemplate()."/layout/appCore";
     }
 	
 }

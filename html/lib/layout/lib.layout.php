@@ -24,10 +24,10 @@ class Layout
     public static function templateList()
     {
         $templ_array = array();
-        $templ = dir(_base_ . '/templates/');
+        $templ = dir(_templates_ . '/');
         while ($elem = $templ->read()) {
 
-            if ((is_dir(_base_ . '/templates/' . $elem)) && $elem{0} != "." && $elem{0} != '_') {
+            if ((is_dir(_templates_ . '/' . $elem)) && $elem{0} != "." && $elem{0} != '_') {
                 $templ_array[] = $elem;
             }
         }
@@ -312,11 +312,11 @@ class Layout
         if ($browser["browser"] !== 'msie') {
             $intest = '<?xml version="1.0" encoding="' . self::charset() . '"?' . '>' . "\n";
         }
-        if (file_exists(_base_ . '/templates/' . getTemplate() . '/layout/' . $layout . '.html.twig')) {
+        if (file_exists(_templates_ . '/' . getTemplate() . '/layout/' . $layout . '.html.twig')) {
             $dataforview = self::PrepareInclude($layout);
-            echo \appCore\Template\TwigManager::getInstance()->render($layout . '.html.twig', $dataforview, _base_ . '/templates/' . getTemplate() . '/layout/');
+            echo \appCore\Template\TwigManager::getInstance()->render($layout . '.html.twig', $dataforview, _templates_ . '/' . getTemplate() . '/layout/');
         } else {
-            include(_base_ . '/templates/' . getTemplate() . '/layout/' . $layout . '.php');
+            include(_templates_ . '/' . getTemplate() . '/layout/' . $layout . '.php');
         }
     }
 
@@ -341,8 +341,8 @@ class Layout
         $retArray['jsAddons'] = JQueryLib::loadJsAddons($minimized);
         $retArray['cssAddons'] = JQueryLib::loadCssAddons($minimized);
 
-        if (file_exists(_base_ . '/templates/' . getTemplate() . '/style/custom.css')) {
-            $customCssPath = Get::rel_path('base') . '/templates/' . getTemplate() . '/style/custom.css';
+        if (file_exists(_templates_ . '/' . getTemplate() . '/style/custom.css')) {
+            $customCssPath = $GLOBALS['where_templates_relative'] . '/' . getTemplate() . '/style/custom.css';
             $retArray['custom_css_path'] = str_replace('/./', '/', $customCssPath);
         }
         switch ($whichLayout) {

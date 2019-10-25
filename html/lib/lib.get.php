@@ -240,7 +240,7 @@ class Get {
 
 		if($item === false) $platform = Get::cur_plat();
 		else $platform = $item;
-		$path = Get::rel_path('base').'/templates/'.getTemplate().'/';
+		$path = $GLOBALS['where_templates_relative'].'/'.getTemplate().'/';
 		return str_replace('/./','/', $path);
 	}
 
@@ -297,7 +297,7 @@ class Get {
 	 */
 	public static function link_img($url, $title, $src, $alt, $extra = false) {
 		// where are we ?
-		$src = Get::rel_path(_base_).'/templates/standard/images/'.$src;
+		$src = $GLOBALS['where_templates_relative'].'/standard/images/'.$src;
 
 		return '<a href="'.$url.'" title="'.$title.'"'.
 			( !empty($extra['link']) != false ? ' '.$extra['link'] : '' ).

@@ -83,7 +83,7 @@ class Learning_ScormOrg extends Learning_Object {
 		/* ------ dropdown template choiche ----- */
 		$arr_templates = array();
 		
-		$path = _base_.'/templates/'.getTemplate().'/player_scorm/';
+		$path = _templates_ . '/'.getTemplate().'/player_scorm/';
 		$templ = @dir($path);
 		if($templ) {
 			while($elem = $templ->read()) {

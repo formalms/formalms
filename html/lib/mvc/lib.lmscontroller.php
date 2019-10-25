@@ -21,6 +21,6 @@ class LmsController extends Controller {
 	}
 
     public function templatePath(){
-        return _base_."/templates/".getTemplate()."/layout/appLms";
+        return _templates_ . "/".getTemplate()."/layout/appLms";
     }
 }

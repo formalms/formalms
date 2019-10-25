@@ -21,7 +21,7 @@ class AlmsController extends Controller {
 	}
 
     public function templatePath(){
-        return _base_."/templates/".getTemplate()."/layout";
+        return _templates_ . "/".getTemplate()."/layout";
     }
 
 	public function init() {

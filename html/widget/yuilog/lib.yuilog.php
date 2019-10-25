@@ -47,7 +47,7 @@ class YuilogWidget extends Widget {
 	 */
 	public function init() {
 		Util::get_js(Get::rel_path('base').'/addons/yui/logger/logger-min.js', true, true);
-		Util::get_css(Get::rel_path('base').'/templates/standard/yui-skin/logger.css', true, true);
+		Util::get_css($GLOBALS['where_templates_relative'].'/standard/yui-skin/logger.css', true, true);
 	}
 
 

@@ -180,7 +180,7 @@ if(trim($playertemplate) != '') echo '	<link href="'.Get::tmpl_path().'/player_s
 		<script type="text/javascript" src=".././addons/yui/animation/animation-min.js"></script>
 		<script type="text/javascript" src=".././addons/yui/logger/logger-min.js"></script>
 
-		<link rel="stylesheet" type="text/css" href="../templates/standard/yui-skin/logger.css" />';
+		<link rel="stylesheet" type="text/css" href="' . $GLOBALS['where_templates_relative'] . '/standard/yui-skin/logger.css" />';
 
 echo '</head>'."\n";
 

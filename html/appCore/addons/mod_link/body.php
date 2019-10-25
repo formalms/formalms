@@ -43,7 +43,7 @@ drawMenu($menu_label, $menu_url, $op);
 // --------------------------------------------------------------------------------------------
 
 $GLOBALS['page']->add(
-		'<link href="'.$GLOBALS["where_framework_relative"].'/templates/standard/style/base-old-treeview.css" rel="stylesheet" type="text/css" />'."\n",
+		'<link href="'.$GLOBALS["where_templates_relative"].'/standard/style/base-old-treeview.css" rel="stylesheet" type="text/css" />'."\n",
 		'page_head');
 
 $GLOBALS['page']->add(
