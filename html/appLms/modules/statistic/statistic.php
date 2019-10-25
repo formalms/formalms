@@ -13,6 +13,8 @@
 
 if (Docebo::user()->isAnonymous()) die("You can't access");
 
+require_once(Forma::inc(_lib_ . '/formatable/include.php'));
+
 function outPageView($link)
 {
 
@@ -236,17 +238,13 @@ function statistic()
 
 
     $users_list =& $acl_man->getUsers($course_user);
-    $GLOBALS['page']->add(
-        getTitleArea(lang::t('_STAT', 'menu_course'))
-        . '<div class="std_block">', 'content');
+    $GLOBALS['page']->add(getTitleArea(lang::t('_STAT', 'menu_course')), 'content');
 
     if (Get::sett('tracking') == 'on') {
-
         $GLOBALS['page']->add('<div class="title">' . $lang->def('_PAGE_VIEW') . '</div>', 'content');
         outPageView('index.php?modname=statistic&amp;op=statistic');
     }
-    $GLOBALS['page']->add(
-        '<br />', 'content');
+    $GLOBALS['page']->add('<br />', 'content');
     $tb = new Table(0, $lang->def('_USERS_LIST_CAPTION'), $lang->def('_USERS_LIST_SUMMARY'));
 
     $type_h = array('', '', '');
@@ -258,7 +256,6 @@ function statistic()
     $tb->setColsStyle($type_h);
     $tb->addHead($cont_h);
     while (list(, $user_info) = each($users_list)) {
-
         $cont = array(
             '<a href="index.php?modname=statistic&amp;op=userdetails&amp;id=' . $user_info[ACL_INFO_IDST] . '" '
             . 'title="' . $lang->def('_DETAILS') . ' : ' . $acl_man->relativeId($user_info[ACL_INFO_USERID]) . '">'
@@ -268,10 +265,56 @@ function statistic()
         );
         $tb->addBody($cont);
     }
-    $GLOBALS['page']->add(
-        $tb->getTable()
-        . '</div>', 'content');
 
+    $GLOBALS['page']->add(getTable($tb,'_USERS_LIST_CAPTION', 'stats_users_list'), 'content');
+}
+
+function getTable($tb, $title = null, $id)
+{
+    $table_head = '';
+    foreach ($tb->table_head as $row) {
+        $table_head.= '<tr>';
+        foreach ($row->cells as $cell) {
+            $table_head.='<th>'.$cell->abbr.'</th>';
+        }
+        $table_head.= '</tr>';
+    }
+
+    $table_body = '';
+    foreach ($tb->table_body as $row) {
+        $table_body.= '<tr>';
+        foreach ($row->cells as $cell) {
+            $table_body.='<td>'.$cell->label.'</td>';
+        }
+        $table_body.= '</tr>';
+    }
+
+    return '
+        <table class="table table-striped table-bordered display" style="width:100%" id="'.$id.'">
+          <thead>
+            <tr>
+                <th colspan="6"><b>'. Lang::t($title, 'statistic').'</b></th>
+            </tr>'.
+            $table_head
+          .'</thead>
+          <tbody>'.
+            $table_body
+          .'</tbody>
+        </table>'
+
+        .'<script>
+        $(function() {
+          var tableId = "#'.$id.'";
+
+          $(tableId).FormaTable({
+            processing: true,
+            serverSide: false,
+            pagingType: "full_numbers",
+            scrollX: true,
+            order: [[ 0, "asc" ]],
+          });
+        });
+        </script>';
 }
 
 function userdetails()
@@ -440,36 +483,11 @@ function userdetails()
         $table_body.= '</tr>';
     }
 
-    $table = '
-        <table class="table table-striped table-bordered display" style="width:100%" id="stats_user_details">
-          <thead>
-            <tr>
-                <th colspan="6"><b>'.Lang::t('_USERS_LIST_DETAILS_CAPTION', 'statistic').'</b></th>
-            </tr>'.
-            $table_head
-          .'</thead>
-          <tbody>'.
-            $table_body
-          .'</tbody>
-        </table>'
-
-        .'<script>
-        $(function() {
-          var tableId = "#stats_user_details";
-
-          $(tableId).FormaTable({
-            processing: true,
-            serverSide: false,
-            scrollX: true,
-            order: [[ 0, "asc" ]],
-          });
-        </script>';
-
     $json = new Services_JSON();
     cout(
         '<div>'
         . '<span class="text_bold">' . $lang->def('_USER_TOTAL_TIME') . ' : </span>' . $hours . 'h ' . $minutes . 'm ' . $seconds . 's '
-        . $table
+        . getTable($tb, '_USERS_LIST_DETAILS_CAPTION', 'stats_user_details')
         . $nav_bar->getNavBar($ini)
         . getBackUi('index.php?modname=statistic&amp;op=statistic', $lang->def('_BACK'))
         . '</div>', 'content');
@@ -591,8 +609,7 @@ function sessiondetails()
     );
     $tb->addBody($cont);
     $GLOBALS['page']->add(
-        $tb->getTable()
-        . $nav_bar->getNavBar()
+        getTable($tb, '_VIEW_SESSION_DETAILS', 'stats_session_detail')
         . getBackUi('index.php?modname=statistic&amp;op=userdetails&amp;id=' . $idst_user . '&amp;p_ini=' . $p_ini, $lang->def('_BACK'))
         . '</div>', 'content');
 }
