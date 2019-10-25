@@ -32,11 +32,11 @@ Lang::setLanguage();
 		<link rel="shortcut icon" href="./templates/standard/images/favicon.png" type="image/png" />
 		<link rel="shortcut icon" href="./templates/standard/images/favicon.ico" />
 		<?php echo getZoneContent('page_head'); ?>
-		<link rel="stylesheet" type="text/css" href="<?php echo $GLOBALS['where_templates_relative']; ?>/standard/style/reset-fonts-grids.css" />
+		<link rel="stylesheet" type="text/css" href="../templates/standard/style/reset-fonts-grids.css" />
 		<link rel="stylesheet" type="text/css" href="./templates/standard/style/base.css" />
 		<link rel="stylesheet" type="text/css" href="./templates/standard/style/form.css" />
-		<link rel="stylesheet" type="text/css" href="<?php echo $GLOBALS['where_templates_relative']; ?>/standard/yui-skin/button.css" />
-		<link rel="stylesheet" type="text/css" href="<?php echo $GLOBALS['where_templates_relative']; ?>/standard/yui-skin/progressbar.css" />
+		<link rel="stylesheet" type="text/css" href="../templates/standard/yui-skin/button.css" />
+		<link rel="stylesheet" type="text/css" href="../templates/standard/yui-skin/progressbar.css" />
 
 		<script type="text/javascript" src="../install/lib/base.js"></script>
 		<script type="text/javascript" src="../addons/yui/event-mouseenter/event-mouseenter-min.js"></script>
@@ -54,7 +54,7 @@ Lang::setLanguage();
 				</div>
 				<div class="install_bd">
 					<div class="install_shoulder">
-						<img class="logo" src="<?php echo $GLOBALS['where_templates_relative']; ?>/standard/images/company_logo.png" alt="Forma e-learning logo" />
+						<img class="logo" src="../templates/standard/images/company_logo.png" alt="Forma e-learning logo" />
 						<img class="flux" src="./templates/standard/images/left_shoulder.jpg" alt="Flux" />
 					</div>
 					<div class="install_content">
