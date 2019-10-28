@@ -41,3 +41,7 @@ test/behat/behat_config.yml
 courselist.php.bkp
 html/.htaccess
 html/dbg-wizard.php
+html/test/config.php
+html/test/new_ass.php
+html/test/classUser.php
+html/test/assignMeta.php

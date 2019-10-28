@@ -754,6 +754,12 @@ class AggregatedCertificate {
         return sql_fetch_row(sql_query("SELECT LAST_INSERT_ID()FROM ".$GLOBALS['prefix_lms'].$this->table_cert ))[0];
 
     }
+    
+    function getLastInsertedIdAggregatedCert() {
+
+        return sql_fetch_row(sql_query("SELECT LAST_INSERT_ID()FROM %lms".$this->table_cert_meta_association ))[0];
+
+    }
 
     function getLastInsertedAssociationId() {
 

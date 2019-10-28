@@ -807,18 +807,12 @@ Class AggregatedCertificateAlmsController extends AlmsController
         require_once(_base_.'/lib/lib.userselector.php');
         require_once(_base_.'/lib/lib.form.php');
 
-
-
         $id_certificate = Get::req('id_certificate', DOTY_INT, -1);
         $id_association = Get::req('id_association', DOTY_INT, 0);
         $type_assoc = Get::req('type_assoc', DOTY_INT, -1);
 
         if(isset($_POST["undo"]) || isset($_POST["undo_filter"]) || isset($_POST["cancelselector"]))
             Util::jump_to('index.php?r=alms/'.$this->controller_name.'/'.$this->op['associationsManagement'].'&amp;id_certificate='.$id_certificate);
-
-            
-        
-            
 
         $edit = Get::req('edit', DOTY_INT, 0);
 
@@ -913,8 +907,8 @@ Class AggregatedCertificateAlmsController extends AlmsController
             
             // Need to pass all the idst of the users / groups / org_chart
             $user_selection->resetSelection($usersArr);
-            $user_selection->resetSelection([11905]);
           
+        
             
             $user_selection->addFormInfo('<input type="hidden" name="old_users" value=' . json_encode($usersArr) . ' />');
 
@@ -974,8 +968,7 @@ Class AggregatedCertificateAlmsController extends AlmsController
         // Users after editing (there may be the same users, new users added, or user to delete)
 
         $user_selection = new UserSelector();
-        $userSelectionArr = array_map('intval',$user_selection->getSelection($_POST, "main_selector_orgchart_tab"));
-
+        $userSelectionArr = array_map('intval',$user_selection->getSelection($_POST));
 
         $_SESSION['meta_certificate']['userSelectionArr'] = $userSelectionArr;
 
