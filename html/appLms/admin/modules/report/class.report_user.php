@@ -749,7 +749,7 @@ class Report_User extends Report {
 		.Form::getCloseFieldset();
 
 
-        $box->body .= Form::getOpenFieldset("campi aggiuntivi per corsi", 'report');
+        $box->body .= Form::getOpenFieldset($lang->def('_ADDITIONAL_FIELDS_COURSES', 'courses'), 'report');
         foreach ($customCourse as $keyCourse =>$valCourse) {
             $box->body .= Form::getCheckBox( addslashes( $valCourse['label']) , 'col_customcourse_'.$valCourse['id'], 'customcourse['.$valCourse['id'].']', $valCourse['id'], $ref['custom_fields_course'][$keyCourse]['selected']);        
         }

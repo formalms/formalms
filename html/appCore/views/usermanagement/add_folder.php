@@ -14,7 +14,7 @@ $body .= Form::getBreakRow();
 foreach ($languages as $language) {
 	$lang_code = $language['code'];
 	$lang_name = $language['description'];
-	$body .= Form::getTextfield($lang_code, 'newfolder_'.$lang_code, 'langs['.$lang_code.']', 255);
+	$body .= Form::getTextfield(Lang::t('_NAME', 'standard').' ('.$lang_code.')', 'newfolder_'.$lang_code, 'langs['.$lang_code.']', 255);
 }
 
 $body.= "<hr>";
