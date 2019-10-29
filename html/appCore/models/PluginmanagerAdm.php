@@ -429,7 +429,7 @@ class PluginmanagerAdm extends Model
                 $check = $model->importTranslation($lang_file, true, false, (int)$plugin_info['plugin_id']);
             }
         }
-        return $check;
+        return $check !== false;
     }
 
     function removeTranslations($plugin_name)
