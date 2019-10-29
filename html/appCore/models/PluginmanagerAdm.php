@@ -346,9 +346,13 @@ class PluginmanagerAdm extends Model
 
         $plugin_class = "Plugin";
         require_once(_plugins_ . "/" . $plugin_name . "/" . $plugin_class . ".php");
-        $this->importSqlFile(_plugins_ . "/" . $plugin_name . "/db/" . $method . ".sql");
+        $res = $this->importSqlFile(_plugins_ . "/" . $plugin_name . "/db/" . $method . ".sql");
+        if (!$res['ok']) {
+            return false;
+        }
         if (method_exists('Plugin\\' . $plugin_name . '\\' . $plugin_class, $method)) {
-            return call_user_func(array('Plugin\\' . $plugin_name . '\\' . $plugin_class, $method), $plugin_name, $plugin_version);
+            $fnResult = call_user_func(array('Plugin\\' . $plugin_name . '\\' . $plugin_class, $method), $plugin_name, $plugin_version);
+            return $fnResult === false ? false : true;
         }
     }
 
@@ -425,7 +429,7 @@ class PluginmanagerAdm extends Model
                 $check = $model->importTranslation($lang_file, true, false, (int)$plugin_info['plugin_id']);
             }
         }
-        return $check;
+        return $check !== false;
     }
 
     function removeTranslations($plugin_name)
@@ -460,8 +464,14 @@ class PluginmanagerAdm extends Model
             $result = sql_query($query);
             if ($result) {
                 if (!$update) {
-                    $this->callPluginMethod($plugin_name, 'install');
-                    $this->installTranslations($plugin_name);
+                    if (
+                        $this->callPluginMethod($plugin_name, 'install') &&
+                        $this->installTranslations($plugin_name) 
+                    ) {
+                        return true;
+                    } else {
+                        return false;
+                    }
                 }
                 return $plugin_info;
             } else {
@@ -500,16 +510,23 @@ class PluginmanagerAdm extends Model
     public
     function uninstallPlugin($plugin_id, $update = false)
     {
+        $reSetting = true;
         if (!$update) {
-            $this->setupPlugin($plugin_id, false);
-            $this->callPluginMethod($plugin_id, 'uninstall');
-            $this->removeSettings($plugin_id);
-            $this->removeRequests($plugin_id);
-            $this->removeTranslations($plugin_id);
-            $this->removeMenu($plugin_id);
+            if (
+                $this->setupPlugin($plugin_id, false) &&
+                $this->callPluginMethod($plugin_id, 'uninstall') &&
+                $this->removeSettings($plugin_id) &&
+                $this->removeRequests($plugin_id) &&
+                $this->removeTranslations($plugin_id) &&
+                $this->removeMenu($plugin_id)
+            ) {
+                $reSetting = true;
+            } else {
+                $reSetting = false;
+            }
         }
 
-        $reSetting = sql_query("
+        sql_query("
 			DELETE FROM " . $this->table . "
 			WHERE name='" . $plugin_id . "'");
 
@@ -525,15 +542,16 @@ class PluginmanagerAdm extends Model
     public
     function setupPlugin($plugin_id, $active)
     {
+        $reSetting = true;
         if ($active == 1) {
-            $this->callPluginMethod($plugin_id, 'activate');
+            $reSetting = $this->callPluginMethod($plugin_id, 'activate');
         } else {
-            $this->callPluginMethod($plugin_id, 'deactivate');
+            $reSetting = $this->callPluginMethod($plugin_id, 'deactivate');
         }
 
-        $reSetting = sql_query("
+        sql_query("
 			UPDATE " . $this->table . "
-			SET active=" . $active . "
+			SET active=" . (int)$active . "
 			WHERE name = '" . $plugin_id . "'");
 
         return $reSetting;
