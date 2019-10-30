@@ -21,7 +21,7 @@ class PluginmanagerAdmController extends AdmController {
     public function showTask() {
         $plugins = $this->model->getPlugins();
         $feedback = "";
-        switch (Get::req('result', DOTY_ALPHANUM, "")) {
+        switch ($res = Get::req('result', DOTY_ALPHANUM, "")) {
 			case 'ok': $feedback = Lang::t('_OPERATION_SUCCESSFUL', 'standard'); break;
 			case 'err': $feedback = Lang::t('_OPERATION_FAILURE', 'standard'); break;
             default:
@@ -29,7 +29,8 @@ class PluginmanagerAdmController extends AdmController {
 		}
         $this->render('show', array(
                 'plugins' => $plugins,
-                'feedback' => $feedback
+                'feedback' => $feedback,
+                'res' => $res
             )
         );
     }

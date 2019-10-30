@@ -10,7 +10,7 @@ echo Form::closeForm();
 
 <hr/>
 <?php include Forma::inc(_lib_ . '/formatable/include.php');?>
-<div><?php echo $feedback; ?></div>
+<div class="feedback-<?php echo $res; ?>"><?php echo $feedback; ?></div>
 <table class="table table-striped table-bordered display" style="width:100%" id="plugins"></table>
 <script>
 function askUninstall(link){
@@ -143,5 +143,11 @@ $(function() {
     #plugins tr td .purge-button {
         background-color: white;
         border: 2px solid #900;
+    }
+    .feedback-err {
+        background-color: #900;
+        color: white;
+        font-weight: bold;
+        padding: 20px;
     }
 </style>
