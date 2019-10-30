@@ -455,88 +455,89 @@ class UsermanagementAdm extends Model {
 		//retrieve which fields are required
 		$custom_fields = array_keys($fields);
 
-		if (count($users_rows) > 0 && !empty($custom_fields)) {
-			//fields
-			$query_fields = "SELECT f.id_common, f.type_field, fu.id_user, fu.user_entry ".
-				" FROM %adm_field_userentry AS fu JOIN %adm_field AS f ON (fu.id_common=f.id_common) ".
-				" WHERE id_user IN (".implode(",", array_keys($users_rows)).") AND fu.id_common IN (".implode(",", $custom_fields).") ";
-			$res_fields = $this->db->query($query_fields);
+		if (count($users_rows) > 0) {
+			if (!empty($custom_fields)) {
+				//fields
+				$query_fields = "SELECT f.id_common, f.type_field, fu.id_user, fu.user_entry ".
+					" FROM %adm_field_userentry AS fu JOIN %adm_field AS f ON (fu.id_common=f.id_common) ".
+					" WHERE id_user IN (".implode(",", array_keys($users_rows)).") AND fu.id_common IN (".implode(",", $custom_fields).") ";
+				$res_fields = $this->db->query($query_fields);
 
-			$field_sons = false;
-			$countries = false;
+				$field_sons = false;
+				$countries = false;
 
-			//get values to add in the row
-			$custom_values = array();
-			while ($frow = $this->db->fetch_obj($res_fields)) {
-				if (!in_array($frow->id_common, $custom_fields)) $custom_fields[] = $frow->id_common;
+				//get values to add in the row
+				$custom_values = array();
+				while ($frow = $this->db->fetch_obj($res_fields)) {
+					if (!in_array($frow->id_common, $custom_fields)) $custom_fields[] = $frow->id_common;
 
-				$field_value = "";
-				switch ($frow->type_field) {
-					case "yesno": {
-						switch($frow->user_entry) {
-							case 1 : $field_value = Lang::t('_YES', 'field');break;
-							case 2 : $field_value = Lang::t('_NO', 'field');break;
-							default: $field_value = '';break;
-						}
-					} break;
-					case "dropdown": {
-						if ($field_sons === false) {
-							//retrieve translations for dropdowns fields
-							$query_fields_sons = "SELECT idField, id_common_son, translation FROM %adm_field_son WHERE lang_code = '".getLanguage()."' ORDER BY idField, sequence";
-							$res_fields_sons = $this->db->query($query_fields_sons);
-							$field_sons = array();
-							while ($fsrow = $this->db->fetch_obj($res_fields_sons)) {
-								$field_sons[$fsrow->idField][$fsrow->id_common_son] = $fsrow->translation;
+					$field_value = "";
+					switch ($frow->type_field) {
+						case "yesno": {
+							switch($frow->user_entry) {
+								case 1 : $field_value = Lang::t('_YES', 'field');break;
+								case 2 : $field_value = Lang::t('_NO', 'field');break;
+								default: $field_value = '';break;
 							}
-						}
-						if (isset($field_sons[$frow->id_common][$frow->user_entry]))
-							$field_value = $field_sons[$frow->id_common][$frow->user_entry];
-						else
-							$field_value = "";
-					} break;
-					//PURPLE fix class copy per visualizzazione corretta dei record nelle tabelle
-					case "copy": {
-						if ($field_sons === false) {
-							//retrieve translations for dropdowns fields
-							$query_fields_sons = "SELECT idField, id_common_son, translation FROM %adm_field_son WHERE lang_code = '".getLanguage()."' ORDER BY idField, sequence";
-							$res_fields_sons = $this->db->query($query_fields_sons);
-							$field_sons = array();
-							while ($fsrow = $this->db->fetch_obj($res_fields_sons)) {
-								$field_sons[$fsrow->idField][$fsrow->id_common_son] = $fsrow->translation;
+						} break;
+						case "dropdown": {
+							if ($field_sons === false) {
+								//retrieve translations for dropdowns fields
+								$query_fields_sons = "SELECT idField, id_common_son, translation FROM %adm_field_son WHERE lang_code = '".getLanguage()."' ORDER BY idField, sequence";
+								$res_fields_sons = $this->db->query($query_fields_sons);
+								$field_sons = array();
+								while ($fsrow = $this->db->fetch_obj($res_fields_sons)) {
+									$field_sons[$fsrow->idField][$fsrow->id_common_son] = $fsrow->translation;
+								}
 							}
-						}
-						if (isset($field_sons[$frow->copy_of][$frow->user_entry]))
-							$field_value = $field_sons[$frow->copy_of][$frow->user_entry];
-						else
-							$field_value = "";
-					} break;
-					//END PURPLE
-					case "country": {
-						if ($countries === false) {
-							//retrieve countries names
-							$query_countries = "SELECT id_country, name_country FROM %adm_country ORDER BY name_country";
-							$res_countries = $this->db->query($query_countries);
-							$countries = array();
-							while ($crow = $this->db->fetch_obj($res_countries)) {
-								$countries[$crow->id_country] = $crow->name_country;
+							if (isset($field_sons[$frow->id_common][$frow->user_entry]))
+								$field_value = $field_sons[$frow->id_common][$frow->user_entry];
+							else
+								$field_value = "";
+						} break;
+						//PURPLE fix class copy per visualizzazione corretta dei record nelle tabelle
+						case "copy": {
+							if ($field_sons === false) {
+								//retrieve translations for dropdowns fields
+								$query_fields_sons = "SELECT idField, id_common_son, translation FROM %adm_field_son WHERE lang_code = '".getLanguage()."' ORDER BY idField, sequence";
+								$res_fields_sons = $this->db->query($query_fields_sons);
+								$field_sons = array();
+								while ($fsrow = $this->db->fetch_obj($res_fields_sons)) {
+									$field_sons[$fsrow->idField][$fsrow->id_common_son] = $fsrow->translation;
+								}
 							}
-						}
-						if (isset($countries[$frow->user_entry]))
-							$field_value = $countries[$frow->user_entry];
-						else
-							$field_value = "";
-					} break;
-					default: $field_value = $frow->user_entry; break;
+							if (isset($field_sons[$frow->copy_of][$frow->user_entry]))
+								$field_value = $field_sons[$frow->copy_of][$frow->user_entry];
+							else
+								$field_value = "";
+						} break;
+						//END PURPLE
+						case "country": {
+							if ($countries === false) {
+								//retrieve countries names
+								$query_countries = "SELECT id_country, name_country FROM %adm_country ORDER BY name_country";
+								$res_countries = $this->db->query($query_countries);
+								$countries = array();
+								while ($crow = $this->db->fetch_obj($res_countries)) {
+									$countries[$crow->id_country] = $crow->name_country;
+								}
+							}
+							if (isset($countries[$frow->user_entry]))
+								$field_value = $countries[$frow->user_entry];
+							else
+								$field_value = "";
+						} break;
+						default: $field_value = $frow->user_entry; break;
+					}
+					$custom_values[$frow->id_user][ '_custom_'.$frow->id_common ] = $field_value; //$frow->user_entry;
 				}
-				$custom_values[$frow->id_user][ '_custom_'.$frow->id_common ] = $field_value; //$frow->user_entry;
-			}
 
-			foreach ($users_rows as $idst=>$value) {
-				foreach ($custom_fields as $id_field) {
-					$users_rows[$idst]['_custom_'.$id_field] = (isset($custom_values[$idst]['_custom_'.$id_field]) ? $custom_values[$idst]['_custom_'.$id_field] : '');
+				foreach ($users_rows as $idst=>$value) {
+					foreach ($custom_fields as $id_field) {
+						$users_rows[$idst]['_custom_'.$id_field] = (isset($custom_values[$idst]['_custom_'.$id_field]) ? $custom_values[$idst]['_custom_'.$id_field] : '');
+					}
 				}
 			}
-
 			if ($descendants) {
 				//check which users are descendants, if option is selected
 				$idst_org = $acl_man->getGroupST('oc_'.$idOrg);
