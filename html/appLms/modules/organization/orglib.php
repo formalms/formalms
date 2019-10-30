@@ -1291,6 +1291,9 @@ class Org_TreeView extends RepoTreeView {
 		$lo_type = $arrData[REPOFIELDOBJECTTYPE];
         $lo_class = createLO($lo_type);
 
+		if (!is_object($lo_class) && !$isFolder ){
+			return '';
+		}
 
 		//check for void selection
 		if(is_array($arrData) && isset($arrData[ORGFIELD_ACCESS]) && $this->playOnly) {
