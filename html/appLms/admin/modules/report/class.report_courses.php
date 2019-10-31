@@ -313,7 +313,7 @@ class Report_Courses extends Report {
 				.Form::getCloseFieldset() ;
                 
                 // LRZ: manage custom fields for COURSE
-                $box->body .= Form::getOpenFieldset("campi aggiuntivi per corsi", 'report');
+                $box->body .= Form::getOpenFieldset($lang->def('_ADDITIONAL_FIELDS_COURSES', 'courses'), 'report');
                 foreach ($customCourse as $keyCourse =>$valCourse) {  
                     $box->body .= Form::getCheckBox($glang->def($valCourse['label']), 'col_sel_'.$valCourse['label'], 'cols[]', '_'.$valCourse['label'], is_showed('_'.$valCourse['label'], $ref))        ;
                 }
