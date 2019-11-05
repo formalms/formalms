@@ -244,7 +244,7 @@ class CoursestatsLms extends Model {
 		if ($res) {
 			$scores = $this->getLOScores($id_course, $id_user); //actually only tests can be scored
 			
-			require_once(_lms_.'/class.module/track.object.php' );
+			require_once Forma::inc(_lms_.'/class.module/track.object.php' );
 
 			while ($obj = $this->db->fetch_obj($res)) {
 				$obj->status = Track_Object::getStatusFromId($obj->idOrg, $id_user);
@@ -490,7 +490,7 @@ class CoursestatsLms extends Model {
 			list($type) = $this->db->fetch_row($res);
 		}
 		if (is_array($types) && isset($types[$type])) {
-			require_once(_lms_.'/class.module/'.$types[$type]->fileName);
+			require_once Forma::inc(_lms_.'/class.module/'.$types[$type]->fileName);
 			$classname = $types[$type]->className;
 			$output = new $classname($id_lo);
 		}
@@ -512,7 +512,7 @@ class CoursestatsLms extends Model {
 			list($type) = $this->db->fetch_row($res);
 		}
 		if (is_array($types) && isset($types[$type])) {
-			require_once(_lms_.'/class.module/'.$types[$type]->fileNameTrack);
+			require_once Forma::inc(_lms_.'/class.module/'.$types[$type]->fileNameTrack);
 			$classname = $types[$type]->classNameTrack;
 			$output = new $classname($id_track);
 		}
