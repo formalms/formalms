@@ -89,12 +89,10 @@ function &createLmsModule($module_name) {
 		$class_name = 'LmsModule';
 	}
 
-	if(Get::cfg('enable_plugins', false)){
-		if(checkIfPlugin($module_name)=="plugin"){
-			include_once( Get::rel_path('plugins').'/'.$module_name.'/class/class.'.$module_name.'.php' ); 
-			$class_name = 'Module_'.ucfirst($module_name);  
-		}
-    }    
+	if(checkIfPlugin($module_name)=="plugin"){
+		include_once( Get::rel_path('plugins').'/'.$module_name.'/class/class.'.$module_name.'.php' ); 
+		$class_name = 'Module_'.ucfirst($module_name);  
+	}
 
 	$module_cfg = new $class_name();
 	return $module_cfg;
