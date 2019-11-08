@@ -7,9 +7,9 @@ function GetCategory($the_course)
         $ret_val = Lang::t('_NO_CATEGORY', 'standard');
     } else {
         //$ret_val = substr($the_course['nameCategory'], 6);
-     $ret_val = explode("/", $the_course['nameCategory']);
-     $ret_val = array_pop($ret_val);          
-        
+        $ret_val = explode("/", $the_course['nameCategory']);
+        $ret_val = array_pop($ret_val);
+
     }
     return $ret_val;
 }
@@ -86,10 +86,10 @@ function userCanUnsubscribe($course)
 {
     $now = new DateTime();
 
-    $courseUnsubscribeDateLimit = (null !== $course['course_unsubscribe_date_limit'] ? DateTime::createFromFormat('Y-m-d H:i:s',$course['course_unsubscribe_date_limit']) : '');
-    $dateUnsubscribeDateLimit = (null !== $course['date_unsubscribe_date_limit'] ? DateTime::createFromFormat('Y-m-d H:i:s',$course['date_unsubscribe_date_limit']) : '');
+    $courseUnsubscribeDateLimit = (null !== $course['course_unsubscribe_date_limit'] ? DateTime::createFromFormat('Y-m-d H:i:s', $course['course_unsubscribe_date_limit']) : '');
+    $dateUnsubscribeDateLimit = (null !== $course['date_unsubscribe_date_limit'] ? DateTime::createFromFormat('Y-m-d H:i:s', $course['date_unsubscribe_date_limit']) : '');
 
-    if ((['auto_unsubscribe'] == 2 || $course['auto_unsubscribe'] == 1) && $now < $courseUnsubscribeDateLimit || $now < $dateUnsubscribeDateLimit ) {
+    if ((['auto_unsubscribe'] == 2 || $course['auto_unsubscribe'] == 1) && $now < $courseUnsubscribeDateLimit || $now < $dateUnsubscribeDateLimit) {
 
         return true;
     }
@@ -180,7 +180,7 @@ function userCanUnsubscribe($course)
 
         <?php foreach ($courselist
 
-        as $course){
+        as $course) {
         $tooltipClass = '';
         $tooltipElement = '';
         if (strlen($course['name']) >= 50) {
@@ -407,13 +407,15 @@ function userCanUnsubscribe($course)
                                                             <td><?php echo $day_lessons[$i]['endDate']; ?></td>
                                                         </tr>
                                                         <tr>
-                                                            <td><?php echo Lang::t('_CLASSROOM', 'standard') ?>:</td>
+                                                            <td><?php echo Lang::t('_CLASSROOM', 'standard') ?>:
+                                                            </td>
                                                             <td><?php echo $day_lessons[$i]['location']; ?></td>
                                                         </tr>
 
                                                         <?php if ($day_lessons[$i]['presence'] > 0) : ?>
                                                             <tr>
-                                                                <td><?php echo Lang::t('_IS_PRESENCE', 'standard') ?>:
+                                                                <td><?php echo Lang::t('_IS_PRESENCE', 'standard') ?>
+                                                                    :
                                                                 </td>
                                                                 <td><?php echo getStringPresence($day_lessons[$i]['presence']); ?></td>
                                                             </tr>
@@ -453,15 +455,47 @@ function userCanUnsubscribe($course)
                             </a>
                         <?php } ?>
                     </div>
-                    <div class="course-box__extraInfo">
-                        <div class="course-box__next"> <!-- TODO @Peppe: dinamicizzare -->
-	                        <?php echo Lang::t('_NEXT_LESSON', 'course'); ?>
-                            <div>10 Giugno 2019</div>
-                        </div>
-                        <div class="course-box__allDates">  <!-- TODO @Peppe: dinamicizzare -->
-                            <a href=""><?php echo Lang::t('_SHOW_ALL_DATES', 'course'); ?></a>
-                        </div>
-                    </div>
+
+                    <?php if ($course['course_type'] === 'classroom') {
+                        $classroom_man = new DateManager();
+                        $dates = $classroom_man->getCourseDate($course['idCourse'], false);
+                        reset($dates);
+                        $first_key = key($dates);
+
+                        if (count($dates) > 0) {
+                            $days = $classroom_man->getDateDayDateDetails($dates[$first_key]['id_date']);
+
+                            ?>
+                            <div class="course-box__extraInfo">
+                                <div class="course-box__next">
+                                    <?php echo Lang::t('_NEXT_LESSON', 'course'); ?>
+                                    <?php
+
+                                    foreach ($days as $day) {
+                                        $dateString = Format::date($day['date_begin'], 'date');
+                                        if (new \DateTime($dateString) > new DateTime()) {
+                                            echo '<div>' . Format::date($day['date_begin'], 'date') . '</div>';
+                                            break;
+                                        }
+                                    }
+                                    ?>
+                                </div>
+
+                                <!--<div class="course-box__allDates">  TODO @Peppe: dinamicizzare
+                                    <a href=""><?php Lang::t('_SHOW_ALL_DATES', 'course'); ?></a>
+
+                                    <?php
+                                    $daysHtml = '';
+                                    foreach ($days as $day) {
+                                        $daysHtml .= '<div>' . Format::date($day['date_begin'], 'date') . '</div>';
+                                    }
+                                     $daysHtml;
+
+                                    ?>
+                                </div>-->
+                            </div>
+                        <?php } ?>
+                    <?php } ?>
                 </div>
             </div>
             <?php } // end foreach ?>
