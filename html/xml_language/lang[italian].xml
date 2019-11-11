@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20191009</DATE>
+  <DATE>20191111</DATE>
   <LANG id="italian">
     <lang_code>italian</lang_code>
     <lang_description>Italiano</lang_description>
@@ -802,6 +802,7 @@ http://server/path/index.php?modname=login) \]]></key>
         <key id="course&amp;_MIN_SUBSCRIBE_FOR_COURSE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Il numero minimo di iscritti è : <b>[min_subscribe]</b>]]></key>
         <key id="course&amp;_MULTIPLE_SUBSCRIPTION" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Iscrizioni multiple]]></key>
         <key id="course&amp;_MY_CERTIFICATE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[I miei certificati]]></key>
+        <key id="course&amp;_NEXT_LESSON" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Prossima lezione]]></key>
         <key id="course&amp;_NEW_USER_SUBS_WAITING_TEXT" attributes="accessibility" save_date="2015-09-30 15:32:39"><![CDATA[Un utente è in attesa su [url]]]></key>
         <key id="course&amp;_NOACTIVE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[In attesa di attivazione]]></key>
         <key id="course&amp;_NOENTER" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Non puoi entrare]]></key>
@@ -2579,6 +2580,7 @@ Password: [password]]]></key>
         <key id="standard&amp;_TITLE" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Titolo]]></key>
         <key id="standard&amp;_TO" attributes="" save_date="2017-07-05 10:41:57"><![CDATA[al]]></key>
         <key id="standard&amp;_TOTAL" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Totale]]></key>
+        <key id="standard&amp;_TOTAL_HOURS" attributes="" save_date="2019-10-30 11:26:31"><![CDATA[Totale ore]]></key>
         <key id="standard&amp;_TOTAL_TIME" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Tempo totale]]></key>
         <key id="standard&amp;_TRANSACTION" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Transazioni]]></key>
         <key id="standard&amp;_TWITTER" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Twitter]]></key>

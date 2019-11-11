@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20191009</DATE>
+  <DATE>20191111</DATE>
   <LANG id="english">
     <lang_code>english</lang_code>
     <lang_description>English</lang_description>
@@ -755,6 +755,9 @@
         <key id="course&amp;_CUSTOM_OPTIONS" attributes="" save_date="0000-00-00 00:00:00"><![CDATA[Custom Options]]></key>
         <key id="course&amp;_DATE_END" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Date end]]></key>
         <key id="course&amp;_DATE_START" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Date start]]></key>
+        <key id="course&amp;_DATE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Date]]></key>
+        <key id="course&amp;_DAY" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Day]]></key>
+        <key id="course&amp;_DAYS" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Days]]></key>
         <key id="course&amp;_DAY_OF_VALIDITY" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Days of validity]]></key>
         <key id="course&amp;_DEMO" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Show demo]]></key>
         <key id="course&amp;_DIRECT_PLAY" attributes="" save_date="2017-03-15 17:59:58"><![CDATA[Directly play the first Learning Object in the player]]></key>
@@ -2586,6 +2589,7 @@ Password: [password]]]></key>
         <key id="standard&amp;_TITLE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Title]]></key>
         <key id="standard&amp;_TO" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[to]]></key>
         <key id="standard&amp;_TOTAL" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Total]]></key>
+        <key id="standard&amp;_TOTAL_HOURS" attributes="" save_date="2019-10-30 11:26:31"><![CDATA[Total hours]]></key>
         <key id="standard&amp;_TOTAL_TIME" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Total time]]></key>
         <key id="standard&amp;_TRANSACTION" attributes="" save_date="2017-04-21 10:07:32"><![CDATA[Transactions]]></key>
         <key id="standard&amp;_TWITTER" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Twitter]]></key>
