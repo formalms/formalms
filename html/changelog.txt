@@ -12,7 +12,7 @@ RELEASE CHANGELOG
 ---------------------------------------------------------------------------------------
 forma.lms 2.4
 ---------------------------------------------------------------------------------------
-Release date: 2019 October 25
+Release date: 2019 November 11
 
 #1940  | CR IMPROVED  | NEW COURSE API
 #19425 | CR IMPROVED  | NEW USER API 
