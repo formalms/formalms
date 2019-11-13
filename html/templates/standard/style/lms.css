@@ -382,6 +382,8 @@ div.coursepath_details{background-color:#f7f7f7;border-top:3px solid #d1d1d1;bor
     border-left: 1px solid #FFF1D9;
     line-height: 16px;
     padding-left: 5px;
+    font-weight: normal;
+    color: #666;
 }
 
 .edition_table tbody tr:nth-child(2n) {
@@ -416,6 +418,7 @@ div.coursepath_details{background-color:#f7f7f7;border-top:3px solid #d1d1d1;bor
 
 .yui-overlay, .yui-panel-container {
     z-index: 999999999 !important;
+    box-shadow: 0 0 21px 7px rgba(18,16,16,.15);
 }
 
 .show-all-dates-popup {
