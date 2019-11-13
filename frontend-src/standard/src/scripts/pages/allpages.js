@@ -88,8 +88,6 @@ var Page = (function() {
       }
     });
 
-    console.log(_height);
-
     $('#user-panel-carousel').height(_height);
   }
 

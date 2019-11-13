@@ -145,7 +145,7 @@ class DateManager
 		$query =	"SELECT idClassroom, location, name"
 					." FROM %lms_class_location as loc JOIN ".$this->classroom_table." AS cl "
 					." ON (loc.location_id = cl.location_id) ";
-		
+
 		if (Docebo::user()->getUserLevelId() !== ADMIN_GROUP_GODADMIN) {
 			require_once(_base_.'/lib/lib.preference.php');
 			$adminManager = new AdminPreference();
@@ -156,7 +156,7 @@ class DateManager
 				return $res;
 			}
 		}
-		
+
 		$query .= " ORDER BY location, name";
 
 		$result = sql_query($query);
@@ -225,17 +225,17 @@ class DateManager
 		return $res;
 	}
 
-	
-    
+
+
     public function getAvailableDate($id_course){
         $res =  $this->getCourseDate($id_course, false);
         foreach ($res as $k => $v) {
-            if ($v['status'] != 0) 
+            if ($v['status'] != 0)
                 unset($res[$k]);
         }
-        return $res; 
+        return $res;
     }
-    
+
     public function getCourseDate($id_course, $all = true, $ini = 0, $num_element = 0)
 	{
 		$res = array();
@@ -255,7 +255,7 @@ class DateManager
 
 		$result = sql_query($query);
 
-		
+
 
 		while($row = sql_fetch_assoc($result))
 		{
@@ -330,7 +330,7 @@ class DateManager
 			else
 				$res .= ', '.$_name;
 		}
-		
+
 		return $res;
 	}
 
@@ -345,20 +345,20 @@ class DateManager
 		return $num_day;
 	}
 
-    
+
     public function getClassromByID($id_classroom)
     {
         $query =    "SELECT name, location "
                     ." FROM ".$this->classroom_table .", ".$this->location_table
                     ." WHERE idClassroom = ".$id_classroom ." and ".$this->location_table.".location_id=".$this->classroom_table.".location_id";
-                    
+
         list($name,$location) = sql_fetch_row(sql_query($query));
 
         return $location." - ".$name;
-    }    
-    
-    
-    
+    }
+
+
+
 	public function getDateInfo($id_date)
 	{
 		$query =	"SELECT dt.*, MIN(dy.date_begin) AS date_begin, MAX(dy.date_end) AS date_end, COUNT(dy.id_day) as num_day, COUNT(DISTINCT du.id_user) as user_subscribed"
@@ -568,8 +568,6 @@ class DateManager
 					." WHERE id_date = ".$id_date;
 
 		$result = sql_query($query);
-var_dump($query);
-die();
 		$res = array();
 		$i = 0;
 
@@ -702,11 +700,11 @@ die();
 		if($this->controlDateUserSubscriptions($id_user, $id_date))
 			return true;
 
-        // LRZ: 
+        // LRZ:
         // ticket: #19465
-        //if the call is made by ws, id_subscribe was null and the insert into query was mistaken  
-        $id_subscriber = intval($id_subscriber);             
-            
+        //if the call is made by ws, id_subscribe was null and the insert into query was mistaken
+        $id_subscriber = intval($id_subscriber);
+
 		$query =	"INSERT INTO ".$this->user_date_table
 					." (id_date, id_user, date_subscription, subscribed_by, overbooking)"
 					." VALUES (".$id_date.", ".$id_user.", '".date('Y-m-d H:i:s')."', ".$id_subscriber.", ".($overbooking ? '1' : '0').")";
@@ -859,7 +857,7 @@ die();
 			$adminManager = new AdminPreference();
 			$is_admin = true;
 		}
-        
+
 		$view_all_perm = checkPerm('view_all', true, 'presence');
 
 		$query = "SELECT u.idst, u.userid, u.firstname, u.lastname"
@@ -870,7 +868,7 @@ die();
 				." AND c.level = 3";
 
 		if ( !$view_all_perm && Docebo::user()->getUserLevelId() == '/framework/level/admin' ) {
-			$query.= ($is_admin ?" AND ".$adminManager->getAdminUsersQuery(Docebo::user()->getIdSt(), 'd.id_user') : '');	
+			$query.= ($is_admin ?" AND ".$adminManager->getAdminUsersQuery(Docebo::user()->getIdSt(), 'd.id_user') : '');
 		}
 		$query.= " ORDER BY u.lastname, u.firstname, u.userid";
 
@@ -896,7 +894,7 @@ die();
 
 		return $test_type;
 	}
-          
+
 	public function getUserPresenceForDate($id_date)
 	{
 		$query =	"SELECT *"
@@ -1415,7 +1413,7 @@ die();
 							." AND ".$adminManager->getAdminUsersQuery(Docebo::user()->getIdSt(), 'id_user');
 
 				list($user_subscribed) = sql_fetch_row(sql_query($query));
-				
+
 				$query =	"SELECT COUNT(*) FROM %lms_courseuser AS cu JOIN %lms_course_date AS cd JOIN %lms_course_date_user AS cdu "
 						." ON (cd.id_date = cdu.id_date AND cd.id_course = cu.idCourse AND cu.idUser = cdu.id_user) "
 						." WHERE cd.id_date = ".(int)$id_date." AND cu.level = 3"

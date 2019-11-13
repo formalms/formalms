@@ -36,7 +36,7 @@
 #middlearea .yui-nav li{position:relative;margin-right:0.6em;}
 .admmenu{position:relative;cursor:pointer;cursor:hand;}
 #middlearea .yui-nav li b,.num_notify{position:absolute;color:#fff!important;font-size:normal;text-align:center;font-size:0.9em;padding-top:0px;line-height:1.2em;text-decoration:none;
-top:-0.4px;right:-0.5px;height:13px;width:12px;background:#ee1111;border:0px none;      
+top:-0.4px;right:-0.5px;height:13px;width:12px;background:#ee1111;border:0px none;
 -webkit-border-radius: 4px 4px 4px 0;-moz-border-radius: 4px 4px 4px 0;border-radius: 4px 4px 4px 0;
 -webkit-box-shadow: #666 0px 2px 3px;-moz-box-shadow: #666 0px 2px 3px;box-shadow: #666 0px 2px 3px;
 /*for the crappy browser we use a background image*/
@@ -45,7 +45,7 @@ _background:url(../images/standard/updates.png) 0 0 no-repeat transparent;}
 
 
 #middlearea .yui-nav li b,.num_notify_bar{position:absolute;color:#fff!important;font-size:normal;text-align:center;font-size:0.9em;padding-top:0px;line-height:1.2em;text-decoration:none;
-top:-13.5px;right:-13.5px;height:13px;width:12px;background:#ee1111;border:0px none;      
+top:-13.5px;right:-13.5px;height:13px;width:12px;background:#ee1111;border:0px none;
 -webkit-border-radius: 4px 4px 4px 0;-moz-border-radius: 4px 4px 4px 0;border-radius: 4px 4px 4px 0;
 -webkit-box-shadow: #666 0px 2px 3px;-moz-box-shadow: #666 0px 2px 3px;box-shadow: #666 0px 2px 3px;
 /*for the crappy browser we use a background image*/
@@ -380,7 +380,7 @@ div.coursepath_details{background-color:#f7f7f7;border-top:3px solid #d1d1d1;bor
 
 .edition_table tbody td {
     border-left: 1px solid #FFF1D9;
-    line-height: 22px;
+    line-height: 16px;
     padding-left: 5px;
 }
 
@@ -416,4 +416,28 @@ div.coursepath_details{background-color:#f7f7f7;border-top:3px solid #d1d1d1;bor
 
 .yui-overlay, .yui-panel-container {
     z-index: 999999999 !important;
+}
+
+.show-all-dates-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    z-index: 999;
+    transform: translate(-50%, -50%);
+    display: none;
+}
+
+.show-all-dates-popup .hd {
+    padding-right: 100px !important;
+    line-height: 24px !important;
+}
+
+.show-all-dates-popup .edition_table {
+    margin-left: 0;
+    margin-top: 0;
+}
+
+.show-all-dates-popup .yui-module {
+    visibility: inherit;
+    width: 600px;
 }

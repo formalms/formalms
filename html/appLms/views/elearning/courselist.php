@@ -161,6 +161,15 @@ function userCanUnsubscribe($course)
     }
 
 
+    function openAllDatesPopup($id) {
+        $('*[data-overlay="course-' + $id + '"]').fadeIn();
+    }
+
+    function closeAllDatesPopup($id) {
+        $('*[data-overlay="course-' + $id + '"]').fadeOut();
+    }
+
+
 </script>
 
 
@@ -178,7 +187,8 @@ function userCanUnsubscribe($course)
 
 
 
-        <?php foreach ($courselist
+        <?php
+        foreach ($courselist
 
         as $course) {
         $tooltipClass = '';
@@ -197,7 +207,7 @@ function userCanUnsubscribe($course)
                 <!-- NEW BLOCK -->
                 <div class="course-box__item <?php echo $tooltipClass; ?>">
                     <div class="course-box__title icon--filter-<?php echo $course['user_status']; ?>">
-                        <?php echo TruncateText($course['name'], 50); ?>
+                        <?php echo TruncateText($course['name'], 50); echo $indexCourse; ?>
                     </div>
                     <?php
                     if ($tooltipElement !== '') {
@@ -456,58 +466,84 @@ function userCanUnsubscribe($course)
                         <?php } ?>
                     </div>
 
-                    <?php if ($course['course_type'] === 'classroom') {
-                        $classroom_man = new DateManager();
+                    <div class="course-box__extraInfo">
+                        <?php if ($course['course_type'] === 'classroom') {
+                            $classroom_man = new DateManager();
 
-                        $dates = $classroom_man->getCourseDate($course['idCourse'], false);
-                        reset($dates);
-                        $first_key = key($dates);
-                        if (count($dates) > 0) {
+                            $dates = $classroom_man->getCourseDate($course['idCourse'], false);
+                            reset($dates);
+                            $first_key = key($dates);
+                            if (count($dates) > 0) {
 
-                            $days = $classroom_man->getDateDayDateDetails($dates[$first_key]['id_date']);
-
-                            ?>
-                            <div class="course-box__extraInfo">
-                                <div class="course-box__next">
-                                    <?php echo Lang::t('_NEXT_LESSON', 'course'); ?>
-                                    <?php
-                                    $nextLessonDateSting = '';
-                                    foreach ($days as $day) {
-                                        $dateString = Format::date($day['date_begin'], 'date');
-                                        try {
-                                            $date = new DateTime($day['date_begin']);
-
-                                            if ($date > new DateTime()) {
-                                                $nextLessonDateSting = '<div>' . $dateString . '</div>';
-                                                break;
-                                            }
-                                        } catch (\Exception $exception) {
-                                            continue;
-                                        }
-                                    }
-                                    if (empty($nextLessonDateSting)) {
-                                        $nextLessonDateSting = '<div> ' . Lang::t('_NEXT_LESSON_DATE_NOT_FOUND', 'course') . ' </div>';
-                                    }
-
-                                    echo $nextLessonDateSting;
-                                    ?>
-                                </div>
-
-                                <!--<div class="course-box__allDates">  TODO @Peppe: dinamicizzare
-                                    <a href=""><?php Lang::t('_SHOW_ALL_DATES', 'course'); ?></a>
-
-                                    <?php
-                                $daysHtml = '';
-                                foreach ($days as $day) {
-                                    $daysHtml .= '<div>' . Format::date($day['date_begin'], 'date') . '</div>';
-                                }
-                                $daysHtml;
+                                $days = $classroom_man->getDateDayDateDetails($dates[$first_key]['id_date']);
 
                                 ?>
-                                </div>-->
-                            </div>
+                                    <div class="course-box__next">
+                                        <?php echo Lang::t('_NEXT_LESSON', 'course');
+                                        $nextLessonDateSting = '';
+                                        foreach ($days as $day) {
+                                            $dateString = Format::date($day['date_begin'], 'date');
+                                            try {
+                                                $date = new DateTime($day['date_begin']);
+
+                                                if ($date > new DateTime()) {
+                                                    $nextLessonDateSting = '<div>' . $dateString . '</div>';
+                                                    break;
+                                                }
+                                            } catch (\Exception $exception) {
+                                                continue;
+                                            }
+                                        }
+                                        if (empty($nextLessonDateSting)) {
+                                            $nextLessonDateSting = '<div> ' . Lang::t('_NEXT_LESSON_DATE_NOT_FOUND', 'course') . ' </div>';
+                                        }
+
+                                        echo $nextLessonDateSting;
+                                        ?>
+                                    </div>
+
+                                    <div class="course-box__allDates">
+                                        <a href="javascript:;" onclick="openAllDatesPopup(<?php echo $course['idCourse']; ?>)"><?php echo Lang::t('_SHOW_ALL_DATES', 'course'); ?></a>
+
+                                        <div class="show-all-dates-popup" data-overlay="course-<?php echo $course['idCourse']; ?>">
+                                            <div id="pop_up_container" class="yui-module yui-overlay yui-panel">
+                                                <a class="container-close" href="javascript:;" onclick="closeAllDatesPopup(<?php echo $course['idCourse']; ?>)">Close</a>
+                                                <div class="hd" id="pop_up_container_h"><?php echo $course['name']; ?></div>
+                                                <div class="bd">
+                                                    <div class="edition_container">
+                                                        <table class="edition_table">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th><?php echo Lang::t('_Data Inizio', 'course'); ?></th>
+                                                                    <th><?php echo Lang::t('_Data Fine', 'course'); ?></th>
+                                                                    <th><?php echo Lang::t('_Classroom', 'course'); ?></th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <?php
+
+                                                                foreach ($days as $day) {
+                                                                    $dateString = Format::date($day['date_begin'], 'date');
+                                                                    if (new \DateTime($dateString) > new DateTime()) {
+                                                                        echo '<tr>';
+                                                                        echo '<td>' . Format::date($day['date_begin'], 'date') . '</td>';
+                                                                        echo '<td>' . Format::date($day['date_end'], 'date') . '</td>';
+                                                                        echo '<td>' . $day['classroom'] . '</td>';
+                                                                        echo '</tr>';
+                                                                        break;
+                                                                    }
+                                                                }
+                                                                ?>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                            <?php } ?>
                         <?php } ?>
-                    <?php } ?>
+                    </div>
                 </div>
             </div>
             <?php } // end foreach ?>

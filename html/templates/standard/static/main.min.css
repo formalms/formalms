@@ -3717,7 +3717,7 @@ body {
   width: 100%;
   min-height: 460px;
   margin-bottom: 15px;
-  padding-bottom: 30px;
+  padding-bottom: 15px;
   border: 2px solid #ececec;
   border-radius: 5px;
   font-family: "Open-sans", Arial;
@@ -3729,6 +3729,9 @@ body {
     box-shadow: #c2c2c2 0px 5px 20px 0px; }
     .course-box:hover .course-box__img-title {
       background-color: rgba(255, 108, 0, 0.5); }
+  .mycourses-list .course-box {
+    position: relative;
+    padding-bottom: 50px; }
 
 .course-box__item {
   width: 100%;
@@ -4051,7 +4054,8 @@ i + .course-box__date-box {
   float: right; }
 
 .course-box .forma-button {
-  max-height: 44px; }
+  max-height: 44px;
+  overflow: hidden; }
 
 .course-box__modal__footer .forma-button {
   width: auto;
@@ -4071,11 +4075,13 @@ i + .course-box__date-box {
 .course-box__extraInfo {
   width: calc(100% - 30px);
   margin-left: 15px;
-  padding-top: 15px;
-  margin-top: 15px;
-  border-top: 1px solid #ECECEC;
+  margin-top: 5px;
   clear: both;
-  font-size: 0; }
+  font-size: 0;
+  min-height: 31px;
+  position: absolute;
+  left: 15px;
+  bottom: 15px; }
 
 .course-box__next,
 .course-box__allDates {
@@ -4643,7 +4649,8 @@ i + .course-box__date-box {
   padding-bottom: 10px;
   border-bottom: 1px solid #666; }
 
-#global_conf .tab-content .tab-pane select { display: block; }
+#global_conf .tab-content .tab-pane select {
+  display: block; }
 
 .layout_footer {
   padding-top: 30px;

@@ -168,7 +168,7 @@
   width: 100%;
   min-height: 460px;
   margin-bottom: 15px;
-  padding-bottom: 30px;
+  padding-bottom: 15px;
   border: 2px solid $gray-4;
   border-radius: 5px;
   font-family: $font;
@@ -183,6 +183,11 @@
     .course-box__img-title {
       background-color: $orange--hover;
     }
+  }
+
+  .mycourses-list & {
+    position: relative;
+    padding-bottom: 50px;
   }
 
   @include breakpoint($tablet) {
@@ -637,6 +642,7 @@ i + .course-box__date-box {
 .forma-button {
   .course-box & {
     max-height: 44px;
+    overflow: hidden;
   }
 
   .course-box__modal__footer & {
@@ -665,11 +671,13 @@ i + .course-box__date-box {
 .course-box__extraInfo {
   width: calc(100% - 30px);
   margin-left: 15px;
-  padding-top: 15px;
-  margin-top: 15px;
-  border-top: 1px solid #ECECEC;
+  margin-top: 5px;
   clear: both;
   font-size: 0;
+  min-height: 31px;
+  position: absolute;
+  left: 15px;
+  bottom: 15px;
 }
 
 .course-box__next,
