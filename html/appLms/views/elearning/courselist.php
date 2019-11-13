@@ -458,11 +458,12 @@ function userCanUnsubscribe($course)
 
                     <?php if ($course['course_type'] === 'classroom') {
                         $classroom_man = new DateManager();
+
                         $dates = $classroom_man->getCourseDate($course['idCourse'], false);
                         reset($dates);
                         $first_key = key($dates);
-
                         if (count($dates) > 0) {
+
                             $days = $classroom_man->getDateDayDateDetails($dates[$first_key]['id_date']);
 
                             ?>
@@ -470,14 +471,25 @@ function userCanUnsubscribe($course)
                                 <div class="course-box__next">
                                     <?php echo Lang::t('_NEXT_LESSON', 'course'); ?>
                                     <?php
-
+                                    $nextLessonDateSting = '';
                                     foreach ($days as $day) {
                                         $dateString = Format::date($day['date_begin'], 'date');
-                                        if (new \DateTime($dateString) > new DateTime()) {
-                                            echo '<div>' . Format::date($day['date_begin'], 'date') . '</div>';
-                                            break;
+                                        try {
+                                            $date = new DateTime($day['date_begin']);
+
+                                            if ($date > new DateTime()) {
+                                                $nextLessonDateSting = '<div>' . $dateString . '</div>';
+                                                break;
+                                            }
+                                        } catch (\Exception $exception) {
+                                            continue;
                                         }
                                     }
+                                    if (empty($nextLessonDateSting)) {
+                                        $nextLessonDateSting = '<div> ' . Lang::t('_NEXT_LESSON_DATE_NOT_FOUND', 'course') . ' </div>';
+                                    }
+
+                                    echo $nextLessonDateSting;
                                     ?>
                                 </div>
 
@@ -485,13 +497,13 @@ function userCanUnsubscribe($course)
                                     <a href=""><?php Lang::t('_SHOW_ALL_DATES', 'course'); ?></a>
 
                                     <?php
-                                    $daysHtml = '';
-                                    foreach ($days as $day) {
-                                        $daysHtml .= '<div>' . Format::date($day['date_begin'], 'date') . '</div>';
-                                    }
-                                     $daysHtml;
+                                $daysHtml = '';
+                                foreach ($days as $day) {
+                                    $daysHtml .= '<div>' . Format::date($day['date_begin'], 'date') . '</div>';
+                                }
+                                $daysHtml;
 
-                                    ?>
+                                ?>
                                 </div>-->
                             </div>
                         <?php } ?>

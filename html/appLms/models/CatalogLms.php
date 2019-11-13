@@ -662,7 +662,7 @@ class CatalogLms extends Model
 			$res['title'] = Lang::t('_ADD_TO_CHART', 'catalogue');
 		else
 			//$res['title'] = Lang::t('_SUBSCRIBE', 'catalogue');
-			$res['title'] = $course['name']; //TODO @Peppe: dinamicizzato
+			$res['title'] = $course['name'];
 
 		$res['body'] = '';
 
@@ -735,7 +735,7 @@ class CatalogLms extends Model
 							$index++;
 						}
 					}
-					$res['body'] .= '<br /><br />'; //TODO @Peppe: dinamicizzare
+					$res['body'] .= '<br /><br />';
 				}
 
 				if ($classroom_info['classroom'] !== '') {

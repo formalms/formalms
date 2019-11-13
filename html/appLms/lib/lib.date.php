@@ -568,7 +568,8 @@ class DateManager
 					." WHERE id_date = ".$id_date;
 
 		$result = sql_query($query);
-
+var_dump($query);
+die();
 		$res = array();
 		$i = 0;
 
