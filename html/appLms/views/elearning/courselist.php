@@ -521,7 +521,6 @@ function userCanUnsubscribe($course)
                                                             </thead>
                                                             <tbody>
                                                                 <?php
-
                                                                 foreach ($days as $day) {
                                                                     $dateString = Format::date($day['date_begin'], 'date');
                                                                     if (new \DateTime($dateString) > new DateTime()) {
@@ -530,7 +529,6 @@ function userCanUnsubscribe($course)
                                                                         echo '<td>' . Format::date($day['date_end'], 'date') . '</td>';
                                                                         echo '<td>' . $day['classroom'] . '</td>';
                                                                         echo '</tr>';
-                                                                        break;
                                                                     }
                                                                 }
                                                                 ?>
