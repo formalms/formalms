@@ -451,31 +451,31 @@ class CatalogLms extends Model
 						$index++;
 					}
 				}
-				$res['body'] .= '<br /><br />'; //TODO @Peppe: dinamicizzare
+				$res['body'] .= '<br /><br />';
 			}
 
 			switch ($course['subscribe_method']) {
 				case 2:
 					// free
-					$res['body'] .= '<div class="moderation-alert">Corso con iscrizioni libere</div><br /><br />'; //TODO @Peppe: dinamicizzare;
+					$res['body'] .= '<div class="moderation-alert">Corso con iscrizioni libere</div>';
 					break;
 				case 1:
 					// moderate
-					$res['body'] .= '<div class="moderation-alert">Corso con iscrizioni soggette a moderazione</div><br /><br />'; //TODO @Peppe: dinamicizzare;
+					$res['body'] .= '<div class="moderation-alert">Corso con iscrizioni soggette a moderazione</div>';
 					break;
 				case 0:
 					// only admin
-					$res['body'] .= '<div class="moderation-alert">Corso con iscrizioni disabilitata</div><br /><br />'; //TODO @Peppe: dinamicizzare;
+					$res['body'] .= '<div class="moderation-alert">Corso con iscrizioni disabilitata</div>';
 					break;
 			}
 
+            $is_in_overbooking = $classroom_info['max_par'] <= $classroom_info['user_subscribed'] && $classroom_info['overbooking'] > 0;
+            if ($is_in_overbooking) {
+                $res['body'] .= '<div class="moderation-alert"><b>' . Lang::t('_OVERBOOKING_WARNING', 'catalogue') . '</b></div><br /><br />';
+            }
+
 			$res['body'] .= '</div>'
 				. '</div>';
-
-			$is_in_overbooking = $classroom_info['max_par'] <= $classroom_info['user_subscribed'] && $classroom_info['overbooking'] > 0;
-			if ($is_in_overbooking) {
-				$res['body'] .= '<br /><p class="red"><b>' . Lang::t('_OVERBOOKING_WARNING', 'catalogue') . '</b></p><br />';
-			}
 
 			$res['footer'] = ($selling == 1 ? '<div class="edition__buttonContainer"><a href="javascript:;" class="subscribe-button" onclick="subscribeToCourse(\'' . $id_course . '\', \'' . $id_date . '\', \'' . $id_edition . '\', \'' . $selling . '\');"><span class="close_dialog">' . Lang::t('_CONFIRM', 'catalogue') . ' (' . $classroom_info['price'] . ' ' . Get::sett('currency_symbol', '&euro;') . ')' . '</span></a>'
 				: '<div class="edition__buttonContainer"><a href="javascript:;" class="subscribe-button" onclick="subscribeToCourse(\'' . $id_course . '\', \'' . $id_date . '\', \'' . $id_edition . '\', \'' . $selling . '\');"><span class="close_dialog">' . Lang::t('_SUBSCRIBE', 'catalogue') . '</span></a>')
@@ -677,6 +677,7 @@ class CatalogLms extends Model
 
 			// cutting not confirmed classrooms
 			$available_classrooms = array_diff_key($classrooms, $classroom_not_confirmed);
+
 			$index = 1;
 
 			foreach ($available_classrooms as $classroom_info) {
@@ -753,17 +754,15 @@ class CatalogLms extends Model
                                             </tr>
                                         </thead>
 										<tbody>';
-				foreach ($available_classrooms as $available_classroom) {
-					$days = $this->classroom_man->getDateDayDateDetails($available_classroom['id_date']);
+					$days = $this->classroom_man->getDateDayDateDetails($classroom_info['id_date']);
 					foreach ($days as $day) {
 						$res['body'] .= '<tr>
 						<td>' . Format::date($day['date_begin'], 'date') . '</td>
 						<td>' . Format::date($day['date_begin'], 'time') . '</td>
-						<td>' . Format::date($day['date_begin'], 'time') . '</td>
+						<td>' . Format::date($day['date_end'], 'time') . '</td>
 						<td>' . $day['classroom'] . '</td>
 					</tr>';
 					}
-				}
 
 				$res['body'] .= '</tbody></table></div>';
 
