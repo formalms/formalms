@@ -183,11 +183,15 @@ class MycertificateLms extends Model {
 
       $associationsUser = $this->aggCertLib->getIdsAssociationUser( $this->id_user);
 
-      $arrAssoc = array_unique(
-        array_merge(
-            $associationsUser[COURSE], $associationsUser[COURSE_PATH]
-            )
-        );  
+     // $arrAssoc = array_unique( );
+      $arrAssoc =  array();
+      foreach ($associationsUser[COURSE] as $value){
+          $arrAssoc[] = $value;
+      }
+        foreach ($associationsUser[COURSE_PATH] as $value){
+            $arrAssoc[] = $value;
+        }
+
 
       $arrIdsCert = array_unique($this->aggCertLib->getIdCertificate($arrAssoc));
         
