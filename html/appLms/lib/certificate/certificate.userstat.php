@@ -62,8 +62,11 @@ class CertificateSubs_UserStat extends CertificateSubstitution {
 		{
 			require_once($GLOBALS['where_lms'].'/lib/lib.course.php');
 			require_once($GLOBALS['where_lms'].'/lib/lib.coursereport.php');
+			require_once($GLOBALS['where_lms'].'/lib/lib.aggregated_certificate.php');
 
 			$acl_man =& $GLOBALS['current_user']->getAclManager();
+
+			$aggCertLib = new AggregatedCertificate();
 
 			$courses = array();
 
@@ -75,15 +78,10 @@ class CertificateSubs_UserStat extends CertificateSubstitution {
 			$course_time = 0;
 			$blended_time = 0;
 
-			$query =	"SELECT DISTINCT idCourse"
-						." FROM ".$GLOBALS['prefix_lms']."_certificate_meta_course"
-						." WHERE idMetaCertificate = '".$this->id_meta."'"
-						." AND idUser = '".$this->id_user."'";
 
-			$result = sql_query($query);
 
-			$table_course =	'<table width="100%" cellspacing="1" cellpadding="1" border="1" align="" summary="Corsi frequentati">'
 
+			$table_course =	 '<table width="100%" cellspacing="1" cellpadding="1" border="1" align="" summary="Corsi frequentati">'
 							.'<thead>'
 							.'<tr>'
 							.'<td>'.$lang->def('_COURSE_NAME').'</td>'
@@ -109,7 +107,10 @@ class CertificateSubs_UserStat extends CertificateSubstitution {
 			$array_meta_inscr = array();
 			$array_meta_access = array();
                         //$array_meta_level = array();
-			while(list($id_course) = sql_fetch_row($result))
+
+            $assocArr =  $aggCertLib->getAssociationLink($this->id_meta, COURSE, $this->id_user, $distinct = true);
+
+            foreach ($assocArr as $id_course)
 			{
                                 //
 				$query =	"SELECT date_complete, date_inscr, date_first_access, level"
@@ -202,9 +203,9 @@ class CertificateSubs_UserStat extends CertificateSubstitution {
 			$subs['[meta_access]'] = $array_meta_access[0];
 
 			$sql = "
-				SELECT title FROM %lms_certificate_meta AS cm 
-				INNER JOIN %lms_certificate_meta_course cmc ON cm.idMetaCertificate = cmc.idMetaCertificate
-				WHERE cmc.idUser = {$this->id_user} AND cm.idMetaCertificate = {$this->id_meta}";
+				SELECT title FROM %lms".$aggCertLib->table_cert_meta_association ." AS cm 
+				INNER JOIN %lms". $aggCertLib->table_cert_meta_association_courses ." cmc ON cm.idMetaCertificate = cmc.idMetaCertificate
+				WHERE cmc.idUser = {$this->id_user} AND cm.idAssociation = {$this->id_meta}";
 			$q = sql_query($sql);
 			$meta = sql_fetch_object($q);
 			$subs['[meta_assoc]'] = $meta->title ?: '-';

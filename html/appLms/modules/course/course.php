@@ -89,7 +89,9 @@ function mycourses(&$url) {
 		if(count($course_stats['with_ulevel']) > 1) {
 
 			require_once($GLOBALS['where_lms'].'/lib/lib.levels.php');
+
 			$lvl = CourseLevel::getLevels();
+
 			foreach($course_stats['with_ulevel'] as $lvl_num => $quantity) {
 
 				$GLOBALS['page']->addStart(''
@@ -98,11 +100,14 @@ function mycourses(&$url) {
 			} //end foreach
 		}
 
-        $query =	"SELECT c.idMetaCertificate, m.idCertificate"
-                    ." FROM ".$GLOBALS['prefix_lms']."_certificate_meta_course as c"
-                    ." JOIN ".$GLOBALS['prefix_lms']."_certificate_meta as m ON c.idMetaCertificate = m.idMetaCertificate"
+		require_once($GLOBALS['where_lms'].'/lib/lib.aggregated_certificate.php');
+		$aggrCertLib = new AggregatedCertificate();
+
+        $query =	"SELECT c.idAssociation, m.idCertificate"
+                    ." FROM ".$GLOBALS['prefix_lms']. $aggrCertLib-> table_cert_meta_association_courses . " as c"
+                    ." JOIN ".$GLOBALS['prefix_lms']. $aggrCertLib->table_cert_meta_association . " AS m ON c.idAssociation = m.idAssociation"
                     ." WHERE c.idUser = '".getLogUserId()."'"
-                    ." GROUP BY c.idMetaCertificate"
+                    ." GROUP BY c.idAssociation"
                     ." ORDER BY m.title, m.description";
 
         $result = sql_query($query);
@@ -112,9 +117,9 @@ function mycourses(&$url) {
         while(list($id_meta, $id_certificate) = sql_fetch_row($result))
         {
             $query_released =	"SELECT on_date"
-                                ." FROM ".$GLOBALS['prefix_lms']."_certificate_meta_assign"
+                                ." FROM ".$GLOBALS['prefix_lms']. $aggrCertLib->table_assign_agg_cert
                                 ." WHERE idUser = '".getLogUserId()."'"
-                                ." AND idMetaCertificate = '".$id_meta."'";
+                                ." AND idCertificate = '".$id_certificate."'";
 
             $result_released = sql_query($query_released);
 
@@ -132,20 +137,22 @@ function mycourses(&$url) {
                 $num_meta_cert--;
             else
             {
-                $query =	"SELECT idCourse"
+               /* $query =	"SELECT idCourse"
                             ." FROM ".$GLOBALS['prefix_lms']."_certificate_meta_course"
                             ." WHERE idUser = '".getLogUserId()."'"
                             ." AND idMetaCertificate = '".$id_meta."'";
 
-                $result_int = sql_query($query);
+                $result_int = sql_query($query);*/
+
+                $assocArr = $aggrCertLib->getAssociationLink($id_meta, COURSE, getLogUserId());
 
                 $control = true;
 
-                while(list($id_course) = sql_fetch_row($result_int))
+               foreach ($assocArr as $assoc)
                 {
                     $query =	"SELECT COUNT(*)"
                                 ." FROM ".$GLOBALS['prefix_lms']."_courseuser"
-                                ." WHERE idCourse = '".$id_course."'"
+                                ." WHERE idCourse = '".$assoc."'"
                                 ." AND idUser = '".getLogUserId()."'"
                                 ." AND status = '"._CUS_END."'";
 

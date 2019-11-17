@@ -264,7 +264,8 @@ class AggregatedCertificate {
      *
      * @return array $linksArr an array of 0 or more rows with the link ids
      */
-    function getAssociationLink($id_association = -1, $type_assoc, $userIdsArr = [] ){
+
+    function getAssociationLink($id_association = -1, $type_assoc, $userIdsArr = [], $distinct = false ){
 
         switch($type_assoc) {
             case COURSE:
@@ -280,6 +281,7 @@ class AggregatedCertificate {
         }
 
         $q =      "SELECT "
+                . ($distinct ? "DISTINCT " : '')
                 . $field_link
                 . " FROM %lms" . $table
                 . " WHERE 1 = 1 " 
