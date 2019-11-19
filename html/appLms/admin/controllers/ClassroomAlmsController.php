@@ -583,11 +583,7 @@ Class ClassroomAlmsController extends AlmsController {
       }
       print "<td><b>".Lang::t('_NOTES', 'standard')."</b></td></tr>";
 
-      $query = "SELECT DISTINCT(U.userid), U.firstname, U.lastname, U.idst 
-      	FROM learning_course_date_user L, core_user U 
-      	INNER JOIN learning_courseuser cu ON U.idst = cu.idUser
-      	WHERE L.id_user=U.idst AND cu.level = 3 AND L.id_date=$id_date
-      	ORDER BY id_user";
+      $query = "SELECT U.userid, U.firstname, U.lastname, U.idst FROM learning_course_date_user L, core_user U WHERE L.id_user=U.idst AND L.id_date=" . $id_date . " ORDER BY id_user";
 
       $res = sql_query($query);
       while ($row = sql_fetch_array($res)) {

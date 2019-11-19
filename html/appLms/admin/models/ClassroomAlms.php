@@ -378,7 +378,7 @@ Class ClassroomAlms extends Model {
 
 	public function getPresenceTable()
 	{
-		$user = $this->classroom_man->getUserForPresence($this->id_date);
+		$user = $this->classroom_man->getUserForPresence($this->id_date, $this->id_course);
 		$day = $this->getDateDay($this->id_date);
 		$test_type = $this->getTestType();
 		$user_presence = $this->classroom_man->getUserPresenceForDate($this->id_date);
