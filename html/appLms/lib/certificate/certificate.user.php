@@ -29,10 +29,11 @@ class CertificateSubs_User extends CertificateSubstitution {
 		//variable fields
 		require_once($GLOBALS['where_framework'].'/lib/lib.field.php');
 		$temp = new FieldList();
-    $fields = $temp->getFlatAllFields();
-		foreach ($fields as $key=>$value) {
-      $subs['[userfield_'.$key.']'] = $lang->def('_USERFIELD').' "'.$value.'"';
-    }
+    	$fields = $temp->getFlatAllFields();
+
+		foreach ($fields as $key => $value) {
+  			$subs['[userfield_'.$key.']'] = $lang->def('_USERFIELD').' "'.$value.'"';
+    	}
 		
 		return $subs;
 	}
@@ -43,6 +44,14 @@ class CertificateSubs_User extends CertificateSubstitution {
 		
 		$aclman =& Docebo::user()->getAclManager();
 		$user = $aclman->getUser($this->id_user, false);
+
+		if ($this->id_meta) {
+			$sql = "SELECT title, description FROM %lms_certificate_meta WHERE idMetaCertificate = ".$this->id_meta;
+	 		$query = sql_query($sql);
+	 		list($title_meta, $description_meta) = sql_fetch_row($query);
+
+	 		$subs['[meta_assoc]'] = $title_meta;
+ 		}
 		
 		$subs['[display_name]'] =  ( $user[ACL_INFO_LASTNAME].$user[ACL_INFO_FIRSTNAME]
 			? $user[ACL_INFO_LASTNAME].' '.$user[ACL_INFO_FIRSTNAME]
