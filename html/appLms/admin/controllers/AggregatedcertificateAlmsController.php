@@ -19,7 +19,7 @@
 /**
  * Class MetacertificateAlmsController
  */
-Class AggregatedCertificateAlmsController extends AlmsController
+Class AggregatedcertificateAlmsController extends AlmsController
 {
 
     /*
