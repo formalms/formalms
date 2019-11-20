@@ -138,7 +138,7 @@ Class AggregatedcertificateAlmsController extends AlmsController
         require_once(_files_lms_.'/'._folder_lib_.'/lib.aggregated_certificate.php');
         $this->aggCertLib = new AggregatedCertificate();
 
-        $this->model = new AggregatedCertificateAlms();
+        $this->model = new AggregatedcertificateAlms();
     }
 
    
