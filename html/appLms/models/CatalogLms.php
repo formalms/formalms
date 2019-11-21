@@ -431,10 +431,11 @@ class CatalogLms extends Model
 			$res['body'] .= '<div class="edition_container">'
 				. '<div class="edition__body">'
 				. '<b>' . Lang::t('_NAME', 'catalogue') . '</b>: ' . $classroom_info['name'] . '<br/><br/>'
-				. ($classroom_info['code'] !== '' ? '<b>' . Lang::t('_CODE', 'catalogue') . '</b>: ' . $classroom_info['code'] . '<br/><br/>' : '')
+				. ($classroom_info['code'] !== '' ? '<b>' . Lang::t('_CODE', 'catalogue') . '</b>: ' . $classroom_info['code'] . '<br/>' : '')
+                . '<b>'.Lang::t('_TITLE', 'catalogue').'</b>: '. $course['name'].'<br/><br/>'
 				. '<div class="edition__twocol">'
 				. (($classroom_info['date_begin'] !== '0000-00-00 00:00:00' || $classroom_info['date_end'] !== '0000-00-00 00:00:00') ? '<div class="edition__col"><b>' . Lang::t('PERIODO', 'catalogue') . '</b><br />' . Format::date($classroom_info['date_begin'], 'datetime') . ' <span class="edition_arrow"></span> ' . Format::date($classroom_info['date_end'], 'datetime') . '</div>' : '')
-				. '<div class="edition__col"><b>Durata</b><br />' . $classroom_info['num_day'] . ' giorni</div>' //TODO @Peppe: dinamicizzare
+				. '<div class="edition__col"><b>'.Lang::t('_DURATION','course').'</b><br />' . $classroom_info['num_day'] . ' '.Lang::t('_DAYS','course').'</div>' 
 				. '</div>';
 			if (count($teachers) > 0) {
 				$res['body'] .= '<b>' . Lang::t('_THEACER_LIST', 'course') . '</b><br />';
@@ -455,17 +456,13 @@ class CatalogLms extends Model
 			}
 
 			switch ($course['subscribe_method']) {
-				case 2:
-					// free
-					$res['body'] .= '<div class="moderation-alert">Corso con iscrizioni libere</div>';
-					break;
 				case 1:
 					// moderate
-					$res['body'] .= '<div class="moderation-alert">Corso con iscrizioni soggette a moderazione</div>';
+					$res['body'] .= '<div class="moderation-alert">'.Lang::t('_COURSE_S_MODERATE', 'catalogue').'</div>';
 					break;
 				case 0:
 					// only admin
-					$res['body'] .= '<div class="moderation-alert">Corso con iscrizioni disabilitata</div>';
+					$res['body'] .= '<div class="moderation-alert">'.Lang::t('_COURSE_S_GODADMIN', 'catalogue').'</div>';
 					break;
 			}
 
@@ -496,7 +493,7 @@ class CatalogLms extends Model
 			if ($edition_info['code'] !== '') {
 				$res['body'] .= '<b>' . Lang::t('_CODE', 'catalogue') . '</b>: ' . $edition_info['code'] . '<br/><br/>';
 			}
-
+            $res['body'] .= '<b>'.Lang::t('_TITLE', 'catalogue').'</b>: '. $course['name'].'<br/><br/>';
 			$res['body'] .= '<div class="edition__twocol">';
 
 			if ($edition_info['date_begin'] !== '0000-00-00 00:00:00' || $edition_info['date_end'] !== '0000-00-00 00:00:00') {
@@ -540,20 +537,16 @@ class CatalogLms extends Model
 				$res['body'] .= '<br /><br />';
 			}
 
-			switch ($course['subscribe_method']) {
-				case 2:
-					// free
-					$res['body'] .= '<div class="moderation-alert">Corso con iscrizioni libere</div><br /><br />'; //TODO @Peppe: dinamicizzare;
-					break;
-				case 1:
-					// moderate
-					$res['body'] .= '<div class="moderation-alert">Corso con iscrizioni soggette a moderazione</div><br /><br />'; //TODO @Peppe: dinamicizzare;
-					break;
-				case 0:
-					// only admin
-					$res['body'] .= '<div class="moderation-alert">Corso con iscrizioni disabilitata</div><br /><br />'; //TODO @Peppe: dinamicizzare;
-					break;
-			}
+            switch ($course['subscribe_method']) {
+                case 1:
+                    // moderate
+                    $res['body'] .= '<div class="moderation-alert">'.Lang::t('_COURSE_S_MODERATE', 'catalogue').'</div>';
+                    break;
+                case 0:
+                    // only admin
+                    $res['body'] .= '<div class="moderation-alert">'.Lang::t('_COURSE_S_GODADMIN', 'catalogue').'</div>';
+                    break;
+            }
 
 			$res['body'] .= '</div>'
 				. '</div>';
@@ -573,10 +566,11 @@ class CatalogLms extends Model
 			$res['body'] .= '<div class="edition_container">'
 				. '<div class="edition__body">';
 			if ($course['code'] !== '') {
-				$res['body'] .= '<b>' . Lang::t('_CODE', 'catalogue') . '</b>: ' . $course['code'] . '<br/><br/>';
+				$res['body'] .= '<b>' . Lang::t('_CODE', 'catalogue') . '</b>: ' . $course['code'] . '<br/>';
 			}
-
-			$res['body'] .= '<div class="edition__twocol">';
+            $res['body'] .= '<b>'.Lang::t('_TITLE', 'catalogue').'</b>: '. $course['name'].'<br/><br/>';
+			
+            $res['body'] .= '<div class="edition__twocol">';
 
 			if (($course['date_begin'] !== '0000-00-00' || $course['date_end'] !== '0000-00-00') && ($course['date_begin'] !== '0000-00-00 00:00:00' || $course['date_end'] !== '0000-00-00 00:00:00')) {
 
@@ -619,20 +613,16 @@ class CatalogLms extends Model
 				$res['body'] .= '<br /><br />';
 			}
 
-			switch ($course['subscribe_method']) {
-				case 2:
-					// free
-					$res['body'] .= '<div class="moderation-alert">Corso con iscrizioni libere</div><br /><br />';
-					break;
-				case 1:
-					// moderate
-					$res['body'] .= '<div class="moderation-alert">Corso con iscrizioni soggette a moderazione</div><br /><br />';
-					break;
-				case 0:
-					// only admin
-					$res['body'] .= '<div class="moderation-alert">Corso con iscrizioni disabilitata</div><br /><br />';
-					break;
-			}
+            switch ($course['subscribe_method']) {
+                case 1:
+                    // moderate
+                    $res['body'] .= '<div class="moderation-alert">'.Lang::t('_COURSE_S_MODERATE', 'catalogue').'</div>';
+                    break;
+                case 0:
+                    // only admin
+                    $res['body'] .= '<div class="moderation-alert">'.Lang::t('_COURSE_S_GODADMIN', 'catalogue').'</div>';
+                    break;
+            }
 
 			$res['body'] .= '</div>'
 				. '</div>';
