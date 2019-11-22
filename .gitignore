@@ -13,10 +13,11 @@ html/files/**
 !html/files/appLms/certificate/certificate_sample.jpg
 !html/files/appLms/label/label_image.png
 # Sezione html/templates
-#html/templates/** # DECOMMENTARE!!
+html/templates/**
 # !html/templates/standard/**
 html/templates/standard/style/custom.css
 #Inserite immagini di corso - percorso attivo e non, da togliere appena mergeato
+#!html/templates/standard/images/standard/**
 
 # Sezione Plugin
 html/plugins/**
