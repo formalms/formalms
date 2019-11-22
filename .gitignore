@@ -12,13 +12,11 @@ html/files/**
 !html/files/common/iofiles/demo_tree_20060413_234612.xml
 !html/files/appLms/certificate/certificate_sample.jpg
 !html/files/appLms/label/label_image.png
-!html/templates/standard/images/standard/**
 # Sezione html/templates
-html/templates/**
+#html/templates/** # DECOMMENTARE!!
 # !html/templates/standard/**
 html/templates/standard/style/custom.css
 #Inserite immagini di corso - percorso attivo e non, da togliere appena mergeato
-
 
 # Sezione Plugin
 html/plugins/**
