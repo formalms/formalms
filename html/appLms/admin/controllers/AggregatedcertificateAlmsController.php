@@ -76,7 +76,7 @@ Class AggregatedcertificateAlmsController extends AlmsController
                 'del_association' => 'delAssociations',
                 'saveMetadataAssoc' => 'saveMetadataAssoc',
                 
-                'associationusers' => 'associationusers',
+                'associationusers' => 'associationUsers',
                 'associationCourses' => 'associationCourses',
                 
                 
