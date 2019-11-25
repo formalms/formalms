@@ -44,23 +44,6 @@ class LoginLayout {
 	}
 
 	/**
-	 * Return the complete code for the login page
-	 * @return <string>
-	 */
-	public static function login_form() {
-
-		$user_manager = new UserManager();
-		$user_manager->_render->hideLoginLanguageSelection();
-		$user_manager->setLoginStyle(false);
-
-		$html = Form::openForm('login_confirm', Get::rel_path('lms').'/index.php?modname=login&amp;op=confirm')
-			.$user_manager->getExtLoginMask(Get::rel_path('lms').'/index.php?modname=login&amp;op=login', '')
-			.Form::closeForm();
-
-		return $html;
-	}
-
-	/**
 	 * Return the links for auto-register and lost password
 	 * @return <html>
 	 */

@@ -319,54 +319,6 @@ class UserManager
         return $this->_render->getLoginMask($this->_platform, $advice, $extra, $disable, $this->_option->getOption('register_type'), $jump_url);
     }
 
-    function getExtLoginMask($jump_url, $extra = '')
-    {
-
-        $advice = '';
-        $disable = false;
-
-        if ($this->_render->clickDeleteRemember())
-            $this->_render->deleteRemember();
-
-        // Control for max number of attempt for this user
-        $max_log_attempt = $this->_option->getOption('max_log_attempt');
-        $save_log_attempt = $this->_option->getOption('save_log_attempt');
-
-        if ($max_log_attempt != 0) {
-
-            if ($this->_getLoginResult() == true) {
-
-                $last_attempt = $this->getLastAttemptTime();
-                $actual_attempt = $this->getAttemptNumber();
-                if ($actual_attempt > $max_log_attempt) {
-
-                    if (($last_attempt + $this->_time_before_reactive) > time()) {
-
-                        $wait_for = (int)((($last_attempt + $this->_time_before_reactive) - time()) / 60);
-                        if ($wait_for < 1) $wait_for = ' < 1';
-
-                        $advice = str_replace('[attempt]', $max_log_attempt, Lang::t('_REACH_NUMBERS_OF_ATTEMPT', 'user_managment'));
-                        $advice = str_replace('[time]', $wait_for, $advice);
-                        $disable = true;
-                        if ($save_log_attempt == 'after_max') $this->_saveLoginFailure($actual_attempt);
-                        $extra['content'] = Lang::t('_ACCESS_LOCK', 'login');
-
-                    } else {
-
-                        $this->resetAttemptNumber();
-                    }
-                } else {
-
-                    $this->_updateLastAttemptTime();
-                    $this->_incAttemptNumber();
-                }
-                if ($save_log_attempt == 'all') $this->_saveLoginFailure($actual_attempt);
-            }
-        }
-
-        return $this->_render->getExtLoginMask($this->_platform, $advice, $extra, $disable, $this->_option->getOption('register_type'), $jump_url);
-    }
-
     function setLoginStyle($path_style)
     {
 
