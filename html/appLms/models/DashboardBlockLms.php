@@ -20,13 +20,12 @@ defined("IN_FORMA") or die('Direct access is forbidden.');
  */
 abstract class DashboardBlockLms extends Model
 {
-    const TYPE_BIG = 'big';
-    const TYPE_MEDIUM = 'medium';
-    const TYPE_SMALL = 'small';
-    const TYPE_BUTTON = 'button';
-    const TYPE_BANNER = 'banner';
+    const TYPE_4COL = '4-col';
+    const TYPE_3COL = '3-col';
+    const TYPE_2COL = '2-col';
+    const TYPE_1COL = '1-col';
 
-    const ALLOWED_TYPES = [self::TYPE_BIG, self::TYPE_MEDIUM, self::TYPE_SMALL, self::TYPE_BUTTON, self::TYPE_BANNER];
+    const ALLOWED_TYPES = [self::TYPE_4COL, self::TYPE_3COL, self::TYPE_2COL, self::TYPE_1COL];
 
     abstract public function getViewPath(): string;
 

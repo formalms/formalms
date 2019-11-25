@@ -64,6 +64,7 @@ Class DashboardSettingsAdmController extends AdmController
             'installedBlocks' => $this->model->getInstalleddBlocksCommonViewData(),
             'enabledBlocks' => $this->model->getEnabledBlocksCommonViewData()
         ]);
+
     }
 }
 

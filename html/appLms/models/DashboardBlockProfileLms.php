@@ -32,7 +32,10 @@ class DashboardBlockProfileLms extends DashboardBlockLms
 
     public function getAvailableTypesForBlock(): array {
         return [
-            DashboardBlockLms::TYPE_SMALL
+            DashboardBlockLms::TYPE_1COL,
+            DashboardBlockLms::TYPE_2COL,
+            DashboardBlockLms::TYPE_3COL,
+            DashboardBlockLms::TYPE_4COL
         ];
     }
 

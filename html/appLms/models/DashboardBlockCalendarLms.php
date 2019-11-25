@@ -36,7 +36,10 @@ class DashboardBlockCalendarLms extends DashboardBlockLms
     public function getAvailableTypesForBlock(): array
     {
         return [
-            DashboardBlockLms::TYPE_BIG
+            DashboardBlockLms::TYPE_1COL,
+            DashboardBlockLms::TYPE_2COL,
+            DashboardBlockLms::TYPE_3COL,
+            DashboardBlockLms::TYPE_4COL
         ];
     }
 
@@ -194,7 +197,7 @@ class DashboardBlockCalendarLms extends DashboardBlockLms
                 $query .= ' ORDER BY c.date_begin';
                 break;
         }
-        
+
         $rs = $this->db->query($query);
 
         $result = array();

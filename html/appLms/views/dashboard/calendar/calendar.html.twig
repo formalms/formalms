@@ -3,8 +3,18 @@
 
 {% block content %}
     {#calendar#}
-  
-  <div class="d-col d-col--12 d-col--6--desktop">
+
+  {% if (block.type == '4-col') %}
+    {% set class =  'd-col--12--desktop' %}
+  {% elseif (block.type == '3-col') %}
+    {% set class =  'd-col--9--desktop' %}
+  {% elseif (block.type == '2-col') %}
+    {% set class =  'd-col--6--desktop' %}
+  {% elseif (block.type == '1-col') %}
+    {% set class =  'd-col--3--desktop' %}
+  {% endif %}
+
+  <div class="d-col d-col--12 {{ class }}">
     <div class="d-calendar d-widget">
       <h3 class="d-title">
         {{ translate('_CALENDAR','standard') }}
@@ -12,11 +22,11 @@
       <div class="d-calendar__item js-dashboard-calendar"></div>
     </div>
   </div>
-{# 
+{#
   <pre>
     {{ dump(block) }}
   </pre> #}
-  
+
   <script>
     window.dashboardCalendarAjaxUrl = '{{ block.ajaxUrl }}';
     window.dashboardCalendarAjaxSignature = '{{ block.postData.signature }}';

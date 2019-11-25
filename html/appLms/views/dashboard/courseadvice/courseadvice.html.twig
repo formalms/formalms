@@ -1,8 +1,20 @@
 {% extends "base/base.html.twig" %}
 
 {% block content %}
+
     {#Course news#}
-    <div class="d-col d-col--12 d-col--3--desktop">
+
+    {% if (block.type == '4-col') %}
+      {% set class =  'd-col--12--desktop' %}
+    {% elseif (block.type == '3-col') %}
+      {% set class =  'd-col--9--desktop' %}
+    {% elseif (block.type == '2-col') %}
+      {% set class =  'd-col--6--desktop' %}
+    {% elseif (block.type == '1-col') %}
+      {% set class =  'd-col--3--desktop' %}
+    {% endif %}
+
+    <div class="d-col d-col--12 {{ class }}">
       <div class="d-advise d-widget">
         <h3 class="d-title">
           {{ translate('_ANNUNCI','standard') }}
@@ -18,10 +30,10 @@
             <div class="d-advise__desc">
               {{ advise.description }}
             </div>
-          </div> 
+          </div>
         {% endfor %}
       </div>
-    </div>  
+    </div>
     {# <pre>
       {{ dump(block) }}
     </pre> #}

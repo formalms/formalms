@@ -70,7 +70,7 @@
     top: 6px;
     bottom: 6px;
     left: 15px;
-    right: 15px;
+    right: 35px;
   }
   font-size: 12px;
   // line-height: 17px;
@@ -87,7 +87,7 @@
 .d-courses__date-wrapper {
   min-height: 17px;
   position: relative;
-  
+
   &.status--red {
     &:before {
       content: '';
@@ -96,7 +96,7 @@
       @include center-object(y, absolute);
       background-color: $orange;
       border-radius: 50%;
-      left: -12px; 
+      left: -12px;
     }
   }
 
@@ -108,7 +108,7 @@
       @include center-object(y, absolute);
       background-color: $green;
       border-radius: 50%;
-      left: -12px; 
+      left: -12px;
     }
   }
 }
