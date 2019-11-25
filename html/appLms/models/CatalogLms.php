@@ -434,8 +434,8 @@ class CatalogLms extends Model
 				. ($classroom_info['code'] !== '' ? '<b>' . Lang::t('_CODE', 'catalogue') . '</b>: ' . $classroom_info['code'] . '<br/>' : '')
                 . '<b>'.Lang::t('_TITLE', 'catalogue').'</b>: '. $course['name'].'<br/><br/>'
 				. '<div class="edition__twocol">'
-				. (($classroom_info['date_begin'] !== '0000-00-00 00:00:00' || $classroom_info['date_end'] !== '0000-00-00 00:00:00') ? '<div class="edition__col"><b>' . Lang::t('PERIODO', 'catalogue') . '</b><br />' . Format::date($classroom_info['date_begin'], 'datetime') . ' <span class="edition_arrow"></span> ' . Format::date($classroom_info['date_end'], 'datetime') . '</div>' : '')
-				. '<div class="edition__col"><b>'.Lang::t('_DURATION','course').'</b><br />' . $classroom_info['num_day'] . ' '.Lang::t('_DAYS','course').'</div>' 
+				. (($classroom_info['date_begin'] !== '0000-00-00 00:00:00' || $classroom_info['date_end'] !== '0000-00-00 00:00:00') ? '<div class="edition__col"><b>' . Lang::t('_DAYS', 'course') . '</b><br />' . Format::date($classroom_info['date_begin'], 'datetime') . ' <span class="edition_arrow"></span> ' . Format::date($classroom_info['date_end'], 'datetime') . '</div>' : '')
+				. '<div class="edition__col"><b>'.Lang::t('_DURATION','course').'</b><br />' . $classroom_info['num_day'] . ' '. Lang::t('_DAYS','course').'</div>' 
 				. '</div>';
 			if (count($teachers) > 0) {
 				$res['body'] .= '<b>' . Lang::t('_THEACER_LIST', 'course') . '</b><br />';
@@ -498,7 +498,7 @@ class CatalogLms extends Model
 
 			if ($edition_info['date_begin'] !== '0000-00-00 00:00:00' || $edition_info['date_end'] !== '0000-00-00 00:00:00') {
 
-				$res['body'] .= '<div class="edition__col"><b>' . Lang::t('PERIODO', 'catalogue') . '</b><br />' . Format::date($edition_info['date_begin'], 'datetime') . ' <span class="edition_arrow"></span> ' . Format::date($edition_info['date_end'], 'datetime') . '</div>';
+				$res['body'] .= '<div class="edition__col"><b>' . Lang::t('_DAYS', 'course') . '</b><br />' . Format::date($edition_info['date_begin'], 'datetime') . ' <span class="edition_arrow"></span> ' . Format::date($edition_info['date_end'], 'datetime') . '</div>';
 
 				if (($edition_info['date_begin'] !== '0000-00-00' && $edition_info['date_end'] !== '0000-00-00') && ($edition_info['date_begin'] !== '0000-00-00 00:00:00' && $edition_info['date_end'] !== '0000-00-00 00:00:00')) {
 					$earlier = new DateTime($edition_info['date_begin']);
@@ -506,9 +506,9 @@ class CatalogLms extends Model
 
 					$days = $later->diff($earlier)->format("%a") + 1;
 					if ($days > 1) {
-						$dayString = Lang::t('_DAYS', 'course');
+						$dayString = ' '.Lang::t('_DAYS', 'course');
 					} else {
-						$dayString = Lang::t('_DAY', 'course');
+						$dayString = ' '.Lang::t('_DAY', 'course');
 					}
 				} else {
 					$days = '--';
@@ -574,7 +574,7 @@ class CatalogLms extends Model
 
 			if (($course['date_begin'] !== '0000-00-00' || $course['date_end'] !== '0000-00-00') && ($course['date_begin'] !== '0000-00-00 00:00:00' || $course['date_end'] !== '0000-00-00 00:00:00')) {
 
-				$res['body'] .= '<div class="edition__col"><b>' . Lang::t('PERIODO', 'catalogue') . '</b><br />' . Format::date($course['date_begin'], 'date') . ' <span class="edition_arrow"></span> ' . Format::date($course['date_end'], 'date') . '</div>';
+				$res['body'] .= '<div class="edition__col"><b>' . Lang::t('_DAYS', 'course') . '</b><br />' . Format::date($course['date_begin'], 'date') . ' <span class="edition_arrow"></span> ' . Format::date($course['date_end'], 'date') . '</div>';
 
 				if (($course['date_begin'] !== '0000-00-00' && $course['date_end'] !== '0000-00-00') && ($course['date_begin'] !== '0000-00-00 00:00:00' && $course['date_end'] !== '0000-00-00 00:00:00')) {
 					$earlier = new DateTime($course['date_begin']);
@@ -582,16 +582,16 @@ class CatalogLms extends Model
 
 					$days = $later->diff($earlier)->format("%a") + 1;
 					if ($days > 1) {
-						$dayString = Lang::t('_DAYS', 'course');
+						$dayString = ' '.Lang::t('_DAYS', 'course');
 					} else {
-						$dayString = Lang::t('_DAY', 'course');
+						$dayString = ' '.Lang::t('_DAY', 'course');
 					}
 				} else {
 					$days = '--';
 					$dayString = '';
 				}
 
-				$res['body'] .= '<div class="edition__col"><b>' . Lang::t('_DURATION', 'course') . '</b><br />' . $days . $dayString . '</div>';
+				$res['body'] .= '<div class="edition__col"><b>' . Lang::t('_DURATION', 'course') . '</b><br />1111' . $days . $dayString . '</div>';
 			}
 
 			$res['body'] .= '</div>';
@@ -684,7 +684,6 @@ class CatalogLms extends Model
 				} else
 					$action = ($selling == 1 ? '<a href="javascript:;" onclick="subscriptionPopUp(\'' . $id_course . '\', \'' . $classroom_info['id_date'] . '\', \'0\', \'' . $selling . '\');"><span class="can_subscribe">' . Lang::t('_ADD_TO_CART', 'catalogue') . ' (' . $classroom_info['price'] . ' ' . Get::sett('currency_symbol', '&euro;') . ')' . '</span></a>'
 						: '<a href="javascript:;" onclick="subscriptionPopUp(\'' . $id_course . '\', \'' . $classroom_info['id_date'] . '\', \'0\', \'' . $selling . '\');"><span class="can_subscribe">' . Lang::t('_SUBSCRIBE', 'catalogue') . '</span></a>');
-				//'<a href="javascript:;" class="moderation-course" onclick="subscriptionPopUp(\''.$id_course.'\', \''.$classroom_info['id_date'].'\', \'0\', \''.$selling.'\');"><span class="can_subscribe can_subscribe_moderation">'.Lang::t('_SUBSCRIBE', 'catalogue').'</span><div class="alert_subscribe">'.Lang::t('iscrizioni soggette a moderazione', 'catalogue').'</div></a>'); TODO @Peppe: dinamicizzare - va gestito il nuovo stato
 
 				$res['body'] .= '<div class="edition__title js-edition-accordion" data-target="target-' . $index . '"><div class="edition__icon"><i class="fa fa-angle-right"></i></div>' . $classroom_info['name']
 					. '<div class="edition_subscribe">'
@@ -697,13 +696,13 @@ class CatalogLms extends Model
 
 				if (($classroom_info['date_begin'] !== '0000-00-00' || $classroom_info['date_end'] !== '0000-00-00') && ($classroom_info['date_begin'] !== '0000-00-00 00:00:00' || $classroom_info['date_end'] !== '0000-00-00 00:00:00')) {
 
-					$res['body'] .= '<div class="edition__col"><b>' . Lang::t('PERIODO', 'catalogue') . '</b><br />' . Format::date($classroom_info['date_begin'], 'datetime') . ' <span class="edition_arrow"></span> ' . Format::date($classroom_info['date_end'], 'datetime') . '</div>';
+					$res['body'] .= '<div class="edition__col"><b>' . Lang::t('_DAYS', 'course') . '</b><br />' . Format::date($classroom_info['date_begin'], 'datetime') . ' <span class="edition_arrow"></span> ' . Format::date($classroom_info['date_end'], 'datetime') . '</div>';
 
 					$days = (int) $classroom_info['num_day'];
 					if ($days > 1) {
-						$dayString = Lang::t('_DAYS', 'course');
+						$dayString = ' '.Lang::t('_DAYS', 'course');
 					} else {
-						$dayString = Lang::t('_DAY', 'course');
+						$dayString = ' '.Lang::t('_DAY', 'course');
 					}
 
 					$res['body'] .= '<div class="edition__col"><b>' . Lang::t('_DURATION', 'course') . '</b><br />' . $days . $dayString . '</div>';
@@ -737,7 +736,7 @@ class CatalogLms extends Model
 				$res['body'] .= '<table class="edition_table">
                                         <thead>
                                             <tr>
-                                                <th>Data</th>
+                                                <th>' . Lang::t('_DATE', 'course').'</th>
                                                 <th>' . Lang::t('_HOUR_BEGIN', 'course') . '</th>
                                                 <th>' . Lang::t('_HOUR_END', 'course') . '</th>
                                                 <th>' . Lang::t('_LOCATION', 'classroom') . '</th>
