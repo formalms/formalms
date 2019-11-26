@@ -628,7 +628,7 @@ class AggregatedCertificate {
 
         $idsArr = json_encode($idsArr);
 
-        $q = "SELECT  cour.code, cour.name, cat.path "
+        $q = "SELECT  cour.code, cour.name,  IF(cour.idCategory = 0 , '/root/' , (SELECT cat.path FROM learning_category cat WHERE cour.idCategory = cat.idCategory)) as path "
             . "FROM " . $GLOBALS["prefix_lms"] . "_course AS cour "
             . "JOIN " . $GLOBALS["prefix_lms"] . "_category AS cat "
             . "WHERE cour.idCourse IN (" . str_replace(array( "[", "]" ) , "" , $idsArr) . ") "

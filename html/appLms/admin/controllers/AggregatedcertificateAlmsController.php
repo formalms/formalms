@@ -578,8 +578,8 @@ Class AggregatedcertificateAlmsController extends AlmsController
         $tb->addActionAdd(    
             '<a class="new_element_link" 
             href="index.php?r=alms/'.$this->controller_name.'/'.$this->op['metaDataAssoc'].'&amp;id_certificate='.$id_certificate.'"
-            title="'.Lang::t('_NEW_ASSOCIATION_AGGREGATE_CERTIFICATE').'">'
-            .Lang::t('_NEW_ASSOCIATION_AGGREGATE_CERTIFICATE')
+            title="'.Lang::t('_NEW_ASSOCIATION_CAPTURE').'">'
+            .Lang::t('_NEW_ASSOCIATION_CAPTURE')
             .'</a>'
         );
         
