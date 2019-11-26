@@ -193,7 +193,7 @@ Class AggregatedcertificateAlmsController extends AlmsController
 
         if($userCanModify) {
         
-            $cont_h[] =    Get::img('standard/moduser.png', Lang::t('_ASSOCIATES_AGGREGATE_CERTIFICATE'));
+            $cont_h[] =    Get::img('standard/moduser.png', Lang::t('_ASSOCIATIONS_AGGREGATED_CERTIFICATES', 'certificate'));
             $type_h[] =    'image';
 
             $cont_h[] =    Get::sprite('subs_print', Lang::t('_ASSIGN_AGGREGATE_CERTIFICATE'));
