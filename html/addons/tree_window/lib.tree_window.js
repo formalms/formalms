@@ -41,7 +41,6 @@ function Node(nodeWindow, id, is_folder) {
         this.$view.html(nodeWindow.folder_box)
 
         this.$view.on('click', function (event) {
-
             nodeWindow.open(id)
 
         })
@@ -106,14 +105,16 @@ NodeWindow.prototype.open = function (id) {
         this.reset(id, function () {
 
             for (var key in cache) {
-
-                var is_folder = self.check_folder(cache[key].data)
-
-                var node = new Node(self, key, is_folder)
-
-                self.fill_box_callback(is_folder, node.view(), cache[key].data)
-
-                self.$view.append(node.view())
+                if (cache[key].data) {
+                    
+                    var is_folder = self.check_folder(cache[key].data)
+    
+                    var node = new Node(self, key, is_folder)
+    
+                    self.fill_box_callback(is_folder, node.view(), cache[key].data)
+    
+                    self.$view.append(node.view())
+                }
 
             }
 
@@ -132,22 +133,21 @@ NodeWindow.prototype.open = function (id) {
 
             self.reset(id, function () {
 
+                var treeCache = findKey(self.treeCache, id)
                 for (var key in data) {
-
-                    var treeCache = findKey(self.treeCache, id)
-
+                    var id_elem = data[key].id
                     if (treeCache) {
-                        treeCache[key] = {
+                        treeCache[id_elem] = {
                             data: data[key],
                             children: {}
                         }
                     }
 
-                    var is_folder = self.check_folder(data[key])
+                    var is_folder = self.check_folder(data.find(e => e.id === id_elem))
 
-                    var node = new Node(self, key, is_folder)
+                    var node = new Node(self, id_elem, is_folder)
 
-                    self.fill_box_callback(is_folder, node.view(), data[key])
+                    self.fill_box_callback(is_folder, node.view(), data.find(e => e.id === id_elem))
 
                     self.$view.append(node.view())
 

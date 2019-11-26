@@ -24,7 +24,7 @@ class LoLmsController extends LmsController
     }
 
     public function show() {
-        addJs($GLOBALS['where_lms_relative'].'/../addons/owlcarousel_dynamic/', 'lib.tree_window.js');
+        addJs($GLOBALS['where_lms_relative'].'/../addons/tree_window/', 'lib.tree_window.js');
         $this->render('show', array());
     }
     

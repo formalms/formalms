@@ -221,7 +221,7 @@ class TreeDb {
 		} else {
 			$result = array();
 			while( list($id) = sql_fetch_row( $rs ) )
-				$result[] = $id;
+				$result[$id] = $id;
 		}
 		return $result;
 	}
