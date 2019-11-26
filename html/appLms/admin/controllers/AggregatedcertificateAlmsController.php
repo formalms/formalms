@@ -317,8 +317,8 @@ Class AggregatedcertificateAlmsController extends AlmsController
         
         $isModifyingMetaData = ($id_cert !== 0);
         $page_title = array(
-        'index.php?r=alms/'.$this->controller_name.'/metadata' => Lang::t('_TITLE_META_CERTIFICATE','certificate'),
-        $isModifyingMetaData ? Lang::t('_MOD_METACERTIFICATE','metacertificate') : Lang::t('_NEW_METACERTIFICATE','metacertificate') 
+        'index.php?r=alms/'.$this->controller_name.'/metadata' => Lang::t('_TITLE_AGGREGATED_CERTIFICATES','certificate'),
+        $isModifyingMetaData ? Lang::t('_MOD_AGGREGATED_CERTIFICATE','certificate') : Lang::t('_NEW_AGGREGATED_CERTIFICATE','certificate')
         );
         
         if($isModifyingMetaData) {
