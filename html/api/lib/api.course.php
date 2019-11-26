@@ -1793,7 +1793,7 @@ public function addClassroom($params) {
         
         
         
-        $q_test = 'select lta.idQuest, lta.idAnswer , title_quest, score_assigned
+        $q_test = 'select lta.idQuest, lta.idAnswer , title_quest, score_assigned  , lta.idTrack as idTrack
                     from learning_testtrack_answer lta, learning_testquest ltq
                     where lta.idTrack='.$id_track." 
                     and lta.idQuest=ltq.idQuest and lta.user_answer=1";
@@ -1823,7 +1823,7 @@ public function addClassroom($params) {
                                                           'title_quest' => $row['title_quest'],
                                                           'score_assigned' => $row['score_assigned'],
                                                           'answer'  => $this->getAnswerQuest($row['idQuest'],$row['idAnswer']) ,                                    
-                                                          'response' => $row['idAnswer'],
+                                                          'response' => $this->getTrackAnswer($row['idTrack'], $row['idQuest']),
                                                           'esito' => $res_esito
                                                           
                                                           );
@@ -1839,6 +1839,30 @@ public function addClassroom($params) {
     }
     
 
+    private function getTrackAnswer($idTrack, $idQuest){
+        $db = DbConn::getInstance();
+        $sql = "select idAnswer, more_info from learning_testtrack_answer where idTrack=".$idTrack." and idQuest=".$idQuest;
+        
+        $qca =$db->query($sql);
+        $output_a =  array();
+        while($row_t = $db->fetch_assoc($qca)) {        
+            if($row_t['idAnswer']>0) {
+                $output_a[] = $row_t['idAnswer'];
+            }else{
+                $output_a[] = $row_t['more_info'];    
+            }
+            
+        }    
+            
+        return $output_a    ;
+        
+        
+    }
+    
+    
+    
+    
+    
     function getAnswerQuest($idQuest, $idAnsw){
        $db = DbConn::getInstance();
         $out = array(); 
