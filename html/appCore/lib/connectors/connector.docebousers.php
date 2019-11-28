@@ -634,6 +634,14 @@ class DoceboConnectorDoceboUsers extends DoceboConnector {
 						
 					Docebo::aclm()->addToGroup($idst_oc_folder, $idst);
 					Docebo::aclm()->addToGroup($idst_ocd_folder, $idst);
+                    
+                    
+                    // adding to enrollment rules for org, if any
+                    $enrollrules = new EnrollrulesAlms();
+                    $users = array($idst);
+                    $enrollrules->newRules('_NEW_IMPORTED_USER', $users, 'all', $id_dir);
+                    
+                    
 				}
 				foreach($to_del as $id_dir) {
 					
@@ -643,6 +651,7 @@ class DoceboConnectorDoceboUsers extends DoceboConnector {
 					Docebo::aclm()->removeFromGroup($idst_oc_folder, $idst);
 					Docebo::aclm()->removeFromGroup($idst_ocd_folder, $idst);
 				}
+                
 			}
 			//  -------------------------------------------------------------------
 			$result = TRUE;
