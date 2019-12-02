@@ -50,7 +50,7 @@ class EnrollrulesAlmsController extends AlmsController {
 		$sort = Get::req('sort', DOTY_MIXED, 'title');
 		$dir = Get::req('dir', DOTY_MIXED, 'asc');
 		if ($dir != 'asc' && $dir != 'desc') {
-			$dir = 'asd';
+			$dir = 'asc';
 		}
 		$rules = $this->model->getRules($start_index, $results, $sort, $dir);
 		$total_rules = $this->model->getTotalRulesCount();
@@ -119,7 +119,7 @@ class EnrollrulesAlmsController extends AlmsController {
 		$sort = Get::req('sort', DOTY_MIXED, 'log_time');
 		$dir = Get::req('dir', DOTY_MIXED, 'asc');
 		if ($dir != 'asc' && $dir != 'desc') {
-			$dir = 'asd';
+			$dir = 'asc';
 		}
 
 		$filter_text = Get::req('filter_text', DOTY_STRING, '');
