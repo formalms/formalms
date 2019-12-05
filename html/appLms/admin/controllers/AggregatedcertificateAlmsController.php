@@ -755,7 +755,12 @@ Class AggregatedcertificateAlmsController extends AlmsController
 
             case COURSE:
 
-                $treeCat = $this->getTreeCategoryAsArray();
+                $treeCat = array(
+            "text" => Lang::t("_ROOT"),
+            "level" => 0,
+            "idCategory" => 0,
+            "nodes" => $this->getTreeCategoryAsArray()
+        );
 
                 //$course_manager = new Course_Manager();
                 //$course_manager->setLink('index.php?r=alms/'.$this->controller_name.'/'.$this->op['associationCourses']);
@@ -767,7 +772,7 @@ Class AggregatedcertificateAlmsController extends AlmsController
 
 
                 //$params["course_manager"] = $course_manager;
-                $params['treeCat'] = $treeCat;
+                $params['treeCat'] = array($treeCat);
 
                 if($edit){
 

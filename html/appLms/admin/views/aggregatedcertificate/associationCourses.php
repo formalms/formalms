@@ -23,7 +23,7 @@ cout(
 
 ?>
 
-<div class="std_block">
+
 
 <?php cout(
         Form::openForm('new_assign_step_2',
@@ -515,4 +515,3 @@ cout(
     );
 ?>
 
-</div>
