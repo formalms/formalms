@@ -12,7 +12,7 @@ RELEASE CHANGELOG
 ---------------------------------------------------------------------------------------
 forma.lms 2.4
 ---------------------------------------------------------------------------------------
-Release date: 2019 November 11
+Release date: 2019 November 26
 
 #1940  | CR IMPROVED  | NEW COURSE API
 #19425 | CR IMPROVED  | NEW USER API 
@@ -46,15 +46,25 @@ Release date: 2019 November 11
 #19486 | BUG | SCORM - ERROR IN FUNCTION SCORMINITIALIZEPARAMS
 #19487 | BUG | Enroll Policy: User not added to node when registering with code
 #19496 | BUG | HELPDESK MODULE FIXES
+#19469 | SECURITY FIX | Talos Security Advisory for Forma LMS (TALOS-2019-0902, 0903,0904)
 
 Plus other minor fixes and improvements
 
 ---------------------------------------------------------------------------------------
-forma.lms 2.3.0.1
+forma.lms 2.3.0.2
+---------------------------------------------------------------------------------------
+Release date: 2019 December 02
+Patch release - no internal change in version number
+
+#19469 | SECURITY FIX | Talos Security Advisory for Forma LMS (TALOS-2019-0902, 0903,0904)
+
+---------------------------------------------------------------------------------------
+forma.lms 2.3.0.1 -- internal release
 ---------------------------------------------------------------------------------------
 Release date: 2019 August 05
-#19446 | BUG | ZIP 2.3 without .htaccess file
+Patch release - no internal change in version number
 
+#19446 | BUG | ZIP package without .htaccess file
 
 ---------------------------------------------------------------------------------------
 forma.lms 2.3
@@ -97,11 +107,10 @@ Release date: 2019 July 11
 
 Plus many other minor improvements and bugfixes
 
-
 ---------------------------------------------------------------------------------------
 forma.lms 2.2.1
 ---------------------------------------------------------------------------------------
-Release date: 2019 April 16
+Release date: 2019 April 08
 
 #19340 | BUG | Platform not sending emails - Fixed typo in smtp config
 #19293 | BUG | fixedy query for checking the unused modules inside a menu
@@ -119,7 +128,15 @@ Release date: 2019 April 16
 #multi | CR IMPROVED  | New events added
 
 ---------------------------------------------------------------------------------------
-forma.lms 2.2
+forma.lms 2.2.0.1 
+---------------------------------------------------------------------------------------
+Release date: 2019 february 26
+Patch release - no internal change in version number
+
+#multi | BUG         | internal version not set
+
+---------------------------------------------------------------------------------------
+forma.lms 2.2 
 ---------------------------------------------------------------------------------------
 Release date: 2019 february 26   
 
