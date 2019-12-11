@@ -1488,7 +1488,7 @@ class UserManagerRenderer
 
                     $array_folder = array($reg_code => $reg_id);
 
-                    if (empty($array_folder) && $code_is_mandatory) {
+                    if (empty($reg_id) && $code_is_mandatory) {
 
                         //invalid code
                         $res['success'] = false;
