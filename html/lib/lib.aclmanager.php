@@ -479,11 +479,11 @@ class DoceboACLManager
             $query_h = "INSERT INTO " . $GLOBALS['prefix_fw'] . "_password_history ( idst_user, pwd_date, passw, changed_by ) "
                 . "VALUES ( " . (int)$idst . ", '" . date("Y-m-d H:i:s") . "', '" . ($alredy_encripted === true ? $pass : $this->encrypt($pass)) . "', " . (int)getLogUserId() . "  )";
             $this->_executeQuery($query_h);
-            $event = new \appCore\Events\Core\User\RegisterUserEvent();
-            $event->setId($idst);
-            \appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\RegisterUserEvent::EVENT_NAME, $event);
 
-            return $event->getId();
+            FormaEvent::make('core.user.registered', ['idst' => $idst])->deprecate()->trigger();
+            FormaEvent::make('core.user.created', ['idst' => $idst])->trigger();
+
+            return $idst;
         }
         else
         {
