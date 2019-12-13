@@ -19,11 +19,11 @@
       <h3 class="d-title">
         {{ translate('_CALENDAR','standard') }}
       </h3>
-      <div class="d-calendar__item js-dashboard-calendar"></div>
+      <div class="d-calendar__item js-dashboard-calendar" data-action="{{ block.enabledActions | join(',') }}"></div>
     </div>
   </div>
-{#
-  <pre>
+
+  {# <pre>
     {{ dump(block) }}
   </pre> #}
 

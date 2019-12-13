@@ -61,6 +61,7 @@ Class DashboardSettingsAdmController extends AdmController
 
         //render view
         $this->render('show', [
+            'ajaxUrl' => 'ajax.adm_server.php?r=adm/dashboardsettings/save',
             'installedBlocks' => $this->model->getInstalleddBlocksCommonViewData(),
             'enabledBlocks' => $this->model->getEnabledBlocksCommonViewData()
         ]);

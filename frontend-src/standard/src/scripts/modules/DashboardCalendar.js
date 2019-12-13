@@ -7,6 +7,22 @@ export const RenderDashBoardCalendar = () => {
 
   if (els.length) {
     for (let i = 0; i <= els.length; i++) {
+      /* const actions = els[i].getAttribute('data-action');
+      const actionsArray = actions.split(',');
+      const sourcesArray = [];
+      let event = {};
+
+       for (i = 0; i < actionsArray.length; i++) {
+        if (actionsArray[i] == 'getElearningCalendar') {
+
+        } else if (actionsArray[i] == 'getClassroomCalendar') {
+
+        } else if (actionsArray[i] == 'getReservationCalendar') {
+
+        }
+      }*/
+
+
       const calendar = new Calendar(els[i], {
         plugins: [dayGridPlugin],
         locale: itLocale,
@@ -116,19 +132,6 @@ export const RenderDashBoardCalendar = () => {
             },
             color: '#007CC8'
           },
-          // {
-          //   events: [
-          //     {
-          //       title: 'Corso lorem ipsum',
-          //       start: '2019-07-09', //l'orario è opzionale
-          //       type: 'elearning',
-          //       status: true, //rosso - verde
-          //       description: 'Testo testo testo',
-          //       hours: '15:30 - 18:30'
-          //     }
-          //   ],
-          //   color: '#A478EA'
-          // }
         ],
         eventClick: function() {
           // renderPopup(event);
@@ -143,9 +146,9 @@ export const RenderDashBoardCalendar = () => {
           }
           renderPopup(item);
         }
-      })
+      });
 
-      calendar.render()
+      calendar.render();
     }
   }
 
