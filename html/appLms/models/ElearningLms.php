@@ -217,7 +217,6 @@ class ElearningLms extends Model {
     
     
     
-    
 
     // LR: list category of subscription
     public function getListCategory($idUser, $completePath = true){
@@ -229,7 +228,6 @@ class ElearningLms extends Model {
 
         $res = $db->query($query);
         if ($res && $db->num_rows($res) > 0) {
-            $output[0] = Lang::t('_ALL_CATEGORIES', 'standard');
             while (list($idCategory, $path) = $db->fetch_row($res)) {
                 if($completePath){
                     $category = str_replace('/root/','',$path);
@@ -239,12 +237,13 @@ class ElearningLms extends Model {
                 }
                 $output[$idCategory] = $category[count($category)-1];
             }
+        	natcasesort($output);
+            array_unshift($output, Lang::t('_ALL_CATEGORIES', 'standard'));
         } else {
             $output[0] = Lang::t('_NO_CATEGORY', 'standard');
         }
+
         return $output;
-
-
     }
 
 
