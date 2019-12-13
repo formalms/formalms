@@ -480,8 +480,8 @@ class DoceboACLManager
                 . "VALUES ( " . (int)$idst . ", '" . date("Y-m-d H:i:s") . "', '" . ($alredy_encripted === true ? $pass : $this->encrypt($pass)) . "', " . (int)getLogUserId() . "  )";
             $this->_executeQuery($query_h);
 
-            FormaEvent::make('core.user.registered', ['idst' => $idst])->deprecate()->trigger();
-            FormaEvent::make('core.user.created', ['idst' => $idst])->trigger();
+            Events::triggerDeprecated('core.user.registered', ['idst' => $idst]);
+            Events::trigger('core.user.created', ['idst' => $idst]);
 
             return $idst;
         }
