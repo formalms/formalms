@@ -224,7 +224,8 @@ class ElearningLms extends Model {
         $db = DbConn::getInstance();
         
         $query = "select idCategory,path from %lms_category where idcategory in (
-       						select distinct idCategory from %lms_course as c,%lms_courseuser as cu where cu.idUser=".$idUser." and cu.idCourse=c.idCourse)";
+       						select distinct idCategory from %lms_course as c,%lms_courseuser as cu where cu.idUser=".$idUser." and cu.idCourse=c.idCourse)
+       						ORDER BY path ASC";
 
         $res = $db->query($query);
         if ($res && $db->num_rows($res) > 0) {
