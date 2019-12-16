@@ -67,6 +67,20 @@ Class DashboardSettingsAdmController extends AdmController
         ]);
 
     }
+
+    public function save()
+    {
+
+        $settings = Get::pReq('settings', DOTY_MIXED);
+
+        $this->model->resetOldSettings();
+
+        foreach ($settings as $block => $setting) {
+
+            $this->model->saveBlockSetting($block, $setting);
+        }
+    }
+
 }
 
 

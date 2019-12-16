@@ -93,4 +93,26 @@ class DashboardSettingsAdm extends Model
 
         return $data;
     }
+
+    public function resetOldSettings()
+    {
+
+        $query_blocks = "TRUNCATE TABLE dashboard_block_config;";
+
+        $this->db->query($query_blocks);
+    }
+
+
+    public function saveBlockSetting($block, $setting)
+    {
+        $config = [
+            'type' => $setting['type'],
+            'enabled' => $setting['enabled'],
+            'enabledActions' => $setting['enabledActions']
+        ];
+
+        $insertQuery = "INSERT INTO `dashboard_block_config` ( `block_class`, `block_config`, `position`) VALUES ( '" . $block . "' , '" . json_encode($config) . "', '" . $setting['position'] . "')";
+
+        $this->db->query($insertQuery);
+    }
 }
