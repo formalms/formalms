@@ -166,6 +166,9 @@ class HomepageAdm extends Model {
         ));
         $attachments    = false;
         $params         = array(MAIL_SENDER_ACLNAME => false);
+        $username = str_replace('/', '', $user_info['1']);
+
+        $body = str_replace('[userid]', $username, $body);
         
         $mailer = DoceboMailer::getInstance();
 
