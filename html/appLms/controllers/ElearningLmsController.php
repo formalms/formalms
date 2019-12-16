@@ -285,7 +285,7 @@ class ElearningLmsController extends LmsController
 
 
         if (!empty($filter_text)) {
-            $conditions[] = "(c.code LIKE '%:keyword%' OR c.name LIKE '%:keyword%')";
+            $conditions[] = "(c.code LIKE '%:keyword%' OR c.name LIKE '%:keyword%' OR cat.path LIKE '%:keyword%')";
             $params[':keyword'] = $filter_text;
         }
 
