@@ -141,7 +141,7 @@ class DoceboDOMNode {
 	 * @return reference to DOMXXX object
 	 **/
 	function getRef( $obj ) {
-		if( strncasecmp(get_class($obj),"Docebo",6) == 0 ) {
+		if( is_object($obj) && strncasecmp(get_class($obj),"Docebo",6) == 0 ) {
 			return $obj->_getSelf();
 		} else {
 			return $obj;
