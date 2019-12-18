@@ -9,7 +9,7 @@
 
 .d-popup__item {
   width: 130px;
-  height: 146px;
+  height: auto;
   padding: 7px;
   background-color: $dashboard-popup-bg;
   border-radius: 6px;
@@ -62,13 +62,22 @@
 }
 
 .d-popup__desc {
-  height: 28px;
+  height: auto;
   margin-bottom: 2px;
   font-size: 10px;
   font-weight: $bold;
   line-height: 14px;
   overflow: hidden;
   color: $dashboard-popup-desc;
+}
+
+.d-popup__category {
+  margin-bottom: 2px;
+  font-size: 10px;
+  font-weight: $bold;
+  line-height: 14px;
+  overflow: hidden;
+  color: $dashboard-popup-title;
 }
 
 .d-popup__hours {
@@ -80,7 +89,7 @@
 }
 
 .d-popup__title {
-  height: 28px;
+  height: auto;
   margin-bottom: 2px;
   padding: {
     left: 13px;
