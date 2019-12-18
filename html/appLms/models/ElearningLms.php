@@ -239,7 +239,7 @@ class ElearningLms extends Model {
                 $output[$idCategory] = $category[count($category)-1];
             }
         	natcasesort($output);
-            array_unshift($output, Lang::t('_ALL_CATEGORIES', 'standard'));
+            $output = [0 => Lang::t('_ALL_CATEGORIES', 'standard')] + $output;
         } else {
             $output[0] = Lang::t('_NO_CATEGORY', 'standard');
         }
