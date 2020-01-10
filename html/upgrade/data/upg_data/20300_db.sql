@@ -16,7 +16,7 @@ set @lastID=LAST_INSERT_ID();
 INSERT IGNORE INTO `core_event_consumer_class` (`idConsumer`, `idClass`) VALUES (1, @lastID);
 
 INSERT IGNORE INTO `core_event_manager` (`idClass`, `permission`, `channel`, `recipients`, `show_level`) 
-VALUES (@lastID, 'mandatory', 'email', '_EVENT_RECIPIENTS_TEACHER', 'admin');
+VALUES (@lastID, 'not_used', 'email', '_EVENT_RECIPIENTS_TEACHER', 'admin');
 
 -- User suspended in forma --
 SET @max = (SELECT MAX(idClass)+1 FROM `core_event_class`);
