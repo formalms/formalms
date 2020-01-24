@@ -1,10 +1,9 @@
 {% extends "base/base.html.twig" %}
 
 {% block content %}
-  Video
-  <pre>
+  {# <pre>
     {{ dump(block) }}
-  </pre>
+  </pre> #}
   {% if (block.type == '4-col') %}
       {% set class =  'd-col--12--desktop' %}
   {% elseif (block.type == '3-col') %}
@@ -14,4 +13,9 @@
   {% elseif (block.type == '1-col') %}
       {% set class =  'd-col--3--desktop' %}
   {% endif %}
+
+  <div class="d-col d-col--12 {{ class }}">
+    <div class="d-video js-dashboard-video" style="background-image: url('{{ block.cover }}')" data-video-url="{{ block.video }}" data-video-type="{{ block.video_type }}">
+    </div>
+  </div>
 {% endblock %}

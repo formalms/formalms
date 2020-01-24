@@ -41,7 +41,13 @@ class DashboardBlockVideoLms extends DashboardBlockLms
 
 	public function getViewData(): array
 	{
-		return $this->getCommonViewData();
+		$data = $this->getCommonViewData();
+		$data['dashboard_video_id'] = '12345'; // id che rappresenta il modulo. serve nel caso ci siano N video in dashboard
+		$data['video_type'] = 'yt'; //può essere yt o vimeo
+		$data['video'] = '3vBwRfQbXkg';
+		$data['cover'] = '/templates/standard/static/images/banner.png';
+
+		return $data;
 	}
 
 	/**
