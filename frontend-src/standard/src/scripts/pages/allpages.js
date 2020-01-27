@@ -25,8 +25,6 @@ var Page = (function() {
     });
 
     $(document).ready(function() {
-      console.log('doc ready');
-
       if ($('.js-dashboard-video').length) {
         DashboardVideo();
       }
@@ -34,7 +32,6 @@ var Page = (function() {
       if ($('.js-dashboard-calendar').length) {
         RenderDashBoardCalendar();
       }
-      // new DashboardDotDotDot();
 
       if ($('.js-tabnav').length) {
         setTabnavHeight();
