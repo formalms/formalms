@@ -1,4 +1,5 @@
-// const $ = require('jquery');
+let $videoModal = null;
+let $videoModalContent = null;
 
 export const DashboardVideo = () => {
   const elementsArray = document.querySelectorAll('.js-dashboard-video');
@@ -6,38 +7,44 @@ export const DashboardVideo = () => {
   for (var i = 0; i < elementsArray.length; i++) {
     elementsArray[i].addEventListener('click', onDashboardVideoClick);
   }
+
+  $('#dashboard-video-modal').on('hidden.bs.modal', closeOverlay);
 }
 
 const onDashboardVideoClick = (event) => {
+  $videoModal = $(`.js-dashboard-video-modal[data-href=${event.target.dataset.videoType}-${event.target.dataset.videoUrl}]`);
+  $videoModal.on('hidden.bs.modal', closeOverlay);
+
+  $videoModalContent = $videoModal.find('.js-dashboard-video-dynamic-content');
+
   switch (event.target.dataset.videoType) {
     case 'yt':
-      console.log('video youtube ---> ' + event.target.dataset.videoUrl);
+      openYtVideo(event.target.dataset.videoUrl);
       break;
 
     case 'vimeo':
-      console.log('video vimeo ---> ' + event.target.dataset.videoUrl);
+      openVimeoVideo(event.target.dataset.videoUrl)
       break;
   }
 
-  $('#dashboard-video-modal').modal();
+  showOverlay();
 }
 
-// const renderPopup = (item) => {
-//   let el = '';
-//   const type = item.event.extendedProps.type === 'classroom' ? 'classroom' : 'elearning';
-//   const desc = item.event.extendedProps.description;
-//   const hours = item.event.extendedProps.hours;
-//   const title = item.event.title;
+const openYtVideo = (url) => {
+  $videoModalContent.empty().append(`<iframe width="100%" height="100%" style="max-width:100%;max-height:100%" src="https://www.youtube-nocookie.com/embed/${url}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`);
+}
 
-//   el += '<div class="d-popup">';
-//   el += '<div class="d-popup__item is-' + type + '">';
-//   el += '<div class="d-popup__title">' + title + '</div>';
-//   el += '<div class="d-popup__type">' + type + '</div>';
-//   el += '<div class="d-popup__desc">' + desc + '</div>';
-//   el += '<div class="d-popup__hours">' + hours + '</div>';
-//   el += '<div class="d-popup__triangle"></div>';
-//   el += '</div>';
-//   el += '</div>';
+const openVimeoVideo = (url) => {
+  $videoModalContent.empty().append(`<div style="padding:0;position:relative;width:100%;height:100%;"><iframe src="https://player.vimeo.com/video/${url}?title=0&byline=0&portrait=0" style="position:absolute;top:0;left:0;width:100%;height:100%;" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`)
+}
 
-//   $(item.el).append(el);
-// }
+const showOverlay = () => {
+  $videoModal.modal();
+}
+
+const closeOverlay = () => {
+  $videoModalContent.empty();
+  $videoModal.off('hidden.bs.modal', closeOverlay);
+  $videoModal = null;
+  $videoModalContent = null;
+}

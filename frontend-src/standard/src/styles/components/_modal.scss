@@ -224,6 +224,22 @@
   }
 }
 
+.modal-dialog--video {
+  width: 90%;
+  height: 70%;
+  max-width: none;
+
+  @include breakpoint($ipad) {
+    width: 80%;
+    height: 70%;
+  }
+
+  @include breakpoint($desktop) {
+    width: 80%;
+    height: 70%;
+  }
+}
+
 .modal-header--notitle {
   border: none;
 
@@ -233,6 +249,20 @@
   }
 }
 
+.modal-content--full {
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.modal-body--nopadding {
+  padding: 0;
+  margin: 0;
+  line-height: 0;
+  width: 100%;
+  height: 100%;
+}
 .modal-header--bio {
   background-color: $orange;
   border: none;
