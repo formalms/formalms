@@ -18,4 +18,18 @@
     <div class="d-video js-dashboard-video" style="background-image: url('{{ block.cover }}')" data-video-url="{{ block.video }}" data-video-type="{{ block.video_type }}">
     </div>
   </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="dashboard-video-modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog--notitle" role="document">
+      <div class="modal-header modal-header--notitle">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      </div>
+      <div class="modal-content">
+        <div class="modal-body">
+          ...
+        </div>
+      </div>
+    </div>
+  </div>
 {% endblock %}
