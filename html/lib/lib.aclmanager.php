@@ -453,6 +453,23 @@ class DoceboACLManager
                           $facebook_id = FALSE, $twitter_id = FALSE, $linkedin_id = FALSE, $google_id = FALSE)
     {
 
+        $input_userdata = [
+            ACL_INFO_IDST => $idst,
+            ACL_INFO_USERID => $userid,
+            ACL_INFO_FIRSTNAME => $firstname,
+            ACL_INFO_LASTNAME => $lastname,
+            ACL_INFO_PASS => $pass,
+            ACL_INFO_EMAIL => $email,
+            ACL_INFO_AVATAR => $avatar,
+            ACL_INFO_SIGNATURE => $signature,
+            ACL_INFO_PWD_EXPIRE_AT => $pwd_expire_at,
+            ACL_INFO_FORCE_CHANGE => $force_change,
+            ACL_INFO_FACEBOOK_ID => $facebook_id,
+            ACL_INFO_TWITTER_ID => $twitter_id,
+            ACL_INFO_LINKEDIN_ID => $linkedin_id,
+            ACL_INFO_GOOGLE_ID => $google_id,
+        ];
+
         if ($idst === false) $idst = $this->_createST();
         if ($idst == 0) return false;
         $userid = $this->absoluteId($userid);
@@ -460,6 +477,44 @@ class DoceboACLManager
 
             $pwd_expire_at = date("Y-m-d H:i:s", time() + Get::sett('pass_max_time_valid') * 24 * 3600);
         }
+
+        $insert_userdata = [
+            ACL_INFO_IDST => $idst,
+            ACL_INFO_USERID => $userid,
+            ACL_INFO_FIRSTNAME => $firstname,
+            ACL_INFO_LASTNAME => $lastname,
+            ACL_INFO_PASS => $pass,
+            ACL_INFO_EMAIL => $email,
+            ACL_INFO_AVATAR => $avatar,
+            ACL_INFO_SIGNATURE => $signature,
+            ACL_INFO_PWD_EXPIRE_AT => $pwd_expire_at,
+            ACL_INFO_FORCE_CHANGE => $force_change,
+            ACL_INFO_FACEBOOK_ID => $facebook_id,
+            ACL_INFO_TWITTER_ID => $twitter_id,
+            ACL_INFO_LINKEDIN_ID => $linkedin_id,
+            ACL_INFO_GOOGLE_ID => $google_id,
+        ];
+
+        $data = Events::trigger('core.user.creating', [
+            'input_userdata' => $input_userdata,
+            'insert_userdata' => $insert_userdata,
+        ]);
+
+        $idst = $data['insert_userdata'][ACL_INFO_IDST];
+        $userid = $data['insert_userdata'][ACL_INFO_USERID];
+        $firstname = $data['insert_userdata'][ACL_INFO_FIRSTNAME];
+        $lastname = $data['insert_userdata'][ACL_INFO_LASTNAME];
+        $pass = $data['insert_userdata'][ACL_INFO_PASS];
+        $email = $data['insert_userdata'][ACL_INFO_EMAIL];
+        $avatar = $data['insert_userdata'][ACL_INFO_AVATAR];
+        $signature = $data['insert_userdata'][ACL_INFO_SIGNATURE];
+        $pwd_expire_at = $data['insert_userdata'][ACL_INFO_PWD_EXPIRE_AT];
+        $force_change = $data['insert_userdata'][ACL_INFO_FORCE_CHANGE];
+        $facebook_id = $data['insert_userdata'][ACL_INFO_FACEBOOK_ID];
+        $twitter_id = $data['insert_userdata'][ACL_INFO_TWITTER_ID];
+        $linkedin_id = $data['insert_userdata'][ACL_INFO_LINKEDIN_ID];
+        $google_id = $data['insert_userdata'][ACL_INFO_GOOGLE_ID];
+
         $query = "INSERT INTO " . $this->_getTableUser()
             . " (idst, userid, firstname, lastname, pass, email, avatar, signature, pwd_expire_at, "
             . "  register_date, "
@@ -481,7 +536,12 @@ class DoceboACLManager
             $this->_executeQuery($query_h);
 
             Events::triggerDeprecated('core.user.registered', ['idst' => $idst]);
-            Events::trigger('core.user.created', ['idst' => $idst]);
+
+            $userdata = $this->getUser($idst, false);
+
+            if($userdata) {
+                Events::trigger('core.user.created', ['idst' => $idst, 'userdata' => $userdata]);
+            }
 
             return $idst;
         }
