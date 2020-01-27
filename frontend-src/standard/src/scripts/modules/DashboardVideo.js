@@ -18,6 +18,8 @@ const onDashboardVideoClick = (event) => {
       console.log('video vimeo ---> ' + event.target.dataset.videoUrl);
       break;
   }
+
+  $('#dashboard-video-modal').modal();
 }
 
 // const renderPopup = (item) => {

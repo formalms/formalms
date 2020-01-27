@@ -2,8 +2,9 @@ require('../modules/course-box');
 require('../modules/folder-view');
 require('../modules/slider-menu');
 require('../modules/modal-accordion');
-import DashboardCalendar from '../modules/DashboardCalendar';
 import { InfoCourse } from '../modules/InfoCourse';
+import {RenderDashBoardCalendar} from '../modules/DashboardCalendar';
+import { DashboardVideo } from '../modules/DashboardVideo';
 
 var Page = (function() {
   function setScroll(elem, action) {
@@ -24,6 +25,12 @@ var Page = (function() {
     });
 
     $(document).ready(function() {
+      console.log('doc ready');
+
+      if ($('.js-dashboard-video').length) {
+        DashboardVideo();
+      }
+
       if ($('.js-dashboard-calendar').length) {
         RenderDashBoardCalendar();
       }
