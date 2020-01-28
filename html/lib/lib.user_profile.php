@@ -1356,11 +1356,10 @@ class UserProfileViewer {
 			$html .= $this->getUIRowCode($value['name'], $value['value']);
 		}
 
+		$lv_lang =& DoceboLanguage::createInstance('admin_directory', 'framework');
 		if($this->_user_profile->godMode()) {
 
 			// show user level
-			$lv_lang =& DoceboLanguage::createInstance('admin_directory', 'framework');
-
 			$acl_man =& Docebo::user()->getAclManager();
 			switch($acl_man->getUserLevelId($this->_user_profile->getIdUser())) {
 				case ADMIN_GROUP_GODADMIN 	: $user_level_string = $lv_lang->def('_DIRECTORY_'.ADMIN_GROUP_GODADMIN);break;
