@@ -2136,7 +2136,7 @@ class UserProfileViewer {
                       . $this->acl_man->relativeId($this->user_info[ACL_INFO_LASTNAME]) . ' ' . $this->acl_man->relativeId($this->user_info[ACL_INFO_FIRSTNAME])
                       . '</a>
                       <a href="mailto:' . $this->user_info[ACL_INFO_EMAIL] . '">' . $this->user_info[ACL_INFO_EMAIL] . '</a>
-                   </div>';
+                   ';
        	} else if (Get::sett('profile_modify') != 'disallow') {
        		$html .= '<a href="index.php?r=lms/profile/show" title="'.Lang::t('_PROFILE', 'profile').'">
                           <span class="glyphicon glyphicon-pencil">'.Lang::t('_PROFILE', 'profile').'</span>
@@ -2145,10 +2145,10 @@ class UserProfileViewer {
                       . $this->acl_man->relativeId($this->user_info[ACL_INFO_LASTNAME]) . ' ' . $this->acl_man->relativeId($this->user_info[ACL_INFO_FIRSTNAME])
                       . '</a>
                       <a href="mailto:' . $this->user_info[ACL_INFO_EMAIL] . '">' . $this->user_info[ACL_INFO_EMAIL] . '</a>
-                   </div>';
+                   ';
        	}
 
-        $html .= '</div>'; // /row
+        $html .= '</div></div>'; // /row
 
         $html .= '<div class="row comunication">'; //pulsanti certificati-messaggi
 
