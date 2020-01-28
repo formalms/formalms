@@ -2146,6 +2146,12 @@ class UserProfileViewer {
                       . '</a>
                       <a href="mailto:' . $this->user_info[ACL_INFO_EMAIL] . '">' . $this->user_info[ACL_INFO_EMAIL] . '</a>
                    ';
+       	} else {
+       		$html .= '<a href="index.php?r=lms/profile/show">'
+                      . $this->acl_man->relativeId($this->user_info[ACL_INFO_LASTNAME]) . ' ' . $this->acl_man->relativeId($this->user_info[ACL_INFO_FIRSTNAME])
+                      . '</a>
+                      <a href="mailto:' . $this->user_info[ACL_INFO_EMAIL] . '">' . $this->user_info[ACL_INFO_EMAIL] . '</a>
+                   ';
        	}
 
         $html .= '</div></div>'; // /row

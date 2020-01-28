@@ -1863,7 +1863,7 @@ class UserProfileViewer {
                       . $this->acl_man->relativeId($this->user_info[ACL_INFO_LASTNAME]) . ' ' . $this->acl_man->relativeId($this->user_info[ACL_INFO_FIRSTNAME])
                       . '</a>
                       <a href="mailto:' . $this->user_info[ACL_INFO_EMAIL] . '">' . $this->user_info[ACL_INFO_EMAIL] . '</a>
-                   </div>';
+                   ';
        	} else if (Get::sett('profile_modify') != 'disallow') {
        		$html .= '<a href="index.php?r=lms/profile/show" title="'.Lang::t('_PROFILE', 'profile').'">
                           <span class="glyphicon glyphicon-pencil">'.Lang::t('_PROFILE', 'profile').'</span>
@@ -1872,15 +1872,21 @@ class UserProfileViewer {
                       . $this->acl_man->relativeId($this->user_info[ACL_INFO_LASTNAME]) . ' ' . $this->acl_man->relativeId($this->user_info[ACL_INFO_FIRSTNAME])
                       . '</a>
                       <a href="mailto:' . $this->user_info[ACL_INFO_EMAIL] . '">' . $this->user_info[ACL_INFO_EMAIL] . '</a>
-                   </div>';
+                   ';
+       	} else {
+       		$html .= '<a href="index.php?r=lms/profile/show">'
+                      . $this->acl_man->relativeId($this->user_info[ACL_INFO_LASTNAME]) . ' ' . $this->acl_man->relativeId($this->user_info[ACL_INFO_FIRSTNAME])
+                      . '</a>
+                      <a href="mailto:' . $this->user_info[ACL_INFO_EMAIL] . '">' . $this->user_info[ACL_INFO_EMAIL] . '</a>
+                   ';
        	}
 
-        $html .= '</div>'; // /row
+        $html .= '</div></div>'; // /row
 
         $html .= '<div class="row comunication">'; //pulsanti certificati-messaggi
 
         if ($perm_certificate) $html .= '<div class="col-xs-4"><a class="btn btn-default" href="index.php?r=lms/mycertificate/show&sop=unregistercourse">' . Lang::t('_MY_CERTIFICATE', 'menu_over') . '</a></div>';
-        if ($perm_competence) $html .= '<div class="col-xs-4"><a class="btn btn-default" href="index.php?modname=mycompetences&op=mycompetences&op=unregistercourse">' . Lang::t('_COMPETENCES', 'standard') . '</a></div>';
+        if (isset($perm_competence) && $perm_competence) $html .= '<div class="col-xs-4"><a class="btn btn-default" href="index.php?modname=mycompetences&op=mycompetences&op=unregistercourse">' . Lang::t('_COMPETENCES', 'standard') . '</a></div>';
 
 
         if ($unread_num > 0 && $perm_message) {
