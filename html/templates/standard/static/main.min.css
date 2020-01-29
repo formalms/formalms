@@ -5229,7 +5229,7 @@ p {
 
 .d-popup__item {
   width: 130px;
-  height: 146px;
+  height: auto;
   padding: 7px;
   background-color: #F3ECEC;
   border-radius: 6px;
@@ -5272,13 +5272,21 @@ p {
       right: 7px; }
 
 .d-popup__desc {
-  height: 28px;
+  height: auto;
   margin-bottom: 2px;
   font-size: 10px;
   font-weight: 700;
   line-height: 14px;
   overflow: hidden;
   color: #6B6B6B; }
+
+.d-popup__category {
+  margin-bottom: 2px;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 14px;
+  overflow: hidden;
+  color: #7D7C7C; }
 
 .d-popup__hours {
   margin-bottom: 5px;
@@ -5288,7 +5296,7 @@ p {
   color: #6B6B6B; }
 
 .d-popup__title {
-  height: 28px;
+  height: auto;
   margin-bottom: 2px;
   padding-left: 13px;
   font-size: 12px;
@@ -5454,7 +5462,7 @@ div#container {
   width: 100%;
   min-height: 460px;
   margin-bottom: 15px;
-  padding-bottom: 30px;
+  padding-bottom: 15px;
   border: 2px solid #ececec;
   border-radius: 5px;
   font-family: "Open-sans", Arial;
@@ -5466,6 +5474,9 @@ div#container {
     box-shadow: #c2c2c2 0px 5px 20px 0px; }
     .course-box:hover .course-box__img-title {
       background-color: rgba(255, 108, 0, 0.5); }
+  .mycourses-list .course-box {
+    position: relative;
+    padding-bottom: 50px; }
 
 .course-box__item {
   width: 100%;
@@ -5788,7 +5799,8 @@ i + .course-box__date-box {
   float: right; }
 
 .course-box .forma-button {
-  max-height: 44px; }
+  max-height: 44px;
+  overflow: hidden; }
 
 .course-box__modal__footer .forma-button {
   width: auto;
@@ -5804,6 +5816,67 @@ i + .course-box__date-box {
   .mycourses-list {
     padding-left: 7.5px;
     padding-right: 7.5px; } }
+
+.course-box__extraInfo {
+  width: calc(100% - 30px);
+  margin-left: 15px;
+  margin-top: 5px;
+  clear: both;
+  font-size: 0;
+  min-height: 31px;
+  position: absolute;
+  left: 15px;
+  bottom: 15px; }
+
+.course-box__next,
+.course-box__allDates {
+  width: 50%;
+  display: inline-block; }
+
+.course-box__next {
+  font-size: 12px;
+  color: #999999;
+  position: relative;
+  padding-left: 20px; }
+
+.course-box__next:before,
+.course-box__allDates:after,
+.course-box__allDates:before {
+  content: '';
+  display: block;
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 8.5px 0 8.5px 9px;
+  border-color: transparent transparent transparent #979797;
+  opacity: .6; }
+
+.course-box__allDates:after,
+.course-box__allDates:before {
+  top: 18px; }
+
+.course-box__allDates:before {
+  left: 10px; }
+
+.course-box__next div {
+  font-size: 14px;
+  font-weight: bold; }
+
+.course-box__allDates {
+  font-size: 13px;
+  font-weight: bold;
+  vertical-align: top;
+  position: relative;
+  padding-left: 23px;
+  padding-top: 10px; }
+
+.course-box__allDates a {
+  color: #C84000;
+  text-decoration: underline; }
 
 .section-coourse__header,
 .section-coourse__menu {
@@ -6304,6 +6377,26 @@ i + .course-box__date-box {
 #course_search_filter_set1 ~ br {
   display: none; }
 
+#global_conf .tab-content .tab-pane h2 {
+  font-size: 24px;
+  font-weight: bold;
+  color: #666;
+  display: block;
+  margin-bottom: 20px; }
+
+#global_conf .tab-content .tab-pane h3 {
+  font-size: 20px;
+  font-weight: bold;
+  color: #666;
+  text-transform: capitalize;
+  margin-bottom: 20px;
+  display: block;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #666; }
+
+#global_conf .tab-content .tab-pane select {
+  display: block; }
+
 .layout_footer {
   padding-top: 30px;
   border-top: 2px solid #c84000;
@@ -6325,8 +6418,8 @@ header.header {
   position: fixed; }
   @media (min-width: 768px) {
     header.header {
-      padding: 18px 15px;
-      height: 87px; } }
+      padding: 10px 15px;
+      height: 71px; } }
   @media (min-width: 768px) and (max-width: 1023px) {
     header.header .row-fluid .navbar-header {
       width: 100%; } }
