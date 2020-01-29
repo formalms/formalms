@@ -102,11 +102,14 @@
             const type = blocks[i].getAttribute('data-type');
             const action = blocks[i].getAttribute('data-action').split(',');
 
-            response[block] = {
-              'position': i + 1,
-              'type': type,
-              'enabled': true,
-              'enabledActions': action
+            response[i] = {
+              'block' : block,
+              'settings' : {
+                'position': i + 1,
+                'type': type,
+                'enabled': true,
+                'enabledActions': action
+              }
             }
 
             console.log(response[block]);
@@ -190,7 +193,7 @@
            selectBlock.parent('.dashboard__select').removeClass('is-required');
 
            const newBlock = '<div id="' + selectBlockValue + '-' + countBlocks + '" class="dashboard__block dashboard__block--' + selectTypeValue + '"' +
-                   '            data-type="' + selectBlockValue + '" data-block="' + selectTypeValue + '" data-action="' + selectActionValue.replace(/\s/g, '') + '">\n' +
+                   '            data-type="' + selectTypeValue + '" data-block="' + selectBlockValue + '" data-action="' + selectActionValue.replace(/\s/g, '') + '">\n' +
                    '            <div class="dashboard__content">\n' +
                    '              <button class="dashboard__remove js-remove-block" data-block="' + selectBlockValue + '-' + countBlocks + '"></button>\n' +
                    '              <img src="../../../templates/standard/static/images/dashboard-placeholder/' + selectBlockValue + '-placeholder.jpg" class="dashboard__image">' +

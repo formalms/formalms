@@ -72,7 +72,7 @@ class DashboardLms extends Model
      * @param string $block
      * @return bool|DashboardBlockLms
      */
-    public function getRegisteredBlock(string $block)
+    public function getRegisteredBlock($block)
     {
         foreach ($this->enabledBlocks as $enabledBlock) {
 
