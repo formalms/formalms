@@ -11,6 +11,9 @@
 |   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
+/**
+ * Class DashboardSettingsAdm
+ */
 class DashboardSettingsAdm extends Model
 {
     protected $db;
@@ -49,6 +52,7 @@ class DashboardSettingsAdm extends Model
         $result = $this->db->query($query_blocks);
 
         while ($block = $this->db->fetch_assoc($result)) {
+
             /** @var DashboardBlockLms $blockObj */
             $blockObj = new $block['block_class']('');
 

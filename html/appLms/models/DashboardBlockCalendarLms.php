@@ -50,7 +50,7 @@ class DashboardBlockCalendarLms extends DashboardBlockLms
     /**
      * @return string
      */
-    public function getViewPath(): string
+    public function getViewPath()
     {
         return $this->viewPath;
     }
@@ -58,12 +58,12 @@ class DashboardBlockCalendarLms extends DashboardBlockLms
     /**
      * @return string
      */
-    public function getViewFile(): string
+    public function getViewFile()
     {
         return $this->viewFile;
     }
 
-    public function getLink(): string
+    public function getLink()
     {
         return '#';
     }

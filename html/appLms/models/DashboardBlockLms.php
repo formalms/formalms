@@ -154,9 +154,9 @@ abstract class DashboardBlockLms extends Model
     }
 
     protected function parseBaseConfig($jsonConfig) {
-        $this->enabled = $jsonConfig['enabled'] ?? false;
-        $this->type = $jsonConfig['type'] ?? '';
-        $this->enabledActions = $jsonConfig['enabledActions'] ?? [];
+        $this->enabled = $jsonConfig['enabled'] ? $jsonConfig['enabled'] :false;
+        $this->type = $jsonConfig['type'] ? $jsonConfig['type'] : '';
+        $this->enabledActions = $jsonConfig['enabledActions'] ? $jsonConfig['enabledActions'] : [];
     }
 
     /**
