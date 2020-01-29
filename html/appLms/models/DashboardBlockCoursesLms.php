@@ -34,7 +34,7 @@ class DashboardBlockCoursesLms extends DashboardBlockLms
 
     }
 
-    public function getAvailableTypesForBlock(): array {
+    public function getAvailableTypesForBlock(){
         return [
             DashboardBlockLms::TYPE_1COL,
             DashboardBlockLms::TYPE_2COL,
@@ -43,8 +43,7 @@ class DashboardBlockCoursesLms extends DashboardBlockLms
         ];
     }
 
-	public function getViewData(): array
-	{
+	public function getViewData(){
 		$data = $this->getCommonViewData();
 
 		$data['courses'] = $this->getCourses();
@@ -54,26 +53,22 @@ class DashboardBlockCoursesLms extends DashboardBlockLms
 	/**
 	 * @return string
 	 */
-	public function getViewPath(): string
-	{
+	public function getViewPath(){
 		return $this->viewPath;
 	}
 
 	/**
 	 * @return string
 	 */
-	public function getViewFile(): string
-	{
+	public function getViewFile(){
 		return $this->viewFile;
 	}
 
-	public function getLink(): string
-	{
+	public function getLink(){
 		return '#';
 	}
 
-	public function getRegisteredActions(): array
-	{
+	public function getRegisteredActions(){
 		return [];
 	}
 

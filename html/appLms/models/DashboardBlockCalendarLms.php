@@ -33,8 +33,7 @@ class DashboardBlockCalendarLms extends DashboardBlockLms
 
     }
 
-    public function getAvailableTypesForBlock(): array
-    {
+    public function getAvailableTypesForBlock() {
         return [
             DashboardBlockLms::TYPE_1COL,
             DashboardBlockLms::TYPE_2COL,
@@ -44,8 +43,7 @@ class DashboardBlockCalendarLms extends DashboardBlockLms
     }
 
 
-    public function getViewData(): array
-    {
+    public function getViewData() {
         return $this->getCommonViewData();
     }
 
@@ -70,8 +68,7 @@ class DashboardBlockCalendarLms extends DashboardBlockLms
         return '#';
     }
 
-    public function getRegisteredActions(): array
-    {
+    public function getRegisteredActions() {
         return [
             'getElearningCalendar',
             'getClassroomCalendar',

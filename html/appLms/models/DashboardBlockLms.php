@@ -27,17 +27,17 @@ abstract class DashboardBlockLms extends Model
 
     const ALLOWED_TYPES = [self::TYPE_4COL, self::TYPE_3COL, self::TYPE_2COL, self::TYPE_1COL];
 
-    abstract public function getViewPath(): string;
+    abstract public function getViewPath();
 
-    abstract public function getViewFile(): string;
+    abstract public function getViewFile();
 
-    abstract public function getViewData(): array;
+    abstract public function getViewData();
 
-    abstract public function getLink(): string;
+    abstract public function getLink();
 
-    abstract public function getRegisteredActions(): array;
+    abstract public function getRegisteredActions();
 
-    abstract public function getAvailableTypesForBlock(): array;
+    abstract public function getAvailableTypesForBlock();
 
     abstract public function parseConfig($jsonConfig);
 
@@ -82,8 +82,7 @@ abstract class DashboardBlockLms extends Model
     /**
      * @return int
      */
-    public function getOrder(): int
-    {
+    public function getOrder(){
         return $this->order;
     }
 
@@ -91,7 +90,7 @@ abstract class DashboardBlockLms extends Model
      * @param int $order
      * @return DashboardBlockLms
      */
-    public function setOrder(int $order): DashboardBlockLms
+    public function setOrder($order)
     {
         $this->order = $order;
         return $this;
@@ -100,7 +99,7 @@ abstract class DashboardBlockLms extends Model
     /**
      * @return bool
      */
-    public function isEnabled(): bool
+    public function isEnabled()
     {
         return $this->enabled;
     }
@@ -109,7 +108,7 @@ abstract class DashboardBlockLms extends Model
      * @param bool $enabled
      * @return DashboardBlockLms
      */
-    public function setEnabled(bool $enabled): DashboardBlockLms
+    public function setEnabled($enabled)
     {
         $this->enabled = $enabled;
         return $this;
@@ -118,7 +117,7 @@ abstract class DashboardBlockLms extends Model
     /**
      * @return string
      */
-    public function getType(): string
+    public function getType()
     {
         return $this->type;
     }
@@ -127,7 +126,7 @@ abstract class DashboardBlockLms extends Model
      * @param string $type
      * @return DashboardBlockLms
      */
-    public function setType(string $type): DashboardBlockLms
+    public function setType($type)
     {
         if (!in_array($type, self::ALLOWED_TYPES)) {
             throw new LogicException(sprintf('Selected type is not allowed : %s', $type));
@@ -139,7 +138,7 @@ abstract class DashboardBlockLms extends Model
     /**
      * @return array
      */
-    public function getEnabledActions(): array
+    public function getEnabledActions()
     {
         return $this->enabledActions;
     }
@@ -148,7 +147,7 @@ abstract class DashboardBlockLms extends Model
      * @param array $enabledActions
      * @return DashboardBlockLms
      */
-    public function setEnabledActions(array $enabledActions): DashboardBlockLms
+    public function setEnabledActions($enabledActions)
     {
         $this->enabledActions = $enabledActions;
         return $this;
@@ -163,7 +162,7 @@ abstract class DashboardBlockLms extends Model
     /**
      * @return array
      */
-    public function getCommonViewData(): array
+    public function getCommonViewData()
     {
         return [
             'view' => $this->getViewName(),
