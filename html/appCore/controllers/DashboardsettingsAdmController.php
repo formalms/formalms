@@ -11,11 +11,13 @@
 |   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
-
-Class DashboardSettingsAdmController extends AdmController
+/**
+ * Class DashboardsettingsAdmController
+ */
+Class DashboardsettingsAdmController extends AdmController
 {
 
-    /** @var DashboardSettingsAdm $model */
+    /** @var DashboardsettingsAdm $model */
     protected $model;
 
     /** @var Services_JSON $json */
@@ -32,7 +34,7 @@ Class DashboardSettingsAdmController extends AdmController
         parent::init();
         require_once(_base_ . '/lib/lib.json.php');
         $this->json = new Services_JSON();
-        $this->model = new DashboardSettingsAdm();
+        $this->model = new DashboardsettingsAdm();
 
         $this->permissions = array(
             'view' => checkPerm('view', true, 'dashboard', 'framework'),

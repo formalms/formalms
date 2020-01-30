@@ -12,9 +12,9 @@
 \ ======================================================================== */
 
 /**
- * Class DashboardSettingsAdm
+ * Class DashboardsettingsAdm
  */
-class DashboardSettingsAdm extends Model
+class DashboardsettingsAdm extends Model
 {
     protected $db;
 
