@@ -44,6 +44,7 @@ class DashboardBlockCalendarLms extends DashboardBlockLms
 
 
     public function getViewData() {
+
         return $this->getCommonViewData();
     }
 

@@ -177,7 +177,8 @@ abstract class DashboardBlockLms extends Model
                 'signature' => Util::getSignature()
             ],
             'registeredActions' => $this->getRegisteredActions(),
-            'enabledActions' => $this->getEnabledActions()
+            'enabledActions' => $this->getEnabledActions(),
+            'templatePath' => getPathTemplate()
         ];
     }
 

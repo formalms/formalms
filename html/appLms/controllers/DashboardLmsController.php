@@ -10,64 +10,64 @@
 |   from docebo 4.0.5 CE 2008-2012 (c) docebo                               |
 |   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
-require_once (_base_ . '/lib/lib.json.php');
+require_once(_base_ . '/lib/lib.json.php');
 
 /**
  * Class DashboardLmsController
  */
 class DashboardLmsController extends LmsController
 {
-	public $name = '';
+    public $name = '';
 
-	/** @var DashboardLms */
-	private $model;
+    /** @var DashboardLms */
+    private $model;
 
-	/**
-	 * DashboardLmsController constructor.
-	 * @param $mvc_name
-	 */
-	public function init ()
-	{
-		$this->_mvc_name = "dashboard";
-		$this->permissions = array (
-			'view' => true ,
-			'mod' => true
-		);
-		/** @var Services_JSON json */
-		$this->json = new Services_JSON();
-		$this->model = new DashboardLms();
-	}
+    /**
+     * DashboardLmsController constructor.
+     * @param $mvc_name
+     */
+    public function init()
+    {
+        $this->_mvc_name = "dashboard";
+        $this->permissions = array(
+            'view' => true,
+            'mod' => true
+        );
+        /** @var Services_JSON json */
+        $this->json = new Services_JSON();
+        $this->model = new DashboardLms();
+    }
 
-	public function show()
-	{
-		checkPerm ('view' , true , $this->_mvc_name);
-		$blocks = $this->model->getBlocksViewData();
+    public function show()
+    {
+        checkPerm('view', true, $this->_mvc_name);
+        $blocks = $this->model->getBlocksViewData();
 
-		$this->render('dashboard', [
-			'blocks' => $blocks
-		]);
-	}
+        $this->render('dashboard', [
+            'blocks' => $blocks,
+            'templatePath' => getPathTemplate()
+        ]);
+    }
 
-	public function ajaxAction()
-	{
-		$result = ['status' => 200];
-		$blockParameter = Get::pReq('block', DOTY_MIXED);
-    	$actionParameter = Get::pReq('blockAction', DOTY_MIXED);
+    public function ajaxAction()
+    {
+        $result = ['status' => 200];
+        $blockParameter = Get::pReq('block', DOTY_MIXED);
+        $actionParameter = Get::pReq('blockAction', DOTY_MIXED);
 
-		$block = $this->model->getRegisteredBlock($blockParameter);
-		if (null !== $block) {
-			if (method_exists($block, $actionParameter)) {
+        $block = $this->model->getRegisteredBlock($blockParameter);
+        if (null !== $block) {
+            if (method_exists($block, $actionParameter)) {
 
-				$result['response'] = $block->$actionParameter();
-			}
-			else {
-				$result['status'] = 400;
-			}
-		} else {
-			$result['status'] = 400;
-		}
+                $result['response'] = $block->$actionParameter();
+            } else {
+                $result['status'] = 400;
+            }
+        } else {
+            $result['status'] = 400;
+        }
 
-		echo json_encode($result);
-		die();
-	}
+        echo json_encode($result);
+        die();
+    }
 }

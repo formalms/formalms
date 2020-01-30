@@ -1,448 +1,455 @@
 <div class="js-router--dashboard dashboard">
-  <div class="d-grid">
-    <div class="d-row">
-      <div id="dashboard-sortable" class="dashboard__container">
-        {% for block in enabledBlocks %}
-          {% if block.enabled %}
-            <div id="{{ block.postData.block }}-{{ loop.index0 }}" class="dashboard__block dashboard__block--{{ block.type }}"
-              data-block="{{ block.postData.block }}"
-              data-type="{{ block.type }}"
-              data-action="{{ block.registeredActions | join(',') }}">
-              <div class="dashboard__content">
-                <button class="dashboard__remove js-remove-block" data-block="{{ block.postData.block }}-{{ loop.index0 }}"></button>
-                <div class="dashboard__title">{{ block.postData.block }}</div>
-                <img src="../../../templates/standard/static/images/dashboard-placeholder/{{ block.postData.block }}-placeholder.jpg" class="dashboard__image">
-                <div class="dashboard__info">
-                  <div class="dashboard__title">Dimensione</div>
-                  <div class="dashboard__select">
-                    <select class="form-control js-type-block" data-block="{{ block.postData.block }}-{{ loop.index0 }}">
-                        <option value="{{ block.type }}" selected>{{ block.type }}</option>
-                        {% for type in block.availableTypes %}
-                          {% if type != block.type %}
-                            <option value="{{ type }}">{{ type }}</option>
-                          {% endif %}
-                        {% endfor %}
-                    </select>
-                  </div>
-                  {% if block.registeredActions | length %}
-                    <div class="dashboard__title dashboard__title--sources">Sorgente dati:<br>
-                      {% for action in block.registeredActions %}
-                        {{ action }}{% if loop.index < block.registeredActions | length %},{% endif %}
-                      {% endfor %}
-                    </div>
-                  {% endif %}
-                </div>
-              </div>
+    <div class="d-grid">
+        <div class="d-row">
+            <div id="dashboard-sortable" class="dashboard__container">
+                {% for block in enabledBlocks %}
+                    {% if block.enabled %}
+                        <div id="{{ block.postData.block }}-{{ loop.index0 }}"
+                             class="dashboard__block dashboard__block--{{ block.type }}"
+                             data-block="{{ block.postData.block }}"
+                             data-type="{{ block.type }}"
+                             data-action="{{ block.registeredActions | join(',') }}">
+                            <div class="dashboard__content">
+                                <button class="dashboard__remove js-remove-block"
+                                        data-block="{{ block.postData.block }}-{{ loop.index0 }}"></button>
+                                <div class="dashboard__title">{{ block.postData.block }}</div>
+                                <img src="{{ block.templatePath }}static/images/dashboard-placeholder/{{ block.postData.block }}-placeholder.jpg"
+                                     class="dashboard__image">
+                                <div class="dashboard__info">
+                                    <div class="dashboard__title">Dimensione</div>
+                                    <div class="dashboard__select">
+                                        <select class="form-control js-type-block"
+                                                data-block="{{ block.postData.block }}-{{ loop.index0 }}">
+                                            <option value="{{ block.type }}" selected>{{ block.type }}</option>
+                                            {% for type in block.availableTypes %}
+                                                {% if type != block.type %}
+                                                    <option value="{{ type }}">{{ type }}</option>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    {% if block.registeredActions | length %}
+                                        <div class="dashboard__title dashboard__title--sources">Sorgente dati:<br>
+                                            {% for action in block.registeredActions %}
+                                                {{ action }}{% if loop.index < block.registeredActions | length %},{% endif %}
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
             </div>
-          {% endif %}
-        {% endfor %}
-      </div>
-      <div class="dashboard__actions">
-        <div class="dashboard__add">
-          <div class="dashboard__select dashboard__select--block">
-            <select class="form-control js-select-block">
-              <option value="" selected>Seleziona blocco</option>
-              {% for block in installedBlocks %}
-                <option value="{{ block.postData.block }}"
-                        data-type="{{ block.availableTypes|json_encode() }}"
-                        data-action="{{ block.registeredActions|json_encode() }}">{{ block.postData.block }}</option>
-              {% endfor %}
-            </select>
-            <div class="dashboard__error">Campo Obbligatorio</div>
-          </div>
-          <div class="dashboard__select dashboard__select--type">
-            <select class="form-control js-select-type"></select>
-          </div>
-          <div class="dashboard__select dashboard__select--action">
-            <div class="dashboard__select__title">Sorgente dati</div>
-            <div class="js-select-action"></div>
-          </div>
-          <button class="btn btn-primary dahsboard__button--add js-add-block">AGGIUNGI NUOVO</button>
+            <div class="dashboard__actions">
+                <div class="dashboard__add">
+                    <div class="dashboard__select dashboard__select--block">
+                        <select class="form-control js-select-block">
+                            <option value="" selected>Seleziona blocco</option>
+                            {% for block in installedBlocks %}
+                                <option value="{{ block.postData.block }}"
+                                        data-type="{{ block.availableTypes|json_encode() }}"
+                                        data-action="{{ block.registeredActions|json_encode() }}">{{ block.postData.block }}</option>
+                            {% endfor %}
+                        </select>
+                        <div class="dashboard__error">Campo Obbligatorio</div>
+                    </div>
+                    <div class="dashboard__select dashboard__select--type">
+                        <select class="form-control js-select-type"></select>
+                    </div>
+                    <div class="dashboard__select dashboard__select--action">
+                        <div class="dashboard__select__title">Sorgente dati</div>
+                        <div class="js-select-action"></div>
+                    </div>
+                    <button class="btn btn-primary dahsboard__button--add js-add-block">AGGIUNGI NUOVO</button>
+                </div>
+                <button class="button btn btn-danger dahsboard__button--save js-save-block">SALVA CONFIGURAZIONE
+                </button>
+                <div class="dashboard__message dashboard__ok">La nuova configurazione è stata salvata.</div>
+                <div class="dashboard__message dashboard__ko">Si è verificato un errore. Ti chiediamo di riprovare.
+                </div>
+            </div>
         </div>
-        <button class="button btn btn-danger dahsboard__button--save js-save-block">SALVA CONFIGURAZIONE</button>
-        <div class="dashboard__message dashboard__ok">La nuova configurazione è stata salvata.</div>
-        <div class="dashboard__message dashboard__ko">Si è verificato un errore. Ti chiediamo di riprovare.</div>
-      </div>
     </div>
-  </div>
 </div>
 
 <script type="application/javascript">
 
-  $( function() {
-    const dashboardSortable = $( "#dashboard-sortable" );
-    const selectBlock = $('.js-select-block');
-    const selectType = $('.js-select-type');
-    const selectAction = $('.js-select-action');
-    const addBlock = $('.js-add-block');
-    const saveField = $('.js-save-block');
-    const blockAction = $('.dashboard__actions');
-    const blockActionWidth = blockAction.width();
-    const windowWidth = $(window).width();
-    const elementOffset = blockAction.offset();
-    const elementOffsetTop = 108;
-    const elementOffsetLeft = elementOffset.left;
+    $(function () {
+        const dashboardSortable = $("#dashboard-sortable");
+        const selectBlock = $('.js-select-block');
+        const selectType = $('.js-select-type');
+        const selectAction = $('.js-select-action');
+        const addBlock = $('.js-add-block');
+        const saveField = $('.js-save-block');
+        const blockAction = $('.dashboard__actions');
+        const blockActionWidth = blockAction.width();
+        const windowWidth = $(window).width();
+        const elementOffset = blockAction.offset();
+        const elementOffsetTop = 108;
+        const elementOffsetLeft = elementOffset.left;
+        const templatePath = "{{ templatePath }}";
 
-    if (windowWidth >= 1024) {
-      $(window).scroll( function() {
-        anchorSidebar();
-      });
-    }
-
-    initSortable();
-
-    // SALVATAGGIO DATI
-      saveField.click( function () {
-        let response = {};
-        const blocks = $('.dashboard__block');
-
-        if (blocks) {
-          for (i = 0; i < blocks.length; i++) {
-            const block = blocks[i].getAttribute('data-block');
-            const type = blocks[i].getAttribute('data-type');
-            const action = blocks[i].getAttribute('data-action').split(',');
-
-            response[i] = {
-              'block' : block,
-              'settings' : {
-                'position': i + 1,
-                'type': type,
-                'enabled': true,
-                'enabledActions': action
-              }
-            }
-
-            console.log(response[block]);
-
-          }
+        if (windowWidth >= 1024) {
+            $(window).scroll(function () {
+                anchorSidebar();
+            });
         }
 
-        $.ajax({
-          url: '{{ ajaxUrl }}',
-          type: 'POST',
-          data: {
-            settings: response
-          },
-          beforeSend: () => {
-            saveField.attr('disabled',true);
-            $('.dashboard__message').css('display','none');
-          },
-          success: () => {
-            console.log(response);
-            saveField.removeAttr('disabled');
-            $('.dashboard__ok').css('display','block');
-          },
-          error: err => {
-            console.log(err)
-            $('.dashboard__ko').css('display','block');
-          }
-        })
+        initSortable();
 
-      });
+        // SALVATAGGIO DATI
+        saveField.click(function () {
+            let response = {};
+            const blocks = $('.dashboard__block');
 
-    // MOSTRA TYPES IN BASE AL BLOCCO SCELTO
-      selectBlock.change( function() {
-          const types = $(this).children('option:selected').attr('data-type');
-          const actions = $(this).children('option:selected').attr('data-action');
-          selectType.find('option').remove();
-          selectAction.find('label').remove();
-          selectType.parent('.dashboard__select').fadeOut();
-          selectAction.parent('.dashboard__select').fadeOut();
+            if (blocks) {
+                for (i = 0; i < blocks.length; i++) {
+                    const block = blocks[i].getAttribute('data-block');
+                    const type = blocks[i].getAttribute('data-type');
+                    const action = blocks[i].getAttribute('data-action').split(',');
 
-          if (JSON.parse(types).length) {
-            const typesJSON = JSON.parse(types);
-            selectBlock.parent('.dashboard__select').removeClass('is-required');
-            selectType.parent('.dashboard__select').fadeIn();
+                    response[i] = {
+                        'block': block,
+                        'settings': {
+                            'position': i + 1,
+                            'type': type,
+                            'enabled': true,
+                            'enabledActions': action
+                        }
+                    }
 
-            for (i = 0; i < typesJSON.length; i++) {
-              selectType.append('<option value="' + typesJSON[i] + '">' + typesJSON[i] + '</option>')
+                    console.log(response[block]);
+
+                }
             }
-          } else {
-            selectType.parent('.dashboard__select').fadeOut();
-          }
 
-        if (JSON.parse(actions).length) {
-          const actionsJSON = JSON.parse(actions);
-          selectBlock.parent('.dashboard__select').removeClass('is-required');
-          selectAction.parent('.dashboard__select').fadeIn();
+            $.ajax({
+                url: '{{ ajaxUrl }}',
+                type: 'POST',
+                data: {
+                    settings: response
+                },
+                beforeSend: () => {
+                    saveField.attr('disabled', true);
+                    $('.dashboard__message').css('display', 'none');
+                },
+                success: () => {
+                    console.log(response);
+                    saveField.removeAttr('disabled');
+                    $('.dashboard__ok').css('display', 'block');
+                },
+                error: err => {
+                    console.log(err)
+                    $('.dashboard__ko').css('display', 'block');
+                }
+            })
 
-          for (i = 0; i < actionsJSON.length; i++) {
-            selectAction.append('<label><input name="registeredAction" type="checkbox" value="' + actionsJSON[i] + '" checked /> ' + actionsJSON[i] + '</label>');
-          }
-        } else {
-          selectAction.parent('.dashboard__select').fadeOut();
-        }
-      });
-
-    // AGGIUNGE BLOCCO
-      addBlock.click( function() {
-        const selectBlockValue = selectBlock.children('option:selected').val();
-        const selectTypeValue = selectType.children('option:selected').val();
-        let selectActionValue = '';
-        const countBlocks = $('.dashboard__block').length + 2;
-
-        $.each($('input[name="registeredAction"]:checked'), function() {
-          if (selectActionValue) {
-            selectActionValue =  selectActionValue + ', ' + ($(this).val());
-          } else {
-            selectActionValue = ($(this).val());
-          }
         });
 
-         if (selectBlockValue.length > 0) {
-           selectBlock.parent('.dashboard__select').removeClass('is-required');
+        // MOSTRA TYPES IN BASE AL BLOCCO SCELTO
+        selectBlock.change(function () {
+            const types = $(this).children('option:selected').attr('data-type');
+            const actions = $(this).children('option:selected').attr('data-action');
+            selectType.find('option').remove();
+            selectAction.find('label').remove();
+            selectType.parent('.dashboard__select').fadeOut();
+            selectAction.parent('.dashboard__select').fadeOut();
 
-           const newBlock = '<div id="' + selectBlockValue + '-' + countBlocks + '" class="dashboard__block dashboard__block--' + selectTypeValue + '"' +
-                   '            data-type="' + selectTypeValue + '" data-block="' + selectBlockValue + '" data-action="' + selectActionValue.replace(/\s/g, '') + '">\n' +
-                   '            <div class="dashboard__content">\n' +
-                   '              <button class="dashboard__remove js-remove-block" data-block="' + selectBlockValue + '-' + countBlocks + '"></button>\n' +
-                   '              <img src="../../../templates/standard/static/images/dashboard-placeholder/' + selectBlockValue + '-placeholder.jpg" class="dashboard__image">' +
-                   '              <div class="dashboard__info">' +
-                   '              <div class="dashboard__title">' + selectBlockValue + '</div>\n' +
-                   '              <div class="dashboard__title dashboard__title--sources">Sorgente dati:<br>' + selectActionValue + '</div>\n' +
-                   '              </div>' +
-                   '            </div>\n' +
-                   '          </div>';
+            if (JSON.parse(types).length) {
+                const typesJSON = JSON.parse(types);
+                selectBlock.parent('.dashboard__select').removeClass('is-required');
+                selectType.parent('.dashboard__select').fadeIn();
 
-           dashboardSortable.append(newBlock);
-           initSortable(true);
-           $('html, body').animate({
-             scrollTop: $('#' + selectBlockValue + '-' + countBlocks).offset().top
-           }, 1000);
-         } else {
-           selectBlock.parent('.dashboard__select').addClass('is-required');
-         }
-      });
+                for (i = 0; i < typesJSON.length; i++) {
+                    selectType.append('<option value="' + typesJSON[i] + '">' + typesJSON[i] + '</option>')
+                }
+            } else {
+                selectType.parent('.dashboard__select').fadeOut();
+            }
 
-    // RIMUOVE BLOCCO
-    $(document).on('click', '.js-remove-block', function() {
-      const blockToRemove = $(this).attr('data-block');
-      $('#' + blockToRemove).remove();
-      initSortable(true);
+            if (JSON.parse(actions).length) {
+                const actionsJSON = JSON.parse(actions);
+                selectBlock.parent('.dashboard__select').removeClass('is-required');
+                selectAction.parent('.dashboard__select').fadeIn();
+
+                for (i = 0; i < actionsJSON.length; i++) {
+                    selectAction.append('<label><input name="registeredAction" type="checkbox" value="' + actionsJSON[i] + '" checked /> ' + actionsJSON[i] + '</label>');
+                }
+            } else {
+                selectAction.parent('.dashboard__select').fadeOut();
+            }
+        });
+
+        // AGGIUNGE BLOCCO
+        addBlock.click(function () {
+            const selectBlockValue = selectBlock.children('option:selected').val();
+            const selectTypeValue = selectType.children('option:selected').val();
+            let selectActionValue = '';
+            const countBlocks = $('.dashboard__block').length + 2;
+
+            $.each($('input[name="registeredAction"]:checked'), function () {
+                if (selectActionValue) {
+                    selectActionValue = selectActionValue + ', ' + ($(this).val());
+                } else {
+                    selectActionValue = ($(this).val());
+                }
+            });
+
+            if (selectBlockValue.length > 0) {
+                selectBlock.parent('.dashboard__select').removeClass('is-required');
+
+                const newBlock = '<div id="' + selectBlockValue + '-' + countBlocks + '" class="dashboard__block dashboard__block--' + selectTypeValue + '"' +
+                    '            data-type="' + selectTypeValue + '" data-block="' + selectBlockValue + '" data-action="' + selectActionValue.replace(/\s/g, '') + '">\n' +
+                    '            <div class="dashboard__content">\n' +
+                    '              <button class="dashboard__remove js-remove-block" data-block="' + selectBlockValue + '-' + countBlocks + '"></button>\n' +
+                    '              <img src="' + templatePath + '/static/images/dashboard-placeholder/' + selectBlockValue + '-placeholder.jpg" class="dashboard__image">' +
+                    '              <div class="dashboard__info">' +
+                    '              <div class="dashboard__title">' + selectBlockValue + '</div>\n' +
+                    '              <div class="dashboard__title dashboard__title--sources">Sorgente dati:<br>' + selectActionValue + '</div>\n' +
+                    '              </div>' +
+                    '            </div>\n' +
+                    '          </div>';
+
+                dashboardSortable.append(newBlock);
+                initSortable(true);
+                $('html, body').animate({
+                    scrollTop: $('#' + selectBlockValue + '-' + countBlocks).offset().top
+                }, 1000);
+            } else {
+                selectBlock.parent('.dashboard__select').addClass('is-required');
+            }
+        });
+
+        // RIMUOVE BLOCCO
+        $(document).on('click', '.js-remove-block', function () {
+            const blockToRemove = $(this).attr('data-block');
+            $('#' + blockToRemove).remove();
+            initSortable(true);
+        });
+
+        // MODIFICA DIMENSIONE BLOCCO
+        $(document).on('change', '.js-type-block', function () {
+            const blockToChange = $(this).attr('data-block');
+            const newType = $(this).val();
+            $('#' + blockToChange).removeAttr('class').addClass('dashboard__block').addClass('dashboard__block--' + newType).attr('data-type', newType);
+            initSortable(true);
+        });
+
+        function initSortable(reinit) {
+            if (reinit) {
+                dashboardSortable.sortable('destroy');
+                dashboardSortable.unbind();
+            }
+            dashboardSortable.sortable({
+                connectWith: "#dashboard-sortable"
+            });
+        }
+
+        function anchorSidebar() {
+            const $scrollTop = $(window).scrollTop();
+            const $distance = (elementOffsetTop - $scrollTop);
+
+            if ($distance <= 0) {
+                blockAction.addClass('is-fixed');
+                blockAction.css('width', blockActionWidth);
+                blockAction.css('left', elementOffsetLeft);
+                blockAction.css('top', 0);
+            } else {
+                blockAction.removeClass('is-fixed');
+                blockAction.removeAttr('style');
+            }
+        }
+
     });
-
-    // MODIFICA DIMENSIONE BLOCCO
-    $(document).on('change', '.js-type-block', function() {
-      const blockToChange = $(this).attr('data-block');
-      const newType = $(this).val();
-      $('#' + blockToChange).removeAttr('class').addClass('dashboard__block').addClass('dashboard__block--' + newType).attr('data-type',newType);
-      initSortable(true);
-    });
-
-    function initSortable(reinit) {
-      if (reinit) {
-        dashboardSortable.sortable('destroy');
-        dashboardSortable.unbind();
-      }
-      dashboardSortable.sortable({
-        connectWith: "#dashboard-sortable"
-      });
-    }
-
-    function anchorSidebar() {
-      const $scrollTop     = $(window).scrollTop();
-      const $distance      = (elementOffsetTop - $scrollTop);
-
-      if ($distance <= 0) {
-        blockAction.addClass('is-fixed');
-        blockAction.css('width', blockActionWidth);
-        blockAction.css('left', elementOffsetLeft);
-        blockAction.css('top', 0);
-      } else {
-        blockAction.removeClass('is-fixed');
-        blockAction.removeAttr('style');
-      }
-    }
-
-  } );
 </script>
 
 <style type="text/css">
-  .dashboard .d-row {
-    align-items: flex-start;
-    justify-content: space-between;
-    flex-direction: column-reverse;
-  }
-
-  @media all and (min-width: 1024px) {
     .dashboard .d-row {
-      flex-direction: row;
+        align-items: flex-start;
+        justify-content: space-between;
+        flex-direction: column-reverse;
     }
-  }
 
-  .dashboard__select__title {
-    margin-bottom: 5px;
-  }
+    @media all and (min-width: 1024px) {
+        .dashboard .d-row {
+            flex-direction: row;
+        }
+    }
 
-  .dashboard__info {
-    width: calc(100% - 20px);
-    position: absolute;
-    bottom: 10px;
-    left: 10px;
-  }
+    .dashboard__select__title {
+        margin-bottom: 5px;
+    }
 
-  .dashboard__title {
-    display: block;
-    width: 100%;
-    text-align: center;
-    font-size: 12px;
-    font-weight: bold;
-    margin-bottom: 10px;
-    word-break: break-all;
-  }
+    .dashboard__info {
+        width: calc(100% - 20px);
+        position: absolute;
+        bottom: 10px;
+        left: 10px;
+    }
 
-  .dashboard__title--sources {
-    margin-top: 10px;
-  }
+    .dashboard__title {
+        display: block;
+        width: 100%;
+        text-align: center;
+        font-size: 12px;
+        font-weight: bold;
+        margin-bottom: 10px;
+        word-break: break-all;
+    }
 
-  .dashboard__container {
-    background: #e2e1e0;
-    display: flex;
-    flex-wrap: wrap;
-    width: 100%;
-    padding: 10px;
-  }
-
-  @media all and (min-width: 1024px) {
+    .dashboard__title--sources {
+        margin-top: 10px;
+    }
 
     .dashboard__container {
-      width: 74%;
+        background: #e2e1e0;
+        display: flex;
+        flex-wrap: wrap;
+        width: 100%;
+        padding: 10px;
     }
-  }
 
-  .dashboard__block {
-    padding: 5px;
-    box-sizing: border-box;
-    flex-basis: 100%;
-  }
+    @media all and (min-width: 1024px) {
 
-  .dashboard__content {
-    background-color: #fff;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
-    height: 100%;
-    position: relative;
-    padding: 25px 10px 125px 10px;
-    cursor: grab;
-  }
+        .dashboard__container {
+            width: 74%;
+        }
+    }
 
-  .dashboard__message {
-    padding: 10px;
-    text-align: center;
-    margin-top: 10px;
-    display: none;
-  }
+    .dashboard__block {
+        padding: 5px;
+        box-sizing: border-box;
+        flex-basis: 100%;
+    }
 
-  .dashboard__ok {
-    color: #155724;
-    background-color: #d4edda;
-    border-color: #c3e6cb;
-  }
+    .dashboard__content {
+        background-color: #fff;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+        transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
+        height: 100%;
+        position: relative;
+        padding: 25px 10px 125px 10px;
+        cursor: grab;
+    }
 
-  .dashboard__ko {
-    color: #721c24;
-    background-color: #f8d7da;
-    border-color: #f5c6cb;
-  }
+    .dashboard__message {
+        padding: 10px;
+        text-align: center;
+        margin-top: 10px;
+        display: none;
+    }
 
-  .dashboard__image {
-    max-width: 100%;
-    height: auto;
-  }
+    .dashboard__ok {
+        color: #155724;
+        background-color: #d4edda;
+        border-color: #c3e6cb;
+    }
 
-  .dashboard__content:focus {
-    cursor: grabbing;
-  }
+    .dashboard__ko {
+        color: #721c24;
+        background-color: #f8d7da;
+        border-color: #f5c6cb;
+    }
 
-  .dashboard__content:hover {
-    box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
-  }
+    .dashboard__image {
+        max-width: 100%;
+        height: auto;
+    }
 
-  .dashboard__remove {
-    position: absolute;
-    top: 5px;
-    right: 5px;
-    font-size: 16px;
-    background-color: transparent;
-    border: 0;
-    width: 15px;
-    height: 15px;
-    background-image: url('../templates/standard/static/images/icons/user-panel/icon--up-close.png');
-    background-size: cover;
-  }
+    .dashboard__content:focus {
+        cursor: grabbing;
+    }
 
-  .dashboard__remove:hover {
-    background-image: url('../templates/standard/static/images/icons/user-panel/icon--up-close-hover.png');
-  }
+    .dashboard__content:hover {
+        box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+    }
 
-  .dashboard__actions {
-    width: 100%;
-    display: flex;
-    justify-content: flex-end;
-    flex-direction: column;
-  }
+    .dashboard__remove {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        font-size: 16px;
+        background-color: transparent;
+        border: 0;
+        width: 15px;
+        height: 15px;
+        background-image: url('../templates/standard/static/images/icons/user-panel/icon--up-close.png');
+        background-size: cover;
+    }
 
-  @media all and (min-width: 1024px) {
+    .dashboard__remove:hover {
+        background-image: url('../templates/standard/static/images/icons/user-panel/icon--up-close-hover.png');
+    }
+
     .dashboard__actions {
-      width: 25%;
+        width: 100%;
+        display: flex;
+        justify-content: flex-end;
+        flex-direction: column;
     }
 
-    .dashboard__actions.is-fixed {
-      position: fixed;
-      right: 0;
-    }
-  }
+    @media all and (min-width: 1024px) {
+        .dashboard__actions {
+            width: 25%;
+        }
 
-  .dashboard__select.is-required select {
-    border: 1px solid #ff0000;
-  }
-
-  .dashboard__select.is-required .dashboard__error {
-    display: block;
-  }
-
-  .dashboard__error {
-    display: none;
-    color: #ff0000;
-  }
-
-  .dashboard__add {
-    display: flex;
-    flex-direction: column;
-    padding: 20px;
-    background-color: #efefef;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    margin-bottom: 40px;
-  }
-
-  .dashboard__add .dashboard__select {
-    margin-bottom: 20px;
-  }
-
-  @media all and (min-width: 1024px) {
-
-    .dashboard__block--4-col {
-      flex-basis: 100%;
+        .dashboard__actions.is-fixed {
+            position: fixed;
+            right: 0;
+        }
     }
 
-    .dashboard__block--3-col {
-      flex-basis: 75%;
+    .dashboard__select.is-required select {
+        border: 1px solid #ff0000;
     }
 
-    .dashboard__block--2-col {
-      flex-basis: 50%;
+    .dashboard__select.is-required .dashboard__error {
+        display: block;
     }
 
-    .dashboard__block--1-col {
-      flex-basis: 25%;
+    .dashboard__error {
+        display: none;
+        color: #ff0000;
     }
 
-  }
+    .dashboard__add {
+        display: flex;
+        flex-direction: column;
+        padding: 20px;
+        background-color: #efefef;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        margin-bottom: 40px;
+    }
 
-  .dashboard__select--type,
-  .dashboard__select--action {
-    display: none;
-  }
+    .dashboard__add .dashboard__select {
+        margin-bottom: 20px;
+    }
+
+    @media all and (min-width: 1024px) {
+
+        .dashboard__block--4-col {
+            flex-basis: 100%;
+        }
+
+        .dashboard__block--3-col {
+            flex-basis: 75%;
+        }
+
+        .dashboard__block--2-col {
+            flex-basis: 50%;
+        }
+
+        .dashboard__block--1-col {
+            flex-basis: 25%;
+        }
+
+    }
+
+    .dashboard__select--type,
+    .dashboard__select--action {
+        display: none;
+    }
 
 </style>

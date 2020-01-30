@@ -4,7 +4,7 @@
   {#profile#}
 
   {% if block.user.avatar == '' %}
-    {% set avatarUrl = '/templates/standard/static/images/icons/user-panel/icon--up-photo-placeholder.png' %}
+    {% set avatarUrl = templatePath ~ 'static/images/icons/user-panel/icon--up-photo-placeholder.png' %}
   {% else %}
     {% set avatarUrl = block.user.avatar %}
   {% endif %}

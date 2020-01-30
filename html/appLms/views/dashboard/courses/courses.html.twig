@@ -29,7 +29,7 @@
                    href="/appLms/index.php?modname=course&op=aula&idCourse={{ course.id }}">
                     <div class="d-courses__img-wrapper">
                         <img class="d-courses__img"
-                             src="{% if course.img != '' %} {{ course.img }} {% else %}/templates/standard/static/images/course-placeholder.png {% endif %}"/>
+                             src="{% if course.img != '' %} {{ course.img }} {% else %}{{ templatePath }}static/images/course-placeholder.png {% endif %}"/>
                     </div>
                     <div class="d-courses__content-wrapper">
                         <div class="d-course__title">
