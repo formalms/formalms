@@ -545,6 +545,7 @@ class SettingAdm extends Model
 	                  $tab_list = array();
 	                  $tab_list['my_courses'] = Lang::t('_MY_COURSES');
 	                  $tab_list['catalogue'] = Lang::t('_CATALOGUE');
+	                  $tab_list['dashboard'] = Lang::t('_DASHBOARD');
 	                  $which_home = $var_value;
 
 	                    echo '<div class="form_line_l"><p><b>' .
