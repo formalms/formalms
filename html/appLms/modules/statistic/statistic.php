@@ -175,32 +175,10 @@ function outPageView($link)
                                 }
                             });
         </script>', 'content');
-
-    /*$GLOBALS['page']->add(
-        '<div class="container_graphic">'."\n"
-        .'<table cellspacing="0">'
-        .'<tr class="colum_isto">', 'content');
-
-    $left_space = 0;
-    $out_index = '';
-    $width = round(100 / $colums, 1);
-    while(list($i, $number) = each($walk)) {
-
-        $value = ( isset($page_views[$number]) ? $page_views[$number] : 0 );
-        $GLOBALS['page']->add(
-            '<td style="width: '.$width.'%;">'
-                .( $value != 0 ? $value.'<div class="colored_isto" style="height: '.((150 / $max) * $value).'px;">&nbsp;</div>' : '' )
-            .'</td>', 'content');
-        $out_index .= '<td>'.( isset($walk_name[$i]) ? $walk_name[$i] : $number ).'</td>';
-    }
-    $GLOBALS['page']->add(
-        '</tr>'
-        .'<tr class="colum_index" scope="col">'.$out_index.'</tr>'
-        .'</table>'
-        .'</div>'."\n"*/
     cout('<div class="align-center">'
         . '<ul class="link_list_inline">', 'content');
-    while (list(, $value) = each($times)) {
+    foreach($times as $value) 
+    {
 
         if ($for == $value) {
             $GLOBALS['page']->add('<li><span>' . $lang->def('_FOR_' . $value) . '</span></li>', 'content');
@@ -255,7 +233,8 @@ function statistic()
     );
     $tb->setColsStyle($type_h);
     $tb->addHead($cont_h);
-    while (list(, $user_info) = each($users_list)) {
+    foreach($users_list as $user_info )
+    {
         $cont = array(
             '<a href="index.php?modname=statistic&amp;op=userdetails&amp;id=' . $user_info[ACL_INFO_IDST] . '" '
             . 'title="' . $lang->def('_DETAILS') . ' : ' . $acl_man->relativeId($user_info[ACL_INFO_USERID]) . '">'

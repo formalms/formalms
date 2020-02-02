@@ -61,7 +61,7 @@ function myfriends(&$url) {
 	}
 	
 	if(is_array($users_info) && !empty($users_info))
-	while(list(, $ui) = each($users_info)) {
+  foreach($users_info as $ui) {
 		
 		$profile = new UserProfile( $ui['id'] );
 		$profile->init('profile', 'framework', 'modname=myfriends&op=searchuser', 'ap');
@@ -116,7 +116,8 @@ function approveuser(&$url) {
 	, 'content');
 	
 	if(!is_array($users_info) || empty($users_info)) Util::jump_to($url->getUrl());
-	while(list(, $ui) = each($users_info)) {
+  foreach($users_info as $ui)
+	{
 		
 		$profile = new UserProfile( $ui['id'] );
 		$profile->init('profile', 'framework', 'modname=myfriends&op=approveuser', 'ap');

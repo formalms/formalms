@@ -249,8 +249,8 @@ class LightRepoManager {
 		
 		$users_list 	=& $acl_man->getUsers($course_user);
 		
-		while(list(,$user) = each($users_list)) {
-			
+	  foreach($users_list as $user )
+    {
 			$file_list[$user[ACL_INFO_IDST]] = array();
 			$file_list[$user[ACL_INFO_IDST]]['id_user'] = $user[ACL_INFO_IDST];
 			$file_list[$user[ACL_INFO_IDST]]['username'] = $acl_man->getConvertedUserName($user);

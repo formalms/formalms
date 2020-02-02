@@ -193,8 +193,8 @@ function send_newsletter($send_id) {
 			$send_to_field = Get::sett('sms_cell_num_field');
 			$users_sms 		= $field_man->showFieldForUserArr($arr_st, array($send_to_field));
 			$users_info = $acl_man->getUsers($arr_st);
-
-			while(list(, $user_dett) = each($users_info)) {
+      foreach($users_info  as $user_dett )
+			{
 
 				// recover media setting
 				$idst_user = $user_dett[ACL_INFO_IDST];

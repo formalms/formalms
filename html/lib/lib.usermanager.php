@@ -1564,12 +1564,11 @@ class UserManagerRenderer
         if (!empty($array_folder)) {
 			//let's find the oc and ocd
 			$oc_folders = $uma->getOcFolders($array_folder);
-			while(list($id, $ocs) = each($oc_folders)) {
-
+      foreach($oc_folders as $id => $ocs ){
 				$acl_man->addToGroup($ocs[0], $iduser);
 				$acl_man->addToGroup($ocs[1], $iduser);
 			}
-            while (list($id, $folder) = each($array_folder)) {
+            foreach($array_folder as $id => $folder ){
                 $acl_man->addToGroup($folder, $iduser);
             }
 
@@ -1632,8 +1631,7 @@ class UserManagerRenderer
         if (isset($_POST['group_sel_implode'])) {
 
             $groups = explode(',', $_POST['group_sel_implode']);
-            while (list(, $idst) = each($groups)) {
-
+            foreach($groups as $idst){            
                 $acl_man->addToGroup($idst, $iduser);
                 // FORMA: added the inscription policy
                 $enrollrules = new EnrollrulesAlms();

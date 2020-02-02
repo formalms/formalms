@@ -120,8 +120,7 @@ function newroom() {
 		.Form::getDropdown($lang->def('_ROOM_TYPE'), 'rules_room_type', 'rules[room_type]', $room_types)
 	);
 	
-	while(list($var_name, $var_value) = each($rules)) {
-		
+	foreach($rules as $var_name => $var_value ) {
 		$out->add(maskMultiple($var_name, $var_value));
 	}
 	$out->add(
@@ -173,8 +172,7 @@ function modroom() {
 	);
 	
 	reset($rules);
-	while(list($var_name, $var_value) = each($rules)) {
-		
+  foreach($rules as $var_name => $var_value ) {
 		if(substr($var_name, 0, 6) == 'enable') {
 			$out->add(maskMultiple($var_name, $var_value));
 		}

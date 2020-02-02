@@ -51,8 +51,8 @@ class LangAdmController extends AdmController {
 
 		$lang_list = $this->model->getLangList($startIndex, $results, $sort, $dir);
 		$total = $this->model->getLangTotal();
-
-		while(list($i, $lang) = each($lang_list)) {
+    foreach($lang_list as $i => $lang)
+    {
 
 			$lang->lang_translate = 'index.php?r=adm/lang/list&amp;lang_code='.$lang->lang_code;
 			$lang->lang_export = 'index.php?r=adm/lang/export&amp;lang_code='.$lang->lang_code;

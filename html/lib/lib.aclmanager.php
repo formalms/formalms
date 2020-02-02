@@ -917,7 +917,8 @@ class DoceboACLManager
             while (list($id) = sql_fetch_row($re)) $idst_del[] = $id;
         }
         // Remove all the finded entry
-        while (list(, $idst) = each($idst_del)) {
+        foreach($idst_del as $idst )
+        {
             if ($del_field === true) {
 
                 $this->_removeAllFromGroup($idst);
@@ -2492,7 +2493,8 @@ class DoceboACLManager
         }
 
         $abs_user_arr = array();
-        while (list(, $user_rel) = each($user_arr)) {
+        foreach($user_arr as $user_rel )
+        {
 
             $abs_user_arr[] = "'" . $this->absoluteId($user_rel) . "'";
         }
@@ -2574,22 +2576,7 @@ class DoceboACLManager
     {
 
         return $this->getAllUsersFromSelection($arr_idst);
-        /*
-        if (is_numeric($arr_idst)) $arr_idst = array((int)$arr_idst);
-        if (!is_array($arr_idst)) return false;
-
-        $users_selected 	= $this->getUsersFromMixedIdst($arr_idst);
-        $groups_selected 	= $this->getGroupsFromMixedIdst($arr_idst);
-        $idst_group_arr =array();
-
-        while(list(, $idst_group) = each($groups_selected)){
-            $idst_group_arr[] = (int)$idst_group;
-        }
-
-        $group_user 		= $this->getGroupAllUser($idst_group_arr);
-        $users_selected 	= array_merge($users_selected, $group_user);
-        return $users_selected;
-        */
+ 
     }
 
 

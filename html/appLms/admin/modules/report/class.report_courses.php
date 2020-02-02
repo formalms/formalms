@@ -1112,8 +1112,9 @@ class Report_Courses extends Report {
 
 			} else {
 
-				reset($org_name);
-				while(list($idst_group, $folder_name) = each($org_name)) {
+				reset($org_name)
+				foreach($org_name as $idst_group => $folder_name)
+        {
 
 					if ($first) {
 						$first = FALSE;
@@ -1293,7 +1294,8 @@ class Report_Courses extends Report {
 
 				$first = true;
 				reset($org_name);
-				while(list($idst_group, $folder_name) = each($org_name)) {
+        foreach($org_name as $idst_group => $folder_name)
+        {
 
 					if ($first) {
 						$first = FALSE;
@@ -1625,8 +1627,9 @@ class Report_Courses extends Report {
 
 		$course_man = new Man_Course();
 		$buffer->openBody();
-
-		while(list($index, $course_info) = each($id_courses) ) {
+		
+    foreach($id_courses as $index => $course_info)
+    {
 
 			$idc = $id_date = 0;
 			if ($show_classrooms_editions) {

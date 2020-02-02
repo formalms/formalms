@@ -147,7 +147,7 @@ function showgrade() {
 
 	// XXX: construct table data
 	if(!empty($reports))
-	while(list($id_report, $report_info) = each($reports)) {
+  foreach($reports as $id_report => $report_info) {
 
 		$id_source = $report_info['id_source'];
 		$title = strip_tags($report_info['title']);

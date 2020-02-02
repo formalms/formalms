@@ -61,7 +61,7 @@ class Field_Freetext extends Field {
 			$mand_lang = getLanguage();
 			$show_on = '';
 			if(isset($_POST['show_on_platform'])) {
-				while(list($code, ) = each($_POST['show_on_platform']))
+        foreach($_POST['show_on_platform']  as $code )      
 					$show_on .= $code.',';
 			}
 			//control if all is ok
@@ -184,7 +184,7 @@ class Field_Freetext extends Field {
 			$mand_lang = getLanguage();
 			$show_on = '';
 			if(isset($_POST['show_on_platform'])) {
-				while(list($code, ) = each($_POST['show_on_platform']))
+        foreach($_POST['show_on_platform']  as $code )
 					$show_on .= $code.',';
 			}
 			//control if all is ok

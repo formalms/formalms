@@ -112,7 +112,8 @@ HTML;
         'mo_message' =>  Lang::t('_MESSAGES', 'menu_over')
     );
     $slider_options = array_merge($block, $menu_on_slider);
-    while(list($id, $name) = each($slider_options)) {
+    foreach($slider_options as $id => $name)
+    {
 
         $block_list .= '<div class="direct_block">'
             .'<span>'.$name.'</span>'

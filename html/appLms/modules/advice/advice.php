@@ -267,7 +267,7 @@ function addadvice() {
 	$db_groups = $acl_man->getBasePathGroupST('/lms/course/'.$_SESSION['idCourse'].'/group/', true);
 	$groups = array();
 	$groups['me'] = $lang->def('_YOUONLY');
-	while(list($idst, $groupid) = each($db_groups)) {
+  foreach($db_groups as $idst => $groupid) {
 
 		$groupid = substr($groupid, strlen('/lms/course/'.$_SESSION['idCourse'].'/group/'));
 		if($groupid == 'alluser') {
@@ -535,7 +535,8 @@ function updreader() {
 	$dest = array();
 	if(is_array($add_reader)) {
 
-		while(list(, $idst) = each($add_reader)) {
+		foreach($add_reader as $idst)
+    {
 
 			$query_insert = "
 				INSERT INTO ".$GLOBALS['prefix_lms']."_adviceuser
@@ -548,7 +549,7 @@ function updreader() {
 	}
 	if(is_array($del_reader)) {
 
-		while(list(, $idst) = each($del_reader)) {
+			foreach($del_reader as $idst) {
 
 			$query_delete = "
 				DELETE FROM ".$GLOBALS['prefix_lms']."_adviceuser

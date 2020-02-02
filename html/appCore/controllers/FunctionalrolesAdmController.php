@@ -1159,7 +1159,8 @@ Class FunctionalrolesAdmController extends AdmController {
 		$_std_expiration = 0;
 		$lang_code = getLanguage();
 		$properties = $this->model->getCompetencesProperties($list);
-		while (list($key, $value) = each($cinfo)) {
+    foreach($cinfo as $key => $value)
+    {
 			$line = array();
 
 			$line[] = $value->langs[$lang_code]['name'];
@@ -1263,7 +1264,8 @@ Class FunctionalrolesAdmController extends AdmController {
 		$competences = $this->model->getCompetences($id_fncrole);
 		$properties = $this->model->getCompetencesProperties($competences, $id_fncrole);
 		$competences_info = $cmodel->getCompetencesInfo($competences);
-		while (list($key, $value) = each($competences_info)) {
+    foreach($competences_info as $key => $value) 
+    {
 			$value->role_score = (isset($properties[$key]) ? $properties[$key]->score : 0);
 			$value->role_expiration = (isset($properties[$key]) ? $properties[$key]->expiration : 0);
 		}

@@ -135,7 +135,8 @@ class Field {
 
 			$res.=Form::getOpenFieldset(Lang::t('_SHOW_ON_PLATFORM', 'field'));
 			$res.=Form::getHidden('show_on_platform_framework', 'show_on_platform[framework]', 1);
-			while(list($code, $name) = each($plt_list)) {
+      foreach( $plt_list as $code => $name )
+      {
 				$sel =(isset($show_on_platform[$code]) ? TRUE : FALSE);
 				$res.=Form::getCheckbox($name, 'show_on_platform_'.$code, 'show_on_platform['.$code.']', 1, $sel);
 			}

@@ -183,7 +183,8 @@ class GroupTestManagement {
 		list($point_required, $show_only_status) = sql_fetch_row($re_test);
 		$old_scores =& $this->getTestsScores(array($id_test), false, true);
 		$re = true;
-		while(list($idst_user, $score) = each($users_scores)) {
+    
+		foreach($users_scores as $idst_user => $score) {
 
 			$query_scores = "
 			UPDATE ".$GLOBALS['prefix_lms']."_testtrack

@@ -754,7 +754,8 @@ class CourseSubscribe_Management {
 	function multipleSubscribe($arr_users, $arr_courses, $levels, $id_log = false) {
 
 		$re = true;
-		while(list(, $id_course) = each($arr_courses)) {
+    foreach($arr_courses as $id_course)
+    {
 
 			$re &= $this->subscribeUsers($arr_users , $id_course, ( is_array($levels) ? $levels[$id_course] : $levels ), $id_log);
 		}
@@ -775,7 +776,8 @@ class CourseSubscribe_Management {
 
 		if(empty($arr_courses)) return true;
 
-		while(list(, $id_course) = each($arr_courses)) {
+    foreach($arr_courses as $id_course)		
+    {
 
 			$re = true;
 
@@ -830,7 +832,7 @@ class CourseSubscribe_Management {
 		$group_levels 	=& $this->course_man->getCourseIdstGroupLevel($id_course);
 		$user_level 	= $this->course_man->getLevelsOfUsers($id_course, $arr_users);
 
-		while(list(, $id_user) = each($arr_users)) {
+    foreach($arr_users as $id_user) {
 
 			$lv = ( is_array($levels) ? $levels[$id_user] : $levels );
 			if(!isset($user_level[$id_user])) {
@@ -909,7 +911,8 @@ class CourseSubscribe_Management {
 	function multipleUnsubscribe($arr_users, $arr_courses) {
 
 		$re = true;
-		while(list(, $id_course) = each($arr_courses)) {
+    
+    foreach($arr_courses as $id_course) {
 
 			$re &= $this->unsubscribeUsers($arr_users , $id_course);
 		}
@@ -929,8 +932,7 @@ class CourseSubscribe_Management {
 
 		$group_levels =& $this->course_man->getCourseIdstGroupLevel($id_course);
 		$user_level = $this->course_man->getLevelsOfUsers($id_course, $arr_users);
-
-		while(list(, $id_user) = each($arr_users)) {
+    foreach($arr_users as $id_user) {
 
 			if(isset($user_level[$id_user])) {
 				$lv = $user_level[$id_user];
@@ -1028,7 +1030,7 @@ class CourseSubscribe_Management {
 		if($edition_group === FALSE) {
 			$edition_group = $acl_man->registerGroup('/lms/course_edition/'.$id_edition.'/subscribed', 'all the user of a course edition', true, "course");
 		}
-		while(list(, $id_user) = each($arr_users)) {
+    foreach($arr_users as $id_user) {
 
 			$lv = ( is_array($levels) ? $levels[$id_user] : $levels );
 			if(!isset($user_level[$id_user])) {
@@ -1199,7 +1201,7 @@ class CourseSubscribe_Management {
 			$survivor[$idu] = $idu;
 		}
 
-		while(list(, $id_user) = each($arr_users)) {
+    foreach($arr_users as $id_user) {
 
 			if(isset($user_level[$id_user]) && !isset($survivor[$id_user])) {
 				$lv = $user_level[$id_user];

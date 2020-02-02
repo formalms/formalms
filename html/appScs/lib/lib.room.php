@@ -38,7 +38,7 @@ function insertRoom($array_source) {
 
 	$variable = '';
 	$values = '';
-	while(list($var_name, $var_value) = each($array_source)) {
+  foreach($array_source as $var_name => $var_value) {
 
 		$variable 	.= $var_name.', ';
 		$values 	.= "'".$var_value."', ";
@@ -54,8 +54,7 @@ function insertRoom($array_source) {
 function updateRoom($id_room, $array_source) {
 
 	$query_update = "UPDATE ".$GLOBALS['prefix_scs']."_rules_room SET ";
-	while(list($var_name, $var_value) = each($array_source)) {
-
+  foreach($array_source as $var_name => $var_value) 
 		$query_update .= $var_name." = '".$var_value."', ";
 	}
 	$query_update = substr($query_update, 0, -2);

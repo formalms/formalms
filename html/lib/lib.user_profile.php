@@ -1351,7 +1351,7 @@ class UserProfileViewer {
 		// user extra field ------------------------------------------------------------------
 
 		if(!empty($user_field))
-		while(list(, $value) = each($user_field)) {
+    foreach($user_field as $value ) {
 
 			$html .= $this->getUIRowCode($value['name'], $value['value']);
 		}
@@ -1429,7 +1429,7 @@ class UserProfileViewer {
 		// end extra field -------------------------------------------------------------------
 
 		if(!empty($user_contacts))
-		while(list(, $value) = each($user_contacts)) {
+    foreach($user_contacts as $value )  {
 
 			if($value['head']) $GLOBALS['page']->add($value['head'], 'page_head');
 			$prefix = '';
@@ -1998,8 +1998,7 @@ class UserProfileViewer {
 		// user extra field ------------------------------------------------------------------
 
 		if(!empty($user_field))
-		while(list(, $value) = each($user_field)) {
-
+    foreach($user_field as $value )  {
 			$html .= $this->getUIRowCode($value['name'], $value['value']);
 		}
 
@@ -2652,32 +2651,11 @@ class UserProfileViewer {
 				.'</tr></thead>';
 
 		$html .= '<tbody>'
-			/*.$this->getUIPolicyCode(	$this->_lang->def('_LASTNAME'),
-										$this->user_info[ACL_INFO_LASTNAME],
-										Form::getInputDropdown(	'dropdown_wh',
-											'policy_selected_lastname',
-											'policy_selected[lastname]',
-											$policy_arr,
-											(isset($field_policy['lastname']) ? $field_policy['lastname'] : PFL_POLICY_NOONE ) ,
-											''
-										)
-									)
-
-			.$this->getUIPolicyCode(	$this->_lang->def('_FIRSTNAME'),
-										$this->user_info[ACL_INFO_FIRSTNAME],
-										Form::getInputDropdown(	'dropdown_wh',
-											'policy_selected_firstname',
-											'policy_selected[firstname]',
-											$policy_arr,
-											(isset($field_policy['firstname']) ? $field_policy['firstname'] : PFL_POLICY_NOONE ) ,
-											''
-										)
-									)*/;
 
 		// user extra field ------------------------------------------------------------------
 
 		if(!empty($user_field))
-		while(list($id, $value) = each($user_field)) {
+    foreach($user_field as $id => $value ) {
 
 			$html .= $this->getUIPolicyCode(	$value['name'],
 												$value['value'],
@@ -2706,8 +2684,7 @@ class UserProfileViewer {
 											)
 										);
 		if(!empty($user_contacts))
-		while(list($id, $value) = each($user_contacts)) {
-
+    foreach($user_field as $id => $value ) {    
 			$html .= $this->getUIPolicyCode(	$value['name'],
 												$value['value'],
 												Form::getInputDropdown(	'dropdown_wh',
@@ -2796,10 +2773,9 @@ class UserProfileViewer {
 					.'<h3>'.str_replace('[firstname]', $this->resolveUsername(true), $this->_lang->def('_FRIENDS_OF')).'</h3>';
 			$html .= '<ul>';
 			$i = 0;
-			while((list($id, $info) = each($friend_list)) && $i < 7) {
-
+      foreach($friend_list as $id => $info ) {
+        if ($i = 7) break; 
 				$friend_username = $acl_man->getConvertedUserName($info);
-
 				$html .= '<li>'
 						.'<a href="'.$this->_url_man->getUrl($this->_varname_action.'=goprofile&id_user='.$id).'"'
 							.' title="'.str_replace('[firstname]', $friend_username, $this->_lang->def('_GO_TO_PROFILE')).'">'
@@ -2844,8 +2820,7 @@ class UserProfileViewer {
 		if(!empty($last_view)){
 
 			$first = true;
-			while(list($id, $info) = each($last_view)) {
-
+      foreach($last_view as $id => $info ){
 				if(!$first) $html .= ', ';
 				else $first = false;
 				$html .= '<a '.( $info['days_ago'] <= 15 ? ' class="last_visit"' : '' )
@@ -3027,7 +3002,7 @@ class UserProfileViewer {
 			$html .= '<div class="up_teacher_course">'
 					.'<h3>'.$this->_lang->def('_COURSE_AS_TEACHER').'</h3>'
 					.'<ul>';
-			while(list($id, $data) = each($teacher_course)) {
+      foreach($teacher_course as $id => $data ){          
 				if ($this->userCourseSubscrived($id))
 					$html .= '<li><a href="'.Get::rel_path('lms').'/index.php?modname=course&amp;op=aula&amp;idCourse='.$id.'">['.$data['code'].'] '.$data['name'].'</a></li>';
 				else
@@ -3041,7 +3016,7 @@ class UserProfileViewer {
 			$html .= '<div class="up_tutor_course">'
 					.'<h3>'.$this->_lang->def('_COURSE_AS_TUTOR').'</h3>'
 					.'<ul>';
-			while(list($id, $data) = each($tutor_list)) {
+      foreach($tutor_list as $id => $data ){          
 				$html .= '<li>['.$data['code'].'] '.$data['name'].'</li>';
 			}
 			$html .= '</ul>'
@@ -3052,7 +3027,7 @@ class UserProfileViewer {
 			$html .= '<div class="up_mentor_course">'
 					.'<h3>'.$this->_lang->def('_COURSE_AS_MENTOR').'</h3>'
 					.'<ul>';
-			while(list($id, $data) = each($mentor_list)) {
+      foreach($mentor_list as $id => $data ){          
 				$html .= '<li>['.$data['code'].'] '.$data['name'].'</li>';
 			}
 			$html .= '</ul>'
@@ -3223,8 +3198,7 @@ class UserProfileViewer {
 			$this->_lang->def('_SCORE_FINAL'),
 			str_replace(':', '', $lang_test->def('_TEST_TOTAL_SCORE'))
 		));
-		while(list($id_c, $info) = each($stats_data)) {
-
+    foreach($stats_data as $id_c => $info ){
 			$tb->addBody(array(
 				$info['course_code'],
 				$info['course_name'],
@@ -3577,8 +3551,7 @@ class UserProfileData {
 		}
 
 		$teachers = Man_CourseUser::getUserWithLevelFilter(array('4', '5', '6', '7'), $arr_user);
-		while(list(, $id) = each($teachers)) {
-
+    foreach($teachers as $id ) {
 			$this->_teacher_data[$id]['is_teacher'] = true;
 		}
 	}
@@ -4397,7 +4370,7 @@ class UserProfileData {
 
 		$score_start = $org_man->getStartObjectScore(array($id_user), $id_courses);
 		$score_final = $org_man->getFinalObjectScore(array($id_user), $id_courses);
-		while(list(,$id_c) = each($id_courses)) {
+    foreach($id_courses as $id_c){
 
 			if(isset($stats[$id_c])) {
 

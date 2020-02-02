@@ -1117,10 +1117,8 @@ class Report extends \ReportPlugin{
                 );
 
             } else {
-
                 reset($org_name);
-                while(list($idst_group, $folder_name) = each($org_name)) {
-
+                foreach($org_name as $idst_group=>$folder_name) {                
                     if ($first) {
                         $first = FALSE;
                     } else {
@@ -1299,8 +1297,7 @@ class Report extends \ReportPlugin{
 
                 $first = true;
                 reset($org_name);
-                while(list($idst_group, $folder_name) = each($org_name)) {
-
+                foreach($org_name as $idst_group=>$folder_name) {                
                     if ($first) {
                         $first = FALSE;
                     } else {
@@ -1605,9 +1602,7 @@ class Report extends \ReportPlugin{
 
         $course_man = new Man_Course();
         $buffer->openBody();
-
-        while(list($index, $course_info) = each($id_courses) ) {
-
+        foreach($id_courses as $index=>$course_info) {
             $idc = $id_date = 0;
             if ($show_classrooms_editions) {
                 if (isset($course_info['course_type']) && $course_info['course_type'] == 'classroom') {

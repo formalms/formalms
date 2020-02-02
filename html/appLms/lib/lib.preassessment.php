@@ -227,7 +227,7 @@ class AssessmentList {
 			$user_assigned[$row[USER_ASSES_ID_USER]] = $row[USER_ASSES_TYPE];
 		}
 		reset($user_list);
-		while(list(, $id_user) = each($user_list)) {
+    foreach($user_list as $id_user) {
 
 			if(isset($user_assigned[$id_user])) {
 
@@ -305,7 +305,8 @@ class AssessmentList {
 			}
 		} // end while
 		reset($user_list);
-		while(list(, $id_user) = each($user_list)) {
+    foreach($user_list as $id_user)    
+    {
 
 			$upd_query = "
 			INSERT INTO ".$this->tableUserAssessment()."
@@ -453,11 +454,11 @@ class AssessmentRule {
 		$eff_piece = explode('|', $effects_string);
 		if(isset($eff_piece[0]) && $eff_piece[0] != '') {
 			$temp = explode(';', $eff_piece[0]);
-			while(list(, $id) = each($temp)) $effects['course'][$id] = $id;
+      foreach($temp as $id) $effects['course'][$id] = $id;
 		}
 		if(isset($eff_piece[1]) && $eff_piece[1] != '') {
 			$temp = explode(';', $eff_piece[1]);
-			while(list(, $id) = each($temp)) $effects['coursepath'][$id] = $id;
+      foreach($temp as $id) $effects['coursepath'][$id] = $id;
 		}
 		return $effects;
 	}

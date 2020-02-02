@@ -355,7 +355,7 @@ class CompetencesAdm extends Model {
 				while (list($id_competence, $count) = $this->db->fetch_row($res)) {
 					$_users[$id_competence] = $count;
 				}
-				while (list($key, $value) = each($output)) {
+        foreach($output as $key => $value )
 					$value->users = (array_key_exists($key, $_users) ? (int)$_users[$key] : 0);
 				}
 
@@ -367,7 +367,8 @@ class CompetencesAdm extends Model {
 				while (list($id_competence, $count) = $this->db->fetch_row($res)) {
 					$_courses[$id_competence] = $count;
 				}
-				while (list($key, $value) = each($output)) {
+        foreach($output as $key => $value )        
+        {
 					$value->courses = (array_key_exists($key, $_courses) ? (int)$_courses[$key] : 0);
 				}
 			}
@@ -588,7 +589,7 @@ class CompetencesAdm extends Model {
 			}
 		}
 
-		while (list($key, $value) = each($output)) {
+    foreach($output as $key => $value ) {
 			if (isset($langs[$key])) {
 				$value->langs = $langs[$key];
 			}

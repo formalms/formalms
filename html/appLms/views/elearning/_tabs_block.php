@@ -14,7 +14,8 @@
 
                 $html = '<ul class="nav nav-pills">';
 
-                while( list($key, $value) = each($statusFilters) ) {
+                foreach($statusFilters as $key => $value )
+               {
 
                     if ($count === 0) {
                         $html .= '<li class="selected js-label-menu-filter" data-value="' . $key . '">';

@@ -50,7 +50,7 @@ function groups() {
 	$tb->setColsStyle($type_h);
 	$tb->addHead($cont_h);
 	if(!empty($groups))
-	while(list(, $group) = each($groups)) {
+  foreach($groups as $group) {
 		
 		$id_group = $group[ACL_INFO_IDST];
 		$group_id = $acl_man->relativeId($group[ACL_INFO_GROUPID]);
@@ -271,7 +271,8 @@ function savemembers() {
 	
 	if(count($add_members)) {
 		
-		while(list(, $idst_user) = each($add_members)) { 
+		foreach($add_members as $idst_user)
+    { 
 			
 			$re &= $acl_man->addToGroup( $id_group, $idst_user );
 		}
@@ -279,8 +280,8 @@ function savemembers() {
 	}
 	if(count($del_members)) {
 		
-		while(list(, $idst_user) = each($del_members)) { 
-			
+				foreach($del_members as $idst_user)
+    { 
 			$re &= $acl_man->removeFromGroup( $id_group, $idst_user );
 		}
 	}

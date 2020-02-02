@@ -207,8 +207,7 @@ class Config_Scs extends Config {
 		
 		$query_update = "UPDATE ".$this->table_root." SET "; 
 		$re = true;
-		while( list($var_name, $new_value) = each($_POST['option']) ) {
-			
+    foreach(($_POST['option'] as $var_name => $new_value) {
 			$query_update .= "".$var_name." = '".$new_value."' ,";
 		}
 		$query_update = substr($query_update, 0, -1);

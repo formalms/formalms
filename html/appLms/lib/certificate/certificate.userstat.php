@@ -139,7 +139,7 @@ class CertificateSubs_UserStat extends CertificateSubstitution {
 					$first = true;
 
 					if(is_array($teacher_array) && !empty($teacher_array))
-						while(list(, $id_teach) = each($teacher_array))
+             foreach($teacher_array as $id_teach) 
 						{
 							$teacher_info = $acl_man->getUser($id_teach);
 							if ($first)

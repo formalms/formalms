@@ -113,7 +113,7 @@ class Boot {
 
 			self::log( "Unset all the globals that aren't php setted. (Emulate register global = off)" );
 			$allowed = array('GLOBALS', '_GET', '_POST', '_COOKIE', '_FILES', '_ENV', '_SERVER', '_REQUEST');
-			while(list(, $elem) = each($allowed)) {
+      foreach ($allowed as $elem) {
 		 		if (!isset($allowed[$elem])) unset($GLOBALS[$elem]);
 			}
 		}

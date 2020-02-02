@@ -234,7 +234,7 @@ function displayCourseList(&$url, $order_type) {
 		if(!empty($categories)) {
 
 			$GLOBALS['page']->add('<ul class="category_list">', 'content');
-			while(list($id_cat, $cat) = each($categories)) {
+      foreach( $categories as $id_cat => $cat ){
 
 				$GLOBALS['page']->add('<li'.( !isset($descendant[$id_cat])  ? ' class="empty_folder"' : '' ).'>'
 					.'<a href="'.$url->getUrl('id_parent='.$id_cat).'">'.$cat['name'].'<br />'
@@ -412,7 +412,8 @@ function displayCoursePathList(&$url, $selected_tab) {
 
 	$GLOBALS['page']->add($nav_bar->getNavBar($ini), 'content');
 	
-	while(list($id_path, $path) = each($coursepath)) {
+  foreach( $coursepath as $id_path => $path )
+  {
 
 		$html = '<div class="coursepath_container">';
 
@@ -492,7 +493,7 @@ function displayCoursePathList(&$url, $selected_tab) {
 					if(!empty($courses[$id_path][$id_slot])) $html .= '<ul class="coursepath_otherslot">';
 				}
 				$i = 0;
-				while(list($id) = each($courses[$id_path][$id_slot])) {
+        foreach($courses[$id_path][$id_slot]) as $id => $v) {
 
 					$html .= '<li class="path_course '.( $i%2 ? 'path_odd' : '' ).'">'
 						.'<a class="show_details_more" href="javascript:;" onclick="course_dash(this, \''.$id.'\',\'info_'.$id_path.'_'.$id.'\', \''.$can_subs.'\');">'.$lang->def('_DETAILS').'</a>'
@@ -640,8 +641,8 @@ function dashcourse(&$url, &$lang, &$cinfo, $uc_status, $index, $enable_actions 
 
 		// edition list show -------------------------------------------------------------------------
 		$html .= '<ul id="course_edition_'.$cinfo['idCourse'].'" class="course_editions">';
-
-		while(list($id_edition, $ed_info) = each($cinfo['edition_list'])) {
+    
+    foreach($cinfo['edition_list']) as $id_edition => $ed_info) {
 
 			if($ed_info['img_material'] != '') $there_material[] = '&id_course='.$cinfo['idCourse'].'&edition_id'.$ed_info['idCourseEdition'];
 
@@ -709,8 +710,8 @@ function dashcourse(&$url, &$lang, &$cinfo, $uc_status, $index, $enable_actions 
 
 					$html .= '<h3 class="course_teacher_list">'.$lang->def('_THEACER_LIST').'</h3>'
 						.'<ul class="course_teacher_list">';
-
-					while(list(, $id_teach) = each($ed_info['theacher_list'])) {
+          
+          foreach($ed_info['theacher_list'] as $id_teach) {
 
 						$profile = new UserProfile( $id_teach );
 						$profile->init('profile', 'framework', '', 'ap');
@@ -739,8 +740,7 @@ function dashcourse(&$url, &$lang, &$cinfo, $uc_status, $index, $enable_actions 
 
 			$html .= '<h3 class="course_teacher_list">'.$lang->def('_THEACER_LIST').'</h3>'
 				.'<ul class="course_teacher_list">';
-
-			while(list(, $id_teach) = each($cinfo['theacher_list'])) {
+      forach($cinfo['theacher_list'] as $id_teach) {
 
 				$profile = new UserProfile( $id_teach );
 				$profile->init('profile', 'framework', '', 'ap');
@@ -1036,12 +1036,7 @@ function relationWithCourse($id_course, &$course, $uc_details, $edition_id = fal
 				// maybe if the course is with edition there is an editon in the cart
 				if($edition_id !== FALSE && isset($course['edition_list']) && !empty($course['edition_list'])) {
 
-					while(list($id) = each($course['edition_list'])) {
-						/*
-						if(isset($bought_items['transaction'][$product_type]) && in_array($product_type."_".$id, $bought_items['transaction'][$product_type])) {
-							// find in bought item
-							return array('waiting_payment', false, false);
-						} else*/
+					foreach($course['edition_list'] as $id=>$v) {
 						if($cart->isInCart($product_type."_".$id)) {
 							// find in cart
 							return array('in_cart', false, false);
@@ -1074,7 +1069,8 @@ function relationWithCourse($id_course, &$course, $uc_details, $edition_id = fal
 				// maybe if the course is with edition there is an editon in the cart
 				if($edition_id !== FALSE && isset($course['edition_list']) && !empty($course['edition_list'])) {
 
-					while(list($id) = each($course['edition_list'])) {
+					foreach($course['edition_list'] as $id => $v)
+          {
 
 						if(isset($bought_items['reservation'][$product_type]) && in_array($product_type."_".$id, $bought_items['reservation'][$product_type])) {
 							// find in bought item
