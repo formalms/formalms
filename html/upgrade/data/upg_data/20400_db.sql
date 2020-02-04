@@ -19,6 +19,11 @@ VALUES ('profile_modify_url', '', 'string', '255', '0', '3', '11', '1', '0', '')
 ALTER TABLE `learning_report_schedule`
 	ADD COLUMN last_execution DATETIME NULL DEFAULT NULL;
 
+INSERT IGNORE INTO core_st(idst) values(null);
+set @v_idst=LAST_INSERT_ID();
+INSERT IGNORE INTO core_role(idst, roleid, description) VALUES
+(@v_idst, concat('/lms/admin/report/schedule'), NULL);
+
 ALTER TABLE `learning_courseuser` ADD INDEX `courseuser_course_idx` (`idCourse`);
 
 ALTER TABLE `core_field_userentry` CHANGE COLUMN `id_common` `id_common` INT(11) NOT NULL DEFAULT '0' ;

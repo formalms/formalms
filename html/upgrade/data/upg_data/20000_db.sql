@@ -744,7 +744,26 @@ CREATE TABLE IF NOT EXISTS `core_requests` (
   
 
 -- Campo per i plugin
+
+CREATE TABLE IF NOT EXISTS `core_plugin` (
+  `plugin_id` int(10) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `title` varchar(64) NOT NULL,
+  `code` varchar(32) NOT NULL,
+  `category` VARCHAR(255),
+  `version` varchar(16) NOT NULL,
+  `author` varchar(128) NOT NULL,
+  `link` varchar(255) NOT NULL,
+  `priority` int(5) NOT NULL,
+  `description` text NOT NULL,
+  `active` int(1) NOT NULL,
+  PRIMARY KEY (`plugin_id`),
+  UNIQUE KEY `name` (`name`,`code`)
+);
+
+  ALTER TABLE `core_plugin` DROP INDEX `name`;
   ALTER TABLE `core_plugin` DROP `code`;
+  ALTER TABLE `core_plugin` ADD UNIQUE (`name`);
   ALTER TABLE `core_plugin`  ADD `regroup` INT(11) NOT NULL  AFTER `description`;
   ALTER TABLE `core_plugin`  ADD `core` INT(1) NOT NULL;
   ALTER TABLE `core_plugin`  MODIFY `core` INT(1) NOT NULL;
