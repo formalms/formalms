@@ -41,7 +41,7 @@ final class EventsHandler
      * @param array $arguments
      * @return array
      */
-    public function trigger($eventName, $arguments)
+    public function trigger($eventName, $arguments = [])
     {
         $event = $this->dispatcher->dispatch($eventName, new FormaEvent(null, $arguments));
         return $event->getArguments();
@@ -54,7 +54,7 @@ final class EventsHandler
      * @param array $arguments
      * @return array
      */
-    public function triggerDeprecated($eventName, $arguments)
+    public function triggerDeprecated($eventName, $arguments = [])
     {
         if ($this->dispatcher->hasListeners($eventName)) {
             trigger_error("Event {$eventName} is deprecated and will be removed in a future release.", E_USER_DEPRECATED);

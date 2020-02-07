@@ -42,7 +42,7 @@ final class Events
      * @param array $arguments
      * @return array
      */
-    public static function trigger($eventName, $arguments)
+    public static function trigger($eventName, $arguments = [])
     {
         return self::getHandler()->trigger($eventName, $arguments);
     }
@@ -54,7 +54,7 @@ final class Events
      * @param array $arguments
      * @return array
      */
-    public static function triggerDeprecated($eventName, $arguments)
+    public static function triggerDeprecated($eventName, $arguments = [])
     {
         return self::getHandler()->triggerDeprecated($eventName, $arguments);
     }
