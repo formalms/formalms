@@ -9,7 +9,6 @@
 \ ======================================================================== */
 
 use Symfony\Component\EventDispatcher\EventDispatcher;
-use Symfony\Component\EventDispatcher\GenericEvent;
 
 defined('IN_FORMA') or die('Direct access is forbidden.');
 
@@ -44,7 +43,7 @@ final class EventsHandler
      */
     public function trigger($eventName, $arguments)
     {
-        $event = $this->dispatcher->dispatch($eventName, new GenericEvent(null, $arguments));
+        $event = $this->dispatcher->dispatch($eventName, new FormaEvent(null, $arguments));
         return $event->getArguments();
     }
 
