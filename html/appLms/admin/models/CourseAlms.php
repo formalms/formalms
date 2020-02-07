@@ -520,6 +520,9 @@ Class CourseAlms extends Model
                 $hour_end .= ':' . $data_params['hour_end']['quarter'];
         }
 
+        $data = Events::trigger('lms.course.creating', ['parameters' => $data_params]);
+        $data_params = $data['parameters'];
+
         $query_course = "
         INSERT INTO %lms_course
         SET idCategory          = '" . (isset($data_params['idCategory']) ? $data_params['idCategory'] : 0) . "',
@@ -630,12 +633,6 @@ Class CourseAlms extends Model
         // recover the id of the course inserted --------------------------------------------
         list($id_course) = sql_fetch_row(sql_query("SELECT LAST_INSERT_ID()"));
 
-        $event = new \appLms\Events\Lms\CourseCreateAndUpdateEvent($id_course);
-
-        $event->setPostData($data_params);
-
-        \appCore\Events\DispatcherManager::dispatch(\appLms\Events\Lms\CourseCreateAndUpdateEvent::EVENT_NAME_INS, $event);
-
         require_once(_lms_ . '/admin/models/LabelAlms.php');
         $label_model = new LabelAlms();
 
@@ -691,6 +688,9 @@ Class CourseAlms extends Model
             }
             $res['res'] = '_ok_course';
         }
+
+        $course = new DoceboCourse($id_course);
+        Events::trigger('lms.course.created', ['id_course' => $id_course, 'course' => $course]);
 
         return $res;
     }
@@ -862,6 +862,9 @@ Class CourseAlms extends Model
                 $hour_end .= ':' . $data_params['hour_end']['quarter'];
         }
 
+        $data = Events::trigger('lms.course.updating', ['id_course' => $id_course, 'old_course' => $course_man, 'parameters' => $data_params]);
+        $data_params = $data['parameters'];
+
         // update database ----------------------------------------------------
         $query_course = "
         UPDATE " . $GLOBALS['prefix_lms'] . "_course
@@ -1026,13 +1029,10 @@ Class CourseAlms extends Model
             }
         }
 
-        $event = new \appLms\Events\Lms\CourseCreateAndUpdateEvent($id_course);
-
-        $event->setPostData($data_params);
-
-        \appCore\Events\DispatcherManager::dispatch(\appLms\Events\Lms\CourseCreateAndUpdateEvent::EVENT_NAME_MOD, $event);
-
         $res['res'] = '_ok_course';
+        
+        $new_course = new DoceboCourse($id_course);
+        Events::trigger('lms.course.updated', ['id_course' => $id_course, 'old_course' => $course_man, 'new_course' => $new_course]);
 
         return $res;
     }
@@ -1114,6 +1114,8 @@ Class CourseAlms extends Model
         if(!$course->getAllInfo()) {
             return false;
         }
+
+        Events::trigger('lms.course.deleting', ['id_course' => $id_course, 'course' => $course]);
 
         //remove course subscribed------------------------------------------
 
@@ -1279,8 +1281,7 @@ Class CourseAlms extends Model
         if (!sql_query("DELETE FROM %lms_course WHERE idCourse = '" . $id_course . "'"))
             return false;
 
-        $event = new \appLms\Events\Lms\CourseDeletedEvent($course);
-        \appCore\Events\DispatcherManager::dispatch($event::EVENT_NAME, $event);
+        Events::trigger('lms.course.deleted', ['id_course' => $id_course, 'course' => $course]);
 
         return true;
     }
