@@ -772,27 +772,56 @@ class DoceboACLManager
                         $signature = FALSE, $lastenter = FALSE, $resume = FALSE, $force_change = '',
                         $facebook_id = FALSE, $twitter_id = FALSE, $linkedin_id = FALSE, $google_id = FALSE)
     {
-        $arrSET = array();
-        if ($userid !== FALSE) $arrSET['userid'] = $this->absoluteId($userid);
-        if ($firstname !== FALSE) $arrSET['firstname'] = $firstname;
-        if ($lastname !== FALSE) $arrSET['lastname'] = $lastname;
-        if ($pass !== FALSE && !Get::cfg('demo_mode')) {
-            $arrSET['pass'] = $this->encrypt($pass);
-            if (Get::sett('pass_max_time_valid') != 0) {
+        $old_userdata = $this->getUser($idst, null);
 
-                $arrSET['pwd_expire_at'] = date("Y-m-d H:i:s", time() + Get::sett('pass_max_time_valid') * 24 * 3600);
-            }
+        $new_userdata = [];
+        if ($userid !== FALSE) $new_userdata[ACL_INFO_USERID] = $this->absoluteId($userid);
+        if ($firstname !== FALSE) $new_userdata[ACL_INFO_FIRSTNAME] = $firstname;
+        if ($lastname !== FALSE) $new_userdata[ACL_INFO_LASTNAME] = $lastname;
+        if ($pass !== FALSE) {
+            $new_userdata[ACL_INFO_PASS] = $pass;            
+            if(Get::sett('pass_max_time_valid') != 0) {
+                $new_userdata[ACL_INFO_PWD_EXPIRE_AT] = date("Y-m-d H:i:s", time() + Get::sett('pass_max_time_valid') * 24 * 3600);
+            }            
         }
-        if ($email !== FALSE) $arrSET['email'] = $email;
-        if ($avatar !== FALSE) $arrSET['avatar'] = $avatar;
-        if ($facebook_id != FALSE && $facebook_id !== '') $arrSET['facebook_id'] = $facebook_id;
-        if ($twitter_id != FALSE && $twitter_id !== '') $arrSET['twitter_id'] = $twitter_id;
-        if ($linkedin_id != FALSE && $linkedin_id !== '') $arrSET['linkedin_id'] = $linkedin_id;
-        if ($google_id != FALSE && $google_id !== '') $arrSET['google_id'] = $google_id;
-        if ($signature !== FALSE) $arrSET['signature'] = $signature;
-        if ($lastenter !== FALSE) $arrSET['lastenter'] = $lastenter;
-        if ($resume) $arrSET['valid'] = '1';
-        if ($force_change !== '') $arrSET['force_change'] = (int)$force_change > 0 ? '1' : '0';
+        if ($email !== FALSE) $new_userdata[ACL_INFO_EMAIL] = $email;
+        if ($avatar !== FALSE) $new_userdata[ACL_INFO_AVATAR] = $avatar;
+        if ($signature !== FALSE) $new_userdata[ACL_INFO_SIGNATURE] = $signature;
+        if ($lastenter !== FALSE) $new_userdata[ACL_INFO_LASTENTER] = $lastenter;
+        if ($resume) $new_userdata[ACL_INFO_VALID] = true;
+        if ($force_change !== '') $new_userdata[ACL_INFO_FORCE_CHANGE] = (int)$force_change > 0;
+        if ($facebook_id != FALSE) $new_userdata[ACL_INFO_FACEBOOK_ID] = $facebook_id;
+        if ($twitter_id != FALSE) $new_userdata[ACL_INFO_TWITTER_ID] = $twitter_id;
+        if ($linkedin_id != FALSE) $new_userdata[ACL_INFO_LINKEDIN_ID] = $linkedin_id;
+        if ($google_id != FALSE) $new_userdata[ACL_INFO_GOOGLE_ID] = $google_id;
+
+        $data = Events::trigger('core.user.updating', [
+            'idst' => $idst,
+            'old_userdata' => $old_userdata,
+            'new_userdata' => $new_userdata,
+        ]);
+
+        $new_userdata = $data['new_userdata'];
+
+        $arrSET = array();
+        if (array_key_exists(ACL_INFO_USERID, $new_userdata)) $arrSET['userid'] = $new_userdata[ACL_INFO_USERID];
+        if (array_key_exists(ACL_INFO_FIRSTNAME, $new_userdata)) $arrSET['firstname'] = $new_userdata[ACL_INFO_FIRSTNAME];
+        if (array_key_exists(ACL_INFO_LASTNAME, $new_userdata)) $arrSET['lastname'] = $new_userdata[ACL_INFO_LASTNAME];
+        if (array_key_exists(ACL_INFO_PASS, $new_userdata) && !Get::cfg('demo_mode')) {
+            $arrSET['pass'] = $this->encrypt($new_userdata[ACL_INFO_PASS]);
+            if (array_key_exists(ACL_INFO_PWD_EXPIRE_AT, $new_userdata)) $arrSET['pwd_expire_at'] = $new_userdata[ACL_INFO_PWD_EXPIRE_AT];
+        }
+        if (array_key_exists(ACL_INFO_EMAIL, $new_userdata)) $arrSET['email'] = $new_userdata[ACL_INFO_EMAIL];
+        if (array_key_exists(ACL_INFO_AVATAR, $new_userdata)) $arrSET['avatar'] = $new_userdata[ACL_INFO_AVATAR];
+        if (array_key_exists(ACL_INFO_SIGNATURE, $new_userdata)) $arrSET['signature'] = $new_userdata[ACL_INFO_SIGNATURE];
+        if (array_key_exists(ACL_INFO_LASTENTER, $new_userdata)) $arrSET['lastenter'] = $new_userdata[ACL_INFO_LASTENTER];
+        if (array_key_exists(ACL_INFO_VALID, $new_userdata)) $arrSET['valid'] = $new_userdata[ACL_INFO_VALID] ? '1' : '0';
+        if (array_key_exists(ACL_INFO_FORCE_CHANGE, $new_userdata)) $arrSET['force_change'] = $new_userdata[ACL_INFO_FORCE_CHANGE] ? '1' : '0';
+        if (array_key_exists(ACL_INFO_FACEBOOK_ID, $new_userdata)) $arrSET['facebook_id'] = $new_userdata[ACL_INFO_FACEBOOK_ID];
+        if (array_key_exists(ACL_INFO_TWITTER_ID, $new_userdata)) $arrSET['twitter_id'] = $new_userdata[ACL_INFO_TWITTER_ID];
+        if (array_key_exists(ACL_INFO_LINKEDIN_ID, $new_userdata)) $arrSET['linkedin_id'] = $new_userdata[ACL_INFO_LINKEDIN_ID];
+        if (array_key_exists(ACL_INFO_GOOGLE_ID, $new_userdata)) $arrSET['google_id'] = $new_userdata[ACL_INFO_GOOGLE_ID];
+
         $colon = '';
         $query = "UPDATE " . $this->_getTableUser() . " SET ";
         foreach ($arrSET as $fieldName => $fieldValue) {
@@ -807,6 +836,16 @@ class DoceboACLManager
                 . "VALUES ( " . (int)$idst . ", '" . date("Y-m-d H:i:s") . "', '" . $this->encrypt($pass) . "'," . (int)getLogUserId() . "  )";
             $this->_executeQuery($query_h);
         }
+
+        if($result) {
+            $new_userdata = $this->getUser($idst, null);
+            Events::trigger('core.user.updated', [
+                'idst' => $idst,
+                'old_userdata' => $old_userdata,
+                'new_userdata' => $new_userdata,
+            ]);
+        }
+
         return $result;
     }
 
@@ -870,6 +909,13 @@ class DoceboACLManager
     {
         //if ($idst == Docebo::user()->getIdSt()) return FALSE;
 
+        $userdata = $this->getUser($idst, null);
+        
+        Events::trigger('core.user.deleting', [
+            'idst' => $idst,
+            'userdata' => $userdata,
+        ]);
+
         if (Get::sett('register_deleted_user') == 'on')
             $control = $this->insertIntoDeleteUserTable($idst);
         else
@@ -896,6 +942,11 @@ class DoceboACLManager
                 $extra_field = new FieldList();
                 //$extra_field->removeUserEntry($idst);
                 $extra_field->quickRemoveUserEntry($idst);
+
+                Events::trigger('core.user.deleted', [
+                    'idst' => $idst,
+                    'userdata' => $userdata,
+                ]);
             }
             // ---
         }
