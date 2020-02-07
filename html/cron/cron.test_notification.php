@@ -135,7 +135,7 @@ try {
                 } else {
                     aout("[" . date("Y-m-d H:i:s") . "] EMAIL -> " . $username . " [" . $email . "] :: " . strip_tags($text));
                     aout("<br>");
-                    $subject = "Subject";
+                    $subject = $notification->getTitle();
                     $result = $mailer->SendMail(
                         Get::sett('sender_event'), $email,
                         $subject,
