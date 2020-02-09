@@ -1,0 +1,108 @@
+.course-info {
+
+}
+
+.course-info__table {
+  width: 45%;
+  float: left;
+  display: table;
+  margin-bottom: 16px;
+  margin-right: 7px;
+
+  @include breakpoint($ipad) {
+    width: 50%;
+    margin-right: 0;
+    margin-bottom: 0;
+    height: 36px;
+  }
+}
+
+.course-info__table--full {
+  width: 100%;
+  float: none;
+  display: block;
+  margin-bottom: 22px;
+
+  @include breakpoint($ipad) {
+    margin-top: 10px;
+    height: auto;
+  }
+}
+
+.course-info__label {
+  width: 100%;
+  display: block;
+  font-size: 10px;
+  color: $gray-2;
+  margin-bottom: 5px;
+
+  @include breakpoint($tablet) {
+    width: 92px;
+    display: table-cell;
+    padding-right: 12px;
+  }
+}
+
+.course-info__value {
+  width: auto;
+  display: block;
+  font-size: 14px;
+  line-height: 19px;
+
+  @include breakpoint($tablet) {
+    display: table-cell;
+    line-height: 21px;
+  }
+}
+
+.course-info__link {
+  text-decoration: none;
+  color: $orange;
+  font-family: $font;
+  margin-right: 7px;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.course-info__diskspace {
+
+}
+
+.course-info__paragraph {
+  margin-top: 16px;
+  padding-left: 19px;
+  font-size: 15px;
+}
+
+.course-info__teacher {
+  padding-left: 0;
+}
+
+.course-info__teachertxt {
+  float: left
+}
+
+.course-info__teacherimage {
+  width: 66px;
+  height: 66px;
+  border-radius: 50%;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  float: left;
+  margin-right: 14px;
+}
+
+.course-info__teachername {
+  display: block;
+  font-size: 14px;
+  color: $orange;
+  margin-bottom: 16px;
+}
+
+.course-info__teacherbio {
+  text-decoration: underline;
+  color: $gray-1;
+}

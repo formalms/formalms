@@ -44,7 +44,16 @@ class CourseLmsController extends LmsController
     {
         checkPerm('view_info');
 
-        $this->render ('infocourse/infocourse' , []);
+        $lang =& DoceboLanguage::createInstance('course');
+        // $course = $GLOBALS['course_descriptor']->getAllInfo();
+
+        $data = [
+            'page_title' => $lang->def('_INFO'),
+            'course_name' => 'Demo Course'
+        ];
+
+        // var_dump($course);
+        $this->render ('infocourse/infocourse' , $data);
 
         /*require_once($GLOBALS['where_lms'] . '/lib/lib.course.php');
 

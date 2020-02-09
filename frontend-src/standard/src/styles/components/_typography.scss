@@ -51,3 +51,50 @@ p {
   font-weight: $regular;
   font-size: 16px;
 }
+
+.box-title {
+  color: $orange;
+  font-family: $font;
+  font-weight: bold;
+  font-size: 12px;
+  text-transform: uppercase;
+  padding-bottom: 6px;
+  margin: 0 0 14px 0;
+  border-bottom: 1px solid #eee;
+
+  @include breakpoint($ipad) {
+    font-size: 14px;
+    margin-bottom: 11px;
+  }
+}
+
+.page-subtitle {
+  font-family: $font;
+  font-size: 24px;
+  color: $anthracite;
+  margin-bottom: 20px;
+  margin-top: 20px;
+
+  @include breakpoint($ipad) {
+    font-size: 35px;
+    margin-bottom: 13px;
+    margin-top: 27px;
+  }
+}
+
+.text--gray {
+  color: $gray-1
+}
+
+.text--green {
+  color: $green
+}
+
+.text--orange {
+  color: $orange
+}
+
+.text--red {
+  color: $red
+}
+
