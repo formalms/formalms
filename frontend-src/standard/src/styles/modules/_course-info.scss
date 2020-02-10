@@ -104,14 +104,19 @@
 }
 
 .course-info__teacherimage {
-  width: 66px;
-  height: 66px;
+  width: 64px;
+  height: 64px;
   border-radius: 50%;
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center center;
   float: left;
   margin-right: 14px;
+
+  @include breakpoint($tablet) {
+    width: 66px;
+    height: 66px;
+  }
 }
 
 .course-info__teachername {
@@ -126,6 +131,20 @@
   @include breakpoint($tablet) {
     font-size: 16px;
     margin-bottom: 14px;
+  }
+}
+
+.course-info__teachername--modal {
+  color: $white;
+  width: calc(100% - 124px);
+  margin-bottom: 0;
+  text-overflow: inherit;
+  white-space: inherit;
+
+  @include breakpoint($tablet) {
+    width: calc(100% - 180px);
+    font-weight: 700;
+    font-size: 17px;
   }
 }
 

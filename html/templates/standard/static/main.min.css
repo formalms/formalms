@@ -2762,6 +2762,9 @@ p {
       font-size: 14px;
       margin-bottom: 11px; } }
 
+.box-title--modal {
+  padding-bottom: 14px; }
+
 .page-subtitle {
   font-family: "Open-sans", Arial;
   font-size: 24px;
@@ -3672,11 +3675,45 @@ p {
       width: 80%;
       height: 70%; } }
 
+.modal-dialog--bio {
+  width: 90%;
+  height: 70%;
+  max-width: none; }
+  @media (min-width: 1024px) {
+    .modal-dialog--bio {
+      width: 55%;
+      height: auto; } }
+  @media (min-width: 1280px) {
+    .modal-dialog--bio {
+      width: 55%;
+      height: auto; } }
+
 .modal-header--notitle {
   border: none; }
   .modal-header--notitle .close {
     opacity: 1;
     color: #fff; }
+
+.modal-header--bio {
+  background-color: #ff6c00;
+  border: none;
+  position: relative;
+  padding-left: 12px;
+  padding-top: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: left; }
+  .modal-header--bio .close {
+    opacity: 1;
+    color: #fff;
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 32px; }
+    @media (min-width: 1024px) {
+      .modal-header--bio .close {
+        right: 25px; } }
 
 .modal-content--full {
   padding: 0;
@@ -3690,6 +3727,22 @@ p {
   line-height: 0;
   width: 100%;
   height: 100%; }
+
+.modal-content--bio {
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  margin-bottom: 20px;
+  box-shadow: none;
+  border: none;
+  border-radius: 8px;
+  overflow: hidden; }
+
+.modal__text {
+  line-height: 20px; }
+
+.modal__textcontainer {
+  padding: 26px 14px; }
 
 * {
   outline: none !important;
@@ -5936,14 +5989,18 @@ header.header {
   max-width: calc(100% - 80px); }
 
 .course-info__teacherimage {
-  width: 66px;
-  height: 66px;
+  width: 64px;
+  height: 64px;
   border-radius: 50%;
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center center;
   float: left;
   margin-right: 14px; }
+  @media (min-width: 768px) {
+    .course-info__teacherimage {
+      width: 66px;
+      height: 66px; } }
 
 .course-info__teachername {
   display: block;
@@ -5957,6 +6014,18 @@ header.header {
     .course-info__teachername {
       font-size: 16px;
       margin-bottom: 14px; } }
+
+.course-info__teachername--modal {
+  color: white;
+  width: calc(100% - 124px);
+  margin-bottom: 0;
+  text-overflow: inherit;
+  white-space: inherit; }
+  @media (min-width: 768px) {
+    .course-info__teachername--modal {
+      width: calc(100% - 180px);
+      font-weight: 700;
+      font-size: 17px; } }
 
 .course-info__teacherbio {
   text-decoration: underline;

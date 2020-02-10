@@ -24,7 +24,7 @@ const onBioClick = (event) => {
   $modalContent = $modal.find('.js-infocourse-dynamic-content');
 
   // TODO: INSERIRE QUI I CONTENUTI
-  $modalContent.empty().append('<iframe width="100%" height="100%" style="max-width:100%;max-height:100%" src="https://www.youtube-nocookie.com/embed/1234" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>');
+  // $modalContent.empty().append('<iframe width="100%" height="100%" style="max-width:100%;max-height:100%" src="https://www.youtube-nocookie.com/embed/1234" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>');
 
   $modal.modal();
 
