@@ -6,7 +6,7 @@
   {{course_name}}
 </div>
 
-<div class="section-coourse course-info">
+<div class="section-course course-info js-infocourse">
   <div class="row">
     <div class="col-sm-6">
       <div class="course-info__general">
@@ -17,7 +17,7 @@
         </div>
         <div class="course-info__table">
           <div class="course-info__label">SUBSCRIBE METHOD</div>
-          <div class="course-info__value text-geren">Free</div>
+          <div class="course-info__value text--green">Free</div>
         </div>
         <div class="course-info__table">
           <div class="course-info__label">LANGUAGE</div>
@@ -25,7 +25,7 @@
         </div>
         <div class="course-info__table">
           <div class="course-info__label">DIFFICULTY</div>
-          <div class="course-info__value text-orange">Medium</div>
+          <div class="course-info__value text--orange">Medium</div>
         </div>
         <div class="clear"></div>
 
@@ -90,10 +90,22 @@
       <div class="col-sm-6 course-info__teacher">
         <div class="course-info__teacherimage" style="background-image:url(https://picsum.photos/600)"></div>
         <div class="course-info__teachertxt">
-          <div class="course-info__teachername text-orange">Dott.ssa Giovanna Neri</div>
-          <a class="course-info__teacherbio" href="#">BIOGRAPHY</a>
+          <div class="course-info__teachername text-orange">Dott.ssa Giovanna Neri YO</div>
+          <a class="course-info__teacherbio js-infocourse-bio-trigger" href="#">BIOGRAPHY</a>
           <a class="forma-button course-info__teachercta" href="#">MESSAGGIO</a>
           <div class="clear"></div>
+          <div class="hidden js-infocourse-bio-text" data-title="Dott.ssa Giovanna Neri YO" data-image="https://picsum.photos/600">
+            My name is Giovanna Neri, and I'm thrilled to say this is my 19th year teaching high school English.  
+            I grew up in Lancaster, Pennsylvania and graduated with a Bachelor of Science 
+            in English Education degree from Millersville University in 2001 and a Master of Education in 
+            Teaching and Learning degree from Lock Haven University in 2009.  
+            I began my teaching career in the Cornwall-Lebanon School District.  
+            I taught three years in this district before moving to State College.    
+            This year, I will be teaching 1 section of International Baccalaureate Langaeg and Literature, 2 sections of CP English 11 and 2 sections of English 11. 
+            Currently, I live in State College with my husband, Steve, and two boys (Maxwell and Brady).
+            I enjoy exercising, cooking, reading, watching movies, and spending time with my family.
+            I look forward to meeting all of my students on Monday, August 26th.
+          </div>
         </div>
         <div class="clear"></div>
       </div>
@@ -109,29 +121,19 @@
         <div class="clear"></div>
       </div>
 
-      <div class="col-sm-6 course-info__teacher">
-        <div class="course-info__teacherimage" style="background-image:url(https://picsum.photos/600)"></div>
-        <div class="course-info__teachertxt">
-          <div class="course-info__teachername text-orange">Dott.ssa Giovanna Neri</div>
-          <a class="course-info__teacherbio" href="#">BIOGRAPHY</a>
-          <a class="forma-button course-info__teachercta" href="#">MESSAGGIO</a>
-          <div class="clear"></div>
-        </div>
-        <div class="clear"></div>
-      </div>
-
-      <div class="col-sm-6 course-info__teacher">
-        <div class="course-info__teacherimage" style="background-image:url(https://picsum.photos/600)"></div>
-        <div class="course-info__teachertxt">
-          <div class="course-info__teachername text-orange">Dott.ssa Giovanna Neri</div>
-          <a class="course-info__teacherbio" href="#">BIOGRAPHY</a>
-          <a class="forma-button course-info__teachercta" href="#">MESSAGGIO</a>
-          <div class="clear"></div>
-        </div>
-        <div class="clear"></div>
-      </div>
-
       {# <div class="course-info__paragraph">There are no teachers for this course at the moment</div> #}
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade js-infocourse-modal" data-href="{{ block.video_type }}-{{ block.video }}" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-dialog--notitle modal-dialog--video" role="document">
+    <div class="modal-header modal-header--notitle">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    </div>
+    <div class="modal-content modal-content--full">
+      <div class="modal-body modal-body--nopadding js-infocourse-dynamic-content"></div>
     </div>
   </div>
 </div>

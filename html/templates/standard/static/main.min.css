@@ -3643,6 +3643,54 @@ p {
     .section-coourse-modal .modal__item {
       padding: 0; } }
 
+.modal-dialog--notitle {
+  width: 90%;
+  max-width: 768px;
+  max-height: calc(100% - 150px);
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) !important; }
+  @media (min-width: 1024px) {
+    .modal-dialog--notitle {
+      width: 45%; } }
+  @media (min-width: 1280px) {
+    .modal-dialog--notitle {
+      width: 40%; } }
+
+.modal-dialog--video {
+  width: 90%;
+  height: 70%;
+  max-width: none; }
+  @media (min-width: 1024px) {
+    .modal-dialog--video {
+      width: 80%;
+      height: 70%; } }
+  @media (min-width: 1280px) {
+    .modal-dialog--video {
+      width: 80%;
+      height: 70%; } }
+
+.modal-header--notitle {
+  border: none; }
+  .modal-header--notitle .close {
+    opacity: 1;
+    color: #fff; }
+
+.modal-content--full {
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  height: 100%; }
+
+.modal-body--nopadding {
+  padding: 0;
+  margin: 0;
+  line-height: 0;
+  width: 100%;
+  height: 100%; }
+
 * {
   outline: none !important;
   box-sizing: border-box; }
