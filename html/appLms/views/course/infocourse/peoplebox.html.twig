@@ -2,10 +2,10 @@
     <div class="course-info__peopleimage" style="background-image:url({{ user.avatar}})"></div>
     <div class="course-info__peopletxt">
         <div class="course-info__peoplename text-orange">{{ user.name}}</div>
-        <a class="course-info__peoplebio js-infocourse-bio-trigger" href="#">{{translate('_BIOGRAPHY','course')}}</a>
+        <a class="course-info__peoplebio js-infocourse-bio-trigger" href="#" data-title="{{ user.name}}" data-image="{{ user.avatar}}" data-role="{{role}}">{{translate('_BIOGRAPHY','course')}}</a>
         <a class="forma-button course-info__peoplecta" href="#">MESSAGGIO</a>
         <div class="clear"></div>
-        <div class="hidden js-infocourse-bio-text" data-title="{{ user.name}}" data-image="{{ user.avatar}}">
+        <div class="hidden js-infocourse-bio-text">
             {{ user.biography}}
         </div>
     </div>

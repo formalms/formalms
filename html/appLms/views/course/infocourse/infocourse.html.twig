@@ -83,7 +83,7 @@
         <div class="col-sm-12 course-info__peoplecontainer">
           <div class="box-title box-title--people">{{ course.Instructor.name }}</div>
           {% for user in course.Instructor.users %}
-            {% include 'infocourse/peoplebox.html.twig' with user %}
+            {% include 'infocourse/peoplebox.html.twig' with {'user': user, 'role': course.Instructor.name} %}
           {% endfor %}
         </div>
       {% endif %}
@@ -92,7 +92,7 @@
         <div class="col-sm-12 course-info__peoplecontainer">
           <div class="box-title box-title--people">{{ course.Tutor.name }}</div>
           {% for user in course.Tutor.users %}
-            {% include 'infocourse/peoplebox.html.twig' with user %}
+            {% include 'infocourse/peoplebox.html.twig' with {'user': user, 'role': course.Tutor.name} %}
           {% endfor %}
         </div>
       {% endif %}
@@ -101,7 +101,7 @@
         <div class="col-sm-12 course-info__peoplecontainer">
           <div class="box-title box-title--people">{{ course.Administrator.name }}</div>
           {% for user in course.Administrator.users %}
-            {% include 'infocourse/peoplebox.html.twig' with user %}
+            {% include 'infocourse/peoplebox.html.twig' with {'user': user, 'role': course.Administrator.name} %}
           {% endfor %}
         </div>
       {% endif %}
@@ -110,7 +110,7 @@
         <div class="col-sm-12 course-info__peoplecontainer">
           <div class="box-title box-title--people">{{ course.Student.name }}</div>
           {% for user in course.Student.users %}
-            {% include 'infocourse/peoplebox.html.twig' with user %}
+            {% include 'infocourse/peoplebox.html.twig' with {'user': user, 'role': course.Student.name} %}
           {% endfor %}
         </div>
       {% endif %}
@@ -124,35 +124,16 @@
   <div class="modal-dialog modal-dialog--notitle modal-dialog--bio" role="document">
     <div class="modal-content modal-content--bio">
       <div class="modal-header modal-header--bio">
-        <div class="course-info__peopleimage" style="background-image:url(https://picsum.photos/600)"></div>
-        <div class="course-info__peoplename course-info__peoplename--modal">Dott.ssa Giovanna Neri</div>
+        <div class="course-info__peopleimage js-infocourse-dynamic-img">
+        </div>
+        <div class="course-info__peoplename course-info__peoplename--modal js-infocourse-dynamic-title"></div>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
       </div>
       <div class="modal-body modal-body--nopadding">
         <div class="modal__textcontainer">
-          <div class="box-title box-title--modal">TEACHERS</div>
+          <div class="box-title box-title--modal js-infocourse-dynamic-role"></div>
           <div class="modal__text js-infocourse-dynamic-content">
-            My name is Giovanna Neri, and I'm thrilled to say this is my 19th year teaching high school English.  
-              I grew up in Lancaster, Pennsylvania and graduated with a Bachelor of Science 
-              in English Education degree from Millersville University in 2001 and a Master of Education in 
-              Teaching and Learning degree from Lock Haven University in 2009.  
-              I began my teaching career in the Cornwall-Lebanon School District.  
-              I taught three years in this district before moving to State College.    
-              This year, I will be teaching 1 section of International Baccalaureate Langaeg and Literature, 2 sections of CP English 11 and 2 sections of English 11. 
-              Currently, I live in State College with my husband, Steve, and two boys (Maxwell and Brady).
-              I enjoy exercising, cooking, reading, watching movies, and spending time with my family.
-              I look forward to meeting all of my students on Monday, August 26th.
-
-              My name is Giovanna Neri, and I'm thrilled to say this is my 19th year teaching high school English.  
-              I grew up in Lancaster, Pennsylvania and graduated with a Bachelor of Science 
-              in English Education degree from Millersville University in 2001 and a Master of Education in 
-              Teaching and Learning degree from Lock Haven University in 2009.  
-              I began my teaching career in the Cornwall-Lebanon School District.  
-              I taught three years in this district before moving to State College.    
-              This year, I will be teaching 1 section of International Baccalaureate Langaeg and Literature, 2 sections of CP English 11 and 2 sections of English 11. 
-              Currently, I live in State College with my husband, Steve, and two boys (Maxwell and Brady).
-              I enjoy exercising, cooking, reading, watching movies, and spending time with my family.
-              I look forward to meeting all of my students on Monday, August 26th.
+           
           </div>
         </div>
       </div>

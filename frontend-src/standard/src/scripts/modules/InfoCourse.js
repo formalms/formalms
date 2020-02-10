@@ -1,30 +1,32 @@
 let $modal = null;
 let $modalContent = null;
+let $modalTitle = null;
+let $modalImg = null;
+let $modalRole = null;
 
 export const InfoCourse = () => {
-  console.log('init info course');
-
   const elementsArray = document.querySelectorAll('.js-infocourse-bio-trigger');
 
   for (var i = 0; i < elementsArray.length; i++) {
     elementsArray[i].addEventListener('click', onBioClick);
   }
 
-  // $('#dashboard-video-modal').on('hidden.bs.modal', closeOverlay);
-};
-
-const onBioClick = (event) => {
-  event.preventDefault();
-  
-  console.log('click su trigger');
-  
   $modal = $('.js-infocourse-modal');
   $modal.on('hidden.bs.modal', closeOverlay);
 
   $modalContent = $modal.find('.js-infocourse-dynamic-content');
+  $modalTitle = $('.js-infocourse-dynamic-title');
+  $modalImg = $('.js-infocourse-dynamic-img');
+  $modalRole = $('.js-infocourse-dynamic-role');
+};
 
-  // TODO: INSERIRE QUI I CONTENUTI
-  // $modalContent.empty().append('<iframe width="100%" height="100%" style="max-width:100%;max-height:100%" src="https://www.youtube-nocookie.com/embed/1234" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>');
+const onBioClick = (event) => {
+  event.preventDefault();
+
+  $modalContent.empty().html($(event.target).parent().find('.js-infocourse-bio-text').html());
+  $modalTitle.empty().html(event.target.dataset.title);
+  $modalImg.css('backgroundImage', `url(${event.target.dataset.image})`);
+  $modalRole.empty().html(event.target.dataset.role);
 
   $modal.modal();
 
@@ -33,7 +35,8 @@ const onBioClick = (event) => {
 
 const closeOverlay = () => {
   $modalContent.empty();
+  $modalTitle.empty();
+  $modalRole.empty();
+  $modalImg.css('background-image', '');
   $modal.off('hidden.bs.modal', closeOverlay);
-  $modal = null;
-  $modalContent = null;
 };
