@@ -80,11 +80,11 @@
   font-size: 15px;
 }
 
-.course-info__teachercontainer {
+.course-info__peoplecontainer {
   margin-bottom: 50px;
 }
 
-.course-info__teacher {
+.course-info__people {
   padding-left: 0;
   margin-bottom: 15px;
 
@@ -98,12 +98,12 @@
   }
 }
 
-.course-info__teachertxt {
+.course-info__peopletxt {
   float: left;
   max-width: calc(100% - 80px);
 }
 
-.course-info__teacherimage {
+.course-info__peopleimage {
   width: 64px;
   height: 64px;
   border-radius: 50%;
@@ -119,7 +119,7 @@
   }
 }
 
-.course-info__teachername {
+.course-info__peoplename {
   display: block;
   font-size: 14px;
   color: $orange;
@@ -134,7 +134,7 @@
   }
 }
 
-.course-info__teachername--modal {
+.course-info__peoplename--modal {
   color: $white;
   width: calc(100% - 124px);
   margin-bottom: 0;
@@ -148,7 +148,7 @@
   }
 }
 
-.course-info__teacherbio {
+.course-info__peoplebio {
   text-decoration: underline;
   color: $gray-1;
   font-size: 12px;
@@ -169,7 +169,7 @@
   }
 }
 
-.course-info__teachercta {
+.course-info__peoplecta {
   float: left;
   display: block;
   width: auto;
@@ -185,12 +185,12 @@
     padding-left: 12px;
     padding-right: 12px;
     float: none;
-    width: 80%;
+    width: 84px;
   }
 
   @include breakpoint($small-desktop) {
     float: left;
-    width: auto;
+    // width: auto;
   }
 }
 

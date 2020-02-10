@@ -36,30 +36,19 @@
           </div>
         </div>
 
-        {% if  course.show_users and course.Student.users is not empty %}
-            <div class="course-info__table course-info__table--full">
-              <div class="course-info__label">{{ course.Student.name }}</div>
-              <div class="course-info__value">
-                {% for student in course.Student.users %}
-                  <a href="#" class="course-info__link">{{student.name}}</a>
-                {% endfor %}
-              </div>
-            </div>
-        {% endif %}
-
         {% if course.show_quota %}
-        <div class="course-info__table course-info__table--full">
-          <div class="course-info__label">{{ translate('_USED_DISK','course') }}</div>
-          <div class="course-info__value text--gray">
-            <span class="text--green">{{ course.quota.actual_space }} MB</span> / {% if course.quota.unlimited %} {{ translate('_UNLIMITED_QUOTA','course') }} {% else %} {{ course.quota.max_quota }} {% endif %}
+          <div class="course-info__table course-info__table--full">
+            <div class="course-info__label">{{ translate('_USED_DISK','course') }}</div>
+            <div class="course-info__value text--gray">
+              <span class="text--green">{{ course.quota.actual_space }} MB</span> / {% if course.quota.unlimited %} {{ translate('_UNLIMITED_QUOTA','course') }} {% else %} {{ course.quota.max_quota }} {% endif %}
+            </div>
           </div>
-        </div>
         {% endif %}
 
         <div class="clear"></div>
       </div>
 
-      <div class="box-title">MATERIALS</div>
+      {# <div class="box-title">MATERIALS</div>
       <div class="row course-info__materials">
         <div class="col-sm-10 course-info__file">
           <a href="#">
@@ -86,36 +75,47 @@
         <div class="col-sm-1 course-info__delete">
           <a href="#"><img src="{{templatePath}}static/images/icons/icon--delete.svg" alt="delete file" class="course-info__icon" /></a>
         </div>
-      </div>
+      </div> #}
     </div>
 
-    {% if  course.show_users and course.Administrator.users is not empty %}
-    <div class="col-sm-6 course-info__teachercontainer">
-      <div class="box-title">{{ course.Administrator.name }}</div>
-      {% for user in course.Administrator.users %}
-        {% include 'infocourse/userbox.html.twig' with user %}
-      {% endfor %}
+    <div class="col-sm-6">
+      {% if  course.show_users and course.Instructor.users is not empty %}
+        <div class="col-sm-12 course-info__peoplecontainer">
+          <div class="box-title box-title--people">{{ course.Instructor.name }}</div>
+          {% for user in course.Instructor.users %}
+            {% include 'infocourse/peoplebox.html.twig' with user %}
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      {% if  course.show_users and course.Tutor.users is not empty %}
+        <div class="col-sm-12 course-info__peoplecontainer">
+          <div class="box-title box-title--people">{{ course.Tutor.name }}</div>
+          {% for user in course.Tutor.users %}
+            {% include 'infocourse/peoplebox.html.twig' with user %}
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      {% if  course.show_users and course.Administrator.users is not empty %}
+        <div class="col-sm-12 course-info__peoplecontainer">
+          <div class="box-title box-title--people">{{ course.Administrator.name }}</div>
+          {% for user in course.Administrator.users %}
+            {% include 'infocourse/peoplebox.html.twig' with user %}
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      {% if  course.show_users and course.Student.users is not empty %}
+        <div class="col-sm-12 course-info__peoplecontainer">
+          <div class="box-title box-title--people">{{ course.Student.name }}</div>
+          {% for user in course.Student.users %}
+            {% include 'infocourse/peoplebox.html.twig' with user %}
+          {% endfor %}
+        </div>
+      {% endif %}
+      
     </div>
-    {% endif %}
-
-    {% if  course.show_users and course.Tutor.users is not empty %}
-      <div class="col-sm-6 course-info__teachercontainer">
-        <div class="box-title">{{ course.Tutor.name }}</div>
-        {% for user in course.Tutor.users %}
-          {% include 'infocourse/userbox.html.twig' with user %}
-        {% endfor %}
-      </div>
-    {% endif %}
-
-    {% if  course.show_users and course.Instructor.users is not empty %}
-      <div class="col-sm-6 course-info__teachercontainer">
-        <div class="box-title">{{ course.Instructor.name }}</div>
-        {% for user in course.Instructor.users %}
-          {% include 'infocourse/userbox.html.twig' with user %}
-        {% endfor %}
-      </div>
-    {% endif %}
-
   </div>
 </div>
 
@@ -124,8 +124,8 @@
   <div class="modal-dialog modal-dialog--notitle modal-dialog--bio" role="document">
     <div class="modal-content modal-content--bio">
       <div class="modal-header modal-header--bio">
-        <div class="course-info__teacherimage" style="background-image:url(https://picsum.photos/600)"></div>
-        <div class="course-info__teachername course-info__teachername--modal">Dott.ssa Giovanna Neri</div>
+        <div class="course-info__peopleimage" style="background-image:url(https://picsum.photos/600)"></div>
+        <div class="course-info__peoplename course-info__peoplename--modal">Dott.ssa Giovanna Neri</div>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
       </div>
       <div class="modal-body modal-body--nopadding">

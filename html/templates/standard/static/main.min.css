@@ -5971,24 +5971,24 @@ header.header {
   padding-left: 19px;
   font-size: 15px; }
 
-.course-info__teachercontainer {
+.course-info__peoplecontainer {
   margin-bottom: 50px; }
 
-.course-info__teacher {
+.course-info__people {
   padding-left: 0;
   margin-bottom: 15px; }
   @media (min-width: 768px) {
-    .course-info__teacher {
+    .course-info__people {
       margin-top: 4px;
       margin-bottom: 11px; } }
-  .course-info__teacher:nth-child(odd) {
+  .course-info__people:nth-child(odd) {
     padding-right: 0; }
 
-.course-info__teachertxt {
+.course-info__peopletxt {
   float: left;
   max-width: calc(100% - 80px); }
 
-.course-info__teacherimage {
+.course-info__peopleimage {
   width: 64px;
   height: 64px;
   border-radius: 50%;
@@ -5998,11 +5998,11 @@ header.header {
   float: left;
   margin-right: 14px; }
   @media (min-width: 768px) {
-    .course-info__teacherimage {
+    .course-info__peopleimage {
       width: 66px;
       height: 66px; } }
 
-.course-info__teachername {
+.course-info__peoplename {
   display: block;
   font-size: 14px;
   color: #ff6c00;
@@ -6011,41 +6011,41 @@ header.header {
   text-overflow: ellipsis;
   white-space: nowrap; }
   @media (min-width: 768px) {
-    .course-info__teachername {
+    .course-info__peoplename {
       font-size: 16px;
       margin-bottom: 14px; } }
 
-.course-info__teachername--modal {
+.course-info__peoplename--modal {
   color: white;
   width: calc(100% - 124px);
   margin-bottom: 0;
   text-overflow: inherit;
   white-space: inherit; }
   @media (min-width: 768px) {
-    .course-info__teachername--modal {
+    .course-info__peoplename--modal {
       width: calc(100% - 180px);
       font-weight: 700;
       font-size: 17px; } }
 
-.course-info__teacherbio {
+.course-info__peoplebio {
   text-decoration: underline;
   color: #666666;
   font-size: 12px;
   float: left;
   margin-right: 20px; }
   @media (min-width: 768px) {
-    .course-info__teacherbio {
+    .course-info__peoplebio {
       margin-right: 6px;
       float: none;
       margin-bottom: 12px;
       display: block; } }
   @media (min-width: 1100px) {
-    .course-info__teacherbio {
+    .course-info__peoplebio {
       float: left;
       display: inline;
       margin-bottom: 0; } }
 
-.course-info__teachercta {
+.course-info__peoplecta {
   float: left;
   display: block;
   width: auto;
@@ -6055,17 +6055,16 @@ header.header {
   padding-left: 10px;
   padding-right: 10px; }
   @media (min-width: 768px) {
-    .course-info__teachercta {
+    .course-info__peoplecta {
       font-size: 10px;
       margin-top: -4px;
       padding-left: 12px;
       padding-right: 12px;
       float: none;
-      width: 80%; } }
+      width: 84px; } }
   @media (min-width: 1100px) {
-    .course-info__teachercta {
-      float: left;
-      width: auto; } }
+    .course-info__peoplecta {
+      float: left; } }
 
 .course-info__materials {
   margin-bottom: 16px; }
