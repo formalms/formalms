@@ -473,7 +473,7 @@ function upcourseinfo() {
 					$recipients, 
 					$msg_composer );
 					
-	Util::jump_to( 'index.php?modname=course&op=infocourse&result='.( $re ? 'ok' : 'err' ));
+	Util::jump_to( 'index.php?r=lms/course/infocourse&result='.( $re ? 'ok' : 'err' ));
 }
 
 function downloadcourse() {
@@ -504,10 +504,10 @@ function addfiles() {
 	
 	$GLOBALS['page']->add(
 		getTitleArea(
-			array('index.php?modname=course&amp;op=infocourse' => $lang->def('_INFO'), $lang->def('_ADDFILES'))
+			array('index.php?r=lms/course/infocourse' => $lang->def('_INFO'), $lang->def('_ADDFILES'))
 			, 'infocourse')
 		.'<div class="std_block">'
-		.getBackUi('index.php?modname=course&amp;op=infocourse', $lang->def('_BACK'))
+		.getBackUi('index.php?r=lms/course/infocourse', $lang->def('_BACK'))
 		.Form::openForm('', 'index.php?modname=course&amp;op=insfiles', false, false, 'multipart/form-data')
 		
 		.Form::openElementSpace()
@@ -570,7 +570,7 @@ function insfiles() {
 		return;
 	}
 	$GLOBALS['course_descriptor']->addFileToUsedSpace($GLOBALS['where_files_relative']._PATH_COURSE.$savefile);
-	Util::jump_to( 'index.php?modname=course&op=infocourse');
+	Util::jump_to( 'index.php?r=lms/course/infocourse');
 }
 
 function modfiles() {
@@ -588,10 +588,10 @@ function modfiles() {
 	
 	$GLOBALS['page']->add(
 		getTitleArea(
-			array('index.php?modname=course&amp;op=infocourse' => $lang->def('_INFO'), $lang->def('_MOD'))
+			array('index.php?r=lms/course/infocourse' => $lang->def('_INFO'), $lang->def('_MOD'))
 			, 'infocourse')
 		.'<div class="std_block">'
-		.getBackUi('index.php?modname=course&amp;op=infocourse', $lang->def('_BACK'))
+		.getBackUi('index.php?r=lms/course/infocourse', $lang->def('_BACK'))
 		.Form::openForm('', 'index.php?modname=course&amp;op=upfiles', false, false, 'multipart/form-data')
 		
 		.Form::openElementSpace()
@@ -668,7 +668,7 @@ function upfiles() {
 		return;
 	}
 	$GLOBALS['course_descriptor']->addFileToUsedSpace($GLOBALS['where_files_relative']._PATH_COURSE.$savefile);
-	Util::jump_to( 'index.php?modname=course&op=infocourse');
+	Util::jump_to( 'index.php?r=lms/course/infocourse');
 }
 
 function remfiles() {
@@ -698,7 +698,7 @@ function remfiles() {
 			return;
 		}
 		
-		Util::jump_to( 'index.php?modname=course&op=infocourse');
+		Util::jump_to( 'index.php?r=lms/course/infocourse');
 	} else {
 		list($title, $file) = sql_fetch_row(sql_query("
 		SELECT title, path 
@@ -708,14 +708,14 @@ function remfiles() {
 		//request erase confirm
 		$GLOBALS['page']->add(
 			getTitleArea(
-				array('index.php?modname=course&amp;op=infocourse' => $lang->def('_INFO'), $lang->def('_DEL'))
+				array('index.php?r=lms/course/infocourse' => $lang->def('_INFO'), $lang->def('_DEL'))
 				, 'infocourse')
 			.'<div class="std_block">'
 			.getDeleteUi(	$lang->def('_AREYOUSURE'), 
 							'<img src="'.getPathImage('fw').mimeDetect($file).'" alt="mime-type" /> '.$title,
 							true,
 							'index.php?modname=course&amp;op=remfiles&amp;id_file='.(int)$_GET['id_file'].'&amp;confirm=1',
-							'index.php?modname=course&amp;op=infocourse'
+							'index.php?r=lms/course/infocourse'
 			)
 			.'</div>'
 		, 'content');
@@ -733,12 +733,12 @@ function viewprofile() {
 	$profile->init('profile', 'framework', 'modname=course&op=profile&infocourse', 'ap');
 	
 	$GLOBALS['page']->add(
-		getTitleArea(	array(	'index.php?modname=course&amp;op=infocourse' => $lang->def('_INFO').': '.$GLOBALS['course_descriptor']->getValue('name'),
+		getTitleArea(	array(	'index.php?r=lms/course/infocourse' => $lang->def('_INFO').': '.$GLOBALS['course_descriptor']->getValue('name'),
 						$profile->resolveUsername() )
 						, 'infocourse')
 		.'<div class="std_block">'
 		.$profile->performAction()
-		.getBackUi('index.php?modname=course&amp;op=infocourse', $lang->def('_BACK'))
+		.getBackUi('index.php?r=lms/course/infocourse', $lang->def('_BACK'))
 		.'</div>'
 	, 'content');
 }
