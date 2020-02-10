@@ -2394,7 +2394,7 @@ class UserManagerRenderer
 
         // control mail is correct
         $acl_man =& Docebo::user()->getAclManager();
-
+        $source['register']['email'] = strtolower($source['register']['email']);
 
         if ($source['register']['email'] === '') {
             $error = ['error' => true,
