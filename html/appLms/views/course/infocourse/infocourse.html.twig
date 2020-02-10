@@ -17,16 +17,42 @@
         </div>
         <div class="course-info__table">
           <div class="course-info__label">{{ translate('_SUBSCRIBE_METHOD','course') }}</div>
-          <div class="course-info__value text--green">Free</div>
+          <div class="course-info__value text--green">{{course.subscribe_method_translate}}</div>
         </div>
         <div class="course-info__table">
           <div class="course-info__label">{{ translate('_LANGUAGE','course') }}</div>
-          <div class="course-info__value">English</div>
+          <div class="course-info__value">{{ course.lang_code }}</div>
         </div>
         <div class="course-info__table">
           <div class="course-info__label">{{ translate('_DIFFICULTY','course') }}</div>
           <div class="course-info__value text--orange">{{course.difficulty_translate}}</div>
         </div>
+
+        {% if course.show_extra_info %}
+          <div class="course-info__table">
+            <div class="course-info__label">{{ translate('_STATUS','course') }}</div>
+            <div class="course-info__value text--orange">{{course.status}}</div>
+          </div>
+
+          <div class="course-info__table">
+            <div class="course-info__label">{{ translate('_PERMCLOSE','course') }}</div>
+            <div class="course-info__value text--orange">{{course.completion_method}}</div>
+          </div>
+
+          <div class="course-info__table">
+            <div class="course-info__label">{{ translate('_MEDIUMTIME','course') }}</div>
+            <div class="course-info__value text--orange">{{course.mediumTime}}</div>
+          </div>
+
+          <div class="course-info__table">
+            <div class="course-info__label">{{ translate('_STATCANNOTENTER','course') }}</div>
+
+            <div class="course-info__value text--gray">{{course.difficulty_translate}}</div>
+            <div class="course-info__value text--gray">{{course.difficulty_translate}}</div>
+            <div class="course-info__value text--gray">{{course.difficulty_translate}}</div>
+          </div>
+        {% endif %}
+
         <div class="clear"></div>
 
         <div class="course-info__table course-info__table--full">
@@ -133,7 +159,7 @@
         <div class="modal__textcontainer">
           <div class="box-title box-title--modal js-infocourse-dynamic-role"></div>
           <div class="modal__text js-infocourse-dynamic-content">
-           
+
           </div>
         </div>
       </div>

@@ -70,7 +70,7 @@ class CourseLmsController extends LmsController
             3 => $lang->def('_COURSE_S_SECURITY_CODE'));
 
         $course['difficulty_translate'] = $difficult_lang[$course['difficult']];
-
+        $course['subscribe_method_translate'] = $subs_lang[$course['subscribe_method']];
 
         if ($_SESSION['levelCourse'] >= 4) {
             $course['show_quota'] = true;
@@ -103,6 +103,27 @@ class CourseLmsController extends LmsController
             }
         }
 
+        if (true || $course['show_extra_info'] == '1') {
+            $course['show_extra_info'] = true || $course['show_extra_info'] == '1';
+            $course['status'] = $status_lang[$course['status']];
+            $course['completion_method'] = $course['permCloseLO'] ? $lang->def('_MANUALACTION') : $lang->def('_ENDOBJECT');
+
+            $course['cannot_enter'] = [];
+            if ($this->statusNoEnter($course['userStatusOp'], _CUS_SUBSCRIBED)) {
+                $course['cannot_enter'][] = $lang->def('_USER_STATUS_SUBS');
+            }
+            if ($this->statusNoEnter($course['userStatusOp'], _CUS_BEGIN)) {
+                $course['cannot_enter'][] = $lang->def('_USER_STATUS_BEGIN');
+            }
+            if ($this->statusNoEnter($course['userStatusOp'], _CUS_SUSPEND)) {
+                $course['cannot_enter'][] = $lang->def('_USER_STATUS_SUSPEND');
+            }
+            if ($this->statusNoEnter($course['userStatusOp'], _CUS_END)) {
+                $course['cannot_enter'][] = $lang->def('_USER_STATUS_END');
+            }
+
+        }
+
         $data = [
             'templatePath' => getPathTemplate(),
             'course' => $course
@@ -110,6 +131,10 @@ class CourseLmsController extends LmsController
 
         // var_dump($course);
         $this->render('infocourse/infocourse', $data);
+    }
+
+    private function statusNoEnter($perm, $status) {
+        return ( $perm & (1 << $status) );
     }
 }
 
