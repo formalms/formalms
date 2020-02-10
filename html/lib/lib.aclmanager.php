@@ -149,9 +149,9 @@ class DoceboACLManager
     }
 
     /**
-     * @internal
      * @return string the name of the table with the users preferences
      * @access private
+     * @internal
      */
     function _getTableSettingUser()
     {
@@ -327,7 +327,7 @@ class DoceboACLManager
 
     /**
      * get security token of an array of user
-     * @param    array $array_idst_user id of the user
+     * @param array $array_idst_user id of the user
      * @return    mixed    some info associated to the users
      **/
     function getArrUserST($array_idst_user, $flip = false)
@@ -408,8 +408,8 @@ class DoceboACLManager
 
     /**
      * get security token froma basepath of group
-     * @param    string $base_path the base path of the group
-     * @param    bool $flip if true the returned array is (idst => groupid)
+     * @param string $base_path the base path of the group
+     * @param bool $flip if true the returned array is (idst => groupid)
      * @return    array    security tokens associated to groups or FALSE (groupid => idst)
      **/
     function getBasePathGroupST($base_path, $flip = false)
@@ -484,9 +484,7 @@ class DoceboACLManager
             \appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\RegisterUserEvent::EVENT_NAME, $event);
 
             return $event->getId();
-        }
-        else
-        {
+        } else {
             return FALSE;
         }
     }
@@ -503,7 +501,7 @@ class DoceboACLManager
      * @return int the security token
      */
     function registerTempUser($userid, $firstname, $lastname, $pass, $email, $random_code, $create_by_admin = 0,
-                              $facebook_id = '', $twitter_id = '', $linkedin_id = '', $google_id = '', $avatar= '')
+                              $facebook_id = '', $twitter_id = '', $linkedin_id = '', $google_id = '', $avatar = '')
     {
 
         $idst = $this->_createST();
@@ -548,7 +546,7 @@ class DoceboACLManager
 
         $query = "SELECT * "
             . " FROM " . $this->_getTableTempUser() . " "
-            ." WHERE ".( $idst !== false ? " idst = '".$idst."' " : '' )
+            . " WHERE " . ($idst !== false ? " idst = '" . $idst . "' " : '')
             . ($random_code !== false ? " random_code = '" . $random_code . "' " : '');
         $rs = $this->_executeQuery($query);
         return sql_fetch_assoc($rs);
@@ -691,7 +689,7 @@ class DoceboACLManager
      */
     function registerRole($roleid, $description, $idPlugin = null)
     {
-        if(is_null($idPlugin)) {
+        if (is_null($idPlugin)) {
             $idPlugin = 'NULL';
         }
 
@@ -938,9 +936,9 @@ class DoceboACLManager
             require_once($GLOBALS['where_framework'] . '/lib/lib.code.php');
             $code_manager = new CodeManager();
 
-             if ($reset_code === true) {
+            if ($reset_code === true) {
                 $code_manager->resetUserCode($idst);
-             }
+            }
         }
 
         return $result;
@@ -973,8 +971,8 @@ class DoceboACLManager
             $idst = false;
         }
         $this->_removeAllFromRole($idst);
-        $query = "DELETE FROM " . $this->prefix."_rules_entity"
-        . " WHERE id_entity = '" . $idst . "'";
+        $query = "DELETE FROM " . $this->prefix . "_rules_entity"
+            . " WHERE id_entity = '" . $idst . "'";
         $this->_executeQuery($query);
         $query = "DELETE FROM " . $this->_getTableGroupMembers()
             . " WHERE idst = '" . $idst . "'"
@@ -1218,6 +1216,40 @@ class DoceboACLManager
         }
     }
 
+    function &getUsersMappedData($array_idst)
+    {
+
+        $responseUsers = [];
+        $users = $this->getUsers($array_idst);
+        if ($users) {
+            foreach ($users as $user) {
+                $responseUsers[] = $this->getUserMappedData($user);
+            }
+        }
+
+        return $responseUsers;
+    }
+
+    function &getUserMappedData($user)
+    {
+        $path = $GLOBALS['where_files_relative'] . '/appCore/' . Get::sett('pathphoto');
+
+        $acl_man = Docebo::user()->getAclManager();
+
+        $responseUser['idst'] = $user[ACL_INFO_IDST];
+        $responseUser['name'] = $acl_man->getConvertedUserName($user);
+        $responseUser['username'] = $user[ACL_INFO_USERID];
+        $responseUser['firstname'] = $user[ACL_INFO_FIRSTNAME];
+        $responseUser['lastname'] = $user[ACL_INFO_LASTNAME];
+        $responseUser['email'] = $user[ACL_INFO_EMAIL];
+        $responseUser['avatar'] = !empty($user[ACL_INFO_AVATAR]) ? $path . $user[ACL_INFO_AVATAR] : '';
+        $responseUser['biography'] = $user[ACL_INFO_SIGNATURE];
+        $responseUser['profile'] = 'index.php?modname=course&amp;op=viewprofile&amp;id_user=' . $user[ACL_INFO_IDST];
+
+
+        return $responseUser;
+    }
+
     /**
      * @return all idst of users
      **/
@@ -1393,8 +1425,8 @@ class DoceboACLManager
 
 
     /**
-     * @param    string $language the language to use as filter
-     * @param    array $array_idst the  optional security token of the users to be
+     * @param string $language the language to use as filter
+     * @param array $array_idst the  optional security token of the users to be
      *                                    used as an additional filter
      *
      * @return    array    with user idst of the found entries
@@ -1419,8 +1451,8 @@ class DoceboACLManager
 
     /**
      * return the user info
-     * @param    string $language the language to use as filter
-     * @param    array $array_idst the  optional security token of the users to be
+     * @param string $language the language to use as filter
+     * @param array $array_idst the  optional security token of the users to be
      *                                    used as an additional filter
      *
      * @return mixed array with user informations with numeric keys:
@@ -1587,8 +1619,8 @@ class DoceboACLManager
 
     /**
      * return the groupid of the groups of a corrispondent base path
-     * @param    string $base_path the array of security tokens
-     * @param    array $group_type a filter for type
+     * @param string $base_path the array of security tokens
+     * @param array $group_type a filter for type
      *
      * @return    array    with idst of gourps
      */
@@ -1640,7 +1672,7 @@ class DoceboACLManager
 
     /**
      * return the information about the users in waiting for a specified group
-     * @param    array $idst a idst of a group
+     * @param array $idst a idst of a group
      * @return    array    the waiting user information
      */
     function &getWaitingUserForGroup($idst)
@@ -1659,7 +1691,7 @@ class DoceboACLManager
 
     /**
      * return the information about the users in waiting for a specified group
-     * @param    array $idst a idst of a group
+     * @param array $idst a idst of a group
      * @return    array    the waiting user information
      */
     function &getPendingGroupOfUser($idst)
@@ -1784,7 +1816,7 @@ class DoceboACLManager
 
     /**
      * return the information about the users in waiting for a specified group
-     * @param    array $idst a idst of a group
+     * @param array $idst a idst of a group
      * @return    array    the waiting user information
      */
     function addToWaitingGroup($idst, $idstMember)
@@ -1822,7 +1854,7 @@ class DoceboACLManager
      */
     function removeFromGroup($idst, $idstMember, $filter = '')
     {
-        if(!is_numeric($idst)){
+        if (!is_numeric($idst)) {
             $idst = false;
         }
         $del_list = (is_numeric($idstMember) ? array($idstMember) : $idstMember);
@@ -1845,7 +1877,7 @@ class DoceboACLManager
      */
     function removeFromAllGroup($idstMember, $filter = '')
     {
-        if(!is_numeric($idstMember)){
+        if (!is_numeric($idstMember)) {
             $idstMember = false;
         }
 
@@ -1862,10 +1894,10 @@ class DoceboACLManager
      */
     function removeFromUserWaitingOfGroup($idst_group, $idst_user)
     {
-        if(!is_numeric($idst_group)){
+        if (!is_numeric($idst_group)) {
             $idst_group = false;
         }
-        if(!is_numeric($idst_user)){
+        if (!is_numeric($idst_user)) {
             $idst_user = false;
         }
 
@@ -1882,10 +1914,10 @@ class DoceboACLManager
      */
     function removeFromRole($idst, $idstMember)
     {
-        if(!is_numeric($idst)){
+        if (!is_numeric($idst)) {
             $idst = false;
         }
-        if(!is_numeric($idstMember)){
+        if (!is_numeric($idstMember)) {
             $idstMember = false;
         }
 
@@ -1902,7 +1934,7 @@ class DoceboACLManager
      */
     function _removeAllFromGroup($idstMember)
     {
-        if(!is_numeric($idstMember)){
+        if (!is_numeric($idstMember)) {
             $idstMember = false;
         }
 
@@ -1919,7 +1951,7 @@ class DoceboACLManager
     function _removeAllFromRole($idstMember)
     {
 
-        if(!is_numeric($idstMember)){
+        if (!is_numeric($idstMember)) {
             $idstMember = false;
         }
 
@@ -1937,7 +1969,7 @@ class DoceboACLManager
     function getGroupsContainer($idstMember, $filter = '')
     {
 
-        if(!is_numeric($idstMember)){
+        if (!is_numeric($idstMember)) {
             $idstMember = false;
         }
 
@@ -1960,9 +1992,9 @@ class DoceboACLManager
      */
     function getGroupsAllContainer($arrMember, $filter = '')
     {
-        if(is_array($arrMember)){
-            foreach($arrMember as $index => $idst) {
-                if(!is_numeric($idst)){
+        if (is_array($arrMember)) {
+            foreach ($arrMember as $index => $idst) {
+                if (!is_numeric($idst)) {
                     unset($arrMember[$index]);
                 }
             }
@@ -1987,7 +2019,7 @@ class DoceboACLManager
      */
     function getRolesContainer($idstMember, $flip = false)
     {
-        if(!is_numeric($idstMember)){
+        if (!is_numeric($idstMember)) {
             $idstMember = false;
         }
 
@@ -2011,9 +2043,9 @@ class DoceboACLManager
      */
     function getRolesAllContainer($arrMember)
     {
-        if(is_array($arrMember)){
-            foreach($arrMember as $index => $idst) {
-                if(!is_numeric($idst)){
+        if (is_array($arrMember)) {
+            foreach ($arrMember as $index => $idst) {
+                if (!is_numeric($idst)) {
                     unset($arrMember[$index]);
                 }
             }
@@ -2048,7 +2080,7 @@ class DoceboACLManager
 
     function getGroupUMembersNumber($idst, $filter = '')
     {
-        if(!is_numeric($idst)){
+        if (!is_numeric($idst)) {
             $idst = false;
         }
 
@@ -2079,14 +2111,13 @@ class DoceboACLManager
      */
     function getGroupUMembers($idst, $filter = '')
     {
-        if(is_array($idst)){
-            foreach($idst as $index => $vidst) {
-                if(!is_numeric($vidst)){
+        if (is_array($idst)) {
+            foreach ($idst as $index => $vidst) {
+                if (!is_numeric($vidst)) {
                     unset($idst[$index]);
                 }
             }
-        }
-        else if (!is_array($idst)) {
+        } else if (!is_array($idst)) {
             $idst = array((int)$idst);
         }
 
@@ -2119,14 +2150,13 @@ class DoceboACLManager
      */
     function getGroupGMembers($idst, $filter = '')
     {
-        if(is_array($idst)){
-            foreach($idst as $index => $vidst) {
-                if(!is_numeric($vidst)){
+        if (is_array($idst)) {
+            foreach ($idst as $index => $vidst) {
+                if (!is_numeric($vidst)) {
                     unset($idst[$index]);
                 }
             }
-        }
-        else if (!is_array($idst)) {
+        } else if (!is_array($idst)) {
             $idst = array((int)$idst);
         }
 
@@ -2284,14 +2314,13 @@ class DoceboACLManager
      */
     function getGroupListMembers($group_arr, $filter = "")
     {
-        if(is_array($group_arr)) {
-            foreach($group_arr as $index => $idst) {
-                if(!is_numeric($idst)){
+        if (is_array($group_arr)) {
+            foreach ($group_arr as $index => $idst) {
+                if (!is_numeric($idst)) {
                     unset($group_arr[$index]);
                 }
             }
-        }
-        else if ((!is_array($group_arr)) || (count($group_arr) < 1)) {
+        } else if ((!is_array($group_arr)) || (count($group_arr) < 1)) {
             return FALSE;
         }
 
@@ -2362,7 +2391,7 @@ class DoceboACLManager
      */
     function getRoleGMembers($idst)
     {
-        if(!is_numeric($idst)){
+        if (!is_numeric($idst)) {
             $idst = false;
         }
 
@@ -2385,7 +2414,7 @@ class DoceboACLManager
      */
     function getRoleMembers($idst)
     {
-        if(!is_numeric($idst)){
+        if (!is_numeric($idst)) {
             $idst = false;
         }
 
@@ -2402,7 +2431,7 @@ class DoceboACLManager
 
     function getAllRoleMembers($idst)
     {
-        if(!is_numeric($idst)){
+        if (!is_numeric($idst)) {
             $idst = false;
         }
 
@@ -2428,8 +2457,9 @@ class DoceboACLManager
      * @internal param int $password_ash
      * @internal param bool $alg
      */
-    function encrypt($text) {
-        $password=new Password($text);
+    function encrypt($text)
+    {
+        $password = new Password($text);
         return $password->hash();
     }
 
@@ -2440,15 +2470,17 @@ class DoceboACLManager
      * @return bool|TRUE
      * @internal param $password
      */
-    function password_verify_update($text, $hash, $idst=false) {
+    function password_verify_update($text, $hash, $idst = false)
+    {
         $password = new Password($text);
-        switch ($password->verify($hash)){
+        switch ($password->verify($hash)) {
             case PASSWORD_INCORRECT:
                 return false;
             case PASSWORD_CORRECT:
                 return true;
-            case PASSWORD_UPDATE:{
-                if ($idst){
+            case PASSWORD_UPDATE:
+            {
+                if ($idst) {
                     return $this->updateUser(
                         $idst,
                         false,
@@ -2518,8 +2550,8 @@ class DoceboACLManager
      */
     function getUsersFromMixedIdst($arr_idst)
     {
-        foreach($arr_idst as $index => $idst) {
-            if(!is_numeric($idst)){
+        foreach ($arr_idst as $index => $idst) {
+            if (!is_numeric($idst)) {
                 unset($arr_idst[$index]);
             }
         }
@@ -2539,14 +2571,14 @@ class DoceboACLManager
 
     /**
      * return the idst corresponding to a group
-     * @param    array $arr_idst the arr_idst to check
+     * @param array $arr_idst the arr_idst to check
      *
      * @return    array    the idst corresponding to a group
      */
     function getGroupsFromMixedIdst($arr_idst)
     {
-        foreach($arr_idst as $index => $idst) {
-            if(!is_numeric($idst)){
+        foreach ($arr_idst as $index => $idst) {
+            if (!is_numeric($idst)) {
                 unset($arr_idst[$index]);
             }
         }
@@ -2568,7 +2600,7 @@ class DoceboACLManager
 
     /**
      * return the idst of all the user related to the idst passed
-     * @param    array $arr_idst the arr_idst to check
+     * @param array $arr_idst the arr_idst to check
      *
      * @return    array    the idst corresponding to a group
      */
@@ -2583,10 +2615,9 @@ class DoceboACLManager
     /**
      * This function returns a list of roles with extra information
      * starting from a given user idst and roleid path.
-     * @author Giovanni Derks <virtualdarkness[AT]gmail-com>
-     * @param  string $user_idst idst of the user that is member of the role/s
-     * @param  string $path_start the pattern with roleid shall start with
-     * @param  string $path_end the pattern with roleid shall end with (optional)
+     * @param string $user_idst idst of the user that is member of the role/s
+     * @param string $path_start the pattern with roleid shall start with
+     * @param string $path_end the pattern with roleid shall end with (optional)
      * @return mixed   FALSE if nothing found; else array with that looks like:
      *                 Array(
      *                     [role_info] => Array(
@@ -2600,7 +2631,8 @@ class DoceboACLManager
      *
      *                 $role_info is the first information found after the given path,
      *                 presumably an id.
-     **/
+     **@author Giovanni Derks <virtualdarkness[AT]gmail-com>
+     */
     function getUserRoleFromPath($user_idst, $path_start, $path_end = FALSE, $owned_directly = FALSE)
     {
         $res = FALSE;
@@ -2826,17 +2858,20 @@ class DoceboACLManager
         $temp = false;
 
         switch (getType($paths)) {
-            case "string" : {
-                $temp = array($paths);
-            }
+            case "string" :
+                {
+                    $temp = array($paths);
+                }
                 break;
 
-            case "array": {
-                $temp =& $paths;
-            }
+            case "array":
+                {
+                    $temp =& $paths;
+                }
                 break;
 
-            default: {
+            default:
+            {
                 $temp = false;
             }
 
@@ -2881,18 +2916,19 @@ class DoceboACLManager
         $admin_userlist = array_merge($admin_users, $this->getGroupUMembers($admin_groups));//$this->getAllUsersFromIdst($admin_groups));
         return $admin_userlist;
     }
-    
-    function random_password () {
+
+    function random_password()
+    {
         $pass = '';
         for ($a = 0; $a < 10; $a++) {
-                $seed = mt_rand(0, 15);
+            $seed = mt_rand(0, 15);
 
-                if ($seed > 10)
-                        $pass .= mt_rand(0, 9);
-                elseif ($seed > 5)
-                        $pass .= chr(mt_rand(65, 90));
-                else
-                        $pass .= chr(mt_rand(97, 122));
+            if ($seed > 10)
+                $pass .= mt_rand(0, 9);
+            elseif ($seed > 5)
+                $pass .= chr(mt_rand(65, 90));
+            else
+                $pass .= chr(mt_rand(97, 122));
         }
         return $pass;
     }

@@ -43,28 +43,9 @@ class CourseLmsController extends LmsController
     public function infocourse()
     {
         checkPerm('view_info');
-
+        $acl_man = Docebo::user()->getAclManager();
         $lang =& DoceboLanguage::createInstance('course');
         // $course = $GLOBALS['course_descriptor']->getAllInfo();
-
-        $data = [
-            'page_title' => $lang->def('_INFO'),
-            'course_name' => 'Demo Course',
-            'file_img_path' => '../templates/standard/static/images/icons/icon--file.svg',
-            'edit_img_path' => '../templates/standard/static/images/icons/icon--edit.svg',
-            'delete_img_path' => '../templates/standard/static/images/icons/icon--delete.svg'
-        ];
-
-        // var_dump($course);
-        $this->render ('infocourse/infocourse' , $data);
-
-        /*require_once($GLOBALS['where_lms'] . '/lib/lib.course.php');
-
-        //finding course information
-        $mod_perm = checkPerm('mod', true);
-        $lang =& DoceboLanguage::createInstance('course');
-
-        $acl_man = Docebo::user()->getAclManager();
         $course = $GLOBALS['course_descriptor']->getAllInfo();
         $levels = CourseLevel::getLevels();
 
@@ -88,106 +69,47 @@ class CourseLmsController extends LmsController
             2 => $lang->def('_COURSE_S_FREE'),
             3 => $lang->def('_COURSE_S_SECURITY_CODE'));
 
-
-        $GLOBALS['page']->add(
-            getTitleArea($lang->def('_INFO'), 'course')
-            . '<div class="std_block">'
-            , 'content');
+        $course['difficulty_translate'] = $difficult_lang[$course['difficult']];
 
 
-        $GLOBALS['page']->add(
-            '<table class="vertical_table">'
-            . '<caption class="cd_name">' . $course['name'] . '</caption>'
-            . '<tr><th scope="row">' . $lang->def('_CODE') . '</th><td>' . $course['code'] . '</td></tr>'
-            . '<tr><th scope="row">' . $lang->def('_COURSE') . '</th><td>' . $course['name'] . '</td></tr>'
-            . '<tr><th scope="row">' . $lang->def('_DIFFICULTY') . '</th><td>' . $difficult_lang[$course['difficult']] . '</td></tr>'
-            . '<tr><th scope="row">' . $lang->def('_DESCRIPTION') . '</th><td>' . $course['description'] . '</td></tr>'
-            . '<tr><th scope="row">' . $lang->def('_SUBSCRIBE_METHOD') . '</th><td>' . $subs_lang[$course['subscribe_method']] . '</td></tr>'
-            . '<tr><th scope="row">' . $lang->def('_LANGUAGE') . '</th><td>' . $course['lang_code'] . '</td></tr>'
-            , 'content');
-        while (list($num_lv, $name_level) = each($levels)) {
-
-            if ($course['level_show_user'] & (1 << $num_lv)) {
-
-                $users =& $acl_man->getUsers(Man_Course::getIdUserOfLevel($_SESSION['idCourse'], $num_lv, $_SESSION['idEdition']));
-                if (!empty($users)) {
-
-                    $first = true;
-                    $GLOBALS['page']->add('<tr><th scope="row">' . $name_level . '</th><td>', 'content');
-                    while (list($id_user, $user_info) = each($users)) {
-
-                        if ($first) $first = false;
-                        else $GLOBALS['page']->add(', ', 'content');
-                        $GLOBALS['page']->add(
-                            '<a href="index.php?modname=course&amp;op=viewprofile&amp;id_user=' . $id_user . '">'
-                            . $acl_man->getConvertedUserName($user_info)
-                            . '</a>', 'content');
-                    } // end while
-                    $GLOBALS['page']->add('</td></tr>', 'content');
-                } // end if
-            } // end if
-        } // end while
-
-        if ($course['show_extra_info'] == '1') {
-
-            $GLOBALS['page']->add(
-                '<tr><th scope="row">' . $lang->def('_STATUS') . '</th><td>' . $status_lang[$course['status']] . '</td></tr>'
-                . '<tr><th scope="row">' . $lang->def('_PERMCLOSE') . '</th><td>' . ($course['permCloseLO'] ? $lang->def('_MANUALACTION') : $lang->def('_ENDOBJECT')) . '</td></tr>'
-                . '<tr><th scope="row">' . $lang->def('_MEDIUMTIME') . '</th><td>' . $course['mediumTime'] . ' ' . $lang->def('_DAYS') . '</td></tr>'
-                . '<tr><th scope="row">' . $lang->def('_STATCANNOTENTER') . '</th><td>'
-                , 'content');
-
-            $first = true;
-            if (statusNoEnter($course['userStatusOp'], _CUS_SUBSCRIBED)) {
-                $GLOBALS['page']->add($lang->def('_USER_STATUS_SUBS'), 'content');
-                $first = false;
-            }
-            if (statusNoEnter($course['userStatusOp'], _CUS_BEGIN)) {
-                $GLOBALS['page']->add(($first ? '' : ', ') . $lang->def('_USER_STATUS_BEGIN'), 'content');
-                $first = false;
-            }
-            if (statusNoEnter($course['userStatusOp'], _CUS_SUSPEND)) {
-                $GLOBALS['page']->add(($first ? '' : ', ') . $lang->def('_USER_STATUS_SUSPEND'), 'content');
-                $first = false;
-            }
-            if (statusNoEnter($course['userStatusOp'], _CUS_END)) {
-                $GLOBALS['page']->add(($first ? '' : ', ') . $lang->def('_USER_STATUS_END'), 'content');
-                $first = false;
-            }
-            $GLOBALS['page']->add('</td></tr>', 'content');
-        }
-
-        // course disk quota
         if ($_SESSION['levelCourse'] >= 4) {
-
+            $course['show_quota'] = true;
+            $quota = [];
             $max_quota = $GLOBALS['course_descriptor']->getQuotaLimit();
             $actual_space = $GLOBALS['course_descriptor']->getUsedSpace();
 
             $actual_space = number_format(($actual_space / (1024 * 1024)), '2');
-            if ($max_quota == 0) {
-                $percent = 0;
-            } else $percent = ($actual_space != 0 ? number_format((($actual_space / $max_quota) * 100), '2') : '0');
 
-            $GLOBALS['page']->add(
-                '<tr>'
-                . '<th scope="row">' . $lang->def('_USED_DISK') . '</th><td>'
-                . ($max_quota == USER_QUOTA_UNLIMIT
-                    ? ' ' . $actual_space . ' MB / ' . $lang->def('_UNLIMITED_QUOTA') . ' '
-                    : '' . $actual_space . ' / ' . $max_quota . ' MB ' . Util::draw_progress_bar($percent, true, 'progress_bar cp_quota_bar', false, false)
-                )
-                . '</td></tr>', 'content');
+            $percent = 0;
+            if ($max_quota > 0) {
+                $percent = ($actual_space != 0 ? number_format((($actual_space / $max_quota) * 100), '2') : '0');
+            }
+
+            $quota['percent'] = $percent;
+            $quota['actual_space'] = $actual_space;
+            $quota['max_quota'] = $max_quota;
+            $quota['unlimited'] = $max_quota == USER_QUOTA_UNLIMIT;
+
+            $course['quota'] = $quota;
         }
 
-        $GLOBALS['page']->add('</table>', 'content');
+        foreach ($levels as $key => $level) {
 
-        if ($mod_perm) {
-            $GLOBALS['page']->add('<br /><div class="table-container-below">'
-                . '<a class="infomod" href="index.php?modname=course&amp;op=modcourseinfo">'
-                . '<img src="' . getPathImage() . 'standard/edit.png" alt="' . $lang->def('_MOD') . '" />&nbsp;' . $lang->def('_MOD') . '</a>'
-                . '</div>', 'content');
+            if ($course['level_show_user'] & (1 << $key)) {
+                $course['show_users'] = true;
+                $users =& $acl_man->getUsersMappedData(Man_Course::getIdUserOfLevel($_SESSION['idCourse'], $key, $_SESSION['idEdition']));
+
+                $course[$level] = ['name' => $level, 'users' => $users];
+            }
         }
 
-        $GLOBALS['page']->add('</div>', 'content');*/
+        $data = [
+            'templatePath' => getPathTemplate(),
+            'course' => $course
+        ];
+
+        // var_dump($course);
+        $this->render('infocourse/infocourse', $data);
     }
 }
 
