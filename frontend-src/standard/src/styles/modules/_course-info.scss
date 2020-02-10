@@ -2,6 +2,10 @@
 
 }
 
+.course-info__general {
+  margin-bottom: 11px;
+}
+
 .course-info__table {
   width: 45%;
   float: left;
@@ -76,6 +80,10 @@
   font-size: 15px;
 }
 
+.course-info__teachercontainer {
+  margin-bottom: 50px;
+}
+
 .course-info__teacher {
   padding-left: 0;
   margin-bottom: 15px;
@@ -84,11 +92,15 @@
     margin-top: 4px;
     margin-bottom: 11px;
   }
+
+  &:nth-child(odd) {
+    padding-right: 0;
+  }
 }
 
 .course-info__teachertxt {
   float: left;
-  max-width: 210px;
+  max-width: calc(100% - 80px);
 }
 
 .course-info__teacherimage {
@@ -107,6 +119,9 @@
   font-size: 14px;
   color: $orange;
   margin-bottom: 16px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 
   @include breakpoint($tablet) {
     font-size: 16px;
@@ -123,6 +138,15 @@
 
   @include breakpoint($tablet) {
     margin-right: 6px;
+    float: none;
+    margin-bottom: 12px;
+    display: block;
+  }
+
+  @include breakpoint($small-desktop) {
+    float: left;
+    display: inline;
+    margin-bottom: 0;
   }
 }
 
@@ -141,5 +165,57 @@
     margin-top: -4px;
     padding-left: 12px;
     padding-right: 12px;
+    float: none;
+    width: 80%;
   }
+
+  @include breakpoint($small-desktop) {
+    float: left;
+    width: auto;
+  }
+}
+
+.course-info__materials {
+  margin-bottom: 16px;
+}
+
+.course-info__file {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-bottom: 17px;
+  
+  @include breakpoint($tablet) {
+    display: block;
+    // padding-right: 10px;
+  }
+}
+
+.course-info__icon {
+
+}
+
+.course-info__edit {
+  display: none;
+
+  @include breakpoint($tablet) {
+    display: block;
+    padding-left: 6px;
+  }
+}
+
+.course-info__delete {
+  display: none;
+
+  @include breakpoint($tablet) {
+    display: block;
+    padding-left: 4px;
+  }
+}
+
+.course-info__icon--download {
+  width: 18px;
+  height: 24px;
+  margin-right: 10px;
+  text-decoration: underline;
 }

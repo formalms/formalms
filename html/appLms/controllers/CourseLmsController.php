@@ -49,7 +49,10 @@ class CourseLmsController extends LmsController
 
         $data = [
             'page_title' => $lang->def('_INFO'),
-            'course_name' => 'Demo Course'
+            'course_name' => 'Demo Course',
+            'file_img_path' => '../templates/standard/static/images/icons/icon--file.svg',
+            'edit_img_path' => '../templates/standard/static/images/icons/icon--edit.svg',
+            'delete_img_path' => '../templates/standard/static/images/icons/icon--delete.svg'
         ];
 
         // var_dump($course);

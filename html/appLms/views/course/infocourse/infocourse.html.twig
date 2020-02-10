@@ -9,54 +9,83 @@
 <div class="section-coourse course-info">
   <div class="row">
     <div class="col-sm-6">
-      <div class="box-title">INFO</div>
-      <div class="course-info__table">
-        <div class="course-info__label">CODE</div>
-        <div class="course-info__value">001</div>
-      </div>
-      <div class="course-info__table">
-        <div class="course-info__label">SUBSCRIBE METHOD</div>
-        <div class="course-info__value text-geren">Free</div>
-      </div>
-      <div class="course-info__table">
-        <div class="course-info__label">LANGUAGE</div>
-        <div class="course-info__value">English</div>
-      </div>
-      <div class="course-info__table">
-        <div class="course-info__label">DIFFICULTY</div>
-        <div class="course-info__value text-orange">Medium</div>
-      </div>
-      <div class="clear"></div>
-
-      <div class="course-info__table course-info__table--full">
-        <div class="course-info__label">DESCRIPTION</div>
-        <div class="course-info__value text--gray">
-          Chupa chups tiramisu wafer. Dessert jujubes dragée dessert. Chocolate bar bear claw tiramisu lemon drops donut. Caramels sugar plum chupa chups. Bear claw candy cotton candy lollipop cake cookie. Cupcake topping candy canes sweet. Chocolate bar powder dessert candy muffin jelly-o candy croissant toffee. Jelly apple pie gummi bears tootsie roll sweet halvah lemon drops. Jelly dessert dragée icing muffin muffin marshmallow jelly beans.
+      <div class="course-info__general">
+        <div class="box-title">INFO</div>
+        <div class="course-info__table">
+          <div class="course-info__label">CODE</div>
+          <div class="course-info__value">001</div>
         </div>
-      </div>
-
-      <div class="course-info__table course-info__table--full">
-        <div class="course-info__label">STUDENT</div>
-        <div class="course-info__value">
-          <a href="#" class="course-info__link">Mario Rossi</a>
-          <a href="#" class="course-info__link">Giorgio Neri</a>
-          <a href="#" class="course-info__link">Maria Bianchi</a>
+        <div class="course-info__table">
+          <div class="course-info__label">SUBSCRIBE METHOD</div>
+          <div class="course-info__value text-geren">Free</div>
         </div>
-      </div>
-
-      <div class="course-info__table course-info__table--full">
-        <div class="course-info__label">DISK SPACE USED</div>
-        <div class="course-info__value text--gray">
-          <span class="text-green">111.58 MB</span> / No disk space limit
+        <div class="course-info__table">
+          <div class="course-info__label">LANGUAGE</div>
+          <div class="course-info__value">English</div>
         </div>
-      </div>
+        <div class="course-info__table">
+          <div class="course-info__label">DIFFICULTY</div>
+          <div class="course-info__value text-orange">Medium</div>
+        </div>
+        <div class="clear"></div>
 
-      <div class="clear"></div>
+        <div class="course-info__table course-info__table--full">
+          <div class="course-info__label">DESCRIPTION</div>
+          <div class="course-info__value text--gray">
+            Chupa chups tiramisu wafer. Dessert jujubes dragée dessert. Chocolate bar bear claw tiramisu lemon drops donut. Caramels sugar plum chupa chups. Bear claw candy cotton candy lollipop cake cookie. Cupcake topping candy canes sweet. Chocolate bar powder dessert candy muffin jelly-o candy croissant toffee. Jelly apple pie gummi bears tootsie roll sweet halvah lemon drops. Jelly dessert dragée icing muffin muffin marshmallow jelly beans.
+          </div>
+        </div>
+
+        <div class="course-info__table course-info__table--full">
+          <div class="course-info__label">STUDENT</div>
+          <div class="course-info__value">
+            <a href="#" class="course-info__link">Mario Rossi</a>
+            <a href="#" class="course-info__link">Giorgio Neri</a>
+            <a href="#" class="course-info__link">Maria Bianchi</a>
+          </div>
+        </div>
+
+        <div class="course-info__table course-info__table--full">
+          <div class="course-info__label">DISK SPACE USED</div>
+          <div class="course-info__value text--gray">
+            <span class="text--green">111.58 MB</span> / No disk space limit
+          </div>
+        </div>
+
+        <div class="clear"></div>
+      </div>
 
       <div class="box-title">MATERIALS</div>
+      <div class="row course-info__materials">
+        <div class="col-sm-10 course-info__file">
+          <a href="#">
+            <img src="{{file_img_path}}" alt="download" class="course-info__icon course-info__icon--download" />
+            Lesson slide - Can be a very long title due of the super text very long and impressive, nobody knows about it why i don't know
+          </a>
+        </div>
+        <div class="col-sm-1 course-info__edit">
+          <a href="#"><img src="{{edit_img_path}}" alt="edit file" class="course-info__icon" /></a>
+        </div>
+        <div class="col-sm-1 course-info__delete">
+          <a href="#"><img src="{{delete_img_path}}" alt="delete file" class="course-info__icon" /></a>
+        </div>
+
+        <div class="col-sm-10 course-info__file">
+          <a href="#">
+            <img src="{{file_img_path}}" alt="download" class="course-info__icon course-info__icon--download" />
+            Lesson slide - Can be a very long title due of the super text very long and impressive, nobody knows about it why i don't know
+          </a>
+        </div>
+        <div class="col-sm-1 course-info__edit">
+          <a href="#"><img src="{{edit_img_path}}" alt="edit file" class="course-info__icon" /></a>
+        </div>
+        <div class="col-sm-1 course-info__delete">
+          <a href="#"><img src="{{delete_img_path}}" alt="delete file" class="course-info__icon" /></a>
+        </div>
+      </div>
     </div>
 
-    <div class="col-sm-6">
+    <div class="col-sm-6 course-info__teachercontainer">
       <div class="box-title">TEACHERS</div>
       <div class="col-sm-6 course-info__teacher">
         <div class="course-info__teacherimage" style="background-image:url(https://picsum.photos/600)"></div>
@@ -73,6 +102,17 @@
         <div class="course-info__teacherimage" style="background-image:url(https://picsum.photos/600)"></div>
         <div class="course-info__teachertxt">
           <div class="course-info__teachername text-orange">Dott.ssa Giovanna Neri ABD ASDLKL ALKSLD </div>
+          <a class="course-info__teacherbio" href="#">BIOGRAPHY</a>
+          <a class="forma-button course-info__teachercta" href="#">MESSAGGIO</a>
+          <div class="clear"></div>
+        </div>
+        <div class="clear"></div>
+      </div>
+
+      <div class="col-sm-6 course-info__teacher">
+        <div class="course-info__teacherimage" style="background-image:url(https://picsum.photos/600)"></div>
+        <div class="course-info__teachertxt">
+          <div class="course-info__teachername text-orange">Dott.ssa Giovanna Neri</div>
           <a class="course-info__teacherbio" href="#">BIOGRAPHY</a>
           <a class="forma-button course-info__teachercta" href="#">MESSAGGIO</a>
           <div class="clear"></div>
