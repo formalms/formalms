@@ -11,40 +11,44 @@
     <div class="col-sm-6">
       <div class="course-info__general">
         <div class="box-title">{{ translate('_INFO','course') }}</div>
-        <div class="course-info__table">
+
+        <div class="course-info__table course-info__table--code">
           <div class="course-info__label">{{ translate('_CODE','course') }}</div>
-          <div class="course-info__value">{{course.code}}</div>
+          <div class="course-info__value text--gray">{{course.code}}</div>
         </div>
-        <div class="course-info__table">
+
+        <div class="course-info__table course-info__table--subscribe-method">
           <div class="course-info__label">{{ translate('_SUBSCRIBE_METHOD','course') }}</div>
-          <div class="course-info__value text--green">{{course.subscribe_method_translate}}</div>
+          <div class="course-info__value text--gray">{{course.subscribe_method_translate}}</div>
         </div>
-        <div class="course-info__table">
+
+        <div class="course-info__table course-info__table--language">
           <div class="course-info__label">{{ translate('_LANGUAGE','course') }}</div>
-          <div class="course-info__value">{{ course.lang_code }}</div>
+          <div class="course-info__value text--gray">{{ course.lang_code }}</div>
         </div>
-        <div class="course-info__table">
+
+        <div class="course-info__table course-info__table--difficulty">
           <div class="course-info__label">{{ translate('_DIFFICULTY','course') }}</div>
-          <div class="course-info__value text--orange">{{course.difficulty_translate}}</div>
+          <div class="course-info__value text--gray">{{course.difficulty_translate}}</div>
         </div>
 
         {% if course.show_extra_info %}
-          <div class="course-info__table">
+          <div class="course-info__table course-info__table--status">
             <div class="course-info__label">{{ translate('_STATUS','course') }}</div>
-            <div class="course-info__value text--orange">{{course.status}}</div>
+            <div class="course-info__value text--gray">{{course.status}}</div>
           </div>
 
-          <div class="course-info__table">
+          <div class="course-info__table course-info__table--completion-method">
             <div class="course-info__label">{{ translate('_PERMCLOSE','course') }}</div>
-            <div class="course-info__value text--orange">{{course.completion_method}}</div>
+            <div class="course-info__value text--gray">{{course.completion_method}}</div>
           </div>
 
-          <div class="course-info__table">
+          <div class="course-info__table course-info__table--mediumtime">
             <div class="course-info__label">{{ translate('_MEDIUMTIME','course') }}</div>
-            <div class="course-info__value text--orange">{{course.mediumTime}}</div>
+            <div class="course-info__value text--gray">{{course.mediumTime}}</div>
           </div>
 
-          <div class="course-info__table">
+          <div class="course-info__table course-info__table--cannot-enter">
             <div class="course-info__label">{{ translate('_STATCANNOTENTER','course') }}</div>
             <div class="course-info__value text--gray"> {{ course.cannot_enter|join(' | ') }}</div>
           </div>
@@ -53,7 +57,7 @@
 
         <div class="clear"></div>
 
-        <div class="course-info__table course-info__table--full">
+        <div class="course-info__table course-info__table--full course-info__table--description">
           <div class="course-info__label">{{ translate('_DESCRIPTION','course') }}</div>
           <div class="course-info__value text--gray">
             {{ course.description }}
@@ -61,7 +65,7 @@
         </div>
 
         {% if course.show_quota %}
-          <div class="course-info__table course-info__table--full">
+          <div class="course-info__table course-info__table--full course-info__table--quota">
             <div class="course-info__label">{{ translate('_USED_DISK','course') }}</div>
             <div class="course-info__value text--gray">
               <span class="text--green">{{ course.quota.actual_space }} MB</span> / {% if course.quota.unlimited %} {{ translate('_UNLIMITED_QUOTA','course') }} {% else %} {{ course.quota.max_quota }} {% endif %}
