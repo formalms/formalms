@@ -122,6 +122,9 @@ class CourseLmsController extends LmsController
                 $course['cannot_enter'][] = $lang->def('_USER_STATUS_END');
             }
 
+            $course['cannot_enter'][] = $lang->def('_USER_STATUS_BEGIN');
+            $course['cannot_enter'][] = $lang->def('_USER_STATUS_END');
+
         }
 
         $data = [
