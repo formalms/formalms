@@ -5992,6 +5992,7 @@ header.header {
   width: 64px;
   height: 64px;
   border-radius: 50%;
+  background-color: #ff6c00;
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center center;
