@@ -361,7 +361,21 @@ class CourseSubscribe_Manager
 	public function subscribeUserToCourse($id_user, $id_course, $level = 3, $waiting = 0, $date_begin_validity = false, $date_expire_validity = false)
 	{
 		if($this->controlSubscription($id_user, $id_course))
-			return true;
+            return true;
+            
+        $data = Events::trigger('lms.course_user.creating', [
+            'id_user' => $id_user,
+            'id_course' => $id_course,
+            'level' => $level,
+            'waiting' => $waiting,
+            'date_begin_validity' => $date_begin_validity,
+            'date_expire_validity' => $date_expire_validity,
+        ]);
+
+        $level = $data['level'];
+        $waiting = $data['waiting'];
+        $date_begin_validity = $data['date_begin_validity'];
+        $date_expire_validity = $data['date_expire_validity'];
 
 		$query =	"INSERT INTO ".$this->subscribe_table
 					." (idUser, idCourse, level, waiting, subscribed_by, date_inscr"
@@ -373,16 +387,43 @@ class CourseSubscribe_Manager
 					.($date_expire_validity ? ", '".substr($date_expire_validity, 0, 10)."'" : "")
 					.")";
 
-		return sql_query($query);
+        $res = sql_query($query);
+        
+        if($res) {
+            Events::trigger('lms.course_user.created', [
+                'id_user' => $id_user,
+                'id_course' => $id_course,
+                'level' => $level,
+                'waiting' => $waiting,
+                'date_begin_validity' => $date_begin_validity,
+                'date_expire_validity' => $date_expire_validity,
+            ]);
+        }
+
+        return $res;
 	}
 
 	public function delUserFromCourse($id_user, $id_course)
 	{
+        Events::trigger('lms.course_user.deleting', [
+            'id_user' => $id_user,
+            'id_course' => $id_course,
+        ]);
+
 		$query =	"DELETE FROM ".$this->subscribe_table
 					." WHERE idCourse = ".$id_course
 					." AND idUser = ".$id_user;
 
-		return sql_query($query);
+        $res = sql_query($query);
+        
+        if($res) {
+            Events::trigger('lms.course_user.deleted', [
+                'id_user' => $id_user,
+                'id_course' => $id_course,
+            ]);
+        }
+
+		return $res;
 	}
 
 	public function getUserLeveInCourse($id_user, $id_course)
@@ -398,6 +439,17 @@ class CourseSubscribe_Manager
 	}
 
 	public function updateUserLeveInCourse($id_user, $id_course, $new_level) {
+
+        $new_data = ['level' => $new_level];
+
+        $data = Events::trigger('lms.course_user.updating', [
+            'id_user' => $id_user,
+            'id_course' => $id_course,
+            'new_data' => $new_data,
+        ]);
+
+        $new_level = $data['new_data']['level'];
+
 		$query_lvl =	"SELECT idUser, level"
 					." FROM ".$this->subscribe_table
 					." WHERE idCourse = ".(int)$id_course
@@ -439,13 +491,31 @@ class CourseSubscribe_Manager
 			{
 				$this->acl_man->removeFromGroup($level_idst[$old_level[$id_user]], $id_user_t);
 				$this->acl_man->addToGroup($level_idst[$new_level], $id_user_t);
-			}
+            }
+            
+            Events::trigger('lms.course_user.updated', [
+                'id_user' => $id_user,
+                'id_course' => $id_course,
+                'new_data' => $new_data,
+            ]);
 		}
 
 		return $res;
 	}
 
 	public function updateUserStatusInCourse($id_user, $id_course, $new_status, $new_date_complete = "") {
+
+        $new_data = ['status' => $new_status, 'date_complete' => $new_date_complete];
+
+        $data = Events::trigger('lms.course_user.updating', [
+            'id_user' => $id_user,
+            'id_course' => $id_course,
+            'new_data' => $new_data,
+        ]);
+
+        $new_status = $data['new_data']['status'];
+        $new_date_complete = $data['new_data']['date_complete'];
+
 		$_new_date = $new_date_complete ? "'".$new_date_complete."'" : "NOW()";
 		$query = "UPDATE ".$this->subscribe_table
 					." SET status = ".(int)$new_status
@@ -460,7 +530,12 @@ class CourseSubscribe_Manager
 			$query .= " = ".(int)$id_user;
 		}
 
-		if ($this->db->query($query)) {
+		if ($this->db->query($query)) {            
+            Events::trigger('lms.course_user.updated', [
+                'id_user' => $id_user,
+                'id_course' => $id_course,
+                'new_data' => $new_data,
+            ]);
 			if($new_status == _CUS_END) {
 				//require_once($GLOBALS['where_lms'].'/lib/lib.competences.php');
 				//$cman = new Competences_Manager();
@@ -480,6 +555,17 @@ class CourseSubscribe_Manager
 
 
 	public function updateUserDateCompleteInCourse($id_user, $id_course, $new_date_complete) {
+
+        $new_data = ['date_complete' => $new_date_complete];
+
+        $data = Events::trigger('lms.course_user.updating', [
+            'id_user' => $id_user,
+            'id_course' => $id_course,
+            'new_data' => $new_data,
+        ]);
+
+        $new_date_complete = $data['new_data']['date_complete'];
+
 		$_new_date = $new_date_complete ? "'".$new_date_complete."'" : "NULL";
 		$query =	"UPDATE ".$this->subscribe_table
 					." SET date_complete = ".$_new_date
@@ -493,10 +579,30 @@ class CourseSubscribe_Manager
 			$query .= " = ".(int)$id_user;
 		}
 
-		return $this->db->query($query);
+        $res = $this->db->query($query);
+        if($res) {                  
+            Events::trigger('lms.course_user.updated', [
+                'id_user' => $id_user,
+                'id_course' => $id_course,
+                'new_data' => $new_data,
+            ]);
+        }
+
+        return $res;
 	}
 
 	public function updateUserDateBeginValidityInCourse($id_user, $id_course, $new_date_begin) {
+
+        $new_data = ['date_begin' => $new_date_begin];
+
+        $data = Events::trigger('lms.course_user.updating', [
+            'id_user' => $id_user,
+            'id_course' => $id_course,
+            'new_data' => $new_data,
+        ]);
+
+        $new_date_begin = $data['new_data']['date_begin'];
+
 		$_new_date = $new_date_begin ? "'".$new_date_begin."'" : "NULL";
 		$query =	"UPDATE ".$this->subscribe_table
 					." SET date_begin_validity = ".$_new_date
@@ -509,10 +615,30 @@ class CourseSubscribe_Manager
 			$query .= " = ".(int)$id_user;
 		}
 
-		return $this->db->query($query);
+        $res = $this->db->query($query);
+        if($res) {                  
+            Events::trigger('lms.course_user.updated', [
+                'id_user' => $id_user,
+                'id_course' => $id_course,
+                'new_data' => $new_data,
+            ]);
+        }
+
+        return $res;
 	}
 	
 	public function updateUserDateExpireValidityInCourse($id_user, $id_course, $new_date_expire) {
+
+        $new_data = ['date_expire' => $new_date_expire];
+
+        $data = Events::trigger('lms.course_user.updating', [
+            'id_user' => $id_user,
+            'id_course' => $id_course,
+            'new_data' => $new_data,
+        ]);
+
+        $new_date_expire = $data['new_data']['date_expire'];
+
 		$_new_date = $new_date_expire ? "'".$new_date_expire."'" : "NULL";
 		$query =	"UPDATE ".$this->subscribe_table
 					." SET date_expire_validity = ".$_new_date
@@ -525,7 +651,16 @@ class CourseSubscribe_Manager
 			$query .= " = ".(int)$id_user;
 		}
 
-		return $this->db->query($query);
+        $res = $this->db->query($query);
+        if($res) {                  
+            Events::trigger('lms.course_user.updated', [
+                'id_user' => $id_user,
+                'id_course' => $id_course,
+                'new_data' => $new_data,
+            ]);
+        }
+        
+        return $res;
 	}
 
 	
@@ -567,6 +702,16 @@ class CourseSubscribe_Manager
 
 	public function saveTrackStatusChange($idUser, $idCourse, $status)
 	{
+        $new_data = ['status' => $status];
+
+        $data = Events::trigger('lms.course_user.updating', [
+            'id_user' => $idUser,
+            'id_course' => $idCourse,
+            'new_data' => $new_data,
+        ]);
+
+        $status = $data['new_data']['status'];
+
 		require_once($GLOBALS['where_lms'].'/lib/lib.course.php');
 
 		list($prev_status) = sql_fetch_row(sql_query("
@@ -669,16 +814,18 @@ class CourseSubscribe_Manager
 			$competences_man = new Competences_Manager();
 			$competences_man->AssignCourseCompetencesToUser($idCourse, $idUser);
 			*/
-
-			$event = new \appLms\Events\Lms\CourseCompletedEvent($idCourse,$idUser,$acl_man);
-
-            \appCore\Events\DispatcherManager::dispatch(\appLms\Events\Lms\CourseCompletedEvent::EVENT_NAME, $event);
-
 			//increment coursecompleted if this course is in a coursepath
 			require_once(_lms_.'/lib/lib.coursepath.php');
 			$cpmodel = new CoursePath_Manager();
 			$cpmodel->assignComplete($idCourse, $idUser);
-		}
+        }
+        
+        Events::trigger('lms.course_user.updated', [
+            'id_user' => $idUser,
+            'id_course' => $idCourse,
+            'new_data' => $new_data,
+        ]);
+
 		return true;
 	}
 
