@@ -6,14 +6,9 @@ let $modalRole = null;
 
 export const InfoCourse = () => {
   const elementsBioArray = document.querySelectorAll('.js-infocourse-bio-trigger');
-  const elementsMessageArray = document.querySelectorAll('.js-infocourse-message-trigger');
 
   for (var i = 0; i < elementsBioArray.length; i++) {
     elementsBioArray[i].addEventListener('click', onBioClick);
-  }
-
-  for (i = 0; i < elementsMessageArray.length; i++) {
-    elementsMessageArray[i].addEventListener('click', onMessageClick);
   }
 
   $modal = $('.js-infocourse-modal');
@@ -36,15 +31,6 @@ const onBioClick = (event) => {
   $modal.modal();
 
   return false;
-};
-
-const onMessageClick = (event) => {
-  event.preventDefault();
-  var userId = event.target.dataset.idst;
-  var signature = event.target.dataset.signature;
-  var routeUrl = event.target.dataset.route;
-
-  window.location.href = routeUrl+'&idst='+userId+'&signature='+signature+'&sop=unregistercourse';
 };
 
 const closeOverlay = () => {
