@@ -142,7 +142,7 @@ class CourseLmsController extends LmsController
         return ($perm & (1 << $status));
     }
 
-    public function viewProfile()
+    public function viewprofile()
     {
         $idUser = Get::gReq('id_user');
 
