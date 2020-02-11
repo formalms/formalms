@@ -7,7 +7,7 @@
 <div class="col-sm-6 course-info__people">
     <a href="{{route.profile.url}}?id_user={{user.idst}}" class="course-info__peopleimage" style="background-image:url({{ avatar}})"></a>
     <div class="course-info__peopletxt">
-        <a href="{{route.profile.url}}?id_user={{user.idst}}" class="course-info__peoplename text-orange">{{ user.name}}</a>
+        <a href="{{route.profile.url}}&id_user={{user.idst}}" class="course-info__peoplename text-orange">{{ user.name}}</a>
         {% if user.biography != '' %}
             <a class="course-info__peoplebio js-infocourse-bio-trigger" href="#" data-title="{{ user.name}}" data-image="{{ avatar}}" data-role="{{role}}">{{translate('_BIOGRAPHY','course')}}</a>
         {% endif %}
