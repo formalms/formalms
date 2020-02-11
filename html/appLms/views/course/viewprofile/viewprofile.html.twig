@@ -48,7 +48,10 @@
 
         <div class="course-info__label">{{ translate('_EMAIL', 'standard') }}</div>
         <div class="course-info__value text--gray">{{user.email}}</div>
-        <a class="forma-button course-info__peoplecta" href="{{ route.message.url }}&idst={{ user.idst }}&signature={{ evalPhp('Util::getSignature') }}&sop=unregistercourse'">{{translate('_MESSAGE','course')}}</a>
+        <a class="forma-button user-profile__cta" href="{{ route.message.url }}&idst={{ user.idst }}&signature={{ evalPhp('Util::getSignature') }}&sop=unregistercourse'">
+          <span class="user-profile__mailicon"></span>
+          {{translate('_MESSAGE','course')}}
+        </a>
       </div>
 
       {% if user.biography != '' %}
@@ -59,26 +62,30 @@
       {% endif %}
     </div>
 
-    <div class="col-sm-3 user-profile__column">
+    <div class="col-sm-3">
       <div class="user-profile__column">
         <div class="box-title">{{ translate('_ACTIVITY', 'standard') }}</div>
-        <div class="course-info__label">{{ translate('_REGISTER_DATE', 'profile') }}</div>
-        <div class="course-info__value text--gray">02/12/2019</div>
-
-        <div class="course-info__label">{{ translate('_FORUM_MESSAGE', 'profile') }}</div>
-        <div class="course-info__value text--gray">65456</div>
-
-        <div class="course-info__label">{{ translate('_LOADED_FILE', 'standard') }}</div>
-        <div class="course-info__value text--gray">65456</div>
+        <div class="user-profile__content">
+          <div class="course-info__label">{{ translate('_REGISTER_DATE', 'profile') }}</div>
+          <div class="course-info__value text--gray">02/12/2019</div>
+        </div>
+        <div class="user-profile__content">
+          <div class="course-info__label">{{ translate('_FORUM_MESSAGE', 'profile') }}</div>
+          <div class="course-info__value text--gray">65456</div>
+        </div>
+        <div class="user-profile__content">
+          <div class="course-info__label">{{ translate('_LOADED_FILE', 'standard') }}</div>
+          <div class="course-info__value text--gray">65456</div>
+        </div>
       </div>
 
       <div class="user-profile__column">
         <div class="box-title">{{ translate('_COMMUNITY', 'profile') }}</div>
         <div class="course-info__label">{{ translate('_LAST_PROFILE_VIEW', 'profile') }}</div>
         <div class="course-info__value text--gray">
-          <a href="#">Mario Rossi</a>
-          <a href="#">Giorgio Neri</a>
-          <a href="#">Maria Bianchi</a>
+          <a href="#" class="user-profile__namelink">Mario Rossi</a>
+          <a href="#" class="user-profile__namelink">Giorgio Neri</a>
+          <a href="#" class="user-profile__namelink">Maria Bianchi</a>
         </div>
       </div>
     </div>

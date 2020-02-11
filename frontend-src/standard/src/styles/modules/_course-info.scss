@@ -1,5 +1,13 @@
 .course-info {
 
+  // .course-info__value {
+  //   font-size: 13px;
+  // }
+
+  // .course-info__label {
+  //   margin-bottom: 3px;
+  // }
+
 }
 
 .course-info__general {
@@ -39,6 +47,7 @@
   font-size: 10px;
   color: $gray-2;
   margin-bottom: 5px;
+  text-transform: uppercase;
 
   @include breakpoint($tablet) {
     width: 92px;
@@ -179,6 +188,8 @@
   line-height: 22px;
   padding-left: 10px;
   padding-right: 10px;
+  background-color: $light-orange;
+  border-color: $light-orange;
 
   @include breakpoint($tablet) {
     font-size: 10px;
@@ -191,7 +202,6 @@
 
   @include breakpoint($small-desktop) {
     float: left;
-    // width: auto;
   }
 }
 
