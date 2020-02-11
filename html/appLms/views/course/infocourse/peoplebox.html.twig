@@ -5,7 +5,7 @@
 {% endif %}
 
 <div class="col-sm-6 course-info__people">
-    <a href="{{route.profile.url}}?id_user={{user.idst}}" class="course-info__peopleimage" style="background-image:url({{ avatar}})"></a>
+    <a href="{{route.profile.url}}&id_user={{user.idst}}" class="course-info__peopleimage" style="background-image:url({{ avatar}})"></a>
     <div class="course-info__peopletxt">
         <a href="{{route.profile.url}}&id_user={{user.idst}}" class="course-info__peoplename text-orange">{{ user.name}}</a>
         {% if user.biography != '' %}
