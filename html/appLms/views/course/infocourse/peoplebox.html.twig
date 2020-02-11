@@ -5,9 +5,9 @@
 {% endif %}
 
 <div class="col-sm-6 course-info__people">
-    <div class="course-info__peopleimage" style="background-image:url({{ avatar}})"></div>
+    <a href="{{route.profile.url}}?id_user={{user.idst}}" class="course-info__peopleimage" style="background-image:url({{ avatar}})"></a>
     <div class="course-info__peopletxt">
-        <div class="course-info__peoplename text-orange">{{ user.name}}</div>
+        <a href="{{route.profile.url}}?id_user={{user.idst}}" class="course-info__peoplename text-orange">{{ user.name}}</a>
         {% if user.biography != '' %}
             <a class="course-info__peoplebio js-infocourse-bio-trigger" href="#" data-title="{{ user.name}}" data-image="{{ avatar}}" data-role="{{role}}">{{translate('_BIOGRAPHY','course')}}</a>
         {% endif %}
