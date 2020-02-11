@@ -47,7 +47,9 @@
         </div>
 
         <div class="course-info__label">{{ translate('_EMAIL', 'standard') }}</div>
-        <div class="course-info__value text--gray">{{user.email}}</div>
+        <div class="course-info__value text--gray">
+          <a class="user-profile__namelink" href="mailto:{{user.email}}" target="_blank">{{user.email}}</a>
+        </div>
         <a class="forma-button user-profile__cta" href="{{ route.message.url }}&idst={{ user.idst }}&signature={{ evalPhp('Util::getSignature') }}&sop=unregistercourse'">
           <span class="user-profile__mailicon"></span>
           {{translate('_MESSAGE','course')}}
