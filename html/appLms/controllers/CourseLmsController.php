@@ -142,13 +142,17 @@ class CourseLmsController extends LmsController
         return ($perm & (1 << $status));
     }
 
-    public function writeMessage()
+    public function viewProfile()
     {
-        $_POST['userselector_input']['main_selector'] = '11836';
-        $_POST['authentic_request'] = Util::getSignature();
-        $_POST['okselector'] = 'Save changes';
-        require_once(Forma::inc(_adm_ . '/lib/lib.message.php'));
-        messageDispatch("writemessage", true);
+        $idUser = Get::gReq('id_user');
+
+        $acl_man = Docebo::user()->getAclManager();
+
+        $user = $acl_man->getUser($idUser);
+
+        $data = ['user' => $acl_man->getUserMappedData($user)];
+
+        $this->render('viewprofile/viewprofile', $data);
     }
 }
 
