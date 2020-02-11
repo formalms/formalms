@@ -159,7 +159,14 @@ class CourseLmsController extends LmsController
 
         $user = $acl_man->getUser($idUser);
 
-        $data = ['user' => $acl_man->getUserMappedData($user)];
+        $data = [
+            'user' => $acl_man->getUserMappedData($user),
+            'templatePath' => getPathTemplate(),
+            'route' => [
+                'message' => ['url' => 'index.php?r=lms/message/directWrite'],
+                'profile' => ['url' => 'index.php?r=lms/course/viewprofile']
+            ]
+        ];
 
         $this->render('viewprofile/viewprofile', $data);
     }

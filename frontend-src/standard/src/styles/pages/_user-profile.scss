@@ -1,0 +1,31 @@
+.user-profile {
+
+}
+
+.user-profile__column {
+  margin-bottom: 50px;
+}
+
+.user-profile__content {
+  width: 100%;
+
+  @include breakpoint($tablet) {
+    display: table;
+  }
+}
+
+.user-profile__infocontainer {
+  display: flex;
+  justify-content: space-between;
+
+  @include breakpoint($tablet) {
+    justify-content: none;
+    display: block;
+  }
+}
+
+.user-profile__img {
+  width: 150px;
+  height: 150px;
+  display: table-cell;
+}

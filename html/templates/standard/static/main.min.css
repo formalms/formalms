@@ -6409,3 +6409,25 @@ header.header {
 
 .homepage__collapsed-text.in + .collapse-wrapper .forma-button {
   display: none; }
+
+.user-profile__column {
+  margin-bottom: 50px; }
+
+.user-profile__content {
+  width: 100%; }
+  @media (min-width: 768px) {
+    .user-profile__content {
+      display: table; } }
+
+.user-profile__infocontainer {
+  display: flex;
+  justify-content: space-between; }
+  @media (min-width: 768px) {
+    .user-profile__infocontainer {
+      justify-content: none;
+      display: block; } }
+
+.user-profile__img {
+  width: 150px;
+  height: 150px;
+  display: table-cell; }
