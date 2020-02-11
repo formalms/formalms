@@ -120,7 +120,7 @@
         <div class="col-sm-12 course-info__peoplecontainer">
           <div class="box-title box-title--people">{{ course.Tutor.name }}</div>
           {% for user in course.Tutor.users %}
-            {% include 'infocourse/peoplebox.html.twig' with {'user': user, 'role': course.Tutor.name} %}
+            {% include 'infocourse/peoplebox.html.twig' with {'route': route, 'user': user, 'role': course.Tutor.name} %}
           {% endfor %}
         </div>
       {% endif %}
@@ -129,7 +129,7 @@
         <div class="col-sm-12 course-info__peoplecontainer">
           <div class="box-title box-title--people">{{ course.Administrator.name }}</div>
           {% for user in course.Administrator.users %}
-            {% include 'infocourse/peoplebox.html.twig' with {'user': user, 'role': course.Administrator.name} %}
+            {% include 'infocourse/peoplebox.html.twig' with {'route': route, 'user': user, 'role': course.Administrator.name} %}
           {% endfor %}
         </div>
       {% endif %}
@@ -138,7 +138,7 @@
         <div class="col-sm-12 course-info__peoplecontainer">
           <div class="box-title box-title--people">{{ course.Student.name }}</div>
           {% for user in course.Student.users %}
-            {% include 'infocourse/peoplebox.html.twig' with {'user': user, 'role': course.Student.name} %}
+            {% include 'infocourse/peoplebox.html.twig' with {'route': route, 'user': user, 'role': course.Student.name} %}
           {% endfor %}
         </div>
       {% endif %}

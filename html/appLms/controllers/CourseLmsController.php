@@ -129,6 +129,7 @@ class CourseLmsController extends LmsController
 
         $data = [
             'templatePath' => getPathTemplate(),
+            'route' => ['message' => ['url' => 'index.php?r=lms/message/directWrite']],
             'course' => $course
         ];
 
@@ -136,8 +137,18 @@ class CourseLmsController extends LmsController
         $this->render('infocourse/infocourse', $data);
     }
 
-    private function statusNoEnter($perm, $status) {
-        return ( $perm & (1 << $status) );
+    private function statusNoEnter($perm, $status)
+    {
+        return ($perm & (1 << $status));
+    }
+
+    public function writeMessage()
+    {
+        $_POST['userselector_input']['main_selector'] = '11836';
+        $_POST['authentic_request'] = Util::getSignature();
+        $_POST['okselector'] = 'Save changes';
+        require_once(Forma::inc(_adm_ . '/lib/lib.message.php'));
+        messageDispatch("writemessage", true);
     }
 }
 

@@ -11,7 +11,7 @@
         {% if user.biography != '' %}
             <a class="course-info__peoplebio js-infocourse-bio-trigger" href="#" data-title="{{ user.name}}" data-image="{{ avatar}}" data-role="{{role}}">{{translate('_BIOGRAPHY','course')}}</a>
         {% endif %}
-        <a class="forma-button course-info__peoplecta" href="#">MESSAGGIO</a>
+        <a class="forma-button course-info__peoplecta js-infocourse-message-trigger" data-route="{{ route.message.url }}" data-idst="{{ user.idst }}" data-signature="{{ evalPhp('Util::getSignature') }}" href="#">MESSAGGIO</a>
         <div class="clear"></div>
         <div class="hidden js-infocourse-bio-text">
             {{ user.biography}}
