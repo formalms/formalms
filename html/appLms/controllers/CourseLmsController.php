@@ -43,31 +43,37 @@ class CourseLmsController extends LmsController
     public function infocourse()
     {
         checkPerm('view_info');
-        $acl_man = Docebo::user()->getAclManager();
-        $lang =& DoceboLanguage::createInstance('course');
-        // $course = $GLOBALS['course_descriptor']->getAllInfo();
-        $course = $GLOBALS['course_descriptor']->getAllInfo();
-        $levels = CourseLevel::getLevels();
+        try {
+            $acl_man = Docebo::user()->getAclManager();
+            $lang =& DoceboLanguage::createInstance('course');
+            $course = $GLOBALS['course_descriptor']->getAllInfo();
+            $levels = CourseLevel::getLevels();
+        } catch (\Exception $exception) {
 
-        $status_lang = array(
+        }
+
+        $status_lang = [
             0 => $lang->def('_NOACTIVE'),
             1 => $lang->def('_ACTIVE'),
             2 => $lang->def('_CST_CONFIRMED'),
             3 => $lang->def('_CST_CONCLUDED'),
-            4 => $lang->def('_CST_CANCELLED'));
+            4 => $lang->def('_CST_CANCELLED')
+        ];
 
-        $difficult_lang = array(
+        $difficult_lang = [
             'veryeasy' => $lang->def('_DIFFICULT_VERYEASY'),
             'easy' => $lang->def('_DIFFICULT_EASY'),
             'medium' => $lang->def('_DIFFICULT_MEDIUM'),
             'difficult' => $lang->def('_DIFFICULT_DIFFICULT'),
-            'verydifficult' => $lang->def('_DIFFICULT_VERYDIFFICULT'));
+            'verydifficult' => $lang->def('_DIFFICULT_VERYDIFFICULT')
+        ];
 
-        $subs_lang = array(
+        $subs_lang = [
             0 => $lang->def('_COURSE_S_GODADMIN'),
             1 => $lang->def('_COURSE_S_MODERATE'),
             2 => $lang->def('_COURSE_S_FREE'),
-            3 => $lang->def('_COURSE_S_SECURITY_CODE'));
+            3 => $lang->def('_COURSE_S_SECURITY_CODE')
+        ];
 
         $course['difficulty_translate'] = $difficult_lang[$course['difficult']];
         $course['subscribe_method_translate'] = $subs_lang[$course['subscribe_method']];
@@ -129,7 +135,10 @@ class CourseLmsController extends LmsController
 
         $data = [
             'templatePath' => getPathTemplate(),
-            'route' => ['message' => ['url' => 'index.php?r=lms/message/directWrite']],
+            'route' => [
+                'message' => ['url' => 'index.php?r=lms/message/directWrite'],
+                'profile' => ['url' => 'index.php?r=lms/course/viewprofile']
+            ],
             'course' => $course
         ];
 
