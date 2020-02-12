@@ -1245,6 +1245,7 @@ class DoceboACLManager
         $responseUser['avatar'] = !empty($user[ACL_INFO_AVATAR]) ? $path . $user[ACL_INFO_AVATAR] : '';
         $responseUser['biography'] = $user[ACL_INFO_SIGNATURE];
         $responseUser['profile'] = 'index.php?modname=course&amp;op=viewprofile&amp;id_user=' . $user[ACL_INFO_IDST];
+        $responseUser['registerDate'] = $user[ACL_INFO_REGISTER_DATE];
 
 
         return $responseUser;

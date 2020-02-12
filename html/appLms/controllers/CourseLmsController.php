@@ -11,11 +11,18 @@
 |   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
-require_once(_base_ . '/lib/lib.json.php');
-
+require_once(Forma::inc(_base_ . '/lib/lib.json.php'));
+require_once(Forma::inc(_base_ . '/lib/lib.user_profile.php'));
+require_once(Forma::inc(_adm_ . '/lib/lib.myfiles.php'));
 
 class CourseLmsController extends LmsController
 {
+    /**
+     * @var UserProfileData the instance of the profile data manager
+     * @access private
+     */
+    var $userProfileDataManager;
+
     public function init()
     {
         require_once(_adm_ . '/lib/lib.field.php');
@@ -27,6 +34,8 @@ class CourseLmsController extends LmsController
             'view' => true,
             'mod' => true
         );
+
+        $this->userProfileDataManager = new UserProfileData();
 
         if (!Docebo::user()->isAnonymous()) {
 
@@ -159,8 +168,15 @@ class CourseLmsController extends LmsController
 
         $user = $acl_man->getUser($idUser);
 
+        $last_view = $this->userProfileDataManager->getUserProfileViewList($idUser, 15);
+        $friend_list =& $this->userProfileDataManager->getUserFriend($idUser);
+        $user_stat = $this->userProfileDataManager->getUserStats($idUser);
+
         $data = [
             'user' => $acl_man->getUserMappedData($user),
+            'lastViews' => $last_view,
+            'friendsList' => $friend_list,
+            'userStats' => $user_stat,
             'templatePath' => getPathTemplate(),
             'route' => [
                 'message' => ['url' => 'index.php?r=lms/message/directWrite'],

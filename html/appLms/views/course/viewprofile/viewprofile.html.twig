@@ -1,9 +1,5 @@
-
-
 <div class="section-course user-profile">
   <div class="page-subtitle">{{user.name}}</div>
-
-  
 
   <div class="row">
 
@@ -20,7 +16,7 @@
           <div>
             <div class="user-profile__content">
               <div class="course-info__label">{{ translate('_USERNAME', 'course') }}</div>
-              <div class="course-info__value text--gray">{{user.username}}</div>
+              <div class="course-info__value text--gray">{{user.name}}</div>
             </div>
 
             <div class="user-profile__content">
@@ -33,14 +29,14 @@
               <div class="course-info__value text--gray">{{user.lastname}}</div>
             </div>
           </div>
-          
+
           <div class="user-profile__imgcontainer">
             <div class="user-profile__content">
               <div class="course-info__label">{{ translate('_AVATAR', 'standard') }}</div>
               {% if user.avatar != '' %}
-                <img class="user-profile__img" src="{{user.avatar}}" alt="{{user.username}}" />
+                <img class="user-profile__img" src="{{user.avatar}}" alt="{{user.name}}" />
               {% else %}
-                <img class="user-profile__img" src="{{templatePath}}/static/images/profile.png" alt="{{user.username}}" />
+                <img class="user-profile__img" src="{{templatePath}}/static/images/profile.png" alt="{{user.name}}" />
               {% endif %}
             </div>
           </div>
@@ -50,7 +46,7 @@
         <div class="course-info__value text--gray">
           <a class="user-profile__namelink" href="mailto:{{user.email}}" target="_blank">{{user.email}}</a>
         </div>
-        <a class="forma-button user-profile__cta" href="{{ route.message.url }}&idst={{ user.idst }}&signature={{ evalPhp('Util::getSignature') }}&sop=unregistercourse'">
+        <a class="forma-button user-profile__cta" href="{{ route.message.url }}&idst={{ user.idst }}&signature={{ evalPhp('Util::getSignature') }}&sop=unregistercourse">
           <span class="user-profile__mailicon"></span>
           {{translate('_MESSAGE','course')}}
         </a>
@@ -59,7 +55,7 @@
       {% if user.biography != '' %}
         <div class="col-sm-8 user-profile__column">
           <div class="course-info__label">{{ translate('_BIOGRAPHY', 'course') }}</div>
-          <div class="course-info__value text--gray">{{ user.biography}}</div>
+          <div class="course-info__value text--gray">{{ user.biography }}</div>
         </div>
       {% endif %}
     </div>
@@ -69,15 +65,15 @@
         <div class="box-title">{{ translate('_ACTIVITY', 'standard') }}</div>
         <div class="user-profile__content">
           <div class="course-info__label">{{ translate('_REGISTER_DATE', 'profile') }}</div>
-          <div class="course-info__value text--gray">02/12/2019</div>
+          <div class="course-info__value text--gray">{{user.registerDate}}</div>
         </div>
         <div class="user-profile__content">
           <div class="course-info__label">{{ translate('_FORUM_MESSAGE', 'profile') }}</div>
-          <div class="course-info__value text--gray">65456</div>
+          <div class="course-info__value text--gray">{{userStats.forum_post}}</div>
         </div>
         <div class="user-profile__content">
           <div class="course-info__label">{{ translate('_LOADED_FILE', 'standard') }}</div>
-          <div class="course-info__value text--gray">65456</div>
+          <div class="course-info__value text--gray">{{userStats.loaded_file}}</div>
         </div>
       </div>
 
@@ -85,9 +81,10 @@
         <div class="box-title">{{ translate('_COMMUNITY', 'profile') }}</div>
         <div class="course-info__label">{{ translate('_LAST_PROFILE_VIEW', 'profile') }}</div>
         <div class="course-info__value text--gray">
-          <a href="#" class="user-profile__namelink">Mario Rossi</a>
-          <a href="#" class="user-profile__namelink">Giorgio Neri</a>
-          <a href="#" class="user-profile__namelink">Maria Bianchi</a>
+
+          {% for user in lastViews %}
+            <a href="#" class="user-profile__namelink">{{ user.username }}</a>
+          {% endfor %}
         </div>
       </div>
     </div>
