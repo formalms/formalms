@@ -752,7 +752,7 @@ function modprerequisites() {
 
 		if($id_c != $id_course) {
 
-			if(isset($courses_prer[$id_c]) && strpos($courses_prer[$id_c], $id_course)) {
+			if(isset($courses_prer[$id_c]) && strpos($courses_prer[$id_c], strval($id_course))) {
 
 				// this course contain the current working course as a  prerequisites
 				$cont = array(

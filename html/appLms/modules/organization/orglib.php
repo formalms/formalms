@@ -1215,7 +1215,7 @@ class Org_TreeView extends RepoTreeView {
 			}
 		}
 		foreach( $arrayState as $nameField => $valueField ) {
-			if( strstr( $nameField, $this->_getSelectedId() ) && !checkPerm('lesson', TRUE, 'storage') ) {
+			if( strstr( $nameField, strval($this->_getSelectedId()) ) && !checkPerm('lesson', TRUE, 'storage') ) {
 				$id = substr( $nameField, strlen($this->_getSelectedId()) );
 				if( strlen( $id ) > 0 ) {
 					$folder = $this->tdb->getFolderById( (int)$id );

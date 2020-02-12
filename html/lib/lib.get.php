@@ -490,7 +490,7 @@ class Get {
 		$known_os_arr = explode(" ", "linux macos sunos bsd qnx solaris irix aix unix amiga os/2 beos windows");
 		foreach($known_os_arr as $os) {
 
-			if(strpos($agent, $os) !== false) return $os;
+			if(strpos($agent, strval($os)) !== false) return $os;
 		}
 		return 'unknown';
 	}

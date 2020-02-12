@@ -94,7 +94,7 @@ class FeedReader {
 
 					$param_name = explode('=', $param);
 
-					if(strpos($feed_url, $param_name[0]) === false) {
+					if(strpos($feed_url, strval($param_name[0])) === false) {
 						$feed_url .= ( strpos($feed_url, '?') === false ? '?' : '&' ).$param;
 					}
 				}

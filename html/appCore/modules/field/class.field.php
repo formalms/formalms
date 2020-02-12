@@ -262,7 +262,7 @@ class Field {
 				if( is_numeric( $skipchar ) )
 					$search_key = substr( $fname, $skipchar );
 				else {
-					$pos = strpos($fname,$skipchar);
+					$pos = strpos($fname,strval($skipchar));
 					if( $pos !== FALSE )
 						$search_key = substr( $fname, $pos+1 );
 					else
@@ -682,19 +682,19 @@ class Field {
 				$output = ( $value == $filter['value'] );
       } break;
 			case 0: { //contains
-				$output = (strpos($value, $filter['value'])===false ? false : true);
+				$output = (strpos($value, strval($filter['value']))===false ? false : true);
 			} break;
 			case 3: { //not equal
 				$output = ( $value != $filter['value'] );
 			} break;
 			case 1: { //do not contains
-				$output = (strpos($value, $filter['value'])===false ? true : false);
+				$output = (strpos($value, strval($filter['value']))===false ? true : false);
 			} break;
 			case 4: { //starts with
-				$output = (strpos($value, $filter['value'])===0 ? true : false);
+				$output = (strpos($value, strval($filter['value']))===0 ? true : false);
 			} break;
 			case 5: { //ends with
-				$output = (strpos($value, $filter['value'])===(strlen($value) - strlen($filter['value'])) ? true : false);
+				$output = (strpos($value, strval($filter['value']))===(strlen($value) - strlen($filter['value'])) ? true : false);
 			} break;
 			default: { $output = false; }
 		} // end switch
