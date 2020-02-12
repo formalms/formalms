@@ -205,7 +205,7 @@ class DoceboMailer extends PHPMailer
             if (is_string($recipients)) {
                 $this->addCustomHeader("To", $recipients);
             } elseif (is_array($recipients)) {
-                $this->addCustomHeader("To", $recipients[0]);
+                // $this->addCustomHeader("To", $recipients[0]); # First dest to A:
             }
 		} else {
             $this->IsMail();
