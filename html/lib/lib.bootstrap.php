@@ -543,7 +543,7 @@ class Boot {
 
 	public static function log($str) { self::$log_array[] = $str; }
 
-	public static function get_log($as_string = false) { return ( $as_string ? implode(self::$log_array, "\n") : self::$log_array ); }
+	public static function get_log($as_string = false) { return ( $as_string ? implode("\n", self::$log_array) : self::$log_array ); }
 
 	public static function error_catcher($code,$message,$file,$line) {
 

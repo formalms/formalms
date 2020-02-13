@@ -3164,7 +3164,7 @@ class GroupDataRetriever extends DataRetriever
         }
         if ($this->platforms_filter !== false) {
 
-            $query .= " AND show_on_platform LIKE '%" . implode($this->platforms_filter, '%') . "%'";
+            $query .= " AND show_on_platform LIKE '%" . implode('%', $this->platforms_filter) . "%'";
         }
         $query .= " GROUP BY g.idst, g.groupid, g.description, g.type";
         $query .= " ORDER BY g.groupid ";
@@ -3185,7 +3185,7 @@ class GroupDataRetriever extends DataRetriever
         }
         if ($this->platforms_filter !== false) {
 
-            $query .= " AND show_on_platform LIKE '%" . implode($this->platforms_filter, '%') . "%'";
+            $query .= " AND show_on_platform LIKE '%" . implode('%', $this->platforms_filter) . "%'";
         }
 
         if ($this->dbConn === NULL)
@@ -3211,7 +3211,7 @@ class GroupDataRetriever extends DataRetriever
         }
         if ($this->platforms_filter !== false) {
 
-            $query .= " AND show_on_platform LIKE '%" . implode($this->platforms_filter, '%') . "%'";
+            $query .= " AND show_on_platform LIKE '%" . implode('%', $this->platforms_filter) . "%'";
         }
         if ($this->dbConn === NULL)
             $rs = sql_query($query);

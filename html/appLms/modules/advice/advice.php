@@ -32,7 +32,7 @@ function adviceList() {
 	$query_my_advice = "
 		SELECT DISTINCT idAdvice
 		FROM ".$GLOBALS['prefix_lms']."_adviceuser
-		WHERE ( idUser IN ( ".implode($user_idst, ',')." ) AND archivied = '0' )";
+		WHERE ( idUser IN ( ".implode(',', $user_idst)." ) AND archivied = '0' )";
 	$re_my_advice = sql_query($query_my_advice);
 
 	$advice_all = array();
@@ -55,7 +55,7 @@ function adviceList() {
 		$query_advice = "
 			SELECT idAdvice, posted, title, description, important, author
 			FROM ".$GLOBALS['prefix_lms']."_advice
-			WHERE idCourse='".$_SESSION['idCourse']."' AND idAdvice IN ( ".implode($advice_all, ',')." )
+			WHERE idCourse='".$_SESSION['idCourse']."' AND idAdvice IN ( ".implode(',', $advice_all)." )
 			ORDER BY posted DESC
 			LIMIT $ini,".Get::sett('visuItem');
 		$re_advice = sql_query($query_advice);
@@ -63,7 +63,7 @@ function adviceList() {
 		list($numofadvice) = sql_fetch_row(sql_query("
 			SELECT COUNT(DISTINCT idAdvice)
 			FROM ".$GLOBALS['prefix_lms']."_advice
-			WHERE idCourse='".$_SESSION['idCourse']."' AND idAdvice IN ( ".implode($advice_all, ',')." )"));
+			WHERE idCourse='".$_SESSION['idCourse']."' AND idAdvice IN ( ".implode(',', $advice_all)." )"));
 		$nav_bar->setElementTotal($numofadvice);
 
 		if(isset($_GET['result'])) {
@@ -149,7 +149,7 @@ function archiveList() {
 		$query_advice = "
 			SELECT idAdvice, posted, title, description, important, author
 			FROM ".$GLOBALS['prefix_lms']."_advice
-			WHERE idCourse='".$_SESSION['idCourse']."' AND idAdvice IN ( ".implode($advice_arch, ',')." )
+			WHERE idCourse='".$_SESSION['idCourse']."' AND idAdvice IN ( ".implode(',', $advice_arch)." )
 			ORDER BY posted DESC
 			LIMIT $ini,".Get::sett('visuItem');
 		$re_advice = sql_query($query_advice);
@@ -157,7 +157,7 @@ function archiveList() {
 		list($numofadvice) = sql_fetch_row(sql_query("
 			SELECT COUNT(DISTINCT idAdvice)
 			FROM ".$GLOBALS['prefix_lms']."_advice
-			WHERE idCourse='".$_SESSION['idCourse']."' AND idAdvice IN ( ".implode($advice_arch, ',')." )"));
+			WHERE idCourse='".$_SESSION['idCourse']."' AND idAdvice IN ( ".implode(',', $advice_arch)." )"));
 		$nav_bar->setElementTotal($numofadvice);
 
 		if(isset($_GET['result'])) {
@@ -653,7 +653,7 @@ function archiveadvice() {
 	$query_my_advice = "
 		SELECT DISTINCT idAdvice, idUser
 		FROM ".$GLOBALS['prefix_lms']."_adviceuser
-		WHERE idUser IN ( ".implode($user_idst, ',')." ) AND idAdvice = '".$id_advice."'";
+		WHERE idUser IN ( ".implode(',', $user_idst)." ) AND idAdvice = '".$id_advice."'";
 	$re_my_advice = sql_query($query_my_advice);
 
 	if(sql_num_rows($re_my_advice)) {

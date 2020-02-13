@@ -124,7 +124,7 @@ function outPageView($link)
 	FROM " . $GLOBALS['prefix_lms'] . "_trackingeneral 
 	WHERE idCourse='" . $_SESSION['idCourse'] . "' ";
     if (!$view_all_perm && Docebo::user()->getUserLevelId() == '/framework/level/admin') {
-        $query_stat .= " AND idUser IN (" . implode($course_user, ',') . ") ";
+        $query_stat .= " AND idUser IN (" . implode(',', $course_user) . ") ";
     }
     if ($_REQUEST['op'] == 'userdetails' && isset($_REQUEST['id'])) {
         $query_stat .= " AND idUser = ".$_REQUEST['id'];

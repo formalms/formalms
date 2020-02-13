@@ -927,7 +927,7 @@ class PlayTestManagement {
 			// page alredy seen, retrive the question alredy displayed
 			while(list($id_quest) = sql_fetch_row($re_quest)) $quest_displayed[] = $id_quest;
 
-			$query_question .= " AND q.idQuest IN (".implode($quest_displayed, ',').")";
+			$query_question .= " AND q.idQuest IN (".implode(',', $quest_displayed).")";
 			if($order_type == 0) $query_question .= " ORDER BY q.sequence ";
 			return $query_question;
 		}

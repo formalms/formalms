@@ -175,7 +175,7 @@ class AssessmentList {
 
 		$users = array();
 		$query = "
-		SELECT ".implode($this->user_field, ',')."
+		SELECT ".implode(',', $this->user_field)."
 		FROM ".$this->tableUserAssessment()."
 		WHERE ".$this->user_field[USER_ASSES_TYPE]." = '".USER_ASSES_TYPE_ADMIN."'";
 		if($id_assessment !== false) $query .= " AND ".$this->user_field[USER_ASSES_ID]." = '".$id_assessment."'";
@@ -191,7 +191,7 @@ class AssessmentList {
 
 		$users = array();
 		$query = "
-		SELECT ".implode($this->user_field, ',')."
+		SELECT ".implode(',', $this->user_field)."
 		FROM ".$this->tableUserAssessment()."
 		WHERE ".$this->user_field[USER_ASSES_TYPE]." = '".USER_ASSES_TYPE_USER."'";
 		if($id_assessment !== false) $query .= " AND ".$this->user_field[USER_ASSES_ID]." = '".$id_assessment."'";
@@ -215,10 +215,10 @@ class AssessmentList {
 		if(empty($user_list)) return true;
 
 		$query = "
-		SELECT ".implode($this->user_field, ',')."
+		SELECT ".implode(',', $this->user_field)."
 		FROM ".$this->tableUserAssessment()."
 		WHERE ".$this->user_field[USER_ASSES_ID]." = '".$id_assessment."'
-			AND ".$this->user_field[USER_ASSES_ID_USER]." IN ( ".implode($user_list, ',')." ) ";
+			AND ".$this->user_field[USER_ASSES_ID_USER]." IN ( ".implode(',', $user_list)." ) ";
 		$re_query = $this->_query($query);
 
 		$user_assigned = array();
@@ -281,7 +281,7 @@ class AssessmentList {
 			$level = 6;
 		$op_result = true;
 		$query = "
-		SELECT ".implode($this->user_field, ',')."
+		SELECT ".implode(',', $this->user_field)."
 		FROM ".$this->tableUserAssessment()."
 		WHERE ".$this->user_field[USER_ASSES_ID]." = '".$id_assessment."'
 			AND ".$this->user_field[USER_ASSES_TYPE]." = '".$user_type."'";
@@ -345,7 +345,7 @@ class AssessmentList {
 		if(!is_array($all_user_idst) || count($all_user_idst) == 0) return $assess;
 
 		$query = "
-		SELECT ".implode($this->user_field, ',')."
+		SELECT ".implode(',', $this->user_field)."
 		FROM ".$this->tableUserAssessment()."
 		WHERE ".$this->user_field[USER_ASSES_ID_USER]." IN ( ".implode(',', $all_user_idst)." ) ";
 		$re = $this->_query($query);

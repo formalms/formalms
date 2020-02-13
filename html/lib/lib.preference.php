@@ -1188,7 +1188,7 @@ class AdminPreference
         if(!empty($admin_users)) $arr_query[] = " $idst_field_name IN (".implode(',', $admin_users).") ";
         if(!empty($admin_groups))  $arr_query[] = " $idst_field_name IN ( SELECT idstMember FROM %adm_group_members WHERE idst IN (".implode(',', $admin_groups).") ) ";
          
-        if(!empty($arr_query)) $query = "( ".implode($arr_query, 'OR')." )";
+        if(!empty($arr_query)) $query = "( ".implode('OR', $arr_query)." )";
         else $query = " 0 ";
         return $query;
 	}
@@ -1217,7 +1217,7 @@ class AdminPreference
 		if(!empty($admin_users)) $arr_query[] = " $idst_field_name IN (".implode(',', $admin_userlist).") ";
 		if(!empty($admin_groups))  $arr_query[] = " $idst_field_name IN ( SELECT idstMember FROM %adm_group_members WHERE idst IN (".implode(',', $admin_groups).") ) ";
 
-		if(!empty($arr_query)) $query = "( ".implode($arr_query, 'OR')." )";
+		if(!empty($arr_query)) $query = "( ".implode('OR', $arr_query)." )";
 		else $query = " 0 ";
 
 

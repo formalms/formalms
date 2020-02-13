@@ -447,7 +447,7 @@ class DoceboConnectorDoceboCourses extends DoceboConnector {
 		WHERE imported_from_connection = '".$this->get_name()."'";
 		if(!empty($this->arr_id_inserted)) {
 		
-			$search_query .= " AND idCourse NOT IN (".implode($this->arr_id_inserted , ',').") ";
+			$search_query .= " AND idCourse NOT IN (".implode(',', $this->arr_id_inserted).") ";
 		}
 		$re_course = sql_query($search_query);
 		if(!$re_course) return 0;

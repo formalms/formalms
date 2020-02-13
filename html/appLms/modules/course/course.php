@@ -578,7 +578,7 @@ function userCourseList(&$url, $use_tab = true, $page_add = true) {
 		$enroll_list = sql_query(""
 			." SELECT u.idCourse, u.edition_id, COUNT(*) as number "
 			." FROM ".$GLOBALS['prefix_lms']."_courseuser AS u"
-			." WHERE u.idCourse IN (".implode($id_course_list, ',').") "
+			." WHERE u.idCourse IN (".implode(',', $id_course_list).") "
 			." AND u.level = '3'"
 			." AND u.status IN ('"._CUS_CONFIRMED."', '"._CUS_SUBSCRIBED."', '"._CUS_BEGIN."', '"._CUS_END."', '"._CUS_SUSPEND."', '"._CUS_WAITING_LIST."')"
 			." AND u.absent = '0'"
