@@ -6421,6 +6421,10 @@ header.header {
   .user-profile .box-title {
     margin-bottom: 21px; } }
 
+@media (min-width: 768px) {
+  .user-profile__firstcolumn--special {
+    min-width: 320px; } }
+
 .user-profile__column {
   margin-bottom: 22px;
   padding-left: 0;
@@ -6428,6 +6432,10 @@ header.header {
   @media (min-width: 768px) {
     .user-profile__column {
       margin-bottom: 55px; } }
+
+@media (min-width: 768px) {
+  .user-profile__column--minwidth {
+    min-width: 300px; } }
 
 .user-profile__content {
   width: 100%;

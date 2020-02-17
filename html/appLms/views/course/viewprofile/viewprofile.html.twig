@@ -5,13 +5,17 @@
 
     {% if user.biography != '' %}
       {% set first_col_width = 'col-sm-9' %}
+      {% set special_user_wrapper = '' %}
+      {% set special_user_profile = '' %}
     {% else %}
       {% set first_col_width = 'col-sm-3' %}
+      {% set special_user_wrapper = 'user-profile__firstcolumn--special' %}
+      {% set special_user_profile = 'user-profile__column--minwidth' %}
     {% endif %}
 
-    <div class="{{first_col_width}}">
+    <div class="{{first_col_width}} {{special_user_wrapper}}">
       <div class="box-title">{{ translate('_PROFILE', 'profile') }}</div>
-      <div class="col-sm-4 user-profile__column">
+      <div class="col-sm-4 user-profile__column {{ special_user_profile }}">
         <div class="user-profile__infocontainer">
           <div>
             <div class="user-profile__content">

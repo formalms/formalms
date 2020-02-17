@@ -11,6 +11,12 @@
   }
 }
 
+.user-profile__firstcolumn--special {
+  @include breakpoint($tablet) {
+    min-width: 320px;
+  }
+}
+
 .user-profile__column {
   margin-bottom: 22px;
   padding-left: 0;
@@ -18,6 +24,12 @@
 
   @include breakpoint($tablet) {
     margin-bottom: 55px;
+  }
+}
+
+.user-profile__column--minwidth {
+  @include breakpoint($tablet) {
+    min-width: 300px;
   }
 }
 
