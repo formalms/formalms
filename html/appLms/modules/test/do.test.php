@@ -805,8 +805,6 @@ function play ($object_test , $id_param)
                             num_answer_radio = $('.answer_question input[type=\"radio\"]:checked').length;
                             num_answer_tot_chk = num_answer_radio + num_answer_chk;
 
-							console.log('TOT: ' + num_answer_tot + ' CHECKED: ' + num_answer_tot_chk);
-
 							if (mandatory) {
 								if (num_answer_tot_chk >= num_answer_tot) {
 									$('#next_page').prop('disabled', false);
@@ -852,16 +850,15 @@ function play ($object_test , $id_param)
 							});
 
 							$(document).on('change', '.answer_question input[type=\"radio\"], .answer_question input[type=\"checkbox\"]', function() {
-								tot_question = $('.answer_question input:checked').length;
-
-                                if (tot_question > 0 ) {
-                                    toggleNext(true);
-                                } else {
-                                    toggleNext(false);
-                                }
-								$('.answer_question input[type=\"radio\"], .answer_question input[type=\"checkbox\"]').parent('.input-wrapper').removeClass('checked');
-								$('.answer_question input[type=\"radio\"]:checked').parent('.input-wrapper').addClass('checked');
-								$('.answer_question input[type=\"checkbox\"]:checked').parent('.input-wrapper').addClass('checked');
+								  tot_question = $('.answer_question input:checked').length;
+                                  if (tot_question > 0 ) {
+                                        toggleNext(true);
+                                    } else {
+                                        toggleNext(false);
+                                    }
+  								    $('.answer_question input[type=\"radio\"], .answer_question input[type=\"checkbox\"]').parent('.input-wrapper').removeClass('checked');
+  								    $('.answer_question input[type=\"radio\"]:checked').parent('.input-wrapper').addClass('checked');
+  								    $('.answer_question input[type=\"checkbox\"]:checked').parent('.input-wrapper').addClass('checked');
 							});
 
 							$(document).on('keyup', '.answer_question textarea', function() {
