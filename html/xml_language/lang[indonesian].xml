@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20190215</DATE>
+  <DATE>20200220</DATE>
   <LANG id="indonesian">
     <lang_code>indonesian</lang_code>
     <lang_description>Indonesian</lang_description>
@@ -8,6 +8,9 @@
     <lang_browsercode>id</lang_browsercode>
     <lang_direction>ltr</lang_direction>
     <platform id="all">
+      <module id="">
+        <key id="&amp;_NEW_USER_SUBSCRIBED_TEXT_MODERATORS" attributes="" save_date="2020-01-20 15:31:45"><![CDATA[[url] [firstname] [lastname] [course] [username]]]></key>
+      </module>
       <module id="adminrules">
         <key id="adminrules&amp;_ADMIN_ASSIGNTREEDESCR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Pilih folder-folder yang akan hanya bisa dilihat oleh administrator]]></key>
         <key id="adminrules&amp;_ADMIN_MANAGMENT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Pengaturan administrator]]></key>
@@ -792,6 +795,7 @@ Jika tidak, anda harus mendaftar dahulu di sistem kami, dengan mengikuti link be
         <key id="coursereport&amp;_USE_FOR_FINAL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Gunakan untuk skor final]]></key>
         <key id="coursereport&amp;_WEIGHT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Berat]]></key>
       </module>
+      <module id="courses"/>
       <module id="course_autoregistration">
         <key id="course_autoregistration&amp;_AUTOREGISTRATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tambah Kursus baru]]></key>
         <key id="course_autoregistration&amp;_BACK_TO_COURSE" attributes="" save_date="2017-05-08 12:30:09"><![CDATA[&gt;&gt; Kembali ke "My course area"]]></key>
@@ -866,6 +870,12 @@ Anda bisa membacanya di URL <a href="[url]">[url]</a>]]></key>
         <key id="email&amp;_DELETED_USER_TEXT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[Akun anda di <a href="[url]">[url]</a> dengan nama [userid] telah dihapus]]></key>
         <key id="email&amp;_DENY_SUBSCRIBED_SUBJECT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[Permintaan langganan ditolak]]></key>
         <key id="email&amp;_DENY_SUBSCRIBED_TEXT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[Permintaan langganan anda untuk kursus [course] telah ditolak oleh administrator di <a href="[url]">[url]</a>]]></key>
+        <key id="email&amp;_EVENT_CHANGE_NODE_USER_SBJ" attributes="" save_date="2020-01-20 18:17:51"><![CDATA[User node change]]></key>
+        <key id="email&amp;_EVENT_CHANGE_NODE_USER_TEXT" attributes="" save_date="2020-01-20 18:18:37"><![CDATA[[url] [firstname] [lastname] [username]]]></key>
+        <key id="email&amp;_EVENT_COURSE_EVENT_SUSPENDED_USER_SBJ" attributes="" save_date="2020-01-20 18:27:00"><![CDATA[User suspended from course]]></key>
+        <key id="email&amp;_EVENT_COURSE_EVENT_SUSPENDED_USER_TEXT" attributes="" save_date="2020-01-20 18:26:25"><![CDATA[[url] [firstname] [lastname] [course] [username]]]></key>
+        <key id="email&amp;_EVENT_SUSPENDED_USER_SBJ" attributes="" save_date="2020-01-20 18:14:15"><![CDATA[User suspended]]></key>
+        <key id="email&amp;_EVENT_SUSPENDED_USER_TEXT" attributes="" save_date="2020-01-20 18:13:32"><![CDATA[[url] [firstname] [lastname] [username]]]></key>
         <key id="email&amp;_MODIFIED_USER_SBJ" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[Akun user telah dirubah]]></key>
         <key id="email&amp;_MODIFIED_USER_TEXT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[Akun anda di <a href="[url]">[url]</a>  telah dirubah:
 
@@ -885,6 +895,7 @@ Nama User: [userid]]]></key>
 
  Judul: [thread_title]]]></key>
         <key id="email&amp;_NEW_USER_SUBSCRIBED_SUBJECT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[User baru telah berlangganan sebuah kursus]]></key>
+        <key id="email&amp;_NEW_USER_SUBSCRIBED_SUBJECT_MODERATORS" attributes="" save_date="2020-01-20 15:30:49"><![CDATA[[url] [firstname] [lastname] [course] [username]]]></key>
         <key id="email&amp;_NEW_USER_SUBSCRIBED_TEXT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[Di url : <a href="[url]">[url]</a> seorang user baru berlangganan kursus : [course]]]></key>
         <key id="email&amp;_NEW_USER_SUBS_WAITING_SUBJECT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[User menunggu persetujuan langganan kursus]]></key>
         <key id="email&amp;_NEW_USER_SUBS_WAITING_TEXT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[User Baru yang berlangganan kursus '[course]' sedang menunggu persetujuan.
@@ -943,6 +954,7 @@ Password: [password]]]></key>
         <key id="event_manager&amp;_EVENT_PLATFORM_framework" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[appCore]]></key>
         <key id="event_manager&amp;_EVENT_PLATFORM_lms" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[appLMS]]></key>
         <key id="event_manager&amp;_EVENT_PLATFORM_lms-a" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[appLMS-A]]></key>
+        <key id="event_manager&amp;_EVENT_RECIPIENTS_GODS" attributes="" save_date="2020-01-20 15:21:28"><![CDATA[Super-Administrators]]></key>
         <key id="event_manager&amp;_EVENT_RECIPIENTS_MODERATORS_GOD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Moderator dan Admin Super]]></key>
         <key id="event_manager&amp;_EVENT_RECIPIENTS_TEACHER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Instruktur]]></key>
         <key id="event_manager&amp;_EVENT_RECIPIENTS_TEACHER_GOD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Instruktur dan Admin Super]]></key>
@@ -1896,6 +1908,9 @@ Anda harus melakukan konfirmasi akun anda sebelum menggunakannya.]]></key>
         <key id="sms&amp;_APPROVED_SUBSCRIBED_TEXT_SMS" attributes="sms" save_date="2014-11-14 00:00:00"><![CDATA[Permintaan langganan anda pada kursus [course] telah disetujui oleh administrator]]></key>
         <key id="sms&amp;_APPROVED_USER_TEXT_SMS" attributes="sms" save_date="2014-11-14 00:00:00"><![CDATA[Permintaan langganan anda telah disetujui]]></key>
         <key id="sms&amp;_DELETED_USER_TEXT_SMS" attributes="sms" save_date="2014-11-14 00:00:00"><![CDATA[E-Learning: Akun anda dengan nama [userid] telah dihapus]]></key>
+        <key id="sms&amp;_EVENT_CHANGE_NODE_USER_SBJ_SMS" attributes="" save_date="2020-01-20 18:19:28"><![CDATA[[url] [firstname] [lastname] [username]]]></key>
+        <key id="sms&amp;_EVENT_COURSE_EVENT_SUSPENDED_USER_TEXT_SMS" attributes="" save_date="2020-01-20 18:25:39"><![CDATA[[url] [firstname] [lastname] [course] [username]]]></key>
+        <key id="sms&amp;_EVENT_SUSPENDED_USER_TEXT_SMS" attributes="" save_date="2020-01-20 18:15:13"><![CDATA[[url] [firstname] [lastname] [username]]]></key>
         <key id="sms&amp;_MODIFIED_USER_TEXT_SMS" attributes="sms" save_date="2014-11-14 00:00:00"><![CDATA[Akun anda saat ini <a href="[url]">[url]</a>   telah dirubah:
 
 Username: [userid]]]></key>
@@ -1903,6 +1918,7 @@ Username: [userid]]]></key>
         <key id="sms&amp;_NEW_FORUM_SMS" attributes="sms" save_date="2014-11-14 00:00:00"><![CDATA[Forum baru]]></key>
         <key id="sms&amp;_NEW_MESSAGE_INSERT_IN_THREAD_SMS" attributes="sms" save_date="2014-11-14 00:00:00"><![CDATA[E-learning: pada kursus '[course]', ada pesan baru di '[forum_title]' > '[thread_title]']]></key>
         <key id="sms&amp;_NEW_THREAD_INSERT_IN_FORUM_SMS" attributes="sms" save_date="2014-11-14 00:00:00"><![CDATA[E-learning: kursus '[course]' ada topik baru di '[forum_title]': [thread_title]]]></key>
+        <key id="sms&amp;_NEW_USER_SUBSCRIBED_TEXT_SMS_MODERATORS" attributes="" save_date="2020-01-20 18:11:42"><![CDATA[[url] [firstname] [lastname] [course] [username]]]></key>
         <key id="sms&amp;_PASSWORD_CHANGED_SMS" attributes="sms" save_date="2014-11-14 00:00:00"><![CDATA[dan password anda telah dirubah menjadi: [password]]]></key>
         <key id="sms&amp;_REGISTERED_USER_TEXT_SMS" attributes="sms" save_date="2014-11-14 00:00:00"><![CDATA[Sekarang anda terdaftar pada sistem kami dengan akun:
 

@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20190215</DATE>
+  <DATE>20200220</DATE>
   <LANG id="dutch">
     <lang_code>dutch</lang_code>
     <lang_description>Dutch</lang_description>
@@ -8,6 +8,9 @@
     <lang_browsercode>nl</lang_browsercode>
     <lang_direction>ltr</lang_direction>
     <platform id="all">
+      <module id="">
+        <key id="&amp;_NEW_USER_SUBSCRIBED_TEXT_MODERATORS" attributes="" save_date="2020-01-20 15:31:45"><![CDATA[[url] [firstname] [lastname] [course] [username]]]></key>
+      </module>
       <module id="adminrules">
         <key id="adminrules&amp;_ADMIN_ASSIGNTREEDESCR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Selecteer mappen voor gebruikers zichtbaarheid]]></key>
         <key id="adminrules&amp;_ADMIN_MANAGMENT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Administrator manager]]></key>
@@ -902,6 +905,7 @@ ander moet je je eerst registreren. Volg dan deze link: <br />
         <key id="coursereport&amp;_USE_FOR_FINAL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Gebruik voor uiteindelijke score]]></key>
         <key id="coursereport&amp;_WEIGHT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Gewicht]]></key>
       </module>
+      <module id="courses"/>
       <module id="course_autoregistration">
         <key id="course_autoregistration&amp;_AUTOREGISTRATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Voeg nieuwe cursus toe]]></key>
         <key id="course_autoregistration&amp;_BACK_TO_COURSE" attributes="" save_date="2017-05-08 12:26:35"><![CDATA[&gt;&gt; Terug naar "Mijn cursussen"]]></key>
@@ -981,7 +985,13 @@ Je kunt het lezen op forma.lms, URL <a href="[url]">[url]</a>]]></key>
         <key id="email&amp;_DELETED_USER_TEXT" attributes="email" save_date="2017-07-07 13:04:17"><![CDATA[Je account is <a href="[url]">[url]</a> met gebruikersnaam [userid] is verwijderd]]></key>
         <key id="email&amp;_DENY_SUBSCRIBED_SUBJECT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[Verzoek voor inschrijving geweigerd]]></key>
         <key id="email&amp;_DENY_SUBSCRIBED_TEXT" attributes="email" save_date="2017-07-10 10:56:48"><![CDATA[Je inschrijf verzoek voor cursus [course] is geweigerd door de administrator op <a href="[url]">[url]</a>]]></key>
+        <key id="email&amp;_EVENT_CHANGE_NODE_USER_SBJ" attributes="" save_date="2020-01-20 18:17:51"><![CDATA[User node change]]></key>
+        <key id="email&amp;_EVENT_CHANGE_NODE_USER_TEXT" attributes="" save_date="2020-01-20 18:18:37"><![CDATA[[url] [firstname] [lastname] [username]]]></key>
         <key id="email&amp;_EVENT_CLASS_UserCourseBuy" attributes="" save_date="2017-07-14 14:47:11"><![CDATA[Gebruiker heeft een cursus gekocht]]></key>
+        <key id="email&amp;_EVENT_COURSE_EVENT_SUSPENDED_USER_SBJ" attributes="" save_date="2020-01-20 18:27:00"><![CDATA[User suspended from course]]></key>
+        <key id="email&amp;_EVENT_COURSE_EVENT_SUSPENDED_USER_TEXT" attributes="" save_date="2020-01-20 18:26:25"><![CDATA[[url] [firstname] [lastname] [course] [username]]]></key>
+        <key id="email&amp;_EVENT_SUSPENDED_USER_SBJ" attributes="" save_date="2020-01-20 18:14:15"><![CDATA[User suspended]]></key>
+        <key id="email&amp;_EVENT_SUSPENDED_USER_TEXT" attributes="" save_date="2020-01-20 18:13:32"><![CDATA[[url] [firstname] [lastname] [username]]]></key>
         <key id="email&amp;_MODIFIED_USER_SBJ" attributes="email" save_date="2017-07-07 17:27:04"><![CDATA[Het gebruikers account is gewijzigd]]></key>
         <key id="email&amp;_MODIFIED_USER_TEXT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[Je account op site <a href="[url]">[url]</a>  is gewijzigd:
 
@@ -1001,6 +1011,7 @@ Gebruikersnaam: [userid]]]></key>
 
  Titel: [thread_title]]]></key>
         <key id="email&amp;_NEW_USER_SUBSCRIBED_SUBJECT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[Nieuwe gebruiker heeft zich ingeschreven voor een cursus]]></key>
+        <key id="email&amp;_NEW_USER_SUBSCRIBED_SUBJECT_MODERATORS" attributes="" save_date="2020-01-20 15:30:49"><![CDATA[[url] [firstname] [lastname] [course] [username]]]></key>
         <key id="email&amp;_NEW_USER_SUBSCRIBED_TEXT" attributes="email" save_date="2017-05-05 17:14:52"><![CDATA[At URL: <a href="[url]">[url]</a> Nieuwe gebruiker heeft zich ingeschreven voor cursus: [course]]]></key>
         <key id="email&amp;_NEW_USER_SUBS_WAITING_SUBJECT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[Gebruiker wacht op goedkeuring van inschrijving]]></key>
         <key id="email&amp;_NEW_USER_SUBS_WAITING_TEXT" attributes="email" save_date="2017-07-10 13:20:24"><![CDATA[Nieuwe ingeschreven gebruiker voor cursus '[course]' en in afwachting van goedkeuring. 
@@ -1075,6 +1086,7 @@ Wachtwoord: [password]]]></key>
         <key id="event_manager&amp;_EVENT_PLATFORM_framework" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[appCore]]></key>
         <key id="event_manager&amp;_EVENT_PLATFORM_lms" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[appLMS]]></key>
         <key id="event_manager&amp;_EVENT_PLATFORM_lms-a" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[appLMS-A]]></key>
+        <key id="event_manager&amp;_EVENT_RECIPIENTS_GODS" attributes="" save_date="2020-01-20 15:21:28"><![CDATA[Super-Administrators]]></key>
         <key id="event_manager&amp;_EVENT_RECIPIENTS_MODERATORS_GOD" attributes="" save_date="2017-04-19 12:57:20"><![CDATA[Moderators en Super-Admins]]></key>
         <key id="event_manager&amp;_EVENT_RECIPIENTS_TEACHER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Instructeurs]]></key>
         <key id="event_manager&amp;_EVENT_RECIPIENTS_TEACHER_GOD" attributes="" save_date="2017-04-19 12:57:15"><![CDATA[Instructeurs and Super-Admins]]></key>
@@ -2095,6 +2107,9 @@ Je moet je account bevestigen voor je het gebruikt.]]></key>
         <key id="sms&amp;_APPROVED_SUBSCRIBED_TEXT_SMS" attributes="sms" save_date="2014-11-14 00:00:00"><![CDATA[Je inschrijvings verzoek voor [course] is goedgekeurd door de admin]]></key>
         <key id="sms&amp;_APPROVED_USER_TEXT_SMS" attributes="sms" save_date="2014-11-14 00:00:00"><![CDATA[Je inschrijvings verzoek is goedgekeurd]]></key>
         <key id="sms&amp;_DELETED_USER_TEXT_SMS" attributes="sms" save_date="2017-04-10 14:00:33"><![CDATA[E-learning: je account met naam [userid] is verwijderd]]></key>
+        <key id="sms&amp;_EVENT_CHANGE_NODE_USER_SBJ_SMS" attributes="" save_date="2020-01-20 18:19:28"><![CDATA[[url] [firstname] [lastname] [username]]]></key>
+        <key id="sms&amp;_EVENT_COURSE_EVENT_SUSPENDED_USER_TEXT_SMS" attributes="" save_date="2020-01-20 18:25:39"><![CDATA[[url] [firstname] [lastname] [course] [username]]]></key>
+        <key id="sms&amp;_EVENT_SUSPENDED_USER_TEXT_SMS" attributes="" save_date="2020-01-20 18:15:13"><![CDATA[[url] [firstname] [lastname] [username]]]></key>
         <key id="sms&amp;_MODIFIED_USER_TEXT_SMS" attributes="sms" save_date="2014-11-14 00:00:00"><![CDATA[Je account op site <a href="[url]">[url]</a> is gewijzigd:
 
 Gebruikersnaam: [userid]]]></key>
@@ -2102,6 +2117,7 @@ Gebruikersnaam: [userid]]]></key>
         <key id="sms&amp;_NEW_FORUM_SMS" attributes="sms" save_date="2014-11-14 00:00:00"><![CDATA[Nieuw forum]]></key>
         <key id="sms&amp;_NEW_MESSAGE_INSERT_IN_THREAD_SMS" attributes="sms" save_date="2014-11-14 00:00:00"><![CDATA[E-learning: inde cursus '[course]', is een nieuw beericht in '[forum_title]' > '[thread_title]']]></key>
         <key id="sms&amp;_NEW_THREAD_INSERT_IN_FORUM_SMS" attributes="sms" save_date="2014-11-14 00:00:00"><![CDATA[E-learning: cursus '[course]' er is een nieuwe thread in '[forum_title]': [thread_title]]]></key>
+        <key id="sms&amp;_NEW_USER_SUBSCRIBED_TEXT_SMS_MODERATORS" attributes="" save_date="2020-01-20 18:11:42"><![CDATA[[url] [firstname] [lastname] [course] [username]]]></key>
         <key id="sms&amp;_PASSWORD_CHANGED_SMS" attributes="sms" save_date="2014-11-14 00:00:00"><![CDATA[en je account wachtwoord is gewijzigd naar: [password]]]></key>
         <key id="sms&amp;_REGISTERED_USER_TEXT_SMS" attributes="sms" save_date="2014-11-14 00:00:00"><![CDATA[Je bent nu geregistreerd met dit account:
 

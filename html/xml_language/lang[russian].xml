@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20190215</DATE>
+  <DATE>20200220</DATE>
   <LANG id="russian">
     <lang_code>russian</lang_code>
     <lang_description>Russian</lang_description>
@@ -8,6 +8,9 @@
     <lang_browsercode>ru</lang_browsercode>
     <lang_direction>ltr</lang_direction>
     <platform id="all">
+      <module id="">
+        <key id="&amp;_NEW_USER_SUBSCRIBED_TEXT_MODERATORS" attributes="" save_date="2020-01-20 15:31:45"><![CDATA[[url] [firstname] [lastname] [course] [username]]]></key>
+      </module>
       <module id="adminrules">
         <key id="adminrules&amp;_ADMIN_ASSIGNTREEDESCR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Выберите папки видимые администратором]]></key>
         <key id="adminrules&amp;_ADMIN_MANAGMENT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Организатор учетных записей администраторов]]></key>
@@ -792,6 +795,7 @@
         <key id="coursereport&amp;_USE_FOR_FINAL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Использовать для окончателного подсчета]]></key>
         <key id="coursereport&amp;_WEIGHT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Вес]]></key>
       </module>
+      <module id="courses"/>
       <module id="course_autoregistration">
         <key id="course_autoregistration&amp;_AUTOREGISTRATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Добавить новый курс]]></key>
         <key id="course_autoregistration&amp;_BACK_TO_COURSE" attributes="" save_date="2017-05-08 12:33:59"><![CDATA[&gt;&gt; азад к  "Моим курсам"]]></key>
@@ -866,6 +870,12 @@
         <key id="email&amp;_DELETED_USER_TEXT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[Ваша учетная запись на <a href="[url]">[url]</a> с именем [userid] была удалена]]></key>
         <key id="email&amp;_DENY_SUBSCRIBED_SUBJECT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[Запрос подписки отклонен]]></key>
         <key id="email&amp;_DENY_SUBSCRIBED_TEXT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[Запрошенная Вами подписка на курс [course] была отброшена администратором на <a href="[url]">[url]</a>]]></key>
+        <key id="email&amp;_EVENT_CHANGE_NODE_USER_SBJ" attributes="" save_date="2020-01-20 18:17:51"><![CDATA[User node change]]></key>
+        <key id="email&amp;_EVENT_CHANGE_NODE_USER_TEXT" attributes="" save_date="2020-01-20 18:18:37"><![CDATA[[url] [firstname] [lastname] [username]]]></key>
+        <key id="email&amp;_EVENT_COURSE_EVENT_SUSPENDED_USER_SBJ" attributes="" save_date="2020-01-20 18:27:00"><![CDATA[User suspended from course]]></key>
+        <key id="email&amp;_EVENT_COURSE_EVENT_SUSPENDED_USER_TEXT" attributes="" save_date="2020-01-20 18:26:25"><![CDATA[[url] [firstname] [lastname] [course] [username]]]></key>
+        <key id="email&amp;_EVENT_SUSPENDED_USER_SBJ" attributes="" save_date="2020-01-20 18:14:15"><![CDATA[User suspended]]></key>
+        <key id="email&amp;_EVENT_SUSPENDED_USER_TEXT" attributes="" save_date="2020-01-20 18:13:32"><![CDATA[[url] [firstname] [lastname] [username]]]></key>
         <key id="email&amp;_MODIFIED_USER_SBJ" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[Учетная запись пользователя была изменена]]></key>
         <key id="email&amp;_MODIFIED_USER_TEXT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[Ваша учетная запись на сайте <a href="[url]">[url]</a> была изменена:
 
@@ -885,6 +895,7 @@
 
  Название: [thread_title]]]></key>
         <key id="email&amp;_NEW_USER_SUBSCRIBED_SUBJECT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[На курс подписался новый пользователь]]></key>
+        <key id="email&amp;_NEW_USER_SUBSCRIBED_SUBJECT_MODERATORS" attributes="" save_date="2020-01-20 15:30:49"><![CDATA[[url] [firstname] [lastname] [course] [username]]]></key>
         <key id="email&amp;_NEW_USER_SUBSCRIBED_TEXT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[По ссылке: <a href="[url]">[url]</a> новый пользователь подписался на курс: [course]]]></key>
         <key id="email&amp;_NEW_USER_SUBS_WAITING_SUBJECT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[Пользоватлеь ожидает одобрения подписки на курс]]></key>
         <key id="email&amp;_NEW_USER_SUBS_WAITING_TEXT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[Новый пользователь подписался на курс '[course]' и ожидает одобрения подписки.
@@ -943,6 +954,7 @@
         <key id="event_manager&amp;_EVENT_PLATFORM_framework" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[appCore]]></key>
         <key id="event_manager&amp;_EVENT_PLATFORM_lms" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[appLMS]]></key>
         <key id="event_manager&amp;_EVENT_PLATFORM_lms-a" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[appLMS-A]]></key>
+        <key id="event_manager&amp;_EVENT_RECIPIENTS_GODS" attributes="" save_date="2020-01-20 15:21:28"><![CDATA[Super-Administrators]]></key>
         <key id="event_manager&amp;_EVENT_RECIPIENTS_MODERATORS_GOD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Модераторы и супер-администраторы]]></key>
         <key id="event_manager&amp;_EVENT_RECIPIENTS_TEACHER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Инструкторы]]></key>
         <key id="event_manager&amp;_EVENT_RECIPIENTS_TEACHER_GOD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Инструкторы и супер-администраторы]]></key>
@@ -1896,6 +1908,9 @@
         <key id="sms&amp;_APPROVED_SUBSCRIBED_TEXT_SMS" attributes="sms" save_date="2014-11-14 00:00:00"><![CDATA[Ваш запрос подписки на курс [course] был одобрен администратором]]></key>
         <key id="sms&amp;_APPROVED_USER_TEXT_SMS" attributes="sms" save_date="2014-11-14 00:00:00"><![CDATA[Ваш запрос подписки был одобрен]]></key>
         <key id="sms&amp;_DELETED_USER_TEXT_SMS" attributes="sms" save_date="2014-11-14 00:00:00"><![CDATA[Эл.обучение: ваша учетная запись с именем [userid] только что была удалена]]></key>
+        <key id="sms&amp;_EVENT_CHANGE_NODE_USER_SBJ_SMS" attributes="" save_date="2020-01-20 18:19:28"><![CDATA[[url] [firstname] [lastname] [username]]]></key>
+        <key id="sms&amp;_EVENT_COURSE_EVENT_SUSPENDED_USER_TEXT_SMS" attributes="" save_date="2020-01-20 18:25:39"><![CDATA[[url] [firstname] [lastname] [course] [username]]]></key>
+        <key id="sms&amp;_EVENT_SUSPENDED_USER_TEXT_SMS" attributes="" save_date="2020-01-20 18:15:13"><![CDATA[[url] [firstname] [lastname] [username]]]></key>
         <key id="sms&amp;_MODIFIED_USER_TEXT_SMS" attributes="sms" save_date="2014-11-14 00:00:00"><![CDATA[Ваша учетная запись на сайте <a href="[url]">[url]</a>   была изменена:
 
 Учетная запись: [userid]]]></key>
@@ -1903,6 +1918,7 @@
         <key id="sms&amp;_NEW_FORUM_SMS" attributes="sms" save_date="2014-11-14 00:00:00"><![CDATA[Новый форум]]></key>
         <key id="sms&amp;_NEW_MESSAGE_INSERT_IN_THREAD_SMS" attributes="sms" save_date="2014-11-14 00:00:00"><![CDATA[Эл.обучение: на курсе '[course]', новое сообщение в форуме '[forum_title]' > '[thread_title]']]></key>
         <key id="sms&amp;_NEW_THREAD_INSERT_IN_FORUM_SMS" attributes="sms" save_date="2014-11-14 00:00:00"><![CDATA[Эл.обучение: курс '[course]' новый тред на форуме '[forum_title]': [thread_title]]]></key>
+        <key id="sms&amp;_NEW_USER_SUBSCRIBED_TEXT_SMS_MODERATORS" attributes="" save_date="2020-01-20 18:11:42"><![CDATA[[url] [firstname] [lastname] [course] [username]]]></key>
         <key id="sms&amp;_PASSWORD_CHANGED_SMS" attributes="sms" save_date="2014-11-14 00:00:00"><![CDATA[и Ваш пароль был изменен на: [password]]]></key>
         <key id="sms&amp;_REGISTERED_USER_TEXT_SMS" attributes="sms" save_date="2014-11-14 00:00:00"><![CDATA[Теперь Вы зарегистрированы в нашей системе с учетной записью:
 
