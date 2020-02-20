@@ -51,7 +51,6 @@
           <a class="user-profile__namelink" href="mailto:{{user.email}}" target="_blank">{{user.email}}</a>
         </div>
         <a class="forma-button user-profile__cta" href="{{ route.message.url }}&idst={{ user.idst }}&signature={{ evalPhp('Util::getSignature') }}&sop=unregistercourse">
-          <span class="user-profile__mailicon"></span>
           {{translate('_MESSAGE','course')}}
         </a>
       </div>
