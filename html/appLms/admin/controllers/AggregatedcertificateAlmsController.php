@@ -11,34 +11,12 @@
 |   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
-// Defining Constants necessaries in creation of a new assoc.
-           
-
-          
-           
 /**
  * Class MetacertificateAlmsController
  */
 Class AggregatedcertificateAlmsController extends AlmsController
 {
 
-    /*
-    protected $acl_man;
-    protected $model;
-
-    protected $data;
-
-    protected $permissions;
-
-    protected $base_link_course;
-    protected $base_link_classroom;
-    protected $base_link_edition;
-    protected $base_link_subscription;
-    protected $base_link_competence;
-    */
-
-    
-    
     protected $json;
     protected $model;
     protected $controller_name;
@@ -94,42 +72,6 @@ Class AggregatedcertificateAlmsController extends AlmsController
     function init() {
         parent::init();
 
-        /*
-
-         $this->acl_man =& Docebo::user()->getAclManager();
-         $this->model = new CourseAlms();
-
-         $this->base_link_course = 'alms/course';
-         $this->base_link_classroom = 'alms/classroom';
-         $this->base_link_edition = 'alms/edition';
-         $this->base_link_subscription = 'alms/subscription';
-         $this->base_link_competence = 'adm/competences';
-
-         $this->lo_types_cache = false;
-                    
-                    
-                    // DA AGGIUNGERE!
-                                        
-         $this->permissions = array(
-             'view'            => checkPerm('view', true, 'course', 'lms'),
-             'add'            => checkPerm('add', true, 'course', 'lms'),
-             'mod'            => checkPerm('mod', true, 'course', 'lms'),
-             'del'            => checkPerm('del', true, 'course', 'lms'),
-             'moderate'        => checkPerm('moderate', true, 'course', 'lms'),
-             'subscribe'        => checkPerm('subscribe', true, 'course', 'lms'),
-             'add_category'    => checkPerm('add', true, 'coursecategory', 'lms'),
-             'mod_category'    => checkPerm('mod', true, 'coursecategory', 'lms'),
-             'del_category'    => checkPerm('del', true, 'coursecategory', 'lms'),
-             'view_cert'        => checkPerm('view', true, 'certificate', 'lms'),
-             'mod_cert'        => checkPerm('mod', true, 'certificate', 'lms')
-         );
-
-        $_SESSION['meta_certificate'] = array(); // testare inizializzazione variabile di sessione.
-
-
-         */
-
-
         require_once(_base_.'/lib/lib.json.php');
         $this->json = new Services_JSON();
 
@@ -157,7 +99,7 @@ Class AggregatedcertificateAlmsController extends AlmsController
         
         checkPerm('view');
 
-        $tb    = new Table(Get::sett('visuItem'), Lang::t('_AGGREGATE_CERTIFICATE_LIST'), Lang::t('_AGGREGATE_CERTIFICATE_LIST'));
+        $tb    = new Table(Get::sett('visuItem'), Lang::t('_AGGREGATED_CERTIFICATE_LIST'), Lang::t('_AGGREGATED_CERTIFICATE_LIST'));
         $tb->initNavBar('ini', 'link');
         $tb->setLink("index.php?r=alms/".$this->controller_name."/".$this->op['home']);        
         $ini = $tb->getSelectedElement();
@@ -193,10 +135,10 @@ Class AggregatedcertificateAlmsController extends AlmsController
 
         if($userCanModify) {
         
-            $cont_h[] =    Get::img('standard/moduser.png', Lang::t('_ASSOCIATIONS_AGGREGATED_CERTIFICATES', 'certificate'));
+            $cont_h[] =    Get::img('standard/moduser.png', Lang::t('_ASSOCIATIONS_AGGREGATED_CERTIFICATES'));
             $type_h[] =    'image';
 
-            $cont_h[] =    Get::sprite('subs_print', Lang::t('_ASSIGN_AGGREGATE_CERTIFICATE'));
+            $cont_h[] =    Get::sprite('subs_print', Lang::t('_RELEASE_AGGREGATED_CERTIFICATE'));
             $type_h[] =    'image';
 
             $cont_h[] =    Get::img('standard/edit.png', Lang::t('_MOD'), Lang::t('_MOD'));
@@ -275,8 +217,8 @@ Class AggregatedcertificateAlmsController extends AlmsController
            $tb->addActionAdd('
                <a   class="ico-wt-sprite subs_add" 
                     href="index.php?r=alms/'.$this->controller_name.'/'.$this->op['metadata'].'" 
-                    title="'.Lang::t('_NEW_AGGREGATE_CERTIFICATE').'">
-                    <span>'.Lang::t('_NEW_AGGREGATE_CERTIFICATE').'</span>
+                    title="'.Lang::t('_NEW_AGGREGATED_CERTIFICATE').'">
+                    <span>'.Lang::t('_NEW_AGGREGATED_CERTIFICATE').'</span>
                </a>
            ');
         }
@@ -317,8 +259,8 @@ Class AggregatedcertificateAlmsController extends AlmsController
         
         $isModifyingMetaData = ($id_cert !== 0);
         $page_title = array(
-        'index.php?r=alms/'.$this->controller_name.'/metadata' => Lang::t('_TITLE_AGGREGATED_CERTIFICATES','certificate'),
-        $isModifyingMetaData ? Lang::t('_MOD_AGGREGATED_CERTIFICATE','certificate') : Lang::t('_NEW_AGGREGATED_CERTIFICATE','certificate')
+        'index.php?r=alms/'.$this->controller_name.'/'.$this->op['metadata'] => Lang::t('_TITLE_AGGREGATED_CERTIFICATES'),
+        $isModifyingMetaData ? Lang::t('_MOD_METADATA_AGGR_CERT') : Lang::t('_INS_METADATA_AGGR_CERT')
         );
         
         if($isModifyingMetaData) {
@@ -387,8 +329,8 @@ Class AggregatedcertificateAlmsController extends AlmsController
         $edit = Get::req('edit', DOTY_INT, 0);
          
         $page_title = array(
-            'index.php?r=alms/'.$this->controller_name.'/'.$this->op['layout'] => Lang::t('_TITLE_META_CERTIFICATE','certificate'),
-            Lang::t('_STRUCTURE_META_CERTIFICATE','certificate')
+            'index.php?r=alms/'.$this->controller_name.'/'.$this->op['layout'] => Lang::t('_TITLE_AGGREGATED_CERTIFICATES'),
+            Lang::t('_STRUCTURE_AGGR_CERT')
         );
 
         if($edit && $id_certificate !== 0)
@@ -468,7 +410,7 @@ Class AggregatedcertificateAlmsController extends AlmsController
         $id_certificate = Get::req('id_certificate',DOTY_INT,0);
 
         // Creating table...
-        $tb = new Table(Get::sett('visuItem'), Lang::t('_AGGREGATE_CERTIFICATES_ASSOCIATION_CAPTION'), Lang::t('_AGGREGATE_CERTIFICATES_ASSOCIATION_CAPTION'));
+        $tb = new Table(Get::sett('visuItem'), Lang::t('_ASSOCIATIONS_CAPTION'), Lang::t('_ASSOCIATIONS_CAPTION'));
         $tb->initNavBar('ini', 'link');
         $tb->setLink('index.php?r=alms/'.$this->controller_name.'/'.$this->op['associationsManagement'].'&id_certificate='.$id_certificate);
         $ini = $tb->getSelectedElement();
@@ -1866,14 +1808,19 @@ Class AggregatedcertificateAlmsController extends AlmsController
         if(!empty($arr_new_file)) {
 
             // if present load the new file --------------------------------------------------------
-            $filename = $new_file_id.'_'.mt_rand(0, 100).'_'.time().'_'.$arr_new_file['name'];
+            $filename = $new_file_id . '_' . mt_rand(0, 100) . '_' . time() . '_' . $arr_new_file['name'];
 
-            if(!sl_upload($arr_new_file['tmp_name'], $path.$filename)) {
+            if (!sl_upload($arr_new_file['tmp_name'], $path . $filename)) {
 
                 return false;
-            }
-            else return $filename;
+            } else return $filename;
         }
+
+        // aggiungo condizione per evitare che vada a cancellare l'immagine pre esistente se non la si aggiorna.
+        if (!$delete_old && $old_file){
+            return $old_file;
+        }
+
         sl_close_fileoperations();
         return '';
     }
