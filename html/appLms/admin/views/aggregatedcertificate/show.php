@@ -1,6 +1,6 @@
 <?php
 
-cout(	getTitleArea(Lang::t('_TITLE_META_CERTIFICATE','certificate'), 'certificate')
+cout(	getTitleArea(Lang::t('_TITLE_AGGREGATED_CERTIFICATES'), 'certificate')
     .'<div class="std_block">'	);
 
 $form = new Form();
