@@ -60,11 +60,10 @@ Class DashboardsettingsAdmController extends AdmController
 
     public function show()
     {
-
         //render view
         $this->render('show', [
             'ajaxUrl' => 'ajax.adm_server.php?r=adm/dashboardsettings/save',
-            'installedBlocks' => $this->model->getInstalleddBlocksCommonViewData(),
+            'installedBlocks' => $this->model->getInstalledBlocksCommonViewData(),
             'enabledBlocks' => $this->model->getEnabledBlocksCommonViewData(),
             'templatePath' => getPathTemplate()
         ]);
@@ -73,7 +72,6 @@ Class DashboardsettingsAdmController extends AdmController
 
     public function save()
     {
-
         $requestSettings = Get::pReq('settings', DOTY_MIXED);
 
         $this->model->resetOldSettings();

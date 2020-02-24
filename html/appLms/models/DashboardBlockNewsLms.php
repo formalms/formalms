@@ -39,6 +39,11 @@ class DashboardBlockNewsLms extends DashboardBlockLms
         ];
     }
 
+    public function getForm()
+    {
+        return [];
+    }
+
 	public function getViewData(){
 		$data = $this->getCommonViewData();
 		$data['news'] = $this->getNews();

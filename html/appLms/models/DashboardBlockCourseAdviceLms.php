@@ -39,6 +39,11 @@ class DashboardBlockCourseAdviceLms extends DashboardBlockLms
         ];
     }
 
+    public function getForm()
+    {
+        return [];
+    }
+
 	public function getViewData(){
 		$data = $this->getCommonViewData();
 		$data['courseAdvices'] = $this->getCourseAdvices();

@@ -38,6 +38,11 @@ class DashboardBlockMessagesLms extends DashboardBlockLms
         ];
     }
 
+    public function getForm()
+    {
+        return [];
+    }
+
 	public function getViewData(){
 		$data = $this->getCommonViewData();
 		$data['messages'] = $this->getMessages();

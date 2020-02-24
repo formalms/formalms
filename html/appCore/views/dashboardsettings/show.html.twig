@@ -4,37 +4,47 @@
             <div id="dashboard-sortable" class="dashboard__container">
                 {% for block in enabledBlocks %}
                     {% if block.enabled %}
-                        <div id="{{ block.postData.block }}-{{ loop.index0 }}"
+                        {% set index = loop.index0 %}
+                        <div id="{{ block.postData.block }}-{{ index }}"
                              class="dashboard__block dashboard__block--{{ block.type }}"
                              data-block="{{ block.postData.block }}"
                              data-type="{{ block.type }}"
                              data-action="{{ block.registeredActions | join(',') }}">
                             <div class="dashboard__content">
                                 <button class="dashboard__remove js-remove-block"
-                                        data-block="{{ block.postData.block }}-{{ loop.index0 }}"></button>
+                                        data-block="{{ block.postData.block }}-{{ index }}"></button>
                                 <div class="dashboard__title">{{ block.postData.block }}</div>
-                                <img src="{{ block.templatePath }}static/images/dashboard-placeholder/{{ block.postData.block }}-placeholder.jpg"
-                                     class="dashboard__image">
+                                {% if block.hasImage %}
+                                    <img src="{{ block.image }}"
+                                         class="dashboard__image">
+                                {% else %}
+                                    <img src="{{ block.templatePath }}static/images/dashboard-placeholder/{{ block.postData.block }}-placeholder.jpg"
+                                         class="dashboard__image">
+                                {% endif %}
+
                                 <div class="dashboard__info">
-                                    <div class="dashboard__title">Dimensione</div>
+                                    <div class="dashboard__title">{{ translate('_type', 'dashboard') }}</div>
                                     <div class="dashboard__select">
                                         <select class="form-control js-type-block"
-                                                data-block="{{ block.postData.block }}-{{ loop.index0 }}">
-                                            <option value="{{ block.type }}" selected>{{ block.type }}</option>
+                                                data-block="{{ block.postData.block }}-{{ index }}">
                                             {% for type in block.availableTypes %}
-                                                {% if type != block.type %}
-                                                    <option value="{{ type }}">{{ type }}</option>
-                                                {% endif %}
+                                                <option value="{{ type }}"{% if block.type == type %} selected{% endif %}>{{ type }}</option>
                                             {% endfor %}
                                         </select>
                                     </div>
                                     {% if block.registeredActions | length %}
-                                        <div class="dashboard__title dashboard__title--sources">Sorgente dati:<br>
-                                            {% for action in block.registeredActions %}
-                                                {{ action }}{% if loop.index < block.registeredActions | length %},{% endif %}
-                                            {% endfor %}
+                                        <div class="dashboard__title dashboard__title--sources">{{ translate('_enabledActions', 'dashboard') }}<br>
+                                            <div class="dashboard__checkbox">
+                                                    {% for action in block.enabledActions %}
+                                                        <label><input name="registeredAction[{{ loop.index0 }}]" type="checkbox" value="{{ action }}" {% if action in block.registeredActions %}checked{% endif %} />{{ action }}</label>
+                                                    {% endfor %}
+                                            </div>
                                         </div>
                                     {% endif %}
+
+                                    {% for form in block.form %}
+                                        {% include 'formtype/form-' ~ form.type ~ '.html.twig' %}
+                                    {% endfor %}
                                 </div>
                             </div>
                         </div>
@@ -56,10 +66,6 @@
                     </div>
                     <div class="dashboard__select dashboard__select--type">
                         <select class="form-control js-select-type"></select>
-                    </div>
-                    <div class="dashboard__select dashboard__select--action">
-                        <div class="dashboard__select__title">Sorgente dati</div>
-                        <div class="js-select-action"></div>
                     </div>
                     <button class="btn btn-primary dahsboard__button--add js-add-block">AGGIUNGI NUOVO</button>
                 </div>
@@ -167,46 +173,24 @@
             } else {
                 selectType.parent('.dashboard__select').fadeOut();
             }
-
-            if (JSON.parse(actions).length) {
-                const actionsJSON = JSON.parse(actions);
-                selectBlock.parent('.dashboard__select').removeClass('is-required');
-                selectAction.parent('.dashboard__select').fadeIn();
-
-                for (i = 0; i < actionsJSON.length; i++) {
-                    selectAction.append('<label><input name="registeredAction" type="checkbox" value="' + actionsJSON[i] + '" checked /> ' + actionsJSON[i] + '</label>');
-                }
-            } else {
-                selectAction.parent('.dashboard__select').fadeOut();
-            }
         });
 
         // AGGIUNGE BLOCCO
         addBlock.click(function () {
             const selectBlockValue = selectBlock.children('option:selected').val();
             const selectTypeValue = selectType.children('option:selected').val();
-            let selectActionValue = '';
             const countBlocks = $('.dashboard__block').length + 2;
-
-            $.each($('input[name="registeredAction"]:checked'), function () {
-                if (selectActionValue) {
-                    selectActionValue = selectActionValue + ', ' + ($(this).val());
-                } else {
-                    selectActionValue = ($(this).val());
-                }
-            });
 
             if (selectBlockValue.length > 0) {
                 selectBlock.parent('.dashboard__select').removeClass('is-required');
 
                 const newBlock = '<div id="' + selectBlockValue + '-' + countBlocks + '" class="dashboard__block dashboard__block--' + selectTypeValue + '"' +
-                    '            data-type="' + selectTypeValue + '" data-block="' + selectBlockValue + '" data-action="' + selectActionValue.replace(/\s/g, '') + '">\n' +
+                    '            data-type="' + selectTypeValue + '" data-block="' + selectBlockValue + '">\n' +
                     '            <div class="dashboard__content">\n' +
                     '              <button class="dashboard__remove js-remove-block" data-block="' + selectBlockValue + '-' + countBlocks + '"></button>\n' +
                     '              <img src="' + templatePath + '/static/images/dashboard-placeholder/' + selectBlockValue + '-placeholder.jpg" class="dashboard__image">' +
                     '              <div class="dashboard__info">' +
                     '              <div class="dashboard__title">' + selectBlockValue + '</div>\n' +
-                    '              <div class="dashboard__title dashboard__title--sources">Sorgente dati:<br>' + selectActionValue + '</div>\n' +
                     '              </div>' +
                     '            </div>\n' +
                     '          </div>';
@@ -289,6 +273,46 @@
     }
 
     .dashboard__title {
+        display: block;
+        width: 100%;
+        text-align: center;
+        font-size: 12px;
+        font-weight: bold;
+        margin-bottom: 10px;
+        word-break: break-all;
+    }
+
+    .dashboard__image {
+        display: block;
+        width: 100%;
+        text-align: center;
+        font-size: 12px;
+        font-weight: bold;
+        margin-bottom: 10px;
+        word-break: break-all;
+    }
+
+    .dashboard__input {
+        display: block;
+        width: 100%;
+        text-align: center;
+        font-size: 12px;
+        font-weight: bold;
+        margin-bottom: 10px;
+        word-break: break-all;
+    }
+
+    .dashboard__select {
+        display: block;
+        width: 100%;
+        text-align: center;
+        font-size: 12px;
+        font-weight: bold;
+        margin-bottom: 10px;
+        word-break: break-all;
+    }
+
+    .dashboard__checkbox {
         display: block;
         width: 100%;
         text-align: center;

@@ -39,7 +39,12 @@ class DashboardBlockWelcomeLms extends DashboardBlockLms
         ];
     }
 
-	public function getViewData(){
+    public function getForm()
+    {
+        return [];
+    }
+
+    public function getViewData(){
 		return $this->getCommonViewData();
 	}
 

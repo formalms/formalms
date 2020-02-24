@@ -27,6 +27,17 @@ abstract class DashboardBlockLms extends Model
 
     const ALLOWED_TYPES = [self::TYPE_4COL, self::TYPE_3COL, self::TYPE_2COL, self::TYPE_1COL];
 
+    const FORM_TYPE_TEXT = 'text';
+    const FORM_TYPE_IMAGE = 'image';
+    const FORM_TYPE_FILE = 'file';
+    const FORM_TYPE_TEXTAREA = 'textarea';
+    const FORM_TYPE_CHECKBOX = 'checkbox';
+    const FORM_TYPE_RADIO = 'radio';
+    const FORM_TYPE_URL = 'url';
+    const FORM_TYPE_SELECT = 'select';
+
+    const ALLOWED_FORM_TYPES = [self::FORM_TYPE_TEXT, self::FORM_TYPE_IMAGE, self::FORM_TYPE_FILE, self::FORM_TYPE_TEXTAREA, self::FORM_TYPE_CHECKBOX, self::FORM_TYPE_RADIO, self::FORM_TYPE_URL, self::FORM_TYPE_SELECT];
+
     abstract public function getViewPath();
 
     abstract public function getViewFile();
@@ -40,6 +51,8 @@ abstract class DashboardBlockLms extends Model
     abstract public function getAvailableTypesForBlock();
 
     abstract public function parseConfig($jsonConfig);
+
+    abstract public function getForm();
 
     /** @var bool|DbConn */
     protected $db;
@@ -66,11 +79,14 @@ abstract class DashboardBlockLms extends Model
     /** @var string */
     protected $viewFile;
 
+    protected $data;
+
+
     public function __construct($jsonConfig)
     {
         parent::__construct();
         $this->db = DbConn::getInstance();
-        $jsonConfig = json_decode($jsonConfig,true);
+        $jsonConfig = json_decode($jsonConfig, true);
         $this->parseBaseConfig($jsonConfig);
         $this->parseConfig($jsonConfig);
 
@@ -82,7 +98,8 @@ abstract class DashboardBlockLms extends Model
     /**
      * @return int
      */
-    public function getOrder(){
+    public function getOrder()
+    {
         return $this->order;
     }
 
@@ -153,10 +170,30 @@ abstract class DashboardBlockLms extends Model
         return $this;
     }
 
-    protected function parseBaseConfig($jsonConfig) {
-        $this->enabled = $jsonConfig['enabled'] ? $jsonConfig['enabled'] :false;
+    /**
+     * @return mixed
+     */
+    public function getData()
+    {
+        return $this->data;
+    }
+
+    /**
+     * @param mixed $data
+     * @return DashboardBlockLms
+     */
+    public function setData($data)
+    {
+        $this->data = $data;
+        return $this;
+    }
+
+    protected function parseBaseConfig($jsonConfig)
+    {
+        $this->enabled = $jsonConfig['enabled'] ? $jsonConfig['enabled'] : false;
         $this->type = $jsonConfig['type'] ? $jsonConfig['type'] : '';
         $this->enabledActions = $jsonConfig['enabledActions'] ? $jsonConfig['enabledActions'] : [];
+        $this->data = $jsonConfig['data'] ? $jsonConfig['data'] : [];
     }
 
     /**
@@ -176,10 +213,22 @@ abstract class DashboardBlockLms extends Model
                 'block' => get_class($this),
                 'signature' => Util::getSignature()
             ],
+            'data' => $this->getData(),
             'registeredActions' => $this->getRegisteredActions(),
             'enabledActions' => $this->getEnabledActions(),
             'templatePath' => getPathTemplate()
         ];
+    }
+
+    public function getSettingsCommonViewData()
+    {
+
+        $data = $this->getCommonViewData();
+
+        $data['form'] = $this->getForm();
+
+        return $data;
+
     }
 
     protected function getViewName()
@@ -305,5 +354,19 @@ abstract class DashboardBlockLms extends Model
             list($path) = $this->db->fetch_row($res);
         }
         return $path;
+    }
+
+    protected function getFormItem($name, $type, $values = [], $attr = [])
+    {
+        if (!in_array($type, self::ALLOWED_FORM_TYPES)) {
+            return false;
+        }
+        return [
+            'class' => get_class($this),
+            'field' => sprintf('%s-%s', get_class($this), $name),
+            'type' => $type,
+            'values' => $values,
+            'attr' => $attr
+        ];
     }
 }

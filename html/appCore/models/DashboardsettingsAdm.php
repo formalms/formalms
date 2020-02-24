@@ -81,18 +81,18 @@ class DashboardsettingsAdm extends Model
         $data = [];
         /** @var DashboardBlockLms $enabledBlocks */
         foreach ($this->enabledBlocks as $enabledBlocks) {
-            $data[] = $enabledBlocks->getCommonViewData();
+            $data[] = $enabledBlocks->getSettingsCommonViewData();
         }
 
         return $data;
     }
 
-    public function getInstalleddBlocksCommonViewData()
+    public function getInstalledBlocksCommonViewData()
     {
         $data = [];
-        /** @var DashboardBlockLms $enabledBlocks */
+        /** @var DashboardBlockLms $installedBlock */
         foreach ($this->installedBlocks as $installedBlock) {
-            $data[] = $installedBlock->getCommonViewData();
+            $data[] = $installedBlock->getSettingsCommonViewData();
         }
 
         return $data;
@@ -112,7 +112,8 @@ class DashboardsettingsAdm extends Model
         $config = [
             'type' => $setting['type'],
             'enabled' => $setting['enabled'],
-            'enabledActions' => $setting['enabledActions']
+            'enabledActions' => $setting['enabledActions'],
+            'data' => $setting['data']
         ];
 
         $insertQuery = "INSERT INTO `dashboard_block_config` ( `block_class`, `block_config`, `position`) VALUES ( '" . $block . "' , '" . json_encode($config) . "', '" . $setting['position'] . "')";

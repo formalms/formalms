@@ -39,9 +39,18 @@ class DashboardBlockVideoLms extends DashboardBlockLms
         ];
     }
 
-	public function getViewData(){
+    public function getForm()
+    {
+        return [
+            $this->getFormItem('profileImage', DashboardBlockLms::FORM_TYPE_IMAGE),
+            $this->getFormItem('textarea', DashboardBlockLms::FORM_TYPE_TEXTAREA),
+            $this->getFormItem('text', DashboardBlockLms::FORM_TYPE_TEXT),
+            $this->getFormItem('file', DashboardBlockLms::FORM_TYPE_FILE)
+        ];
+    }
+
+    public function getViewData(){
 		$data = $this->getCommonViewData();
-		$data['dashboard_video_id'] = '12345'; // id che rappresenta il modulo. serve nel caso ci siano N video in dashboard
 		$data['video_type'] = 'yt'; //può essere yt o vimeo
 		$data['video'] = '3vBwRfQbXkg';
 		$data['cover'] = '/templates/standard/static/images/banner.png';

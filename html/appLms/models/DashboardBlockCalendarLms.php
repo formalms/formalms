@@ -69,6 +69,19 @@ class DashboardBlockCalendarLms extends DashboardBlockLms
         return '#';
     }
 
+    public function getForm()
+    {
+        return [
+            $this->getFormItem('image', DashboardBlockLms::FORM_TYPE_IMAGE),
+            $this->getFormItem('select', DashboardBlockLms::FORM_TYPE_SELECT,['value1','value2'])
+        ];
+        /*$this->getFormItem('textarea', DashboardBlockLms::FORM_TYPE_TEXTAREA),
+            $this->getFormItem('text', DashboardBlockLms::FORM_TYPE_TEXT),
+            $this->getFormItem('file', DashboardBlockLms::FORM_TYPE_FILE),
+            $this->getFormItem('radio', DashboardBlockLms::FORM_TYPE_RADIO,['value1','value2']),
+            $this->getFormItem('checkbox', DashboardBlockLms::FORM_TYPE_CHECKBOX,['value1','value2']),*/
+    }
+
     public function getRegisteredActions() {
         return [
             'getElearningCalendar',

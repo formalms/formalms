@@ -1,0 +1,11 @@
+<div class="dashboard__select">
+    {{ dump(form) }}
+    <select class="form-control" data-block="{{ block.postData.block }}-{{ index }}">
+
+        {% for value in form.values %}
+
+            <option value="{{ block.postData.block }}_{{ index }}_{{ value }}"{% if block.type == type %} selected{% endif %}>{{ value }}</option>
+
+        {% endfor %}
+    </select>
+</div>

@@ -1,33 +1,25 @@
 {% extends "base/base.html.twig" %}
 
 {% block content %}
-  {# <pre>
-    {{ dump(block) }}
-  </pre> #}
-  {% if (block.type == '4-col') %}
-      {% set class =  'd-col--12--desktop' %}
-  {% elseif (block.type == '3-col') %}
-      {% set class =  'd-col--9--desktop' %}
-  {% elseif (block.type == '2-col') %}
-      {% set class =  'd-col--6--desktop' %}
-  {% elseif (block.type == '1-col') %}
-      {% set class =  'd-col--3--desktop' %}
-  {% endif %}
-
-  <div class="d-col d-col--12 {{ class }}">
-    <div class="d-video js-dashboard-video" style="background-image: url('{{ block.cover }}')" data-video-url="{{ block.video }}" data-video-type="{{ block.video_type }}">
+    {# <pre>
+      {{ dump(block) }}
+    </pre> #}
+    {% if (block.type == '4-col') %}
+        {% set class =  'd-col--12--desktop' %}
+    {% elseif (block.type == '3-col') %}
+        {% set class =  'd-col--9--desktop' %}
+    {% elseif (block.type == '2-col') %}
+        {% set class =  'd-col--6--desktop' %}
+    {% elseif (block.type == '1-col') %}
+        {% set class =  'd-col--3--desktop' %}
+    {% endif %}
+    <div class="d-col d-col--12 {{ class }}">
+        <div class="d-video js-dashboard-video"
+             style="background-image: url('{{ block.templatePath }}{{ block.cover }}')"
+             data-video-data-video-url="{{ block.video }}" data-video-type="{{ block.video_type }}">
+        </div>
     </div>
-  </div>
 
-  <!-- Modal -->
-  <div class="modal fade js-dashboard-video-modal" data-href="{{ block.video_type }}-{{ block.video }}" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-dialog--notitle modal-dialog--video" role="document">
-      <div class="modal-header modal-header--notitle">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-      </div>
-      <div class="modal-content modal-content--full">
-        <div class="modal-body modal-body--nopadding js-dashboard-video-dynamic-content"></div>
-      </div>
-    </div>
-  </div>
+    {% include 'base/videomodal.html.twig' with {'videoref': block.video_type ~ "-" ~ block.video } %}
+
 {% endblock %}
