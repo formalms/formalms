@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20190215</DATE>
+  <DATE>20200220</DATE>
   <LANG id="hebrew">
     <lang_code>hebrew</lang_code>
     <lang_description>&#x5E2;&#x5D1;&#x5E8;&#x5D9;&#x5EA;</lang_description>
@@ -8,6 +8,9 @@
     <lang_browsercode>he; Hebrew</lang_browsercode>
     <lang_direction>rtl</lang_direction>
     <platform id="all">
+      <module id="">
+        <key id="&amp;_NEW_USER_SUBSCRIBED_TEXT_MODERATORS" attributes="" save_date="2020-01-20 15:31:45"><![CDATA[[url] [firstname] [lastname] [course] [username]]]></key>
+      </module>
       <module id="adminrules">
         <key id="adminrules&amp;_ADMIN_ASSIGNTREEDESCR" attributes="" save_date="2016-12-12 17:16:46"><![CDATA[בחירת תיקיות הנגישות למשתמש מנהלן]]></key>
         <key id="adminrules&amp;_ADMIN_MANAGMENT" attributes="" save_date="2016-12-12 17:11:02"><![CDATA[מנהל המנהלנים]]></key>
@@ -818,6 +821,7 @@ Otherwise, you must register in our system, following this link: <br />
         <key id="coursereport&amp;_USE_FOR_FINAL" attributes="" save_date="2016-12-15 18:49:38"><![CDATA[השתמש לציון סופי]]></key>
         <key id="coursereport&amp;_WEIGHT" attributes="" save_date="2016-12-15 18:49:48"><![CDATA[משקל]]></key>
       </module>
+      <module id="courses"/>
       <module id="course_autoregistration">
         <key id="course_autoregistration&amp;_AUTOREGISTRATION" attributes="" save_date="2016-12-15 18:50:12"><![CDATA[הוספת קורס חדש]]></key>
         <key id="course_autoregistration&amp;_BACK_TO_COURSE" attributes="" save_date="2016-12-15 18:50:01"><![CDATA[>> חזרה ל"אזור הקורס שלי"]]></key>
@@ -888,6 +892,12 @@ Otherwise, you must register in our system, following this link: <br />
         <key id="email&amp;_DELETED_USER_TEXT" attributes="email" save_date="2016-12-15 20:20:21"><![CDATA[החשבון שלך ב [url] עם שם המשתמש [userid] נמחק]]></key>
         <key id="email&amp;_DENY_SUBSCRIBED_SUBJECT" attributes="email" save_date="2016-12-15 20:17:33"><![CDATA[בקשת הרשמה נדחתה]]></key>
         <key id="email&amp;_DENY_SUBSCRIBED_TEXT" attributes="email" save_date="2016-12-15 20:21:16"><![CDATA[בקשת ההרשמה שלך לקורס [course] נדחתה על-ידי המנהלן ב [url]]]></key>
+        <key id="email&amp;_EVENT_CHANGE_NODE_USER_SBJ" attributes="" save_date="2020-01-20 18:17:51"><![CDATA[User node change]]></key>
+        <key id="email&amp;_EVENT_CHANGE_NODE_USER_TEXT" attributes="" save_date="2020-01-20 18:18:37"><![CDATA[[url] [firstname] [lastname] [username]]]></key>
+        <key id="email&amp;_EVENT_COURSE_EVENT_SUSPENDED_USER_SBJ" attributes="" save_date="2020-01-20 18:27:00"><![CDATA[User suspended from course]]></key>
+        <key id="email&amp;_EVENT_COURSE_EVENT_SUSPENDED_USER_TEXT" attributes="" save_date="2020-01-20 18:26:25"><![CDATA[[url] [firstname] [lastname] [course] [username]]]></key>
+        <key id="email&amp;_EVENT_SUSPENDED_USER_SBJ" attributes="" save_date="2020-01-20 18:14:15"><![CDATA[User suspended]]></key>
+        <key id="email&amp;_EVENT_SUSPENDED_USER_TEXT" attributes="" save_date="2020-01-20 18:13:32"><![CDATA[[url] [firstname] [lastname] [username]]]></key>
         <key id="email&amp;_MODIFIED_USER_SBJ" attributes="email" save_date="2016-12-15 20:18:02"><![CDATA[חשבון המשתמש שונה]]></key>
         <key id="email&amp;_MODIFIED_USER_TEXT" attributes="email" save_date="2016-12-15 20:20:39"><![CDATA[החשבון שלך באתר [url] שונה: שם משתמש: [userid]]]></key>
         <key id="email&amp;_MOD_USER_SUBSCRIPTION_SUBJECT" attributes="email" save_date="2016-12-15 20:21:09"><![CDATA[ההרשמה שלך שונתה]]></key>
@@ -897,6 +907,7 @@ Otherwise, you must register in our system, following this link: <br />
         <key id="email&amp;_NEW_MESSAGE_INSERT_IN_THREAD" attributes="email" save_date="2016-12-15 20:18:10"><![CDATA[קיימת הודעה חדשה בשרשור שאחריו אתה עוקב [url] > [course] > [forum_title] > [thread_title]]]></key>
         <key id="email&amp;_NEW_THREAD_INSERT_IN_FORUM" attributes="email" save_date="2016-12-15 20:18:24"><![CDATA[יש שרשור חדש ב [url] > [course] > [forum_title] כותרת: [thread_title]]]></key>
         <key id="email&amp;_NEW_USER_SUBSCRIBED_SUBJECT" attributes="email" save_date="2016-12-15 20:17:19"><![CDATA[משתמש חדש נרשם לקורס]]></key>
+        <key id="email&amp;_NEW_USER_SUBSCRIBED_SUBJECT_MODERATORS" attributes="" save_date="2020-01-20 15:30:49"><![CDATA[[url] [firstname] [lastname] [course] [username]]]></key>
         <key id="email&amp;_NEW_USER_SUBSCRIBED_TEXT" attributes="email" save_date="2017-04-14 11:33:05"><![CDATA[הודעה חדשה פורסמה בקורס "[course]" כותרת: '[title]' [text] תוכל לקרוא את זה בפורמט forma.lms בקישור [url]]]></key>
         <key id="email&amp;_NEW_USER_SUBS_WAITING_SUBJECT" attributes="email" save_date="2016-12-15 20:18:52"><![CDATA[המשתמש ממתין לאישור ההרשמה לקורס]]></key>
         <key id="email&amp;_NEW_USER_SUBS_WAITING_TEXT" attributes="email" save_date="2016-12-15 20:16:35"><![CDATA[משתמש חדש נרשם לקורס '[course]', וממתין לאישור. [url]]]></key>
@@ -960,6 +971,7 @@ Otherwise, you must register in our system, following this link: <br />
         <key id="event_manager&amp;_EVENT_PLATFORM_framework" attributes="" save_date="2015-09-08 18:15:38"><![CDATA[appCore]]></key>
         <key id="event_manager&amp;_EVENT_PLATFORM_lms" attributes="" save_date="2015-09-08 18:15:38"><![CDATA[appLMS]]></key>
         <key id="event_manager&amp;_EVENT_PLATFORM_lms-a" attributes="" save_date="2015-09-08 18:15:38"><![CDATA[appLMS-A]]></key>
+        <key id="event_manager&amp;_EVENT_RECIPIENTS_GODS" attributes="" save_date="2020-01-20 15:21:28"><![CDATA[Super-Administrators]]></key>
         <key id="event_manager&amp;_EVENT_RECIPIENTS_MODERATORS_GOD" attributes="" save_date="2016-12-15 20:22:41"><![CDATA[מנחים ומנהלנים בכירים]]></key>
         <key id="event_manager&amp;_EVENT_RECIPIENTS_TEACHER" attributes="" save_date="2016-12-15 20:22:24"><![CDATA[מדריכים]]></key>
         <key id="event_manager&amp;_EVENT_RECIPIENTS_TEACHER_GOD" attributes="" save_date="2016-12-15 20:22:32"><![CDATA[מדריכים ומנהלנים בכירים]]></key>
@@ -1943,11 +1955,15 @@ Otherwise, you must register in our system, following this link: <br />
         <key id="sms&amp;_APPROVED_SUBSCRIBED_TEXT_SMS" attributes="sms" save_date="2016-12-16 20:51:59"><![CDATA[החשבון שלך באתר [url] שונה: שם משתמש: [userid]]]></key>
         <key id="sms&amp;_APPROVED_USER_TEXT_SMS" attributes="sms" save_date="2016-12-16 20:52:09"><![CDATA[בקשת ההרשמה שלך אושרה]]></key>
         <key id="sms&amp;_DELETED_USER_TEXT_SMS" attributes="sms" save_date="2016-12-16 20:50:42"><![CDATA[למידה מקוונת: החשבון שלך עם שם המשתמש [userid] נמחק]]></key>
+        <key id="sms&amp;_EVENT_CHANGE_NODE_USER_SBJ_SMS" attributes="" save_date="2020-01-20 18:19:28"><![CDATA[[url] [firstname] [lastname] [username]]]></key>
+        <key id="sms&amp;_EVENT_COURSE_EVENT_SUSPENDED_USER_TEXT_SMS" attributes="" save_date="2020-01-20 18:25:39"><![CDATA[[url] [firstname] [lastname] [course] [username]]]></key>
+        <key id="sms&amp;_EVENT_SUSPENDED_USER_TEXT_SMS" attributes="" save_date="2020-01-20 18:15:13"><![CDATA[[url] [firstname] [lastname] [username]]]></key>
         <key id="sms&amp;_MODIFIED_USER_TEXT_SMS" attributes="sms" save_date="2016-12-16 20:51:49"><![CDATA[החשבון שלך באתר [url] שונה: שם משתמש: [userid]]]></key>
         <key id="sms&amp;_NEW_FORUM_BODY_SMS" attributes="sms" save_date="2016-12-16 20:49:51"><![CDATA[למידה מקוונת: קורס '[course]' פורום חדש '[title]']]></key>
         <key id="sms&amp;_NEW_FORUM_SMS" attributes="sms" save_date="2016-12-16 20:50:47"><![CDATA[פורום חדש]]></key>
         <key id="sms&amp;_NEW_MESSAGE_INSERT_IN_THREAD_SMS" attributes="sms" save_date="2016-12-16 20:50:35"><![CDATA[למידה מקוונת: בקורס החדש '[course]', יש הודעה חדשה ב '[forum_title]' > '[thread_title]']]></key>
         <key id="sms&amp;_NEW_THREAD_INSERT_IN_FORUM_SMS" attributes="sms" save_date="2016-12-16 20:49:57"><![CDATA[למידה מקוונת: קורס '[course]' יש שרשור חדש '[forum_title]': [thread_title]]]></key>
+        <key id="sms&amp;_NEW_USER_SUBSCRIBED_TEXT_SMS_MODERATORS" attributes="" save_date="2020-01-20 18:11:42"><![CDATA[[url] [firstname] [lastname] [course] [username]]]></key>
         <key id="sms&amp;_PASSWORD_CHANGED_SMS" attributes="sms" save_date="2016-12-16 20:49:43"><![CDATA[והסיסמה שלך שונתה ל: [password]]]></key>
         <key id="sms&amp;_REGISTERED_USER_TEXT_SMS" attributes="sms" save_date="2016-12-16 20:51:22"><![CDATA[אתה כעת רשום במערכת שלנו עם חשבון זה: שם משתמש: [userid] סיסמה: [password]]]></key>
         <key id="sms&amp;_TO_APPROVE_GROUP_USER_TEXT_SMS" attributes="sms" save_date="2016-12-16 20:51:11"><![CDATA[ישנה הרשמה של משתמש לקבוצה מונחית אשר ממתינה לאישורך]]></key>
