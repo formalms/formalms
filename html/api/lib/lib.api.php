@@ -179,10 +179,6 @@ class API {
 
 	static public function Execute($auth_code, $module, $function, $params) {
 
-		if(!(new self())->checkAuthentication($auth_code)) {
-            return false;
-        }
-        
 		$class_name = $module.'_API';
         $file_name = Forma::inc(_base_.'/api/lib/api.'.$module.'.php');
         
@@ -197,7 +193,11 @@ class API {
         }
 
 		$api_obj = new $class_name();
-        $result = $api_obj->call($function, $params);
+
+		$result = false;
+		if ($api_obj->checkAuthentication($auth_code)) {
+			$result = $api_obj->call($function, $params);
+		}
 
 		return $result;
 	}
