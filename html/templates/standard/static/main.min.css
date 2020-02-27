@@ -5215,7 +5215,9 @@ p {
     color: #ff6c00; }
 
 .d-calendar__item {
-  margin-top: 38px; }
+  margin-top: 38px;
+  margin-left: 10px;
+  margin-right: 10px; }
 
 .d-popup {
   padding-top: 25px;
