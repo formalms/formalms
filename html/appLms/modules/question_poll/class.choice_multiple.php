@@ -266,7 +266,7 @@ class ChoiceMultiple_QuestionPoll extends QuestionPoll {
 					}
 				}
 			}
-      foreach ($existent_answer as $id_answer = $v)
+      foreach ($existent_answer as $id_answer => $v)
       {
 				//i must delete these answer
 				$del_answer_query = "

@@ -375,7 +375,7 @@ class ChoiceMultiple_Question extends Question {
 					}
 				}
 			}
-      foreach($existent_answer as $idA = $v) {
+      foreach($existent_answer as $idA => $v) {
 				//i must delete these answer
 				$del_answer_query = "
 				DELETE FROM ".$GLOBALS['prefix_lms']."_testquestanswer

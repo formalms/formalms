@@ -1112,10 +1112,9 @@ class Report_Courses extends Report {
 
 			} else {
 
-				reset($org_name)
-				foreach($org_name as $idst_group => $folder_name)
-        {
-
+				reset($org_name);
+				foreach ($org_name as $idst_group => $folder_name)
+                {
 					if ($first) {
 						$first = FALSE;
 					} else {

@@ -683,8 +683,7 @@ function userCourseList(&$url, $use_tab = true, $page_add = true) {
 		else $course_stats['with_ulevel'][$cinfo['level']]++;
 		
 		if(isset($available_cert[$cinfo['idCourse']]))
-    foreach($available_cert[$cinfo['idCourse'] as $id_cert => $certificate)
-			
+        foreach($available_cert[$cinfo['idCourse']] as $id_cert => $certificate)
 			if(!isset($released[$id_cert]) && $cert->canRelease($certificate[CERT_AV_STATUS], $cinfo['user_status'])) {
                                 if ($cert->certificateAvailableForUser($id_cert, $cinfo['idCourse'], Docebo::user()->getIdst())){
                                     $course_stats['cert_relesable']++;
@@ -878,7 +877,7 @@ function userCourseList(&$url, $use_tab = true, $page_add = true) {
 		// find course basilar information -------------------------------------
 		if(!empty($needed_info_for)) $course_info = $man_course->getAllCourses(false, false, $needed_info_for);
 		else $course_info = array();
-    foreach($coursepath as $id_path => 	$path) {
+        foreach($coursepath as $id_path => 	$path) {
 			
 			$html = '<div class="coursepath_container coursepath_container_simple">';
 			
@@ -921,7 +920,7 @@ function userCourseList(&$url, $use_tab = true, $page_add = true) {
 					}
 					
 					foreach($path_courses[$id_path][$id_slot] as $id => $v)
-          {
+                    {
 						
 						if(isset($course_cache[$id])) {
 							$html .= '<li>'.$course_cache[$id].'</li>';
