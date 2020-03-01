@@ -29,20 +29,20 @@ next($pl_arr);
 $prev = '';
 while($cur && $prev != $platform_code) {
 	$prev =$cur['value'];
-	$cur['value'] =current($pl_arr);
-  next($pl_arr);
+	$cur['value'] = current($pl_arr);
+    next($pl_arr);
 }
 $next_platform =($cur ? $cur['value'] : false);
 
 
 if ($next_platform === false) {
-	$cur['value'] =current($lang_arr);
-  next($lang_arr);  
+	$cur['value'] = current($lang_arr);
+    next($lang_arr);  
 	$prev ='';
 	while($cur && $prev != $lang) {
 		$prev =$cur['value'];
-		$cur['value'] current($lang_arr);
-    next($lang_arr)
+		$cur['value'] = current($lang_arr);
+        next($lang_arr);
 	}
 	$next_lang =($cur ? $cur['value'] : false);
 	$next_platform =$pl_arr[0];

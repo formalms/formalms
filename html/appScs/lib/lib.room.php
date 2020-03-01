@@ -54,7 +54,7 @@ function insertRoom($array_source) {
 function updateRoom($id_room, $array_source) {
 
 	$query_update = "UPDATE ".$GLOBALS['prefix_scs']."_rules_room SET ";
-  foreach($array_source as $var_name => $var_value) 
+    foreach($array_source as $var_name => $var_value) {
 		$query_update .= $var_name." = '".$var_value."', ";
 	}
 	$query_update = substr($query_update, 0, -2);

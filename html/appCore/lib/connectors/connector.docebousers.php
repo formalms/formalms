@@ -398,7 +398,7 @@ class DoceboConnectorDoceboUsers extends DoceboConnector {
 			if(is_numeric($field_id)) {
 				
 				$p = $this->fl->fieldValue((int)$field_id, array($row[0]));
-				$export[] = reset($p) 
+				$export[] = reset($p); 
 			} else {
 				
 				switch($field_id) {

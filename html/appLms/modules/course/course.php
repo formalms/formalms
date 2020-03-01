@@ -877,6 +877,7 @@ function userCourseList(&$url, $use_tab = true, $page_add = true) {
 		// find course basilar information -------------------------------------
 		if(!empty($needed_info_for)) $course_info = $man_course->getAllCourses(false, false, $needed_info_for);
 		else $course_info = array();
+        
         foreach($coursepath as $id_path => 	$path) {
 			
 			$html = '<div class="coursepath_container coursepath_container_simple">';
@@ -931,7 +932,7 @@ function userCourseList(&$url, $use_tab = true, $page_add = true) {
 					}
 					
 					if(!empty($path_courses[$id_path][$id_slot])) $html .= '</ul>';
-				}
+				
 			}
 			$html .= '</div>';
 			if ($page_add)
@@ -1106,8 +1107,8 @@ function dashmycourse(&$url, $lang, &$subscription, $cinfo, $index) {
 		// edition unique--------------------------------------------------------------------------------
     
 
-    $ed_id = key(($subscription['edition'][$cinfo['idCourse']]);
-    $sub_info = current(($subscription['edition'][$cinfo['idCourse']])
+        $ed_id = key($subscription['edition'][$cinfo['idCourse']]);
+        $sub_info = current($subscription['edition'][$cinfo['idCourse']]);
 		$ed_info =& $cinfo['edition_list'][$ed_id];
 		
 		$cinfo['date_begin'] 	= $ed_info['date_begin'];

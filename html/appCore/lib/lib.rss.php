@@ -90,7 +90,7 @@ class FeedReader {
 			$feed_url = $feed_info["url"];
 			if(!empty($this->query_rss)) {
 
-				foreach($this->query_rss as => $param){
+				foreach($this->query_rss as $param){
 
 					$param_name = explode('=', $param);
 

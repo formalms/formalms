@@ -2650,12 +2650,12 @@ class UserProfileViewer {
 				.'<th scope="col">'.$this->_lang->def('_POLICY_ASSIGNED').'</th>'
 				.'</tr></thead>';
 
-		$html .= '<tbody>'
+		$html .= '<tbody>';
 
 		// user extra field ------------------------------------------------------------------
 
 		if(!empty($user_field))
-    foreach($user_field as $id => $value ) {
+        foreach($user_field as $id => $value ) {
 
 			$html .= $this->getUIPolicyCode(	$value['name'],
 												$value['value'],
@@ -3784,7 +3784,7 @@ class UserProfileData {
 		switch ($fal['online_satus'])
 		{
 			case PFL_POLICY_FREE:
-				$online = ( strcmp($u_info[ACL_INFO_LASTENTER], date("Y-m-d H:i:s", time() - REFRESH_LAST_ENTER)) >= 0);
+                $online = ( strcmp($u_info[ACL_INFO_LASTENTER], date("Y-m-d H:i:s", time() - REFRESH_LAST_ENTER)) >= 0);
 				break;
 			case PFL_POLICY_TEACHER:
 				if ($is_teacher)

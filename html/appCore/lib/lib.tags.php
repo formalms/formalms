@@ -222,8 +222,8 @@ class Tags {
 		
 		// add the non existing tag
 		
-		foreach($tag_to_create as => $tag_name)
-    {
+		foreach($tag_to_create as $tag_name)
+        {
 			
 			$query = "INSERT INTO ".$this->_tag_t." "
 			." ( id_tag, tag_name ) VALUES "

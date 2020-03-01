@@ -70,7 +70,7 @@ function &createDoceboDOMObject( &$domObj, $secondChoice = FALSE ) {
 		//soap__dbgOut1( "createDoceboDOMObject ". get_class($domObj) );
 		switch( strToLower(get_class($domObj)) ) {
 			case "domattribute":
-				$tmpObj =& new DoceboDOMAttr( $domObj );
+				$tmpObj = new DoceboDOMAttr( $domObj );
 			break;
 			/*case "domcdata":
 				$tmpObj =& new DoceboDOMCData( $domObj );
@@ -79,13 +79,13 @@ function &createDoceboDOMObject( &$domObj, $secondChoice = FALSE ) {
 				$tmpObj =& new DoceboDOMComment( $domObj );
 			break;*/
 			case "domdocument":
-				$tmpObj =& new DoceboDOMDocument( $domObj );
+				$tmpObj = new DoceboDOMDocument( $domObj );
 			break;
 			case "domdocumenttype":
-				$tmpObj =& new DoceboDOMDocumentType( $domObj );
+				$tmpObj = new DoceboDOMDocumentType( $domObj );
 			break;
 			case "domelement":
-				$tmpObj =& new DoceboDOMElement( $domObj );
+				$tmpObj = new DoceboDOMElement( $domObj );
 			break;
 			/*case "domentity":
 				$tmpObj =& new DoceboDOMEntity( $domObj );
@@ -94,13 +94,13 @@ function &createDoceboDOMObject( &$domObj, $secondChoice = FALSE ) {
 				$tmpObj =& new DoceboDOMEntityReference( $domObj );
 			break;*/
 			case "domnode":
-				$tmpObj =& new DoceboDOMNode( $domObj );
+				$tmpObj = new DoceboDOMNode( $domObj );
 			break;
 			/*case "domprocessinginstruction":
 				$tmpObj =& new DoceboDOMProcessingInstruction( $domObj );
 			break;*/
 			case "domtext":
-				$tmpObj =& new DoceboDOMText( $domObj );
+				$tmpObj = new DoceboDOMText( $domObj );
 			break;
 			/*case "domparser":
 				$tmpObj =& new DoceboDOMParser( $domObj );
@@ -114,9 +114,9 @@ function &createDoceboDOMObject( &$domObj, $secondChoice = FALSE ) {
 		}
 	} elseif( is_array($domObj) ) {
 		if( $secondChoice )
-			$tmpObj =& new DoceboDOMNamedNodeMap( $domObj );
+			$tmpObj = new DoceboDOMNamedNodeMap( $domObj );
 		else
-			$tmpObj =& new DoceboDOMNodeList( $domObj );
+			$tmpObj = new DoceboDOMNodeList( $domObj );
 	} else {
 		$tmpObj =& $domObj;
 	}

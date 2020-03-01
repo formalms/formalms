@@ -1626,7 +1626,7 @@ class SubscriptionAlmsController extends AlmsController
 								}
 							}
 
-            foreach($user_selected as $id_user => $lv_sel) {
+                            foreach($user_selected as $id_user => $lv_sel) {
 								if (!$limited_subscribe || $max_subscribe) {
 									if ($lv_sel != 0) {
 										//$this->acl_man->addToGroup($level_idst[$lv_sel], $id_user);
@@ -1669,22 +1669,20 @@ class SubscriptionAlmsController extends AlmsController
 
 								if (!$direct_subscribe)
 									$waiting = 1;
-                foreach($_POST['user_level_sel'] as $id_user => $lv_sel) {
-                {
-									if (!$limited_subscribe || $max_subscribe) {
-										if ($lv_sel != 0) {
-											//$this->acl_man->addToGroup($level_idst[$lv_sel], $id_user);
-											$this->_addToCourseGroup($level_idst[$lv_sel], $id_user);
+                                    foreach($_POST['user_level_sel'] as $id_user => $lv_sel) {
+									    if (!$limited_subscribe || $max_subscribe) {
+										    if ($lv_sel != 0) {
+											    //$this->acl_man->addToGroup($level_idst[$lv_sel], $id_user);
+											    $this->_addToCourseGroup($level_idst[$lv_sel], $id_user);
 
-											if ($model_t->subscribeUser($id_user, $lv_sel, $waiting)) {
-												$max_subscribe--;
-												$just_subscribed_count++;
-											} else
-												$this->acl_man->removeFromGroup($level_idst[$lv_sel], $id_user);
-										}
-									}
+											    if ($model_t->subscribeUser($id_user, $lv_sel, $waiting)) {
+												    $max_subscribe--;
+												    $just_subscribed_count++;
+											    } else
+												    $this->acl_man->removeFromGroup($level_idst[$lv_sel], $id_user);
+										    }
+									    }
 								}//End While
-
 								reset($_POST['user_level_sel']);
 							}
 						} else {
@@ -3579,7 +3577,7 @@ class SubscriptionAlmsController extends AlmsController
 	function removeSubscription($id_course, $id_user, $lv_group, $edition_id = 0, $start_date = FALSE, $end_date = FALSE)
 	{
 
-		require_once($GLOBALS["where_framework"] . "/lib/resources/lib.timetable.php");
+        require_once($GLOBALS["where_framework"] . "/lib/resources/lib.timetable.php");
 		$tt = new TimeTable();
 		// ----------------------------------------
 		$resource = "user";
