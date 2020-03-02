@@ -4753,10 +4753,19 @@ header.header {
         header.header .row-fluid .navbar-collapse li a:hover {
           background-color: transparent;
           color: #ff6c00; }
+        header.header .row-fluid .navbar-collapse li a .title-with-icon {
+          display: block; }
+          @media (min-width: 1024px) {
+            header.header .row-fluid .navbar-collapse li a .title-with-icon {
+              display: none; } }
         header.header .row-fluid .navbar-collapse li a .glyphicon {
           position: relative;
           width: 35px;
-          height: 35px; }
+          height: 35px;
+          display: none; }
+          @media (min-width: 1024px) {
+            header.header .row-fluid .navbar-collapse li a .glyphicon {
+              display: block; } }
           header.header .row-fluid .navbar-collapse li a .glyphicon:hover:before {
             border-color: #ff6c00; }
           header.header .row-fluid .navbar-collapse li a .glyphicon:before {
