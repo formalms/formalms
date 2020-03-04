@@ -87,6 +87,14 @@ Class DashboardsettingsAdmController extends AdmController
         }
     }
 
+    public function uploadBlockImage(){
+        if ((isset($_FILES["file"]["name"])) && (!empty($_FILES["file"]["name"]))) {
+            /*$fname 			= $_FILES["file"]["name"];
+            $size 			= $_FILES["file"]["size"];
+            $tmp_fname 		= $_FILES["file"]["tmp_name"];
+            $real_fname 	= $user_id.'_'.mt_rand(0,100).'_'.time().'_'.$fname;*/
+        }
+    }
 }
 
 

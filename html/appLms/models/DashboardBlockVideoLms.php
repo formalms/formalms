@@ -42,10 +42,12 @@ class DashboardBlockVideoLms extends DashboardBlockLms
     public function getForm()
     {
         return [
-            $this->getFormItem('profileImage', DashboardBlockLms::FORM_TYPE_IMAGE),
-            $this->getFormItem('textarea', DashboardBlockLms::FORM_TYPE_TEXTAREA),
-            $this->getFormItem('text', DashboardBlockLms::FORM_TYPE_TEXT),
-            $this->getFormItem('file', DashboardBlockLms::FORM_TYPE_FILE)
+            $this->getFormItem('cover', DashboardBlockLms::FORM_TYPE_IMAGE),
+            $this->getFormItem('video', DashboardBlockLms::FORM_TYPE_TEXT),
+            $this->getFormItem('video_type', DashboardBlockLms::FORM_TYPE_SELECT,[
+                'yt' => 'Youtube',
+                'vimeo' => 'Vimeo'
+            ]),
         ];
     }
 
