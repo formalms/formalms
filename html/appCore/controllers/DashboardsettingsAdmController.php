@@ -36,6 +36,9 @@ Class DashboardsettingsAdmController extends AdmController
         $this->json = new Services_JSON();
         $this->model = new DashboardsettingsAdm();
 
+        Util::get_js(Get::rel_path('base').'/addons/tiny_mce/tinymce.min.js', true, true);
+        Util::get_js(Get::rel_path('base').'/addons/tiny_mce/forma.js', true, true);
+
         $this->permissions = array(
             'view' => checkPerm('view', true, 'dashboard', 'framework'),
             'view_user' => checkPerm('view', true, 'usermanagement', 'framework'),

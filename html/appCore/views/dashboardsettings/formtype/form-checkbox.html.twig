@@ -1,6 +1,11 @@
-<div class="dashboard__input dashboard__input--block">
+<div class="dashboard__checkbox dashboard__checkbox--block">
     <div class="form-group">
-        <label for="{{ block.postData.block }}-{{ loop.index0 }}-input">{{translate('_input','dashboardsetting')}}</label>
-        <input class="form-control" type="text" placeholder="{{ translate('_input_placeholder','dashboardsetting')}}" data-block="{{ block.postData.block }}-{{ loop.index0 }}">
+        <label for="{{ block.postData.block }}-{{ index }}-file">{{translate('_checkbox_'~ form.class,'dashboardsetting')}}</label>
+
+        {% for key,value in form.values %}
+
+            <input type="checkbox" class="checkbox" value="{{ block.postData.block }}_{{ index }}_{{ key }}" {% if block.type == type %}checked="checked"{% endif %}>{{ value }}</input>
+
+        {% endfor %}
     </div>
 </div>

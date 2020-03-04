@@ -29,11 +29,13 @@ class DashboardBlockCalendarLms extends DashboardBlockLms
 
     }
 
-    public function parseConfig($jsonConfig) {
+    public function parseConfig($jsonConfig)
+    {
 
     }
 
-    public function getAvailableTypesForBlock() {
+    public function getAvailableTypesForBlock()
+    {
         return [
             DashboardBlockLms::TYPE_1COL,
             DashboardBlockLms::TYPE_2COL,
@@ -43,7 +45,8 @@ class DashboardBlockCalendarLms extends DashboardBlockLms
     }
 
 
-    public function getViewData() {
+    public function getViewData()
+    {
 
         return $this->getCommonViewData();
     }
@@ -73,16 +76,32 @@ class DashboardBlockCalendarLms extends DashboardBlockLms
     {
         return [
             $this->getFormItem('image', DashboardBlockLms::FORM_TYPE_IMAGE),
-            $this->getFormItem('select', DashboardBlockLms::FORM_TYPE_SELECT,['value1','value2'])
-        ];
-        /*$this->getFormItem('textarea', DashboardBlockLms::FORM_TYPE_TEXTAREA),
+            $this->getFormItem('select', DashboardBlockLms::FORM_TYPE_SELECT,
+                [
+                    'value1' => 'Valore 1',
+                    'value2' => 'Valore 2'
+                ]
+            ),
             $this->getFormItem('text', DashboardBlockLms::FORM_TYPE_TEXT),
             $this->getFormItem('file', DashboardBlockLms::FORM_TYPE_FILE),
-            $this->getFormItem('radio', DashboardBlockLms::FORM_TYPE_RADIO,['value1','value2']),
-            $this->getFormItem('checkbox', DashboardBlockLms::FORM_TYPE_CHECKBOX,['value1','value2']),*/
+            $this->getFormItem('radio', DashboardBlockLms::FORM_TYPE_RADIO,
+                [
+                    'value1' => 'Valore 1',
+                    'value2' => 'Valore 2'
+                ]
+            ),
+            $this->getFormItem('checkbox', DashboardBlockLms::FORM_TYPE_CHECKBOX,
+                [
+                    'value1' => 'Valore 1',
+                    'value2' => 'Valore 2'
+                ]
+            ),
+            $this->getFormItem('textarea', DashboardBlockLms::FORM_TYPE_TEXTAREA),
+        ];
     }
 
-    public function getRegisteredActions() {
+    public function getRegisteredActions()
+    {
         return [
             'getElearningCalendar',
             'getClassroomCalendar',
@@ -300,20 +319,19 @@ class DashboardBlockCalendarLms extends DashboardBlockLms
                 INNER JOIN %lms_course c ON c.idCourse = cd.id_course 
                 LEFT JOIN %lms_classroom cr ON cdd.classroom = cr.idClassroom
                 LEFT JOIN %lms_class_location cl ON cr.location_id = cl.location_id
-                WHERE cd.id_course = ".$course['course_id']."
-                AND cdu.id_user = ".Docebo::user()->getId()
+                WHERE cd.id_course = " . $course['course_id'] . "
+                AND cdu.id_user = " . Docebo::user()->getId()
             );
 
             while ($row = $this->db->fetch_obj($q)) {
                 $courseData['endDate'] = $courseData['startDate'] = $row->date_begin;
                 $courseData['hourBegin'] = substr(explode(' ', $row->date_begin)[1], 0, 5);
                 $courseData['hourEnd'] = substr(explode(' ', $row->date_end)[1], 0, 5);
-                $courseData['hours'] = $courseData['hourBegin'].' - '.$courseData['hourEnd'];
-                $courseData['description'] = $row->name.'<br>'.$row->location.' - '.$row->class;
+                $courseData['hours'] = $courseData['hourBegin'] . ' - ' . $courseData['hourEnd'];
+                $courseData['description'] = $row->name . '<br>' . $row->location . ' - ' . $row->class;
                 $dates[] = $courseData;
             }
-        }
-        else if ($course['course_date_begin'] !== $course['course_date_end']) {
+        } else if ($course['course_date_begin'] !== $course['course_date_end']) {
             $dates[] = $courseData;
             $courseData = $this->getDataFromCourse($course, false);
             $dates[] = $courseData;
