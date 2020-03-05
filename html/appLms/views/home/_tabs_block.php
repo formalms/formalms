@@ -8,8 +8,8 @@
             ));
             ?>
         </div>
+        <div id="tab_content"></div>
     </div>
-    <div id="tab_content"></div>
 </div>
 
 <script type="text/javascript">
