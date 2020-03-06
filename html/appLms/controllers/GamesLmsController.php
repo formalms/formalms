@@ -70,7 +70,8 @@ class GamesLmsController extends LmsController {
 		$games = $model->findAllUnread(0, 0, 'start_date', 'DESC', Docebo::user()->getId(), array(
 					'viewer' => Docebo::user()->getArrSt()
 				));
-		while (list($id, $game) = each($games)) {
+    foreach($games as $id => $games)    
+    {
 
 			$game['start_date'] = Format::date($game['start_date'], 'date');
 			$game['end_date'] = Format::date($game['end_date'], 'date');

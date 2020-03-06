@@ -62,7 +62,8 @@ class DoceboUserNotifier extends DoceboEventConsumer {
 		// scan all users
 
 		if(!is_array($users_info) || empty($users_info)) return;
-		while(list(, $user_dett) = each($users_info)) {
+        foreach($users_info as $user_dett)
+        {
 
 			if($user_dett[ACL_INFO_VALID] == '1') {
 				// recover media setting

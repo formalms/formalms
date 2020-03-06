@@ -541,7 +541,8 @@ class Associate_Question extends Question {
 				}
 			}
 			
-			while(list($id_aa) = each($existent_associate)) {
+			foreach ($existent_associate as $id_aa => $v)
+      {
 				//i must delete these answer
 				$del_answer_query = "
 				DELETE FROM ".$GLOBALS['prefix_lms']."_testquestanswer_associate
@@ -601,7 +602,8 @@ class Associate_Question extends Question {
 					}
 				}
 			}
-			while(list($idA) = each($existent_answer)) {
+			foreach($existent_answer as $idA => $v)
+       {
 				//i must delete these answer
 				
 				$del_answer_query = "
@@ -1272,7 +1274,8 @@ class Associate_Question extends Question {
 		
 		//retriving new answer
 		reset($raw_quest->extra_info);
-		while(list($k ,$raw_answer) = each($raw_quest->extra_info)) {
+    foreach($raw_quest->extra_info as $k => $raw_answer)
+    {
 			
 			//insert answer
 			$ins_answer_query = "
@@ -1285,7 +1288,8 @@ class Associate_Question extends Question {
 		}
 		
 		reset($raw_quest->answers);
-		while(list($k, $raw_answer) = each($raw_quest->answers)) {
+    foreach($raw_quest->answers as $k => $raw_answer)
+    {
 			
 			//insert answer
 			$ins_answer_query = "

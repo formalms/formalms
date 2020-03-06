@@ -108,7 +108,7 @@
 
             $(function () {
                 callAjaxCatalog(0);
-                a_node = <?php echo $a_node ?>;
+                a_node = <?php echo $a_node ?>
 
                 // Alphabetical sort
                 $.each(a_node, function(k, cat) {

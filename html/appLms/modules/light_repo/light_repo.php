@@ -387,7 +387,7 @@ function repoManagerDetails(&$url) {
 	
 	$url->addToStdQuery('id_repo='.$id_repo);
 	
-	while(list(,$file) = each($file_list)) {
+  foreach($file_list as $file) {
 		
 		$content = array();
 		$content[] = $file['username'];

@@ -17,7 +17,8 @@ $tb->addHead(
 	array('min-cell', '', '', 'min-cell', '')
 );
 
-while(list(,$obj) = each($data)) {
+foreach($data as $obj)
+{
 
 	$row = array(
 		Docebo::aclm()->relativeId($obj->userid),

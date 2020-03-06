@@ -24,7 +24,8 @@ function statusNoEnter($perm, $status) {
 function newStatusEnter($arr_stat) {
 	$new_perm = 0;
 	if(!is_array($arr_stat)) return $new_perm;
-	while( list($status) = each($arr_stat) ) {
+  foreach($arr_stat as $status => $v)
+  {
 		$new_perm |= (1 << $status);
 	}
 	return $new_perm;
@@ -141,8 +142,9 @@ function infocourse() {
 			.'<tr><th scope="row">'.$lang->def('_SUBSCRIBE_METHOD').'</th><td>'.$subs_lang[$course['subscribe_method']].'</td></tr>'
 			.'<tr><th scope="row">'.$lang->def('_LANGUAGE').'</th><td>'.$course['lang_code'].'</td></tr>'
 	, 'content');
-	while(list($num_lv, $name_level) = each($levels)) {
-		
+
+	foreach( $levels as $num_lv => $name_level )  
+	{
 		if($course['level_show_user'] & (1 << $num_lv)) {
 			
 			$users =& $acl_man->getUsers( Man_Course::getIdUserOfLevel($_SESSION['idCourse'], $num_lv, $_SESSION['idEdition']) );
@@ -150,7 +152,9 @@ function infocourse() {
 				
 				$first = true;
 				$GLOBALS['page']->add('<tr><th scope="row">'.$name_level.'</th><td>', 'content');
-				while(list($id_user, $user_info) = each($users)) {
+	      
+        foreach( $users as $id_user => $user_info )        
+         {
 					
 					if($first) $first = false;
 					else $GLOBALS['page']->add(', ', 'content');
@@ -292,7 +296,8 @@ function modcourseinfo() {
 		
 		//-list-of-user---------------------------------------------------
 		.$form->getOpenCombo($lang->def('_SHOW_USER_OF_LEVEL')));
-	while(list($level, $level_name) = each($levels)) {
+	foreach( $levels as $level => $level_name )    
+  {
 		
 		$out->add($form->getCheckbox($level_name, 'course_show_level_'.$level, 'course_show_level['.$level.']', $level, 
 			($course['level_show_user'] & (1 << $level))));
@@ -404,7 +409,8 @@ function upcourseinfo() {
 	
 	$user_status = 0;
 	if(isset($_POST['user_status'])) {
-		while(list($status) = each($_POST['user_status'])) {
+    foreach( $_POST['user_status'] as $status => $v )
+    {
 			$user_status |= (1 << $status);
 		}
 	}
@@ -413,7 +419,8 @@ function upcourseinfo() {
 	$re = true;
 	$show_level = 0;
 	if(isset($_POST['course_show_level'])) {
-		while(list($lv) = each($_POST['course_show_level'])) {
+    foreach( $_POST['course_show_level'] as $lv => $v )
+    {
 			$show_level |= (1 << $lv);
 		}
 	}

@@ -456,7 +456,7 @@ class DoceboConnector_DoceboCourseUser extends DoceboConnector {
 		WHERE 1";
 		if(!empty($this->arr_pair_inserted)) {
 		
-			$search_query .= " AND CONCAT(idCourse, '_', idUser) NOT IN (".implode($this->arr_pair_inserted , ',').") ";
+			$search_query .= " AND CONCAT(idCourse, '_', idUser) NOT IN (".implode(',', $this->arr_pair_inserted).") ";
 		}
 		$re_courseuser = sql_query($search_query);
 		if(!$re_courseuser) return 0;

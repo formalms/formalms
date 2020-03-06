@@ -288,17 +288,23 @@ class DoceboConnectionManager {
 			return FALSE;
 		}
 
-		$query = "INSERT INTO ".$GLOBALS['prefix_fw']."_connector "
-				."( type, file, class ) VALUES ("
-				."'".$connector->get_type_name()."', "
-				."'".$file."', "
-				."'".get_class($connector)."') ";
-		if( sql_query($query) ) {
-			return TRUE;
-		} else {
-			$this->last_error = sql_error();
-			return FALSE;
-		}
+        if(is_object($connector)) {  
+		    $query = "INSERT INTO ".$GLOBALS['prefix_fw']."_connector "
+				    ."( type, file, class ) VALUES ("
+				    ."'".$connector->get_type_name()."', "
+				    ."'".$file."', "
+				    ."'".get_class($connector)."') ";
+		    if( sql_query($query) ) {
+			    return TRUE;
+		    } else {
+			    $this->last_error = sql_error();
+			    return FALSE;
+		    }
+        }
+        else{
+            $this->last_error = "Object connector is null, cannot call get_class function";
+            return FALSE;
+        }
 	}
 
 	/**

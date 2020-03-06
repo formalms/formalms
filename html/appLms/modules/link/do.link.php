@@ -114,7 +114,8 @@ function displayAsKey( $idCategory, $link ) {
 	while(list($keyword) = sql_fetch_row($result)) {
 		$keyword_split = explode(',', $keyword);
 		if(is_array($keyword_split))
-		while(list(, $value) = each($keyword_split)) {
+    foreach($keyword_split as $value)
+    {
 			$value = trim($value);
 			if($value != '') {
 				if(isset($keyword_help[$value])) ++$keyword_help[$value];
@@ -130,7 +131,8 @@ function displayAsKey( $idCategory, $link ) {
 		.'<div class="boxinfo_title">'.$lang->def('_TERM').'</div>'
 		.'<div class="boxinfo_container">'
 		.'<ul class="link_list">', 'content');
-	while(list($key, $value) = each($keyword_help)) {
+  foreach($keyword_help as $key => $value )  
+  {
 		$GLOBALS['page']->add('<li><a class="href_block" href="'.$link.'&amp;word='.($key).'">'
 			.$key.' ('.$value.')</a></li>', 'content'); 
 	}

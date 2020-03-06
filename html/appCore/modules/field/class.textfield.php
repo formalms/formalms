@@ -61,7 +61,7 @@ class Field_Textfield extends Field {
 			$mand_lang = getLanguage();
 			$show_on = '';
 			if(isset($_POST['show_on_platform'])) {
-				while(list($code, ) = each($_POST['show_on_platform']))
+        foreach($_POST['show_on_platform']  as $code )
 					$show_on .= $code.',';
 			}
 			//control if all is ok
@@ -213,7 +213,7 @@ class Field_Textfield extends Field {
 			$re = true;
 			//insert other field
 			if(isset($_POST['show_on_platform'])) {
-				while(list($code, ) = each($_POST['show_on_platform']))
+        foreach($_POST['show_on_platform']  as $code )
 					$show_on .= $code.',';
 			}
 			//insert other field

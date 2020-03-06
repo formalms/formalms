@@ -174,10 +174,10 @@ class SettingAdm extends Model
 
 		$html = Form::getOpenFieldset($lang->def('_LOAD_UNLOAD_PLATFORM'));
 		reset($all_platform);
-        while (list($code, $info) = each($all_platform)) {
+        foreach($all_platform as $code => $info )
+        {
             if ($info['hidden_in_config'] != 'true') {
-
-				$code = $info['platform'];
+				        $code = $info['platform'];
                 echo Form::getCheckbox($info['name'],
                     'activate_platform_' . $code,
                     'activate_platform[' . $code . ']',
@@ -215,18 +215,18 @@ class SettingAdm extends Model
 		$re = true;
 
 		reset($all_platform);
-        while (list($code, $info) = each($all_platform)) {
+        foreach($all_platform as $code => $info )
+        {
             if ($info['hidden_in_config'] != 'true') {
-				$code = $info['platform'];
+				        $code = $info['platform'];
                 if (isset($_POST['activate_platform'][$code])) {
-
-					$re &= $plat_man->activatePlatform($code);
-					$code_list_home[$code] = $info['name'];
+					         $re &= $plat_man->activatePlatform($code);
+					         $code_list_home[$code] = $info['name'];
                 } elseif ($info['mandatory'] == 'false') $re &= $plat_man->deactivatePlatform($code);
-			}
-		}
+			       }
+		  }
         if (isset($code_list_home[$_POST['platform_in_home']])) $re &= $plat_man->putInHome($_POST['platform_in_home']);
-		return $re;
+		    return $re;
 	}
 
 	/**

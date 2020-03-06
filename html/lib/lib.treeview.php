@@ -229,14 +229,12 @@ class TreeView {
 	// make flat array from tree array. Also execute expand and compress opertations
 	function _visitArrayDeep(&$tree, &$result, &$expand, &$compress ) {
 		reset($tree);
-		/*echo "\ntree:\n";
-		var_dump($tree);*/
 		$counter = 0;
-		while( list($key,$val) = each( $tree ) ) {
+    foreach($tree as $key => $val) {
 			if( $this->refresh ) {
 				if( $childrens = $this->_getChildrens($key) ) {
 					$childrens = array_flip($childrens);
-					while( list($keynew, $valnew) = each($childrens) ) {
+          foreach($childrens as $keynew => $valnew) {
 						if( !is_array( $tree[$key] ) )
 							$tree[$key] = array();
 						if( isset( $tree[$key][$keynew] ) ) {
@@ -535,7 +533,9 @@ class TreeView {
 		if( $coll !== FALSE ) {
 			while( $folder = $coll->getNext() ) {
 				$count++;
-				list($key, $val) = each( $stack[$level-1]['childs'] );
+        $key = key($stack[$level-1]['childs'] );
+        $val = current($stack[$level-1]['childs'] );
+        next($stack[$level-1]['childs'] );
 				$stack[$level] = array();
 				$stack[$level]['folder'] = $folder;
 				$stack[$level]['childs'] = $val;

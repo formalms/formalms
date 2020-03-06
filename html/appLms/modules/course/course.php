@@ -578,7 +578,7 @@ function userCourseList(&$url, $use_tab = true, $page_add = true) {
 		$enroll_list = sql_query(""
 			." SELECT u.idCourse, u.edition_id, COUNT(*) as number "
 			." FROM ".$GLOBALS['prefix_lms']."_courseuser AS u"
-			." WHERE u.idCourse IN (".implode($id_course_list, ',').") "
+			." WHERE u.idCourse IN (".implode(',', $id_course_list).") "
 			." AND u.level = '3'"
 			." AND u.status IN ('"._CUS_CONFIRMED."', '"._CUS_SUBSCRIBED."', '"._CUS_BEGIN."', '"._CUS_END."', '"._CUS_SUSPEND."', '"._CUS_WAITING_LIST."')"
 			." AND u.absent = '0'"
@@ -683,8 +683,7 @@ function userCourseList(&$url, $use_tab = true, $page_add = true) {
 		else $course_stats['with_ulevel'][$cinfo['level']]++;
 		
 		if(isset($available_cert[$cinfo['idCourse']]))
-		while(list($id_cert, $certificate) = each($available_cert[$cinfo['idCourse']])) {
-			
+        foreach($available_cert[$cinfo['idCourse']] as $id_cert => $certificate)
 			if(!isset($released[$id_cert]) && $cert->canRelease($certificate[CERT_AV_STATUS], $cinfo['user_status'])) {
                                 if ($cert->certificateAvailableForUser($id_cert, $cinfo['idCourse'], Docebo::user()->getIdst())){
                                     $course_stats['cert_relesable']++;
@@ -878,8 +877,8 @@ function userCourseList(&$url, $use_tab = true, $page_add = true) {
 		// find course basilar information -------------------------------------
 		if(!empty($needed_info_for)) $course_info = $man_course->getAllCourses(false, false, $needed_info_for);
 		else $course_info = array();
-		
-		while(list($id_path, $path) = each($coursepath)) {
+        
+        foreach($coursepath as $id_path => 	$path) {
 			
 			$html = '<div class="coursepath_container coursepath_container_simple">';
 			
@@ -921,7 +920,8 @@ function userCourseList(&$url, $use_tab = true, $page_add = true) {
 						if(!empty($path_courses[$id_path][$id_slot])) $html .= '<ul class="coursepath_otherslot">';
 					}
 					
-					while(list($id) = each($path_courses[$id_path][$id_slot])) {
+					foreach($path_courses[$id_path][$id_slot] as $id => $v)
+                    {
 						
 						if(isset($course_cache[$id])) {
 							$html .= '<li>'.$course_cache[$id].'</li>';
@@ -932,7 +932,7 @@ function userCourseList(&$url, $use_tab = true, $page_add = true) {
 					}
 					
 					if(!empty($path_courses[$id_path][$id_slot])) $html .= '</ul>';
-				}
+				
 			}
 			$html .= '</div>';
 			if ($page_add)
@@ -1105,7 +1105,10 @@ function dashmycourse(&$url, $lang, &$subscription, $cinfo, $index) {
 	} elseif(count($subscription['edition'][$cinfo['idCourse']]) == 1) {
 		
 		// edition unique--------------------------------------------------------------------------------
-		list($ed_id, $sub_info)  = each($subscription['edition'][$cinfo['idCourse']]);
+    
+
+        $ed_id = key($subscription['edition'][$cinfo['idCourse']]);
+        $sub_info = current($subscription['edition'][$cinfo['idCourse']]);
 		$ed_info =& $cinfo['edition_list'][$ed_id];
 		
 		$cinfo['date_begin'] 	= $ed_info['date_begin'];
@@ -1182,8 +1185,7 @@ function dashmycourse(&$url, $lang, &$subscription, $cinfo, $index) {
 		// more than one edition ------------------------------------------------------------------------
 		
 		foreach($subscription['edition'][$cinfo['idCourse']] as $ed_id => $sub_info) {
-			
-			//list($ed_id, $sub_info)  = each($subscription['edition'][$cinfo['idCourse']]);
+
 			$ed_info =& $cinfo['edition_list'][$ed_id];
 			
 			$cinfo['date_begin'] 	= $ed_info['date_begin'];

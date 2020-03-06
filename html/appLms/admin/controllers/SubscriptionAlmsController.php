@@ -326,7 +326,8 @@ class SubscriptionAlmsController extends AlmsController
 							// do the subscriptions
 							$result = true;
 							$this->db->start_transaction();
-							while (list(, $id_user) = each($user_selected)) {
+              foreach($user_selected as $id_user )
+              {
 								if (!$limited_subscribe || $max_subscribe) {
 
 									//$this->acl_man->addToGroup($level_idst[3], $id_user);
@@ -522,8 +523,8 @@ class SubscriptionAlmsController extends AlmsController
 			// To track event data
 			$userModel = new UsermanagementAdm();
 			$users = [];
-
-			while (list($id_user, $lv_sel) = each($user_selected)) {
+      foreach($user_selected as $id_user => $lv_sel)
+      {
 				if (!$limited_subscribe || $max_subscribe) {
 					if ($lv_sel != 0) {
 						//$this->acl_man->addToGroup($level_idst[$lv_sel], $id_user);
@@ -1625,7 +1626,7 @@ class SubscriptionAlmsController extends AlmsController
 								}
 							}
 
-							while (list($id_user, $lv_sel) = each($user_selected)) {
+                            foreach($user_selected as $id_user => $lv_sel) {
 								if (!$limited_subscribe || $max_subscribe) {
 									if ($lv_sel != 0) {
 										//$this->acl_man->addToGroup($level_idst[$lv_sel], $id_user);
@@ -1668,22 +1669,20 @@ class SubscriptionAlmsController extends AlmsController
 
 								if (!$direct_subscribe)
 									$waiting = 1;
+                                    foreach($_POST['user_level_sel'] as $id_user => $lv_sel) {
+									    if (!$limited_subscribe || $max_subscribe) {
+										    if ($lv_sel != 0) {
+											    //$this->acl_man->addToGroup($level_idst[$lv_sel], $id_user);
+											    $this->_addToCourseGroup($level_idst[$lv_sel], $id_user);
 
-								while (list($id_user, $lv_sel) = each($_POST['user_level_sel'])) {
-									if (!$limited_subscribe || $max_subscribe) {
-										if ($lv_sel != 0) {
-											//$this->acl_man->addToGroup($level_idst[$lv_sel], $id_user);
-											$this->_addToCourseGroup($level_idst[$lv_sel], $id_user);
-
-											if ($model_t->subscribeUser($id_user, $lv_sel, $waiting)) {
-												$max_subscribe--;
-												$just_subscribed_count++;
-											} else
-												$this->acl_man->removeFromGroup($level_idst[$lv_sel], $id_user);
-										}
-									}
+											    if ($model_t->subscribeUser($id_user, $lv_sel, $waiting)) {
+												    $max_subscribe--;
+												    $just_subscribed_count++;
+											    } else
+												    $this->acl_man->removeFromGroup($level_idst[$lv_sel], $id_user);
+										    }
+									    }
 								}//End While
-
 								reset($_POST['user_level_sel']);
 							}
 						} else {
@@ -1712,7 +1711,7 @@ class SubscriptionAlmsController extends AlmsController
 								if (!$direct_subscribe)
 									$waiting = 1;
 
-								while (list($id_user, $lv_sel) = each($_POST['user_level_sel'])) {
+                foreach($_POST['user_level_sel'] as $id_user => $lv_sel) {
 									if (!$limited_subscribe || $max_subscribe) {
 										if ($lv_sel != 0) {
 											//$this->acl_man->addToGroup($level_idst[$lv_sel], $id_user);
@@ -2011,8 +2010,7 @@ class SubscriptionAlmsController extends AlmsController
 
 				$tb = new Table(false, Lang::t('_USER_SUBSCRIBED', 'subscribe'), Lang::t('_USER_SUBSCRIBED', 'subscribe'));
 				$tb->addHead($cont_h, $type_h);
-
-				while (list(, $id_user_added_detail) = each($id_user_added)) {
+        foreach($id_user_added as $id_user_added_detail) {
 					$cont = array();
 
 					$user_info = $this->acl_man->getUser(false, $id_user_added_detail['id_user']);
@@ -3491,7 +3489,8 @@ class SubscriptionAlmsController extends AlmsController
 		if (is_array($waiting_users['users_info'])) {
 
 			reset($waiting_users['users_info']);
-			while ((list($id_user, $info) = each($waiting_users['users_info']))) {
+      foreach($waiting_users['users_info'] as $id_user => $info)
+      {
 
 				$id_sub_by = $info['subscribed_by'];
 				$subscribed = ($users_name[$id_sub_by][ACL_INFO_LASTNAME] . '' . $users_name[$id_sub_by][ACL_INFO_FIRSTNAME] != ''
@@ -3578,7 +3577,7 @@ class SubscriptionAlmsController extends AlmsController
 	function removeSubscription($id_course, $id_user, $lv_group, $edition_id = 0, $start_date = FALSE, $end_date = FALSE)
 	{
 
-		require_once($GLOBALS["where_framework"] . "/lib/resources/lib.timetable.php");
+        require_once($GLOBALS["where_framework"] . "/lib/resources/lib.timetable.php");
 		$tt = new TimeTable();
 		// ----------------------------------------
 		$resource = "user";
@@ -3637,8 +3636,8 @@ class SubscriptionAlmsController extends AlmsController
 			$group_levels = $docebo_course->getCourseLevel($id_course);
 			if (count($group_levels) == 0 || $group_levels[1] == '')
 				$group_levels =& $docebo_course->createCourseLevel($id_course);
-
-			while (list($id_user, $action) = each($_POST['waiting_user'])) {
+      foreach($_POST['waiting_user'] as $id_user => $action)
+      {
 
 				if ($action == 0) {
 					// approved -----------------------------------------------
@@ -3670,8 +3669,8 @@ class SubscriptionAlmsController extends AlmsController
 			}
 		}
 		if (!empty($tot_deny)) {
-
-			while (list($id_user, $inc) = each($tot_deny)) {
+      foreach($tot_deny as $id_user => $inc )
+      {
 
 				$pref = new UserPreferences($id_user);
 				$max_subscribe = $pref->getAdminPreference('admin_rules.max_course_subscribe');

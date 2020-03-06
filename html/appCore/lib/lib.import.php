@@ -260,7 +260,7 @@ class DoceboImport_DestinationMySQL extends DoceboImport_Destination {
 				return FALSE;
 			}
 		}
-		$fields = "(`".implode("`,`",$keys)."`)";
+		$fields = "('".implode("','",$keys)."')";
 		$values = "('".implode("','",array_values($row))."')";
 		
 		$query = "INSERT INTO ".$this->table

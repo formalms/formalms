@@ -1153,7 +1153,7 @@ Class CourseAlmsController extends AlmsController
 			else
 				$view_cert = true;
 
-			while(list($id_cert, $cert) = each($certificate_list))
+			foreach($certificate_list as $id_cert => $cert)
 			{
 				$cont = array();
 				$cont[] = '<label for="certificate_assign_'.$id_cert.'">'.$cert[CERT_NAME].'</label>';

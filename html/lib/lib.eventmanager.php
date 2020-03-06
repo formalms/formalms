@@ -286,7 +286,7 @@ class EventMessageComposer {
 		$compose = '';
 		Lang::init('email', false, $language);
 		Lang::init('sms', false, $language);
-		while(list(, $arr_text) = each($arr_element) ) {
+    foreach($arr_element as $arr_text) {
 			if(isset($arr_text['simple_text']) && $arr_text['simple_text'] === true) {
 				$compose .= $arr_text['lang_text'];
 			} else {

@@ -401,13 +401,13 @@ Class CourseAlms extends Model
         // restriction on course status ------------------------------------------
         $user_status = 0;
         if (isset($data_params['user_status']))
-            while (list($status) = each($data_params['user_status']))
+            foreach(data_params['user_status'] as $status => $v )
                 $user_status |= (1 << $status);
 
         // level that will be showed in the course --------------------------------
         $show_level = 0;
         if (isset($data_params['course_show_level']))
-            while (list($lv) = each($data_params['course_show_level']))
+            foreach(data_params['course_show_level'] as $lv => $v )
                 $show_level |= (1 << $lv);
 
         // save the file uploaded -------------------------------------------------
@@ -748,13 +748,13 @@ Class CourseAlms extends Model
         // restriction on course status ------------------------------------------
         $user_status = 0;
         if(isset($data_params['user_status']))
-            while(list($status) = each($data_params['user_status']))
+            foreach(data_params['user_status'] as $status => $v )
                 $user_status |= (1 << $status);
 
         // level that will be showed in the course --------------------------------
         $show_level = 0;
         if(isset($data_params['course_show_level']))
-            while(list($lv) = each($data_params['course_show_level']))
+            foreach(data_params['course_show_level'] as $lv => $v )
                 $show_level |= (1 << $lv);
 
         // save the file uploaded -------------------------------------------------

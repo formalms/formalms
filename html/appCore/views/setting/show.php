@@ -2,7 +2,7 @@
 <div class="std_block">
 	<div id="global_conf" class="tabs-wrapper">
 		<ul class="nav nav-tabs"><?php
-			while(list($id, $canonical_name) = each($regroup)) {?>
+      foreach( $regroup as $id => $canonical_name ) {?>
 				<li class="<?php echo ($id == $active_tab ? ' active' : '');?>">
 					<a data-toggle="tab" href="#tab_g_<?php echo $id;?>" class="nav-link">
 						<em><?php echo Lang::t('_'.strtoupper($canonical_name), 'configuration');?></em>
@@ -12,7 +12,7 @@
 			reset($regroup);?>
 		</ul>
 		<div class="tab-content"><?php
-			while(list($id, $canonical_name) = each($regroup)) {
+      foreach( $regroup as $id => $canonical_name ) {
 
 				// print the tab content
 				echo '<div class="tab-pane'.($id == $active_tab ? ' active' : '').'" id="tab_g_'.$id.'">'

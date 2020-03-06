@@ -28,7 +28,7 @@ class AdminmanagerAdm extends Model
 
 		$this->acl_man =& Docebo::user()->getAclManager();
 
-		list($idst) = each($this->acl_man->getGroupsIdstFromBasePath('/framework/level/admin'));
+        $idst = key($this->acl_man->getGroupsIdstFromBasePath('/framework/level/admin'));
 		$this->idst_admin_group = $idst;
 
 		$this->model_adminrules = new AdminrulesAdm();

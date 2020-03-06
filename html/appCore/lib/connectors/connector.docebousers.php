@@ -403,9 +403,8 @@ class DoceboConnectorDoceboUsers extends DoceboConnector {
 			
 			if(is_numeric($field_id)) {
 				
-				$pluto = $this->fl->fieldValue((int)$field_id, array($row[0]));
-				
-				list(,$export[]) = each($pluto);
+				$p = $this->fl->fieldValue((int)$field_id, array($row[0]));
+				$export[] = reset($p); 
 			} else {
 				
 				switch($field_id) {
@@ -625,7 +624,8 @@ class DoceboConnectorDoceboUsers extends DoceboConnector {
 				$tree_codes = explode(';', $tree_code);
 				
 				$readed_folders = array();
-				while(list(, $tree_code)= each($tree_codes)) {
+        foreach($tree_codes as $tree_code )
+        {
 					
 					$dir_code = stripslashes($tree_code);
 					if(isset($this->org_chart_code[$dir_code])) {

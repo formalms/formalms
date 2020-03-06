@@ -42,14 +42,16 @@ function config() {
 	cout('<div id="global_conf" class="yui-navset">'
 		.'<ul class="yui-nav">'
 	);
-	while(list($id, $name) = each($groups)) {
+  foreach($groups as $id => $name)
+  {
 		// print the tab list
 		cout('<li'.($id == $active_tab?' class="selected"':'').'><a href="#tab_g_'.$id.'"><em>'.$name['name'].'</em></a></li>');
 	}
 	reset($groups);
 	cout('</ul>'
 		.'<div class="yui-content">');
-	while(list($id, $name) = each($groups)) {
+  foreach($groups as $id => $name)    
+  {
 
 		// print the tab content
 		cout('<div id="tab_g_'.$id.'">'

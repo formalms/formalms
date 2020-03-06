@@ -456,7 +456,7 @@ class NavBar {
 			else $page = 1;
 		} else {
 
-			if(isset($_POST[$var_name])) list($page) = each($_POST[$var_name]);
+			if(isset($_POST[$var_name])) $page = key($_POST[$var_name]);
 			else $page = 1;
 		}
 		return $page;

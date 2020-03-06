@@ -39,7 +39,8 @@ class HtmlChatEmoticons {
 		$this->_regexp 		= array_values($arr_emot_allowed);
 		$this->_substitute 	= array_keys($arr_emot_allowed);
 		
-		while(list($index, $e_name) = each($this->_substitute)) {
+		foreach($this->_substitute as $index => $e_name )
+    {
 			
 			$this->_substitute[$index] = $this->getChatEmoticon($e_name);
 		}

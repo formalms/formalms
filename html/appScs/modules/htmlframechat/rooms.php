@@ -15,8 +15,7 @@ error_reporting(E_ALL ^ E_NOTICE);
 require_once(dirname(__FILE__)."/header.php");
 // check for remote file inclusion attempt -------------------------------
 $list = array('GLOBALS', '_POST', '_GET', '_COOKIE', '_SESSION'); 
-while(list(, $elem) = each($list)) {
-		
+foreach ($list as $elem) {
 	if(isset($_REQUEST[$elem])) die('Request overwrite attempt detected');
 }
 
