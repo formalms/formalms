@@ -14,7 +14,8 @@ defined("IN_FORMA") or die('Direct access is forbidden.');
 |   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
-
+require_once (Forma::inc(_lms_.'/models/DashboardBlockForm.php'));
+require_once (Forma::inc(_lms_.'/models/DashboardBlockFormItem.php'));
 /**
  * Class DashboardLms
  */
@@ -27,16 +28,6 @@ abstract class DashboardBlockLms extends Model
 
     const ALLOWED_TYPES = [self::TYPE_4COL, self::TYPE_3COL, self::TYPE_2COL, self::TYPE_1COL];
 
-    const FORM_TYPE_TEXT = 'text';
-    const FORM_TYPE_IMAGE = 'image';
-    const FORM_TYPE_FILE = 'file';
-    const FORM_TYPE_TEXTAREA = 'textarea';
-    const FORM_TYPE_CHECKBOX = 'checkbox';
-    const FORM_TYPE_RADIO = 'radio';
-    const FORM_TYPE_URL = 'url';
-    const FORM_TYPE_SELECT = 'select';
-
-    const ALLOWED_FORM_TYPES = [self::FORM_TYPE_TEXT, self::FORM_TYPE_IMAGE, self::FORM_TYPE_FILE, self::FORM_TYPE_TEXTAREA, self::FORM_TYPE_CHECKBOX, self::FORM_TYPE_RADIO, self::FORM_TYPE_URL, self::FORM_TYPE_SELECT];
 
     abstract public function getViewPath();
 
@@ -356,17 +347,17 @@ abstract class DashboardBlockLms extends Model
         return $path;
     }
 
-    protected function getFormItem($name, $type, $values = [], $attr = [])
+
+
+    public function validate($data)
     {
-        if (!in_array($type, self::ALLOWED_FORM_TYPES)) {
-            return false;
+        $form = $this->getForm();
+
+        if (!empty($form)) {
+            foreach ($form as $formItem) {
+                //if ($formItem)
+            }
         }
-        return [
-            'class' => get_class($this),
-            'field' => sprintf('%s-%s', get_class($this), $name),
-            'type' => $type,
-            'values' => $values,
-            'attr' => $attr
-        ];
+        return true;
     }
 }

@@ -24,13 +24,15 @@ class DashboardBlockVideoLms extends DashboardBlockLms
     public function __construct($jsonConfig)
     {
         parent::__construct($jsonConfig);
-	}
+    }
 
-    public function parseConfig($jsonConfig) {
+    public function parseConfig($jsonConfig)
+    {
 
     }
 
-    public function getAvailableTypesForBlock(){
+    public function getAvailableTypesForBlock()
+    {
         return [
             DashboardBlockLms::TYPE_1COL,
             DashboardBlockLms::TYPE_2COL,
@@ -42,45 +44,50 @@ class DashboardBlockVideoLms extends DashboardBlockLms
     public function getForm()
     {
         return [
-            $this->getFormItem('cover', DashboardBlockLms::FORM_TYPE_IMAGE),
-            $this->getFormItem('video', DashboardBlockLms::FORM_TYPE_TEXT),
-            $this->getFormItem('video_type', DashboardBlockLms::FORM_TYPE_SELECT,[
+            DashboardBlockForm::getFormItem($this, 'cover', DashboardBlockForm::FORM_TYPE_IMAGE, true),
+            DashboardBlockForm::getFormItem($this, 'video', DashboardBlockForm::FORM_TYPE_TEXT, true),
+            DashboardBlockForm::getFormItem($this, 'video_type', DashboardBlockForm::FORM_TYPE_SELECT, true, [
                 'yt' => 'Youtube',
                 'vimeo' => 'Vimeo'
             ]),
         ];
     }
 
-    public function getViewData(){
-		$data = $this->getCommonViewData();
-		$data['video_type'] = 'yt'; //può essere yt o vimeo
-		$data['video'] = '3vBwRfQbXkg';
-		$data['cover'] = '/templates/standard/static/images/banner.png';
+    public function getViewData()
+    {
+        $data = $this->getCommonViewData();
+        $data['video_type'] = 'yt'; //può essere yt o vimeo
+        $data['video'] = '3vBwRfQbXkg';
+        $data['cover'] = '/templates/standard/static/images/banner.png';
 
-		return $data;
-	}
+        return $data;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getViewPath(){
-		return $this->viewPath;
-	}
+    /**
+     * @return string
+     */
+    public function getViewPath()
+    {
+        return $this->viewPath;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getViewFile(){
-		return $this->viewFile;
-	}
+    /**
+     * @return string
+     */
+    public function getViewFile()
+    {
+        return $this->viewFile;
+    }
 
 
-	public function getLink(){
-		return '#';
-	}
+    public function getLink()
+    {
+        return '#';
+    }
 
-	public function getRegisteredActions(){
-		return [];
-	}
+    public function getRegisteredActions()
+    {
+        return [];
+    }
 
 }

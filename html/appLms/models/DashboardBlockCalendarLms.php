@@ -75,28 +75,29 @@ class DashboardBlockCalendarLms extends DashboardBlockLms
     public function getForm()
     {
         return [
-            $this->getFormItem('image', DashboardBlockLms::FORM_TYPE_IMAGE),
-            $this->getFormItem('select', DashboardBlockLms::FORM_TYPE_SELECT,
+            DashboardBlockForm::getFormItem($this,'calendarImage', DashboardBlockForm::FORM_TYPE_IMAGE,true),
+            DashboardBlockForm::getFormItem($this,'calendarSelect', DashboardBlockForm::FORM_TYPE_SELECT,false,
                 [
                     'value1' => 'Valore 1',
                     'value2' => 'Valore 2'
                 ]
             ),
-            $this->getFormItem('text', DashboardBlockLms::FORM_TYPE_TEXT),
-            $this->getFormItem('file', DashboardBlockLms::FORM_TYPE_FILE),
-            $this->getFormItem('radio', DashboardBlockLms::FORM_TYPE_RADIO,
+            DashboardBlockForm::getFormItem($this,'calendarText', DashboardBlockForm::FORM_TYPE_TEXT),
+            DashboardBlockForm::getFormItem($this,'calendarFile', DashboardBlockForm::FORM_TYPE_FILE),
+            DashboardBlockForm::getFormItem($this,'calendarRadio', DashboardBlockForm::FORM_TYPE_RADIO,false,
                 [
                     'value1' => 'Valore 1',
                     'value2' => 'Valore 2'
                 ]
             ),
-            $this->getFormItem('checkbox', DashboardBlockLms::FORM_TYPE_CHECKBOX,
+            DashboardBlockForm::getFormItem($this,'calendarCheckbox', DashboardBlockForm::FORM_TYPE_CHECKBOX,false,
                 [
                     'value1' => 'Valore 1',
-                    'value2' => 'Valore 2'
+                    'value2' => 'Valore 2',
+                    'value3' => 'Valore 3'
                 ]
             ),
-            $this->getFormItem('textarea', DashboardBlockLms::FORM_TYPE_TEXTAREA),
+            DashboardBlockForm::getFormItem($this,'calendarTextarea', DashboardBlockForm::FORM_TYPE_TEXTAREA),
         ];
     }
 

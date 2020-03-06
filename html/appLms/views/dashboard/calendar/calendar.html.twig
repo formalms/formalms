@@ -3,7 +3,7 @@
 
 {% block content %}
     {#calendar#}
-
+  {{ dump(block) }}
   {% if (block.type == '4-col') %}
     {% set class =  'd-col--12--desktop' %}
   {% elseif (block.type == '3-col') %}

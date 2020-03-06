@@ -36,8 +36,8 @@ Class DashboardsettingsAdmController extends AdmController
         $this->json = new Services_JSON();
         $this->model = new DashboardsettingsAdm();
 
-        Util::get_js(Get::rel_path('base').'/addons/tiny_mce/tinymce.min.js', true, true);
-        Util::get_js(Get::rel_path('base').'/addons/tiny_mce/forma.js', true, true);
+        Util::get_js(Get::rel_path('base') . '/addons/tiny_mce/tinymce.min.js', true, true);
+        Util::get_js(Get::rel_path('base') . '/addons/tiny_mce/forma.js', true, true);
 
         $this->permissions = array(
             'view' => checkPerm('view', true, 'dashboard', 'framework'),
@@ -77,23 +77,80 @@ Class DashboardsettingsAdmController extends AdmController
     {
         $requestSettings = Get::pReq('settings', DOTY_MIXED);
 
-        $this->model->resetOldSettings();
-
+        $response = ['status' => 200];
         foreach ($requestSettings as $data) {
 
             $block = $data['block'];
-            $setting = $data['settings'];
-            $this->model->saveBlockSetting($block, $setting);
+            $settings = $data['settings'];
+
+            $valid = DashboardBlockForm::validate($block, $settings);
+
+            if (!empty($valid)) {
+                $response['status'] = 400;
+                $response['errors'][] = ['block' => $block, 'settings' => $valid];
+            }
         }
+
+        if ($response['status'] === 200) {
+            $this->model->resetOldSettings();
+
+            foreach ($requestSettings as $data) {
+
+                $block = $data['block'];
+                $setting = $data['settings'];
+
+                $this->model->saveBlockSetting($block, $setting);
+            }
+        }
+
+        echo $this->json->encode($response);
     }
 
-    public function uploadBlockImage(){
-        if ((isset($_FILES["file"]["name"])) && (!empty($_FILES["file"]["name"]))) {
-            /*$fname 			= $_FILES["file"]["name"];
-            $size 			= $_FILES["file"]["size"];
-            $tmp_fname 		= $_FILES["file"]["tmp_name"];
-            $real_fname 	= $user_id.'_'.mt_rand(0,100).'_'.time().'_'.$fname;*/
+    public function uploadFile()
+    {
+        $response = ['status' => 200];
+
+        $block = Get::pReq('block', DOTY_MIXED);
+        $field = Get::pReq('field', DOTY_MIXED);
+
+        $exist = DashboardBlockForm::fieldExist($block, $field);
+        if (!$exist) {
+            $response['status'] = 400;
+            $response['error'] = Lang::t('_FIELD_NOT_EXIST', 'dashboardsetting');
+        } else {
+
+            $path = '/appLms/dashboard';
+
+            if (!is_dir(_base_ . '/files' . $path . '/')) {
+                $sts = mkdir(_base_ . '/files' . $path);
+            }
+
+            if ($_FILES[$field]['size'] == 0 && $_FILES[$field]['error'] == 0) {
+                $response['status'] = 400;
+                $response['error'] = Lang::t('_FIELD_NOT_EXIST', 'dashboardsetting');
+            }
+            else {
+
+                $savefile = mt_rand(0, 100) . '_' . time() . '_' . $_FILES[$field]['name'];
+
+                if (!file_exists($GLOBALS['where_files_relative'] . $path . $savefile)) {
+                    sl_open_fileoperations();
+
+                    if (!sl_upload($_FILES[$field]['tmp_name'], $path . $savefile)) {
+                        sl_close_fileoperations();
+                    }
+
+                    sl_close_fileoperations();
+
+                    $response['file'] = $GLOBALS['where_files_relative'] . $path . $savefile;
+                }
+                else {
+                    $response['status'] = 400;
+                    $response['error'] = Lang::t('_FILE_ALREADY_EXIST', 'dashboardsetting');
+                }
+            }
         }
+        echo $this->json->encode($response);
     }
 }
 
