@@ -1523,6 +1523,9 @@ class UserManagerRenderer
                 };
                     break;
                 case "tree_drop" : {
+                    $query = sql_query("SELECT code FROM %adm_org_chart_tree WHERE idOrg = $reg_code LIMIT 1");
+                    $reg_code = sql_fetch_array($query)['code'];
+                    $reg_code = substr(str_replace('-', '', $reg_code), 0, 10);
                     $array_course = $this->getCodeCourses($reg_code);
                     $array_folder = array($reg_code => $reg_code);
                 };
