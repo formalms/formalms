@@ -14,14 +14,15 @@
                                 <button class="dashboard__remove js-remove-block"
                                         data-block="{{ block.postData.block }}-{{ index }}"></button>
                                 <div class="dashboard__title">{{ block.postData.block }}</div>
-                                {% if block.hasImage %}
-                                    <img src="{{ block.image }}"
-                                         class="dashboard__image">
-                                {% else %}
-                                    <img src="{{ block.templatePath }}static/images/dashboard-placeholder/{{ block.postData.block }}-placeholder.jpg"
-                                         class="dashboard__image">
-                                {% endif %}
-
+                                <div class="dashboard__image">
+                                    {% if block.hasImage %}
+                                        <img src="{{ block.image }}"
+                                             class="dashboard__image">
+                                    {% else %}
+                                        <img src="{{ block.templatePath }}static/images/dashboard-placeholder/{{ block.postData.block }}-placeholder.jpg"
+                                             class="dashboard__image">
+                                    {% endif %}
+                                </div>
                                 <div class="dashboard__info">
                                     <div class="dashboard__title">{{ translate('_type', 'dashboard') }}</div>
                                     <div class="dashboard__select">
@@ -33,11 +34,15 @@
                                         </select>
                                     </div>
                                     {% if block.registeredActions | length %}
-                                        <div class="dashboard__title dashboard__title--sources">{{ translate('_enabledActions', 'dashboard') }}<br>
+                                        <div class="dashboard__title dashboard__title--sources">{{ translate('_enabledActions', 'dashboard') }}
+                                            <br>
                                             <div class="dashboard__checkbox">
-                                                    {% for action in block.enabledActions %}
-                                                        <label><input name="registeredAction[{{ loop.index0 }}]" type="checkbox" value="{{ action }}" {% if action in block.registeredActions %}checked{% endif %} />{{ action }}</label>
-                                                    {% endfor %}
+                                                {% for action in block.enabledActions %}
+                                                    <label><input name="registeredAction[{{ loop.index0 }}]"
+                                                                  type="checkbox" value="{{ action }}"
+                                                                  {% if action in block.registeredActions %}checked{% endif %} />{{ action }}
+                                                    </label>
+                                                {% endfor %}
                                             </div>
                                         </div>
                                     {% endif %}
@@ -59,7 +64,11 @@
                             {% for block in installedBlocks %}
                                 <option value="{{ block.postData.block }}"
                                         data-type="{{ block.availableTypes|json_encode() }}"
-                                        data-action="{{ block.registeredActions|json_encode() }}">{{ block.postData.block }}</option>
+                                        data-action="{{ block.registeredActions|json_encode() }}"
+                                        data-form="{{ block.form|json_encode() }}">
+                                    {{ block.postData.block }}
+
+                                </option>
                             {% endfor %}
                         </select>
                         <div class="dashboard__error">Campo Obbligatorio</div>
@@ -114,6 +123,7 @@
                     const block = blocks[i].getAttribute('data-block');
                     const type = blocks[i].getAttribute('data-type');
                     const action = blocks[i].getAttribute('data-action').split(',');
+                    const firstInsert = blocks[i].getAttribute('data-first-insert');
 
                     response[i] = {
                         'block': block,
@@ -121,7 +131,8 @@
                             'position': i + 1,
                             'type': type,
                             'enabled': true,
-                            'enabledActions': action
+                            'enabledActions': action,
+                            'firstInsert': firstInsert
                         }
                     }
 
@@ -185,7 +196,7 @@
                 selectBlock.parent('.dashboard__select').removeClass('is-required');
 
                 const newBlock = '<div id="' + selectBlockValue + '-' + countBlocks + '" class="dashboard__block dashboard__block--' + selectTypeValue + '"' +
-                    '            data-type="' + selectTypeValue + '" data-block="' + selectBlockValue + '">\n' +
+                    '            data-type="' + selectTypeValue + '" data-block="' + selectBlockValue + '" data-action="" data-first-insert="true">\n' +
                     '            <div class="dashboard__content">\n' +
                     '              <button class="dashboard__remove js-remove-block" data-block="' + selectBlockValue + '-' + countBlocks + '"></button>\n' +
                     '              <img src="' + templatePath + '/static/images/dashboard-placeholder/' + selectBlockValue + '-placeholder.jpg" class="dashboard__image">' +
@@ -267,7 +278,7 @@
 
     .dashboard__info {
         width: calc(100% - 20px);
-        position: absolute;
+        position: relative;
         bottom: 10px;
         left: 10px;
     }

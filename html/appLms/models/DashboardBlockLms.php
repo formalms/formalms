@@ -14,8 +14,9 @@ defined("IN_FORMA") or die('Direct access is forbidden.');
 |   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
-require_once (Forma::inc(_lms_.'/models/DashboardBlockForm.php'));
-require_once (Forma::inc(_lms_.'/models/DashboardBlockFormItem.php'));
+require_once(Forma::inc(_lms_ . '/models/DashboardBlockForm.php'));
+require_once(Forma::inc(_lms_ . '/models/DashboardBlockFormItem.php'));
+
 /**
  * Class DashboardLms
  */
@@ -72,12 +73,17 @@ abstract class DashboardBlockLms extends Model
 
     protected $data;
 
+    /** @var bool */
+    protected $firstInsert;
+
 
     public function __construct($jsonConfig)
     {
         parent::__construct();
         $this->db = DbConn::getInstance();
-        $jsonConfig = json_decode($jsonConfig, true);
+        if (is_string($jsonConfig)){
+            $jsonConfig = json_decode($jsonConfig, true);
+        }
         $this->parseBaseConfig($jsonConfig);
         $this->parseConfig($jsonConfig);
 
@@ -179,12 +185,21 @@ abstract class DashboardBlockLms extends Model
         return $this;
     }
 
+    /**
+     * @return bool
+     */
+    public function isFirstInsert()
+    {
+        return $this->firstInsert;
+    }
+
     protected function parseBaseConfig($jsonConfig)
     {
         $this->enabled = $jsonConfig['enabled'] ? $jsonConfig['enabled'] : false;
         $this->type = $jsonConfig['type'] ? $jsonConfig['type'] : '';
         $this->enabledActions = $jsonConfig['enabledActions'] ? $jsonConfig['enabledActions'] : [];
         $this->data = $jsonConfig['data'] ? $jsonConfig['data'] : [];
+        $this->firstInsert = $jsonConfig['firstInsert'] ? $jsonConfig['firstInsert'] : false;
     }
 
     /**
@@ -216,7 +231,7 @@ abstract class DashboardBlockLms extends Model
 
         $data = $this->getCommonViewData();
 
-        $data['form'] = $this->getForm();
+        $data['form'] = $this->getFormArray();
 
         return $data;
 
@@ -348,7 +363,6 @@ abstract class DashboardBlockLms extends Model
     }
 
 
-
     public function validate($data)
     {
         $form = $this->getForm();
@@ -359,5 +373,19 @@ abstract class DashboardBlockLms extends Model
             }
         }
         return true;
+    }
+
+    public function getFormArray()
+    {
+        $result = [];
+
+        $form = $this->getForm();
+
+        /** @var DashboardBlockFormItem $formItem */
+        foreach ($form as $formItem) {
+            $result[] = $formItem->toArray();
+        }
+
+        return $result;
     }
 }

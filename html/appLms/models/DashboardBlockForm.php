@@ -29,6 +29,10 @@ class DashboardBlockForm
         /** @var DashboardBlockLms $blockObj */
         $blockObj = new $block($data);
 
+        if ($blockObj->isFirstInsert()){
+            return $errors;
+        }
+
         $blockForm = $blockObj->getForm();
 
         /** @var DashboardBlockFormItem $formItem */

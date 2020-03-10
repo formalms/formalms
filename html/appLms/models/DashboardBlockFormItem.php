@@ -90,4 +90,22 @@ class DashboardBlockFormItem
     {
         return $this->attr;
     }
+
+    public function toArray(){
+        return $this->objectToArray($this);
+    }
+
+    private function objectToArray($data)
+    {
+        if (is_array($data) || is_object($data))
+        {
+            $result = array();
+            foreach ($data as $key => $value)
+            {
+                $result[$key] = $this->objectToArray($value);
+            }
+            return $result;
+        }
+        return $data;
+    }
 }
