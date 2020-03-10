@@ -924,8 +924,6 @@ class CatalogLms extends Model
         return $global_tree;
     }
     
-    
-    
     private function getMajorCategory()
     {
         $q = "SELECT idCategory, path, iLeft, iRight"
@@ -942,10 +940,7 @@ class CatalogLms extends Model
         return $res;
     }
     
-    
-    
-    
-    private function  getMinorCategoryTree($idCat, $ileft, $iright, $lev) {
+    public function getMinorCategoryTree($idCat, $ileft, $iright, $lev) {
     
         if (($iright - $ileft > 1 ) && $this->CategoryHasChildrenCourses($idCat, $ileft, $iright) ) {
                 $q = "SELECT idCategory, path, idParent, lev, iLeft, iRight  FROM %lms_category  
@@ -970,8 +965,6 @@ class CatalogLms extends Model
         } 
     
     }
-    
-
 
     /**
      * checking if there are courses starting from id_cat and searching through all children nodes 
@@ -1012,10 +1005,5 @@ class CatalogLms extends Model
               list($c) = sql_fetch_row(sql_query($query));
               return ($c > 0);
         }
-    }    
-    
-    
-
-
-
+    }
 }
