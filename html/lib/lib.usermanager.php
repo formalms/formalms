@@ -1527,7 +1527,7 @@ class UserManagerRenderer
                     $reg_code = sql_fetch_array($query)['code'];
                     $reg_code = substr(str_replace('-', '', $reg_code), 0, 10);
                     $array_course = $this->getCodeCourses($reg_code);
-                    $array_folder = array($reg_code => $reg_code);
+                    $array_folder = $uma->getFoldersFromCode($reg_code);
                 };
                     break;
                 case "custom": {
