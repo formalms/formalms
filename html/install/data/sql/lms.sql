@@ -2050,7 +2050,7 @@ INSERT INTO `learning_module` (`idModule`, `module_name`, `default_op`, `default
 (1, 'course', '', '_MYCOURSES', 'view', '', '', 'all', 'elearning/show'),
 (3, 'profile', 'profile', '_PROFILE', 'view', 'class.profile.php', 'Module_Profile', '_user', ''),
 (7, 'mycertificate', 'mycertificate', '_MY_CERTIFICATE', 'view', 'class.mycertificate.php', 'Module_MyCertificate', 'all', ''),
-(10, 'course', 'infocourse', '_INFCOURSE', 'view_info', 'class.course.php', 'Module_Course', '', ''),
+(10, 'course', 'infocourse', '_INFCOURSE', 'view_info', 'class.course.php', 'Module_Course', '', 'lms/course/infocourse'),
 (11, 'advice', 'advice', '_ADVICE', 'view', 'class.advice.php', 'Module_Advice', '', ''),
 (12, 'storage', 'display', '_STORAGE', 'view', 'class.storage.php', 'Module_Storage', '', ''),
 (13, 'calendar', 'calendar', '_CALENDAR', 'view', 'class.calendar.php', 'Module_Calendar', '', ''),
