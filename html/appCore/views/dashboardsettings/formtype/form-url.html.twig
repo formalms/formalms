@@ -2,7 +2,7 @@
     <div class="form-group">
         <label class="dashboard__label" for="{{ block.postData.block }}-{{ index }}-file">{{translate('_url_'~ form.class,'dashboardsetting')}}</label>
         <div class="dashboard__infoContainer">
-            <input class="form-control" type="url" placeholder="{{ translate('_input_placeholder','dashboardsetting')}}" data-block="{{ block.postData.block }}-{{ loop.index0 }}">
+            <input class="form-control js-extra-setting" name="{{ form.name }}" type="url" placeholder="{{ translate('_input_placeholder','dashboardsetting')}}" data-block="{{ block.postData.block }}-{{ loop.index0 }}">
         </div>
     </div>
 </div>

@@ -128,6 +128,8 @@
                     const type = blocks[i].getAttribute('data-type');
                     const action = blocks[i].getAttribute('data-action').split(',');
                     const firstInsert = blocks[i].getAttribute('data-first-insert');
+                    const extraElement = blocks[i].querySelectorAll('.js-extra-setting');
+                    let extraSettings = {};
 
                     response[i] = {
                         'block': block,
@@ -140,7 +142,42 @@
                         }
                     }
 
-                    console.log(response[block]);
+                    if (extraElement.length) {
+
+                        for (let i = 0; i < extraElement.length; i++) {
+                            const key = extraElement[i].getAttribute('name');
+                            const value = extraElement[i].value;
+                            const typeEl = extraElement[i].getAttribute('type');
+
+                            switch (typeEl) {
+                                case 'checkbox':
+                                    if (extraElement[i].checked) {
+                                        if (extraSettings[key]) {
+                                            extraSettings[key] += '|' + value;
+                                        } else {
+                                            extraSettings[key] = value;
+                                        }
+                                    }
+                                    break;
+                                case 'radio':
+                                    if (extraElement[i].checked) {
+                                        extraSettings[key] = value;
+                                    }
+                                    break;
+                                case 'file':
+
+                                    break;
+                                default:
+                                    if (value) {
+                                        extraSettings[key] = value;
+                                    }
+                            }
+
+                        }
+
+                        response[i]['settings'] = {...response[i]['settings'], ...extraSettings};
+                        console.log(response[i]['settings']);
+                    }
 
                 }
             }
