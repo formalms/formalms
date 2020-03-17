@@ -24,19 +24,22 @@
                                     {% endif %}
                                 </div>
                                 <div class="dashboard__info">
-                                    <div class="dashboard__title">{{ translate('_type', 'dashboard') }}</div>
-                                    <div class="dashboard__select">
-                                        <select class="form-control js-type-block"
-                                                data-block="{{ block.postData.block }}-{{ index }}">
-                                            {% for type in block.availableTypes %}
-                                                <option value="{{ type }}"{% if block.type == type %} selected{% endif %}>{{ type }}</option>
-                                            {% endfor %}
-                                        </select>
+                                    <div class="dashboard__infoBlock">
+                                        <label class="dashboard__label">{{ translate('_type', 'dashboard') }}</label>
+                                        <div class="dashboard__select">
+                                            <select class="form-control js-type-block"
+                                                    data-block="{{ block.postData.block }}-{{ index }}">
+                                                {% for type in block.availableTypes %}
+                                                    <option value="{{ type }}"{% if block.type == type %} selected{% endif %}>{{ type }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
                                     </div>
                                     {% if block.registeredActions | length %}
-                                        <div class="dashboard__title dashboard__title--sources">{{ translate('_enabledActions', 'dashboard') }}
-                                            <br>
-                                            <div class="dashboard__checkbox">
+                                    <div class="dashboard__infoBlock">
+                                        <div class="dashboard__label">{{ translate('_enabledActions', 'dashboard') }}</div>
+                                        <div class="dashboard__infoContainer">
+                                            <div class="dashboard__el">
                                                 {% for action in block.enabledActions %}
                                                     <label><input name="registeredAction[{{ loop.index0 }}]"
                                                                   type="checkbox" value="{{ action }}"
@@ -45,6 +48,7 @@
                                                 {% endfor %}
                                             </div>
                                         </div>
+                                    </div>
                                     {% endif %}
 
                                     {% for form in block.form %}
@@ -299,7 +303,7 @@
         text-align: center;
         font-size: 12px;
         font-weight: bold;
-        margin-bottom: 10px;
+        margin-bottom: 15px;
         word-break: break-all;
     }
 
@@ -319,9 +323,17 @@
         text-align: center;
         font-size: 12px;
         font-weight: bold;
-        margin-bottom: 10px;
+        margin-bottom: 15px;
         word-break: break-all;
     }
+
+    .dashboard__infoBlock {
+        padding: 15px 15px 0 15px;
+        border: 1px solid #ccc;
+        margin-bottom: 15px;
+        background-color: #efefef;
+    }
+
 
     .dashboard__checkbox {
         display: block;
@@ -331,6 +343,34 @@
         font-weight: bold;
         margin-bottom: 10px;
         word-break: break-all;
+    }
+
+    .dashboard__label {
+        margin-bottom: 10px;
+        text-transform: uppercase;
+        display: block;
+        text-align: center;
+        font-weight: 800;
+    }
+
+    .dashboard__infoContainer {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .dashboard__el {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 10px;
+        margin-left: 10px;
+    }
+
+
+    .dashboard__el input[type=checkbox],
+    .dashboard__el input[type=radio] {
+        margin: 0 5px 0 0;
     }
 
     .dashboard__title--sources {

@@ -1,7 +1,10 @@
-<div class="dashboard__image dashboard__image--block">
+<div class="dashboard__infoBlock dashboard__infoBlock--image">
     <div class="form-group">
-        <label for="{{ block.postData.block }}-{{ index }}-image">{{translate('_image_'~ form.class,'dashboardsetting')}}</label>
-        <input type="file" class="form-control-image" id="{{ block.postData.block }}-{{ index }}-image" data-block="{{ block.postData.block }}-{{ index }}">
-        <input type="hidden" class="form-control-image" id="{{ block.postData.block }}-{{ index }}-image-string" data-block="{{ block.postData.block }}-{{ index }}">
+        <label class="dashboard__label" for="{{ block.postData.block }}-{{ index }}-image">{{translate('_image_'~ form.class,'dashboardsetting')}}</label>
+
+        <div class="dashboard__infoContainer">
+            <input type="file" class="form-control-image" id="{{ block.postData.block }}-{{ index }}-image" data-block="{{ block.postData.block }}-{{ index }}">
+            <input type="hidden" class="form-control-image" id="{{ block.postData.block }}-{{ index }}-image-string" data-block="{{ block.postData.block }}-{{ index }}">
+        </div>
     </div>
 </div>

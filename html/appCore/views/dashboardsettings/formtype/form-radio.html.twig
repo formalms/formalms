@@ -1,11 +1,15 @@
-<div class="dashboard__radio dashboard__radio--block">
+<div class="dashboard__infoBlock dashboard__infoBlock--radio">
     <div class="form-group">
-        <label for="{{ block.postData.block }}-{{ index }}-file">{{translate('_radio_'~ form.class,'dashboardsetting')}}</label>
+        <label class="dashboard__label" for="{{ block.postData.block }}-{{ index }}-file">{{translate('_radio_'~ form.class,'dashboardsetting')}}</label>
 
-        {% for key,value in form.values %}
+        <div class="dashboard__infoContainer">
+            {% for key,value in form.values %}
 
-            <input type="radio" value="{{ block.postData.block }}_{{ index }}_{{ key }}" {% if block.type == type %}checked="checked"{% endif %}>{{ value }}</input>
+                <div class="dashboard__el">
+                    <input type="radio" name="{{ block.postData.block }}" value="{{ block.postData.block }}_{{ index }}_{{ key }}" {% if block.type == type %}checked="checked"{% endif %} />{{ value }}
+                </div>
 
-        {% endfor %}
+            {% endfor %}
+        </div>
     </div>
 </div>

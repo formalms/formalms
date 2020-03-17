@@ -1,7 +1,10 @@
-<div class="dashboard__file dashboard__file--block">
+<div class="dashboard__infoBlock dashboard__infoBlock--file">
     <div class="form-group">
-        <label for="{{ block.postData.block }}-{{ index }}-file">{{translate('_file_'~ form.class,'dashboardsetting')}}</label>
-        <input type="file" class="form-control-file" id="{{ block.postData.block }}-{{ index }}-file" data-block="{{ block.postData.block }}-{{ index }}">
-        <input type="hidden" class="form-control-file" id="{{ block.postData.block }}-{{ index }}-file-string" data-block="{{ block.postData.block }}-{{ index }}">
+        <label class="dashboard__label" for="{{ block.postData.block }}-{{ index }}-file">{{translate('_file_'~ form.class,'dashboardsetting')}}</label>
+
+        <div class="dashboard__infoContainer">
+            <input type="file" class="form-control-file" id="{{ block.postData.block }}-{{ index }}-file" data-block="{{ block.postData.block }}-{{ index }}">
+            <input type="hidden" class="form-control-file" id="{{ block.postData.block }}-{{ index }}-file-string" data-block="{{ block.postData.block }}-{{ index }}">
+        </div>
     </div>
 </div>
