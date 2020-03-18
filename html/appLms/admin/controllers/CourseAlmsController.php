@@ -515,6 +515,12 @@ Class CourseAlmsController extends AlmsController
 			}
 		}
 
+		$event = new \appCore\Events\Core\Courses\CoursesListEvent($list, $course_res, $course_with_cert, $course_with_competence);
+
+		\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\Courses\CoursesListEvent::EVENT_NAME_LIST, $event);
+
+		$list = $event->getCoursesList();
+
 		$result = array(
 			'totalRecords' => $total_course,
 			'startIndex' => $start_index,
