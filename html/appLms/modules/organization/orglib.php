@@ -1244,12 +1244,14 @@ class Org_TreeView extends RepoTreeView {
 		include_once (_base_.'/appLms/Events/Lms/OrgPropertiesPrintEvent.php');
 		$event = new \appLms\Events\Lms\OrgPropertiesPrintEvent();
 
-        $event->setElement($stack[$level]['folder']);
+		$event->setElement($stack[$level]['folder']);
 
-        $event->setDisplayable(true);
-        $event->setAccessible(true);
+		$event->setDisplayable(true);
+		$event->setAccessible(true);
 
-        $event->setId($this->id);
+		$event->setOrgTreeView($this);
+
+		$event->setId($this->id);
 
 		\appCore\Events\DispatcherManager::dispatch(\appLms\Events\Lms\OrgPropertiesPrintEvent::EVENT_NAME, $event);
 		
@@ -1462,6 +1464,9 @@ class Org_TreeView extends RepoTreeView {
 									
 							} else {
 								$out .=  '<div class="TVActionEmpty"></div>';
+							}
+							foreach ($event->getAction() as $action){
+								$out .= $action;
 							}
 						} else if( !$isFolder ) {
 							

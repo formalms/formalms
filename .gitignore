@@ -37,4 +37,5 @@ html/config.php
 test/behat/behat_config.yml
 courselist.php.bkp
 docs/
+.vscode/**
 .DS_Store
