@@ -75,7 +75,7 @@ class DashboardBlockCalendarLms extends DashboardBlockLms
     public function getForm()
     {
         return [
-            DashboardBlockForm::getFormItem($this,'calendarImage', DashboardBlockForm::FORM_TYPE_IMAGE,true),
+            DashboardBlockForm::getFormItem($this,'calendarImage', DashboardBlockForm::FORM_TYPE_IMAGE,false),
             DashboardBlockForm::getFormItem($this,'calendarSelect', DashboardBlockForm::FORM_TYPE_SELECT,false,
                 [
                     'value1' => 'Valore 1',

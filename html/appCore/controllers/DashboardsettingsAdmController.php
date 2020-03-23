@@ -67,6 +67,7 @@ Class DashboardsettingsAdmController extends AdmController
         //render view
         $this->render('show', [
             'ajaxUrl' => 'ajax.adm_server.php?r=adm/dashboardsettings/save',
+            'ajaxUploadFileUrl' => 'ajax.adm_server.php?r=adm/dashboardsettings/uploadFile',
             'installedBlocks' => $this->model->getInstalledBlocksCommonViewData(),
             'enabledBlocks' => $this->model->getEnabledBlocksCommonViewData(),
             'templatePath' => getPathTemplate()
@@ -113,6 +114,9 @@ Class DashboardsettingsAdmController extends AdmController
 
         $block = Get::pReq('block', DOTY_MIXED);
         $field = Get::pReq('field', DOTY_MIXED);
+
+        //print_r($_FILES);
+        //die();
 
         $exist = DashboardBlockForm::fieldExist($block, $field);
 

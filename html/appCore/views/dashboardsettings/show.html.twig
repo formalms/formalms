@@ -116,6 +116,7 @@
         }
 
         initSortable();
+        uploadFileCheck();
 
         // SALVATAGGIO DATI
         saveField.click(function () {
@@ -138,7 +139,9 @@
                             'type': type,
                             'enabled': true,
                             'enabledActions': action,
-                            'firstInsert': firstInsert
+                            'data': {
+                                'firstInsert': firstInsert
+                            }
                         }
                     }
 
@@ -165,7 +168,11 @@
                                     }
                                     break;
                                 case 'file':
-
+                                case 'image':
+                                    const fileUrl = extraElement[i].getAttribute('data-url');
+                                    if (fileUrl) {
+                                        extraSettings[key] = fileUrl;
+                                    }
                                     break;
                                 default:
                                     if (value) {
@@ -175,8 +182,8 @@
 
                         }
 
-                        response[i]['settings'] = {...response[i]['settings'], ...extraSettings};
-                        console.log(response[i]['settings']);
+                        response[i]['settings']['data'] = {...response[i]['settings']['data'], ...extraSettings};
+                        console.log(response[i]['settings']['data']);
                     }
 
                 }
@@ -297,6 +304,55 @@
             }
         }
 
+        function uploadFileCheck() {
+            const inputFile = document.querySelectorAll('.js-upload-file');
+
+            for (let i = 0; i < inputFile.length; i++) {
+                const item = inputFile[i];
+                item.addEventListener('change', () => {
+                    const formData = new FormData();
+                    formData.append('file', item.files[0], item.files[0].name);
+
+                    if (item.classList.contains('form-control-image')) {
+
+                        const error = item.parentNode.parentNode.querySelector('.dashboard__error');
+                        error.style.display = 'none';
+
+                        if (isFileImage(item.files[0]) > 0) {
+                            uploadFileAjax(formData, item)
+                        } else {
+                            error.style.display = 'block';
+                        }
+                    } else {
+                        uploadFileAjax(formData, item);
+                    }
+
+                })
+            }
+
+        }
+
+        function uploadFileAjax(formData, item) {
+            $.ajax({
+                url: '{{ ajaxUploadFileUrl }}',
+                data: formData,
+                processData: false,
+                contentType: false,
+                type: 'POST',
+                success: function(url){
+                    //console.log(url);
+                    console.log(url);
+                    let imageUrl = 'http://testimage.local'; // PLEASE REMOVE, ONLY FOR TEST
+                    item.setAttribute('data-url', imageUrl);
+                }
+            });
+        }
+
+        function isFileImage(file) {
+            const acceptedImageTypes = ['image/gif', 'image/jpeg', 'image/png'];
+            return file && $.inArray(file['type'], acceptedImageTypes)
+        }
+
     });
 </script>
 
@@ -371,6 +427,18 @@
         background-color: #efefef;
     }
 
+    .dashboard__infoBlock .dashboard__error {
+        text-align: center;
+        margin-top: 5px;
+    }
+
+    .dashboard__helper {
+        font-size: 12px;
+        margin-top: 10px;
+        text-align: center;
+        color: #666;
+        font-style: italic;
+    }
 
     .dashboard__checkbox {
         display: block;
