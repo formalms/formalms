@@ -14,8 +14,8 @@
 define("BOOT_CONFIG", 	0);
 define("BOOT_UTILITY", 	1);
 define("BOOT_DATABASE", 2);
-define("BOOT_PLUGINS",  3);
-define("BOOT_SETTING", 	4);
+define("BOOT_SETTING", 	3);
+define("BOOT_PLUGINS",  4);
 define("BOOT_SESS_CKE", 5);
 define("BOOT_USER", 	6);
 define("BOOT_INPUT", 	7);
@@ -38,8 +38,8 @@ class Boot {
 		BOOT_CONFIG 	=> 'config',
 		BOOT_UTILITY 	=> 'utility',
 		BOOT_DATABASE 	=> 'database',
-        BOOT_PLUGINS 	=> 'plugins',
 		BOOT_SETTING	=> 'loadSetting',
+        BOOT_PLUGINS 	=> 'plugins',
 		BOOT_SESS_CKE 	=> 'sessionCookie',
 		BOOT_USER 		=> 'user',
 		BOOT_INPUT 		=> 'filteringInput',
