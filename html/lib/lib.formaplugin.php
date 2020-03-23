@@ -36,14 +36,10 @@ abstract class FormaPlugin {
         return \Get::site_url() . _folder_plugins_ . '/' . static::getName() . '/' . $file;
     }
 
-    public static function getName()
-    {
-        $name = Get::req('plugin');
-        if (empty($name)) {
-            $reflector = new ReflectionClass(get_called_class());
-            $fn = $reflector->getFileName();
-            $name = basename(dirname($fn));
-        }
+    public static function getName(){
+        $reflector = new ReflectionClass( get_called_class() );
+        $fn = $reflector->getFileName();
+        $name=basename(dirname($fn));
         return $name;
     }
 
