@@ -14,15 +14,16 @@
 define("BOOT_CONFIG", 	0);
 define("BOOT_UTILITY", 	1);
 define("BOOT_DATABASE", 2);
-define("BOOT_SETTING", 	3);
-define("BOOT_SESS_CKE", 4);
-define("BOOT_USER", 	5);
-define("BOOT_INPUT", 	6);
-define("BOOT_LANGUAGE", 7);
-define("BOOT_DATETIME", 8);
-define("BOOT_TEMPLATE", 9);
-define("BOOT_PLUGINS",  10);
-define("BOOT_PAGE_WR", 	11);
+define("BOOT_PLUGINS",  3);
+define("BOOT_SETTING", 	4);
+define("BOOT_SESS_CKE", 5);
+define("BOOT_USER", 	6);
+define("BOOT_INPUT", 	7);
+define("BOOT_LANGUAGE", 8);
+define("BOOT_DATETIME", 9);
+define("BOOT_HOOKS",    10);
+define("BOOT_TEMPLATE", 11);
+define("BOOT_PAGE_WR", 	12);
 define("BOOT_INPUT_ALT", 99);
 
 /**
@@ -37,14 +38,15 @@ class Boot {
 		BOOT_CONFIG 	=> 'config',
 		BOOT_UTILITY 	=> 'utility',
 		BOOT_DATABASE 	=> 'database',
+        BOOT_PLUGINS 	=> 'plugins',
 		BOOT_SETTING	=> 'loadSetting',
 		BOOT_SESS_CKE 	=> 'sessionCookie',
 		BOOT_USER 		=> 'user',
 		BOOT_INPUT 		=> 'filteringInput',
 		BOOT_INPUT_ALT	=> 'anonFilteringInput',
 		BOOT_LANGUAGE 	=> 'language',
+        BOOT_HOOKS  	=> 'hooks',
 		BOOT_DATETIME 	=> 'dateTime',
-        BOOT_PLUGINS 	=> 'plugins',
 		BOOT_TEMPLATE 	=> 'template',
 		BOOT_PAGE_WR 	=> 'loadPageWriter'
 	);
@@ -260,6 +262,16 @@ class Boot {
      * - step to load the plugins
      */
     private static function plugins() {
+
+        self::log( "Initialize plugins." );
+        PluginManager::initialize();
+
+    }
+
+    /**
+     * - step to load the plugins
+     */
+    private static function hooks() {
 
         self::log( "Prepare plugin's listeners." );
         PluginManager::hook();
