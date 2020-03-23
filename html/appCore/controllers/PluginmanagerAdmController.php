@@ -68,7 +68,7 @@ class PluginmanagerAdmController extends AdmController {
 
     public function update() {
         $plugin = Get::req('plugin');
-        $online = Get::req('online');
+        $online = Get::req('online', DOTY_BOOL, FALSE);
         $res=$this->model->updatePlugin($plugin,$online);
         if($res) {
             Util::jump_to('index.php?r=adm/pluginmanager/show&active_tab='.$plugin.'&result=ok');
