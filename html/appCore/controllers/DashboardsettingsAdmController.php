@@ -112,8 +112,8 @@ Class DashboardsettingsAdmController extends AdmController
     {
         $response = ['status' => 200];
 
-        $block = Get::pReq('block', DOTY_MIXED);
-        $field = Get::pReq('field', DOTY_MIXED);
+        $block = Get::gReq('block', DOTY_MIXED);
+        $field = Get::gReq('field', DOTY_MIXED);
 
         //print_r($_FILES);
         //die();
@@ -125,7 +125,7 @@ Class DashboardsettingsAdmController extends AdmController
             $response['error'] = Lang::t('_FIELD_NOT_EXIST', 'dashboardsetting');
         } else {
 
-            $fieldName = DashboardBlockForm::getFieldName($block, $field);
+            $fieldName = 'file';  //DashboardBlockForm::getFieldName($block, $field);
             $path = '/appLms/dashboard';
 
             if (!is_dir(_base_ . '/files' . $path . '/')) {
@@ -142,7 +142,7 @@ Class DashboardsettingsAdmController extends AdmController
                 if (!file_exists($GLOBALS['where_files_relative'] . $path . '/' . $savefile)) {
                     sl_open_fileoperations();
 
-                    if (!sl_upload($_FILES[$fieldName]['tmp_name'], $path . '/' . $savefile)) {
+                    if (!sl_upload($_FILES[$fieldName]['tmp_name'], $path . '/' . $savefile, $_FILES[$fieldName]['type'])) {
                         sl_close_fileoperations();
                     }
 

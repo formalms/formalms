@@ -183,7 +183,6 @@
                         }
 
                         response[i]['settings']['data'] = {...response[i]['settings']['data'], ...extraSettings};
-                        console.log(response[i]['settings']['data']);
                     }
 
                 }
@@ -311,12 +310,11 @@
                 const item = inputFile[i];
                 item.addEventListener('change', () => {
                     const formData = new FormData();
+                    const error = item.parentNode.parentNode.querySelector('.dashboard__error');
                     formData.append('file', item.files[0], item.files[0].name);
+                    error.style.display = 'none';
 
                     if (item.classList.contains('form-control-image')) {
-
-                        const error = item.parentNode.parentNode.querySelector('.dashboard__error');
-                        error.style.display = 'none';
 
                         if (isFileImage(item.files[0]) > 0) {
                             uploadFileAjax(formData, item)
@@ -324,7 +322,13 @@
                             error.style.display = 'block';
                         }
                     } else {
-                        uploadFileAjax(formData, item);
+                        const acceptedExtensions = item.getAttribute('data-types');
+
+                        if (isFileOther(item.files[0], acceptedExtensions) > 0) {
+                            uploadFileAjax(formData, item);
+                        } else {
+                            error.style.display = 'block';
+                        }
                     }
 
                 })
@@ -333,16 +337,20 @@
         }
 
         function uploadFileAjax(formData, item) {
+            const block = item.getAttribute('data-block');
+            const field = item.getAttribute('id');
             $.ajax({
-                url: '{{ ajaxUploadFileUrl }}',
+                url: '{{ ajaxUploadFileUrl }}&block=' + block + '&field=' + field,
                 data: formData,
                 processData: false,
                 contentType: false,
                 type: 'POST',
-                success: function(url){
-                    //console.log(url);
-                    console.log(url);
-                    let imageUrl = 'http://testimage.local'; // PLEASE REMOVE, ONLY FOR TEST
+                success: function(data){
+                    const response = JSON.parse(data);
+                    let imageUrl = '';
+                    if (response.status == 200) {
+                        imageUrl = response.file;
+                    }
                     item.setAttribute('data-url', imageUrl);
                 }
             });
@@ -351,6 +359,11 @@
         function isFileImage(file) {
             const acceptedImageTypes = ['image/gif', 'image/jpeg', 'image/png'];
             return file && $.inArray(file['type'], acceptedImageTypes)
+        }
+
+        function isFileOther(file, extensions) {
+            const acceptedFileTypes = extensions;
+            return file && $.inArray(file['type'], acceptedFileTypes.split(','))
         }
 
     });
