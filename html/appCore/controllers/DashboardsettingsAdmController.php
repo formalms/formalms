@@ -10,6 +10,7 @@
 |   from docebo 4.0.5 CE 2008-2012 (c) docebo                               |
 |   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
+require_once(Forma::inc(_base_ . '/lib/lib.upload.php'));
 
 /**
  * Class DashboardsettingsAdmController
@@ -114,43 +115,44 @@ Class DashboardsettingsAdmController extends AdmController
         $field = Get::pReq('field', DOTY_MIXED);
 
         $exist = DashboardBlockForm::fieldExist($block, $field);
+
         if (!$exist) {
             $response['status'] = 400;
             $response['error'] = Lang::t('_FIELD_NOT_EXIST', 'dashboardsetting');
         } else {
 
+            $fieldName = DashboardBlockForm::getFieldName($block, $field);
             $path = '/appLms/dashboard';
 
             if (!is_dir(_base_ . '/files' . $path . '/')) {
                 $sts = mkdir(_base_ . '/files' . $path);
             }
 
-            if ($_FILES[$field]['size'] == 0 && $_FILES[$field]['error'] == 0) {
+            if ($_FILES[$fieldName]['size'] == 0 && $_FILES[$fieldName]['error'] == 0) {
                 $response['status'] = 400;
                 $response['error'] = Lang::t('_FIELD_NOT_EXIST', 'dashboardsetting');
-            }
-            else {
+            } else {
 
-                $savefile = mt_rand(0, 100) . '_' . time() . '_' . $_FILES[$field]['name'];
+                $savefile = mt_rand(0, 100) . '_' . time() . '_' . $_FILES[$fieldName]['name'];
 
-                if (!file_exists($GLOBALS['where_files_relative'] . $path . $savefile)) {
+                if (!file_exists($GLOBALS['where_files_relative'] . $path . '/' . $savefile)) {
                     sl_open_fileoperations();
 
-                    if (!sl_upload($_FILES[$field]['tmp_name'], $path . $savefile)) {
+                    if (!sl_upload($_FILES[$fieldName]['tmp_name'], $path . '/' . $savefile)) {
                         sl_close_fileoperations();
                     }
 
                     sl_close_fileoperations();
 
-                    $response['file'] = $GLOBALS['where_files_relative'] . $path . $savefile;
-                }
-                else {
+                    $response['file'] = $GLOBALS['where_files_relative'] . $path . '/' . $savefile;
+                } else {
                     $response['status'] = 400;
                     $response['error'] = Lang::t('_FILE_ALREADY_EXIST', 'dashboardsetting');
                 }
             }
         }
         echo $this->json->encode($response);
+        die();
     }
 }
 

@@ -92,4 +92,20 @@ class DashboardBlockForm
         }
         return false;
     }
+
+    public static function getFieldName($block, $field)
+    {
+        /** @var DashboardBlockLms $blockObj */
+        $blockObj = new $block([]);
+
+        $blockForm = $blockObj->getForm();
+
+        /** @var DashboardBlockFormItem $formItem */
+        foreach ($blockForm as $formItem) {
+            if ($formItem->getField() === $field) {
+                return $formItem->getName();
+            }
+        }
+        return false;
+    }
 }
