@@ -269,11 +269,11 @@ function movefield($direction) {
 		if($type_file_2 == '') Util::jump_to($back);
 	}
 
-	require_once($GLOBALS['where_framework'].'/modules/field/'.$type_file_1);
+	require_once(Forma::inc($GLOBALS['where_framework'].'/modules/field/'.$type_file_1));
 	$first_instance = eval("return new $type_class_1( $id_common );");
 	$first_instance->movetoposition($next_seq);
 
-	require_once($GLOBALS['where_framework'].'/modules/field/'.$type_file_2);
+	require_once(Forma::inc($GLOBALS['where_framework'].'/modules/field/'.$type_file_2));
 	$second_instance = eval("return new $type_class_2( $id_common_2 );");
 	$second_instance->movetoposition($sequence);
 
