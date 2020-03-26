@@ -37,18 +37,18 @@ class DashboardBlockForm
 
         /** @var DashboardBlockFormItem $formItem */
         foreach ($blockForm as $formItem) {
-            if (!array_key_exists($formItem->getField(), $blockObj->getData()) && $formItem->isRequired()) {
+            if (!array_key_exists($formItem->getName(), $blockObj->getData()) && $formItem->isRequired()) {
                 $errors[] = [
                     'field' => $formItem->getField(),
                     'error' => sprintf(Lang::t('_VALUE_IS_REQUIRED','dashboardsetting'), $formItem->getField())
                 ];
-            } elseif (array_key_exists($formItem->getField(), $blockObj->getData())) {
-                $value = $blockObj->getData()[$formItem->getField()];
+            } elseif (array_key_exists($formItem->getName(), $blockObj->getData())) {
+                $value = $blockObj->getData()[$formItem->getName()];
                 switch ($formItem->getType()) {
                     case DashboardBlockForm::FORM_TYPE_SELECT:
                     case DashboardBlockForm::FORM_TYPE_RADIO:
                     case DashboardBlockForm::FORM_TYPE_CHECKBOX:
-                        if (!in_array($value, $formItem->getValues())) {
+                        if (!in_array($value, array_keys($formItem->getValues()))) {
                             $errors[] = [
                                 'field' => $formItem->getField(),
                                 'error' => sprintf(Lang::t('_VALUE_IS_NOT_VALID','dashboardsetting'), $value)

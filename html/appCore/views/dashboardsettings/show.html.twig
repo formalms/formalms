@@ -15,13 +15,10 @@
                                         data-block="{{ block.postData.block }}-{{ index }}"></button>
                                 <div class="dashboard__title">{{ block.postData.block }}</div>
                                 <div class="dashboard__image">
-                                    {% if block.hasImage %}
-                                        <img src="{{ block.image }}"
-                                             class="dashboard__image">
-                                    {% else %}
-                                        <img src="{{ block.templatePath }}static/images/dashboard-placeholder/{{ block.postData.block }}-placeholder.jpg"
-                                             class="dashboard__image">
-                                    {% endif %}
+
+                                    <img src="{{ block.templatePath }}static/images/dashboard-placeholder/{{ block.postData.block }}-placeholder.jpg"
+                                         class="dashboard__image">
+
                                 </div>
                                 <div class="dashboard__info">
                                     <div class="dashboard__infoBlock">
@@ -36,19 +33,19 @@
                                         </div>
                                     </div>
                                     {% if block.registeredActions | length %}
-                                    <div class="dashboard__infoBlock">
-                                        <div class="dashboard__label">{{ translate('_enabledActions', 'dashboard') }}</div>
-                                        <div class="dashboard__infoContainer">
-                                            <div class="dashboard__el">
-                                                {% for action in block.enabledActions %}
-                                                    <label><input name="registeredAction[{{ loop.index0 }}]"
-                                                                  type="checkbox" value="{{ action }}"
-                                                                  {% if action in block.registeredActions %}checked{% endif %} />{{ action }}
-                                                    </label>
-                                                {% endfor %}
+                                        <div class="dashboard__infoBlock">
+                                            <div class="dashboard__label">{{ translate('_enabledActions', 'dashboard') }}</div>
+                                            <div class="dashboard__infoContainer">
+                                                <div class="dashboard__el">
+                                                    {% for action in block.enabledActions %}
+                                                        <label><input name="registeredAction[{{ loop.index0 }}]"
+                                                                      type="checkbox" value="{{ action }}"
+                                                                      {% if action in block.registeredActions %}checked{% endif %} />{{ action }}
+                                                        </label>
+                                                    {% endfor %}
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
                                     {% endif %}
 
                                     {% for form in block.form %}
@@ -139,8 +136,8 @@
                             'type': type,
                             'enabled': true,
                             'enabledActions': action,
+                            'firstInsert': firstInsert,
                             'data': {
-                                'firstInsert': firstInsert
                             }
                         }
                     }
@@ -345,7 +342,7 @@
                 processData: false,
                 contentType: false,
                 type: 'POST',
-                success: function(data){
+                success: function (data) {
                     const response = JSON.parse(data);
                     let imageUrl = '';
                     if (response.status == 200) {

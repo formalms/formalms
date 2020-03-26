@@ -1,22 +1,23 @@
 {% extends "base/base.html.twig" %}
 
 {% block content %}
-  {#welcome#}
-  {# <pre>
-    {{ dump(block) }}
-  </pre> #}
-  {% if (block.type == '4-col') %}
-      {% set class =  'd-col--12--desktop' %}
-  {% elseif (block.type == '3-col') %}
-      {% set class =  'd-col--9--desktop' %}
-  {% elseif (block.type == '2-col') %}
-      {% set class =  'd-col--6--desktop' %}
-  {% elseif (block.type == '1-col') %}
-      {% set class =  'd-col--3--desktop' %}
-  {% endif %}
+    {#welcome#}
 
-  <div class="d-col d-col--12 {{ class }}">
-    <div class="d-banner" style="background-image: url('{{ templatePath }}static/images/banner.png')">
+    {% if (block.type == '4-col') %}
+        {% set class =  'd-col--12--desktop' %}
+    {% elseif (block.type == '3-col') %}
+        {% set class =  'd-col--9--desktop' %}
+    {% elseif (block.type == '2-col') %}
+        {% set class =  'd-col--6--desktop' %}
+    {% elseif (block.type == '1-col') %}
+        {% set class =  'd-col--3--desktop' %}
+    {% endif %}
+
+    <div class="d-col d-col--12 {{ class }}">
+        {% if block.data.image %}
+            <div class="d-banner" style="background-image: url('{{ block.data.image }}')"></div>
+        {% else %}
+            <div class="d-banner" style="background-image: url('{{ templatePath }}static/images/banner.png')"></div>
+        {% endif %}
     </div>
-  </div>
 {% endblock %}

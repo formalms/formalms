@@ -56,9 +56,6 @@ class DashboardBlockVideoLms extends DashboardBlockLms
     public function getViewData()
     {
         $data = $this->getCommonViewData();
-        $data['video_type'] = 'yt'; //può essere yt o vimeo
-        $data['video'] = '3vBwRfQbXkg';
-        $data['cover'] = '/templates/standard/static/images/banner.png';
 
         return $data;
     }

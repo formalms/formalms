@@ -3,7 +3,7 @@
         <label class="dashboard__label" for="{{ block.postData.block }}-{{ index }}-file">{{translate('_file_'~ form.class,'dashboardsetting')}}</label>
 
         <div class="dashboard__infoContainer">
-            <input type="file" name="{{ form.name }}" class="form-control-file js-extra-setting js-upload-file" id="{{ form.field }}" data-block="{{ block.postData.block }}" data-types="{{ block.allowedFileMimeTypes|join(',') }}"> <!-- @TODO PEPPE: Dinamicizzare, basta che mi passi le estensioni ammesse come stringa separate da virgola. Poi converto io in array  -->
+            <input type="file" name="{{ form.name }}" class="form-control-file js-extra-setting js-upload-file" id="{{ form.field }}" data-block="{{ block.postData.block }}" data-types="{{ block.allowedFileMimeTypes|join(',') }}" data-url="{{ attribute(block.data, form.name)}}"> <!-- @TODO PEPPE: Dinamicizzare, basta che mi passi le estensioni ammesse come stringa separate da virgola. Poi converto io in array  -->
             <input type="hidden" class="form-control-file" id="{{ block.postData.block }}-{{ index }}-file-string" data-block="{{ block.postData.block }}-{{ index }}">
         </div>
 

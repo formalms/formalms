@@ -15,11 +15,11 @@
     {% endif %}
     <div class="d-col d-col--12 {{ class }}">
         <div class="d-video js-dashboard-video"
-             style="background-image: url('{{ block.templatePath }}{{ block.cover }}')"
-             data-video-data-video-url="{{ block.video }}" data-video-type="{{ block.video_type }}">
+             style="background-image: url('{{ block.data.cover }}')"
+             data-video-data-video-url="{{ block.data.video }}" data-video-type="{{ block.data.video_type }}">
         </div>
     </div>
 
-    {% include 'base/videomodal.html.twig' with {'videoref': block.video_type ~ "-" ~ block.video } %}
+    {% include 'base/videomodal.html.twig' with {'videoref': block.data.video_type ~ "-" ~ block.data.video } %}
 
 {% endblock %}

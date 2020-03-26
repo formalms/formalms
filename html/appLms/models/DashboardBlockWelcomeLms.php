@@ -42,7 +42,7 @@ class DashboardBlockWelcomeLms extends DashboardBlockLms
     public function getForm()
     {
         return [
-            DashboardBlockForm::getFormItem($this,'image', DashboardBlockForm::FORM_TYPE_IMAGE),
+            DashboardBlockForm::getFormItem($this,'image', DashboardBlockForm::FORM_TYPE_IMAGE,true),
         ];
     }
 
