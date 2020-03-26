@@ -75,29 +75,6 @@ class DashboardBlockCalendarLms extends DashboardBlockLms
     public function getForm()
     {
         return [
-            DashboardBlockForm::getFormItem($this,'calendarImage', DashboardBlockForm::FORM_TYPE_IMAGE,false),
-            DashboardBlockForm::getFormItem($this,'calendarSelect', DashboardBlockForm::FORM_TYPE_SELECT,false,
-                [
-                    'value1' => 'Valore 1',
-                    'value2' => 'Valore 2'
-                ]
-            ),
-            DashboardBlockForm::getFormItem($this,'calendarText', DashboardBlockForm::FORM_TYPE_TEXT),
-            DashboardBlockForm::getFormItem($this,'calendarFile', DashboardBlockForm::FORM_TYPE_FILE),
-            DashboardBlockForm::getFormItem($this,'calendarRadio', DashboardBlockForm::FORM_TYPE_RADIO,false,
-                [
-                    'value1' => 'Valore 1',
-                    'value2' => 'Valore 2'
-                ]
-            ),
-            DashboardBlockForm::getFormItem($this,'calendarCheckbox', DashboardBlockForm::FORM_TYPE_CHECKBOX,false,
-                [
-                    'value1' => 'Valore 1',
-                    'value2' => 'Valore 2',
-                    'value3' => 'Valore 3'
-                ]
-            ),
-            DashboardBlockForm::getFormItem($this,'calendarTextarea', DashboardBlockForm::FORM_TYPE_TEXTAREA),
         ];
     }
 
