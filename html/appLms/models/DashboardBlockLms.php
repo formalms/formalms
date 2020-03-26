@@ -81,7 +81,7 @@ abstract class DashboardBlockLms extends Model
     {
         parent::__construct();
         $this->db = DbConn::getInstance();
-        if (is_string($jsonConfig)){
+        if (is_string($jsonConfig)) {
             $jsonConfig = json_decode($jsonConfig, true);
         }
         $this->parseBaseConfig($jsonConfig);
@@ -222,7 +222,9 @@ abstract class DashboardBlockLms extends Model
             'data' => $this->getData(),
             'registeredActions' => $this->getRegisteredActions(),
             'enabledActions' => $this->getEnabledActions(),
-            'templatePath' => getPathTemplate()
+            'templatePath' => getPathTemplate(),
+            'allowedFileTypes' => $this->getAllowedFileTypes(),
+            'allowedFileMimeTypes' => $this->getAllowedFileMimeTypes()
         ];
     }
 
@@ -387,5 +389,37 @@ abstract class DashboardBlockLms extends Model
         }
 
         return $result;
+    }
+
+    public function getAllowedFileTypes()
+    {
+        $upload_whitelist = Get::sett('file_upload_whitelist', 'rar,exe,zip,jpg,gif,png,txt,csv,rtf,xml,doc,docx,xls,xlsx,ppt,pptx,odt,ods,odp,pdf,xps,mp4,mp3,flv,swf,mov,wav,ogg,flac,wma,wmv,jpeg');
+        $allowedFileTypes = explode(',', trim($upload_whitelist, ','));
+
+        return $allowedFileTypes;
+    }
+
+
+    public function getAllowedFileMimeTypes()
+    {
+        require_once(_lib_ . '/lib.mimetype.php');
+
+        $allowedFileTypes = $this->getAllowedFileTypes();
+        $mimetypeArray = [];
+        if (!empty($allowedFileTypes)) {
+
+            foreach ($allowedFileTypes as $k => $v) { // remove extra spaces and set lower case
+                $ext = trim(strtolower($v));
+                $mt = mimetype($ext);
+                if ($mt) {
+                    $mimetypeArray[] = $mt;
+                }
+                getOtherMime($ext, $mimetypeArray);
+
+            }
+            $mimetypeArray = array_unique($mimetypeArray);
+        }
+
+        return $mimetypeArray;
     }
 }

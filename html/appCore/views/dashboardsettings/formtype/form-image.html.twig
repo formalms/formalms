@@ -3,7 +3,7 @@
         <label class="dashboard__label" for="{{ block.postData.block }}-{{ index }}-image">{{translate('_image_'~ form.class,'dashboardsetting')}}</label>
 
         <div class="dashboard__infoContainer">
-            <input type="file" name="{{ form.name }}" class="form-control-image js-extra-setting js-upload-file" id="{{ block.postData.block }}-image" data-block="{{ block.postData.block }}">
+            <input type="file" name="{{ form.name }}" class="form-control-image js-extra-setting js-upload-file" id="{{ form.field }}" data-block="{{ block.postData.block }}">
             <input type="hidden" class="form-control-image" id="{{ block.postData.block }}-{{ index }}-image-string" data-block="{{ block.postData.block }}-{{ index }}">
         </div>
 
