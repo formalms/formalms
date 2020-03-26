@@ -6,7 +6,7 @@ export const RenderDashBoardCalendar = () => {
   const els = document.querySelectorAll('.js-dashboard-calendar')
 
   if (els.length) {
-    for (let i = 0; i <= els.length; i++) {
+    for (let i = 0; i < els.length; i++) {
       /* const actions = els[i].getAttribute('data-action');
       const actionsArray = actions.split(',');
       const sourcesArray = [];
