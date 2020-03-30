@@ -544,7 +544,7 @@ a.fc-more:hover {
   -ms-user-select: none;
   user-select: none;
   -webkit-touch-callout: none;
-  -webkit-tap-highlight-color: transparent; }
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0); }
 
 /*
 TODO: more distinction between this file and common.css
@@ -3681,6 +3681,47 @@ p {
   font-weight: 400;
   font-size: 16px; }
 
+.box-title {
+  color: #ff6c00;
+  font-family: "Open-sans", Arial;
+  font-weight: bold;
+  font-size: 12px;
+  text-transform: uppercase;
+  padding-bottom: 6px;
+  margin: 0 0 14px 0;
+  border-bottom: 1px solid #eee; }
+  @media (min-width: 1024px) {
+    .box-title {
+      font-size: 14px;
+      margin-bottom: 11px; } }
+
+.box-title--modal {
+  padding-bottom: 14px; }
+
+.page-subtitle {
+  font-family: "Open-sans", Arial;
+  font-size: 24px;
+  color: #222222;
+  margin-bottom: 20px;
+  margin-top: 20px; }
+  @media (min-width: 1024px) {
+    .page-subtitle {
+      font-size: 35px;
+      margin-bottom: 13px;
+      margin-top: 27px; } }
+
+.text--gray {
+  color: #666666; }
+
+.text--green {
+  color: #70d800; }
+
+.text--orange {
+  color: #ff6c00; }
+
+.text--red {
+  color: #ff0101; }
+
 .forma-button {
   display: inline-block;
   width: 100%;
@@ -4593,6 +4634,32 @@ p {
       width: 80%;
       height: 70%; } }
 
+.modal-dialog--bio {
+  width: 90%;
+  height: 70%;
+  max-width: none; }
+  @media (min-width: 1024px) {
+    .modal-dialog--bio {
+      width: 55%;
+      height: auto; } }
+  @media (min-width: 1280px) {
+    .modal-dialog--bio {
+      width: 55%;
+      height: auto; } }
+
+.modal-dialog--video {
+  width: 90%;
+  height: 70%;
+  max-width: none; }
+  @media (min-width: 1024px) {
+    .modal-dialog--video {
+      width: 80%;
+      height: 70%; } }
+  @media (min-width: 1280px) {
+    .modal-dialog--video {
+      width: 80%;
+      height: 70%; } }
+
 .modal-header--notitle {
   border: none; }
   .modal-header--notitle .close {
@@ -4611,6 +4678,56 @@ p {
   line-height: 0;
   width: 100%;
   height: 100%; }
+
+.modal-header--bio {
+  background-color: #ff6c00;
+  border: none;
+  position: relative;
+  padding-left: 12px;
+  padding-top: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: left; }
+  .modal-header--bio .close {
+    opacity: 1;
+    color: #fff;
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 32px; }
+    @media (min-width: 1024px) {
+      .modal-header--bio .close {
+        right: 25px; } }
+
+.modal-content--full {
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  height: 100%; }
+
+.modal-body--nopadding {
+  padding: 0;
+  margin: 0;
+  line-height: 0;
+  width: 100%;
+  height: 100%; }
+
+.modal-content--bio {
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  margin-bottom: 20px;
+  box-shadow: none;
+  border: none;
+  border-radius: 8px;
+  overflow: hidden; }
+
+.modal__text {
+  line-height: 20px; }
+
+.modal__textcontainer {
+  padding: 26px 14px; }
 
 .dashboard {
   margin-bottom: 100px; }
@@ -6500,10 +6617,19 @@ header.header {
         header.header .row-fluid .navbar-collapse li a:hover {
           background-color: transparent;
           color: #ff6c00; }
+        header.header .row-fluid .navbar-collapse li a .title-with-icon {
+          display: block; }
+          @media (min-width: 1024px) {
+            header.header .row-fluid .navbar-collapse li a .title-with-icon {
+              display: none; } }
         header.header .row-fluid .navbar-collapse li a .glyphicon {
           position: relative;
           width: 35px;
-          height: 35px; }
+          height: 35px;
+          display: none; }
+          @media (min-width: 1024px) {
+            header.header .row-fluid .navbar-collapse li a .glyphicon {
+              display: block; } }
           header.header .row-fluid .navbar-collapse li a .glyphicon:hover:before {
             border-color: #ff6c00; }
           header.header .row-fluid .navbar-collapse li a .glyphicon:before {
@@ -7509,6 +7635,198 @@ header.header {
   .slider-menu--tabs .slider-menu__arrow {
     top: 5px; }
 
+.course-info__general {
+  margin-bottom: 11px; }
+
+.course-info__table {
+  width: 45%;
+  float: left;
+  display: table;
+  margin-bottom: 16px;
+  margin-right: 7px; }
+  @media (min-width: 1024px) {
+    .course-info__table {
+      width: 50%;
+      margin-right: 0;
+      margin-bottom: 0;
+      height: 36px; } }
+
+.course-info__table--full {
+  width: 100%;
+  float: none;
+  display: block;
+  margin-bottom: 22px; }
+  @media (min-width: 1024px) {
+    .course-info__table--full {
+      margin-top: 10px;
+      height: auto; } }
+
+.course-info__label {
+  width: 100%;
+  display: block;
+  font-size: 9px;
+  color: #999999;
+  margin-bottom: 5px;
+  text-transform: uppercase; }
+  @media (min-width: 768px) {
+    .course-info__label {
+      width: 92px;
+      display: table-cell;
+      padding-right: 12px; } }
+
+.course-info__value {
+  width: auto;
+  display: block;
+  font-size: 14px;
+  line-height: 19px; }
+  @media (min-width: 768px) {
+    .course-info__value {
+      display: table-cell;
+      line-height: 21px; } }
+
+.course-info__link {
+  text-decoration: none;
+  color: #ff6c00;
+  font-family: "Open-sans", Arial;
+  margin-right: 7px; }
+  .course-info__link:hover {
+    text-decoration: underline; }
+
+.course-info__paragraph {
+  margin-top: 16px;
+  padding-left: 19px;
+  font-size: 15px; }
+
+.course-info__peoplecontainer {
+  margin-bottom: 50px; }
+
+.course-info__people {
+  padding-left: 0;
+  margin-bottom: 15px; }
+  @media (min-width: 768px) {
+    .course-info__people {
+      margin-top: 4px;
+      margin-bottom: 11px; } }
+  .course-info__people:nth-child(odd) {
+    padding-right: 0; }
+
+.course-info__peopletxt {
+  float: left;
+  max-width: calc(100% - 80px); }
+
+.course-info__peopleimage {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background-color: #ff6c00;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  float: left;
+  margin-right: 14px; }
+  @media (min-width: 768px) {
+    .course-info__peopleimage {
+      width: 66px;
+      height: 66px; } }
+
+.course-info__peoplename {
+  display: block;
+  font-size: 14px;
+  color: #ff6c00;
+  margin-bottom: 16px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap; }
+  @media (min-width: 768px) {
+    .course-info__peoplename {
+      font-size: 16px;
+      margin-bottom: 14px; } }
+
+.course-info__peoplename--modal {
+  color: white;
+  width: calc(100% - 124px);
+  margin-bottom: 0;
+  text-overflow: inherit;
+  white-space: inherit; }
+  @media (min-width: 768px) {
+    .course-info__peoplename--modal {
+      width: calc(100% - 180px);
+      font-weight: 700;
+      font-size: 17px; } }
+
+.course-info__peoplebio {
+  text-decoration: underline;
+  color: #666666;
+  font-size: 12px;
+  float: left;
+  margin-right: 20px; }
+  @media (min-width: 768px) {
+    .course-info__peoplebio {
+      margin-right: 6px;
+      float: none;
+      margin-bottom: 12px;
+      display: block; } }
+  @media (min-width: 1100px) {
+    .course-info__peoplebio {
+      float: left;
+      display: inline;
+      margin-bottom: 0; } }
+
+.course-info__peoplecta {
+  float: left;
+  display: block;
+  width: auto;
+  height: auto;
+  margin-top: -2px;
+  line-height: 22px;
+  padding-left: 10px;
+  padding-right: 10px;
+  background-color: #FA6C06;
+  border-color: #FA6C06; }
+  @media (min-width: 768px) {
+    .course-info__peoplecta {
+      font-size: 10px;
+      margin-top: -4px;
+      padding-left: 12px;
+      padding-right: 12px;
+      float: none;
+      width: 84px; } }
+  @media (min-width: 1100px) {
+    .course-info__peoplecta {
+      float: left; } }
+
+.course-info__materials {
+  margin-bottom: 16px; }
+
+.course-info__file {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-bottom: 17px; }
+  @media (min-width: 768px) {
+    .course-info__file {
+      display: block; } }
+
+.course-info__edit {
+  display: none; }
+  @media (min-width: 768px) {
+    .course-info__edit {
+      display: block;
+      padding-left: 6px; } }
+
+.course-info__delete {
+  display: none; }
+  @media (min-width: 768px) {
+    .course-info__delete {
+      display: block;
+      padding-left: 4px; } }
+
+.course-info__icon--download {
+  width: 18px;
+  height: 24px;
+  margin-right: 10px;
+  text-decoration: underline; }
+
 .homepage {
   height: auto;
   /* Importante per posizione corretta bootstrap datepicker */
@@ -7819,3 +8137,82 @@ header.header {
 
 .homepage__collapsed-text.in + .collapse-wrapper .forma-button {
   display: none; }
+
+.user-profile .course-info__label {
+  vertical-align: top;
+  padding-top: 5px; }
+
+@media (min-width: 768px) {
+  .user-profile .box-title {
+    margin-bottom: 21px; } }
+
+@media (min-width: 768px) {
+  .user-profile__firstcolumn--special {
+    min-width: 320px; } }
+
+.user-profile__column {
+  margin-bottom: 22px;
+  padding-left: 0;
+  padding-right: 0; }
+  @media (min-width: 768px) {
+    .user-profile__column {
+      margin-bottom: 55px; } }
+
+@media (min-width: 768px) {
+  .user-profile__column--minwidth {
+    min-width: 300px; } }
+
+.user-profile__content {
+  width: 100%;
+  margin-bottom: 15px; }
+  @media (min-width: 768px) {
+    .user-profile__content {
+      display: table; } }
+
+.user-profile__infocontainer {
+  display: flex;
+  justify-content: space-between; }
+  @media (min-width: 768px) {
+    .user-profile__infocontainer {
+      justify-content: none;
+      display: block; } }
+
+.user-profile__imgcontainer {
+  margin-right: 32px; }
+
+.user-profile__img {
+  width: 120px;
+  display: table-cell; }
+
+.user-profile__cta {
+  display: block;
+  width: auto;
+  height: auto;
+  margin-top: 17px;
+  line-height: 39px;
+  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: 700;
+  background-color: #FA6C06;
+  border-color: #FA6C06; }
+  @media (min-width: 768px) {
+    .user-profile__cta {
+      font-size: 12px;
+      margin-top: 16px;
+      width: 100%; } }
+
+.user-profile__mailicon {
+  background: url("images/icons/icon--mail.svg") no-repeat center center;
+  width: 16px;
+  height: 12px;
+  display: inline-block;
+  position: relative;
+  top: 2px;
+  margin-right: 5px; }
+
+.user-profile__namelink {
+  color: #ff6c00;
+  margin-right: 5px; }
+  .user-profile__namelink:hover {
+    text-decoration: underline;
+    color: #70d800; }
