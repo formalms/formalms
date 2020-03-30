@@ -3382,6 +3382,60 @@ CREATE TABLE IF NOT EXISTS `learning_wiki_course` (
 -- --------------------------------------------------------
 
 
+--
+-- Struttura della tabella `dashboard_block_config`
+--
+
+CREATE TABLE IF NOT EXISTS `dashboard_block_config` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `block_class` varchar(255) NOT NULL,
+  `block_config` text NOT NULL,
+  `position` bigint(20) NOT NULL DEFAULT '999',
+  PRIMARY KEY (`id`),
+  KEY `block_class_idx` (`block_class`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+--
+-- Dump dei dati per la tabella `dashboard_block_config`
+--
+
+
+-- --------------------------------------------------------
+
+
+--
+-- Struttura della tabella `dashboard_blocks`
+--
+
+CREATE TABLE IF NOT EXISTS `dashboard_blocks` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `block_class` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `block_class_unique` (`block_class`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+--
+-- Dump dei dati per la tabella `dashboard_block_config`
+--
+
+
+-- --------------------------------------------------------
+
+
+INSERT INTO `dashboard_blocks` (`id`, `block_class`)
+VALUES
+(7,'DashboardBlockCalendarLms'),
+(3,'DashboardBlockCertificatesLms'),
+(6,'DashboardBlockCourseAdviceLms'),
+(5,'DashboardBlockCoursesLms'),
+(4,'DashboardBlockMessagesLms'),
+(2,'DashboardBlockProfileLms'),
+(8,'DashboardBlockVideoLms'),
+(1,'DashboardBlockWelcomeLms');
+
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
