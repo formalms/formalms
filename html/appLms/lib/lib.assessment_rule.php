@@ -24,6 +24,14 @@ Class AssessmentRuleManager {
 
 
 	public function loadJs() {
+		Util::get_js(Get::rel_path('base').'/addons/yui/utilities/utilities.js', true, true);
+		Util::get_js(Get::rel_path('base').'/addons/yui/dom/dom.js', true, true);
+		Util::get_js(Get::rel_path('base').'/addons/yui/json/json.js', true, true);
+		Util::get_js(Get::rel_path('base').'/addons/yui/selector/selector.js', true, true);
+		Util::get_js(Get::rel_path('base').'/addons/yui/event/event.js', true, true);
+		Util::get_js(Get::rel_path('base').'/addons/yui/datasource/datasource.js', true, true);
+		Util::get_js(Get::rel_path('base').'/addons/yui/autocomplete/autocomplete.js', true, true);
+
 		Util::get_js(Get::rel_path('lms').'/modules/test/assessment_rule.js', true, true);
 	}
 
@@ -99,6 +107,7 @@ Class AssessmentRuleManager {
 			.Form::getHidden('courses_list', 'courses_list', '')
 			.Form::getHidden('test_id', 'test_id', (int)$data['test_id'])
 			.Form::getHidden('category_id', 'category_id', (int)$data['category_id'])
+			.Form::getHidden('authentic_request', 'authentic_request', Util::getSignature())				
 			.Form::getHidden('save', 'save', '1')
 			.Form::closeElementSpace()
 
