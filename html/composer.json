@@ -9,7 +9,7 @@
         "ezyang/htmlpurifier": "~4.10.0"
     },
     "require-dev": {
-        "php": ">=5.4.0",
+        "php": ">=7.0",
         "phing/phing": "~2.13.0",
         "phpunit/phpunit": "~4.1.6",
         "behat/behat": "~3.0.15",
