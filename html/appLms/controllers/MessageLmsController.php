@@ -76,6 +76,16 @@ class MessageLmsController extends LmsController {
 		messageDispatch("download", true);
 	}
 
+	public function directWriteTask() {
+
+        $_POST['userselector_input']['main_selector'] = Get::gReq('idst',DOTY_MIXED,'');
+        $_POST['authentic_request'] = Get::gReq('signature');
+        $_POST['okselector'] = 'Save changes';
+
+        require_once(_adm_.'/lib/lib.message.php');
+        messageDispatch("writemessage", true);
+    }
+
 	//ajax function
 
 	public function delete_message() {

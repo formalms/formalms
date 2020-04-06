@@ -421,19 +421,36 @@ class CoursestatsLms extends Model {
 	public function getUserScormHistoryTrackInfo($id_user, $id_lo) {
 		if ($id_lo <= 0 || $id_user <= 0) return false;
 		$output = false;
-		$query = "SELECT t1.date_action, t1.score_raw, t1.score_max, SEC_TO_TIME( TIME_TO_SEC( t1.session_time ) ) as session_total_time, t1.lesson_status FROM %lms_organization AS t3 JOIN %lms_scorm_tracking AS t2 ON ( t3.objectType = 'scormorg' AND t3.idOrg = t2.idReference ) JOIN  ".$this->tables['scorm_tracking_history']." as t1 ON (t1.idscorm_tracking=t2.idscorm_tracking) WHERE t3.idOrg =".$id_lo." AND t2.idUser=".$id_user.
+		$query = "SELECT t1.date_action, t1.score_raw, t1.score_max, SEC_TO_TIME( TIME_TO_SEC( t1.session_time ) ) as session_total_time, t1.lesson_status, t1.session_time FROM %lms_organization AS t3 JOIN %lms_scorm_tracking AS t2 ON ( t3.objectType = 'scormorg' AND t3.idOrg = t2.idReference ) JOIN  ".$this->tables['scorm_tracking_history']." as t1 ON (t1.idscorm_tracking=t2.idscorm_tracking) WHERE t3.idOrg =".$id_lo." AND t2.idUser=".$id_user.
 		" ORDER BY t1.date_action ASC ";
 
 		$res = $this->db->query($query);
 		if ($res) {
 			if ($this->db->num_rows($res) > 0) {
 				while ( $row = $this->db->fetch_row($res) ) {
+					if ($row[3] == '00:00:00') {
+						$row[3] = $this->parsePTTime($row[5]);
+					}
 					$row[3] = $this->roundTime($row[3]);
+
 					$output[] = $row;
 				}
 			}
 		}
 		return $output;
+	}
+
+	private function parsePTTime($pt_time) {
+		$time = str_replace('PT', '', $pt_time);
+	    $time = str_replace('H', ':', $time);
+	    $time = str_replace('M', ':', $time);
+	    $time = str_replace('S', '', $time);
+
+	    if (strpos($pt_time, 'H') === false) {
+	    	$time = '00:'.$time;
+	    }
+
+	    return $time;
 	}
 
 	public function roundTime($time)

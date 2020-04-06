@@ -65,6 +65,7 @@ HTML;
     $tab = array(
         'tb_elearning' => Lang::t('_ELEARNING', 'middlearea'),
         'tb_home' => Lang::t('_HOME', 'middlearea'),
+	    'tb_dashboard' => Lang::t('_DASHBOARD', 'middlearea'),
         'tb_label' => Lang::t('_LABELS', 'label'),
         'tb_coursepath' => Lang::t('_COURSEPATH', 'coursepath'),
         'tb_games' => Lang::t('_CONTEST', 'middlearea'),
@@ -112,7 +113,8 @@ HTML;
         'mo_message' =>  Lang::t('_MESSAGES', 'menu_over')
     );
     $slider_options = array_merge($block, $menu_on_slider);
-    while(list($id, $name) = each($slider_options)) {
+    foreach($slider_options as $id => $name)
+    {
 
         $block_list .= '<div class="direct_block">'
             .'<span>'.$name.'</span>'
@@ -140,7 +142,7 @@ HTML;
             .'<div id="yui-main">'
                 .'<div class="yui-b" id="tablist">'
                 .'<h2>'.Lang::t('_TABS', 'middlearea').'</h2>'
-                .'<ul class="action-list">'
+                .'<ul id="h_label" class="action-list">'
                 .$tab_list
                 .'</ul>'
                 .'</div>'
@@ -148,47 +150,46 @@ HTML;
             .'<div class="nofloat"></div>'
         .'</div>');
     cout('</div>');
-    $js = "
-    <script src=\"http://yui.yahooapis.com/3.9.1/build/yui/yui-min.js\"></script>
-    <script>
-    YUI().use('sortable', function (Y) {
-        var sortable;
-        sortable = new Y.Sortable({
-            container: '#tablist ul',
-            nodes    : 'li',
-            opacity  : '0.1'
-        });
-
-        sortable.delegate.after('drag:end', function (e) {
-            var node = sortable.delegate.get('currentNode');
-
-                // rewind
-                while(node.previous()) {
-                    node = node.previous();
-}
-                // ciclo
-                a = node.get('id');
-                while(node.next()) {
-                    node = node.next();
-                    a += ','+node.get('id');
-                }
-
-                sUrl = 'ajax.adm_server.php?r=middlearea/order&list='+a;
-
-                var callback = {
-                        success: function(o) {
-                        },
-                        failure:function(o) {
+    $js = "<script>
+            var label_current_order = ''
+            $('#h_label li').each(function(){
+                label_current_order += ',' + String($(this).attr('id'))            
+            })
+            
+            $( function(){
+                $('#h_label').sortable({
+                    deactivate: function(e, ui){
+                        var label_new_order = ''
+                        $('#h_label li').each(function(){
+                            label_new_order += ',' + String($(this).attr('id')) 
+                        })
+                        if (label_new_order != label_current_order) {
+                            label_new_order = label_new_order.substr(1);
+                            var posting = $.get(
+                                'ajax.adm_server.php', 
+                                {
+                                    r: 'middlearea/order',
+                                    list: label_new_order
+                                }
+                            )
+                            posting.done(function(r){
+                                label_current_order = label_new_order
+                            })
+                            posting.fail(function(r){
+                                console.log('error=' + r)
+                            })
                         }
-                };
-                YAHOO.util.Connect.asyncRequest('GET', sUrl, callback);
+                    },
+                    cursor: 'crosshair',
+                    cursorAt: {left:5},
+                    revert: true
+                });
+                $('#h_label').disableSelection();
+            } )
 
-
-        });
-    });
-
-
-    </script>";
+            
+            
+          </script>";
 
     cout($js);
 }

@@ -1,0 +1,48 @@
+{% extends "base/base.html.twig" %}
+
+{% block content %}
+    {% if block.user.avatar == '' %}
+        {% set avatarUrl = templatePath ~ "static/images/icons/user-panel/icon--up-photo-placeholder.png" %}
+    {% else %}
+        {% set avatarUrl = block.user.avatar %}
+    {% endif %}
+
+    {% if (block.type == '4-col') %}
+        {% set class =  'd-col--12--desktop' %}
+    {% elseif (block.type == '3-col') %}
+        {% set class =  'd-col--9--desktop' %}
+    {% elseif (block.type == '2-col') %}
+        {% set class =  'd-col--6--desktop' %}
+    {% elseif (block.type == '1-col') %}
+        {% set class =  'd-col--3--desktop' %}
+    {% endif %}
+
+    <div class="d-col d-col--12 {{ class }}">
+        <div class="d-user-profile">
+            <div class="d-grid">
+                <div class="d-row d-user-profile__padder">
+                    <div class="d-col d-col--12">
+                        <div class="d-user-profile__avatar-wrapper">
+                            <img src="{{ avatarUrl }}" alt="" class="d-user-profile__img">
+                        </div>
+                        <div class="d-user-profile__content-wrapper">
+                            <p class="d-user-profile__text">
+                                Ciao,
+                            </p>
+                            <p class="d-user-profile__text">
+                                {{ block.user.firstname ~ ' ' ~  block.user.lastname }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-row d-user-profile__padder">
+                    <div class="d-col d-col--6">
+                        <a class="forma-button forma-button--orange-hover forma-button--full d-button--cert" title="" href="{{ blocks[2].link }}">
+                            <span class="forma-button__label">{{ translate('_MY_CERTIFICATE', 'menu_over') }}</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

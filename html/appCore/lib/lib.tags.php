@@ -222,7 +222,8 @@ class Tags {
 		
 		// add the non existing tag
 		
-		while(list(,$tag_name) = each($tag_to_create)) {
+		foreach($tag_to_create as $tag_name)
+        {
 			
 			$query = "INSERT INTO ".$this->_tag_t." "
 			." ( id_tag, tag_name ) VALUES "
@@ -236,7 +237,8 @@ class Tags {
 		if(!empty($to_associate)) {
 			
 			$inserts = false;
-			while(list(,$id_tag) = each($to_associate)) {
+      foreach($to_associate as => $id_tag)
+      {
 				
 				$inserts[] = " ( "
 					." ".(int)$id_tag.", ".(int)$id_resource.", '".$this->resource_type."', ".(int)$id_user.", ".(int)$this->_id_course.", "
@@ -436,8 +438,8 @@ class Tags {
 		WHERE 0 ";
 		if(is_array($arr_resources)) {
 			
-			while(list($type, $id_list) = each($arr_resources)) {
-				
+			foreach($arr_resources as $type => $id_list)
+      {
 				$query .= " OR ( rel.resource_type = '".$type."' AND rel.id_resource IN ( ".implode(',', $id_list)." ) ) "; 
 			}
 		}
@@ -566,7 +568,8 @@ class Tags {
 		
 		$html = '<ul class="tag_cloud">';
 		
-		while(list($id_tag, $info) = each($tags_founded)) {
+		foreach($tags_founded as $id_tag => $info)
+    {
 			
 			$size = $min_class_size + ($info[1] - $min) 
 				* ($max_class_size - $min_class_size) / $section;

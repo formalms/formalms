@@ -2273,7 +2273,8 @@ class UsermanagementAdm extends Model {
 		$uinfo = $this->aclManager->getTempUsers($arr_idst, false);
 		$approved = array();
 
-		while (list(,$idst) = each($arr_idst)) {
+    foreach( $arr_idst as $idst )
+		{
 			$res = $this->aclManager->registerUser(
 				addslashes($uinfo[$idst]['userid']),
 				addslashes($uinfo[$idst]['firstname']),

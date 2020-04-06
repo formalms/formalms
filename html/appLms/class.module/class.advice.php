@@ -15,7 +15,7 @@ class Module_Advice extends LmsModule {
 	
 	function loadBody() {
 		
-		require_once($GLOBALS['where_lms'].'/modules/advice/advice.php');
+		require_once(_lms_.'/modules/advice/advice.php');
 		adviceDispatch($GLOBALS['op']);
 	}
 	

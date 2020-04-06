@@ -614,7 +614,8 @@ class UserPreferences {
 		$preferences = $this->_up_db->getFullPreferences($this->id_user, $only_visible, false, $base_path);
 
 		$html = '';
-		while(list(, $pref) = each($preferences)) {
+    foreach($preferences as $pref)
+    {
 
 			// Navigation trought the preferences
 			// array( 'path_name', 'label', 'default_value', 'type', 'visible', 'load_at_startup', 'user_value' )
@@ -683,7 +684,7 @@ class UserPreferences {
 		$preferences = $this->_up_db->getFullPreferences($this->id_user, $only_visible, false, $base_path);
 
 		$html = array();
-		while(list(, $pref) = each($preferences)) {
+    foreach($preferences as $pref) {
 
 			// Navigation trought the preferences
 			// array( 'path_name', 'label', 'default_value', 'type', 'visible', 'load_at_startup', 'user_value' )
@@ -779,7 +780,7 @@ class UserPreferences {
 		if(!is_array($array_source[$this->base_name])) return true;
 
 		$re = true;
-		while(list(, $pref) = each($info_pref)) {
+    foreach($info_pref as $pref) {
 
 			if(isset($array_source[$this->base_name][$pref['path_name']])) {
 				$new_value = $array_source[$this->base_name][$pref['path_name']];
@@ -987,7 +988,7 @@ class AdminPreference
 		if(isset($old_rules[_RULES_LANG]))
 			$old_rules[_RULES_LANG] = array_flip($old_rules[_RULES_LANG]);
 
-		while(list(,$lang_code) = each($all_languages))
+    foreach($all_languages as $lang_code)	
 		{
 			$res .=	Form::getCheckbox('<img src="'.getPathImage('cms').'language/'.$lang_code.'.png" alt="'.$lang_code.'" /> '.$lang_code,
 					'admin_lang_'.$lang_code,
@@ -1187,7 +1188,7 @@ class AdminPreference
         if(!empty($admin_users)) $arr_query[] = " $idst_field_name IN (".implode(',', $admin_users).") ";
         if(!empty($admin_groups))  $arr_query[] = " $idst_field_name IN ( SELECT idstMember FROM %adm_group_members WHERE idst IN (".implode(',', $admin_groups).") ) ";
          
-        if(!empty($arr_query)) $query = "( ".implode($arr_query, 'OR')." )";
+        if(!empty($arr_query)) $query = "( ".implode('OR', $arr_query)." )";
         else $query = " 0 ";
         return $query;
 	}
@@ -1216,7 +1217,7 @@ class AdminPreference
 		if(!empty($admin_users)) $arr_query[] = " $idst_field_name IN (".implode(',', $admin_userlist).") ";
 		if(!empty($admin_groups))  $arr_query[] = " $idst_field_name IN ( SELECT idstMember FROM %adm_group_members WHERE idst IN (".implode(',', $admin_groups).") ) ";
 
-		if(!empty($arr_query)) $query = "( ".implode($arr_query, 'OR')." )";
+		if(!empty($arr_query)) $query = "( ".implode('OR', $arr_query)." )";
 		else $query = " 0 ";
 
 

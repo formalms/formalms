@@ -338,7 +338,7 @@ class Lang {
 
 					foreach ($all_language as $lang) {
 
-						if(strpos($lang->lang_browsercode, $code) !== false) {
+						if(strpos($lang->lang_browsercode, strval($code)) !== false) {
 							
 							$_SESSION['current_lang'] = $lang->lang_code;
 							return $_SESSION['current_lang'];

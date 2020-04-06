@@ -455,7 +455,8 @@ function entrylist() {
 		}
 	}
 	if(is_array($coursespath_name)) {
-		while(list($id, $coursepath) = each($coursespath_name)) {
+    foreach( $coursespath_name as $id => $coursepath )
+    {
             
             $cont = array($coursepath, $lang->def('_COURSEPATH'));
             // #bugfix 1141
@@ -513,14 +514,16 @@ function updateCatalogueEntry(&$new_sel, &$old_sel, $type, $id_cat) {
 	$re = true;
 	$to_add 	= array_diff($new_sel, $old_sel);
 	$to_del 	= array_diff($old_sel, $new_sel);
-	while(list(,$id) = each($to_add)) {
+  foreach($to_add as $id)
+	{
 
 		$re &= sql_query("
 		INSERT INTO ".$GLOBALS['prefix_lms']."_catalogue_entry
 		( idEntry, type_of_entry, idCatalogue ) VALUES
 		( '".$id."', '".$type."', '".$id_cat."') ");
 	}
-	while(list(,$id) = each($to_del)) {
+  foreach($to_del as $id)
+  {
 
 		$re &= sql_query("
 		DELETE FROM ".$GLOBALS['prefix_lms']."_catalogue_entry
@@ -632,7 +635,8 @@ function addToCatologue($memebers, $id_catalogue) {
 
 	$re = true;
 	reset($memebers);
-	while(list(, $id_m) = each($memebers)) {
+  foreach($memebers as $id_m)
+  {
 
 		$query_insert = "
 		INSERT INTO ".$GLOBALS['prefix_lms']."_catalogue_member
@@ -648,7 +652,8 @@ function removeFromCatologue($memebers, $id_catalogue) {
 
 	$re = true;
 	reset($memebers);
-	while(list(, $id_m) = each($memebers)) {
+  foreach($memebers as $id_m)  
+  {
 
 		$query_delete = "
 		DELETE FROM ".$GLOBALS['prefix_lms']."_catalogue_member

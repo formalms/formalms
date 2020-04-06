@@ -101,7 +101,8 @@ class Config_Framework {
 
 		$html = Form::getOpenFieldset($lang->def('_LOAD_UNLOAD_PLATFORM'));
 		reset($all_platform);
-		while(list($code, $info) = each($all_platform)) {
+    foreach($all_platform as $code => $info)
+    {
 			if($info['hidden_in_config'] != 'true') {
 
 				$code = $info['platform'];
@@ -137,7 +138,8 @@ class Config_Framework {
 		$re = true;
 
 		reset($all_platform);
-		while(list($code, $info) = each($all_platform)) {
+    foreach($all_platform as $code => $info)
+    {
 			if($info['hidden_in_config'] != 'true') {
 				$code = $info['platform'];
 				if(isset($_POST['activate_platform'][$code])) {
@@ -214,7 +216,8 @@ class Config_Framework {
 			$type_h = array('','');
 			$tb_son->setColsStyle($type_h);
 			$tb_son->addHead($cont_h);
-			while(list($id_son, $drop_son_name) = each($son_value)) {
+      foreach($son_value as $id_son => $drop_son_name)
+      {
 
 				$cont = array(
 					'<label for="template_selected_'.$id_son.'">'.$drop_son_name.'</label>',
@@ -246,12 +249,12 @@ class Config_Framework {
 		FROM ".$GLOBALS['prefix_fw']."_field_template
 		WHERE id_common = '".Get::sett('templ_use_field')."'";
 		$re_templ_assigned = sql_query($query_template_assigned);
+    foreach($re_templ_assigned as $ref_id => $template_code)
 		while(list($ref_id, $template_code) = sql_fetch_row($re_templ_assigned)) {
 			$assignement[$ref_id] = $template_code;
 		}
 
-		while(list($ref_id, $template_code) = each($_POST['template_selected'])) {
-
+		foreach($_POST['template_selected'] as $ref_id => $template_code) {
 			if(isset($assignement[$ref_id])) {
 
 				if(!sql_query("

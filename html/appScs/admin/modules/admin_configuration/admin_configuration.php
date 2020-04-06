@@ -47,7 +47,8 @@ function adminConf() {
 		
 		$query_update = "UPDATE ".$GLOBALS['prefix_scs']."_rules_admin SET ";
 		if(isset($_POST['rules'])) {
-			while(list($var_name, $new_value) = each($_POST['rules'])) {
+      foreach($_POST['rules'] as $var_name => $new_value )
+      {
 				
 				$query_update .= " $var_name = '".$new_value."',";
 			}

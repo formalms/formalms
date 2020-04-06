@@ -80,7 +80,7 @@ switch($op) {
 		$tags = new Tags('*');
 		$suggestion = $tags->getAutoComplete($query);
 		
-		$output = implode ($suggestion , "\n");
+		$output = implode ("\n", $suggestion);
 		
   		aout($output);
 	};break;

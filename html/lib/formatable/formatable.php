@@ -342,9 +342,15 @@ function formaTable(dom, options) {
     if(options.scrollX !== undefined) {
         _options.scrollX = options.scrollX;
     }
+
+    if (options.stateSave !== undefined) {
+        _options.stateSave = options.stateSave;
+    }
+    
     if(options.drawCallback !== undefined) {
         this.drawCallbacks.push(options.drawCallback);
     }
+    
     
     /**
      * Select option extension.

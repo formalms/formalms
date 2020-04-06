@@ -147,7 +147,7 @@ function showgrade() {
 
 	// XXX: construct table data
 	if(!empty($reports))
-	while(list($id_report, $report_info) = each($reports)) {
+  foreach($reports as $id_report => $report_info) {
 
 		$id_source = $report_info['id_source'];
 		$title = strip_tags($report_info['title']);
@@ -444,7 +444,7 @@ function user_test_report($idUser, $idTest, $id_track) {
 		$query_question = "
 		SELECT q.idQuest, q.title_quest, q.type_quest, t.type_file, t.type_class, q.idCategory
 		FROM ".$GLOBALS['prefix_lms']."_testquest AS q JOIN ".$GLOBALS['prefix_lms']."_quest_type AS t
-		WHERE q.idTest = '".$idTest."' AND q.type_quest = t.type_quest AND  q.idQuest IN (".implode($quest_see, ',').")
+		WHERE q.idTest = '".$idTest."' AND q.type_quest = t.type_quest AND  q.idQuest IN (".implode(',', $quest_see).")
 		ORDER BY q.sequence";
 	} else {
 		$query_question = "

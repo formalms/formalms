@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20191111</DATE>
+  <DATE>20200220</DATE>
   <LANG id="italian">
     <lang_code>italian</lang_code>
     <lang_description>Italiano</lang_description>
@@ -8,6 +8,9 @@
     <lang_browsercode>it</lang_browsercode>
     <lang_direction>ltr</lang_direction>
     <platform id="all">
+      <module id="">
+        <key id="&amp;_NEW_USER_SUBSCRIBED_TEXT_MODERATORS" attributes="" save_date="2020-02-19 10:55:21"><![CDATA[Un nuovo utente con [firstname] [lastname] e userId [username] è stato iscritto al corso [course] ]]></key>
+      </module>
       <module id="adminrules">
         <key id="adminrules&amp;_ADMIN_ASSIGNTREEDESCR" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Seleziona le directory utenti che saranno visibili all'amministratore]]></key>
         <key id="adminrules&amp;_ADMIN_MANAGMENT" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Gestione amministratori]]></key>
@@ -756,9 +759,9 @@ http://server/path/index.php?modname=login) \]]></key>
         <key id="course&amp;_CST_CONFIRMED" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Confermato]]></key>
         <key id="course&amp;_CST_PREPARATION" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[In costruzione]]></key>
         <key id="course&amp;_CUSTOM_OPTIONS" attributes="" save_date="0000-00-00 00:00:00"><![CDATA[Opzioni Personalizzate]]></key>
+        <key id="course&amp;_DATE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Data]]></key>
         <key id="course&amp;_DATE_END" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Data fine]]></key>
         <key id="course&amp;_DATE_START" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Data inizio]]></key>
-        <key id="course&amp;_DATE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Data]]></key>
         <key id="course&amp;_DAY" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Giorno]]></key>
         <key id="course&amp;_DAYS" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Giorni]]></key>
         <key id="course&amp;_DAY_OF_VALIDITY" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Giorni di validità]]></key>
@@ -802,8 +805,8 @@ http://server/path/index.php?modname=login) \]]></key>
         <key id="course&amp;_MIN_SUBSCRIBE_FOR_COURSE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Il numero minimo di iscritti è : <b>[min_subscribe]</b>]]></key>
         <key id="course&amp;_MULTIPLE_SUBSCRIPTION" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Iscrizioni multiple]]></key>
         <key id="course&amp;_MY_CERTIFICATE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[I miei certificati]]></key>
-        <key id="course&amp;_NEXT_LESSON" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Prossima lezione]]></key>
         <key id="course&amp;_NEW_USER_SUBS_WAITING_TEXT" attributes="accessibility" save_date="2015-09-30 15:32:39"><![CDATA[Un utente è in attesa su [url]]]></key>
+        <key id="course&amp;_NEXT_LESSON" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Prossima lezione]]></key>
         <key id="course&amp;_NOACTIVE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[In attesa di attivazione]]></key>
         <key id="course&amp;_NOENTER" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Non puoi entrare]]></key>
         <key id="course&amp;_NO_COURSE_DATA" attributes="" save_date="2018-01-15 17:04:00"><![CDATA[Corso senza data di inizio]]></key>
@@ -1030,7 +1033,13 @@ Puoi leggerlo su forma.lms all'indirizzo <a href="[url]">[url]</a>]]></key>
         <key id="email&amp;_DELETED_USER_TEXT" attributes="email" save_date="2017-03-15 11:56:07"><![CDATA[Il tuo account all'indirizzo <a href="[url]">[url]</a> con lo username [userid] è stato eliminato]]></key>
         <key id="email&amp;_DENY_SUBSCRIBED_SUBJECT" attributes="email" save_date="2015-09-30 15:32:39"><![CDATA[Richiesta di iscrizione rifiutata]]></key>
         <key id="email&amp;_DENY_SUBSCRIBED_TEXT" attributes="email" save_date="2015-09-30 15:32:39"><![CDATA[La tua richiesta di iscrizione al corso [corso] è stata rifiutata dall'amministratore all'indirizzo <a href="[url]">[url]</a>]]></key>
+        <key id="email&amp;_EVENT_CHANGE_NODE_USER_SBJ" attributes="" save_date="2020-02-19 10:54:46"><![CDATA[L'utente [User] ha cambiato nodo nella piattaforma [platform]]]></key>
+        <key id="email&amp;_EVENT_CHANGE_NODE_USER_TEXT" attributes="" save_date="2020-02-19 10:44:45"><![CDATA[Nella piattaforma [url] l'utente [firstname] [lastname] [username] è stato spostato dal nodo]]></key>
         <key id="email&amp;_EVENT_CLASS_UserCourseBuy" attributes="" save_date="2017-03-15 16:38:53"><![CDATA[L'utente ha acquistato un corso]]></key>
+        <key id="email&amp;_EVENT_COURSE_EVENT_SUSPENDED_USER_SBJ" attributes="" save_date="2020-02-19 10:54:23"><![CDATA[L'utente con [firstname] [lastname] e userId : [username] è stato sospeso dal corso : [course] nella piattaforma : [url]]]></key>
+        <key id="email&amp;_EVENT_COURSE_EVENT_SUSPENDED_USER_TEXT" attributes="" save_date="2020-02-19 10:54:19"><![CDATA[L'utente con [firstname] [lastname] e userId : [username] è stato sospeso dal corso : [course] nella piattaforma : [url]]]></key>
+        <key id="email&amp;_EVENT_SUSPENDED_USER_SBJ" attributes="" save_date="2020-02-19 10:42:10"><![CDATA[L'utente [User] è stato sospeso]]></key>
+        <key id="email&amp;_EVENT_SUSPENDED_USER_TEXT" attributes="" save_date="2020-02-19 10:44:58"><![CDATA[Nella piattaforma [url] l'utente [firstname] [lastname] [username] è stato sospeso]]></key>
         <key id="email&amp;_MODIFIED_USER_SBJ" attributes="email" save_date="2015-09-30 15:32:39"><![CDATA[L'account utente è stato modificato]]></key>
         <key id="email&amp;_MODIFIED_USER_TEXT" attributes="email" save_date="2015-09-30 15:32:39"><![CDATA[Il tuo account all'indirizzo <a href="[url]">[url]</a> è stato modificato: Username: [userid]]]></key>
         <key id="email&amp;_MOD_USER_SUBSCRIPTION_SUBJECT" attributes="email" save_date="2015-09-30 15:32:39"><![CDATA[La tua iscrizione è stata modificata]]></key>
@@ -1049,6 +1058,7 @@ Titolo: [title]
 
 Titolo: [thread_title]]]></key>
         <key id="email&amp;_NEW_USER_SUBSCRIBED_SUBJECT" attributes="email" save_date="2015-09-30 15:32:39"><![CDATA[Un nuovo utente si è iscritto ad un corso]]></key>
+        <key id="email&amp;_NEW_USER_SUBSCRIBED_SUBJECT_MODERATORS" attributes="" save_date="2020-02-19 10:43:56"><![CDATA[Un nuovo utente [firstname] [lastname] [username] è stato sospeso dal corso [course] da un moderatore]]></key>
         <key id="email&amp;_NEW_USER_SUBSCRIBED_TEXT" attributes="email" save_date="2015-09-30 15:32:39"><![CDATA[All'indirizzo: [url] un nuovo utente è stato iscritto al corso: [course]]]></key>
         <key id="email&amp;_NEW_USER_SUBS_WAITING_SUBJECT" attributes="email" save_date="2015-09-30 15:32:39"><![CDATA[Un utente è in attesa di essere iscritto ad un corso]]></key>
         <key id="email&amp;_NEW_USER_SUBS_WAITING_TEXT" attributes="email" save_date="2015-09-30 15:32:39"><![CDATA[Un nuovo utente si è iscritto al corso '[course]' ed è in attesa di essere approvato.
@@ -1088,8 +1098,8 @@ Titolo: [thread_title]]]></key>
         <key id="enrollrules&amp;_SHOW_LOGS" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Mostra log]]></key>
       </module>
       <module id="event_manager">
-        <key id="event_manager&amp;_EVENT_CHANGE_NODE_USER_SBJ" attributes="" save_date="2019-04-17 15:25:20"><![CDATA[User has been change node]]></key>
-        <key id="event_manager&amp;_EVENT_CHANGE_NODE_USER_SBJ_SMS" attributes="" save_date="2019-04-17 15:25:20"><![CDATA[User with [firstname] [lastname] and userId : [username] has been change node in platform : [url]]]></key>
+        <key id="event_manager&amp;_EVENT_CHANGE_NODE_USER_SBJ" attributes="" save_date="2020-02-19 10:54:01"><![CDATA[L'utente con [firstname] [lastname] e UserID : [username] è stato cambiato di nodo nella piattaforma: [url]]]></key>
+        <key id="event_manager&amp;_EVENT_CHANGE_NODE_USER_SBJ_SMS" attributes="" save_date="2020-02-19 10:53:58"><![CDATA[L'utente con [firstname] [lastname] e UserID : [username] è stato cambiato di nodo nella piattaforma: [url]]]></key>
         <key id="event_manager&amp;_EVENT_CHANNEL_SMS" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[SMS]]></key>
         <key id="event_manager&amp;_EVENT_CLASS_AdviceNew" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Nuovo avviso creato]]></key>
         <key id="event_manager&amp;_EVENT_CLASS_CoursePorpModified" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Proprietà del corso modificate]]></key>
@@ -1105,7 +1115,7 @@ Titolo: [thread_title]]]></key>
         <key id="event_manager&amp;_EVENT_CLASS_UserCourseLevelChanged" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Utente cambia livello in corso]]></key>
         <key id="event_manager&amp;_EVENT_CLASS_UserCourseRemoved" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Utente disiscritto da un corso]]></key>
         <key id="event_manager&amp;_EVENT_CLASS_UserCourseRemovedModerate" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Utente in attesa di rimozione dal corso]]></key>
-        <key id="event_manager&amp;_EVENT_CLASS_UserCourseSuspendedSuperAdmin" attributes="" save_date="2019-04-17 15:25:20"><![CDATA[User has been suspended]]></key>
+        <key id="event_manager&amp;_EVENT_CLASS_UserCourseSuspendedSuperAdmin" attributes="" save_date="2020-02-19 10:53:48"><![CDATA[L'utente con [firstname] [lastname] e userId : [username] è stato sospeso dal corso : [course] nella piattaforma : [url]]]></key>
         <key id="event_manager&amp;_EVENT_CLASS_UserDel" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Utente eliminato]]></key>
         <key id="event_manager&amp;_EVENT_CLASS_UserGroupInsert" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Inserito utente in gruppo]]></key>
         <key id="event_manager&amp;_EVENT_CLASS_UserGroupModerated" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Utente da moderare in gruppo]]></key>
@@ -1118,28 +1128,29 @@ Titolo: [thread_title]]]></key>
         <key id="event_manager&amp;_EVENT_CLASS_UserNewModerated" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Utente da moderare in creazione]]></key>
         <key id="event_manager&amp;_EVENT_CLASS_UserNewWaiting" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Un nuovo utente è in attesa di essere approvato]]></key>
         <key id="event_manager&amp;_EVENT_CLASS_UserRegistrationSuperadmins" attributes="" save_date="2019-07-26 12:10:23"><![CDATA[Utente registrato - superadmins]]></key>
-        <key id="event_manager&amp;_EVENT_CLASS_UserSuspendedSuperAdmin" attributes="" save_date="2019-04-17 15:25:20"><![CDATA[User has been suspended]]></key>
+        <key id="event_manager&amp;_EVENT_CLASS_UserSuspendedSuperAdmin" attributes="" save_date="2020-02-19 10:53:52"><![CDATA[L'utente con [firstname] [lastname] e userId : [username] è stato sospeso dal corso : [course] nella piattaforma : [url]]]></key>
         <key id="event_manager&amp;_EVENT_COURSE_EVENT_SUSPENDED_USER_SBJ" attributes="" save_date="2019-04-17 15:25:20"><![CDATA[User has been suspended]]></key>
-        <key id="event_manager&amp;_EVENT_COURSE_EVENT_SUSPENDED_USER_TEXT" attributes="" save_date="2019-04-17 15:25:20"><![CDATA[User with [firstname] [lastname] and userId : [username] has been suspended from course : [course] in platform : [url]]]></key>
-        <key id="event_manager&amp;_EVENT_COURSE_EVENT_SUSPENDED_USER_TEXT_SMS" attributes="" save_date="2019-04-17 15:25:20"><![CDATA[User with [firstname] [lastname] and userId : [username] has been suspended from course : [course] in platform : [url]]]></key>
+        <key id="event_manager&amp;_EVENT_COURSE_EVENT_SUSPENDED_USER_TEXT" attributes="" save_date="2020-02-19 10:54:15"><![CDATA[L'utente con [firstname] [lastname] e userId : [username] è stato sospeso dal corso : [course] nella piattaforma : [url]]]></key>
+        <key id="event_manager&amp;_EVENT_COURSE_EVENT_SUSPENDED_USER_TEXT_SMS" attributes="" save_date="2020-02-19 10:52:57"><![CDATA[L'utente con [firstname] [lastname] e userId : [username] è stato sospeso dal corso : [course] nella piattaforma : [url]]]></key>
         <key id="event_manager&amp;_EVENT_MANAGER" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Gestore eventi]]></key>
-        <key id="event_manager&amp;_EVENT_MOD_USER_SBJ" attributes="" save_date="2019-04-17 15:25:20"><![CDATA[User has been modified]]></key>
-        <key id="event_manager&amp;_EVENT_MOD_USER_TEXT" attributes="" save_date="2019-04-17 15:25:20"><![CDATA[User with [firstname] [lastname] and userId : [username] has been modified in platform : [url]]]></key>
-        <key id="event_manager&amp;_EVENT_MOD_USER_TEXT_SMS" attributes="" save_date="2019-04-17 15:25:20"><![CDATA[User with [firstname] [lastname] and userId : [username] has been modified in platform : [url]]]></key>
+        <key id="event_manager&amp;_EVENT_MOD_USER_SBJ" attributes="" save_date="2020-02-19 10:54:08"><![CDATA[L'utente con [firstname] [lastname] e userId : [username] è stato modificato nella piattaforma : [url]]]></key>
+        <key id="event_manager&amp;_EVENT_MOD_USER_TEXT" attributes="" save_date="2020-02-19 10:52:08"><![CDATA[L'utente con [firstname] [lastname] e userId : [username] è stato modificato nella piattaforma : [url]]]></key>
+        <key id="event_manager&amp;_EVENT_MOD_USER_TEXT_SMS" attributes="" save_date="2020-02-19 10:52:11"><![CDATA[L'utente con [firstname] [lastname] e userId : [username] è stato modificato nella piattaforma : [url]]]></key>
         <key id="event_manager&amp;_EVENT_PERM_NOTUSED" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Non usato]]></key>
         <key id="event_manager&amp;_EVENT_PLATFORM" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Piattaforma]]></key>
         <key id="event_manager&amp;_EVENT_PLATFORM_framework" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[appCore]]></key>
         <key id="event_manager&amp;_EVENT_PLATFORM_lms" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[appLMS]]></key>
         <key id="event_manager&amp;_EVENT_PLATFORM_lms-a" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[appLMS-A]]></key>
         <key id="event_manager&amp;_EVENT_RECIPIENTS_GOD" attributes="" save_date="2019-04-17 15:25:20"><![CDATA[Super-Administrators]]></key>
+        <key id="event_manager&amp;_EVENT_RECIPIENTS_GODS" attributes="" save_date="2020-01-20 15:21:28"><![CDATA[Super-Administrators]]></key>
         <key id="event_manager&amp;_EVENT_RECIPIENTS_MODERATORS_GOD" attributes="" save_date="2017-03-15 18:07:07"><![CDATA[Moderatori e super-amministratori]]></key>
         <key id="event_manager&amp;_EVENT_RECIPIENTS_TEACHER" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Docenti]]></key>
         <key id="event_manager&amp;_EVENT_RECIPIENTS_TEACHER_GOD" attributes="" save_date="2017-03-15 18:06:48"><![CDATA[Docenti e super-amministratori]]></key>
         <key id="event_manager&amp;_EVENT_RECIPIENTS_USER" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Utente]]></key>
         <key id="event_manager&amp;_EVENT_SETTINGS" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Impostazioni eventi]]></key>
         <key id="event_manager&amp;_EVENT_SUSPENDED_USER_SBJ" attributes="" save_date="2019-04-17 15:25:20"><![CDATA[User has been suspended]]></key>
-        <key id="event_manager&amp;_EVENT_SUSPENDED_USER_TEXT" attributes="" save_date="2019-04-17 15:25:20"><![CDATA[User with [firstname] [lastname] and userId : [username] has been suspended in platform : [url]]]></key>
-        <key id="event_manager&amp;_EVENT_SUSPENDED_USER_TEXT_SMS" attributes="" save_date="2019-04-17 15:25:20"><![CDATA[User with [firstname] [lastname] and userId : [username] has been suspended in platform : [url]]]></key>
+        <key id="event_manager&amp;_EVENT_SUSPENDED_USER_TEXT" attributes="" save_date="2020-02-19 10:53:23"><![CDATA[L'utente con [firstname] [lastname] e userId : [username] è stato sospeso dalla piattaforma : [url]]]></key>
+        <key id="event_manager&amp;_EVENT_SUSPENDED_USER_TEXT_SMS" attributes="" save_date="2020-02-19 10:53:30"><![CDATA[L'utente con [firstname] [lastname] e userId : [username] è stato sospeso dalla piattaforma : [url]]]></key>
       </module>
       <module id="faq">
         <key id="faq&amp;_ADDFAQ" attributes="" save_date="2017-03-15 18:07:20"><![CDATA[Aggiungi una FAQ]]></key>
@@ -2169,11 +2180,15 @@ Ti è stata inviata una email con i tuoi dati di registrazione.]]></key>
         <key id="sms&amp;_APPROVED_SUBSCRIBED_TEXT_SMS" attributes="sms" save_date="2015-09-30 15:32:40"><![CDATA[La tua richiesta di iscrizione al corso [course] è stata approvata dall'amministratore]]></key>
         <key id="sms&amp;_APPROVED_USER_TEXT_SMS" attributes="sms" save_date="2015-09-30 15:32:40"><![CDATA[La tua iscrizione è stata approvata]]></key>
         <key id="sms&amp;_DELETED_USER_TEXT_SMS" attributes="sms" save_date="2015-09-30 15:32:40"><![CDATA[E-learning: Il tuo account con lo username [userid] è stato eliminato]]></key>
+        <key id="sms&amp;_EVENT_CHANGE_NODE_USER_SBJ_SMS" attributes="" save_date="2020-01-20 18:19:28"><![CDATA[[url] [firstname] [lastname] [username]]]></key>
+        <key id="sms&amp;_EVENT_COURSE_EVENT_SUSPENDED_USER_TEXT_SMS" attributes="" save_date="2020-01-20 18:25:39"><![CDATA[[url] [firstname] [lastname] [course] [username]]]></key>
+        <key id="sms&amp;_EVENT_SUSPENDED_USER_TEXT_SMS" attributes="" save_date="2020-01-20 18:15:13"><![CDATA[[url] [firstname] [lastname] [username]]]></key>
         <key id="sms&amp;_MODIFIED_USER_TEXT_SMS" attributes="sms" save_date="2015-09-30 15:32:40"><![CDATA[Il tuo account all'indirizzo <a href="[url]">[url]</a> è stato modificato: Username: [userid]]]></key>
         <key id="sms&amp;_NEW_FORUM_BODY_SMS" attributes="sms" save_date="2015-09-30 15:32:40"><![CDATA[E-learning: è stato aperto un nuovo forum '[title]' nel corso '[course]']]></key>
         <key id="sms&amp;_NEW_FORUM_SMS" attributes="sms" save_date="2015-09-30 15:32:40"><![CDATA[Nuovo forum]]></key>
         <key id="sms&amp;_NEW_MESSAGE_INSERT_IN_THREAD_SMS" attributes="sms" save_date="2015-09-30 15:32:40"><![CDATA[E-learning: nel corso '[course]' c'è un nuovo messaggio in '[forum_title]' > '[thread_title]']]></key>
         <key id="sms&amp;_NEW_THREAD_INSERT_IN_FORUM_SMS" attributes="sms" save_date="2015-09-30 15:32:40"><![CDATA[E-learning: nel corso '[course]' c'è una nuova discussione in '[forum_title]': '[thread_title]']]></key>
+        <key id="sms&amp;_NEW_USER_SUBSCRIBED_TEXT_SMS_MODERATORS" attributes="" save_date="2020-01-20 18:11:42"><![CDATA[[url] [firstname] [lastname] [course] [username]]]></key>
         <key id="sms&amp;_PASSWORD_CHANGED_SMS" attributes="sms" save_date="2015-09-30 15:32:40"><![CDATA[e la tua password è stata cambiata in: [password]]]></key>
         <key id="sms&amp;_REGISTERED_USER_TEXT_SMS" attributes="sms" save_date="2015-09-30 15:32:40"><![CDATA[Sei ora registrato al nostro sistema con questo account:
 
@@ -2214,6 +2229,7 @@ Password: [password]]]></key>
         <key id="standard&amp;_ADMINISTRATORS" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Amministratori]]></key>
         <key id="standard&amp;_ADVANCED" attributes="" save_date="2017-04-10 14:09:27"><![CDATA[Avanzata]]></key>
         <key id="standard&amp;_ADVANCED_SEARCH" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Ricerca avanzata]]></key>
+        <key id="standard&amp;_ADVISE" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Avvisi]]></key>
         <key id="standard&amp;_ALL" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Tutti]]></key>
         <key id="standard&amp;_ALLOW_FULL_EDIT_PROFILE" attributes="" save_date="2019-10-11 10:35:14"><![CDATA[Consenti la modifica completa]]></key>
         <key id="standard&amp;_ALL_CATEGORIES" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Tutte le categorie]]></key>

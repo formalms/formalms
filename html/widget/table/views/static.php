@@ -15,7 +15,7 @@
 		<thead>
 			<tr class="yui-dt-first yui-dt-last">
 				<?php $first = true; $last = false; $i = 0;
-				while(list($key, $row) = each($this->header)) :
+                foreach($this->header  as $key=>$row ) :
 					$last = ($i == count($row)-1);  ?>
 
 				<th class="yui-dt-<?php echo ( $first ? 'first' : ($last ? 'last' : '' ) ).( !empty($this->styles[$key]) ? ' '.$this->styles[$key] : '' ); ?>; ?>">
@@ -25,16 +25,16 @@
 				</th>
 				
 				<?php $i++; $first = false;
-				endwhile; ?>
+				endforeach; ?>
 			</tr>
 		</thead>
 		<tbody>
 			<?php $i = 0;
-			while(list($key, $row) = each($this->data)) :?>
+			foreach($this->data as $key=>$row ) :?>
 			<tr class="yui-dt-<?php echo ($i++%2?'odd':'even'); ?>">
 				
 				<?php $first = true; $j = 0;
-				while(list($key, $cell) = each($row)) :
+                foreach($row as $key=>$cell) :
 					$last = ($j == count($row)-1); ?>
 
 				<td class="yui-dt-<?php echo ( $first ? 'first' : ($last ? 'last' : 'filter' ) ).( !empty($this->styles[$key]) ? ' '.$this->styles[$key] : '' ); ?>">
@@ -44,9 +44,9 @@
 				</td>
 
 				<?php $j++; $first = false;
-				endwhile; ?>
+				endforeach; ?>
 			</tr>
-			<?php endwhile; ?>
+		<?php endforeach; ?>
 		</tbody>
 	</table>
 </div>

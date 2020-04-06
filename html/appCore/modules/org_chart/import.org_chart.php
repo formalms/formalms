@@ -674,8 +674,8 @@ class ImportGroupUser extends DoceboImport_Destination {
 	 * @return TRUE if the row was succesfully inserted, FALSE otherwise
 	**/
 	function add_row( $row ) {
-
-		while(list($k, $v) = each($row)) {
+    foreach($row as $k => $v)
+    {
 			
 			$row[$k] = sql_escape_string($v);
 		}

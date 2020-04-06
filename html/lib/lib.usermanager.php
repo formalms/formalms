@@ -1523,8 +1523,11 @@ class UserManagerRenderer
                 };
                     break;
                 case "tree_drop" : {
+                    $query = sql_query("SELECT code FROM %adm_org_chart_tree WHERE idOrg = $reg_code LIMIT 1");
+                    $reg_code = sql_fetch_array($query)['code'];
+                    $reg_code = substr(str_replace('-', '', $reg_code), 0, 10);
                     $array_course = $this->getCodeCourses($reg_code);
-                    $array_folder = array($reg_code => $reg_code);
+                    $array_folder = $uma->getFoldersFromCode($reg_code);
                 };
                     break;
                 case "custom": {
@@ -1564,12 +1567,11 @@ class UserManagerRenderer
         if (!empty($array_folder)) {
 			//let's find the oc and ocd
 			$oc_folders = $uma->getOcFolders($array_folder);
-			while(list($id, $ocs) = each($oc_folders)) {
-
+      foreach($oc_folders as $id => $ocs ){
 				$acl_man->addToGroup($ocs[0], $iduser);
 				$acl_man->addToGroup($ocs[1], $iduser);
 			}
-            while (list($id, $folder) = each($array_folder)) {
+            foreach($array_folder as $id => $folder ){
                 $acl_man->addToGroup($folder, $iduser);
             }
 
@@ -1632,8 +1634,7 @@ class UserManagerRenderer
         if (isset($_POST['group_sel_implode'])) {
 
             $groups = explode(',', $_POST['group_sel_implode']);
-            while (list(, $idst) = each($groups)) {
-
+            foreach($groups as $idst){            
                 $acl_man->addToGroup($idst, $iduser);
                 // FORMA: added the inscription policy
                 $enrollrules = new EnrollrulesAlms();
@@ -2394,7 +2395,7 @@ class UserManagerRenderer
 
         // control mail is correct
         $acl_man =& Docebo::user()->getAclManager();
-
+        $source['register']['email'] = strtolower($source['register']['email']);
 
         if ($source['register']['email'] === '') {
             $error = ['error' => true,

@@ -87,7 +87,8 @@ class Selector_Catalogue {
 		}
 		// add last selection
 		if(isset($array_state['new_catalogue_selected'])) {
-			while(list($id_c) = each($_POST['new_catalogue_selected'])) {
+      foreach($_POST['new_catalogue_selected'] as $id_c)
+      {
 
 				$this->current_selection[$id_c] = $id_c;
 			}

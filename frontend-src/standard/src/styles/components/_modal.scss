@@ -171,3 +171,153 @@
     }
   }
 }
+
+
+.modal-dialog--notitle {
+  width: 90%;
+  max-width: 768px;
+  max-height: calc(100% - 150px);
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) !important;
+
+  @include breakpoint($ipad) {
+    width: 45%;
+  }
+
+  @include breakpoint($desktop) {
+    width: 40%;
+  }
+}
+
+.modal-dialog--video {
+  width: 90%;
+  height: 70%;
+  max-width: none;
+
+  @include breakpoint($ipad) {
+    width: 80%;
+    height: 70%;
+  }
+
+  @include breakpoint($desktop) {
+    width: 80%;
+    height: 70%;
+  }
+}
+
+.modal-dialog--bio {
+  width: 90%;
+  height: 70%;
+  max-width: none;
+
+  @include breakpoint($ipad) {
+    width: 55%;
+    height: auto;
+  }
+
+  @include breakpoint($desktop) {
+    width: 55%;
+    height: auto;
+  }
+}
+
+.modal-dialog--video {
+  width: 90%;
+  height: 70%;
+  max-width: none;
+
+  @include breakpoint($ipad) {
+    width: 80%;
+    height: 70%;
+  }
+
+  @include breakpoint($desktop) {
+    width: 80%;
+    height: 70%;
+  }
+}
+
+.modal-header--notitle {
+  border: none;
+
+  .close {
+    opacity: 1;
+    color: #fff;
+  }
+}
+
+.modal-content--full {
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.modal-body--nopadding {
+  padding: 0;
+  margin: 0;
+  line-height: 0;
+  width: 100%;
+  height: 100%;
+}
+.modal-header--bio {
+  background-color: $orange;
+  border: none;
+  position: relative;
+  padding-left: 12px;
+  padding-top: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: left;
+
+  .close {
+    opacity: 1;
+    color: #fff;
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 32px;
+
+    @include breakpoint($ipad) {
+      right: 25px;
+    }
+  }
+}
+
+.modal-content--full {
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.modal-body--nopadding {
+  padding: 0;
+  margin: 0;
+  line-height: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.modal-content--bio {
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  margin-bottom: 20px;
+  box-shadow: none;
+  border: none;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.modal__text {
+  line-height: 20px;
+}
+
+.modal__textcontainer {
+  padding: 26px 14px;
+}

@@ -32,7 +32,7 @@ function adviceList() {
 	$query_my_advice = "
 		SELECT DISTINCT idAdvice
 		FROM ".$GLOBALS['prefix_lms']."_adviceuser
-		WHERE ( idUser IN ( ".implode($user_idst, ',')." ) AND archivied = '0' )";
+		WHERE ( idUser IN ( ".implode(',', $user_idst)." ) AND archivied = '0' )";
 	$re_my_advice = sql_query($query_my_advice);
 
 	$advice_all = array();
@@ -55,7 +55,7 @@ function adviceList() {
 		$query_advice = "
 			SELECT idAdvice, posted, title, description, important, author
 			FROM ".$GLOBALS['prefix_lms']."_advice
-			WHERE idCourse='".$_SESSION['idCourse']."' AND idAdvice IN ( ".implode($advice_all, ',')." )
+			WHERE idCourse='".$_SESSION['idCourse']."' AND idAdvice IN ( ".implode(',', $advice_all)." )
 			ORDER BY posted DESC
 			LIMIT $ini,".Get::sett('visuItem');
 		$re_advice = sql_query($query_advice);
@@ -63,7 +63,7 @@ function adviceList() {
 		list($numofadvice) = sql_fetch_row(sql_query("
 			SELECT COUNT(DISTINCT idAdvice)
 			FROM ".$GLOBALS['prefix_lms']."_advice
-			WHERE idCourse='".$_SESSION['idCourse']."' AND idAdvice IN ( ".implode($advice_all, ',')." )"));
+			WHERE idCourse='".$_SESSION['idCourse']."' AND idAdvice IN ( ".implode(',', $advice_all)." )"));
 		$nav_bar->setElementTotal($numofadvice);
 
 		if(isset($_GET['result'])) {
@@ -149,7 +149,7 @@ function archiveList() {
 		$query_advice = "
 			SELECT idAdvice, posted, title, description, important, author
 			FROM ".$GLOBALS['prefix_lms']."_advice
-			WHERE idCourse='".$_SESSION['idCourse']."' AND idAdvice IN ( ".implode($advice_arch, ',')." )
+			WHERE idCourse='".$_SESSION['idCourse']."' AND idAdvice IN ( ".implode(',', $advice_arch)." )
 			ORDER BY posted DESC
 			LIMIT $ini,".Get::sett('visuItem');
 		$re_advice = sql_query($query_advice);
@@ -157,7 +157,7 @@ function archiveList() {
 		list($numofadvice) = sql_fetch_row(sql_query("
 			SELECT COUNT(DISTINCT idAdvice)
 			FROM ".$GLOBALS['prefix_lms']."_advice
-			WHERE idCourse='".$_SESSION['idCourse']."' AND idAdvice IN ( ".implode($advice_arch, ',')." )"));
+			WHERE idCourse='".$_SESSION['idCourse']."' AND idAdvice IN ( ".implode(',', $advice_arch)." )"));
 		$nav_bar->setElementTotal($numofadvice);
 
 		if(isset($_GET['result'])) {
@@ -267,7 +267,7 @@ function addadvice() {
 	$db_groups = $acl_man->getBasePathGroupST('/lms/course/'.$_SESSION['idCourse'].'/group/', true);
 	$groups = array();
 	$groups['me'] = $lang->def('_YOUONLY');
-	while(list($idst, $groupid) = each($db_groups)) {
+  foreach($db_groups as $idst => $groupid) {
 
 		$groupid = substr($groupid, strlen('/lms/course/'.$_SESSION['idCourse'].'/group/'));
 		if($groupid == 'alluser') {
@@ -535,7 +535,8 @@ function updreader() {
 	$dest = array();
 	if(is_array($add_reader)) {
 
-		while(list(, $idst) = each($add_reader)) {
+		foreach($add_reader as $idst)
+    {
 
 			$query_insert = "
 				INSERT INTO ".$GLOBALS['prefix_lms']."_adviceuser
@@ -548,7 +549,7 @@ function updreader() {
 	}
 	if(is_array($del_reader)) {
 
-		while(list(, $idst) = each($del_reader)) {
+			foreach($del_reader as $idst) {
 
 			$query_delete = "
 				DELETE FROM ".$GLOBALS['prefix_lms']."_adviceuser
@@ -652,7 +653,7 @@ function archiveadvice() {
 	$query_my_advice = "
 		SELECT DISTINCT idAdvice, idUser
 		FROM ".$GLOBALS['prefix_lms']."_adviceuser
-		WHERE idUser IN ( ".implode($user_idst, ',')." ) AND idAdvice = '".$id_advice."'";
+		WHERE idUser IN ( ".implode(',', $user_idst)." ) AND idAdvice = '".$id_advice."'";
 	$re_my_advice = sql_query($query_my_advice);
 
 	if(sql_num_rows($re_my_advice)) {

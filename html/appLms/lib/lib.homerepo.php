@@ -937,7 +937,8 @@ function loadFields( $arrayData, &$lo, $idLO ) {
 	else
 		$selLang = $defaultLanguage;
 
-		while(list( ,$valueLang)= each($langArray)) {
+		foreach($langArray as $valueLang )
+    {
 			echo '<option value="'.$valueLang.'"';
 			if($valueLang == $selLang) echo ' selected="selected"';
 			echo '>'.$valueLang.'</option>';

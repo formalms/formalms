@@ -2331,15 +2331,107 @@ public function addClassroom($params) {
                 $output['id_new_association'] = $id_meta;
                 
                 
-            } catch(Exception $e) {
+            } catch(Exception $e) {       
               $output['success']=false;
             }           
+                                
+        return $output;
+        
+    }
+      
+
+    /**
+     * put introduction of course    
+     * @param <type> course_id 
+     * @param <type> text_intro 
+     * GRIFO:LRZ
+     */      
+    public function putIntroductionCourse($params){
+        $output =array();
+        $output['success']=true;
+        
+        $course_id = (isset($params['course_id']) ? $params['course_id'] : '');
+        $text_intro = (isset($params['text_intro']) ? $params['text_intro'] : '');
+        
+        if (empty($course_id)) {
+            $output['success']=false;
+            $output['message']='Missing course_id '.$course_id;
+            return $output;
+        }    
+       
+        // get exist record intro-course
+        $sql_exist = "select count(id_course) as exist from learning_htmlfront where id_course=".$params['course_id'];
+        $qres = sql_query($sql_exist);
+        list($exist) = sql_fetch_row($qres); 
+
+        if($exist==0){
+            // insert
+            $sql_intro = "insert into learning_htmlfront (id_course, textof) values (".$params['course_id'].",'".(($params['text_intro']))."')";
+            
+        }else{
+            // update
+            $sql_intro = "update learning_htmlfront set textof='".($params['text_intro'])."'   where id_course=".$params['course_id'];
+        }
+        
+        try {
+            $q_intro = sql_query($sql_intro);
+        } catch(Exception $e) {
+              $output['success']=false;
+        }          
+        
+        
+        $output['course_id']=$course_id;
         
         return $output;
         
     }
-        
     
+    /**
+     * copy image cover from another course    
+     * @param <type> course_id_from 
+     * @param <type> course_id_to
+     * GRIFO:LRZ
+     */     
+    public function copyImgFromCourse($params){
+        $output =array();
+        $output['success']=true;
+        
+        $course_id_from = (isset($params['course_id_from']) ? $params['course_id_from'] : '');
+        $course_id_to = (isset($params['course_id_to']) ? $params['course_id_to'] : '');
+        
+        if (empty($course_id_to)) {
+            $output['success']=false;
+            $output['message']='Missing course_id_to '.$course_id_to;
+            return $output;
+        }
+
+        // if $course_id_from equal zero, l'img of course destination is image default
+        $img_course='';
+        
+        // get exist image course source
+        if($course_id_from>0){
+            $sql_img = "select img_course from learning_course where idCourse=".$params['course_id_from'];
+            $qres = sql_query($sql_img);
+            list($img_course) = sql_fetch_row($qres);         
+        }
+            
+        // associate img_course to course destination
+        $sql_img = "update learning_course set img_course = '".$img_course."' where idCourse=".$params['course_id_to'];
+        
+       try {
+            $q_img = sql_query($sql_img);
+        } catch(Exception $e) {
+              $output['success']=false;
+        }        
+        
+        
+        $output['course_id_from'] = $course_id_from;
+        $output['course_id_to'] = $course_id_to;
+        
+         return $output;
+        
+        
+    }
     
     
     
@@ -2514,7 +2606,6 @@ public function addClassroom($params) {
                 $output = $this->getAnswerTest($_POST);
                 
             }break;               
-            
 
             //META CERTIFICATE 
             case 'assignMetaUser':
@@ -2522,14 +2613,28 @@ public function addClassroom($params) {
                 $output = $this->assignMetaUser($_POST);
             }break;        
             
-
-            
             case 'addCertificate':
             case 'addcertificate':{
                 $output = $this->addAssociationCertificate($_POST);                
         
             }break;             
             
+           // manage introduction module of course
+           case 'putintroductioncourse':
+           case 'putIntroductionCourse':{
+                $output = $this->putIntroductionCourse($_POST);
+               
+           } break;
+           
+           // copy image from course source
+           case 'copyimgfromcourse':
+           case 'copyImgFromCourse':{
+                $output = $this->copyImgFromCourse($_POST);
+           }
+           
+           
+           
+           
             
 			default: $output = parent::call($name, $params);
 		}

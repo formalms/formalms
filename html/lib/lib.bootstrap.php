@@ -113,7 +113,7 @@ class Boot {
 
 			self::log( "Unset all the globals that aren't php setted. (Emulate register global = off)" );
 			$allowed = array('GLOBALS', '_GET', '_POST', '_COOKIE', '_FILES', '_ENV', '_SERVER', '_REQUEST');
-			while(list(, $elem) = each($allowed)) {
+      foreach ($allowed as $elem) {
 		 		if (!isset($allowed[$elem])) unset($GLOBALS[$elem]);
 			}
 		}
@@ -543,7 +543,7 @@ class Boot {
 
 	public static function log($str) { self::$log_array[] = $str; }
 
-	public static function get_log($as_string = false) { return ( $as_string ? implode(self::$log_array, "\n") : self::$log_array ); }
+	public static function get_log($as_string = false) { return ( $as_string ? implode("\n", self::$log_array) : self::$log_array ); }
 
 	public static function error_catcher($code,$message,$file,$line) {
 

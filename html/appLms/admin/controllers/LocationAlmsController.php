@@ -97,7 +97,8 @@ class LocationAlmsController extends AlmsController {
 			}
 		}
 
-		while (list($i, $location) = each($location_list)) {
+		foreach($location_list as $i=>$location )
+    {
 			if ($ulevel != ADMIN_GROUP_GODADMIN && !in_array($location->id_location, $admin_locations)) {
 				$location->can_manage_classrooms = 0;
 				$location->location_mod = FALSE;
@@ -271,8 +272,8 @@ class LocationAlmsController extends AlmsController {
 		$classroom_list = $this->model->getClassroomList($id_location, $startIndex, $results, $sort, $dir, $filter);
 
 		$total = $this->model->getClassroomTotal($id_location, $filter);
-
-		while (list($i, $classroom) = each($classroom_list)) {
+		foreach($classroom_list as $i=>$classroom )
+    {
 			$classroom->classroom = $classroom->name;
 			$classroom->classroom_mod = 'ajax.adm_server.php?r=alms/location/mod&amp;idClassroom=' . $classroom->name;
 			$classroom->classroom_del = 'ajax.adm_server.php?r=alms/location/delClassroom&amp;idClassroom=' . $classroom->id_classroom;

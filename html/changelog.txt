@@ -10,6 +10,33 @@
 FORMA LMS
 RELEASE CHANGELOG
 ---------------------------------------------------------------------------------------
+forma.lms 2.4.1
+---------------------------------------------------------------------------------------
+Release date: 2020 february 20
+
+#19016 - test objects: fixed issue about mandatory answer on Edge and IE
+#19437 - IO task - add user language import to userconnector
+#19504 - Add username in password recovery email
+#19547 - Added enroll policy management in docebousers connector
+#19563 - Move htmlpurifier cache folder into forma twig cache folder
+#19569 - Mycourses - order categoy filter alphabetically
+#19567 - Free registration with manual code - any code accepted
+#19575 - My courses - include category in filter search
+#19609 - Upgrader - bug upgrade 1.3 - 2.x 
+#19611 - Disable some notification events
+#19614 - Can't delete single certificates 
+#19615 - Manage additional tabs in the mycertificate page 
+#19619 - Edit profile - bug with allow all and disallow mode
+#19612 - Fixed and improved algorithm for computing catalogue tree
+#19617 - Role creation for menu error
+#19620 - User registration - error with uppercase in email field
+#19622 - Issue with course newsletter recipient
+#19669 - Bug Fixes template side
+#19671 - removed external http call to Yui library
+
+Plus other minor fixes and improvements
+
+---------------------------------------------------------------------------------------
 forma.lms 2.4
 ---------------------------------------------------------------------------------------
 Release date: 2019 November 26

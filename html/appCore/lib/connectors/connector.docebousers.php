@@ -14,6 +14,12 @@
 
 require_once( dirname(__FILE__) . '/lib.connector.php' );
 
+// Constant definition for language
+
+define(LANG_NOT_SET_IN_CSV, '');
+define(NOT_VALID_LANG, NULL);
+define(USER_HAS_NO_LANG, NULL);
+
 /** 
  * class for define docebo users connection to data source.
  * @package admin-core
@@ -397,9 +403,8 @@ class DoceboConnectorDoceboUsers extends DoceboConnector {
 			
 			if(is_numeric($field_id)) {
 				
-				$pluto = $this->fl->fieldValue((int)$field_id, array($row[0]));
-				
-				list(,$export[]) = each($pluto);
+				$p = $this->fl->fieldValue((int)$field_id, array($row[0]));
+				$export[] = reset($p); 
 			} else {
 				
 				switch($field_id) {
@@ -528,13 +533,13 @@ class DoceboConnectorDoceboUsers extends DoceboConnector {
 				FALSE //google_id
 			);
                
-           if($language !== '') { // language set in csv...
+           if($language !== LANG_NOT_SET_IN_CSV ) { 
            
                // Add language to the user
                
                $language = $this->return_valid_language_from_csv_row($language);
                
-               if ($language !== NULL)  // It's a valid and recognized and in platform language.
+               if ($language !== NULL && $language != Lang::get())  // It's a valid and recognized and in platform language.
                       $this->add_language_to_user_by_idst($idst, $language);
            
            }    
@@ -567,7 +572,7 @@ class DoceboConnectorDoceboUsers extends DoceboConnector {
 				return FALSE;				
 			}
             
-             if($language !== '') { // language set in csv...
+             if($language !== LANG_NOT_SET_IN_CSV) { // language set in csv...
            
                // Update language to the user only if it's different compared to 
                // the actual.
@@ -578,12 +583,16 @@ class DoceboConnectorDoceboUsers extends DoceboConnector {
                // If lang_in_db is null, the user has default language.
                $lang_in_db = $this->get_lang_user_from_db($idst);
                
-               if($language != NULL && $lang_in_db != NULL && $language != $lang_in_db)  // if language is different from the default, it means that it already exists a row in the db
-              
-                    $this->update_language_if_different($idst, $language);   
-                else if($lang_in_db == NULL && ($language != NULL && $language != Lang::get()) ) // It's been added a language since the user has never been one (it has the def.).
-                    
-                    $this->add_language_to_user_by_idst($idst,$language); // a language has never been set  to the user.
+               if($language != NOT_VALID_LANG) {
+                   if($lang_in_db != USER_HAS_NO_LANG) {
+                       
+                      if($language != $lang_in_db) 
+                             // It's been added a language since the user has never been one (it has the def.).
+                        $this->update_language_if_different($idst, $language); 
+                       
+                   }  else
+                       $this->add_language_to_user_by_idst($idst,$language); // a language has never been set  to the user.  
+               }
               
               }
             
@@ -615,7 +624,8 @@ class DoceboConnectorDoceboUsers extends DoceboConnector {
 				$tree_codes = explode(';', $tree_code);
 				
 				$readed_folders = array();
-				while(list(, $tree_code)= each($tree_codes)) {
+        foreach($tree_codes as $tree_code )
+        {
 					
 					$dir_code = stripslashes($tree_code);
 					if(isset($this->org_chart_code[$dir_code])) {
@@ -633,15 +643,12 @@ class DoceboConnectorDoceboUsers extends DoceboConnector {
 					$idst_ocd_folder = $this->org_chart_group['/ocd_'.$id_dir];
 						
 					Docebo::aclm()->addToGroup($idst_oc_folder, $idst);
-					Docebo::aclm()->addToGroup($idst_ocd_folder, $idst);
-                    
+					Docebo::aclm()->addToGroup($idst_ocd_folder, $idst); 
                     
                     // adding to enrollment rules for org, if any
                     $enrollrules = new EnrollrulesAlms();
                     $users = array($idst);
-                    $enrollrules->newRules('_NEW_IMPORTED_USER', $users, 'all', $id_dir);
-                    
-                    
+                    $enrollrules->newRules('_NEW_IMPORTED_USER', $users, 'all', $id_dir);                    
 				}
 				foreach($to_del as $id_dir) {
 					
@@ -651,7 +658,6 @@ class DoceboConnectorDoceboUsers extends DoceboConnector {
 					Docebo::aclm()->removeFromGroup($idst_oc_folder, $idst);
 					Docebo::aclm()->removeFromGroup($idst_ocd_folder, $idst);
 				}
-                
 			}
 			//  -------------------------------------------------------------------
 			$result = TRUE;
@@ -699,7 +705,7 @@ class DoceboConnectorDoceboUsers extends DoceboConnector {
             $q_lang = "SELECT lang_code FROM " . $GLOBALS['prefix_fw'] . "_lang_language WHERE lang_browsercode LIKE '%$language%' ";
             $rs = sql_query( $q_lang, $this->dbconn );
             
-            return (($language = sql_fetch_row($rs)) != NULL) ? $language[0] : NULL;
+            return (($language = sql_fetch_row($rs)) != NULL) ? $language[0] : NOT_VALID_LANG;
             
             
         }

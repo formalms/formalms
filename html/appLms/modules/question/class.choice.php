@@ -413,7 +413,8 @@ class Choice_Question extends Question {
 					}
 				}
 			}
-			while(list($idA) = each($existent_answer)) {
+      foreach($existent_answer as $idA => $v )
+      {
 				//i must delete these answer
 				$del_answer_query = "
 				DELETE FROM ".$GLOBALS['prefix_lms']."_testquestanswer
@@ -1005,7 +1006,8 @@ class Choice_Question extends Question {
 		if(!is_array($raw_quest->answers)) return $new_id_quest;
 		
 		reset($raw_quest->answers);
-		while(list(,$raw_answer) = each($raw_quest->answers)) {
+    foreach($raw_quest->answers as $raw_answer) 
+    {
 			
 			if($raw_answer->score_correct > 0 && $raw_answer->score_correct < 1  && $raw_answer->is_correct) {
 			

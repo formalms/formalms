@@ -74,7 +74,8 @@ function classEventMain() {
 	$res.="\n";
 	$res.="<div class=\"std_block\" style=\"margin:auto;width:".$width.";\">\n";
 	$res.="<p>".$lang->def("_SELECT_CLASSROOM").": <select name=\"classroom_selected\" id=\"classroom_selected\"  onChange=\"updateCalendar(cal.date);\"><option value=\"\">(".$lang->def("_SELECT_ALL").")</option>";
-	while (list($key,$value)=each($class_arr)) {
+  foreach( $class_arr as $key => $value)
+  {
 		$res.="<option value=\"".htmlentities($key)."\">".htmlentities($value)."</option>";	
 	}
 	$res.="</select></p>";

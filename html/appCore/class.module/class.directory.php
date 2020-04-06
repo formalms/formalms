@@ -1054,8 +1054,7 @@ class Module_Directory extends Module {
 		$plt_list = $plt_man->getPlatformList(true);
 
 		$GLOBALS['page']->add( Form::getHidden('show_on_platform_framework', 'show_on_platform[framework]', 1), 'content');
-		while(list($code, $name) = each($plt_list)) {
-
+    foreach($plt_list as $code => $name) {
 			$GLOBALS['page']->add( Form::getCheckbox($name, 'show_on_platform_'.$code, 'show_on_platform['.$code.']', 1, isset($show_on_platform[$code])) , 'content');
 		}
 		$GLOBALS['page']->add( Form::getCloseFieldset() , 'content');
@@ -1096,7 +1095,7 @@ class Module_Directory extends Module {
 		$waiting_users =& $this->aclManager->getWaitingUserForGroup($idst);
 		if($waiting_users) {
 
-			while(list($idst_u, $user_info) = each($waiting_users)) {
+			foreach ($waiting_users as $idst_u=>$user_info) {
 
 				$more = '';
 				$more = ( isset($_GET['id_user']) && $_GET['id_user'] == $idst_u
@@ -1831,8 +1830,7 @@ class Module_Directory extends Module {
 			$aopproved = array();
 			if(isset($_POST['waiting_user_refuse'])) {
 
-				while(list($idst) = each($_POST['waiting_user_refuse'])) {
-
+				foreach($_POST['waiting_user_refuse'] as $idst => $v) {
 					$this->aclManager->deleteTempUser( $idst , false, false, true );
 				}
 				$refused[] = $idst;
@@ -1851,8 +1849,8 @@ class Module_Directory extends Module {
 
 				$request = $this->aclManager->getTempUsers(false, true);
 
-				while(list($idst) = each($_POST['waiting_user_accept'])) {
-
+				
+        foreach($_POST['waiting_user_accept'] as $idst => $v) {
 					if($this->aclManager->registerUser(addslashes($request[$idst]['userid']),
 						addslashes($request[$idst]['firstname']),
 						addslashes($request[$idst]['lastname']),
@@ -1943,8 +1941,7 @@ class Module_Directory extends Module {
 
 			if($temp_users !== false) {
 				$idst_admins = array();
-				while(list($idst, $info) = each($temp_users)) {
-
+				foreach($temp_users as $idst => $info) {
 					if($info['create_by_admin'] != 0) {
 						$idst_admins[] = $info['create_by_admin'];
 					}
@@ -1952,7 +1949,7 @@ class Module_Directory extends Module {
 				$admins = $this->aclManager->getUsers($idst_admins);
 
 				reset($temp_users);
-				while(list($idst, $info) = each($temp_users)) {
+				foreach ($temp_users as $idst => $info) {
 
 					if($info['create_by_admin'] != 0) {
 						$creator = $admins[$info['create_by_admin']][ACL_INFO_LASTNAME].' '

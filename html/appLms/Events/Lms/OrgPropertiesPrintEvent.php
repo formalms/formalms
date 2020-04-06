@@ -22,6 +22,8 @@ class OrgPropertiesPrintEvent extends Event {
 
     protected $action;
 
+    protected $orgTreeView;
+
     /**
      * @return mixed
      */
@@ -36,6 +38,22 @@ class OrgPropertiesPrintEvent extends Event {
     public function setElement($element)
     {
         $this->element = $element;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getOrgTreeView()
+    {
+        return $this->orgTreeView;
+    }
+
+    /**
+     * @param mixed $orgTreeView
+     */
+    public function setOrgTreeView($orgTreeView)
+    {
+        $this->orgTreeView = $orgTreeView;
     }
 
     /**

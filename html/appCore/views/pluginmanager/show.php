@@ -60,7 +60,7 @@ $(function() {
                                     <?php if (!class_exists('ZipArchive')): ?>
                                         $error+= '<?php echo Lang::t('_PLUGIN_ERROR_NOT_ONLINE_UPDATE', 'configuration')?><br>';
                                     <?php endif; ?>
-                                    $install+= ' <a class="forma-button forma-button--orange-hover" title="' + $error + '" style="color: #006d07;" href="index.php?r=adm/pluginmanager/update' + '&plugin=' + $info['name'] + '&online=' + $info['online'] + '"><?php echo Lang::t('_PLUGIN_UPDATE', 'configuration')?></a>';
+                                    $install+= ' <a class="forma-button forma-button--orange-hover" title="' + $error + '" style="color: #006d07;" href="index.php?r=adm/pluginmanager/update' + '&plugin=' + $info['name'] + ($info['online'] ? "&online=true" : "") + '"><?php echo Lang::t('_PLUGIN_UPDATE', 'configuration')?></a>';
                                 }
                             }
                         }else {

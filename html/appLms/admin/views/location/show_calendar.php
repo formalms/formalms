@@ -20,7 +20,7 @@
 		cal1.cfg.setProperty("MDY_MONTH_POSITION", 2);
 		cal1.cfg.setProperty("MDY_DAY_POSITION", 3);
 
-		<?php if ($date_list) { while(list(,$value) = each($date_list)){ ?>
+		<?php if ($date_list) { foreach(date_list as $value ) { ?>
 			
 			cal1.addRenderer("<?php echo $value; ?>", cal1.renderCellStyleHighlight1);
 

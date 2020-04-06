@@ -116,7 +116,8 @@ class FunctionalrolesAdm extends Model {
 
 			//insert values in output records
 			reset($output);
-			while (list($key, $value) = each($output)) {
+      foreach($output as $key => $value )
+      {
 				//WARNING: extremely expansive; TO DO: optimize the users count
 				$count = count($this->getAllUsers($key));
 				$value->users = $count > 0 ? $count : 0;
@@ -136,7 +137,8 @@ class FunctionalrolesAdm extends Model {
 			}
 			//insert values in output records
 			reset($output);
-			while (list($key, $value) = each($output)) {
+      foreach($output as $key => $value )      
+      {
 				$value->competences = (isset($_arr_competences[$key]) ? (int)$_arr_competences[$key] : 0);
 			}
 			unset($_arr_competences);
@@ -1496,7 +1498,7 @@ class FunctionalrolesAdm extends Model {
 			}
 		}
 
-		while (list($key, $value) = each($output)) {
+    foreach($output as $key => $value ) {
 			if (isset($langs[$key])) {
 				$value->langs = $langs[$key];
 			}

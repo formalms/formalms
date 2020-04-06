@@ -491,7 +491,8 @@ class Man_Eportfolio {
 		if(empty($members_to_add)) return true;
 		$result = true;
 		reset($members_to_add);
-		while(list(, $idst_member) = each($members_to_add)) {
+    foreach($members_to_add as $idst_member)
+    {
 			
 			$query = "
 			INSERT INTO ".$this->getTableEpfMember()." ( id_portfolio, idst_member, user_is_admin ) VALUES (
@@ -518,7 +519,7 @@ class Man_Eportfolio {
 		if(empty($members_to_add)) return true;
 		$result = true;
 		reset($members_to_add);
-		while(list(, $idst_member) = each($members_to_add)) {
+    foreach($members_to_add as $idst_member) {
 			
 			$query = "
 			UPDATE ".$this->getTableEpfMember()." 
@@ -543,7 +544,8 @@ class Man_Eportfolio {
 		if(empty($members_to_remove)) return true;
 		$result = true;
 		reset($members_to_remove);
-		while(list(, $idst_member) = each($members_to_remove)) {
+    foreach($members_to_remove as $idst_member)    
+    {
 			
 			$query = "
 			DELETE FROM ".$this->getTableEpfMember()." 
@@ -1518,7 +1520,8 @@ class Man_Eportfolio {
 		$to_del = array_diff($old_file, $file_selection);
 		
 		$result = true;
-		while(list(, $add) = each($to_add)) {
+    foreach($to_add as $add)    
+    {
 			
 			$query = "INSERT INTO ".$this->getTablePresentationAttach()." 
 			( id_presentation, id_user , id_file) VALUES
@@ -1528,7 +1531,8 @@ class Man_Eportfolio {
 				echo sql_error();
 			$result &= $this->_query($query);
 		}
-		while(list(, $del) = each($to_del)) {
+    foreach($to_del as $del)    
+    {
 			
 			$query = "DELETE FROM ".$this->getTablePresentationAttach()."  
 			WHERE id_presentation = '".$id_presentation."'

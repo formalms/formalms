@@ -104,6 +104,7 @@ class ElearningLms extends Model {
             ." FROM %lms_course AS c "
             ." JOIN %lms_courseuser AS cu ON (c.idCourse = cu.idCourse)  "
             ." left JOIN %lms_course_date AS cd ON (c.idCourse = cd.id_course)  "
+            ." left JOIN %lms_category AS cat ON (c.idCategory = cat.idCategory)  "
             ." WHERE ".$this->compileWhere($conditions, $params)
             .($_SESSION['id_common_label'] > 0 ? " AND c.idCourse IN (SELECT id_course FROM %lms_label_course WHERE id_common_label = '".$_SESSION['id_common_label']."')" : "")
             .$exclude_pathcourse 
@@ -217,18 +218,17 @@ class ElearningLms extends Model {
     
     
     
-    
 
     // LR: list category of subscription
     public function getListCategory($idUser, $completePath = true){
         $db = DbConn::getInstance();
         
         $query = "select idCategory,path from %lms_category where idcategory in (
-       						select distinct idCategory from %lms_course as c,%lms_courseuser as cu where cu.idUser=".$idUser." and cu.idCourse=c.idCourse)";
+       						select distinct idCategory from %lms_course as c,%lms_courseuser as cu where cu.idUser=".$idUser." and cu.idCourse=c.idCourse)
+       						ORDER BY path ASC";
 
         $res = $db->query($query);
         if ($res && $db->num_rows($res) > 0) {
-            $output[0] = Lang::t('_ALL_CATEGORIES', 'standard');
             while (list($idCategory, $path) = $db->fetch_row($res)) {
                 if($completePath){
                     $category = str_replace('/root/','',$path);
@@ -238,12 +238,13 @@ class ElearningLms extends Model {
                 }
                 $output[$idCategory] = $category[count($category)-1];
             }
+        	natcasesort($output);
+            $output = [0 => Lang::t('_ALL_CATEGORIES', 'standard')] + $output;
         } else {
             $output[0] = Lang::t('_NO_CATEGORY', 'standard');
         }
+
         return $output;
-
-
     }
 
 

@@ -36,7 +36,7 @@ function tagslist() {
 		.'<div class="tag_list">'
 	, 'content');
 	
-	while(list(, $res) = each($resources['list'])) {
+	foreach($resources['list'] as $res) {
 		
 		$link = $res['permalink'];
 		$delim = ( strpos($link, '?') === false ? '?' : '&' );

@@ -854,10 +854,10 @@ INSERT INTO `core_event_manager` (`idEventMgr`, `idClass`, `permission`, `channe
 (39, 39, 'not_used', 'email', '_EVENT_RECIPIENTS_USER', 'godadmin,admin,user'),
 (41, 41, 'mandatory', 'email', '_EVENT_RECIPIENTS_MODERATORS_GOD', 'godadmin,admin'),
 (42, 42, 'mandatory', 'email', '_EVENT_RECIPIENTS_USER', 'godadmin,admin,user'),
-(43, 43, 'mandatory', 'email', '_EVENT_RECIPIENTS_USER', 'godadmin,admin,user'),
-(44, 44, 'mandatory', 'email', '_EVENT_RECIPIENTS_TEACHER', 'admin'),
+(43, 43, 'not_used', 'email', '_EVENT_RECIPIENTS_USER', 'godadmin,admin,user'),
+(44, 44, 'not_used', 'email', '_EVENT_RECIPIENTS_TEACHER', 'admin'),
 (45, 45, 'not_used', 'email', '_EVENT_RECIPIENTS_TEACHER_GOD', 'godadmin,admin,user'),
-(46, 46, 'mandatory', 'email', '_EVENT_RECIPIENTS_MODERATORS_GOD', 'admin');
+(46, 46, 'not_used', 'email', '_EVENT_RECIPIENTS_MODERATORS_GOD', 'admin');
 
 -- --------------------------------------------------------
 
@@ -2697,7 +2697,10 @@ INSERT INTO `core_st` (`idst`) VALUES
 (11832),
 (11833),
 (11834),
-(11835);
+(11835),
+(11836),
+(11837),
+(11838);
 
 -- --------------------------------------------------------
 

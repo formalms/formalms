@@ -41,7 +41,8 @@ class OrgChartManager {
 		$folder_name = $this->tree_db->getFoldersCurrTranslationDoubleCheck($groups_id);
 		
 		$branch_name = array();
-		while(list($id, $groupid) = each($groups_id)) {
+    foreach($groups_id as $id => $groupid)
+    {
 			
 			$id_dir = explode('_', $groupid);
 			$branch_name[$id]['name'] = $folder_name[$id_dir[1]];

@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20191009</DATE>
+  <DATE>20200220</DATE>
   <LANG id="portuguese">
     <lang_code>portuguese</lang_code>
     <lang_description>Portuguese</lang_description>
@@ -8,6 +8,9 @@
     <lang_browsercode>pt</lang_browsercode>
     <lang_direction>ltr</lang_direction>
     <platform id="all">
+      <module id="">
+        <key id="&amp;_NEW_USER_SUBSCRIBED_TEXT_MODERATORS" attributes="" save_date="2020-01-20 15:31:45"><![CDATA[[url] [firstname] [lastname] [course] [username]]]></key>
+      </module>
       <module id="adminrules">
         <key id="adminrules&amp;_ADMIN_ASSIGNTREEDESCR" attributes="" save_date="2018-12-21 16:51:29"><![CDATA[Selecionar as pastas/diretórios do utilizador que o administrador pode ver]]></key>
         <key id="adminrules&amp;_ADMIN_MANAGMENT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Gestor de administradores]]></key>
@@ -930,6 +933,7 @@ Se não estiver registado, deve registar-se no nosso sistema, seguindo este <i>l
         <key id="coursereport&amp;_USE_FOR_FINAL" attributes="" save_date="2018-12-26 22:31:57"><![CDATA[Considerar como pontuação final]]></key>
         <key id="coursereport&amp;_WEIGHT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Peso]]></key>
       </module>
+      <module id="courses"/>
       <module id="course_autoregistration">
         <key id="course_autoregistration&amp;_AUTOREGISTRATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Adicionar novo curso]]></key>
         <key id="course_autoregistration&amp;_BACK_TO_COURSE" attributes="" save_date="2018-12-26 22:33:43"><![CDATA[&gt;&gt; Voltar a "Os meus cursos"]]></key>
@@ -1009,7 +1013,13 @@ Pode ler em forma.lms no URL <a href="[url]">[url]</a>]]></key>
         <key id="email&amp;_DELETED_USER_TEXT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[A sua conta <a href="[url]">[url]</a> com o nome de utilizador [userid] foi apagada]]></key>
         <key id="email&amp;_DENY_SUBSCRIBED_SUBJECT" attributes="email" save_date="2018-12-27 14:06:17"><![CDATA[Pedido de inscrição recusado]]></key>
         <key id="email&amp;_DENY_SUBSCRIBED_TEXT" attributes="email" save_date="2018-12-27 14:05:23"><![CDATA[O seu pedido de inscrição no curso [course] foi recusado pelo administrador <a href="[url]">[url]</a>]]></key>
+        <key id="email&amp;_EVENT_CHANGE_NODE_USER_SBJ" attributes="" save_date="2020-01-20 18:17:51"><![CDATA[User node change]]></key>
+        <key id="email&amp;_EVENT_CHANGE_NODE_USER_TEXT" attributes="" save_date="2020-01-20 18:18:37"><![CDATA[[url] [firstname] [lastname] [username]]]></key>
         <key id="email&amp;_EVENT_CLASS_UserCourseBuy" attributes="" save_date="2017-07-19 14:04:53"><![CDATA[Utilizador comprou um curso]]></key>
+        <key id="email&amp;_EVENT_COURSE_EVENT_SUSPENDED_USER_SBJ" attributes="" save_date="2020-01-20 18:27:00"><![CDATA[User suspended from course]]></key>
+        <key id="email&amp;_EVENT_COURSE_EVENT_SUSPENDED_USER_TEXT" attributes="" save_date="2020-01-20 18:26:25"><![CDATA[[url] [firstname] [lastname] [course] [username]]]></key>
+        <key id="email&amp;_EVENT_SUSPENDED_USER_SBJ" attributes="" save_date="2020-01-20 18:14:15"><![CDATA[User suspended]]></key>
+        <key id="email&amp;_EVENT_SUSPENDED_USER_TEXT" attributes="" save_date="2020-01-20 18:13:32"><![CDATA[[url] [firstname] [lastname] [username]]]></key>
         <key id="email&amp;_MODIFIED_USER_SBJ" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[A conta de utilizador foi modificada]]></key>
         <key id="email&amp;_MODIFIED_USER_TEXT" attributes="email" save_date="2018-12-27 13:54:47"><![CDATA[A sua conta no site <a href="[url]">[url]</a>  foi modificada.
 
@@ -1029,6 +1039,7 @@ Nome de utilizador: [userid]]]></key>
 
  Title: [thread_title]]]></key>
         <key id="email&amp;_NEW_USER_SUBSCRIBED_SUBJECT" attributes="email" save_date="2018-12-27 14:03:40"><![CDATA[Novo utilizador foi inscrito num curso]]></key>
+        <key id="email&amp;_NEW_USER_SUBSCRIBED_SUBJECT_MODERATORS" attributes="" save_date="2020-01-20 15:30:49"><![CDATA[[url] [firstname] [lastname] [course] [username]]]></key>
         <key id="email&amp;_NEW_USER_SUBSCRIBED_TEXT" attributes="email" save_date="2017-05-05 17:16:32"><![CDATA[No URL: <a href="[url]">[url]</a> um novo utilizador foi inscrito para o curso: [course]]]></key>
         <key id="email&amp;_NEW_USER_SUBS_WAITING_SUBJECT" attributes="email" save_date="2018-12-27 14:07:45"><![CDATA[Utilizador está a aguardar pela aprovação de inscrição do curso]]></key>
         <key id="email&amp;_NEW_USER_SUBS_WAITING_TEXT" attributes="email" save_date="2018-12-27 14:04:06"><![CDATA[Novo utilizador inscrito no curso '[course]' e está a aguardar aprovação.
@@ -1118,6 +1129,7 @@ Senha: [password]]]></key>
         <key id="event_manager&amp;_EVENT_PLATFORM_lms" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[appLMS]]></key>
         <key id="event_manager&amp;_EVENT_PLATFORM_lms-a" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[appLMS-A]]></key>
         <key id="event_manager&amp;_EVENT_RECIPIENTS_GOD" attributes="" save_date="2019-08-08 16:01:47"><![CDATA[Superadministradores]]></key>
+        <key id="event_manager&amp;_EVENT_RECIPIENTS_GODS" attributes="" save_date="2020-01-20 15:21:28"><![CDATA[Super-Administrators]]></key>
         <key id="event_manager&amp;_EVENT_RECIPIENTS_MODERATORS_GOD" attributes="" save_date="2018-12-27 14:57:30"><![CDATA[Moderadores e Super-administradores]]></key>
         <key id="event_manager&amp;_EVENT_RECIPIENTS_TEACHER" attributes="" save_date="2018-12-27 14:57:43"><![CDATA[Professores]]></key>
         <key id="event_manager&amp;_EVENT_RECIPIENTS_TEACHER_GOD" attributes="" save_date="2018-12-27 14:58:15"><![CDATA[Professores e Super-administradores]]></key>
@@ -2151,6 +2163,9 @@ Você tem que confirmar a sua conta antes de a usar.]]></key>
         <key id="sms&amp;_APPROVED_SUBSCRIBED_TEXT_SMS" attributes="sms" save_date="2014-11-14 00:00:00"><![CDATA[O seu pedido de inscrição para curso [course] foi aprovada pelo administrador]]></key>
         <key id="sms&amp;_APPROVED_USER_TEXT_SMS" attributes="sms" save_date="2014-11-14 00:00:00"><![CDATA[Sua solicitação de inscrição foi aprovada]]></key>
         <key id="sms&amp;_DELETED_USER_TEXT_SMS" attributes="sms" save_date="2017-04-10 13:57:46"><![CDATA[E-learning: A sua conta con o nome de utilizador [userid] foi apagada]]></key>
+        <key id="sms&amp;_EVENT_CHANGE_NODE_USER_SBJ_SMS" attributes="" save_date="2020-01-20 18:19:28"><![CDATA[[url] [firstname] [lastname] [username]]]></key>
+        <key id="sms&amp;_EVENT_COURSE_EVENT_SUSPENDED_USER_TEXT_SMS" attributes="" save_date="2020-01-20 18:25:39"><![CDATA[[url] [firstname] [lastname] [course] [username]]]></key>
+        <key id="sms&amp;_EVENT_SUSPENDED_USER_TEXT_SMS" attributes="" save_date="2020-01-20 18:15:13"><![CDATA[[url] [firstname] [lastname] [username]]]></key>
         <key id="sms&amp;_MODIFIED_USER_TEXT_SMS" attributes="sms" save_date="2017-07-17 11:02:56"><![CDATA[A sua conta no site <a href="[url]">[url]</a>  foi modificada:
 
 Nome de utilizador: [userid]]]></key>
@@ -2158,6 +2173,7 @@ Nome de utilizador: [userid]]]></key>
         <key id="sms&amp;_NEW_FORUM_SMS" attributes="sms" save_date="2019-01-11 16:40:09"><![CDATA[Novo fórum]]></key>
         <key id="sms&amp;_NEW_MESSAGE_INSERT_IN_THREAD_SMS" attributes="sms" save_date="2014-11-14 00:00:00"><![CDATA[E-learning: no curso '[course]', existe uma nova mensagem '[forum_title]' > '[thread_title]']]></key>
         <key id="sms&amp;_NEW_THREAD_INSERT_IN_FORUM_SMS" attributes="sms" save_date="2019-01-11 21:15:59"><![CDATA[E-learning: curso '[course]' existe um novo tópico (thread) em '[forum_title]': [thread_title]]]></key>
+        <key id="sms&amp;_NEW_USER_SUBSCRIBED_TEXT_SMS_MODERATORS" attributes="" save_date="2020-01-20 18:11:42"><![CDATA[[url] [firstname] [lastname] [course] [username]]]></key>
         <key id="sms&amp;_PASSWORD_CHANGED_SMS" attributes="sms" save_date="2017-07-17 10:53:23"><![CDATA[e a sua senha foi alterada para: [password]]]></key>
         <key id="sms&amp;_REGISTERED_USER_TEXT_SMS" attributes="sms" save_date="2017-07-17 11:03:00"><![CDATA[Você agora está registado no nosso sistema com a conta:
 

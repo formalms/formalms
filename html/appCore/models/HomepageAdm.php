@@ -162,7 +162,8 @@ class HomepageAdm extends Model {
         $recipients     = $user_info[ACL_INFO_EMAIL];
         $subject        = Lang::t("_LOST_PWD_TITLE", "register");
         $body           = Lang::t("_LOST_PWD_MAILTEXT", "register", array(
-            '[link]'    => Get::site_url() . "index.php?r=" . _newpwd_ . "&code=" . $code
+            '[link]'    => Get::site_url() . "index.php?r=" . _newpwd_ . "&code=" . $code,
+            '[userid]'  => $acl_man->relativeId($user_info[ACL_INFO_USERID]),
         ));
         $attachments    = false;
         $params         = array(MAIL_SENDER_ACLNAME => false);

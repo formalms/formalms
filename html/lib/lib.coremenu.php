@@ -269,11 +269,11 @@ SQL;
 
             $role = self::role($menuUnder['ofPlatform'], $menuUnder['moduleName'], $menuUnder['associatedToken']);
             $am = Docebo::user()->getACLManager();
-            if(!$am->getRole($role, FALSE)) {
+            if(!$idst = $am->getRole(false, $role)) {
                 $idst = $am->registerRole($role, '', $idPlugin);
+            }
                 foreach($roleMembers as $roleMember) {
                     $am->addToRole($idst, $roleMember);
-                }
             }
         }
 

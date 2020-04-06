@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20191111</DATE>
+  <DATE>20200220</DATE>
   <LANG id="english">
     <lang_code>english</lang_code>
     <lang_description>English</lang_description>
@@ -8,6 +8,9 @@
     <lang_browsercode>en</lang_browsercode>
     <lang_direction>ltr</lang_direction>
     <platform id="all">
+      <module id="">
+        <key id="&amp;_NEW_USER_SUBSCRIBED_TEXT_MODERATORS" attributes="" save_date="2020-01-20 15:31:45"><![CDATA[[url] [firstname] [lastname] [course] [username]]]></key>
+      </module>
       <module id="adminrules">
         <key id="adminrules&amp;_ADMIN_ASSIGNTREEDESCR" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Select folders for administrator user visibility]]></key>
         <key id="adminrules&amp;_ADMIN_MANAGMENT" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Administrators manager]]></key>
@@ -753,9 +756,9 @@
         <key id="course&amp;_CST_CONFIRMED" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Confirmed]]></key>
         <key id="course&amp;_CST_PREPARATION" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Under construction]]></key>
         <key id="course&amp;_CUSTOM_OPTIONS" attributes="" save_date="0000-00-00 00:00:00"><![CDATA[Custom Options]]></key>
+        <key id="course&amp;_DATE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Date]]></key>
         <key id="course&amp;_DATE_END" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Date end]]></key>
         <key id="course&amp;_DATE_START" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Date start]]></key>
-        <key id="course&amp;_DATE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Date]]></key>
         <key id="course&amp;_DAY" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Day]]></key>
         <key id="course&amp;_DAYS" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Days]]></key>
         <key id="course&amp;_DAY_OF_VALIDITY" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Days of validity]]></key>
@@ -799,8 +802,8 @@
         <key id="course&amp;_MIN_SUBSCRIBE_FOR_COURSE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Minimum number of subscribed students allowed is <b>[min_subscribe]</b>]]></key>
         <key id="course&amp;_MULTIPLE_SUBSCRIPTION" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Multiple subscriptions]]></key>
         <key id="course&amp;_MY_CERTIFICATE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[My certificates]]></key>
-        <key id="course&amp;_NEXT_LESSON" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Next lesson]]></key>
         <key id="course&amp;_NEW_USER_SUBS_WAITING_TEXT" attributes="accessibility" save_date="2017-03-14 16:10:41"><![CDATA[User is waiting at [url]]]></key>
+        <key id="course&amp;_NEXT_LESSON" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Next lesson]]></key>
         <key id="course&amp;_NOACTIVE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Waiting for activation]]></key>
         <key id="course&amp;_NOENTER" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Access denied]]></key>
         <key id="course&amp;_NO_COURSE_DATA" attributes="" save_date="2018-02-19 12:07:20"><![CDATA[Course with no start date]]></key>
@@ -1028,7 +1031,13 @@ You can read it on forma.lms at URL <a href="[url]">[url]</a>]]></key>
         <key id="email&amp;_DELETED_USER_TEXT" attributes="email" save_date="2015-09-30 15:32:23"><![CDATA[Your account at <a href="[url]">[url]</a> with the username [userid] has been deleted]]></key>
         <key id="email&amp;_DENY_SUBSCRIBED_SUBJECT" attributes="email" save_date="2017-03-14 16:10:41"><![CDATA[Subscription request refused]]></key>
         <key id="email&amp;_DENY_SUBSCRIBED_TEXT" attributes="email" save_date="2017-03-14 16:10:41"><![CDATA[Your subscription to the course [course] has been refused by the administrator at the address <a href="[url]">[url]</a>]]></key>
+        <key id="email&amp;_EVENT_CHANGE_NODE_USER_SBJ" attributes="" save_date="2020-01-20 18:17:51"><![CDATA[User node change]]></key>
+        <key id="email&amp;_EVENT_CHANGE_NODE_USER_TEXT" attributes="" save_date="2020-01-20 18:18:37"><![CDATA[[url] [firstname] [lastname] [username]]]></key>
         <key id="email&amp;_EVENT_CLASS_UserCourseBuy" attributes="" save_date="2017-04-10 18:28:44"><![CDATA[User purchased a course]]></key>
+        <key id="email&amp;_EVENT_COURSE_EVENT_SUSPENDED_USER_SBJ" attributes="" save_date="2020-01-20 18:27:00"><![CDATA[User suspended from course]]></key>
+        <key id="email&amp;_EVENT_COURSE_EVENT_SUSPENDED_USER_TEXT" attributes="" save_date="2020-01-20 18:26:25"><![CDATA[[url] [firstname] [lastname] [course] [username]]]></key>
+        <key id="email&amp;_EVENT_SUSPENDED_USER_SBJ" attributes="" save_date="2020-01-20 18:14:15"><![CDATA[User suspended]]></key>
+        <key id="email&amp;_EVENT_SUSPENDED_USER_TEXT" attributes="" save_date="2020-01-20 18:13:32"><![CDATA[[url] [firstname] [lastname] [username]]]></key>
         <key id="email&amp;_MODIFIED_USER_SBJ" attributes="email" save_date="2017-03-14 16:10:41"><![CDATA[The user account has been modified]]></key>
         <key id="email&amp;_MODIFIED_USER_TEXT" attributes="email" save_date="2017-03-14 16:22:09"><![CDATA[Your account at the site <a href="[url]">[url]</a>  has been modified:
 
@@ -1045,6 +1054,7 @@ Username: [userid]]]></key>
 
  Title: [thread_title]]]></key>
         <key id="email&amp;_NEW_USER_SUBSCRIBED_SUBJECT" attributes="email" save_date="2017-03-14 16:10:41"><![CDATA[New user was subscribed to a course]]></key>
+        <key id="email&amp;_NEW_USER_SUBSCRIBED_SUBJECT_MODERATORS" attributes="" save_date="2020-01-20 15:30:49"><![CDATA[[url] [firstname] [lastname] [course] [username]]]></key>
         <key id="email&amp;_NEW_USER_SUBSCRIBED_TEXT" attributes="email" save_date="2017-05-05 17:05:00"><![CDATA[At URL: <a href="[url]">[url]</a> a new user was subscribed to the course: [course]]]></key>
         <key id="email&amp;_NEW_USER_SUBS_WAITING_SUBJECT" attributes="email" save_date="2017-03-14 16:10:41"><![CDATA[User is waiting for course subscription approval]]></key>
         <key id="email&amp;_NEW_USER_SUBS_WAITING_TEXT" attributes="email" save_date="2015-09-30 15:32:23"><![CDATA[New user subscribed to the '[course]' course and is waiting to be approved.
@@ -1134,6 +1144,7 @@ Password: [password]]]></key>
         <key id="event_manager&amp;_EVENT_PLATFORM_lms" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[appLMS]]></key>
         <key id="event_manager&amp;_EVENT_PLATFORM_lms-a" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[appLMS-A]]></key>
         <key id="event_manager&amp;_EVENT_RECIPIENTS_GOD" attributes="" save_date="2019-04-17 12:10:37"><![CDATA[Super-Administrators]]></key>
+        <key id="event_manager&amp;_EVENT_RECIPIENTS_GODS" attributes="" save_date="2020-01-20 15:21:28"><![CDATA[Super-Administrators]]></key>
         <key id="event_manager&amp;_EVENT_RECIPIENTS_MODERATORS_GOD" attributes="" save_date="2017-07-17 11:19:25"><![CDATA[Moderators and Super-Administrators]]></key>
         <key id="event_manager&amp;_EVENT_RECIPIENTS_TEACHER" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Instructors]]></key>
         <key id="event_manager&amp;_EVENT_RECIPIENTS_TEACHER_GOD" attributes="" save_date="2017-07-17 11:19:32"><![CDATA[Instructors and Super-Administrators]]></key>
@@ -1941,21 +1952,20 @@ Please don't upload offensive images.]]></key>
         <key id="register&amp;_REG_CONFIRM_FAILED" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[The confirmation of your account is failed]]></key>
         <key id="register&amp;_REG_ELAPSEDREQUEST" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[The request is not valid because the validity period is elapsed]]></key>
         <key id="register&amp;_REG_HOUR_REQUEST_LIMIT" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[This request will expire after <b>[hour] hours</b>]]></key>
-        <key id="register&amp;_REG_MAIL_TEXT" attributes="" save_date="2017-06-23 15:12:49"><![CDATA[We have received your subscription request with the following information:<br />
+        <key id="register&amp;_REG_MAIL_TEXT" attributes="" save_date="2020-01-24 08:22:03"><![CDATA[We have received your subscription request with the following information:<br />
 <br />
 Username : [userid]<br />
-Password : [password]<br />
 <br />
 To complete  the registration process, please click on the link below, (or copy it in your web browser address bar)<br />
 <br />
 <a href="[link]">[link]</a><br />
 <br />
 This request will be valid for the next [hour] hours]]></key>
-        <key id="register&amp;_REG_MAIL_TEXT_SELF" attributes="" save_date="2017-06-23 15:13:01"><![CDATA[We received your registration request with the following data:<br/>
+        <key id="register&amp;_REG_MAIL_TEXT_SELF" attributes="" save_date="2020-01-24 08:22:10"><![CDATA[We received your registration request with the following data:<br/>
 <br/>
 
 Username: [userid]<br/>
-Password: [password]]]></key>
+]]></key>
         <key id="register&amp;_REG_MANDATORY" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[You must fill the mandatory fields, marked with the symbol [mandatory]]]></key>
         <key id="register&amp;_REG_NOTE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[From this page you can register to the platform; follow the instructions below and fill in the fields properly.]]></key>
         <key id="register&amp;_REG_NOT_ACTIVE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Registration is not active]]></key>
@@ -2175,6 +2185,9 @@ You have to confirm your account before using it.]]></key>
         <key id="sms&amp;_APPROVED_SUBSCRIBED_TEXT_SMS" attributes="sms" save_date="2017-03-14 16:10:41"><![CDATA[Your subscription request at course [course] has been approved by the administrator]]></key>
         <key id="sms&amp;_APPROVED_USER_TEXT_SMS" attributes="sms" save_date="2017-03-14 16:10:41"><![CDATA[Your subscription request has been approved]]></key>
         <key id="sms&amp;_DELETED_USER_TEXT_SMS" attributes="sms" save_date="2017-04-10 13:03:18"><![CDATA[E-learning: Your account with the username [userid] has been deleted]]></key>
+        <key id="sms&amp;_EVENT_CHANGE_NODE_USER_SBJ_SMS" attributes="" save_date="2020-01-20 18:19:28"><![CDATA[[url] [firstname] [lastname] [username]]]></key>
+        <key id="sms&amp;_EVENT_COURSE_EVENT_SUSPENDED_USER_TEXT_SMS" attributes="" save_date="2020-01-20 18:25:39"><![CDATA[[url] [firstname] [lastname] [course] [username]]]></key>
+        <key id="sms&amp;_EVENT_SUSPENDED_USER_TEXT_SMS" attributes="" save_date="2020-01-20 18:15:13"><![CDATA[[url] [firstname] [lastname] [username]]]></key>
         <key id="sms&amp;_MODIFIED_USER_TEXT_SMS" attributes="sms" save_date="2015-09-30 15:32:24"><![CDATA[Your account at the site <a href="[url]">[url]</a>   has been modified:
 
 Username: [userid]]]></key>
@@ -2182,11 +2195,12 @@ Username: [userid]]]></key>
         <key id="sms&amp;_NEW_FORUM_SMS" attributes="sms" save_date="2017-03-14 16:10:41"><![CDATA[New forum]]></key>
         <key id="sms&amp;_NEW_MESSAGE_INSERT_IN_THREAD_SMS" attributes="sms" save_date="2017-03-14 16:10:41"><![CDATA[E-learning: in the course '[course]', there is a new message in '[forum_title]' > '[thread_title]']]></key>
         <key id="sms&amp;_NEW_THREAD_INSERT_IN_FORUM_SMS" attributes="sms" save_date="2017-03-14 16:10:41"><![CDATA[E-learning: course '[course]' there's a new thread in '[forum_title]': [thread_title]]]></key>
-        <key id="sms&amp;_PASSWORD_CHANGED_SMS" attributes="sms" save_date="2017-03-14 16:10:41"><![CDATA[and your password has been changed to: [password]]]></key>
-        <key id="sms&amp;_REGISTERED_USER_TEXT_SMS" attributes="sms" save_date="2017-03-14 16:10:41"><![CDATA[You are now registered in our system with this account:
+        <key id="sms&amp;_NEW_USER_SUBSCRIBED_TEXT_SMS_MODERATORS" attributes="" save_date="2020-01-20 18:11:42"><![CDATA[[url] [firstname] [lastname] [course] [username]]]></key>
+        <key id="sms&amp;_PASSWORD_CHANGED_SMS" attributes="sms" save_date="2020-01-24 08:22:24"><![CDATA[and your password has been changed]]></key>
+        <key id="sms&amp;_REGISTERED_USER_TEXT_SMS" attributes="sms" save_date="2020-01-24 08:22:30"><![CDATA[You are now registered in our system with this account:
 
 Username: [userid]
-Password: [password]]]></key>
+]]></key>
         <key id="sms&amp;_TO_APPROVE_GROUP_USER_TEXT_SMS" attributes="sms" save_date="2017-04-10 18:28:10"><![CDATA[There is a new user subscription to a moderated group waiting for approval]]></key>
         <key id="sms&amp;_TO_APPROVE_USER_TEXT_SMS" attributes="sms" save_date="2017-03-14 16:10:41"><![CDATA[New user is registered and awaiting your approval]]></key>
         <key id="sms&amp;_TO_NEW_USER_TEXT_SMS" attributes="sms" save_date="2017-03-14 16:10:41"><![CDATA[New user registered]]></key>
@@ -2844,7 +2858,7 @@ Password: [password]]]></key>
         <key id="test&amp;_SUSPENSION_PREREQUISITES" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[After the test suspension, require a new completion of all the test prerequisites]]></key>
         <key id="test&amp;_TEST_ADDQUEST" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Add question]]></key>
         <key id="test&amp;_TEST_ADD_FORM" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Description is shown to students before attempting the test]]></key>
-        <key id="test&amp;_TEST_ADD_ONE_ANSWER" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Add one more anwser]]></key>
+        <key id="test&amp;_TEST_ADD_ONE_ANSWER" attributes="" save_date="2019-12-27 19:10:47"><![CDATA[Add one more answer]]></key>
         <key id="test&amp;_TEST_AFTER_QUEST" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[after row]]></key>
         <key id="test&amp;_TEST_ANSWER" attributes="" save_date="2017-04-14 12:21:16"><![CDATA[Answers:]]></key>
         <key id="test&amp;_TEST_ANSWER_CHECK" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Selected]]></key>
@@ -2870,7 +2884,7 @@ Password: [password]]]></key>
         <key id="test&amp;_TEST_INCORRECT" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Wrong]]></key>
         <key id="test&amp;_TEST_INFO" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Information about the test]]></key>
         <key id="test&amp;_TEST_INSERT" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[New Test]]></key>
-        <key id="test&amp;_TEST_ISCORRECT" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Correct anwser]]></key>
+        <key id="test&amp;_TEST_ISCORRECT" attributes="" save_date="2019-12-27 19:08:40"><![CDATA[Correct answer]]></key>
         <key id="test&amp;_TEST_ISNOT_THECORRECT" attributes="" save_date="2017-04-21 10:53:48"><![CDATA[The right answer is]]></key>
         <key id="test&amp;_TEST_IS_THECORRECT" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[, was the right choice]]></key>
         <key id="test&amp;_TEST_LAST_QUEST" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[as last]]></key>

@@ -100,8 +100,9 @@ class RevisionManager {
 
 		if (!function_exists("array_combine")) {
 			foreach($this->table_keys as $field_name) {
-				$current=each($default_keys_val);
-				$this->default_keys_val[$field_name]=$current["value"];
+				$current=current($default_keys_val);
+        next($default_keys_val);
+				$this->default_keys_val[$field_name]=$current;
 			}
 		}
 		else {

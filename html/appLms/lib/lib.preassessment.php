@@ -175,7 +175,7 @@ class AssessmentList {
 
 		$users = array();
 		$query = "
-		SELECT ".implode($this->user_field, ',')."
+		SELECT ".implode(',', $this->user_field)."
 		FROM ".$this->tableUserAssessment()."
 		WHERE ".$this->user_field[USER_ASSES_TYPE]." = '".USER_ASSES_TYPE_ADMIN."'";
 		if($id_assessment !== false) $query .= " AND ".$this->user_field[USER_ASSES_ID]." = '".$id_assessment."'";
@@ -191,7 +191,7 @@ class AssessmentList {
 
 		$users = array();
 		$query = "
-		SELECT ".implode($this->user_field, ',')."
+		SELECT ".implode(',', $this->user_field)."
 		FROM ".$this->tableUserAssessment()."
 		WHERE ".$this->user_field[USER_ASSES_TYPE]." = '".USER_ASSES_TYPE_USER."'";
 		if($id_assessment !== false) $query .= " AND ".$this->user_field[USER_ASSES_ID]." = '".$id_assessment."'";
@@ -215,10 +215,10 @@ class AssessmentList {
 		if(empty($user_list)) return true;
 
 		$query = "
-		SELECT ".implode($this->user_field, ',')."
+		SELECT ".implode(',', $this->user_field)."
 		FROM ".$this->tableUserAssessment()."
 		WHERE ".$this->user_field[USER_ASSES_ID]." = '".$id_assessment."'
-			AND ".$this->user_field[USER_ASSES_ID_USER]." IN ( ".implode($user_list, ',')." ) ";
+			AND ".$this->user_field[USER_ASSES_ID_USER]." IN ( ".implode(',', $user_list)." ) ";
 		$re_query = $this->_query($query);
 
 		$user_assigned = array();
@@ -227,7 +227,7 @@ class AssessmentList {
 			$user_assigned[$row[USER_ASSES_ID_USER]] = $row[USER_ASSES_TYPE];
 		}
 		reset($user_list);
-		while(list(, $id_user) = each($user_list)) {
+    foreach($user_list as $id_user) {
 
 			if(isset($user_assigned[$id_user])) {
 
@@ -281,7 +281,7 @@ class AssessmentList {
 			$level = 6;
 		$op_result = true;
 		$query = "
-		SELECT ".implode($this->user_field, ',')."
+		SELECT ".implode(',', $this->user_field)."
 		FROM ".$this->tableUserAssessment()."
 		WHERE ".$this->user_field[USER_ASSES_ID]." = '".$id_assessment."'
 			AND ".$this->user_field[USER_ASSES_TYPE]." = '".$user_type."'";
@@ -305,7 +305,8 @@ class AssessmentList {
 			}
 		} // end while
 		reset($user_list);
-		while(list(, $id_user) = each($user_list)) {
+    foreach($user_list as $id_user)    
+    {
 
 			$upd_query = "
 			INSERT INTO ".$this->tableUserAssessment()."
@@ -344,7 +345,7 @@ class AssessmentList {
 		if(!is_array($all_user_idst) || count($all_user_idst) == 0) return $assess;
 
 		$query = "
-		SELECT ".implode($this->user_field, ',')."
+		SELECT ".implode(',', $this->user_field)."
 		FROM ".$this->tableUserAssessment()."
 		WHERE ".$this->user_field[USER_ASSES_ID_USER]." IN ( ".implode(',', $all_user_idst)." ) ";
 		$re = $this->_query($query);
@@ -453,11 +454,11 @@ class AssessmentRule {
 		$eff_piece = explode('|', $effects_string);
 		if(isset($eff_piece[0]) && $eff_piece[0] != '') {
 			$temp = explode(';', $eff_piece[0]);
-			while(list(, $id) = each($temp)) $effects['course'][$id] = $id;
+      foreach($temp as $id) $effects['course'][$id] = $id;
 		}
 		if(isset($eff_piece[1]) && $eff_piece[1] != '') {
 			$temp = explode(';', $eff_piece[1]);
-			while(list(, $id) = each($temp)) $effects['coursepath'][$id] = $id;
+      foreach($temp as $id) $effects['coursepath'][$id] = $id;
 		}
 		return $effects;
 	}
