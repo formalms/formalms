@@ -75,6 +75,7 @@ echo getTitleArea(array(
            <table id='table_certificate'  data-id_course='<?=$id_course?>' data-id_certificate='<?php echo $id_certificate ?>' class='table table-striped table-bordered' style='width:100%'></table>            
 <script type="text/javascript">
 
+
         var id_course=$('#table_certificate').data('id_course');
         var cert_table = $('#table_certificate').FormaTable({
             margin: '0 auto',
@@ -105,7 +106,7 @@ echo getTitleArea(array(
              ?>               
              { data:'status', title: '<?php echo Lang::t('_STATUS', 'standard'); ?>', sortable: true,  
                 render: function ( data, type, row ) { 
-                    
+
                     switch (data){
                         case '-2':
                         return '<?php echo Lang::t('_WAITING', 'standard'); ?>'
@@ -141,6 +142,7 @@ echo getTitleArea(array(
                  'sEmptyTable' : '<?php echo Lang::t('_NO_CERTIFICATE_AVAILABLE', 'certificate'); ?> '
             },
             dom: 'Bfrtip',
+            stateSave: true, 
             buttons:[ {
                         extend: 'colvis',
                         text: '<?=Lang::t('_CHANGEPOLICY', 'profile')?>',
@@ -157,15 +159,49 @@ echo getTitleArea(array(
             ]
         })
         cert_table.searchBar.init('#table_certificate');
+
         $('#table_certificate').on( 'column-visibility.dt', function ( e, settings, column, state ) {
             // if adding or remove fields, force redraw
             cert_table.searchBar.redraw() 
         });
+        
+        $('#table_certificate').on( 'draw.dt', function ( ) {
+            
+           initDialogHref.call( {
+                elementsFilter:'a[href*=del_report_certificate]',
+                title: '<?=Lang::t('_CONFIRM_DELETION')?>',
+                okButton: '<?=Lang::t('_YES', 'standard')?>',
+                cancelButton: '<?=Lang::t('_NO', 'standard')?>',
+                composeBody:  function (o) {
+                                if((o.title).match(':')) return (o.title).replace(/:/, ':<b>') + '<b>'
+                                return o.title;
+                              },
+                authentication: '<?=Util::getSignature()?>'
+                } )
+                cert_table
+        });        
+        
+        function print_certificate(id_user, id_course, id_certificate){
+              var posting = $.get(
+                        'index.php',
+                        {
+                            modname:'certificate',
+                            of_platform:'lms',
+                            op:'print_certificate',
+                            certificate_id: id_certificate,
+                            course_id: id_course,
+                            user_id: id_user
+                        }
+                    );
+                    posting.done(function (responseText) {
+                        location.reload();    
+                    });
+                    posting.fail(function () {
+                        alert("Error generating certificate: " + id_certificate + " - " + id_course + " - " + id_user);
+                    })      
+        } 
 
-
-
-	
-		   function generate_all_certificate() {
+        function generate_all_certificate() {
         
             if(cert_table.getFlatSelection().length==0) return 
                 
@@ -186,7 +222,7 @@ echo getTitleArea(array(
         } 
 		  
           
-          function download_all_certificate(){
+        function download_all_certificate(){
             var newarray=[];     
             $.each(cert_table.getFlatSelection(), function( index, value ) {
                     var this_row = value.split("-");
@@ -197,11 +233,7 @@ echo getTitleArea(array(
             var strRows = newarray.join();
             if(strRows=="") return 
             document.location.href = "index.php?modname=certificate&of_platform=lms&op=download_all&str_rows=" + strRows;
-          }          
-          
-                     
-                    
-          
+          } 
           
           
 </script>
@@ -210,6 +242,7 @@ echo getTitleArea(array(
 
     require_once(_base_.'/lib/lib.dialog.php');
     setupHrefDialogBox('a[href*=del_report_certificate]',Lang::t('_CONFIRM_DELETION', 'iotask'),Lang::t('_YES', 'standard'),Lang::t('_NO', 'standard'));    
+
 
 
 

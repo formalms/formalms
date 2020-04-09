@@ -805,8 +805,6 @@ function play ($object_test , $id_param)
                             num_answer_radio = $('.answer_question input[type=\"radio\"]:checked').length;
                             num_answer_tot_chk = num_answer_radio + num_answer_chk;
 
-							console.log('TOT: ' + num_answer_tot + ' CHECKED: ' + num_answer_tot_chk);
-
 							if (mandatory) {
 								if (num_answer_tot_chk >= num_answer_tot) {
 									$('#next_page').prop('disabled', false);
@@ -852,16 +850,15 @@ function play ($object_test , $id_param)
 							});
 
 							$(document).on('change', '.answer_question input[type=\"radio\"], .answer_question input[type=\"checkbox\"]', function() {
-								tot_question = $('.answer_question input:checked').length;
-
-                                if (tot_question > 0 ) {
-                                    toggleNext(true);
-                                } else {
-                                    toggleNext(false);
-                                }
-								$('.answer_question input[type=\"radio\"], .answer_question input[type=\"checkbox\"]').parent('.input-wrapper').removeClass('checked');
-								$('.answer_question input[type=\"radio\"]:checked').parent('.input-wrapper').addClass('checked');
-								$('.answer_question input[type=\"checkbox\"]:checked').parent('.input-wrapper').addClass('checked');
+								  tot_question = $('.answer_question input:checked').length;
+                                  if (tot_question > 0 ) {
+                                        toggleNext(true);
+                                    } else {
+                                        toggleNext(false);
+                                    }
+  								    $('.answer_question input[type=\"radio\"], .answer_question input[type=\"checkbox\"]').parent('.input-wrapper').removeClass('checked');
+  								    $('.answer_question input[type=\"radio\"]:checked').parent('.input-wrapper').addClass('checked');
+  								    $('.answer_question input[type=\"checkbox\"]:checked').parent('.input-wrapper').addClass('checked');
 							});
 
 							$(document).on('keyup', '.answer_question textarea', function() {
@@ -1227,7 +1224,7 @@ function showResult ($object_test , $id_param)
 	$reQuest = sql_query ("
 	SELECT q.idQuest, q.type_quest, t.type_file, t.type_class, q.idCategory 
 	FROM %lms_testquest AS q JOIN " . $GLOBALS[ 'prefix_lms' ] . "_quest_type AS t
-	WHERE q.idTest = '" . $id_test . "' AND q.type_quest = t.type_quest AND q.idQuest IN (" . implode ($quest_see , ',') . ")
+	WHERE q.idTest = '" . $id_test . "' AND q.type_quest = t.type_quest AND q.idQuest IN (" . implode (',', $quest_see) . ")
 	ORDER BY q.sequence");
 	
 	//#2093: Conto le domande
@@ -1664,7 +1661,7 @@ function review ($object_test , $id_param)
 		$query_question = "
 		SELECT q.idQuest, q.type_quest, t.type_file, t.type_class
 		FROM ".$GLOBALS['prefix_lms']."_testquest AS q JOIN ".$GLOBALS['prefix_lms']."_quest_type AS t
-		WHERE q.idTest = '".$idTest."' AND q.type_quest = t.type_quest AND q.idQuest IN (".implode($quest_see, ',').")
+		WHERE q.idTest = '".$idTest."' AND q.type_quest = t.type_quest AND q.idQuest IN (".implode(',', $quest_see).")
 			 AND q.type_quest <> 'break_page' AND q.type_quest <> 'title'
 		ORDER BY q.sequence";
 	} else {
@@ -1781,7 +1778,7 @@ function user_report ($idUser , $idTest , $id_param = false , $id_track = false 
 		$query_question = "
 		SELECT q.idQuest, q.type_quest, t.type_file, t.type_class, q.idCategory 
 		FROM %lms_testquest AS q JOIN %lms_quest_type AS t
-		WHERE q.idTest = '" . $idTest . "' AND q.type_quest = t.type_quest AND  q.idQuest IN (" . implode ($quest_see , ',') . ")
+		WHERE q.idTest = '" . $idTest . "' AND q.type_quest = t.type_quest AND  q.idQuest IN (" . implode (',', $quest_see) . ")
 		ORDER BY q.sequence";
 		
 		
@@ -1988,7 +1985,7 @@ function editUserReport ($id_user , $id_test , $id_track , $number_time = null ,
 		$query_question = "
 		SELECT q.idQuest, q.type_quest, t.type_file, t.type_class, q.idCategory 
 		FROM " . $GLOBALS[ 'prefix_lms' ] . "_testquest AS q JOIN " . $GLOBALS[ 'prefix_lms' ] . "_quest_type AS t
-		WHERE q.idTest = '" . $id_test . "' AND q.type_quest = t.type_quest AND  q.idQuest IN (" . implode ($quest_see , ',') . ")
+		WHERE q.idTest = '" . $id_test . "' AND q.type_quest = t.type_quest AND  q.idQuest IN (" . implode (',', $quest_see) . ")
 		ORDER BY q.sequence";
 	} else {
 		$query_question = "
@@ -2160,7 +2157,7 @@ function saveManualUserReport ($id_user , $id_test , $id_track)
 		$query_question = "
 		SELECT q.idQuest, q.type_quest, t.type_file, t.type_class, q.idCategory 
 		FROM " . $GLOBALS[ 'prefix_lms' ] . "_testquest AS q JOIN " . $GLOBALS[ 'prefix_lms' ] . "_quest_type AS t
-		WHERE q.idTest = '" . $id_test . "' AND q.type_quest = t.type_quest AND  q.idQuest IN (" . implode ($quest_see , ',') . ")
+		WHERE q.idTest = '" . $id_test . "' AND q.type_quest = t.type_quest AND  q.idQuest IN (" . implode (',', $quest_see) . ")
 		ORDER BY q.sequence";
 	} else {
 		$query_question = "

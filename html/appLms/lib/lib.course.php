@@ -121,7 +121,8 @@ class Selector_Course {
 		}
 		// add last selection
 		if(isset($_POST['new_course_selected'])) {
-			while(list($id_c) = each($array_state['new_course_selected'])) {
+      foreach($array_state['new_course_selected'] as $id_c => $v)
+			{
 
 				$this->current_selection[$id_c] = $id_c;
 			}
@@ -2029,8 +2030,8 @@ class DoceboCourse {
 
 		$re = true;
 		if(empty($arr_new_values)) return $re;
-		while(list($key, $value) = each($arr_new_values)) {
-
+    foreach($arr_new_values as $key => $value)
+    {
 			$params[] = " ".$key." = '".$value."'";
 		}
 		$query = "
@@ -2372,8 +2373,8 @@ function &fromIdstToUser($id_user) {
 	}
 
 	$acl_man	=& Docebo::user()->getAclManager();
-
-	while(list(, $id_u) = each($id_user)) {
+  foreach($id_user as $id_u)
+  {
 
 		$user_info = $acl_man->getUser($id_u, false);
 		if( $user_info[ACL_INFO_LASTNAME].$user_info[ACL_INFO_FIRSTNAME] == '') {

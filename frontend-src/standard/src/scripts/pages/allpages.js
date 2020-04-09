@@ -1,6 +1,10 @@
 require('../modules/course-box');
 require('../modules/folder-view');
 require('../modules/slider-menu');
+require('../modules/modal-accordion');
+import { InfoCourse } from '../modules/InfoCourse';
+import {RenderDashBoardCalendar} from '../modules/DashboardCalendar';
+import { DashboardVideo } from '../modules/DashboardVideo';
 
 var Page = (function() {
   function setScroll(elem, action) {
@@ -21,8 +25,20 @@ var Page = (function() {
     });
 
     $(document).ready(function() {
+      if ($('.js-dashboard-video').length) {
+        DashboardVideo();
+      }
+
+      if ($('.js-dashboard-calendar').length) {
+        RenderDashBoardCalendar();
+      }
+
       if ($('.js-tabnav').length) {
         setTabnavHeight();
+
+        if ($('.js-infocourse').length) {
+          InfoCourse();
+        }
 
         $('.tabnav__label').on('click', function() {
           var _target = $(this).attr('data-tab');
@@ -86,8 +102,6 @@ var Page = (function() {
         _height = $(this).height();
       }
     });
-
-    console.log(_height);
 
     $('#user-panel-carousel').height(_height);
   }

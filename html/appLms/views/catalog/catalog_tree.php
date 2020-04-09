@@ -93,23 +93,22 @@
             }
 
             function checkSticky() {
-                if (window.innerWidth >= 768 && $('#div_course').offset().top - $(window).scrollTop() <= 60) {
-                    var windowHeight = window.innerHeight - 70;
-                    var treeviewHeight = $treeview.innerHeight();
+                var windowHeight = $( window ).height();
+                var treeviewHeight = $treeview.innerHeight();
+                $treeview.css({ maxHeight: windowHeight - 200, overflowY: 'auto'});
+                $(".container-fluid").css("height", "auto");
 
-                    if (treeviewHeight > windowHeight) {
-                        $treeview.css({ maxHeight: treeviewHeight, overflowY: 'auto'});
-                    }
-
-                    $treeview.css({width: $treeview.parent().width(), position: 'fixed', top: '60px'});
+                if (window.innerWidth >= 768 && $('#div_course').offset().top - $(window).scrollTop() <= 70) {
+                    $treeview.css({ maxHeight: windowHeight - 190, overflowY: 'auto'});
+                    $treeview.css({width: $treeview.parent().width(), position: 'fixed', top: '70px'});
                 } else {
-                    $treeview.attr('style', '');
+                    $treeview.css({position: 'static'});
                 }
             }
 
             $(function () {
                 callAjaxCatalog(0);
-                a_node = <?php echo $a_node ?>;
+                a_node = <?php echo $a_node ?>
 
                 // Alphabetical sort
                 $.each(a_node, function(k, cat) {

@@ -28,7 +28,8 @@ function fileList(&$url) {
 	$lang 		=& DoceboLanguage::createInstance('myfiles');
 
 	$areas = $file_man->getFilesAreas();
-	while(list($id_page, $area_name) = each($areas)) {
+  foreach($areas  as $id_page => $area_name )
+  {
 
 		$new_tab = new TabElemDefault(	$id_page,
 										$lang->def($area_name),

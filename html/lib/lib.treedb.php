@@ -334,11 +334,13 @@ class TreeDb {
 				.$this->_getParentJoinFilter( 't1','t2' ).")"
 				.$this->_getOtherTables( 't1' )
 				.$this->_outJoinFilter( 't1' );
-		if( $arrayId === NULL )
+        if( $arrayId === NULL )
 			$query .=" WHERE ((1) "
 					.$this->_getFilter('t1');
 		else
-			$query .=" WHERE ((t1.". $this->fields['id'] ." IN (". implode( ',', $arrayId) ."))"
+			$query .=" WHERE ((t1.". $this->fields['id'] ." IN ("
+                    . (!empty($arrayId) ? implode( ',', $arrayId) : "NULL" ) 
+                    .")) "
 					//."   AND ((t1.".$this->fields['id']." = t2.".$this->fields['idParent'] .")"
 					//."    OR  (t1.".$this->fields['id']." = 0 ))"
 					.$this->_getFilter('t1');
@@ -525,7 +527,7 @@ class TreeDb {
 	 *			- FALSE otherwise
 	 **/
 	function checkAncestor( $folderA, $folderB ) {
-		if( strpos( $folderB->path, $folderA->path ) !== FALSE )
+		if( strpos( $folderB->path, strval($folderA->path) ) !== FALSE )
 			return TRUE;
 		else
 			return FALSE;

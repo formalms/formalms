@@ -8,8 +8,8 @@
 \ ======================================================================== */
 
 -----------------------------------------------------------------------------
-forma.lms 2.2.1
-Release date: 2019 april 16
+forma.lms 2.4.1
+Release date: 2020 february 20
 -----------------------------------------------------------------------------
 
 
@@ -31,13 +31,13 @@ Index
 
 ------------------------------------------------------------------------------
 
-0    RELEASE NOTES (2.2.1)
+0    RELEASE NOTES (2.4.1)
 
 For all bugfix and new features included in this release, please read changelog.txt
 Here are some notes from base release.
 
 Attention
-From this release the templates system checks the version of the template.
+From release 2.2 the templates system checks the version of the template.
 check and update your templates manifest as described in par. 2.1 
 
 0.1  RELEASE NOTES (2.0)
@@ -46,13 +46,13 @@ Release date: 2018 june 19
 
 This is a new major release  with new features, redesign of the UI , many improvements
 
-For a list of all new features included in this release, please read changelog.txt
+For a list of all thenew features included in this release, please read changelog.txt
 
-Here are important notes:
+Here are some important notes:
 
 a) PHP support
    Full support for PHP from 5.4.x to 7.0.x 
-   Know issues for PHP 7.1.x and 7.2.x  will be addressed in next releases
+   Known issues for PHP 7.1.x and 7.2.x  will be addressed in next releases
    Dropped support for PHP < 5.4
    improved wrapper for mysqli - switch automatically to mysqli driver if mysql is missing
    
@@ -60,57 +60,57 @@ b) Template System
    Refactored front-end (users) UI with native responsive system based on bootstrap,
    Enhanced administrator templates .
    forma.lms 1.x.x  templates are NOT supported 
-   During upgrade and running a 2.x version forma.lms check the template defined and if not
-   supported  switch to the standard template. A template labeled "standard" must always be exists.
+   During upgrade and running a 2.x version forma.lms will check the defined template and - if not
+   supported - will switch to the standard template. A template labeled "standard" must always exist.
    A compliant 2.0 template must have a manifest file declaring the supported version 
    (for now 2.0)
    
-   As a suggestion, never change the standard template, if you need customisation, copy in a new one 
+   As a suggestion, never change the standard template, if you need customisation, copy it into a new one 
    and change it
    
 c) Privacy and GDPR compliance
    forma.lms is released with a compliant set of privacy features. The default settings meet GDPR 
-   requirements. You can change these settings as your requirements.
-   Acceptance of privacy policy records who, when and witch privacy policy has been acknowledged.
-   Go to the privacy section of the administration section to set privacy messages. For default
-   forma.lms use    privacy messages from language translation, but any modifications must be made 
+   requirements. You can change these settings as per your requirements.
+   Acceptance of privacy policy registers who, when and wich privacy policy has been acknowledged.
+   Go to the privacy section of the administration section to set privacy messages. By default, forma.lms uses
+   the privacy messages taken from the language translation. Any modification must be made 
    in the privacy settings section. 
    Note that privacy language translation defaults might be dropped in future releases.
-   Each orgchart node can have its own privacy policy, Node without policy will use the policy 
+   Each orgchart node can have its own privacy policy. A node without a specific policy will use the policy 
    marked as "default"
    
-   After upgrade from 1.xx release  all users must be re-accept privacy policy at first login.
+   After the upgrade from the 1.xx release  all users must re-accept the privacy policy upon the first login.
 
 d) Public admin removed
    The "public admin" feature has been dropped.
    The "admin" feature remains and has been enhanced with new permissions
    
-   During upgrade from 1.xx, users with "public admin" permissions will be reverted to standard 
-   users, however courses and orgchart node assigned to such users are retained. 
-   After upgrade, you must update interested users to the admin role and assign them an 
-   administration profile (create new one if needed).
+   During the upgrade from 1.xx, users with the "public admin" permissions will be reverted to standard 
+   users. However, the courses and orgchart node assigned to such users are retained. 
+   After the upgrade, you must update the interested users to the admin role and assign them an 
+   administration profile (create a new one if needed).
 
 e) direct SSO link.
-   The SSO direct link from external site to forma.lms is changed .   
+   The SSO direct link from an external site to forma.lms has changed .   
    v1.xx url:  http://yourformalms.domain.com/appLms/index.php
    v2.xx url:  http://yourformalms.domain.com/index.php
-   All other parameters (token included) are non changed
+   All other parameters (token included) have not changed
 
 f) Assessment
    Feature dropped
    
 g) Plugin system
-   The plugin system has been enhanced in the administration and extended use into the system.
+   The plugin system has been enhanced in the administration section and its use has been extended into the system.
    Each plugin must have a manifest file to describe its version, forma.lms version and 
    dependencies.
-   Many components has been converted in plugin, and distributed with the core system:
-   -- all login module
-   -- base video conferencing
+   Many components has been converted to plugins, and distributed with the core system:
+   -- all the login module
+   -- the base video conferencing systems
    -- some reports
    With next releases, other components will be converted.
 
 h) Back-end administration menu
-   DB tables and contents used by "admin menu components" are changed. During upgrade any 
+   DB tables and contents used by "admin menu components" have changed. During the upgrade any 
    customization of these will be lost
  
 

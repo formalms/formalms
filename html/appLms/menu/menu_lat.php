@@ -130,7 +130,8 @@ if(!Docebo::user()->isAnonymous() && isset($_SESSION['idCourse'])) {
     //** menu è il vettore interno 
     $array_menu = array();
     
-	while(list($id_main, $menu) = each($menu_module)) {
+	foreach($menu_module as $id_main => $menu)
+  {
         $span='';
         if($cont==0)  $span = '<span class="glyphicon glyphicon-cloud"></span> ';
         if($cont==1)  $span = '<span class="glyphicon glyphicon-inbox"></span> ';
@@ -168,8 +169,8 @@ if(!Docebo::user()->isAnonymous() && isset($_SESSION['idCourse'])) {
                        
             
             
-            
-			while(list($id_sub, $sub) = each($menu['submenu'])) {
+      foreach($menu['submenu'] as $id_sub => $sub)            
+    {
 
                   $array_menu[$id_main]['nome_area'] = $menu['main']['name'];    
                   $array_menu[$id_main]['menu'] = $sub;

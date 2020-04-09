@@ -253,22 +253,36 @@ function get_report_table($url='') {
 
 	//$_SESSION['report_admin_filter']['type']
 	//end query
+    
+   
 
 	$tb = new Table(Get::sett('visu_course'));
 	$tb->initNavBar('ini', 'button');
 	$col_type = array('','','align_center','image','image', 'img-cell', 'img-cell','image');//,'image','image');
-	$col_content = array(
-		$lang->def('_NAME'),
-		$lang->def('_TAB_REP_CREATOR'),
-		$lang->def('_CREATION_DATE'),
-		$lang->def('_TAB_REP_PUBLIC'),
-		'<img src="'.getPathImage().'standard/view.png" alt="'.$lang->def('_VIEW').'" title="'.$lang->def('_VIEW').'" />',
-		'<img src="'.getPathImage().'standard/msg_unread.png" alt="'.$lang->def('_SEND_EMAIL').'" title="'.$lang->def('_SEND_EMAIL').'" />',
-		'<span class="ico-sprite subs_csv"><span>'.Lang::t('_EXPORT_CSV', 'report').'</span></span>',
-		'<span class="ico-sprite subs_xls"><span>'.Lang::t('_EXPORT_XLS', 'report').'</span></span>',/*,
-		'<img src="'.getPathImage().'standard/edit.png" alt="'.$lang->def('_REP_TITLE_MOD').'" title="'.$lang->def('_MOD').'" />',
-		'<img src="'.getPathImage().'standard/delete.png" alt="'.$lang->def('_DEL').'" title="'.$lang->def('_DEL').'" />'	*/
-	);
+    
+    
+    if (Get::sett('use_immediate_report')=='on') {    
+	    $col_content = array(
+		    $lang->def('_NAME'),
+		    $lang->def('_TAB_REP_CREATOR'),
+		    $lang->def('_CREATION_DATE'),
+		    $lang->def('_TAB_REP_PUBLIC'),
+		    '<img src="'.getPathImage().'standard/view.png" alt="'.$lang->def('_VIEW').'" title="'.$lang->def('_VIEW').'" />',
+		    '<img src="'.getPathImage().'standard/msg_unread.png" alt="'.$lang->def('_SEND_EMAIL').'" title="'.$lang->def('_SEND_EMAIL').'" />',
+            '<span class="ico-sprite subs_csv" title="'.Lang::t('_EXPORT_CSV', 'report').'"><span>'.Lang::t('_EXPORT_CSV', 'report').'</span></span>',
+            '<span class="ico-sprite subs_xls" title="'.Lang::t('_EXPORT_XLS', 'report').'"><span>'.Lang::t('_EXPORT_XLS', 'report').'</span></span>'
+	    );
+    } else {
+        $col_content = array(
+            $lang->def('_NAME'),
+            $lang->def('_TAB_REP_CREATOR'),
+            $lang->def('_CREATION_DATE'),
+            $lang->def('_TAB_REP_PUBLIC'),
+            '<img src="'.getPathImage().'standard/view.png" alt="'.$lang->def('_VIEW').'" title="'.$lang->def('_VIEW').'" />',
+            '<span class="ico-sprite subs_csv" title="'.Lang::t('_EXPORT_CSV', 'report').'"><span>'.Lang::t('_EXPORT_CSV', 'report').'</span></span>',
+            '<span class="ico-sprite subs_xls" title="'.Lang::t('_EXPORT_XLS', 'report').'"><span>'.Lang::t('_EXPORT_XLS', 'report').'</span></span>'
+        );
+    }  
 
 	if ($level==ADMIN_GROUP_GODADMIN || $can_schedule) {
 		$col_content[] = '<img src="'.getPathImage().'standard/wait_alarm.png" alt="'.$lang->def('_SCHEDULE').'" title="'.$lang->def('_SCHEDULE').'" />';
@@ -321,39 +335,55 @@ function get_report_table($url='') {
 			
 			
 			
-			//Check if user has already a send mail request for current report
-			$user_id = Docebo::User()->getId();
-			$qry = "
-				SELECT * FROM %lms_report_schedule schedules
-				JOIN %lms_report_schedule_recipient recipients ON recipients.id_report_schedule = schedules.id_report_schedule AND recipients.id_user = $user_id
-				WHERE schedules.period LIKE '%now%'
-				AND schedules.id_report_filter=$id
-				AND schedules.enabled = 1
-			";
-			$background_task_search = sql_query($qry);
-			if($background_task_search->num_rows>0){
-				$background_execution_link = '<img src="'.getPathImage().'standard/move.png" alt="'.$lang->def('_EXECUTING').'" title="'.$lang->def('_EXECUTING').'" />';
-			}else{
-				$background_execution_link = '<a href="index.php?modname=report&op=reportlist&action=send_email&idrep='.(int)$id.'"><img src="'.getPathImage().'standard/msg_unread.png" alt="'.$lang->def('_SEND_EMAIL').'" title="'.$lang->def('_SEND_EMAIL').'" /></a>';
+            if (Get::sett('use_immediate_report')=='on') {
+            //Check if user has already a send mail request for current report
+			    $user_id = Docebo::User()->getId();
+			    $qry = "
+				    SELECT * FROM %lms_report_schedule schedules
+				    JOIN %lms_report_schedule_recipient recipients ON recipients.id_report_schedule = schedules.id_report_schedule AND recipients.id_user = $user_id
+				    WHERE schedules.period LIKE '%now%'
+				    AND schedules.id_report_filter=$id
+				    AND schedules.enabled = 1
+			    ";
+			    $background_task_search = sql_query($qry);
+			    if($background_task_search->num_rows>0){
+				    $background_execution_link = '<img src="'.getPathImage().'standard/move.png" alt="'.$lang->def('_EXECUTING').'" title="'.$lang->def('_EXECUTING').'" />';
+			    }else{
+				    $background_execution_link = '<a href="index.php?modname=report&op=reportlist&action=send_email&idrep='.(int)$id.'"><img src="'.getPathImage().'standard/msg_unread.png" alt="'.$lang->def('_SEND_EMAIL').'" title="'.$lang->def('_SEND_EMAIL').'" /></a>';
+			    }
 			}
-			
 			
 			
 			$_name = ($row['author'] == 0 ? $lang->def($row['filter_name']) : $row['filter_name']);
 			if (trim($_SESSION['report_admin_filter']['name']) != "") { $_name = Layout::highlight($_name, $_SESSION['report_admin_filter']['name']); }
 
-			$tb_content = array(
-				_REP_KEY_NAME     => $_name,
-				_REP_KEY_CREATOR  => ($row['author'] == 0 ? '<div class="align_center">-</div>' : $acl_man->relativeId($row['userid'])),
-				_REP_KEY_CREATION => Format::date($row['creation_date']),
-				_REP_KEY_PUBLIC   => $public,//$row['report_name'],
-				_REP_KEY_OPEN     => $opn_link,
-				$background_execution_link,
-				$export_link_csv,
-				$export_link_xls,/*,
-				_REP_KEY_MOD    => $mod_link,
-				_REP_KEY_REM    => $rem_link*/
-			);
+			
+            if (Get::sett('use_immediate_report')=='on') {            
+                $tb_content = array(
+				    _REP_KEY_NAME     => $_name,
+				    _REP_KEY_CREATOR  => ($row['author'] == 0 ? '<div class="align_center">-</div>' : $acl_man->relativeId($row['userid'])),
+				    _REP_KEY_CREATION => Format::date($row['creation_date']),
+				    _REP_KEY_PUBLIC   => $public,//$row['report_name'],
+				    _REP_KEY_OPEN     => $opn_link,
+				    $background_execution_link,
+				    $export_link_csv,
+				    $export_link_xls,/*,
+				    _REP_KEY_MOD    => $mod_link,
+				    _REP_KEY_REM    => $rem_link*/
+			    );
+            } else {
+                $tb_content = array(
+                    _REP_KEY_NAME     => $_name,
+                    _REP_KEY_CREATOR  => ($row['author'] == 0 ? '<div class="align_center">-</div>' : $acl_man->relativeId($row['userid'])),
+                    _REP_KEY_CREATION => Format::date($row['creation_date']),
+                    _REP_KEY_PUBLIC   => $public,//$row['report_name'],
+                    _REP_KEY_OPEN     => $opn_link,
+                    $export_link_csv,
+                    $export_link_xls,/*,
+                    _REP_KEY_MOD    => $mod_link,
+                    _REP_KEY_REM    => $rem_link*/
+                );
+            }   
 
 			if ($level==ADMIN_GROUP_GODADMIN || $can_schedule) {
 				$tb_content[_REP_KEY_SCHED] = $sch_link;

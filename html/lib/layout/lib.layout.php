@@ -359,7 +359,6 @@ class Layout
                 if ($GLOBALS['maintenance'] != "on") {
                     $retArray['changeLanguage_text'] = Lang::t('_CHANGELANG', 'register');
                     $retArray['changeLanguageBox'] = self::change_lang();
-                    $retArray['login_form'] = LoginLayout:: login_form();
                     $retArray['service_msg'] = LoginLayout:: service_msg();
                     $retArray['layout_zone_footer'] = self::zone('footer');
                     $retArray['login_links'] = LoginLayout::links();

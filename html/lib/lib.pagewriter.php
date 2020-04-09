@@ -137,7 +137,7 @@ class PageZone {
 
 		foreach($this->_contentOut as $k => $value) {
 
-			if(strpos($value, $needle) !== false) {
+			if(strpos($value, strval($needle)) !== false) {
 				$this->_contentOut[$k] = $text;
 			}
 		}

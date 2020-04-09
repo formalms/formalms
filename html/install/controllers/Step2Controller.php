@@ -17,10 +17,16 @@ Class Step2Controller extends StepController {
 function checkRequirements() {
 	$res =array();
 
-	// phpversion();
-	// PHP_VERSION version supported 5.2.x 5.3.x 5.4.x -- experimental 5.5.x 5.6.x
-	$res['php']=((version_compare(PHP_VERSION, '5.2.0', '>=') && version_compare(PHP_VERSION, '7.0.11', '<')) ? 'ok' :
-                     ((version_compare(PHP_VERSION, '7.0.11', '>=') && version_compare(PHP_VERSION, '7.1.0', '<')) ? 'warn' :  'err' ));
+	// Minimum PHP required version: 7.0
+	// Minimum PHP suggested version: 7.4.x
+	if(version_compare(PHP_VERSION, '7.0', '<')) {
+		$res['php'] = 'err';
+	} else if(version_compare(PHP_VERSION, '7.5', '>=')) {
+		$res['php'] = 'warn';
+	} else {
+		$res['php'] = 'ok';
+	}
+	
 	$driver=array(
         'mysqli'=>extension_loaded("mysqli"),
 	    'mysql'=>extension_loaded("mysql")

@@ -46,7 +46,6 @@ class CertificateSubs_UserStat extends CertificateSubstitution {
 			$subs['[test_score_final_max]'] = $lang->def('_TEST_SCORE_FINAL_MAX');
 			$subs['[course_score_final]'] 	= $lang->def('_FINAL_SCORE');
 			$subs['[course_score_final_max]'] = $lang->def('_COURSE_SCORE_FINAL_MAX');
-			$subs['[meta_assoc]'] = $lang->def('_META_ASSOC');
 		}
 		return $subs;
 	}
@@ -57,7 +56,8 @@ class CertificateSubs_UserStat extends CertificateSubstitution {
 
 		$lang =& DoceboLanguage::createInstance('course', 'lms');
 		$lang =& DoceboLanguage::createInstance('certificate', 'lms');
-                $lang =& DoceboLanguage::createInstance('levels', 'lms');
+        $lang =& DoceboLanguage::createInstance('levels', 'lms');
+
 		if($this->id_meta != 0)
 		{
 			require_once($GLOBALS['where_lms'].'/lib/lib.course.php');
@@ -86,9 +86,9 @@ class CertificateSubs_UserStat extends CertificateSubstitution {
 
 							.'<thead>'
 							.'<tr>'
-							.'<td>'.$lang->def('_COURSE_NAME').'</td>'
-							.'<td>'.$lang->def('_COURSE_TYPE').'</td>'
-							.'<td align="right">'.$lang->def('_COURSE_TIME').'</td>'
+							.'<td><b>'.$lang->def('_LANG_MODULE', 'admin_lang').'</b></td>'
+							//.'<td>'.$lang->def('_COURSE_TYPE').'</td>'
+							.'<td align="right"><b>'.$lang->def('_DURATION', 'course').'</b></td>'
 							.'</tr>'
 							.'</thead>'
 							.'</tbody>';
@@ -96,10 +96,10 @@ class CertificateSubs_UserStat extends CertificateSubstitution {
 			$table_blended =	'<table width="100%" cellspacing="1" cellpadding="1" border="1" align="" summary="Corsi frequentati">'
 								.'<thead>'
 								.'<tr>'
-								.'<td>'.$lang->def('_COURSE_NAME').'</td>'
+								.'<td><b>'.$lang->def('_LANG_MODULE', 'admin_lang').'</b></td>'
 								.'<td>'.$lang->def('_COURSE_PROF').'</td>'
-								.'<td>'.$lang->def('_COURSE_TYPE').'</td>'
-								.'<td align="right">'.$lang->def('_COURSE_TIME').'</td>'
+								//.'<td>'.$lang->def('_COURSE_TYPE').'</td>'
+								.'<td align="right"><b>'.$lang->def('_DURATION', 'course').'</b></td>'
 								.'</thead>'
 								.'</tbody>';
 			$course_count = 0;
@@ -108,10 +108,10 @@ class CertificateSubs_UserStat extends CertificateSubstitution {
 			$array_meta_complete = array();
 			$array_meta_inscr = array();
 			$array_meta_access = array();
-                        //$array_meta_level = array();
+        	// $array_meta_level = array();
+
 			while(list($id_course) = sql_fetch_row($result))
 			{
-                                //
 				$query =	"SELECT date_complete, date_inscr, date_first_access, level"
 						." FROM ".$GLOBALS['prefix_lms']."_courseuser"
 						." WHERE idCourse = '".$id_course."'"
@@ -122,7 +122,7 @@ class CertificateSubs_UserStat extends CertificateSubstitution {
 				$array_meta_complete[] = $date_complete_meta;
 				$array_meta_inscr[] = $date_inscr_meta;
 				$array_meta_access[] = $date_access_meta;
-                                //$array_meta_level[] = $level;
+                // $array_meta_level[] = $level;
 
 				$man_course = new Man_Course();
 
@@ -139,7 +139,7 @@ class CertificateSubs_UserStat extends CertificateSubstitution {
 					$first = true;
 
 					if(is_array($teacher_array) && !empty($teacher_array))
-						while(list(, $id_teach) = each($teacher_array))
+             foreach($teacher_array as $id_teach) 
 						{
 							$teacher_info = $acl_man->getUser($id_teach);
 							if ($first)
@@ -156,7 +156,7 @@ class CertificateSubs_UserStat extends CertificateSubstitution {
 					$table_blended .=	'<tr>'
 										.'<td>'.$course_info['name'].'</td>'
 										.'<td>'.$teacher.'</td>'
-										.'<td>'.$array_coursetype[$course_info['course_type']].'</td>'
+										//.'<td>'.$array_coursetype[$course_info['course_type']].'</td>'
 										.'<td align="right">'.$course_info['mediumTime'].'</td>'
 										.'</tr>';
 
@@ -167,7 +167,7 @@ class CertificateSubs_UserStat extends CertificateSubstitution {
 				{
 					$table_course .=	'<tr>'
 										.'<td>'.$course_info['name'].'</td>'
-										.'<td>'.$array_coursetype[$course_info['course_type']].'</td>'
+										//.'<td>'.$array_coursetype[$course_info['course_type']].'</td>'
 										.'<td align="right">'.$course_info['mediumTime'].'</td>'
 										.'</tr>';
 
@@ -178,7 +178,7 @@ class CertificateSubs_UserStat extends CertificateSubstitution {
 
 			$table_course .=	'<tr>'
 								//.'<td>&nbsp;</td>'
-								.'<td align="right" colspan="2">'.$lang->def('_TOTAL_HOURS').'</td>'
+								.'<td align="right" colspan="2" width="75%">'.$lang->def('_TOTAL_HOURS', 'standard').'</td>'
 								.'<td align="right">'.$course_time.'</td>'
 								.'</tr>'
 								.'</tbody>'
@@ -186,7 +186,7 @@ class CertificateSubs_UserStat extends CertificateSubstitution {
 
 			$table_blended .=	'<tr>'
 								//.'<td>&nbsp;</td>'
-								.'<td align="right" colspan="2">'.$lang->def('_TOTAL_HOURS').'</td>'
+								.'<td align="right" colspan="2" width="75%">'.$lang->def('_TOTAL_HOURS', 'standard').'</td>'
 								.'<td align="right">'.$blended_time.'</td>'
 								.'</tr>'
 								.'</tbody>'
@@ -195,21 +195,13 @@ class CertificateSubs_UserStat extends CertificateSubstitution {
 			rsort($array_meta_complete);
 			sort($array_meta_inscr);
 			sort($array_meta_access);
-                        //sort($array_meta_level);
+            // sort($array_meta_level);
 
 			$subs['[meta_complete]'] = $array_meta_complete[0];
 			$subs['[meta_inscr]'] = $array_meta_inscr[0];
 			$subs['[meta_access]'] = $array_meta_access[0];
-
-			$sql = "
-				SELECT title FROM %lms_certificate_meta AS cm 
-				INNER JOIN %lms_certificate_meta_course cmc ON cm.idMetaCertificate = cmc.idMetaCertificate
-				WHERE cmc.idUser = {$this->id_user} AND cm.idMetaCertificate = {$this->id_meta}";
-			$q = sql_query($sql);
-			$meta = sql_fetch_object($q);
-			$subs['[meta_assoc]'] = $meta->title ?: '-';
                         
-                       // $subs['[meta_level]'] = $lang->def('_LEVEL_'.$array_meta_level[0],'levels');
+           	// $subs['[meta_level]'] = $lang->def('_LEVEL_'.$array_meta_level[0],'levels');
                         
 			$subs['[table_course]'] = ( $course_count ? $table_course : '' );
 			$subs['[table_blended]'] = ( $blended_count ? $table_blended : '' );
@@ -227,15 +219,14 @@ class CertificateSubs_UserStat extends CertificateSubstitution {
 				$subs['[date_first_access]'] = Format::date($course_stat[$this->id_course]['date_first_access'], 'date');
 				$subs['[date_complete]'] = Format::date($course_stat[$this->id_course]['date_complete'], 'date');
 				$subs['[date_complete_year]'] = substr($course_stat[$this->id_course]['date_complete'], 0, 4);
-                                
-                                $subs['[user_level]'] = $lang->def('_LEVEL_'.$course_stat[$this->id_course]['level'],'levels');
+              	$subs['[user_level]'] = $lang->def('_LEVEL_'.$course_stat[$this->id_course]['level'],'levels');
 			} else {
 
 				$subs['[date_enroll]'] = '';
 				$subs['[date_first_access]'] = '';
 				$subs['[date_complete]'] = '';
 				$subs['[date_complete_year]'] = '';
-                                $subs['[user_level]'] = '';
+                $subs['[user_level]'] = '';
 			}
 
 			require_once($GLOBALS['where_lms'].'/lib/lib.orgchart.php');
@@ -249,7 +240,6 @@ class CertificateSubs_UserStat extends CertificateSubstitution {
 			$rep_man = new CourseReportManager();
 
 			$score_course = $rep_man->getUserFinalScore(array($this->id_user), array($this->id_course));
-
 
 			$subs['[test_score_start]'] = ( isset($score_start[$this->id_course][$this->id_user]) ? $score_start[$this->id_course][$this->id_user]['score'] : '' );
 			$subs['[test_score_start_max]'] = ( isset($score_start[$this->id_course][$this->id_user]) ? $score_start[$this->id_course][$this->id_user]['max_score'] : '' );
@@ -267,6 +257,7 @@ class CertificateSubs_UserStat extends CertificateSubstitution {
 			$hours = (int)($time_in/3600);
 			$minutes = (int)(($time_in%3600)/60);
 			$seconds = (int)($time_in%60);
+
 			if($minutes < 10) $minutes = '0'.$minutes;
 			if($seconds < 10) $seconds = '0'.$seconds;
 

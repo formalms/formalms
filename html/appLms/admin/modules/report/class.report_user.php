@@ -391,7 +391,8 @@ class Report_User extends Report {
 			}
 
 			if (isset($_REQUEST['courses_filter'])) {
-				while(list($ind, $filter_data) = each($_REQUEST['courses_filter'])) {
+         foreach($_REQUEST['courses_filter'] as $ind => $filter_data)
+         {
 					if($opt_type[$filter_data['option']] == _FILTER_DATE) {
 						$_REQUEST['courses_filter'][$ind]['value'] = Format::dateDb($filter_data['value'], 'date');
 					}
@@ -749,7 +750,7 @@ class Report_User extends Report {
 		.Form::getCloseFieldset();
 
 
-        $box->body .= Form::getOpenFieldset("campi aggiuntivi per corsi", 'report');
+        $box->body .= Form::getOpenFieldset($lang->def('_ADDITIONAL_FIELDS_COURSES', 'courses'), 'report');
         foreach ($customCourse as $keyCourse =>$valCourse) {
             $box->body .= Form::getCheckBox( addslashes( $valCourse['label']) , 'col_customcourse_'.$valCourse['id'], 'customcourse['.$valCourse['id'].']', $valCourse['id'], $ref['custom_fields_course'][$keyCourse]['selected']);        
         }
@@ -1368,7 +1369,8 @@ class Report_User extends Report {
 			$date_now = Format::date(date("Y-m-d H:i:s"));
 
 			reset($org_name);
-			while(list($idst_group, $folder_name) = each($org_name)) {
+      foreach($org_name as $idst_group => $folder_name )
+      {
 
 				if ($type == 'html') {
 					cout('<div class="datasummary">'
@@ -2189,9 +2191,10 @@ class Report_User extends Report {
 		$buffer->addHeader($_head);
 		$buffer->closeHeader();
 		$buffer->openBody();
-//die('<pre>'.print_r($rc_filters, true).'</pre>');
+
 		//check all data row and print them
-		while (list($id_user, $ucomps) = each($arr_data)) {
+    foreach($arr_data as $id_user => $ucomps )    
+    {
 			$is_valid = true;
 
 			$satisfied = 0;

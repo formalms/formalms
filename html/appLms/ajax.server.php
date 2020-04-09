@@ -22,7 +22,7 @@ ob_start();
 
 // initialize
 require(_base_.'/lib/lib.bootstrap.php');
-Boot::init(BOOT_PLUGINS);
+Boot::init(BOOT_HOOKS);
 
 // not a pagewriter but something similar
 $GLOBALS['operation_result'] = '';

@@ -18,6 +18,7 @@ class PluginmanagerAdm extends Model
     protected $db;
     protected $table;
     protected $plugin_core;
+    static $plugins_active;
 
     public function __construct()
     {
@@ -210,31 +211,35 @@ class PluginmanagerAdm extends Model
 
     public function getActivePlugins()
     {
-        if ($GLOBALS['notuse_plugin'] == true || $_SESSION['notuse_plugin'] == true){
-            $query = "SELECT * FROM ".$this->table." WHERE core=1 ORDER BY priority ASC";
-        } else {    
-            $query = "SELECT * FROM ".$this->table." WHERE  active=1 or core=1 ORDER BY priority ASC";
-        }
-        $re = $this->db->query($query);
-        $plugins = array();
-        while ($row = sql_fetch_assoc($re)) {
-            if ($row['core'] == 1) {
-                if ($row['active'] == 1) {
-                    $plugins[$row['name']] = $row;
+        if (!isset(self::$plugins_active)) {
+            if ($GLOBALS['notuse_plugin'] == true || $_SESSION['notuse_plugin'] == true){
+                $query = "SELECT * FROM ".$this->table." WHERE core=1 ORDER BY priority ASC";
+            } else {    
+                $query = "SELECT * FROM ".$this->table." WHERE  active=1 or core=1 ORDER BY priority ASC";
+            }
+            $re = $this->db->query($query);
+            $plugins = array();
+            while ($row = sql_fetch_assoc($re)) {
+                if ($row['core'] == 1) {
+                    if ($row['active'] == 1) {
+                        $plugins[$row['name']] = $row;
+                    } else {
+                        $plugins[$row['name']] = false;
+                    }
                 } else {
-                    $plugins[$row['name']] = false;
+                    $plugins[$row['name']] = $row;
                 }
-            } else {
-                $plugins[$row['name']] = $row;
+                $plugins[$row['name']]['missing'] = !file_exists(_base_ . "/plugins/" . $row['name']);
             }
-        }
-        foreach ($this->plugin_core as $core_name) {
-            if (!key_exists($core_name, $plugins)) {
-                $manifest = $this->readPluginManifest($core_name);
-                $plugins[$manifest['name']] = $manifest;
+            foreach ($this->plugin_core as $core_name) {
+                if (!key_exists($core_name, $plugins)) {
+                    $manifest = $this->readPluginManifest($core_name);
+                    $plugins[$manifest['name']] = $manifest;
+                }
             }
+            self::$plugins_active = array_filter($plugins);
         }
-        return array_filter($plugins);
+        return self::$plugins_active;
     }
 
     /**
@@ -341,9 +346,13 @@ class PluginmanagerAdm extends Model
 
         $plugin_class = "Plugin";
         require_once(_plugins_ . "/" . $plugin_name . "/" . $plugin_class . ".php");
-        $this->importSqlFile(_plugins_ . "/" . $plugin_name . "/db/" . $method . ".sql");
+        $res = $this->importSqlFile(_plugins_ . "/" . $plugin_name . "/db/" . $method . ".sql");
+        if (!$res['ok']) {
+            return false;
+        }
         if (method_exists('Plugin\\' . $plugin_name . '\\' . $plugin_class, $method)) {
-            return call_user_func(array('Plugin\\' . $plugin_name . '\\' . $plugin_class, $method), $plugin_name, $plugin_version);
+            $fnResult = call_user_func(array('Plugin\\' . $plugin_name . '\\' . $plugin_class, $method), $plugin_name, $plugin_version);
+            return $fnResult === false ? false : true;
         }
     }
 
@@ -420,7 +429,7 @@ class PluginmanagerAdm extends Model
                 $check = $model->importTranslation($lang_file, true, false, (int)$plugin_info['plugin_id']);
             }
         }
-        return $check;
+        return $check !== false;
     }
 
     function removeTranslations($plugin_name)
@@ -455,13 +464,38 @@ class PluginmanagerAdm extends Model
             $result = sql_query($query);
             if ($result) {
                 if (!$update) {
-                    $this->callPluginMethod($plugin_name, 'install');
-                    $this->installTranslations($plugin_name);
+                    if (
+                        $this->callPluginMethod($plugin_name, 'install') &&
+                        $this->installTranslations($plugin_name) 
+                    ) {
+                        return true;
+                    } else {
+                        return false;
+                    }
                 }
                 return $plugin_info;
             } else {
                 return false;
             }
+        } else {
+            return false;
+        }
+    }
+
+        /**
+     * Set specified priority for specified plugin
+     * @param $plugin_name
+     * @param int $priority
+     * @return bool
+     */
+    function setPriority($plugin_name, $priority = 0)
+    {
+        $updateQuery = sql_query("
+        UPDATE " . $this->table . "
+        SET priority=" . (int)$priority . "
+        WHERE name = '" . $plugin_name . "'");
+        if($updateQuery) {
+            return true;
         } else {
             return false;
         }
@@ -476,16 +510,23 @@ class PluginmanagerAdm extends Model
     public
     function uninstallPlugin($plugin_id, $update = false)
     {
+        $reSetting = true;
         if (!$update) {
-            $this->setupPlugin($plugin_id, false);
-            $this->callPluginMethod($plugin_id, 'uninstall');
-            $this->removeSettings($plugin_id);
-            $this->removeRequests($plugin_id);
-            $this->removeTranslations($plugin_id);
-            $this->removeMenu($plugin_id);
+            if (
+                $this->setupPlugin($plugin_id, false) &&
+                $this->callPluginMethod($plugin_id, 'uninstall') &&
+                $this->removeSettings($plugin_id) &&
+                $this->removeRequests($plugin_id) &&
+                $this->removeTranslations($plugin_id) &&
+                $this->removeMenu($plugin_id)
+            ) {
+                $reSetting = true;
+            } else {
+                $reSetting = false;
+            }
         }
 
-        $reSetting = sql_query("
+        sql_query("
 			DELETE FROM " . $this->table . "
 			WHERE name='" . $plugin_id . "'");
 
@@ -501,15 +542,16 @@ class PluginmanagerAdm extends Model
     public
     function setupPlugin($plugin_id, $active)
     {
+        $reSetting = true;
         if ($active == 1) {
-            $this->callPluginMethod($plugin_id, 'activate');
+            $reSetting = $this->callPluginMethod($plugin_id, 'activate');
         } else {
-            $this->callPluginMethod($plugin_id, 'deactivate');
+            $reSetting = $this->callPluginMethod($plugin_id, 'deactivate');
         }
 
-        $reSetting = sql_query("
+        sql_query("
 			UPDATE " . $this->table . "
-			SET active=" . $active . "
+			SET active=" . (int)$active . "
 			WHERE name = '" . $plugin_id . "'");
 
         return $reSetting;

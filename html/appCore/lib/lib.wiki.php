@@ -1639,7 +1639,7 @@ Class CoreWikiPublic {
 		$res.='<p class="wiki_search_txt_preview">';
 		$content =strip_tags($data["content"]);
 		$content =preg_replace("/\[\[(.*?)\]\]/", "\$1", $content);
-		$start =strpos($content, $search_txt);
+		$start =strpos($content, strval($search_txt));
 		$start =($start > 150 ? $start-150 : 0);
 		$res.=($start > 0 ? "..." : "");
 		$preview =substr($content, $start, 300);

@@ -1,14 +1,14 @@
-#!/usr/bin/env php
-<?php
+#!/usr/bin/env sh
 
-/**
- * Shell wrapper for Phing
- * $Id: 3da5a2758ca689a6ee49defabcda5efa6dd70a97 $
- */
+dir=$(cd "${0%[/\\]*}" > /dev/null; cd "../html/vendor/phing/phing/bin" && pwd)
 
-// turn off html errors
-ini_set('html_errors', 'off');
+if [ -d /proc/cygdrive ]; then
+    case $(which php) in
+        $(readlink -n /proc/cygdrive)/*)
+            # We are in Cygwin using Windows php, so the path must be translated
+            dir=$(cygpath -m "$dir");
+            ;;
+    esac
+fi
 
-putenv("PHING_HOME=" . realpath(dirname(__FILE__) . '/../'));
-
-require_once dirname(__FILE__) . '/phing.php';
+"${dir}/phing" "$@"

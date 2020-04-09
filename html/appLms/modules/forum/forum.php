@@ -125,7 +125,7 @@ function forum ()
 		FROM " . $GLOBALS[ 'prefix_lms' ] . "_forum AS f
 			LEFT JOIN " . $GLOBALS[ 'prefix_lms' ] . "_forum_access AS fa ON ( f.idForum = fa.idForum )
 		WHERE f.idCourse = '" . (int) $_SESSION[ 'idCourse' ] . "' AND
-			( fa.idMember IS NULL OR fa.idMember IN (" . implode ($all_user_idst , ',') . " )  )
+			( fa.idMember IS NULL OR fa.idMember IN (" . implode (',', $all_user_idst) . " )  )
 		ORDER BY f.sequence ";
         
         $query_num_view = "
@@ -133,7 +133,7 @@ function forum ()
 		FROM " . $GLOBALS[ 'prefix_lms' ] . "_forum AS f
 			LEFT JOIN " . $GLOBALS[ 'prefix_lms' ] . "_forum_access AS fa ON ( f.idForum = fa.idForum )
 		WHERE f.idCourse = '" . (int) $_SESSION[ 'idCourse' ] . "' AND
-			( fa.idMember IS NULL OR fa.idMember IN (" . implode ($all_user_idst , ',') . " )  ) ";
+			( fa.idMember IS NULL OR fa.idMember IN (" . implode (',', $all_user_idst) . " )  ) ";
     
     }
     
@@ -1941,7 +1941,7 @@ function message ()
         $re_num_post = sql_query ("
 		SELECT u.idUser, u.level, COUNT(*)
 		FROM " . $GLOBALS[ 'prefix_lms' ] . "_forummessage AS m, " . $GLOBALS[ 'prefix_lms' ] . "_courseuser AS u
-		WHERE u.idCourse = '" . (int) $_SESSION[ 'idCourse' ] . "' AND m.author = u.idUser AND m.author IN ( " . implode ($authors , ',') . " )
+		WHERE u.idCourse = '" . (int) $_SESSION[ 'idCourse' ] . "' AND m.author = u.idUser AND m.author IN ( " . implode (',', $authors) . " )
 		GROUP BY u.idUser, u.level");
         while (list($id_u , $level_u , $num_post_a) = sql_fetch_row ($re_num_post)) {
             
@@ -2973,7 +2973,7 @@ function forumsearch ()
 		FROM " . $GLOBALS[ 'prefix_lms' ] . "_forum AS f
 			LEFT JOIN " . $GLOBALS[ 'prefix_lms' ] . "_forum_access AS fa ON ( f.idForum = fa.idForum )
 		WHERE f.idCourse = '" . (int) $_SESSION[ 'idCourse' ] . "' AND
-			( fa.idMember IS NULL OR fa.idMember IN (" . implode ($all_user_idst , ',') . " )  ) ";
+			( fa.idMember IS NULL OR fa.idMember IN (" . implode (',', $all_user_idst) . " )  ) ";
     
     }
     $forums = array ();
@@ -2997,7 +2997,7 @@ function forumsearch ()
 	SELECT COUNT(DISTINCT t.idThread)
 	FROM " . $GLOBALS[ 'prefix_lms' ] . "_forumthread AS t JOIN
 			" . $GLOBALS[ 'prefix_lms' ] . "_forummessage AS m
-	WHERE t.idThread = m.idThread AND t.idForum IN ( " . implode ($forums , ',') . " )
+	WHERE t.idThread = m.idThread AND t.idForum IN ( " . implode (',', $forums) . " )
 		AND ( m.title LIKE '%" . $search_arg . "%' OR m.textof LIKE '%" . $search_arg . "%' ) ";
     list($tot_thread) = sql_fetch_row (sql_query ($query_num_thread));
     
@@ -3011,7 +3011,7 @@ function forumsearch ()
 	SELECT DISTINCT t.idThread, t.idForum, t.author AS thread_author, t.posted, t.title, t.num_post, t.num_view, t.locked, t.erased
 	FROM " . $GLOBALS[ 'prefix_lms' ] . "_forumthread AS t JOIN
 			" . $GLOBALS[ 'prefix_lms' ] . "_forummessage AS m
-	WHERE t.idThread = m.idThread AND t.idForum IN ( " . implode ($forums , ',') . " )
+	WHERE t.idThread = m.idThread AND t.idForum IN ( " . implode (',', $forums) . " )
 		AND ( m.title LIKE '%" . $search_arg . "%' OR m.textof LIKE '%" . $search_arg . "%' ) ";
     switch ($ord) {
         case "obji"        :
@@ -3267,7 +3267,7 @@ function forumsearchmessage ()
     $re_num_post = sql_query ("
 	SELECT u.idUser, u.level, COUNT(*)
 	FROM " . $GLOBALS[ 'prefix_lms' ] . "_forummessage AS m, " . $GLOBALS[ 'prefix_lms' ] . "_courseuser AS u
-	WHERE u.idCourse = '" . (int) $_SESSION[ 'idCourse' ] . "' AND m.author = u.idUser AND m.author IN ( " . implode ($authors , ',') . " )
+	WHERE u.idCourse = '" . (int) $_SESSION[ 'idCourse' ] . "' AND m.author = u.idUser AND m.author IN ( " . implode (',', $authors) . " )
 	GROUP BY u.idUser, u.level");
     while (list($id_u , $level_u , $num_post_a) = sql_fetch_row ($re_num_post)) {
         

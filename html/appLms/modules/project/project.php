@@ -204,7 +204,7 @@ function getGroupsForProject(& $lang) {
 	$db_groups = $acl_man->getBasePathGroupST('/lms/course/'.$_SESSION['idCourse'].'/group/', true);
 	$groups = array();
 	$groups[getLogUserId()] = $lang->def('_YOUONLY');
-	while(list($idst, $groupid) = each($db_groups)) {
+  foreach($db_groups as $idst => $groupid ){
 
 		$groupid = substr($groupid, strlen('/lms/course/'.$_SESSION['idCourse'].'/group/'));
 		if($groupid == 'alluser') {

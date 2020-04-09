@@ -522,15 +522,16 @@ class MyFileSelector {
 		if(isset($_POST['new_file_selected'])) {
 			
 			$displayed = array_diff($displayed, $_POST['new_file_selected']);
-			while(list($id_f) = each($_POST['new_file_selected'])) {
+      foreach($_POST['new_file_selected']  as $id_f => $v)
+       {
 				
 				$this->current_selection[$id_f] = $id_f;
 			}
 		}
 		// remove old selection
 		if(is_array($displayed) && count($displayed)) {
-		
-			while(list($id_f) = each($displayed)) {
+      foreach($displayed as $id_f => $v)		
+      {
 				
 				if(isset($this->current_selection[$id_f])) unset($this->current_selection[$id_f]);
 			}
@@ -549,7 +550,8 @@ class MyFileSelector {
 		$lang 		=& DoceboLanguage::createInstance('myfiles');
 			
 		$areas = $file_man->getFilesAreas();
-		while(list($id_page, $area_name) = each($areas)) {
+    foreach($areas as $id_page => $area_name)
+    {
 			
 			$new_tab = new TabElemDefault(	$id_page, 
 											$lang->def($area_name), 

@@ -128,7 +128,7 @@ function forum ()
 		FROM " . $GLOBALS[ 'prefix_lms' ] . "_forum AS f
 			LEFT JOIN " . $GLOBALS[ 'prefix_lms' ] . "_forum_access AS fa ON ( f.idForum = fa.idForum )
 		WHERE f.idCourse = '" . (int) PUBLIC_FORUM_COURSE_ID . "' AND
-			( fa.idMember IS NULL OR fa.idMember IN (" . implode ($all_user_idst , ',') . " )  )
+			( fa.idMember IS NULL OR fa.idMember IN (" . implode (',', $all_user_idst) . " )  )
 		ORDER BY f.sequence ";
         
         $query_num_view = "
@@ -2176,7 +2176,7 @@ function message ()
         $re_num_post = sql_query ("
 		SELECT u.idUser, u.level, COUNT(*)
 		FROM " . $GLOBALS[ 'prefix_lms' ] . "_forummessage AS m, " . $GLOBALS[ 'prefix_lms' ] . "_courseuser AS u
-		WHERE m.idCourse = '" . (int) PUBLIC_FORUM_COURSE_ID . "' AND m.author = u.idUser AND m.author IN ( " . implode ($authors , ',') . " )
+		WHERE m.idCourse = '" . (int) PUBLIC_FORUM_COURSE_ID . "' AND m.author = u.idUser AND m.author IN ( " . implode (',', $authors) . " )
 		GROUP BY u.idUser, u.level");
         while (list($id_u , $level_u , $num_post_a) = sql_fetch_row ($re_num_post)) {
             
@@ -2537,7 +2537,7 @@ function showMessageForAdd ($id_thread , $how_much)
     $re_num_post = sql_query ("
 	SELECT u.idUser, u.level, COUNT(*)
 	FROM " . $GLOBALS[ 'prefix_lms' ] . "_forummessage AS m, " . $GLOBALS[ 'prefix_lms' ] . "_courseuser AS u
-	WHERE m.idCourse = '" . (int) PUBLIC_FORUM_COURSE_ID . "' AND m.author = u.idUser AND m.author IN ( " . implode ($authors , ',') . " )
+	WHERE m.idCourse = '" . (int) PUBLIC_FORUM_COURSE_ID . "' AND m.author = u.idUser AND m.author IN ( " . implode (',', $authors) . " )
 	GROUP BY u.idUser, u.level");
     while (list($id_u , $level_u , $num_post_a) = sql_fetch_row ($re_num_post)) {
         
@@ -3258,7 +3258,7 @@ function forumsearch ()
 	SELECT COUNT(DISTINCT t.idThread)
 	FROM " . $GLOBALS[ 'prefix_lms' ] . "_forumthread AS t JOIN
 			" . $GLOBALS[ 'prefix_lms' ] . "_forummessage AS m
-	WHERE t.idThread = m.idThread AND t.idForum IN ( " . implode ($forums , ',') . " )";
+	WHERE t.idThread = m.idThread AND t.idForum IN ( " . implode (',', $forums) . " )";
     
     if (isset($search_arg))
         $query_num_thread .= " AND ( m.title LIKE '%" . $search_arg . "%' OR m.textof LIKE '%" . $search_arg . "%' ) ";
@@ -3275,7 +3275,7 @@ function forumsearch ()
 	SELECT DISTINCT t.idThread, t.idForum, t.author AS thread_author, t.posted, t.title, t.num_post, t.num_view, t.locked, t.erased
 	FROM " . $GLOBALS[ 'prefix_lms' ] . "_forumthread AS t JOIN
 			" . $GLOBALS[ 'prefix_lms' ] . "_forummessage AS m
-	WHERE t.idThread = m.idThread AND t.idForum IN ( " . implode ($forums , ',') . " )
+	WHERE t.idThread = m.idThread AND t.idForum IN ( " . implode (',', $forums) . " )
 		AND ( m.title LIKE '%" . $search_arg . "%' OR m.textof LIKE '%" . $search_arg . "%' ) ";
     switch ($ord) {
         case "obji"        :
@@ -3307,7 +3307,7 @@ function forumsearch ()
 	SELECT m.idThread, t.author AS thread_author, m.posted, m.title, m.author  AS mess_author, m.generator
 	FROM " . $GLOBALS[ 'prefix_lms' ] . "_forumthread AS t LEFT JOIN
 		" . $GLOBALS[ 'prefix_lms' ] . "_forummessage AS m ON ( t.last_post = m.idMessage )
-	WHERE t.idForum IN ( " . implode ($forums , ',') . " )");
+	WHERE t.idForum IN ( " . implode (',', $forums) . " )");
     while (list($idT_p , $id_ta , $posted , $title_p , $id_a , $is_gener) = sql_fetch_row ($re_last_post)) {
         
         $last_authors[ $id_ta ] = $id_ta;
@@ -3539,7 +3539,7 @@ function forumsearchmessage ()
     $re_num_post = sql_query ("
 	SELECT u.idUser, u.level, COUNT(*)
 	FROM " . $GLOBALS[ 'prefix_lms' ] . "_forummessage AS m, " . $GLOBALS[ 'prefix_lms' ] . "_courseuser AS u
-	WHERE m.idCourse = '" . (int) PUBLIC_FORUM_COURSE_ID . "' AND m.author = u.idUser AND m.author IN ( " . implode ($authors , ',') . " )
+	WHERE m.idCourse = '" . (int) PUBLIC_FORUM_COURSE_ID . "' AND m.author = u.idUser AND m.author IN ( " . implode (',', $authors) . " )
 	GROUP BY u.idUser, u.level");
     while (list($id_u , $level_u , $num_post_a) = sql_fetch_row ($re_num_post)) {
         

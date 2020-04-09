@@ -149,9 +149,9 @@ class DoceboACLManager
     }
 
     /**
-     * @internal
      * @return string the name of the table with the users preferences
      * @access private
+     * @internal
      */
     function _getTableSettingUser()
     {
@@ -460,6 +460,45 @@ class DoceboACLManager
 
             $pwd_expire_at = date("Y-m-d H:i:s", time() + Get::sett('pass_max_time_valid') * 24 * 3600);
         }
+
+        $userdata = [
+            ACL_INFO_IDST => $idst,
+            ACL_INFO_USERID => $userid,
+            ACL_INFO_FIRSTNAME => $firstname,
+            ACL_INFO_LASTNAME => $lastname,
+            ACL_INFO_PASS => $pass,
+            ACL_INFO_EMAIL => $email,
+            ACL_INFO_AVATAR => $avatar,
+            ACL_INFO_SIGNATURE => $signature,
+            ACL_INFO_PWD_EXPIRE_AT => $pwd_expire_at,
+            ACL_INFO_FORCE_CHANGE => $force_change,
+            ACL_INFO_FACEBOOK_ID => $facebook_id,
+            ACL_INFO_TWITTER_ID => $twitter_id,
+            ACL_INFO_LINKEDIN_ID => $linkedin_id,
+            ACL_INFO_GOOGLE_ID => $google_id,
+        ];
+
+        $data = Events::trigger('core.user.creating', [
+            'userdata' => $userdata,
+        ]);
+
+        $userdata = $data['userdata'];
+
+        $idst = $userdata[ACL_INFO_IDST];
+        $userid = $userdata[ACL_INFO_USERID];
+        $firstname = $userdata[ACL_INFO_FIRSTNAME];
+        $lastname = $userdata[ACL_INFO_LASTNAME];
+        $pass = $userdata[ACL_INFO_PASS];
+        $email = $userdata[ACL_INFO_EMAIL];
+        $avatar = $userdata[ACL_INFO_AVATAR];
+        $signature = $userdata[ACL_INFO_SIGNATURE];
+        $pwd_expire_at = $userdata[ACL_INFO_PWD_EXPIRE_AT];
+        $force_change = $userdata[ACL_INFO_FORCE_CHANGE];
+        $facebook_id = $userdata[ACL_INFO_FACEBOOK_ID];
+        $twitter_id = $userdata[ACL_INFO_TWITTER_ID];
+        $linkedin_id = $userdata[ACL_INFO_LINKEDIN_ID];
+        $google_id = $userdata[ACL_INFO_GOOGLE_ID];
+
         $query = "INSERT INTO " . $this->_getTableUser()
             . " (idst, userid, firstname, lastname, pass, email, avatar, signature, pwd_expire_at, "
             . "  register_date, "
@@ -479,11 +518,16 @@ class DoceboACLManager
             $query_h = "INSERT INTO " . $GLOBALS['prefix_fw'] . "_password_history ( idst_user, pwd_date, passw, changed_by ) "
                 . "VALUES ( " . (int)$idst . ", '" . date("Y-m-d H:i:s") . "', '" . ($alredy_encripted === true ? $pass : $this->encrypt($pass)) . "', " . (int)getLogUserId() . "  )";
             $this->_executeQuery($query_h);
-            $event = new \appCore\Events\Core\User\RegisterUserEvent();
-            $event->setId($idst);
-            \appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\RegisterUserEvent::EVENT_NAME, $event);
 
-            return $event->getId();
+            Events::triggerDeprecated('core.user.registered', ['idst' => $idst]);
+
+            $userdata = $this->getUser($idst, false);
+
+            if($userdata) {
+                Events::trigger('core.user.created', ['idst' => $idst, 'userdata' => $userdata]);
+            }
+
+            return $idst;
         }
         else
         {
@@ -503,7 +547,7 @@ class DoceboACLManager
      * @return int the security token
      */
     function registerTempUser($userid, $firstname, $lastname, $pass, $email, $random_code, $create_by_admin = 0,
-                              $facebook_id = '', $twitter_id = '', $linkedin_id = '', $google_id = '', $avatar= '')
+                              $facebook_id = '', $twitter_id = '', $linkedin_id = '', $google_id = '', $avatar = '')
     {
 
         $idst = $this->_createST();
@@ -548,7 +592,7 @@ class DoceboACLManager
 
         $query = "SELECT * "
             . " FROM " . $this->_getTableTempUser() . " "
-            ." WHERE ".( $idst !== false ? " idst = '".$idst."' " : '' )
+            . " WHERE " . ($idst !== false ? " idst = '" . $idst . "' " : '')
             . ($random_code !== false ? " random_code = '" . $random_code . "' " : '');
         $rs = $this->_executeQuery($query);
         return sql_fetch_assoc($rs);
@@ -691,7 +735,7 @@ class DoceboACLManager
      */
     function registerRole($roleid, $description, $idPlugin = null)
     {
-        if(is_null($idPlugin)) {
+        if (is_null($idPlugin)) {
             $idPlugin = 'NULL';
         }
 
@@ -728,27 +772,56 @@ class DoceboACLManager
                         $signature = FALSE, $lastenter = FALSE, $resume = FALSE, $force_change = '',
                         $facebook_id = FALSE, $twitter_id = FALSE, $linkedin_id = FALSE, $google_id = FALSE)
     {
-        $arrSET = array();
-        if ($userid !== FALSE) $arrSET['userid'] = $this->absoluteId($userid);
-        if ($firstname !== FALSE) $arrSET['firstname'] = $firstname;
-        if ($lastname !== FALSE) $arrSET['lastname'] = $lastname;
-        if ($pass !== FALSE && !Get::cfg('demo_mode')) {
-            $arrSET['pass'] = $this->encrypt($pass);
-            if (Get::sett('pass_max_time_valid') != 0) {
+        $old_userdata = $this->getUser($idst, null);
 
-                $arrSET['pwd_expire_at'] = date("Y-m-d H:i:s", time() + Get::sett('pass_max_time_valid') * 24 * 3600);
-            }
+        $new_userdata = [];
+        if ($userid !== FALSE) $new_userdata[ACL_INFO_USERID] = $this->absoluteId($userid);
+        if ($firstname !== FALSE) $new_userdata[ACL_INFO_FIRSTNAME] = $firstname;
+        if ($lastname !== FALSE) $new_userdata[ACL_INFO_LASTNAME] = $lastname;
+        if ($pass !== FALSE) {
+            $new_userdata[ACL_INFO_PASS] = $pass;            
+            if(Get::sett('pass_max_time_valid') != 0) {
+                $new_userdata[ACL_INFO_PWD_EXPIRE_AT] = date("Y-m-d H:i:s", time() + Get::sett('pass_max_time_valid') * 24 * 3600);
+            }            
         }
-        if ($email !== FALSE) $arrSET['email'] = $email;
-        if ($avatar !== FALSE) $arrSET['avatar'] = $avatar;
-        if ($facebook_id != FALSE && $facebook_id !== '') $arrSET['facebook_id'] = $facebook_id;
-        if ($twitter_id != FALSE && $twitter_id !== '') $arrSET['twitter_id'] = $twitter_id;
-        if ($linkedin_id != FALSE && $linkedin_id !== '') $arrSET['linkedin_id'] = $linkedin_id;
-        if ($google_id != FALSE && $google_id !== '') $arrSET['google_id'] = $google_id;
-        if ($signature !== FALSE) $arrSET['signature'] = $signature;
-        if ($lastenter !== FALSE) $arrSET['lastenter'] = $lastenter;
-        if ($resume) $arrSET['valid'] = '1';
-        if ($force_change !== '') $arrSET['force_change'] = (int)$force_change > 0 ? '1' : '0';
+        if ($email !== FALSE) $new_userdata[ACL_INFO_EMAIL] = $email;
+        if ($avatar !== FALSE) $new_userdata[ACL_INFO_AVATAR] = $avatar;
+        if ($signature !== FALSE) $new_userdata[ACL_INFO_SIGNATURE] = $signature;
+        if ($lastenter !== FALSE) $new_userdata[ACL_INFO_LASTENTER] = $lastenter;
+        if ($resume) $new_userdata[ACL_INFO_VALID] = true;
+        if ($force_change !== '') $new_userdata[ACL_INFO_FORCE_CHANGE] = (int)$force_change > 0;
+        if ($facebook_id != FALSE) $new_userdata[ACL_INFO_FACEBOOK_ID] = $facebook_id;
+        if ($twitter_id != FALSE) $new_userdata[ACL_INFO_TWITTER_ID] = $twitter_id;
+        if ($linkedin_id != FALSE) $new_userdata[ACL_INFO_LINKEDIN_ID] = $linkedin_id;
+        if ($google_id != FALSE) $new_userdata[ACL_INFO_GOOGLE_ID] = $google_id;
+
+        $data = Events::trigger('core.user.updating', [
+            'idst' => $idst,
+            'old_userdata' => $old_userdata,
+            'new_userdata' => $new_userdata,
+        ]);
+
+        $new_userdata = $data['new_userdata'];
+
+        $arrSET = array();
+        if (array_key_exists(ACL_INFO_USERID, $new_userdata)) $arrSET['userid'] = $new_userdata[ACL_INFO_USERID];
+        if (array_key_exists(ACL_INFO_FIRSTNAME, $new_userdata)) $arrSET['firstname'] = $new_userdata[ACL_INFO_FIRSTNAME];
+        if (array_key_exists(ACL_INFO_LASTNAME, $new_userdata)) $arrSET['lastname'] = $new_userdata[ACL_INFO_LASTNAME];
+        if (array_key_exists(ACL_INFO_PASS, $new_userdata) && !Get::cfg('demo_mode')) {
+            $arrSET['pass'] = $this->encrypt($new_userdata[ACL_INFO_PASS]);
+            if (array_key_exists(ACL_INFO_PWD_EXPIRE_AT, $new_userdata)) $arrSET['pwd_expire_at'] = $new_userdata[ACL_INFO_PWD_EXPIRE_AT];
+        }
+        if (array_key_exists(ACL_INFO_EMAIL, $new_userdata)) $arrSET['email'] = $new_userdata[ACL_INFO_EMAIL];
+        if (array_key_exists(ACL_INFO_AVATAR, $new_userdata)) $arrSET['avatar'] = $new_userdata[ACL_INFO_AVATAR];
+        if (array_key_exists(ACL_INFO_SIGNATURE, $new_userdata)) $arrSET['signature'] = $new_userdata[ACL_INFO_SIGNATURE];
+        if (array_key_exists(ACL_INFO_LASTENTER, $new_userdata)) $arrSET['lastenter'] = $new_userdata[ACL_INFO_LASTENTER];
+        if (array_key_exists(ACL_INFO_VALID, $new_userdata)) $arrSET['valid'] = $new_userdata[ACL_INFO_VALID] ? '1' : '0';
+        if (array_key_exists(ACL_INFO_FORCE_CHANGE, $new_userdata)) $arrSET['force_change'] = $new_userdata[ACL_INFO_FORCE_CHANGE] ? '1' : '0';
+        if (array_key_exists(ACL_INFO_FACEBOOK_ID, $new_userdata)) $arrSET['facebook_id'] = $new_userdata[ACL_INFO_FACEBOOK_ID];
+        if (array_key_exists(ACL_INFO_TWITTER_ID, $new_userdata)) $arrSET['twitter_id'] = $new_userdata[ACL_INFO_TWITTER_ID];
+        if (array_key_exists(ACL_INFO_LINKEDIN_ID, $new_userdata)) $arrSET['linkedin_id'] = $new_userdata[ACL_INFO_LINKEDIN_ID];
+        if (array_key_exists(ACL_INFO_GOOGLE_ID, $new_userdata)) $arrSET['google_id'] = $new_userdata[ACL_INFO_GOOGLE_ID];
+
         $colon = '';
         $query = "UPDATE " . $this->_getTableUser() . " SET ";
         foreach ($arrSET as $fieldName => $fieldValue) {
@@ -763,6 +836,16 @@ class DoceboACLManager
                 . "VALUES ( " . (int)$idst . ", '" . date("Y-m-d H:i:s") . "', '" . $this->encrypt($pass) . "'," . (int)getLogUserId() . "  )";
             $this->_executeQuery($query_h);
         }
+
+        if($result) {
+            $new_userdata = $this->getUser($idst, null);
+            Events::trigger('core.user.updated', [
+                'idst' => $idst,
+                'old_userdata' => $old_userdata,
+                'new_userdata' => $new_userdata,
+            ]);
+        }
+
         return $result;
     }
 
@@ -826,6 +909,13 @@ class DoceboACLManager
     {
         //if ($idst == Docebo::user()->getIdSt()) return FALSE;
 
+        $userdata = $this->getUser($idst, null);
+        
+        Events::trigger('core.user.deleting', [
+            'idst' => $idst,
+            'userdata' => $userdata,
+        ]);
+
         if (Get::sett('register_deleted_user') == 'on')
             $control = $this->insertIntoDeleteUserTable($idst);
         else
@@ -852,6 +942,11 @@ class DoceboACLManager
                 $extra_field = new FieldList();
                 //$extra_field->removeUserEntry($idst);
                 $extra_field->quickRemoveUserEntry($idst);
+
+                Events::trigger('core.user.deleted', [
+                    'idst' => $idst,
+                    'userdata' => $userdata,
+                ]);
             }
             // ---
         }
@@ -917,7 +1012,8 @@ class DoceboACLManager
             while (list($id) = sql_fetch_row($re)) $idst_del[] = $id;
         }
         // Remove all the finded entry
-        while (list(, $idst) = each($idst_del)) {
+        foreach($idst_del as $idst )
+        {
             if ($del_field === true) {
 
                 $this->_removeAllFromGroup($idst);
@@ -972,7 +1068,7 @@ class DoceboACLManager
             $idst = false;
         }
         $this->_removeAllFromRole($idst);
-        $query = "DELETE FROM " . $this->prefix."_rules_entity"
+        $query = "DELETE FROM " . $this->prefix . "_rules_entity"
         . " WHERE id_entity = '" . $idst . "'";
         $this->_executeQuery($query);
         $query = "DELETE FROM " . $this->_getTableGroupMembers()
@@ -1215,6 +1311,41 @@ class DoceboACLManager
             $false_var = false;
             return $false_var;
         }
+    }
+
+    function &getUsersMappedData($array_idst)
+    {
+
+        $responseUsers = [];
+        $users = $this->getUsers($array_idst);
+        if ($users) {
+            foreach ($users as $user) {
+                $responseUsers[] = $this->getUserMappedData($user);
+            }
+        }
+
+        return $responseUsers;
+    }
+
+    function &getUserMappedData($user)
+    {
+        $path = $GLOBALS['where_files_relative'] . '/appCore/' . Get::sett('pathphoto');
+
+        $acl_man = Docebo::user()->getAclManager();
+
+        $responseUser['idst'] = $user[ACL_INFO_IDST];
+        $responseUser['name'] = $acl_man->getConvertedUserName($user);
+        $responseUser['username'] = $user[ACL_INFO_USERID];
+        $responseUser['firstname'] = $user[ACL_INFO_FIRSTNAME];
+        $responseUser['lastname'] = $user[ACL_INFO_LASTNAME];
+        $responseUser['email'] = $user[ACL_INFO_EMAIL];
+        $responseUser['avatar'] = !empty($user[ACL_INFO_AVATAR]) ? $path . $user[ACL_INFO_AVATAR] : '';
+        $responseUser['biography'] = $user[ACL_INFO_SIGNATURE];
+        $responseUser['profile'] = 'index.php?modname=course&amp;op=viewprofile&amp;id_user=' . $user[ACL_INFO_IDST];
+        $responseUser['registerDate'] = $user[ACL_INFO_REGISTER_DATE];
+
+
+        return $responseUser;
     }
 
     /**
@@ -1821,7 +1952,7 @@ class DoceboACLManager
      */
     function removeFromGroup($idst, $idstMember, $filter = '')
     {
-        if(!is_numeric($idst)){
+        if (!is_numeric($idst)) {
             $idst = false;
         }
         $del_list = (is_numeric($idstMember) ? array($idstMember) : $idstMember);
@@ -1844,7 +1975,7 @@ class DoceboACLManager
      */
     function removeFromAllGroup($idstMember, $filter = '')
     {
-        if(!is_numeric($idstMember)){
+        if (!is_numeric($idstMember)) {
             $idstMember = false;
         }
 
@@ -1861,10 +1992,10 @@ class DoceboACLManager
      */
     function removeFromUserWaitingOfGroup($idst_group, $idst_user)
     {
-        if(!is_numeric($idst_group)){
+        if (!is_numeric($idst_group)) {
             $idst_group = false;
         }
-        if(!is_numeric($idst_user)){
+        if (!is_numeric($idst_user)) {
             $idst_user = false;
         }
 
@@ -1881,10 +2012,10 @@ class DoceboACLManager
      */
     function removeFromRole($idst, $idstMember)
     {
-        if(!is_numeric($idst)){
+        if (!is_numeric($idst)) {
             $idst = false;
         }
-        if(!is_numeric($idstMember)){
+        if (!is_numeric($idstMember)) {
             $idstMember = false;
         }
 
@@ -1901,7 +2032,7 @@ class DoceboACLManager
      */
     function _removeAllFromGroup($idstMember)
     {
-        if(!is_numeric($idstMember)){
+        if (!is_numeric($idstMember)) {
             $idstMember = false;
         }
 
@@ -1918,7 +2049,7 @@ class DoceboACLManager
     function _removeAllFromRole($idstMember)
     {
 
-        if(!is_numeric($idstMember)){
+        if (!is_numeric($idstMember)) {
             $idstMember = false;
         }
 
@@ -1936,7 +2067,7 @@ class DoceboACLManager
     function getGroupsContainer($idstMember, $filter = '')
     {
 
-        if(!is_numeric($idstMember)){
+        if (!is_numeric($idstMember)) {
             $idstMember = false;
         }
 
@@ -1959,9 +2090,9 @@ class DoceboACLManager
      */
     function getGroupsAllContainer($arrMember, $filter = '')
     {
-        if(is_array($arrMember)){
-            foreach($arrMember as $index => $idst) {
-                if(!is_numeric($idst)){
+        if (is_array($arrMember)) {
+            foreach ($arrMember as $index => $idst) {
+                if (!is_numeric($idst)) {
                     unset($arrMember[$index]);
                 }
             }
@@ -1986,7 +2117,7 @@ class DoceboACLManager
      */
     function getRolesContainer($idstMember, $flip = false)
     {
-        if(!is_numeric($idstMember)){
+        if (!is_numeric($idstMember)) {
             $idstMember = false;
         }
 
@@ -2010,9 +2141,9 @@ class DoceboACLManager
      */
     function getRolesAllContainer($arrMember)
     {
-        if(is_array($arrMember)){
-            foreach($arrMember as $index => $idst) {
-                if(!is_numeric($idst)){
+        if (is_array($arrMember)) {
+            foreach ($arrMember as $index => $idst) {
+                if (!is_numeric($idst)) {
                     unset($arrMember[$index]);
                 }
             }
@@ -2047,7 +2178,7 @@ class DoceboACLManager
 
     function getGroupUMembersNumber($idst, $filter = '')
     {
-        if(!is_numeric($idst)){
+        if (!is_numeric($idst)) {
             $idst = false;
         }
 
@@ -2078,14 +2209,13 @@ class DoceboACLManager
      */
     function getGroupUMembers($idst, $filter = '')
     {
-        if(is_array($idst)){
-            foreach($idst as $index => $vidst) {
-                if(!is_numeric($vidst)){
+        if (is_array($idst)) {
+            foreach ($idst as $index => $vidst) {
+                if (!is_numeric($vidst)) {
                     unset($idst[$index]);
                 }
             }
-        }
-        else if (!is_array($idst)) {
+        } else if (!is_array($idst)) {
             $idst = array((int)$idst);
         }
 
@@ -2118,14 +2248,13 @@ class DoceboACLManager
      */
     function getGroupGMembers($idst, $filter = '')
     {
-        if(is_array($idst)){
-            foreach($idst as $index => $vidst) {
-                if(!is_numeric($vidst)){
+        if (is_array($idst)) {
+            foreach ($idst as $index => $vidst) {
+                if (!is_numeric($vidst)) {
                     unset($idst[$index]);
                 }
             }
-        }
-        else if (!is_array($idst)) {
+        } else if (!is_array($idst)) {
             $idst = array((int)$idst);
         }
 
@@ -2283,14 +2412,13 @@ class DoceboACLManager
      */
     function getGroupListMembers($group_arr, $filter = "")
     {
-        if(is_array($group_arr)) {
-            foreach($group_arr as $index => $idst) {
-                if(!is_numeric($idst)){
+        if (is_array($group_arr)) {
+            foreach ($group_arr as $index => $idst) {
+                if (!is_numeric($idst)) {
                     unset($group_arr[$index]);
                 }
             }
-        }
-        else if ((!is_array($group_arr)) || (count($group_arr) < 1)) {
+        } else if ((!is_array($group_arr)) || (count($group_arr) < 1)) {
             return FALSE;
         }
 
@@ -2361,7 +2489,7 @@ class DoceboACLManager
      */
     function getRoleGMembers($idst)
     {
-        if(!is_numeric($idst)){
+        if (!is_numeric($idst)) {
             $idst = false;
         }
 
@@ -2384,7 +2512,7 @@ class DoceboACLManager
      */
     function getRoleMembers($idst)
     {
-        if(!is_numeric($idst)){
+        if (!is_numeric($idst)) {
             $idst = false;
         }
 
@@ -2401,7 +2529,7 @@ class DoceboACLManager
 
     function getAllRoleMembers($idst)
     {
-        if(!is_numeric($idst)){
+        if (!is_numeric($idst)) {
             $idst = false;
         }
 
@@ -2427,8 +2555,9 @@ class DoceboACLManager
      * @internal param int $password_ash
      * @internal param bool $alg
      */
-    function encrypt($text) {
-        $password=new Password($text);
+    function encrypt($text)
+    {
+        $password = new Password($text);
         return $password->hash();
     }
 
@@ -2439,15 +2568,17 @@ class DoceboACLManager
      * @return bool|TRUE
      * @internal param $password
      */
-    function password_verify_update($text, $hash, $idst=false) {
+    function password_verify_update($text, $hash, $idst = false)
+    {
         $password = new Password($text);
-        switch ($password->verify($hash)){
+        switch ($password->verify($hash)) {
             case PASSWORD_INCORRECT:
                 return false;
             case PASSWORD_CORRECT:
                 return true;
-            case PASSWORD_UPDATE:{
-                if ($idst){
+            case PASSWORD_UPDATE:
+            {
+                if ($idst) {
                     return $this->updateUser(
                         $idst,
                         false,
@@ -2492,7 +2623,8 @@ class DoceboACLManager
         }
 
         $abs_user_arr = array();
-        while (list(, $user_rel) = each($user_arr)) {
+        foreach($user_arr as $user_rel )
+        {
 
             $abs_user_arr[] = "'" . $this->absoluteId($user_rel) . "'";
         }
@@ -2516,8 +2648,8 @@ class DoceboACLManager
      */
     function getUsersFromMixedIdst($arr_idst)
     {
-        foreach($arr_idst as $index => $idst) {
-            if(!is_numeric($idst)){
+        foreach ($arr_idst as $index => $idst) {
+            if (!is_numeric($idst)) {
                 unset($arr_idst[$index]);
             }
         }
@@ -2543,8 +2675,8 @@ class DoceboACLManager
      */
     function getGroupsFromMixedIdst($arr_idst)
     {
-        foreach($arr_idst as $index => $idst) {
-            if(!is_numeric($idst)){
+        foreach ($arr_idst as $index => $idst) {
+            if (!is_numeric($idst)) {
                 unset($arr_idst[$index]);
             }
         }
@@ -2574,29 +2706,13 @@ class DoceboACLManager
     {
 
         return $this->getAllUsersFromSelection($arr_idst);
-        /*
-        if (is_numeric($arr_idst)) $arr_idst = array((int)$arr_idst);
-        if (!is_array($arr_idst)) return false;
 
-        $users_selected 	= $this->getUsersFromMixedIdst($arr_idst);
-        $groups_selected 	= $this->getGroupsFromMixedIdst($arr_idst);
-        $idst_group_arr =array();
-
-        while(list(, $idst_group) = each($groups_selected)){
-            $idst_group_arr[] = (int)$idst_group;
-        }
-
-        $group_user 		= $this->getGroupAllUser($idst_group_arr);
-        $users_selected 	= array_merge($users_selected, $group_user);
-        return $users_selected;
-        */
     }
 
 
     /**
      * This function returns a list of roles with extra information
      * starting from a given user idst and roleid path.
-     * @author Giovanni Derks <virtualdarkness[AT]gmail-com>
      * @param  string $user_idst idst of the user that is member of the role/s
      * @param  string $path_start the pattern with roleid shall start with
      * @param  string $path_end the pattern with roleid shall end with (optional)
@@ -2613,7 +2729,8 @@ class DoceboACLManager
      *
      *                 $role_info is the first information found after the given path,
      *                 presumably an id.
-     **/
+     **@author Giovanni Derks <virtualdarkness[AT]gmail-com>
+     */
     function getUserRoleFromPath($user_idst, $path_start, $path_end = FALSE, $owned_directly = FALSE)
     {
         $res = FALSE;
@@ -2839,17 +2956,20 @@ class DoceboACLManager
         $temp = false;
 
         switch (getType($paths)) {
-            case "string" : {
+            case "string" :
+                {
                 $temp = array($paths);
             }
                 break;
 
-            case "array": {
+            case "array":
+                {
                 $temp =& $paths;
             }
                 break;
 
-            default: {
+            default:
+            {
                 $temp = false;
             }
 
@@ -2895,7 +3015,8 @@ class DoceboACLManager
         return $admin_userlist;
     }
     
-    function random_password () {
+    function random_password()
+    {
         $pass = '';
         for ($a = 0; $a < 10; $a++) {
                 $seed = mt_rand(0, 15);
@@ -3177,7 +3298,7 @@ class GroupDataRetriever extends DataRetriever
         }
         if ($this->platforms_filter !== false) {
 
-            $query .= " AND show_on_platform LIKE '%" . implode($this->platforms_filter, '%') . "%'";
+            $query .= " AND show_on_platform LIKE '%" . implode('%', $this->platforms_filter) . "%'";
         }
         $query .= " GROUP BY g.idst, g.groupid, g.description, g.type";
         $query .= " ORDER BY g.groupid ";
@@ -3198,7 +3319,7 @@ class GroupDataRetriever extends DataRetriever
         }
         if ($this->platforms_filter !== false) {
 
-            $query .= " AND show_on_platform LIKE '%" . implode($this->platforms_filter, '%') . "%'";
+            $query .= " AND show_on_platform LIKE '%" . implode('%', $this->platforms_filter) . "%'";
         }
 
         if ($this->dbConn === NULL)
@@ -3224,7 +3345,7 @@ class GroupDataRetriever extends DataRetriever
         }
         if ($this->platforms_filter !== false) {
 
-            $query .= " AND show_on_platform LIKE '%" . implode($this->platforms_filter, '%') . "%'";
+            $query .= " AND show_on_platform LIKE '%" . implode('%', $this->platforms_filter) . "%'";
         }
         if ($this->dbConn === NULL)
             $rs = sql_query($query);

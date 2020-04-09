@@ -299,7 +299,7 @@ class AjaxCommentRender {
 	
 		$users = array();
 		$this->_data = $data;
-		while(list($id, $comment) = each($this->_data)) { $users[] = $comment[AJCOMM_AUTHOR]; }
+    foreach( $this->_data as $id => $comment) { $users[] = $comment[AJCOMM_AUTHOR]; }
 		reset($this->_data);
 		
 		$this->_acl_man = Docebo::user()->getAclManager();
@@ -313,7 +313,8 @@ class AjaxCommentRender {
 	function nextComment() {
 		
 		if(!$this->_continue) return false;
-		$this->_continue = list( ,$comment_data) = each($this->_data);
+    $comment_data[] = reset($this->_data);
+		$this->_continue = !empty($comment_data);
 		if(!$this->_continue) return false;
 		
 		$this->profile->setIdUser($comment_data[AJCOMM_AUTHOR]);

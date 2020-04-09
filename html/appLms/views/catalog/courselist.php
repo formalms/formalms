@@ -243,14 +243,14 @@ function InsertOption(&$row, $smodel){
     $result_control = $smodel->getInfoEnroll($row['idCourse'], Docebo::user()->getIdSt());
     $not_enrolled = sql_num_rows($result_control) > 0;
     $html = '';
-    if( $not_enrolled && $row['selling'] == 0 && ($row['auto_unsubscribe']==2 || $row['auto_unsubscribe']==1 || $row["course_demo"] ) ){
+    if( $not_enrolled && $row['selling'] == 0 && (userCanUnsubscribe($row) || $row["course_demo"] ) ){
     
         $html .= '<div class="course-box__options dropdown pull-right">
                     <div class="dropdown-toggle" id="courseBoxOptions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                         <i class="glyphicon glyphicon-option-horizontal"></i> 
                     </div>   
                     <ul class="dropdown-menu" aria-labelledby="courseBoxOptions">';
-                        if(($row['auto_unsubscribe']==2 || $row['auto_unsubscribe']==1)  && $not_enrolled) {
+                        if((userCanUnsubscribe($row))  && $not_enrolled) {
                             $html .= '<li><a href="javascript:confirmDialog(\''.$row['name'].'\','.$row['idCourse'].')">'.Lang::t('_SELF_UNSUBSCRIBE', 'course').'</a></li>';    
                             //$html .= "<li><a href='javascript:void(0);'>option1</a></li>";
                         }    
@@ -261,6 +261,21 @@ function InsertOption(&$row, $smodel){
     }     
     return $html;
     
+}
+
+function userCanUnsubscribe($course)
+{
+    $now = new DateTime();
+
+    $courseUnsubscribeDateLimit = (null !== $course['course_unsubscribe_date_limit'] ? DateTime::createFromFormat('Y-m-d H:i:s',$course['course_unsubscribe_date_limit']) : '');
+    $dateUnsubscribeDateLimit = (null !== $course['date_unsubscribe_date_limit'] ? DateTime::createFromFormat('Y-m-d H:i:s',$course['date_unsubscribe_date_limit']) : '');
+
+    if ((['auto_unsubscribe'] == 2 || $course['auto_unsubscribe'] == 1) && $now < $courseUnsubscribeDateLimit || $now < $dateUnsubscribeDateLimit ) {
+
+        return true;
+    }
+
+    return false;
 }
 
 ?>

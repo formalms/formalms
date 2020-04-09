@@ -277,7 +277,8 @@ class Choice_QuestionPoll extends QuestionPoll {
 					}
 				}
 			}
-			while(list($idA) = each($existent_answer)) {
+        foreach ($existent_answer->answers as $idA => $v)
+        {
 				//i must delete these answer
 				$del_answer_query = "
 				DELETE FROM ".$GLOBALS['prefix_lms']."_pollquestanswer

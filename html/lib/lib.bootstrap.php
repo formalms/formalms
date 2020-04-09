@@ -15,14 +15,15 @@ define("BOOT_CONFIG", 	0);
 define("BOOT_UTILITY", 	1);
 define("BOOT_DATABASE", 2);
 define("BOOT_SETTING", 	3);
-define("BOOT_SESS_CKE", 4);
-define("BOOT_USER", 	5);
-define("BOOT_INPUT", 	6);
-define("BOOT_LANGUAGE", 7);
-define("BOOT_DATETIME", 8);
-define("BOOT_TEMPLATE", 9);
-define("BOOT_PLUGINS",  10);
-define("BOOT_PAGE_WR", 	11);
+define("BOOT_PLUGINS",  4);
+define("BOOT_SESS_CKE", 5);
+define("BOOT_USER", 	6);
+define("BOOT_INPUT", 	7);
+define("BOOT_LANGUAGE", 8);
+define("BOOT_DATETIME", 9);
+define("BOOT_HOOKS",    10);
+define("BOOT_TEMPLATE", 11);
+define("BOOT_PAGE_WR", 	12);
 define("BOOT_INPUT_ALT", 99);
 
 /**
@@ -38,13 +39,14 @@ class Boot {
 		BOOT_UTILITY 	=> 'utility',
 		BOOT_DATABASE 	=> 'database',
 		BOOT_SETTING	=> 'loadSetting',
+        BOOT_PLUGINS 	=> 'plugins',
 		BOOT_SESS_CKE 	=> 'sessionCookie',
 		BOOT_USER 		=> 'user',
 		BOOT_INPUT 		=> 'filteringInput',
 		BOOT_INPUT_ALT	=> 'anonFilteringInput',
 		BOOT_LANGUAGE 	=> 'language',
+        BOOT_HOOKS  	=> 'hooks',
 		BOOT_DATETIME 	=> 'dateTime',
-        BOOT_PLUGINS 	=> 'plugins',
 		BOOT_TEMPLATE 	=> 'template',
 		BOOT_PAGE_WR 	=> 'loadPageWriter'
 	);
@@ -113,7 +115,7 @@ class Boot {
 
 			self::log( "Unset all the globals that aren't php setted. (Emulate register global = off)" );
 			$allowed = array('GLOBALS', '_GET', '_POST', '_COOKIE', '_FILES', '_ENV', '_SERVER', '_REQUEST');
-			while(list(, $elem) = each($allowed)) {
+      foreach ($allowed as $elem) {
 		 		if (!isset($allowed[$elem])) unset($GLOBALS[$elem]);
 			}
 		}
@@ -261,6 +263,16 @@ class Boot {
      * - step to load the plugins
      */
     private static function plugins() {
+
+        self::log( "Initialize plugins." );
+        PluginManager::initialize();
+
+    }
+
+    /**
+     * - step to load the plugins
+     */
+    private static function hooks() {
 
         self::log( "Prepare plugin's listeners." );
         PluginManager::hook();
@@ -544,7 +556,7 @@ class Boot {
 
 	public static function log($str) { self::$log_array[] = $str; }
 
-	public static function get_log($as_string = false) { return ( $as_string ? implode(self::$log_array, "\n") : self::$log_array ); }
+	public static function get_log($as_string = false) { return ( $as_string ? implode("\n", self::$log_array) : self::$log_array ); }
 
 	public static function error_catcher($code,$message,$file,$line) {
 

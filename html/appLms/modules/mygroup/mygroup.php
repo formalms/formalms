@@ -60,8 +60,7 @@ function group() {
 		.Form::closeForm()
 	, 'content');
 	if(is_array($hidden_group)) {
-		while(list(, $id) = each($hidden_group)) {
-			
+    foreach($hidden_group as $id) {
 			$GLOBALS['page']->add(Form::getHidden('group_sel_'.$id, 'group_sel['.$id.']', $id), 'content');
 		}
 	}
@@ -75,8 +74,7 @@ function group() {
 						$lang->def('_DESCRIPTION') );
 		$tb->setColsStyle($type_h);
 		$tb->addHead($cont_h);
-		while(list($id, $info) = each($groups)) {
-			echo $id;
+    foreach($groups as $id => $info ) {
 			$cont = array();
 			
 			if(isset($user_group[$id])) {
@@ -166,8 +164,7 @@ function savesel() {
 			
 			$moderate_add = false;
 			if(!empty($add_groups))
-			while(list(, $idst) = each($add_groups)) {
-				
+      foreach($add_groups as $idst) {
 				if($groups[$idst]['type'] == 'free') {
 					$acl_man->addToGroup($idst, getLogUserId());
 				} elseif($groups[$idst]['type'] == 'moderate') {
@@ -193,7 +190,7 @@ function savesel() {
 							$recipients, $msg_composer );
 			}
 			if(!empty($del_groups))
-			while(list(, $idst_group) = each($del_groups)) {
+      foreach($del_groups as $idst_group){
 				
 				$extra_field->removeUserEntry(getLogUserId(), $idst_group);
 				$acl_man->removeFromGroup($idst_group, getLogUserId());

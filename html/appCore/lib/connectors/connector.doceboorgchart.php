@@ -32,7 +32,7 @@ class DoceboConnectorDoceboOrgChart extends DoceboConnector {
 	var $dbconn = NULL;
 	var $tree = 0;			// idst where to insert the imported tree
 	var $tree_desc = 0;		// the descendant idst
-	
+	var $org_chart_destination = 0;
 	var $default_lang = '';
 
 	var $readwrite = 0; // read = 1, write = 2, readwrite = 3
@@ -65,6 +65,7 @@ class DoceboConnectorDoceboOrgChart extends DoceboConnector {
 						'readwrite' => $this->readwrite,
 						'name' => $this->name,
 						'description' => $this->description,
+                        'org_chart_destination' => $this->org_chart_destination,                        
 						'default_lang' => $this->default_lang );
 	}
 	
@@ -74,6 +75,7 @@ class DoceboConnectorDoceboOrgChart extends DoceboConnector {
 		if( isset($params['readwrite']) )	$this->readwrite = $params['readwrite'];
 		if( isset($params['name']) )		$this->name = $params['name'];
 		if( isset($params['description']) )	$this->description = $params['description'];
+        if( isset($params['org_chart_destination']) )    $this->org_chart_destination = $params['org_chart_destination'];        
 		if( isset($params['default_lang']) )$this->default_lang = $params['default_lang'];
 	}
 
@@ -233,12 +235,11 @@ class DoceboConnectorDoceboOrgChart extends DoceboConnector {
 		$path_tokens = explode('/',$path);
 		$parent_path = implode('/',array_slice($path_tokens,0,-1));
 		$name = $path_tokens[count($path_tokens)-1];
-		
+        
 		$arr_folder = $this->get_row_bypk(array('path'=> $path));
 		if( $parent_path == '' ) {
 			$this->tree_view->tdb->setFolderLang($this->default_lang);
-			$arr_foldersid = $this->tree_view->tdb->getFoldersIdFromIdst(array($this->tree));
-			$parent_id = $arr_foldersid[$this->tree];
+            $parent_id = (int) $this->org_chart_destination;       
 		} else {
 			$arr_parent_folder = $this->get_row_bypk(array('path'=> $parent_path));
 			$parent_id = $arr_parent_folder['id'];
@@ -256,7 +257,6 @@ class DoceboConnectorDoceboOrgChart extends DoceboConnector {
 				$folderName[$lang] = addslashes($name);
 		
 		if( $arr_folder === FALSE ) {
-                        //VECCHIO SISTEMA vedi Update  $id = $this->tree_view->tdb->addFolderByIdTranslation( $parent_id, $folderName );
                         require_once(Forma::inc(_base_ . '/lib/lib.usermanager.php'));
                         $umodel = new UsermanagementAdm();
                         $id = $umodel->addFolder($parent_id, $folderName, $row['code']);
@@ -416,9 +416,14 @@ class DoceboConnectorDoceboOrgChartUI extends DoceboConnectorUI {
 				$this->post_params['tree'] = '';
 			} elseif( $this->directory->isParseDataAvailable($post) ) {
 				$arr_selection = $this->directory->getSelection($post);
-				list( $this->post_params['tree'] ) = $this->directory->getSelection($post);				
+				$this->post_params['tree'] = implode(",", $arr_selection);				
 			}
 			$this->directory->resetSelection(array($this->post_params['tree']));
+            $this->post_params['org_chart_destination'] =
+                            isset($arr_new_params['org_chart_destination'])
+                            ? (int)$arr_new_params['org_chart_destination']
+                            : $this->post_params['org_chart_destination'];
+            
 		}
 		$this->_load_step_info();
 	}
@@ -537,7 +542,7 @@ class DoceboConnectorDoceboOrgChartUI extends DoceboConnectorUI {
 */
 		// ---- the tree selector -----
 		//$GLOBALS['page']->add($this->lang->def('_TREE_INSERT_FOLDER'));
-		$this->directory->show_user_selector = false;
+	/*	$this->directory->show_user_selector = false;
 		$this->directory->show_group_selector = false;
 		$this->directory->show_orgchart_selector = true;
 		$this->directory->show_orgchart_simple_selector = true;
@@ -554,7 +559,17 @@ class DoceboConnectorDoceboOrgChartUI extends DoceboConnectorUI {
 		// ---- add a button to reset selection -----
 		$out = $this->form->getButton(	$this->_get_base_name().'_reset', 
 										$this->_get_base_name().'[reset]', 
-										$this->lang->def('_RESET'));
+										$this->lang->def('_RESET'));  */
+                                        
+                                        
+        $umodel = new UsermanagementAdm();
+        $out = $this->form->getDropdown(
+                Lang::t('_DIRECTORY_MEMBERTYPETREE', 'admin_directory'),
+                $this->_get_base_name().'_org_chart_destination',
+                $this->_get_base_name().'[org_chart_destination]',
+                $umodel->getOrgChartDropdownList(),
+                $this->post_params['org_chart_destination']
+            );                                        
 				
 		return $out;
 	}

@@ -832,7 +832,8 @@ class MessageModule {
 				if(is_array($send_to_idst)) {
 
 					$logged_user =  getLogUserId();
-					while(list(, $id_recipient) = each($send_to_idst)) {
+          foreach ($send_to_idst as $id_recipient)
+          {
 
 						$query_recipients = "
 						INSERT INTO %adm_message_user
@@ -946,7 +947,8 @@ class MessageModule {
 		if(is_array($only_groups) && !empty($only_groups)) {
 
 			$output .= '<strong>';
-			while(list(, $group_info) = each($only_groups)) {
+      foreach ($only_groups as $group_info )
+      {
 				if($first) $first = false;
 				else $attach = ', ';
 
@@ -958,7 +960,8 @@ class MessageModule {
 				$group_users =& $acl_man->getUsers($members);
 				$output .= ' <span class="message_group_members">( ';
 				$m_first = true;
-				while(list(, $user_info) = each($group_users)) {
+        foreach ($group_users as $user_info )
+        {
 					if($m_first) $m_first = false;
 					else $attach = ', ';
 					$output .=  $attach
@@ -973,7 +976,8 @@ class MessageModule {
 		}
 		$acl_man->setContext('/');
 		if(is_array($only_users) && !empty($only_users))
-		while(list(, $user_info) = each($only_users)) {
+    foreach($only_users as $user_info)    
+		{
 			if($first) $first = false;
 			else $attach = ', ';
 			$output .=  $attach
@@ -1280,7 +1284,8 @@ class MessageModule {
 		$re = true;
 		$recipients[] = getLogUserId();
 		$logged_user =  getLogUserId();
-		while(list(, $id_recipient) = each($recipients)) {
+      foreach ($recipients as $id_recipient)    
+      {
 
 			$query_recipients = "
 			INSERT INTO %adm_message_user

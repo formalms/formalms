@@ -16,7 +16,7 @@ set @lastID=LAST_INSERT_ID();
 INSERT IGNORE INTO `core_event_consumer_class` (`idConsumer`, `idClass`) VALUES (1, @lastID);
 
 INSERT IGNORE INTO `core_event_manager` (`idClass`, `permission`, `channel`, `recipients`, `show_level`) 
-VALUES (@lastID, 'mandatory', 'email', '_EVENT_RECIPIENTS_TEACHER', 'admin');
+VALUES (@lastID, 'not_used', 'email', '_EVENT_RECIPIENTS_TEACHER', 'admin');
 
 -- User suspended in forma --
 SET @max = (SELECT MAX(idClass)+1 FROM `core_event_class`);
@@ -57,8 +57,12 @@ INSERT IGNORE INTO core_event_manager (idEventMgr, idClass, permission, channel,
 -- Certificate Assign permissions --
 UPDATE core_menu_under SET associated_token = 'mod' WHERE default_name = '_CERTIFICATE' AND of_platform = 'alms';
 
-SET @max = (SELECT MAX(idst)+1 FROM `core_role`);
-INSERT IGNORE INTO `core_role` (idst, roleid) VALUES (@max, '/lms/admin/certificate/assign');
+INSERT IGNORE INTO core_st(idst) values(null);
+set @v_idst=LAST_INSERT_ID();
+INSERT IGNORE INTO core_role(idst, roleid, description) VALUES
+(@v_idst, concat('/lms/admin/certificate/assign'), NULL);
 
-SET @max = (SELECT MAX(idst)+2 FROM `core_role`);
-INSERT IGNORE INTO `core_role` (idst, roleid) VALUES (@max, '/lms/admin/certificate/release');
+INSERT IGNORE INTO core_st(idst) values(null);
+set @v_idst=LAST_INSERT_ID();
+INSERT IGNORE INTO core_role(idst, roleid, description) VALUES
+(@v_idst, concat('/lms/admin/certificate/release'), NULL);

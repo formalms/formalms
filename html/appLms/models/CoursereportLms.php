@@ -209,7 +209,7 @@ class CoursereportLms extends Model
 
             if (is_array($this->sourceOf)) {
 
-                $query_report .= " AND source_of IN ('" . implode($this->sourceOf, "','") . "')";
+                $query_report .= " AND source_of IN ('" . implode("','", $this->sourceOf) . "')";
             } else {
                 $query_report .= " AND source_of = '" . $this->sourceOf . "'";
             }

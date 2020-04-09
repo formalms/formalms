@@ -48,7 +48,6 @@ class Forma {
                 $plugin_folder = _plugins_ . '/' . $plugin['name'];
                 $plugin_file = "$plugin_folder/Features/$_file";
                 if(file_exists($plugin_file)) {
-                    require_once "$plugin_folder/Plugin.php";
                     return $plugin_file;
                 }
             }

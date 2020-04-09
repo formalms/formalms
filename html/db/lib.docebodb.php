@@ -527,7 +527,7 @@ function sql_field_seek($result, $fieldnr){
 }
 function sql_num_field($res){
     $db = DbConn::getInstance();
-    $re = $db->num_field($res);
+    $re = $db->num_fields($res);
     return $re;
 }
 function sql_fetch_field($result){

@@ -50,7 +50,7 @@ class EnrollrulesAlmsController extends AlmsController {
 		$sort = Get::req('sort', DOTY_MIXED, 'title');
 		$dir = Get::req('dir', DOTY_MIXED, 'asc');
 		if ($dir != 'asc' && $dir != 'desc') {
-			$dir = 'asd';
+			$dir = 'asc';
 		}
 		$rules = $this->model->getRules($start_index, $results, $sort, $dir);
 		$total_rules = $this->model->getTotalRulesCount();
@@ -119,7 +119,7 @@ class EnrollrulesAlmsController extends AlmsController {
 		$sort = Get::req('sort', DOTY_MIXED, 'log_time');
 		$dir = Get::req('dir', DOTY_MIXED, 'asc');
 		if ($dir != 'asc' && $dir != 'desc') {
-			$dir = 'asd';
+			$dir = 'asc';
 		}
 
 		$filter_text = Get::req('filter_text', DOTY_STRING, '');
@@ -127,7 +127,8 @@ class EnrollrulesAlmsController extends AlmsController {
 		$logs = $this->model->getLogs($start_index, $results, $sort, $dir);
 		$total_logs = $this->model->getTotalLogs();
 
-		while(list($i, $log) = each($logs)) {
+		foreach($logs as $i => $log )
+    {
 			$log->log_action  = Lang::t($log->log_action, 'enrollrules');
 			$log->log_detail = 'index.php?r=alms/enrollrules/logdetails&amp;id_log='.$log->id_log;
 			$log->rollback = 'ajax.adm_server.php?r=alms/enrollrules/logrollback&amp;id_log='.$log->id_log;
@@ -270,7 +271,9 @@ class EnrollrulesAlmsController extends AlmsController {
 			array('key' => 'entity', 'label' => $rule->rule_type_text),
 		);
 		$keys = array('id_entity', 'entity');
-		while(list($id_course, $coursename) = each($courselist)) {
+
+		foreach($courselist as $id_course => $coursename )    
+    {
 			$keys[] = 'course_'.$id_course;
 			$columns[] = array('key' => 'course_'.$id_course, 'label' => $coursename, 'formatter' => 'coursecheckbox');
 		}
@@ -308,8 +311,8 @@ class EnrollrulesAlmsController extends AlmsController {
 		$entities = $this->model->getEntityRule($id_rule);
 		$id_entities = array_keys($entities);
 		$entities_name = $this->model->convertEntity($id_entities, $rule->rule_type);
-		
-		while(list(, $entity) = each($entities)) {
+    foreach($entities as $entity) 		
+    {
 			
 			$rules[$i] = array(
 				'id_entity' => $entity->id_entity,
@@ -343,10 +346,11 @@ class EnrollrulesAlmsController extends AlmsController {
 		$prev_entities = $this->model->getEntityRule($id_rule);
 
 		$re = true;
-		while(list($id_entity, $courses) = each($_POST['entity_course'])) {
+    foreach($_POST['entity_course'] as $id_entity => $courses )
+    {
 			
 			$course_list = array();
-			while(list($id_c, ) = each($courses)) $course_list[] = (int)str_replace('course_', '', $id_c);
+			foreach($courses as $id_c => $v) $course_list[] = (int)str_replace('course_', '', $id_c);
 			
 			if(isset($prev_entities[$id_entity])) $re &= $this->model->saveEntityRule($id_rule, $id_entity, $course_list);
 			else $re &= $this->model->insertEntityRule($id_rule, $id_entity, $course_list);
@@ -458,7 +462,8 @@ class EnrollrulesAlmsController extends AlmsController {
 			array('key' => 'entity', 'label' => Lang::t('_ENTITY', 'enrollrules')),
 		);
 		$keys = array('id_entity', 'entity');
-		while(list($id_course, $coursename) = each($courselist)) {
+    foreach($courselist as $id_course  => $coursename)
+    {
 			$keys[] = 'course_'.$id_course;
 			$columns[] = array('key' => 'course_'.$id_course, 'label' => $coursename, 'formatter' => 'coursecheckbox');
 		}
@@ -497,7 +502,8 @@ class EnrollrulesAlmsController extends AlmsController {
 		$entities = $this->model->getBaseEntityRule($id_rule);
 		$entities_name = $this->model->convertEntity($entities, $rule->rule_type);
 
-		while(list(, $entity) = each($entities)) {
+    foreach($entities as $entity)
+    {
 
 			$rules[$i] = array(
 				'id_entity' => ( isset($entity->id_entity) ? $entity->id_entity : 0 ),
@@ -541,7 +547,8 @@ class EnrollrulesAlmsController extends AlmsController {
             if (isset($_POST['entity_course'][$id_entity])){
                 $courses = $_POST['entity_course'][$id_entity];
             }
-			while(list($id_c, ) = each($courses)) $course_list[] = (int)str_replace('course_', '', $id_c);
+			foreach($courses as $id_c => $v) 
+          $course_list[] = (int)str_replace('course_', '', $id_c);
 
 			if(isset($prev_entities[$id_entity])) $re &= $this->model->saveEntityRule($id_rule, $id_entity, $course_list);
 			else $re &= $this->model->insertEntityRule($id_rule, $id_entity, $course_list);
@@ -574,14 +581,14 @@ class EnrollrulesAlmsController extends AlmsController {
 			$id_entities = array_keys($entities);
 			$entities_name = $this->model->convertEntity($id_entities, $rule->rule_type);
 			// For any group
-			while(list(, $entity) = each($entities)) {
+      foreach($entities as $entity) {
 				$listUsers = array();
 				$listUsersGroup = array();
 				// Get users in group
 				$listUsersGroup = $groupmanagement->getGroupUsersList($entity->id_entity, 
 							array('startIndex' => 0,'results' => 99999999999999999,'sort' => 'userid','dir' => 'ASC'), 
 							false);
-				while(list(, $userGroup) = each($listUsersGroup)) {
+        foreach ($listUsersGroup as $userGroup) {
 					$listUsers[] = $userGroup->idst;
 				}
 				// Apply enroll rule
@@ -594,7 +601,7 @@ class EnrollrulesAlmsController extends AlmsController {
 			$entities = $this->model->getEntityRule($id_rule);
 			$id_entities = array_keys($entities);
 			// For any orgchart
-			while(list(, $entity) = each($entities)) {
+			foreach($entities as $entity) {
 				$listUsers = array();
 				$listUsersOrgchart = array();
 				$descendants = false;
@@ -626,14 +633,14 @@ class EnrollrulesAlmsController extends AlmsController {
 			$id_entities = array_keys($entities);
 			$entities_name = $this->model->convertEntity($id_entities, $rule->rule_type);
 			// For any fncrole
-			while(list(, $entity) = each($entities)) {
+		  foreach($entities as $entity) {
 				$listUsers = array();
 				$listUsersFncrole = array();
 				// Get users in fncrole
 				$listUsersFncrole = $functionalroles->getManageUsersList($entity->id_entity, 
 							array('startIndex' => 0,'results' => 99999999,'sort' => 'userid','dir' => 'ASC'), 
 							false);
-				while(list(, $userFncrole) = each($listUsersFncrole)) {
+				foreach( $listUsersFncrole as $userFncrole) {
 					$listUsers[] = $userFncrole->idst;
 				}
 				// Apply enroll rule
@@ -642,7 +649,6 @@ class EnrollrulesAlmsController extends AlmsController {
 		}
 		$result = array(
 				'success' => true
-#				, 'message' => Lang::t('_OPERATION_FAILURE', 'enrollrules')
 		);
 		echo $this->json->encode($result);
 	}

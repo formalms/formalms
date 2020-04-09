@@ -30,6 +30,7 @@ class MycoursesLms extends Model {
             case 'tb_elearning':        $req = 'lms/elearning/show';        break;
             case 'tb_games':            $req = 'lms/games/show';            break;
             case 'tb_home':             $req = 'lms/home/show';             break;
+	        case 'tb_dashboard':        $req = 'lms/dashboard/show';        break;
             case 'tb_kb':               $req = 'lms/kb/show';               break;
             case 'tb_label':            $req = 'lms/label/show';            break;
             case 'tb_videoconference':  $req = 'lms/videoconference/show';  break;
@@ -37,17 +38,12 @@ class MycoursesLms extends Model {
         }
 
         // checking plugin tab
-        if(Get::cfg('enable_plugins', false)){
-             $pl = new PluginManager();
-             $list_pl = $pl->get_all_plugins();
-            
-             foreach ($list_pl as $key){
-                $plugin_name = strtolower ($key['name']);
-                if($tab=='tb_'.$plugin_name) $req = 'lms/'.$plugin_name.'/show';
-             }             
-             
-         } 
-        
+        $pl = new PluginManager('');
+        $list_pl = $pl->get_all_plugins();
+        foreach ($list_pl as $key){
+            $plugin_name = strtolower ($key['name']);
+            if($tab=='tb_'.$plugin_name) $req = 'lms/'.$plugin_name.'/show';
+        }
 
         return $req;
     }

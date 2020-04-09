@@ -19,8 +19,10 @@ class CatalogLmsController extends LmsController {
 
 	protected $_default_action = 'show';
 
+	/** @var CatalogLms */
 	var $model;
 	var $json;
+	/** @var DoceboACLManager */
 	var $acl_man;
 
 	public function isTabActive($tab_name)
@@ -337,7 +339,7 @@ class CatalogLmsController extends LmsController {
 		$model = new SubscriptionAlms($id_course, $id_edition, $id_date);
 
 		$course_info = $model->getCourseInfoForSubscription();
-		$userinfo = $this->acl_man->getUser($id_user);
+		$userinfo = $this->acl_man->getUser($id_user, false);
 
 		$level_idst =& $docebo_course->getCourseLevel($id_course);
 

@@ -17,6 +17,7 @@
       content: '';
       width: 100%;
       padding-bottom: ($h/$w) * 100%;
+      position: relative;
     }
   }
 }
@@ -33,4 +34,32 @@
 .collapse-wrapper {
   width: auto;
   margin: 0 auto;
+}
+
+@function rem($size) {
+  @return #{$size / 16}rem;
+}
+
+@mixin center-object($direction: x, $position: absolute) {
+
+  position: $position;
+
+  @if $direction == 'x' {
+
+    left: 50%;
+    transform: translateX(-50%);
+
+  } @else if $direction == 'y' {
+
+    top: 50%;
+    transform: translateY(-50%);
+
+  } @else if $direction == 'all' {
+
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+
+  }
+
 }

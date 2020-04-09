@@ -90,11 +90,11 @@ class FeedReader {
 			$feed_url = $feed_info["url"];
 			if(!empty($this->query_rss)) {
 
-				while(list(, $param) = each($this->query_rss)) {
+				foreach($this->query_rss as $param){
 
 					$param_name = explode('=', $param);
 
-					if(strpos($feed_url, $param_name[0]) === false) {
+					if(strpos($feed_url, strval($param_name[0])) === false) {
 						$feed_url .= ( strpos($feed_url, '?') === false ? '?' : '&' ).$param;
 					}
 				}
@@ -821,7 +821,7 @@ class FeedGenerator {
 
 		$i=0;
 		reset($data_arr);
-		while (($data=each($data_arr)) && ($i < $this->getMaxFeedItems())) {
+		while (($data=current($data_arr)) && ($i < $this->getMaxFeedItems())) {
 
 			$item=new rssGenerator_item();
 			$item->title='<![CDATA['.$data["value"]["title"].']]>';
@@ -829,6 +829,7 @@ class FeedGenerator {
 			$item->link=$data["value"]["url"];
 			$item->pubDate=$data["value"]["date"];;
 			$feed->items[]=$item;
+      next(data_arr);
 
 		}
 

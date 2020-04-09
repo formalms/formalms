@@ -199,6 +199,16 @@ function getStatStatusCount($stat_idUser, $stat_idCourse, $arrStauts) {
  * @param int $status new status
  **/
 function saveTrackStatusChange( $idUser, $idCourse, $status ) {
+    
+    $new_data = ['status' => $status];
+
+    $data = Events::trigger('lms.course_user.updating', [
+        'id_user' => $idUser,
+        'id_course' => $idCourse,
+        'new_data' => $new_data,
+    ]);
+
+    $status = $data['new_data']['status'];
 	
 	require_once(_lms_.'/lib/lib.course.php');
 
@@ -288,10 +298,6 @@ function saveTrackStatusChange( $idUser, $idCourse, $status ) {
 						'User end course',
 						$teachers, 
 						$msg_composer );
-
-		$event = new \appLms\Events\Lms\CourseCompletedEvent($idCourse,$idUser,$acl_man);
-
-		\appCore\Events\DispatcherManager::dispatch(\appLms\Events\Lms\CourseCompletedEvent::EVENT_NAME, $event);
 		
 		//add course's competences scores to user
 		$cmodel = new CompetencesAdm();
@@ -303,6 +309,13 @@ function saveTrackStatusChange( $idUser, $idCourse, $status ) {
 		$cpmodel->assignComplete($idCourse, $idUser);
 
 	}
+        
+    Events::trigger('lms.course_user.updated', [
+        'id_user' => $idUser,
+        'id_course' => $idCourse,
+        'new_data' => $new_data,
+    ]);
+
 	return true;
 }
 

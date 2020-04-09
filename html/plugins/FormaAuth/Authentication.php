@@ -79,8 +79,9 @@ class Authentication extends \PluginAuthentication implements \PluginAuthenticat
 
         $_SESSION['user_attempt_lasttime'] = time();
 
-        if(!isset($_SESSION['user_attempt_number'])) $_SESSION['user_attempt_number'] = 1;
-	else $_SESSION['user_attempt_number']++;
+        if(!isset($_SESSION['user_attempt_number']))
+             $_SESSION['user_attempt_number'] = 1;
+	    else $_SESSION['user_attempt_number']++;
     }
 
     private static function _logLoginFailure($username) {

@@ -350,7 +350,8 @@ function coursePathSubstPrer($id_string, $names) {
 	if($id_string == '') return $prereq;
 	$all_id = explode(',', $id_string);
 	$i = 0;
-	while(list(, $id) = each($all_id)) {
+  foreach($all_id as $id)
+  {
 
 		$i++;
 		$prereq .= $names[$id]['name'].', ';
@@ -488,8 +489,8 @@ function pathelem() {
 					$admin_courses['course'] = array_merge($admin_courses['course'], $array_courses);
 				}
 			}
-
-			while(list($id_item, $prerequisites) = each($courses[$id_slot])) {
+      foreach($id as $id_item => $prerequisites)
+      {
 
 				$cont = array(	$course_info[$id_item]['code'],
 								$course_info[$id_item]['name'] );
@@ -619,13 +620,15 @@ function importcourse() {
 		$re = true;
 		$added_courses = array();
 		$removed_courses = array();
-		while(list(,$id_c) = each($to_add)) {
+    foreach($to_add as $id_c )
+    {
 
 			$re_s = $path_man->addToSlot($id_path, $id_slot, $id_c);
 			if($re_s) $added_courses[] = $id_c;
 			$re &= $re_s;
 		}
-		while(list(,$id_c) = each($to_del)) {
+    foreach($to_del as $id_c )    
+    {
 
 			$re_s = $path_man->delFromSlot($id_path, $id_slot, $id_c);
 			if($re_s) $removed_courses[] = $id_c;
@@ -744,12 +747,12 @@ function modprerequisites() {
 
 	$tb_path_ass->setColsStyle($type_h);
 	$tb_path_ass->addHead($cont_h);
-
-	while(list($id_c, $course) = each($course_info)) {
+  foreach( $course_info as $id_c => $course )
+  {
 
 		if($id_c != $id_course) {
 
-			if(isset($courses_prer[$id_c]) && strpos($courses_prer[$id_c], $id_course)) {
+			if(isset($courses_prer[$id_c]) && strpos($courses_prer[$id_c], strval($id_course))) {
 
 				// this course contain the current working course as a  prerequisites
 				$cont = array(
@@ -889,7 +892,8 @@ function waitingsubscription() {
 		if(isset($_POST['approve_user'])) {
 
 			$users_subsc = array();
-			while(list($id_user) = each($_POST['approve_user'])) {
+      foreach($_POST['approve_user'] as $id_user => $v)
+      {
 
 				$text_query = "
 				UPDATE ".$GLOBALS['prefix_lms']."_coursepath_user
@@ -904,8 +908,8 @@ function waitingsubscription() {
 
 		}
 		if(isset($_POST['deny_user'])) {
-
-			while(list($id_user) = each($_POST['deny_user'])) {
+      foreach($_POST['deny_user'] as $id_user => $v)
+      {
 
 				$text_query = "
 				DELETE FROM ".$GLOBALS['prefix_lms']."_coursepath_user
@@ -943,7 +947,8 @@ function waitingsubscription() {
 	$tb->addHead($cont_h);
 
 	if(!empty($users))
-	while(list($id_user, $user_info) = each($users_waiting)) {
+  foreach($users_waiting as $id_user => $user_info)
+  {
 
 		$cont = array( $acl_man->relativeId($user_info[ACL_INFO_USERID]),
 						$user_info[ACL_INFO_LASTNAME].' '.$user_info[ACL_INFO_FIRSTNAME],
@@ -1139,7 +1144,8 @@ function addsubscription() {
 			$course_man = new Man_Course();
 			$assessment = $course_man->getAllCourses(false, 'assessment', $courses);
 
-			while(list(,$id_user) = each($user_selected)) {
+      foreach($user_selected as $id_user)
+      {
 
 				$text_query = "
 				INSERT INTO ".$GLOBALS['prefix_lms']."_coursepath_user
@@ -1221,8 +1227,9 @@ function addsubscriptionedition()
 
 	require_once(_lms_.'/lib/lib.edition.php');
 	$edition_man = new EditionManager();
-
-	while(list(,$id_user) = each($user_selected)) {
+  
+  foreach($user_selected as $id_user)
+  {
 
 		$text_query = "
 		INSERT INTO ".$GLOBALS['prefix_lms']."_coursepath_user

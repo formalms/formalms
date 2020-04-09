@@ -1084,7 +1084,8 @@ class PeopleListView extends ListView {
 
 		$type_h = array();
 		$cont_h = array();
-		while(list($key, $contentCell) = each($colInfo)) {
+    foreach( $colInfo as $key => $contentCell )
+    {
 
 			if( $contentCell['toDisplay'] ) {
 
@@ -1358,8 +1359,9 @@ class GroupListView extends ListView {
 			$type = $_POST['group_type'];
 			$show_on_platform = '';
 			if(isset($_POST['show_on_platform'])) {
-				while(list($code, ) = each($_POST['show_on_platform']))
+        foreach( $_POST['show_on_platform'] as $code => $v ) {
 					$show_on_platform .= $code.',';
+        }  
 			}
 			if( $idst !== '' ) {
 				$this->aclManager->updateGroup( $idst, $groupid, $description, NULL, $type, $show_on_platform );
@@ -1381,7 +1383,8 @@ class GroupListView extends ListView {
 			$idst_group = $_POST['idst'];
 			if(isset($arrayState['waiting_user']) && is_array($arrayState['waiting_user'])) {
 
-				while(list($idst_user, $action) = each($arrayState['waiting_user'])) {
+				foreach($arrayState['waiting_user'] as $idst_user => $action )
+        {
 
 					if($action == 'accept') {
 

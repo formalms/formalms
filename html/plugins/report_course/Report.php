@@ -677,7 +677,7 @@ class Report extends \ReportPlugin{
             if( !$view_all_perm ) {
                 $query =	"SELECT pta.id_quest, MIN(CAST(pta.more_info AS DECIMAL(65,30))) AS min_answer, MAX(CAST(pta.more_info AS DECIMAL(65,30))) AS max_answer, SUM(CAST(pta.more_info AS DECIMAL(65,30))) AS sum_answer, COUNT(*) AS num_answer"
                     ." FROM ".$GLOBALS['prefix_lms']."_polltrack_answer AS pta, ".$GLOBALS['prefix_lms']."_polltrack AS pt"
-                    ." WHERE 1 AND pta.id_track = pt.id_track AND pt.id_user IN (".implode($ctrl_users , ',').") AND pta.id_quest IN (".implode(',', $question_id).")"
+                    ." WHERE 1 AND pta.id_track = pt.id_track AND pt.id_user IN (".implode(',', $ctrl_users).") AND pta.id_quest IN (".implode(',', $question_id).")"
                     ." GROUP BY pta.id_quest";
             } else {
                 $query =	"SELECT id_quest, MIN(CAST(more_info AS DECIMAL(65,30))) AS min_answer, MAX(CAST(more_info AS DECIMAL(65,30))) AS max_answer, SUM(CAST(more_info AS DECIMAL(65,30))) AS sum_answer, COUNT(*) AS num_answer"
@@ -767,7 +767,7 @@ class Report extends \ReportPlugin{
             if( !$view_all_perm ) {
                 $query =	"SELECT pta.id_quest, MIN(CAST(pta.more_info AS DECIMAL(65,30))) AS min_answer, MAX(CAST(pta.more_info AS DECIMAL(65,30))) AS max_answer, SUM(CAST(pta.more_info AS DECIMAL(65,30))) AS sum_answer, COUNT(*) AS num_answer"
                     ." FROM ".$GLOBALS['prefix_lms']."_polltrack_answer AS pta, ".$GLOBALS['prefix_lms']."_polltrack AS pt"
-                    ." WHERE 1 AND pta.id_track = pt.id_track AND pt.id_user IN (".implode($ctrl_users , ',').") AND pta.id_quest IN (".implode(',', $question_id).")"
+                    ." WHERE 1 AND pta.id_track = pt.id_track AND pt.id_user IN (".implode(',', $ctrl_users).") AND pta.id_quest IN (".implode(',', $question_id).")"
                     ." GROUP BY pta.id_quest";
             } else {
                 $query =	"SELECT id_quest, MIN(CAST(more_info AS DECIMAL(65,30))) AS min_answer, MAX(CAST(more_info AS DECIMAL(65,30))) AS max_answer, SUM(CAST(more_info AS DECIMAL(65,30))) AS sum_answer, COUNT(*) AS num_answer"
@@ -1117,10 +1117,8 @@ class Report extends \ReportPlugin{
                 );
 
             } else {
-
                 reset($org_name);
-                while(list($idst_group, $folder_name) = each($org_name)) {
-
+                foreach($org_name as $idst_group=>$folder_name) {                
                     if ($first) {
                         $first = FALSE;
                     } else {
@@ -1299,8 +1297,7 @@ class Report extends \ReportPlugin{
 
                 $first = true;
                 reset($org_name);
-                while(list($idst_group, $folder_name) = each($org_name)) {
-
+                foreach($org_name as $idst_group=>$folder_name) {                
                     if ($first) {
                         $first = FALSE;
                     } else {
@@ -1605,9 +1602,7 @@ class Report extends \ReportPlugin{
 
         $course_man = new Man_Course();
         $buffer->openBody();
-
-        while(list($index, $course_info) = each($id_courses) ) {
-
+        foreach($id_courses as $index=>$course_info) {
             $idc = $id_date = 0;
             if ($show_classrooms_editions) {
                 if (isset($course_info['course_type']) && $course_info['course_type'] == 'classroom') {

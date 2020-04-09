@@ -56,7 +56,6 @@ function scormInitializeParams($trackobj, $scormtype, $idscorm_item) {
 	
 	list(	$adlcp_masteryscore,
 			$adlcp_maxtimeallowed,
-			$adlcp_completionthreshold,
 			$adlcp_datafromlms,
 			$adlcp_timelimitaction ) = 
 					sql_fetch_row(sql_query( "SELECT  adlcp_masteryscore,"

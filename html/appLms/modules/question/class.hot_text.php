@@ -518,7 +518,7 @@ class HotText_Question extends Question {
 					++$seq;
 				}
 			}
-			while(list($idA) = each($existent_answer)) {
+      foreach ($existent_answer as $idA => $v) {
 				//i must delete these answer
 				$del_answer_query = "
 				DELETE FROM ".$GLOBALS['prefix_lms']."_testquestanswer

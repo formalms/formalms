@@ -1,0 +1,13 @@
+{% block videoModal %}
+    <!-- Modal -->
+    <div class="modal fade js-dashboard-video-modal" data-href="{{ videoref }}" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog--notitle modal-dialog--video" role="document">
+            <div class="modal-header modal-header--notitle">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-content modal-content--full">
+                <div class="modal-body modal-body--nopadding js-dashboard-video-dynamic-content"></div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

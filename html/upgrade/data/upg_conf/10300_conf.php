@@ -126,17 +126,8 @@ function _update_cfg_customscripts($_config) {
 function _update_cfg_plugin($_config) {
 
 	$sts = 0;
-	if ( strpos($_config, "cfg['enable_plugins']") !== false ) {
-		// config already upgraded
-		$sts = 1;	// no change required
-	} else {
-		$sts = 2;	// changed
-
-		$_config = $_config . '
-//$cfg[\'enable_plugins\']       = false; // enable plugins processing;  accepted value: true , false ; default false
-';
-
-	}
+	// config already upgraded
+	$sts = 1;	// no change required
 
 	return array($sts,$_config);
 }

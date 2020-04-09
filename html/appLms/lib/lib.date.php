@@ -701,11 +701,6 @@ class DateManager
 		if($this->controlDateUserSubscriptions($id_user, $id_date))
 			return true;
 
-        // LRZ: 
-        // ticket: #19465
-        //if the call is made by ws, id_subscribe was null and the insert into query was mistaken  
-        $id_subscriber = intval($id_subscriber);             
-            
 		$query =	"INSERT INTO ".$this->user_date_table
 					." (id_date, id_user, date_subscription, subscribed_by, overbooking)"
 					." VALUES (".$id_date.", ".$id_user.", '".date('Y-m-d H:i:s')."', ".$id_subscriber.", ".($overbooking ? '1' : '0').")";
@@ -846,7 +841,7 @@ class DateManager
 						'55' => '55');
 	}
 
-	public function getUserForPresence($id_date)
+	public function getUserForPresence($id_date, $id_course = null)
 	{
 		$acl_man =& Docebo::user()->getAclManager();
 
@@ -865,8 +860,11 @@ class DateManager
 				." FROM ".$this->user_date_table.' AS d'
 				." JOIN ".$this->courseuser_table.' AS c ON c.idUser = d.id_user'
 				." JOIN ".$this->user_table.' AS u ON u.idst = d.id_user'
-				." WHERE d.id_date = ".$id_date
-				." AND c.level = 3";
+				." WHERE d.id_date = ".$id_date;
+
+		if ($id_course) {
+			$query.= " AND idCourse = ".$id_course;
+		}
 
 		if ( !$view_all_perm && Docebo::user()->getUserLevelId() == '/framework/level/admin' ) {
 			$query.= ($is_admin ?" AND ".$adminManager->getAdminUsersQuery(Docebo::user()->getIdSt(), 'd.id_user') : '');	

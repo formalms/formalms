@@ -319,54 +319,6 @@ class UserManager
         return $this->_render->getLoginMask($this->_platform, $advice, $extra, $disable, $this->_option->getOption('register_type'), $jump_url);
     }
 
-    function getExtLoginMask($jump_url, $extra = '')
-    {
-
-        $advice = '';
-        $disable = false;
-
-        if ($this->_render->clickDeleteRemember())
-            $this->_render->deleteRemember();
-
-        // Control for max number of attempt for this user
-        $max_log_attempt = $this->_option->getOption('max_log_attempt');
-        $save_log_attempt = $this->_option->getOption('save_log_attempt');
-
-        if ($max_log_attempt != 0) {
-
-            if ($this->_getLoginResult() == true) {
-
-                $last_attempt = $this->getLastAttemptTime();
-                $actual_attempt = $this->getAttemptNumber();
-                if ($actual_attempt > $max_log_attempt) {
-
-                    if (($last_attempt + $this->_time_before_reactive) > time()) {
-
-                        $wait_for = (int)((($last_attempt + $this->_time_before_reactive) - time()) / 60);
-                        if ($wait_for < 1) $wait_for = ' < 1';
-
-                        $advice = str_replace('[attempt]', $max_log_attempt, Lang::t('_REACH_NUMBERS_OF_ATTEMPT', 'user_managment'));
-                        $advice = str_replace('[time]', $wait_for, $advice);
-                        $disable = true;
-                        if ($save_log_attempt == 'after_max') $this->_saveLoginFailure($actual_attempt);
-                        $extra['content'] = Lang::t('_ACCESS_LOCK', 'login');
-
-                    } else {
-
-                        $this->resetAttemptNumber();
-                    }
-                } else {
-
-                    $this->_updateLastAttemptTime();
-                    $this->_incAttemptNumber();
-                }
-                if ($save_log_attempt == 'all') $this->_saveLoginFailure($actual_attempt);
-            }
-        }
-
-        return $this->_render->getExtLoginMask($this->_platform, $advice, $extra, $disable, $this->_option->getOption('register_type'), $jump_url);
-    }
-
     function setLoginStyle($path_style)
     {
 
@@ -1463,7 +1415,7 @@ class UserManagerRenderer
             INNER JOIN %adm_rules r ON r.id_rule = re.id_rule
             LEFT JOIN %adm_org_chart_tree AS oct
             ON (oct.idst_oc = re.id_entity) 
-            WHERE r.rule_type = 'orgchart' AND oct.idOrg = ".$reg_code;
+            WHERE r.rule_type = 'orgchart' AND oct.code = '".$reg_code."'";
         $result = sql_query($query);
         $entity = sql_fetch_array($result);
 
@@ -1530,9 +1482,13 @@ class UserManagerRenderer
                 case "tree_man" : {
                     // resolving the tree_man
                     $array_course = $this->getCodeCourses($reg_code);
-                    $array_folder = array($reg_code => $reg_code);
 
-                    if (empty($array_folder) && $code_is_mandatory) {
+                    $org = sql_fetch_object(sql_query("SELECT idOrg FROM %adm_org_chart_tree WHERE code = '".$reg_code."'"));
+                    $reg_id = $org->idOrg;
+
+                    $array_folder = array($reg_code => $reg_id);
+
+                    if (empty($reg_id) && $code_is_mandatory) {
 
                         //invalid code
                         $res['success'] = false;
@@ -1567,8 +1523,11 @@ class UserManagerRenderer
                 };
                     break;
                 case "tree_drop" : {
+                    $query = sql_query("SELECT code FROM %adm_org_chart_tree WHERE idOrg = $reg_code LIMIT 1");
+                    $reg_code = sql_fetch_array($query)['code'];
+                    $reg_code = substr(str_replace('-', '', $reg_code), 0, 10);
                     $array_course = $this->getCodeCourses($reg_code);
-                    $array_folder = array($reg_code => $reg_code);
+                    $array_folder = $uma->getFoldersFromCode($reg_code);
                 };
                     break;
                 case "custom": {
@@ -1608,12 +1567,11 @@ class UserManagerRenderer
         if (!empty($array_folder)) {
 			//let's find the oc and ocd
 			$oc_folders = $uma->getOcFolders($array_folder);
-			while(list($id, $ocs) = each($oc_folders)) {
-
+      foreach($oc_folders as $id => $ocs ){
 				$acl_man->addToGroup($ocs[0], $iduser);
 				$acl_man->addToGroup($ocs[1], $iduser);
 			}
-            while (list($id, $folder) = each($array_folder)) {
+            foreach($array_folder as $id => $folder ){
                 $acl_man->addToGroup($folder, $iduser);
             }
 
@@ -1676,8 +1634,7 @@ class UserManagerRenderer
         if (isset($_POST['group_sel_implode'])) {
 
             $groups = explode(',', $_POST['group_sel_implode']);
-            while (list(, $idst) = each($groups)) {
-
+            foreach($groups as $idst){            
                 $acl_man->addToGroup($idst, $iduser);
                 // FORMA: added the inscription policy
                 $enrollrules = new EnrollrulesAlms();
@@ -2438,7 +2395,7 @@ class UserManagerRenderer
 
         // control mail is correct
         $acl_man =& Docebo::user()->getAclManager();
-
+        $source['register']['email'] = strtolower($source['register']['email']);
 
         if ($source['register']['email'] === '') {
             $error = ['error' => true,
@@ -2760,6 +2717,11 @@ class UserManagerRenderer
 
             return array('error' => true,
                 'msg' => getErrorUi($lang->def('_ERR_PASSWORD_NO_MATCH')));
+        }
+        if ($_POST['oldpwd'] == $_POST['newpwd']) {
+
+            return array('error' => true,
+                'msg' => getErrorUi($lang->def('_ERR_PWD_SAME_OLD')));
         }
         if ($options['pass_alfanumeric'] == 'on') {
             if (!preg_match('/[a-z]/i', $_POST['newpwd']) || !preg_match('/[0-9]/', $_POST['newpwd'])) {

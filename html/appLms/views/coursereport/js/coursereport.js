@@ -317,7 +317,9 @@ window.CourseReport = (function ($) {
         let table = $('#table-details').DataTable();
         table.destroy();
         table = $('#table-details').DataTable( {
-            paging: true,
+            paging: false,
+			orderCellsTop: true,
+			fixedHeader: true,
             "language": {
                 "info": "",
             }
@@ -398,15 +400,20 @@ window.CourseReport = (function ($) {
 	var clearDetailTable = function () {
 
 		$('.js-details-table').empty();
-		/* $('.js-activity-name').each(function (i, elem) {
-			elem.remove();
-		}); */
 
 		$('.js-user-level-filter').attr('disabled', true);
 		$('.js-user-level-filter').addClass('is-disabled');
 
 		$('.js-user-detail-filter').attr('disabled', true);
 		$('.js-user-detail-filter').addClass('is-disabled');
+
+	};
+
+	var clearHeadersTable = function () {
+
+		$('.js-activity-name').each(function (i, elem) {
+			elem.remove();
+		});
 
 	};
 
@@ -483,6 +490,7 @@ window.CourseReport = (function ($) {
 
 		$('.js-details').on('click', function () {
 			clearDetailTable();
+			clearHeadersTable();
 
 			testData = loadActivitiesData();
 

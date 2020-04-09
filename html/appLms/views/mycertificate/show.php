@@ -10,8 +10,21 @@ $icon_download = '<span class="ico-sprite subs_pdf"><span>'.Lang::t('_ALT_TAKE_A
 
 // tabs
 $selected_tab = Get::req('current_tab', DOTY_STRING, 'cert');
-$tabs = '<ul class="nav nav-tabs" role="tablist">
-            <li role="presentation" class="active" ' . ($selected_tab == 'cert' ? ' class="selected"' : '') . '><a href="#cert" aria-controls="cert" role="tab" data-toggle="tab"><em>' . Lang::t('_CERTIFICATE', 'menu') . '</em></a></li>';
+$tabs = '
+        <ul class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="active" ' . ($selected_tab == 'cert' ? ' class="selected"' : '') . '>
+              <a href="#cert" aria-controls="cert" role="tab" data-toggle="tab"><em>' . Lang::t('_CERTIFICATE', 'menu') . '</em></a>
+            </li>
+            <li role="presentation" ' . ($selected_tab == 'meta' ? ' class="selected"' : '') . '>
+              <a href="#meta" aria-controls="meta" role="tab" data-toggle="tab"><em>' . Lang::t('_META', 'menu') . '</em></a>
+            </li>
+';
+
+foreach ($additionalTabs as $tab_id => $tab_content) {
+  $tabs .= '<li role="presentation"  ' . ($selected_tab == $tab_id ? ' class="selected"' : '') . '>
+      <a href="#' . $tab_id . '" aria-controls="' . $tab_id . '" role="tab" data-toggle="tab"><em>' . Lang::t('_' . $tab_id, 'menu') . '</em></a>
+    </li>';
+}
 
 /*if ($totalMetaCertificates){
     $tabs .= '<li role="presentation" ' . ($selected_tab == 'meta' ? ' class="selected"' : '') . '><a href="#meta" aria-controls="meta" role="tab" data-toggle="tab"><em>' . Lang::t('_TITLE_META_CERTIFICATE', 'certificate') . '</em></a></li>';
@@ -41,21 +54,22 @@ $cert_columns = array(
       }?>
     </tr>
   </thead>
-</table><?php
+</table>
 
+
+<?php
 echo '</div>'; // close certificate tab 
-
+echo '<div role="tabpanel" class="tab-pane fade in" id="meta">';
+?>
+<?php
 // metacertificate tab
 $meta_columns = array(
-    array('key' => 'cert_code', 'label' => Lang::t('_CODE', 'certificate')),
-    array('key' => 'cert_name', 'label' => Lang::t('_NAME')),
-    array('key' => 'courses', 'label' => Lang::t('_COURSE_LIST')),
-    array('key' => 'download', 'label' => $icon_download, 'className' => 'img-cell')
-);?>
-
-<div class="page-header">
-  <h1><?php echo Lang::t('_TITLE_META_CERTIFICATE', 'certificate');?></h1>
-</div>
+  array('key' => 'cert_code', 'label' => Lang::t('_CODE', 'certificate')),
+  array('key' => 'cert_name', 'label' => Lang::t('_NAME')),
+  array('key' => 'courses', 'label' => Lang::t('_COURSE_LIST')),
+  array('key' => 'download', 'label' => $icon_download, 'className' => 'img-cell')
+);
+?>
 
 <table class="table table-striped table-bordered display" style="width:100%" id="mymetacertificates">
   <thead>
@@ -65,7 +79,21 @@ $meta_columns = array(
       }?>
     </tr>
   </thead>
-</table><?php
+</table>
+
+<?php
+
+echo '</div>'; // close meta tab 
+
+foreach ($additionalTabs as $tab_id => $tab_content) {
+  echo '<div role="tabpanel" class="tab-pane fade in" id="' . $tab_id . '">';
+  echo $tab_content;
+  echo '</div>';
+}
+
+?>
+
+<?php
 
 echo '</div>'; // close tabs
 echo '</div>'; //close std_block div
@@ -112,3 +140,8 @@ $(function() {
   });
 });
 </script>
+<style>
+.dataTables_scrollHeadInner, .table{
+  width:100%!important
+};
+</style>

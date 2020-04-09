@@ -1,0 +1,21 @@
+{% if user.avatar != '' %}
+    {% set avatar = user.avatar %}
+{% else %}
+    {% set avatar = templatePath ~ '/static/images/profile.png' %}
+{% endif %}
+
+<div class="col-sm-6 course-info__people">
+    <a href="{{route.profile.url}}&id_user={{user.idst}}" class="course-info__peopleimage" style="background-image:url({{ avatar}})"></a>
+    <div class="course-info__peopletxt">
+        <a href="{{route.profile.url}}&id_user={{user.idst}}" class="course-info__peoplename text-orange">{{ user.name}}</a>
+        {% if user.biography != '' %}
+            <a class="course-info__peoplebio js-infocourse-bio-trigger" href="#" data-title="{{ user.name}}" data-image="{{ avatar}}" data-role="{{role}}">{{translate('_BIOGRAPHY','course')}}</a>
+        {% endif %}
+        <a class="forma-button course-info__peoplecta" href="{{ route.message.url }}&idst={{ user.idst }}&signature={{ evalPhp('Util::getSignature') }}&sop=unregistercourse'">{{translate('_MESSAGE','course')}}</a>
+        <div class="clear"></div>
+        <div class="hidden js-infocourse-bio-text">
+            {{ user.biography}}
+        </div>
+    </div>
+    <div class="clear"></div>
+</div>

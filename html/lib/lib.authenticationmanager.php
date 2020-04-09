@@ -59,13 +59,14 @@ class AuthenticationManager {
     public function login($plugin) {
         
         $user = $this->plugin_manager->run_plugin($plugin, "getUserFromLogin");
+
+        Events::trigger('core.user.logging_in', ['user' => $user]);
         
         if(!($user instanceof DoceboUser)) return $user;
         
         $saveUser = $this->saveUser($user);
-        
-        $event = new \appCore\Events\Core\User\LoggedInEvent($user);
-        \appCore\Events\DispatcherManager::dispatch($event::EVENT_NAME, $event);
+
+        Events::trigger('core.user.logged_in', ['user' => $user]);
         
         return $saveUser;
     }
@@ -76,6 +77,8 @@ class AuthenticationManager {
         // TODO: lingua
 
         $user = Docebo::user();
+
+        Events::trigger('core.user.logging_out', ['user' => $user]);
         
         require_once(_lms_ . '/lib/lib.track_user.php');
         TrackUser::logoutSessionCourseTrack();
@@ -91,8 +94,7 @@ class AuthenticationManager {
         	$_COOKIE = array_merge($_COOKIE,  $session);
         }
         
-        $event = new \appCore\Events\Core\User\LoggedOutEvent($user);
-        \appCore\Events\DispatcherManager::dispatch($event::EVENT_NAME, $event);
+        Events::trigger('core.user.logged_out', ['user' => $user]);
     }
     
     public function saveUser($user) {

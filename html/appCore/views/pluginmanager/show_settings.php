@@ -5,7 +5,7 @@ echo Form::openForm('conf_option', 'index.php?r=adm/setting/save&plugin='.$plugi
     .Form::openElementSpace()
     .Form::getHidden('active_tab', 'active_tab', $regroup);
 
-$setting_adm->printPageWithElement($regroup);
+$setting_adm->printPageWithElement($regroup, true);
 
 echo Form::closeElementSpace()
     .Form::openButtonSpace()

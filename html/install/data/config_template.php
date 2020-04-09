@@ -87,7 +87,6 @@ $cfg['smtp_debug']          = '[%-SMTP_DEBUG-%]';           // Options: debug le
  * keepalive    = set TMO for keepalive scorm tracking. must be < session lifetime, 0 to disable keepalive
  *                default session lifetime - 15 sec
  * enable_customscripts = enable custom scripts processing;  accepted vaule: true , false ; default false
- * enable_plugins = enable plugins processing;  accepted value: true , false ; default false
 *
  */
 
@@ -97,7 +96,6 @@ $cfg['smtp_debug']          = '[%-SMTP_DEBUG-%]';           // Options: debug le
 //$cfg['keepalivetmo'] = '';			// timeout for keepalive, must be < session lifetime, 0 to disable keepalive
 
 //$cfg['enable_customscripts'] = false;	// enable custom scripts processing;  accepted value: true , false ; default false
-//$cfg['enable_plugins']       = false; // enable plugins processing;  accepted value: true , false ; default false
 
 /**
  * Template engine custom param
