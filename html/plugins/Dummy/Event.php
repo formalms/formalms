@@ -15,7 +15,8 @@
 
 Events::listen('core.user.creating', function($event) {
     $userdata = $event['userdata'];
-    $userdata[ACL_INFO_USERID] = '/test_change_username';
+    $userdata[ACL_INFO_FIRSTNAME] = 'Firstname changed by Dummy plugin';
+    $userdata[ACL_INFO_LASTNAME] = 'Lastname changed by Dummy plugin';
     $event['userdata'] = $userdata;
 });
 
