@@ -17,18 +17,4 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  */
 final class FormaEvent extends GenericEvent
 {
-    public function __get($name)
-    {
-        return $this->getArgument($name);
-    }
-
-    public function __set($name, $value)
-    {
-        return $this->setArgument($name, $value);
-    }
-    
-    public function __isset($name)
-    {
-        return $this->hasArgument($name);
-    }
 }

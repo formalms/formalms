@@ -14,15 +14,15 @@
 });
 
 Events::listen('core.user.creating', function($event) {
-    $userdata = $event->userdata;
+    $userdata = $event['userdata'];
     $userdata[ACL_INFO_USERID] = '/test_change_username';
-    $event->userdata = $userdata;
+    $event['userdata'] = $userdata;
 });
 
 Events::listen('core.user.registered', function($event, $eventName) {
-    file_put_contents(_files_ . '/tmp/test_events.log', "Function called listening to '{$eventName}' event. Registered user {$event->idst}.\n", FILE_APPEND);
+    file_put_contents(_files_ . '/tmp/test_events.log', "Function called listening to '{$eventName}' event. Registered user {$event['idst']}.\n", FILE_APPEND);
 });
 
 Events::listen('core.user.created', function($event, $eventName) {
-    file_put_contents(_files_ . '/tmp/test_events.log', "Function called listening to '{$eventName}' event. Created user {$event->idst} with username '{$event->userdata[ACL_INFO_USERID]}'.\n", FILE_APPEND);
+    file_put_contents(_files_ . '/tmp/test_events.log', "Function called listening to '{$eventName}' event. Created user {$event['idst']} with username '{$event['userdata'][ACL_INFO_USERID]}'.\n", FILE_APPEND);
 });
