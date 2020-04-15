@@ -190,7 +190,7 @@ class DoceboACLManager
     function _createST()
     {
         $query = "INSERT INTO " . $this->_getTableST()
-            . " ( idst ) VALUES ( '' )";
+            . " ( idst ) VALUES ( null )";//TODO NO_Strict_MODE: to be confirmed
         return $this->_executeInsert($query);
     }
 

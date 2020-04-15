@@ -17,6 +17,8 @@ sql_query("CREATE DATABASE IF NOT EXISTS ".$_SESSION['db_info']['db_name']);
 sql_select_db($_SESSION['db_info']['db_name']);
 sql_query("SET NAMES 'utf8'");
 sql_query("SET CHARACTER SET 'utf8'");
+//TODO NO_Strict_MODE: to be confirmed
+sql_query("SET SQL_MODE = 'NO_AUTO_CREATE_USER'");
 
 $sq = 'ALTER DATABASE `' . $_SESSION['db_info']['db_name'] . "` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci";
 sql_query($sq);
