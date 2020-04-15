@@ -175,7 +175,11 @@ Class Step4Controller extends StepController {
         return $charset=="utf8"?true:false;
     }
 
+//TODO NO_Strict_MODE: to be confirmed
 	function checkStrictMode() {
+//TODO NO_Strict_MODE: to be done
+return true;
+//TODO NO_Strict_MODE: to be done [remove below]
 		$qtxt ="SELECT @@GLOBAL.sql_mode AS res";
 		$q =sql_query($qtxt, $GLOBALS['db_link']);
 		list($r1)=sql_fetch_row($q);

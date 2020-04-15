@@ -13,12 +13,12 @@ Class Step2Controller extends StepController {
 
 }
 
-
+	//TODO INSTALL_vs_UPGRADE: please share what you can
 function checkRequirements() {
 	$res =array();
 
-	// Minimum PHP required version: 7.0
-	// Minimum PHP suggested version: 7.4.x
+	//TODO PHP7x: set const for Minimum PHP required version: 7.0
+	//TODO PHP7x: set const for Maximum PHP suggested version: 7.4.x
 	if(version_compare(PHP_VERSION, '7.0', '<')) {
 		$res['php'] = 'err';
 	} else if(version_compare(PHP_VERSION, '7.5', '>=')) {

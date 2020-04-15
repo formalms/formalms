@@ -10,6 +10,7 @@
 |   from docebo 4.0.5 CE 2008-2012 (c) docebo                               |
 |   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
+//TODO INSTALL_vs_UPGRADE: please share what you can
 include_once(_base_."/db/lib.docebodb.php");
 Class StepController {
 
@@ -34,10 +35,9 @@ Class StepController {
 	}
 
 	public function getNextStep($current_step) {
-
 		return ($current_step + 1);
 	}
-	
+
 	public function validate() {
 		return false;
 	}
