@@ -113,15 +113,17 @@ class Track_Object {
 		$result = sql_query($query) 
 			or errorCommunication( 'createTrack'.sql_error() );
 
-		include_once (_base_.'/appLms/Events/Lms/LoStatusUpdate.php');
-		$event = new \appLms\Events\Lms\LoStatusUpdate();
-		$event->setUser($idUser);
-		$event->setObjectType((($objectType==FALSE)?($this->objectType):($objectType))); // TODO: $objectTYpe vuoto
-		$event->setReference($idReference);
-		$event->setStatus($status);
-		$event->setDate($dateAttempt);
-		$event->setTrackType(\appLms\Events\Lms\LoStatusUpdate::CREATE_TRACK);
-		\appCore\Events\DispatcherManager::dispatch(\appLms\Events\Lms\LoStatusUpdate::EVENT_NAME, $event);
+		//TODO: EVT_OBJECT (§)
+		// include_once (_base_.'/appLms/Events/Lms/LoStatusUpdate.php');
+		// $event = new \appLms\Events\Lms\LoStatusUpdate();
+		// $event->setUser($idUser);
+		// $event->setObjectType((($objectType==FALSE)?($this->objectType):($objectType))); // TODO: $objectTYpe vuoto
+		// $event->setReference($idReference);
+		// $event->setStatus($status);
+		// $event->setDate($dateAttempt);
+		// $event->setTrackType(\appLms\Events\Lms\LoStatusUpdate::CREATE_TRACK);
+		//TODO: EVT_LAUNCH (&)
+		// \appCore\Events\DispatcherManager::dispatch(\appLms\Events\Lms\LoStatusUpdate::EVENT_NAME, $event);
 		
 		if(isset($this)) {
 			
@@ -164,15 +166,17 @@ class Track_Object {
 				." WHERE idTrack = '".(int)$this->idTrack."' AND objectType = '".$this->objectType."'";
 		if(!sql_query($query))
 			return false;
-		include_once (_base_.'/appLms/Events/Lms/LoStatusUpdate.php');
-		$event = new \appLms\Events\Lms\LoStatusUpdate();
-		$event->setUser($this->idUser);
-		$event->setObjectType($this->objectType?$this->objectType:$this->_table); // TODO: $objectTYpe vuoto
-		$event->setReference($this->idReference);
-		$event->setStatus($this->status);
-		$event->setDate($this->dateAttempt);
-		$event->setTrackType(\appLms\Events\Lms\LoStatusUpdate::UPDATE_TRACK);
-		\appCore\Events\DispatcherManager::dispatch(\appLms\Events\Lms\LoStatusUpdate::EVENT_NAME, $event);
+		//TODO: EVT_OBJECT (§)
+		// include_once (_base_.'/appLms/Events/Lms/LoStatusUpdate.php');
+		// $event = new \appLms\Events\Lms\LoStatusUpdate();
+		// $event->setUser($this->idUser);
+		// $event->setObjectType($this->objectType?$this->objectType:$this->_table); // TODO: $objectTYpe vuoto
+		// $event->setReference($this->idReference);
+		// $event->setStatus($this->status);
+		// $event->setDate($this->dateAttempt);
+		// $event->setTrackType(\appLms\Events\Lms\LoStatusUpdate::UPDATE_TRACK);
+		//TODO: EVT_LAUNCH (&)
+		// \appCore\Events\DispatcherManager::dispatch(\appLms\Events\Lms\LoStatusUpdate::EVENT_NAME, $event);
 		$this->_setCourseCompleted();
 		return true;
 	}
