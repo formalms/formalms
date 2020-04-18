@@ -934,7 +934,7 @@ class Certificate {
 		$this->getPdf($cert_structure, $name, $bgimage, $orientation, true, true);
 	}
 
-	function send_certificate($id_certificate, $id_user, $id_course, $array_substituton = false, $download = true, $from_multi = false)
+	function send_certificate($id_certificate, $id_user, $id_course, $array_substituton = false, $download = true, $from_multi = false, $id_association = 0)
 	{
 		$isAggregatedCert = Get::req('aggCert', DOTY_INT, 0);
         if( $isAggregatedCert){
@@ -956,7 +956,8 @@ class Certificate {
             $query_certificate = "SELECT cert_file"
 			." FROM ".$GLOBALS['prefix_lms'].$aggCertLib->table_assign_agg_cert
 			." WHERE idUser = ".$id_user
-            ." AND idCertificate = ".$id_certificate;
+            ." AND idCertificate = ".$id_certificate
+            ." AND idAssociation = ".$id_association;
 
 
 
@@ -1002,12 +1003,12 @@ class Certificate {
 			." ( '".$id_certificate."', '".$id_course."', '".$id_user."', '".date("Y-m-d H:i:s")."', '".addslashes($cert_file)."' ) ";
 		else
 			$query = "INSERT INTO ".$GLOBALS['prefix_lms'].$aggCertLib->table_assign_agg_cert
-			        ." ( idUser, idCertificate, on_date, cert_file ) "
+			        ." ( idUser, idCertificate, idAssociation ,on_date, cert_file ) "
 			        ." VALUES "
 			        ." ( "
-                        . "'".$id_user."',"
-                    //."      '".$isAggregatedCert."',"
-                        ."'".$id_certificate."', "
+                        .intval($id_user). ","
+                        .intval($id_certificate).", "
+                        .intval($id_association).", "                        
                         ."'".date("Y-m-d H:i:s")."',"
                         ."'".addslashes($cert_file)."' "
                     . ") ";

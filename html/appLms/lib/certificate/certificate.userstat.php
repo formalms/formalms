@@ -31,7 +31,7 @@ class CertificateSubs_UserStat extends CertificateSubstitution {
 		}
 		else
 		{
-                        $subs['[user_level]'] 			= $lang->def('_LEVEL');
+        $subs['[user_level]'] 			= $lang->def('_LEVEL');
 			$subs['[date_enroll]'] 			= $lang->def('_DATE_ENROLL');
 			$subs['[date_first_access]'] 	= $lang->def('_DATE_FIRST_ACCESS');
 			$subs['[date_complete]'] 		= $lang->def('_DATE_COMPLETE');
@@ -47,6 +47,7 @@ class CertificateSubs_UserStat extends CertificateSubstitution {
 			$subs['[course_score_final]'] 	= $lang->def('_FINAL_SCORE');
 			$subs['[course_score_final_max]'] = $lang->def('_COURSE_SCORE_FINAL_MAX');
 			$subs['[meta_assoc]'] = $lang->def('_META_ASSOC');
+            
 		}
 		return $subs;
 	}
@@ -72,131 +73,122 @@ class CertificateSubs_UserStat extends CertificateSubstitution {
 
 			$array_coursetype = array(	'elearning' => $lang->def('_COURSE_TYPE_ELEARNING', 'course', 'lms'),
 										'classroom' => $lang->def('_CLASSROOM', 'course', 'lms'),
-										//'blended' => $lang->def('_COURSE_TYPE_BLENDED', 'course', 'lms'),
 										'web_seminar' => $lang->def('Web seminar'));
 
 			$course_time = 0;
 			$blended_time = 0;
 
-
-
-
-			$table_course =	 '<table width="100%" cellspacing="1" cellpadding="1" border="1" align="" summary="Corsi frequentati">'
+			$table_course =	 '<table width="100%" cellspacing="1" cellpadding="1" border="1" align="">'
 							.'<thead>'
 							.'<tr>'
 							.'<td>'.$lang->def('_COURSE_NAME').'</td>'
 							.'<td>'.$lang->def('_COURSE_TYPE').'</td>'
-							.'<td align="right">'.$lang->def('_COURSE_TIME').'</td>'
+							.'<td>'.$lang->def('_COURSE_TIME').'</td>'
 							.'</tr>'
 							.'</thead>'
-							.'</tbody>';
+							.'<tbody>';
 
-			$table_blended =	'<table width="100%" cellspacing="1" cellpadding="1" border="1" align="" summary="Corsi frequentati">'
+			$table_blended =	'<table width="100%" cellspacing="1" cellpadding="1" border="1" align="">'
 								.'<thead>'
 								.'<tr>'
-								.'<td>'.$lang->def('_COURSE_NAME').'</td>'
-								.'<td>'.$lang->def('_COURSE_PROF').'</td>'
-								.'<td>'.$lang->def('_COURSE_TYPE').'</td>'
-								.'<td align="right">'.$lang->def('_COURSE_TIME').'</td>'
-								.'</thead>'
-								.'</tbody>';
-			$course_count = 0;
-			$blended_count = 0;
-
+								.'<td>'.$lang->def('_COURSEPATH').'</td>'
+								.'<td>'.$lang->def('_COURSE_TIME').'</td>'
+                                .'</tr>'								
+                                .'</thead>'
+								.'<tbody>';
 			$array_meta_complete = array();
 			$array_meta_inscr = array();
 			$array_meta_access = array();
-                        //$array_meta_level = array();
+            
+            $assocType = $aggCertLib->getTypeAssoc($this->id_meta);
+            
+            if ($assocType == COURSE_PATH) {
+                $path = $aggCertLib->getIdsCoursePath($this->id_meta);
+                require_once($GLOBALS['where_lms'].'/lib/lib.coursepath.php');
+                $coursePath_man = new CoursePath_Manager();
+                foreach ($path as $id_path){
+                    $courses = $coursePath_man->getAllCourses($id_path);
+                    $courses_path_time = 0;
+                    foreach ($courses as $id_course){
+                        $query =    "SELECT date_complete, date_inscr, date_first_access "
+                                ." FROM ".$GLOBALS['prefix_lms']."_courseuser"
+                                ." WHERE idCourse = '".$id_course."'"
+                                ." AND idUser = '".$this->id_user."'";
 
-            $assocArr =  $aggCertLib->getAssociationLink($this->id_meta, COURSE, $this->id_user, $distinct = true);
+                        list($date_complete_meta, $date_inscr_meta, $date_access_meta) = sql_fetch_row(sql_query($query));
 
-            foreach ($assocArr as $id_course)
-			{
-                                //
-				$query =	"SELECT date_complete, date_inscr, date_first_access, level"
-						." FROM ".$GLOBALS['prefix_lms']."_courseuser"
-						." WHERE idCourse = '".$id_course."'"
-						." AND idUser = '".$this->id_user."'";
+                        $array_meta_complete[] = $date_complete_meta;
+                        $array_meta_inscr[] = $date_inscr_meta;
+                        $array_meta_access[] = $date_access_meta;
 
-				list($date_complete_meta, $date_inscr_meta, $date_access_meta, $level) = sql_fetch_row(sql_query($query));
+                        $man_course = new Man_Course();
 
-				$array_meta_complete[] = $date_complete_meta;
-				$array_meta_inscr[] = $date_inscr_meta;
-				$array_meta_access[] = $date_access_meta;
-                                //$array_meta_level[] = $level;
+                        $course_info = $man_course->getCourseInfo($id_course);
 
-				$man_course = new Man_Course();
+                        $rep_man = new CourseReportManager();
 
-				$course_info = $man_course->getCourseInfo($id_course);
+                        $score_course = $rep_man->getUserFinalScore(array($this->id_user), array($this->id_course));
+                        $courses_path_time += $course_info['mediumTime'];
+                        $course_time += $course_info['mediumTime'];
+                    }
+                    $info_path = $coursePath_man->getCoursepathInfo($id_path);
+                    $table_blended .= '<tr>'
+                                      .'<td>'.$info_path['path_name'].'</td>'
+                                      .'<td>'.$courses_path_time.'</td>'
+                                      .'</tr>';
+                                      
+                }
+                $table_blended .=    '<tr>'
+                                .'<td>'.$lang->def('_TOTAL_TIME').'</td>'
+                                .'<td>'.$course_time.'</td>'
+                                .'</tr>'
+                                .'</tbody>'
+                                .'</table>';
+                $subs['[table_blended]'] = $table_blended;
+                $subs['[table_course]'] = $subs['[table_blended]'];
+                
+            } 
+            if ($assocType == COURSE){
+                $courses = $aggCertLib->getIdsCourse($this->id_meta);
+                foreach ($courses as $id_course) {
+                    $query =    "SELECT date_complete, date_inscr, date_first_access, level"
+                            ." FROM ".$GLOBALS['prefix_lms']."_courseuser"
+                            ." WHERE idCourse = '".$id_course."'"
+                            ." AND idUser = '".$this->id_user."'";
 
-				$rep_man = new CourseReportManager();
+                    list($date_complete_meta, $date_inscr_meta, $date_access_meta, $level) = sql_fetch_row(sql_query($query));
 
-				$score_course = $rep_man->getUserFinalScore(array($this->id_user), array($this->id_course));
+                    $array_meta_complete[] = $date_complete_meta;
+                    $array_meta_inscr[] = $date_inscr_meta;
+                    $array_meta_access[] = $date_access_meta;
+                                    //$array_meta_level[] = $level;
 
-				if($course_info['course_type'] === 'blended')
-				{
-					$teacher_array = getSubscribed($id_course, false, 6, true);
+                    $man_course = new Man_Course();
 
-					$first = true;
+                    $course_info = $man_course->getCourseInfo($id_course);
 
-					if(is_array($teacher_array) && !empty($teacher_array))
-						while(list(, $id_teach) = each($teacher_array))
-						{
-							$teacher_info = $acl_man->getUser($id_teach);
-							if ($first)
-							{
-								$teacher = $teacher_info[ACL_INFO_FIRSTNAME].' '.$teacher_info[ACL_INFO_LASTNAME];
-								$first = false;
-							}
-							else
-								$teacher = '<br/>'.$teacher_info[ACL_INFO_FIRSTNAME].' '.$teacher_info[ACL_INFO_LASTNAME];
-						}
-					else
-						$teacher = '&nbsp;';
+                    $rep_man = new CourseReportManager();
 
-					$table_blended .=	'<tr>'
-										.'<td>'.$course_info['name'].'</td>'
-										.'<td>'.$teacher.'</td>'
-										.'<td>'.$array_coursetype[$course_info['course_type']].'</td>'
-										.'<td align="right">'.$course_info['mediumTime'].'</td>'
-										.'</tr>';
-
-					$blended_time += $course_info['mediumTime'];
-					$blended_count++;
-				}
-				else
-				{
-					$table_course .=	'<tr>'
-										.'<td>'.$course_info['name'].'</td>'
-										.'<td>'.$array_coursetype[$course_info['course_type']].'</td>'
-										.'<td align="right">'.$course_info['mediumTime'].'</td>'
-										.'</tr>';
-
-					$course_time += $course_info['mediumTime'];
-					$course_count++;
-				}
-			}
-
-			$table_course .=	'<tr>'
-								//.'<td>&nbsp;</td>'
-								.'<td align="right" colspan="2">'.$lang->def('_TOTAL_HOURS').'</td>'
-								.'<td align="right">'.$course_time.'</td>'
-								.'</tr>'
-								.'</tbody>'
-								.'</table>';
-
-			$table_blended .=	'<tr>'
-								//.'<td>&nbsp;</td>'
-								.'<td align="right" colspan="2">'.$lang->def('_TOTAL_HOURS').'</td>'
-								.'<td align="right">'.$blended_time.'</td>'
-								.'</tr>'
-								.'</tbody>'
-								.'</table>';
-
+                    $score_course = $rep_man->getUserFinalScore(array($this->id_user), array($this->id_course));
+                    $table_course .=    '<tr>'
+                                        .'<td>'.$course_info['name'].'</td>'
+                                        .'<td>'.$array_coursetype[$course_info['course_type']].'</td>'
+                                        .'<td align="right">'.$course_info['mediumTime'].'</td>'
+                                        .'</tr>';
+                    $course_time += $course_info['mediumTime'];
+                }
+                $table_course .= '<tr>'
+                                .'<td align="right" colspan="2">'.$lang->def('_TOTAL_TIME').'</td>'
+                                .'<td align="right">'.$course_time.'</td>'
+                                .'</tr>'
+                                .'</tbody>'
+                                .'</table>'; 
+                $subs['[table_course]'] = $table_course; 
+                $subs['[table_blended]'] = $subs['[table_course]']; 
+            }
 			rsort($array_meta_complete);
 			sort($array_meta_inscr);
 			sort($array_meta_access);
-                        //sort($array_meta_level);
 
 			$subs['[meta_complete]'] = $array_meta_complete[0];
 			$subs['[meta_inscr]'] = $array_meta_inscr[0];
@@ -204,16 +196,10 @@ class CertificateSubs_UserStat extends CertificateSubstitution {
 
 			$sql = "
 				SELECT title FROM %lms".$aggCertLib->table_cert_meta_association ." AS cm 
-				INNER JOIN %lms". $aggCertLib->table_cert_meta_association_courses ." cmc ON cm.idMetaCertificate = cmc.idMetaCertificate
-				WHERE cmc.idUser = {$this->id_user} AND cm.idAssociation = {$this->id_meta}";
+				WHERE cm.idAssociation = {$this->id_meta}";
 			$q = sql_query($sql);
 			$meta = sql_fetch_object($q);
-			$subs['[meta_assoc]'] = $meta->title ?: '-';
-                        
-                       // $subs['[meta_level]'] = $lang->def('_LEVEL_'.$array_meta_level[0],'levels');
-                        
-			$subs['[table_course]'] = ( $course_count ? $table_course : '' );
-			$subs['[table_blended]'] = ( $blended_count ? $table_blended : '' );
+			$subs['[meta_assoc]'] = $meta->title;
 		}
 		else
 		{

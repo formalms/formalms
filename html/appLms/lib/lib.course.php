@@ -1985,32 +1985,18 @@ class Man_CourseUser {
 		return sql_num_rows($result_course);
 	}
 
+    
     /**
-    * return true if the user has completed a course
-    * 
-    * @param mixed $id_user
-    * @param mixed $id_course
-    * 
-    * @return boolean true | false 
+    * return whether the user is enrolled in a course
     */
-    function hasCompletedCourse($id_user, $id_course) {
-       
-       $query =    "SELECT COUNT(*)"
+    function isEnrolled($id_user, $id_course) {
+        $q =    "SELECT COUNT(*)"
                     ." FROM " . $this->_table_user_subscription
-                    ." WHERE idCourse = '" . $id_course . "'"
-                    ." AND idUser = '" . $id_user . "'"
-                    ." AND status = '" . _CUS_END . "'";
-                
-        $rs = sql_query($query);
-        
-        while($rows = sql_fetch_row($rs)) {
-          
-            $count = $rows[0];
-             
-        }
-        
-        return $count == 0;    
-        
+                    ." WHERE idCourse =" . intval($id_course)
+                    ." AND idUser =" . intval($id_user);
+        $row = sql_fetch_row(sql_query($q));
+        return boolval($row[0]);                       
+
     }
     
     /**
@@ -2021,36 +2007,17 @@ class Man_CourseUser {
 
     function hasCompletedCourses($id_user, $courseIdsArr){        
     
-        $result = true;
-
-        
-        foreach($courseIdsArr as $id_course){
-            
-            $query =    "SELECT COUNT(*)"
+        $c = implode(",",$courseIdsArr);
+        $q =    "SELECT COUNT(*)"
                     ." FROM " . $this->_table_user_subscription
-                    ." WHERE idCourse = " . $id_course
-                    ." AND idUser = " . $id_user
+                    ." WHERE idCourse in (" . $c
+                    .") AND idUser = " . $id_user
                     ." AND status = " . _CUS_END ;
-                    
-            $rs = sql_query($query);
+        $row = sql_fetch_row(sql_query($q));       
+        return ($row[0] == count($courseIdsArr)); 
     
-            while($rows = sql_fetch_row($rs)) {
-                $count = $rows[0];
-            }
-    
-            if ($count == 0){
-                $result = false;
-                break; 
-            }
-                 
-        }
-        
-        return $result;
-        
     }
-    
 }
-
 class DoceboCourse {
 
 	var $id_course;

@@ -62,8 +62,8 @@ final class LMSTemplateController extends TemplateController {
         }
       }
 
-      // Adding aggr. certs
-        $availables += $model->countAggrCertsToRelease();
+      // Adding aggr. certs - removed at the moment. Need a faster way to get new issued aggregated certifies
+      //  $availables += $model->countAggrCertsToRelease();
       
       
       return $availables;
@@ -92,6 +92,7 @@ final class LMSTemplateController extends TemplateController {
 
     private function showProfile() {
         
+   
         $this->render('profile', 'profile', array(
             'user'              => $this->model->getUser()
           , 'profile'           => $this->model->getProfile()

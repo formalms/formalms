@@ -286,9 +286,10 @@ CREATE TABLE IF NOT EXISTS `learning_aggregated_cert_metadata` (
 CREATE TABLE IF NOT EXISTS `learning_aggregated_cert_assign` (
   `idUser` int(11) NOT NULL DEFAULT '0',
   `idCertificate` int(11) NOT NULL DEFAULT '0',
+  `idAssociation` int(11) NOT NULL,  
   `on_date` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `cert_file` varchar(255) NOT NULL DEFAULT '',
-  PRIMARY KEY (`idUser`,`idCertificate`)
+  PRIMARY KEY (`idUser`,`idCertificate`, `idAssociation`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -308,7 +309,8 @@ CREATE TABLE IF NOT EXISTS `learning_aggregated_cert_course` (
   `idUser` int(11) NOT NULL DEFAULT '0',
   `idCourse` int(11) NOT NULL DEFAULT '0',
   `idCourseEdition` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `idAssociation` (`idAssociation`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
 
 --
@@ -327,7 +329,8 @@ CREATE TABLE IF NOT EXISTS `learning_aggregated_cert_coursepath` (
   `idAssociation` int(11) NOT NULL DEFAULT '0',
   `idUser` int(11) NOT NULL DEFAULT '0',
   `idCoursePath` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `idAssociation` (`idAssociation`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
 
 --

@@ -9,24 +9,18 @@
 \ ======================================================================== */
 
 require_once(Forma::inc(_lms_.'/lib/lib.certificate.php'));
-require_once(Forma::inc(_lms_.'/lib/lib.aggregated_certificate.php'));
-
 class MycertificateLms extends Model {
 
     protected $certificate;
     
     public $id_user;
 
-    protected $aggCertLib;
     protected $aggrCertsArr;
 
     public function __construct($id_user) {
         $this->id_user = (int) $id_user;
-
         $this->certificate = new Certificate();
-        $this->aggCertLib = new AggregatedCertificate();
 
-        $this->aggrCertsArr = $this->loadMyMetaCertificates();
     }
     
     public function loadMyCertificates($pagination = false, $count = false) {
@@ -129,55 +123,9 @@ class MycertificateLms extends Model {
     * 
     * Return an array of all certs available
     */
-    public function loadMyMetaCertificates() {
+    
+  /*  public function loadMyMetaCertificates() {
 
-      /*  require_once($GLOBALS['where_lms'].'/lib/lib.course.php');
-        $startIndex = Get::req('startIndex', DOTY_INT, 0);
-        $results = Get::req('results', DOTY_INT, Get::sett('visuItem', 25));
-        
-        $filter = array('id_user' => (int) $this->id_user);
-        $myMetaCertificates = $this->certificate->getMetaAssignment($filter, $pagination, $count);
-        
-     
-                
-        $data = array();
-        foreach ($myMetaCertificates AS $meta) {
-           
-            $preview    = '<a class="ico-wt-sprite subs_view"'
-                        . ' href="?r=mycertificate/preview'
-                        . '&id_certificate='.$meta['id_certificate']
-                        . '&id_meta='.$meta['id_meta'].'" '
-                        . ' title="'.Lang::t('_PREVIEW', 'certificate').'"><span>'.Lang::t('_PREVIEW', 'certificate').'</span></a>';
-            $download   = '<a class="ico-wt-sprite subs_pdf"' 
-                        . ' href="?r=mycertificate/download'
-                        . '&id_certificate='.$meta['id_certificate'].'&id_meta='.$meta['id_meta'].'" '
-                        .' title="'.Lang::t('_DOWNLOAD', 'certificate').'"><span>'.Lang::t('_DOWNLOAD', 'certificate').'</span></a>';
-            $generate    = '<a class="ico-wt-sprite subs_pdf" href="?r=mycertificate/'
-                        . 'release_cert'
-                        .'&id_certificate='.$meta['id_certificate']
-                        .'&aggCert=1'
-                        .'&id_meta='.$meta['id_meta'].'" '
-                        .' title="'.Lang::t('_GENERATE', 'certificate').'"><span>'.Lang::t('_GENERATE', 'certificate').'</span></a>';
-                    
-            $row = array(
-                'cert_code'         => $meta['cert_code'], 
-                'cert_name'         => $meta['cert_name'], 
-                'courses'           => $meta['courses'],
-                // 'preview'           => isset($meta['on_date']) ? '' : $preview,
-                'download'          => ($meta['isReleased']) ? $download : $generate
-            );
-            
-            $data[] = array_values($row);
-        }
-        
-        $data_to_display = array();
-        for ($i = $startIndex; $i < ($startIndex + $results) && $i < count($data); $i++){
-            $data_to_display[] = $data[$i];
-        }
-        
-        return $data_to_display;*/
-      /* if ($pagination && isset($pagination['search']))
-            $filter['search'] = $pagination['search'];*/
 
       require_once($GLOBALS['where_lms'].'/lib/lib.course.php');
 
@@ -252,39 +200,31 @@ class MycertificateLms extends Model {
     
         return $arrAggregatedCerts;
 
+    }  */
+    
+    public function loadMyMetaCertificates(){
+        
     }
+    
 
-    function getAggregatedCerts(){
-
-        return $this->aggrCertsArr;
-
-    }
-
-    public function countMyMetaCertificates() {
-
-       return count($this->aggrCertsArr);
-
-    }
-
-    function countAggrCertsReleased() {
-
-        $k = 0;
-
-        foreach ($this->aggrCertsArr as $aggrCert)
-            if($aggrCert['released']) $k += 1;
-
-        return $k;
-
-    }
     // TODO: passare nella aggregated_certificate
     function countAggrCertsToRelease() {
-
-        $k = 0;
-        foreach ($this->aggrCertsArr as $aggrCert)
-            if(!$aggrCert['released']) $k += 1;
-
-        return $k;
-
+        $r = sql_fetch_row(
+                sql_query('SELECT count(*) as tot from %lms_aggregated_cert_assign where idUser ='.Docebo::user()->getIdSt(). ' AND cert_file is null')
+                          );
+        return $r[0];
+    }
+    
+    function countMyMetaCertificates(){
+        $r = sql_fetch_row(sql_query('SELECT count(*) as tot from %lms_aggregated_cert_assign where idUser ='.Docebo::user()->getIdSt()));
+        return $r[0];
+    }
+    
+    function countMyMetaCertsReleased(){
+        $r = sql_fetch_row(
+                sql_query('SELECT count(*) as tot from %lms_aggregated_cert_assign where idUser ='.Docebo::user()->getIdSt(). ' AND cert_file is not null')
+                          );
+        return $r[0];
     }
 
 }

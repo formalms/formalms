@@ -97,13 +97,9 @@ class MycertificateLmsController extends LmsController
             'results' => $results,
         );
 
-      /*  if ($search = $_REQUEST['search']) {
-            $pagination['search'] = $search['value'];
-        } else {
-            $pagination['search'] = null;
-        }
-        */
 
+         $this->model->loadMyMetaCertificates($pagination, true);
+        
         // query for the relation between user and certificates associated to it
         // all the assoc. with the user, for all the user get id cert.
         $totalMetaCertificates = $this->model->countMyMetaCertificates();

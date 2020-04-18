@@ -814,6 +814,44 @@ class CoursePath_Manager {
 		}
 		return $paths;
 	}
+    
+    /**
+    *  Check if a user is enrolled in a coursepath
+    * input id user, id pathCourse
+    */
+    function isEnrolled($id_user, $id_path) {
+        $q =    "SELECT COUNT(*)"
+                    ." FROM " . $this->_getPathUserTable()
+                    ." WHERE id_path =" . intval($id_path)
+                    ." AND idUser =" . intval($id_user);
+        $row = sql_fetch_row(sql_query($q));
+        return boolval($row[0]);                       
+
+    }
+    /**
+    *  Check if a user completed one or more course paths
+    * input id user
+    * input single id_path or array of ids path
+    */
+    
+    function isCoursePathCompleted($id_user, $id_path){
+        require_once($GLOBALS['where_lms'].'/lib/lib.course.php');
+        if (is_array($id_path)) {
+            $courseIdsFromPath = [];
+            foreach ($id_path as $id){
+                $courses =  $this->getPathCourses(intval($id));
+                $courseIdsFromPath = array_merge($courseIdsFromPath,$courses);
+            }
+        } else
+            $courseIdsFromPath = $this->getPathCourses(intval($id_path));
+            
+        if (!empty($courseIdsFromPath)) {
+            $man_courseuser = new Man_CourseUser(DbConn::getInstance());
+            $result = $man_courseuser->hasCompletedCourses($id_user,$courseIdsFromPath);
+            return $result;
+        }
+        return false;
+    }
 
 	function checkPrerequisites($prerequisites, &$courses_info) {
 
