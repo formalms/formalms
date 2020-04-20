@@ -34,14 +34,28 @@ class MycertificateLmsController extends LmsController
         checkPerm('view', false, self::mod_name);
         $totalMetaCertificates = $this->model->countMyMetaCertificates();
 
-        $event = new \appLms\Events\Lms\MyCertificateTabLoading();
-
-		\appCore\Events\DispatcherManager::dispatch(\appLms\Events\Lms\MyCertificateTabLoading::EVENT_NAME, $event);
+        //TODO: EVT_OBJECT (§)
+        //$event = new \appLms\Events\Lms\MyCertificateTabLoading();
+        //TODO: EVT_LAUNCH (&)
+		//\appCore\Events\DispatcherManager::dispatch(\appLms\Events\Lms\MyCertificateTabLoading::EVENT_NAME, $event);
 
         $this->render('show', [
             'totalMetaCertificates' => $totalMetaCertificates,
-            'additionalTabs' => $event->getTabs()
+            'additionalTabs' => array() // TODO: EVT_TABS $event->getTabs()
         ]);
+
+/*
+        //NEW Event Method
+        $tabs = array();
+        $eventTabs = Events::trigger('lms.mycertificatetab.loading', [
+            'tabs' => $tabs,
+        ]);
+        $additionalTabs = $eventTabs['tabs'];
+        $this->render('show', [
+            'totalMetaCertificates' => $totalMetaCertificates,
+            'additionalTabs' => $additionalTabs
+        ]);
+*/
     }
 
     public function getMyCertificates()
