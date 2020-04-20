@@ -680,13 +680,15 @@ function viewUserEvent()
 			);
 			$out->add('<br/>');
 
-            $event = new \appLms\Events\Lms\UserListEvent($out,$lang);
+			//TODO: EVT_OBJECT (§)
+            //$event = new \appLms\Events\Lms\UserListEvent($out,$lang);
 
-            $event->setIdEvent($id_event);
+            //$event->setIdEvent($id_event);
 
-            $event->setDefaultExportEndpoint('index.php?modname=reservation&amp;op=excel&id_event=' . $id_event);
-
-            \appCore\Events\DispatcherManager::dispatch(\appLms\Events\Lms\UserListEvent::EVENT_NAME, $event);
+            //$event->setDefaultExportEndpoint('index.php?modname=reservation&amp;op=excel&id_event=' . $id_event);
+			
+			//TODO: EVT_LAUNCH (&)
+            //\appCore\Events\DispatcherManager::dispatch(\appLms\Events\Lms\UserListEvent::EVENT_NAME, $event);
 
             $out->add($event->getExportLink(),'content');
 		}
