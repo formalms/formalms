@@ -477,11 +477,13 @@ class UserProfile {
 					$this->_up_viewer->unloadUserData();
 
 					// SET EDIT CHANGE PASSWORD EVENT
-					$event = new \appCore\Events\Core\User\UsersManagementChangePasswordEvent();
-					$model = new UsermanagementAdm();
-					$event->setUser($model->getProfileData($this->_id_user));
-					$event->setFilledPwd($this->_up_viewer->getFilledPwd());
-					\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementChangePasswordEvent::EVENT_NAME, $event);
+					//TODO: EVT_OBJECT (§)
+					//$event = new \appCore\Events\Core\User\UsersManagementChangePasswordEvent();
+					//$model = new UsermanagementAdm();
+					//$event->setUser($model->getProfileData($this->_id_user));
+					//$event->setFilledPwd($this->_up_viewer->getFilledPwd());
+					//TODO: EVT_LAUNCH (&)
+					//\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementChangePasswordEvent::EVENT_NAME, $event);
 
 					if($this->_end_url !== false) Util::jump_to($this->_end_url);
 
