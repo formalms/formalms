@@ -417,12 +417,14 @@ class UserProfile {
 						Util::jump_to('index.php?modname=reservation&op=reservation');
 					}
 					else {
+						//TODO: EVT_OBJECT (§)
 						// SET EDIT USER EVENT
-						$event = new \appCore\Events\Core\User\UsersManagementEditEvent();
-						$event->setType('single');
-						$event->setUser($model->getProfileData($this->_id_user));
-						$event->setOldUser($oldUserdata);
-						\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementEditEvent::EVENT_NAME, $event);
+						//$event = new \appCore\Events\Core\User\UsersManagementEditEvent();
+						//$event->setType('single');
+						//$event->setUser($model->getProfileData($this->_id_user));
+						//$event->setOldUser($oldUserdata);
+						//TODO: EVT_LAUNCH (&)
+						//\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementEditEvent::EVENT_NAME, $event);
 
 
 						require_once(Forma::inc(_base_ . '/lib/lib.eventmanager.php'));

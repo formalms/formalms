@@ -680,11 +680,13 @@ class UsermanagementAdmController extends AdmController
 		$oldUserdata = $model->getProfileData($idst);
 
 		// SET EDIT USER SINGLE EVENT
-		$event = new \appCore\Events\Core\User\UsersManagementEditEvent();
-		$event->setType('single');
-		$event->setUser($userdata);
-		$event->setOldUser($oldUserdata);
-		\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementEditEvent::EVENT_NAME, $event);
+		//TODO: EVT_OBJECT (§)
+		//$event = new \appCore\Events\Core\User\UsersManagementEditEvent();
+		//$event->setType('single');
+		//$event->setUser($userdata);
+		//$event->setOldUser($oldUserdata);
+		//TODO: EVT_LAUNCH (&)
+		//\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementEditEvent::EVENT_NAME, $event);
 
 		require_once(Forma::inc(_base_ . '/lib/lib.eventmanager.php'));
 
@@ -2947,11 +2949,13 @@ class UsermanagementAdmController extends AdmController
 			$info->__preferences = $pref_properties;
 		}
 
-		$event = new \appCore\Events\Core\User\UsersManagementEditEvent();
-		$event->setType('multiple');
-		$event->setUsers($users);
-		\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementEditEvent::EVENT_NAME, $event);
-		$users = $event->getUsers();
+		//TODO: EVT_OBJECT (§)
+		//$event = new \appCore\Events\Core\User\UsersManagementEditEvent();
+		//$event->setType('multiple');
+		//$event->setUsers($users);
+		//TODO: EVT_LAUNCH (&)
+		//\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementEditEvent::EVENT_NAME, $event);
+		//$users = $event->getUsers();
 
 		$acl_man =& Docebo::user()->getAclManager();
 
