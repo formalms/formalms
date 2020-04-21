@@ -1,5 +1,7 @@
 @import '../../node_modules/breakpoint-sass/stylesheets/breakpoint';
 @import '../../node_modules/slick-carousel/slick/slick.scss';
+@import '../../node_modules/@fullcalendar/core/main';
+@import '../../node_modules/@fullcalendar/daygrid/main';
 
 //@import '../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap-sprockets.scss';
 //@import '../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap.scss';
@@ -24,6 +26,7 @@
 @import 'components/accordion';
 @import 'components/icons';
 @import 'components/modal';
+@import 'components/dashboard/main';
 
 //MODULES
 @import 'modules/layout';
@@ -41,6 +44,8 @@
 @import 'modules/course-objects';
 @import 'modules/section-course';
 @import 'modules/slider-menu';
+@import 'modules/course-info';
 
 //PAGES
 @import 'pages/homepage';
+@import 'pages/user-profile';

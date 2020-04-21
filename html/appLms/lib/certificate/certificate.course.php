@@ -95,7 +95,7 @@ class CertificateSubs_Course extends CertificateSubstitution {
 			$subs['[date_begin]'] 			= Format::date($man_course->getValue('date_begin'), 'date');
 			$subs['[date_end]'] 			= Format::date($man_course->getValue('date_end'), 'date');
 
-			$subs['[course_description]'] 	= html_entity_decode(strip_tags($man_course->getValue('description')), ENT_QUOTES, "UTF-8");
+			$subs['[course_description]'] 	= html_entity_decode($man_course->getValue('description'), ENT_QUOTES, "UTF-8");
 
 			$subs['[medium_time]'] 			= $man_course->getValue('mediumTime');
 			$subs['[course_credits]']		= $man_course->getValue('credits');

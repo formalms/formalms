@@ -23,34 +23,35 @@ class DbPurifier extends HTMLPurifier {
 	 * @access private
 	 */
 	function DbPurifier() {
-		
+
 		$config = HTMLPurifier_Config::createDefault();
 		$config->set('Core', 'Encoding', 'UTF-8');
 		$config->set('Core', 'XHTML', true);
+        $config->set('Cache.SerializerPath', _files_ . '/cache/twig');
 		parent::HTMLPurifier($config);
 	}
-	
+
 	/**
 	 * return the instance of the DbPurifier
 	 * @access public
 	 */
 	function &getInstance() {
-	
+
 		if(!isset($GLOBALS['html_purifier'])) {
-			
+
 			$GLOBALS['html_purifier'] = new DBPurifier();
 		}
 		return $GLOBALS['html_purifier'];
 	}
-	
+
 	/**
 	 * remove all the html from the string
 	 */
 	function text($string) {
-		
-		return strip_tags($this->purify($string)); 
+
+		return strip_tags($this->purify($string));
 	}
-	
+
 }
 
 ?>

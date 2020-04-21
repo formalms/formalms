@@ -87,7 +87,8 @@ class Selector_CoursePath {
 		}
 		// add last selection
 		if(isset($array_state['new_coursepath_selected'])) {
-			while(list($id_cpath) = each($_POST['new_coursepath_selected'])) {
+     foreach($_POST['new_coursepath_selected'] as $id_cpath => $v) 
+      {
 
 				$this->current_selection[$id_cpath] = $id_cpath;
 			}
@@ -861,7 +862,8 @@ class CoursePath_Manager {
 		if($prerequisites == '') return true;
 		$arr_prere = explode(',', trim($prerequisites));
 		if(($arr_prere == false) || (count($arr_prere) < 1)) return true;
-		while(list(,$id_c) = each($arr_prere)) {
+    foreach($arr_prere as $id_c)
+    {
 
 			if (isset($courses_info['course'][$id_c]['user_status'])) {
 				if($courses_info['course'][$id_c]['user_status'] != _CUS_END) return false;

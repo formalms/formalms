@@ -69,7 +69,8 @@ class CommunicationLmsController extends LmsController {
 		$communications = $model->findAllUnread( 0, 0, 'publish_date', 'DESC', Docebo::user()->getId(), array(
 			'viewer' => Docebo::user()->getArrSt()
 		));
-		while(list($id,$comm) = each($communications)) {
+    foreach($communications as $id => $comm)
+		{
 			//$communications[$id]['publish_date'] = Format::dateDistance($comm['publish_date']);
 			switch($comm['type_of']) {
 				case "none" : {
@@ -113,7 +114,8 @@ class CommunicationLmsController extends LmsController {
 		$communications = $model->findAllReaded( 0, 0, 'publish_date', 'DESC', Docebo::user()->getId(), array(
 			'viewer' => Docebo::user()->getArrSt()
 		));
-		while(list($id,$comm) = each($communications)) {
+    foreach($communications as $id => $comm)     
+    {
 			//$communications[$id]['publish_date'] = Format::dateDistance($comm['publish_date']);
 			switch($comm['type_of']) {
 				case "none" : {

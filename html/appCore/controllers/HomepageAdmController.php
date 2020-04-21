@@ -37,6 +37,9 @@ class HomepageAdmController extends AdmController
 
         if (Get::req("cancel_social", DOTY_BOOL, false)) unset($_SESSION['social']);
 
+        $params['block_attempts'] = false;
+        
+       
         $block_attempts = $this->model->checkBrute();
         if ($block_attempts) {
 
@@ -46,7 +49,8 @@ class HomepageAdmController extends AdmController
                 '[attempt]' => $block_attempts['max_login_attempt'],
                 '[time]' => $wait
             ));
-        } else $params['block_attempts'] = false;
+        }  
+        
 
         $params['under_maintenence'] = $this->model->isUnderMaintenence();
         $params['isCatalogToShow'] = $this->model->isCatalogToShow();

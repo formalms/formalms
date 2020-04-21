@@ -152,7 +152,7 @@ class CoursereportLmsController extends LmsController
 		}
 
 
-		$report_details = array ();
+		$report_details = [];
 		//while (list($id_report , $users_result) = each ($reports_scores)) {
 		foreach ($reports_scores as $id_report => $users_result) {
 			//while (list($id_user , $single_report) = each ($users_result)) {
@@ -196,7 +196,7 @@ class CoursereportLmsController extends LmsController
 
 		$total_weight = 0;
 
-		$tests = array ();
+		$tests = [];
 		if (! empty($students_info)) {
 			//while (list($idst_user , $user_info) = each ($students_info)) {
 			foreach ($students_info as $idst_user => $user_info) {
@@ -354,7 +354,7 @@ class CoursereportLmsController extends LmsController
 				}
 			}
 
-			$results_activity = array ();
+			$results_activity = [];
 
 			foreach ($this->model->getCourseReports () as $info_report) {
 
@@ -664,7 +664,7 @@ class CoursereportLmsController extends LmsController
 
 		$tests_score =& $test_man->getTestsScores ($included_test , $id_students);
 
-		$test_details = array ();
+		$test_details = [];
 
 		if (is_array ($included_test)) {
 			foreach ($tests_score as $id_test => $users_result) {
@@ -713,10 +713,10 @@ class CoursereportLmsController extends LmsController
 		}
 		$reports_score =& $report_man->getReportsScores ((isset($included_test_report_id) && is_array ($included_test_report_id) ? array_diff ($reports_id , $included_test_report_id) : $reports_id) , $id_students);
 
-		$results_names = array ();
-		$results_activity = array ();
-		$results_scorm_test = array ();
-		$students_array = array ();
+		$results_names = [];
+		$results_activity = [];
+		$results_scorm_test = [];
+		$students_array = [];
 
 		if (! empty($students_info)) {
 			require_once ($GLOBALS[ 'where_lms' ] . '/class.module/learning.test.php');
@@ -768,7 +768,7 @@ class CoursereportLmsController extends LmsController
 					$student[ $key ] = $studendVal;
 				}
 
-				$student[ 'activities_results' ] = array ();
+				$student[ 'activities_results' ] = [];
 				$student[ 'total_result' ] = '-';
 
 
@@ -784,11 +784,13 @@ class CoursereportLmsController extends LmsController
 
 							case CoursereportLms::SOURCE_OF_TEST : {
 
-							    if (!in_array($testObj->getTitle (),$results_names)){
-							        $results_names[] = $testObj->getTitle ();
+							    $key = sprintf('%s_%s_%s',$info_report->getSourceOf (),$info_report->getIdSource (),$testObj->getTitle());
+
+							    if (!in_array($key,$results_names)){
+							        $results_names[$key] = $testObj->getTitle ();
                                 }
 
-								$values = array ();
+								$values = [];
 
 								if (isset($tests_score[ $info_report->getIdSource () ][ $idst_user ])) {
 									switch ($tests_score[ $info_report->getIdSource () ][ $idst_user ][ 'score_status' ]) {
@@ -938,11 +940,14 @@ class CoursereportLmsController extends LmsController
 
 								$scormItem = new ScormLms($info_report->getIdSource () , $idst_user);
 
-                                if (!in_array($info_report->getTitle(),$results_names)){
-                                    $results_names[] = $info_report->getTitle();
+                                $key = sprintf('%s_%s_%s',$info_report->getSourceOf (),$info_report->getIdSource (),$info_report->getTitle());
+
+                                if (!in_array($key,$results_names)){
+                                    $results_names[$key] = $info_report->getTitle ();
                                 }
 
-								$value = array (
+
+                                $value = array (
 									'icon' => 'cr_not_check' ,
 									'showIcon' => false ,
 									'value' => $scormItem->getScoreRaw () ,
@@ -971,8 +976,10 @@ class CoursereportLmsController extends LmsController
 								break;
 							case CoursereportLms::SOURCE_OF_ACTIVITY    : {
 
-                                if (!in_array($info_report->getTitle(),$results_names)){
-                                    $results_names[] = $info_report->getTitle();
+                                $key = sprintf('%s_%s_%s',$info_report->getSourceOf (),$info_report->getIdReport (),$info_report->getTitle());
+
+                                if (!in_array($key,$results_names)){
+                                    $results_names[$key] = $info_report->getTitle ();
                                 }
 
 								if (isset($reports_score[ $info_report->getIdReport () ][ $idst_user ])) {
@@ -1066,10 +1073,11 @@ class CoursereportLmsController extends LmsController
 
 		$reports = $this->model->getReportsForFinal ();
 
+
 		$sum_max_score = 0;
-		$included_test = array ();
-		$other_source = array ();
-		$scorm_source = array ();
+		$included_test = [];
+		$other_source = [];
+        $scorm_source = [];
 
 		foreach ($reports as $info_report) {
 			$sum_max_score += $info_report->getMaxScore () * $info_report->getWeight ();
@@ -1094,7 +1102,7 @@ class CoursereportLmsController extends LmsController
 		if (! empty($other_source))
 			$other_score =& $report_man->getReportsScores ($other_source);
 
-		$final_score = array ();
+		$final_score = [];
 
 		foreach ($id_students as $id_user) {
             $user_score = 0;
@@ -1235,7 +1243,7 @@ class CoursereportLmsController extends LmsController
         SELECT DATE_FORMAT(tt.date_attempt, '%d/%m/%Y %H:%i'), tt.score, tt.idTest, t.idUser, tt.number_time
         FROM " . $GLOBALS[ 'prefix_lms' ] . "_testtrack_times AS tt
         LEFT JOIN " . $GLOBALS[ 'prefix_lms' ] . "_testtrack AS t ON tt.idTrack=t.idTrack
-        WHERE tt.idTrack = '" . $idTrack . "' AND tt.idTest = '" . $idTest . "' ORDER BY tt.date_attempt";
+        WHERE tt.idTest = '" . $idTest . "' ORDER BY tt.date_attempt";// tt.idTrack = '" . $idTrack . "' AND
 		$re_testreport = sql_query ($query_testreport);
 
 		$test_man = new GroupTestManagement();
@@ -1659,9 +1667,9 @@ class CoursereportLmsController extends LmsController
 		$test_man = new GroupTestManagement();
 		$acl_man = Docebo::user ()->getAclManager ();
 
-		$quests = array ();
-		$answers = array ();
-		$tracks = array ();
+		$quests = [];
+		$answers = [];
+		$tracks = [];
 
 		$test_info =& $test_man->getTestInfo (array ( $id_test ));
 
@@ -2146,8 +2154,8 @@ class CoursereportLmsController extends LmsController
 		$reports = $courseReportLms->getReportsForFinal ();
 
 		$sum_max_score = 0;
-		$included_test = array ();
-		$other_source = array ();
+		$included_test = [];
+		$other_source = [];
 
 		foreach ($reports as $info_report) {
 
@@ -2170,7 +2178,7 @@ class CoursereportLmsController extends LmsController
 		if (! empty($other_source))
 			$other_score =& $report_man->getReportsScores ($other_source);
 
-		$final_score = array ();
+		$final_score = [];
 
 		while (list(, $id_user) = each ($id_students)) {
 			$user_score = 0;
@@ -2203,7 +2211,7 @@ class CoursereportLmsController extends LmsController
 				$final_score[ $id_user ] = 0;
 		}
 		// Save final scores
-		$exists_final = array ();
+		$exists_final = [];
 		$query_final_score = "SELECT id_user
 	                          FROM " . $GLOBALS[ 'prefix_lms' ] . "_coursereport_score
 	                          WHERE id_report = '" . $info_final[ 'id_report' ] . "'";
@@ -2895,7 +2903,7 @@ class CoursereportLmsController extends LmsController
 		$lang =& DoceboLanguage::createInstance ('coursereport' , 'lms');
 		$out =& $GLOBALS[ 'page' ];
 		$out->setWorkingZone ('content');
-		$included_test = array ();
+		$included_test = [];
 		$mod_perm = checkPerm ('mod' , true);
 		$view_all_perm = checkPerm ('view_all' , true , $this->_mvc_name);
 		$csv = '';
@@ -2940,7 +2948,7 @@ class CoursereportLmsController extends LmsController
 		}
 
 		$i = 0;
-		$students_info = array ();
+		$students_info = [];
 		foreach ($students as $idst => $user_course_info)
 			$students_info[ $idst ] =& $acl_man->getUser ($idst , FALSE);
 
@@ -3094,7 +3102,7 @@ class CoursereportLmsController extends LmsController
 
 		$tests_score =& $test_man->getTestsScores ($included_test , array_keys ($students));
 
-		$test_details = array ();
+		$test_details = [];
 		if (is_array ($included_test)) {
 			while (list($id_test , $users_result) = each ($tests_score)) {
 				while (list($id_user , $single_test) = each ($users_result)) {
@@ -3129,7 +3137,7 @@ class CoursereportLmsController extends LmsController
 		$reports_score =& $report_man->getReportsScores (
 			(isset($included_test_report_id) && is_array ($included_test_report_id) ? array_diff ($reports_id , $included_test_report_id) : $reports_id));
 
-		$report_details = array ();
+		$report_details = [];
 		while (list($id_report , $users_result) = each ($reports_score)) {
 			while (list($id_user , $single_report) = each ($users_result)) {
 				if ($single_report[ 'score_status' ] == 'valid') {
@@ -3299,7 +3307,7 @@ class CoursereportLmsController extends LmsController
 	public function testQuestion ()
 	{
 		checkPerm ('view' , true , $this->_mvc_name);
-		$responseValue = array ();
+		$responseValue = [];
 		$undo = Get::pReq ('undo' , DOTY_MIXED , false);
 
 		if ($undo) {
@@ -3333,8 +3341,8 @@ class CoursereportLmsController extends LmsController
 
 		$responseValue[ 'title' ] = $test_info[ $idTest ][ 'title' ];
 
-		$answersNew = array ();
-		$tracks = array ();
+		$answersNew = [];
+		$tracks = [];
 		$quests = Question::getTestQuestsFromTest ($idTest);
 
 		foreach ($quests as $quest) {
@@ -3368,8 +3376,8 @@ class CoursereportLmsController extends LmsController
 		$total_play = Track_Test::getValidTotalPlaysTestTrackFromTestAndUsers ($idTest , $id_students);
 
 		foreach ($quests as $quest) {
-			$question = array ();
-			$answersArray = array ();
+			$question = [];
+			$answersArray = [];
 
 			switch ($quest[ 'type_quest' ]) {
 				case "inline_choice":
@@ -3380,8 +3388,8 @@ class CoursereportLmsController extends LmsController
 					$question[ "title" ] = str_replace ('[title]' , $quest[ 'title_quest' ] , $lang->def ('_TABLE_QUEST'));
 
 					foreach ($answersNew[ $quest[ 'idQuest' ] ] as $answer) {
-						$answerObj = array ();
-						$cont = array ();
+						$answerObj = [];
+						$cont = [];
 
 						if ($answer[ 'is_correct' ]) {
 							$answerObj[ 'showIcon' ] = true;
@@ -3437,7 +3445,7 @@ class CoursereportLmsController extends LmsController
 					$question[ "title" ] = str_replace ('[title]' , $quest[ 'title_quest' ] , $lang->def ('_TABLE_QUEST_CORRECT_TXT'));
 
 					foreach ($answersNew[ $quest[ 'idQuest' ] ] as $answer) {
-						$answerObj = array ();
+						$answerObj = [];
 
 						$answer_correct = 0;
 
@@ -3464,7 +3472,7 @@ class CoursereportLmsController extends LmsController
 					$question[ "title" ] = str_replace ('[title]' , $quest[ 'title_quest' ] , $lang->def ('_TABLE_QUEST_CORRECT_ASS'));
 
 					foreach ($answersNew[ $quest[ 'idQuest' ] ] as $answer) {
-						$answerObj = array ();
+						$answerObj = [];
 
 						$answerObj[ 'title' ] = $answer[ 'answer' ];
 
@@ -3548,7 +3556,7 @@ class CoursereportLmsController extends LmsController
 
 	public function testQuestionOld ()
 	{
-		$responseValue = array ();
+		$responseValue = [];
 
 		checkPerm ('view' , true , $this->_mvc_name);
 
@@ -3583,9 +3591,9 @@ class CoursereportLmsController extends LmsController
 		$students = getSubscribed ((int) $_SESSION[ 'idCourse' ] , FALSE , $lev , TRUE , false , false , true);
 		$id_students = array_keys ($students);
 
-		$quests = array ();
-		$answers = array ();
-		$tracks = array ();
+		$quests = [];
+		$answers = [];
+		$tracks = [];
 
 		$test_info = $test_man->getTestInfo (array ( $id_test ));
 
@@ -3706,7 +3714,7 @@ class CoursereportLmsController extends LmsController
 					$tb->addHead ($cont_h);
 
 					foreach ($answers[ $quest[ 'idQuest' ] ] as $answer) {
-						$cont = array ();
+						$cont = [];
 
 						if ($answer[ 'is_correct' ])
 							$txt = '<img src="' . getPathImage ('lms') . 'standard/publish.png" alt="' . $lang->def ('_ANSWER_CORRECT') . '" title="' . $lang->def ('_ANSWER_CORRECT') . '" align="left" /> ';
@@ -3767,7 +3775,7 @@ class CoursereportLmsController extends LmsController
 					$tb->addHead ($cont_h);
 
 					foreach ($answers[ $quest[ 'idQuest' ] ] as $answer) {
-						$cont = array ();
+						$cont = [];
 
 						$answer_correct = 0;
 
@@ -3801,7 +3809,7 @@ class CoursereportLmsController extends LmsController
 					$tb->addHead ($cont_h);
 
 					foreach ($answers[ $quest[ 'idQuest' ] ] as $answer) {
-						$cont = array ();
+						$cont = [];
 
 						$cont[] = $answer[ 'answer' ];
 

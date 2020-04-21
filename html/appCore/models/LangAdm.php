@@ -354,7 +354,7 @@ class LangAdm extends Model {
 	 * @param string $lang_code return translation in this languages (default language will be used if not setted)
 	 * @return array
 	 */
-	public function getTranslation($module, $lang_code = false) {
+	public function getTranslation($module, $lang_code = false, $includeDisabledPlugins = false) {
 
 		if(!$lang_code) $lang_code = getLanguage();
 
@@ -364,7 +364,7 @@ class LangAdm extends Model {
 		LEFT JOIN %adm_lang_translation AS ta ON ( lt.id_text = ta.id_text AND ta.lang_code = '".$lang_code."')
 		LEFT JOIN %adm_plugin AS p ON lt.plugin_id = p.plugin_id
 		WHERE lt.text_module = '".$module."'
-		AND ( coalesce(lt.plugin_id, 0) = 0 OR p.active = 1 )
+		AND ( coalesce(lt.plugin_id, 0) = 0 OR p.active = 1 " . ($includeDisabledPlugins ? " OR p.active = 0 " : "") . ")
 		ORDER BY p.priority DESC";
 
 		$data = array();

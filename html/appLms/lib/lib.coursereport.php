@@ -92,8 +92,8 @@ class CourseReportManager
         sql_query($query_seq);
 
         $test_info = $test_man->getTestInfo($id_tests);
-
-        while (list($id_test, $title) = each($id_tests)) {
+        foreach( $id_tests as $id_test => $title )
+        {
 
             $query_test = "
 			INSERT INTO " . $GLOBALS['prefix_lms'] . "_coursereport 
@@ -119,7 +119,8 @@ class CourseReportManager
         $test_man = new GroupTestManagement();
         $tests_list = $test_man->getTestInfo($id_tests);
 
-        while (list($id_test, $test_info) = each($tests_list)) {
+        foreach( $tests_list as $id_test => $test_info )
+      {
 
             $query_test = "
 			UPDATE " . $GLOBALS['prefix_lms'] . "_coursereport 
@@ -209,7 +210,8 @@ class CourseReportManager
 
         $old_scores =& $this->getReportsScores(array($id_report));
         $re = true;
-        while (list($idst_user, $score) = each($users_scores)) {
+        foreach( $users_scores as $idst_user => $score )
+        {
 
             if (!isset($old_scores[$id_report][$idst_user])) {
 

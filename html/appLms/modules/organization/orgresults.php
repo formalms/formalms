@@ -130,7 +130,7 @@ function getCompilationTable($id_user, $id_test)
             $query_question = "
             SELECT q.idQuest, q.type_quest, t.type_file, t.type_class
             FROM %lms_testquest AS q JOIN %lms_quest_type AS t
-            WHERE q.idTest = '".$id_test."' AND q.type_quest = t.type_quest AND q.idQuest IN (".implode($quest_see, ',').")
+            WHERE q.idTest = '".$id_test."' AND q.type_quest = t.type_quest AND q.idQuest IN (".implode(',', $quest_see).")
                  AND q.type_quest <> 'break_page' AND q.type_quest <> 'title'
             ORDER BY q.sequence";
 

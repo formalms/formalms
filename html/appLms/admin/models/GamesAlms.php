@@ -230,8 +230,9 @@ class GamesAlms extends Model {
 
 		$re = true;
 		if(is_array($add_reader)) {
-
-			while(list(, $idst) = each($add_reader)) {
+      
+      foreach($add_reader as $idst)
+      {
 
 				$query_insert = "INSERT INTO %lms_games_access ( id_game, idst ) VALUES ("
 					." ".(int)$id_game.", "
@@ -241,8 +242,8 @@ class GamesAlms extends Model {
 			}
 		}
 		if(is_array($del_reader)) {
-
-			while(list(, $idst) = each($del_reader)) {
+      foreach($del_reader as $idst)
+    {
 
 				$query_delete = "
 				DELETE FROM %lms_games_access

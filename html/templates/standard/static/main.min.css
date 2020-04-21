@@ -74,6 +74,939 @@
 .slick-arrow.slick-hidden {
   display: none; }
 
+.fc {
+  direction: ltr;
+  text-align: left; }
+
+.fc-rtl {
+  text-align: right; }
+
+body .fc {
+  /* extra precedence to overcome jqui */
+  font-size: 1em; }
+
+/* Colors
+--------------------------------------------------------------------------------------------------*/
+.fc-highlight {
+  /* when user is selecting cells */
+  background: #bce8f1;
+  opacity: 0.3; }
+
+.fc-bgevent {
+  /* default look for background events */
+  background: #8fdf82;
+  opacity: 0.3; }
+
+.fc-nonbusiness {
+  /* default look for non-business-hours areas */
+  /* will inherit .fc-bgevent's styles */
+  background: #d7d7d7; }
+
+/* Popover
+--------------------------------------------------------------------------------------------------*/
+.fc-popover {
+  position: absolute;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15); }
+
+.fc-popover .fc-header {
+  /* TODO: be more consistent with fc-head/fc-body */
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2px 4px; }
+
+.fc-rtl .fc-popover .fc-header {
+  flex-direction: row-reverse; }
+
+.fc-popover .fc-header .fc-title {
+  margin: 0 2px; }
+
+.fc-popover .fc-header .fc-close {
+  cursor: pointer;
+  opacity: 0.65;
+  font-size: 1.1em; }
+
+/* Misc Reusable Components
+--------------------------------------------------------------------------------------------------*/
+.fc-divider {
+  border-style: solid;
+  border-width: 1px; }
+
+hr.fc-divider {
+  height: 0;
+  margin: 0;
+  padding: 0 0 2px;
+  /* height is unreliable across browsers, so use padding */
+  border-width: 1px 0; }
+
+.fc-bg,
+.fc-bgevent-skeleton,
+.fc-highlight-skeleton,
+.fc-mirror-skeleton {
+  /* these element should always cling to top-left/right corners */
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0; }
+
+.fc-bg {
+  bottom: 0;
+  /* strech bg to bottom edge */ }
+
+.fc-bg table {
+  height: 100%;
+  /* strech bg to bottom edge */ }
+
+/* Tables
+--------------------------------------------------------------------------------------------------*/
+.fc table {
+  width: 100%;
+  box-sizing: border-box;
+  /* fix scrollbar issue in firefox */
+  table-layout: fixed;
+  border-collapse: collapse;
+  border-spacing: 0;
+  font-size: 1em;
+  /* normalize cross-browser */ }
+
+.fc th {
+  text-align: center; }
+
+.fc th,
+.fc td {
+  border-style: solid;
+  border-width: 1px;
+  padding: 0;
+  vertical-align: top; }
+
+.fc td.fc-today {
+  border-style: double;
+  /* overcome neighboring borders */ }
+
+/* Internal Nav Links
+--------------------------------------------------------------------------------------------------*/
+a[data-goto] {
+  cursor: pointer; }
+
+a[data-goto]:hover {
+  text-decoration: underline; }
+
+/* Fake Table Rows
+--------------------------------------------------------------------------------------------------*/
+.fc .fc-row {
+  /* extra precedence to overcome themes forcing a 1px border */
+  /* no visible border by default. but make available if need be (scrollbar width compensation) */
+  border-style: solid;
+  border-width: 0; }
+
+.fc-row table {
+  /* don't put left/right border on anything within a fake row.
+     the outer tbody will worry about this */
+  border-left: 0 hidden transparent;
+  border-right: 0 hidden transparent;
+  /* no bottom borders on rows */
+  border-bottom: 0 hidden transparent; }
+
+.fc-row:first-child table {
+  border-top: 0 hidden transparent;
+  /* no top border on first row */ }
+
+/* Day Row (used within the header and the DayGrid)
+--------------------------------------------------------------------------------------------------*/
+.fc-row {
+  position: relative; }
+
+.fc-row .fc-bg {
+  z-index: 1; }
+
+/* highlighting cells & background event skeleton */
+.fc-row .fc-bgevent-skeleton,
+.fc-row .fc-highlight-skeleton {
+  bottom: 0;
+  /* stretch skeleton to bottom of row */ }
+
+.fc-row .fc-bgevent-skeleton table,
+.fc-row .fc-highlight-skeleton table {
+  height: 100%;
+  /* stretch skeleton to bottom of row */ }
+
+.fc-row .fc-highlight-skeleton td,
+.fc-row .fc-bgevent-skeleton td {
+  border-color: transparent; }
+
+.fc-row .fc-bgevent-skeleton {
+  z-index: 2; }
+
+.fc-row .fc-highlight-skeleton {
+  z-index: 3; }
+
+/*
+row content (which contains day/week numbers and events) as well as "mirror" (which contains
+temporary rendered events).
+*/
+.fc-row .fc-content-skeleton {
+  position: relative;
+  z-index: 4;
+  padding-bottom: 2px;
+  /* matches the space above the events */ }
+
+.fc-row .fc-mirror-skeleton {
+  z-index: 5; }
+
+.fc .fc-row .fc-content-skeleton table,
+.fc .fc-row .fc-content-skeleton td,
+.fc .fc-row .fc-mirror-skeleton td {
+  /* see-through to the background below */
+  /* extra precedence to prevent theme-provided backgrounds */
+  background: none;
+  /* in case <td>s are globally styled */
+  border-color: transparent; }
+
+.fc-row .fc-content-skeleton td,
+.fc-row .fc-mirror-skeleton td {
+  /* don't put a border between events and/or the day number */
+  border-bottom: 0; }
+
+.fc-row .fc-content-skeleton tbody td,
+.fc-row .fc-mirror-skeleton tbody td {
+  /* don't put a border between event cells */
+  border-top: 0; }
+
+/* Scrolling Container
+--------------------------------------------------------------------------------------------------*/
+.fc-scroller {
+  -webkit-overflow-scrolling: touch; }
+
+/* TODO: move to timegrid/daygrid */
+.fc-scroller > .fc-day-grid,
+.fc-scroller > .fc-time-grid {
+  position: relative;
+  /* re-scope all positions */
+  width: 100%;
+  /* hack to force re-sizing this inner element when scrollbars appear/disappear */ }
+
+/* Global Event Styles
+--------------------------------------------------------------------------------------------------*/
+.fc-event {
+  position: relative;
+  /* for resize handle and other inner positioning */
+  display: block;
+  /* make the <a> tag block */
+  font-size: 0.85em;
+  line-height: 1.4;
+  border-radius: 3px;
+  border: 1px solid #3788d8; }
+
+.fc-event,
+.fc-event-dot {
+  background-color: #3788d8;
+  /* default BACKGROUND color */ }
+
+.fc-event,
+.fc-event:hover {
+  color: #fff;
+  /* default TEXT color */
+  text-decoration: none;
+  /* if <a> has an href */ }
+
+.fc-event[href],
+.fc-event.fc-draggable {
+  cursor: pointer;
+  /* give events with links and draggable events a hand mouse pointer */ }
+
+.fc-not-allowed,
+.fc-not-allowed .fc-event {
+  /* to override an event's custom cursor */
+  cursor: not-allowed; }
+
+.fc-event .fc-content {
+  position: relative;
+  z-index: 2; }
+
+/* resizer (cursor AND touch devices) */
+.fc-event .fc-resizer {
+  position: absolute;
+  z-index: 4; }
+
+/* resizer (touch devices) */
+.fc-event .fc-resizer {
+  display: none; }
+
+.fc-event.fc-allow-mouse-resize .fc-resizer,
+.fc-event.fc-selected .fc-resizer {
+  /* only show when hovering or selected (with touch) */
+  display: block; }
+
+/* hit area */
+.fc-event.fc-selected .fc-resizer:before {
+  /* 40x40 touch area */
+  content: "";
+  position: absolute;
+  z-index: 9999;
+  /* user of this util can scope within a lower z-index */
+  top: 50%;
+  left: 50%;
+  width: 40px;
+  height: 40px;
+  margin-left: -20px;
+  margin-top: -20px; }
+
+/* Event Selection (only for touch devices)
+--------------------------------------------------------------------------------------------------*/
+.fc-event.fc-selected {
+  z-index: 9999 !important;
+  /* overcomes inline z-index */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); }
+
+.fc-event.fc-selected:after {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  /* same z-index as fc-bg, behind text */
+  /* overcome the borders */
+  top: -1px;
+  right: -1px;
+  bottom: -1px;
+  left: -1px;
+  /* darkening effect */
+  background: #000;
+  opacity: 0.25; }
+
+/* Event Dragging
+--------------------------------------------------------------------------------------------------*/
+.fc-event.fc-dragging.fc-selected {
+  box-shadow: 0 2px 7px rgba(0, 0, 0, 0.3); }
+
+.fc-event.fc-dragging:not(.fc-selected) {
+  opacity: 0.75; }
+
+/* Horizontal Events
+--------------------------------------------------------------------------------------------------*/
+/* bigger touch area when selected */
+.fc-h-event.fc-selected:before {
+  content: "";
+  position: absolute;
+  z-index: 3;
+  /* below resizers */
+  top: -10px;
+  bottom: -10px;
+  left: 0;
+  right: 0; }
+
+/* events that are continuing to/from another week. kill rounded corners and butt up against edge */
+.fc-ltr .fc-h-event.fc-not-start,
+.fc-rtl .fc-h-event.fc-not-end {
+  margin-left: 0;
+  border-left-width: 0;
+  padding-left: 1px;
+  /* replace the border with padding */
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0; }
+
+.fc-ltr .fc-h-event.fc-not-end,
+.fc-rtl .fc-h-event.fc-not-start {
+  margin-right: 0;
+  border-right-width: 0;
+  padding-right: 1px;
+  /* replace the border with padding */
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0; }
+
+/* resizer (cursor AND touch devices) */
+/* left resizer  */
+.fc-ltr .fc-h-event .fc-start-resizer,
+.fc-rtl .fc-h-event .fc-end-resizer {
+  cursor: w-resize;
+  left: -1px;
+  /* overcome border */ }
+
+/* right resizer */
+.fc-ltr .fc-h-event .fc-end-resizer,
+.fc-rtl .fc-h-event .fc-start-resizer {
+  cursor: e-resize;
+  right: -1px;
+  /* overcome border */ }
+
+/* resizer (mouse devices) */
+.fc-h-event.fc-allow-mouse-resize .fc-resizer {
+  width: 7px;
+  top: -1px;
+  /* overcome top border */
+  bottom: -1px;
+  /* overcome bottom border */ }
+
+/* resizer (touch devices) */
+.fc-h-event.fc-selected .fc-resizer {
+  /* 8x8 little dot */
+  border-radius: 4px;
+  border-width: 1px;
+  width: 6px;
+  height: 6px;
+  border-style: solid;
+  border-color: inherit;
+  background: #fff;
+  /* vertically center */
+  top: 50%;
+  margin-top: -4px; }
+
+/* left resizer  */
+.fc-ltr .fc-h-event.fc-selected .fc-start-resizer,
+.fc-rtl .fc-h-event.fc-selected .fc-end-resizer {
+  margin-left: -4px;
+  /* centers the 8x8 dot on the left edge */ }
+
+/* right resizer */
+.fc-ltr .fc-h-event.fc-selected .fc-end-resizer,
+.fc-rtl .fc-h-event.fc-selected .fc-start-resizer {
+  margin-right: -4px;
+  /* centers the 8x8 dot on the right edge */ }
+
+/* DayGrid events
+----------------------------------------------------------------------------------------------------
+We use the full "fc-day-grid-event" class instead of using descendants because the event won't
+be a descendant of the grid when it is being dragged.
+*/
+.fc-day-grid-event {
+  margin: 1px 2px 0;
+  /* spacing between events and edges */
+  padding: 0 1px; }
+
+tr:first-child > td > .fc-day-grid-event {
+  margin-top: 2px;
+  /* a little bit more space before the first event */ }
+
+.fc-mirror-skeleton tr:first-child > td > .fc-day-grid-event {
+  margin-top: 0;
+  /* except for mirror skeleton */ }
+
+.fc-day-grid-event .fc-content {
+  /* force events to be one-line tall */
+  white-space: nowrap;
+  overflow: hidden; }
+
+.fc-day-grid-event .fc-time {
+  font-weight: bold; }
+
+/* resizer (cursor devices) */
+/* left resizer  */
+.fc-ltr .fc-day-grid-event.fc-allow-mouse-resize .fc-start-resizer,
+.fc-rtl .fc-day-grid-event.fc-allow-mouse-resize .fc-end-resizer {
+  margin-left: -2px;
+  /* to the day cell's edge */ }
+
+/* right resizer */
+.fc-ltr .fc-day-grid-event.fc-allow-mouse-resize .fc-end-resizer,
+.fc-rtl .fc-day-grid-event.fc-allow-mouse-resize .fc-start-resizer {
+  margin-right: -2px;
+  /* to the day cell's edge */ }
+
+/* Event Limiting
+--------------------------------------------------------------------------------------------------*/
+/* "more" link that represents hidden events */
+a.fc-more {
+  margin: 1px 3px;
+  font-size: 0.85em;
+  cursor: pointer;
+  text-decoration: none; }
+
+a.fc-more:hover {
+  text-decoration: underline; }
+
+.fc-limited {
+  /* rows and cells that are hidden because of a "more" link */
+  display: none; }
+
+/* popover that appears when "more" link is clicked */
+.fc-day-grid .fc-row {
+  z-index: 1;
+  /* make the "more" popover one higher than this */ }
+
+.fc-more-popover {
+  z-index: 2;
+  width: 220px; }
+
+.fc-more-popover .fc-event-container {
+  padding: 10px; }
+
+/* Now Indicator
+--------------------------------------------------------------------------------------------------*/
+.fc-now-indicator {
+  position: absolute;
+  border: 0 solid red; }
+
+/* Utilities
+--------------------------------------------------------------------------------------------------*/
+.fc-unselectable {
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0); }
+
+/*
+TODO: more distinction between this file and common.css
+*/
+/* Colors
+--------------------------------------------------------------------------------------------------*/
+.fc-unthemed th,
+.fc-unthemed td,
+.fc-unthemed thead,
+.fc-unthemed tbody,
+.fc-unthemed .fc-divider,
+.fc-unthemed .fc-row,
+.fc-unthemed .fc-content,
+.fc-unthemed .fc-popover,
+.fc-unthemed .fc-list-view,
+.fc-unthemed .fc-list-heading td {
+  border-color: #ddd; }
+
+.fc-unthemed .fc-popover {
+  background-color: #fff; }
+
+.fc-unthemed .fc-divider,
+.fc-unthemed .fc-popover .fc-header,
+.fc-unthemed .fc-list-heading td {
+  background: #eee; }
+
+.fc-unthemed td.fc-today {
+  background: #fcf8e3; }
+
+.fc-unthemed .fc-disabled-day {
+  background: #d7d7d7;
+  opacity: 0.3; }
+
+/* Icons
+--------------------------------------------------------------------------------------------------
+from https://feathericons.com/ and built with IcoMoon
+*/
+@font-face {
+  font-family: "fcicons";
+  src: url("data:application/x-font-ttf;charset=utf-8;base64,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") format("truetype");
+  font-weight: normal;
+  font-style: normal; }
+
+.fc-icon {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: "fcicons" !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale; }
+
+.fc-icon-chevron-left:before {
+  content: ""; }
+
+.fc-icon-chevron-right:before {
+  content: ""; }
+
+.fc-icon-chevrons-left:before {
+  content: ""; }
+
+.fc-icon-chevrons-right:before {
+  content: ""; }
+
+.fc-icon-minus-square:before {
+  content: ""; }
+
+.fc-icon-plus-square:before {
+  content: ""; }
+
+.fc-icon-x:before {
+  content: ""; }
+
+.fc-icon {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  text-align: center; }
+
+/* Buttons
+--------------------------------------------------------------------------------------------------
+Lots taken from Flatly (MIT): https://bootswatch.com/4/flatly/bootstrap.css
+*/
+/* reset */
+.fc-button {
+  border-radius: 0;
+  overflow: visible;
+  text-transform: none;
+  margin: 0;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit; }
+
+.fc-button:focus {
+  outline: 1px dotted;
+  outline: 5px auto -webkit-focus-ring-color; }
+
+.fc-button {
+  -webkit-appearance: button; }
+
+.fc-button:not(:disabled) {
+  cursor: pointer; }
+
+.fc-button::-moz-focus-inner {
+  padding: 0;
+  border-style: none; }
+
+/* theme */
+.fc-button {
+  display: inline-block;
+  font-weight: 400;
+  color: #212529;
+  text-align: center;
+  vertical-align: middle;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  background-color: transparent;
+  border: 1px solid transparent;
+  padding: 0.4em 0.65em;
+  font-size: 1em;
+  line-height: 1.5;
+  border-radius: 0.25em; }
+
+.fc-button:hover {
+  color: #212529;
+  text-decoration: none; }
+
+.fc-button:focus {
+  outline: 0;
+  -webkit-box-shadow: 0 0 0 0.2rem rgba(44, 62, 80, 0.25);
+  box-shadow: 0 0 0 0.2rem rgba(44, 62, 80, 0.25); }
+
+.fc-button:disabled {
+  opacity: 0.65; }
+
+/* "primary" coloring */
+.fc-button-primary {
+  color: #fff;
+  background-color: #2C3E50;
+  border-color: #2C3E50; }
+
+.fc-button-primary:hover {
+  color: #fff;
+  background-color: #1e2b37;
+  border-color: #1a252f; }
+
+.fc-button-primary:focus {
+  -webkit-box-shadow: 0 0 0 0.2rem rgba(76, 91, 106, 0.5);
+  box-shadow: 0 0 0 0.2rem rgba(76, 91, 106, 0.5); }
+
+.fc-button-primary:disabled {
+  color: #fff;
+  background-color: #2C3E50;
+  border-color: #2C3E50; }
+
+.fc-button-primary:not(:disabled):active,
+.fc-button-primary:not(:disabled).fc-button-active {
+  color: #fff;
+  background-color: #1a252f;
+  border-color: #151e27; }
+
+.fc-button-primary:not(:disabled):active:focus,
+.fc-button-primary:not(:disabled).fc-button-active:focus {
+  -webkit-box-shadow: 0 0 0 0.2rem rgba(76, 91, 106, 0.5);
+  box-shadow: 0 0 0 0.2rem rgba(76, 91, 106, 0.5); }
+
+/* icons within buttons */
+.fc-button .fc-icon {
+  vertical-align: middle;
+  font-size: 1.5em; }
+
+/* Buttons Groups
+--------------------------------------------------------------------------------------------------*/
+.fc-button-group {
+  position: relative;
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  vertical-align: middle; }
+
+.fc-button-group > .fc-button {
+  position: relative;
+  -webkit-box-flex: 1;
+  -ms-flex: 1 1 auto;
+  flex: 1 1 auto; }
+
+.fc-button-group > .fc-button:hover {
+  z-index: 1; }
+
+.fc-button-group > .fc-button:focus,
+.fc-button-group > .fc-button:active,
+.fc-button-group > .fc-button.fc-button-active {
+  z-index: 1; }
+
+.fc-button-group > .fc-button:not(:first-child) {
+  margin-left: -1px; }
+
+.fc-button-group > .fc-button:not(:last-child) {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0; }
+
+.fc-button-group > .fc-button:not(:first-child) {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0; }
+
+/* Popover
+--------------------------------------------------------------------------------------------------*/
+.fc-unthemed .fc-popover {
+  border-width: 1px;
+  border-style: solid; }
+
+/* List View
+--------------------------------------------------------------------------------------------------*/
+.fc-unthemed .fc-list-item:hover td {
+  background-color: #f5f5f5; }
+
+/* Toolbar
+--------------------------------------------------------------------------------------------------*/
+.fc-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center; }
+
+.fc-toolbar.fc-header-toolbar {
+  margin-bottom: 1.5em; }
+
+.fc-toolbar.fc-footer-toolbar {
+  margin-top: 1.5em; }
+
+/* inner content */
+.fc-toolbar > * > :not(:first-child) {
+  margin-left: 0.75em; }
+
+.fc-toolbar h2 {
+  font-size: 1.75em;
+  margin: 0; }
+
+/* View Structure
+--------------------------------------------------------------------------------------------------*/
+.fc-view-container {
+  position: relative; }
+
+/* undo twitter bootstrap's box-sizing rules. normalizes positioning techniques */
+/* don't do this for the toolbar because we'll want bootstrap to style those buttons as some pt */
+.fc-view-container *,
+.fc-view-container *:before,
+.fc-view-container *:after {
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  box-sizing: content-box; }
+
+.fc-view,
+.fc-view > table {
+  /* so dragged elements can be above the view's main element */
+  position: relative;
+  z-index: 1; }
+
+@media print {
+  .fc {
+    max-width: 100% !important; }
+  /* Global Event Restyling
+  --------------------------------------------------------------------------------------------------*/
+  .fc-event {
+    background: #fff !important;
+    color: #000 !important;
+    page-break-inside: avoid; }
+  .fc-event .fc-resizer {
+    display: none; }
+  /* Table & Day-Row Restyling
+  --------------------------------------------------------------------------------------------------*/
+  .fc th,
+  .fc td,
+  .fc hr,
+  .fc thead,
+  .fc tbody,
+  .fc-row {
+    border-color: #ccc !important;
+    background: #fff !important; }
+  /* kill the overlaid, absolutely-positioned components */
+  /* common... */
+  .fc-bg,
+  .fc-bgevent-skeleton,
+  .fc-highlight-skeleton,
+  .fc-mirror-skeleton,
+  .fc-bgevent-container,
+  .fc-business-container,
+  .fc-highlight-container,
+  .fc-mirror-container {
+    display: none; }
+  /* don't force a min-height on rows (for DayGrid) */
+  .fc tbody .fc-row {
+    height: auto !important;
+    /* undo height that JS set in distributeHeight */
+    min-height: 0 !important;
+    /* undo the min-height from each view's specific stylesheet */ }
+  .fc tbody .fc-row .fc-content-skeleton {
+    position: static;
+    /* undo .fc-rigid */
+    padding-bottom: 0 !important;
+    /* use a more border-friendly method for this... */ }
+  .fc tbody .fc-row .fc-content-skeleton tbody tr:last-child td {
+    /* only works in newer browsers */
+    padding-bottom: 1em;
+    /* ...gives space within the skeleton. also ensures min height in a way */ }
+  .fc tbody .fc-row .fc-content-skeleton table {
+    /* provides a min-height for the row, but only effective for IE, which exaggerates this value,
+       making it look more like 3em. for other browers, it will already be this tall */
+    height: 1em; }
+  /* Undo month-view event limiting. Display all events and hide the "more" links
+  --------------------------------------------------------------------------------------------------*/
+  .fc-more-cell,
+  .fc-more {
+    display: none !important; }
+  .fc tr.fc-limited {
+    display: table-row !important; }
+  .fc td.fc-limited {
+    display: table-cell !important; }
+  .fc-popover {
+    display: none;
+    /* never display the "more.." popover in print mode */ }
+  /* TimeGrid Restyling
+  --------------------------------------------------------------------------------------------------*/
+  /* undo the min-height 100% trick used to fill the container's height */
+  .fc-time-grid {
+    min-height: 0 !important; }
+  /* don't display the side axis at all ("all-day" and time cells) */
+  .fc-timeGrid-view .fc-axis {
+    display: none; }
+  /* don't display the horizontal lines */
+  .fc-slats,
+  .fc-time-grid hr {
+    /* this hr is used when height is underused and needs to be filled */
+    display: none !important;
+    /* important overrides inline declaration */ }
+  /* let the container that holds the events be naturally positioned and create real height */
+  .fc-time-grid .fc-content-skeleton {
+    position: static; }
+  /* in case there are no events, we still want some height */
+  .fc-time-grid .fc-content-skeleton table {
+    height: 4em; }
+  /* kill the horizontal spacing made by the event container. event margins will be done below */
+  .fc-time-grid .fc-event-container {
+    margin: 0 !important; }
+  /* TimeGrid *Event* Restyling
+  --------------------------------------------------------------------------------------------------*/
+  /* naturally position events, vertically stacking them */
+  .fc-time-grid .fc-event {
+    position: static !important;
+    margin: 3px 2px !important; }
+  /* for events that continue to a future day, give the bottom border back */
+  .fc-time-grid .fc-event.fc-not-end {
+    border-bottom-width: 1px !important; }
+  /* indicate the event continues via "..." text */
+  .fc-time-grid .fc-event.fc-not-end:after {
+    content: "..."; }
+  /* for events that are continuations from previous days, give the top border back */
+  .fc-time-grid .fc-event.fc-not-start {
+    border-top-width: 1px !important; }
+  /* indicate the event is a continuation via "..." text */
+  .fc-time-grid .fc-event.fc-not-start:before {
+    content: "..."; }
+  /* time */
+  /* undo a previous declaration and let the time text span to a second line */
+  .fc-time-grid .fc-event .fc-time {
+    white-space: normal !important; }
+  /* hide the the time that is normally displayed... */
+  .fc-time-grid .fc-event .fc-time span {
+    display: none; }
+  /* ...replace it with a more verbose version (includes AM/PM) stored in an html attribute */
+  .fc-time-grid .fc-event .fc-time:after {
+    content: attr(data-full); }
+  /* Vertical Scroller & Containers
+  --------------------------------------------------------------------------------------------------*/
+  /* kill the scrollbars and allow natural height */
+  .fc-scroller,
+  .fc-day-grid-container,
+  .fc-time-grid-container {
+    /* */
+    overflow: visible !important;
+    height: auto !important; }
+  /* kill the horizontal border/padding used to compensate for scrollbars */
+  .fc-row {
+    border: 0 !important;
+    margin: 0 !important; }
+  /* Button Controls
+  --------------------------------------------------------------------------------------------------*/
+  .fc-button-group,
+  .fc button {
+    display: none;
+    /* don't display any button-related controls */ } }
+
+/* DayGridView
+--------------------------------------------------------------------------------------------------*/
+/* day row structure */
+.fc-dayGridWeek-view .fc-content-skeleton,
+.fc-dayGridDay-view .fc-content-skeleton {
+  /* there may be week numbers in these views, so no padding-top */
+  padding-bottom: 1em;
+  /* ensure a space at bottom of cell for user selecting/clicking */ }
+
+.fc-dayGrid-view .fc-body .fc-row {
+  min-height: 4em;
+  /* ensure that all rows are at least this tall */ }
+
+/* a "rigid" row will take up a constant amount of height because content-skeleton is absolute */
+.fc-row.fc-rigid {
+  overflow: hidden; }
+
+.fc-row.fc-rigid .fc-content-skeleton {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0; }
+
+/* week and day number styling */
+.fc-day-top.fc-other-month {
+  opacity: 0.3; }
+
+.fc-dayGrid-view .fc-week-number,
+.fc-dayGrid-view .fc-day-number {
+  padding: 2px; }
+
+.fc-dayGrid-view th.fc-week-number,
+.fc-dayGrid-view th.fc-day-number {
+  padding: 0 2px;
+  /* column headers can't have as much v space */ }
+
+.fc-ltr .fc-dayGrid-view .fc-day-top .fc-day-number {
+  float: right; }
+
+.fc-rtl .fc-dayGrid-view .fc-day-top .fc-day-number {
+  float: left; }
+
+.fc-ltr .fc-dayGrid-view .fc-day-top .fc-week-number {
+  float: left;
+  border-radius: 0 0 3px 0; }
+
+.fc-rtl .fc-dayGrid-view .fc-day-top .fc-week-number {
+  float: right;
+  border-radius: 0 0 0 3px; }
+
+.fc-dayGrid-view .fc-day-top .fc-week-number {
+  min-width: 1.5em;
+  text-align: center;
+  background-color: #f2f2f2;
+  color: #808080; }
+
+/* when week/day number have own column */
+.fc-dayGrid-view td.fc-week-number {
+  text-align: center; }
+
+.fc-dayGrid-view td.fc-week-number > * {
+  /* work around the way we do column resizing and ensure a minimum width */
+  display: inline-block;
+  min-width: 1.25em; }
+
 /*!
  *  Font Awesome 4.6.3 by @davegandy - http://fontawesome.io - @fontawesome
  *  License - http://fontawesome.io/license (Font: SIL OFL 1.1, CSS: MIT License)
@@ -2748,6 +3681,47 @@ p {
   font-weight: 400;
   font-size: 16px; }
 
+.box-title {
+  color: #ff6c00;
+  font-family: "Open-sans", Arial;
+  font-weight: bold;
+  font-size: 12px;
+  text-transform: uppercase;
+  padding-bottom: 6px;
+  margin: 0 0 14px 0;
+  border-bottom: 1px solid #eee; }
+  @media (min-width: 1024px) {
+    .box-title {
+      font-size: 14px;
+      margin-bottom: 11px; } }
+
+.box-title--modal {
+  padding-bottom: 14px; }
+
+.page-subtitle {
+  font-family: "Open-sans", Arial;
+  font-size: 24px;
+  color: #222222;
+  margin-bottom: 20px;
+  margin-top: 20px; }
+  @media (min-width: 1024px) {
+    .page-subtitle {
+      font-size: 35px;
+      margin-bottom: 13px;
+      margin-top: 27px; } }
+
+.text--gray {
+  color: #666666; }
+
+.text--green {
+  color: #70d800; }
+
+.text--orange {
+  color: #ff6c00; }
+
+.text--red {
+  color: #ff0101; }
+
 .forma-button {
   display: inline-block;
   width: 100%;
@@ -2785,6 +3759,9 @@ p {
   .homepage .forma-button {
     padding-right: 15px;
     padding-left: 15px; }
+  .d-courses .forma-button,
+  .d-user-profile .forma-button {
+    font-size: 16px; }
   .forma-button.is-hidden {
     opacity: 0;
     visibility: hidden; }
@@ -2885,6 +3862,29 @@ p {
     font-size: inherit;
     color: rgba(255, 255, 255, 0.7);
     margin-left: 6px; }
+    .d-courses .forma-button__label:after,
+    .d-user-profile .forma-button__label:after {
+      display: none; }
+  .d-user-profile .forma-button__label:before {
+    content: '';
+    width: 24px;
+    height: 24px;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: -30px; }
+  .d-button--cert .forma-button__label:before {
+    background-image: url(images/icons/icon--file.svg);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat; }
+  .d-button--mess .forma-button__label:before {
+    background-image: url(images/icons/icon--envelope.svg);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat; }
+  .d-user-profile .forma-button__label {
+    position: relative; }
 
 /* NEW TEST */
 .user-panel input[type='submit'].btn.btn-default {
@@ -3605,6 +4605,867 @@ p {
     .section-coourse-modal .modal__item {
       padding: 0; } }
 
+.modal-dialog--notitle {
+  width: 90%;
+  max-width: 768px;
+  max-height: calc(100% - 150px);
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) !important; }
+  @media (min-width: 1024px) {
+    .modal-dialog--notitle {
+      width: 45%; } }
+  @media (min-width: 1280px) {
+    .modal-dialog--notitle {
+      width: 40%; } }
+
+.modal-dialog--video {
+  width: 90%;
+  height: 70%;
+  max-width: none; }
+  @media (min-width: 1024px) {
+    .modal-dialog--video {
+      width: 80%;
+      height: 70%; } }
+  @media (min-width: 1280px) {
+    .modal-dialog--video {
+      width: 80%;
+      height: 70%; } }
+
+.modal-dialog--bio {
+  width: 90%;
+  height: 70%;
+  max-width: none; }
+  @media (min-width: 1024px) {
+    .modal-dialog--bio {
+      width: 55%;
+      height: auto; } }
+  @media (min-width: 1280px) {
+    .modal-dialog--bio {
+      width: 55%;
+      height: auto; } }
+
+.modal-dialog--video {
+  width: 90%;
+  height: 70%;
+  max-width: none; }
+  @media (min-width: 1024px) {
+    .modal-dialog--video {
+      width: 80%;
+      height: 70%; } }
+  @media (min-width: 1280px) {
+    .modal-dialog--video {
+      width: 80%;
+      height: 70%; } }
+
+.modal-header--notitle {
+  border: none; }
+  .modal-header--notitle .close {
+    opacity: 1;
+    color: #fff; }
+
+.modal-content--full {
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  height: 100%; }
+
+.modal-body--nopadding {
+  padding: 0;
+  margin: 0;
+  line-height: 0;
+  width: 100%;
+  height: 100%; }
+
+.modal-header--bio {
+  background-color: #ff6c00;
+  border: none;
+  position: relative;
+  padding-left: 12px;
+  padding-top: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: left; }
+  .modal-header--bio .close {
+    opacity: 1;
+    color: #fff;
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 32px; }
+    @media (min-width: 1024px) {
+      .modal-header--bio .close {
+        right: 25px; } }
+
+.modal-content--full {
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  height: 100%; }
+
+.modal-body--nopadding {
+  padding: 0;
+  margin: 0;
+  line-height: 0;
+  width: 100%;
+  height: 100%; }
+
+.modal-content--bio {
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  margin-bottom: 20px;
+  box-shadow: none;
+  border: none;
+  border-radius: 8px;
+  overflow: hidden; }
+
+.modal__text {
+  line-height: 20px; }
+
+.modal__textcontainer {
+  padding: 26px 14px; }
+
+.dashboard {
+  margin-bottom: 100px; }
+
+.d-widget.d-calendar, .d-widget.d-courses, .d-widget.d-advise {
+  color: #222222;
+  padding: 0 14px; }
+
+.d-grid {
+  width: 100%;
+  height: 100%;
+  max-width: 1288px;
+  margin: 0 auto;
+  padding: 0; }
+
+.d-grid--no-overflow {
+  overflow: initial; }
+
+@media (min-width: 1024px) {
+  .d-row {
+    margin-left: -0.5rem;
+    margin-right: -0.5rem; } }
+
+.d-row {
+  margin-left: -8px;
+  margin-right: -8px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap; }
+
+.d-col {
+  float: left;
+  position: relative;
+  padding-left: 8px;
+  padding-right: 8px; }
+
+.d-col--no-padding {
+  padding-left: 0;
+  padding-right: 0; }
+
+.d-col--0 {
+  width: calc((100% / 12) * 0);
+  flex-basis: calc((100% / 12) * 0); }
+
+.d-col-gap--0 {
+  margin-left: calc((100% / 12) * 0); }
+
+@media (min-width: 1024px) {
+  .d-col--0--desktop {
+    width: calc((100% / 12) * 0) !important;
+    flex: calc((100% / 12) * 0) !important;
+    max-width: calc((100% / 12) * 0) !important; } }
+
+@media (min-width: 1024px) {
+  .d-col-gap--0--desktop {
+    margin-left: calc((100% / 12) * 0); } }
+
+.d-col--1 {
+  width: calc((100% / 12) * 1);
+  flex-basis: calc((100% / 12) * 1); }
+
+.d-col-gap--1 {
+  margin-left: calc((100% / 12) * 1); }
+
+@media (min-width: 1024px) {
+  .d-col--1--desktop {
+    width: calc((100% / 12) * 1) !important;
+    flex: calc((100% / 12) * 1) !important;
+    max-width: calc((100% / 12) * 1) !important; } }
+
+@media (min-width: 1024px) {
+  .d-col-gap--1--desktop {
+    margin-left: calc((100% / 12) * 1); } }
+
+.d-col--2 {
+  width: calc((100% / 12) * 2);
+  flex-basis: calc((100% / 12) * 2); }
+
+.d-col-gap--2 {
+  margin-left: calc((100% / 12) * 2); }
+
+@media (min-width: 1024px) {
+  .d-col--2--desktop {
+    width: calc((100% / 12) * 2) !important;
+    flex: calc((100% / 12) * 2) !important;
+    max-width: calc((100% / 12) * 2) !important; } }
+
+@media (min-width: 1024px) {
+  .d-col-gap--2--desktop {
+    margin-left: calc((100% / 12) * 2); } }
+
+.d-col--3 {
+  width: calc((100% / 12) * 3);
+  flex-basis: calc((100% / 12) * 3); }
+
+.d-col-gap--3 {
+  margin-left: calc((100% / 12) * 3); }
+
+@media (min-width: 1024px) {
+  .d-col--3--desktop {
+    width: calc((100% / 12) * 3) !important;
+    flex: calc((100% / 12) * 3) !important;
+    max-width: calc((100% / 12) * 3) !important; } }
+
+@media (min-width: 1024px) {
+  .d-col-gap--3--desktop {
+    margin-left: calc((100% / 12) * 3); } }
+
+.d-col--4 {
+  width: calc((100% / 12) * 4);
+  flex-basis: calc((100% / 12) * 4); }
+
+.d-col-gap--4 {
+  margin-left: calc((100% / 12) * 4); }
+
+@media (min-width: 1024px) {
+  .d-col--4--desktop {
+    width: calc((100% / 12) * 4) !important;
+    flex: calc((100% / 12) * 4) !important;
+    max-width: calc((100% / 12) * 4) !important; } }
+
+@media (min-width: 1024px) {
+  .d-col-gap--4--desktop {
+    margin-left: calc((100% / 12) * 4); } }
+
+.d-col--5 {
+  width: calc((100% / 12) * 5);
+  flex-basis: calc((100% / 12) * 5); }
+
+.d-col-gap--5 {
+  margin-left: calc((100% / 12) * 5); }
+
+@media (min-width: 1024px) {
+  .d-col--5--desktop {
+    width: calc((100% / 12) * 5) !important;
+    flex: calc((100% / 12) * 5) !important;
+    max-width: calc((100% / 12) * 5) !important; } }
+
+@media (min-width: 1024px) {
+  .d-col-gap--5--desktop {
+    margin-left: calc((100% / 12) * 5); } }
+
+.d-col--6 {
+  width: calc((100% / 12) * 6);
+  flex-basis: calc((100% / 12) * 6); }
+
+.d-col-gap--6 {
+  margin-left: calc((100% / 12) * 6); }
+
+@media (min-width: 1024px) {
+  .d-col--6--desktop {
+    width: calc((100% / 12) * 6) !important;
+    flex: calc((100% / 12) * 6) !important;
+    max-width: calc((100% / 12) * 6) !important; } }
+
+@media (min-width: 1024px) {
+  .d-col-gap--6--desktop {
+    margin-left: calc((100% / 12) * 6); } }
+
+.d-col--7 {
+  width: calc((100% / 12) * 7);
+  flex-basis: calc((100% / 12) * 7); }
+
+.d-col-gap--7 {
+  margin-left: calc((100% / 12) * 7); }
+
+@media (min-width: 1024px) {
+  .d-col--7--desktop {
+    width: calc((100% / 12) * 7) !important;
+    flex: calc((100% / 12) * 7) !important;
+    max-width: calc((100% / 12) * 7) !important; } }
+
+@media (min-width: 1024px) {
+  .d-col-gap--7--desktop {
+    margin-left: calc((100% / 12) * 7); } }
+
+.d-col--8 {
+  width: calc((100% / 12) * 8);
+  flex-basis: calc((100% / 12) * 8); }
+
+.d-col-gap--8 {
+  margin-left: calc((100% / 12) * 8); }
+
+@media (min-width: 1024px) {
+  .d-col--8--desktop {
+    width: calc((100% / 12) * 8) !important;
+    flex: calc((100% / 12) * 8) !important;
+    max-width: calc((100% / 12) * 8) !important; } }
+
+@media (min-width: 1024px) {
+  .d-col-gap--8--desktop {
+    margin-left: calc((100% / 12) * 8); } }
+
+.d-col--9 {
+  width: calc((100% / 12) * 9);
+  flex-basis: calc((100% / 12) * 9); }
+
+.d-col-gap--9 {
+  margin-left: calc((100% / 12) * 9); }
+
+@media (min-width: 1024px) {
+  .d-col--9--desktop {
+    width: calc((100% / 12) * 9) !important;
+    flex: calc((100% / 12) * 9) !important;
+    max-width: calc((100% / 12) * 9) !important; } }
+
+@media (min-width: 1024px) {
+  .d-col-gap--9--desktop {
+    margin-left: calc((100% / 12) * 9); } }
+
+.d-col--10 {
+  width: calc((100% / 12) * 10);
+  flex-basis: calc((100% / 12) * 10); }
+
+.d-col-gap--10 {
+  margin-left: calc((100% / 12) * 10); }
+
+@media (min-width: 1024px) {
+  .d-col--10--desktop {
+    width: calc((100% / 12) * 10) !important;
+    flex: calc((100% / 12) * 10) !important;
+    max-width: calc((100% / 12) * 10) !important; } }
+
+@media (min-width: 1024px) {
+  .d-col-gap--10--desktop {
+    margin-left: calc((100% / 12) * 10); } }
+
+.d-col--11 {
+  width: calc((100% / 12) * 11);
+  flex-basis: calc((100% / 12) * 11); }
+
+.d-col-gap--11 {
+  margin-left: calc((100% / 12) * 11); }
+
+@media (min-width: 1024px) {
+  .d-col--11--desktop {
+    width: calc((100% / 12) * 11) !important;
+    flex: calc((100% / 12) * 11) !important;
+    max-width: calc((100% / 12) * 11) !important; } }
+
+@media (min-width: 1024px) {
+  .d-col-gap--11--desktop {
+    margin-left: calc((100% / 12) * 11); } }
+
+.d-col--12 {
+  width: calc((100% / 12) * 12);
+  flex-basis: calc((100% / 12) * 12); }
+
+.d-col-gap--12 {
+  margin-left: calc((100% / 12) * 12); }
+
+@media (min-width: 1024px) {
+  .d-col--12--desktop {
+    width: calc((100% / 12) * 12) !important;
+    flex: calc((100% / 12) * 12) !important;
+    max-width: calc((100% / 12) * 12) !important; } }
+
+@media (min-width: 1024px) {
+  .d-col-gap--12--desktop {
+    margin-left: calc((100% / 12) * 12); } }
+
+.d-title {
+  display: block;
+  color: #ff6c00;
+  font-size: 25px;
+  font-weight: 700;
+  padding-top: 48px;
+  padding-left: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #ececec; }
+
+.d-banner {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  position: relative;
+  overflow: hidden; }
+  .d-banner:before {
+    content: '';
+    position: relative;
+    display: block;
+    padding-bottom: 17.333%; }
+
+.d-banner__text {
+  font-weight: 700;
+  color: white;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  font-size: 22px; }
+  @media (min-width: 1024px) {
+    .d-banner__text {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      left: 33px; } }
+
+.d-banner__img {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  height: 100%; }
+
+.d-user-profile {
+  height: 100%; }
+  .d-user-profile > .d-grid {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; }
+  .d-user-profile .forma-button {
+    font-size: 14px; }
+
+.d-user-profile__avatar-wrapper {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  overflow: hidden;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 10px; }
+
+.d-user-profile__img {
+  min-width: 100%;
+  min-height: 100%;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%); }
+
+.d-user-profile__content-wrapper {
+  padding-top: 27px;
+  padding-right: 78px;
+  padding-bottom: 27px; }
+
+.d-user-profile__text {
+  display: block;
+  line-height: 1.2;
+  text-align: right;
+  font-size: 18px; }
+
+.d-user-profile__padder {
+  padding-left: 14px;
+  padding-right: 14px; }
+  @media (min-width: 1024px) {
+    .d-user-profile__padder {
+      padding: 0; } }
+
+.d-courses {
+  padding-bottom: 90px !important; }
+  @media (min-width: 1024px) {
+    .d-courses {
+      padding-bottom: 0 !important; } }
+
+.d-courses__item {
+  height: 84px;
+  margin-top: 38px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  position: relative;
+  overflow: hidden; }
+  .d-courses__item:hover {
+    color: initial; }
+  .d-courses__item.has-icon--elearning:before {
+    content: '';
+    width: 26px;
+    height: 22px;
+    background-image: url(images/icons/icon--elearning.svg);
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: absolute;
+    top: 0;
+    right: 0; }
+  .d-courses__item.has-icon--classroom:before {
+    content: '';
+    width: 26px;
+    height: 22px;
+    background-image: url(images/icons/icon--classroom.svg);
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: absolute;
+    top: 0;
+    right: 0; }
+
+.d-courses__img-wrapper {
+  width: 37.17%;
+  flex-basis: 37.17%;
+  position: relative;
+  overflow: hidden; }
+
+.d-courses__img {
+  min-width: 100%;
+  min-height: 100%;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%); }
+
+.d-courses__content-wrapper {
+  width: 62.83%;
+  flex-basis: 62.83%;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  padding-left: 15px;
+  padding-right: 35px;
+  font-size: 12px; }
+
+.d-course__title {
+  height: 34px;
+  font-weight: 700;
+  color: #ff6c00;
+  line-height: 17px;
+  overflow: hidden; }
+
+.d-courses__date-wrapper {
+  min-height: 17px;
+  position: relative; }
+  .d-courses__date-wrapper.status--red:before {
+    content: '';
+    width: 9px;
+    height: 9px;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: #ff6c00;
+    border-radius: 50%;
+    left: -12px; }
+  .d-courses__date-wrapper.status--green:before {
+    content: '';
+    width: 9px;
+    height: 9px;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: #70d800;
+    border-radius: 50%;
+    left: -12px; }
+
+.d-courses__date {
+  font-weight: 400; }
+
+.d-courses__date--end {
+  padding-left: 22px;
+  position: relative; }
+  .d-courses__date--end:before {
+    content: '';
+    width: 14px;
+    height: 6px;
+    background-image: url(images/icons/icon--arrow-right-long.svg);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 3px; }
+
+.d-courses__next-course {
+  min-height: 17px;
+  font-weight: 400;
+  font-size: 12px;
+  position: relative;
+  line-height: 17px; }
+  .d-courses__next-course:before {
+    content: '';
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 6px 0 6px 10px;
+    border-color: transparent transparent transparent #70d800;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: -11px; }
+
+.d-courses__desc {
+  color: #ff6c00;
+  font-weight: 700;
+  height: 34px;
+  overflow: hidden; }
+
+.d-courses__cta-wrapper {
+  width: 200px;
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%); }
+  @media (min-width: 1024px) {
+    .d-courses__cta-wrapper {
+      right: 0;
+      left: initial;
+      transform: none; } }
+
+.d-advise__item {
+  height: 84px;
+  margin-top: 38px; }
+
+.d-advise__date {
+  font-weight: 700;
+  font-size: 10px;
+  line-height: 14px;
+  color: #222222; }
+
+.d-advise__title {
+  height: 17px;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 17px;
+  color: #ff6c00;
+  overflow: hidden; }
+
+.d-advise__desc {
+  height: 51px;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  color: #222222;
+  overflow: hidden; }
+
+.d-calendar {
+  font-family: "Open-sans", Arial; }
+  .d-calendar .fc-button {
+    background-color: white !important;
+    border: none !important; }
+  .d-calendar .fc-today-button {
+    color: #222222; }
+  .d-calendar .fc-day-top {
+    padding-top: 5px; }
+  .d-calendar .fc-sun {
+    color: #ff6c00; }
+  .d-calendar .fc-left > h2 {
+    font-weight: 700;
+    color: #ff6c00; }
+  .d-calendar .fc-scroller {
+    overflow: visible !important; }
+  .d-calendar .fc-row:nth-child(1) {
+    z-index: 100 !important; }
+  .d-calendar .fc-row:nth-child(2) {
+    z-index: 90 !important; }
+  .d-calendar .fc-row:nth-child(3) {
+    z-index: 80 !important; }
+  .d-calendar .fc-row:nth-child(4) {
+    z-index: 70 !important; }
+  .d-calendar .fc-row:nth-child(5) {
+    z-index: 60 !important; }
+  .d-calendar .fc-row:nth-child(6) {
+    z-index: 50 !important; }
+  .d-calendar .fc-row:nth-child(7) {
+    z-index: 40 !important; }
+  .d-calendar .fc-event {
+    width: 65.48%;
+    height: 7px;
+    margin-left: auto !important;
+    position: relative;
+    cursor: pointer;
+    border-radius: 0 !important; }
+    .d-calendar .fc-event.is-open:before {
+      background-color: #70d800; }
+    .d-calendar .fc-event.is-closed:before {
+      background-color: #ff6c00; }
+    .d-calendar .fc-event:before {
+      content: '';
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      left: -10px; }
+      @media (min-width: 1024px) {
+        .d-calendar .fc-event:before {
+          left: -11px; } }
+    @media (min-width: 1024px) {
+      .d-calendar .fc-event {
+        width: 77.61%;
+        height: 10px; } }
+    .d-calendar .fc-event:hover .d-popup {
+      opacity: 1;
+      visibility: visible; }
+    .d-calendar .fc-event .fc-time {
+      display: none; }
+  .d-calendar .fc-title {
+    font-weight: 700;
+    line-height: 9px;
+    display: none; }
+    @media (min-width: 1024px) {
+      .d-calendar .fc-title {
+        font-size: 9px;
+        display: block; } }
+  .d-calendar .fc-icon-chevron-left,
+  .d-calendar .fc-icon-chevron-right {
+    color: #ff6c00; }
+
+.d-calendar__item {
+  margin-top: 38px;
+  margin-left: 10px;
+  margin-right: 10px; }
+
+.d-popup {
+  padding-top: 25px;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 999999;
+  transition: all .2s ease-in-out 0s;
+  opacity: 0;
+  visibility: hidden; }
+
+.d-popup__item {
+  width: 130px;
+  height: auto;
+  padding: 7px;
+  background-color: #F3ECEC;
+  border-radius: 6px;
+  position: relative; }
+
+.d-popup__type {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 19px;
+  text-transform: uppercase;
+  border-top: 1px solid #D8D8D8;
+  position: relative; }
+  .is-elearning .d-popup__type {
+    color: #A478EA; }
+    .is-elearning .d-popup__type:before {
+      content: '';
+      width: 20px;
+      height: 17px;
+      background-image: url(images/icons/icon--elearning.svg);
+      background-size: contain;
+      background-position: center;
+      background-repeat: no-repeat;
+      position: absolute;
+      top: 7px;
+      right: 7px; }
+  .is-classroom .d-popup__type {
+    color: #007CC8; }
+    .is-classroom .d-popup__type:before {
+      content: '';
+      width: 20px;
+      height: 17px;
+      background-image: url(images/icons/icon--classroom.svg);
+      background-size: contain;
+      background-position: center;
+      background-repeat: no-repeat;
+      position: absolute;
+      top: 7px;
+      right: 7px; }
+
+.d-popup__desc {
+  height: auto;
+  margin-bottom: 2px;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 14px;
+  overflow: hidden;
+  color: #6B6B6B; }
+
+.d-popup__category {
+  margin-bottom: 2px;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 14px;
+  overflow: hidden;
+  color: #7D7C7C; }
+
+.d-popup__hours {
+  margin-bottom: 5px;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 17px;
+  color: #6B6B6B; }
+
+.d-popup__title {
+  height: auto;
+  margin-bottom: 2px;
+  padding-left: 13px;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 14px;
+  overflow: hidden;
+  color: #7D7C7C;
+  position: relative; }
+  .d-popup__title:before {
+    content: '';
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    position: absolute;
+    top: 2px;
+    left: 0; }
+    .is-open .d-popup__title:before {
+      background-color: #70d800; }
+    .is-closed .d-popup__title:before {
+      background-color: #ff6c00; }
+
+.d-popup__triangle {
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0 12px 12px 12px;
+  border-color: transparent transparent #F3ECEC transparent;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: -12px; }
+
+.d-video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-top: 27px; }
+  .d-video:before {
+    content: '';
+    position: relative;
+    display: block;
+    padding-bottom: 17.333%; }
+
 * {
   outline: none !important;
   box-sizing: border-box; }
@@ -3713,11 +5574,14 @@ body {
     margin: 0;
     padding: 0; } }
 
+div#container {
+  min-height: calc(100% - 86px); }
+
 .course-box {
   width: 100%;
   min-height: 460px;
   margin-bottom: 15px;
-  padding-bottom: 30px;
+  padding-bottom: 15px;
   border: 2px solid #ececec;
   border-radius: 5px;
   font-family: "Open-sans", Arial;
@@ -3729,6 +5593,9 @@ body {
     box-shadow: #c2c2c2 0px 5px 20px 0px; }
     .course-box:hover .course-box__img-title {
       background-color: rgba(255, 108, 0, 0.5); }
+  .mycourses-list .course-box {
+    position: relative;
+    padding-bottom: 50px; }
 
 .course-box__item {
   width: 100%;
@@ -4051,7 +5918,8 @@ i + .course-box__date-box {
   float: right; }
 
 .course-box .forma-button {
-  max-height: 44px; }
+  max-height: 44px;
+  overflow: hidden; }
 
 .course-box__modal__footer .forma-button {
   width: auto;
@@ -4067,6 +5935,67 @@ i + .course-box__date-box {
   .mycourses-list {
     padding-left: 7.5px;
     padding-right: 7.5px; } }
+
+.course-box__extraInfo {
+  width: calc(100% - 30px);
+  margin-left: 15px;
+  margin-top: 5px;
+  clear: both;
+  font-size: 0;
+  min-height: 31px;
+  position: absolute;
+  left: 15px;
+  bottom: 15px; }
+
+.course-box__next,
+.course-box__allDates {
+  width: 50%;
+  display: inline-block; }
+
+.course-box__next {
+  font-size: 12px;
+  color: #999999;
+  position: relative;
+  padding-left: 20px; }
+
+.course-box__next:before,
+.course-box__allDates:after,
+.course-box__allDates:before {
+  content: '';
+  display: block;
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 8.5px 0 8.5px 9px;
+  border-color: transparent transparent transparent #979797;
+  opacity: .6; }
+
+.course-box__allDates:after,
+.course-box__allDates:before {
+  top: 18px; }
+
+.course-box__allDates:before {
+  left: 10px; }
+
+.course-box__next div {
+  font-size: 14px;
+  font-weight: bold; }
+
+.course-box__allDates {
+  font-size: 13px;
+  font-weight: bold;
+  vertical-align: top;
+  position: relative;
+  padding-left: 23px;
+  padding-top: 10px; }
+
+.course-box__allDates a {
+  color: #C84000;
+  text-decoration: underline; }
 
 .section-coourse__header,
 .section-coourse__menu {
@@ -4568,20 +6497,24 @@ i + .course-box__date-box {
   display: none; }
 
 #global_conf .tab-content .tab-pane h2 {
-  font-size: 20px;
+  font-size: 24px;
   font-weight: bold;
   color: #666;
   display: block;
   margin-bottom: 20px; }
 
 #global_conf .tab-content .tab-pane h3 {
-  font-size: 16px;
+  font-size: 20px;
   font-weight: bold;
   color: #666;
+  text-transform: capitalize;
   margin-bottom: 20px;
   display: block;
   padding-bottom: 10px;
   border-bottom: 1px solid #666; }
+
+#global_conf .tab-content .tab-pane select {
+  display: block; }
 
 .layout_footer {
   padding-top: 30px;
@@ -4684,10 +6617,19 @@ header.header {
         header.header .row-fluid .navbar-collapse li a:hover {
           background-color: transparent;
           color: #ff6c00; }
+        header.header .row-fluid .navbar-collapse li a .title-with-icon {
+          display: block; }
+          @media (min-width: 1024px) {
+            header.header .row-fluid .navbar-collapse li a .title-with-icon {
+              display: none; } }
         header.header .row-fluid .navbar-collapse li a .glyphicon {
           position: relative;
           width: 35px;
-          height: 35px; }
+          height: 35px;
+          display: none; }
+          @media (min-width: 1024px) {
+            header.header .row-fluid .navbar-collapse li a .glyphicon {
+              display: block; } }
           header.header .row-fluid .navbar-collapse li a .glyphicon:hover:before {
             border-color: #ff6c00; }
           header.header .row-fluid .navbar-collapse li a .glyphicon:before {
@@ -5693,6 +7635,198 @@ header.header {
   .slider-menu--tabs .slider-menu__arrow {
     top: 5px; }
 
+.course-info__general {
+  margin-bottom: 11px; }
+
+.course-info__table {
+  width: 45%;
+  float: left;
+  display: table;
+  margin-bottom: 16px;
+  margin-right: 7px; }
+  @media (min-width: 1024px) {
+    .course-info__table {
+      width: 50%;
+      margin-right: 0;
+      margin-bottom: 0;
+      height: 36px; } }
+
+.course-info__table--full {
+  width: 100%;
+  float: none;
+  display: block;
+  margin-bottom: 22px; }
+  @media (min-width: 1024px) {
+    .course-info__table--full {
+      margin-top: 10px;
+      height: auto; } }
+
+.course-info__label {
+  width: 100%;
+  display: block;
+  font-size: 9px;
+  color: #999999;
+  margin-bottom: 5px;
+  text-transform: uppercase; }
+  @media (min-width: 768px) {
+    .course-info__label {
+      width: 92px;
+      display: table-cell;
+      padding-right: 12px; } }
+
+.course-info__value {
+  width: auto;
+  display: block;
+  font-size: 14px;
+  line-height: 19px; }
+  @media (min-width: 768px) {
+    .course-info__value {
+      display: table-cell;
+      line-height: 21px; } }
+
+.course-info__link {
+  text-decoration: none;
+  color: #ff6c00;
+  font-family: "Open-sans", Arial;
+  margin-right: 7px; }
+  .course-info__link:hover {
+    text-decoration: underline; }
+
+.course-info__paragraph {
+  margin-top: 16px;
+  padding-left: 19px;
+  font-size: 15px; }
+
+.course-info__peoplecontainer {
+  margin-bottom: 50px; }
+
+.course-info__people {
+  padding-left: 0;
+  margin-bottom: 15px; }
+  @media (min-width: 768px) {
+    .course-info__people {
+      margin-top: 4px;
+      margin-bottom: 11px; } }
+  .course-info__people:nth-child(odd) {
+    padding-right: 0; }
+
+.course-info__peopletxt {
+  float: left;
+  max-width: calc(100% - 80px); }
+
+.course-info__peopleimage {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background-color: #ff6c00;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  float: left;
+  margin-right: 14px; }
+  @media (min-width: 768px) {
+    .course-info__peopleimage {
+      width: 66px;
+      height: 66px; } }
+
+.course-info__peoplename {
+  display: block;
+  font-size: 14px;
+  color: #ff6c00;
+  margin-bottom: 16px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap; }
+  @media (min-width: 768px) {
+    .course-info__peoplename {
+      font-size: 16px;
+      margin-bottom: 14px; } }
+
+.course-info__peoplename--modal {
+  color: white;
+  width: calc(100% - 124px);
+  margin-bottom: 0;
+  text-overflow: inherit;
+  white-space: inherit; }
+  @media (min-width: 768px) {
+    .course-info__peoplename--modal {
+      width: calc(100% - 180px);
+      font-weight: 700;
+      font-size: 17px; } }
+
+.course-info__peoplebio {
+  text-decoration: underline;
+  color: #666666;
+  font-size: 12px;
+  float: left;
+  margin-right: 20px; }
+  @media (min-width: 768px) {
+    .course-info__peoplebio {
+      margin-right: 6px;
+      float: none;
+      margin-bottom: 12px;
+      display: block; } }
+  @media (min-width: 1100px) {
+    .course-info__peoplebio {
+      float: left;
+      display: inline;
+      margin-bottom: 0; } }
+
+.course-info__peoplecta {
+  float: left;
+  display: block;
+  width: auto;
+  height: auto;
+  margin-top: -2px;
+  line-height: 22px;
+  padding-left: 10px;
+  padding-right: 10px;
+  background-color: #FA6C06;
+  border-color: #FA6C06; }
+  @media (min-width: 768px) {
+    .course-info__peoplecta {
+      font-size: 10px;
+      margin-top: -4px;
+      padding-left: 12px;
+      padding-right: 12px;
+      float: none;
+      width: 84px; } }
+  @media (min-width: 1100px) {
+    .course-info__peoplecta {
+      float: left; } }
+
+.course-info__materials {
+  margin-bottom: 16px; }
+
+.course-info__file {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-bottom: 17px; }
+  @media (min-width: 768px) {
+    .course-info__file {
+      display: block; } }
+
+.course-info__edit {
+  display: none; }
+  @media (min-width: 768px) {
+    .course-info__edit {
+      display: block;
+      padding-left: 6px; } }
+
+.course-info__delete {
+  display: none; }
+  @media (min-width: 768px) {
+    .course-info__delete {
+      display: block;
+      padding-left: 4px; } }
+
+.course-info__icon--download {
+  width: 18px;
+  height: 24px;
+  margin-right: 10px;
+  text-decoration: underline; }
+
 .homepage {
   height: auto;
   /* Importante per posizione corretta bootstrap datepicker */
@@ -6003,3 +8137,82 @@ header.header {
 
 .homepage__collapsed-text.in + .collapse-wrapper .forma-button {
   display: none; }
+
+.user-profile .course-info__label {
+  vertical-align: top;
+  padding-top: 5px; }
+
+@media (min-width: 768px) {
+  .user-profile .box-title {
+    margin-bottom: 21px; } }
+
+@media (min-width: 768px) {
+  .user-profile__firstcolumn--special {
+    min-width: 320px; } }
+
+.user-profile__column {
+  margin-bottom: 22px;
+  padding-left: 0;
+  padding-right: 0; }
+  @media (min-width: 768px) {
+    .user-profile__column {
+      margin-bottom: 55px; } }
+
+@media (min-width: 768px) {
+  .user-profile__column--minwidth {
+    min-width: 300px; } }
+
+.user-profile__content {
+  width: 100%;
+  margin-bottom: 15px; }
+  @media (min-width: 768px) {
+    .user-profile__content {
+      display: table; } }
+
+.user-profile__infocontainer {
+  display: flex;
+  justify-content: space-between; }
+  @media (min-width: 768px) {
+    .user-profile__infocontainer {
+      justify-content: none;
+      display: block; } }
+
+.user-profile__imgcontainer {
+  margin-right: 32px; }
+
+.user-profile__img {
+  width: 120px;
+  display: table-cell; }
+
+.user-profile__cta {
+  display: block;
+  width: auto;
+  height: auto;
+  margin-top: 17px;
+  line-height: 39px;
+  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: 700;
+  background-color: #FA6C06;
+  border-color: #FA6C06; }
+  @media (min-width: 768px) {
+    .user-profile__cta {
+      font-size: 12px;
+      margin-top: 16px;
+      width: 100%; } }
+
+.user-profile__mailicon {
+  background: url("images/icons/icon--mail.svg") no-repeat center center;
+  width: 16px;
+  height: 12px;
+  display: inline-block;
+  position: relative;
+  top: 2px;
+  margin-right: 5px; }
+
+.user-profile__namelink {
+  color: #ff6c00;
+  margin-right: 5px; }
+  .user-profile__namelink:hover {
+    text-decoration: underline;
+    color: #70d800; }

@@ -115,7 +115,8 @@ $event->setPostData($course);
         //-list-of-user---------------------------------------------------
         . Form::getOpenCombo(Lang::t('_SHOW_USER_OF_LEVEL', 'course')));
 
-    while (list($level, $level_name) = each($levels)) {
+    foreach($levels as $level => $level_name )
+    {
         $event->appendHtmlData(Form::getCheckbox($level_name, 'course_show_level_' . $level, 'course_show_level[' . $level . ']', $level, $course['level_show_user'] & (1 << $level)));
     }
     $event->appendHtmlData(Form::getCloseCombo()

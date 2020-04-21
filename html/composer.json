@@ -1,6 +1,7 @@
 {
     "name": "formalms/formalms",
     "require": {
+        "php": ">=7.0",
         "symfony/event-dispatcher": "~2.8.22",
         "twig/twig": "~1.34.3",
         "symfony/var-dumper": "~2.8.17",
@@ -9,7 +10,6 @@
         "ezyang/htmlpurifier": "~4.10.0"
     },
     "require-dev": {
-        "php": ">=5.4.0",
         "phing/phing": "~2.13.0",
         "phpunit/phpunit": "~4.1.6",
         "behat/behat": "~3.0.15",
@@ -29,6 +29,9 @@
     "minimum-stability": "stable",
     "prefer-stable": true,
     "config": {
+        "platform": {
+            "php": "7.0"
+        },
         "vendor-dir": "vendor",
         "bin-dir": "../bin",
         "autoloader-suffix": "_formalms"

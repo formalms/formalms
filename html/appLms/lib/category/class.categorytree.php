@@ -318,7 +318,7 @@ class CategoryTree extends TreeDb_CatDb {
 	}
 
 	function checkAncestor( $folderA, $folderB ) {
-		if( strpos( $folderB->path, $folderA->path ) !== FALSE )
+		if( strpos( $folderB->path, strval($folderA->path) ) !== FALSE )
 			return TRUE;
 		else
 			return FALSE;

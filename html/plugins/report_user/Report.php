@@ -311,12 +311,15 @@ class Report extends \ReportPlugin
                 $user_select->requested_tab = PEOPLEVIEW_TAB;
                 $user_select->resetSelection($_SESSION['report_tempdata']['rows_filter']['users']);
             }
-            $user_select->addFormInfo(
-                Form::getCheckbox($lang->def('_REPORT_FOR_ALL'), 'all_users', 'all_users', 1, $_SESSION['report_tempdata']['rows_filter']['all_users']) .//($_SESSION['report_tempdata']['rows_filter']['all_users'] ? 1 : 0)).
-                Form::getBreakRow() .
-                Form::getHidden('org_chart_subdivision', 'org_chart_subdivision', $org_chart_subdivision) .
-                Form::getHidden('is_updating', 'is_updating', 1)
-            );
+
+            if(Docebo::user()->getUserLevelId() == ADMIN_GROUP_GODADMIN && !Docebo::user()->isAnonymous()) {
+                $user_select->addFormInfo(
+                    Form::getCheckbox($lang->def('_REPORT_FOR_ALL'), 'all_users', 'all_users', 1, $_SESSION['report_tempdata']['rows_filter']['all_users']) .//($_SESSION['report_tempdata']['rows_filter']['all_users'] ? 1 : 0)).
+                    Form::getBreakRow() .
+                    Form::getHidden('org_chart_subdivision', 'org_chart_subdivision', $org_chart_subdivision) .
+                    Form::getHidden('is_updating', 'is_updating', 1)
+                );
+            }
             //$user_select->setPageTitle($this->page_title);
             cout($this->page_title, 'content');
             //$user_select->resetSelection($_SESSION['report_tempdata']['rows_filter']['users']);
@@ -407,7 +410,7 @@ class Report extends \ReportPlugin
             }
 
             if (isset($_POST['courses_filter'])) {
-                while (list($ind, $filter_data) = each($_POST['courses_filter'])) {
+                foreach($_POST['courses_filter'] as $ind =>  $filter_data ){
                     if ($opt_type[$filter_data['option']] == _FILTER_DATE) {
                         $_POST['courses_filter'][$ind]['value'] = Format::dateDb($filter_data['value'], 'date');
                     }
@@ -1325,7 +1328,7 @@ class Report extends \ReportPlugin
             $date_now = Format::date(date("Y-m-d H:i:s"));
 
             reset($org_name);
-            while (list($idst_group, $folder_name) = each($org_name)) {
+            foreach($org_name  as $idst_group=>$folder_name ) {
 
                 if ($type == 'html') {
                     cout('<div class="datasummary">'
@@ -2105,9 +2108,8 @@ class Report extends \ReportPlugin
         $buffer->addHeader($_head);
         $buffer->closeHeader();
         $buffer->openBody();
-//die('<pre>'.print_r($rc_filters, true).'</pre>');
         //check all data row and print them
-        while (list($id_user, $ucomps) = each($arr_data)) {
+        foreach($arr_data  as $id_user=>$ucomps ) {        
             $is_valid = true;
 
             $satisfied = 0;

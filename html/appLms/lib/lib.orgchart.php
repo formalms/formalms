@@ -62,7 +62,8 @@ class OrganizationManagement {
 		$unreaded = array();
 		if(empty($courses)) return $unreaded;
 		
-		while(list(, $id_c) = each($courses)) {
+    foreach($courses as $id_c)
+    {
 			
 			
 			$query_unreaded = "
@@ -137,7 +138,7 @@ class OrganizationManagement {
 		}
 		
 		$obj_types = array_keys($l_obj);
-		while(list(, $type) = each($obj_types)) {
+    foreach($obj_types as $type){
 		
 			switch($type) {
 				case "scormorg" : {
@@ -145,8 +146,8 @@ class OrganizationManagement {
 					require_once($GLOBALS['where_lms'].'/lib/lib.scorm.php');
 					$group_test = new GroupScormObjMan();
 					$scorm_score =& $group_test->getSimpleScormScores($l_obj['scormorg'], $arr_user);
-					
-					while(list($id_test, $scorm_info) = each($scorm_score)) {
+          foreach( $scorm_score as $id_test => $scorm_info)					
+          {
 						
 						$idc = $course_obj_assoc['scormorg'][$id_test];
 						$score[$idc] = $scorm_info;
@@ -158,8 +159,8 @@ class OrganizationManagement {
 					require_once($GLOBALS['where_lms'].'/lib/lib.test.php');
 					$group_test = new GroupTestManagement();
 					$test_score =& $group_test->getSimpleTestsScores($l_obj['test'], $arr_user);
-					
-					while(list($id_test, $test_info) = each($test_score)) {
+          foreach( $test_score as $id_test => $test_info)	
+          {
 						
 						$idc = $course_obj_assoc['test'][$id_test];
 						$score[$idc] = $test_info;
@@ -209,8 +210,7 @@ class OrganizationManagement {
 		}
 		
 		$obj_types = array_keys($l_obj);
-		while(list(, $type) = each($obj_types)) {
-		
+    foreach($obj_types as $type) {
 			switch($type) {
 				case "scormorg" : {
 					
@@ -218,7 +218,8 @@ class OrganizationManagement {
 					$group_test = new GroupScormObjMan();
 					$scorm_score =& $group_test->getSimpleScormScores($r_obj['scormorg'], $arr_user);
 					
-					while(list($id_test, $scorm_info) = each($scorm_score)) {
+					foreach( $scorm_score as $id_test => $scorm_info )
+          {
 						
 						$idc = $course_org_assoc['scormorg'][$id_test];
 						$score[$idc] = $scorm_info;
@@ -231,7 +232,8 @@ class OrganizationManagement {
 					$group_test = new GroupTestManagement();
 					$test_score =& $group_test->getSimpleTestsScores($l_obj['test'], $arr_user);
 					
-					while(list($id_test, $test_info) = each($test_score)) {
+          foreach($test_score as $id_test => $test_info)
+          {
 						
 						$idc = $course_obj_assoc['test'][$id_test];
 						$score[$idc] = $test_info;

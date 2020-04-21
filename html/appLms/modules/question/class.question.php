@@ -672,7 +672,7 @@ class Question {
 		if(!is_array($raw_quest->answers)) return $new_id_quest;
 
 		reset($raw_quest->answers);
-		while(list(,$raw_answer) = each($raw_quest->answers)) {
+    foreach ($raw_quest->answers as $raw_answer) {
 
 			//insert answer
 			$ins_answer_query = "

@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20190711</DATE>
+  <DATE>20200220</DATE>
   <LANG id="german">
     <lang_code>german</lang_code>
     <lang_description>German</lang_description>
@@ -8,6 +8,9 @@
     <lang_browsercode>de</lang_browsercode>
     <lang_direction>ltr</lang_direction>
     <platform id="all">
+      <module id="">
+        <key id="&amp;_NEW_USER_SUBSCRIBED_TEXT_MODERATORS" attributes="" save_date="2020-01-20 15:31:45"><![CDATA[[url] [firstname] [lastname] [course] [username]]]></key>
+      </module>
       <module id="adminrules">
         <key id="adminrules&amp;_ADMIN_ASSIGNTREEDESCR" attributes="" save_date="2019-06-18 22:04:17"><![CDATA[Wähle Ordner die für Administratorbenutzer sichtbar sein sollen]]></key>
         <key id="adminrules&amp;_ADMIN_MANAGMENT" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Administratorenverwalter]]></key>
@@ -37,7 +40,7 @@
         <key id="admin_directory&amp;_APPROVED_USER_SBJ" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Benutzer akzeptiert]]></key>
         <key id="admin_directory&amp;_ASSIGNED_EXTRAFIELD" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Weitere Felder zugewiesen]]></key>
         <key id="admin_directory&amp;_DECLINE" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Abgewiesen]]></key>
-        <key id="admin_directory&amp;_DIRECOTRY_SELFREGISTERED" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Selbstregistration]]></key>
+        <key id="admin_directory&amp;_DIRECOTRY_SELFREGISTERED" attributes="" save_date="2020-01-16 21:06:02"><![CDATA[Selbstregistrierung]]></key>
         <key id="admin_directory&amp;_DIRECTORY_/framework/level/admin" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Administrator]]></key>
         <key id="admin_directory&amp;_DIRECTORY_/framework/level/godadmin" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Super-Admin]]></key>
         <key id="admin_directory&amp;_DIRECTORY_/framework/level/publicadmin" attributes="" save_date="2019-06-18 22:04:29"><![CDATA[Öffentlicher Administrator]]></key>
@@ -49,7 +52,7 @@
         <key id="admin_directory&amp;_DIRECTORY_FILTER_language" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Sprache]]></key>
         <key id="admin_directory&amp;_DIRECTORY_FILTER_lastname" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Nachname]]></key>
         <key id="admin_directory&amp;_DIRECTORY_FILTER_pass" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Passwort]]></key>
-        <key id="admin_directory&amp;_DIRECTORY_FILTER_register_date" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Datum der Registration]]></key>
+        <key id="admin_directory&amp;_DIRECTORY_FILTER_register_date" attributes="" save_date="2020-01-16 21:01:53"><![CDATA[Datum der Registrierung]]></key>
         <key id="admin_directory&amp;_DIRECTORY_FILTER_templatename" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Template Name]]></key>
         <key id="admin_directory&amp;_DIRECTORY_FILTER_userid" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Benutzername]]></key>
         <key id="admin_directory&amp;_DIRECTORY_FULLNAME" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Voller Name]]></key>
@@ -78,9 +81,9 @@
         <key id="admin_directory&amp;_LASTNAME_FIRSTNAME" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Nachname Vorname]]></key>
         <key id="admin_directory&amp;_REFUSED_USER_TEXT_SMS" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Benutzer wurde nicht akzeptiert]]></key>
         <key id="admin_directory&amp;_REFUSE_USER" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Ablehnen]]></key>
-        <key id="admin_directory&amp;_REFUSE_USER_TITLE" attributes="" save_date="2019-06-18 22:04:36"><![CDATA[Anfrage für Benutzerregistration ablehnen]]></key>
+        <key id="admin_directory&amp;_REFUSE_USER_TITLE" attributes="" save_date="2020-01-16 21:01:13"><![CDATA[Anfrage für Benutzerregistrierung ablehnen]]></key>
         <key id="admin_directory&amp;_SIMPLE_FILTER" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Suche in Feld Benutzername, Vorname oder Nachname]]></key>
-        <key id="admin_directory&amp;_WAITING_USER_SUMMARY" attributes="" save_date="2019-06-18 22:05:05"><![CDATA[Benutzerliste mit bestätigten und auf Bestätigung wartenden Registrationsanfragen]]></key>
+        <key id="admin_directory&amp;_WAITING_USER_SUMMARY" attributes="" save_date="2020-01-16 21:03:50"><![CDATA[Benutzerliste mit bestätigten und auf Bestätigung wartenden Registrierungsanfragen]]></key>
       </module>
       <module id="admin_lang">
         <key id="admin_lang&amp;_BLANKLANG_CODE" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Sprachcode nicht angegeben]]></key>
@@ -122,7 +125,9 @@
         <key id="admin_lang&amp;_TRANSLATION_COTAINS" attributes="" save_date="2019-06-18 22:06:53"><![CDATA[Übersetzung enthält]]></key>
         <key id="admin_lang&amp;_YESIMPORT" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Ja, importieren]]></key>
       </module>
-      <module id="admin_news"/>
+      <module id="admin_news">
+        <key id="admin_news&amp;_LONG_DESCR" attributes="" save_date="2020-01-10 17:50:22"><![CDATA[Lange Beschreibung]]></key>
+      </module>
       <module id="admin_newsletter">
         <key id="admin_newsletter&amp;_ANY" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[jede Sprache]]></key>
         <key id="admin_newsletter&amp;_NEWSLETTER_WILL_BE_SENT_TO" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Der Newsletter wird [tot] Benutzer erreichen.]]></key>
@@ -140,8 +145,8 @@
         <key id="advice&amp;_ADD_ADVICE" attributes="" save_date="2019-06-18 22:07:01"><![CDATA[Ankündigung hinzufügen]]></key>
         <key id="advice&amp;_ADVICE" attributes="" save_date="2019-06-18 22:07:03"><![CDATA[Ankündigungen]]></key>
         <key id="advice&amp;_ALT_ARCHIVE" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Ins Archiv verschieben]]></key>
-        <key id="advice&amp;_ARCHIVE_THIS_ADVICE" attributes="" save_date="2019-06-18 22:01:11"><![CDATA[Zu gelesenen Ankündigungen verschieben]]></key>
-        <key id="advice&amp;_CHOOSE_READER" attributes="" save_date="2019-06-18 21:59:06"><![CDATA[Wählen Sie aus, wer diese Ankündigung lesen kann]]></key>
+        <key id="advice&amp;_ARCHIVE_THIS_ADVICE" attributes="" save_date="2020-01-16 11:43:58"><![CDATA[Zu gelesenen Ankündigungen verschieben]]></key>
+        <key id="advice&amp;_CHOOSE_READER" attributes="" save_date="2020-01-16 11:44:02"><![CDATA[Wählen Sie aus, wer diese Ankündigung lesen kann]]></key>
         <key id="advice&amp;_MANUAL_USER_SEL" attributes="" save_date="2019-06-18 22:01:25"><![CDATA[Benutzer wählen]]></key>
         <key id="advice&amp;_YOUONLY" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Nur ich]]></key>
       </module>
@@ -282,7 +287,7 @@
         <key id="catalogue&amp;_TOTAL_COURSE" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Anzahl der Kurse, in die Sie eingeschrieben sind]]></key>
         <key id="catalogue&amp;_TXT_SUBSCRIPTION_BY_CODE" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Haben Sie einen Einschreibungscode erhalten?
 Einfüge den hier und Sie werden automatisch in den Kurs eingeschrieben]]></key>
-        <key id="catalogue&amp;_USER_STATUS_ENTER" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Eingeben]]></key>
+        <key id="catalogue&amp;_USER_STATUS_ENTER" attributes="" save_date="2020-01-13 08:45:10"><![CDATA[Weiter]]></key>
         <key id="catalogue&amp;_WAITING_APPROVAL" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Warte auf Bestätigung]]></key>
         <key id="catalogue&amp;_WORD_TO_SEARCH" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Suche per Wort]]></key>
       </module>
@@ -487,7 +492,7 @@ Einfüge den hier und Sie werden automatisch in den Kurs eingeschrieben]]></key>
         <key id="configuration&amp;_KB_FILTER_BY_USER_ACCESS" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Zeige bei den Suchergebnissen der Inhaltsbibliothek auch Objekte, die für den Benutzer nicht direkt verfügbar sind.]]></key>
         <key id="configuration&amp;_KB_SHOW_UNCATEGORIZED" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Zeige bei den Suchergebnissen der Inhaltsbibliothek auch Objekte, die nicht komplett kategorisiert sind]]></key>
         <key id="configuration&amp;_LANG_CHECK" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Aktiviere Sprachbearbeitung (wird zum Debuggen genutzt)]]></key>
-        <key id="configuration&amp;_LASTFIRST_MANDATORY" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Vor- und Nachname werden zur Registration benötigt]]></key>
+        <key id="configuration&amp;_LASTFIRST_MANDATORY" attributes="" save_date="2020-01-16 21:06:33"><![CDATA[Vor- und Nachname werden zur Registrierung benötigt]]></key>
         <key id="configuration&amp;_LDAP" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[LDAP]]></key>
         <key id="configuration&amp;_LDAP_PORT" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[LDAP Port (gewöhnlich 389)]]></key>
         <key id="configuration&amp;_LDAP_SERVER" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[LDAP Serveradresse]]></key>
@@ -495,11 +500,11 @@ Einfüge den hier und Sie werden automatisch in den Kurs eingeschrieben]]></key>
         <key id="configuration&amp;_LDAP_USER_STRING" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Benutzername für LDAP Benutzer, benutze $user für den Benutzernamen.<br />z.B. $user@domain2.domain1 (für: W2k3)]]></key>
         <key id="configuration&amp;_LIST_DB_UPGRADES" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[DB SQL Script Log]]></key>
         <key id="configuration&amp;_MAGIC_QUOTES_GPC" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Konfiguration von "magic_quotes_gpc"]]></key>
-        <key id="configuration&amp;_MAIL_SENDER" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Registrationen und Versendung verlorener Passworte]]></key>
+        <key id="configuration&amp;_MAIL_SENDER" attributes="" save_date="2020-01-16 21:05:27"><![CDATA[Registrierungen und Versendung verlorener Passworte]]></key>
         <key id="configuration&amp;_MAINTENANCE" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Wartungsmodus]]></key>
         <key id="configuration&amp;_MAINTENANCE_PW" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Passwort des Wartungsmodus]]></key>
         <key id="configuration&amp;_MAIN_OPTIONS" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Hauptoptionen]]></key>
-        <key id="configuration&amp;_MANDATORY_CODE" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Wenn eine der Registrationscode Optionen oben aktiviert ist, werden Benutzer gezwungen, einen Registrationscode einzugeben (das Codefeld muss ausgefült werden)]]></key>
+        <key id="configuration&amp;_MANDATORY_CODE" attributes="" save_date="2020-01-16 21:06:43"><![CDATA[Wenn eine der Registrierungscode Optionen oben aktiviert ist, werden Benutzer gezwungen, einen Registrierungscode einzugeben (das Codefeld muss ausgefült werden)]]></key>
         <key id="configuration&amp;_MAX_EXECUTION_TIME" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Konfiguration von "max_execution_time"]]></key>
         <key id="configuration&amp;_MAX_LOG_ATTEMPT" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Max. Anzahl von fehlgeschlagenen Login-Versuchen (0 = kein Limit)]]></key>
         <key id="configuration&amp;_MYSQL_COLLATION" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[MySQL Kollation]]></key>
@@ -567,12 +572,12 @@ Organisationsdiagramms]]></key>
         <key id="configuration&amp;_PROFILE_ONLY_PWD" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Begrenze den Benutzer auf das ändern seines Passworts (deaktiviere erweitertes Profil)]]></key>
         <key id="configuration&amp;_REGISTER_DELETED_USER" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Erhalte einen Eintrag der gelöschten Nutzer]]></key>
         <key id="configuration&amp;_REGISTER_GLOBAL" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Konfiguration von "register_global"]]></key>
-        <key id="configuration&amp;_REGISTER_TYPE" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Registrationstyp]]></key>
+        <key id="configuration&amp;_REGISTER_TYPE" attributes="" save_date="2020-01-16 21:05:56"><![CDATA[Registrierungstyp]]></key>
         <key id="configuration&amp;_REGISTER_TYPE_ADMIN" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Nur durch Administrator]]></key>
-        <key id="configuration&amp;_REGISTER_TYPE_MODERATE" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Moderierte Selbtregistration]]></key>
-        <key id="configuration&amp;_REGISTER_TYPE_SELF" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Freie Selbstregistration]]></key>
-        <key id="configuration&amp;_REGISTER_TYPE_SELF_OPTIN" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Double-Opt-In freie Selbstregistration]]></key>
-        <key id="configuration&amp;_REGISTRATION_CODE_TYPE" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Nutzung eines Registrationscodes]]></key>
+        <key id="configuration&amp;_REGISTER_TYPE_MODERATE" attributes="" save_date="2020-01-16 21:03:16"><![CDATA[Moderierte Selbstregistrierung]]></key>
+        <key id="configuration&amp;_REGISTER_TYPE_SELF" attributes="" save_date="2020-01-16 21:02:06"><![CDATA[Freie Selbstregistrierung]]></key>
+        <key id="configuration&amp;_REGISTER_TYPE_SELF_OPTIN" attributes="" save_date="2020-01-16 21:03:26"><![CDATA[Double-Opt-In freie Selbstregistrierung]]></key>
+        <key id="configuration&amp;_REGISTRATION_CODE_TYPE" attributes="" save_date="2020-01-16 21:04:44"><![CDATA[Nutzung eines Registrierungscodes]]></key>
         <key id="configuration&amp;_REQUEST_MANDATORY_FIELDS_COMPILATION" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Beim Login wird der Benutzer gebeten, die Pflichtfelder seines Profils auszufüllen.]]></key>
         <key id="configuration&amp;_REST_AUTH_API_KEY" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[API Autorisierungsschlüssel]]></key>
         <key id="configuration&amp;_REST_AUTH_API_SECRET" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[API Autorisierungsgeheimschlüssel]]></key>
@@ -650,7 +655,7 @@ Organisationsdiagramms]]></key>
         <key id="configuration&amp;_USERS_ALREADY_ASSIGNED" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Benutzer bereits zugewiesen]]></key>
         <key id="configuration&amp;_USER_PWD_HISTORY_LENGTH" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Den Benutzer bitten, ein anderes als die letzten X benutzten Passwörter zu wählen]]></key>
         <key id="configuration&amp;_USER_QUOTA" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Speicherplatzbegrenzung (in MB) für den Meine Dateien Bereich jedes Nutzers]]></key>
-        <key id="configuration&amp;_USE_ADVANCED_FORM" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Benutze erweitertes Registrationsformular]]></key>
+        <key id="configuration&amp;_USE_ADVANCED_FORM" attributes="" save_date="2020-01-16 21:03:39"><![CDATA[Benutze erweitertes Registrierungsformular]]></key>
         <key id="configuration&amp;_USE_DIMDIM_API" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Benutze DimDim API statt URL Schnittstelle]]></key>
         <key id="configuration&amp;_USE_REST_API" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Aktiviere die API Funktionalität]]></key>
         <key id="configuration&amp;_USE_TAG" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Aktiviere Tags-Funktion in Foren]]></key>
@@ -664,18 +669,20 @@ Organisationsdiagramms]]></key>
         <key id="course&amp;_ADVERT_FORUM" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Im Forum sind [forum] neue Nachrichten]]></key>
         <key id="course&amp;_ADVERT_LOBJ" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Es sind [lobj] neue Lernobjekte verfügbar]]></key>
         <key id="course&amp;_ALLOW_OVERBOOKING" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Erlaube überbuchung]]></key>
+        <key id="course&amp;_ALL_COURSE_TYPE" attributes="" save_date="2020-01-16 20:58:46"><![CDATA[Alle Kurstypen]]></key>
         <key id="course&amp;_ALL_OPEN" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Alle offen]]></key>
+        <key id="course&amp;_ALL_YEARS" attributes="" save_date="2020-01-10 17:50:34"><![CDATA[Alle Jahre]]></key>
         <key id="course&amp;_ASSIGN_FOR_ALL_STATUS" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Jedem Benutzerstatus zuweisen]]></key>
         <key id="course&amp;_ASSIGN_FOR_AT_LEAST_MINUTES" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Mindestzeit der Benutzung (min.)]]></key>
         <key id="course&amp;_ASSIGN_FOR_STATUS_COMPLETED" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Benutzern zuweisen, die diesen Kurs abgeschlossen haben]]></key>
         <key id="course&amp;_ASSIGN_FOR_STATUS_INCOURSE" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Benutzern zuweisen, die am Kurs teilnehmen]]></key>
         <key id="course&amp;_ASSIGN_MENU" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Dem Kurs ein neues Menü zuweisen]]></key>
-        <key id="course&amp;_AUTOREGISTRATION_CODE" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Registrationscode]]></key>
+        <key id="course&amp;_AUTOREGISTRATION_CODE" attributes="" save_date="2020-01-16 21:05:39"><![CDATA[Registrierungscode]]></key>
         <key id="course&amp;_BACK_TO_ADMINISTRATION" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Zurück zum Adminbereich]]></key>
         <key id="course&amp;_BUY_COURSE" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Erlaube, den Kurs zu kaufen]]></key>
         <key id="course&amp;_CALENDAR_CLASSROOM_EDITION" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Kalendar der Klassenräume Editionen]]></key>
         <key id="course&amp;_CAN_SUBSCRIBE" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Einschreiben]]></key>
-        <key id="course&amp;_CASCADE_MOD_ON_EDITION" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[änderungen auch zu Editionen hinzufügen]]></key>
+        <key id="course&amp;_CASCADE_MOD_ON_EDITION" attributes="" save_date="2020-01-13 08:44:21"><![CDATA[Änderungen auch zu Editionen hinzufügen]]></key>
         <key id="course&amp;_CATEGORY_PATH" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Sie sind in]]></key>
         <key id="course&amp;_CATEGORY_SELECTED" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Gewählte Kategorie]]></key>
         <key id="course&amp;_CERTIFICATE_ASSIGN_STATUS" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Zertifikatzuweisung]]></key>
@@ -730,6 +737,9 @@ Organisationsdiagramms]]></key>
         <key id="course&amp;_CST_CONCLUDED" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Beendet]]></key>
         <key id="course&amp;_CST_CONFIRMED" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Bestätigt]]></key>
         <key id="course&amp;_CST_PREPARATION" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Im Aufbau]]></key>
+        <key id="course&amp;_DATE" attributes="" save_date="2020-01-10 17:50:40"><![CDATA[Datum]]></key>
+        <key id="course&amp;_DAY" attributes="" save_date="2020-01-10 17:50:45"><![CDATA[Tag]]></key>
+        <key id="course&amp;_DAYS" attributes="" save_date="2020-01-10 17:50:49"><![CDATA[Tage]]></key>
         <key id="course&amp;_DAY_OF_VALIDITY" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Gütigkeit in Tagen]]></key>
         <key id="course&amp;_DEMO" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Zeige Demo]]></key>
         <key id="course&amp;_DIRECT_PLAY" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Spiele direkt das erste Lernobjekt im Betrachter]]></key>
@@ -773,6 +783,7 @@ Organisationsdiagramms]]></key>
         <key id="course&amp;_NEW_USER_SUBS_WAITING_TEXT" attributes="accessibility" save_date="2019-03-27 17:15:50"><![CDATA[Benutzer wartet bei [url]]]></key>
         <key id="course&amp;_NOACTIVE" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Warte auf Aktivierung]]></key>
         <key id="course&amp;_NOENTER" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Zugriff verweigert]]></key>
+        <key id="course&amp;_NO_COURSE_DATA" attributes="" save_date="2020-01-16 20:58:09"><![CDATA[Keine Kursdaten]]></key>
         <key id="course&amp;_NO_COURSE_FOUND" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Kein Kurs gefunden]]></key>
         <key id="course&amp;_OTHER_OPTION" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Andere Einstellungen]]></key>
         <key id="course&amp;_OTHER_USER_MATERIAL" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Material für andere Rollen]]></key>
@@ -788,7 +799,7 @@ Organisationsdiagramms]]></key>
         <key id="course&amp;_PROGRESS_PASSED" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Bestanden]]></key>
         <key id="course&amp;_PROGRESS_TITLE" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Objekte: [total], bestanden: [complete], durchgefallen: [failed]]]></key>
         <key id="course&amp;_QUOTA_EXCEDED" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Sie können keine weiteren Dateien hochladen, da der Speicherplatz des Kurses voll ist]]></key>
-        <key id="course&amp;_RANDOM_COURSE_AUTOREGISTRATION_CODE" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Generiere zufälligen Code für Selbstregistration]]></key>
+        <key id="course&amp;_RANDOM_COURSE_AUTOREGISTRATION_CODE" attributes="" save_date="2020-01-16 21:02:51"><![CDATA[Generiere zufälligen Code für Selbstregistrierung]]></key>
         <key id="course&amp;_RESERVE_COURSE" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Reserviere Kurs]]></key>
         <key id="course&amp;_SC_EVERYWHERE" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Jeder, und auf der Startseite zeigen]]></key>
         <key id="course&amp;_SC_ONLYINSC_USER" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Nur im Kurs eingeschriebene Benutzer]]></key>
@@ -814,12 +825,12 @@ Organisationsdiagramms]]></key>
         <key id="course&amp;_SUBSCRIPTION_CORRECT" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Erfolgreiche Einschreibung]]></key>
         <key id="course&amp;_SUBSCRIPTION_DATE_BEGIN" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Von]]></key>
         <key id="course&amp;_SUBSCRIPTION_DATE_BEGIN_FROM" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Die Einschreibun ist offen schon seit]]></key>
-        <key id="course&amp;_SUBSCRIPTION_DATE_END" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[An]]></key>
+        <key id="course&amp;_SUBSCRIPTION_DATE_END" attributes="" save_date="2020-01-16 20:50:51"><![CDATA[Bis]]></key>
         <key id="course&amp;_SUBSCRIPTION_ERROR" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Fehler bei der Einschreibung]]></key>
         <key id="course&amp;_SUBSCRIPTION_IN_PERIOD" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Einschreibung ist während der folgenden Zeit erlaubt]]></key>
         <key id="course&amp;_SUBSCRIPTION_OPEN" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Einschreibungen sind offen]]></key>
-        <key id="course&amp;_THANKS_LOGIN_OR_REGISTER" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Sie wollen den Kurs kaufen: <b>[name]</b><br />
-Um fortzufahren, müssen Sie sich auf der Plattform anmelden, falls sie bereits registriert sind.<br />
+        <key id="course&amp;_THANKS_LOGIN_OR_REGISTER" attributes="" save_date="2020-01-16 11:26:50"><![CDATA[Sie wollen den Kurs kaufen: <b>[name]</b><br />
+Um fortzufahren, müssen Sie sich auf der Plattform anmelden, falls Sie bereits registriert sind.<br />
 Ansonsten müssen Sie sich mittels dieses Links registrieren: <br />
 <br />
 <a href="[link_register]">Registrieren</a>]]></key>
@@ -910,6 +921,7 @@ Ansonsten müssen Sie sich mittels dieses Links registrieren: <br />
         <key id="coursereport&amp;_USE_FOR_FINAL" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Anwendung für Endergebniss]]></key>
         <key id="coursereport&amp;_WEIGHT" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Gewichtung]]></key>
       </module>
+      <module id="courses"/>
       <module id="course_autoregistration">
         <key id="course_autoregistration&amp;_AUTOREGISTRATION" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Neuen Kurs hinzufügen]]></key>
         <key id="course_autoregistration&amp;_BACK_TO_COURSE" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[&gt;&gt; Zurück zu "Mein Kursbereich"]]></key>
@@ -934,6 +946,7 @@ Ansonsten müssen Sie sich mittels dieses Links registrieren: <br />
         <key id="customer_help&amp; &#9; _CUSTOMER_HELP_DISCLAIMER_TITLE" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Disclaimer - assistenza utenti]]></key>
         <key id="customer_help&amp;_CUSTOMER_HELP" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Hilfe]]></key>
         <key id="customer_help&amp;_CUSTOMER_HELP_DISCLAIMER" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Autorizzo l'invio di informazioni tecniche all'assistenza utili per risolvere la mia richiesta]]></key>
+        <key id="customer_help&amp;_CUSTOMER_HELP_DISCLAIMER_TITLE" attributes="" save_date="2020-01-10 17:51:02"><![CDATA[Datenschutz]]></key>
         <key id="customer_help&amp;_README_HELP" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[<!-- here you can put some help text -->]]></key>
       </module>
       <module id="dashboard">
@@ -974,7 +987,7 @@ Ansonsten müssen Sie sich mittels dieses Links registrieren: <br />
       </module>
       <module id="email">
         <key id="email&amp;_ALERT_SUBJECT" attributes="email" save_date="2019-03-27 17:15:50"><![CDATA[Neue Ankündigung]]></key>
-        <key id="email&amp;_ALERT_TEXT" attributes="email" save_date="2019-03-27 17:15:50"><![CDATA[Eine neue Ankündigung wurde im Kurs "[course]" veröffentlicht
+        <key id="email&amp;_ALERT_TEXT" attributes="email" save_date="2020-01-16 11:43:53"><![CDATA[Eine neue Ankündigung wurde im Kurs "[course]" veröffentlicht
 
 Titel: '[title]'
 
@@ -988,7 +1001,13 @@ Sie können Sie auf forma.lms mit der URL <a href="[url]">[url]</a> lesen]]></ke
         <key id="email&amp;_DELETED_USER_TEXT" attributes="email" save_date="2019-03-27 17:15:50"><![CDATA[Ihr Benutzerkonto bei <a href="[url]">[url]</a> mit dem Benutzernamen [userid] wurde gelöscht]]></key>
         <key id="email&amp;_DENY_SUBSCRIBED_SUBJECT" attributes="email" save_date="2019-03-27 17:15:50"><![CDATA[Einschreibungsanfrage abgelehnt]]></key>
         <key id="email&amp;_DENY_SUBSCRIBED_TEXT" attributes="email" save_date="2019-03-27 17:15:50"><![CDATA[Ihre Einschreibung in den Kurs [course] wurde von dem Administrator bei <a href="[url]">[url]</a> abgelehnt]]></key>
+        <key id="email&amp;_EVENT_CHANGE_NODE_USER_SBJ" attributes="" save_date="2020-01-20 18:17:51"><![CDATA[User node change]]></key>
+        <key id="email&amp;_EVENT_CHANGE_NODE_USER_TEXT" attributes="" save_date="2020-01-20 18:18:37"><![CDATA[[url] [firstname] [lastname] [username]]]></key>
         <key id="email&amp;_EVENT_CLASS_UserCourseBuy" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Benutzer hat einen Kurs gekauft]]></key>
+        <key id="email&amp;_EVENT_COURSE_EVENT_SUSPENDED_USER_SBJ" attributes="" save_date="2020-01-20 18:27:00"><![CDATA[User suspended from course]]></key>
+        <key id="email&amp;_EVENT_COURSE_EVENT_SUSPENDED_USER_TEXT" attributes="" save_date="2020-01-20 18:26:25"><![CDATA[[url] [firstname] [lastname] [course] [username]]]></key>
+        <key id="email&amp;_EVENT_SUSPENDED_USER_SBJ" attributes="" save_date="2020-01-20 18:14:15"><![CDATA[User suspended]]></key>
+        <key id="email&amp;_EVENT_SUSPENDED_USER_TEXT" attributes="" save_date="2020-01-20 18:13:32"><![CDATA[[url] [firstname] [lastname] [username]]]></key>
         <key id="email&amp;_MODIFIED_USER_SBJ" attributes="email" save_date="2019-03-27 17:15:50"><![CDATA[Das Benutzerkonto wurde verändert]]></key>
         <key id="email&amp;_MODIFIED_USER_TEXT" attributes="email" save_date="2019-03-27 17:15:50"><![CDATA[Ihr Benutzerkonto bei der Seite <a href="[url]">[url]</a> wurde verändert:
 
@@ -1008,6 +1027,7 @@ Benutzername: [userid]]]></key>
 
  Titel: [thread_title]]]></key>
         <key id="email&amp;_NEW_USER_SUBSCRIBED_SUBJECT" attributes="email" save_date="2019-03-27 17:15:50"><![CDATA[Ein neuer Benutzer wurde in einen Kurs eingeschrieben]]></key>
+        <key id="email&amp;_NEW_USER_SUBSCRIBED_SUBJECT_MODERATORS" attributes="" save_date="2020-01-20 15:30:49"><![CDATA[[url] [firstname] [lastname] [course] [username]]]></key>
         <key id="email&amp;_NEW_USER_SUBSCRIBED_TEXT" attributes="email" save_date="2019-03-27 17:15:50"><![CDATA[Unter der URL : <a href="[url]">[url]</a> Ein neuer Benutzer wurde in den Kurs eingeschrieben : [course]]]></key>
         <key id="email&amp;_NEW_USER_SUBS_WAITING_SUBJECT" attributes="email" save_date="2019-03-27 17:15:50"><![CDATA[Benutzer wartet auf die Einschreibung in den Kurs]]></key>
         <key id="email&amp;_NEW_USER_SUBS_WAITING_TEXT" attributes="email" save_date="2019-03-27 17:15:50"><![CDATA[Ein neuer Benutzer hat sich in den Kurs '[course]' eingeschrieben und wartet auf die Bestätigung.
@@ -1019,14 +1039,14 @@ Benutzername: [userid]]]></key>
 
 <a href="[url]">[url]</a>]]></key>
         <key id="email&amp;_NEW_USER_UNSUBS_WAITING_TEXT_SMS" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Ein Benutzer bittet um sich von dem Kurs abgemeldet zu werden]]></key>
-        <key id="email&amp;_PASSWORD_CHANGED" attributes="email" save_date="2019-03-27 17:15:50"><![CDATA[und Ihr Passwort wurde geändert zu: [password]]]></key>
+        <key id="email&amp;_PASSWORD_CHANGED" attributes="email" save_date="2020-01-24 08:23:19"><![CDATA[und Ihr Passwort wurde geändert ]]></key>
         <key id="email&amp;_REFUSED_USER_SBJ" attributes="email" save_date="2019-03-27 17:15:50"><![CDATA[Benutzer nicht akzeptiert]]></key>
         <key id="email&amp;_REFUSED_USER_TEXT" attributes="email" save_date="2019-03-27 17:15:50"><![CDATA[Der Administrator von [url] hat Ihre Einschreibung abgelehnt]]></key>
         <key id="email&amp;_REGISTERED_USER_SBJ" attributes="email" save_date="2019-03-27 17:15:50"><![CDATA[Sie sind jetzt in unserem System registriert]]></key>
-        <key id="email&amp;_REGISTERED_USER_TEXT" attributes="email" save_date="2019-03-27 17:15:50"><![CDATA[Sie sind jetzt in unserem System unter <a href="[url]">[url]</a> mit diesem Benutzerkonto registriert:
+        <key id="email&amp;_REGISTERED_USER_TEXT" attributes="email" save_date="2020-01-24 08:23:24"><![CDATA[Sie sind jetzt in unserem System unter <a href="[url]">[url]</a> mit diesem Benutzerkonto registriert:
 
 Benutzername: [userid]
-Passwort: [password]]]></key>
+]]></key>
         <key id="email&amp;_SUBJECT_NOTIFY_MESSAGE" attributes="email" save_date="2019-03-27 17:15:50"><![CDATA[Alarm: Neue Nachricht in Diskussion]]></key>
         <key id="email&amp;_SUBJECT_NOTIFY_THREAD" attributes="email" save_date="2019-03-27 17:15:50"><![CDATA[Alarm: Neue Diskussion]]></key>
         <key id="email&amp;_TO_APPROVE_GROUP_USER_SBJ" attributes="email" save_date="2019-03-27 17:15:50"><![CDATA[Eine neue Abonnierung einer Nutzergruppe wartet auf Zustimmung]]></key>
@@ -1072,7 +1092,7 @@ Passwort: [password]]]></key>
         <key id="event_manager&amp;_EVENT_CLASS_UserGroupRemove" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Benutzer wurde von einer Gruppe entfernt]]></key>
         <key id="event_manager&amp;_EVENT_CLASS_UserMod" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Benutzer wurde verändert]]></key>
         <key id="event_manager&amp;_EVENT_CLASS_UserNew" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Benutzer wurde erstellt]]></key>
-        <key id="event_manager&amp;_EVENT_CLASS_UserNew2" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Ein neuer Benutzer wurde durch "freie automatische Registration" oder "Double-Opt-In freie automatische Registration" registriert]]></key>
+        <key id="event_manager&amp;_EVENT_CLASS_UserNew2" attributes="" save_date="2020-01-16 21:04:26"><![CDATA[Ein neuer Benutzer wurde durch "freie automatische Registrierung" oder "Double-Opt-In freie automatische Registrierung" registriert]]></key>
         <key id="event_manager&amp;_EVENT_CLASS_UserNewModerated" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Benutzer wartet auf Zustimmung zum Beitritt der Plattform]]></key>
         <key id="event_manager&amp;_EVENT_CLASS_UserNewWaiting" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Ein neuer Benutzer wartet auf  Bestätigung]]></key>
         <key id="event_manager&amp;_EVENT_MANAGER" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Ereignisverwaltung]]></key>
@@ -1081,6 +1101,7 @@ Passwort: [password]]]></key>
         <key id="event_manager&amp;_EVENT_PLATFORM_framework" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[appCore]]></key>
         <key id="event_manager&amp;_EVENT_PLATFORM_lms" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[appLMS]]></key>
         <key id="event_manager&amp;_EVENT_PLATFORM_lms-a" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[appLMS-A]]></key>
+        <key id="event_manager&amp;_EVENT_RECIPIENTS_GODS" attributes="" save_date="2020-01-20 15:21:28"><![CDATA[Super-Administrators]]></key>
         <key id="event_manager&amp;_EVENT_RECIPIENTS_MODERATORS_GOD" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Moderatoren und Super-Admins]]></key>
         <key id="event_manager&amp;_EVENT_RECIPIENTS_TEACHER" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Instruktoren]]></key>
         <key id="event_manager&amp;_EVENT_RECIPIENTS_TEACHER_GOD" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Instruktoren und Super-Admins]]></key>
@@ -1394,8 +1415,8 @@ Um diese Worte zu ändern, gehen Sie bitte auf Admin/Sprachverwaltung, suchen Si
         <key id="login&amp;_LOGIN_WITH" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Login mit]]></key>
         <key id="login&amp;_LOG_IN" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Login]]></key>
         <key id="login&amp;_LOG_LOSTPWD" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Verlorenes Passwort]]></key>
-        <key id="login&amp;_LOST_INSTRUCTION_PWD" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Geben Sie Ihren Benutzernamen ein, und Ihnen wird eine eMail (an Ihre Registrationsadresse) gesendet. Diese eMail enthält Anweisungen, wie Sie ein neues Passwort generieren.]]></key>
-        <key id="login&amp;_LOST_INSTRUCTION_USER" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Geben Sie in dieses Feld die eMail Adresse ein, die Sie bei der Registration angegeben haben, und Sie erhalten eine eMail mit Ihrem Benutzernamen auf dieser Seite.]]></key>
+        <key id="login&amp;_LOST_INSTRUCTION_PWD" attributes="" save_date="2020-01-16 21:02:31"><![CDATA[Geben Sie Ihren Benutzernamen ein, und Ihnen wird eine eMail (an Ihre die hinterlegte eMail-Adresse) gesendet. Diese eMail enthält Anweisungen, wie Sie ein neues Passwort generieren.]]></key>
+        <key id="login&amp;_LOST_INSTRUCTION_USER" attributes="" save_date="2020-01-16 21:02:46"><![CDATA[Geben Sie in dieses Feld die eMail Adresse ein, die Sie bei der Registrierung angegeben haben, und Sie erhalten eine eMail mit Ihrem Benutzernamen.]]></key>
         <key id="login&amp;_LOST_TITLE_USER" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Ich habe meinen Benutzernamen vergessen]]></key>
         <key id="login&amp;_MAINTENANCE_TEXT" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[System in mainteinance mode.<br/><br/>To change these text please go to Admin/Language management, search for login and edit the key _MAINTENANCE_TEXT]]></key>
         <key id="login&amp;_NOACCESS" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Zugriff verweigert, bitte überprüfen Sie Ihr Passwort]]></key>
@@ -1517,6 +1538,7 @@ Um diese Worte zu ändern, gehen Sie bitte auf Admin/Sprachverwaltung, suchen Si
         <key id="menu_over&amp;_AUTHORING" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Autorenverwaltung]]></key>
         <key id="menu_over&amp;_BLIND_MENU_LAT" attributes="accessibility" save_date="2019-03-27 17:15:50"><![CDATA[Springe zum Hauptmenü]]></key>
         <key id="menu_over&amp;_BLIND_YOUR_INFO" attributes="accessibility" save_date="2019-03-27 17:15:50"><![CDATA[Springe zu Ihren Informationen zu diesem Kurs]]></key>
+        <key id="menu_over&amp;_CERTIFICATE_DOWNLOAD" attributes="" save_date="2020-01-16 17:55:24"><![CDATA[Zertifikat-Download]]></key>
         <key id="menu_over&amp;_COMMUNITY" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Community]]></key>
         <key id="menu_over&amp;_GO_TO_FRAMEWORK" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Admin Bereich]]></key>
         <key id="menu_over&amp;_LIBRARY" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Autorenverwaltung]]></key>
@@ -1843,7 +1865,7 @@ Bitte keine anstö&szlig;igen Bilder hochladen.]]></key>
         <key id="register&amp;_FORCE_CHANGE" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Wählen Sie ein neues Passwort, bitte.]]></key>
         <key id="register&amp;_GOTO_LOGIN" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Zurück zur Loginseite]]></key>
         <key id="register&amp;_GROUPS_FIELDS" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Dies ist das Feld, das mit der gewählten Gruppe verbunden ist]]></key>
-        <key id="register&amp;_IMGSECTION" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Registration]]></key>
+        <key id="register&amp;_IMGSECTION" attributes="" save_date="2020-01-16 21:04:36"><![CDATA[Registrierung]]></key>
         <key id="register&amp;_INEXISTENT_USER" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Der eingegebene Benutzername existiert nicht. Bitte überprüfen und erneut versuchen]]></key>
         <key id="register&amp;_INVALID_CODE" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Aktivierungscode ist nicht gültig]]></key>
         <key id="register&amp;_INVALID_RANDOM_CODE" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Der Sicherheitscode ist ungültig]]></key>
@@ -1856,9 +1878,9 @@ Bitte keine anstö&szlig;igen Bilder hochladen.]]></key>
         <key id="register&amp;_LOST_PWD_TITLE" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Neues Passwort]]></key>
         <key id="register&amp;_LOST_TITLE_PWD" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Ich habe mein Passwort vergessen]]></key>
         <key id="register&amp;_LOST_TITLE_USER" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Ich habe meinen Benutzernamen vergessen]]></key>
-        <key id="register&amp;_LOST_USERID_MAILTEXT" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Ihr Benutzername für die [url] Webseiten Community ist [userid]]]></key>
+        <key id="register&amp;_LOST_USERID_MAILTEXT" attributes="" save_date="2020-01-13 08:43:01"><![CDATA[Ihr Benutzername für [url] ist [userid]]]></key>
         <key id="register&amp;_LOST_USERID_TITLE" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Benutzername wiederfinden]]></key>
-        <key id="register&amp;_MAIL_OBJECT" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Bitte bestätigen Sie Ihre Registrationsanfrage]]></key>
+        <key id="register&amp;_MAIL_OBJECT" attributes="" save_date="2020-01-16 21:01:35"><![CDATA[Bitte bestätigen Sie Ihre Registrierungsanfrage]]></key>
         <key id="register&amp;_MAIL_OBJECT_SELF" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Sie haben sich soeben erfolgreich registriert]]></key>
         <key id="register&amp;_MAIL_SEND_SUCCESSFUL" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Vielen Dank! Wir haben Ihnen eine eMail mit Ihrem Benutzernamen gesendet.]]></key>
         <key id="register&amp;_MAIL_SEND_SUCCESSFUL_PWD" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Vielen Dank! Wir haben Ihnen eine eMail mit einem Link gesendet, um Ihr Passwort wiederherzustellen.]]></key>
@@ -1870,23 +1892,23 @@ Bitte keine anstö&szlig;igen Bilder hochladen.]]></key>
         <key id="register&amp;_REG_CONFIRM_FAILED" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Die Bestätigung Ihres Benutzerkontos ist fehlgeschlagen]]></key>
         <key id="register&amp;_REG_ELAPSEDREQUEST" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Die Anfrage ist nicht gültig, weil die Gültigkeitsdauer abgelaufen ist]]></key>
         <key id="register&amp;_REG_HOUR_REQUEST_LIMIT" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Diese Anfrage läuft nach <b>[hour] Stunden</b> ab]]></key>
-        <key id="register&amp;_REG_MAIL_TEXT" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Wir haben Ihre Anfrage mit folgenden Informationen erhalten:<br />
+        <key id="register&amp;_REG_MAIL_TEXT" attributes="" save_date="2020-01-24 08:22:57"><![CDATA[Wir haben Ihre Anfrage mit folgenden Informationen erhalten:<br />
 <br />
 Benutzername : [userid]<br />
-Passwort : [password]<br />
+
 <br />
-Klicken Sie auf folgenden Link, um Ihre Registration abzuschlie&szlig;en (oder kopieren Sie ihn in die Adresszeile Ihres Browsers)<br />
+Klicken Sie auf folgenden Link, um Ihre Registrierung abzuschlie&szlig;en (oder kopieren Sie ihn in die Adresszeile Ihres Browsers)<br />
 <br />
 <a href="[link]">[link]</a><br />
 <br />
 Die Anfrage ist für die nächsten [hour] Stunden gültig]]></key>
-        <key id="register&amp;_REG_MAIL_TEXT_SELF" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Wir haben Ihre Anfrage mit folgenden Informationen erhalten:<br />
+        <key id="register&amp;_REG_MAIL_TEXT_SELF" attributes="" save_date="2020-01-24 08:22:52"><![CDATA[Wir haben Ihre Anfrage mit folgenden Informationen erhalten:<br />
 <br />
 Benutzername : [userid]<br />
-Passwort : [password]<br />]]></key>
+]]></key>
         <key id="register&amp;_REG_MANDATORY" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Sie müssen die Pflichtfelder ausfüllen, die mit dem Symbol [mandatory] markiert sind]]></key>
         <key id="register&amp;_REG_NOTE" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Auf dieser Seite können Sie sich für die Plattform registrieren; folgen Sie den folgenden Anweisungen und füllen Sie die Felder entsprechend aus.]]></key>
-        <key id="register&amp;_REG_NOT_ACTIVE" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Registration ist nicht aktiv]]></key>
+        <key id="register&amp;_REG_NOT_ACTIVE" attributes="" save_date="2020-01-16 21:05:18"><![CDATA[Registrierung ist nicht aktiv]]></key>
         <key id="register&amp;_REG_PASS_MIN_CHAR" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Das Passwort muss mindestens <b>[min_char] Zeichen</b> enthalten]]></key>
         <key id="register&amp;_REG_PASS_MUST_BE_ALPNUM" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Das Passwort muss <b>Buchstaben</b> und <b>Ziffern</b> enthalten]]></key>
         <key id="register&amp;_REG_PASS_MUST_DIFF" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Das neue Passwort muss sich unterschieden]]></key>
@@ -1899,14 +1921,14 @@ Passwort : [password]<br />]]></key>
 Beim Behandeln dieser Informationen wird mit Genauigkeit und Präzision vorgegangen, um die Integrität und die Qualität der gesammelten persönlichen Daten zu gewährleisten. Wenn Sie hierzu fragen haben, kontaktieren Sie uns bitte.]]></key>
         <key id="register&amp;_REG_PRIVACY_POLICY_TILTE" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Datenschutzerklärung]]></key>
         <key id="register&amp;_REG_REMEMBER_PRIVACY" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Sie müssen derDatenschutzerklärung zustimmen]]></key>
-        <key id="register&amp;_REG_SUCCESS" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Vielen Dank für die Registrationsanfrage in unserer Community.
+        <key id="register&amp;_REG_SUCCESS" attributes="" save_date="2020-01-16 21:06:30"><![CDATA[Vielen Dank für die Registrierungsanfrage.
 Um Ihre Privatsphäre zu schützen, werden Sie eine eMail mit einem Bestätigungslink erhalten.
 Sie müssen Ihr Benutzerkonto vor der Nutzung freischalten.]]></key>
-        <key id="register&amp;_REG_SUCCESS_SELF" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Vielen Dank für die Registrationsanfrage in unserer Community.
+        <key id="register&amp;_REG_SUCCESS_SELF" attributes="" save_date="2020-01-16 21:06:22"><![CDATA[Vielen Dank für die Registrierungsanfrage.
 Sie werden eine eMail mit Ihren Informationen erhalten.]]></key>
         <key id="register&amp;_REG_USERID_DEF" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Ihr Benutzername]]></key>
-        <key id="register&amp;_REG_WAIT_FOR_ADMIN_OK" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Ihre Registration wurde bestätigt, Sie bekommen eine eMail, sobald der Administrator dies bestätigt]]></key>
-        <key id="register&amp;_REG_YOUR_ABI_TO_ACCESS" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Registration bestätigt]]></key>
+        <key id="register&amp;_REG_WAIT_FOR_ADMIN_OK" attributes="" save_date="2020-01-16 21:05:04"><![CDATA[Ihre Registrierung wurde bestätigt, Sie bekommen eine eMail, sobald der Administrator dies bestätigt]]></key>
+        <key id="register&amp;_REG_YOUR_ABI_TO_ACCESS" attributes="" save_date="2020-01-16 21:05:13"><![CDATA[Registrierung bestätigt]]></key>
         <key id="register&amp;_RETYPE_PASSWORD" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Passwort erneut eingeben]]></key>
         <key id="register&amp;_SELECT_GROUP" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Wählen Sie die Gruppe, der Sie beitreten wollen]]></key>
         <key id="register&amp;_SELECT_GROUP_SUMMARY" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Liste der Gruppen, denen Sie beitreten können]]></key>
@@ -2032,10 +2054,10 @@ Sie werden eine eMail mit Ihren Informationen erhalten.]]></key>
         <key id="reservation&amp;_ADD_USER" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Benutzer hinzufügen]]></key>
         <key id="reservation&amp;_ALT_ADD_USER" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[zuweisen]]></key>
         <key id="reservation&amp;_AREYOUSURE_ADD_SUBSCRIPTION" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Sind Sie sicher, da&szlig; Sie dieses Ereignis registrieren wollen?]]></key>
-        <key id="reservation&amp;_AREYOUSURE_DEL_SUBSCRIPTION" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Sind Sie sicher, da&szlig; Sie diese Registration abbrechen wollen?]]></key>
+        <key id="reservation&amp;_AREYOUSURE_DEL_SUBSCRIPTION" attributes="" save_date="2020-01-16 21:06:17"><![CDATA[Sind Sie sicher, da&szlig; Sie diese Registrierung abbrechen wollen?]]></key>
         <key id="reservation&amp;_AVAILABLE_PLACES" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Verfügbar]]></key>
         <key id="reservation&amp;_BODY_DELSUBSCRIPTION" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Abgelehnte Ereigniseinschreibung]]></key>
-        <key id="reservation&amp;_CANCEL_REGISTRATION" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Registration abbrechen]]></key>
+        <key id="reservation&amp;_CANCEL_REGISTRATION" attributes="" save_date="2020-01-16 21:05:10"><![CDATA[Registrierung abbrechen]]></key>
         <key id="reservation&amp;_CATEGORY_CAPTION" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Kategorien]]></key>
         <key id="reservation&amp;_CATEGORY_GESTION" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Kategorie verwalten]]></key>
         <key id="reservation&amp;_CATEGORY_MAX_SUBSCRIPTION" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Max. Ereignisse für Kategorie]]></key>
@@ -2052,12 +2074,12 @@ Sie werden eine eMail mit Ihren Informationen erhalten.]]></key>
         <key id="reservation&amp;_NO_RESERVATION_FOUND" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Keine Reservierungen gefunden]]></key>
         <key id="reservation&amp;_NO_USERS_FOUND" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Keine Benutzer eingeschrieben]]></key>
         <key id="reservation&amp;_NUMBER_SUBSCRIBED" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Nummer der Registrierten]]></key>
-        <key id="reservation&amp;_REGISTRATION" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Registration]]></key>
+        <key id="reservation&amp;_REGISTRATION" attributes="" save_date="2020-01-16 21:05:07"><![CDATA[Registrierung]]></key>
         <key id="reservation&amp;_RESERVATION" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Reservierung]]></key>
         <key id="reservation&amp;_RESERVATION_CAPTION" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Kategorieverwaltung]]></key>
         <key id="reservation&amp;_RESERVATION_EVENTS" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Verfügbare Ereignisse]]></key>
         <key id="reservation&amp;_RESERVATION_MAIL_SEND" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[eMail senden]]></key>
-        <key id="reservation&amp;_RESERVATION_MY_EVENTS" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Meine Registration]]></key>
+        <key id="reservation&amp;_RESERVATION_MY_EVENTS" attributes="" save_date="2020-01-16 21:04:53"><![CDATA[Meine Registrierung]]></key>
         <key id="reservation&amp;_RESERVATION_PAST_EVENTS" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Vergangene Ereignisse]]></key>
         <key id="reservation&amp;_RESERVATION_PROFILE_MODIFY" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Reservierung]]></key>
         <key id="reservation&amp;_RESERVATION_SUBSCRIBED_USER" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Ereignisse verwalten]]></key>
@@ -2098,16 +2120,20 @@ Sie werden eine eMail mit Ihren Informationen erhalten.]]></key>
         <key id="sms&amp;_APPROVED_SUBSCRIBED_TEXT_SMS" attributes="sms" save_date="2019-03-27 17:15:50"><![CDATA[Ihre Einschreibungsanfrage in den Kurs [course] wurde vom Administrator akzeptiert]]></key>
         <key id="sms&amp;_APPROVED_USER_TEXT_SMS" attributes="sms" save_date="2019-03-27 17:15:50"><![CDATA[Ihre Einschreibungsanfrage wurde akzeptiert]]></key>
         <key id="sms&amp;_DELETED_USER_TEXT_SMS" attributes="sms" save_date="2019-03-27 17:15:50"><![CDATA[E-Learning: Ihr Benutzerkonto mit dem Benutzernamen [userid] wurde gelöscht]]></key>
+        <key id="sms&amp;_EVENT_CHANGE_NODE_USER_SBJ_SMS" attributes="" save_date="2020-01-20 18:19:28"><![CDATA[[url] [firstname] [lastname] [username]]]></key>
+        <key id="sms&amp;_EVENT_COURSE_EVENT_SUSPENDED_USER_TEXT_SMS" attributes="" save_date="2020-01-20 18:25:39"><![CDATA[[url] [firstname] [lastname] [course] [username]]]></key>
+        <key id="sms&amp;_EVENT_SUSPENDED_USER_TEXT_SMS" attributes="" save_date="2020-01-20 18:15:13"><![CDATA[[url] [firstname] [lastname] [username]]]></key>
         <key id="sms&amp;_MODIFIED_USER_TEXT_SMS" attributes="sms" save_date="2019-03-27 17:15:50"><![CDATA[Ihr Benutzerkonto auf der Seite <a href="[url]">[url]</a> wurde verändert: Benutzername: [userid]]]></key>
         <key id="sms&amp;_NEW_FORUM_BODY_SMS" attributes="sms" save_date="2019-03-27 17:15:50"><![CDATA[E-Learning: Kurs '[course]' neues Forum '[title]']]></key>
         <key id="sms&amp;_NEW_FORUM_SMS" attributes="sms" save_date="2019-03-27 17:15:50"><![CDATA[Neues Forum]]></key>
         <key id="sms&amp;_NEW_MESSAGE_INSERT_IN_THREAD_SMS" attributes="sms" save_date="2019-03-27 17:15:50"><![CDATA[E-Learning: In dem Kurs '[course]' gibt es eine neue Nachricht unter '[forum_title]' > '[thread_title]']]></key>
         <key id="sms&amp;_NEW_THREAD_INSERT_IN_FORUM_SMS" attributes="sms" save_date="2019-03-27 17:15:50"><![CDATA[E-Learning: Kurs '[course]' Es gibt eine neue Diskussion unter '[forum_title]': [thread_title]]]></key>
-        <key id="sms&amp;_PASSWORD_CHANGED_SMS" attributes="sms" save_date="2019-03-27 17:15:50"><![CDATA[und Ihr Passwort wurde geändert zu: [password]]]></key>
-        <key id="sms&amp;_REGISTERED_USER_TEXT_SMS" attributes="sms" save_date="2019-03-27 17:15:50"><![CDATA[Sie sind jetzt mit folgendem Benutzerkonto in unserem System registriert:
+        <key id="sms&amp;_NEW_USER_SUBSCRIBED_TEXT_SMS_MODERATORS" attributes="" save_date="2020-01-20 18:11:42"><![CDATA[[url] [firstname] [lastname] [course] [username]]]></key>
+        <key id="sms&amp;_PASSWORD_CHANGED_SMS" attributes="sms" save_date="2020-01-24 08:23:12"><![CDATA[und Ihr Passwort wurde geändert ]]></key>
+        <key id="sms&amp;_REGISTERED_USER_TEXT_SMS" attributes="sms" save_date="2020-01-24 08:23:02"><![CDATA[Sie sind jetzt mit folgendem Benutzerkonto in unserem System registriert:
 
 Benutzername: [userid]
-Passwort: [password]]]></key>
+]]></key>
         <key id="sms&amp;_TO_APPROVE_GROUP_USER_TEXT_SMS" attributes="sms" save_date="2019-03-27 17:15:50"><![CDATA[Es gibt eine neue Mitgliedschaftsanfrage zu einer moderierten Gruppe, die Sie bestätigen müssen]]></key>
         <key id="sms&amp;_TO_APPROVE_USER_TEXT_SMS" attributes="sms" save_date="2019-03-27 17:15:50"><![CDATA[Ein neuer Benutzer hat sich registriert und wartet auf Ihre Bestätigung]]></key>
         <key id="sms&amp;_TO_NEW_USER_TEXT_SMS" attributes="sms" save_date="2019-03-27 17:15:50"><![CDATA[Neuer Benutzer registriert]]></key>
@@ -2179,7 +2205,7 @@ Passwort: [password]]]></key>
         <key id="standard&amp;_CHAPTERS" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Kapitel]]></key>
         <key id="standard&amp;_CHAT" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Chat]]></key>
         <key id="standard&amp;_CLASSROOM" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Klassenraum]]></key>
-        <key id="standard&amp;_CLOSE" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Schlie&szlig;en]]></key>
+        <key id="standard&amp;_CLOSE" attributes="" save_date="2020-02-09 21:14:11"><![CDATA[Schlie&szlig;en]]></key>
         <key id="standard&amp;_CODE" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Code]]></key>
         <key id="standard&amp;_COLLAPSE" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Ausklappen]]></key>
         <key id="standard&amp;_COMMENTS" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Kommentare]]></key>
@@ -2242,8 +2268,8 @@ Passwort: [password]]]></key>
         <key id="standard&amp;_DOWNLOAD" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Download]]></key>
         <key id="standard&amp;_EDITION" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Edition]]></key>
         <key id="standard&amp;_EDITIONS" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Editionen]]></key>
-        <key id="standard&amp;_EDIT_SCORE" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[änderungspunkte]]></key>
-        <key id="standard&amp;_EDIT_SETTINGS" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[änderungseinstellungen]]></key>
+        <key id="standard&amp;_EDIT_SCORE" attributes="" save_date="2020-01-13 08:39:28"><![CDATA[Änderungspunkte]]></key>
+        <key id="standard&amp;_EDIT_SETTINGS" attributes="" save_date="2020-01-13 08:39:33"><![CDATA[Änderungseinstellungen]]></key>
         <key id="standard&amp;_ELEARNING" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[E-Learning]]></key>
         <key id="standard&amp;_EMAIL" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[eMail]]></key>
         <key id="standard&amp;_EMPTY_SELECTION" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Leere Auswahl]]></key>
@@ -2427,7 +2453,7 @@ Passwort: [password]]]></key>
         <key id="standard&amp;_READ" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Lesen]]></key>
         <key id="standard&amp;_RECIPIENTS" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Empfänger]]></key>
         <key id="standard&amp;_REGISTER" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Registrieren]]></key>
-        <key id="standard&amp;_REGISTER_DATE" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Registrationsdatum]]></key>
+        <key id="standard&amp;_REGISTER_DATE" attributes="" save_date="2020-01-16 21:05:46"><![CDATA[Registrierungsdatum]]></key>
         <key id="standard&amp;_REMEMBER_ME" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Erinnere mich]]></key>
         <key id="standard&amp;_REMOVE_FROM_NODE" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Von Knoten entfernen]]></key>
         <key id="standard&amp;_REPLY" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Antworten]]></key>
@@ -2438,7 +2464,7 @@ Passwort: [password]]]></key>
         <key id="standard&amp;_ROLLBACK" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Rückgängig]]></key>
         <key id="standard&amp;_ROOT" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Root]]></key>
         <key id="standard&amp;_ROW" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Zeile]]></key>
-        <key id="standard&amp;_SAVE" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[änderungen speichern]]></key>
+        <key id="standard&amp;_SAVE" attributes="" save_date="2020-01-13 08:44:36"><![CDATA[Änderungen speichern]]></key>
         <key id="standard&amp;_SCHEDULE" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Plan]]></key>
         <key id="standard&amp;_SCORE" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Punktzahl]]></key>
         <key id="standard&amp;_SCORE_LAST_TEST" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Punktzahl des letzestes Test]]></key>
@@ -2485,7 +2511,7 @@ Passwort: [password]]]></key>
         <key id="standard&amp;_TEXTOF" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Text]]></key>
         <key id="standard&amp;_TIME_PERIODS" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Zeitperioden]]></key>
         <key id="standard&amp;_TITLE" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Titel]]></key>
-        <key id="standard&amp;_TO" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[an]]></key>
+        <key id="standard&amp;_TO" attributes="" save_date="2020-01-16 20:50:43"><![CDATA[Bis]]></key>
         <key id="standard&amp;_TOTAL" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Gesamt]]></key>
         <key id="standard&amp;_TOTAL_TIME" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Gesamtzeit]]></key>
         <key id="standard&amp;_TRANSACTION" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Transaktion]]></key>
@@ -2511,7 +2537,7 @@ Passwort: [password]]]></key>
         <key id="standard&amp;_USER_STATUS_CANCELLED" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Gelöscht]]></key>
         <key id="standard&amp;_USER_STATUS_CONFIRMED" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Zu bestätigende Abos]]></key>
         <key id="standard&amp;_USER_STATUS_END" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Abgeschlossen]]></key>
-        <key id="standard&amp;_USER_STATUS_ENTER" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Eingeben]]></key>
+        <key id="standard&amp;_USER_STATUS_ENTER" attributes="" save_date="2020-01-13 08:45:13"><![CDATA[Weiter]]></key>
         <key id="standard&amp;_USER_STATUS_RESERVED" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Reserviert]]></key>
         <key id="standard&amp;_USER_STATUS_SUBS" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Abonniert]]></key>
         <key id="standard&amp;_USER_STATUS_SUSPEND" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Suspendiert]]></key>
@@ -2863,7 +2889,7 @@ Passwort: [password]]]></key>
         <key id="test&amp;_TEST_TM2_NEWTIMETOTAL" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Neue Gesamtzeit:]]></key>
         <key id="test&amp;_TEST_TM2_PENALITY_QUEST" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Strafe wenn Zeitlimit der Frage überschritten wird]]></key>
         <key id="test&amp;_TEST_TM2_PENALITY_TEST" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Strafe wenn Gesamtzeitlimit überschritten wird]]></key>
-        <key id="test&amp;_TEST_TM2_SETSCORE" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[änderungen übernehmen]]></key>
+        <key id="test&amp;_TEST_TM2_SETSCORE" attributes="" save_date="2020-01-13 08:43:31"><![CDATA[Änderungen übernehmen]]></key>
         <key id="test&amp;_TEST_TM2_SETTIME" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[übernehmen und Zeit festlegen]]></key>
         <key id="test&amp;_TEST_TM2_SUBD_BY" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Verteilt von:]]></key>
         <key id="test&amp;_TEST_TM_FOUR" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Die den Fragen zugewiesene Zeit einstellen]]></key>
@@ -2896,15 +2922,15 @@ Passwort: [password]]]></key>
         <key id="user_managment&amp;_AUTOMATIC_PASSWORD" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Automatische Passwort]]></key>
         <key id="user_managment&amp;_CREATE_ALL" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Erstellen Alle]]></key>
         <key id="user_managment&amp;_CREATE_AND_UPDATE" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Erstellen und aktualisieren]]></key>
-        <key id="user_managment&amp;_DONT_USE_TREE_REGISTRATION" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Selbstregistration im Organisationsbaum nicht benutzen]]></key>
+        <key id="user_managment&amp;_DONT_USE_TREE_REGISTRATION" attributes="" save_date="2020-01-16 21:06:13"><![CDATA[Selbstregistrierung im Organisationsbaum nicht benutzen]]></key>
         <key id="user_managment&amp;_FIELD_REPEATED" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Man kann nicht das selbe Feld manches Mals importieren]]></key>
         <key id="user_managment&amp;_FROM_FILE" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Passwort aus Datei laden]]></key>
         <key id="user_managment&amp;_GENERATE_PASSWORD" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Passwort Generierung]]></key>
         <key id="user_managment&amp;_INSERT_ALL" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Einfügen für alle]]></key>
         <key id="user_managment&amp;_INSERT_EMPTY" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Passwort einfügen, wo das Feld leer ist]]></key>
-        <key id="user_managment&amp;_LOG_OPTION" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Login-/Registrationsoptionen]]></key>
+        <key id="user_managment&amp;_LOG_OPTION" attributes="" save_date="2020-01-16 21:05:00"><![CDATA[Login-/Registrierungsoptionen]]></key>
         <key id="user_managment&amp;_MANUAL_PASSWORD" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Manuelle Passwort]]></key>
-        <key id="user_managment&amp;_NEED_TO_ALERT" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Sie müssen die übermittung der Ankundigung an Benutzer aktivieren, wenn die Passworteinfügung gewählt ist]]></key>
+        <key id="user_managment&amp;_NEED_TO_ALERT" attributes="" save_date="2020-01-16 11:44:09"><![CDATA[Sie müssen die Übermittung der Ankündigung an Benutzer aktivieren, wenn die Passworteinfügung gewählt ist]]></key>
         <key id="user_managment&amp;_NO_FILE" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Keine Datei geladen]]></key>
         <key id="user_managment&amp;_NO_VALUE" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Es wurde keine Auswahl getroffen]]></key>
         <key id="user_managment&amp;_ONLY_CREATE" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Nur erstellen]]></key>
@@ -2912,8 +2938,8 @@ Passwort: [password]]]></key>
         <key id="user_managment&amp;_PASSWORD_TO_INSERT" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Passwort zu einfügen]]></key>
         <key id="user_managment&amp;_REACH_NUMBERS_OF_ATTEMPT" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Ihre Anmeldung ist [attempt] Mal fehlgeschlagen, aus Sicherheitsgründen müssen Sie [time] Minuten warten, um es erneut zu versuchen]]></key>
         <key id="user_managment&amp;_REGISTER_TYPE_ADMIN" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Nur durch Administrator]]></key>
-        <key id="user_managment&amp;_REGISTER_TYPE_MODERATE" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Moderierte Selbstregistration]]></key>
-        <key id="user_managment&amp;_REGISTER_TYPE_SELF" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Freie Selbstregistration]]></key>
+        <key id="user_managment&amp;_REGISTER_TYPE_MODERATE" attributes="" save_date="2020-01-16 21:03:12"><![CDATA[Moderierte Selbstregistrierung]]></key>
+        <key id="user_managment&amp;_REGISTER_TYPE_SELF" attributes="" save_date="2020-01-16 21:02:03"><![CDATA[Freie Selbstregistrierung]]></key>
         <key id="user_managment&amp;_SEND_NEW_CREDENTIALS_ALERT" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Logininformationen an Nutzer senden]]></key>
         <key id="user_managment&amp;_SET_PASSWORD" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Passwort einrichten]]></key>
         <key id="user_managment&amp;_USERID_NEEDED" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Das Benutzername Feld muss importiert und gewählt für Vergleich werden]]></key>

@@ -126,19 +126,6 @@ class UsermanagementAdmController extends AdmController
 		$f_selected = $this->json->decode(Docebo::user()->getPreference('ui.directory.custom_columns'));
 		if ($f_selected == false) {
 			$f_selected = array('level','email', 'lastenter', 'register_date');
-			/*$k_list = array_keys($f_list);
-			$counter = 0;
-			$lastkey = !empty($k_list) ? $k_list[0] : false;
-			while (list($key, $value) = each($f_list) && $counter < $this->numVarFields) {
-				$f_selected[] = $key;
-				$lastkey = $key;
-				$counter++;
-			}
-			if (count($f_selected) < $this->numVarFields) {
-				for ($i=0; $i<($this->numVarFields - $counter); $i++) {
-					$f_selected[] = $lastkey;
-				}
-			}*/
 		}
 
 		$js_arr = array();
@@ -2428,6 +2415,10 @@ class UsermanagementAdmController extends AdmController
 		if ($users != "") {
 			$acl_man = Docebo::user()->getAclManager();
 			$arr_users = explode(',', $users);
+			$arr_users = array_map(
+				function($value) { return (int)$value; },
+				$arr_users
+			);
 			$arr_users = array_unique($arr_users);
 			$details = $this->model->getUsersDetails($arr_users, true, true);
 			if (is_array($details)) {

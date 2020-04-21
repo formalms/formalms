@@ -174,10 +174,10 @@ class SettingAdm extends Model
 
 		$html = Form::getOpenFieldset($lang->def('_LOAD_UNLOAD_PLATFORM'));
 		reset($all_platform);
-        while (list($code, $info) = each($all_platform)) {
+        foreach($all_platform as $code => $info )
+        {
             if ($info['hidden_in_config'] != 'true') {
-
-				$code = $info['platform'];
+				        $code = $info['platform'];
                 echo Form::getCheckbox($info['name'],
                     'activate_platform_' . $code,
                     'activate_platform[' . $code . ']',
@@ -215,25 +215,25 @@ class SettingAdm extends Model
 		$re = true;
 
 		reset($all_platform);
-        while (list($code, $info) = each($all_platform)) {
+        foreach($all_platform as $code => $info )
+        {
             if ($info['hidden_in_config'] != 'true') {
-				$code = $info['platform'];
+				        $code = $info['platform'];
                 if (isset($_POST['activate_platform'][$code])) {
-
-					$re &= $plat_man->activatePlatform($code);
-					$code_list_home[$code] = $info['name'];
+					         $re &= $plat_man->activatePlatform($code);
+					         $code_list_home[$code] = $info['name'];
                 } elseif ($info['mandatory'] == 'false') $re &= $plat_man->deactivatePlatform($code);
-			}
-		}
+			       }
+		  }
         if (isset($code_list_home[$_POST['platform_in_home']])) $re &= $plat_man->putInHome($_POST['platform_in_home']);
-		return $re;
+		    return $re;
 	}
 
 	/**
 	 * REturnes the displayable information for a selected group
 	 * @return string
 	 */
-    function printPageWithElement($regroup)
+    function printPageWithElement($regroup, $includeDisabledPlugins = false)
     {
 
         require_once(_base_ . '/lib/lib.form.php');
@@ -246,6 +246,8 @@ class SettingAdm extends Model
 			echo '<div class="col-sm-6">';
 			if ($groupPack)
 				echo '<h3>' . Lang::t('_' . strtoupper($groupPack), 'configuration') . '</h3>';
+			else 
+				echo '<h3>' . Lang::t('MAIN_SET_' . strtoupper($regroup), 'configuration') . '</h3>';
 
 			$reSetting = sql_query("
 			SELECT pack, param_name, param_value, value_type, max_size
@@ -543,6 +545,7 @@ class SettingAdm extends Model
 	                  $tab_list = array();
 	                  $tab_list['my_courses'] = Lang::t('_MY_COURSES');
 	                  $tab_list['catalogue'] = Lang::t('_CATALOGUE');
+	                  $tab_list['dashboard'] = Lang::t('_DASHBOARD');
 	                  $which_home = $var_value;
 
 	                    echo '<div class="form_line_l"><p><b>' .
@@ -629,7 +632,7 @@ class SettingAdm extends Model
 
 					default : {
 						//string or int
-	                    echo Form::getTextfield(Lang::t('_' . strtoupper($var_name), 'configuration'),
+	                    echo Form::getTextfield(Lang::t('_' . strtoupper($var_name), 'configuration', array(), false, false, $includeDisabledPlugins),
 													$var_name,
 	                        'option[' . $var_name . ']',
 													$max_size,

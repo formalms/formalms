@@ -134,3 +134,7 @@ body {
     }
   }
 }
+
+div#container {
+  min-height: calc(100% - 86px);
+}

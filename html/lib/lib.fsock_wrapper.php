@@ -217,7 +217,7 @@ class FSock {
 
 	        do {
 	            $tmp = ltrim ( $tmp );
-	            $pos = strpos ( $tmp, $eol );
+	            $pos = strpos ( $tmp, strval($eol) );
 	            $len = hexdec ( substr ( $tmp, 0, $pos ) );
 	            if ( isset ( $info['content-encoding'] ) )  {
 	                $str .= gzinflate ( substr ( $tmp, ( $pos + $add + 10 ), $len ) );

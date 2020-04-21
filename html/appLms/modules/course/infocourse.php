@@ -24,7 +24,8 @@ function statusNoEnter($perm, $status) {
 function newStatusEnter($arr_stat) {
 	$new_perm = 0;
 	if(!is_array($arr_stat)) return $new_perm;
-	while( list($status) = each($arr_stat) ) {
+  foreach($arr_stat as $status => $v)
+  {
 		$new_perm |= (1 << $status);
 	}
 	return $new_perm;
@@ -141,8 +142,9 @@ function infocourse() {
 			.'<tr><th scope="row">'.$lang->def('_SUBSCRIBE_METHOD').'</th><td>'.$subs_lang[$course['subscribe_method']].'</td></tr>'
 			.'<tr><th scope="row">'.$lang->def('_LANGUAGE').'</th><td>'.$course['lang_code'].'</td></tr>'
 	, 'content');
-	while(list($num_lv, $name_level) = each($levels)) {
-		
+
+	foreach( $levels as $num_lv => $name_level )  
+	{
 		if($course['level_show_user'] & (1 << $num_lv)) {
 			
 			$users =& $acl_man->getUsers( Man_Course::getIdUserOfLevel($_SESSION['idCourse'], $num_lv, $_SESSION['idEdition']) );
@@ -150,7 +152,9 @@ function infocourse() {
 				
 				$first = true;
 				$GLOBALS['page']->add('<tr><th scope="row">'.$name_level.'</th><td>', 'content');
-				while(list($id_user, $user_info) = each($users)) {
+	      
+        foreach( $users as $id_user => $user_info )        
+         {
 					
 					if($first) $first = false;
 					else $GLOBALS['page']->add(', ', 'content');
@@ -292,7 +296,8 @@ function modcourseinfo() {
 		
 		//-list-of-user---------------------------------------------------
 		.$form->getOpenCombo($lang->def('_SHOW_USER_OF_LEVEL')));
-	while(list($level, $level_name) = each($levels)) {
+	foreach( $levels as $level => $level_name )    
+  {
 		
 		$out->add($form->getCheckbox($level_name, 'course_show_level_'.$level, 'course_show_level['.$level.']', $level, 
 			($course['level_show_user'] & (1 << $level))));
@@ -404,7 +409,8 @@ function upcourseinfo() {
 	
 	$user_status = 0;
 	if(isset($_POST['user_status'])) {
-		while(list($status) = each($_POST['user_status'])) {
+    foreach( $_POST['user_status'] as $status => $v )
+    {
 			$user_status |= (1 << $status);
 		}
 	}
@@ -413,7 +419,8 @@ function upcourseinfo() {
 	$re = true;
 	$show_level = 0;
 	if(isset($_POST['course_show_level'])) {
-		while(list($lv) = each($_POST['course_show_level'])) {
+    foreach( $_POST['course_show_level'] as $lv => $v )
+    {
 			$show_level |= (1 << $lv);
 		}
 	}
@@ -466,7 +473,7 @@ function upcourseinfo() {
 					$recipients, 
 					$msg_composer );
 					
-	Util::jump_to( 'index.php?modname=course&op=infocourse&result='.( $re ? 'ok' : 'err' ));
+	Util::jump_to( 'index.php?r=lms/course/infocourse&result='.( $re ? 'ok' : 'err' ));
 }
 
 function downloadcourse() {
@@ -497,10 +504,10 @@ function addfiles() {
 	
 	$GLOBALS['page']->add(
 		getTitleArea(
-			array('index.php?modname=course&amp;op=infocourse' => $lang->def('_INFO'), $lang->def('_ADDFILES'))
+			array('index.php?r=lms/course/infocourse' => $lang->def('_INFO'), $lang->def('_ADDFILES'))
 			, 'infocourse')
 		.'<div class="std_block">'
-		.getBackUi('index.php?modname=course&amp;op=infocourse', $lang->def('_BACK'))
+		.getBackUi('index.php?r=lms/course/infocourse', $lang->def('_BACK'))
 		.Form::openForm('', 'index.php?modname=course&amp;op=insfiles', false, false, 'multipart/form-data')
 		
 		.Form::openElementSpace()
@@ -563,7 +570,7 @@ function insfiles() {
 		return;
 	}
 	$GLOBALS['course_descriptor']->addFileToUsedSpace($GLOBALS['where_files_relative']._PATH_COURSE.$savefile);
-	Util::jump_to( 'index.php?modname=course&op=infocourse');
+	Util::jump_to( 'index.php?r=lms/course/infocourse');
 }
 
 function modfiles() {
@@ -581,10 +588,10 @@ function modfiles() {
 	
 	$GLOBALS['page']->add(
 		getTitleArea(
-			array('index.php?modname=course&amp;op=infocourse' => $lang->def('_INFO'), $lang->def('_MOD'))
+			array('index.php?r=lms/course/infocourse' => $lang->def('_INFO'), $lang->def('_MOD'))
 			, 'infocourse')
 		.'<div class="std_block">'
-		.getBackUi('index.php?modname=course&amp;op=infocourse', $lang->def('_BACK'))
+		.getBackUi('index.php?r=lms/course/infocourse', $lang->def('_BACK'))
 		.Form::openForm('', 'index.php?modname=course&amp;op=upfiles', false, false, 'multipart/form-data')
 		
 		.Form::openElementSpace()
@@ -661,7 +668,7 @@ function upfiles() {
 		return;
 	}
 	$GLOBALS['course_descriptor']->addFileToUsedSpace($GLOBALS['where_files_relative']._PATH_COURSE.$savefile);
-	Util::jump_to( 'index.php?modname=course&op=infocourse');
+	Util::jump_to( 'index.php?r=lms/course/infocourse');
 }
 
 function remfiles() {
@@ -691,7 +698,7 @@ function remfiles() {
 			return;
 		}
 		
-		Util::jump_to( 'index.php?modname=course&op=infocourse');
+		Util::jump_to( 'index.php?r=lms/course/infocourse');
 	} else {
 		list($title, $file) = sql_fetch_row(sql_query("
 		SELECT title, path 
@@ -701,14 +708,14 @@ function remfiles() {
 		//request erase confirm
 		$GLOBALS['page']->add(
 			getTitleArea(
-				array('index.php?modname=course&amp;op=infocourse' => $lang->def('_INFO'), $lang->def('_DEL'))
+				array('index.php?r=lms/course/infocourse' => $lang->def('_INFO'), $lang->def('_DEL'))
 				, 'infocourse')
 			.'<div class="std_block">'
 			.getDeleteUi(	$lang->def('_AREYOUSURE'), 
 							'<img src="'.getPathImage('fw').mimeDetect($file).'" alt="mime-type" /> '.$title,
 							true,
 							'index.php?modname=course&amp;op=remfiles&amp;id_file='.(int)$_GET['id_file'].'&amp;confirm=1',
-							'index.php?modname=course&amp;op=infocourse'
+							'index.php?r=lms/course/infocourse'
 			)
 			.'</div>'
 		, 'content');
@@ -726,12 +733,12 @@ function viewprofile() {
 	$profile->init('profile', 'framework', 'modname=course&op=profile&infocourse', 'ap');
 	
 	$GLOBALS['page']->add(
-		getTitleArea(	array(	'index.php?modname=course&amp;op=infocourse' => $lang->def('_INFO').': '.$GLOBALS['course_descriptor']->getValue('name'),
+		getTitleArea(	array(	'index.php?r=lms/course/infocourse' => $lang->def('_INFO').': '.$GLOBALS['course_descriptor']->getValue('name'),
 						$profile->resolveUsername() )
 						, 'infocourse')
 		.'<div class="std_block">'
 		.$profile->performAction()
-		.getBackUi('index.php?modname=course&amp;op=infocourse', $lang->def('_BACK'))
+		.getBackUi('index.php?r=lms/course/infocourse', $lang->def('_BACK'))
 		.'</div>'
 	, 'content');
 }

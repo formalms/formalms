@@ -270,8 +270,9 @@ class QuestBankMan {
 
 				require_once($GLOBALS['where_lms'].'/modules/question/format.gift.php');
 				$qgift = new  qformat_gift();
-
-				while(list($id_quest, $type_quest) = each($quest_list)) {
+        
+        foreach($quest_list as $id_quest=>$type_quest )
+        {
 
 					$oQuest 	= $this->instanceQuestType($id_quest, $type_quest);
 					if($oQuest) {

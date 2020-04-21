@@ -135,7 +135,8 @@ class EnrollrulesAlms extends Model {
 		$re = $this->db->query($query);
 		// we also need to remove the removed course from the rules
 		$entityr = $this->getEntityRule($id_rule);
-		while(list($id_e, $ent) = each($entityr)) {
+    foreach( $entityr as $id_e => $ent )    
+    {
 			
 			$surplus = array_diff($ent->course_list, $data_selection);
 			if(!empty($surplus)) {
@@ -299,7 +300,7 @@ class EnrollrulesAlms extends Model {
 			." ON (r.id_rule = re.id_rule) "
 			."WHERE r.rule_type <> 'base' "
 			." AND ( r.lang_code = 'all' OR r.lang_code = '".$language."' )"
-			." AND id_entity IN ( '".implode("','", $id_entities)."' ) ";
+			." AND id_entity IN ( '".implode("','", $id_entities)."' ) AND r.rule_active = 1";
 		$result = $this->db->query($query);
 		while($entity = $this->db->fetch_obj($result)) {
 

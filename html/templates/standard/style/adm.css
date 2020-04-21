@@ -21,7 +21,12 @@
 html, body {}
 .layout_header {padding: 8px 1em;background:#ffffff;}
 .layout_header .left_logo {margin-top: 5px;margin-left: 10px;vertical-align:middle;}
-.layout_colum_container{padding:1em;}
+
+/* Fix bug #19669: the main container will always fill 90% of vertical height to avoid the footer to be in the middle of the page */
+.layout_colum_container{
+  padding:1em;
+  min-height: 90vh;
+}
 
 .layout_footer{background:#eeeeee; height:21px; font-size:90%;}
 .layout_footer img{vertical-align:middle;}
@@ -487,5 +492,12 @@ html, body {}
     width: auto;
   }
   
+/* Fix bug #19669: fixed position for the search buttons to avoid the wrong movement */
+.btn-default:focus, .btn-default:hover{
+  background-position: 2px;
+}
 
+/* Fix bug #19669: the main container will always fill 90% of vertical height to avoid the footer to be in the middle of the page */
+div#admcontainer {
+  min-height: 90vh;
 }

@@ -854,10 +854,10 @@ INSERT INTO `core_event_manager` (`idEventMgr`, `idClass`, `permission`, `channe
 (39, 39, 'not_used', 'email', '_EVENT_RECIPIENTS_USER', 'godadmin,admin,user'),
 (41, 41, 'mandatory', 'email', '_EVENT_RECIPIENTS_MODERATORS_GOD', 'godadmin,admin'),
 (42, 42, 'mandatory', 'email', '_EVENT_RECIPIENTS_USER', 'godadmin,admin,user'),
-(43, 43, 'mandatory', 'email', '_EVENT_RECIPIENTS_USER', 'godadmin,admin,user'),
-(44, 44, 'mandatory', 'email', '_EVENT_RECIPIENTS_TEACHER', 'admin'),
+(43, 43, 'not_used', 'email', '_EVENT_RECIPIENTS_USER', 'godadmin,admin,user'),
+(44, 44, 'not_used', 'email', '_EVENT_RECIPIENTS_TEACHER', 'admin'),
 (45, 45, 'not_used', 'email', '_EVENT_RECIPIENTS_TEACHER_GOD', 'godadmin,admin,user'),
-(46, 46, 'mandatory', 'email', '_EVENT_RECIPIENTS_MODERATORS_GOD', 'admin');
+(46, 46, 'not_used', 'email', '_EVENT_RECIPIENTS_MODERATORS_GOD', 'admin');
 
 -- --------------------------------------------------------
 
@@ -977,7 +977,7 @@ INSERT INTO `core_field_type` (`type_field`, `type_file`, `type_class`, `type_ca
 --
 
 CREATE TABLE IF NOT EXISTS `core_field_userentry` (
-  `id_common` varchar(11) NOT NULL DEFAULT '',
+  `id_common` int(11) NOT NULL DEFAULT '0',
   `id_common_son` int(11) NOT NULL DEFAULT '0',
   `id_user` int(11) NOT NULL DEFAULT '0',
   `user_entry` text NOT NULL,
@@ -2039,7 +2039,8 @@ INSERT INTO `core_role` (`idst`, `roleid`, `description`) VALUES
 (11757, '/lms/course/private/coursestats/view', ''),
 (11835, '/lms/course/private/presence/view', ''),
 (11836, '/lms/admin/certificate/assign', NULL),
-(11837, '/lms/admin/certificate/release', NULL);
+(11837, '/lms/admin/certificate/release', NULL),
+(11838, '/lms/admin/report/schedule', NULL);
 
 -- --------------------------------------------------------
 
@@ -2334,9 +2335,6 @@ INSERT INTO `core_role_members` (`idst`, `idstMember`) VALUES
 (198, 302),
 (198, 303),
 (198, 304),
-(198, 305),
-(198, 306),
-(198, 307),
 (199, 301),
 (199, 302),
 (199, 303),
@@ -2600,7 +2598,7 @@ INSERT INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size
 ('user_pwd_history_length', '3', 'int', 3, 'password', 3, 10, 1, 0, ''),
 ('user_quota', '50', 'string', 255, '0', 8, 6, 1, 0, ''),
 ('use_advanced_form', 'off', 'enum', 3, 'register', 3, 16, 1, 0, ''),
-('use_course_label', 'off', 'enum', 3, 'main', 4, 7, 1, 0, ''),
+('use_course_label', 'off', 'enum', 3, '0', 4, 7, 1, 0, ''),
 ('use_rest_api', 'off', 'enum', 3, 'api', 9, 7, 1, 0, ''),
 ('use_tag', 'on', 'enum', 3, '0', 4, 8, 1, 0, ''),
 ('visuItem', '25', 'int', 3, '0', 2, 1, 1, 1, ''),
@@ -2699,7 +2697,10 @@ INSERT INTO `core_st` (`idst`) VALUES
 (11832),
 (11833),
 (11834),
-(11835);
+(11835),
+(11836),
+(11837),
+(11838);
 
 -- --------------------------------------------------------
 
@@ -3160,13 +3161,16 @@ UPDATE `core_setting` SET `sequence` = '13' WHERE `core_setting`.`param_name` = 
 -- Nuove configurazioni e colonne per la gestione avanzata della reportistica
 --
 INSERT IGNORE INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size`, `pack`, `regroup`, `sequence`, `param_load`, `hide_in_modify`, `extra_info`)
-VALUES ('report_persistence_days', '30', 'int', '4', 'report_settings', '1', '990', '1', '0', '');
+VALUES ('report_persistence_days', '30', 'int', '4', 'report_settings', '8', '990', '1', '0', '');
 
 INSERT IGNORE INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size`, `pack`, `regroup`, `sequence`, `param_load`, `hide_in_modify`, `extra_info`)
-VALUES ('report_max_email_size_MB', '0', 'int', '4', 'report_settings', '1', '991', '1', '0', '');
+VALUES ('report_max_email_size_MB', '0', 'int', '4', 'report_settings', '8', '991', '1', '0', '');
 
 INSERT IGNORE INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size`, `pack`, `regroup`, `sequence`, `param_load`, `hide_in_modify`, `extra_info`)
-VALUES ('report_storage_folder', '/files/common/report/', 'string', '255', 'report_settings', '1', '992', '1', '0', '');
+VALUES ('report_storage_folder', '/files/common/report/', 'string', '255', 'report_settings', '8', '992', '1', '0', '');
+
+INSERT IGNORE INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size`, `pack`, `regroup`, `sequence`, `param_load`, `hide_in_modify`, `extra_info`)
+VALUES ('use_immediate_report', 'off', 'enum', '3', 'report_settings', '8', '993', '1', '0', '');
 
 
 

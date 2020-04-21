@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="12px" viewBox="0 0 16 12" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 62 (91390) - https://sketch.com -->
+    <title>Mask</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <path d="M14.5,0 L1.5,0 C0.6715625,0 0,0.6715625 0,1.5 L0,10.5 C0,11.3284375 0.6715625,12 1.5,12 L14.5,12 C15.3284375,12 16,11.3284375 16,10.5 L16,1.5 C16,0.6715625 15.3284375,0 14.5,0 Z M14.5,1.5 L14.5,2.77515625 C13.7993125,3.34575 12.68225,4.233 10.2941563,6.10296875 C9.767875,6.5169375 8.725375,7.51146875 8,7.499875 C7.27475,7.51159375 6.23190625,6.51678125 5.70584375,6.10296875 C3.318125,4.23328125 2.20078125,3.34584375 1.5,2.77515625 L1.5,1.5 L14.5,1.5 Z M1.5,10.5 L1.5,4.6999375 C2.2160625,5.27028125 3.23153125,6.070625 4.7793125,7.282625 C5.46234375,7.82028125 6.6585,9.0071875 8,8.99996875 C9.33490625,9.0071875 10.5159063,7.8375 11.2204062,7.282875 C12.7681563,6.07090625 13.7839062,5.27034375 14.5,4.6999375 L14.5,10.5 L1.5,10.5 Z" id="path-1"></path>
+    </defs>
+    <g id="002-User-Teacher-Profile" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="profile-iPhone-SE" transform="translate(-92.000000, -911.000000)">
+            <g id="ui/cta-primary-copy" transform="translate(15.000000, 895.000000)">
+                <g id="Group" transform="translate(48.000000, 13.000000)">
+                    <g id="Group-2">
+                        <g id="Regular/envelope" transform="translate(29.000000, 3.000000)">
+                            <mask id="mask-2" fill="white">
+                                <use xlink:href="#path-1"></use>
+                            </mask>
+                            <use id="Mask" fill="#FFFFFF" xlink:href="#path-1"></use>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

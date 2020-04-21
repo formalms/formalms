@@ -146,9 +146,11 @@ function schedule_recipients($idrep) {
 
 
 //time and period of schedulation
-function schedule_set($idrep) {
+function schedule_set($idrep, $checkperm = 'mod') {
 
-    checkPerm('mod');
+	if ($checkperm) {
+    	checkPerm($checkperm);
+	}
 
 		$lang =& DoceboLanguage::createInstance('report', 'framework');
 
@@ -314,7 +316,7 @@ function schedule_report() {
 	if ($step=='sched_setrecipients') {
 		schedule_recipients($idrep);
 	} else {
-		schedule_set($idrep);
+		schedule_set($idrep, null);
 	}
 }
 

@@ -1,7 +1,7 @@
 <div class="homepage__row homepage__row--gray">
 	<div><i class="fa {% if registration == true %} fa-check {% else %} fa-close {% endif %}"></i></div>
 	<p>
-		{{ message }}
+		{{ message|raw }}
 	</p>
 	<br/><br/>
 </div>

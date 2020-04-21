@@ -53,8 +53,19 @@ class HelpdeskLmsController extends LmsController {
             $msg .= "<h2 style='font-weight:bold;border-bottom:1px dotted #ccc;'>".Get::sett('customer_help_email')."</h2>\r\n";
             $msg .= "<p><strong>".Lang::t('_USER', 'standard').":</strong> ".$username."</p>\r\n";
             $msg .= "<p><strong>".Lang::t('_EMAIL', 'menu').":</strong> ".$usermail."</p>\r\n";
-            $msg .= "<p><strong>".Lang::t('_PHONE', 'classroom').":</strong> ".$telefono."</p>\r\n";
+            if ($telefono) {
+                $msg .= "<p><strong>".Lang::t('_PHONE', 'classroom').":</strong> ".$telefono."</p>\r\n";
+            }
             $msg .= "<p><strong>".Lang::t('_TEXTOF', 'menu').":</strong> ".$content."</p>\r\n";
+
+            if ($id_course = $_SESSION['idCourse']) {
+                $sql = "SELECT c.code, c.name FROM %lms_course AS c WHERE c.idCourse = $id_course";
+                $query = sql_query($sql);
+
+                if ($row = sql_fetch_object($query)) {
+                    $msg .= "<p><strong>".Lang::t('_COURSE', 'standard').":</strong> [".$row->code."] - ".$row->name."</p>\r\n";
+                }
+            }
 
             $msg .= $br_char . "---------- CLIENT INFO -----------" . $br_char;
             // $msg .= "IP: " . $_SERVER['REMOTE_ADDR'] . $br_char;

@@ -878,7 +878,8 @@ class Form {
 				.(($multiple)?'multiple="multiple" ':'')
 				.$other_param.'>'."\n";
 		if( is_array($all_value) ) {
-			while( list($key, $value) = each($all_value) ) {
+      foreach($all_value as $key => $value)
+      {
 				$html_code .= '	<option value="'.$key.'"'
 						.(in_array ( $key, $selected) ? ' selected="selected"' : '' )
 						.'>'.$value.'</option>'."\n";

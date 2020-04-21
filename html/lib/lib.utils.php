@@ -349,7 +349,7 @@ class Util  {
 
 
 	public function str_replace_once($search, $replace, $subject, &$count=false) {
-		if (strpos($subject, $replace) === false) {
+		if (strpos($subject, strval($replace)) === false) {
 			if ($count === false) {
 				return str_replace($search, $replace, $subject);
 			}

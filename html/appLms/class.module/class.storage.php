@@ -94,8 +94,8 @@ class Module_Storage extends LmsModule {
 		}
 		$tb->setColsStyle($t_head);
 		$tb->addHead($c_head);
-		
-		while(list($lv, $levelname) = each($levels)) {
+		foreach($levels as $lv => $levelname )
+    {
 			
 			$c_body = array($levelname);
 			
@@ -145,7 +145,8 @@ class Module_Storage extends LmsModule {
 		$levels 	= CourseLevel::getLevels();
 		$perm 		= array();
 		
-		while(list($lv, $levelname) = each($levels)) {
+		foreach($levels as $lv => $levelname ) 
+    {
 			$perm[$lv] = array();
 			foreach($tokens as $k => $token) {
 				

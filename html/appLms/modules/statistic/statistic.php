@@ -13,6 +13,8 @@
 
 if (Docebo::user()->isAnonymous()) die("You can't access");
 
+require_once(Forma::inc(_lib_ . '/formatable/include.php'));
+
 function outPageView($link)
 {
 
@@ -122,7 +124,10 @@ function outPageView($link)
 	FROM " . $GLOBALS['prefix_lms'] . "_trackingeneral 
 	WHERE idCourse='" . $_SESSION['idCourse'] . "' ";
     if (!$view_all_perm && Docebo::user()->getUserLevelId() == '/framework/level/admin') {
-        $query_stat .= " AND idUser IN (" . implode($course_user, ',') . ") ";
+        $query_stat .= " AND idUser IN (" . implode(',', $course_user) . ") ";
+    }
+    if ($_REQUEST['op'] == 'userdetails' && isset($_REQUEST['id'])) {
+        $query_stat .= " AND idUser = ".$_REQUEST['id'];
     }
     $query_stat .= " AND timeof >= '$dateinit' AND timeof <= '$dateend' 
 	GROUP BY " . $group_by . "
@@ -170,32 +175,10 @@ function outPageView($link)
                                 }
                             });
         </script>', 'content');
-
-    /*$GLOBALS['page']->add(
-        '<div class="container_graphic">'."\n"
-        .'<table cellspacing="0">'
-        .'<tr class="colum_isto">', 'content');
-
-    $left_space = 0;
-    $out_index = '';
-    $width = round(100 / $colums, 1);
-    while(list($i, $number) = each($walk)) {
-
-        $value = ( isset($page_views[$number]) ? $page_views[$number] : 0 );
-        $GLOBALS['page']->add(
-            '<td style="width: '.$width.'%;">'
-                .( $value != 0 ? $value.'<div class="colored_isto" style="height: '.((150 / $max) * $value).'px;">&nbsp;</div>' : '' )
-            .'</td>', 'content');
-        $out_index .= '<td>'.( isset($walk_name[$i]) ? $walk_name[$i] : $number ).'</td>';
-    }
-    $GLOBALS['page']->add(
-        '</tr>'
-        .'<tr class="colum_index" scope="col">'.$out_index.'</tr>'
-        .'</table>'
-        .'</div>'."\n"*/
     cout('<div class="align-center">'
         . '<ul class="link_list_inline">', 'content');
-    while (list(, $value) = each($times)) {
+    foreach($times as $value) 
+    {
 
         if ($for == $value) {
             $GLOBALS['page']->add('<li><span>' . $lang->def('_FOR_' . $value) . '</span></li>', 'content');
@@ -233,17 +216,13 @@ function statistic()
 
 
     $users_list =& $acl_man->getUsers($course_user);
-    $GLOBALS['page']->add(
-        getTitleArea(lang::t('_STAT', 'menu_course'))
-        . '<div class="std_block">', 'content');
+    $GLOBALS['page']->add(getTitleArea(lang::t('_STAT', 'menu_course')), 'content');
 
     if (Get::sett('tracking') == 'on') {
-
         $GLOBALS['page']->add('<div class="title">' . $lang->def('_PAGE_VIEW') . '</div>', 'content');
         outPageView('index.php?modname=statistic&amp;op=statistic');
     }
-    $GLOBALS['page']->add(
-        '<br />', 'content');
+    $GLOBALS['page']->add('<br />', 'content');
     $tb = new Table(0, $lang->def('_USERS_LIST_CAPTION'), $lang->def('_USERS_LIST_SUMMARY'));
 
     $type_h = array('', '', '');
@@ -254,8 +233,8 @@ function statistic()
     );
     $tb->setColsStyle($type_h);
     $tb->addHead($cont_h);
-    while (list(, $user_info) = each($users_list)) {
-
+    foreach($users_list as $user_info )
+    {
         $cont = array(
             '<a href="index.php?modname=statistic&amp;op=userdetails&amp;id=' . $user_info[ACL_INFO_IDST] . '" '
             . 'title="' . $lang->def('_DETAILS') . ' : ' . $acl_man->relativeId($user_info[ACL_INFO_USERID]) . '">'
@@ -265,10 +244,56 @@ function statistic()
         );
         $tb->addBody($cont);
     }
-    $GLOBALS['page']->add(
-        $tb->getTable()
-        . '</div>', 'content');
 
+    $GLOBALS['page']->add(getTable($tb,'_USERS_LIST_CAPTION', 'stats_users_list'), 'content');
+}
+
+function getTable($tb, $title = null, $id)
+{
+    $table_head = '';
+    foreach ($tb->table_head as $row) {
+        $table_head.= '<tr>';
+        foreach ($row->cells as $cell) {
+            $table_head.='<th>'.$cell->abbr.'</th>';
+        }
+        $table_head.= '</tr>';
+    }
+
+    $table_body = '';
+    foreach ($tb->table_body as $row) {
+        $table_body.= '<tr>';
+        foreach ($row->cells as $cell) {
+            $table_body.='<td>'.$cell->label.'</td>';
+        }
+        $table_body.= '</tr>';
+    }
+
+    return '
+        <table class="table table-striped table-bordered display" style="width:100%" id="'.$id.'">
+          <thead>
+            <tr>
+                <th colspan="6"><b>'. Lang::t($title, 'statistic').'</b></th>
+            </tr>'.
+            $table_head
+          .'</thead>
+          <tbody>'.
+            $table_body
+          .'</tbody>
+        </table>'
+
+        .'<script>
+        $(function() {
+          var tableId = "#'.$id.'";
+
+          $(tableId).FormaTable({
+            processing: true,
+            serverSide: false,
+            pagingType: "full_numbers",
+            scrollX: true,
+            order: [[ 0, "asc" ]],
+          });
+        });
+        </script>';
 }
 
 function userdetails()
@@ -354,7 +379,7 @@ function userdetails()
 
     $GLOBALS['page']->add(
         getTitleArea($page_title, 'statistic')
-        . '<div class="std_block">'
+        //. '<div class="std_block">'
         . getBackUi('index.php?modname=statistic&amp;op=statistic', $lang->def('_BACK')), 'content');
 
     $tb = new Table(0, $lang->def('_USERS_LIST_DETAILS_CAPTION'), $lang->def('_USERS_LIST_DETAILS_SUMMARY'));
@@ -374,6 +399,8 @@ function userdetails()
         $cont_h[] = '<img src="' . getPathImage() . 'standard/view.png" title="' . $lang->def('_VIEW_SESSION_DETAILS') . '" '
             . 'alt="' . $lang->def('_VIEW_SESSION_DETAILS_ALT') . '" />';
         $type_h[] = 'image';
+
+        outPageView($link);
     };
     $tb->setColsStyle($type_h);
     $tb->addHead($cont_h);
@@ -417,30 +444,29 @@ function userdetails()
     if ($minutes < 10) $minutes = '0' . $minutes;
     if ($seconds < 10) $seconds = '0' . $seconds;
 
+    $table_head = '';
+    foreach ($tb->table_head as $row) {
+        $table_head.= '<tr>';
+        foreach ($row->cells as $cell) {
+            $table_head.='<th>'.$cell->label.'</th>';
+        }
+        $table_head.= '</tr>';
+    }
+
+    $table_body = '';
+    foreach ($tb->table_body as $row) {
+        $table_body.= '<tr>';
+        foreach ($row->cells as $cell) {
+            $table_body.='<td>'.$cell->label.'</td>';
+        }
+        $table_body.= '</tr>';
+    }
+
     $json = new Services_JSON();
     cout(
         '<div>'
         . '<span class="text_bold">' . $lang->def('_USER_TOTAL_TIME') . ' : </span>' . $hours . 'h ' . $minutes . 'm ' . $seconds . 's '
-        . '</div>'
-        . '<div id="statistic_chart">Unable to load Flash content. Required Flash Player 9.0.45 or higher. You can download the latest version of Flash Player from the <a href="http://www.adobe.com/go/getflashplayer">Adobe Flash Player Download Center</a>.</div>
-		<script type="text/javascript">
-			var dataSource = new YAHOO.util.DataSource( ' . $json->encode(array_values($chart_data)) . ' );
-			dataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
-			dataSource.responseSchema = {fields: [ "x_axis", "y_axis" ]};
-
-			var getDataTipText = function(item, index, series) {
-				var toolTipText = Math.floor(item.y_axis/3600) +"h "+ Math.floor((item.y_axis%3600)/60) + "m";
-				return toolTipText;
-			};
-			
-			var myChart = new YAHOO.widget.ColumnChart( "statistic_chart", dataSource, {
-				xField: "x_axis",
-				yField: "y_axis",
-				wmode: "opaque",
-			dataTipFunction: getDataTipText
-			});
-		</script>'
-        . $tb->getTable()
+        . getTable($tb, '_USERS_LIST_DETAILS_CAPTION', 'stats_user_details')
         . $nav_bar->getNavBar($ini)
         . getBackUi('index.php?modname=statistic&amp;op=statistic', $lang->def('_BACK'))
         . '</div>', 'content');
@@ -562,8 +588,7 @@ function sessiondetails()
     );
     $tb->addBody($cont);
     $GLOBALS['page']->add(
-        $tb->getTable()
-        . $nav_bar->getNavBar()
+        getTable($tb, '_VIEW_SESSION_DETAILS', 'stats_session_detail')
         . getBackUi('index.php?modname=statistic&amp;op=userdetails&amp;id=' . $idst_user . '&amp;p_ini=' . $p_ini, $lang->def('_BACK'))
         . '</div>', 'content');
 }

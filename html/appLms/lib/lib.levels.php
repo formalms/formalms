@@ -13,6 +13,15 @@
 
 class CourseLevel {
 
+	const COURSE_LEVEL_ADMIN = 7;
+	const COURSE_LEVEL_TEACHER = 6;
+	const COURSE_LEVEL_MENTOR = 5;
+	const COURSE_LEVEL_TUTOR = 4;
+	const COURSE_LEVEL_STUDENT = 3;
+	const COURSE_LEVEL_GHOST = 2;
+	const COURSE_LEVEL_GUEST = 1;
+
+
 	function getLevels() {
 
 		$lang =& DoceboLanguage::createInstance('levels', 'lms');

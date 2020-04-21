@@ -96,7 +96,8 @@ class OrgDirDb extends RepoDirDb {
 			return NULL;
 		$arrPre = explode( ',', $prerequisistes );
 		$arrResult = array();
-		while( list($key, $val) = each( $arrPre ) ) {
+    foreach($arrPre as $key => $val )
+    {
 			if( strncmp( $val, $idItem, strlen($idItem) ) != 0 ) {
 				$arrResult[] = $val;
 			}
@@ -109,7 +110,8 @@ class OrgDirDb extends RepoDirDb {
 			return '*';
 		$result = '*';
 		$arrPre = explode( ',', $prerequisites );
-		while( list($key, $val) = each( $arrPre ) ) {
+    foreach($arrPre as $key => $val) 
+    {
 			if( strncmp( $val, $idItem, strlen($idItem) ) == 0 ) {
 				$arrSelf = explode( '=', $val);
 				if( count( $arrSelf ) > 1 )
@@ -833,8 +835,8 @@ class OrgDirDb extends RepoDirDb {
 	function _setAccessUG( $idOrgAccess, $kind, $arrId ) {
 		return true;
 		$arrCurrId = $this->_getAccessUG( $idOrgAccess, $kind );
-
-		while( list( $currKey, $currId ) = each($arrCurrId) ) {
+    foreach($arrCurrId as $currKey => $currId)
+    {
 			$pos = array_search( $currId, $arrId );
 			if( $pos === FALSE ) {
 				$this->_deleteAccessUG( $idOrgAccess, $kind, $currId );
@@ -843,7 +845,7 @@ class OrgDirDb extends RepoDirDb {
 			}
 		}
 		// now in $arrId they are only $id to insert
-		while( list( $newKey, $newId ) = each( $arrId ) )
+    foreach($arrId as $newKey => $newId )
 			$this->_insertAccessUG( $idOrgAccess, $kind, $newId );
 	}
 	
@@ -1213,7 +1215,7 @@ class Org_TreeView extends RepoTreeView {
 			}
 		}
 		foreach( $arrayState as $nameField => $valueField ) {
-			if( strstr( $nameField, $this->_getSelectedId() ) && !checkPerm('lesson', TRUE, 'storage') ) {
+			if( strstr( $nameField, strval($this->_getSelectedId()) ) && !checkPerm('lesson', TRUE, 'storage') ) {
 				$id = substr( $nameField, strlen($this->_getSelectedId()) );
 				if( strlen( $id ) > 0 ) {
 					$folder = $this->tdb->getFolderById( (int)$id );
@@ -1242,12 +1244,14 @@ class Org_TreeView extends RepoTreeView {
 		include_once (_base_.'/appLms/Events/Lms/OrgPropertiesPrintEvent.php');
 		$event = new \appLms\Events\Lms\OrgPropertiesPrintEvent();
 
-        $event->setElement($stack[$level]['folder']);
+		$event->setElement($stack[$level]['folder']);
 
-        $event->setDisplayable(true);
-        $event->setAccessible(true);
+		$event->setDisplayable(true);
+		$event->setAccessible(true);
 
-        $event->setId($this->id);
+		$event->setOrgTreeView($this);
+
+		$event->setId($this->id);
 
 		\appCore\Events\DispatcherManager::dispatch(\appLms\Events\Lms\OrgPropertiesPrintEvent::EVENT_NAME, $event);
 		
@@ -1291,6 +1295,9 @@ class Org_TreeView extends RepoTreeView {
 		$lo_type = $arrData[REPOFIELDOBJECTTYPE];
         $lo_class = createLO($lo_type);
 
+		if (!is_object($lo_class) && !$isFolder ){
+			return '';
+		}
 
 		//check for void selection
 		if(is_array($arrData) && isset($arrData[ORGFIELD_ACCESS]) && $this->playOnly) {
@@ -1458,6 +1465,9 @@ class Org_TreeView extends RepoTreeView {
 							} else {
 								$out .=  '<div class="TVActionEmpty"></div>';
 							}
+							foreach ($event->getAction() as $action){
+								$out .= $action;
+							}
 						} else if( !$isFolder ) {
 							
 							if($arrData[ORGFIELD_PUBLISHFROM] != '' && $arrData[ORGFIELD_PUBLISHFROM] != '0000-00-00 00:00:00') {
@@ -1574,7 +1584,10 @@ class Org_TreeView extends RepoTreeView {
 		if( $coll !== FALSE ) {
 			while( $folder = $coll->getNext() ) {
 				
-				list($key, $val) = each( $stack[$level-1]['childs'] );
+        $key = key($stack[$level-1]['childs']) ;
+        $val = current($stack[$level-1]['childs']);
+        next($stack[$level-1]['childs']);
+        
 				$stack[$level] = array();
 				$stack[$level]['folder'] = $folder;
 				$stack[$level]['childs'] = $val;
@@ -1621,6 +1634,7 @@ class Org_TreeView extends RepoTreeView {
 						while( $stack[$level]['isLast'] && $level > 1 ) $level--;
 					}
 				}
+        
 			}
 		} else {
 			$tree .= "\n<!-- coll is null -->";

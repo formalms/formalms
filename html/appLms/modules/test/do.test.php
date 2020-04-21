@@ -256,6 +256,7 @@ function intro ($object_test , $id_param , $deleteLastTrack = false)
 		
 		//check remaining attempts
 		$diff_attempts = $test_info[ 'suspension_num_attempts' ] - $attempts_until_now;
+
 		if ($diff_attempts > 0 && ($last_suspension_date < $now || $test_info[ 'suspension_num_hours' ] <= 0)) {
 			//warning: $diff_attempts remaining before suspesion
 			cout (UIFeedback::pnotice ($lang->def ('_ATTEMPTS_REMAINING_BEFORE_SUSPENSION') . ' : ' . $diff_attempts) . '<br /><br />' , 'content');
@@ -804,8 +805,6 @@ function play ($object_test , $id_param)
                             num_answer_radio = $('.answer_question input[type=\"radio\"]:checked').length;
                             num_answer_tot_chk = num_answer_radio + num_answer_chk;
 
-							console.log('TOT: ' + num_answer_tot + ' CHECKED: ' + num_answer_tot_chk);
-
 							if (mandatory) {
 								if (num_answer_tot_chk >= num_answer_tot) {
 									$('#next_page').prop('disabled', false);
@@ -851,16 +850,15 @@ function play ($object_test , $id_param)
 							});
 
 							$(document).on('change', '.answer_question input[type=\"radio\"], .answer_question input[type=\"checkbox\"]', function() {
-								tot_question = $('.answer_question input:checked').length;
-
-                                if (tot_question > 0 ) {
-                                    toggleNext(true);
-                                } else {
-                                    toggleNext(false);
-                                }
-								$('.answer_question input[type=\"radio\"], .answer_question input[type=\"checkbox\"]').parent('.input-wrapper').removeClass('checked');
-								$('.answer_question input[type=\"radio\"]:checked').parent('.input-wrapper').addClass('checked');
-								$('.answer_question input[type=\"checkbox\"]:checked').parent('.input-wrapper').addClass('checked');
+								  tot_question = $('.answer_question input:checked').length;
+                                  if (tot_question > 0 ) {
+                                        toggleNext(true);
+                                    } else {
+                                        toggleNext(false);
+                                    }
+  								    $('.answer_question input[type=\"radio\"], .answer_question input[type=\"checkbox\"]').parent('.input-wrapper').removeClass('checked');
+  								    $('.answer_question input[type=\"radio\"]:checked').parent('.input-wrapper').addClass('checked');
+  								    $('.answer_question input[type=\"checkbox\"]:checked').parent('.input-wrapper').addClass('checked');
 							});
 
 							$(document).on('keyup', '.answer_question textarea', function() {
@@ -1226,7 +1224,7 @@ function showResult ($object_test , $id_param)
 	$reQuest = sql_query ("
 	SELECT q.idQuest, q.type_quest, t.type_file, t.type_class, q.idCategory 
 	FROM %lms_testquest AS q JOIN " . $GLOBALS[ 'prefix_lms' ] . "_quest_type AS t
-	WHERE q.idTest = '" . $id_test . "' AND q.type_quest = t.type_quest AND q.idQuest IN (" . implode ($quest_see , ',') . ")
+	WHERE q.idTest = '" . $id_test . "' AND q.type_quest = t.type_quest AND q.idQuest IN (" . implode (',', $quest_see) . ")
 	ORDER BY q.sequence");
 	
 	//#2093: Conto le domande
@@ -1422,17 +1420,11 @@ function showResult ($object_test , $id_param)
 						$idscorm_tracking = $row[0];
 						$sql = "DELETE FROM %lms_scorm_tracking WHERE idscorm_tracking = $idscorm_tracking AND idUser = " . Docebo::user()->getIdst();
 						$q = sql_query($sql);
-						/*$sql = "DELETE FROM %lms_scorm_tracking_history WHERE idscorm_tracking = $idscorm_tracking AND idUser = " . Docebo::user()->getIdst();
-						$q = sql_query($sql);*/
 					}
 					$sql = "DELETE FROM %lms_scorm_items_track WHERE idReference IN ($prerequisite) AND idUser = " . Docebo::user()->getIdst();
 					$q = sql_query($sql);
 				}
-				$sql = "DELETE FROM %lms_testtrack WHERE idTest = ".$test_info['idTest']." AND idUser = " . Docebo::user()->getIdst();
-				$q = sql_query($sql);
-
-				/*$sql = "UPDATE %lms_testtrack SET number_of_save = 0, number_of_attempt = 0, attempts_for_suspension = 0 WHERE idTest = ".$test_info['idTest']." AND idUser = " . Docebo::user()->getIdst();
-				$q = sql_query($sql);*/
+				$suspend_info[ 'attempts_for_suspension' ] = 0;
 			}
 			if ($suspend_info[ 'attempts_for_suspension' ] >= $test_info[ 'suspension_num_attempts' ] && $test_info[ 'suspension_num_hours' ] > 0) {
 				//should we reset learning_test.suspension_num_attempts ??
@@ -1669,7 +1661,7 @@ function review ($object_test , $id_param)
 		$query_question = "
 		SELECT q.idQuest, q.type_quest, t.type_file, t.type_class
 		FROM ".$GLOBALS['prefix_lms']."_testquest AS q JOIN ".$GLOBALS['prefix_lms']."_quest_type AS t
-		WHERE q.idTest = '".$idTest."' AND q.type_quest = t.type_quest AND q.idQuest IN (".implode($quest_see, ',').")
+		WHERE q.idTest = '".$idTest."' AND q.type_quest = t.type_quest AND q.idQuest IN (".implode(',', $quest_see).")
 			 AND q.type_quest <> 'break_page' AND q.type_quest <> 'title'
 		ORDER BY q.sequence";
 	} else {
@@ -1786,7 +1778,7 @@ function user_report ($idUser , $idTest , $id_param = false , $id_track = false 
 		$query_question = "
 		SELECT q.idQuest, q.type_quest, t.type_file, t.type_class, q.idCategory 
 		FROM %lms_testquest AS q JOIN %lms_quest_type AS t
-		WHERE q.idTest = '" . $idTest . "' AND q.type_quest = t.type_quest AND  q.idQuest IN (" . implode ($quest_see , ',') . ")
+		WHERE q.idTest = '" . $idTest . "' AND q.type_quest = t.type_quest AND  q.idQuest IN (" . implode (',', $quest_see) . ")
 		ORDER BY q.sequence";
 		
 		
@@ -1993,7 +1985,7 @@ function editUserReport ($id_user , $id_test , $id_track , $number_time = null ,
 		$query_question = "
 		SELECT q.idQuest, q.type_quest, t.type_file, t.type_class, q.idCategory 
 		FROM " . $GLOBALS[ 'prefix_lms' ] . "_testquest AS q JOIN " . $GLOBALS[ 'prefix_lms' ] . "_quest_type AS t
-		WHERE q.idTest = '" . $id_test . "' AND q.type_quest = t.type_quest AND  q.idQuest IN (" . implode ($quest_see , ',') . ")
+		WHERE q.idTest = '" . $id_test . "' AND q.type_quest = t.type_quest AND  q.idQuest IN (" . implode (',', $quest_see) . ")
 		ORDER BY q.sequence";
 	} else {
 		$query_question = "
@@ -2165,7 +2157,7 @@ function saveManualUserReport ($id_user , $id_test , $id_track)
 		$query_question = "
 		SELECT q.idQuest, q.type_quest, t.type_file, t.type_class, q.idCategory 
 		FROM " . $GLOBALS[ 'prefix_lms' ] . "_testquest AS q JOIN " . $GLOBALS[ 'prefix_lms' ] . "_quest_type AS t
-		WHERE q.idTest = '" . $id_test . "' AND q.type_quest = t.type_quest AND  q.idQuest IN (" . implode ($quest_see , ',') . ")
+		WHERE q.idTest = '" . $id_test . "' AND q.type_quest = t.type_quest AND  q.idQuest IN (" . implode (',', $quest_see) . ")
 		ORDER BY q.sequence";
 	} else {
 		$query_question = "

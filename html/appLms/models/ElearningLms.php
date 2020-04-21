@@ -95,16 +95,21 @@ class ElearningLms extends Model {
             ."    c.max_num_subscribe, c.create_date, "
             ."    c.direct_play, c.img_othermaterial, c.course_demo, c.use_logo_in_courselist, c.img_course, c.lang_code, "
 			."	  c.course_vote, c.hour_end , "
-            ."    c.date_begin, c.date_end, c.valid_time, c.show_result, c.userStatusOp, c.auto_unsubscribe, c.unsubscribe_date_limit, "
+            ."    c.date_begin, c.date_end, c.valid_time, c.show_result, c.userStatusOp, c.auto_unsubscribe, c.unsubscribe_date_limit as course_unsubscribe_date_limit, "
 
-            ."    cu.status AS user_status, cu.level, cu.date_inscr, cu.date_first_access, cu.date_complete, cu.waiting"
+            ."    cu.status AS user_status, cu.level, cu.date_inscr, cu.date_first_access, cu.date_complete, cu.waiting,"
+
+            ."    cd.unsubscribe_date_limit as date_unsubscribe_date_limit"
 
             ." FROM %lms_course AS c "
             ." JOIN %lms_courseuser AS cu ON (c.idCourse = cu.idCourse)  "
+            ." left JOIN %lms_course_date AS cd ON (c.idCourse = cd.id_course)  "
+            ." left JOIN %lms_category AS cat ON (c.idCategory = cat.idCategory)  "
             ." WHERE ".$this->compileWhere($conditions, $params)
             .($_SESSION['id_common_label'] > 0 ? " AND c.idCourse IN (SELECT id_course FROM %lms_label_course WHERE id_common_label = '".$_SESSION['id_common_label']."')" : "")
             .$exclude_pathcourse 
             ." ORDER BY ".$this->_resolveOrder(array('cu', 'c'));
+
 
 		$rs = $db->query($query);
 
@@ -213,18 +218,17 @@ class ElearningLms extends Model {
     
     
     
-    
 
     // LR: list category of subscription
     public function getListCategory($idUser, $completePath = true){
         $db = DbConn::getInstance();
         
         $query = "select idCategory,path from %lms_category where idcategory in (
-       						select distinct idCategory from %lms_course as c,%lms_courseuser as cu where cu.idUser=".$idUser." and cu.idCourse=c.idCourse)";
+       						select distinct idCategory from %lms_course as c,%lms_courseuser as cu where cu.idUser=".$idUser." and cu.idCourse=c.idCourse)
+       						ORDER BY path ASC";
 
         $res = $db->query($query);
         if ($res && $db->num_rows($res) > 0) {
-            $output[0] = Lang::t('_ALL_CATEGORIES', 'standard');
             while (list($idCategory, $path) = $db->fetch_row($res)) {
                 if($completePath){
                     $category = str_replace('/root/','',$path);
@@ -234,12 +238,13 @@ class ElearningLms extends Model {
                 }
                 $output[$idCategory] = $category[count($category)-1];
             }
+        	natcasesort($output);
+            $output = [0 => Lang::t('_ALL_CATEGORIES', 'standard')] + $output;
         } else {
             $output[0] = Lang::t('_NO_CATEGORY', 'standard');
         }
+
         return $output;
-
-
     }
 
 

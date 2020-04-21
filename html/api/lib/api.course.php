@@ -16,328 +16,328 @@ require_once(_base_.'/api/lib/lib.api.php');
 class Course_API extends API {
 
 
-    public function getCourses($params) {
-        require_once(_lms_.'/lib/lib.course.php');
-        $output =array();
+	public function getCourses($params) {
+		require_once(_lms_.'/lib/lib.course.php');
+		$output =array();
 
-        $output['success']=true;
-        $id_category =(isset($params['category']) ? (int)$params['category'] : false);
+		$output['success']=true;
+		$id_category =(isset($params['category']) ? (int)$params['category'] : false);
 
-        $course_man =new Man_Course();
-        $course_list =$course_man->getAllCoursesWithMoreInfo($id_category);
+		$course_man =new Man_Course();
+		$course_list =$course_man->getAllCoursesWithMoreInfo($id_category);
 
 
-        foreach($course_list as $key=>$course_info) {
-            if($category = $course_info['idCategory']) {
-                $category = $course_man->getCategory($category)['path'];
-            } else {
-                $category = null;
+		foreach($course_list as $key=>$course_info) {
+			if($category = $course_info['idCategory']) {
+				$category = $course_man->getCategory($category)['path'];
+			} else {
+				$category = null;
             }
-            $output['course_info'][]=array(
-                'course_id'=>$course_info['idCourse'],
-                'code'=>str_replace('&', '&amp;', $course_info['code']),
-                'course_name'=>str_replace('&', '&amp;', $course_info['name']),
-                'course_description'=>str_replace('&', '&amp;', $course_info['description']),
-                'status'=>$course_info['status'],
-                'selling'=>$course_info['selling'],
-                'price'=>$course_info['prize'],
-                'subscribe_method'=>$course_info['subscribe_method'],
-                'course_edition'=>$course_info['course_edition'],
-                'course_type'=>$course_info['course_type'],
-                'can_subscribe'=>$course_info['can_subscribe'],
-                'sub_start_date'=>$course_info['sub_start_date'],
-                'sub_end_date'=>$course_info['sub_end_date'],
-                'date_begin'=>$course_info['date_begin'],
-                'date_end'=>$course_info['date_end'],
-                'course_link'=>Get::site_url() . _folder_lms_ . "/index.php?modname=course&amp;op=aula&amp;idCourse={$course_info['idCourse']}",
-                'img_course'=>$course_info['img_course'] ? Get::site_url() . _folder_files_ . '/' . _folder_lms_ . '/' . Get::sett('pathcourse') . $course_info['img_course'] : '',
-                'category_id'=>$course_info['idCategory'],
-                'category'=>$category
-            );
-        }
+			$output['course_info'][]=array(
+				'course_id'=>$course_info['idCourse'],
+				'code'=>str_replace('&', '&amp;', $course_info['code']),
+				'course_name'=>str_replace('&', '&amp;', $course_info['name']),
+				'course_description'=>str_replace('&', '&amp;', $course_info['description']),
+				'status'=>$course_info['status'],
+				'selling'=>$course_info['selling'],
+				'price'=>$course_info['prize'],
+				'subscribe_method'=>$course_info['subscribe_method'],
+				'course_edition'=>$course_info['course_edition'],
+				'course_type'=>$course_info['course_type'],
+				'can_subscribe'=>$course_info['can_subscribe'],
+				'sub_start_date'=>$course_info['sub_start_date'],
+				'sub_end_date'=>$course_info['sub_end_date'],
+				'date_begin'=>$course_info['date_begin'],
+				'date_end'=>$course_info['date_end'],
+				'course_link'=>Get::site_url() . _folder_lms_ . "/index.php?modname=course&amp;op=aula&amp;idCourse={$course_info['idCourse']}",
+				'img_course'=>$course_info['img_course'] ? Get::site_url() . _folder_files_ . '/' . _folder_lms_ . '/' . Get::sett('pathcourse') . $course_info['img_course'] : '',
+				'category_id'=>$course_info['idCategory'],
+				'category'=>$category
+			);
+		}
 
 
-        return $output;
-    }
+		return $output;
+	}
 
 
  //e-learning editions
     public function getEditions($params) {
-        require_once(_lms_.'/lib/lib.course.php');
-        require_once(_lms_.'/lib/lib.edition.php');
-        $output =array();
+		require_once(_lms_.'/lib/lib.course.php');
+		require_once(_lms_.'/lib/lib.edition.php');
+		$output =array();
 
-        $output['success']=true;
+		$output['success']=true;
 
-        $course_id =(isset($params['course_id']) ? (int)$params['course_id'] : false);
-        $course_code =(isset($params['course_code']) ? $params['course_code'] : false);
+		$course_id =(isset($params['course_id']) ? (int)$params['course_id'] : false);
+		$course_code =(isset($params['course_code']) ? $params['course_code'] : false);
 
-        if (empty($course_id) && empty($course_code)) {
-            return false;
-            // return array('success'=>true, 'debug'=>print_r($params, true));
-        }
-        else if (empty($course_id) && !empty($course_code)) { // grab course info by code:
-            $db = DbConn::getInstance();
-            $qtxt ="SELECT * FROM %lms_course
-                    WHERE code='".$course_code."'
-                    LIMIT 0,1";
-            $q =$db->query($qtxt);
-            $course_info =$db->fetch_assoc($q);
-            if (!empty($course_info)) {
-                $course_id =(int)$course_info['idCourse'];
-            }
-            else { // course not found
-                return false;
-                // return array('success'=>'true', 'debug'=>print_r($course_info));
-            }
-        }
+		if (empty($course_id) && empty($course_code)) {
+			return false;
+			// return array('success'=>true, 'debug'=>print_r($params, true));
+		}
+		else if (empty($course_id) && !empty($course_code)) { // grab course info by code:
+			$db = DbConn::getInstance();
+			$qtxt ="SELECT * FROM %lms_course
+					WHERE code='".$course_code."'
+					LIMIT 0,1";
+			$q =$db->query($qtxt);
+			$course_info =$db->fetch_assoc($q);
+			if (!empty($course_info)) {
+				$course_id =(int)$course_info['idCourse'];
+			}
+			else { // course not found
+				return false;
+				// return array('success'=>'true', 'debug'=>print_r($course_info));
+			}
+		}
 
-        $edition_man = new EditionManager();
-        $course_list =$edition_man->getEditionsInfoByCourses($course_id);
+		$edition_man = new EditionManager();
+		$course_list =$edition_man->getEditionsInfoByCourses($course_id);
 
-        $course_man =new Man_Course();
-        $course =$course_man->getCourseInfo($course_id);
+		$course_man =new Man_Course();
+		$course =$course_man->getCourseInfo($course_id);
 
-        foreach($course_list[$course_id] as $key=>$course_info) {
-            $output[]['course_info']=array(
-                'course_id'=>$course['idCourse'],
-                'edition_id'=>$course_info['id_edition'],
-                'code'=>str_replace('&', '&amp;', $course_info['code']),
-                'course_name'=>str_replace('&', '&amp;', $course_info['name']),
-                'course_description'=>str_replace('&', '&amp;', $course_info['description']),
-                'status'=>$course_info['status'],
-                'selling'=>$course['selling'],
-                'price'=>$course_info['price'],
-                'subscribe_method'=>$course['subscribe_method'],
-                'sub_start_date'=>$course_info['sub_date_begin'],
-                'sub_end_date'=>$course_info['sub_date_end'],
-                'date_begin'=>$course_info['date_begin'],
-                'date_end'=>$course_info['date_end'],
-                'course_link'=>Get::site_url()._folder_lms_.'/index.php?modname=course&amp;op=aula&amp;idCourse='.$course['idCourse'],
-            );
-        }
+		foreach($course_list[$course_id] as $key=>$course_info) {
+			$output[]['course_info']=array(
+				'course_id'=>$course['idCourse'],
+				'edition_id'=>$course_info['id_edition'],
+				'code'=>str_replace('&', '&amp;', $course_info['code']),
+				'course_name'=>str_replace('&', '&amp;', $course_info['name']),
+				'course_description'=>str_replace('&', '&amp;', $course_info['description']),
+				'status'=>$course_info['status'],
+				'selling'=>$course['selling'],
+				'price'=>$course_info['price'],
+				'subscribe_method'=>$course['subscribe_method'],
+				'sub_start_date'=>$course_info['sub_date_begin'],
+				'sub_end_date'=>$course_info['sub_date_end'],
+				'date_begin'=>$course_info['date_begin'],
+				'date_end'=>$course_info['date_end'],
+				'course_link'=>Get::site_url()._folder_lms_.'/index.php?modname=course&amp;op=aula&amp;idCourse='.$course['idCourse'],
+			);
+		}
 
-        //$output['debug']=print_r($course_list, true).print_r($course, true);
+		//$output['debug']=print_r($course_list, true).print_r($course, true);
 
-        return $output;
-    }
-
-
-    public function getClassrooms($params) {
-        require_once(_lms_.'/lib/lib.course.php');
-        require_once(_lms_.'/lib/lib.date.php');
-        $output =array();
-
-        $output['success']=true;
-
-        $course_id =(isset($params['course_id']) ? (int)$params['course_id'] : false);
-        $course_code =(isset($params['course_code']) ? $params['course_code'] : false);
-
-        if (empty($course_id) && empty($course_code)) {
-            return false;
-            // return array('success'=>true, 'debug'=>print_r($params, true));
-        }
-        else if (empty($course_id) && !empty($course_code)) { // grab course info by code:
-            $db = DbConn::getInstance();
-            $qtxt ="SELECT * FROM %lms_course
-                    WHERE code='".$course_code."'
-                    LIMIT 0,1";
-            $q =$db->query($qtxt);
-            $course_info =$db->fetch_assoc($q);
-            if (!empty($course_info)) {
-                $course_id =(int)$course_info['idCourse'];
-            }
-            else { // course not found
-                return false;
-                // return array('success'=>'true', 'debug'=>print_r($course_info));
-            }
-        }
-
-        $classroom_man = new DateManager();
-        $course_list =$classroom_man->getCourseDate($course_id);
-
-        $course_man =new Man_Course();
-        $course =$course_man->getCourseInfo($course_id);
-
-        foreach($course_list as $key=>$course_info) {
-            $output[]['course_info']=array(
-                'course_id'=>$course['idCourse'],
-                'date_id'=>$course_info['id_date'],
-                'code'=>str_replace('&', '&amp;', $course_info['code']),
-                'course_name'=>str_replace('&', '&amp;', $course_info['name']),
-                'course_description'=>str_replace('&', '&amp;', $course_info['description']),
-                'status'=>$course_info['status'],
-                'selling'=>$course['selling'],
-                'price'=>$course_info['price'],
-                'subscribe_method'=>$course['subscribe_method'],
-                'sub_start_date'=>$course_info['sub_start_date'],
-                'sub_end_date'=>$course_info['sub_end_date'],
-                'date_begin'=>$course_info['date_begin'],
-                'date_end'=>$course_info['date_end'],
-                'num_day'=>$course_info['num_day'],
-                'classroom'=>$course_info['classroom'],
-                'course_link'=>Get::site_url()._folder_lms_.'/index.php?modname=course&amp;op=aula&amp;idCourse='.$course['idCourse'],
-            );
-        }
-
-        //$output['debug']=print_r($course_list, true).print_r($course, true);
-
-        return $output;
-    }
+		return $output;
+	}
 
 
-    protected function getUserLevelId($my_level) {
+	public function getClassrooms($params) {
+		require_once(_lms_.'/lib/lib.course.php');
+		require_once(_lms_.'/lib/lib.date.php');
+		$output =array();
 
-        if ($my_level === false) { return false; }
+		$output['success']=true;
 
-        $lev_arr =array(
-            'administrator' => 7,
-            'instructor' => 6,
-            'mentor' => 5,
-            'tutor' => 4,
-            'student' => 3,
-            'ghost' => 2,
-            'guest' => 1,
-        );
+		$course_id =(isset($params['course_id']) ? (int)$params['course_id'] : false);
+		$course_code =(isset($params['course_code']) ? $params['course_code'] : false);
 
-        return (int)$lev_arr[$my_level];
-    }
+		if (empty($course_id) && empty($course_code)) {
+			return false;
+			// return array('success'=>true, 'debug'=>print_r($params, true));
+		}
+		else if (empty($course_id) && !empty($course_code)) { // grab course info by code:
+			$db = DbConn::getInstance();
+			$qtxt ="SELECT * FROM %lms_course
+					WHERE code='".$course_code."'
+					LIMIT 0,1";
+			$q =$db->query($qtxt);
+			$course_info =$db->fetch_assoc($q);
+			if (!empty($course_info)) {
+				$course_id =(int)$course_info['idCourse'];
+			}
+			else { // course not found
+				return false;
+				// return array('success'=>'true', 'debug'=>print_r($course_info));
+			}
+		}
 
+		$classroom_man = new DateManager();
+		$course_list =$classroom_man->getCourseDate($course_id);
 
-    protected function getUserStatusId($my_status) {
-        require_once(_lms_.'/lib/lib.subscribe.php');
+		$course_man =new Man_Course();
+		$course =$course_man->getCourseInfo($course_id);
 
-        if ($my_status === false) { return false; }
+		foreach($course_list as $key=>$course_info) {
+			$output[]['course_info']=array(
+				'course_id'=>$course['idCourse'],
+				'date_id'=>$course_info['id_date'],
+				'code'=>str_replace('&', '&amp;', $course_info['code']),
+				'course_name'=>str_replace('&', '&amp;', $course_info['name']),
+				'course_description'=>str_replace('&', '&amp;', $course_info['description']),
+				'status'=>$course_info['status'],
+				'selling'=>$course['selling'],
+				'price'=>$course_info['price'],
+				'subscribe_method'=>$course['subscribe_method'],
+				'sub_start_date'=>$course_info['sub_start_date'],
+				'sub_end_date'=>$course_info['sub_end_date'],
+				'date_begin'=>$course_info['date_begin'],
+				'date_end'=>$course_info['date_end'],
+				'num_day'=>$course_info['num_day'],
+				'classroom'=>$course_info['classroom'],
+				'course_link'=>Get::site_url()._folder_lms_.'/index.php?modname=course&amp;op=aula&amp;idCourse='.$course['idCourse'],
+			);
+		}
 
-        $lev_arr =array(
-            'waiting_list' => _CUS_WAITING_LIST,
-            'to_confirm' => _CUS_CONFIRMED,
-            'subscribed' => _CUS_SUBSCRIBED,
-            'started' => _CUS_BEGIN,
-            'completed' => _CUS_END,
-            'suspended' => _CUS_SUSPEND,
-            'overbooking' => _CUS_OVERBOOKING,
-        );
+		//$output['debug']=print_r($course_list, true).print_r($course, true);
 
-        return (int)$lev_arr[$my_status];
-    }
-
-
-    protected function fillCourseDataFromParams(
-        &$params, &$db, &$course_id, &$edition_id, &$classroom_id,
-        &$course_code, &$edition_code, &$classroom_code,
-        &$course_info, &$edition_info, &$classroom_info, &$output
-    ) {
-
-        // -- read course info / id ----------
-
-        if (empty($course_id) && empty($course_code)) {
-            return false;
-            // return array('success'=>true, 'debug'=>print_r($params, true));
-        }
-        else if (empty($course_id) && !empty($course_code)) { // grab course info by code:
-            $qtxt ="SELECT * FROM %lms_course
-                    WHERE code='".$course_code."'
-                    LIMIT 0,1";
-            $q =$db->query($qtxt);
-            $course_info =$db->fetch_assoc($q);
-            if (!empty($course_info)) {
-                $course_id =(int)$course_info['idCourse'];
-            }
-            else { // course not found
-                return false;
-
-            }
-        }
-        else if (!empty($course_id)) {
-            $qtxt ="SELECT * FROM %lms_course
-                    WHERE idCourse='".$course_id."'
-                    LIMIT 0,1";
-            $q =$db->query($qtxt);
-            $course_info =$db->fetch_assoc($q);
-            if (empty($course_info)) { // course not found
-                return false;
-                // return array('success'=>'true', 'debug'=>print_r($course_info));
-            }
-        }
+		return $output;
+	}
 
 
+	protected function getUserLevelId($my_level) {
+
+		if ($my_level === false) { return false; }
+
+		$lev_arr =array(
+			'administrator' => 7,
+			'instructor' => 6,
+			'mentor' => 5,
+			'tutor' => 4,
+			'student' => 3,
+			'ghost' => 2,
+			'guest' => 1,
+		);
+
+		return (int)$lev_arr[$my_level];
+	}
 
 
-        // -- read edition info / id ----------
+	protected function getUserStatusId($my_status) {
+		require_once(_lms_.'/lib/lib.subscribe.php');
 
-        if (!empty($edition_id) || !empty($edition_code)) {
-            if (empty($edition_id) && !empty($edition_code)) { // grab edition info by code:
-                $qtxt ="SELECT * FROM %lms_course_editions
-                    WHERE id_course='".$course_id."' AND code='".$edition_code."'
-                    LIMIT 0,1";
-                $q =$db->query($qtxt);
-                $edition_info =$db->fetch_assoc($q);
-                if (!empty($edition_info)) {
-                    $edition_id =(int)$edition_info['id_edition'];
-                }
-                else { // edition not found
-                    return false;
-                }    
-            }
-            else if (!empty($edition_id)) {
+		if ($my_status === false) { return false; }
 
-            }
-        }
+		$lev_arr =array(
+			'waiting_list' => _CUS_WAITING_LIST,
+			'to_confirm' => _CUS_CONFIRMED,
+			'subscribed' => _CUS_SUBSCRIBED,
+			'started' => _CUS_BEGIN,
+			'completed' => _CUS_END,
+			'suspended' => _CUS_SUSPEND,
+			'overbooking' => _CUS_OVERBOOKING,
+		);
+
+		return (int)$lev_arr[$my_status];
+	}
+
+
+	protected function fillCourseDataFromParams(
+		&$params, &$db, &$course_id, &$edition_id, &$classroom_id,
+		&$course_code, &$edition_code, &$classroom_code,
+		&$course_info, &$edition_info, &$classroom_info, &$output
+	) {
+
+		// -- read course info / id ----------
+
+		if (empty($course_id) && empty($course_code)) {
+			return false;
+			// return array('success'=>true, 'debug'=>print_r($params, true));
+		}
+		else if (empty($course_id) && !empty($course_code)) { // grab course info by code:
+			$qtxt ="SELECT * FROM %lms_course
+					WHERE code='".$course_code."'
+					LIMIT 0,1";
+			$q =$db->query($qtxt);
+			$course_info =$db->fetch_assoc($q);
+			if (!empty($course_info)) {
+				$course_id =(int)$course_info['idCourse'];
+			}
+			else { // course not found
+				return false;
+
+			}
+		}
+		else if (!empty($course_id)) {
+			$qtxt ="SELECT * FROM %lms_course
+					WHERE idCourse='".$course_id."'
+					LIMIT 0,1";
+			$q =$db->query($qtxt);
+			$course_info =$db->fetch_assoc($q);
+			if (empty($course_info)) { // course not found
+				return false;
+				// return array('success'=>'true', 'debug'=>print_r($course_info));
+			}
+		}
 
 
 
 
-        // -- read classroom info / id ----------
+		// -- read edition info / id ----------
 
-        if (!empty($classroom_id) || !empty($classroom_code)) {
-            if (empty($classroom_id) && !empty($classroom_code)) { // grab edition info by code:
-                $qtxt ="SELECT * FROM %lms_course_date
-                    WHERE id_course='".$course_id."' AND code='".$classroom_code."'
-                    LIMIT 0,1";
-                $q =$db->query($qtxt);
-                $classroom_info =$db->fetch_assoc($q);
-                if (!empty($classroom_info)) {
-                    $classroom_id =(int)$classroom_info['id_date'];
-                }
-                else { // classroom not found
-                    return false;
+		if (!empty($edition_id) || !empty($edition_code)) {
+			if (empty($edition_id) && !empty($edition_code)) { // grab edition info by code:
+				$qtxt ="SELECT * FROM %lms_course_editions
+					WHERE id_course='".$course_id."' AND code='".$edition_code."'
+					LIMIT 0,1";
+				$q =$db->query($qtxt);
+				$edition_info =$db->fetch_assoc($q);
+				if (!empty($edition_info)) {
+					$edition_id =(int)$edition_info['id_edition'];
+				}
+				else { // edition not found
+					return false;
+				}	
+			}
+			else if (!empty($edition_id)) {
 
-                }
-            }
-            else if (!empty($classroom_id)) {
-
-            }
-        }
-
-
-    }
+			}
+		}
 
 
-    public function addUserSubscription($params) {
-        require_once(_lms_.'/lib/lib.subscribe.php');
-        require_once(_lms_.'/lib/lib.course.php');
-        $output =array();
 
-        $output['success']=true;
 
-        if (empty($params['idst']) || (int)$params['idst'] <= 0) {
-            $output['success']=false;
-            $output['message']='INVALID REQUEST';
-            return $output;
-        }
-        else {
-            $user_id =$params['idst'];
-        }
+		// -- read classroom info / id ----------
 
-        $course_id =(isset($params['course_id']) ? (int)$params['course_id'] : false);
-        $course_code =(isset($params['course_code']) ? $params['course_code'] : false);
-        $edition_id =(isset($params['edition_id']) ? (int)$params['edition_id'] : false);
-        $edition_code =(isset($params['edition_code']) ? $params['edition_code'] : false);
-        $classroom_id =(isset($params['classroom_id']) ? (int)$params['classroom_id'] : false);
-        $classroom_code =(isset($params['classroom_code']) ? $params['classroom_code'] : false);
+		if (!empty($classroom_id) || !empty($classroom_code)) {
+			if (empty($classroom_id) && !empty($classroom_code)) { // grab edition info by code:
+				$qtxt ="SELECT * FROM %lms_course_date
+					WHERE id_course='".$course_id."' AND code='".$classroom_code."'
+					LIMIT 0,1";
+				$q =$db->query($qtxt);
+				$classroom_info =$db->fetch_assoc($q);
+				if (!empty($classroom_info)) {
+					$classroom_id =(int)$classroom_info['id_date'];
+				}
+				else { // classroom not found
+					return false;
 
-        $user_level =$this->getUserLevelId((isset($params['user_level']) ? $params['user_level'] : 'student'));
+				}
+			}
+			else if (!empty($classroom_id)) {
+
+			}
+		}
+
+
+	}
+
+
+	public function addUserSubscription($params) {
+		require_once(_lms_.'/lib/lib.subscribe.php');
+		require_once(_lms_.'/lib/lib.course.php');
+		$output =array();
+
+		$output['success']=true;
+
+		if (empty($params['idst']) || (int)$params['idst'] <= 0) {
+			$output['success']=false;
+			$output['message']='INVALID REQUEST';
+			return $output;
+		}
+		else {
+			$user_id =$params['idst'];
+		}
+
+		$course_id =(isset($params['course_id']) ? (int)$params['course_id'] : false);
+		$course_code =(isset($params['course_code']) ? $params['course_code'] : false);
+		$edition_id =(isset($params['edition_id']) ? (int)$params['edition_id'] : false);
+		$edition_code =(isset($params['edition_code']) ? $params['edition_code'] : false);
+		$classroom_id =(isset($params['classroom_id']) ? (int)$params['classroom_id'] : false);
+		$classroom_code =(isset($params['classroom_code']) ? $params['classroom_code'] : false);
+
+		$user_level =$this->getUserLevelId((isset($params['user_level']) ? $params['user_level'] : 'student'));
 
 
                 if (!isset($params['sendmail']) || $params['sendmail'] == "") {
@@ -346,61 +346,61 @@ class Course_API extends API {
                         $sendMailToUser = true;
                 }
 
-        $acl_man =Docebo::user()->getAclManager();
-        $course_man =new Man_Course();
-        $db = DbConn::getInstance();
+		$acl_man =Docebo::user()->getAclManager();
+		$course_man =new Man_Course();
+		$db = DbConn::getInstance();
 
-        $user_data = $this->aclManager->getUser($user_id, false);
+		$user_data = $this->aclManager->getUser($user_id, false);
 
-        if (!$user_data) {
-                $output['success']=false;
-                $output['message']='NO_DATA_FOUND';
-                return $output;
-        }
+		if (!$user_data) {
+				$output['success']=false;
+				$output['message']='NO_DATA_FOUND';
+				return $output;
+		}
 
-        $course_info =false;
-        $edition_info =false;
-        $classroom_info =false;
+		$course_info =false;
+		$edition_info =false;
+		$classroom_info =false;
 
-        $course_exists = $this->fillCourseDataFromParams(
-            $params, $db, $course_id, $edition_id, $classroom_id, $course_code,
-            $edition_code, $classroom_code, $course_info, $edition_info,
-            $classroom_info, $output
-        );
-        if ($course_exists === false){
-            $output['success']=false;
-            $output['message']='NO_DATA_FOUND';
-            return $output;
-        }
+		$course_exists = $this->fillCourseDataFromParams(
+			$params, $db, $course_id, $edition_id, $classroom_id, $course_code,
+			$edition_code, $classroom_code, $course_info, $edition_info,
+			$classroom_info, $output
+		);
+		if ($course_exists === false){
+			$output['success']=false;
+			$output['message']='NO_DATA_FOUND';
+			return $output;
+		}
 
 
-        // --------------- add user: -----------------------------------
+		// --------------- add user: -----------------------------------
 
-        $model = new SubscriptionAlms($course_id, $edition_id, $classroom_id);
-        $docebo_course = new DoceboCourse($course_id);
-        $level_idst = $docebo_course->getCourseLevel($course_id);
-        if (count($level_idst) == 0 || $level_idst[1] == ''){
-            $level_idst = $docebo_course->createCourseLevel($course_id);
-        }
-        $waiting = 0;
+		$model = new SubscriptionAlms($course_id, $edition_id, $classroom_id);
+		$docebo_course = new DoceboCourse($course_id);
+		$level_idst = $docebo_course->getCourseLevel($course_id);
+		if (count($level_idst) == 0 || $level_idst[1] == ''){
+			$level_idst = $docebo_course->createCourseLevel($course_id);
+		}
+		$waiting = 0;
 
-        $acl_man->addToGroup($level_idst[$user_level], $user_id);
+		$acl_man->addToGroup($level_idst[$user_level], $user_id);
 
-        $subscribe_ok =$model->subscribeUser($user_id, $user_level, $waiting, false, false);
+		$subscribe_ok =$model->subscribeUser($user_id, $user_level, $waiting, false, false);
 
-        if (!$subscribe_ok) {
-            $acl_man->removeFromGroup($level_idst[$user_level], $user_id);
-            $output['success']=false;
-        }
-        else {
-            $output['message']='User has been subscribed to the course';
-        }
+		if (!$subscribe_ok) {
+			$acl_man->removeFromGroup($level_idst[$user_level], $user_id);
+			$output['success']=false;
+		}
+		else {
+			$output['message']='User has been subscribed to the course';
+		}
 
                 if ($sendMailToUser) {
                     // Send Message
                     require_once(_base_.'/lib/lib.eventmanager.php');
 
-                    $array_subst = array(    '[url]' => Get::site_url(),
+                    $array_subst = array(	'[url]' => Get::site_url(),
                                             '[course]' => $course_info['name'] );
 
                     $msg_composer = new EventMessageComposer();
@@ -410,218 +410,218 @@ class Course_API extends API {
                     $recipients = array($user_id);
 
                     if(!empty($recipients)) {
-                                    createNewAlert(    'UserCourseInsertedApi', 'subscribe', 'insert', '1', 'User subscribed API', $recipients, $msg_composer);
+                                    createNewAlert(	'UserCourseInsertedApi', 'subscribe', 'insert', '1', 'User subscribed API', $recipients, $msg_composer);
                     }
                 }
-        return $output;
-    }
+		return $output;
+	}
 
 
-    public function updateUserSubscription($params) {
-        require_once(_lms_.'/lib/lib.subscribe.php');
-        require_once(_lms_.'/lib/lib.course.php');
-        $output =array();
+	public function updateUserSubscription($params) {
+		require_once(_lms_.'/lib/lib.subscribe.php');
+		require_once(_lms_.'/lib/lib.course.php');
+		$output =array();
 
-        $output['success']=true;
+		$output['success']=true;
 
-        if (empty($params['idst']) || (int)$params['idst'] <= 0) {
-            return false;
-            // return array('success'=>true, 'debug'=>print_r($params, true));
-        }
-        else {
-            $user_id =$params['idst'];
-        }
+		if (empty($params['idst']) || (int)$params['idst'] <= 0) {
+			return false;
+			// return array('success'=>true, 'debug'=>print_r($params, true));
+		}
+		else {
+			$user_id =$params['idst'];
+		}
 
-        $course_id =(isset($params['course_id']) ? (int)$params['course_id'] : false);
-        $course_code =(isset($params['course_code']) ? $params['course_code'] : false);
-        $edition_id =(isset($params['edition_id']) ? (int)$params['edition_id'] : false);
-        $edition_code =(isset($params['edition_code']) ? $params['edition_code'] : false);
-        $classroom_id =(isset($params['classroom_id']) ? (int)$params['classroom_id'] : false);
-        $classroom_code =(isset($params['classroom_code']) ? $params['classroom_code'] : false);
+		$course_id =(isset($params['course_id']) ? (int)$params['course_id'] : false);
+		$course_code =(isset($params['course_code']) ? $params['course_code'] : false);
+		$edition_id =(isset($params['edition_id']) ? (int)$params['edition_id'] : false);
+		$edition_code =(isset($params['edition_code']) ? $params['edition_code'] : false);
+		$classroom_id =(isset($params['classroom_id']) ? (int)$params['classroom_id'] : false);
+		$classroom_code =(isset($params['classroom_code']) ? $params['classroom_code'] : false);
 
-        $user_level =$this->getUserLevelId((isset($params['user_level']) ? $params['user_level'] : false));
-        $user_status =$this->getUserStatusId((isset($params['user_status']) ? $params['user_status'] : false));
-
-
-        $acl_man =Docebo::user()->getAclManager();
-        $course_man =new Man_Course();
-        $db = DbConn::getInstance();
-
-        $course_info =false;
-        $edition_info =false;
-        $classroom_info =false;
-
-        $this->fillCourseDataFromParams(
-            $params, $db, $course_id, $edition_id, $classroom_id, $course_code,
-            $edition_code, $classroom_code, $course_info, $edition_info,
-            $classroom_info, $output
-        );
+		$user_level =$this->getUserLevelId((isset($params['user_level']) ? $params['user_level'] : false));
+		$user_status =$this->getUserStatusId((isset($params['user_status']) ? $params['user_status'] : false));
 
 
-        // --------------- update user subscription: ------------------------
+		$acl_man =Docebo::user()->getAclManager();
+		$course_man =new Man_Course();
+		$db = DbConn::getInstance();
 
-        $model = new SubscriptionAlms($course_id, $edition_id, $classroom_id);
-        $docebo_course = new DoceboCourse($course_id);
-        $level_idst = $docebo_course->getCourseLevel($course_id);
-        if (count($level_idst) == 0 || $level_idst[1] == '')
-            $level_idst = $docebo_course->createCourseLevel($course_id);
+		$course_info =false;
+		$edition_info =false;
+		$classroom_info =false;
 
-
-        $update_ok =true;
-
-        // -- update level -----
-        if (!empty($user_level)) {
-            $old_level =$model->getUserLevel($user_id);
-
-            if (isset($level_idst[$user_level]) && isset($level_idst[$old_level])) {
-                $acl_man->removeFromGroup($level_idst[$old_level], $user_id);
-                $acl_man->addToGroup($level_idst[$user_level], $user_id);
-                $ok =$model->updateUserLevel($user_id, $user_level);
-                if (!$ok) { $update_ok =false; }
-            }
-        }
+		$this->fillCourseDataFromParams(
+			$params, $db, $course_id, $edition_id, $classroom_id, $course_code,
+			$edition_code, $classroom_code, $course_info, $edition_info,
+			$classroom_info, $output
+		);
 
 
-        // -- update status -----
-        if (!empty($user_status)) {
-            $status_arr =$model->getUserStatusList();
+		// --------------- update user subscription: ------------------------
 
-            if (isset($status_arr[$user_status])) {
-                $ok =$model->updateUserStatus($user_id, $user_status);
-                if (!$ok) { $update_ok =false; }
-            }
-        }
+		$model = new SubscriptionAlms($course_id, $edition_id, $classroom_id);
+		$docebo_course = new DoceboCourse($course_id);
+		$level_idst = $docebo_course->getCourseLevel($course_id);
+		if (count($level_idst) == 0 || $level_idst[1] == '')
+			$level_idst = $docebo_course->createCourseLevel($course_id);
 
 
-        if (!$update_ok) {
-            $output['success']=false;
-        }
-        else {
-            $output['message']='User subscription has been updated';
-        }
+		$update_ok =true;
 
-        return $output;
-    }
+		// -- update level -----
+		if (!empty($user_level)) {
+			$old_level =$model->getUserLevel($user_id);
 
-
-    public function deleteUserSubscription($params) {
-        require_once(_lms_.'/lib/lib.subscribe.php');
-        require_once(_lms_.'/lib/lib.course.php');
-        $output =array();
-
-        $output['success']=true;
-
-        if (empty($params['idst']) || (int)$params['idst'] <= 0) {
-            return false;
-            // return array('success'=>true, 'debug'=>print_r($params, true));
-        }
-        else {
-            $user_id =$params['idst'];
-        }
-
-        $course_id =(isset($params['course_id']) ? (int)$params['course_id'] : false);
-        $course_code =(isset($params['course_code']) ? $params['course_code'] : false);
-        $edition_id =(isset($params['edition_id']) ? (int)$params['edition_id'] : false);
-        $edition_code =(isset($params['edition_code']) ? $params['edition_code'] : false);
-        $classroom_id =(isset($params['classroom_id']) ? (int)$params['classroom_id'] : false);
-        $classroom_code =(isset($params['classroom_code']) ? $params['classroom_code'] : false);
-
-        $user_level =$this->getUserLevelId((isset($params['user_level']) ? $params['user_level'] : false));
-        $user_status =$this->getUserStatusId((isset($params['user_status']) ? $params['user_status'] : false));
+			if (isset($level_idst[$user_level]) && isset($level_idst[$old_level])) {
+				$acl_man->removeFromGroup($level_idst[$old_level], $user_id);
+				$acl_man->addToGroup($level_idst[$user_level], $user_id);
+				$ok =$model->updateUserLevel($user_id, $user_level);
+				if (!$ok) { $update_ok =false; }
+			}
+		}
 
 
-        $acl_man =Docebo::user()->getAclManager();
-        $course_man =new Man_Course();
-        $db = DbConn::getInstance();
+		// -- update status -----
+		if (!empty($user_status)) {
+			$status_arr =$model->getUserStatusList();
 
-        $course_info =false;
-        $edition_info =false;
-        $classroom_info =false;
-
-        $this->fillCourseDataFromParams(
-            $params, $db, $course_id, $edition_id, $classroom_id, $course_code,
-            $edition_code, $classroom_code, $course_info, $edition_info,
-            $classroom_info, $output
-        );
+			if (isset($status_arr[$user_status])) {
+				$ok =$model->updateUserStatus($user_id, $user_status);
+				if (!$ok) { $update_ok =false; }
+			}
+		}
 
 
-        // --------------- delete user subscription: ------------------------
+		if (!$update_ok) {
+			$output['success']=false;
+		}
+		else {
+			$output['message']='User subscription has been updated';
+		}
 
-        $model = new SubscriptionAlms($course_id, $edition_id, $classroom_id);
-        $docebo_course = new DoceboCourse($course_id);
-        $level_idst = $docebo_course->getCourseLevel($course_id);
-
-        $old_level =$model->getUserLevel($user_id);
-
-        $delete_ok =$model->delUser($user_id);
-
-        if ($delete_ok) {
-            if (empty($edition_id) && empty($classroom_id)) {
-                $acl_man->removeFromGroup($level_idst[$old_level], $user_id);
-            }
-        }
+		return $output;
+	}
 
 
-        if (!$delete_ok) {
-            $output['success']=false;
-        }
-        else {
-            $output['message']='User has been removed from the course';
-        }
+	public function deleteUserSubscription($params) {
+		require_once(_lms_.'/lib/lib.subscribe.php');
+		require_once(_lms_.'/lib/lib.course.php');
+		$output =array();
 
-        return $output;
-    }
+		$output['success']=true;
 
+		if (empty($params['idst']) || (int)$params['idst'] <= 0) {
+			return false;
+			// return array('success'=>true, 'debug'=>print_r($params, true));
+		}
+		else {
+			$user_id =$params['idst'];
+		}
 
-    public function subscribeUserWithCode($params) {
-        require_once(_lms_.'/lib/lib.subscribe.php');
-        require_once(_lms_.'/lib/lib.course.php');
-        $output =array();
+		$course_id =(isset($params['course_id']) ? (int)$params['course_id'] : false);
+		$course_code =(isset($params['course_code']) ? $params['course_code'] : false);
+		$edition_id =(isset($params['edition_id']) ? (int)$params['edition_id'] : false);
+		$edition_code =(isset($params['edition_code']) ? $params['edition_code'] : false);
+		$classroom_id =(isset($params['classroom_id']) ? (int)$params['classroom_id'] : false);
+		$classroom_code =(isset($params['classroom_code']) ? $params['classroom_code'] : false);
 
-        $output['success']=true;
-
-        if (empty($params['idst']) || (int)$params['idst'] <= 0) {
-            return false;
-        }
-        else {
-            $user_id =$params['idst'];
-        }
-
-
-        $registration_code_type =$params['reg_code_type'];
-        $code =$params['reg_code'];
-        $code = strtoupper($code);
-        $code = str_replace('-', '', $code);
-
-        if (empty($registration_code_type) || empty($code)) {
-            $output['success']=false;
-        }
-        else {
-
-            if($registration_code_type == 'tree_course') $code = substr($code, 10, 10);
-
-            $course_registration_result = false;
-            $man_course_user = new Man_CourseUser();
-            $course_registration_result = $man_course_user->subscribeUserWithCode($code, $user_id);
+		$user_level =$this->getUserLevelId((isset($params['user_level']) ? $params['user_level'] : false));
+		$user_status =$this->getUserStatusId((isset($params['user_status']) ? $params['user_status'] : false));
 
 
-            if ($course_registration_result <= 0) {
-                if ($course_registration_result == 0) {
-                    $output['message']='Invalid code';
-                }
-                else if ($course_registration_result < 0) {
-                    $output['message']='Code already used';
-                }
-                $output['success']=false;
-            }
-            else {
-                $output['message']='User has been subscribed to the course';
-            }
-        }
+		$acl_man =Docebo::user()->getAclManager();
+		$course_man =new Man_Course();
+		$db = DbConn::getInstance();
+
+		$course_info =false;
+		$edition_info =false;
+		$classroom_info =false;
+
+		$this->fillCourseDataFromParams(
+			$params, $db, $course_id, $edition_id, $classroom_id, $course_code,
+			$edition_code, $classroom_code, $course_info, $edition_info,
+			$classroom_info, $output
+		);
 
 
-        return $output;
-    }
+		// --------------- delete user subscription: ------------------------
+
+		$model = new SubscriptionAlms($course_id, $edition_id, $classroom_id);
+		$docebo_course = new DoceboCourse($course_id);
+		$level_idst = $docebo_course->getCourseLevel($course_id);
+
+		$old_level =$model->getUserLevel($user_id);
+
+		$delete_ok =$model->delUser($user_id);
+
+		if ($delete_ok) {
+			if (empty($edition_id) && empty($classroom_id)) {
+				$acl_man->removeFromGroup($level_idst[$old_level], $user_id);
+			}
+		}
+
+
+		if (!$delete_ok) {
+			$output['success']=false;
+		}
+		else {
+			$output['message']='User has been removed from the course';
+		}
+
+		return $output;
+	}
+
+
+	public function subscribeUserWithCode($params) {
+		require_once(_lms_.'/lib/lib.subscribe.php');
+		require_once(_lms_.'/lib/lib.course.php');
+		$output =array();
+
+		$output['success']=true;
+
+		if (empty($params['idst']) || (int)$params['idst'] <= 0) {
+			return false;
+		}
+		else {
+			$user_id =$params['idst'];
+		}
+
+
+		$registration_code_type =$params['reg_code_type'];
+		$code =$params['reg_code'];
+		$code = strtoupper($code);
+		$code = str_replace('-', '', $code);
+
+		if (empty($registration_code_type) || empty($code)) {
+			$output['success']=false;
+		}
+		else {
+
+			if($registration_code_type == 'tree_course') $code = substr($code, 10, 10);
+
+			$course_registration_result = false;
+			$man_course_user = new Man_CourseUser();
+			$course_registration_result = $man_course_user->subscribeUserWithCode($code, $user_id);
+
+
+			if ($course_registration_result <= 0) {
+				if ($course_registration_result == 0) {
+					$output['message']='Invalid code';
+				}
+				else if ($course_registration_result < 0) {
+					$output['message']='Code already used';
+				}
+				$output['success']=false;
+			}
+			else {
+				$output['message']='User has been subscribed to the course';
+			}
+		}
+
+
+		return $output;
+	}
 
 
 
@@ -635,30 +635,30 @@ class Course_API extends API {
        @return array
     */    
     public function getCertificateByUser($params){
-        require_once(_lms_.'/lib/lib.subscribe.php');
-        require_once(_lms_.'/lib/lib.course.php');
-        $output =array();
+		require_once(_lms_.'/lib/lib.subscribe.php');
+		require_once(_lms_.'/lib/lib.course.php');
+		$output =array();
 
-        $output['success']=true;
+		$output['success']=true;
         
-        if (empty($params['username'])) {
-            return false;
-        }
-        else {
-            $username =$params['username'];
-        }    
+		if (empty($params['username'])) {
+			return false;
+		}
+		else {
+			$username =$params['username'];
+		}    
     
     
-        if (!empty($params['course_id']))  $id_course = (int)$params['course_id'];
-       
+		if (!empty($params['course_id']))  $id_course = (int)$params['course_id'];
+	   
     
     
 
         $db = DbConn::getInstance();
-        $qtxt ="SELECT idst, firstname, lastname  FROM core_user 
-                WHERE userid='/".$username."' ";
-        $q =$db->query($qtxt);
-        $user_info =$db->fetch_assoc($q);        
+		$qtxt ="SELECT idst, firstname, lastname  FROM core_user 
+				WHERE userid='/".$username."' ";
+		$q =$db->query($qtxt);
+		$user_info =$db->fetch_assoc($q);        
 
         $output['idst'] = (int)$user_info['idst'];
         $output['firstname'] = $user_info['firstname'];
@@ -672,12 +672,12 @@ class Course_API extends API {
         $qcert = $qcert." order by on_date desc";
     
         
-            $output['certificate_list'] = array();
-        
+			$output['certificate_list'] = array();
+		
             $qc =$db->query($qcert);
-            while($row = $db->fetch_assoc($qc)) {
+        	while($row = $db->fetch_assoc($qc)) {
             
-                    $output['certificate_list'][] = array('course_id' => $row['id_course'],
+                	$output['certificate_list'][] = array('course_id' => $row['id_course'],
                                                           'course_code' => $row['code'],
                                                           'course_name' => $row['name']   ,
                                                           'date_generate' =>  $row['on_date'],
@@ -685,8 +685,8 @@ class Course_API extends API {
                                                           
                                                           );
 
-            }
-        
+			}
+		
     
         return $output;
     
@@ -702,30 +702,30 @@ class Course_API extends API {
        @return array
     */   
     public function getCertificateByCourse($params){
-        require_once(_lms_.'/lib/lib.subscribe.php');
-        require_once(_lms_.'/lib/lib.course.php');
-        require_once(_adm_.'/lib/lib.field.php');
+    	require_once(_lms_.'/lib/lib.subscribe.php');
+		require_once(_lms_.'/lib/lib.course.php');
+		require_once(_adm_.'/lib/lib.field.php');
         
         $output =array();
 
-        $output['success']=true;
+		$output['success']=true;
         
-        if (empty($params['course_id'])) {
-            return false;
-        }
-        else {
-            $id_course =$params['course_id'];
-        }    
+		if (empty($params['course_id'])) {
+			return false;
+		}
+		else {
+			$id_course =$params['course_id'];
+		}    
     
     
-        if (!empty($params['username']))  $username = $params['username'];
+		if (!empty($params['username']))  $username = $params['username'];
     
 
         $db = DbConn::getInstance();
-        $qtxt ="SELECT idCourse, code, name, box_description  FROM learning_course 
-                WHERE idCourse=".(int)$id_course;
-        $q =$db->query($qtxt);
-        $course_info =$db->fetch_assoc($q);        
+		$qtxt ="SELECT idCourse, code, name, box_description  FROM learning_course 
+				WHERE idCourse=".(int)$id_course;
+		$q =$db->query($qtxt);
+		$course_info =$db->fetch_assoc($q);        
 
         $output['course_id'] = (int)$id_course;
         $output['course_code'] = $course_info['code'];
@@ -741,23 +741,23 @@ class Course_API extends API {
         $qcert = $qcert." order by on_date desc";
     
         
-            $output['certificate_list'] = array();
+			$output['certificate_list'] = array();
         
             $qc =$db->query($qcert);
-            while($row = $db->fetch_assoc($qc)) {
+        	while($row = $db->fetch_assoc($qc)) {
             
             
-                     $field_man = new FieldList();
-                      $field_data = $field_man->getFieldsAndValueFromUser($row['idst'], false, true);
+ 			        $field_man = new FieldList();
+          			$field_data = $field_man->getFieldsAndValueFromUser($row['idst'], false, true);
           
-                      $fields = array();
-                      foreach($field_data as $field_id => $value) {
-                          $fields[] = array('id'=>$field_id, 'name'=>$value[0], 'value'=>$value[1]);
-                      }            
+          			$fields = array();
+          			foreach($field_data as $field_id => $value) {
+          				$fields[] = array('id'=>$field_id, 'name'=>$value[0], 'value'=>$value[1]);
+          			}            
             
             
             
-                    $output['certificate_list'][] = array(
+                	$output['certificate_list'][] = array(
                                                           'idst' => $row['idst'],
                                                           'firstname' => $row['firstname'],
                                                           'lastname' => $row['lastname']   ,
@@ -766,19 +766,19 @@ class Course_API extends API {
                                                           
                                                           'cert_file' => Get::site_url()."files/appLms/certificate/".$row['cert_file'],
                                                         
-                                                           'custom_fields' => $fields                                                          
+                                                		   'custom_fields' => $fields                                                          
                                                           
                                                           
                                                           );
 
-            }    
+			}    
     
         return $output;
     
     }
         
 
-    // ---------------------------------------------------------------------------
+	// ---------------------------------------------------------------------------
     // LRZ
     // Adding Course Category:
     // Input param:
@@ -1087,56 +1087,56 @@ public function addClassroom($params) {
     
     
 
-    public function delDay($params){
-            require_once(_lms_.'/admin/models/ClassroomAlms.php');
-            require_once(_lms_.'/lib/lib.date.php');
-            
-            $output =array();
-            
-            
-            $id_day =(isset($params['id_day']) ? $params['id_day'] : '');
-            
-         
-            if (empty($id_day)) {
-                $output['success']=false;
-                $output['message']='Missing ID Day: '.$params['id_day'];
-                return $output;
-            }
-     
-          
-            $id_date =(isset($params['id_date']) ? $params['id_date'] : '');
-            
-            if (empty($id_date)) {
-                $output['success']=false;
-                $output['message']='Missing ID Date'.$params['id_date'];
-                return $output;
-            }
-            
-            $course_id =(isset($params['course_id']) ? $params['course_id'] : '');
-            
-            if (empty($course_id)) {
-                $output['success']=false;
-                $output['message']='Missing Course ID'.$params['course_id'];
-                return $output;
-            }
+	public function delDay($params){
+	        require_once(_lms_.'/admin/models/ClassroomAlms.php');
+	        require_once(_lms_.'/lib/lib.date.php');
+	        
+	        $output =array();
+	        
+	        
+	        $id_day =(isset($params['id_day']) ? $params['id_day'] : '');
+	        
+	     
+	        if (empty($id_day)) {
+	            $output['success']=false;
+	            $output['message']='Missing ID Day: '.$params['id_day'];
+	            return $output;
+	        }
+	 
+	      
+	        $id_date =(isset($params['id_date']) ? $params['id_date'] : '');
+	        
+	        if (empty($id_date)) {
+	            $output['success']=false;
+	            $output['message']='Missing ID Date'.$params['id_date'];
+	            return $output;
+	        }
+	        
+	        $course_id =(isset($params['course_id']) ? $params['course_id'] : '');
+	        
+	        if (empty($course_id)) {
+	            $output['success']=false;
+	            $output['message']='Missing Course ID'.$params['course_id'];
+	            return $output;
+	        }
 
-            $query = "delete from learning_course_date_day where id_date=".$params['id_date']." and id_day=".$params['id_day'];
-            $res = sql_query($query);
-            
-            
-            if($res){
-                $output['success']=true;
-                $output['day_delete']=$params['id_day'];
-                $output['id_date']=$params['id_date'];
-                
-            }
-            else {
-                $output['success']=false;
-                $output['message']='Error deleting day';
-            }
-    
-            return $output;
-     }    
+	        $query = "delete from learning_course_date_day where id_date=".$params['id_date']." and id_day=".$params['id_day'];
+	        $res = sql_query($query);
+	        
+	        
+	        if($res){
+	            $output['success']=true;
+	            $output['day_delete']=$params['id_day'];
+	            $output['id_date']=$params['id_date'];
+	            
+	        }
+	        else {
+	            $output['success']=false;
+	            $output['message']='Error deleting day';
+	        }
+	
+	        return $output;
+	 }    
     
     
     public function updateCourse($params){
@@ -1309,79 +1309,79 @@ public function addClassroom($params) {
     }    
     
     
-     // update date    
-    public function updateClassroom($params) {
-            require_once(_lms_.'/lib/lib.date.php');
-            require_once(_lms_.'/lib/lib.course.php');
-            $output =array();
-            
-            $id_date =(isset($params['id_date']) ? $params['id_date'] : '');
-            
-            if (empty($id_date)) {
-                $output['success']=false;
-                $output['message']='Missing ID date '.$params['id_date'];
-                return $output;
-            }
-            
-            $course_id =(isset($params['course_id']) ? $params['course_id'] : '');
-            
-            if (empty($course_id)) {
-                $output['success']=false;
-                $output['message']='Missing Course ID'.$params['course_id'];
-                return $output;
-            }
-    
-            $course = new CourseAlms();
-            $classroom_man = new DateManager();
-    
-            $res =false;
-            
-            
-            $info =$course->getInfo($course_id);
-            if (empty($info)) {
-                $output['success']=false;
-                $output['message']='Course not found:'.$params['course_id'];
-                return $output;
-            }
-          
-            
-            $params['classroom_sub_start_date']=substr(Format::dateDb($params['classroom_sub_start_date'], 'date'),0,10);
-            $params['classroom_sub_end_date']=substr(Format::dateDb($params['classroom_sub_end_date'], 'date'),0,10);
-            $params['classroom_unsubscribe_date_limit']=substr(Format::dateDb($params['classroom_unsubscribe_date_limit'], 'date'),0,10);
-    
-            
-            
-            
-            
-            $res =$this->upDate(
-                $id_date,
-                (!empty($params['classroom_code']) ? $params['classroom_code'] : false),
-                (!empty($params['classroom_name']) ? $params['classroom_name'] : false),
-                (!empty($params['classroom_descr']) ? $params['classroom_descr'] : false),
-                (!empty($params['classroom_medium_time']) ? $params['classroom_medium_time'] : false),
-                (!empty($params['classroom_max_users']) ? $params['classroom_max_users'] : 0),
-                (!empty($params['classroom_price']) ? $params['classroom_price'] : null),
-                (!empty($params['classroom_allow_overbooking']) ? $params['classroom_allow_overbooking'] : 0),
-                (!empty($params['classroom_status']) ? $params['classroom_status'] : 0),
-                (!empty($params['classroom_test_type']) ? $params['classroom_test_type'] : 0),
-                (!empty($params['classroom_sub_start_date']) ? $params['classroom_sub_start_date'] : false),
-                (!empty($params['classroom_sub_end_date']) ? $params['classroom_sub_end_date'] : false),
-                (!empty($params['classroom_unsubscribe_date_limit']) ? $params['classroom_unsubscribe_date_limit'] : false)
-            );
-            
-            if ($res) {
-                $output['success']=true;
-                $output['id_date']=$id_date;
-            }
-            else {
-                $output['success']=false;
-                $output['message']='Error updating classroom<br>'.$id_date. "<br>- ".$params['classroom_code']."<br>- ".$params['classroom_name'];
-            }
-    
-    
-            
-            return $output;
-        }    
+	 // update date    
+	public function updateClassroom($params) {
+	        require_once(_lms_.'/lib/lib.date.php');
+	        require_once(_lms_.'/lib/lib.course.php');
+	        $output =array();
+	        
+	        $id_date =(isset($params['id_date']) ? $params['id_date'] : '');
+	        
+	        if (empty($id_date)) {
+	            $output['success']=false;
+	            $output['message']='Missing ID date '.$params['id_date'];
+	            return $output;
+	        }
+	        
+	        $course_id =(isset($params['course_id']) ? $params['course_id'] : '');
+	        
+	        if (empty($course_id)) {
+	            $output['success']=false;
+	            $output['message']='Missing Course ID'.$params['course_id'];
+	            return $output;
+	        }
+	
+	        $course = new CourseAlms();
+	        $classroom_man = new DateManager();
+	
+	        $res =false;
+	        
+	        
+	        $info =$course->getInfo($course_id);
+	        if (empty($info)) {
+	            $output['success']=false;
+	            $output['message']='Course not found:'.$params['course_id'];
+	            return $output;
+	        }
+	      
+	        
+	        $params['classroom_sub_start_date']=substr(Format::dateDb($params['classroom_sub_start_date'], 'date'),0,10);
+	        $params['classroom_sub_end_date']=substr(Format::dateDb($params['classroom_sub_end_date'], 'date'),0,10);
+	        $params['classroom_unsubscribe_date_limit']=substr(Format::dateDb($params['classroom_unsubscribe_date_limit'], 'date'),0,10);
+	
+	        
+	        
+	        
+	        
+	        $res =$this->upDate(
+	            $id_date,
+	            (!empty($params['classroom_code']) ? $params['classroom_code'] : false),
+	            (!empty($params['classroom_name']) ? $params['classroom_name'] : false),
+	            (!empty($params['classroom_descr']) ? $params['classroom_descr'] : false),
+	            (!empty($params['classroom_medium_time']) ? $params['classroom_medium_time'] : false),
+	            (!empty($params['classroom_max_users']) ? $params['classroom_max_users'] : 0),
+	            (!empty($params['classroom_price']) ? $params['classroom_price'] : null),
+	            (!empty($params['classroom_allow_overbooking']) ? $params['classroom_allow_overbooking'] : 0),
+	            (!empty($params['classroom_status']) ? $params['classroom_status'] : 0),
+	            (!empty($params['classroom_test_type']) ? $params['classroom_test_type'] : 0),
+	            (!empty($params['classroom_sub_start_date']) ? $params['classroom_sub_start_date'] : false),
+	            (!empty($params['classroom_sub_end_date']) ? $params['classroom_sub_end_date'] : false),
+	            (!empty($params['classroom_unsubscribe_date_limit']) ? $params['classroom_unsubscribe_date_limit'] : false)
+	        );
+	        
+	        if ($res) {
+	            $output['success']=true;
+	            $output['id_date']=$id_date;
+	        }
+	        else {
+	            $output['success']=false;
+	            $output['message']='Error updating classroom<br>'.$id_date. "<br>- ".$params['classroom_code']."<br>- ".$params['classroom_name'];
+	        }
+	
+	
+	        
+	        return $output;
+	    }    
     
     
     
@@ -1448,7 +1448,7 @@ public function addClassroom($params) {
     *  Input param:
     *  $id_course: id of the course to delete
     */
-     public function delCourse($id_course)
+ 	public function delCourse($id_course)
     {
         if ((int)$id_course <= 0) return false;
 
@@ -1788,11 +1788,12 @@ public function addClassroom($params) {
         $course_info =$db->fetch_assoc($q);        
     
         $id_track = $course_info['idTrack'];           
-        $id_test = $course_info['idTest'];           
+        $id_test = $course_info['idTest'];        
+        $date_end_attempt = $course_info['date_end_attempt'];   
         
         
         
-        $q_test = 'select lta.idQuest, lta.idAnswer , title_quest, score_assigned
+        $q_test = 'select lta.idQuest, lta.idAnswer , title_quest, score_assigned  , lta.idTrack as idTrack
                     from learning_testtrack_answer lta, learning_testquest ltq
                     where lta.idTrack='.$id_track." 
                     and lta.idQuest=ltq.idQuest and lta.user_answer=1";
@@ -1802,7 +1803,7 @@ public function addClassroom($params) {
         $output['success'] = true;
         $output['id_user'] = $params['id_user'];
         $output['id_org'] = $params['id_org'];
-        
+        $output['date_end_attempt'] = $date_end_attempt;
        
         
             $qc =$db->query($q_test);
@@ -1822,7 +1823,7 @@ public function addClassroom($params) {
                                                           'title_quest' => $row['title_quest'],
                                                           'score_assigned' => $row['score_assigned'],
                                                           'answer'  => $this->getAnswerQuest($row['idQuest'],$row['idAnswer']) ,                                    
-                                                          'response' => $row['idAnswer'],
+                                                          'response' => $this->getTrackAnswer($row['idTrack'], $row['idQuest']),
                                                           'esito' => $res_esito
                                                           
                                                           );
@@ -1838,6 +1839,30 @@ public function addClassroom($params) {
     }
     
 
+    private function getTrackAnswer($idTrack, $idQuest){
+        $db = DbConn::getInstance();
+        $sql = "select idAnswer, more_info from learning_testtrack_answer where idTrack=".$idTrack." and idQuest=".$idQuest;
+        
+        $qca =$db->query($sql);
+        $output_a =  array();
+        while($row_t = $db->fetch_assoc($qca)) {        
+            if($row_t['idAnswer']>0) {
+                $output_a[] = $row_t['idAnswer'];
+            }else{
+                $output_a[] = $row_t['more_info'];    
+            }
+            
+        }    
+            
+        return $output_a    ;
+        
+        
+    }
+    
+    
+    
+    
+    
     function getAnswerQuest($idQuest, $idAnsw){
        $db = DbConn::getInstance();
         $out = array(); 
@@ -2206,16 +2231,16 @@ public function addClassroom($params) {
                 $lo_types_cache[$type] = array( $className, $fileName );
             }
         
-            if (!isset($lo_types_cache[$objectType])) return NULL;
-            list( $className, $fileName ) = $lo_types_cache[$objectType];
-            require_once(_lms_.'/class.module/'.$fileName );
-            $lo =  new $className ( $idResource );
-            return $lo;
+	        if (!isset($lo_types_cache[$objectType])) return NULL;
+	        list( $className, $fileName ) = $lo_types_cache[$objectType];
+	        require_once(_lms_.'/class.module/'.$fileName );
+	        $lo =  new $className ( $idResource );
+	        return $lo;
     }    
     
     
     
-    // assign meta certificate & course to user
+// assign meta certificate & course to user
     function assignMetaUser($params){
         
         require_once(_files_lms_.'/'._folder_lib_.'/lib.aggregated_certificate.php');
@@ -2264,17 +2289,15 @@ public function addClassroom($params) {
       /*              
                     
         foreach($vett_user as $keyUser => $valueUser){
-            $output['value_user_'.$valueUser]=$valueUser;
+            $output['debug_user_'.$valueUser]=$valueUser;
             foreach($vett_course as $keyCourse => $valueCourse){
-                    
-                $output['value_course_'.$valueCourse] = $valueCourse;    
+                $output['debug_course_'.$valueCourse]=$valueCourse;    
                 
                 // assign course to user by meta cert id
                 try {
-                    $query_meta = "INSERT INTO %lms".$aggCertLib->table_cert_meta_association_courses." (idAssociation, idUser, idCourse) 
-                                     VALUES (".$meta_cert_id.",".$valueUser.",".$valueCourse.")";                                     
+                    $query_meta = "INSERT INTO %lms_certificate_meta_course (idMetaCertificate, idUser, idCourse,idCourseEdition) 
+                                     VALUES (".$meta_cert_id.",".$valueUser.",".$valueCourse.",0)";                                     
                     $result_meta = sql_query($query_meta);
-                   
                 } catch(Exception $e) {
                   $output['success']=false;
                 }                
@@ -2317,106 +2340,203 @@ public function addClassroom($params) {
         
            // add association to meta cert id
             try {
-                $query_meta = "INSERT INTO %lms".$aggCertLib->table_cert_meta_association." ( idCertificate, title, description) 
+                $query_meta = "INSERT INTO %lms_certificate_meta ( idCertificate, title, description) 
                                  VALUES (".$meta_cert_id.",'".$name_ass."','".$descr_ass."')";                                     
                 $result_meta = sql_query($query_meta);
                 
                 
-                $output['id_new_association'] = $aggCertLib->getLastInsertedIdAggregatedCert();
+                // get id new association
+                $query_association = "select max(idMetaCertificate) as id_meta from %lms_certificate_meta";
+                $qres = sql_query($query_association);
+                list($id_meta) = sql_fetch_row($qres);                
+                
+                $output['id_new_association'] = $id_meta;
                 
                 
-            } catch(Exception $e) {
+            } catch(Exception $e) {       
               $output['success']=false;
             }           
+                                
+        return $output;
+        
+    }
+      
+
+    /**
+     * put introduction of course    
+     * @param <type> course_id 
+     * @param <type> text_intro 
+     * GRIFO:LRZ
+     */      
+    public function putIntroductionCourse($params){
+        $output =array();
+        $output['success']=true;
+        
+        $course_id = (isset($params['course_id']) ? $params['course_id'] : '');
+        $text_intro = (isset($params['text_intro']) ? $params['text_intro'] : '');
+        
+        if (empty($course_id)) {
+            $output['success']=false;
+            $output['message']='Missing course_id '.$course_id;
+            return $output;
+        }    
+       
+        // get exist record intro-course
+        $sql_exist = "select count(id_course) as exist from learning_htmlfront where id_course=".$params['course_id'];
+        $qres = sql_query($sql_exist);
+        list($exist) = sql_fetch_row($qres); 
+
+        if($exist==0){
+            // insert
+            $sql_intro = "insert into learning_htmlfront (id_course, textof) values (".$params['course_id'].",'".(($params['text_intro']))."')";
+            
+        }else{
+            // update
+            $sql_intro = "update learning_htmlfront set textof='".($params['text_intro'])."'   where id_course=".$params['course_id'];
+        }
+        
+        try {
+            $q_intro = sql_query($sql_intro);
+        } catch(Exception $e) {
+              $output['success']=false;
+        }          
+        
+        
+        $output['course_id']=$course_id;
         
         return $output;
         
     }
-        
     
+    /**
+     * copy image cover from another course    
+     * @param <type> course_id_from 
+     * @param <type> course_id_to
+     * GRIFO:LRZ
+     */     
+    public function copyImgFromCourse($params){
+        $output =array();
+        $output['success']=true;
+        
+        $course_id_from = (isset($params['course_id_from']) ? $params['course_id_from'] : '');
+        $course_id_to = (isset($params['course_id_to']) ? $params['course_id_to'] : '');
+        
+        if (empty($course_id_to)) {
+            $output['success']=false;
+            $output['message']='Missing course_id_to '.$course_id_to;
+            return $output;
+        }
+
+        // if $course_id_from equal zero, l'img of course destination is image default
+        $img_course='';
+        
+        // get exist image course source
+        if($course_id_from>0){
+            $sql_img = "select img_course from learning_course where idCourse=".$params['course_id_from'];
+            $qres = sql_query($sql_img);
+            list($img_course) = sql_fetch_row($qres);         
+        }
+            
+        // associate img_course to course destination
+        $sql_img = "update learning_course set img_course = '".$img_course."' where idCourse=".$params['course_id_to'];
+        
+       try {
+            $q_img = sql_query($sql_img);
+        } catch(Exception $e) {
+              $output['success']=false;
+        }        
+        
+        
+        $output['course_id_from'] = $course_id_from;
+        $output['course_id_to'] = $course_id_to;
+        
+         return $output;
+        
+        
+    }
     
     
     
     // ---------------------------------------------------------------------------
     
 
-    public function call($name, $params) {
-        $output = false;
+	public function call($name, $params) {
+		$output = false;
 
-        // Loads user information according to the external user data provided:
-        $params =$this->fillParamsFrom($params, $_POST);
-        $params =$this->checkExternalUser($params, $_POST);
-
-
-        if (!empty($params[0]) && !isset($params['idst'])) {
-            $params['idst']=$params[0]; //params[0] should contain user idst
-        }
+		// Loads user information according to the external user data provided:
+		$params =$this->fillParamsFrom($params, $_POST);
+		$params =$this->checkExternalUser($params, $_POST);
 
 
-        switch ($name) {
-
-            case 'listCourses':
-            case 'courses': {
-                $output = $this->getCourses($params);
-            } break;
+		if (!empty($params[0]) && !isset($params['idst'])) {
+			$params['idst']=$params[0]; //params[0] should contain user idst
+		}
 
 
-            //e-learning editions
+		switch ($name) {
+
+			case 'listCourses':
+			case 'courses': {
+				$output = $this->getCourses($params);
+			} break;
+
+
+			//e-learning editions
             case 'editions': {
-                $output = $this->getEditions($params);
-            } break;
+				$output = $this->getEditions($params);
+			} break;
 
 
-            
+			
             case 'classrooms': {
-                $output = $this->getClassrooms($params);
-            } break;
+				$output = $this->getClassrooms($params);
+			} break;
 
 
-            case 'addUserSubscription':
-            case 'addusersubscription': {
-                if (!isset($params['ext_not_found'])) {
-                    $output = $this->addUserSubscription($params);
-                }
-            } break;
+			case 'addUserSubscription':
+			case 'addusersubscription': {
+				if (!isset($params['ext_not_found'])) {
+					$output = $this->addUserSubscription($params);
+				}
+			} break;
 
-            case 'updateUserSubscription':
-            case 'updateusersubscription': {
-                if (!isset($params['ext_not_found'])) {
-                    $output = $this->updateUserSubscription($params);
-                }
-            } break;
+			case 'updateUserSubscription':
+			case 'updateusersubscription': {
+				if (!isset($params['ext_not_found'])) {
+					$output = $this->updateUserSubscription($params);
+				}
+			} break;
 
-            case 'deleteUserSubscription':
-            case 'deleteusersubscription': {
-                if (!isset($params['ext_not_found'])) {
-                    $output = $this->deleteUserSubscription($params);
-                }
-            } break;
+			case 'deleteUserSubscription':
+			case 'deleteusersubscription': {
+				if (!isset($params['ext_not_found'])) {
+					$output = $this->deleteUserSubscription($params);
+				}
+			} break;
 
-            case 'subscribeUserWithCode':
-            case 'subscribeuserwithcode': {
-                if (!isset($params['ext_not_found'])) {                
-                    $output = $this->subscribeUserWithCode($params);
-                }
-            } break;
+			case 'subscribeUserWithCode':
+			case 'subscribeuserwithcode': {
+				if (!isset($params['ext_not_found'])) {                
+					$output = $this->subscribeUserWithCode($params);
+				}
+			} break;
 
 
             case 'getCertificateByUser':
             case 'getcertificatebyuser': {
-                if (!isset($params['ext_not_found'])) {     
+				if (!isset($params['ext_not_found'])) {     
                
-                    $output = $this->getCertificateByUser($params);
-                }
-            } break;
+					$output = $this->getCertificateByUser($params);
+				}
+			} break;
 
             case 'getCertificateByCourse':
             case 'getcertificatebycourse': {
-                if (!isset($params['ext_not_found'])) {     
+				if (!isset($params['ext_not_found'])) {     
                
-                    $output = $this->getCertificateByCourse($params);
-                }
-            } break;
+					$output = $this->getCertificateByCourse($params);
+				}
+			} break;
 
 
             // LRZ 
@@ -2508,7 +2628,6 @@ public function addClassroom($params) {
                 $output = $this->getAnswerTest($_POST);
                 
             }break;               
-            
 
             //META CERTIFICATE 
             case 'assignMetaUser':
@@ -2516,18 +2635,32 @@ public function addClassroom($params) {
                 $output = $this->assignMetaUser($_POST);
             }break;        
             
-
-            
             case 'addCertificate':
             case 'addcertificate':{
                 $output = $this->addAssociationCertificate($_POST);                
         
             }break;             
             
+           // manage introduction module of course
+           case 'putintroductioncourse':
+           case 'putIntroductionCourse':{
+                $output = $this->putIntroductionCourse($_POST);
+               
+           } break;
+           
+           // copy image from course source
+           case 'copyimgfromcourse':
+           case 'copyImgFromCourse':{
+                $output = $this->copyImgFromCourse($_POST);
+           }
+           
+           
+           
+           
             
-            default: $output = parent::call($name, $params);
-        }
-        return $output;
-    }
+			default: $output = parent::call($name, $params);
+		}
+		return $output;
+	}
 
 }

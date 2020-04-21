@@ -56,13 +56,12 @@ function edithtml() {
 	$re_htmlfront = sql_query($query);
 	
 	$error = false;
-	if(isset($_POST['save'])) {
-		
+	if(isset($_REQUEST['save'])) {
 		if(sql_num_rows($re_htmlfront) > 0) {
 			
 			$upd_query = "
 			UPDATE ".$GLOBALS['prefix_lms']."_htmlfront 
-			SET textof = '".$_POST['description']."'
+			SET textof = '".$_REQUEST['description']."'
 			WHERE id_course = '".$_SESSION['idCourse']."'";
 			$re = sql_query($upd_query);
 		} else {
@@ -71,7 +70,7 @@ function edithtml() {
 			INSERT INTO ".$GLOBALS['prefix_lms']."_htmlfront 
 			( id_course, textof) VALUES 
 			( 	'".$_SESSION['idCourse']."',
-				'".$_POST['description']."' )";
+				'".$_REQUEST['description']."' )";
 			$re = sql_query($ins_query);
 		}
 		if($re) Util::jump_to('index.php?modname=htmlfront&amp;op=showhtml&amp;saveok=1');

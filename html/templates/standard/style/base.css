@@ -339,7 +339,7 @@ ul.flat-categories li a{color: #C84000;font-weight:bold;}
 ul.style_none li{list-style:none; }
 /* Form */
 .form_elem{padding:0px 6px;}
-.form_line_l, .form-line{display:block; margin:1px 0;line-height:1.8em;}
+.form_line_l, .form-line{display:block; margin:6px 0;line-height:1.8em;}
 /*.form_line_l p, .form-line p{display:inline;margin:0 8px 0 0;padding:2px 0 2px 0;vertical-align:top;}*/
 .form_line_l p, .form-line p{display:inline-block;max-width:100%;margin:0 8px 0 0;padding:2px 0 2px 0;vertical-align:middle;}
 .form_line_l .form-control {display:inline-block;vertical-align:middle;}
@@ -1805,11 +1805,6 @@ ul.tabs li.current{
     display: block;
 }
 
-/* FIX WIDTH POPUP CONTAINER SUBSCRIBE COURSE */
-
-#pop_up_container {
-    width: 100%!important;
-}
 
 /* FIX POPUP USER AREA */
 
@@ -1820,4 +1815,15 @@ ul.tabs li.current{
     transform: none;
     border: none;
 }
+
+/* Fix bug #19669: add left margin to first element of the menu in LMS page */
+header.header .row-fluid .navbar-collapse li:first-child a{
+    margin-left: 10px;
+}
+
+/* Fix bug #19669: the main container will always fill 90% of vertical height to avoid the footer to be in the middle of the page */
+.container-fluid{
+    height: 90vh;
+}
+
 

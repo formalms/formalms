@@ -91,6 +91,7 @@ class FilterInput {
 				}
 
 				$config->set('HTML.TidyLevel', 'none');
+                $config->set('Cache.SerializerPath', _files_ . '/cache/twig');
 				$this->html_purifier = new HTMLPurifier($config);
 			};break;
 			case 'htmlawed' : {
@@ -150,6 +151,7 @@ class FilterInput {
 
 	protected function getHtmlPurifierDefaultElements() {
 		$temp = HTMLPurifier_Config::createDefault();
+        $temp->set('Cache.SerializerPath', _files_ . '/cache/twig');
 		$def =$temp->getHTMLDefinition();
 		ksort($def->info);
 		$res =array_keys($def->info);
@@ -161,6 +163,7 @@ class FilterInput {
 
 	protected function getHtmlPurifierDefaultAttributes() {
 		$temp = HTMLPurifier_Config::createDefault();
+        $temp->set('Cache.SerializerPath', _files_ . '/cache/twig');
 		$def =$temp->getHTMLDefinition();
 		ksort($def->info);
 		$res = array();

@@ -297,7 +297,7 @@ class CompetencesAdm extends Model {
 		//validate pagination data
 		if (!is_array($pagination)) $pagination = array();
 		$_startIndex = (isset($pagination['startIndex']) ? (int)$pagination['startIndex'] : 0);
-		$_results = (isset($pagination['results']) ? (int)$pagination['results'] : Get::sett('visuItem', 25));
+	    $_results = (isset($pagination['results']) ? (int)$pagination['results'] : Get::sett('visuItem', 25));
 		$_sort = 't2.name';
 		$_dir = 'ASC';
 
@@ -322,13 +322,12 @@ class CompetencesAdm extends Model {
 		$_filter = "";
 		if (is_array($filter) && isset($filter['text']) && $filter['text'] != '')
 			$_filter .= " AND (t2.name LIKE '%".$filter['text']."%' OR t2.description LIKE '%".$filter['text']."%') ";
-			//$_filter .= " AND t2.name LIKE '%".$filter['text']."%' ";
 
 		//validate language for name and description
 		$_language = (!empty($filter) && isset($filter['language']) ? $filter['language'] : getLanguage());
 
 		//mount query
-		$query = "SELECT t1.id_competence, t1.id_category, t1.typology, t1.type, "// t1.score, t1.expiration, "
+		$query = "SELECT t1.id_competence, t1.id_category, t1.typology, t1.type, "
 			." t2.name, t2.description "
 			." FROM ".$this->_getCompetencesTable()." as t1 "
 			." LEFT JOIN ".$this->_getCompetencesLangTable()." as t2 "
@@ -355,7 +354,7 @@ class CompetencesAdm extends Model {
 				while (list($id_competence, $count) = $this->db->fetch_row($res)) {
 					$_users[$id_competence] = $count;
 				}
-				while (list($key, $value) = each($output)) {
+                foreach($output as $key => $value ) {
 					$value->users = (array_key_exists($key, $_users) ? (int)$_users[$key] : 0);
 				}
 
@@ -367,14 +366,14 @@ class CompetencesAdm extends Model {
 				while (list($id_competence, $count) = $this->db->fetch_row($res)) {
 					$_courses[$id_competence] = $count;
 				}
-				while (list($key, $value) = each($output)) {
+                foreach($output as $key => $value )        
+                {
 					$value->courses = (array_key_exists($key, $_courses) ? (int)$_courses[$key] : 0);
 				}
 			}
 			reset($output);
 
 		}
-
 		return array_values($output);
 	}
 
@@ -588,7 +587,7 @@ class CompetencesAdm extends Model {
 			}
 		}
 
-		while (list($key, $value) = each($output)) {
+    foreach($output as $key => $value ) {
 			if (isset($langs[$key])) {
 				$value->langs = $langs[$key];
 			}

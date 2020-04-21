@@ -32,8 +32,8 @@ function adapt_input_data(&$arr_data, $deeper = TRUE, $deep_reached = 0 ) {
 	
 	$good = TRUE;
 	if($deep_reached > ADP_MAX_DEEP) return $good;
-	while(list($key, $val) = each($arr_data)) {
-		
+  foreach($arr_data as $key => $val)
+  {
 		// control key
 		$new_key = ( get_magic_quotes_gpc() ? stripslashes($key) : $key );
 		if($new_key != $key) {

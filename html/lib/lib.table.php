@@ -269,8 +269,7 @@ class TableRow {
 			$row .= $this->cells[0]->getCell();
 		} else {
 			reset($this->cells);
-			while(list(, $cell) = each($this->cells)) {
-
+      foreach($this->cells as $cell){
 				$row .= $cell->getCell();
 			}
 		}
@@ -292,8 +291,7 @@ class TableRow {
 			.(!empty($this->other_code) ? ' '.$this->other_code : '').'>';
 
 		reset($this->cells);
-		while(list(, $cell) = each($this->cells)) {
-
+    foreach($this->cells as $cell){    
 			$row .= $cell->getResponsiveCell();
 		}
 
@@ -558,7 +556,7 @@ class Table {
 
 			reset($this->table_head);
 			$table .= '<thead>'."\n";
-			while(list(, $row) = each($this->table_head)) {
+      foreach($this->table_head as $row) {
 				if(is_array($row)) $table .= $row['label'];
 				else $table .= $row->getRow();
 			}
@@ -568,7 +566,7 @@ class Table {
 
 			reset($this->table_foot);
 			$table .= '<tfoot>'."\n";
-			while(list(, $row) = each($this->table_foot)) {
+      foreach($this->table_foot as $row) {      
 				if(is_array($row)) $table .= $row['label'];
 				else $table .= $row->getRow();
 			}
@@ -578,7 +576,7 @@ class Table {
 			$i = 0;
 			reset($this->table_body);
 			$table .= '<tbody>'."\n";
-			while(list($k, $row) = each($this->table_body)) {
+      foreach($this->table_body as $k => $row) {      
 				if(is_array($row)) $table .= $row['label'];
 				else $table .= $row->getRow($i++);
 			}
@@ -633,7 +631,8 @@ class Table {
 
 			reset($this->table_head);
 			$table .= '<div class="table-head">';
-			while(list(, $row) = each($this->table_head)) {
+      
+      foreach($this->table_head as $row) {
 				if(is_array($row)) $table .= $row['label'];
 				else $table .= $row->getResponsiveRow();
 			}
@@ -643,7 +642,7 @@ class Table {
 
 			reset($this->table_foot);
 			$table .= '<div class="table-foot">';
-			while(list(, $row) = each($this->table_foot)) {
+      foreach($this->table_foot as $row) {      
 				if(is_array($row)) $table .= $row['label'];
 				else $table .= $row->getResponsiveRow();
 			}
@@ -653,7 +652,7 @@ class Table {
 			$i = 0;
 			reset($this->table_body);
 			$table .= '<div class="table-body">';
-			while(list($k, $row) = each($this->table_body)) {
+      foreach($this->table_body as $k => $row) {      
 				if(is_array($row)) $table .= $row['label'];
 				else $table .= $row->getResponsiveRow($i++);
 			}
@@ -802,7 +801,7 @@ class Table {
 		$this->typeCol = $colsType;
 		$code = '<thead>'."\n"
 			.'<tr>'."\n";
-		while(list($key, $contentCell) = each($colElem)) {
+    foreach($colElem as $key => $contentCell) {      
 			++$this->cols;
 			$code .= "\t".'<th';
 			if (trim($colsType[$key]) != '') {
@@ -840,7 +839,7 @@ class Table {
 		//EFFECTS: write the header of the table
 		$code = '<thead>'."\n"
 			.'<tr>'."\n";
-		while(list($key, $contentCell) = each($colElem)) {
+    foreach($colElem as $key => $contentCell) {      
 			if( $contentCell['toDisplay'] ) {
 				++$this->cols;
 				$code .= '<th'.($contentCell['hClass'] != '' ? ' class="'.$contentCell['hClass'].'"' : '' ).'>'
@@ -856,7 +855,7 @@ class Table {
 	public function writeRow($colsContent) {
 		//EFFFECTS: write the row
 		$code = '<tr class="line'.($this->rows % 2? '' : '-col' ).'">'."\n";
-		while(list($key, $contentCell) = each($colsContent)) {
+    foreach($colsContent as $key => $contentCell) {    
 			$code .= "\t".'<td';
 			if (trim($this->typeCol[$key]) != '') {
 				switch(trim($this->typeCol[$key])) {
@@ -885,7 +884,7 @@ class Table {
 	public function writeRowCss($colElem) {
 		//EFFFECTS: write the row
 		$code = '<tr class="line'.($this->rows % 2? '' : '-col' ).'">';
-		while(list($key, $contentCell) = each($colElem)) {
+    foreach($colElem as $key => $contentCell) {    
 			if( $contentCell['toDisplay'] ) {
 				$code .= '<td'.($contentCell['fieldClass'] != '' ? ' class="'.$contentCell['fieldClass'].'"' : '' ).'>'
 					.$contentCell['data']

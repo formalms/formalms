@@ -33,7 +33,7 @@ class User_API extends API {
 			return false;
 	}
 
-    // calcola idOrg attraverso il codice organigramma
+    //  return idOrg using org chart code
     protected function _getBranchByCode($like, $parent = false, $lang_code = false) {
         if (!$like) return false;
         
@@ -72,7 +72,7 @@ class User_API extends API {
 
 		$set_idst =(isset($params['idst']) ? $params['idst'] : false);
 		
-		//fix grifomultimedia soap	argument [auth a.b.]
+
 		$userdata = (!isset($userdata['userid'])&&isset($params)) ?$params:$userdata;
 		
 		if (!isset($userdata['userid'])) return false;
@@ -346,9 +346,7 @@ class User_API extends API {
 				'userid' => $this->aclManager->relativeId($user_data[ACL_INFO_USERID]),
 				'firstname' => $user_data[ACL_INFO_FIRSTNAME],
 				'lastname' => $user_data[ACL_INFO_LASTNAME],
-				//'password' => $user_data[ACL_INFO_PASS],
 				'email' => $user_data[ACL_INFO_EMAIL],
-				//'avatar' => $user_data[ACL_INFO_AVATAR],
 				'signature' => $user_data[ACL_INFO_SIGNATURE],
 				'valid' => $user_data[ACL_INFO_VALID],
 				'pwd_expire_at' => $user_data[ACL_INFO_PWD_EXPIRE_AT],
@@ -785,6 +783,16 @@ class User_API extends API {
             }
         }
         
+        // select single user to admin  // PER FESTO
+        if (array_key_exists('single_user', $params)){
+            $q = "select idst from core_user where userid = '/".$params['single_user']."'";
+            $rs =$this->db->query($q);
+            if ($rs){
+                list($selected_group) = $this->db->fetch_row($rs);
+            }                                                           
+        }          
+        
+        
         
         // associates users to admin
         if(array_key_exists('userid', $params) && $selected_group > 0 ){
@@ -868,13 +876,269 @@ class User_API extends API {
     }
 
 	
-	
+    
+    private function getIdOrgByCode($code){
+        $idParent=0;
+        $query = "select idOrg from core_org_chart_tree where code like '".$code."' ";
+
+            $rs =$this->db->query($query);
+            if ($rs){
+                list($idParent) = $this->db->fetch_row($rs);
+            }        
+        
+        
+        return $idParent;
+        
+        
+    }
+    
+    
+        //GRIFO LRZ: crea ramo organigramma
+      function newOrg($orgData){
+        $name=array('italian'=>$orgData['name_org']);
+        
+        
+        // calcola idParent by code
+        $output = array();
+        
+        $idParent = $orgData['parent_org'];
+        
+        if(empty($orgData['parent_org'])) $idParent = 0;
+        
+        include_once(_adm_."/models/UsermanagementAdm.php");
+        $adm=new UsermanagementAdm();
+        $idOrg=$adm->addFolder($idParent,$name,$orgData['code']);
+        if($idOrg) $output = array('success'=>true, 'message'=>$idOrg);
+        else $output = array('success'=>false, 'message'=>"Organizzazione:$name; idParent:$idParent; code:".$orgData['code']);
+        return $output;
+      }
+      
+      
+      function moveOrg($orgData){
+        $name=array('italian'=>$orgData['name']);
+        
+      
+        $output = array();
+        $output['success']=true;
+        
+        if (empty($orgData['code'])) {
+            $output['success']=false;
+            $output['message']='Missing Code org Source '.$orgData['code'];
+            return $output;
+        }        
+        
+        if (empty($orgData['parent_org_new'])) {
+            $output['success']=false;
+            $output['message']='Missing Code org Destination '.$orgData['parent_org_new'];
+            return $output;
+        } 
+        
+
+        
+        $idSrcFolder = $this->getIdOrgByCode($orgData['code']);
+        $idParentNew = $this->getIdOrgByCode($orgData['parent_org_new']);
+        
+        include_once(_adm_."/models/UsermanagementAdm.php");
+        $adm=new UsermanagementAdm();
+        $idOrg=$adm->moveFolder($idSrcFolder,$idParentNew);
+        if($idOrg) $output = array('success'=>true, 'message'=>$idOrg);
+        else $output = array('success'=>false, 'message'=>"Organizzazione:$name; idParent:$idParentNew; code:".$orgData['code']);
+        
+        
+        $output['id_org'] = $idSrcFolder;
+        
+        return $output;
+          
+      }    
+    
+    
+    // associa utente ad organigramma
+    function moveUserInOrg($params){
+         $output =array();
+         $output['message']='';
+         $id_user = $params['id_user'];
+         
+         
+            $branches = explode(";", $params['code_new_org']);
+            if (is_array($branches)) {
+                foreach ($branches as $branch) {
+                    $idOrg = $this->_getBranchByCode($branch);
+        
+                    if ($idOrg !== false) {
+                        $oc = $this->aclManager->getGroupST('/oc_'.$idOrg);
+                        $ocd = $this->aclManager->getGroupST('/ocd_'.$idOrg);
+                        $this->aclManager->addToGroup($oc, $id_user);
+                        $this->aclManager->addToGroup($ocd, $id_user);
+                        $entities[$oc] = $oc;
+                        $entities[$ocd] = $ocd;
+         
+                        $output['id_user']=$id_user;               
+                        $output['orgchart']=$idOrg;               
+                        $output['success']=true;   
+               
+                    
+                    }else{
+                        
+                        $output['id_user']=$id_user;               
+                        $output['orgchart']=$id_org;               
+                        $output['success']=false;                         
+                        
+                    }
+                
+         
+                
+                }
+            }         
+         
+         
+         
+         
+         
+         return  $output ;
+        
+    }	
+    
+    
+    
+    function removeUserFromOrg($params){
+        
+        
+         $output =array();
+         $output['message']=' '.$params['id_user']." - " .$params['code_org'] ;        
+        
+        
+        $id_user = $params['id_user'];        
+        $code_org = $params['code_org'];
+
+        if (empty($id_user)) {
+            $output['success']=false;
+            $output['message']='Missing User ID'.$params['id_user'];
+            return $output;
+        }
+
+        if (empty($code_org)) {
+            $output['success']=false;
+            $output['message']='Missing Code ORG'.$params['code_org'];
+            return $output;
+        }
+        
+        
+        $id_org = $this->_getBranchByCode($code_org);    
+            
+         
+        $acl_man = Docebo::user()->getAclManager();
+        
+        $idst_org = $acl_man->getGroupST('oc_' . $id_org);
+        $idst_orgd = $acl_man->getGroupST('ocd_' . $id_org);
+    
+        //cancel from group
+        $acl_man->removeFromGroup($idst_org, $id_user);
+        $acl_man->removeFromGroup($idst_orgd, $id_user);
+        $output['success']=true; 
+        
+        return  $output ;
+    }
+    
+   
+        
+    function renameOrg($params){
+        
+
+        $lang_code = 'italian';
+        $id_org = $params['id_org'];        
+        $code_org = $params['code_org'];
+        $name_org = $params['name_org'];
+
+        $output =array();
+        $output['message']='rename org: '.$params['id_org']." - " .$params['code_org']." - ".$params['name_org'] ." - ".!empty($name_org);        
+        
+                
+        $output['success']=true;
+        
+        if (empty($id_org)) {
+            $output['success']=false;
+            $output['message']='Missing ORG ID'.$params['id_org'];
+            return $output;
+        }        
+        
+        if (!empty($name_org)) {            
+            $query = "UPDATE core_org_chart SET translation = '".$name_org."' WHERE lang_code='".$lang_code."' AND id_dir=".$id_org;        
+            $res = $this->db->query($query);    
+            $output['message_name'] = 'Nome organigramma modificato con successo';   
+        }
+       
+       
+        if (!empty($code_org)) {            
+            $query = "UPDATE core_org_chart_tree SET code = '".$code_org."' WHERE idOrg=".$id_org;        
+            $res = $this->db->query($query);    
+            $output['message_code'] = 'Codice organigramma modificato con successo';   
+        }        
+       
+       
+        
+        return $output;
+        
+        
+    }
+    
+    
+
+    function removeOrg($params){
+        $id_org = $params['id_org'];
+        
+        $output =array();
+        $output['message']='remove org: '.$id_org;        
+                
+        $output['success']=true;        
+        
+        if (empty($id_org)) {
+            $output['success']=false;
+            $output['message']='Missing ORG ID'.$params['id_org'];
+            return $output;
+        }          
+        
+        // conta quanti figli ha il nodo corrente
+        $query = "select count(*) as c from core_org_chart_tree where idParent=".$id_org;
+
+        $rs =$this->db->query($query);
+        if ($rs){
+            list($numChild) = $this->db->fetch_row($rs);
+        }          
+        
+        if($numChild>0){
+            $output['success']=false;
+            $output['message']='ORG ID'.$params['id_org']." ha dei nodi figli, eliminare prima i nodi figli per eliminare il nodo corrente";
+            return $output;            
+            
+        }
+        
+        
+        require_once(_adm_.'/models/UsermanagementAdm.php');
+        $classUser = new UsermanagementAdm();
+        $res = $classUser->deleteFolder($id_org);
+        
+        if($res){
+            $output['success']=true;
+            $output['message']='Remove ORG ID'.$params['id_org'];            
+        }else{
+            $output['success']=false;
+            $output['message']='Errore in Remove ORG ID'.$params['id_org'];            
+        }
+        
+          
+        
+        return $output;
+        
+        
+    }
+    
+    
+    
+    
 	// ---------------------------------------------------------------------------
 	
 	
 	public function call($name, $params) {
-        // WS DEBUGGING
-        //DebugBreak('session@localhost');        
 		$output = false;
 
 		// Loads user information according to the external user data provided:
@@ -1055,8 +1319,48 @@ class User_API extends API {
                 $output = $this->admin_assignCourses($_POST);
             } break;
             
-
-		
+// LRZ
+        case 'newOrg':
+        case 'neworg':
+        case 'addorg': {          
+                $output = $this->newOrg($_POST);
+              }  
+            break;
+      
+        case 'moveOrg':
+        case 'moveorg':{
+                $output = $this->moveOrg($_POST);
+          }
+            break;	
+        
+        case 'moveOrgUser':    
+        case 'moveorguser':{
+            
+            $output = $this->moveUserInOrg($_POST);
+             break;    
+        }    	
+        
+        case 'removeUserFromOrg':
+        case 'removeuserfromorg':{
+            
+             $output = $this->removeUserFromOrg($_POST);
+             break;    
+            
+        }
+        
+        case 'renameOrg':
+        case 'renameorg':{
+             $output = $this->renameOrg($_POST);
+             break;                            
+        }
+        
+        case 'removeOrg':
+        case 'removeorg':{
+            $output = $this->removeOrg($_POST);
+             break;                     
+            
+        }
+        
 
 			default: $output = parent::call($name, $_POST);
 		}

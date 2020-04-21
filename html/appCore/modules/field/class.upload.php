@@ -60,7 +60,7 @@ class Field_Upload extends Field {
 			//insert mandatory translation
 			$mand_lang = getLanguage();
 			if(isset($_POST['show_on_platform'])) {
-				while(list($code, ) = each($_POST['show_on_platform']))
+        foreach($_POST['show_on_platform']  as $code )
 					$show_on .= $code.',';
 			}
 			//insert mandatory translation
@@ -214,7 +214,7 @@ class Field_Upload extends Field {
 
 			$re = true;
 			if(isset($_POST['show_on_platform'])) {
-				while(list($code, ) = each($_POST['show_on_platform']))
+        foreach($_POST['show_on_platform']  as $code )
 					$show_on .= $code.',';
 			}
 			//insert other field

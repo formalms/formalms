@@ -455,7 +455,7 @@ function getBackUrl($use_xhtml=TRUE) {
 		$res=$_SESSION["chat_back_url"];
 	else if (isset($_GET["backurl"]))  {
 		$backurl=urldecode($_GET["backurl"]);
-		if (strpos($backurl, $_SERVER["HTTP_HOST"]) === FALSE) { // No-phishing zone!
+		if (strpos($backurl, strval($_SERVER["HTTP_HOST"])) === FALSE) { // No-phishing zone!
 			$backurl=(isset($_SERVER["HTTPS"]) ? "https://" : "http://").$_SERVER["HTTP_HOST"].$backurl;
 			$_SESSION["chat_back_url"]=$backurl;
 			$res=$backurl;

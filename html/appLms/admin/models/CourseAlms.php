@@ -401,13 +401,13 @@ Class CourseAlms extends Model
         // restriction on course status ------------------------------------------
         $user_status = 0;
         if (isset($data_params['user_status']))
-            while (list($status) = each($data_params['user_status']))
+            foreach(data_params['user_status'] as $status => $v )
                 $user_status |= (1 << $status);
 
         // level that will be showed in the course --------------------------------
         $show_level = 0;
         if (isset($data_params['course_show_level']))
-            while (list($lv) = each($data_params['course_show_level']))
+            foreach(data_params['course_show_level'] as $lv => $v )
                 $show_level |= (1 << $lv);
 
         // save the file uploaded -------------------------------------------------
@@ -748,13 +748,13 @@ Class CourseAlms extends Model
         // restriction on course status ------------------------------------------
         $user_status = 0;
         if(isset($data_params['user_status']))
-            while(list($status) = each($data_params['user_status']))
+            foreach(data_params['user_status'] as $status => $v )
                 $user_status |= (1 << $status);
 
         // level that will be showed in the course --------------------------------
         $show_level = 0;
         if(isset($data_params['course_show_level']))
-            while(list($lv) = each($data_params['course_show_level']))
+            foreach(data_params['course_show_level'] as $lv => $v )
                 $show_level |= (1 << $lv);
 
         // save the file uploaded -------------------------------------------------
@@ -1445,6 +1445,19 @@ Class CourseAlms extends Model
         return $row;
     }
 
+    
+    private function getStatusCertificate($idCertificate, $idCourse){
+         $query = "select available_for_status from %lms_certificate_course where id_certificate=".$idCertificate." and id_course=".$idCourse;
+         
+         $idCert = sql_fetch_row(sql_query($query));        
+         if ($idCert==false) $idCert = 0;
+
+         return $idCert[0];         
+        
+        
+    }    
+    
+    
   public function getListTototalUserCertificate($id_course, $id_certificate, $cf){
         
         
@@ -1459,6 +1472,8 @@ Class CourseAlms extends Model
         $tcu = $GLOBALS['prefix_lms']."_courseuser as cu";
         $tu = $GLOBALS['prefix_fw']."_user as u";
 
+        
+        $available_for_status = $this->getStatusCertificate($id_certificate, $id_course);
 
         $query = "SELECT u.idst, u.userid, u.firstname, u.lastname,
                          DATE_FORMAT(cu.date_complete,'".$date_format."'), DATE_FORMAT(ca.on_date,'".$date_format."'), cu.idUser as id_user,
@@ -1473,6 +1488,30 @@ Class CourseAlms extends Model
             . ($id_certificate != 0 ? " AND cc.id_certificate = ".$id_certificate : "")
             ." AND coalesce(elapsed,0) >= coalesce(cc.minutes_required,0)*60 "
             ." AND cu.idCourse='".(int)$id_course."'";       
+           
+            // Bug #19681 - downloadable certificates for all user states
+            // dev: LR
+            switch($available_for_status){
+                    // for each user    
+                    case 1:
+                        $query = $query." and cu.status>=0";
+                        break;
+                    
+                    // for users who have attended the course
+                    case 2:
+                        $query = $query." and cu.status=1";
+                        break;
+                        
+                    // for users who have completed the course                 
+                    case 3:
+                        $query = $query." and cu.status=2";
+                        break;  
+                
+        }    
+             
+           
+           
+           
            
         $res = sql_query($query);   
 
@@ -1524,9 +1563,9 @@ Class CourseAlms extends Model
   
     }
 
-    
-    
-    private function getInfoClassroom($id_user, $id_course){
+
+
+    protected function getInfoClassroom($id_user, $id_course){
         
         $query =    "SELECT code, name"
                         ." FROM %lms_course_date, %lms_course_date_user

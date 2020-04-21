@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20190215</DATE>
+  <DATE>20200220</DATE>
   <LANG id="arabic">
     <lang_code>arabic</lang_code>
     <lang_description>&#x627;&#x644;&#x639;&#x631;&#x628;&#x64A;&#x629;</lang_description>
@@ -8,6 +8,9 @@
     <lang_browsercode>ar</lang_browsercode>
     <lang_direction>rtl</lang_direction>
     <platform id="all">
+      <module id="">
+        <key id="&amp;_NEW_USER_SUBSCRIBED_TEXT_MODERATORS" attributes="" save_date="2020-01-20 15:31:45"><![CDATA[[url] [firstname] [lastname] [course] [username]]]></key>
+      </module>
       <module id="adminrules">
         <key id="adminrules&amp;_ADMIN_ASSIGNTREEDESCR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[حدد المجلدات لرؤية المستخدم المسؤول]]></key>
         <key id="adminrules&amp;_ADMIN_MANAGMENT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[مدير المسؤولين]]></key>
@@ -475,6 +478,8 @@
         <key id="configuration&amp;_REGISTER_TYPE_MODERATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[التسجيل الذاتي خاضع للإشراف]]></key>
         <key id="configuration&amp;_REGISTER_TYPE_SELF" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[مجانا التسجيل الذاتي]]></key>
         <key id="configuration&amp;_REGISTRATION_CODE_TYPE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[تسجيل رمز الاستخدام]]></key>
+        <key id="configuration&amp;_REPORT_MAX_EMAIL_SIZE_MB" attributes="" save_date="2019-10-22 18:15:59"><![CDATA[]]></key>
+        <key id="configuration&amp;_REPORT_STORAGE_FOLDER" attributes="" save_date="2019-10-22 18:15:53"><![CDATA[]]></key>
         <key id="configuration&amp;_REQUEST_MANDATORY_FIELDS_COMPILATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[بالملف الشخصي له في الدخول يتم مطالبة المستخدم لملء الحقول الإلزامية المتعلقة]]></key>
         <key id="configuration&amp;_REST_AUTH_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[رمز واحد للمنصة]]></key>
         <key id="configuration&amp;_REST_AUTH_LIFETIME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[( سوف تنتهي صلاحية الرمز  بعد  (دقيقة]]></key>
@@ -793,6 +798,7 @@
         <key id="coursereport&amp;_USE_FOR_FINAL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[النتيجة النهائية للاستخدام]]></key>
         <key id="coursereport&amp;_WEIGHT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[الوزن]]></key>
       </module>
+      <module id="courses"/>
       <module id="course_autoregistration">
         <key id="course_autoregistration&amp;_AUTOREGISTRATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[إضافة دورة جديدة]]></key>
         <key id="course_autoregistration&amp;_BACK_TO_COURSE" attributes="" save_date="2017-05-08 12:23:07"><![CDATA[&gt;&gt; "عودة إلى "منطقة الدورة الخاصة بي]]></key>
@@ -867,6 +873,12 @@ You can read it on forma.lms at URL <a href="[url]">[url]</a>]]></key>
         <key id="email&amp;_DELETED_USER_TEXT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[حسابك في <a href="[url]">[url]</a> مع اسم المستخدم [userid] تم حذفه]]></key>
         <key id="email&amp;_DENY_SUBSCRIBED_SUBJECT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[رفض طلب الاشتراك]]></key>
         <key id="email&amp;_DENY_SUBSCRIBED_TEXT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[اشتراكك المطلوب ل[دورة] بالدورة تم رفضه من قبل المسؤول <a href="[url]">[url]</a>]]></key>
+        <key id="email&amp;_EVENT_CHANGE_NODE_USER_SBJ" attributes="" save_date="2020-01-20 18:17:51"><![CDATA[User node change]]></key>
+        <key id="email&amp;_EVENT_CHANGE_NODE_USER_TEXT" attributes="" save_date="2020-01-20 18:18:37"><![CDATA[[url] [firstname] [lastname] [username]]]></key>
+        <key id="email&amp;_EVENT_COURSE_EVENT_SUSPENDED_USER_SBJ" attributes="" save_date="2020-01-20 18:27:00"><![CDATA[User suspended from course]]></key>
+        <key id="email&amp;_EVENT_COURSE_EVENT_SUSPENDED_USER_TEXT" attributes="" save_date="2020-01-20 18:26:25"><![CDATA[[url] [firstname] [lastname] [course] [username]]]></key>
+        <key id="email&amp;_EVENT_SUSPENDED_USER_SBJ" attributes="" save_date="2020-01-20 18:14:15"><![CDATA[User suspended]]></key>
+        <key id="email&amp;_EVENT_SUSPENDED_USER_TEXT" attributes="" save_date="2020-01-20 18:13:32"><![CDATA[[url] [firstname] [lastname] [username]]]></key>
         <key id="email&amp;_MODIFIED_USER_SBJ" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[تم تعديل حساب المستخدم]]></key>
         <key id="email&amp;_MODIFIED_USER_TEXT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[حسابك في الموقع <a href="[url]">[url]</a>  تم تعديله:
 
@@ -886,6 +898,7 @@ Username: [userid]]]></key>
 
  Title: [thread_title]]]></key>
         <key id="email&amp;_NEW_USER_SUBSCRIBED_SUBJECT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[اشترك مستخدم جديد في  الدورة]]></key>
+        <key id="email&amp;_NEW_USER_SUBSCRIBED_SUBJECT_MODERATORS" attributes="" save_date="2020-01-20 15:30:49"><![CDATA[[url] [firstname] [lastname] [course] [username]]]></key>
         <key id="email&amp;_NEW_USER_SUBSCRIBED_TEXT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[At url : <a href="[url]">[url]</a>اشترك مستخدم جديد في  الدورة[course]]]></key>
         <key id="email&amp;_NEW_USER_SUBS_WAITING_SUBJECT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[مستخدم ينتظر موافقة الاشتراك ف الدورة]]></key>
         <key id="email&amp;_NEW_USER_SUBS_WAITING_TEXT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[اشترك مستخدم جديد ف الدورة وينتظر أن تتم الموافقة عليها.
@@ -943,6 +956,7 @@ Username: [userid]]]></key>
         <key id="event_manager&amp;_EVENT_PLATFORM_framework" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[appCore]]></key>
         <key id="event_manager&amp;_EVENT_PLATFORM_lms" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[appLMS]]></key>
         <key id="event_manager&amp;_EVENT_PLATFORM_lms-a" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[appLMS-A]]></key>
+        <key id="event_manager&amp;_EVENT_RECIPIENTS_GODS" attributes="" save_date="2020-01-20 15:21:28"><![CDATA[Super-Administrators]]></key>
         <key id="event_manager&amp;_EVENT_RECIPIENTS_MODERATORS_GOD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[المشرفين والمسؤولين الممتازين]]></key>
         <key id="event_manager&amp;_EVENT_RECIPIENTS_TEACHER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[المدربون]]></key>
         <key id="event_manager&amp;_EVENT_RECIPIENTS_TEACHER_GOD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[المشرفين والمسؤولين الممتازين]]></key>
@@ -1898,6 +1912,9 @@ Username: [userid]]]></key>
         <key id="sms&amp;_APPROVED_SUBSCRIBED_TEXT_SMS" attributes="sms" save_date="2014-11-14 00:00:00"><![CDATA[لقد تمت الموافقة على طلبك للاشتراك في دورة [المقرر التعليمي] من قبل المسؤول]]></key>
         <key id="sms&amp;_APPROVED_USER_TEXT_SMS" attributes="sms" save_date="2014-11-14 00:00:00"><![CDATA[لقد تمت الموافقة على طلب الاشتراك الخاص بك]]></key>
         <key id="sms&amp;_DELETED_USER_TEXT_SMS" attributes="sms" save_date="2014-11-14 00:00:00"><![CDATA[التعليم الإلكتروني : حسابك مع [اسم المستخدم] تم حذف اسم المستخدم]]></key>
+        <key id="sms&amp;_EVENT_CHANGE_NODE_USER_SBJ_SMS" attributes="" save_date="2020-01-20 18:19:28"><![CDATA[[url] [firstname] [lastname] [username]]]></key>
+        <key id="sms&amp;_EVENT_COURSE_EVENT_SUSPENDED_USER_TEXT_SMS" attributes="" save_date="2020-01-20 18:25:39"><![CDATA[[url] [firstname] [lastname] [course] [username]]]></key>
+        <key id="sms&amp;_EVENT_SUSPENDED_USER_TEXT_SMS" attributes="" save_date="2020-01-20 18:15:13"><![CDATA[[url] [firstname] [lastname] [username]]]></key>
         <key id="sms&amp;_MODIFIED_USER_TEXT_SMS" attributes="sms" save_date="2014-11-14 00:00:00"><![CDATA[حسابك في الموقع <a href="[url]">[url]</a>   تم تعديله:
 
 اسم المستخدم: [هوية المستخدم]]]></key>
@@ -1905,6 +1922,7 @@ Username: [userid]]]></key>
         <key id="sms&amp;_NEW_FORUM_SMS" attributes="sms" save_date="2014-11-14 00:00:00"><![CDATA[منتدى جديد]]></key>
         <key id="sms&amp;_NEW_MESSAGE_INSERT_IN_THREAD_SMS" attributes="sms" save_date="2014-11-14 00:00:00"><![CDATA[التعلم الإلكتروني : في '[المقرر التعليمي]' وبطبيعة الحال ، هناك رسالة جديدة في '[forum_title]'> '[thread_title]']]></key>
         <key id="sms&amp;_NEW_THREAD_INSERT_IN_FORUM_SMS" attributes="sms" save_date="2014-11-14 00:00:00"><![CDATA[التعلم الإلكتروني : دورة '[المقرر التعليمي]' هناك موضوع جديد في '[forum_title]' : [thread_title]]]></key>
+        <key id="sms&amp;_NEW_USER_SUBSCRIBED_TEXT_SMS_MODERATORS" attributes="" save_date="2020-01-20 18:11:42"><![CDATA[[url] [firstname] [lastname] [course] [username]]]></key>
         <key id="sms&amp;_PASSWORD_CHANGED_SMS" attributes="sms" save_date="2014-11-14 00:00:00"><![CDATA[[وقد تم تغيير كلمة السر الخاصة بك إلى : [كلمة السر]]></key>
         <key id="sms&amp;_REGISTERED_USER_TEXT_SMS" attributes="sms" save_date="2014-11-14 00:00:00"><![CDATA[أنت الآن تسجل في نظامنا مع هذا الحساب:
 

@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20190711</DATE>
+  <DATE>20200220</DATE>
   <LANG id="norwegian">
     <lang_code>norwegian</lang_code>
     <lang_description>Norsk</lang_description>
@@ -8,6 +8,9 @@
     <lang_browsercode>no</lang_browsercode>
     <lang_direction>ltr</lang_direction>
     <platform id="all">
+      <module id="">
+        <key id="&amp;_NEW_USER_SUBSCRIBED_TEXT_MODERATORS" attributes="" save_date="2020-01-20 15:31:45"><![CDATA[[url] [firstname] [lastname] [course] [username]]]></key>
+      </module>
       <module id="adminrules">
         <key id="adminrules&amp;_ADMIN_ASSIGNTREEDESCR" attributes="" save_date="2018-11-19 11:20:00"><![CDATA[Velg mapper for synlighet for administratorbruker]]></key>
         <key id="adminrules&amp;_ADMIN_MANAGMENT" attributes="" save_date="2018-11-17 22:29:50"><![CDATA[Administratorer]]></key>
@@ -735,6 +738,7 @@
         <key id="coursereport&amp;_USE_FOR_FINAL" attributes="" save_date="2018-11-22 16:19:50"><![CDATA[Bruk som endelig resultat]]></key>
         <key id="coursereport&amp;_WEIGHT" attributes="" save_date="2018-11-19 14:19:26"><![CDATA[Vekting]]></key>
       </module>
+      <module id="courses"/>
       <module id="course_autoregistration">
         <key id="course_autoregistration&amp;_AUTOREGISTRATION" attributes="" save_date="2018-11-19 11:27:53"><![CDATA[Nytt kurs]]></key>
         <key id="course_autoregistration&amp;_BACK_TO_COURSE" attributes="" save_date="2018-11-19 11:28:02"><![CDATA[>> Tilbake til "Mine kurs"]]></key>
@@ -798,13 +802,20 @@
       <module id="email">
         <key id="email&amp;_ALERT_SUBJECT" attributes="email" save_date="2018-11-17 21:35:41"><![CDATA[Ny kunngjøring]]></key>
         <key id="email&amp;_DELETED_USER_SBJ" attributes="email" save_date="2018-11-26 15:28:34"><![CDATA[Brukerkontoen din er slettet]]></key>
+        <key id="email&amp;_EVENT_CHANGE_NODE_USER_SBJ" attributes="" save_date="2020-01-20 18:17:51"><![CDATA[User node change]]></key>
+        <key id="email&amp;_EVENT_CHANGE_NODE_USER_TEXT" attributes="" save_date="2020-01-20 18:18:37"><![CDATA[[url] [firstname] [lastname] [username]]]></key>
         <key id="email&amp;_EVENT_CLASS_UserCourseBuy" attributes="" save_date="2018-11-26 15:28:02"><![CDATA[Bruker har kjøpt et kurs]]></key>
+        <key id="email&amp;_EVENT_COURSE_EVENT_SUSPENDED_USER_SBJ" attributes="" save_date="2020-01-20 18:27:00"><![CDATA[User suspended from course]]></key>
+        <key id="email&amp;_EVENT_COURSE_EVENT_SUSPENDED_USER_TEXT" attributes="" save_date="2020-01-20 18:26:25"><![CDATA[[url] [firstname] [lastname] [course] [username]]]></key>
+        <key id="email&amp;_EVENT_SUSPENDED_USER_SBJ" attributes="" save_date="2020-01-20 18:14:15"><![CDATA[User suspended]]></key>
+        <key id="email&amp;_EVENT_SUSPENDED_USER_TEXT" attributes="" save_date="2020-01-20 18:13:32"><![CDATA[[url] [firstname] [lastname] [username]]]></key>
         <key id="email&amp;_MODIFIED_USER_SBJ" attributes="email" save_date="2018-11-26 15:28:09"><![CDATA[Brukerkontoen er endret]]></key>
         <key id="email&amp;_MOD_USER_SUBSCRIPTION_SUBJECT" attributes="email" save_date="2018-11-26 15:28:21"><![CDATA[Påmeldingen din er endret]]></key>
         <key id="email&amp;_NEW_FORUM" attributes="email" save_date="2018-11-19 14:20:19"><![CDATA[Nytt forum]]></key>
         <key id="email&amp;_NEW_FORUM_BODY" attributes="email" save_date="2018-11-19 14:21:00"><![CDATA[Nytt forum lagt til kurset '[course]' på netteadressen [url] Tittel: [title] [text]]]></key>
         <key id="email&amp;_NEW_MESSAGE_INSERT_IN_THREAD" attributes="email" save_date="2018-11-19 14:21:37"><![CDATA[Det er kommet en ny melding i et emne som du følger [url] > [course] > [forum_title] > [thread_title]]]></key>
         <key id="email&amp;_NEW_USER_SUBSCRIBED_SUBJECT" attributes="email" save_date="2018-11-19 14:21:51"><![CDATA[En ny bruker er påmeldt et kurs]]></key>
+        <key id="email&amp;_NEW_USER_SUBSCRIBED_SUBJECT_MODERATORS" attributes="" save_date="2020-01-20 15:30:49"><![CDATA[[url] [firstname] [lastname] [course] [username]]]></key>
         <key id="email&amp;_NEW_USER_SUBS_WAITING_SUBJECT" attributes="email" save_date="2018-11-26 15:30:14"><![CDATA[Bruker venter på godkjenning av kurspåmelding]]></key>
         <key id="email&amp;_NEW_USER_UNSUBS_WAITING_SUBJECT" attributes="" save_date="2018-11-26 15:30:36"><![CDATA[Bruker venter på godkjenning av kursavmelding]]></key>
         <key id="email&amp;_REFUSED_USER_SBJ" attributes="email" save_date="2018-11-19 14:22:09"><![CDATA[Bruker ikke godkjent]]></key>
@@ -838,6 +849,7 @@
         <key id="event_manager&amp;_EVENT_CLASS_UserNew" attributes="" save_date="2018-11-19 09:15:29"><![CDATA[Bruker er opprettet]]></key>
         <key id="event_manager&amp;_EVENT_PERM_NOTUSED" attributes="" save_date="2018-11-19 09:15:20"><![CDATA[Ikke i bruk]]></key>
         <key id="event_manager&amp;_EVENT_PLATFORM" attributes="" save_date="2018-11-19 09:15:14"><![CDATA[Plattform]]></key>
+        <key id="event_manager&amp;_EVENT_RECIPIENTS_GODS" attributes="" save_date="2020-01-20 15:21:28"><![CDATA[Super-Administrators]]></key>
         <key id="event_manager&amp;_EVENT_RECIPIENTS_MODERATORS_GOD" attributes="" save_date="2018-11-19 09:15:08"><![CDATA[Moderatorer og superadministratorer]]></key>
         <key id="event_manager&amp;_EVENT_RECIPIENTS_TEACHER" attributes="" save_date="2018-11-19 09:14:43"><![CDATA[Instruktører]]></key>
         <key id="event_manager&amp;_EVENT_RECIPIENTS_TEACHER_GOD" attributes="" save_date="2018-11-19 09:14:59"><![CDATA[Instruktører og superadministratorer]]></key>
@@ -1352,11 +1364,15 @@
         <key id="sms&amp;_APPROVED_SUBSCRIBED_TEXT_SMS" attributes="sms" save_date="2018-11-19 08:49:30"><![CDATA[Din påmelding til kurset [course] er nå godkjent av administrator]]></key>
         <key id="sms&amp;_APPROVED_USER_TEXT_SMS" attributes="sms" save_date="2018-11-19 08:49:51"><![CDATA[Din påmelding er blitt godkjent]]></key>
         <key id="sms&amp;_DELETED_USER_TEXT_SMS" attributes="sms" save_date="2018-11-19 08:50:35"><![CDATA[E-læring: Din brukerkonto [userid] er nå slettet]]></key>
+        <key id="sms&amp;_EVENT_CHANGE_NODE_USER_SBJ_SMS" attributes="" save_date="2020-01-20 18:19:28"><![CDATA[[url] [firstname] [lastname] [username]]]></key>
+        <key id="sms&amp;_EVENT_COURSE_EVENT_SUSPENDED_USER_TEXT_SMS" attributes="" save_date="2020-01-20 18:25:39"><![CDATA[[url] [firstname] [lastname] [course] [username]]]></key>
+        <key id="sms&amp;_EVENT_SUSPENDED_USER_TEXT_SMS" attributes="" save_date="2020-01-20 18:15:13"><![CDATA[[url] [firstname] [lastname] [username]]]></key>
         <key id="sms&amp;_MODIFIED_USER_TEXT_SMS" attributes="sms" save_date="2018-11-19 08:51:26"><![CDATA[Din brukerkonto på [url] er endret: Brukernavn: [userid]]]></key>
         <key id="sms&amp;_NEW_FORUM_BODY_SMS" attributes="sms" save_date="2018-11-19 08:52:39"><![CDATA[E-læring: kurs '[course]' nytt forum '[title]']]></key>
         <key id="sms&amp;_NEW_FORUM_SMS" attributes="sms" save_date="2018-11-19 08:52:45"><![CDATA[Nytt forum]]></key>
         <key id="sms&amp;_NEW_MESSAGE_INSERT_IN_THREAD_SMS" attributes="sms" save_date="2018-11-19 08:53:52"><![CDATA[E-læring: I kurset '[course]', er det nå en melding i forumet '[forum_title]' > '[thread_title]']]></key>
         <key id="sms&amp;_NEW_THREAD_INSERT_IN_FORUM_SMS" attributes="sms" save_date="2018-11-19 08:54:37"><![CDATA[E-læring: I kurset '[course]' er det et nytt emne i forumet  '[forum_title]': [thread_title]]]></key>
+        <key id="sms&amp;_NEW_USER_SUBSCRIBED_TEXT_SMS_MODERATORS" attributes="" save_date="2020-01-20 18:11:42"><![CDATA[[url] [firstname] [lastname] [course] [username]]]></key>
         <key id="sms&amp;_PASSWORD_CHANGED_SMS" attributes="sms" save_date="2018-11-19 08:55:13"><![CDATA[og passordet ditt er endret til: [password]]]></key>
         <key id="sms&amp;_REGISTERED_USER_TEXT_SMS" attributes="sms" save_date="2018-11-19 08:56:13"><![CDATA[Du er nå registrert som bruker i systemet med denne brukerkontoen: Brukernavn: [userid] Passord: [password]]]></key>
         <key id="sms&amp;_TO_APPROVE_GROUP_USER_TEXT_SMS" attributes="sms" save_date="2018-11-19 08:57:11"><![CDATA[En ny bruker venter på godkjenning av påmelding til rn moderert gruppe]]></key>

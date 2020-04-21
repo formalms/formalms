@@ -278,7 +278,8 @@ function homerepo_itemproperties( &$treeView, &$arrayData, $idItem ) {
 	else
 		$selLang = $defaultLanguage;
 
-		while(list( ,$valueLang)= each($langArray)) {
+	 foreach($langArray as $valueLang)
+    {
 			$GLOBALS['page']->add( '<option value="'.$valueLang.'"' );
 			if($valueLang == $selLang) 
 				$GLOBALS['page']->add( ' selected="selected"' );

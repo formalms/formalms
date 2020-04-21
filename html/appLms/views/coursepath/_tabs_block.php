@@ -14,7 +14,8 @@
 
                 $html = '<ul class="nav nav-pills">';
 
-                while( list($key, $value) = each($statusFilters) ) {
+                foreach($statusFilters as $key => $value )
+                {
 
                     $html_code .= '    <option value="'.$key.'"'
                         .((string)$key == (string)$selected ? ' selected="selected"' : '' )

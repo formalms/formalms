@@ -14,8 +14,8 @@
 error_reporting(E_ALL ^ E_NOTICE); 
 
 // check for remote file inclusion attempt -------------------------------
-$list = array('GLOBALS', '_POST', '_GET', '_COOKIE', '_SESSION'); 
-while(list(, $elem) = each($list)) {
+$list = array('GLOBALS', '_POST', '_GET', '_COOKIE', '_SESSION');
+foreach ($list as $elem) {
 		
 	if(isset($_REQUEST[$elem])) die('Request overwrite attempt detected');
 }

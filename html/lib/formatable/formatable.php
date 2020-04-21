@@ -349,9 +349,15 @@ function formaTable(dom, options) {
         _options.rowCallback = options.rowCallback;
     }        
     
+
+    if (options.stateSave !== undefined) {
+        _options.stateSave = options.stateSave;
+    }
+    
     if(options.drawCallback !== undefined) {
         this.drawCallbacks.push(options.drawCallback);
     }
+    
     
     /**
      * Select option extension.

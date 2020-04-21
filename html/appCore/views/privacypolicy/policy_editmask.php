@@ -2,7 +2,7 @@
 <?php
       
 if (isset($id_policy)) {      
-       echo getTitleArea("Modifica ". Lang::t('_PRIVACYPOLICIES', 'privacypolicies')); 
+       echo getTitleArea(Lang::t('_MOD', 'standard')." ".Lang::t('_PRIVACYPOLICIES', 'privacypolicies')); 
 
        echo '<div class="std_block">';
       

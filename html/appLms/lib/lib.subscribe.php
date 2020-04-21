@@ -447,6 +447,17 @@ class CourseSubscribe_Manager
 
 	public function updateUserStatusInCourse($id_user, $id_course, $new_status, $new_date_complete = "") {
 		$_new_date = $new_date_complete ? "'".$new_date_complete."'" : "NOW()";
+
+
+	        // saving the old user status for the actual course
+	        $queryStatus = "SELECT STATUS"
+	                       . " FROM " . $this->subscribe_table
+	                       . " WHERE idUser = '" . $id_user . "'"
+	                       . " AND idCourse = '" . $id_course . "'";
+        
+	        $resultStatus = $this->db->query($queryStatus);
+	        $oldStatus = $this->db->fetch_row($resultStatus);
+
 		$query = "UPDATE ".$this->subscribe_table
 					." SET status = ".(int)$new_status
 					.", waiting = ".($new_status < 0 ? "1" : "0" )." "
@@ -468,7 +479,7 @@ class CourseSubscribe_Manager
 				$list = is_array($id_user) ? $id_user : array((int)$id_user);
 				foreach ($list as $idst_user) {
 					$res1 = $cmodel->assignCourseCompetencesToUser($id_course, $id_user);//$cman->AssignCourseCompetencesToUser($id_course, $id_user);
-					$res2 = $this->saveTrackStatusChange($id_user, $id_course, $new_status);
+					$res2 = $this->saveTrackStatusChange($id_user, $id_course, $new_status, $oldStatus);
 					//TO DO: check if all users are been tracked  and had competences assigned
 				}
 				return true; //this should be in dependance with above results
@@ -565,14 +576,9 @@ class CourseSubscribe_Manager
 	}
 	
 
-	public function saveTrackStatusChange($idUser, $idCourse, $status)
+	public function saveTrackStatusChange($idUser, $idCourse, $status, $prev_status)
 	{
 		require_once($GLOBALS['where_lms'].'/lib/lib.course.php');
-
-		list($prev_status) = sql_fetch_row(sql_query("
-		SELECT status
-		FROM ".$GLOBALS['prefix_lms']."_courseuser
-		WHERE idUser = '".(int)$idUser."' AND idCourse = '".(int)$idCourse."'"));
 
 		$extra = '';
 		if($prev_status != $status) {
@@ -754,7 +760,8 @@ class CourseSubscribe_Management {
 	function multipleSubscribe($arr_users, $arr_courses, $levels, $id_log = false) {
 
 		$re = true;
-		while(list(, $id_course) = each($arr_courses)) {
+    foreach($arr_courses as $id_course)
+    {
 
 			$re &= $this->subscribeUsers($arr_users , $id_course, ( is_array($levels) ? $levels[$id_course] : $levels ), $id_log);
 		}
@@ -775,7 +782,8 @@ class CourseSubscribe_Management {
 
 		if(empty($arr_courses)) return true;
 
-		while(list(, $id_course) = each($arr_courses)) {
+    foreach($arr_courses as $id_course)		
+    {
 
 			$re = true;
 
@@ -830,7 +838,7 @@ class CourseSubscribe_Management {
 		$group_levels 	=& $this->course_man->getCourseIdstGroupLevel($id_course);
 		$user_level 	= $this->course_man->getLevelsOfUsers($id_course, $arr_users);
 
-		while(list(, $id_user) = each($arr_users)) {
+    foreach($arr_users as $id_user) {
 
 			$lv = ( is_array($levels) ? $levels[$id_user] : $levels );
 			if(!isset($user_level[$id_user])) {
@@ -909,7 +917,8 @@ class CourseSubscribe_Management {
 	function multipleUnsubscribe($arr_users, $arr_courses) {
 
 		$re = true;
-		while(list(, $id_course) = each($arr_courses)) {
+    
+    foreach($arr_courses as $id_course) {
 
 			$re &= $this->unsubscribeUsers($arr_users , $id_course);
 		}
@@ -929,8 +938,7 @@ class CourseSubscribe_Management {
 
 		$group_levels =& $this->course_man->getCourseIdstGroupLevel($id_course);
 		$user_level = $this->course_man->getLevelsOfUsers($id_course, $arr_users);
-
-		while(list(, $id_user) = each($arr_users)) {
+    foreach($arr_users as $id_user) {
 
 			if(isset($user_level[$id_user])) {
 				$lv = $user_level[$id_user];
@@ -1028,7 +1036,7 @@ class CourseSubscribe_Management {
 		if($edition_group === FALSE) {
 			$edition_group = $acl_man->registerGroup('/lms/course_edition/'.$id_edition.'/subscribed', 'all the user of a course edition', true, "course");
 		}
-		while(list(, $id_user) = each($arr_users)) {
+    foreach($arr_users as $id_user) {
 
 			$lv = ( is_array($levels) ? $levels[$id_user] : $levels );
 			if(!isset($user_level[$id_user])) {
@@ -1199,7 +1207,7 @@ class CourseSubscribe_Management {
 			$survivor[$idu] = $idu;
 		}
 
-		while(list(, $id_user) = each($arr_users)) {
+    foreach($arr_users as $id_user) {
 
 			if(isset($user_level[$id_user]) && !isset($survivor[$id_user])) {
 				$lv = $user_level[$id_user];

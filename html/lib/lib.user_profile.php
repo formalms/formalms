@@ -1351,16 +1351,15 @@ class UserProfileViewer {
 		// user extra field ------------------------------------------------------------------
 
 		if(!empty($user_field))
-		while(list(, $value) = each($user_field)) {
+    foreach($user_field as $value ) {
 
 			$html .= $this->getUIRowCode($value['name'], $value['value']);
 		}
 
+		$lv_lang =& DoceboLanguage::createInstance('admin_directory', 'framework');
 		if($this->_user_profile->godMode()) {
 
 			// show user level
-			$lv_lang =& DoceboLanguage::createInstance('admin_directory', 'framework');
-
 			$acl_man =& Docebo::user()->getAclManager();
 			switch($acl_man->getUserLevelId($this->_user_profile->getIdUser())) {
 				case ADMIN_GROUP_GODADMIN 	: $user_level_string = $lv_lang->def('_DIRECTORY_'.ADMIN_GROUP_GODADMIN);break;
@@ -1368,8 +1367,47 @@ class UserProfileViewer {
 				case ADMIN_GROUP_USER 		: $user_level_string = $lv_lang->def('_DIRECTORY_'.ADMIN_GROUP_USER);break;
 				default :$user_level_string = $acl_man->getUserLevelId($this->_user_profile->getIdUser());
 			}
-			$html .= $this->getUIRowCode($this->_lang->def('_LEVEL'), $user_level_string);
+
+
+            // GRIFO - LRZ - add admin profile name
+            $stato_admin = $acl_man->getUserLevelId($this->_user_profile->getIdUser());
+            $str_admin = ' ';
+            $name_admin_profile = '';
+            if(
+               $stato_admin  == ADMIN_GROUP_GODADMIN ||
+               $stato_admin  == ADMIN_GROUP_ADMIN             
+            ){               
+                $name_admin_profile = $this->getRoleAdmin($this->_user_profile->getIdUser());
+                if($name_admin_profile!="")  $str_admin = "&nbsp; (".$this->_lang->def('_TYPE','standard').": ".$name_admin_profile.")";
+            }    
+            
+            
+            
+			$html .= $this->getUIRowCode($this->_lang->def('_LEVEL'), $user_level_string.$str_admin);
+
 		}
+        
+        
+        //Grifo: ticket #19467 
+        $html .= '<tr><th scope="col" colspan="2" id="up_type2">Gestito da:</th></tr>';        
+        $str_manage_org_by = $this->getManagerOrgBy($this->_user_profile->getIdUser());
+        $str_manage_group_by = $this->getManagerGroupBy($this->_user_profile->getIdUser());
+        $str_manage_role_by = $this->getMaganerRoleBy($this->_user_profile->getIdUser());
+        $str_manage_user = $this->getManageUser($this->_user_profile->getIdUser());
+        
+        
+        $no_admin = true;
+        if($str_manage_org_by['cont']>0)           { $html .= $this->getUIRowCode($lv_lang->def('_ORGCHART'), substr($str_manage_org_by['content'], 0, -3) );  $no_admin = false;};
+        if($str_manage_role_by['cont']>0) { $html .= $this->getUIRowCode($lv_lang->def('_FUNCTIONAL_ROLE'),substr($str_manage_role_by['content'], 0, -3) ); $no_admin = false;}
+        if($str_manage_group_by['cont']>0){ $html .= $this->getUIRowCode($lv_lang->def('_GROUPS'),substr($str_manage_group_by['content'], 0, -3) ); $no_admin = false;}        
+        if($str_manage_user['cont']>0)             { $html .= $this->getUIRowCode("Direttamente da", substr($str_manage_user['content'], 0, -3) ); $no_admin = false;}
+        
+        if($no_admin == true) $html .= '<tr><td colspan=2 align=center>- Nessun amministratore -</td></tr>';  
+        
+        $html .= '<tr><td ></td></tr>';          
+        
+        
+        
 		if($viewer == $this->_id_user) {
 
 			// convert from bytes in mbytes
@@ -1390,7 +1428,7 @@ class UserProfileViewer {
 		// end extra field -------------------------------------------------------------------
 
 		if(!empty($user_contacts))
-		while(list(, $value) = each($user_contacts)) {
+    foreach($user_contacts as $value )  {
 
 			if($value['head']) $GLOBALS['page']->add($value['head'], 'page_head');
 			$prefix = '';
@@ -1459,6 +1497,209 @@ class UserProfileViewer {
 		$html .= '</div>';
 		return $html;
 	}
+
+
+
+   // calcola gli amministratori diretti dell'utente 
+    function getManageUser($id_user){
+        
+        $sql = "select idstAdmin, firstname, lastname 
+                from core_admin_tree, core_user
+                where core_admin_tree.idst=".$id_user." and core_admin_tree.idstAdmin = core_user.idst";
+                
+        $re = sql_query($sql);
+        $out1 = "<ul>";
+        $out = "";
+        $cont=0;
+        while(list($idstAdmin, $firstname, $lastname) = sql_fetch_row($re)) {      
+            $out .= "<li><b>".$firstname." ".$lastname."</b>,";
+            $cont++;
+        }
+        $out2 ="</ul>";        
+                
+        if($out!=""){        
+            $out = substr($out, 0, -1);
+            $out = $out1.$out.$out2."-".$cont ;
+        }         
+        
+        $array_out = array();
+        $array_out['cont']=$cont;
+        $array_out['content']=$out;
+        
+        
+        return $array_out;        
+        
+    }
+    
+    
+    // calcola da chi è gestito l'utente corrente
+    function getManagerOrgBy($id_user){
+        // calcola organigrammi di appartenenza  
+        
+        require_once(_adm_.'/models/UsermanagementAdm.php');
+        
+        $modelUser = new UsermanagementAdm();
+        
+        $vett_org = $modelUser->getUserFolders($id_user);
+        $out = "<ul>";
+        $cont=0;
+        foreach($vett_org as $key => $value){            
+            $manager = $this->getManagerFolder($key);
+            $vett_manager = explode("#",$manager);
+            if($vett_manager[1]>0){
+                $out .= "<li>" .$value . " ".$vett_manager[0];               
+                $cont++;
+            }
+        }
+        $out .="</ul>";
+
+        
+        
+        $array_out = array();
+        $array_out['cont']=$cont;
+        $array_out['content']=$out;
+        
+        
+        return $array_out;
+                
+    }
+    
+    
+    
+    // calcola gruppi di appartenenza, e relativi admin
+    function getManagerGroupBy($id_user){
+        //
+        require_once(_adm_.'/models/UsermanagementAdm.php');
+        
+        $modelUser = new UsermanagementAdm();
+        
+        $vett_gruop = $modelUser->getUserGroups($id_user);        
+        $out = "<ul>";
+        $cont=0;
+        foreach($vett_gruop as $key => $value){            
+            $manager = $this->getManagerGroup($key);
+            $vett_manager = explode("#",$manager);
+            if($vett_manager[1]>0){
+                $out .= "<li>" .$value ." ".$vett_manager[0];   
+                $cont++;
+            }
+        }
+        $out .="</ul>";    
+                    
+        $array_out = array();
+        $array_out['cont']=$cont;
+        $array_out['content']=$out;
+        
+        //return $out."-".$cont;
+        return $array_out;
+        
+        
+    }
+    
+    
+    // calcola ruoli di appartenenza e relativ admin
+    function getMaganerRoleBy($id_user){
+        
+         require_once(_adm_.'/models/FunctionalrolesAdm.php');
+         $modelRole = new FunctionalrolesAdm();
+         
+         $user_fncroles = $this->_up_data_man->getUserFunctionalRoles($id_user);
+        
+         $vett_role = $modelRole->getUserFunctionalRoles($user_fncroles);         
+        
+         $out = "<ul>";
+         $cont=0;
+         foreach($user_fncroles as $key => $value){      
+            $manager = $this->getManagerGroup($key);
+            $vett_manager = explode("#",$manager);
+            if($vett_manager[1]>0){
+                $out .= "<li>".$value->name . " ".$vett_manager[0];   
+                $cont++;
+            }
+         }
+         $out .="</ul>";              
+        
+        $array_out = array();
+        $array_out['cont']=$cont;
+        $array_out['content']=$out;
+        
+        //return $out."-".$cont;
+        return $array_out;
+        
+    }
+    
+    
+    
+    // calcola admin del gruppo
+    function getManagerGroup($id_group){
+        $sql = "select idstAdmin, firstname, lastname 
+                from core_admin_tree, core_user
+                where core_admin_tree.idst=".$id_group." and core_admin_tree.idstAdmin = core_user.idst";
+                
+        $re = sql_query($sql);
+        $out = "";
+        $cont=0;
+        while(list($idstAdmin, $firstname, $lastname) = sql_fetch_row($re)) {      
+            $out .= $firstname." ".$lastname.",";
+            $cont++;
+        }
+                
+        if($out!=""){        
+            $out = substr($out, 0, -1);
+            return " <b>(".$out.")</b>#".$cont ;
+        }else{
+            return "#0";
+        } 
+        
+    }
+    
+    
+    
+    // calcola admin dell'organigramma
+    function getManagerFolder($id_oc){
+        $sql = "select idstAdmin , firstname, lastname
+                from core_admin_tree, core_org_chart_tree , core_user 
+                where idst_oc=".$id_oc." and idst_ocd=core_admin_tree.idst
+                and
+                core_admin_tree.idstAdmin = core_user.idst
+                ";
+    
+
+  
+        $re = sql_query($sql);
+        $out = "";
+        $cont=0;
+        while(list($idstAdmin, $firstname, $lastname) = sql_fetch_row($re)) {      
+            $out .= $firstname." ".$lastname.",";
+            $cont++;
+        }
+                
+        if($out!=""){        
+            $out = substr($out, 0, -1);
+            return " <b>(".$out.")</b>#".$cont ;
+        }else{
+            return "#0";
+        }    
+        
+    }
+    
+    
+    
+    // calcola stringa ruolo amministrativo
+    function getRoleAdmin($id_user){
+        
+      $sql = "select groupid from core_group , core_group_members where idstMember=".$id_user." and core_group.idst=core_group_members.idst and groupid like '%adminrules%'";
+      $re_query = sql_query($sql);
+      $row = sql_fetch_row($re_query);
+      
+      $vett = explode("/",$row[0]); 
+      return $vett[3];
+      
+    }
+    
+
+
+
 
 	function getViewUserFiles() {
 
@@ -1756,8 +1997,7 @@ class UserProfileViewer {
 		// user extra field ------------------------------------------------------------------
 
 		if(!empty($user_field))
-		while(list(, $value) = each($user_field)) {
-
+    foreach($user_field as $value )  {
 			$html .= $this->getUIRowCode($value['name'], $value['value']);
 		}
 
@@ -1890,20 +2130,31 @@ class UserProfileViewer {
        	if (Get::sett('profile_modify') == 'redirect' && Get::sett('profile_modify_url')) {
        		$html .= '<a href="'.Get::sett('profile_modify_url').'" target="_blank" title="'.Lang::t('_PROFILE', 'profile').'">
                           <span class="glyphicon glyphicon-pencil">'.Lang::t('_PROFILE', 'profile').'</span>
-                      </a>';
+                      </a>
+                      <a href="'.Get::sett('profile_modify_url').'" target="_blank">'
+                      . $this->acl_man->relativeId($this->user_info[ACL_INFO_LASTNAME]) . ' ' . $this->acl_man->relativeId($this->user_info[ACL_INFO_FIRSTNAME])
+                      . '</a>
+                      <a href="mailto:' . $this->user_info[ACL_INFO_EMAIL] . '">' . $this->user_info[ACL_INFO_EMAIL] . '</a>
+                   ';
        	} else if (Get::sett('profile_modify') != 'disallow') {
        		$html .= '<a href="index.php?r=lms/profile/show" title="'.Lang::t('_PROFILE', 'profile').'">
                           <span class="glyphicon glyphicon-pencil">'.Lang::t('_PROFILE', 'profile').'</span>
-                      </a>';
-       	}
-                      
-		$html .= '<a href="index.php?r=lms/profile/show">'
-                          . $this->acl_man->relativeId($this->user_info[ACL_INFO_LASTNAME]) . ' ' . $this->acl_man->relativeId($this->user_info[ACL_INFO_FIRSTNAME])
+                      </a>
+                      <a href="index.php?r=lms/profile/show">'
+                      . $this->acl_man->relativeId($this->user_info[ACL_INFO_LASTNAME]) . ' ' . $this->acl_man->relativeId($this->user_info[ACL_INFO_FIRSTNAME])
                       . '</a>
                       <a href="mailto:' . $this->user_info[ACL_INFO_EMAIL] . '">' . $this->user_info[ACL_INFO_EMAIL] . '</a>
-                   </div>'; // /col-xs-7
+                   ';
+       	} else {
+       		$html .= '<a style="display:none;"></a>
+   					<a href="index.php?r=lms/profile/show">'
+                      . $this->acl_man->relativeId($this->user_info[ACL_INFO_LASTNAME]) . ' ' . $this->acl_man->relativeId($this->user_info[ACL_INFO_FIRSTNAME])
+                      . '</a>
+                      <a href="mailto:' . $this->user_info[ACL_INFO_EMAIL] . '">' . $this->user_info[ACL_INFO_EMAIL] . '</a>
+                   ';
+       	}
 
-        $html .= '</div>'; // /row
+        $html .= '</div></div>'; // /row
 
         $html .= '<div class="row comunication">'; //pulsanti certificati-messaggi
 
@@ -2408,33 +2659,12 @@ class UserProfileViewer {
 				.'<th scope="col">'.$this->_lang->def('_POLICY_ASSIGNED').'</th>'
 				.'</tr></thead>';
 
-		$html .= '<tbody>'
-			/*.$this->getUIPolicyCode(	$this->_lang->def('_LASTNAME'),
-										$this->user_info[ACL_INFO_LASTNAME],
-										Form::getInputDropdown(	'dropdown_wh',
-											'policy_selected_lastname',
-											'policy_selected[lastname]',
-											$policy_arr,
-											(isset($field_policy['lastname']) ? $field_policy['lastname'] : PFL_POLICY_NOONE ) ,
-											''
-										)
-									)
-
-			.$this->getUIPolicyCode(	$this->_lang->def('_FIRSTNAME'),
-										$this->user_info[ACL_INFO_FIRSTNAME],
-										Form::getInputDropdown(	'dropdown_wh',
-											'policy_selected_firstname',
-											'policy_selected[firstname]',
-											$policy_arr,
-											(isset($field_policy['firstname']) ? $field_policy['firstname'] : PFL_POLICY_NOONE ) ,
-											''
-										)
-									)*/;
+		$html .= '<tbody>';
 
 		// user extra field ------------------------------------------------------------------
 
 		if(!empty($user_field))
-		while(list($id, $value) = each($user_field)) {
+        foreach($user_field as $id => $value ) {
 
 			$html .= $this->getUIPolicyCode(	$value['name'],
 												$value['value'],
@@ -2463,8 +2693,7 @@ class UserProfileViewer {
 											)
 										);
 		if(!empty($user_contacts))
-		while(list($id, $value) = each($user_contacts)) {
-
+    foreach($user_field as $id => $value ) {    
 			$html .= $this->getUIPolicyCode(	$value['name'],
 												$value['value'],
 												Form::getInputDropdown(	'dropdown_wh',
@@ -2553,10 +2782,9 @@ class UserProfileViewer {
 					.'<h3>'.str_replace('[firstname]', $this->resolveUsername(true), $this->_lang->def('_FRIENDS_OF')).'</h3>';
 			$html .= '<ul>';
 			$i = 0;
-			while((list($id, $info) = each($friend_list)) && $i < 7) {
-
+      foreach($friend_list as $id => $info ) {
+        if ($i = 7) break; 
 				$friend_username = $acl_man->getConvertedUserName($info);
-
 				$html .= '<li>'
 						.'<a href="'.$this->_url_man->getUrl($this->_varname_action.'=goprofile&id_user='.$id).'"'
 							.' title="'.str_replace('[firstname]', $friend_username, $this->_lang->def('_GO_TO_PROFILE')).'">'
@@ -2601,8 +2829,7 @@ class UserProfileViewer {
 		if(!empty($last_view)){
 
 			$first = true;
-			while(list($id, $info) = each($last_view)) {
-
+      foreach($last_view as $id => $info ){
 				if(!$first) $html .= ', ';
 				else $first = false;
 				$html .= '<a '.( $info['days_ago'] <= 15 ? ' class="last_visit"' : '' )
@@ -2784,7 +3011,7 @@ class UserProfileViewer {
 			$html .= '<div class="up_teacher_course">'
 					.'<h3>'.$this->_lang->def('_COURSE_AS_TEACHER').'</h3>'
 					.'<ul>';
-			while(list($id, $data) = each($teacher_course)) {
+      foreach($teacher_course as $id => $data ){          
 				if ($this->userCourseSubscrived($id))
 					$html .= '<li><a href="'.Get::rel_path('lms').'/index.php?modname=course&amp;op=aula&amp;idCourse='.$id.'">['.$data['code'].'] '.$data['name'].'</a></li>';
 				else
@@ -2798,7 +3025,7 @@ class UserProfileViewer {
 			$html .= '<div class="up_tutor_course">'
 					.'<h3>'.$this->_lang->def('_COURSE_AS_TUTOR').'</h3>'
 					.'<ul>';
-			while(list($id, $data) = each($tutor_list)) {
+      foreach($tutor_list as $id => $data ){          
 				$html .= '<li>['.$data['code'].'] '.$data['name'].'</li>';
 			}
 			$html .= '</ul>'
@@ -2809,7 +3036,7 @@ class UserProfileViewer {
 			$html .= '<div class="up_mentor_course">'
 					.'<h3>'.$this->_lang->def('_COURSE_AS_MENTOR').'</h3>'
 					.'<ul>';
-			while(list($id, $data) = each($mentor_list)) {
+      foreach($mentor_list as $id => $data ){          
 				$html .= '<li>['.$data['code'].'] '.$data['name'].'</li>';
 			}
 			$html .= '</ul>'
@@ -2980,8 +3207,7 @@ class UserProfileViewer {
 			$this->_lang->def('_SCORE_FINAL'),
 			str_replace(':', '', $lang_test->def('_TEST_TOTAL_SCORE'))
 		));
-		while(list($id_c, $info) = each($stats_data)) {
-
+    foreach($stats_data as $id_c => $info ){
 			$tb->addBody(array(
 				$info['course_code'],
 				$info['course_name'],
@@ -3334,8 +3560,7 @@ class UserProfileData {
 		}
 
 		$teachers = Man_CourseUser::getUserWithLevelFilter(array('4', '5', '6', '7'), $arr_user);
-		while(list(, $id) = each($teachers)) {
-
+    foreach($teachers as $id ) {
 			$this->_teacher_data[$id]['is_teacher'] = true;
 		}
 	}
@@ -3568,7 +3793,7 @@ class UserProfileData {
 		switch ($fal['online_satus'])
 		{
 			case PFL_POLICY_FREE:
-				$online = ( strcmp($u_info[ACL_INFO_LASTENTER], date("Y-m-d H:i:s", time() - REFRESH_LAST_ENTER)) >= 0);
+                $online = ( strcmp($u_info[ACL_INFO_LASTENTER], date("Y-m-d H:i:s", time() - REFRESH_LAST_ENTER)) >= 0);
 				break;
 			case PFL_POLICY_TEACHER:
 				if ($is_teacher)
@@ -4154,7 +4379,7 @@ class UserProfileData {
 
 		$score_start = $org_man->getStartObjectScore(array($id_user), $id_courses);
 		$score_final = $org_man->getFinalObjectScore(array($id_user), $id_courses);
-		while(list(,$id_c) = each($id_courses)) {
+    foreach($id_courses as $id_c){
 
 			if(isset($stats[$id_c])) {
 

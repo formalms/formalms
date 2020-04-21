@@ -628,20 +628,24 @@
 #global_conf {
   .tab-content .tab-pane {
     h2 {
-      font-size: 20px;
+      font-size: 24px;
       font-weight: bold;
       color: #666;
       display: block;
       margin-bottom: 20px;
     }
     h3 {
-      font-size: 16px;
+      font-size: 20px;
       font-weight: bold;
       color: #666;
+      text-transform: capitalize;
       margin-bottom: 20px;
       display: block;
       padding-bottom: 10px;
       border-bottom: 1px solid #666;
+    }
+    select {
+      display: block;
     }
   }
 }

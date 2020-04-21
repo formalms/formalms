@@ -120,7 +120,8 @@ class Admin_Managment {
 		// Retriving main menu
 		$main_area 		= $this->getLevelOne();
 		$re = true;
-		while(list($id_page, $area_info) = each($main_area)) {
+    foreach($main_area as $id_page => $area_info )
+    {
 			
 			// retriving modules of the main menu
 			$query_menu = "
@@ -183,7 +184,8 @@ class Admin_Managment {
 		// Retriving main menu
 		$main_area 	= $this->getLevelOne();
 		$html 		= '';
-		while(list($id_page, $area_info) = each($main_area)) {
+    foreach ($main_area as $id_page => $area_info)
+    {
 			
 			// retriving modules of the main menu
 			$query_menu = "

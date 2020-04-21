@@ -113,18 +113,8 @@ $this->widget('tree', array(
 ));
 
 
-    /*
-echo  Form::getTextarea(
-        Lang::t('_CONTENT', 'standard'),
-        'translation_'.$_lang_code,
-        'translation['.$_lang_code.']',
-        $_translation   ,
-        true, '', 'form_line_l', 'floating',  'textarea',true
-    )  
-  */   
 ?>      
 
-<script src="//assimoco/addons/tiny_mce/tinymce.min.js"></script> 
     <!-- Just be careful that you give correct path to your tinymce.min.js file, above is the default example -->
     <script>
         tinymce.init({selector:'textarea'});

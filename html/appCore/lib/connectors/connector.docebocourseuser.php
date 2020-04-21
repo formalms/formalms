@@ -37,9 +37,12 @@ class DoceboConnector_DoceboCourseUser extends DoceboConnector {
 		array( 'userid', 'text' ),
 		array( 'level', 'int' ),
 		array( 'date_subscription', 'date' ),
-        array( 'last_finish', 'text' )
+        array( 'last_finish', 'text' ),
+        array( 'status', 'text' )
 	);
 	
+
+    
 	var $mandatory_cols = array('code', 'userid', 'level');
 	
 	var $default_cols = array( 	'code' => '', 
@@ -61,6 +64,8 @@ class DoceboConnector_DoceboCourseUser extends DoceboConnector {
 	
 	var $first_row_header = '1';
 	
+    
+    
 	/**
 	 * constructor
 	 * @param array params	 
@@ -68,7 +73,8 @@ class DoceboConnector_DoceboCourseUser extends DoceboConnector {
 	function DoceboConnector_DoceboCourseUser( $params ) {
 		
 		require_once($GLOBALS['where_lms'].'/lib/lib.subscribe.php');
-		
+    
+        
 		$this->acl_man = new DoceboACLManager();
 		$this->sub_man = new CourseSubscribe_Management();
 		
@@ -77,6 +83,7 @@ class DoceboConnector_DoceboCourseUser extends DoceboConnector {
 	  	else
 			$this->set_config( $params );	// connection
 			
+            
 	}
 
 	/**
@@ -126,6 +133,10 @@ class DoceboConnector_DoceboCourseUser extends DoceboConnector {
 		$this->today = mktime(0, 0, 0, date('m'), date('d'), date('Y'));
 		$this->position = 1;
         
+        
+        // get custom field of course and put in property "vett_custom"
+        $this->get_custom_field_course();        
+        
         $query = "SELECT COUNT(*) FROM %lms_courseuser";
 		
 		list($tot_row) = sql_fetch_row(sql_query($query));
@@ -138,6 +149,9 @@ class DoceboConnector_DoceboCourseUser extends DoceboConnector {
                 . "   , cu.level"
                 . "   , cu.date_inscr"
                 . "   , cu.date_complete"
+                . "   , cu.idCourse"
+                . "   , cu.idUser"
+                . "   , cu.status"
                 . " FROM %lms_courseuser cu"
                 . " INNER JOIN %lms_course c"
                 . "     ON cu.idCourse = c.idCourse"
@@ -150,6 +164,10 @@ class DoceboConnector_DoceboCourseUser extends DoceboConnector {
 		
 		$counter = 0;
 		
+        // get custom field of course
+        $vett_custom =      $this->get_custom_field_all_info();  
+        $vett_custom_user = $this->get_custom_field_all_info_user(); 
+        
 		if($this->first_row_header)
 		{
 			$data[$counter][] = 'code';
@@ -158,6 +176,23 @@ class DoceboConnector_DoceboCourseUser extends DoceboConnector {
 			$data[$counter][] = 'date_subscription';
 			$data[$counter][] = 'last_finish';
 			
+            
+            // add status of user<-->course
+            $data[$counter][] = 'status';
+            
+            // ADD CUSTOM FIELD IN ROW HEADER
+            foreach($vett_custom as $key => $value){
+                $data[$counter][] = $this->lang->def('_COURSE').": ". $value[0];    
+                
+            }
+                                                                        
+            // MANAGE CUSTOM FIELD USER
+            foreach($vett_custom_user as $key => $value){
+                $data[$counter][] = $this->lang->def('_USER').": ".$value[0];    
+                
+            }                
+            
+            
 			$counter++;
 		}
 		
@@ -168,7 +203,27 @@ class DoceboConnector_DoceboCourseUser extends DoceboConnector {
 			$data[$counter][] = $row[2];
 			$data[$counter][] = $row[3];
 			$data[$counter][] = $row[4];
-			
+            
+            
+            // add status of user<-->course
+            $data[$counter][] = $row[7];            
+            
+            $idCourse = $row[5];
+            $idUser = $row[6];
+            // MANAGE CUSTOM FIELD COURSE
+            foreach($vett_custom as $key => $value){
+                $data[$counter][] = $this->get_value_custom_field_by_type($value[1],$value[2],$idCourse );   //$value[1]."-".$value[2]."  ** ".$idCourse;
+                
+            }		
+              
+            // MANAGE CUSTOM FIELD COURSE
+            foreach($vett_custom_user as $key => $value){
+                $data[$counter][] = $this->get_value_custom_field_user_by_type($value[1],$value[2],$idUser); //$value[1]."-".$value[2]."  ** ".$idUser;
+                
+            }
+            
+            
+            
 			$counter++;
 		}
 		$counter--;
@@ -201,10 +256,206 @@ class DoceboConnector_DoceboCourseUser extends DoceboConnector {
 		return count( $this->all_cols );
 	}
 	
+    
+    /*  get custom field of entity course */
+    function get_custom_field_course() {
+    
+            $search_query = "SELECT translation, code, type_field 
+                        FROM %adm_customfield cf , %adm_customfield_lang cfl
+                        where area_code like 'COURSE' and cfl.id_field=cf.id_field and lang_code like '".getLanguage()."'";                          
+                        
+            $re_course = sql_query($search_query);        
+            if(!$re_course) return false;
+            $vett_out = array();
+            while(list($translation, $code, $type_field) = sql_fetch_row($re_course)) {
+                   $vett_out[] = array($translation,$type_field ); 
+            }     
+            
+            return $vett_out;
+            
+    }        
+    
+    /* get custom field of entity user */
+    function get_custom_field_user() {
+    
+            $search_query = "SELECT translation, lang_code, type_field 
+                        FROM  %adm_field
+                        where   lang_code like '".getLanguage()."'";                          
+                        
+                        
+            $re_course = sql_query($search_query);        
+            if(!$re_course) return false;
+            $vett_out = array();
+            while(list($translation, $code, $type_field) = sql_fetch_row($re_course)) {
+                   $vett_out[] = array($translation,$type_field ); 
+            }     
+            
+            return $vett_out;
+            
+    } 
+    
+    
+    
+    /* get custom field of entity course alla info */
+    function get_custom_field_all_info() {
+    
+            $search_query = "SELECT translation, code, type_field , cfl.id_field
+                        FROM %adm_customfield cf , %adm_customfield_lang cfl
+                        where area_code like 'COURSE' and cfl.id_field=cf.id_field and lang_code like '".getLanguage()."'";                          
+                        
+            $re_course = sql_query($search_query);        
+            if(!$re_course) return false;
+            $vett_out = array();
+            while(list($translation, $code, $type_field, $id_field) = sql_fetch_row($re_course)) {
+                   $vett_out[] = array($translation,$id_field , $type_field); 
+            }     
+            
+            return $vett_out;
+            
+    }    
+   
+   
+    /* get custom field of entity user alla info */
+    function get_custom_field_all_info_user() {
+    
+            $search_query = "SELECT translation, type_field , idField
+                        FROM %adm_field
+                        where lang_code like '".getLanguage()."'";                          
+
+                        
+            $re_course = sql_query($search_query);        
+            if(!$re_course) return false;
+            $vett_out = array();
+            while(list($translation, $type_field, $id_field) = sql_fetch_row($re_course)) {
+                   $vett_out[] = array($translation,$id_field , $type_field); 
+            }     
+            
+            return $vett_out;
+            
+    }     
+   
+   
+    /* get value custom field of entity user by type_field */
+    function get_value_custom_field_user_by_type($id_field, $type_field, $idUser){
+
+        $value_custom = $this->get_value_textfield_user($id_field,$idUser);      
+        if($type_field=="dropdown") {
+            $value_custom = $this->get_value_dropdown_user($id_field,$idUser,$value_custom );  
+        }        
+        
+        
+        return $value_custom;
+        
+    }
+   
+   
+      
+      
+    /* get value custum field entry by type of entity course */  
+    function get_value_custom_field_by_type($id_field, $type_field, $idCourse){
+        if($type_field=="textfield") {
+            $value_custom = $this->get_value_textfield($id_field,$idCourse);     
+        }    
+        
+        if($type_field=="dropdown") {
+            $value = $this->get_value_textfield($id_field,$idCourse);  
+            $value_custom = $this->get_value_dropdown($id_field,$idCourse, $value);     
+        }           
+        
+        
+        return $value_custom;
+        
+    }  
+      
+    /* get value of custom fiel for type textfield */  
+    function get_value_textfield($id_field, $id_course){
+        
+         $sql = "SELECT obj_entry FROM %adm_customfield_entry WHERE id_field=".$id_field." AND id_obj=".$id_course;
+         $re_course = sql_query($sql);
+         if(!$re_course) return false;
+         list($obj_entry) = sql_fetch_row($re_course);
+            
+            
+        return $obj_entry;
+        
+    }
+    
+    /* get value of custom script for type dropdown */
+    function get_value_dropdown($id_field, $id_course, $value){
+           $sql = "select translation from %adm_customfield_son_lang, %adm_customfield_son 
+             where %adm_customfield_son.id_field=".$id_field."
+             and %adm_customfield_son.id_field_son=%adm_customfield_son_lang.id_field_son
+             and lang_code like '".getLanguage()."' 
+             and %adm_customfield_son.id_field_son=".$value;
+        
+         $re_course = sql_query($sql);
+         if(!$re_course) return false;
+         list($obj_entry) = sql_fetch_row($re_course);
+            
+            
+        return $obj_entry;        
+        
+    }  
+      
+     
+    function get_value_dropdown_user($id_field,$idUser, $value){
+        
+        
+        $sql = "select translation from %adm_field_son where idField=".$id_field." and idSon=".$value;
+        
+         $re_user = sql_query($sql);
+         if(!$re_user) return false;
+         list($obj_entry) = sql_fetch_row($re_user);
+            
+            
+        return $obj_entry; 
+        
+        
+        
+    }     
+     
+     
+     
+      
+    /* get value of custom fiel for type textfield */  
+    function get_value_textfield_user($id_field, $id_user){
+        
+         $sql = "SELECT user_entry FROM %adm_field_userentry, core_field 
+         WHERE idField=".$id_field." 
+         AND  %adm_field_userentry.id_common = %adm_field.id_common
+         AND id_user=".$id_user;
+
+   
+         $re_course = sql_query($sql);
+         if(!$re_course) return false;
+         list($obj_entry) = sql_fetch_row($re_course);
+            
+            
+        return $obj_entry;
+        
+    }     
+     
+      
+      
+    
 	function get_cols_descripor() {
 		
 		$lang = DoceboLanguage::createInstance('subscribe', 'lms');
 		
+        // get custom field of course and put in property "vett_custom"
+        $vett_customfield = $this->get_custom_field_course();
+        
+        
+        //get custom field user
+        $vett_customfield_user = $this->get_custom_field_user();
+        
+        // merge custom and value default - course
+        $this->all_cols = array_merge($this->all_cols, $vett_customfield);
+        
+        // merge custom and value default - users
+        $this->all_cols = array_merge($this->all_cols, $vett_customfield_user); 
+        
+        
 		$col_descriptor = array();
 		foreach($this->all_cols as $k => $col) {
 				
@@ -322,11 +573,11 @@ class DoceboConnector_DoceboCourseUser extends DoceboConnector {
 		if(!$arr_id || ($arr_id['idst_user'] == '')) {
 			$this->last_error = 'not found the requested user '.sql_error();
 			return false;
-		}
+		} 
 		if($arr_id['id_course'] == '') {
 			$this->last_error = 'not found the requested course '.sql_error();
 			return false;
-		}
+		}     
 		if (!$row['level'])
 			$row['level'] = 3;
 		$re_ins = $this->sub_man->subscribeUserWithConnection($arr_id['idst_user'], $arr_id['id_course'], $row['level'], $this->get_name(), $row['date_subscription'].' 00:00:00');
@@ -456,7 +707,7 @@ class DoceboConnector_DoceboCourseUser extends DoceboConnector {
 		WHERE 1";
 		if(!empty($this->arr_pair_inserted)) {
 		
-			$search_query .= " AND CONCAT(idCourse, '_', idUser) NOT IN (".implode($this->arr_pair_inserted , ',').") ";
+			$search_query .= " AND CONCAT(idCourse, '_', idUser) NOT IN (".implode(',', $this->arr_pair_inserted).") ";
 		}
 		$re_courseuser = sql_query($search_query);
 		if(!$re_courseuser) return 0;

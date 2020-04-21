@@ -92,8 +92,8 @@ class Field_Country extends Field {
 			$mand_lang = getLanguage();
 			$show_on = '';
 			if(isset($_POST['show_on_platform'])) {
-				while(list($code, ) = each($_POST['show_on_platform']))
-					$show_on .= $code.',';
+          foreach($_POST['show_on_platform']  as $code )
+  					$show_on .= $code.',';
 			}
 			//control if all is ok
 			if(!isset($_POST['new_dropdown'][$mand_lang])) {
@@ -211,7 +211,7 @@ class Field_Country extends Field {
 			$mand_lang = getLanguage();
 			$show_on = '';
 			if(isset($_POST['show_on_platform'])) {
-				while(list($code, ) = each($_POST['show_on_platform']))
+        foreach($_POST['show_on_platform']  as $code )
 					$show_on .= $code.',';
 			}
 			//control if all is ok
@@ -346,12 +346,6 @@ class Field_Country extends Field {
 	}
 
 	function convert_name($name) {
-		/*
-		$exp_name = explode(' ', $name);
-		while(list($i, $word) = each($exp_name)) {
-			$exp_name[$i] = ucfirst(strtolower($word));
-		}
-		return implode(' ', $exp_name);*/
 		
 		return mb_convert_case($name, MB_CASE_TITLE, "UTF-8");
 	}
