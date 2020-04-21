@@ -546,16 +546,8 @@ class SubscriptionAlmsController extends AlmsController
 					}
 				}
 			} //End While
-			$this->db->commit();
-
-			// SET ADD STANDARD (multiple) SUBSCRIPTION EVENT
-			if ($data) {
-				$event = new \appCore\Events\Core\Courses\CourseSubscriptionAddEvent();
-				$event->setData($data);
-				$event->setType('standard');
-				\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\Courses\CourseSubscriptionAddEvent::EVENT_NAME, $event);
-			}
-
+            $this->db->commit();
+            
 			// Save limit preference for admin
 			if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
 				$to_subscribe = count($user_selected);
@@ -754,15 +746,6 @@ class SubscriptionAlmsController extends AlmsController
 			if ($this->id_edition == 0 && $this->id_date == 0)
 				$this->acl_man->removeFromGroup($level_idst[$level], $id_user);
 			$res = array('success' => true);
-
-			// SET REMOVE SUBSCRIPTION EVENT
-			$event = new \appCore\Events\Core\Courses\CourseSubscriptionRemoveEvent();
-			$userModel = new UsermanagementAdm();
-			$user = $userModel->getProfileData($id_user);
-			$event->setUser($user);
-			$event->setLevel($level);
-			$event->setCourse($docebo_course->course_info);
-			\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\Courses\CourseSubscriptionRemoveEvent::EVENT_NAME, $event);
 		} else {
 			$res = array('success' => false);
 		}
@@ -863,13 +846,6 @@ class SubscriptionAlmsController extends AlmsController
 
 						if ($this->model->updateUserLevel($id_user, $new_value)) {
 							echo $this->json->encode(array('succes' => true));
-
-							// SET EDIT LEVEL SUBSCRIPTION EVENT
-							$event = new \appCore\Events\Core\Courses\CourseSubscriptionEditLevelEvent();
-							$event->setUser($user);
-							$event->setLevel($level);
-							$event->setCourse($docebo_course->course_info);
-							\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\Courses\CourseSubscriptionEditLevelEvent::EVENT_NAME, $event);
 						} else
 							echo $this->json->encode(array('succes' => false));
 					}
@@ -931,12 +907,6 @@ class SubscriptionAlmsController extends AlmsController
 									break;
 								default:
 							}
-							// SET EDIT STATUS SUBSCRIPTION EVENT
-							$event = new \appCore\Events\Core\Courses\CourseSubscriptionEditStatusEvent();
-							$event->setUser($user);
-							$event->setStatus(['id' => $new_value, 'name' => $status[$new_value]]);
-							$event->setCourse($docebo_course->course_info);
-							\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\Courses\CourseSubscriptionEditStatusEvent::EVENT_NAME, $event);
 						} else
 							echo $this->json->encode(array('succes' => false));
 					}
@@ -1068,17 +1038,8 @@ class SubscriptionAlmsController extends AlmsController
 				}
 
 				//check if we have selected send alert checkbox
-				$send_alert = Get::req('send_alert', DOTY_INT, 0) > 0;
-
-				// SET ADD FAST SUBSCRIPTION EVENT
-				$event = new \appCore\Events\Core\Courses\CourseSubscriptionAddEvent();
-				$userModel = new UsermanagementAdm();
-				$user = $userModel->getProfileData($id_user);
-				$event->setUser($user);
-				$event->setType('fast');
-				$event->setLevel($level);
-				\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\Courses\CourseSubscriptionAddEvent::EVENT_NAME, $event);
-
+                $send_alert = Get::req('send_alert', DOTY_INT, 0) > 0;
+                
 				require_once(_base_ . '/lib/lib.eventmanager.php');
 
 				$course_info = $docebo_course->getAllInfo();
@@ -1365,25 +1326,6 @@ class SubscriptionAlmsController extends AlmsController
 					if (!$res4)
 						$message .= 'Unable to change date expire;'; //TO DO: make translation
 					$output['message'] = $message;
-				} else {
-					// SET EDIT MULTI SUBSCRIPTION EVENT
-					$event = new \appCore\Events\Core\Courses\CourseSubscriptionEditEvent();
-
-					$users = [];
-					foreach ($users_list as $idst) {
-						$query = "SELECT * FROM core_user as u WHERE u.idst=" . (int)$idst;
-						$res = $this->db->query($query);
-						$users[] = $this->db->fetch_obj($res);
-					}
-					$event->setUsers($users);
-					if ($set_level > 0) {
-						$event->setLevel($new_level);
-					}
-					if ($set_status > 0 && $new_status) {
-						$status_list = $this->model->getUserStatusList();
-						$event->setStatus(['id' => $new_status, 'name' => $status_list[$new_status]]);
-					}
-					\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\Courses\CourseSubscriptionEditEvent::EVENT_NAME, $event);
 				}
 			}
 		}

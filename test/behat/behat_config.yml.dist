@@ -1,8 +1,0 @@
-default:
-    extensions:
-        Behat\MinkExtension:
-            base_url: http://formalms.local
-            sessions:
-                default:
-                    goutte: ~
-

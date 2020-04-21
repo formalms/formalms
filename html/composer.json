@@ -2,7 +2,7 @@
     "name": "formalms/formalms",
     "require": {
         "php": ">=7.0",
-        "symfony/event-dispatcher": "~2.8.22",
+        "symfony/event-dispatcher": "^3.3",
         "twig/twig": "~1.34.3",
         "symfony/var-dumper": "~2.8.17",
         "lusitanian/oauth": "~0.8.10",
@@ -12,12 +12,6 @@
     "require-dev": {
         "phing/phing": "~2.13.0",
         "phpunit/phpunit": "~4.1.6",
-        "behat/behat": "~3.0.15",
-        "behat/mink": "~1.7.1",
-        "behat/mink-extension": "~2.2",
-        "behat/mink-browserkit-driver": "~1.3.2",
-        "behat/mink-goutte-driver": "~1.2.1",
-        "behat/mink-selenium2-driver": "~1.3.1",
         "simpletest/simpletest": "~1.1"
     },
     "authors": [
@@ -42,7 +36,6 @@
             "appCore": ""
         },
         "psr-4": {
-            "FormaLms\\Features\\Contexts\\": "../test/behat/FormaLms/Features/Contexts"
         }
     }
 }

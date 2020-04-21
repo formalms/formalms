@@ -205,6 +205,13 @@ class PluginManager {
             self::include_plugin_file($plugin['name'], 'Event.php');
         }
     }
+
+    public static function initialize(){
+        $plugin_list = self::get_all_plugins();
+        foreach ($plugin_list as $plugin) {
+            self::include_plugin_file($plugin['name'], $plugin['name'] . '.php');
+        }
+    }
 }
 
 class PluginManagerException extends Exception {}

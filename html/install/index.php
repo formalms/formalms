@@ -11,7 +11,7 @@
 |   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
-// start buffer
+//TODO INSTALL_vs_UPGRADE: please share what you can
 ob_start();
 
 include('bootstrap.php');
@@ -31,6 +31,7 @@ Lang::setLanguage();
 		<link rel="Author" href="http://www.formalms.org/about" title="About" />
 		<link rel="shortcut icon" href="./templates/standard/images/favicon.png" type="image/png" />
 		<link rel="shortcut icon" href="./templates/standard/images/favicon.ico" />
+
 		<?php echo getZoneContent('page_head'); ?>
 		<link rel="stylesheet" type="text/css" href="../templates/standard/style/reset-fonts-grids.css" />
 		<link rel="stylesheet" type="text/css" href="./templates/standard/style/base.css" />
@@ -88,12 +89,10 @@ Lang::setLanguage();
 		<?php echo Form::closeForm(); ?>
 	</body>
 </html>
-
-
 <?php
 
 // flush buffer
-$contents =ob_get_contents();
+$contents = ob_get_contents();
 ob_clean();
 echo $GLOBALS['page']->render($contents);
 ?>
