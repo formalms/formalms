@@ -1254,7 +1254,7 @@ class CoursereportLmsController extends LmsController
         SELECT DATE_FORMAT(tt.date_attempt, '%d/%m/%Y %H:%i'), tt.score, tt.idTest, t.idUser, tt.number_time
         FROM " . $GLOBALS['prefix_lms'] . "_testtrack_times AS tt
         LEFT JOIN " . $GLOBALS['prefix_lms'] . "_testtrack AS t ON tt.idTrack=t.idTrack
-        WHERE tt.idTest = '" . $idTest . "' ORDER BY tt.date_attempt"; // tt.idTrack = '" . $idTrack . "' AND
+        WHERE tt.idTrack = '" . $idTrack . "' AND tt.idTest = '" . $idTest . "' ORDER BY tt.date_attempt";
 		$re_testreport = sql_query($query_testreport);
 
 		$test_man = new GroupTestManagement();
@@ -1721,8 +1721,10 @@ class CoursereportLmsController extends LmsController
 			'index.php?r=lms/coursereport/testdetail&amp;id_test=' . $id_test => $test_info[$id_test]['title']
 		);
 
-		$out->add(getTitleArea($page_title, 'coursereport')
-			. '<div class="std_block">');
+		$out->add(
+			getTitleArea($page_title, 'coursereport')
+				. '<div class="std_block">'
+		);
 
 		$query_test = "SELECT title"
 			. " FROM " . $GLOBALS['prefix_lms'] . "_test"
@@ -3699,8 +3701,10 @@ class CoursereportLmsController extends LmsController
 			$test_info[$id_test]['title']
 		);
 
-		$out->add(getTitleArea($page_title, 'coursereport')
-			. '<div class="std_block">');
+		$out->add(
+			getTitleArea($page_title, 'coursereport')
+				. '<div class="std_block">'
+		);
 
 		$query_test = "SELECT title"
 			. " FROM " . $GLOBALS['prefix_lms'] . "_test"
