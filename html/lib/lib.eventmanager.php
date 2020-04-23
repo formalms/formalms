@@ -315,7 +315,12 @@ class EventMessageComposer {
  * @param bool					$force_email_send		if true the message is sent to all the user in $recipients ignoring their settings for email
  **/
 function createNewAlert(	$class,$module,$section,$priority,$description,
-							$recipients,$msg_composer,$force_email_send = false) {
+							$recipients,$msg_composer,$force_email_send = false)
+{
+
+	if (!getEnabledEvent($class, $module, $section)) {
+		return;
+	}
 
 	$event =& DoceboEventManager::newEvent($class, $module, $section, $priority, $description);
 
@@ -334,6 +339,19 @@ function createNewAlert(	$class,$module,$section,$priority,$description,
 	$event->setProperty('MessageComposer', addslashes(rawurlencode(serialize($msg_composer))) );
 	$event->setProperty('force_email_send', ( $force_email_send === false ? 'false' : 'true' ) );
 	DoceboEventManager::dispatch($event);
+}
+
+function getEnabledEvent($class)
+{
+	$query = "SELECT COUNT(*) AS count FROM " . $GLOBALS['prefix_fw'] . "_event_manager AS em"
+		. " INNER JOIN " . $GLOBALS['prefix_fw'] . "_event_class AS ec ON em.idClass = ec.idClass"
+		. " WHERE ec.class = '$class' AND em.permission <> 'not_used'";
+
+	if ($res = sql_query($query)) {
+		if ($row = sql_fetch_object($res)) {
+			return (bool) $row->count;
+		}
+	}
 }
 
 /**
@@ -356,4 +374,3 @@ function createNewAlert(	$class,$module,$section,$priority,$description,
 	DoceboEventManager::dispatch($event);
 }
 */
-?>
