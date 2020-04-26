@@ -954,7 +954,7 @@ class Certificate {
 				 AND id_user = '".$id_user."' ";
 		else
             $query_certificate = "SELECT cert_file"
-			." FROM ".$GLOBALS['prefix_lms'].$aggCertLib->table_assign_agg_cert
+			." FROM ".$aggCertLib->table_assign_agg_cert
 			." WHERE idUser = ".$id_user
             ." AND idCertificate = ".$id_certificate
             ." AND idAssociation = ".$id_association;
@@ -1002,7 +1002,7 @@ class Certificate {
 			." VALUES "
 			." ( '".$id_certificate."', '".$id_course."', '".$id_user."', '".date("Y-m-d H:i:s")."', '".addslashes($cert_file)."' ) ";
 		else
-			$query = "INSERT INTO ".$GLOBALS['prefix_lms'].$aggCertLib->table_assign_agg_cert
+			$query = "INSERT INTO ".$aggCertLib->table_assign_agg_cert
 			        ." ( idUser, idCertificate, idAssociation ,on_date, cert_file ) "
 			        ." VALUES "
 			        ." ( "

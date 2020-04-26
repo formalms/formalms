@@ -885,6 +885,8 @@ class CoursePath_Manager {
 		$query = "UPDATE %lms_coursepath_user SET course_completed = course_completed + 1 "
 			." WHERE idUser = ".(int)$id_user." AND id_path IN ( "
 			." SELECT id_path FROM %lms_coursepath_courses WHERE id_item = ".(int)$id_course." )";
+            
+            
 		return sql_query($query);
 	}
 

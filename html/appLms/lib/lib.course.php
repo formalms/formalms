@@ -385,7 +385,7 @@ class Man_Course {
 		if($type_of !== false && $type_of !== 'all' && $type_of !== 'edition') $query_course .= " AND course_type = '".$type_of."' ";
 		if($type_of === 'edition') $query_course .= " AND course_edition = '1' ";
 		if($arr_courses !== false) $query_course .= " AND idCourse IN ( ".implode(',', $arr_courses)." )";
-		$query_course .= " ORDER BY name";
+		$query_course .= " ORDER BY idCourse";
 
 		$re_course = sql_query($query_course);
 		while(list($id, $code, $name, $description) = sql_fetch_row($re_course)) {

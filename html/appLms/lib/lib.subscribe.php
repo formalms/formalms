@@ -744,10 +744,20 @@ class CourseSubscribe_Manager
 			}
 		}
 
-		if(!sql_query("
+		
+        
+        if(!sql_query("
 		UPDATE ".$GLOBALS['prefix_lms']."_courseuser
 		SET status = '".(int)$status."' ".$extra."
-		WHERE idUser = '".(int)$idUser."' AND idCourse = '".(int)$idCourse."'")) return false;
+		WHERE idUser = '".(int)$idUser."' AND idCourse = '".(int)$idCourse."'")) {
+            return false;
+        } else {
+            Events::trigger('lms.course_user.updated', [
+            'id_user' => $idUser,
+            'id_course' => $idCourse,
+            'new_data' => $new_data,
+            ]);
+        }    
 
 		$re = sql_query("
 		SELECT when_do
@@ -825,12 +835,6 @@ class CourseSubscribe_Manager
 			$cpmodel = new CoursePath_Manager();
 			$cpmodel->assignComplete($idCourse, $idUser);
         }
-        
-        Events::trigger('lms.course_user.updated', [
-            'id_user' => $idUser,
-            'id_course' => $idCourse,
-            'new_data' => $new_data,
-        ]);
 
 		return true;
 	}

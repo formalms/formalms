@@ -223,7 +223,7 @@ Class AggregatedcertificateAlmsController extends AlmsController
         
             $params["tb"] = $tb;
             $params["ini"] = $ini;
-            $params["countAggrCerts"] = count($this->aggCertLib->getAllAggregatedCerts($ini, true, $filter));
+            $params["countAggrCerts"] = count($aggregateCertsArr);
             
             $params["controller_name"] = $this->controller_name;
             $params["opsArr"] = $this->op;
@@ -1206,19 +1206,14 @@ function associationPaths() {
     */
     function assignmentManagement() {
         checkPerm('mod');
-        require_once($GLOBALS['where_lms'].'/lib/lib.course.php');
-        require_once($GLOBALS['where_lms'].'/lib/lib.coursepath.php');
-        require_once(_base_.'/lib/lib.table.php');
-        require_once(_base_.'/lib/lib.form.php');
-        $acl_man =& Docebo::user()->getAclManager(); //necessary to obtain users data
-        $man_courseuser = new Man_CourseUser(DbConn::getInstance());
-        $cp_m = new CoursePath_Manager();
+
         
         $id_cert = Get::req('id_certificate', DOTY_INT, 0);
         if($id_cert == 0) cout(getErrorUi(Lang::t('_NO_CERT_AVAILABLE', 'certificate'))); 
+      
         $certificate_assoc = $this->aggCertLib->getAssociationsMetadata($id_cert);
         
-        if(empty($certificate_assoc)) 
+     /*  if(empty($certificate_assoc)) 
             cout(getErrorUi(Lang::t('_NO_CERT_AVAILABLE', 'certificate'))); 
         foreach ($certificate_assoc as $k1=>$array_assoc) {
             $type_assoc = intVal($this->aggCertLib->getTypeAssoc($array_assoc['idAssociation']));
@@ -1247,7 +1242,12 @@ function associationPaths() {
                     unset($certificate_assoc[$k1]);
                 
                 
-        }
+        }*/
+        
+        $certificate_assoc = $this->aggCertLib->getIssuedCertificates($id_cert);
+        if(!$certificate_assoc) 
+            cout(getErrorUi(Lang::t('_NO_CERT_AVAILABLE', 'certificate'))); 
+        
         $type_h = array('', '', '', 'image', 'image', 'image');
 
         $cont_h = array(Lang::t('_FULLNAME'),
@@ -1263,9 +1263,8 @@ function associationPaths() {
         $tb->addHead($cont_h);
        $i = 0;
        foreach($certificate_assoc as $the_cert){
-            foreach ($the_cert['users']as $id => $v) {
-                $cell[$i][] = $v['lastname'].' '.$v['name'];
-                $cell[$i][] = $v['username'];
+                $cell[$i][] = $the_cert['lastname'].' '.$the_cert['firstname'];
+                $cell[$i][] = $the_cert['userid'];
                 $cell[$i][] = $the_cert['title'];
                 $cell[$i][] = '<a href="index.php?r=alms/'.$this->controller_name.'/'.$this->op['release_cert']
                 . '&amp;id_certificate=' . $id_cert
@@ -1274,8 +1273,7 @@ function associationPaths() {
                 . '&amp;aggCert=1'
                 . '">'
                 . Get::img('course/certificate.png', Lang::t('_TAKE_A_COPY', 'certificate')) . '</a>';
-                $aggCertReleasedCount = $this->aggCertLib->hasUserAggCertsReleased($id, $id_cert, $the_cert['idAssociation']);
-                if ($aggCertReleasedCount > 0)
+                if ($the_cert['released'] > 0)
                     $cell[$i][] = '<a href="index.php?r=alms/'.$this->controller_name.'/'.$this->op['del_released']
                             .'&amp;id_certificate='.$id_cert 
                             .'&amp;id_user='.$id
@@ -1285,8 +1283,6 @@ function associationPaths() {
                 else
                     $cell[$i][] = '';
                  $tb->addBody($cell[$i++]);            
-
-            }
         }
         require_once(_base_.'/lib/lib.dialog.php');
         setupHrefDialogBox('a[href*='.$this->op['del_released'].']');

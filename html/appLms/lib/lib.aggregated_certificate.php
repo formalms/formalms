@@ -17,13 +17,13 @@ class AggregatedCertificate {
     public function __construct(){
 
         $this->db = DbConn::getInstance();
-        $this->table_cert = '_certificate';  // TODO: remove, inserting appropriate libraries
-        $this->table_cert_tags = '_certificate_tags';
+        $this->table_cert = $GLOBALS['prefix_lms'].'_certificate';  // TODO: remove, inserting appropriate libraries
+        $this->table_cert_tags = $GLOBALS['prefix_lms'].'_certificate_tags';
 
-        $this->table_cert_meta_association = '_aggregated_cert_metadata';
-        $this->table_cert_meta_association_courses = '_aggregated_cert_course';
-        $this->table_cert_meta_association_coursepath = '_aggregated_cert_coursepath';
-        $this->table_assign_agg_cert = '_aggregated_cert_assign';
+        $this->table_cert_meta_association = $GLOBALS['prefix_lms'].'_aggregated_cert_metadata';
+        $this->table_cert_meta_association_courses = $GLOBALS['prefix_lms'].'_aggregated_cert_course';
+        $this->table_cert_meta_association_coursepath = $GLOBALS['prefix_lms'].'_aggregated_cert_coursepath';
+        $this->table_assign_agg_cert = $GLOBALS['prefix_lms'].'_aggregated_cert_assign';
     
     
     
@@ -49,15 +49,8 @@ class AggregatedCertificate {
     */
     function getAllAggregatedCerts($ini = 0, $count = false, $filter = []) {
         //search query of certificates 
-        $query_certificate = "SELECT ";
-        $query_certificate .= "id_certificate, "
-                            . "code, "
-                            . "name, "
-                            . "description ";
-
-
-        $query_certificate .= "FROM ".$GLOBALS['prefix_lms']. $this->table_cert
-                            . " WHERE meta = 1";
+        $query_certificate = "SELECT id_certificate, code, name, description 
+                            FROM ".$this->table_cert . " WHERE meta = 1";
 
         if (!empty($filter)) { // Generalize with a filter variable
             if (isset($filter['filter_text']))
@@ -109,7 +102,7 @@ class AggregatedCertificate {
                         . "base_language, "
                         . "description, "
                         . "user_release "
-                        . "FROM ".$GLOBALS['prefix_lms'].$this->table_cert
+                        . "FROM ".$this->table_cert
                         . " WHERE id_certificate ". ( is_array($id_cert) ? "IN (" . implode(", ", $id_cert) . ") ": " = " . $id_cert);
         
             $rs = sql_query($query);
@@ -135,7 +128,7 @@ class AggregatedCertificate {
     function getAssociationsMetadata($id_cert = 0, $id_association = 0, $ini = -1) {
         
         $query = "SELECT idAssociation, title, description"
-                ." FROM ".$GLOBALS['prefix_lms'].$this->table_cert_meta_association
+                ." FROM ".$this->table_cert_meta_association
                 . ($id_cert != 0 ? " WHERE idCertificate = ".$id_cert : '')
                 . ($id_association != 0 ? " WHERE idAssociation = ".$id_association : '');
 
@@ -172,7 +165,7 @@ class AggregatedCertificate {
             ."cert_structure, "
             ."orientation, "
             ."bgimage "
-            ."FROM ".$GLOBALS['prefix_lms'].$this->table_cert
+            ."FROM ".$this->table_cert
             ." WHERE id_certificate = ".$id_cert."";
 
         return sql_fetch_assoc(sql_query($query));
@@ -189,7 +182,7 @@ class AggregatedCertificate {
     function getIdCertificate($idAssociation) {
         
         $q = "SELECT idCertificate "
-            ." FROM %lms".$this->table_cert_meta_association
+            ." FROM ".$this->table_cert_meta_association
             ." WHERE idAssociation " . (is_array($idAssociation) ? "IN (" . implode(", ", $idAssociation) .")" : " = " . $idAssociation);
         
             $rs = $this->db->query($q);
@@ -212,7 +205,7 @@ class AggregatedCertificate {
      */
     function getIdAssociations($idCert) {
 
-        $query = "SELECT idAssociation FROM ".$GLOBALS['prefix_lms'].$this->table_cert_meta_association
+        $query = "SELECT idAssociation FROM ".$this->table_cert_meta_association
             ." WHERE idCertificate = ".$idCert;
 
         $rs = sql_query($query);
@@ -228,6 +221,8 @@ class AggregatedCertificate {
         return $idsArr;
 
     }
+    
+    
 
     /**
      * Returns an array of id/s associations (object) with the type of the assoc.
@@ -236,7 +231,7 @@ class AggregatedCertificate {
      */
     function getIdAssociationsWithType($idCert) {
 
-        $query = "SELECT idAssociation FROM ".$GLOBALS['prefix_lms'].$this->table_cert_meta_association
+        $query = "SELECT idAssociation FROM ".$this->table_cert_meta_association
             ." WHERE idCertificate = ".$idCert;
 
         $rs = sql_query($query);
@@ -283,7 +278,7 @@ class AggregatedCertificate {
         $q =      "SELECT "
                 . ($distinct ? "DISTINCT " : '')
                 . $field_link
-                . " FROM %lms" . $table
+                . " FROM " . $table
                 . " WHERE 1 = 1 " 
                 . ($id_association != -1 ? " AND idAssociation ". ( is_array($id_association) ? " IN (" . implode(", ", $id_association) . ")" : " = " . $id_association) : "") 
                 . (!empty($userIdsArr) ? " AND idUser ". ( is_array($userIdsArr) ? " IN (" . implode( ", ", $userIdsArr) . ") " : " = " . $userIdsArr) : "");
@@ -316,7 +311,7 @@ class AggregatedCertificate {
         foreach($this->assocTypesArr as $association_type => $table_name){
             
             $q =      "SELECT DISTINCT idAssociation"
-                    . " FROM %lms" . $table_name
+                    . " FROM " . $table_name
                     . " WHERE 1 = 1 "
                     . " AND idUser = ".$user;
                             
@@ -343,7 +338,7 @@ class AggregatedCertificate {
         foreach($this->assocTypesArr as $association_type => $table_name){
             
             $q =      "SELECT DISTINCT idAssociation"
-                    . " FROM %lms" . $table_name
+                    . " FROM ". $table_name
                     . " WHERE 1 = 1 "
                     . " AND idUser = ".$user;
                             
@@ -382,7 +377,7 @@ class AggregatedCertificate {
 
         $q =    "SELECT "
             .   "DISTINCT idUser" // If i'm passing array of id user and array of links, i want to check if there are any assoc
-            .   " FROM ". $GLOBALS['prefix_lms'] . $table
+            .   " FROM ".$table
             .   " WHERE idAssociation ". ( is_array($id_assoc) ? " IN (" . implode(", ", $id_assoc) . ")" : " = " . $id_assoc) 
             .   " AND idUser != 0 "; // skip course / path placeholder 
 
@@ -395,6 +390,8 @@ class AggregatedCertificate {
         return $id_users;
 
     }
+    
+
 
     function getAllLinksFromIdAssoc($id_assoc, $type_assoc) {
 
@@ -414,7 +411,7 @@ class AggregatedCertificate {
 
         $q =    "SELECT "
             .   "{$field_link}" // If i'm passing array of id user and array of links, i want to check if there are any assoc
-            .   " FROM ". $GLOBALS['prefix_lms'] . $table
+            .   " FROM ".$table
             .   " WHERE idAssociation = ".$id_assoc
             .   " AND idUser = 0";
 
@@ -438,7 +435,7 @@ class AggregatedCertificate {
     public function getIdsCourse($id_association){
 
         $q = "SELECT idCourse FROM "
-            . $GLOBALS['prefix_lms'] . $this->table_cert_meta_association_courses
+            .$this->table_cert_meta_association_courses
             . " WHERE idAssociation = " . $id_association
             . " and idUser = 0";
 
@@ -471,13 +468,13 @@ class AggregatedCertificate {
         }
         if (!is_array($idAssoc)) {
             $query =    "SELECT idUser, {$field}"
-                ." FROM ".$GLOBALS['prefix_lms'].$table
-                ." WHERE idAssociation = '".$idAssoc."' and idUser <> 0";
+                ." FROM ".$table
+                ." WHERE idAssociation = '".$idAssoc."' and idUser <> 0 order by idCourse";
         } else {
             $idAssoc_str = implode(',',$idAssoc);
             $query =    "SELECT idUser, {$field}"
-                ." FROM ".$GLOBALS['prefix_lms'].$table
-                ." WHERE idAssociation in (".$idAssoc_str.") and idUser <> 0";
+                ." FROM ".$table
+                ." WHERE idAssociation in (".$idAssoc_str.") and idUser <> 0 order by idCourse";
         }                        
 
         $rs = sql_query($query);
@@ -491,7 +488,7 @@ class AggregatedCertificate {
     function getCountCoursesCompleted($coursesIdsArr, $id_user){
 
         $query =    "SELECT COUNT(*)"
-            ." FROM ".$GLOBALS['prefix_lms']."_courseuser"
+            ." FROM %lms_courseuser"
             ." WHERE idCourse " . ( is_array($coursesIdsArr) ? " IN (" . implode(", ", $coursesIdsArr) . ")" : " = " . $coursesIdsArr) 
             ." AND idUser = ".$id_user
             ." AND status = "._CUS_END;
@@ -510,7 +507,7 @@ class AggregatedCertificate {
     function hasUserAggCertsReleased($id_user, $id_cert, $id_association){
 
             $q = "SELECT * "
-                ." FROM ". $GLOBALS['prefix_lms']. $this->table_assign_agg_cert
+                ." FROM ".$this->table_assign_agg_cert
                 ." WHERE idUser = ".$id_user
                 ." AND idCertificate = ".$id_cert
                 ." AND idAssociation = ".$id_association;
@@ -550,7 +547,7 @@ class AggregatedCertificate {
                 ."         ,cma.on_date"
                 ." GROUP_CONCAT(DISTINCT CONCAT( '(', co.code, ') - ', co.name) SEPARATOR '<br>') AS courses"
                 ." FROM %lms_certificate_meta_course as cmc"  //??
-                ." JOIN %lms" . $this->table_assign_agg_cert . " as cma ON cmc.idAssociation = cma.idMetaCertificate"
+                ." JOIN " . $this->table_assign_agg_cert . " as cma ON cmc.idAssociation = cma.idMetaCertificate"
                 ." JOIN %lms_certificate AS ce ON cma.idCertificate = ce.id_certificate"
                 ." JOIN %lms_course AS co ON cmc.idCourse = co.idCourse"
                 ." WHERE 1 = 1";
@@ -591,7 +588,7 @@ class AggregatedCertificate {
     function getIdsCoursePath($id_association){
 
         $q = "SELECT idCoursePath FROM "
-            . $GLOBALS['prefix_lms'] . $this->table_cert_meta_association_coursepath
+            .$this->table_cert_meta_association_coursepath
             . " WHERE idAssociation = " . $id_association
             . " and idUser = 0";
 
@@ -611,7 +608,7 @@ class AggregatedCertificate {
     function getCoursePathList() {
 
         $q = " SELECT id_path, path_name, path_descr
-             FROM ".$GLOBALS['prefix_lms']."_coursepath ";
+             FROM %lms_coursepath ";
         $rs = sql_query($q);
 
         $coursepathArr['data'] = [];
@@ -657,7 +654,7 @@ class AggregatedCertificate {
     function getAggregatedCertFileName($idUser, $idCertificate){
 
         $query = "SELECT cert_file"
-                ." FROM ".$GLOBALS['prefix_lms'].$this->table_assign_agg_cert
+                ." FROM ".$this->table_assign_agg_cert
                 ." WHERE idUser = ".$idUser
                 ." AND idCertificate = ".$idCertificate;
 
@@ -672,8 +669,8 @@ class AggregatedCertificate {
 
         $q = "SELECT cour.name, cour.idCourse, cour.code, cour.description, cour.status "
             . (($req_root) ? '' : ", cat.path ")
-            . "FROM " . $GLOBALS["prefix_lms"] . "_course AS cour "
-            . (($req_root) ? '' : "JOIN " . $GLOBALS["prefix_lms"] . "_category AS cat ")
+            . "FROM %lms_course AS cour "
+            . (($req_root) ? '' : "JOIN %lms_category AS cat ")
             . "WHERE cour.idCategory IN (" . str_replace(array( "[", "]" ) , "" , $idCategoryArr) . ")"
             . (($req_root) ? '' : " AND cour.idCategory = cat.idCategory ");
 
@@ -729,7 +726,7 @@ class AggregatedCertificate {
         foreach($this->assocTypesArr as $key => $table) {
 
             $q = "SELECT * 
-                FROM ". $GLOBALS['prefix_lms']. $table ."
+                FROM ".$table ."
                 WHERE idAssociation = ".$id_assoc. " AND idUser = 0";
 
             if(sql_num_rows(sql_query($q)))
@@ -744,7 +741,7 @@ class AggregatedCertificate {
 
     function getCertificateTags(){
 
-        $query = "SELECT file_name, class_name FROM ".$GLOBALS['prefix_lms'].$this->table_cert_tags;
+        $query = "SELECT file_name, class_name FROM ".$this->table_cert_tags;
 
         $rs = sql_query($query);
 
@@ -758,19 +755,19 @@ class AggregatedCertificate {
 
     function getLastInsertedIdCertificate() {
 
-        return sql_fetch_row(sql_query("SELECT LAST_INSERT_ID()FROM ".$GLOBALS['prefix_lms'].$this->table_cert ))[0];
+        return sql_fetch_row(sql_query("SELECT LAST_INSERT_ID()FROM ".$this->table_cert ))[0];
 
     }
     
     function getLastInsertedIdAggregatedCert() {
 
-        return sql_fetch_row(sql_query("SELECT LAST_INSERT_ID()FROM %lms".$this->table_cert_meta_association ))[0];
+        return sql_fetch_row(sql_query("SELECT LAST_INSERT_ID()FROM ".$this->table_cert_meta_association ))[0];
 
     }
 
     function getLastInsertedAssociationId() {
 
-        return sql_fetch_row(sql_query("SELECT LAST_INSERT_ID()FROM ".$GLOBALS['prefix_lms'].$this->table_cert_meta_association ))[0];
+        return sql_fetch_row(sql_query("SELECT LAST_INSERT_ID()FROM ".$this->table_cert_meta_association ))[0];
 
     }
 
@@ -855,7 +852,7 @@ class AggregatedCertificate {
 
         
        $query = "INSERT INTO "
-                .$GLOBALS['prefix_lms'] . $this->table_cert 
+                .$this->table_cert 
                 ." ("
                 .implode(", ", $fields)
                 ." )"
@@ -895,7 +892,7 @@ class AggregatedCertificate {
         if(empty($metaDataAssocArr)) return false; // You never know...
         
 
-        $query = "UPDATE  ".$GLOBALS['prefix_lms'].$this->table_cert_meta_association 
+        $query = "UPDATE  ".$this->table_cert_meta_association 
                 ." SET description = '".$metaDataAssocArr['description']."', title ='". $metaDataAssocArr['title'] 
                 ."' WHERE idAssociation = ".$metaDataAssocArr['idAssociation']. " AND"
                 . " idCertificate = ".$metaDataAssocArr['idCertificate'];
@@ -922,14 +919,14 @@ class AggregatedCertificate {
             $table = $this->table_cert_meta_association_coursepath;            
         }
         if ($this->_idAssoc == 0 ) {
-            $sql1 = "INSERT INTO ".$GLOBALS["prefix_lms"].$this->table_cert_meta_association." (idCertificate, title, description) VALUES ("
+            $sql1 = "INSERT INTO ".$this->table_cert_meta_association." (idCertificate, title, description) VALUES ("
                     .$this->_id_cert.',\''.$this->_title.'\',\''.$this->_description.'\')';
             if (sql_query($sql1)) {
                 $sql2 = "SELECT LAST_INSERT_ID() as idAssociation";                 
                 $row = sql_fetch_assoc(sql_query($sql2));
                 $this->_idAssoc = $row['idAssociation'];
                 if ($this->_type_assoc == COURSE) {
-                    $sql1 = "INSERT INTO ".$GLOBALS["prefix_lms"].$table." (idAssociation, idUser, idCourse, idCourseEdition) VALUES ";
+                    $sql1 = "INSERT INTO ".$table." (idAssociation, idUser, idCourse, idCourseEdition) VALUES ";
                     // insert placeholder for no user selected case
                     $array_course = explode(",", Get::req('selected_courses', DOTY_NUMLIST));
                     $r = Array();
@@ -937,7 +934,7 @@ class AggregatedCertificate {
                         $r[] = '('.$this->_idAssoc.',0,'.$the_course.', 0)';
                     }
                 } else {
-                    $sql1 = "INSERT INTO ".$GLOBALS["prefix_lms"].$table." (idAssociation, idUser, idCoursePath) VALUES ";
+                    $sql1 = "INSERT INTO ".$table." (idAssociation, idUser, idCoursePath) VALUES ";
                     // insert placeholder for no user selected case
                     $array_path = explode(",", Get::req('selected_idsCoursePath', DOTY_NUMLIST));
                     $r = Array();
@@ -952,13 +949,13 @@ class AggregatedCertificate {
                return false ;
             }
         } else { // update, deleting old association 
-            $sql0 = "UPDATE ".$GLOBALS["prefix_lms"].$this->table_cert_meta_association." SET "
+            $sql0 = "UPDATE ".$this->table_cert_meta_association." SET "
                     ." title = '".$this->_title."', "
                     ." description ='".$this->_description."'"
                     ." WHERE idAssociation = ".$this->_idAssoc;
-            $sql1 = "DELETE FROM ".$GLOBALS["prefix_lms"].$table." WHERE idAssociation =".$this->_idAssoc;
+            $sql1 = "DELETE FROM ".$table." WHERE idAssociation =".$this->_idAssoc;
             if($this->_type_assoc == COURSE){
-                $sql2 = "INSERT INTO ".$GLOBALS["prefix_lms"].$table." (idAssociation, idUser, idCourse, idCourseEdition) VALUES ";
+                $sql2 = "INSERT INTO ".$table." (idAssociation, idUser, idCourse, idCourseEdition) VALUES ";
                 // insert placeholder for no user selected case
                 $array_course = explode(",", Get::req('selected_courses', DOTY_NUMLIST));
                 $r = Array();
@@ -966,7 +963,7 @@ class AggregatedCertificate {
                     $r[] = '('.$this->_idAssoc.',0,'.$the_course.', 0)';
                 }
             } else {
-                $sql2 = "INSERT INTO ".$GLOBALS["prefix_lms"].$table." (idAssociation, idUser, idCoursePath) VALUES ";
+                $sql2 = "INSERT INTO ".$table." (idAssociation, idUser, idCoursePath) VALUES ";
                 // insert placeholder for no user selected case
                 $array_path = explode(",", Get::req('selected_idsCoursePath', DOTY_NUMLIST));
                 $r = Array();
@@ -1000,7 +997,7 @@ class AggregatedCertificate {
       
     private function saveCertRowPath($assocArr){
         $table = $this->table_cert_meta_association_coursepath;            
-        $sql1 = "INSERT INTO " . $GLOBALS["prefix_lms"].$table
+        $sql1 = "INSERT INTO " .$table
                 . " ( idAssociation, idUser, idCoursePath)"
                 . " VALUES ";
 
@@ -1038,7 +1035,7 @@ class AggregatedCertificate {
     private function saveCertRowCourse($assocArr){
     
         $table = $this->table_cert_meta_association_courses;
-        $sql1 = "INSERT INTO " . $GLOBALS["prefix_lms"].$table
+        $sql1 = "INSERT INTO " . $table
                 . " ( idAssociation, idUser, idCourse, idCourseEdition )"
                 . " VALUES ";
 
@@ -1079,7 +1076,7 @@ class AggregatedCertificate {
     */
     function deleteCert($idCert) {
         
-        $query = " DELETE FROM ".$GLOBALS['prefix_lms'].$this->table_cert
+        $query = " DELETE FROM ".$this->table_cert
                  ." WHERE id_certificate = ".$idCert;
 
         return sql_query($query);
@@ -1087,7 +1084,7 @@ class AggregatedCertificate {
     }
 
     function deleteReleasedCert($id_user, $id_cert){
-        $query =    "DELETE FROM ".$GLOBALS['prefix_lms']. $this->table_assign_agg_cert
+        $query =    "DELETE FROM ". $this->table_assign_agg_cert
             ." WHERE idUser = ".$id_user
             ." AND idCertificate = ".$id_cert;
 
@@ -1101,7 +1098,7 @@ class AggregatedCertificate {
      */
     function deleteAssociationsMetadata($idsArr){
 
-        $query = "DELETE FROM ".$GLOBALS['prefix_lms'].$this->table_cert_meta_association
+        $query = "DELETE FROM ".$this->table_cert_meta_association
             ." WHERE idAssociation "
             . ( is_array($idsArr) ? " IN (" . implode( ", ", $idsArr) . ") " : " = " . $idsArr);
 
@@ -1168,7 +1165,7 @@ class AggregatedCertificate {
                 return;
         }
 
-        $query2 =   "DELETE FROM ".$GLOBALS['prefix_lms'].$table
+        $query2 =   "DELETE FROM ".$table
                     . " WHERE idAssociation = " . $id_association
                     . ( !empty($userIdsArr) ? " AND idUser IN (" . implode(", ", $userIdsArr) . ")" : '')
                     . ( !empty($linkIdsArr) ? " AND " .$field_link." IN (" . implode(", ", $linkIdsArr) . ")" : '');
@@ -1186,7 +1183,7 @@ class AggregatedCertificate {
     function updateLayout($templateArr) {
         
 
-        $query =    "UPDATE ".$GLOBALS['prefix_lms'].$this->table_cert
+        $query =    "UPDATE ".$this->table_cert
                     ." SET ";
                     foreach($templateArr as $column_header => $value){
 
@@ -1203,6 +1200,69 @@ class AggregatedCertificate {
         $rs = sql_query($query);
         return $rs;
 
+    }
+    
+    function releaseNewCertificate($id_user, $id_certificate, $id_association){
+        $query = "INSERT INTO ".$this->table_assign_agg_cert
+        ." ( idUser, idCertificate, idAssociation ) "
+        ." VALUES "
+        ." ( "
+            .intval($id_user). ","
+            .intval($id_certificate).", "
+            .intval($id_association)
+        . ") ";
+        $rs = sql_query($query);
+        return $rs;
+
+    }
+    
+    function isCertIssued($user, $cert, $association){
+        $q = "SELECT COUNT(*) FROM ".$this->table_assign_agg_cert
+              ." WHERE idUSer=".$user
+              ." AND idCertificate=".$cert
+              ." AND idAssociation=".$association;
+        $row = sql_fetch_row(sql_query($q));
+        return $row[0] > 0;
+    }
+    
+    
+        /**
+    * given an id_cours and a username, returns all the association and certificates that
+    * containing both user and course - used to check if a assign has been completed
+    * input: userid, id course
+    * output array[id_association] => courses associated
+    */
+    function getIdAssocFromUserCourse($id_user, $id_course){
+        if ($id_user == null || $id_course  == null) return 0;
+        $id_associations_courses = array();
+        
+        $q = "select assoc_meta.idCertificate, assoc_course.idAssociation, assoc_course.idCourse  from "
+        .$this->table_cert_meta_association_courses." as assoc_course,".$this->table_cert_meta_association. " as assoc_meta "
+        ." where assoc_course.idUser = ".intval($id_user)." and assoc_course.idCourse <> 0 and assoc_course.idAssociation in 
+        (select idAssociation from ".$this->table_cert_meta_association_courses." where idUser =".intval($id_user)." and  idCourse = ".intval($id_course).")"
+        ." and assoc_course.idAssociation = assoc_meta.idAssociation" ;
+        $rs = sql_query($q);
+        while ($row = sql_fetch_assoc($rs)) {
+            $id_associations_courses[$row['idCertificate']][$row['idAssociation']][] = $row['idCourse']; 
+        }
+
+        return $id_associations_courses;
+        
+    }
+    
+    function getIssuedCertificates($certificate) {
+        $q = "SELECT ".$this->table_assign_agg_cert.".idCertificate," 
+             .$this->table_assign_agg_cert.".idAssociation, (CASE WHEN cert_file = '' then false else true END) as released,
+                firstname, lastname, TRIM(LEADING '/' FROM userid ) as userid, title FROM  %adm_user,".$this->table_assign_agg_cert.",".$this->table_cert_meta_association
+             ." WHERE ".$this->table_assign_agg_cert.".idCertificate=".intval($certificate)  
+             . " AND idst = idUser"
+             . " AND ".$this->table_assign_agg_cert.".idAssociation = ".$this->table_cert_meta_association.".idAssociation";
+        $rs = sql_query($q);
+        while($r =sql_fetch_assoc($rs))     
+                $row[] = $r;
+        return $row;
+             
+        
     }
 
    
