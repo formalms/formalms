@@ -155,7 +155,7 @@ class DbConn {
 		if($keys) {
 			$current = 0;
 			$parsed_query = '';
-			while(list($ind, $match) = each($keys)) {
+            foreach($keys as $ind => $match ) {
 
 				$parsed_query .= $match[0];
 
