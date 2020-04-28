@@ -339,10 +339,12 @@ class UsermanagementAdmController extends AdmController
 			'records' => $output_results
 		);
 
-		$event = new appCore\Events\Core\User\UsersManagementShowEvent();
-		$event->setUsers($output['records']);
-		\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementShowEvent::EVENT_NAME, $event);
-		$output['records'] = $event->getUsers();
+		//TODO: EVT_OBJECT (§)
+		//$event = new appCore\Events\Core\User\UsersManagementShowEvent();
+		//$event->setUsers($output['records']);
+		//TODO: EVT_LAUNCH (&)
+		//\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementShowEvent::EVENT_NAME, $event);
+		//$output['records'] = $event->getUsers();
 
 		echo $this->json->encode($output);
 	}
@@ -680,11 +682,13 @@ class UsermanagementAdmController extends AdmController
 		$oldUserdata = $model->getProfileData($idst);
 
 		// SET EDIT USER SINGLE EVENT
-		$event = new \appCore\Events\Core\User\UsersManagementEditEvent();
-		$event->setType('single');
-		$event->setUser($userdata);
-		$event->setOldUser($oldUserdata);
-		\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementEditEvent::EVENT_NAME, $event);
+		//TODO: EVT_OBJECT (§)
+		//$event = new \appCore\Events\Core\User\UsersManagementEditEvent();
+		//$event->setType('single');
+		//$event->setUser($userdata);
+		//$event->setOldUser($oldUserdata);
+		//TODO: EVT_LAUNCH (&)
+		//\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementEditEvent::EVENT_NAME, $event);
 
 		require_once(Forma::inc(_base_ . '/lib/lib.eventmanager.php'));
 
@@ -764,9 +768,11 @@ class UsermanagementAdmController extends AdmController
 				}
 
 				// SET DELETE USER EVENT
-				$event = new \appCore\Events\Core\User\UsersManagementDeleteEvent();
-				$event->setUser($user);
-				\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementDeleteEvent::EVENT_NAME, $event);
+				//TODO: EVT_OBJECT (§)
+				//$event = new \appCore\Events\Core\User\UsersManagementDeleteEvent();
+				//$event->setUser($user);
+				//TODO: EVT_LAUNCH (&)
+				//\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementDeleteEvent::EVENT_NAME, $event);
 			} else {
 				$output = array('success' => false, 'message' => 'Error: unable to delete user #' . $id_user . '.');
 			}
@@ -806,9 +812,11 @@ class UsermanagementAdmController extends AdmController
 			$res = $this->model->deleteUsers($users_arr);
 
 			// SET DELETE USER MULTIPLE EVENT
-			$event = new \appCore\Events\Core\User\UsersManagementDeleteEvent();
-			$event->setUsers($users);
-			\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementDeleteEvent::EVENT_NAME, $event);
+			//TODO: EVT_OBJECT (§)
+			//$event = new \appCore\Events\Core\User\UsersManagementDeleteEvent();
+			//$event->setUsers($users);
+			//TODO: EVT_LAUNCH (&)
+			//\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementDeleteEvent::EVENT_NAME, $event);
 
 			if (is_array($res)) {
 				$output['success'] = true;
@@ -897,17 +905,21 @@ class UsermanagementAdmController extends AdmController
 
 
 				// SET SUSPAND USER EVENT
-				$event = new \appCore\Events\Core\User\UsersManagementSuspendEvent();
-				$event->setUser($user);
-				\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementSuspendEvent::EVENT_NAME, $event);
+				//TODO: EVT_OBJECT (§)
+				//$event = new \appCore\Events\Core\User\UsersManagementSuspendEvent();
+				//$event->setUser($user);
+				//TODO: EVT_LAUNCH (&)
+				//\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementSuspendEvent::EVENT_NAME, $event);
 			} else {
 				$output['success'] = $this->model->unsuspendUsers($idst);
 				$output['message'] = UIFeedback::pinfo(Lang::t('_OPERATION_SUCCESSFUL', 'standard'));
 
 				// SET UNSUSPAND USER EVENT
-				$event = new \appCore\Events\Core\User\UsersManagementUnsuspendEvent();
-				$event->setUser($user);
-				\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementUnsuspendEvent::EVENT_NAME, $event);
+				//TODO: EVT_OBJECT (§)
+				//$event = new \appCore\Events\Core\User\UsersManagementUnsuspendEvent();
+				//$event->setUser($user);
+				//TODO: EVT_LAUNCH (&)
+				//\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementUnsuspendEvent::EVENT_NAME, $event);
 			}
 		} else {
 			$output['success'] = false;
@@ -975,16 +987,19 @@ class UsermanagementAdmController extends AdmController
 				}
 
 				// SET SUSPAND USERS MULTIPLE EVENT
-				$event = new \appCore\Events\Core\User\UsersManagementSuspendEvent();
-				$event->setUsers($users);
-				\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementSuspendEvent::EVENT_NAME, $event);
+				//TODO: EVT_OBJECT (§)
+				//$event = new \appCore\Events\Core\User\UsersManagementSuspendEvent();
+				//$event->setUsers($users);
+				//TODO: EVT_LAUNCH (&)
+				//\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementSuspendEvent::EVENT_NAME, $event);
 			} else {
 				$output['success'] = $this->model->unsuspendUsers($arr_users);
 
 				// SET UNSUSPAND USERS MULTIPLE EVENT
-				$event = new \appCore\Events\Core\User\UsersManagementUnsuspendEvent();
-				$event->setUsers($users);
-				\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementUnsuspendEvent::EVENT_NAME, $event);
+				//TODO: EVT_OBJECT (§)
+				//$event = new \appCore\Events\Core\User\UsersManagementUnsuspendEvent();
+				//$event->setUsers($users);
+				//\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementUnsuspendEvent::EVENT_NAME, $event);
 			}
 		} else {
 			$output['success'] = false;
@@ -1413,9 +1428,11 @@ class UsermanagementAdmController extends AdmController
 				$output['node'] = $nodedata;
 				$output['id_parent'] = $id_parent;
 
-				$event = new \appCore\Events\Core\User\UsersManagementOrgChartCreateNodeEvent();
-				$event->setNode($nodedata);
-				\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementOrgChartCreateNodeEvent::EVENT_NAME, $event);
+				//TODO: EVT_OBJECT (§)
+				//$event = new \appCore\Events\Core\User\UsersManagementOrgChartCreateNodeEvent();
+				//$event->setNode($nodedata);
+				//TODO: EVT_LAUNCH (&)
+				//\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementOrgChartCreateNodeEvent::EVENT_NAME, $event);
 
 				// adding custom fields (if any)
 				$vett_custom_org = $this->model->getCustomOrg();
@@ -1448,9 +1465,11 @@ class UsermanagementAdmController extends AdmController
 		$id = Get::req('node_id', DOTY_INT, -1);
 
 		if ($id > 0) {
-			$event = new \appCore\Events\Core\User\UsersManagementOrgChartDeleteNodeEvent();
-			$event->setNode($this->model->getFolderById($id));
-			\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementOrgChartDeleteNodeEvent::EVENT_NAME, $event);
+			//TODO: EVT_OBJECT (§)
+			//$event = new \appCore\Events\Core\User\UsersManagementOrgChartDeleteNodeEvent();
+			//$event->setNode($this->model->getFolderById($id));
+			//TODO: EVT_LAUNCH (&)
+			//\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementOrgChartDeleteNodeEvent::EVENT_NAME, $event);
 
 			$output['success'] = $this->model->deleteFolder($id, true);
 		}
@@ -1495,10 +1514,12 @@ class UsermanagementAdmController extends AdmController
 			//$output['new_name'] = ($code != "" ? '['.$code.'] ' : '').$langs[getLanguage()];
 			$output['new_name'] = $this->_formatFolderCode($id, $code) . $langs[getLanguage()];
 
-			$event = new \appCore\Events\Core\User\UsersManagementOrgChartEditNodeEvent();
-			$event->setOldNode($old_node);
-			$event->setNode($this->model->getFolderById($id));
-			\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementOrgChartEditNodeEvent::EVENT_NAME, $event);
+			//TODO: EVT_OBJECT (§)
+			//$event = new \appCore\Events\Core\User\UsersManagementOrgChartEditNodeEvent();
+			//$event->setOldNode($old_node);
+			//$event->setNode($this->model->getFolderById($id));
+			//TODO: EVT_LAUNCH (&)
+			//\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementOrgChartEditNodeEvent::EVENT_NAME, $event);
 		} else {
 			$output['success'] = false;
 			$output['message'] = Lang::t('_CONNECTION_ERROR');
@@ -1582,11 +1603,13 @@ class UsermanagementAdmController extends AdmController
 				foreach ($selection as $idst) {
 					$users[] = $model->getProfileData($idst);
 				}
-				$event = new \appCore\Events\Core\User\UsersManagementOrgChartAssignEditEvent();
-				$nodedata = $this->model->getFolderById($id);
-				$event->setUsers($users);
-				$event->setNode($nodedata);
-				\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementOrgChartAssignEditEvent::EVENT_NAME, $event);
+				//TODO: EVT_OBJECT (§)
+				//$event = new \appCore\Events\Core\User\UsersManagementOrgChartAssignEditEvent();
+				//$nodedata = $this->model->getFolderById($id);
+				//$event->setUsers($users);
+				//$event->setNode($nodedata);
+				//TODO: EVT_LAUNCH (&)
+				//\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementOrgChartAssignEditEvent::EVENT_NAME, $event);
 
 
 				$acl_manager = \Docebo::user()->getAclManager();
@@ -1822,10 +1845,12 @@ class UsermanagementAdmController extends AdmController
 			$new_fields[] = $this->getFieldGroupById($idst);
 		}
 
-		$event = new \appCore\Events\Core\User\UsersManagementOrgChartEditNodeFieldsEvent();
-		$event->setNode($nodedata);
-		$event->setFields($new_fields);
-		\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementOrgChartEditNodeFieldsEvent::EVENT_NAME, $event);
+		//TODO: EVT_OBJECT (§)
+		//$event = new \appCore\Events\Core\User\UsersManagementOrgChartEditNodeFieldsEvent();
+		//$event->setNode($nodedata);
+		//$event->setFields($new_fields);
+		//TODO: EVT_LAUNCH (&)
+		//\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementOrgChartEditNodeFieldsEvent::EVENT_NAME, $event);
 
 		$output = array('success' => true, 'total' => count($fields_use), 'done' => $count);
 		echo $this->json->encode($output);
@@ -1894,11 +1919,13 @@ class UsermanagementAdmController extends AdmController
 			$acl_man->removeFromGroup($idst_orgd, $id_user);
 			$success = true;
 
-			$event = new \appCore\Events\Core\User\UsersManagementOrgChartRemoveEvent();
-			$model = new UsermanagementAdm();
-			$user = $model->getProfileData($id_user);
-			$event->setUser($user);
-			\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementOrgChartRemoveEvent::EVENT_NAME, $event);
+			//TODO: EVT_OBJECT (§)
+			//$event = new \appCore\Events\Core\User\UsersManagementOrgChartRemoveEvent();
+			//$model = new UsermanagementAdm();
+			//$user = $model->getProfileData($id_user);
+			//$event->setUser($user);
+			//TODO: EVT_LAUNCH (&)
+			//\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementOrgChartRemoveEvent::EVENT_NAME, $event);
 
 			require_once(_base_ . '/lib/lib.eventmanager.php');
 
@@ -1972,9 +1999,11 @@ class UsermanagementAdmController extends AdmController
 			foreach ($arr_users as $idst) {
 				$users[] = $model->getProfileData($idst);
 			}
-			$event = new \appCore\Events\Core\User\UsersManagementOrgChartRemoveEvent();
-			$event->setUsers($users);
-			\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementOrgChartRemoveEvent::EVENT_NAME, $event);
+			//TODO: EVT_OBJECT (§)
+			//$event = new \appCore\Events\Core\User\UsersManagementOrgChartRemoveEvent();
+			//$event->setUsers($users);
+			//TODO: EVT_LAUNCH (&)
+			//\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementOrgChartRemoveEvent::EVENT_NAME, $event);
 
 			$acl_manager = \Docebo::user()->getAclManager();
 			$permission_godadmin = $acl_manager->getGroupST(ADMIN_GROUP_GODADMIN);
@@ -2321,9 +2350,12 @@ class UsermanagementAdmController extends AdmController
 						foreach ($users as $idst) {
 							$arr_users[] = $model->getProfileData($idst);
 						}
-						$event = new \appCore\Events\Core\User\UsersManagementCSVimportEvent();
-						$event->setUsers($arr_users);
-						\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementCSVimportEvent::EVENT_NAME, $event);
+
+						//TODO: EVT_OBJECT (§)
+						//$event = new \appCore\Events\Core\User\UsersManagementCSVimportEvent();
+						//$event->setUsers($arr_users);
+						//TODO: EVT_LAUNCH (&)
+						//\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementCSVimportEvent::EVENT_NAME, $event);
 
 						$enrollrules = new EnrollrulesAlms();
 						$enrollrules->newRules('_NEW_IMPORTED_USER', $users, 'all', $idOrg);
@@ -2487,9 +2519,11 @@ class UsermanagementAdmController extends AdmController
 
 		//evento mostra dettaglio profilo
 
-		$event = new \appCore\Events\Core\User\UsersManagementShowDetailsEvent();
-		$event->setProfile($profile);
-		\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementShowDetailsEvent::EVENT_NAME, $event);
+		//TODO: EVT_OBJECT (§)
+		//$event = new \appCore\Events\Core\User\UsersManagementShowDetailsEvent();
+		//$event->setProfile($profile);
+		//TODO: EVT_LAUNCH (&)
+		//\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementShowDetailsEvent::EVENT_NAME, $event);
 
 
 		$this->render('user_profile', array(
@@ -2947,11 +2981,13 @@ class UsermanagementAdmController extends AdmController
 			$info->__preferences = $pref_properties;
 		}
 
-		$event = new \appCore\Events\Core\User\UsersManagementEditEvent();
-		$event->setType('multiple');
-		$event->setUsers($users);
-		\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementEditEvent::EVENT_NAME, $event);
-		$users = $event->getUsers();
+		//TODO: EVT_OBJECT (§)
+		//$event = new \appCore\Events\Core\User\UsersManagementEditEvent();
+		//$event->setType('multiple');
+		//$event->setUsers($users);
+		//TODO: EVT_LAUNCH (&)
+		//\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementEditEvent::EVENT_NAME, $event);
+		//$users = $event->getUsers();
 
 		$acl_man =& Docebo::user()->getAclManager();
 
