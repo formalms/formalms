@@ -4392,8 +4392,11 @@ p {
   border-left: solid 6px transparent;
 }
 .forma-tooltip.down:after {
-  transform: translate(-50%, 100%) translateY(-285px);
-  transform: translate3d(-50%, -100%) translateY(-285px);
+  transform: translate(-50%, 0%);
+  border-top: none;
+  border-right: solid 6px transparent;
+  border-left: solid 6px transparent;
+  bottom: 100%;
 }
 .has-forma-tooltip:hover .forma-tooltip {
   transform: translate(-50%, -100%) translateY(-15px);
@@ -4404,10 +4407,6 @@ p {
 
 .has-forma-tooltip {
   overflow: visible !important;
-}
-.has-forma-tooltip:hover .forma-tooltip.down {
-  transform: translate(-50%, -100%) translateY(105px);
-  transform: translate3d(-50%, -100%, 0) translateY(105px);
 }
 .has-forma-tooltip:hover .forma-tooltip.down:after {
   transform: translate(-50%, -100%) translateY(-115px);
