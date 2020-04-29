@@ -166,7 +166,7 @@
 
 .course-box {
   width: 100%;
-  min-height: 460px;
+  min-height: 465px;
   margin-bottom: 15px;
   padding-bottom: 15px;
   border: 2px solid $gray-4;
@@ -278,7 +278,7 @@
   }
 
   &:before {
-    content: '';
+    content: "";
     width: 30px;
     height: 30px;
     position: absolute;
@@ -330,7 +330,7 @@
   color: $gray-2;
 
   &:before {
-    content: '';
+    content: "";
     position: absolute;
     left: 0;
     bottom: 6px;
@@ -364,7 +364,7 @@
     cursor: pointer;
 
     &:before {
-      content: '';
+      content: "";
       width: 30px;
       height: 30px;
       position: absolute;
@@ -443,7 +443,7 @@
   border-radius: 5px;
 
   &:before {
-    content: '';
+    content: "";
     position: absolute;
     top: 14px;
     left: 9px;
@@ -661,7 +661,6 @@ i + .course-box__date-box {
 }
 
 .mycourses-list {
-
   @include breakpoint($ipad) {
     padding-left: 7.5px;
     padding-right: 7.5px;
@@ -696,7 +695,7 @@ i + .course-box__date-box {
 .course-box__next:before,
 .course-box__allDates:after,
 .course-box__allDates:before {
-  content:'';
+  content: "";
   display: block;
   position: absolute;
   left: 0;
@@ -707,7 +706,7 @@ i + .course-box__date-box {
   border-style: solid;
   border-width: 8.5px 0 8.5px 9px;
   border-color: transparent transparent transparent #979797;
-  opacity: .6;
+  opacity: 0.6;
 }
 
 .course-box__allDates:after,
@@ -734,6 +733,6 @@ i + .course-box__date-box {
 }
 
 .course-box__allDates a {
-  color: #C84000;
+  color: #c84000;
   text-decoration: underline;
 }
