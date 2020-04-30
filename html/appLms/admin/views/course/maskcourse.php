@@ -6,13 +6,14 @@ Get::title(array(
         : Lang::t('_MOD', 'course') . ': ' . ($course['code'] !== '' ? '[' . $course['code'] . '] ' : '') . $course['name'])
 ));
 
-$event = new \appLms\Events\Lms\CourseCreateAndUpdateEvent($id_course);
-$event->setPostData($course);
+//TODO: EVT_OBJECT (§)
+//$event = new \appLms\Events\Lms\CourseCreateAndUpdateEvent($id_course);
+//$event->setPostData($course);
 
 ?>
 <div class="std_block">
     <?php
-    $event->appendHtmlData(Form::openForm('maskcourse_form', 'index.php?r=' . $base_link_course . '/' . ($id_course === false ? 'newcourse' : 'modcourse'), false, 'post', 'multipart/form-data')
+    echo(Form::openForm('maskcourse_form', 'index.php?r=' . $base_link_course . '/' . ($id_course === false ? 'newcourse' : 'modcourse'), false, 'post', 'multipart/form-data')
         . Form::getHidden('id_course', 'id_course', $id_course)
         . Form::openElementSpace()
         . ($id_course === false ? Form::getLineBox(Lang::t('_CATEGORY_SELECTED', 'course'), $name_category) .
@@ -23,17 +24,17 @@ $event->setPostData($course);
 
     if ($course['course_type'] == 'classroom' && $has_editions_or_classrooms) {
         //this is a classroom course with editions
-        $event->appendHtmlData(Form::getLineBox(Lang::t('_COURSE_TYPE', 'course'), $course_type['classroom'])
+        echo(Form::getLineBox(Lang::t('_COURSE_TYPE', 'course'), $course_type['classroom'])
             . Form::getHidden('course_type', 'course_type', 'classroom'));
     } elseif ($course['course_edition'] > 0 && $has_editions_or_classrooms) {
         //this is a classroom course with editions
-        $event->appendHtmlData(Form::getLineBox(Lang::t('_COURSE_TYPE', 'course'), $course_type['edition'])
+        echo(Form::getLineBox(Lang::t('_COURSE_TYPE', 'course'), $course_type['edition'])
             . Form::getHidden('course_type', 'course_type', 'edition'));
     } else {
         //echo Form::getDropdown(Lang::t('_COURSE_TYPE', 'course'), 'course_type', 'course_type', $course_type, $course['course_type']);
-        $event->appendHtmlData(Form::getDropdown(Lang::t('_COURSE_TYPE', 'course'), 'course_type', 'course_type', $course_type, $id_course === false ? 'elearning' : $course['course_type']));
+        echo(Form::getDropdown(Lang::t('_COURSE_TYPE', 'course'), 'course_type', 'course_type', $course_type, $id_course === false ? 'elearning' : $course['course_type']));
     }
-    $event->appendHtmlData(Form::getDropdown(Lang::t('_STATUS', 'course'), 'course_status', 'course_status', $status, $course['status'])
+    echo(Form::getDropdown(Lang::t('_STATUS', 'course'), 'course_status', 'course_status', $status, $course['status'])
         . Form::getCheckbox(Lang::t('_DIRECT_PLAY', 'course'), 'direct_play', 'direct_play', '1', $course['direct_play'] == 1)
         // hiding the "show results" option - is not used (missing functions)
         //. Form::getCheckbox(Lang::t('_SHOW_RESULTS', 'course'), 'show_result', 'show_result', '1', $course['show_result'] == 1)
@@ -54,9 +55,9 @@ $event->setPostData($course);
     //. (!$classroom ? Form::getCheckbox(Lang::t('_COURSE_EDITION', 'course'), 'course_edition_yes', 'course_edition', 1, $course['course_edition'] == 1) : '' )
     //. Form::getCloseCombo()
 
-    $event->appendHtmlData(Form::getCloseFieldset());
+    echo(Form::getCloseFieldset());
 
-    $event->appendHtmlData(Form::openCollasableFieldset(Lang::t('_COURSE_SUBSCRIPTION', 'course'))
+    echo(Form::openCollasableFieldset(Lang::t('_COURSE_SUBSCRIPTION', 'course'))
 
         //-----------------------COURSE SUBSCRIPTION ---------------------
         . Form::getOpenCombo(Lang::t('_COURSE_SUBSRIBE', 'course'))
@@ -117,9 +118,9 @@ $event->setPostData($course);
 
     foreach($levels as $level => $level_name )
     {
-        $event->appendHtmlData(Form::getCheckbox($level_name, 'course_show_level_' . $level, 'course_show_level[' . $level . ']', $level, $course['level_show_user'] & (1 << $level)));
+        echo(Form::getCheckbox($level_name, 'course_show_level_' . $level, 'course_show_level[' . $level . ']', $level, $course['level_show_user'] & (1 << $level)));
     }
-    $event->appendHtmlData(Form::getCloseCombo()
+    echo(Form::getCloseCombo()
 
         . Form::getOpenCombo(Lang::t('_COURSE_STATUS_CANNOT_ENTER', 'course'))
         . Form::getCheckbox(Lang::t('_USER_STATUS_SUBS', 'course'), 'user_status_' . _CUS_SUBSCRIBED, 'user_status[' . _CUS_SUBSCRIBED . ']', _CUS_SUBSCRIBED,
@@ -178,14 +179,15 @@ $event->setPostData($course);
 
     if ($fman->getNumberFieldbyArea() > 0) {
         $fields_mask = $fman->playFields($id_course);
-        $event->appendHtmlData(Form::openCollasableFieldset(Lang::t('_CUSTOM_OPTIONS', 'course'))
+        echo(Form::openCollasableFieldset(Lang::t('_CUSTOM_OPTIONS', 'course'))
             . $fields_mask
             . Form::getCloseFieldset());
     }
 
-    \appCore\Events\DispatcherManager::dispatch(\appLms\Events\Lms\CourseCreateAndUpdateEvent::EVENT_NAME_MASK, $event);
+    //TODO: EVT_LAUNCH (&)
+    //\appCore\Events\DispatcherManager::dispatch(\appLms\Events\Lms\CourseCreateAndUpdateEvent::EVENT_NAME_MASK, $event);
 
-    $event->appendHtmlData(Form::closeElementSpace()
+    echo(Form::closeElementSpace()
         . Form::openButtonSpace()
         . ((($_REQUEST['r'] == 'alms/course/newcourse') || ($_REQUEST['r'] == 'alms/course/modcourse' && $row[0] == 0)) ? Form::getCheckbox(Lang::t('_AUTO_SUBSCRIPTION'), 'auto_subscription', 'auto_subscription', '1', true) : '')
         . Form::getButton('save', 'save', Lang::t('_SAVE'))
@@ -193,9 +195,9 @@ $event->setPostData($course);
         . Form::closeButtonSpace());
 
 
-    $event->appendHtmlData(Form::closeForm());
+    echo(Form::closeForm());
 
-    echo $event->getHtmlData();
+    //echo $event->getHtmlData();
     ?>
 </div>
 <script type="text/javascript">
