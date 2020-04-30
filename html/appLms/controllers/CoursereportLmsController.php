@@ -389,7 +389,8 @@ class CoursereportLmsController extends LmsController
 
 							$testObj = Learning_Test::load ($info_report->getIdSource ());
 
-							$event = new \appLms\Events\Lms\TestCousereportEvent($testObj);
+							//TODO: EVT_OBJECT (§)
+							//$event = new \appLms\Events\Lms\TestCousereportEvent($testObj);
 
 							$type = $testObj->getObjectType ();
 							$id = $info_report->getIdSource ();
@@ -400,14 +401,14 @@ class CoursereportLmsController extends LmsController
 							if ($mod_perm) {
 								//$chartLink = 'index.php?modname=coursereport&op=testQuestion&type_filter=' . $type_filter . '&id_test=' . $info_report->getIdSource();
 								$chartLink = 'index.php?r=lms/coursereport/testQuestion&type_filter=' . $type_filter . '&id_test=' . $info_report->getIdSource ();
-								$event->setOverViewTestQuestionLink ($chartLink);
+								//$event->setOverViewTestQuestionLink ($chartLink);
 
 								$editLink = 'index.php?r=lms/coursereport/testvote&type_filter=' . $type_filter . '&id_test=' . $info_report->getIdSource ();
 								$trashLinkVisible = false;
 							} else if ($view_perm) {
 
 								$chartLink = 'index.php?r=lms/coursereport/testQuestion&type_filter=' . $type_filter . '&id_test=' . $info_report->getIdSource ();
-								$event->setOverViewTestQuestionLink ($chartLink);
+								//$event->setOverViewTestQuestionLink ($chartLink);
 								$trashLinkVisible = false;
 							}
 
@@ -430,10 +431,10 @@ class CoursereportLmsController extends LmsController
 							$maxScore = (isset($test_details[ $info_report->getIdSource () ][ 'max_score' ]) ? round ($test_details[ $info_report->getIdSource () ][ 'max_score' ] , 2) : '-');
 							$minScore = (isset($test_details[ $info_report->getIdSource () ][ 'min_score' ]) ? round ($test_details[ $info_report->getIdSource () ][ 'min_score' ] , 2) : '-');
 
+							//TODO: EVT_LAUNCH (&)
+							//\appCore\Events\DispatcherManager::dispatch (\appLms\Events\Lms\TestCousereportEvent::EVENT_NAME , $event);
 
-							\appCore\Events\DispatcherManager::dispatch (\appLms\Events\Lms\TestCousereportEvent::EVENT_NAME , $event);
-
-							$chartLink = $event->getOverViewTestQuestionLink ();
+							//$chartLink = $event->getOverViewTestQuestionLink ();
 						}
 							break;
 						case CoursereportLms::SOURCE_OF_SCOITEM: {
@@ -778,7 +779,8 @@ class CoursereportLmsController extends LmsController
 
 						$testObj = Learning_Test::load ($info_report->getIdSource ());
 
-                        $courseReportDetailEvent = new \appLms\Events\Lms\CourseReportDetailEvent($testObj , $tests_score , $info_report , $idst_user, $acl_man, $user_info);
+						//TODO: EVT_OBJECT (§)
+                        //$courseReportDetailEvent = new \appLms\Events\Lms\CourseReportDetailEvent($testObj , $tests_score , $info_report , $idst_user, $acl_man, $user_info);
 
 						switch ($info_report->getSourceOf ()) {
 
@@ -804,7 +806,7 @@ class CoursereportLmsController extends LmsController
 													'link' => "javascript:void(0)" ,
 													'active' => false );
 
-                                            $courseReportDetailEvent->addValue ($value);
+                                            //$courseReportDetailEvent->addValue ($value);
 										}
 											break;
 										case CoursereportLms::TEST_STATUS_NOT_CHECKED :
@@ -817,7 +819,7 @@ class CoursereportLmsController extends LmsController
 												'link' => "javascript:void(0)" ,
 												'active' => false );
 
-                                            $courseReportDetailEvent->addValue ($value);
+                                            //$courseReportDetailEvent->addValue ($value);
 										}
 											break;
 										case CoursereportLms::TEST_STATUS_DOING :
@@ -837,7 +839,7 @@ class CoursereportLmsController extends LmsController
 														'link' => "javascript:void(0)" ,
 														'active' => false );
 
-                                                    $courseReportDetailEvent->addValue ($value);
+                                                    //$courseReportDetailEvent->addValue ($value);
 
 													$value = array (
 														'icon' => 'cr_max_score' ,
@@ -846,7 +848,7 @@ class CoursereportLmsController extends LmsController
 														'link' => "index.php?r=lms/coursereport/testreport&idTest=" . $tests_score[ $info_report->getIdSource () ][ $idst_user ][ 'idTest' ] . "&idTrack=" . $tests_score[ $info_report->getIdSource () ][ $idst_user ][ 'idTrack' ] . "&testName=" . $testObj->getTitle () . "&studentName=" . $acl_man->relativeId ($user_info[ ACL_INFO_USERID ]) ,
 														'active' =>  true);
 
-                                                    $courseReportDetailEvent->addValue ($value);
+                                                    //$courseReportDetailEvent->addValue ($value);
 												} else {
 
 													$value = array (
@@ -856,7 +858,7 @@ class CoursereportLmsController extends LmsController
 														'link' => "javascript:void(0)" ,
 														'active' => false );
 
-                                                    $courseReportDetailEvent->addValue ($value);
+                                                    //$courseReportDetailEvent->addValue ($value);
 
 													$value = array (
 														'icon' => '' ,
@@ -865,7 +867,7 @@ class CoursereportLmsController extends LmsController
 														'link' => "index.php?r=lms/coursereport/testreport&idTest=" . $tests_score[ $info_report->getIdSource () ][ $idst_user ][ 'idTest' ] . "&idTrack=" . $tests_score[ $info_report->getIdSource () ][ $idst_user ][ 'idTrack' ] . "&testName=" . $testObj->getTitle () . "&studentName=" . $acl_man->relativeId ($user_info[ ACL_INFO_USERID ]) ,
 														'active' => true);
 
-                                                    $courseReportDetailEvent->addValue ($value);
+                                                    //$courseReportDetailEvent->addValue ($value);
 												}
 											} else {
 
@@ -877,7 +879,7 @@ class CoursereportLmsController extends LmsController
 														'link' => "javascript:void(0)" ,
 														'active' => false );
 
-                                                    $courseReportDetailEvent->addValue ($value);
+                                                    //$courseReportDetailEvent->addValue ($value);
 
 													$value = array (
 														'icon' => 'cr_max_score cr_not_passed' ,
@@ -886,7 +888,7 @@ class CoursereportLmsController extends LmsController
 														'link' => "index.php?r=lms/coursereport/testreport&idTest=" . $tests_score[ $info_report->getIdSource () ][ $idst_user ][ 'idTest' ] . "&idTrack=" . $tests_score[ $info_report->getIdSource () ][ $idst_user ][ 'idTrack' ] . "&testName=" . $testObj->getTitle () . "&studentName=" . $acl_man->relativeId ($user_info[ ACL_INFO_USERID ]) ,
 														'active' =>  true);
 
-                                                    $courseReportDetailEvent->addValue ($value);
+                                                    //$courseReportDetailEvent->addValue ($value);
 												} else {
 													$value = array (
 														'icon' => 'cr_not_passed' ,
@@ -895,7 +897,7 @@ class CoursereportLmsController extends LmsController
 														'link' => "javascript:void(0)" ,
 														'active' => false );
 
-                                                    $courseReportDetailEvent->addValue ($value);
+                                                    //$courseReportDetailEvent->addValue ($value);
 
 													$value = array (
 														'icon' => 'cr_not_passed' ,
@@ -904,7 +906,7 @@ class CoursereportLmsController extends LmsController
 														'link' => "index.php?r=lms/coursereport/testreport&idTest=" . $tests_score[ $info_report->getIdSource () ][ $idst_user ][ 'idTest' ] . "&idTrack=" . $tests_score[ $info_report->getIdSource () ][ $idst_user ][ 'idTrack' ] . "&testName=" . $testObj->getTitle () . "&studentName=" . $acl_man->relativeId ($user_info[ ACL_INFO_USERID ]) ,
 														'active' =>  true );
 
-                                                    $courseReportDetailEvent->addValue ($value);
+                                                    //$courseReportDetailEvent->addValue ($value);
 												}
 											}
 										}
@@ -917,7 +919,7 @@ class CoursereportLmsController extends LmsController
 												'link' => "javascript:void(0)" ,
 												'active' => false );
 
-                                            $courseReportDetailEvent->addValue ($value);
+                                            //$courseReportDetailEvent->addValue ($value);
 										}
 									}
 								} else {
@@ -928,12 +930,13 @@ class CoursereportLmsController extends LmsController
 										'link' => "javascript:void(0)" ,
 										'active' => false );
 
-                                    $courseReportDetailEvent->addValue ($value);
+                                    //$courseReportDetailEvent->addValue ($value);
 								}
 
-                                \appCore\Events\DispatcherManager::dispatch (\appLms\Events\Lms\CourseReportDetailEvent::EVENT_NAME , $courseReportDetailEvent);
+								//TODO: EVT_LAUNCH (&)
+                                //\appCore\Events\DispatcherManager::dispatch (\appLms\Events\Lms\CourseReportDetailEvent::EVENT_NAME , $courseReportDetailEvent);
 
-                                $student[ 'activities_results' ][] = $courseReportDetailEvent->getValues ();
+                                //$student[ 'activities_results' ][] = $courseReportDetailEvent->getValues ();
 							}
 								break;
                             case CoursereportLms::SOURCE_OF_SCOITEM    : {
@@ -954,7 +957,7 @@ class CoursereportLmsController extends LmsController
 									'link' => "javascript:void(0)" ,
 									'active' => false );
 
-                                $courseReportDetailEvent->addValue ($value);
+                                //$courseReportDetailEvent->addValue ($value);
 
 								$history = $scormItem->getHistory ();
 
@@ -966,12 +969,13 @@ class CoursereportLmsController extends LmsController
 										'link' => "index.php?r=lms/coursereport/scormreport&idTest=" . $scormItem->getIdTrack () ,
 										'active' => true );
 
-                                    $courseReportDetailEvent->addValue ($value);
+                                    //$courseReportDetailEvent->addValue ($value);
 								}
 
-                                \appCore\Events\DispatcherManager::dispatch (\appLms\Events\Lms\CourseReportDetailEvent::EVENT_NAME , $courseReportDetailEvent);
+								//TODO: EVT_LAUNCH (&)
+                                //\appCore\Events\DispatcherManager::dispatch (\appLms\Events\Lms\CourseReportDetailEvent::EVENT_NAME , $courseReportDetailEvent);
 
-                                $student[ 'activities_results' ][] = $courseReportDetailEvent->getValues ();
+                                //$student[ 'activities_results' ][] = $courseReportDetailEvent->getValues ();
 							}
 								break;
 							case CoursereportLms::SOURCE_OF_ACTIVITY    : {
@@ -992,7 +996,7 @@ class CoursereportLmsController extends LmsController
 												'link' => "javascript:void(0)" ,
 												'active' => false );
 
-                                            $courseReportDetailEvent->addValue ($value);
+                                            //$courseReportDetailEvent->addValue ($value);
 										}
 											break;
 										case CoursereportLms::TEST_STATUS_VALID: {
@@ -1006,7 +1010,7 @@ class CoursereportLmsController extends LmsController
 														'link' => "javascript:void(0)" ,
 														'active' => false );
 
-                                                    $courseReportDetailEvent->addValue ($value);
+                                                    //$courseReportDetailEvent->addValue ($value);
 												} else {
 													$value = array (
 														'icon' => '' ,
@@ -1015,7 +1019,7 @@ class CoursereportLmsController extends LmsController
 														'link' => "javascript:void(0)" ,
 														'active' => false );
 
-                                                    $courseReportDetailEvent->addValue ($value);
+                                                    //$courseReportDetailEvent->addValue ($value);
 												}
 											} else {
 												$value = array (
@@ -1025,7 +1029,7 @@ class CoursereportLmsController extends LmsController
 													'link' => "javascript:void(0)" ,
 													'active' => false );
 
-                                                $courseReportDetailEvent->addValue ($value);
+                                                //$courseReportDetailEvent->addValue ($value);
 											}
 										}
 											break;
@@ -1037,7 +1041,7 @@ class CoursereportLmsController extends LmsController
 												'link' => "javascript:void(0)" ,
 												'active' => false );
 
-                                            $courseReportDetailEvent->addValue ($value);
+                                            //$courseReportDetailEvent->addValue ($value);
 										}
 									}
 								} else {
@@ -1048,11 +1052,12 @@ class CoursereportLmsController extends LmsController
 										'link' => "javascript:void(0)" ,
 										'active' => false );
 
-                                    $courseReportDetailEvent->addValue ($value);
+                                    //$courseReportDetailEvent->addValue ($value);
 								}
-                                \appCore\Events\DispatcherManager::dispatch (\appLms\Events\Lms\CourseReportDetailEvent::EVENT_NAME , $courseReportDetailEvent);
+								//TODO: EVT_LAUNCH (&)
+                                //\appCore\Events\DispatcherManager::dispatch (\appLms\Events\Lms\CourseReportDetailEvent::EVENT_NAME , $courseReportDetailEvent);
 
-                                $student[ 'activities_results' ][] = $courseReportDetailEvent->getValues ();
+                                //$student[ 'activities_results' ][] = $courseReportDetailEvent->getValues ();
 							}
 								break;
 							default: {
