@@ -344,11 +344,15 @@ class Learning_Test extends Learning_Object {
 	}
 
 	public static final function getTestTypes(){
-		$event = new \appLms\Events\Lms\TestGetTypesEvent();
-		$event->addTestType('test');
-		\appCore\Events\DispatcherManager::dispatch(\appLms\Events\Lms\TestGetTypesEvent::EVENT_NAME, $event);
 
-		return $event->getTestTypes();
+		//TODO: EVT_OBJECT (§)
+		//$event = new \appLms\Events\Lms\TestGetTypesEvent();
+		//$event->addTestType('test');
+		//TODO: EVT_LAUNCH (&)
+		//\appCore\Events\DispatcherManager::dispatch(\appLms\Events\Lms\TestGetTypesEvent::EVENT_NAME, $event);
+
+		//return $event->getTestTypes();
+		return array('test');
 	}
 
 	/**
