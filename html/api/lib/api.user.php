@@ -102,9 +102,11 @@ class User_API extends API {
 			(isset($userdata['force_change']) ? $userdata['force_change'] : 0)
 		);
 
-		$event = new \appLms\Events\Api\ApiUserRegistrationEvent();
-		$event->setId($id_user);
-		\appCore\Events\DispatcherManager::dispatch(\appLms\Events\Api\ApiUserRegistrationEvent::EVENT_NAME, $event);
+		//TODO: EVT_OBJECT (§)
+		//$event = new \appLms\Events\Api\ApiUserRegistrationEvent();
+		//$event->setId($id_user);
+		//TODO: EVT_LAUNCH (&)
+		//\appCore\Events\DispatcherManager::dispatch(\appLms\Events\Api\ApiUserRegistrationEvent::EVENT_NAME, $event);
 
 
 		// suspend

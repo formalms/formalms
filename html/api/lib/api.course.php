@@ -1635,8 +1635,10 @@ public function addClassroom($params) {
         if (!sql_query("DELETE FROM %lms_course WHERE idCourse = '" . $id_course . "'"))
             return false;
 
-        $event = new \appLms\Events\Lms\CourseDeletedEvent($course);
-        \appCore\Events\DispatcherManager::dispatch($event::EVENT_NAME, $event);
+        //TODO: EVT_OBJECT (§)
+        //$event = new \appLms\Events\Lms\CourseDeletedEvent($course);
+        //TODO: EVT_LAUNCH (&)
+        //\appCore\Events\DispatcherManager::dispatch($event::EVENT_NAME, $event);
 
         return true;
     }    
