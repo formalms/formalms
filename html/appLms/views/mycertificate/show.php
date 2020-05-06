@@ -6,26 +6,17 @@ echo getTitleArea(Lang::t('_MY_CERTIFICATE', 'certificate'));
 
 
 $cert_columns = array(
-    array('key' => 'year', 'label' => Lang::t('_YEAR', 'certificate'), 'className' => 'min-cell', 'sortable' => true),
-    array('key' => 'code', 'label' => Lang::t('_COURSE_CODE', 'certificate')),
+    array('key' => 'year', 'label' => Lang::t('_DATE'), 'className' => 'min-cell', 'sortable' => true),
+    array('key' => 'code', 'label' => Lang::t('_CODE')),
     array('key' => 'course_name', 'label' => Lang::t('_COURSE', 'certificate')),
     array('key' => 'cert_name', 'label' => Lang::t('_CERTIFICATE_NAME', 'course')),
     array('key' => 'date_complete', 'label' => Lang::t('_DATE_COMPLETE', 'certificate')),
-    array('key' => 'download', 'label' => $icon_download, 'className' => 'img-cell'),
+    array('key' => 'download', 'label' =>  Lang::t('_TAKE_A_COPY', 'certificate'), 'className' => 'img-cell'),
 );
 
-                       
- // metacertificate tab
-$meta_columns = array(
-    array('key' => 'cert_code', 'label' => Lang::t('_CODE', 'certificate')),
-    array('key' => 'cert_name', 'label' => Lang::t('_NAME')),
-    array('key' => 'courses', 'label' => Lang::t('_COURSE_LIST')),
-    array('key' => 'download', 'label' => $icon_download, 'className' => 'img-cell')
-); 
 
 
-$icon_preview = '<span class="ico-sprite subs_view"><span>'.Lang::t('_PREVIEW', 'certificate').'</span></span>';
-$icon_download = '<span class="ico-sprite subs_pdf"><span>'.Lang::t('_ALT_TAKE_A_COPY', 'certificate').'</span></span>';
+
 
 // tabs
 $selected_tab = Get::req('current_tab', DOTY_STRING, 'cert');
@@ -61,27 +52,10 @@ $tabs_header = '<ul class="nav nav-tabs" role="tablist">
      
             <div role="tabpanel" class="tab-pane fade in " id="meta">
                     <table class="table table-striped table-bordered display" style="width:100%" id="mymetacertificates">
-                        <thead>
-                            <tr>
-                                <?php
-                                  foreach ($meta_columns as $metacolumn) {?>
-                                    <th scope="col"><b><?php echo $metacolumn['label'];?></b></th><?php
-                                  }?>
-                            </tr>
-                        </thead>
                     </table>
             </div> <!-- close tabs -->
         </div> <!-- close content -->
     </div> <!-- close std_block -->    
-
-<?php
-    cout('<script type="text/javascript">
-    $("body").on("click", ".subs_pdf", function () {
-            $(this).attr("title", "'.Lang::t('_DOWNLOAD', 'certificate').'");
-            $(this).children("span").text("'.Lang::t('_DOWNLOAD', 'certificate').'");
-        });
-    </script>', 'scripts');
-?>
 
 <script>
 $(function() {
@@ -100,29 +74,43 @@ $(function() {
   });
 
   var tableMetaId = '#mymetacertificates';
-
-  var metacert_tb = $(tableMetaId).FormaTable({
-    processing: true,
-    serverSide: true,
-      searching: false,
-    ordering: false,
-    scrollX: true,
-    order: [[ 0, "asc" ]],
-    ajax: {
-      url: 'ajax.server.php?r=mycertificate/getMyMetaCertificates',
-      type: "POST",
-      complete: function(json) {
-      },
-    },
-  });
-
-  $('a[href="#meta"]').click(function(){
-          metacert_tb._datatable.draw();
-  });
-
+  
+  
+  var metacert_tb =  $(tableMetaId).FormaTable({
+       data:  <?=$metacertificates?>,
+       columns:[
+       { data: 'id_certificate', title: 'id_certificate', sortable: false, visible: false, searchable: false },
+       { data: 'idAssociation', title: 'idAssociation', sortable: false, visible: false, searchable: false },
+       { data: 'on_date', title: '<?=Lang::t('_DATE')?>', sortable: true, visible: true, searchable: false, render: function(data){ 
+           if (data !=  '' && data != '0000/00/00') {
+               d = new Date(data)
+               return d.toLocaleDateString()
+           } 
+           return '';   
+       }},
+       { data: 'code', title: '<?=Lang::t('_CODE')?>', sortable: true, visible: true, searchable: false },
+       { data: 'name', title: '<?=Lang::t('_CERTIFICATE_NAME', 'course')?>', sortable: true, visible: true, searchable: true },
+       { data: 'courses_name', title: '<?=Lang::t('_COURSES')?>', sortable: true, visible: true, searchable: true },
+       { data: 'path_name', title: '<?=Lang::t('_COURSEPATH')?>', sortable: true, visible: true, searchable: true, render: function(data){return data.replace("|", "<br>");} },
+       { data: 'cert_file', title: '<?=Lang::t('_TAKE_A_COPY', 'certificate')?>', 
+                sortable: false, visible: true, searchable: false, render: function(data, type, row){
+            title = (data!=''?"<?=LANG::t('_DOWNLOAD', 'certificate')?>":"<?=LANG::t('_GENERATE', 'certificate')?>");        
+            return  '<a id="pdf_download" class="ico-wt-sprite subs_pdf" href="?r=mycertificate/downloadMetaCert'
+                    +'&id_certificate='+row.id_certificate
+                    +'&aggCert=1'
+                    +'&id_association='+row.idAssociation + '" title="'+title+'">'
+                    +title+'</a>' 
+       }}
+       ]
+      
+  })
+  
+  $( '#mymetacertificates tbody, #mycertificates tbody' ).on('click', 'tr', function(){
+        var d = metacert_tb.row( this).data();
+        alert( 'You clicked on' );
+  })
 
 });
-
 
 
 </script>

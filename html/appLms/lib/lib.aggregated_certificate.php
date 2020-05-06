@@ -469,12 +469,12 @@ class AggregatedCertificate {
         if (!is_array($idAssoc)) {
             $query =    "SELECT idUser, {$field}"
                 ." FROM ".$table
-                ." WHERE idAssociation = '".$idAssoc."' and idUser <> 0 order by idCourse";
+                ." WHERE idAssociation = '".$idAssoc."' and idUser <> 0 order by {$field}";
         } else {
             $idAssoc_str = implode(',',$idAssoc);
             $query =    "SELECT idUser, {$field}"
                 ." FROM ".$table
-                ." WHERE idAssociation in (".$idAssoc_str.") and idUser <> 0 order by idCourse";
+                ." WHERE idAssociation in (".$idAssoc_str.") and idUser <> 0 order by {$field}";
         }                        
 
         $rs = sql_query($query);
@@ -651,12 +651,13 @@ class AggregatedCertificate {
 
     }
 
-    function getAggregatedCertFileName($idUser, $idCertificate){
+    function getAggregatedCertFileName($idUser, $idCertificate, $id_association){
 
         $query = "SELECT cert_file"
                 ." FROM ".$this->table_assign_agg_cert
-                ." WHERE idUser = ".$idUser
-                ." AND idCertificate = ".$idCertificate;
+                ." WHERE idUser = ".intval($idUser)
+                ." AND idCertificate = ".intval($idCertificate)
+                ." AND idAssociation = ".intval($id_association);
 
         return sql_fetch_row(sql_query($query));
 
@@ -1083,10 +1084,13 @@ class AggregatedCertificate {
         
     }
 
-    function deleteReleasedCert($id_user, $id_cert){
-        $query =    "DELETE FROM ". $this->table_assign_agg_cert
-            ." WHERE idUser = ".$id_user
-            ." AND idCertificate = ".$id_cert;
+    function deleteReleasedCert($id_user, $id_cert, $id_assoc){
+        $query = "UPDATE ".$this->table_assign_agg_cert
+                     ." SET on_date = '', cert_file = ''
+                      WHERE idUser = ".intval($id_user)
+                     . " AND idCertificate = ".intval($id_cert)
+                     . " AND idAssociation = ".intval($id_assoc); 
+
 
         return sql_query($query);
     }
@@ -1226,34 +1230,61 @@ class AggregatedCertificate {
     }
     
     
-        /**
-    * given an id_cours and a username, returns all the association and certificates that
-    * containing both user and course - used to check if a assign has been completed
+    /**
+    * given an id_course and a username, returns all the association and certificates that
+    * containing both user and course - used to check if an assign has been completed
     * input: userid, id course
-    * output array[id_association] => courses associated
+    * output array[id_association] => courses associated (related to the user)
+    * for a given association the associated courses can be different for different users
     */
-    function getIdAssocFromUserCourse($id_user, $id_course){
+    function getIdAssocForUserCourse($id_user, $id_course){
         if ($id_user == null || $id_course  == null) return 0;
         $id_associations_courses = array();
         
-        $q = "select assoc_meta.idCertificate, assoc_course.idAssociation, assoc_course.idCourse  from "
-        .$this->table_cert_meta_association_courses." as assoc_course,".$this->table_cert_meta_association. " as assoc_meta "
-        ." where assoc_course.idUser = ".intval($id_user)." and assoc_course.idCourse <> 0 and assoc_course.idAssociation in 
-        (select idAssociation from ".$this->table_cert_meta_association_courses." where idUser =".intval($id_user)." and  idCourse = ".intval($id_course).")"
-        ." and assoc_course.idAssociation = assoc_meta.idAssociation" ;
+        $q = "SELECT assoc_meta.idCertificate, assoc_course.idAssociation, assoc_course.idCourse  FROM "
+        .$this->table_cert_meta_association_courses." as assoc_course,".$this->table_cert_meta_association. " as assoc_meta 
+         WHERE assoc_course.idUser = ".intval($id_user)." AND assoc_course.idCourse <> 0 AND assoc_course.idAssociation in 
+        (SELECT idAssociation FROM ".$this->table_cert_meta_association_courses." WHERE idUser =".intval($id_user)." AND  idCourse = ".intval($id_course).")
+         AND assoc_course.idAssociation = assoc_meta.idAssociation" ;
         $rs = sql_query($q);
-        while ($row = sql_fetch_assoc($rs)) {
+        while ($row = sql_fetch_assoc($rs))
             $id_associations_courses[$row['idCertificate']][$row['idAssociation']][] = $row['idCourse']; 
-        }
+        
 
         return $id_associations_courses;
+        
+    }
+    
+    /**
+    * given an id_path and a username, returns all the association and certificates that
+    * containing both user and path - used to check if an assign has been completed
+    * input: userid, id_path
+    * output array[id_association] => path associated (related to the user)
+    * for a given association the associated pathcourses can be different for different users
+    */
+    function getIdAssocForUserPath($id_user, $id_path){
+        if ($id_user == null || $id_path  == null) return 0;
+        $id_associations_paths = array();
+        $id_path_str = implode(',',$id_path);
+        
+        $q = "SELECT assoc_meta.idCertificate, assoc_path.idAssociation, assoc_path.idCoursePath FROM "
+             .$this->table_cert_meta_association." as assoc_meta, ".$this->table_cert_meta_association_coursepath." as assoc_path
+             WHERE assoc_path.idUser =".intval($id_user)." AND assoc_path.idCoursePath <> 0 AND assoc_path.idAssociation in 
+             (SELECT idAssociation FROM ".$this->table_cert_meta_association_coursepath." WHERE idUser = ".intval($id_user)." AND idCoursePath in (".$id_path_str."))
+              AND assoc_path.idAssociation = assoc_meta.idAssociation";
+        $rs = sql_query($q);
+        while ($row = sql_fetch_assoc($rs))
+            $id_associations_paths[$row['idCertificate']][$row['idAssociation']][] = $row['idCoursePath']; 
+        
+
+        return $id_associations_paths;              
         
     }
     
     function getIssuedCertificates($certificate) {
         $q = "SELECT ".$this->table_assign_agg_cert.".idCertificate," 
              .$this->table_assign_agg_cert.".idAssociation, (CASE WHEN cert_file = '' then false else true END) as released,
-                firstname, lastname, TRIM(LEADING '/' FROM userid ) as userid, title FROM  %adm_user,".$this->table_assign_agg_cert.",".$this->table_cert_meta_association
+                idst, firstname, lastname, TRIM(LEADING '/' FROM userid ) as userid, title FROM  %adm_user,".$this->table_assign_agg_cert.",".$this->table_cert_meta_association
              ." WHERE ".$this->table_assign_agg_cert.".idCertificate=".intval($certificate)  
              . " AND idst = idUser"
              . " AND ".$this->table_assign_agg_cert.".idAssociation = ".$this->table_cert_meta_association.".idAssociation";
@@ -1264,7 +1295,52 @@ class AggregatedCertificate {
              
         
     }
-
+    
+    public function releaseNewAggrCertCourses($params){
+        $man_courseuser = new Man_CourseUser(DbConn::getInstance()); 
+        $associated_aggr_cert_courses = $this->getIdAssocForUserCourse($params['id_user'], $params['id_course']);
+    
+        foreach($associated_aggr_cert_courses as $idcert=>$associations) {
+            foreach ($associations as $id_association =>$courses) {
+                if ($man_courseuser->hasCompletedCourses($params['id_user'], $courses) ) {
+                    if (!$this->isCertIssued($params['id_user'],$idcert,$id_association))
+                        $this->releaseNewCertificate($params['id_user'],$idcert,$id_association); 
+                }
+            }
+        
+        }
+        
+    }
+    
+    
+    public function releaseNewAggrCertPaths($params){
+        
+        $man_pathuser = new CoursePath_Manager();
+        
+        $associated_aggr_cert_paths = $this->getIdAssocForUserPath($params['id_user'], $params['id_paths']);
+        foreach($associated_aggr_cert_paths as $idcert=>$associations) {
+             foreach ($associations as $id_association => $path) {
+                 if ($man_pathuser->isCoursePathCompleted($params['id_user'],$path )) {
+                    if (!$this->isCertIssued($params['id_user'],$idcert,$id_association))
+                        $this->releaseNewCertificate($params['id_user'],$idcert,$id_association); 
+                 }
+                 
+             }
+        }
+        
+        
+    }
+    
+    
+    public function getAggrCertName($idcert){
+        $rs = sql_query("SELECT name from %lms_certificate WHERE id_certificate = ".intval($idcert));
+        if ($rs) {
+            $r = sql_fetch_row($rs);
+            return $r[0];
+        }
+        return '';
+        
+    }
    
   
 

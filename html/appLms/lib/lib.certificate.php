@@ -957,7 +957,8 @@ class Certificate {
 			." FROM ".$aggCertLib->table_assign_agg_cert
 			." WHERE idUser = ".$id_user
             ." AND idCertificate = ".$id_certificate
-            ." AND idAssociation = ".$id_association;
+            ." AND idAssociation = ".$id_association
+            . " AND cert_file != ''";
 
 
 
@@ -1002,16 +1003,12 @@ class Certificate {
 			." VALUES "
 			." ( '".$id_certificate."', '".$id_course."', '".$id_user."', '".date("Y-m-d H:i:s")."', '".addslashes($cert_file)."' ) ";
 		else
-			$query = "INSERT INTO ".$aggCertLib->table_assign_agg_cert
-			        ." ( idUser, idCertificate, idAssociation ,on_date, cert_file ) "
-			        ." VALUES "
-			        ." ( "
-                        .intval($id_user). ","
-                        .intval($id_certificate).", "
-                        .intval($id_association).", "                        
-                        ."'".date("Y-m-d H:i:s")."',"
-                        ."'".addslashes($cert_file)."' "
-                    . ") ";
+            $query = "UPDATE ".$aggCertLib->table_assign_agg_cert
+                     ." SET on_date = '".date("Y-m-d H:i:s")
+                     ."', cert_file = '".addslashes($cert_file)
+                     ."' WHERE idUser = ".intval($id_user)
+                     . " AND idCertificate = ".intval($id_certificate)
+                     . " AND idAssociation = ".intval($id_association); 
 
 		if(!sql_query($query)) return false;
 

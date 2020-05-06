@@ -39,25 +39,19 @@ class MycertificateLms extends Model {
         $data = array();
         foreach ($myCertificates AS $cert) {
             if($this->certificate->certificateAvailableForUser($cert['id_certificate'], $cert['id_course'], $this->id_user) ) {
-                $preview = '<a class="ico-wt-sprite subs_view" href="?r=mycertificate/'
-                    . 'preview&id_certificate=' . $cert['id_certificate'] . '&id_course=' . $cert['id_course'] . '" '
-                    . ' title="' . Lang::t('_PREVIEW', 'certificate') . '"><span>' . Lang::t('_PREVIEW', 'certificate') . '</span></a>';
-                $download = '<a class="ico-wt-sprite subs_pdf" href="?r=mycertificate/'
-                    . 'download&id_certificate=' . $cert['id_certificate'] . '&id_course=' . $cert['id_course'] . '" '
-                    . ' title="' . Lang::t('_DOWNLOAD', 'certificate') . '"><span>' . Lang::t('_DOWNLOAD', 'certificate') . '</span></a>';
-                $generate = '<a class="ico-wt-sprite subs_pdf" href="?r=mycertificate/'
-                    . 'download&id_certificate=' . $cert['id_certificate'] . '&id_course=' . $cert['id_course'] . '" '
-                    . ' title="' . Lang::t('_GENERATE', 'certificate') . '"><span>' . Lang::t('_GENERATE', 'certificate') . '</span></a>';
-
+                $download = '<a class="ico-wt-sprite subs_pdf" id="pdf_download" href="?r=mycertificate/'
+                    . 'downloadCert&id_certificate=' . $cert['id_certificate'] . '&id_course=' . $cert['id_course'] . '" '
+                    . ' title="' . (isset($cert['on_date'])?Lang::t('_DOWNLOAD', 'certificate'):Lang::t('_GENERATE', 'certificate')). '"><span>' 
+                    . (isset($cert['on_date'])?Lang::t('_DOWNLOAD', 'certificate'):Lang::t('_GENERATE', 'certificate')) . '</span></a>';
                 switch ($cert['available_for_status']) {
                     case 3:
-                        $year = substr($cert['date_end'], 0, 4);
+                        $year = substr($cert['date_end'], 0, 10);
                         break;
                     case 2:
-                        $year = substr($cert['date_begin'], 0, 4);
+                        $year = substr($cert['date_begin'], 0, 10);
                         break;
                     case 1:
-                        $year = substr($cert['date_inscr'], 0, 4);
+                        $year = substr($cert['date_inscr'], 0, 10);
                         break;
                     default:
                         $year = '-';
@@ -68,10 +62,8 @@ class MycertificateLms extends Model {
                     'code' => $cert['code'],
                     'course_name' => $cert['course_name'],
                     'cert_name' => $cert['cert_name'],
-                    'date_complete' => $cert['date_complete'],
-                    // 'preview' => isset($cert['on_date']) ? '' : $preview,
-                    'download' => isset($cert['on_date']) ? $download : $generate,
                     'on_date' => $cert['on_date'],
+                    'download' => $download                    
                 );
 
                 $data[] = $row;
@@ -124,87 +116,52 @@ class MycertificateLms extends Model {
     * Return an array of all certs available
     */
     
-  /*  public function loadMyMetaCertificates() {
-
-
-      require_once($GLOBALS['where_lms'].'/lib/lib.course.php');
-
-      $associationsUser = $this->aggCertLib->getIdsAssociationUser( $this->id_user);
-
-     // $arrAssoc = array_unique( );
-      $arrAssoc =  array();
-      foreach ($associationsUser[COURSE] as $value){
-          $arrAssoc[] = $value;
-      }
-        foreach ($associationsUser[COURSE_PATH] as $value){
-            $arrAssoc[] = $value;
-        }
-
-
-      $arrIdsCert = array_unique($this->aggCertLib->getIdCertificate($arrAssoc));
+    public function getMyMetaCertificates() {
         
-       foreach($arrIdsCert as $id_cert) {
+        $q = "SELECT %lms_certificate.id_certificate, %lms_aggregated_cert_assign.idAssociation, %lms_certificate.code,  %lms_certificate.name, 
+              DATE_FORMAT(%lms_aggregated_cert_assign.on_date, '%Y/%m/%d') as 'on_date', %lms_aggregated_cert_assign.cert_file, '' as 'courses_name', %lms_coursepath.path_name 
+              FROM %lms_certificate, %lms_aggregated_cert_assign, %lms_aggregated_cert_coursepath, %lms_coursepath
+              WHERE %lms_certificate.id_certificate=%lms_aggregated_cert_assign.idCertificate
+              AND %lms_aggregated_cert_assign.idAssociation=%lms_aggregated_cert_coursepath.idAssociation
+              AND %lms_aggregated_cert_coursepath.idCoursePath = %lms_coursepath.id_path
+              AND %lms_aggregated_cert_coursepath.idUser=".intval($this->id_user);
+              
+       $rs = sql_query($q);       
+       $prev_idcert = 0;
+       $ii = 0;
+       while ($row = sql_fetch_assoc($rs)) {
+       
+           if ($prev_idcert != $row['id_certificate']) {
+                $arrAggregatedCerts[$ii] = $row;
+                $ii++;     
+           } else {        
+                $arrAggregatedCerts[$ii-1]['path_name'] = $arrAggregatedCerts[$ii-1]['path_name']." | ".$row['path_name'];
+           }     
+           $prev_idcert = $row['id_certificate'];
+       }                         
+
            
-           $showAggrCert = true;
+       $q = "SELECT %lms_certificate.id_certificate, %lms_aggregated_cert_assign.idAssociation, %lms_certificate.code,  %lms_certificate.name, 
+              DATE_FORMAT(%lms_aggregated_cert_assign.on_date, '%Y/%m/%d') as 'on_date', %lms_aggregated_cert_assign.cert_file, %lms_course.name as 'courses_name', '' as 'path_name'
+              FROM %lms_certificate, %lms_aggregated_cert_assign, %lms_aggregated_cert_course, %lms_course
+              WHERE %lms_certificate.id_certificate=%lms_aggregated_cert_assign.idCertificate
+              AND %lms_aggregated_cert_assign.idAssociation=%lms_aggregated_cert_course.idAssociation
+              AND %lms_aggregated_cert_course.idCourse = %lms_course.idCourse
+              AND %lms_aggregated_cert_course.idUser=".intval($this->id_user);
+       $rs = sql_query($q);       
+       $prev_idcert = 0; 
+       while ($row = sql_fetch_assoc($rs)) {
+            if ($prev_idcert != $row['id_certificate']) {
+                $arrAggregatedCerts[$ii] = $row;
+                $ii++;     
+            } else {
+                $arrAggregatedCerts[$ii-1]['path_name'] = $arrAggregatedCerts[$ii-1]['courses_name']." | ".$row['courses_name'];
+            }    
            
-           $arrIdsAssoc = $this->aggCertLib->getIdAssociationsWithType($id_cert);
-           
-           foreach($arrIdsAssoc as $association){
-           
-               $courseIdsArr = array();
-
-               $arrLinks = $this->aggCertLib->getAssociationLink($association["id"], $association["type"], $this->id_user);
-               
-               foreach($arrLinks as $idLink){
-                 
-                      if($association["type"] == COURSE_PATH){
-
-                            require_once($GLOBALS['where_lms'].'/lib/lib.coursepath.php');
-                            $cp_m = new CoursePath_Manager();
-                            
-                                $courseIdsFromPath = array_map('intval', $cp_m->getPathCourses($idLink));
-
-                            foreach($courseIdsFromPath as $coursefrompath)
-                                $courseIdsArr[] = $coursefrompath;
-
-
-
-                     } else $courseIdsArr[] = $idLink;  
-               }
-               
-               if($this->aggCertLib->getCountCoursesCompleted($courseIdsArr, $this->id_user) != count($courseIdsArr)) {
-                    $showAggrCert = false;
-                    break 1;
-               } 
-           }
-           
-           if ($showAggrCert) 
-                    // User has completed all the courses in the assoc.
-                    $arrCertUser[] = $id_cert;
-                
        }
-           $arrCertUser = array_unique($arrCertUser);
+       return $arrAggregatedCerts;
 
-           $arrAggregatedCerts = array();
-           
-           $k = 0;
-           foreach($this->aggCertLib->getMetadata($arrCertUser) as $cert){
-            
-                $arrAggregatedCerts[$k]["id_certificate"] = $cert["id_certificate"];
-                $arrAggregatedCerts[$k]["code"] = $cert["code"];
-                $arrAggregatedCerts[$k]["name"] = $cert["name"];
-                $arrAggregatedCerts[$k]["released"] = $this->aggCertLib->hasUserAggCertsReleased($this->id_user, $cert["id_certificate"]);
-               
-               $k += 1;
-           }
-    
-        return $arrAggregatedCerts;
-
-    }  */
-    
-    public function loadMyMetaCertificates(){
-        
-    }
+    } 
     
 
     // TODO: passare nella aggregated_certificate

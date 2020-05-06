@@ -862,8 +862,8 @@ class CoursePath_Manager {
 		if($prerequisites == '') return true;
 		$arr_prere = explode(',', trim($prerequisites));
 		if(($arr_prere == false) || (count($arr_prere) < 1)) return true;
-    foreach($arr_prere as $id_c)
-    {
+        foreach($arr_prere as $id_c)
+        {
 
 			if (isset($courses_info['course'][$id_c]['user_status'])) {
 				if($courses_info['course'][$id_c]['user_status'] != _CUS_END) return false;
@@ -881,13 +881,40 @@ class CoursePath_Manager {
 	}
 
 	public function assignComplete($id_course, $id_user) {
-
-		$query = "UPDATE %lms_coursepath_user SET course_completed = course_completed + 1 "
+        
+        // path_courses containing course
+        $q = " SELECT id_path FROM %lms_coursepath_courses WHERE id_item = ".(int)$id_course;
+		$rs = sql_query($q);
+        while ($r = sql_fetch_row($rs))
+            $path_courses[] = $r[0];
+            
+            
+        $path_courses_str = implode(',', $path_courses);
+        // update for the user
+        $query = "UPDATE %lms_coursepath_user SET course_completed = course_completed + 1 "
 			." WHERE idUser = ".(int)$id_user." AND id_path IN ( "
-			." SELECT id_path FROM %lms_coursepath_courses WHERE id_item = ".(int)$id_course." )";
+			.$path_courses_str." )";
             
+        if (sql_query($query) && sql_affected_rows() > 0) {
+            // check completion paths
+            $q ="SELECT id_path from %lms_coursepath_user where idUser=".intval($id_user)." AND id_path IN (".$path_courses_str.")";
+            $rs = sql_query($q);
+            while ($r = sql_fetch_row($rs)) {
+                if ($this->isCoursePathCompleted($id_user, $r[0])) {
+                    $completed_paths[] = $r[0];
+                }
+                
+            }
+            if (count($completed_paths) > 0) {
+                $data = Events::trigger('lms.coursepath_user.completed', [
+                    'id_user' => $id_user,
+                    'id_paths' => $completed_paths,
+                    ]);    
+            }
+            return true;
+        } else 
+            return false;
             
-		return sql_query($query);
 	}
 
 	//--- subscription management ------------------------------------------------

@@ -11,6 +11,18 @@
 Events::listen("lms.course_user.updated", function($event)
 {
     if($event['new_data']['status'] == _CUS_END) {
-        file_put_contents(_files_ . "/test-core-listener.txt", "Generate certificate for user {$event['id_user']} in course {$event['id_course']}");
+        require_once(Forma::inc(_lms_.'/lib/lib.aggregated_certificate.php'));
+        $ca = new AggregatedCertificate();
+        $ca->releaseNewAggrCertCourses($event); 
     }
-});
+},0);
+
+
+Events::listen("lms.coursepath_user.completed", function($event)
+{
+    require_once(Forma::inc(_lms_.'/lib/lib.aggregated_certificate.php'));
+    $ca = new AggregatedCertificate();
+    $ca->releaseNewAggrCertPaths($event); 
+    
+},0);
+

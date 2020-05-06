@@ -1210,39 +1210,6 @@ function associationPaths() {
         
         $id_cert = Get::req('id_certificate', DOTY_INT, 0);
         if($id_cert == 0) cout(getErrorUi(Lang::t('_NO_CERT_AVAILABLE', 'certificate'))); 
-      
-        $certificate_assoc = $this->aggCertLib->getAssociationsMetadata($id_cert);
-        
-     /*  if(empty($certificate_assoc)) 
-            cout(getErrorUi(Lang::t('_NO_CERT_AVAILABLE', 'certificate'))); 
-        foreach ($certificate_assoc as $k1=>$array_assoc) {
-            $type_assoc = intVal($this->aggCertLib->getTypeAssoc($array_assoc['idAssociation']));
-            $certificate_assoc[$k1]['type']= $type_assoc;
-            if ($type_assoc == COURSE) {
-                $course_array = $this->aggCertLib->getUserAndCourseFromIdAssoc($array_assoc['idAssociation'], COURSE);                
-                foreach ($course_array as $idUser=>$v) {
-                    if (!in_array('0', $v) && $man_courseuser->hasCompletedCourses($idUser,$v)) {
-                            $u = $acl_man->getUser($idUser);
-                            $certificate_assoc[$k1]['users'][$idUser] = 
-                            ['lastname'=>$u[ACL_INFO_LASTNAME], 'name'=>$u[ACL_INFO_FIRSTNAME], 'username'=>$acl_man->relativeId($u[ACL_INFO_USERID])];
-                    }        
-                }
-            } else {
-                $path_array = $this->aggCertLib->getUserAndCourseFromIdAssoc($array_assoc['idAssociation'], COURSE_PATH);
-                foreach ($path_array as $idUser=>$ids_path) {
-                        if (!in_array('0', $ids_path) && $cp_m->isCoursePathCompleted($idUser, $ids_path)) {
-                            $u = $acl_man->getUser($idUser);
-                            $certificate_assoc[$k1]['users'][$idUser] = 
-                            ['lastname'=>$u[ACL_INFO_LASTNAME], 'name'=>$u[ACL_INFO_FIRSTNAME], 'username'=>$acl_man->relativeId($u[ACL_INFO_USERID])];
-
-                        } 
-                }    
-            }
-            if (!isset($certificate_assoc[$k1]['users']))
-                    unset($certificate_assoc[$k1]);
-                
-                
-        }*/
         
         $certificate_assoc = $this->aggCertLib->getIssuedCertificates($id_cert);
         if(!$certificate_assoc) 
@@ -1255,8 +1222,8 @@ function associationPaths() {
             Lang::t('_TITLE'),
             Get::img('course/certificate.png', Lang::t('_TAKE_A_COPY', 'certificate')),
             '<img src="' . getPathImage('lms') . 'standard/delete.png" alt="' . Lang::t('_ALT_REM_META_CERT') . ' : ' . strip_tags($certificate["name"]) . '" />');
-
-        $tb = new Table(Get::sett('visuItem'), Lang::t('_META_CERTIFICATE_CREATE_CAPTION','certificate'), Lang::t('_META_CERTIFICATE_CREATE_CAPTION','certificate'));
+        $cert_name_caption = $this->aggCertLib->getAggrCertName($id_cert);    
+        $tb = new Table(Get::sett('visuItem'), $cert_name_caption, $cert_name_caption);
         $tb->initNavBar('ini', 'button');
         $ini = $tb->getSelectedElement();
         $tb->setColsStyle($type_h);
@@ -1268,7 +1235,7 @@ function associationPaths() {
                 $cell[$i][] = $the_cert['title'];
                 $cell[$i][] = '<a href="index.php?r=alms/'.$this->controller_name.'/'.$this->op['release_cert']
                 . '&amp;id_certificate=' . $id_cert
-                . '&amp;id_user=' . $id
+                . '&amp;id_user=' . $the_cert['idst']
                 . '&amp;id_association=' . $the_cert['idAssociation'] 
                 . '&amp;aggCert=1'
                 . '">'
@@ -1276,7 +1243,7 @@ function associationPaths() {
                 if ($the_cert['released'] > 0)
                     $cell[$i][] = '<a href="index.php?r=alms/'.$this->controller_name.'/'.$this->op['del_released']
                             .'&amp;id_certificate='.$id_cert 
-                            .'&amp;id_user='.$id
+                            .'&amp;id_user='.$the_cert['idst']
                             .'&amp;id_association='.$the_cert['idAssociation']
                             .'">'
                             . Get::img('standard/delete.png', Lang::t('_ALT_REM_META_CERT')).'</a>';
@@ -1367,7 +1334,7 @@ function associationPaths() {
 
             if(Get::req('confirm', DOTY_INT, 0) == 1) {
 
-               $cert_file = $this->aggCertLib->getAggregatedCertFileName($id_user,$id_certificate);
+               $cert_file = $this->aggCertLib->getAggregatedCertFileName($id_user,$id_certificate, $id_association);
 
                $path = '/appLms/certificate/';
 
@@ -1378,7 +1345,7 @@ function associationPaths() {
                if(!$res)
                     Util::jump_to('index.php?r=alms/'.$this->controller_name.'/'.$this->op['assignmentManagement'].'&id_certificate='.$id_certificate.'&result=err_del_cert');
 
-               $res = $this->aggCertLib->deleteReleasedCert($id_user, $id_certificate);
+               $res = $this->aggCertLib->deleteReleasedCert($id_user, $id_certificate, $id_association);
                
                Util::jump_to('index.php?r=alms/'.$this->controller_name.'/'.$this->op['assignmentManagement'].'&id_certificate='.$id_certificate.'&result='. ($res ? 'ok' : 'err_del_cert'));
 
