@@ -1,0 +1,88 @@
+/* CUSTOM CSS STYLES*/
+
+/*-------------------------------------------------------------*/
+/* This file will be loaded after the standard CSS files */
+/* Add your colour and styles to oveeride the standard ones*/
+/*-------------------------------------------------------------*/
+
+
+/* LAYOUT */
+.layout_footer {border-top:;}
+header.header {border-bottom:;}
+.sm-forma { /* Admin top bar*/
+    border-top:0;
+    border-bottom:;
+}
+
+#change_language .fa {color:;} /*Selettore Lingue*/
+
+/* TEXT */
+
+a {color:;}
+h1 {color:;}
+.inline_block_big .heading {color:;}
+
+
+/* BUTTONS */
+
+.forma-button {
+	background-color:; 
+	color:;
+}
+.forma-button--orange-hover:hover {
+	background-color:; 
+	color:;
+}
+
+.homepage .forma-button--black {}
+
+.homepage .forma-button--black:hover {
+    background-color:;}
+
+
+/* LOGIN & REGISTRATION */
+
+.homepage__row--footer .homepage__links {border-top:;}
+.homepage__row--form .form-control.has-error {border:;}
+.homepage__row--login .logout, .homepage__row--login .login_failed {color:;}
+
+
+/* LMS NAVIGATION*/
+
+/*Main Menu*/
+header.header .row-fluid .navbar-collapse li a:hover {color:;}
+/*Main Menu - Icons*/
+header.header .row-fluid .navbar-collapse li a .glyphicon:hover:before {border-color:;}
+header.header .row-fluid .navbar-collapse li .o-wrapper .c-button.open .username:hover:before, header.header .row-fluid .navbar-collapse li .o-wrapper .c-button a .username:hover:before {border-color:;}
+header.header .row-fluid .navbar-collapse li .o-wrapper .c-button.open .username:before, header.header .row-fluid .navbar-collapse li .o-wrapper .c-button a .username:before {border-color:; }
+
+/* Navbar */
+.nav.nav-pills {background-color:!important;}
+.nav.nav-pills li.selected a {background-color:!important;}
+.nav.nav-pills li a:hover {background-color: !important;}
+
+/* Tabs */
+.nav.nav-tabs.hidden-xs li.active>a { /*Active*/
+	background-color: !important; 
+	color:;
+} 
+.nav-tabs > li a { /*Inactive*/
+	background-color: #eeeeee!important;
+	color:;
+} 
+
+/*Search*/
+.quick_search_form {background-color:;}
+.forma-quick-search-form .input-group input {border:;}
+
+
+/* COURSE BOXES */
+
+.course-box:hover {border:;}
+
+
+/* CATALOG */
+/* Aside Categories */
+.aside .list-group-item.node-treeview1:hover {background-color: !important}
+.node-treeview1.node-selected { background-color: !important;}
+

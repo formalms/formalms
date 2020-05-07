@@ -1,0 +1,32 @@
+/* ======================================================================== \
+|   FORMA - The E-Learning Suite                                            |
+|                                                                           |
+|   Copyright (c) 2013 (Forma)                                              |
+|   http://www.formalms.org                                                 |
+|   License  http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt           |
+|                                                                           |
+|   from docebo 4.0.5 CE 2008-2012 (c) docebo                               |
+|   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
+\ ======================================================================== */
+
+html,body{height:100%;}
+body{font:13px/1.231 arial,sans-serif;color:#333333;background:#fff;*font-size:small;*font:x-small;}
+
+/*.footer { background: none repeat scroll 0 0 green;} */
+.footer .copyright { top: 4px }
+
+.catalog {position:absolute;top:340px;left:596px;background:#FF9900;border:0px none;color:#322C2C;font-size:90%;font-weight:bold;padding:1px 8px 2px 64px;margin-left:11px;}
+.catalog a{color:#807F83;}
+
+.webcontent div.logo_container {float: left; margin: 0 1em 0.6em 0; padding: 0; text-align: center; width: 100px;}
+.webcontent div.info_container {display: inline-block; width: 430px; padding-left: 0px;}
+.webcontent div.action_container {float: right; margin: 0 0 0.6em 1em; padding: 0; text-align: center; width: 100px;}
+
+.webcontent .box {margin:10px 5px;}
+.webcontent h3 {margin:0 0 10px;padding:0;font-size:140%;color:#322C2C;}
+.webcontent p {margin:0 0 6px;}
+
+.content-text{padding:6px;border:solid 2px #F1EDEB;}
+
+div.home_cat_back{text-align:right;border-top:1px solid #cccccc;margin-top:25px;padding-top:10px;font-size:90%;}
+a.home_cat_link{color:#2F763B;text-decoration:none;}

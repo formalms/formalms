@@ -1,0 +1,106 @@
+<div id="inline">
+    <form id="contact" name="contact" action="#" method="post" style="width: 470px;" role="form" style="display: block;">
+        <legend>{{ translate('_CUSTOMER_HELP', 'customer_help') }}</legend>
+        <fieldset>
+            <input type="hidden" id="sendto" name="sendto" class="txt" value="{{ evalPhp('Get::sett', ['customer_help_email']) }}" readonly>
+            <input type="hidden" id="authentic_request_newsletter" name="authentic_request" value="{{ evalPhp('Util::getSignature') }}" />
+            <input type="hidden" id="username" name="username" class="txt" value="{{ user.getIdst() }}">
+            <input type="hidden" id="msg_ok" name="msg_ok" class="txt" value="{{ translate('_OPERATION_SUCCESSFUL', 'standard') }}">
+            <input type="hidden" id="help_req_resolution" name="help_req_resolution">
+            <input type="hidden" id="help_req_flash_installed" name="help_req_flash_installed">
+            <table cellspacing=2 cellpaddin=2 width=98% border=0>
+                <tr>
+                    <td width="27%"><label for="username">{{ translate('_USER', 'standard') }}</label></td>
+                    <td>
+                        <div class="input-group">
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
+                            <input class="form-control" type="text" id="username" name="username" class="txt" value="{{ user.getUserid() }}" readonly>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="oggetto">{{ translate('_HELPDESK_SUBJ', 'configuration') }}</label></td>
+                    <td>
+                        <div class="input-group">
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-file"></span></span>
+                            <input class="form-control" type="oggetto" id="oggetto" name="oggetto" class="txt" placeholder="{{ translate('_HELPDESK_SUBJ_PLACEHOLDER', 'configuration') }}">
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="email">{{ translate('_EMAIL', 'menu') }}</label> </td>
+                    <td>
+                        <div class="input-group">
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-envelope"></span></span>
+                            <input class="form-control" type="email" id="email" name="email" class="txt" value="{{ userDetails[ evalPhp('constant', ['ACL_INFO_EMAIL']) ] }}" placeholder="">
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="telefono">{{ translate('_PHONE', 'classroom') }}</label></td>
+                    <td>
+                        <div class="input-group">
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-phone-alt"></span></span>
+                            <input class="form-control" type="text" id="telefono" name="telefono" class="txt" placeholder="">
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="msg">{{ translate('_TEXTOF', 'menu') }}</label></td>
+                    <td><textarea id="msg" name="msg" class="txtarea" placeholder="{{ translate('_WRITE_ASK_A_FRIEND', 'profile') }}"></textarea></td>
+                </tr>
+                <tr>
+                    <td><label for="copia">{{ translate('_SEND_CC', 'standard') }}</label></td>
+                    <td> <input id="copia" name="copia" checked data-toggle="toggle" data-on="{{ translate('_GROUP_FIELD_NORMAL', 'admin_directory') }}"
+                            data-size="small" data-off="{{ translate('_NO', 'standard') }}" data-onstyle="success"
+                            data-offstyle="danger" type="checkbox">
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="priorita">{{ translate('_PRIORITY', 'message') }}</label></td>
+                    <td>
+                        <input id="priorita" name="priorita" data-size="small" checked data-toggle="toggle" data-on="{{ translate('_NORMAL', 'message') }}"
+                            data-off="{{ translate('_HIGH', 'message') }}" data-onstyle="success" data-offstyle="danger"
+                            type="checkbox">
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="disclaimer">{{ translate('_CUSTOMER_HELP_DISCLAIMER_TITLE', 'customer_help') }}</label></td>
+                    <td>
+                        <p>{{ translate('_CUSTOMER_HELP_DISCLAIMER', 'customer_help') }}</p><br>
+                        <input id="disclaimer" name="disclaimer" data-size="small" data-toggle="toggle" data-on="{{ translate('_NORMAL', 'message') }}"
+                            data-off="{{ translate('_HIGH', 'message') }}" data-onstyle="success" data-offstyle="danger"
+                            type="checkbox">
+                    </td>
+                </tr>
+            </table>
+            <br>
+            <table width=88% border=0 bgcolor="#ffcc99">
+                <tr>
+                    <td align=center>
+                        <button id="close">{{ translate('_CANCEL') }}</button>
+                    </td>
+                    <td align=center>
+                        <button id="send" disabled="true">{{ translate('_CONFIRM') }}</button>
+                    </td>
+                </tr>
+            </table>
+        </fieldset>
+    </form>
+</div>
+<div id="inline_no_help">No Help Desk</div>
+
+<style>
+#inline_no_help {
+    display: none;
+    width: 100px;
+    height: 100px;
+}
+</style>
+
+<script>
+$('#navbar a[href*="modname=helpdesk&op=popup"]').fancybox({href: '#{% if email %}inline{% else %}inline_no_help{% endif %}'});
+$("#disclaimer").change(function() {
+    $("#send").attr("disabled", !$("#disclaimer").is(":checked"));
+});
+</script>

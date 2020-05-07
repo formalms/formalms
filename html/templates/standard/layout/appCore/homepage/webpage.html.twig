@@ -1,0 +1,24 @@
+<div class="homepage__row homepage__row--gray homepage__back">
+    <a href="./index.php">
+        <span class="fa fa-chevron-left"></span> Indietro
+    </a>
+</div>
+<div class="homepage__row homepage__row--gray">
+    <p class="homepage__text homepage__text--centered homepage__text--title">
+        {{ title|raw }}
+    </p>
+</div>
+<div class="homepage__row homepage__row--gray">
+    <p class="homepage__text homepage__text--justified homepage__text--description">
+        {{ description|raw }}
+    </p>
+</div>
+<div class="homepage__row homepage__row--footer">
+    <nav class="homepage__links">
+        {% if externalPages is defined %}
+        {% for externalPage in externalPages %}
+        <a href="{{ externalPage.link }}">{{ externalPage.title }}</a>
+        {% endfor %}
+        {% endif %}
+    </nav>
+</div>

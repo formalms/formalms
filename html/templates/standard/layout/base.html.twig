@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="{{ evalPhp('Layout::lang_code') }}">
+
+<head>
+     {% block compatibility %}
+    		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+     {% endblock %}
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{{ layout_title | raw }}</title>
+    <!-- zone  -->
+    {{ layout_zone_meta}}
+    <!-- meta  -->
+    {{ layout_meta | raw }}
+    <link rel="shortcut icon" href="{{layout_path}}images/favicon.png" type="image/png"/>
+    <link rel="shortcut icon" href="{{layout_path}}images/favicon.ico"/>
+
+    <!-- reset and font stylesheet -->
+    {{ resetter|raw }}
+    
+    <!-- JQuery, Bootstrap  -->
+    {% block jquery_core %}
+    {{ jqueryLib|raw }}    
+    {% endblock %}
+
+    {% block bootstrap %}
+    {{ boostrap|raw }}
+    
+    <script>$.fn.bootstrapBtn = $.fn.button.noConflict();</script>
+    {% endblock %}
+    
+    
+    {% block jsAddons %}
+    <!-- addons: js -->    
+    {{ jsAddons|raw }}    
+    {% endblock %}
+
+    {% block css_addons %}
+    <!-- addons: css -->    
+    {{ cssAddons|raw }}    
+    {% endblock %}
+    
+    {% block locale_calendar %}
+    <!-- locale data format -->        
+    {{ locale_calendar|raw }}
+    {% endblock %}
+
+    
+
+    <!-- specific stylesheet -->    
+    <link rel="stylesheet" type="text/css" href="{{ layout_path }}style/base.css"/>    
+    <link rel="stylesheet" type="text/css" href="{{ layout_path }}style/responsive.css"/>
+    <link rel="stylesheet" type="text/css" href="{{ layout_path }}style/font-awesome/css/font-awesome.min.css" />
+
+    <!-- to be eliminated -->    
+    {{ yuiLib}}
+    <!-- printer stylesheet-->
+    <link rel="stylesheet" type="text/css" href="{{ layout_path }}style/print.css" media="print"/>
+    {{ accessibility|raw }}
+    <!-- Page Head area -->
+    {{ layout_zone_page_head|raw }}
+    {{ layout_rtl|raw }}
+    {% block pagehead %}
+    {% endblock %}
+    
+    
+    <!-- Custom css area -->    
+    {% block stylesheet %}
+    {% endblock %}
+
+    <!-- Custom Javascripts area -->
+
+    <script type="text/javascript" src="{{ layout_path }}script/tabnav.js"></script>
+    <script type="text/javascript" src="{{ layout_path }}static/main.js"></script>
+
+  {% block javascript %}
+    {% endblock %}
+
+    <!-- Restyling -->
+    <link rel="stylesheet" type="text/css" href="{{ layout_path }}static/main.min.css">
+    <!--
+    To use or edit the not minified css uncomment this portion of code
+    <link rel="stylesheet" type="text/css" href="{{ layout_path }}static/main.css">
+    -->
+    {% if custom_css_path is defined %}
+    <link rel="stylesheet" type="text/css" href="{{ custom_css_path }}" />
+    {% endif %}
+</head>
+<body class="yui-skin-docebo yui-skin-sam">
+
+    {#<div class="container-fluid">      #}
+    {% block content %}
+    {% endblock %}
+        {{ layout_analytics|raw }}
+    {#</div>#}
+</body>
+</html>

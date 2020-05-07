@@ -1,0 +1,104 @@
+<div class="homepage__row homepage__row--login homepage__row--gray no-padding">
+
+    <div class="visible-xs">
+        {{ evalPhp('Layout::get_catalogue') }}
+    </div>
+    {% if not under_maintenence %}
+        {% if baseLogin is defined %}
+            <div class="col-xs-12 col-sm-6{% if socialLogin is not defined %} col-sm-offset-3{% endif %}">
+                {% if block_attempts == false %}
+                    {% for login in baseLogin %}
+                        {{ login.form|raw }}
+                    {% endfor %}
+                    {% if done != false %}
+                        <div>
+                            <b class="logout">{{ done }}</b>
+                        </div>
+                    {% endif %}
+                    {% if msg != false %}
+                        <div id="service_msg">
+                            <b class="login_failed">{{ msg }}</b>
+                        </div>
+                    {% endif %}
+                {% else %}
+                    <h3>{{ translate('_ACCESS_LOCK', 'login') }}</h3>
+                    <p>{{ block_attempts }}</p>
+                {% endif %}
+                {% if socialLogin is not defined %}
+                    <nav class="homepage__links">
+                        {% if isSelfRegistrationActive != false %}
+                            <a href="{{ evalPhp('Get::rel_path', ['base']) }}/index.php?r={{ constant('_register_') }}">{{ translate('_REGISTER', 'login') }}</a>
+                        {% endif %}
+                        <a href="{{ evalPhp('Get::rel_path', ['base']) }}/index.php?r={{ constant('_lostpwd_') }}">{{ translate('_LOG_LOSTPWD', 'login') }}</a>
+                    </nav>
+                {% endif %}
+            </div>
+        {% endif %}
+        {% if socialLogin is defined %}
+            <div class="col-xs-12 col-sm-6">
+                <div class="social-login">
+                    <p class="social-login__title">
+                        <span>{{ translate('_SOCIAL_LOGIN','login') }}</span>
+                    </p>
+                    <div class="social-login__list">
+                        {% for login in socialLogin %}
+                            {{ login.form|raw }}
+                        {% endfor %}
+                    </div>
+                </div>
+                <nav class="homepage__links">
+                    {% if isSelfRegistrationActive != false %}
+                        <a href="{{ evalPhp('Get::rel_path', ['base']) }}/index.php?r={{ constant('_register_') }}">{{ translate('_REGISTER', 'login') }}</a>
+                    {% endif %}
+                    <a href="{{ evalPhp('Get::rel_path', ['base']) }}/index.php?r={{ constant('_lostpwd_') }}">{{ translate('_LOG_LOSTPWD', 'login') }}</a>
+                </nav>
+            </div>
+        {% endif %}
+    {% else %}
+        <div class="box">
+            <h3>{{ translate('_MAINTENANCE', 'configuration') }}</h3>
+            <div class="text">
+                {{ translate('_MAINTENANCE_TEXT', 'login') }}
+            </div>
+        </div>
+    {% endif %}
+</div>
+<div class="homepage__row">
+    <br/>
+    <h3>{{ intro_text_header|raw }}</h3>
+</div>
+<div class="homepage__row">
+    <br/>
+    <div class="collapse homepage__collapsed-text js-collapsed-text" id="description">
+        <p style="line-height: 26px;">{{ intro_text_body|raw }}</p>
+    </div>
+    <div class="collapse-wrapper" data-toggle="collapse" data-target="#description">
+        <a class="forma-button forma-button--orange is-hidden js-show-collapsed-text" href="#">
+            {{ read_all|raw }}
+        </a>
+        <span class="glyphicon glyphicon-remove icon icon--close">{{ close|raw }}</span>
+        <br/><br/>
+    </div>
+</div>
+<div class="homepage__row homepage__row--footer">
+    <nav class="homepage__links">
+        {% if externalPages is defined %}
+            {% for externalPage in externalPages %}
+                <a href="{{ externalPage.link }}">{{ externalPage.title }}</a>
+            {% endfor %}
+        {% endif %}
+    </nav>
+</div>
+
+<script>
+    $(document).ready(function () {
+        var $elem = $('.js-collapsed-text');
+        var _textHeight = $elem.children('p').height();
+        var _containerHeight = $elem.height();
+        var $btn = $('.js-show-collapsed-text');
+
+        if (_textHeight > _containerHeight) {
+            $btn.removeClass('is-hidden');
+        }
+    });
+</script>

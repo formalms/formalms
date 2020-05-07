@@ -1,0 +1,406 @@
+<!-- container -->
+{#<pre style="margin-top: 100px;">#}
+{#{{ dump() }}#}
+{#</pre>#}
+
+{% set selectedArea = '' %}
+{% set selectedAreaSlug = '' %}
+{% set columnWidth = '' %}
+
+{% for dropdown_menu in dropdown %}
+	{% if dropdown_menu.selected %}
+		{% set selectedArea = dropdown_menu.name %}
+        {% set selectedAreaSlug = dropdown_menu.slug %}
+	{% endif %}
+{% endfor %}
+
+<div class="row section-coourse">
+    <div class="section-coourse__header col-xs-12">
+		<div class="row-fluid">
+            <div class="col-sm-3 text-center">
+                <div class="row">
+                    <img src="{{ course_img }}" class="img-responsive section-coourse__img">
+                </div>
+            </div>
+            <div class="col-sm-9">
+                <h1 class="section-coourse__title">{{ course_name }}</h1>
+                <div class="section-coourse__progress-container">
+                    <div class="progress section-coourse__progress">
+                        <div class="progress-bar progress-bar-warning{% if stats.perc_completed < 25 %} progress-bar-warning--black{% endif %}" role="progressbar" aria-valuenow="{{ stats.perc_completed }}"
+                             aria-valuemin="0" aria-valuemax="100" style="width: {{ stats.perc_completed }}%;">
+                            <span>{{ stats.perc_completed }}%</span>
+                        </div>
+                        <span class="glyphicon glyphicon-signal pull-right" aria-hidden="true" data-toggle="modal" data-target="#myModal"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+    <div class="section-coourse__menu col-xs-12">
+		<div class="row-fluid">
+			<div class="section-coourse__dropdown col-sm-3 text-center">
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="forma-dropdown">
+							<button type="button" class="forma-dropdown__selected forma-button dropdown-toggle has-icon icon--coourse-menu icon--coourse-menu-{{ selectedAreaSlug }}" data-toggle="dropdown">{{ selectedArea }}</button>
+							<button type="button" class="forma-dropdown__toggle forma-button dropdown-toggle" data-toggle="dropdown"
+									aria-haspopup="true" aria-expanded="false">
+								<span class="glyphicon glyphicon-chevron-down"></span>
+								<span class="sr-only">Toggle Dropdown</span>
+							</button>
+							<ul class="dropdown-menu">
+								{% for dropdown_menu in dropdown %}
+									<li>
+										<a href="{{ dropdown_menu.link }}" data-id="{{ dropdown_menu.id_menu }}" class="has-icon icon--coourse-menu icon--coourse-menu-{{ dropdown_menu.slug }}">
+											<span class="" aria-hidden="true"></span>
+											{{ dropdown_menu.name }}
+										</a>
+									</li>
+								{% endfor %}
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-sm-9 section-coourse__menu-horizontal">
+				<ul class="slider-menu">
+					{% for dropdown_menu in dropdown %}
+						{% if dropdown_menu.selected  %}
+							{% for slider_menu in dropdown_menu.slider_menu %}
+								<li class="slider-menu__item{% if slider_menu.selected  %} is-selected{% endif %}"><a href="{{ slider_menu.link }}">{{ slider_menu.name }}</a></li>
+							{% endfor %}
+						{% endif %}
+					{% endfor %}
+				</ul>
+			</div>
+		</div>
+        <div class="clearfix"></div>
+    </div>
+	<div class="clearfix"></div>
+
+	{#<pre>#}
+		{#{{ dump(modal_stats.course_stats) }}#}
+	{#</pre>#}
+
+	<div id="myModal" class="modal fade section-coourse-modal" role="dialog">
+		<div class="modal-dialog">
+			<!-- Modal content-->
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">
+                        {{ translate('_overview','coursereport') }}
+					</h4>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+                        {% if (modal_stats.user_stats.show_time != null) %}
+							{% set columnWidth = '4' %}
+
+							<div class="modal__item col-sm-12 col-md-4">
+								<h3 class="title">
+                                    {{ translate('_PARTIAL_TIME', 'course') }}
+								</h3>
+								<p class="text">
+									{{ modal_stats.user_stats.show_time.partial_time }}
+								</p>
+							</div>
+							<div class="modal__item col-sm-12 col-md-4">
+								<h3 class="title">
+                                    {{ translate('_TOTAL_TIME', 'standard') }}
+								</h3>
+								<p class="text">
+                                    {{ modal_stats.user_stats.show_time.total_time }}
+								</p>
+							</div>
+                        {% else %}
+							{% set columnWidth = '6' %}
+						{% endif %}
+
+						<div class="modal__item col-sm-12 col-md-{{ columnWidth }}">
+							<h3 class="title">
+                                {{ translate('_WHOIS_ONLINE', 'course') }}
+							</h3>
+							<p class="text">
+                                {{ modal_stats.user_stats.who_is_online.user_online }}
+							</p>
+						</div>
+
+						{# COURSE STATS #}
+
+						<div class="modal__item col-sm-12 col-md-{{ columnWidth }}">
+							<h3 class="title">
+                                {{ translate('_PROGRESS_ALL', 'course') }}
+							</h3>
+							<p class="text">
+                                {{ modal_stats.course_stats.materials }}
+							</p>
+						</div>
+
+						<div class="modal__item col-sm-12 col-md-{{ columnWidth }}">
+							<h3 class="title">
+                                {{ translate('_COMPLETED', 'standard') }}
+							</h3>
+							<p class="text">
+                                {{ modal_stats.course_stats.materials_complete }}
+							</p>
+						</div>
+
+						<div class="modal__item col-sm-12 col-md-{{ columnWidth }}">
+							<h3 class="title">
+                                {{ translate('_PROGRESS_FAILED', 'standard') }}
+							</h3>
+							<p class="text">
+                                {{ modal_stats.course_stats.materials_incomplete }}
+							</p>
+						</div>
+
+						{#
+						<div class="modal__item col-sm-12 col-md-6">
+							<h3 class="title">
+                                {{ translate('_PASSED', 'standard') }}
+							</h3>
+							<p class="text">
+                                {{ modal_stats.course_stats.materials_passed }}
+							</p>
+						</div>
+
+						<div class="modal__item col-sm-12 col-md-6">
+							<h3 class="title">
+                                {{ translate('_FAILED', 'standard') }}
+							</h3>
+							<p class="text">
+                                {{ modal_stats.course_stats.materials_failed }}
+							</p>
+						</div>
+						#}
+
+					</div>
+				</div>
+				<div class="modal-footer">
+					<div class="col-xs-6"></div>
+					<div class="col-xs-6">
+						<a href="javascript:void(0);" class="forma-button forma-button--orange-hover" data-dismiss="modal">{{ translate('_CLOSE', 'standard') }}</a>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+	{# FOLLOWING CODE IS A STATIC TEMPLATE OF NEW FOLDER-VIEW FOR STUFF HANDLING #}
+	{#<div class="section-coourse__content col-xs-12">#}
+		{#<p style="width:100%;padding:5px;margin-bottom:15px;background-color:red;text-align:center;color:white;">Il seguente contenuto è statico</p><br>#}
+		{#<div class="row-fluid folder-view">#}
+			{#<aside class="folder-view__aside col-sm-3 hidden-xs">#}
+				{#<nav class="accordion">#}
+					{#<div class="accordion__item has-subset has-open-subset">#}
+						{#<button type="button" class="folder-view__link js-folder-view-filter js-accordion-toggle-subset" data-category="">#}
+							{#1. Materiali#}
+						{#</button>#}
+					{#</div>#}
+					{#<div class="accordion__subset">#}
+						{#<nav class="accordion">#}
+							{#<div class="accordion__item has-subset has-open-subset">#}
+								{#<button type="button" class="folder-view__link js-folder-view-filter js-accordion-toggle-subset" data-category="">#}
+									{#1.1 Sottocartella#}
+								{#</button>#}
+							{#</div>#}
+							{#<div class="accordion__subset">#}
+								{#<nav class="accordion">#}
+									{#<div class="accordion__item">#}
+										{#<button type="button" class="folder-view__link js-folder-view-filter" data-category="">#}
+											{#1.1.1 Sottocartella#}
+										{#</button>#}
+									{#</div>#}
+								{#</nav>#}
+							{#</div>#}
+							{#<div class="accordion__item">#}
+								{#<button type="button" class="folder-view__link js-folder-view-filter" data-category="">#}
+									{#1.2 Sottocartella#}
+								{#</button>#}
+							{#</div>#}
+						{#</nav>#}
+					{#</div>#}
+				{#</nav>#}
+			{#</aside>#}
+			{#<div class="folder-view__content col-xs-12 col-sm-9">#}
+				{#<h2 class="folder-view__title">Gestione oggetti didattici</h2>#}
+				{#<div class="folder-view__filters tabs-wrapper">#}
+					{#<ul class="nav nav-tabs hidden-xs">#}
+						{#<li><a href="javascript:void(0)" rel="nofollow">I miei oggetti</a></li>#}
+						{#<li class="active"><a href="javascript:void(0)" rel="nofollow">Oggetti del corso</a></li>#}
+						{#<li><a href="javascript:void(0)" rel="nofollow">Oggetti condivisi</a></li>#}
+					{#</ul>#}
+				{#</div>#}
+				{#<h2 class="folder-view__title">Materiali</h2>#}
+				{#<table class="folder-view__table course-objects table table-responsive">#}
+					{#<tr>#}
+						{#<td class="course-objects__item course-objects__item--icon">#}
+							{#<span class="glyphicon glyphicon-film"></span>#}
+						{#</td>#}
+						{#<td class="course-objects__item course-objects__item--name">#}
+							{#filename.extension#}
+						{#</td>#}
+						{#<td class="course-objects__item course-objects__item--action">#}
+							{#<span class="glyphicon glyphicon-search"></span>#}
+						{#</td>#}
+						{#<td class="course-objects__item course-objects__item--action">#}
+							{#<span class="glyphicon glyphicon-pencil"></span>#}
+						{#</td>#}
+						{#<td class="course-objects__item course-objects__item--action">#}
+							{#<span class="glyphicon glyphicon-wrench"></span>#}
+						{#</td>#}
+						{#<td class="course-objects__item course-objects__item--action">#}
+							{#<span class="glyphicon glyphicon-chevron-up"></span>#}
+						{#</td>#}
+						{#<td class="course-objects__item course-objects__item--action">#}
+							{#<span class="glyphicon glyphicon-chevron-down"></span>#}
+						{#</td>#}
+						{#<td class="course-objects__item course-objects__item--dropdown">#}
+							{#<div class="forma-dropdown">#}
+								{#<button type="button" class="forma-dropdown__selected forma-button dropdown-toggle" data-toggle="dropdown">Actions</button>#}
+								{#<button type="button" class="forma-dropdown__toggle forma-button dropdown-toggle" data-toggle="dropdown"#}
+										{#aria-haspopup="true" aria-expanded="false">#}
+									{#<span class="glyphicon glyphicon-chevron-down"></span>#}
+									{#<span class="sr-only">Toggle Dropdown</span>#}
+								{#</button>#}
+								{#<ul class="dropdown-menu">#}
+									{#<li>#}
+										{#<a href="#">#}
+											{#<span class="glyphicon glyphicon-signal" aria-hidden="true"></span>#}
+											{#<strong>Example 1</strong>#}
+										{#</a>#}
+									{#</li>#}
+									{#<li>#}
+										{#<a href="#">#}
+											{#<span class="glyphicon glyphicon-signal" aria-hidden="true"></span>#}
+											{#<strong>Example 2</strong>#}
+										{#</a>#}
+									{#</li>#}
+									{#<li>#}
+										{#<a href="#">#}
+											{#<span class="glyphicon glyphicon-signal" aria-hidden="true"></span>#}
+											{#<strong>Example 3</strong>#}
+										{#</a>#}
+									{#</li>#}
+								{#</ul>#}
+							{#</div>#}
+						{#</td>#}
+					{#</tr>#}
+					{#<tr>#}
+						{#<td class="course-objects__item course-objects__item--icon">#}
+							{#<span class="glyphicon glyphicon-film"></span>#}
+						{#</td>#}
+						{#<td class="course-objects__item course-objects__item--name">#}
+							{#filename.extension#}
+						{#</td>#}
+						{#<td class="course-objects__item course-objects__item--action">#}
+							{#<span class="glyphicon glyphicon-search"></span>#}
+						{#</td>#}
+						{#<td class="course-objects__item course-objects__item--action">#}
+							{#<span class="glyphicon glyphicon-pencil"></span>#}
+						{#</td>#}
+						{#<td class="course-objects__item course-objects__item--action">#}
+							{#<span class="glyphicon glyphicon-wrench"></span>#}
+						{#</td>#}
+						{#<td class="course-objects__item course-objects__item--action">#}
+							{#<span class="glyphicon glyphicon-chevron-up"></span>#}
+						{#</td>#}
+						{#<td class="course-objects__item course-objects__item--action">#}
+							{#<span class="glyphicon glyphicon-chevron-down"></span>#}
+						{#</td>#}
+						{#<td class="course-objects__item course-objects__item--dropdown">#}
+							{#<div class="forma-dropdown">#}
+								{#<button type="button" class="forma-dropdown__selected forma-button dropdown-toggle" data-toggle="dropdown">Actions</button>#}
+								{#<button type="button" class="forma-dropdown__toggle forma-button dropdown-toggle" data-toggle="dropdown"#}
+										{#aria-haspopup="true" aria-expanded="false">#}
+									{#<span class="glyphicon glyphicon-chevron-down"></span>#}
+									{#<span class="sr-only">Toggle Dropdown</span>#}
+								{#</button>#}
+								{#<ul class="dropdown-menu">#}
+									{#<li>#}
+										{#<a href="#">#}
+											{#<span class="glyphicon glyphicon-signal" aria-hidden="true"></span>#}
+											{#<strong>Example 1</strong>#}
+										{#</a>#}
+									{#</li>#}
+									{#<li>#}
+										{#<a href="#">#}
+											{#<span class="glyphicon glyphicon-signal" aria-hidden="true"></span>#}
+											{#<strong>Example 2</strong>#}
+										{#</a>#}
+									{#</li>#}
+									{#<li>#}
+										{#<a href="#">#}
+											{#<span class="glyphicon glyphicon-signal" aria-hidden="true"></span>#}
+											{#<strong>Example 3</strong>#}
+										{#</a>#}
+									{#</li>#}
+								{#</ul>#}
+							{#</div>#}
+						{#</td>#}
+					{#</tr>#}
+					{#<tr>#}
+						{#<td class="course-objects__item course-objects__item--icon">#}
+							{#<span class="glyphicon glyphicon-film"></span>#}
+						{#</td>#}
+						{#<td class="course-objects__item course-objects__item--name">#}
+							{#filename.extension#}
+						{#</td>#}
+						{#<td class="course-objects__item course-objects__item--action">#}
+							{#<span class="glyphicon glyphicon-search"></span>#}
+						{#</td>#}
+						{#<td class="course-objects__item course-objects__item--action">#}
+							{#<span class="glyphicon glyphicon-pencil"></span>#}
+						{#</td>#}
+						{#<td class="course-objects__item course-objects__item--action">#}
+							{#<span class="glyphicon glyphicon-wrench"></span>#}
+						{#</td>#}
+						{#<td class="course-objects__item course-objects__item--action">#}
+							{#<span class="glyphicon glyphicon-chevron-up"></span>#}
+						{#</td>#}
+						{#<td class="course-objects__item course-objects__item--action">#}
+							{#<span class="glyphicon glyphicon-chevron-down"></span>#}
+						{#</td>#}
+						{#<td class="course-objects__item course-objects__item--dropdown">#}
+							{#<div class="forma-dropdown">#}
+								{#<button type="button" class="forma-dropdown__selected forma-button dropdown-toggle" data-toggle="dropdown">Actions</button>#}
+								{#<button type="button" class="forma-dropdown__toggle forma-button dropdown-toggle" data-toggle="dropdown"#}
+										{#aria-haspopup="true" aria-expanded="false">#}
+									{#<span class="glyphicon glyphicon-chevron-down"></span>#}
+									{#<span class="sr-only">Toggle Dropdown</span>#}
+								{#</button>#}
+								{#<ul class="dropdown-menu">#}
+									{#<li>#}
+										{#<a href="#">#}
+											{#<span class="glyphicon glyphicon-signal" aria-hidden="true"></span>#}
+											{#<strong>Example 1</strong>#}
+										{#</a>#}
+									{#</li>#}
+									{#<li>#}
+										{#<a href="#">#}
+											{#<span class="glyphicon glyphicon-signal" aria-hidden="true"></span>#}
+											{#<strong>Example 2</strong>#}
+										{#</a>#}
+									{#</li>#}
+									{#<li>#}
+										{#<a href="#">#}
+											{#<span class="glyphicon glyphicon-signal" aria-hidden="true"></span>#}
+											{#<strong>Example 3</strong>#}
+										{#</a>#}
+									{#</li>#}
+								{#</ul>#}
+							{#</div>#}
+						{#</td>#}
+					{#</tr>#}
+				{#</table>#}
+			{#</div>#}
+		{#</div>#}
+	{#</div>#}
+
+
+</div>
+{#<p style="width:100%;padding:5px;margin-top:15px;background-color:green;text-align:center;color:white;">Il seguente contenuto è quello originale (funzionante)</p><br>#}

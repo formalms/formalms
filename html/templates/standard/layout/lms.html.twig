@@ -1,0 +1,130 @@
+{% extends "base.html.twig" %}
+
+{% block stylesheet %}
+    <link rel="stylesheet" type="text/css" href="{{ layout_path }}style/base-old-treeview.css"/>
+    <link rel="stylesheet" type="text/css" href="{{ layout_path }}style/lms.css"/>
+    <link rel="stylesheet" type="text/css" href="{{ layout_path }}style/lms-to-review.css"/>
+    <link rel="stylesheet" type="text/css" href="{{ layout_path }}style/lms-menu.css"/>
+    <link rel="stylesheet" type="text/css" href="{{ layout_path }}style/table-responsive.css"/>
+
+{% endblock %}
+
+{% block javascript %}
+
+    <script type="text/javascript" src="{{ evalPhp('Get::rel_path', ['base']) }}/lib/js_utils.js"></script>
+
+    <script>
+        $(function () {
+            $('div.menu-area a').bind('click', function (event) {
+                event.preventDefault();
+                id = $(this).attr('rel');
+                $('ul.float-left').hide();
+                $('ul#' + id).show();
+                $('div.menu-area').removeClass('menu-selected');
+                $(this).parent().addClass('menu-selected');
+            });
+
+            $("#accordion").accordion({
+                collapsible: true,
+                active: false,
+                icons: false
+            });
+
+            // feedback
+            $('#container-feedback').click(function () {
+                event.preventDefault();
+                $(this).fadeOut(500);
+            });
+
+        });
+    </script>
+
+
+{% endblock %}
+
+{% block content %}
+
+    {{ evalPhp('Layout::zone', ['meta']) }}
+    {{ evalPhp('Layout::meta') }}
+
+    {{ evalPhp('Layout::rtl') }}
+    {{ evalPhp('Layout::accessibility') }}
+    <!-- blind nav -->
+    {{ evalPhp('Layout::zone', ['blind_navigation']) }}
+
+    <!-- container -->
+    <div id="container">
+        <!-- header -->
+
+        <!-- menu_over -->
+        <div id="menu_over" class="layout_menu_over">
+        <!-- feedback -->
+            {{ evalPhp('Layout::zone', ['feedback']) }}
+            {{ evalPhp('Layout::cart') }} <!-- ????? -->
+
+            <!-- header -->
+            <header class="header white-bg">
+                <nav>
+                    <div class="row-fluid" id="lms_menu_container" >
+                        <div class="navbar-header">
+                            {{ evalPhp('Layout::zone', ['logo']) }}
+                            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                                <span class="glyphicon glyphicon-align-justify"></span>
+                            </button>
+                        </div>
+                        <div id="navbar" class="navbar-collapse collapse">
+                            <ul class="nav navbar-nav">
+                                {{ evalPhp('Layout::zone', ['main-menu']) }}
+                                {{ evalPhp('Layout::zone', ['cart']) }} <!-- ????? -->
+                                {{ evalPhp('Layout::zone', ['profile']) }}
+                            </ul>
+                        </div>
+                        <div id="c-mask" class="c-mask"></div>
+                    </div>
+                </nav>
+            </header>
+
+            {# Temporary solution before helpdesk refactoring. #}
+            {{ evalPhp('Layout::zone', ['helpdesk']) }}
+            {# ############################################### #}
+
+        </div>
+
+
+        <!-- content -->
+        <div id="lms_main_container" class="row">
+
+                <!-- MENU LATERALE ON/OFF -->
+                <div id="course-info-boot" class="col-md-12">
+
+                    {{ evalPhp('Layout::zone', ['menu']) }}
+                    {% include 'coursemenu_lat.html.twig' with {dropdown:dropdown, course_name:course_name, course_img:course_img } %}
+                </div>
+
+            <div id="yui-main-boot" class='col-md-12'>
+
+                {{ direct_play|raw }}
+
+            </div>
+
+            <div class="nofloat"></div>
+        </div>
+        <!-- footer -->
+        <div id="footer" class="layout_footer">
+            {{ evalPhp('Layout::zone', ['footer']) }}
+
+            {{ evalPhp('Layout::copyright') }}
+
+
+        </div>
+    </div>
+
+    <!-- scripts -->
+    {{ evalPhp('Layout::zone', ['scripts']) }}
+    <!-- debug -->
+    {{ evalPhp('Layout::zone', ['debug']) }}
+    <!-- def_lang -->
+    {{ evalPhp('Layout::zone', ['def_lang']) }}
+
+{% endblock %}
+

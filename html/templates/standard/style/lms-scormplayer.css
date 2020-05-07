@@ -1,0 +1,93 @@
+/* ======================================================================== \
+
+|   FORMA - The E-Learning Suite                                            |
+
+|                                                                           |
+
+|   Copyright (c) 2013 (Forma)                                              |
+
+|   http://www.formalms.org                                                 |
+
+|   License  http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt           |
+
+|                                                                           |
+
+|   from docebo 4.0.5 CE 2008-2012 (c) docebo                               |
+
+|   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
+
+\ ======================================================================== */
+
+html{height:100%;}
+body{height:100%;background:#ffffff;color:#000000;font:13px/1.231 arial,sans-serif;*font-size:small;*font:x-small;}
+/* css for scorm */
+a.accessible{background:none;color:black;text-decoration:underline;}
+a.notaccessible{background:none;color:#666666;text-decoration:underline;}
+.TreeRowClass img{}
+.TreeRowClass{position:relative;clear:both;display:block;padding:6px 22px 6px 24px;}
+.TreeRowFolder{display:block;padding:6px 10px 6px 14px;font-weight:bold;color:#666666;}
+.TreeRoot{display:none;}
+.yui-skin-docebo .TreeRoot{display:block;padding:6px;font-weight:bold;color:#666666;}
+.TreeRowClass a{text-decoration:none;}
+.TreeRowClass a{text-decoration:none;color:#000000;}
+.TreeRowClass a:hover{text-decoration:underline;}
+img.TreeClass{vertical-align:middle;border:0px;}
+img.icoStatus{vertical-align:middle;border:0px none;margin:0px;padding-right:0.40em;position:absolute;top:3px;right:4px;}
+img.icoCompleted{}
+img.icoIncomplete{}
+img.icoLoked{}
+a.RunningSco{font-weight:bold;text-decoration:underline;}
+#headerLogo{width:20%;height:110px;float:left;border:0px;background-color:#fff;}
+#headtitle{padding:16px 35px 0 0;font-size:90%;font-weight:bold;}
+#statistics{padding-left:50px;margin-top:10px;width:35%;border:0px;float:left;font-size:83%;;}
+#headnav{border:0px;float:left;margin:10px;font-size:90%;}
+.new_headnav{border:0px;float:left;margin:0px;font-size:90%}
+img.imgnav{margin:0px 5px;}
+a#closewindow{margin:0;top:3px;right:3px;position:absolute;}
+#bodynav{text-align:center;width:90%;height:300px;margin:0 auto 0;padding:250px 0 0 0;position:relative;}
+#bodynav #prevblocklink{float:left;text-align:left;width:35%;height:32px;margin:0 0 0 30px;padding:0 0 0 35px;background:url('../images/scorm/bt_sx.gif') 0 50% no-repeat #ffffff;}
+#bodynav #nextblocklink{float:right;text-align:right;width:35%;height:32px;margin:0 30px 0 0;padding:0 35px 0 0;background:url('../images/scorm/bt_dx.gif') 100% 50% no-repeat #ffffff;}
+#bodynav a{color:#336699;font-weight:bold;}
+#treebody{}
+.standard_back{background:#4f4f4f;}
+#headerHeight{height:63px;}
+/** css for IE **/
+body{padding:0;margin:0;}
+#page_head{padding:0;margin:0;overflow:hidden;}
+	.treecontent_hiddentree,
+	.treecontent{position:absolute;
+				 top:0;
+				 left:0;
+				 width:170px;
+				 height:100%;overflow:hidden;}
+	.treecontent_hiddentree{width:0;}
+		.menubox{text-align:center;}
+		#TreeContainer{font-size:83%;width:95%;margin:5px 0 5px 2%;height: 94%;overflow-y: auto;}
+	.separator{position:absolute;
+			   width:5px;
+			   top:0;
+			   left:170px;
+			   overflow:hidden;
+			   height:100%;
+			   background:#cccccc;}
+		#sep_command{position:absolute;top:49%;}
+		#sep_command img{margin:0;border:0px none;}
+	.scocontent_hiddentree,
+	.scocontent{width:auto;
+				position:relative;
+				padding-left:175px;
+				height:100%;}
+	.scocontent_hiddentree{padding-left:6px;}
+		#scormbody{}
+/** css for all other browsers */
+table.statuser{width:100%;vertical-align:middle;}
+tr.statuser{vertical-align:middle;}
+td.statuser{vertical-align:middle;}
+.scorm_progressbarstat{position:relative;width:232px;height:24px;border-width:0px;border-style:solid;border-color:black;background:url('../images/scorm/bk_progress_bar.gif') left top no-repeat;padding:2px 5px 6px 2px;margin:0;font-size:83%;overflow:hidden;}
+.scorm_complete{position:absolute;height:14px;border-width:0;border-style:none;background:url('../images/scorm/bk_progress_complete.gif') left toprepeat-x white;margin:1px;padding:0px;}
+.scorm_incomplete{position:absolute;height:14px;border-width:0;border-style:none;background-color:white;margin:1px;padding:0px;}
+.scorm_failed{text-align:center;height:12px;position:relative;background:#FFCF31;border-width:1px 1px 1px 1px;border-style:solid;border-color:#000;margin:0px;padding:0px;}
+.reportcomplete{float:right;height:14px;width:130px;font-size:83%;font-family:Verdana,Arial,sans-serif;background:#0CAA0C;border-width:1px;border-style:solid;border-color:#000;}
+.reportfailed{float:right;height:14px;width:130px;font-size:83%;font-family:Verdana,Arial,sans-serif;background-color:#FFCF31;border-style:solid;border-width:1px;border-color:#000;}
+.reportincomplete{float:right;height:14px;width:130px;font-size:83%;font-family:Verdana,Arial,sans-serif;background-color:#FFFFFF;border-style:solid;border-width:1px;border-color:#000;}
+div.fright{float:right;width:132px;}

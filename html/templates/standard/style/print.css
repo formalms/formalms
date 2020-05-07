@@ -1,0 +1,28 @@
+/* ======================================================================== \
+
+|   FORMA - The E-Learning Suite                                            |
+
+|                                                                           |
+
+|   Copyright (c) 2013 (Forma)                                              |
+
+|   http://www.formalms.org                                                 |
+
+|   License  http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt           |
+
+|                                                                           |
+
+|   from docebo 4.0.5 CE 2008-2012 (c) docebo                               |
+
+|   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
+
+\ ======================================================================== */
+
+
+#header, div.layout_header{display:none; }
+#menu_over{display:none; }
+#menu{display:none; }
+#footer{display:none; }
+.container-back{display:none; }
+.print{display:none; }
+#content{width:100%;border:0px none;margin:0;}

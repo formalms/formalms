@@ -1,0 +1,491 @@
+/* ======================================================================== \
+
+|   FORMA - The E-Learning Suite                                            |
+
+|                                                                           |
+
+|   Copyright (c) 2013 (Forma)                                              |
+
+|   http://www.formalms.org                                                 |
+
+|   License  http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt           |
+
+|                                                                           |
+
+|   from docebo 4.0.5 CE 2008-2012 (c) docebo                               |
+
+|   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
+
+\ ======================================================================== */
+
+html, body {}
+.layout_header {padding: 8px 1em;background:#ffffff;}
+.layout_header .left_logo {margin-top: 5px;margin-left: 10px;vertical-align:middle;}
+.layout_colum_container{padding:1em;}
+
+.layout_footer{background:#eeeeee; height:21px; font-size:90%;}
+.layout_footer img{vertical-align:middle;}
+.layout_footer #link{margin-top:3px;padding:3px 16px 4px;}
+.layout_footer a{text-decoration:none;color:#777777;}
+.layout_footer a:hover{text-decoration:underline;}
+.layout_footer #link a.first{font-weight:bold;padding:0 6px 0 0;margin:0 3px 0 0;border-right:1px solid #777777;}
+.layout_footer .copyright{position:relative;top:3px;right:16px;text-align: right;color:#777777;}
+.layout_footer .ownedby{color:#777777;}
+
+.directory_order_image {vertical-align:middle;margin-left:2px;}
+#main_menu_container {border-top: 1px solid #cccccc;border-bottom: 1px solid #cccccc;}
+#admin_box_login{margin:10em auto;width:40em;border:1px solid #cccccc;}
+#admin_box_login div.form_login_ext{margin:1em 1em;}
+#admin_box_login legend{display:none;}
+/* dashboard */
+.block_spacer{margin-bottom:20px;}
+.block_spacer h3 {color:#003d6b; padding-bottom:6px; margin-bottom:10px;border-bottom:3px solid #eeeeee;text-transform:uppercase;}
+.chart {margin:0 auto;width:80%;height:250px;}
+
+
+/*
+ * SmartMenus jQuery v1.0.1
+ * http://www.smartmenus.org/
+ *
+ * Copyright Vasil Dinkov, Vadikom Web Ltd.
+ * http://vadikom.com/
+ *
+ * Released under the MIT license:
+ * http://www.opensource.org/licenses/MIT
+ */
+
+
+/* ADMIN MENU CSS */
+/* Mobile first layout SmartMenus Core CSS (it's not recommended editing these rules)
+-------------------------------------------------------------------------------------------*/
+/*  CORE - PART DO NOT MODIFY */
+.sm{position:relative;z-index:9999;}
+.sm,.sm ul,.sm li{display:block;list-style:none;margin:0;padding:0;line-height:normal;direction:ltr;text-align:left;-webkit-tap-highlight-color:rgba(0,0,0,0);}
+.sm-rtl,.sm-rtl ul,.sm-rtl li{direction:rtl;text-align:right;}
+.sm>li>h1,.sm>li>h2,.sm>li>h3,.sm>li>h4,.sm>li>h5,.sm>li>h6{margin:0;padding:0;}
+.sm ul{display:none;}
+.sm li,.sm a{position:relative;}
+.sm a{display:block;}
+.sm a.disabled{cursor:not-allowed;}
+.sm:after{content:"\00a0";display:block;height:0;font:0px/0 serif;clear:both;visibility:hidden;overflow:hidden;}
+.sm,.sm *,.sm *:before,.sm *:after{-moz-box-sizing:border-box;-webkit-box-sizing:border-box;box-sizing:border-box;}
+
+/*----------------------------------------------------------------------------------*/
+.sm-forma {
+  border-top: 2px solid #C84000;
+  border-bottom: 1px solid #C84000;
+  background: white;
+}
+.sm-forma a, .sm-forma a:hover, .sm-forma a:focus, .sm-forma a:active {
+  padding: 13px 20px;
+  /* make room for the toggle button (sub indicator) */
+  padding-right: 58px;
+  color: #333333;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  font-weight: normal;
+  line-height: 17px;
+  text-decoration: none;
+}
+.sm-forma a.current {
+  font-weight: bold;
+}
+.sm-forma a.disabled {
+  color: #cccccc;
+}
+.sm-forma a span.sub-arrow {
+  position: absolute;
+  top: 50%;
+  margin-top: -17px;
+  left: auto;
+  right: 4px;
+  width: 34px;
+  height: 34px;
+  overflow: hidden;
+  font: bold 14px/34px monospace !important;
+  text-align: center;
+  text-shadow: none;
+  background: rgba(141, 184, 99, 0.2);
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  border-radius: 4px;
+}
+.sm-forma a.highlighted span.sub-arrow:before {
+  display: block;
+  content: '-';
+}
+
+ .sm-forma a:hover {
+    background: #C84000; 
+ }
+
+.sm-forma li {
+  border-top: 1px solid rgba(141, 184, 99, 0.2);
+}
+.sm-forma > li:first-child {
+  border-top: 0;
+}
+.sm-forma ul {
+  background: rgba(141, 184, 99, 0.2);
+}
+.sm-forma ul a, .sm-forma ul a:hover, .sm-forma ul a:focus, .sm-forma ul a:active {
+  font-size: 14px;
+  border-left: 8px solid transparent;
+}
+.sm-forma ul ul a,
+.sm-forma ul ul a:hover,
+.sm-forma ul ul a:focus,
+.sm-forma ul ul a:active {
+  border-left: 16px solid transparent;
+}
+.sm-forma ul ul ul a,
+.sm-forma ul ul ul a:hover,
+.sm-forma ul ul ul a:focus,
+.sm-forma ul ul ul a:active {
+  border-left: 24px solid transparent;
+}
+.sm-forma ul ul ul ul a,
+.sm-forma ul ul ul ul a:hover,
+.sm-forma ul ul ul ul a:focus,
+.sm-forma ul ul ul ul a:active {
+  border-left: 32px solid transparent;
+}
+.sm-forma ul ul ul ul ul a,
+.sm-forma ul ul ul ul ul a:hover,
+.sm-forma ul ul ul ul ul a:focus,
+.sm-forma ul ul ul ul ul a:active {
+  border-left: 40px solid transparent;
+}
+
+.nav-brand a {
+  display: block;
+  padding: 11px 10px 10px 20px;
+  color: #333;
+}
+
+@media (min-width: 768px) {
+  /* Switch to desktop layout
+  -----------------------------------------------
+     These transform the menu tree from
+     collapsible to desktop (navbar + dropdowns)
+  -----------------------------------------------*/
+  /* start... (it's not recommended editing these rules) */
+  .sm-forma ul {
+    position: absolute;
+    width: 12em;
+  }
+
+  .sm-forma li {
+    float: left;
+  }
+
+  .sm-forma.sm-rtl li {
+    float: right;
+  }
+
+  .sm-forma ul li, .sm-forma.sm-rtl ul li, .sm-forma.sm-vertical li {
+    float: none;
+  }
+
+  .sm-forma a {
+    white-space: nowrap;
+  }
+
+  .sm-forma ul a, .sm-forma.sm-vertical a {
+    white-space: normal;
+  }
+
+  .sm-forma .sm-nowrap > li > a, .sm-forma .sm-nowrap > li > :not(ul) a {
+    white-space: nowrap;
+  }
+
+  /* ...end */
+  .sm-forma {
+    border-top: 0;
+    background: transparent;
+  }
+  .sm-forma a, .sm-forma a:hover, .sm-forma a:focus, .sm-forma a:active, .sm-forma a.highlighted {
+    padding: 15px 20px;
+    color: #333333;
+    -webkit-border-radius: 4px 4px 0 0;
+    -moz-border-radius: 4px 4px 0 0;
+    -ms-border-radius: 4px 4px 0 0;
+    -o-border-radius: 4px 4px 0 0;
+    border-radius: 4px 4px 0 0;
+  }
+  .sm-forma a:hover, .sm-forma a:focus, .sm-forma a:active {
+    background: #BFBFBF; //*#f6ffed;*/
+    color: black;
+  }
+  .sm-forma a.highlighted {
+    background: #BFBFBF;
+    color: #333333;
+    -webkit-box-shadow: 0 4px 3px rgba(0, 0, 0, 0.25);
+    -moz-box-shadow: 0 4px 3px rgba(0, 0, 0, 0.25);
+    box-shadow: 0 4px 3px rgba(0, 0, 0, 0.25);
+  }
+  .sm-forma a.disabled {
+    background: transparent;
+    color: #cccccc;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+  }
+  .sm-forma a.has-submenu {
+    padding-right: 34px;
+  }
+  .sm-forma a span.sub-arrow {
+    top: 50%;
+    margin-top: -3px;
+    right: 20px;
+    width: 0;
+    height: 0;
+    border-width: 6px 4.02px 0 4.02px;
+    border-style: solid dashed dashed dashed;
+    border-color: #C84000 transparent transparent transparent;
+    background: transparent;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    -ms-border-radius: 0;
+    -o-border-radius: 0;
+    border-radius: 0;
+  }
+  .sm-forma a:hover span.sub-arrow, .sm-forma a:focus span.sub-arrow, .sm-forma a:active span.sub-arrow {
+    border-color: white transparent transparent transparent;
+  }
+  .sm-forma a.highlighted span.sub-arrow {
+    border-color: #8db863 transparent transparent transparent;
+  }
+  .sm-forma a.disabled span.sub-arrow {
+    border-color: #8db863 transparent transparent transparent;
+  }
+  .sm-forma a.highlighted span.sub-arrow:before {
+    display: none;
+  }
+  .sm-forma li {
+    border-top: 0;
+  }
+  .sm-forma ul {
+    border: 0;
+    padding: 8px 0;
+    background: #f2f2f2;
+    -webkit-border-radius: 0 4px 4px 4px;
+    -moz-border-radius: 0 4px 4px 4px;
+    -ms-border-radius: 0 4px 4px 4px;
+    -o-border-radius: 0 4px 4px 4px;
+    border-radius: 0 4px 4px 4px;
+    -webkit-box-shadow: 0 5px 4px rgba(0, 0, 0, 0.25);
+    -moz-box-shadow: 0 5px 4px rgba(0, 0, 0, 0.25);
+    box-shadow: 0 5px 4px rgba(0, 0, 0, 0.25);
+  }
+  .sm-forma ul ul {
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    -ms-border-radius: 4px;
+    -o-border-radius: 4px;
+    border-radius: 4px;
+  }
+  .sm-forma ul a, .sm-forma ul a:hover, .sm-forma ul a:focus, .sm-forma ul a:active, .sm-forma ul a.highlighted {
+    border: 0 !important;
+    padding: 10px 20px;
+    color: #333333;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    -ms-border-radius: 0;
+    -o-border-radius: 0;
+    border-radius: 0;
+  }
+  .sm-forma ul a:hover, .sm-forma ul a:focus, .sm-forma ul a:active, .sm-forma ul a.highlighted {
+    background: #C84000;
+    color: white;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+  }
+  .sm-forma ul a.disabled {
+    background: transparent;
+    color: #b3b3b3;
+  }
+  .sm-forma ul a.has-submenu {
+    padding-right: 20px;
+  }
+  .sm-forma ul a span.sub-arrow {
+    right: 10px;
+    margin-top: -4.02px;
+    border-width: 4.02px 0 4.02px 6px;
+    border-style: dashed dashed dashed solid;
+    border-color: transparent transparent transparent #8db863;
+  }
+  .sm-forma ul a:hover span.sub-arrow, .sm-forma ul a:focus span.sub-arrow, .sm-forma ul a:active span.sub-arrow, .sm-forma ul a.highlighted span.sub-arrow {
+    border-color: transparent transparent transparent white;
+  }
+  .sm-forma ul a.disabled span.sub-arrow {
+    border-color: transparent transparent transparent #8db863;
+  }
+  .sm-forma span.scroll-up,
+  .sm-forma span.scroll-down {
+    position: absolute;
+    display: none;
+    visibility: hidden;
+    overflow: hidden;
+    background: #f6ffed;
+    height: 20px;
+  }
+  .sm-forma span.scroll-up-arrow, .sm-forma span.scroll-down-arrow {
+    position: absolute;
+    top: 6px;
+    left: 50%;
+    margin-left: -8px;
+    width: 0;
+    height: 0;
+    overflow: hidden;
+    border-width: 0 6px 8px 6px;
+    border-style: dashed dashed solid dashed;
+    border-color: transparent transparent #8db863 transparent;
+  }
+  .sm-forma span.scroll-down-arrow {
+    border-width: 8px 6px 0 6px;
+    border-style: solid dashed dashed dashed;
+    border-color: #8db863 transparent transparent transparent;
+  }
+  .sm-forma.sm-rtl a.has-submenu {
+    padding-right: 20px;
+    padding-left: 34px;
+  }
+  .sm-forma.sm-rtl a span.sub-arrow {
+    right: auto;
+    left: 20px;
+  }
+  .sm-forma.sm-rtl.sm-vertical {
+    border-right: 0;
+    border-left: 2px solid #8db863;
+  }
+  .sm-forma.sm-rtl.sm-vertical a {
+    -webkit-border-radius: 0 4px 4px 0;
+    -moz-border-radius: 0 4px 4px 0;
+    -ms-border-radius: 0 4px 4px 0;
+    -o-border-radius: 0 4px 4px 0;
+    border-radius: 0 4px 4px 0;
+  }
+  .sm-forma.sm-rtl.sm-vertical a.has-submenu {
+    padding: 10px 20px;
+  }
+  .sm-forma.sm-rtl.sm-vertical a span.sub-arrow {
+    right: auto;
+    left: 10px;
+    border-width: 4.02px 6px 4.02px 0;
+    border-style: dashed solid dashed dashed;
+    border-color: transparent #8db863 transparent transparent;
+  }
+  .sm-forma.sm-rtl.sm-vertical a:hover span.sub-arrow, .sm-forma.sm-rtl.sm-vertical a:focus span.sub-arrow, .sm-forma.sm-rtl.sm-vertical a:active span.sub-arrow, .sm-forma.sm-rtl.sm-vertical a.highlighted span.sub-arrow {
+    border-color: transparent white transparent transparent;
+  }
+  .sm-forma.sm-rtl.sm-vertical a.disabled span.sub-arrow {
+    border-color: transparent #8db863 transparent transparent;
+  }
+  .sm-forma.sm-rtl ul {
+    -webkit-border-radius: 4px 0 4px 4px;
+    -moz-border-radius: 4px 0 4px 4px;
+    -ms-border-radius: 4px 0 4px 4px;
+    -o-border-radius: 4px 0 4px 4px;
+    border-radius: 4px 0 4px 4px;
+  }
+  .sm-forma.sm-rtl ul a {
+    -webkit-border-radius: 0 !important;
+    -moz-border-radius: 0 !important;
+    -ms-border-radius: 0 !important;
+    -o-border-radius: 0 !important;
+    border-radius: 0 !important;
+  }
+  .sm-forma.sm-rtl ul a.has-submenu {
+    padding: 10px 20px !important;
+  }
+  .sm-forma.sm-rtl ul a span.sub-arrow {
+    right: auto;
+    left: 10px;
+    border-width: 4.02px 6px 4.02px 0;
+    border-style: dashed solid dashed dashed;
+    border-color: transparent #8db863 transparent transparent;
+  }
+  .sm-forma.sm-rtl ul a:hover span.sub-arrow, .sm-forma.sm-rtl ul a:focus span.sub-arrow, .sm-forma.sm-rtl ul a:active span.sub-arrow, .sm-forma.sm-rtl ul a.highlighted span.sub-arrow {
+    border-color: transparent white transparent transparent;
+  }
+  .sm-forma.sm-rtl ul a.disabled span.sub-arrow {
+    border-color: transparent #8db863 transparent transparent;
+  }
+  .sm-forma.sm-vertical {
+    border-bottom: 0;
+    border-right: 2px solid #8db863;
+  }
+  .sm-forma.sm-vertical a {
+    padding: 10px 20px;
+    -webkit-border-radius: 4px 0 0 4px;
+    -moz-border-radius: 4px 0 0 4px;
+    -ms-border-radius: 4px 0 0 4px;
+    -o-border-radius: 4px 0 0 4px;
+    border-radius: 4px 0 0 4px;
+  }
+  .sm-forma.sm-vertical a:hover, .sm-forma.sm-vertical a:focus, .sm-forma.sm-vertical a:active, .sm-forma.sm-vertical a.highlighted {
+    background: #8db863;
+    color: white;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+  }
+  .sm-forma.sm-vertical a.disabled {
+    background: transparent;
+    color: #cccccc;
+  }
+  .sm-forma.sm-vertical a span.sub-arrow {
+    right: 10px;
+    margin-top: -4.02px;
+    border-width: 4.02px 0 4.02px 6px;
+    border-style: dashed dashed dashed solid;
+    border-color: transparent transparent transparent #8db863;
+  }
+  .sm-forma.sm-vertical a:hover span.sub-arrow, .sm-forma.sm-vertical a:focus span.sub-arrow, .sm-forma.sm-vertical a:active span.sub-arrow, .sm-forma.sm-vertical a.highlighted span.sub-arrow {
+    border-color: transparent transparent transparent white;
+  }
+  .sm-forma.sm-vertical a.disabled span.sub-arrow {
+    border-color: transparent transparent transparent #8db863;
+  }
+  .sm-forma.sm-vertical ul {
+    -webkit-border-radius: 4px !important;
+    -moz-border-radius: 4px !important;
+    -ms-border-radius: 4px !important;
+    -o-border-radius: 4px !important;
+    border-radius: 4px !important;
+  }
+  .sm-forma.sm-vertical ul a {
+    padding: 10px 20px;
+  }
+
+  .nav-brand {
+    float: left;
+    margin: 0;
+  }
+
+  /* FIX ADMIN LOGO */
+
+  .sm-forma a.forma-admin-logo {
+    padding: 6px;
+    margin-left: 25px;
+    background-color: #c84000;
+    border-radius: 0;
+  }
+
+  .sm-forma a.forma-admin-logo:hover {
+    background-color: #c84000;
+    border-radius: 0;
+    padding: 6px;
+  }
+
+  .forma-admin-logo img {
+    height: 35px;
+    width: auto;
+  }
+  
+
+}

@@ -1,0 +1,69 @@
+<li class="green_menu">                                
+    <div id="o-wrapper" class="o-wrapper">
+        <button id="c-button--slide-right" class="c-button" >
+            <a data-toggle="dropdown" href="#" title="{{ translate('_PROFILE', 'menu_course') }}">
+                <span class="username icon--profile">{{ user.getUserName() }}</span>
+            </a>
+        </button>
+    </div>
+</li>
+<div id="c-menu--slide-right" class="c-menu c-menu--slide-right user-panel">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-6">
+                <a href="javascript:void(0)" class="c-menu__close"><span class="glyphicon glyphicon-remove">{{ translate('_PROFILE', 'organization') }}</span></a>
+            </div>
+            <div class="col-xs-6">
+                <a title="{{ translate('_LOGOUT', 'standard') }}" href="{{ evalPhp('Get::rel_path', ['base']) }}/index.php?r={{ evalPhp('constant', ['_logout_']) }}">
+                    <span class="glyphicon glyphicon-off">{{ translate('_LOGOUT', 'standard') }}</span>
+                </a>
+            </div>
+        </div>
+        <div class="tabnav js-tabnav">
+            {% if profile or credits %}
+                <div class="tabnav__label-wrapper">
+                {% if profile %}
+                    <div class="tabnav__label selected" data-tab="profile">{{ translate('_PROFILE', 'standard') }}</div>
+                {% endif %}
+                {% if credits %}
+                    <div class="tabnav__label{% if not profile %} selected{% endif %}" data-tab="credits">{{ translate('_TIME_PERIODS', 'standard') }}</div>
+                {% endif %}
+                </div>
+            {% endif %}
+        </div>
+        <div class="tabnav__content-wrapper">
+        {% if profile %}
+            <div class="tabnav__content tabnav__content--profile is-visible">{{ profile.homeUserProfile('normal', false, false)|raw }}</div>
+        {% endif %}
+        {% if credits %}
+            <div class="tabnav__content tabnav__content--credits{% if not profile %} is-visible{% endif %}">
+                <div class="row credits">
+                    <div class="col-xs-12">
+                        <div class="js-credits-ajax-container">{{ credits|raw }}</div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+        </div>
+        <div class="row course-subscription">
+            <div class="col-xs-12">
+                {{ subscribeCourse|raw }}
+            </div>
+        </div>
+        <div class="row news">
+            <div class="col-xs-12">
+                {{ news|raw }}
+            </div>
+        </div>
+        {% if evalPhp('count', [languages]) > 1 %}
+        <div class="row lang">
+            <div class="col-xs-6">
+                <p>{{ translate('_CHANGELANG', 'register') }}</p>
+            </div>
+            <div class="col-xs-6">
+                {{ evalPhp('Layout::buildLanguages') }}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
