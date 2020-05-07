@@ -413,7 +413,7 @@ class AggregatedCertificate {
             .   "{$field_link}" // If i'm passing array of id user and array of links, i want to check if there are any assoc
             .   " FROM ".$table
             .   " WHERE idAssociation = ".$id_assoc
-            .   " AND idUser = 0";
+            .   " AND idUser = 0 order by {$field_link}";
 
 
         $rs = sql_query($q);

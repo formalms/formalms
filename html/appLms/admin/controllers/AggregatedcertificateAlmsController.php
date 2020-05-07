@@ -1103,7 +1103,7 @@ function associationPaths() {
         $tb->setColsStyle($type_h);
         $tb->addHead($cont_h);
         
-        reset($linksArr);
+
 
         $aclManager = new DoceboACLManager();
         $usersArr =  array_map('intval', $aclManager->getArrUserST($usersArr));

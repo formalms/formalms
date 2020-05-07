@@ -119,7 +119,7 @@ class MycertificateLms extends Model {
     public function getMyMetaCertificates() {
         
         $q = "SELECT %lms_certificate.id_certificate, %lms_aggregated_cert_assign.idAssociation, %lms_certificate.code,  %lms_certificate.name, 
-              DATE_FORMAT(%lms_aggregated_cert_assign.on_date, '%Y/%m/%d') as 'on_date', %lms_aggregated_cert_assign.cert_file, '' as 'courses_name', %lms_coursepath.path_name 
+              DATE_FORMAT(%lms_aggregated_cert_assign.on_date, '%Y/%m/%d') as 'on_date', %lms_aggregated_cert_assign.cert_file, '' as 'course_name', %lms_coursepath.path_name 
               FROM %lms_certificate, %lms_aggregated_cert_assign, %lms_aggregated_cert_coursepath, %lms_coursepath
               WHERE %lms_certificate.id_certificate=%lms_aggregated_cert_assign.idCertificate
               AND %lms_aggregated_cert_assign.idAssociation=%lms_aggregated_cert_coursepath.idAssociation
@@ -142,7 +142,7 @@ class MycertificateLms extends Model {
 
            
        $q = "SELECT %lms_certificate.id_certificate, %lms_aggregated_cert_assign.idAssociation, %lms_certificate.code,  %lms_certificate.name, 
-              DATE_FORMAT(%lms_aggregated_cert_assign.on_date, '%Y/%m/%d') as 'on_date', %lms_aggregated_cert_assign.cert_file, %lms_course.name as 'courses_name', '' as 'path_name'
+              DATE_FORMAT(%lms_aggregated_cert_assign.on_date, '%Y/%m/%d') as 'on_date', %lms_aggregated_cert_assign.cert_file, %lms_course.name as 'course_name', '' as 'path_name'
               FROM %lms_certificate, %lms_aggregated_cert_assign, %lms_aggregated_cert_course, %lms_course
               WHERE %lms_certificate.id_certificate=%lms_aggregated_cert_assign.idCertificate
               AND %lms_aggregated_cert_assign.idAssociation=%lms_aggregated_cert_course.idAssociation
@@ -155,8 +155,9 @@ class MycertificateLms extends Model {
                 $arrAggregatedCerts[$ii] = $row;
                 $ii++;     
             } else {
-                $arrAggregatedCerts[$ii-1]['path_name'] = $arrAggregatedCerts[$ii-1]['courses_name']." | ".$row['courses_name'];
-            }    
+                $arrAggregatedCerts[$ii-1]['course_name'] = $arrAggregatedCerts[$ii-1]['course_name']." | ".$row['course_name'];
+            }
+            $prev_idcert = $row['id_certificate'];    
            
        }
        return $arrAggregatedCerts;

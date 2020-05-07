@@ -5,6 +5,7 @@ include Forma::inc(_lib_ . '/formatable/include.php');
 echo getTitleArea(Lang::t('_MY_CERTIFICATE', 'certificate')); 
 
 
+
 $cert_columns = array(
     array('key' => 'year', 'label' => Lang::t('_DATE'), 'className' => 'min-cell', 'sortable' => true),
     array('key' => 'code', 'label' => Lang::t('_CODE')),
@@ -58,6 +59,13 @@ $tabs_header = '<ul class="nav nav-tabs" role="tablist">
     </div> <!-- close std_block -->    
 
 <script>
+
+$("body").on("click", "#pdf_download", function () {
+    $(this).text("<?=Lang::t('_DOWNLOAD')?>")
+});
+
+
+
 $(function() {
   var tableId = '#mycertificates';
 
@@ -73,10 +81,9 @@ $(function() {
     },
   });
 
-  var tableMetaId = '#mymetacertificates';
   
   
-  var metacert_tb =  $(tableMetaId).FormaTable({
+  var metacert_tb =  $('#mymetacertificates').FormaTable({
        data:  <?=$metacertificates?>,
        columns:[
        { data: 'id_certificate', title: 'id_certificate', sortable: false, visible: false, searchable: false },
@@ -90,8 +97,8 @@ $(function() {
        }},
        { data: 'code', title: '<?=Lang::t('_CODE')?>', sortable: true, visible: true, searchable: false },
        { data: 'name', title: '<?=Lang::t('_CERTIFICATE_NAME', 'course')?>', sortable: true, visible: true, searchable: true },
-       { data: 'courses_name', title: '<?=Lang::t('_COURSES')?>', sortable: true, visible: true, searchable: true },
-       { data: 'path_name', title: '<?=Lang::t('_COURSEPATH')?>', sortable: true, visible: true, searchable: true, render: function(data){return data.replace("|", "<br>");} },
+       { data: 'course_name', title: '<?=Lang::t('_COURSES')?>', sortable: true, visible: true, searchable: true, render: function(data){return data.split("|").join("<br>");} },
+       { data: 'path_name', title: '<?=Lang::t('_COURSEPATH')?>', sortable: true, visible: true, searchable: true, render: function(data){return data.split("|").join("<br>");} },
        { data: 'cert_file', title: '<?=Lang::t('_TAKE_A_COPY', 'certificate')?>', 
                 sortable: false, visible: true, searchable: false, render: function(data, type, row){
             title = (data!=''?"<?=LANG::t('_DOWNLOAD', 'certificate')?>":"<?=LANG::t('_GENERATE', 'certificate')?>");        
@@ -105,12 +112,7 @@ $(function() {
       
   })
   
-  $( '#mymetacertificates tbody, #mycertificates tbody' ).on('click', 'tr', function(){
-        var d = metacert_tb.row( this).data();
-        alert( 'You clicked on' );
-  })
 
 });
-
 
 </script>
