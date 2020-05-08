@@ -1410,6 +1410,21 @@ class CoursereportLmsController extends LmsController
 
 		$lev = $type_filter;
 		$students = getSubscribed((int) $_SESSION['idCourse'], FALSE, $lev, TRUE, false, false, true);
+
+		//apply sub admin filters, if needed
+		if (!$view_all_perm) {
+			//filter users
+			require_once(_base_ . '/lib/lib.preference.php');
+			$ctrlManager = new ControllerPreference();
+			$ctrl_users = $ctrlManager->getUsers(Docebo::user()->getIdST());
+			foreach ($students as $idst => $user_course_info) {
+				if (!in_array($idst, $ctrl_users)) {
+					// Elimino gli studenti non amministrati
+					unset($students[$idst]);
+				}
+			}
+		}
+
 		$id_students = array_keys($students);
 		$students_info = &$acl_man->getUsers($id_students);
 
