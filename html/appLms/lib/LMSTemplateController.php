@@ -57,16 +57,12 @@ final class LMSTemplateController extends TemplateController {
       
       $availables = 0;
       foreach ($certificates as $cert) {
-        if (!$cert[6]) { // $cert['on_date']
+        if ($cert[4] == '0000-00-00' || $cert[4] == '' ) { // $cert['on_date']
           $availables++;
         }
       }
-
-      // Adding aggr. certs - removed at the moment. Need a faster way to get new issued aggregated certifies
-      //  $availables += $model->countAggrCertsToRelease();
       
-      
-      return $availables;
+      return $availables+ $model->countAggrCertsToRelease();
     }
 
     private function showMenu() {

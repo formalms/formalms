@@ -1,8 +1,8 @@
 <?php
 
-
+    $mytitle = $cert_name.":&nbsp".Lang::t('_CERTIFICATE_AGGREGATE_ASSOCIATION','certificate'); 
     cout(
-        getTitleArea(Lang::t('_AGGREGATE_CERTIFICATES_ASSOCIATION_CAPTION'), 'certificate')
+        getTitleArea($mytitle)
         .'<div class="std_block">'
             .Form::openForm('new_assign_step_0', 'index.php?r=alms/aggregatedcertificate/'. $operation)
                 .Form::getHidden('id_certificate', 'id_certificate',  $id_certificate)

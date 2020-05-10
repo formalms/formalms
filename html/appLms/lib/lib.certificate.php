@@ -934,7 +934,10 @@ class Certificate {
 		$this->getPdf($cert_structure, $name, $bgimage, $orientation, true, true);
 	}
 
-	function send_certificate($id_certificate, $id_user, $id_course, $array_substituton = false, $download = true, $from_multi = false, $id_association = 0)
+	/**
+    *  $from_multi true and download false used for generating multiple certificates zipped in a file
+    */
+    function send_certificate($id_certificate, $id_user, $id_course, $array_substituton = false, $download = true, $from_multi = false, $id_association = 0)
 	{
 		$isAggregatedCert = Get::req('aggCert', DOTY_INT, 0);
         if( $isAggregatedCert){
@@ -997,21 +1000,29 @@ class Certificate {
 		sl_close_fileoperations();
 
 		//save the generated file in database
+        $the_date = date("Y-m-d H:i:s");        
         if(!$isAggregatedCert)
 			$query = "INSERT INTO ".$GLOBALS['prefix_lms']."_certificate_assign "
 			." ( id_certificate, id_course, id_user, on_date, cert_file ) "
 			." VALUES "
-			." ( '".$id_certificate."', '".$id_course."', '".$id_user."', '".date("Y-m-d H:i:s")."', '".addslashes($cert_file)."' ) ";
+			." ( '".$id_certificate."', '".$id_course."', '".$id_user."', '".$the_date."', '".addslashes($cert_file)."' ) ";
 		else
             $query = "UPDATE ".$aggCertLib->table_assign_agg_cert
-                     ." SET on_date = '".date("Y-m-d H:i:s")
+                     ." SET on_date = '".$the_date
                      ."', cert_file = '".addslashes($cert_file)
                      ."' WHERE idUser = ".intval($id_user)
                      . " AND idCertificate = ".intval($id_certificate)
                      . " AND idAssociation = ".intval($id_association); 
-
-		if(!sql_query($query)) return false;
-
+        if(!sql_query($query)) return false;
+        
+        $new_data['cert_file'] = $cert_file;
+        $new_data['on_date'] = $the_date;
+        Events::trigger('lms.certificate_user.assigned', [
+                'id_user' => $id_user,
+                'id_certificate' => $id_certificate,
+                'new_data' => $new_data,
+        ], 0); 
+        
 		if($from_multi)
 			return;
 

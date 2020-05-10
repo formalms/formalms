@@ -7,7 +7,7 @@ echo getTitleArea(Lang::t('_MY_CERTIFICATE', 'certificate'));
 
 
 $cert_columns = array(
-    array('key' => 'year', 'label' => Lang::t('_DATE'), 'className' => 'min-cell', 'sortable' => true),
+    array('key' => 'on_date', 'label' => Lang::t('_DATE'), 'className' => 'min-cell', 'sortable' => true),
     array('key' => 'code', 'label' => Lang::t('_CODE')),
     array('key' => 'course_name', 'label' => Lang::t('_COURSE', 'certificate')),
     array('key' => 'cert_name', 'label' => Lang::t('_CERTIFICATE_NAME', 'course')),
@@ -68,6 +68,12 @@ $("body").on("click", "#pdf_download", function () {
 
 $(function() {
   var tableId = '#mycertificates';
+  var languageObj = {
+                    'sInfo' :"<?=Lang::t('_FROM'); ?> _START_  <?= Lang::t('_TO'); ?> _END_ <?=Lang::t('_OF')?>   _TOTAL_ ",
+                    'infoEmpty': '',
+                    'sEmptyTable' : '<?=Lang::t('_NO_CERT_AVAILABLE', 'certificate');?> '
+                 } 
+  
 
   $(tableId).FormaTable({
     processing: true,
@@ -79,6 +85,7 @@ $(function() {
       type: "POST",
       complete: function(json) {},
     },
+    language:languageObj
   });
 
   
@@ -108,7 +115,9 @@ $(function() {
                     +'&id_association='+row.idAssociation + '" title="'+title+'">'
                     +title+'</a>' 
        }}
-       ]
+       ],
+       language:languageObj
+       
       
   })
   

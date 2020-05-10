@@ -43,30 +43,15 @@ class MycertificateLms extends Model {
                     . 'downloadCert&id_certificate=' . $cert['id_certificate'] . '&id_course=' . $cert['id_course'] . '" '
                     . ' title="' . (isset($cert['on_date'])?Lang::t('_DOWNLOAD', 'certificate'):Lang::t('_GENERATE', 'certificate')). '"><span>' 
                     . (isset($cert['on_date'])?Lang::t('_DOWNLOAD', 'certificate'):Lang::t('_GENERATE', 'certificate')) . '</span></a>';
-                switch ($cert['available_for_status']) {
-                    case 3:
-                        $year = substr($cert['date_end'], 0, 10);
-                        break;
-                    case 2:
-                        $year = substr($cert['date_begin'], 0, 10);
-                        break;
-                    case 1:
-                        $year = substr($cert['date_inscr'], 0, 10);
-                        break;
-                    default:
-                        $year = '-';
-                }
 
-                $row = array(
-                    'year' => $year,
+                $data[] = array(
+                    'on_date' => substr($cert['on_date'], 0, 10),
                     'code' => $cert['code'],
                     'course_name' => $cert['course_name'],
                     'cert_name' => $cert['cert_name'],
-                    'on_date' => $cert['on_date'],
+                    'date_complete' => $cert['date_complete'],
                     'download' => $download                    
                 );
-
-                $data[] = $row;
             }
         }
 
@@ -124,6 +109,7 @@ class MycertificateLms extends Model {
               WHERE %lms_certificate.id_certificate=%lms_aggregated_cert_assign.idCertificate
               AND %lms_aggregated_cert_assign.idAssociation=%lms_aggregated_cert_coursepath.idAssociation
               AND %lms_aggregated_cert_coursepath.idCoursePath = %lms_coursepath.id_path
+              AND learning_aggregated_cert_course.idUser = learning_aggregated_cert_assign.idUser
               AND %lms_aggregated_cert_coursepath.idUser=".intval($this->id_user);
               
        $rs = sql_query($q);       
@@ -147,6 +133,7 @@ class MycertificateLms extends Model {
               WHERE %lms_certificate.id_certificate=%lms_aggregated_cert_assign.idCertificate
               AND %lms_aggregated_cert_assign.idAssociation=%lms_aggregated_cert_course.idAssociation
               AND %lms_aggregated_cert_course.idCourse = %lms_course.idCourse
+              AND learning_aggregated_cert_course.idUser = learning_aggregated_cert_assign.idUser
               AND %lms_aggregated_cert_course.idUser=".intval($this->id_user);
        $rs = sql_query($q);       
        $prev_idcert = 0; 
@@ -165,10 +152,9 @@ class MycertificateLms extends Model {
     } 
     
 
-    // TODO: passare nella aggregated_certificate
     function countAggrCertsToRelease() {
         $r = sql_fetch_row(
-                sql_query('SELECT count(*) as tot from %lms_aggregated_cert_assign where idUser ='.Docebo::user()->getIdSt(). ' AND cert_file is null')
+                sql_query('SELECT count(*) as tot from %lms_aggregated_cert_assign where idUser ='.Docebo::user()->getIdSt(). ' AND cert_file = \'\'')
                           );
         return $r[0];
     }
@@ -180,7 +166,7 @@ class MycertificateLms extends Model {
     
     function countMyMetaCertsReleased(){
         $r = sql_fetch_row(
-                sql_query('SELECT count(*) as tot from %lms_aggregated_cert_assign where idUser ='.Docebo::user()->getIdSt(). ' AND cert_file is not null')
+                sql_query('SELECT count(*) as tot from %lms_aggregated_cert_assign where idUser ='.Docebo::user()->getIdSt(). ' AND cert_file <> \'\'')
                           );
         return $r[0];
     }

@@ -22,6 +22,7 @@ Class AggregatedcertificateAlmsController extends AlmsController
     protected $controller_name;
 
     protected $aggCertLib;
+    public $cert_name;
     /** 
     *   In this array there are all the operations called in the module.
     *
@@ -37,19 +38,12 @@ Class AggregatedcertificateAlmsController extends AlmsController
         'layout' => 'layout',
             'saveLayout' => 'saveLayout',
         
-        'preview' => 'preview',
-        
-        'assignmentManagement' => 'assignmentManagement',
-        
-            'preview_cert' => 'preview_cert',
             
             'release_cert' => 'release_cert',
             
             'del_released' => 'delReleased',
  
-        'associationsManagement' => 'associationsManagement',
         
-            'metaDataAssoc' => 'metaDataAssoc',
                 
                 'del_association' => 'delAssociations',
                 
@@ -76,6 +70,17 @@ Class AggregatedcertificateAlmsController extends AlmsController
         $this->aggCertLib = new AggregatedCertificate();
 
         $this->model = new AggregatedcertificateAlms();
+        
+        $this->id_certificate = importVar('id_certificate',true, 0);
+        $this->id_association = importVar('id_association',true, 0);
+        $this->cert_name = $this->aggCertLib->getAggrCertName( $this->id_certificate);
+        if ($this->id_association > 0 ) {
+            $a = $this->aggCertLib->getAssociationsMetadata( 0,  $this->id_association);
+            $this->association_name = $a[0]['title'];
+        } else
+           $this->association_name = ''; 
+        $this->back_url =  'index.php?r=alms/'.$this->controller_name.'/associationsManagement&id_certificate='. $this->id_certificate;
+               
     }
 
    
@@ -94,7 +99,7 @@ Class AggregatedcertificateAlmsController extends AlmsController
         
         checkPerm('view');
 
-        $tb    = new Table(Get::sett('visuItem'), Lang::t('_AGGREGATED_CERTIFICATE_LIST'), Lang::t('_AGGREGATED_CERTIFICATE_LIST'));
+        $tb    = new Table(Get::sett('visuItem'), Lang::t('_META_CERTIFICATE_SUMMARY', 'certificate'), Lang::t('_META_CERTIFICATE_SUMMARY', 'certificate'));
         $tb->initNavBar('ini', 'link');
         $tb->setLink("index.php?r=alms/".$this->controller_name."/".$this->op['home']);        
         $ini = $tb->getSelectedElement();
@@ -130,10 +135,10 @@ Class AggregatedcertificateAlmsController extends AlmsController
 
         if($userCanModify) {
         
-            $cont_h[] =    Get::img('standard/moduser.png', Lang::t('_ASSOCIATIONS_AGGREGATED_CERTIFICATES'));
+            $cont_h[] =    Get::img('standard/moduser.png', Lang::t('_CERTIFICATE_AGGREGATE_ASSOCIATION', 'certificate'));
             $type_h[] =    'image';
 
-            $cont_h[] =    Get::sprite('subs_print', Lang::t('_RELEASE_AGGREGATED_CERTIFICATE'));
+            $cont_h[] =    Get::sprite('subs_print', Lang::t('_CERTIFICATE_AGGREGATE_ASSOCIATION', 'certificate'));
             $type_h[] =    'image';
 
             $cont_h[] =    Get::img('standard/edit.png', Lang::t('_MOD'), Lang::t('_MOD'));
@@ -169,22 +174,22 @@ Class AggregatedcertificateAlmsController extends AlmsController
 
                     $cont[] = Get::sprite_link(                           
                         'subs_view',
-                        'index.php?r=alms/'.$this->controller_name.'/'.$this->op['preview'].'&amp;id_certificate='.$aggregate_cert["id_certificate"],
-                        Lang::t('_PREVIEW')
+                        'index.php?r=alms/'.$this->controller_name.'/preview&amp;id_certificate='.$aggregate_cert["id_certificate"],
+                        Lang::t('_PREVIEW'). ' : ' . $title  
                     ); 
                     
             if($userCanModify) {
                     
                     $cont[] = Get::sprite_link(    
                         'subs_admin',
-                        'index.php?r=alms/'.$this->controller_name.'/'.$this->op['associationsManagement'].'&amp;id_certificate='.$aggregate_cert["id_certificate"],
-                         Lang::t('_ASSOCIATES_AGGREGATE_CERTIFICATE')        
+                        'index.php?r=alms/'.$this->controller_name.'/associationsManagement&amp;id_certificate='.$aggregate_cert["id_certificate"],
+                         Lang::t('_CERTIFICATE_AGGREGATE_ASSOCIATION', 'certificate'). ' : ' . $title          
                         );
                         
                     $cont[] = Get::sprite_link(
                         'subs_print',
-                        'index.php?r=alms/'.$this->controller_name.'/'.$this->op['assignmentManagement'].'&amp;id_certificate='.$aggregate_cert["id_certificate"],
-                        Lang::t('_ASSIGN_AGGREGATE_CERTIFICATE')
+                        'index.php?r=alms/'.$this->controller_name.'/assignmentManagement&amp;id_certificate='.$aggregate_cert["id_certificate"],
+                        Lang::t('_TITLE_ASSIGN_META_CERTIFICATE', 'certificate'). ' : ' . $title  
                         );
 
                     $cont[] = Get::sprite_link(
@@ -212,8 +217,8 @@ Class AggregatedcertificateAlmsController extends AlmsController
            $tb->addActionAdd('
                <a   class="ico-wt-sprite subs_add" 
                     href="index.php?r=alms/'.$this->controller_name.'/'.$this->op['metadata'].'" 
-                    title="'.Lang::t('_NEW_AGGREGATED_CERTIFICATE').'">
-                    <span>'.Lang::t('_NEW_AGGREGATED_CERTIFICATE').'</span>
+                    title="'.Lang::t('_NEW_CERTIFICATE', 'certificate').'">
+                    <span>'.Lang::t('_NEW_CERTIFICATE', 'certificate').'</span>
                </a>
            ');
         }
@@ -254,8 +259,8 @@ Class AggregatedcertificateAlmsController extends AlmsController
         
         $isModifyingMetaData = ($id_cert !== 0);
         $page_title = array(
-        'index.php?r=alms/'.$this->controller_name.'/'.$this->op['metadata'] => Lang::t('_TITLE_AGGREGATED_CERTIFICATES'),
-        $isModifyingMetaData ? Lang::t('_MOD_METADATA_AGGR_CERT') : Lang::t('_INS_METADATA_AGGR_CERT')
+        'index.php?r=alms/'.$this->controller_name.'/show' =>Lang::t('_TITLE_META_CERTIFICATE', 'certificate'),
+        $isModifyingMetaData ? Lang::t('_MOD') : Lang::t('_NEW_CERTIFICATE', 'certificate')
         );
         
         if($isModifyingMetaData) {
@@ -317,19 +322,17 @@ Class AggregatedcertificateAlmsController extends AlmsController
         
         checkPerm('view');
         checkPerm('mod', true);
-        
-        $id_certificate = Get::req('id_certificate', DOTY_INT, 0);
        
         // If the user want to edit layout, then in the page will be loaded the datas from the db
         $edit = Get::req('edit', DOTY_INT, 0);
          
         $page_title = array(
-            'index.php?r=alms/'.$this->controller_name.'/'.$this->op['layout'] => Lang::t('_TITLE_AGGREGATED_CERTIFICATES'),
-            Lang::t('_STRUCTURE_AGGR_CERT')
+            'index.php?r=alms/'.$this->controller_name.'/'.$this->op['layout'] => Lang::t('_TITLE_META_CERTIFICATE', 'certificate'),
+            ($edit? Lang::t('_MOD'):Lang::t('_NEW') )
         );
 
-        if($edit && $id_certificate !== 0)
-            $template = $this->aggCertLib->getLayoutMetacert($id_certificate);
+        if($edit && $this->id_certificate !== 0)
+            $template = $this->aggCertLib->getLayoutMetacert($this->id_certificate);
          
         $certificate_tags = $this->aggCertLib->getCertificateTags();
           
@@ -337,7 +340,7 @@ Class AggregatedcertificateAlmsController extends AlmsController
             "controller_name" => $this->controller_name,
             "page_title" => $page_title,
 
-            "id_certificate" => $id_certificate,
+            "id_certificate" => $this->id_certificate,
             "certificate_tags" => $certificate_tags,
         );
         
@@ -347,7 +350,7 @@ Class AggregatedcertificateAlmsController extends AlmsController
         $this->render( $this->op['layout'],$params);
     }
     
-        function saveLayout() {
+    function saveLayout() {
         
             checkPerm('mod');
             
@@ -402,16 +405,21 @@ Class AggregatedcertificateAlmsController extends AlmsController
         checkPerm('mod');
         require_once(_base_.'/lib/lib.table.php');
 
-        $id_certificate = Get::req('id_certificate',DOTY_INT,0);
-
         // Creating table...
-        $tb = new Table(Get::sett('visuItem'), Lang::t('_ASSOCIATIONS_CAPTION'), Lang::t('_ASSOCIATIONS_CAPTION'));
+        $tb = new Table(Get::sett('visuItem'), Lang::t('_META_CERTIFICATE_ASSIGN_CAPTION', 'certificate'), Lang::t('_META_CERTIFICATE_ASSIGN_CAPTION', 'certificate'));
         $tb->initNavBar('ini', 'link');
-        $tb->setLink('index.php?r=alms/'.$this->controller_name.'/'.$this->op['associationsManagement'].'&id_certificate='.$id_certificate);
+        $tb->setLink($this->back_url);
         $ini = $tb->getSelectedElement();
+        $tb->addActionAdd(    
+            '<a class="new_element_link" 
+            href="index.php?r=alms/'.$this->controller_name.'/modAssoc&amp;id_certificate='.$this->id_certificate.'"
+            title="'.Lang::t('_NEW_ASSING_META_CERTIFICATE','certificate').'">'
+            .Lang::t('_NEW_ASSING_META_CERTIFICATE','certificate')
+            .'</a>'
+        );        
 
         // Getting all metacerts belonging to the certificate
-        $associationsMetadataArr = $this->aggCertLib->getAssociationsMetadata($id_certificate, 0, $ini);
+        $associationsMetadataArr = $this->aggCertLib->getAssociationsMetadata($this->id_certificate, 0, $ini);
 
         $type_h = array('',  // Name
                         '',  // Description
@@ -448,7 +456,8 @@ Class AggregatedcertificateAlmsController extends AlmsController
             $rows[] = stripslashes($association["description"]);
             $rows[] = Get::sprite_link( 
                         'subs_view',
-                        'index.php?r=alms/'.$this->controller_name.'/'.$this->op['view_details'].'&amp;id_association='.$association["idAssociation"].'&amp;id_certificate='.$id_certificate.'&amp;type_assoc='.$type_association,
+                        'index.php?r=alms/'.$this->controller_name.'/'.$this->op['view_details'].'&amp;id_association='.$association["idAssociation"].'&amp;id_certificate='
+                        .$this->id_certificate.'&amp;type_assoc='.$type_association,
                         Lang::t( '_DETAILS' )  
                     );
                     
@@ -456,31 +465,31 @@ Class AggregatedcertificateAlmsController extends AlmsController
             // Depending on the type of the course
             $rows[] = ($type_association == COURSE) ? 
                     '<a href="index.php?r=alms/'.$this->controller_name.'/modAssoc'
-                        .'&amp;id_certificate='.$id_certificate
+                        .'&amp;id_certificate='.$this->id_certificate
                         .'&amp;id_association='.$association["idAssociation"]
                         .'&amp;type_assoc='. COURSE
                         .'">
                         <img src="'.getPathImage().'standard/edit.png"
-                             alt="'.Lang::t( '_MODIFY_COURSE_ASSOCIATIONS' ).'" 
-                             title="'.Lang::t( '_MODIFY_COURSE_ASSOCIATIONS' ).'" />
+                             alt="'.Lang::t( '_MOD' ).'" 
+                             title="'.Lang::t( '_MOD' ).'" />
                     </a>' : 
                     '<a href="index.php?r=alms/'.$this->controller_name.'/modAssoc'
-                        .'&amp;id_certificate='.$id_certificate
+                        .'&amp;id_certificate='.$this->id_certificate
                         .'&amp;id_association='.$association["idAssociation"]
                         .'&amp;type_assoc='. COURSE_PATH
                         .'&amp;edit=1'
                         .'">
                         <img 
                             src="'.getPathImage().'standard/edit.png" 
-                            alt="'.Lang::t( '_MODIFY_COURSEPATH_ASSOCIATIONS' ).'" 
-                            title="'.Lang::t( '_MODIFY_COURSEPATH_ASSOCIATIONS' ).'" />
+                            alt="'.Lang::t( '_MOD' ).'" 
+                            title="'.Lang::t( '_MOD' ).'" />
                     </a>'; 
             
             $rows[] = Get::sprite_link( 
                         'subs_del',
                         'index.php?r=alms/'.$this->controller_name.'/'.$this->op['del_association']
                         .'&amp;id_association='.$association["idAssociation"]
-                        .'&amp;id_certificate='.$id_certificate
+                        .'&amp;id_certificate='.$this->id_certificate
                         .'&amp;type_assoc='.$type_association,
                         Lang::t('_DEL')
                     ); 
@@ -493,13 +502,7 @@ Class AggregatedcertificateAlmsController extends AlmsController
         require_once(_base_.'/lib/lib.dialog.php');
         setupHrefDialogBox('a[href*=delassignmetacertificate]');
 
-        $tb->addActionAdd(    
-            '<a class="new_element_link" 
-            href="index.php?r=alms/'.$this->controller_name.'/modAssoc&amp;id_certificate='.$id_certificate.'"
-            title="'.Lang::t('_NEW_ASSOCIATION_CAPTURE').'">'
-            .Lang::t('_NEW_ASSOCIATION_CAPTURE')
-            .'</a>'
-        );
+
         
         setupHrefDialogBox('a[href*='. $this->op['del_association'].']');
 
@@ -529,17 +532,18 @@ Class AggregatedcertificateAlmsController extends AlmsController
             }
         }
         
+
         $params = array(
-            "id_certificate" => $id_certificate,
-            "countAssociations" => count($this->aggCertLib->getAssociationsMetadata($id_certificate)),
+            "id_certificate" => $this->id_certificate,
+            "countAssociations" => count($this->aggCertLib->getAssociationsMetadata($this->id_certificate)),
             "ini" => $ini,
-            
+            "cert_name" => $this->cert_name,
             "arrOps" => $this->op,
             "controller_name" => $this->controller_name,
             "tb" => $tb,
         );
         
-        $this->render( $this->op['associationsManagement'], $params);
+        $this->render( 'associationsManagement', $params);
         
     }
 
@@ -550,35 +554,30 @@ Class AggregatedcertificateAlmsController extends AlmsController
 
         $association = array(
 
-            "idCertificate" => Get::req("id_certificate", DOTY_INT),
+            "idCertificate" => $this->id_certificate,
             "title" => Get::req('title',DOTY_STRING), 
             "description" => Get::req('description', DOTY_STRING), 
-            "idAssociation" => Get::req('id_association', DOTY_INT)
+            "idAssociation" => $this->id_association
         );
 
 
         $res = $this->aggCertLib->updateMetaDataAssoc($association);
-        Util::jump_to('index.php?r=alms/'.$this->controller_name.'/'.$this->op['associationsManagement']
-            .'&id_certificate='. $association['idCertificate']
-            .'&res='. ($res ? 'ok' : 'err'));
+        Util::jump_to($this->back_url.'&res='. ($res ? 'ok' : 'err'));
     }
      
-     function modAssoc() {
-        $id_certificate = Get::req('id_certificate');
-        $id_association = Get::req('id_association', DOTY_INT, 0);
-       
+    function modAssoc() {
         $params = array();
         
         // necessary for passing additional parameters to the form (ex. disabled to type selector)
         $params['html_before_select'] = ''; 
         
 
-        if ($id_association > 0 ) { // If i'm editing an association, i need to get all datas. of that assoc.
-                $associationMetadataArr = $this->aggCertLib->getAssociationsMetadata(0, $id_association);
+        if ($this->id_association > 0 ) { // If i'm editing an association, i need to get all datas. of that assoc.
+                $associationMetadataArr = $this->aggCertLib->getAssociationsMetadata(0, $this->id_association);
                 $params['associationMetadataArr'] = $associationMetadataArr[0];
                 $params['html_before_select'] = 'disabled';
                 $params['type_assoc'] = Get::req('type_assoc', DOTY_INT, -1);
-                $params['id_association'] = $id_association;
+                $params['id_association'] = $this->id_association;
        }
 
        $assoc_types = array(
@@ -589,16 +588,17 @@ Class AggregatedcertificateAlmsController extends AlmsController
        );
         
         
-       $params['id_certificate'] = $id_certificate;
+       $params['cert_name'] = $this->cert_name;
+       $params['id_certificate'] = $this->id_certificate;
        $params['assoc_types'] = $assoc_types;
        $params['operation'] = 'newassociation'; 
 
-       $this->render($this->op['metaDataAssoc'], $params);
+       $this->render('metaDataAssoc', $params);
     }
     
     function newAssociation(){
-        if(isset($_POST['undo_assign']))
-            Util::jump_to('index.php?r=alms/'.$this->controller_name.'/'.$this->op['associationsManagement'].'&amp;id_certificate='.Get::req('id_certificate', DOTY_INT, 0));
+        if(isset($_POST['undo_assign'])) 
+            Util::jump_to($this->back_url);
         
         $r = Get::req('type_assoc', DOTY_INT);
         $operation = Get::req(nextOperation);
@@ -614,8 +614,6 @@ Class AggregatedcertificateAlmsController extends AlmsController
         } else {
             $this->modAssocDesc();
         }              
-
-
     }
 
 
@@ -632,17 +630,15 @@ Class AggregatedcertificateAlmsController extends AlmsController
         require_once($GLOBALS['where_lms'].'/lib/lib.course_managment.php');
 
         if(isset($_POST['undo_assign']))
-            Util::jump_to('index.php?r=alms/'.$this->controller_name.'/'.$this->op['associationsManagement'].'&amp;id_certificate='.Get::req('id_certificate', DOTY_INT, 0));
-
-
-        $id_association = Get::req('id_association', DOTY_INT, 0);
+            Util::jump_to($this->back_url);
 
         $params = array(
             "id_certificate" => Get::req('id_certificate', DOTY_INT),
-            "id_association" => $id_association,
+            "id_association" => $this->id_association,
             "type_assoc" => Get::req('type_assoc', DOTY_INT, -1),
             "title" => $_POST["title"],
             "description" =>$_POST["description"],
+            "cert_name" => $this->cert_name
         );
 
 
@@ -657,8 +653,8 @@ Class AggregatedcertificateAlmsController extends AlmsController
 
         //$params["course_manager"] = $course_manager;
         $params['treeCat'] = array($treeCat);
-        if($id_association>0){
-            $idsC = $this->aggCertLib->getIdsCourse($id_association);
+        if($this->id_association>0){
+            $idsC = $this->aggCertLib->getIdsCourse($this->id_association);
             $params['idsCourses'] = '['.implode(",",$idsC).']';
             $params['coursesArr'] = $this->aggCertLib->getCoursesArrFromId($idsC);
         } else {
@@ -674,20 +670,21 @@ function associationPaths() {
         require_once($GLOBALS['where_lms'].'/lib/lib.course_managment.php');
 
         if(isset($_POST['cancelselector']))
-            Util::jump_to('index.php?r=alms/'.$this->controller_name.'/'.$this->op['associationsManagement'].'&amp;id_certificate='.Get::req('id_certificate', DOTY_INT, 0));
+            Util::jump_to($this->back_url);
 
-        $id_association = Get::req('id_association', DOTY_INT, 0);
+
         $params = array(
-            "id_certificate" => Get::req('id_certificate', DOTY_INT),
-            "id_association" => $id_association,
+            "id_certificate" => $this->id_certificate,
+            "id_association" => $this->id_association,
             "type_assoc" => Get::req('type_assoc', DOTY_INT, -1),
             "title" => $_POST["title"],
             "description" =>$_POST["description"],
+            "cert_name" => $this->cert_name
         );
 
         
-        if($id_association>0){
-            $coursePathIdsArr = $this->aggCertLib->getIdsCoursePath($id_association);
+        if($this->id_association>0){
+            $coursePathIdsArr = $this->aggCertLib->getIdsCoursePath($this->id_association);
             $params['idsCoursePath'] = '['.implode(",",$coursePathIdsArr).']';
             require_once($GLOBALS['where_lms'].'/lib/lib.coursepath.php');
             $coursePath_man = new CoursePath_Manager();
@@ -708,12 +705,8 @@ function associationPaths() {
         require_once(_base_.'/lib/lib.userselector.php');
         require_once(_base_.'/lib/lib.form.php');
 
-        $id_certificate = Get::req('id_certificate', DOTY_INT, -1);
-        $id_association = Get::req('id_association', DOTY_INT, 0);
-        $type_assoc = Get::req('type_assoc', DOTY_INT, -1);
-
         if(isset($_POST["undo"]) || isset($_POST["undo_filter"]) || isset($_POST["cancelselector"]))
-            Util::jump_to('index.php?r=alms/'.$this->controller_name.'/'.$this->op['associationsManagement'].'&amp;id_certificate='.$id_certificate);
+            Util::jump_to($this->back_url);
 
         
 
@@ -725,7 +718,7 @@ function associationPaths() {
              *
              * Need to compare old users and new, to add or to remove users from assoc.
              */
-            $usersArr = $this->aggCertLib->getAllUsersFromIdAssoc($id_association, $type_assoc);
+            $usersArr = $this->aggCertLib->getAllUsersFromIdAssoc($this->id_association, $type_assoc);
             
             // Need to pass all the idst of the users / groups / org_chart
             $user_selection->resetSelection($usersArr);
@@ -745,8 +738,8 @@ function associationPaths() {
 
         $user_selection->setPageTitle(getTitleArea(Lang::t('_TITLE_META_CERTIFICATE_ASSIGN','certificate'), 'certificate'));
         
-        $user_selection->addFormInfo('<input type="hidden" name="id_certificate" value=' .$id_certificate . ' />');
-        $user_selection->addFormInfo('<input type="hidden" name="id_association" value=' . $id_association . ' />');
+        $user_selection->addFormInfo('<input type="hidden" name="id_certificate" value=' .$this->id_certificate . ' />');
+        $user_selection->addFormInfo('<input type="hidden" name="id_association" value=' . $this->id_association . ' />');
         $user_selection->addFormInfo('<input type="hidden" name="type_assoc" value=' . $type_assoc . ' />');
         $user_selection->addFormInfo('<input type="hidden" name="selected_courses" value=' . Get::req("idsCourse", DOTY_NUMLIST) . ' />');
         $user_selection->addFormInfo('<input type="hidden" name="title" value="'. $_POST['title']. '"/>');
@@ -760,6 +753,7 @@ function associationPaths() {
             "user_selection" => $user_selection,
             "opsArr" => $this->op,
             "controller_name" => $this->controller_name,
+            "cert_name" => $this->cert_name
         );
         
         $this->render($this->op['associationusers'], $params);
@@ -775,14 +769,10 @@ function associationPaths() {
 
         YuiLib::load();
         Util::get_js(Get::rel_path('base').'/lib/js_utils.js', true, true);
-
-
-        $id_certificate = Get::req("id_certificate", DOTY_INT);
-        $id_association = Get::req("id_association", DOTY_INT);
         $type_assoc = Get::req('type_assoc', DOTY_INT, -1);
 
         if(isset($_POST["undo"]) || isset($_POST["undo_filter"]) || isset($_POST["cancelselector"]))
-            Util::jump_to('index.php?r=alms/'.$this->controller_name.'/'.$this->op['associationsManagement'].'&amp;id_certificate='.$id_certificate);
+            Util::jump_to($this->back_url);
 
 
         // Users after editing (there may be the same users, new users added, or user to delete)
@@ -844,7 +834,7 @@ function associationPaths() {
 
             $cont[] = $acl_man->relativeId($user_info[ACL_INFO_USERID]);
 
-            $check_assoc = $this->aggCertLib->getAssociationLink($id_association, $type_assoc,(int) $id_user);            
+            $check_assoc = $this->aggCertLib->getAssociationLink($this->id_association, $type_assoc,(int) $id_user);            
             foreach($idsCP_array as $id_coursepath) {
                 $checked = in_array($id_coursepath, $check_assoc);
                 $cont[] = $form->getCheckbox('', '_' . $id_user . '_' . $id_coursepath . '_', '_' . $id_user . '_' . $id_coursepath . '_', 1, $checked);
@@ -879,8 +869,8 @@ function associationPaths() {
                     
         $params = array(
             "form" => $form,
-            "id_certificate" => Get::req("id_certificate"),
-            "id_association" => $id_association,
+            "id_certificate" => $this->id_certificate,
+            "id_association" => $this->id_association,
             "type_assoc" => $type_assoc,
             "title" => $_POST['title'],
             "description" => $_POST['description'],
@@ -888,6 +878,7 @@ function associationPaths() {
             "selected_users"  => implode(",", $userSelectionArr),
             "tb" => $tb,
             "opsArr" => $this->op,
+            "cert_name" => $this->cert_name
             
         );
         
@@ -907,13 +898,10 @@ function associationPaths() {
         YuiLib::load();
         Util::get_js(Get::rel_path('base').'/lib/js_utils.js', true, true);
 
-
-        $id_certificate = Get::req("id_certificate", DOTY_INT);
-        $id_association = Get::req("id_association", DOTY_INT);
         $type_assoc = Get::req('type_assoc', DOTY_INT, -1);
 
         if(isset($_POST["undo"]) || isset($_POST["undo_filter"]) || isset($_POST["cancelselector"]))
-            Util::jump_to('index.php?r=alms/'.$this->controller_name.'/'.$this->op['associationsManagement'].'&amp;id_certificate='.$id_certificate);
+            Util::jump_to($this->back_url);
 
 
         // Users after editing (there may be the same users, new users added, or user to delete)
@@ -963,7 +951,7 @@ function associationPaths() {
             $user_info = $acl_man->getUser($id_user, false);
             $cont[] = $user_info[ACL_INFO_LASTNAME].' '.$user_info[ACL_INFO_FIRSTNAME];
             $cont[] = $acl_man->relativeId($user_info[ACL_INFO_USERID]);
-            $check_assoc = $this->aggCertLib->getAssociationLink($id_association, $type_assoc,(int) $id_user);            
+            $check_assoc = $this->aggCertLib->getAssociationLink($this->id_association, $type_assoc,(int) $id_user);            
             foreach($selected_course as $id_course) {
                 $checked = in_array($id_course, $check_assoc);
                 $cont[] = $form->getCheckbox('', '_'.$id_user.'_'.$id_course.'_', '_'.$id_user.'_'.$id_course.'_', 1, $checked);
@@ -995,8 +983,8 @@ function associationPaths() {
         $params = array(
         
             "form" => $form,
-            "id_certificate" => Get::req("id_certificate"),
-            "id_association" => $id_association,
+            "id_certificate" => $this->id_certificate,
+            "id_association" => $this->id_association,
             "type_assoc" => $type_assoc,
             "title" => $_POST['title'],
             "description" => $_POST['description'],
@@ -1004,6 +992,7 @@ function associationPaths() {
             "selected_users"  => implode(",", $userSelectionArr),
             "tb" => $tb,
             "opsArr" => $this->op,
+            "cert_name" => $this->cert_name
             
         );
         
@@ -1013,10 +1002,9 @@ function associationPaths() {
 
     function saveAssignment() {
         
-        if(isset($_POST["undo_assign"]))
-            Util::jump_to('index.php?r=alms/'.$this->controller_name.'/'.$this->op['associationsManagement'].'&id_certificate='.Get::req("id_certificate",DOTY_INT,0));
+        if(isset($_POST["undo_assign"])) 
+            Util::jump_to($this->back_url);
         
-        $id_assoc = Get::req("id_assoc", DOTY_INT, 0);
         $type_assoc = Get::req('type_assoc', DOTY_INT, -1);
         $selected_courses = explode(",", $_POST['selected_courses']);
         $selected_path = explode(",", $_POST['selected_idsCoursePath']);
@@ -1053,7 +1041,7 @@ function associationPaths() {
 
         $res = $this->aggCertLib->saveCertAggregatedCert($associationsArr);
 
-        Util::jump_to('index.php?r=alms/'.$this->controller_name.'/'.$this->op['associationsManagement'].'&id_certificate='.Get::req("id_certificate", DOTY_INT, 0).'&res='. ($res ? 'ok' : 'err'));
+        Util::jump_to($this->back_url.'&res='. ($res ? 'ok' : 'err'));
     
         
     }
@@ -1065,20 +1053,19 @@ function associationPaths() {
 
         $acl_man =& Docebo::user()->getAclManager();
         
-        $id_certificate = Get::req('id_certificate', DOTY_INT, 0);
+
         $id_association = Get::req('id_association', DOTY_INT, 0);
 
 
         // Getting type of metacert. (if it's a metacert on course, on coursepath...)
         $type_assoc = Get::req('type_assoc', DOTY_INT, -1);
 
-        $usersArr = $this->aggCertLib->getAllUsersFromIdAssoc($id_association, $type_assoc);
-        $linksArr = $this->aggCertLib->getAllLinksFromIdAssoc($id_association, $type_assoc);
-
+        $usersArr = $this->aggCertLib->getAllUsersFromIdAssoc($this->id_association, $type_assoc);
+        $linksArr = $this->aggCertLib->getAllLinksFromIdAssoc($this->id_association, $type_assoc);
 
         //Table creation
-        $tb    = new Table(0, Lang::t("_META_CERTIFICATE_DETAILS_CAPTION",'certificate'), Lang::t("_META_CERTIFICATE_DETAILS_CAPTION",'certificate'));
-        $tb->setLink('index.php?r=alms/'.$this->controller_name.'/'.$this->op['viewdetails'].'&amp;id_certificate='.$id_certificate.'&amp;id_association='.$id_association);
+        $tb    = new Table(0, $this->association_name, $this->association_name);
+        $tb->setLink('index.php?r=alms/'.$this->controller_name.'/'.$this->op['viewdetails'].'&amp;id_certificate='.$this->id_certificate.'&amp;id_association='.$this->id_association);
 
         $type_h = array('', '');
         $cont_h = array(Lang::t('_FULLNAME'), Lang::t('_USERNAME'));
@@ -1107,7 +1094,7 @@ function associationPaths() {
 
         $aclManager = new DoceboACLManager();
         $usersArr =  array_map('intval', $aclManager->getArrUserST($usersArr));
-        $status = $this->aggCertLib->getUserAndCourseFromIdAssoc($id_association, $type_assoc);
+        $status = $this->aggCertLib->getUserAndCourseFromIdAssoc($this->id_association, $type_assoc);
         
         foreach($usersArr as $id_user) {
 
@@ -1162,9 +1149,10 @@ function associationPaths() {
         $params = array(
             
             "controller_name" => $this->controller_name,
-            "id_certificate" => $id_certificate,
+            "id_certificate" => $this->id_certificate,
             "tb" => $tb,
             "opsArr" => $this->op,
+            "cert_name" => $this->cert_name
             
         );
         
@@ -1172,22 +1160,11 @@ function associationPaths() {
 
     }
 
-        function delAssociations(){
-
-            checkPerm('mod');
-
-            $id_association = Get::req('id_association', DOTY_INT, 0);
-            $id_certificate = Get::req('id_certificate', DOTY_INT, 0);
-
-            $type_assoc = Get::req('type_assoc', DOTY_INT, -1);
-
-
-            if(Get::req('confirm', DOTY_INT, 0) == 1 && ($id_association != 0) ) {
-
-                Util::jump_to('index.php?r=alms/'.$this->controller_name.'/'.$this->op['associationsManagement'].'&id_certificate='.$id_certificate.'&res='
-                    .( $this->aggCertLib->deleteAssociations( $id_association, $type_assoc ) ? 'ok' : 'err'));
-
-            }
+    function delAssociations(){
+        checkPerm('mod');
+        $type_assoc = Get::req('type_assoc', DOTY_INT, -1);
+        if(Get::req('confirm', DOTY_INT, 0) == 1 && ($this->id_association != 0) ) 
+            Util::jump_to($this->back_url.'&res='.( $this->aggCertLib->deleteAssociations( $this->id_association, $type_assoc ) ? 'ok' : 'err'));
     }
     
     
@@ -1206,12 +1183,9 @@ function associationPaths() {
     */
     function assignmentManagement() {
         checkPerm('mod');
-
+        if($this->id_certificate == 0) cout(getErrorUi()); 
         
-        $id_cert = Get::req('id_certificate', DOTY_INT, 0);
-        if($id_cert == 0) cout(getErrorUi(Lang::t('_NO_CERT_AVAILABLE', 'certificate'))); 
-        
-        $certificate_assoc = $this->aggCertLib->getIssuedCertificates($id_cert);
+        $certificate_assoc = $this->aggCertLib->getIssuedCertificates($this->id_certificate);
         if(!$certificate_assoc) 
             cout(getErrorUi(Lang::t('_NO_CERT_AVAILABLE', 'certificate'))); 
         
@@ -1222,7 +1196,7 @@ function associationPaths() {
             Lang::t('_TITLE'),
             Get::img('course/certificate.png', Lang::t('_TAKE_A_COPY', 'certificate')),
             '<img src="' . getPathImage('lms') . 'standard/delete.png" alt="' . Lang::t('_ALT_REM_META_CERT') . ' : ' . strip_tags($certificate["name"]) . '" />');
-        $cert_name_caption = $this->aggCertLib->getAggrCertName($id_cert);    
+        $cert_name_caption = $this->cert_name;    
         $tb = new Table(Get::sett('visuItem'), $cert_name_caption, $cert_name_caption);
         $tb->initNavBar('ini', 'button');
         $ini = $tb->getSelectedElement();
@@ -1234,7 +1208,7 @@ function associationPaths() {
                 $cell[$i][] = $the_cert['userid'];
                 $cell[$i][] = $the_cert['title'];
                 $cell[$i][] = '<a href="index.php?r=alms/'.$this->controller_name.'/'.$this->op['release_cert']
-                . '&amp;id_certificate=' . $id_cert
+                . '&amp;id_certificate=' . $this->id_certificate
                 . '&amp;id_user=' . $the_cert['idst']
                 . '&amp;id_association=' . $the_cert['idAssociation'] 
                 . '&amp;aggCert=1'
@@ -1242,7 +1216,7 @@ function associationPaths() {
                 . Get::img('course/certificate.png', Lang::t('_TAKE_A_COPY', 'certificate')) . '</a>';
                 if ($the_cert['released'] > 0)
                     $cell[$i][] = '<a href="index.php?r=alms/'.$this->controller_name.'/'.$this->op['del_released']
-                            .'&amp;id_certificate='.$id_cert 
+                            .'&amp;id_certificate='.$this->id_certificate 
                             .'&amp;id_user='.$the_cert['idst']
                             .'&amp;id_association='.$the_cert['idAssociation']
                             .'">'
@@ -1262,7 +1236,7 @@ function associationPaths() {
 
         $params = array(
             "release_status_arr" => $array_release_status,
-            "id_certificate" => $id_cert,
+            "id_certificate" => $this->id_certificate,
             "tb" => $tb,
             "type_h" => $type_h,
             "tot_element" => $tot_element,
@@ -1273,27 +1247,22 @@ function associationPaths() {
             );
 
         $params["controller_name"] = $this->controller_name;
-
-        $this->render($this->op['assignmentManagement'], $params);
+        $this->render('assignmentManagement', $params);
 
     }
 
    
-        function preview_cert() {
+        function preview() {
             
             checkPerm('view');
 
             require_once(Forma::inc(_lms_.'/lib/lib.certificate.php'));
-
-            $id_certificate =  Get::req('id_certificate', DOTY_INT, 0);
-            $id_association = Get::req('id_association', DOTY_INT, 0);
-
             $id_course =  Get::req('id_course', true, 0);
             $id_user = Get::req('id_user', DOTY_INT, 0);
 
             $cert = new Certificate();
-            $subs = $cert->getSubstitutionArray($id_user, $id_course, $id_association);
-            $cert->send_facsimile_certificate($id_certificate, $id_user, $id_course, $subs);
+            $subs = $cert->getSubstitutionArray($id_user, $id_course, $this->id_association);
+            $cert->send_facsimile_certificate($this->id_certificate, $id_user, $id_course, $subs);
         
         }
        
@@ -1302,21 +1271,14 @@ function associationPaths() {
 
             require_once(Forma::inc(_lms_.'/lib/lib.certificate.php'));
 
-            
-            $id_certificate =  Get::req('id_certificate', DOTY_INT, 0);
-            $id_association = Get::req('id_association', DOTY_INT, 0);
-
             $id_user = Get::req('id_user', DOTY_INT, 0);
-
-
             $cert = new Certificate();
-            $subs = $cert->getSubstitutionArray($id_user, $id_course, $id_association);
-            $rs = $cert->send_certificate($id_certificate,$id_user,0,$subs,true,false,$id_association);
+            $subs = $cert->getSubstitutionArray($id_user, $id_course, $this->id_association);
+            $rs = $cert->send_certificate($this->id_certificate,$id_user,0,$subs,true,false,$this->id_association);
             
             // the next nstruction is not called because of previous cert download; this functin need to be called trough Ajax Call, as soon as the main
             // cert table is build trough jquery datatable instead of the actuala table widget
-            Util::jump_to('index.php?r=alms/'.$this->controller_name.'/'.$this->op['assignmentManagement']
-                .'&amp;id_certificate='.$id_certificate);
+            Util::jump_to($this->back_url);
                 
 
         }
@@ -1327,14 +1289,11 @@ function associationPaths() {
 
             require_once(_base_.'/lib/lib.form.php');
             require_once(_base_.'/lib/lib.upload.php');
-            
-            $id_certificate =  Get::req('id_certificate', DOTY_INT, 0);
-            $id_association = Get::req('id_association', DOTY_INT, 0);
             $id_user = Get::req('id_user', DOTY_INT, 0);
 
             if(Get::req('confirm', DOTY_INT, 0) == 1) {
 
-               $cert_file = $this->aggCertLib->getAggregatedCertFileName($id_user,$id_certificate, $id_association);
+               $cert_file = $this->aggCertLib->getAggregatedCertFileName($id_user,$this->id_certificate, $this->id_association);
 
                $path = '/appLms/certificate/';
 
@@ -1343,11 +1302,11 @@ function associationPaths() {
                sl_close_fileoperations();
 
                if(!$res)
-                    Util::jump_to('index.php?r=alms/'.$this->controller_name.'/'.$this->op['assignmentManagement'].'&id_certificate='.$id_certificate.'&result=err_del_cert');
+                    Util::jump_to('index.php?r=alms/'.$this->controller_name.'/'.$this->op['assignmentManagement'].'&id_certificate='.$this->id_certificate.'&result=err_del_cert');
 
-               $res = $this->aggCertLib->deleteReleasedCert($id_user, $id_certificate, $id_association);
+               $res = $this->aggCertLib->deleteReleasedCert($id_user, $this->id_certificate, $this->id_association);
                
-               Util::jump_to('index.php?r=alms/'.$this->controller_name.'/'.$this->op['assignmentManagement'].'&id_certificate='.$id_certificate.'&result='. ($res ? 'ok' : 'err_del_cert'));
+               Util::jump_to($this->back_url.'&result='. ($res ? 'ok' : 'err_del_cert'));
 
             }
         }
@@ -1364,14 +1323,13 @@ function associationPaths() {
     function delcertificate() {
 
         checkPerm('mod');
-        $id_cert = Get::req('id_certificate', DOTY_INT);
 
         if(Get::req('confirm', DOTY_INT, 0) == 1) {
             
-            if($this->aggCertLib->deleteCert($id_cert)) {
+            if($this->aggCertLib->deleteCert($this->id_certificate)) {
 
                 // Get all the associations with the cert.
-                $idsAssocArr = $this->aggCertLib->getIdAssociations($id_cert);
+                $idsAssocArr = $this->aggCertLib->getIdAssociations($this->id_certificate);
 
                 if( !empty($idsAssocArr) ) { // Cert. has some associations METADATA
 
@@ -1532,7 +1490,6 @@ function associationPaths() {
      * Ajax call from view
      */
     function getCatalogCourseListTask() {
-
         echo $this->json->encode($this->model->getCatalogCourse());
 
     }

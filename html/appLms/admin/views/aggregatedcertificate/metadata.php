@@ -2,7 +2,7 @@
 
     
      cout( 
-                getTitleArea($page_title, 'certificate')
+                getTitleArea($page_title)
                 .'<div class="std_block">'
                 .getBackUi( 'index.php?r=alms/'.$controller_name.'/'.$opArr['home'], Lang::t('_BACK') )
                 .$form->openForm('metadataForm', 'index.php?r=alms/'.$controller_name.'/'.$opArr['saveMetaData'])

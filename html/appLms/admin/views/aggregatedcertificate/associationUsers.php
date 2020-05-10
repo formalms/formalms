@@ -1,5 +1,9 @@
 <?php
 
+cout(
+    getTitleArea($cert_name.':&nbsp;'.Lang::t('_CERTIFICATE_AGGREGATE_ASSOCIATION', 'certificate'))
+);
+
 $op =   'aggregatedcertificate/'.(get::req('type_assoc',DOTY_INT) == 0 ? 'associationUsersCourses': 'associationUsersPath' );
 
 cout('<div class="std_block">');

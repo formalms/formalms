@@ -18,7 +18,7 @@ include Forma::inc(_lib_ . '/formatable/include.php');
     
 
 cout(
-    getTitleArea(Lang::t('_AGGRETATE_CERTIFICATES_ASSOCIATION_CAPTION'), 'certificate')
+     getTitleArea($cert_name.':&nbsp;'.Lang::t('_CERTIFICATE_AGGREGATE_ASSOCIATION', 'certificate'))
 );
 
 ?>

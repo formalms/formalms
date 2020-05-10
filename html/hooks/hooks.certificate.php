@@ -25,4 +25,3 @@ Events::listen("lms.coursepath_user.completed", function($event)
     $ca->releaseNewAggrCertPaths($event); 
     
 },0);
-

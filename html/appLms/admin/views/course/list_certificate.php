@@ -138,7 +138,7 @@ echo getTitleArea(array(
             language : {
                  'sInfo'  : '<?php echo Lang::t('_FROM', 'standard'); ?>  _START_  <?php echo Lang::t('_TO', 'standard'); ?> _END_ <?php echo Lang::t('_OF', 'standard'); ?>   _TOTAL_ <?php echo Lang::t('_CERTIFICATE', 'menu'); ?> <?php echo Lang::t('_TOTAL', 'standard'); ?> ',
                  'infoEmpty': '',
-                 'sEmptyTable' : '<?php echo Lang::t('_NO_CERTIFICATE_AVAILABLE', 'certificate'); ?> '
+                 'sEmptyTable' : '<?php echo Lang::t('_NO_CERT_AVAILABLE', 'certificate'); ?> '
             },
             dom: 'Bfrtip',
             stateSave: true, 

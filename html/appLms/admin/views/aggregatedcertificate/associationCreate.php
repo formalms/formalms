@@ -3,7 +3,7 @@
 <?php
 
 
-     cout(    getTitleArea(Lang::t('_AGGRETATE_CERTIFICATES_ASSOCIATION_CAPTION', 'certificate'), 'certificate')
+     cout(    getTitleArea($cert_name.':&nbsp;'.Lang::t('_CERTIFICATE_AGGREGATE_ASSOCIATION', 'certificate'))
                     .'<div class="std_block">'
                     .$form->openForm('new_assign_step_3', 'index.php?r=alms/'.$this->controller_name.'/'.$opsArr['saveAssignment'])
                     .$form->getHidden('id_certificate', 'id_certificate', $id_certificate)
