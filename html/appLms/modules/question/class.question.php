@@ -21,19 +21,20 @@
  * @abstract
  */
 
-require_once(Docebo::inc(_folder_lms_.'/modules/question/class.associate.php'));
-require_once(Docebo::inc(_folder_lms_.'/modules/question/class.break_page.php'));
-require_once(Docebo::inc(_folder_lms_.'/modules/question/class.choice.php'));
-require_once(Docebo::inc(_folder_lms_.'/modules/question/class.choice_multiple.php'));
-require_once(Docebo::inc(_folder_lms_.'/modules/question/class.extended_text.php'));
-require_once(Docebo::inc(_folder_lms_.'/modules/question/class.hot_text.php'));
-require_once(Docebo::inc(_folder_lms_.'/modules/question/class.inline_choice.php'));
-require_once(Docebo::inc(_folder_lms_.'/modules/question/class.numerical.php'));
-require_once(Docebo::inc(_folder_lms_.'/modules/question/class.text_entry.php'));
-require_once(Docebo::inc(_folder_lms_.'/modules/question/class.title.php'));
-require_once(Docebo::inc(_folder_lms_.'/modules/question/class.upload.php'));
+require_once(Docebo::inc(_folder_lms_ . '/modules/question/class.associate.php'));
+require_once(Docebo::inc(_folder_lms_ . '/modules/question/class.break_page.php'));
+require_once(Docebo::inc(_folder_lms_ . '/modules/question/class.choice.php'));
+require_once(Docebo::inc(_folder_lms_ . '/modules/question/class.choice_multiple.php'));
+require_once(Docebo::inc(_folder_lms_ . '/modules/question/class.extended_text.php'));
+require_once(Docebo::inc(_folder_lms_ . '/modules/question/class.hot_text.php'));
+require_once(Docebo::inc(_folder_lms_ . '/modules/question/class.inline_choice.php'));
+require_once(Docebo::inc(_folder_lms_ . '/modules/question/class.numerical.php'));
+require_once(Docebo::inc(_folder_lms_ . '/modules/question/class.text_entry.php'));
+require_once(Docebo::inc(_folder_lms_ . '/modules/question/class.title.php'));
+require_once(Docebo::inc(_folder_lms_ . '/modules/question/class.upload.php'));
 
-class Question {
+class Question
+{
 
 	protected $db;
 
@@ -65,16 +66,17 @@ class Question {
 	 * @access public
 	 * @author Fabio Pirovano (fabio@docebo.com)
 	 */
-	function Question( $id ) {
+	function Question($id)
+	{
 		$this->db = DbConn::getInstance();
-		if( $id !== NULL ) {
+		if ($id !== NULL) {
 			$this->id = $id;
-			$res = $this->db->query("SELECT idTest, idCategory, type_quest, title_quest, difficult FROM %lms_testquest WHERE idQuest = '".(int)$id."'");
-			if ($res && $this->db->num_rows($res)>0) {
-				list( $this->testId, $this->categoryId, $this->type, $this->title, $this->difficult ) = $this->db->fetch_row($res);
+			$res = $this->db->query("SELECT idTest, idCategory, type_quest, title_quest, difficult FROM %lms_testquest WHERE idQuest = '" . (int) $id . "'");
+			if ($res && $this->db->num_rows($res) > 0) {
+				list($this->testId, $this->categoryId, $this->type, $this->title, $this->difficult) = $this->db->fetch_row($res);
 			}
 		}
-		$this->_table_category =$GLOBALS['prefix_lms'].'_quest_category';
+		$this->_table_category = $GLOBALS['prefix_lms'] . '_quest_category';
 		return;
 	}
 
@@ -86,7 +88,8 @@ class Question {
 	 * @access public
 	 * @author Fabio Pirovano (fabio@docebo.com)
 	 */
-	function getQuestionType() {
+	function getQuestionType()
+	{
 		return 'question';
 	}
 
@@ -150,14 +153,15 @@ class Question {
 	 * @access private
 	 * @author Fabio Pirovano (fabio@docebo.com)
 	 */
-	function _getNextSequence( $idTest ) {
+	function _getNextSequence($idTest)
+	{
 
 
 		//select max sequence number
 		list($seq) = sql_fetch_row(sql_query("
 		SELECT MAX(sequence)
-		FROM ".$GLOBALS['prefix_lms']."_testquest 
-		WHERE idTest = '".$idTest."'"));
+		FROM " . $GLOBALS['prefix_lms'] . "_testquest 
+		WHERE idTest = '" . $idTest . "'"));
 		return ($seq + 1);
 	}
 
@@ -170,21 +174,22 @@ class Question {
 	 * @author Fabio Pirovano (fabio@docebo.com)
 	 */
 
-	 function _fixAnswerSequence() {
+	function _fixAnswerSequence()
+	{
 
 
 		$re_answer = sql_query("
 		SELECT idAnswer 
-		FROM ".$GLOBALS['prefix_lms']."_testquestanswer 
-		WHERE idQuest = '".(int)$this->id."'
+		FROM " . $GLOBALS['prefix_lms'] . "_testquestanswer 
+		WHERE idQuest = '" . (int) $this->id . "'
 		ORDER BY sequence, idAnswer");
 
 		$seq = 0;
-		while(list($id_answer ) = sql_fetch_row($re_answer)){
+		while (list($id_answer) = sql_fetch_row($re_answer)) {
 			sql_query("
-			UPDATE ".$GLOBALS['prefix_lms']."_testquestanswer
-			SET sequence = '".(int)$seq."' 
-			WHERE idAnswer = '".(int)$id_answer."'");
+			UPDATE " . $GLOBALS['prefix_lms'] . "_testquestanswer
+			SET sequence = '" . (int) $seq . "' 
+			WHERE idAnswer = '" . (int) $id_answer . "'");
 			++$seq;
 		}
 	}
@@ -198,20 +203,21 @@ class Question {
 	 * @access private
 	 * @author Fabio Pirovano (fabio@docebo.com)
 	 */
-	function _getPageNumber( $idTest ) {
+	function _getPageNumber($idTest)
+	{
 
 
 		list($seq, $page) = sql_fetch_row(sql_query("
 		SELECT MAX(sequence), MAX(page)
-		FROM ".$GLOBALS['prefix_lms']."_testquest 
-		WHERE idTest = '".$idTest."'"));
-		if(!$page) return 1;
+		FROM " . $GLOBALS['prefix_lms'] . "_testquest 
+		WHERE idTest = '" . $idTest . "'"));
+		if (!$page) return 1;
 
 		list($type_quest) = sql_fetch_row(sql_query("
 		SELECT type_quest 
-		FROM ".$GLOBALS['prefix_lms']."_testquest 
-		WHERE sequence = '".$seq."' AND idTest = '".$idTest."'"));
-		if($type_quest == 'break_page') return ($page + 1);
+		FROM " . $GLOBALS['prefix_lms'] . "_testquest 
+		WHERE sequence = '" . $seq . "' AND idTest = '" . $idTest . "'"));
+		if ($type_quest == 'break_page') return ($page + 1);
 		else return $page;
 	}
 
@@ -224,9 +230,11 @@ class Question {
 	 * @access private
 	 * @author Fabio Pirovano (fabio@docebo.com)
 	 */
-	function _checkScore( $score ) {
-        $score = preg_replace('[,]','.', $score);
-		if( $score{0} == '.') $score = '0'.$score;
+	function _checkScore($score)
+	{
+		$score = preg_replace('[,]', '.', $score);
+		if ($score{
+			0} == '.') $score = '0' . $score;
 		return $score;
 	}
 
@@ -240,8 +248,8 @@ class Question {
 	 * @access public
 	 * @author Fabio Pirovano (fabio@docebo.com)
 	 */
-	function create( $idTest, $back_test ) {
-
+	function create($idTest, $back_test)
+	{
 	}
 
 	/**
@@ -253,8 +261,8 @@ class Question {
 	 * @access public
 	 * @author Fabio Pirovano (fabio@docebo.com)
 	 */
-	function edit( $back_test ) {
-
+	function edit($back_test)
+	{
 	}
 
 	/**
@@ -265,7 +273,8 @@ class Question {
 	 * @access public
 	 * @author Fabio Pirovano (fabio@docebo.com)
 	 */
-	function del() {
+	function del()
+	{
 
 		return true;
 	}
@@ -279,56 +288,57 @@ class Question {
 	 * @access public
 	 * @author Fabio Pirovano (fabio@docebo.com)
 	 */
-	function copy( $new_id_test, $back_test = NULL ) {
+	function copy($new_id_test, $back_test = NULL)
+	{
 
 
 		//retriving question information
 		list($idCategory, $type_quest, $title_quest, $difficult, $time_assigned, $sequence, $page, $shuffle) = sql_fetch_row(sql_query("
 		SELECT idCategory, type_quest, title_quest, difficult, time_assigned, sequence, page, shuffle
-		FROM ".$GLOBALS['prefix_lms']."_testquest 
-		WHERE idQuest = '".(int)$this->id."'"));
+		FROM " . $GLOBALS['prefix_lms'] . "_testquest 
+		WHERE idQuest = '" . (int) $this->id . "'"));
 
 		//insert the question copy
 		$ins_query = "
-		INSERT INTO ".$GLOBALS['prefix_lms']."_testquest 
+		INSERT INTO " . $GLOBALS['prefix_lms'] . "_testquest 
 		( idTest, idCategory, type_quest, title_quest, difficult, time_assigned, sequence, page, shuffle ) VALUES 
-		( 	'".(int)$new_id_test."', 
-			'".(int)$idCategory."', 
-			'".$this->getQuestionType()."', 
-			'".sql_escape_string(addslashes($title_quest))."',
-			'".(int)$difficult."', 
-			'".$time_assigned."',
-			'".(int)$sequence."',
-			'".(int)$page."', 
-			'".(int)$shuffle."' ) ";
-		if(!sql_query($ins_query)) return false;
+		( 	'" . (int) $new_id_test . "', 
+			'" . (int) $idCategory . "', 
+			'" . $this->getQuestionType() . "', 
+			'" . sql_escape_string(addslashes($title_quest)) . "',
+			'" . (int) $difficult . "', 
+			'" . $time_assigned . "',
+			'" . (int) $sequence . "',
+			'" . (int) $page . "', 
+			'" . (int) $shuffle . "' ) ";
+		if (!sql_query($ins_query)) return false;
 
 		//find the id of the inserted question
 		list($new_id_quest) = sql_fetch_row(sql_query("SELECT LAST_INSERT_ID()"));
-		if(!$new_id_quest) return false;
+		if (!$new_id_quest) return false;
 
 		//retriving new answer
 		$re_answer = sql_query("
 		SELECT idAnswer, sequence, is_correct, answer, comment, score_correct, score_incorrect 
-		FROM ".$GLOBALS['prefix_lms']."_testquestanswer 
-		WHERE idQuest = '".(int)$this->id."'
+		FROM " . $GLOBALS['prefix_lms'] . "_testquestanswer 
+		WHERE idQuest = '" . (int) $this->id . "'
 		ORDER BY idAnswer");
 
 		$map_answer[0] = 0;
-		while(list($idAnswer, $seq, $is_correct, $answer, $comment, $score_c, $score_inc) = sql_fetch_row($re_answer)) {
+		while (list($idAnswer, $seq, $is_correct, $answer, $comment, $score_c, $score_inc) = sql_fetch_row($re_answer)) {
 
 			//insert answer
 			$ins_answer_query = "
-			INSERT INTO ".$GLOBALS['prefix_lms']."_testquestanswer 
+			INSERT INTO " . $GLOBALS['prefix_lms'] . "_testquestanswer 
 			( idQuest, sequence, is_correct, answer, comment, score_correct, score_incorrect ) VALUES
-			( 	'".(int)$new_id_quest."', 
-				'".(int)$seq."', 
-				'".(int)$is_correct."', 
-				'".sql_escape_string(addslashes($answer))."', 
-				'".sql_escape_string(addslashes($comment))."',
-				'".$this->_checkScore($score_c)."', 
-				'".$this->_checkScore($score_inc)."') ";
-			if(!sql_query($ins_answer_query)) return false;
+			( 	'" . (int) $new_id_quest . "', 
+				'" . (int) $seq . "', 
+				'" . (int) $is_correct . "', 
+				'" . sql_escape_string(addslashes($answer)) . "', 
+				'" . sql_escape_string(addslashes($comment)) . "',
+				'" . $this->_checkScore($score_c) . "', 
+				'" . $this->_checkScore($score_inc) . "') ";
+			if (!sql_query($ins_answer_query)) return false;
 
 			list($map_answer[$idAnswer]) = sql_fetch_row(sql_query("SELECT LAST_INSERT_ID()"));
 		}
@@ -336,28 +346,28 @@ class Question {
 		//retriving extra information for this question
 		$re_extra = sql_query("
 		SELECT idAnswer, extra_info 
-		FROM ".$GLOBALS['prefix_lms']."_testquest_extra 
-		WHERE idQuest = '".(int)$this->id."'");
+		FROM " . $GLOBALS['prefix_lms'] . "_testquest_extra 
+		WHERE idQuest = '" . (int) $this->id . "'");
 
 		// save all the extra info, if there are
-		while(list($id_answer, $title_info) = sql_fetch_row($re_extra)) {
-			if(!sql_query("
-			INSERT INTO ".$GLOBALS['prefix_lms']."_testquest_extra 
+		while (list($id_answer, $title_info) = sql_fetch_row($re_extra)) {
+			if (!sql_query("
+			INSERT INTO " . $GLOBALS['prefix_lms'] . "_testquest_extra 
 			( idQuest, idAnswer, extra_info ) VALUES 
-			( 	'".(int)$new_id_quest."', 
-				'".(int)$map_answer[$id_answer]."', 
-				'".sql_escape_string($title_info)."' )")) return false;
+			( 	'" . (int) $new_id_quest . "', 
+				'" . (int) $map_answer[$id_answer] . "', 
+				'" . sql_escape_string($title_info) . "' )")) return false;
 		}
 
 		return $new_id_quest;
 	}
 
-	function import( $format, $back_test = NULL ) {
-
+	function import($format, $back_test = NULL)
+	{
 	}
 
-	function export( $id, $format, $back_test = NULL ) {
-
+	function export($id, $format, $back_test = NULL)
+	{
 	}
 
 	/**
@@ -374,7 +384,8 @@ class Question {
 	 * @access public
 	 * @author Fabio Pirovano (fabio@docebo.com)
 	 */
-	function play( $num_quest, $shuffle_answer = false, $id_track = 0, $freeze = false, $number_time = null ) {
+	function play($num_quest, $shuffle_answer = false, $id_track = 0, $freeze = false, $number_time = null)
+	{
 
 		return '';
 	}
@@ -389,17 +400,18 @@ class Question {
 	 * @access public
 	 * @author Fabio Pirovano (fabio@docebo.com)
 	 */
-	function userDoAnswer( $id_track ) {
+	function userDoAnswer($id_track)
+	{
 
 
 		$recover_answer = "
 		SELECT idAnswer 
-		FROM ".$GLOBALS['prefix_lms']."_testtrack_answer 
-		WHERE idQuest = '".(int)$this->id."' AND 
-			idTrack = '".(int)$id_track."'";
+		FROM " . $GLOBALS['prefix_lms'] . "_testtrack_answer 
+		WHERE idQuest = '" . (int) $this->id . "' AND 
+			idTrack = '" . (int) $id_track . "'";
 		$re_answer_do = sql_query($recover_answer);
 
-		if(sql_num_rows($re_answer_do)) return true;
+		if (sql_num_rows($re_answer_do)) return true;
 		else return false;
 	}
 
@@ -416,7 +428,8 @@ class Question {
 	 * @access public
 	 * @author Fabio Pirovano (fabio@docebo.com)
 	 */
-	function storeAnswer( Track_Test $trackTest, &$source, $can_overwrite = false ) {
+	function storeAnswer(Track_Test $trackTest, &$source, $can_overwrite = false)
+	{
 
 		return true;
 	}
@@ -432,7 +445,8 @@ class Question {
 	 * @access private
 	 * @author Fabio Pirovano (fabio@docebo.com)
 	 */
-	function updateAnswer( $id_track, &$source ) {
+	function updateAnswer($id_track, &$source)
+	{
 
 		return true;
 	}
@@ -447,7 +461,8 @@ class Question {
 	 * @access public
 	 * @author Fabio Pirovano (fabio@docebo.com)
 	 */
-	function deleteAnswer( $id_track ) {
+	function deleteAnswer($id_track)
+	{
 
 		return true;
 	}
@@ -455,41 +470,44 @@ class Question {
 	/**
 	 * force a score to a question
 	 */
-	function setUserScore($id_track, $id_quest, $new_score) {
+	function setUserScore($id_track, $id_quest, $new_score)
+	{
 
-		switch($this->getScoreSetType()) {
-			case "manual" : {
+		switch ($this->getScoreSetType()) {
+			case "manual": {
 
-				$query_update = "
-				UPDATE ".$GLOBALS['prefix_lms']."_testtrack_answer 
-				SET score_assigned = '".$new_score."', 
+					$query_update = "
+				UPDATE " . $GLOBALS['prefix_lms'] . "_testtrack_answer 
+				SET score_assigned = '" . $new_score . "', 
 					manual_assigned = '1'
-				WHERE idTrack = '".$id_track."' AND idQuest = '".$id_quest."'";
+				WHERE idTrack = '" . $id_track . "' AND idQuest = '" . $id_quest . "'";
 
-				return sql_query($query_update);
-			};break;
-			case "auto" : {
+					return sql_query($query_update);
+				};
+				break;
+			case "auto": {
 
-				$sel_answer = "
+					$sel_answer = "
 				SELECT idAnswer
-				FROM ".$GLOBALS['prefix_lms']."_testtrack_answer 
-				WHERE idTrack = '".$id_track."' AND idQuest = '".$id_quest."'";
-				list($id_answer) = sql_fetch_row(sql_query($sel_answer));
+				FROM " . $GLOBALS['prefix_lms'] . "_testtrack_answer 
+				WHERE idTrack = '" . $id_track . "' AND idQuest = '" . $id_quest . "'";
+					list($id_answer) = sql_fetch_row(sql_query($sel_answer));
 
-				$query_update = "
-				UPDATE ".$GLOBALS['prefix_lms']."_testtrack_answer 
+					$query_update = "
+				UPDATE " . $GLOBALS['prefix_lms'] . "_testtrack_answer 
 				SET score_assigned = '0'
-				WHERE idTrack = '".$id_track."' AND idQuest = '".$id_quest."'";
-				$re = sql_query($query_update);
+				WHERE idTrack = '" . $id_track . "' AND idQuest = '" . $id_quest . "'";
+					$re = sql_query($query_update);
 
-				$query_update = "
-				UPDATE ".$GLOBALS['prefix_lms']."_testtrack_answer 
-				SET score_assigned = '".$new_score."'
-				WHERE idTrack = '".$id_track."' AND idQuest = '".$id_quest."' AND idAnswer = '".$id_answer."'";
-				$re &= sql_query($query_update);
+					$query_update = "
+				UPDATE " . $GLOBALS['prefix_lms'] . "_testtrack_answer 
+				SET score_assigned = '" . $new_score . "'
+				WHERE idTrack = '" . $id_track . "' AND idQuest = '" . $id_quest . "' AND idAnswer = '" . $id_answer . "'";
+					$re &= sql_query($query_update);
 
-				return $re;
-			};break;
+					return $re;
+				};
+				break;
 		}
 	}
 
@@ -504,7 +522,8 @@ class Question {
 	 * @access public
 	 * @author Fabio Pirovano (fabio@docebo.com)
 	 */
-	function getScoreSetType() {
+	function getScoreSetType()
+	{
 
 		return 'none';
 	}
@@ -517,15 +536,16 @@ class Question {
 	 * @access public
 	 * @author Fabio Pirovano (fabio@docebo.com)
 	 */
-	function getMaxScore() {
+	function getMaxScore()
+	{
 
 
 		$max_score = 0;
 		$re_answer = sql_query("
 		SELECT score_correct
-		FROM ".$GLOBALS['prefix_lms']."_testquestanswer 
-		WHERE idQuest = '".(int)$this->id."'");
-		while(list($score_correct) = sql_fetch_row($re_answer)) {
+		FROM " . $GLOBALS['prefix_lms'] . "_testquestanswer 
+		WHERE idQuest = '" . (int) $this->id . "'");
+		while (list($score_correct) = sql_fetch_row($re_answer)) {
 			$max_score = round($max_score + $score_correct, 2);
 		}
 		return $max_score;
@@ -541,15 +561,16 @@ class Question {
 	 * @access public
 	 * @author Fabio Pirovano (fabio@docebo.com)
 	 */
-	function getRealMaxScore( $score ) {
+	function getRealMaxScore($score)
+	{
 
 
 		list($num_correct) = sql_fetch_row(sql_query("
 		SELECT COUNT(*)
-		FROM ".$GLOBALS['prefix_lms']."_testquestanswer 
-		WHERE idQuest = '".(int)$this->id."' AND is_correct = '1'"));
+		FROM " . $GLOBALS['prefix_lms'] . "_testquestanswer 
+		WHERE idQuest = '" . (int) $this->id . "' AND is_correct = '1'"));
 
-		if(!$num_correct) $score_assigned = 0;
+		if (!$num_correct) $score_assigned = 0;
 		else $score_assigned = round($score / $num_correct, 2);
 
 		return round($score_assigned * $num_correct, 2);
@@ -566,27 +587,28 @@ class Question {
 	 * @access public
 	 * @author Fabio Pirovano (fabio@docebo.com)
 	 */
-	function setMaxScore( $score ) {
+	function setMaxScore($score)
+	{
 
 
 		list($num_correct) = sql_fetch_row(sql_query("
 		SELECT COUNT(*)
-		FROM ".$GLOBALS['prefix_lms']."_testquestanswer 
-		WHERE idQuest = '".(int)$this->id."' AND is_correct = '1'"));
+		FROM " . $GLOBALS['prefix_lms'] . "_testquestanswer 
+		WHERE idQuest = '" . (int) $this->id . "' AND is_correct = '1'"));
 
-		if(!$num_correct) $score_assigned = 0;
+		if (!$num_correct) $score_assigned = 0;
 		else $score_assigned = round($score / $num_correct, 2);
 
 		$re_assign = sql_query("
-		UPDATE ".$GLOBALS['prefix_lms']."_testquestanswer 
+		UPDATE " . $GLOBALS['prefix_lms'] . "_testquestanswer 
 		SET score_correct = '0' 
-		WHERE idQuest = '".(int)$this->id."' AND is_correct = '0'");
+		WHERE idQuest = '" . (int) $this->id . "' AND is_correct = '0'");
 
 		$re_assign = sql_query("
-		UPDATE ".$GLOBALS['prefix_lms']."_testquestanswer 
-		SET score_correct = '".$score_assigned."' 
-		WHERE idQuest = '".(int)$this->id."' AND is_correct = '1'");
-		if(!$re_assign) return 0;
+		UPDATE " . $GLOBALS['prefix_lms'] . "_testquestanswer 
+		SET score_correct = '" . $score_assigned . "' 
+		WHERE idQuest = '" . (int) $this->id . "' AND is_correct = '1'");
+		if (!$re_assign) return 0;
 		else return round($score_assigned * $num_correct, 2);
 	}
 
@@ -601,21 +623,22 @@ class Question {
 	 * @access public
 	 * @author Fabio Pirovano (fabio@docebo.com)
 	 */
-	function userScore( $id_track, $number_time = null ) {
+	function userScore($id_track, $number_time = null)
+	{
 
 
 		$score = 0;
 		$query = "SELECT score_assigned
-		FROM ".$GLOBALS['prefix_lms']."_testtrack_answer
-		WHERE idQuest = '".(int)$this->id."'
-		AND idTrack = '".(int)$id_track."'";
-		if ($number_time != null){
-			$query .= " AND number_time = ".$number_time;
+		FROM " . $GLOBALS['prefix_lms'] . "_testtrack_answer
+		WHERE idQuest = '" . (int) $this->id . "'
+		AND idTrack = '" . (int) $id_track . "'";
+		if ($number_time != null) {
+			$query .= " AND number_time = " . $number_time;
 		}
 		$query .= " ORDER BY number_time DESC LIMIT 1";
 		$re_answer = sql_query($query);
-		if(!sql_num_rows($re_answer)) return $score;
-		while(list($score_assigned) = sql_fetch_row($re_answer)) {
+		if (!sql_num_rows($re_answer)) return $score;
+		while (list($score_assigned) = sql_fetch_row($re_answer)) {
 			$score = round($score + $score_assigned, 2);
 		}
 		return $score;
@@ -637,80 +660,86 @@ class Question {
 	 * @access public
 	 * @author Fabio Pirovano (fabio@docebo.com)
 	 */
-	function displayUserResult( $id_track, $num_quest, $show_solution, $number_time = null ) {
+	function displayUserResult($id_track, $num_quest, $show_solution, $number_time = null)
+	{
 
 
-		return array(	'quest' 	=> $num_quest.' : displayUserResult() not defined ! '.$this->getQuestionType().'<br />',
-						'score'		=> 0,
-						'comment'	=> '',
-						'manual_assigned' => 0 );
+		return array(
+			'quest' 	=> $num_quest . ' : displayUserResult() not defined ! ' . $this->getQuestionType() . '<br />',
+			'score'		=> 0,
+			'comment'	=> '',
+			'manual_assigned' => 0
+		);
 	}
 
-	function importFromRaw($raw_quest, $id_test = false) {
+	function importFromRaw($raw_quest, $id_test = false)
+	{
 
-		if($id_test === false) $id_test = 0;
+		if ($id_test === false) $id_test = 0;
 
 		//insert question
 		$ins_query = "
-		INSERT INTO ".$GLOBALS['prefix_lms']."_testquest 
+		INSERT INTO " . $GLOBALS['prefix_lms'] . "_testquest 
 		( idQuest, idTest, idCategory, type_quest, title_quest, difficult, time_assigned, sequence, page ) VALUES 
 		( 	NULL,
-			'".(int)$id_test."', 
-			'".(int)$raw_quest->id_category."', 
-			'".$this->getQuestionType()."', 
-			'".$raw_quest->quest_text."',
-			'".(int)$raw_quest->difficult."', 
-			'".$raw_quest->time_assigned."',
+			'" . (int) $id_test . "', 
+			'" . (int) $raw_quest->id_category . "', 
+			'" . $this->getQuestionType() . "', 
+			'" . $raw_quest->quest_text . "',
+			'" . (int) $raw_quest->difficult . "', 
+			'" . $raw_quest->time_assigned . "',
 			'1',
 			'1' ) ";
-		if(!sql_query($ins_query)) return false;
+		if (!sql_query($ins_query)) return false;
 
 		//find id of auto_increment colum
 		list($new_id_quest) = sql_fetch_row(sql_query("SELECT LAST_INSERT_ID()"));
-		if(!$new_id_quest) return false;
+		if (!$new_id_quest) return false;
 
-		if(!is_array($raw_quest->answers)) return $new_id_quest;
+		if (!is_array($raw_quest->answers)) return $new_id_quest;
 
 		reset($raw_quest->answers);
-    foreach ($raw_quest->answers as $raw_answer) {
+		while (list(, $raw_answer) = each($raw_quest->answers)) {
 
 			//insert answer
 			$ins_answer_query = "
-			INSERT INTO ".$GLOBALS['prefix_lms']."_testquestanswer 
+			INSERT INTO " . $GLOBALS['prefix_lms'] . "_testquestanswer 
 			( idQuest, is_correct, answer, comment, score_correct, score_incorrect ) VALUES
-			( 	'".(int)$new_id_quest."', 
-				'".(int)$raw_answer->is_correct."', 
-				'".addslashes($raw_answer->text)."', 
-				'".addslashes($raw_answer->comment)."',
-				'".$this->_checkScore($raw_answer->score_correct)."', 
-				'".$this->_checkScore($raw_answer->score_penalty)."') ";
-			if(!sql_query($ins_answer_query)) return false;
+			( 	'" . (int) $new_id_quest . "', 
+				'" . (int) $raw_answer->is_correct . "', 
+				'" . addslashes($raw_answer->text) . "', 
+				'" . addslashes($raw_answer->comment) . "',
+				'" . $this->_checkScore($raw_answer->score_correct) . "', 
+				'" . $this->_checkScore($raw_answer->score_penalty) . "') ";
+			if (!sql_query($ins_answer_query)) return false;
 		}
 		return $new_id_quest;
 	}
 
-	function getCategoryName($id_cat = null) {
-		if ($id_cat == null){
+	function getCategoryName($id_cat = null)
+	{
+		if ($id_cat == null) {
 			$id_cat = $this->categoryId;
 		}
 
 		$name = '';
 		$qtxt = "SELECT name "
-			."FROM ".$this->_table_category." "
-			."WHERE idCategory = '".$id_cat."' ";
+			. "FROM " . $this->_table_category . " "
+			. "WHERE idCategory = '" . $id_cat . "' ";
 		$re = sql_query($qtxt);
 		list($name) = sql_fetch_row($re);
 
 		return $name;
 	}
 
-	function exportToRaw($id_test = false) {
+	function exportToRaw($id_test = false)
+	{
 
 		//retriving question information
-		list($idCategory, $type_quest, $title_quest, $difficult, $time_assigned, ) = sql_fetch_row(sql_query("
+		list($idCategory, $type_quest, $title_quest, $difficult, $time_assigned,) = sql_fetch_row(sql_query("
 		SELECT idCategory, type_quest, title_quest, difficult, time_assigned 
-		FROM ".$GLOBALS['prefix_lms']."_testquest 
-		WHERE idQuest = '".(int)$this->id."'"));
+		FROM " . $GLOBALS['prefix_lms'] . "_testquest 
+		WHERE idQuest = '" . (int) $this->id . "'"));
 
 		//insert the question copy
 		$oQuest = new QuestionRaw();
@@ -728,10 +757,10 @@ class Question {
 		//retriving new answer
 		$re_answer = sql_query("
 		SELECT idAnswer, is_correct, answer, comment, score_correct, score_incorrect 
-		FROM ".$GLOBALS['prefix_lms']."_testquestanswer 
-		WHERE idQuest = '".(int)$this->id."'
+		FROM " . $GLOBALS['prefix_lms'] . "_testquestanswer 
+		WHERE idQuest = '" . (int) $this->id . "'
 		ORDER BY idAnswer");
-		while(list($idAnswer, $is_correct, $answer, $comment, $score_c, $score_inc) = sql_fetch_row($re_answer)) {
+		while (list($idAnswer, $is_correct, $answer, $comment, $score_c, $score_inc) = sql_fetch_row($re_answer)) {
 
 			$oAnswer = new AnswerRaw();
 
@@ -747,11 +776,11 @@ class Question {
 		//retriving extra information for this question
 		$re_extra = sql_query("
 		SELECT idAnswer, extra_info 
-		FROM ".$GLOBALS['prefix_lms']."_testquest_extra 
-		WHERE idQuest = '".(int)$this->id."'");
+		FROM " . $GLOBALS['prefix_lms'] . "_testquest_extra 
+		WHERE idQuest = '" . (int) $this->id . "'");
 
 		// save all the extra info, if there are
-		while(list($id_answer, $title_info) = sql_fetch_row($re_extra)) {
+		while (list($id_answer, $title_info) = sql_fetch_row($re_extra)) {
 
 			$oAnswer = new AnswerRaw();
 			$oAnswer->text = $title_info;
@@ -759,60 +788,62 @@ class Question {
 			$oQuest->extra_info[] = $oAnswer;
 		}
 
-                // Customfield
-                require_once(_adm_.'/lib/lib.customfield.php');
-                $fman = new CustomFieldList();
-                $fman->setFieldArea( "LO_TEST" );
-                $oQuest->customfield = $fman->playFieldsFlat($this->id);
-                
+		// Customfield
+		require_once(_adm_ . '/lib/lib.customfield.php');
+		$fman = new CustomFieldList();
+		$fman->setFieldArea("LO_TEST");
+		$oQuest->customfield = $fman->playFieldsFlat($this->id);
+
 		return $oQuest;
 	}
 
-	static function getTestQuestsFromTest($idTest){
-        $query_quest = "SELECT idQuest, type_quest, title_quest"
-            . " FROM " . $GLOBALS['prefix_lms'] . "_testquest"
-            . " WHERE idTest = '" . $idTest . "'"
-            . " ORDER BY sequence";
+	static function getTestQuestsFromTest($idTest)
+	{
+		$query_quest = "SELECT idQuest, type_quest, title_quest"
+			. " FROM " . $GLOBALS['prefix_lms'] . "_testquest"
+			. " WHERE idTest = '" . $idTest . "'"
+			. " ORDER BY sequence";
 
-        $result_quest = sql_query($query_quest);
+		$result_quest = sql_query($query_quest);
 
-        $quests = array();
-        while (list($idQuest, $type_quest, $title_quest) = sql_fetch_row($result_quest)) {
-            $quests[$idQuest]['idQuest'] = $idQuest;
-            $quests[$idQuest]['type_quest'] = $type_quest;
-            $quests[$idQuest]['title_quest'] = $title_quest;
-        }
+		$quests = array();
+		while (list($idQuest, $type_quest, $title_quest) = sql_fetch_row($result_quest)) {
+			$quests[$idQuest]['idQuest'] = $idQuest;
+			$quests[$idQuest]['type_quest'] = $type_quest;
+			$quests[$idQuest]['title_quest'] = $title_quest;
+		}
 
-        return $quests;
+		return $quests;
 	}
 
-	static function getTestQuestAnswerFromQuestAndStudents($idQuest,$idStudents){
+	static function getTestQuestAnswerFromQuestAndStudents($idQuest, $idStudents)
+	{
 
-        $query_answer = "SELECT tqa.idAnswer, tqa.is_correct, tqa.answer"
-            . " FROM " . $GLOBALS['prefix_lms'] . "_testquestanswer AS tqa"
-            . " LEFT JOIN"
-            . " " . $GLOBALS['prefix_lms'] . "_testtrack_answer tta ON tqa.idAnswer = tta.idAnswer"
-            . " LEFT JOIN"
-            . " " . $GLOBALS['prefix_lms'] . "_testtrack tt ON tt.idTrack = tta.idTrack"
-            . " WHERE tqa.idQuest = '" . $idQuest . "'";
-        $query_answer .= " and tt.idUser in (" . implode(",", $idStudents) . ")";
-        $query_answer .= " ORDER BY tqa.sequence";
+		$query_answer = "SELECT tqa.idAnswer, tqa.is_correct, tqa.answer"
+			. " FROM " . $GLOBALS['prefix_lms'] . "_testquestanswer AS tqa"
+			. " LEFT JOIN"
+			. " " . $GLOBALS['prefix_lms'] . "_testtrack_answer tta ON tqa.idAnswer = tta.idAnswer"
+			. " LEFT JOIN"
+			. " " . $GLOBALS['prefix_lms'] . "_testtrack tt ON tt.idTrack = tta.idTrack"
+			. " WHERE tqa.idQuest = '" . $idQuest . "'";
+		$query_answer .= " and tt.idUser in (" . implode(",", $idStudents) . ")";
+		$query_answer .= " ORDER BY tqa.sequence";
 
-        $result_answer = sql_query($query_answer);
+		$result_answer = sql_query($query_answer);
 
-        $answers = array();
+		$answers = array();
 
-        while (list($id_answer, $is_correct, $answer) = sql_fetch_row($result_answer)) {
-            $answers[$idQuest][$id_answer] = array('idAnswer'=>$id_answer,'is_correct' => $is_correct,'answer' => $answer);
-        }
+		while (list($id_answer, $is_correct, $answer) = sql_fetch_row($result_answer)) {
+			$answers[$idQuest][$id_answer] = array('idAnswer' => $id_answer, 'is_correct' => $is_correct, 'answer' => $answer);
+		}
 
-        return $answers;
+		return $answers;
 	}
-
 }
 
 
-class QuestionRaw {
+class QuestionRaw
+{
 
 	var $qtype = NULL;
 
@@ -824,23 +855,33 @@ class QuestionRaw {
 	var $answers 		= array();
 	var $extra_info 	= array();
 
-	function QuestionRaw() {}
-
-	function setCategoryFromName($category_name) {
-
-		$cat_list = array();
-		$qtxt = "SELECT idCategory "
-			."FROM ".$GLOBALS['prefix_lms']."_quest_category "
-			."WHERE name = '".$category_name."' AND ( author = 0 OR author = ".(int)getLogUserId()." ) ";
-		$re = sql_query($qtxt);
-		if(!$re || !sql_num_rows($re)) $this->id_category = 0;
-		else list($this->id_category) = sql_fetch_row($re);
-
+	function QuestionRaw()
+	{
 	}
 
+	function setCategoryFromName($category_name, $autocreate_categories = false)
+	{
+		$qtxt = "SELECT idCategory "
+			. "FROM " . $GLOBALS['prefix_lms'] . "_quest_category "
+			. "WHERE name = '" . $category_name . "' AND ( author = 0 OR author = " . (int) getLogUserId() . " ) ";
+		$re = sql_query($qtxt);
+		if (!$re || !sql_num_rows($re)) {
+			if ($autocreate_categories && $category_name) {
+				$qins = "INSERT INTO " . $GLOBALS['prefix_lms'] . "_quest_category (name, author) VALUES ('$category_name', 0)";
+				if (sql_query($qins)) {
+					$this->id_category = sql_insert_id();
+				}
+			} else {
+				$this->id_category = 0;
+			}
+		} else {
+			list($this->id_category) = sql_fetch_row($re);
+		}
+	}
 }
 
-class AnswerRaw {
+class AnswerRaw
+{
 
 	var $is_correct 	= 0;
 	var $text 			= false;
@@ -848,8 +889,7 @@ class AnswerRaw {
 	var $score_correct 	= 0;
 	var $score_penalty 	= 0;
 
-	function AnswerRaw() {}
-
+	function AnswerRaw()
+	{
+	}
 }
-
-?>
