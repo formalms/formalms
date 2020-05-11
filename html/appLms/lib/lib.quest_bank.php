@@ -228,7 +228,7 @@ class QuestBankMan {
 		return true;
 	}
 
-	function import_quest($file_lines, $file_format, $id_test = 0, $id_category = 0) {
+	function import_quest($file_lines, $file_format, $id_test = 0, $id_category = 0, $autocreate_categories = false) {
 
 		$result = array();
 		switch($file_format) {
@@ -237,7 +237,7 @@ class QuestBankMan {
 				require_once($GLOBALS['where_lms'].'/modules/question/format.gift.php');
 
 				$qgift = new  qformat_gift();
-				$formatted = $qgift->readquestions($file_lines);
+				$formatted = $qgift->readquestions($file_lines, $autocreate_categories);
 
 				foreach($formatted as $question) {
 
@@ -538,5 +538,3 @@ class QuestBank_Selector {
 	}
 
 }
-
-?>
