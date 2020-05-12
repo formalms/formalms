@@ -19,6 +19,9 @@ defined('IN_FORMA') or die('Direct access is forbidden.');
  */
 final class EventsHandler
 {
+    const PRIORITY_CORE = 0;
+    const PRIORITY_DEFAULT = 100;
+
     /**
      * Events dispatcher.
      *
@@ -70,7 +73,7 @@ final class EventsHandler
      * @param int $priority
      * @return void
      */
-    public function listen($eventName, $listener, $priority = 0)
+    public function listen($eventName, $listener, $priority = self::PRIORITY_DEFAULT)
     {
         $this->dispatcher->addListener($eventName, $listener, $priority);
     }
