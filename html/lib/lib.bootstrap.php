@@ -274,7 +274,7 @@ class Boot {
     private static function hooks() {
 
 		self::log( "Prepare core listeners." );
-		foreach(glob(_base_ . "/hooks/hooks.*.php") as $hooks) include $hooks;
+		foreach(glob(_base_ . "/eventListeners/listeners.*.php") as $listeners) include $listeners;
 		
         self::log( "Prepare plugins' listeners." );
         PluginManager::hook();
