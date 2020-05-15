@@ -11,13 +11,15 @@
 |   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
-class CoursestatsLms extends Model {
+class CoursestatsLms extends Model
+{
 
 	protected $db;
 	protected $tables;
 	protected $cache;
 
-	public function  __construct() {
+	public function  __construct()
+	{
 		$this->db = DbConn::getInstance();
 		$this->tables = array(
 			'organization'	=> '%lms_organization',
@@ -28,13 +30,14 @@ class CoursestatsLms extends Model {
 			'lo_types'			=> '%lms_lo_types',
 			'scorm_tracking_history'           => '%lms_scorm_tracking_history',
 			'scorm_tracking' => '%lms_scorm_tracking'
-			
+
 		);
 		$this->cache = array();
 	}
 
 
-	public function getPerm()	{
+	public function getPerm()
+	{
 		return array(
 			'view' => 'standard/view.png',
 			'mod'  => 'standard/edit.png'
@@ -44,11 +47,12 @@ class CoursestatsLms extends Model {
 	//...
 
 
-	public function getTrackId($id_lo, $id_user) {
-		$query = "SELECT idTrack FROM ".$this->tables['commontrack']." "
-			." WHERE idReference=".(int)$id_lo." AND idUser=".(int)$id_user;
+	public function getTrackId($id_lo, $id_user)
+	{
+		$query = "SELECT idTrack FROM " . $this->tables['commontrack'] . " "
+			. " WHERE idReference=" . (int) $id_lo . " AND idUser=" . (int) $id_user;
 		$res = $this->db->query($query);
-		if ($res && $this->db->num_rows($res)>0) {
+		if ($res && $this->db->num_rows($res) > 0) {
 			list($id_track) = $this->db->fetch_row($res);
 			return $id_track;
 		}
@@ -56,14 +60,15 @@ class CoursestatsLms extends Model {
 	}
 
 
-	public function getCourseLOs($id_course) {
+	public function getCourseLOs($id_course)
+	{
 		if (isset($this->cache['lo_list'][$id_course]) && is_array($this->cache['lo_list'][$id_course])) {
 			return $this->cache['lo_list'][$id_course];
 		}
-		
+
 		$output = array();
-		$query = "SELECT * FROM ".$this->tables['organization']." "
-			." WHERE idCourse=".(int)$id_course." ORDER BY path ASC";
+		$query = "SELECT * FROM " . $this->tables['organization'] . " "
+			. " WHERE idCourse=" . (int) $id_course . " ORDER BY path ASC";
 		$res = $this->db->query($query);
 		if ($res) {
 			while ($obj = $this->db->fetch_obj($res)) {
@@ -80,7 +85,8 @@ class CoursestatsLms extends Model {
 	}
 
 
-	public function getCourseStatsList($pagination, $id_course) {
+	public function getCourseStatsList($pagination, $id_course)
+	{
 		if (is_array($pagination)) {
 			$startIndex = (isset($pagination['startIndex']) ? $pagination['startIndex'] : 0);
 			$results = (isset($pagination['rowsPerPage']) ? $pagination['rowsPerPage'] : Get::sett('visuItem', 25));
@@ -90,35 +96,48 @@ class CoursestatsLms extends Model {
 			$dir = 'ASC';
 			if (isset($pagination['order_column'])) {
 				switch ($pagination['order_column']) {
-					case 0: $sort = 'u.userid'; break;
-					case 1: $sort = 'lastname'; break;
-					case 2: $sort = 'level'; break;
-					case 3: $sort = 'status'; break;
+					case 0:
+						$sort = 'u.userid';
+						break;
+					case 1:
+						$sort = 'lastname';
+						break;
+					case 2:
+						$sort = 'level';
+						break;
+					case 3:
+						$sort = 'status';
+						break;
 				}
 				if (isset($pagination['order_dir'])) {
 					switch ($pagination['order_dir']) {
-						case 'asc': $dir = 'ASC'; break;
-						case 'desc': $dir = 'DESC'; break;
-						default: $dir = 'ASC';
+						case 'asc':
+							$dir = 'ASC';
+							break;
+						case 'desc':
+							$dir = 'DESC';
+							break;
+						default:
+							$dir = 'ASC';
 					}
 				}
 			}
 
 			$where = '';
 			if (isset($pagination['search']) && $pagination['search'] != "") {
-				$where = " AND (u.userid LIKE '%".$pagination['search']."%' OR u.firstname LIKE '%".$pagination['search']."%' OR u.lastname LIKE '%".$pagination['search']."%') ";
+				$where = " AND (u.userid LIKE '%" . $pagination['search'] . "%' OR u.firstname LIKE '%" . $pagination['search'] . "%' OR u.lastname LIKE '%" . $pagination['search'] . "%') ";
 			}
 		}
 
 		$query = "SELECT u.idst, u.userid, u.firstname, u.lastname, cu.status, cu.level "
-			." FROM ".$this->tables['courseuser']." as cu "
-			." JOIN ".$this->tables['user']." as u "
-			." ON (cu.idUser = u.idst AND cu.idCourse=".(int)$id_course.") "
-			." WHERE 1=1".$where;
-		
+			. " FROM " . $this->tables['courseuser'] . " as cu "
+			. " JOIN " . $this->tables['user'] . " as u "
+			. " ON (cu.idUser = u.idst AND cu.idCourse=" . (int) $id_course . ") "
+			. " WHERE 1=1" . $where;
+
 		if (is_array($pagination)) {
-			$query .= " ORDER BY ".$sort." ".$dir." ";
-			$query .= "LIMIT ".$startIndex.", ".$results;
+			$query .= " ORDER BY " . $sort . " " . $dir . " ";
+			$query .= "LIMIT " . $startIndex . ", " . $results;
 		}
 
 		$res = $this->db->query($query);
@@ -132,9 +151,9 @@ class CoursestatsLms extends Model {
 			//extract LOs status for the user (a subarray in the record)
 			$lo_list = $this->getCourseLOs($id_course);
 			if (!empty($lo_list) && !empty($output)) {
-				$query = "SELECT * FROM ".$this->tables['commontrack']." as c "
-					." WHERE idReference IN (".implode(",", array_keys($lo_list)).") "
-					." AND idUser IN (".implode(",", array_keys($output)).")";
+				$query = "SELECT * FROM " . $this->tables['commontrack'] . " as c "
+					. " WHERE idReference IN (" . implode(",", array_keys($lo_list)) . ") "
+					. " AND idUser IN (" . implode(",", array_keys($output)) . ")";
 				$res = $this->db->query($query);
 				if ($res) {
 					while ($obj = $this->db->fetch_obj($res)) {
@@ -142,7 +161,6 @@ class CoursestatsLms extends Model {
 					}
 				}
 			}
-
 		} else {
 			return false;
 		}
@@ -150,19 +168,20 @@ class CoursestatsLms extends Model {
 		return array_values($output);
 	}
 
-	public function getCourseStatsTotal($id_course, $filter, $filtered = false) {
+	public function getCourseStatsTotal($id_course, $filter, $filtered = false)
+	{
 		$query = "SELECT COUNT(*) "
-			." FROM ".$this->tables['courseuser']." as cu "
-			." JOIN ".$this->tables['user']." as u "
-			." ON (cu.idUser = u.idst AND cu.idCourse=".(int)$id_course.") ";
-		
+			. " FROM " . $this->tables['courseuser'] . " as cu "
+			. " JOIN " . $this->tables['user'] . " as u "
+			. " ON (cu.idUser = u.idst AND cu.idCourse=" . (int) $id_course . ") ";
+
 
 		if ($filtered) {
 			$where = 'WHERE 1=1';
 			if (isset($filter['search']) && $filter['search'] != "") {
-				$where = " AND (u.userid LIKE '%".$filter['search']."%' OR u.firstname LIKE '%".$filter['search']."%' OR u.lastname LIKE '%".$filter['search']."%') ";
+				$where = " AND (u.userid LIKE '%" . $filter['search'] . "%' OR u.firstname LIKE '%" . $filter['search'] . "%' OR u.lastname LIKE '%" . $filter['search'] . "%') ";
 			}
-			$query.= $where;
+			$query .= $where;
 		}
 
 		$res = $this->db->query($query);
@@ -175,15 +194,16 @@ class CoursestatsLms extends Model {
 		return $count;
 	}
 
-	public function countTotalCourseUsersStats($id_course, $id_user, $search = null, $filtered = false) {
+	public function countTotalCourseUsersStats($id_course, $id_user, $search = null, $filtered = false)
+	{
 		$query = "SELECT COUNT(o.idOrg) AS count"
-			." FROM ".$this->tables['organization']." as o "
-			." LEFT JOIN ".$this->tables['commontrack']." as c "
-			." ON (c.idReference = o.idOrg AND c.idUser=".(int)$id_user.") "
-			." WHERE o.idCourse=".(int)$id_course." ";
+			. " FROM " . $this->tables['organization'] . " as o "
+			. " LEFT JOIN " . $this->tables['commontrack'] . " as c "
+			. " ON (c.idReference = o.idOrg AND c.idUser=" . (int) $id_user . ") "
+			. " WHERE o.idCourse=" . (int) $id_course . " ";
 
 		if ($search && $filtered) {
-			$query.= " AND title LIKE '%".$search."%'";
+			$query .= " AND title LIKE '%" . $search . "%'";
 		}
 
 		$query = $this->db->query($query);
@@ -193,7 +213,8 @@ class CoursestatsLms extends Model {
 	}
 
 
-	public function getCourseUserStatsList($pagination, $id_course, $id_user) {
+	public function getCourseUserStatsList($pagination, $id_course, $id_user)
+	{
 		// Default order
 		$sort = 'o.path';
 		$dir = 'ASC';
@@ -204,38 +225,55 @@ class CoursestatsLms extends Model {
 
 			if (isset($pagination['order_column'])) {
 				switch ($pagination['order_column']) {
-					case 1: $sort = 'o.path'; break;
-					case 2: $sort = 'o.title'; break;
-					case 3: $sort = 'o.objectType'; break;
-					case 4: $sort = 'c.status'; break;
-					case 5: $sort = 'c.firstAttempt'; break;
-					case 6: $sort = 'c.dateAttempt'; break;
+					case 1:
+						$sort = 'o.path';
+						break;
+					case 2:
+						$sort = 'o.title';
+						break;
+					case 3:
+						$sort = 'o.objectType';
+						break;
+					case 4:
+						$sort = 'c.status';
+						break;
+					case 5:
+						$sort = 'c.firstAttempt';
+						break;
+					case 6:
+						$sort = 'c.dateAttempt';
+						break;
 				}
 				if (isset($pagination['order_dir'])) {
 					switch ($pagination['order_dir']) {
-						case 'asc': $dir = 'ASC'; break;
-						case 'desc': $dir = 'DESC'; break;
-						default: $dir = 'ASC';
+						case 'asc':
+							$dir = 'ASC';
+							break;
+						case 'desc':
+							$dir = 'DESC';
+							break;
+						default:
+							$dir = 'ASC';
 					}
 				}
 			}
 
 			$where = '';
 			if (isset($pagination['search'])) {
-				$where.= " AND title LIKE '%".$pagination['search']."%'";
+				$where .= " AND title LIKE '%" . $pagination['search'] . "%'";
 			}
 		}
 
 		$query = "SELECT o.path, o.idOrg, o.title, o.objectType, o.idResource, c.status, "
-			." c.dateAttempt as last_access, c.firstAttempt as first_access, c.first_complete, c.last_complete "
-			." FROM ".$this->tables['organization']." as o "
-			." LEFT JOIN ".$this->tables['commontrack']." as c "
-			." ON (c.idReference = o.idOrg AND c.idUser=".(int)$id_user.") "
-			." WHERE o.idCourse=".(int)$id_course.$where;
+			. " c.dateAttempt as last_access, c.firstAttempt as first_access, c.first_complete, c.last_complete "
+			. " FROM " . $this->tables['organization'] . " as o "
+			. " LEFT JOIN " . $this->tables['commontrack'] . " as c "
+			. " ON (c.idReference = o.idOrg AND c.idUser=" . (int) $id_user . ") "
+			. " WHERE o.idCourse=" . (int) $id_course . $where;
 
-		$query .= " GROUP BY o.path ORDER BY ".$sort." ".$dir." ";
+		$query .= " GROUP BY o.path ORDER BY " . $sort . " " . $dir . " ";
 		if (is_array($pagination)) {
-			$query .= "LIMIT ".$startIndex.", ".$rowsPerPage;
+			$query .= "LIMIT " . $startIndex . ", " . $rowsPerPage;
 		}
 		//echo $query."\n";
 		$output = array();
@@ -243,36 +281,36 @@ class CoursestatsLms extends Model {
 
 		if ($res) {
 			$scores = $this->getLOScores($id_course, $id_user); //actually only tests can be scored
-			
-			require_once Forma::inc(_lms_.'/class.module/track.object.php' );
+
+			require_once Forma::inc(_lms_ . '/class.module/track.object.php');
 
 			while ($obj = $this->db->fetch_obj($res)) {
 				$obj->status = Track_Object::getStatusFromId($obj->idOrg, $id_user);
 				$history = $this->getUserScormHistoryTrackInfo($id_user, $obj->idOrg);
 				$history_table_html = '<table class="timesDetail table table-striped table-bordered">';
-				
-				if (is_array($history)) $history_table_html.='
+
+				if (is_array($history)) $history_table_html .= '
 					<tr>
 						<td>&nbsp;</td>
-						<td><b>'.Lang::t('_DATE_START', 'course').'</b></td>
-						<td><b>'.Lang::t('_DATE_END', 'course').'</b></td>
-						<td><b>'.Lang::t('_DURATION', 'course').' (hh:mm:ss)</b></td>
-						<td><b>'.Lang::t('_RESULT', 'course').'</b></td>
+						<td><b>' . Lang::t('_DATE_START', 'course') . '</b></td>
+						<td><b>' . Lang::t('_DATE_END', 'course') . '</b></td>
+						<td><b>' . Lang::t('_DURATION', 'course') . ' (hh:mm:ss)</b></td>
+						<td><b>' . Lang::t('_RESULT', 'course') . '</b></td>
 					</tr>';
-				foreach ($history as $key => $history_rec) { 
-					$seconds_diff = strtotime("1970-01-01 ".$history_rec[3]." UTC");
+				foreach ($history as $key => $history_rec) {
+					$seconds_diff = strtotime("1970-01-01 " . $history_rec[3] . " UTC");
 					$date_start = date('Y-m-d H:i:s', strtotime($history_rec[0]) - $seconds_diff);
 					$date_end = date('Y-m-d H:i:s', strtotime($history_rec[0]));
-					$history_table_html.= '
+					$history_table_html .= '
 						<tr>
-							<td><b>Tentativo '.($key+1).'</b></td>
-							<td>'.Format::date($date_start,'datetime', true).'</td>
-							<td>'.Format::date($date_end,'datetime', true).'</td>
-							<td>'.$history_rec[3].'</td>
-							<td>'.$history_rec[4].'</td>
+							<td><b>Tentativo ' . ($key + 1) . '</b></td>
+							<td>' . Format::date($date_start, 'datetime', true) . '</td>
+							<td>' . Format::date($date_end, 'datetime', true) . '</td>
+							<td>' . $history_rec[3] . '</td>
+							<td>' . $history_rec[4] . '</td>
 						</tr>';
 				}
-				$history_table_html.= '</table>';
+				$history_table_html .= '</table>';
 				$obj->score = isset($scores[$obj->idOrg]) ? $scores[$obj->idOrg] : "";
 				$obj->history = isset($history) ? $history_table_html : ""; // by marco array sessioni
 				$obj->totaltime = $this->getUserScormHistoryTrackTotaltime($id_user, $obj->idOrg);
@@ -286,7 +324,8 @@ class CoursestatsLms extends Model {
 		return $output;
 	}
 	// by marco come la precedente ma adattata all'esportazione csv
-	public function getCourseUserStatsList2csv($pagination, $id_course, $id_user) {
+	public function getCourseUserStatsList2csv($pagination, $id_course, $id_user)
+	{
 		if (is_array($pagination)) {
 			$startIndex = (isset($pagination['startIndex']) ? $pagination['startIndex'] : 0);
 			$results = (isset($pagination['results']) ? $pagination['results'] : Get::sett('visuItem', 10));
@@ -294,35 +333,50 @@ class CoursestatsLms extends Model {
 			$dir = 'ASC';
 			if (isset($pagination['dir'])) {
 				switch (strtolower($pagination['dir'])) {
-					case 'yui-dt-asc': $dir = 'ASC'; break;
-					case 'yui-dt-desc': $dir = 'DESC'; break;
-					case 'asc': $dir = 'ASC'; break;
-					case 'desc': $dir = 'DESC'; break;
-					default: $dir = 'ASC';
+					case 'yui-dt-asc':
+						$dir = 'ASC';
+						break;
+					case 'yui-dt-desc':
+						$dir = 'DESC';
+						break;
+					case 'asc':
+						$dir = 'ASC';
+						break;
+					case 'desc':
+						$dir = 'DESC';
+						break;
+					default:
+						$dir = 'ASC';
 				}
 			}
 
 			$sort = 'o.title';
 			if (isset($pagination['sort'])) {
 				switch ($pagination['sort']) {
-					case 'LO_name': $sort = 'o.title'; break;
-					case 'LO_type': $sort = 'o.objectType '.$dir.', o.title'; break;
-					case 'LO_status': $sort = 'c.status '.$dir.', o.title'; break;
+					case 'LO_name':
+						$sort = 'o.title';
+						break;
+					case 'LO_type':
+						$sort = 'o.objectType ' . $dir . ', o.title';
+						break;
+					case 'LO_status':
+						$sort = 'c.status ' . $dir . ', o.title';
+						break;
 				}
 			}
 		}
 
 
 		$query = "SELECT o.idOrg, o.title, o.objectType, o.idResource, c.status, "
-			." c.dateAttempt as last_access, c.firstAttempt as first_access, c.first_complete, c.last_complete "
-			." FROM ".$this->tables['organization']." as o "
-			." LEFT JOIN ".$this->tables['commontrack']." as c "
-			." ON (c.idReference = o.idOrg AND c.idUser=".(int)$id_user.") "
-			." WHERE o.idCourse=".(int)$id_course." ";
-		
+			. " c.dateAttempt as last_access, c.firstAttempt as first_access, c.first_complete, c.last_complete "
+			. " FROM " . $this->tables['organization'] . " as o "
+			. " LEFT JOIN " . $this->tables['commontrack'] . " as c "
+			. " ON (c.idReference = o.idOrg AND c.idUser=" . (int) $id_user . ") "
+			. " WHERE o.idCourse=" . (int) $id_course . " ";
+
 		if (is_array($pagination)) {
-			$query .= " ORDER BY ".$sort." ".$dir." ";
-			$query .= "LIMIT ".$startIndex.", ".$results;
+			$query .= " ORDER BY " . $sort . " " . $dir . " ";
+			$query .= "LIMIT " . $startIndex . ", " . $results;
 		}
 
 		$output = array();
@@ -330,7 +384,7 @@ class CoursestatsLms extends Model {
 		$history_table_html = '<table style="margin-left:auto; margin-right:auto;width:50%">';
 		if ($res) {
 			$scores = $this->getLOScores($id_course, $id_user); //actually only tests can be scored
-			
+
 			while ($obj = $this->db->fetch_obj($res)) {
 				$obj->history = '';
 				$history = $this->getUserScormHistoryTrackInfo($id_user, $obj->idOrg);
@@ -345,14 +399,15 @@ class CoursestatsLms extends Model {
 
 		return $output;
 	}
-	
 
-	public function getCourseUserStatsTotal($id_course, $id_user) {
+
+	public function getCourseUserStatsTotal($id_course, $id_user)
+	{
 		$query = "SELECT COUNT(*) "
-			." FROM ".$this->tables['organization']." as o "
-			." LEFT JOIN ".$this->tables['commontrack']." as c "
-			." ON (c.idReference = o.idOrg AND c.idUser=".(int)$id_user.") "
-			." WHERE o.idCourse=".(int)$id_course." ";
+			. " FROM " . $this->tables['organization'] . " as o "
+			. " LEFT JOIN " . $this->tables['commontrack'] . " as c "
+			. " ON (c.idReference = o.idOrg AND c.idUser=" . (int) $id_user . ") "
+			. " WHERE o.idCourse=" . (int) $id_course . " ";
 		$res = $this->db->query($query);
 		if ($res) {
 			list($total) = $this->db->fetch_row($res);
@@ -363,23 +418,24 @@ class CoursestatsLms extends Model {
 
 
 
-	public function getLOInfo($id_lo) {
-		if ((int)$id_lo <= 0) return false;
-		$query = "SELECT * FROM ".$this->tables['organization']." WHERE idOrg=".(int)$id_lo;
+	public function getLOInfo($id_lo)
+	{
+		if ((int) $id_lo <= 0) return false;
+		$query = "SELECT * FROM " . $this->tables['organization'] . " WHERE idOrg=" . (int) $id_lo;
 		$res = $this->db->query($query);
 		$output = $this->db->fetch_obj($res);
 		return $output;
 	}
 
 
-	public function getLOScores($id_course, $id_user) {
+	public function getLOScores($id_course, $id_user)
+	{
 		$output = array();
 
-		$query = "SELECT * FROM ".$this->tables['testtrack']."";
+		$query = "SELECT * FROM " . $this->tables['testtrack'] . "";
 		$res = $this->db->query($query);
 		if ($res) {
 			while ($obj = $this->db->fetch_obj($res)) {
-
 			}
 		}
 
@@ -387,11 +443,12 @@ class CoursestatsLms extends Model {
 	}
 
 
-	public function getUserCourseInfo($id_course, $id_user) {
+	public function getUserCourseInfo($id_course, $id_user)
+	{
 		if ($id_course <= 0 || $id_user <= 0) return false;
 		$output = false;
-		$query = "SELECT status, date_first_access, date_complete FROM ".$this->tables['courseuser']." "
-			."WHERE idUser=".(int)$id_user." AND idCourse=".(int)$id_course;
+		$query = "SELECT status, date_first_access, date_complete FROM " . $this->tables['courseuser'] . " "
+			. "WHERE idUser=" . (int) $id_user . " AND idCourse=" . (int) $id_course;
 		$res = $this->db->query($query);
 		if ($res) {
 			if ($this->db->num_rows($res) > 0) {
@@ -402,13 +459,14 @@ class CoursestatsLms extends Model {
 	}
 
 
-	public function getUserTrackInfo($id_user, $id_lo) {
+	public function getUserTrackInfo($id_user, $id_lo)
+	{
 		if ($id_lo <= 0 || $id_user <= 0) return false;
 		$output = false;
 		$query = "SELECT idTrack, objectType, status, firstAttempt as first_access, "
-			." dateAttempt as last_access, first_complete, last_complete "
-			." FROM ".$this->tables['commontrack']
-			." WHERE idUser=".(int)$id_user." AND idReference=".(int)$id_lo;
+			. " dateAttempt as last_access, first_complete, last_complete "
+			. " FROM " . $this->tables['commontrack']
+			. " WHERE idUser=" . (int) $id_user . " AND idReference=" . (int) $id_lo;
 		$res = $this->db->query($query);
 		if ($res) {
 			if ($this->db->num_rows($res) > 0) {
@@ -429,7 +487,7 @@ class CoursestatsLms extends Model {
 		if ($res) {
 			if ($this->db->num_rows($res) > 0) {
 				while ($row = $this->db->fetch_row($res)) {
-					if ($row[3] == '00:00:00') {
+					if ($row[3] == '00:00:00' || $row[3] == '00:00:00.000000') {
 						$row[3] = $this->parsePTTime($row[5]);
 					}
 					$row[3] = $this->zeroToTime($this->roundTime($row[3]));
@@ -458,14 +516,16 @@ class CoursestatsLms extends Model {
 
 	private function zeroToTime($time)
 	{
-		$array_time = explode(':', $time);
-		foreach ($array_time as &$at) {
-			if (strlen(trim($at)) < 2) {
-				$at = '0' . $at;
+		if ($time) {
+			$array_time = explode(':', $time);
+			foreach ($array_time as &$at) {
+				if (strlen(trim($at)) < 2) {
+					$at = '0' . $at;
+				}
 			}
-		}
 
-		return implode(':', $array_time);
+			return implode(':', $array_time);
+		}
 	}
 
 	public function roundTime($time)
@@ -474,39 +534,41 @@ class CoursestatsLms extends Model {
 		return $t[0];
 	}
 
-	public function getUserScormHistoryTrackTotaltime($id_user, $id_lo) {
+	public function getUserScormHistoryTrackTotaltime($id_user, $id_lo)
+	{
 		if ($id_lo <= 0 || $id_user <= 0) return false;
 		$output = false;
-		
+
 		$query = "SELECT SEC_TO_TIME( SUM( TIME_TO_SEC( t1.session_time ) ) ) AS total_time, t1.session_time 
 							FROM %lms_organization AS t3 
 							JOIN %lms_scorm_tracking AS t2 ON ( t3.objectType = 'scormorg' AND t3.idOrg = t2.idReference ) 
-							JOIN ".$this->tables['scorm_tracking_history']." as t1 ON (t1.idscorm_tracking=t2.idscorm_tracking) 
-							WHERE t3.idOrg =".$id_lo." 
-							AND t2.idUser=".$id_user.
-							" ORDER BY t1.date_action ASC ";
-		
+							JOIN " . $this->tables['scorm_tracking_history'] . " as t1 ON (t1.idscorm_tracking=t2.idscorm_tracking) 
+							WHERE t3.idOrg =" . $id_lo . " 
+							AND t2.idUser=" . $id_user .
+			" ORDER BY t1.date_action ASC ";
+
 		$res = $this->db->query($query);
 
 		if ($res) {
 			if ($this->db->num_rows($res) > 0) {
 				$row = $this->db->fetch_row($res);
-				if ($row[0] == '00:00:00') {
+				if ($row[0] == '00:00:00.000000') {
 					$row[0] = $this->parsePTTime($row[1]);
 				}
-				$output = $this->roundTime($row[0]);
+				$output = $this->zeroToTime($this->roundTime($row[0]));
 			}
-		}		
+		}
 		return $output;
 	}
 
 	/*
 	 * retrieve a list of alla existent types of LO (and cache it for future retrievements)
 	 */
-	public function getLOTypes() {
+	public function getLOTypes()
+	{
 		if (!isset($this->cache['lo_types'])) {
 			$this->cache['lo_types'] = array();
-			$query = "SELECT * FROM ".$this->tables['lo_types'];
+			$query = "SELECT * FROM " . $this->tables['lo_types'];
 			$res = $this->db->query($query);
 			if ($res) {
 				while ($obj = $this->db->fetch_obj($res)) {
@@ -520,17 +582,18 @@ class CoursestatsLms extends Model {
 	/*
 	 * get an instance of LO object given ad id organization and/or an objectType
 	 */
-	public function getLOObject($id_lo, $type = false) {
+	public function getLOObject($id_lo, $type = false)
+	{
 		$output = false;
 		$types = $this->getLOTypes();
 		if (!$type) {
-			$query = "SELECT objectType FROM ".$this->tables['organization']." WHERE idOrg=".(int)$id_lo;
+			$query = "SELECT objectType FROM " . $this->tables['organization'] . " WHERE idOrg=" . (int) $id_lo;
 			$res = $this->db->query($query);
 			if (!$res || $this->db->num_rows($res) <= 0) return false;
 			list($type) = $this->db->fetch_row($res);
 		}
 		if (is_array($types) && isset($types[$type])) {
-			require_once Forma::inc(_lms_.'/class.module/'.$types[$type]->fileName);
+			require_once Forma::inc(_lms_ . '/class.module/' . $types[$type]->fileName);
 			$classname = $types[$type]->className;
 			$output = new $classname($id_lo);
 		}
@@ -540,19 +603,20 @@ class CoursestatsLms extends Model {
 	/*
 	 * get an instance of LO track object given ad idTrack and/or an objectType
 	 */
-	public function getLOTrackObject($id_track, $type = false, $id_lo = false) {
+	public function getLOTrackObject($id_track, $type = false, $id_lo = false)
+	{
 		if ($id_track <= 0) return false;
 		$output = false;
 		$types = $this->getLOTypes();
 		if (!$type) {
-			$query = "SELECT objectType FROM ".$this->tables['commontrack']." WHERE idTrack=".(int)$id_track;
-			$query.= ($id_lo > 0 ? " AND idReference = ".$id_lo : "");
+			$query = "SELECT objectType FROM " . $this->tables['commontrack'] . " WHERE idTrack=" . (int) $id_track;
+			$query .= ($id_lo > 0 ? " AND idReference = " . $id_lo : "");
 			$res = $this->db->query($query);
 			if (!$res || $this->db->num_rows($res) <= 0) return false;
 			list($type) = $this->db->fetch_row($res);
 		}
 		if (is_array($types) && isset($types[$type])) {
-			require_once Forma::inc(_lms_.'/class.module/'.$types[$type]->fileNameTrack);
+			require_once Forma::inc(_lms_ . '/class.module/' . $types[$type]->fileNameTrack);
 			$classname = $types[$type]->classNameTrack;
 			$output = new $classname($id_track);
 		}
@@ -562,21 +626,22 @@ class CoursestatsLms extends Model {
 	/*
 	 * change the status of a user for a given LO
 	 */
-	public function changeLOUserStatus($id_lo, $id_user, $new_status) {
+	public function changeLOUserStatus($id_lo, $id_user, $new_status)
+	{
 		if ($id_lo <= 0 || $id_user <= 0) return false;
 
 		$output = false;
-		$query = "SELECT * FROM ".$this->tables['organization']." WHERE idOrg=".(int)$id_lo;
+		$query = "SELECT * FROM " . $this->tables['organization'] . " WHERE idOrg=" . (int) $id_lo;
 		$res = $this->db->query($query);
-		if ($res && $this->db->num_rows($res)>0) {
-			$query = "SELECT * FROM ".$this->tables['commontrack']." WHERE idReference=".(int)$id_lo." AND idUser=".(int)$id_user;
+		if ($res && $this->db->num_rows($res) > 0) {
+			$query = "SELECT * FROM " . $this->tables['commontrack'] . " WHERE idReference=" . (int) $id_lo . " AND idUser=" . (int) $id_user;
 			$res = $this->db->query($query);
 			if ($res) {
 				$obj = $this->db->fetch_obj($res);
 				$track_obj = $this->getLOTrackObject($obj->idTrack, $obj->objectType);
 				if (!$track_obj) return false;
 
-				if ($this->db->num_rows($res)>0) {
+				if ($this->db->num_rows($res) > 0) {
 					$obj = $this->db->fetch_obj($res);
 					$old_status = $obj->status;
 					if ($old_status == $new_status) return true;
@@ -587,12 +652,13 @@ class CoursestatsLms extends Model {
 		return $output;
 	}
 
-	public function changeLOUserFirstAccess($id_lo, $id_user, $new_status) {
+	public function changeLOUserFirstAccess($id_lo, $id_user, $new_status)
+	{
 		if ($id_lo <= 0 || $id_user <= 0) return false;
 
 		$output = false;
-		$query = "UPDATE ".$this->tables['commontrack']." SET firstAttempt='".$new_status."' "
-			." WHERE idReference=".(int)$id_lo." AND idUser=".(int)$id_user;
+		$query = "UPDATE " . $this->tables['commontrack'] . " SET firstAttempt='" . $new_status . "' "
+			. " WHERE idReference=" . (int) $id_lo . " AND idUser=" . (int) $id_user;
 		$res = $this->db->query($query);
 
 		if ($res) {
@@ -601,12 +667,13 @@ class CoursestatsLms extends Model {
 		return $output;
 	}
 
-	public function changeLOUserLastAccess($id_lo, $id_user, $new_status) {
+	public function changeLOUserLastAccess($id_lo, $id_user, $new_status)
+	{
 		if ($id_lo <= 0 || $id_user <= 0) return false;
 
 		$output = false;
-		$query = "UPDATE ".$this->tables['commontrack']." SET dateAttempt='".$new_status."' "
-			." WHERE idReference=".(int)$id_lo." AND idUser=".(int)$id_user;
+		$query = "UPDATE " . $this->tables['commontrack'] . " SET dateAttempt='" . $new_status . "' "
+			. " WHERE idReference=" . (int) $id_lo . " AND idUser=" . (int) $id_user;
 		$res = $this->db->query($query);
 
 		if ($res) {
@@ -615,27 +682,29 @@ class CoursestatsLms extends Model {
 		return $output;
 	}
 
-	public function changeLOUserFirstComplete($id_lo, $id_user, $new_status) {
+	public function changeLOUserFirstComplete($id_lo, $id_user, $new_status)
+	{
 		if ($id_lo <= 0 || $id_user <= 0) return false;
 
 		$output = false;
-		$query = "UPDATE ".$this->tables['commontrack']." SET first_complete='".$new_status."' "
-			." WHERE idReference=".(int)$id_lo." AND idUser=".(int)$id_user;
+		$query = "UPDATE " . $this->tables['commontrack'] . " SET first_complete='" . $new_status . "' "
+			. " WHERE idReference=" . (int) $id_lo . " AND idUser=" . (int) $id_user;
 		$res = $this->db->query($query);
-		if ($res && $this->db->affected_rows($res)>0) {
+		if ($res && $this->db->affected_rows($res) > 0) {
 			$output = true;
 		}
 		return $output;
 	}
 
-	public function changeLOUserLastComplete($id_lo, $id_user, $new_status) {
+	public function changeLOUserLastComplete($id_lo, $id_user, $new_status)
+	{
 		if ($id_lo <= 0 || $id_user <= 0) return false;
 
 		$output = false;
-		$query = "UPDATE ".$this->tables['commontrack']." SET last_complete='".$new_status."' "
-			." WHERE idReference=".(int)$id_lo." AND idUser=".(int)$id_user;
+		$query = "UPDATE " . $this->tables['commontrack'] . " SET last_complete='" . $new_status . "' "
+			. " WHERE idReference=" . (int) $id_lo . " AND idUser=" . (int) $id_user;
 		$res = $this->db->query($query);
-		if ($res && $this->db->affected_rows($res)>0) {
+		if ($res && $this->db->affected_rows($res) > 0) {
 			$output = true;
 		}
 		return $output;
@@ -644,19 +713,20 @@ class CoursestatsLms extends Model {
 	/*
 	 * for every LO of a course with id $id_course, count how many users have completed it
 	 */
-	public function getLOsTotalCompleted($id_course) {
+	public function getLOsTotalCompleted($id_course)
+	{
 		$output = array();
 		$lo_list = $this->getCourseLOs($id_course);
 		if (!empty($lo_list)) {
-			$query = "SELECT idReference, COUNT(*) FROM ".$this->tables['commontrack']." "
-				." WHERE (status='completed' OR status='passed') AND idReference IN (".implode(",", array_keys($lo_list)).") "
-				." GROUP BY idReference";
+			$query = "SELECT idReference, COUNT(*) FROM " . $this->tables['commontrack'] . " "
+				. " WHERE (status='completed' OR status='passed') AND idReference IN (" . implode(",", array_keys($lo_list)) . ") "
+				. " GROUP BY idReference";
 			$res = $this->db->query($query);
 			if ($res) {
 				$output = array();
 				foreach ($lo_list as $id_lo => $lo_info) $output[$id_lo] = 0;
 				while (list($id_lo, $count) = $this->db->fetch_row($res)) {
-					$output[$id_lo] = (int)$count;
+					$output[$id_lo] = (int) $count;
 				}
 			}
 		}
@@ -666,7 +736,8 @@ class CoursestatsLms extends Model {
 	/*
 	 * delete all tracking info for a LO
 	 */
-	public function resetTrack($id_lo, $id_user) {
+	public function resetTrack($id_lo, $id_user)
+	{
 		$id_track = $this->getTrackId($id_lo, $id_user);
 		$object_lo = $this->getLOTrackObject($id_track, false, $id_lo);
 		if (!$object_lo) return true; //no track for this user and LO, the track is already "reset"
