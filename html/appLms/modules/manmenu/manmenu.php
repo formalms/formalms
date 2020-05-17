@@ -174,30 +174,8 @@ function editmenuvoice($load = false) {
 	if($load !== false) {
 		
 		$out->add(Form::getHidden('id_main', 'id_main', $id_main));
-	}/*
-	$out->add(
-		Form::getDropdown($lang->def('_SYMBOL_TITLE'), 'image', 'image', $all_images, $image)
-	);
-	$out->add(Form::getLineBox($lang->def('_PREVIEW'), 
-		'<img class="image_preview" id="imgpreview" src="'.getPathImage().'menu/'.$image.'" alt="'.$lang->def('_PREVIEW').'" />'));
-	$out->add('<script type="text/javascript">
-		<!--
-		var imgselect = null;
-		var imgpreview = null;
-		window.onload = function() {
-			if( document.getElementById ) {
-				imgselect = document.getElementById("image");
-				imgpreview = document.getElementById("imgpreview");
-			} else {
-				imgselect = document.all["image"];
-				imgpreview = document.all["imgpreview"];
-			}
-			imgselect.onchange = function() {
-				imgpreview.src = "'.getPathImage('lms').'menu/" + imgselect.options[imgselect.selectedIndex].value;
-			}
-		}
-		// -->
-	 </script>');*/
+	}
+  
 	$out->add(
 		Form::closeElementSpace()
 		.Form::openButtonSpace()

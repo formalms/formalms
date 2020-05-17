@@ -5,7 +5,7 @@ cout(getTitleArea(Lang::t('_TITLE_META_CERTIFICATE', 'certificate').'<div class=
 $form = new Form();
 
 cout(	
-        $form->openForm('certificate_filter', 'index.php?r=alms/'.$controller_name.'/'.$opsArr['home'])
+        $form->openForm('certificate_filter', 'index.php?r=alms/'.$controller_name.'/show')
         .'<div class="quick_search_form">
                 <div>
                     <div class="simple_search_box">'

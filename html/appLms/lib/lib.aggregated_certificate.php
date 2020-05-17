@@ -45,7 +45,7 @@ class AggregatedCertificate {
     * $aggCertArr['description']            Defines the description of the cert.
     *  
     * @return array $aggCertArr
-    *           
+    * OK          
     */
     function getAllAggregatedCerts($ini = 0, $count = false, $filter = []) {
         //search query of certificates 
@@ -222,32 +222,6 @@ class AggregatedCertificate {
 
     }
     
-    
-
-    /**
-     * Returns an array of id/s associations (object) with the type of the assoc.
-     *
-     * @param int $idCert
-     */
-    function getIdAssociationsWithType($idCert) {
-
-        $query = "SELECT idAssociation FROM ".$this->table_cert_meta_association
-            ." WHERE idCertificate = ".$idCert;
-
-        $rs = sql_query($query);
-
-        $k = 0;
-        while($rows = sql_fetch_assoc($rs)) {
-
-            $idsArr[$k]["id"] = (int) $rows['idAssociation'];
-            $idsArr[$k]["type"] = $this->getTypeAssoc((int) $rows['idAssociation']);
-            
-            $k += 1;
-        }
-
-        return $idsArr;
-
-    }
 
     /**
      * Returning all associations between idAssociation or,
@@ -295,66 +269,7 @@ class AggregatedCertificate {
         return $assocArr;
     }
 
-    /**
-    * Returns in each type assoc all the assoc. ids that belongs to user
-    * 
-    * @param int
-    * 
-    * @return array $idsAssocArr[$association_type] = $idAssociation
-    */
-    function getIdsAssociationUser($user) {
-        
-        if(!isset($user)) return;
-
-        $idsAssocArr = array();
-
-        foreach($this->assocTypesArr as $association_type => $table_name){
-            
-            $q =      "SELECT DISTINCT idAssociation"
-                    . " FROM " . $table_name
-                    . " WHERE 1 = 1 "
-                    . " AND idUser = ".$user;
-                            
-                    $rs = $this->db->query($q);
-                    
-            while($row = $this->db->fetch_assoc($rs)){
-             
-                $idsAssocArr[$association_type][] = (int) $row['idAssociation'];
-            
-            }
-        }   
-
-        return $idsAssocArr; 
-              
-    }
-    
-    function getIdsAssociationCertUser($user) {
-        
-        if(!isset($user)) return;
-
-        // Will contain id cert -> id assocs. -> idCourse
-        $idsAssocArr = array();
-
-        foreach($this->assocTypesArr as $association_type => $table_name){
-            
-            $q =      "SELECT DISTINCT idAssociation"
-                    . " FROM ". $table_name
-                    . " WHERE 1 = 1 "
-                    . " AND idUser = ".$user;
-                            
-                    $rs = $this->db->query($q);
-                    
-            while($row = $this->db->fetch_assoc($rs)){
-             
-                $idsAssocArr[$association_type][] = (int) $row['idAssociation'];
-            
-            }
-        }   
-
-        return $idsAssocArr; 
-              
-        
-    }
+     
     
     /**
      * @param array | int $id_assoc
@@ -485,101 +400,7 @@ class AggregatedCertificate {
         return $status;
     }
 
-    function getCountCoursesCompleted($coursesIdsArr, $id_user){
 
-        $query =    "SELECT COUNT(*)"
-            ." FROM %lms_courseuser"
-            ." WHERE idCourse " . ( is_array($coursesIdsArr) ? " IN (" . implode(", ", $coursesIdsArr) . ")" : " = " . $coursesIdsArr) 
-            ." AND idUser = ".$id_user
-            ." AND status = "._CUS_END;
-
-        $rs = sql_query($query);
-
-        while($rows = sql_fetch_row($rs)) {
-
-            $count = $rows[0];
-
-        }
-
-        return $count;
-    }
-
-    function hasUserAggCertsReleased($id_user, $id_cert, $id_association){
-
-            $q = "SELECT * "
-                ." FROM ".$this->table_assign_agg_cert
-                ." WHERE idUser = ".$id_user
-                ." AND idCertificate = ".$id_cert
-                ." AND idAssociation = ".$id_association;
-
-           return sql_num_rows(sql_query($q));
-
-
-        }
-        
-    /**
-    * 
-    *     $filter['id_certificate'] int
-    *     $filter['id_course'] int
-    *     $filter['id_user'] int
-    * 
-    * @param array $filter
-    */
-    function getAssignedAggCerts($filter) {
-       
-        /* Steps:
-        
-            query for all type assoc.
-                type course
-                if is set filter user, then get all courses associated to the user
-                type course_path
-            then query if the user has some course path associated, then get if the user has completed all the courses in the coursepath
-        
-        
-        */
-        
-        
-        $query = " SELECT   cma.idCertificate AS id_certificate "
-                ."         ,cma.idMetaCertificate AS id_meta "
-                ."         ,cmc.idUser AS id_user "
-                ."         ,ce.code AS cert_code "
-                ."         ,ce.name AS cert_name "
-                ."         ,cma.on_date"
-                ." GROUP_CONCAT(DISTINCT CONCAT( '(', co.code, ') - ', co.name) SEPARATOR '<br>') AS courses"
-                ." FROM %lms_certificate_meta_course as cmc"  //??
-                ." JOIN " . $this->table_assign_agg_cert . " as cma ON cmc.idAssociation = cma.idMetaCertificate"
-                ." JOIN %lms_certificate AS ce ON cma.idCertificate = ce.id_certificate"
-                ." JOIN %lms_course AS co ON cmc.idCourse = co.idCourse"
-                ." WHERE 1 = 1";
-        
-        if (isset($filter['id_certificate'])) {
-            $query .= " AND cma.idCertificate = " . $filter['id_certificate'];
-        }
-        if (isset($filter['id_course'])) {
-            $query .= " AND cmc.idCourse = " . $filter['id_course'];
-        }
-        if (isset($filter['id_user'])) {
-            $query .= " AND cma.idUser = " . $filter['id_user'];
-        }
-        if (!isset($filter['id_user'])) {
-            if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
-                require_once(_base_ . '/lib/lib.preference.php');
-                $adminManager = new AdminPreference();
-                $query .= " AND " . $adminManager->getAdminUsersQuery(Docebo::user()->getIdSt(), 'idUser');
-            }
-        }
-        $query .= " GROUP BY cmc.idMetaCertificate";
-
-        $res = sql_query($query);
-        
-        while ($row = sql_fetch_assoc($res)) {
-            $metaAssigned[] = $row;
-        }
-        
-        return $metaAssigned;
-    }
-    
-    
 
     /**
      *
@@ -756,22 +577,10 @@ class AggregatedCertificate {
 
     function getLastInsertedIdCertificate() {
 
-        return sql_fetch_row(sql_query("SELECT LAST_INSERT_ID()FROM ".$this->table_cert ))[0];
+        return sql_fetch_row(sql_query("SELECT LAST_INSERT_ID() FROM ".$this->table_cert ))[0];
 
     }
     
-    function getLastInsertedIdAggregatedCert() {
-
-        return sql_fetch_row(sql_query("SELECT LAST_INSERT_ID()FROM ".$this->table_cert_meta_association ))[0];
-
-    }
-
-    function getLastInsertedAssociationId() {
-
-        return sql_fetch_row(sql_query("SELECT LAST_INSERT_ID()FROM ".$this->table_cert_meta_association ))[0];
-
-    }
-
 
     
     // ------------------------ Inserting queries ------------------------------

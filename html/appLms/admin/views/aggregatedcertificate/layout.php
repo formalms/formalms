@@ -15,7 +15,7 @@
     // cout( getInfoUi(Lang::t('_CERTIFICATE_WARNING')) );
 
     cout(
-    $form->openForm('structure_certificate_form', 'index.php?r=alms/'.$controller_name.'/'.$this->op['saveLayout'], false, false, 'multipart/form-data')
+    $form->openForm('structure_certificate_form', 'index.php?r=alms/'.$controller_name.'/saveLayout', false, false, 'multipart/form-data')
     .$form->openElementSpace()
     .$form->getTextarea (Lang::t('_STRUCTURE_CERTIFICATE','certificate'), 'structure', 'structure', isset($template["cert_structure"]) ? $template["cert_structure"] : '')
     .'<p><b>'.Lang::t('_ORIENTATION','certificate').'</b></p>'

@@ -109,8 +109,8 @@ class MycertificateLms extends Model {
               WHERE %lms_certificate.id_certificate=%lms_aggregated_cert_assign.idCertificate
               AND %lms_aggregated_cert_assign.idAssociation=%lms_aggregated_cert_coursepath.idAssociation
               AND %lms_aggregated_cert_coursepath.idCoursePath = %lms_coursepath.id_path
-              AND learning_aggregated_cert_course.idUser = learning_aggregated_cert_assign.idUser
-              AND %lms_aggregated_cert_coursepath.idUser=".intval($this->id_user);
+              AND %lms_aggregated_cert_coursepath.idUser = %lms_aggregated_cert_assign.idUser
+              AND %lms_aggregated_cert_assign.idUser=".intval($this->id_user);
               
        $rs = sql_query($q);       
        $prev_idcert = 0;
@@ -133,8 +133,8 @@ class MycertificateLms extends Model {
               WHERE %lms_certificate.id_certificate=%lms_aggregated_cert_assign.idCertificate
               AND %lms_aggregated_cert_assign.idAssociation=%lms_aggregated_cert_course.idAssociation
               AND %lms_aggregated_cert_course.idCourse = %lms_course.idCourse
-              AND learning_aggregated_cert_course.idUser = learning_aggregated_cert_assign.idUser
-              AND %lms_aggregated_cert_course.idUser=".intval($this->id_user);
+              AND %lms_aggregated_cert_course.idUser = %lms_aggregated_cert_assign.idUser
+              AND %lms_aggregated_cert_assign.idUser=".intval($this->id_user);
        $rs = sql_query($q);       
        $prev_idcert = 0; 
        while ($row = sql_fetch_assoc($rs)) {
@@ -153,20 +153,21 @@ class MycertificateLms extends Model {
     
 
     function countAggrCertsToRelease() {
+
         $r = sql_fetch_row(
-                sql_query('SELECT count(*) as tot from %lms_aggregated_cert_assign where idUser ='.Docebo::user()->getIdSt(). ' AND cert_file = \'\'')
+                sql_query('SELECT count(*) as tot from %lms_aggregated_cert_assign where idUser ='.$this->id_user. ' AND cert_file = \'\'')
                           );
         return $r[0];
     }
     
     function countMyMetaCertificates(){
-        $r = sql_fetch_row(sql_query('SELECT count(*) as tot from %lms_aggregated_cert_assign where idUser ='.Docebo::user()->getIdSt()));
+        $r = sql_fetch_row(sql_query('SELECT count(*) as tot from %lms_aggregated_cert_assign where idUser ='.$this->id_user));
         return $r[0];
     }
     
     function countMyMetaCertsReleased(){
         $r = sql_fetch_row(
-                sql_query('SELECT count(*) as tot from %lms_aggregated_cert_assign where idUser ='.Docebo::user()->getIdSt(). ' AND cert_file <> \'\'')
+                sql_query('SELECT count(*) as tot from %lms_aggregated_cert_assign where idUser ='.$this->id_user. ' AND cert_file <> \'\'')
                           );
         return $r[0];
     }

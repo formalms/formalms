@@ -85,9 +85,6 @@ class TreeDb_OrgDb extends TreeDb {
 		}
 	}
 	
-	function _getOtherValues() {
-		
-	}
 	
 	function _getParentJoinFilter( $t1name, $t2name ) {
 		if( $this->filter_path !== FALSE ) {

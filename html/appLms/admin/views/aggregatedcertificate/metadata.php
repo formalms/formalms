@@ -1,14 +1,12 @@
 <?php
-
-    
      cout( 
                 getTitleArea($page_title)
                 .'<div class="std_block">'
-                .getBackUi( 'index.php?r=alms/'.$controller_name.'/'.$opArr['home'], Lang::t('_BACK') )
-                .$form->openForm('metadataForm', 'index.php?r=alms/'.$controller_name.'/'.$opArr['saveMetaData'])
-                .$form->openElementSpace());
+                .getBackUi( 'index.php?r=alms/'.$controller_name.'/show', Lang::t('_BACK') )
+                .$form->openForm('metadataForm', 'index.php?r=alms/'.$controller_name.'/saveMetaData')
+                .$form->openElementSpace()); 
      if(isset($id_certificate))
-         cout($form->getHidden('id_certificate', 'id_certificate', $id_certificate));
+         cout($form->getHidden('id_certificate', 'id_certificate', $id_certificate)); 
 
     cout(
         $form->getTextfield(Lang::t('_CODE'), 'code', 'code', 255, (isset ($metacert['code']) ? $metacert['code'] : '' ))
@@ -20,7 +18,7 @@
          $languages,
           (isset ($metacert['base_language']) ? $metacert['base_language'] : Lang::get())
            )
-        .$form->getCheckbox(Lang::t('_USER_RELEASE'), 'user_release', 'user_release', '1', (isset ($metacert['user_release']) ? $metacert['user_release'] : 0 ))
+        .$form->getCheckbox(Lang::t('_USER_RELEASE'), 'user_release', 'user_release', '1', (isset ($metacert['user_release']) ? $metacert['user_release'] : 1 ))
         .$form->getTextarea(Lang::t('_DESCRIPTION'), 'descr', 'descr', (isset ($metacert['description']) ? $metacert['description'] : '' ))
         .$form->closeElementSpace()
         .$form->openButtonSpace()
@@ -32,4 +30,4 @@
         ); 
     
 
-
+?>
