@@ -5500,7 +5500,7 @@ body {
   clear: both; }
 
 .text--open-sans {
-  font-family: 'Open-sans', sans-serif; }
+  font-family: "Open-sans", sans-serif; }
 
 .forma-grid {
   overflow: auto; }
@@ -5558,18 +5558,19 @@ body {
     margin: 0;
     width: 100vw; } }
 
-@media (max-width: 1024px) {
-  .lms-user-content-wrapper > .container-fluid {
-    padding: 0; } }
-
-@media (max-width: 1024px) {
-  .lms-user-content-wrapper > .container-fluid > .row {
-    margin: 0; } }
-
-@media (max-width: 1024px) {
-  .lms-user-content-wrapper > .container-fluid > .row > .col-md-12 {
-    margin: 0;
-    padding: 0; } }
+.lms-user-content-wrapper > .container-fluid {
+  height: auto;
+  min-height: 90vh; }
+  @media (max-width: 1024px) {
+    .lms-user-content-wrapper > .container-fluid {
+      padding: 0; } }
+  @media (max-width: 1024px) {
+    .lms-user-content-wrapper > .container-fluid > .row {
+      margin: 0; } }
+  @media (max-width: 1024px) {
+    .lms-user-content-wrapper > .container-fluid > .row > .col-md-12 {
+      margin: 0;
+      padding: 0; } }
 
 div#container {
   min-height: calc(100% - 86px); }
@@ -5591,8 +5592,7 @@ div#container {
     .course-box:hover .course-box__img-title {
       background-color: rgba(255, 108, 0, 0.5); }
   .mycourses-list .course-box {
-    position: relative;
-    padding-bottom: 50px; }
+    position: relative; }
 
 .course-box__item {
   width: 100%;
@@ -5666,7 +5666,8 @@ div#container {
   position: absolute;
   bottom: 0;
   width: 100%;
-  height: 35px;
+  height: auto;
+  min-height: 35px;
   padding: 10px 30px;
   background-color: rgba(0, 0, 0, 0.2);
   color: white;

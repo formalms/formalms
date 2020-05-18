@@ -41,7 +41,7 @@ body {
 }
 
 .text--open-sans {
-  font-family: 'Open-sans', sans-serif;
+  font-family: "Open-sans", sans-serif;
 }
 
 //FIXME fixare griglia
@@ -116,6 +116,8 @@ body {
     width: 100vw;
   }
   > .container-fluid {
+    height: auto;
+    min-height: 90vh;
     @media (max-width: 1024px) {
       padding: 0;
     }
