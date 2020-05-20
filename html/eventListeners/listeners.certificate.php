@@ -15,7 +15,7 @@ Events::listen("lms.course_user.updated", function($event)
         $ca = new AggregatedCertificate();
         $ca->releaseNewAggrCertCourses($event); 
     }
-},0);
+},Events::PRIORITY_CORE);
 
 
 Events::listen("lms.coursepath_user.completed", function($event)
@@ -24,4 +24,4 @@ Events::listen("lms.coursepath_user.completed", function($event)
     $ca = new AggregatedCertificate();
     $ca->releaseNewAggrCertPaths($event); 
     
-},0);
+},Events::PRIORITY_CORE);

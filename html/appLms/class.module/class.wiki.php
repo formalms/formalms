@@ -22,7 +22,7 @@ class Module_Wiki extends LmsModule {
 		return false;
 	}
 
-	function getAllToken($op) {
+	function getAllToken($op='') {
 		return array(
 			'view' => array( 	'code' => 'view',
 								'name' => '_VIEW',

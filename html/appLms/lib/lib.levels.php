@@ -22,7 +22,7 @@ class CourseLevel {
 	const COURSE_LEVEL_GUEST = 1;
 
 
-	function getLevels() {
+	function getLevels($op = '') {
 
 		$lang =& DoceboLanguage::createInstance('levels', 'lms');
 		return array(
