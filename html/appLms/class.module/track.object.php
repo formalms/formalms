@@ -98,16 +98,33 @@ class Track_Object {
 		if(!$idReference || !$idTrack || !$idUser) return false;
 		if(isset($this)) $table = $this->_table;
 		else $table = self::getEnvironmentTable('course_lo');
+
+		if(!$objectType) {
+			$objectType = $this->objectType;
+		}
+
+		$firstAttempt = date("Y-m-d H:i:s");
+
+		$data = Events::trigger('lms.lo_user.creating', [
+			'id_reference' => $idReference,
+			'id_user' => $idUser,
+			'object_type' => $objectType,
+			'id_track' => $idTrack,
+			'firstAttempt' => $firstAttempt,
+			'dateAttempt' => $dateAttempt,
+			'status' => $status,
+		]);
+
 		$query = "INSERT INTO ".$table." "
 				."( `idReference`, `idUser`, `idTrack`, `objectType`, `firstAttempt`, `dateAttempt`, `status` )"
 				." VALUES ("
 				." '".(int)$idReference."',"
 				." '".(int)$idUser."',"
 				." '".(int)$idTrack."',"
-				." '".(($objectType==FALSE)?($this->objectType):($objectType))."',"
-				." '".date("Y-m-d H:i:s")."', "
-				." '".$dateAttempt."', "
-				." '".$status."'"
+				." '".$objectType."',"
+				." '".$data['firstAttempt']."', "
+				." '".$data['dateAttempt']."', "
+				." '".$data['status']."'"
 				." )";
 		
 		$result = sql_query($query) 
@@ -124,15 +141,25 @@ class Track_Object {
 		// $event->setTrackType(\appLms\Events\Lms\LoStatusUpdate::CREATE_TRACK);
 		//TODO: EVT_LAUNCH (&)
 		// \appCore\Events\DispatcherManager::dispatch(\appLms\Events\Lms\LoStatusUpdate::EVENT_NAME, $event);
+
+		Events::trigger('lms.lo_user.created', [
+			'id_reference' => $idReference,
+			'id_user' => $idUser,
+			'object_type' => $objectType,
+			'id_track' => $idTrack,
+			'firstAttempt' => $data['firstAttempt'],
+			'dateAttempt' => $data['dateAttempt'],
+			'status' => $data['status'],
+		]);
 		
 		if(isset($this)) {
 			
 			$this->idReference = $idReference;
 			$this->idUser = $idUser;
 			$this->idTrack = $idTrack;
-			$this->objectType = (($objectType==FALSE)?($this->objectType):($objectType));
-			$this->dateAttempt = $dateAttempt;
-			$this->status = $status;
+			$this->objectType = $objectType;
+			$this->dateAttempt = $data['dateAttempt'];
+			$this->status = $data['status'];
 						
 			$this->_setCourseCompleted();
 		}
