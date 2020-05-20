@@ -103,6 +103,7 @@ class Track_Object {
 			$objectType = $this->objectType;
 		}
 
+		$environment = isset($this) ? $this->environment : 'course_lo';
 		$firstAttempt = date("Y-m-d H:i:s");
 
 		$data = Events::trigger('lms.lo_user.creating', [
@@ -110,6 +111,7 @@ class Track_Object {
 			'id_user' => $idUser,
 			'object_type' => $objectType,
 			'id_track' => $idTrack,
+			'environment' => $environment,
 			'data' => [
 				'firstAttempt' => $firstAttempt,
 				'dateAttempt' => $dateAttempt,
@@ -149,6 +151,7 @@ class Track_Object {
 			'id_user' => $idUser,
 			'object_type' => $objectType,
 			'id_track' => $idTrack,
+			'environment' => $environment,
 			'data' => [
 				'firstAttempt' => $firstAttempt,
 				'dateAttempt' => $dateAttempt,
