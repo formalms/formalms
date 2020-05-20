@@ -110,10 +110,12 @@ class Track_Object {
 			'id_user' => $idUser,
 			'object_type' => $objectType,
 			'id_track' => $idTrack,
-			'firstAttempt' => $firstAttempt,
-			'dateAttempt' => $dateAttempt,
-			'status' => $status,
-		]);
+			'data' => [
+				'firstAttempt' => $firstAttempt,
+				'dateAttempt' => $dateAttempt,
+				'status' => $status,
+			]
+		])['data'];
 
 		$query = "INSERT INTO ".$table." "
 				."( `idReference`, `idUser`, `idTrack`, `objectType`, `firstAttempt`, `dateAttempt`, `status` )"
@@ -147,9 +149,11 @@ class Track_Object {
 			'id_user' => $idUser,
 			'object_type' => $objectType,
 			'id_track' => $idTrack,
-			'firstAttempt' => $data['firstAttempt'],
-			'dateAttempt' => $data['dateAttempt'],
-			'status' => $data['status'],
+			'data' => [
+				'firstAttempt' => $firstAttempt,
+				'dateAttempt' => $dateAttempt,
+				'status' => $status,
+			]
 		]);
 		
 		if(isset($this)) {
