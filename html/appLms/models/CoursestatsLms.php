@@ -565,20 +565,37 @@ class CoursestatsLms extends Model {
 					$obj = $this->db->fetch_obj($res);
 					$old_status = $obj->status;
 					if ($old_status == $new_status) return true;
-					$output = $track_obj->updateTrackInfo(array('status' => $new_status));
+					$track_obj->setStatus($new_status);
+					return $track_obj->update();
 				}
 			}
 		}
 		return $output;
 	}
 
-	public function changeLOUserFirstAccess($id_lo, $id_user, $new_status) {
+	public function changeLOUserFirstAccess($id_lo, $id_user, $new_first_attempt) {
 		if ($id_lo <= 0 || $id_user <= 0) return false;
+		
+		$data = Events::trigger('lms.lo_user.updating', [
+			'id_reference' => $id_lo,
+			'id_user' => $id_user,
+			'new_data' => [
+				'firstAttempt' => $new_first_attempt
+			],
+		])['new_data'];
 
 		$output = false;
-		$query = "UPDATE ".$this->tables['commontrack']." SET firstAttempt='".$new_status."' "
+		$query = "UPDATE ".$this->tables['commontrack']." SET firstAttempt='".$data['firstAttempt']."' "
 			." WHERE idReference=".(int)$id_lo." AND idUser=".(int)$id_user;
 		$res = $this->db->query($query);
+		
+		Events::trigger('lms.lo_user.updated', [
+			'id_reference' => $id_lo,
+			'id_user' => $id_user,
+			'new_data' => [
+				'firstAttempt' => $new_first_attempt
+			],
+		]);
 
 		if ($res) {
 			$output = true;
@@ -586,13 +603,29 @@ class CoursestatsLms extends Model {
 		return $output;
 	}
 
-	public function changeLOUserLastAccess($id_lo, $id_user, $new_status) {
+	public function changeLOUserLastAccess($id_lo, $id_user, $new_date_attempt) {
 		if ($id_lo <= 0 || $id_user <= 0) return false;
+		
+		$data = Events::trigger('lms.lo_user.updating', [
+			'id_reference' => $id_lo,
+			'id_user' => $id_user,
+			'new_data' => [
+				'dateAttempt' => $new_date_attempt
+			],
+		])['new_data'];
 
 		$output = false;
-		$query = "UPDATE ".$this->tables['commontrack']." SET dateAttempt='".$new_status."' "
+		$query = "UPDATE ".$this->tables['commontrack']." SET dateAttempt='".$data['date_attempt']."' "
 			." WHERE idReference=".(int)$id_lo." AND idUser=".(int)$id_user;
 		$res = $this->db->query($query);
+
+		Events::trigger('lms.lo_user.updated', [
+			'id_reference' => $id_lo,
+			'id_user' => $id_user,
+			'new_data' => [
+				'dateAttempt' => $new_date_attempt
+			],
+		]);
 
 		if ($res) {
 			$output = true;
@@ -600,26 +633,60 @@ class CoursestatsLms extends Model {
 		return $output;
 	}
 
-	public function changeLOUserFirstComplete($id_lo, $id_user, $new_status) {
+	public function changeLOUserFirstComplete($id_lo, $id_user, $new_first_complete) {
 		if ($id_lo <= 0 || $id_user <= 0) return false;
+		
+		$data = Events::trigger('lms.lo_user.updating', [
+			'id_reference' => $id_lo,
+			'id_user' => $id_user,
+			'new_data' => [
+				'firstComplete' => $new_first_complete
+			],
+		])['new_data'];
 
 		$output = false;
-		$query = "UPDATE ".$this->tables['commontrack']." SET first_complete='".$new_status."' "
+		$query = "UPDATE ".$this->tables['commontrack']." SET first_complete='".$data['firstComplete']."' "
 			." WHERE idReference=".(int)$id_lo." AND idUser=".(int)$id_user;
 		$res = $this->db->query($query);
+
+		Events::trigger('lms.lo_user.updated', [
+			'id_reference' => $id_lo,
+			'id_user' => $id_user,
+			'new_data' => [
+				'firstComplete' => $new_first_complete
+			],
+		]);
+
 		if ($res && $this->db->affected_rows($res)>0) {
 			$output = true;
 		}
 		return $output;
 	}
 
-	public function changeLOUserLastComplete($id_lo, $id_user, $new_status) {
+	public function changeLOUserLastComplete($id_lo, $id_user, $new_last_complete) {
 		if ($id_lo <= 0 || $id_user <= 0) return false;
+		
+		$data = Events::trigger('lms.lo_user.updating', [
+			'id_reference' => $id_lo,
+			'id_user' => $id_user,
+			'new_data' => [
+				'lastComplete' => $new_last_complete
+			],
+		])['new_data'];
 
 		$output = false;
-		$query = "UPDATE ".$this->tables['commontrack']." SET last_complete='".$new_status."' "
+		$query = "UPDATE ".$this->tables['commontrack']." SET last_complete='".$data['lastComplete']."' "
 			." WHERE idReference=".(int)$id_lo." AND idUser=".(int)$id_user;
 		$res = $this->db->query($query);
+
+		Events::trigger('lms.lo_user.updated', [
+			'id_reference' => $id_lo,
+			'id_user' => $id_user,
+			'new_data' => [
+				'lastComplete' => $new_last_complete
+			],
+		]);
+
 		if ($res && $this->db->affected_rows($res)>0) {
 			$output = true;
 		}

@@ -1419,8 +1419,20 @@ function showResult ($object_test , $id_param)
 					$sql = "DELETE FROM %lms_materials_track WHERE idReference IN ($prerequisite) AND idUser = " . Docebo::user()->getIdst();
 					$q = sql_query($sql);
 
+					Events::trigger('lms.lo_user.deleting', [
+						'ids_reference' => $prerequisite,
+						'id_user' => Docebo::user()->getIdst(),
+						'environment' => 'course_lo',
+					]);
+
 					$sql = "DELETE FROM %lms_commontrack WHERE idReference IN ($prerequisite) AND idUser = " . Docebo::user()->getIdst();
 					$q = sql_query($sql);
+					
+					Events::trigger('lms.lo_user.deleted', [
+						'ids_reference' => $prerequisite,
+						'id_user' => Docebo::user()->getIdst(),
+						'environment' => 'course_lo',
+					]);
 
 					$sql = "SELECT idscorm_tracking FROM %lms_scorm_tracking WHERE idReference IN ($prerequisite) AND idUser = " . Docebo::user()->getIdst();
 					$q = sql_query($sql);

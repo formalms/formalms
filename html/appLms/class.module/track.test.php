@@ -289,11 +289,22 @@ class Track_Test extends Track_Object
      **/
     function deleteTrack($idTrack)
     {
+		Events::trigger('lms.lo_user.deleting', [
+            'id_track' => $idTrack,
+            'object_type' => 'test',
+			'environment' => 'course_lo',
+		]);
 
         $query = "DELETE FROM " . $GLOBALS['prefix_lms'] . "_commontrack "
             . " WHERE idTrack='" . (int)$idTrack . "'"
             . "   AND objectType='test'";
         if (!sql_query($query)) return false;
+
+		Events::trigger('lms.lo_user.deleted', [
+            'id_track' => $idTrack,
+            'object_type' => 'test',
+			'environment' => 'course_lo',
+		]);
 
         $query = "
 		DELETE FROM " . $GLOBALS['prefix_lms'] . "_testtrack 

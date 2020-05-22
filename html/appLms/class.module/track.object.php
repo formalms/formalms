@@ -71,21 +71,55 @@ class Track_Object {
 	function setEnvGamesData($id_user, $id_reference, $score, $objectType) {
 
 		// find prev info
-		$query = "SELECT max_score "
+		$query = "SELECT max_score, current_score, num_attempts "
 				."FROM ".self::getEnvironmentTable('games')." "
 				."WHERE objectType = '".$objectType."' "
 				."	AND idReference = ".(int)$id_reference." "
 				."	AND idUser = ".(int)$id_user." ";
-		list($max_score) = sql_fetch_row( sql_query($query) );
+		list($max_score, $current_score, $num_attempts) = sql_fetch_row( sql_query($query) );
+
+		$data = Events::trigger('lms.lo_user.updating', [
+			'id_reference' => $id_reference,
+			'id_user' => $id_user,
+			'object_type' => $objectType,
+			'environment' => 'games',
+			'old_data' => [
+				'num_attempts' => $num_attempts,
+				'current_score' => $current_score,
+				'max_score' => $max_score,
+			],
+			'new_data' => [
+				'num_attempts' => $num_attempts + 1,
+				'current_score' => $score,
+				'max_score' => $score > $max_score ? $score : $max_score,
+			],
+		])['new_data'];
 
 		$query = "UPDATE ".self::getEnvironmentTable('games')." SET "
-				." current_score = '".$score."', "
-				." num_attempts = num_attempts + 1 "
-				.( $score > $max_score ? ", max_score = '".$score."' " : '' )
+				." current_score = '".$data['current_score']."', "
+				." num_attempts = ".$data['num_attempts']." "
+				.", max_score = '".$data['max_score']."' "
 				."WHERE objectType = '".$objectType."' "
 				."	AND idReference = ".(int)$id_reference." "
 				."	AND idUser = ".(int)$id_user."";
 		sql_query( $query );
+
+		Events::trigger('lms.lo_user.updated', [
+			'id_reference' => $id_reference,
+			'id_user' => $id_user,
+			'object_type' => $objectType,
+			'environment' => 'games',
+			'old_data' => [
+				'num_attempts' => $num_attempts,
+				'current_score' => $current_score,
+				'max_score' => $max_score,
+			],
+			'new_data' => [
+				'num_attempts' => $data['num_attempts'],
+				'current_score' => $data['current_score'],
+				'max_score' => $data['max_score'],
+			],
+		]);
 	}
 
 	/** 
@@ -116,7 +150,7 @@ class Track_Object {
 				'firstAttempt' => $firstAttempt,
 				'dateAttempt' => $dateAttempt,
 				'status' => $status,
-			]
+			],
 		])['data'];
 
 		$query = "INSERT INTO ".$table." "
@@ -153,10 +187,10 @@ class Track_Object {
 			'id_track' => $idTrack,
 			'environment' => $environment,
 			'data' => [
-				'firstAttempt' => $firstAttempt,
-				'dateAttempt' => $dateAttempt,
-				'status' => $status,
-			]
+				'firstAttempt' => $data['firstAttempt'],
+				'dateAttempt' => $data['dateAttempt'],
+				'status' => $data['status'],
+			],
 		]);
 		
 		if(isset($this)) {
@@ -194,9 +228,27 @@ class Track_Object {
 	
 	function update()
 	{
+		$old_track = new self($this->idTrack, $this->environment);
+
+		$data = Events::trigger('lms.lo_user.updating', [
+			'id_reference' => $this->idReference,
+			'id_user' => $this->idUser,
+			'object_type' => $this->objectType,
+			'id_track' => $this->idTrack,
+			'environment' => $this->environment,
+			'old_data' => [
+				'dateAttempt' => $old_track->getDate(),
+				'status' => $old_track->getStatus(),
+			],
+			'new_data' => [
+				'dateAttempt' => $this->dateAttempt,
+				'status' => $this->status,
+			],
+		])['new_data'];
+
 		$query = "UPDATE ".$this->_table." SET "
-				." dateAttempt ='".$this->dateAttempt."',"
-				." status ='".$this->status."'"
+				." dateAttempt ='".$data['dateAttempt']."',"
+				." status ='".$data['status']."'"
 				." WHERE idTrack = '".(int)$this->idTrack."' AND objectType = '".$this->objectType."'";
 		if(!sql_query($query))
 			return false;
@@ -211,6 +263,23 @@ class Track_Object {
 		// $event->setTrackType(\appLms\Events\Lms\LoStatusUpdate::UPDATE_TRACK);
 		//TODO: EVT_LAUNCH (&)
 		// \appCore\Events\DispatcherManager::dispatch(\appLms\Events\Lms\LoStatusUpdate::EVENT_NAME, $event);
+
+		Events::trigger('lms.lo_user.updated', [
+			'id_reference' => $this->idReference,
+			'id_user' => $this->idUser,
+			'object_type' => $this->objectType,
+			'id_track' => $this->idTrack,
+			'environment' => $this->environment,
+			'old_data' => [
+				'dateAttempt' => $old_track->getDate(),
+				'status' => $old_track->getStatus(),
+			],
+			'new_data' => [
+				'dateAttempt' => $data['dateAttempt'],
+				'status' => $data['status'],
+			],
+		]);
+
 		$this->_setCourseCompleted();
 		return true;
 	}
@@ -226,10 +295,42 @@ class Track_Object {
 			if ($res && sql_num_rows($res)>0) {
 				$now = date("Y-m-d H:i:s");
 				list($first_complete, $last_complete) = sql_fetch_row($res);
-				$query = "UPDATE %lms_commontrack SET last_complete='".$now."'";
-				if (!$first_complete || $first_complete>$now) $query .= ", first_complete='".$now."'";
+
+				$old_data = ['last_complete' => $last_complete];
+				$new_data = ['last_complete' => $now];
+
+				if(!$first_complete || $first_complete > $now) {
+					$old_data['first_complete'] = $first_complete;
+					$new_data['first_complete'] = $now;
+				}
+		
+				$data = Events::trigger('lms.lo_user.updating', [
+					'id_reference' => $this->idReference,
+					'id_user' => $this->idUser,
+					'object_type' => $this->objectType,
+					'id_track' => $this->idTrack,
+					'environment' => $this->environment,
+					'old_data' => $old_data,
+					'new_data' => $new_data,
+				])['new_data'];
+
+				$query = "UPDATE %lms_commontrack SET last_complete='".$data['last_complete']."'";
+				if (array_key_exists('first_complete', $data)) $query .= ", first_complete='".$data['first_complete']."'";
 				$query .= " WHERE idTrack=".(int)$this->idTrack;
 				$res = sql_query($query);
+
+				Events::trigger('lms.lo_user.updated', [
+					'id_reference' => $this->idReference,
+					'id_user' => $this->idUser,
+					'object_type' => $this->objectType,
+					'id_track' => $this->idTrack,
+					'environment' => $this->environment,
+					'old_data' => $old_data,
+					'new_data' => [
+						'last_complete' => $data['last_complete'],
+						'first_complete' => $data['first_complete'],
+					],
+				]);
 			}
 			//---
 /*
@@ -409,6 +510,12 @@ class Track_Object {
 	}
 	
 	function delIdTrackFromCommon( $idReference ) {
+
+		Events::trigger('lms.lo_user.deleting', [
+			'ids_reference' => (array)$idReference,
+			'environment' => $this->environment
+		]);
+
 		if (is_numeric($idReference)) {
 			$query = "DELETE FROM ".$this->_table.""
 				." WHERE (idReference = ".(int)$idReference.")";
@@ -418,6 +525,12 @@ class Track_Object {
 		}
 		$rs = sql_query( $query )
 			or die( "Error in query=[ $query ] ". sql_error() );
+
+		Events::trigger('lms.lo_user.deleted', [
+			'ids_reference' => (array)$idReference,
+			'environment' => $this->environment
+		]);
+
 		return $rs;
 	}
 		
@@ -500,58 +613,6 @@ class Track_Object {
 		return $re;
 	}
 
-
-
-	function updateTrackInfo($new_data = false) {
-		//validate input parameters
-		if (!$this->idTrack) return false;
-		if (!$new_data) return true;
-		if (is_object($new_data)) $new_data = Util::objectToArray($new_data);
-		if (!is_array($new_data)) return false;
-
-		//set values to set in the query
-		$values = array();
-		foreach ($new_data as $key => $value) {
-			switch ($key) {
-				case "status": $values[] = " status='".$value."' "; break;
-				case "firstAttempt":
-				case "first_access": $values[] = " firstAttempt='".$value."'"; break;
-				case "dateAttempt":
-				case "last_access": $values[] = " dateAttempt='".$value."'"; break;
-				case "first_complete": $values[] = " first_complete='".$value."'"; break;
-				case "last_complete": $values[] = " last_complete='".$value."'"; break;
-			}
-		}
-
-		//don't do anything if no values have been provided
-		if (!empty($values)) {
-			$query = "UPDATE ".$this->_table." SET ".implode(",", $values)." WHERE idTrack=".(int)$this->idTrack;
-			if (isset($new_data['id_user']) && $new_data['id_user'] > 0) $query .= " AND idUser=".(int)$id_user;
-			$res = sql_query($query);
-
-			if ($res) {
-				//update data in the object and make "deep" status change if needed
-				foreach ($new_data as $key => $value) {
-					switch ($key) {
-						case "status": $this->status = (int)$value; break;
-						case "firstAttempt":
-						case "first_access": $this->firstAttempt = $value; break;
-						case "dateAttempt":
-						case "last_access": $this->dateAttempt = $value; break;
-						case "first_complete": $this->first_complete = $value; break;
-						case "last_complete": $this->last_complete = $value; break;
-					}
-				}
-			}
-
-			$this->_setCourseCompleted();
-
-			return $res ? true : false;
-		}
-		return true;
-	}
-
-
 	/**
 	 * @return idTrack if exists or false
 	 **/
@@ -561,8 +622,21 @@ class Track_Object {
 	}
 
 	function deleteTrackInfo($id_lo, $id_user) {
+
+		Events::trigger('lms.lo_user.deleting', [
+			'id_reference' => $id_lo,
+			'id_user' => $id_user,
+			'environment' => $this->environment,
+		]);
+
 		$query = "DELETE FROM ".$this->_table." WHERE idUser=".(int)$id_user." AND idReference=".(int)$id_lo;
 		$res = sql_query($query);
+
+		Events::trigger('lms.lo_user.deleted', [
+			'id_reference' => $id_lo,
+			'id_user' => $id_user,
+			'environment' => $this->environment,
+		]);
         
         $query = "DELETE FROM %lms_materials_track WHERE idUser=".(int)$id_user." AND idReference=".(int)$id_lo;
         $res = sql_query($query);
