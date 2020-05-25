@@ -33,7 +33,7 @@
   }
 
   &:after {
-    content: '';
+    content: "";
     position: absolute;
     bottom: 1px;
     left: 50%;
@@ -64,15 +64,12 @@
   overflow: visible !important;
   &:hover {
     .forma-tooltip.down {
-      transform: translate(-50%, -100%) translateY(105px);
-      transform: translate3d(-50%, -100%, 0) translateY(105px);
-
       &:after {
-        transform: translate(-50%, -100%) translateY(-115px);
-        transform: translate3d(-50%, -100%, 0) translateY(-115px);
+        transform: translate(-50%, 0%);
         border-top: none;
         border-right: solid 6px transparent;
         border-left: solid 6px transparent;
+        bottom: 100%;
       }
     }
   }

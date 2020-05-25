@@ -115,7 +115,7 @@ class qformat_gift {
         return $question;
     }
 	
-	function readquestions($lines) {
+	function readquestions($lines, $autocreate_categories = false) {
      
         $questions = array();
         $currentquestion = array();
@@ -124,7 +124,7 @@ class qformat_gift {
             $line = trim($line);
             if (empty($line)) {
                 if (!empty($currentquestion)) {
-                    if ($question = $this->readquestion($currentquestion)) {
+                    if ($question = $this->readquestion($currentquestion, $autocreate_categories)) {
                         $questions[] = $question;
                     }
                     $currentquestion = array();
@@ -135,7 +135,7 @@ class qformat_gift {
         }
 
         if (!empty($currentquestion)) {  // There may be a final question
-            if ($question = $this->readquestion($currentquestion)) {
+            if ($question = $this->readquestion($currentquestion, $autocreate_categories)) {
                 $questions[] = $question;
             }
         }
@@ -143,7 +143,7 @@ class qformat_gift {
         return $questions;
     }
    
-    function readquestion($lines) {
+    function readquestion($lines, $autocreate_categories = false) {
     	// Given an array of lines known to define a question in this format, this function
     	// converts it into a question object suitable for processing and insertion.
 
@@ -181,7 +181,7 @@ class qformat_gift {
 				$newcategory = trim(substr( $newcategory, 0,  strpos($newcategory, '$CUSTOMFIELD:')));
 			}
 			
-            $question->setCategoryFromName($newcategory);
+            $question->setCategoryFromName($newcategory, $autocreate_categories);
             $text = trim(substr($text, 10+strlen($newcategory)));
                         
             // build fake question to contain category
@@ -799,5 +799,3 @@ class qformat_gift {
 	}
 	
 }
-
-?>

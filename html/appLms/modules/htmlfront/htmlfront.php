@@ -61,7 +61,7 @@ function edithtml() {
 			
 			$upd_query = "
 			UPDATE ".$GLOBALS['prefix_lms']."_htmlfront 
-			SET textof = '".$_REQUEST['description']."'
+			SET textof = '".addslashes($_REQUEST['description'])."'
 			WHERE id_course = '".$_SESSION['idCourse']."'";
 			$re = sql_query($upd_query);
 		} else {
@@ -70,7 +70,7 @@ function edithtml() {
 			INSERT INTO ".$GLOBALS['prefix_lms']."_htmlfront 
 			( id_course, textof) VALUES 
 			( 	'".$_SESSION['idCourse']."',
-				'".$_REQUEST['description']."' )";
+				'". addslashes($_REQUEST['description'])."' )";
 			$re = sql_query($ins_query);
 		}
 		if($re) Util::jump_to('index.php?modname=htmlfront&amp;op=showhtml&amp;saveok=1');
@@ -117,5 +117,3 @@ function htmlfrontDispatch($op) {
 		case "edithtml" : edithtml(); break;
 	}
 }
-
-?>

@@ -1,4 +1,4 @@
-<div class="middlearea_container">
+<div class="middlearea_container--margintop-small">
 	<?php
 	$lmstab = $this->widget('lms_tab', array(
 		'active' => 'communication',

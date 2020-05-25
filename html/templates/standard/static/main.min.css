@@ -4318,7 +4318,7 @@ p {
   transition-timing-function: ease;
   transition-delay: 0s; }
   .forma-tooltip:after {
-    content: '';
+    content: "";
     position: absolute;
     bottom: 1px;
     left: 50%;
@@ -4338,15 +4338,12 @@ p {
 
 .has-forma-tooltip {
   overflow: visible !important; }
-  .has-forma-tooltip:hover .forma-tooltip.down {
-    transform: translate(-50%, -100%) translateY(105px);
-    transform: translate3d(-50%, -100%, 0) translateY(105px); }
-    .has-forma-tooltip:hover .forma-tooltip.down:after {
-      transform: translate(-50%, -100%) translateY(-115px);
-      transform: translate3d(-50%, -100%, 0) translateY(-115px);
-      border-top: none;
-      border-right: solid 6px transparent;
-      border-left: solid 6px transparent; }
+  .has-forma-tooltip:hover .forma-tooltip.down:after {
+    transform: translate(-50%, 0%);
+    border-top: none;
+    border-right: solid 6px transparent;
+    border-left: solid 6px transparent;
+    bottom: 100%; }
 
 .tabnav {
   overflow: hidden;
@@ -5503,7 +5500,7 @@ body {
   clear: both; }
 
 .text--open-sans {
-  font-family: 'Open-sans', sans-serif; }
+  font-family: "Open-sans", sans-serif; }
 
 .forma-grid {
   overflow: auto; }
@@ -5561,25 +5558,26 @@ body {
     margin: 0;
     width: 100vw; } }
 
-@media (max-width: 1024px) {
-  .lms-user-content-wrapper > .container-fluid {
-    padding: 0; } }
-
-@media (max-width: 1024px) {
-  .lms-user-content-wrapper > .container-fluid > .row {
-    margin: 0; } }
-
-@media (max-width: 1024px) {
-  .lms-user-content-wrapper > .container-fluid > .row > .col-md-12 {
-    margin: 0;
-    padding: 0; } }
+.lms-user-content-wrapper > .container-fluid {
+  height: auto;
+  min-height: 90vh; }
+  @media (max-width: 1024px) {
+    .lms-user-content-wrapper > .container-fluid {
+      padding: 0; } }
+  @media (max-width: 1024px) {
+    .lms-user-content-wrapper > .container-fluid > .row {
+      margin: 0; } }
+  @media (max-width: 1024px) {
+    .lms-user-content-wrapper > .container-fluid > .row > .col-md-12 {
+      margin: 0;
+      padding: 0; } }
 
 div#container {
   min-height: calc(100% - 86px); }
 
 .course-box {
   width: 100%;
-  min-height: 460px;
+  min-height: 465px;
   margin-bottom: 15px;
   padding-bottom: 15px;
   border: 2px solid #ececec;
@@ -5594,8 +5592,7 @@ div#container {
     .course-box:hover .course-box__img-title {
       background-color: rgba(255, 108, 0, 0.5); }
   .mycourses-list .course-box {
-    position: relative;
-    padding-bottom: 50px; }
+    position: relative; }
 
 .course-box__item {
   width: 100%;
@@ -5647,7 +5644,7 @@ div#container {
     padding-right: 30px;
     padding-bottom: 15px; }
   .course-box__title:before {
-    content: '';
+    content: "";
     width: 30px;
     height: 30px;
     position: absolute;
@@ -5669,7 +5666,8 @@ div#container {
   position: absolute;
   bottom: 0;
   width: 100%;
-  height: 35px;
+  height: auto;
+  min-height: 35px;
   padding: 10px 30px;
   background-color: rgba(0, 0, 0, 0.2);
   color: white;
@@ -5688,7 +5686,7 @@ div#container {
   text-transform: uppercase;
   color: #999999; }
   .course-box__owner:before {
-    content: '';
+    content: "";
     position: absolute;
     left: 0;
     bottom: 6px;
@@ -5715,7 +5713,7 @@ div#container {
     color: #999999;
     cursor: pointer; }
     .course-box__options .dropdown-toggle:before {
-      content: '';
+      content: "";
       width: 30px;
       height: 30px;
       position: absolute;
@@ -5773,7 +5771,7 @@ div#container {
   border: 1px solid #c2c2c2;
   border-radius: 5px; }
   .course-box__date-box:before {
-    content: '';
+    content: "";
     position: absolute;
     top: 14px;
     left: 9px;
@@ -5961,7 +5959,7 @@ i + .course-box__date-box {
 .course-box__next:before,
 .course-box__allDates:after,
 .course-box__allDates:before {
-  content: '';
+  content: "";
   display: block;
   position: absolute;
   left: 0;
@@ -5972,7 +5970,7 @@ i + .course-box__date-box {
   border-style: solid;
   border-width: 8.5px 0 8.5px 9px;
   border-color: transparent transparent transparent #979797;
-  opacity: .6; }
+  opacity: 0.6; }
 
 .course-box__allDates:after,
 .course-box__allDates:before {
@@ -5994,7 +5992,7 @@ i + .course-box__date-box {
   padding-top: 10px; }
 
 .course-box__allDates a {
-  color: #C84000;
+  color: #c84000;
   text-decoration: underline; }
 
 .section-coourse__header,
@@ -6283,7 +6281,7 @@ i + .course-box__date-box {
       padding-bottom: 0;
       padding-left: 40px; }
       .nav.nav-pills li.selected a:before {
-        content: '';
+        content: "";
         position: absolute;
         top: 15px;
         left: 0;
@@ -6302,7 +6300,7 @@ i + .course-box__date-box {
       padding-bottom: 0;
       padding-left: 40px; }
       .nav.nav-pills li a:before {
-        content: '';
+        content: "";
         position: absolute;
         top: 15px;
         left: 0;
@@ -6350,7 +6348,7 @@ i + .course-box__date-box {
         border: 0;
         position: relative; }
         .nav.nav-tabs.visible-xs .dropdown .dropdown-toggle .caret:before {
-          content: '\f107';
+          content: "\f107";
           font-family: "FontAwesome";
           color: #ff6c00;
           font-size: 18px;
@@ -6407,7 +6405,7 @@ i + .course-box__date-box {
     display: inline-block; }
     .forma-quick-search-form .navbar-collapse.collapsing ~ .navbar-header .filter-open:before,
     .forma-quick-search-form .collapse.navbar-collapse ~ .navbar-header .filter-open:before {
-      content: '\f107'; }
+      content: "\f107"; }
   .forma-quick-search-form .navbar-collapse.collapsing ~ .navbar-header .filter-closed,
   .forma-quick-search-form .collapse.navbar-collapse ~ .navbar-header .filter-closed {
     display: none; }
@@ -6418,7 +6416,7 @@ i + .course-box__date-box {
   .forma-quick-search-form .collapse.navbar-collapse.in ~ .navbar-header .filter-closed {
     display: inline-block; }
     .forma-quick-search-form .collapse.navbar-collapse.in ~ .navbar-header .filter-closed:before {
-      content: '\f106'; }
+      content: "\f106"; }
   .forma-quick-search-form .navbar {
     margin: 0;
     border: none; }
@@ -6462,7 +6460,7 @@ i + .course-box__date-box {
     font-size: 14px;
     transition: display 0.2s ease 0s; }
     .forma-quick-search-form .filter-label:before {
-      content: '';
+      content: "";
       font-family: "FontAwesome";
       color: #ff6c00;
       position: absolute;
@@ -6514,7 +6512,10 @@ i + .course-box__date-box {
   border-bottom: 1px solid #666; }
 
 #global_conf .tab-content .tab-pane select {
-  display: block; }
+  display: inline-block;
+  width: 28rem;
+  max-width: 28rem;
+  margin-right: 0; }
 
 .layout_footer {
   padding-top: 30px;

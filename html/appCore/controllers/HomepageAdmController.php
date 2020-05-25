@@ -38,25 +38,25 @@ class HomepageAdmController extends AdmController
         if (Get::req("cancel_social", DOTY_BOOL, false)) unset($_SESSION['social']);
 
         $params['block_attempts'] = false;
-        
-       
+
+
         $block_attempts = $this->model->checkBrute();
         if ($block_attempts) {
 
-            $wait = $block_attempts['wait_for'] >= 1 ? (string)$block_attempts['wait_for'] : " < 1";
+            $wait = $block_attempts['wait_for'] >= 1 ? (string) $block_attempts['wait_for'] : " < 1";
 
             $params['block_attempts'] = Lang::t("_REACH_NUMBERS_OF_ATTEMPT", "user_managment", array(
                 '[attempt]' => $block_attempts['max_login_attempt'],
                 '[time]' => $wait
             ));
-        }  
-        
+        }
+
 
         $params['under_maintenence'] = $this->model->isUnderMaintenence();
         $params['isCatalogToShow'] = $this->model->isCatalogToShow();
         $params['isSelfRegistrationActive'] = $this->model->isSelfRegistrationActive();
 
-        foreach ($this->model->getLoginGUI() AS $loginGUI) {
+        foreach ($this->model->getLoginGUI() as $loginGUI) {
             $params[$loginGUI['type']][] = $loginGUI;
         }
 
@@ -64,7 +64,7 @@ class HomepageAdmController extends AdmController
         $external_pages = $this->model->getExternalPages();
         $params['externalPages'] = [];
         if (!empty($external_pages)) {
-            foreach ($external_pages AS $id_page => $title) {
+            foreach ($external_pages as $id_page => $title) {
 
                 $externalPage = ['id' => $id_page, 'link' => Get::rel_path("base") . "/index.php?r=" . _homewebpage_ . "&page=" . $id_page, 'title' => $title];
 
@@ -82,13 +82,13 @@ class HomepageAdmController extends AdmController
         $params['close'] = Lang::t("_CLOSE", "standard");
 
         // force_standard mode
-        if(isset($_REQUEST["notuse_plugin"])){
+        if (isset($_REQUEST["notuse_plugin"])) {
             $params['notuse_plugin'] = true;
         }
-        if(isset($_REQUEST["notuse_customscript"])){
+        if (isset($_REQUEST["notuse_customscript"])) {
             $params['notuse_customscript'] = true;
         }
-        if(isset($_REQUEST["notuse_template"])){
+        if (isset($_REQUEST["notuse_template"])) {
             $params['notuse_template'] = true;
         }
 
@@ -122,7 +122,7 @@ class HomepageAdmController extends AdmController
                 $msg_output = Lang::t("_INVALID_RANDOM_CODE", "register");
                 break;
             case USER_NOT_FOUND:
-                $msg_output = Lang::t('_USER_NOT_FOUND','login');
+                $msg_output = Lang::t('_USER_NOT_FOUND', 'login');
                 break;
             default:
                 $msg_output = false;
@@ -175,7 +175,7 @@ class HomepageAdmController extends AdmController
         $external_pages = $this->model->getExternalPages();
         $dataView['externalPages'] = [];
         if (!empty($external_pages)) {
-            foreach ($external_pages AS $id_page => $title) {
+            foreach ($external_pages as $id_page => $title) {
 
                 $externalPage = ['id' => $id_page, 'link' => Get::rel_path("base") . "/index.php?r=" . _homewebpage_ . "&page=" . $id_page, 'title' => $title];
 
@@ -187,9 +187,8 @@ class HomepageAdmController extends AdmController
 
             $dataView['message'] = $registerResultForm['msg'];
             $dataView['registration'] = $registerResultForm['registration'];
-            
-            return $this->render('register-typ', $dataView);
 
+            return $this->render('register-typ', $dataView);
         }
 
         $this->render('register', $dataView);
@@ -270,7 +269,8 @@ class HomepageAdmController extends AdmController
                 '',
                 strip_tags(Lang::t("_EMAIL", "register")),
                 255,
-                'placeholder="' . Lang::t("_EMAIL", "register") . ' ' . $mand_symbol . '"');
+                'placeholder="' . Lang::t("_EMAIL", "register") . ' ' . $mand_symbol . '"'
+            );
         if (($error && $action === 'lost_user')) {
             $lostUsernameForm .= '<small class="form-text">* ' . $errorMessage . '</small>';
         }
@@ -291,7 +291,8 @@ class HomepageAdmController extends AdmController
                 '',
                 strip_tags(Lang::t("_USERNAME", "register")),
                 255,
-                'placeholder="' . Lang::t("_USERNAME", "register") . ' ' . $mand_symbol . '"');
+                'placeholder="' . Lang::t("_USERNAME", "register") . ' ' . $mand_symbol . '"'
+            );
         if (($error && $action === 'lost_pwd')) {
             $lostPwdForm .= '<small class="form-text">* ' . $errorMessage . '</small>';
         }
@@ -470,7 +471,7 @@ class HomepageAdmController extends AdmController
         $params['externalPages'] = [];
 
         if (!empty($external_pages)) {
-            foreach ($external_pages AS $id_page => $title) {
+            foreach ($external_pages as $id_page => $title) {
 
                 $externalPage = ['id' => $id_page, 'link' => Get::rel_path("base") . "/index.php?r=" . _homewebpage_ . "&page=" . $id_page, 'title' => $title];
 
@@ -483,8 +484,7 @@ class HomepageAdmController extends AdmController
     }
 
     public function sso()
-    { // index.php?login_user=staff&time=200812101752&token=5D93BCEDF500E9759E4870492AF32E7A
-
+    {
         $login_user = stripslashes(Get::req('login_user', DOTY_MIXED, false));
         $login_idst = Get::req('use_user_idst', DOTY_MIXED, false);
 
@@ -521,7 +521,7 @@ class HomepageAdmController extends AdmController
             self::redirect($redirection);
         }
 
-        $user_manager =& $GLOBALS['current_user']->getAclManager();
+        $user_manager = &$GLOBALS['current_user']->getAclManager();
 
         if (!$login_idst) {
 
@@ -565,6 +565,7 @@ class HomepageAdmController extends AdmController
 
         $id_course = Get::req('id_course', DOTY_INT, 0);
         $next_action = Get::req('act', DOTY_STRING, 'none');
+        $module = Get::req('module', DOTY_STRING, 'none');
         $id_item = Get::req('id_item', DOTY_INT, '');
         $chapter = Get::req('chapter', DOTY_MIXED, false);
 
@@ -575,13 +576,20 @@ class HomepageAdmController extends AdmController
             require_once(_lms_ . "/lib/lib.course.php");
             logIntoCourse($id_course, ($next_action == false || $next_action == "none" ? true : false));
 
+            $url = str_replace('act=', 'op=', $_SERVER['REQUEST_URI']);
+            $url = str_replace('module=', 'modname=', $url);
+            $url = str_replace('chapter=', 'start_from_chapter=', $url);
+            $url_components = parse_url($url);
+            parse_str($url_components['query'], $params);
+            $redirection['query'] = $params;
+            $redirection['op'] = $next_action;
+            $redirection['modname'] = $module;
+
+            $_SESSION["login_redirect"] = trim(dirname($_SERVER['SCRIPT_NAME']), DIRECTORY_SEPARATOR) . "/" . _folder_lms_ . "/index.php?" . http_build_query($params, '', '&');
+
             switch ($next_action) {
-                case "organization":
-                    $_SESSION["login_redirect"] = trim(dirname($_SERVER['SCRIPT_NAME']), DIRECTORY_SEPARATOR) . "/" . _folder_lms_ . "/index.php?modname=organization&op=custom_playitem&id_item=" . $id_item;
-                    break;
-                case "playsco":
-                    $_SESSION["login_redirect"] = trim(dirname($_SERVER['SCRIPT_NAME']), DIRECTORY_SEPARATOR) . "/" . _folder_lms_ . "/index.php?modname=organization&op=custom_playitem&id_course=" . $id_course
-                        . "&courseid=" . $id_course . "&id_item=" . $id_item . "&start_from_chapter=" . $chapter . "&collapse_menu=1";
+                case "custom_playitem":
+                    $_SESSION["login_redirect"] += "&collapse_menu=1";
                     break;
             }
         }
@@ -589,9 +597,8 @@ class HomepageAdmController extends AdmController
         self::redirect($redirection);
     }
 
-    public static function redirect($redirection = array())
+    private static function makeQueryUrl($redirection = array())
     {
-
         $query = array();
         if (isset($redirection['modname'])) $query['modname'] = $redirection['modname'];
         if (isset($redirection['op'])) $query['op'] = $redirection['op'];
@@ -602,6 +609,13 @@ class HomepageAdmController extends AdmController
         if (!empty($query)) {
             $query = "?" . urldecode(http_build_query($query));
         } else $query = "";
+
+        return $query;
+    }
+
+    public static function redirect($redirection = array())
+    {
+        $query = self::makeQueryUrl($redirection);
 
         Util::jump_to("index.php" . $query);
     }
