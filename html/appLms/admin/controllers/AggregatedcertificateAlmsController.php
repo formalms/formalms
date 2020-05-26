@@ -153,7 +153,7 @@ Class AggregatedcertificateAlmsController extends AlmsController
 
                     $cont[] = Get::sprite_link(                           
                         'subs_view',
-                        'index.php?r=alms/'.$this->controller_name.'/preview&amp;id_certificate='.$aggregate_cert["id_certificate"],
+                        'index.php?r=alms/'.$this->controller_name.'/release_cert&amp;id_certificate='.$aggregate_cert["id_certificate"],
                         Lang::t('_PREVIEW'). ' : ' . $title  
                     ); 
                     
@@ -792,6 +792,7 @@ function associationPaths() {
 
         $selected_idsCoursePath = Get::req('selected_idsCoursePath', DOTY_NUMLIST);
         $idsCP_array = explode(',',$selected_idsCoursePath );
+        sort($idsCP_array);
         $coursePath_man = new CoursePath_Manager();
         $coursePathInfoArr = $coursePath_man->getCoursepathAllInfo($idsCP_array);
         

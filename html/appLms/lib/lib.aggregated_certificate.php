@@ -816,6 +816,7 @@ class AggregatedCertificate {
             foreach ($idUsers as $id => $assoc) {
                 if ($assoc) {
                     $q[] = '('.$this->_idAssoc. ','.$id.','.$pathId.')';
+                    $user_paths[$id][] = $pathId;
                 } else {
                     $q[] = '('.$this->_idAssoc. ','.$id.',0)';
                 }                        
@@ -825,6 +826,7 @@ class AggregatedCertificate {
         sql_query('START TRANSACTION');
         if (sql_query($sql1)){
             sql_query('COMMIT');
+            $this -> checkIstantCertification($user_paths, COURSE_PATH);
             return true;
         } else {
             sql_query('ROLLBACK');
@@ -848,14 +850,12 @@ class AggregatedCertificate {
         $sql1 = "INSERT INTO " . $table
                 . " ( idAssociation, idUser, idCourse, idCourseEdition )"
                 . " VALUES ";
-
-        /**
-        * TODO: course edition management
-        */        
+        $user_courses = array();
         foreach ($assocArr as $courseId => $idUsers) {
             foreach ($idUsers as $id => $assoc) {
                 if ($assoc) {
                     $q[] = '('.$this->_idAssoc. ','.$id.','.$courseId.',0)';
+                    $user_courses[$id][] = $courseId;
                 } else {
                     $q[] = '('.$this->_idAssoc. ','.$id.',0,0)';
                 }                        
@@ -865,12 +865,30 @@ class AggregatedCertificate {
         sql_query('START TRANSACTION');
         if (sql_query($sql1)){
             sql_query('COMMIT');
+            $this -> checkIstantCertification($user_courses, COURSE);
             return true;
         } else {
             sql_query('ROLLBACK');
             return false;
         }
+        
 
+    }
+    
+    // checking if the just assigned courses trigger new certificate
+    private function checkIstantCertification($user_association, $type_association){
+        
+        foreach ($user_association as $id_user => $association ) {
+            $p['id_user'] = $id_user;
+            if ($type_association == COURSE ) {
+                $p['id_course'] = $association[0];
+                $this->releaseNewAggrCertCourses($p);
+            } else {
+                $p['id_paths'] = $association[0];
+                $this->releaseNewAggrCertPaths($p);
+            }   
+        }
+        
     }
     
 
@@ -1074,7 +1092,7 @@ class AggregatedCertificate {
     function getIdAssocForUserPath($id_user, $id_path){
         if ($id_user == null || $id_path  == null) return 0;
         $id_associations_paths = array();
-        $id_path_str = implode(',',$id_path);
+        $id_path_str = (is_array($id_path) ? implode(',',$id_path): $id_path );
         
         $q = "SELECT assoc_meta.idCertificate, assoc_path.idAssociation, assoc_path.idCoursePath FROM "
              .$this->table_cert_meta_association." as assoc_meta, ".$this->table_cert_meta_association_coursepath." as assoc_path
@@ -1106,6 +1124,7 @@ class AggregatedCertificate {
     }
     
     public function releaseNewAggrCertCourses($params){
+        require_once(_lms_.'/lib/lib.course.php');
         $man_courseuser = new Man_CourseUser(DbConn::getInstance()); 
         $associated_aggr_cert_courses = $this->getIdAssocForUserCourse($params['id_user'], $params['id_course']);
     
@@ -1123,7 +1142,7 @@ class AggregatedCertificate {
     
     
     public function releaseNewAggrCertPaths($params){
-        
+        require_once(_lms_.'/lib/lib.coursepath.php');
         $man_pathuser = new CoursePath_Manager();
         
         $associated_aggr_cert_paths = $this->getIdAssocForUserPath($params['id_user'], $params['id_paths']);

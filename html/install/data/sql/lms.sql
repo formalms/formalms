@@ -272,6 +272,8 @@ CREATE TABLE IF NOT EXISTS `learning_aggregated_cert_metadata` (
   PRIMARY KEY (`idAssociation`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
 
+
+
 --
 -- Dump dei dati per la tabella `learning_aggregated_certificate_metadata_association`
 --
@@ -313,6 +315,8 @@ CREATE TABLE IF NOT EXISTS `learning_aggregated_cert_course` (
   KEY `idAssociation` (`idAssociation`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
 
+
+
 --
 -- Dump dei dati per la tabella `learning_aggregated_certificate_association_course`
 --
@@ -332,6 +336,8 @@ CREATE TABLE IF NOT EXISTS `learning_aggregated_cert_coursepath` (
   PRIMARY KEY (`id`),
   KEY `idAssociation` (`idAssociation`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
+
+
 
 --
 -- Dump dei dati per la tabella `learning_aggregated_certificate_association_coursepath`

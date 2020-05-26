@@ -198,7 +198,7 @@ cout(
 
 <?php
 
-    require_once($GLOBALS["where_lms"].'/lib/tab/lib.tab.php');
+    require_once('tab.php');
     require_once(_base_.'/lib/lib.table.php');
 
 ?>

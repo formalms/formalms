@@ -793,7 +793,16 @@ class CoursePath_Manager {
 				$insert_values[] = "( ".(int)$id_path.", ".(int)$id_user.", '".date("Y-m-d h:i:s")."', '".Docebo::user()->getIdst()."', '".$course_completed."' )";
 			}
 			$query = "INSERT INTO %lms_coursepath_user (id_path, idUser, date_assign, subscribed_by, course_completed ) VALUES ".implode(", ", $insert_values);
-			if(!sql_query($query)) $re = false;
+			if(!sql_query($query)) {
+                $re = false;   
+            } else {
+                $t = count($courses);
+                foreach($completed as $id_users => $num_completed){
+                    if ($num_completed == $t){
+                        $data = Events::trigger('lms.coursepath_user.completed', ['id_user' => $id_user, 'id_paths' => $id_path ]);
+                    }
+                }
+            }
 		}
 		
 		return $re;

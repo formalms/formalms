@@ -115,7 +115,11 @@ ALTER TABLE learning_certificate_meta_course
 ALTER TABLE learning_aggregated_cert_course
     CHANGE idMetaCertificate idAssociation INT(11) NOT NULL ;
 ALTER TABLE `learning_aggregated_cert_course`
-  ADD KEY `idAssociation` (`idAssociation`);    
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;       
+ALTER TABLE `learning_aggregated_cert_course`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `idAssociation` (`idAssociation`);
+   
 
     
 
@@ -128,4 +132,6 @@ CREATE TABLE IF NOT EXISTS `learning_aggregated_cert_coursepath` (
   KEY `idAssociation` (`idAssociation`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
 
---
+DELETE FROM learning_aggregated_cert_course WHERE idUser = 0; 
+INSERT INTO `learning_aggregated_cert_course` (idAssociation, idUser, idCourse, idCourseEdition)  
+SELECT idAssociation, 0 as idUser, idCourse, idCourseEdition  FROM `learning_aggregated_cert_course`;

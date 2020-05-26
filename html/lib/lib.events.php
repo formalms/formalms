@@ -15,6 +15,9 @@ defined('IN_FORMA') or die('Direct access is forbidden.');
  */
 final class Events
 {
+    const PRIORITY_CORE = EventsHandler::PRIORITY_CORE;
+    const PRIORITY_DEFAULT = EventsHandler::PRIORITY_DEFAULT;
+
     /**
      * Events handler.
      *
@@ -67,7 +70,7 @@ final class Events
      * @param int $priority
      * @return void
      */
-    public static function listen($eventName, $listener, $priority = 0)
+    public static function listen($eventName, $listener, $priority = self::PRIORITY_DEFAULT)
     {
         return self::getHandler()->listen($eventName, $listener, $priority);
     }
