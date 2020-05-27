@@ -428,20 +428,27 @@ ScormApi.prototype.commonLMSFinish = function() {
 	var ajxreq = new Ajax.Request(
        	this.baseurl+'?op=Finish',
        	{	method: 'post',
-			asynchronous:false,
+            asynchronous:true,
 			postBody: strSoap,
 			requestHeaders: {
 				'Man':"POST " + this.baseurl + " HTTP/1.1",
 				'Host':this.host,
 				"Content-type":"text/xml; charset=utf-8",
 				"X-Signature":playerConfig.auth_request
+            },
+            onComplete: onfinish_callback
 			}
-		}
     );
 
-	if( ajxreq.transport.status == 200 ) {
+
+    return new String("true");
+		}
+
+
+function onfinish_callback(objReq){
+    if( objReq.status == 200 ) {
 		try {
-			var xmldoc = ajxreq.transport.responseXML;
+            var xmldoc = objReq.responseXML;
 			var status = xmldoc.getElementsByTagName("status").item(0).firstChild;
 			var errorCode = xmldoc.getElementsByTagName("error").item(0).firstChild;
 			var errorText = xmldoc.getElementsByTagName("errorString").item(0).firstChild;
@@ -454,20 +461,21 @@ ScormApi.prototype.commonLMSFinish = function() {
 			}
 			this.scoStatus = ScormApi.UNINITIALIZED;
 		} catch (ex) {
-			w = window.open('#', 'debug');
+            /* console.log( objReq.responseText );*/
+            /*w = window.open('#', 'debug');
 			w.document.open();
 			w.document.write( ajxreq.transport.responseText );
 			w.document.close();
-   			alert( " Finish: "+ex );
+             alert( " Finish: "+ex );*/ //MODIFICA per anomalia 18/03/2020
 			return "false"
 		}
 	} else {
 		this.setError("101");
-		this.diagnostic = ajxreq.transport.responseText;
+        this.diagnostic = objReq.responseText;
 		return "false"
 	}
-	return new String("true");
 }
+
 
 ScormApi.prototype.commonLMSGetValue = function( param ) {
 	var pi = new ScormParamInfo();
