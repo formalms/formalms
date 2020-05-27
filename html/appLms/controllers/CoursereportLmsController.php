@@ -615,7 +615,7 @@ class CoursereportLmsController extends LmsController
 
 		$students = getSubscribedInfo((int) $_SESSION['idCourse'], FALSE, $type_filter, TRUE, false, false, true);
 
-		if (!$view_all_perm) {
+		if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
 			//filter users
 			require_once(_base_ . '/lib/lib.preference.php');
 			$ctrlManager = new ControllerPreference();
@@ -1412,7 +1412,7 @@ class CoursereportLmsController extends LmsController
 		$students = getSubscribed((int) $_SESSION['idCourse'], FALSE, $lev, TRUE, false, false, true);
 
 		//apply sub admin filters, if needed
-		if (!$view_all_perm) {
+		if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
 			//filter users
 			require_once(_base_ . '/lib/lib.preference.php');
 			$ctrlManager = new ControllerPreference();
