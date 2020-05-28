@@ -32,7 +32,7 @@ function certificate() {
     $tb    = new Table(Get::sett('visuItem'), $lang->def('_CERTIFICATE_CAPTION'), $lang->def('_CERTIFICATE_SUMMARY'));
     $tb->initNavBar('ini', 'link');
     $tb->setLink("index.php?modname=certificate&amp;op=certificate");
-    $ini=$tb->getSelectedElement();
+    $ini = $tb->getSelectedElement();
 
     $form = new Form();
 
@@ -127,7 +127,7 @@ function certificate() {
     $out->add(getTitleArea($lang->def('_TITLE_CERTIFICATE'), 'certificate')
         .'<div class="std_block">'
         .$form->openForm('certificate_filter', 'index.php?modname=certificate&amp;op=certificate')
-        .'<div class="quick_search_form" style="float: none;">
+        .'<div class="quick_search_form">
             <div>
                 <div class="simple_search_box">'
         .Form::getInputTextfield("search_t", "filter_text", "filter_text", Get::req('filter_text', DOTY_MIXED, ''), '', 255, '' )

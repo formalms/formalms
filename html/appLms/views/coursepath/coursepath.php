@@ -156,11 +156,11 @@
 			$accesso_control_info = sql_fetch_assoc(sql_query($query_control_info));
             
 
-            $type_course = ($course_info['course_type']=='elearning'? Lang::t('_COURSE_TYPE_ELEARNING', 'course'): Lang::t('_CLASSROOM_COURSE', 'cart'));
+            $type_assoc = ($course_info['course_type']=='elearning'? Lang::t('_COURSE_TYPE_ELEARNING', 'course'): Lang::t('_CLASSROOM_COURSE', 'cart'));
 			$course_access = Man_Course::canEnterCourse($accesso_control_info, $id_path);
 			echo	'<tr>'
 					.'<td><span class="ico-sprite '.$ico_style.'"><span>'.Lang::t($ico_text, 'coursepath').'</span></span></td>'
-					.'<td class="course_type">'.$type_course.'</td>'
+					.'<td class="course_type">'.$type_assoc.'</td>'
 					.'<td>'.($course_access['can'] ? '<a class="std_link" href="index.php?modname=course&amp;op=aula&amp;idCourse='.$course_info['idCourse'].'">' : '').$course_info['name'].($course_access['can'] ? '</a>' : '').'</td>'
 					.'</tr>';
 		}

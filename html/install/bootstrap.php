@@ -41,7 +41,6 @@ $GLOBALS['page']->setZone('page_head');
 YuiLib::load();
 $GLOBALS['page']->setZone('main');
 
-//cout('ciao');
 
 $GLOBALS['page']->add(Util::get_css(getTemplatePath().'style/base.css', true), 'page_head');
 $GLOBALS['page']->add(Util::get_css(getTemplatePath().'style/form.css', true), 'page_head');

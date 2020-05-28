@@ -8,12 +8,7 @@
                 {% for subitem in item.submenu %}
                     <li{% if subitem.active %} class="active"{% endif %}>
                         <a href="{{ item.url }}" title="{{ translate(item.name, 'menu_over') }}">
-                            {% if item.image %}
-                                {{ item.image|raw }}
-                                <span class="title-with-icon">{{ translate(item.name, 'menu_over') }}</span>
-                            {% else %}
-                                <span>{{ translate(item.name, 'menu_over') }}</span>
-                            {% endif %}
+                            {% if item.image %}{{ item.image|raw }}{% else %}{{ translate(item.name, 'menu_over') }}{% endif %}
                         </a>
                     </li>
                 {% endfor %}
@@ -22,12 +17,7 @@
         {% else %}
             <li{% if ((currentPage.isMVC == true and item.mvc_path == currentPage.MVC) or (currentPage.isMVC == false and item.module_name == currentPage.modname and item.default_op == currentPage.op)) %} class="active"{% endif %}>
                 <a href="{{ item.url }}" title="{{ translate(item.name, 'menu_over') }}">
-                    {% if item.image %}
-                        {{ item.image|raw }}
-                        <span class="title-with-icon">{{ translate(item.name, 'menu_over') }}</span>
-                    {% else %}
-                        <span>{{ translate(item.name, 'menu_over') }}</span>
-                    {% endif %}
+                    {% if item.image %}{{ item.image|raw }}{% else %}{{ translate(item.name, 'menu_over') }}{% endif %}
                 </a>
             </li>
         {% endif %}
@@ -50,7 +40,6 @@
     <li class="green_menu">
         <a href="{{ evalPhp('Get::rel_path', ['adm']) }}" class="no-border-right no-before" title="{{ translate('_GO_TO_FRAMEWORK', 'menu_over') }}">
             <span class="glyphicon glyphicon-cog top-menu__label">{{ translate('_GO_TO_FRAMEWORK', 'menu_over') }}</span>
-            <span class="title-with-icon">{{ translate('_GO_TO_FRAMEWORK', 'menu_over') }}</span>
         </a>
     </li>
 {% endif %}

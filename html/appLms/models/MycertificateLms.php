@@ -9,16 +9,18 @@
 \ ======================================================================== */
 
 require_once(Forma::inc(_lms_.'/lib/lib.certificate.php'));
-
 class MycertificateLms extends Model {
 
     protected $certificate;
     
     public $id_user;
 
+    protected $aggrCertsArr;
+
     public function __construct($id_user) {
+        $this->id_user = (int) $id_user;
         $this->certificate = new Certificate();
-        $this->id_user = $id_user;
+
     }
     
     public function loadMyCertificates($pagination = false, $count = false) {
@@ -37,42 +39,19 @@ class MycertificateLms extends Model {
         $data = array();
         foreach ($myCertificates AS $cert) {
             if($this->certificate->certificateAvailableForUser($cert['id_certificate'], $cert['id_course'], $this->id_user) ) {
-                $preview = '<a class="ico-wt-sprite subs_view" href="?r=mycertificate/'
-                    . 'preview&id_certificate=' . $cert['id_certificate'] . '&id_course=' . $cert['id_course'] . '" '
-                    . ' title="' . Lang::t('_PREVIEW', 'certificate') . '"><span>' . Lang::t('_PREVIEW', 'certificate') . '</span></a>';
-                $download = '<a class="ico-wt-sprite subs_pdf" href="?r=mycertificate/'
-                    . 'download&id_certificate=' . $cert['id_certificate'] . '&id_course=' . $cert['id_course'] . '" '
-                    . ' title="' . Lang::t('_DOWNLOAD', 'certificate') . '"><span>' . Lang::t('_DOWNLOAD', 'certificate') . '</span></a>';
-                $generate = '<a class="ico-wt-sprite subs_pdf" href="?r=mycertificate/'
-                    . 'download&id_certificate=' . $cert['id_certificate'] . '&id_course=' . $cert['id_course'] . '" '
-                    . ' title="' . Lang::t('_GENERATE', 'certificate') . '"><span>' . Lang::t('_GENERATE', 'certificate') . '</span></a>';
+                $download = '<a class="ico-wt-sprite subs_pdf" id="pdf_download" href="?r=mycertificate/'
+                    . 'downloadCert&id_certificate=' . $cert['id_certificate'] . '&id_course=' . $cert['id_course'] . '" '
+                    . ' title="' . (isset($cert['on_date'])?Lang::t('_DOWNLOAD', 'certificate'):Lang::t('_GENERATE', 'certificate')). '"><span>' 
+                    . (isset($cert['on_date'])?Lang::t('_DOWNLOAD', 'certificate'):Lang::t('_GENERATE', 'certificate')) . '</span></a>';
 
-                switch ($cert['available_for_status']) {
-                    case 3:
-                        $year = substr($cert['date_end'], 0, 4);
-                        break;
-                    case 2:
-                        $year = substr($cert['date_begin'], 0, 4);
-                        break;
-                    case 1:
-                        $year = substr($cert['date_inscr'], 0, 4);
-                        break;
-                    default:
-                        $year = '-';
-                }
-
-                $row = array(
-                    'year' => $year,
+                $data[] = array(
+                    'on_date' => substr($cert['on_date'], 0, 10),
                     'code' => $cert['code'],
                     'course_name' => $cert['course_name'],
                     'cert_name' => $cert['cert_name'],
                     'date_complete' => $cert['date_complete'],
-                    // 'preview' => isset($cert['on_date']) ? '' : $preview,
-                    'download' => isset($cert['on_date']) ? $download : $generate,
-                    'on_date' => $cert['on_date'],
+                    'download' => $download                    
                 );
-
-                $data[] = $row;
             }
         }
 
@@ -109,49 +88,90 @@ class MycertificateLms extends Model {
         $filter = array('id_user' => $this->id_user);
         return $this->certificate->countAssignment($filter);
     }
+
+
+    /**
+    * In this funct. we need to select all the aggr. certs that has been released or not.
+    * The cert. has been released -> there's an entry in the aggr. certs. assignment with the user and id cert.
+    * 
+    * From the user, get all assoc. -> from all assoc, get ids of cert. distinct
+    * from the id cert., get all courses and see if they are completed
+    * 
+    * 
+    * Return an array of all certs available
+    */
     
-    public function loadMyMetaCertificates() {
-        $startIndex = Get::req('startIndex', DOTY_INT, 0);
-        $results = Get::req('results', DOTY_INT, Get::sett('visuItem', 25));
+    public function getMyMetaCertificates() {
         
-        $filter = array('id_user' => $this->id_user);
-        $myMetaCertificates = $this->certificate->getMetaAssignment($filter);
-                
-        $data = array();
-        foreach ($myMetaCertificates AS $meta) {
-            $preview    = '<a class="ico-wt-sprite subs_view" href="?r=mycertificate/'
-                        . 'preview&id_certificate='.$meta['id_certificate'].'&id_meta='.$meta['id_meta'].'" '
-                        .' title="'.Lang::t('_PREVIEW', 'certificate').'"><span>'.Lang::t('_PREVIEW', 'certificate').'</span></a>';
-            $download    = '<a class="ico-wt-sprite subs_pdf" href="?r=mycertificate/'
-                        . 'download&id_certificate='.$meta['id_certificate'].'&id_meta='.$meta['id_meta'].'" '
-                        .' title="'.Lang::t('_DOWNLOAD', 'certificate').'"><span>'.Lang::t('_DOWNLOAD', 'certificate').'</span></a>';
-            $generate    = '<a class="ico-wt-sprite subs_pdf" href="?r=mycertificate/'
-                        . 'download&id_certificate='.$meta['id_certificate'].'&id_meta='.$meta['id_meta'].'" '
-                        .' title="'.Lang::t('_GENERATE', 'certificate').'"><span>'.Lang::t('_GENERATE', 'certificate').'</span></a>';
-					
-            $row = array(
-                'cert_code'         => $meta['cert_code'], 
-                'cert_name'         => $meta['cert_name'], 
-                'courses'           => $meta['courses'],
-                // 'preview'           => isset($meta['on_date']) ? '' : $preview,
-                'download'          => isset($meta['on_date']) ? $download : $generate
-            );
-            
-            $data[] = array_values($row);
-        }
-        
-        $data_to_display = array();
-        for ($i = $startIndex; $i < ($startIndex + $results) && $i < count($data); $i++){
-            $data_to_display[] = $data[$i];
-        }
-        
-        return $data_to_display;
+        $q = "SELECT %lms_certificate.id_certificate, %lms_aggregated_cert_assign.idAssociation, %lms_certificate.code,  %lms_certificate.name, 
+              DATE_FORMAT(%lms_aggregated_cert_assign.on_date, '%Y/%m/%d') as 'on_date', %lms_aggregated_cert_assign.cert_file, '' as 'course_name', %lms_coursepath.path_name 
+              FROM %lms_certificate, %lms_aggregated_cert_assign, %lms_aggregated_cert_coursepath, %lms_coursepath
+              WHERE %lms_certificate.id_certificate=%lms_aggregated_cert_assign.idCertificate
+              AND %lms_aggregated_cert_assign.idAssociation=%lms_aggregated_cert_coursepath.idAssociation
+              AND %lms_aggregated_cert_coursepath.idCoursePath = %lms_coursepath.id_path
+              AND %lms_aggregated_cert_coursepath.idUser = %lms_aggregated_cert_assign.idUser
+              AND %lms_aggregated_cert_assign.idUser=".intval($this->id_user);
+              
+       $rs = sql_query($q);       
+       $prev_idcert = 0;
+       $ii = 0;
+       while ($row = sql_fetch_assoc($rs)) {
+       
+           if ($prev_idcert != $row['id_certificate']) {
+                $arrAggregatedCerts[$ii] = $row;
+                $ii++;     
+           } else {        
+                $arrAggregatedCerts[$ii-1]['path_name'] = $arrAggregatedCerts[$ii-1]['path_name']." | ".$row['path_name'];
+           }     
+           $prev_idcert = $row['id_certificate'];
+       }                         
+
+           
+       $q = "SELECT %lms_certificate.id_certificate, %lms_aggregated_cert_assign.idAssociation, %lms_certificate.code,  %lms_certificate.name, 
+              DATE_FORMAT(%lms_aggregated_cert_assign.on_date, '%Y/%m/%d') as 'on_date', %lms_aggregated_cert_assign.cert_file, %lms_course.name as 'course_name', '' as 'path_name'
+              FROM %lms_certificate, %lms_aggregated_cert_assign, %lms_aggregated_cert_course, %lms_course
+              WHERE %lms_certificate.id_certificate=%lms_aggregated_cert_assign.idCertificate
+              AND %lms_aggregated_cert_assign.idAssociation=%lms_aggregated_cert_course.idAssociation
+              AND %lms_aggregated_cert_course.idCourse = %lms_course.idCourse
+              AND %lms_aggregated_cert_course.idUser = %lms_aggregated_cert_assign.idUser
+              AND %lms_aggregated_cert_assign.idUser=".intval($this->id_user);
+       $rs = sql_query($q);       
+       $prev_idcert = 0; 
+       while ($row = sql_fetch_assoc($rs)) {
+            if ($prev_idcert != $row['id_certificate']) {
+                $arrAggregatedCerts[$ii] = $row;
+                $ii++;     
+            } else {
+                $arrAggregatedCerts[$ii-1]['course_name'] = $arrAggregatedCerts[$ii-1]['course_name']." | ".$row['course_name'];
+            }
+            $prev_idcert = $row['id_certificate'];    
+           
+       }
+       return $arrAggregatedCerts;
+
+    } 
+    
+
+    function countAggrCertsToRelease() {
+
+        $r = sql_fetch_row(
+                sql_query('SELECT count(*) as tot from %lms_aggregated_cert_assign where idUser ='.$this->id_user. ' AND cert_file = \'\'')
+                          );
+        return $r[0];
     }
     
-    public function countMyMetaCertificates() {        
-        $filter = array('id_user' => $this->id_user);
-        return $this->certificate->countMetaAssignment($filter);
+    function countMyMetaCertificates(){
+        $r = sql_fetch_row(sql_query('SELECT count(*) as tot from %lms_aggregated_cert_assign where idUser ='.$this->id_user));
+        return $r[0];
     }
+    
+    function countMyMetaCertsReleased(){
+        $r = sql_fetch_row(
+                sql_query('SELECT count(*) as tot from %lms_aggregated_cert_assign where idUser ='.$this->id_user. ' AND cert_file <> \'\'')
+                          );
+        return $r[0];
+    }
+
 }
 
 ?>

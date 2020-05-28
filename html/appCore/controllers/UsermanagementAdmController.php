@@ -1185,7 +1185,6 @@ class UsermanagementAdmController extends AdmController
 							}
 							// LRZ
 							// Add custom fiels for org chart tree
-							$form_content .= Form::getLineBox();
 							$form_content .= '<hr>';
 							$vett_custom_org = $this->model->getCustomFieldOrg($id);
 							foreach ($vett_custom_org as $key => $value) {
@@ -1579,7 +1578,7 @@ class UsermanagementAdmController extends AdmController
 
 				require_once(Forma::inc(_base_ . '/lib/lib.user_profile.php'));
 				require_once(_adm_ . '/modules/org_chart/tree.org_chart.php');
-				$treedborgdb = new TreeDb_OrgDb();
+				$treedborgdb = new TreeDb_OrgDb($GLOBALS['prefix_fw'].'_org_chart_tree');
 
 				if (Get::sett('orgchart_singlenode', 'off') == 'on') {
 

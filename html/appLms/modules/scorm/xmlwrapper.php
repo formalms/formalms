@@ -274,8 +274,9 @@ class DDomElement extends DDomNode {
 	function getAttribute( $name ) {
 		if( $GLOBALS['xmlv'] == XMLV4 ) 
 			return $this->node->get_attribute($name);
-		else
+		else {
 			return $this->node->getAttribute($name);
+        }    
 	}
 	
 	function setAttribute( $name, $value  ) {

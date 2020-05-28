@@ -63,11 +63,7 @@ class CertificateSubs_Course extends CertificateSubstitution {
 
 		$subs = array();
 
-		if($this->id_meta != 0)
-		{
-
-		}
-		else
+		if($this->id_meta == 0)
 		{
 			require_once($GLOBALS['where_lms'].'/lib/lib.course.php');
 

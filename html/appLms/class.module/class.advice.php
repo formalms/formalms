@@ -19,7 +19,7 @@ class Module_Advice extends LmsModule {
 		adviceDispatch($GLOBALS['op']);
 	}
 	
-	function getAllToken($op) {
+	function getAllToken($op = '') {
 		return array( 
 			'view' => array( 	'code' => 'view',
 								'name' => '_VIEW',

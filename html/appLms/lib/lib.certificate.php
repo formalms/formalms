@@ -38,8 +38,7 @@ define("ASSIGN_CERT_SENDNAME", 		5);
 
 class Certificate {
 
-    public function findAll($filter, $pagination)
-    {
+    public function findAll($filter, $pagination) {
         list($aval_status, $minutes_required) = sql_fetch_row(
             sql_query(
                 "SELECT available_for_status, minutes_required FROM %lms_certificate_course as cc"
@@ -129,11 +128,18 @@ class Certificate {
         return array($assignment, $totalrows);
     }
 
-        function countAssignment($filter){
+    function countAssignment($filter){
             return count($this->getAssignment($filter));
         }
 
-        function getAssignment($filter, $pagination = false, $count = null) {
+    /**
+    * put your comment there...
+    * 
+    * @param mixed $filter
+    * @param mixed $pagination
+    * @param mixed $count
+    */
+    function getAssignment($filter, $pagination = false, $count = null) {
             if ($pagination && isset($pagination['search'])) {
                 $filter['search'] = $pagination['search'];
             }
@@ -165,7 +171,7 @@ class Certificate {
             return $pagination ? $paginated_assignment : $assignment;
         }
 
-        function getAssigned($filter) {
+    function getAssigned($filter) {
                 $query = "SELECT ca.id_certificate, ca.id_course,"
                             ."	ca.id_user, SUBSTRING(u.userid, 2) AS username,"
                             ."	u.lastname, u.firstname, co.code, cc.available_for_status,"
@@ -240,7 +246,7 @@ class Certificate {
                 return $assigned;
         }
 
-        function getAssignable($filter) {
+    function getAssignable($filter) {
                 $query = "	SELECT ce.id_certificate, co.idCourse AS id_course,"
                             ."	u.idst AS id_user, SUBSTRING(u.userid, 2) AS username,"
                             ."	u.lastname, u.firstname, co.code, cc.available_for_status,"
@@ -322,103 +328,8 @@ class Certificate {
                 return $assignable;
         }
         
-    function countMetaAssignment($filter) {
-        return count($this->getMetaAssignment($filter));
-    }
     
-    function getMetaAssignment($filter) {
-        $metaAssigned = $this->getMetaAssigned($filter);
-        $metaAssignable = $this->getMetaAssignable($filter);
-
-        return array_merge($metaAssigned, $metaAssignable);        
-    }
     
-    function getMetaAssigned($filter) {
-        $query = "  SELECT cma.idCertificate AS id_certificate, cma.idMetaCertificate AS id_meta, cmc.idUser AS id_user,"
-               . "      ce.code AS cert_code, ce.name AS cert_name, cma.on_date,"
-               . "      GROUP_CONCAT(DISTINCT CONCAT('(', co.code, ') - ', co.name) SEPARATOR '<br>') AS courses"
-               . "  FROM %lms_certificate_meta_course as cmc"
-               . "      JOIN %lms_certificate_meta_assign as cma"
-               . "      ON cmc.idMetaCertificate = cma.idMetaCertificate"
-               . "      JOIN %lms_certificate AS ce"
-               . "      ON cma.idCertificate = ce.id_certificate"
-               . "      JOIN %lms_course AS co"
-               . "      ON cmc.idCourse = co.idCourse"
-               . "      WHERE 1 = 1";
-        
-        if (isset($filter['id_certificate'])) {
-            $query .= " AND cma.idCertificate = " . $filter['id_certificate'];
-        }
-        if (isset($filter['id_course'])) {
-            $query .= " AND cmc.idCourse = " . $filter['id_course'];
-        }
-        if (isset($filter['id_user'])) {
-            $query .= " AND cma.idUser = " . $filter['id_user'];
-        }
-        if (!isset($filter['id_user'])) {
-            if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
-                require_once(_base_ . '/lib/lib.preference.php');
-                $adminManager = new AdminPreference();
-                $query .= " AND " . $adminManager->getAdminUsersQuery(Docebo::user()->getIdSt(), 'idUser');
-            }
-        }
-        $query .= " GROUP BY cmc.idMetaCertificate";
-
-        $res = sql_query($query);
-        while ($row = sql_fetch_assoc($res)) {
-            $metaAssigned[] = $row;
-        }
-        return $metaAssigned;
-    }
-    
-    function getMetaAssignable($filter) {
-        $query = "  SELECT cm.idCertificate AS id_certificate, cm.idMetaCertificate AS id_meta, cmc.idUser AS id_user,"
-               . "      ce.code AS cert_code, ce.name AS cert_name, NULL AS on_date,"
-               . "      GROUP_CONCAT(DISTINCT CONCAT('(', co.code, ') - ', co.name) SEPARATOR '<br>') AS courses"
-               . "  FROM %lms_certificate_meta_course as cmc"
-               . "      JOIN %lms_certificate_meta as cm"
-               . "      ON cmc.idMetaCertificate = cm.idMetaCertificate"
-               . "      JOIN %lms_certificate AS ce"
-               . "      ON cm.idCertificate = ce.id_certificate"
-               . "      JOIN %lms_course AS co"
-               . "      ON cmc.idCourse = co.idCourse"
-               . "  WHERE (cm.idCertificate, cm.idMetaCertificate, cmc.idUser) NOT IN ("
-               . "      SELECT cma.idCertificate, cma.idMetaCertificate, cma.idUser"
-               . "      FROM %lms_certificate_meta_assign AS cma"
-               . "  ) AND 2 = ALL ("
-               . "      SELECT cu.status"
-               . "      FROM %lms_courseuser AS cu"
-               . "          JOIN %lms_certificate_meta_course AS mc"
-               . "          ON cu.idCourse = mc.idCourse"
-               . "              AND cu.idUser = mc.idUser"
-               . "      WHERE mc.idUser = cmc.idUser"
-               . "          AND mc.idMetaCertificate = cmc.idMetaCertificate"
-               . "  )" ;
-
-        if (isset($filter['id_certificate'])) {
-            $query .= " AND cm.idCertificate = " . $filter['id_certificate'];
-        }
-        if (isset($filter['id_course'])) {
-            $query .= " AND cmc.idCourse = " . $filter['id_course'];
-        }
-        if (isset($filter['id_user'])) {
-            $query .= " AND cmc.idUser = " . $filter['id_user'];
-        }
-        if (!isset($filter['id_user'])) {
-            if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
-                require_once(_base_ . '/lib/lib.preference.php');
-                $adminManager = new AdminPreference();
-                $query .= " AND " . $adminManager->getAdminUsersQuery(Docebo::user()->getIdSt(), 'idUser');
-            }
-        }
-        $query .= " GROUP BY cmc.idMetaCertificate";
-
-        $res = sql_query($query);
-        while ($row = sql_fetch_assoc($res)) {
-            $metaAssignable[] = $row;
-        }
-        return $metaAssignable;
-    }
 
 	//fix: Php7.1+ compatibility
 	function canRelExceptional($perm_close_lo, $id_user, $id_course =''){
@@ -862,11 +773,21 @@ class Certificate {
 		$this->getPdf($cert_structure, $name, $bgimage, $orientation, true, true);
 	}
 
-	function send_certificate($id_certificate, $id_user, $id_course, $array_substituton = false, $download = true, $from_multi = false)
+	/**
+    *  $from_multi true and download false used for generating multiple certificates zipped in a file
+    */
+    function send_certificate($id_certificate, $id_user, $id_course, $array_substituton = false, $download = true, $from_multi = false, $id_association = 0)
 	{
-		$id_meta = Get::req('id_meta', DOTY_INT, 0);
+		$isAggregatedCert = Get::req('aggCert', DOTY_INT, 0);
+        if( $isAggregatedCert){
+            require_once(_files_lms_.'/'._folder_lib_.'/lib.aggregated_certificate.php');
+            $aggCertLib = new AggregatedCertificate();
+        }
 
-		if(!isset($_GET['id_meta']))
+
+
+		// funct. not called not by aggregated cert.
+		if( ! $isAggregatedCert)
 			$query_certificate = "
 			SELECT cert_file
 			FROM ".$GLOBALS['prefix_lms']."_certificate_assign
@@ -874,11 +795,16 @@ class Certificate {
 				 AND id_course = '".$id_course."'
 				 AND id_user = '".$id_user."' ";
 		else
-			$query_certificate = "
-			SELECT cert_file
-			FROM ".$GLOBALS['prefix_lms']."_certificate_meta_assign
-			WHERE idUser = '".$id_user."'
-			AND idMetaCertificate = '".$id_meta."'";
+            $query_certificate = "SELECT cert_file"
+			." FROM ".$aggCertLib->table_assign_agg_cert
+			." WHERE idUser = ".$id_user
+            ." AND idCertificate = ".$id_certificate
+            ." AND idAssociation = ".$id_association
+            . " AND cert_file != ''";
+
+
+
+
 
 		$re = sql_query($query_certificate);
 		echo sql_error();
@@ -913,19 +839,29 @@ class Certificate {
 		sl_close_fileoperations();
 
 		//save the generated file in database
-		if(!isset($_GET['id_meta']))
+        $the_date = date("Y-m-d H:i:s");        
+        if(!$isAggregatedCert)
 			$query = "INSERT INTO ".$GLOBALS['prefix_lms']."_certificate_assign "
 			." ( id_certificate, id_course, id_user, on_date, cert_file ) "
 			." VALUES "
-			." ( '".$id_certificate."', '".$id_course."', '".$id_user."', '".date("Y-m-d H:i:s")."', '".addslashes($cert_file)."' ) ";
+			." ( '".$id_certificate."', '".$id_course."', '".$id_user."', '".$the_date."', '".addslashes($cert_file)."' ) ";
 		else
-			$query = "INSERT INTO ".$GLOBALS['prefix_lms']."_certificate_meta_assign "
-			." ( idUser, idMetaCertificate, idCertificate, on_date, cert_file ) "
-			." VALUES "
-			." ('".$id_user."', '".$id_meta."', '".$id_certificate."', '".date("Y-m-d H:i:s")."', '".addslashes($cert_file)."' ) ";
-
-		if(!sql_query($query)) return false;
-
+            $query = "UPDATE ".$aggCertLib->table_assign_agg_cert
+                     ." SET on_date = '".$the_date
+                     ."', cert_file = '".addslashes($cert_file)
+                     ."' WHERE idUser = ".intval($id_user)
+                     . " AND idCertificate = ".intval($id_certificate)
+                     . " AND idAssociation = ".intval($id_association); 
+        if(!sql_query($query)) return false;
+        
+        $new_data['cert_file'] = $cert_file;
+        $new_data['on_date'] = $the_date;
+        Events::trigger('lms.certificate_user.assigned', [
+                'id_user' => $id_user,
+                'id_certificate' => $id_certificate,
+                'new_data' => $new_data,
+        ], 0); 
+        
 		if($from_multi)
 			return;
 

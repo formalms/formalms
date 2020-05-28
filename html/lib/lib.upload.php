@@ -71,7 +71,7 @@ function sl_fopen( $filename, $mode ) {
 	}
 }
 
-function sl_upload( $srcFile, $dstFile, $file_ext) {
+function sl_upload( $srcFile, $dstFile, $file_ext = "") {
 	$uploadType = Get::cfg('uploadType', null);
 
 	// check if the mime type is allowed by the whitelist

@@ -342,6 +342,13 @@ function formaTable(dom, options) {
     if(options.scrollX !== undefined) {
         _options.scrollX = options.scrollX;
     }
+    if(options.createdRow !== undefined) {
+        _options.createdRow = options.createdRow;
+    } 
+    if(options.rowCallback !== undefined) {
+        _options.rowCallback = options.rowCallback;
+    }        
+    
 
     if (options.stateSave !== undefined) {
         _options.stateSave = options.stateSave;

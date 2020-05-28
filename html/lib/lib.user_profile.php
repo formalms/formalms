@@ -2226,7 +2226,10 @@ class UserProfileViewer {
             $cert = new Certificate();
 
             $filter['id_user'] = $this->_id_user;
-            $tot_cert = $cert->countAssignment($filter) + $cert->countMetaAssignment($filter);
+            
+            $modelMyCertLMS = new MycertificateLms($this->_id_user);
+
+            $tot_cert = $cert->countAssignment($filter) + $modelMyCertLMS->countMyMetaCertificates();
 
             $html .= ''
 
@@ -4041,7 +4044,7 @@ class UserProfileData {
 	/**
 	 * save the user new password
 	 */
-	function saveUserPwd($id_user, $new_pwd) {
+    function saveUserPwd($id_user, $new_pwd) {
 
 		if(!$this->acl_man->updateUser( 	$id_user,
 											FALSE,

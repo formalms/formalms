@@ -1785,7 +1785,7 @@ public function addClassroom($params) {
         
         // recupera TRACK della risposta del test
         $db = DbConn::getInstance();
-        $qtxt ="SELECT idTrack, idTest, date_end_attempt FROM learning_testtrack where idReference=".$params['id_org']." and idUser=".$params['id_user'];
+        $qtxt ="SELECT idTrack, idTest FROM learning_testtrack where idReference=".$params['id_org']." and idUser=".$params['id_user'];
         $q =$db->query($qtxt);
         $course_info =$db->fetch_assoc($q);        
     
@@ -2245,6 +2245,10 @@ public function addClassroom($params) {
 // assign meta certificate & course to user
     function assignMetaUser($params){
         
+        require_once(_files_lms_.'/'._folder_lib_.'/lib.aggregated_certificate.php');
+
+        $aggCertLib = new AggregatedCertificate();
+        
         $meta_cert_id = (isset($params['meta_cert_id']) ? $params['meta_cert_id'] : '');
         $meta_user_id = (isset($params['meta_user_id']) ? $params['meta_user_id'] : '');  
         $meta_course_id = (isset($params['meta_course_id']) ? $params['meta_course_id'] : '');       
@@ -2274,6 +2278,18 @@ public function addClassroom($params) {
         $vett_course = explode(",",$meta_course_id);
         
         $output['success']=true;
+        
+         
+        //-----------------------------------
+
+        foreach($vett_user as $keyUser => $valueUser)
+            $userArr[$valueUser] = $vett_course;
+        
+        $assocArr[$meta_cert_id] = $userArr;
+        
+        $aggCertLib->insertAssociationLink(COURSE, $assocArr);
+      /*              
+                    
         foreach($vett_user as $keyUser => $valueUser){
             $output['debug_user_'.$valueUser]=$valueUser;
             foreach($vett_course as $keyCourse => $valueCourse){
@@ -2290,7 +2306,7 @@ public function addClassroom($params) {
                 
             }    
             
-        }
+        }*/
         
         return $output;
         
@@ -2298,6 +2314,12 @@ public function addClassroom($params) {
      
     // add association to meta certificate
     function addAssociationCertificate($params){
+        
+          
+        require_once(_files_lms_.'/'._folder_lib_.'/lib.aggregated_certificate.php');
+        $aggCertLib = new AggregatedCertificate();
+        
+        
           $output =array();
           $output['success']=true;
         

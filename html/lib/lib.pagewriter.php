@@ -203,6 +203,16 @@ class PageZoneLang extends PageZone {
 				.'</a>'
 				.'<script type="text/javascript">'
 					.'YAHOO.util.Dom.get(\'link_container\').style.display = \'none\';'
+					/*.'$("#link_container").click(
+					function(){
+	    				  if ($(this).is(":visible")) {
+                        // handle non visible state
+                            $(this).show();
+                          } else {
+                        // handle visible state
+                            $(this).show();
+                            }  
+                        });'*/
 				.'</script>'
 				.'<script type="text/javascript">
 				var translation = { module: "", key: "" }

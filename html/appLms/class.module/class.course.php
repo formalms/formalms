@@ -58,7 +58,7 @@ class Module_Course extends LmsModule {
 		}
 	}
 	
-	function getAllToken($op) {
+	function getAllToken($op='') {
 		
 		switch($op) {
 			case "infocourse" : {
