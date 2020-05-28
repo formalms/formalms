@@ -100,7 +100,7 @@ echo getTitleArea(array(
                foreach($custom_fields as $key=>$value) {
                    $hidden_fields_n++;
                    $hidden_fields_array[] = $hidden_fields_n;
-                   echo "{data:'cf_$key', title:'".$value."', sortable:true, visible: false},".PHP_EOL;
+                   echo "{data:'cf_$key', title:'".addslashes($value)."', sortable:true, visible: false},".PHP_EOL;
                }
              ?>               
              { data:'status', title: '<?php echo Lang::t('_STATUS', 'standard'); ?>', sortable: true,  
