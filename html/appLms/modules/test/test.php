@@ -210,11 +210,12 @@ function modtestgui ($object_test)
     FROM " . $GLOBALS[ 'prefix_lms' ] . "_test
     WHERE idTest = '" . $object_test->getId () . "'"));
 
-    $re_quest = sql_query ("
-    SELECT idQuest, type_quest, title_quest, sequence, page 
-    FROM " . $GLOBALS[ 'prefix_lms' ] . "_testquest
-    WHERE idTest = '" . $object_test->getId () . "'
-    ORDER BY sequence");
+    $re_quest = sql_query("
+    SELECT tq.idQuest, tq.type_quest, tq.title_quest, tq.sequence, tq.page, tq.idCategory, qc.name AS category 
+    FROM " . $GLOBALS['prefix_lms'] . "_testquest AS tq
+    LEFT JOIN " . $GLOBALS['prefix_lms'] . "_quest_category qc ON qc.idCategory = tq.idCategory
+    WHERE tq.idTest = '" . $object_test->getId() . "'
+    ORDER BY tq.sequence");
 
     $num_quest = sql_num_rows ($re_quest);
     list($num_page) = sql_fetch_row (sql_query ("
@@ -261,22 +262,19 @@ function modtestgui ($object_test)
         . $lang->def ('_COURSEREPORT_MANAGEMENT') . '</a>' . '</li>');
 
     */
-    //TODO: EVT_LAUNCH (&)
-    //\appCore\Events\DispatcherManager::dispatch (\appLms\Events\Lms\TestConfigurationTabsRenderEvent::EVENT_NAME , $event);
+    \appCore\Events\DispatcherManager::dispatch(\appLms\Events\Lms\TestConfigurationTabsRenderEvent::EVENT_NAME, $event);
 
-    $GLOBALS[ 'page' ]->add ('<ul class="link_list_inline">' , 'content');
-    
-    //foreach ($event->getTabs () as $tab) {
-    //    $GLOBALS[ 'page' ]->add ($tab , 'content');
-    //}
+    $GLOBALS['page']->add('<ul class="link_list_inline">', 'content');
+    foreach ($event->getTabs() as $tab) {
+        $GLOBALS['page']->add($tab, 'content');
+    }
+    $GLOBALS['page']->add('</ul>', 'content');
 
-    $GLOBALS[ 'page' ]->add ('</ul>' , 'content');
+    $caption = str_replace('%tot_page%', $num_page, str_replace('%tot_element%', $num_quest, $lang->def('_TEST_CAPTION')));
 
-    $caption = str_replace ('%tot_page%' , $num_page , str_replace ('%tot_element%' , $num_quest , $lang->def ('_TEST_CAPTION')));
+    $tab = new Table(0, $caption, $lang->def('_TEST_SUMMARY'));
 
-    $tab = new Table(0 , $caption , $lang->def ('_TEST_SUMMARY'));
-
-    $tab->setColsStyle (array ( 'image' , 'image' , '' , 'image' , 'image' , 'image' , 'image' , 'image' ));
+    $tab->setColsStyle(array('image', 'image', 'image', '', 'image', 'image', 'image', 'image'));
 
     $i = 0;
     $correct_sequence = 1;
@@ -293,14 +291,14 @@ function modtestgui ($object_test)
     $fman = new CustomFieldList();
     $fman->setFieldArea ("LO_TEST");
 
-    while (list($id_quest , $type , $title , $sequence , $page) = sql_fetch_row ($re_quest)) {
+    while (list($id_quest, $type, $title, $sequence, $page, $idCategory, $category_name) = sql_fetch_row($re_quest)) {
 
         // Customfields Get
         $fields_mask = $fman->playFieldsFlat ($id_quest);
 
         if ($first) {
-            $arrHead = array ();
-            array_push ($arrHead , $lang->def ('_QUEST') , $lang->def ('_TYPE') , $lang->def ('_QUESTION'));
+            $arrHead = array();
+            array_push($arrHead, $lang->def('_QUEST'), $lang->def('_TYPE'), $lang->def('_CATEGORY'), $lang->def('_QUESTION'));
             // Customfields head
             foreach ($fields_mask as $field) {
                 array_push ($arrHead , $field[ 'name' ]);
@@ -317,10 +315,14 @@ function modtestgui ($object_test)
 
         $last_type = $type;
 
-        $content = array ();
-        array_push ($content , ((($type != 'break_page') && ($type != 'title')) ? '<span class="text_bold">' . ($quest_num++) . '</span>' : '') ,
-            $lang->def ('_QUEST_ACRN_' . strtoupper ($type)) ,
-            '<div style="width:300px;">' . $title . '</div>');
+        $content = array();
+        array_push(
+            $content,
+            ((($type != 'break_page') && ($type != 'title')) ? '<span class="text_bold">' . ($quest_num++) . '</span>' : ''),
+            $lang->def('_QUEST_ACRN_' . strtoupper($type)),
+            '<div style="text-align:center;">' . $category_name . '</div>',
+            '<div style="width:300px;">' . $title . '</div>'
+        );
 
         // Customfields content
         foreach ($fields_mask as $field) {
