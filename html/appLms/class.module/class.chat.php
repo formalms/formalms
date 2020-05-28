@@ -19,7 +19,7 @@ class Module_Chat extends LmsModule {
 		chatDispatch($GLOBALS['op']);
 	}
 	
-	function getAllToken($op) {
+	function getAllToken($op = '') {
 		return array( 
 			'view' => array( 	'code' => 'view',
 								'name' => '_VIEW',

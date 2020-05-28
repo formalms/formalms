@@ -94,32 +94,59 @@ WHERE module_name = 'meta_certificate';
 
 
 
-ALTER TABLE learning_certificate_meta
-    RENAME TO learning_aggregated_cert_metadata;
-ALTER TABLE learning_aggregated_cert_metadata
-    CHANGE idMetaCertificate idAssociation INT(11) NOT NULL AUTO_INCREMENT;
+CREATE TABLE IF NOT EXISTS `learning_aggregated_cert_metadata` (
+  `idAssociation` int(11) NOT NULL,
+  `idCertificate` int(11) NOT NULL DEFAULT '0',
+  `title` varchar(255) NOT NULL DEFAULT '',
+  `description` longtext NOT NULL,
+   PRIMARY KEY (`idAssociation`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
+ALTER TABLE `learning_aggregated_cert_metadata`
+  MODIFY `idAssociation` int(11) NOT NULL AUTO_INCREMENT;
+  
+INSERT INTO `learning_aggregated_cert_metadata` (`idCertificate`, `title`, `description` ) 
+SELECT `idCertificate`, `title`, `description` from `learning_certificate_meta`;
 
 
-ALTER TABLE learning_certificate_meta_assign
-    RENAME TO learning_aggregated_cert_assign;
-ALTER TABLE learning_aggregated_cert_assign
-    CHANGE idMetaCertificate idAssociation INT(11) NOT NULL;
-ALTER TABLE `learning_aggregated_cert_assign` DROP PRIMARY KEY, ADD PRIMARY KEY (`idUser`, `idCertificate`,  `idAssociation`) USING BTREE;
+CREATE TABLE IF NOT EXISTS `learning_aggregated_cert_assign` (
+  `idUser` int(11) NOT NULL DEFAULT 0,
+  `idCertificate` int(11) NOT NULL DEFAULT 0,
+  `idAssociation` int(11) NOT NULL,
+  `on_date` datetime DEFAULT NULL,
+  `cert_file` varchar(255) NOT NULL DEFAULT '',
+  PRIMARY KEY (`idUser`,`idCertificate`,`idAssociation`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+INSERT INTO `learning_aggregated_cert_assign` (`idUser`, `idAssociation`, `idCertificate`, `on_date`, `cert_file`  ) 
+SELECT `idUser`, `idMetaCertificate`, `idCertificate`, `on_date`, `cert_file` from learning_certificate_meta`;
 
 
+  
+CREATE TABLE IF NOT EXISTS `learning_aggregated_cert_course` (
+  `id` int(11) NOT NULL,
+  `idAssociation` int(11) NOT NULL,
+  `idUser` int(11) NOT NULL DEFAULT '0',
+  `idCourse` int(11) NOT NULL DEFAULT '0',
+  `idCourseEdition` int(11) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-ALTER TABLE learning_certificate_meta_course
-    RENAME TO learning_aggregated_cert_course;
-ALTER TABLE learning_aggregated_cert_course
-    CHANGE idMetaCertificate idAssociation INT(11) NOT NULL ;
-ALTER TABLE `learning_aggregated_cert_course`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;       
 ALTER TABLE `learning_aggregated_cert_course`
   ADD PRIMARY KEY (`id`),
   ADD KEY `idAssociation` (`idAssociation`);
-   
+
+ALTER TABLE `learning_aggregated_cert_course`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  
+  
+INSERT INTO `learning_aggregated_cert_course` (`idAssociation`, `idUser`,  `idCourse`, `idCourseEdition`  ) 
+SELECT `idMetaCertificate`, `idUser`, `idCourse`, `idCourseEdition`  from learning_meta_course`;    
+  
+DELETE FROM learning_aggregated_cert_course WHERE idUser = 0; 
+INSERT INTO `learning_aggregated_cert_course` (idAssociation, idUser, idCourse, idCourseEdition)  
+SELECT idAssociation, 0 as idUser, idCourse, idCourseEdition  FROM `learning_aggregated_cert_course`;
+
 
     
 
@@ -132,6 +159,3 @@ CREATE TABLE IF NOT EXISTS `learning_aggregated_cert_coursepath` (
   KEY `idAssociation` (`idAssociation`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
 
-DELETE FROM learning_aggregated_cert_course WHERE idUser = 0; 
-INSERT INTO `learning_aggregated_cert_course` (idAssociation, idUser, idCourse, idCourseEdition)  
-SELECT idAssociation, 0 as idUser, idCourse, idCourseEdition  FROM `learning_aggregated_cert_course`;

@@ -34,7 +34,7 @@ class Module_Stats extends LmsModule {
 		require(_lms_.'/modules/stats/stats.php');
 	}
 	
-	function getAllToken($op) {
+	function getAllToken($op = '') {
 		
 		if($op == 'statuser') {
 			return array( 'view_user' => array( 	'code' => 'view_user',

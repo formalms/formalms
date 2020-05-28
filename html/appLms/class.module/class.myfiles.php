@@ -19,7 +19,7 @@ class Module_MyFiles extends LmsModule {
 		myfilesDispatch($GLOBALS['op']);
 	}
 	
-	function getAllToken($op) {
+	function getAllToken() {
 		
 		return array( 
 			'view' => array( 	'code' => 'view',

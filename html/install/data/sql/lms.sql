@@ -286,17 +286,13 @@ CREATE TABLE IF NOT EXISTS `learning_aggregated_cert_metadata` (
 --
 
 CREATE TABLE IF NOT EXISTS `learning_aggregated_cert_assign` (
-  `idUser` int(11) NOT NULL DEFAULT '0',
-  `idCertificate` int(11) NOT NULL DEFAULT '0',
-  `idAssociation` int(11) NOT NULL,  
-  `on_date` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `idUser` int(11) NOT NULL DEFAULT 0,
+  `idCertificate` int(11) NOT NULL DEFAULT 0,
+  `idAssociation` int(11) NOT NULL,
+  `on_date` datetime DEFAULT NULL,
   `cert_file` varchar(255) NOT NULL DEFAULT '',
-  PRIMARY KEY (`idUser`,`idCertificate`, `idAssociation`)
+  PRIMARY KEY (`idUser`,`idCertificate`,`idAssociation`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dump dei dati per la tabella `learning_aggregated_certificate_association`
---
 
 
 -- --------------------------------------------------------

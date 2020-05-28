@@ -13,7 +13,7 @@
 
 class Module_Coursestats extends LmsModule {
 
-	function getAllToken($op) {
+	function getAllToken() {
 			return array( 	'view' => array( 	'code' => 'view',
 								'name' => '_VIEW',
 								'image' => 'standard/view.png'), 
