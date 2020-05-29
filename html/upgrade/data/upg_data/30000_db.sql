@@ -95,7 +95,7 @@ WHERE module_name = 'meta_certificate';
 
 
 CREATE TABLE IF NOT EXISTS `learning_aggregated_cert_metadata` (
-  `idAssociation` int(11) NOT NULL,
+  `idAssociation` int(11) NOT NULL AUTO_INCREMENT,
   `idCertificate` int(11) NOT NULL DEFAULT '0',
   `title` varchar(255) NOT NULL DEFAULT '',
   `description` longtext NOT NULL,
@@ -125,20 +125,15 @@ SELECT `idUser`, `idMetaCertificate`, `idCertificate`, `on_date`, `cert_file` fr
 
   
 CREATE TABLE IF NOT EXISTS `learning_aggregated_cert_course` (
-  `id` int(11) NOT NULL,
-  `idAssociation` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `idAssociation` int(11) NOT NULL DEFAULT 0,
   `idUser` int(11) NOT NULL DEFAULT '0',
   `idCourse` int(11) NOT NULL DEFAULT '0',
-  `idCourseEdition` int(11) NOT NULL DEFAULT '0'
+  `idCourseEdition` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `idAssociation` (`idAssociation`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-ALTER TABLE `learning_aggregated_cert_course`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `idAssociation` (`idAssociation`);
-
-ALTER TABLE `learning_aggregated_cert_course`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-  
   
 INSERT INTO `learning_aggregated_cert_course` (`idAssociation`, `idUser`,  `idCourse`, `idCourseEdition`  ) 
 SELECT `idMetaCertificate`, `idUser`, `idCourse`, `idCourseEdition`  from learning_meta_course`;    
