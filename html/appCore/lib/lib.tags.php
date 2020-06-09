@@ -237,7 +237,7 @@ class Tags {
 		if(!empty($to_associate)) {
 			
 			$inserts = false;
-      foreach($to_associate as => $id_tag)
+      foreach($to_associate as $id_tag)
       {
 				
 				$inserts[] = " ( "
