@@ -900,7 +900,7 @@ class DateManager
 					." FROM ".$this->presence_date_table
 					." WHERE id_date = ".$id_date;
 
-		if(Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN)
+		if(Docebo::user()->getUserLevelId() == ADMIN_GROUP_ADMIN)
 		{
 			require_once(_base_.'/lib/lib.preference.php');
 			$adminManager = new AdminPreference();
@@ -1839,5 +1839,3 @@ class DateManager
 
 
 }
-
-?>
