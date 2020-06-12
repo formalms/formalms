@@ -634,6 +634,15 @@ class FieldList
 		$tmp = $acl_man->getGroup(false, '/ocd_0');
 		$arr_idst[] = $tmp[0];
 
+		if (count($arr_idst) > 2) {
+			// Not only roots ocd_0 and oc_0
+			for ($i = 0; $i < count($arr_idst); $i++) {
+				if ($arr_idst[$i] == 1) {
+					unset($arr_idst[$i]);
+				}
+			}
+		}
+
 		$query = "SELECT ft.id_common, ft.type_field, tft.type_file, tft.type_class, gft.mandatory"
 			. "  FROM ( " . $this->getFieldTable() . " AS ft"
 			. "  JOIN " . $this->getTypeFieldTable() . " AS tft )"
@@ -934,6 +943,15 @@ class FieldList
 			$arr_idst[] = $tmp[0];
 		}
 
+		if (count($arr_idst) > 2) {
+			// Not only roots ocd_0 and oc_0
+			for ($i = 0; $i < count($arr_idst); $i++) {
+				if ($arr_idst[$i] == 1) {
+					unset($arr_idst[$i]);
+				}
+			}
+		}
+
 		$query = "SELECT ft.id_common, ft.type_field, tft.type_file, tft.type_class, gft.mandatory"
 			. "  FROM ( " . $this->getFieldTable() . " AS ft"
 			. "  JOIN " . $this->getTypeFieldTable() . " AS tft )"
@@ -1066,6 +1084,15 @@ class FieldList
 		$tmp = $acl_man->getGroup(false, '/ocd_0');
 		$arr_idst[] = $tmp[0];
 
+		if (count($arr_idst) > 2) {
+			// Not only roots ocd_0 and oc_0
+			for ($i = 0; $i < count($arr_idst); $i++) {
+				if ($arr_idst[$i] == 1) {
+					unset($arr_idst[$i]);
+				}
+			}
+		}
+
 		$query = "SELECT ft.id_common, ft.type_field, tft.type_file, tft.type_class, gft.mandatory"
 			. "  FROM ( " . $this->getFieldTable() . " AS ft"
 			. "  JOIN " . $this->getTypeFieldTable() . " AS tft )"
@@ -1148,6 +1175,16 @@ class FieldList
 			$tmp = $acl_man->getGroup(false, '/ocd_0');
 			$arr_idst[] = $tmp[0];
 		}
+
+		if (count($arr_idst) > 2) {
+			// Not only roots ocd_0 and oc_0
+			for ($i = 0; $i < count($arr_idst); $i++) {
+				if ($arr_idst[$i] == 1) {
+					unset($arr_idst[$i]);
+				}
+			}
+		}
+
 		$query = "SELECT ft.id_common, ft.type_field, tft.type_file, tft.type_class"
 			. "  FROM ( " . $this->getFieldTable() . " AS ft"
 			. "  JOIN " . $this->getTypeFieldTable() . " AS tft )"
