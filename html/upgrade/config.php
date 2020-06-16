@@ -17,7 +17,7 @@
 // 2xxxx : forma     versions series 2.x  (formely 2.xx.xx )
 
 
-$GLOBALS['cfg']['versions'] = array(
+$GLOBALS['cfg']['versions'] = [
     '3603' => '3.6.0.3  - Docebo CE',
     '3604' => '3.6.0.4 - Docebo CE',
     '3605' => '3.6.0.5 - Docebo CE',
@@ -42,10 +42,11 @@ $GLOBALS['cfg']['versions'] = array(
    '20300' => '2.3.0',
    '20400' => '2.4.0',
    '20401' => '2.4.1',
-);
+   '20402' => '2.4.2',
+];
 
 // for reference old docebo ce versions
-$GLOBALS['cfg']['docebo_versions'] = array(
+$GLOBALS['cfg']['docebo_versions'] = [
 	'3603' => '3.6.0.3',
 	'3604' => '3.6.0.4',
 	'3605' => '3.6.0.5',
@@ -55,7 +56,7 @@ $GLOBALS['cfg']['docebo_versions'] = array(
 	'4030' => '4.0.3',
 	'4040' => '4.0.4',
 	'4050' => '4.0.5',
-);
+];
 
 $GLOBALS['cfg']['endversion'] = '20401';
 

@@ -8,7 +8,7 @@
 \ ======================================================================== */
 
 -----------------------------------------------------------------------------
-forma.lms 2.4.1
+forma.lms 2.4.2
 Release date: 2020 february 20
 -----------------------------------------------------------------------------
 
@@ -31,7 +31,7 @@ Index
 
 ------------------------------------------------------------------------------
 
-0    RELEASE NOTES (2.4.1)
+0    RELEASE NOTES (2.4.2)
 
 For all bugfix and new features included in this release, please read changelog.txt
 Here are some notes from base release.
