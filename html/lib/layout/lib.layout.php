@@ -1,4 +1,9 @@
-<?php defined("IN_FORMA") or die('Direct access is forbidden.');
+<?php
+
+use appCore\Events\Core\Catalogue\ExternalCatalogueLink;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+
+defined("IN_FORMA") or die('Direct access is forbidden.');
 
 /* ======================================================================== \
 |   FORMA - The E-Learning Suite                                            |
@@ -27,7 +32,9 @@ class Layout
         $templ = dir(_base_ . '/templates/');
         while ($elem = $templ->read()) {
 
-            if ((is_dir(_base_ . '/templates/' . $elem)) && $elem{0} != "." && $elem{0} != '_') {
+            if ((is_dir(_base_ . '/templates/' . $elem)) && $elem{
+                0} != "." && $elem{
+                0} != '_') {
                 $templ_array[] = $elem;
             }
         }
@@ -86,7 +93,6 @@ class Layout
             . "\t\t" . '<meta name="Generator" content="www.formalms.org ' . Get::sett('core_version', '') . '" />' . "\n"
             . "\t\t" . '<link rel="Copyright" href="http://www.formalms.org/copyright" title="Copyright Notice" />' . "\n"
             . "\t\t" . '<link rel="Author" href="http://www.formalms.org/about" title="About" />' . "\n";
-
     }
 
     public static function resetter()
@@ -186,7 +192,8 @@ class Layout
         $pos = strpos($server_query_string, 'special=changelang&new_lang=');
         if ($pos !== FALSE) {
             if ($pos == 0) $pos = 1;
-            if ($server_query_string{$pos - 1} === '&') $pos = $pos - 1;
+            if ($server_query_string{
+                $pos - 1} === '&') $pos = $pos - 1;
             $server_query_string = substr($server_query_string, 0, $pos);
         }
 
@@ -195,17 +202,16 @@ class Layout
 
             $html .= '<li><a class="lang-sprite lang_' . strtolower(str_replace(' ', '_', $lang->lang_code)) . ($lang->lang_code == $lang_sel ? ' current' : '') . '"'
                 . 'href="' . (isset($args['redirect_on']) ? $args['redirect_on'] : 'index.php')
-                . '?'//.($r !== '' ? '?r='.$r.'&amp;' : '?')
+                . '?' //.($r !== '' ? '?r='.$r.'&amp;' : '?')
                 . ($server_query_string !== "" ? str_replace('&', '&amp;', $server_query_string) . '&amp;' : "")
                 . 'special=changelang&new_lang=' . rawurlencode($lang->lang_code) . '" title="' . $lang->lang_description . '">'
                 . '</a></li>';
-
         }
         $html .= '</ul>';
 
         return $html;
     }
-    
+
 
     /**
      * Return the complete code for change lang dropdown
@@ -238,7 +244,7 @@ class Layout
         foreach ($lang_list as $keyLang => $lang) {
             if ($keyLang !== $lang_sel) {
                 $href = isset($args['redirect_on']) ? $args['redirect_on'] : 'index.php';
-//			$href .= '?' . $server_query_string !== '' ? str_replace('&', '&amp;', $server_query_string).'&amp;' : '';
+                //			$href .= '?' . $server_query_string !== '' ? str_replace('&', '&amp;', $server_query_string).'&amp;' : '';
                 $href .= '?s&special=changelang&amp;new_lang=' . rawurlencode($lang->lang_code);
 
                 $options[] = '<a class="dropdown-item" href="' . $href . '" title="' . $lang->lang_description . '">' . $lang->lang_description . '</a>';
@@ -254,8 +260,8 @@ class Layout
             $html .= $option;
         }
 
-//		echo var_dump($href);
-//        die();
+        //		echo var_dump($href);
+        //        die();
 
         $html .= '</div>';
         $html .= '</div>';
@@ -271,8 +277,10 @@ class Layout
     {
         $html = '';
         if (HomepageAdm::staticIsCatalogToShow()) {
-            //$html = '<a href="index.php?r=homecatalogue/show">'.Lang::t('_CATALOGUE', 'standard').'</a>';
-            $html = '<a class="forma-button forma-button--orange" href="index.php?r=' . _homecatalog_ . '">' . Lang::t('_CATALOGUE', 'standard') . '</a>';
+            $event = new ExternalCatalogueLink();
+            $event->setLink(_homecatalog_);
+            \appCore\Events\DispatcherManager::dispatch(ExternalCatalogueLink::EVENT_NAME, $event);
+            $html = '<a class="forma-button forma-button--orange" href="index.php?r=' . $event->getLink() . '">' . Lang::t('_CATALOGUE', 'standard') . '</a>';
         }
 
         return $html;
@@ -359,7 +367,7 @@ class Layout
                 if ($GLOBALS['maintenance'] != "on") {
                     $retArray['changeLanguage_text'] = Lang::t('_CHANGELANG', 'register');
                     $retArray['changeLanguageBox'] = self::change_lang();
-                    $retArray['service_msg'] = LoginLayout:: service_msg();
+                    $retArray['service_msg'] = LoginLayout::service_msg();
                     $retArray['layout_zone_footer'] = self::zone('footer');
                     $retArray['login_links'] = LoginLayout::links();
                 } else {
@@ -391,7 +399,6 @@ class Layout
                     $retArray['direct_play'] = Layout::zone('content');
                 }
                 break;
-
         }
         return $retArray;
     }
@@ -418,11 +425,11 @@ class Layout
             $main_menu_id = Get::req('id_main_sel', DOTY_INT, 0);
             $module_menu_id = Get::req('id_module_sel', DOTY_INT, 0);
 
-            if($main_menu_id > 0) 	{
+            if ($main_menu_id > 0) {
                 $_SESSION['current_main_menu'] = $main_menu_id;
             }
 
-            if($module_menu_id > 0) {
+            if ($module_menu_id > 0) {
                 $_SESSION['sel_module_id'] = $module_menu_id;
             }
 
@@ -443,16 +450,15 @@ class Layout
                     // checkmodule module
                     if (checkPerm($obj->token, true, $obj->module_name)) {
 
-                        $GLOBALS['module_assigned_name'][$obj->module_name] = ( $obj->my_name != '' ? $obj->my_name : Lang::t($obj->default_name, 'menu_course') );
+                        $GLOBALS['module_assigned_name'][$obj->module_name] = ($obj->my_name != '' ? $obj->my_name : Lang::t($obj->default_name, 'menu_course'));
 
                         $slider_menu[] = array(
                             'id_submenu' => $obj->id,
                             'name' => $GLOBALS['module_assigned_name'][$obj->module_name],
-                            'selected' => ($obj->id === ''.$_SESSION['sel_module_id'] ? true : false),
+                            'selected' => ($obj->id === '' . $_SESSION['sel_module_id'] ? true : false),
                             'link' => ($obj->mvc_path != ''
                                 ? 'index.php?r=' . $obj->mvc_path . '&id_module_sel=' . $obj->id . '&id_main_sel=' . $obj->id_main
-                                : 'index.php?modname=' . $obj->module_name . '&op=' . $obj->default_op . '&id_module_sel=' . $obj->id . '&id_main_sel=' . $obj->id_main
-                            )
+                                : 'index.php?modname=' . $obj->module_name . '&op=' . $obj->default_op . '&id_module_sel=' . $obj->id . '&id_main_sel=' . $obj->id_main)
                         );
 
                         $checkperm_under = true; // Posso visualizzare il menu principale
@@ -466,7 +472,7 @@ class Layout
                     $dropdown_menu[] = array(
                         // 'submenu'=> array(),
                         'id_menu' => $main->id,
-                        'slug' => strtolower(str_replace(' ','-',$main->name)),
+                        'slug' => strtolower(str_replace(' ', '-', $main->name)),
                         'name' => Lang::t($main->name, 'menu_course', false, false, $main->name),
                         'link' => $slider_menu[0]['link'],
                         'selected' => ($main->id === '' . $_SESSION['current_main_menu'] ? true : false),
@@ -475,28 +481,32 @@ class Layout
 
                     $id_list[] = '"menu_lat_' . $main->id . '"';
                 }
-
-
             }
 
             if ($_SESSION['current_main_menu'] === 0) {
                 $dropdown_menu[0]['selected'] = true;
             }
             // horizontal menu
-            require_once( $GLOBALS['where_lms'].'/lib/lib.stats.php' );
-            $total = getNumCourseItems( $_SESSION['idCourse'],
+            require_once($GLOBALS['where_lms'] . '/lib/lib.stats.php');
+            $total = getNumCourseItems(
+                $_SESSION['idCourse'],
                 FALSE,
                 getLogUserId(),
-                FALSE );
-            $tot_complete = getStatStatusCount(	getLogUserId(),
+                FALSE
+            );
+            $tot_complete = getStatStatusCount(
+                getLogUserId(),
                 $_SESSION['idCourse'],
-                array( 'completed', 'passed' ) );
-            $tot_failed = getStatStatusCount(	getLogUserId(),
+                array('completed', 'passed')
+            );
+            $tot_failed = getStatStatusCount(
+                getLogUserId(),
                 $_SESSION['idCourse'],
-                array( 'failed' ) );
+                array('failed')
+            );
 
-            $perc_complete 	= round(($tot_complete / $total) * 100, 2);
-            $perc_failed 	= round(($tot_failed / $total) * 100, 2);
+            $perc_complete     = round(($tot_complete / $total) * 100, 2);
+            $perc_failed     = round(($tot_failed / $total) * 100, 2);
 
             $stats = [];
             if (!isset($_SESSION['is_ghost']) || $_SESSION['is_ghost'] !== true) {
@@ -507,25 +517,24 @@ class Layout
                     $partial_time_sec = TrackUser::getUserCurrentSessionCourseTime($_SESSION['idCourse']);
                     $tot_time_sec += $partial_time_sec;
 
-                    $hours = (int)($partial_time_sec / 3600);
-                    $minutes = (int)(($partial_time_sec % 3600) / 60);
-                    $seconds = (int)($partial_time_sec % 60);
+                    $hours = (int) ($partial_time_sec / 3600);
+                    $minutes = (int) (($partial_time_sec % 3600) / 60);
+                    $seconds = (int) ($partial_time_sec % 60);
                     if ($minutes < 10) $minutes = '0' . $minutes;
                     if ($seconds < 10) $seconds = '0' . $seconds;
-                    $partial_time = ($hours != 0 ? $hours . 'h ' : '') . $minutes . 'm ';//.$seconds.'s ';
+                    $partial_time = ($hours != 0 ? $hours . 'h ' : '') . $minutes . 'm '; //.$seconds.'s ';
 
-                    $hours = (int)($tot_time_sec / 3600);
-                    $minutes = (int)(($tot_time_sec % 3600) / 60);
-                    $seconds = (int)($tot_time_sec % 60);
+                    $hours = (int) ($tot_time_sec / 3600);
+                    $minutes = (int) (($tot_time_sec % 3600) / 60);
+                    $seconds = (int) ($tot_time_sec % 60);
                     if ($minutes < 10) $minutes = '0' . $minutes;
                     if ($seconds < 10) $seconds = '0' . $seconds;
-                    $tot_time = ($hours != 0 ? $hours . 'h ' : '') . $minutes . 'm ';//.$seconds.'s ';
+                    $tot_time = ($hours != 0 ? $hours . 'h ' : '') . $minutes . 'm '; //.$seconds.'s ';
 
                     $stats['user_stats']['show_time']['partial_time'] = $partial_time;
 
                     $stats['user_stats']['show_time']['total_time'] = $tot_time;
                 }
-
             }
 
             // who is online ---------------------------------------------------------
@@ -539,22 +548,30 @@ class Layout
             if (Docebo::course()->getValue('show_progress') == 1) {
 
                 require_once($GLOBALS['where_lms'] . '/lib/lib.stats.php');
-                $total = getNumCourseItems($_SESSION['idCourse'],
+                $total = getNumCourseItems(
+                    $_SESSION['idCourse'],
                     FALSE,
                     getLogUserId(),
-                    FALSE);
-                $tot_complete = getStatStatusCount(getLogUserId(),
+                    FALSE
+                );
+                $tot_complete = getStatStatusCount(
+                    getLogUserId(),
                     $_SESSION['idCourse'],
-                    array('completed', 'passed'));
+                    array('completed', 'passed')
+                );
 
                 $tot_incomplete = $total - $tot_complete;
 
-                $tot_passed = getStatStatusCount(	getLogUserId(),
+                $tot_passed = getStatStatusCount(
+                    getLogUserId(),
                     $_SESSION['idCourse'],
-                    array( 'passed' ) );
-                $tot_failed = getStatStatusCount(	getLogUserId(),
+                    array('passed')
+                );
+                $tot_failed = getStatStatusCount(
+                    getLogUserId(),
                     $_SESSION['idCourse'],
-                    array( 'failed' ) );
+                    array('failed')
+                );
 
                 $stats['course_stats']['materials'] = $total;
                 $stats['course_stats']['materials_complete'] = $tot_complete;
@@ -620,5 +637,4 @@ class Layout
             return Get::sett('google_stat_code');
         }
     }
-
 }
