@@ -397,15 +397,57 @@ class SettingAdm extends Model
 					case "template_domain_node": {
 							//drop down template + domain + node with repeater
 							$templ = getTemplateList();
-							echo Form::getDropdown(
-								Lang::t('_' . strtoupper($var_name), 'configuration'),
-								$var_name,
-								'option[' . $var_name . ']',
+
+							$uma = new UsermanagementAdm();
+							$tree_names = $uma->getAllFolders(false);
+							foreach ($tree_names as &$node) {
+								$node = $node->code;
+							}
+
+							echo '<div style="margin-top: 2rem;"><h3>' . Lang::t('_' . strtoupper($var_name), 'configuration') . '</h3>';
+							echo '<div class="row">';
+							echo Form::getLineDropdown(
+								'col-sm-4',
+								null,
+								null,
+								'select',
+								$var_name . '_template_0',
+								'option[' . $var_name . '_template][0]',
 								$templ,
 								array_search($var_value, $templ),
-								$i_after
+								null,
+								$i_after,
+								null
 							);
+
+							echo Form::getLineDropdown(
+								'col-sm-4',
+								null,
+								null,
+								'select',
+								$var_name . '_node_0',
+								'option[' . $var_name . '_node][0]',
+								$tree_names,
+								array_search($var_value, $tree_names),
+								null,
+								$i_after,
+								null
+							);
+
+							echo '<div class="col-sm-4">';
+							echo Form::getInputTextfield(
+								null,
+								$var_name . '_domain_0',
+								'option[' . $var_name . '_domain][0]',
+								$var_value ?: 'https://',
+								null,
+								$maxlenght,
+								null
+							);
+							echo '</div>';
+							echo '</div>';
 						};
+						echo '</div>';
 						break;
 					case "hteditor": {
 							//drop down hteditor
