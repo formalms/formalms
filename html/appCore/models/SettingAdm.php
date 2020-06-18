@@ -397,6 +397,12 @@ class SettingAdm extends Model
 					case "template_domain_node": {
 							//drop down template + domain + node with repeater
 							$templ = getTemplateList();
+							$templates = [];
+							foreach ($templ as $k => $v) {
+								if ($v != 'standard') {
+									$templates[$v] = $v;
+								}
+							}
 
 							$uma = new UsermanagementAdm();
 							$tree_names = $uma->getAllFolders(false);
@@ -404,50 +410,92 @@ class SettingAdm extends Model
 								$node = $node->code;
 							}
 
-							echo '<div style="margin-top: 2rem;"><h3>' . Lang::t('_' . strtoupper($var_name), 'configuration') . '</h3>';
-							echo '<div class="row">';
-							echo Form::getLineDropdown(
-								'col-sm-4',
-								null,
-								null,
-								'select',
-								$var_name . '_template_0',
-								'option[' . $var_name . '_template][0]',
-								$templ,
-								array_search($var_value, $templ),
-								null,
-								$i_after,
-								null
-							);
+							echo '<div id="' . $var_name . '_body" style="margin-top: 2rem;">
+								<h3>' . Lang::t('_' . strtoupper($var_name), 'configuration') . '</h3>
+								<div class="form_line_l">
+									<button id="' . $var_name . '_add" type="button" class="btn btn-primary">' . Lang::t('_ADD', 'standard') . '</button>
+								</div>';
 
-							echo Form::getLineDropdown(
-								'col-sm-4',
-								null,
-								null,
-								'select',
-								$var_name . '_node_0',
-								'option[' . $var_name . '_node][0]',
-								$tree_names,
-								array_search($var_value, $tree_names),
-								null,
-								$i_after,
-								null
-							);
+							// $var_value = json_decode($var_value, true) ?: [];
 
-							echo '<div class="col-sm-4">';
-							echo Form::getInputTextfield(
-								null,
-								$var_name . '_domain_0',
-								'option[' . $var_name . '_domain][0]',
-								$var_value ?: 'https://',
-								null,
-								$maxlenght,
-								null
-							);
-							echo '</div>';
-							echo '</div>';
-						};
-						echo '</div>';
+							$row_item = '<div class="row form_line_l">'
+								. Form::getLineDropdown(
+									'col-sm-3',
+									null,
+									null,
+									'select',
+									null,
+									'option[' . $var_name . '][template][]',
+									$templates,
+									null,
+									null,
+									$i_after,
+									null
+								)
+								. Form::getLineDropdown(
+									'col-sm-4',
+									null,
+									null,
+									'select',
+									null,
+									'option[' . $var_name . '][node][]',
+									$tree_names,
+									null,
+									null,
+									$i_after,
+									null
+								)
+								. '<div class="col-sm-4"><p>&nbsp;</p>'
+								. Form::getInputTextfield(
+									null,
+									null,
+									'option[' . $var_name . '][domain][]',
+									'https://',
+									null,
+									$maxlenght,
+									null
+								)
+								. '</div>'
+
+								. '<div class="col-sm-1"><p>&nbsp;</p><button type="button" class="btn btn-danger"><i class="fa fa-close"></i></button>'
+								. '</div>'
+								. '</div>';
+
+							$row_item = str_replace(array("\r", "\n"), "", $row_item);
+						}; ?>
+						</div>
+
+						<script>
+							var content = $("#<?php echo $var_name; ?>_body");
+							var item = '<?php echo $row_item ?>';
+
+							$(function() {
+								var values = JSON.parse('<?php echo $var_value; ?>');
+								var num_rows = values.length;
+
+								for (var i = 0; i < num_rows; i++) {
+									var value = values[i];
+									content.append(item);
+									$("#template_domain_body .row:last-child select[name='option[template_domain][template][]']").val(value.template);
+									$("#template_domain_body .row:last-child select[name='option[template_domain][node][]']").val(value.node);
+									$("#template_domain_body .row:last-child input[name='option[template_domain][domain][]']").val(value.domain);
+
+									$("#template_domain_body .row .btn-danger").click(function(e) {
+										$(e.target).closest('.row').remove();
+									});
+								};
+
+								$("#<?php echo $var_name; ?>_add").click(function(e) {
+									var num_rows = $("#template_domain_body .row").length;
+									content.append(item);
+
+									$("#template_domain_body .row .btn-danger").click(function(e) {
+										$(e.target).closest('.row').remove();
+									});
+								});
+							});
+						</script>
+<?php
 						break;
 					case "hteditor": {
 							//drop down hteditor
@@ -830,6 +878,20 @@ class SettingAdm extends Model
 				case "template": {
 						$templ = getTemplateList();
 						$new_value = $templ[$_POST['option'][$var_name]];
+					};
+					break;
+				case "template_domain_node": {
+						$values = [];
+						for ($i = 0; $i < count($_POST['option'][$var_name]['template']); $i++) {
+							$item = $_POST['option'][$var_name];
+							$values[] = [
+								'template' => $item['template'][$i],
+								'node' => $item['node'][$i],
+								'domain' => $item['domain'][$i],
+							];
+						}
+
+						$new_value = json_encode($values, true);
 					};
 					break;
 				case "int": {
