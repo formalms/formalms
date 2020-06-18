@@ -347,7 +347,7 @@ ScormApi.prototype.LMSSetValue = function( param, data ) {
 	var result = "";
 	if( this.transmission_start_cb != null )
 		this.transmission_start_cb();
-	result = this.commonLMSSetValue( param, data );
+	result = this.commonLMSSetValue( param, data.toString());
 	if( this.transmission_end_cb != null )
 		this.transmission_end_cb();
 
