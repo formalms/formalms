@@ -408,6 +408,9 @@ class SettingAdm extends Model
 							$tree_names = $uma->getAllFolders(false);
 							foreach ($tree_names as &$node) {
 								$node = $node->code;
+								if ($node->translate) {
+									$node .= ' ' . $node->translate;
+								}
 							}
 
 							echo '<div id="' . $var_name . '_body" style="margin-top: 2rem;">
