@@ -1892,5 +1892,3 @@ class TreeView_OrgView extends TreeView {
 		return $tree;
 	}
 }
-
-?>

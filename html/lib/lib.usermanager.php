@@ -1730,6 +1730,7 @@
             $text = str_replace('[lastname]', $_POST['register']['lastname'], $text);
             $text = str_replace('[password]', $_POST['register']['pwd'], $text);
             $text = str_replace('[link]', '' . $link . '', $text);
+            $text = str_replace('[dynamic_link]', '' . $dynamic_link . '', $text);
             $text = str_replace('[hour]', $options['hour_request_limit'], $text);
             $text = stripslashes($text);
 

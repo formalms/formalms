@@ -406,10 +406,12 @@ class SettingAdm extends Model
 
 							$uma = new UsermanagementAdm();
 							$tree_names = $uma->getAllFolders(false);
+							$nodes = [];
 							foreach ($tree_names as &$node) {
-								$node = $node->code . ' ' . addslashes($node->translation);
+								$nodes[$node->idOrg] = addslashes($node->translation) ?: $node->code;
 							}
-							array_unshift($tree_names, Lang::t('_SELECT_NODE', 'configuration'));
+							$nodes[0] = Lang::t('_SELECT_NODE', 'configuration');
+							ksort($nodes, true);
 
 							echo '<div id="' . $var_name . '_body" style="margin-top: 2rem;">
 								<h3>' . Lang::t('_' . strtoupper($var_name), 'configuration') . '</h3>

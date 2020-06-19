@@ -556,6 +556,7 @@ class UsermanagementAdmController extends AdmController
 			$array_subst = array(
 				'[url]' => Get::site_url(),
 				'[userid]' => $userid,
+				'[dynamic_link]' => $folders ? getCurrentDomain(array_values($folders)[0]) : Get::site_url(),
 				'[password]' => $password
 			);
 
@@ -3118,5 +3119,3 @@ class UsermanagementAdmController extends AdmController
 
 
 }
-
-?>
