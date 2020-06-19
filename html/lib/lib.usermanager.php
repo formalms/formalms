@@ -1720,7 +1720,7 @@
             // FIX BUG 399
             //$link = str_replace('&amp;', '&', $opt_link.( strpos($opt_link, '?') === false ? '?' : '&' ).'random_code='.$random_code);
             //$link = Get::site_url() . 'index.php?modname=login&op=register_opt&random_code=' . $random_code;
-            $link = getCurrentDomain($reg_code) ?: Get::site_url();
+            $dynamic_link = $link = getCurrentDomain($reg_code) ?: Get::site_url();
             $link .= 'index.php?r=adm/homepage/signup&random_code=' . $random_code;
             // END FIX BUG 399
 
@@ -1771,6 +1771,7 @@
                 $text_self = str_replace('[lastname]', $_POST['register']['lastname'], $text_self);
                 $text_self = str_replace('[password]', $_POST['register']['pwd'], $text_self);
                 $text_self = str_replace('[link]', '' . $link . '', $text_self);
+                $text_self = str_replace('[dynamic_link]', '' . $dynamic_link . '', $text_self);
 
                 require_once(_base_ . '/lib/lib.mailer.php');
 
