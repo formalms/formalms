@@ -1770,6 +1770,7 @@
                 $text_self = str_replace('[firstname]', $_POST['register']['firstname'], $text_self);
                 $text_self = str_replace('[lastname]', $_POST['register']['lastname'], $text_self);
                 $text_self = str_replace('[password]', $_POST['register']['pwd'], $text_self);
+                $text_self = str_replace('[link]', '' . $link . '', $text_self);
 
                 require_once(_base_ . '/lib/lib.mailer.php');
 
