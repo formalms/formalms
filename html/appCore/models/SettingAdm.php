@@ -407,19 +407,15 @@ class SettingAdm extends Model
 							$uma = new UsermanagementAdm();
 							$tree_names = $uma->getAllFolders(false);
 							foreach ($tree_names as &$node) {
-								$node = $node->code;
-								if ($node->translate) {
-									$node .= ' ' . $node->translate;
-								}
+								$node = $node->code . ' ' . addslashes($node->translation);
 							}
+							array_unshift($tree_names, Lang::t('_SELECT_NODE', 'configuration'));
 
 							echo '<div id="' . $var_name . '_body" style="margin-top: 2rem;">
 								<h3>' . Lang::t('_' . strtoupper($var_name), 'configuration') . '</h3>
 								<div class="form_line_l">
 									<button id="' . $var_name . '_add" type="button" class="btn btn-primary">' . Lang::t('_ADD', 'standard') . '</button>
 								</div>';
-
-							// $var_value = json_decode($var_value, true) ?: [];
 
 							$row_item = '<div class="row form_line_l">'
 								. Form::getLineDropdown(
