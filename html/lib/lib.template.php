@@ -21,48 +21,49 @@
 /**
  * @return string the actual template name
  */
-function getTemplate() {
- 
+function getTemplate()
+{
+
 	// If saved in session use this one
-	if(isset($_SESSION['template']) && $_SESSION['template'] != false) {
-		if (!checkTemplateVersion($_SESSION['template'])){
+	if (isset($_SESSION['template']) && $_SESSION['template'] != false) {
+		if (!checkTemplateVersion($_SESSION['template'])) {
 			return 'standard';
 		}
 		return $_SESSION['template'];
 	}
 
 	// force_standard mode
-	if(isset($_REQUEST["notuse_template"]) || $GLOBALS['notuse_template'] == true){
+	if (isset($_REQUEST["notuse_template"]) || $GLOBALS['notuse_template'] == true) {
 		$_SESSION['template'] = "standard";
 		return $_SESSION['template'];
 	}
 
 	//search for a template associated to the current host
 	$plat_templ = parseTemplateDomain($_SERVER['HTTP_HOST']);
-	if($plat_templ != false) {
+	if ($plat_templ != false) {
 		$_SESSION['template'] = $plat_templ;
-		if (!checkTemplateVersion($_SESSION['template'])){
+		if (!checkTemplateVersion($_SESSION['template'])) {
 			return 'standard';
 		}
 		return $plat_templ;
 	}
 
 	// search template according to the org_chart_tree option
-	if(!Docebo::user()->isAnonymous()) {
+	if (!Docebo::user()->isAnonymous()) {
 
 		$qtxt = "SELECT associated_template FROM
 			%adm_org_chart_tree
 			WHERE associated_template IS NOT NULL AND
-			idst_oc IN (".implode(',', Docebo::user()->getArrSt()).")
+			idst_oc IN (" . implode(',', Docebo::user()->getArrSt()) . ")
 			ORDER BY iLeft DESC
 			LIMIT 0,1";
-		
-		$re =sql_query($qtxt);
+
+		$re = sql_query($qtxt);
 		if (sql_num_rows($re) > 0) {
 			list($template_code) = sql_fetch_row($re);
 
 			setTemplate($template_code);
-			if (!checkTemplateVersion($_SESSION['template'])){
+			if (!checkTemplateVersion($_SESSION['template'])) {
 				return 'standard';
 			}
 			return $_SESSION['template'];
@@ -79,19 +80,31 @@ function getTemplate() {
  * @param <type> $curr_domain the current domain
  * @return <mixed> fals eif there isn't a template associated, or the template name
  */
-function parseTemplateDomain($curr_domain = false) {
+function parseTemplateDomain($curr_domain = false)
+{
+	if (!$domains = Get::sett('template_domain', false)) {
+		return false;
+	}
 
-	$association = array();
-	
-	$domains = Get::sett('template_domain', false);
-	if(!$domains) return false;
-	$domains = str_replace(array("\r", "\n\n"), "\n", $domains);
+	$domains = json_decode($domains, true) ?: [];
 
-	$rows = explode("\n", $domains);
-	foreach($rows as $pair) {
+	foreach ($domains as $item) {
+		if ($item['domain'] == $curr_domain) return $item['template'];
+	}
+	return false;
+}
 
-		list($domain, $template) = explode(',', $pair);
-		if($domain == $curr_domain) return $template;
+function getCurrentDomain($idOrg = null)
+{
+	if (!$domains = Get::sett('template_domain', false)) {
+		return false;
+	}
+
+	$domains = json_decode($domains, true) ?: [];
+
+	foreach ($domains as $item) {
+		if ($idOrg && $item['node'] == $idOrg)
+			return $item['domain'] . '/';
 	}
 	return false;
 }
@@ -100,12 +113,12 @@ function parseTemplateDomain($curr_domain = false) {
  * This function change the template used only in the session
  * @param string 	a valid template name
  */
-function setTemplate($new_template) {
+function setTemplate($new_template)
+{
 
-	if(is_dir(_base_.'/templates/'.$new_template)) {
+	if (is_dir(_base_ . '/templates/' . $new_template)) {
 		$_SESSION['template'] = $new_template;
-	}
-	else {
+	} else {
 		$_SESSION['template'] = getDefaultTemplate();
 	}
 }
@@ -113,41 +126,43 @@ function setTemplate($new_template) {
 /**
  * Reset the template to the default
  */
-function resetTemplate() {
+function resetTemplate()
+{
 
 	unset($_SESSION['template']);
 	setTemplate(getTemplate());
 }
 
-    /**
-     * Read specified template manifest
-     * @param $template_name
-     * @param bool $key
-     * @return bool|array
-     */
-	 function readTemplateManifest($template_name, $key = false)
-	 {
-		 $template_file = _base_ . "/templates/" . $template_name . "/manifest.xml";
-		 if (!file_exists($template_file)) {
-			 return false;
-		 }
-		 if ($xml = simplexml_load_file($template_file)) {
-			 $man_json = json_encode($xml);
-			 $man_array = json_decode($man_json, TRUE);
-			if (key_exists($key, $man_array)) {
-				return $man_array[$key];
-			}
-			return $man_array;
-		 } else {
-			 return false;
-		 }
-	 }
+/**
+ * Read specified template manifest
+ * @param $template_name
+ * @param bool $key
+ * @return bool|array
+ */
+function readTemplateManifest($template_name, $key = false)
+{
+	$template_file = _base_ . "/templates/" . $template_name . "/manifest.xml";
+	if (!file_exists($template_file)) {
+		return false;
+	}
+	if ($xml = simplexml_load_file($template_file)) {
+		$man_json = json_encode($xml);
+		$man_array = json_decode($man_json, TRUE);
+		if (key_exists($key, $man_array)) {
+			return $man_array[$key];
+		}
+		return $man_array;
+	} else {
+		return false;
+	}
+}
 
 /**
  * Check the template version
  * @return bool false if template is not compatible, true if it is compatible
  */
-function checkTemplateVersion($template_name) {
+function checkTemplateVersion($template_name)
+{
 	require_once(Forma::inc(_adm_ . "/versions.php"));
 	$template_forma_version = readTemplateManifest($template_name, 'forma_version');
 	$check = array();
@@ -164,12 +179,14 @@ function checkTemplateVersion($template_name) {
  * Retrive a list of template
  * @return array an array with the existent templates
  */
-function getTemplateList($set_keys = FALSE, $platform = FALSE) {
+function getTemplateList($set_keys = FALSE, $platform = FALSE)
+{
 
-	$templ = dir(_base_.'/templates/');
-	while($elem = $templ->read()) {
+	$templ = dir(_base_ . '/templates/');
+	while ($elem = $templ->read()) {
 
-		if((is_dir(_base_.'/templates/'.$elem)) && ($elem != ".") && ($elem != "..") && ($elem != ".svn") && $elem{0} != '_' && checkTemplateVersion($elem)) {
+		if ((is_dir(_base_ . '/templates/' . $elem)) && ($elem != ".") && ($elem != "..") && ($elem != ".svn") && $elem{
+			0} != '_' && checkTemplateVersion($elem)) {
 
 			if (!$set_keys) $templArray[] = $elem;
 			else $templArray[$elem] = $elem;
@@ -188,56 +205,61 @@ function getTemplateList($set_keys = FALSE, $platform = FALSE) {
  * Search for the default template
  * @return string 	the default template saved in database
  */
-function getDefaultTemplate( $platform = false ) {
+function getDefaultTemplate($platform = false)
+{
 
 	$plat_templ = Get::sett('defaultTemplate');
-	if(is_dir(_base_.'/templates/'.$plat_templ)) return $plat_templ;
+	if (is_dir(_base_ . '/templates/' . $plat_templ)) return $plat_templ;
 	else return array_pop(getTemplateList());
 }
 
 /**
  * @return string the absolute path of templates folder root
  */
-function getAbsoluteBasePathTemplate($platform = false) {
+function getAbsoluteBasePathTemplate($platform = false)
+{
 
-	if($platform === false) {
-		if(defined("CORE") && isset($_SESSION['current_action_platform'])) $platform = $_SESSION['current_action_platform'];
+	if ($platform === false) {
+		if (defined("CORE") && isset($_SESSION['current_action_platform'])) $platform = $_SESSION['current_action_platform'];
 		else $platform = Get::cur_plat();
 	}
-	if($platform == 'fw') $platform = 'framework';
-	if(!isset($GLOBALS['where_'.$platform])) $platform = 'framework';
-	return $GLOBALS['where_'.$platform]
-				.( substr($GLOBALS['where_'.$platform], -1) == '/' ? '' : '/').'templates/';
+	if ($platform == 'fw') $platform = 'framework';
+	if (!isset($GLOBALS['where_' . $platform])) $platform = 'framework';
+	return $GLOBALS['where_' . $platform]
+		. (substr($GLOBALS['where_' . $platform], -1) == '/' ? '' : '/') . 'templates/';
 }
 
 /**
  * @return string the absolute path of templates folder
  */
-function getAbsolutePathTemplate($platform = false) {
+function getAbsolutePathTemplate($platform = false)
+{
 
-	return getAbsoluteBasePathTemplate($platform).getTemplate().'/';
+	return getAbsoluteBasePathTemplate($platform) . getTemplate() . '/';
 }
 
 /**
  * @return string the relative url of templates folder root
  */
-function getRelativeBasePathTemplate($platform = false) {
+function getRelativeBasePathTemplate($platform = false)
+{
 
 
-	if($platform === false) {
-		if(defined("CORE") && isset($_SESSION['current_action_platform'])) $platform = $_SESSION['current_action_platform'];
+	if ($platform === false) {
+		if (defined("CORE") && isset($_SESSION['current_action_platform'])) $platform = $_SESSION['current_action_platform'];
 		else $platform = Get::cur_plat();
 	}
-	if($platform == 'fw') $platform = 'framework';
-	if(!isset($GLOBALS['where_'.$platform.'_relative'])) $platform = 'framework';
-	return $GLOBALS['where_'.$platform.'_relative']
-				.( substr($GLOBALS['where_'.$platform.'_relative'], -1) == '/' ? '' : '/').'templates/';
+	if ($platform == 'fw') $platform = 'framework';
+	if (!isset($GLOBALS['where_' . $platform . '_relative'])) $platform = 'framework';
+	return $GLOBALS['where_' . $platform . '_relative']
+		. (substr($GLOBALS['where_' . $platform . '_relative'], -1) == '/' ? '' : '/') . 'templates/';
 }
 
 /**
  * @return string the relative url of templates folder
  */
-function getPathTemplate($platform = false) {
+function getPathTemplate($platform = false)
+{
 
 	return Get::tmpl_path($platform);
 	//return getRelativeBasePathTemplate($platform).getTemplate().'/';
@@ -246,17 +268,19 @@ function getPathTemplate($platform = false) {
 /**
  * @return string 	the relative address of the images directory
  */
-function getPathImage($platform = false) {
+function getPathImage($platform = false)
+{
 
-	return getPathTemplate($platform).'images/';
+	return getPathTemplate($platform) . 'images/';
 }
 
 /**
  * @return string 	this function is added in 31/05/2017 and it returns the relative address of the restyling images directory
  */
-function getPathRestylingImage($platform = false) {
+function getPathRestylingImage($platform = false)
+{
 
-    return getPathTemplate($platform).'static/';
+	return getPathTemplate($platform) . 'static/';
 }
 
 /**
@@ -267,17 +291,18 @@ function getPathRestylingImage($platform = false) {
  *
  * @return string 	the code for a graceful title area
  */
-function getTitleArea($text, $image = '', $alt_image = '', $ignore_glob = false) {
+function getTitleArea($text, $image = '', $alt_image = '', $ignore_glob = false)
+{
 
 	$is_first = true;
-	if(!is_array($text))
+	if (!is_array($text))
 		$text = array($text);
 
 	// $html = '<div class="title_block">'."\n";
-	$html = '<div class="page-header">'."\n";
-	foreach($text as $link => $title) {
+	$html = '<div class="page-header">' . "\n";
+	foreach ($text as $link => $title) {
 
-		if($is_first) {
+		if ($is_first) {
 
 			$is_first = false;
 			// Retrive, if exists, name customized by the user for the module
@@ -286,34 +311,34 @@ function getTitleArea($text, $image = '', $alt_image = '', $ignore_glob = false)
 			}*/
 			// Area title
 			$html .= '<h1>'
-				.(!is_int($link) ? '<a href="'.$link.'">' : '' )
-				.$title
-				.(!is_int($link) ? '</a>' : '' )
-				.'</h1>'."\n";
+				. (!is_int($link) ? '<a href="' . $link . '">' : '')
+				. $title
+				. (!is_int($link) ? '</a>' : '')
+				. '</h1>' . "\n";
 
-			$GLOBALS['page']->add('<li><a href="#main_area_title">'. Lang::t('_JUMP_TO', 'standard').' '.$title.'</a></li>', 'blind_navigation');
+			$GLOBALS['page']->add('<li><a href="#main_area_title">' . Lang::t('_JUMP_TO', 'standard') . ' ' . $title . '</a></li>', 'blind_navigation');
 
-			if($title) $GLOBALS['page_title'] = Get::sett('page_title', '').' &rsaquo; '.$title;
+			if ($title) $GLOBALS['page_title'] = Get::sett('page_title', '') . ' &rsaquo; ' . $title;
 
 			// Init navigation
-			if(count($text) > 1) {
+			if (count($text) > 1) {
 				// $html .= '<ul class="navigation">';
 				$html .= '<ul class="breadcrumb">';
-			//	if(!is_int($link)) {
-			//		$html .= '<li><a href="'.$link.'">'. Lang::t('_START_PAGE', 'standard').' '.strtolower($title).'</a></li>';
-			//	} else $html .= '<li>'. Lang::t('_START_PAGE', 'standard').' '.strtolower($title).'</li>';
+				//	if(!is_int($link)) {
+				//		$html .= '<li><a href="'.$link.'">'. Lang::t('_START_PAGE', 'standard').' '.strtolower($title).'</a></li>';
+				//	} else $html .= '<li>'. Lang::t('_START_PAGE', 'standard').' '.strtolower($title).'</li>';
 			}
 		} else {
 
 			// if(is_int($link)) $html .= '<li> &rsaquo; '.$title.'</li>';
 			// else $html .= ' <li> &rsaquo; <a href="'.$link.'">'.$title.'</a></li>';
 
-			if(is_int($link)) $html .= '<li>'.$title.'</li>';
-			else $html .= ' <li><a href="'.$link.'">'.$title.'</a></li>';
+			if (is_int($link)) $html .= '<li>' . $title . '</li>';
+			else $html .= ' <li><a href="' . $link . '">' . $title . '</a></li>';
 		}
 	}
-	if(count($text) > 1) $html .= '</ul>'."\n";
-	$html .= '</div>'."\n";
+	if (count($text) > 1) $html .= '</ul>' . "\n";
+	$html .= '</div>' . "\n";
 	return $html;
 }
 
@@ -323,12 +348,13 @@ function getTitleArea($text, $image = '', $alt_image = '', $ignore_glob = false)
  *
  * @return string 	the code for a graceful error user interface
  */
-function getErrorUi($message, $with_image = true) {
+function getErrorUi($message, $with_image = true)
+{
 	return UIFeedback::error($message);
 
 	return '<p class="error_container">'
-		.'<strong>'.$message.'</strong>'
-		.'</p>';
+		. '<strong>' . $message . '</strong>'
+		. '</p>';
 }
 
 /**
@@ -336,12 +362,13 @@ function getErrorUi($message, $with_image = true) {
  *
  * @return string 	the code for a graceful result confirmer
  **/
-function getResultUi( $name ) {
+function getResultUi($name)
+{
 	return UIFeedback::info($name);
 
-	return "\n".'<p class="result_container">'."\n\t"
-		.'<strong>'.$name.'</strong>'."\n"
-		.'</p>'."\n";
+	return "\n" . '<p class="result_container">' . "\n\t"
+		. '<strong>' . $name . '</strong>' . "\n"
+		. '</p>' . "\n";
 }
 
 /**
@@ -349,12 +376,13 @@ function getResultUi( $name ) {
  *
  * @return string 	the code for a graceful information user interface
  */
-function getInfoUi($message, $return = false) {
+function getInfoUi($message, $return = false)
+{
 	return UIFeedback::info($message, $return);
 
 	return '<p class="information_container">'
-		.'<strong>'.$message.'</strong>'
-		.'</p>';
+		. '<strong>' . $message . '</strong>'
+		. '</p>';
 }
 
 /**
@@ -365,22 +393,25 @@ function getInfoUi($message, $return = false) {
  *
  * @return  string 	the code for a graceful back purpose
  **/
-function getBackUi( $link, $name, $type = 'link' ) {
+function getBackUi($link, $name, $type = 'link')
+{
 
-	switch($type) {
-		case "button" : {
-			return '<div class="container-back_button">'
-				.'<input class="button" type="button" value="'.$name.'" /></div>';
-		};break;
-		case "submit" : {
-			return '<div class="container-back_button">'
-				.'<input class="button" type="submit" value="'.$name.'" /></div>';
-		};break;
-		default : {
-			return '<div class="container-back">'."\n\t".'<a href="'.$link.'" '
-					.( Get::sett('use_accesskey') == 'on' ? 'accesskey="b">'.$name.' (b)' : '>'.$name ).'</a>'."\n"
-					.'</div>'."\n";
-		}
+	switch ($type) {
+		case "button": {
+				return '<div class="container-back_button">'
+					. '<input class="button" type="button" value="' . $name . '" /></div>';
+			};
+			break;
+		case "submit": {
+				return '<div class="container-back_button">'
+					. '<input class="button" type="submit" value="' . $name . '" /></div>';
+			};
+			break;
+		default: {
+				return '<div class="container-back">' . "\n\t" . '<a href="' . $link . '" '
+					. (Get::sett('use_accesskey') == 'on' ? 'accesskey="b">' . $name . ' (b)' : '>' . $name) . '</a>' . "\n"
+					. '</div>' . "\n";
+			}
 	}
 }
 
@@ -398,31 +429,38 @@ function getBackUi( $link, $name, $type = 'link' ) {
  *
  * @return string the html code for the requested interface
  */
-function getDeleteUi($are_you_sure, $central_text, $command_is_link,
-			$confirm_ref, $undo_ref, $confirm_text = false, $undo_text = false) {
+function getDeleteUi(
+	$are_you_sure,
+	$central_text,
+	$command_is_link,
+	$confirm_ref,
+	$undo_ref,
+	$confirm_text = false,
+	$undo_text = false
+) {
 
-	require_once(_base_.'/lib/lib.form.php');
+	require_once(_base_ . '/lib/lib.form.php');
 
-	$txt = '<h2>'.$are_you_sure.'</h2>'
-		.'<p class="spacer">'
-		.$central_text
-		.'</p>'
-		.'<p>';
-	if($command_is_link) {
+	$txt = '<h2>' . $are_you_sure . '</h2>'
+		. '<p class="spacer">'
+		. $central_text
+		. '</p>'
+		. '<p>';
+	if ($command_is_link) {
 
-		$txt .= '<a href="'.$confirm_ref.'">'
-				.'<img src="'.getPathImage().'standard/delete.png" alt="'.( $confirm_text == false ? Lang::t('_CONFIRM') : $confirm_text ).'" />'
-				.'&nbsp;'.( $confirm_text == false ? Lang::t('_CONFIRM') : $confirm_text ).'</a>&nbsp;&nbsp;'
-				.'<a href="'.$undo_ref.'">'
-				.'<img src="'.getPathImage().'standard/cancel.png" alt="'.( $undo_text == false ? Lang::t('_UNDO') : $undo_text ).'" />'
-				.'&nbsp;'.( $undo_text == false ? Lang::t('_UNDO') : $undo_text ).' </a>';
+		$txt .= '<a href="' . $confirm_ref . '">'
+			. '<img src="' . getPathImage() . 'standard/delete.png" alt="' . ($confirm_text == false ? Lang::t('_CONFIRM') : $confirm_text) . '" />'
+			. '&nbsp;' . ($confirm_text == false ? Lang::t('_CONFIRM') : $confirm_text) . '</a>&nbsp;&nbsp;'
+			. '<a href="' . $undo_ref . '">'
+			. '<img src="' . getPathImage() . 'standard/cancel.png" alt="' . ($undo_text == false ? Lang::t('_UNDO') : $undo_text) . '" />'
+			. '&nbsp;' . ($undo_text == false ? Lang::t('_UNDO') : $undo_text) . ' </a>';
 	} else {
 
 		$confirm_ref_id = str_replace(']', '', str_replace('[', '_', $confirm_ref));
 		$undo_ref_id	= str_replace(']', '', str_replace('[', '_', $undo_ref));
 		$txt .= Form::getButton($confirm_ref_id, $confirm_ref, Lang::t('_CONFIRM'), 'transparent_del_button')
-			.'&nbsp;'
-			.Form::getButton($undo_ref_id, $undo_ref, Lang::t('_UNDO'), 'transparent_undo_button');
+			. '&nbsp;'
+			. Form::getButton($undo_ref_id, $undo_ref, Lang::t('_UNDO'), 'transparent_undo_button');
 	}
 	$txt .= '</p>';
 	return $txt;
@@ -442,29 +480,36 @@ function getDeleteUi($are_you_sure, $central_text, $command_is_link,
  *
  * @return string the html code for the requested interface
  */
-function getModifyUi($are_you_sure, $central_text, $command_is_link,
-			$confirm_ref, $undo_ref, $confirm_text = false, $undo_text = false) {
+function getModifyUi(
+	$are_you_sure,
+	$central_text,
+	$command_is_link,
+	$confirm_ref,
+	$undo_ref,
+	$confirm_text = false,
+	$undo_text = false
+) {
 
-	require_once(_base_.'/lib/lib.form.php');
+	require_once(_base_ . '/lib/lib.form.php');
 
-	$txt = '<h2>'.$are_you_sure.'</h2>'
-		.'<p class="spacer">'
-		.$central_text
-		.'</p>'
-		.'<p>';
-	if($command_is_link) {
+	$txt = '<h2>' . $are_you_sure . '</h2>'
+		. '<p class="spacer">'
+		. $central_text
+		. '</p>'
+		. '<p>';
+	if ($command_is_link) {
 
-		$txt .= '<a class="ico-wt-sprite subs_confirm" href="'.$confirm_ref.'">'
-				.'<span>'.( $confirm_text == false ? Lang::t('_CONFIRM') : $confirm_text ).'</span></a>&nbsp;&nbsp;'
-				.'<a class="ico-wt-sprite subs_cancel" href="'.$undo_ref.'">'
-				.'<span>'.( $undo_text == false ? Lang::t('_UNDO') : $undo_text ).'</span></a>';
+		$txt .= '<a class="ico-wt-sprite subs_confirm" href="' . $confirm_ref . '">'
+			. '<span>' . ($confirm_text == false ? Lang::t('_CONFIRM') : $confirm_text) . '</span></a>&nbsp;&nbsp;'
+			. '<a class="ico-wt-sprite subs_cancel" href="' . $undo_ref . '">'
+			. '<span>' . ($undo_text == false ? Lang::t('_UNDO') : $undo_text) . '</span></a>';
 	} else {
 
 		$confirm_ref_id = str_replace(']', '', str_replace('[', '_', $confirm_ref));
 		$undo_ref_id	= str_replace(']', '', str_replace('[', '_', $undo_ref));
 		$txt .= Form::getButton($confirm_ref_id, $confirm_ref, Lang::t('_CONFIRM'), 'transparent_del_button')
-			.'&nbsp;'
-			.Form::getButton($undo_ref_id, $undo_ref, Lang::t('_UNDO'), 'transparent_undo_button');
+			. '&nbsp;'
+			. Form::getButton($undo_ref_id, $undo_ref, Lang::t('_UNDO'), 'transparent_undo_button');
 	}
 	$txt .= '</p>';
 	return $txt;
@@ -475,34 +520,37 @@ function getModifyUi($are_you_sure, $central_text, $command_is_link,
  *
  * @return string 	the text added
  */
-function addLegendaEntry($entry) {
+function addLegendaEntry($entry)
+{
 
-	if(!isset($GLOBALS['_legenda'])) $GLOBALS['_legenda'] = array();
+	if (!isset($GLOBALS['_legenda'])) $GLOBALS['_legenda'] = array();
 	return $GLOBALS['_legenda'][] = $entry;
 }
 
 /**
  * Destroy the entry in the legenda
  */
-function emptyLegenda() {
+function emptyLegenda()
+{
 
-	if(!isset($GLOBALS['_legenda'])) $GLOBALS['_legenda'] = array();
+	if (!isset($GLOBALS['_legenda'])) $GLOBALS['_legenda'] = array();
 }
 
 /**
  * @return string 	the legenda, if it has at least one entry
  */
-function getLegenda() {
+function getLegenda()
+{
 
 	$text = '';
-	if(!isset($GLOBALS['_legenda'])) $GLOBALS['_legenda'] = array();
-	if(is_array($GLOBALS['_legenda']) && count($GLOBALS['_legenda'])) {
+	if (!isset($GLOBALS['_legenda'])) $GLOBALS['_legenda'] = array();
+	if (is_array($GLOBALS['_legenda']) && count($GLOBALS['_legenda'])) {
 		$text = '<div id="legend" class="layout_legenda">
-				<div class="title">Legenda</div>'."\n";
-		foreach($GLOBALS['_legenda'] as $key => $value) {
-			$text .= '<div class="legenda_line">'."\n"
-				."\t".$value."\n"
-				.'</div>'."\n";
+				<div class="title">Legenda</div>' . "\n";
+		foreach ($GLOBALS['_legenda'] as $key => $value) {
+			$text .= '<div class="legenda_line">' . "\n"
+				. "\t" . $value . "\n"
+				. '</div>' . "\n";
 		}
 		$text .= '</div>';
 	}
@@ -510,9 +558,10 @@ function getLegenda() {
 }
 
 
-function setAccessibilityStatus($new_status) {
+function setAccessibilityStatus($new_status)
+{
 
-	if(Get::sett('accessibility', 'off') != 'off') {
+	if (Get::sett('accessibility', 'off') != 'off') {
 
 		$_SESSION['high_accessibility'] = $new_status;
 	} else {
@@ -520,14 +569,14 @@ function setAccessibilityStatus($new_status) {
 	}
 }
 
-function getAccessibilityStatus() {
+function getAccessibilityStatus()
+{
 
-	if(Get::sett('accessibility') == 'off')
+	if (Get::sett('accessibility') == 'off')
 		return false;
 
-	if(isset($_SESSION['high_accessibility']))
+	if (isset($_SESSION['high_accessibility']))
 		return ($_SESSION['high_accessibility'] == 1);
 
 	else return true;
 }
-
