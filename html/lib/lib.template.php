@@ -104,7 +104,7 @@ function getCurrentDomain($idOrg = null)
 
 	foreach ($domains as $item) {
 		if ($idOrg && $item['node'] == $idOrg) {
-			return $item['domain'] . '/';
+			return 'https://' . $item['domain'] . '/';
 		} else {
 			$sql = "SELECT idParent FROM core_org_chart_tree WHERE idOrg = $idOrg";
 			$query = sql_query($sql);
