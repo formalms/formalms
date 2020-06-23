@@ -60,7 +60,13 @@
 	if( this.host != '' )
 		loadFromXml( this.basepath + '/scormItemTrackData-'+this.scormVersion+'.xml', null, this );
 
+	this.is_unloading = false;
+	window.addEventListener('beforeunload', this.unloading.bind(this));
  }
+
+ScormApi.prototype.unloading = function() {
+	this.is_unloading = true;
+}
 
 ScormApi.prototype.setScormVersion = function( version ) {
 	this.scormVersion = version;
@@ -347,7 +353,7 @@ ScormApi.prototype.LMSSetValue = function( param, data ) {
 	var result = "";
 	if( this.transmission_start_cb != null )
 		this.transmission_start_cb();
-	result = this.commonLMSSetValue( param, data );
+	result = this.commonLMSSetValue( param, data.toString());
 	if( this.transmission_end_cb != null )
 		this.transmission_end_cb();
 
@@ -359,6 +365,43 @@ ScormApi.prototype.LMSSetValue = function( param, data ) {
 }
 
 // =========== Private functions ============================
+ScormApi.prototype.commonRequest = function (op, strSoap, callback) {
+
+	var requrl = this.baseurl + '?op=' + op;
+	var reqheaders = {
+		'Man': "POST " + this.baseurl + " HTTP/1.1",
+		'Host': this.host,
+		"Content-type": "text/xml; charset=utf-8",
+		"SOAPAction": this.serviceid + op,
+		"X-Signature": playerConfig.auth_request
+	};
+
+	if (this.is_unloading) {
+		// TODO: use sendBeacon instead.
+		var ajxreq = new Ajax.Request(requrl,
+			{
+				method: 'post',
+				asynchronous: true,
+				postBody: strSoap,
+				requestHeaders: reqheaders
+			}
+		);
+		// Ajax.Request onComplete callback is not actually called after the request completion (it uses a timeout instead).
+		// The page is unloading: the response can not be used. Just return "true".
+		return "true"; 
+	} else {
+		var ajxreq = new Ajax.Request(requrl,
+			{
+				method: 'post',
+				asynchronous: false,
+				postBody: strSoap,
+				requestHeaders: reqheaders,
+			}
+		);
+		return callback(ajxreq);
+	}
+}
+
 ScormApi.prototype.commonLMSInitialize = function() {
 
 	strSoap = '<?xml version="1.0" encoding="utf-8"?>'
@@ -377,97 +420,75 @@ ScormApi.prototype.commonLMSInitialize = function() {
 			+		'</a0:Initialize>'
 			+	'</env:Body>'
 			+ '</env:Envelope>';
-	var ajxreq = new Ajax.Request(
-       	this.baseurl+'?op=Initialize',
-       	{	method: 'post',
-			asynchronous:false,
-			postBody: strSoap,
-			requestHeaders: {
-				'Man':"POST " + this.baseurl + " HTTP/1.1",
-				'Host':this.host,
-				"Content-type":"text/xml; charset=utf-8",
-				"SOAPAction":this.serviceid + "Initialize",
-				"X-Signature":playerConfig.auth_request
-			}
-		}
-    );
 
-	if( ajxreq.transport.status == 200 ) {
-		try {
-            // detecting IE
-            if(window.ActiveXObject || "ActiveXObject" in window) {  
-                var xmldom = new ActiveXObject("Msxml2.DOMDocument.6.0"); 
-                xmldom.async = false;
-                xmldom.loadXML(ajxreq.transport.responseText);
-                xmldom.setProperty("SelectionLanguage", "XPath"); 
-                this.setTom(xmldom);
-			} else {
-                this.setTom( ajxreq.transport.responseXML );
-            }   
-			this.scoStatus = ScormApi.INITIALIZED;
-		} catch (ex) {
-			w = window.open('#', 'debug');
-			w.document.open();
-			w.document.write( ajxreq.transport.responseText );
-			w.document.close();
-   			alert( "XML exception: "+ex );
-			alert( "XML error: "+ajxreq.transport.responseText );
+	return this.commonRequest("Initialize", strSoap, function(ajxreq) {
+		if( ajxreq.transport.status == 200 ) {
+			try {
+				// detecting IE
+				if(window.ActiveXObject || "ActiveXObject" in window) {  
+					var xmldom = new ActiveXObject("Msxml2.DOMDocument.6.0"); 
+					xmldom.async = false;
+					xmldom.loadXML(ajxreq.transport.responseText);
+					xmldom.setProperty("SelectionLanguage", "XPath"); 
+					this.setTom(xmldom);
+				} else {
+					this.setTom( ajxreq.transport.responseXML );
+				}   
+				this.scoStatus = ScormApi.INITIALIZED;
+			} catch (ex) {
+				w = window.open('#', 'debug');
+				w.document.open();
+				w.document.write( ajxreq.transport.responseText );
+				w.document.close();
+				   alert( "XML exception: "+ex );
+				alert( "XML error: "+ajxreq.transport.responseText );
+			}
+		} else {
+			alert( "Server failure: "+ajxreq.transport.status );
+			this.setError("101");
+			this.diagnostic = ajxreq.transport.responseText;
+			alert( "Failure diagnostic: "+this.diagnostic );
 		}
-	} else {
-		alert( "Server failure: "+ajxreq.transport.status );
-		this.setError("101");
-		this.diagnostic = ajxreq.transport.responseText;
-		alert( "Failure diagnostic: "+this.diagnostic );
-	}
-	return new String("true");
+		return new String("true");
+	}.bind(this));
 }
 
 ScormApi.prototype.commonLMSFinish = function() {
 
 	strSoap = this.getStrTom();
-	var ajxreq = new Ajax.Request(
-       	this.baseurl+'?op=Finish',
-       	{	method: 'post',
-			asynchronous:false,
-			postBody: strSoap,
-			requestHeaders: {
-				'Man':"POST " + this.baseurl + " HTTP/1.1",
-				'Host':this.host,
-				"Content-type":"text/xml; charset=utf-8",
-				"X-Signature":playerConfig.auth_request
+	
+	return this.commonRequest("Finish", strSoap, function(ajxreq) {
+		if( ajxreq.transport.status == 200 ) {
+			try {
+				var xmldoc = ajxreq.transport.responseXML;
+				var status = xmldoc.getElementsByTagName("status").item(0).firstChild;
+				var errorCode = xmldoc.getElementsByTagName("error").item(0).firstChild;
+				var errorText = xmldoc.getElementsByTagName("errorString").item(0).firstChild;
+				if( status.nodeValue == "success" ) {
+					return "true";
+				} else {
+					this.setError(errorCode == null ? "102":errorCode.nodeValue);
+					this.diagnostic = errorText == null ? "":errorText.nodeValue;
+					return "false";
+				}
+				this.scoStatus = ScormApi.UNINITIALIZED;
+			} catch (ex) {
+				w = window.open('#', 'debug');
+				w.document.open();
+				w.document.write( ajxreq.transport.responseText );
+				w.document.close();
+				   alert( " Finish: "+ex );
+				return "false"
 			}
-		}
-    );
-
-	if( ajxreq.transport.status == 200 ) {
-		try {
-			var xmldoc = ajxreq.transport.responseXML;
-			var status = xmldoc.getElementsByTagName("status").item(0).firstChild;
-			var errorCode = xmldoc.getElementsByTagName("error").item(0).firstChild;
-			var errorText = xmldoc.getElementsByTagName("errorString").item(0).firstChild;
-			if( status.nodeValue == "success" ) {
-				return "true";
-			} else {
-				this.setError(errorCode == null ? "102":errorCode.nodeValue);
-				this.diagnostic = errorText == null ? "":errorText.nodeValue;
-				return "false";
-			}
-			this.scoStatus = ScormApi.UNINITIALIZED;
-		} catch (ex) {
-			w = window.open('#', 'debug');
-			w.document.open();
-			w.document.write( ajxreq.transport.responseText );
-			w.document.close();
-   			alert( " Finish: "+ex );
+		} else {
+			this.setError("101");
+			this.diagnostic = ajxreq.transport.responseText;
 			return "false"
 		}
-	} else {
-		this.setError("101");
-		this.diagnostic = ajxreq.transport.responseText;
-		return "false"
-	}
-	return new String("true");
+		return new String("true");
+	}.bind(this));
 }
+
 
 ScormApi.prototype.commonLMSGetValue = function( param ) {
 	var pi = new ScormParamInfo();
@@ -508,69 +529,42 @@ ScormApi.prototype.commonLMSSetValue = function( param, value ) {
 }
 
 ScormApi.prototype.commonLMSCommit = function( param , /*FIX 17052016*/ callback ) {
-    /*if( this['xmlhttp'] == null ) {
-		this.xmlhttp = this.CreateXmlHttpRequest();
-	}
-	var xmlhttp = this.xmlhttp;
-
-	xmlhttp.open("POST", this.baseurl + '?op=Commit', false);
-	xmlhttp.setRequestHeader("Man", "POST " + this.baseurl + " HTTP/1.1");
-	xmlhttp.setRequestHeader("Host", this.host );
-	xmlhttp.setRequestHeader("Content-Type", "text/xml; charset=utf-8");
-	xmlhttp.setRequestHeader("SOAPAction", this.serviceid + "Commit" );
 
 	strSoap = this.getStrTom();
-
-	xmlhttp.send(strSoap);*/
-
-	strSoap = this.getStrTom();
-
-	var ajxreq = new Ajax.Request(
-       	this.baseurl+'?op=Commit',
-       	{	method: 'post',
-			asynchronous:false,
-			postBody: strSoap,
-			requestHeaders: {
-				'Man':"POST " + this.baseurl + " HTTP/1.1",
-				'Host':this.host,
-				"Content-type":"text/xml; charset=utf-8",
-				"SOAPAction":this.serviceid + "Commit" ,
-				"X-Signature":playerConfig.auth_request
+	
+	return this.commonRequest("Commit", strSoap, function(ajxreq) {
+		if( ajxreq.transport.status == 200 ) {
+			try {
+				var xmldoc = ajxreq.transport.responseXML;
+				var status = xmldoc.getElementsByTagName("status").item(0).firstChild;
+				var errorCode = xmldoc.getElementsByTagName("error").item(0).firstChild;
+				var errorText = xmldoc.getElementsByTagName("errorString").item(0).firstChild;
+				if( status.nodeValue == "success" ) {
+			/*FIX 17052016*/
+			if (callback) {
+			  callback();
 			}
-		}
-    );
-
-	if( ajxreq.transport.status == 200 ) {
-		try {
-			var xmldoc = ajxreq.transport.responseXML;
-			var status = xmldoc.getElementsByTagName("status").item(0).firstChild;
-			var errorCode = xmldoc.getElementsByTagName("error").item(0).firstChild;
-			var errorText = xmldoc.getElementsByTagName("errorString").item(0).firstChild;
-			if( status.nodeValue == "success" ) {
-        /*FIX 17052016*/
-        if (callback) {
-          callback();
-        }
-				return "true";
-			} else {
-				this.setError(errorCode == null ? "102":errorCode.nodeValue);
-				this.diagnostic = errorText == null ? "":errorText.nodeValue;
-				return "false";
+					return "true";
+				} else {
+					this.setError(errorCode == null ? "102":errorCode.nodeValue);
+					this.diagnostic = errorText == null ? "":errorText.nodeValue;
+					return "false";
+				}
+			} catch (ex) {
+				w = window.open('#', 'debug');
+				w.document.open();
+				w.document.write( ajxreq.transport.responseText );
+				w.document.close();
+				   alert( " Commit failure: "+ex );
+				return "false"
 			}
-		} catch (ex) {
-			w = window.open('#', 'debug');
-			w.document.open();
-			w.document.write( ajxreq.transport.responseText );
-			w.document.close();
-   			alert( " Commit failure: "+ex );
+		} else {
+			this.setError("101");
+			this.diagnostic = ajxreq.transport.responseText;
 			return "false"
 		}
-	} else {
-		this.setError("101");
-		this.diagnostic = ajxreq.transport.responseText;
-		return "false"
-	}
-	return new String("true");
+		return new String("true");
+	}.bind(this));	
 }
 
 ScormApi.prototype.CreateXmlHttpRequest = function() {

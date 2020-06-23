@@ -354,14 +354,16 @@ ScormPlayer.prototype.blankPageLoaded = function() {
 
 	//if we are in a single sco environment we can close the player
 	if(window.close_player) {
-		window.top.onbeforeunload = null;
-		/*var url = window.top.location.href;
-		url = url.slice(0, url.lastIndexOf("/"));
-		window.top.location.href = url + "/" + playerConfig.backurl;*/
-		window.top.location.href = playerConfig.lms_base_url + "" + playerConfig.backurl;
+		this.closePlayer();
 	} else {
 		this.playNext();
 	}
+}
+
+ScormPlayer.prototype.closePlayer = function() {
+	
+	window.top.onbeforeunload = null;
+	window.top.location.href = playerConfig.lms_base_url + "" + playerConfig.backurl;
 }
 
 ScormPlayer.prototype.addActionQueue = function( action ) {

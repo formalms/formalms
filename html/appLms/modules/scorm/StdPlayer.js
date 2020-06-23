@@ -271,9 +271,7 @@ StdUIPlayer.prototype.closePlayer = function() {
 			window.API.LMSFinish("");
 		});
 	}
-	this.scormPlayer.play( null, this.cntSco );
-//	window.location.href = playerConfig.backurl;
-	window.close_player = true;
+	this.scormPlayer.closePlayer();
 }
 
 /**
