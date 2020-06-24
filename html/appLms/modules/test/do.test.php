@@ -1502,11 +1502,11 @@ function showResult ($object_test , $id_param)
 		list($random_question) = sql_fetch_row(sql_query("SELECT order_info FROM ".$GLOBALS['prefix_lms']."_test WHERE idTest='".$id_test."'"));
 		$json = new Services_JSON(SERVICES_JSON_LOOSE_TYPE);
 		$json_random = $json->decode($random_question);
-		if (is_array($json_random)) {
-		   foreach ($json_random as $value) {
-			  $array_question_number[] = $value['selected'];
-		   }
-		}
+        if (is_array($json_random)) {
+            foreach ($json_random as $value) {
+                $array_question_number[$value['id_category']] = $value['selected'];
+            }
+        }
 		
 		if(sql_num_rows($re_category)) {
 		   
@@ -1524,8 +1524,8 @@ function showResult ($object_test , $id_param)
 		   $i=0;   
 		   while(list($id_cat, $name_cat, $quest_number) = sql_fetch_row($re_category)) {
 			  $GLOBALS['page']->add('<tr><td>'.$name_cat.'</td>'
-				 .'<td class="number">'.$array_question_number[$i].'</td>'
-				 .'<td class="number">'.( isset($point_do_cat[$id_cat]) ? $point_do_cat[$id_cat] : 0 ).'</td></tr>'
+                  .'<td class="number">'.$array_question_number[(int)$id_cat].'</td>'
+                  .'<td class="number">'.( isset($point_do_cat[$id_cat]) ? $point_do_cat[$id_cat] : 0 ).'</td></tr>'
 			  , 'content');
 			  $i++;
 		   }
