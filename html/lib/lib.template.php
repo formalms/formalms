@@ -114,7 +114,7 @@ function getCurrentDomain($idOrg = null)
 			}
 		}
 	}
-	return false;
+	return Get::site_url();
 }
 
 /**
