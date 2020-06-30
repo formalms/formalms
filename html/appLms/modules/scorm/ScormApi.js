@@ -747,7 +747,7 @@ ScormApiUI.prototype.LMSFinish = function( param ) {
 	return result;
 }
 
-ScormApiUI.prototype.LMSCommit = function( param ) {
+ScormApiUI.prototype.LMSCommit = function( param , /*FIX 17052016*/ callback) {
 	if(this.initialized == false) {
         this.setError("142");
 		return new String("false");
@@ -775,7 +775,7 @@ ScormApiUI.prototype.LMSCommit = function( param ) {
 		result = showModalDialog( this.basepath + "/dialog.php", args, this.sStyle );
 	} else {
 		slStopEvents();
-		result = this.commonLMSCommit();
+		result = this.commonLMSCommit(param, /*FIX 17052016*/ callback);
 		window.setTimeout(slStartEvents, 500);
 	}
 	if( this.transmission_end_cb != null )
