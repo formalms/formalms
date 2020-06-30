@@ -628,7 +628,7 @@ class Question
 
 
 		$score = 0;
-		$query = "SELECT score_assigned
+		$query = "SELECT SUM(score_assigned) AS score_assigned
 		FROM " . $GLOBALS['prefix_lms'] . "_testtrack_answer
 		WHERE idQuest = '" . (int) $this->id . "'
 		AND idTrack = '" . (int) $id_track . "'";
