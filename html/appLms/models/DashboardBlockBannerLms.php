@@ -16,21 +16,23 @@ defined("IN_FORMA") or die('Direct access is forbidden.');
 
 
 /**
- * Class DashboardBlockWelcomeLms
+ * Class DashboardBlockBannerLms
  */
-class DashboardBlockWelcomeLms extends DashboardBlockLms
+class DashboardBlockBannerLms extends DashboardBlockLms
 {
 
     public function __construct($jsonConfig)
     {
         parent::__construct($jsonConfig);
-	}
+    }
 
-    public function parseConfig($jsonConfig) {
+    public function parseConfig($jsonConfig)
+    {
 
     }
 
-    public function getAvailableTypesForBlock(){
+    public function getAvailableTypesForBlock()
+    {
         return [
             DashboardBlockLms::TYPE_1COL,
             DashboardBlockLms::TYPE_2COL,
@@ -42,35 +44,48 @@ class DashboardBlockWelcomeLms extends DashboardBlockLms
     public function getForm()
     {
         return [
-            DashboardBlockForm::getFormItem($this,'image', DashboardBlockForm::FORM_TYPE_IMAGE,false),
+            DashboardBlockForm::getFormItem($this, 'cover', DashboardBlockForm::FORM_TYPE_IMAGE, false),
+            DashboardBlockForm::getFormItem($this, 'video', DashboardBlockForm::FORM_TYPE_TEXT, false),
+            DashboardBlockForm::getFormItem($this, 'video_type', DashboardBlockForm::FORM_TYPE_SELECT, false, [
+                'blank' => 'Select Video Type',
+                'yt' => 'Youtube',
+                'vimeo' => 'Vimeo'
+            ]),
         ];
     }
 
-    public function getViewData(){
-		return $this->getCommonViewData();
-	}
+    public function getViewData()
+    {
+        $data = $this->getCommonViewData();
 
-	/**
-	 * @return string
-	 */
-	public function getViewPath(){
-		return $this->viewPath;
-	}
+        return $data;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getViewFile(){
-		return $this->viewFile;
-	}
+    /**
+     * @return string
+     */
+    public function getViewPath()
+    {
+        return $this->viewPath;
+    }
+
+    /**
+     * @return string
+     */
+    public function getViewFile()
+    {
+        return $this->viewFile;
+    }
 
 
-	public function getLink(){
-		return '#';
-	}
+    public function getLink()
+    {
+        return '#';
+    }
 
-	public function getRegisteredActions(){
-		return [];
-	}
+    public function getRegisteredActions()
+    {
+        return [];
+    }
 
 }

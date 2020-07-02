@@ -3441,12 +3441,10 @@ CREATE TABLE IF NOT EXISTS `dashboard_blocks`
 INSERT INTO `dashboard_blocks` (`id`, `block_class`)
 VALUES (7, 'DashboardBlockCalendarLms'),
        (3, 'DashboardBlockCertificatesLms'),
-       (6, 'DashboardBlockCourseAdviceLms'),
+       (6, 'DashboardBlockAnnouncementsLms'),
        (5, 'DashboardBlockCoursesLms'),
        (4, 'DashboardBlockMessagesLms'),
-       (2, 'DashboardBlockProfileLms'),
-       (8, 'DashboardBlockVideoLms'),
-       (1, 'DashboardBlockWelcomeLms');
+       (8, 'DashboardBlockBannerLms');
 
 
 INSERT INTO learning_middlearea (`obj_index`, `disabled`, `idst_list`, `sequence`)
