@@ -370,7 +370,7 @@ ScormApi.prototype.commonRequest = function (op, strSoap, callback) {
 	var requrl = this.baseurl + '?op=' + op;
 	var reqheaders = {
 		'Man': "POST " + this.baseurl + " HTTP/1.1",
-		'Host': this.host,
+		'X-Host': this.host,
 		"Content-type": "text/xml; charset=utf-8",
 		"SOAPAction": this.serviceid + op,
 		"X-Signature": playerConfig.auth_request
