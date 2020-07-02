@@ -131,7 +131,7 @@ echo getTitleArea(array(
              { data: 'name_certificate', title: '<?php echo Lang::t('_CERTIFICATE_REPORT', 'certificate'); ?>', sortable: true },
              { data: 'date_complete', title: '<?php echo Lang::t('_DATE_END', 'standard'); ?>', sortable: true, type: 'date' },  // TBD converting to local time                      
              { data: 'on_date', title: '<?php echo Lang::t('_RELASE_DATE', 'certificate'); ?>', sortable: true, type: 'date' }, // TBD converting to local time
-             { data: 'cell_down_gen', title: '<?php echo Get::sprite('subs_pdf', Lang::t('_TITLE_VIEW_CERT', 'certificate')) ?>', sortable: true, searchable: false },
+             { data: 'cell_down_gen', title: '<?php echo Get::sprite('subs_pdf', Lang::t('_TITLE_VIEW_CERT', 'certificate'));echo " ".Lang::t('_TAKE_A_COPY', 'certificate') ?>', sortable: true, searchable: false },
              { data: 'cell_del_cert', title: '<?php echo Get::sprite('subs_del', Lang::t('_DEL', 'certificate')); ?>', sortable: false, searchable: false }
             ],
             pagingType: 'full_numbers',
