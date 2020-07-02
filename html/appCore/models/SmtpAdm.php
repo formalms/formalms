@@ -95,7 +95,17 @@ final class SmtpAdm extends Model
      */
     public function isUseSmtp()
     {
-        return $this->useSmtp === 'on';
+        switch ($this->useSmtp) {
+            case 'on':
+            case 'true':
+            case true:
+                return true;
+                break;
+            default:
+                return false;
+                break;
+
+        }
     }
 
     /**
@@ -127,7 +137,17 @@ final class SmtpAdm extends Model
      */
     public function isAutoTls()
     {
-        return $this->autoTls === 'on';
+        switch ($this->autoTls) {
+            case 'on':
+            case 'true':
+            case true:
+                return true;
+                break;
+            default:
+                return false;
+                break;
+
+        }
     }
 
     /**
@@ -159,10 +179,17 @@ final class SmtpAdm extends Model
     {
         $smtpConfigIsEnabled = Get::cfg('use_smtp_database');
 
-        if ($smtpConfigIsEnabled === 'on') {
-            return true;
+        switch ($smtpConfigIsEnabled) {
+            case 'on':
+            case 'true':
+            case true:
+                return true;
+                break;
+            default:
+                return false;
+                break;
+
         }
-        return false;
     }
 
     private function fetchData()
@@ -205,8 +232,6 @@ final class SmtpAdm extends Model
             $this->user = Get::cfg('smtp_user');
             $this->pwd = Get::cfg('smtp_pwd');
             $this->debug = Get::cfg('smtp_debug', 0);
-
-
         }
     }
 }
