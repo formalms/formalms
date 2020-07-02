@@ -10,16 +10,16 @@
   {% endif %}
 
   {% if (block.type == '4-col') %}
-    {% set class =  'd-col--12--desktop' %}
-  {% elseif (block.type == '3-col') %}
-    {% set class =  'd-col--9--desktop' %}
-  {% elseif (block.type == '2-col') %}
-    {% set class =  'd-col--6--desktop' %}
-  {% elseif (block.type == '1-col') %}
-    {% set class =  'd-col--3--desktop' %}
-  {% endif %}
+        {% set class =  ' d-col--12--desktop' %}
+    {% elseif (block.type == '3-col') %}
+        {% set class =  ' d-col--9--desktop' %}
+    {% elseif (block.type == '2-col') %}
+        {% set class =  ' d-col--6--desktop' %}
+    {% elseif (block.type == '1-col') %}
+        {% set class =  ' d-col--3--desktop' %}
+    {% endif %}
 
-  <div class="d-col d-col--12 {{ class }}">
+    <div class="d-col d-col--12 {{ class }}">
     <div class="d-user-profile">
       <div class="d-grid">
         <div class="d-row d-user-profile__padder">

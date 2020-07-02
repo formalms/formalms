@@ -199,6 +199,8 @@
                     console.log(response);
                     saveField.removeAttr('disabled');
                     $('.dashboard__ok').css('display', 'block');
+                    setTimeout(function(){ location.reload(); }, 1500);
+
                 },
                 error: err => {
                     console.log(err)
