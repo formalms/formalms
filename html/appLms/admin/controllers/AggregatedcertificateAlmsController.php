@@ -775,9 +775,8 @@ function associationPaths() {
         $acl_man =& Docebo::user()->getAclManager();
         $aclManager = new DoceboACLManager();
         $userSelectionArr = array_map('intval',$user_selection->getSelection($_POST));
-        sort($userSelectionArr);
-        $array_user = $aclManager->getAllUsersFromIdst($userSelectionArr);
-        $array_user = $aclManager->getArrUserST($array_user);
+        $userSelectionArr = $aclManager->getAllUsersFromIdst($userSelectionArr);
+        $array_user = $aclManager->getArrUserST($userSelectionArr);
 
         $form = new Form();
         $form_name = 'new_assign_step_3';

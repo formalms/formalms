@@ -77,33 +77,23 @@ class CertificateSubs_UserStat extends CertificateSubstitution {
 
 			$course_time = 0;
 			$blended_time = 0;
-
-			$table_course =	 '<table width="100%" cellspacing="1" cellpadding="1" border="1" align="">'
-							.'<thead>'
-							.'<tr>'
-							.'<td>'.$lang->def('_COURSE_NAME').'</td>'
-							.'<td>'.$lang->def('_COURSE_TYPE').'</td>'
-							.'<td>'.$lang->def('_COURSE_TIME').'</td>'
-							.'</tr>'
-							.'</thead>'
-							.'<tbody>';
-
-			$table_blended =	'<table width="100%" cellspacing="1" cellpadding="1" border="1" align="">'
-								.'<thead>'
-								.'<tr>'
-								.'<td>'.$lang->def('_COURSEPATH').'</td>'
-								.'<td>'.$lang->def('_COURSE_TIME').'</td>'
-                                .'</tr>'								
-                                .'</thead>'
-								.'<tbody>';
 			$array_meta_complete = array();
 			$array_meta_inscr = array();
 			$array_meta_access = array();
             
-            $assocType = $aggCertLib->getTypeAssoc($this->id_meta);
+            $assocType = $aggCertLib->getTypeAssoc($this->id_meta, $this->id_user);
             
             if ($assocType == COURSE_PATH) {
-                $path = $aggCertLib->getIdsCoursePath($this->id_meta);
+                $table_blended =    '<table width="100%" cellspacing="1" cellpadding="1" border="1" align="">'
+                                .'<thead>'
+                                .'<tr>'
+                                .'<td>'.$lang->def('_COURSEPATH').'</td>'
+                                .'<td>'.$lang->def('_TOTAL_SESSION', 'report').'</td>'
+                                .'</tr>'                                
+                                .'</thead>'
+                                .'<tbody>';
+                
+                $path = $aggCertLib->getIdsCoursePath($this->id_meta, $this->id_user);
                 require_once($GLOBALS['where_lms'].'/lib/lib.coursepath.php');
                 $coursePath_man = new CoursePath_Manager();
                 foreach ($path as $id_path){
@@ -149,7 +139,16 @@ class CertificateSubs_UserStat extends CertificateSubstitution {
                 
             } 
             if ($assocType == COURSE){
-                $courses = $aggCertLib->getIdsCourse($this->id_meta);
+                $table_course =     '<table width="100%" cellspacing="1" cellpadding="1" border="1" align="">'
+                                .'<thead>'
+                                .'<tr>'
+                                .'<td>'.$lang->def('_COURSE_NAME').'</td>'
+                                .'<td>'.$lang->def('_COURSE_TYPE', 'course').'</td>'
+                                .'<td>'.$lang->def('_TOTAL_SESSION', 'report').'</td>'
+                                .'</tr>'
+                                .'</thead>'
+                                .'<tbody>';
+                $courses = $aggCertLib->getIdsCourse($this->id_meta, $this->id_user);
                 foreach ($courses as $id_course) {
                     $query =    "SELECT date_complete, date_inscr, date_first_access, level"
                             ." FROM ".$GLOBALS['prefix_lms']."_courseuser"

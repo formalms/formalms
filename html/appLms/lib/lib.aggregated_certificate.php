@@ -347,12 +347,12 @@ class AggregatedCertificate {
      *
      * @param mixed $id_association
      */
-    public function getIdsCourse($id_association){
+    public function getIdsCourse($id_association, $id_user = 0){
 
         $q = "SELECT idCourse FROM "
             .$this->table_cert_meta_association_courses
             . " WHERE idAssociation = " . $id_association
-            . " and idUser = 0";
+            . " and idUser = ".$id_user." AND idCourse <> 0";
 
         $rs = sql_query($q);
 
@@ -365,6 +365,7 @@ class AggregatedCertificate {
 
         return $idsCourseArr;
     }
+    
 
 
     function getUserAndCourseFromIdAssoc($idAssoc, $type_assoc){
@@ -406,12 +407,12 @@ class AggregatedCertificate {
      *
      *
      */
-    function getIdsCoursePath($id_association){
+    function getIdsCoursePath($id_association, $id_user = 0){
 
         $q = "SELECT idCoursePath FROM "
             .$this->table_cert_meta_association_coursepath
             . " WHERE idAssociation = " . $id_association
-            . " and idUser = 0";
+            . " and idUser = ".$id_user." and idCoursePath <> 0";
 
         $rs = sql_query($q);
 

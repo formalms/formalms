@@ -16,9 +16,9 @@ defined("IN_FORMA") or die('Direct access is forbidden.');
 
 
 /**
- * Class DashboardBlockCourseAdviceLms
+ * Class DashboardBlockAnnouncementsLms
  */
-class DashboardBlockCourseAdviceLms extends DashboardBlockLms
+class DashboardBlockAnnouncementsLms extends DashboardBlockLms
 {
 
     public function __construct($jsonConfig)

@@ -16,9 +16,9 @@ defined("IN_FORMA") or die('Direct access is forbidden.');
 
 
 /**
- * Class DashboardBlockVideoLms
+ * Class DashboardBlockBannerLms
  */
-class DashboardBlockVideoLms extends DashboardBlockLms
+class DashboardBlockBannerLms extends DashboardBlockLms
 {
 
     public function __construct($jsonConfig)
@@ -44,9 +44,10 @@ class DashboardBlockVideoLms extends DashboardBlockLms
     public function getForm()
     {
         return [
-            DashboardBlockForm::getFormItem($this, 'cover', DashboardBlockForm::FORM_TYPE_IMAGE, true),
-            DashboardBlockForm::getFormItem($this, 'video', DashboardBlockForm::FORM_TYPE_TEXT, true),
-            DashboardBlockForm::getFormItem($this, 'video_type', DashboardBlockForm::FORM_TYPE_SELECT, true, [
+            DashboardBlockForm::getFormItem($this, 'cover', DashboardBlockForm::FORM_TYPE_IMAGE, false),
+            DashboardBlockForm::getFormItem($this, 'video', DashboardBlockForm::FORM_TYPE_TEXT, false),
+            DashboardBlockForm::getFormItem($this, 'video_type', DashboardBlockForm::FORM_TYPE_SELECT, false, [
+                'blank' => 'Select Video Type',
                 'yt' => 'Youtube',
                 'vimeo' => 'Vimeo'
             ]),
