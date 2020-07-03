@@ -432,10 +432,10 @@ class CatalogLms extends Model
 				. '<div class="edition__body">'
 				. '<b>' . Lang::t('_NAME', 'catalogue') . '</b>: ' . $classroom_info['name'] . '<br/><br/>'
 				. ($classroom_info['code'] !== '' ? '<b>' . Lang::t('_CODE', 'catalogue') . '</b>: ' . $classroom_info['code'] . '<br/>' : '')
-                . '<b>'.Lang::t('_TITLE', 'catalogue').'</b>: '. $course['name'].'<br/><br/>'
+				. '<b>' . Lang::t('_TITLE', 'catalogue') . '</b>: ' . $course['name'] . '<br/><br/>'
 				. '<div class="edition__twocol">'
 				. (($classroom_info['date_begin'] !== '0000-00-00 00:00:00' || $classroom_info['date_end'] !== '0000-00-00 00:00:00') ? '<div class="edition__col"><b>' . Lang::t('_DAYS', 'course') . '</b><br />' . Format::date($classroom_info['date_begin'], 'datetime') . ' <span class="edition_arrow"></span> ' . Format::date($classroom_info['date_end'], 'datetime') . '</div>' : '')
-				. '<div class="edition__col"><b>'.Lang::t('_DURATION','course').'</b><br />' . $classroom_info['num_day'] . ' '. Lang::t('_DAYS','course').'</div>' 
+				. '<div class="edition__col"><b>' . Lang::t('_DURATION', 'course') . '</b><br />' . $classroom_info['num_day'] . ' ' . Lang::t('_DAYS', 'course') . '</div>'
 				. '</div>';
 			if (count($teachers) > 0) {
 				$res['body'] .= '<b>' . Lang::t('_THEACER_LIST', 'course') . '</b><br />';
@@ -458,18 +458,18 @@ class CatalogLms extends Model
 			switch ($course['subscribe_method']) {
 				case 1:
 					// moderate
-					$res['body'] .= '<div class="moderation-alert">'.Lang::t('_COURSE_S_MODERATE', 'catalogue').'</div>';
+					$res['body'] .= '<div class="moderation-alert">' . Lang::t('_COURSE_S_MODERATE', 'catalogue') . '</div>';
 					break;
 				case 0:
 					// only admin
-					$res['body'] .= '<div class="moderation-alert">'.Lang::t('_COURSE_S_GODADMIN', 'catalogue').'</div>';
+					$res['body'] .= '<div class="moderation-alert">' . Lang::t('_COURSE_S_GODADMIN', 'catalogue') . '</div>';
 					break;
 			}
 
-            $is_in_overbooking = $classroom_info['max_par'] <= $classroom_info['user_subscribed'] && $classroom_info['overbooking'] > 0;
-            if ($is_in_overbooking) {
-                $res['body'] .= '<div class="moderation-alert"><b>' . Lang::t('_OVERBOOKING_WARNING', 'catalogue') . '</b></div><br /><br />';
-            }
+			$is_in_overbooking = $classroom_info['max_par'] <= $classroom_info['user_subscribed'] && $classroom_info['overbooking'] > 0;
+			if ($is_in_overbooking) {
+				$res['body'] .= '<div class="moderation-alert"><b>' . Lang::t('_OVERBOOKING_WARNING', 'catalogue') . '</b></div><br /><br />';
+			}
 
 			$res['body'] .= '</div>'
 				. '</div>';
@@ -493,7 +493,7 @@ class CatalogLms extends Model
 			if ($edition_info['code'] !== '') {
 				$res['body'] .= '<b>' . Lang::t('_CODE', 'catalogue') . '</b>: ' . $edition_info['code'] . '<br/><br/>';
 			}
-            $res['body'] .= '<b>'.Lang::t('_TITLE', 'catalogue').'</b>: '. $course['name'].'<br/><br/>';
+			$res['body'] .= '<b>' . Lang::t('_TITLE', 'catalogue') . '</b>: ' . $course['name'] . '<br/><br/>';
 			$res['body'] .= '<div class="edition__twocol">';
 
 			if ($edition_info['date_begin'] !== '0000-00-00 00:00:00' || $edition_info['date_end'] !== '0000-00-00 00:00:00') {
@@ -506,9 +506,9 @@ class CatalogLms extends Model
 
 					$days = $later->diff($earlier)->format("%a") + 1;
 					if ($days > 1) {
-						$dayString = ' '.Lang::t('_DAYS', 'course');
+						$dayString = ' ' . Lang::t('_DAYS', 'course');
 					} else {
-						$dayString = ' '.Lang::t('_DAY', 'course');
+						$dayString = ' ' . Lang::t('_DAY', 'course');
 					}
 				} else {
 					$days = '--';
@@ -537,16 +537,16 @@ class CatalogLms extends Model
 				$res['body'] .= '<br /><br />';
 			}
 
-            switch ($course['subscribe_method']) {
-                case 1:
-                    // moderate
-                    $res['body'] .= '<div class="moderation-alert">'.Lang::t('_COURSE_S_MODERATE', 'catalogue').'</div>';
-                    break;
-                case 0:
-                    // only admin
-                    $res['body'] .= '<div class="moderation-alert">'.Lang::t('_COURSE_S_GODADMIN', 'catalogue').'</div>';
-                    break;
-            }
+			switch ($course['subscribe_method']) {
+				case 1:
+					// moderate
+					$res['body'] .= '<div class="moderation-alert">' . Lang::t('_COURSE_S_MODERATE', 'catalogue') . '</div>';
+					break;
+				case 0:
+					// only admin
+					$res['body'] .= '<div class="moderation-alert">' . Lang::t('_COURSE_S_GODADMIN', 'catalogue') . '</div>';
+					break;
+			}
 
 			$res['body'] .= '</div>'
 				. '</div>';
@@ -568,9 +568,9 @@ class CatalogLms extends Model
 			if ($course['code'] !== '') {
 				$res['body'] .= '<b>' . Lang::t('_CODE', 'catalogue') . '</b>: ' . $course['code'] . '<br/>';
 			}
-            $res['body'] .= '<b>'.Lang::t('_TITLE', 'catalogue').'</b>: '. $course['name'].'<br/><br/>';
-			
-            $res['body'] .= '<div class="edition__twocol">';
+			$res['body'] .= '<b>' . Lang::t('_TITLE', 'catalogue') . '</b>: ' . $course['name'] . '<br/><br/>';
+
+			$res['body'] .= '<div class="edition__twocol">';
 
 			if (($course['date_begin'] !== '0000-00-00' || $course['date_end'] !== '0000-00-00') && ($course['date_begin'] !== '0000-00-00 00:00:00' || $course['date_end'] !== '0000-00-00 00:00:00')) {
 
@@ -582,16 +582,16 @@ class CatalogLms extends Model
 
 					$days = $later->diff($earlier)->format("%a") + 1;
 					if ($days > 1) {
-						$dayString = ' '.Lang::t('_DAYS', 'course');
+						$dayString = ' ' . Lang::t('_DAYS', 'course');
 					} else {
-						$dayString = ' '.Lang::t('_DAY', 'course');
+						$dayString = ' ' . Lang::t('_DAY', 'course');
 					}
 				} else {
 					$days = '--';
 					$dayString = '';
 				}
 
-				$res['body'] .= '<div class="edition__col"><b>' . Lang::t('_DURATION', 'course') . '</b><br />1111' . $days . $dayString . '</div>';
+				$res['body'] .= '<div class="edition__col"><b>' . Lang::t('_DURATION', 'course') . '</b><br />' . $days . $dayString . '</div>';
 			}
 
 			$res['body'] .= '</div>';
@@ -613,16 +613,16 @@ class CatalogLms extends Model
 				$res['body'] .= '<br /><br />';
 			}
 
-            switch ($course['subscribe_method']) {
-                case 1:
-                    // moderate
-                    $res['body'] .= '<div class="moderation-alert">'.Lang::t('_COURSE_S_MODERATE', 'catalogue').'</div>';
-                    break;
-                case 0:
-                    // only admin
-                    $res['body'] .= '<div class="moderation-alert">'.Lang::t('_COURSE_S_GODADMIN', 'catalogue').'</div>';
-                    break;
-            }
+			switch ($course['subscribe_method']) {
+				case 1:
+					// moderate
+					$res['body'] .= '<div class="moderation-alert">' . Lang::t('_COURSE_S_MODERATE', 'catalogue') . '</div>';
+					break;
+				case 0:
+					// only admin
+					$res['body'] .= '<div class="moderation-alert">' . Lang::t('_COURSE_S_GODADMIN', 'catalogue') . '</div>';
+					break;
+			}
 
 			$res['body'] .= '</div>'
 				. '</div>';
@@ -700,9 +700,9 @@ class CatalogLms extends Model
 
 					$days = (int) $classroom_info['num_day'];
 					if ($days > 1) {
-						$dayString = ' '.Lang::t('_DAYS', 'course');
+						$dayString = ' ' . Lang::t('_DAYS', 'course');
 					} else {
-						$dayString = ' '.Lang::t('_DAY', 'course');
+						$dayString = ' ' . Lang::t('_DAY', 'course');
 					}
 
 					$res['body'] .= '<div class="edition__col"><b>' . Lang::t('_DURATION', 'course') . '</b><br />' . $days . $dayString . '</div>';
@@ -736,22 +736,22 @@ class CatalogLms extends Model
 				$res['body'] .= '<table class="edition_table">
                                         <thead>
                                             <tr>
-                                                <th>' . Lang::t('_DATE', 'course').'</th>
+                                                <th>' . Lang::t('_DATE', 'course') . '</th>
                                                 <th>' . Lang::t('_HOUR_BEGIN', 'course') . '</th>
                                                 <th>' . Lang::t('_HOUR_END', 'course') . '</th>
                                                 <th>' . Lang::t('_LOCATION', 'classroom') . '</th>
                                             </tr>
                                         </thead>
 										<tbody>';
-					$days = $this->classroom_man->getDateDayDateDetails($classroom_info['id_date']);
-					foreach ($days as $day) {
-						$res['body'] .= '<tr>
+				$days = $this->classroom_man->getDateDayDateDetails($classroom_info['id_date']);
+				foreach ($days as $day) {
+					$res['body'] .= '<tr>
 						<td>' . Format::date($day['date_begin'], 'date') . '</td>
 						<td>' . Format::date($day['date_begin'], 'time') . '</td>
 						<td>' . Format::date($day['date_end'], 'time') . '</td>
 						<td>' . $day['classroom'] . '</td>
 					</tr>';
-					}
+				}
 
 				$res['body'] .= '</tbody></table></div>';
 
@@ -909,100 +909,103 @@ class CatalogLms extends Model
 
 		return $output;
 	}
-    
-    public function GetGlobalJsonTree($id_catalogue)
-    {
-        $this->current_catalogue = $id_catalogue;
-        $global_tree = [];        
-        $top_category = $this->getMajorCategory();
-        foreach ($top_category as $id_key => $val) {
-            if ( $this->CategoryHasChildrenCourses($id_key, $val['iLeft'], $val['iRight']) )   {
-                 $this->children = $this->getMinorCategoryTree($id_key, $val['iLeft'], $val['iRight'], 2);
-                 $global_tree[] = array('text' => $val['text'], "id_cat" => $id_key, 'nodes' => $this->children);
-            }   
-        }
-        return $global_tree;
-    }
-    
-    private function getMajorCategory()
-    {
-        $q = "SELECT idCategory, path, iLeft, iRight"
-            . " FROM %lms_category"
-            . " WHERE lev = 1"
-            . " ORDER BY path";
 
-        $res = [];
-        $records = sql_query($q);
-        while ($row = sql_fetch_assoc($records)) {
-            $res[$row['idCategory']] = array( 'text'=>end(explode('/', $row['path'])), 'iLeft' => $row['iLeft'], 'iRight' => $row['iRight'] );     
-        }
+	public function GetGlobalJsonTree($id_catalogue)
+	{
+		$this->current_catalogue = $id_catalogue;
+		$global_tree = [];
+		$top_category = $this->getMajorCategory();
+		foreach ($top_category as $id_key => $val) {
+			if ($this->CategoryHasChildrenCourses($id_key, $val['iLeft'], $val['iRight'])) {
+				$this->children = $this->getMinorCategoryTree($id_key, $val['iLeft'], $val['iRight'], 2);
+				$global_tree[] = array('text' => $val['text'], "id_cat" => $id_key, 'nodes' => $this->children);
+			}
+		}
+		return $global_tree;
+	}
 
-        return $res;
-    }
-    
-    public function getMinorCategoryTree($idCat, $ileft, $iright, $lev) {
-    
-        if (($iright - $ileft > 1 ) && $this->CategoryHasChildrenCourses($idCat, $ileft, $iright) ) {
-                $q = "SELECT idCategory, path, idParent, lev, iLeft, iRight  FROM %lms_category  
-                        WHERE iLeft > " . (int) $ileft ." AND iRight < " . $iright ." AND lev=".$lev;
-                $res = [];        
-                $records = sql_query($q);
-                while ($row = sql_fetch_assoc($records)) {
-                    // including only if there are courses starting from here
-                    if ($this->CategoryHasChildrenCourses($row['idCategory'], $row['iLeft'] , $row['iRight'])) {
-                          $res[$row['idCategory']] = array('text'=>end(explode('/', $row['path'])),  
-                                                            'id_cat' => $row['idCategory']);
-                          // getting all children of next level, if any
-                          $children = $this->getMinorCategoryTree( $row['idCategory'], $row['iLeft'] , $row['iRight'], $row['lev']+1);
-                          if ($children) {
-                            $res[$row['idCategory']]['nodes'] = $children;
-                          }
-                    }   
-                }
-                return $res; 
-        } else {
-            return '';
-        }
-    }
+	private function getMajorCategory()
+	{
+		$q = "SELECT idCategory, path, iLeft, iRight"
+			. " FROM %lms_category"
+			. " WHERE lev = 1"
+			. " ORDER BY path";
 
-    /**
-     * checking if there are courses starting from id_cat and searching through all children nodes 
-    */
-    private function CategoryHasChildrenCourses($id_cat, $ileft, $iright)
-    {
+		$res = [];
+		$records = sql_query($q);
+		while ($row = sql_fetch_assoc($records)) {
+			$res[$row['idCategory']] = array('text' => end(explode('/', $row['path'])), 'iLeft' => $row['iLeft'], 'iRight' => $row['iRight']);
+		}
 
-        if ($this->show_all_category) {
-            return true;
-        }  else {
-            if ($this->current_catalogue == 0) {
-          
-              $query = "select count(*) as t from
+		return $res;
+	}
+
+	public function getMinorCategoryTree($idCat, $ileft, $iright, $lev)
+	{
+
+		if (($iright - $ileft > 1) && $this->CategoryHasChildrenCourses($idCat, $ileft, $iright)) {
+			$q = "SELECT idCategory, path, idParent, lev, iLeft, iRight  FROM %lms_category  
+                        WHERE iLeft > " . (int) $ileft . " AND iRight < " . $iright . " AND lev=" . $lev;
+			$res = [];
+			$records = sql_query($q);
+			while ($row = sql_fetch_assoc($records)) {
+				// including only if there are courses starting from here
+				if ($this->CategoryHasChildrenCourses($row['idCategory'], $row['iLeft'], $row['iRight'])) {
+					$res[$row['idCategory']] = array(
+						'text' => end(explode('/', $row['path'])),
+						'id_cat' => $row['idCategory']
+					);
+					// getting all children of next level, if any
+					$children = $this->getMinorCategoryTree($row['idCategory'], $row['iLeft'], $row['iRight'], $row['lev'] + 1);
+					if ($children) {
+						$res[$row['idCategory']]['nodes'] = $children;
+					}
+				}
+			}
+			return $res;
+		} else {
+			return '';
+		}
+	}
+
+	/**
+	 * checking if there are courses starting from id_cat and searching through all children nodes 
+	 */
+	private function CategoryHasChildrenCourses($id_cat, $ileft, $iright)
+	{
+
+		if ($this->show_all_category) {
+			return true;
+		} else {
+			if ($this->current_catalogue == 0) {
+
+				$query = "select count(*) as t from
                        %lms_course, %lms_category  where
                        %lms_course.idCategory = %lms_category.idCategory and
-                       %lms_category.iLeft >=".$ileft." and %lms_category.iRight <= ". $iright . " and
+                       %lms_category.iLeft >=" . $ileft . " and %lms_category.iRight <= " . $iright . " and
                        %lms_course.course_type <> 'assessment' and
                        %lms_course.status NOT IN (" . CST_PREPARATION . ", " . CST_CONCLUDED . ", " . CST_CANCELLED . ")
                        AND (                       
                               (can_subscribe=2 AND (sub_end_date = '0000-00-00' OR sub_end_date >= '" . date('Y-m-d') . "') AND (sub_start_date = '0000-00-00' OR '" . date('Y-m-d') . "' >= sub_start_date)) OR
                               (can_subscribe=1)
                           )";
-              } else {
-          
-              $query = "select count(*) as t from
+			} else {
+
+				$query = "select count(*) as t from
                        %lms_course, %lms_category  %lms_catalogue_entry where
                        %lms_course.idCategory = %lms_category.idCategory and
-                       %lms_category.iLeft >=".$ileft." and %lms_category.iRight <= ". $iright . " and
+                       %lms_category.iLeft >=" . $ileft . " and %lms_category.iRight <= " . $iright . " and
                        %lms_course.course_type <> 'assessment' and
                        %lms_course.status NOT IN (" . CST_PREPARATION . ", " . CST_CONCLUDED . ", " . CST_CANCELLED . ")
                        AND (                       
                               (can_subscribe=2 AND (sub_end_date = '0000-00-00' OR sub_end_date >= '" . date('Y-m-d') . "') AND (sub_start_date = '0000-00-00' OR '" . date('Y-m-d') . "' >= sub_start_date)) OR
                               (can_subscribe=1)
                           )
-                       AND idCatalogue = " . (int) $this->current_catalogue . 
-                     " AND %lms_catalogue_entry.idEntry=%lms_course.idCourse";                        
-              }
-              list($c) = sql_fetch_row(sql_query($query));
-              return ($c > 0);
-        }
-    }
+                       AND idCatalogue = " . (int) $this->current_catalogue .
+					" AND %lms_catalogue_entry.idEntry=%lms_course.idCourse";
+			}
+			list($c) = sql_fetch_row(sql_query($query));
+			return ($c > 0);
+		}
+	}
 }
