@@ -62,10 +62,17 @@
 
 	this.is_unloading = false;
 	window.addEventListener('beforeunload', this.unloading.bind(this));
+	window.addEventListener('beforeunload', this.forceFinish.bind(this));
  }
 
 ScormApi.prototype.unloading = function() {
 	this.is_unloading = true;
+}
+
+ScormApi.prototype.forceFinish = function() {
+	if(!this.finish_launched) {
+		this.commonLMSFinish();
+	}
 }
 
 ScormApi.prototype.setScormVersion = function( version ) {
