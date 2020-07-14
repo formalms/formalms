@@ -990,7 +990,7 @@ class CatalogLms extends Model
               } else {
           
               $query = "select count(*) as t from
-                       %lms_course, %lms_category  %lms_catalogue_entry where
+                       %lms_course, %lms_category,  %lms_catalogue_entry where
                        %lms_course.idCategory = %lms_category.idCategory and
                        %lms_category.iLeft >=".$ileft." and %lms_category.iRight <= ". $iright . " and
                        %lms_course.course_type <> 'assessment' and
