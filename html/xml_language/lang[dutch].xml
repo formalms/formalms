@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20200220</DATE>
+  <DATE>20200714</DATE>
   <LANG id="dutch">
     <lang_code>dutch</lang_code>
     <lang_description>Dutch</lang_description>
@@ -1527,6 +1527,7 @@ ingelogd met uw account]]></key>
         <key id="menu_over&amp;_BLIND_YOUR_INFO" attributes="accessibility" save_date="2014-11-14 00:00:00"><![CDATA[Ga naar informatie gerelateerd aan deze cursus]]></key>
         <key id="menu_over&amp;_COMMUNITY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Community]]></key>
         <key id="menu_over&amp;_GO_TO_FRAMEWORK" attributes="" save_date="2017-07-10 10:56:55"><![CDATA[Administrator gebied]]></key>
+        <key id="menu_over&amp;_HELPDESK" attributes="" save_date="2020-06-08 08:45:25"><![CDATA[Helpdesk]]></key>
         <key id="menu_over&amp;_LIBRARY" attributes="" save_date="2017-07-14 12:43:58"><![CDATA[Authoring]]></key>
         <key id="menu_over&amp;_MENUCOURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Campus]]></key>
         <key id="menu_over&amp;_MENUGEN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Algemeen menu]]></key>

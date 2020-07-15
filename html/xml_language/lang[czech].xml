@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20200220</DATE>
+  <DATE>20200714</DATE>
   <LANG id="czech">
     <lang_code>czech</lang_code>
     <lang_description>Czech</lang_description>
@@ -1363,6 +1363,7 @@ Pro změnu těchto slov jděte do Správy Administrace/Jazyků, vyhledejte <b>lo
         <key id="menu_over&amp;_BLIND_YOUR_INFO" attributes="accessibility" save_date="2014-11-14 00:00:00"><![CDATA[Přeskočit na Vaše informace souvisejcí s tímto kurzem]]></key>
         <key id="menu_over&amp;_COMMUNITY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Komunita]]></key>
         <key id="menu_over&amp;_GO_TO_FRAMEWORK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Administrátorský prostor]]></key>
+        <key id="menu_over&amp;_HELPDESK" attributes="" save_date="2020-06-08 08:45:25"><![CDATA[Helpdesk]]></key>
         <key id="menu_over&amp;_MENUCOURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kampus]]></key>
         <key id="menu_over&amp;_MENUGEN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Obecné menu]]></key>
         <key id="menu_over&amp;_MYCOMPETENCES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kompetence/Oprávnění]]></key>
