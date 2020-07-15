@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20200220</DATE>
+  <DATE>20200714</DATE>
   <LANG id="italian">
     <lang_code>italian</lang_code>
     <lang_description>Italiano</lang_description>
@@ -278,6 +278,7 @@
         <key id="catalogue&amp;_NO_COURSE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Nessun corso disponibile]]></key>
         <key id="catalogue&amp;_NO_COURSE_FOUND" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Corso non trovato]]></key>
         <key id="catalogue&amp;_NO_EDITIONS" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Non ci sono edizioni in questo corso]]></key>
+        <key id="catalogue&amp;_NO_PERIODS" attributes="" save_date="2020-05-31 17:47:07"><![CDATA[Nessun periodo temporale]]></key>
         <key id="catalogue&amp;_PREASSESSMENT_SUGGESTION" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Curriculum suggerito]]></key>
         <key id="catalogue&amp;_REMOVE_ENTRY" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Rimuovilo dal catalogo]]></key>
         <key id="catalogue&amp;_RESERVE_COURSE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Prenota]]></key>
@@ -300,6 +301,7 @@
         <key id="certificate&amp;_BACK_IMAGE" attributes="" save_date="2017-04-05 12:15:41"><![CDATA[Immagine di background]]></key>
         <key id="certificate&amp;_BASE_LANGUAGE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Lingua certificato]]></key>
         <key id="certificate&amp;_CERTIFICATES_GENERATION" attributes="" save_date="2017-03-15 16:34:50"><![CDATA[Generazione certificati]]></key>
+        <key id="certificate&amp;_CERTIFICATE_AGGREGATE_ASSOCIATION" attributes="" save_date="2020-05-09 17:21:55"><![CDATA[Associa certificato aggregato]]></key>
         <key id="certificate&amp;_CERTIFICATE_ASSIGN" attributes="" save_date="2017-03-15 16:36:02"><![CDATA[Assegnamento certificato]]></key>
         <key id="certificate&amp;_CERTIFICATE_CAPTION" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Lista template certificati]]></key>
         <key id="certificate&amp;_CERTIFICATE_LIST" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Lista certificati]]></key>
@@ -356,7 +358,7 @@
         <key id="certificate&amp;_TEST_SCORE_FINAL_MAX" attributes="" save_date="2017-07-05 13:01:25"><![CDATA[Punteggio massimo conseguibile per l'oggetto didattico di fine corso]]></key>
         <key id="certificate&amp;_TEST_SCORE_START" attributes="" save_date="2017-07-05 13:01:04"><![CDATA[Punteggio iniziale dell'oggetto didattico]]></key>
         <key id="certificate&amp;_TEST_SCORE_START_MAX" attributes="" save_date="2017-07-05 13:01:37"><![CDATA[Punteggio massimo conseguibile per l'oggetto didattico di inizio corso]]></key>
-        <key id="certificate&amp;_TITLE_ASSIGN_META_CERTIFICATE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Assegna meta certificato]]></key>
+        <key id="certificate&amp;_TITLE_ASSIGN_META_CERTIFICATE" attributes="" save_date="2020-05-09 17:29:43"><![CDATA[Assegna certificato aggregato]]></key>
         <key id="certificate&amp;_TITLE_CERTIFICATE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Gestione certificato]]></key>
         <key id="certificate&amp;_TITLE_CREATE_META_CERTIFICATE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Meta certificati pronti ad essere generati]]></key>
         <key id="certificate&amp;_TITLE_META_CERTIFICATE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Certificati aggregati]]></key>
@@ -441,6 +443,8 @@ La chat si aprirà in una finestra di pop-up]]></key>
         <key id="configuration&amp;MAIN_SET_6" attributes="" save_date="2019-10-02 11:39:14"><![CDATA[Opzioni generali]]></key>
         <key id="configuration&amp;MAIN_SET_8" attributes="" save_date="2019-10-02 11:39:27"><![CDATA[Opzioni generali]]></key>
         <key id="configuration&amp;MAIN_SET_9" attributes="" save_date="2019-10-02 11:39:53"><![CDATA[LDAP]]></key>
+        <key id="configuration&amp;PASSWORD_BCRYPT" attributes="" save_date="2020-05-31 16:28:19"><![CDATA[Bycrypt password]]></key>
+        <key id="configuration&amp;PASSWORD_MD5" attributes="" save_date="2020-05-31 16:28:27"><![CDATA[MD5 Password]]></key>
         <key id="configuration&amp;_ACCESSIBILITY" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Attiva tutte le feature per l'accessibilità]]></key>
         <key id="configuration&amp;_ALLOW_URL_FOPEN" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Configurazione di "allow_url_fopen"]]></key>
         <key id="configuration&amp;_ALLOW_URL_INCLUDE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Configurazione di "allow_url_include"]]></key>
@@ -488,6 +492,7 @@ La chat si aprirà in una finestra di pop-up]]></key>
         <key id="configuration&amp;_DONT_SHOW" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Non mostrarle]]></key>
         <key id="configuration&amp;_DO_DEBUG" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Attiva informazioni di debug]]></key>
         <key id="configuration&amp;_ECOMMERCE" attributes="" save_date="2017-04-10 14:07:05"><![CDATA[E-commerce]]></key>
+        <key id="configuration&amp;_EMAIL_SETTINGS" attributes="" save_date="2020-05-31 16:28:47"><![CDATA[Impostazioni e-mail]]></key>
         <key id="configuration&amp;_FILE_UPLOAD_WHITELIST" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Estensioni file permesse (whitelist)]]></key>
         <key id="configuration&amp;_FIRST_CATALOGUE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Mostra il catalogo corsi come pagina principale]]></key>
         <key id="configuration&amp;_FORUM_AS_TABLE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Mostra i forum in formato tabella]]></key>
@@ -495,6 +500,8 @@ La chat si aprirà in una finestra di pop-up]]></key>
         <key id="configuration&amp;_FTPOK" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[FTP OK]]></key>
         <key id="configuration&amp;_GOOGLE_STAT_CODE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Codice fornito da Google]]></key>
         <key id="configuration&amp;_GOOGLE_STAT_IN_LMS" attributes="" save_date="2017-04-07 16:22:55"><![CDATA[Usa le statistiche di Google Analytics]]></key>
+        <key id="configuration&amp;_HELPDESK_SUBJ" attributes="" save_date="2020-05-31 16:29:04"><![CDATA[Oggetto assistenza]]></key>
+        <key id="configuration&amp;_HELPDESK_SUBJ_PLACEHOLDER" attributes="" save_date="2020-05-31 16:29:17"><![CDATA[Segnaposto richiesta assistenza]]></key>
         <key id="configuration&amp;_HIDE_EMPTY_CATEGORY" attributes="" save_date="2017-11-09 18:09:03"><![CDATA[Nascondi categorie vuote]]></key>
         <key id="configuration&amp;_HOME_PAGE" attributes="" save_date="2017-11-09 18:10:07"><![CDATA[Home page]]></key>
         <key id="configuration&amp;_HOUR_REQUEST_LIMIT" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Limite di ore disponibili per confermare la richiesta di iscrizione]]></key>
@@ -506,6 +513,7 @@ La chat si aprirà in una finestra di pop-up]]></key>
         <key id="configuration&amp;_KB_FILTER_BY_USER_ACCESS" attributes="" save_date="2017-04-10 15:54:34"><![CDATA[Mostra, nell'area dei risultati ricerche per la content library, anche gli oggetti non direttamente disponibili agli utenti]]></key>
         <key id="configuration&amp;_KB_SHOW_UNCATEGORIZED" attributes="" save_date="2017-04-10 15:54:39"><![CDATA[Mostra, nell'area dei risultati ricerche per la content library, anche gli oggetti non indicizzati completamente]]></key>
         <key id="configuration&amp;_LANG_CHECK" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Attiva l'interfaccia di editing delle lingue (utilizzato per il debug)]]></key>
+        <key id="configuration&amp;_LANG_EXPORT_TIME" attributes="" save_date="2020-05-31 17:47:39"><![CDATA[Data dell'esportazione lingue]]></key>
         <key id="configuration&amp;_LASTFIRST_MANDATORY" attributes="" save_date="2017-05-26 09:58:52"><![CDATA[Nome e Cognome sono campi obbligatori per la registrazione]]></key>
         <key id="configuration&amp;_LDAP" attributes="" save_date="2017-03-15 11:47:14"><![CDATA[Estensione LDAP di PHP]]></key>
         <key id="configuration&amp;_LDAP_PORT" attributes="" save_date="2017-03-15 11:48:12"><![CDATA[Porta server LDAP]]></key>
@@ -541,6 +549,7 @@ La chat si aprirà in una finestra di pop-up]]></key>
         <key id="configuration&amp;_OWNED_BY" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Proprietà sito]]></key>
         <key id="configuration&amp;_PAGE_TITLE" attributes="" save_date="2017-03-15 10:54:08"><![CDATA[Titolo pagina (apparirà come titolo del browser)]]></key>
         <key id="configuration&amp;_PASS_ALFANUMERIC" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[La password deve essere composta sia da lettere che da numeri]]></key>
+        <key id="configuration&amp;_PASS_ALGORITHM" attributes="" save_date="2020-05-31 16:29:28"><![CDATA[Algoritmo per la password]]></key>
         <key id="configuration&amp;_PASS_CHANGE_FIRST_LOGIN" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Obbliga gli utenti al cambio della password al primo login]]></key>
         <key id="configuration&amp;_PASS_MAX_TIME_VALID" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Giorni di validità di una password (0 = la password non ha scadenza)]]></key>
         <key id="configuration&amp;_PASS_MIN_CHAR" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Lunghezza password (numero minimo di caratteri)]]></key>
@@ -664,6 +673,7 @@ http://server/path/index.php?modname=login) \]]></key>
         <key id="configuration&amp;_TEMPLATE_DOMAIN" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Associazione Dominio Template]]></key>
         <key id="configuration&amp;_TRACKING" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Abilita tracciamento utenti (Raccomandato)]]></key>
         <key id="configuration&amp;_TTLSESSION" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Tempo di vita della sessione]]></key>
+        <key id="configuration&amp;_TWIG_CACHE" attributes="" save_date="2020-05-31 16:29:39"><![CDATA[memoria cache di Twig]]></key>
         <key id="configuration&amp;_UPLOADFTP" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Connessione FTP]]></key>
         <key id="configuration&amp;_UPLOAD_MAX_FILESIZE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Configurazione di "upload_max_filesize"]]></key>
         <key id="configuration&amp;_URL" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Indirizzo del sito (deve terminare con /)]]></key>
@@ -1058,8 +1068,9 @@ Titolo: [title]
 
 Titolo: [thread_title]]]></key>
         <key id="email&amp;_NEW_USER_SUBSCRIBED_SUBJECT" attributes="email" save_date="2015-09-30 15:32:39"><![CDATA[Un nuovo utente si è iscritto ad un corso]]></key>
-        <key id="email&amp;_NEW_USER_SUBSCRIBED_SUBJECT_MODERATORS" attributes="" save_date="2020-02-19 10:43:56"><![CDATA[Un nuovo utente [firstname] [lastname] [username] è stato sospeso dal corso [course] da un moderatore]]></key>
+        <key id="email&amp;_NEW_USER_SUBSCRIBED_SUBJECT_MODERATORS" attributes="" save_date="2020-03-02 13:14:32"><![CDATA[Un nuovo utente è stato iscritto ad un corso]]></key>
         <key id="email&amp;_NEW_USER_SUBSCRIBED_TEXT" attributes="email" save_date="2015-09-30 15:32:39"><![CDATA[All'indirizzo: [url] un nuovo utente è stato iscritto al corso: [course]]]></key>
+        <key id="email&amp;_NEW_USER_SUBSCRIBED_TEXT_MODERATORS" attributes="" save_date="2020-03-02 13:15:09"><![CDATA[Un nuovo utente [firstname] [lastname] [username] è stato iscritto al corso [course]]]></key>
         <key id="email&amp;_NEW_USER_SUBS_WAITING_SUBJECT" attributes="email" save_date="2015-09-30 15:32:39"><![CDATA[Un utente è in attesa di essere iscritto ad un corso]]></key>
         <key id="email&amp;_NEW_USER_SUBS_WAITING_TEXT" attributes="email" save_date="2015-09-30 15:32:39"><![CDATA[Un nuovo utente si è iscritto al corso '[course]' ed è in attesa di essere approvato.
 
@@ -1595,6 +1606,7 @@ Nella conservazione dei dati verranno osservate accuratezza e precisione per gar
         <key id="menu_over&amp;_COMMUNITY" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Comunità]]></key>
         <key id="menu_over&amp;_COURSE_AUTOREGISTRATION" attributes="" save_date="2018-02-05 15:12:13"><![CDATA[Aggiungi corso]]></key>
         <key id="menu_over&amp;_GO_TO_FRAMEWORK" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Amministrazione]]></key>
+        <key id="menu_over&amp;_HELPDESK" attributes="" save_date="2020-06-08 08:45:50"><![CDATA[Richiesta di assistenza]]></key>
         <key id="menu_over&amp;_LIBRARY" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Authoring]]></key>
         <key id="menu_over&amp;_MENUCOURSE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Campus]]></key>
         <key id="menu_over&amp;_MENUGEN" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Menu generale]]></key>
@@ -1666,6 +1678,7 @@ Nella conservazione dei dati verranno osservate accuratezza e precisione per gar
         <key id="organization&amp;_ORGPLAYTITLE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Play]]></key>
         <key id="organization&amp;_ORGROOTNAME" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Materiali]]></key>
         <key id="organization&amp;_ORG_ACCESS" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Accessi]]></key>
+        <key id="organization&amp;_PROFILE" attributes="" save_date="2020-05-31 16:29:44"><![CDATA[Profilo]]></key>
         <key id="organization&amp;_PUBLISH_FROM" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Pubblica a partire da]]></key>
         <key id="organization&amp;_PUBLISH_TO" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Pubblica fino a]]></key>
         <key id="organization&amp;_REPOSELECTDESTINATION" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Seleziona la cartella di destinazione per l'operazione di copia]]></key>
@@ -2249,6 +2262,7 @@ Password: [password]]]></key>
         <key id="standard&amp;_ATTACHMENT" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Allegato]]></key>
         <key id="standard&amp;_ATTENDANCE" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Presenze]]></key>
         <key id="standard&amp;_AUTHOR" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Autore]]></key>
+        <key id="standard&amp;_AUTOCREATE_CATEGORIES" attributes="" save_date="2020-05-11 12:41:17"><![CDATA[Crea automaticamente le categorie mancanti]]></key>
         <key id="standard&amp;_AUTODETECT" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Auto-detect]]></key>
         <key id="standard&amp;_AUTO_SUBSCRIPTION" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Iscrizione automatica al corso]]></key>
         <key id="standard&amp;_AVATAR" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Avatar]]></key>
@@ -2519,6 +2533,7 @@ Password: [password]]]></key>
         <key id="standard&amp;_PREVIEW" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Anteprima]]></key>
         <key id="standard&amp;_PREV_B" attributes="" save_date="2017-04-11 18:47:42"><![CDATA[Precedente]]></key>
         <key id="standard&amp;_PREV_STEP" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Precedente]]></key>
+        <key id="standard&amp;_PROFILE" attributes="" save_date="2020-05-31 16:29:49"><![CDATA[Profilo]]></key>
         <key id="standard&amp;_PROFILE_MODIFY" attributes="" save_date="2019-10-11 10:33:15"><![CDATA[Modifica profilo]]></key>
         <key id="standard&amp;_PROFILE_MODIFY_URL" attributes="" save_date="2019-10-11 10:38:13"><![CDATA[Url per la modifica del profilo:]]></key>
         <key id="standard&amp;_PROGRESS" attributes="" save_date="2017-10-25 15:36:11"><![CDATA[Progresso]]></key>
@@ -2591,6 +2606,7 @@ Password: [password]]]></key>
         <key id="standard&amp;_TAGS" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Tag]]></key>
         <key id="standard&amp;_TELESKILL" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Teleskill]]></key>
         <key id="standard&amp;_TEXTOF" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Testo]]></key>
+        <key id="standard&amp;_TIMEPERIODS" attributes="" save_date="2020-05-31 17:46:49"><![CDATA[Periodi temporali]]></key>
         <key id="standard&amp;_TIME_PERIODS" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Periodi temporali]]></key>
         <key id="standard&amp;_TITLE" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Titolo]]></key>
         <key id="standard&amp;_TO" attributes="" save_date="2017-07-05 10:41:57"><![CDATA[al]]></key>
