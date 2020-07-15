@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20200220</DATE>
+  <DATE>20200714</DATE>
   <LANG id="german">
     <lang_code>german</lang_code>
     <lang_description>German</lang_description>
@@ -1541,6 +1541,7 @@ Um diese Worte zu ändern, gehen Sie bitte auf Admin/Sprachverwaltung, suchen Si
         <key id="menu_over&amp;_CERTIFICATE_DOWNLOAD" attributes="" save_date="2020-01-16 17:55:24"><![CDATA[Zertifikat-Download]]></key>
         <key id="menu_over&amp;_COMMUNITY" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Community]]></key>
         <key id="menu_over&amp;_GO_TO_FRAMEWORK" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Admin Bereich]]></key>
+        <key id="menu_over&amp;_HELPDESK" attributes="" save_date="2020-06-08 08:45:25"><![CDATA[Helpdesk]]></key>
         <key id="menu_over&amp;_LIBRARY" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Autorenverwaltung]]></key>
         <key id="menu_over&amp;_MENUCOURSE" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Campus]]></key>
         <key id="menu_over&amp;_MENUGEN" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Generalmenü]]></key>

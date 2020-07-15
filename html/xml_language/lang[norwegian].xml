@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20200220</DATE>
+  <DATE>20200714</DATE>
   <LANG id="norwegian">
     <lang_code>norwegian</lang_code>
     <lang_description>Norsk</lang_description>
@@ -1117,7 +1117,9 @@
         <key id="menu&amp;_WEBPAGES" attributes="" save_date="2018-11-17 22:05:34"><![CDATA[Nettsteder]]></key>
       </module>
       <module id="menu_course"/>
-      <module id="menu_over"/>
+      <module id="menu_over">
+        <key id="menu_over&amp;_HELPDESK" attributes="" save_date="2020-06-08 08:45:26"><![CDATA[Helpdesk]]></key>
+      </module>
       <module id="message">
         <key id="message&amp;_ATTACH_TITLE" attributes="" save_date="2018-11-17 22:11:37"><![CDATA[Meldingen har vedlegg]]></key>
         <key id="message&amp;_FILTER_MESSAGE_FOR" attributes="" save_date="2018-11-17 22:15:42"><![CDATA[Send melding til kursdeltagerne]]></key>
