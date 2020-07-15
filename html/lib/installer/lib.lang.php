@@ -74,6 +74,8 @@ Class Lang {
 			//$res["th"] = "thai";
 			$res["tr"] = "turkish";
 			$res["uk"] = "ukrainian";
+			$res["he"] = "hebrew";
+			$res["lv"] = "latvian";
 
 		} else if ($key == "language") {
 
@@ -111,6 +113,8 @@ Class Lang {
 			//$res["thai"] = "thai";
 			$res["turkish"] = "turkish";
 			$res["ukrainian"] = "ukrainian";
+			$res["hebrew"] = "hebrew";
+			$res["latvian"] = "latvian";
 		}
 		return $res;
 	}
