@@ -12,8 +12,9 @@ RELEASE CHANGELOG
 ---------------------------------------------------------------------------------------
 forma.lms 2.4.2
 ---------------------------------------------------------------------------------------
-Release date: 2020 february 20
+Release date: 2020 july
 
+#19743 - SCORM fixes and improvements
 #19680 - Registration with code doesn't work wit advanced registration (tree_drop)
 #19684 - Catalogo esterno alla piatta, resta in download
 #19682 - Registro valutazioni: numero di compilazioni errate
