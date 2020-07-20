@@ -196,7 +196,7 @@ class PeopleListView extends ListView {
 
 	function _getRowsPage() { return Get::sett('visuUser'); }
 
-	function PeopleListView($title, &$data, &$rend, $id) {
+	function __construct($title='', &$data='', &$rend='', $id='') {
 		require_once($GLOBALS['where_framework'].'/lib/lib.field.php');
 		$this->field_list = new FieldList();
 		parent::ListView($title, $data, $rend, $id);
