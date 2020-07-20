@@ -86,7 +86,6 @@ class Layout
             . "\t\t" . '<meta name="Generator" content="www.formalms.org ' . Get::sett('core_version', '') . '" />' . "\n"
             . "\t\t" . '<link rel="Copyright" href="http://www.formalms.org/copyright" title="Copyright Notice" />' . "\n"
             . "\t\t" . '<link rel="Author" href="http://www.formalms.org/about" title="About" />' . "\n";
-
     }
 
     public static function resetter()
@@ -195,7 +194,7 @@ class Layout
 
             $html .= '<li><a class="lang-sprite lang_' . strtolower(str_replace(' ', '_', $lang->lang_code)) . ($lang->lang_code == $lang_sel ? ' current' : '') . '"'
                 . 'href="' . (isset($args['redirect_on']) ? $args['redirect_on'] : 'index.php')
-                . '?'//.($r !== '' ? '?r='.$r.'&amp;' : '?')
+                . '?' //.($r !== '' ? '?r='.$r.'&amp;' : '?')
                 . ($server_query_string !== "" ? str_replace('&', '&amp;', $server_query_string) . '&amp;' : "")
                 . 'special=changelang&new_lang=' . rawurlencode($lang->lang_code) . '" title="' . $lang->lang_description . '">'
                 . '</a></li>';
@@ -391,7 +390,6 @@ class Layout
                     $retArray['direct_play'] = Layout::zone('content');
                 }
                 break;
-
         }
         return $retArray;
     }
@@ -475,8 +473,6 @@ class Layout
 
                     $id_list[] = '"menu_lat_' . $main->id . '"';
                 }
-
-
             }
 
             if ($_SESSION['current_main_menu'] === 0) {
@@ -512,14 +508,14 @@ class Layout
                     $seconds = (int)($partial_time_sec % 60);
                     if ($minutes < 10) $minutes = '0' . $minutes;
                     if ($seconds < 10) $seconds = '0' . $seconds;
-                    $partial_time = ($hours != 0 ? $hours . 'h ' : '') . $minutes . 'm ';//.$seconds.'s ';
+                    $partial_time = ($hours != 0 ? $hours . 'h ' : '') . $minutes . 'm '; //.$seconds.'s ';
 
                     $hours = (int)($tot_time_sec / 3600);
                     $minutes = (int)(($tot_time_sec % 3600) / 60);
                     $seconds = (int)($tot_time_sec % 60);
                     if ($minutes < 10) $minutes = '0' . $minutes;
                     if ($seconds < 10) $seconds = '0' . $seconds;
-                    $tot_time = ($hours != 0 ? $hours . 'h ' : '') . $minutes . 'm ';//.$seconds.'s ';
+                    $tot_time = ($hours != 0 ? $hours . 'h ' : '') . $minutes . 'm '; //.$seconds.'s ';
 
                     $stats['user_stats']['show_time']['partial_time'] = $partial_time;
 
@@ -537,7 +533,7 @@ class Layout
 
             // print progress bar -------------------------------------------------
             if (Docebo::course()->getValue('show_progress') == 1) {
-
+                $show_progress = true;
                 require_once($GLOBALS['where_lms'] . '/lib/lib.stats.php');
                 $total = getNumCourseItems($_SESSION['idCourse'],
                     FALSE,
@@ -561,11 +557,14 @@ class Layout
                 $stats['course_stats']['materials_incomplete'] = $tot_incomplete;
                 //$stats['course_stats']['materials_passed'] = $tot_passed;
                 //$stats['course_stats']['materials_failed'] = $tot_failed;
+            } else {
+                $show_progress = false;
             }
 
             return [
                 'dropdown' => $dropdown_menu,
                 'course_name' => $course_name,
+                'show_progress' => $show_progress,
                 'course_img' => $course_img,
                 'stats' => [
                     'total' => $total,
