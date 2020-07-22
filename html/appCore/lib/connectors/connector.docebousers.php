@@ -621,11 +621,11 @@ class DoceboConnectorDoceboUsers extends DoceboConnector {
 			
 			if($tree_code) {
 				
-				$tree_codes = explode(';', $tree_code);
+				$tree_codes = explode('#', $tree_code);
 				
 				$readed_folders = array();
-        foreach($tree_codes as $tree_code )
-        {
+                foreach($tree_codes as $tree_code )
+                {
 					
 					$dir_code = stripslashes($tree_code);
 					if(isset($this->org_chart_code[$dir_code])) {
@@ -978,6 +978,7 @@ class DoceboConnectorDoceboUsersUI extends DoceboConnectorUI {
 											$this->_get_base_name().'[name]', 
 											255, 
 											$this->post_params['name']);
+        // ---- description -----
 		// ---- description -----
 		$out .= $this->form->getSimpleTextarea( $this->lang->def('_DESCRIPTION'), 
 											$this->_get_base_name().'_description', 
