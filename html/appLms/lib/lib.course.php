@@ -2008,6 +2008,7 @@ class Man_CourseUser {
 
     function hasCompletedCourses($id_user, $courseIdsArr){        
     
+        $courseIdsArr = array_unique($courseIdsArr);
         $c = implode(",",$courseIdsArr);
         $q =    "SELECT COUNT(*)"
                     ." FROM " . $this->_table_user_subscription
