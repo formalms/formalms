@@ -238,6 +238,8 @@ class SettingAdm extends Model
 	function printPageWithElement($regroup, $includeDisabledPlugins = false)
 	{
 
+		$i_after = null;
+		$maxlenght = null;
 		require_once(_base_ . '/lib/lib.form.php');
 
 		if ($regroup == 'suite_man') return $this->_maskSuiteManager();
@@ -420,6 +422,17 @@ class SettingAdm extends Model
 								</div>';
 
 							$row_item = '<div class="row form_line_l">'
+								. '<div class="col-sm-4"><p>&nbsp;</p>'
+								. Form::getInputTextfield(
+									null,
+									null,
+									'option[' . $var_name . '][domain][]',
+									'https://',
+									null,
+									$maxlenght,
+									null
+								)
+								. '</div>'
 								. Form::getLineDropdown(
 									'col-sm-3',
 									null,
@@ -440,24 +453,12 @@ class SettingAdm extends Model
 									'select',
 									null,
 									'option[' . $var_name . '][node][]',
-									$tree_names,
+									$nodes,
 									null,
 									null,
 									$i_after,
 									null
 								)
-								. '<div class="col-sm-4"><p>&nbsp;</p>'
-								. Form::getInputTextfield(
-									null,
-									null,
-									'option[' . $var_name . '][domain][]',
-									'https://',
-									null,
-									$maxlenght,
-									null
-								)
-								. '</div>'
-
 								. '<div class="col-sm-1"><p>&nbsp;</p><button type="button" class="btn btn-danger"><i class="fa fa-close"></i></button>'
 								. '</div>'
 								. '</div>';
