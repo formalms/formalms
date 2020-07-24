@@ -14,6 +14,8 @@ html/files/**
 !html/files/appLms/label/label_image.png
 # Sezione html/templates
 html/templates/standard/style/custom.css
+html/templates/**
+!html/templates/standard
 
 # Sezione Plugin
 html/plugins/**
