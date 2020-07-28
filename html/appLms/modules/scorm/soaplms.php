@@ -58,7 +58,7 @@ class SOAPLMS {
 		return null;
 	} 
 	// Constructor builds PEAR::SOAP Server
-	function SOAPLMS ()
+	function __construct()
 	{ 
 		// Define the signature of the dispatch map
 		$this->__dispatch_map['Finish'] =
