@@ -52,6 +52,9 @@ StdUIPlayer.prototype.setScormPlayer = function( scormPlayer ) {
 
 StdUIPlayer.prototype.scormPlayerActionPerformer = function( evType, evValue) {
 	switch( evType ) {
+		case 'blankPageLoaded':
+			StdUIPlayer.refresh();
+		break;
 		case 'Initialize':
 			if( playerConfig.autoplay == '1' ) {
 				// set next scoid
@@ -61,7 +64,6 @@ StdUIPlayer.prototype.scormPlayerActionPerformer = function( evType, evValue) {
 			}
 		break;
 		case 'Finish':
-			StdUIPlayer.refresh();
 			if(this.scormPlayer.singleSco()) window.close_player = true;
 			this.scormPlayer.play(null, this.cntSco);
 		break;
@@ -261,16 +263,6 @@ StdUIPlayer.prototype.showhidetree = function() {
 
 StdUIPlayer.prototype.closePlayer = function() {
 
-	// Forzo LMSFinish per bug Lectora
-	if(playerConfig.scormVersion == '1.3') {
-		window.API_1484_11.LMSCommit("", /*FIX 17052016*/ function(){
-			window.API_1484_11.LMSFinish("");
-		});
-	}else {
-		window.API.LMSCommit("", /*FIX 17052016*/ function(){
-			window.API.LMSFinish("");
-		});
-	}
 	this.scormPlayer.closePlayer();
 }
 
@@ -300,6 +292,9 @@ StdUIPlayer.initialize = function() {
 									playerConfig.idscorm_organization,
 									playerConfig.scormVersion,
 									playerConfig.environment);
+
+	scormapi.init();
+
 	/* hook for scorm 1.3 */
 	if(playerConfig.scormVersion == '1.3')  window.API_1484_11 = scormapi;
 	else window.API = scormapi;

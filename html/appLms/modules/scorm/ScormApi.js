@@ -61,11 +61,26 @@
 		loadFromXml( this.basepath + '/scormItemTrackData-'+this.scormVersion+'.xml', null, this );
 
 	this.is_unloading = false;
+}
+
+ScormApi.prototype.init = function() {
 	window.addEventListener('beforeunload', this.unloading.bind(this));
+	window.addEventListener('beforeunload', this.forceFinish.bind(this));
  }
 
 ScormApi.prototype.unloading = function() {
 	this.is_unloading = true;
+}
+
+ScormApi.prototype.notUnloading = function() {
+	this.is_unloading = false;
+}
+
+ScormApi.prototype.forceFinish = function() {
+	if(!this.finish_launched) {
+		this.commonLMSFinish();
+		this.finish_launched = true;
+	}
 }
 
 ScormApi.prototype.setScormVersion = function( version ) {
@@ -367,35 +382,25 @@ ScormApi.prototype.LMSSetValue = function( param, data ) {
 // =========== Private functions ============================
 ScormApi.prototype.commonRequest = function (op, strSoap, callback) {
 
-	var requrl = this.baseurl + '?op=' + op;
+	var requrl = this.baseurl + '?op=' + op + '&authentic_request=' + playerConfig.auth_request;
+
+	if (this.is_unloading && navigator.sendBeacon) {
+		navigator.sendBeacon(requrl, new Blob([strSoap], { type: 'text/xml' }));
+		// The page is unloading: the response can not be used. Just return "true".
+		return "true"; 
+	} else {
 	var reqheaders = {
 		'Man': "POST " + this.baseurl + " HTTP/1.1",
 		'X-Host': this.host,
 		"Content-type": "text/xml; charset=utf-8",
-		"SOAPAction": this.serviceid + op,
-		"X-Signature": playerConfig.auth_request
+			"SOAPAction": this.serviceid + op
 	};
-
-	if (this.is_unloading) {
-		// TODO: use sendBeacon instead.
-		var ajxreq = new Ajax.Request(requrl,
-			{
-				method: 'post',
-				asynchronous: true,
-				postBody: strSoap,
-				requestHeaders: reqheaders
-			}
-		);
-		// Ajax.Request onComplete callback is not actually called after the request completion (it uses a timeout instead).
-		// The page is unloading: the response can not be used. Just return "true".
-		return "true"; 
-	} else {
 		var ajxreq = new Ajax.Request(requrl,
 			{
 				method: 'post',
 				asynchronous: false,
 				postBody: strSoap,
-				requestHeaders: reqheaders,
+				requestHeaders: reqheaders
 			}
 		);
 		return callback(ajxreq);
