@@ -83,6 +83,7 @@ Class AggregatedcertificateAlmsController extends AlmsController
         $tb->setLink("index.php?r=alms/".$this->controller_name."/show");        
         $ini = $tb->getSelectedElement();
 
+        $ini=importVar("ini", true, 0);
         
         $filter_text = Get::req('filter_text', DOTY_STRING, '');
         
@@ -135,6 +136,8 @@ Class AggregatedcertificateAlmsController extends AlmsController
         // Array of all metacertificates to display in the main admin panel
         $aggregateCertsArr = $this->aggCertLib->getAllAggregatedCerts($ini, false, $filter);
 
+         $aggregateCertsArrTot = $this->aggCertLib->getAllAggregatedCerts(0,true);
+        
             foreach ($aggregateCertsArr as $aggregate_cert) {
                 $title = strip_tags($aggregate_cert["name"]);
 
@@ -207,6 +210,8 @@ Class AggregatedcertificateAlmsController extends AlmsController
             $params["tb"] = $tb;
             $params["ini"] = $ini;
             $params["countAggrCerts"] = count($aggregateCertsArr);
+            
+            $params["aggregateCertsArrTot"] = $aggregateCertsArrTot   ;
             
             $params["controller_name"] = $this->controller_name;
             $params["opsArr"] = $this->op;

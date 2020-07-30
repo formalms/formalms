@@ -916,10 +916,10 @@ class Table {
 		if($this->maxRowsAtTime == 0) return;
 		if( !is_array($symbol) ) {
 			$symbol = array(
-				'start' => '<img src="'.getPathImage().'standard/start.gif" alt="'. Lang::t('_START').'" title="'. Lang::t('_START').'" />',
-				'prev' => '<img src="'.getPathImage().'standard/prev.gif" alt="'. Lang::t('_PREV').'" title="'. Lang::t('_PREV').'" />',
-				'next' => '<img src="'.getPathImage().'standard/next.gif" alt="'. Lang::t('_NEXT').'" title="'. Lang::t('_NEXT').'" />',
-				'end' => '<img src="'.getPathImage().'standard/end.gif" alt="'. Lang::t('_END').'" title="'. Lang::t('_END').'" />'
+				'start' => '<img src="'.getPathImage().'standard/start.png" alt="'. Lang::t('_START').'" title="'. Lang::t('_START').'" />',
+				'prev' => '<img src="'.getPathImage().'standard/prev.png" alt="'. Lang::t('_PREV').'" title="'. Lang::t('_PREV').'" />',
+				'next' => '<img src="'.getPathImage().'standard/next.png" alt="'. Lang::t('_NEXT').'" title="'. Lang::t('_NEXT').'" />',
+				'end' => '<img src="'.getPathImage().'standard/end.png" alt="'. Lang::t('_END').'" title="'. Lang::t('_END').'" />'
 			);
 		}
 		$nav = '';
@@ -939,9 +939,6 @@ class Table {
 			//total number of page
 			$nav .= '<div class="nav-bar">';
 
-			$nav .= '<div class="float_right">'
-				. Lang::t('_RE').$totalRow.' '
-				. Lang::t('_PAGES').$numberOfPage.'</div>';
 
 			//jump to start position
 			if($start != '1') $nav .= '<a href="'.$link.'0">'.$symbol['start'].'</a>&nbsp;';

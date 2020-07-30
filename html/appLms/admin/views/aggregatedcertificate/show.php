@@ -34,4 +34,12 @@ if(isset($_GET['result']))
     }
 }
 
-cout($tb->getTable().$tb->getNavBar($ini, $countAggrCerts).'</div>');
+//cout($tb->getTable().$tb->getNavBar($ini, $countAggrCerts).'</div>');
+
+cout($tb->getTable()                                  
+    .$tb->WriteNavBar('',
+                                'index.php?r=alms/aggregatedcertificate/show&result=ok&ini=',
+                                $ini,              
+                                count($aggregateCertsArrTot))     
+
+    .'</div>');
