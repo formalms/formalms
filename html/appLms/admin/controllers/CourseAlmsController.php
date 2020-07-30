@@ -1107,9 +1107,13 @@ Class CourseAlmsController extends AlmsController
 			
 			// , $list_of_assign_obj, $list_of_who
 			
-			if(!$cert->updateCertificateCourseAssign($id_course, $_POST['certificate_assign'], $_POST['certificate_ex_assign'], $point_required))
-				Util::jump_to('index.php?r='.$this->base_link_course.'/show&err=_up_cert_err');
-			Util::jump_to('index.php?r='.$this->base_link_course.'/show&res=_up_cert_ok');
+			if(!$cert->updateCertificateCourseAssign($id_course, 
+                $_POST['certificate_assign'], 
+                $_POST['certificate_ex_assign'], 
+                $point_required, 
+                $_POST['certificate_assign_minutes'])) 
+				    Util::jump_to('index.php?r='.$this->base_link_course.'/show&err=_up_cert_err');
+			        Util::jump_to('index.php?r='.$this->base_link_course.'/show&res=_up_cert_ok');
 		}
 		else
 		{
