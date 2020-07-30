@@ -555,13 +555,13 @@ class DoceboConnectorDoceboUsers extends DoceboConnector {
 				$userid,
 				$firstname,
 				$lastname,
-				$pass, 
+				FALSE, 
 				$email,
 				FALSE,
 				FALSE,
 				FALSE,
 				TRUE,
-				$force_change,
+				0,
 				FALSE, //facebook_id
 				FALSE, //twitter_id
 				FALSE, //linkedin_id
@@ -1071,6 +1071,3 @@ class DoceboConnectorDoceboUsersUI extends DoceboConnectorUI {
 function docebousers_factory() {
   return new DoceboConnectorDoceboUsers(array());
 }
-
-
-?>
