@@ -95,7 +95,7 @@ final class SmtpAdm extends Model
      */
     public function isUseSmtp()
     {
-        if ($this->useSmtp === 'on' || $this->useSmtp === 'true' || $this->useSmtp){
+        if ($this->useSmtp === 'on' || $this->useSmtp === 'true' || $this->useSmtp === true){
             return true;
         }
         else {
