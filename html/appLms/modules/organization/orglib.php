@@ -1664,6 +1664,27 @@ class Org_TreeView extends RepoTreeView {
 			} else {
 				$node['locked'] = true;
 			}
+
+			$lo_type = $arrData[REPOFIELDOBJECTTYPE];
+			$lo_class = createLO($lo_type);
+			if( checkPerm('lesson', true, 'storage') && !$this->playOnly)  {
+				$canBeCategorized = false;
+				if (is_object($lo_class)){
+					$canBeCategorized = $lo_class->canBeCategorized();
+				}
+				
+				if ($canBeCategorized) {
+					$node['cateogrize_link']='link + '.$this->id.'['.$this->_getCategorizeId().']['.$folder->id.']';
+				}
+				$node['properties_link']=''.$this->id.'['.$this->_getPropertiesId().']['.$folder->id.']';
+				
+				if( !$isFolder ) {
+					$node['copy_link'] = ''.$this->id.'['.$this->_getOpCopyLOId().']['.$folder->id.']';
+					$node['edit_link'] = ''.$this->id.'['.$this->_getOpEditLOId().']['.$folder->id.']';
+					$node['play_teacher_link'] = 'index.php?modname=organization&amp;op=custom_playitem&amp;edit=1&amp;id_item='.$folder->id.'';
+						
+				} 
+			}
 			
 			switch( $status ) {
 				case 'not attempted': $img = 'notcompleted.svg'; break;
