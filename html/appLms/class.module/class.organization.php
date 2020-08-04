@@ -428,9 +428,7 @@ class Module_Organization extends LmsModule {
 
 				$folder = $this->repoDb->getFolderById( $this->treeView->getSelectedFolderId() );
 				$lo = createLO( $folder->otherValues[REPOFIELDOBJECTTYPE]);
-				$lo->edit($folder->otherValues[REPOFIELDIDRESOURCE], 'index.php?modname='.$modname
-							.'&op=display&sor='.$saveName.'&'
-							.$this->treeView->_getOpEditLOEnd().'=1' );
+				$lo->edit($folder->otherValues[REPOFIELDIDRESOURCE], 'index.php?r=lms/lo/organization&id_course=1' );
 			break;
 			case 'playitem':
 				global $modname;

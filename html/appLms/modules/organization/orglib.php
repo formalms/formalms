@@ -1549,7 +1549,7 @@ class Org_TreeView extends RepoTreeView {
 		require_once($GLOBALS['where_lms'].'/lib/lib.course.php');
 		
 		$res = [];
-		foreach($idLoList as $idLo){
+		foreach($idLoList as $index => $idLo){
 
 			$node = [];
 
@@ -1668,20 +1668,62 @@ class Org_TreeView extends RepoTreeView {
 			$lo_type = $arrData[REPOFIELDOBJECTTYPE];
 			$lo_class = createLO($lo_type);
 			if( checkPerm('lesson', true, 'storage') && !$this->playOnly)  {
+
+				$node['actions'] = [];
+
+				if( $index != 0 ) {
+					$node['actions']['up']=[
+						'link' => $this->id.'['.$this->_getOpUpId().']['.$folder->id.']',
+						'image' => $this->_getOpUpImg()
+					];
+				}
+				if( $index != count($idLoList) - 1) {
+					$node['actions']['down']=[
+						'link' => $this->id.'['.$this->_getOpDownId().']['.$folder->id.']',
+						'image' => $this->_getOpDownImg()
+					];
+				}
+
+				$node['actions']['access']=[
+					'link' => $this->id.'['.$this->_getAccessId().']['.$folder->id.']',
+					'image' => $this->_getAccessImg()
+				];
+
+				$node['actions']['delete']=[
+					'link' => $this->id.'['.$this->_getDeleteUrl().']['.$folder->id.']',
+					'image' => $this->_getDeleteImage()
+				];
+
+				$tree .= '<img src="'.$this->_getDeleteImage().'" alt="'.$this->_getDeleteAlt().'" /> '
+				.'<input type="submit" class="TreeViewAction" value="'.$this->_getDeleteLabel().'"'
+				.' name="'.$this->_getDeleteUrl().'" />';
+
 				$canBeCategorized = false;
 				if (is_object($lo_class)){
 					$canBeCategorized = $lo_class->canBeCategorized();
 				}
 				
 				if ($canBeCategorized) {
-					$node['cateogrize_link']='link + '.$this->id.'['.$this->_getCategorizeId().']['.$folder->id.']';
+					$node['actions']['categorize']=[
+						'link' => 'link + '.$this->id.'['.$this->_getCategorizeId().']['.$folder->id.']',
+						'image' => $this->_getCategorizeImg()
+					];
 				}
-				$node['properties_link']=''.$this->id.'['.$this->_getPropertiesId().']['.$folder->id.']';
+				$node['actions']['properties']=[
+					'link' => ''.$this->id.'['.$this->_getPropertiesId().']['.$folder->id.']',
+					'image' => $this->_getPropertiesImg()
+				];
 				
 				if( !$isFolder ) {
-					$node['copy_link'] = ''.$this->id.'['.$this->_getOpCopyLOId().']['.$folder->id.']';
-					$node['edit_link'] = ''.$this->id.'['.$this->_getOpEditLOId().']['.$folder->id.']';
-					$node['play_teacher_link'] = 'index.php?modname=organization&amp;op=custom_playitem&amp;edit=1&amp;id_item='.$folder->id.'';
+					$node['actions']['copy'] = [
+						'link' => ''.$this->id.'['.$this->_getOpCopyLOId().']['.$folder->id.']',
+						'image' => $this->_getCopyImage()
+					];
+					$node['actions']['edit'] = [
+						'link' => ''.$this->id.'['.$this->_getOpEditLOId().']['.$folder->id.']',
+						'image' => $this->_getEditImage()
+					];
+					$node['play_teacher'] = 'index.php?modname=organization&amp;op=custom_playitem&amp;edit=1&amp;id_item='.$folder->id.'';
 						
 				} 
 			}
