@@ -281,15 +281,18 @@ class CoursestatsLms extends Model
 
 		if ($res) {
 			$scores = $this->getLOScores($id_course, $id_user); //actually only tests can be scored
-
-			require_once Forma::inc(_lms_ . '/class.module/track.object.php');
+			require_once Forma::inc(_lms_.'/class.module/track.object.php' );
+			require_once Forma::inc(_lms_.'/lib/lib.module.php');
 
 			while ($obj = $this->db->fetch_obj($res)) {
+				$track = createLOTrackShort($obj->idOrg, $id_user, null);
 				$obj->status = Track_Object::getStatusFromId($obj->idOrg, $id_user);
-				$history = $this->getUserScormHistoryTrackInfo($id_user, $obj->idOrg);
-				$history_table_html = '<table class="timesDetail table table-striped table-bordered">';
-
-				if (is_array($history)) $history_table_html .= '
+				$history = $track->getHistory();
+				
+				$history_table_html = "";
+				if (count($history)) {
+					$history_table_html = '<table class="timesDetail table table-striped table-bordered">';
+					$history_table_html .= '
 					<tr>
 						<td>&nbsp;</td>
 						<td><b>' . Lang::t('_DATE_START', 'course') . '</b></td>
@@ -297,23 +300,21 @@ class CoursestatsLms extends Model
 						<td><b>' . Lang::t('_DURATION', 'course') . ' (hh:mm:ss)</b></td>
 						<td><b>' . Lang::t('_RESULT', 'course') . '</b></td>
 					</tr>';
-				foreach ($history as $key => $history_rec) {
-					$seconds_diff = strtotime("1970-01-01 " . $history_rec[3] . " UTC");
-					$date_start = date('Y-m-d H:i:s', strtotime($history_rec[0]) - $seconds_diff);
-					$date_end = date('Y-m-d H:i:s', strtotime($history_rec[0]));
-					$history_table_html .= '
-						<tr>
-							<td><b>Tentativo ' . ($key + 1) . '</b></td>
-							<td>' . Format::date($date_start, 'datetime', true) . '</td>
-							<td>' . Format::date($date_end, 'datetime', true) . '</td>
-							<td>' . $history_rec[3] . '</td>
-							<td>' . $history_rec[4] . '</td>
-						</tr>';
+					foreach ($history as $key => $history_rec) {
+						$history_table_html .= '
+							<tr>
+								<td><b>Tentativo ' . ($key + 1) . '</b></td>
+								<td>' . Format::date($history_rec->start_datetime, 'datetime', true) . '</td>
+								<td>' . Format::date($history_rec->end_datetime, 'datetime', true) . '</td>
+								<td>' . $history_rec->duration . '</td>
+								<td>' . $history_rec->status . '</td>
+							</tr>';
+					}
+					$history_table_html .= '</table>';
 				}
-				$history_table_html .= '</table>';
+				$obj->history = $history_table_html;
 				$obj->score = isset($scores[$obj->idOrg]) ? $scores[$obj->idOrg] : "";
-				$obj->history = isset($history) ? $history_table_html : ""; // by marco array sessioni
-				$obj->totaltime = $this->getUserScormHistoryTrackTotaltime($id_user, $obj->idOrg);
+				$obj->totaltime = $track->getTotalTime();
 
 				$output[] = $obj;
 			}

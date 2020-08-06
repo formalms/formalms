@@ -532,4 +532,12 @@ class Track_Object {
         
 		return $res;
 	}
+
+	function getHistory() {
+		return [];
+	}
+
+	function getTotalTime() {
+		return null;
+	}
 }
