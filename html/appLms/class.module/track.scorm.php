@@ -125,6 +125,47 @@ class Track_ScormOrg extends Track_Object {
 		return false;
 	}
 
+	function getHistory() {
+		$query = <<<SQL
+SELECT
+	DATE_SUB(sth.date_action, INTERVAL COALESCE(TIME_TO_SEC(sth.session_time), 0) SECOND) AS start_datetime,
+    sth.date_action AS end_datetime,
+    sth.score_raw,
+    sth.score_max,
+    TIME_FORMAT(sth.session_time, "%H:%i:%s") AS duration,
+    sth.lesson_status AS status
+FROM %lms_scorm_tracking_history sth
+	INNER JOIN %lms_scorm_tracking st ON sth.idscorm_tracking = st.idscorm_tracking
+WHERE st.idReference = {$this->idReference} AND st.idUser = {$this->idUser}
+ORDER BY sth.date_action ASC
+SQL;
+
+		$history = [];
+		if ($res = sql_query($query)) {
+			while ($session = sql_fetch_object($res)) {
+				$history[] = $session;
+			}
+		}
+
+		return $history;
+	}
+
+	function getTotalTime() {
+		$query = <<<SQL
+SELECT TIME_FORMAT(SUM(COALESCE(TIME_TO_SEC(sth.session_time), 0)), "%H:%i:%s") AS total_time
+FROM %lms_scorm_tracking_history sth
+	INNER JOIN %lms_scorm_tracking st ON sth.idscorm_tracking = st.idscorm_tracking
+WHERE st.idReference = {$this->idReference} AND st.idUser = {$this->idUser}
+LIMIT 1
+SQL;
+
+		$total_time = null;
+		if ($res = sql_query($query)) {
+			list($total_time) = sql_fetch_row($res);
+		}
+
+		return $total_time;
+	}
 }
 
 ?>
