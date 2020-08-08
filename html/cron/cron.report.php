@@ -319,7 +319,7 @@ if($lock_stream){
                     if (file_exists(_base_ . '/customscripts/' . _folder_lms_ . '/admin/modules/report/' . $file_name) && Get::cfg('enable_customscripts', false) == true) {
                         require_once(_base_ . '/customscripts/' . _folder_lms_ . '/admin/modules/report/' . $file_name);
                     } else {
-                        require_once(_lms_ . '/admin/modules/report/' . $file_name);
+                        require_once(Forma::inc(_lms_ . '/admin/modules/report/' . $file_name));
                     }
                     $temp = new $class_name($data['id_report']);
                 } else {
