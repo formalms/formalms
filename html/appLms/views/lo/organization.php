@@ -3,7 +3,7 @@
 <?php echo Form::closeForm(); ?>
 <script>
     $(".TreeWindow").TreeWindow({
-                    ajax: "index.php?r=lms/lo/get&id_course=<?php echo GET::req('id_course', DOTY_INT)?>",
+                    ajax: "index.php?r=lms/lo/get",
                     folder_box: "<div><div class='title'></div></div>",
                     element_box: "<div><div class='title'></div></div>",
                     check_folder: function (data) {
