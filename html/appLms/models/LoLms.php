@@ -14,7 +14,7 @@ class LoLms extends Model {
     
     public function getLearningObjects($idCourse = FALSE, $rootId = 0, $offset = null, $limit = null, $filters = array(), $groupBy = null, $selectFunction = null, $orderBy = null) {
         require_once( Docebo::inc( _lms_.'/modules/organization/orglib.php' ) );
-        //$tdb = new OrgDirDb($idCourse, $filters, $offset, $limit, $groupBy, $selectFunction, $orderBy);
+        $tdb = new OrgDirDb($idCourse, $filters, $offset, $limit, $groupBy, $selectFunction, $orderBy);
         
         //repo db
         //$tdb = new RepoDirDb( $GLOBALS['prefix_lms'].'_repo', getLogUserId());
