@@ -29,6 +29,8 @@ class LoLmsController extends LmsController
     }
 
     public function organization() {
+        addJs($GLOBALS['where_lms_relative'].'/../addons/fancyTree/', 'jquery.fancytree-all-deps.min.js');
+        addCss('../../../addons/fancyTree/skin-custom-1/ui.fancytree');
         addJs($GLOBALS['where_lms_relative'].'/../addons/tree_window/', 'lib.tree_window.js');
         $this->render('organization', array([
             'teacher' => true
