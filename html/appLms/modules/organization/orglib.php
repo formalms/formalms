@@ -1549,6 +1549,7 @@ class Org_TreeView extends RepoTreeView {
 		require_once($GLOBALS['where_lms'].'/lib/lib.course.php');
 		
 		$res = [];
+		$idx = 0;
 		foreach($idLoList as $index => $idLo){
 
 			$node = [];
@@ -1661,6 +1662,7 @@ class Org_TreeView extends RepoTreeView {
 				if (!$node['is_folder']) {
 					$node['actions']['play']=[
 						'label' => 'Play',
+						'image' => getPathImage() . '/standard/view.png',
 						'url' => 'index.php?modname=organization&op=custom_playitem&id_item='.$folder->id
 					];
 				}
@@ -1673,13 +1675,13 @@ class Org_TreeView extends RepoTreeView {
 			
 			if( checkPerm('lesson', true, 'storage') && !$this->playOnly)  {
 
-				if( $index != 0 ) {
+				if( $idx != 0 ) {
 					$node['actions']['up']=[
 						'link' => $this->id.'['.$this->_getOpUpId().']['.$folder->id.']',
 						'image' => $this->_getOpUpImg()
 					];
 				}
-				if( $index != count($idLoList) - 1) {
+				if( $idx != count($idLoList) - 1) {
 					$node['actions']['down']=[
 						'link' => $this->id.'['.$this->_getOpDownId().']['.$folder->id.']',
 						'image' => $this->_getOpDownImg()
@@ -1689,6 +1691,11 @@ class Org_TreeView extends RepoTreeView {
 				$node['actions']['access']=[
 					'link' => $this->id.'['.$this->_getAccessId().']['.$folder->id.']',
 					'image' => $this->_getAccessImg()
+				];
+
+				$node['actions']['move']=[
+					'link' => $this->id.'['.$this->_getOpMoveFolderId().']['.$folder->id.']',
+					'image' => $this->_getMoveImage()
 				];
 
 				$node['actions']['delete']=[
@@ -1716,7 +1723,7 @@ class Org_TreeView extends RepoTreeView {
 					'image' => $this->_getPropertiesImg()
 				];
 				
-				if( !$isFolder ) {
+				if( !$node['is_folder'] ) {
 					$node['actions']['copy'] = [
 						'link' => ''.$this->id.'['.$this->_getOpCopyLOId().']['.$folder->id.']',
 						'image' => $this->_getCopyImage()
@@ -1762,7 +1769,7 @@ class Org_TreeView extends RepoTreeView {
 
 
 
-			if( !$isFolder ) {
+			if( !$node['is_folder'] ) {
 				if($arrData[ORGFIELD_PUBLISHFOR] == PF_ATTENDANCE && !$this->presence()) {
 
 					$node['actions']['locked']=[
@@ -1799,6 +1806,7 @@ class Org_TreeView extends RepoTreeView {
 
 			
 			$res[$idLo] = $node;
+			$idx++;
 		}
 
 		return $res;
