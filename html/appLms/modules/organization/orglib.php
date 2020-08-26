@@ -1596,7 +1596,9 @@ class Org_TreeView extends RepoTreeView {
             $node['title']= $this->getFolderPrintName( $folder );
 
             $idCourse = $folder->otherValues[ORGFIELDIDCOURSE];
-            $course = new DoceboCourse($idCourse);
+			$course = new DoceboCourse($idCourse);
+			
+			$node['actions'] = [];
             
             $node['idCourse'] = $idCourse;
 
@@ -1656,12 +1658,11 @@ class Org_TreeView extends RepoTreeView {
 
 			} else if( $isPrerequisitesSatisfied && $event->getAccessible() ) {
 				
-				if ($folder->otherValues[1] == 'scormorg') {
-					$node['play'] = 'index.php?modname=organization&op=scorm_track&id_user='.getLogUserId().'&id_org='.$folder->otherValues[2];
-				}
-				elseif($folder->otherValues[1] == 'test')
-				{
-					$node['play'] = 'index.php?modname=organization&op=test_track&id_user='.getLogUserId().'&id_org='.$folder->otherValues[2];
+				if (!$node['is_folder']) {
+					$node['actions']['play']=[
+						'label' => 'Play',
+						'url' => 'index.php?modname=organization&op=custom_playitem&id_item='.$folder->id
+					];
 				}
 				
 				$node['locked'] = false;
@@ -1671,8 +1672,6 @@ class Org_TreeView extends RepoTreeView {
 
 			
 			if( checkPerm('lesson', true, 'storage') && !$this->playOnly)  {
-
-				$node['actions'] = [];
 
 				if( $index != 0 ) {
 					$node['actions']['up']=[
@@ -1732,15 +1731,15 @@ class Org_TreeView extends RepoTreeView {
 			}
 			
 			switch( $status ) {
-				case 'not attempted': $img = 'notcompleted.svg'; break;
-				case 'ab-initio': $img = 'notcompleted.svg'; break;
-				case 'attempted': $img = 'notcompleted.svg'; break;
+				case 'not attempted': $img = 'blank.png'; break;
+				case 'ab-initio': $img = 'ab-initio.png'; break;
+				case 'attempted': $img = 'attempted.png'; break;
 				case 'passed': 
-				case 'completed': $img = 'completed.svg'; break;
-				case 'failed': $img = 'notcompleted.svg'; break;
+				case 'completed': $img = 'completed.png'; break;
+				case 'failed': $img = 'fail.png'; break;
 			}
 
-			$node['status_logo'] = getPathImage().'lobject/status/'.$img;
+			$node['status_logo'] = getPathImage().'lobject/'.$img;
 
 			$node['type'] = $folder->otherValues[1];
 

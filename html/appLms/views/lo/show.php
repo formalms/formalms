@@ -3,9 +3,13 @@
         <colgroup>
             <col width="*"></col>
             <col width="30px"></col>
+            <col width="30px"></col>
+            <col width="30px"></col>
         </colgroup>
         <thead>
             <tr>
+                <th></th>
+                <th></th>
                 <th></th>
                 <th></th>
             </tr>
@@ -66,7 +70,18 @@
             var node = data.node,
                 $tdList = $(node.tr).find(">td");
             
-            console.log(node.data.actions)
+            console.log(node.data)
+
+            let playEl = node.data.actions['play']
+            if (playEl) {
+                $("<a>")
+                    .attr("href", playEl.url)
+                    .append(
+                        $("<span>").text(playEl.label)
+                    )
+                    .appendTo($tdList.eq(1))
+            }
+            
             let showResEl = node.data.actions['show_results']
             if (showResEl) {
                 $("<a>")
@@ -76,7 +91,14 @@
                             .attr("src", showResEl.image)
                             .attr("name", showResEl.link)
                     )
-                    .appendTo($tdList.eq(1))
+                    .appendTo($tdList.eq(2))
+            }
+
+            let statusEl = node.data['status_logo']
+            if (statusEl) {
+                $("<img>")
+                        .attr("src", statusEl)
+                        .appendTo($tdList.eq(3))
             }
         }
     });
