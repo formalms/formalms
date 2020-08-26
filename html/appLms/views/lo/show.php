@@ -1,5 +1,5 @@
 <?php echo Form::openForm("orgshow" , "index.php?modname=storage&op=display", false, "POST"); ?>
-    <table id="tree">
+    <table id="tree" style="width: 100%; margin-top: 20px;">
         <colgroup>
             <col width="*"></col>
             <col width="30px"></col>
@@ -31,11 +31,8 @@
             handleCursorKeys: true // Allow UP/DOWN in inputs to move to prev/next node
         },
         icon: function(event, data) {
-            if (data.node.isFolder()) {
-                return "folder-icon";
-            } else {
-                return "file-icon";
-            }
+            console.log(data.node.data.image_type)
+            return data.node.data.image_type + '-icon'
             // Otherwise no value is returned, so continue with default processing
         },
         extensions: ["edit", "filter", "table", "gridnav"],
@@ -69,8 +66,6 @@
         renderColumns: function(event, data) {
             var node = data.node,
                 $tdList = $(node.tr).find(">td");
-            
-            console.log(node.data)
 
             let playEl = node.data.actions['play']
             if (playEl) {

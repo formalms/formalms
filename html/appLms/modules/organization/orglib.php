@@ -1744,11 +1744,11 @@ class Org_TreeView extends RepoTreeView {
 			$node['type'] = $folder->otherValues[1];
 
 			if($folder->otherValues[1]!=""){
-				$node['image_type'] = getPathImage().'lobject/covers/'.$folder->otherValues[1].'.jpg';
+				$node['image_type'] = $folder->otherValues[1];
 			}
 
 			if(!key_exists('image_type', $node)){
-				$node['image_type'] = getPathImage().'lobject/covers/folder.jpg';
+				$node['image_type'] = 'folder';
 			}
 
             $node['properties']=$folder->properties;

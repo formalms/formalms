@@ -628,12 +628,57 @@ span.fancytree-custom-icon {
   height: 2em;
 }
 .folder-icon {
-  background-image: url('./folder.png');
+  background-image: url('../../../templates/standard/images/treeview/menu_folder_closed.png');
   background-size: 100% 100%;
   background-repeat: no-repeat;
 }
-.file-icon {
-  background-image: url('./node.png');
+
+.faq-icon {
+  background-image: url('../../../templates/standard/images/lobject/faq.png');
   background-size: 100% 100%;
   background-repeat: no-repeat;
 }
+.glossay-icon {
+  background-image: url('../../../templates/standard/images/lobject/glossay.png');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}
+.htmlpage-icon {
+  background-image: url('../../../templates/standard/images/lobject/htmlpage.png');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}
+.item-icon {
+  background-image: url('../../../templates/standard/images/lobject/item.png');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}
+.link-icon {
+  background-image: url('../../../templates/standard/images/lobject/link.png');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}
+.poll-icon {
+  background-image: url('../../../templates/standard/images/lobject/poll.png');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}
+.scormorg-icon {
+  background-image: url('../../../templates/standard/images/lobject/scormorg.png');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}
+.test-icon {
+  background-image: url('../../../templates/standard/images/lobject/test.png');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}
+
+
+
+
+
+
+
+
+
