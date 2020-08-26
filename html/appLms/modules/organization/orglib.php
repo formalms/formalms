@@ -1587,6 +1587,10 @@ class Org_TreeView extends RepoTreeView {
 				$html .= $action;
 			}
 
+			$arrData = $folder->otherValues;
+			$lo_type = $arrData[REPOFIELDOBJECTTYPE];
+			$lo_class = createLO($lo_type);
+
 			$node['html'] = $html;
 
             $node['title']= $this->getFolderPrintName( $folder );
@@ -1623,7 +1627,7 @@ class Org_TreeView extends RepoTreeView {
 			}
 
 			// find extra data and check if the node is a folder or a LO
-            $arrData = $folder->otherValues;
+            
             if (is_array($arrData) && !empty($arrData)) {
                 $node['is_folder']= ($arrData[REPOFIELDOBJECTTYPE] === '');
             } else {
@@ -1665,8 +1669,7 @@ class Org_TreeView extends RepoTreeView {
 				$node['locked'] = true;
 			}
 
-			$lo_type = $arrData[REPOFIELDOBJECTTYPE];
-			$lo_class = createLO($lo_type);
+			
 			if( checkPerm('lesson', true, 'storage') && !$this->playOnly)  {
 
 				$node['actions'] = [];
@@ -1751,7 +1754,50 @@ class Org_TreeView extends RepoTreeView {
 
             $node['properties']=$folder->properties;
                         
-            $node['img_path'] = Get::rel_path('files_lms') . '/lo/';
+			$node['img_path'] = Get::rel_path('files_lms') . '/lo/';
+			
+
+
+
+
+
+
+
+			if( !$isFolder ) {
+				if($arrData[ORGFIELD_PUBLISHFOR] == PF_ATTENDANCE && !$this->presence()) {
+
+					$node['actions']['locked']=[
+						'link' => $this->id.'['.$this->_getOpLockedId().']['.$folder->id.']" ',
+						'image' => $this->_getOpLockedImg()
+					];
+
+				} else if( $isPrerequisitesSatisfied && $event->getAccessible()) {
+
+					error_log($lo_class);
+					if(method_exists($lo_class, 'trackDetails')) {
+
+						$node['actions']['show_results']=[
+							'link' => $this->id.'['.$this->_getShowResultsId().']['.$folder->id.']" ',
+							'image' => $this->_getShowResultsImg(),
+							'url' => 'index.php?modname=organization&op=track_details&type=' . $arrData[REPOFIELDOBJECTTYPE] . '&id_user='.getLogUserId().'&id_org='.$arrData[REPOFIELDIDRESOURCE]
+						];
+					}
+				} else {
+					$node['actions']['locked']=[
+						'link' => $this->id.'['.$this->_getOpLockedId().']['.$folder->id.']" ',
+						'image' => $this->_getOpLockedImg()
+					];
+				}
+			}
+
+
+
+
+
+
+
+
+
 			
 			$res[$idLo] = $node;
 		}
