@@ -150,7 +150,7 @@ class CustomFieldList
 
 			$id_field = $id_field;
 		}
-		require_once($GLOBALS['where_framework'] . '/modules/field/' . $type_file);
+		require_once($GLOBALS['where_framework'] . '/modules/customfield/' . $type_file);
 		$quest_obj = new $type_class($id_field);
 
 		return $quest_obj;
@@ -191,7 +191,7 @@ class CustomFieldList
 		}
 
 		list($id_field, $type_file, $type_class) = sql_fetch_row($rs);
-		require_once($GLOBALS['where_framework'] . '/modules/field/' . $type_file);
+		require_once($GLOBALS['where_framework'] . '/modules/customfield/' . $type_file);
 		$quest_obj =  new $type_class($id_field);
 
 		return $quest_obj;
@@ -405,7 +405,7 @@ class CustomFieldList
 		$result = array();
 		while (list($id_field, $type_field, $type_file, $type_class, $translation, $mandatory, $useraccess) = sql_fetch_row($rs)) {
 			if (!class_exists($type_class)) {
-				require_once($GLOBALS['where_framework'] . '/modules/field/' . $type_file);
+				require_once($GLOBALS['where_framework'] . '/modules/customfield/' . $type_file);
 			}
 			$quest_obj = new $type_class($id_field);
 			if ($this->field_entry_table !== FALSE)
@@ -700,7 +700,7 @@ class CustomFieldList
 		if (sql_num_rows($rs) < 1)
 			return 'NULL';
 		list($type_file, $type_class) = sql_fetch_row($rs);
-		require_once($GLOBALS['where_framework'] . '/modules/field/' . $type_file);
+		require_once($GLOBALS['where_framework'] . '/modules/customfield/' . $type_file);
 		$quest_obj = eval("return new $type_class( $id_field );");
 		if ($this->field_entry_table !== FALSE)
 			$quest_obj->setFieldEntryTable($this->field_entry_table);
@@ -751,7 +751,7 @@ class CustomFieldList
 
 		while (list($id_field, $type_field, $type_file, $type_class, $mandatory) = sql_fetch_row($re_fields)) {
 			if (!class_exists($type_class)) {
-				require_once($GLOBALS['where_framework'] . '/modules/field/' . $type_file);
+				require_once($GLOBALS['where_framework'] . '/modules/customfield/' . $type_file);
 			}
 			$quest_obj = eval("return new $type_class( $id_field );");
 			if ($this->field_entry_table !== FALSE)
@@ -786,7 +786,7 @@ class CustomFieldList
 			return $res;
 		}
 		list($id_field, $type_file, $type_class) = sql_fetch_row($rs);
-		require_once($GLOBALS['where_framework'] . '/modules/field/' . $type_file);
+		require_once($GLOBALS['where_framework'] . '/modules/customfield/' . $type_file);
 		$quest_obj = eval("return new $type_class( $id_field );");
 		if ($this->field_entry_table !== FALSE)
 			$quest_obj->setFieldEntryTable($this->field_entry_table);
@@ -824,7 +824,7 @@ class CustomFieldList
 
 		while (list($id_field, $type_file, $type_class) = sql_fetch_row($rs)) {
 			if (!class_exists($type_class)) {
-				require_once($GLOBALS['where_framework'] . '/modules/field/' . $type_file);
+				require_once($GLOBALS['where_framework'] . '/modules/customfield/' . $type_file);
 			}
 			$quest_obj = eval("return new $type_class( $id_field );");
 			if ($this->field_entry_table !== FALSE)
@@ -873,7 +873,7 @@ class CustomFieldList
 
 		list($id_field, $type_file, $type_class) = sql_fetch_row($rs);
 
-		require_once($GLOBALS['where_framework'] . '/modules/field/' . $type_file);
+		require_once($GLOBALS['where_framework'] . '/modules/customfield/' . $type_file);
 		$quest_obj = new $type_class($id_field);
 		if ($this->field_entry_table !== FALSE)
 			$quest_obj->setFieldEntryTable($this->field_entry_table);
@@ -915,7 +915,7 @@ class CustomFieldList
 		if (sql_num_rows($rs) < 1)
 			return 'NULL';
 		list($type_file, $type_class) = sql_fetch_row($rs);
-		require_once($GLOBALS['where_framework'] . '/modules/field/' . $type_file);
+		require_once($GLOBALS['where_framework'] . '/modules/customfield/' . $type_file);
 		$quest_obj = eval("return new $type_class( $id_field );");
 		if ($this->field_entry_table !== FALSE)
 			$quest_obj->setFieldEntryTable($this->field_entry_table);
@@ -1085,7 +1085,7 @@ class CustomFieldList
 
 		while (list($id_field, $type_field, $type_file, $type_class, $mandatory) = sql_fetch_row($re_fields)) {
 			if (!class_exists($type_class)) {
-				require_once($GLOBALS['where_framework'] . '/modules/field/' . $type_file);
+				require_once($GLOBALS['where_framework'] . '/modules/customfield/' . $type_file);
 			}
 			$quest_obj = eval("return new $type_class( $id_field );");
 			if ($this->field_entry_table !== FALSE)
@@ -1137,7 +1137,7 @@ class CustomFieldList
 		$re_fields 			= sql_query($query);
 		while (list($id_field, $type_field, $type_file, $type_class, $is_mandatory) = sql_fetch_row($re_fields)) {
 			if (!class_exists($type_class)) {
-				require_once($GLOBALS['where_framework'] . '/modules/field/' . $type_file);
+				require_once($GLOBALS['where_framework'] . '/modules/customfield/' . $type_file);
 			}
 			$quest_obj = new $type_class($id_field);
 
@@ -1248,7 +1248,7 @@ class CustomFieldList
 		}
 		while (list($id_field, $type_field, $type_file, $type_class) = sql_fetch_row($re_fields)) {
 			if (!class_exists($type_class)) {
-				require_once($GLOBALS['where_framework'] . '/modules/field/' . $type_file);
+				require_once($GLOBALS['where_framework'] . '/modules/customfield/' . $type_file);
 			}
 			$quest_obj = eval("return new $type_class( $id_field );");
 			if ($this->field_entry_table !== FALSE)
@@ -1296,7 +1296,7 @@ class CustomFieldList
 		}
 		while (list($id_field, $type_field, $type_file, $type_class) = sql_fetch_row($re_fields)) {
 			if (!class_exists($type_class)) {
-				require_once(_adm_ . '/modules/field/' . $type_file);
+				require_once(_adm_ . '/modules/customfield/' . $type_file);
 			}
 			$quest_obj = new $type_class($id_field);
 			if ($this->field_entry_table !== FALSE) {
@@ -1353,7 +1353,7 @@ class CustomFieldList
 				$mandatory = false;
 
 			if (!class_exists($type_class)) {
-				require_once($GLOBALS['where_framework'] . '/modules/field/' . $type_file);
+				require_once($GLOBALS['where_framework'] . '/modules/customfield/' . $type_file);
 			}
 			$quest_obj = eval("return new $type_class( $id_field );");
 			if ($this->field_entry_table !== FALSE)
@@ -1392,7 +1392,7 @@ class CustomFieldList
 		$re_fields = sql_query($query);
 		while (list($id_field, $type_field, $type_file, $type_class) = sql_fetch_row($re_fields)) {
 			if (!class_exists($type_class)) {
-				require_once($GLOBALS['where_framework'] . '/modules/field/' . $type_file);
+				require_once($GLOBALS['where_framework'] . '/modules/customfield/' . $type_file);
 			}
 			$quest_obj = eval("return new $type_class( $id_field );");
 			if ($this->field_entry_table !== FALSE)
@@ -1427,7 +1427,7 @@ class CustomFieldList
 		$re_fields = sql_query($query);
 		while (list($id_field, $type_field, $type_file, $type_class) = sql_fetch_row($re_fields)) {
 			if (!class_exists($type_class)) {
-				require_once($GLOBALS['where_framework'] . '/modules/field/' . $type_file);
+				require_once($GLOBALS['where_framework'] . '/modules/customfield/' . $type_file);
 			}
 			$quest_obj = eval("return new $type_class( $id_field );");
 			if ($this->field_entry_table !== FALSE)
@@ -1465,7 +1465,7 @@ class CustomFieldList
 		$re_fields = sql_query($query);
 		while (list($id_field, $translation, $type_field, $type_file, $type_class) = sql_fetch_row($re_fields)) {
 			if (!class_exists($type_class)) {
-				require_once($GLOBALS['where_framework'] . '/modules/field/' . $type_file);
+				require_once($GLOBALS['where_framework'] . '/modules/customfield/' . $type_file);
 			}
 			$quest_obj = eval("return new $type_class( $id_field );");
 			if ($this->field_entry_table !== FALSE)
@@ -1625,7 +1625,7 @@ class CustomFieldList
 		$re_fields = sql_query($query);
 		while (list($id_field, $type_field, $type_file, $type_class) = sql_fetch_row($re_fields)) {
 			if (!class_exists($type_class)) {
-				require_once($GLOBALS['where_framework'] . '/modules/field/' . $type_file);
+				require_once($GLOBALS['where_framework'] . '/modules/customfield/' . $type_file);
 			}
 			$quest_obj = eval("return new $type_class( $id_field );");
 			if ($this->field_entry_table !== FALSE)
