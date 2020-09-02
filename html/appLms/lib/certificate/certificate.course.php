@@ -132,8 +132,7 @@ class CertificateSubs_Course extends CertificateSubstitution {
                 $qtxt = "SELECT d.id_date, MIN( dd.date_begin ) AS date_begin, MAX( dd.date_end ) AS date_end, d.name
 												 FROM ".$GLOBALS['prefix_lms']."_course_date_day AS dd
 												 JOIN ".$GLOBALS['prefix_lms']."_course_date AS d
-												 JOIN ".$GLOBALS['prefix_lms']."_classroom AS c
-												 ON ( dd.classroom = c.idClassroom AND d.id_date = dd.id_date )
+                                                 ON (d.id_date = dd.id_date)
 				              	 LEFT JOIN ".$GLOBALS['prefix_lms']."_course_date_user ON ".$GLOBALS['prefix_lms']."_course_date_user.id_date = d.id_date
                 				 WHERE d.id_course = ".(int)$this->id_course."  and ".$GLOBALS['prefix_lms']."_course_date_user.id_user=".$this->id_user."
                 				 GROUP BY dd.id_date";
