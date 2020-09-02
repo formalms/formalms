@@ -871,8 +871,10 @@ class Man_Course {
         
 		if($level_id != ADMIN_GROUP_GODADMIN && $course['sub_end_date'] != '0000-00-00') {
 			$date01=new DateTime($course['sub_end_date']);
-			$exp_time = $now - $date01->format('U');
-
+	        // BUG: ticket 19753
+            //$exp_time = $now - $date01->format('U');
+             $exp_time = $date01->format('U') - $now ;            
+            
 			if ($exp_time > 0) {
 				return array('can' => false, 'reason' => 'course_sub_end_date', 'expiring_in' => $exp_time);
 			}
