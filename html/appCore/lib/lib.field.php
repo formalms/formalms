@@ -628,14 +628,16 @@ class FieldList
 
 		$acl = &Docebo::user()->getACL();
 		$arr_idst = $acl->getUserGroupsST($idst_user);
+		$index = count($arr_idst);
 
 		$acl_man = &$acl->getAclManager();
 		$tmp = $acl_man->getGroup(false, '/oc_0');
 		$arr_idst[] = $tmp[0];
 		$tmp = $acl_man->getGroup(false, '/ocd_0');
 		$arr_idst[] = $tmp[0];
+		$index += 2;
 
-		if (count($arr_idst) > 2) {
+		if (count($arr_idst) > $index) {
 			// Not only roots ocd_0 and oc_0
 			for ($i = 0; $i < count($arr_idst); $i++) {
 				if ($arr_idst[$i] == 1) {
@@ -851,10 +853,12 @@ class FieldList
 	 **/
 	public function playFieldsForUser($idst_user, $arr_idst = FALSE, $freeze = FALSE, $add_root = TRUE, $useraccess = FALSE, $separate_output = FALSE, $check_precompiled = FALSE, $registrationLayout = false, $registrationErrors = false)
 	{
-
 		$acl = &Docebo::user()->getACL();
-		if ($arr_idst === FALSE)
+		$index = 0;
+		if ($arr_idst === FALSE) {
 			$arr_idst = $acl->getArrSTGroupsST($acl->getUserGroupsST($idst_user));
+			$index += count($arr_idst);
+		}
 
 		if ($add_root) {
 			$acl_man = &$acl->getAclManager();
@@ -862,9 +866,10 @@ class FieldList
 			$arr_idst[] = $tmp[0];
 			$tmp = $acl_man->getGroup(false, '/ocd_0');
 			$arr_idst[] = $tmp[0];
+			$index += 2;
 		}
 
-		if (count($arr_idst) > 2) {
+		if (count($arr_idst) > $index) {
 			// Not only roots ocd_0 and oc_0
 			for ($i = 0; $i < count($arr_idst); $i++) {
 				if ($arr_idst[$i] == 1) {
@@ -935,10 +940,12 @@ class FieldList
 	 **/
 	function hiddenFieldForUserArr($idst_user, $arr_idst = FALSE, $freeze = FALSE, $add_root = TRUE, $useraccess = FALSE)
 	{
-
+		$index = 0;
 		$acl = &Docebo::user()->getACL();
-		if ($arr_idst === FALSE)
+		if ($arr_idst === FALSE) {
 			$arr_idst = $acl->getUserGroupsST($idst_user);
+			$index = count($arr_idst);
+		}
 
 		if ($add_root) {
 			$acl_man = &$acl->getAclManager();
@@ -946,9 +953,10 @@ class FieldList
 			$arr_idst[] = $tmp[0];
 			$tmp = $acl_man->getGroup(false, '/ocd_0');
 			$arr_idst[] = $tmp[0];
+			$index += 2;
 		}
 
-		if (count($arr_idst) > 2) {
+		if (count($arr_idst) > $index) {
 			// Not only roots ocd_0 and oc_0
 			for ($i = 0; $i < count($arr_idst); $i++) {
 				if ($arr_idst[$i] == 1) {
@@ -1009,17 +1017,20 @@ class FieldList
 	 **/
 	function isFilledFieldsForUser($idst_user, $arr_idst = FALSE)
 	{
-
+		$index = 0;
 		$acl = &Docebo::user()->getACL();
-		if ($arr_idst === FALSE)
+		if ($arr_idst === FALSE) {
 			$arr_idst = $acl->getUserGroupsST($idst_user);
+			$index = count($arr_idst);
+		}
 		$acl_man = &$acl->getAclManager();
 		$tmp = $acl_man->getGroup(false, '/oc_0');
 		$arr_idst[] = $tmp[0];
 		$tmp = $acl_man->getGroup(false, '/ocd_0');
 		$arr_idst[] = $tmp[0];
+		$index += 2;
 
-		if (count($arr_idst) > 2) {
+		if (count($arr_idst) > $index) {
 			// Not only roots ocd_0 and oc_0
 			for ($i = 0; $i < count($arr_idst); $i++) {
 				if ($arr_idst[$i] == 1) {
@@ -1081,17 +1092,20 @@ class FieldList
 	 **/
 	public function isFilledFieldsForUserInRegistration($idst_user, $arr_idst = FALSE)
 	{
-
+		$index = 0;
 		$acl = &Docebo::user()->getACL();
-		if ($arr_idst === FALSE)
+		if ($arr_idst === FALSE) {
 			$arr_idst = $acl->getUserGroupsST($idst_user);
+			$index = count($arr_idst);
+		}
 		$acl_man = &$acl->getAclManager();
 		$tmp = $acl_man->getGroup(false, '/oc_0');
 		$arr_idst[] = $tmp[0];
 		$tmp = $acl_man->getGroup(false, '/ocd_0');
 		$arr_idst[] = $tmp[0];
+		$index += 2;
 
-		if (count($arr_idst) > 2) {
+		if (count($arr_idst) > $index) {
 			// Not only roots ocd_0 and oc_0
 			for ($i = 0; $i < count($arr_idst); $i++) {
 				if ($arr_idst[$i] == 1) {
@@ -1109,8 +1123,6 @@ class FieldList
 			. "   AND ft.id_common = gft.id_field"
 			. "   AND gft.idst IN ('" . implode("','", $arr_idst) . "')"
 			. " GROUP BY ft.id_common ";
-
-
 
 		$error_message = array();
 
@@ -1172,19 +1184,23 @@ class FieldList
 	 **/
 	function storeFieldsForUser($idst_user, $arr_idst = FALSE, $add_root = TRUE, $int_userid = TRUE)
 	{
-
+		$index = 0;
 		$acl = &Docebo::user()->getACL();
-		if ($arr_idst === FALSE)
+		if ($arr_idst === FALSE) {
 			$arr_idst = $acl->getUserGroupsST($idst_user);
+			$index = count($arr_idst);
+		}
+
 		if ($add_root) {
 			$acl_man = &$acl->getAclManager();
 			$tmp = $acl_man->getGroup(false, '/oc_0');
 			$arr_idst[] = $tmp[0];
 			$tmp = $acl_man->getGroup(false, '/ocd_0');
 			$arr_idst[] = $tmp[0];
+			$index += 2;
 		}
 
-		if (count($arr_idst) > 2) {
+		if (count($arr_idst) > $index) {
 			// Not only roots ocd_0 and oc_0
 			for ($i = 0; $i < count($arr_idst); $i++) {
 				if ($arr_idst[$i] == 1) {
