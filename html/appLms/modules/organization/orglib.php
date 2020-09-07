@@ -1730,7 +1730,8 @@ class Org_TreeView extends RepoTreeView {
 					];
 					$node['actions']['edit'] = [
 						'link' => ''.$this->id.'['.$this->_getOpEditLOId().']['.$folder->id.']',
-						'image' => $this->_getEditImage()
+						'image' => $this->_getEditImage(),
+						'url' => 'index.php?r=lms/lo/edit&id=' . $folder->id
 					];
 					$node['play_teacher'] = 'index.php?modname=organization&amp;op=custom_playitem&amp;edit=1&amp;id_item='.$folder->id.'';
 						

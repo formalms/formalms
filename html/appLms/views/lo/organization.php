@@ -93,11 +93,17 @@
             
             let editEl = node.data.actions['edit']
             if (editEl) {
-                $("<input>")
+                $("<a>")
+                    .attr("href", editEl.url)
+                    .append(
+                        $("<img>").attr("src", editEl.image)
+                    )
+                    .appendTo($tdList.eq(2))
+                /* $("<input>")
                     .attr("type", "image")
                     .attr("src", editEl.image)
                     .attr("name", editEl.link)
-                    .appendTo($tdList.eq(2))
+                    .appendTo($tdList.eq(2)) */
             }
 
             let copyEl = node.data.actions['copy']

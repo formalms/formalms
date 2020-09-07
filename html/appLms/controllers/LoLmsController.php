@@ -46,4 +46,24 @@ class LoLmsController extends LmsController
         echo json_encode(array_values($this->model->getFolders($id_course, $id)));
         die();
     }
+
+    public function edit() {
+
+
+        require_once( Docebo::inc( _lms_.'/modules/organization/orglib.php' ) );
+        $tdb = new OrgDirDb($_SESSION['idCourse'], array());
+        
+        $tree_view = new Org_TreeView($tdb, 'organization' );
+
+        require_once Forma::inc(_adm_ . '/lib/lib.sessionsave.php' );
+        $saveObj = new Session_Save();
+        $saveName = $saveObj->getName('organization'.$_SESSION['idCourse'], true);
+        $saveObj->save( $saveName, $tree_view->getState() );
+
+        $id = Get::req('id', DOTY_INT, false);
+
+        $folder = $tdb->getFolderById( (string)$id );
+        $lo = createLO( $folder->otherValues[REPOFIELDOBJECTTYPE]);
+        $lo->edit($folder->otherValues[REPOFIELDIDRESOURCE], 'index.php?r=lms/lo/organization&id_course=1' );
+    }
 }
