@@ -417,6 +417,17 @@ class CartLmsController extends LmsController
 
 			$username = str_replace('/', '', $user_data[1]);
 
+			require_once(Forma::inc(_adm_ . '/lib/lib.field.php'));
+			$extra_field = new FieldList();
+			$fields_arr = $extra_field->getUserFieldEntryData($user_data[0]);
+
+			$fields = '<ul>';
+			foreach ($fields_arr as $k => $f) {
+				list($name) = sql_fetch_row(sql_query("SELECT `translation` FROM core_field WHERE idField = $k AND lang_code = '" . getLanguage() . "'"));
+				$fields .= "<li>$name: <strong>$f</strong></li>";
+			}
+			$fields .= '</ul>';
+
 			$array_subst = array(
 				'[url]' => Get::site_url(),
 				'[userid]' => $user_data[0],
@@ -429,6 +440,7 @@ class CartLmsController extends LmsController
 				'[date_transaction]' => $date,
 				'[price]' => $total_price,
 				'[method]' => $method,
+				'[fields]' => $fields,
 			);
 
 			$e_msg = new EventMessageComposer();
