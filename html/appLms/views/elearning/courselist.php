@@ -29,7 +29,8 @@ function GetCourseYear($the_course)
 
 function GetCourseMonth($the_course)
 {
-    setlocale(LC_ALL, "IT"); // TBD: setting to platform locale
+    $lang = DoceboLangManager::getInstance()->getLanguageBrowsercode(Lang::get());
+    setlocale(LC_ALL, $lang . "_" . strtoupper($lang)); // TBD: setting to platform locale
     $date = Format::date($the_course['date_end'], 'date');
     $month_name = ucfirst(strftime("%B", strtotime($date)));
     return substr($month_name, 0, 3);

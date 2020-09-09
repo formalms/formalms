@@ -72,6 +72,31 @@ echo "</div>";
 <div class='std_block'>
   <table id='table_certificate' data-id_course='<?= $id_course ?>' data-id_certificate='<?php echo $id_certificate ?>' class='table table-striped table-bordered' style='width:100%'></table>
   <script type="text/javascript">
+    $.extend(jQuery.fn.dataTableExt.oSort, {
+      "date-euro-pre": function(a) {
+        var x;
+
+        if ($.trim(a) !== '') {
+          var frDatea = $.trim(a).split(' ');
+          var frTimea = (undefined != frDatea[1]) ? frDatea[1].split(':') : [00, 00, 00];
+          var frDatea2 = frDatea[0].split('-');
+          x = (frDatea2[2] + frDatea2[1] + frDatea2[0] + frTimea[0] + frTimea[1] + ((undefined != frTimea[2]) ? frTimea[2] : 0)) * 1;
+        } else {
+          x = Infinity;
+        }
+
+        return x;
+      },
+
+      "date-euro-asc": function(a, b) {
+        return a - b;
+      },
+
+      "date-euro-desc": function(a, b) {
+        return b - a;
+      }
+    });
+
     var id_course = $('#table_certificate').data('id_course');
     var cert_table = $('#table_certificate').FormaTable({
       margin: '0 auto',
@@ -164,13 +189,13 @@ echo "</div>";
           data: 'date_complete',
           title: '<?php echo Lang::t('_DATE_END', 'standard'); ?>',
           sortable: true,
-          type: 'date'
+          type: 'date-euro'
         }, // TBD converting to local time                      
         {
           data: 'on_date',
           title: '<?php echo Lang::t('_RELASE_DATE', 'certificate'); ?>',
           sortable: true,
-          type: 'date'
+          type: 'date-euro'
         }, // TBD converting to local time
         {
           data: 'cell_down_gen',
