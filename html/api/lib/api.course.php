@@ -1785,7 +1785,7 @@ public function addClassroom($params) {
         
         // recupera TRACK della risposta del test
         $db = DbConn::getInstance();
-        $qtxt ="SELECT idTrack, idTest FROM learning_testtrack where idReference=".$params['id_org']." and idUser=".$params['id_user'];
+        $qtxt ="SELECT idTrack, idTest, date_end_attempt FROM learning_testtrack where idReference=".$params['id_org']." and idUser=".$params['id_user'];
         $q =$db->query($qtxt);
         $course_info =$db->fetch_assoc($q);        
     
