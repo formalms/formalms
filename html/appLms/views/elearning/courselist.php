@@ -23,7 +23,14 @@ function dataEndExists($the_course)
 function GetCourseYear($the_course)
 {
     $date = Format::date($the_course['date_end'], 'date');
-    $date_split = explode('-', $date);
+     
+    if(strpos($date,"/")){
+        $separator = '/';
+    } else if (strpos($date,"-")){
+        $separator = '-';
+    } else return null;
+   
+    $date_split = explode($separator, $date); // format DD/MM/YYYY
     return $date_split[2];
 }
 
