@@ -95,16 +95,11 @@ final class SmtpAdm extends Model
      */
     public function isUseSmtp()
     {
-        switch ($this->useSmtp) {
-            case 'on':
-            case 'true':
-            case true:
-                return true;
-                break;
-            default:
-                return false;
-                break;
-
+        if ($this->useSmtp === 'on' || $this->useSmtp === 'true' || $this->useSmtp === true){
+            return true;
+        }
+        else {
+            return false;
         }
     }
 
@@ -137,16 +132,11 @@ final class SmtpAdm extends Model
      */
     public function isAutoTls()
     {
-        switch ($this->autoTls) {
-            case 'on':
-            case 'true':
-            case true:
-                return true;
-                break;
-            default:
-                return false;
-                break;
-
+        if ($this->autoTls === 'on' || $this->autoTls === 'true' || $this->autoTls === true){
+            return true;
+        }
+        else {
+            return false;
         }
     }
 
