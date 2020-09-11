@@ -205,7 +205,7 @@
   position: relative;
 
   &:first-child {
-    height: 70px;
+    min-height: 70px;
 
     @include breakpoint($tablet) {
     }
@@ -263,7 +263,7 @@
   padding: {
     top: 10px;
     right: 15px;
-    bottom: 25px;
+    bottom: 15px;
   }
   color: $anthracite;
   font-weight: 600;
