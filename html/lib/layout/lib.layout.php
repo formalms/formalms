@@ -1,4 +1,9 @@
-<?php defined("IN_FORMA") or die('Direct access is forbidden.');
+<?php
+
+use appCore\Events\Core\Catalogue\ExternalCatalogueLink;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+
+defined("IN_FORMA") or die('Direct access is forbidden.');
 
 /* ======================================================================== \
 |   FORMA - The E-Learning Suite                                            |
@@ -28,8 +33,8 @@ class Layout
         while ($elem = $templ->read()) {
 
             if ((is_dir(_base_ . '/templates/' . $elem)) && $elem{
-            0} != "." && $elem{
-            0} != '_') {
+                0} != "." && $elem{
+                0} != '_') {
                 $templ_array[] = $elem;
             }
         }
@@ -188,7 +193,7 @@ class Layout
         if ($pos !== FALSE) {
             if ($pos == 0) $pos = 1;
             if ($server_query_string{
-            $pos - 1} === '&') $pos = $pos - 1;
+                $pos - 1} === '&') $pos = $pos - 1;
             $server_query_string = substr($server_query_string, 0, $pos);
         }
 
@@ -272,8 +277,10 @@ class Layout
     {
         $html = '';
         if (HomepageAdm::staticIsCatalogToShow()) {
-            //$html = '<a href="index.php?r=homecatalogue/show">'.Lang::t('_CATALOGUE', 'standard').'</a>';
-            $html = '<a class="forma-button forma-button--orange" href="index.php?r=' . _homecatalog_ . '">' . Lang::t('_CATALOGUE', 'standard') . '</a>';
+            $event = new ExternalCatalogueLink();
+            $event->setLink(_homecatalog_);
+            \appCore\Events\DispatcherManager::dispatch(ExternalCatalogueLink::EVENT_NAME, $event);
+            $html = '<a class="forma-button forma-button--orange" href="index.php?r=' . $event->getLink() . '">' . Lang::t('_CATALOGUE', 'standard') . '</a>';
         }
 
         return $html;
@@ -510,16 +517,16 @@ class Layout
                     $partial_time_sec = TrackUser::getUserCurrentSessionCourseTime($_SESSION['idCourse']);
                     $tot_time_sec += $partial_time_sec;
 
-                    $hours = (int)($partial_time_sec / 3600);
-                    $minutes = (int)(($partial_time_sec % 3600) / 60);
-                    $seconds = (int)($partial_time_sec % 60);
+                    $hours = (int) ($partial_time_sec / 3600);
+                    $minutes = (int) (($partial_time_sec % 3600) / 60);
+                    $seconds = (int) ($partial_time_sec % 60);
                     if ($minutes < 10) $minutes = '0' . $minutes;
                     if ($seconds < 10) $seconds = '0' . $seconds;
                     $partial_time = ($hours != 0 ? $hours . 'h ' : '') . $minutes . 'm '; //.$seconds.'s ';
 
-                    $hours = (int)($tot_time_sec / 3600);
-                    $minutes = (int)(($tot_time_sec % 3600) / 60);
-                    $seconds = (int)($tot_time_sec % 60);
+                    $hours = (int) ($tot_time_sec / 3600);
+                    $minutes = (int) (($tot_time_sec % 3600) / 60);
+                    $seconds = (int) ($tot_time_sec % 60);
                     if ($minutes < 10) $minutes = '0' . $minutes;
                     if ($seconds < 10) $seconds = '0' . $seconds;
                     $tot_time = ($hours != 0 ? $hours . 'h ' : '') . $minutes . 'm '; //.$seconds.'s ';

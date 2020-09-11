@@ -6514,7 +6514,7 @@ i + .course-box__date-box {
 #global_conf .tab-content .tab-pane select {
   display: inline-block;
   width: 28rem;
-  max-width: 28rem;
+  max-width: 100%;
   margin-right: 0; }
 
 .layout_footer {

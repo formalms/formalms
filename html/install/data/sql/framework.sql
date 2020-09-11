@@ -2590,7 +2590,7 @@ INSERT INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size
 ('sso_token', 'off', 'enum', 3, '0', 9, 5, 1, 0, ''),
 ('stop_concurrent_user', 'on', 'enum', 3, 'security', 8, 23, 1, 0, ''),
 ('tablist_mycourses', 'name,code,status', 'tablist_mycourses', 255, '0', 4, 4, 1, 0, ''),
-('template_domain', '', 'textarea', 65535, '0', 8, 9, 1, 0, ''),
+('template_domain', '', 'template_domain_node', 65535, '0', 8, 9, 1, 0, ''),
 ('templ_use_field', '0', 'id_field', 11, '0', 1, 0, 1, 1, ''),
 ('title_organigram_chart', 'Forma', 'string', 255, '0', 1, 0, 1, 1, ''),
 ('tracking', 'off', 'enum', 3, '0', 4, 12, 1, 0, ''),

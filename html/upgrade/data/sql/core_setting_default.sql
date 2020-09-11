@@ -160,7 +160,7 @@ INSERT INTO `core_setting_default` (`param_name`, `param_value`, `value_type`, `
 ('visuItem', '25', 'int', 3, '0', 2, 1, 1, 1, ''),
 ('visuNewsHomePage', '3', 'int', 5, '0', 1, 0, 1, 1, ''),
 ('welcome_use_feed', 'on', 'enum', 3, '0', 1, 0, 1, 1, ''),
-('template_domain',  '',  'textarea',  '65535',  '0',  '8',  '8',  '1',  '0',  '');
+('template_domain',  '',  'template_domain_node',  '65535',  '0',  '8',  '8',  '1',  '0',  '');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
