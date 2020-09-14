@@ -15,21 +15,28 @@
  * @return string The Admin User panel
  */
 function GetAdminPanel(){
-
-    return '
+    
+    
+    $ret_str =  '
         <li data-sm-reverse="true" style="float:right">
             <a href="#"><i class="fa fa-user"></i>&nbsp;<b>'.Docebo::user()->getUserName().'</b></a>
-            <ul>
-                  <li>
+            <ul> ';
+             
+    if ( Get::sett('profile_modify','allow') != 'disallow' )  {             
+        $ret_str .= '<li>
                         <a href="index.php?r=lms/profile/show">'.Lang::t('_PROFILE', 'profile').'</a>   
-                  </li>
-                  <li> 
-                    <a id="logout"  href="'.Get::rel_path('base').'/index.php?r='. _logout_ .'">                
-                        <i class="fa fa-power-off" aria-hidden="true"></i>&nbsp;'.Lang::t('_LOGOUT', 'standard').'</span>
-                    </a>
-                  </li>
-            </ul>
-          </li>'.BackToLms();
+                  </li> ';
+    }             
+     $ret_str .= '<li> 
+            <a id="logout"  href="'.Get::rel_path('base').'/index.php?r='. _logout_ .'">                
+                <i class="fa fa-power-off" aria-hidden="true"></i>&nbsp;'.Lang::t('_LOGOUT', 'standard').'</span>
+            </a>
+          </li>
+    </ul>
+  </li>'.BackToLms();
+    
+
+    return $ret_str;
      
 }
 
