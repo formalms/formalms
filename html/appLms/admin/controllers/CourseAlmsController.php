@@ -550,7 +550,7 @@ Class CourseAlmsController extends AlmsController
 		*/
 		if (!isset($this->lo_types_cache[$objectType])) return NULL;
 		list( $className, $fileName ) = $this->lo_types_cache[$objectType];
-		require_once(_lms_.'/class.module/'.$fileName );
+		require_once(Forma::inc(_lms_.'/class.module/'.$fileName ));
 		$lo =  new $className ( $idResource );
 		return $lo;
 	}
