@@ -153,3 +153,4 @@ CREATE TABLE IF NOT EXISTS `learning_aggregated_cert_coursepath` (
   KEY `idAssociation` (`idAssociation`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
 
+UPDATE `core_setting` SET `value_type` = 'template_domain_node' WHERE `core_setting`.`param_name` = 'template_domain';
