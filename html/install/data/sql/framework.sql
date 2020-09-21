@@ -735,7 +735,7 @@ INSERT INTO `core_event_class` (`idClass`, `class`, `platform`, `description`) V
 (43, 'UserCourseInsertedApi', 'lms-a', ''),
 (44, 'UserCourseInsertedModerators', 'lms-a', ''),
 (45, 'UserCourseSuspendedSuperAdmin', 'framework', ''),
-(46, 'UserRegistrationSuperadmins', 'lms-a', '')
+(46, 'UserRegistrationSuperadmins', 'lms-a', ''),
 (50, 'PurchaseCourse', 'lms', '');
 
 -- --------------------------------------------------------
@@ -2604,7 +2604,7 @@ INSERT INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size
 ('use_tag', 'on', 'enum', 3, '0', 4, 8, 1, 0, ''),
 ('visuItem', '25', 'int', 3, '0', 2, 1, 1, 1, ''),
 ('visuNewsHomePage', '3', 'int', 5, '0', 1, 0, 1, 1, ''),
-('welcome_use_feed', 'on', 'enum', 3, '0', 1, 0, 1, 1, '')
+('welcome_use_feed', 'on', 'enum', 3, '0', 1, 0, 1, 1, ''),
 ('purchase_user', '', 'string', 255, 'ecommerce', 4, 18, 1, 0, '');
 
 -- --------------------------------------------------------
