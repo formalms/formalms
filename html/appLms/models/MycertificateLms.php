@@ -125,18 +125,22 @@ class MycertificateLms extends Model {
                 $arrAggregatedCerts[$ii-1]['path_name'] = $arrAggregatedCerts[$ii-1]['path_name']." | ".$row['path_name'];
            }     
            $prev_idcert = $row['id_certificate'];
-       }                         
+       }
 
-           
-       $q = "SELECT %lms_certificate.id_certificate, %lms_aggregated_cert_assign.idAssociation, %lms_certificate.code,  %lms_certificate.name, 
+
+        $q = "SELECT %lms_certificate.id_certificate, %lms_aggregated_cert_assign.idAssociation, %lms_certificate.code,  %lms_certificate.name, 
               IF(%lms_aggregated_cert_assign.on_date IS NOT NULL, DATE_FORMAT(%lms_aggregated_cert_assign.on_date,'%Y/%m/%d'), '')  as 'on_date',
               %lms_aggregated_cert_assign.cert_file, %lms_course.name as 'course_name', '' as 'path_name'
-              FROM %lms_certificate, %lms_aggregated_cert_assign, %lms_aggregated_cert_course, %lms_course
+              FROM %lms_certificate, %lms_aggregated_cert_assign, %lms_aggregated_cert_course, %lms_course, %lms_courseuser
               WHERE %lms_certificate.id_certificate=%lms_aggregated_cert_assign.idCertificate
               AND %lms_aggregated_cert_assign.idAssociation=%lms_aggregated_cert_course.idAssociation
               AND %lms_aggregated_cert_course.idCourse = %lms_course.idCourse
               AND %lms_aggregated_cert_course.idUser = %lms_aggregated_cert_assign.idUser
-              AND %lms_aggregated_cert_assign.idUser=".intval($this->id_user);
+              AND %lms_courseuser.idUser = %lms_aggregated_cert_assign.idUser 
+              AND %lms_courseuser.idCourse = %lms_course.idCourse 
+              AND %lms_courseuser.status = 2 
+              AND %lms_courseuser.date_complete IS NOT NULL
+              AND %lms_aggregated_cert_assign.idUser=" . intval($this->id_user);
        $rs = sql_query($q);       
        $prev_idcert = 0; 
        while ($row = sql_fetch_assoc($rs)) {
@@ -175,5 +179,3 @@ class MycertificateLms extends Model {
     }
 
 }
-
-?>
