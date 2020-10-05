@@ -1700,7 +1700,8 @@ class Org_TreeView extends RepoTreeView {
 
 				$node['actions']['delete']=[
 					'link' => $this->id.'['.$this->_getDeleteUrl().']['.$folder->id.']',
-					'image' => $this->_getDeleteImage()
+					'image' => $this->_getDeleteImage(),
+					'url' => 'index.php?r=lms/lo/delete&id=' . $folder->id
 				];
 
 				$tree .= '<img src="'.$this->_getDeleteImage().'" alt="'.$this->_getDeleteAlt().'" /> '

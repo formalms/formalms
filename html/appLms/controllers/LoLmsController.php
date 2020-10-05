@@ -47,6 +47,15 @@ class LoLmsController extends LmsController
         die();
     }
 
+    public function delete(){
+        header('Content-type:application/json');
+        $id = Get::req('id', DOTY_INT, false);
+        $id_course = $_SESSION['idCourse'];
+        $_REQUEST["treeview_delete_folder_organization"] = array($id => "");
+        echo json_encode($this->model->deleteFolder($id_course, $id));
+        die();
+    }
+
     public function edit() {
 
 

@@ -38,4 +38,20 @@ class LoLms extends Model {
         return $learning_objects;
     }
 
+    public function deleteFolder($idCourse, $id) {
+        require_once( Docebo::inc( _lms_.'/modules/organization/orglib.php' ) );
+        $tdb = new OrgDirDb($idCourse, $filters, $offset, $limit, $groupBy, $selectFunction, $orderBy);
+        
+        //repo db
+        //$tdb = new RepoDirDb( $GLOBALS['prefix_lms'].'_repo', getLogUserId());
+
+        //home db
+        //$tdb = new HomerepoDirDb( $GLOBALS['prefix_lms'] .'_homerepo', getLogUserId());
+
+        $folder = $tdb->getFolderById( (string)$id);
+        
+        return $tdb->_deleteTree( $folder );
+        
+    }
+
 }

@@ -174,7 +174,13 @@
                 $("<input>")
                     .attr("type", "image")
                     .attr("src", deleteEl.image)
-                    .attr("name", deleteEl.link)
+                    //.attr("name", deleteEl.link)
+                    .click(function(e) {
+                        e.preventDefault()
+                        var data = {}
+                        data[deleteEl.link] = ""
+                        $.post(deleteEl.url, data).success(console.log)
+                    })
                     .appendTo($tdList.eq(10))
             }
         }
