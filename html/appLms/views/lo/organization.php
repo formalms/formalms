@@ -177,9 +177,7 @@
                     //.attr("name", deleteEl.link)
                     .click(function(e) {
                         e.preventDefault()
-                        var data = {}
-                        data[deleteEl.link] = ""
-                        $.post(deleteEl.url, data).success(console.log)
+                        $.post(deleteEl.url).success(console.log)
                     })
                     .appendTo($tdList.eq(10))
             }
