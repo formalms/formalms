@@ -237,23 +237,46 @@ function recursive_delete_directory($dir){
  */
 function update_schedules($schedules){
 		
-		foreach($schedules as $schedule){
-			$id_report_schedule = $schedule['id_report_schedule'];
-			$period = $schedule['period'];
-			switch($period){
-				case 'now':
-					$qry = "DELETE FROM %lms_report_schedule WHERE id_report_schedule = $id_report_schedule";
-					sql_query($qry);
-					$qry = "DELETE FROM %lms_report_schedule_recipient WHERE id_report_schedule = $id_report_schedule";
-					sql_query($qry);
-					break;
-				default:
-					$qry = "UPDATE %lms_report_schedule SET last_execution = now() WHERE id_report_schedule = $id_report_schedule";
-					sql_query($qry);
-					break;
-			}
-		}
-	}
+    foreach($schedules as $schedule){
+        $id_report_schedule = $schedule['id_report_schedule'];
+        $period = $schedule['period'];
+        switch($period){
+            case 'now':
+                $qry = "DELETE FROM %lms_report_schedule WHERE id_report_schedule = $id_report_schedule";
+                sql_query($qry);
+                $qry = "DELETE FROM %lms_report_schedule_recipient WHERE id_report_schedule = $id_report_schedule";
+                sql_query($qry);
+                break;
+            default:
+                $qry = "UPDATE %lms_report_schedule SET last_execution = now() WHERE id_report_schedule = $id_report_schedule";
+                sql_query($qry);
+                break;
+        }
+    }
+}
+
+function parseBaseUrlFromRequest($atRoot = FALSE, $atCore = FALSE, $parse = FALSE)
+{
+    if (isset($_SERVER['HTTP_HOST'])) {
+        $http = isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) !== 'off' ? 'https' : 'http';
+        $hostname = $_SERVER['HTTP_HOST'];
+        $dir = str_replace(basename($_SERVER['SCRIPT_NAME']), '', $_SERVER['SCRIPT_NAME']);
+
+        $core = preg_split('@/@', str_replace($_SERVER['DOCUMENT_ROOT'], '', realpath(dirname(__FILE__))), NULL, PREG_SPLIT_NO_EMPTY);
+        $core = $core[0];
+
+        $tmplt = $atRoot ? ($atCore ? "%s://%s/%s/" : "%s://%s/") : ($atCore ? "%s://%s/%s/" : "%s://%s%s");
+        $end = $atRoot ? ($atCore ? $core : $hostname) : ($atCore ? $core : $dir);
+        $base_url = sprintf($tmplt, $http, $hostname, $end);
+    } else $base_url = 'http://localhost/';
+
+    if ($parse) {
+        $base_url = parse_url($base_url);
+        if (isset($base_url['path'])) if ($base_url['path'] == '/') $base_url['path'] = '';
+    }
+
+    return $base_url;
+}
 
 //******************************************************************************
 
@@ -262,6 +285,9 @@ $report_persistence_days = Get::sett('report_persistence_days', 30);
 $report_max_email_size = Get::sett('report_max_email_size_MB', 0);
 $report_store_folder = Get::sett('report_storage_folder', '/files/common/report/');
 $base_url = Get::sett('url', '');
+if (empty($base_url)) {
+    $base_url = parseBaseUrlFromRequest(true);
+}
 $report_uuid_prefix = 'uuid';
 
 
