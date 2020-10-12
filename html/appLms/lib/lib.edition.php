@@ -465,7 +465,7 @@ class EditionManager
 			break;
 
 			case 'fullname':
-				$query .= " ORDER BY u.firstname ".$dir.", u.lastname ".$dir.", u.userid ".$dir;
+				$query .= " ORDER BY u.lastname ".$dir.", u.firstaname ".$dir.", u.userid ".$dir;
 			break;
 
 			case 'level':
@@ -485,7 +485,7 @@ class EditionManager
 		while(list($id_user, $userid, $firstname, $lastname, $level, $status, $date_complete, $date_begin_validity, $date_expire_validity) = sql_fetch_row($result))
 		{
 			if($firstname !== '' && $lastname !== '')
-				$user = $firstname.' '.$lastname;
+				$user = $lastname.' '.$firstname;
 			elseif($firstname !== '')
 				$user = $firstname;
 			elseif($lastname !== '')
