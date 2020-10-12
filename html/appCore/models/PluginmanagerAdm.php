@@ -565,10 +565,13 @@ class PluginmanagerAdm extends Model
     function downloadPlugin($name)
     {
         $info = $this->readPluginManifest($name);
+        if (!isset($info['update'])) {
+            return false;
+        }
         $link = $info['update'] . "?action=download&plugin=" . $name;
         $f = file_put_contents(_base_ . "/plugins/" . "temp_update.zip", fopen($link, 'r'), LOCK_EX);
         if (FALSE === $f) {
-            die("Couldn't write to file.");
+            return false;
         }
         return $this->unpackPlugin("temp_update.zip", $name);
     }
@@ -668,7 +671,9 @@ class PluginmanagerAdm extends Model
     function updatePlugin($plugin_id, $online = false)
     {
         if ($online) {
-            $this->downloadPlugin($plugin_id);
+            if (!$this->downloadPlugin($plugin_id)) {
+                return false;
+            }
         }
         if ($this->callPluginMethod($plugin_id, 'update') !== false) {
             $plugin_db = $this->getPluginFromDB($plugin_id, 'name');
