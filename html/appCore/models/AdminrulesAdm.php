@@ -301,10 +301,13 @@ class AdminrulesAdm extends Model
 				$p=$folder_abspath.'/class.module/'.$class_file;
 			}
 
-			$tmp_class = new $class_name();
-			$perm_path = $perm_base.strtolower($module_name).'/';
+			if (class_exists($class_name)) {
 
-			$perm = $tmp_class->getAllToken('lang');
+				$tmp_class = new $class_name();
+				$perm_path = $perm_base.strtolower($module_name).'/';
+	
+				$perm = $tmp_class->getAllToken('lang');
+			}
 
 			if(!empty($perm))
 			{

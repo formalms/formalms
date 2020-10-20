@@ -103,7 +103,7 @@ class Folder {
 	}
 
 	function move( $newParentFolder ) {
-		$this->tdb->moveFolder( $this, $newParentFolder );
+		return $this->tdb->moveFolder( $this, $newParentFolder );
 	}
 }
 
@@ -574,7 +574,7 @@ class TreeDb {
 				. $this->_getOtherUpdates()
 				." WHERE (". $this->fields['id'] ." = '". $folder->id ."')"
 				.$this->_getFilter();
-		$this->_executeQuery( $query )
+		return $this->_executeQuery( $query )
 			or $this->_printSQLError( 'changeOtherData' );
 	}
 }

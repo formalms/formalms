@@ -474,7 +474,7 @@ class OrgDirDb extends RepoDirDb {
 		$this->org_access = $folder->otherValues[ORGFIELD_ACCESS];
 		$this->org_publish_for = $folder->otherValues[ORGFIELD_PUBLISHFOR];
 		
-		$this->changeOtherData( $folder );
+		return $this->changeOtherData( $folder );
 	}
 	
 	// overload to modify folder internal name to avoid conflicts 
@@ -1698,10 +1698,20 @@ class Org_TreeView extends RepoTreeView {
 					'image' => $this->_getMoveImage()
 				];
 
+				$node['actions']['moveFolder']=[
+					'image' => $this->_getEditImage(),
+					'url' => 'index.php?r=lms/lo/move&id=' . $folder->id
+				];
+
 				$node['actions']['delete']=[
 					'link' => $this->id.'['.$this->_getDeleteUrl().']['.$folder->id.']',
 					'image' => $this->_getDeleteImage(),
 					'url' => 'index.php?r=lms/lo/delete&id=' . $folder->id
+				];
+
+				$node['actions']['rename']=[
+					'image' => $this->_getEditImage(),
+					'url' => 'index.php?r=lms/lo/rename&id=' . $folder->id
 				];
 
 				$tree .= '<img src="'.$this->_getDeleteImage().'" alt="'.$this->_getDeleteAlt().'" /> '

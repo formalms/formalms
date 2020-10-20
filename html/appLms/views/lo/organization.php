@@ -181,6 +181,34 @@
                     })
                     .appendTo($tdList.eq(10))
             }
+
+            let renameEl = node.data.actions['rename']
+            if (renameEl) {
+                $("<input>")
+                    .attr("type", "image")
+                    .attr("src", renameEl.image)
+                    //.attr("name", renameEl.link)
+                    .click(function(e) {
+                        e.preventDefault()
+                        var newName = prompt('input new name')
+                        $.post(renameEl.url + '&newName=' + newName).success(console.log)
+                    })
+                    .appendTo($tdList.eq(1))
+            }
+
+            let moveFolderEl = node.data.actions['moveFolder']
+            if (moveFolderEl) {
+                $("<input>")
+                    .attr("type", "image")
+                    .attr("src", moveFolderEl.image)
+                    //.attr("name", moveFolderEl.link)
+                    .click(function(e) {
+                        e.preventDefault()
+                        var newParentId = prompt('input new parent id')
+                        $.post(moveFolderEl.url + '&newParentId=' + newParentId).success(console.log)
+                    })
+                    .appendTo($tdList.eq(9))
+            }
         }
     });
 </script>

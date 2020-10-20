@@ -13,7 +13,7 @@ require_once( Forma::inc( _lms_.'/modules/homerepo/homerepo.php') );
 class LoLms extends Model {
     
     public function getLearningObjects($idCourse = FALSE, $rootId = 0, $offset = null, $limit = null, $filters = array(), $groupBy = null, $selectFunction = null, $orderBy = null) {
-        require_once( Docebo::inc( _lms_.'/modules/organization/orglib.php' ) );
+        require_once( Forma::inc( _lms_.'/modules/organization/orglib.php' ) );
         $tdb = new OrgDirDb($idCourse, $filters, $offset, $limit, $groupBy, $selectFunction, $orderBy);
         
         //repo db
@@ -39,7 +39,7 @@ class LoLms extends Model {
     }
 
     public function deleteFolder($idCourse, $id) {
-        require_once( Docebo::inc( _lms_.'/modules/organization/orglib.php' ) );
+        require_once( Forma::inc( _lms_.'/modules/organization/orglib.php' ) );
         $tdb = new OrgDirDb($idCourse, $filters, $offset, $limit, $groupBy, $selectFunction, $orderBy);
         
         //repo db
@@ -51,6 +51,40 @@ class LoLms extends Model {
         $folder = $tdb->getFolderById( (string)$id);
         
         return $tdb->_deleteTree( $folder );
+        
+    }
+
+    public function renameFolder($idCourse, $id, $newName) {
+        require_once( Forma::inc( _lms_.'/modules/organization/orglib.php' ) );
+        $tdb = new OrgDirDb($idCourse, $filters, $offset, $limit, $groupBy, $selectFunction, $orderBy);
+        
+        //repo db
+        //$tdb = new RepoDirDb( $GLOBALS['prefix_lms'].'_repo', getLogUserId());
+
+        //home db
+        //$tdb = new HomerepoDirDb( $GLOBALS['prefix_lms'] .'_homerepo', getLogUserId());
+
+        $folder = $tdb->getFolderById( (string)$id);
+        
+        return $tdb->renameFolder( $folder, $newName );
+        
+    }
+
+    public function moveFolder($idCourse, $id, $newParentId) {
+        require_once( Forma::inc( _lms_.'/modules/organization/orglib.php' ) );
+        $tdb = new OrgDirDb($idCourse, $filters, $offset, $limit, $groupBy, $selectFunction, $orderBy);
+        
+        //repo db
+        //$tdb = new RepoDirDb( $GLOBALS['prefix_lms'].'_repo', getLogUserId());
+
+        //home db
+        //$tdb = new HomerepoDirDb( $GLOBALS['prefix_lms'] .'_homerepo', getLogUserId());
+
+        $folder = $tdb->getFolderById( (string)$id);
+
+        $newParent = $tdb->getFolderById( (string)$newParentId);
+        
+        return $folder->move( $newParent );
         
     }
 

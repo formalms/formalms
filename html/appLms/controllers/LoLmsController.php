@@ -55,6 +55,24 @@ class LoLmsController extends LmsController
         die();
     }
 
+    public function rename(){
+        header('Content-type:application/json');
+        $id = Get::req('id', DOTY_INT, false);
+        $newName = Get::req('newName', DOTY_STRING, false);
+        $id_course = $_SESSION['idCourse'];
+        echo json_encode($this->model->renameFolder($id_course, $id, $newName));
+        die();
+    }
+
+    public function move(){
+        header('Content-type:application/json');
+        $id = Get::req('id', DOTY_INT, false);
+        $newParentId = Get::req('newParentId', DOTY_INT, false);
+        $id_course = $_SESSION['idCourse'];
+        echo json_encode($this->model->moveFolder($id_course, $id, $newParentId));
+        die();
+    }
+
     public function edit() {
 
 
