@@ -88,8 +88,7 @@ Class Step2Controller extends StepController {
 		}
 		
         $driver=array(
-            'mysqli'=>extension_loaded("mysqli"),
-            'mysql'=>extension_loaded("mysql")
+            'mysqli'=>extension_loaded("mysqli")
         );
 		if(array_filter($driver)) {
             // mysql client version, in php the version number is a string regcut it

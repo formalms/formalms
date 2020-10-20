@@ -13,7 +13,6 @@
 
 //require_once(_base_.'/lib/lib.utils.php');
 require_once($GLOBALS['where_scs'].'/lib/lib.utils.php');
-require_once($GLOBALS['where_scs'].'/lib/lib.check.php');
 
 require_once(_base_.'/lib/lib.json.php');
 require_once($GLOBALS['where_scs'].'/lib/lib.emoticons.php');

@@ -63,8 +63,7 @@ if (file_exists(_base_.'/config.php')){
 	$cfg['db_pass'] = "_fromconfig";
 }
 $driver=array_filter(array(
-    'mysqli'=>extension_loaded("mysqli")?'mysqli':false,
-    'mysql'=>extension_loaded("mysql")?'mysql':false
+    'mysqli'=>extension_loaded("mysqli")?'mysqli':false
 ));
 
 

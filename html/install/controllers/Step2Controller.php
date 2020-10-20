@@ -28,8 +28,7 @@ function checkRequirements() {
 	}
 	
 	$driver=array(
-        'mysqli'=>extension_loaded("mysqli"),
-	    'mysql'=>extension_loaded("mysql")
+        'mysqli'=>extension_loaded("mysqli")
     );
 	if(array_filter($driver)) {
         // mysql version, in easyphp the version number is ina string regcut it
