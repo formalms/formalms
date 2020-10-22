@@ -885,7 +885,8 @@ class FieldList
 			. " WHERE ft.lang_code = '" . getLanguage() . "'"
 			. "	 AND ft.type_field = tft.type_field"
 			. "   AND ft.id_common = gft.id_field"
-			. "   AND gft.idst IN ('" . implode("','", $arr_idst) . "')";
+			. "   AND gft.idst IN ('" . implode("','", $arr_idst) . "')"
+			. "   AND gft.useraccess <> 'readwrite'"; # Hide invisible;
 
 		if ($useraccess !== 'false' && is_array($useraccess)) {
 			$query .= " AND ( ";
