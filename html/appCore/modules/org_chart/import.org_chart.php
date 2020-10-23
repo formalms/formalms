@@ -200,7 +200,7 @@ class ImportUser extends DoceboImport_Destination {
 		$pass		= addslashes($this->_convert_char($row['pass']));
 		$email		= addslashes($this->_convert_char($row['email']));
 
-                if(isset($tocompare['userid']))     $tocompare['userid']    = '/'.strtolower( addslashes($this->_convert_char($tocompare['userid'])) );
+                if(isset($tocompare['userid']))     $tocompare['userid']    = '/'.trim(strtolower( addslashes($this->_convert_char($tocompare['userid'])) ));
 		if(isset($tocompare['firstname']))  $tocompare['firstname'] = ucfirst( strtolower( addslashes($this->_convert_char($tocompare['firstname'])) ) );
 		if(isset($tocompare['lastname']))   $tocompare['lastname']  = ucfirst( strtolower( addslashes($this->_convert_char($tocompare['lastname'])) ) ); 
 		if(isset($tocompare['pass']))       $tocompare['pass']      = addslashes($this->_convert_char($tocompare['pass']));
@@ -461,7 +461,7 @@ class ImportUser extends DoceboImport_Destination {
 		}
                         break;
                     case 'only_update':
-			if($idst !== FALSE ){   //if($sameuserid !== false) {
+			if($userid){   //if($sameuserid !== false) {
 				$result = $acl_manager->updateUser(
                                     $acl_manager->getUserST( $tocompare['userid']),
                                     $userid,
@@ -721,5 +721,3 @@ class ImportGroupUser extends DoceboImport_Destination {
 		return $this->last_error;
 	}
 }
-
-?>
