@@ -62,7 +62,6 @@ class Boot {
 	 */
 	public static function init($load_option = BOOT_PAGE_WR) {
 
-		$boot_report = array();
 		if(is_array($load_option)) {
 
 			$last_step = BOOT_PAGE_WR;
@@ -152,8 +151,6 @@ class Boot {
 		// setup some php.ini things
 		$step_report[] = "Setup some php.ini settings.";
 		ini_set('arg_separator.output',     '&amp;');
-		ini_set('magic_quotes_runtime',     0);
-		ini_set('magic_quotes_sybase',      0);
 		ini_set('session.cache_expire',     (int)$cfg['session_lenght']);
 		ini_set('session.cache_limiter',    'none');
 		ini_set('session.cookie_lifetime',  (int)$cfg['session_lenght']);
@@ -234,9 +231,9 @@ class Boot {
 		require_once _base_.'/lib/lib.get.php';
 		require_once Docebo::inc( _base_.'/lib/lib.utils.php' );
 
-		// utf8 support
-		self::log( "Load utf8 management library." );
-		require_once _base_.'/addons/utf8/lib.utf8.php';
+		// UTF8 Support
+		\Patchwork\Utf8\Bootup::initAll();
+		\Patchwork\Utf8\Bootup::filterRequestInputs();
 
 		// filter input
 		self::log( "Load filter input library." );
@@ -310,7 +307,7 @@ class Boot {
 		self::log( " Load settings from database." );
 		Util::load_setting(Get::cfg('prefix_fw').'_setting', 'framework');
 
-		if (Get::sett('do_debug') == 'on'){
+		if (Get::sett('do_debug') === 'on'){
             @error_reporting(E_ALL);
         }
 	}
@@ -386,14 +383,6 @@ class Boot {
 
 		$step_report = array();
 
-		// Convert to Utf-8.
-		self::log( "Convert to Utf-8." );
-		$_GET 		= utf8::clean($_GET);
-		$_POST 		= utf8::clean($_POST);
-		$_COOKIE 	= utf8::clean($_COOKIE);
-		$_SERVER 	= utf8::clean($_SERVER);
-		if(isset($_FILES)) 	$_FILES = utf8::clean($_FILES);
-
 		// Convert ' and " (quote or unquote)
 		self::log( "Sanitize the input." );
 
@@ -422,17 +411,9 @@ class Boot {
 		// todo: check if we can do in other way the same thing
 		// save login password from modification
 		$ldap_used = Get::sett('ldap_used');
-		if( ($ldap_used == 'on') && isset($_POST['modname']) && ($_POST['modname'] == 'login') && isset($_POST['passIns'])) {
+		if( ($ldap_used === 'on') && isset($_POST['modname']) && ($_POST['modname'] === 'login') && isset($_POST['passIns'])) {
 			$password_login = $_POST['passIns'];
 		}
-
-		// Convert to Utf-8.
-		self::log( "Convert to Utf-8." );
-		$_GET 		= utf8::clean($_GET);
-		$_POST 		= utf8::clean($_POST);
-		$_COOKIE 	= utf8::clean($_COOKIE);
-		$_SERVER 	= utf8::clean($_SERVER);
-		if(isset($_FILES)) 	$_FILES = utf8::clean($_FILES);
 
 		// Variable to skip checkSignature control if saml response
 		// https://en.wikipedia.org/wiki/SAML_2.0
@@ -464,11 +445,11 @@ class Boot {
 
 			$filter_input->sanitize();
 		}
-		if( ($ldap_used == 'on') && isset($_POST['modname']) && ($_POST['modname'] == 'login') && isset($_POST['passIns'])) {
-			$_POST['passIns'] = utf8::clean(stripslashes($password_login));
+		if( ($ldap_used === 'on') && isset($_POST['modname']) && ($_POST['modname'] === 'login') && isset($_POST['passIns'])) {
+			$_POST['passIns'] = \voku\helper\UTF8::clean(stripslashes($password_login));
 		}
 
-		if(!defined("IS_API") && !defined("IS_PAYPAL") && !$IS_SAML_RESPONSE && ( strtoupper($_SERVER['REQUEST_METHOD']) == 'POST' || defined("IS_AJAX"))) {
+		if(!defined("IS_API") && !defined("IS_PAYPAL") && !$IS_SAML_RESPONSE && ( strtoupper($_SERVER['REQUEST_METHOD']) === 'POST' || defined("IS_AJAX"))) {
 			// If this is a post or a ajax request then we must have a signature attached
 			Util::checkSignature();
 		}
@@ -597,7 +578,7 @@ class Boot {
 					.'<td style="'.($i%2?'background:#F7F7F7;':'').'padding:3px 10px 3px 10px;"><i>';
 				if(isset($t['object']) && is_object($t['object']))
 					echo get_class($t['object']).'->';
-				if($t['function'] != 'error_catcher')
+				if($t['function'] !== 'error_catcher')
 					echo "{$t['function']}</i>()<i>";
 				echo '</i></td></tr>';
 			}

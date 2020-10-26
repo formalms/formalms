@@ -72,7 +72,6 @@ function insitem() {
 	//checkPerm( 'view', FALSE, 'storage' );
 	
 	require_once Forma::inc(_lib_ . '/lib.upload.php');
-	require_once Forma::inc(_addons_ . '/pclzip/pclzip.lib.php');
 	require_once Forma::inc(_lms_ . '/modules/scorm/RendererDb.php');
 	require_once Forma::inc(_lms_ . '/modules/scorm/CPManager.php');
 	

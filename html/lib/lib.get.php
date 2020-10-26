@@ -57,11 +57,11 @@ class Get
 			if (isset($_POST[$var_name])) $value = $_POST[$var_name];
 			elseif (isset($_GET[$var_name])) $value = $_GET[$var_name];
 			elseif (isset($_REQUEST[$var_name])) $value = $_REQUEST[$var_name];
-		} else if ($only_from == 'post' && isset($_POST[$var_name])) {
+		} else if ($only_from === 'post' && isset($_POST[$var_name])) {
 			$value = $_POST[$var_name];
-		} else if ($only_from == 'get' && isset($_GET[$var_name])) {
+		} else if ($only_from === 'get' && isset($_GET[$var_name])) {
 			$value = $_GET[$var_name];
-		} else if ($only_from == 'request' && isset($_REQUEST[$var_name])) {
+		} else if ($only_from === 'request' && isset($_REQUEST[$var_name])) {
 			$value = $_REQUEST[$var_name];
 		}
 
@@ -117,8 +117,7 @@ class Get
 			case DOTY_MVC: {
 
 					$value = preg_replace('/[^a-zA-Z0-9\-\_\/]+/', '', $value);
-					if ($value{
-					0} == '/') $value = '';
+					if ($value{0} === '/') $value = '';
 				};
 				break;
 			case DOTY_MIXED:
