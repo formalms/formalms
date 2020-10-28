@@ -200,11 +200,13 @@ class CertificateSubs_UserStat extends CertificateSubstitution {
 			$subs['[meta_complete]'] = $array_meta_complete[0];
 			$subs['[meta_inscr]'] = $array_meta_inscr[0];
 			$subs['[meta_access]'] = $array_meta_access[0];
-                        
-           	// $subs['[meta_level]'] = $lang->def('_LEVEL_'.$array_meta_level[0],'levels');
-                        
-			$subs['[table_course]'] = ( $course_count ? $table_course : '' );
-			$subs['[table_blended]'] = ( $blended_count ? $table_blended : '' );
+
+			$sql = "
+				SELECT title FROM ".$aggCertLib->table_cert_meta_association ." AS cm 
+				WHERE cm.idAssociation = {$this->id_meta}";
+			$q = sql_query($sql);
+			$meta = sql_fetch_object($q);
+			$subs['[meta_assoc]'] = $meta->title;
 		}
 		else
 		{
@@ -271,5 +273,3 @@ class CertificateSubs_UserStat extends CertificateSubstitution {
 	}
 
 }
-
-?>

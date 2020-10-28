@@ -48,9 +48,11 @@ class CertificateSubs_User extends CertificateSubstitution {
 		if ($this->id_meta) {
 			$sql = "SELECT title, description FROM %lms_certificate_meta WHERE idMetaCertificate = ".$this->id_meta;
 	 		$query = sql_query($sql);
-	 		list($title_meta, $description_meta) = sql_fetch_row($query);
+			 list($title_meta, $description_meta) = sql_fetch_row($query);
 
-	 		$subs['[meta_assoc]'] = $title_meta;
+			if ($title_meta) {
+				$subs['[meta_assoc]'] = $title_meta;
+			}
  		}
 		
 		$subs['[display_name]'] =  ( $user[ACL_INFO_LASTNAME].$user[ACL_INFO_FIRSTNAME]
@@ -72,5 +74,3 @@ class CertificateSubs_User extends CertificateSubstitution {
 		return $subs;
 	}
 }
-
-?>
