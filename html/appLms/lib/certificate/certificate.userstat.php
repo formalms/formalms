@@ -194,7 +194,7 @@ class CertificateSubs_UserStat extends CertificateSubstitution {
 			$subs['[meta_access]'] = $array_meta_access[0];
 
 			$sql = "
-				SELECT title FROM %lms".$aggCertLib->table_cert_meta_association ." AS cm 
+				SELECT title FROM ".$aggCertLib->table_cert_meta_association ." AS cm 
 				WHERE cm.idAssociation = {$this->id_meta}";
 			$q = sql_query($sql);
 			$meta = sql_fetch_object($q);
@@ -266,5 +266,3 @@ class CertificateSubs_UserStat extends CertificateSubstitution {
 	}
 
 }
-
-?>
