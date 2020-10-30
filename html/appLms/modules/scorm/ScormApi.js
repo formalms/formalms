@@ -403,6 +403,12 @@ ScormApi.prototype.commonRequest = function (op, strSoap, callback) {
 				requestHeaders: reqheaders
 			}
 		);
+
+		// Workaround to support SCORMs opening popup
+		if(ajxreq.transport.status == 0 && navigator.sendBeacon) {
+			navigator.sendBeacon(requrl, new Blob([strSoap], { type: 'text/xml' }));
+		}
+
 		return callback(ajxreq);
 	}
 }
