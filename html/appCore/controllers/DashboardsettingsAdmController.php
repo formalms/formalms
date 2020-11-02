@@ -15,7 +15,7 @@ require_once(Forma::inc(_base_ . '/lib/lib.upload.php'));
 /**
  * Class DashboardsettingsAdmController
  */
-Class DashboardsettingsAdmController extends AdmController
+class DashboardsettingsAdmController extends AdmController
 {
 
     /** @var DashboardsettingsAdm $model */
@@ -64,14 +64,17 @@ Class DashboardsettingsAdmController extends AdmController
 
     public function show()
     {
-        //render view
-        $this->render('show', [
+
+        $data = [
             'ajaxUrl' => 'ajax.adm_server.php?r=adm/dashboardsettings/save',
             'ajaxUploadFileUrl' => 'ajax.adm_server.php?r=adm/dashboardsettings/uploadFile',
             'installedBlocks' => $this->model->getInstalledBlocksCommonViewData(),
             'enabledBlocks' => $this->model->getEnabledBlocksCommonViewData(),
             'templatePath' => getPathTemplate()
-        ]);
+        ];
+
+        //render view
+        $this->render('show', $data);
 
     }
 
