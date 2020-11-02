@@ -20,6 +20,11 @@ Release date: 2020 october
 #19753 corso disabilitato se fuori dal range di tempo di iscrizione
 #19745 - 1111 nel box di conferma iscrizioneFix campi in registro valutazioni dettaglio
 #19731 - root/nodes fields selector
+#19781 - Support SCORMs opening popup - workaround by retrying with an asynchronous request (sendBeacon) if the synchronous request fails (response status 0).
+#16623 - Risolto Problema con "only update" e "create and update" Fix only update	b4560035	Alessandro Micelli <alessandro.micelli@email.it>	23 Oct 2020 at 10:14
+#1780: in case of classroom courses, the certificate does not print the classrooms appointments in case of missing location indication; modified the query to manage data even in this situation.
+#19761 - RISOLTO - Funzione playFieldForUser() di libreria customfield non funzionante Risolto includendo le classi nella cartella "customfield" invece che "field"
+
 
 
 Plus other minor fixes and improvements
