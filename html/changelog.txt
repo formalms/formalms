@@ -9,6 +9,61 @@
 
 FORMA LMS
 RELEASE CHANGELOG
+
+---------------------------------------------------------------------------------------
+forma.lms 2.4.3
+---------------------------------------------------------------------------------------
+Release date: 2020 october
+
+#19760 - RISOLTO mettendo class_exist in librerie - Fatal error in creazione oggetto con customfield Fatal error se in oggetto ci sono 2 customfield
+#19705 - Filtro lista tentativi in registro valutazioni
+#19753 corso disabilitato se fuori dal range di tempo di iscrizione
+#19745 - 1111 nel box di conferma iscrizioneFix campi in registro valutazioni dettaglio
+#19731 - root/nodes fields selector
+#19781 - Support SCORMs opening popup - workaround by retrying with an asynchronous request (sendBeacon) if the synchronous request fails (response status 0).
+#16623 - Risolto Problema con "only update" e "create and update" Fix only update	b4560035	Alessandro Micelli <alessandro.micelli@email.it>	23 Oct 2020 at 10:14
+#1780: in case of classroom courses, the certificate does not print the classrooms appointments in case of missing location indication; modified the query to manage data even in this situation.
+#19761 - RISOLTO - Funzione playFieldForUser() di libreria customfield non funzionante Risolto includendo le classi nella cartella "customfield" invece che "field"
+
+
+
+Plus other minor fixes and improvements
+
+---------------------------------------------------------------------------------------
+forma.lms 2.4.2
+---------------------------------------------------------------------------------------
+Release date: 2020 july
+
+#19743 - SCORM fixes and improvements
+#19680 - Registration with code doesn't work wit advanced registration (tree_drop)
+#19684 - Catalogo esterno alla piatta, resta in download
+#19682 - Registro valutazioni: numero di compilazioni errate
+#19683 - Griglia utenti oggetti: Tempo di fruizione 00.00
+#19680 - Registration with code doesn't work wit advanced registration (tree_drop node)
+#19695 - Gestione Feedback autocomplete corsi e competenze
+#19683 - SCORM - Display ISO-8601 Timeformat
+#19701 - Apostrofi in gestione certificati
+#19703 - Apostrofi in modifica introduzione corso
+#19705 - Filtro lista tentativi in registro valutazioni
+#19706 - Log su evento disabilitato
+#19709 - Ordine box corsi e titoli tagliati
+#19710 - Fix tooltip down css
+#19712 - Direct link on object by SSO access
+#19711 - Errata Visualizzazione utenti in EDIT Registro valutazioni
+#19713 - Import GIFT categories
+#19715 - Time problem for format time in scorm tracking 00:00:00.000000
+#19716 - Course boxes hover css
+#19708 - bug + mancata traduzione in catalogo pubblico
+merge  #19723 - Verification register node-code manually in second step
+#19724 - Users list for admin in gradebook
+#19728 - Salvataggio presenze in area docenti
+#19731 - root/nodes fields selector fix normal reg with a root discendent required field
+#19732 - pagination error in gradebook detail
+#19734 - Same values in empty custom fields in certificates associations
+
+
+Plus other minor fixes and improvements
+
 ---------------------------------------------------------------------------------------
 forma.lms 2.4.1
 ---------------------------------------------------------------------------------------
