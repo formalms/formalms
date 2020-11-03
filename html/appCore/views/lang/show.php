@@ -41,9 +41,11 @@ $this->widget('table', array(
 	'delDisplayField' => 'lang_code',
 	'rel_actions'	=> array(
 		'<a id="addlang_top" href="ajax.adm_server.php?r=adm/lang/addmask" class="ico-wt-sprite subs_add" title="'.Lang::t('_ADD', 'standard').'"><span>'.Lang::t('_ADD', 'standard').'</span></a>'
-		.'<a href="index.php?r=adm/lang/import" class="ico-wt-sprite subs_import" title="'.Lang::t('_IMPORT', 'standard').'"><span>'.Lang::t('_IMPORT', 'standard').'</span></a>',
+		.'<a href="index.php?r=adm/lang/import" class="ico-wt-sprite subs_import" title="'.Lang::t('_IMPORT', 'standard').'"><span>'.Lang::t('_IMPORT', 'standard').'</span></a>'
+        .'<a href="index.php?r=adm/lang/importCore" class="ico-wt-sprite subs_import" title="'.Lang::t('_IMPORT_CORE', 'standard').'"><span>'.Lang::t('_IMPORT_CORE', 'standard').'</span></a>',
 		'<a id="addlang_bottom" href="ajax.adm_server.php?r=adm/lang/addmask" class="ico-wt-sprite subs_add" title="'.Lang::t('_ADD', 'standard').'"><span>'.Lang::t('_ADD', 'standard').'</span></a>'
-		.'<a href="index.php?r=adm/lang/import" class="ico-wt-sprite subs_import" title="'.Lang::t('_IMPORT', 'standard').'"><span>'.Lang::t('_IMPORT', 'standard').'</span></a>',
+		.'<a href="index.php?r=adm/lang/import" class="ico-wt-sprite subs_import" title="'.Lang::t('_IMPORT', 'standard').'"><span>'.Lang::t('_IMPORT', 'standard').'</span></a>'
+        .'<a href="index.php?r=adm/lang/importCore" class="ico-wt-sprite subs_import" title="'.Lang::t('_IMPORT_CORE', 'standard').'"><span>'.Lang::t('_IMPORT_CORE', 'standard').'</span></a>',
 	)
 ));
 
