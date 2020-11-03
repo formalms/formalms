@@ -25,8 +25,9 @@ class DashboardBlockMessagesLms extends DashboardBlockLms
         parent::__construct($jsonConfig);
 	}
 
-    public function parseConfig($jsonConfig) {
-
+    public function parseConfig($jsonConfig)
+    {
+        return parent::parseBaseConfig($jsonConfig);
     }
 
     public function getAvailableTypesForBlock(){

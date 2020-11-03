@@ -28,7 +28,7 @@ class DashboardBlockBannerLms extends DashboardBlockLms
 
     public function parseConfig($jsonConfig)
     {
-
+        return parent::parseBaseConfig($jsonConfig);
     }
 
     public function getAvailableTypesForBlock()
