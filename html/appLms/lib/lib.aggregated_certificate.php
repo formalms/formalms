@@ -350,11 +350,12 @@ class AggregatedCertificate
      */
     public function getIdsCourse($id_association, $id_user = 0)
     {
-
-        $q = "SELECT idCourse FROM "
-            . $this->table_cert_meta_association_courses
+        $q = "SELECT acc.idCourse FROM "
+            . $this->table_cert_meta_association_courses . " AS acc"
+            . " INNER JOIN learning_course c ON c.idCourse = acc.idCourse"
             . " WHERE idAssociation = " . $id_association
-            . " and idUser = " . $id_user . " AND idCourse <> 0";
+            . " AND acc.idUser = " . $id_user . " AND acc.idCourse <> 0"
+            . " ORDER BY c.name ASC";
 
         $rs = sql_query($q);
 
