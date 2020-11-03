@@ -785,7 +785,7 @@ class User_API extends API {
             }
         }
         
-        // select single user to admin  // PER FESTO
+        // select single user to admin  
         if (array_key_exists('single_user', $params)){
             $q = "select idst from core_user where userid = '/".$params['single_user']."'";
             $rs =$this->db->query($q);
@@ -897,8 +897,19 @@ class User_API extends API {
     
         //GRIFO LRZ: crea ramo organigramma
       function newOrg($orgData){
-        $name=array('italian'=>$orgData['name_org']);
+      
+        // get array language
+        $name = [];
+        $q = "select lang_code from %adm_lang_language";
+        $r = $this->db->query($q);
+        if ($r){
+            while ($row = $this->db->fetch_array($r)){
+                $name[$row[0]] = $orgData['name_org'];    
+            }
         
+        }      
+      
+      
         
         // calcola idParent by code
         $output = array();
@@ -910,7 +921,7 @@ class User_API extends API {
         include_once(_adm_."/models/UsermanagementAdm.php");
         $adm=new UsermanagementAdm();
         $idOrg=$adm->addFolder($idParent,$name,$orgData['code']);
-        if($idOrg) $output = array('success'=>true, 'message'=>$idOrg);
+        if($idOrg) $output = array('success'=>true, 'message'=>$idOrg, 'name' => $name);
         else $output = array('success'=>false, 'message'=>"Organizzazione:$name; idParent:$idParent; code:".$orgData['code']);
         return $output;
       }
