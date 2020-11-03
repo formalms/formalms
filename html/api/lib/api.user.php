@@ -895,7 +895,7 @@ class User_API extends API {
     }
     
     
-        //GRIFO LRZ: crea ramo organigramma
+        //GRIFO LRZ: new org user
       function newOrg($orgData){
       
         // get array language
