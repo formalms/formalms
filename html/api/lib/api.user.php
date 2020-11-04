@@ -642,8 +642,8 @@ class User_API extends API {
 	 * @return boolean 
 	 */
 	public function checkUsername($params) {
-		$output =array('success'=>true);
-		
+
+
 		$userid =$params['userid'];
 		$query = "SELECT idst, userid, firstname, lastname, pass, email, avatar, signature,"
 				." level, lastenter, valid, pwd_expire_at, register_date, lastenter, force_change,
@@ -665,15 +665,16 @@ class User_API extends API {
 		if (!$res) {
 			$output =array(
 				'success'=>false,
-				'message'=>'User not found',
+				'message'=>'User not found'
 			);
 		}
 		else {
 			$output['idst']=(int)$res[ACL_INFO_IDST];
+            $output['success'] = true;
+            $output['message'] = ($res[ACL_INFO_VALID] == 0) ? '_DISABLED':'';
 		}
 		
 		return $output;
-	}
     
     /**
     * Get the ID related to a profile name
