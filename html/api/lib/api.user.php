@@ -675,6 +675,7 @@ class User_API extends API {
 		}
 		
 		return $output;
+    }    
     
     /**
     * Get the ID related to a profile name
