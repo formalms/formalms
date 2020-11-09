@@ -24,11 +24,15 @@ $this->widget('table', array(
 			'label' => '<span class="ico-sprite subs_elem"><span>'.Lang::t('_TRANSLATELANG', 'admin_lang').'</span></span>',
 			'formatter' => 'TranslateFormatter',
 			'className' => 'img-cell' ),
-		array('key' => 'lang_export',
+        array('key' => 'lang_diff',
+            'label' => '<span class="ico-sprite subs_diff"><span>'.Lang::t('_DIFF_LANG', 'admin_lang').'</span></span>',
+            'formatter' => 'DiffFormatter',
+            'className' => 'img-cell' ),
+        array('key' => 'lang_export',
 			'label' => '<span class="ico-sprite subs_download"><span>'.Lang::t('_EXPORT_XML', 'admin_lang').'</span></span>',
 			'formatter' => 'ExportFormatter',
 			'className' => 'img-cell' ),
-		array('key' => 'lang_mod', 
+        array('key' => 'lang_mod',
 			'label' => '<span class="ico-sprite subs_mod"><span>'.Lang::t('_MOD', 'admin_lang').'</span></span>',
 			'formatter' => 'stdModify',
 			'className' => 'img-cell' ),
@@ -37,7 +41,7 @@ $this->widget('table', array(
 			'formatter' => 'stdDelete',
 			'className' => 'img-cell' ),
 	),
-	'fields'		=> array('lang_code', 'lang_description','lang_direction', 'lang_stats', 'lang_translate', 'lang_export', 'lang_mod', 'lang_del'),
+	'fields'		=> array('lang_code', 'lang_description','lang_direction', 'lang_stats', 'lang_diff', 'lang_translate', 'lang_export', 'lang_mod', 'lang_del'),
 	'delDisplayField' => 'lang_code',
 	'rel_actions'	=> array(
 		'<a id="addlang_top" href="ajax.adm_server.php?r=adm/lang/addmask" class="ico-wt-sprite subs_add" title="'.Lang::t('_ADD', 'standard').'"><span>'.Lang::t('_ADD', 'standard').'</span></a>'
@@ -71,6 +75,12 @@ function ExportFormatter(elLiner, oRecord, oColumn, oData) {
 		var id = this.getTableEl().parentNode.id+'_translate_'+oRecord.getData("id");
 		if(oData) elLiner.innerHTML = '<a id="'+id+'" href="'+oData+'" class="ico-sprite subs_download" title="<?php echo Lang::t('_EXPORT', 'admin_lang'); ?>"><span></span></a>';
 		else elLiner.innerHTML = '';
+}
+
+function DiffFormatter(elLiner, oRecord, oColumn, oData) {
+    var id = this.getTableEl().parentNode.id+'_translate_'+oRecord.getData("id");
+    if(oData) elLiner.innerHTML = '<a id="'+id+'" href="'+oData+'" class="ico-sprite subs_download" title="<?php echo Lang::t('_DIFF_LANG', 'admin_lang'); ?>"><span></span></a>';
+    else elLiner.innerHTML = '';
 }
 
 </script>

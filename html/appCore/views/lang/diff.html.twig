@@ -1,0 +1,43 @@
+<table class="table table-striped table-bordered display" style="width:100%" id="langdiff"></table>
+
+</div>
+
+<script>
+    $(function () {
+
+        var body = {{ body | json_encode(constant('JSON_HEX_APOS')) | raw }};
+
+        var columns = [
+            {data: 'id', title: '{{ translate('_ID', 'standard') }}', sortable: true},
+            {data: 'text_module', title: '{{ translate('_MODULE', 'standard') }}', sortable: true},
+            {data: 'text_key', title: '{{ translate('_KEY', 'standard') }}', sortable: true},
+            {data: 'plugin_name', title: '{{ translate('_PLUGIN', 'standard') }}', sortable: true},
+            {data: 'translation_text', title: '{{ translate('_TRANSLATION', 'standard') }}', sortable: true},
+            {data: 'translation_text_diff', title: '{{ translate('_CORE_TRANSLATION', 'standard') }}', sortable: true},
+            {data: 'reset', title: '{{ Get_sprite('subs_del', translate('_DEL', 'certificate')) }}', sortable: true}
+
+            //Get::sprite('subs_del', Lang::t('_DEL', 'certificate')
+        ];
+        var rows = [];
+
+        body.forEach(function (item, k) {
+            rows.push(Object.assign({}, item));
+        });
+
+        var table = $('#langdiff').FormaTable({
+            rowId: function (row) {
+                return row[0];
+            },  // cambia
+            scrollX: true,
+            processing: true,
+            serverSide: false,
+            paging: true,
+            searching: true,
+            columns,
+            data: rows,
+            dom: 'Bfrtip',
+            stateSave: true,
+            deferRender: true
+        });
+    });
+</script>

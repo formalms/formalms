@@ -15,6 +15,8 @@ class GetExtension extends \Twig\Extension\AbstractExtension
         return [
             new TwigFunction('Get_title', [\Get::class, 'title'],['is_safe' =>['html']]),
 
+            new TwigFunction('Get_sprite', [\Get::class, 'sprite'],['is_safe' =>['html']]),
+
         ];
     }
 }
