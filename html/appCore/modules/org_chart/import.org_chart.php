@@ -553,7 +553,7 @@ class ImportUser extends DoceboImport_Destination
 				'[url]' => Get::site_url(),
 				'[userid]' => $userid,
 				'[password]' => $pass,
-				'[dynamic_link]' => getCurrentDomain($f->idOrg) ?: Get::site_url(),
+				'[dynamic_link]' => getCurrentDomain($this->tree) ?: Get::site_url(),
 			);
 			//send email alert
 			if (($this->send_alert && (!$is_an_update || $pass)) || $force_send_alert) {
