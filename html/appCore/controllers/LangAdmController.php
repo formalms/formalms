@@ -50,13 +50,11 @@ class LangAdmController extends AdmController
 
         if (!in_array($sort, $sortable)) $sort = 'lang_code';
         switch ($dir) {
-            case "desc" :
-                {
+            case "desc": {
                     $dir = 'desc';
                 };
                 break;
-            default :
-                {
+            default: {
                     $dir = 'asc';
                 };
                 break;
@@ -209,8 +207,10 @@ class LangAdmController extends AdmController
         $error = Get::req('error', DOTY_INT, 0);
         if ($error) UIFeedback::error(Lang::t('_ERROR_UPLOAD', 'standard'));
 
-
-        $this->render('import_mask', []);
+        $this->render('import_mask', ['coreLangs' => $this->getFileSystemCoreLanguages(), 'importTypes' => [
+            'file' => Lang::t('_IMPORT_FROM_FILE', 'standard'),
+            'core' => Lang::t('_IMPORT_FROM_CORE', 'standard')
+        ]]);
     }
 
     public function doimportTask()
@@ -220,50 +220,33 @@ class LangAdmController extends AdmController
             Util::jump_to('index.php?r=adm/lang/show');
         }
 
-        if (!isset($_FILES['lang_file'])) Util::jump_to('index.php?r=adm/lang/import&error=1');
-        if ($_FILES['lang_file']['error'] != UPLOAD_ERR_OK) Util::jump_to('index.php?r=adm/lang/import&error=2');
-
-        $lang_file = $_FILES['lang_file']['tmp_name'];
+        $import_type = Get::req('import_type', DOTY_STRING, false);
         $overwrite = Get::req('overwrite', DOTY_INT, 0);
         $noadd_miss = Get::req('noadd_miss', DOTY_INT, 0);
 
+        if ($import_type == 'core') {
+            $langFile = Get::req('lang_id', DOTY_STRING, false);
+            if (empty($langFile)) {
+                Util::jump_to('index.php?r=adm/lang/import&error=1');
+            }
 
-        $re = $this->model->importTranslation($lang_file, $overwrite, $noadd_miss);
+            $filePath = _base_ . '/xml_language/' . $langFile;
 
-        Util::jump_to('index.php?r=adm/lang/show');
-    }
+            if (!is_file($filePath)) {
+                Util::jump_to('index.php?r=adm/lang/import&error=2');
+            }
 
-    public function importCoreTask()
-    {
-        $error = Get::req('error', DOTY_INT, 0);
-        if ($error) UIFeedback::error(Lang::t('_ERROR_UPLOAD', 'standard'));
+            $re = $this->model->importTranslation($filePath, $overwrite, $noadd_miss);
 
-
-        $this->render('import_core_mask', ['coreLangs' => $this->getFileSystemCoreLanguages()]);
-    }
-
-    public function doimportCoreTask()
-    {
-        $undo = Get::req('undo', DOTY_STRING, false);
-        if (!empty($undo)) {
             Util::jump_to('index.php?r=adm/lang/show');
+        } else if ($import_type == 'file') {
+            if (!isset($_FILES['lang_file'])) Util::jump_to('index.php?r=adm/lang/import&error=1');
+            if ($_FILES['lang_file']['error'] != UPLOAD_ERR_OK) Util::jump_to('index.php?r=adm/lang/import&error=2');
+
+            $lang_file = $_FILES['lang_file']['tmp_name'];
+
+            $re = $this->model->importTranslation($lang_file, $overwrite, $noadd_miss);
         }
-
-        $langFile = Get::req('lang_file', DOTY_STRING, '');
-        if (empty($langFile)) {
-            Util::jump_to('index.php?r=adm/lang/importCore&error=1');
-        }
-
-        $filePath = _base_ . '/xml_language/' . $langFile;
-
-        if (!is_file($filePath)) {
-            Util::jump_to('index.php?r=adm/lang/importCore&error=2');
-        }
-
-        $overwrite = Get::req('overwrite', DOTY_INT, 0);
-        $noadd_miss = Get::req('noadd_miss', DOTY_INT, 0);
-
-        $re = $this->model->importTranslation($filePath, $overwrite, $noadd_miss);
 
         Util::jump_to('index.php?r=adm/lang/show');
     }
@@ -313,13 +296,15 @@ class LangAdmController extends AdmController
 
         $total_lang = $this->model->getCount($la_module, $la_text, $lang_code, $only_empty);
 
-        $res = array('totalRecords' => $total_lang,
+        $res = array(
+            'totalRecords' => $total_lang,
             'startIndex' => $start_index,
             'sort' => $sort,
             'dir' => $dir,
             'rowsPerPage' => $results,
             'results' => count($lang_list),
-            'records' => $lang_list);
+            'records' => $lang_list
+        );
 
         echo $this->json->encode($res);
     }
@@ -335,9 +320,11 @@ class LangAdmController extends AdmController
         $old_value = urldecode(Get::req('old_value', DOTY_MIXED, ''));
 
         $re = $this->model->saveTranslation($id_text, $lang_code, $new_value);
-        $res = array('success' => $re,
+        $res = array(
+            'success' => $re,
             'new_value' => $new_value,
-            'old_value' => $old_value);
+            'old_value' => $old_value
+        );
 
         echo $this->json->encode($res);
     }
@@ -404,8 +391,10 @@ class LangAdmController extends AdmController
         $id_text = Get::req('id_text', DOTY_INT, 0);
 
         $re = $this->model->deleteKey($id_text);
-        $res = array('success' => $re,
-            'message' => Lang::t('_UNABLE_TO_DELETE', 'standard'));
+        $res = array(
+            'success' => $re,
+            'message' => Lang::t('_UNABLE_TO_DELETE', 'standard')
+        );
 
         echo $this->json->encode($res);
     }

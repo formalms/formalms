@@ -7,6 +7,9 @@
         <div class="col d-col--6--desktop">
             {{ Form_openForm('import_lang', 'index.php?r=adm/lang/doimport', false, 'post', 'multipart/form-data') }}
 
+            {{ Form_getDropdown(translate('_IMPORT_TYPE', 'admin_lang'), 'import_type', 'import_type', importTypes) }}
+
+            {{ Form_getDropdown(translate('_LANGUAGE', 'admin_lang'), 'lang_id', 'lang_id', coreLangs) }}
             {{ Form_getFilefield(translate('_FILE', 'admin_lang'), 'lang_file', 'lang_file') }}
 
             {{ Form_getCheckbox(translate('_OVERWRITE_EXISTENT', 'admin_lang'), 'overwrite', 'overwrite', '1') }}
@@ -21,3 +24,22 @@
         </div>
     </div>
 </div>
+
+<script>
+$(function() {
+    var langIdField = $("#lang_id").parents('.form_line_l');
+    var langFileField = $("#lang_file").parents('.form_line_l');
+    langIdField.hide();
+
+    $("#import_type").change(function(e) {
+        if ($(this).val() == 'core') {
+            langIdField.show();
+            langFileField.hide();
+        } else if ($(this).val() == 'file') {
+            langFileField.show();
+            langIdField.hide();
+            
+        }
+    });
+})
+</script>
