@@ -4,10 +4,10 @@
 },false) }}
 <div class="container">
     <div class="row">
-        <div class="col d-col--6--desktop">
+        <div class="col d-col--12--desktop">
             {{ Form_openForm('import_lang', 'index.php?r=adm/lang/doimport', false, 'post', 'multipart/form-data') }}
 
-            {{ Form_getDropdown(translate('_IMPORT_TYPE', 'admin_lang'), 'import_type', 'import_type', importTypes) }}
+            {{ Form_getRadioHoriz(translate('_IMPORT_TYPE','admin_lang'),'import_type','import_type',importTypes,defaultType) }}
 
             {{ Form_getDropdown(translate('_LANGUAGE', 'admin_lang'), 'lang_id', 'lang_id', coreLangs) }}
             {{ Form_getFilefield(translate('_FILE', 'admin_lang'), 'lang_file', 'lang_file') }}
@@ -29,9 +29,10 @@
 $(function() {
     var langIdField = $("#lang_id").parents('.form_line_l');
     var langFileField = $("#lang_file").parents('.form_line_l');
-    langIdField.hide();
+    langFileField.hide();
 
-    $("#import_type").change(function(e) {
+    $("input[type=radio][name=import_type]").change(function(e) {
+
         if ($(this).val() == 'core') {
             langIdField.show();
             langFileField.hide();

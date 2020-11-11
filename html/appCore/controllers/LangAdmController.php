@@ -14,6 +14,9 @@
 class LangAdmController extends AdmController
 {
 
+    const IMPORT_TYPE_CORE = 'core';
+    const IMPORT_TYPE_FILE = 'file';
+
     protected $json;
     /** @var LangAdm $model */
     protected $model;
@@ -50,11 +53,13 @@ class LangAdmController extends AdmController
 
         if (!in_array($sort, $sortable)) $sort = 'lang_code';
         switch ($dir) {
-            case "desc": {
+            case "desc":
+                {
                     $dir = 'desc';
                 };
                 break;
-            default: {
+            default:
+                {
                     $dir = 'asc';
                 };
                 break;
@@ -207,10 +212,13 @@ class LangAdmController extends AdmController
         $error = Get::req('error', DOTY_INT, 0);
         if ($error) UIFeedback::error(Lang::t('_ERROR_UPLOAD', 'standard'));
 
-        $this->render('import_mask', ['coreLangs' => $this->getFileSystemCoreLanguages(), 'importTypes' => [
-            'file' => Lang::t('_IMPORT_FROM_FILE', 'standard'),
-            'core' => Lang::t('_IMPORT_FROM_CORE', 'standard')
-        ]]);
+        $this->render('import_mask', [
+            'coreLangs' => $this->getFileSystemCoreLanguages(),
+            'importTypes' => [
+                Lang::t('_IMPORT_FROM_CORE', 'standard') => self::IMPORT_TYPE_CORE,
+                Lang::t('_IMPORT_FROM_FILE', 'standard') => self::IMPORT_TYPE_FILE
+            ],
+            'defaultType' => self::IMPORT_TYPE_CORE]);
     }
 
     public function doimportTask()
@@ -224,7 +232,7 @@ class LangAdmController extends AdmController
         $overwrite = Get::req('overwrite', DOTY_INT, 0);
         $noadd_miss = Get::req('noadd_miss', DOTY_INT, 0);
 
-        if ($import_type == 'core') {
+        if ($import_type === self::IMPORT_TYPE_CORE) {
             $langFile = Get::req('lang_id', DOTY_STRING, false);
             if (empty($langFile)) {
                 Util::jump_to('index.php?r=adm/lang/import&error=1');
@@ -239,7 +247,7 @@ class LangAdmController extends AdmController
             $re = $this->model->importTranslation($filePath, $overwrite, $noadd_miss);
 
             Util::jump_to('index.php?r=adm/lang/show');
-        } else if ($import_type == 'file') {
+        } else if ($import_type === self::IMPORT_TYPE_FILE) {
             if (!isset($_FILES['lang_file'])) Util::jump_to('index.php?r=adm/lang/import&error=1');
             if ($_FILES['lang_file']['error'] != UPLOAD_ERR_OK) Util::jump_to('index.php?r=adm/lang/import&error=2');
 
