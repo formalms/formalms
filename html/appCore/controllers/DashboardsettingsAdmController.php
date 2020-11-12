@@ -137,7 +137,7 @@ class DashboardsettingsAdmController extends AdmController
 
             if ($_FILES[$fieldName]['size'] == 0 && $_FILES[$fieldName]['error'] == 0) {
                 $response['status'] = 400;
-                $response['error'] = Lang::t('_FIELD_NOT_EXIST', 'dashboardsetting');
+                $response['error'] = Lang::t('_FILE_NOT_VALID', 'dashboardsetting');
             } else {
 
                 $savefile = mt_rand(0, 100) . '_' . time() . '_' . $_FILES[$fieldName]['name'];

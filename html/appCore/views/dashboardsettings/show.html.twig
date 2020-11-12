@@ -22,7 +22,7 @@
                                 </div>
                                 <div class="dashboard__info">
                                     <div class="dashboard__infoBlock">
-                                        <label class="dashboard__label">{{ translate('_type', 'dashboardsetting') }}</label>
+                                        <label class="dashboard__label">{{ translate('_TYPE', 'dashboardsetting') }}</label>
                                         <div class="dashboard__select">
                                             <select class="form-control js-type-block"
                                                     data-block="{{ block.postData.block }}-{{ index }}">
@@ -34,7 +34,7 @@
                                     </div>
                                     {% if block.registeredActions | length %}
                                         <div class="dashboard__infoBlock">
-                                            <div class="dashboard__label">{{ translate('_enabledActions', 'dashboardsetting') }}</div>
+                                            <div class="dashboard__label">{{ translate('_ENABLED_ACTIONS', 'dashboardsetting') }}</div>
                                             <div class="dashboard__infoContainer">
                                                 <div class="dashboard__el">
                                                     {% for action in block.enabledActions %}
@@ -61,13 +61,13 @@
                 <div class="dashboard__add">
                     <div class="dashboard__select dashboard__select--block">
                         <select class="form-control js-select-block">
-                            <option value="" selected>{{ translate('_DASHBOARD_SETTING_SELECT_BLOCK', 'dashoboard') }}</option>
+                            <option value="" selected>{{ translate('_DASHBOARD_SETTING_SELECT_BLOCK', 'dashboardsetting') }}</option>
                             {% for block in installedBlocks %}
                                 <option value="{{ block.postData.block }}"
                                         data-type="{{ block.availableTypes|json_encode() }}"
                                         data-action="{{ block.registeredActions|json_encode() }}"
                                         data-form="{{ block.form|json_encode() }}">
-                                    {{ translate(block.postData.block, 'dashoboard') }}
+                                    {{ translate(block.postData.block, 'dashboardsetting') }}
 
                                 </option>
                             {% endfor %}
@@ -77,12 +77,12 @@
                     <div class="dashboard__select dashboard__select--type">
                         <select class="form-control js-select-type"></select>
                     </div>
-                    <button class="btn btn-primary dahsboard__button--add js-add-block">{{ translate('_DASHBOARD_SETTING_ADD_NEW_BLOCK', 'dashoboard') }}</button>
+                    <button class="btn btn-primary dahsboard__button--add js-add-block">{{ translate('_DASHBOARD_SETTING_ADD_NEW_BLOCK', 'dashboardsetting') }}</button>
                 </div>
-                <button class="button btn btn-danger dahsboard__button--save js-save-block">{{ translate('_DASHBOARD_SETTING_SAVE', 'dashoboard') }}
+                <button class="button btn btn-danger dahsboard__button--save js-save-block">{{ translate('_DASHBOARD_SETTING_SAVE', 'dashboardsetting') }}
                 </button>
-                <div class="dashboard__message dashboard__ok">{{ translate('_DASHBOARD_SETTING_SAVE_MESSAGE_OK', 'dashoboard') }}</div>
-                <div class="dashboard__message dashboard__ko">{{ translate('_DASHBOARD_SETTING_SAVE_MESSAGE_KO', 'dashoboard') }}
+                <div class="dashboard__message dashboard__ok">{{ translate('_DASHBOARD_SETTING_SAVE_MESSAGE_OK', 'dashboardsetting') }}</div>
+                <div class="dashboard__message dashboard__ko">{{ translate('_DASHBOARD_SETTING_SAVE_MESSAGE_KO', 'dashboardsetting') }}
                 </div>
             </div>
         </div>
