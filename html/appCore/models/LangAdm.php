@@ -342,7 +342,7 @@ class LangAdm extends Model
      * @param bool $only_empty return only untranslated words for the selected language
      * @return array
      */
-    public function getAllForDiff($lang_code = false, $langFile)
+    public function getAllForDiff($langFile, $lang_code = false)
     {
         if (!$lang_code) $lang_code = Lang::get();
 
@@ -373,7 +373,7 @@ class LangAdm extends Model
         $langs = $xpath->query('//LANGUAGES/LANG');
         foreach ($langs as $lang) {
 
-            $lang_code = addslashes($lang->getAttribute('id'));
+            $fileLangCode = addslashes($lang->getAttribute('id'));
 
             $elem = $xpath->query('lang_description/text()', $lang);
             $lang_description = addslashes(urldecode($elem->item(0)->textContent));
@@ -385,25 +385,17 @@ class LangAdm extends Model
             $elem = $xpath->query('lang_browsercode/text()', $lang);
             $lang_browsercode = addslashes($elem->item(0)->textContent);
 
-            // Now we can create or update the language
-            if ($this->languageExist($lang_code)) {
-                $re = $this->updateLanguage($lang_code, $lang_description, $lang_direction, $lang_browsercode);
-            } else {
-                $re = $this->newLanguage($lang_code, $lang_description, $lang_direction, $lang_browsercode);
-            }
-
             // in order to insert the translation an the new language we can load the entire keys set
             $current_translation = $this->getAllTranslation($lang_code);
 
             // now we can go trough the xml keys adding them and the new translation
             $keys = $xpath->query('platform/module/key', $lang);
-            $this->db->start_transaction();
+
             foreach ($keys as $key) {
 
                 $textModule = $key->parentNode->getAttribute('id');
                 $explodeTextKeyArray = explode("&", str_replace('&amp;', '&', $key->getAttribute('id')));
                 $textKey = array_pop($explodeTextKeyArray);
-                $text_savedt = $key->getAttribute('save_date');
                 $translation = stripslashes($this->cleanImport($key->nodeValue));
 
                 $neededObject = array_filter(
@@ -416,19 +408,37 @@ class LangAdm extends Model
                 if (!empty($neededObject)) {
                     $key = array_keys($neededObject);
 
-                    $langObj = $data[$key[0]];
-
-                    if ($langObj->translation_text === $translation) {
-                        unset($data[$key[0]]);
-                    } else {
-                        $data[$key[0]]->reset = sprintf('ajax.adm_server.php?r=adm/lang/resetKey&id_text=%s&lang_module=%s&translation=%s', $langObj->id, $lang_code, $translation);
-                        $data[$key[0]]->translation_text_diff = $translation;
-                    }
+                    $data[$key[0]]->translation_text_diff = $translation;
                 }
             }
         }
 
+        foreach ($data as $key => $datum) {
+            if ($datum->translation_text === $datum->translation_text_diff || (empty($datum->translation_text) && empty($datum->translation_text_diff)) || empty($datum->translation_text_diff)) {
+                unset($data[$key]);
+            }
+        }
+
         return $data;
+    }
+
+    public function getFileLangCode($langFile)
+    {
+
+        $doc = new \DOMDocument();
+        $doc->preserveWhiteSpace = false;
+        if (!$doc->load($langFile)) {
+            return false;
+        }
+        $xpath = new \DOMXPath($doc);
+
+        $langs = $xpath->query('//LANGUAGES/LANG');
+        foreach ($langs as $lang) {
+
+            $fileLangCode = addslashes($lang->getAttribute('id'));
+
+            return $fileLangCode;
+        }
     }
 
     /**

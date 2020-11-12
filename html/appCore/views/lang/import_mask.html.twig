@@ -10,6 +10,7 @@
             {{ Form_getRadioHoriz(translate('_IMPORT_TYPE','admin_lang'),'import_type','import_type',importTypes,defaultType) }}
 
             {{ Form_getDropdown(translate('_LANGUAGE', 'admin_lang'), 'lang_id', 'lang_id', coreLangs) }}
+
             {{ Form_getFilefield(translate('_FILE', 'admin_lang'), 'lang_file', 'lang_file') }}
 
             {{ Form_getCheckbox(translate('_OVERWRITE_EXISTENT', 'admin_lang'), 'overwrite', 'overwrite', '1') }}
