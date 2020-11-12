@@ -13,7 +13,7 @@
                             <div class="dashboard__content">
                                 <button class="dashboard__remove js-remove-block"
                                         data-block="{{ block.postData.block }}-{{ index }}"></button>
-                                <div class="dashboard__title">{{ block.postData.block }}</div>
+                                <div class="dashboard__title">{{ translate('_'~block.postData.block,'dashboardsetting') }}</div>
                                 <div class="dashboard__image">
 
                                     <img src="{{ block.templatePath }}static/images/dashboard-placeholder/{{ block.postData.block }}-placeholder.jpg"
@@ -40,7 +40,7 @@
                                                     {% for action in block.enabledActions %}
                                                         <label><input name="registeredAction[{{ loop.index0 }}]"
                                                                       type="checkbox" value="{{ action }}"
-                                                                      {% if action in block.registeredActions %}checked{% endif %} />{{ action }}
+                                                                      {% if action in block.registeredActions %}checked{% endif %} />{{ translate('_'~action,'dashboardsetting') }}
                                                         </label>
                                                     {% endfor %}
                                                 </div>
@@ -61,13 +61,14 @@
                 <div class="dashboard__add">
                     <div class="dashboard__select dashboard__select--block">
                         <select class="form-control js-select-block">
-                            <option value="" selected>{{ translate('_DASHBOARD_SETTING_SELECT_BLOCK', 'dashboardsetting') }}</option>
+                            <option value=""
+                                    selected>{{ translate('_DASHBOARD_SETTING_SELECT_BLOCK', 'dashboardsetting') }}</option>
                             {% for block in installedBlocks %}
                                 <option value="{{ block.postData.block }}"
                                         data-type="{{ block.availableTypes|json_encode() }}"
                                         data-action="{{ block.registeredActions|json_encode() }}"
                                         data-form="{{ block.form|json_encode() }}">
-                                    {{ translate(block.postData.block, 'dashboardsetting') }}
+                                    {{ translate('_'~block.postData.block, 'dashboardsetting') }}
 
                                 </option>
                             {% endfor %}
@@ -137,8 +138,7 @@
                             'enabled': true,
                             'enabledActions': action,
                             'firstInsert': firstInsert,
-                            'data': {
-                            }
+                            'data': {}
                         }
                     }
 
@@ -199,7 +199,9 @@
                     console.log(response);
                     saveField.removeAttr('disabled');
                     $('.dashboard__ok').css('display', 'block');
-                    setTimeout(function(){ location.reload(); }, 1500);
+                    setTimeout(function () {
+                        location.reload();
+                    }, 1500);
 
                 },
                 error: err => {
@@ -235,6 +237,7 @@
         // AGGIUNGE BLOCCO
         addBlock.click(function () {
             const selectBlockValue = selectBlock.children('option:selected').val();
+            const selectBlockTitle = selectBlock.children('option:selected').text();
             const selectTypeValue = selectType.children('option:selected').val();
             const countBlocks = $('.dashboard__block').length + 2;
 
@@ -247,7 +250,7 @@
                     '              <button class="dashboard__remove js-remove-block" data-block="' + selectBlockValue + '-' + countBlocks + '"></button>\n' +
                     '              <img src="' + templatePath + '/static/images/dashboard-placeholder/' + selectBlockValue + '-placeholder.jpg" class="dashboard__image">' +
                     '              <div class="dashboard__info">' +
-                    '              <div class="dashboard__title">' + selectBlockValue + '</div>\n' +
+                    '              <div class="dashboard__title">' + selectBlockTitle + '</div>\n' +
                     '              </div>' +
                     '            </div>\n' +
                     '          </div>';
