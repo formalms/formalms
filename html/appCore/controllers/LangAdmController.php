@@ -235,6 +235,11 @@ class LangAdmController extends AdmController
 
         switch ($importType) {
             case self::IMPORT_TYPE_CORE:
+
+                if (empty($langFile)) {
+                    Util::jump_to('index.php?r=adm/lang/import&error=1');
+                }
+
                 $filePath = _base_ . '/xml_language/' . $langFile;
                 break;
             case self::IMPORT_TYPE_FILE:
@@ -242,17 +247,12 @@ class LangAdmController extends AdmController
                 $filePath = $_FILES['lang_file']['tmp_name'];
                 break;
             default:
-                Util::jump_to('index.php?r=adm/lang/importCore&error=1');
+                Util::jump_to('index.php?r=adm/lang/import&error=1');
                 break;
         }
 
-
-        if (empty($langFile)) {
-            Util::jump_to('index.php?r=adm/lang/importCore&error=1');
-        }
-
         if (!is_file($filePath)) {
-            Util::jump_to('index.php?r=adm/lang/importCore&error=2');
+            Util::jump_to('index.php?r=adm/lang/import&error=2');
         }
 
         $langCode = $this->model->getFileLangCode($filePath);
