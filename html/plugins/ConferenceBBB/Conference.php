@@ -183,12 +183,13 @@ class Conference extends \PluginConference {
         }*/
 
         $name = self::getRoomName($idConference);
+        $meetingID = $_SERVER['SERVER_NAME']."-".$idConference;
         include_once ('lib.bbb.api.php');
         $url= Get::sett('ConferenceBBB_server', "");
         $salt = Get::sett('ConferenceBBB_salt', "");
         $moderator_password = Get::sett('ConferenceBBB_password_moderator', "");
         $viewer_password = Get::sett('ConferenceBBB_password_viewer', "");
-        $response = BigBlueButton::createMeetingArray($username, $name, null, $moderator_password, $viewer_password, $salt, $url, $returnurl);
+        $response = BigBlueButton::createMeetingArray($name, $meetingID, null, $moderator_password, $viewer_password, $salt, $url, $returnurl);
         if(checkPerm('mod', true)){
             $password = $moderator_password;
         }
@@ -208,7 +209,7 @@ class Conference extends \PluginConference {
             }
         }
         else{
-            $_url = BigBlueButton::joinURL($name, $username,$password, $salt, $url);
+            $_url = BigBlueButton::joinURL($meetingID, $username,$password, $salt, $url);
         }
 
 ////////////////////////////////////////////////////
