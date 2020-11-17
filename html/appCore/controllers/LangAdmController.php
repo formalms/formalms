@@ -53,13 +53,11 @@ class LangAdmController extends AdmController
 
         if (!in_array($sort, $sortable)) $sort = 'lang_code';
         switch ($dir) {
-            case "desc":
-                {
+            case "desc": {
                     $dir = 'desc';
                 };
                 break;
-            default:
-                {
+            default: {
                     $dir = 'asc';
                 };
                 break;
@@ -218,7 +216,8 @@ class LangAdmController extends AdmController
                 Lang::t('_IMPORT_FROM_CORE', 'standard') => self::IMPORT_TYPE_CORE,
                 Lang::t('_IMPORT_FROM_FILE', 'standard') => self::IMPORT_TYPE_FILE
             ],
-            'defaultType' => self::IMPORT_TYPE_CORE]);
+            'defaultType' => self::IMPORT_TYPE_CORE
+        ]);
     }
 
     public function doimportTask()
@@ -268,7 +267,8 @@ class LangAdmController extends AdmController
                 if (count($langList) > 0) {
 
                     $data = [
-                        'body' => array_values($langList)
+                        'body' => array_values($langList),
+                        'langCode' => $langCode
                     ];
 
                     $this->render('diff', $data);
@@ -284,7 +284,7 @@ class LangAdmController extends AdmController
 
     public function listTask()
     {
-        YuiLib::load('table');
+        // YuiLib::load('table');
 
         $lang_code = Get::req('lang_code', DOTY_STRING, Lang::get());
 
@@ -309,8 +309,8 @@ class LangAdmController extends AdmController
 
     public function getTask()
     {
-        $start_index = Get::req('startIndex', DOTY_INT, 0);
-        $results = Get::req('results', DOTY_MIXED, Get::sett('visuItem', 250));
+        $start_index = Get::req('start', DOTY_INT, 0);
+        $results = Get::req('length', DOTY_MIXED, Get::sett('visuItem', 250));
         $sort = Get::req('sort', DOTY_MIXED, 'text_module');
         $dir = Get::req('dir', DOTY_MIXED, 'asc');
 
@@ -328,13 +328,14 @@ class LangAdmController extends AdmController
         $total_lang = $this->model->getCount($la_module, $la_text, $lang_code, $only_empty);
 
         $res = array(
-            'totalRecords' => $total_lang,
+            'recordsTotal' => $total_lang,
+            'recordsFiltered' => $total_lang,
             'startIndex' => $start_index,
             'sort' => $sort,
             'dir' => $dir,
             'rowsPerPage' => $results,
             'results' => count($lang_list),
-            'records' => $lang_list
+            'data' => $lang_list
         );
 
         echo $this->json->encode($res);
@@ -444,7 +445,8 @@ class LangAdmController extends AdmController
         $langList = $this->model->getAllForDiff($langFile, $langCode);
 
         $data = [
-            'body' => array_values($langList)
+            'body' => array_values($langList),
+            'langCode' => $langCode
         ];
 
         $this->render('diff', $data);
@@ -456,7 +458,7 @@ class LangAdmController extends AdmController
 
         foreach ($langKeys as $langKey) {
             if (!empty($langKey['translation'])) {
-                $re = $this->model->updateTranslation($langKey['idText'], $langKey['langModule'], $langKey['translation']);
+                $re = $this->model->updateTranslation($langKey['idText'], $langKey['langCode'], $langKey['translation']);
 
                 $output[] = [
                     'langKey' => $langKey,

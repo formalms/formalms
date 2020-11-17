@@ -300,19 +300,19 @@ class LangAdm extends Model
 
         $dir = $this->clean_dir($dir);
         switch ($sort) {
-            case "text_key" :
+            case "text_key":
                 $qtxt .= " ORDER BY lt.text_key " . $dir . ", ta.translation_text ASC";
                 break;
-            case "translation_text" :
+            case "translation_text":
                 $qtxt .= " ORDER BY ta.translation_text " . $dir . "";
                 break;
-            case "translation_text_diff" :
+            case "translation_text_diff":
                 $qtxt .= " ORDER BY translation_text_diff " . $dir . "";
                 break;
-            case "save_date" :
+            case "save_date":
                 $qtxt .= " ORDER BY ta.save_date " . $dir . "";
                 break;
-            default :
+            default:
                 $qtxt .= " ORDER BY lt.text_module " . $dir . ", ta.translation_text ASC";
                 break;
         }
@@ -794,7 +794,6 @@ class LangAdm extends Model
                     if ($id_text) $re = $this->insertTranslation($id_text, $lang_code, $translation, $text_savedt);
                 }
                 if ($re) $definitions++;
-
             } // end foreach
             $this->db->commit();
         }
@@ -810,5 +809,4 @@ class LangAdm extends Model
             $translation = addslashes(trim(urldecode($text)));
         return $translation;
     }
-
 }
