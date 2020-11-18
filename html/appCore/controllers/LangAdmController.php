@@ -37,8 +37,39 @@ class LangAdmController extends AdmController
 
     public function showTask()
     {
+        require_once Forma::inc(_lib_ . '/formatable/include.php');
 
-        $this->render('show', array());
+        $startIndex = Get::req('startIndex', DOTY_INT, 0);
+        $results = Get::req('results', DOTY_INT, Get::sett('visuItem', 100));
+        $dir = Get::req('dir', DOTY_STRING, "asc");
+
+        $sort = 'lang_code';
+        switch ($dir) {
+            case "desc":
+                {
+                    $dir = 'desc';
+                };
+                break;
+            default:
+                {
+                    $dir = 'asc';
+                };
+                break;
+        }
+
+        $lang_list = $this->model->getLangList($startIndex, $results, $sort, $dir);
+        $total = $this->model->getLangTotal();
+        foreach ($lang_list as $i => $lang) {
+
+            $lang->lang_translate = 'index.php?r=adm/lang/list&amp;lang_code=' . $lang->lang_code;
+            $lang->lang_export = 'index.php?r=adm/lang/export&amp;lang_code=' . $lang->lang_code;
+            $lang->lang_diff = 'index.php?r=adm/lang/diff&amp;lang_code=' . $lang->lang_code;
+            $lang->lang_mod = 'ajax.adm_server.php?r=adm/lang/mod&amp;lang_code=' . $lang->lang_code;
+            $lang->lang_del = 'ajax.adm_server.php?r=adm/lang/del&amp;lang_code=' . $lang->lang_code;
+            $lang_list[$i] = $lang;
+        }
+
+        $this->render('show', ['langList' => array_values($lang_list)]);
     }
 
     public function getlang()
@@ -53,11 +84,13 @@ class LangAdmController extends AdmController
 
         if (!in_array($sort, $sortable)) $sort = 'lang_code';
         switch ($dir) {
-            case "desc": {
+            case "desc":
+                {
                     $dir = 'desc';
                 };
                 break;
-            default: {
+            default:
+                {
                     $dir = 'asc';
                 };
                 break;

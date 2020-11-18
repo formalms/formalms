@@ -1,0 +1,58 @@
+{{ Get_title({
+	'index.php?r=adm/lang/show' : translate('_LANGUAGE', 'admin_lang'),
+	'':translate('_IMPORT', 'admin_lang')
+},false) }}
+
+<table class="table table-bordered display" style="width:100%" id="langlist"></table>
+
+
+<script>
+    $(function () {
+        var body = {{ langList | json_encode(constant('JSON_HEX_APOS')) | raw }};
+
+        var columns = [
+            {data: 'lang_code', title: '{{ translate('_LANGUAGE', 'admin_lang') }}', sortable: true},
+            {data: 'lang_description', title: '{{ translate('_DESCRIPTION', 'admin_lang') }}', sortable: true},
+            {data: 'lang_direction', title: '{{ translate('_ORIENTATION', 'admin_lang') }}', sortable: true},
+            {data: 'lang_stats', title: '{{ translate('_STATISTICS', 'admin_lang') }}', sortable: true},
+            {data: 'lang_translate', title: '<span class="ico-sprite subs_elem"><span>{{ translate("_TRANSLATELANG", "admin_lang") }}</span></span>', sortable: true},
+            {data: 'lang_diff', title: '<span class="ico-sprite subs_diff"><span>{{ translate("_DIFF_LANG", "admin_lang") }}</span></span>', sortable: true},
+            {data: 'lang_export', title: '<span class="ico-sprite subs_download"><span>{{ translate("_EXPORT_XML", "admin_lang") }}</span></span>', sortable: true},
+            {data: 'lang_mod', title: '<span class="ico-sprite subs_mod"><span>{{ translate("_MOD", "admin_lang") }}</span></span>', sortable: true},
+            {data: 'lang_del', title: '<span class="ico-sprite subs_del"><span>{{ translate("_DEL", "admin_lang") }}</span></span>', sortable: true}
+
+        ];
+        var rows = [];
+
+        body.forEach(function (item, k) {
+            link = '<a id="'+item.id+'" href="'+item.lang_diff+'" class="ico-sprite subs_elem" title="{{ translate("_TRANSLATELANG", "admin_lang") }}"><span></span></a>'
+            item.lang_translate = link;
+            link = '<a id="'+item.id+'" href="'+item.lang_diff+'" class="ico-sprite subs_diff" title="{{ translate("_DIFF_LANG", "admin_lang") }}"><span></span></a>'
+            item.lang_diff = link;
+            link = '<a id="'+item.id+'" href="'+item.lang_export+'" class="ico-sprite subs_download" title="{{ translate("_EXPORT_XML", "admin_lang") }}"><span></span></a>'
+            item.lang_export = link;
+            link = '<a id="'+item.id+'" href="'+item.lang_mod+'" class="ico-sprite subs_mod" title="{{ translate("_MOD", "admin_lang") }}"><span></span></a>'
+            item.lang_mod = link;
+            link = '<a id="'+item.id+'" href="'+item.lang_del+'" class="ico-sprite subs_del" title="{{ translate("_DEL", "admin_lang") }}"><span></span></a>'
+            item.lang_del = link;
+
+            rows.push(Object.assign({}, item));
+        });
+
+        var t = $('#langlist').FormaTable({
+            rowId: function (row) {
+                return row[0];
+            },  // cambia
+            scrollX: true,
+            processing: true,
+            serverSide: false,
+            paging: true,
+            searching: true,
+            columns,
+            data: rows,
+            dom: 'Bfrtip',
+            stateSave: true,
+            deferRender: true,
+        });
+    });
+</script>
