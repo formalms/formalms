@@ -318,7 +318,7 @@ class LangAdmController extends AdmController
     public function listTask()
     {
         // YuiLib::load('table');
-
+        require_once Forma::inc(_lib_ . '/formatable/include.php');
         $lang_code = Get::req('lang_code', DOTY_STRING, Lang::get());
 
         $module_list = $this->model->getModuleList();
@@ -331,12 +331,27 @@ class LangAdmController extends AdmController
         $language_list_diff = $language_list = $this->model->getLangCodeList();
         array_unshift($language_list_diff, Lang::t('_NONE'));
 
+        $sort = Get::req('sort', DOTY_MIXED, 'text_module');
+        $dir = Get::req('dir', DOTY_MIXED, 'asc');
+
+        $la_module = Get::req('la_module', DOTY_ALPHANUM, false);
+        $la_text = Get::req('la_text', DOTY_MIXED, false);
+        $lang_code = Get::req('lang_code', DOTY_ALPHANUM, false);
+        $lang_code_diff = Get::req('lang_code_diff', DOTY_ALPHANUM, false);
+        $only_empty = Get::req('only_empty', DOTY_MIXED, 0);
+        $plugin_id = Get::req('plugin_id', DOTY_INT, false);
+        if ($only_empty === 'true') $only_empty = true;
+        else $only_empty = false;
+
+        $lang_list = $this->model->getAll(false, false, $la_module, $la_text, $lang_code, $lang_code_diff, $only_empty, $sort, $dir, $plugin_id);
+
         $this->render('list', array(
             'lang_code' => $lang_code,
             'module_list' => $module_list,
             'language_list' => $language_list,
             'language_list_diff' => $language_list_diff,
-            'plugins_ids' => $plugins_ids
+            'plugins_ids' => $plugins_ids,
+            'data' => $lang_list
         ));
     }
 

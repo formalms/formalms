@@ -25,7 +25,7 @@
         var rows = [];
 
         body.forEach(function (item, k) {
-            link = '<a id="'+item.id+'" href="'+item.lang_diff+'" class="ico-sprite subs_elem" title="{{ translate("_TRANSLATELANG", "admin_lang") }}"><span></span></a>'
+            link = '<a id="'+item.id+'" href="'+item.lang_translate+'" class="ico-sprite subs_elem" title="{{ translate("_TRANSLATELANG", "admin_lang") }}"><span></span></a>'
             item.lang_translate = link;
             link = '<a id="'+item.id+'" href="'+item.lang_diff+'" class="ico-sprite subs_diff" title="{{ translate("_DIFF_LANG", "admin_lang") }}"><span></span></a>'
             item.lang_diff = link;
