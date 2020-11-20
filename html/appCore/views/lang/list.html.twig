@@ -4,17 +4,20 @@
 },false) }}
 
 
-<div class="std_block">
+<div class="std_blockx">
     <div class="container-back">
         <a href="index.php?r=adm/lang/show"><span>{{ translate('_BACK', 'standard')|raw }}</span></a>
     </div>
 
-    <div class="quick_search_form">
+    <div class="search_form">
         {{ Form_openForm('lang_filters', 'index.php?r=adm/lang/list', false, false, '','','row') }}
-        <div class="lang-filter col-xs-12 col-sm-2">'
-            <label for="lang_code">{{ translate('_LANGUAGE', 'admin_lang') }}</label>: '
-            {{ Form_getInputDropdown("search_d", "lang_code", "lang_code", language_list, array_search($lang_code,
-            $language_list), ' onchange=" DataTable_lang_table.refresh(); "')
+        <div class="lang-filter col-xs-12 col-sm-2">
+            <label for="lang_code">{{ translate('_LANGUAGE', 'admin_lang') }}</label>:
+            {{ Form_getInputDropdown("search_d", "lang_code", "lang_code", language_list, selected_language, ' onchange="DataTable_lang_table.reload();"') }}
+        </div>
+        <div class="lang-confr-filter  col-xs-12 col-sm-3">
+            <label for="lang_code_diff">{{ translate('_LANG_COMPARE', 'admin_lang') }}</label>:
+            {{ Form_getInputDropdown("search_d", "lang_code_diff", "lang_code_diff", language_list, selected_language_diff, ' onchange="DataTable_lang_table.reload();"') }}
         </div>
         {{ Form_closeForm() }}
     </div>
@@ -69,7 +72,7 @@
             "&lang_code=" + encodeURIComponent(YAHOO.util.Dom.get('lang_code').value) +
             "&new_value=" + encodeURIComponent(new_value) +
             "&old_value=" + encodeURIComponent(old_value);
-        console.log(post)
+
         var url = "ajax.adm_server.php?r=adm/lang/saveData&";
 
         YAHOO.util.Connect.asyncRequest("POST", url, myCallback, post);
@@ -113,13 +116,13 @@
     }
     YAHOO.util.Event.addListener("lang_filters", "submit", function (e) {
         YAHOO.util.Event.preventDefault(e);
-        DataTable_lang_table.refresh();
+        DataTable_lang_table.reload();
     });
     YAHOO.util.Event.addListener("filter_reset", "click", function (e) {
         YAHOO.util.Event.preventDefault(e);
         YAHOO.util.Dom.get('la_module').value = '0';
         YAHOO.util.Dom.get('la_text').value = '';
-        DataTable_lang_table.refresh();
+        DataTable_lang_table.reload();
     });
 
     var body = {{ data | json_encode(constant('JSON_HEX_APOS')) | raw }};
@@ -149,7 +152,10 @@
         {
             data: 'translation_text',
             title: "{{ translate('_LANG_TRANSLATION ', 'admin_lang ') }}",
-            sortable: true
+            sortable: true,
+            edit: {
+                type: 'text',
+            },
         },
         {
             data: 'translation_text_diff',
@@ -169,20 +175,33 @@
     ];
 
     $(function () {
-        var t = $('#lang_table').FormaTable({
-            rowId: function (row) {
-                return row[0];
-            },  // cambia
+        DataTable_lang_table = $('#lang_table').FormaTable({
+            rowId: "id",
             scrollX: true,
             processing: true,
-            serverSide: false,
+            serverSide: true,
+            'ajax': {
+                type: 'GET',
+                data: function(d) {
+                    d.lang_code = $("#lang_code").val();
+                    d.lang_code_diff = $("#lang_code_diff").val();
+                },
+                url: 'ajax.adm_server.php?r=adm/lang/get',
+            },
             paging: true,
             searching: true,
             columns,
-            data: rows,
             dom: 'Bfrtip',
             stateSave: true,
             deferRender: true,
+            edit: {
+                url: "ajax.adm_server.php?r=adm/lang/inline_edit",
+                type: "POST",
+                data: {
+                    language: $("#lang_code").val(),
+                },
+                id: 'id_text'
+            },
         });
     });
 </script>

@@ -45,13 +45,11 @@ class LangAdmController extends AdmController
 
         $sort = 'lang_code';
         switch ($dir) {
-            case "desc":
-                {
+            case "desc": {
                     $dir = 'desc';
                 };
                 break;
-            default:
-                {
+            default: {
                     $dir = 'asc';
                 };
                 break;
@@ -84,13 +82,11 @@ class LangAdmController extends AdmController
 
         if (!in_array($sort, $sortable)) $sort = 'lang_code';
         switch ($dir) {
-            case "desc":
-                {
+            case "desc": {
                     $dir = 'desc';
                 };
                 break;
-            default:
-                {
+            default: {
                     $dir = 'asc';
                 };
                 break;
@@ -315,6 +311,43 @@ class LangAdmController extends AdmController
         Util::jump_to('index.php?r=adm/lang/show');
     }
 
+    public function inline_editTask()
+    {
+        $id_text = Get::req('id_text', DOTY_INT, 0);
+
+        if ($id_text <= 0) {
+            echo $this->json->encode(array('success' => false));
+            return;
+        }
+
+        //Update info
+        $new_value = Get::req('new_value', DOTY_MIXED, '');
+        $old_value = Get::req('old_value', DOTY_MIXED, '');
+        $column = Get::req('col', DOTY_STRING, '');
+        $language = Get::req('language', DOTY_STRING, getLanguage());
+
+        if ($new_value === $old_value) {
+            echo $this->json->encode(array('success' => true));
+        } else {
+
+            switch ($column) {
+
+                case 'translation_text': {
+                        $res = $this->model->updateTranslation($id_text, $language, $new_value);
+                        $output = array('success' => $res ? true : false);
+                        if ($res) $output['new_value'] = stripslashes($new_value);
+                        echo $this->json->encode($output);
+                    }
+                    break;
+
+                default: {
+                        echo $this->json->encode(array('success' => false));
+                    }
+                    break;
+            }
+        }
+    }
+
     public function listTask()
     {
         // YuiLib::load('table');
@@ -347,6 +380,14 @@ class LangAdmController extends AdmController
 
         $this->render('list', array(
             'lang_code' => $lang_code,
+            'selected_language' => array_search(
+                $lang_code,
+                $language_list
+            ),
+            'selected_language_diff' => array_search(
+                $lang_code_diff,
+                $language_list
+            ),
             'module_list' => $module_list,
             'language_list' => $language_list,
             'language_list_diff' => $language_list_diff,
