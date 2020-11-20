@@ -77,7 +77,7 @@ function openreport($idrep=false) {
 	$obj_report = new $class_name( $id_report );
     }else{
         $pg = new PluginManager('Report');
-        $obj_report = $pg->get_plugin(strtolower($class_name),array($id_report));
+        $obj_report = $pg->get_plugin($class_name,array($id_report));
         }
 	return $obj_report;
 }
@@ -710,7 +710,7 @@ function report_show_results($idrep = false) {
                 $obj_report = new $class_name($idrep);
             } else {
                 $pg = new PluginManager('Report');
-                $obj_report = $pg->get_plugin(strtolower($class_name), array($idrep));
+                $obj_report = $pg->get_plugin($class_name, array($idrep));
             }
 		} else {
 			reportlist();
@@ -740,7 +740,7 @@ function report_show_results($idrep = false) {
             $obj_report = new $class_name($idrep);
         } else {
             $pg = new PluginManager('Report');
-            $obj_report = $pg->get_plugin(strtolower($class_name), array($idrep));
+            $obj_report = $pg->get_plugin($class_name, array($idrep));
         }
     }
 
