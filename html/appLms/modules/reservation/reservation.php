@@ -738,7 +738,7 @@ function viewUserEvent()
             $sender = Get::sett('sender_event');
 	
 			//sendMail($recipients, $subject, $body, $sender);
-			require_once(_base_.'/lib/lib.mailer.php');
+
 			$mailer = DoceboMailer::getInstance();
 			$mailer->SendMail($sender, $re, $subject, $body, array(MAIL_REPLYTO => $sender, MAIL_SENDER_ACLNAME => false));
 				
@@ -1032,7 +1032,7 @@ function viewUserEvent()
 
                 $sender = Get::sett('sender_event');
 
-				require_once(_base_.'/lib/lib.mailer.php');
+
 				$mailer = DoceboMailer::getInstance();
 				$mailer->SendMail($sender, $re, $subject, $body, array(MAIL_REPLYTO => $sender, MAIL_SENDER_ACLNAME => false));
 		
@@ -2149,7 +2149,7 @@ function reservationSendMail()
         $sender = Get::sett('sender_event');
 
 		//sendMail($recipients, $subject, $body, $sender);
-		require_once(_base_.'/lib/lib.mailer.php');
+
 		$mailer = DoceboMailer::getInstance();
 		$mailer->SendMail($sender, $recipients, Lang::t('_MAIL_OBJECT', 'register'), $body, array(MAIL_REPLYTO => $sender, MAIL_SENDER_ACLNAME => false));
 				

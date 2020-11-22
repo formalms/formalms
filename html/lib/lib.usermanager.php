@@ -622,7 +622,7 @@ class UserManager
 
                 //if(!@mail($user_info[ACL_INFO_EMAIL], $lang->def('_LOST_USERID_TITLE'), $mail_text, $from.$intestazione)) {
 
-                require_once(_base_ . '/lib/lib.mailer.php');
+
                 $mailer = DoceboMailer::getInstance();
                 $success = $mailer->SendMail(
                     $mail_sender,
@@ -682,7 +682,7 @@ class UserManager
                 $link = Get::site_url() . $mail_url . '&amp;pwd=retrpwd&amp;code=' . $code;
                 $mail_text = str_replace('[link]', $link, $lang->def('_LOST_PWD_MAILTEXT'));
 
-                require_once(_base_ . '/lib/lib.mailer.php');
+
                 $mailer = DoceboMailer::getInstance();
                 $success = $mailer->SendMail(
                     $mail_sender,
@@ -1767,7 +1767,7 @@ class UserManagerRenderer
         if (strcmp($options['register_type'], 'self') != 0) {
 
 
-            require_once(_base_ . '/lib/lib.mailer.php');
+
             $mailer = DoceboMailer::getInstance();
 
             if (!$mailer->SendMail($admin_mail, $_POST['register']['email'], Lang::t('_MAIL_OBJECT', 'register'), $text, false, array(MAIL_REPLYTO => $admin_mail, MAIL_SENDER_ACLNAME => false))) {
@@ -1803,7 +1803,7 @@ class UserManagerRenderer
             $text_self = str_replace('[link]', '' . $link . '', $text_self);
             $text_self = str_replace('[dynamic_link]', '' . $dynamic_link . '', $text_self);
 
-            require_once(_base_ . '/lib/lib.mailer.php');
+
 
             $mailer = DoceboMailer::getInstance();
             if (!$mailer->SendMail($admin_mail, $_POST['register']['email'], Lang::t('_MAIL_OBJECT_SELF', 'register'), $text_self, false, false)) {

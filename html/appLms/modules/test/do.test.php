@@ -480,7 +480,7 @@ function intro ($object_test , $id_param , $deleteLastTrack = false)
 function resetTrack ($testObj , $id_track)
 {
 	if (! checkPerm ('view' , true , 'organization') && ! checkPerm ('view' , true , 'storage')) die("You can't access");
-	require_once (Docebo::inc (_folder_lms_ . '/class.module/learning.test.php'));
+	require_once (Forma::inc (_folder_lms_ . '/class.module/learning.test.php'));
 	require_once (_base_ . '/lib/lib.upload.php');
 
 	if (! $testObj->isRetainAnswersHistory ()) {
@@ -933,7 +933,7 @@ function play ($object_test , $id_param)
 
 	while (list($idQuest , $type_quest , $type_file , $type_class , $time_assigned) = sql_fetch_row ($re_question)) {
 
-		require_once (Docebo::inc (_folder_lms_ . '/modules/question/' . $type_file));
+		require_once (Forma::inc (_folder_lms_ . '/modules/question/' . $type_file));
 		$quest_obj = eval("return new $type_class( $idQuest );");
 
 		$GLOBALS[ 'page' ]->add (
@@ -1240,7 +1240,7 @@ function showResult ($object_test , $id_param)
 
 	while (list($id_quest , $type_quest , $type_file , $type_class , $id_cat) = sql_fetch_row ($reQuest)) {
 
-		require_once (Docebo::inc (_folder_lms_ . '/modules/question/' . $type_file));
+		require_once (Forma::inc (_folder_lms_ . '/modules/question/' . $type_file));
 
 		$quest_point_do = 0;
 
@@ -1814,7 +1814,7 @@ function user_report ($idUser , $idTest , $id_param = false , $id_track = false 
 	$reQuest = sql_query ($query_question);
 	while (list($id_quest , $type_quest , $type_file , $type_class , $id_cat) = sql_fetch_row ($reQuest)) {
 
-		require_once (Docebo::inc (_folder_lms_ . '/modules/question/' . $type_file));
+		require_once (Forma::inc (_folder_lms_ . '/modules/question/' . $type_file));
 
 		$quest_point_do = 0;
 
@@ -2018,7 +2018,7 @@ function editUserReport ($id_user , $id_test , $id_track , $number_time = null ,
 	$reQuest = sql_query ($query_question);
 	while (list($id_quest , $type_quest , $type_file , $type_class , $id_cat) = sql_fetch_row ($reQuest)) {
 
-		require_once (Docebo::inc (_folder_lms_ . '/modules/question/' . $type_file));
+		require_once (Forma::inc (_folder_lms_ . '/modules/question/' . $type_file));
 
 		$quest_point_do = 0;
 
@@ -2193,7 +2193,7 @@ function saveManualUserReport ($id_user , $id_test , $id_track)
 	while (list($id_quest , $type_quest , $type_file , $type_class , $id_cat) = sql_fetch_row ($reQuest)) {
 
 		// instance question class
-		require_once (Docebo::inc (_folder_lms_ . '/modules/question/' . $type_file));
+		require_once (Forma::inc (_folder_lms_ . '/modules/question/' . $type_file));
 		$quest_obj = eval("return new $type_class( $id_quest );");
 
 		// check score

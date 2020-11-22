@@ -296,7 +296,7 @@ require_once(_base_.'/lib/lib.upload.php');
 
 
 
-require_once(_base_.'/lib/lib.mailer.php');
+
 $mailer = DoceboMailer::getInstance();
 
 require_once(_base_.'/lib/lib.json.php');

@@ -73,7 +73,7 @@ function instest()
 {
     checkPerm('view', false, 'storage');
 
-    require_once(Docebo::inc(_folder_lms_ . '/class.module/learning.test.php'));
+    require_once(Forma::inc(_folder_lms_ . '/class.module/learning.test.php'));
 
     $lang = &DoceboLanguage::createInstance('test');
 
@@ -672,7 +672,7 @@ function &istanceQuest($type_of_quest, $id)
     if (!sql_num_rows($re_quest)) return;
     list($type_file, $type_class) = sql_fetch_row($re_quest);
 
-    require_once(Docebo::inc(_folder_lms_ . '/modules/question/' . $type_file));
+    require_once(Forma::inc(_folder_lms_ . '/modules/question/' . $type_file));
     $quest_obj = eval("return new $type_class ( $id );");
 
     return $quest_obj;
@@ -1675,7 +1675,7 @@ function defpoint()
     $max_score = 0;
     while (list($idQuest, $type_quest, $type_file, $type_class, $title_quest, $difficult) = sql_fetch_row($re_quest)) {
 
-        require_once(Docebo::inc(_folder_lms_ . '/modules/question/' . $type_file));
+        require_once(Forma::inc(_folder_lms_ . '/modules/question/' . $type_file));
         $quest_obj = eval("return new $type_class( $idQuest );");
 
         $max_score += $quest_obj->getMaxScore();
@@ -1779,7 +1779,7 @@ function modassignpoint()
             SET difficult = '" . (int) $_REQUEST['new_difficult_quest'][$idQuest] . "'
             WHERE idTest = '" . $idTest . "' AND idQuest = '" . (int) $idQuest . "'");
 
-            require_once(Docebo::inc(_folder_lms_ . '/modules/question/' . $type_file));
+            require_once(Forma::inc(_folder_lms_ . '/modules/question/' . $type_file));
             $quest_obj = eval("return new $type_class( $idQuest );");
             $score_assign[$idQuest] = $quest_obj->setMaxScore($_REQUEST['new_score_quest'][$idQuest]);
         }
@@ -1828,7 +1828,7 @@ function modassignpoint()
 
     while (list($idQuest, $type_quest, $type_file, $type_class, $title_quest, $difficult) = sql_fetch_row($re_quest)) {
 
-        require_once(Docebo::inc(_folder_lms_ . '/modules/question/' . $type_file));
+        require_once(Forma::inc(_folder_lms_ . '/modules/question/' . $type_file));
         $quest_obj = eval("return new $type_class( $idQuest );");
 
         if (isset($_REQUEST['new_score_quest'][$idQuest])) {
@@ -2160,7 +2160,7 @@ function doexportquestqb()
                         WHERE q.idQuest IN (" . implode(',', $quest_selection) . ") AND q.type_quest = t.type_quest");
 
         while (list($idQuest, $type_quest, $type_file, $type_class) = sql_fetch_row($reQuest)) {
-            require_once(Docebo::inc(_folder_lms_ . '/modules/question/' . $type_file));
+            require_once(Forma::inc(_folder_lms_ . '/modules/question/' . $type_file));
             $quest_obj = new $type_class($idQuest);
             $new_id = $quest_obj->copy(0);
         }
@@ -2181,7 +2181,7 @@ function _getTestMaxScore($idTest)
 
     $max_score = 0;
     while (list($idQuest, $type_quest, $type_file, $type_class, $title_quest, $difficult) = sql_fetch_row($re_quest)) {
-        require_once(Docebo::inc(_folder_lms_ . '/modules/question/' . $type_file));
+        require_once(Forma::inc(_folder_lms_ . '/modules/question/' . $type_file));
         $quest_obj = eval("return new $type_class( $idQuest );");
         $max_score += $quest_obj->getMaxScore();
     }

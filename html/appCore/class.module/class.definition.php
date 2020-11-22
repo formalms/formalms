@@ -102,10 +102,10 @@ class Module {
 
 		if (file_exists('modules/'.$this->module_name.'/'.$this->module_name.'.php')){
 			//include('modules/'.$this->module_name.'/'.$this->module_name.'.php');
-			include( Docebo::inc( _adm_.'/modules/'.$this->module_name.'/'.$this->module_name.'.php' ) );
+			include( Forma::inc( _adm_.'/modules/'.$this->module_name.'/'.$this->module_name.'.php' ) );
 		} else {
 			//include('../appLms/admin/modules/'.$this->module_name.'/'.$this->module_name.'.php');
-			include( Docebo::inc( _lms_.'/admin/modules/'.$this->module_name.'/'.$this->module_name.'.php' ) );
+			include( Forma::inc( _lms_.'/admin/modules/'.$this->module_name.'/'.$this->module_name.'.php' ) );
 		}
 		
 	}

@@ -11,7 +11,7 @@
 |   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
-require_once( Docebo::inc(_base_ .'/lib/lib.aclmanager.php') );
+require_once( Forma::inc(_base_ .'/lib/lib.aclmanager.php') );
 
 /**
  * Acl common tasks class

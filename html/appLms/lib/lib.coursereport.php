@@ -52,7 +52,7 @@ class CourseReportManager
     {
 
         require_once($GLOBALS['where_lms'] . '/lib/lib.orgchart.php');
-        require_once(Docebo::inc(_folder_lms_ . '/class.module/learning.test.php'));
+        require_once(Forma::inc(_folder_lms_ . '/class.module/learning.test.php'));
 
         $org_man = new OrganizationManagement($_SESSION['idCourse']);
         $tests =& $org_man->getAllLoAbsoluteIdWhereType(Learning_Test::getTestTypes());

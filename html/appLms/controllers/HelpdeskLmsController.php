@@ -79,7 +79,6 @@ class HelpdeskLmsController extends LmsController {
 
             $msg .= "</body></html>";
 
-            require_once(Forma::inc(_base_.'/lib/lib.mailer.php'));
             $mailer = DoceboMailer::getInstance();
             $mailer->addReplyTo(strip_tags($usermail));
 

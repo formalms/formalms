@@ -11,7 +11,7 @@
 |   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
-require_once(_base_.'/lib/lib.mailer.php');
+
 require_once(_lms_.'/lib/lib.course.php');
 require_once(dirname(__FILE__).'/class.report.php');
 

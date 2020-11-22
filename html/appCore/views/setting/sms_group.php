@@ -1,5 +1,5 @@
 <?php
-require_once(Docebo::inc(_adm_ . '/lib/Sms/SmsGatewayManager.php'));
+require_once(Forma::inc(_adm_ . '/lib/Sms/SmsGatewayManager.php'));
 try {
     $credit = SmsGatewayManager::getCredit();
 } catch (SmsGatewayException $e) {

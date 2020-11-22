@@ -12,7 +12,7 @@
 \ ======================================================================== */
 
 require_once($GLOBALS['where_lms'] . '/class.module/track.object.php');
-require_once(Docebo::inc(_folder_lms_ . '/class.module/learning.test.php'));
+require_once(Forma::inc(_folder_lms_ . '/class.module/learning.test.php'));
 
 class Track_Test extends Track_Object
 {

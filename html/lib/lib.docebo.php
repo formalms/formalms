@@ -132,15 +132,6 @@ class Docebo {
 		return DoceboLangManager::getInstance();
 	}
 
-    /**
-     * Return an object that describe the system languages
-     * @return string the file to include
-     * @deprecated
-     */
-    public static function inc($file) {
-        return Forma::inc($file);
-    }
-
 
 	/**
 	 * Return an object that describe the system languages
