@@ -41,7 +41,7 @@ define("MAIL_REPLYTO", "replyto");
 define("MAIL_RESET", "reset");
 
 
-class DoceboMailer extends PHPMailer
+class DoceboMailer extends \PHPMailer\PHPMailer\PHPMailer
 {
     //internal acl_manager instance
     var $acl_man;
@@ -91,7 +91,19 @@ class DoceboMailer extends PHPMailer
     function ConvertToPlain_UTF8(&$html)
     {
         $allowedProtocols = ['http', 'https', 'ftp', 'mailto', 'color', 'background-color'];
-        $res = kses($html,[],$allowedProtocols);
+
+        $config = HTMLPurifier_Config::createDefault();
+        $allowed_elements = array();
+        $allowed_attributes = array();
+
+        $config->set('HTML.AllowedElements', $allowed_elements);
+        $config->set('HTML.AllowedAttributes', $allowed_attributes);
+        if ($allowedProtocols !== null) {
+            $config->set('URI.AllowedSchemes', $allowedProtocols);
+        }
+        $purifier = new HTMLPurifier($config);
+        $res = $purifier->purify($html);
+
         $res = str_replace('&amp;', '&', $res);
 
         return $res;

@@ -296,8 +296,23 @@ class FilterInput
                 {
                     $allowedProtocols = ['http', 'https', 'ftp', 'mailto', 'color', 'background-color'];
                     // Run htmLawed
-                    $string = kses($string, $GLOBALS['allowed_html'], $allowedProtocols);
-                };
+                    $config = HTMLPurifier_Config::createDefault();
+                    $allowed_elements = array();
+                    $allowed_attributes = array();
+                    foreach ($GLOBALS['allowed_html'] as $element => $attributes) {
+                        $allowed_elements[$element] = true;
+                        foreach ($attributes as $attribute => $x) {
+                            $allowed_attributes["$element.$attribute"] = true;
+                        }
+                    }
+                    $config->set('HTML.AllowedElements', $allowed_elements);
+                    $config->set('HTML.AllowedAttributes', $allowed_attributes);
+                    if ($allowedProtocols !== null) {
+                        $config->set('URI.AllowedSchemes', $allowedProtocols);
+                    }
+                    $purifier = new HTMLPurifier($config);
+                    $string =  $purifier->purify($string);
+                }
                 break;
         }
 

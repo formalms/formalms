@@ -22,6 +22,4 @@ require_once($GLOBALS['where_scs'].'/modules/video_conference/lib/resource.chat.
 require_once($GLOBALS['where_scs'].'/modules/video_conference/lib/resource.user.php');
 require_once($GLOBALS['where_scs'].'/modules/video_conference/lib/resource.room.php');
 
-require_once($GLOBALS['where_scs'].'/lib/lib.htmlpurifier.php');
-
 ?>
