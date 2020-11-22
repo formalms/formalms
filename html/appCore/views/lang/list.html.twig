@@ -175,14 +175,22 @@
     ];
 
     $(function () {
-        DataTable_lang_table = $('#lang_table').FormaTable({
+        DataTable_lang_table = $('#lang_table').on('xhr.dt', function (e, settings, json, xhr) {
+            if (json.data.length > 0) {
+                json.data.forEach(function (item, index) {
+                    link = '<a id="' + item.id + '" href="' + item.delete + '" class="ico-sprite subs_del" title="{{ translate("_DEL", "admin_lang") }}"><span></span></a>'
+                    item.delete = link;
+                });
+            }
+            // Note no return - manipulate the data directly in the JSON object.
+        }).FormaTable({
             rowId: "id",
             scrollX: true,
             processing: true,
             serverSide: true,
             'ajax': {
                 type: 'GET',
-                data: function(d) {
+                data: function (d) {
                     d.lang_code = $("#lang_code").val();
                     d.lang_code_diff = $("#lang_code_diff").val();
                 },
