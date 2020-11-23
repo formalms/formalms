@@ -8,8 +8,39 @@
 <a id="addlang_bottom" href="ajax.adm_server.php?r=adm/lang/addmask" class="ico-wt-sprite subs_add" title="{{ translate('_ADD', 'standard') }}"><span>{{ translate('_ADD', 'standard') }}</span></a>
 <a href="index.php?r=adm/lang/import" class="ico-wt-sprite subs_import" title="{{ translate('_IMPORT', 'standard') }}"><span>{{ translate('_IMPORT', 'standard') }}</span></a>
 
+<!-- Modal confirm -->
+<div class="modal" id="confirmModal" style="display: none; z-index: 9999;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body" data-val="body">
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="yes" class="btn btn-primary" data-val="yes">{{ translate('_YES', 'standard') }}</button>
+                <button type="button" class="btn btn-default" data-val="no">{{ translate('_NO', 'standard') }}</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
     $(function () {
+        var confirmDialog = function (modalSelector, message, onConfirm) {
+            var fClose = function() {
+                modal.modal("hide");
+            };
+            var modal = $(modalSelector);
+            modal.modal("show");
+            modal.find("*[data-val=body]").empty().append(message);
+            modal.find("*[data-val=yes]").unbind().one('click', onConfirm).one('click', fClose);
+            modal.find("*[data-val=no]").unbind().one("click", fClose);
+        }
+
+        var delFunc = function(id) {
+            confirmDialog("#confirmModal", {{ translate('_AREYOUSURE', 'standard') }}, function() {
+                alert("SIIII!")
+            });
+        };
+        
         var body = {{ langList | json_encode(constant('JSON_HEX_APOS')) | raw }};
 
         var columns = [

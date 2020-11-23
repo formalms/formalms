@@ -5,6 +5,20 @@
 <a id="addlang_bottom" href="#" class="ico-wt-sprite subs_add" title="<?php echo Lang::t('_ADD', 'standard'); ?>"><span><?php echo Lang::t('_ADD', 'standard'); ?></span></a>
 <a href="index.php?r=adm/lang/import" class="ico-wt-sprite subs_import" title="<?php echo Lang::t('_IMPORT', 'standard'); ?>"><span><?php echo Lang::t('_IMPORT', 'standard'); ?></span></a>
 
+<!-- Modal confirm -->
+<div class="modal" id="confirmModal" style="display: none; z-index: 9999;">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-body" data-val="body">
+			</div>
+			<div class="modal-footer">
+				<button type="button" id="yes" class="btn btn-primary" data-val="yes"><?php echo Lang::t('_YES', 'standard'); ?></button>
+				<button type="button" class="btn btn-default" data-val="no"><?php echo Lang::t('_NO', 'standard'); ?></button>
+			</div>
+		</div>
+	</div>
+</div>
+
 <?php
 
 $this->widget('dialog', array(
@@ -18,6 +32,33 @@ $this->widget('dialog', array(
 ));
 ?>
 <script type="text/javascript">
+	var confirmDialog = function(modalSelector, message, onConfirm) {
+		var fClose = function() {
+			modal.modal("hide");
+		};
+		var modal = $(modalSelector);
+		modal.modal("show");
+		modal.find("*[data-val=body]").empty().append(message);
+		modal.find("*[data-val=yes]").unbind().one('click', onConfirm).one('click', fClose);
+		modal.find("*[data-val=no]").unbind().one("click", fClose);
+	}
+
+	var delFunc = function(id) {
+		console.log(id)
+		confirmDialog("#confirmModal", "<?php echo Lang::t('_AREYOUSURE', 'standard'); ?>", function() {
+			$.ajax({
+				type: 'POST',
+				url: 'ajax.adm_server.php?r=adm/lang/del',
+				data: {
+					lang_code: id
+				},
+				success: function(data) {
+					location.reload();
+				}
+			});
+		});
+	};
+
 	$(function() {
 		var body = <?php echo json_encode($langList); ?>;
 
@@ -79,7 +120,7 @@ $this->widget('dialog', array(
 			item.lang_export = link;
 			link = '<a id="' + item.id + '" href="' + item.lang_mod + '" class="ico-sprite subs_mod" title="<?php echo Lang::t("_MOD", "admin_lang"); ?>"><span></span></a>'
 			item.lang_mod = link;
-			link = '<a id="' + item.id + '" href="' + item.lang_del + '" class="ico-sprite subs_del" title="<?php echo Lang::t("_DEL", "admin_lang"); ?>"><span></span></a>'
+			link = '<a id="' + item.id + '" href="#" onclick="delFunc(\'' + item.lang_code + '\')" class="ico-sprite subs_del" title="<?php echo Lang::t("_DEL", "admin_lang"); ?>"><span></span></a>'
 			item.lang_del = link;
 
 			rows.push(Object.assign({}, item));

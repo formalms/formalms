@@ -3,12 +3,13 @@
     '':translate('_TRANSLATELANG', 'admin_lang')
 },false) }}
 
-
 <div class="std_blockx">
     <div class="container-back">
         <a href="index.php?r=adm/lang/show"><span>{{ translate('_BACK', 'standard')|raw }}</span></a>
     </div>
 
+    <a id="addlang_top" href="#" class="ico-wt-sprite subs_add" title="{{ translate('_ADD', 'standard') }}"><span>{{ translate('_ADD', 'standard') }}</span></a>
+    <br><br>
     <div class="search_form">
         {{ Form_openForm('lang_filters', 'index.php?r=adm/lang/list', false, false, '','','row') }}
         <div class="lang-filter col-xs-12 col-sm-2">
@@ -22,9 +23,77 @@
         {{ Form_closeForm() }}
     </div>
 </div>
+
 <table class="table table-bordered display" style="width:100%" id="lang_table"></table>
 
+<!-- Modal confirm -->
+<div class="modal" id="confirmModal" style="display: none; z-index: 9999;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body" data-val="body">
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="yes" class="btn btn-primary" data-val="yes">{{ translate('_YES', 'standard') }}</button>
+                <button type="button" class="btn btn-default" data-val="no">{{ translate('_NO', 'standard') }}</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Add -->
+<div class="modal" id="addModal" style="display: none; z-index: 9999;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="translateKey()">{{ translate('_CONFIRM', 'standard') }}</button>
+                <button type="button" class="btn btn-default" onclick="$('#addModal').modal('hide');">{{ translate('_CANCEL', 'standard') }}</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script type="text/javascript">
+    var confirmDialog = function (modalSelector, message, onConfirm) {
+        var fClose = function() {
+            modal.modal("hide");
+        };
+        var modal = $(modalSelector);
+        modal.modal("show");
+        modal.find("*[data-val=body]").empty().append(message);
+        modal.find("*[data-val=yes]").unbind().one('click', onConfirm).one('click', fClose);
+        modal.find("*[data-val=no]").unbind().one("click", fClose);
+    }
+
+    var delFunc = function(id) {
+        confirmDialog("#confirmModal", "{{ translate('_AREYOUSURE', 'standard') }}", function() {
+            $.ajax({
+                type: 'POST',
+                url: 'ajax.adm_server.php?r=adm/lang/deleteKey',
+                data: { id_text: id },
+                success: function(data) {
+                    DataTable_lang_table.reload();
+                }
+            });
+        });
+    };
+
+    var translateKey = function() {
+        $.ajax({
+            type: 'POST',
+            url: 'ajax.adm_server.php?r=adm/lang/insertkey',
+            data: $("#addModal form").serialize(),
+            dataType: "json",
+            success: function(data) {
+                if (data.success) {
+                    DataTable_lang_table.reload();
+                    $("#addModal").modal('hide');
+                }
+            }
+        });
+    };
+    
     var requestBuilder = function (oState, oSelf) {
         var sort, dir, startIndex, results;
         oState = oState || {
@@ -129,7 +198,7 @@
     var rows = [];
 
     body.forEach(function (item, k) {
-        link = '<a id="' + item.id + '" href="' + item.delete + '" class="ico-sprite subs_del" title="{{ translate("_DEL", "admin_lang") }}"><span></span></a>'
+        link = '<a id="' + item.id + '" onclick="delFunc(' + item.id + ')" href="#" class="ico-sprite subs_del" title="{{ translate("_DEL", "admin_lang") }}"><span></span></a>'
         item.delete = link;
         rows.push(Object.assign({}, item));
     });
@@ -186,7 +255,7 @@
         DataTable_lang_table = $('#lang_table').on('xhr.dt', function (e, settings, json, xhr) {
             if (json.data.length > 0) {
                 json.data.forEach(function (item, index) {
-                    link = '<a id="' + item.id + '" href="' + item.delete + '" class="ico-sprite subs_del" title="{{ translate("_DEL", "admin_lang") }}"><span></span></a>'
+                    link = '<a id="' + item.id + '" href="#" onclick="delFunc(' + item.id + ')" class="ico-sprite subs_del" title="{{ translate("_DEL", "admin_lang") }}"><span></span></a>'
                     item.delete = link;
                 });
             }
@@ -230,6 +299,21 @@
         DataTable_lang_table.searchBar.init('#lang_table');
         //report_table.searchBar.redraw()
         DataTable_lang_table.searchBar.show();
+    });
+
+    $("#addlang_top").click(function(e) {
+        $.ajax({
+            type: 'POST',
+            url: 'ajax.adm_server.php?r=adm/lang/translatemask',
+            dataType: "json",
+            success: function(data) {
+                if (data.success) {
+                    console.log($("#addModal"))
+                    $("#addModal").find('.modal-body').html(data.body)
+                    $("#addModal").modal('show');
+                }
+            }
+        });
     });
 </script>
 </div>

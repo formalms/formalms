@@ -45,13 +45,11 @@ class LangAdmController extends AdmController
 
         $sort = 'lang_code';
         switch ($dir) {
-            case "desc":
-                {
+            case "desc": {
                     $dir = 'desc';
                 };
                 break;
-            default:
-                {
+            default: {
                     $dir = 'asc';
                 };
                 break;
@@ -84,13 +82,11 @@ class LangAdmController extends AdmController
 
         if (!in_array($sort, $sortable)) $sort = 'lang_code';
         switch ($dir) {
-            case "desc":
-                {
+            case "desc": {
                     $dir = 'desc';
                 };
                 break;
-            default:
-                {
+            default: {
                     $dir = 'asc';
                 };
                 break;
@@ -336,8 +332,7 @@ class LangAdmController extends AdmController
 
             switch ($column) {
 
-                case 'translation_text':
-                    {
+                case 'translation_text': {
                         $res = $this->model->updateTranslation($id_text, $language, $new_value);
                         $output = array('success' => $res ? true : false);
                         if ($res) $output['new_value'] = stripslashes($new_value);
@@ -345,8 +340,7 @@ class LangAdmController extends AdmController
                     }
                     break;
 
-                default:
-                    {
+                default: {
                         echo $this->json->encode(array('success' => false));
                     }
                     break;
@@ -404,13 +398,13 @@ class LangAdmController extends AdmController
 
     private function removeSearchRegex($searchString)
     {
-        if (strpos( $searchString,'^.*') !== false && strpos( $searchString,'.*$') !== false) {
+        if (strpos($searchString, '^.*') !== false && strpos($searchString, '.*$') !== false) {
             $searchString = str_replace(['^.*', '.*$'], '%', $searchString);
         }
-        if (strpos($searchString,'^') !== false && strpos( $searchString,'$') !== false) {
+        if (strpos($searchString, '^') !== false && strpos($searchString, '$') !== false) {
             $searchString = str_replace(['^', '$'], ['%', ''], $searchString);
         }
-        if (strpos( $searchString,'^') !== false) {
+        if (strpos($searchString, '^') !== false) {
             $searchString = str_replace(['^'], [''], $searchString);
             $searchString .= '%';
         }
@@ -448,11 +442,10 @@ class LangAdmController extends AdmController
                     if (!empty($column['search']['value']) && $column['search']['value'] !== '^') {
                         $plugins = $this->model->getPluginsList();
 
-                        foreach ($plugins as $id => $pluginName){
-                            if ($pluginName === $column['search']['value']){
+                        foreach ($plugins as $id => $pluginName) {
+                            if ($pluginName === $column['search']['value']) {
                                 $plugin_id = $id;
                             }
-
                         }
                     }
                     break;
@@ -567,7 +560,7 @@ class LangAdmController extends AdmController
         $re = $this->model->deleteKey($id_text);
         $res = array(
             'success' => $re,
-            'message' => Lang::t('_UNABLE_TO_DELETE', 'standard')
+            'message' => ($re ? Lang::t('_OPERATION_SUCCESSFUL', 'admin_lang') : Lang::t('_UNABLE_TO_DELETE', 'standard')),
         );
 
         echo $this->json->encode($res);
