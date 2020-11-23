@@ -29,12 +29,14 @@ class CertificateSubs_Course extends CertificateSubstitution
 			$subs['[date_end]'] 			= $lang->def('_COURSE_END');
 			$subs['[medium_time]'] 			= $lang->def('_COURSE_MEDIUM_TIME');
 
+            
+            // ticket: #19791
 			$subs['[ed_date_begin]']		= $lang->def('_ED_DATE_BEGIN');
-			$subs['[ed_classroom]'] 		= $lang->def('_ED_CLASSROOM');
+			$subs['[ed_classroom]'] 		= $lang->def('_ED_CLASSROOM', 'certificate','lms');
 
-			$subs['[cl_date_begin]']		= $lang->def('_DATE_BEGIN');
-			$subs['[cl_date_end]']			= $lang->def('_DATE_END');
-			$subs['[cl_classroom]'] 		= $lang->def('_CLASSROOM');
+			$subs['[cl_date_begin]']		= $lang->def('_CL_DATE_BEGIN', 'certificate','lms');
+			$subs['[cl_date_end]']			= $lang->def('_CL_DATE_END', 'certificate','lms');
+			$subs['[cl_classroom]'] 		= $lang->def('_CL_CLASSROOM', 'certificate','lms');
 
 			$subs['[teacher_list]'] 		= $lang->def('_TEACHER_LIST');
 			$subs['[teacher_list_inverse]'] 	= $lang->def('_TEACHER_LIST_INVERSE');
