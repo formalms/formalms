@@ -277,7 +277,7 @@ class LangAdm extends Model
             $qtxt = "
 			SELECT lt.id_text as id, lt.text_key, lt.text_module, ta.translation_text, '' as translation_text_diff, ta.save_date, p.name plugin_name
 			FROM  %adm_lang_text AS lt
-			LEFT JOIN %adm_lang_translation AS ta ON ( lt.id_text = ta.id_text AND ta.lang_code = '" . $lang_code . "')
+			LEFT JOIN %adm_lang_translation AS ta ON ( lt.id_text = ta.id_text AND ta.lang_code LIKE '" . $lang_code . "')
 			LEFT JOIN %adm_plugin AS p ON ( lt.plugin_id = p.plugin_id )
 			WHERE 1 ";
         } else {
@@ -286,9 +286,9 @@ class LangAdm extends Model
 			SELECT lt.id_text as id, lt.text_key, lt.text_module, ta.translation_text, tad.translation_text as translation_text_diff, ta.save_date, p.name plugin_name
 			FROM  (
 				%adm_lang_text AS lt
-				LEFT JOIN %adm_lang_translation AS ta ON ( lt.id_text = ta.id_text AND ta.lang_code = '" . $lang_code . "')
+				LEFT JOIN %adm_lang_translation AS ta ON ( lt.id_text = ta.id_text AND ta.lang_code LIKE '" . $lang_code . "')
 			)
-			LEFT JOIN %adm_lang_translation AS tad ON (lt.id_text = tad.id_text AND tad.lang_code = '" . $lang_code_diff . "' )
+			LEFT JOIN %adm_lang_translation AS tad ON (lt.id_text = tad.id_text AND tad.lang_code LIKE '" . $lang_code_diff . "' )
 			LEFT JOIN %adm_plugin AS p ON ( lt.plugin_id = p.plugin_id )
 			WHERE 1 ";
         }

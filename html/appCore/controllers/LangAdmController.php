@@ -45,11 +45,13 @@ class LangAdmController extends AdmController
 
         $sort = 'lang_code';
         switch ($dir) {
-            case "desc": {
+            case "desc":
+                {
                     $dir = 'desc';
                 };
                 break;
-            default: {
+            default:
+                {
                     $dir = 'asc';
                 };
                 break;
@@ -82,11 +84,13 @@ class LangAdmController extends AdmController
 
         if (!in_array($sort, $sortable)) $sort = 'lang_code';
         switch ($dir) {
-            case "desc": {
+            case "desc":
+                {
                     $dir = 'desc';
                 };
                 break;
-            default: {
+            default:
+                {
                     $dir = 'asc';
                 };
                 break;
@@ -332,7 +336,8 @@ class LangAdmController extends AdmController
 
             switch ($column) {
 
-                case 'translation_text': {
+                case 'translation_text':
+                    {
                         $res = $this->model->updateTranslation($id_text, $language, $new_value);
                         $output = array('success' => $res ? true : false);
                         if ($res) $output['new_value'] = stripslashes($new_value);
@@ -340,7 +345,8 @@ class LangAdmController extends AdmController
                     }
                     break;
 
-                default: {
+                default:
+                    {
                         echo $this->json->encode(array('success' => false));
                     }
                     break;
@@ -396,19 +402,66 @@ class LangAdmController extends AdmController
         ));
     }
 
+    private function removeSearchRegex($searchString)
+    {
+        if (strpos( $searchString,'^.*') !== false && strpos( $searchString,'.*$') !== false) {
+            $searchString = str_replace(['^.*', '.*$'], '%', $searchString);
+        }
+        if (strpos($searchString,'^') !== false && strpos( $searchString,'$') !== false) {
+            $searchString = str_replace(['^', '$'], ['%', ''], $searchString);
+        }
+        if (strpos( $searchString,'^') !== false) {
+            $searchString = str_replace(['^'], [''], $searchString);
+            $searchString .= '%';
+        }
+
+        return $searchString;
+    }
+
     public function getTask()
     {
+
         $start_index = Get::req('start', DOTY_INT, 0);
         $results = Get::req('length', DOTY_MIXED, Get::sett('visuItem', 250));
         $sort = Get::req('sort', DOTY_MIXED, 'text_module');
         $dir = Get::req('dir', DOTY_MIXED, 'asc');
-
-        $la_module = Get::req('la_module', DOTY_ALPHANUM, false);
-        $la_text = Get::req('la_text', DOTY_MIXED, false);
         $lang_code = Get::req('lang_code', DOTY_ALPHANUM, false);
         $lang_code_diff = Get::req('lang_code_diff', DOTY_ALPHANUM, false);
-        $only_empty = Get::req('only_empty', DOTY_MIXED, 0);
+
+        $search = Get::req('search', DOTY_MIXED, false);
+
+        $la_module = false;
+        $la_text = $this->removeSearchRegex($search['value']);
+
+
         $plugin_id = Get::req('plugin_id', DOTY_INT, false);
+
+        $columns = Get::req('columns', DOTY_MIXED, []);
+        foreach ($columns as $column) {
+            switch ($column['name']) {
+                case 'text_module':
+                    if (!empty($column['search']['value']) && $column['search']['value'] !== '^') {
+                        $la_module = $this->removeSearchRegex($column['search']['value']);
+                    }
+                    break;
+                case 'plugin_name':
+                    if (!empty($column['search']['value']) && $column['search']['value'] !== '^') {
+                        $plugins = $this->model->getPluginsList();
+
+                        foreach ($plugins as $id => $pluginName){
+                            if ($pluginName === $column['search']['value']){
+                                $plugin_id = $id;
+                            }
+
+                        }
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        $only_empty = Get::req('only_empty', DOTY_MIXED, 0);
         if ($only_empty === 'true') $only_empty = true;
         else $only_empty = false;
 

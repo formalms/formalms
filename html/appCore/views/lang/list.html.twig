@@ -134,25 +134,30 @@
         rows.push(Object.assign({}, item));
     });
 
-    var columns = [{
-        data: 'text_module',
-        title: "{{ translate('_LANG_MODULE ', 'admin_lang ') }}",
-        sortable: true
-    },
+    var columns = [
+        {
+            data: 'text_module',
+            title: "{{ translate('_LANG_MODULE ', 'admin_lang ') }}",
+            sortable: true,
+            searchable: true
+        },
         {
             data: 'text_key',
             title: "{{ translate('_LANG_KEY ', 'admin_lang ') }}",
-            sortable: true
+            sortable: true,
+            searchable: false
         },
         {
             data: 'plugin_name',
             title: "{{ translate('_PLUGIN_NAME ', 'admin_lang ') }}",
-            sortable: false
+            sortable: false,
+            searchable: true
         },
         {
             data: 'translation_text',
             title: "{{ translate('_LANG_TRANSLATION ', 'admin_lang ') }}",
             sortable: true,
+            searchable: false,
             edit: {
                 type: 'text',
             },
@@ -160,17 +165,20 @@
         {
             data: 'translation_text_diff',
             title: "{{ translate('_LANG_COMPARE ', 'admin_lang ') }}",
-            sortable: true
+            sortable: true,
+            searchable: false
         },
         {
             data: 'save_date',
             title: "{{ translate('_DATE ', 'admin_lang ') }}",
-            sortable: true
+            sortable: true,
+            searchable: false
         },
         {
             data: 'delete',
             title: "{{ translate('_DEL ', 'standard ') }}",
-            sortable: false
+            sortable: false,
+            searchable: false
         }
     ];
 
@@ -210,7 +218,18 @@
                 },
                 id: 'id_text'
             },
+            'columnDefs': [
+                {
+                    'targets': 0
+                }
+            ],
+            'select': {
+                'all': false
+            },
         });
+        DataTable_lang_table.searchBar.init('#lang_table');
+        //report_table.searchBar.redraw()
+        DataTable_lang_table.searchBar.show();
     });
 </script>
 </div>
