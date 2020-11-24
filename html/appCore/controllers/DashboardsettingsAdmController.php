@@ -69,6 +69,7 @@ class DashboardsettingsAdmController extends AdmController
 
         $data = [
             'ajaxUrl' => 'ajax.adm_server.php?r=adm/dashboardsettings/save',
+            'ajaxLayoutSaveUrl' => 'ajax.adm_server.php?r=adm/dashboardsettings/saveLayout',
             'ajaxUploadFileUrl' => 'ajax.adm_server.php?r=adm/dashboardsettings/uploadFile',
             'installedBlocks' => $this->model->getInstalledBlocksCommonViewData(),
             'enabledBlocks' => $this->model->getEnabledBlocksCommonViewData($dashboardId),
@@ -78,7 +79,43 @@ class DashboardsettingsAdmController extends AdmController
 
         //render view
         $this->render('show', $data);
+    }
 
+    public function saveLayout()
+    {
+        $name = Get::pReq('name', DOTY_MIXED);
+        $status = Get::pReq('status', DOTY_MIXED);
+        $default = Get::pReq('default', DOTY_BOOL);
+        $data = [
+            'name' => $name,
+            'status' => $status,
+            'default' => $default
+        ];
+
+        $response = ['status' => 200];
+
+        // Validation
+        $errors = [];
+        if (!isset($data['name']) || !$data['name']) {
+            $errors['name'] = Lang::t('_VALUE_IS_NOT_VALID', 'dashboardsetting');
+        }
+        if (!isset($data['status']) || !$data['status']) {
+            $errors['status'] = Lang::t('_VALUE_IS_NOT_VALID', 'dashboardsetting');
+        }
+        if (!isset($data['default']) || !is_bool($data['default'])) {
+            $errors['default'] = Lang::t('_VALUE_IS_NOT_VALID', 'dashboardsetting');
+        }
+
+        if ($errors) {
+            $response['status'] = 400;
+            $response['errors'] = $errors;
+        }
+
+        if ($response['status'] === 200) {
+            $this->model->saveLayout($data);
+        }
+
+        echo $this->json->encode($response);
     }
 
     public function save()
@@ -167,9 +204,5 @@ class DashboardsettingsAdmController extends AdmController
 
     public function getBlockTypeForm()
     {
-
     }
 }
-
-
-?>

@@ -32,11 +32,12 @@ class DashboardsettingsAdm extends Model
         $this->loadEnabledBlocks();
     }
 
-    public function loadLayouts(){
-
+    public function loadLayouts()
+    {
         $query = "SELECT `id`, `name`, `status`, `default` FROM `dashboard_layouts` ORDER BY `created_at` ASC";
 
         $result = $this->db->query($query);
+        $this->layouts = [];
 
         while ($layout = $this->db->fetch_assoc($result)) {
             /** @var DashboardLayoutLms $layoutObj */
@@ -128,6 +129,15 @@ class DashboardsettingsAdm extends Model
         $this->db->query($query_blocks);
     }
 
+    public function saveLayout($layout)
+    {
+        $name = $layout['name'];
+        $status = $layout['status'];
+        $default = (bool)$layout['default'];
+
+        $insertQuery = "INSERT INTO `dashboard_layouts` ( `name`, `status`, `default`) VALUES ( '" . addslashes($name) . "', '" . addslashes($status) . "', " . $default . ")";
+        $this->db->query($insertQuery);
+    }
 
     public function saveBlockSetting($block, $setting)
     {

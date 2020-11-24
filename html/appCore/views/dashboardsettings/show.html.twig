@@ -1,8 +1,6 @@
 <div class="js-router--dashboard dashboard">
     <div class="d-grid">
         <div class="d-row">
-            {{ dump(layouts) }}
-
             <div id="dashboard-sortable" class="dashboard__container">
                 {% for block in enabledBlocks %}
                     {% if block.enabled %}
@@ -61,6 +59,47 @@
             </div>
             <div class="dashboard__actions">
                 <div class="dashboard__add">
+                    <div class="dashboard__select dashboard__select--layout">
+                        <button id="btn-new-layout" class="btn btn-primary dahsboard__button--add js-add-layout">{{ translate('_DASHBOARD_SETTING_ADD_NEW_LAYOUT', 'dashboardsetting') }}</button>
+                        <form id="form-layout">
+                            <h3>{{ translate('_DASHBOARD_SETTING_INSERT_NEW_LAYOUT', 'dashboardsetting') }}</h3>
+
+                            <div class="dashboard__select dashboard__select--layout">
+                                <select name="status" class="form-control js-select-layout">
+                                    <option value="" selected>-- {{ translate('_DASHBOARD_SETTING_SELECT_STATUS', 'dashboardsetting') }} --</option>
+                                    
+                                    <option value="draft">
+                                        {{ translate('_DASHBOARD_SETTING_DRAFT_STATUS', 'dashboardsetting') }}
+                                    </option>
+                                    <option value="publish">
+                                        {{ translate('_DASHBOARD_SETTING_PUBLISH_STATUS', 'dashboardsetting') }}
+                                    </option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label>{{ translate('_DASHBOARD_SETTING_LAYOUT_NAME', 'dashboardsetting') }}</label>
+                                <input name="name" class="form-control" type="text" value="">
+                            </div>
+
+                            <div class="checkbox">
+                                <label><input name="default" type="checkbox" value="1">{{ translate('_DASHBOARD_SETTING_DEFAULT_LAYOUT', 'dashboardsetting') }}</label>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary dahsboard__button--add js-add-layout">{{ translate('_DASHBOARD_SETTING_CREATE_NEW_LAYOUT', 'dashboardsetting') }}</button>
+                        </form>
+                    </div>
+                    <div class="dashboard__select dashboard__select--layout">
+                        <select class="form-control js-select-layout">
+                            <option value="" selected>{{ translate('_DASHBOARD_SETTING_SELECT_LAYOUT', 'dashboardsetting') }}</option>
+                            {% for layout in layouts %}
+                                <option value="{{ layout.id }}">
+                                    {{ layout.name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                        <div class="dashboard__error">{{ translate('_DASHBOARD_SETTING_LAYOUT_REQUIRED','dashboardsetting') }}</div>
+                    </div>
                     <div class="dashboard__select dashboard__select--block">
                         <select class="form-control js-select-block">
                             <option value=""
@@ -108,6 +147,10 @@
         const elementOffsetTop = 108;
         const elementOffsetLeft = elementOffset.left;
         const templatePath = "{{ templatePath }}";
+        const btnNewLayout = $('#btn-new-layout');
+        const formLayout = $('#form-layout');
+        const addLayoutBtn = $('.js-add-layout');
+        let openedLayoutForm = false;
 
         if (windowWidth >= 1024) {
             $(window).scroll(function () {
@@ -117,8 +160,46 @@
 
         initSortable();
         uploadFileCheck();
+        formLayout.slideUp();
 
-        // SALVATAGGIO DATI
+        btnNewLayout.click(function() {
+            openedLayoutForm = !openedLayoutForm;
+            if (openedLayoutForm) {
+                formLayout.slideDown();
+            } else {
+                formLayout.slideUp();
+            }
+        });
+
+        formLayout.submit(function(e) {
+            e.preventDefault();
+
+            // CREATE NEW LAYOUT
+            $.ajax({
+                url: '{{ ajaxLayoutSaveUrl }}',
+                type: 'POST',
+                data: $(this).serialize(),
+                beforeSend: () => {
+                    addLayoutBtn.attr('disabled', true);
+                    $('.dashboard__message').css('display', 'none');
+                },
+                success: (response) => {
+                    console.log(response);
+                    addLayoutBtn.removeAttr('disabled');
+                    $('.dashboard__ok').css('display', 'block');
+                    /*setTimeout(function () {
+                        location.reload();
+                    }, 1500);*/
+
+                },
+                error: err => {
+                    console.log(err)
+                    $('.dashboard__ko').css('display', 'block');
+                }
+            })
+        });
+
+        // SALVATAGGIO DATI BLOCK
         saveField.click(function () {
             let response = {};
             const blocks = $('.dashboard__block');
