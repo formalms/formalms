@@ -22,16 +22,37 @@ class DashboardsettingsAdm extends Model
 
     protected $installedBlocks;
 
+    protected $layouts;
+
     public function __construct()
     {
         $this->db = DbConn::getInstance();
+        $this->loadLayouts();
         $this->loadInstalledBlocks();
         $this->loadEnabledBlocks();
     }
 
+    public function loadLayouts(){
+
+        $query = "SELECT `id`, `name`, `status`, `default` FROM `dashboard_layouts` ORDER BY `created_at` ASC";
+
+        $result = $this->db->query($query);
+
+        while ($layout = $this->db->fetch_assoc($result)) {
+            /** @var DashboardLayoutLms $layoutObj */
+            $layoutObj = new DashboardLayoutLms();
+            $layoutObj->setId($layout['id']);
+            $layoutObj->setName($layout['name']);
+            $layoutObj->setStatus($layout['status']);
+            $layoutObj->setDefault($layout['default']);
+
+            $this->layouts[] = $layoutObj;
+        }
+    }
+
     public function loadEnabledBlocks()
     {
-        $query_blocks = "SELECT `id`, `block_class`, `block_config`, `position` FROM `dashboard_block_config` ORDER BY `position` ASC";
+        $query_blocks = "SELECT `id`, `block_class`, `block_config`, `position`, `dashboard_id` FROM `dashboard_block_config` ORDER BY `position` ASC";
 
         $result = $this->db->query($query_blocks);
 
@@ -40,7 +61,7 @@ class DashboardsettingsAdm extends Model
             $blockObj = new $block['block_class']($block['block_config']);
             $blockObj->setOrder($block['position']);
 
-            $this->enabledBlocks[] = $blockObj;
+            $this->enabledBlocks[$block['dashboard_id']][] = $blockObj;
         }
     }
 
@@ -76,12 +97,14 @@ class DashboardsettingsAdm extends Model
         return $this->installedBlocks;
     }
 
-    public function getEnabledBlocksCommonViewData()
+    public function getEnabledBlocksCommonViewData($dashboardId = false)
     {
         $data = [];
-        /** @var DashboardBlockLms $enabledBlocks */
-        foreach ($this->enabledBlocks as $enabledBlocks) {
-            $data[] = $enabledBlocks->getSettingsCommonViewData();
+        if (false !== $dashboardId && array_key_exists($dashboardId, $this->enabledBlocks)) {
+            /** @var DashboardBlockLms $enabledBlocks */
+            foreach ($this->enabledBlocks[$dashboardId] as $enabledBlocks) {
+                $data[] = $enabledBlocks->getSettingsCommonViewData();
+            }
         }
 
         return $data;
@@ -100,7 +123,6 @@ class DashboardsettingsAdm extends Model
 
     public function resetOldSettings()
     {
-
         $query_blocks = "TRUNCATE TABLE dashboard_block_config;";
 
         $this->db->query($query_blocks);
@@ -119,5 +141,13 @@ class DashboardsettingsAdm extends Model
         $insertQuery = "INSERT INTO `dashboard_block_config` ( `block_class`, `block_config`, `position`) VALUES ( '" . $block . "' , '" . json_encode($config) . "', '" . $setting['position'] . "')";
 
         $this->db->query($insertQuery);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLayouts()
+    {
+        return $this->layouts;
     }
 }

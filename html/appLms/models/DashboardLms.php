@@ -25,6 +25,8 @@ class DashboardLms extends Model
 
     private $enabledBlocks;
 
+    private $installedBlocks;
+
     public function  __construct() {
 
         parent::__construct();
@@ -34,7 +36,7 @@ class DashboardLms extends Model
 
     private function loadBlocks()
     {
-        $query_blocks = "SELECT `id`, `block_class`, `block_config`, `position` FROM `dashboard_block_config` ORDER BY `position` ASC";
+        $query_blocks = "SELECT `id`, `block_class`, `block_config`, `position`, `dashboard_id` FROM `dashboard_block_config` ORDER BY `position` ASC";
 
         $result = $this->db->query($query_blocks);
 
@@ -43,7 +45,7 @@ class DashboardLms extends Model
             $blockObj = new $block['block_class']($block['block_config']);
             $blockObj->setOrder($block['position']);
 
-            $this->enabledBlocks[] = $blockObj;
+            $this->enabledBlocks[$block['dashboard_id']] = $blockObj;
         }
     }
 
@@ -55,13 +57,15 @@ class DashboardLms extends Model
         return $this->enabledBlocks;
     }
 
-    public function getBlocksViewData()
+    public function getBlocksViewData($dashboardId = false)
     {
         $data = [];
-        /** @var DashboardBlockLms $enabledBlock */
-        foreach ($this->enabledBlocks as $enabledBlock) {
-            if ($enabledBlock->isEnabled()) {
-                $data[] = $enabledBlock->getViewData();
+        if (false !== $dashboardId && array_key_exists($dashboardId, $this->enabledBlocks)) {
+            /** @var DashboardBlockLms $enabledBlock */
+            foreach ($this->enabledBlocks[$dashboardId] as $enabledBlock) {
+                if ($enabledBlock->isEnabled()) {
+                    $data[] = $enabledBlock->getViewData();
+                }
             }
         }
 
@@ -72,12 +76,14 @@ class DashboardLms extends Model
      * @param string $block
      * @return bool|DashboardBlockLms
      */
-    public function getRegisteredBlock($block)
+    public function getRegisteredBlock($dashboardId,$block)
     {
-        foreach ($this->enabledBlocks as $enabledBlock) {
+        if (false !== $dashboardId && array_key_exists($dashboardId, $this->enabledBlocks)) {
+            foreach ($this->enabledBlocks[$dashboardId] as $enabledBlock) {
 
-            if (get_class($enabledBlock) === $block) {
-                return $enabledBlock;
+                if (get_class($enabledBlock) === $block) {
+                    return $enabledBlock;
+                }
             }
         }
         return null;

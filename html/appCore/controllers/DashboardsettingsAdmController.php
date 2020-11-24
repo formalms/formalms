@@ -65,11 +65,14 @@ class DashboardsettingsAdmController extends AdmController
     public function show()
     {
 
+        $dashboardId = Get::req('dashboard', DOTY_INT, false);
+
         $data = [
             'ajaxUrl' => 'ajax.adm_server.php?r=adm/dashboardsettings/save',
             'ajaxUploadFileUrl' => 'ajax.adm_server.php?r=adm/dashboardsettings/uploadFile',
             'installedBlocks' => $this->model->getInstalledBlocksCommonViewData(),
-            'enabledBlocks' => $this->model->getEnabledBlocksCommonViewData(),
+            'enabledBlocks' => $this->model->getEnabledBlocksCommonViewData($dashboardId),
+            'layouts' => $this->model->getLayouts(),
             'templatePath' => getPathTemplate()
         ];
 
@@ -160,6 +163,11 @@ class DashboardsettingsAdmController extends AdmController
         }
         echo $this->json->encode($response);
         die();
+    }
+
+    public function getBlockTypeForm()
+    {
+
     }
 }
 

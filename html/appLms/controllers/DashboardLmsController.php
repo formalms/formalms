@@ -41,7 +41,7 @@ class DashboardLmsController extends LmsController
     public function show()
     {
         checkPerm('view', true, $this->_mvc_name);
-        $blocks = $this->model->getBlocksViewData();
+        $blocks = $this->model->getBlocksViewData(1);
 
         $this->render('dashboard', [
             'blocks' => $blocks,
@@ -54,8 +54,9 @@ class DashboardLmsController extends LmsController
         $result = ['status' => 200];
         $blockParameter = Get::pReq('block', DOTY_MIXED);
         $actionParameter = Get::pReq('blockAction', DOTY_MIXED);
+        $dashboardParameter = Get::pReq('dashboard', DOTY_MIXED);
 
-        $block = $this->model->getRegisteredBlock($blockParameter);
+        $block = $this->model->getRegisteredBlock($dashboardParameter,$blockParameter);
         if (null !== $block) {
             if (method_exists($block, $actionParameter)) {
 
