@@ -122,9 +122,9 @@ class DashboardsettingsAdm extends Model
         return $data;
     }
 
-    public function resetOldSettings()
+    public function resetOldSettings($dashboard)
     {
-        $query_blocks = "TRUNCATE TABLE dashboard_block_config;";
+        $query_blocks = sprintf("DELETE FROM dashboard_block_config WHERE `dashboard_id` = %s;", $dashboard);
 
         $this->db->query($query_blocks);
     }
@@ -139,7 +139,7 @@ class DashboardsettingsAdm extends Model
         $this->db->query($insertQuery);
     }
 
-    public function saveBlockSetting($block, $setting)
+    public function saveBlockSetting($block, $setting, $dashboard)
     {
         $config = [
             'type' => $setting['type'],
@@ -148,8 +148,7 @@ class DashboardsettingsAdm extends Model
             'data' => $setting['data']
         ];
 
-        $insertQuery = "INSERT INTO `dashboard_block_config` ( `block_class`, `block_config`, `position`) VALUES ( '" . $block . "' , '" . json_encode($config) . "', '" . $setting['position'] . "')";
-
+        $insertQuery = sprintf("INSERT INTO `dashboard_block_config` ( `block_class`, `block_config`, `position`, `dashboard_id`) VALUES ( '%s' , '%s', '%s', '%s')", $block, json_encode($config), $setting['position'], $dashboard);
         $this->db->query($insertQuery);
     }
 

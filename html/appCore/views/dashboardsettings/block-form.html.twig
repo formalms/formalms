@@ -1,0 +1,14 @@
+<div class="dashboard__infoBlock">
+    <label class="dashboard__label">{{ translate('_TYPE', 'dashboardsetting') }}</label>
+    <div class="dashboard__select">
+        <select class="form-control js-type-block"
+                data-block="{{ block.postData.block }}-{{ index }}">
+            {% for type in block.availableTypes %}
+                <option value="{{ type }}"{% if block.type == type %} selected{% endif %}>{{ type }}</option>
+            {% endfor %}
+        </select>
+    </div>
+</div>
+{% for form in block.form %}
+    {% include 'formtype/form-' ~ form.type ~ '.html.twig' %}
+{% endfor %}

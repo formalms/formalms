@@ -68,13 +68,17 @@ class DashboardsettingsAdmController extends AdmController
         $dashboardId = Get::req('dashboard', DOTY_INT, false);
 
         $data = [
-            'ajaxUrl' => 'ajax.adm_server.php?r=adm/dashboardsettings/save',
-            'ajaxLayoutSaveUrl' => 'ajax.adm_server.php?r=adm/dashboardsettings/saveLayout',
-            'ajaxUploadFileUrl' => 'ajax.adm_server.php?r=adm/dashboardsettings/uploadFile',
+            'ajaxUrl' => [
+                'save' => 'ajax.adm_server.php?r=adm/dashboardsettings/save',
+                'saveLayout' => 'ajax.adm_server.php?r=adm/dashboardsettings/saveLayout',
+                'uploadFile' => 'ajax.adm_server.php?r=adm/dashboardsettings/uploadFile',
+                'getBlockType' => 'ajax.adm_server.php?r=adm/dashboardsettings/getBlockTypeForm',
+            ],
             'installedBlocks' => $this->model->getInstalledBlocksCommonViewData(),
             'enabledBlocks' => $this->model->getEnabledBlocksCommonViewData($dashboardId),
             'layouts' => $this->model->getLayouts(),
-            'templatePath' => getPathTemplate()
+            'templatePath' => getPathTemplate(),
+            'dashboardId' => $dashboardId
         ];
 
         //render view
@@ -120,6 +124,7 @@ class DashboardsettingsAdmController extends AdmController
 
     public function save()
     {
+        $dashboard = Get::req('dashboard', DOTY_MIXED);
         $requestSettings = Get::pReq('settings', DOTY_MIXED);
 
         $response = ['status' => 200];
@@ -137,14 +142,14 @@ class DashboardsettingsAdmController extends AdmController
         }
 
         if ($response['status'] === 200) {
-            $this->model->resetOldSettings();
+            $this->model->resetOldSettings($dashboard);
 
             foreach ($requestSettings as $data) {
 
                 $block = $data['block'];
                 $setting = $data['settings'];
 
-                $this->model->saveBlockSetting($block, $setting);
+                $this->model->saveBlockSetting($block, $setting, $dashboard);
             }
         }
 
@@ -204,5 +209,13 @@ class DashboardsettingsAdmController extends AdmController
 
     public function getBlockTypeForm()
     {
+        $block = Get::req('block', DOTY_STRING, false);
+        $index = Get::req('index', DOTY_INT, 99);
+        $type = Get::req('type', DOTY_STRING, 'col-1');
+
+        /** @var DashboardBlockLms $blockObj */
+        $blockObj = new $block('');
+
+        return $this->render('new-block-form', ['block' => $blockObj->getSettingsCommonViewData(), 'index' => $index, 'type' => $type]);
     }
 }

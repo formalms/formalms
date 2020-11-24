@@ -1,6 +1,7 @@
 <div class="js-router--dashboard dashboard">
     <div class="d-grid">
         <div class="d-row">
+
             <div id="dashboard-sortable" class="dashboard__container">
                 {% for block in enabledBlocks %}
                     {% if block.enabled %}
@@ -21,17 +22,6 @@
 
                                 </div>
                                 <div class="dashboard__info">
-                                    <div class="dashboard__infoBlock">
-                                        <label class="dashboard__label">{{ translate('_TYPE', 'dashboardsetting') }}</label>
-                                        <div class="dashboard__select">
-                                            <select class="form-control js-type-block"
-                                                    data-block="{{ block.postData.block }}-{{ index }}">
-                                                {% for type in block.availableTypes %}
-                                                    <option value="{{ type }}"{% if block.type == type %} selected{% endif %}>{{ type }}</option>
-                                                {% endfor %}
-                                            </select>
-                                        </div>
-                                    </div>
                                     {% if block.registeredActions | length %}
                                         <div class="dashboard__infoBlock">
                                             <div class="dashboard__label">{{ translate('_ENABLED_ACTIONS', 'dashboardsetting') }}</div>
@@ -48,9 +38,7 @@
                                         </div>
                                     {% endif %}
 
-                                    {% for form in block.form %}
-                                        {% include 'formtype/form-' ~ form.type ~ '.html.twig' %}
-                                    {% endfor %}
+                                    {% include 'block-form.html.twig' %}
                                 </div>
                             </div>
                         </div>
@@ -67,7 +55,7 @@
                             <div class="dashboard__select dashboard__select--layout">
                                 <select name="status" class="form-control js-select-layout">
                                     <option value="" selected>-- {{ translate('_DASHBOARD_SETTING_SELECT_STATUS', 'dashboardsetting') }} --</option>
-                                    
+
                                     <option value="draft">
                                         {{ translate('_DASHBOARD_SETTING_DRAFT_STATUS', 'dashboardsetting') }}
                                     </option>
@@ -134,6 +122,7 @@
 <script type="application/javascript">
 
     $(function () {
+        const dashboardId = {{ dashboardId }};
         const dashboardSortable = $("#dashboard-sortable");
         const selectBlock = $('.js-select-block');
         const selectType = $('.js-select-type');
@@ -176,7 +165,7 @@
 
             // CREATE NEW LAYOUT
             $.ajax({
-                url: '{{ ajaxLayoutSaveUrl }}',
+                url: '{{ ajaxUrl.saveLayout }}',
                 type: 'POST',
                 data: $(this).serialize(),
                 beforeSend: () => {
@@ -269,7 +258,7 @@
             }
 
             $.ajax({
-                url: '{{ ajaxUrl }}',
+                url: '{{ ajaxUrl.save }}&dashboard=' + dashboardId,
                 type: 'POST',
                 data: {
                     settings: response
@@ -327,23 +316,22 @@
             if (selectBlockValue.length > 0) {
                 selectBlock.parent('.dashboard__select').removeClass('is-required');
 
-                const newBlock = '<div id="' + selectBlockValue + '-' + countBlocks + '" class="dashboard__block dashboard__block--' + selectTypeValue + '"' +
-                    '            data-type="' + selectTypeValue + '" data-block="' + selectBlockValue + '" data-action="" data-first-insert="true">\n' +
-                    '            <div class="dashboard__content">\n' +
-                    '              <div class="dashboard__title">' + selectBlockTitle + '</div>\n' +
-                    '              <button class="dashboard__remove js-remove-block" data-block="' + selectBlockValue + '-' + countBlocks + '"></button>\n' +
-                    '              <img src="' + templatePath + '/static/images/dashboard-placeholder/' + selectBlockValue + '-placeholder.jpg" class="dashboard__image">' +
-                    '              <div class="dashboard__info">' +
-                    //infilare form
-                    '              </div>' +
-                    '            </div>\n' +
-                    '          </div>';
+                $.ajax({
+                    url: '{{ ajaxUrl.getBlockType }}&block=' + selectBlockValue + '&index=' + countBlocks + '&type=' + selectTypeValue,
+                    type: 'GET',
+                    success: (data) => {
 
-                dashboardSortable.append(newBlock);
-                initSortable(true);
-                $('html, body').animate({
-                    scrollTop: $('#' + selectBlockValue + '-' + countBlocks).offset().top
-                }, 1000);
+                        dashboardSortable.append(data);
+                        initSortable(true);
+                        $('html, body').animate({
+                            scrollTop: $('#' + selectBlockValue + '-' + countBlocks).offset().top
+                        }, 1000);
+                    },
+                    error: err => {
+                        console.log(err)
+                        $('.dashboard__ko').css('display', 'block');
+                    }
+                })
             } else {
                 selectBlock.parent('.dashboard__select').addClass('is-required');
             }
@@ -426,7 +414,7 @@
             const block = item.getAttribute('data-block');
             const field = item.getAttribute('id');
             $.ajax({
-                url: '{{ ajaxUploadFileUrl }}&block=' + block + '&field=' + field,
+                url: '{{ ajaxUrl.uploadFile }}&block=' + block + '&field=' + field,
                 data: formData,
                 processData: false,
                 contentType: false,
