@@ -1276,7 +1276,7 @@ function edit_files($mode="edit") {
 				sl_close_fileoperations();
 
 				if (($ok) && ($savefile != ""))
-					$query=sql_query("INSERT INTO ".$GLOBALS["prefix_lms"]."_prj_files (pid,fname,ftitle,fver,fdesc) VALUES('$id','".( get_magic_quotes_gpc() ? $savefile : sql_escape_string($savefile) )."','$ftitle','$fver','$fdesc');");
+					$query=sql_query("INSERT INTO ".$GLOBALS["prefix_lms"]."_prj_files (pid,fname,ftitle,fver,fdesc) VALUES('$id','". sql_escape_string($savefile) ."','$ftitle','$fver','$fdesc');");
 			}
 			if ($mode == "edit") {
 				$query=sql_query("UPDATE ".$GLOBALS["prefix_lms"]."_prj_files SET ftitle='$ftitle',fver='$fver',fdesc='$fdesc' WHERE id='$itemid' LIMIT 1;");

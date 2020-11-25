@@ -11,8 +11,8 @@
 |   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
-require_once(Docebo::inc(_folder_lms_.'/class.module/learning.object.php'));
-require_once(Docebo::inc(_folder_lms_.'/modules/question/class.question.php'));
+require_once(Forma::inc(_folder_lms_.'/class.module/learning.object.php'));
+require_once(Forma::inc(_folder_lms_.'/modules/question/class.question.php'));
 
 class Learning_Test extends Learning_Object {
 
@@ -67,7 +67,7 @@ class Learning_Test extends Learning_Object {
 
 		$res = sql_query("SELECT fileName, className FROM %lms_lo_types WHERE objectType = '".$testObj->getObjectType()."'");
 		list($type_file, $type_class) = sql_fetch_row($res);
-		require_once(Docebo::inc(_folder_lms_ . '/class.module/'.$type_file));
+		require_once(Forma::inc(_folder_lms_ . '/class.module/'.$type_file));
 		return  new $type_class( $id );
 	}
 
@@ -147,7 +147,7 @@ class Learning_Test extends Learning_Object {
 		//deleting answer
 		while( list($idQuest, $type_quest, $type_file, $type_class) = sql_fetch_row($reQuest) ) {
 
-			Docebo::inc(_folder_lms_.'/modules/question/'.$type_file);
+			Forma::inc(_folder_lms_.'/modules/question/'.$type_file);
 
 			$quest_obj = eval("return new $type_class( $idQuest );");
 			if(!$quest_obj->del())  {

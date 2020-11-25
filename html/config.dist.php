@@ -14,7 +14,7 @@
 /**
  * Db info
  * -------------------------------------------------------------------------
- * db type, now mysql and mysqli are supported
+ * db type, mysqli is supported
  * db server address
  * db user name
  * db user password

@@ -12,7 +12,7 @@ defined("IN_FORMA") or die('Direct access is forbidden.');
 |   from docebo 4.0.5 CE 2008-2012 (c) docebo                               |
 |   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
-require_once(_base_.'/lib/lib.mailer.php');
+
 require_once(_lms_.'/lib/lib.course.php');
 
 

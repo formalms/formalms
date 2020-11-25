@@ -21,17 +21,17 @@
  * @abstract
  */
 
-require_once(Docebo::inc(_folder_lms_ . '/modules/question/class.associate.php'));
-require_once(Docebo::inc(_folder_lms_ . '/modules/question/class.break_page.php'));
-require_once(Docebo::inc(_folder_lms_ . '/modules/question/class.choice.php'));
-require_once(Docebo::inc(_folder_lms_ . '/modules/question/class.choice_multiple.php'));
-require_once(Docebo::inc(_folder_lms_ . '/modules/question/class.extended_text.php'));
-require_once(Docebo::inc(_folder_lms_ . '/modules/question/class.hot_text.php'));
-require_once(Docebo::inc(_folder_lms_ . '/modules/question/class.inline_choice.php'));
-require_once(Docebo::inc(_folder_lms_ . '/modules/question/class.numerical.php'));
-require_once(Docebo::inc(_folder_lms_ . '/modules/question/class.text_entry.php'));
-require_once(Docebo::inc(_folder_lms_ . '/modules/question/class.title.php'));
-require_once(Docebo::inc(_folder_lms_ . '/modules/question/class.upload.php'));
+require_once(Forma::inc(_folder_lms_ . '/modules/question/class.associate.php'));
+require_once(Forma::inc(_folder_lms_ . '/modules/question/class.break_page.php'));
+require_once(Forma::inc(_folder_lms_ . '/modules/question/class.choice.php'));
+require_once(Forma::inc(_folder_lms_ . '/modules/question/class.choice_multiple.php'));
+require_once(Forma::inc(_folder_lms_ . '/modules/question/class.extended_text.php'));
+require_once(Forma::inc(_folder_lms_ . '/modules/question/class.hot_text.php'));
+require_once(Forma::inc(_folder_lms_ . '/modules/question/class.inline_choice.php'));
+require_once(Forma::inc(_folder_lms_ . '/modules/question/class.numerical.php'));
+require_once(Forma::inc(_folder_lms_ . '/modules/question/class.text_entry.php'));
+require_once(Forma::inc(_folder_lms_ . '/modules/question/class.title.php'));
+require_once(Forma::inc(_folder_lms_ . '/modules/question/class.upload.php'));
 
 class Question
 {
@@ -699,8 +699,7 @@ class Question
 		if (!is_array($raw_quest->answers)) return $new_id_quest;
 
 		reset($raw_quest->answers);
-		while (list(, $raw_answer) = each($raw_quest->answers)) {
-
+		foreach($raw_quest as $raw_answer){
 			//insert answer
 			$ins_answer_query = "
 			INSERT INTO " . $GLOBALS['prefix_lms'] . "_testquestanswer 

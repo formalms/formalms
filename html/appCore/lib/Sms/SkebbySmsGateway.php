@@ -1,6 +1,6 @@
 <?php
-require_once(Docebo::inc(_adm_ . '/lib/Sms/SmsGatewayInterface.php'));
-require_once(Docebo::inc(_adm_ . '/lib/Sms/SmsGatewayException.php'));
+require_once(Forma::inc(_adm_ . '/lib/Sms/SmsGatewayInterface.php'));
+require_once(Forma::inc(_adm_ . '/lib/Sms/SmsGatewayException.php'));
 
 class SkebbySmsGateway implements SmsGatewayInterface
 {

@@ -196,8 +196,7 @@ class Util  {
 		// signature from a ajax request
 		if(!$authentic_request && isset($_SERVER['HTTP_X_SIGNATURE'])) $authentic_request = $_SERVER['HTTP_X_SIGNATURE'];
 
-		if(!isset($_SESSION['mdsign'])
-			|| $authentic_request != $_SESSION['mdsign']
+		if(!isset($_SESSION['mdsign']) || $authentic_request !== $_SESSION['mdsign']
 		) {
 			// Invalid request
 			if (!defined('IS_AJAX')) {
@@ -319,14 +318,7 @@ class Util  {
 	 */
 	public static function add_slashes($str) {
 
-		if (!get_magic_quotes_gpc()) {
-			$res = addslashes($str);
-		}
-		else {
-			$res = $str;
-		}
-
-		return $res;
+		return addslashes($str);
 	}
 
 	/**
@@ -337,14 +329,7 @@ class Util  {
 	 */
 	public static function strip_slashes($str) {
 
-		if (!get_magic_quotes_gpc()) {
-			$res = $str;
-		}
-		else {
-			$res = stripslashes($str);
-		}
-
-		return $res;
+		return $str;
 	}
 
 

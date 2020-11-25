@@ -10,7 +10,6 @@
 |   from docebo 4.0.5 CE 2008-2012 (c) docebo                               |
 |   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
-require_once(_base_.'/addons/password_compact/password.php');
 
 define("PASSWORD_INCORRECT", 0);
 define("PASSWORD_CORRECT", 1);
@@ -29,7 +28,7 @@ class Password {
      * @param $password String containing unencrypted password
      * @return Password
      */
-    function Password($password) {
+    public function __construct($password) {
         $this->policies=PasswordPolicies::check($password);
         $this->password=$password;
         $this->algorithm_default=(int)Get::sett('pass_algorithm', PASSWORD_MD5);

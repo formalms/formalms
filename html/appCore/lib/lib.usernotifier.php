@@ -115,7 +115,7 @@ class DoceboUserNotifier extends DoceboEventConsumer {
 	}
 
 	function _sendMail($subject, $body, &$mail_recipients, &$users_info = false) {
-		require_once(_base_.'/lib/lib.mailer.php');
+
 		$mailer = DoceboMailer::getInstance();
 		$acl_man = Docebo::user()->getAclManager();
 
@@ -143,7 +143,7 @@ class DoceboUserNotifier extends DoceboEventConsumer {
 	}
 
 	function _sendSms($body, &$sms_recipients, &$users_info = false) {
-		require_once(Docebo::inc(_adm_ . '/lib/Sms/SmsGatewayManager.php'));
+		require_once(Forma::inc(_adm_ . '/lib/Sms/SmsGatewayManager.php'));
 		SmsGatewayManager::send($sms_recipients, strip_tags($body));
 	}
 

@@ -13,7 +13,7 @@
 
 if(Docebo::user()->isAnonymous() || !isset($_SESSION['idCourse'])) die( "You can't access to oragnization");
 
-require_once( Docebo::inc( _lms_.'/modules/organization/orglib.php' ) );
+require_once( Forma::inc( _lms_.'/modules/organization/orglib.php' ) );
 
 function organization( &$treeView ) {
 	

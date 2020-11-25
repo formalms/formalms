@@ -70,7 +70,7 @@ switch ($op) {
 
     case "send":
         {
-            require_once(_base_ . '/lib/lib.mailer.php');
+
 
             $help_email = Get::sett('customer_help_email', '');
             $help_pfx = Get::sett('customer_help_subj_pfx', '');

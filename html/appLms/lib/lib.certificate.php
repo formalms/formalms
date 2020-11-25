@@ -778,7 +778,7 @@ class Certificate
 
 	function getPdf($html, $name, $img = false, $orientation = 'P', $download = true, $facs_simile = false, $for_saving = false)
 	{
-		require_once(Docebo::inc(_base_ . '/lib/pdf/lib.pdf.php'));
+		require_once(Forma::inc(_base_ . '/lib/pdf/lib.pdf.php'));
 
 		$pdf = new PDF($orientation);
 		$pdf->setEncrypted(Get::cfg('certificate_encryption', true));

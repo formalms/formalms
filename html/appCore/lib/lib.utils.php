@@ -321,12 +321,7 @@ class Util  {
 	 */
 	public static function add_slashes($str) {
 
-		if (!get_magic_quotes_gpc()) {
-			$res = addslashes($str);
-		}
-		else {
-			$res = $str;
-		}
+		$res = addslashes($str);
 
 		return $res;
 	}
@@ -339,14 +334,7 @@ class Util  {
 	 */
 	public static function strip_slashes($str) {
 
-		if (!get_magic_quotes_gpc()) {
-			$res = $str;
-		}
-		else {
-			$res = stripslashes($str);
-		}
-
-		return $res;
+		return $str;
 	}
 
 

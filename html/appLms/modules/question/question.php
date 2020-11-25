@@ -77,7 +77,7 @@ switch($GLOBALS['op']) {
 		if(!sql_num_rows($re_quest) ) return;
 		list($type_file, $type_class) = sql_fetch_row($re_quest);
 		
-		require_once(Docebo::inc(_folder_lms_.'/modules/question/'.$type_file));
+		require_once(Forma::inc(_folder_lms_.'/modules/question/'.$type_file));
 		
 		$quest_obj = eval("return new $type_class( $id_quest );");
 		

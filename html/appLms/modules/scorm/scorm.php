@@ -72,7 +72,6 @@ function insitem() {
 	//checkPerm( 'view', FALSE, 'storage' );
 	
 	require_once Forma::inc(_lib_ . '/lib.upload.php');
-	require_once Forma::inc(_addons_ . '/pclzip/pclzip.lib.php');
 	require_once Forma::inc(_lms_ . '/modules/scorm/RendererDb.php');
 	require_once Forma::inc(_lms_ . '/modules/scorm/CPManager.php');
 	
@@ -102,7 +101,7 @@ function insitem() {
 	// compute filepath
 	$filepath = $path.$savefile.STRPOSTCONTENT;
 	// extract zip file
-	$zip = new PclZip($path.$savefile);
+	$zip = new PclZip($GLOBALS['where_files_relative'].$path.$savefile);
 	
 	// check disk quota --------------------------------------------------
 	if(isset($_SESSION['idCourse']) && defined("LMS")) {
@@ -131,7 +130,7 @@ function insitem() {
 	}
 	// extract zip ------------------------------------------------------
 	
-	$zip->extract(PCLZIP_OPT_PATH, $filepath );
+	$zip->extract(PCLZIP_OPT_PATH, $GLOBALS['where_files_relative'].$filepath );
 	if( $zip->errorCode() != PCLZIP_ERR_NO_ERROR && $zip->errorCode() != 1 ) {
 		sl_unlink($path.$savefile);
 		$_SESSION['last_error'] = _ERROR_UPLOAD;

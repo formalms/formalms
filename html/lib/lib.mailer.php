@@ -11,8 +11,7 @@
 |   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
-//require_once(_base_.'/addons/phpmailer/language/phpmailer.lang-en.php'); // not need for phpmailer 5.2.7
-require_once(_base_ . '/addons/kses/kses.php');
+//require_once(_base_.'/addons/phpmailer/language/phpmailer.lang-en.php'); // not need for phpmailer 5.2.
 
 
 //property name: multisending mode
@@ -42,9 +41,8 @@ define("MAIL_REPLYTO", "replyto");
 define("MAIL_RESET", "reset");
 
 
-class DoceboMailer extends PHPMailer
+class DoceboMailer extends \PHPMailer\PHPMailer\PHPMailer
 {
-
     //internal acl_manager instance
     var $acl_man;
 
@@ -69,26 +67,13 @@ class DoceboMailer extends PHPMailer
 
 
     //the constructor
-    function DoceboMailer($params = false)
+    function __construct()
     {
         $this->acl_man = new DoceboACLManager();
-
-        if (is_array($params)) {
-            //manage addictional parameters
-            //$params should represent custom default configuration
-        }
 
         //set initial default value
         $this->ResetToDefault();
 
-        //write translation table for utf-8
-        /*
-                $this->utf8_trans_tbl = get_html_translation_table(HTML_ENTITIES);
-                $this->utf8_trans_tbl = array_flip($this->utf8_trans_tbl);
-                // changing translation table to UTF-8
-                foreach( $this->utf8_trans_tbl as $key => $value ) {
-                    $this->utf8_trans_tbl[$key] = iconv( 'ISO-8859-1', 'UTF-8', $value );
-                }*/
     }
 
 
@@ -105,18 +90,22 @@ class DoceboMailer extends PHPMailer
     //convert html into plain txt in utf-8 avoiding the bug
     function ConvertToPlain_UTF8(&$html)
     {
+        $allowedProtocols = ['http', 'https', 'ftp', 'mailto', 'color', 'background-color'];
 
-        //$string = strip_tags($html);
+        $config = HTMLPurifier_Config::createDefault();
+        $allowed_elements = array();
+        $allowed_attributes = array();
 
-        // replace numeric entities
-        //$string = preg_replace('~&#x([0-9a-f]+);~ei', 'chr(hexdec("\\1"))', $string);
-        //$string = preg_replace('~&#([0-9]+);~e', 'chr("\\1")', $string);
-        // replace literal entities
+        $config->set('HTML.AllowedElements', $allowed_elements);
+        $config->set('HTML.AllowedAttributes', $allowed_attributes);
+        if ($allowedProtocols !== null) {
+            $config->set('URI.AllowedSchemes', $allowedProtocols);
+        }
+        $purifier = new HTMLPurifier($config);
+        $res = $purifier->purify($html);
 
-        //return strtr($string, $this->utf8_trans_tbl);
-        $tags = array();
-        $res = kses($html, $tags); // strip all tags
         $res = str_replace('&amp;', '&', $res);
+
         return $res;
     }
 

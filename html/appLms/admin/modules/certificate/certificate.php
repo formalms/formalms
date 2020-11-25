@@ -622,7 +622,6 @@ function del_report_certificate()
 
 
 function send_zip_certificates() {
-    require_once(_base_.'/addons/pclzip/pclzip.lib.php');
     require_once(Forma::inc(_lms_.'/lib/lib.certificate.php'));
     require_once(_base_.'/lib/lib.download.php');
 
@@ -716,7 +715,6 @@ function preview() {
 
 
  function gen_zip_cert(){
-    require_once(_base_.'/addons/pclzip/pclzip.lib.php');
     require_once(_base_.'/'._folder_lms_.'/lib/lib.certificate.php');
     require_once(_base_.'/lib/lib.download.php');        
     

@@ -61,11 +61,13 @@ final class SmtpAdm extends Model
     const SMTP_GROUP = 14;
 
     /**
-     * @var SmtpAdm null
+     * @var SmtpAdm
      */
     private static $instance = null;
 
-
+    /**
+     * @return SmtpAdm
+     */
     public static function getInstance()
     {
         if (self::$instance == null) {

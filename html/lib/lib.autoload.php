@@ -40,7 +40,6 @@ function docebo_autoload($classname) {
 
 		// db
 		'DbConn'			=> _base_.'/db/lib.docebodb.php',
-		'Mysql_DbConn'		=> _base_.'/db/drivers/docebodb.mysql.php',
 		'Mysqli_DbConn'		=> _base_.'/db/drivers/docebodb.mysqli.php',
         
 		// i18n

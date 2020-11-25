@@ -47,7 +47,7 @@ Class Step7Controller extends StepController
 	function checkConnection($smtp_host, $smtp_port, $smtp_secure, $smtp_auto_tls, $smtp_user, $smtp_pwd)
 	{
 
-		$mail = new PHPMailer();
+		$mail = new PHPMailer\PHPMailer\PHPMailer();
 
 		$mail->Host = $smtp_host;
 		$mail->Port = $smtp_port;
