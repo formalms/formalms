@@ -1,128 +1,127 @@
-<div class="js-router--dashboard dashboard">
-    <div class="d-grid">
-        <div class="d-row">
+<div class="dashboard__actions is-block">
+    <button id="btn-new-layout" class="btn btn-primary dahsboard__button--add js-add-layout">{{ translate('_DASHBOARD_SETTING_ADD_NEW_LAYOUT', 'dashboardsetting') }}</button>
 
-            <div id="dashboard-sortable" class="dashboard__container">
-                {% for block in enabledBlocks %}
-                    {% if block.enabled %}
-                        {% set index = loop.index0 %}
-                        <div id="{{ block.postData.block }}-{{ index }}"
-                             class="dashboard__block dashboard__block--{{ block.type }}"
-                             data-block="{{ block.postData.block }}"
-                             data-type="{{ block.type }}"
-                             data-action="{{ block.registeredActions | join(',') }}">
-                            <div class="dashboard__content">
-                                <button class="dashboard__remove js-remove-block"
-                                        data-block="{{ block.postData.block }}-{{ index }}"></button>
-                                <div class="dashboard__title">{{ translate('_'~block.postData.block,'dashboardsetting') }}</div>
-                                <div class="dashboard__image">
+    <form id="form-layout" class="dashboard__add">
+        <h3>{{ translate('_DASHBOARD_SETTING_INSERT_NEW_LAYOUT', 'dashboardsetting') }}</h3>
 
-                                    <img src="{{ block.templatePath }}static/images/dashboard-placeholder/{{ block.postData.block }}-placeholder.jpg"
-                                         class="dashboard__image">
+        <div class="form-group">
+            <label>{{ translate('_DASHBOARD_SETTING_LAYOUT_NAME', 'dashboardsetting') }}</label>
+            <input name="name" placeholder="{{ translate('_DASHBOARD_SETTING_LAYOUT_NAME', 'dashboardsetting') }}" class="form-control" type="text" value="">
+        </div>
 
-                                </div>
-                                <div class="dashboard__info">
-                                    {% if block.registeredActions | length %}
-                                        <div class="dashboard__infoBlock">
-                                            <div class="dashboard__label">{{ translate('_ENABLED_ACTIONS', 'dashboardsetting') }}</div>
-                                            <div class="dashboard__infoContainer">
-                                                <div class="dashboard__el">
-                                                    {% for action in block.enabledActions %}
-                                                        <label><input name="registeredAction[{{ loop.index0 }}]"
-                                                                      type="checkbox" value="{{ action }}"
-                                                                      {% if action in block.registeredActions %}checked{% endif %} />{{ translate('_'~action,'dashboardsetting') }}
-                                                        </label>
-                                                    {% endfor %}
+        <div class="dashboard__select dashboard__select--layout">
+            <select name="status" class="form-control js-select-layout">
+                <option value="" selected>-- {{ translate('_DASHBOARD_SETTING_SELECT_STATUS', 'dashboardsetting') }} --</option>
+
+                <option value="draft">
+                    {{ translate('_DASHBOARD_SETTING_DRAFT_STATUS', 'dashboardsetting') }}
+                </option>
+                <option value="publish">
+                    {{ translate('_DASHBOARD_SETTING_PUBLISH_STATUS', 'dashboardsetting') }}
+                </option>
+            </select>
+        </div>
+
+        <div class="checkbox">
+            <label><input name="default" type="checkbox" value="1">{{ translate('_DASHBOARD_SETTING_DEFAULT_LAYOUT', 'dashboardsetting') }}</label>
+        </div>
+
+        <button type="submit" class="btn btn-primary dahsboard__button--add js-add-layout btn-block">{{ translate('_DASHBOARD_SETTING_CREATE_NEW_LAYOUT', 'dashboardsetting') }}</button>
+
+        <div class="dashboard__message dashboard_layout__ok">{{ translate('_DASHBOARD_LAYOUT_SAVE_MESSAGE_OK', 'dashboardsetting') }}</div>
+        <div class="dashboard__message dashboard_layout__ko">{{ translate('_DASHBOARD_LAYOUT_SAVE_MESSAGE_KO', 'dashboardsetting') }}</div>
+    </form>
+</div>
+
+<table class="table table-striped table-bordered display" style="width:100%" id="layouts">
+    {% for layout in layouts %}
+        <tr style="{% if dashboardId == layout.id %}background-color: #aaa;{% endif %}">
+            <td><a href="{{ showUrl }}&amp;dashboard={{ layout.id }}">{{ layout.name }}</a></td>
+            <td>{{ translate('_DASHBOARD_STATUS_' ~ layout.status|upper, 'dashboard' ) }}</td>
+            <td><label><input type="checkbox" value="1" data-id="{{ layout.id }}" {{ layout.default ? 'checked' : '' }}></label></td>
+        </tr>
+    {% endfor %}
+</table>
+
+{% if dashboardId %}
+    <div class="js-router--dashboard dashboard">
+        <div class="d-grid">
+            <div class="d-row">
+                <div id="dashboard-sortable" class="dashboard__container">
+                    {% for block in enabledBlocks %}
+                        {% if block.enabled %}
+                            {% set index = loop.index0 %}
+                            <div id="{{ block.postData.block }}-{{ index }}"
+                                class="dashboard__block dashboard__block--{{ block.type }}"
+                                data-block="{{ block.postData.block }}"
+                                data-type="{{ block.type }}"
+                                data-action="{{ block.registeredActions | join(',') }}">
+                                <div class="dashboard__content">
+                                    <button class="dashboard__remove js-remove-block" data-block="{{ block.postData.block }}-{{ index }}"></button>
+                                    <div class="dashboard__title">{{ translate('_'~block.postData.block,'dashboardsetting') }}</div>
+                                    <div class="dashboard__image">
+                                        <img src="{{ block.templatePath }}static/images/dashboard-placeholder/{{ block.postData.block }}-placeholder.jpg"
+                                            class="dashboard__image">
+                                    </div>
+                                    <div class="dashboard__info">
+                                        {% if block.registeredActions | length %}
+                                            <div class="dashboard__infoBlock">
+                                                <div class="dashboard__label">{{ translate('_ENABLED_ACTIONS', 'dashboardsetting') }}</div>
+                                                <div class="dashboard__infoContainer">
+                                                    <div class="dashboard__el">
+                                                        {% for action in block.enabledActions %}
+                                                            <label><input name="registeredAction[{{ loop.index0 }}]"
+                                                                        type="checkbox" value="{{ action }}"
+                                                                        {% if action in block.registeredActions %}checked{% endif %} />{{ translate('_'~action,'dashboardsetting') }}
+                                                            </label>
+                                                        {% endfor %}
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    {% endif %}
+                                        {% endif %}
 
-                                    {% include 'block-form.html.twig' %}
+                                        {% include 'block-form.html.twig' %}
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    {% endif %}
-                {% endfor %}
-            </div>
-            <div class="dashboard__actions">
-                <div class="dashboard__add">
-                    <div class="dashboard__select dashboard__select--layout">
-                        <button id="btn-new-layout" class="btn btn-primary dahsboard__button--add js-add-layout">{{ translate('_DASHBOARD_SETTING_ADD_NEW_LAYOUT', 'dashboardsetting') }}</button>
-                        <form id="form-layout">
-                            <h3>{{ translate('_DASHBOARD_SETTING_INSERT_NEW_LAYOUT', 'dashboardsetting') }}</h3>
-
-                            <div class="dashboard__select dashboard__select--layout">
-                                <select name="status" class="form-control js-select-layout">
-                                    <option value="" selected>-- {{ translate('_DASHBOARD_SETTING_SELECT_STATUS', 'dashboardsetting') }} --</option>
-
-                                    <option value="draft">
-                                        {{ translate('_DASHBOARD_SETTING_DRAFT_STATUS', 'dashboardsetting') }}
-                                    </option>
-                                    <option value="publish">
-                                        {{ translate('_DASHBOARD_SETTING_PUBLISH_STATUS', 'dashboardsetting') }}
-                                    </option>
-                                </select>
-                            </div>
-
-                            <div class="form-group">
-                                <label>{{ translate('_DASHBOARD_SETTING_LAYOUT_NAME', 'dashboardsetting') }}</label>
-                                <input name="name" class="form-control" type="text" value="">
-                            </div>
-
-                            <div class="checkbox">
-                                <label><input name="default" type="checkbox" value="1">{{ translate('_DASHBOARD_SETTING_DEFAULT_LAYOUT', 'dashboardsetting') }}</label>
-                            </div>
-
-                            <button type="submit" class="btn btn-primary dahsboard__button--add js-add-layout">{{ translate('_DASHBOARD_SETTING_CREATE_NEW_LAYOUT', 'dashboardsetting') }}</button>
-                        </form>
-                    </div>
-                    <div class="dashboard__select dashboard__select--layout">
-                        <select class="form-control js-select-layout">
-                            <option value="" selected>{{ translate('_DASHBOARD_SETTING_SELECT_LAYOUT', 'dashboardsetting') }}</option>
-                            {% for layout in layouts %}
-                                <option value="{{ layout.id }}">
-                                    {{ layout.name }}
-                                </option>
-                            {% endfor %}
-                        </select>
-                        <div class="dashboard__error">{{ translate('_DASHBOARD_SETTING_LAYOUT_REQUIRED','dashboardsetting') }}</div>
-                    </div>
-                    <div class="dashboard__select dashboard__select--block">
-                        <select class="form-control js-select-block">
-                            <option value=""
-                                    selected>{{ translate('_DASHBOARD_SETTING_SELECT_BLOCK', 'dashboardsetting') }}</option>
-                            {% for block in installedBlocks %}
-                                <option value="{{ block.postData.block }}"
-                                        data-type="{{ block.availableTypes|json_encode() }}"
-                                        data-action="{{ block.registeredActions|json_encode() }}"
-                                        data-form="{{ block.form|json_encode() }}">
-                                    {{ translate('_'~block.postData.block, 'dashboardsetting') }}
-
-                                </option>
-                            {% endfor %}
-                        </select>
-                        <div class="dashboard__error">{{ translate('_DASHBOARD_SETTING_BLOCK_REQUIRED','dashboardsetting') }}</div>
-                    </div>
-                    <div class="dashboard__select dashboard__select--type">
-                        <select class="form-control js-select-type"></select>
-                    </div>
-                    <button class="btn btn-primary dahsboard__button--add js-add-block">{{ translate('_DASHBOARD_SETTING_ADD_NEW_BLOCK', 'dashboardsetting') }}</button>
+                        {% endif %}
+                    {% endfor %}
                 </div>
-                <button class="button btn btn-danger dahsboard__button--save js-save-block">{{ translate('_DASHBOARD_SETTING_SAVE', 'dashboardsetting') }}
-                </button>
-                <div class="dashboard__message dashboard__ok">{{ translate('_DASHBOARD_SETTING_SAVE_MESSAGE_OK', 'dashboardsetting') }}</div>
-                <div class="dashboard__message dashboard__ko">{{ translate('_DASHBOARD_SETTING_SAVE_MESSAGE_KO', 'dashboardsetting') }}
+                <div class="dashboard__actionsx">
+                    <div class="dashboard__add">
+                        <div class="dashboard__select dashboard__select--block">
+                            <select class="form-control js-select-block">
+                                <option value="" selected>{{ translate('_DASHBOARD_SETTING_SELECT_BLOCK', 'dashboardsetting') }}</option>
+                                {% for block in installedBlocks %}
+                                    <option value="{{ block.postData.block }}"
+                                            data-type="{{ block.availableTypes|json_encode() }}"
+                                            data-action="{{ block.registeredActions|json_encode() }}"
+                                            data-form="{{ block.form|json_encode() }}">
+                                        {{ translate('_'~block.postData.block, 'dashboardsetting') }}
+
+                                    </option>
+                                {% endfor %}
+                            </select>
+                            <div class="dashboard__error">{{ translate('_DASHBOARD_SETTING_BLOCK_REQUIRED','dashboardsetting') }}</div>
+                        </div>
+                        <div class="dashboard__select dashboard__select--type">
+                            <select class="form-control js-select-type"></select>
+                        </div>
+                        <button class="btn btn-primary dahsboard__button--add js-add-block">{{ translate('_DASHBOARD_SETTING_ADD_NEW_BLOCK', 'dashboardsetting') }}</button>
+                    </div>
+                    <button class="button btn btn-danger dahsboard__button--save js-save-block btn-block">{{ translate('_DASHBOARD_SETTING_SAVE', 'dashboardsetting') }}
+                    </button>
+                    <div class="dashboard__message dashboard__ok">{{ translate('_DASHBOARD_SETTING_SAVE_MESSAGE_OK', 'dashboardsetting') }}</div>
+                    <div class="dashboard__message dashboard__ko">{{ translate('_DASHBOARD_SETTING_SAVE_MESSAGE_KO', 'dashboardsetting') }}</div>
                 </div>
             </div>
         </div>
     </div>
-</div>
+{% endif %}
 
 <script type="application/javascript">
-
     $(function () {
-        const dashboardId = {{ dashboardId }};
+        const dashboardId = {{ dashboardId ?: 'null' }};
         const dashboardSortable = $("#dashboard-sortable");
         const selectBlock = $('.js-select-block');
         const selectType = $('.js-select-type');
@@ -151,6 +150,18 @@
         uploadFileCheck();
         formLayout.slideUp();
 
+        let table = $('#layouts').FormaTable({
+            rowId: "id",  // cambia
+            processing: false,
+            serverSide: false,
+            paging: false,
+            columns: [  // definisco le colonne
+                { data: 'name', title: '{{ translate("_DASHBOARD_LAYOUT", "dashboard") }}', sortable: true, width: 'auto'},
+                { data: 'status', title: '{{ translate("_DASHBOARD_LAYOUT_STATUS", "dashboard") }}', sortable: true, width: '25%'},
+                { data: 'default', title: '{{ translate("_DASHBOARD_LAYOUT_DEFAULT", "dashboard") }}', sortable: true, width: '25%'},
+            ],
+        });
+
         btnNewLayout.click(function() {
             openedLayoutForm = !openedLayoutForm;
             if (openedLayoutForm) {
@@ -175,15 +186,16 @@
                 success: (response) => {
                     console.log(response);
                     addLayoutBtn.removeAttr('disabled');
-                    $('.dashboard__ok').css('display', 'block');
-                    /*setTimeout(function () {
+                    $('.dashboard_layout__ok').css('display', 'block');
+                    setTimeout(function () {
                         location.reload();
-                    }, 1500);*/
+                    }, 1500);
 
                 },
                 error: err => {
                     console.log(err)
-                    $('.dashboard__ko').css('display', 'block');
+                    $('.dashboard_layout__ko').css('display', 'block');
+                    addLayoutBtn.removeAttr('disabled');
                 }
             })
         });
@@ -271,9 +283,6 @@
                     console.log(response);
                     saveField.removeAttr('disabled');
                     $('.dashboard__ok').css('display', 'block');
-                    setTimeout(function () {
-                        location.reload();
-                    }, 1500);
 
                 },
                 error: err => {
@@ -326,6 +335,8 @@
                         $('html, body').animate({
                             scrollTop: $('#' + selectBlockValue + '-' + countBlocks).offset().top
                         }, 1000);
+
+                        uploadFileCheck();
                     },
                     error: err => {
                         console.log(err)
@@ -424,6 +435,7 @@
                     let imageUrl = '';
                     if (response.status == 200) {
                         imageUrl = response.file;
+                        $(item).parents(".dashboard__infoContainer").find('img').attr("src", imageUrl).fadeIn();
                     }
                     item.setAttribute('data-url', imageUrl);
                 }
@@ -584,6 +596,10 @@
         }
     }
 
+    #form-layout {
+        display: none;
+    }
+
     .dashboard__block {
         padding: 5px;
         box-sizing: border-box;
@@ -607,13 +623,13 @@
         display: none;
     }
 
-    .dashboard__ok {
+    .dashboard_layout__ok, .dashboard__ok {
         color: #155724;
         background-color: #d4edda;
         border-color: #c3e6cb;
     }
 
-    .dashboard__ko {
+    .dashboard_layout__ko, .dashboard__ko {
         color: #721c24;
         background-color: #f8d7da;
         border-color: #f5c6cb;
@@ -649,7 +665,7 @@
         background-image: url('../templates/standard/static/images/icons/user-panel/icon--up-close-hover.png');
     }
 
-    .dashboard__actions {
+    .dashboard__actions, .dashboard_layout__actions {
         width: 100%;
         display: flex;
         justify-content: flex-end;
@@ -657,7 +673,7 @@
     }
 
     @media all and (min-width: 1024px) {
-        .dashboard__actions {
+        .dashboard__actions, .dashboard_layout__actions {
             width: 25%;
         }
 

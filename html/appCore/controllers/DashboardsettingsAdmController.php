@@ -64,6 +64,8 @@ class DashboardsettingsAdmController extends AdmController
 
     public function show()
     {
+        require_once(Get::rel_path('lib') . '/formatable/formatable.php');
+        Util::get_css(Get::rel_path('lib') . '/formatable/formatable.css', true, true);
 
         $dashboardId = Get::req('dashboard', DOTY_INT, false);
 
@@ -74,6 +76,7 @@ class DashboardsettingsAdmController extends AdmController
                 'uploadFile' => 'ajax.adm_server.php?r=adm/dashboardsettings/uploadFile',
                 'getBlockType' => 'ajax.adm_server.php?r=adm/dashboardsettings/getBlockTypeForm',
             ],
+            'showUrl' => './index.php?r=adm/dashboardsettings/show',
             'installedBlocks' => $this->model->getInstalledBlocksCommonViewData(),
             'enabledBlocks' => $this->model->getEnabledBlocksCommonViewData($dashboardId),
             'layouts' => $this->model->getLayouts(),
@@ -96,7 +99,7 @@ class DashboardsettingsAdmController extends AdmController
             'default' => $default
         ];
 
-        $response = ['status' => 200];
+        $response = [];
 
         // Validation
         $errors = [];
@@ -111,15 +114,34 @@ class DashboardsettingsAdmController extends AdmController
         }
 
         if ($errors) {
-            $response['status'] = 400;
+            $status = 400;
             $response['errors'] = $errors;
-        }
-
-        if ($response['status'] === 200) {
+        } else {
+            $status = 200;
             $this->model->saveLayout($data);
         }
 
-        echo $this->json->encode($response);
+        echo $this->json_response($status, $response);
+        exit;
+    }
+
+    private function json_response($code = 200, $message = null)
+    {
+        header_remove();
+        http_response_code($code);
+        header("Cache-Control: no-transform,public,max-age=300,s-maxage=900");
+        header('Content-Type: application/json');
+
+        $status = array(
+            200 => '200 OK',
+            400 => '400 Bad Request',
+            422 => 'Unprocessable Entity',
+            500 => '500 Internal Server Error'
+        );
+        // ok, validation error, or failure
+        header('Status: ' . $status[$code]);
+
+        return json_encode($message);
     }
 
     public function save()
