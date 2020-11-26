@@ -365,7 +365,7 @@ class Field_Dropdown extends Field {
 		}
 
 		if ($value !== NULL) $obj_entry = (int)$value;
-                if($freeze) return '<p><b>'.$translation.'</b> : '.$option[$obj_entry].'</p>';
+                if($freeze) return '<p>'.($do_not_show_label ? '' : '<b>'.$translation.'</b> : ').$option[$obj_entry].'</p>';
                 
                 
 

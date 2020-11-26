@@ -900,7 +900,7 @@ class CustomFieldList
 	 * @param bool $mandatory Specified if the field is a mandatory one or not.
 	 * @return html with the form code for play a set of fields
 	 **/
-	function playFieldForUser($idst_user, $id_field, $freeze, $mandatory = FALSE)
+	function playFieldForUser($idst_user, $id_field, $freeze, $mandatory = FALSE, $do_not_show_label = FALSE)
 	{
 
 		$query = "SELECT tft.type_file, tft.type_class"
@@ -922,9 +922,9 @@ class CustomFieldList
 
 		$quest_obj->setMainTable($this->getFieldTable());
 		if (!$this->getUseMultiLang()) {
-			return $quest_obj->play($idst_user, $freeze, $mandatory);
+			return $quest_obj->play($idst_user, $freeze, $mandatory, $do_not_show_label);
 		} else {
-			return $quest_obj->multiLangPlay($idst_user, $freeze, $mandatory);
+			return $quest_obj->multiLangPlay($idst_user, $freeze, $mandatory, $do_not_show_label);
 		}
 	}
 

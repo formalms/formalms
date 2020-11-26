@@ -499,7 +499,7 @@ class Field_Textfield extends Field {
 		list($translation) = sql_fetch_row($re_field);
 
 		if ($value !== NULL) $obj_entry = "".$value;
-                if($freeze) return '<p><b>'.$translation.'</b> : '.$obj_entry.'</p>';
+                if($freeze) return '<p>'.($do_not_show_label ? '' : '<b>'.$translation.'</b> : ').$obj_entry.'</p>';
 
 		return Form::getTextfield($translation.( $mandatory ? ' <span class="mandatory">*</span>' : '' ),
 								'field_'.$this->getFieldType().'_'.$this->id_field,
