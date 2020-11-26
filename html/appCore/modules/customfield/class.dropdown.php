@@ -72,8 +72,8 @@ class Field_Dropdown extends Field {
 			$mand_lang = getLanguage();
 			$show_on = '';
 			if(isset($_POST['show_on_platform'])) {
-				while(list($code, ) = each($_POST['show_on_platform']))
-					$show_on .= $code.',';
+        foreach($_POST['show_on_platform']  as $code )
+								$show_on .= $code.',';
 			}
 			//control if all is ok
 			if(!isset($_POST['new_dropdown'][$mand_lang])) {
@@ -367,7 +367,7 @@ class Field_Dropdown extends Field {
 		if ($value !== NULL) $obj_entry = (int)$value;
 
 		//if($freeze) return Form::getLineBox($translation.' : ', $option[$obj_entry]);
-                if($freeze) return '<p><b>'.$translation.'</b> : '.$option[$obj_entry].'</p>';
+                if($freeze) return '<p>'.($do_not_show_label ? '' : '<b>'.$translation.'</b> : ').$option[$obj_entry].'</p>';
                 
                 
 

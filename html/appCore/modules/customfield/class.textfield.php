@@ -69,8 +69,8 @@ class Field_Textfield extends Field {
 			$mand_lang = getLanguage();
 			$show_on = '';
 			if(isset($_POST['show_on_platform'])) {
-				while(list($code, ) = each($_POST['show_on_platform']))
-					$show_on .= $code.',';
+          foreach($_POST['show_on_platform']  as $code ) 
+				  	$show_on .= $code.',';
 			}
 			//control if all is ok
 			if(!isset($_POST['new_textfield'][$mand_lang])) {
@@ -501,7 +501,7 @@ class Field_Textfield extends Field {
 		if ($value !== NULL) $obj_entry = "".$value;
 
 		//if($freeze) return Form::getLineBox($translation.' : ', $obj_entry);
-                if($freeze) return '<p><b>'.$translation.'</b> : '.$obj_entry.'</p>';
+                if($freeze) return '<p>'.($do_not_show_label ? '' : '<b>'.$translation.'</b> : ').$obj_entry.'</p>';
 
 		return Form::getTextfield($translation.( $mandatory ? ' <span class="mandatory">*</span>' : '' ),
 								'field_'.$this->getFieldType().'_'.$this->id_field,

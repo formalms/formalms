@@ -455,8 +455,8 @@ class Field {
 	}
 
 
-	function multiLangPlay($id_user, $freeze, $mandatory = false, $value = NULL) {
-		return $this->play($id_user, $freeze, $mandatory, $value);
+	function multiLangPlay($id_user, $freeze, $mandatory = false, $do_not_show_label = false, $value = NULL) {
+		return $this->play($id_user, $freeze, $mandatory, $do_not_show_label, $value);
 	}
 
 
