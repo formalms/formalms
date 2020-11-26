@@ -22,10 +22,6 @@
             </select>
         </div>
 
-        <div class="checkbox">
-            <label><input name="default" type="checkbox" value="1">{{ translate('_DASHBOARD_SETTING_DEFAULT_LAYOUT', 'dashboardsetting') }}</label>
-        </div>
-
         <button type="submit" class="btn btn-primary dahsboard__button--add js-add-layout btn-block">{{ translate('_DASHBOARD_SETTING_CREATE_NEW_LAYOUT', 'dashboardsetting') }}</button>
 
         <div class="dashboard__message dashboard_layout__ok">{{ translate('_DASHBOARD_LAYOUT_SAVE_MESSAGE_OK', 'dashboardsetting') }}</div>
@@ -34,13 +30,14 @@
 </div>
 
 <table class="table table-striped table-bordered display" style="width:100%" id="layouts">
-    {% for layout in layouts %}
-        <tr style="{% if dashboardId == layout.id %}background-color: #aaa;{% endif %}">
-            <td><a href="{{ showUrl }}&amp;dashboard={{ layout.id }}">{{ layout.name }}</a></td>
-            <td>{{ translate('_DASHBOARD_STATUS_' ~ layout.status|upper, 'dashboard' ) }}</td>
-            <td><label><input type="checkbox" value="1" data-id="{{ layout.id }}" {{ layout.default ? 'checked' : '' }}></label></td>
-        </tr>
-    {% endfor %}
+{% for layout in layouts %}
+    <tr style="{% if dashboardId == layout.id %}background-color: #aaa;{% endif %}">
+        <td><a href="{{ showUrl }}&amp;dashboard={{ layout.id }}">{{ layout.name }}</a></td>
+        <td>{{ translate('_DASHBOARD_STATUS_' ~ layout.status|upper, 'dashboard' ) }}</td>
+        <td><label><input class="default_check" type="checkbox" value="1" data-id="{{ layout.id }}" {{ layout.default ? 'disabled checked' : '' }}></label></td>
+        <td><button type="button" class="btn btn-danger btn-del" data-id="{{ layout.id }}"><i class="glyphicon glyphicon-trash"></i> </button></td>
+    </tr>
+{% endfor %}
 </table>
 
 {% if dashboardId %}
@@ -121,7 +118,7 @@
 
 <script type="application/javascript">
     $(function () {
-        const dashboardId = {{ dashboardId ?: 'null' }};
+        const dashboardId = "{{ dashboardId ?: 'null' }}";
         const dashboardSortable = $("#dashboard-sortable");
         const selectBlock = $('.js-select-block');
         const selectType = $('.js-select-type');
@@ -138,6 +135,7 @@
         const btnNewLayout = $('#btn-new-layout');
         const formLayout = $('#form-layout');
         const addLayoutBtn = $('.js-add-layout');
+        const layoutsTable = $('#layouts');
         let openedLayoutForm = false;
 
         if (windowWidth >= 1024) {
@@ -150,7 +148,7 @@
         uploadFileCheck();
         formLayout.slideUp();
 
-        let table = $('#layouts').FormaTable({
+        let table = layoutsTable.FormaTable({
             rowId: "id",  // cambia
             processing: false,
             serverSide: false,
@@ -159,6 +157,7 @@
                 { data: 'name', title: '{{ translate("_DASHBOARD_LAYOUT", "dashboard") }}', sortable: true, width: 'auto'},
                 { data: 'status', title: '{{ translate("_DASHBOARD_LAYOUT_STATUS", "dashboard") }}', sortable: true, width: '25%'},
                 { data: 'default', title: '{{ translate("_DASHBOARD_LAYOUT_DEFAULT", "dashboard") }}', sortable: true, width: '25%'},
+                { data: 'delete', title: '{{ translate("_DASHBOARD_DELETE_LAYOUT", "dashboard") }}', sortable: false, width: '15%'},
             ],
         });
 
@@ -197,7 +196,48 @@
                     $('.dashboard_layout__ko').css('display', 'block');
                     addLayoutBtn.removeAttr('disabled');
                 }
-            })
+            });
+        });
+
+        $('.btn-del').click(function(e) {
+            if (confirm("{{ translate('_DASHBOARD_LAYOUT_SURE_DEL', 'dashboard') }}")) {
+                var delBtn = $(this);
+                // DELETE A LAYOUT
+                $.ajax({
+                    url: '{{ ajaxUrl.delLayout }}',
+                    type: 'POST',
+                    data: { id_layout: delBtn.data('id') },
+                    beforeSend: () => {
+                        delBtn.attr('disabled', true);
+                    },
+                    success: (response) => {
+                        delBtn.attr('disabled', false);
+                        setTimeout(function () {
+                            location.reload();
+                        }, 1500);
+                    },
+                    error: err => {
+                        console.log(err);
+                        delBtn.attr('disabled', false);
+                    }
+                });
+            }
+        });
+
+        $(".default_check").change(function() {
+            // SET A LAYOUT AS DEFAULT
+            $.ajax({
+                url: '{{ ajaxUrl.defaultLayout }}',
+                type: 'POST',
+                data: { id_layout: $(this).data('id') },
+                success: (response) => {
+                    $(".default_check").attr('disabled', false).prop('checked', false);
+                    $(this).prop('checked', true).attr('disabled', true);
+                },
+                error: err => {
+                    console.log(err)
+                }
+            });
         });
 
         // SALVATAGGIO DATI BLOCK

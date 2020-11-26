@@ -133,10 +133,29 @@ class DashboardsettingsAdm extends Model
     {
         $name = $layout['name'];
         $status = $layout['status'];
-        $default = (bool)$layout['default'];
+
+        $query = "SELECT COUNT(*) AS count FROM `dashboard_layouts`";
+        $res = $this->db->query($query);
+        $res = sql_fetch_array($res);
+        $default = $res['count'] ? 0 : 1;
 
         $insertQuery = "INSERT INTO `dashboard_layouts` ( `name`, `status`, `default`) VALUES ( '" . addslashes($name) . "', '" . addslashes($status) . "', " . $default . ")";
         $this->db->query($insertQuery);
+    }
+
+    public function delLayout($id_layout)
+    {
+        $query = "DELETE FROM `dashboard_layouts` WHERE id = $id_layout";
+        return $this->db->query($query);
+    }
+
+    public function defaultLayout($id_layout)
+    {
+        $query = "UPDATE `dashboard_layouts` SET `default` = 0";
+        $this->db->query($query);
+
+        $query = "UPDATE `dashboard_layouts` SET `default` = 1 WHERE id = $id_layout";
+        return $this->db->query($query);
     }
 
     public function saveBlockSetting($block, $setting, $dashboard)

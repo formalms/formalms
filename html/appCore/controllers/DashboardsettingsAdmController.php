@@ -73,6 +73,8 @@ class DashboardsettingsAdmController extends AdmController
             'ajaxUrl' => [
                 'save' => 'ajax.adm_server.php?r=adm/dashboardsettings/save',
                 'saveLayout' => 'ajax.adm_server.php?r=adm/dashboardsettings/saveLayout',
+                'delLayout' => 'ajax.adm_server.php?r=adm/dashboardsettings/delLayout',
+                'defaultLayout' => 'ajax.adm_server.php?r=adm/dashboardsettings/defaultLayout',
                 'uploadFile' => 'ajax.adm_server.php?r=adm/dashboardsettings/uploadFile',
                 'getBlockType' => 'ajax.adm_server.php?r=adm/dashboardsettings/getBlockTypeForm',
             ],
@@ -119,6 +121,28 @@ class DashboardsettingsAdmController extends AdmController
         } else {
             $status = 200;
             $this->model->saveLayout($data);
+        }
+
+        echo $this->json_response($status, $response);
+        exit;
+    }
+
+    public function delLayout()
+    {
+        $status = 400;
+        if ($response = $this->model->delLayout(Get::pReq('id_layout'))) {
+            $status = 200;
+        }
+
+        echo $this->json_response($status, $response);
+        exit;
+    }
+
+    public function defaultLayout()
+    {
+        $status = 400;
+        if ($response = $this->model->defaultLayout(Get::pReq('id_layout'))) {
+            $status = 200;
         }
 
         echo $this->json_response($status, $response);
