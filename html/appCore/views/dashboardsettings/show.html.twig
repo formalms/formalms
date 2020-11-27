@@ -1,35 +1,40 @@
-<div class="dashboard__actions is-block">
-    <button id="btn-new-layout" class="btn btn-primary dahsboard__button--add js-add-layout">{{ translate('_DASHBOARD_SETTING_ADD_NEW_LAYOUT', 'dashboardsetting') }}</button>
 
-    <form id="form-layout" class="dashboard__add">
-        <h3>{{ translate('_DASHBOARD_SETTING_INSERT_NEW_LAYOUT', 'dashboardsetting') }}</h3>
+<div class="d-grid">
+    <div class="d-row">
+        <div class="dashboard__actions is-block">
+            <button id="btn-new-layout" class="btn btn-primary dahsboard__button--add js-add-layout">{{ translate('_DASHBOARD_SETTING_ADD_NEW_LAYOUT', 'dashboardsetting') }}</button>
 
-        <div class="form-group">
-            <label>{{ translate('_DASHBOARD_SETTING_LAYOUT_NAME', 'dashboardsetting') }}</label>
-            <input name="name" placeholder="{{ translate('_DASHBOARD_SETTING_LAYOUT_NAME', 'dashboardsetting') }}" class="form-control" type="text" value="">
+            <form id="form-layout" class="dashboard__add">
+                <h3>{{ translate('_DASHBOARD_SETTING_INSERT_NEW_LAYOUT', 'dashboardsetting') }}</h3>
+
+                <div class="form-group">
+                    <label>{{ translate('_DASHBOARD_SETTING_LAYOUT_NAME', 'dashboardsetting') }}</label>
+                    <input name="name" placeholder="{{ translate('_DASHBOARD_SETTING_LAYOUT_NAME', 'dashboardsetting') }}" class="form-control" type="text" value="">
+                </div>
+
+                <div class="dashboard__select dashboard__select--layout">
+                    <select name="status" class="form-control js-select-layout">
+                        <option value="" selected>-- {{ translate('_DASHBOARD_SETTING_SELECT_STATUS', 'dashboardsetting') }} --</option>
+
+                        <option value="draft">
+                            {{ translate('_DASHBOARD_SETTING_DRAFT_STATUS', 'dashboardsetting') }}
+                        </option>
+                        <option value="publish">
+                            {{ translate('_DASHBOARD_SETTING_PUBLISH_STATUS', 'dashboardsetting') }}
+                        </option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn btn-primary dahsboard__button--add js-add-layout btn-block">{{ translate('_DASHBOARD_SETTING_CREATE_NEW_LAYOUT', 'dashboardsetting') }}</button>
+
+                <div class="dashboard__message dashboard_layout__ok">{{ translate('_DASHBOARD_LAYOUT_SAVE_MESSAGE_OK', 'dashboardsetting') }}</div>
+                <div class="dashboard__message dashboard_layout__ko">{{ translate('_DASHBOARD_LAYOUT_SAVE_MESSAGE_KO', 'dashboardsetting') }}</div>
+            </form>
         </div>
-
-        <div class="dashboard__select dashboard__select--layout">
-            <select name="status" class="form-control js-select-layout">
-                <option value="" selected>-- {{ translate('_DASHBOARD_SETTING_SELECT_STATUS', 'dashboardsetting') }} --</option>
-
-                <option value="draft">
-                    {{ translate('_DASHBOARD_SETTING_DRAFT_STATUS', 'dashboardsetting') }}
-                </option>
-                <option value="publish">
-                    {{ translate('_DASHBOARD_SETTING_PUBLISH_STATUS', 'dashboardsetting') }}
-                </option>
-            </select>
-        </div>
-
-        <button type="submit" class="btn btn-primary dahsboard__button--add js-add-layout btn-block">{{ translate('_DASHBOARD_SETTING_CREATE_NEW_LAYOUT', 'dashboardsetting') }}</button>
-
-        <div class="dashboard__message dashboard_layout__ok">{{ translate('_DASHBOARD_LAYOUT_SAVE_MESSAGE_OK', 'dashboardsetting') }}</div>
-        <div class="dashboard__message dashboard_layout__ko">{{ translate('_DASHBOARD_LAYOUT_SAVE_MESSAGE_KO', 'dashboardsetting') }}</div>
-    </form>
+    </div>
+        <table class="table table-striped table-bordered display" style="width:100%" id="layouts"></table>
 </div>
 
-<table class="table table-striped table-bordered display" style="width:100%" id="layouts"></table>
 
 {% if dashboardId %}
     <div class="js-router--dashboard dashboard">
