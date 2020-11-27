@@ -1635,8 +1635,10 @@ public function addClassroom($params) {
         if (!sql_query("DELETE FROM %lms_course WHERE idCourse = '" . $id_course . "'"))
             return false;
 
-        $event = new \appLms\Events\Lms\CourseDeletedEvent($course);
-        \appCore\Events\DispatcherManager::dispatch($event::EVENT_NAME, $event);
+        //TODO: EVT_OBJECT (§)
+        //$event = new \appLms\Events\Lms\CourseDeletedEvent($course);
+        //TODO: EVT_LAUNCH (&)
+        //\appCore\Events\DispatcherManager::dispatch($event::EVENT_NAME, $event);
 
         return true;
     }    
@@ -2238,16 +2240,22 @@ public function addClassroom($params) {
 	        return $lo;
     }    
     
-    
-    
+           
+           
+
 // assign meta certificate & course to user
     function assignMetaUser($params){
+        
+        require_once(_files_lms_.'/'._folder_lib_.'/lib.aggregated_certificate.php');
+
+        $aggCertLib = new AggregatedCertificate();
         
         $meta_cert_id = (isset($params['meta_cert_id']) ? $params['meta_cert_id'] : '');
         $meta_user_id = (isset($params['meta_user_id']) ? $params['meta_user_id'] : '');  
         $meta_course_id = (isset($params['meta_course_id']) ? $params['meta_course_id'] : '');       
-        $output =array();
+        $meta_type_course = (isset($params['meta_type_course']) ? $params['meta_type_course'] : 'COURSE'); 
         
+        $output =array();
 
         if (empty(meta_cert_id)) {
             $output['success']=false;
@@ -2272,15 +2280,61 @@ public function addClassroom($params) {
         $vett_course = explode(",",$meta_course_id);
         
         $output['success']=true;
-        foreach($vett_user as $keyUser => $valueUser){
-            $output['debug_user_'.$valueUser]=$valueUser;
-            foreach($vett_course as $keyCourse => $valueCourse){
-                $output['debug_course_'.$valueCourse]=$valueCourse;    
+        
+         
+        //-----------------------------------
+
+        foreach($vett_user as $keyUser => $valueUser)
+            $userArr[$valueUser] = $vett_course;
+        
+        $assocArr[$meta_cert_id] = $userArr;
+        $assocArr['type_assoc']=0;
+        $assocArr['id_assoc']=$meta_cert_id; 
+        
+        
+        // TO DO RIVIEW  - not working
+        //$aggCertLib->insertAssociationLink(COURSE, $assocArr);
+        
+        foreach($vett_course as $keyCourse => $valueCourse){  
+            
+            // assign course to user by meta cert id
+            try {
                 
-                // assign course to user by meta cert id
+                if($meta_type_course=='COURSE'){
+                    $query_meta = "INSERT INTO %lms_aggregated_cert_course (idAssociation, idUser, idCourse,idCourseEdition) 
+                                     VALUES (".$meta_cert_id.",0,".$valueCourse.",0)";                                     
+                } else{
+                    $query_meta = "INSERT INTO %lms_aggregated_cert_coursepath (idAssociation, idUser, idCoursePath) 
+                                     VALUES (".$meta_cert_id.",0,".$valueCourse.")"; 
+                    
+                    
+                }                
+                                 
+                                 
+                $result_meta = sql_query($query_meta);
+            } catch(Exception $e) {
+              $output['success']=false;
+            }                
+            
+        }         
+                 
+        foreach($vett_user as $keyUser => $valueUser){
+            foreach($vett_course as $keyCourse => $valueCourse){   
+                
+                // assign course to user by association cert id
                 try {
-                    $query_meta = "INSERT INTO %lms_certificate_meta_course (idMetaCertificate, idUser, idCourse,idCourseEdition) 
-                                     VALUES (".$meta_cert_id.",".$valueUser.",".$valueCourse.",0)";                                     
+                    
+                    if($meta_type_course=='COURSE'){
+                        $query_meta = "INSERT INTO %lms_aggregated_cert_course(idAssociation, idUser, idCourse,idCourseEdition) 
+                                         VALUES (".$meta_cert_id.",".$valueUser.",".$valueCourse.",0)";  
+                    }else{
+                        $query_meta = "INSERT INTO %lms_aggregated_cert_coursepath(idAssociation, idUser, idCoursePath) 
+                                         VALUES (".$meta_cert_id.",".$valueUser.",".$valueCourse.")"; 
+   
+                    }                 
+                                     
+                                     
+                                                                        
                     $result_meta = sql_query($query_meta);
                 } catch(Exception $e) {
                   $output['success']=false;
@@ -2289,6 +2343,7 @@ public function addClassroom($params) {
             }    
             
         }
+
         
         return $output;
         
@@ -2296,6 +2351,12 @@ public function addClassroom($params) {
      
     // add association to meta certificate
     function addAssociationCertificate($params){
+                         
+          
+        require_once(_files_lms_.'/'._folder_lib_.'/lib.aggregated_certificate.php');
+        $aggCertLib = new AggregatedCertificate();
+        
+        
           $output =array();
           $output['success']=true;
         
@@ -2318,17 +2379,17 @@ public function addClassroom($params) {
         
            // add association to meta cert id
             try {
-                $query_meta = "INSERT INTO %lms_certificate_meta ( idCertificate, title, description) 
+                $query_meta = "INSERT INTO %lms_aggregated_cert_metadata ( idCertificate, title, description) 
                                  VALUES (".$meta_cert_id.",'".$name_ass."','".$descr_ass."')";                                     
                 $result_meta = sql_query($query_meta);
                 
                 
                 // get id new association
-                $query_association = "select max(idMetaCertificate) as id_meta from %lms_certificate_meta";
+                $query_association = "select max(idAssociation) as id_association from %lms_aggregated_cert_metadata";
                 $qres = sql_query($query_association);
-                list($id_meta) = sql_fetch_row($qres);                
+                list($id_association) = sql_fetch_row($qres);                
                 
-                $output['id_new_association'] = $id_meta;
+                $output['id_new_association'] = $id_association;
                 
                 
             } catch(Exception $e) {       
@@ -2337,8 +2398,10 @@ public function addClassroom($params) {
                                 
         return $output;
         
-    }
-      
+    }             
+           
+           
+           
 
     /**
      * put introduction of course    

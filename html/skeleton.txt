@@ -20,13 +20,9 @@
  |	 |- calendar/							Calendar
  | 	 |- feeds/								Reading and generatin rss files
  |	 |- htmlpurifier/						Filtering html input
- | 	 |- kses/								Filtering html input
  |	 |- nusoap/								Soap and wsdl classess
- |	 |- pclzip/								Zip files
- |	 |- phpmailer/							Mail sender
  |	 |- shadowbox/							Lightbox
  |	 |- tiny_mce/							wyswyg editor
- |	 |- utf8/								string manipulation function utf8-safe
  |	 '- yui/								JS Framework
  |
  |-	api/									api servers

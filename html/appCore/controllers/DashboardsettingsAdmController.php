@@ -15,7 +15,7 @@ require_once(Forma::inc(_base_ . '/lib/lib.upload.php'));
 /**
  * Class DashboardsettingsAdmController
  */
-Class DashboardsettingsAdmController extends AdmController
+class DashboardsettingsAdmController extends AdmController
 {
 
     /** @var DashboardsettingsAdm $model */
@@ -64,14 +64,17 @@ Class DashboardsettingsAdmController extends AdmController
 
     public function show()
     {
-        //render view
-        $this->render('show', [
+
+        $data = [
             'ajaxUrl' => 'ajax.adm_server.php?r=adm/dashboardsettings/save',
             'ajaxUploadFileUrl' => 'ajax.adm_server.php?r=adm/dashboardsettings/uploadFile',
             'installedBlocks' => $this->model->getInstalledBlocksCommonViewData(),
             'enabledBlocks' => $this->model->getEnabledBlocksCommonViewData(),
             'templatePath' => getPathTemplate()
-        ]);
+        ];
+
+        //render view
+        $this->render('show', $data);
 
     }
 
@@ -134,7 +137,7 @@ Class DashboardsettingsAdmController extends AdmController
 
             if ($_FILES[$fieldName]['size'] == 0 && $_FILES[$fieldName]['error'] == 0) {
                 $response['status'] = 400;
-                $response['error'] = Lang::t('_FIELD_NOT_EXIST', 'dashboardsetting');
+                $response['error'] = Lang::t('_FILE_NOT_VALID', 'dashboardsetting');
             } else {
 
                 $savefile = mt_rand(0, 100) . '_' . time() . '_' . $_FILES[$fieldName]['name'];

@@ -19,7 +19,7 @@ class Module_Statistic extends LmsModule {
 		statisticDispatch($GLOBALS['op']);
 	}
 
-	function getAllToken($op) {
+	function getAllToken() {
 			return array( 	'view' => array( 	'code' => 'view',
 								'name' => '_VIEW',
 								'image' => 'standard/view.png'), 

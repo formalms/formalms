@@ -299,6 +299,7 @@ ScormPlayer.prototype._fireEvent = function( evType, evValue ) {
  * @param Object win window in cui caricare lo sco
  **/
 ScormPlayer.prototype.play = function( id, win ) {
+	this.api.unloading();
 	if( id === null ) {
 		win.location.replace( this.basePath + this.blankPage );
 	} else {
@@ -327,6 +328,7 @@ ScormPlayer.prototype.playNext = function() {
 				this.cntWin.msgPrereqNotSatisfied(this.getScoName(this.nextScoId));
 			return;
 		}
+		this.api.notUnloading();
 		this.api.setIdscorm_item( item.getAttribute('uniqueid') );
 		this.api.setIdscorm_organization( playerConfig.idscorm_organization );
 		this.cntWin.location.replace(	this.lmsBase + '/index.php?modname=scorm&op=scoload'
@@ -352,16 +354,20 @@ ScormPlayer.prototype.singleSco = function() {
 
 ScormPlayer.prototype.blankPageLoaded = function() {
 
+	this._fireEvent( 'blankPageLoaded', null );
+
 	//if we are in a single sco environment we can close the player
 	if(window.close_player) {
-		window.top.onbeforeunload = null;
-		/*var url = window.top.location.href;
-		url = url.slice(0, url.lastIndexOf("/"));
-		window.top.location.href = url + "/" + playerConfig.backurl;*/
-		window.top.location.href = playerConfig.lms_base_url + "" + playerConfig.backurl;
+		this.closePlayer();
 	} else {
 		this.playNext();
 	}
+}
+
+ScormPlayer.prototype.closePlayer = function() {
+	
+	window.top.onbeforeunload = null;
+	window.top.location.href = playerConfig.lms_base_url + "" + playerConfig.backurl;
 }
 
 ScormPlayer.prototype.addActionQueue = function( action ) {

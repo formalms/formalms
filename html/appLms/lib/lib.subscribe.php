@@ -257,7 +257,7 @@ class CourseSubscribe_Manager
 			break;
 
 			case 'fullname':
-				$query .= " ORDER BY u.firstname ".$dir.", u.lastname ".$dir.", u.userid ".$dir;
+				$query .= " ORDER BY u.lastname ".$dir.", u.firstname ".$dir.", u.userid ".$dir;
 			break;
 
 			case 'level':
@@ -277,7 +277,7 @@ class CourseSubscribe_Manager
 		while(list($id_user, $userid, $firstname, $lastname, $level, $status, $date_complete, $date_begin_validity, $date_expire_validity, $waiting) = sql_fetch_row($result))
 		{
 			if($firstname !== '' && $lastname !== '')
-				$user = $firstname.' '.$lastname;
+				$user = $lastname.' '.$firstname;
 			elseif($firstname !== '')
 				$user = $firstname;
 			elseif($lastname !== '')
@@ -505,33 +505,27 @@ class CourseSubscribe_Manager
 
 	public function updateUserStatusInCourse($id_user, $id_course, $new_status, $new_date_complete = "") {
 
-        $new_data = ['status' => $new_status, 'date_complete' => $new_date_complete];
 
+
+	    // saving the old user status for the actual course
+	    $queryStatus = "SELECT status"
+	                   . " FROM " . $this->subscribe_table
+	                   . " WHERE idUser = '" . $id_user . "'"
+	                   . " AND idCourse = '" . $id_course . "'";
+    
+	    $resultStatus = $this->db->query($queryStatus);
+	    $oldStatus = $this->db->fetch_row($resultStatus);
+        $current_data = ['status' => $oldStatus];
         $data = Events::trigger('lms.course_user.updating', [
             'id_user' => $id_user,
             'id_course' => $id_course,
-            'new_data' => $new_data,
+            'new_data' => $current_data,
         ]);
-
-        $new_status = $data['new_data']['status'];
-        $new_date_complete = $data['new_data']['date_complete'];
-
-		$_new_date = $new_date_complete ? "'".$new_date_complete."'" : "NOW()";
-
-
-	        // saving the old user status for the actual course
-	        $queryStatus = "SELECT STATUS"
-	                       . " FROM " . $this->subscribe_table
-	                       . " WHERE idUser = '" . $id_user . "'"
-	                       . " AND idCourse = '" . $id_course . "'";
         
-	        $resultStatus = $this->db->query($queryStatus);
-	        $oldStatus = $this->db->fetch_row($resultStatus);
-
+        
 		$query = "UPDATE ".$this->subscribe_table
 					." SET status = ".(int)$new_status
 					.", waiting = ".($new_status < 0 ? "1" : "0" )." "
-					.", date_complete = ".($new_status == _CUS_END ? $_new_date : " null")
 					." WHERE idCourse = ".$id_course
 					." AND idUser ";
 
@@ -541,11 +535,12 @@ class CourseSubscribe_Manager
 			$query .= " = ".(int)$id_user;
 		}
 
-		if ($this->db->query($query)) {            
+		if ($this->db->query($query)) {
+            $current_data = ['status' => $new_status];           
             Events::trigger('lms.course_user.updated', [
                 'id_user' => $id_user,
                 'id_course' => $id_course,
-                'new_data' => $new_data,
+                'new_data' => $current_data,
             ]);
 			if($new_status == _CUS_END) {
 				//require_once($GLOBALS['where_lms'].'/lib/lib.competences.php');
@@ -713,12 +708,18 @@ class CourseSubscribe_Manager
 
 	public function saveTrackStatusChange($idUser, $idCourse, $status, $prev_status)
 	{
-        $new_data = ['status' => $status];
-
+        
+        $queryStatus = "SELECT status, date_inscr, date_first_access, date_complete"
+               . " FROM " . $this->subscribe_table
+               . " WHERE idUser = '" . $idUser . "'"
+               . " AND idCourse = '" . $idCourse . "'";
+        $resultStatus = $this->db->query($queryStatus);
+        list($st, $d_insc, $d_fa, $d_c) = $this->db->fetch_row($resultStatus);
+        $current_status = ['status' => $st, 'date_inscr' => $d_insc, 'date_first_access'=>$d_fa, 'date_complete'=>$d_c];           
         $data = Events::trigger('lms.course_user.updating', [
             'id_user' => $idUser,
             'id_course' => $idCourse,
-            'new_data' => $new_data,
+            'new_data' => $current_status,
         ]);
 
         $status = $data['new_data']['status'];
@@ -731,23 +732,36 @@ class CourseSubscribe_Manager
 				case _CUS_SUBSCRIBED : {
 					//approved subscriptin for example
 					$extra = ", date_inscr = NOW()";
+                    $current_status = ['status' => $status, 'date_inscr' => date('Y-m-d H:i:s')];
 				};break;
 				case _CUS_BEGIN : {
 					//first access
 					UpdatesLms::resetCache();
 					$extra = ", date_first_access = NOW()";
+                    $current_status = ['status' => $status, 'date_first_access' => date('Y-m-d H:i:s')];
 				};break;
 				case _CUS_END : {
 					//end course
 					$extra = ", date_complete = NOW()";
+                    $current_status = ['status' => $status, 'date_complete' => date('Y-m-d H:i:s')];
 				};break;
 			}
 		}
 
-		if(!sql_query("
+		
+        
+        if(!sql_query("
 		UPDATE ".$GLOBALS['prefix_lms']."_courseuser
 		SET status = '".(int)$status."' ".$extra."
-		WHERE idUser = '".(int)$idUser."' AND idCourse = '".(int)$idCourse."'")) return false;
+		WHERE idUser = '".(int)$idUser."' AND idCourse = '".(int)$idCourse."'")) {
+            return false;
+        } else {
+            Events::trigger('lms.course_user.updated', [
+            'id_user' => $idUser,
+            'id_course' => $idCourse,
+            'new_data' => $current_status,
+            ]);
+        }    
 
 		$re = sql_query("
 		SELECT when_do
@@ -825,12 +839,6 @@ class CourseSubscribe_Manager
 			$cpmodel = new CoursePath_Manager();
 			$cpmodel->assignComplete($idCourse, $idUser);
         }
-        
-        Events::trigger('lms.course_user.updated', [
-            'id_user' => $idUser,
-            'id_course' => $idCourse,
-            'new_data' => $new_data,
-        ]);
 
 		return true;
 	}

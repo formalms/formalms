@@ -833,8 +833,8 @@ function modforumaccess ()
         
         if (is_array ($add_reader)) {
             
-            while (list(, $idst) = each ($add_reader)) {
-                
+            foreach($add_reader as $idst)
+            {             
                 $query_insert = "
 				INSERT INTO " . $GLOBALS[ 'prefix_lms' ] . "_forum_access
 				( idForum, idMember ) VALUES
@@ -845,7 +845,8 @@ function modforumaccess ()
         }
         if (is_array ($del_reader)) {
             
-            while (list(, $idst) = each ($del_reader)) {
+            foreach($del_reader as $idst)
+            {
                 
                 $query_delete = "
 				DELETE FROM " . $GLOBALS[ 'prefix_lms' ] . "_forum_access
@@ -1957,7 +1958,7 @@ function message ()
     // Compose messagges display
     $path = $GLOBALS[ 'where_files_relative' ] . '/appCore/' . Get::sett ('pathphoto');
     $counter = 0;
-    while (list($id_message , $message_info) = each ($messages)) {
+    foreach($messages as $id_message => $message_info) {   
         $counter++;
         // sender info
         $m_author = $message_info[ 'author' ];
@@ -2312,7 +2313,9 @@ function showMessageForAdd ($id_thread , $how_much)
     
     // Compose messagges display
     $path = $GLOBALS[ 'where_files_relative' ] . '/appCore/' . Get::sett ('pathphoto');
-    while (list($id_message , $message_info) = each ($messages)) {
+
+    foreach($messages as $id_message => $message_info)
+    {
         
         // sender info
         $m_author = $message_info[ 'author' ];
@@ -3148,7 +3151,7 @@ function forumsearch ()
             '<div class="forumErased">' . $lang->def ('_OPERATION_SUCCESSFUL') . '</div>' :
             '<a' . $c_css . ' href="index.php?modname=forum&amp;op=searchmessage&amp;idThread=' . $idT . '&amp;ini_thread=' . $ini_page . '">'
             . ($search_arg !== ''
-                ? eregi_replace ($search_arg , '<span class="filter_evidence">' . $search_arg . '</span>' , $title)
+                ? preg_replace ($search_arg , '<span class="filter_evidence">' . $search_arg . '</span>' , $title)
                 : $title) . '</a>');
         $content[] = $num_post
             . (isset($_SESSION[ 'unreaded_forum' ][ $_SESSION[ 'idCourse' ] ][ $id_forum ][ $idT ]) && $_SESSION[ 'unreaded_forum' ][ $_SESSION[ 'idCourse' ] ][ $id_forum ][ $idT ] != 'new_thread'
@@ -3280,7 +3283,8 @@ function forumsearchmessage ()
     
     // Compose messagges display
     $path = $GLOBALS[ 'where_files_relative' ] . '/appCore/' . Get::sett ('pathphoto');
-    while (list($id_message , $message_info) = each ($messages)) {
+    
+    foreach($messages as $id_message => $message_info)   {
         
         // sender info
         $m_author = $message_info[ 'author' ];
@@ -3331,12 +3335,12 @@ function forumsearchmessage ()
             $textof = str_replace ('[quote]' , '<blockquote class="forum_quote">' , str_replace ('[/quote]' , '</blockquote>' , $message_info[ 'textof' ]));
             $msgtext .= '<div class="forum_post_title">' . $lang->def ('_SUBJECT') . ' : '
                 . ($search_arg !== ''
-                    ? eregi_replace ($search_arg , '<span class="filter_evidence">' . $search_arg . '</span>' , $message_info[ 'title' ])
+                    ? preg_replace ($search_arg , '<span class="filter_evidence">' . $search_arg . '</span>' , $message_info[ 'title' ])
                     : $message_info[ 'title' ])
                 . '</div>';
             $msgtext .= '<div class="forum_post_text">'
                 . ($search_arg !== ''
-                    ? eregi_replace ($search_arg , '<span class="filter_evidence">' . $search_arg . '</span>' , $textof)
+                    ? preg_replace ($search_arg , '<span class="filter_evidence">' . $search_arg . '</span>' , $textof)
                     : $textof)
                 . '</div>';
             

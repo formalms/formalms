@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20200220</DATE>
+  <DATE>20200714</DATE>
   <LANG id="spanish">
     <lang_code>spanish</lang_code>
     <lang_description>Spanish</lang_description>
@@ -1530,6 +1530,7 @@ Para cambiar estas palabras, vaya a Administración / Gestión de idiomas, busqu
         <key id="menu_over&amp;_COMMUNITY" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Comunidad]]></key>
         <key id="menu_over&amp;_COURSE_AUTOREGISTRATION" attributes="" save_date="2018-10-12 16:00:27"><![CDATA[Auto registro en el curso]]></key>
         <key id="menu_over&amp;_GO_TO_FRAMEWORK" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Area de administrador]]></key>
+        <key id="menu_over&amp;_HELPDESK" attributes="" save_date="2020-06-08 08:45:26"><![CDATA[Helpdesk]]></key>
         <key id="menu_over&amp;_LIBRARY" attributes="" save_date="2016-12-01 08:21:46"><![CDATA[Creación]]></key>
         <key id="menu_over&amp;_MENUCOURSE" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Campus]]></key>
         <key id="menu_over&amp;_MENUGEN" attributes="" save_date="2017-05-24 09:35:31"><![CDATA[Menú general]]></key>

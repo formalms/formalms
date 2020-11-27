@@ -1,17 +1,21 @@
 <div class="dashboard__infoBlock dashboard__infoBlock--image">
     <div class="form-group">
         <label class="dashboard__label"
-               for="{{ block.postData.block }}-{{ index }}-image">{{ translate('_image_'~ form.class,'dashboardsetting') }}</label>
+               for="{{ block.postData.block }}-{{ index }}-image">{{ translate('_IMAGE_'~ form.class,'dashboardsetting') }}</label>
 
         <div class="dashboard__infoContainer">
             <input type="file" name="{{ form.name }}" class="form-control-image js-extra-setting js-upload-file"
                    id="{{ form.field }}" data-block="{{ block.postData.block }}" data-url="{{ attribute(block.data, form.name) }}">
             <input type="hidden" class="form-control-image" id="{{ block.postData.block }}-{{ index }}-image-string"
                    data-block="{{ block.postData.block }}-{{ index }}">
+
+            {% if attribute(block.data,form.name) is defined %}
+                <img src="{{ attribute(block.data, form.name) }}" style="width: 100px">
+            {% endif %}
         </div>
 
-        <div class="dashboard__helper">Tipi di file ammessi: .jpg, .png, .gif</div>
-        <div class="dashboard__error">L'immagine caricata non ha una delle seguente estensioni:<br> .jpg, .png, .gif
+        <div class="dashboard__helper">{{ translate('_DASHBOARD_SETTING_IMAGE_ALLOWED_TYPES', 'dashboardsetting') }} .jpg, .png, .gif</div>
+        <div class="dashboard__error">{{ translate('_DASHBOARD_SETTING_IMAGE_TYPE_ERROR', 'dashboardsetting') }}<br> .jpg, .png, .gif
         </div>
     </div>
 </div>

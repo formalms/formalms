@@ -385,7 +385,7 @@ class Man_Course {
 		if($type_of !== false && $type_of !== 'all' && $type_of !== 'edition') $query_course .= " AND course_type = '".$type_of."' ";
 		if($type_of === 'edition') $query_course .= " AND course_edition = '1' ";
 		if($arr_courses !== false) $query_course .= " AND idCourse IN ( ".implode(',', $arr_courses)." )";
-		$query_course .= " ORDER BY name";
+		$query_course .= " ORDER BY idCourse";
 
 		$re_course = sql_query($query_course);
 		while(list($id, $code, $name, $description) = sql_fetch_row($re_course)) {
@@ -872,8 +872,10 @@ class Man_Course {
         
 		if($level_id != ADMIN_GROUP_GODADMIN && $course['sub_end_date'] != '0000-00-00') {
 			$date01=new DateTime($course['sub_end_date']);
-			$exp_time = $now - $date01->format('U');
-
+	        // BUG: ticket 19753
+            //$exp_time = $now - $date01->format('U');
+             $exp_time = $date01->format('U') - $now ;            
+            
 			if ($exp_time > 0) {
 				return array('can' => false, 'reason' => 'course_sub_end_date', 'expiring_in' => $exp_time);
 			}
@@ -1986,8 +1988,40 @@ class Man_CourseUser {
 		return sql_num_rows($result_course);
 	}
 
-}
+    
+    /**
+    * return whether the user is enrolled in a course
+    */
+    function isEnrolled($id_user, $id_course) {
+        $q =    "SELECT COUNT(*)"
+                    ." FROM " . $this->_table_user_subscription
+                    ." WHERE idCourse =" . intval($id_course)
+                    ." AND idUser =" . intval($id_user);
+        $row = sql_fetch_row(sql_query($q));
+        return boolval($row[0]);                       
 
+    }
+    
+    /**
+    * 
+    *  return true if the user has completed all courses in array courseIdsArr
+    * 
+    */
+
+    function hasCompletedCourses($id_user, $courseIdsArr){        
+    
+        $courseIdsArr = array_unique($courseIdsArr);
+        $c = implode(",",$courseIdsArr);
+        $q =    "SELECT COUNT(*)"
+                    ." FROM " . $this->_table_user_subscription
+                    ." WHERE idCourse in (" . $c
+                    .") AND idUser = " . $id_user
+                    ." AND status = " . _CUS_END ;
+        $row = sql_fetch_row(sql_query($q));       
+        return ($row[0] == count($courseIdsArr)); 
+    
+    }
+}
 class DoceboCourse {
 
 	var $id_course;

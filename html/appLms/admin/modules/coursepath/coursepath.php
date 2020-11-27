@@ -489,7 +489,7 @@ function pathelem() {
 					$admin_courses['course'] = array_merge($admin_courses['course'], $array_courses);
 				}
 			}
-      foreach($id as $id_item => $prerequisites)
+      foreach($courses[$id_slot] as $id_item => $prerequisites)
       {
 
 				$cont = array(	$course_info[$id_item]['code'],

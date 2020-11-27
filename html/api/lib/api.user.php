@@ -102,9 +102,11 @@ class User_API extends API {
 			(isset($userdata['force_change']) ? $userdata['force_change'] : 0)
 		);
 
-		$event = new \appLms\Events\Api\ApiUserRegistrationEvent();
-		$event->setId($id_user);
-		\appCore\Events\DispatcherManager::dispatch(\appLms\Events\Api\ApiUserRegistrationEvent::EVENT_NAME, $event);
+		//TODO: EVT_OBJECT (§)
+		//$event = new \appLms\Events\Api\ApiUserRegistrationEvent();
+		//$event->setId($id_user);
+		//TODO: EVT_LAUNCH (&)
+		//\appCore\Events\DispatcherManager::dispatch(\appLms\Events\Api\ApiUserRegistrationEvent::EVENT_NAME, $event);
 
 
 		// suspend
@@ -640,8 +642,8 @@ class User_API extends API {
 	 * @return boolean 
 	 */
 	public function checkUsername($params) {
-		$output =array('success'=>true);
-		
+
+
 		$userid =$params['userid'];
 		$query = "SELECT idst, userid, firstname, lastname, pass, email, avatar, signature,"
 				." level, lastenter, valid, pwd_expire_at, register_date, lastenter, force_change,
@@ -663,15 +665,17 @@ class User_API extends API {
 		if (!$res) {
 			$output =array(
 				'success'=>false,
-				'message'=>'User not found',
+				'message'=>'User not found'
 			);
 		}
 		else {
 			$output['idst']=(int)$res[ACL_INFO_IDST];
+            $output['success'] = true;
+            $output['message'] = ($res[ACL_INFO_VALID] == 0) ? '_DISABLED':'';
 		}
 		
 		return $output;
-	}
+    }    
     
     /**
     * Get the ID related to a profile name
@@ -783,7 +787,7 @@ class User_API extends API {
             }
         }
         
-        // select single user to admin  // PER FESTO
+        // select single user to admin  
         if (array_key_exists('single_user', $params)){
             $q = "select idst from core_user where userid = '/".$params['single_user']."'";
             $rs =$this->db->query($q);
@@ -893,10 +897,21 @@ class User_API extends API {
     }
     
     
-        //GRIFO LRZ: crea ramo organigramma
+        //GRIFO LRZ: new org user
       function newOrg($orgData){
-        $name=array('italian'=>$orgData['name_org']);
+      
+        // get array language
+        $name = [];
+        $q = "select lang_code from %adm_lang_language";
+        $r = $this->db->query($q);
+        if ($r){
+            while ($row = $this->db->fetch_array($r)){
+                $name[$row[0]] = $orgData['name_org'];    
+            }
         
+        }      
+      
+      
         
         // calcola idParent by code
         $output = array();
@@ -908,7 +923,7 @@ class User_API extends API {
         include_once(_adm_."/models/UsermanagementAdm.php");
         $adm=new UsermanagementAdm();
         $idOrg=$adm->addFolder($idParent,$name,$orgData['code']);
-        if($idOrg) $output = array('success'=>true, 'message'=>$idOrg);
+        if($idOrg) $output = array('success'=>true, 'message'=>$idOrg, 'name' => $name);
         else $output = array('success'=>false, 'message'=>"Organizzazione:$name; idParent:$idParent; code:".$orgData['code']);
         return $output;
       }

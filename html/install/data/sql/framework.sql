@@ -735,7 +735,8 @@ INSERT INTO `core_event_class` (`idClass`, `class`, `platform`, `description`) V
 (43, 'UserCourseInsertedApi', 'lms-a', ''),
 (44, 'UserCourseInsertedModerators', 'lms-a', ''),
 (45, 'UserCourseSuspendedSuperAdmin', 'framework', ''),
-(46, 'UserRegistrationSuperadmins', 'lms-a', '');
+(46, 'UserRegistrationSuperadmins', 'lms-a', ''),
+(50, 'PurchaseCourse', 'lms', '');
 
 -- --------------------------------------------------------
 
@@ -1379,7 +1380,7 @@ INSERT INTO `core_menu_under` (`idUnder`, `idMenu`, `module_name`, `default_name
 INSERT INTO `core_menu_under` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES(212, 212, 'coursepath', '_COURSEPATH', 'pathlist', 'view', 'alms', 2, 'class.coursepath.php', 'Module_Coursepath', '');
 INSERT INTO `core_menu_under` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES(213, 213, 'catalogue', '_CATALOGUE', 'catlist', 'view', 'alms', 3, 'class.catalogue.php', 'Module_Catalogue', '');
 INSERT INTO `core_menu_under` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES(241, 241, 'certificate', '_CERTIFICATE', 'certificate', 'mod', 'alms', 1, 'class.certificate.php', 'Module_Certificate', '');
-INSERT INTO `core_menu_under` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES(242, 242, 'meta_certificate', '_META_CERTIFICATE', 'meta_certificate', 'view', 'alms', 2, 'class.meta_certificate.php', 'Module_Meta_Certificate', '');
+INSERT INTO `core_menu_under` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES(242, 242, 'aggregated_certificate', '_AGGREGATED_CERTIFICATE', '', 'view', 'alms', 2, '', '', 'alms/aggregatedcertificate/show');
 INSERT INTO `core_menu_under` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES(251, 251, 'reservation', '_EVENTS', 'view_event', 'view', 'alms', 1, 'class.reservation.php', 'Module_Reservation', '');
 INSERT INTO `core_menu_under` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES(252, 252, 'reservation', '_CATEGORY', 'view_category', 'view', 'alms', 2, 'class.reservation.php', 'Module_Reservation', '');
 INSERT INTO `core_menu_under` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES(253, 253, 'reservation', '_RESERVATION', 'view_registration', 'view', 'alms', 3, 'class.reservation.php', 'Module_Reservation', '');
@@ -2589,7 +2590,7 @@ INSERT INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size
 ('sso_token', 'off', 'enum', 3, '0', 9, 5, 1, 0, ''),
 ('stop_concurrent_user', 'on', 'enum', 3, 'security', 8, 23, 1, 0, ''),
 ('tablist_mycourses', 'name,code,status', 'tablist_mycourses', 255, '0', 4, 4, 1, 0, ''),
-('template_domain', '', 'textarea', 65535, '0', 8, 9, 1, 0, ''),
+('template_domain', '', 'template_domain_node', 65535, '0', 8, 9, 1, 0, ''),
 ('templ_use_field', '0', 'id_field', 11, '0', 1, 0, 1, 1, ''),
 ('title_organigram_chart', 'Forma', 'string', 255, '0', 1, 0, 1, 1, ''),
 ('tracking', 'off', 'enum', 3, '0', 4, 12, 1, 0, ''),
@@ -2603,7 +2604,8 @@ INSERT INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size
 ('use_tag', 'on', 'enum', 3, '0', 4, 8, 1, 0, ''),
 ('visuItem', '25', 'int', 3, '0', 2, 1, 1, 1, ''),
 ('visuNewsHomePage', '3', 'int', 5, '0', 1, 0, 1, 1, ''),
-('welcome_use_feed', 'on', 'enum', 3, '0', 1, 0, 1, 1, '');
+('welcome_use_feed', 'on', 'enum', 3, '0', 1, 0, 1, 1, ''),
+('purchase_user', '', 'string', 255, 'ecommerce', 4, 18, 1, 0, '');
 
 -- --------------------------------------------------------
 

@@ -73,11 +73,12 @@ Class Step2Controller extends StepController {
 		return $txt;
 	}
 
+	//TODO INSTALL_vs_UPGRADE: please share what you can
 	function checkRequirements() {
 		$res =array();
 
-		// Minimum PHP required version: 7.0
-		// Minimum PHP suggested version: 7.4.x
+	//TODO PHP7x: set const for Minimum PHP required version: 7.0
+	//TODO PHP7x: set const for Maximum PHP suggested version: 7.4.x
 		if(version_compare(PHP_VERSION, '7.0', '<')) {
 			$res['php'] = 'err';
 		} else if(version_compare(PHP_VERSION, '7.5', '>=')) {
@@ -87,8 +88,7 @@ Class Step2Controller extends StepController {
 		}
 		
         $driver=array(
-            'mysqli'=>extension_loaded("mysqli"),
-            'mysql'=>extension_loaded("mysql")
+            'mysqli'=>extension_loaded("mysqli")
         );
 		if(array_filter($driver)) {
             // mysql client version, in php the version number is a string regcut it

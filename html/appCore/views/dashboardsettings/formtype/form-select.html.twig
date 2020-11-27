@@ -1,11 +1,12 @@
 <div class="dashboard__infoBlock dashboard__infoBlock--select">
-    <label class="dashboard__label" for="{{ block.postData.block }}-{{ index }}-file">{{ translate('_select_'~ form.class,'dashboardsetting') }}</label>
-    <select name="{{ form.name }}" class="dashboard__select form-control js-extra-setting" data-block="{{ block.postData.block }}-{{ index }}">
+    <label class="dashboard__label"
+           for="{{ block.postData.block }}-{{ index }}-file">{{ translate('_SELECT_'~ form.class,'dashboardsetting') }}</label>
+
+    <select name="{{ form.name }}" class="dashboard__select form-control js-extra-setting"
+            data-block="{{ block.postData.block }}-{{ index }}">
 
         {% for key,value in form.values %}
-
-            <option value="{{ key }}"{% if block.type == type %} selected{% endif %}>{{ value }}</option>
-
+            <option value="{{ key }}"{% if attribute(block.data, form.name) == key %} selected{% endif %}>{{ translate(value,'dashboardsetting') }}</option>
         {% endfor %}
     </select>
 </div>

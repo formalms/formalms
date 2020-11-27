@@ -900,7 +900,7 @@ class DateManager
 					." FROM ".$this->presence_date_table
 					." WHERE id_date = ".$id_date;
 
-		if(Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN)
+		if(Docebo::user()->getUserLevelId() == ADMIN_GROUP_ADMIN)
 		{
 			require_once(_base_.'/lib/lib.preference.php');
 			$adminManager = new AdminPreference();
@@ -1513,7 +1513,7 @@ class DateManager
 			break;
 
 			case 'fullname':
-				$query .= " ORDER BY u.firstname ".$dir.", u.lastname ".$dir.", u.userid ".$dir;
+				$query .= " ORDER BY u.lastname ".$dir.", u.firstname ".$dir.", u.userid ".$dir;
 			break;
 
 			case 'level':
@@ -1535,7 +1535,7 @@ class DateManager
 		while(list($id_user, $userid, $firstname, $lastname, $level, $status, $date_complete, $date_begin_validity, $date_expire_validity) = sql_fetch_row($result))
 		{
 			if($firstname !== '' && $lastname !== '')
-				$user = $firstname.' '.$lastname;
+				$user = $lastname.' '.$firstname;
 			elseif($firstname !== '')
 				$user = $firstname;
 			elseif($lastname !== '')
@@ -1839,5 +1839,3 @@ class DateManager
 
 
 }
-
-?>

@@ -19,7 +19,7 @@ class Module_Quest_Bank extends LmsModule {
 		questbankDispatch($GLOBALS['op']);
 	}
 	
-	function getAllToken($op) {
+	function getAllToken() {
 		return array( 
 			'view' => array( 	'code' => 'view',
 								'name' => '_VIEW',

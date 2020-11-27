@@ -18,9 +18,10 @@
  * @author   Fabio Pirovano <fabio@docebo.com>
  */
 
-require_once(Forma::inc(_adm_.'/modules/field/class.field.php'));
+require_once(Forma::inc(_adm_ . '/modules/field/class.field.php'));
 
-class Field_Date extends Field {
+class Field_Date extends Field
+{
 
 
 	/**
@@ -30,7 +31,8 @@ class Field_Date extends Field {
 	 *
 	 * @access public
 	 */
-	function getFieldType() {
+	function getFieldType()
+	{
 		return 'date';
 	}
 
@@ -42,79 +44,80 @@ class Field_Date extends Field {
 	 *
 	 * @access public
 	 */
-	function create($back) {
+	function create($back)
+	{
 
 		$back_coded = htmlentities(urlencode($back));
 
 		$array_lang = array();
-		$std_lang 		=& DoceboLanguage::createInstance('standard');
-		$lang 			=& DoceboLanguage::createInstance('field');
+		$std_lang 		= &DoceboLanguage::createInstance('standard');
+		$lang 			= &DoceboLanguage::createInstance('field');
 		$array_lang 	= Docebo::langManager()->getAllLangCode();
-		$out 			=& $GLOBALS['page'];
+		$out 			= &$GLOBALS['page'];
 
-		if(isset($_POST['undo'])) {
+		if (isset($_POST['undo'])) {
 			//undo action
-			Util::jump_to($back.'&result=undo');
+			Util::jump_to($back . '&result=undo');
 		}
-		if(isset($_POST['save_field_'.$this->getFieldType()])) {
+		if (isset($_POST['save_field_' . $this->getFieldType()])) {
 
 			//insert mandatory translation
 			$mand_lang = getLanguage();
 			$show_on = '';
-			if(isset($_POST['show_on_platform'])) {
-        foreach($_POST['show_on_platform']  as $code )
-						$show_on .= $code.',';
+			if (isset($_POST['show_on_platform'])) {
+				foreach ($_POST['show_on_platform']  as $code)
+					$show_on .= $code . ',';
 			}
 			//control if all is ok
-			if(!isset($_POST['new_date'][$mand_lang])) {
+			if (!isset($_POST['new_date'][$mand_lang])) {
 				$out->add(
 					getErrorUi($lang->def('_ERR_MUST_DEF_MANADATORY_TRANSLATION'))
-					.getBackUi($this->getUrl().'&amp;type_field='
-						.$this->getFieldType().'&amp;back='.$back_coded, $std_lang->def('_BACK')),
+						. getBackUi($this->getUrl() . '&amp;type_field='
+							. $this->getFieldType() . '&amp;back=' . $back_coded, $std_lang->def('_BACK')),
 					'content'
 				);
 				return;
 			}
-			if($_POST['new_date'][$mand_lang] == $lang->def('_FIELD_NAME') || trim($_POST['new_date'][$mand_lang]) == '') {
+			if ($_POST['new_date'][$mand_lang] == $lang->def('_FIELD_NAME') || trim($_POST['new_date'][$mand_lang]) == '') {
 				$out->add(
 					getErrorUi($lang->def('_ERR_MUST_DEF_MANADATORY_TRANSLATION'))
-					.getBackUi($this->getUrl().'&amp;type_field='
-						.$this->getFieldType().'&amp;back='.$back_coded, $std_lang->def('_BACK')),
+						. getBackUi($this->getUrl() . '&amp;type_field='
+							. $this->getFieldType() . '&amp;back=' . $back_coded, $std_lang->def('_BACK')),
 					'content'
 				);
 				return;
 			}
 
 			//insert mandatory field
-			if(!sql_query("
-			INSERT INTO ".$this->_getMainTable()."
+			if (!sql_query("
+			INSERT INTO " . $this->_getMainTable() . "
 			(type_field, lang_code, translation, show_on_platform, use_multilang) VALUES
-			('".$this->getFieldType()."', '".$mand_lang."', '".$_POST['new_date'][$mand_lang]."', '".$show_on."', '".$use_multilang."') ")) {
-				Util::jump_to($back.'&result=fail');
+			('" . $this->getFieldType() . "', '" . $mand_lang . "', '" . $_POST['new_date'][$mand_lang] . "', '" . $show_on . "', '" . $use_multilang . "') ")) {
+				Util::jump_to($back . '&result=fail');
 			}
 			list($id_common) = sql_fetch_row(sql_query("SELECT LAST_INSERT_ID()"));
-			if(!sql_query("
-			UPDATE ".$this->_getMainTable()."
-			SET id_common = '".(int)$id_common."'
-			WHERE idField = '".(int)$id_common."'")) {
-				Util::jump_to($back.'&result=fail');
+			if (!sql_query("
+			UPDATE " . $this->_getMainTable() . "
+			SET id_common = '" . (int)$id_common . "'
+			WHERE idField = '" . (int)$id_common . "'")) {
+				Util::jump_to($back . '&result=fail');
 			}
 			$re = true;
 			//insert other field
-			foreach($_POST['new_date'] as $lang_code => $translation) {
+			foreach ($_POST['new_date'] as $lang_code => $translation) {
 
-				if($mand_lang != $lang_code && $translation != $lang->def('_FIELD_NAME') && trim($translation) != '') {
+				if ($mand_lang != $lang_code && $translation != $lang->def('_FIELD_NAME') && trim($translation) != '') {
 					$re_ins = sql_query("
-					INSERT INTO ".$this->_getMainTable()."
+					INSERT INTO " . $this->_getMainTable() . "
 					(type_field, id_common, lang_code, translation, show_on_platform, use_multilang) VALUES
-					('".$this->getFieldType()."', '".(int)$id_common."', '".$lang_code."', '".$translation."', '".$show_on."', '".$use_multilang."') ");
+					('" . $this->getFieldType() . "', '" . (int)$id_common . "', '" . $lang_code . "', '" . $translation . "', '" . $show_on . "', '" . $use_multilang . "') ");
 					$re = $re && $re_ins;
 				}
 			}
-			Util::jump_to($back.'&result='.( $re ? 'success' : 'fail'));
+			Util::jump_to($back . '&result=' . ($re ? 'success' : 'fail'));
 		}
 
-		require_once(_base_.'/lib/lib.form.php');
+		require_once(_base_ . '/lib/lib.form.php');
 
 		$form = new Form();
 
@@ -122,21 +125,22 @@ class Field_Date extends Field {
 		$out->add('<div class="std_block">');
 		$out->add(
 			$form->getFormHeader($lang->def('_NEW_DATEFIELD'))
-			.$form->openForm('create_'.$this->getFieldType(), $this->getUrl())
-			.$form->openElementSpace()
-			.$form->getHidden('type_field', 'type_field', $this->getFieldType())
-			.$form->getHidden('back', 'back', $back_coded)
+				. $form->openForm('create_' . $this->getFieldType(), $this->getUrl())
+				. $form->openElementSpace()
+				. $form->getHidden('type_field', 'type_field', $this->getFieldType())
+				. $form->getHidden('back', 'back', $back_coded)
 		);
 		$mand_lang = getLanguage();
-		foreach($array_lang as $k => $lang_code ) {
+		foreach ($array_lang as $k => $lang_code) {
 
 			$out->add(
-				$form->getTextfield(( ($mand_lang == $lang_code) ? '<span class="mandatory">*</span>' : '' ).$lang_code,
-									'new_date_'.$lang_code,
-									'new_date['.$lang_code.']',
-									255,
-									'',
-									$lang_code.' '.$lang->def('_FIELD_NAME') )
+				$form->getTextfield((($mand_lang == $lang_code) ? '<span class="mandatory">*</span>' : '') . $lang_code,
+					'new_date_' . $lang_code,
+					'new_date[' . $lang_code . ']',
+					255,
+					'',
+					$lang_code . ' ' . $lang->def('_FIELD_NAME')
+				)
 			);
 		}
 
@@ -145,11 +149,11 @@ class Field_Date extends Field {
 
 		$out->add(
 			$form->closeElementSpace()
-			.$form->openButtonSpace()
-			.$form->getButton('save_field', 'save_field_'.$this->getFieldType(), $std_lang->def('_CREATE', 'standard'))
-			.$form->getButton('undo', 'undo', $std_lang->def('_UNDO', 'standard'))
-			.$form->closeButtonSpace()
-			.$form->closeForm()
+				. $form->openButtonSpace()
+				. $form->getButton('save_field', 'save_field_' . $this->getFieldType(), $std_lang->def('_CREATE', 'standard'))
+				. $form->getButton('undo', 'undo', $std_lang->def('_UNDO', 'standard'))
+				. $form->closeButtonSpace()
+				. $form->closeForm()
 		);
 		$out->add('</div>');
 	}
@@ -162,43 +166,44 @@ class Field_Date extends Field {
 	 *
 	 * @access public
 	 */
-	function edit( $back ) {
+	function edit($back)
+	{
 		$back_coded = htmlentities(urlencode($back));
 
 		$array_lang = array();
-		$std_lang 		=& DoceboLanguage::createInstance('standard');
-		$lang 			=& DoceboLanguage::createInstance('field');
+		$std_lang 		= &DoceboLanguage::createInstance('standard');
+		$lang 			= &DoceboLanguage::createInstance('field');
 		$array_lang 	= Docebo::langManager()->getAllLangCode();
-		$out 			=& $GLOBALS['page'];
+		$out 			= &$GLOBALS['page'];
 
-		if(isset($_POST['undo'])) {
+		if (isset($_POST['undo'])) {
 			//undo action
-			Util::jump_to($back.'&result=undo');
+			Util::jump_to($back . '&result=undo');
 		}
-		if(isset($_POST['save_field_'.$this->getFieldType()])) {
+		if (isset($_POST['save_field_' . $this->getFieldType()])) {
 
 			//insert mandatory translation
 			$mand_lang = getLanguage();
 			$show_on = '';
-			if(isset($_POST['show_on_platform'])) {
-				  foreach($_POST['show_on_platform']  as $code )
-					 $show_on .= $code.',';
+			if (isset($_POST['show_on_platform'])) {
+				foreach ($_POST['show_on_platform']  as $code)
+					$show_on .= $code . ',';
 			}
 			//control if all is ok
-			if(!isset($_POST['new_date'][$mand_lang])) {
+			if (!isset($_POST['new_date'][$mand_lang])) {
 				$out->add(
 					getErrorUi($lang->def('_ERR_MUST_DEF_MANADATORY_TRANSLATION'))
-					.getBackUi($this->getUrl().'&amp;type_field='
-						.$this->getFieldType().'&amp;back='.$back_coded, $std_lang->def('_BACK')),
+						. getBackUi($this->getUrl() . '&amp;type_field='
+							. $this->getFieldType() . '&amp;back=' . $back_coded, $std_lang->def('_BACK')),
 					'content'
 				);
 				return;
 			}
-			if($_POST['new_date'][$mand_lang] == $lang->def('_FIELD_NAME') || trim($_POST['new_date'][$mand_lang]) == '') {
+			if ($_POST['new_date'][$mand_lang] == $lang->def('_FIELD_NAME') || trim($_POST['new_date'][$mand_lang]) == '') {
 				$out->add(
 					getErrorUi($lang->def('_ERR_MUST_DEF_MANADATORY_TRANSLATION'))
-					.getBackUi($this->getUrl().'&amp;type_field='
-						.$this->getFieldType().'&amp;back='.$back_coded, $std_lang->def('_BACK')),
+						. getBackUi($this->getUrl() . '&amp;type_field='
+							. $this->getFieldType() . '&amp;back=' . $back_coded, $std_lang->def('_BACK')),
 					'content'
 				);
 				return;
@@ -207,71 +212,72 @@ class Field_Date extends Field {
 			$existsing_translation = array();
 			$re_trans = sql_query("
 			SELECT lang_code
-			FROM ".$this->_getMainTable()."
-			WHERE id_common = '".$this->id_common."'");
-			while(list($l_code) = sql_fetch_row($re_trans)) {
+			FROM " . $this->_getMainTable() . "
+			WHERE id_common = '" . $this->id_common . "'");
+			while (list($l_code) = sql_fetch_row($re_trans)) {
 				$existsing_translation[$l_code] = 1;
 			}
 
-			$use_multilang =(isset($_POST['use_multi_lang']) ? 1 : 0);
+			$use_multilang = (isset($_POST['use_multi_lang']) ? 1 : 0);
 
 			$re = true;
 			//insert other field
-			foreach($_POST['new_date'] as $lang_code => $translation) {
+			foreach ($_POST['new_date'] as $lang_code => $translation) {
 
-				if(isset($existsing_translation[$lang_code])) {
+				if (isset($existsing_translation[$lang_code])) {
 
-					if(!sql_query("
-					UPDATE ".$this->_getMainTable()."
-					SET translation = '".$translation."',
-						show_on_platform = '".$show_on."',
-						use_multilang = '".$use_multilang."'
-					WHERE id_common = '".(int)$this->id_common."' AND lang_code = '".$lang_code."'")) $re = false;
+					if (!sql_query("
+					UPDATE " . $this->_getMainTable() . "
+					SET translation = '" . $translation . "',
+						show_on_platform = '" . $show_on . "',
+						use_multilang = '" . $use_multilang . "'
+					WHERE id_common = '" . (int)$this->id_common . "' AND lang_code = '" . $lang_code . "'")) $re = false;
 				} else {
 
-					if(!sql_query("
-					INSERT INTO ".$this->_getMainTable()."
+					if (!sql_query("
+					INSERT INTO " . $this->_getMainTable() . "
 					(type_field, id_common, lang_code, translation, show_on_platform, use_multilang) VALUES
-					('".$this->getFieldType()."', '".(int)$this->id_common."', '".$lang_code."', '".$translation."', '".$show_on."', '".$use_multilang."') ")) $re= false;
+					('" . $this->getFieldType() . "', '" . (int)$this->id_common . "', '" . $lang_code . "', '" . $translation . "', '" . $show_on . "', '" . $use_multilang . "') ")) $re = false;
 				}
 			}
-			Util::jump_to($back.'&result='.( $re ? 'success' : 'fail'));
+			Util::jump_to($back . '&result=' . ($re ? 'success' : 'fail'));
 		}
 
 		//load value form database
 		$re_trans = sql_query("
 		SELECT lang_code, translation, show_on_platform, use_multilang
-		FROM ".$this->_getMainTable()."
-		WHERE id_common = '".$this->id_common."'");
-		while(list($l_code, $trans, $show_on, $db_use_multilang) = sql_fetch_row($re_trans)) {
+		FROM " . $this->_getMainTable() . "
+		WHERE id_common = '" . $this->id_common . "'");
+		while (list($l_code, $trans, $show_on, $db_use_multilang) = sql_fetch_row($re_trans)) {
 			$translation[$l_code] = $trans;
-			if(!isset($show_on_platform)) $show_on_platform = array_flip(explode(',', $show_on));
-			if(!isset($use_multilang)) $use_multilang = $db_use_multilang;
+			if (!isset($show_on_platform)) $show_on_platform = array_flip(explode(',', $show_on));
+			if (!isset($use_multilang)) $use_multilang = $db_use_multilang;
 		}
 
-		require_once(_base_.'/lib/lib.form.php');
+		require_once(_base_ . '/lib/lib.form.php');
 
 		$form = new Form();
 
 		$out->setWorkingZone('content');
 		$out->add('<div class="std_block">');
 		$out->add(
-			$form->openForm('create_'.$this->getFieldType(), $this->getUrl())
-			.$form->openElementSpace()
-			.$form->getHidden('type_field', 'type_field', $this->getFieldType())
-			.$form->getHidden('id_common', 'id_common', $this->id_common)
-			.$form->getHidden('back', 'back', $back_coded)
+			$form->openForm('create_' . $this->getFieldType(), $this->getUrl())
+				. $form->openElementSpace()
+				. $form->getHidden('type_field', 'type_field', $this->getFieldType())
+				. $form->getHidden('id_common', 'id_common', $this->id_common)
+				. $form->getHidden('back', 'back', $back_coded)
 		);
 		$mand_lang = getLanguage();
-		foreach($array_lang as $k => $lang_code ) {
+		foreach ($array_lang as $k => $lang_code) {
 
 			$out->add(
-				$form->getTextfield(( ($mand_lang == $lang_code) ? '<span class="mandatory">*</span>' : '' ).$lang_code,
-									'new_date_'.$lang_code,
-									'new_date['.$lang_code.']',
-									255,
-									( isset($translation[$lang_code]) ? $translation[$lang_code] : '' ),
-									$lang_code.' '.$lang->def('_FIELD_NAME') )
+				$form->getTextfield((($mand_lang == $lang_code) ? '<span class="mandatory">*</span>' : '') . $lang_code,
+					'new_date_' . $lang_code,
+					'new_date[' . $lang_code . ']',
+					255,
+					(isset($translation[$lang_code]) ? $translation[$lang_code] : ''),
+					$lang_code . ' ' . $lang->def('_FIELD_NAME')
+				)
 			);
 		}
 
@@ -280,11 +286,11 @@ class Field_Date extends Field {
 
 		$out->add(
 			$form->closeElementSpace()
-			.$form->openButtonSpace()
-			.$form->getButton('save_field', 'save_field_'.$this->getFieldType(), $std_lang->def('_SAVE', 'standard'))
-			.$form->getButton('undo', 'undo', $std_lang->def('_UNDO', 'standard'))
-			.$form->closeButtonSpace()
-			.$form->closeForm()
+				. $form->openButtonSpace()
+				. $form->getButton('save_field', 'save_field_' . $this->getFieldType(), $std_lang->def('_SAVE', 'standard'))
+				. $form->getButton('undo', 'undo', $std_lang->def('_UNDO', 'standard'))
+				. $form->closeButtonSpace()
+				. $form->closeForm()
 		);
 		$out->add('</div>');
 	}
@@ -299,19 +305,21 @@ class Field_Date extends Field {
 	 *
 	 * @access public
 	 */
-	function show( $id_user ) {
+	function show($id_user)
+	{
 
 		list($user_entry) = sql_fetch_row(sql_query("
 		SELECT user_entry
-		FROM ".$this->_getUserEntryTable()."
-		WHERE id_user = '".(int)$id_user."' AND
-			id_common = '".(int)$this->id_common."' AND
+		FROM " . $this->_getUserEntryTable() . "
+		WHERE id_user = '" . (int)$id_user . "' AND
+			id_common = '" . (int)$this->id_common . "' AND
 			id_common_son = '0'"));
 
 		return Format::date($user_entry, 'date');
 	}
 
-	function toString( $value ) {
+	function toString($value)
+	{
 
 		return Format::date($value, 'date');
 	}
@@ -328,69 +336,79 @@ class Field_Date extends Field {
 	 *
 	 * @access public
 	 */
-    function play( $id_user, $freeze, $mandatory = false, $do_not_show_label = false, $value = NULL, $registrationLayout=false, $registrationErrors = false ) {
+	function play($id_user, $freeze, $mandatory = false, $do_not_show_label = false, $value = NULL, $registrationLayout = false, $registrationErrors = false)
+	{
 
-		require_once(_base_.'/lib/lib.form.php');
+		require_once(_base_ . '/lib/lib.form.php');
 
-		if( 	isset( $_POST['field_'.$this->getFieldType()] )
-			&& 	isset( $_POST['field_'.$this->getFieldType()][$this->id_common] ) ) {
+		if (
+			isset($_POST['field_' . $this->getFieldType()])
+			&& 	isset($_POST['field_' . $this->getFieldType()][$this->id_common])
+		) {
 
-			$user_entry = $_POST['field_'.$this->getFieldType()][$this->id_common];
+			$value = $user_entry = $_POST['field_' . $this->getFieldType()][$this->id_common];
 		} else {
 			list($user_entry) = sql_fetch_row(sql_query("
 			SELECT user_entry
-			FROM ".$this->_getUserEntryTable()."
-			WHERE id_user = '".(int)$id_user."' AND
-				id_common = '".(int)$this->id_common."' AND
+			FROM " . $this->_getUserEntryTable() . "
+			WHERE id_user = '" . (int)$id_user . "' AND
+				id_common = '" . (int)$this->id_common . "' AND
 				id_common_son = '0'"));
 			$user_entry = Format::date($user_entry, 'date');
 		}
 
 		$re_field = sql_query("
 		SELECT translation
-		FROM ".$this->_getMainTable()."
-		WHERE lang_code = '".getLanguage()."' AND id_common = '".(int)$this->id_common."' AND type_field = '".$this->getFieldType()."'");
+		FROM " . $this->_getMainTable() . "
+		WHERE lang_code = '" . getLanguage() . "' AND id_common = '" . (int)$this->id_common . "' AND type_field = '" . $this->getFieldType() . "'");
 		list($translation) = sql_fetch_row($re_field);
 
 		if ($value !== NULL) $user_entry = Format::date($value, 'date');
 
-        if ($registrationLayout) {
+		if ($registrationLayout) {
 
-            $error = (isset($registrationErrors) && $registrationErrors[$this->id_common]);
-            $errorMessage = $registrationErrors[$this->id_common]['msg'];
+			$error = (isset($registrationErrors) && $registrationErrors[$this->id_common]);
+			$errorMessage = $registrationErrors[$this->id_common]['msg'];
 
-            $formField = '<div class="homepage__row homepage__row--form homepage__row--gray row-fluid">';
+			$formField = '<div class="homepage__row homepage__row--form homepage__row--gray row-fluid">';
 
-            $formField .= '<div class="col-xs-12 col-sm-6">';
+			$formField .= '<div class="col-xs-12 col-sm-6">';
 			$formField .= '<div class="input-group date">';
 			$formField .= '<div class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></div>';
 
-            $formField .= Form::getInputDatefield(
-                'form-control datepicker '.($error ? 'has-error' : ''),
-                    'field_' . $this->getFieldType() . '_' . $this->id_common,
-                    'field_' . $this->getFieldType() . '[' . $this->id_common . ']', $value, false, false, $translation,
-                'placeholder="' . $translation . ($mandatory ? ' *' : '') . '"');
+			$formField .= Form::getInputDatefield(
+				'form-control datepicker ' . ($error ? 'has-error' : ''),
+				'field_' . $this->getFieldType() . '_' . $this->id_common,
+				'field_' . $this->getFieldType() . '[' . $this->id_common . ']',
+				$value,
+				false,
+				false,
+				$translation,
+				'placeholder="' . $translation . ($mandatory ? ' *' : '') . '"'
+			);
 
-            if ($error) {
-                $formField .= '<small class="form-text">* ' . $errorMessage . '</small>';
-            }
+			if ($error) {
+				$formField .= '<small class="form-text">* ' . $errorMessage . '</small>';
+			}
 
 			$formField .= '</div>';
-            $formField .= '</div>';
-            $formField .= '</div>';
+			$formField .= '</div>';
+			$formField .= '</div>';
 
-            return $formField;
-        }
+			return $formField;
+		}
 
-		if($freeze) return Form::getLineBox($translation.' : ', $user_entry);
+		if ($freeze) return Form::getLineBox($translation . ' : ', $user_entry);
 
-		return Form::getDatefield($translation.( $mandatory ? ' <span class="mandatory">*</span>' : '' ),
-								'field_'.$this->getFieldType().'_'.$this->id_common,
-								'field_'.$this->getFieldType().'['.$this->id_common.']',
-								$user_entry,
-								false,
-								false,
-								$translation);
+		return Form::getDatefield(
+			$translation . ($mandatory ? ' <span class="mandatory">*</span>' : ''),
+			'field_' . $this->getFieldType() . '_' . $this->id_common,
+			'field_' . $this->getFieldType() . '[' . $this->id_common . ']',
+			$user_entry,
+			false,
+			false,
+			$translation
+		);
 	}
 
 	/**
@@ -412,29 +430,32 @@ class Field_Date extends Field {
 	 *
 	 * @access public
 	 */
-	function play_filter( $id_field, $value = FALSE, $label = FALSE, $field_prefix = FALSE, $other_after = '', $other_before = '', $field_special = FALSE ) {
-		require_once(_base_.'/lib/lib.form.php');
+	function play_filter($id_field, $value = FALSE, $label = FALSE, $field_prefix = FALSE, $other_after = '', $other_before = '', $field_special = FALSE)
+	{
+		require_once(_base_ . '/lib/lib.form.php');
 
-		if( $value === FALSE ) {
-			$value = Field::getFieldValue_Filter( $_POST, $id_field, $field_prefix, '' );
+		if ($value === FALSE) {
+			$value = Field::getFieldValue_Filter($_POST, $id_field, $field_prefix, '');
 		}
-		if( $label === FALSE ) {
+		if ($label === FALSE) {
 			$re_field = sql_query("
 			SELECT translation
-			FROM ".Field::_getMainTable()."
-			WHERE id_common = '".(int)$id_field."' AND type_field = '".Field_Date::getFieldType()."'");
+			FROM " . Field::_getMainTable() . "
+			WHERE id_common = '" . (int)$id_field . "' AND type_field = '" . Field_Date::getFieldType() . "'");
 			list($label) = sql_fetch_row($re_field);
 		}
 
-		return Form::getDatefield($label,
-								Field::getFieldId_Filter($id_field, $field_prefix),
-								Field::getFieldName_Filter($id_field, $field_prefix),
-								$value,
-								false,
-								false,
-								$label,
-								$other_after,
-								$other_before );
+		return Form::getDatefield(
+			$label,
+			Field::getFieldId_Filter($id_field, $field_prefix),
+			Field::getFieldName_Filter($id_field, $field_prefix),
+			$value,
+			false,
+			false,
+			$label,
+			$other_after,
+			$other_before
+		);
 	}
 
 
@@ -448,16 +469,19 @@ class Field_Date extends Field {
 	 *
 	 * @access public
 	 **/
-	function getFieldValue_Filter( $array_values, $id_field, $field_prefix = FALSE, $default_value = '' ) {
+	function getFieldValue_Filter($array_values, $id_field, $field_prefix = FALSE, $default_value = '')
+	{
 
-		if( $field_prefix !== NULL ) {
-			if( isset( $array_values[$field_prefix] ) )
+		if ($field_prefix !== NULL) {
+			if (isset($array_values[$field_prefix]))
 				$array_values = $array_values[$field_prefix];
 			else
 				return $default_value;
 		}
-		if( isset( $array_values['field_filter'])
-			&& isset( $array_values['field_filter'][$id_field]) )
+		if (
+			isset($array_values['field_filter'])
+			&& isset($array_values['field_filter'][$id_field])
+		)
 			return Format::dateDb($array_values['field_filter'][$id_field], 'date');
 		else
 			return $default_value;
@@ -470,13 +494,14 @@ class Field_Date extends Field {
 	 *
 	 * @access public
 	 */
-	function isFilled( $id_user ) {
+	function isFilled($id_user)
+	{
 
-		$new_entry = Format::dateDb($_POST['field_'.$this->getFieldType()][$this->id_common], 'date');
+		$new_entry = Format::dateDb($_POST['field_' . $this->getFieldType()][$this->id_common], 'date');
 
-		if(!isset($_POST['field_'.$this->getFieldType()][$this->id_common])) return false;
-		elseif(trim($_POST['field_'.$this->getFieldType()][$this->id_common]) == '') return false;
-		elseif(trim($new_entry) == '0000-00-00') return false;
+		if (!isset($_POST['field_' . $this->getFieldType()][$this->id_common])) return false;
+		elseif (trim($_POST['field_' . $this->getFieldType()][$this->id_common]) == '') return false;
+		elseif (trim($new_entry) == '0000-00-00') return false;
 		else return true;
 	}
 
@@ -490,41 +515,42 @@ class Field_Date extends Field {
 	 *
 	 * @access public
 	 */
-	function store( $id_user, $no_overwrite, $int_userid=TRUE ) {
+	function store($id_user, $no_overwrite, $int_userid = TRUE)
+	{
 
 		if (($int_userid) || (empty($id_user)))
-			$id_user=(int)$id_user;
+			$id_user = (int)$id_user;
 
-		if(!isset($_POST['field_'.$this->getFieldType()][$this->id_common])) return true;
+		if (!isset($_POST['field_' . $this->getFieldType()][$this->id_common])) return true;
 		$re_entry = sql_query("
 		SELECT user_entry
-		FROM ".$this->_getUserEntryTable()."
-		WHERE id_user = '".$id_user."' AND
-			id_common = '".(int)$this->id_common."' AND
+		FROM " . $this->_getUserEntryTable() . "
+		WHERE id_user = '" . $id_user . "' AND
+			id_common = '" . (int)$this->id_common . "' AND
 			id_common_son = '0'");
 		$some_entry = sql_num_rows($re_entry);
 
-		$new_entry = $_POST['field_'.$this->getFieldType()][$this->id_common];
+		$new_entry = $_POST['field_' . $this->getFieldType()][$this->id_common];
 		$new_entry = Format::dateDb($new_entry, 'date');
-		$new_entry = Format::dateDb($_POST['field_'.$this->getFieldType()][$this->id_common], 'date');
+		$new_entry = Format::dateDb($_POST['field_' . $this->getFieldType()][$this->id_common], 'date');
 
-		if($some_entry) {
-			if($no_overwrite) return true;
-			if(!sql_query("
-			UPDATE ".$this->_getUserEntryTable()."
-			SET user_entry = '".$new_entry."'
-			WHERE id_user = '".$id_user."' AND
-			id_common = '".(int)$this->id_common."' AND
+		if ($some_entry) {
+			if ($no_overwrite) return true;
+			if (!sql_query("
+			UPDATE " . $this->_getUserEntryTable() . "
+			SET user_entry = '" . $new_entry . "'
+			WHERE id_user = '" . $id_user . "' AND
+			id_common = '" . (int)$this->id_common . "' AND
 			id_common_son = '0'")) return false;
 		} else {
 
-			if(!sql_query("
-			INSERT INTO ".$this->_getUserEntryTable()."
+			if (!sql_query("
+			INSERT INTO " . $this->_getUserEntryTable() . "
 			( id_user, id_common, id_common_son, user_entry ) VALUES
-			(	'".$id_user."',
-				'".(int)$this->id_common."',
+			(	'" . $id_user . "',
+				'" . (int)$this->id_common . "',
 				'0',
-				'".$new_entry."')")) return false;
+				'" . $new_entry . "')")) return false;
 		}
 
 		return true;
@@ -543,45 +569,47 @@ class Field_Date extends Field {
 	 *
 	 * @access public
 	 */
-	function storeDirect( $id_user, $value, $is_id, $no_overwrite, $int_userid=TRUE ) {
-		
+	function storeDirect($id_user, $value, $is_id, $no_overwrite, $int_userid = TRUE)
+	{
+
 		if (($int_userid) || (empty($id_user)))
-			$id_user=(int)$id_user;
+			$id_user = (int)$id_user;
 
 		$re_entry = sql_query("
 		SELECT user_entry
-		FROM ".$this->_getUserEntryTable()."
-		WHERE id_user = '".$id_user."' AND
-			id_common = '".(int)$this->id_common."' AND
+		FROM " . $this->_getUserEntryTable() . "
+		WHERE id_user = '" . $id_user . "' AND
+			id_common = '" . (int)$this->id_common . "' AND
 			id_common_son = '0'");
 
 		$some_entry = sql_num_rows($re_entry);
 		$new_entry = Format::dateDb($value, 'date');
 
-		if($some_entry) {
-			if($no_overwrite) return true;
-			if(!sql_query("
-			UPDATE ".$this->_getUserEntryTable()."
-			SET user_entry = '".$new_entry."'
-			WHERE id_user = '".$id_user."' AND
-			id_common = '".(int)$this->id_common."' AND
+		if ($some_entry) {
+			if ($no_overwrite) return true;
+			if (!sql_query("
+			UPDATE " . $this->_getUserEntryTable() . "
+			SET user_entry = '" . $new_entry . "'
+			WHERE id_user = '" . $id_user . "' AND
+			id_common = '" . (int)$this->id_common . "' AND
 			id_common_son = '0'")) return false;
 		} else {
 
-			if(!sql_query("
-			INSERT INTO ".$this->_getUserEntryTable()."
+			if (!sql_query("
+			INSERT INTO " . $this->_getUserEntryTable() . "
 			( id_user, id_common, id_common_son, user_entry ) VALUES
-			(	'".$id_user."',
-				'".(int)$this->id_common."',
+			(	'" . $id_user . "',
+				'" . (int)$this->id_common . "',
 				'0',
-				'".$new_entry."')")) return false;
+				'" . $new_entry . "')")) return false;
 		}
 
 		return true;
 	}
 
 
-	function storeDirectMultiple( $idst_users, $value, $is_id, $no_overwrite, $int_userid=TRUE ) {
+	function storeDirectMultiple($idst_users, $value, $is_id, $no_overwrite, $int_userid = TRUE)
+	{
 		if (is_numeric($idst_users)) $idst_users = array($idst_users);
 		if (!is_array($idst_users)) return false;
 		if (empty($idst_users)) return true;
@@ -589,9 +617,9 @@ class Field_Date extends Field {
 		$arr_existent = array();
 		$arr_new = $idst_users;
 
-		$query = "SELECT id_user, user_entry FROM ".$this->_getUserEntryTable()." "
-			." WHERE id_user IN (".implode(",", $idst_users).") "
-			." AND id_common = '".(int)$this->id_common."' AND id_common_son = '0'";
+		$query = "SELECT id_user, user_entry FROM " . $this->_getUserEntryTable() . " "
+			. " WHERE id_user IN (" . implode(",", $idst_users) . ") "
+			. " AND id_common = '" . (int)$this->id_common . "' AND id_common_son = '0'";
 		$res = sql_query($query);
 		if ($res) {
 			if (sql_num_rows($res) > 0) {
@@ -602,21 +630,21 @@ class Field_Date extends Field {
 			}
 
 			if (!empty($arr_existent) && !$no_overwrite) {
-				if($no_overwrite) return true;
-				$query = "UPDATE ".$this->_getUserEntryTable()." SET user_entry = '".$value."' "
-					." WHERE id_user IN (".implode(",", $arr_existent).") "
-					." AND id_common = '".(int)$this->id_common."' AND id_common_son = '0'";
+				if ($no_overwrite) return true;
+				$query = "UPDATE " . $this->_getUserEntryTable() . " SET user_entry = '" . $value . "' "
+					. " WHERE id_user IN (" . implode(",", $arr_existent) . ") "
+					. " AND id_common = '" . (int)$this->id_common . "' AND id_common_son = '0'";
 				$res1 = sql_query($query);
 			}
 
 			if (!empty($arr_new)) {
 				$insert_values = array();
 				foreach ($arr_new as $idst) {
-					$insert_values[] = "(	'".(int)$idst."', '".(int)$this->id_common."', '0', '".$value."')";
+					$insert_values[] = "(	'" . (int)$idst . "', '" . (int)$this->id_common . "', '0', '" . $value . "')";
 				}
-				$query = "INSERT INTO ".$this->_getUserEntryTable()." "
-					."( id_user, id_common, id_common_son, user_entry ) VALUES "
-					.implode(",", $insert_values);
+				$query = "INSERT INTO " . $this->_getUserEntryTable() . " "
+					. "( id_user, id_common, id_common_son, user_entry ) VALUES "
+					. implode(",", $insert_values);
 				$res2 = sql_query($query);
 			}
 		}
@@ -632,31 +660,35 @@ class Field_Date extends Field {
 	 *
 	 * @access public
 	 */
-	function isValid( $id_user ) {
+	function isValid($id_user)
+	{
 
-		if(!isset($_POST['field_'.$this->getFieldType()][$this->id_common])) return true;
-		if($_POST['field_'.$this->getFieldType()][$this->id_common] == '') return true;
+		if (!isset($_POST['field_' . $this->getFieldType()][$this->id_common])) return true;
+		if ($_POST['field_' . $this->getFieldType()][$this->id_common] == '') return true;
 
-		$new_entry = $_POST['field_'.$this->getFieldType()][$this->id_common];
+		$new_entry = $_POST['field_' . $this->getFieldType()][$this->id_common];
 		$new_entry = Format::dateDb($new_entry, 'date');
-		if($new_entry == '0000-00-00') return true;
+		if ($new_entry == '0000-00-00') return true;
 
 		$day 	= (int)substr($new_entry, 8, 2);
 		$month 	= (int)substr($new_entry, 5, 2);
 		$year 	= (int)substr($new_entry, 0, 4);
 
-		if(checkdate($month, $day, $year)) { return true; }
+		if (checkdate($month, $day, $year)) {
+			return true;
+		}
 		return false;
 	}
 
 
 
-  function getClientClassObject() {
+	function getClientClassObject()
+	{
 		$format = Format::instance();
 		$date_format = $format->date_token;
 		Form::loadDatefieldScript($date_format);
-		return 'YAHOO.dynamicFilter.renderTypes.get("'.$this->getFieldType().'", {format: "'.$date_format.'"})';
-/*
+		return 'YAHOO.dynamicFilter.renderTypes.get("' . $this->getFieldType() . '", {format: "' . $date_format . '"})';
+		/*
     return '
       {
         type: "'.$this->getFieldType().'",
@@ -714,54 +746,77 @@ class Field_Date extends Field {
       }    
     ';
 */
-  }
+	}
 
 
-	function checkUserField($value, $filter) {
+	function checkUserField($value, $filter)
+	{
 
 		$output = false;
 		$d1 = substr($value, 0, 10);
 		$d2 = substr(Format::dateDb($filter['value'], 'date'), 0, 10);
 		switch ($filter['cond']) {
 			case 0: { //<
-				$output = ($d1 < $d2);
-			} break;
+					$output = ($d1 < $d2);
+				}
+				break;
 			case 1: { //<=
-				$output = ($d1 <= $d2);
-			} break;
+					$output = ($d1 <= $d2);
+				}
+				break;
 			case 2: { //=
-				$output = ($d1 == $d2);
-			} break;
+					$output = ($d1 == $d2);
+				}
+				break;
 			case 3: { //>=
-				$output = ($d1 >= $d2);
-			} break;
+					$output = ($d1 >= $d2);
+				}
+				break;
 			case 4: { //>
-				$output = ($d1 > $d2);
-			} break;
-			default: { $output = false; }
+					$output = ($d1 > $d2);
+				}
+				break;
+			default: {
+					$output = false;
+				}
 		} // end switch
 		return $output;
 	}
 
-  
-	function getFieldQuery($filter) {
-    
+
+	function getFieldQuery($filter)
+	{
+
 		$date = Format::dateDb($filter['value'], 'date');
-		$output = "SELECT id_user ".
-			"FROM ".$GLOBALS['prefix_fw']."_field_userentry ".
-			"WHERE id_common = '".$this->id_common."' AND ";
+		$output = "SELECT id_user " .
+			"FROM " . $GLOBALS['prefix_fw'] . "_field_userentry " .
+			"WHERE id_common = '" . $this->id_common . "' AND ";
 		$temp = " user_entry ";
 		switch ($filter['cond']) {
-			case 0: { $temp .= " < '".$date.".' 00:00:00'' "; } break; //<
-			case 1: { $temp .= " <= '".$date.".' 23:59:59'' "; } break; //<=
-			case 2: { $temp = " ( user_entry >= '".$date." 00:00:00' AND user_entry <= '".$date." 23:59:59' ) "; } break; //=
-			case 3: { $temp .= " >= '".$date." 00:00:00' "; } break; //>=
-			case 4: { $temp .= " > '".$date.".' 23:59:59'' "; } break; //>
-			default: { $temp .= " NOT LIKE '%' "; } //unexistent
+			case 0: {
+					$temp .= " < '" . $date . ".' 00:00:00'' ";
+				}
+				break; //<
+			case 1: {
+					$temp .= " <= '" . $date . ".' 23:59:59'' ";
+				}
+				break; //<=
+			case 2: {
+					$temp = " ( user_entry >= '" . $date . " 00:00:00' AND user_entry <= '" . $date . " 23:59:59' ) ";
+				}
+				break; //=
+			case 3: {
+					$temp .= " >= '" . $date . " 00:00:00' ";
+				}
+				break; //>=
+			case 4: {
+					$temp .= " > '" . $date . ".' 23:59:59'' ";
+				}
+				break; //>
+			default: {
+					$temp .= " NOT LIKE '%' ";
+				} //unexistent
 		}
-		return $output.$temp;
-  }
-    
+		return $output . $temp;
+	}
 }
-
-?>

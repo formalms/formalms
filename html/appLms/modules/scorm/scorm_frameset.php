@@ -130,13 +130,14 @@ echo '	<title>'.$lo_title.'</title>';
 echo '	<link href="'.Get::tmpl_path().'/style/lms-scormplayer.css" rel="stylesheet" type="text/css" />';
 
 if(trim($playertemplate) != '') echo '	<link href="'.Get::tmpl_path().'/player_scorm/'.$playertemplate.'/def_style.css" rel="stylesheet" type="text/css" />';
-
-	echo '<SCRIPT type="text/javascript" src="'.Get::rel_path('lms').'/modules/scorm/prototype.js"></SCRIPT>'."\n";
-	echo '<SCRIPT type="text/javascript" src="'.Get::rel_path('lms').'/modules/scorm/ScormTypes.js"></SCRIPT>'."\n";
-	echo '<SCRIPT type="text/javascript" src="'.Get::rel_path('lms').'/modules/scorm/ScormCache.js"></SCRIPT>'."\n";
-	echo '<SCRIPT type="text/javascript" src="'.Get::rel_path('lms').'/modules/scorm/ScormApi.js"></SCRIPT>'."\n";
-	echo '<SCRIPT type="text/javascript" src="'.Get::rel_path('lms').'/modules/scorm/player.js"></SCRIPT>'."\n";
-	echo '<SCRIPT type="text/javascript" src="'.Get::rel_path('lms').'/modules/scorm/StdPlayer.js"></SCRIPT>'."\n";
+	
+	$rnd = 2007101900;
+	echo '<SCRIPT type="text/javascript" src="'.Get::rel_path('lms').'/modules/scorm/prototype.js'."?v=$rnd".'"></SCRIPT>'."\n";
+	echo '<SCRIPT type="text/javascript" src="'.Get::rel_path('lms').'/modules/scorm/ScormTypes.js'."?v=$rnd".'"></SCRIPT>'."\n";
+	echo '<SCRIPT type="text/javascript" src="'.Get::rel_path('lms').'/modules/scorm/ScormCache.js'."?v=$rnd".'"></SCRIPT>'."\n";
+	echo '<SCRIPT type="text/javascript" src="'.Get::rel_path('lms').'/modules/scorm/ScormApi.js'."?v=$rnd".'"></SCRIPT>'."\n";
+	echo '<SCRIPT type="text/javascript" src="'.Get::rel_path('lms').'/modules/scorm/player.js'."?v=$rnd".'"></SCRIPT>'."\n";
+	echo '<SCRIPT type="text/javascript" src="'.Get::rel_path('lms').'/modules/scorm/StdPlayer.js'."?v=$rnd".'"></SCRIPT>'."\n";
 	echo '<SCRIPT type="text/javascript" >'."\n";
 	echo '<!--'."\n";
 

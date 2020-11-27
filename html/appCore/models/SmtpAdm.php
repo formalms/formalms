@@ -61,11 +61,13 @@ final class SmtpAdm extends Model
     const SMTP_GROUP = 14;
 
     /**
-     * @var SmtpAdm null
+     * @var SmtpAdm
      */
     private static $instance = null;
 
-
+    /**
+     * @return SmtpAdm
+     */
     public static function getInstance()
     {
         if (self::$instance == null) {
@@ -95,7 +97,12 @@ final class SmtpAdm extends Model
      */
     public function isUseSmtp()
     {
-        return $this->useSmtp === 'on';
+        if ($this->useSmtp === 'on' || $this->useSmtp === 'true' || $this->useSmtp === true){
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
     /**
@@ -127,7 +134,12 @@ final class SmtpAdm extends Model
      */
     public function isAutoTls()
     {
-        return $this->autoTls === 'on';
+        if ($this->autoTls === 'on' || $this->autoTls === 'true' || $this->autoTls === true){
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
     /**
@@ -159,10 +171,17 @@ final class SmtpAdm extends Model
     {
         $smtpConfigIsEnabled = Get::cfg('use_smtp_database');
 
-        if ($smtpConfigIsEnabled === 'on') {
-            return true;
+        switch ($smtpConfigIsEnabled) {
+            case 'on':
+            case 'true':
+            case true:
+                return true;
+                break;
+            default:
+                return false;
+                break;
+
         }
-        return false;
     }
 
     private function fetchData()
@@ -205,8 +224,6 @@ final class SmtpAdm extends Model
             $this->user = Get::cfg('smtp_user');
             $this->pwd = Get::cfg('smtp_pwd');
             $this->debug = Get::cfg('smtp_debug', 0);
-
-
         }
     }
 }

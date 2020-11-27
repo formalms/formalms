@@ -11,7 +11,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-xs-6">
-                <a href="javascript:void(0)" class="c-menu__close"><span class="glyphicon glyphicon-remove">{{ translate('_PROFILE', 'organization') }}</span></a>
+                <a href="javascript:void(0)" class="c-menu__close"><span class="glyphicon glyphicon-remove">{{ translate('_PROFILE', 'profile') }}</span></a>
             </div>
             <div class="col-xs-6">
                 <a title="{{ translate('_LOGOUT', 'standard') }}" href="{{ evalPhp('Get::rel_path', ['base']) }}/index.php?r={{ evalPhp('constant', ['_logout_']) }}">
@@ -23,7 +23,7 @@
             {% if profile or credits %}
                 <div class="tabnav__label-wrapper">
                 {% if profile %}
-                    <div class="tabnav__label selected" data-tab="profile">{{ translate('_PROFILE', 'standard') }}</div>
+                    <div class="tabnav__label selected" data-tab="profile">{{ translate('_PROFILE', 'profile') }}</div>
                 {% endif %}
                 {% if credits %}
                     <div class="tabnav__label{% if not profile %} selected{% endif %}" data-tab="credits">{{ translate('_TIME_PERIODS', 'standard') }}</div>

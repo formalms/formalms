@@ -334,8 +334,7 @@ class LightRepoManager {
 			
 			if($saved_file === false) return false;
 			
-			if (!get_magic_quotes_gpc())
-				$saved_file = addslashes($saved_file);
+			$saved_file = addslashes($saved_file);
 		}
 		
 		if($old_file == false) {

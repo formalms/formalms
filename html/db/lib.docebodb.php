@@ -64,22 +64,9 @@ class DbConn {
         }
 		if(self::$instance == NULL) {
             if(empty($db_type)){
-                $db_type = function_exists('mysqli_connect') ? 'mysqli' : 'mysql' ;
+                $db_type = function_exists('mysqli_connect') ? 'mysqli' : null ;
             }
 			switch($db_type) {
-				case "mysql" : {
-
-					require_once _base_.'/db/drivers/docebodb.mysql.php';
-
-					self::$instance = new Mysql_DbConn();
-					self::$instance->debug = Get::cfg('do_debug');
-
-					$conn = self::$instance->connect(	$host,
-														$user,
-														$pass,
-														$name);
-					if($conn) self::$connected = true;
-				};break;
 				case "mysqli" : {
 
 					require_once _base_.'/db/drivers/docebodb.mysqli.php';
@@ -155,7 +142,7 @@ class DbConn {
 		if($keys) {
 			$current = 0;
 			$parsed_query = '';
-			while(list($ind, $match) = each($keys)) {
+            foreach($keys as $ind => $match ) {
 
 				$parsed_query .= $match[0];
 

@@ -189,7 +189,7 @@ Class DashboardAdmController extends AdmController {
 		//check if input is correct
 		if ($id_user <= 0 || $id_course <= 0) {
 			$output['success'] = false;
-			$output['message'] = 'Invalid input.';
+			$output['message'] = Lang::t('_INVALID_INPUT'); // International message
 			echo $this->json->encode($output);
 			return;
 		}

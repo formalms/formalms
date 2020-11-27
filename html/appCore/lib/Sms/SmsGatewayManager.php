@@ -38,7 +38,7 @@ class SmsGatewayManager
         switch (Get::sett('sms_gateway')) {
             case "skebby":
             default:
-                require_once(Docebo::inc(_adm_ . '/lib/Sms/SkebbySmsGateway.php'));
+                require_once(Forma::inc(_adm_ . '/lib/Sms/SkebbySmsGateway.php'));
                 $smsGateway = new SkebbySmsGateway();
                 break;
         }

@@ -51,7 +51,7 @@ function play( $idResource, $idParams, $back_url ) {
 		require_once( $GLOBALS['where_lms'].'/class.module/track.item.php' );
 		list( $exist, $idTrack) = Track_Item::getIdTrack($idReference, getLogUserId(), $idResource, TRUE );
 		if( $exist ) {
-			$ti = new Track_Item( $idTrack );
+			$ti = new Track_Item($idTrack, Docebo::user()->getIdSt());
 			$ti->setDate(date('Y-m-d H:i:s'));
 			$ti->status = 'completed';
 			$ti->update();

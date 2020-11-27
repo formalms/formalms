@@ -19,7 +19,7 @@ class Module_Course_Autoregistration extends LmsModule {
 		courseAutoregistrationDispatch($GLOBALS['op']);
 	}
 	
-	function getAllToken($op) {
+	function getAllToken() {
 		return array( 
 			'view' => array( 	'code' => 'view',
 								'name' => '_VIEW',

@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20200220</DATE>
+  <DATE>20200714</DATE>
   <LANG id="hebrew">
     <lang_code>hebrew</lang_code>
     <lang_description>&#x5E2;&#x5D1;&#x5E8;&#x5D9;&#x5EA;</lang_description>
@@ -1396,6 +1396,7 @@ Otherwise, you must register in our system, following this link: <br />
         <key id="menu_over&amp;_BLIND_YOUR_INFO" attributes="accessibility" save_date="2016-12-16 16:54:01"><![CDATA[עבור למידע שלך הקשור לקורס זה]]></key>
         <key id="menu_over&amp;_COMMUNITY" attributes="" save_date="2016-08-02 13:56:09"><![CDATA[קהילה]]></key>
         <key id="menu_over&amp;_GO_TO_FRAMEWORK" attributes="" save_date="2016-12-16 16:05:00"><![CDATA[מנהלן אזור]]></key>
+        <key id="menu_over&amp;_HELPDESK" attributes="" save_date="2020-06-08 08:45:26"><![CDATA[Helpdesk]]></key>
         <key id="menu_over&amp;_LIBRARY" attributes="" save_date="2016-12-16 16:52:17"><![CDATA[עריכה]]></key>
         <key id="menu_over&amp;_MENUCOURSE" attributes="" save_date="2016-12-16 16:52:29"><![CDATA[קמפוס]]></key>
         <key id="menu_over&amp;_MENUGEN" attributes="" save_date="2016-12-16 16:53:28"><![CDATA[תפריט כללי]]></key>

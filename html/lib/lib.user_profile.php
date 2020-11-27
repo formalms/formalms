@@ -417,12 +417,14 @@ class UserProfile {
 						Util::jump_to('index.php?modname=reservation&op=reservation');
 					}
 					else {
+						//TODO: EVT_OBJECT (§)
 						// SET EDIT USER EVENT
-						$event = new \appCore\Events\Core\User\UsersManagementEditEvent();
-						$event->setType('single');
-						$event->setUser($model->getProfileData($this->_id_user));
-						$event->setOldUser($oldUserdata);
-						\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementEditEvent::EVENT_NAME, $event);
+						//$event = new \appCore\Events\Core\User\UsersManagementEditEvent();
+						//$event->setType('single');
+						//$event->setUser($model->getProfileData($this->_id_user));
+						//$event->setOldUser($oldUserdata);
+						//TODO: EVT_LAUNCH (&)
+						//\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementEditEvent::EVENT_NAME, $event);
 
 
 						require_once(Forma::inc(_base_ . '/lib/lib.eventmanager.php'));
@@ -477,11 +479,13 @@ class UserProfile {
 					$this->_up_viewer->unloadUserData();
 
 					// SET EDIT CHANGE PASSWORD EVENT
-					$event = new \appCore\Events\Core\User\UsersManagementChangePasswordEvent();
-					$model = new UsermanagementAdm();
-					$event->setUser($model->getProfileData($this->_id_user));
-					$event->setFilledPwd($this->_up_viewer->getFilledPwd());
-					\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementChangePasswordEvent::EVENT_NAME, $event);
+					//TODO: EVT_OBJECT (§)
+					//$event = new \appCore\Events\Core\User\UsersManagementChangePasswordEvent();
+					//$model = new UsermanagementAdm();
+					//$event->setUser($model->getProfileData($this->_id_user));
+					//$event->setFilledPwd($this->_up_viewer->getFilledPwd());
+					//TODO: EVT_LAUNCH (&)
+					//\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementChangePasswordEvent::EVENT_NAME, $event);
 
 					if($this->_end_url !== false) Util::jump_to($this->_end_url);
 
@@ -2222,7 +2226,10 @@ class UserProfileViewer {
             $cert = new Certificate();
 
             $filter['id_user'] = $this->_id_user;
-            $tot_cert = $cert->countAssignment($filter) + $cert->countMetaAssignment($filter);
+            
+            $modelMyCertLMS = new MycertificateLms($this->_id_user);
+
+            $tot_cert = $cert->countAssignment($filter) + $modelMyCertLMS->countMyMetaCertificates();
 
             $html .= ''
 
@@ -4037,7 +4044,7 @@ class UserProfileData {
 	/**
 	 * save the user new password
 	 */
-	function saveUserPwd($id_user, $new_pwd) {
+    function saveUserPwd($id_user, $new_pwd) {
 
 		if(!$this->acl_man->updateUser( 	$id_user,
 											FALSE,

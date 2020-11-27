@@ -110,11 +110,13 @@ Class TransactionAlmsController extends AlmsController
                     }
                 }
 
+                //TODO: EVT_OBJECT (§)
+				//$event = new \appLms\Events\Transaction\TransactionPaidEvent($trans);
+				//TODO: EVT_LAUNCH (&)
+                //\appCore\Events\DispatcherManager::dispatch($event::EVENT_NAME, $event);
                 
-                $event = new \appLms\Events\Transaction\TransactionPaidEvent($trans);
-                \appCore\Events\DispatcherManager::dispatch($event::EVENT_NAME, $event);
-                
-                if($event->getRes()) { Util::jump_to('index.php?r=alms/transaction/show&res=ok'); }
+				//if($event->getRes()) { Util::jump_to('index.php?r=alms/transaction/show&res=ok'); }
+				if(true) { Util::jump_to('index.php?r=alms/transaction/show&res=ok'); }
                 else { Util::jump_to('index.php?r=alms/transaction/show&res=err'); }
             }
 			Util::jump_to('index.php?r=alms/transaction/show&res=err');

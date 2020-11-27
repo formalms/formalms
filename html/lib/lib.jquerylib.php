@@ -29,6 +29,7 @@ class JQueryLib
         'swipe',
         'select',
          'datepicker',
+         'bootstrap-treeview',
          'datatables',
          'moment',
          'table-edits',

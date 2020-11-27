@@ -757,7 +757,7 @@ class Form {
 	 * @param string $css_dropdown 	the css class for the select element
 	 * @param string $id 			the id of the element
 	 * @param string $name 			the name of the element
-	 * @param array $all_value 	the possible value of the textfield
+	 * @param array $all_value 	    the possible value of the textfield
 	 * @param string $selected 		the element selected
 	 * @param string $other_param 	other element for the tag
 	 * @param bool $withPlaceholder disable the first element
@@ -1408,5 +1408,3 @@ class Form {
 		.'</form>';
 	}
 }
-
-?>

@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20200220</DATE>
+  <DATE>20200714</DATE>
   <LANG id="swedish">
     <lang_code>swedish</lang_code>
     <lang_description>Swedish</lang_description>
@@ -1531,6 +1531,7 @@ För att ändra på dessa ord var vänlig och gå till Admin/språkhantering, s�
         <key id="menu_over&amp;_COMMUNITY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Community]]></key>
         <key id="menu_over&amp;_COURSE_AUTOREGISTRATION" attributes="" save_date="2010-11-02 11:10:55"><![CDATA[Aktivera kurs]]></key>
         <key id="menu_over&amp;_GO_TO_FRAMEWORK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Admin område]]></key>
+        <key id="menu_over&amp;_HELPDESK" attributes="" save_date="2020-06-08 08:45:26"><![CDATA[Helpdesk]]></key>
         <key id="menu_over&amp;_LIBRARY" attributes="" save_date="2017-07-24 12:43:31"><![CDATA[Publicering]]></key>
         <key id="menu_over&amp;_MENUCOURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kampus]]></key>
         <key id="menu_over&amp;_MENUGEN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Allmän meny]]></key>

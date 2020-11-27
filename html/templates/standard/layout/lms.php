@@ -168,12 +168,12 @@
 			</div>
             
 			<div class="nofloat"></div>
-    </div>
-    </div>
+		</div>
 		<!-- footer -->
 		<div id="footer" class="layout_footer">
 			<?php echo Layout::zone('footer'); ?>
 				<?php echo Layout::copyright(); ?>
+		</div>
 		</div>
 		<!-- scripts -->
 		<?php echo Layout::zone('scripts'); ?>

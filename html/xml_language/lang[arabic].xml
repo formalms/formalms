@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20200220</DATE>
+  <DATE>20200714</DATE>
   <LANG id="arabic">
     <lang_code>arabic</lang_code>
     <lang_description>&#x627;&#x644;&#x639;&#x631;&#x628;&#x64A;&#x629;</lang_description>
@@ -900,6 +900,7 @@ Username: [userid]]]></key>
         <key id="email&amp;_NEW_USER_SUBSCRIBED_SUBJECT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[اشترك مستخدم جديد في  الدورة]]></key>
         <key id="email&amp;_NEW_USER_SUBSCRIBED_SUBJECT_MODERATORS" attributes="" save_date="2020-01-20 15:30:49"><![CDATA[[url] [firstname] [lastname] [course] [username]]]></key>
         <key id="email&amp;_NEW_USER_SUBSCRIBED_TEXT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[At url : <a href="[url]">[url]</a>اشترك مستخدم جديد في  الدورة[course]]]></key>
+        <key id="email&amp;_NEW_USER_SUBSCRIBED_TEXT_MODERATORS" attributes="" save_date="2020-03-02 13:13:57"><![CDATA[Un nuovo utente [firstname] [lastname] [username] è stato iscritto al corso [course]]]></key>
         <key id="email&amp;_NEW_USER_SUBS_WAITING_SUBJECT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[مستخدم ينتظر موافقة الاشتراك ف الدورة]]></key>
         <key id="email&amp;_NEW_USER_SUBS_WAITING_TEXT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[اشترك مستخدم جديد ف الدورة وينتظر أن تتم الموافقة عليها.
 
@@ -1366,6 +1367,7 @@ Username: [userid]]]></key>
         <key id="menu_over&amp;_BLIND_YOUR_INFO" attributes="accessibility" save_date="2014-11-14 00:00:00"><![CDATA[انتقل الى معلوماتك المتعلقة بهذا البرنامج الدراسي]]></key>
         <key id="menu_over&amp;_COMMUNITY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[المجتمع]]></key>
         <key id="menu_over&amp;_GO_TO_FRAMEWORK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[منطقة المشرف]]></key>
+        <key id="menu_over&amp;_HELPDESK" attributes="" save_date="2020-06-08 08:45:25"><![CDATA[Helpdesk]]></key>
         <key id="menu_over&amp;_MENUCOURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[حرم الجامعة]]></key>
         <key id="menu_over&amp;_MENUGEN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[القائمة العامة]]></key>
         <key id="menu_over&amp;_MYCOMPETENCES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[الكفاءات]]></key>

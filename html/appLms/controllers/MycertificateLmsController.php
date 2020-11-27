@@ -32,16 +32,28 @@ class MycertificateLmsController extends LmsController
     public function show()
     {
         checkPerm('view', false, self::mod_name);
-        $totalMetaCertificates = $this->model->countMyMetaCertificates();
 
-        $event = new \appLms\Events\Lms\MyCertificateTabLoading();
+        //TODO: EVT_OBJECT (§)
+        //$event = new \appLms\Events\Lms\MyCertificateTabLoading();
+        //TODO: EVT_LAUNCH (&)
+		//\appCore\Events\DispatcherManager::dispatch(\appLms\Events\Lms\MyCertificateTabLoading::EVENT_NAME, $event);
+        
+        $metaCertificates = $this->model->getMyMetaCertificates();
+        $totalMetaCertificates = count($metaCertificates);
+        $this->render('show',array("metacertificates" => $this->json->encode($metaCertificates), "totalMetaCertificates" =>  $totalMetaCertificates, "id_user" => $this->id_user ));
 
-		\appCore\Events\DispatcherManager::dispatch(\appLms\Events\Lms\MyCertificateTabLoading::EVENT_NAME, $event);
-
+/*
+        //NEW Event Method
+        $tabs = array();
+        $eventTabs = Events::trigger('lms.mycertificatetab.loading', [
+            'tabs' => $tabs,
+        ]);
+        $additionalTabs = $eventTabs['tabs'];
         $this->render('show', [
             'totalMetaCertificates' => $totalMetaCertificates,
-            'additionalTabs' => $event->getTabs()
+            'additionalTabs' => $additionalTabs
         ]);
+*/
     }
 
     public function getMyCertificates()
@@ -67,8 +79,15 @@ class MycertificateLmsController extends LmsController
         } else {
             $pagination['search'] = null;
         }
+        
+        //Return total of all assignment / certs. available for the user filtered only by user id
         $totalCertificates = $this->model->countMyCertificates();
+        
+        // returns all the certs. datas with the pagination option and count to false (I.E. )
+        // return the rows for the rendering in the view
         $certificates = $this->model->loadMyCertificates($pagination, false);
+        
+        // return the number of certs released and not
         $total_filtered = $this->model->loadMyCertificates($pagination, true);
 
         $result = array(
@@ -84,64 +103,34 @@ class MycertificateLmsController extends LmsController
         echo $this->json->encode($result);
     }
 
-    public function getMyMetaCertificates()
-    {
-        checkPerm('view', false, self::mod_name);
+  
 
-        $startIndex = Get::req('start', DOTY_INT, 0);
-        $results = Get::req('results', DOTY_INT, Get::sett('visuItem', 10));
-        $rowsPerPage = Get::req('length', DOTY_INT, $results);
-
-        $pagination = array(
-            'startIndex' => $startIndex,
-            'rowsPerPage' => $rowsPerPage,
-            'results' => $results,
-        );
-
-        if ($search = $_REQUEST['search']) {
-            $pagination['search'] = $search['value'];
-        } else {
-            $pagination['search'] = null;
-        }
-        $totalMetaCertificates = $this->model->countMyMetaCertificates();
-        $metaCertificates = $this->model->loadMyMetaCertificates();
-
-        $result = array(
-            'recordsTotal' => $totalMetaCertificates,
-            'startIndex' => $startIndex,
-            'rowsPerPage' => $rowsPerPage,
-            'recordsFiltered' => $totalMetaCertificates,
-            'data' => $metaCertificates,
-        );
-
-        echo $this->json->encode($result);
-    }
-
-    public function preview()
+    public function downloadCert()
     {
         checkPerm('view', false, self::mod_name);
 
         $id_certificate = importVar('id_certificate', true, 0);
         $id_course = importVar('id_course', true, 0);
-        $id_meta = Get::req('idmeta', DOTY_INT, 0);
-
-        $subs = $this->certificate->getSubstitutionArray($this->id_user, $id_course, $id_meta);
-        $this->certificate->send_facsimile_certificate($id_certificate, $this->id_user, $id_course, $subs);
-    }
-
-    public function download()
-    {
-        checkPerm('view', false, self::mod_name);
-
-        $id_certificate = importVar('id_certificate', true, 0);
-        $id_course = importVar('id_course', true, 0);
-        $id_meta = Get::req('id_meta', DOTY_INT, 0);
+        $idAssociation = importVar('idAssociation', true, 0);
 
         if($this->certificate->certificateAvailableForUser($id_certificate, $id_course, $this->id_user) ) {
-            $subs = $this->certificate->getSubstitutionArray($this->id_user, $id_course, $id_meta);
+            $subs = $this->certificate->getSubstitutionArray($this->id_user, $id_course, $idAssociation);
             $this->certificate->send_certificate($id_certificate, $this->id_user, $id_course, $subs);
         }
     }
+    
+    public function downloadMetaCert(){
+        $id_certificate = importVar('id_certificate', true, 0);
+        $id_association = importVar('id_association', true, 0);
+        $id_user =  $this->id_user;
+        
+        $subs = $this->certificate->getSubstitutionArray($id_user, $id_course, $id_association);
+        $rs = $this->certificate->send_certificate($id_certificate,$id_user,0,$subs,true,false,$id_association);
+        
+
+    }
+
+
+
 }
 
-?>

@@ -53,14 +53,16 @@ final class LMSTemplateController extends TemplateController {
 
       $certificates = $model->loadMyCertificates(false, false);
 
+      
+      
       $availables = 0;
       foreach ($certificates as $cert) {
-        if (!$cert[6]) { // $cert['on_date']
+        if ($cert[4] == '0000-00-00' || $cert[4] == '' ) { // $cert['on_date']
           $availables++;
         }
       }
-
-      return $availables;
+      
+      return $availables+ $model->countAggrCertsToRelease();
     }
 
     private function showMenu() {
@@ -86,6 +88,7 @@ final class LMSTemplateController extends TemplateController {
 
     private function showProfile() {
         
+   
         $this->render('profile', 'profile', array(
             'user'              => $this->model->getUser()
           , 'profile'           => $this->model->getProfile()

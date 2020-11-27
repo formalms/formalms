@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20200220</DATE>
+  <DATE>20200714</DATE>
   <LANG id="english">
     <lang_code>english</lang_code>
     <lang_description>English</lang_description>
@@ -278,6 +278,7 @@
         <key id="catalogue&amp;_NO_COURSE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[No courses available]]></key>
         <key id="catalogue&amp;_NO_COURSE_FOUND" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Course not found]]></key>
         <key id="catalogue&amp;_NO_EDITIONS" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[There are no editions in this course.]]></key>
+        <key id="catalogue&amp;_NO_PERIODS" attributes="" save_date="2020-05-31 17:46:58"><![CDATA[No time periods]]></key>
         <key id="catalogue&amp;_PREASSESSMENT_SUGGESTION" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Suggested curriculum]]></key>
         <key id="catalogue&amp;_REMOVE_ENTRY" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Remove from the catalog]]></key>
         <key id="catalogue&amp;_RESERVE_COURSE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Reserve]]></key>
@@ -300,6 +301,7 @@
         <key id="certificate&amp;_BACK_IMAGE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Background image]]></key>
         <key id="certificate&amp;_BASE_LANGUAGE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Certificate language]]></key>
         <key id="certificate&amp;_CERTIFICATES_GENERATION" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Certificates generation]]></key>
+        <key id="certificate&amp;_CERTIFICATE_AGGREGATE_ASSOCIATION" attributes="" save_date="2020-05-09 17:21:55"><![CDATA[Associate aggregate certificate]]></key>
         <key id="certificate&amp;_CERTIFICATE_ASSIGN" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Certificate assignment]]></key>
         <key id="certificate&amp;_CERTIFICATE_CAPTION" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Certificate template list]]></key>
         <key id="certificate&amp;_CERTIFICATE_LIST" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Certificates list]]></key>
@@ -356,7 +358,7 @@
         <key id="certificate&amp;_TEST_SCORE_FINAL_MAX" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Maximum final Learning Object score]]></key>
         <key id="certificate&amp;_TEST_SCORE_START" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Initial Learning Object score]]></key>
         <key id="certificate&amp;_TEST_SCORE_START_MAX" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Maximum initial Learning Object score]]></key>
-        <key id="certificate&amp;_TITLE_ASSIGN_META_CERTIFICATE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Assign meta-certificate]]></key>
+        <key id="certificate&amp;_TITLE_ASSIGN_META_CERTIFICATE" attributes="" save_date="2020-05-09 17:29:52"><![CDATA[Assign certificate aggregate]]></key>
         <key id="certificate&amp;_TITLE_CERTIFICATE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Certificate management]]></key>
         <key id="certificate&amp;_TITLE_CREATE_META_CERTIFICATE" attributes="" save_date="2017-04-10 16:43:01"><![CDATA[Meta-certificates available to be published]]></key>
         <key id="certificate&amp;_TITLE_META_CERTIFICATE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Meta-certificate]]></key>
@@ -439,6 +441,8 @@
         <key id="configuration&amp;MAIN_SET_6" attributes="" save_date="2019-10-02 11:39:14"><![CDATA[General settings]]></key>
         <key id="configuration&amp;MAIN_SET_8" attributes="" save_date="2019-10-02 11:39:27"><![CDATA[General settings]]></key>
         <key id="configuration&amp;MAIN_SET_9" attributes="" save_date="2019-10-02 11:39:53"><![CDATA[LDAP]]></key>
+        <key id="configuration&amp;PASSWORD_BCRYPT" attributes="" save_date="2020-05-31 16:24:51"><![CDATA[BYCRYPT Password]]></key>
+        <key id="configuration&amp;PASSWORD_MD5" attributes="" save_date="2020-05-31 16:24:58"><![CDATA[MD5 Password]]></key>
         <key id="configuration&amp;_ACCESSIBILITY" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Activate accessibility features]]></key>
         <key id="configuration&amp;_ALLOW_URL_FOPEN" attributes="" save_date="2015-09-30 15:32:22"><![CDATA[Configuration of "allow_url_fopen"]]></key>
         <key id="configuration&amp;_ALLOW_URL_INCLUDE" attributes="" save_date="2015-09-30 15:32:22"><![CDATA[Configuration of "allow_url_include"]]></key>
@@ -486,6 +490,7 @@
         <key id="configuration&amp;_DONT_SHOW" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Don't show]]></key>
         <key id="configuration&amp;_DO_DEBUG" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Enable debug information]]></key>
         <key id="configuration&amp;_ECOMMERCE" attributes="" save_date="2017-04-10 14:04:25"><![CDATA[E-commerce]]></key>
+        <key id="configuration&amp;_EMAIL_SETTINGS" attributes="" save_date="2020-05-31 16:25:10"><![CDATA[Email settings]]></key>
         <key id="configuration&amp;_FILE_UPLOAD_WHITELIST" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Whitelist permitted file extensions]]></key>
         <key id="configuration&amp;_FIRST_CATALOGUE" attributes="" save_date="2015-09-30 15:32:22"><![CDATA[Show "course catalog" as user main page]]></key>
         <key id="configuration&amp;_FORUM_AS_TABLE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Show forum list in a table]]></key>
@@ -493,6 +498,8 @@
         <key id="configuration&amp;_FTPOK" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[FTP OK]]></key>
         <key id="configuration&amp;_GOOGLE_STAT_CODE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Code provided by Google]]></key>
         <key id="configuration&amp;_GOOGLE_STAT_IN_LMS" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Enable Google Analytics]]></key>
+        <key id="configuration&amp;_HELPDESK_SUBJ" attributes="" save_date="2020-05-31 16:25:23"><![CDATA[Helpdesk Subject]]></key>
+        <key id="configuration&amp;_HELPDESK_SUBJ_PLACEHOLDER" attributes="" save_date="2020-05-31 16:25:37"><![CDATA[Helpdesk Subject Placeholder]]></key>
         <key id="configuration&amp;_HIDE_EMPTY_CATEGORY" attributes="" save_date="2017-11-09 18:09:26"><![CDATA[Hide empty category]]></key>
         <key id="configuration&amp;_HOME_PAGE" attributes="" save_date="2017-11-09 18:10:23"><![CDATA[Home page]]></key>
         <key id="configuration&amp;_HOUR_REQUEST_LIMIT" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Limit, in hours, for the expiration of the subscription request]]></key>
@@ -504,6 +511,7 @@
         <key id="configuration&amp;_KB_FILTER_BY_USER_ACCESS" attributes="" save_date="2017-04-10 16:00:19"><![CDATA[In the result area of the content library searches, show also objects not directly available to the user]]></key>
         <key id="configuration&amp;_KB_SHOW_UNCATEGORIZED" attributes="" save_date="2017-04-10 16:00:28"><![CDATA[In the result area of the content library searches, show also objects that aren't fully categorized]]></key>
         <key id="configuration&amp;_LANG_CHECK" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Activate language editing (used for debugging)]]></key>
+        <key id="configuration&amp;_LANG_EXPORT_TIME" attributes="" save_date="2020-05-31 17:47:30"><![CDATA[Time of language export]]></key>
         <key id="configuration&amp;_LASTFIRST_MANDATORY" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[First Name and Last Name are required in order to register]]></key>
         <key id="configuration&amp;_LDAP" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[LDAP]]></key>
         <key id="configuration&amp;_LDAP_PORT" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[LDAP port (usually 389)]]></key>
@@ -539,6 +547,7 @@
         <key id="configuration&amp;_OWNED_BY" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Site owner]]></key>
         <key id="configuration&amp;_PAGE_TITLE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Page title (will appear in the user's browser)]]></key>
         <key id="configuration&amp;_PASS_ALFANUMERIC" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Password must be composed of letters and numbers]]></key>
+        <key id="configuration&amp;_PASS_ALGORITHM" attributes="" save_date="2020-05-31 16:30:51"><![CDATA[Password Algorithm]]></key>
         <key id="configuration&amp;_PASS_CHANGE_FIRST_LOGIN" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Force users to change their password at the first login]]></key>
         <key id="configuration&amp;_PASS_MAX_TIME_VALID" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Password validity, max number of days the password will be valid (0 for unlimited)]]></key>
         <key id="configuration&amp;_PASS_MIN_CHAR" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Password length, minimum number of characters]]></key>
@@ -661,6 +670,7 @@
         <key id="configuration&amp;_TEMPLATE_DOMAIN" attributes="" save_date="2017-05-10 19:07:20"><![CDATA[Domain Template assignment]]></key>
         <key id="configuration&amp;_TRACKING" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Allow user tracking (Recommended: yes)]]></key>
         <key id="configuration&amp;_TTLSESSION" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Session lifetime]]></key>
+        <key id="configuration&amp;_TWIG_CACHE" attributes="" save_date="2020-05-31 16:26:02"><![CDATA[Twig Cache]]></key>
         <key id="configuration&amp;_UPLOADFTP" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[FTP connection]]></key>
         <key id="configuration&amp;_UPLOAD_MAX_FILESIZE" attributes="" save_date="2015-09-30 15:32:22"><![CDATA[Configuration of "upload_max_filesize"]]></key>
         <key id="configuration&amp;_URL" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Website URL with final /]]></key>
@@ -1054,8 +1064,9 @@ Username: [userid]]]></key>
 
  Title: [thread_title]]]></key>
         <key id="email&amp;_NEW_USER_SUBSCRIBED_SUBJECT" attributes="email" save_date="2017-03-14 16:10:41"><![CDATA[New user was subscribed to a course]]></key>
-        <key id="email&amp;_NEW_USER_SUBSCRIBED_SUBJECT_MODERATORS" attributes="" save_date="2020-01-20 15:30:49"><![CDATA[[url] [firstname] [lastname] [course] [username]]]></key>
+        <key id="email&amp;_NEW_USER_SUBSCRIBED_SUBJECT_MODERATORS" attributes="" save_date="2020-03-02 13:16:34"><![CDATA[A new user has been enrolled in a course]]></key>
         <key id="email&amp;_NEW_USER_SUBSCRIBED_TEXT" attributes="email" save_date="2017-05-05 17:05:00"><![CDATA[At URL: <a href="[url]">[url]</a> a new user was subscribed to the course: [course]]]></key>
+        <key id="email&amp;_NEW_USER_SUBSCRIBED_TEXT_MODERATORS" attributes="" save_date="2020-03-02 13:16:05"><![CDATA[A new user, [firstname] [lastname] [username] has been enrolled in course [course]]]></key>
         <key id="email&amp;_NEW_USER_SUBS_WAITING_SUBJECT" attributes="email" save_date="2017-03-14 16:10:41"><![CDATA[User is waiting for course subscription approval]]></key>
         <key id="email&amp;_NEW_USER_SUBS_WAITING_TEXT" attributes="email" save_date="2015-09-30 15:32:23"><![CDATA[New user subscribed to the '[course]' course and is waiting to be approved.
 
@@ -1548,6 +1559,7 @@ In handling this information, accuracy and precision shall be met to ensure the 
         <key id="menu&amp;_NEWS_INTERNAL" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Manage news in users area]]></key>
         <key id="menu&amp;_PLAYERTEMPLATE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Template player]]></key>
         <key id="menu&amp;_PLUGIN_MANAGER" attributes="" save_date="2017-03-15 12:13:11"><![CDATA[Plugin manager]]></key>
+        <key id="menu&amp;_DASHBOARD_CONFIGURATION" attributes="" save_date="2017-03-15 12:13:11"><![CDATA[Impostazioni Dashboard]]></key>
         <key id="menu&amp;_PRIVACYPOLICIES" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Privacy policies]]></key>
         <key id="menu&amp;_PUBLIC_ADMIN_MANAGER" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Public Administrators management]]></key>
         <key id="menu&amp;_PUBLIC_ADMIN_RULES" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Public Administrator profile]]></key>
@@ -1599,6 +1611,7 @@ In handling this information, accuracy and precision shall be met to ensure the 
         <key id="menu_over&amp;_COMMUNITY" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Community]]></key>
         <key id="menu_over&amp;_COURSE_AUTOREGISTRATION" attributes="" save_date="2018-02-19 12:07:32"><![CDATA[Add course]]></key>
         <key id="menu_over&amp;_GO_TO_FRAMEWORK" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Admin area]]></key>
+        <key id="menu_over&amp;_HELPDESK" attributes="" save_date="2020-06-08 08:46:03"><![CDATA[Request help]]></key>
         <key id="menu_over&amp;_LIBRARY" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Authoring]]></key>
         <key id="menu_over&amp;_MENUCOURSE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Campus]]></key>
         <key id="menu_over&amp;_MENUGEN" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[General menu]]></key>
@@ -1670,6 +1683,7 @@ In handling this information, accuracy and precision shall be met to ensure the 
         <key id="organization&amp;_ORGPLAYTITLE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Execute object]]></key>
         <key id="organization&amp;_ORGROOTNAME" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Lectures]]></key>
         <key id="organization&amp;_ORG_ACCESS" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Access]]></key>
+        <key id="organization&amp;_PROFILE" attributes="" save_date="2020-05-31 16:26:27"><![CDATA[Profile]]></key>
         <key id="organization&amp;_PUBLISH_FROM" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Publish from]]></key>
         <key id="organization&amp;_PUBLISH_TO" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Publish until]]></key>
         <key id="organization&amp;_REPOSELECTDESTINATION" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Select the destination folder for the copy operation]]></key>
@@ -2112,7 +2126,7 @@ You have to confirm your account before using it.]]></key>
         <key id="report&amp;_TIME_BELT_2" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Range]]></key>
         <key id="report&amp;_TIME_PERIOD_FILTER" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Filter for time periods]]></key>
         <key id="report&amp;_TOTAL_SESSION" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Time]]></key>
-        <key id="report&amp;_USER_CUSTOM_FIELDS" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Show users custom fields]]></key>
+        <key id="report&amp;_USER_CUSTOM_FIELDS" attributes="" save_date="2020-05-24 10:48:15"><![CDATA[Show users fields]]></key>
         <key id="report&amp;_WARNING_REPORT" attributes="" save_date="2017-09-20 15:21:25"><![CDATA[Beware, users will see the report as well as the user who generated it]]></key>
       </module>
       <module id="reservation">
@@ -2256,6 +2270,7 @@ Username: [userid]
         <key id="standard&amp;_ATTACHMENT" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Attachment]]></key>
         <key id="standard&amp;_ATTENDANCE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Attendance]]></key>
         <key id="standard&amp;_AUTHOR" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Author]]></key>
+        <key id="standard&amp;_AUTOCREATE_CATEGORIES" attributes="" save_date="2020-05-31 16:26:22"><![CDATA[Autocreate categories]]></key>
         <key id="standard&amp;_AUTODETECT" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Auto-detect]]></key>
         <key id="standard&amp;_AUTO_SUBSCRIPTION" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Automatic subscription]]></key>
         <key id="standard&amp;_AVATAR" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Avatar]]></key>
@@ -2417,7 +2432,7 @@ Username: [userid]
         <key id="standard&amp;_LASTNAME" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Last name]]></key>
         <key id="standard&amp;_LBL_CODE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Insert your code]]></key>
         <key id="standard&amp;_LBL_SEND" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Subscribe]]></key>
-        <key id="standard&amp;_LEARNING_OBJECTS" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Learning Objects]]></key>
+        <key id="standard&amp;_LEARNING_OBJECTS" attributes="" save_date="2020-05-24 10:48:52"><![CDATA[Learning Objects info]]></key>
         <key id="standard&amp;_LEVEL" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Level]]></key>
         <key id="standard&amp;_LIBRARY" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Library]]></key>
         <key id="standard&amp;_LINK" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Link]]></key>
@@ -2527,6 +2542,7 @@ Username: [userid]
         <key id="standard&amp;_PREVIEW" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Preview]]></key>
         <key id="standard&amp;_PREV_B" attributes="" save_date="2017-04-11 18:40:37"><![CDATA[Previous]]></key>
         <key id="standard&amp;_PREV_STEP" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Previous]]></key>
+        <key id="standard&amp;_PROFILE" attributes="" save_date="2020-05-31 16:26:33"><![CDATA[Profile]]></key>
         <key id="standard&amp;_PROFILE_MODIFY" attributes="" save_date="2019-10-11 10:33:15"><![CDATA[Profile Edit]]></key>
         <key id="standard&amp;_PROFILE_MODIFY_URL" attributes="" save_date="2019-10-11 10:38:13"><![CDATA[Profile edit page:]]></key>
         <key id="standard&amp;_PROGRESS" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Progress]]></key>
@@ -2599,6 +2615,7 @@ Username: [userid]
         <key id="standard&amp;_TAGS" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Tags]]></key>
         <key id="standard&amp;_TELESKILL" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Teleskill]]></key>
         <key id="standard&amp;_TEXTOF" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Text]]></key>
+        <key id="standard&amp;_TIMEPERIODS" attributes="" save_date="2020-05-31 17:46:41"><![CDATA[Time periods]]></key>
         <key id="standard&amp;_TIME_PERIODS" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Time periods]]></key>
         <key id="standard&amp;_TITLE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Title]]></key>
         <key id="standard&amp;_TO" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[to]]></key>
@@ -2852,7 +2869,7 @@ Username: [userid]
         <key id="test&amp;_RESTART_INFO" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Restart test execution from beginning]]></key>
         <key id="test&amp;_SELECT_PAGE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Select page]]></key>
         <key id="test&amp;_SHOW_IN_COURSEREPORT" attributes="" save_date="2018-01-12 15:47:30"><![CDATA[Show in Gradebook Management]]></key>
-        <key id="test&amp;_SHOW_IN_DETAIL" attributes="" save_date="2018-06-19 22:51:57"><![CDATA[Show details in Gradebook Management]]></key>
+        <key id="test&amp;_SHOW_IN_DETAIL" attributes="" save_date="2020-05-14 08:06:47"><![CDATA[Show in detail tab]]></key>
         <key id="test&amp;_SUSPENSION_NUM_ATTEMPTS" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Suspend the test after the following number of failed attempts]]></key>
         <key id="test&amp;_SUSPENSION_NUM_HOURS" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Suspend the test for the following number of hours]]></key>
         <key id="test&amp;_SUSPENSION_PREREQUISITES" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[After the test suspension, require a new completion of all the test prerequisites]]></key>

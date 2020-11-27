@@ -58,7 +58,7 @@ class SOAPLMS {
 		return null;
 	} 
 	// Constructor builds PEAR::SOAP Server
-	function SOAPLMS ()
+	function __construct()
 	{ 
 		// Define the signature of the dispatch map
 		$this->__dispatch_map['Finish'] =
@@ -151,10 +151,43 @@ class SOAPLMS {
 		if ($res && sql_num_rows($res)>0) {
 			$now = date("Y-m-d H:i:s");
 			list($first_complete, $last_complete) = sql_fetch_row($res);
-			$query = "UPDATE %lms_commontrack SET last_complete='".$now."'";
-			if (!$first_complete) $query .= ", first_complete='".$now."'";
-			$query .= " WHERE idReference=".(int)$idReference;
+
+			$old_data = ['last_complete' => $last_complete];
+			$new_data = ['last_complete' => $now];
+
+			if(!$first_complete || $first_complete > $now) {
+				$old_data['first_complete'] = $first_complete;
+				$new_data['first_complete'] = $now;
+			}
+	
+			$data = Events::trigger('lms.lo_user.updating', [
+				'id_reference' => $this->idReference,
+				'id_user' => $this->idUser,
+				'object_type' => $this->objectType,
+				'id_track' => $this->idTrack,
+				'environment' => $this->environment,
+				'old_data' => $old_data,
+				'new_data' => $new_data,
+			])['new_data'];
+
+			$query = "UPDATE %lms_commontrack SET last_complete='".$data['last_complete']."'";
+			if (array_key_exists('first_complete', $data)) $query .= ", first_complete='".$data['first_complete']."'";
+			$query .= " WHERE idTrack=".(int)$this->idTrack;
 			$res = sql_query($query);
+
+			Events::trigger('lms.lo_user.updated', [
+				'id_reference' => $this->idReference,
+				'id_user' => $this->idUser,
+				'object_type' => $this->objectType,
+				'id_track' => $this->idTrack,
+				'environment' => $this->environment,
+				'old_data' => $old_data,
+				'new_data' => [
+					'last_complete' => $data['last_complete'],
+					'first_complete' => $data['first_complete'],
+				],
+			]);
+
 			return $res;
 		}
 	}

@@ -36,7 +36,7 @@ class Module_Storage extends LmsModule {
 	
 	function loadExtraMenu() {}
 	
-	function getAllToken($op = '') {
+	function getAllToken() {
 		return array( 
 			'view' => array( 	'code' => 'view',
 								'name' => '_VIEW',

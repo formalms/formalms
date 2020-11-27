@@ -11,6 +11,7 @@
 |   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
+//TODO INSTALL_vs_UPGRADE: please share what you can
 ob_start();
 
 include('bootstrap.php');
@@ -94,5 +95,4 @@ Lang::setLanguage();
 $contents = ob_get_contents();
 ob_clean();
 echo $GLOBALS['page']->render($contents);
-
 ?>

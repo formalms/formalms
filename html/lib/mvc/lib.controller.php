@@ -17,7 +17,7 @@ class Controller {
 
 	protected $_default_action = 'show';
 
-	public function  __construct($mvc_name) {
+	public function  __construct($mvc_name = '') {
 
 		$this->_mvc_name = $mvc_name;
 

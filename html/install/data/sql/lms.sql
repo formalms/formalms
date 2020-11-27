@@ -261,59 +261,82 @@ CREATE TABLE IF NOT EXISTS `learning_certificate_course` (
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `learning_certificate_meta`
+-- Struttura della tabella `learning_aggregated_certificate_metadata_association`
 --
 
-CREATE TABLE IF NOT EXISTS `learning_certificate_meta` (
-  `idMetaCertificate` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE IF NOT EXISTS `learning_aggregated_cert_metadata` (
+  `idAssociation` int(11) NOT NULL AUTO_INCREMENT,
   `idCertificate` int(11) NOT NULL DEFAULT '0',
   `title` varchar(255) NOT NULL DEFAULT '',
   `description` longtext NOT NULL,
-  PRIMARY KEY (`idMetaCertificate`)
+  PRIMARY KEY (`idAssociation`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
 
+
+
 --
--- Dump dei dati per la tabella `learning_certificate_meta`
+-- Dump dei dati per la tabella `learning_aggregated_certificate_metadata_association`
 --
 
 
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `learning_certificate_meta_assign`
+-- Struttura della tabella `learning_aggregated_certificate_association`
 --
 
-CREATE TABLE IF NOT EXISTS `learning_certificate_meta_assign` (
-  `idUser` int(11) NOT NULL DEFAULT '0',
-  `idMetaCertificate` int(11) NOT NULL DEFAULT '0',
-  `idCertificate` int(11) NOT NULL DEFAULT '0',
-  `on_date` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+CREATE TABLE IF NOT EXISTS `learning_aggregated_cert_assign` (
+  `idUser` int(11) NOT NULL DEFAULT 0,
+  `idCertificate` int(11) NOT NULL DEFAULT 0,
+  `idAssociation` int(11) NOT NULL,
+  `on_date` datetime DEFAULT NULL,
   `cert_file` varchar(255) NOT NULL DEFAULT '',
-  PRIMARY KEY (`idUser`,`idMetaCertificate`)
+  PRIMARY KEY (`idUser`,`idCertificate`,`idAssociation`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Dump dei dati per la tabella `learning_certificate_meta_assign`
---
-
 
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `learning_certificate_meta_course`
+-- Struttura della tabella `learning_aggregated_certificate_association_course`
 --
 
-CREATE TABLE IF NOT EXISTS `learning_certificate_meta_course` (
+CREATE TABLE IF NOT EXISTS `learning_aggregated_cert_course` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `idMetaCertificate` int(11) NOT NULL DEFAULT '0',
+  `idAssociation` int(11) NOT NULL DEFAULT '0',
   `idUser` int(11) NOT NULL DEFAULT '0',
   `idCourse` int(11) NOT NULL DEFAULT '0',
   `idCourseEdition` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `idAssociation` (`idAssociation`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
 
+
+
 --
--- Dump dei dati per la tabella `learning_certificate_meta_course`
+-- Dump dei dati per la tabella `learning_aggregated_certificate_association_course`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Struttura della tabella `learning_aggregated_certificate_association_coursepath`
+--
+
+CREATE TABLE IF NOT EXISTS `learning_aggregated_cert_coursepath` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,             
+  `idAssociation` int(11) NOT NULL DEFAULT '0',
+  `idUser` int(11) NOT NULL DEFAULT '0',
+  `idCoursePath` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `idAssociation` (`idAssociation`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
+
+
+
+--
+-- Dump dei dati per la tabella `learning_aggregated_certificate_association_coursepath`
 --
 
 
@@ -3418,12 +3441,10 @@ CREATE TABLE IF NOT EXISTS `dashboard_blocks`
 INSERT INTO `dashboard_blocks` (`id`, `block_class`)
 VALUES (7, 'DashboardBlockCalendarLms'),
        (3, 'DashboardBlockCertificatesLms'),
-       (6, 'DashboardBlockCourseAdviceLms'),
+       (6, 'DashboardBlockAnnouncementsLms'),
        (5, 'DashboardBlockCoursesLms'),
        (4, 'DashboardBlockMessagesLms'),
-       (2, 'DashboardBlockProfileLms'),
-       (8, 'DashboardBlockVideoLms'),
-       (1, 'DashboardBlockWelcomeLms');
+       (8, 'DashboardBlockBannerLms');
 
 
 INSERT INTO learning_middlearea (`obj_index`, `disabled`, `idst_list`, `sequence`)

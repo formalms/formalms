@@ -13,7 +13,7 @@
 
 class SubscriptionAlmsController extends AlmsController
 {
-    /** @var SubscriptionAlms $model */
+	/** @var SubscriptionAlms $model */
 	protected $model;
 	protected $json;
 	protected $acl_man;
@@ -188,7 +188,7 @@ class SubscriptionAlmsController extends AlmsController
 			//'sub_start' => $sub_start,
 			//'sub_end' => $sub_end,
 			//'del_sub' => $del_sub,
-			'use_overbooking' => (isset($course_info['overbooking']) ? (bool)$course_info['overbooking'] : false),
+			'use_overbooking' => (isset($course_info['overbooking']) ? (bool) $course_info['overbooking'] : false),
 			//'info_subscriptions' => $this->model->getSubscriptionsInfo(),
 			'num_var_fields' => 1,
 			'fieldlist' => $f_list,
@@ -238,7 +238,7 @@ class SubscriptionAlmsController extends AlmsController
 
 			$_selection = $user_selector->getSelection($_POST);
 			$acl_man = Docebo::user()->getAclManager();
-			$user_selected = $acl_man->getAllUsersFromSelection($_selection);//$acl_man->getAllUsersFromIdst($_selection);
+			$user_selected = $acl_man->getAllUsersFromSelection($_selection); //$acl_man->getAllUsersFromIdst($_selection);
 
 			$user_alredy_subscribed = $model->loadUserSelectorSelection();
 			$user_selected = array_diff($user_selected, $user_alredy_subscribed);
@@ -283,8 +283,7 @@ class SubscriptionAlmsController extends AlmsController
 
 			$select_level_mode = Get::req('select_level_mode', DOTY_STRING, "");
 			switch ($select_level_mode) {
-				case "students":
-					{
+				case "students": {
 
 						// subscribe the selection with the students level
 						require_once(_lms_ . '/lib/lib.course.php');
@@ -315,7 +314,7 @@ class SubscriptionAlmsController extends AlmsController
 
 							$level_idst = &$docebo_course->getCourseLevel($id_course);
 							if (count($level_idst) == 0 || $level_idst[1] == '')
-								$level_idst =& $docebo_course->createCourseLevel($id_course);
+								$level_idst = &$docebo_course->createCourseLevel($id_course);
 
 							$waiting = 0;
 							$user_subscribed = array();
@@ -326,8 +325,7 @@ class SubscriptionAlmsController extends AlmsController
 							// do the subscriptions
 							$result = true;
 							$this->db->start_transaction();
-              foreach($user_selected as $id_user )
-              {
+							foreach ($user_selected as $id_user) {
 								if (!$limited_subscribe || $max_subscribe) {
 
 									//$this->acl_man->addToGroup($level_idst[3], $id_user);
@@ -339,9 +337,8 @@ class SubscriptionAlmsController extends AlmsController
 										$this->acl_man->removeFromGroup($level_idst[3], $id_user);
 										$result = false;
 									}
-
 								}
-							}//End While
+							} //End While
 							$this->db->commit();
 
 
@@ -361,24 +358,37 @@ class SubscriptionAlmsController extends AlmsController
 							if (!empty($user_selected) && $send_alert) {
 								require_once(_base_ . '/lib/lib.eventmanager.php');
 
-								$array_subst = array(
-									'[url]' => Get::site_url(),
-									'[course]' => $course_info['name'],
-									'[medium_time]' => $course_info['mediumTime'], //Format::date(date("Y-m-d", time() + ($course_info['mediumTime']*24*60*60) ), 'date'))
-									'[course_name]' => $course_info['name'],
-									'[course_code]' => $course_info['code']
-								);
+								$uma = new UsermanagementAdm;
 
-								// message to user that is waiting
-								$msg_composer = new EventMessageComposer();
-								$msg_composer->setSubjectLangText('email', '_NEW_USER_SUBSCRIBED_SUBJECT', false);
-								$msg_composer->setBodyLangText('email', '_NEW_USER_SUBSCRIBED_TEXT', $array_subst);
-								$msg_composer->setBodyLangText('sms', '_NEW_USER_SUBSCRIBED_TEXT_SMS', $array_subst);
+								foreach (array_keys($user_selected) as $user_id) {
+									$reg_code = null;
+									if ($nodes = $uma->getUserFolders($user_id)) {
+										$idst_oc = array_keys($nodes)[0];
 
-								// send message to the user subscribed
-								createNewAlert('UserCourseInserted', 'subscribe', 'insert', '1', 'User subscribed', $user_selected, $msg_composer, $send_alert, true);
+										if ($query = sql_query("SELECT idOrg FROM %adm_org_chart_tree WHERE idst_oc = $idst_oc LIMIT 1")) {
+											$reg_code = sql_fetch_object($query)->idOrg;
+										}
+									}
+
+									$array_subst = array(
+										'[url]' => Get::site_url(),
+										'[dynamic_link]' => getCurrentDomain($reg_code) ?: Get::site_url(),
+										'[course]' => $course_info['name'],
+										'[medium_time]' => $course_info['mediumTime'], //Format::date(date("Y-m-d", time() + ($course_info['mediumTime']*24*60*60) ), 'date'))
+										'[course_name]' => $course_info['name'],
+										'[course_code]' => $course_info['code']
+									);
+
+									// message to user that is waiting
+									$msg_composer = new EventMessageComposer();
+									$msg_composer->setSubjectLangText('email', '_NEW_USER_SUBSCRIBED_SUBJECT', false);
+									$msg_composer->setBodyLangText('email', '_NEW_USER_SUBSCRIBED_TEXT', $array_subst);
+									$msg_composer->setBodyLangText('sms', '_NEW_USER_SUBSCRIBED_TEXT_SMS', $array_subst);
+
+									// send message to the user subscribed
+									createNewAlert('UserCourseInserted', 'subscribe', 'insert', '1', 'User subscribed', [$user_id], $msg_composer, $send_alert, true);
+								}
 							}
-
 						}
 
 						$result = $result > 0 ? '_operation_successful' : '_operation_failed';
@@ -512,7 +522,7 @@ class SubscriptionAlmsController extends AlmsController
 			if ($_POST['subs']) {
 				$subs = $_POST['subs'];
 				$subs = explode(",", $_POST['subs']);
-				foreach ($subs AS $sub) {
+				foreach ($subs as $sub) {
 					list($user, $level) = explode(":", $sub);
 					$user_selected[$user] = $level;
 				}
@@ -523,8 +533,7 @@ class SubscriptionAlmsController extends AlmsController
 			// To track event data
 			$userModel = new UsermanagementAdm();
 			$users = [];
-      foreach($user_selected as $id_user => $lv_sel)
-      {
+			foreach ($user_selected as $id_user => $lv_sel) {
 				if (!$limited_subscribe || $max_subscribe) {
 					if ($lv_sel != 0) {
 						//$this->acl_man->addToGroup($level_idst[$lv_sel], $id_user);
@@ -546,8 +555,8 @@ class SubscriptionAlmsController extends AlmsController
 					}
 				}
 			} //End While
-            $this->db->commit();
-            
+			$this->db->commit();
+
 			// Save limit preference for admin
 			if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
 				$to_subscribe = count($user_selected);
@@ -566,31 +575,46 @@ class SubscriptionAlmsController extends AlmsController
 			$send_alert = Get::req('send_alert', DOTY_INT, 0);
 			//basically we will consider the alert as a checkbox, the initial state of the checkbox will be setted according to the alert status
 			if (!empty($user_selected) && $send_alert) {
-
-				$array_subst = array(
-					'[url]' => Get::site_url(),
-					'[course]' => $course_info['name'],
-					'[medium_time]' => $course_info['mediumTime'], //Format::date(date("Y-m-d", time() + ($course_info['mediumTime']*24*60*60) ), 'date'))
-					'[course_name]' => $course_info['name'],
-					'[course_code]' => $course_info['code']
-				);
-
 				// message to user that is waiting
 				require_once(_base_ . '/lib/lib.eventmanager.php');
-				$msg_composer = new EventMessageComposer();
-				$msg_composer->setSubjectLangText('email', '_NEW_USER_SUBSCRIBED_SUBJECT', false);
-				$msg_composer->setBodyLangText('email', '_NEW_USER_SUBSCRIBED_TEXT', $array_subst);
-				$msg_composer->setBodyLangText('sms', '_NEW_USER_SUBSCRIBED_TEXT_SMS', $array_subst);
 
-				// send message to the user subscribed
-				createNewAlert('UserCourseInserted', 'subscribe', 'insert', '1', 'User subscribed', array_keys($user_selected), $msg_composer, $send_alert, true);
+				$uma = new UsermanagementAdm;
+
+				foreach (array_keys($user_selected) as $user_id) {
+					$reg_code = null;
+					if ($nodes = $uma->getUserFolders($user_id)) {
+						$idst_oc = array_keys($nodes)[0];
+
+						if ($query = sql_query("SELECT idOrg FROM %adm_org_chart_tree WHERE idst_oc = $idst_oc LIMIT 1")) {
+							$reg_code = sql_fetch_object($query)->idOrg;
+						}
+					}
+
+					$array_subst = array(
+						'[url]' => Get::site_url(),
+						'[dynamic_link]' => getCurrentDomain($reg_code) ?: Get::site_url(),
+						'[course]' => $course_info['name'],
+						'[medium_time]' => $course_info['mediumTime'], //Format::date(date("Y-m-d", time() + ($course_info['mediumTime']*24*60*60) ), 'date'))
+						'[course_name]' => $course_info['name'],
+						'[course_code]' => $course_info['code']
+					);
+
+					// message to user that is waiting
+					$msg_composer = new EventMessageComposer();
+					$msg_composer->setSubjectLangText('email', '_NEW_USER_SUBSCRIBED_SUBJECT', false);
+					$msg_composer->setBodyLangText('email', '_NEW_USER_SUBSCRIBED_TEXT', $array_subst);
+					$msg_composer->setBodyLangText('sms', '_NEW_USER_SUBSCRIBED_TEXT_SMS', $array_subst);
+
+					// send message to the user subscribed
+					createNewAlert('UserCourseInserted', 'subscribe', 'insert', '1', 'User subscribed', [$user_id], $msg_composer, $send_alert, true);
+				}
 			}
 
 			$user_selected = array();
 			if ($_POST['subs']) {
 				$subs = $_POST['subs'];
 				$subs = explode(",", $_POST['subs']);
-				foreach ($subs AS $sub) {
+				foreach ($subs as $sub) {
 					list($user_id, $level) = explode(":", $sub);
 					$user_selected[$user] = $level;
 
@@ -620,7 +644,7 @@ class SubscriptionAlmsController extends AlmsController
 						$recipients[] = $row->idUser;
 					}
 
-					createNewAlert(	'UserCourseInsertedModerators', 'directory', 'edit', '1', 'User '.$username.' was modified', $recipients, $msg_composer );
+					createNewAlert('UserCourseInsertedModerators', 'directory', 'edit', '1', 'User ' . $username . ' was modified', $recipients, $msg_composer);
 				}
 			}
 		}
@@ -644,8 +668,7 @@ class SubscriptionAlmsController extends AlmsController
 	{
 		$op = Get::req('op', DOTY_MIXED, false);
 		switch ($op) {
-			case "selectall":
-				{
+			case "selectall": {
 					$this->_selectall();
 					return;
 				}
@@ -695,8 +718,8 @@ class SubscriptionAlmsController extends AlmsController
 				$record['overbooking'] = $value['overbooking'];
 				if ($value['overbooking']) $record['status'] = '' . _CUS_OVERBOOKING;
 			}
-			$list[(int)$value['id_user']] = $record;
-			$date_complete[(int)$value['id_user']] = $value['date_complete'];
+			$list[(int) $value['id_user']] = $record;
+			$date_complete[(int) $value['id_user']] = $value['date_complete'];
 		}
 
 		//custom fields
@@ -809,8 +832,8 @@ class SubscriptionAlmsController extends AlmsController
 		}
 
 		//Update info
-		$new_value = Get::req('new_value', DOTY_STRING, '');//DOTY_MIXED  DOTY_INT
-		$old_value = Get::req('old_value', DOTY_STRING, '');//DOTY_MIXED  DOTY_INT
+		$new_value = Get::req('new_value', DOTY_STRING, ''); //DOTY_MIXED  DOTY_INT
+		$old_value = Get::req('old_value', DOTY_STRING, ''); //DOTY_MIXED  DOTY_INT
 		$col = Get::req('col', DOTY_STRING, '');
 
 		if ($new_value === $old_value) {
@@ -823,8 +846,7 @@ class SubscriptionAlmsController extends AlmsController
 			$docebo_course = new DoceboCourse($this->id_course);
 
 			switch ($col) {
-				case 'level':
-					{
+				case 'level': {
 						require_once(_lms_ . '/lib/lib.course.php');
 
 						$level_idst = &$docebo_course->getCourseLevel($this->id_course);
@@ -851,8 +873,7 @@ class SubscriptionAlmsController extends AlmsController
 					}
 					break;
 
-				case 'status':
-					{
+				case 'status': {
 						$status = $this->model->getUserStatusList();
 
 						if (!isset($status[$new_value])) {
@@ -864,7 +885,7 @@ class SubscriptionAlmsController extends AlmsController
 							echo $this->json->encode(array('succes' => true));
 
 
-							switch ((int)$new_value) {
+							switch ((int) $new_value) {
 								case _CUS_SUSPEND:
 
 									require_once(Forma::inc(_base_ . '/lib/lib.eventmanager.php'));
@@ -901,8 +922,15 @@ class SubscriptionAlmsController extends AlmsController
 									$recipients = array_merge($recipients, $acl_manager->getGroupAllUser($permission_godadmin));
 									$recipients = array_merge($recipients, $acl_manager->getGroupAllUser($permission_admin));
 
-									createNewAlert('UserCourseSuspendedSuperAdmin', 'directory', 'edit', '1', 'User ' . $userid . ' was suspended',
-										$recipients, $msg_composer);
+									createNewAlert(
+										'UserCourseSuspendedSuperAdmin',
+										'directory',
+										'edit',
+										'1',
+										'User ' . $userid . ' was suspended',
+										$recipients,
+										$msg_composer
+									);
 
 									break;
 								default:
@@ -911,24 +939,21 @@ class SubscriptionAlmsController extends AlmsController
 							echo $this->json->encode(array('succes' => false));
 					}
 					break;
-				case 'date_begin':
-					{
+				case 'date_begin': {
 						if ($this->model->updateUserDateBeginValidity($id_user, Format::dateDb($new_value, 'date')))
 							echo $this->json->encode(array('succes' => true));
 						else
 							echo $this->json->encode(array('succes' => false));
 					}
 					break;
-				case 'date_expire':
-					{
+				case 'date_expire': {
 						if ($this->model->updateUserDateExpireValidity($id_user, Format::dateDb($new_value, 'date')))
 							echo $this->json->encode(array('succes' => true));
 						else
 							echo $this->json->encode(array('succes' => false));
 					}
 					break;
-				default:
-					{
+				default: {
 						echo $this->json->encode(array('succes' => false));
 					}
 			}
@@ -1038,17 +1063,27 @@ class SubscriptionAlmsController extends AlmsController
 				}
 
 				//check if we have selected send alert checkbox
-                $send_alert = Get::req('send_alert', DOTY_INT, 0) > 0;
-                
+				$send_alert = Get::req('send_alert', DOTY_INT, 0) > 0;
+
 				require_once(_base_ . '/lib/lib.eventmanager.php');
 
 				$course_info = $docebo_course->getAllInfo();
 				if ($send_alert) {
 					$uinfo = Docebo::aclm()->getUser($id_user, false);
+					$reg_code = null;
+					if ($nodes = $userModel->getUserFolders($id_user)) {
+						$idst_oc = array_keys($nodes)[0];
+
+						if ($query = sql_query("SELECT idOrg FROM %adm_org_chart_tree WHERE idst_oc = $idst_oc LIMIT 1")) {
+							$reg_code = sql_fetch_object($query)->idOrg;
+						}
+					}
+
 					$array_subst = array(
 						'[url]' => Get::site_url(),
+						'[dynamic_link]' => getCurrentDomain($reg_code) ?: Get::site_url(),
 						'[course]' => $course_info['name'],
-						'[medium_time]' => $course_info['mediumTime'],//Format::date(date("Y-m-d", time() + ($course_info['mediumTime']*24*60*60) ), 'date'),
+						'[medium_time]' => $course_info['mediumTime'], //Format::date(date("Y-m-d", time() + ($course_info['mediumTime']*24*60*60) ), 'date'),
 						'[firstname]' => $uinfo[ACL_INFO_FIRSTNAME],
 						'[lastname]' => $uinfo[ACL_INFO_LASTNAME],
 						'[username]' => Docebo::aclm()->relativeId($uinfo[ACL_INFO_USERID])
@@ -1061,15 +1096,23 @@ class SubscriptionAlmsController extends AlmsController
 					$msg_composer->setBodyLangText('sms', '_NEW_USER_SUBSCRIBED_TEXT_SMS', $array_subst);
 
 					// send message to the user subscribed
-					$users = array($id_user);
-					createNewAlert('UserCourseInserted', 'subscribe', 'insert', '1', 'User subscribed', $users, $msg_composer, $send_alert, true);
+					createNewAlert('UserCourseInserted', 'subscribe', 'insert', '1', 'User subscribed', [$id_user], $msg_composer, $send_alert, true);
 				}
 
 				// Moderator notification
 				$username = str_replace('/', '', $user->userid);
+				$reg_code = null;
+				if ($nodes = $userModel->getUserFolders($id_user)) {
+					$idst_oc = array_keys($nodes)[0];
+
+					if ($query = sql_query("SELECT idOrg FROM %adm_org_chart_tree WHERE idst_oc = $idst_oc LIMIT 1")) {
+						$reg_code = sql_fetch_object($query)->idOrg;
+					}
+				}
 
 				$array_subst = array(
 					'[url]' => Get::site_url(),
+					'[dynamic_link]' => getCurrentDomain($reg_code) ?: Get::site_url(),
 					'[firstname]' => $user->firstname,
 					'[lastname]' => $user->lastname,
 					'[course]' => $course_info['name'],
@@ -1084,13 +1127,13 @@ class SubscriptionAlmsController extends AlmsController
 				$msg_composer->setBodyLangText('sms', '_NEW_USER_SUBSCRIBED_TEXT_SMS_MODERATORS', $array_subst);
 
 				$recipients = [];
-				$sql = "SELECT idUser FROM learning_courseuser WHERE idCourse = ".$this->id_course." AND (level = 6 OR level = 7)";
+				$sql = "SELECT idUser FROM learning_courseuser WHERE idCourse = " . $this->id_course . " AND (level = 6 OR level = 7)";
 				$query = sql_query($sql);
 				while ($row = sql_fetch_object($query)) {
 					$recipients[] = $row->idUser;
 				}
 
-				createNewAlert(	'UserCourseInsertedModerators', 'directory', 'edit', '1', 'User '.$username.' was modified', $recipients, $msg_composer );
+				createNewAlert('UserCourseInsertedModerators', 'directory', 'edit', '1', 'User ' . $username . ' was modified', $recipients, $msg_composer);
 			}
 
 			$output = array('success' => $result);
@@ -1116,7 +1159,8 @@ class SubscriptionAlmsController extends AlmsController
 		$list = $this->model->getUserLevelList();
 		foreach ($list as $id_level => $level_translation) {
 			if ($first)
-				$first = false; else
+				$first = false;
+			else
 				$output .= ',';
 			$output .= '{"value":' . $this->json->encode($id_level) . ',"label":' . $this->json->encode($level_translation) . '}';
 		}
@@ -1131,7 +1175,8 @@ class SubscriptionAlmsController extends AlmsController
 		$list = $this->model->getUserStatusList();
 		foreach ($list as $id_status => $status_translation) {
 			if ($first)
-				$first = false; else
+				$first = false;
+			else
 				$output .= ', ';
 			$output .= '{"value":' . $this->json->encode($id_status) . ',"label":' . $this->json->encode($status_translation) . '}';
 		}
@@ -1242,7 +1287,7 @@ class SubscriptionAlmsController extends AlmsController
 					}
 
 					foreach ($users_list as $user) {
-						switch ((int)$new_status) {
+						switch ((int) $new_status) {
 							case _CUS_SUSPEND:
 
 								require_once(_lms_ . '/lib/lib.course.php');
@@ -1282,8 +1327,15 @@ class SubscriptionAlmsController extends AlmsController
 								$recipients = array_merge($recipients, $acl_manager->getGroupAllUser($permission_godadmin));
 								$recipients = array_merge($recipients, $acl_manager->getGroupAllUser($permission_admin));
 
-								createNewAlert('UserCourseSuspendedSuperAdmin', 'directory', 'edit', '1', 'User ' . $userid . ' was suspended',
-									$recipients, $msg_composer);
+								createNewAlert(
+									'UserCourseSuspendedSuperAdmin',
+									'directory',
+									'edit',
+									'1',
+									'User ' . $userid . ' was suspended',
+									$recipients,
+									$msg_composer
+								);
 
 								break;
 							default:
@@ -1305,12 +1357,12 @@ class SubscriptionAlmsController extends AlmsController
 
 				$res5 = true;
 				if ($reset_date_begin > 0) {
-					$res5 = $sman->resetValidityDateBegin($this->id_course, 0, $users_list);//$this->id_edition
+					$res5 = $sman->resetValidityDateBegin($this->id_course, 0, $users_list); //$this->id_edition
 				}
 
 				$res6 = true;
 				if ($reset_date_expire > 0) {
-					$res6 = $sman->resetValidityDateExpire($this->id_course, 0, $users_list);//$this->id_edition
+					$res6 = $sman->resetValidityDateExpire($this->id_course, 0, $users_list); //$this->id_edition
 				}
 
 				$success = $res1 && $res2 && $res3 && $res4 && $res5 && $res6;
@@ -1417,7 +1469,7 @@ class SubscriptionAlmsController extends AlmsController
 				if (isset($_POST['okselector'])) {
 					$_selection = $user_selector->getSelection($_POST);
 					$acl_man = Docebo::user()->getAclManager();
-					$user_selected = $acl_man->getAllUsersFromSelection($_selection);//$acl_man->getAllUsersFromIdst($_selection);
+					$user_selected = $acl_man->getAllUsersFromSelection($_selection); //$acl_man->getAllUsersFromIdst($_selection);
 					//$user_selected = $user_selector->getSelection($_POST);
 
 					if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
@@ -1484,7 +1536,7 @@ class SubscriptionAlmsController extends AlmsController
 
 					foreach ($courses as $id_course)
 						if (isset($_POST['edition_' . $id_course]))
-							$edition_selected[$id_course] = (int)$_POST['edition_' . $id_course];
+							$edition_selected[$id_course] = (int) $_POST['edition_' . $id_course];
 
 					$model->loadSelectedUser(Util::unserialize(urldecode($user_selection)));
 
@@ -1562,13 +1614,13 @@ class SubscriptionAlmsController extends AlmsController
 							if ($_POST['subs']) {
 								$subs = $_POST['subs'];
 								$subs = explode(",", $_POST['subs']);
-								foreach ($subs AS $sub) {
+								foreach ($subs as $sub) {
 									list($user, $level) = explode(":", $sub);
 									$user_selected[$user] = $level;
 								}
 							}
 
-                            foreach($user_selected as $id_user => $lv_sel) {
+							foreach ($user_selected as $id_user => $lv_sel) {
 								if (!$limited_subscribe || $max_subscribe) {
 									if ($lv_sel != 0) {
 										//$this->acl_man->addToGroup($level_idst[$lv_sel], $id_user);
@@ -1581,7 +1633,7 @@ class SubscriptionAlmsController extends AlmsController
 											$this->acl_man->removeFromGroup($level_idst[$lv_sel], $id_user);
 									}
 								}
-							}//End While
+							} //End While
 
 							reset($_POST['user_level_sel']);
 						}
@@ -1611,20 +1663,20 @@ class SubscriptionAlmsController extends AlmsController
 
 								if (!$direct_subscribe)
 									$waiting = 1;
-                                    foreach($_POST['user_level_sel'] as $id_user => $lv_sel) {
-									    if (!$limited_subscribe || $max_subscribe) {
-										    if ($lv_sel != 0) {
-											    //$this->acl_man->addToGroup($level_idst[$lv_sel], $id_user);
-											    $this->_addToCourseGroup($level_idst[$lv_sel], $id_user);
+								foreach ($_POST['user_level_sel'] as $id_user => $lv_sel) {
+									if (!$limited_subscribe || $max_subscribe) {
+										if ($lv_sel != 0) {
+											//$this->acl_man->addToGroup($level_idst[$lv_sel], $id_user);
+											$this->_addToCourseGroup($level_idst[$lv_sel], $id_user);
 
-											    if ($model_t->subscribeUser($id_user, $lv_sel, $waiting)) {
-												    $max_subscribe--;
-												    $just_subscribed_count++;
-											    } else
-												    $this->acl_man->removeFromGroup($level_idst[$lv_sel], $id_user);
-										    }
-									    }
-								}//End While
+											if ($model_t->subscribeUser($id_user, $lv_sel, $waiting)) {
+												$max_subscribe--;
+												$just_subscribed_count++;
+											} else
+												$this->acl_man->removeFromGroup($level_idst[$lv_sel], $id_user);
+										}
+									}
+								} //End While
 								reset($_POST['user_level_sel']);
 							}
 						} else {
@@ -1653,7 +1705,7 @@ class SubscriptionAlmsController extends AlmsController
 								if (!$direct_subscribe)
 									$waiting = 1;
 
-                foreach($_POST['user_level_sel'] as $id_user => $lv_sel) {
+								foreach ($_POST['user_level_sel'] as $id_user => $lv_sel) {
 									if (!$limited_subscribe || $max_subscribe) {
 										if ($lv_sel != 0) {
 											//$this->acl_man->addToGroup($level_idst[$lv_sel], $id_user);
@@ -1666,7 +1718,7 @@ class SubscriptionAlmsController extends AlmsController
 												$this->acl_man->removeFromGroup($level_idst[$lv_sel], $id_user);
 										}
 									}
-								}//End While
+								} //End While
 
 								reset($_POST['user_level_sel']);
 							}
@@ -1725,12 +1777,14 @@ class SubscriptionAlmsController extends AlmsController
 				$course_info = $this->model->getCourseInfoForSubscription();
 				$course_name = ($course_info['code'] !== '' ? '[' . $course_info['code'] . '] ' : '') . $course_info['name'];
 
-				$params = array('table' => $tb,
+				$params = array(
+					'table' => $tb,
 					'id_course' => $this->id_course,
 					'id_date' => $this->id_date,
 					'id_edition' => $this->id_edition,
 					'course_name' => $course_name,
-					'model' => $this->model);
+					'model' => $this->model
+				);
 
 				$this->render('import_csv_step_1', $params);
 				break;
@@ -1780,7 +1834,8 @@ class SubscriptionAlmsController extends AlmsController
 				$src = new DeceboImport_SourceCSV(array('filename' => _files_ . $path . $savefile,
 					'separator' => $separator,
 					'first_row_header' => $first_row_header,
-					'import_charset' => $import_charset));
+					'import_charset' => $import_charset
+				));
 
 				$src->connect();
 
@@ -1952,7 +2007,7 @@ class SubscriptionAlmsController extends AlmsController
 
 				$tb = new Table(false, Lang::t('_USER_SUBSCRIBED', 'subscribe'), Lang::t('_USER_SUBSCRIBED', 'subscribe'));
 				$tb->addHead($cont_h, $type_h);
-        foreach($id_user_added as $id_user_added_detail) {
+				foreach ($id_user_added as $id_user_added_detail) {
 					$cont = array();
 
 					$user_info = $this->acl_man->getUser(false, $id_user_added_detail['id_user']);
@@ -1974,7 +2029,8 @@ class SubscriptionAlmsController extends AlmsController
 				$course_info = $this->model->getCourseInfoForSubscription();
 				$course_name = ($course_info['code'] !== '' ? '[' . $course_info['code'] . '] ' : '') . $course_info['name'];
 
-				$params = array('table' => $tb,
+				$params = array(
+					'table' => $tb,
 					'id_course' => $this->id_course,
 					'id_date' => $this->id_date,
 					'id_edition' => $this->id_edition,
@@ -2082,13 +2138,15 @@ class SubscriptionAlmsController extends AlmsController
 			$course_info = $this->model->getCourseInfoForSubscription();
 			$course_name = ($course_info['code'] !== '' ? '[' . $course_info['code'] . '] ' : '') . $course_info['name'];
 
-			$this->render('import_course', array('model' => $this->model,
+			$this->render('import_course', array(
+				'model' => $this->model,
 				'id_cat' => $id_cat,
 				'course_selector' => $course_selector,
 				'course_name' => $course_name,
 				'id_course' => $this->id_course,
 				'id_edition' => $this->id_edition,
-				'id_date' => $this->id_date));
+				'id_date' => $this->id_date
+			));
 		}
 	}
 
@@ -2208,7 +2266,8 @@ class SubscriptionAlmsController extends AlmsController
 			$course_info = $this->model->getCourseInfoForSubscription();
 			$course_name = ($course_info['code'] !== '' ? '[' . $course_info['code'] . '] ' : '') . $course_info['name'];
 
-			$this->render('copy_course', array('model' => $this->model,
+			$this->render('copy_course', array(
+				'model' => $this->model,
 				'id_cat' => $id_cat,
 				'users' => $users,
 				'move' => $move,
@@ -2216,7 +2275,8 @@ class SubscriptionAlmsController extends AlmsController
 				'course_name' => $course_name,
 				'id_course' => $this->id_course,
 				'id_edition' => $this->id_edition,
-				'id_date' => $this->id_date));
+				'id_date' => $this->id_date
+			));
 		}
 	}
 
@@ -2256,10 +2316,10 @@ class SubscriptionAlmsController extends AlmsController
 
 	protected function _getCatalogueName($id_catalogue)
 	{
-		if ((int)$id_catalogue <= 0)
+		if ((int) $id_catalogue <= 0)
 			return false;
 		$db = DbConn::getInstance();
-		$query = "SELECT name, description FROM %lms_catalogue WHERE idCatalogue='" . (int)$id_catalogue . "'";
+		$query = "SELECT name, description FROM %lms_catalogue WHERE idCatalogue='" . (int) $id_catalogue . "'";
 		$res = $db->query($query);
 		list($name, $description) = $db->fetch_row($res);
 		return $name;
@@ -2541,14 +2601,16 @@ class SubscriptionAlmsController extends AlmsController
 			);
 			$user_select->addFormInfo(
 				Form::getHidden('is_updating', 'is_updating', 1) .
-				Form::getHidden('id_catalogue', 'id_catalogue', $id_catalogue)
+					Form::getHidden('id_catalogue', 'id_catalogue', $id_catalogue)
 			);
 			//$user_select->setPageTitle($page_title_arr);
 			//$user_select->resetSelection($_SESSION['report_tempdata']['rows_filter']['users']);
-			$user_select->loadSelector(Util::str_replace_once('&', '&amp;', $jump_url),
+			$user_select->loadSelector(
+				Util::str_replace_once('&', '&amp;', $jump_url),
 				$page_title_arr,
 				false,
-				true);
+				true
+			);
 		}
 	}
 
@@ -2602,8 +2664,8 @@ class SubscriptionAlmsController extends AlmsController
 				$data[] = array(
 					$user,
 					$idCourse,
-					array_key_exists($idCourse, $editions) ? (int)$editions[$idCourse] : false,
-					array_key_exists($idCourse, $classrooms) ? (int)$classrooms[$idCourse] : false,
+					array_key_exists($idCourse, $editions) ? (int) $editions[$idCourse] : false,
+					array_key_exists($idCourse, $classrooms) ? (int) $classrooms[$idCourse] : false,
 				);
 			}
 		}
@@ -2681,7 +2743,7 @@ class SubscriptionAlmsController extends AlmsController
 				$docebo_course = new DoceboCourse($id_course);
 				$level_idst = &$docebo_course->getCourseLevel($id_course);
 				if (count($level_idst) == 0 || $level_idst[1] == '') {
-					$level_idst =& $docebo_course->createCourseLevel($id_course);
+					$level_idst = &$docebo_course->createCourseLevel($id_course);
 				}
 				$this->_addToCourseGroup($level_idst[$lv_user], $id_user);
 			}
@@ -2814,17 +2876,16 @@ class SubscriptionAlmsController extends AlmsController
 
 			switch ($col) {
 
-				case 'date_begin':
-					{
+				case 'date_begin': {
 						$_new_date = date("Y-m-d H:i:s", $new_value); //convert the input in ISO format
 						//extract date_expire and check if less than date_begin
 						$res = false;
 						$query = "SELECT date_expire_validity FROM %lms_courseuser "
-							. " WHERE idCourse=" . (int)$id_course . " AND idUser=" . (int)$id_user . " AND edition_id=" . (int)$id_edition;
+							. " WHERE idCourse=" . (int) $id_course . " AND idUser=" . (int) $id_user . " AND edition_id=" . (int) $id_edition;
 						list($date_expire) = sql_fetch_row(sql_query($query));
 						if ($date_expire == NULL || $date_expire == "" || $date_expire == "0000-00-00 00:00:00" || $date_expire > $_new_date) {
 							$query = "UPDATE %lms_courseuser SET date_begin_validity = '" . $_new_date . "' "
-								. " WHERE idCourse=" . (int)$id_course . " AND idUser=" . (int)$id_user . " AND edition_id=" . (int)$id_edition;
+								. " WHERE idCourse=" . (int) $id_course . " AND idUser=" . (int) $id_user . " AND edition_id=" . (int) $id_edition;
 							$res = sql_query($query);
 						}
 
@@ -2836,17 +2897,16 @@ class SubscriptionAlmsController extends AlmsController
 					}
 					break;
 
-				case 'date_expire':
-					{
+				case 'date_expire': {
 						$_new_date = date("Y-m-d H:i:s", $new_value); //convert the input in ISO format
 						//extract date_begin and check if ggreater than date_expire
 						$res = false;
 						$query = "SELECT date_begin_validity FROM %lms_courseuser "
-							. " WHERE idCourse=" . (int)$id_course . " AND idUser=" . (int)$id_user . " AND edition_id=" . (int)$id_edition;
+							. " WHERE idCourse=" . (int) $id_course . " AND idUser=" . (int) $id_user . " AND edition_id=" . (int) $id_edition;
 						list($date_begin) = sql_fetch_row(sql_query($query));
 						if ($date_begin == NULL || $date_begin == "" || $date_begin == "0000-00-00 00:00:00" || $date_begin < $_new_date) {
 							$query = "UPDATE %lms_courseuser SET date_expire_validity = '" . $_new_date . "' "
-								. " WHERE idCourse=" . (int)$id_course . " AND idUser=" . (int)$id_user . " AND edition_id=" . (int)$id_edition;
+								. " WHERE idCourse=" . (int) $id_course . " AND idUser=" . (int) $id_user . " AND edition_id=" . (int) $id_edition;
 							$res = sql_query($query);
 						}
 
@@ -2858,16 +2918,15 @@ class SubscriptionAlmsController extends AlmsController
 					}
 					break;
 
-				case 'date_complete':
-					{
+				case 'date_complete': {
 						$_new_date = date("Y-m-d H:i:s", $new_value); //convert the input in ISO format
 						//extract date_begin and check if ggreater than date_expire
 						$res = false;
 						$query = "SELECT date_complete FROM %lms_courseuser "
-							. " WHERE idCourse=" . (int)$id_course . " AND idUser=" . (int)$id_user . " AND edition_id=" . (int)$id_edition;
+							. " WHERE idCourse=" . (int) $id_course . " AND idUser=" . (int) $id_user . " AND edition_id=" . (int) $id_edition;
 						list($date_begin) = sql_fetch_row(sql_query($query));
 						$query = "UPDATE %lms_courseuser SET date_complete = '" . $_new_date . "' "
-							. " WHERE idCourse=" . (int)$id_course . " AND idUser=" . (int)$id_user . " AND edition_id=" . (int)$id_edition;
+							. " WHERE idCourse=" . (int) $id_course . " AND idUser=" . (int) $id_user . " AND edition_id=" . (int) $id_edition;
 						$res = sql_query($query);
 
 						$output = array('success' => $res ? true : false);
@@ -2878,8 +2937,7 @@ class SubscriptionAlmsController extends AlmsController
 					}
 					break;
 
-				default:
-					{
+				default: {
 						echo $this->json->encode(array('success' => false));
 					}
 					break;
@@ -2963,8 +3021,7 @@ class SubscriptionAlmsController extends AlmsController
 	{
 		$op = Get::req('op', DOTY_MIXED, false);
 		switch ($op) {
-			case "selectall":
-				{
+			case "selectall": {
 					$this->_selectall_coursepath();
 					return;
 				}
@@ -3211,7 +3268,7 @@ class SubscriptionAlmsController extends AlmsController
 		$path_man = new CoursePath_Manager();
 
 		//1 - get list of the courses of the coursepath
-		$base_url = 'index.php?r=' . $this->link . '/show_coursepath&id_path=' . (int)$id_path;
+		$base_url = 'index.php?r=' . $this->link . '/show_coursepath&id_path=' . (int) $id_path;
 		$courses = $path_man->getAllCourses(array($id_path));
 		if (empty($courses)) {
 			Util::jump_to($base_url);
@@ -3293,7 +3350,7 @@ class SubscriptionAlmsController extends AlmsController
 				$docebo_course = new DoceboCourse($id_course);
 				$level_idst = &$docebo_course->getCourseLevel($id_course);
 				if (count($level_idst) == 0 || $level_idst[1] == '')
-					$level_idst =& $docebo_course->createCourseLevel($id_course);
+					$level_idst = &$docebo_course->createCourseLevel($id_course);
 				foreach ($_to_add as $id_user) {
 					$level = 3; //student
 					$waiting = false;
@@ -3303,14 +3360,14 @@ class SubscriptionAlmsController extends AlmsController
 					$this->model->subscribeUser($id_user, $level, $waiting);
 				}
 			}
-			Util::jump_to('index.php?r=' . $this->link . '/show_coursepath&id_path=' . (int)$id_path . '&res=' . $result);
+			Util::jump_to('index.php?r=' . $this->link . '/show_coursepath&id_path=' . (int) $id_path . '&res=' . $result);
 		}
 	}
 
 	public function choose_editions_coursepath_action()
 	{
 		if (isset($_POST['undo']))
-			Util::jump_to('index.php?r=' . $this->link . '/show_coursepath&id_path=' . (int)$_POST['id_path']);
+			Util::jump_to('index.php?r=' . $this->link . '/show_coursepath&id_path=' . (int) $_POST['id_path']);
 
 		$courses = explode(',', Get::req('courses_list', DOTY_MIXED, ''));
 		$_to_add = explode(',', Get::req('users_to_add', DOTY_MIXED, ''));
@@ -3329,7 +3386,7 @@ class SubscriptionAlmsController extends AlmsController
 			$docebo_course = new DoceboCourse($id_course);
 			$level_idst = &$docebo_course->getCourseLevel($id_course);
 			if (count($level_idst) == 0 || $level_idst[1] == '')
-				$level_idst =& $docebo_course->createCourseLevel($id_course);
+				$level_idst = &$docebo_course->createCourseLevel($id_course);
 
 			foreach ($_to_add as $id_user) {
 				$level = 3; //student
@@ -3349,7 +3406,7 @@ class SubscriptionAlmsController extends AlmsController
 		if ($res)
 			$res = $path_man->subscribeUserToCoursePath($id_path, $_to_add);
 
-		Util::jump_to('index.php?r=' . $this->link . '/show_coursepath&id_path=' . (int)$_POST['id_path'] . '&res=' . $res);
+		Util::jump_to('index.php?r=' . $this->link . '/show_coursepath&id_path=' . (int) $_POST['id_path'] . '&res=' . $res);
 	}
 
 	/****** End coursepaths ****************************************************/
@@ -3373,23 +3430,24 @@ class SubscriptionAlmsController extends AlmsController
 		$edition_id = Get::req('id_edition', DOTY_INT, 0);
 		$ed_url_param = '&id_edition=' . $edition_id;
 
-		$out =& $GLOBALS['page'];
-		$lang =& DoceboLanguage::CreateInstance('course', 'lms');
-		$lang =& DoceboLanguage::CreateInstance('subscribe', 'lms');
-		$acl_man =& Docebo::user()->getAclManager();
+		$out = &$GLOBALS['page'];
+		$lang = &DoceboLanguage::CreateInstance('course', 'lms');
+		$lang = &DoceboLanguage::CreateInstance('subscribe', 'lms');
+		$acl_man = &Docebo::user()->getAclManager();
 		$levels = CourseLevel::getLevels();
 
-		$waiting_users =& $man_course->getWaitingSubscribed($id_course, $edition_id);
-		$users_name =& $acl_man->getUsers($waiting_users['all_users_id']);
+		$waiting_users = &$man_course->getWaitingSubscribed($id_course, $edition_id);
+		$users_name = &$acl_man->getUsers($waiting_users['all_users_id']);
 
-		$arr_status = array(//_CUS_RESERVED		=> $lang->def('_USER_STATUS_RESERVED'),
+		$arr_status = array( //_CUS_RESERVED		=> $lang->def('_USER_STATUS_RESERVED'),
 			_CUS_WAITING_LIST => $lang->def('_WAITING_USERS'),
 			_CUS_CONFIRMED => $lang->def('_USER_STATUS_CONFIRMED'),
 
 			_CUS_SUBSCRIBED => $lang->def('_USER_STATUS_SUBS'),
 			_CUS_BEGIN => $lang->def('_USER_STATUS_BEGIN'),
 			_CUS_END => $lang->def('_USER_STATUS_END'),
-			_CUS_SUSPEND => $lang->def('_SUSPENDED'));
+			_CUS_SUSPEND => $lang->def('_SUSPENDED')
+		);
 
 		$page_title = array(
 			'index.php?r=' . $this->link_course . '/show' => Lang::t('_COURSES', 'course'),
@@ -3397,11 +3455,12 @@ class SubscriptionAlmsController extends AlmsController
 		);
 		$GLOBALS['page']->add(
 			getTitleArea($page_title, 'subscribe')
-			. '<div class="std_block">'
-			. Form::openForm('approve users', 'index.php?r=' . $this->link . '/approveusers')
-			. Form::getHidden('id_course', 'id_course', $id_course)
-			. Form::getHidden('edition_id', 'edition_id', $edition_id)
-			, 'content');
+				. '<div class="std_block">'
+				. Form::openForm('approve users', 'index.php?r=' . $this->link . '/approveusers')
+				. Form::getHidden('id_course', 'id_course', $id_course)
+				. Form::getHidden('edition_id', 'edition_id', $edition_id),
+			'content'
+		);
 
 		$tb = new Table(0, $lang->def('_SELECT_WHO_CONFIRM'), $lang->def('_SUMMARY_SELECT_WHO_CONFIRM'));
 
@@ -3431,8 +3490,7 @@ class SubscriptionAlmsController extends AlmsController
 		if (is_array($waiting_users['users_info'])) {
 
 			reset($waiting_users['users_info']);
-      foreach($waiting_users['users_info'] as $id_user => $info)
-      {
+			foreach ($waiting_users['users_info'] as $id_user => $info) {
 
 				$id_sub_by = $info['subscribed_by'];
 				$subscribed = ($users_name[$id_sub_by][ACL_INFO_LASTNAME] . '' . $users_name[$id_sub_by][ACL_INFO_FIRSTNAME] != ''
@@ -3464,29 +3522,31 @@ class SubscriptionAlmsController extends AlmsController
 					$content[] = '';
 					$content[] = '';
 					$content[] = '';
-
 				} else {
 
 					$content[] = Form::getInputRadio(
-							'waiting_user_0_' . $id_user,
-							'waiting_user[' . $id_user . ']',
-							'0',
-							false,
-							'') . '<label class="access-only" for="waiting_user_0_' . $id_user . '">' . $users_name[$id_user][ACL_INFO_USERID] . '</label>';
+						'waiting_user_0_' . $id_user,
+						'waiting_user[' . $id_user . ']',
+						'0',
+						false,
+						''
+					) . '<label class="access-only" for="waiting_user_0_' . $id_user . '">' . $users_name[$id_user][ACL_INFO_USERID] . '</label>';
 
 					$content[] = Form::getInputRadio(
-							'waiting_user_1_' . $id_user,
-							'waiting_user[' . $id_user . ']',
-							'1',
-							false,
-							'') . '<label class="access-only" for="waiting_user_1_' . $id_user . '">' . $users_name[$id_user][ACL_INFO_USERID] . '</label>';
+						'waiting_user_1_' . $id_user,
+						'waiting_user[' . $id_user . ']',
+						'1',
+						false,
+						''
+					) . '<label class="access-only" for="waiting_user_1_' . $id_user . '">' . $users_name[$id_user][ACL_INFO_USERID] . '</label>';
 
 					$content[] = Form::getInputRadio(
-							'waiting_user_2_' . $id_user,
-							'waiting_user[' . $id_user . ']',
-							'2',
-							true,
-							'') . '<label class="access-only" for="waiting_user_1_' . $id_user . '">' . $users_name[$id_user][ACL_INFO_USERID] . '</label>';
+						'waiting_user_2_' . $id_user,
+						'waiting_user[' . $id_user . ']',
+						'2',
+						true,
+						''
+					) . '<label class="access-only" for="waiting_user_1_' . $id_user . '">' . $users_name[$id_user][ACL_INFO_USERID] . '</label>';
 				}
 
 				$tb->addBody($content);
@@ -3500,18 +3560,19 @@ class SubscriptionAlmsController extends AlmsController
 
 		$GLOBALS['page']->add(
 			$tb->getTable()
-			. '<br />'
-			. Form::openElementSpace()
-			. Form::getSimpleTextarea($lang->def('_SUBSCRIBE_ACCEPT'), 'subscribe_accept', 'subscribe_accept')
-			. Form::getSimpleTextarea($lang->def('_SUBSCRIBE_REFUSE'), 'subscribe_refuse', 'subscribe_refuse')
-			. Form::closeElementSpace()
-			. Form::openButtonSpace()
-			. '<br />'
-			. Form::getButton('subscribe', 'subscribe', $lang->def('_SAVE'))
-			. Form::getButton('cancelselector', 'cancelselector', $lang->def('_UNDO'))
-			. Form::closeButtonSpace()
-			. Form::closeForm()
-			, 'content');
+				. '<br />'
+				. Form::openElementSpace()
+				. Form::getSimpleTextarea($lang->def('_SUBSCRIBE_ACCEPT'), 'subscribe_accept', 'subscribe_accept')
+				. Form::getSimpleTextarea($lang->def('_SUBSCRIBE_REFUSE'), 'subscribe_refuse', 'subscribe_refuse')
+				. Form::closeElementSpace()
+				. Form::openButtonSpace()
+				. '<br />'
+				. Form::getButton('subscribe', 'subscribe', $lang->def('_SAVE'))
+				. Form::getButton('cancelselector', 'cancelselector', $lang->def('_UNDO'))
+				. Form::closeButtonSpace()
+				. Form::closeForm(),
+			'content'
+		);
 		$GLOBALS['page']->add('</div>', 'content');
 	}
 
@@ -3519,7 +3580,7 @@ class SubscriptionAlmsController extends AlmsController
 	function removeSubscription($id_course, $id_user, $lv_group, $edition_id = 0, $start_date = FALSE, $end_date = FALSE)
 	{
 
-        require_once($GLOBALS["where_framework"] . "/lib/resources/lib.timetable.php");
+		require_once($GLOBALS["where_framework"] . "/lib/resources/lib.timetable.php");
 		$tt = new TimeTable();
 		// ----------------------------------------
 		$resource = "user";
@@ -3534,7 +3595,7 @@ class SubscriptionAlmsController extends AlmsController
 		// ----------------------------------------
 		$tt->deleteEvent(FALSE, $resource, $resource_id, $consumer, $consumer_id, $start_date, $end_date);
 
-		$acl_man =& Docebo::user()->getAclManager();
+		$acl_man = &Docebo::user()->getAclManager();
 		$acl_man->removeFromGroup($lv_group, $id_user);
 
 		if ($edition_id > 0) {
@@ -3546,7 +3607,7 @@ class SubscriptionAlmsController extends AlmsController
 		return sql_query("
 		DELETE FROM " . $GLOBALS['prefix_lms'] . "_courseuser
 		WHERE idUser = '" . $id_user . "' AND idCourse = '" . $id_course . "'
-		AND edition_id='" . (int)$edition_id . "'");
+		AND edition_id='" . (int) $edition_id . "'");
 	}
 
 	function approveusers()
@@ -3567,7 +3628,7 @@ class SubscriptionAlmsController extends AlmsController
 		if (isset($_POST['waiting_user'])) {
 
 			$man_course = new Man_Course();
-			$waiting_users =& $man_course->getWaitingSubscribed($id_course);
+			$waiting_users = &$man_course->getWaitingSubscribed($id_course);
 			$tot_deny = array();
 
 			require_once(_lms_ . '/lib/lib.course.php');
@@ -3577,9 +3638,8 @@ class SubscriptionAlmsController extends AlmsController
 
 			$group_levels = $docebo_course->getCourseLevel($id_course);
 			if (count($group_levels) == 0 || $group_levels[1] == '')
-				$group_levels =& $docebo_course->createCourseLevel($id_course);
-      foreach($_POST['waiting_user'] as $id_user => $action)
-      {
+				$group_levels = &$docebo_course->createCourseLevel($id_course);
+			foreach ($_POST['waiting_user'] as $id_user => $action) {
 
 				if ($action == 0) {
 					// approved -----------------------------------------------
@@ -3593,7 +3653,6 @@ class SubscriptionAlmsController extends AlmsController
 					$result = sql_query($text_query);
 					if ($result) $approve_user[] = $id_user;
 					$re &= $result;
-
 				} elseif ($action == 1) {
 					// refused --------------------------------------------------
 
@@ -3611,8 +3670,7 @@ class SubscriptionAlmsController extends AlmsController
 			}
 		}
 		if (!empty($tot_deny)) {
-      foreach($tot_deny as $id_user => $inc )
-      {
+			foreach ($tot_deny as $id_user => $inc) {
 
 				$pref = new UserPreferences($id_user);
 				$max_subscribe = $pref->getAdminPreference('admin_rules.max_course_subscribe');
@@ -3620,8 +3678,10 @@ class SubscriptionAlmsController extends AlmsController
 			}
 		}
 		require_once(_base_ . '/lib/lib.eventmanager.php');
-		$array_subst = array('[url]' => Get::site_url(),
-			'[course]' => $course_info['name']);
+		$array_subst = array(
+			'[url]' => Get::site_url(),
+			'[course]' => $course_info['name']
+		);
 		if (!empty($approve_user)) {
 
 			$msg_composer = new EventMessageComposer();
@@ -3633,9 +3693,16 @@ class SubscriptionAlmsController extends AlmsController
 			$msg_composer->setBodyLangText('sms', '_APPROVED_SUBSCRIBED_TEXT_SMS', $array_subst);
 
 			// send message to the user subscribed
-			createNewAlert('UserCourseInserted', 'subscribe', 'approve', '1', 'User course approve',
-				$approve_user, $msg_composer, true);
-
+			createNewAlert(
+				'UserCourseInserted',
+				'subscribe',
+				'approve',
+				'1',
+				'User course approve',
+				$approve_user,
+				$msg_composer,
+				true
+			);
 		}
 		if (!empty($deny_user)) {
 
@@ -3649,11 +3716,18 @@ class SubscriptionAlmsController extends AlmsController
 			$msg_composer->setBodyLangText('sms', '_DENY_SUBSCRIBED_TEXT_SMS', $array_subst);
 
 			// send message to the user subscribed
-			createNewAlert('UserCourseInserted', 'subscribe', 'deny', '1', 'User course deny',
-				$deny_user, $msg_composer, true);
+			createNewAlert(
+				'UserCourseInserted',
+				'subscribe',
+				'deny',
+				'1',
+				'User course deny',
+				$deny_user,
+				$msg_composer,
+				true
+			);
 		}
 		Util::jump_to('index.php?r=' . $this->link_course . '/show&res=' . ($re ? 'ok' : 'err'));
-
 	}
 
 	public function unsubscriberequestsTask()
@@ -3665,7 +3739,6 @@ class SubscriptionAlmsController extends AlmsController
 			'filter_text' => "",
 			'num_subs_selected' => 0
 		));
-
 	}
 
 
@@ -3707,7 +3780,7 @@ class SubscriptionAlmsController extends AlmsController
 					$courses = array(0);
 
 					foreach ($user_catalogue as $id_cat) {
-						$catalogue_course =& $cat_man->getCatalogueCourse($id_cat, true);
+						$catalogue_course = &$cat_man->getCatalogueCourse($id_cat, true);
 
 						$courses = array_merge($courses, $catalogue_course);
 					}
@@ -3724,14 +3797,14 @@ class SubscriptionAlmsController extends AlmsController
 				if (!empty($view['coursepath'])) {
 					require_once(_lms_ . '/lib/lib.coursepath.php');
 					$path_man = new Catalogue_Manager();
-					$coursepath_course =& $path_man->getAllCourses($view['coursepath']);
+					$coursepath_course = &$path_man->getAllCourses($view['coursepath']);
 					$array_courses = array_merge($array_courses, $coursepath_course);
 				}
 				if (!empty($view['catalogue'])) {
 					require_once(_lms_ . '/lib/lib.catalogue.php');
 					$cat_man = new Catalogue_Manager();
 					foreach ($view['catalogue'] as $id_cat) {
-						$catalogue_course =& $cat_man->getCatalogueCourse($id_cat, true);
+						$catalogue_course = &$cat_man->getCatalogueCourse($id_cat, true);
 						$array_courses = array_merge($array_courses, $catalogue_course);
 					}
 				}
@@ -3744,12 +3817,12 @@ class SubscriptionAlmsController extends AlmsController
 
 		if ($filter_course > 0) {
 			if ($courses_filter === FALSE) {
-				$courses_filter = (int)$filter_course;
+				$courses_filter = (int) $filter_course;
 			} else {
 				if (!in_array($filter_course, $courses_filter)) {
 					$courses_filter = array();
 				} else {
-					$courses_filter = (int)$filter_course;
+					$courses_filter = (int) $filter_course;
 				}
 			}
 		}
@@ -3779,7 +3852,7 @@ class SubscriptionAlmsController extends AlmsController
 		$records = array();
 		if (is_array($list)) {
 			foreach ($list as $record) {
-				$id_unsub = (int)$record->user_id . '_' . $record->idCourse . '_' . $record->res_id . '_' . $record->r_type;
+				$id_unsub = (int) $record->user_id . '_' . $record->idCourse . '_' . $record->res_id . '_' . $record->r_type;
 				$record->id = $id_unsub;
 				$record->userid = Layout::highlight($this->acl_man->relativeId($record->userid), $filter_text);
 				$record->firstname = Layout::highlight($record->firstname, $filter_text);
@@ -3796,8 +3869,8 @@ class SubscriptionAlmsController extends AlmsController
 				'recordsReturned' => count($records),
 				'sort' => $sort,
 				'dir' => $dir,
-				'totalRecords' => $total,//$this->model->getTotalGroups($filter),
-				'pageSize' => $results,//$rowsPerPage,
+				'totalRecords' => $total, //$this->model->getTotalGroups($filter),
+				'pageSize' => $results, //$rowsPerPage,
 				'records' => $records
 			);
 		} else {
@@ -3832,7 +3905,7 @@ class SubscriptionAlmsController extends AlmsController
 					$courses = array(0);
 
 					foreach ($user_catalogue as $id_cat) {
-						$catalogue_course =& $cat_man->getCatalogueCourse($id_cat);
+						$catalogue_course = &$cat_man->getCatalogueCourse($id_cat);
 
 						$courses = array_merge($courses, $catalogue_course);
 					}
@@ -3849,14 +3922,14 @@ class SubscriptionAlmsController extends AlmsController
 				if (!empty($view['coursepath'])) {
 					require_once(_lms_ . '/lib/lib.coursepath.php');
 					$path_man = new Catalogue_Manager();
-					$coursepath_course =& $path_man->getAllCourses($view['coursepath']);
+					$coursepath_course = &$path_man->getAllCourses($view['coursepath']);
 					$array_courses = array_merge($array_courses, $coursepath_course);
 				}
 				if (!empty($view['catalogue'])) {
 					require_once(_lms_ . '/lib/lib.catalogue.php');
 					$cat_man = new Catalogue_Manager();
 					foreach ($view['catalogue'] as $id_cat) {
-						$catalogue_course =& $cat_man->getCatalogueCourse($id_cat, true);
+						$catalogue_course = &$cat_man->getCatalogueCourse($id_cat, true);
 						$array_courses = array_merge($array_courses, $catalogue_course);
 					}
 				}
@@ -3868,12 +3941,12 @@ class SubscriptionAlmsController extends AlmsController
 
 		if ($filter_course > 0) {
 			if ($courses_filter === FALSE) {
-				$courses_filter = (int)$filter_course;
+				$courses_filter = (int) $filter_course;
 			} else {
 				if (!in_array($filter_course, $courses_filter)) {
 					$courses_filter = array();
 				} else {
-					$courses_filter = (int)$filter_course;
+					$courses_filter = (int) $filter_course;
 				}
 			}
 		}
@@ -3897,18 +3970,15 @@ class SubscriptionAlmsController extends AlmsController
 		list($user_id, $idCourse, $res_id, $r_type) = explode("_", $_id);
 		$smodel = new SubscriptionAlms();
 		switch ($r_type) {
-			case "course":
-				{
+			case "course": {
 					$res = $smodel->unsubscribeUser($user_id, $idCourse);
 				}
 				break;
-			case "edition":
-				{
+			case "edition": {
 					$res = $smodel->unsubscribeUser($user_id, $idCourse, $res_id);
 				}
 				break;
-			case "classroom":
-				{
+			case "classroom": {
 					$res = $smodel->unsubscribeUser($user_id, $idCourse, false, $res_id);
 				}
 				break;
@@ -3927,18 +3997,15 @@ class SubscriptionAlmsController extends AlmsController
 		list($user_id, $idCourse, $res_id, $r_type) = explode("_", $_id);
 		$smodel = new SubscriptionAlms();
 		switch ($r_type) {
-			case "course":
-				{
+			case "course": {
 					$res = $smodel->unsetUnsubscribeRequest($user_id, $idCourse);
 				}
 				break;
-			case "edition":
-				{
+			case "edition": {
 					$res = $smodel->unsetUnsubscribeRequest($user_id, $idCourse, $res_id);
 				}
 				break;
-			case "classroom":
-				{
+			case "classroom": {
 					$res = $smodel->unsetUnsubscribeRequest($user_id, $idCourse, false, $res_id);
 				}
 				break;
@@ -3962,18 +4029,15 @@ class SubscriptionAlmsController extends AlmsController
 		foreach ($list as $request) {
 			list($user_id, $idCourse, $res_id, $r_type) = explode("_", $request);
 			switch ($r_type) {
-				case "course":
-					{
+				case "course": {
 						$res = $smodel->unsubscribeUser($user_id, $idCourse);
 					}
 					break;
-				case "edition":
-					{
+				case "edition": {
 						$res = $smodel->unsubscribeUser($user_id, $idCourse, $res_id);
 					}
 					break;
-				case "classroom":
-					{
+				case "classroom": {
 						$res = $smodel->unsubscribeUser($user_id, $idCourse, false, $res_id);
 					}
 					break;
@@ -3998,18 +4062,15 @@ class SubscriptionAlmsController extends AlmsController
 		foreach ($list as $request) {
 			list($user_id, $idCourse, $res_id, $r_type) = explode("_", $request);
 			switch ($r_type) {
-				case "course":
-					{
+				case "course": {
 						$res = $smodel->unsetUnsubscribeRequest($user_id, $idCourse);
 					}
 					break;
-				case "edition":
-					{
+				case "edition": {
 						$res = $smodel->unsetUnsubscribeRequest($user_id, $idCourse, $res_id);
 					}
 					break;
-				case "classroom":
-					{
+				case "classroom": {
 						$res = $smodel->unsetUnsubscribeRequest($user_id, $idCourse, false, $res_id);
 					}
 					break;
@@ -4019,8 +4080,4 @@ class SubscriptionAlmsController extends AlmsController
 		$output = array('success' => $res ? TRUE : FALSE);
 		echo $this->json->encode($output);
 	}
-
-
 }
-
-?>

@@ -95,7 +95,7 @@ class UsermanagementAdmController extends AdmController
 				break;
 			case "password mismatch":
 				$message = Lang::t('PASSWRONG', 'register');
-			//...
+				//...
 			case "":
 				$message = "";
 				break;
@@ -115,17 +115,17 @@ class UsermanagementAdmController extends AdmController
 		$fields = $fman->getFlatAllFields(array('framework', 'lms'));
 
 		$f_list = array(
-            'level' => Lang::t('_LEVEL', 'standard'),
+			'level' => Lang::t('_LEVEL', 'standard'),
 			'email' => Lang::t('_EMAIL', 'standard'),
 			'lastenter' => Lang::t('_DATE_LAST_ACCESS', 'profile'),
 			'register_date' => Lang::t('_DIRECTORY_FILTER_register_date', 'admin_directory'),
 			'language' => Lang::t('_LANGUAGE', 'standard')
-			
+
 		);
 		$f_list = $f_list + $fields;
 		$f_selected = $this->json->decode(Docebo::user()->getPreference('ui.directory.custom_columns'));
 		if ($f_selected == false) {
-			$f_selected = array('level','email', 'lastenter', 'register_date');
+			$f_selected = array('level', 'email', 'lastenter', 'register_date');
 		}
 
 		$js_arr = array();
@@ -157,8 +157,7 @@ class UsermanagementAdmController extends AdmController
 				$message = getErrorUi(Lang::t('_FIELD_REPEATED', 'user_managment'));
 				break;
 
-			case 'err_alreadyassigned':
-				{
+			case 'err_alreadyassigned': {
 					$countassigned = Get::req('count', DOTY_STRING, '');
 					$id_first = Get::req('id_first', DOTY_STRING, '');
 					$profile_user = $this->model->getProfileData($id_first);
@@ -195,11 +194,11 @@ class UsermanagementAdmController extends AdmController
 			'fieldlist' => $f_list,
 			'fieldlist_js' => $f_list_js,
 			'selected' => $f_selected,
-			'selected_orgchart' => $selected_orgchart,//$this->_getSelectedNode(),
+			'selected_orgchart' => $selected_orgchart, //$this->_getSelectedNode(),
 			'root_node_actions' => $root_node_actions,
-			'show_descendants' => $this->_getSessionValue('show_descendants', false),//$this->_getDescendantsFilter(),
-			'show_suspended' => $this->_getSessionValue('show_suspended', true),//$this-> _getSuspendedFilter(),
-			'filter_text' => $this->_getSessionValue('text_filter', ""),//$this->_getTextFilter(),
+			'show_descendants' => $this->_getSessionValue('show_descendants', false), //$this->_getDescendantsFilter(),
+			'show_suspended' => $this->_getSessionValue('show_suspended', true), //$this-> _getSuspendedFilter(),
+			'filter_text' => $this->_getSessionValue('text_filter', ""), //$this->_getTextFilter(),
 			'result_message' => $message,
 			'dynamic_filter' => $dyn_filter,
 			'num_waiting_users' => $this->model->getWaitingUsersTotal(),
@@ -230,8 +229,7 @@ class UsermanagementAdmController extends AdmController
 
 		$op = Get::req('op', DOTY_MIXED, false);
 		switch ($op) {
-			case "selectall":
-				{
+			case "selectall": {
 					$this->selectall();
 					return;
 				}
@@ -249,7 +247,7 @@ class UsermanagementAdmController extends AdmController
 		$var_fields = Get::req('_dyn_field', DOTY_MIXED, array());
 		if (stristr($sort, '_dyn_field_') !== false) {
 			$index = str_replace('_dyn_field_', '', $sort);
-			$sort = $var_fields[(int)$index];
+			$sort = $var_fields[(int) $index];
 		}
 
 		$filter_text = Get::req('filter_text', DOTY_STRING, '');
@@ -295,7 +293,7 @@ class UsermanagementAdmController extends AdmController
 			$user_entry_data = $fman->getUsersFieldEntryData(array_keys($list));
 			foreach ($list as $idst => $record) {
 				$record_row = array(
-					'id' => (int)$record['idst'],
+					'id' => (int) $record['idst'],
 					'userid' => Layout::highlight($acl_man->relativeId($record['userid']), $filter_text),
 					'firstname' => Layout::highlight($record['firstname'], $filter_text),
 					'lastname' => Layout::highlight($record['lastname'], $filter_text),
@@ -303,9 +301,9 @@ class UsermanagementAdmController extends AdmController
 					'register_date' => Format::date($record['register_date'], "datetime"),
 					'lastenter' => Format::date($record['lastenter'], "datetime"),
 					'unassoc' => $idOrg > 0 ? (!empty($record['is_descendant']) ? 0 : 1) : -1,
-					'valid' => (int)$record['valid'] > 0 ? 1 : 0,
-					'mod' => 'ajax.adm_server.php?r=' . $this->link . '/moduser&id=' . (int)$idst,
-					'del' => ($idst != $current_user) ? 'ajax.adm_server.php?r=' . $this->link . '/deluser&id=' . (int)$idst : false,
+					'valid' => (int) $record['valid'] > 0 ? 1 : 0,
+					'mod' => 'ajax.adm_server.php?r=' . $this->link . '/moduser&id=' . (int) $idst,
+					'del' => ($idst != $current_user) ? 'ajax.adm_server.php?r=' . $this->link . '/deluser&id=' . (int) $idst : false,
 				);
 
 				foreach ($var_fields as $i => $value) {
@@ -321,7 +319,7 @@ class UsermanagementAdmController extends AdmController
 					if ($name == 'lastenter') $content = Format::date($content, 'datetime');
 					if ($name == 'level' && $content != '') $content = Lang::t('_DIRECTORY_' . $content, 'admin_directory');
 					if (!empty($date_fields) && in_array($value, $date_fields)) $content = Format::date(substr($content, 0, 10), 'date');
-					if ($name == '_custom_' . $value) $content = $user_entry_data[(int)$record['idst']][$value];
+					if ($name == '_custom_' . $value) $content = $user_entry_data[(int) $record['idst']][$value];
 					$record_row['_dyn_field_' . $i] = $content;
 				}
 
@@ -339,10 +337,12 @@ class UsermanagementAdmController extends AdmController
 			'records' => $output_results
 		);
 
-		$event = new appCore\Events\Core\User\UsersManagementShowEvent();
-		$event->setUsers($output['records']);
-		\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementShowEvent::EVENT_NAME, $event);
-		$output['records'] = $event->getUsers();
+		//TODO: EVT_OBJECT (§)
+		//$event = new appCore\Events\Core\User\UsersManagementShowEvent();
+		//$event->setUsers($output['records']);
+		//TODO: EVT_LAUNCH (&)
+		//\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementShowEvent::EVENT_NAME, $event);
+		//$output['records'] = $event->getUsers();
 
 		echo $this->json->encode($output);
 	}
@@ -373,14 +373,13 @@ class UsermanagementAdmController extends AdmController
 			$force_change = $user_info[ACL_INFO_FORCE_CHANGE];
 
 			$level = $acl_man->getUserLevelId($idst);
-
 		} else {
 			$form_id = 'create_user_form';
 			$form_url = 'ajax.adm_server.php?r=' . $this->link . '/createuser_action';
 			$info_userid = $info_firstname = $info_lastname = $info_email = "";
 		}
 
-		$arr_levels = $acl_man->getAdminLevels();//index = idst; value = groupid;
+		$arr_levels = $acl_man->getAdminLevels(); //index = idst; value = groupid;
 		$levels = array();
 		foreach ($arr_levels as $groupid_level => $idst_level) {
 			if ($this->_canUseLevel($groupid_level))
@@ -390,7 +389,7 @@ class UsermanagementAdmController extends AdmController
 		$language = getDefaultLanguage();
 		$languages = Docebo::langManager()->getAllLanguages();
 
-		$pman =& PlatformManager::createInstance();// = new PlatformManager();
+		$pman = &PlatformManager::createInstance(); // = new PlatformManager();
 		$platforms = $pman->getPlatformList();
 		$fman = new FieldList();
 
@@ -404,7 +403,7 @@ class UsermanagementAdmController extends AdmController
 			$arr_idst[] = $tmp[0];
 			$tmp = $acl_man->getGroup(false, '/ocd_' . $_SESSION['usermanagement']['selected_node']);
 			$arr_idst[] = $tmp[0];
-			$acl =& Docebo::user()->getACL();
+			$acl = &Docebo::user()->getACL();
 			$arr_idst = $acl->getArrSTGroupsST($arr_idst);
 		}
 
@@ -534,7 +533,7 @@ class UsermanagementAdmController extends AdmController
 			$userdata->force_change = 1;
 		}
 
-		$userdata->preferences =& $_POST;
+		$userdata->preferences = &$_POST;
 
 
 		$folders = Get::req('sel', DOTY_MIXED, false);
@@ -554,6 +553,7 @@ class UsermanagementAdmController extends AdmController
 			$array_subst = array(
 				'[url]' => Get::site_url(),
 				'[userid]' => $userid,
+				'[dynamic_link]' => $folders ? getCurrentDomain(array_values($folders)[0]) : Get::site_url(),
 				'[password]' => $password
 			);
 
@@ -567,8 +567,15 @@ class UsermanagementAdmController extends AdmController
 			$recipients = array($idst);
 
 			if (!empty($recipients)) {
-				createNewAlert('UserNew', 'directory', 'edit', '1', 'New user created',
-					$recipients, $e_msg);
+				createNewAlert(
+					'UserNew',
+					'directory',
+					'edit',
+					'1',
+					'New user created',
+					$recipients,
+					$e_msg
+				);
 				ob_clean();
 			}
 
@@ -579,7 +586,7 @@ class UsermanagementAdmController extends AdmController
 				$pref = $admin_pref->getAdminRules(Docebo::user()->getIdSt());
 				if ($pref['admin_rules.limit_user_insert'] == 'on') {
 					$user_pref = new UserPreferences(Docebo::user()->getIdSt());
-					$user_created_count = (int)$user_pref->getPreference('user_created_count');
+					$user_created_count = (int) $user_pref->getPreference('user_created_count');
 					$user_created_count++;
 					$user_pref->setPreference('user_created_count', $user_created_count);
 					if ($user_created_count >= $pref['admin_rules.max_user_insert']) {
@@ -588,7 +595,6 @@ class UsermanagementAdmController extends AdmController
 					}
 				}
 			}
-
 		} else {
 			$output['success'] = false;
 			$output['message'] = $idst;
@@ -666,7 +672,7 @@ class UsermanagementAdmController extends AdmController
 		}
 		$userdata->force_change = Get::req('force_changepwd', DOTY_INT, 0);
 
-		$userdata->preferences =& $_POST; //Get::req('user_preferences', DOTY_MIXED, array());
+		$userdata->preferences = &$_POST; //Get::req('user_preferences', DOTY_MIXED, array());
 
 		$res = $this->model->editUser($idst, $userdata);
 		if ($res === true) {
@@ -680,11 +686,13 @@ class UsermanagementAdmController extends AdmController
 		$oldUserdata = $model->getProfileData($idst);
 
 		// SET EDIT USER SINGLE EVENT
-		$event = new \appCore\Events\Core\User\UsersManagementEditEvent();
-		$event->setType('single');
-		$event->setUser($userdata);
-		$event->setOldUser($oldUserdata);
-		\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementEditEvent::EVENT_NAME, $event);
+		//TODO: EVT_OBJECT (§)
+		//$event = new \appCore\Events\Core\User\UsersManagementEditEvent();
+		//$event->setType('single');
+		//$event->setUser($userdata);
+		//$event->setOldUser($oldUserdata);
+		//TODO: EVT_LAUNCH (&)
+		//\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementEditEvent::EVENT_NAME, $event);
 
 		require_once(Forma::inc(_base_ . '/lib/lib.eventmanager.php'));
 
@@ -713,8 +721,15 @@ class UsermanagementAdmController extends AdmController
 		$recipients = $acl_manager->getGroupAllUser($permission_godadmin);
 		$recipients = array_merge($recipients, $acl_manager->getGroupAllUser($permission_admin));
 
-		createNewAlert('UserModSuperAdmin', 'directory', 'edit', '1', 'User ' . $userid . ' was modified',
-			$recipients, $msg_composer);
+		createNewAlert(
+			'UserModSuperAdmin',
+			'directory',
+			'edit',
+			'1',
+			'User ' . $userid . ' was modified',
+			$recipients,
+			$msg_composer
+		);
 
 		echo $this->json->encode($output);
 	}
@@ -757,16 +772,18 @@ class UsermanagementAdmController extends AdmController
 					$pref = $admin_pref->getAdminRules(Docebo::user()->getIdSt());
 					if ($pref['admin_rules.limit_user_insert'] == 'on') {
 						$user_pref = new UserPreferences(Docebo::user()->getIdSt());
-						$user_created_count = (int)$user_pref->getPreference('user_created_count');
+						$user_created_count = (int) $user_pref->getPreference('user_created_count');
 						$user_created_count = $user_created_count - 1;
 						$user_pref->setPreference('user_created_count', $user_created_count);
 					}
 				}
 
 				// SET DELETE USER EVENT
-				$event = new \appCore\Events\Core\User\UsersManagementDeleteEvent();
-				$event->setUser($user);
-				\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementDeleteEvent::EVENT_NAME, $event);
+				//TODO: EVT_OBJECT (§)
+				//$event = new \appCore\Events\Core\User\UsersManagementDeleteEvent();
+				//$event->setUser($user);
+				//TODO: EVT_LAUNCH (&)
+				//\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementDeleteEvent::EVENT_NAME, $event);
 			} else {
 				$output = array('success' => false, 'message' => 'Error: unable to delete user #' . $id_user . '.');
 			}
@@ -806,9 +823,11 @@ class UsermanagementAdmController extends AdmController
 			$res = $this->model->deleteUsers($users_arr);
 
 			// SET DELETE USER MULTIPLE EVENT
-			$event = new \appCore\Events\Core\User\UsersManagementDeleteEvent();
-			$event->setUsers($users);
-			\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementDeleteEvent::EVENT_NAME, $event);
+			//TODO: EVT_OBJECT (§)
+			//$event = new \appCore\Events\Core\User\UsersManagementDeleteEvent();
+			//$event->setUsers($users);
+			//TODO: EVT_LAUNCH (&)
+			//\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementDeleteEvent::EVENT_NAME, $event);
 
 			if (is_array($res)) {
 				$output['success'] = true;
@@ -823,12 +842,11 @@ class UsermanagementAdmController extends AdmController
 					$pref = $admin_pref->getAdminRules(Docebo::user()->getIdSt());
 					if ($pref['admin_rules.limit_user_insert'] == 'on') {
 						$user_pref = new UserPreferences(Docebo::user()->getIdSt());
-						$user_created_count = (int)$user_pref->getPreference('user_created_count');
+						$user_created_count = (int) $user_pref->getPreference('user_created_count');
 						$user_created_count = $user_created_count - $count_users;
 						$user_pref->setPreference('user_created_count', $user_created_count);
 					}
 				}
-
 			} else {
 				$output['success'] = false;
 				$output['message'] = 'error while deleting users';
@@ -892,22 +910,33 @@ class UsermanagementAdmController extends AdmController
 				$recipients = $acl_manager->getGroupAllUser($permission_godadmin);
 				$recipients = array_merge($recipients, $acl_manager->getGroupAllUser($permission_admin));
 
-				createNewAlert('UserSuspendedSuperAdmin', 'directory', 'edit', '1', 'User ' . $userid . ' was suspended',
-					$recipients, $msg_composer);
+				createNewAlert(
+					'UserSuspendedSuperAdmin',
+					'directory',
+					'edit',
+					'1',
+					'User ' . $userid . ' was suspended',
+					$recipients,
+					$msg_composer
+				);
 
 
 				// SET SUSPAND USER EVENT
-				$event = new \appCore\Events\Core\User\UsersManagementSuspendEvent();
-				$event->setUser($user);
-				\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementSuspendEvent::EVENT_NAME, $event);
+				//TODO: EVT_OBJECT (§)
+				//$event = new \appCore\Events\Core\User\UsersManagementSuspendEvent();
+				//$event->setUser($user);
+				//TODO: EVT_LAUNCH (&)
+				//\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementSuspendEvent::EVENT_NAME, $event);
 			} else {
 				$output['success'] = $this->model->unsuspendUsers($idst);
 				$output['message'] = UIFeedback::pinfo(Lang::t('_OPERATION_SUCCESSFUL', 'standard'));
 
 				// SET UNSUSPAND USER EVENT
-				$event = new \appCore\Events\Core\User\UsersManagementUnsuspendEvent();
-				$event->setUser($user);
-				\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementUnsuspendEvent::EVENT_NAME, $event);
+				//TODO: EVT_OBJECT (§)
+				//$event = new \appCore\Events\Core\User\UsersManagementUnsuspendEvent();
+				//$event->setUser($user);
+				//TODO: EVT_LAUNCH (&)
+				//\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementUnsuspendEvent::EVENT_NAME, $event);
 			}
 		} else {
 			$output['success'] = false;
@@ -970,21 +999,31 @@ class UsermanagementAdmController extends AdmController
 
 					$msg_composer->setBodyLangText('sms', '_EVENT_SUSPENDED_USER_TEXT_SMS', $array_subst);
 
-					createNewAlert('UserSuspendedSuperAdmin', 'directory', 'edit', '1', 'User ' . $userid . ' was suspended',
-						$recipients, $msg_composer);
+					createNewAlert(
+						'UserSuspendedSuperAdmin',
+						'directory',
+						'edit',
+						'1',
+						'User ' . $userid . ' was suspended',
+						$recipients,
+						$msg_composer
+					);
 				}
 
 				// SET SUSPAND USERS MULTIPLE EVENT
-				$event = new \appCore\Events\Core\User\UsersManagementSuspendEvent();
-				$event->setUsers($users);
-				\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementSuspendEvent::EVENT_NAME, $event);
+				//TODO: EVT_OBJECT (§)
+				//$event = new \appCore\Events\Core\User\UsersManagementSuspendEvent();
+				//$event->setUsers($users);
+				//TODO: EVT_LAUNCH (&)
+				//\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementSuspendEvent::EVENT_NAME, $event);
 			} else {
 				$output['success'] = $this->model->unsuspendUsers($arr_users);
 
 				// SET UNSUSPAND USERS MULTIPLE EVENT
-				$event = new \appCore\Events\Core\User\UsersManagementUnsuspendEvent();
-				$event->setUsers($users);
-				\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementUnsuspendEvent::EVENT_NAME, $event);
+				//TODO: EVT_OBJECT (§)
+				//$event = new \appCore\Events\Core\User\UsersManagementUnsuspendEvent();
+				//$event->setUsers($users);
+				//\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementUnsuspendEvent::EVENT_NAME, $event);
 			}
 		} else {
 			$output['success'] = false;
@@ -1007,7 +1046,7 @@ class UsermanagementAdmController extends AdmController
 		if ($users != "") {
 			$arr_users = explode(',', $users);
 			$output['success'] = true;
-			foreach ($arr_users AS $user) {
+			foreach ($arr_users as $user) {
 				if (!$this->model->randomPassword($user)) {
 					$output['success'] = false;
 				}
@@ -1056,8 +1095,7 @@ class UsermanagementAdmController extends AdmController
 
 		switch ($command) {
 
-			case "expand":
-				{
+			case "expand": {
 					//check permissions
 					if (!$this->permissions['view_org']) {
 						$output = array('success' => false, 'message' => $this->_getErrorMessage('no permission'));
@@ -1070,7 +1108,7 @@ class UsermanagementAdmController extends AdmController
 
 					if ($initial) {
 						//get selected node from session and set the expanded tree
-						$idOrg = $this->_getSessionValue('selected_node', 0);//$this->_getSelectedNode();
+						$idOrg = $this->_getSessionValue('selected_node', 0); //$this->_getSelectedNode();
 						$nodes = $this->model->getOrgChartInitialNodes($idOrg, true);
 						//create actions for every node
 						$this->_assignActions($nodes);
@@ -1102,15 +1140,13 @@ class UsermanagementAdmController extends AdmController
 				}
 				break;
 
-			case "set_selected_node":
-				{
+			case "set_selected_node": {
 					$idOrg = Get::req('node_id', DOTY_INT, -1);
-					$this->_setSessionValue('selected_node', $idOrg);//_setSelectedNode($idOrg);
+					$this->_setSessionValue('selected_node', $idOrg); //_setSelectedNode($idOrg);
 				}
 				break;
 
-			case "delete":
-				{
+			case "delete": {
 					//check permissions
 					if (!$this->permissions['del_org']) {
 						$output = array('success' => false, 'message' => $this->_getErrorMessage('no permission'));
@@ -1122,8 +1158,7 @@ class UsermanagementAdmController extends AdmController
 				}
 				break;
 
-			case "getmodform":
-				{
+			case "getmodform": {
 					//check permissions
 					if (!$this->permissions['mod_org']) {
 						$output = array('success' => false, 'message' => $this->_getErrorMessage('no permission'));
@@ -1147,7 +1182,7 @@ class UsermanagementAdmController extends AdmController
 								. Form::closeForm();
 						} else {
 							$folder_info = $this->model->getFolderById($id);
-							$languages = Docebo::langManager()->getAllLanguages(true);//getAllLangCode();
+							$languages = Docebo::langManager()->getAllLanguages(true); //getAllLangCode();
 							$std_lang = getLanguage();
 
 							$template = (!empty($folder_info->associated_template) ? $folder_info->associated_template : getDefaultTemplate());
@@ -1170,7 +1205,6 @@ class UsermanagementAdmController extends AdmController
 							}
 							// LRZ
 							// Add custom fiels for org chart tree
-							$form_content .= Form::getLineBox();
 							$form_content .= '<hr>';
 							$vett_custom_org = $this->model->getCustomFieldOrg($id);
 							foreach ($vett_custom_org as $key => $value) {
@@ -1200,8 +1234,7 @@ class UsermanagementAdmController extends AdmController
 				}
 				break;
 
-			case "assignfields":
-				{
+			case "assignfields": {
 					//check permissions
 					if (!$this->permissions['mod_org']) {
 						$output = array('success' => false, 'message' => $this->_getErrorMessage('no permission'));
@@ -1213,8 +1246,7 @@ class UsermanagementAdmController extends AdmController
 				}
 				break;
 
-			case "options":
-				{
+			case "options": {
 					//check permissions
 					if (!$this->permissions['view_org']) {
 						$output = array('success' => false, 'message' => $this->_getErrorMessage('no permission'));
@@ -1234,8 +1266,7 @@ class UsermanagementAdmController extends AdmController
 				}
 				break;
 
-			case "movefolder":
-				{
+			case "movefolder": {
 					//check permissions
 					if (!$this->permissions['mod_org']) {
 						$output = array('success' => false, 'message' => $this->_getErrorMessage('no permission'));
@@ -1256,8 +1287,7 @@ class UsermanagementAdmController extends AdmController
 				}
 				break;
 
-			default:
-				{
+			default: {
 					$output = array();
 					$output['success'] = false;
 					echo $this->json->encode($output);
@@ -1276,7 +1306,7 @@ class UsermanagementAdmController extends AdmController
 				'id' => $nodedata->idOrg,
 				'label' => $model->getFolderTranslation($nodedata->idOrg, getLanguage()),
 				'is_leaf' => (($nodedata->iRight - $nodedata->iLeft) == 1),
-				'count_content' => (int)(($nodedata->iRight - $nodedata->iLeft - 1) / 2)
+				'count_content' => (int) (($nodedata->iRight - $nodedata->iLeft - 1) / 2)
 			);
 		}
 		if (!is_array($node)) return false; //unrecognized type for node data
@@ -1413,9 +1443,11 @@ class UsermanagementAdmController extends AdmController
 				$output['node'] = $nodedata;
 				$output['id_parent'] = $id_parent;
 
-				$event = new \appCore\Events\Core\User\UsersManagementOrgChartCreateNodeEvent();
-				$event->setNode($nodedata);
-				\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementOrgChartCreateNodeEvent::EVENT_NAME, $event);
+				//TODO: EVT_OBJECT (§)
+				//$event = new \appCore\Events\Core\User\UsersManagementOrgChartCreateNodeEvent();
+				//$event->setNode($nodedata);
+				//TODO: EVT_LAUNCH (&)
+				//\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementOrgChartCreateNodeEvent::EVENT_NAME, $event);
 
 				// adding custom fields (if any)
 				$vett_custom_org = $this->model->getCustomOrg();
@@ -1425,7 +1457,6 @@ class UsermanagementAdmController extends AdmController
 					$id_field = $key;
 					$res = $this->model->addCustomFieldValue($id, $id_field, $org_chart);
 				}
-
 			} else {
 				$output['success'] = false;
 				$output['message'] = Lang::t('_CONNECTION_ERROR');
@@ -1448,9 +1479,11 @@ class UsermanagementAdmController extends AdmController
 		$id = Get::req('node_id', DOTY_INT, -1);
 
 		if ($id > 0) {
-			$event = new \appCore\Events\Core\User\UsersManagementOrgChartDeleteNodeEvent();
-			$event->setNode($this->model->getFolderById($id));
-			\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementOrgChartDeleteNodeEvent::EVENT_NAME, $event);
+			//TODO: EVT_OBJECT (§)
+			//$event = new \appCore\Events\Core\User\UsersManagementOrgChartDeleteNodeEvent();
+			//$event->setNode($this->model->getFolderById($id));
+			//TODO: EVT_LAUNCH (&)
+			//\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementOrgChartDeleteNodeEvent::EVENT_NAME, $event);
 
 			$output['success'] = $this->model->deleteFolder($id, true);
 		}
@@ -1460,7 +1493,7 @@ class UsermanagementAdmController extends AdmController
 	protected function _formatFolderCode($id, $code)
 	{
 		if (!$code || $id <= 0) return "";
-		return '<span id="orgchart_code_' . (int)$id . '">[' . $code . ']&nbsp;</span>';
+		return '<span id="orgchart_code_' . (int) $id . '">[' . $code . ']&nbsp;</span>';
 	}
 
 	public function modfolder()
@@ -1495,10 +1528,12 @@ class UsermanagementAdmController extends AdmController
 			//$output['new_name'] = ($code != "" ? '['.$code.'] ' : '').$langs[getLanguage()];
 			$output['new_name'] = $this->_formatFolderCode($id, $code) . $langs[getLanguage()];
 
-			$event = new \appCore\Events\Core\User\UsersManagementOrgChartEditNodeEvent();
-			$event->setOldNode($old_node);
-			$event->setNode($this->model->getFolderById($id));
-			\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementOrgChartEditNodeEvent::EVENT_NAME, $event);
+			//TODO: EVT_OBJECT (§)
+			//$event = new \appCore\Events\Core\User\UsersManagementOrgChartEditNodeEvent();
+			//$event->setOldNode($old_node);
+			//$event->setNode($this->model->getFolderById($id));
+			//TODO: EVT_LAUNCH (&)
+			//\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementOrgChartEditNodeEvent::EVENT_NAME, $event);
 		} else {
 			$output['success'] = false;
 			$output['message'] = Lang::t('_CONNECTION_ERROR');
@@ -1558,7 +1593,7 @@ class UsermanagementAdmController extends AdmController
 
 				require_once(Forma::inc(_base_ . '/lib/lib.user_profile.php'));
 				require_once(_adm_ . '/modules/org_chart/tree.org_chart.php');
-				$treedborgdb = new TreeDb_OrgDb();
+				$treedborgdb = new TreeDb_OrgDb($GLOBALS['prefix_fw'] . '_org_chart_tree');
 
 				if (Get::sett('orgchart_singlenode', 'off') == 'on') {
 
@@ -1582,11 +1617,13 @@ class UsermanagementAdmController extends AdmController
 				foreach ($selection as $idst) {
 					$users[] = $model->getProfileData($idst);
 				}
-				$event = new \appCore\Events\Core\User\UsersManagementOrgChartAssignEditEvent();
-				$nodedata = $this->model->getFolderById($id);
-				$event->setUsers($users);
-				$event->setNode($nodedata);
-				\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementOrgChartAssignEditEvent::EVENT_NAME, $event);
+				//TODO: EVT_OBJECT (§)
+				//$event = new \appCore\Events\Core\User\UsersManagementOrgChartAssignEditEvent();
+				//$nodedata = $this->model->getFolderById($id);
+				//$event->setUsers($users);
+				//$event->setNode($nodedata);
+				//TODO: EVT_LAUNCH (&)
+				//\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementOrgChartAssignEditEvent::EVENT_NAME, $event);
 
 
 				$acl_manager = \Docebo::user()->getAclManager();
@@ -1622,8 +1659,15 @@ class UsermanagementAdmController extends AdmController
 
 						$msg_composer->setBodyLangText('sms', '_EVENT_CHANGE_NODE_USER_SBJ_SMS', $array_subst);
 
-						createNewAlert('UserModNodeSuperAdmin', 'directory', 'edit', '1', 'User ' . $idst . ' was modified',
-							$recipients, $msg_composer);
+						createNewAlert(
+							'UserModNodeSuperAdmin',
+							'directory',
+							'edit',
+							'1',
+							'User ' . $idst . ' was modified',
+							$recipients,
+							$msg_composer
+						);
 					}
 				}
 
@@ -1640,7 +1684,6 @@ class UsermanagementAdmController extends AdmController
 				$selector->show_fncrole_selector = false;
 
 				if (Get::req('is_updating', DOTY_INT, false)) {
-
 				} else {
 					$members = $this->model->getFolderUsers($id);
 					$selector->requested_tab = PEOPLEVIEW_TAB;
@@ -1648,16 +1691,18 @@ class UsermanagementAdmController extends AdmController
 				}
 				$selector->addFormInfo(
 					Form::getHidden('is_updating', 'is_updating', 1) .
-					Form::getHidden('id', 'id', $id)
+						Form::getHidden('id', 'id', $id)
 				);
-				$selector->loadSelector(Util::str_replace_once('&', '&amp;', $jump_url),
-					array('index.php?r=' . $this->link . '/show' => Lang::t('_ORG_CHART', 'organization_chart'),
-						Lang::t('_ASSIGN_USERS', 'organization_chart')),
+				$selector->loadSelector(
+					Util::str_replace_once('&', '&amp;', $jump_url),
+					array(
+						'index.php?r=' . $this->link . '/show' => Lang::t('_ORG_CHART', 'organization_chart'),
+						Lang::t('_ASSIGN_USERS', 'organization_chart')
+					),
 					false,
-					true);
-
+					true
+				);
 			}
-
 		} else {
 			Util::jump_to($back_url);
 		}
@@ -1711,24 +1756,21 @@ class UsermanagementAdmController extends AdmController
 				$def_value = GROUP_FIELD_INHERIT;
 
 			switch ($def_value) {
-				case GROUP_FIELD_NORMAL:
-					{
+				case GROUP_FIELD_NORMAL: {
 						$is_mandatory = isset($arr_fields_normal[$id_field]) && $arr_fields_normal[$id_field][FIELD_INFO_MANDATORY] == 'true';
 						$is_invisible = isset($arr_fields_normal[$id_field]) && $arr_fields_normal[$id_field][FIELD_INFO_USERACCESS] == 'readwrite';
 						$is_userinherit = isset($arr_fields_normal[$id_field]) && $arr_fields_normal[$id_field][FIELD_INFO_USERINHERIT] == '1';
 					}
 					break;
 
-				case GROUP_FIELD_INHERIT:
-					{
+				case GROUP_FIELD_INHERIT: {
 						$is_mandatory = isset($arr_fields_inherit[$id_field]) && $arr_fields_inherit[$id_field][FIELD_INFO_MANDATORY] == 'true';
 						$is_invisible = isset($arr_fields_inherit[$id_field]) && $arr_fields_inherit[$id_field][FIELD_INFO_USERACCESS] == 'readwrite';
 						$is_userinherit = isset($arr_fields_inherit[$id_field]) && $arr_fields_inherit[$id_field][FIELD_INFO_USERINHERIT] == '1';
 					}
 					break;
 
-				default:
-					{
+				default: {
 						$is_mandatory = false;
 						$is_invisible = false;
 						$is_userinherit = false;
@@ -1822,10 +1864,12 @@ class UsermanagementAdmController extends AdmController
 			$new_fields[] = $this->getFieldGroupById($idst);
 		}
 
-		$event = new \appCore\Events\Core\User\UsersManagementOrgChartEditNodeFieldsEvent();
-		$event->setNode($nodedata);
-		$event->setFields($new_fields);
-		\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementOrgChartEditNodeFieldsEvent::EVENT_NAME, $event);
+		//TODO: EVT_OBJECT (§)
+		//$event = new \appCore\Events\Core\User\UsersManagementOrgChartEditNodeFieldsEvent();
+		//$event->setNode($nodedata);
+		//$event->setFields($new_fields);
+		//TODO: EVT_LAUNCH (&)
+		//\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementOrgChartEditNodeFieldsEvent::EVENT_NAME, $event);
 
 		$output = array('success' => true, 'total' => count($fields_use), 'done' => $count);
 		echo $this->json->encode($output);
@@ -1894,11 +1938,13 @@ class UsermanagementAdmController extends AdmController
 			$acl_man->removeFromGroup($idst_orgd, $id_user);
 			$success = true;
 
-			$event = new \appCore\Events\Core\User\UsersManagementOrgChartRemoveEvent();
-			$model = new UsermanagementAdm();
-			$user = $model->getProfileData($id_user);
-			$event->setUser($user);
-			\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementOrgChartRemoveEvent::EVENT_NAME, $event);
+			//TODO: EVT_OBJECT (§)
+			//$event = new \appCore\Events\Core\User\UsersManagementOrgChartRemoveEvent();
+			//$model = new UsermanagementAdm();
+			//$user = $model->getProfileData($id_user);
+			//$event->setUser($user);
+			//TODO: EVT_LAUNCH (&)
+			//\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementOrgChartRemoveEvent::EVENT_NAME, $event);
 
 			require_once(_base_ . '/lib/lib.eventmanager.php');
 
@@ -1927,8 +1973,15 @@ class UsermanagementAdmController extends AdmController
 			$recipients = $acl_manager->getGroupAllUser($permission_godadmin);
 			$recipients = array_merge($recipients, $acl_manager->getGroupAllUser($permission_admin));
 
-			createNewAlert('UserModNodeSuperAdmin', 'directory', 'edit', '1', 'User ' . $id_user . ' was modified',
-				$recipients, $msg_composer);
+			createNewAlert(
+				'UserModNodeSuperAdmin',
+				'directory',
+				'edit',
+				'1',
+				'User ' . $id_user . ' was modified',
+				$recipients,
+				$msg_composer
+			);
 		}
 		$output = array('success' => $success);
 		echo $this->json->encode($output);
@@ -1972,9 +2025,11 @@ class UsermanagementAdmController extends AdmController
 			foreach ($arr_users as $idst) {
 				$users[] = $model->getProfileData($idst);
 			}
-			$event = new \appCore\Events\Core\User\UsersManagementOrgChartRemoveEvent();
-			$event->setUsers($users);
-			\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementOrgChartRemoveEvent::EVENT_NAME, $event);
+			//TODO: EVT_OBJECT (§)
+			//$event = new \appCore\Events\Core\User\UsersManagementOrgChartRemoveEvent();
+			//$event->setUsers($users);
+			//TODO: EVT_LAUNCH (&)
+			//\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementOrgChartRemoveEvent::EVENT_NAME, $event);
 
 			$acl_manager = \Docebo::user()->getAclManager();
 			$permission_godadmin = $acl_manager->getGroupST(ADMIN_GROUP_GODADMIN);
@@ -1983,7 +2038,7 @@ class UsermanagementAdmController extends AdmController
 			$recipients = $acl_manager->getGroupAllUser($permission_godadmin);
 			$recipients = array_merge($recipients, $acl_manager->getGroupAllUser($permission_admin));
 
-			foreach ($arr_users as $idst){
+			foreach ($arr_users as $idst) {
 
 				require_once(_base_ . '/lib/lib.eventmanager.php');
 
@@ -2004,8 +2059,15 @@ class UsermanagementAdmController extends AdmController
 
 				$msg_composer->setBodyLangText('sms', '_EVENT_CHANGE_NODE_USER_SBJ_SMS', $array_subst);
 
-				createNewAlert('UserModNodeSuperAdmin', 'directory', 'edit', '1', 'User ' . $idst . ' was modified',
-					$recipients, $msg_composer);
+				createNewAlert(
+					'UserModNodeSuperAdmin',
+					'directory',
+					'edit',
+					'1',
+					'User ' . $idst . ' was modified',
+					$recipients,
+					$msg_composer
+				);
 			}
 		}
 		echo $this->json->encode($output);
@@ -2175,13 +2237,11 @@ class UsermanagementAdmController extends AdmController
 
 		switch ($step) {
 
-			case 1:
-				{
+			case 1: {
 				}
 				break;
 
-			case 2:
-				{
+			case 2: {
 					$params['orgchart_list'] = $this->model->getOrgChartDropdownList(Docebo::user()->getIdSt());
 
 					require_once(Forma::inc(_base_ . '/lib/lib.upload.php'));
@@ -2263,8 +2323,7 @@ class UsermanagementAdmController extends AdmController
 				}
 				break;
 
-			case 3:
-				{
+			case 3: {
 					//if (!Get::pReq('send_alert', DOTY_INT, 0) && Get::req('set_password', DOTY_STRING, 'from_file') != 'from_file') {
 					//    Util::jump_to($base_url.'&res=need_to_alert' );
 					//}
@@ -2300,12 +2359,14 @@ class UsermanagementAdmController extends AdmController
 					$importer->setDestination($dst);
 
 					$importer->parseMap();
-					if (!in_array('userid', $importer->import_map)
-						|| !in_array(array_search('userid', $importer->import_map), array_keys($importer->import_tocompare))) {
+					if (
+						!in_array('userid', $importer->import_map)
+						|| !in_array(array_search('userid', $importer->import_map), array_keys($importer->import_tocompare))
+					) {
 						Util::jump_to($base_url . '&res=userid_needed');
 					}
 
-					foreach ($importer->import_map AS $im) {
+					foreach ($importer->import_map as $im) {
 						if ($im != DOCEBOIMPORT_IGNORE && count(array_keys($importer->import_map, $im)) > 1) {
 							Util::jump_to($base_url . '&res=field_repeated');
 						}
@@ -2321,9 +2382,12 @@ class UsermanagementAdmController extends AdmController
 						foreach ($users as $idst) {
 							$arr_users[] = $model->getProfileData($idst);
 						}
-						$event = new \appCore\Events\Core\User\UsersManagementCSVimportEvent();
-						$event->setUsers($arr_users);
-						\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementCSVimportEvent::EVENT_NAME, $event);
+
+						//TODO: EVT_OBJECT (§)
+						//$event = new \appCore\Events\Core\User\UsersManagementCSVimportEvent();
+						//$event->setUsers($arr_users);
+						//TODO: EVT_LAUNCH (&)
+						//\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementCSVimportEvent::EVENT_NAME, $event);
 
 						$enrollrules = new EnrollrulesAlms();
 						$enrollrules->newRules('_NEW_IMPORTED_USER', $users, 'all', $idOrg);
@@ -2370,7 +2434,6 @@ class UsermanagementAdmController extends AdmController
 					sl_close_fileoperations();
 				}
 				break;
-
 		}
 
 		$this->render('importusers', $params);
@@ -2416,7 +2479,9 @@ class UsermanagementAdmController extends AdmController
 			$acl_man = Docebo::user()->getAclManager();
 			$arr_users = explode(',', $users);
 			$arr_users = array_map(
-				function($value) { return (int)$value; },
+				function ($value) {
+					return (int) $value;
+				},
 				$arr_users
 			);
 			$arr_users = array_unique($arr_users);
@@ -2481,15 +2546,17 @@ class UsermanagementAdmController extends AdmController
 		}
 
 		$profile = new UserProfile($id_user);
-		$profile->init('profile', 'framework', 'r=' . $this->link . '/editprofile&id_user=' . (int)$id_user, 'ap');
+		$profile->init('profile', 'framework', 'r=' . $this->link . '/editprofile&id_user=' . (int) $id_user, 'ap');
 		if (Docebo::user()->getUserLevelId() == ADMIN_GROUP_GODADMIN) $profile->enableGodMode();
 		//$profile->setEndUrl('index.php?modname=directory&op=org_chart#user_row_'.$id_user);
 
 		//evento mostra dettaglio profilo
 
-		$event = new \appCore\Events\Core\User\UsersManagementShowDetailsEvent();
-		$event->setProfile($profile);
-		\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementShowDetailsEvent::EVENT_NAME, $event);
+		//TODO: EVT_OBJECT (§)
+		//$event = new \appCore\Events\Core\User\UsersManagementShowDetailsEvent();
+		//$event->setProfile($profile);
+		//TODO: EVT_LAUNCH (&)
+		//\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementShowDetailsEvent::EVENT_NAME, $event);
 
 
 		$this->render('user_profile', array(
@@ -2515,7 +2582,7 @@ class UsermanagementAdmController extends AdmController
 		$id_user = Get::req('id_user', DOTY_INT, -1);
 		if ($id_user > 0) {
 			$profile = new UserProfile($id_user);
-			$profile->init('profile', 'framework', 'r=' . $this->link . '/editprofile&id_user=' . (int)$id_user, 'ap');
+			$profile->init('profile', 'framework', 'r=' . $this->link . '/editprofile&id_user=' . (int) $id_user, 'ap');
 			if (Docebo::user()->getUserLevelId() == ADMIN_GROUP_GODADMIN) $profile->enableGodMode();
 
 			echo '<br />'
@@ -2616,7 +2683,7 @@ class UsermanagementAdmController extends AdmController
 			foreach ($list as $record) {
 				$_userid = $acl_man->relativeId($record->userid);
 				$records[] = array(
-					'id' => (int)$record->idst,
+					'id' => (int) $record->idst,
 					'userid' => Layout::highlight($_userid, $filter),
 					'firstname' => Layout::highlight($record->firstname, $filter),
 					'lastname' => Layout::highlight($record->lastname, $filter),
@@ -2690,7 +2757,7 @@ class UsermanagementAdmController extends AdmController
 				$_userid = $acl_man->relativeId($record->userid);
 				$_inserted_by = $record->inserted_by != "" ? $acl_man->relativeId($record->inserted_by) : "";
 				$records[] = array(
-					'id' => (int)$record->idst,
+					'id' => (int) $record->idst,
 					'userid' => Layout::highlight($_userid, $filter),
 					'firstname' => Layout::highlight($record->firstname, $filter),
 					'lastname' => Layout::highlight($record->lastname, $filter),
@@ -2698,7 +2765,7 @@ class UsermanagementAdmController extends AdmController
 					'confirmed' => Layout::highlight($record->confirmed, $filter),
 					'insert_date' => Format::date($record->insert_date, 'datetime'),
 					'inserted_by' => $_inserted_by,
-					'del' => 'ajax.adm_server.php?r=' . $this->link . '/delete_waiting&id_user=' . (int)$record->idst
+					'del' => 'ajax.adm_server.php?r=' . $this->link . '/delete_waiting&id_user=' . (int) $record->idst
 				);
 			}
 		}
@@ -2814,7 +2881,7 @@ class UsermanagementAdmController extends AdmController
 		$level = ADMIN_GROUP_USER;
 
 
-		$arr_levels = $acl_man->getAdminLevels();//index = idst; value = groupid;
+		$arr_levels = $acl_man->getAdminLevels(); //index = idst; value = groupid;
 		$levels = array();
 		foreach ($arr_levels as $groupid_level => $idst_level) {
 			$levels[$groupid_level] = Lang::t('_DIRECTORY_' . $groupid_level, 'admin_directory');
@@ -2831,7 +2898,7 @@ class UsermanagementAdmController extends AdmController
 		$languages = Docebo::langManager()->getAllLanguages();
 
 		require_once(Forma::inc(_base_ . '/lib/lib.platform.php'));
-		$pman =& PlatformManager::createInstance();// = new PlatformManager();
+		$pman = &PlatformManager::createInstance(); // = new PlatformManager();
 		$platforms = $pman->getPlatformList();
 
 		require_once(_adm_ . '/lib/lib.field.php');
@@ -2886,7 +2953,6 @@ class UsermanagementAdmController extends AdmController
 
 		if (!empty($to_update)) {
 			foreach ($to_update as $property) {
-
 			}
 		}
 
@@ -2947,22 +3013,35 @@ class UsermanagementAdmController extends AdmController
 			$info->__preferences = $pref_properties;
 		}
 
-		$event = new \appCore\Events\Core\User\UsersManagementEditEvent();
-		$event->setType('multiple');
-		$event->setUsers($users);
-		\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementEditEvent::EVENT_NAME, $event);
-		$users = $event->getUsers();
+		//TODO: EVT_OBJECT (§)
+		//$event = new \appCore\Events\Core\User\UsersManagementEditEvent();
+		//$event->setType('multiple');
+		//$event->setUsers($users);
+		//TODO: EVT_LAUNCH (&)
+		//\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementEditEvent::EVENT_NAME, $event);
+		//$users = $event->getUsers();
 
-		$acl_man =& Docebo::user()->getAclManager();
+		$acl_man = &Docebo::user()->getAclManager();
 
 		//send email alert
 		if (isset($sel_properties['send_alert']) && isset($sel_properties['password']) && $info->password != "") {
 
 			for ($i = 0; $i < count($users); $i++) {
 
+				$uma = new UsermanagementAdm;
+				$reg_code = null;
+				if ($nodes = $uma->getUserFolders($users[$i])) {
+					$idst_oc = array_keys($nodes)[0];
+
+					if ($query = sql_query("SELECT idOrg FROM %adm_org_chart_tree WHERE idst_oc = $idst_oc LIMIT 1")) {
+						$reg_code = sql_fetch_object($query)->idOrg;
+					}
+				}
+
 				$array_subst = array(
 					'[url]' => Get::site_url(),
 					'[userid]' => $acl_man->getUserid($users[$i]),
+					'[dynamic_link]' => getCurrentDomain($reg_code) ?: Get::site_url(),
 					'[password]' => $info->password
 				);
 
@@ -2976,9 +3055,7 @@ class UsermanagementAdmController extends AdmController
 
 				$recipients = array($users[$i]);
 				createNewAlert('UserNew', 'directory', 'edit', '1', 'New user created', $recipients, $e_msg, true);
-
 			}
-
 		}
 
 		//send email link change password
@@ -3007,8 +3084,7 @@ class UsermanagementAdmController extends AdmController
 
 		switch ($command) {
 
-			case "expand":
-				{
+			case "expand": {
 					//check permissions
 					if (!$this->permissions['view_org']) {
 						$output = array('success' => false, 'message' => $this->_getErrorMessage('no permission'));
@@ -3021,7 +3097,7 @@ class UsermanagementAdmController extends AdmController
 
 					if ($initial) {
 						//get selected node from session and set the expanded tree
-						$idOrg = $this->_getSessionValue('selected_node', 0);//$this->_getSelectedNode();
+						$idOrg = $this->_getSessionValue('selected_node', 0); //$this->_getSelectedNode();
 						$nodes = $this->model->getOrgChartInitialNodes($idOrg, true);
 
 						//set output
@@ -3049,13 +3125,11 @@ class UsermanagementAdmController extends AdmController
 				}
 				break;
 
-			case "set_selected_node":
-				{
+			case "set_selected_node": {
 				}
 				break;
 
-			default:
-				{
+			default: {
 					$output = array();
 					$output['success'] = false;
 					echo $this->json->encode($output);
@@ -3080,8 +3154,4 @@ class UsermanagementAdmController extends AdmController
 		}
 		return FALSE;
 	}
-
-
 }
-
-?>

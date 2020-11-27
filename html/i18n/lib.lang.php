@@ -860,8 +860,7 @@ class DoceboLangManager {
 
 		$i=0;
 		$res="";
-		while(list(,$value) = each($al_arr)) {
-
+		foreach($al_arr as $value) {
 			$bl_arr = explode(";", $value);
 			$browser_language = $bl_arr[0];
 			$browser_language =sql_escape_string(substr($browser_language, 0, 5));

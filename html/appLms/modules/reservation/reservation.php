@@ -680,13 +680,15 @@ function viewUserEvent()
 			);
 			$out->add('<br/>');
 
-            $event = new \appLms\Events\Lms\UserListEvent($out,$lang);
+			//TODO: EVT_OBJECT (§)
+            //$event = new \appLms\Events\Lms\UserListEvent($out,$lang);
 
-            $event->setIdEvent($id_event);
+            //$event->setIdEvent($id_event);
 
-            $event->setDefaultExportEndpoint('index.php?modname=reservation&amp;op=excel&id_event=' . $id_event);
-
-            \appCore\Events\DispatcherManager::dispatch(\appLms\Events\Lms\UserListEvent::EVENT_NAME, $event);
+            //$event->setDefaultExportEndpoint('index.php?modname=reservation&amp;op=excel&id_event=' . $id_event);
+			
+			//TODO: EVT_LAUNCH (&)
+            //\appCore\Events\DispatcherManager::dispatch(\appLms\Events\Lms\UserListEvent::EVENT_NAME, $event);
 
             $out->add($event->getExportLink(),'content');
 		}
@@ -736,7 +738,7 @@ function viewUserEvent()
             $sender = Get::sett('sender_event');
 	
 			//sendMail($recipients, $subject, $body, $sender);
-			require_once(_base_.'/lib/lib.mailer.php');
+
 			$mailer = DoceboMailer::getInstance();
 			$mailer->SendMail($sender, $re, $subject, $body, array(MAIL_REPLYTO => $sender, MAIL_SENDER_ACLNAME => false));
 				
@@ -1030,7 +1032,7 @@ function viewUserEvent()
 
                 $sender = Get::sett('sender_event');
 
-				require_once(_base_.'/lib/lib.mailer.php');
+
 				$mailer = DoceboMailer::getInstance();
 				$mailer->SendMail($sender, $re, $subject, $body, array(MAIL_REPLYTO => $sender, MAIL_SENDER_ACLNAME => false));
 		
@@ -2147,7 +2149,7 @@ function reservationSendMail()
         $sender = Get::sett('sender_event');
 
 		//sendMail($recipients, $subject, $body, $sender);
-		require_once(_base_.'/lib/lib.mailer.php');
+
 		$mailer = DoceboMailer::getInstance();
 		$mailer->SendMail($sender, $recipients, Lang::t('_MAIL_OBJECT', 'register'), $body, array(MAIL_REPLYTO => $sender, MAIL_SENDER_ACLNAME => false));
 				

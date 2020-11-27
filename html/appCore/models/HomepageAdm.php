@@ -118,8 +118,6 @@ class HomepageAdm extends Model {
         
         if(!$user_info) return USER_NOT_FOUND;
         
-        require_once(_lib_ . "/lib.mailer.php");
-        
         $sender         = $this->options->getOption('mail_sender');
         $recipients     = $user_info[ACL_INFO_EMAIL];
         $subject        = Lang::t("_LOST_USERID_TITLE", "register");
@@ -156,7 +154,7 @@ class HomepageAdm extends Model {
             if(!$this->user_manager->savePwdRandomCode($user_info[ACL_INFO_IDST], $code)) return FAILURE_SEND_LOST_PWD;
         }
 
-        require_once(_base_.'/lib/lib.mailer.php');
+
         
         $sender         = $this->options->getOption('mail_sender');
         $recipients     = $user_info[ACL_INFO_EMAIL];

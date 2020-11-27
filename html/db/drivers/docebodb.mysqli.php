@@ -73,6 +73,8 @@ class mysqli_DbConn extends DbConn {
 		$charset = Get::cfg('db_charset', 'utf8');
 		$this->query("SET NAMES '".$charset."'", $this->conn);
 		$this->query("SET CHARACTER SET '".$charset."'", $this->conn);
+		//TODO NO_Strict_MODE: to be confirmed
+		$this->query("SET SQL_MODE = 'NO_AUTO_CREATE_USER'", $this->conn);
 
 		return true;
 	}

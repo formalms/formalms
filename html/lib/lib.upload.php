@@ -71,7 +71,7 @@ function sl_fopen( $filename, $mode ) {
 	}
 }
 
-function sl_upload( $srcFile, $dstFile, $file_ext, $root = false) {
+function sl_upload( $srcFile, $dstFile, $file_ext = "", $root = false) {
 	$uploadType = Get::cfg('uploadType', null);
 
 	// check if the mime type is allowed by the whitelist
@@ -115,10 +115,13 @@ function sl_upload( $srcFile, $dstFile, $file_ext, $root = false) {
 	} elseif( $uploadType == "fs" || $uploadType == null ) {
 		return sl_upload_fs( $srcFile, $dstFile, $root ? $root : _files_ );
 	} else {
-        $event = new \appCore\Events\Core\FileSystem\UploadEvent($srcFile, $dstFile);
-        \appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\FileSystem\UploadEvent::EVENT_NAME, $event);
-		unlink($srcFile);
-        return $event->getResult();
+		//TODO: EVT_OBJECT (§)
+        //$event = new \appCore\Events\Core\FileSystem\UploadEvent($srcFile, $dstFile);
+		//TODO: EVT_LAUNCH (&)
+		//\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\FileSystem\UploadEvent::EVENT_NAME, $event);
+		//unlink($srcFile);
+		//return $event->getResult();
+		return TRUE;
     }
 }
 
@@ -174,10 +177,12 @@ function sl_copy( $srcFile, $dstFile ) {
 	} elseif( $uploadType == "fs" || $uploadType == null ) {
 		return copy(_files_.$srcFile, _files_.$dstFile);
 	} else {
-        $event = new \appCore\Events\Core\FileSystem\CopyEvent($srcFile, $dstFile);
-        \appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\FileSystem\UploadEvent::EVENT_NAME, $event);
-
-        return $event->getResult();
+		//TODO: EVT_OBJECT (§)
+		//$event = new \appCore\Events\Core\FileSystem\CopyEvent($srcFile, $dstFile);
+		//TODO: EVT_LAUNCH (&)
+		//\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\FileSystem\UploadEvent::EVENT_NAME, $event);
+		//return $event->getResult();
+		return TRUE;
     }
 }
 
@@ -350,10 +355,13 @@ function sl_upload_cgi( $srcFile, $dstFile ) {
          if( !file_exists(_files_.$path) ) return true;
          return @unlink(_files_.$path);
      } else {
-         $event = new \appCore\Events\Core\FileSystem\UnlinkEvent($path);
-         \appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\FileSystem\UnlinkEvent::EVENT_NAME, $event);
+		//TODO: EVT_OBJECT (§)
+         //$event = new \appCore\Events\Core\FileSystem\UnlinkEvent($path);
+		 //TODO: EVT_LAUNCH (&)
+		 //\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\FileSystem\UnlinkEvent::EVENT_NAME, $event);
 
-         return $event->getResult();
+		 //return $event->getResult();
+		 return TRUE;
      }
 
 

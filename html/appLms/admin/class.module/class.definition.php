@@ -96,7 +96,7 @@ class LmsAdminModule {
 	function loadBody() {
 		
 		//include(dirname(__FILE__).'/../modules/'.$this->module_name.'/'.$this->module_name.'.php');
-		include( Docebo::inc( _lms_.'/admin/modules/'.$this->module_name.'/'.$this->module_name.'.php' ) );
+		include( Forma::inc( _lms_.'/admin/modules/'.$this->module_name.'/'.$this->module_name.'.php' ) );
 	}
 	
 	function loadFooter() {

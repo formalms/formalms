@@ -170,7 +170,7 @@
       padding: {
         left: 0;
         right: 0;
-      };
+      }
       text-align: left;
 
       &.active {
@@ -182,7 +182,6 @@
       padding-left: 10px;
     }
   }
-
 }
 
 .nav.nav-tabs.visible-xs {
@@ -268,7 +267,7 @@
         }
 
         &:before {
-          content: '';
+          content: "";
           position: absolute;
           top: 15px;
           left: 0;
@@ -296,7 +295,7 @@
       }
 
       &:before {
-        content: '';
+        content: "";
         position: absolute;
         top: 15px;
         left: 0;
@@ -405,7 +404,7 @@
         position: relative;
 
         &:before {
-          content: '\f107';
+          content: "\f107";
           font-family: $icon;
           color: $orange;
           font-size: 18px;
@@ -494,7 +493,7 @@
     .filter-open {
       display: inline-block;
       &:before {
-        content: '\f107';
+        content: "\f107";
       }
     }
 
@@ -515,7 +514,7 @@
     .filter-closed {
       display: inline-block;
       &:before {
-        content: '\f106';
+        content: "\f106";
       }
     }
   }
@@ -579,7 +578,7 @@
     transition: display 0.2s ease 0s;
 
     &:before {
-      content: '';
+      content: "";
       font-family: $icon;
       color: $orange;
       position: absolute;
@@ -645,7 +644,10 @@
       border-bottom: 1px solid #666;
     }
     select {
-      display: block;
+      display: inline-block;
+      width: 28rem;
+      max-width: 100%;
+      margin-right: 0;
     }
   }
 }

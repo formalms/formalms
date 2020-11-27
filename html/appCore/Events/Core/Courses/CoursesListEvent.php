@@ -72,7 +72,7 @@ class CoursesListEvent extends Event
     /**
      * @return array
      */
-    public function getCourses(): array
+    public function getCourses()
     {
         return $this->courses;
     }
@@ -80,7 +80,7 @@ class CoursesListEvent extends Event
     /**
      * @return array
      */
-    public function getCoursesWithCertificates(): array
+    public function getCoursesWithCertificates()
     {
         return $this->coursesWithCertificates;
     }
@@ -88,7 +88,7 @@ class CoursesListEvent extends Event
     /**
      * @return array
      */
-    public function getCoursesWithCompetences(): array
+    public function getCoursesWithCompetences()
     {
         return $this->coursesWithCompetences;
     }
@@ -96,7 +96,7 @@ class CoursesListEvent extends Event
     /**
      * @return string
      */
-    public function getBaseLinkCourse(): string
+    public function getBaseLinkCourse()
     {
         return $this->base_link_course;
     }
@@ -104,7 +104,7 @@ class CoursesListEvent extends Event
     /**
      * @return string
      */
-    public function getBaseLinkClassroom(): string
+    public function getBaseLinkClassroom()
     {
         return $this->base_link_classroom;
     }
@@ -112,7 +112,7 @@ class CoursesListEvent extends Event
     /**
      * @return string
      */
-    public function getBaseLinkEdition(): string
+    public function getBaseLinkEdition()
     {
         return $this->base_link_edition;
     }
@@ -120,7 +120,7 @@ class CoursesListEvent extends Event
     /**
      * @return string
      */
-    public function getBaseLinkSubscription(): string
+    public function getBaseLinkSubscription()
     {
         return $this->base_link_subscription;
     }
@@ -128,10 +128,8 @@ class CoursesListEvent extends Event
     /**
      * @return string
      */
-    public function getBaseLinkCompetence(): string
+    public function getBaseLinkCompetence()
     {
         return $this->base_link_competence;
     }
-
-
 }

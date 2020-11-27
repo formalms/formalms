@@ -39,7 +39,7 @@ class Module_Forum extends LmsModule {
 		forumDispatch($GLOBALS['op']);
 	}
 	
-	function getAllToken($op) {
+	function getAllToken() {
 		return array( 
 			'view' => array( 	'code' => 'view',
 								'name' => '_VIEW',
