@@ -73,21 +73,59 @@ class DashboardsettingsAdmController extends AdmController
             'ajaxUrl' => [
                 'save' => 'ajax.adm_server.php?r=adm/dashboardsettings/save',
                 'saveLayout' => 'ajax.adm_server.php?r=adm/dashboardsettings/saveLayout',
+                'editInlineLayout' => 'ajax.adm_server.php?r=adm/dashboardsettings/editInlineLayout',
                 'delLayout' => 'ajax.adm_server.php?r=adm/dashboardsettings/delLayout',
                 'defaultLayout' => 'ajax.adm_server.php?r=adm/dashboardsettings/defaultLayout',
                 'uploadFile' => 'ajax.adm_server.php?r=adm/dashboardsettings/uploadFile',
+                'getLayouts' => 'ajax.adm_server.php?r=adm/dashboardsettings/getLayouts',
                 'getBlockType' => 'ajax.adm_server.php?r=adm/dashboardsettings/getBlockTypeForm',
             ],
             'showUrl' => './index.php?r=adm/dashboardsettings/show',
             'installedBlocks' => $this->model->getInstalledBlocksCommonViewData(),
             'enabledBlocks' => $this->model->getEnabledBlocksCommonViewData($dashboardId),
-            'layouts' => $this->model->getLayouts(),
             'templatePath' => getPathTemplate(),
             'dashboardId' => $dashboardId
         ];
 
         //render view
         $this->render('show', $data);
+    }
+
+    public function getLayouts()
+    {
+        $selectedDashboardId = Get::req('dashboard', DOTY_INT, false);
+        $search = Get::req('search', DOTY_MIXED, false);
+        $layouts = $this->model->getLayouts();
+        $res = [];
+
+        foreach ($layouts as $layout) {
+            $layout = array_values((array)$layout);
+
+            $keys = [
+                'id',
+                'name',
+                'status',
+                'default',
+                'selected',
+            ];
+
+            $item = [];
+            for ($i = 0; $i < count($keys) - 1; $i++) {
+                $item[$keys[$i]] = $layout[$i];
+                $item['selected'] = $layout[0] == $selectedDashboardId;
+            }
+
+            if (!$search['value'] || strpos($item['name'], $search['value']) !== false) {
+                $res[] = $item;
+            }
+        }
+
+        $response = [
+            "data" => $res,
+        ];
+
+        echo $this->json_response(200, $response);
+        exit;
     }
 
     public function saveLayout()
@@ -121,6 +159,36 @@ class DashboardsettingsAdmController extends AdmController
         } else {
             $status = 200;
             $this->model->saveLayout($data);
+        }
+
+        echo $this->json_response($status, $response);
+        exit;
+    }
+
+    public function editInlineLayout()
+    {
+        $id = Get::pReq('id', DOTY_INT);
+        $col = Get::pReq('col', DOTY_STRING);
+        $new_value = Get::pReq('new_value', DOTY_STRING);
+
+        $response = [];
+
+        // Validation
+        $errors = [];
+        if (!isset($new_value) || !$new_value) {
+            $errors[$col] = Lang::t('_VALUE_IS_REQUIRED', 'dashboardsetting');
+        }
+
+        if ($errors) {
+            $status = 400;
+            $response['errors'] = $errors;
+        } else {
+            $status = 200;
+            $response = $this->model->editInlineLayout([
+                'id' => $id,
+                'col' => $col,
+                'new_value' => $new_value,
+            ]);
         }
 
         echo $this->json_response($status, $response);

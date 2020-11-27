@@ -34,18 +34,18 @@ class DashboardsettingsAdm extends Model
 
     public function loadLayouts()
     {
-        $query = "SELECT `id`, `name`, `status`, `default` FROM `dashboard_layouts` ORDER BY `created_at` ASC";
+        $query = "SELECT `id`, `name`, `status`, `default` FROM `dashboard_layouts` ORDER BY `default` DESC, `created_at` ASC";
 
-        $result = $this->db->query($query);
+        $result = sql_query($query);
         $this->layouts = [];
 
-        while ($layout = $this->db->fetch_assoc($result)) {
+        while ($layout = sql_fetch_object($result)) {
             /** @var DashboardLayoutLms $layoutObj */
             $layoutObj = new DashboardLayoutLms();
-            $layoutObj->setId($layout['id']);
-            $layoutObj->setName($layout['name']);
-            $layoutObj->setStatus($layout['status']);
-            $layoutObj->setDefault($layout['default']);
+            $layoutObj->setId($layout->id);
+            $layoutObj->setName($layout->name);
+            $layoutObj->setStatus($layout->status);
+            $layoutObj->setDefault($layout->default);
 
             $this->layouts[] = $layoutObj;
         }
@@ -141,6 +141,12 @@ class DashboardsettingsAdm extends Model
 
         $insertQuery = "INSERT INTO `dashboard_layouts` ( `name`, `status`, `default`) VALUES ( '" . addslashes($name) . "', '" . addslashes($status) . "', " . $default . ")";
         $this->db->query($insertQuery);
+    }
+
+    public function editInlineLayout($data)
+    {
+        $query = "UPDATE `dashboard_layouts` SET " . $data['col'] . " = '" . addslashes($data['new_value']) . "' WHERE id = " . $data['id'];
+        return $this->db->query($query);
     }
 
     public function delLayout($id_layout)
