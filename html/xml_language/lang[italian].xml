@@ -1026,6 +1026,31 @@ Per poterlo fare devi loggarti nella piattaforma se sei un utente registarto, al
         <key id="dashboard&amp;_USERS_PANEL" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Informazioni sugli utenti]]></key>
         <key id="dashboard&amp;_WAITING_SUBSCRIPTION" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Iscrizioni in attesa]]></key>
       </module>
+      <module id="dashboardsetting">
+        <key id="dashboardsetting&amp;_DASHBOARD_SETTING_ADD_NEW_LAYOUT" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Crea una nuova dashboard]]></key>
+        <key id="dashboardsetting&amp;_DASHBOARD_SETTING_INSERT_NEW_LAYOUT" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Inserisci nuova dashboard]]></key>
+        <key id="dashboardsetting&amp;_DASHBOARD_SETTING_LAYOUT_NAME" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Nome dashboard]]></key>
+        <key id="dashboardsetting&amp;_DASHBOARD_SETTING_SELECT_STATUS" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Seleziona uno stato]]></key>
+        <key id="dashboardsetting&amp;_DASHBOARD_SETTING_DRAFT_STATUS" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Bozza]]></key>
+        <key id="dashboardsetting&amp;_DASHBOARD_SETTING_PUBLISH_STATUS" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Pubblica]]></key>
+        <key id="dashboardsetting&amp;_DASHBOARD_SETTING_CREATE_NEW_LAYOUT" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Crea nuova dashboard]]></key>
+        <key id="dashboardsetting&amp;_DASHBOARD_LAYOUT_SAVE_MESSAGE_OK" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Dashboard creata correttamente]]></key>
+        <key id="dashboardsetting&amp;_DASHBOARD_LAYOUT_SAVE_MESSAGE_KO" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Non è stato possibile creare la dashboard, verifica i dati inseriti]]></key>
+        <key id="dashboardsetting&amp;_ENABLED_ACTIONS" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Azioni abilitate]]></key>
+        <key id="dashboardsetting&amp;_DASHBOARD_SETTING_SELECT_BLOCK" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Seleziona blocco]]></key>
+        <key id="dashboardsetting&amp;_DASHBOARD_SETTING_BLOCK_REQUIRED" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Blocco richiesto]]></key>
+        <key id="dashboardsetting&amp;_DASHBOARD_SETTING_ADD_NEW_BLOCK" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Inserisci un nuovo blocco]]></key>
+        <key id="dashboardsetting&amp;_DASHBOARD_SETTING_SAVE" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Salva]]></key>
+        <key id="dashboardsetting&amp;_DASHBOARD_SETTING_SAVE_MESSAGE_OK" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Dashboard salvata correttamente]]></key>
+        <key id="dashboardsetting&amp;_DASHBOARD_SETTING_SAVE_MESSAGE_KO" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Non è stato possibile salvare la dashboard, verifica i dati inseriti]]></key>
+        <key id="dashboardsetting&amp;_DASHBOARD_LAYOUT" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Dashboard]]></key>
+        <key id="dashboardsetting&amp;_DASHBOARD_LAYOUT_STATUS" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Stato dashboard]]></key>
+        <key id="dashboardsetting&amp;_DASHBOARD_STATUS_DRAFT" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Bozza]]></key>
+        <key id="dashboardsetting&amp;_DASHBOARD_STATUS_PUBLISH" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Pubblica]]></key>
+        <key id="dashboardsetting&amp;_DASHBOARD_LAYOUT_DEFAULT" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Default]]></key>
+        <key id="dashboardsetting&amp;_DASHBOARD_DELETE_LAYOUT" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Dashboard]]></key>
+        <key id="dashboardsetting&amp;_DASHBOARD_LAYOUT_SURE_DEL" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Sei sicuro di voler eliminare questa dashboard?]]></key>
+      </module>
       <module id="email">
         <key id="email&amp;_ALERT_SUBJECT" attributes="email" save_date="2015-09-30 15:32:39"><![CDATA[Nuovo avviso creato]]></key>
         <key id="email&amp;_ALERT_TEXT" attributes="email" save_date="2015-09-30 15:32:39"><![CDATA[Un nuovo avviso è stato pubblicato nel corso "[course]"

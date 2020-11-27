@@ -160,7 +160,7 @@ class DashboardsettingsAdm extends Model
         $query = "UPDATE `dashboard_layouts` SET `default` = 0";
         $this->db->query($query);
 
-        $query = "UPDATE `dashboard_layouts` SET `default` = 1 WHERE id = $id_layout";
+        $query = "UPDATE `dashboard_layouts` SET `default` = 1, `status` = 'publish' WHERE id = $id_layout";
         return $this->db->query($query);
     }
 

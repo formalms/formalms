@@ -144,28 +144,31 @@
             serverSide: true,
             paging: false,
             columns: [  // definisco le colonne
-                { data: 'id', title: '{{ translate("_ID", "standard") }}', sortable: false },
-                { data: 'name', title: '{{ translate("_DASHBOARD_LAYOUT", "dashboard") }}', sortable: false, width: 'auto', edit: { type: 'text' } },
-                { data: 'status', title: '{{ translate("_DASHBOARD_LAYOUT_STATUS", "dashboard") }}', sortable: false, width: '25%',
+                { data: 'id', title: '{{ translate("_ID", "standard") }}', sortable: false, 
+                    render: function(data, type, row, meta) {
+                        return '<a href="{{ showUrl }}' + '&amp;dashboard=' + row.id + '">' + row.id + '</a>';
+                    }
+                },
+                { data: 'name', title: '{{ translate("_DASHBOARD_LAYOUT", "dashboardsetting") }}', sortable: false, width: 'auto', edit: { type: 'text' } },
+                { data: 'status', title: '{{ translate("_DASHBOARD_LAYOUT_STATUS", "dashboardsetting") }}', sortable: false, width: '25%',
                     edit: {
                         type: 'select',
                         options: {
-                            'draft': "{{ translate('_DASHBOARD_STATUS_DRAFT', 'dashboard') }}",
-                            'publish': "{{ translate('_DASHBOARD_STATUS_PUBLISH', 'dashboard') }}",
+                            'draft': "{{ translate('_DASHBOARD_STATUS_DRAFT', 'dashboardsetting') }}",
+                            'publish': "{{ translate('_DASHBOARD_STATUS_PUBLISH', 'dashboardsetting') }}",
                         }
                     }, 
                     render: function(data, type, row, meta) {
                         return row.status;
-                        //return translate('_DASHBOARD_STATUS_' + row.status, 'dashboard' );
                     }
                 },
-                { data: 'default', title: '{{ translate("_DASHBOARD_LAYOUT_DEFAULT", "dashboard") }}', sortable: false, width: '10%', 
+                { data: 'default', title: '{{ translate("_DASHBOARD_LAYOUT_DEFAULT", "dashboardsetting") }}', sortable: false, width: '10%', 
                     render: function(data, type, row, meta) {
                         var checked = row.default ? 'disabled checked' : '';
                         return '<div class="text-center"><input class="default_check" type="checkbox" value="1" data-id="' + row.id + '" ' + checked + '></div>';
                     }
                 },
-                { data: 'delete', title: '{{ translate("_DASHBOARD_DELETE_LAYOUT", "dashboard") }}', sortable: false, width: '10%', 
+                { data: 'delete', title: '{{ translate("_DASHBOARD_DELETE_LAYOUT", "dashboardsetting") }}', sortable: false, width: '10%', 
                     render: function(data, type, row, meta) {
                         return '<div class="text-center"><button type="button" class="btn btn-danger btn-del" data-id="' + row.id + '"><i class="glyphicon glyphicon-trash"></i> </button></div>';
                     }
@@ -177,7 +180,7 @@
             },
             drawCallback: function() {
                 $('.btn-del').click(function(e) {
-                    if (confirm("{{ translate('_DASHBOARD_LAYOUT_SURE_DEL', 'dashboard') }}")) {
+                    if (confirm("{{ translate('_DASHBOARD_LAYOUT_SURE_DEL', 'dashboardsetting') }}")) {
                         var delBtn = $(this);
                         // DELETE A LAYOUT
                         $.ajax({
@@ -208,12 +211,15 @@
                         success: (response) => {
                             $(".default_check").attr('disabled', false).prop('checked', false);
                             $(this).prop('checked', true).attr('disabled', true);
+                            table.reload();
                         },
                         error: err => {
                             console.log(err)
                         }
                     });
                 });
+
+                $("#layouts tr[id={{ dashboardId }}]").addClass('selected');
             },
             edit: {
                 url: '{{ ajaxUrl.editInlineLayout }}',
@@ -244,7 +250,6 @@
                     $('.dashboard__message').css('display', 'none');
                 },
                 success: (response) => {
-                    console.log(response);
                     addLayoutBtn.removeAttr('disabled');
                     $('.dashboard_layout__ok').css('display', 'block');
                     table.reload();
@@ -338,7 +343,6 @@
                     $('.dashboard__message').css('display', 'none');
                 },
                 success: () => {
-                    console.log(response);
                     saveField.removeAttr('disabled');
                     $('.dashboard__ok').css('display', 'block');
 

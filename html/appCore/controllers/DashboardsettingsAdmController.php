@@ -122,6 +122,8 @@ class DashboardsettingsAdmController extends AdmController
 
         $response = [
             "data" => $res,
+            "recordsFiltered" => count($res),
+            "recordsTotal" => count($res),
         ];
 
         echo $this->json_response(200, $response);
