@@ -250,12 +250,13 @@
 
         formLayout.submit(function(e) {
             e.preventDefault();
+            var addForm = $(this);
 
             // CREATE NEW LAYOUT
             $.ajax({
                 url: '{{ ajaxUrl.saveLayout }}',
                 type: 'POST',
-                data: $(this).serialize(),
+                data: addForm.serialize(),
                 beforeSend: () => {
                     addLayoutBtn.attr('disabled', true);
                     $('.dashboard__message').css('display', 'none');
@@ -265,6 +266,12 @@
                     $('.dashboard_layout__ok').css('display', 'block');
                     table.reload();
 
+                    // Per mostrare messaggio di Ok inserimento
+                    setTimeout(function() {
+                        $("#form-layout").trigger('reset');
+                        openedLayoutForm = !openedLayoutForm;
+                        formLayout.slideUp();
+                    }, 1500);
                 },
                 error: err => {
                     console.log(err)
