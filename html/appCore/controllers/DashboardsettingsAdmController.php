@@ -104,6 +104,7 @@ class DashboardsettingsAdmController extends AdmController
             $keys = [
                 'id',
                 'name',
+                'caption',
                 'status',
                 'default',
                 'selected',
@@ -115,7 +116,7 @@ class DashboardsettingsAdmController extends AdmController
                 $item['selected'] = $layout[0] == $selectedDashboardId;
             }
 
-            if (!$search['value'] || strpos($item['name'], $search['value']) !== false) {
+            if (!$search['value'] || strpos($item['name'], $search['value']) !== false || strpos($item['caption'], $search['value']) !== false) {
                 $res[] = $item;
             }
         }
@@ -133,10 +134,12 @@ class DashboardsettingsAdmController extends AdmController
     public function saveLayout()
     {
         $name = Get::pReq('name', DOTY_MIXED);
+        $caption = Get::pReq('caption', DOTY_MIXED);
         $status = Get::pReq('status', DOTY_MIXED);
         $default = Get::pReq('default', DOTY_BOOL);
         $data = [
             'name' => $name,
+            'caption' => $caption,
             'status' => $status,
             'default' => $default
         ];
@@ -147,6 +150,9 @@ class DashboardsettingsAdmController extends AdmController
         $errors = [];
         if (!isset($data['name']) || !$data['name']) {
             $errors['name'] = Lang::t('_VALUE_IS_NOT_VALID', 'dashboardsetting');
+        }
+        if (!isset($data['caption']) || !$data['caption']) {
+            $errors['caption'] = Lang::t('_VALUE_IS_NOT_VALID', 'dashboardsetting');
         }
         if (!isset($data['status']) || !$data['status']) {
             $errors['status'] = Lang::t('_VALUE_IS_NOT_VALID', 'dashboardsetting');

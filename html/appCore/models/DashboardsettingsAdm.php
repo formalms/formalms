@@ -34,7 +34,7 @@ class DashboardsettingsAdm extends Model
 
     public function loadLayouts()
     {
-        $query = "SELECT `id`, `name`, `status`, `default` FROM `dashboard_layouts` ORDER BY `default` DESC, `created_at` ASC";
+        $query = "SELECT `id`, `name`, `caption`, `status`, `default` FROM `dashboard_layouts` ORDER BY `default` DESC, `created_at` ASC";
 
         $result = sql_query($query);
         $this->layouts = [];
@@ -44,6 +44,7 @@ class DashboardsettingsAdm extends Model
             $layoutObj = new DashboardLayoutLms();
             $layoutObj->setId($layout->id);
             $layoutObj->setName($layout->name);
+            $layoutObj->setCaption($layout->caption);
             $layoutObj->setStatus($layout->status);
             $layoutObj->setDefault($layout->default);
 
@@ -75,7 +76,7 @@ class DashboardsettingsAdm extends Model
 
         while ($block = $this->db->fetch_assoc($result)) {
 
-            require_once Forma::inc(_lms_ . '/models/' . $block['block_class'].'.php');
+            require_once Forma::inc(_lms_ . '/models/' . $block['block_class'] . '.php');
             /** @var DashboardBlockLms $blockObj */
             $blockObj = new $block['block_class']('');
 
@@ -133,6 +134,7 @@ class DashboardsettingsAdm extends Model
     public function saveLayout($layout)
     {
         $name = $layout['name'];
+        $caption = $layout['caption'];
         $status = $layout['status'];
 
         $query = "SELECT COUNT(*) AS count FROM `dashboard_layouts`";
@@ -140,7 +142,7 @@ class DashboardsettingsAdm extends Model
         $res = sql_fetch_array($res);
         $default = $res['count'] ? 0 : 1;
 
-        $insertQuery = "INSERT INTO `dashboard_layouts` ( `name`, `status`, `default`) VALUES ( '" . addslashes($name) . "', '" . addslashes($status) . "', " . $default . ")";
+        $insertQuery = "INSERT INTO `dashboard_layouts` ( `name`, `caption`, `status`, `default`) VALUES ( '" . addslashes($name) . "', '" . addslashes($caption) . "', '" . addslashes($status) . "', " . $default . ")";
         $this->db->query($insertQuery);
     }
 

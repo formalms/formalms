@@ -12,6 +12,11 @@
                     <input name="name" placeholder="{{ translate('_DASHBOARD_SETTING_LAYOUT_NAME', 'dashboardsetting') }}" class="form-control" type="text" value="">
                 </div>
 
+                <div class="form-group">
+                    <label>{{ translate('_DASHBOARD_SETTING_LAYOUT_CAPTION', 'dashboardsetting') }}</label>
+                    <textarea name="caption" placeholder="{{ translate('_DASHBOARD_SETTING_LAYOUT_CAPTION', 'dashboardsetting') }}" class="form-control textarea"></textarea>
+                </div>
+
                 <div class="dashboard__select dashboard__select--layout">
                     <select name="status" class="form-control js-select-layout">
                         <option value="" selected>-- {{ translate('_DASHBOARD_SETTING_SELECT_STATUS', 'dashboardsetting') }} --</option>
@@ -155,6 +160,7 @@
                     }
                 },
                 { data: 'name', title: '{{ translate("_DASHBOARD_LAYOUT", "dashboardsetting") }}', sortable: false, width: 'auto', edit: { type: 'text' } },
+                { data: 'caption', title: '{{ translate("_DASHBOARD_LAYOUT_CAPTION", "dashboardsetting") }}', sortable: false, width: 'auto', edit: { type: 'text' } },
                 { data: 'status', title: '{{ translate("_DASHBOARD_LAYOUT_STATUS", "dashboardsetting") }}', sortable: false, width: '25%',
                     edit: {
                         type: 'select',
