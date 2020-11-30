@@ -23,30 +23,18 @@ class DashboardLms extends Model
     /** @var bool|DbConn */
     private $db;
 
+    /** @var DashboardsettingsAdm */
+    private $dashboardSettingsModel;
+
     private $enabledBlocks;
 
-    private $installedBlocks;
+    private $layouts;
 
     public function  __construct() {
 
         parent::__construct();
         $this->db = DbConn::getInstance();
-        $this->loadBlocks();
-    }
-
-    private function loadBlocks()
-    {
-        $query_blocks = "SELECT `id`, `block_class`, `block_config`, `position`, `dashboard_id` FROM `dashboard_block_config` ORDER BY `position` ASC";
-
-        $result = $this->db->query($query_blocks);
-
-        while ($block = $this->db->fetch_assoc($result)) {
-            /** @var DashboardBlockLms $blockObj */
-            $blockObj = new $block['block_class']($block['block_config']);
-            $blockObj->setOrder($block['position']);
-
-            $this->enabledBlocks[$block['dashboard_id']] = $blockObj;
-        }
+        $this->dashboardSettingsModel = new DashboardsettingsAdm();
     }
 
     /**
@@ -54,15 +42,15 @@ class DashboardLms extends Model
      */
     public function getEnabledBlocks()
     {
-        return $this->enabledBlocks;
+        return $this->dashboardSettingsModel->getEnabledBlocks();
     }
 
     public function getBlocksViewData($dashboardId = false)
     {
         $data = [];
-        if (false !== $dashboardId && array_key_exists($dashboardId, $this->enabledBlocks)) {
+        if (false !== $dashboardId && array_key_exists($dashboardId, $this->dashboardSettingsModel->getEnabledBlocks())) {
             /** @var DashboardBlockLms $enabledBlock */
-            foreach ($this->enabledBlocks[$dashboardId] as $enabledBlock) {
+            foreach ($this->dashboardSettingsModel->getEnabledBlocks()[$dashboardId] as $enabledBlock) {
                 if ($enabledBlock->isEnabled()) {
                     $data[] = $enabledBlock->getViewData();
                 }
@@ -78,8 +66,8 @@ class DashboardLms extends Model
      */
     public function getRegisteredBlock($dashboardId,$block)
     {
-        if (false !== $dashboardId && array_key_exists($dashboardId, $this->enabledBlocks)) {
-            foreach ($this->enabledBlocks[$dashboardId] as $enabledBlock) {
+        if (false !== $dashboardId && array_key_exists($dashboardId, $this->dashboardSettingsModel->getEnabledBlocks())) {
+            foreach ($this->dashboardSettingsModel->getEnabledBlocks()[$dashboardId] as $enabledBlock) {
 
                 if (get_class($enabledBlock) === $block) {
                     return $enabledBlock;
@@ -87,5 +75,15 @@ class DashboardLms extends Model
             }
         }
         return null;
+    }
+
+    public function getDefaultLayout(){
+        /** @var DashboardLayoutLms $layout */
+        foreach ($this->dashboardSettingsModel->getLayouts() as $layout){
+            if ($layout->isDefault()){
+                return $layout;
+            }
+        }
+        return false;
     }
 }

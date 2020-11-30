@@ -75,6 +75,7 @@ class DashboardsettingsAdm extends Model
 
         while ($block = $this->db->fetch_assoc($result)) {
 
+            require_once Forma::inc(_lms_ . '/models/' . $block['block_class'].'.php');
             /** @var DashboardBlockLms $blockObj */
             $blockObj = new $block['block_class']('');
 

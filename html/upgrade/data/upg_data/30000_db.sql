@@ -9,6 +9,19 @@ ALTER TABLE `core_lang_text`
     MODIFY COLUMN `text_key` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' AFTER `id_text`;
 
 
+CREATE TABLE IF NOT EXISTS `dashboard_layouts`
+(
+    `id` bigint(20) NOT NULL AUTO_INCREMENT,
+    `name` varchar(255) NOT NULL,
+    `caption` varchar(255) NOT NULL,
+    `status` varchar(255) NOT NULL,
+    `default` tinyint(1) NOT NULL DEFAULT 0,
+    `created_at` timestamp NULL DEFAULT NOW(),
+    `updated_at` timestamp NULL ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (`id`),
+    UNIQUE INDEX `name_idx`(`name`) USING BTREE,
+    INDEX `status_idx`(`status`) USING BTREE
+);
 
 CREATE TABLE IF NOT EXISTS `dashboard_block_config`
 (
@@ -46,20 +59,6 @@ VALUES (7, 'DashboardBlockCalendarLms'),
        (5, 'DashboardBlockCoursesLms'),
        (4, 'DashboardBlockMessagesLms'),
        (8, 'DashboardBlockBannerLms');
-
-CREATE TABLE IF NOT EXISTS `dashboard_layouts`
-(
-      `id` bigint(20) NOT NULL AUTO_INCREMENT,
-      `name` varchar(255) NOT NULL,
-      `status` varchar(255) NOT NULL,
-      `default` tinyint(1) NOT NULL DEFAULT 0,
-      `created_at` timestamp NULL DEFAULT NOW(),
-      `updated_at` timestamp NULL ON UPDATE CURRENT_TIMESTAMP,
-      PRIMARY KEY (`id`),
-      UNIQUE INDEX `name_idx`(`name`) USING BTREE,
-      INDEX `status_idx`(`status`) USING BTREE
-);
-
 
 INSERT IGNORE INTO learning_middlearea (`obj_index`, `disabled`, `idst_list`, `sequence`)
 VALUES ('tb_dashboard', '1', 'a:0:{}', '0');

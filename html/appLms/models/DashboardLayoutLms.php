@@ -26,6 +26,8 @@ class DashboardLayoutLms extends Model
 
     protected $name;
 
+    protected $caption;
+
     protected $status;
 
     protected $default = false;
@@ -60,6 +62,22 @@ class DashboardLayoutLms extends Model
     public function setName($name)
     {
         $this->name = $name;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCaption()
+    {
+        return $this->caption;
+    }
+
+    /**
+     * @param mixed $caption
+     */
+    public function setCaption($caption)
+    {
+        $this->caption = $caption;
     }
 
     /**
