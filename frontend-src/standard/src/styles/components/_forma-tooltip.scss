@@ -51,6 +51,9 @@
       transform: translate3d(-50%, -100%) translateY(-285px);
     }
   }
+  &.left {
+    transition-duration: 0s;
+  }
 
   .has-forma-tooltip:hover & {
     transform: translate(-50%, -100%) translateY(-15px);
@@ -70,6 +73,23 @@
         border-right: solid 6px transparent;
         border-left: solid 6px transparent;
         bottom: 100%;
+      }
+    }
+    .forma-tooltip.left {
+      left: auto;
+      right: -12px;
+      top: 160%;
+      bottom: auto;
+      transition-duration: 0s;
+      &:after {
+        transform: translate(-100%, 0%);
+        border-top: solid 6px transparent;
+        border-right: none;
+        border-left: solid 12px $orange;
+        border-bottom: solid 6px transparent;
+        bottom: calc(50% - 6px);
+        right: -23px;
+        left: auto;
       }
     }
   }
