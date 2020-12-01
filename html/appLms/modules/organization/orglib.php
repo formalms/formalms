@@ -1667,7 +1667,7 @@ class Org_TreeView extends RepoTreeView
 								if (method_exists($lo_class, 'trackDetails')) {
 									$out .= '
 										<div class="has-forma-tooltip" style="float:right;">
-											<div class="forma-tooltip left">' . Lang::t($status, 'standard', 'framework') . '</div>
+											<div class="forma-tooltip left">' . $this->_getShowResultsTitle() . ': ' . $this->getFolderPrintName($stack[$level]['folder']) . '</div>
 											<span>'
 										. '<a class="tree_view_image" '
 										. 'id="' . $this->id . '_' . $this->_getShowResultsId() . '_' . $stack[$level]['folder']->id . '" '
