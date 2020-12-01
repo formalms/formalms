@@ -4330,6 +4330,8 @@ p {
   .forma-tooltip.down:after {
     transform: translate(-50%, 100%) translateY(-285px);
     transform: translate3d(-50%, -100%) translateY(-285px); }
+  .forma-tooltip.left {
+    transition-duration: 0s; }
   .has-forma-tooltip:hover .forma-tooltip {
     transform: translate(-50%, -100%) translateY(-15px);
     transform: translate3d(-50%, -100%, 0) translateY(-15px);
@@ -4344,6 +4346,21 @@ p {
     border-right: solid 6px transparent;
     border-left: solid 6px transparent;
     bottom: 100%; }
+  .has-forma-tooltip:hover .forma-tooltip.left {
+    left: auto;
+    right: -12px;
+    top: 160%;
+    bottom: auto;
+    transition-duration: 0s; }
+    .has-forma-tooltip:hover .forma-tooltip.left:after {
+      transform: translate(-100%, 0%);
+      border-top: solid 6px transparent;
+      border-right: none;
+      border-left: solid 12px #ff6c00;
+      border-bottom: solid 6px transparent;
+      bottom: calc(50% - 6px);
+      right: -23px;
+      left: auto; }
 
 .tabnav {
   overflow: hidden;
@@ -5601,7 +5618,7 @@ div#container {
   overflow: hidden;
   position: relative; }
   .course-box__item:first-child {
-    height: 70px; }
+    min-height: 70px; }
   .course-box__item:nth-child(3) {
     padding-top: 16px;
     min-height: 90px; }
@@ -5635,7 +5652,7 @@ div#container {
   max-height: 123px;
   padding-top: 10px;
   padding-right: 15px;
-  padding-bottom: 25px;
+  padding-bottom: 15px;
   color: #222222;
   font-weight: 600;
   font-size: 16px;
