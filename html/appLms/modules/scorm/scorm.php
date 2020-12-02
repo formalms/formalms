@@ -101,7 +101,7 @@ function insitem() {
 	// compute filepath
 	$filepath = $path.$savefile.STRPOSTCONTENT;
 	// extract zip file
-	$zip = new PclZip($GLOBALS['where_files_relative'].$path.$savefile);
+	$zip = new PclZip(_files_.$path.$savefile);
 	
 	// check disk quota --------------------------------------------------
 	if(isset($_SESSION['idCourse']) && defined("LMS")) {
@@ -130,7 +130,7 @@ function insitem() {
 	}
 	// extract zip ------------------------------------------------------
 	
-	$zip->extract(PCLZIP_OPT_PATH, $GLOBALS['where_files_relative'].$filepath );
+	$zip->extract(PCLZIP_OPT_PATH, _files_.$filepath );
 	if( $zip->errorCode() != PCLZIP_ERR_NO_ERROR && $zip->errorCode() != 1 ) {
 		sl_unlink($path.$savefile);
 		$_SESSION['last_error'] = _ERROR_UPLOAD;
