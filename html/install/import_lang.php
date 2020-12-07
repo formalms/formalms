@@ -16,6 +16,8 @@ DbConn::getInstance(false,array(
 
 sql_query("SET NAMES 'utf8'");
 sql_query("SET CHARACTER SET 'utf8'");
+//TODO NO_Strict_MODE: to be confirmed
+sql_query("SET SQL_MODE = 'NO_AUTO_CREATE_USER'");
 
 $platform_code = Get::pReq('platform', DOTY_STRING);
 $lang = Get::pReq('lang', DOTY_STRING);
