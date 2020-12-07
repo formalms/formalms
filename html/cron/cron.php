@@ -36,6 +36,7 @@ ob_start();
 
 @sql_query("SET NAMES '".$GLOBALS['db_conn_names']."'", $GLOBALS['dbConn']);
 @sql_query("SET CHARACTER SET '".$GLOBALS['db_conn_char_set']."'", $GLOBALS['dbConn']);
+@sql_query("SET SQL_MODE = 'NO_AUTO_CREATE_USER'", $GLOBALS['dbConn']);
 
 // load lms setting ------------------------------------------------------------------
 

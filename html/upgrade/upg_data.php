@@ -9,6 +9,8 @@ include_once(_base_."/db/lib.docebodb.php");
 
 sql_query("SET NAMES 'utf8'");
 sql_query("SET CHARACTER SET 'utf8'");
+//TODO NO_Strict_MODE: to be confirmed
+sql_query("SET SQL_MODE = 'NO_AUTO_CREATE_USER'");
 
 $enabled_step = 5;
 $current_step = Get::gReq('cur_step', DOTY_INT);
