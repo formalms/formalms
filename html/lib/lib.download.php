@@ -38,8 +38,10 @@ function sendFile($path, $filename, $ext = NULL, $sendname = NULL)
         'sendFileFromFS'
 	);
 
-    $event = new \appCore\Events\Core\FileSystem\DownloadEvent($path, $filename, $ext, $sendname);
-    \appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\FileSystem\DownloadEvent::EVENT_NAME, $event);
+	//TODO: EVT_OBJECT (§)
+	//$event = new \appCore\Events\Core\FileSystem\DownloadEvent($path, $filename, $ext, $sendname);
+	//TODO: EVT_LAUNCH (&)
+    //\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\FileSystem\DownloadEvent::EVENT_NAME, $event);
 }
 
 

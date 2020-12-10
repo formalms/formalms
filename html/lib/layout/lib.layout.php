@@ -275,10 +275,13 @@ class Layout
     {
         $html = '';
         if (HomepageAdm::staticIsCatalogToShow()) {
-            $event = new ExternalCatalogueLink();
-            $event->setLink(_homecatalog_);
-            \appCore\Events\DispatcherManager::dispatch(ExternalCatalogueLink::EVENT_NAME, $event);
-            $html = '<a class="forma-button forma-button--orange" href="index.php?r=' . $event->getLink() . '">' . Lang::t('_CATALOGUE', 'standard') . '</a>';
+            //TODO: EVT_OBJECT (§)
+            //$event = new ExternalCatalogueLink();
+            //$event->setLink(_homecatalog_);
+            //TODO: EVT_LAUNCH (&)
+            //\appCore\Events\DispatcherManager::dispatch(ExternalCatalogueLink::EVENT_NAME, $event);
+            //$html = '<a class="forma-button forma-button--orange" href="index.php?r=' . $event->getLink() . '">' . Lang::t('_CATALOGUE', 'standard') . '</a>';
+            $html = '<a class="forma-button forma-button--orange" href="index.php?r=' . _homecatalog_ . '">' . Lang::t('_CATALOGUE', 'standard') . '</a>';
         }
 
         return $html;

@@ -1414,22 +1414,25 @@ class Org_TreeView extends RepoTreeView
 	{
 
 		include_once(_base_ . '/appLms/Events/Lms/OrgPropertiesPrintEvent.php');
-		$event = new \appLms\Events\Lms\OrgPropertiesPrintEvent();
 
-		$event->setElement($stack[$level]['folder']);
+		//TODO: EVT_OBJECT (§)
+		//$event = new \appLms\Events\Lms\OrgPropertiesPrintEvent();
 
-		$event->setDisplayable(true);
-		$event->setAccessible(true);
+		//$event->setElement($stack[$level]['folder']);
 
-		$event->setOrgTreeView($this);
+		//$event->setDisplayable(true);
+		//$event->setAccessible(true);
 
-		$event->setId($this->id);
+		//$event->setOrgTreeView($this);
 
-		\appCore\Events\DispatcherManager::dispatch(\appLms\Events\Lms\OrgPropertiesPrintEvent::EVENT_NAME, $event);
+		//$event->setId($this->id);
 
-		if (!$event->getDisplayable()) {
-			return '';
-		}
+		//TODO: EVT_LAUNCH (&)
+		//\appCore\Events\DispatcherManager::dispatch(\appLms\Events\Lms\OrgPropertiesPrintEvent::EVENT_NAME, $event);
+
+		//if (!$event->getDisplayable()) {
+		//	return '';
+		//}
 
 		require_once($GLOBALS['where_lms'] . '/class.module/track.object.php');
 
