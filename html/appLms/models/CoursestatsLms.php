@@ -30,7 +30,7 @@ class CoursestatsLms extends Model
 			'lo_types'			=> '%lms_lo_types',
 			'scorm_tracking_history'           => '%lms_scorm_tracking_history',
 			'scorm_tracking' => '%lms_scorm_tracking'
-			
+
 		);
 		$this->cache = array();
 	}
@@ -65,7 +65,7 @@ class CoursestatsLms extends Model
 		if (isset($this->cache['lo_list'][$id_course]) && is_array($this->cache['lo_list'][$id_course])) {
 			return $this->cache['lo_list'][$id_course];
 		}
-		
+
 		$output = array();
 		$query = "SELECT * FROM " . $this->tables['organization'] . " "
 			. " WHERE idCourse=" . (int) $id_course . " ORDER BY path ASC";
@@ -134,7 +134,7 @@ class CoursestatsLms extends Model
 			. " JOIN " . $this->tables['user'] . " as u "
 			. " ON (cu.idUser = u.idst AND cu.idCourse=" . (int) $id_course . ") "
 			. " WHERE 1=1" . $where;
-		
+
 		if (is_array($pagination)) {
 			$query .= " ORDER BY " . $sort . " " . $dir . " ";
 			$query .= "LIMIT " . $startIndex . ", " . $results;
@@ -174,7 +174,7 @@ class CoursestatsLms extends Model
 			. " FROM " . $this->tables['courseuser'] . " as cu "
 			. " JOIN " . $this->tables['user'] . " as u "
 			. " ON (cu.idUser = u.idst AND cu.idCourse=" . (int) $id_course . ") ";
-		
+
 
 		if ($filtered) {
 			$where = 'WHERE 1=1';
@@ -281,14 +281,14 @@ class CoursestatsLms extends Model
 
 		if ($res) {
 			$scores = $this->getLOScores($id_course, $id_user); //actually only tests can be scored
-			
+
 			require_once Forma::inc(_lms_ . '/class.module/track.object.php');
 
 			while ($obj = $this->db->fetch_obj($res)) {
 				$obj->status = Track_Object::getStatusFromId($obj->idOrg, $id_user);
 				$history = $this->getUserScormHistoryTrackInfo($id_user, $obj->idOrg);
 				$history_table_html = '<table class="timesDetail table table-striped table-bordered">';
-				
+
 				if (is_array($history)) $history_table_html .= '
 					<tr>
 						<td>&nbsp;</td>
@@ -297,7 +297,7 @@ class CoursestatsLms extends Model
 						<td><b>' . Lang::t('_DURATION', 'course') . ' (hh:mm:ss)</b></td>
 						<td><b>' . Lang::t('_RESULT', 'course') . '</b></td>
 					</tr>';
-				foreach ($history as $key => $history_rec) { 
+				foreach ($history as $key => $history_rec) {
 					$seconds_diff = strtotime("1970-01-01 " . $history_rec[3] . " UTC");
 					$date_start = date('Y-m-d H:i:s', strtotime($history_rec[0]) - $seconds_diff);
 					$date_end = date('Y-m-d H:i:s', strtotime($history_rec[0]));
@@ -373,7 +373,7 @@ class CoursestatsLms extends Model
 			. " LEFT JOIN " . $this->tables['commontrack'] . " as c "
 			. " ON (c.idReference = o.idOrg AND c.idUser=" . (int) $id_user . ") "
 			. " WHERE o.idCourse=" . (int) $id_course . " ";
-		
+
 		if (is_array($pagination)) {
 			$query .= " ORDER BY " . $sort . " " . $dir . " ";
 			$query .= "LIMIT " . $startIndex . ", " . $results;
@@ -384,7 +384,7 @@ class CoursestatsLms extends Model
 		$history_table_html = '<table style="margin-left:auto; margin-right:auto;width:50%">';
 		if ($res) {
 			$scores = $this->getLOScores($id_course, $id_user); //actually only tests can be scored
-			
+
 			while ($obj = $this->db->fetch_obj($res)) {
 				$obj->history = '';
 				$history = $this->getUserScormHistoryTrackInfo($id_user, $obj->idOrg);
@@ -399,7 +399,7 @@ class CoursestatsLms extends Model
 
 		return $output;
 	}
-	
+
 
 	public function getCourseUserStatsTotal($id_course, $id_user)
 	{
@@ -475,13 +475,13 @@ class CoursestatsLms extends Model
 		}
 		return $output;
 	}
-	
+
 	public function getUserScormHistoryTrackInfo($id_user, $id_lo)
 	{
 		if ($id_lo <= 0 || $id_user <= 0) return false;
 		$output = false;
 		$query = "SELECT t1.date_action, t1.score_raw, t1.score_max, SEC_TO_TIME( TIME_TO_SEC( t1.session_time ) ) as session_total_time, t1.lesson_status, t1.session_time FROM %lms_organization AS t3 JOIN %lms_scorm_tracking AS t2 ON ( t3.objectType = 'scormorg' AND t3.idOrg = t2.idReference ) JOIN  " . $this->tables['scorm_tracking_history'] . " as t1 ON (t1.idscorm_tracking=t2.idscorm_tracking) WHERE t3.idOrg =" . $id_lo . " AND t2.idUser=" . $id_user .
-		" ORDER BY t1.date_action ASC ";
+			" ORDER BY t1.date_action ASC ";
 
 		$res = $this->db->query($query);
 		if ($res) {
@@ -501,11 +501,11 @@ class CoursestatsLms extends Model
 	private function parsePTTime($pt_time)
 	{
 		$time = str_replace('PT', '', $pt_time);
-	    $time = str_replace('H', ':', $time);
-	    $time = str_replace('M', ':', $time);
-	    $time = str_replace('S', '', $time);
+		$time = str_replace('H', ':', $time);
+		$time = str_replace('M', ':', $time);
+		$time = str_replace('S', '', $time);
 
-	    if (strpos($pt_time, 'H') === false) {
+		if (strpos($pt_time, 'H') === false) {
 			$time = '00:' . $time;
 		}
 		if (strpos($pt_time, 'M') === false) {
@@ -537,28 +537,43 @@ class CoursestatsLms extends Model
 	public function getUserScormHistoryTrackTotaltime($id_user, $id_lo)
 	{
 		if ($id_lo <= 0 || $id_user <= 0) return false;
-		$output = false;
-		
-		$query = "SELECT SEC_TO_TIME( SUM( TIME_TO_SEC( t1.session_time ) ) ) AS total_time, t1.session_time 
+		$output = 0;
+
+		$query = "SELECT t1.session_time 
 							FROM %lms_organization AS t3 
 							JOIN %lms_scorm_tracking AS t2 ON ( t3.objectType = 'scormorg' AND t3.idOrg = t2.idReference ) 
 							JOIN " . $this->tables['scorm_tracking_history'] . " as t1 ON (t1.idscorm_tracking=t2.idscorm_tracking) 
 							WHERE t3.idOrg =" . $id_lo . " 
 							AND t2.idUser=" . $id_user .
-							" ORDER BY t1.date_action ASC ";
-		
+			" ORDER BY t1.date_action ASC ";
+
 		$res = $this->db->query($query);
 
 		if ($res) {
 			if ($this->db->num_rows($res) > 0) {
-				$row = $this->db->fetch_row($res);
-				if ($row[0] == '00:00:00.000000') {
-					$row[0] = $this->parsePTTime($row[1]);
+				while ($row = $this->db->fetch_row($res)) {
+					$output += $this->timeToSec($this->parsePTTime($row[0])); // Sum in seconds
 				}
-				$output = $this->zeroToTime($this->roundTime($row[0]));
 			}
-		}		
-		return $output;
+		}
+		return $this->zeroToTime($this->decimal_to_time($output));
+	}
+
+	private function timeToSec($time)
+	{
+		$seconds = 0;
+		list($hour, $minute, $second) = explode(':', $time);
+		$seconds += $hour * 3600;
+		$seconds += $minute * 60;
+		$seconds += $second;
+
+		return $seconds;
+	}
+
+	function decimal_to_time($t)
+	{
+		$t = round($t);
+		return sprintf('%02d:%02d:%02d', ($t / 3600), ($t / 60 % 60), $t % 60);
 	}
 
 	/*
@@ -653,9 +668,10 @@ class CoursestatsLms extends Model
 		return $output;
 	}
 
-	public function changeLOUserFirstAccess($id_lo, $id_user, $new_first_attempt) {
+	public function changeLOUserFirstAccess($id_lo, $id_user, $new_first_attempt)
+	{
 		if ($id_lo <= 0 || $id_user <= 0) return false;
-		
+
 		$data = Events::trigger('lms.lo_user.updating', [
 			'id_reference' => $id_lo,
 			'id_user' => $id_user,
@@ -665,10 +681,10 @@ class CoursestatsLms extends Model
 		])['new_data'];
 
 		$output = false;
-		$query = "UPDATE ".$this->tables['commontrack']." SET firstAttempt='".$data['firstAttempt']."' "
-			." WHERE idReference=".(int)$id_lo." AND idUser=".(int)$id_user;
+		$query = "UPDATE " . $this->tables['commontrack'] . " SET firstAttempt='" . $data['firstAttempt'] . "' "
+			. " WHERE idReference=" . (int)$id_lo . " AND idUser=" . (int)$id_user;
 		$res = $this->db->query($query);
-		
+
 		Events::trigger('lms.lo_user.updated', [
 			'id_reference' => $id_lo,
 			'id_user' => $id_user,
@@ -683,9 +699,10 @@ class CoursestatsLms extends Model
 		return $output;
 	}
 
-	public function changeLOUserLastAccess($id_lo, $id_user, $new_date_attempt) {
+	public function changeLOUserLastAccess($id_lo, $id_user, $new_date_attempt)
+	{
 		if ($id_lo <= 0 || $id_user <= 0) return false;
-		
+
 		$data = Events::trigger('lms.lo_user.updating', [
 			'id_reference' => $id_lo,
 			'id_user' => $id_user,
@@ -695,8 +712,8 @@ class CoursestatsLms extends Model
 		])['new_data'];
 
 		$output = false;
-		$query = "UPDATE ".$this->tables['commontrack']." SET dateAttempt='".$data['date_attempt']."' "
-			." WHERE idReference=".(int)$id_lo." AND idUser=".(int)$id_user;
+		$query = "UPDATE " . $this->tables['commontrack'] . " SET dateAttempt='" . $data['date_attempt'] . "' "
+			. " WHERE idReference=" . (int)$id_lo . " AND idUser=" . (int)$id_user;
 		$res = $this->db->query($query);
 
 		Events::trigger('lms.lo_user.updated', [
@@ -713,9 +730,10 @@ class CoursestatsLms extends Model
 		return $output;
 	}
 
-	public function changeLOUserFirstComplete($id_lo, $id_user, $new_first_complete) {
+	public function changeLOUserFirstComplete($id_lo, $id_user, $new_first_complete)
+	{
 		if ($id_lo <= 0 || $id_user <= 0) return false;
-		
+
 		$data = Events::trigger('lms.lo_user.updating', [
 			'id_reference' => $id_lo,
 			'id_user' => $id_user,
@@ -725,8 +743,8 @@ class CoursestatsLms extends Model
 		])['new_data'];
 
 		$output = false;
-		$query = "UPDATE ".$this->tables['commontrack']." SET first_complete='".$data['firstComplete']."' "
-			." WHERE idReference=".(int)$id_lo." AND idUser=".(int)$id_user;
+		$query = "UPDATE " . $this->tables['commontrack'] . " SET first_complete='" . $data['firstComplete'] . "' "
+			. " WHERE idReference=" . (int)$id_lo . " AND idUser=" . (int)$id_user;
 		$res = $this->db->query($query);
 
 		Events::trigger('lms.lo_user.updated', [
@@ -737,15 +755,16 @@ class CoursestatsLms extends Model
 			],
 		]);
 
-		if ($res && $this->db->affected_rows($res)>0) {
+		if ($res && $this->db->affected_rows($res) > 0) {
 			$output = true;
 		}
 		return $output;
 	}
 
-	public function changeLOUserLastComplete($id_lo, $id_user, $new_last_complete) {
+	public function changeLOUserLastComplete($id_lo, $id_user, $new_last_complete)
+	{
 		if ($id_lo <= 0 || $id_user <= 0) return false;
-		
+
 		$data = Events::trigger('lms.lo_user.updating', [
 			'id_reference' => $id_lo,
 			'id_user' => $id_user,
@@ -755,8 +774,8 @@ class CoursestatsLms extends Model
 		])['new_data'];
 
 		$output = false;
-		$query = "UPDATE ".$this->tables['commontrack']." SET last_complete='".$data['lastComplete']."' "
-			." WHERE idReference=".(int)$id_lo." AND idUser=".(int)$id_user;
+		$query = "UPDATE " . $this->tables['commontrack'] . " SET last_complete='" . $data['lastComplete'] . "' "
+			. " WHERE idReference=" . (int)$id_lo . " AND idUser=" . (int)$id_user;
 		$res = $this->db->query($query);
 
 		Events::trigger('lms.lo_user.updated', [
@@ -767,7 +786,7 @@ class CoursestatsLms extends Model
 			],
 		]);
 
-		if ($res && $this->db->affected_rows($res)>0) {
+		if ($res && $this->db->affected_rows($res) > 0) {
 			$output = true;
 		}
 		return $output;
