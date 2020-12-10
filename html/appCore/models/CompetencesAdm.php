@@ -787,6 +787,10 @@ class CompetencesAdm extends Model {
 					." VALUES ".implode(",", $conditions);
 				$res = $this->db->query($query);
 				$output = ($res ? $id : false);
+
+				$competence = $this->getCompetenceInfo($id);
+				Events::trigger('lms.competence.created', ['id_competence' => $id, 'competence' => $competence]);
+
 				return $output;
 			}
 		} else {
@@ -862,6 +866,9 @@ class CompetencesAdm extends Model {
 			}
 		}
 
+		$competence = $this->getCompetenceInfo($id_competence);
+		Events::trigger('lms.competence.edited', ['id_competence' => $id_competence, 'competence' => $competence]);
+
 		return $output;
 	}
 
@@ -882,6 +889,9 @@ class CompetencesAdm extends Model {
 			$res = $this->db->query($query);
 		}
 
+		$competence = $this->getCompetenceInfo($id_competence);
+		Events::trigger('lms.competence.edited', ['id_competence' => $id_competence, 'competence' => $competence]);
+		
 		return ($res ? true : false);
 	}
 
