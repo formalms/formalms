@@ -56,8 +56,8 @@ function sendFileFromFS(\appCore\Events\Core\FileSystem\DownloadEvent $event){
 		$sendname = $event->getSendname();
 
 		//empty and close buffer
-		if (!($GLOBALS['where_files_relative'] == substr($path, 0, strlen($GLOBALS['where_files_relative'])))) {
-			$path = $GLOBALS['where_files_relative'] . $path;
+		if (!(_files_ == substr($path, 0, strlen(_files_)))) {
+			$path = _files_ . $path;
 		}
 		if ($sendname === NULL) {
 			$sendname = implode('_', array_slice(explode('_', $filename), 3));

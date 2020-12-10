@@ -53,6 +53,6 @@ abstract class TemplateController {
     protected function render($view, $zone, $data = array()) {
         
         $GLOBALS['page']->addZone($zone);
-        cout(TwigManager::getInstance()->render("$view.html.twig", $data, _base_ . "/templates/" . getTemplate() . "/layout/" . $this->templateFolder), $zone);
+        cout(TwigManager::getInstance()->render("$view.html.twig", $data, _templates_ . "/" . getTemplate() . "/layout/" . $this->templateFolder), $zone);
     }
 }

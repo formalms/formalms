@@ -43,6 +43,7 @@ define( '_folder_files_lms_', 	'appLms' );
 define( '_folder_files_app_', 	'appCore' );
 define( '_folder_files_com_', 	'common' );
 define( '_folder_plugins_', 	'plugins' );
+define( '_folder_templates_', 	'templates' );
 
 /** absolute address to the addons folder */
 define( '_addons_',		_base_.'/'._folder_addons_ );
@@ -52,9 +53,10 @@ define( '_scs_', 		_base_.'/'._folder_scs_ );
 define( '_i18n_', 		_base_.'/'._folder_i18n_ );
 define( '_lib_', 		_base_.'/'._folder_lib_ );
 define( '_files_',		_base_.'/'._folder_files_ );
-define( '_files_lms_',	_base_.'/'._folder_files_lms_ );
-define( '_files_app_',	_base_.'/'._folder_files_app_ );
-define( '_files_com_',	_base_.'/'._folder_files_com_ );
+define( '_files_lms_',	_files_.'/'._folder_files_lms_ );
+define( '_files_app_',	_files_.'/'._folder_files_app_ );
+define( '_files_com_',	_files_.'/'._folder_files_com_ );
+define( '_templates_',	_base_.'/'._folder_templates_ );
 
 
 define( '_plugins_', 	_base_.'/'._folder_plugins_ );

@@ -2253,7 +2253,7 @@ class UsermanagementAdmController extends AdmController
 					} else {
 						$path = '/appCore/';
 						$savefile = mt_rand(0, 100) . '_' . time() . '_' . $_FILES['file_import']['name'];
-						if (!file_exists(Get::rel_path('base') . '/files' . $path . $savefile)) {
+						if (!file_exists(_files_ . $path . $savefile)) {
 							sl_open_fileoperations();
 							if (!sl_upload($_FILES['file_import']['tmp_name'], $path . $savefile)) {
 								sl_close_fileoperations();
@@ -2291,7 +2291,7 @@ class UsermanagementAdmController extends AdmController
 					$manual_password = Get::req('manual_password', DOTY_STRING, '');
 
 					$src = new DeceboImport_SourceCSV(array(
-						'filename' => $GLOBALS['where_files_relative'] . $path . $savefile,
+						'filename' => _files_ . $path . $savefile,
 						'separator' => $separator,
 						'first_row_header' => $first_row_header,
 						'import_charset' => $import_charset
@@ -2316,7 +2316,7 @@ class UsermanagementAdmController extends AdmController
 
 					$params['UIMap'] = $importer->getUIMap();
 					$params['tot_row'] = $importer->getTotRow();
-					$params['filename'] = $GLOBALS['where_files_relative'] . $path . $savefile;
+					$params['filename'] = _files_ . $path . $savefile;
 					$params['first_row_header'] = $first_row_header;
 					$params['separator'] = $separator;
 					$params['import_charset'] = $import_charset;

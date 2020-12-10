@@ -283,7 +283,7 @@ function parseBaseUrlFromRequest($atRoot = FALSE, $atCore = FALSE, $parse = FALS
 
 $report_persistence_days = Get::sett('report_persistence_days', 30);
 $report_max_email_size = Get::sett('report_max_email_size_MB', 0);
-$report_store_folder = Get::sett('report_storage_folder', '/files/common/report/');
+$report_store_folder = Get::sett('report_storage_folder', '/'._folder_files_.'/common/report/');
 $base_url = Get::sett('url', '');
 if (empty($base_url)) {
     $base_url = parseBaseUrlFromRequest(true);
@@ -303,7 +303,7 @@ require_once(_base_.'/lib/lib.json.php');
 $json = new Services_JSON();
 
 
-$path = _base_.'/files/tmp/';
+$path = _files_.'/tmp/';
 $qry = "SELECT * FROM %lms_report_filter";
 $res = sql_query($qry);
 sl_open_fileoperations();

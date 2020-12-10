@@ -681,7 +681,7 @@ class Course_API extends API {
                                                           'course_code' => $row['code'],
                                                           'course_name' => $row['name']   ,
                                                           'date_generate' =>  $row['on_date'],
-                                                          'cert_file' => Get::site_url()."files/appLms/certificate/".$row['cert_file']
+                                                          'cert_file' => Get::site_url()._folder_files_."/appLms/certificate/".$row['cert_file']
                                                           
                                                           );
 
@@ -764,7 +764,7 @@ class Course_API extends API {
                                                           'userid' =>  $row['userid'],
                                                           'date_generate' =>  $row['on_date'],
                                                           
-                                                          'cert_file' => Get::site_url()."files/appLms/certificate/".$row['cert_file'],
+                                                          'cert_file' => Get::site_url()._folder_files_."/appLms/certificate/".$row['cert_file'],
                                                         
                                                 		   'custom_fields' => $fields                                                          
                                                           

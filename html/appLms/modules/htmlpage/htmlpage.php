@@ -227,7 +227,7 @@ function save_file($file) {
 	if($file['name'] != '') {
 
 		$savefile = $_SESSION['idCourse'].'_'.rand(0,100).'_'.time().'_'.$file['name'];
-		if(!file_exists($GLOBALS['where_files_relative'].$path.$savefile)) {
+		if(!file_exists(_files_.$path.$savefile)) {
 
 			sl_open_fileoperations();
 			if(!sl_upload($file['tmp_name'], $path.$savefile)) {

@@ -192,6 +192,7 @@ class Boot
         $GLOBALS['where_lms_relative'] = (!defined("LMS") ? _deeppath_ : '') . _folder_lms_;
         $GLOBALS['where_scs_relative'] = _deeppath_ . _folder_scs_;
         $GLOBALS['where_files_relative'] = _deeppath_ . _folder_files_;
+		$GLOBALS['where_templates_relative'] = _deeppath_._folder_templates_;
 
         $GLOBALS['where_files_lms_relative'] = _deeppath_ . _folder_files_lms_;
         $GLOBALS['where_files_app_relative'] = _deeppath_ . _folder_files_app_;

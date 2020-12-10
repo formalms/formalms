@@ -121,12 +121,12 @@ function getCurrentDomain($idOrg = null)
  * This function change the template used only in the session
  * @param string 	a valid template name
  */
-function setTemplate($new_template)
-{
+function setTemplate($new_template) {
 
-	if (is_dir(_base_ . '/templates/' . $new_template)) {
+	if(is_dir(_templates_ . "/".$new_template)) {
 		$_SESSION['template'] = $new_template;
-	} else {
+	}
+	else {
 		$_SESSION['template'] = getDefaultTemplate();
 	}
 }
@@ -141,30 +141,23 @@ function resetTemplate()
 	setTemplate(getTemplate());
 }
 
-/**
- * Read specified template manifest
- * @param $template_name
- * @param bool $key
- * @return bool|array
- */
 function readTemplateManifest($template_name, $key = false)
-{
-	$template_file = _base_ . "/templates/" . $template_name . "/manifest.xml";
-	if (!file_exists($template_file)) {
-		return false;
-	}
-	if ($xml = simplexml_load_file($template_file)) {
-		$man_json = json_encode($xml);
-		$man_array = json_decode($man_json, TRUE);
+ {
+	 $template_file = _templates_ . "/" . $template_name . "/manifest.xml";
+	 if (!file_exists($template_file)) {
+		 return false;
+	 }
+	 if ($xml = simplexml_load_file($template_file)) {
+		 $man_json = json_encode($xml);
+		 $man_array = json_decode($man_json, TRUE);
 		if (key_exists($key, $man_array)) {
 			return $man_array[$key];
 		}
 		return $man_array;
-	} else {
-		return false;
-	}
+	 } else {
+		 return false;
+	 }
 }
-
 /**
  * Check the template version
  * @return bool false if template is not compatible, true if it is compatible
@@ -187,14 +180,12 @@ function checkTemplateVersion($template_name)
  * Retrive a list of template
  * @return array an array with the existent templates
  */
-function getTemplateList($set_keys = FALSE, $platform = FALSE)
-{
+function getTemplateList($set_keys = FALSE, $platform = FALSE) {
 
-	$templ = dir(_base_ . '/templates/');
-	while ($elem = $templ->read()) {
+	$templ = dir(_templates_ . "/");
+	while($elem = $templ->read()) {
 
-		if ((is_dir(_base_ . '/templates/' . $elem)) && ($elem != ".") && ($elem != "..") && ($elem != ".svn") && $elem{
-			0} != '_' && checkTemplateVersion($elem)) {
+		if((is_dir(_templates_ . "/".$elem)) && ($elem != ".") && ($elem != "..") && ($elem != ".svn") && $elem{0} != '_' && checkTemplateVersion($elem)) {
 
 			if (!$set_keys) $templArray[] = $elem;
 			else $templArray[$elem] = $elem;
@@ -208,16 +199,14 @@ function getTemplateList($set_keys = FALSE, $platform = FALSE)
 	reset($templArray);
 	return $templArray;
 }
-
 /**
  * Search for the default template
  * @return string 	the default template saved in database
  */
-function getDefaultTemplate($platform = false)
-{
+function getDefaultTemplate( $platform = false ) {
 
 	$plat_templ = Get::sett('defaultTemplate');
-	if (is_dir(_base_ . '/templates/' . $plat_templ)) return $plat_templ;
+	if(is_dir(_templates_ . "/".$plat_templ)) return $plat_templ;
 	else return array_pop(getTemplateList());
 }
 

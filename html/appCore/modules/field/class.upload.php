@@ -563,7 +563,7 @@ class Field_Upload extends Field {
 
 		list($file) = sql_fetch_row($re_entry);
 
-		$path = $GLOBALS['where_files_relative'].'/appCore/field/';
+		$path = _files_.'/appCore/field/';
 
 		sendFile($path, $file);
 		

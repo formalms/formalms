@@ -4074,7 +4074,7 @@ class UserProfileData {
 		require_once(_base_.'/lib/lib.multimedia.php');
 
 		$savefile = $id_user.'a_'.mt_rand(0,100).'_'.time(); //.'_'.$file_descriptor['name'];     removed for vulnerability
-		if(file_exists($GLOBALS['where_files_relative'].$this->getPAPath().$savefile)) return false;
+		if(file_exists(_files_.$this->getPAPath().$savefile)) return false;
 
 		sl_open_fileoperations();
 		if(createImageFromTmp(	$file_descriptor['tmp_name'],

@@ -44,7 +44,7 @@ class PluginmanagerAdm extends Model
      */
     function readPluginManifest($plugin_name, $key = false)
     {
-        $plugin_file = _base_ . "/plugins/" . $plugin_name . "/manifest.xml";
+        $plugin_file = _plugins_ ."/". $plugin_name . "/manifest.xml";
         if (!file_exists($plugin_file)) {
             return false;
         }
@@ -121,7 +121,7 @@ class PluginmanagerAdm extends Model
 
     private static function scan_dir()
     {
-        return array_diff(scandir(_base_ . '/plugins/'), array('..', '.'));
+        return array_diff(scandir(_plugins_), array('..', '.'));
     }
 
     private function check_dependencies($manifest, $dependence = false)
@@ -250,7 +250,7 @@ class PluginmanagerAdm extends Model
     public function getPlugins($onlyActive = false)
     {
         $plugins = array();
-        $dp = opendir(_base_ . "/plugins/");
+        $dp = opendir(_plugins_);
         //read each plugin in folder
         while ($file = readdir($dp)) {
             if (!preg_match("/^\./", $file)) {
@@ -416,7 +416,7 @@ class PluginmanagerAdm extends Model
     {
         $plugin_info = $this->getPluginFromDB($plugin_name, 'name');
         $check = true;
-        $path = _base_ . "/plugins/" . $plugin_name . "/translations/";
+        $path = _plugins_ . $plugin_name . "/translations/";
         $model = new LangAdm();
 
         $installedLangs = $model->getLangCodeList();
@@ -569,7 +569,7 @@ class PluginmanagerAdm extends Model
             return false;
         }
         $link = $info['update'] . "?action=download&plugin=" . $name;
-        $f = file_put_contents(_base_ . "/plugins/" . "temp_update.zip", fopen($link, 'r'), LOCK_EX);
+        $f = file_put_contents(_plugins_ . "/" . "temp_update.zip", fopen($link, 'r'), LOCK_EX);
         if (FALSE === $f) {
             return false;
         }
@@ -585,20 +585,20 @@ class PluginmanagerAdm extends Model
     function unpackPlugin($package_name, $rename = false)
     {
         $zip = new ZipArchive;
-        $res = $zip->open(_base_ . "/plugins/" . $package_name);
+        $res = $zip->open(_plugins_ . "/" . $package_name);
         if ($res === TRUE) {
             if ($rename) {
-                $rename_file = _base_ . "/plugins/" . $rename;
+                $rename_file = _plugins_ . "/" . $rename;
                 $rename_file_time = $rename_file;
                 if (file_exists($rename_file_time)) {
                     $rename_file_time .= "." . time();
                 }
                 rename($rename_file, $rename_file_time);
             }
-            $zip->extractTo(_base_ . "/plugins/");
+            $zip->extractTo(_plugins_);
             $zip->close();
-            fclose(_base_ . "/plugins/" . $package_name);
-            unlink(_base_ . "/plugins/" . $package_name);
+            fclose(_plugins_  . "/" .  $package_name);
+            unlink(_plugins_  . "/" .  $package_name);
             return true;
         } else {
             return false;
@@ -616,11 +616,11 @@ class PluginmanagerAdm extends Model
         if ($file_uploaded['name'] == '') {
             return false;
         } else {
-            $path = "/../plugins/";
+            $path = "/";
             $savefile = $file_uploaded['name'];
-            if (!file_exists($GLOBALS['where_files_relative'] . $path . $savefile)) {
+            if (!file_exists(_plugins_  . "/" .  $savefile)) {
                 sl_open_fileoperations();
-                if (!sl_upload($file_uploaded['tmp_name'], $path . $savefile)) {
+                if (!sl_upload($file_uploaded['tmp_name'], $path . $savefile, "zip", _plugins_)) {
                     sl_close_fileoperations();
                     return false;
                 }
@@ -653,7 +653,7 @@ class PluginmanagerAdm extends Model
      */
     function delete_files($name)
     {
-        $path = _base_ . "/plugins/" . $name;
+        $path = _plugins_  . "/" .  $name;
         if (file_exists($path)) {
             return self::removeDirectory($path);
         } else {
@@ -700,7 +700,7 @@ class PluginmanagerAdm extends Model
     public
     static function getPluginCore()
     {
-        $plugins = array_diff(scandir(_base_ . '/plugins/'), array('..', '.'));
+        $plugins = array_diff(scandir(_plugins_), array('..', '.'));
         $plugin_list = array();
         foreach ($plugins as $plugin) {
             if (self::readPluginManifest($plugin, 'core') == "true") {

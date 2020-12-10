@@ -82,12 +82,12 @@ function insitem() {
 		$_SESSION['last_error'] = _FILEUNSPECIFIED;
 		Util::jump_to( ''.$back_url.'&create_result=0' );
 	}
-	$path = str_replace ( '\\', '/', '/appLms/'.Get::sett('pathscorm'));
+	$path = str_replace ( '\\', '/', '/'._folder_lms_.'/'.Get::sett('pathscorm'));
 	$savefile = getLogUserId().'_'.rand(0,100).'_'.time().'_'.$_FILES['attach']['name'];
-	if(!file_exists ($GLOBALS['where_files_relative'].$path.$savefile)) {
+	if(!file_exists (_files_.$path.$savefile)) {
 		sl_open_fileoperations();
 		if(!sl_upload($_FILES['attach']['tmp_name'], $path.$savefile)) {
-		//if( !move_uploaded_file($_FILES['attach']['tmp_name'], $GLOBALS['where_files_relative'].$path.$savefile ) ) {
+		//if( !move_uploaded_file($_FILES['attach']['tmp_name'], _files_.$path.$savefile ) ) {
 			sl_close_fileoperations();				
 			$_SESSION['last_error'] = _ERROR_UPLOAD;
 			Util::jump_to( ''.$back_url.'&create_result=0' );
@@ -101,7 +101,7 @@ function insitem() {
 	// compute filepath
 	$filepath = $path.$savefile.STRPOSTCONTENT;
 	// extract zip file
-	$zip = new PclZip($GLOBALS['where_files_relative'].$path.$savefile);
+	$zip = new PclZip(_files_.$path.$savefile);
 	
 	// check disk quota --------------------------------------------------
 	if(isset($_SESSION['idCourse']) && defined("LMS")) {
@@ -130,7 +130,7 @@ function insitem() {
 	}
 	// extract zip ------------------------------------------------------
 	
-	$zip->extract(PCLZIP_OPT_PATH, $GLOBALS['where_files_relative'].$filepath );
+	$zip->extract(PCLZIP_OPT_PATH, _files_.$filepath );
 	if( $zip->errorCode() != PCLZIP_ERR_NO_ERROR && $zip->errorCode() != 1 ) {
 		sl_unlink($path.$savefile);
 		$_SESSION['last_error'] = _ERROR_UPLOAD;
@@ -146,7 +146,7 @@ function insitem() {
 	
 	$cpm = new CPManager();
 	// try to open content package
-	if( !$cpm->Open( $GLOBALS['where_files_relative'].$filepath ) ) {
+	if( !$cpm->Open( _files_.$filepath ) ) {
 		$_SESSION['last_error'] = 'Error: '. $cpm->errText . ' [' . $cpm->errCode .']';
 		Util::jump_to( ''.$back_url.'&create_result=0' );
 	}
@@ -298,7 +298,7 @@ function _scorm_deleteitem( $idscorm_package, $idscorm_organization, $erasetrack
 			or die(sql_error());
 	
 		list($path) = sql_fetch_row($rs);
-		$scopath = str_replace ( '\\', '/', $GLOBALS['where_files_relative'].'/appLms/'.Get::sett('pathscorm'));
+		$scopath = str_replace ( '\\', '/', _files_.'/appLms/'.Get::sett('pathscorm'));
 		/* remove all zip directory */
 		if(file_exists($scopath.$path)) {
 			
@@ -343,7 +343,7 @@ function _scorm_copyitem( $idscorm_package, $idscorm_organization ) {
 	}
 
 	list($path) = sql_fetch_row($rs);
-	$scopath = str_replace ( '\\', '/', $GLOBALS['where_files_relative'].'/appLms/'.Get::sett('pathscorm'));
+	$scopath = str_replace ( '\\', '/', _files_.'/appLms/'.Get::sett('pathscorm'));
 	
 	/* copy all zip directory */
 	/* remove copy - use same files 
