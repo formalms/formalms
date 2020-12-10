@@ -386,7 +386,7 @@ class SubscriptionAlmsController extends AlmsController
 									$msg_composer->setBodyLangText('sms', '_NEW_USER_SUBSCRIBED_TEXT_SMS', $array_subst);
 
 									// send message to the user subscribed
-									createNewAlert('UserCourseInserted', 'subscribe', 'insert', '1', 'User subscribed', [$user_id], $msg_composer, $send_alert, true);
+									createNewAlert('UserCourseInserted', 'subscribe', 'insert', '1', 'User subscribed', [$user_id], $msg_composer, $send_alert);
 								}
 							}
 						}
@@ -606,7 +606,7 @@ class SubscriptionAlmsController extends AlmsController
 					$msg_composer->setBodyLangText('sms', '_NEW_USER_SUBSCRIBED_TEXT_SMS', $array_subst);
 
 					// send message to the user subscribed
-					createNewAlert('UserCourseInserted', 'subscribe', 'insert', '1', 'User subscribed', [$user_id], $msg_composer, $send_alert, true);
+					createNewAlert('UserCourseInserted', 'subscribe', 'insert', '1', 'User subscribed', [$user_id], $msg_composer, $send_alert);
 				}
 			}
 
@@ -1096,7 +1096,7 @@ class SubscriptionAlmsController extends AlmsController
 					$msg_composer->setBodyLangText('sms', '_NEW_USER_SUBSCRIBED_TEXT_SMS', $array_subst);
 
 					// send message to the user subscribed
-					createNewAlert('UserCourseInserted', 'subscribe', 'insert', '1', 'User subscribed', [$id_user], $msg_composer, $send_alert, true);
+					createNewAlert('UserCourseInserted', 'subscribe', 'insert', '1', 'User subscribed', [$id_user], $msg_composer, $send_alert);
 				}
 
 				// Moderator notification
