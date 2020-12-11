@@ -3124,14 +3124,14 @@ class UsermanagementAdm extends Model
 
 
 		if (is_null($user)) return $output;
-		$query = "select idField, user_entry from 
+		$query = "select idField, user_entry, type_field from 
                     %adm_field JOIN %adm_field_userentry ON core_field.id_common = core_field_userentry.id_common where
                     id_user =" . $user . " and lang_code='" . getLanguage() . "' order by idField";
 
 		$res = sql_query($query);
 
 
-		while (list($id_field, $user_entry) = sql_fetch_row($res)) {
+		while (list($id_field, $user_entry, $type_field) = sql_fetch_row($res)) {
 			if ($type_field == 'dropdown') {
 				$q = sql_query("SELECT translation FROM %adm_field_son WHERE idField = $id_field AND id_common_son = $user_entry AND lang_code = '" . getLanguage() . "'");
 				list($translation) = sql_fetch_row($q);
