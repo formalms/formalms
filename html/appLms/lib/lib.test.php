@@ -61,7 +61,7 @@ class GroupTestManagement {
 		$question_number = 0;
 		while(list($idQuest, $type_quest, $type_file, $type_class) = sql_fetch_row($re_quest)) {
 
-			require_once(Forma::inc(_folder_lms_.'/modules/question/'.$type_file));
+			require_once(Forma::inc(_lms_.'/modules/question/'.$type_file));
 			$quest_obj = eval("return new $type_class( $idQuest );");
 
 			$max_score += $quest_obj->getMaxScore();
