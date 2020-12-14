@@ -364,7 +364,7 @@ class GroupTestManagement {
 		$re_quest = sql_query($query_question);
 		while(list($idQuest, $type_quest, $type_file, $type_class) = sql_fetch_row($re_quest)) {
 
-			require_once(Forma::inc(_folder_lms_.'/modules/question/'.$type_file));
+			require_once(Forma::inc(_lms_.'/modules/question/'.$type_file));
 			$quest_obj = eval("return new $type_class( $idQuest );");
 
 			if(!$quest_obj->deleteAnswer($id_track)) return false;
@@ -605,7 +605,7 @@ class TestManagement {
 		$max_score = 0;
 		while(list($idQuest, $type_quest, $type_file, $type_class) = sql_fetch_row($re_quest)) {
 
-			require_once(Forma::inc(_folder_lms_.'/modules/question/'.$type_file));
+			require_once(Forma::inc(_lms_.'/modules/question/'.$type_file));
 			$quest_obj = eval("return new $type_class( $idQuest );");
 
 			$max_score += $quest_obj->getMaxScore();
@@ -1100,8 +1100,8 @@ class PlayTestManagement {
 		$re_question = sql_query($query_question);
 		while(list($id_quest, $type_quest, $type_file, $type_class) = sql_fetch_row($re_question)) {
 
-			require_once(Forma::inc(_folder_lms_.'/modules/question/'.$type_file));
-			require_once(Forma::inc(_folder_lms_.'/class.module/track.test.php'));
+			require_once(Forma::inc(_lms_.'/modules/question/'.$type_file));
+			require_once(Forma::inc(_lms_.'/class.module/track.test.php'));
 			$trackTest = new Track_Test($this->id_track);
 			$quest_obj = eval("return new $type_class( $id_quest );");
 			$storing   = $quest_obj->storeAnswer( $trackTest, $_POST, $can_overwrite );

@@ -11,8 +11,8 @@
 |   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
-require_once(Forma::inc(_folder_lms_.'/class.module/learning.object.php'));
-require_once(Forma::inc(_folder_lms_.'/modules/question/class.question.php'));
+require_once(Forma::inc(_lms_.'/class.module/learning.object.php'));
+require_once(Forma::inc(_lms_.'/modules/question/class.question.php'));
 
 class Learning_Test extends Learning_Object {
 
@@ -67,7 +67,7 @@ class Learning_Test extends Learning_Object {
 
 		$res = sql_query("SELECT fileName, className FROM %lms_lo_types WHERE objectType = '".$testObj->getObjectType()."'");
 		list($type_file, $type_class) = sql_fetch_row($res);
-		require_once(Forma::inc(_folder_lms_ . '/class.module/'.$type_file));
+		require_once(Forma::inc(_lms_ . '/class.module/'.$type_file));
 		return  new $type_class( $id );
 	}
 
