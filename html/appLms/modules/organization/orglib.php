@@ -1639,9 +1639,9 @@ class Org_TreeView extends RepoTreeView
 							} else {
 								$out .=  '<div class="TVActionEmpty"></div>';
 							}
-							foreach ($event->getAction() as $action) {
-								$out .= $action;
-							}
+							//foreach ($event->getAction() as $action) {
+							//	$out .= $action;
+							//}
 						} else if (!$isFolder) {
 
 							if ($arrData[ORGFIELD_PUBLISHFROM] != '' && $arrData[ORGFIELD_PUBLISHFROM] != '0000-00-00 00:00:00') {
@@ -1720,9 +1720,9 @@ class Org_TreeView extends RepoTreeView
 												<span><img src="' . getPathImage() . 'lobject/' . $img . '" class="OrgStatus" alt="' . Lang::t($status, 'standard', 'framework') . '" title="' . Lang::t($status, 'standard', 'framework') . ': ' . $this->getFolderPrintName($stack[$level]['folder']) . '" /></span>
 											</div>';
 
-							foreach ($event->getAction() as $action) {
-								$out .= $action;
-							}
+							//foreach ($event->getAction() as $action) {
+							//	$out .= $action;
+							//}
 						}
 						break;
 				}
