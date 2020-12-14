@@ -147,7 +147,7 @@ class Learning_Test extends Learning_Object {
 		//deleting answer
 		while( list($idQuest, $type_quest, $type_file, $type_class) = sql_fetch_row($reQuest) ) {
 
-			Forma::inc(_folder_lms_.'/modules/question/'.$type_file);
+			Forma::inc(_lms_.'/modules/question/'.$type_file);
 
 			$quest_obj = eval("return new $type_class( $idQuest );");
 			if(!$quest_obj->del())  {
