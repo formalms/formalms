@@ -1518,7 +1518,7 @@ class Org_TreeView extends RepoTreeView
 					'name="' . $this->id . '[' . $this->_getOpPlayItemId() . '][' . $stack[$level]['folder']->id . ']">'
 					. $this->getFolderPrintName($stack[$level]['folder']) .
 					'</span>';
-			} else if ($isPrerequisitesSatisfied && $event->getAccessible()) {
+			} else if ($isPrerequisitesSatisfied) {// && $event->getAccessible()
 
 				$out .= ' <a ' . ($lo_class->showInLightbox() ? ' rel="lightbox' . $lb_param . '"' : '') . ' class="' . $classStyle . '" ' .
 					'id="' . $this->id . '_' . $this->_getOpPlayItemId() . '_' . $stack[$level]['folder']->id . '" ' .
@@ -1665,7 +1665,7 @@ class Org_TreeView extends RepoTreeView
 									. ' name="' . $this->id . '[' . $this->_getOpLockedId() . '][' . $stack[$level]['folder']->id . ']" '
 									. ' title="' . $this->_getOpLockedTitle() . ': ' . $this->getFolderPrintName($stack[$level]['folder']) . '" '
 									. ' alt="' . $this->_getOpLockedTitle() . ': ' . $this->getFolderPrintName($stack[$level]['folder']) . '" />';
-							} else if ($isPrerequisitesSatisfied && $event->getAccessible()) {
+							} else if ($isPrerequisitesSatisfied) {// && $event->getAccessible()
 
 								if (method_exists($lo_class, 'trackDetails')) {
 									$out .= '
