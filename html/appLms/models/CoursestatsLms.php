@@ -505,6 +505,10 @@ class CoursestatsLms extends Model
 		$time = str_replace('M', ':', $time);
 		$time = str_replace('S', '', $time);
 
+		if ($pt_time == $time) {
+			return $pt_time; // It's not PT ISO time
+		}
+
 		if (strpos($pt_time, 'H') === false) {
 			$time = '00:' . $time;
 		}
@@ -562,6 +566,7 @@ class CoursestatsLms extends Model
 	private function timeToSec($time)
 	{
 		$seconds = 0;
+		list($time) = explode('.', $time); // Remove decimals
 		list($hour, $minute, $second) = explode(':', $time);
 		$seconds += $hour * 3600;
 		$seconds += $minute * 60;
