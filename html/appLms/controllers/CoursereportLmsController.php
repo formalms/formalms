@@ -153,7 +153,9 @@ class CoursereportLmsController extends LmsController
 
 
 		$report_details = [];
+		//while (list($id_report , $users_result) = each ($reports_scores)) {
 		foreach ($reports_scores as $id_report => $users_result) {
+			//while (list($id_user , $single_report) = each ($users_result)) {
 			foreach ($users_result as $id_user => $single_report) {
 				if ($single_report['score_status'] == 'valid') {
 					// max
@@ -182,6 +184,7 @@ class CoursereportLmsController extends LmsController
 				}
 			}
 		}
+		//while (list($id_report , $single_detail) = each ($report_details)) {
 		foreach ($report_details as $id_report => $single_detail) {
 			if (isset($single_detail['num_result'])) {
 				$report_details[$id_report]['average'] /= $report_details[$id_report]['num_result'];
@@ -195,6 +198,7 @@ class CoursereportLmsController extends LmsController
 
 		$tests = [];
 		if (!empty($students_info)) {
+			//while (list($idst_user , $user_info) = each ($students_info)) {
 			foreach ($students_info as $idst_user => $user_info) {
 
 				foreach ($this->model->getCourseReports() as $info_report) {
@@ -599,6 +603,7 @@ class CoursereportLmsController extends LmsController
 
 		$view_all_perm = checkPerm('view_all', true, $this->_mvc_name);
 		$type_filter = Get::pReq('type_filter', DOTY_MIXED, false);
+		$edition_filter = Get::pReq('edition_filter', DOTY_MIXED, false);
 
 		$org_tests = &$report_man->getTest();
 		$tests_info = $test_man->getTestInfo($org_tests);
@@ -607,9 +612,13 @@ class CoursereportLmsController extends LmsController
 			$type_filter = false;
 		}
 
+		if ($edition_filter == 'false') {
+			$type_filter = false;
+		}
+
 		$reportsArray = $this->model->getCourseReportsVisibleInDetail();
 
-		$students = getSubscribedInfo((int) $_SESSION['idCourse'], FALSE, $type_filter, TRUE, false, false, true);
+		$students = getSubscribedInfo((int) $_SESSION['idCourse'], FALSE, $type_filter, TRUE, false, false, true, null, false, false, $edition_filter);
 
 		if (!$view_all_perm) {
 			//filter users
@@ -710,6 +719,7 @@ class CoursereportLmsController extends LmsController
 		if (!empty($students_info)) {
 			require_once($GLOBALS['where_lms'] . '/class.module/learning.test.php');
 
+			//while (list($idst_user , $user_info) = each ($students_info)) {
 			foreach ($students_info as $idst_user => $user_info) {
 
 				$user_name = ($user_info[ACL_INFO_LASTNAME] . $user_info[ACL_INFO_FIRSTNAME]
@@ -1176,9 +1186,39 @@ class CoursereportLmsController extends LmsController
 			}
 		}
 
+		//retrieve edition
+		$query = "SELECT * FROM %lms_course_date WHERE id_course = " . (int)$_SESSION['idCourse'];
+		$res = sql_query($query);
+
+		//is there more any edition ?
+		if (sql_num_rows($res) > 0) {
+			$lang = &DoceboLanguage::createInstance('stats', 'lms');
+			$arr_editions[] = $lang->def('_FILTEREDITIONSELECTONEOPTION');
+
+			//list of editions for the dropdown, in the format: "[code] name (date_begin - date_end)"
+			while ($einfo = sql_fetch_object($res)) {
+				$_label = '';
+				if ($einfo->code != '') {
+					$_label .= '[' . $einfo->code . '] ';
+				}
+				if ($einfo->name != '') {
+					$_label .= $einfo->name;
+				}
+				if (($einfo->sub_start_date != '' || $einfo->sub_start_date != '0000-00-00') && ($einfo->sub_end_date != '' || $einfo->sub_end_date != '0000-00-00')) {
+					$_label .= ' (' . Format::date($einfo->sub_start_date, 'date')
+						. ' - ' . Format::date($einfo->sub_end_date, 'date') . ')';
+				}
+				if ($_label == '') {
+					//...
+				}
+				$arr_editions[$einfo->id_date] = $_label;
+			}
+		}
+
 		$resposeArray = array(
 			'names' => $results_names,
 			'details' => array(
+				'editions' => $arr_editions,
 				'students' => $students_array,
 				'redo-final' => array('idReport' => $info_final[0]->getIdReport()),
 				'round-report' => array('idReport' => $info_final[0]->getIdReport()),
@@ -1249,7 +1289,7 @@ class CoursereportLmsController extends LmsController
         SELECT DATE_FORMAT(tt.date_attempt, '%d/%m/%Y %H:%i'), tt.score, tt.idTest, t.idUser, tt.number_time
         FROM " . $GLOBALS['prefix_lms'] . "_testtrack_times AS tt
         LEFT JOIN " . $GLOBALS['prefix_lms'] . "_testtrack AS t ON tt.idTrack=t.idTrack
-        WHERE tt.idTest = '" . $idTest . "' ORDER BY tt.date_attempt"; // tt.idTrack = '" . $idTrack . "' AND
+        WHERE tt.idTrack = '" . $idTrack . "' AND tt.idTest = '" . $idTest . "' ORDER BY tt.date_attempt";
 		$re_testreport = sql_query($query_testreport);
 
 		$test_man = new GroupTestManagement();
@@ -1425,9 +1465,8 @@ class CoursereportLmsController extends LmsController
 		// XXX: Reset track of user
 		if (isset($_POST['reset_track'])) {
 			$re = $this->saveTestUpdate($id_test, $test_man);
-			
-			$id_user = key($_POST['reset_track']);
-		
+			list($id_user,) = each($_POST['reset_track']);
+
 			$user_info = $acl_man->getUser($id_user, false);
 
 			$GLOBALS['page']->add(
@@ -1565,8 +1604,7 @@ class CoursereportLmsController extends LmsController
 
 		// XXX: Display user scores
 		$i = 0;
-		foreach ($students_info as $idst_user => $user_info)
-		{
+		while (list($idst_user, $user_info) = each($students_info)) {
 			$user_name = ($user_info[ACL_INFO_LASTNAME] . $user_info[ACL_INFO_FIRSTNAME]
 				? $user_info[ACL_INFO_LASTNAME] . ' ' . $user_info[ACL_INFO_FIRSTNAME]
 				: $acl_man->relativeId($user_info[ACL_INFO_USERID]));
@@ -1718,8 +1756,10 @@ class CoursereportLmsController extends LmsController
 			'index.php?r=lms/coursereport/testdetail&amp;id_test=' . $id_test => $test_info[$id_test]['title']
 		);
 
-		$out->add(getTitleArea($page_title, 'coursereport')
-			. '<div class="std_block">');
+		$out->add(
+			getTitleArea($page_title, 'coursereport')
+				. '<div class="std_block">'
+		);
 
 		$query_test = "SELECT title"
 			. " FROM " . $GLOBALS['prefix_lms'] . "_test"
@@ -1801,7 +1841,7 @@ class CoursereportLmsController extends LmsController
 		// XXX: Save input if needed
 		if (isset($_POST['view_answer'])) {
 			$re = $this->saveTestUpdate($id_test, $test_man);
-			$id_user = key($_POST['view_answer']);
+			list($id_user,) = each($_POST['view_answer']);
 		} else {
 			$id_user = importVar('id_user', true, 0);
 		}
@@ -2063,9 +2103,8 @@ class CoursereportLmsController extends LmsController
 		$report_score = &$report_man->getReportsScores(array($id_report));
 
 		// XXX: Display user scores
-		$i = 0; 
-		foreach ($students_info as $idst_user => $user_info)
-		{
+		$i = 0;
+		while (list($idst_user, $user_info) = each($students_info)) {
 
 			$user_name = ($user_info[ACL_INFO_LASTNAME] . $user_info[ACL_INFO_FIRSTNAME]
 				? $user_info[ACL_INFO_LASTNAME] . ' ' . $user_info[ACL_INFO_FIRSTNAME]
@@ -2234,8 +2273,7 @@ class CoursereportLmsController extends LmsController
 
 		$final_score = [];
 
-		foreach ($id_students as $id_user)
-		{
+		while (list(, $id_user) = each($id_students)) {
 			$user_score = 0;
 
 			foreach ($reports as $info_report) {
@@ -2278,8 +2316,7 @@ class CoursereportLmsController extends LmsController
 
 		$re = true;
 
-		foreach ($final_score as $user => $score)
-		{
+		while (list($user, $score) = each($final_score)) {
 			if (isset($exists_final[$user])) {
 				$query_scores = "
 			UPDATE " . $GLOBALS['prefix_lms'] . "_coursereport_score
@@ -2819,8 +2856,7 @@ class CoursereportLmsController extends LmsController
 
 			// XXX: Display user scores
 			$i = 0;
-			foreach ($students_info as $idst_user => $user_info)
-			{
+			while (list($idst_user, $user_info) = each($students_info)) {
 				$user_name = ($user_info[ACL_INFO_LASTNAME] . $user_info[ACL_INFO_FIRSTNAME]
 					? $user_info[ACL_INFO_LASTNAME] . ' ' . $user_info[ACL_INFO_FIRSTNAME]
 					: $acl_man->relativeId($user_info[ACL_INFO_USERID]));
@@ -3202,10 +3238,8 @@ class CoursereportLmsController extends LmsController
 
 		$test_details = [];
 		if (is_array($included_test)) {
-			foreach ($tests_score as $id_test => $users_result)
-			{
-				foreach ($users_result as $id_user => $single_test)
-				{
+			while (list($id_test, $users_result) = each($tests_score)) {
+				while (list($id_user, $single_test) = each($users_result)) {
 					if ($single_test['score_status'] == 'valid') {
 						if (!isset($test_details[$id_test]['max_score']))
 							$test_details[$id_test]['max_score'] = $single_test['score'];
@@ -3229,7 +3263,7 @@ class CoursereportLmsController extends LmsController
 					}
 				}
 			}
-			foreach ($test_details as $id_test => $singe_detail)
+			while (list($id_test, $single_detail) = each($test_details))
 				if (isset($single_detail['num_result']))
 					$test_details[$id_test]['average'] /= $test_details[$id_test]['num_result'];
 			reset($test_details);
@@ -3239,10 +3273,8 @@ class CoursereportLmsController extends LmsController
 		);
 
 		$report_details = [];
-		foreach ($reports_score as $id_report => $users_result)
-		{
-			foreach ($users_result as $id_user => $single_report)
-			{
+		while (list($id_report, $users_result) = each($reports_score)) {
+			while (list($id_user, $single_report) = each($users_result)) {
 				if ($single_report['score_status'] == 'valid') {
 					if (!isset($report_details[$id_report]['max_score']))
 						$report_details[$id_report]['max_score'] = $single_report['score'];
@@ -3266,15 +3298,13 @@ class CoursereportLmsController extends LmsController
 				}
 			}
 		}
-		//while (list($id_report, $single_detail) = each($report_details))
-		foreach ($report_details as $id_report => $single_detail)
+		while (list($id_report, $single_detail) = each($report_details))
 			if (isset($single_detail['num_result']))
 				$report_details[$id_report]['average'] /= $report_details[$id_report]['num_result'];
 		reset($report_details);
 
 		if (!empty($students_info))
-			foreach ($students_info as $idst_user => $user_info)
-			{
+			while (list($idst_user, $user_info) = each($students_info)) {
 				$user_name = ($user_info[ACL_INFO_LASTNAME] . $user_info[ACL_INFO_FIRSTNAME]
 					? $user_info[ACL_INFO_LASTNAME] . ' ' . $user_info[ACL_INFO_FIRSTNAME]
 					: $acl_man->relativeId($user_info[ACL_INFO_USERID]));
@@ -3706,8 +3736,10 @@ class CoursereportLmsController extends LmsController
 			$test_info[$id_test]['title']
 		);
 
-		$out->add(getTitleArea($page_title, 'coursereport')
-			. '<div class="std_block">');
+		$out->add(
+			getTitleArea($page_title, 'coursereport')
+				. '<div class="std_block">'
+		);
 
 		$query_test = "SELECT title"
 			. " FROM " . $GLOBALS['prefix_lms'] . "_test"
