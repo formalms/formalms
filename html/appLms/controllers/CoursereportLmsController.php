@@ -603,6 +603,7 @@ class CoursereportLmsController extends LmsController
 
 		$view_all_perm = checkPerm('view_all', true, $this->_mvc_name);
 		$type_filter = Get::pReq('type_filter', DOTY_MIXED, false);
+		$edition_filter = Get::pReq('edition_filter', DOTY_MIXED, false);
 
 		$org_tests = &$report_man->getTest();
 		$tests_info = $test_man->getTestInfo($org_tests);
@@ -611,9 +612,13 @@ class CoursereportLmsController extends LmsController
 			$type_filter = false;
 		}
 
+		if ($edition_filter == 'false') {
+			$type_filter = false;
+		}
+
 		$reportsArray = $this->model->getCourseReportsVisibleInDetail();
 
-		$students = getSubscribedInfo((int) $_SESSION['idCourse'], FALSE, $type_filter, TRUE, false, false, true);
+		$students = getSubscribedInfo((int) $_SESSION['idCourse'], FALSE, $type_filter, TRUE, false, false, true, null, false, false, $edition_filter);
 
 		if (!$view_all_perm) {
 			//filter users
@@ -1181,9 +1186,39 @@ class CoursereportLmsController extends LmsController
 			}
 		}
 
+		//retrieve edition
+		$query = "SELECT * FROM %lms_course_date WHERE id_course = " . (int)$_SESSION['idCourse'];
+		$res = sql_query($query);
+
+		//is there more any edition ?
+		if (sql_num_rows($res) > 0) {
+			$lang = &DoceboLanguage::createInstance('stats', 'lms');
+			$arr_editions[] = $lang->def('_FILTEREDITIONSELECTONEOPTION');
+
+			//list of editions for the dropdown, in the format: "[code] name (date_begin - date_end)"
+			while ($einfo = sql_fetch_object($res)) {
+				$_label = '';
+				if ($einfo->code != '') {
+					$_label .= '[' . $einfo->code . '] ';
+				}
+				if ($einfo->name != '') {
+					$_label .= $einfo->name;
+				}
+				if (($einfo->sub_start_date != '' || $einfo->sub_start_date != '0000-00-00') && ($einfo->sub_end_date != '' || $einfo->sub_end_date != '0000-00-00')) {
+					$_label .= ' (' . Format::date($einfo->sub_start_date, 'date')
+						. ' - ' . Format::date($einfo->sub_end_date, 'date') . ')';
+				}
+				if ($_label == '') {
+					//...
+				}
+				$arr_editions[$einfo->id_date] = $_label;
+			}
+		}
+
 		$resposeArray = array(
 			'names' => $results_names,
 			'details' => array(
+				'editions' => $arr_editions,
 				'students' => $students_array,
 				'redo-final' => array('idReport' => $info_final[0]->getIdReport()),
 				'round-report' => array('idReport' => $info_final[0]->getIdReport()),
