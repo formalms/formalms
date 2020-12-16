@@ -44,6 +44,7 @@ $GLOBALS['cfg']['versions'] = [
     '20401' => '2.4.1',
     '20402' => '2.4.2',
     '20403' => '2.4.3',
+    '20404' => '2.4.4',
 ];
 
 // for reference old docebo ce versions
