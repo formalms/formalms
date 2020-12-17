@@ -131,13 +131,13 @@
                     
                     if (Get::sett('on_catalogue_empty')=='on' ) {
                         if (count($user_catalogue)==0) {
-                            echo '<li class="active" ><a href="index.php?r=catalog/show&amp;id_cata=0">'.Lang::t('_CATALOGUE').'</a></li>';
+                            echo '<li class="active" ><a href="index.php?r=catalog/show&amp;id_catalogue=0">'.Lang::t('_CATALOGUE').'</a></li>';
                         } else {
                             GetMyFirstCatalogue($user_catalogue);   
                         }    
                      } else {
                         if (!$catalogue_exist) {
-                            echo '<li class="active" ><a href="index.php?r=catalog/show&amp;id_cata=0">'.Lang::t('_CATALOGUE').'</a></li>';
+                            echo '<li class="active" ><a href="index.php?r=catalog/show&amp;id_catalogue=0">'.Lang::t('_CATALOGUE').'</a></li>';
                         } else {
                             if (count($user_catalogue) > 0) {
                                 GetMyFirstCatalogue($user_catalogue);
@@ -154,7 +154,7 @@
                                     $i = 1;
                                 }
                                 echo '<li '.$active.' >'
-                                . '<a href="index.php?r=catalog/show&amp;id_cata=' . $id_catalogue . '">'
+                                . '<a href="index.php?r=catalog/show&amp;id_catalogue=' . $id_catalogue . '">'
                                 . '' . $cat_info['name'] . ''
                                 . '</a>'
                                 . '</li>';
