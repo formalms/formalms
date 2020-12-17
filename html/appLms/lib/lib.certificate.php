@@ -813,7 +813,7 @@ class Certificate
 	{
 		$isAggregatedCert = Get::req('aggCert', DOTY_INT, 0);
 		if ($isAggregatedCert) {
-			require_once(_files_lms_ . '/' . _folder_lib_ . '/lib.aggregated_certificate.php');
+			require_once(Forma::inc(_lms_.'/'._folder_lib_.'/lib.aggregated_certificate.php'));
 			$aggCertLib = new AggregatedCertificate();
 		}
 
