@@ -2174,6 +2174,7 @@ Nome de utilizador: [userid]]]></key>
         <key id="sms&amp;_NEW_FORUM_SMS" attributes="sms" save_date="2019-01-11 16:40:09"><![CDATA[Novo fórum]]></key>
         <key id="sms&amp;_NEW_MESSAGE_INSERT_IN_THREAD_SMS" attributes="sms" save_date="2014-11-14 00:00:00"><![CDATA[E-learning: no curso '[course]', existe uma nova mensagem '[forum_title]' > '[thread_title]']]></key>
         <key id="sms&amp;_NEW_THREAD_INSERT_IN_FORUM_SMS" attributes="sms" save_date="2019-01-11 21:15:59"><![CDATA[E-learning: curso '[course]' existe um novo tópico (thread) em '[forum_title]': [thread_title]]]></key>
+        <key id="sms&amp;_NEW_USER_SUBSCRIBED_TEXT_SMS" attributes="" save_date="2020-01-20 18:11:42"><![CDATA[You have been enrolled in the course : [course] at URL: [url]]]></key>
         <key id="sms&amp;_NEW_USER_SUBSCRIBED_TEXT_SMS_MODERATORS" attributes="" save_date="2020-01-20 18:11:42"><![CDATA[[url] [firstname] [lastname] [course] [username]]]></key>
         <key id="sms&amp;_PASSWORD_CHANGED_SMS" attributes="sms" save_date="2017-07-17 10:53:23"><![CDATA[e a sua senha foi alterada para: [password]]]></key>
         <key id="sms&amp;_REGISTERED_USER_TEXT_SMS" attributes="sms" save_date="2017-07-17 11:03:00"><![CDATA[Você agora está registado no nosso sistema com a conta:

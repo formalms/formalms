@@ -2118,6 +2118,7 @@ Gebruikersnaam: [userid]]]></key>
         <key id="sms&amp;_NEW_FORUM_SMS" attributes="sms" save_date="2014-11-14 00:00:00"><![CDATA[Nieuw forum]]></key>
         <key id="sms&amp;_NEW_MESSAGE_INSERT_IN_THREAD_SMS" attributes="sms" save_date="2014-11-14 00:00:00"><![CDATA[E-learning: inde cursus '[course]', is een nieuw beericht in '[forum_title]' > '[thread_title]']]></key>
         <key id="sms&amp;_NEW_THREAD_INSERT_IN_FORUM_SMS" attributes="sms" save_date="2014-11-14 00:00:00"><![CDATA[E-learning: cursus '[course]' er is een nieuwe thread in '[forum_title]': [thread_title]]]></key>
+        <key id="sms&amp;_NEW_USER_SUBSCRIBED_TEXT_SMS" attributes="" save_date="2020-01-20 18:11:42"><![CDATA[You have been enrolled in the course : [course] at URL: [url]]]></key>
         <key id="sms&amp;_NEW_USER_SUBSCRIBED_TEXT_SMS_MODERATORS" attributes="" save_date="2020-01-20 18:11:42"><![CDATA[[url] [firstname] [lastname] [course] [username]]]></key>
         <key id="sms&amp;_PASSWORD_CHANGED_SMS" attributes="sms" save_date="2014-11-14 00:00:00"><![CDATA[en je account wachtwoord is gewijzigd naar: [password]]]></key>
         <key id="sms&amp;_REGISTERED_USER_TEXT_SMS" attributes="sms" save_date="2014-11-14 00:00:00"><![CDATA[Je bent nu geregistreerd met dit account:

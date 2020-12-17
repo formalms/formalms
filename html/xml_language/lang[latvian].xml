@@ -2206,6 +2206,7 @@ Lietotājvārds: [userid]]]></key>
         <key id="sms&amp;_NEW_FORUM_SMS" attributes="sms" save_date="2020-05-28 14:54:01"><![CDATA[Jauns forums]]></key>
         <key id="sms&amp;_NEW_MESSAGE_INSERT_IN_THREAD_SMS" attributes="sms" save_date="2020-05-28 14:54:45"><![CDATA[E-apmācība: kursā '[course]', ir jauna ziņa forumā  '[forum_title]' > '[thread_title]']]></key>
         <key id="sms&amp;_NEW_THREAD_INSERT_IN_FORUM_SMS" attributes="sms" save_date="2020-05-28 14:55:23"><![CDATA[E-apmācība: kursā '[course]' ir jauns pavediens forumā '[forum_title]': [thread_title]]]></key>
+        <key id="sms&amp;_NEW_USER_SUBSCRIBED_TEXT_SMS" attributes="" save_date="2020-01-20 18:11:42"><![CDATA[You have been enrolled in the course : [course] at URL: [url]]]></key>
         <key id="sms&amp;_NEW_USER_SUBSCRIBED_TEXT_SMS_MODERATORS" attributes="" save_date="2020-05-31 17:15:06"><![CDATA[[url] [firstname] [lastname] [course] [username]]]></key>
         <key id="sms&amp;_PASSWORD_CHANGED_SMS" attributes="sms" save_date="2020-05-28 14:56:04"><![CDATA[un jūsu parole tika mainīta.]]></key>
         <key id="sms&amp;_REGISTERED_USER_TEXT_SMS" attributes="sms" save_date="2020-05-28 14:58:29"><![CDATA[Jūs esat reģistrēts sistēmā:
