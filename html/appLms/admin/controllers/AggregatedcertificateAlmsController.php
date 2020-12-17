@@ -44,7 +44,7 @@ Class AggregatedcertificateAlmsController extends AlmsController
 
         $this->controller_name = strtolower(str_replace('AlmsController','',get_class($this)));
         $this->json = new Services_JSON();
-        require_once(_files_lms_.'/'._folder_lib_.'/lib.aggregated_certificate.php');
+        require_once(Forma::inc(_lms_.'/'._folder_lib_.'/lib.aggregated_certificate.php'));
         $this->aggCertLib = new AggregatedCertificate();
 
         $this->model = new AggregatedcertificateAlms();
