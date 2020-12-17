@@ -1921,6 +1921,7 @@ forma.lmsのURL <a href="[url]">[url]</a>で読めます]]></key>
         <key id="sms&amp;_NEW_FORUM_SMS" attributes="sms" save_date="2014-11-14 00:00:00"><![CDATA[新フォーラム]]></key>
         <key id="sms&amp;_NEW_MESSAGE_INSERT_IN_THREAD_SMS" attributes="sms" save_date="2014-11-14 00:00:00"><![CDATA[E-ラーニング: コース '[course]'の'[forum_title]' > '[thread_title]'に新しいメッセージがあります]]></key>
         <key id="sms&amp;_NEW_THREAD_INSERT_IN_FORUM_SMS" attributes="sms" save_date="2014-11-14 00:00:00"><![CDATA[E-ラーニング: コース '[course]'の'[forum_title]': [thread_title]に新しいスレッドがあります]]></key>
+        <key id="sms&amp;_NEW_USER_SUBSCRIBED_TEXT_SMS" attributes="" save_date="2020-01-20 18:11:42"><![CDATA[You have been enrolled in the course : [course] at URL: [url]]]></key>
         <key id="sms&amp;_NEW_USER_SUBSCRIBED_TEXT_SMS_MODERATORS" attributes="" save_date="2020-01-20 18:11:42"><![CDATA[[url] [firstname] [lastname] [course] [username]]]></key>
         <key id="sms&amp;_PASSWORD_CHANGED_SMS" attributes="sms" save_date="2014-11-14 00:00:00"><![CDATA[さらにあなたのパスワードは次のものに変更されました: [password]]]></key>
         <key id="sms&amp;_REGISTERED_USER_TEXT_SMS" attributes="sms" save_date="2014-11-14 00:00:00"><![CDATA[あなたは次のアカウントで私たちのシステムに登録されました:

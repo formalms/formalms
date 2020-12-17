@@ -1964,6 +1964,7 @@ Otherwise, you must register in our system, following this link: <br />
         <key id="sms&amp;_NEW_FORUM_SMS" attributes="sms" save_date="2016-12-16 20:50:47"><![CDATA[פורום חדש]]></key>
         <key id="sms&amp;_NEW_MESSAGE_INSERT_IN_THREAD_SMS" attributes="sms" save_date="2016-12-16 20:50:35"><![CDATA[למידה מקוונת: בקורס החדש '[course]', יש הודעה חדשה ב '[forum_title]' > '[thread_title]']]></key>
         <key id="sms&amp;_NEW_THREAD_INSERT_IN_FORUM_SMS" attributes="sms" save_date="2016-12-16 20:49:57"><![CDATA[למידה מקוונת: קורס '[course]' יש שרשור חדש '[forum_title]': [thread_title]]]></key>
+        <key id="sms&amp;_NEW_USER_SUBSCRIBED_TEXT_SMS" attributes="" save_date="2020-01-20 18:11:42"><![CDATA[You have been enrolled in the course : [course] at URL: [url]]]></key>
         <key id="sms&amp;_NEW_USER_SUBSCRIBED_TEXT_SMS_MODERATORS" attributes="" save_date="2020-01-20 18:11:42"><![CDATA[[url] [firstname] [lastname] [course] [username]]]></key>
         <key id="sms&amp;_PASSWORD_CHANGED_SMS" attributes="sms" save_date="2016-12-16 20:49:43"><![CDATA[והסיסמה שלך שונתה ל: [password]]]></key>
         <key id="sms&amp;_REGISTERED_USER_TEXT_SMS" attributes="sms" save_date="2016-12-16 20:51:22"><![CDATA[אתה כעת רשום במערכת שלנו עם חשבון זה: שם משתמש: [userid] סיסמה: [password]]]></key>
