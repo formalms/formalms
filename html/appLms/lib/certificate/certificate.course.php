@@ -29,14 +29,14 @@ class CertificateSubs_Course extends CertificateSubstitution
 			$subs['[date_end]'] 			= $lang->def('_COURSE_END');
 			$subs['[medium_time]'] 			= $lang->def('_COURSE_MEDIUM_TIME');
 
-            
-            // ticket: #19791
-			$subs['[ed_date_begin]']		= $lang->def('_ED_DATE_BEGIN');
-			$subs['[ed_classroom]'] 		= $lang->def('_ED_CLASSROOM', 'certificate','lms');
 
-			$subs['[cl_date_begin]']		= $lang->def('_CL_DATE_BEGIN', 'certificate','lms');
-			$subs['[cl_date_end]']			= $lang->def('_CL_DATE_END', 'certificate','lms');
-			$subs['[cl_classroom]'] 		= $lang->def('_CL_CLASSROOM', 'certificate','lms');
+			// ticket: #19791
+			$subs['[ed_date_begin]']		= $lang->def('_ED_DATE_BEGIN');
+			$subs['[ed_classroom]'] 		= $lang->def('_ED_CLASSROOM', 'certificate', 'lms');
+
+			$subs['[cl_date_begin]']		= $lang->def('_CL_DATE_BEGIN', 'certificate', 'lms');
+			$subs['[cl_date_end]']			= $lang->def('_CL_DATE_END', 'certificate', 'lms');
+			$subs['[cl_classroom]'] 		= $lang->def('_CL_CLASSROOM', 'certificate', 'lms');
 
 			$subs['[teacher_list]'] 		= $lang->def('_TEACHER_LIST');
 			$subs['[teacher_list_inverse]'] 	= $lang->def('_TEACHER_LIST_INVERSE');
@@ -158,14 +158,32 @@ class CertificateSubs_Course extends CertificateSubstitution
 					$num_pv++;
 				}
 
+				$qdates = "SELECT dd.date_begin, dd.pause_begin, dd.pause_end, dd.date_end
+                             FROM learning_course_date_day AS dd
+                             JOIN learning_course_date AS d
+                             JOIN learning_classroom AS c
+                             ON ( dd.classroom = c.idClassroom AND d.id_date = dd.id_date )
+                             INNER JOIN learning_course_date_user ON learning_course_date_user.id_date = d.id_date
+                             WHERE d.id_course = " . (int)$this->id_course . " AND learning_course_date_user.id_user=" . $this->id_user;
+				$qdates = sql_query($qdates);
 
+				$subs['[ed_dates_subscribed]'] = '';
+				$num_ds = 0;
+				while (list($date_begin, $pause_begin, $pause_end, $date_end) = sql_fetch_row($qdates)) {
+					if (!$num_ds) {
+						$subs['[ed_dates_subscribed]'] = "<ul>";
+					} else {
+						$subs['[ed_dates_subscribed]'] .= "<li>" . Format::date($date_begin, 'date') . "</li>";
+					}
+					if ($num_ds == $qdates->num_rows) {
+						$subs['[ed_dates_subscribed]'] .= "</ul>";
+					}
+					$num_ds++;
+				}
 
-
-				$subs['[course_description]']  = html_entity_decode($man_course->getValue('description'), ENT_QUOTES, "UTF-8");
+				$subs['[course_description]']  = html_entity_decode(strip_tags($man_course->getValue('description')), ENT_QUOTES, "UTF-8");
 				$subs['[cl_date_begin]'] = Format::date($subs['[cl_date_begin]'], 'date');
 				$subs['[cl_date_end]'] =  Format::date($subs['[cl_date_end]'], 'date');
-
-
 
 				if ($id_date) {
 					$subs['[teacher_list]'] = $subs['[teacher_list_inverse]'] = null;
