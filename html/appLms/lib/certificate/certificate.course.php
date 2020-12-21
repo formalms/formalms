@@ -28,7 +28,7 @@ class CertificateSubs_Course extends CertificateSubstitution
 			$subs['[date_begin]'] 			= $lang->def('_COURSE_BEGIN');
 			$subs['[date_end]'] 			= $lang->def('_COURSE_END');
 			$subs['[medium_time]'] 			= $lang->def('_COURSE_MEDIUM_TIME');
-            
+
 			$subs['[ed_date_begin]']		= $lang->def('_ED_DATE_BEGIN');
 			$subs['[ed_classroom]'] 		= $lang->def('_ED_CLASSROOM', 'certificate', 'lms');
 
@@ -170,9 +170,8 @@ class CertificateSubs_Course extends CertificateSubstitution
 				while (list($date_begin, $pause_begin, $pause_end, $date_end) = sql_fetch_row($qdates)) {
 					if (!$num_ds) {
 						$subs['[ed_dates_subscribed]'] = "<ul>";
-					} else {
-						$subs['[ed_dates_subscribed]'] .= "<li>" . Format::date($date_begin, 'date') . "</li>";
 					}
+					$subs['[ed_dates_subscribed]'] .= "<li>" . Format::date($date_begin, 'date') . "</li>";
 					if ($num_ds == $qdates->num_rows) {
 						$subs['[ed_dates_subscribed]'] .= "</ul>";
 					}
