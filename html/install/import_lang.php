@@ -3,7 +3,7 @@
 include('bootstrap.php');
 
 require_once(_installer_.'/lib/lib.lang_import.php');
-include _lib_.'/loggers/lib.logger.php';
+require_once _lib_.'/loggers/lib.logger.php';
 require_once(_base_.'/db/lib.docebodb.php');
 
 DbConn::getInstance(false,array(

@@ -48,7 +48,7 @@
 			}
 		};
 
-		var sUrl ='../install/import_lang.php';
+		var sUrl ='./update_lang.php';
 
 		YAHOO.util.Dom.get('loading_img_'+language[0]).style.visibility='visible';
 

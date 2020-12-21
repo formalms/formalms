@@ -24,25 +24,27 @@ class TwigManager
      */
     private function __construct()
     {
-        $loader = new \Twig_Loader_Filesystem();
+        $loader = new \Twig\Loader\FilesystemLoader();
         $debug = \Get::cfg('twig_debug', false);
-        $this->twig = new \Twig_Environment($loader, array(
+        $this->twig = new \Twig\Environment($loader, array(
             'cache' => $debug ? false : _files_ . '/cache/twig',
             'debug' => $debug
         ));
 
-        $this->twig->addFunction(new \Twig_SimpleFunction('translate', function ($key, $module = false, $substitution = array(), $lang_code = false, $default = false) {
+        $this->twig->addFunction(new \Twig\TwigFunction('translate', function ($key, $module = false, $substitution = array(), $lang_code = false, $default = false) {
             return \Lang::t($key, $module, $substitution, $lang_code, $default);
         }));
-        $this->twig->addFunction(new \Twig_SimpleFunction('evalPhp', function ($phpCode, $args = array()) {
+        $this->twig->addFunction(new \Twig\TwigFunction('evalPhp', function ($phpCode, $args = array()) {
             return call_user_func_array($phpCode, $args);
         }, array(
             'is_safe' => array('html')
         )));
+        $this->twig->addExtension(new FormExtension());
+        $this->twig->addExtension(new GetExtension());
         $this->twig->addGlobal('GLOBALS', $GLOBALS);
         $this->twig->addGlobal('Docebo', Docebo);
         if ($debug) {
-            $this->twig->addExtension(new \Twig_Extension_Debug());
+            $this->twig->addExtension(new \Twig\Extension\DebugExtension());
         }
     }
 

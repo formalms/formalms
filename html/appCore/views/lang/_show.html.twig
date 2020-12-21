@@ -1,0 +1,91 @@
+{{ Get_title({
+	'index.php?r=adm/lang/show' : translate('_LANGUAGE', 'admin_lang'),
+	'':translate('_IMPORT', 'admin_lang')
+},false) }}
+
+<table class="table table-bordered display" style="width:100%" id="langlist"></table>
+<br>
+<a id="addlang_bottom" href="ajax.adm_server.php?r=adm/lang/addmask" class="ico-wt-sprite subs_add" title="{{ translate('_ADD', 'standard') }}"><span>{{ translate('_ADD', 'standard') }}</span></a>
+<a href="index.php?r=adm/lang/import" class="ico-wt-sprite subs_import" title="{{ translate('_IMPORT', 'standard') }}"><span>{{ translate('_IMPORT', 'standard') }}</span></a>
+
+<!-- Modal confirm -->
+<div class="modal" id="confirmModal" style="display: none; z-index: 9999;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body" data-val="body">
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="yes" class="btn btn-primary" data-val="yes">{{ translate('_YES', 'standard') }}</button>
+                <button type="button" class="btn btn-default" data-val="no">{{ translate('_NO', 'standard') }}</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        var confirmDialog = function (modalSelector, message, onConfirm) {
+            var fClose = function() {
+                modal.modal("hide");
+            };
+            var modal = $(modalSelector);
+            modal.modal("show");
+            modal.find("*[data-val=body]").empty().append(message);
+            modal.find("*[data-val=yes]").unbind().one('click', onConfirm).one('click', fClose);
+            modal.find("*[data-val=no]").unbind().one("click", fClose);
+        }
+
+        var delFunc = function(id) {
+            confirmDialog("#confirmModal", {{ translate('_AREYOUSURE', 'standard') }}, function() {
+                alert("SIIII!")
+            });
+        };
+        
+        var body = {{ langList | json_encode(constant('JSON_HEX_APOS')) | raw }};
+
+        var columns = [
+            {data: 'lang_code', title: '{{ translate('_LANGUAGE', 'admin_lang') }}', sortable: true},
+            {data: 'lang_description', title: '{{ translate('_DESCRIPTION', 'admin_lang') }}', sortable: true},
+            {data: 'lang_direction', title: '{{ translate('_ORIENTATION', 'admin_lang') }}', sortable: true},
+            {data: 'lang_stats', title: '{{ translate('_STATISTICS', 'admin_lang') }}', sortable: true},
+            {data: 'lang_translate', title: '<span class="ico-sprite subs_elem"><span>{{ translate("_TRANSLATELANG", "admin_lang") }}</span></span>', sortable: true},
+            {data: 'lang_diff', title: '<span class="ico-sprite subs_diff"><span>{{ translate("_DIFF_LANG", "admin_lang") }}</span></span>', sortable: true},
+            {data: 'lang_export', title: '<span class="ico-sprite subs_download"><span>{{ translate("_EXPORT_XML", "admin_lang") }}</span></span>', sortable: true},
+            {data: 'lang_mod', title: '<span class="ico-sprite subs_mod"><span>{{ translate("_MOD", "admin_lang") }}</span></span>', sortable: true},
+            {data: 'lang_del', title: '<span class="ico-sprite subs_del"><span>{{ translate("_DEL", "admin_lang") }}</span></span>', sortable: true}
+
+        ];
+        var rows = [];
+
+        body.forEach(function (item, k) {
+            link = '<a id="'+item.id+'" href="'+item.lang_translate+'" class="ico-sprite subs_elem" title="{{ translate("_TRANSLATELANG", "admin_lang") }}"><span></span></a>'
+            item.lang_translate = link;
+            link = '<a id="'+item.id+'" href="'+item.lang_diff+'" class="ico-sprite subs_diff" title="{{ translate("_DIFF_LANG", "admin_lang") }}"><span></span></a>'
+            item.lang_diff = link;
+            link = '<a id="'+item.id+'" href="'+item.lang_export+'" class="ico-sprite subs_download" title="{{ translate("_EXPORT_XML", "admin_lang") }}"><span></span></a>'
+            item.lang_export = link;
+            link = '<a id="'+item.id+'" href="'+item.lang_mod+'" class="ico-sprite subs_mod" title="{{ translate("_MOD", "admin_lang") }}"><span></span></a>'
+            item.lang_mod = link;
+            link = '<a id="'+item.id+'" href="'+item.lang_del+'" class="ico-sprite subs_del" title="{{ translate("_DEL", "admin_lang") }}"><span></span></a>'
+            item.lang_del = link;
+
+            rows.push(Object.assign({}, item));
+        });
+
+        var t = $('#langlist').FormaTable({
+            rowId: function (row) {
+                return row[0];
+            },  // cambia
+            scrollX: true,
+            processing: true,
+            serverSide: false,
+            paging: true,
+            searching: true,
+            columns,
+            data: rows,
+            dom: 'Bfrtip',
+            stateSave: true,
+            deferRender: true,
+        });
+    });
+</script>

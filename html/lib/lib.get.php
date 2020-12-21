@@ -463,7 +463,7 @@ class Get
 	 * @param bool $echo if true the output will be automaticaly echoed
 	 * @return string
 	 */
-	function title($text_array, $echo = true)
+	public static function title($text_array, $echo = true)
 	{
 
 		$is_first = true;
