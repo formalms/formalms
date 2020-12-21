@@ -330,12 +330,12 @@ window.CourseReport = (function ($) {
       $table.append(buildStudentRow(elem));
     });
 
-    if (!_editions || !_editions.length) {
-      $("select.js-editions-filter").hide();
-    } else if (!$("select.js-editions-filter option").length) {
-      $.each(_editions, function (i, elem) {
-        $("select.js-editions-filter").append('<option value="' + i + '">' + elem + '</option>');
-      });
+    if (_editions) {
+      if (!$("select.js-editions-filter option").length) {
+        $.each(_editions, function (i, elem) {
+          $("select.js-editions-filter").append('<option value="' + i + '">' + elem + '</option>');
+        });
+      }
       $("select.js-editions-filter").show();
     }
 
