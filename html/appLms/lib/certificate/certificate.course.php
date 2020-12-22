@@ -172,7 +172,7 @@ class CertificateSubs_Course extends CertificateSubstitution
 						$subs['[ed_dates_subscribed]'] = "<ul>";
 					}
 					$subs['[ed_dates_subscribed]'] .= "<li>" . Format::date($date_begin, 'date') . "</li>";
-					if ($num_ds == $qdates->num_rows) {
+					if ($num_ds == $qdates->num_rows - 1) {
 						$subs['[ed_dates_subscribed]'] .= "</ul>";
 					}
 					$num_ds++;
