@@ -38,6 +38,8 @@ class CertificateSubs_Course extends CertificateSubstitution
 			$subs['[cl_date_end]']			= $lang->def('_CL_DATE_END', 'certificate', 'lms');
 			$subs['[cl_classroom]'] 		= $lang->def('_CL_CLASSROOM', 'certificate', 'lms');
 
+			$subs['[ed_dates_subscribed]'] 		= $lang->def('_ED_DATES_SUBSCRIBED');
+
 			$subs['[teacher_list]'] 		= $lang->def('_TEACHER_LIST');
 			$subs['[teacher_list_inverse]'] 	= $lang->def('_TEACHER_LIST_INVERSE');
 			$subs['[course_credits]']		= $lang->def('_CREDITS');
