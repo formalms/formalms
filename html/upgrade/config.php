@@ -60,6 +60,6 @@ $GLOBALS['cfg']['docebo_versions'] = [
     '4050' => '4.0.5',
 ];
 
-$GLOBALS['cfg']['endversion'] = '20403';
+$GLOBALS['cfg']['endversion'] = '20404';
 
 ?>
