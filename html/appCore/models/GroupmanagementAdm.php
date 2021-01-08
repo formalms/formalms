@@ -421,6 +421,8 @@ class GroupmanagementAdm extends Model {
 			}
 		}
 
+        Events::trigger('core.group_member.assigned', ['idst' => $idst, 'members' => $members]);
+
 		return $res;
 	}
 
@@ -757,6 +759,9 @@ class GroupmanagementAdm extends Model {
 				$output = $res ? true : false;
 			}
 		}
+
+		Events::trigger('core.group_member.unassigned', ['id_group' => $id_group, 'users' => $users]);
+
 		return $output;
 	}
 
