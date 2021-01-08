@@ -1096,6 +1096,8 @@ class CompetencesAdm extends Model {
 			$this->trackOperation($id_competence, array_keys($users), $params);
 		}
 
+		Events::trigger('core.competence_user.assigned', ['id_competence' => $id_competence, 'users' => $users]);
+
 		return $res ? true : false;
 	}
 
@@ -1152,6 +1154,8 @@ class CompetencesAdm extends Model {
 			$params->score_total = 0;
 			$this->trackOperation($id_competence, $users, $params);
 		}
+
+		Events::trigger('core.competence_user.unassigned', ['id_competence' => $id_competence, 'users' => $users]);
 
 		return $res ? true : false;
 	}
