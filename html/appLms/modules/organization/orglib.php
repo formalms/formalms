@@ -1518,7 +1518,7 @@ class Org_TreeView extends RepoTreeView
 					'name="' . $this->id . '[' . $this->_getOpPlayItemId() . '][' . $stack[$level]['folder']->id . ']">'
 					. $this->getFolderPrintName($stack[$level]['folder']) .
 					'</span>';
-			} else if ($isPrerequisitesSatisfied && $event->getAccessible()) {
+			} else if ($isPrerequisitesSatisfied) {// && $event->getAccessible()
 
 				$out .= ' <a ' . ($lo_class->showInLightbox() ? ' rel="lightbox' . $lb_param . '"' : '') . ' class="' . $classStyle . '" ' .
 					'id="' . $this->id . '_' . $this->_getOpPlayItemId() . '_' . $stack[$level]['folder']->id . '" ' .
@@ -1639,9 +1639,9 @@ class Org_TreeView extends RepoTreeView
 							} else {
 								$out .=  '<div class="TVActionEmpty"></div>';
 							}
-							foreach ($event->getAction() as $action) {
-								$out .= $action;
-							}
+							//foreach ($event->getAction() as $action) {
+							//	$out .= $action;
+							//}
 						} else if (!$isFolder) {
 
 							if ($arrData[ORGFIELD_PUBLISHFROM] != '' && $arrData[ORGFIELD_PUBLISHFROM] != '0000-00-00 00:00:00') {
@@ -1665,7 +1665,7 @@ class Org_TreeView extends RepoTreeView
 									. ' name="' . $this->id . '[' . $this->_getOpLockedId() . '][' . $stack[$level]['folder']->id . ']" '
 									. ' title="' . $this->_getOpLockedTitle() . ': ' . $this->getFolderPrintName($stack[$level]['folder']) . '" '
 									. ' alt="' . $this->_getOpLockedTitle() . ': ' . $this->getFolderPrintName($stack[$level]['folder']) . '" />';
-							} else if ($isPrerequisitesSatisfied && $event->getAccessible()) {
+							} else if ($isPrerequisitesSatisfied) {// && $event->getAccessible()
 
 								if (method_exists($lo_class, 'trackDetails')) {
 									$out .= '
@@ -1720,9 +1720,9 @@ class Org_TreeView extends RepoTreeView
 												<span><img src="' . getPathImage() . 'lobject/' . $img . '" class="OrgStatus" alt="' . Lang::t($status, 'standard', 'framework') . '" title="' . Lang::t($status, 'standard', 'framework') . ': ' . $this->getFolderPrintName($stack[$level]['folder']) . '" /></span>
 											</div>';
 
-							foreach ($event->getAction() as $action) {
-								$out .= $action;
-							}
+							//foreach ($event->getAction() as $action) {
+							//	$out .= $action;
+							//}
 						}
 						break;
 				}

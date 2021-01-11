@@ -1,5 +1,5 @@
 <div class="filter-container">
-    <select class="filter js-user-level-filter is-disabled" disabled>
+    <select class="filter js-user-level-filter is-disabled" style="position: relative" disabled>
         {% for i in 0..7 %}
             {% if loop.first %}
                 <option value="false" selected>{{ translate('_ALL') }}</option>
@@ -8,6 +8,7 @@
             {% endif %}
         {% endfor %}
     </select>
+    <select class="filter js-editions-filter is-disabled" style="position: relative; display: none;" disabled></select>
     <div class="button--exportcsv"><a href="index.php?r=lms/coursereport/export">{{ translate('_EXPORT_CSV','standard') }}</a></div>
 </div>
 

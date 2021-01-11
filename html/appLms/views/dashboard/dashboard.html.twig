@@ -2,7 +2,7 @@
     <div class="d-grid">
         <div class="d-row">
             {% for block in blocks %}
-                {% include  block.view with {'block': block } %}
+                {% include block.view with {'block': block } %}
             {% endfor %}
         </div>
     </div>

@@ -1,75 +1,146 @@
 <?php Get::title(Lang::t('_LANGUAGE', 'admin_lang')); ?>
-<div class="std_block">
+
+<table class="table table-bordered display" style="width:100%" id="langlist"></table>
+<br>
+<a id="addlang_bottom" href="#" class="ico-wt-sprite subs_add" title="<?php echo Lang::t('_ADD', 'standard'); ?>"><span><?php echo Lang::t('_ADD', 'standard'); ?></span></a>
+<a href="index.php?r=adm/lang/import" class="ico-wt-sprite subs_import" title="<?php echo Lang::t('_IMPORT', 'standard'); ?>"><span><?php echo Lang::t('_IMPORT', 'standard'); ?></span></a>
+
+<!-- Modal confirm -->
+<div class="modal" id="confirmModal" style="display: none; z-index: 9999;">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-body" data-val="body">
+			</div>
+			<div class="modal-footer">
+				<button type="button" id="yes" class="btn btn-primary" data-val="yes"><?php echo Lang::t('_YES', 'standard'); ?></button>
+				<button type="button" class="btn btn-default" data-val="no"><?php echo Lang::t('_NO', 'standard'); ?></button>
+			</div>
+		</div>
+	</div>
+</div>
+
 <?php
-$this->widget('table', array(
-	'id'			=> 'langlist',
-	'ajaxUrl'		=> 'ajax.adm_server.php?r=adm/lang/getlang',
-	'sort'			=> 'lang_code',
-	'columns'		=> array(
-		array('key' => 'lang_code', 
-			'label' => Lang::t('_LANGUAGE', 'admin_lang'),
-			'sortable' => true ),
-		array('key' => 'lang_description', 
-			'label' => Lang::t('_DESCRIPTION', 'admin_lang'),
-			'sortable' => true ),
-		array('key' => 'lang_direction',
-			'label' => Lang::t('_ORIENTATION', 'admin_lang'),
-			'className' => 'min-cell',
-			'sortable' => true ),
-		array('key' => 'lang_stats',
-			'label' => Lang::t('_STATISTICS', 'admin_lang'),
-			'className' => 'img-cell',
-			'sortable' => true ),
-		array('key' => 'lang_translate', 
-			'label' => '<span class="ico-sprite subs_elem"><span>'.Lang::t('_TRANSLATELANG', 'admin_lang').'</span></span>',
-			'formatter' => 'TranslateFormatter',
-			'className' => 'img-cell' ),
-		array('key' => 'lang_export',
-			'label' => '<span class="ico-sprite subs_download"><span>'.Lang::t('_EXPORT_XML', 'admin_lang').'</span></span>',
-			'formatter' => 'ExportFormatter',
-			'className' => 'img-cell' ),
-		array('key' => 'lang_mod', 
-			'label' => '<span class="ico-sprite subs_mod"><span>'.Lang::t('_MOD', 'admin_lang').'</span></span>',
-			'formatter' => 'stdModify',
-			'className' => 'img-cell' ),
-		array('key' => 'lang_del',
-			'label' => '<span class="ico-sprite subs_del"><span>'.Lang::t('_DEL', 'admin_lang').'</span></span>',
-			'formatter' => 'stdDelete',
-			'className' => 'img-cell' ),
-	),
-	'fields'		=> array('lang_code', 'lang_description','lang_direction', 'lang_stats', 'lang_translate', 'lang_export', 'lang_mod', 'lang_del'),
-	'delDisplayField' => 'lang_code',
-	'rel_actions'	=> array(
-		'<a id="addlang_top" href="ajax.adm_server.php?r=adm/lang/addmask" class="ico-wt-sprite subs_add" title="'.Lang::t('_ADD', 'standard').'"><span>'.Lang::t('_ADD', 'standard').'</span></a>'
-		.'<a href="index.php?r=adm/lang/import" class="ico-wt-sprite subs_import" title="'.Lang::t('_IMPORT', 'standard').'"><span>'.Lang::t('_IMPORT', 'standard').'</span></a>',
-		'<a id="addlang_bottom" href="ajax.adm_server.php?r=adm/lang/addmask" class="ico-wt-sprite subs_add" title="'.Lang::t('_ADD', 'standard').'"><span>'.Lang::t('_ADD', 'standard').'</span></a>'
-		.'<a href="index.php?r=adm/lang/import" class="ico-wt-sprite subs_import" title="'.Lang::t('_IMPORT', 'standard').'"><span>'.Lang::t('_IMPORT', 'standard').'</span></a>',
-	)
-));
 
 $this->widget('dialog', array(
 	'id' => 'lang_add',
 	'dynamicContent' => true,
 	'ajaxUrl' => 'ajax.adm_server.php?r=adm/lang/addmask',
-	'callback' => 'function() { this.destroy(); DataTable_langlist.refresh(); }',
+	'callback' => 'function() { this.destroy(); location.reload(); }',
 	'callEvents' => array(
-		array('caller' => 'addlang_top', 'event' => 'click'),
 		array('caller' => 'addlang_bottom', 'event' => 'click')
 	)
 ));
 ?>
 <script type="text/javascript">
+	var confirmDialog = function(modalSelector, message, onConfirm) {
+		var fClose = function() {
+			modal.modal("hide");
+		};
+		var modal = $(modalSelector);
+		modal.modal("show");
+		modal.find("*[data-val=body]").empty().append(message);
+		modal.find("*[data-val=yes]").unbind().one('click', onConfirm).one('click', fClose);
+		modal.find("*[data-val=no]").unbind().one("click", fClose);
+	}
 
-function TranslateFormatter(elLiner, oRecord, oColumn, oData) {
-		var id = this.getTableEl().parentNode.id+'_translate_'+oRecord.getData("id");
-		if(oData) elLiner.innerHTML = '<a id="'+id+'" href="'+oData+'" class="ico-sprite subs_elem" title="<?php echo Lang::t('_TRANSLATELANG', 'admin_lang'); ?>"><span></span></a>';
-		else elLiner.innerHTML = '';
-}
-function ExportFormatter(elLiner, oRecord, oColumn, oData) {
-		var id = this.getTableEl().parentNode.id+'_translate_'+oRecord.getData("id");
-		if(oData) elLiner.innerHTML = '<a id="'+id+'" href="'+oData+'" class="ico-sprite subs_download" title="<?php echo Lang::t('_EXPORT', 'admin_lang'); ?>"><span></span></a>';
-		else elLiner.innerHTML = '';
-}
+	var delFunc = function(id) {
+		console.log(id)
+		confirmDialog("#confirmModal", "<?php echo Lang::t('_AREYOUSURE', 'standard'); ?>", function() {
+			$.ajax({
+				type: 'POST',
+				url: 'ajax.adm_server.php?r=adm/lang/del',
+				data: {
+					lang_code: id
+				},
+				success: function(data) {
+					location.reload();
+				}
+			});
+		});
+	};
 
+	$(function() {
+		var body = <?php echo json_encode($langList); ?>;
+
+		var columns = [{
+				data: 'lang_code',
+				title: '<?php echo Lang::t('_LANGUAGE ', 'admin_lang '); ?>',
+				sortable: true
+			},
+			{
+				data: 'lang_description',
+				title: '<?php echo Lang::t('_DESCRIPTION ', 'admin_lang '); ?>',
+				sortable: true
+			},
+			{
+				data: 'lang_direction',
+				title: '<?php echo Lang::t('_ORIENTATION ', 'admin_lang '); ?>',
+				sortable: true
+			},
+			{
+				data: 'lang_stats',
+				title: '<?php echo Lang::t('_STATISTICS ', 'admin_lang '); ?>',
+				sortable: true
+			},
+			{
+				data: 'lang_translate',
+				title: '<span class="ico-sprite subs_elem"><span><?php echo Lang::t("_TRANSLATELANG", "admin_lang"); ?></span></span>',
+				sortable: true
+			},
+			{
+				data: 'lang_diff',
+				title: '<span class="ico-sprite subs_diff"><span><?php echo Lang::t("_DIFF_LANG", "admin_lang"); ?></span></span>',
+				sortable: true
+			},
+			{
+				data: 'lang_export',
+				title: '<span class="ico-sprite subs_download"><span><?php echo Lang::t("_EXPORT_XML", "admin_lang"); ?></span></span>',
+				sortable: true
+			},
+			{
+				data: 'lang_mod',
+				title: '<span class="ico-sprite subs_mod"><span><?php echo Lang::t("_MOD", "admin_lang"); ?></span></span>',
+				sortable: true
+			},
+			{
+				data: 'lang_del',
+				title: '<span class="ico-sprite subs_del"><span><?php echo Lang::t("_DEL", "admin_lang"); ?></span></span>',
+				sortable: true
+			}
+
+		];
+		var rows = [];
+
+		body.forEach(function(item, k) {
+			link = '<a id="' + item.id + '" href="' + item.lang_translate + '" class="ico-sprite subs_elem" title="<?php echo Lang::t("_TRANSLATELANG", "admin_lang"); ?>"><span></span></a>'
+			item.lang_translate = link;
+			link = '<a id="' + item.id + '" href="' + item.lang_diff + '" class="ico-sprite subs_diff" title="<?php echo Lang::t("_DIFF_LANG", "admin_lang"); ?>"><span></span></a>'
+			item.lang_diff = link;
+			link = '<a id="' + item.id + '" href="' + item.lang_export + '" class="ico-sprite subs_download" title="<?php echo Lang::t("_EXPORT_XML", "admin_lang"); ?>"><span></span></a>'
+			item.lang_export = link;
+			link = '<a id="' + item.id + '" href="' + item.lang_mod + '" class="ico-sprite subs_mod" title="<?php echo Lang::t("_MOD", "admin_lang"); ?>"><span></span></a>'
+			item.lang_mod = link;
+			link = '<a id="' + item.id + '" href="#" onclick="delFunc(\'' + item.lang_code + '\')" class="ico-sprite subs_del" title="<?php echo Lang::t("_DEL", "admin_lang"); ?>"><span></span></a>'
+			item.lang_del = link;
+
+			rows.push(Object.assign({}, item));
+		});
+
+		t = $('#langlist').FormaTable({
+			rowId: function(row) {
+				return row[0];
+			}, // cambia
+			scrollX: true,
+			processing: true,
+			serverSide: false,
+			paging: true,
+			searching: true,
+			columns,
+			data: rows,
+			dom: 'Bfrtip',
+			stateSave: true,
+			deferRender: true,
+		});
+	});
 </script>
 </div>

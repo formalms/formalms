@@ -9,9 +9,7 @@
             <input type="hidden" class="form-control-image" id="{{ block.postData.block }}-{{ index }}-image-string"
                    data-block="{{ block.postData.block }}-{{ index }}">
 
-            {% if attribute(block.data,form.name) is defined %}
-                <img src="{{ attribute(block.data, form.name) }}" style="width: 100px">
-            {% endif %}
+                <img src="{{ attribute(block.data, form.name) }}" style="width: 100px; {% if attribute(block.data,form.name) is not defined %}display:none;{% endif %}">
         </div>
 
         <div class="dashboard__helper">{{ translate('_DASHBOARD_SETTING_IMAGE_ALLOWED_TYPES', 'dashboardsetting') }} .jpg, .png, .gif</div>

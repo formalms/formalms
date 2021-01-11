@@ -44,8 +44,6 @@ abstract class DashboardBlockLms extends Model
 
     abstract public function parseConfig($jsonConfig);
 
-    abstract public function getForm();
-
     /** @var bool|DbConn */
     protected $db;
     /**
@@ -89,7 +87,13 @@ abstract class DashboardBlockLms extends Model
 
         $this->viewPath = strtolower(str_replace('DashboardBlock', '', str_replace('Lms', '', get_class($this))));
         $this->viewFile = strtolower(str_replace('DashboardBlock', '', str_replace('Lms', '', get_class($this))));
+    }
 
+    public function getForm()
+    {
+        return [
+            DashboardBlockForm::getFormItem($this, 'title', DashboardBlockForm::FORM_TYPE_TEXT, false)
+        ];
     }
 
     /**
@@ -236,7 +240,6 @@ abstract class DashboardBlockLms extends Model
         $data['form'] = $this->getFormArray();
 
         return $data;
-
     }
 
     protected function getViewName()
@@ -415,7 +418,6 @@ abstract class DashboardBlockLms extends Model
                     $mimetypeArray[] = $mt;
                 }
                 getOtherMime($ext, $mimetypeArray);
-
             }
             $mimetypeArray = array_unique($mimetypeArray);
         }

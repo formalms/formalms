@@ -119,8 +119,8 @@ if($req) {
         Util::jump_to($url);
     }
     else {
-        
-        Util::jump_to(_folder_lms_);
+
+        Util::jump_to(_folder_lms_ . DIRECTORY_SEPARATOR);
     }
 }
 

@@ -1063,9 +1063,9 @@ Username: [userid]]]></key>
 <a href="[url]">[url]</a> > [course] > [forum_title]
 
  Title: [thread_title]]]></key>
-        <key id="email&amp;_NEW_USER_SUBSCRIBED_SUBJECT" attributes="email" save_date="2017-03-14 16:10:41"><![CDATA[New user was subscribed to a course]]></key>
+        <key id="email&amp;_NEW_USER_SUBSCRIBED_SUBJECT" attributes="email" save_date="2017-03-14 16:10:41"><![CDATA[You have been enrolled in course ]]></key>
         <key id="email&amp;_NEW_USER_SUBSCRIBED_SUBJECT_MODERATORS" attributes="" save_date="2020-03-02 13:16:34"><![CDATA[A new user has been enrolled in a course]]></key>
-        <key id="email&amp;_NEW_USER_SUBSCRIBED_TEXT" attributes="email" save_date="2017-05-05 17:05:00"><![CDATA[At URL: <a href="[url]">[url]</a> a new user was subscribed to the course: [course]]]></key>
+        <key id="email&amp;_NEW_USER_SUBSCRIBED_TEXT" attributes="email" save_date="2017-05-05 17:05:00"><![CDATA[You have been enrolled in the course : [course] at URL: <a href="[url]">[url]</a>]]></key>
         <key id="email&amp;_NEW_USER_SUBSCRIBED_TEXT_MODERATORS" attributes="" save_date="2020-03-02 13:16:05"><![CDATA[A new user, [firstname] [lastname] [username] has been enrolled in course [course]]]></key>
         <key id="email&amp;_NEW_USER_SUBS_WAITING_SUBJECT" attributes="email" save_date="2017-03-14 16:10:41"><![CDATA[User is waiting for course subscription approval]]></key>
         <key id="email&amp;_NEW_USER_SUBS_WAITING_TEXT" attributes="email" save_date="2015-09-30 15:32:23"><![CDATA[New user subscribed to the '[course]' course and is waiting to be approved.
@@ -2209,6 +2209,7 @@ Username: [userid]]]></key>
         <key id="sms&amp;_NEW_FORUM_SMS" attributes="sms" save_date="2017-03-14 16:10:41"><![CDATA[New forum]]></key>
         <key id="sms&amp;_NEW_MESSAGE_INSERT_IN_THREAD_SMS" attributes="sms" save_date="2017-03-14 16:10:41"><![CDATA[E-learning: in the course '[course]', there is a new message in '[forum_title]' > '[thread_title]']]></key>
         <key id="sms&amp;_NEW_THREAD_INSERT_IN_FORUM_SMS" attributes="sms" save_date="2017-03-14 16:10:41"><![CDATA[E-learning: course '[course]' there's a new thread in '[forum_title]': [thread_title]]]></key>
+        <key id="sms&amp;_NEW_USER_SUBSCRIBED_TEXT_SMS" attributes="" save_date="2020-01-20 18:11:42"><![CDATA[You have been enrolled in the course : [course] at URL: [url]]]></key>
         <key id="sms&amp;_NEW_USER_SUBSCRIBED_TEXT_SMS_MODERATORS" attributes="" save_date="2020-01-20 18:11:42"><![CDATA[[url] [firstname] [lastname] [course] [username]]]></key>
         <key id="sms&amp;_PASSWORD_CHANGED_SMS" attributes="sms" save_date="2020-01-24 08:22:24"><![CDATA[and your password has been changed]]></key>
         <key id="sms&amp;_REGISTERED_USER_TEXT_SMS" attributes="sms" save_date="2020-01-24 08:22:30"><![CDATA[You are now registered in our system with this account:

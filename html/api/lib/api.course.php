@@ -2246,7 +2246,7 @@ public function addClassroom($params) {
 // assign meta certificate & course to user
     function assignMetaUser($params){
         
-        require_once(_files_lms_.'/'._folder_lib_.'/lib.aggregated_certificate.php');
+        require_once(Forma::inc(_lms_.'/'._folder_lib_.'/lib.aggregated_certificate.php'));
 
         $aggCertLib = new AggregatedCertificate();
         
@@ -2351,9 +2351,8 @@ public function addClassroom($params) {
      
     // add association to meta certificate
     function addAssociationCertificate($params){
-                         
-          
-        require_once(_files_lms_.'/'._folder_lib_.'/lib.aggregated_certificate.php');
+        
+        require_once(Forma::inc(_lms_.'/'._folder_lib_.'/lib.aggregated_certificate.php'));
         $aggCertLib = new AggregatedCertificate();
         
         

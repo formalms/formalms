@@ -2129,6 +2129,7 @@ Sie werden eine eMail mit Ihren Informationen erhalten.]]></key>
         <key id="sms&amp;_NEW_FORUM_SMS" attributes="sms" save_date="2019-03-27 17:15:50"><![CDATA[Neues Forum]]></key>
         <key id="sms&amp;_NEW_MESSAGE_INSERT_IN_THREAD_SMS" attributes="sms" save_date="2019-03-27 17:15:50"><![CDATA[E-Learning: In dem Kurs '[course]' gibt es eine neue Nachricht unter '[forum_title]' > '[thread_title]']]></key>
         <key id="sms&amp;_NEW_THREAD_INSERT_IN_FORUM_SMS" attributes="sms" save_date="2019-03-27 17:15:50"><![CDATA[E-Learning: Kurs '[course]' Es gibt eine neue Diskussion unter '[forum_title]': [thread_title]]]></key>
+        <key id="sms&amp;_NEW_USER_SUBSCRIBED_TEXT_SMS" attributes="" save_date="2020-01-20 18:11:42"><![CDATA[You have been enrolled in the course : [course] at URL: [url]]]></key>
         <key id="sms&amp;_NEW_USER_SUBSCRIBED_TEXT_SMS_MODERATORS" attributes="" save_date="2020-01-20 18:11:42"><![CDATA[[url] [firstname] [lastname] [course] [username]]]></key>
         <key id="sms&amp;_PASSWORD_CHANGED_SMS" attributes="sms" save_date="2020-01-24 08:23:12"><![CDATA[und Ihr Passwort wurde geändert ]]></key>
         <key id="sms&amp;_REGISTERED_USER_TEXT_SMS" attributes="sms" save_date="2020-01-24 08:23:02"><![CDATA[Sie sind jetzt mit folgendem Benutzerkonto in unserem System registriert:

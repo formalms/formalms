@@ -22,12 +22,14 @@ window.CourseReport = (function ($) {
     callback,
     tests,
     filter,
+    edition_filter,
     round_redo,
     pagination
   ) {
     var _data = {
       courseId: "id",
       type_filter: filter || false,
+      edition_filter: edition_filter || false,
       pagination: pagination ? pagination.page : 0,
       currentPage: pagination ? pagination.current : 0,
     };
@@ -51,6 +53,8 @@ window.CourseReport = (function ($) {
         $(".loading").html("");
         $(".js-user-level-filter").removeAttr("disabled");
         $(".js-user-level-filter").removeClass("is-disabled");
+        $(".js-editions-filter").removeAttr("disabled");
+        $(".js-editions-filter").removeClass("is-disabled");
         $(".js-user-detail-filter").removeAttr("disabled");
         $(".js-user-detail-filter").removeClass("is-disabled");
         var parsedData = JSON.parse(data);
@@ -168,6 +172,7 @@ window.CourseReport = (function ($) {
   var navigatePage = function (page, current) {
     var _userData;
     var _filter = $(".js-user-level-filter").val();
+    var _edition_filter = $(".js-editions-filter").val();
     var _pagination = {
       page: page,
       currentPage: current,
@@ -182,6 +187,7 @@ window.CourseReport = (function ($) {
       },
       testData,
       _filter,
+      _edition_filter,
       "",
       _pagination
     );
@@ -310,6 +316,7 @@ window.CourseReport = (function ($) {
 
   var fillTable = function (data) {
     var _students = data.details["students"];
+    var _editions = data.details["editions"];
     var _redoFinal = data.details["redo-final"];
     var _roundReport = data.details["round-report"];
     var _editFinal = data.details["edit-final"];
@@ -322,6 +329,15 @@ window.CourseReport = (function ($) {
     $.each(_students, function (i, elem) {
       $table.append(buildStudentRow(elem));
     });
+
+    if (_editions) {
+      if (!$("select.js-editions-filter option").length) {
+        $.each(_editions, function (i, elem) {
+          $("select.js-editions-filter").append('<option value="' + i + '">' + elem + '</option>');
+        });
+      }
+      $("select.js-editions-filter").show();
+    }
 
     // initDataTables();
   };
@@ -385,6 +401,27 @@ window.CourseReport = (function ($) {
   };
 
   /**
+   * function used to filter users by edition
+   * @param filter
+   */
+  var filterUsersByEdition = function (filter) {
+    var userData;
+
+    clearPagination();
+    clearDetailTable();
+
+    loadUserData(
+      function (data) {
+        userData = data;
+        fillTable(userData);
+      },
+      testData,
+      null,
+      filter
+    );
+  };
+
+  /**
    * function used to recount the table in case of rounding or redoing
    * @param filter   {string}   -   filter type with an ID
    */
@@ -422,6 +459,9 @@ window.CourseReport = (function ($) {
 
     $(".js-user-level-filter").attr("disabled", true);
     $(".js-user-level-filter").addClass("is-disabled");
+
+    $(".js-editions-filter").attr("disabled", true);
+    $(".js-editions-filter").addClass("is-disabled");
 
     $(".js-user-detail-filter").attr("disabled", true);
     $(".js-user-detail-filter").addClass("is-disabled");
@@ -534,6 +574,10 @@ window.CourseReport = (function ($) {
 
     $(".js-user-level-filter").on("change", function () {
       filterUsersByLevel($(this).val());
+    });
+
+    $(".js-editions-filter").on("change", function () {
+      filterUsersByEdition($(this).val());
     });
 
     $(".js-user-detail-filter").on("change", function () {

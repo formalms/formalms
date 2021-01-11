@@ -64,22 +64,189 @@ class DashboardsettingsAdmController extends AdmController
 
     public function show()
     {
+        require_once(Get::rel_path('lib') . '/formatable/formatable.php');
+        Util::get_css(Get::rel_path('lib') . '/formatable/formatable.css', true, true);
+
+        $dashboardId = Get::req('dashboard', DOTY_INT, false);
 
         $data = [
-            'ajaxUrl' => 'ajax.adm_server.php?r=adm/dashboardsettings/save',
-            'ajaxUploadFileUrl' => 'ajax.adm_server.php?r=adm/dashboardsettings/uploadFile',
+            'ajaxUrl' => [
+                'save' => 'ajax.adm_server.php?r=adm/dashboardsettings/save',
+                'saveLayout' => 'ajax.adm_server.php?r=adm/dashboardsettings/saveLayout',
+                'editInlineLayout' => 'ajax.adm_server.php?r=adm/dashboardsettings/editInlineLayout',
+                'delLayout' => 'ajax.adm_server.php?r=adm/dashboardsettings/delLayout',
+                'defaultLayout' => 'ajax.adm_server.php?r=adm/dashboardsettings/defaultLayout',
+                'uploadFile' => 'ajax.adm_server.php?r=adm/dashboardsettings/uploadFile',
+                'getLayouts' => 'ajax.adm_server.php?r=adm/dashboardsettings/getLayouts',
+                'getBlockType' => 'ajax.adm_server.php?r=adm/dashboardsettings/getBlockTypeForm',
+            ],
+            'showUrl' => './index.php?r=adm/dashboardsettings/show',
             'installedBlocks' => $this->model->getInstalledBlocksCommonViewData(),
-            'enabledBlocks' => $this->model->getEnabledBlocksCommonViewData(),
-            'templatePath' => getPathTemplate()
+            'enabledBlocks' => $this->model->getEnabledBlocksCommonViewData($dashboardId),
+            'templatePath' => getPathTemplate(),
+            'dashboardId' => $dashboardId
         ];
 
         //render view
         $this->render('show', $data);
+    }
 
+    public function getLayouts()
+    {
+        $selectedDashboardId = Get::req('dashboard', DOTY_INT, false);
+        $search = Get::req('search', DOTY_MIXED, false);
+        $layouts = $this->model->getLayouts();
+        $res = [];
+
+        foreach ($layouts as $layout) {
+            $layout = array_values((array)$layout);
+
+            $keys = [
+                'id',
+                'name',
+                'caption',
+                'status',
+                'default',
+                'selected',
+            ];
+
+            $item = [];
+            for ($i = 0; $i < count($keys) - 1; $i++) {
+                $item[$keys[$i]] = $layout[$i];
+                $item['selected'] = $layout[0] == $selectedDashboardId;
+            }
+
+            if (!$search['value'] || strpos($item['name'], $search['value']) !== false || strpos($item['caption'], $search['value']) !== false) {
+                $res[] = $item;
+            }
+        }
+
+        $response = [
+            "data" => $res,
+            "recordsFiltered" => count($res),
+            "recordsTotal" => count($res),
+        ];
+
+        echo $this->json_response(200, $response);
+        exit;
+    }
+
+    public function saveLayout()
+    {
+        $name = Get::pReq('name', DOTY_MIXED);
+        $caption = Get::pReq('caption', DOTY_MIXED);
+        $status = Get::pReq('status', DOTY_MIXED);
+        $default = Get::pReq('default', DOTY_BOOL);
+        $data = [
+            'name' => $name,
+            'caption' => $caption,
+            'status' => $status,
+            'default' => $default
+        ];
+
+        $response = [];
+
+        // Validation
+        $errors = [];
+        if (!isset($data['name']) || !$data['name']) {
+            $errors['name'] = Lang::t('_VALUE_IS_NOT_VALID', 'dashboardsetting');
+        }
+        if (!isset($data['caption']) || !$data['caption']) {
+            $errors['caption'] = Lang::t('_VALUE_IS_NOT_VALID', 'dashboardsetting');
+        }
+        if (!isset($data['status']) || !$data['status']) {
+            $errors['status'] = Lang::t('_VALUE_IS_NOT_VALID', 'dashboardsetting');
+        }
+        if (!isset($data['default']) || !is_bool($data['default'])) {
+            $errors['default'] = Lang::t('_VALUE_IS_NOT_VALID', 'dashboardsetting');
+        }
+
+        if ($errors) {
+            $status = 400;
+            $response['errors'] = $errors;
+        } else {
+            $status = 200;
+            $this->model->saveLayout($data);
+        }
+
+        echo $this->json_response($status, $response);
+        exit;
+    }
+
+    public function editInlineLayout()
+    {
+        $id = Get::pReq('id', DOTY_INT);
+        $col = Get::pReq('col', DOTY_STRING);
+        $new_value = Get::pReq('new_value', DOTY_STRING);
+
+        $response = [];
+
+        // Validation
+        $errors = [];
+        if (!isset($new_value) || !$new_value) {
+            $errors[$col] = Lang::t('_VALUE_IS_REQUIRED', 'dashboardsetting');
+        }
+
+        if ($errors) {
+            $status = 400;
+            $response['errors'] = $errors;
+        } else {
+            $status = 200;
+            $response = $this->model->editInlineLayout([
+                'id' => $id,
+                'col' => $col,
+                'new_value' => $new_value,
+            ]);
+        }
+
+        echo $this->json_response($status, $response);
+        exit;
+    }
+
+    public function delLayout()
+    {
+        $status = 400;
+        if ($response = $this->model->delLayout(Get::pReq('id_layout'))) {
+            $status = 200;
+        }
+
+        echo $this->json_response($status, $response);
+        exit;
+    }
+
+    public function defaultLayout()
+    {
+        $status = 400;
+        if ($response = $this->model->defaultLayout(Get::pReq('id_layout'))) {
+            $status = 200;
+        }
+
+        echo $this->json_response($status, $response);
+        exit;
+    }
+
+    private function json_response($code = 200, $message = null)
+    {
+        header_remove();
+        http_response_code($code);
+        header("Cache-Control: no-transform,public,max-age=300,s-maxage=900");
+        header('Content-Type: application/json');
+
+        $status = array(
+            200 => '200 OK',
+            400 => '400 Bad Request',
+            422 => 'Unprocessable Entity',
+            500 => '500 Internal Server Error'
+        );
+        // ok, validation error, or failure
+        header('Status: ' . $status[$code]);
+
+        return json_encode($message);
     }
 
     public function save()
     {
+        $dashboard = Get::req('dashboard', DOTY_MIXED);
         $requestSettings = Get::pReq('settings', DOTY_MIXED);
 
         $response = ['status' => 200];
@@ -97,14 +264,14 @@ class DashboardsettingsAdmController extends AdmController
         }
 
         if ($response['status'] === 200) {
-            $this->model->resetOldSettings();
+            $this->model->resetOldSettings($dashboard);
 
             foreach ($requestSettings as $data) {
 
                 $block = $data['block'];
                 $setting = $data['settings'];
 
-                $this->model->saveBlockSetting($block, $setting);
+                $this->model->saveBlockSetting($block, $setting, $dashboard);
             }
         }
 
@@ -161,7 +328,16 @@ class DashboardsettingsAdmController extends AdmController
         echo $this->json->encode($response);
         die();
     }
+
+    public function getBlockTypeForm()
+    {
+        $block = Get::req('block', DOTY_STRING, false);
+        $index = Get::req('index', DOTY_INT, 99);
+        $type = Get::req('type', DOTY_STRING, 'col-1');
+
+        /** @var DashboardBlockLms $blockObj */
+        $blockObj = new $block('');
+
+        return $this->render('new-block-form', ['block' => $blockObj->getSettingsCommonViewData(), 'index' => $index, 'type' => $type]);
+    }
 }
-
-
-?>
