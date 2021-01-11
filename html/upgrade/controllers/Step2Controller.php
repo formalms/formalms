@@ -135,6 +135,7 @@ Class Step2Controller extends StepController {
 
 
 	function checkStrictMode() {
+		return true;
 		$qtxt ="SELECT @@GLOBAL.sql_mode AS res";
 		$q =sql_query($qtxt);
 		list($r1)=sql_fetch_row($q);
