@@ -482,15 +482,29 @@ class Course_API extends API {
 		}
 
 
-		// -- update status -----
-		if (!empty($user_status)) {
-			$status_arr =$model->getUserStatusList();
+        $status_arr = $model->getUserStatusList();
+        // -- update status -----
+        if (!empty($user_status)) {
+            if (isset($status_arr[$user_status])) {
 
-			if (isset($status_arr[$user_status])) {
-				$ok =$model->updateUserStatus($user_id, $user_status);
-				if (!$ok) { $update_ok =false; }
-			}
-		}
+                if ($model->updateUserStatus($user_id, $user_status)) {
+                    // SET EDIT STATUS SUBSCRIPTION EVENT
+                    $event = new \appCore\Events\Core\Courses\CourseSubscriptionEditStatusEvent();
+                    $userModel = new UsermanagementAdm();
+                    $user = $userModel->getProfileData($user_id);
+
+                    require_once(_lms_ . '/lib/lib.course.php');
+                    $docebo_course = new DoceboCourse($course_id);
+
+                    $event->setUser($user);
+                    $event->setStatus(['id' => $user_status, 'name' => $status_arr[$user_status]]);
+                    $event->setCourse($docebo_course->course_info);
+                    \appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\Courses\CourseSubscriptionEditStatusEvent::EVENT_NAME, $event);
+                } else {
+                    $update_ok = false;
+                }
+            }
+        }
 
 
 		if (!$update_ok) {
