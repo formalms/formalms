@@ -23,7 +23,7 @@ ob_start();
 // initialize
 require(_base_.'/lib/lib.bootstrap.php');
 //Boot::init(array("BOOT_CONFIG", "BOOT_UTILITY", "BOOT_DATABASE", "BOOT_SETTING", "BOOT_INPUT", "BOOT_LANGUAGE", "BOOT_DATETIME"));
-Boot::init(BOOT_DATETIME);
+Boot::init(BOOT_PLUGINS);
 
 // -----------------------------------------------------------------------------
 
@@ -58,5 +58,3 @@ Boot::finalize();
 
 // flush buffer
 ob_end_flush();
-
-?>
