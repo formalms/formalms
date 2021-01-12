@@ -855,6 +855,8 @@ class FieldList
 	{
 		$acl = &Docebo::user()->getACL();
 		$index = 0;
+      
+    
 		if ($arr_idst === FALSE) {
 			$arr_idst = $acl->getArrSTGroupsST($acl->getUserGroupsST($idst_user));
 			$index += count($arr_idst);
@@ -868,6 +870,8 @@ class FieldList
 			$arr_idst[] = $tmp[0];
 			$index += 2;
 		}
+        
+
 
 		if (count($arr_idst) > $index) {
 			// Not only roots ocd_0 and oc_0
@@ -877,7 +881,7 @@ class FieldList
 				}
 			}
 		}
-
+          
 		$query = "SELECT ft.id_common, ft.type_field, tft.type_file, tft.type_class, gft.mandatory"
 			. "  FROM ( " . $this->getFieldTable() . " AS ft"
 			. "  JOIN " . $this->getTypeFieldTable() . " AS tft )"
@@ -901,6 +905,7 @@ class FieldList
 		$query .= " GROUP BY ft.id_common "
 			. " ORDER BY ft.sequence, gft.idst, gft.id_field";
 
+            
 		$play_txt = array();
 		$re_fields = sql_query($query);
 
@@ -1018,42 +1023,63 @@ class FieldList
 	 **/
 	function isFilledFieldsForUser($idst_user, $arr_idst = FALSE)
 	{
-		$index = 0;
-		$acl = &Docebo::user()->getACL();
-		if ($arr_idst === FALSE) {
-			$arr_idst = $acl->getUserGroupsST($idst_user);
-			$index = count($arr_idst);
-		}
-		$acl_man = &$acl->getAclManager();
-		$tmp = $acl_man->getGroup(false, '/oc_0');
-		$arr_idst[] = $tmp[0];
-		$tmp = $acl_man->getGroup(false, '/ocd_0');
-		$arr_idst[] = $tmp[0];
-		$index += 2;
+        
+        
+        
+        $acl = &Docebo::user()->getACL(); 
+        $error_message = array();
+        
+        // #BUG - 19799
+        $acl_man = Docebo::user()->getAclManager();
+        if (isset($_SESSION['usermanagement']['selected_node']) && $_SESSION['usermanagement']['selected_node'] != 0 ) {
+            $arr_idst = array();
+            $tmp = $acl_man->getGroup(false, '/oc_' . $_SESSION['usermanagement']['selected_node']);
+            $arr_idst[] = $tmp[0];
+            $tmp = $acl_man->getGroup(false, '/ocd_' . $_SESSION['usermanagement']['selected_node']);
+            $arr_idst[] = $tmp[0];
+            $acl = &Docebo::user()->getACL();
+            $arr_idst = $acl->getArrSTGroupsST($arr_idst);
+        }      
+                
+ 
+        $index = 0;
+        if ($arr_idst === FALSE) {
+            $arr_idst = $acl->getArrSTGroupsST($acl->getUserGroupsST($idst_user));
+            $index += count($arr_idst);
+        }
 
-		if (count($arr_idst) > $index) {
-			// Not only roots ocd_0 and oc_0
-			for ($i = 0; $i < count($arr_idst); $i++) {
-				if ($arr_idst[$i] == 1) {
-					unset($arr_idst[$i]);
-				}
-			}
-		}
+        $acl_man = &$acl->getAclManager();
+        $tmp = $acl_man->getGroup(false, '/oc_0');
+        $arr_idst[] = $tmp[0];
+        $tmp = $acl_man->getGroup(false, '/ocd_0');
+        $arr_idst[] = $tmp[0];
+        $index += 2;
 
-		$query = "SELECT ft.id_common, ft.type_field, tft.type_file, tft.type_class, gft.mandatory"
-			. "  FROM ( " . $this->getFieldTable() . " AS ft"
-			. "  JOIN " . $this->getTypeFieldTable() . " AS tft )"
-			. "  JOIN " . $this->getGroupFieldsTable() . " AS gft"
-			. " WHERE ft.lang_code = '" . getLanguage() . "'"
-			. "	 AND ft.type_field = tft.type_field"
-			. "   AND ft.id_common = gft.id_field"
-			. "   AND gft.idst IN ('" . implode("','", $arr_idst) . "')"
-			. " GROUP BY ft.id_common ";
+        if (count($arr_idst) > $index) {
+            // Not only roots ocd_0 and oc_0
+            for ($i = 0; $i < count($arr_idst); $i++) {
+                if ($arr_idst[$i] == 1) {
+                    unset($arr_idst[$i]);
+                }
+            }
+        }
+  
+        
 
+        $query = "SELECT ft.id_common, ft.type_field, tft.type_file, tft.type_class, gft.mandatory"
+            . "  FROM ( " . $this->getFieldTable() . " AS ft"
+            . "  JOIN " . $this->getTypeFieldTable() . " AS tft )"
+            . "  JOIN " . $this->getGroupFieldsTable() . " AS gft"
+            . " WHERE ft.lang_code = '" . getLanguage() . "'"
+            . "     AND ft.type_field = tft.type_field"
+            . "   AND ft.id_common = gft.id_field"
+            . "   AND gft.idst IN ('" . implode("','", $arr_idst) . "')";
 
+        $query .= " GROUP BY ft.id_common ";
 
-		$error_message = array();
+   
 
+   
 		$mandatory_filled 	= true;
 		$field_valid 		= true;
 		$re_fields 			= sql_query($query);
