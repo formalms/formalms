@@ -142,7 +142,7 @@ class DashboardsettingsAdm extends Model
         $res = sql_fetch_array($res);
         $default = $res['count'] ? 0 : 1;
 
-        $insertQuery = "INSERT INTO `dashboard_layouts` ( `name`, `caption`, `status`, `default`) VALUES ( '" . addslashes($name) . "', '" . addslashes($caption) . "', '" . addslashes($status) . "', " . $default . ")";
+        $insertQuery = "INSERT INTO `dashboard_layouts` ( `name`, `caption`, `status`, `default`, `created_at`) VALUES ( '" . addslashes($name) . "', '" . addslashes($caption) . "', '" . addslashes($status) . "', " . $default . ", CURRENT_TIMESTAMP)";
         $this->db->query($insertQuery);
     }
 
@@ -176,7 +176,7 @@ class DashboardsettingsAdm extends Model
             'data' => $setting['data']
         ];
 
-        $insertQuery = sprintf("INSERT INTO `dashboard_block_config` ( `block_class`, `block_config`, `position`, `dashboard_id`) VALUES ( '%s' , '%s', '%s', '%s')", $block, json_encode($config), $setting['position'], $dashboard);
+        $insertQuery = sprintf("INSERT INTO `dashboard_block_config` ( `block_class`, `block_config`, `position`, `dashboard_id`, `created_at`) VALUES ( '%s' , '%s', '%s', '%s', CURRENT_TIMESTAMP)", $block, json_encode($config), $setting['position'], $dashboard);
         $this->db->query($insertQuery);
     }
 
