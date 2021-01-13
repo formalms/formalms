@@ -16,12 +16,13 @@ CREATE TABLE IF NOT EXISTS `dashboard_layouts`
     `caption` varchar(255) NOT NULL,
     `status` varchar(255) NOT NULL,
     `default` tinyint(1) NOT NULL DEFAULT 0,
-    `created_at` timestamp NULL DEFAULT NOW(),
+    `created_at` timestamp DEFAULT '0000-00-00 00:00:00',
     `updated_at` timestamp NULL ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`),
     UNIQUE INDEX `name_idx`(`name`) USING BTREE,
     INDEX `status_idx`(`status`) USING BTREE
-);
+) ENGINE = InnoDB
+ DEFAULT CHARSET = utf8;
 
 CREATE TABLE IF NOT EXISTS `dashboard_block_config`
 (
@@ -30,7 +31,7 @@ CREATE TABLE IF NOT EXISTS `dashboard_block_config`
     `block_config` text         NOT NULL,
     `position`     bigint(20)   NOT NULL DEFAULT '999',
     `dashboard_id` bigint(20) NOT NULL,
-    `created_at` timestamp NULL DEFAULT NOW(),
+    `created_at` timestamp DEFAULT '0000-00-00 00:00:00',
     `updated_at` timestamp NULL ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`),
     KEY `block_class_idx` (`block_class`)
@@ -44,7 +45,7 @@ CREATE TABLE IF NOT EXISTS `dashboard_blocks`
 (
     `id`          bigint(20)   NOT NULL AUTO_INCREMENT,
     `block_class` varchar(255) NOT NULL,
-    `created_at` timestamp NULL DEFAULT NOW(),
+    `created_at` timestamp DEFAULT '0000-00-00 00:00:00',
     `updated_at` timestamp NULL ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`),
     UNIQUE KEY `block_class_unique` (`block_class`)
@@ -52,13 +53,13 @@ CREATE TABLE IF NOT EXISTS `dashboard_blocks`
   DEFAULT CHARSET = utf8;
 
 
-INSERT IGNORE INTO `dashboard_blocks` (`id`, `block_class`)
-VALUES (7, 'DashboardBlockCalendarLms'),
-       (3, 'DashboardBlockCertificatesLms'),
-       (6, 'DashboardBlockAnnouncementsLms'),
-       (5, 'DashboardBlockCoursesLms'),
-       (4, 'DashboardBlockMessagesLms'),
-       (8, 'DashboardBlockBannerLms');
+INSERT IGNORE INTO `dashboard_blocks` (`id`, `block_class`, `created_at`)
+VALUES (7, 'DashboardBlockCalendarLms', CURRENT_TIMESTAMP),
+       (3, 'DashboardBlockCertificatesLms',CURRENT_TIMESTAMP),
+       (6, 'DashboardBlockAnnouncementsLms',CURRENT_TIMESTAMP),
+       (5, 'DashboardBlockCoursesLms',CURRENT_TIMESTAMP),
+       (4, 'DashboardBlockMessagesLms',CURRENT_TIMESTAMP),
+       (8, 'DashboardBlockBannerLms',CURRENT_TIMESTAMP);
 
 INSERT IGNORE INTO learning_middlearea (`obj_index`, `disabled`, `idst_list`, `sequence`)
 VALUES ('tb_dashboard', '1', 'a:0:{}', '0');
