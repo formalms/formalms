@@ -401,13 +401,13 @@ class CourseAlms extends Model
         // restriction on course status ------------------------------------------
         $user_status = 0;
         if (isset($data_params['user_status']))
-            foreach(data_params['user_status'] as $status => $v )
+            foreach (data_params['user_status'] as $status => $v)
                 $user_status |= (1 << $status);
 
         // level that will be showed in the course --------------------------------
         $show_level = 0;
         if (isset($data_params['course_show_level']))
-            foreach(data_params['course_show_level'] as $lv => $v )
+            foreach (data_params['course_show_level'] as $lv => $v)
                 $show_level |= (1 << $lv);
 
         // save the file uploaded -------------------------------------------------
@@ -758,13 +758,13 @@ class CourseAlms extends Model
         // restriction on course status ------------------------------------------
         $user_status = 0;
         if (isset($data_params['user_status']))
-            foreach($data_params ['user_status'] as $status => $val)
+            foreach ($data_params['user_status'] as $status => $val)
                 $user_status |= (1 << $status);
 
         // level that will be showed in the course --------------------------------
         $show_level = 0;
         if (isset($data_params['course_show_level']))
-            foreach($data_params ['course_show_level'] as $lv => $val)
+            foreach ($data_params['course_show_level'] as $lv => $val)
                 $show_level |= (1 << $lv);
 
         // save the file uploaded -------------------------------------------------
@@ -1049,7 +1049,7 @@ class CourseAlms extends Model
         }
 
         $res['res'] = '_ok_course';
-        
+
         $new_course = new DoceboCourse($id_course);
         Events::trigger('lms.course.updated', ['id_course' => $id_course, 'old_course' => $course_man, 'new_course' => $new_course]);
 
@@ -1539,16 +1539,14 @@ class CourseAlms extends Model
 
     protected function getInfoClassroom($id_user, $id_course)
     {
+        $query = "SELECT cd.code, cd.name
+                 FROM %lms_course_date AS cd
+                 INNER JOIN %lms_course_date_user cdu ON cd.id_date = cdu.id_date
+                 WHERE id_course = $id_course
+                 AND cdu.id_user = $id_user
+                 ORDER BY cd.id_date DESC LIMIT 1";
+        // AND cdu.date_complete <> '0000-00-00 00:00:00'
 
-        $query =    "SELECT code, name"
-            . " FROM %lms_course_date, %lms_course_date_user
-                         WHERE id_course = '" . $id_course . "' and %lms_course_date_user.id_date=%lms_course_date.id_date and id_user=" . $id_user;
-
-
-
-        $date = sql_fetch_row(sql_query($query));
-        if ($date == false) $date = '';
-
-        return $date;
+        return sql_fetch_row(sql_query($query)) ?: '';
     }
 }
