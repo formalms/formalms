@@ -1538,16 +1538,14 @@ class CourseAlms extends Model
 
     protected function getInfoClassroom($id_user, $id_course)
     {
+        $query = "SELECT cd.code, cd.name
+                 FROM %lms_course_date AS cd
+                 INNER JOIN %lms_course_date_user cdu ON cd.id_date = cdu.id_date
+                 WHERE id_course = $id_course
+                 AND cdu.id_user = $id_user
+                 ORDER BY cd.id_date DESC LIMIT 1";
+        // AND cdu.date_complete <> '0000-00-00 00:00:00'
 
-        $query =    "SELECT code, name"
-            . " FROM %lms_course_date, %lms_course_date_user
-                         WHERE id_course = '" . $id_course . "' and %lms_course_date_user.id_date=%lms_course_date.id_date and id_user=" . $id_user;
-
-
-
-        $date = sql_fetch_row(sql_query($query));
-        if ($date == false) $date = '';
-
-        return $date;
+        return sql_fetch_row(sql_query($query)) ?: '';
     }
 }
