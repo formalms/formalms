@@ -24,7 +24,13 @@
     </div>
 </div>
 
-<table class="table table-bordered display" style="width:100%" id="lang_table"></table>
+<form id="form_langs">
+    <table class="table table-bordered display" style="width:100%" id="lang_table"></table>
+    <button id="export-btn" class="button btn btn-primary dahsboard__button--save js-save-block" type="submit" disabled="disabled">
+        <i class="fa fa-spinner fa-spin" style="display:none;"></i>
+        {{ translate('_EXPORT_XML', 'admin_lang') }}
+    </button>
+</form>
 
 <!-- Modal confirm -->
 <div class="modal" id="confirmModal" style="display: none; z-index: 9999;">
@@ -228,7 +234,7 @@
             sortable: true,
             searchable: false,
             edit: {
-                type: 'text',
+                type: 'textarea',
             },
         },
         {
@@ -258,6 +264,7 @@
                     link = '<a id="' + item.id + '" href="#" onclick="delFunc(' + item.id + ')" class="ico-sprite subs_del" title="{{ translate("_DEL", "admin_lang") }}"><span></span></a>'
                     item.delete = link;
                 });
+                $($.fn.dataTable.tables(true)).DataTable().columns.adjust();
             }
             // Note no return - manipulate the data directly in the JSON object.
         }).FormaTable({
@@ -270,6 +277,18 @@
                 data: function (d) {
                     d.lang_code = $("#lang_code").val();
                     d.lang_code_diff = $("#lang_code_diff").val();
+                },
+                complete: function(json) {
+                    $("#lang_table .select-checkbox, .buttons-select-all, .buttons-select-none").click(function(e) {
+                        setTimeout(function() {
+                            if ($("#lang_table tr.selected").length > 0) {
+                                $("#export-btn").attr("disabled", false);
+                            } else {
+                                $("#export-btn").attr("disabled", true);
+                            }
+                        }, 100);
+                    });
+                    return json;
                 },
                 url: 'ajax.adm_server.php?r=adm/lang/get',
             },
@@ -289,16 +308,50 @@
             },
             'columnDefs': [
                 {
-                    'targets': 0
+                    'targets': 0,
+                    'checkboxes': {
+                    'selectRow': true
+                    }
                 }
             ],
             'select': {
-                'all': false
+                'all': true,
+                'style': 'multi',
             },
         });
-        DataTable_lang_table.searchBar.init('#lang_table');
-        //report_table.searchBar.redraw()
-        DataTable_lang_table.searchBar.show();
+        // DataTable_lang_table.searchBar.init('#lang_table');
+        // DataTable_lang_table.searchBar.redraw()
+        // DataTable_lang_table.searchBar.show();
+    });
+
+    $('#form_langs').on('submit', function(e) {
+        e.preventDefault();
+
+        if (!$("#lang_table tr.selected").length) {
+            return;
+        }
+
+        var selectedIds = DataTable_lang_table._selection.rows;
+
+        params = {
+            text_items: selectedIds, 
+            lang_code: $("#lang_code").val()
+        };
+
+        $("#export-btn .fa-spin").show();
+        $("#export-btn").attr("disabled", true);
+
+        $.ajax({
+            type: 'POST',
+            url: 'ajax.adm_server.php?r=adm/lang/export',
+            data: params,
+            success: function(data) {
+                $("#export-btn .fa-spin").hide();
+                $("#export-btn").attr("disabled", false);
+
+                downloadString(data, "application/xml", "lang[" + params.lang_code + "].xml");
+            }
+        });
     });
 
     $("#addlang_top").click(function(e) {
@@ -308,12 +361,25 @@
             dataType: "json",
             success: function(data) {
                 if (data.success) {
-                    console.log($("#addModal"))
                     $("#addModal").find('.modal-body').html(data.body)
                     $("#addModal").modal('show');
                 }
             }
         });
     });
+
+    function downloadString(text, fileType, fileName) {
+        var blob = new Blob([text], { type: fileType });
+
+        var a = document.createElement('a');
+        a.download = fileName;
+        a.href = URL.createObjectURL(blob);
+        a.dataset.downloadurl = [fileType, a.download, a.href].join(':');
+        a.style.display = "none";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        setTimeout(function() { URL.revokeObjectURL(a.href); }, 1500);
+    }
 </script>
 </div>

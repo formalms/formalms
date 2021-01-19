@@ -230,8 +230,9 @@ class LangAdmController extends AdmController
     public function exportTask()
     {
         $lang_code = Get::req('lang_code', DOTY_STRING, '');
+        $text_items = Get::req('text_items', DOTY_MIXED, []);
 
-        $this->model->exportTranslation($lang_code);
+        $this->model->exportTranslation($lang_code, $text_items);
     }
 
     public function importTask()

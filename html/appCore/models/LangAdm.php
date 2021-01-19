@@ -649,7 +649,7 @@ class LangAdm extends Model
         return $this->db->query($query);
     }
 
-    public function exportTranslation($lang_code)
+    public function exportTranslation($lang_code, $text_items = null)
     {
 
         $doc = new DOMDocument('1.0');
@@ -702,7 +702,7 @@ class LangAdm extends Model
             $elemModule->setAttribute("id", $module);
             $elemPlatform->appendChild($elemModule);
 
-            $arrTranslations = Docebo::langManager()->getModuleLangTranslations('all', $module, $lang_code, '', false, false, true);
+            $arrTranslations = Docebo::langManager()->getModuleLangTranslations('all', $module, $lang_code, '', false, false, true, $text_items);
             foreach ($arrTranslations as $tran) {
                 $elem = $doc->createElement("key");
                 $elem->setAttribute('id', Docebo::langManager()->composeKey($tran[1], $module, 'all'));
