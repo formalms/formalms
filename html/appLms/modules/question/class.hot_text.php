@@ -589,7 +589,7 @@ class HotText_Question extends Question {
 			( isset($_POST['title_info']) ? stripslashes($_POST['title_info']) : $title_info ), $lang->def('_TITLE') )
 			
 			.Form::getTextarea($lang->def('_QUESTION'), 'title_quest', 'title_quest', 
-			( isset($_POST['title_quest']) ? stripslashes($_POST['title_quest']) : $quest ) ), 'content');
+			( isset($_POST['title_quest']) ? stripslashes($_POST['title_quest']) : stripslashes($quest) ) ), 'content');
 		if (count($categories) > 1)
 			$GLOBALS['page']->add(Form::getDropdown( $lang->def('_TEST_QUEST_CATEGORY'), 'idCategory', 'idCategory', $categories,
 				( isset($_POST['idCategory']) ? $_POST['idCategory'] : $sel_cat )), 'content');
@@ -733,7 +733,7 @@ class HotText_Question extends Question {
 					.( ($find_prev && $id_answer == $id_answer_do) ? ' checked="checked"' : '' )
 					.( $find_prev && $freeze ? ' disabled="disabled"' : '' ).' />'
 					.'<label class="text_answer_ht" for="quest_'.$id_quest.'_'.$id_answer.'">'.$answer.'</label>';
-			$title_quest = preg_replace('/\[answer'.$i.'\]/', $term, $title_quest);
+			$title_quest = preg_replace('/\[answer'.$i.'\]/', $term, stripslashes($title_quest));
 			$i++;
 		}
 		return '<div class="play_question">'

@@ -48,7 +48,7 @@ class TextEntry_Question extends Question {
 			( 	'".(int)$idTest."', 
 				'".(int)$_REQUEST['idCategory']."', 
 				'".$this->getQuestionType()."', 
-				'".$_REQUEST['title_quest']."',
+				'".addslashes($_REQUEST['title_quest'])."',
 				'".(int)$_REQUEST['difficult']."', 
 				'".(int)$_REQUEST['time_assigned']."', 
 				'".$this->_getNextSequence($idTest)."', 
@@ -73,7 +73,7 @@ class TextEntry_Question extends Question {
 			( idQuest, is_correct, answer, comment, score_correct, score_incorrect ) VALUES 
 			( 	'".$idQuest."', 
 				'1', 
-				'".strtolower($_REQUEST['answer'])."', 
+				'".strtolower(addslashes($_REQUEST['answer']))."', 
 				'".$_REQUEST['comment']."', 
 				'".$this->_checkScore($_REQUEST['score_correct'])."', 
 				'".$this->_checkScore($_REQUEST['score_incorrect'])."' ) ";
@@ -187,7 +187,7 @@ class TextEntry_Question extends Question {
 			UPDATE ".$GLOBALS['prefix_lms']	."_testquest 
 			SET idCategory = '".$_REQUEST['idCategory']."', 
 				type_quest = '".$this->getQuestionType()."', 
-				title_quest = '".$_REQUEST['title_quest']."', 
+				title_quest = '".addslashes($_REQUEST['title_quest'])."', 
 				difficult = '".$_REQUEST['difficult']."',
 				time_assigned = '".$_REQUEST['time_assigned']."'
 			WHERE idQuest = '".(int)$this->id."'";
@@ -200,7 +200,7 @@ class TextEntry_Question extends Question {
 			//modify answer
 			$mod_answer_query = "
 			UPDATE ".$GLOBALS['prefix_lms']	."_testquestanswer 
-			SET answer = '".strtolower($_REQUEST['answer'])."',
+			SET answer = '".strtolower(addslashes($_REQUEST['answer']))."',
 				comment = '".$_REQUEST['comment']."',
 				score_correct = '".$this->_checkScore($_REQUEST['score_correct'])."', 
 				score_incorrect = '".$this->_checkScore($_REQUEST['score_incorrect'])."'

@@ -58,7 +58,7 @@ class ExtendedText_Question extends Question {
 			( 	'".$idTest."', 
 				'".(int)$_REQUEST['idCategory']."', 
 				'".$this->getQuestionType()."', 
-				'".$_REQUEST['title_quest']."',
+				'".addslashes($_REQUEST['title_quest'])."',
 				'".(int)$_REQUEST['difficult']."', 
 				'".(int)$_REQUEST['time_assigned']."', 
 				'".$this->_getNextSequence($idTest)."', 
@@ -136,7 +136,7 @@ class ExtendedText_Question extends Question {
 			if(!sql_query("
 			UPDATE ".$GLOBALS['prefix_lms']	."_testquest 
 			SET idCategory = '".(int)$_REQUEST['idCategory']."', 
-				title_quest = '".$_REQUEST['title_quest']."', 
+				title_quest = '".addslashes($_REQUEST['title_quest'])."', 
 				difficult = '".(int)$_REQUEST['difficult']."', 
 				time_assigned = '".(int)$_REQUEST['time_assigned']."' 
 			WHERE idQuest = '".$this->id."'")) {
