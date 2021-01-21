@@ -57,7 +57,7 @@ class Title_Question extends Question {
 			( idTest, type_quest, title_quest, sequence, page, difficult ) VALUES 
 			( 	'".$idTest."', 
 				'".$this->getQuestionType()."', 
-				'".$_REQUEST['title_quest']."',
+				'".addslashes($_REQUEST['title_quest'])."',
 				'".$this->_getNextSequence($idTest)."', 
 				'".$this->_getPageNumber($idTest)."', 
 				'0' ) ")) {
@@ -103,7 +103,7 @@ class Title_Question extends Question {
 		if(isset($_REQUEST['add_question'])) {
 			if(!sql_query("
 			UPDATE ".$GLOBALS['prefix_lms']."_testquest 
-			SET title_quest = '".$_REQUEST['title_quest']."' 
+			SET title_quest = '".addslashes($_REQUEST['title_quest'])."' 
 			WHERE idQuest = '".$this->id."'")) {
 				errorCommunication($lang->def('_ERR_INS_QUEST')
 					.getBackUi('index.php?modname=question&amp;op=edit&amp;type_quest='
@@ -220,5 +220,3 @@ class Title_Question extends Question {
 						'comment'	=> '' );
 	}
 }
-
-?>
