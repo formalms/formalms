@@ -187,7 +187,7 @@ class Upload_Question extends Question {
 			.Form::getHidden('idQuest', 'idQuest', $this->id)
 			.Form::getHidden('back_test', 'back_test', $url_encode)
 		
-			.Form::getTextarea($lang->def('_QUESTION'), 'title_quest', 'title_quest', $title_quest), 'content');
+			.Form::getTextarea($lang->def('_QUESTION'), 'title_quest', 'title_quest', stripslashes($title_quest)), 'content');
 		if (count($categories) > 1)
 			$GLOBALS['page']->add(Form::getDropdown( $lang->def('_TEST_QUEST_CATEGORY'), 'idCategory', 'idCategory', $categories), 'content',
 				( isset($_POST['idCategory']) ? $_POST['idCategory'] : $cat_sel ));
