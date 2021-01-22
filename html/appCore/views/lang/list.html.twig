@@ -12,13 +12,17 @@
     <br><br>
     <div class="search_form">
         {{ Form_openForm('lang_filters', 'index.php?r=adm/lang/list', false, false, '','','row') }}
-        <div class="lang-filter col-xs-12 col-sm-2">
+        <div class="lang-filter col-xs-12 col-sm-4">
             <label for="lang_code">{{ translate('_LANGUAGE', 'admin_lang') }}</label>:
             {{ Form_getInputDropdown("search_d", "lang_code", "lang_code", language_list, selected_language, ' onchange="DataTable_lang_table.reload();"') }}
         </div>
-        <div class="lang-confr-filter  col-xs-12 col-sm-3">
+        <div class="lang-confr-filter  col-xs-12 col-sm-4">
             <label for="lang_code_diff">{{ translate('_LANG_COMPARE', 'admin_lang') }}</label>:
             {{ Form_getInputDropdown("search_d", "lang_code_diff", "lang_code_diff", language_list, selected_language_diff, ' onchange="DataTable_lang_table.reload();"') }}
+        </div>
+        <div class="lang-confr-filter  col-xs-12 col-sm-4">
+            <label for="only_empty">{{ translate('_ONLY_EMPTY', 'admin_lang') }}</label>:
+            {{ Form_getInputCheckbox("only_empty", "only_empty", "true", only_empty, ' onchange="DataTable_lang_table.reload();"') }}
         </div>
         {{ Form_closeForm() }}
     </div>
@@ -277,6 +281,7 @@
                 data: function (d) {
                     d.lang_code = $("#lang_code").val();
                     d.lang_code_diff = $("#lang_code_diff").val();
+                    d.only_empty = $("#only_empty").is(":checked");
                 },
                 complete: function(json) {
                     $("#lang_table .select-checkbox, .buttons-select-all, .buttons-select-none").click(function(e) {

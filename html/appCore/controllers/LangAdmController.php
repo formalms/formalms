@@ -389,6 +389,7 @@ class LangAdmController extends AdmController
                 $lang_code_diff,
                 $language_list
             ),
+            'only_empty' => $only_empty,
             'module_list' => $module_list,
             'language_list' => $language_list,
             'language_list_diff' => $language_list_diff,
