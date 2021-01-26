@@ -2547,7 +2547,8 @@ class UsermanagementAdmController extends AdmController
 
 		$profile = new UserProfile($id_user);
 		$profile->init('profile', 'framework', 'r=' . $this->link . '/editprofile&id_user=' . (int) $id_user, 'ap');
-		if (Docebo::user()->getUserLevelId() == ADMIN_GROUP_GODADMIN) $profile->enableGodMode();
+		$admin_can_mod = ($this->permissions['mod_user'] && Docebo::user()->getUserLevelId() == ADMIN_GROUP_ADMIN);
+		if (Docebo::user()->getUserLevelId() == ADMIN_GROUP_GODADMIN || $admin_can_mod) $profile->enableGodMode();
 		//$profile->setEndUrl('index.php?modname=directory&op=org_chart#user_row_'.$id_user);
 
 		//evento mostra dettaglio profilo
