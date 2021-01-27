@@ -1,0 +1,12 @@
+{
+    "version": {
+        "name": "1.4.2",
+        "number": "10402",
+        "description": "1.4.2",
+        "pretty_version": "1.4.2",
+        "pre": "10402_pre.php",
+        "post": "10402_post.php",
+        "config": "10402_config.php",
+        "file_sytem": "10402_fs.php"
+    }
+}

@@ -140,7 +140,7 @@ CREATE TABLE IF NOT EXISTS `learning_aggregated_cert_assign` (
 INSERT IGNORE INTO `learning_aggregated_cert_assign` (`idUser`, `idAssociation`, `idCertificate`, `on_date`, `cert_file`  ) 
 SELECT learning_certificate_assign.id_user, learning_certificate_meta.idMetaCertificate, learning_certificate_meta.idCertificate,
     learning_certificate_assign.on_date, learning_certificate_assign.cert_file from `learning_certificate_meta`, `learning_certificate_assign` where
-    learning_certificate_assign.id_Certificate = learning_certificate_meta.idCertificate
+    learning_certificate_assign.id_Certificate = learning_certificate_meta.idCertificate;
 
   
 CREATE TABLE IF NOT EXISTS `learning_aggregated_cert_course` (
