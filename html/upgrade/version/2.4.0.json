@@ -1,0 +1,12 @@
+{
+    "version": {
+        "name": "2.4.0",
+        "number": "20400",
+        "description": "2.4.0",
+        "pretty_version": "2.4.0",
+        "pre": "20400_pre.php",
+        "post": "20400_post.php",
+        "config": "20400_config.php",
+        "file_sytem": "20400_fs.php"
+    }
+}

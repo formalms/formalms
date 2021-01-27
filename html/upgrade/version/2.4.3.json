@@ -1,0 +1,12 @@
+{
+    "version": {
+        "name": "2.4.3",
+        "number": "20403",
+        "description": "2.4.3",
+        "pretty_version": "2.4.3",
+        "pre": "20403_pre.php",
+        "post": "20403_post.php",
+        "config": "20403_config.php",
+        "file_sytem": "20403_fs.php"
+    }
+}
