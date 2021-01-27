@@ -1,0 +1,12 @@
+{
+    "version": {
+        "name": "2.0",
+        "number": "20000",
+        "description": "2.0",
+        "pretty_version": "2.0",
+        "pre": "20000_pre.php",
+        "post": "20000_post.php",
+        "config": "20000_config.php",
+        "file_sytem": "20000_fs.php"
+    }
+}

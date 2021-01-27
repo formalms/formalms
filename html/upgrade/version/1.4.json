@@ -1,0 +1,12 @@
+{
+    "version": {
+        "name": "1.4",
+        "number": "10400",
+        "description": "1.4",
+        "pretty_version": "1.4",
+        "pre": "10400_pre.php",
+        "post": "10400_post.php",
+        "config": "10400_config.php",
+        "file_sytem": "10400_fs.php"
+    }
+}
