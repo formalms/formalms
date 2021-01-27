@@ -251,7 +251,7 @@ class Lms_BlockWidget_menu extends Widget {
 
         
         
-        var_dump ($course_data);
+        //var_dump ($course_data);
        // die("s");
         
         $table = '<div class="table-credit-wrapper">';
