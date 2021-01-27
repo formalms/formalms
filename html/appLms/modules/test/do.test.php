@@ -807,8 +807,12 @@ function play ($object_test , $id_param)
 								}
 							});
 
+							$('.answer_question').find('input[type=file]').each(function(index, item) {
+								num_answer_chk += $(item)[0].files.length;
+							});
+
                             num_answer_radio = $('.answer_question input[type=\"radio\"]:checked').length;
-                            num_answer_tot_chk = num_answer_radio + num_answer_chk;
+														num_answer_tot_chk = num_answer_radio + num_answer_chk;
 
 							if (mandatory) {
 								if (num_answer_tot_chk >= num_answer_tot) {
@@ -875,6 +879,14 @@ function play ($object_test , $id_param)
 							});
 
 							$(document).on('keyup', '.answer_question input', function() {
+								if ($('.answer_question input').val().length > 0) {
+									toggleNext(true);
+								} else {
+                                	toggleNext(false);
+                                }
+							});
+
+							$(document).on('change', '.answer_question input[type=file]', function() {
 								if ($('.answer_question input').val().length > 0) {
 									toggleNext(true);
 								} else {
@@ -2246,5 +2258,3 @@ function saveManualUserReport ($id_user , $id_test , $id_track)
 
 
 }
-
-?>

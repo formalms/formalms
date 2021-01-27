@@ -284,7 +284,7 @@ class Upload_Question extends Question {
 		return '<div class="play_question">'
             .'<div>'.$lang->def('_QUEST_'.strtoupper($this->getQuestionType())).'</div>'
 			.'<div class="title_question">'
-			.'<label for="quest_'.$id_quest.'">'.$num_quest.') '.$title_quest.'</label>'
+			.'<label for="quest_'.$id_quest.'">'.$num_quest.') '.stripslashes($title_quest).'</label>'
 			.'</div>'
 			.'<div class="answer_question">&nbsp;'
 			.'<input type="file" id="quest_'.$id_quest.'" name="quest['.$id_quest.']" '
@@ -502,5 +502,3 @@ class Upload_Question extends Question {
 		sendFile($path, $filename, $extens);
 	}
 }
-
-?>
