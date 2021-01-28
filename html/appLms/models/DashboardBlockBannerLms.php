@@ -45,12 +45,12 @@ class DashboardBlockBannerLms extends DashboardBlockLms
     {
         return [
             DashboardBlockForm::getFormItem($this, 'cover', DashboardBlockForm::FORM_TYPE_IMAGE, false),
-            DashboardBlockForm::getFormItem($this, 'video', DashboardBlockForm::FORM_TYPE_TEXT, false),
             DashboardBlockForm::getFormItem($this, 'video_type', DashboardBlockForm::FORM_TYPE_SELECT, false, [
                 'blank' => 'Select Video Type',
                 'yt' => 'Youtube',
                 'vimeo' => 'Vimeo'
             ]),
+            DashboardBlockForm::getFormItem($this, 'video', DashboardBlockForm::FORM_TYPE_TEXT, false),
         ];
     }
 
@@ -87,5 +87,4 @@ class DashboardBlockBannerLms extends DashboardBlockLms
     {
         return [];
     }
-
 }
