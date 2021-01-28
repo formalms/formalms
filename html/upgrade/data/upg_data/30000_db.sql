@@ -76,8 +76,11 @@ INSERT IGNORE INTO core_lang_translation (id_text, lang_code, translation_text, 
 VALUES ((SELECT id_text FROM core_lang_text where text_key = '_DASHBOARD' and text_module = 'middlearea'),
         'italian', 'Dashboard', NOW());
 
+SET @max = (SELECT MAX(idModule) + 1
+            FROM `learning_module`);
+
 INSERT IGNORE INTO `learning_module`
-VALUES (47, 'dashboard', 'show', '_DASHBOARD', 'view', '', '', 'all', 'lms/dashboard/show');
+VALUES (@max, 'dashboard', 'show', '_DASHBOARD', 'view', '', '', 'all', 'lms/dashboard/show');
 
 SET @max = (SELECT MAX(idMenu) + 1
             FROM `core_menu`);
@@ -140,7 +143,7 @@ CREATE TABLE IF NOT EXISTS `learning_aggregated_cert_assign` (
 INSERT IGNORE INTO `learning_aggregated_cert_assign` (`idUser`, `idAssociation`, `idCertificate`, `on_date`, `cert_file`  ) 
 SELECT learning_certificate_assign.id_user, learning_certificate_meta.idMetaCertificate, learning_certificate_meta.idCertificate,
     learning_certificate_assign.on_date, learning_certificate_assign.cert_file from `learning_certificate_meta`, `learning_certificate_assign` where
-    learning_certificate_assign.id_Certificate = learning_certificate_meta.idCertificate
+    learning_certificate_assign.id_Certificate = learning_certificate_meta.idCertificate;
 
   
 CREATE TABLE IF NOT EXISTS `learning_aggregated_cert_course` (
