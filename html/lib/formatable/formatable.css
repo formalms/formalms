@@ -16,15 +16,20 @@ form.ft-edit-popup {
   box-shadow: #808080 0 0 5px 1px;
   padding: 10px;
   white-space: nowrap;
-  min-width: 100%;
+  width: 320px;
 }
 
 form.ft-edit-popup select,
 form.ft-edit-popup input {
   box-sizing: border-box;
-  width: 100%;
   margin-bottom: 10px;
   display: block;
+  width: 100%;
+}
+form.ft-edit-popup textarea {
+  min-width: 100%;
+  max-width: 100%;
+  max-height: 160px;
 }
 
 form.ft-edit-popup .button-container {

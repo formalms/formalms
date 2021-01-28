@@ -67,7 +67,33 @@ class DashboardsettingsAdmController extends AdmController
         require_once(Get::rel_path('lib') . '/formatable/formatable.php');
         Util::get_css(Get::rel_path('lib') . '/formatable/formatable.css', true, true);
 
+        $data = [
+            'ajaxUrl' => [
+                'save' => 'ajax.adm_server.php?r=adm/dashboardsettings/save',
+                'saveLayout' => 'ajax.adm_server.php?r=adm/dashboardsettings/saveLayout',
+                'editInlineLayout' => 'ajax.adm_server.php?r=adm/dashboardsettings/editInlineLayout',
+                'delLayout' => 'ajax.adm_server.php?r=adm/dashboardsettings/delLayout',
+                'defaultLayout' => 'ajax.adm_server.php?r=adm/dashboardsettings/defaultLayout',
+                'uploadFile' => 'ajax.adm_server.php?r=adm/dashboardsettings/uploadFile',
+                'getLayouts' => 'ajax.adm_server.php?r=adm/dashboardsettings/getLayouts',
+                'getBlockType' => 'ajax.adm_server.php?r=adm/dashboardsettings/getBlockTypeForm',
+            ],
+            'showUrl' => './index.php?r=adm/dashboardsettings/show',
+            'editUrl' => './index.php?r=adm/dashboardsettings/edit',
+            'templatePath' => getPathTemplate(),
+        ];
+
+        //render view
+        $this->render('show', $data);
+    }
+
+    public function edit()
+    {
+        /*require_once(Get::rel_path('lib') . '/formatable/formatable.php');
+        Util::get_css(Get::rel_path('lib') . '/formatable/formatable.css', true, true);*/
+
         $dashboardId = Get::req('dashboard', DOTY_INT, false);
+        $dashboard = $this->model->getLayout($dashboardId);
 
         $data = [
             'ajaxUrl' => [
@@ -84,11 +110,12 @@ class DashboardsettingsAdmController extends AdmController
             'installedBlocks' => $this->model->getInstalledBlocksCommonViewData(),
             'enabledBlocks' => $this->model->getEnabledBlocksCommonViewData($dashboardId),
             'templatePath' => getPathTemplate(),
-            'dashboardId' => $dashboardId
+            'dashboard' => $dashboard,
+            'dashboardId' => $dashboardId,
         ];
 
         //render view
-        $this->render('show', $data);
+        $this->render('edit', $data);
     }
 
     public function getLayouts()
@@ -137,6 +164,7 @@ class DashboardsettingsAdmController extends AdmController
         $caption = Get::pReq('caption', DOTY_MIXED);
         $status = Get::pReq('status', DOTY_MIXED);
         $default = Get::pReq('default', DOTY_BOOL);
+
         $data = [
             'name' => $name,
             'caption' => $caption,
@@ -151,9 +179,6 @@ class DashboardsettingsAdmController extends AdmController
         if (!isset($data['name']) || !$data['name']) {
             $errors['name'] = Lang::t('_VALUE_IS_NOT_VALID', 'dashboardsetting');
         }
-        if (!isset($data['caption']) || !$data['caption']) {
-            $errors['caption'] = Lang::t('_VALUE_IS_NOT_VALID', 'dashboardsetting');
-        }
         if (!isset($data['status']) || !$data['status']) {
             $errors['status'] = Lang::t('_VALUE_IS_NOT_VALID', 'dashboardsetting');
         }
@@ -164,9 +189,10 @@ class DashboardsettingsAdmController extends AdmController
         if ($errors) {
             $status = 400;
             $response['errors'] = $errors;
+        } else if (!$this->model->saveLayout($data)) {
+            $response['errors'] = [];
         } else {
             $status = 200;
-            $this->model->saveLayout($data);
         }
 
         echo $this->json_response($status, $response);

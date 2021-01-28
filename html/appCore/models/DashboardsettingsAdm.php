@@ -52,6 +52,14 @@ class DashboardsettingsAdm extends Model
         }
     }
 
+    public function getLayout($id)
+    {
+        $query = "SELECT `id`, `name`, `caption`, `status`, `default` FROM `dashboard_layouts` WHERE id = $id";
+        $result = sql_query($query);
+
+        return sql_fetch_object($result);
+    }
+
     public function loadEnabledBlocks()
     {
         $query_blocks = "SELECT `id`, `block_class`, `block_config`, `position`, `dashboard_id` FROM `dashboard_block_config` ORDER BY `position` ASC";
@@ -134,7 +142,7 @@ class DashboardsettingsAdm extends Model
     public function saveLayout($layout)
     {
         $name = $layout['name'];
-        $caption = $layout['caption'];
+        $caption = $layout['caption'] ?: ' ';
         $status = $layout['status'];
 
         $query = "SELECT COUNT(*) AS count FROM `dashboard_layouts`";
@@ -142,8 +150,11 @@ class DashboardsettingsAdm extends Model
         $res = sql_fetch_array($res);
         $default = $res['count'] ? 0 : 1;
 
-        $insertQuery = "INSERT INTO `dashboard_layouts` ( `name`, `caption`, `status`, `default`, `created_at`) VALUES ( '" . addslashes($name) . "', '" . addslashes($caption) . "', '" . addslashes($status) . "', " . $default . ", CURRENT_TIMESTAMP)";
-        $this->db->query($insertQuery);
+        $insertQuery = "
+            INSERT INTO `dashboard_layouts` ( `name`, `caption`, `status`, `default`, `created_at`) 
+            VALUES ( '" . addslashes($name) . "', '" . addslashes($caption) . "', '" . addslashes($status) . "', " . $default . ", CURRENT_TIMESTAMP)
+        ";
+        return $this->db->query($insertQuery);
     }
 
     public function editInlineLayout($data)
