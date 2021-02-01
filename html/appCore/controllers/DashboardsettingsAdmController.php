@@ -80,6 +80,7 @@ class DashboardsettingsAdmController extends AdmController
             ],
             'showUrl' => './index.php?r=adm/dashboardsettings/show',
             'editUrl' => './index.php?r=adm/dashboardsettings/edit',
+            'cloneUrl' => './index.php?r=adm/dashboardsettings/clone',
             'templatePath' => getPathTemplate(),
         ];
 
@@ -89,9 +90,6 @@ class DashboardsettingsAdmController extends AdmController
 
     public function edit()
     {
-        /*require_once(Get::rel_path('lib') . '/formatable/formatable.php');
-        Util::get_css(Get::rel_path('lib') . '/formatable/formatable.css', true, true);*/
-
         $dashboardId = Get::req('dashboard', DOTY_INT, false);
         $dashboard = $this->model->getLayout($dashboardId);
 
@@ -99,6 +97,7 @@ class DashboardsettingsAdmController extends AdmController
             'ajaxUrl' => [
                 'save' => 'ajax.adm_server.php?r=adm/dashboardsettings/save',
                 'saveLayout' => 'ajax.adm_server.php?r=adm/dashboardsettings/saveLayout',
+                'cloneLayout' => 'ajax.adm_server.php?r=adm/dashboardsettings/cloneLayout',
                 'editInlineLayout' => 'ajax.adm_server.php?r=adm/dashboardsettings/editInlineLayout',
                 'delLayout' => 'ajax.adm_server.php?r=adm/dashboardsettings/delLayout',
                 'defaultLayout' => 'ajax.adm_server.php?r=adm/dashboardsettings/defaultLayout',
@@ -116,6 +115,27 @@ class DashboardsettingsAdmController extends AdmController
 
         //render view
         $this->render('edit', $data);
+    }
+
+    public function clone()
+    {
+        $dashboardId = Get::req('dashboard', DOTY_INT, false);
+        $dashboard = $this->model->getLayout($dashboardId);
+
+        $data = [
+            'ajaxUrl' => [
+                'cloneLayout' => 'ajax.adm_server.php?r=adm/dashboardsettings/cloneLayout',
+            ],
+            'dashboard' => $dashboard,
+            'dashboardId' => $dashboardId,
+        ];
+
+        $res = array(
+            'data' => $data
+        );
+
+        echo $this->json->encode($res);
+        exit;
     }
 
     public function getLayouts()
@@ -184,6 +204,43 @@ class DashboardsettingsAdmController extends AdmController
         }
         if (!isset($data['default']) || !is_bool($data['default'])) {
             $errors['default'] = Lang::t('_VALUE_IS_NOT_VALID', 'dashboardsetting');
+        }
+
+        if ($errors) {
+            $status = 400;
+            $response['errors'] = $errors;
+        } else if (!$this->model->saveLayout($data)) {
+            $response['errors'] = [];
+        } else {
+            $status = 200;
+        }
+
+        echo $this->json_response($status, $response);
+        exit;
+    }
+
+    public function cloneLayout()
+    {
+        $id = Get::pReq('id', DOTY_INT);
+        $name = Get::pReq('name', DOTY_MIXED);
+        $caption = Get::pReq('caption', DOTY_MIXED);
+        $status = Get::pReq('status', DOTY_MIXED);
+
+        $data = [
+            'name' => $name,
+            'caption' => $caption,
+            'status' => $status,
+        ];
+
+        $response = [];
+
+        // Validation
+        $errors = [];
+        if (!isset($data['name']) || !$data['name']) {
+            $errors['name'] = Lang::t('_VALUE_IS_NOT_VALID', 'dashboardsetting');
+        }
+        if (!isset($data['status']) || !$data['status']) {
+            $errors['status'] = Lang::t('_VALUE_IS_NOT_VALID', 'dashboardsetting');
         }
 
         if ($errors) {
