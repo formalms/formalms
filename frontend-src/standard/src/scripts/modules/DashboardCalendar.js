@@ -36,7 +36,8 @@ export const RenderDashBoardCalendar = () => {
                 data: {
                   blockAction: 'getElearningCalendar',
                   authentic_request: window.dashboardCalendarAjaxSignature,
-                  block: 'DashboardBlockCalendarLms'
+                  block: 'DashboardBlockCalendarLms',
+                  dashboardLayoutId : window.dashboardLayoutId
                 },
                 success: function (data) {
                   const parsedData = JSON.parse(data);
@@ -70,7 +71,8 @@ export const RenderDashBoardCalendar = () => {
                 data: {
                   blockAction: 'getClassroomCalendar',
                   authentic_request: window.dashboardCalendarAjaxSignature,
-                  block: 'DashboardBlockCalendarLms'
+                  block: 'DashboardBlockCalendarLms',
+                  dashboardLayoutId : window.dashboardLayoutId
                 },
                 success: function (data) {
                   const parsedData = JSON.parse(data);
@@ -105,7 +107,8 @@ export const RenderDashBoardCalendar = () => {
                 data: {
                   blockAction: 'getReservationCalendar',
                   authentic_request: window.dashboardCalendarAjaxSignature,
-                  block: 'DashboardBlockCalendarLms'
+                  block: 'DashboardBlockCalendarLms',
+                  dashboardLayoutId : window.dashboardLayoutId
                 },
                 success: function (data) {
                   const parsedData = JSON.parse(data);
