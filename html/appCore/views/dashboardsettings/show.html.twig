@@ -40,10 +40,14 @@
     <table class="table table-striped table-bordered display" style="width:100%" id="layouts"></table>
 </div>
 
+{% include 'modal-clone.html.twig' %}
+
 <script type="application/javascript">
+
     $(function () {
         const showUrl = "{{ showUrl }}";
         const editUrl = "{{ editUrl }}";
+        const cloneUrl = "{{ cloneUrl }}";
         const dashboardSortable = $("#dashboard-sortable");
         const selectBlock = $('.js-select-block');
         const selectType = $('.js-select-type');
@@ -96,6 +100,11 @@
                     render: function(data, type, row, meta) {
                         var checked = row.default ? 'disabled checked' : '';
                         return '<div class="text-center"><input class="default_check" type="checkbox" value="1" data-id="' + row.id + '" ' + checked + '></div>';
+                    }
+                },
+                { data: 'clone', title: '&nbsp;', sortable: false, width: '10%', 
+                    render: function(data, type, row, meta) {
+                        return '<div class="text-center"><a onclick="cloneFunc(' + row.id + ')" href="#" class="btn btn-primary"><i class="glyphicon glyphicon-duplicate"></i> </a></div>';
                     }
                 },
                 { data: 'edit', title: '&nbsp;', sortable: false, width: '10%', 
