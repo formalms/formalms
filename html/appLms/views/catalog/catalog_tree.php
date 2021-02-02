@@ -3,7 +3,7 @@
 
     /* managing setting options */
     $catalogue_todisplay = true;
-    if (Get::sett('on_catalogue_empty')=='on') {
+    if (Get::sett('on_catalogue_empty')=='on') { // show user's catalogue or main catalogue
         if (count($user_catalogue)==0) {
            $starting_catalogue = 0;  // show main catalogue
         } else {
@@ -15,22 +15,18 @@
                 $starting_catalogue = $id_catalogue;
             }    
         }
-    } else {
-        if (!$catalogue_exist) {
-                $starting_catalogue = 0; // show main catalogue
+    } else {   // show user's catalogue or nothing
+        if (count($user_catalogue) > 0) { // show first user's catalogue
+            if ($id_catalogue == 0) {
+                reset($user_catalogue);
+                $key = key($user_catalogue);
+                $starting_catalogue= $user_catalogue[$key]['idCatalogue'];
             } else {
-                if (count($user_catalogue) > 0) { // show first user's catalogue
-                    if ($id_catalogue == 0) {
-                        reset($user_catalogue);
-                        $key = key($user_catalogue);
-                        $starting_catalogue= $user_catalogue[$key]['idCatalogue'];
-                    } else {
-                        $starting_catalogue = $id_catalogue; // or the called one
-                    }    
-                } else {
-                    $catalogue_todisplay =  false;
-                }
-            }
+                $starting_catalogue = $id_catalogue; // or the called one
+            }    
+        } else {
+            $catalogue_todisplay =  false;
+        }
     }          
     
 
@@ -71,19 +67,21 @@
 
       <?php if ($catalogue_todisplay) { ?>
         <script type="text/javascript">
+            var $treeview = $("#treeview1");
+
             function callAjaxCatalog(id_category) {
+
                 <?php echo $no_course ?>
                 str_loading = "<?php echo Layout::path() ?>images/standard/loadbar.gif";
                 $("#div_course").html("<br><p align='center'><img src='" + str_loading + "'></p>");
-                scriviCookie('id_current_cat', id_category, 60);
-                var type_course = leggiCookie('type_course');
+                var type_course = getCurrentTypeCourse();
                 var posting = $.get(
                     'ajax.server.php',
                     {
                         r: 'catalog/allCourseForma',
                         id_category: id_category,
                         type_course: type_course,
-                        id_catalogue: <?php echo $starting_catalogue;   ?> 
+                        id_catalogue: <?php echo $starting_catalogue ?>
                     }
                 );
                 posting.done(function (responseText) {
@@ -94,9 +92,36 @@
                 })
             }
 
+            function checkSticky() {
+                var windowHeight = $( window ).height();
+                var treeviewHeight = $treeview.innerHeight();
+                $treeview.css({ maxHeight: windowHeight - 200, overflowY: 'auto'});
+                $(".container-fluid").css("height", "auto");
+
+                if (window.innerWidth >= 768 && $('#div_course').offset().top - $(window).scrollTop() <= 70) {
+                    $treeview.css({ maxHeight: windowHeight - 190, overflowY: 'auto'});
+                    $treeview.css({width: $treeview.parent().width(), position: 'fixed', top: '70px'});
+                } else {
+                    $treeview.css({position: 'static'});
+                }
+            }
+
             $(function () {
-                scriviCookie('type_course', 0, 60);
                 callAjaxCatalog(0);
+                a_node = <?php echo $a_node ?>
+
+                // Alphabetical sort
+                $.each(a_node, function(k, cat) {
+                    if (cat.nodes) {
+                        var result = Object.keys(cat.nodes).map(function(key) {
+                            return cat.nodes[key];
+                        });
+                        result = result.sort(function(a, b) {
+                            return (a['text'] < b['text']) ? -1 : (a['text'] > b['text']) ? 1 : 0;
+                        })
+                        cat.nodes = result;
+                    }
+                })
                 var category_tree = [
                     {
                         text: "&nbsp;&nbsp;<?php echo Lang::t('_ALL_COURSES') ?>",
@@ -107,10 +132,10 @@
                             selected: true
                         },
                         showIcon: true,
-                        nodes:<?php echo $a_node ?>
+                        nodes:a_node
                     }
                 ];
-                $("#treeview1").treeview({
+                $treeview.treeview({
                     data: category_tree,
                     enableLinks: false,
                     backColor: "#ffffff",
@@ -122,12 +147,18 @@
                     selectedBackColor: "#C84000",
 
                     onNodeSelected: function (event, node) {
-                        id_category = node.id_cat;
-                        callAjaxCatalog(id_category);
+                        var id_cat = node.id_cat ? node.id_cat : node.nodeId;
+
+                        callAjaxCatalog(id_cat);
                     },
                     onNodeUnselected: function (event, node) {
                     }
                 });
+
+                // sticky feature
+                checkSticky();
+                window.addEventListener('scroll', checkSticky, true);
+                window.addEventListener('resize', checkSticky, true);
             });
         </script>
         <?php } else { ?> 
