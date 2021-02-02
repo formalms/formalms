@@ -78,6 +78,6 @@ $GLOBALS['cfg']['docebo_versions'] = array(
     '4050' => '4.0.5',
 );
 
-$GLOBALS['cfg']['endversion'] = '30000'; //29301 3.0.0.alpha.1
+$GLOBALS['cfg']['endversion'] = '29301'; //30000  29301 3.0.0.alpha.1 recuperarlo dalla core version
 
 ?>
