@@ -241,14 +241,19 @@ class Lms_BlockWidget_menu extends Widget {
 
 
 		// date dropdown
-
         $form = new Form ();
 
         $select = $form->openForm('credits_period_form', '#', false, 'POST') . $form->getDropdown(Lang::t('_TIME_PERIODS', 'menu'), 'credits_period', 'credits_period', $p_list, $p_selected, '', '', '') . $form->closeForm();
 
         // draw tables
         $no_cdata = true;
+        
 
+        
+        
+        //var_dump ($course_data);
+       // die("s");
+        
         $table = '<div class="table-credit-wrapper">';
         if (count($course_data) > 0) {
             $table .= '<table class="table-credit">
@@ -259,15 +264,23 @@ class Lms_BlockWidget_menu extends Widget {
                             </tr>
                         </thead>
                         <tbody>';
+                        
+                        
+             // BUG: LRZ no count 
+             // #19820 
+            $total = 0;          
             foreach ($course_data as $ctype => $cdata) {
 
                 if (count($cdata) > 0) {
 
                     $no_cdata = false;
 
-                    $total = 0;
+                  //  $total = 0;
+            
                     foreach ($cdata as $id_course => $data) {
 
+                        $t = $t + $data->credits;
+                        
                         $table .= '<tr class="table-credit__row">
                             <td>
                                 ' . $data->name . '
@@ -278,6 +291,7 @@ class Lms_BlockWidget_menu extends Widget {
                         </tr>';
 
                         $total += $data->credits;
+                        
                     }
                 }
             }
@@ -287,7 +301,7 @@ class Lms_BlockWidget_menu extends Widget {
                         <tfoot>
                             <tr class="table-credit__row table-credit__row--footer">
                                 <td>' . Lang::t('_TOTAL', 'catalogue') . '</td>
-                                <td>' . $total . '</td>
+                                <td>' .  $total . '</td>
                             </tr>
                         </tfoot>    
                     </table>';

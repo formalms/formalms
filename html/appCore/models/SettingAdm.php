@@ -421,8 +421,9 @@ class SettingAdm extends Model
 									<button id="' . $var_name . '_add" type="button" class="btn btn-primary">' . Lang::t('_ADD', 'standard') . '</button>
 								</div>';
 
-							$row_item = '<div class="row form_line_l">'
-								. '<div class="col-sm-4"><p>&nbsp;</p>'
+							$row_item = '<br><div class="row form_line_l">'
+								. '<div class="col-md-4"><p><label>' .
+								Lang::t('_URL', 'standard') . '</label></p>'
 								. Form::getInputTextfield(
 									null,
 									null,
@@ -434,9 +435,9 @@ class SettingAdm extends Model
 								)
 								. '</div>'
 								. Form::getLineDropdown(
-									'col-sm-3',
+									'col-md-3',
 									null,
-									null,
+									Lang::t('_TEMPLATE', 'certificate'),
 									'select',
 									null,
 									'option[' . $var_name . '][template][]',
@@ -447,9 +448,9 @@ class SettingAdm extends Model
 									null
 								)
 								. Form::getLineDropdown(
-									'col-sm-4',
+									'col-md-4',
 									null,
-									null,
+									Lang::t('_DIRECTORY_MEMBERTYPETREE', 'admin_directory'),
 									'select',
 									null,
 									'option[' . $var_name . '][node][]',
@@ -459,7 +460,7 @@ class SettingAdm extends Model
 									$i_after,
 									null
 								)
-								. '<div class="col-sm-1"><p>&nbsp;</p><button type="button" class="btn btn-danger"><i class="fa fa-close"></i></button>'
+								. '<div class="col-md-1"><p><label>&nbsp;</label></p><button type="button" class="btn btn-danger"><i class="fa fa-close"></i></button>'
 								. '</div>'
 								. '</div>';
 
@@ -472,7 +473,7 @@ class SettingAdm extends Model
 							var item = '<?php echo $row_item ?>';
 
 							$(function() {
-								var values = JSON.parse('<?php echo $var_value; ?>');
+								var values = JSON.parse('<?php echo $var_value ?: '[]'; ?>');
 								var num_rows = values.length;
 
 								for (var i = 0; i < num_rows; i++) {
