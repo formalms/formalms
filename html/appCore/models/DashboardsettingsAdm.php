@@ -150,11 +150,11 @@ class DashboardsettingsAdm extends Model
         $res = sql_fetch_array($res);
         $default = $res['count'] ? 0 : 1;
 
-        $insertQuery = "
+        $sql = "
             INSERT INTO `dashboard_layouts` ( `name`, `caption`, `status`, `default`, `created_at`) 
-            VALUES ( '" . addslashes($name) . "', '" . addslashes($caption) . "', '" . addslashes($status) . "', " . $default . ", CURRENT_TIMESTAMP)
-        ";
-        return $this->db->query($insertQuery);
+            VALUES ( '" . addslashes($name) . "', '" . addslashes($caption) . "', '" . addslashes($status) . "', " . $default . ", CURRENT_TIMESTAMP)";
+
+        return sql_query($sql);
     }
 
     public function editInlineLayout($data)

@@ -7,6 +7,7 @@
                     <div class="form-group">
                         <label>{{ translate('_DASHBOARD_SETTING_LAYOUT_NAME', 'dashboardsetting') }}</label>
                         <input name="name" placeholder="{{ translate('_DASHBOARD_SETTING_LAYOUT_NAME', 'dashboardsetting') }}" class="form-control" type="text" value="">
+                        <p class="text text-danger" style="display: none;"></p>
                     </div>
 
                     <input name="id" type="hidden">
@@ -14,6 +15,7 @@
                     <div class="form-group">
                         <label>{{ translate('_DASHBOARD_SETTING_LAYOUT_CAPTION', 'dashboardsetting') }}</label>
                         <textarea name="caption" maxlength="255" placeholder="{{ translate('_DASHBOARD_SETTING_LAYOUT_CAPTION', 'dashboardsetting') }}" class="form-control textarea"></textarea>
+                        <p class="text text-danger" style="display: none;"></p>
                     </div>
 
                     <div class="dashboard__select dashboard__select--layout">
@@ -26,6 +28,7 @@
                                 {{ translate('_DASHBOARD_SETTING_PUBLISH_STATUS', 'dashboardsetting') }}
                             </option>
                         </select>
+                        <p class="text text-danger" style="display: none;"></p>
                     </div>
 
                     <div class="dashboard__message dashboard_layout__ok">{{ translate('_DASHBOARD_LAYOUT_SAVE_MESSAGE_OK', 'dashboardsetting') }}</div>
@@ -48,18 +51,20 @@
     };
     var modal = $(modalSelector);
     modal.modal("show");
-    modal.find("*[data-val=yes]").unbind().one('click', onConfirm).one('click', fClose);
-    modal.find("*[data-val=no]").unbind().one("click", fClose);
+    modal.find("*[data-val=yes]").unbind().bind('click', onConfirm);
+    modal.find("*[data-val=no]").unbind().bind("click", fClose);
   }
 
   function cloneFunc(id) {
+    var form = $("#cloneModal form");
+    form.find('.text-danger').slideUp().html('');
+
     $.ajax({
         type: 'GET',
         url: 'ajax.adm_server.php?r=adm/dashboardsettings/clone',
         data: { dashboard: id },
         success: function(data) {
             data = JSON.parse(data).data;
-            var form = $("#cloneModal form");
 
             form.find('input[name=name]').val(data.dashboard.name);
             form.find('textarea[name=caption]').val(data.dashboard.caption);
@@ -72,7 +77,13 @@
                     data: form.serialize(),
                     success: function(data) {
                         table.reload();
-                    }
+                        $("#cloneModal").modal("hide");
+                    },
+                    error: function(err) {
+                        $.each(err.responseJSON, function(k, item) {
+                            form.find('*[name=' + k + ']').parents('.form-group').find('p').html(item).slideDown();
+                        });
+                    },
                 });
             });     
         }
