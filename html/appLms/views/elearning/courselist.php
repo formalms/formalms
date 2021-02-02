@@ -23,13 +23,13 @@ function dataEndExists($the_course)
 function GetCourseYear($the_course)
 {
     $date = Format::date($the_course['date_end'], 'date');
-     
+
     if(strpos($date,"/")){
         $separator = '/';
     } else if (strpos($date,"-")){
         $separator = '-';
     } else return null;
-   
+
     $date_split = explode($separator, $date); // format DD/MM/YYYY
     return $date_split[2];
 }
@@ -282,7 +282,7 @@ function userCanUnsubscribe($course)
                             <?php
 
                             if ($course['course_type'] == 'classroom') {
-                                // if exists end course, show it 
+                                // if exists end course, show it
                             ?>
                                 <div class="course-box__item course-box__item--half">
 
@@ -484,13 +484,14 @@ function userCanUnsubscribe($course)
                                         <div class="course-box__next">
                                             <?php echo Lang::t('_NEXT_LESSON', 'course');
                                             $nextLessonDateSting = '';
+                                            $currentDate = new DateTime();
                                             foreach ($days as $day) {
-                                                $dateString = Format::date($day['date_begin'], 'date');
                                                 try {
                                                     $date = new DateTime($day['date_begin']);
 
-                                                    if ($date > new DateTime()) {
-                                                        $nextLessonDateSting = '<div>' . $dateString . '</div>';
+                                                    if ($date > $currentDate) {
+
+                                                        $nextLessonDateSting = '<div>' . Format::date($day['date_begin'], 'date') . '</div>';
                                                         break;
                                                     }
                                                 } catch (\Exception $exception) {
@@ -524,14 +525,20 @@ function userCanUnsubscribe($course)
                                                                 </thead>
                                                                 <tbody>
                                                                     <?php
+                                                                    $currentDate = new DateTime();
                                                                     foreach ($days as $day) {
-                                                                        $dateString = Format::date($day['date_begin'], 'date');
-                                                                        if (new \DateTime($dateString) > new DateTime()) {
-                                                                            echo '<tr>';
-                                                                            echo '<td>' . Format::date($day['date_begin'], 'date') . '</td>';
-                                                                            echo '<td>' . Format::date($day['date_end'], 'date') . '</td>';
-                                                                            echo '<td>' . $day['classroom'] . '</td>';
-                                                                            echo '</tr>';
+                                                                        try {
+                                                                            $date = new DateTime($day['date_begin']);
+                                                                            if ($date > $currentDate) {
+
+                                                                                echo '<tr>';
+                                                                                echo '<td>' . Format::date($day['date_begin'], 'date') . '</td>';
+                                                                                echo '<td>' . Format::date($day['date_end'], 'date') . '</td>';
+                                                                                echo '<td>' . $day['classroom'] . '</td>';
+                                                                                echo '</tr>';
+                                                                            }
+                                                                        } catch (\Exception $exception) {
+                                                                            continue;
                                                                         }
                                                                     }
                                                                     ?>
