@@ -226,6 +226,8 @@ class DashboardsettingsAdmController extends AdmController
         $caption = Get::pReq('caption', DOTY_MIXED);
         $status = Get::pReq('status', DOTY_MIXED);
 
+        $dashboard = $this->model->getLayout($id);
+
         $data = [
             'name' => $name,
             'caption' => $caption,
@@ -246,10 +248,20 @@ class DashboardsettingsAdmController extends AdmController
         if ($errors) {
             $status = 400;
             $response['errors'] = $errors;
-        } else if (!$this->model->saveLayout($data)) {
-            $response['errors'] = [];
+        } else if (!$res = $this->model->saveLayout($data)) {
+            $status = 400;
+            $response['name'] = Lang::t('_VALUE_IS_NOT_VALID', 'dashboardsetting');
         } else {
             $status = 200;
+            $res = sql_query("SELECT id FROM `dashboard_layouts` ORDER BY id DESC LIMIT 1");
+            $row = sql_fetch_object($res);
+            $dashboard_new_id = $row->id;
+
+            $sql = "INSERT INTO dashboard_block_config (block_class, block_config, position, dashboard_id)
+            SELECT block_class, block_config, position, '$dashboard_new_id'
+            FROM dashboard_block_config
+            WHERE dashboard_id = $id";
+            $response = sql_query($sql);
         }
 
         echo $this->json_response($status, $response);
