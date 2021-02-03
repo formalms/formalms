@@ -67,7 +67,6 @@ class DashboardLmsController extends LmsController
         $block = $this->model->getRegisteredBlock($dashboardParameter, $blockParameter);
         if (null !== $block) {
             if (method_exists($block, $actionParameter)) {
-
                 $result['response'] = $block->$actionParameter();
             } else {
                 $result['status'] = 400;
