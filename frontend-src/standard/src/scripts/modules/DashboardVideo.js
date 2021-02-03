@@ -19,7 +19,9 @@ const onDashboardVideoClick = (event) => {
 
   $videoModalContent = $videoModal.find('.js-dashboard-video-dynamic-content');
 
-  console.log(event.target.dataset, 'event.target.dataset');
+  if (event.target.dataset.videoDataVideoUrl == 0 || !event.target.dataset.videoType == 'none') {
+    return;
+  }
 
   switch (event.target.dataset.videoType) {
     case 'yt':
@@ -29,6 +31,9 @@ const onDashboardVideoClick = (event) => {
     case 'vimeo':
       openVimeoVideo(event.target.dataset.videoDataVideoUrl);
       break;
+    
+    default:
+      return;
   }
 
   showOverlay();
