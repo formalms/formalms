@@ -766,7 +766,8 @@ class LangAdm extends Model
             foreach ($keys as $key) {
 
                 $text_module = $key->parentNode->getAttribute('id');
-                $text_key = array_pop(explode("&", str_replace('&amp;', '&', $key->getAttribute('id'))));
+                $array = explode("&", str_replace('&amp;', '&', $key->getAttribute('id')));
+                $text_key = array_pop($array);
                 $text_savedt = $key->getAttribute('save_date');
                 $translation = $this->cleanImport($key->nodeValue);
 
