@@ -13,7 +13,7 @@ export const DashboardVideo = () => {
 
 const onDashboardVideoClick = (event) => {
   $videoModal = $(
-    `.js-dashboard-video-modal[data-href=${event.target.dataset.videoType}-${event.target.dataset.videoDataVideoUrl}]`
+    `.js-dashboard-video-modal[data-href="${event.target.dataset.videoType}-${event.target.dataset.videoDataVideoUrl}"]`
   );
   $videoModal.on('hidden.bs.modal', closeOverlay);
 
@@ -23,6 +23,8 @@ const onDashboardVideoClick = (event) => {
     return;
   }
 
+  console.log(event.target.dataset);
+
   switch (event.target.dataset.videoType) {
     case 'yt':
       openYtVideo(event.target.dataset.videoDataVideoUrl);
@@ -30,6 +32,10 @@ const onDashboardVideoClick = (event) => {
 
     case 'vimeo':
       openVimeoVideo(event.target.dataset.videoDataVideoUrl);
+      break;
+
+    case 'mp4':
+      openMp4Video(event.target.dataset.videoDataVideoUrl);
       break;
     
     default:
@@ -48,12 +54,20 @@ const openYtVideo = (url) => {
 };
 
 const openVimeoVideo = (url) => {
-  console.log($videoModalContent, url);
   $videoModalContent
     .empty()
     .append(
       `<div style='padding:0;position:relative;width:100%;height:100%;'><iframe src='https://player.vimeo.com/video/${url}?title=0&byline=0&portrait=0' style='position:absolute;top:0;left:0;width:100%;height:100%;' frameborder='0' allow='autoplay; fullscreen' allowfullscreen></iframe></div><script src='https://player.vimeo.com/api/player.js'></script>`
     );
+};
+
+const openMp4Video = (url) => {
+  $videoModalContent.empty().append(
+    `<video width="100%" controls>
+      <source src="${url}" type="video/mp4">
+      Your browser does not support HTML video.
+    </video>`
+  );
 };
 
 const showOverlay = () => {
