@@ -47,11 +47,6 @@ class DashboardBlockBannerLms extends DashboardBlockLms
     {
         return [
             DashboardBlockForm::getFormItem($this, 'cover', DashboardBlockForm::FORM_TYPE_IMAGE, false),
-            /*DashboardBlockForm::getFormItem($this, 'video_type', DashboardBlockForm::FORM_TYPE_SELECT, false, [
-                'blank' => 'Select Video Type',
-                'yt' => 'Youtube',
-                'vimeo' => 'Vimeo'
-            ]),*/
             DashboardBlockForm::getFormItem($this, 'video', DashboardBlockForm::FORM_TYPE_TEXT, false),
         ];
     }
@@ -82,12 +77,13 @@ class DashboardBlockBannerLms extends DashboardBlockLms
     private function setVideoType()
     {
         $data = $this->getData();
-        if (isset($data['video'])) {
+
+        if (isset($data['video']) && !isset($_POST['settings']) && !isset($_GET['dashboard'])) {
             if ($type = $this->determineVideoUrlType($data['video'])) {
                 $data['video_type'] = $type['video_type'];
                 $data['video'] = $type['video_id'];
 
-                $this->setData($data);
+                $this->setData($data); // TEMP
             }
         }
     }
@@ -100,6 +96,9 @@ class DashboardBlockBannerLms extends DashboardBlockLms
         $vm_rx = '/(https?:\/\/)?(www\.)?(player\.)?vimeo\.com\/([a-z]*\/)*([‌​0-9]{6,11})[?]?.*/';
         $has_match_vimeo = preg_match($vm_rx, $url, $vm_matches);
 
+        $m4_rx = '/\.mp4/';
+        $has_match_mp4 = preg_match($m4_rx, $url, $m4_matches);
+
         //Then we want the video id which is:
         if ($has_match_youtube) {
             $video_id = $yt_matches[5];
@@ -107,6 +106,9 @@ class DashboardBlockBannerLms extends DashboardBlockLms
         } elseif ($has_match_vimeo) {
             $video_id = $vm_matches[5];
             $type = 'vimeo';
+        } elseif ($has_match_mp4) {
+            $video_id = $url;
+            $type = 'mp4';
         } else {
             $video_id = 0;
             $type = 'none';
