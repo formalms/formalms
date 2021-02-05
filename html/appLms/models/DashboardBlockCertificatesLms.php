@@ -24,14 +24,15 @@ class DashboardBlockCertificatesLms extends DashboardBlockLms
     public function __construct($jsonConfig)
     {
         parent::__construct($jsonConfig);
-	}
+    }
 
     public function parseConfig($jsonConfig)
     {
         return parent::parseBaseConfig($jsonConfig);
     }
 
-    public function getAvailableTypesForBlock() {
+    public function getAvailableTypesForBlock()
+    {
         return [
             DashboardBlockLms::TYPE_1COL,
             DashboardBlockLms::TYPE_2COL,
@@ -42,44 +43,50 @@ class DashboardBlockCertificatesLms extends DashboardBlockLms
 
     public function getForm()
     {
+        return [
+            DashboardBlockForm::getFormItem($this, 'alternative_text', DashboardBlockForm::FORM_TYPE_TEXT, false),
+            DashboardBlockForm::getFormItem($this, 'show_button', DashboardBlockForm::FORM_TYPE_CHECKBOX, false, [1 => Lang::t('_SHOW_BUTTON', 'dashboardsetting')]),
+            DashboardBlockForm::getFormItem($this, 'max_last_records', DashboardBlockForm::FORM_TYPE_NUMBER, false),
+        ];
+    }
+
+    public function getViewData()
+    {
+        $data = $this->getCommonViewData();
+        $data['certifcates'] = $this->getCertificates();
+        return $data;
+    }
+
+    /**
+     * @return string
+     */
+    public function getViewPath()
+    {
+        return $this->viewPath;
+    }
+
+    /**
+     * @return string
+     */
+    public function getViewFile()
+    {
+        return $this->viewFile;
+    }
+
+    public function getLink()
+    {
+        return 'index.php?r=lms/mycertificate/show';
+    }
+
+    public function getRegisteredActions()
+    {
         return [];
     }
 
-    public function getViewData(){
-		$data = $this->getCommonViewData();
-		$data['certifcates'] = $this->getCertificates();
-		return $data;
-	}
+    private function getCertificates()
+    {
+        $data = [];
 
-	/**
-	 * @return string
-	 */
-	public function getViewPath(){
-		return $this->viewPath;
-	}
-
-	/**
-	 * @return string
-	 */
-	public function getViewFile(){
-		return $this->viewFile;
-	}
-
-	public function getLink(){
-		return 'index.php?r=lms/mycertificate/show';
-	}
-
-	public function getRegisteredActions(){
-		return [];
-	}
-
-	private function getCertificates(){
-		$data = [];
-
-		return $data;
-	}
-
-
-
-
+        return $data;
+    }
 }
