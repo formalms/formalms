@@ -5618,7 +5618,7 @@ div#container {
   overflow: hidden;
   position: relative; }
   .course-box__item:first-child {
-    min-height: 70px; }
+    height: 70px; }
   .course-box__item:nth-child(3) {
     padding-top: 16px;
     min-height: 90px; }
@@ -5652,7 +5652,7 @@ div#container {
   max-height: 123px;
   padding-top: 10px;
   padding-right: 15px;
-  padding-bottom: 15px;
+  padding-bottom: 25px;
   color: #222222;
   font-weight: 600;
   font-size: 16px;
@@ -6895,7 +6895,7 @@ header.header {
           .user-panel .container-fluid .row:first-child .col-xs-6 + .col-xs-6 span {
             padding-right: 25px; }
         .user-panel .container-fluid .row:first-child .glyphicon:before {
-          content: '';
+          content: "";
           position: absolute;
           border-radius: 0;
           border: none;
@@ -6909,7 +6909,7 @@ header.header {
             .user-panel .container-fluid .row:first-child .glyphicon.glyphicon-remove:hover:before {
               background-image: url("images/icons/user-panel/icon--up-close-hover.png"); } }
           .user-panel .container-fluid .row:first-child .glyphicon.glyphicon-remove:before {
-            content: '\f053';
+            content: "\f053";
             width: 30px;
             height: 30px;
             top: 0;
@@ -6920,7 +6920,7 @@ header.header {
             text-align: center; }
             @media (min-width: 768px) {
               .user-panel .container-fluid .row:first-child .glyphicon.glyphicon-remove:before {
-                content: '';
+                content: "";
                 width: 30px;
                 height: 30px;
                 background-image: url("images/icons/user-panel/icon--up-close.png"); } }
@@ -6978,7 +6978,7 @@ header.header {
                 font-family: "Open-sans", Arial;
                 border-radius: 0; }
                 .user-panel .container-fluid .row.profile .col-xs-7 a:first-child .glyphicon.glyphicon-pencil:before {
-                  content: '';
+                  content: "";
                   border: none;
                   position: absolute;
                   top: 0;
@@ -7041,7 +7041,7 @@ header.header {
             list-style: none;
             position: relative; }
             .user-panel .container-fluid .row.career .col-xs-12 .list-group:before {
-              content: '';
+              content: "";
               background-color: #ececec;
               width: 100%;
               height: 1px;
@@ -7054,7 +7054,7 @@ header.header {
               position: relative;
               font-size: 14px; }
               .user-panel .container-fluid .row.career .col-xs-12 .list-group .list-group-item:before {
-                content: '\f111';
+                content: "\f111";
                 font-family: "FontAwesome";
                 color: #c84000;
                 position: absolute;
