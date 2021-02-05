@@ -677,7 +677,7 @@ i + .course-box__date-box {
   min-height: 31px;
   position: absolute;
   left: 15px;
-  bottom: 15px;
+  bottom: 10px;
 }
 
 .course-box__next,
@@ -690,7 +690,8 @@ i + .course-box__date-box {
   font-size: 12px;
   color: #999999;
   position: relative;
-  padding-left: 20px;
+  padding-left: 23px;
+  padding-top: 7px;
 }
 
 .course-box__next:before,

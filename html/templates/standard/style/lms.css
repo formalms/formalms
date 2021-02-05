@@ -36,7 +36,7 @@
 #middlearea .yui-nav li{position:relative;margin-right:0.6em;}
 .admmenu{position:relative;cursor:pointer;cursor:hand;}
 #middlearea .yui-nav li b,.num_notify{position:absolute;color:#fff!important;font-size:normal;text-align:center;font-size:0.9em;padding-top:0px;line-height:1.2em;text-decoration:none;
-top:-0.4px;right:-0.5px;height:13px;width:12px;background:#ee1111;border:0px none;
+top:-0.4px;right:-0.5px;height:13px;width:12px;background:#ee1111;border:0px none;      
 -webkit-border-radius: 4px 4px 4px 0;-moz-border-radius: 4px 4px 4px 0;border-radius: 4px 4px 4px 0;
 -webkit-box-shadow: #666 0px 2px 3px;-moz-box-shadow: #666 0px 2px 3px;box-shadow: #666 0px 2px 3px;
 /*for the crappy browser we use a background image*/
@@ -45,7 +45,7 @@ _background:url(../images/standard/updates.png) 0 0 no-repeat transparent;}
 
 
 #middlearea .yui-nav li b,.num_notify_bar{position:absolute;color:#fff!important;font-size:normal;text-align:center;font-size:0.9em;padding-top:0px;line-height:1.2em;text-decoration:none;
-top:-13.5px;right:-13.5px;height:13px;width:12px;background:#ee1111;border:0px none;
+top:-13.5px;right:-13.5px;height:13px;width:12px;background:#ee1111;border:0px none;      
 -webkit-border-radius: 4px 4px 4px 0;-moz-border-radius: 4px 4px 4px 0;border-radius: 4px 4px 4px 0;
 -webkit-box-shadow: #666 0px 2px 3px;-moz-box-shadow: #666 0px 2px 3px;box-shadow: #666 0px 2px 3px;
 /*for the crappy browser we use a background image*/
