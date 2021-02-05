@@ -21,21 +21,6 @@
         <div class="d-user-profile">
             <div class="d-grid">
                 <div class="d-row d-user-profile__padder">
-                    <div class="d-col d-col--12">
-                        <div class="d-user-profile__avatar-wrapper">
-                            <img src="{{ avatarUrl }}" alt="" class="d-user-profile__img">
-                        </div>
-                        <div class="d-user-profile__content-wrapper">
-                            <p class="d-user-profile__text">
-                                Ciao,
-                            </p>
-                            <p class="d-user-profile__text">
-                                {{ block.user.firstname ~ ' ' ~  block.user.lastname }}
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="d-row d-user-profile__padder">
                     <div class="d-col d-col--6">
                         <a class="forma-button forma-button--orange-hover forma-button--full d-button--cert" title="" href="{{ blocks[2].link }}">
                             <span class="forma-button__label">{{ translate('_MY_CERTIFICATE', 'menu_over') }}</span>
