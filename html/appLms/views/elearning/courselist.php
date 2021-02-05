@@ -511,7 +511,7 @@ function userCanUnsubscribe($course)
 
                                             <div class="show-all-dates-popup" data-overlay="course-<?php echo $course['idCourse']; ?>">
                                                 <div id="pop_up_container" class="yui-module yui-overlay yui-panel">
-                                                    <a class="container-close" href="javascript:;" onclick="closeAllDatesPopup(<?php echo $course['idCourse']; ?>)">Close</a>
+                                                    <a class="container-close" href="javascript:;" onclick="closeAllDatesPopup(<?php echo $course['idCourse']; ?>)"></a>
                                                     <div class="hd" id="pop_up_container_h"><?php echo $course['name']; ?></div>
                                                     <div class="bd">
                                                         <div class="edition_container">
