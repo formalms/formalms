@@ -7,6 +7,10 @@ import Tree from '../twig/tree.html.twig';
 class FolderTree {
 
   constructor() {
+    this.config = {
+      'get': 'lms/lo/get&id=',
+      'rename': 'lms/lo/rename&id='
+    }
 
       const btn = document.querySelector('.js-ft-rename-el');
       const inputRename = document.querySelector('.folderTree__rename__input');
@@ -43,17 +47,27 @@ class FolderTree {
     const el = target.closest('.folderTree__link');
 
     if (el) {
-      const elId = el.getAttribute('id')
-      const getLoData = Config.apiUrl + 'lms/lo/get&id=' + elId;
-      el.classList.add('ft-is-folderOpen');
-      axios.get(getLoData).then( (response) => {
-        const child = Tree(response);
-        el.insertAdjacentHTML('afterend',child);
-        contextMenu();
-      }).catch( (error) => {
-        console.log(error)
-      });
-      event.preventDefault();
+      const isOpen = el.classList.contains('ft-is-folderOpen')
+      const noClick = el.classList.contains('ft-no-click');
+
+      if (!noClick) {
+        if (isOpen) {
+          el.classList.remove('ft-is-folderOpen');
+          el.parentNode.querySelector('.folderTree__ul').remove();
+        } else {
+          const elId = el.getAttribute('id');
+          const getLoData = Config.apiUrl + this.config.get + elId;
+          el.classList.add('ft-is-folderOpen');
+          axios.get(getLoData).then( (response) => {
+            const child = Tree(response);
+            el.insertAdjacentHTML('afterend',child);
+            contextMenu();
+          }).catch( (error) => {
+            console.log(error)
+          });
+          event.preventDefault();
+        }
+      }
     }
 
   }
@@ -62,9 +76,19 @@ class FolderTree {
     const rename = document.querySelector('.folderTree__rename');
     const input = document.querySelector('.folderTree__rename__input');
     const value = input.value;
+    const el = input.parentNode.parentNode;
+    const elId = el.getAttribute('id');
+    const renameLoData = Config.apiUrl + this.config.rename + elId + '&newName=' + value;
+
+    axios.get(renameLoData).then().catch( (error) => {
+      console.log(error);
+    });
 
     rename.classList.remove('is-show');
-    input.parentNode.parentNode.childNodes[0].innerHTML = value;
+    el.childNodes[0].innerHTML = value;
+    el.classList.remove('ft-no-click');
+
+    document.querySelector('#fv-' + elId).querySelector('.folderView__label').innerHTML = value;
   }
 
 }
@@ -102,13 +126,15 @@ function contextMenu() {
 
             // Stop della propagazione del click se sono su context menu, in alternativa disabilito modifica input se clicco fuori dall'input
             document.addEventListener('click', (event) => {
-              const clickInside = rename.contains(event.target);
-              if (event.target.classList.contains('menu-item-clickable')) {
-                event.stopPropagation();
-              } else {
-                if (!clickInside) {
-                  renameInput.blur();
-                  rename.classList.remove('is-show');
+              if (event.detail) { // fix trigger click se premo su spazio
+                const clickInside = rename.contains(event.target);
+                if (event.target.classList.contains('menu-item-clickable')) {
+                  event.stopPropagation();
+                } else {
+                  if (!clickInside) {
+                    renameInput.blur();
+                    rename.classList.remove('is-show');
+                  }
                 }
               }
             });
@@ -120,14 +146,19 @@ function contextMenu() {
         text: 'Elimina',
         onClick() {
           let siblings;
+          let elId;
 
           if (target.hasAttribute('id')) {
             siblings = target.parentNode.children;
             target.parentNode.querySelector('.folderTree__link').remove();
+            elId = target.getAttribute('id');
           } else {
             siblings = target.parentNode.parentNode.children;
             target.parentNode.parentNode.querySelector('.folderTree__link').remove();
+            elId = target.parentNode.getAttribute('id');
           }
+
+          document.querySelector('#fv-' + elId).parentNode.remove();
 
           if (siblings) {
             for (let el of siblings) {
@@ -136,6 +167,11 @@ function contextMenu() {
               }
             }
           }
+
+          const deleteLoData = Config.apiUrl + 'lms/lo/delete&id=' + elId;
+          axios.get(deleteLoData).then().catch( (error) => {
+            console.log(error);
+          });
 
         }
       }
