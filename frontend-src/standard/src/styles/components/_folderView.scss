@@ -1,0 +1,120 @@
+.folderViewContent--two-third {
+  width: 75%;
+  padding: 0 32px;
+}
+
+.folderView {
+  padding: 16px;
+}
+
+.folderView__ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.folderView__el {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.folderView__li {
+  border-bottom: 1px solid #efefef;
+  color: #000;
+}
+
+.folderView__el {
+  padding: 8px 16px 8px 56px;
+  overflow: hidden;
+  cursor: pointer;
+  background: {
+    repeat: no-repeat;
+    position: 16px center;
+  };
+}
+
+.fv-is-selected {
+  background-color: #ffe4ce;
+  font-weight: bold;
+}
+
+.folderView__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  position: relative;
+  right: -100%;
+  transition: all .5s ease-in-out;
+
+  .fv-is-selected & {
+    right: 0;
+    transition: all .5s ease-in-out;
+  }
+}
+
+.folderView__action {
+  background: transparent;
+  cursor: pointer;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 1px solid #000;
+  margin: 0 4px;
+  transition: all .2s ease-in-out;
+  background: {
+    repeat: no-repeat;
+    position: center;
+    size: 18px;
+  };
+
+  &:hover {
+    background-color: #ff6c00;
+    border-color: #ff6c00;
+    transition: all .2s ease-in-out;
+  }
+}
+
+.fv-is-play {
+  background-image: url('images/folderView/icon-eye.svg');
+}
+
+.fv-is-edit {
+  background-image: url('images/folderView/icon-edit.svg');
+}
+
+.fv-is-copy {
+  background-image: url('images/folderView/icon-copy.svg');
+}
+
+.fv-is-properties {
+  background-image: url('images/folderView/icon-settings.svg');
+}
+
+.fv-is-access {
+  background-image: url('images/folderView/icon-user.svg');
+}
+
+.fv-is-delete {
+  background-image: url('images/folderView/icon-delete.svg');
+}
+
+.fv-is-folder {
+  background-image: url('images/folderView/icon-folder.svg');
+}
+
+.fv-is-faq {
+  background-image: url('images/folderView/icon-faq.svg');
+}
+
+.fv-is-htmlpage {
+  background-image: url('images/folderView/icon-document.svg');
+}
+
+.fv-is-link {
+  background-image: url('images/folderView/icon-link.svg');
+}
+
+.fv-is-attachment {
+  background-image: url('images/folderView/icon-attachment.svg');
+}

@@ -1,0 +1,90 @@
+{# dump(data) #}
+{% if data | length %}
+    <section class="folderTreeView">
+        <aside class="folderTreeContent folderTreeContent--one-third">
+            <div class="folderTree__actions">
+                <button class="folderTree__btn folderTree__btn--new folderTree__newFolder" title="Nuova Cartella"></button>
+                <button class="folderTree__btn folderTree__btn--new folderTree__newLO" title="Nuovo Oggetto"></button>
+            </div>
+            <nav class="folderTree js-folder-tree">
+                <ul class="folderTree__ul">
+                    {% for el in data %}
+                        {% if el.is_folder %}
+                            <li class="folderTree__li">
+                                <button id="{{ el.id }}" class="folderTree__link ft-is-folder" draggable="true"><span>{{ el.title }}</span></button>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                    <!-- <li class="folderTree__li"> {% if el.active == false %}ft-is-disabled{% endif %}
+                        <a href="" id="1" class="folderTree__link ft-has-child ft-is-folder ft-is-folderOpen" draggable="true"><span>Node 1</span></a>
+                        <ul class="folderTree__ul">
+                            <li class="folderTree__li">
+                                <a href="" id="1.1" class="folderTree__link ft-has-child ft-is-folder ft-is-folderOpen" draggable="true"><span>Child 1</span></a>
+                                <ul class="folderTree__ul">
+                                    <li class="folderTree__li">
+                                        <a href="" id="1.1.1" class="folderTree__link ft-is-folder ft-has-child" draggable="true"><span>Sub Child 1</span></a>
+                                    </li>
+                                    <li class="folderTree__li">
+                                        <a href="" id="1.1.2" class="folderTree__link ft-is-folder" draggable="true"><span>Sub Child 2</span></a>
+                                    </li>
+                                    <li class="folderTree__li">
+                                        <a href="" id="1.1.3" class="folderTree__link ft-is-folder" draggable="true"><span>Sub Child 3</span></a>
+                                    </li>
+                                    <li class="folderTree__li">
+                                        <a href="" id="1.1.4" class="folderTree__link ft-is-folder" draggable="true"><span>Sub Child 4</span></a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="folderTree__li">
+                                <a href="" id="1.2" class="folderTree__link ft-is-folder" draggable="true"><span>Child 2</span></a>
+                            </li>
+                            <li class="folderTree__li">
+                                <a href="" id="1.3" class="folderTree__link ft-is-folder" draggable="true"><span>Child 3</span></a>
+                            </li>
+                            <li class="folderTree__li">
+                                <a href="" id="1.4" class="folderTree__link ft-is-folder" draggable="true"><span>Child 4</span></a>
+                            </li>
+                        </ul>
+                    </li> -->
+                </ul>
+                <div class="folderTree__rename">
+                    <input type="text" value="" class="folderTree__rename__input"
+                           onfocus="this.value = null; this.value = value" />
+                    <button class="folderTree__rename__btn js-ft-rename-el" type="button"></button>
+                </div>
+            </nav>
+        </aside>
+        <main class="folderViewContent folderViewContent--two-third">
+            <div class="folderTree__actions">
+                <button class="folderTree__btn folderTree__btn--new folderTree__newFolder" title="Nuova Cartella"></button>
+                <button class="folderTree__btn folderTree__btn--new folderTree__newLO" title="Nuovo Oggetto"></button>
+            </div>
+            <div class="folderView">
+                <ul class="folderView__ul">
+                    {% for el in data %}
+                        <li class="folderView__li">
+                            <div id="fv-{{ el.id }}" class="folderView__el {% if el.type %}fv-is-{{ el.type }}{% else %}fv-is-folder{% endif %} js-fv-select-el">
+                                <span class="folderView__label">{{ el.title }}</span>
+                                {% if el.actions %}
+                                    {% set types = ['access','delete','rename','properties','play','show_results','edit','copy'] %}
+                                    <div class="folderView__actions">
+                                        {% for key, action in el.actions %}
+                                            {% if key in types %}
+                                                {% if action.url | length %}
+                                                    <button data-action="{{ action.url }}" class="folderView__action fv-is-{{ key }}" title="{{ key }}"></button>
+                                                {% else %}
+                                                    <a href="{{ action.link }}" class="folderView__action fv-is-{{ key }}" title="{{ key }}">
+                                                    </a>
+                                                {% endif %}
+                                            {% endif %}
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </main>
+    </section>
+{% endif %}

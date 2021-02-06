@@ -12,7 +12,10 @@ class LoLmsController extends LmsController
 {
 
     public $name = 'lo';
-    
+
+    /**
+     * @var LoLms $model
+     */
     protected $model;
 
     protected $user_status;
@@ -23,27 +26,26 @@ class LoLmsController extends LmsController
         $this->model = new LoLms();
     }
 
+    private function getFolders($idCourse, $idFolder = false) {
+        return array_values($this->model->getFolders($idCourse, $idFolder));
+    }
+
     public function show() {
-        addJs($GLOBALS['where_lms_relative'].'/../addons/fancyTree/', 'jquery.fancytree-all-deps.min.js');
-        addCss('../../../addons/fancyTree/skin-custom-1/ui.fancytree');
-        addJs($GLOBALS['where_lms_relative'].'/../addons/tree_window/', 'lib.tree_window.js');
-        $this->render('show', array());
+        $id_course = $_SESSION['idCourse'];
+        $this->render('show', ['data' => $this->getFolders($id_course)]);
     }
 
     public function organization() {
-        addJs($GLOBALS['where_lms_relative'].'/../addons/fancyTree/', 'jquery.fancytree-all-deps.min.js');
-        addCss('../../../addons/fancyTree/skin-custom-1/ui.fancytree');
-        addJs($GLOBALS['where_lms_relative'].'/../addons/tree_window/', 'lib.tree_window.js');
         $this->render('organization', array([
             'teacher' => true
         ]));
     }
-    
+
     public function get(){
         $id_course = $_SESSION['idCourse'];
         $id = Get::req('id', DOTY_INT, false);
         header('Content-type:application/json');
-        echo json_encode(array_values($this->model->getFolders($id_course, $id)));
+        echo json_encode($this->getFolders($id_course, $id));
         die();
     }
 
@@ -78,7 +80,7 @@ class LoLmsController extends LmsController
 
         require_once( Docebo::inc( _lms_.'/modules/organization/orglib.php' ) );
         $tdb = new OrgDirDb($_SESSION['idCourse'], array());
-        
+
         $tree_view = new Org_TreeView($tdb, 'organization' );
 
         require_once Forma::inc(_adm_ . '/lib/lib.sessionsave.php' );

@@ -3,10 +3,18 @@ require('../modules/folder-view');
 require('../modules/slider-menu');
 require('../modules/modal-accordion');
 import { InfoCourse } from '../modules/InfoCourse';
-import { RenderDashBoardCalendar } from '../modules/DashboardCalendar';
+import {RenderDashBoardCalendar} from '../modules/DashboardCalendar';
 import { DashboardVideo } from '../modules/DashboardVideo';
+import FolderTree from '../components/FolderTree';
+import FolderView from '../components/FolderView';
 
 var Page = (function () {
+
+  document.addEventListener('DOMContentLoaded', function() {
+    new FolderTree();
+    new FolderView();
+  });
+
   function setScroll(elem, action) {
     if (action === 'lock') {
       $(elem).addClass('no-scroll');

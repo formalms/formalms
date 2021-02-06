@@ -1,8 +1,8 @@
 var Config = {
   projectName: 'formalms',
-  baseUrl: 'http://localhost',
-  apiUrl: 'http://formalms.local/',
-  shareUrl: 'http://localhost',
+  baseUrl: `${window.location.protocol}//${window.location.host}`,
+  apiUrl: `${window.location.protocol}//${window.location.host}/appLms/index.php?r=`,
+  shareUrl: `${window.location.protocol}//${window.location.host}/`,
   assetsUrl: '/static'
 };
 
