@@ -1533,6 +1533,19 @@ class Org_TreeView extends RepoTreeView {
 		}
 		return $out;
 	}
+
+	function countChildren($parentId) {
+		$query = "SELECT count(*) as countChildren FROM %lms_organization"
+				." WHERE idParent = ".(int)$parentId;
+		$rs = sql_query($query);
+		if( sql_num_rows($rs) == 1) {
+			list($count) = sql_fetch_row($rs);
+			
+			return $count;
+		} else {
+			return FALSE;
+		}
+	}
 	
 	function getChildrensDataById( $id ){
 		$root_folder = $this->tdb->getFolderById($id);
@@ -1806,6 +1819,8 @@ class Org_TreeView extends RepoTreeView {
 						'image' => $this->_getOpLockedImg()
 					];
 				}
+			} else {
+				$node['childCount'] = (int)$this->countChildren($folder->id);
 			}
 
 
