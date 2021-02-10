@@ -1,0 +1,33 @@
+.d-cert {
+  .d-item {
+    margin: 18px 0;
+    overflow: hidden;
+
+    .d-title {
+      font-weight: $bold;
+      font-size: 14px;
+      color: $orange;
+      padding: 3px;
+    }
+    .d-date {
+      font-weight: $bold;
+      font-size: 10px;
+      color: $anthracite;
+    }
+    .d-link {
+      font-weight: $bold;
+      font-size: 12px;
+      color: $anthracite;
+      padding: 6px;
+      &:hover {
+        color: $orange;
+      }
+    }
+    .d-subtitle {
+      font-weight: $regular;
+      font-size: 14px;
+      padding: 3px;
+      color: $anthracite;
+    }
+  }
+}
