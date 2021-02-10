@@ -85,9 +85,36 @@ class DashboardBlockMessagesLms extends DashboardBlockLms
 
     private function getMessages()
     {
+        if (!$limit = (int)$this->data['max_last_records']) {
+            return;
+        }
 
-        $data = [];
+        return $this->getMessagesForBlock($limit);
+    }
 
-        return $data;
+    private function getMessagesForBlock($limit = 0)
+    {
+        $id_user = Docebo::user()->idst;
+
+        $query = "SELECT m.idMessage, m.idCourse, m.sender, m.posted, m.attach, m.title, m.priority, user.read
+            FROM %adm_message AS m JOIN
+                %adm_message_user AS user
+            WHERE m.idMessage = user.idMessage AND
+                m.sender <> $id_user AND
+                user.idUser = $id_user AND
+            ORDER BY m.idMessage DESC";
+
+        if ($limit > 0) {
+            $query .= " LIMIT $limit";
+        }
+
+        $res = sql_query($query);
+
+        $results = [];
+        while ($row = sql_fetch_assoc($res)) {
+            $results[] = $row;
+        }
+
+        return $results;
     }
 }

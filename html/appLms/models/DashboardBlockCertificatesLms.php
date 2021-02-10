@@ -53,7 +53,8 @@ class DashboardBlockCertificatesLms extends DashboardBlockLms
     public function getViewData()
     {
         $data = $this->getCommonViewData();
-        $data['certifcates'] = $this->getCertificates();
+        $data['certificates'] = $this->getCertificates();
+
         return $data;
     }
 
@@ -85,8 +86,40 @@ class DashboardBlockCertificatesLms extends DashboardBlockLms
 
     private function getCertificates()
     {
-        $data = [];
+        if (!$limit = (int)$this->data['max_last_records']) {
+            return;
+        }
 
-        return $data;
+        return $this->getCertificatesForBlock($limit);
+    }
+
+    private function getCertificatesForBlock($limit = 0)
+    {
+        $id_user = Docebo::user()->idst;
+
+        $query = "SELECT cu.date_complete, ca.on_date, cu.idUser as id_user,"
+            . " cu.status , cu.idCourse, cc.id_certificate, c.name AS name_certificate,"
+            . " ca.cert_file, courses.name AS course_name, courses.code AS course_code"
+            . " FROM ( %adm_user AS u JOIN %lms_courseuser AS cu ON (u.idst = cu.idUser) )"
+            . " JOIN %lms_certificate_course AS cc ON cc.id_course = cu.idCourse"
+            . " JOIN %lms_course AS courses ON courses.idCourse = cu.idCourse"
+            . " JOIN %lms_certificate AS c ON c.id_certificate = cc.id_certificate"
+            . " LEFT JOIN %lms_certificate_assign AS ca ON"
+            . " ( ca.id_course = cu.idCourse AND ca.id_user=cu.idUser AND ca.id_certificate = cc.id_certificate )"
+            . " WHERE cu.idUser = " . $id_user
+            . " ORDER BY ca.on_date DESC";
+
+        if ($limit > 0) {
+            $query .= " LIMIT $limit";
+        }
+
+        $res = sql_query($query);
+
+        $results = [];
+        while ($row = sql_fetch_assoc($res)) {
+            $results[] = $row;
+        }
+
+        return $results;
     }
 }
