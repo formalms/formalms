@@ -27,7 +27,7 @@ $GLOBALS['UNFILTERED_POST'] = $_POST;
 
 // initialize
 require(_base_.'/lib/lib.bootstrap.php');
-Boot::init(BOOT_PLUGINS);
+Boot::init(BOOT_HOOKS);
 
 // -----------------------------------------------------------------------------
 
