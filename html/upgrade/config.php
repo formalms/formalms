@@ -20,7 +20,7 @@ function versionSort($a, $b) {
   return -1 * version_compare($a, $b);
 }
 
-$readFolder = "version";
+$readFolder = _upgrader_."/version/";
 $subFolders = array();
 $versions = array();
 $arrGlobal = array();
