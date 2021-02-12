@@ -1,19 +1,16 @@
 import { contextmenu } from 'easycontext';
 import Config from '../config/config';
 const axios = require('axios');
+import Sortable from 'sortablejs';
 import Tree from '../twig/tree.html.twig';
 //import Content from '../twig/content.html.twig';
 
 class FolderTree {
 
   constructor() {
-    this.config = {
-      'get': 'lms/lo/get&id=',
-      'rename': 'lms/lo/rename&id='
-    }
-
       const btn = document.querySelector('.js-ft-rename-el');
       const inputRename = document.querySelector('.folderTree__rename__input');
+      this.dragged;
 
       if (document.querySelectorAll('.folderTree__link').length) {
         contextMenu();
@@ -40,6 +37,7 @@ class FolderTree {
       });
 
       document.addEventListener('click', this.clickOnFolder);
+      initDragAndDrop();
   }
 
   clickOnFolder(event) {
@@ -56,12 +54,13 @@ class FolderTree {
           el.parentNode.querySelector('.folderTree__ul').remove();
         } else {
           const elId = el.getAttribute('id');
-          const getLoData = Config.apiUrl + this.config.get + elId;
+          const getLoData = Config.apiUrl + 'lms/lo/get&id=' + elId;
           el.classList.add('ft-is-folderOpen');
           axios.get(getLoData).then( (response) => {
             const child = Tree(response);
             el.insertAdjacentHTML('afterend',child);
             contextMenu();
+            initDragAndDrop();
           }).catch( (error) => {
             console.log(error)
           });
@@ -78,7 +77,7 @@ class FolderTree {
     const value = input.value;
     const el = input.parentNode.parentNode;
     const elId = el.getAttribute('id');
-    const renameLoData = Config.apiUrl + this.config.rename + elId + '&newName=' + value;
+    const renameLoData = Config.apiUrl + 'lms/lo/rename&id=' + elId + '&newName=' + value;
 
     axios.get(renameLoData).then().catch( (error) => {
       console.log(error);
@@ -92,6 +91,30 @@ class FolderTree {
   }
 
 }
+
+function initDragAndDrop() {
+  const list = document.querySelector('.folderTree__ul');
+
+  new Sortable.create(list, {
+    draggable: '.folderTree__li',
+    onMove: function (/**Event*/evt, /**Event*/originalEvent) {
+      // Example: https://jsbin.com/nawahef/edit?js,output
+      console.log(evt);
+      evt.dragged; // dragged HTMLElement
+      evt.draggedRect; // DOMRect {left, top, right, bottom}
+      evt.related; // HTMLElement on which have guided
+      evt.relatedRect; // DOMRect
+      evt.willInsertAfter; // Boolean that is true if Sortable will insert drag element after target by default
+      originalEvent.clientY; // mouse position
+      // return false; — for cancel
+      // return -1; — insert before target
+      // return 1; — insert after target
+      // return true; — keep default insertion point based on the direction
+      // return void; — keep default insertion point based on the direction
+    },
+  })
+}
+
 
 function contextMenu() {
   contextmenu('.folderTree__link', (target) => {

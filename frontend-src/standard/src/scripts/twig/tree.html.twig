@@ -2,7 +2,7 @@
     {% for el in data %}
         {% if el.is_folder %}
             <li class="folderTree__li">
-                <button id="{{ el.id }}" class="folderTree__link ft-is-folder" draggable="true"><span>{{ el.title }}</span></button>
+                <button id="{{ el.id }}" class="folderTree__link ft-is-folder"><span>{{ el.title }}</span></button>
             </li>
         {% endif %}
     {% endfor %}
