@@ -102,7 +102,7 @@
         const layoutsTable = $('#layouts');
         let openedLayoutForm = false;
 
-        // initSortable();
+        initSortable();
         uploadFileCheck();
 
         // SALVATAGGIO DATI BLOCK
@@ -266,6 +266,16 @@
             $('#' + blockToChange).removeAttr('class').addClass('dashboard__block').addClass('dashboard__block--' + newType).attr('data-type', newType);
             // initSortable(true);
         });
+
+        function initSortable(reinit) {
+            if (reinit) {
+                dashboardSortable.sortable('destroy');
+                dashboardSortable.unbind();
+            }
+            dashboardSortable.sortable({
+                connectWith: "#dashboard-sortable"
+            });
+        }
 
         function uploadFileCheck() {
             const inputFile = document.querySelectorAll('.js-upload-file');
