@@ -416,7 +416,7 @@ class PluginmanagerAdm extends Model
     {
         $plugin_info = $this->getPluginFromDB($plugin_name, 'name');
         $check = true;
-        $path = _plugins_ . $plugin_name . "/translations/";
+        $path = _plugins_ . "/". $plugin_name . "/translations/";
         $model = new LangAdm();
 
         $installedLangs = $model->getLangCodeList();
@@ -710,5 +710,3 @@ class PluginmanagerAdm extends Model
         return $plugin_list;
     }
 }
-
-?>

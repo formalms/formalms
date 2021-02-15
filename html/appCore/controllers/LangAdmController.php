@@ -334,7 +334,7 @@ class LangAdmController extends AdmController
             switch ($column) {
 
                 case 'translation_text': {
-                        $res = $this->model->updateTranslation($id_text, $language, $new_value);
+                        $res = $this->model->saveTranslation($id_text, $language, $new_value);
                         $output = array('success' => $res ? true : false);
                         if ($res) $output['new_value'] = stripslashes($new_value);
                         echo $this->json->encode($output);
