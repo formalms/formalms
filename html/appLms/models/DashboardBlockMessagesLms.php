@@ -102,7 +102,7 @@ class DashboardBlockMessagesLms extends DashboardBlockLms
             WHERE m.idMessage = user.idMessage AND
                 m.sender <> $id_user AND
                 user.idUser = $id_user AND
-            ORDER BY m.idMessage DESC";
+            ORDER BY m.posted DESC";
 
         if ($limit > 0) {
             $query .= " LIMIT $limit";
