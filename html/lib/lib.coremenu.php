@@ -27,7 +27,7 @@ class CoreMenu {
         $query =
 <<<SQL
 SELECT  m.idMenu, m.idParent, m.sequence, m.name, m.image, m.is_active, mu.idUnder
-      , mu.module_name, mu.default_op, mu.mvc_path, mu.associated_token, mu.of_platform
+      , mu.module_name, mu.default_op, mu.mvc_path, mu.associated_token, mu.of_platform, mu.sequence as menu_under_sequence
 FROM %adm_menu AS m
     LEFT JOIN %adm_plugin AS p ON (m.idPlugin = p.plugin_id)
     LEFT JOIN %adm_menu_under AS mu ON (m.idMenu = mu.idMenu)
@@ -48,6 +48,14 @@ SQL;
         $menu = self::buildMenuArray($menu);
 
         return $menu;
+    }
+
+    public static function updateSequence($idMenu,$sequence) {
+        $query = <<<SQL
+        UPDATE `%adm_menu` SET `sequence` = $sequence WHERE `idMenu` = $idMenu 
+SQL;
+
+        $res = sql_query($query);
     }
     
     private static function buildMenuArray($menu, $parent = 0) {
