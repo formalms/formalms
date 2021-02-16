@@ -546,9 +546,9 @@ class Question
 		FROM " . $GLOBALS['prefix_lms'] . "_testquestanswer 
 		WHERE idQuest = '" . (int) $this->id . "'");
 		while (list($score_correct) = sql_fetch_row($re_answer)) {
-			$max_score = round($max_score + $score_correct, 2);
+			$max_score = $max_score + $score_correct;
 		}
-		return $max_score;
+		return round($max_score, 2);
 	}
 
 	/**
@@ -571,7 +571,7 @@ class Question
 		WHERE idQuest = '" . (int) $this->id . "' AND is_correct = '1'"));
 
 		if (!$num_correct) $score_assigned = 0;
-		else $score_assigned = round($score / $num_correct, 2);
+		else $score_assigned = round($score / $num_correct, 3);
 
 		return round($score_assigned * $num_correct, 2);
 	}
@@ -597,7 +597,7 @@ class Question
 		WHERE idQuest = '" . (int) $this->id . "' AND is_correct = '1'"));
 
 		if (!$num_correct) $score_assigned = 0;
-		else $score_assigned = round($score / $num_correct, 2);
+		else $score_assigned = round($score / $num_correct, 3);
 
 		$re_assign = sql_query("
 		UPDATE " . $GLOBALS['prefix_lms'] . "_testquestanswer 
