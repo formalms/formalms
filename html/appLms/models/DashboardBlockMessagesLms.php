@@ -52,6 +52,10 @@ class DashboardBlockMessagesLms extends DashboardBlockLms
     public function getViewData()
     {
         $data = $this->getCommonViewData();
+
+        $ma = new Man_MiddleArea();
+        $data['perm'] = $ma->currentCanAccessObj('mo_message');
+
         $data['messages'] = $this->getMessages();
 
         return $data;
@@ -96,12 +100,20 @@ class DashboardBlockMessagesLms extends DashboardBlockLms
     {
         $id_user = Docebo::user()->idst;
 
-        $query = "SELECT m.idMessage, m.idCourse, m.sender, m.posted, m.attach, m.title, m.priority, user.read
-            FROM %adm_message AS m JOIN
-                %adm_message_user AS user
-            WHERE m.idMessage = user.idMessage AND
-                m.sender <> $id_user AND
-                user.idUser = $id_user AND
+        $query = "SELECT 
+                m.idMessage, 
+                CONCAT(u.firstname, ' ', u.lastname) AS sender, 
+                m.posted, 
+                m.attach, 
+                m.title, 
+                m.priority, 
+                mu.read
+            FROM %adm_message AS m 
+            JOIN %adm_message_user AS mu
+            INNER JOIN core_user u ON u.idst = m.sender
+            WHERE m.idMessage = mu.idMessage
+                AND m.sender <> $id_user
+                AND mu.idUser = $id_user
             ORDER BY m.posted DESC";
 
         if ($limit > 0) {
