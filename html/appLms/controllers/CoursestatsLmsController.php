@@ -311,7 +311,8 @@ class CoursestatsLmsController extends LmsController {
 			'id_user' => $id_user,
 			'info' => $info,
 			'status_list_js' => $this->_getJsArrayLOStatus(),
-			'permissions' => $this->permissions
+			'permissions' => $this->permissions,
+			'base_url' => "index.php?r=coursestats/show"
 		);
 
 		$this->render('show_user', $params);
