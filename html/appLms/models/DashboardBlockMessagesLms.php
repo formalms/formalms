@@ -106,15 +106,19 @@ class DashboardBlockMessagesLms extends DashboardBlockLms
                 m.posted, 
                 m.attach, 
                 m.title, 
+                m.textof, 
                 m.priority, 
-                mu.read
+                mu.read,
+                c.name AS course,
+                c.code AS course_code
             FROM %adm_message AS m 
             JOIN %adm_message_user AS mu
-            INNER JOIN core_user u ON u.idst = m.sender
+            INNER JOIN %adm_user u ON u.idst = m.sender
+            LEFT JOIN %lms_course c ON c.idCourse = m.idCourse
             WHERE m.idMessage = mu.idMessage
                 AND m.sender <> $id_user
                 AND mu.idUser = $id_user
-            ORDER BY m.posted DESC";
+            ORDER BY m.priority DESC, m.posted DESC";
 
         if ($limit > 0) {
             $query .= " LIMIT $limit";
