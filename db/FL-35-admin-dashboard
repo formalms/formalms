@@ -48,6 +48,7 @@ VALUES (7, 'DashboardBlockCalendarLms', CURRENT_TIMESTAMP),
        (6, 'DashboardBlockAnnouncementsLms',CURRENT_TIMESTAMP),
        (5, 'DashboardBlockCoursesLms',CURRENT_TIMESTAMP),
        (4, 'DashboardBlockMessagesLms',CURRENT_TIMESTAMP),
+       (9, 'DashboardBlockWelcomeLms',CURRENT_TIMESTAMP),
        (8, 'DashboardBlockBannerLms',CURRENT_TIMESTAMP);
 
 INSERT IGNORE INTO learning_middlearea (`obj_index`, `disabled`, `idst_list`, `sequence`)
