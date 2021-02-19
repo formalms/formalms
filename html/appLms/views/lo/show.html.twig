@@ -1,10 +1,21 @@
 {# dump(data) #}
 {% if data | length %}
+    {{ Form_openForm('orgshow', 'index.php?modname=storage&op=display', false, 'POST') }}
     <section class="folderTreeView">
         <aside class="folderTreeContent folderTreeContent--one-third">
             <div class="folderTree__actions">
-                <button class="folderTree__btn folderTree__btn--new folderTree__newFolder" title="Nuova Cartella"></button>
-                <button class="folderTree__btn folderTree__btn--new folderTree__newLO" title="Nuovo Oggetto"></button>
+                <input type="submit"
+                       class="folderTree__btn folderTree__btn--new folderTree__newFolder"
+                       title="Nuova cartella"
+                       id="treeview_opnewfolder_organization"
+                       name="treeview_opnewfolder_organization"
+                        value="">
+                <input type="submit"
+                       class="folderTree__btn folderTree__btn--new folderTree__newLO"
+                       title="Nuovo oggetto didattico"
+                       id="organization_createLOBegin"
+                       name="organization_createLOBegin"
+                        value="">
             </div>
             <nav class="folderTree js-folder-tree">
                 <ul class="folderTree__ul">
@@ -57,8 +68,18 @@
         </aside>
         <main class="folderViewContent folderViewContent--two-third">
             <div class="folderTree__actions">
-                <button class="folderTree__btn folderTree__btn--new folderTree__newFolder" title="Nuova Cartella"></button>
-                <button class="folderTree__btn folderTree__btn--new folderTree__newLO" title="Nuovo Oggetto"></button>
+                <input type="submit"
+                       class="folderTree__btn folderTree__btn--new folderTree__newFolder"
+                       title="Nuova cartella"
+                       id="treeview_opnewfolder_organization"
+                       name="treeview_opnewfolder_organization"
+                       value="">
+                <input type="submit"
+                       class="folderTree__btn folderTree__btn--new folderTree__newLO"
+                       title="Nuovo oggetto didattico"
+                       id="organization_createLOBegin"
+                       name="organization_createLOBegin"
+                       value="">
             </div>
             <div class="folderView">
                 <ul class="folderView__ul">
@@ -67,14 +88,19 @@
                             <div id="fv-{{ el.id }}" class="folderView__el {% if el.type %}fv-is-{{ el.type }}{% else %}fv-is-folder{% endif %} js-fv-select-el">
                                 <span class="folderView__label">{{ el.title }}</span>
                                 {% if el.actions %}
-                                    {% set types = ['access','delete','rename','properties','play','show_results','edit','copy'] %}
+                                    {% set types = ['access','delete','properties','play','show_results','edit','copy'] %}
                                     <div class="folderView__actions">
                                         {% for key, action in el.actions %}
                                             {% if key in types %}
-                                                {% if action.url | length %}
-                                                    <button data-action="{{ action.url }}" class="folderView__action fv-is-{{ key }}" title="{{ key }}"></button>
-                                                {% else %}
-                                                    <a href="{{ action.link }}" class="folderView__action fv-is-{{ key }}" title="{{ key }}">
+                                                {% if action.link | length %}
+                                                    <input type="submit"
+                                                           id="{{ action.link }}"
+                                                           name="{{ action.link }}"
+                                                           class="folderView__action fv-is-{{ key }}"
+                                                           title="{{ key }}"
+                                                           value=""/>
+                                                {% elseif (action.url | length) %}
+                                                    <a href="{{ action.url }}" class="folderView__action fv-is-{{ key }}" title="{{ key }}">
                                                     </a>
                                                 {% endif %}
                                             {% endif %}
@@ -88,4 +114,5 @@
             </div>
         </main>
     </section>
+    {{ Form_closeForm() }}
 {% endif %}
