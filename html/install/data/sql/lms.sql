@@ -2182,6 +2182,7 @@ CREATE TABLE IF NOT EXISTS `learning_organization` (
   `publish_to` datetime DEFAULT NULL,
   `access` varchar(255) DEFAULT NULL,
   `publish_for` int(1) NOT NULL DEFAULT '0',
+  `ignoreScore` TINYINT( 4 ) NOT NULL DEFAULT '0',
   PRIMARY KEY (`idOrg`),
   KEY `idParent` (`idParent`),
   KEY `path` (`path`)

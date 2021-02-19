@@ -1691,6 +1691,7 @@ In handling this information, accuracy and precision shall be met to ensure the 
         <key id="organization&amp;_SHOW_INTERACTIONS" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Interactions]]></key>
         <key id="organization&amp;_TIME" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Elapsed time]]></key>
         <key id="organization&amp;_VIEWTREE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Show menu]]></key>
+        <key id="organization&amp;_IGNORE_SCORE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Ignore score]]></key>
       </module>
       <module id="organization_chart">
         <key id="organization_chart&amp;_ASSIGNED_EXTRAFIELD" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Node Fields]]></key>
