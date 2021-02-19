@@ -1045,6 +1045,25 @@ Per poterlo fare devi loggarti nella piattaforma se sei un utente registarto, al
         <key id="dashboardsetting&amp;_DASHBOARD_SETTING_SAVE_MESSAGE_OK" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Dashboard salvata correttamente]]></key>
         <key id="dashboardsetting&amp;_DASHBOARD_NO_LAYOUTS" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Non è presente nessun layout]]></key>
         <key id="dashboardsetting&amp;_DASHBOARD_SETTING_SAVE_MESSAGE_KO" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Non è stato possibile salvare la dashboard, verifica i dati inseriti]]></key>
+        <key id="dashboardsetting&amp;_IMAGE_DASHBOARDBLOCKBANNERLMS_COVER" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Immagine cover]]></key>
+        <key id="dashboardsetting&amp;_INPUT_DASHBOARDBLOCKBANNERLMS_VIDEO" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Url video youtube/vimeo]]></key>
+        <key id="dashboardsetting&amp;_INPUT_DASHBOARDBLOCKCERTIFICATESLMS_ALTERNATIVE_TEXT" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Testo alternativo]]></key>
+        <key id="dashboardsetting&amp;_CHECKBOX_DASHBOARDBLOCKCERTIFICATESLMS_SHOW_BUTTON" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Visualizza pulsante]]></key>
+        <key id="dashboardsetting&amp;_INPUT_DASHBOARDBLOCKCERTIFICATESLMS_MAX_LAST_RECORDS" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Massimo numero di certificati visibili]]></key>
+        <key id="dashboardsetting&amp;_INPUT_DASHBOARDBLOCKMESSAGESLMS_ALTERNATIVE_TEXT" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Testo alternativo]]></key>
+        <key id="dashboardsetting&amp;_INPUT_DASHBOARDBLOCKWELCOMELMS_WELCOME_TEXT" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Messaggio di benvenuto (chiave di traduzione)]]></key>
+        <key id="dashboardsetting&amp;_CHECKBOX_DASHBOARDBLOCKMESSAGESLMS_SHOW_BUTTON" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Visualizza pulsante]]></key>
+        <key id="dashboardsetting&amp;_INPUT_DASHBOARDBLOCKMESSAGESLMS_MAX_LAST_RECORDS" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Massimo numero di messaggi visibili]]></key>
+        <key id="dashboardsetting&amp;_DASHBOARDBLOCKWELCOMELMS" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Messaggio di benvenuto]]></key>
+        <key id="dashboardsetting&amp;_DASHBOARDBLOCKBANNERLMS" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Banner immagine/video]]></key>
+        <key id="dashboardsetting&amp;_DASHBOARDBLOCKCERTIFICATESLMS" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Certificati]]></key>
+        <key id="dashboardsetting&amp;_DASHBOARDBLOCKMESSAGESLMS" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Messaggi]]></key>
+        <key id="dashboardsetting&amp;_DASHBOARDBLOCKANNOUNCEMENTSLMS" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Annunci]]></key>
+        <key id="dashboardsetting&amp;_DASHBOARDBLOCKCALENDARLMS" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Calendario]]></key>
+        <key id="dashboardsetting&amp;_DASHBOARDBLOCKCOURSESLMS" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Corsi]]></key>
+        <key id="dashboardsetting&amp;_DASHBOARDBLOCKCALENDARLMS_GETELEARNINGCALENDAR" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Corsi E-Learning]]></key>
+        <key id="dashboardsetting&amp;_DASHBOARDBLOCKCALENDARLMS_GETCLASSROOMCALENDAR" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Corsi Classi]]></key>
+        <key id="dashboardsetting&amp;_DASHBOARDBLOCKCALENDARLMS_GETRESERVATIONCALENDAR" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Prenotazioni]]></key>
         <key id="dashboardsetting&amp;_DASHBOARD_LAYOUT" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Dashboard]]></key>
         <key id="dashboardsetting&amp;_DASHBOARD_LAYOUT_STATUS" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Stato dashboard]]></key>
         <key id="dashboardsetting&amp;_DASHBOARD_STATUS_DRAFT" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Bozza]]></key>
