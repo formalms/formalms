@@ -1711,6 +1711,7 @@ Nella conservazione dei dati verranno osservate accuratezza e precisione per gar
         <key id="organization&amp;_SHOW_INTERACTIONS" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Interazioni]]></key>
         <key id="organization&amp;_TIME" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Tempo di permanenza]]></key>
         <key id="organization&amp;_VIEWTREE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Mostra menu]]></key>
+        <key id="organization&amp;_IGNORE_SCORE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Ignora punteggio]]></key>
       </module>
       <module id="organization_chart">
         <key id="organization_chart&amp;_ASSIGNED_EXTRAFIELD" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Campi del nodo]]></key>
