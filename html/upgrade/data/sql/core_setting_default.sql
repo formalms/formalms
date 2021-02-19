@@ -89,7 +89,6 @@ INSERT INTO `core_setting_default` (`param_name`, `param_value`, `value_type`, `
 ('pass_change_first_login', 'off', 'enum', 3, 'password', 3, 8, 1, 0, ''),
 ('pass_max_time_valid', '0', 'int', 4, 'password', 3, 9, 1, 0, ''),
 ('pass_min_char', '5', 'int', 2, 'password', 3, 7, 0, 0, ''),
-('pathchat', 'chat/', 'string', 255, 'path', 8, 21, 1, 0, ''),
 ('pathcourse', 'course/', 'string', 255, 'path', 8, 11, 1, 0, ''),
 ('pathfield', 'field/', 'string', 255, 'path', 8, 12, 1, 0, ''),
 ('pathforum', 'forum/', 'string', 255, 'path', 8, 14, 1, 0, ''),
