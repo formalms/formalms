@@ -38,7 +38,7 @@
                                             </div>
                                         {% endif %}
                                         <div class="d-date text-center">
-                                            {{ message.posted }}
+                                            {{ message.posted | date("d-m-Y H:i") }}
                                         </div>
                                         <div class="d-subject text-center">
                                             <a href="index.php?r=message/read&amp;from=out&amp;id_message={{ message.idMessage }}">{{ message.title }}</a>
