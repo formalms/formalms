@@ -229,7 +229,7 @@ class SOAPLMS {
 				."FROM %lms_organization "
 				."WHERE idOrg = '".(int)$idReference."' ";
 				list($idCourse) = sql_fetch_row(sql_query($query));
-				require_once( Docebo::inc( _lms_.'/modules/organization/orglib.php' ) );
+				require_once( Forma::inc( _lms_.'/modules/organization/orglib.php' ) );
 				$repoDb = new OrgDirDb( $idCourse );
 				$item = $repoDb->getFolderById( $idReference );
 				$values = $item->otherValues;
