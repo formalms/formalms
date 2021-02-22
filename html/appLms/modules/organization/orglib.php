@@ -361,7 +361,7 @@ class OrgDirDb extends RepoDirDb
 		$this->org_publish_from = NULL;
 		$this->org_publish_to = NULL;
 		$this->org_publish_for = '';
-		$this->org_ignoreScore = 0;
+		$this->org_ignoreScore = 1;
 
 		if ($idCourse === FALSE)
 			$this->org_idCourse = $this->idCourse;
@@ -405,7 +405,7 @@ class OrgDirDb extends RepoDirDb
 
 		$this->org_prerequisites = '';
 		$this->org_isTerminator = 0;
-		$this->org_ignoreScore = 0;
+		$this->org_ignoreScore = 1;
 		$this->org_visible = 1;
 		if ($idCourse === FALSE)
 			$this->org_idCourse = $this->idCourse;
@@ -453,7 +453,7 @@ class OrgDirDb extends RepoDirDb
 		$this->org_objectType = $objectType;
 		$this->org_prerequisites = '';
 		$this->org_isTerminator = 0;
-		$this->org_ignoreScore = 0;
+		$this->org_ignoreScore = 1;
 		$this->org_idResource = $idResource;
 		$this->org_visible = 1;
 		if ($idCourse === FALSE)
