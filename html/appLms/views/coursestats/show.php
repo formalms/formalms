@@ -96,6 +96,10 @@ echo getTitleArea(Lang::t('_COURSESTATS', 'menu_course'));
             ajax: {
                 url: 'ajax.server.php?r=coursestats/gettabledata',
                 type: "POST",
+      data: function(data){
+        return JSON.stringify(data)
+      },
+      contentType:'application/json',
                 complete: function (json) {
                     var tr = $(tableId).find('> tbody > tr');
 
