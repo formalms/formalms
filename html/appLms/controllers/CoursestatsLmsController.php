@@ -167,9 +167,11 @@ class CoursestatsLmsController extends LmsController {
 	public function gettabledataTask() {
 		$view_all_perm = checkPerm('view_all', true, 'coursestats');
 
-		$startIndex = Get::req('start', DOTY_INT, 0);
+		$data = json_decode(file_get_contents('php://input'), true);
+
+		$startIndex = $data['start'];
 		$results = Get::req('results', DOTY_INT, Get::sett('visuItem'));
-		$rowsPerPage = Get::req('length', DOTY_INT, $results);
+		$rowsPerPage = $data['length'];
 
 		$dir = Get::req('dir', DOTY_STRING, "asc");
 
@@ -183,12 +185,12 @@ class CoursestatsLmsController extends LmsController {
 			'dir' => $dir
 		);
 
-		if ($order = $_REQUEST['order']) {
+		if ($order = $data['order']) {
 			$pagination['order_column'] = $order[0]['column'];
 			$pagination['order_dir'] = $order[0]['dir'];
 		}
 
-		if ($search = $_REQUEST['search']) {
+		if ($search = $data['search']) {
 			$pagination['search'] = $search['value'];
 		} else {
 			$pagination['search'] = null;
