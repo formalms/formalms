@@ -40,7 +40,7 @@ else {
 	$to_upgrade_arr =getToUpgradeArray();
 }
 
-$last_ver =getVersionIntNumber($GLOBALS['cfg']['endversion']);
+$last_ver = (int)$GLOBALS['cfg']['endversion'];
 
 $fn_config = _base_.'/config.php';
 

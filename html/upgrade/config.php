@@ -62,6 +62,7 @@ foreach ($versions as $version) {
   $arrJsonVer=json_decode($strJsonVer,true);
   $arrGlobal[$arrJsonVer['version']['number']] = $arrJsonVer['version']['name'];
   $GLOBALS['cfg']['versions'][$arrJsonVer['version']['number']] = $arrJsonVer['version']['name'];
+  $GLOBALS['cfg']['detailversions'][$arrJsonVer['version']['number']] = $arrJsonVer['version'];
   $GLOBALS['cfg']['endversion'] = $arrJsonVer['version']['number'];
 }
 
