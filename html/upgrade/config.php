@@ -34,7 +34,7 @@ if ($handle = opendir($readFolder))
     }
     else
     {
-      if ($file != "." & $file != "..") {
+      if ($file != "." & $file != ".." & substr($file, -5) == '.json') {
         $versions[] = substr($file, 0, -5);
       }
     }
