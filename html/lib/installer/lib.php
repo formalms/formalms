@@ -135,6 +135,8 @@ function getVersionIntNumber($ver)
         // docebo ce versions series
         $res = str_pad(str_replace('.', '', $ver), 4, '0', STR_PAD_RIGHT);
     } else {
+        $res = array_search($ver, $GLOBALS['cfg']['versions']);
+/* OLD METHOD
         // forma     versions series 1.x   (formely 1.xx.nn ) =>  1xxnn
         // forma versions series 1:  1.0 - 1.1 - 1.2 - .. - 1.9 .. => 10900
         $arr_v = explode(".", $ver);
@@ -149,7 +151,7 @@ function getVersionIntNumber($ver)
             }
         }
         $res = str_pad($res, 5, '0', STR_PAD_RIGHT);
-
+*/
     }
 
     return $res;
