@@ -255,36 +255,126 @@ class ImportUser extends DoceboImport_Destination {
 		}
 		
 		$is_an_update = false;
-                $err = false;
-                $idst = $acl_manager->getUserST( $tocompare['userid'] );
-                $sameuserid = FALSE;
-                
-                if($idst !== FALSE){
-                    $user_mng = new UsermanagementAdm();
-                    $infouser = $user_mng->getProfileData($idst);
-                    $fielduser = $this->fl->getUserFieldEntryData($idst);
-			
-                    foreach($tocompare as $field_id => $field_value) {				
-                        if(isset($this->arr_fields[$field_id])) {
-                            if($field_value != $fielduser[$field_id]){
-                                $idst = FALSE;
-                                $sameuserid = TRUE;
-                            }
-                        } else {
-                            if($field_value != $infouser->$field_id && $field_id != "pass"){
-                                $idst = FALSE;
-                                $sameuserid = TRUE;
-                            }
-                        }
-                    }
-                }
-				
-                
-                switch($this->action_on_users) {
-                    case 'create_and_update':
-                        if($idst === FALSE && !$sameuserid) {
-                            // create a new user
-                            $idst = $acl_manager->registerUser(
+		$err = false;
+		$idst = $acl_manager->getUserST($tocompare['userid']);
+		$sameuserid = FALSE;
+
+		if ($idst !== FALSE) {
+			$user_mng = new UsermanagementAdm();
+			$infouser = $user_mng->getProfileData($idst);
+			$fielduser = $this->fl->getUserFieldEntryData($idst);
+
+			foreach ($tocompare as $field_id => $field_value) {
+				if (isset($this->arr_fields[$field_id])) {
+					if ($field_value != $fielduser[$field_id]) {
+						$idst = FALSE;
+						$sameuserid = TRUE;
+					}
+				} else {
+					if ($field_value != $infouser->$field_id && $field_id != "pass") {
+						// $idst = FALSE;
+						$sameuserid = TRUE;
+					}
+				}
+			}
+		}
+
+
+		switch ($this->action_on_users) {
+			case 'create_and_update':
+				if ($idst === FALSE && !$sameuserid) {
+					// create a new user
+					$idst = $acl_manager->registerUser(
+						$userid,
+						$firstname,
+						$lastname,
+						$pass ? $pass : '',
+						$email,
+						'',
+						'',
+						FALSE,
+						FALSE,
+						'',
+						$force_change,
+						FALSE,
+						FALSE,
+						FALSE,
+						FALSE
+					);
+
+					if ($idst === FALSE) {
+						$this->last_error = 'Error on insert user';
+						$err = true;
+					}
+				} else if ($idst !== FALSE) {	//   if ($sameuserid == TRUE) {
+					$result = $acl_manager->updateUser(
+						$acl_manager->getUserST($tocompare['userid']),
+						$userid,
+						$firstname != '' ? $firstname : FALSE,
+						$lastname != '' ? $lastname : FALSE,
+						$pass,
+						$email != '' ? $email : FALSE,
+						FALSE,
+						FALSE,
+						FALSE,
+						TRUE,
+						$force_change != '' ? $force_change : FALSE,
+						FALSE,
+						FALSE,
+						FALSE,
+						FALSE
+					);
+					$is_an_update = true;
+					// the user exist but the update query fails
+					if (!$result) {
+						$this->last_error = 'Error on update user';
+						$err = true;
+					}
+				} else {
+					$a = 1;
+					$newuserid = $userid;
+					while ($acl_manager->getUserST($newuserid)) {
+						$newuserid = $userid . $a;
+						$a++;
+					}
+					$userid = $newuserid;
+
+					// create a new user
+					$idst = $acl_manager->registerUser(
+						$userid,
+						$firstname,
+						$lastname,
+						$pass ? $pass : '',
+						$email,
+						'',
+						'',
+						FALSE,
+						FALSE,
+						'',
+						$force_change,
+						FALSE,
+						FALSE,
+						FALSE,
+						FALSE
+					);
+
+					if ($idst === FALSE) {
+						$this->last_error = 'Error on insert user';
+						$err = true;
+					}
+				}
+				break;
+			case 'create_all':
+				$a = 1;
+				$newuserid = $userid;
+				while ($acl_manager->getUserST($newuserid)) {
+					$newuserid = $userid . $a;
+					$a++;
+				}
+				$userid = $newuserid;
+
+				// create a new user
+				$idst = $acl_manager->registerUser(
 					$userid,
 					$firstname,
 					$lastname,
