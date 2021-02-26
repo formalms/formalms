@@ -6,7 +6,7 @@
         "pretty_desc": "1 4",
         "pre": "10400_pre.php",
         "post": "10400_post.php",
-        "config": "10400_config.php",
+        "config": "10400_conf.php",
         "file_sytem": "10400_fs.php",
         "role": "10400_role.php",
         "mysql": "10400_db.sql",

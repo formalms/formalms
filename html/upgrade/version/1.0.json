@@ -6,7 +6,7 @@
         "pretty_desc": "1 0",
         "pre": "10000_pre.php",
         "post": "10000_post.php",
-        "config": "10000_config.php",
+        "config": "10000_conf.php",
         "file_sytem": "10000_fs.php",
         "role": "10000_role.php",
         "mysql": "10000_db.sql",

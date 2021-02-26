@@ -6,7 +6,7 @@
         "pretty_desc": "3 0 0 alpha 1",
         "pre": "29171_pre.php",
         "post": "29171_post.php",
-        "config": "29171_config.php",
+        "config": "29171_conf.php",
         "file_sytem": "29171_fs.php",
         "role": "29171_role.php",
         "mysql": "29171_db.sql",
