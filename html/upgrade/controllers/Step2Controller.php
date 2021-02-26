@@ -190,7 +190,6 @@ Class Step2Controller extends StepController {
 					case "lms": {
 						$specific_dir_to_check = array(
 							'files/' . $dirprefix .'Lms/certificate',
-							'files/' . $dirprefix .'Lms/chat',
 							'files/' . $dirprefix .'Lms/course',
 							'files/' . $dirprefix .'Lms/forum',
 							'files/' . $dirprefix .'Lms/item',
