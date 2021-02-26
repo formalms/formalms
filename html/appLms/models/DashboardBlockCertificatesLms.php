@@ -55,6 +55,9 @@ class DashboardBlockCertificatesLms extends DashboardBlockLms
         $data = $this->getCommonViewData();
         $data['certificates'] = $this->getCertificates();
 
+        $ma = new Man_MiddleArea();
+        $data['perm'] = $ma->currentCanAccessObj('mo_7');
+
         return $data;
     }
 

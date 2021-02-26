@@ -1,7 +1,7 @@
 <div class="dashboard__infoBlock dashboard__infoBlock--image">
     <div class="form-group">
         <label class="dashboard__label"
-               for="{{ block.postData.block }}-{{ index }}-image">{{ translate('_IMAGE_'~ form.class,'dashboardsetting') }}</label>
+               for="{{ block.postData.block }}-{{ index }}-image">{{ translate('_IMAGE_'~ form.field|upper,'dashboardsetting') }}</label>
 
         <div class="dashboard__infoContainer">
             <input type="file" name="{{ form.name }}" class="form-control-image js-extra-setting js-upload-file"

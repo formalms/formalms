@@ -28,7 +28,7 @@ class DashboardBlockFormItem
     {
         $this->name = $name;
         $this->class = $class;
-        $this->field = sprintf('%s-%s', $class, $name);
+        $this->field = sprintf('%s_%s', $class, $name);
         $this->required = $required;
         $this->type = $type;
         $this->values = $values;
@@ -91,17 +91,16 @@ class DashboardBlockFormItem
         return $this->attr;
     }
 
-    public function toArray(){
+    public function toArray()
+    {
         return $this->objectToArray($this);
     }
 
     private function objectToArray($data)
     {
-        if (is_array($data) || is_object($data))
-        {
+        if (is_array($data) || is_object($data)) {
             $result = array();
-            foreach ($data as $key => $value)
-            {
+            foreach ($data as $key => $value) {
                 $result[$key] = $this->objectToArray($value);
             }
             return $result;
