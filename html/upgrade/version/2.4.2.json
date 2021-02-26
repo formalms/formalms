@@ -6,7 +6,7 @@
         "pretty_desc": "2 4 2",
         "pre": "20402_pre.php",
         "post": "20402_post.php",
-        "config": "20402_config.php",
+        "config": "20402_conf.php",
         "file_sytem": "20402_fs.php",
         "role": "20402_role.php",
         "mysql": "20402_db.sql",

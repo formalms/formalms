@@ -6,7 +6,7 @@
         "pretty_desc": "2 1",
         "pre": "20100_pre.php",
         "post": "20100_post.php",
-        "config": "20100_config.php",
+        "config": "20100_conf.php",
         "file_sytem": "20100_fs.php",
         "role": "20100_role.php",
         "mysql": "20100_db.sql",
