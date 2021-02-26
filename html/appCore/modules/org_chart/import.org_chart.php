@@ -296,7 +296,7 @@ class ImportUser extends DoceboImport_Destination
 					}
 				} else {
 					if ($field_value != $infouser->$field_id && $field_id != "pass") {
-						$idst = FALSE;
+						// $idst = FALSE;
 						$sameuserid = TRUE;
 					}
 				}
