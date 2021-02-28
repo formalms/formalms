@@ -1,4 +1,3 @@
-{# dump(data) #}
 {% if data | length %}
     {{ Form_openForm('orgshow', 'index.php?modname=storage&op=display', false, 'POST') }}
     <section class="folderTreeView">
@@ -19,49 +18,27 @@
             </div>
             <nav class="folderTree js-folder-tree">
                 <ul class="folderTree__ul">
-                    {% for el in data %}
-                        {% if el.is_folder %}
-                            <li class="folderTree__li">
-                                <button id="{{ el.id }}"
-                                        class="folderTree__link ft-is-folder"><span>{{ el.title }}</span></button>
-                            </li>
-                        {% endif %}
-                    {% endfor %}
-                    <!-- <li class="folderTree__li"> {% if el.active == false %}ft-is-disabled{% endif %}
-                        <a href="" id="1" class="folderTree__link ft-has-child ft-is-folder ft-is-folderOpen" draggable="true"><span>Node 1</span></a>
-                        <ul class="folderTree__ul">
-                            <li class="folderTree__li">
-                                <a href="" id="1.1" class="folderTree__link ft-has-child ft-is-folder ft-is-folderOpen" draggable="true"><span>Child 1</span></a>
-                                <ul class="folderTree__ul">
-                                    <li class="folderTree__li">
-                                        <a href="" id="1.1.1" class="folderTree__link ft-is-folder ft-has-child" draggable="true"><span>Sub Child 1</span></a>
+                    <li id="0" class="folderTree__li folderTree__li--ignore">
+                        <button id="0"
+                                type="button"
+                                class="folderTree__link ft-is-root ft-is-selected ft-is-folder ft-is-selected ft-is-folderOpen"><span>Livello Principale</span></button>
+                        <ul class="folderTree__ul js-sortable-tree">
+                            {% for el in data %}
+                                {% if el.is_folder %}
+                                    <li id="{{ el.id }}" class="folderTree__li {% if el.childCount > 0 %}ft-is-parent{% endif %}">
+                                        <button id="{{ el.id }}"
+                                                type="button"
+                                                class="folderTree__link ft-is-folder {% if el.childCount > 0 %}ft-has-child{% endif %}"><span>{{ el.title }}</span></button>
                                     </li>
-                                    <li class="folderTree__li">
-                                        <a href="" id="1.1.2" class="folderTree__link ft-is-folder" draggable="true"><span>Sub Child 2</span></a>
-                                    </li>
-                                    <li class="folderTree__li">
-                                        <a href="" id="1.1.3" class="folderTree__link ft-is-folder" draggable="true"><span>Sub Child 3</span></a>
-                                    </li>
-                                    <li class="folderTree__li">
-                                        <a href="" id="1.1.4" class="folderTree__link ft-is-folder" draggable="true"><span>Sub Child 4</span></a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li class="folderTree__li">
-                                <a href="" id="1.2" class="folderTree__link ft-is-folder" draggable="true"><span>Child 2</span></a>
-                            </li>
-                            <li class="folderTree__li">
-                                <a href="" id="1.3" class="folderTree__link ft-is-folder" draggable="true"><span>Child 3</span></a>
-                            </li>
-                            <li class="folderTree__li">
-                                <a href="" id="1.4" class="folderTree__link ft-is-folder" draggable="true"><span>Child 4</span></a>
-                            </li>
+                                {% endif %}
+                            {% endfor %}
                         </ul>
-                    </li> -->
+                    </li>
                 </ul>
                 <div class="folderTree__rename">
                     <input type="text" value="" class="folderTree__rename__input"
-                           onfocus="this.value = null; this.value = value" />
+                           onfocus="this.value = null; this.value = value"
+                            onkeypress="return !(window.event && window.event.keyCode == 13);"/>
                     <button class="folderTree__rename__btn js-ft-rename-el" type="button"></button>
                 </div>
             </nav>
@@ -82,9 +59,9 @@
                        value="">
             </div>
             <div class="folderView">
-                <ul class="folderView__ul">
+                <ul class="folderView__ul js-sortable-view">
                     {% for el in data %}
-                        <li class="folderView__li">
+                        <li id="{{ el.id }}" class="folderView__li">
                             <div id="fv-{{ el.id }}" class="folderView__el {% if el.type %}fv-is-{{ el.type }}{% else %}fv-is-folder{% endif %} js-fv-select-el">
                                 <span class="folderView__label">{{ el.title }}</span>
                                 {% if el.actions %}

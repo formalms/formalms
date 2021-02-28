@@ -1,31 +1,25 @@
 class FolderView {
 
   constructor() {
-    this.config = {
-      el: '.js-fv-select-el'
-    }
-
-    this.toggleSelectEl();
+    document.addEventListener('click', this.toggleSelectEl);
   }
 
-  toggleSelectEl() {
-    const els = document.querySelectorAll(this.config.el);
+  toggleSelectEl(event) {
+    const target = event.target;
+    const el = target.closest('.js-fv-select-el');
+    const els = document.querySelectorAll('.js-fv-select-el');
 
-    if (els) {
+    if (el) {
+      const currentId = el.id;
+
       els.forEach(el => {
-        el.addEventListener('click', (e) => {
-          const currentId = e.currentTarget.id;
-
-          els.forEach(el => {
-            const id = el.id;
-            if (currentId !== id) {
-              el.classList.remove('fv-is-selected');
-            }
-          });
-
-          el.classList.toggle('fv-is-selected');
-        })
+        const id = el.id;
+        if (currentId !== id) {
+          el.classList.remove('fv-is-selected');
+        }
       });
+
+      el.classList.toggle('fv-is-selected');
     }
 
   }

@@ -1,8 +1,10 @@
-<ul class="folderTree__ul">
+<ul class="folderTree__ul js-sortable-tree">
     {% for el in data %}
         {% if el.is_folder %}
-            <li class="folderTree__li">
-                <button id="{{ el.id }}" class="folderTree__link ft-is-folder"><span>{{ el.title }}</span></button>
+            <li id="{{ el.id }}" class="folderTree__li {% if el.childCount > 0 %}ft-is-parent{% endif %}">
+                <button id="{{ el.id }}"
+                        type="button"
+                        class="folderTree__link ft-is-folder {% if el.childCount > 0 %}ft-has-child{% endif %}"><span>{{ el.title }}</span></button>
             </li>
         {% endif %}
     {% endfor %}

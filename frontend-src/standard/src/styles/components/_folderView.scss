@@ -39,6 +39,11 @@
   font-weight: bold;
 }
 
+.fv-is-dropped {
+  opacity: .4;
+  border: 1px solid #ccc;
+}
+
 .folderView__actions {
   display: flex;
   flex-wrap: wrap;

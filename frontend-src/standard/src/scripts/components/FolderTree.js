@@ -1,9 +1,9 @@
 import { contextmenu } from 'easycontext';
 import Config from '../config/config';
 const axios = require('axios');
-import Sortable from 'sortablejs';
+import Sortable from 'sortablejs/modular/sortable.complete.esm.js';
 import Tree from '../twig/tree.html.twig';
-//import Content from '../twig/content.html.twig';
+import Content from '../twig/content.html.twig';
 
 class FolderTree {
 
@@ -26,6 +26,7 @@ class FolderTree {
         inputRename.addEventListener('keyup', (e) => {
           if (e.keyCode === 13) {
             this.renameEl();
+            e.preventDefault();
           }
         });
       }
@@ -49,23 +50,32 @@ class FolderTree {
       const noClick = el.classList.contains('ft-no-click');
 
       if (!noClick) {
+        const els = document.querySelectorAll('.folderTree__link');
+        if (els) {
+          els.forEach(el => {
+            el.classList.remove('ft-is-selected');
+          });
+        }
+        el.classList.add('ft-is-selected');
         if (isOpen) {
-          el.classList.remove('ft-is-folderOpen');
           el.parentNode.querySelector('.folderTree__ul').remove();
         } else {
-          const elId = el.getAttribute('id');
-          const getLoData = Config.apiUrl + 'lms/lo/get&id=' + elId;
           el.classList.add('ft-is-folderOpen');
-          axios.get(getLoData).then( (response) => {
-            const child = Tree(response);
-            el.insertAdjacentHTML('afterend',child);
-            contextMenu();
-            initDragAndDrop();
-          }).catch( (error) => {
-            console.log(error)
-          });
-          event.preventDefault();
         }
+        const elId = el.getAttribute('id');
+        const getLoData = Config.apiUrl + 'lms/lo/get&id=' + elId;
+        axios.get(getLoData).then( (response) => {
+          const child = Tree(response);
+          const childView = Content(response);
+          const folderView = document.querySelector('.folderView');
+          el.insertAdjacentHTML('afterend',child);
+          folderView.innerHTML = childView;
+          contextMenu();
+          initDragAndDrop();
+        }).catch( (error) => {
+          console.log(error)
+        });
+        event.preventDefault();
       }
     }
 
@@ -93,31 +103,85 @@ class FolderTree {
 }
 
 function initDragAndDrop() {
-  const list = document.querySelector('.folderTree__ul');
+  const list = document.querySelectorAll('.js-sortable-tree');
+  const view = document.querySelector('.js-sortable-view');
+  let dragged, related;
 
-  new Sortable.create(list, {
-    draggable: '.folderTree__li',
-    onMove: function (/**Event*/evt, /**Event*/originalEvent) {
-      // Example: https://jsbin.com/nawahef/edit?js,output
-      console.log(evt);
-      evt.dragged; // dragged HTMLElement
-      evt.draggedRect; // DOMRect {left, top, right, bottom}
-      evt.related; // HTMLElement on which have guided
-      evt.relatedRect; // DOMRect
-      evt.willInsertAfter; // Boolean that is true if Sortable will insert drag element after target by default
-      originalEvent.clientY; // mouse position
-      // return false; — for cancel
-      // return -1; — insert before target
-      // return 1; — insert after target
-      // return true; — keep default insertion point based on the direction
-      // return void; — keep default insertion point based on the direction
+  new Sortable.create(view, {
+    animation: 150,
+    onEnd: function() {
+      document.querySelectorAll('.folderView__li').forEach(el => el.classList.remove('fv-is-dropped'));
+      const currentElementId = dragged.id;
+      const parentElementId = related.id;
+      const reorderLoData = Config.apiUrl + 'lms/lo/reorder&id=' + currentElementId + '&newParent=' + parentElementId + '&newOrder=';
+      axios.get(reorderLoData).then().catch( (error) => {
+        console.log(error);
+      });
     },
-  })
+    onMove: function(evt) {
+      dragged = evt.dragged;
+      related = evt.related;
+      if (related) {
+        document.querySelectorAll('.folderView__li').forEach(el => el.classList.remove('fv-is-dropped'));
+        related.classList.add('fv-is-dropped');
+      }
+      return false;
+    }
+  });
+
+  list.forEach(single => {
+    new Sortable.create(single, {
+      group: 'nested',
+      draggable: '.folderTree__li',
+      filter: '.folderTree__li--ignore',
+      animation: 150,
+      easing: 'cubic-bezier(1, 0, 0, 1)',
+      fallbackOnBody: true,
+      swapThreshold: 0.62,
+      onEnd: function (evt) {
+        const currentElement = evt.item;
+        const currentElementId = currentElement.id;
+        const parentElement = currentElement.parentNode.closest('.ft-is-parent');
+        const childElement = currentElement.closest('.folderTree__ul').querySelectorAll('.folderTree__li');
+        const childElementArray = [];
+        let parentElementId = 0;
+        console.log('current: ' + currentElementId);
+        console.log(childElement);
+
+        if (parentElement) {
+          parentElementId = parentElement ? parentElement.id : 0;
+          console.log('parent: ' + parentElementId);
+        }
+
+        childElement.forEach(el => {
+          const elId = el.id;
+          childElementArray.push(elId);
+        });
+
+        console.log(childElementArray);
+
+        const reorderLoData = Config.apiUrl + 'lms/lo/reorder&id=' + currentElementId + '&newParent=' + parentElementId + '&newOrder=' + childElementArray;
+        axios.get(reorderLoData).then().catch( (error) => {
+          console.log(error);
+        });
+
+        evt.to;    // target list
+        evt.from;  // previous list
+        evt.oldIndex;  // element's old index within old parent
+        evt.newIndex;  // element's new index within new parent
+        evt.oldDraggableIndex; // element's old index within old parent, only counting draggable elements
+        evt.newDraggableIndex; // element's new index within new parent, only counting draggable elements
+        evt.clone // the clone element
+        evt.pullMode;  // when item is in another sortable: `"clone"` if cloning, `true` if moving
+      },
+    })
+  });
+
 }
 
 
 function contextMenu() {
-  contextmenu('.folderTree__link', (target) => {
+  contextmenu('.folderTree__link:not(.ft-is-root)', (target) => {
     return [
       {
         text: 'Rinomina',
