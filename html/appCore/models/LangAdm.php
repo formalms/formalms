@@ -262,7 +262,7 @@ class LangAdm extends Model
      * @param bool $only_empty return only untranslated words for the selected language
      * @return array
      */
-    public function getAll($ini, $rows, $module = false, $text = false, $lang_code = false, $lang_code_diff = false, $only_empty = false, $sort = false, $dir = false, $plugin_id = false)
+    public function getAll($ini, $rows, $search = [], $text = false, $lang_code = false, $lang_code_diff = false, $only_empty = false, $sort = false, $dir = false, $plugin_id = false)
     {
 
         if (!$lang_code) $lang_code = getLanguage();
@@ -293,8 +293,25 @@ class LangAdm extends Model
 			WHERE 1 ";
         }
 
-        if ($module != false) $qtxt .= " AND lt.text_module LIKE  '" . $module . "' ";
-        if ($text != false && $only_empty == false) $qtxt .= " AND ( ta.translation_text LIKE  '%" . $text . "%' OR lt.text_key LIKE  '%" . $text . "%' ) ";
+        if ($search) {
+            foreach ($search as $k => $v) {
+                switch ($k) {
+                    case "translation_text":
+                        $qtxt .= " AND ta.$k LIKE  '%" . $v . "%' ";
+                        break;
+                    case "translation_text_diff":
+                        $qtxt .= " AND tad.translation_text LIKE  '%" . $v . "%' ";
+                        break;
+                    case "plugin_name":
+                        $qtxt .= " AND p.name LIKE  '%" . $v . "%' ";
+                        break;
+                    default:
+                        $qtxt .= " AND $k LIKE  '%" . $v . "%' ";
+                        break;
+                }
+            }
+        }
+        if ($text != false && $only_empty == false) $qtxt .= " AND ( ta.translation_text LIKE  '%" . $text . "%' OR tad.translation_text LIKE  '%" . $text . "%' OR lt.text_key LIKE  '%" . $text . "%' OR p.name LIKE  '%" . $text . "%' ) ";
         if ($only_empty != false) $qtxt .= " AND ta.translation_text IS NULL";
         if ($plugin_id != false) $qtxt .= " AND lt.plugin_id = " . (int)$plugin_id;
 
@@ -449,7 +466,7 @@ class LangAdm extends Model
      * @param bool $only_empty return only untranslated words for the selected language
      * @return array
      */
-    public function getCount($module = false, $text = false, $lang_code = false, $only_empty = false)
+    public function getCount($search = [], $text = false, $lang_code = false, $only_empty = false)
     {
 
         if (!$lang_code) $lang_code = getLanguage();
@@ -458,7 +475,26 @@ class LangAdm extends Model
 		FROM  %adm_lang_text AS lt
 		LEFT JOIN %adm_lang_translation AS ta ON ( lt.id_text = ta.id_text AND ta.lang_code = '" . $lang_code . "')
 		WHERE 1 ";
-        if ($module != false) $qtxt .= " AND lt.text_module LIKE  '" . $module . "' ";
+
+        if ($search) {
+            foreach ($search as $k => $v) {
+                switch ($k) {
+                    case "translation_text":
+                        $qtxt .= " AND ta.$k LIKE  '%" . $v . "%' ";
+                        break;
+                    case "translation_text_diff":
+                        $qtxt .= " AND tad.translation_text LIKE  '%" . $v . "%' ";
+                        break;
+                    case "plugin_name":
+                        $qtxt .= " AND p.name LIKE  '%" . $v . "%' ";
+                        break;
+                    default:
+                        $qtxt .= " AND $k LIKE  '%" . $v . "%' ";
+                        break;
+                }
+            }
+        }
+        
         if ($text != false && $only_empty == false) $qtxt .= " AND ta.translation_text LIKE '%" . $text . "%' ";
         if ($only_empty != false) $qtxt .= " AND ta.translation_text IS NULL";
 

@@ -426,20 +426,14 @@ class LangAdmController extends AdmController
 
         $search = Get::req('search', DOTY_MIXED, false);
 
-        $la_module = false;
         $la_text = $this->removeSearchRegex($search['value']);
 
 
         $plugin_id = Get::req('plugin_id', DOTY_INT, false);
-
+        $search = [];
         $columns = Get::req('columns', DOTY_MIXED, []);
         foreach ($columns as $column) {
             switch ($column['name']) {
-                case 'text_module':
-                    if (!empty($column['search']['value']) && $column['search']['value'] !== '^') {
-                        $la_module = $this->removeSearchRegex($column['search']['value']);
-                    }
-                    break;
                 case 'plugin_name':
                     if (!empty($column['search']['value']) && $column['search']['value'] !== '^') {
                         $plugins = $this->model->getPluginsList();
@@ -451,8 +445,10 @@ class LangAdmController extends AdmController
                         }
                     }
                     break;
-                default:
-                    break;
+            }
+
+            if (!empty($column['search']['value']) && $column['search']['value'] !== '^') {
+                $search[$column['name']] = $this->removeSearchRegex($column['search']['value']);
             }
         }
 
@@ -460,9 +456,9 @@ class LangAdmController extends AdmController
         if ($only_empty === 'true') $only_empty = true;
         else $only_empty = false;
 
-        $lang_list = $this->model->getAll($start_index, $results, $la_module, $la_text, $lang_code, $lang_code_diff, $only_empty, $sort, $dir, $plugin_id);
+        $lang_list = $this->model->getAll($start_index, $results, $search, $la_text, $lang_code, $lang_code_diff, $only_empty, $sort, $dir, $plugin_id);
 
-        $total_lang = $this->model->getCount($la_module, $la_text, $lang_code, $only_empty);
+        $total_lang = $this->model->getCount($search, $la_text, $lang_code, $only_empty);
 
         $res = array(
             'recordsTotal' => $total_lang,
