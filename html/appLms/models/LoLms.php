@@ -88,4 +88,19 @@ class LoLms extends Model {
         
     }
 
+    public function reorder($idCourse, $idToMove, $newParent, $newOrder) {
+        require_once( Forma::inc( _lms_.'/modules/organization/orglib.php' ) );
+        $tdb = new OrgDirDb($idCourse);
+        
+        //repo db
+        //$tdb = new RepoDirDb( $GLOBALS['prefix_lms'].'_repo', getLogUserId());
+
+        //home db
+        //$tdb = new HomerepoDirDb( $GLOBALS['prefix_lms'] .'_homerepo', getLogUserId());
+        $folder = $tdb->getFolderById( (string)$idToMove);
+        
+        return $folder->reorder($newParent, $newOrder );
+        
+    }
+
 }

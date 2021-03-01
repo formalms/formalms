@@ -75,10 +75,31 @@ class LoLmsController extends LmsController
         die();
     }
 
+    public function reorder(){
+        header('Content-type:application/json');
+        $id = Get::req('id', DOTY_INT, false);
+        $newParent = Get::req('newParent', DOTY_INT, false);
+        $newOrderString = Get::req('newOrder', DOTY_STRING, false);
+        $newOrder = explode(",", $newOrderString);
+        if ($id && $newParent !== false) {
+            $id_course = $_SESSION['idCourse'];
+            if ($this->model->reorder($id_course, $id, $newParent, $newOrder ? $newOrder : null)) {
+                echo json_encode([
+                    "success" => true
+                ]);
+                die();   
+            }
+        }
+        echo json_encode([
+            "success" => false
+        ]);
+        die();
+    }
+
     public function edit() {
 
 
-        require_once( Docebo::inc( _lms_.'/modules/organization/orglib.php' ) );
+        require_once( Forma::inc( _lms_.'/modules/organization/orglib.php' ) );
         $tdb = new OrgDirDb($_SESSION['idCourse'], array());
 
         $tree_view = new Org_TreeView($tdb, 'organization' );

@@ -105,6 +105,10 @@ class Folder {
 	function move( $newParentFolder ) {
 		return $this->tdb->moveFolder( $this, $newParentFolder );
 	}
+
+	function reorder( $newParentFolder, $newOrder = [] ) {
+		return $this->tdb->reorder( $this->id, $newParentFolder, $newOrder );
+	}
 }
 
 class TreeDb {
