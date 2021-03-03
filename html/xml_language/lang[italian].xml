@@ -1026,6 +1026,8 @@ Per poterlo fare devi loggarti nella piattaforma se sei un utente registarto, al
         <key id="dashboard&amp;_URL_SUPPORTLMS" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Supporto e community opensource forma.lms]]></key>
         <key id="dashboard&amp;_USERS_PANEL" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Informazioni sugli utenti]]></key>
         <key id="dashboard&amp;_WAITING_SUBSCRIPTION" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Iscrizioni in attesa]]></key>
+        <key id="dashboard&amp;_DASHBOARD_BLOCKMESSAGES_NO_RECORDS" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Non ci sono messaggi]]></key>
+        <key id="dashboard&amp;_DASHBOARD_BLOCKCERTIFICATES_NO_RECORDS" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Non ci sono certificati]]></key>
       </module>
       <module id="dashboardsetting">
         <key id="dashboardsetting&amp;_DASHBOARD_SETTING_ADD_NEW_LAYOUT" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Crea una nuova dashboard]]></key>

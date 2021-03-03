@@ -26,23 +26,24 @@
                         {% if not block.perm %}
                             <p class="d-alt-text text-center">{{ block.data.alternative_text }}</p>
                         {% else %}
+                            <h3 class="d-title">{{ translate('_MY_CERTIFICATE', 'menu_over') }}</h3>
                             {% if block.certificates and block.certificates|length > 0 %}
                                 {% for certificate in block.certificates %}
                                     <div class="d-item">
                                         <div class="d-title text-center">
-                                        {{ certificate.course_name }} ({{ certificate.course_code }})
+                                        {{ certificate.course_name }}
                                         </div>
                                         <div class="d-subtitle text-center">
                                         {{ certificate.name_certificate }}
                                         </div>
-                                        {% if certificate.date_complete %}
+                                        {% if certificate.on_date %}
                                             <div class="d-date text-center">
-                                            {{ certificate.on_date }}
+                                            {{ certificate.on_date | date("d-m-Y H:i") }}
                                             </div>
                                         {% endif %}
                                         {#% if certificate.date_complete %}
                                             <div class="d-date">
-                                            {{ certificate.date_complete }}
+                                            {{ certificate.date_complete | date("d-m-Y H:i") }}
                                             </div>
                                         {% endif %#}
                                         {% if certificate.cert_file %}
@@ -56,6 +57,8 @@
                                         {% endif %}
                                     </div>
                                 {% endfor %}
+                            {% else %}
+				                <div class="alert alert-danger text-center">{{ translate('_DASHBOARD_BLOCKCERTIFICATES_NO_RECORDS', 'dashboard') }}</div>
                             {% endif %}
 
                             {% if block.data.show_button %}
