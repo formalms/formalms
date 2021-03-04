@@ -177,9 +177,3 @@ CREATE TABLE IF NOT EXISTS `learning_aggregated_cert_coursepath` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
 
 UPDATE `core_setting` SET `value_type` = 'template_domain_node' WHERE `core_setting`.`param_name` = 'template_domain';
-
--- setting ignore_score
-INSERT INTO `core_setting` 
-(`param_name`, `param_value`, `value_type`, `max_size`, `pack`, `regroup`, `sequence`, `param_load`, `hide_in_modify`, `extra_info`) 
-VALUES
-('ignore_score', 'off', 'enum', 3, '0', 4, 16, 1, 0, '');
