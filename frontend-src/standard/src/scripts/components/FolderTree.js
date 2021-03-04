@@ -112,15 +112,21 @@ function initDragAndDrop() {
     onEnd: function() {
       document.querySelectorAll('.folderView__li').forEach(el => el.classList.remove('fv-is-dropped'));
       const currentElementId = dragged.id;
-      const parentElementId = related.id;
-      const reorderLoData = Config.apiUrl + 'lms/lo/reorder&id=' + currentElementId + '&newParent=' + parentElementId + '&newOrder=';
-      axios.get(reorderLoData).then().catch( (error) => {
-        console.log(error);
-      });
+      console.log('onEnd');
+      console.log(dragged);
+      console.log(related);
+      if (related) {
+        const parentElementId = related.id;
+        const reorderLoData = Config.apiUrl + 'lms/lo/reorder&id=' + currentElementId + '&newParent=' + parentElementId + '&newOrder=';
+        axios.get(reorderLoData).then().catch( (error) => {
+          console.log(error);
+        });
+      }
     },
     onMove: function(evt) {
       dragged = evt.dragged;
       related = evt.related;
+      console.log('onMove');
       if (related) {
         document.querySelectorAll('.folderView__li').forEach(el => el.classList.remove('fv-is-dropped'));
         related.classList.add('fv-is-dropped');
