@@ -473,6 +473,7 @@ La chat si aprirà in una finestra di pop-up]]></key>
         <key id="configuration&amp;_CONF_GLOBAL" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Generale]]></key>
         <key id="configuration&amp;_CONF_LMS" attributes="" save_date="2017-04-10 13:01:57"><![CDATA[E-learning]]></key>
         <key id="configuration&amp;_COURSE_BLOCK" attributes="" save_date="2017-11-09 18:11:31"><![CDATA[Attiva elenco corsi in pagina di login]]></key>
+        <key id="configuration&amp;_IGNORE_SCORE" attributes="" save_date="2017-11-09 18:11:31"><![CDATA[Ignora mastery score]]></key>
         <key id="configuration&amp;_COURSE_QUOTA" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Limite per il massimo di contenuti caricabili nel corso (in MB)]]></key>
         <key id="configuration&amp;_CURRENCY_SYMBOL" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Simbolo valuta (sarà mostrato all'utente)]]></key>
         <key id="configuration&amp;_CUSTOMER_HELP_EMAIL" attributes="" save_date="2017-03-15 12:09:35"><![CDATA[Email Help Desk]]></key>

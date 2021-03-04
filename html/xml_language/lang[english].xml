@@ -471,6 +471,7 @@
         <key id="configuration&amp;_CONF_GLOBAL" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Common]]></key>
         <key id="configuration&amp;_CONF_LMS" attributes="" save_date="2017-04-10 13:01:52"><![CDATA[E-learning]]></key>
         <key id="configuration&amp;_COURSE_BLOCK" attributes="" save_date="2017-11-09 18:11:39"><![CDATA[Show catalogue in login page]]></key>
+        <key id="configuration&amp;_IGNORE_SCORE" attributes="" save_date="2017-11-09 18:11:31"><![CDATA[Ignore mastery score]]></key>
         <key id="configuration&amp;_COURSE_QUOTA" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Limit for the maximum total size of contents uploaded into the course (MB)]]></key>
         <key id="configuration&amp;_CURRENCY_SYMBOL" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Currency symbol (will be displayed at user side)]]></key>
         <key id="configuration&amp;_CUSTOMER_HELP_EMAIL" attributes="" save_date="2017-04-10 14:55:02"><![CDATA[Help Desk email]]></key>
