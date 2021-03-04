@@ -2,11 +2,19 @@
     "version": {
         "name": "2.2.1",
         "number": "20201",
-        "description": "2.2.1",
-        "pretty_version": "2.2.1",
+        "description": "questa è la 2.2.1",
+        "pretty_desc": "2 2 1",
         "pre": "20201_pre.php",
         "post": "20201_post.php",
-        "config": "20201_config.php",
-        "file_sytem": "20201_fs.php"
+        "config": "20201_conf.php",
+        "file_sytem": "20201_fs.php",
+        "role": "20201_role.php",
+        "mysql": "20201_db.sql",
+        "date": "2000-01-01 00:00",
+        "status": "stable",
+        "php": {
+            "min": "5.6",
+            "max": "7.0" 
+        }
     }
 }

@@ -1,6 +1,6 @@
 .d-message {
   .d-item {
-    margin-top: 18px;
+    margin: 18px 0;
     overflow: hidden;
 
     .d-title {
@@ -9,10 +9,17 @@
       color: $orange;
       padding: 3px;
     }
+    .d-subject {
+      font-weight: $bold;
+      font-size: 12px;
+      color: $orange;
+      padding: 3px 6px 3px 3px;
+    }
     .d-date {
       font-weight: $bold;
       font-size: 10px;
       color: $anthracite;
+      padding: 3px;
     }
     .d-link {
       font-weight: $bold;

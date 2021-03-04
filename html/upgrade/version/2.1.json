@@ -2,11 +2,19 @@
     "version": {
         "name": "2.1",
         "number": "20100",
-        "description": "2.1",
-        "pretty_version": "2.1",
+        "description": "questa è la 2.1",
+        "pretty_desc": "2 1",
         "pre": "20100_pre.php",
         "post": "20100_post.php",
-        "config": "20100_config.php",
-        "file_sytem": "20100_fs.php"
+        "config": "20100_conf.php",
+        "file_sytem": "20100_fs.php",
+        "role": "20100_role.php",
+        "mysql": "20100_db.sql",
+        "date": "2000-01-01 00:00",
+        "status": "stable",
+        "php": {
+            "min": "5.6",
+            "max": "7.0" 
+        }
     }
 }

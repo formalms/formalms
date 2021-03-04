@@ -40,7 +40,7 @@ else {
 	$to_upgrade_arr =getToUpgradeArray();
 }
 
-$last_ver =getVersionIntNumber($GLOBALS['cfg']['endversion']);
+$last_ver = (int)$GLOBALS['cfg']['endversion'];
 
 if ($_SESSION['upgrade_ok']) {
 	$current_ver =$to_upgrade_arr[$upg_step-1];
@@ -53,7 +53,8 @@ if ($_SESSION['upgrade_ok']) {
 	$upgrade_msg .= " <br/>" . "Upgrading to version: ".$formalms_version;
 
 	// --- pre upgrade -----------------------------------------------------------
-	$fn =_upgrader_.'/data/upg_data/'.$current_ver.'_pre.php';
+	$fn =_upgrader_.'/data/upg_data/'.$GLOBALS['cfg']['detailversions'][$current_ver]['pre'];
+
 	if (file_exists($fn)) {
 		$GLOBALS['debug'] .=  " <br/>" . "Source pre-upgrade file: " . $fn ;
 		require($fn);
@@ -68,7 +69,7 @@ if ($_SESSION['upgrade_ok']) {
 
 	if ($_SESSION['upgrade_ok']) {
 		// --- sql upgrade -----------------------------------------------------------
-		$fn =_upgrader_.'/data/upg_data/'.$current_ver.'_db.sql';
+		$fn =_upgrader_.'/data/upg_data/'.$GLOBALS['cfg']['detailversions'][$current_ver]['mysql'];
 		if (file_exists($fn)) {
 			$GLOBALS['debug'] .=  " <br/>" . "Upgrade db with file: " . $fn ;
 			$res =importSqlFile($fn, $allowed_err_codes);
@@ -80,7 +81,7 @@ if ($_SESSION['upgrade_ok']) {
 
 	if ($_SESSION['upgrade_ok']) {
 		// --- post upgrade ----------------------------------------------------------
-		$fn =_upgrader_.'/data/upg_data/'.$current_ver.'_post.php';
+		$fn =_upgrader_.'/data/upg_data/'.$GLOBALS['cfg']['detailversions'][$current_ver]['post'];
 		if (file_exists($fn)) {
 			$GLOBALS['debug'] .=  " <br/>" . "Source post-upgrade file: " . $fn ;
 			require($fn);
@@ -99,7 +100,7 @@ if ($_SESSION['upgrade_ok']) {
 	if ($_SESSION['upgrade_ok']) {
 		// --- roles -----------------------------------------------------------------
 		require_once(_lib_.'/installer/lib.role.php');
-		$fn =_upgrader_.'/data/upg_data/'.$current_ver.'_role.php';
+		$fn =_upgrader_.'/data/upg_data/'.$GLOBALS['cfg']['detailversions'][$current_ver]['role'];
 		if (file_exists($fn)) {
 			$GLOBALS['debug'] .=  " <br/>" . "Source role-upgrade file: " . $fn ;
 			require($fn);

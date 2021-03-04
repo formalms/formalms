@@ -214,8 +214,8 @@ class ImportUser extends DoceboImport_Destination
 		}
 
 		$userid		= strtolower(addslashes($this->_convert_char($row['userid'])));
-		$firstname	= (Get::sett('import_ucfirst', 'on') == "on" ? ucfirst(strtolower(addslashes($this->_convert_char($row['firstname'])))) : addslashes($this->_convert_char($row['firstname'])));
-		$lastname	= (Get::sett('import_ucfirst', 'on') == "on" ? ucfirst(strtolower(addslashes($this->_convert_char($row['lastname'])))) : addslashes($this->_convert_char($row['lastname'])));
+		$firstname	= (Get::sett('import_ucfirst', 'off') == "on" ? ucfirst(strtolower(addslashes($this->_convert_char($row['firstname'])))) : addslashes($this->_convert_char($row['firstname'])));
+		$lastname	= (Get::sett('import_ucfirst', 'off') == "on" ? ucfirst(strtolower(addslashes($this->_convert_char($row['lastname'])))) : addslashes($this->_convert_char($row['lastname'])));
 		$pass		= addslashes($this->_convert_char($row['pass']));
 		$email		= addslashes($this->_convert_char($row['email']));
 
@@ -296,7 +296,7 @@ class ImportUser extends DoceboImport_Destination
 					}
 				} else {
 					if ($field_value != $infouser->$field_id && $field_id != "pass") {
-						$idst = FALSE;
+						// $idst = FALSE;
 						$sameuserid = TRUE;
 					}
 				}
