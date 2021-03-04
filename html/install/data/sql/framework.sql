@@ -1856,8 +1856,8 @@ CREATE TABLE IF NOT EXISTS `core_role` (
   `description` varchar(255) DEFAULT NULL,
   `idPlugin` INT(10) NULL,
   PRIMARY KEY (`idst`),
-  KEY `roleid` (`roleid`),
-  CONSTRAINT FOREIGN KEY (`idPlugin`) REFERENCES `core_plugin`(`plugin_id`) ON DELETE CASCADE ON UPDATE CASCADE
+  KEY `roleid` (`roleid`)-- ,
+  -- CONSTRAINT FOREIGN KEY (`idPlugin`) REFERENCES `core_plugin`(`plugin_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 PACK_KEYS=0;
 
 --
@@ -2051,8 +2051,8 @@ INSERT INTO `core_role` (`idst`, `roleid`, `description`) VALUES
 CREATE TABLE IF NOT EXISTS `core_role_members` (
   `idst` int(11) NOT NULL DEFAULT '0',
   `idstMember` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`idst`,`idstMember`),
-  CONSTRAINT FOREIGN KEY (idst) REFERENCES core_role(idst) ON DELETE CASCADE ON UPDATE CASCADE
+  PRIMARY KEY (`idst`,`idstMember`)-- ,
+  -- CONSTRAINT FOREIGN KEY (idst) REFERENCES core_role(idst) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -2497,6 +2497,7 @@ INSERT INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size
 ('common_admin_session', 'on', 'enum', 3, 'security', 8, 24, 1, 0, ''),
 ('conference_creation_limit_per_user', '99999999999', 'string', 255, '0', 6, 0, 1, 0, ''),
 ('course_block', 'off', 'enum', 3, '0', 4, 15, 1, 0, ''),
+('ignore_score', 'off', 'enum', 3, '0', 4, 16, 1, 0, ''),
 ('course_quota', '500', 'string', 255, '0', 4, 9, 1, 0, ''),
 ('currency_symbol', '€', 'string', 10, 'ecommerce', 4, 18, 1, 0, ''),
 ('customer_help_email', '', 'string', 255, 'email_settings', 1, 9, 1, 0, ''),
