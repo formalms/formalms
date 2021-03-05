@@ -3515,7 +3515,6 @@ class CoursereportLmsController extends LmsController
 
 			switch ($quest['type_quest']) {
 				case "inline_choice":
-				case "hot_text":
 				case "choice_multiple":
 				case "choice": {
 
@@ -3834,7 +3833,6 @@ class CoursereportLmsController extends LmsController
 		foreach ($quests as $quest) {
 			switch ($quest['type_quest']) {
 				case "inline_choice":
-				case "hot_text":
 				case "choice_multiple":
 				case "choice":
 					$cont_h = array(
