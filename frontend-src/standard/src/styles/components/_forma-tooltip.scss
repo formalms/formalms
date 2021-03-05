@@ -67,9 +67,12 @@
   overflow: visible !important;
   &:hover {
     .forma-tooltip.down {
+      top: 115px;
+      z-index: 1;
       &:after {
         transform: translate(-50%, 0%);
         border-top: none;
+        border-bottom: 12px solid $orange;
         border-right: solid 6px transparent;
         border-left: solid 6px transparent;
         bottom: 100%;
