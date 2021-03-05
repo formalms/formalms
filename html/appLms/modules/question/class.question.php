@@ -26,7 +26,6 @@ require_once(Forma::inc(_lms_ . '/modules/question/class.break_page.php'));
 require_once(Forma::inc(_lms_ . '/modules/question/class.choice.php'));
 require_once(Forma::inc(_lms_ . '/modules/question/class.choice_multiple.php'));
 require_once(Forma::inc(_lms_ . '/modules/question/class.extended_text.php'));
-require_once(Forma::inc(_lms_ . '/modules/question/class.hot_text.php'));
 require_once(Forma::inc(_lms_ . '/modules/question/class.inline_choice.php'));
 require_once(Forma::inc(_lms_ . '/modules/question/class.numerical.php'));
 require_once(Forma::inc(_lms_ . '/modules/question/class.text_entry.php'));

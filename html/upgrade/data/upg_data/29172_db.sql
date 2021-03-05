@@ -3,6 +3,7 @@ VALUES (9, 'DashboardBlockWelcomeLms',CURRENT_TIMESTAMP);
 
 -- delete menu chat
 delete from learning_module where module_name like 'chat';
+DELETE FROM `learning_quest_type` WHERE `type_quest` = 'hot_text';
 
 -- add property ignorescore in scorm
 ALTER TABLE `learning_organization` ADD `ignoreScore` TINYINT( 4 ) NOT NULL DEFAULT '0';

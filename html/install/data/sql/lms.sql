@@ -2499,7 +2499,6 @@ INSERT INTO `learning_quest_type` (`type_quest`, `type_file`, `type_class`, `seq
 ('choice', 'class.choice.php', 'Choice_Question', 1),
 ('choice_multiple', 'class.choice_multiple.php', 'ChoiceMultiple_Question', 2),
 ('extended_text', 'class.extended_text.php', 'ExtendedText_Question', 3),
-('hot_text', 'class.hot_text.php', 'HotText_Question', 6),
 ('inline_choice', 'class.inline_choice.php', 'InlineChoice_Question', 5),
 ('text_entry', 'class.text_entry.php', 'TextEntry_Question', 4),
 ('title', 'class.title.php', 'Title_Question', 9),
