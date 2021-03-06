@@ -13,25 +13,27 @@
   margin: 0;
 }
 
-.folderView__el {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
 .folderView__li {
   border-bottom: 1px solid #efefef;
+  cursor: pointer;
   color: #000;
 }
 
 .folderView__el {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  pointer-events: none;
   padding: 8px 16px 8px 56px;
   overflow: hidden;
-  cursor: pointer;
   background: {
     repeat: no-repeat;
     position: 16px center;
   };
+}
+
+.folderView__label {
+  pointer-events: none;
 }
 
 .fv-is-selected {

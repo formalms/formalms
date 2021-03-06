@@ -16,6 +16,7 @@
 }
 
 .folderTree__li {
+  pointer-events: none;
 
    > .folderTree__ul {
      margin-left: 32px;
@@ -83,6 +84,11 @@
   border-bottom: 1px solid #efefef;
   transition: all .2s ease-in-out;
   background: transparent;
+  pointer-events: all;
+
+  span {
+    pointer-events: none;
+  }
 
   &:hover:not(.ft-is-selected) {
     background-color: #efefef;

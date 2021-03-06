@@ -38,7 +38,8 @@ class FolderTree {
       });
 
       document.addEventListener('click', this.clickOnFolder);
-      initDragAndDrop();
+      initSortable();
+      initDragDrop();
   }
 
   clickOnFolder(event) {
@@ -54,6 +55,9 @@ class FolderTree {
         if (els) {
           els.forEach(el => {
             el.classList.remove('ft-is-selected');
+            if (!el.classList.contains('ft-has-child')) {
+              el.classList.remove('ft-is-folderOpen');
+            }
           });
         }
         el.classList.add('ft-is-selected');
@@ -71,7 +75,8 @@ class FolderTree {
           el.insertAdjacentHTML('afterend',child);
           folderView.innerHTML = childView;
           contextMenu();
-          initDragAndDrop();
+          initSortable();
+          initDragDrop();
         }).catch( (error) => {
           console.log(error)
         });
@@ -102,44 +107,53 @@ class FolderTree {
 
 }
 
-function initDragAndDrop() {
+function initSortable() {
+  const listRoot = document.querySelector('.js-folder-root');
   const list = document.querySelectorAll('.js-sortable-tree');
   const view = document.querySelector('.js-sortable-view');
-  let dragged, related;
+
+  new Sortable.create(listRoot, {});
 
   new Sortable.create(view, {
+    draggable: '.folderView__li',
     animation: 150,
-    onEnd: function() {
-      document.querySelectorAll('.folderView__li').forEach(el => el.classList.remove('fv-is-dropped'));
-      const currentElementId = dragged.id;
-      console.log('onEnd');
-      console.log(dragged);
-      console.log(related);
-      if (related) {
-        const parentElementId = related.id;
-        const reorderLoData = Config.apiUrl + 'lms/lo/reorder&id=' + currentElementId + '&newParent=' + parentElementId + '&newOrder=';
-        axios.get(reorderLoData).then().catch( (error) => {
-          console.log(error);
-        });
+    easing: 'cubic-bezier(1, 0, 0, 1)',
+    fallbackOnBody: true,
+    invertSwap: true,
+    swapThreshold: 0.43,
+    onUpdate: function (evt) {
+      const currentElement = evt.item;
+      const currentElementId = currentElement.id;
+      const parentElement = document.querySelector('.ft-is-selected');
+      const childElement = document.querySelector('.folderView__ul').querySelectorAll('.folderView__li');
+      const childElementArray = [];
+      let parentElementId = 0;
+      console.log('current: ' + currentElementId);
+      console.log(childElement);
+
+      if (parentElement) {
+        parentElementId = parentElement ? parentElement.id : 0;
+        console.log('parent: ' + parentElementId);
       }
+
+      childElement.forEach(el => {
+        const elId = el.id;
+        childElementArray.push(elId);
+      });
+
+      console.log(childElementArray);
+
+      const reorderLoData = Config.apiUrl + 'lms/lo/reorder&id=' + currentElementId + '&newParent=' + parentElementId + '&newOrder=' + childElementArray;
+      axios.get(reorderLoData).then().catch( (error) => {
+        console.log(error);
+      });
     },
-    onMove: function(evt) {
-      dragged = evt.dragged;
-      related = evt.related;
-      console.log('onMove');
-      if (related) {
-        document.querySelectorAll('.folderView__li').forEach(el => el.classList.remove('fv-is-dropped'));
-        related.classList.add('fv-is-dropped');
-      }
-      return false;
-    }
   });
 
   list.forEach(single => {
     new Sortable.create(single, {
       group: 'nested',
       draggable: '.folderTree__li',
-      filter: '.folderTree__li--ignore',
       animation: 150,
       easing: 'cubic-bezier(1, 0, 0, 1)',
       fallbackOnBody: true,
@@ -151,12 +165,11 @@ function initDragAndDrop() {
         const childElement = currentElement.closest('.folderTree__ul').querySelectorAll('.folderTree__li');
         const childElementArray = [];
         let parentElementId = 0;
-        console.log('current: ' + currentElementId);
-        console.log(childElement);
+        //console.log('current: ' + currentElementId);
 
         if (parentElement) {
           parentElementId = parentElement ? parentElement.id : 0;
-          console.log('parent: ' + parentElementId);
+          //console.log('parent: ' + parentElementId);
         }
 
         childElement.forEach(el => {
@@ -164,7 +177,7 @@ function initDragAndDrop() {
           childElementArray.push(elId);
         });
 
-        console.log(childElementArray);
+        //console.log(childElementArray);
 
         const reorderLoData = Config.apiUrl + 'lms/lo/reorder&id=' + currentElementId + '&newParent=' + parentElementId + '&newOrder=' + childElementArray;
         axios.get(reorderLoData).then().catch( (error) => {
@@ -182,7 +195,6 @@ function initDragAndDrop() {
       },
     })
   });
-
 }
 
 
@@ -270,6 +282,56 @@ function contextMenu() {
       }
     ]
   })
+}
+
+function initDragDrop() {
+  const contexts = document.querySelectorAll('.js-folder-tree-view');
+  let currentEl, currentElId;
+
+  contexts.forEach(context => {
+    context.addEventListener('drag', (event) => {
+      if (event.target.classList.contains('is-file')) {
+        currentEl = event.target;
+        currentElId = currentEl.id;
+      }
+    });
+
+    context.addEventListener('dragenter', (event) => {
+      const target = event.target;
+
+      if (currentEl) {
+        if ( (currentElId !== target.id) && (target.classList.contains('is-dropzone')) ) {
+          target.classList.add('fv-is-dropped');
+        }
+      }
+    });
+
+    context.addEventListener('dragleave', (event) => {
+      const target = event.target;
+
+      if (currentEl) {
+        if ((currentElId !== target.id) && (target.classList.contains('is-dropzone'))) {
+          target.classList.remove('fv-is-dropped');
+        }
+      }
+    });
+
+    context.addEventListener('drop', (event) => {
+      const target = event.target;
+      target.classList.remove('fv-is-dropped');
+
+      if (currentEl) {
+        if ( (currentElId !== target.id) && (target.classList.contains('is-dropzone')) ) {
+          const reorderLoData = Config.apiUrl + 'lms/lo/reorder&id=' + currentElId + '&newParent=' + event.target.id;
+          axios.get(reorderLoData).then(() => {
+            currentEl.parentNode.removeChild(currentEl);
+          }).catch((error) => {
+            console.log(error);
+          });
+        }
+      }
+    });
+  });
 }
 
 export default FolderTree
