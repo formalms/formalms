@@ -216,7 +216,7 @@ class DoceboMailer extends \PHPMailer\PHPMailer\PHPMailer
         $this->From = $_sender;
         if ($conf_arr[MAIL_SENDER_ACLNAME]) {
             $temp = $this->acl_man->getUserByEmail($sender);
-            $this->FromName = $temp[ACL_INFO_FIRSTNAME] . ' ' . $temp[ACL_INFO_LASTNAME];
+            $this->FromName = $conf_arr[MAIL_SENDER_ACLNAME] !== true ? $conf_arr[MAIL_SENDER_ACLNAME] : $temp[ACL_INFO_FIRSTNAME] . ' ' . $temp[ACL_INFO_LASTNAME];
         }
         //----------------------------------------------------------------------------
 
