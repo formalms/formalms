@@ -1066,6 +1066,7 @@ class SubscriptionAlmsController extends AlmsController
 				$send_alert = Get::req('send_alert', DOTY_INT, 0) > 0;
 
 				require_once(_base_ . '/lib/lib.eventmanager.php');
+				$userModel = new UsermanagementAdm();
 
 				$course_info = $docebo_course->getAllInfo();
 				if ($send_alert) {

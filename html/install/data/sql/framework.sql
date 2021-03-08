@@ -2568,6 +2568,7 @@ INSERT INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size
 ('save_log_attempt', 'no', 'save_log_attempt', 255, '0', 3, 5, 0, 0, ''),
 ('sco_direct_play', 'on', 'enum', 3, '0', 8, 3, 1, 0, ''),
 ('sender_event', 'sample@localhost.localdomain', 'string', 255, '0', 1, 5, 1, 0, ''),
+('use_sender_aclname', '', 'string', 255, '0', 1, 5, 1, 0, ''),
 ('send_cc_for_system_emails', '', 'string', 255, 'email_settings', 1, 11, 1, 0, ''),
 ('session_ip_control', 'off', 'enum', 3, 'security', 8, 22, 1, 0, ''),
 ('sms_cell_num_field', '1', 'field_select', 5, '0', 11, 6, 1, 0, ''),

@@ -13,3 +13,8 @@ INSERT INTO `core_setting`
 (`param_name`, `param_value`, `value_type`, `max_size`, `pack`, `regroup`, `sequence`, `param_load`, `hide_in_modify`, `extra_info`) 
 VALUES
 ('ignore_score', 'off', 'enum', 3, '0', 4, 16, 1, 0, '');
+
+-- setting name from email
+INSERT INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size`, `pack`, `regroup`, `sequence`, `param_load`, `hide_in_modify`, `extra_info`)
+VALUES
+	('use_sender_aclname', '', 'string', 255, '0', 1, 5, 1, 0, '');
