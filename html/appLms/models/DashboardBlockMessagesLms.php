@@ -16,7 +16,7 @@ defined("IN_FORMA") or die('Direct access is forbidden.');
 
 
 /**
- * Class DashboardBlockAnnouncementLms
+ * Class DashboardBlockMessagesLms
  */
 class DashboardBlockMessagesLms extends DashboardBlockLms
 {

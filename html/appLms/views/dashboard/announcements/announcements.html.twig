@@ -1,9 +1,6 @@
 {% extends "base/base.html.twig" %}
 
 {% block content %}
-
-    {#Course news#}
-
     {% if (block.type == '4-col') %}
         {% set class =  ' d-col--12--desktop' %}
     {% elseif (block.type == '3-col') %}
@@ -17,7 +14,7 @@
     <div class="d-col d-col--12 {{ class }}">
       <div class="d-advise d-widget">
         <h3 class="d-title">
-          {{ translate('_ANNUNCI','standard') }}
+          {{ translate('_DASHBOARDBLOCKANNOUNCEMENTSLMS','dashboardsetting') }}
         </h3>
         {% for advise in block.courseAdvices %}
           <div class="d-advise__item">
@@ -34,7 +31,4 @@
         {% endfor %}
       </div>
     </div>
-    {# <pre>
-      {{ dump(block) }}
-    </pre> #}
 {% endblock %}
