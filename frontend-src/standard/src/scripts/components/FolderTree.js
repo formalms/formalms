@@ -61,7 +61,7 @@ class FolderTree {
           });
         }
         el.classList.add('ft-is-selected');
-        if (isOpen) {
+        if (isOpen && (!el.classList.contains('ft-is-root')) ) {
           el.parentNode.querySelector('.folderTree__ul').remove();
         } else {
           el.classList.add('ft-is-folderOpen');
@@ -72,7 +72,11 @@ class FolderTree {
           const child = Tree(response);
           const childView = Content(response);
           const folderView = document.querySelector('.folderView');
-          el.insertAdjacentHTML('afterend',child);
+          const inputParent = document.querySelector('#treeview_selected_organization');
+          inputParent.value = elId;
+          if (!el.classList.contains('ft-is-root')) {
+            el.insertAdjacentHTML('afterend',child);
+          }
           folderView.innerHTML = childView;
           contextMenu();
           initSortable();
@@ -102,7 +106,7 @@ class FolderTree {
     el.childNodes[0].innerHTML = value;
     el.classList.remove('ft-no-click');
 
-    document.querySelector('#fv-' + elId).querySelector('.folderView__label').innerHTML = value;
+    document.querySelector('.folderView').querySelector('.folderView__li[data-id="' + elId + '"]').querySelector('.folderView__label').innerHTML = value;
   }
 
 }
@@ -112,64 +116,30 @@ function initSortable() {
   const list = document.querySelectorAll('.js-sortable-tree');
   const view = document.querySelector('.js-sortable-view');
 
-  new Sortable.create(listRoot, {});
+  if (listRoot) {
+    new Sortable.create(listRoot, {});
+  }
 
-  new Sortable.create(view, {
-    draggable: '.folderView__li',
-    animation: 150,
-    easing: 'cubic-bezier(1, 0, 0, 1)',
-    fallbackOnBody: true,
-    invertSwap: true,
-    swapThreshold: 0.43,
-    onUpdate: function (evt) {
-      const currentElement = evt.item;
-      const currentElementId = currentElement.id;
-      const parentElement = document.querySelector('.ft-is-selected');
-      const childElement = document.querySelector('.folderView__ul').querySelectorAll('.folderView__li');
-      const childElementArray = [];
-      let parentElementId = 0;
-      console.log('current: ' + currentElementId);
-      console.log(childElement);
-
-      if (parentElement) {
-        parentElementId = parentElement ? parentElement.id : 0;
-        console.log('parent: ' + parentElementId);
-      }
-
-      childElement.forEach(el => {
-        const elId = el.id;
-        childElementArray.push(elId);
-      });
-
-      console.log(childElementArray);
-
-      const reorderLoData = Config.apiUrl + 'lms/lo/reorder&id=' + currentElementId + '&newParent=' + parentElementId + '&newOrder=' + childElementArray;
-      axios.get(reorderLoData).then().catch( (error) => {
-        console.log(error);
-      });
-    },
-  });
-
-  list.forEach(single => {
-    new Sortable.create(single, {
-      group: 'nested',
-      draggable: '.folderTree__li',
+  if (view) {
+    new Sortable.create(view, {
+      draggable: '.folderView__li',
       animation: 150,
       easing: 'cubic-bezier(1, 0, 0, 1)',
       fallbackOnBody: true,
-      swapThreshold: 0.62,
-      onEnd: function (evt) {
+      invertSwap: true,
+      swapThreshold: 0.43,
+      onUpdate: function (evt) {
         const currentElement = evt.item;
         const currentElementId = currentElement.id;
-        const parentElement = currentElement.parentNode.closest('.ft-is-parent');
-        const childElement = currentElement.closest('.folderTree__ul').querySelectorAll('.folderTree__li');
+        const parentElement = document.querySelector('.ft-is-selected');
+        const childElement = document.querySelector('.folderView__ul').querySelectorAll('.folderView__li');
         const childElementArray = [];
         let parentElementId = 0;
-        //console.log('current: ' + currentElementId);
+        console.log('current: ' + currentElementId);
 
         if (parentElement) {
           parentElementId = parentElement ? parentElement.id : 0;
-          //console.log('parent: ' + parentElementId);
+          console.log('parent: ' + parentElementId);
         }
 
         childElement.forEach(el => {
@@ -177,24 +147,63 @@ function initSortable() {
           childElementArray.push(elId);
         });
 
-        //console.log(childElementArray);
+        console.log('child order: ' + childElementArray);
 
         const reorderLoData = Config.apiUrl + 'lms/lo/reorder&id=' + currentElementId + '&newParent=' + parentElementId + '&newOrder=' + childElementArray;
         axios.get(reorderLoData).then().catch( (error) => {
           console.log(error);
         });
-
-        evt.to;    // target list
-        evt.from;  // previous list
-        evt.oldIndex;  // element's old index within old parent
-        evt.newIndex;  // element's new index within new parent
-        evt.oldDraggableIndex; // element's old index within old parent, only counting draggable elements
-        evt.newDraggableIndex; // element's new index within new parent, only counting draggable elements
-        evt.clone // the clone element
-        evt.pullMode;  // when item is in another sortable: `"clone"` if cloning, `true` if moving
       },
-    })
-  });
+    });
+  }
+
+  if (list.length > 0) {
+    list.forEach(single => {
+      new Sortable.create(single, {
+        group: 'nested',
+        draggable: '.folderTree__li',
+        animation: 150,
+        easing: 'cubic-bezier(1, 0, 0, 1)',
+        fallbackOnBody: true,
+        swapThreshold: 0.62,
+        onEnd: function (evt) {
+          const currentElement = evt.item;
+          const currentElementId = currentElement.id;
+          const parentElement = currentElement.parentNode.closest('.ft-is-parent');
+          const childElement = currentElement.closest('.folderTree__ul').querySelectorAll('.folderTree__li');
+          const childElementArray = [];
+          let parentElementId = 0;
+          console.log('current: ' + currentElementId);
+
+          if (parentElement) {
+            parentElementId = parentElement ? parentElement.id : 0;
+            console.log('parent: ' + parentElementId);
+          }
+
+          childElement.forEach(el => {
+            const elId = el.id;
+            childElementArray.push(elId);
+          });
+
+          console.log('child order: ' + childElementArray);
+
+          const reorderLoData = Config.apiUrl + 'lms/lo/reorder&id=' + currentElementId + '&newParent=' + parentElementId + '&newOrder=' + childElementArray;
+          axios.get(reorderLoData).then().catch( (error) => {
+            console.log(error);
+          });
+
+          evt.to;    // target list
+          evt.from;  // previous list
+          evt.oldIndex;  // element's old index within old parent
+          evt.newIndex;  // element's new index within new parent
+          evt.oldDraggableIndex; // element's old index within old parent, only counting draggable elements
+          evt.newDraggableIndex; // element's new index within new parent, only counting draggable elements
+          evt.clone // the clone element
+          evt.pullMode;  // when item is in another sortable: `"clone"` if cloning, `true` if moving
+        },
+      })
+    });
+  }
 }
 
 
@@ -263,7 +272,7 @@ function contextMenu() {
             elId = target.parentNode.getAttribute('id');
           }
 
-          document.querySelector('#fv-' + elId).parentNode.remove();
+          document.querySelector('.folderView').querySelector('.folderView__li[data-id="' + elId + '"]').parentNode.remove();
 
           if (siblings) {
             for (let el of siblings) {
@@ -324,7 +333,7 @@ function initDragDrop() {
         if ( (currentElId !== target.id) && (target.classList.contains('is-dropzone')) ) {
           const reorderLoData = Config.apiUrl + 'lms/lo/reorder&id=' + currentElId + '&newParent=' + event.target.id;
           axios.get(reorderLoData).then(() => {
-            currentEl.parentNode.removeChild(currentEl);
+            currentEl.style.display = 'none';
           }).catch((error) => {
             console.log(error);
           });

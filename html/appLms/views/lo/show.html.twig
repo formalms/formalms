@@ -1,5 +1,7 @@
 {% if data | length %}
     {{ Form_openForm('orgshow', 'index.php?modname=storage&op=display', false, 'POST') }}
+    <input type="hidden" id="treeview_selected_organization" name="treeview_selected_organization" value="0">
+    <!-- <input type="hidden" id="treeview_state_organization" name="treeview_state_organization" value=""> -->
     <section class="folderTreeView">
         <aside class="folderTreeContent folderTreeContent--one-third">
             <div class="folderTree__actions">
@@ -61,7 +63,7 @@
             <div class="folderView">
                 <ul class="folderView__ul js-sortable-view js-folder-tree-view">
                     {% for el in data %}
-                         <li id="{{ el.id }}" class="folderView__li {% if el.type %}is-file{% else %}is-dropzone{% endif %} js-fv-select-el">
+                         <li id="{{ el.id }}" data-id="{{ el.id }}" class="folderView__li {% if el.type %}is-file{% else %}is-dropzone{% endif %} js-fv-select-el">
                             <div id="{{ el.id }}" class="folderView__el {% if el.type %}fv-is-{{ el.type }}{% else %}fv-is-folder{% endif %}">
                                 <span class="folderView__label">{{ el.title }}</span>
                                 {% if el.actions %}
