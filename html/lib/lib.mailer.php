@@ -54,7 +54,7 @@ class DoceboMailer extends \PHPMailer\PHPMailer\PHPMailer
     //default config for phpmailer, to set any time we send a mail, except for user-defined params
     var $default_conf = array(
         MAIL_MULTIMODE => MAIL_SINGLE,
-        MAIL_SENDER_ACLNAME => false,
+        MAIL_SENDER_ACLNAME => Get::sett('use_sender_aclname', false),
         MAIL_RECIPIENT_ACLNAME => false,
         MAIL_REPLYTO_ACLNAME => false,
         MAIL_HTML => true,
@@ -344,6 +344,13 @@ class DoceboMailer extends \PHPMailer\PHPMailer\PHPMailer
                 }
             }
 
+            if (Get::sett('send_ccn_for_system_emails', '') !== '') {
+                $arr_ccn_for_system_emails = explode(' ', Get::sett('send_ccn_for_system_emails'));
+                foreach ($arr_ccn_for_system_emails as &$user_ccn_for_system_emails) {
+                    $this->addBCC($user_ccn_for_system_emails);
+                }
+            }
+
         }
         //----------------------------------------------------------------------------
 
@@ -363,6 +370,3 @@ class DoceboMailer extends \PHPMailer\PHPMailer\PHPMailer
     }
 
 }
-
-
-?>
