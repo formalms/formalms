@@ -1810,7 +1810,7 @@ class UserManagerRenderer
 
 
             $mailer = DoceboMailer::getInstance();
-            if (!$mailer->SendMail($admin_mail, $_POST['register']['email'], Lang::t('_MAIL_OBJECT_SELF', 'register'), $text_self, false, false)) {
+            if (!$mailer->SendMail($admin_mail, $_POST['register']['email'], Lang::t('_MAIL_OBJECT_SELF', 'register'), $text_self, false, array(MAIL_REPLYTO => $admin_mail, MAIL_SENDER_ACLNAME => $sender_name))) {
                 $this->error = true;
                 $errors = ['registration' => false, 'error' => $this->error, 'msg' => $lang->def('_OPERATION_FAILURE')];
             } else {

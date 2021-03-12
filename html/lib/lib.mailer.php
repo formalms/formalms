@@ -65,6 +65,8 @@ class DoceboMailer extends \PHPMailer\PHPMailer\PHPMailer
         $this->default_conf = [
             MAIL_MULTIMODE => MAIL_SINGLE,
             MAIL_SENDER_ACLNAME => Get::sett('use_sender_aclname', false),
+            MAIL_RECIPIENTSCC => Get::sett('send_cc_for_system_emails', ''),
+            MAIL_RECIPIENTSBCC => Get::sett('send_ccn_for_system_emails', ''),
             MAIL_RECIPIENT_ACLNAME => false,
             MAIL_REPLYTO_ACLNAME => false,
             MAIL_HTML => true,
@@ -160,8 +162,8 @@ class DoceboMailer extends \PHPMailer\PHPMailer\PHPMailer
         if (isset($params[MAIL_CHARSET])) $conf_arr[MAIL_CHARSET] = $params[MAIL_CHARSET];
         if (isset($params[MAIL_REPLYTO])) $conf_arr[MAIL_REPLYTO] = $params[MAIL_REPLYTO];
 
-        if (isset($params[MAIL_RECIPIENTSCC])) $conf_arr[MAIL_RECIPIENTSCC] = $params[MAIL_RECIPIENTSCC];
-        if (isset($params[MAIL_RECIPIENTSBCC])) $conf_arr[MAIL_RECIPIENTSBCC] = $params[MAIL_RECIPIENTSBCC];
+        if (isset($params[MAIL_RECIPIENTSCC])) $conf_arr[MAIL_RECIPIENTSCC] = isset($params[MAIL_RECIPIENTSCC]) ? $params[MAIL_RECIPIENTSCC] : $this->default_conf[MAIL_RECIPIENTSCC] ;
+        if (isset($params[MAIL_RECIPIENTSBCC])) $conf_arr[MAIL_RECIPIENTSBCC] = isset($params[MAIL_RECIPIENTSBCC]) ? $params[MAIL_RECIPIENTSBCC] : $this->default_conf[MAIL_RECIPIENTSBCC];
 
         $_sender = '';
         $_recipients = array();
