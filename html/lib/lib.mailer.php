@@ -52,19 +52,7 @@ class DoceboMailer extends \PHPMailer\PHPMailer\PHPMailer
     //var $reset_to_default = true;
 
     //default config for phpmailer, to set any time we send a mail, except for user-defined params
-    var $default_conf = array(
-        MAIL_MULTIMODE => MAIL_SINGLE,
-        MAIL_SENDER_ACLNAME => Get::sett('use_sender_aclname', false),
-        MAIL_RECIPIENT_ACLNAME => false,
-        MAIL_REPLYTO_ACLNAME => false,
-        MAIL_HTML => true,
-        MAIL_WORDWRAP => 0,
-        MAIL_CHARSET => 'Utf-8',
-        MAIL_SINGLETO => true
-        //MAIL_ = ;
-        //MAIL_ = ;
-    );
-
+    private $default_conf = [];
 
     //the constructor
     function __construct()
@@ -74,6 +62,16 @@ class DoceboMailer extends \PHPMailer\PHPMailer\PHPMailer
         //set initial default value
         $this->ResetToDefault();
 
+        $this->default_conf = [
+            MAIL_MULTIMODE => MAIL_SINGLE,
+            MAIL_SENDER_ACLNAME => Get::sett('use_sender_aclname', false),
+            MAIL_RECIPIENT_ACLNAME => false,
+            MAIL_REPLYTO_ACLNAME => false,
+            MAIL_HTML => true,
+            MAIL_WORDWRAP => 0,
+            MAIL_CHARSET => 'Utf-8',
+            MAIL_SINGLETO => true,
+        ];
     }
 
 
