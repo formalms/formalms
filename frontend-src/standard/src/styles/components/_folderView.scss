@@ -37,6 +37,7 @@
   background: {
     repeat: no-repeat;
     position: 16px center;
+    size: 24px auto;
   };
 }
 
@@ -133,4 +134,20 @@
 
 .fv-is-attachment {
   background-image: url('images/folderView/icon-attachment.svg');
+}
+
+.fv-is-test {
+  background-image: url('images/folderView/icon-test.svg');
+}
+
+.fv-is-item {
+  background-image: url('images/folderView/icon-item.svg');
+}
+
+.fv-is-glossary {
+  background-image: url('images/folderView/icon-glossary.svg');
+}
+
+.fv-is-poll {
+  background-image: url('images/folderView/icon-survey.svg');
 }
