@@ -1568,6 +1568,22 @@ class Org_TreeView extends RepoTreeView {
 		return $this->getLoData($childrens);
 	}
 
+    function getCurrentState($id)
+    {
+        $possTree = [];
+
+        $childrensRoot = $this->_getChildrens($id);
+        if (is_array($childrensRoot) && count($childrensRoot) > 0) {
+            foreach (array_flip($childrensRoot) as $children) {
+                $possTree[$children] = $this->getCurrentState($children);
+            }
+        } else {
+            return $id;
+        }
+
+        return $possTree;
+    }
+
 	function getLoData( $idLoList ){
 
 		$idLoList = (array)$idLoList;

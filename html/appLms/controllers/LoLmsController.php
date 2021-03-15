@@ -30,6 +30,10 @@ class LoLmsController extends LmsController
         return array_values($this->model->getFolders($idCourse, $idFolder));
     }
 
+    private function getCurrentState($idCourse,$idFolder = false){
+        return $this->model->getCurrentState($idCourse,$idFolder);
+    }
+
     public function show() {
         $id_course = $_SESSION['idCourse'];
         $this->render('show', ['data' => $this->getFolders($id_course)]);
@@ -45,7 +49,12 @@ class LoLmsController extends LmsController
         $id_course = $_SESSION['idCourse'];
         $id = Get::req('id', DOTY_INT, false);
         header('Content-type:application/json');
-        echo json_encode($this->getFolders($id_course, $id));
+        $responseData = [];
+
+        $responseData['data'] = $this->getFolders($id_course, $id);
+        $responseData['currentState'] = $this->getCurrentState($id_course, 0);
+        echo json_encode($responseData);
+
         die();
     }
 

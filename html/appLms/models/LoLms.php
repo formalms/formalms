@@ -38,6 +38,15 @@ class LoLms extends Model {
         return $learning_objects;
     }
 
+    public function getCurrentState($idCourse,$idFolder = 0){
+
+        require_once( Forma::inc( _lms_.'/modules/organization/orglib.php' ) );
+        $tdb = new OrgDirDb($idCourse);
+
+        $tree_view = new Org_TreeView($tdb, 'organization' );
+        return $tree_view->getCurrentState($idFolder);
+    }
+
     public function deleteFolder($idCourse, $id) {
         require_once( Forma::inc( _lms_.'/modules/organization/orglib.php' ) );
         $tdb = new OrgDirDb($idCourse, $filters, $offset, $limit, $groupBy, $selectFunction, $orderBy);
