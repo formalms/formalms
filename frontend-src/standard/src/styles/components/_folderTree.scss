@@ -5,6 +5,14 @@
   flex-wrap: wrap;
 }
 
+.folderTreeContent {
+  display: none;
+
+  @include breakpoint($ipad) {
+    display: block;
+  }
+}
+
 .folderTreeContent--one-third {
   width: 25%;
 }

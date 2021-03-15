@@ -14,11 +14,11 @@ class FolderView {
       els.forEach(el => {
         const id = el.id;
         if (currentId !== id) {
-          el.querySelector('.folderView__el').classList.remove('fv-is-selected');
+          el.classList.remove('fv-is-selected');
         }
       });
 
-      el.querySelector('.folderView__el').classList.toggle('fv-is-selected');
+      el.classList.toggle('fv-is-selected');
     }
 
   }

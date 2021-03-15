@@ -1,6 +1,10 @@
 .folderViewContent--two-third {
-  width: 75%;
-  padding: 0 32px;
+  width: 100%;
+
+  @include breakpoint($ipad) {
+    width: 75%;
+    padding: 0 32px;
+  }
 }
 
 .folderView {
@@ -17,10 +21,14 @@
   border-bottom: 1px solid #efefef;
   cursor: pointer;
   color: #000;
+  position: relative;
+  height: 64px;
+  overflow: hidden;
 }
 
 .folderView__el {
   display: flex;
+  height: 100%;
   justify-content: space-between;
   align-items: center;
   pointer-events: none;
@@ -50,7 +58,8 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  position: relative;
+  position: absolute;
+  top: 8px;
   right: -100%;
   transition: all .5s ease-in-out;
 
