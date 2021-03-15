@@ -1,10 +1,9 @@
 var Config = {
   projectName: 'formalms',
-  baseUrl: 'http://dev.formalms.org/feature/restyling-box-corsi',
-  apiUrl: 'http://dev.formalms.org/feature/restyling-box-corsi/',
-  shareUrl: 'http://dev.formalms.org/feature/restyling-box-corsi/',
-  assetsUrl:
-    'http://dev.formalms.org/feature/restyling-box-corsi/templates/standard/static/'
+  baseUrl: `${window.location.protocol}//${window.location.host}`,
+  apiUrl: `${window.location.protocol}//${window.location.host}/dev-lo-refactor-jt/appLms/index.php?r=`,
+  shareUrl: `${window.location.protocol}//${window.location.host}/`,
+  assetsUrl: 'http://formalms.local/static/'
 };
 
 module.exports = Config;
