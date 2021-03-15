@@ -52,7 +52,7 @@ class LoLmsController extends LmsController
         $responseData = [];
 
         $responseData['data'] = $this->getFolders($id_course, $id);
-        $responseData['currentState'] = $this->getCurrentState($id_course, 0);
+        $responseData['currentState'] = serialize([$this->getCurrentState($id_course, 0)]);
         echo json_encode($responseData);
 
         die();
@@ -96,7 +96,7 @@ class LoLmsController extends LmsController
                 echo json_encode([
                     "success" => true
                 ]);
-                die();   
+                die();
             }
         }
         echo json_encode([

@@ -69,11 +69,13 @@ class FolderTree {
         const elId = el.getAttribute('id');
         const getLoData = Config.apiUrl + 'lms/lo/get&id=' + elId;
         axios.get(getLoData).then( (response) => {
-          const child = Tree(response);
-          const childView = Content(response);
+          const child = Tree(response.data);
+          const childView = Content(response.data);
           const folderView = document.querySelector('.folderView');
           const inputParent = document.querySelector('#treeview_selected_organization');
+          const inputState = document.querySelector('#treeview_state_organization');
           inputParent.value = elId;
+          inputState.value = response.data.currentState;
           if (!el.classList.contains('ft-is-root')) {
             el.insertAdjacentHTML('afterend',child);
           }
