@@ -477,6 +477,7 @@ La chat si aprirà in una finestra di pop-up]]></key>
         <key id="configuration&amp;_COURSE_QUOTA" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Limite per il massimo di contenuti caricabili nel corso (in MB)]]></key>
         <key id="configuration&amp;_CURRENCY_SYMBOL" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Simbolo valuta (sarà mostrato all'utente)]]></key>
         <key id="configuration&amp;_CUSTOMER_HELP_EMAIL" attributes="" save_date="2017-03-15 12:09:35"><![CDATA[Email Help Desk]]></key>
+        <key id="configuration&amp;_CUSTOMER_HELP_NAME_FROM" attributes="" save_date="2017-03-15 12:09:35"><![CDATA[Nome da Help Desk]]></key>
         <key id="configuration&amp;_CUSTOMER_HELP_SUBJ_PFX" attributes="" save_date="2019-10-22 18:17:41"><![CDATA[Prefisso per oggetto email di help]]></key>
         <key id="configuration&amp;_CUSTOMER_HELP_SUBJ_PLACEHOLDER" attributes="" save_date="2019-05-29 10:31:20"><![CDATA[Oggetto email Help Desk]]></key>
         <key id="configuration&amp;_CUSTOM_FIELDS_MANDATORY_FOR_ADMIN" attributes="" save_date="2017-05-05 12:02:48"><![CDATA[Campi supplementari obbligatori]]></key>
@@ -524,6 +525,7 @@ La chat si aprirà in una finestra di pop-up]]></key>
         <key id="configuration&amp;_LIST_DB_UPGRADES" attributes="" save_date="2016-09-29 16:01:42"><![CDATA[Log script SQL eseguiti sul DB]]></key>
         <key id="configuration&amp;_MAGIC_QUOTES_GPC" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Configurazione di "magic_quotes_gpc"]]></key>
         <key id="configuration&amp;_MAIL_SENDER" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Mittente delle email di registrazione e della procedura automatica di recupero password]]></key>
+        <key id="configuration&amp;_MAIL_SENDER_NAME_FROM" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Nome mittente delle email di registrazione e della procedura automatica di recupero password]]></key>
         <key id="configuration&amp;_MAINTENANCE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Sito in manutenzione]]></key>
         <key id="configuration&amp;_MAINTENANCE_PW" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Password manutenzione]]></key>
         <key id="configuration&amp;_MAIN_OPTIONS" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Opzioni principali]]></key>
@@ -621,7 +623,9 @@ La chat si aprirà in una finestra di pop-up]]></key>
         <key id="configuration&amp;_SCO_DIRECT_PLAY" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Consenti l'utilizzo di link esterni per attivare su altri applicativi la visualizzazioni di capitoli di un pacchetto SCORM]]></key>
         <key id="configuration&amp;_SECURITY" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Configurazioni di sicurezza]]></key>
         <key id="configuration&amp;_SENDER_EVENT" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Mittente delle email di notifica]]></key>
+        <key id="configuration&amp;_USE_SENDER_ACLNAME" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Nome mittente delle mail di notifica]]></key>
         <key id="configuration&amp;_SEND_CC_FOR_SYSTEM_EMAILS" attributes="" save_date="2017-03-15 14:51:04"><![CDATA[Aggiungi i seguenti indirizzi in CC per tutte le email inviate dalla piattaforma]]></key>
+        <key id="configuration&amp;_SEND_CCN_FOR_SYSTEM_EMAILS" attributes="" save_date="2017-03-15 14:51:04"><![CDATA[Aggiungi i seguenti indirizzi in CCN per tutte le email inviate dalla piattaforma]]></key>
         <key id="configuration&amp;_SERVERINFO" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Configurazione del server]]></key>
         <key id="configuration&amp;_SERVER_ADDR" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Indirizzo del server]]></key>
         <key id="configuration&amp;_SERVER_ADMIN" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Email dell'amministratore del server]]></key>

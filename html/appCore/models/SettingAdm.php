@@ -410,10 +410,11 @@ class SettingAdm extends Model
 							$tree_names = $uma->getAllFolders(false);
 							$nodes = [];
 							foreach ($tree_names as &$node) {
-								$nodes[$node->idOrg] = addslashes($node->translation) ?: $node->code;
+								$node_name = addslashes($node->translation) ?: $node->code;
+								$nodes[$node->idOrg] = $node_name;
 							}
 							$nodes[0] = Lang::t('_SELECT_NODE', 'configuration');
-							ksort($nodes, true);
+							asort($nodes);
 
 							echo '<div id="' . $var_name . '_body" style="margin-top: 2rem;">
 								<h3>' . Lang::t('_' . strtoupper($var_name), 'configuration') . '</h3>
