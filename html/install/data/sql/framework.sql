@@ -2495,8 +2495,7 @@ INSERT INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size
 ('ignore_score', 'off', 'enum', 3, '0', 4, 16, 1, 0, ''),
 ('course_quota', '500', 'string', 255, '0', 4, 9, 1, 0, ''),
 ('currency_symbol', '€', 'string', 10, 'ecommerce', 4, 18, 1, 0, ''),
-('customer_help_email', '', 'string', 255, 'email_settings', 1, 9, 1, 0, ''),
-('customer_help_subj_pfx', '', 'string', 255, 'email_settings', 1, 10, 1, 0, ''),
+('ldap_user_string', '$user@domain2.domain1', 'string', 255, 'email_settings', 9, 4, 1, 0, ''),
 ('custom_fields_mandatory_for_admin', 'off', 'enum', 3, 'register', 3, 21, 1, 0, ''),
 ('defaultTemplate', 'standard', 'template', 255, '0', 1, 4, 1, 0, ''),
 ('default_language', 'italian', 'language', 255, '0', 1, 3, 1, 0, ''),
@@ -2518,8 +2517,6 @@ INSERT INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size
 ('ldap_port', '389', 'string', 5, '0', 9, 1, 1, 0, ''),
 ('ldap_server', '192.168.0.1', 'string', 255, '0', 9, 3, 1, 0, ''),
 ('ldap_used', 'off', 'enum', 3, '0', 9, 2, 1, 0, ''),
-('ldap_user_string', '$user@domain2.domain1', 'string', 255, '0', 9, 4, 1, 0, ''),
-('mail_sender', 'sample@localhost.localdomain', 'string', 255, 'email_settings', 1, 8, 0, 0, ''),
 ('maintenance', 'off', 'enum', 3, 'security', 8, 25, 0, 0, ''),
 ('maintenance_pw', 'manutenzione', 'string', 16, 'security', 8, 26, 0, 0, ''),
 ('mandatory_code', 'off', 'enum', 3, 'register', 3, 18, 1, 0, ''),
@@ -2569,7 +2566,13 @@ INSERT INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size
 ('sco_direct_play', 'on', 'enum', 3, '0', 8, 3, 1, 0, ''),
 ('sender_event', 'sample@localhost.localdomain', 'string', 255, 'email_settings', 1, 1, 1, 0, ''),
 ('use_sender_aclname', '', 'string', 255, 'email_settings', 1, 2, 1, 0, ''),
-('send_cc_for_system_emails', '', 'string', 255, 'email_settings', 1, 11, 1, 0, ''),
+('mail_sender', 'sample@localhost.localdomain', 'string', 255, 'email_settings', 1, 3, 0, 0, ''),
+('mail_sender_name_from', '', 'string', 255, 'email_settings', 1, 4, 0, 0, ''),
+('customer_help_email', '', 'string', 255, 'helpdesk', 1, 1, 1, 0, ''),
+('customer_help_name_from', '', 'string', 255, 'helpdesk', 1, 2, 1, 0, ''),
+('customer_help_subj_pfx', '', 'string', 255, 'helpdesk', 1, 3, 1, 0, ''),
+('send_cc_for_system_emails', '', 'string', 255, 'email_settings_cc', 1, 1, 1, 0, ''),
+('send_ccn_for_system_emails', '', 'string', 255, 'email_settings_cc', 1, 2, 1, 0, ''),
 ('session_ip_control', 'off', 'enum', 3, 'security', 8, 22, 1, 0, ''),
 ('sms_cell_num_field', '1', 'field_select', 5, '0', 11, 6, 1, 0, ''),
 ('sms_credit', '0', 'string', 20, '0', 1, 0, 1, 1, ''),
@@ -3102,15 +3105,15 @@ UPDATE `core_setting` SET `pack` = 'ecommerce' WHERE `core_setting`.`param_name`
 
 DELETE FROM `core_lang_text` WHERE `core_lang_text`.`id_text` = (SELECT clt.`id_text` FROM (SELECT * FROM `core_lang_text`) AS clt WHERE clt.`text_key` = "_ASK_FOR_TREE_COURSE_CODE");
 
-UPDATE `core_setting` SET `regroup` = '1' WHERE `core_setting`.`param_name` = 'mail_sender';
-UPDATE `core_setting` SET `regroup` = '1' WHERE `core_setting`.`param_name` = 'customer_help_email';
-UPDATE `core_setting` SET `regroup` = '1' WHERE `core_setting`.`param_name` = 'customer_help_subj_pfx';
-UPDATE `core_setting` SET `regroup` = '1' WHERE `core_setting`.`param_name` = 'send_cc_for_system_emails';
+/* UPDATE `core_setting` SET `regroup` = '1' WHERE `core_setting`.`param_name` = 'mail_sender'; */
+/* UPDATE `core_setting` SET `regroup` = '1' WHERE `core_setting`.`param_name` = 'customer_help_email'; */
+/* UPDATE `core_setting` SET `regroup` = '1' WHERE `core_setting`.`param_name` = 'customer_help_subj_pfx'; */
+/* UPDATE `core_setting` SET `regroup` = '1' WHERE `core_setting`.`param_name` = 'send_cc_for_system_emails'; */
 
-UPDATE `core_setting` SET `pack` = 'email_settings' WHERE `core_setting`.`param_name` = 'mail_sender';
-UPDATE `core_setting` SET `pack` = 'email_settings' WHERE `core_setting`.`param_name` = 'customer_help_email';
-UPDATE `core_setting` SET `pack` = 'email_settings' WHERE `core_setting`.`param_name` = 'customer_help_subj_pfx';
-UPDATE `core_setting` SET `pack` = 'email_settings' WHERE `core_setting`.`param_name` = 'send_cc_for_system_emails';
+/* UPDATE `core_setting` SET `pack` = 'email_settings' WHERE `core_setting`.`param_name` = 'mail_sender'; */
+/* UPDATE `core_setting` SET `pack` = 'email_settings' WHERE `core_setting`.`param_name` = 'customer_help_email'; */
+/* UPDATE `core_setting` SET `pack` = 'email_settings' WHERE `core_setting`.`param_name` = 'customer_help_subj_pfx'; */
+/* UPDATE `core_setting` SET `pack` = 'email_settings' WHERE `core_setting`.`param_name` = 'send_cc_for_system_emails'; */
 
 UPDATE `core_setting` SET `sequence` = '1' WHERE `core_setting`.`param_name` = 'page_title';
 UPDATE `core_setting` SET `sequence` = '2' WHERE `core_setting`.`param_name` = 'url';
@@ -3122,10 +3125,10 @@ UPDATE `core_setting` SET `sequence` = '2' WHERE `core_setting`.`param_name` = '
 
 UPDATE `core_setting` SET `sequence` = '6' WHERE `core_setting`.`param_name` = 'hteditor';
 UPDATE `core_setting` SET `sequence` = '7' WHERE `core_setting`.`param_name` = 'owned_by';
-UPDATE `core_setting` SET `sequence` = '8' WHERE `core_setting`.`param_name` = 'mail_sender';
-UPDATE `core_setting` SET `sequence` = '9' WHERE `core_setting`.`param_name` = 'customer_help_email';
-UPDATE `core_setting` SET `sequence` = '10' WHERE `core_setting`.`param_name` = 'customer_help_subj_pfx';
-UPDATE `core_setting` SET `sequence` = '11' WHERE `core_setting`.`param_name` = 'send_cc_for_system_emails';
+/* UPDATE `core_setting` SET `sequence` = '8' WHERE `core_setting`.`param_name` = 'mail_sender'; */
+/* UPDATE `core_setting` SET `sequence` = '9' WHERE `core_setting`.`param_name` = 'customer_help_email'; */
+/* UPDATE `core_setting` SET `sequence` = '10' WHERE `core_setting`.`param_name` = 'customer_help_subj_pfx'; */
+/* UPDATE `core_setting` SET `sequence` = '11' WHERE `core_setting`.`param_name` = 'send_cc_for_system_emails'; */
 
 UPDATE `core_setting` SET `regroup` = '8' WHERE `core_setting`.`param_name` = 'ttlSession';
 

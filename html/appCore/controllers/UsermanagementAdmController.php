@@ -1645,7 +1645,8 @@ class UsermanagementAdmController extends AdmController
 						$uinfo = Docebo::aclm()->getUser($idst, false);
 
 						$array_subst = array(
-							'[url]' => Get::site_url(),
+							'[url]' => getCurrentDomain($id) ?: Get::site_url(),
+							'[dynamic_link]' => getCurrentDomain($id) ?: Get::site_url(),
 							'[firstname]' => $uinfo[ACL_INFO_FIRSTNAME],
 							'[lastname]' => $uinfo[ACL_INFO_LASTNAME],
 							'[username]' => $uinfo[ACL_INFO_USERID]

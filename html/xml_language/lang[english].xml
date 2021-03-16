@@ -475,6 +475,7 @@
         <key id="configuration&amp;_COURSE_QUOTA" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Limit for the maximum total size of contents uploaded into the course (MB)]]></key>
         <key id="configuration&amp;_CURRENCY_SYMBOL" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Currency symbol (will be displayed at user side)]]></key>
         <key id="configuration&amp;_CUSTOMER_HELP_EMAIL" attributes="" save_date="2017-04-10 14:55:02"><![CDATA[Help Desk email]]></key>
+        <key id="configuration&amp;_CUSTOMER_HELP_NAME_FROM" attributes="" save_date="2017-03-15 12:09:35"><![CDATA[Name from Help Desk]]></key>
         <key id="configuration&amp;_CUSTOMER_HELP_SUBJ_PFX" attributes="" save_date="2019-10-24 10:42:45"><![CDATA[Prefix for help email subject]]></key>
         <key id="configuration&amp;_CUSTOMER_HELP_SUBJ_PLACEHOLDER" attributes="" save_date="2017-04-10 16:37:21"><![CDATA[Help Desk subject prefix]]></key>
         <key id="configuration&amp;_CUSTOM_FIELDS_MANDATORY_FOR_ADMIN" attributes="" save_date="2017-05-05 12:03:05"><![CDATA[Mandatory customfields]]></key>
@@ -522,6 +523,7 @@
         <key id="configuration&amp;_LIST_DB_UPGRADES" attributes="" save_date="2017-04-10 12:21:42"><![CDATA[DB SQL scripts log]]></key>
         <key id="configuration&amp;_MAGIC_QUOTES_GPC" attributes="" save_date="2015-09-30 15:32:22"><![CDATA[Configuration of "magic_quotes_gpc"]]></key>
         <key id="configuration&amp;_MAIL_SENDER" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Registrations and Lost passwords email sender]]></key>
+        <key id="configuration&amp;_MAIL_SENDER_NAME_FROM" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Sender name of registration emails and automatic password recovery procedure]]></key>
         <key id="configuration&amp;_MAINTENANCE" attributes="" save_date="2017-05-10 19:01:34"><![CDATA[Maintenance mode]]></key>
         <key id="configuration&amp;_MAINTENANCE_PW" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Maintenance Password]]></key>
         <key id="configuration&amp;_MAIN_OPTIONS" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Main options]]></key>
@@ -619,7 +621,9 @@
         <key id="configuration&amp;_SCO_DIRECT_PLAY" attributes="" save_date="2017-07-07 12:46:08"><![CDATA[Allow the usage of direct links from external sources to SCORM chapters (sco and asset)]]></key>
         <key id="configuration&amp;_SECURITY" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Security related]]></key>
         <key id="configuration&amp;_SENDER_EVENT" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Sender email address for alert messages]]></key>
+        <key id="configuration&amp;_USE_SENDER_ACLNAME" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Sender name from for alert messages]]></key>
         <key id="configuration&amp;_SEND_CC_FOR_SYSTEM_EMAILS" attributes="" save_date="2017-04-10 12:02:38"><![CDATA[Add the following address as CC for all the email sent by the platform]]></key>
+        <key id="configuration&amp;_SEND_CCN_FOR_SYSTEM_EMAILS" attributes="" save_date="2017-04-10 12:02:38"><![CDATA[Add the following address as CCN for all the email sent by the platform]]></key>
         <key id="configuration&amp;_SERVERINFO" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Server configuration]]></key>
         <key id="configuration&amp;_SERVER_ADDR" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Server address]]></key>
         <key id="configuration&amp;_SERVER_ADMIN" attributes="" save_date="2017-04-10 14:54:56"><![CDATA[Server admin email]]></key>
