@@ -1850,7 +1850,7 @@ function user_report ($idUser , $idTest , $id_param = false , $id_track = false 
     $reQuest = sql_query ($query_question);
     while (list($id_quest , $type_quest , $type_file , $type_class , $id_cat) = sql_fetch_row ($reQuest)) {
 
-        require_once (Docebo::inc (_folder_lms_ . '/modules/question/' . $type_file));
+        require_once (Forma::inc (_folder_lms_ . '/modules/question/' . $type_file));
 
         $quest_point_do = 0;
 
