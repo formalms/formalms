@@ -1,9 +1,9 @@
 import { Calendar } from '@fullcalendar/core';
-import itLocale from '@fullcalendar/core/locales/it';
 import dayGridPlugin from '@fullcalendar/daygrid';
+import initialLocaleCode from '@fullcalendar/core/locales/it';
 
 export const RenderDashBoardCalendar = () => {
-  const els = document.querySelectorAll('.js-dashboard-calendar')
+  const els = document.querySelectorAll('.js-dashboard-calendar');
 
   if (els.length) {
     for (let i = 0; i < els.length; i++) {
@@ -22,10 +22,9 @@ export const RenderDashBoardCalendar = () => {
         }
       }*/
 
-
       const calendar = new Calendar(els[i], {
         plugins: [dayGridPlugin],
-        locale: itLocale,
+        locale: initialLocaleCode,
         height: 'auto',
         eventSources: [
           {
@@ -150,6 +149,10 @@ export const RenderDashBoardCalendar = () => {
           renderPopup(item);
         }
       });
+
+      if (initialLocaleCode != window.lang) {
+        calendar.setOption('locale', window.lang);
+      }
 
       calendar.render();
     }

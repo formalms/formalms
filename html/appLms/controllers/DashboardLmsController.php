@@ -48,13 +48,17 @@ class DashboardLmsController extends LmsController
             $blocks = $this->model->getBlocksViewData($defaultLayout->getId());
         }
 
+        $langCode = sql_fetch_row(sql_query("SELECT lang_browsercode FROM %adm_lang_language WHERE lang_code = '" . getLanguage() . "'"))[0];
 
-        $this->render('dashboard',
+        $this->render(
+            'dashboard',
             [
                 'blocks' => $blocks,
                 'templatePath' => getPathTemplate(),
-                'dashboardLayoutId' => $defaultLayout->getId()
-            ], false,
+                'dashboardLayoutId' => $defaultLayout->getId(),
+                'lang' => $langCode,
+            ],
+            false,
             $blockPaths
         );
     }
