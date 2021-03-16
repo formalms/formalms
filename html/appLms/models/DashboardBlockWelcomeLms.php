@@ -52,7 +52,7 @@ class DashboardBlockWelcomeLms extends DashboardBlockLms
     {
         $data = $this->getCommonViewData();
         $acl_man = Docebo::user()->getAclManager();
-        $user = $acl_man->getUser(Docebo::user()->idst);
+        $user = $acl_man->getUser(Docebo::user()->idst, null);
         $data['data'] = [
             'firstname' => $user[2],
             'lastname' => $user[3],

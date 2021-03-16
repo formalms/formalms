@@ -14,6 +14,7 @@ defined("IN_FORMA") or die('Direct access is forbidden.');
 |   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
+require_once(_lms_ . '/lib/lib.middlearea.php');
 
 /**
  * Class DashboardBlockCertificatesLms
