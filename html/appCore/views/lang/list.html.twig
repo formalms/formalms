@@ -334,12 +334,40 @@
                 var title = item.data;
                 var searchPlaceholder = "{{ translate('_SEARCH', 'standard') }}";
                 var cell = $('.dataTables_scrollHeadInner .dataTable thead tr th:nth-child(' + (i + 1) +')')
-                cell.append('<br><input type="text" class="form-control input-sm" placeholder="' + searchPlaceholder + '" />');
+                if (i == 3) {
+                    var plugins = {{ plugins_ids|json_encode()|raw }};
+                    var selectPlugins = '<select class="form-control input-sm">';
+
+                    for (const [key, value] of Object.entries(plugins)) {
+                        var k = key != 0 ? value : '';
+                        selectPlugins += '<option value="' + k + '">' + value + '</option>';
+                    }
+                    selectPlugins += '</select>';
+                    cell.append('<br>' + selectPlugins);
+                } else if (i == 1) {
+                    var modules = {{ module_list|json_encode()|raw }};
+                    var selectModules = '<select class="form-control input-sm">';
+
+                    for (const [key, value] of Object.entries(modules)) {
+                        selectModules += '<option value="' + key + '">' + value + '</option>';
+                    }
+                    selectModules += '</select>';
+                    cell.append('<br>' + selectModules);
+                } else {
+                    cell.append('<br><input type="text" class="form-control input-sm" placeholder="' + searchPlaceholder + '" />');
+                }
                 var table = $($.fn.dataTable.tables(true)).DataTable();
                 table.columns.adjust();
         
                 cell.find('input').on('keyup', function () {
-                    console.log("AAAA")
+                    if (table.column(i).search() !== this.value ) {
+                        table
+                            .column(i)
+                            .search(this.value)
+                            .draw();
+                    }
+                });
+                cell.find('select').on('change', function () {
                     if (table.column(i).search() !== this.value ) {
                         table
                             .column(i)
