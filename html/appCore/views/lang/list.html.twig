@@ -299,6 +299,7 @@
                 url: 'ajax.adm_server.php?r=adm/lang/get',
             },
             paging: true,
+            pageLength: 25,
             searching: true,
             columns,
             dom: 'Bfrtip',
@@ -339,8 +340,7 @@
                     var selectPlugins = '<select class="form-control input-sm">';
 
                     for (const [key, value] of Object.entries(plugins)) {
-                        var k = key != 0 ? value : '';
-                        selectPlugins += '<option value="' + k + '">' + value + '</option>';
+                        selectPlugins += '<option value="' + key + '">' + value + '</option>';
                     }
                     selectPlugins += '</select>';
                     cell.append('<br>' + selectPlugins);
