@@ -303,7 +303,9 @@ class LangAdm extends Model
                         $qtxt .= " AND tad.translation_text LIKE  '%" . $v . "%' ";
                         break;
                     case "plugin_name":
-                        $qtxt .= " AND p.name LIKE  '%" . $v . "%' ";
+                        if ($v) {
+                            $qtxt .= " AND p.plugin_id = $v";
+                        }
                         break;
                     default:
                         $qtxt .= " AND $k LIKE  '%" . $v . "%' ";
