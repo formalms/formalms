@@ -1291,8 +1291,6 @@ public function addClassroom($params) {
         $model = new ClassroomAlms($course_id, $id_date);
 
         $res =false;
-            
-        
         
         $array_day = $model->classroom_man->getDateDay($id_date);
         
@@ -1303,15 +1301,6 @@ public function addClassroom($params) {
         $array_day[$id_day]['classroom'] = $params['edition_classroom'];
         
         
-        $query = "update learning_course_date_day set classroom='' , date_begin=";
-
-        /*
-        $classroom_man = new DateManager();
-        $res=$classroom_man-> ($id_date, $array_day);
-        */
-        
-        $res = false;
-        
         if($res){
             $output['success']=true;
             $output['id_date']=$id_date;
@@ -1319,7 +1308,7 @@ public function addClassroom($params) {
         }
         else {
             $output['success']=false;
-            $output['message']='Error updating day '.$query;
+            $output['message']='Error updating day ';
         }
 
         return $output;
