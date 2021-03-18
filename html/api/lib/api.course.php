@@ -1264,15 +1264,13 @@ public function addClassroom($params) {
         
         $output =array();
         
-        $id_day =(is_int($params['id_day']) ? $params['id_day'] : 0);
-        
-   
-        if (!is_int($id_day)) {
+        $id_day = (isset($params['id_day']) ? $params['id_day'] : 0);
+
+        if (empty($id_day)) {
             $output['success']=false;
             $output['message']='Missing ID Day: '.$params['id_day']." - ".$params['id_day'];
             return $output;
         }
-      
         
         $id_date =(isset($params['id_date']) ? $params['id_date'] : '');
         
@@ -1304,10 +1302,15 @@ public function addClassroom($params) {
         $array_day[$id_day]['date_end'] = substr(Format::dateDb($params['edition_date_selected'], 'date'),0,10).' '.$params['edition_e_hours'].':'.$params['edition_e_minutes'].':00';
         $array_day[$id_day]['classroom'] = $params['edition_classroom'];
         
-
         
+        $query = "update learning_course_date_day set classroom='' , date_begin=";
+
+        /*
         $classroom_man = new DateManager();
-        $res=$classroom_man->insDateDay($id_date, $array_day);
+        $res=$classroom_man-> ($id_date, $array_day);
+        */
+        
+        $res = false;
         
         if($res){
             $output['success']=true;
@@ -1316,7 +1319,7 @@ public function addClassroom($params) {
         }
         else {
             $output['success']=false;
-            $output['message']='Error updating day ';
+            $output['message']='Error updating day '.$query;
         }
 
         return $output;
