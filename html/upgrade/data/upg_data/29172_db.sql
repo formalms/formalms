@@ -15,7 +15,7 @@ VALUES
 ('ignore_score', 'off', 'enum', 3, '0', 4, 16, 1, 0, '');
 
 -- setting email
-UPDATE `core_setting` SET `pack` = 'email_settings', `regroup` = 1, `sequence` = 1,  WHERE `param_name` = 'sender_event';
+UPDATE `core_setting` SET `pack` = 'email_settings', `regroup` = 1, `sequence` = 1  WHERE `param_name` = 'sender_event';
 
 INSERT INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size`, `pack`, `regroup`, `sequence`, `param_load`, `hide_in_modify`, `extra_info`)
 VALUES
