@@ -476,6 +476,7 @@ class LangAdm extends Model
 		SELECT COUNT(*)
 		FROM  %adm_lang_text AS lt
 		LEFT JOIN %adm_lang_translation AS ta ON ( lt.id_text = ta.id_text AND ta.lang_code = '" . $lang_code . "')
+        LEFT JOIN core_plugin AS p ON ( lt.plugin_id = p.plugin_id )
 		WHERE 1 ";
 
         if ($search) {
@@ -488,7 +489,9 @@ class LangAdm extends Model
                         $qtxt .= " AND tad.translation_text LIKE  '%" . $v . "%' ";
                         break;
                     case "plugin_name":
-                        $qtxt .= " AND p.name LIKE  '%" . $v . "%' ";
+                        if ($v) {
+                            $qtxt .= " AND p.plugin_id = $v";
+                        }
                         break;
                     default:
                         $qtxt .= " AND $k LIKE  '%" . $v . "%' ";
@@ -496,7 +499,7 @@ class LangAdm extends Model
                 }
             }
         }
-        
+
         if ($text != false && $only_empty == false) $qtxt .= " AND ta.translation_text LIKE '%" . $text . "%' ";
         if ($only_empty != false) $qtxt .= " AND ta.translation_text IS NULL";
 
