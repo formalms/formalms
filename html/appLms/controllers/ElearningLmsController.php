@@ -143,124 +143,6 @@ class ElearningLmsController extends LmsController
         }
     }
 
-    public function newTask()
-    {
-        $model = new ElearningLms();
-
-        $filter_text = Get::req('filter_text', DOTY_STRING, '');
-        $filter_year = Get::req('filter_year', DOTY_INT, 0);
-        $filter_type = Get::req('filter_type', DOTY_STRING, '');
-        $filter_cat = Get::req('filter_cat', DOTY_STRING, '');
-
-
-        $conditions = [
-            'cu.iduser = :id_user',
-            'cu.status = :status'
-        ];
-
-        $params = [
-            ':id_user' => (int)Docebo::user()->getId(),
-            ':status' => _CUS_SUBSCRIBED
-        ];
-
-        if (!empty($filter_text)) {
-            $conditions[] = "(c.code LIKE '%:keyword%' OR c.name LIKE '%:keyword%')";
-            $params[':keyword'] = $filter_text;
-        }
-
-        if (!empty($filter_year)) {
-            $conditions[] = "(cu.date_inscr >= ':year-00-00 00:00:00' AND cu.date_inscr <= ':year-12-31 23:59:59')";
-            $params[':year'] = $filter_year;
-        }
-
-
-        if (!empty($filter_cat)) {
-            $conditions[] = '(c.idCategory in (' . $filter_cat . ') )';
-        }
-
-        // filtro per tipo corso elearning
-        if (empty($filter_type) || $filter_type === 'elearning' || $filter_type === 'all') {
-            $courselist = $model->findAll($conditions, $params);
-            $filter_type = empty($filter_type) ? 'elearning' : $filter_type;
-        }
-
-        //check courses accessibility
-        foreach ($courselist as $key => $courseListItem) {
-            $courselist[$key]['can_enter'] = Man_Course::canEnterCourse($courselist[$key]);
-            $courselist[$key]['course_type'] = 'elearning';
-        }
-
-
-        // CLASSROOM
-        $modelClassroom = new ClassroomLms();
-
-        $filter_text = Get::req('filter_text', DOTY_STRING, '');
-        $filter_year = Get::req('filter_year', DOTY_INT, 0);
-
-        $conditions = [
-            'cu.iduser = :id_user',
-            'cu.status = :status'
-        ];
-
-        $params = [
-            ':id_user' => (int)Docebo::user()->getId(),
-            ':status' => _CUS_SUBSCRIBED
-        ];
-
-        if (!empty($filter_text)) {
-            $conditions[] = "(c.code LIKE '%:keyword%' OR c.name LIKE '%:keyword%')";
-            $params[':keyword'] = $filter_text;
-        }
-
-
-        if (!empty($filter_cat)) {
-            $conditions[] = '(c.idCategory in (' . $filter_cat . ') )';
-        }
-
-        if (!empty($filter_year)) {
-            $clist = $modelClassroom->getUserCoursesByYear(Docebo::user()->getId(), $filter_year);
-            if ($clist !== false) {
-                $conditions[] = 'cu.idCourse IN (' . implode(',', $clist) . ')';
-            }
-        }
-
-        $cp_courses = $modelClassroom->getUserCoursePathCourses(Docebo::user()->getIdst());
-        if (!empty($cp_courses)) {
-            $conditions[] = 'cu.idCourse NOT IN (' . implode(',', $cp_courses) . ')';
-        }
-
-        if ($filter_type === 'classroom' || $filter_type === 'all') {
-            $courselistClassroom = $modelClassroom->findAll($conditions, $params);
-        }
-
-
-        //check courses accessibility
-        $keys = [];
-        foreach ($courselistClassroom as $key => $courselistClassroomItem) {
-            $courselistClassroom[$key]['can_enter'] = Man_Course::canEnterCourse($courselistClassroom[$key]);
-            $keys[] = $key;
-        }
-        // fine classroom
-
-
-        require_once(_lms_ . '/lib/lib.middlearea.php');
-        $ma = new Man_MiddleArea();
-        $this->render('courselist', [
-            'path_course' => $this->path_course,
-            'courselist' => $courselist,
-            'use_label' => $ma->currentCanAccessObj('tb_label'),
-            'keyword' => $filter_text,
-            'display_info' => $this->_getClassDisplayInfo($keys),
-            'courselistClassroom' => $courselistClassroom,
-            'course_state' => "new_task",
-            'filter_type' => $filter_type
-        ]);
-    }
-
-
-                
-    
-
 
     public function allTask()
     {
@@ -331,14 +213,54 @@ class ElearningLmsController extends LmsController
         }
 
         $courselist = $model->findAll($conditions, $params);
-
-
-        //check courses accessibility
-        $keys = array_keys($courselist);
-        for ($i = 0; $i < count($keys); $i++) {
-            $courselist[$keys[$i]]['can_enter'] = Man_Course::canEnterCourse($courselist[$keys[$i]]);
+        
+        foreach ($courselist as $k => $course_array) {
+            $courselist[$k]['can_enter'] = Man_Course::canEnterCourse($courselist[$k]);
+            if ( strlen($course_array['name']) >=50 ){
+                $courselist[$k]['tooltipClass'] =  'has-forma-tooltip';
+                $courselist[$k]['tooltipElement'] =  '<div class="forma-tooltip">'.$course_array['name'].'</div>';
+                $courselist[$k]['name'] = substr($course_array['name'], 0, 50) . '...';                
+            } else {
+                $courselist[$k]['tooltipClass'] =  '';
+                $courselist[$k]['tooltipElement'] =  '';
+            }
+            if (strlen($course_array['nameCategory']) > 1 )
+                $courselist[$k]['nameCategory'] = substr($course_array['nameCategory'], strripos($course_array['nameCategory'],'/')+1);
+            $courselist[$k]['level_icon'] = $course_array['level'];
+            $courselist[$k]['level_text'] = $this->levels[$course_array['level']]; 
+            $courselist[$k]['userCanUnsubscribe'] = $this->userCanUnsubscribe($course_array);
+            
+            $date_closing = getDate(strtotime(Format::date($course_array['date_end'], 'date'))); 
+            if ( $date_closing['year'] > 0 ) {
+                $courselist[$k]['dateClosing_year'] = $date_closing['year'];
+                $courselist[$k]['dateClosing_month'] = Lang::t('_MONTH_'.substr('0'.$date_closing['mon'], -2), 'standard');
+                $courselist[$k]['dateClosing_day'] = $date_closing['mday'];
+            }
+           $courselist[$k]['img_course'] = $course_array['img_course'] ?  $this->path_course . $course_array['img_course'] : Get::tmpl_path() . 'images/course/course_nologo.png';
+           if ($course_array['course_type'] == 'classroom' ) {
+                $courselist[$k]['editions'] =  $model->_getClassDisplayInfo($k, $courselist[$k]);
+           } else  {
+               $courselist[$k]['editions'] = false;
+           }
+            $courselist[$k]['name'] = Util::purge($courselist[$k]['name']);
+            $courselist[$k]['rel'] =  ($courselist[$k]['direct_play'] == 1 && 
+                                       $courselist[$k]['level'] <= 3 && 
+                                       $courselist[$k]['first_lo_type'] == 'scormorg' ?  "lightbox" : '');
+           
+                 
         }
-
+        switch ($filter_type) {
+            case "elearning":
+                $ft = Lang::t('_ELEARNING', 'catalogue');
+            case "classroom":
+                $ft = Lang::t('_CLASSROOM_COURSE', 'cart');
+            case "all":
+                $ft =  Lang::t('_ALL_COURSES', 'standard');
+        }
+        
+        
+        
+        
 
         require_once(_lms_ . '/lib/lib.middlearea.php');
         $ma = new Man_MiddleArea();
@@ -348,9 +270,8 @@ class ElearningLmsController extends LmsController
             'keyword' => $filter_text,
             'ustatus' => $this->ustatus,
             'levels' => $this->levels,
-            'display_info' => $this->_getClassDisplayInfo($keys),
             'stato_corso' => 'all_task',
-            'filter_type' => $filter_type,
+            'filter_type' => $ft,
             'current_user' => $params[':id_user']
         ]);
     }
@@ -459,48 +380,27 @@ class ElearningLmsController extends LmsController
         Util::jump_to($jump_url);
     }
 
-
-    protected function _getClassDisplayInfo($courses)
+    
+    
+    private function userCanUnsubscribe(&$course)
     {
-        $model = new ClassroomLms();
-        $class_info = $model->getUserEditionsInfo(Docebo::user()->getIdst(), $courses);
-        if (empty ($class_info)) return [];
+        $now = new DateTime();
 
-        $dm = new DateManager();
-        $status_arr = $dm->getStatusForDropdown();
+        $courseUnsubscribeDateLimit = (null !== $course['course_unsubscribe_date_limit'] ? DateTime::createFromFormat('Y-m-d H:i:s', $course['course_unsubscribe_date_limit']) : DateTime::createFromFormat('Y-m-d', '2199-01-01'));
+        $dateUnsubscribeDateLimit = (null !== $course['date_unsubscribe_date_limit'] ? DateTime::createFromFormat('Y-m-d H:i:s', $course['date_unsubscribe_date_limit']) :
+         DateTime::createFromFormat('Y-m-d', '2199-01-01'));
 
-        $output = [];
-        /** @var int $id_course @var array $classrooms */
-        foreach ($class_info as $id_course => $classrooms) {
-            $output[$id_course] = [];
-            foreach ($classrooms as $id_classroom => $classroom) {
-                if (!isset($output[$id_course][$id_classroom])) {
-                    $output[$id_course][$id_classroom] = new stdClass();
-                    $output[$id_course][$id_classroom]->code = $classroom->code;
-                    $output[$id_course][$id_classroom]->name = $classroom->name;
-                    $output[$id_course][$id_classroom]->location = $classroom->location;
-                    $output[$id_course][$id_classroom]->enrolled = $classroom->enrolled;
-                    $output[$id_course][$id_classroom]->status = $status_arr[$classroom->status];
-                    $output[$id_course][$id_classroom]->date_min = $classroom->date_min;
-                    $output[$id_course][$id_classroom]->date_max = $classroom->date_max;
+        if (((int)$course['auto_unsubscribe'] == 2 || (int)$course['auto_unsubscribe'] == 1) && ($now < $courseUnsubscribeDateLimit || $now < $dateUnsubscribeDateLimit)) {
 
-                    if (property_exists($classroom, 'date_info')) {
-                        $output[$id_course][$id_classroom]->date_info = $classroom->date_info; // (array)
-                    } else {
-                        $output[$id_course][$id_classroom]->date_info = false;
-                    }
-                }
-
-                if (!property_exists($output[$id_course][$id_classroom], 'start_date')) $output[$id_course][$id_classroom]->start_date = $classroom->date_begin;
-                if (!property_exists($output[$id_course][$id_classroom], 'end_date')) $output[$id_course][$id_classroom]->end_date = $classroom->date_end;
-                if ($classroom->date_end > $output[$id_course][$id_classroom]->end_date) $output[$id_course][$id_classroom]->end_date = $classroom->date_end;
-                if ($classroom->date_begin < $output[$id_course][$id_classroom]->start_date) $output[$id_course][$id_classroom]->start_date = $classroom->date_begin;
-            }
+            return true;
         }
 
-
-        return $output;
+        return false;
     }
+    
+    
+    
+    
 
 
 }

@@ -1,0 +1,243 @@
+<script language="javascript">
+    function confirmDialog(title, id_course, id_date) {
+        closeAllDatesPopup(id_course);
+        $('<div></div>').appendTo('body')
+            .html("<div><h6>{{ translate('_SELF_UNSUBSCRIBE', 'course') }}</h6></div>")
+            .dialog({
+                modal: true,
+                title: title,
+                autoOpen: true,
+                width: '200',
+                height: '150',
+                resizable: false,
+                buttons: {
+                    {{ translate('_CONFIRM', 'standard') }}:
+
+                        function() {
+                            var posting = $.get(
+                                'ajax.server.php', {
+                                    r: 'elearning/self_unsubscribe',
+                                    id_course: id_course,
+                                    id_date: id_date
+                                }
+                            );
+                            posting.done(function(responseText) {
+                                var ft = $("#course_search_filter_text").val();
+                                var ctype = $("#course_search_filter_type").selectpicker().val();
+                                var category = $('#course_search_filter_cat').selectpicker().val();
+                                var cyear = $("#course_search_filter_year").selectpicker().val();
+                                var json_status = $('.js-label-menu-filter.selected').attr('data-value');
+                                $("#div_course").html("<br><p align='center'><img src='{{ evalPhp('Layout::path()') }}images/standard/loadbar.gif'></p>");
+                               var posting = $.get('ajax.server.php?r=elearning/all&rnd={{ date().timestamp }}&filter_text=' + ft + '&filter_type=' + ctype + '&filter_cat=' + category + '&filter_status=' + json_status + '&filter_year=' + cyear, {});
+                                posting.done(function(responseText) {
+                                    $("#div_course").html(responseText);
+                                });
+                            });
+                            posting.fail(function() {
+                                alert('unsubscribe failed')
+                            })
+                            $(this).dialog("close");
+                        }
+
+                        ,
+                    {{ translate('_UNDO', 'standard') }}:
+
+                        function() {
+                            $(this).dialog("close");
+                        }
+                },
+                open: function(event, ui) {
+                    $(".ui-dialog-titlebar-close", ui.dialog | ui).hide();
+                },
+                close: function(event, ui) {
+                    $(this).remove();
+                }
+            });
+    }
+
+
+    function openAllDatesPopup($id) {
+        $('*[data-overlay="course-' + $id + '"]').fadeIn();
+    }
+
+    function closeAllDatesPopup($id) {
+        $('*[data-overlay="course-' + $id + '"]').fadeOut();
+    }
+</script>
+
+
+<link rel="shortcut icon" href="../favicon.ico">
+
+
+<div id='container1_{{ course_state }}'>
+    <h1 class="page-header col-xs-12"><strong> {{filter_type}} </strong></h1>
+    <div class="clearfix row" id='mia_area_{{stato_corso}}'>
+        {% if courselist is empty %}
+            <div class="col-xs-12">
+        {% block emptycourselist %} <p>{{ translate('_NO_CONTENT', 'standard') }}</p> {% endblock %}
+            </div>    
+       {% endif %}
+     
+        {% for course in courselist %}    
+            <div class="col-xs-12 col-md-4 col-lg-3 mycourses-list">
+                <div class="course-box" {% if course.tooltipClass != '' %}  {{ 'style="overflow:visible"' }} {% endif %}  ?>
+                    <div class="course-box__item  {{ course.tooltipClass }}">  
+                       <div class="course-box__title icon--filter-{{ course.user_status }}">
+                        {% block title %}     {{ course.name }}       {% endblock%}
+                        </div>
+                        {{ course.tooltipElement }} 
+                    </div>
+                    <div class="course-box__item course-box__item--no-padding">
+                      {% block courseimage %} 
+                       {% if course.use_logo_in_courselist %} 
+                            <div class="course-box__img" style="background-image: url( {{ course.img_course }})">
+                       {% else %}
+                            <div class="course-box__img">
+                       {% endif %}             
+                            <div class="course-box__img-title">
+                            {{ course.nameCategory }}
+                            </div>
+                            </div>
+                            </div>
+                      {% endblock %}
+                            <div class="course-box__item">
+                             {% block role %}  
+                              <div class="course-box__owner course-box__owner--{{ course.level_icon }}">
+                                  {{ course.level_text }}   
+                              </div> 
+                             {% endblock %}
+
+                                {% if (course.userCanUnsubscribe or course.course_demo ) and course.course_type == 'elearning' %} 
+                                       
+                                    <div class="course-box__options dropdown pull-right">
+                                        <div class="dropdown-toggle" id="courseBoxOptions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                            <i class="glyphicon glyphicon-option-horizontal"></i>
+                                        </div>
+                                             
+                                        <ul class="dropdown-menu" aria-labelledby="courseBoxOptions">
+                                            {% if course.userCanUnsubscribe %}  
+                                              {% block unsubscribe %}
+                                                <li>
+                                                   <a href="javascript:confirmDialog('{{ course.name }}', {{ course.idCourse }})">{{ translate('_SELF_UNSUBSCRIBE', 'course') }}</a>
+                                                </li>
+                                              {% endblock %} 
+                                            {% endif %}
+                                                       
+                                            {% if course.course_demo %}  
+                                             {% block demo %}
+                                                <li>
+                                                  <a href="index.php?r=catalog/downloadDemoMaterial&amp;course_id={{ course.idCourse }}"> {{ translate('_COURSE_DEMO', 'course') }}</a>
+                                                </li>
+                                             {% endblock %} 
+                                            {% endif %}
+                                        </ul>
+                                    </div>
+                                {% endif %}   
+
+                                <div class="course-box__desc">
+                               {% block coursedesc %} 
+                                {{ course.box_description }} 
+                               {% endblock %}
+                                </div>
+                            </div>
+
+                            
+                               {% if course.dateClosing_year > 0 %}
+                                <div class="course-box__item course-box__item--half">
+                                    <div class="course-box__date-text">
+                                      {% block closingdate %}
+                                        <span>{{ translate('_CLOSING_DATA', 'course') }}</span>:
+                                       {{ course.dateClosing_day}} &nbsp; {{ course.dateClosing_month }} 
+                                        &nbsp;{{ course.dateClosing_year }} 
+                                      {% endblock %}
+                                    </div>
+                                </div>
+                               {% endif %}
+
+
+                            <div class="course-box__item course-box__item{% if course.dateClosing_year > 0 %} {{ --half }} {% endif %}">
+                                {% if course.can_enter.can %}                                                      
+                                   {% block entercourse %}
+                                    <a class="forma-button forma-button--orange-hover forma-button--full" title="{{ course.name }}" href="index.php?modname=course&amp;op=aula&amp;idCourse={{ course.idCourse }} " rel= {{ course.rel }}>
+                                        <span class="forma-button__label"> {{ translate('_USER_STATUS_ENTER', 'catalogue') }}</span>
+                                    </a>   
+                                   {% endblock %}
+                                {% else %}
+                                   {% block enterdisabled %}  
+                                    <a class="forma-button forma-button--disabled" href="javascript:void(0);">
+                                        <span class="forma-button__label">
+                                            {{ translate('_DISABLED', 'course') }}
+                                        </span>
+                                    </a>       
+                                   {% endblock %}
+                                {% endif %}
+                            </div>
+
+                            <div class="course-box__extraInfo">
+                                {% if (course.course_type == 'classroom' and course.editions|length) > 0 %}
+                                        <div class="course-box__next">
+                                    {% block nextlesson %} 
+                                      {{ translate('_NEXT_LESSON', 'course') }}<br> {{ course.next_lesson }}
+                                    {% endblock %}
+                                        </div>
+                               
+
+                                        <div class="course-box__allDates">
+                                           <a href="javascript:;" onclick="openAllDatesPopup({{ course.idCourse }})">{{ translate('_SHOW_ALL_DATES', 'course') }}</a>
+                                                                                                                
+                                            <div class="show-all-dates-popup" data-overlay="course-{{ course.idCourse }}">
+                                                <div id="pop_up_container" class="yui-module yui-overlay yui-panel">
+                                                    <a class="container-close" href="javascript:;" onclick="closeAllDatesPopup({{ course.idCourse }})"></a>
+                                                    <div class="hd" id="pop_up_container_h">{{ course.name }}</div>
+                                                    <div class="bd">
+                                                        <div class="edition_container">
+                                                            <table class="edition_table">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>{{ translate('_DAY', 'course') }}</th>
+                                                                        <th>{{ translate('_HOUR_BEGIN', 'course') }}</th>
+                                                                        <th>{{ translate('_HOUR_END', 'course') }}</th>
+                                                                        <th>{{ translate('_LOCATION_INFO', 'classroom') }}</th>  
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    {% for days in course.editions %} 
+                                                                       <tr><td colspan=4>{{ translate('_EDITION') }}:&nbsp; {{ days.name }}<td></tr> 
+                                                                       {% if course.userCanUnsubscribe %}    
+                                                                            <tr><td colspan=4><a href="javascript:confirmDialog(\''.{{ course.name }}.'\','.{{ course.idCourse }}.','.{{ id_edition }}.')">'.{{ translate('_SELF_UNSUBSCRIBE', 'course') }}.'</a><td></tr>
+                                                                       {% endif %}  
+                                                                        {% for day in days.days%}  
+                                                                                <tr> 
+                                                                                 {% if day.day in course.next_lesson %}
+                                                                                    
+                                                                                    <td><b>{{ day.day}}</b></td> 
+                                                                                    <td><b>{{ day.begin}}</b></td>
+                                                                                    <td><b>{{ day.end}}</b></td>
+                                                                                    <td><b>{{ day.classroom}}</b></td>
+                                                                                    
+                                                                                 {% else %} 
+                                                                                     
+                                                                                    <td>{{ day.day}}</td> 
+                                                                                    <td>{{ day.begin}}</td>
+                                                                                    <td>{{ day.end}}</td>
+                                                                                    <td>{{ day.classroom}}</td>
+                                                                                 {% endif %}   
+                                                                                </tr>
+                                                                        {% endfor %}  
+                                                                    {% endfor %}
+                                                             
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>    
+                                {% endif %}
+                            </div>
+                    </div>
+                </div>
+       {% endfor%}
+            </div>
+    </div>
+</div>
