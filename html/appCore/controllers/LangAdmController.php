@@ -419,8 +419,11 @@ class LangAdmController extends AdmController
 
         $start_index = Get::req('start', DOTY_INT, 0);
         $results = Get::req('length', DOTY_MIXED, Get::sett('visuItem', 250));
-        $sort = Get::req('sort', DOTY_MIXED, 'text_module');
-        $dir = Get::req('dir', DOTY_MIXED, 'asc');
+        $sort = $dir = null;
+        if ($order = Get::req('order', DOTY_MIXED)) {
+            $sort = $order[0]['column'];
+            $dir = $order[0]['dir'];
+        }
         $lang_code = Get::req('lang_code', DOTY_ALPHANUM, false);
         $lang_code_diff = Get::req('lang_code_diff', DOTY_ALPHANUM, false);
 
