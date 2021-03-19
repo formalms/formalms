@@ -277,6 +277,54 @@ class ElearningLms extends Model
 		}
 		return $output;
 	}
+    
+    
+    public function _getClassDisplayInfo($id_course, &$course_array)
+    {
+        require_once(_lms_.'/lib/lib.date.php');
+        $dm = new DateManager();
+        $cl = new ClassroomLms();
+        $course_editions =$cl->getUserEditionsInfo(Docebo::user()->idst,$id_course );
+        $out = [];
+        $course_array['next_lesson']  = '-';
+        $next_lesson_array = [];
+        $currentDate = new DateTime();   
+             
+        // user can be enrolled in more than one edition (as a teacher or crazy student....)
+        foreach ($course_editions[$id_course] as $id_date => $obj_data ) {
+            // skip if course if over or not available
+            $end_course = New DateTime(Format::date($obj_data -> date_max, 'datetime'));
+            if ($end_course > $currentDate && $obj_data -> status == 0  ) {   
+                $out[$id_date]['code'] = $obj_data -> code;
+                $out[$id_date]['name'] = $obj_data -> name;
+                $out[$id_date]['date_begin'] = $obj_data -> date_min;
+                $out[$id_date]['date_end'] = $obj_data -> date_max;
+                $array_day =  $dm->getDateDayDateDetails($obj_data->id_date);
+
+                foreach ($array_day as $id => $day) {
+                    $out[$id_date]['days'][$id]['classroom'] = $day['classroom'];
+                    $out[$id_date]['days'][$id]['day'] = Format::date($day['date_begin'], 'date');
+                    $out[$id_date]['days'][$id]['begin'] = Format::date($day['date_begin'], 'time');
+                    $out[$id_date]['days'][$id]['end'] = Format::date($day['date_end'], 'time');
+                    $next_lesson_array[$id_date.','.$id] = New DateTime(Format::date($day['date_begin'], 'datetime'));
+                }
+            }    
+
+        }
+        
+        // calculating what's next lession will be; safe mode in case of more editions with different days
+        if (count($next_lesson_array > 0)) {
+            asort($next_lesson_array);
+            foreach ($next_lesson_array as $k => $v) {
+                if ( $v > $currentDate ) {
+                    $j = explode(',', $k);
+                    $course_array['next_lesson'] = $out[$j[0]]['days'][$j[1]]['day'].' '.$out[$j[0]]['days'][$j[1]]['begin'];
+                    break;
+                }           
+            }
+        }    
+       return $out;
+    }
 
 
 	private function getCategory($idCat)
