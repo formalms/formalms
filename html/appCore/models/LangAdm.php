@@ -319,16 +319,19 @@ class LangAdm extends Model
 
         $dir = $this->clean_dir($dir);
         switch ($sort) {
-            case "text_key":
+            case "1":
+                $qtxt .= " ORDER BY lt.text_module " . $dir . ", ta.translation_text ASC";
+                break;
+            case "2":
                 $qtxt .= " ORDER BY lt.text_key " . $dir . ", ta.translation_text ASC";
                 break;
-            case "translation_text":
+            case "4":
                 $qtxt .= " ORDER BY ta.translation_text " . $dir . "";
                 break;
-            case "translation_text_diff":
+            case "5":
                 $qtxt .= " ORDER BY translation_text_diff " . $dir . "";
                 break;
-            case "save_date":
+            case "6":
                 $qtxt .= " ORDER BY ta.save_date " . $dir . "";
                 break;
             default:
