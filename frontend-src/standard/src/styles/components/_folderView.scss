@@ -70,7 +70,8 @@
   }
 }
 
-.folderView__action {
+.folderView__action,
+.folderView__button {
   background: transparent;
   cursor: pointer;
   width: 48px;
@@ -90,6 +91,12 @@
     border-color: #ff6c00;
     transition: all .2s ease-in-out;
   }
+}
+
+.folderView__button {
+  position: absolute;
+  top: 8px;
+  right: 0;
 }
 
 .fv-is-play {
@@ -150,4 +157,8 @@
 
 .fv-is-poll {
   background-image: url('images/folderView/icon-survey.svg');
+}
+
+.fv-is-menu {
+  background-image: url('images/folderView/icon-dots.svg');
 }

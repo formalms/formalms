@@ -2,7 +2,7 @@
     {{ Form_openForm('orgshow', 'index.php?modname=storage&op=display', false, 'POST') }}
     <input type="hidden" id="treeview_selected_organization" name="treeview_selected_organization" value="0">
     <input type="hidden" id="treeview_state_organization" name="treeview_state_organization" value="">
-    <section class="folderTreeView">
+    <section class="folderTreeView js-folder-tree-view">
         <aside class="folderTreeContent folderTreeContent--one-third">
             <div class="folderTree__actions">
                 <input type="submit"
@@ -19,7 +19,7 @@
                         value="">
             </div>
             <nav class="folderTree js-folder-tree">
-                <ul class="folderTree__ul js-folder-tree-view js-folder-root">
+                <ul class="folderTree__ul js-folder-root">
                     <li id="0" class="folderTree__li ft-is-parent">
                         <button id="0"
                                 type="button"
@@ -27,7 +27,7 @@
                         <ul class="folderTree__ul js-sortable-tree">
                             {% for el in data %}
                                 {% if el.is_folder %}
-                                    <li id="{{ el.id }}" class="folderTree__li {% if el.childCount > 0 %}ft-is-parent{% endif %}">
+                                    <li id="{{ el.id }}" class="folderTree__li {% if el.childCount > 0 %}ft-is-parent{% endif %} is-droppable" draggable="true">
                                         <button id="{{ el.id }}"
                                                 type="button"
                                                 class="folderTree__link ft-is-folder {% if el.childCount > 0 %}ft-has-child{% endif %} is-dropzone"><span>{{ el.title }}</span></button>
@@ -61,13 +61,14 @@
                        value="">
             </div>
             <div class="folderView">
-                <ul class="folderView__ul js-sortable-view js-folder-tree-view">
+                <ul class="folderView__ul js-sortable-view">
                     {% for el in data %}
-                         <li id="{{ el.id }}" data-id="{{ el.id }}" class="folderView__li {% if el.type %}is-file{% else %}is-dropzone{% endif %} js-fv-select-el">
+                         <li id="{{ el.id }}" data-id="{{ el.id }}" class="folderView__li {% if el.type %}is-droppable{% else %}is-dropzone{% endif %}">
                             <div id="{{ el.id }}" class="folderView__el {% if el.type %}fv-is-{{ el.type }}{% else %}fv-is-folder{% endif %}">
                                 <span class="folderView__label">{{ el.title }}</span>
                             </div>
                              {% if el.actions %}
+                                 <button type="button" class="folderView__button fv-is-menu js-fv-open-actions"></button>
                                  {% set types = ['access','delete','properties','play','show_results','edit','copy'] %}
                                  <div class="folderView__actions">
                                      {% for key, action in el.actions %}

@@ -1,7 +1,7 @@
 {% if data.length > 0 %}
-    <ul class="folderView__ul js-sortable-view js-folder-tree-view">
+    <ul class="folderView__ul js-sortable-view">
         {% for el in data %}
-            <li id="{{ el.id }}" data-id="{{ el.id }}" class="folderView__li {% if el.type %}is-file{% else %}is-dropzone{% endif %} js-fv-select-el">
+            <li id="{{ el.id }}" data-id="{{ el.id }}" class="folderView__li {% if el.type %}is-droppable{% else %}is-dropzone{% endif %} js-fv-select-el">
                 <div id="{{ el.id }}" class="folderView__el {% if el.type %}fv-is-{{ el.type }}{% else %}fv-is-folder{% endif %}">
                     <span class="folderView__label">{{ el.title }}</span>
                 </div>

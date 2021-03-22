@@ -115,7 +115,6 @@ class FolderTree {
 
 function initSortable() {
   const listRoot = document.querySelector('.js-folder-root');
-  const list = document.querySelectorAll('.js-sortable-tree');
   const view = document.querySelector('.js-sortable-view');
 
   if (listRoot) {
@@ -158,160 +157,30 @@ function initSortable() {
       },
     });
   }
-
-  if (list.length > 0) {
-    list.forEach(single => {
-      new Sortable.create(single, {
-        group: 'nested',
-        draggable: '.folderTree__li',
-        animation: 150,
-        easing: 'cubic-bezier(1, 0, 0, 1)',
-        fallbackOnBody: true,
-        swapThreshold: 0.62,
-        onEnd: function (evt) {
-          const currentElement = evt.item;
-          const currentElementId = currentElement.id;
-          const parentElement = currentElement.parentNode.closest('.ft-is-parent');
-          const childElement = currentElement.closest('.folderTree__ul').querySelectorAll('.folderTree__li');
-          const childElementArray = [];
-          let parentElementId = 0;
-          console.log('current: ' + currentElementId);
-
-          if (parentElement) {
-            parentElementId = parentElement ? parentElement.id : 0;
-            console.log('parent: ' + parentElementId);
-          }
-
-          childElement.forEach(el => {
-            const elId = el.id;
-            childElementArray.push(elId);
-          });
-
-          console.log('child order: ' + childElementArray);
-
-          const reorderLoData = Config.apiUrl + 'lms/lo/reorder&id=' + currentElementId + '&newParent=' + parentElementId + '&newOrder=' + childElementArray;
-          axios.get(reorderLoData).then().catch( (error) => {
-            console.log(error);
-          });
-
-          evt.to;    // target list
-          evt.from;  // previous list
-          evt.oldIndex;  // element's old index within old parent
-          evt.newIndex;  // element's new index within new parent
-          evt.oldDraggableIndex; // element's old index within old parent, only counting draggable elements
-          evt.newDraggableIndex; // element's new index within new parent, only counting draggable elements
-          evt.clone // the clone element
-          evt.pullMode;  // when item is in another sortable: `"clone"` if cloning, `true` if moving
-        },
-      })
-    });
-  }
-}
-
-
-function contextMenu() {
-  contextmenu('.folderTree__link:not(.ft-is-root)', (target) => {
-    return [
-      {
-        text: 'Rinomina',
-        onClick() {
-          const rename = document.querySelector('.folderTree__rename');
-          const renameInput = document.querySelector('.folderTree__rename__input');
-
-          if (target.classList.contains('folderTree__rename__input') === false) {
-            if (target.hasAttribute('id')) {
-              target.classList.add('ft-no-click');
-              target.appendChild(rename);
-            } else {
-              target.parentNode.classList.add('ft-no-click');
-              target.parentNode.appendChild(rename);
-            }
-            rename.classList.add('is-show');
-            renameInput.focus();
-            renameInput.setAttribute('value', target.textContent);
-
-            // Rendo tutti gli elementi non cliccabile se sono in modalità rinomina
-            const elsNotClick = document.querySelectorAll('.ft-no-click');
-            if (elsNotClick) {
-              for (let el of elsNotClick) {
-                el.addEventListener('click', (e) => {
-                  e.preventDefault();
-                })
-              }
-            }
-
-            // Stop della propagazione del click se sono su context menu, in alternativa disabilito modifica input se clicco fuori dall'input
-            document.addEventListener('click', (event) => {
-              if (event.detail) { // fix trigger click se premo su spazio
-                const clickInside = rename.contains(event.target);
-                if (event.target.classList.contains('menu-item-clickable')) {
-                  event.stopPropagation();
-                } else {
-                  if (!clickInside) {
-                    renameInput.blur();
-                    rename.classList.remove('is-show');
-                  }
-                }
-              }
-            });
-          }
-
-        }
-      },
-      {
-        text: 'Elimina',
-        onClick() {
-          let siblings;
-          let elId;
-
-          if (target.hasAttribute('id')) {
-            siblings = target.parentNode.children;
-            target.parentNode.querySelector('.folderTree__link').remove();
-            elId = target.getAttribute('id');
-          } else {
-            siblings = target.parentNode.parentNode.children;
-            target.parentNode.parentNode.querySelector('.folderTree__link').remove();
-            elId = target.parentNode.getAttribute('id');
-          }
-
-          document.querySelector('.folderView').querySelector('.folderView__li[data-id="' + elId + '"]').parentNode.remove();
-
-          if (siblings) {
-            for (let el of siblings) {
-              if (el.classList.contains('folderTree__ul')) {
-                el.classList.remove('folderTree__ul');
-              }
-            }
-          }
-
-          const deleteLoData = Config.apiUrl + 'lms/lo/delete&id=' + elId;
-          axios.get(deleteLoData).then().catch( (error) => {
-            console.log(error);
-          });
-
-        }
-      }
-    ]
-  })
 }
 
 function initDragDrop() {
-  const contexts = document.querySelectorAll('.js-folder-tree-view');
-  let currentEl, currentElId;
+    const context = document.querySelector('.js-folder-tree-view');
+    let currentEl, currentElId;
 
-  contexts.forEach(context => {
     context.addEventListener('drag', (event) => {
-      if (event.target.classList.contains('is-file')) {
+      if (event.target.classList.contains('is-droppable')) {
         currentEl = event.target;
         currentElId = currentEl.id;
       }
     });
 
-    context.addEventListener('dragenter', (event) => {
+    document.addEventListener('dragover', (event) => {
       const target = event.target;
+      console.log(event)
 
       if (currentEl) {
         if ( (currentElId !== target.id) && (target.classList.contains('is-dropzone')) ) {
+            console.log('dragover');
+            console.log(currentElId)
+            console.log(target.id)
+            console.log(target.classList)
+            //target.style.color = '#ff0000';
           target.classList.add('fv-is-dropped');
         }
       }
@@ -333,16 +202,113 @@ function initDragDrop() {
 
       if (currentEl) {
         if ( (currentElId !== target.id) && (target.classList.contains('is-dropzone')) ) {
+          console.log(target);
+          console.log(currentEl);
           const reorderLoData = Config.apiUrl + 'lms/lo/reorder&id=' + currentElId + '&newParent=' + event.target.id;
           axios.get(reorderLoData).then(() => {
-            currentEl.style.display = 'none';
+            if (target.classList.contains('ft-is-folderOpen') && (currentEl.classList.contains('folderTree__li') )) {
+              const nextElementSibling = target.nextElementSibling;
+              if (nextElementSibling.classList.contains('folderTree__ul')) {
+                nextElementSibling.appendChild(currentEl);
+              } else {
+                currentEl.remove();
+              }
+            } else {
+              currentEl.remove();
+            }
+            document.querySelector('.folderView__li[data-id="' + currentElId + '"]').remove();
           }).catch((error) => {
             console.log(error);
           });
         }
       }
     });
-  });
+}
+
+function contextMenu() {
+    contextmenu('.folderTree__link:not(.ft-is-root)', (target) => {
+        return [
+            {
+                text: 'Rinomina',
+                onClick() {
+                    const rename = document.querySelector('.folderTree__rename');
+                    const renameInput = document.querySelector('.folderTree__rename__input');
+
+                    if (target.classList.contains('folderTree__rename__input') === false) {
+                        if (target.hasAttribute('id')) {
+                            target.classList.add('ft-no-click');
+                            target.appendChild(rename);
+                        } else {
+                            target.parentNode.classList.add('ft-no-click');
+                            target.parentNode.appendChild(rename);
+                        }
+                        rename.classList.add('is-show');
+                        renameInput.focus();
+                        renameInput.setAttribute('value', target.textContent);
+
+                        // Rendo tutti gli elementi non cliccabile se sono in modalità rinomina
+                        const elsNotClick = document.querySelectorAll('.ft-no-click');
+                        if (elsNotClick) {
+                            for (let el of elsNotClick) {
+                                el.addEventListener('click', (e) => {
+                                    e.preventDefault();
+                                })
+                            }
+                        }
+
+                        // Stop della propagazione del click se sono su context menu, in alternativa disabilito modifica input se clicco fuori dall'input
+                        document.addEventListener('click', (event) => {
+                            if (event.detail) { // fix trigger click se premo su spazio
+                                const clickInside = rename.contains(event.target);
+                                if (event.target.classList.contains('menu-item-clickable')) {
+                                    event.stopPropagation();
+                                } else {
+                                    if (!clickInside) {
+                                        renameInput.blur();
+                                        rename.classList.remove('is-show');
+                                    }
+                                }
+                            }
+                        });
+                    }
+
+                }
+            },
+            {
+                text: 'Elimina',
+                onClick() {
+                    let siblings;
+                    let elId;
+
+                    if (target.hasAttribute('id')) {
+                        siblings = target.parentNode.children;
+                        target.parentNode.querySelector('.folderTree__link').remove();
+                        elId = target.getAttribute('id');
+                    } else {
+                        siblings = target.parentNode.parentNode.children;
+                        target.parentNode.parentNode.querySelector('.folderTree__link').remove();
+                        elId = target.parentNode.getAttribute('id');
+                    }
+
+                    document.querySelector('.folderView').querySelector('.folderView__li[data-id="' + elId + '"]').parentNode.remove();
+
+                    if (siblings) {
+                        for (let el of siblings) {
+                            if (el.classList.contains('folderTree__ul')) {
+                                el.classList.remove('folderTree__ul');
+                            }
+                        }
+                    }
+
+                    const deleteLoData = Config.apiUrl + 'lms/lo/delete&id=' + elId;
+                    axios.get(deleteLoData).then().catch( (error) => {
+                        console.log(error);
+                    });
+
+                }
+            }
+        ]
+    })
 }
 
 export default FolderTree

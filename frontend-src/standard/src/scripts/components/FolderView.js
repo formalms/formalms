@@ -5,10 +5,10 @@ class FolderView {
   }
 
   toggleSelectEl(event) {
-    const el = event.target.closest('.js-fv-select-el');
-    const els = document.querySelectorAll('.js-fv-select-el');
+    const el = event.target;
+    const els = document.querySelectorAll('.folderView__li');
 
-    if (el) {
+    if (el && (el.classList.contains('js-fv-open-actions'))) {
       const currentId = el.id;
 
       els.forEach(el => {
@@ -18,7 +18,7 @@ class FolderView {
         }
       });
 
-      el.classList.toggle('fv-is-selected');
+      el.closest('.folderView__li').classList.toggle('fv-is-selected');
     }
 
   }
