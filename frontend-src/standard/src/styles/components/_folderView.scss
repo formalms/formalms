@@ -97,10 +97,16 @@
   position: absolute;
   top: 8px;
   right: 0;
+  opacity: 1;
+
+  .fv-is-selected & {
+    opacity: 0;
+  }
 }
 
 .fv-is-play {
   background-image: url('images/folderView/icon-eye.svg');
+  display: none;
 }
 
 .fv-is-edit {
@@ -159,6 +165,10 @@
   background-image: url('images/folderView/icon-survey.svg');
 }
 
-.fv-is-menu {
-  background-image: url('images/folderView/icon-dots.svg');
+.fv-is-menu-open {
+  background-image: url('images/folderView/icon-horizontal-dots.svg');
+}
+
+.fv-is-menu-close {
+  background-image: url('images/folderView/icon-vertical-dots.svg');
 }

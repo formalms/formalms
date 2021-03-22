@@ -2,23 +2,35 @@ class FolderView {
 
   constructor() {
     document.addEventListener('click', this.toggleSelectEl);
+    document.addEventListener('click', this.triggerClick);
   }
 
   toggleSelectEl(event) {
     const el = event.target;
-    const els = document.querySelectorAll('.folderView__li');
 
     if (el && (el.classList.contains('js-fv-open-actions'))) {
-      const currentId = el.id;
 
-      els.forEach(el => {
-        const id = el.id;
-        if (currentId !== id) {
-          el.classList.remove('fv-is-selected');
-        }
-      });
+      el.closest('.folderView__li').classList.add('fv-is-selected');
+    }
 
-      el.closest('.folderView__li').classList.toggle('fv-is-selected');
+    if (el && (el.classList.contains('js-fv-close-actions'))) {
+
+      el.closest('.folderView__li').classList.remove('fv-is-selected');
+
+    }
+
+  }
+
+  triggerClick(event) {
+    const el = event.target;
+
+    if (el) {
+      const id = el.id;
+      if (el.classList.contains('js-folderView-folder')) {
+        document.querySelector('.js-folder-tree').querySelector('.folderTree__link[id="' + id + '"]').click();
+      } else if (el.classList.contains('js-folderView-file')) {
+        el.querySelector('.fv-is-play').click();
+      }
     }
 
   }
