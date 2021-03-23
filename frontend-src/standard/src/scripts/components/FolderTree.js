@@ -114,12 +114,7 @@ class FolderTree {
 }
 
 function initSortable() {
-  const listRoot = document.querySelector('.js-folder-root');
   const view = document.querySelector('.js-sortable-view');
-
-  if (listRoot) {
-    new Sortable.create(listRoot, {});
-  }
 
   if (view) {
     new Sortable.create(view, {
@@ -154,16 +149,15 @@ function initSortable() {
         axios.get(reorderLoData).then().catch( (error) => {
           console.log(error);
         });
-      },
+      }
     });
   }
 }
 
 function initDragDrop() {
-    const context = document.querySelector('.js-folder-tree-view');
     let currentEl, currentElId;
 
-    context.addEventListener('drag', (event) => {
+    document.addEventListener('dragstart', (event) => {
       if (event.target.classList.contains('is-droppable')) {
         currentEl = event.target;
         currentElId = currentEl.id;
@@ -172,21 +166,17 @@ function initDragDrop() {
 
     document.addEventListener('dragover', (event) => {
       const target = event.target;
-      console.log(event)
 
       if (currentEl) {
         if ( (currentElId !== target.id) && (target.classList.contains('is-dropzone')) ) {
-            console.log('dragover');
-            console.log(currentElId)
-            console.log(target.id)
-            console.log(target.classList)
-            //target.style.color = '#ff0000';
-          target.classList.add('fv-is-dropped');
+            console.log('drag over')
+            target.classList.add('fv-is-dropped');
+            event.preventDefault();
         }
       }
     });
 
-    context.addEventListener('dragleave', (event) => {
+    document.addEventListener('dragleave', (event) => {
       const target = event.target;
 
       if (currentEl) {
@@ -196,14 +186,12 @@ function initDragDrop() {
       }
     });
 
-    context.addEventListener('drop', (event) => {
+    document.addEventListener('drop', (event) => {
       const target = event.target;
       target.classList.remove('fv-is-dropped');
 
       if (currentEl) {
         if ( (currentElId !== target.id) && (target.classList.contains('is-dropzone')) ) {
-          console.log(target);
-          console.log(currentEl);
           const reorderLoData = Config.apiUrl + 'lms/lo/reorder&id=' + currentElId + '&newParent=' + event.target.id;
           axios.get(reorderLoData).then(() => {
             if (target.classList.contains('ft-is-folderOpen') && (currentEl.classList.contains('folderTree__li') )) {
