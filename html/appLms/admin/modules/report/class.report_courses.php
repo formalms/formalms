@@ -1650,10 +1650,10 @@ class Report_Courses extends Report {
 				? Format::date($info_course['create_date'], 'datetime')
 				: "";
 			$_date_begin = $info_course['date_begin'] != '0000-00-00 00:00:00' && $info_course['date_begin'] != ""
-				? Format::date($info_course['date_begin'], 'datetime')
+				? Format::date($info_course['date_begin'], 'date')
 				: "";
 			$_date_end = $info_course['date_end'] != '0000-00-00 00:00:00' && $info_course['date_end'] != ""
-				? Format::date($info_course['date_end'], 'datetime')
+				? Format::date($info_course['date_end'], 'date')
 				: "";
 
 			$trow = array();
