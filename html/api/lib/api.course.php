@@ -1257,7 +1257,7 @@ public function addClassroom($params) {
     }    
     
     
-    // update an appointment related to an edition
+     // update an appointment related to an edition
     public function upDay($params){
         require_once(_lms_.'/admin/models/ClassroomAlms.php');
         require_once(_lms_.'/lib/lib.date.php');
@@ -1265,12 +1265,14 @@ public function addClassroom($params) {
         $output =array();
         
         $id_day = (isset($params['id_day']) ? $params['id_day'] : 0);
-
+        
+   
         if (empty($id_day)) {
             $output['success']=false;
             $output['message']='Missing ID Day: '.$params['id_day']." - ".$params['id_day'];
             return $output;
         }
+      
         
         $id_date =(isset($params['id_date']) ? $params['id_date'] : '');
         
@@ -1289,8 +1291,6 @@ public function addClassroom($params) {
         }
 
         $model = new ClassroomAlms($course_id, $id_date);
-
-        $res =false;
         
         $array_day = $model->classroom_man->getDateDay($id_date);
         
@@ -1299,7 +1299,11 @@ public function addClassroom($params) {
         $array_day[$id_day]['pause_end'] = substr(Format::dateDb($params['edition_date_selected'], 'date'),0,10).' '.$params['edition_pe_hours'].':'.$params['edition_pe_minutes'].':00';
         $array_day[$id_day]['date_end'] = substr(Format::dateDb($params['edition_date_selected'], 'date'),0,10).' '.$params['edition_e_hours'].':'.$params['edition_e_minutes'].':00';
         $array_day[$id_day]['classroom'] = $params['edition_classroom'];
+                      
+
         
+        $classroom_man = new DateManager();
+        $res=$classroom_man->insDateDay($id_date, $array_day);
         
         if($res){
             $output['success']=true;
