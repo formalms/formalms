@@ -1289,7 +1289,7 @@ public function addClassroom($params) {
             $output['message']='Missing Course ID'.$params['course_id'];
             return $output;
         }
-
+                        
         $model = new ClassroomAlms($course_id, $id_date);
         
         $array_day = $model->classroom_man->getDateDay($id_date);
