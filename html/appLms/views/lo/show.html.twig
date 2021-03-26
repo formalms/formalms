@@ -1,99 +1,54 @@
-{% if data | length %}
-    {{ Form_openForm('orgshow', 'index.php?modname=storage&op=display', false, 'POST') }}
-    <input type="hidden" id="treeview_selected_organization" name="treeview_selected_organization" value="0">
-    <input type="hidden" id="treeview_state_organization" name="treeview_state_organization" value="">
-    <section class="folderTreeView js-folder-tree-view">
-        <aside class="folderTreeContent folderTreeContent--one-third">
-            <div class="folderTree__actions">
-                <input type="submit"
-                       class="folderTree__btn folderTree__btn--new folderTree__newFolder"
-                       title="Nuova cartella"
-                       id="treeview_opnewfolder_organization"
-                       name="treeview_opnewfolder_organization"
-                        value="">
-                <input type="submit"
-                       class="folderTree__btn folderTree__btn--new folderTree__newLO"
-                       title="Nuovo oggetto didattico"
-                       id="organization_createLOBegin"
-                       name="organization_createLOBegin"
-                        value="">
-            </div>
-            <nav class="folderTree js-folder-tree">
-                <ul class="folderTree__ul js-folder-root">
-                    <li id="0" class="folderTree__li ft-is-parent">
-                        <button id="0"
-                                type="button"
-                                class="folderTree__link ft-is-root ft-is-selected ft-is-folder ft-is-folderOpen is-dropzone"><span>Livello Principale</span></button>
-                        <ul class="folderTree__ul js-sortable-tree">
-                            {% for el in data %}
-                                {% if el.is_folder %}
-                                    <li id="{{ el.id }}" class="folderTree__li {% if el.childCount > 0 %}ft-is-parent{% endif %} is-droppable" draggable="true">
-                                        <button id="{{ el.id }}"
-                                                type="button"
-                                                class="folderTree__link ft-is-folder {% if el.childCount > 0 %}ft-has-child{% endif %} is-dropzone"><span>{{ el.title }}</span></button>
-                                    </li>
-                                {% endif %}
-                            {% endfor %}
-                        </ul>
-                    </li>
-                </ul>
-                <div class="folderTree__rename">
-                    <input type="text" value="" class="folderTree__rename__input"
-                           onfocus="this.value = null; this.value = value"
-                            onkeypress="return !(window.event && window.event.keyCode == 13);"/>
-                    <button class="folderTree__rename__btn js-ft-rename-el" type="button"></button>
-                </div>
-            </nav>
-        </aside>
-        <main class="folderViewContent folderViewContent--two-third">
-            <div class="folderTree__actions">
-                <input type="submit"
-                       class="folderTree__btn folderTree__btn--new folderTree__newFolder"
-                       title="Nuova cartella"
-                       id="treeview_opnewfolder_organization"
-                       name="treeview_opnewfolder_organization"
-                       value="">
-                <input type="submit"
-                       class="folderTree__btn folderTree__btn--new folderTree__newLO"
-                       title="Nuovo oggetto didattico"
-                       id="organization_createLOBegin"
-                       name="organization_createLOBegin"
-                       value="">
-            </div>
-            <div class="folderView">
-                <ul class="folderView__ul js-sortable-view">
-                    {% for el in data %}
-                         <li id="{{ el.id }}" data-id="{{ el.id }}" class="folderView__li {% if el.type %}is-droppable js-folderView-file{% else %}is-dropzone js-folderView-folder{% endif %}">
-                            <div id="{{ el.id }}" class="folderView__el {% if el.type %}fv-is-{{ el.type }}{% else %}fv-is-folder{% endif %}">
-                                <span class="folderView__label">{{ el.title }}</span>
-                            </div>
-                             {% if el.actions %}
-                                 <button type="button" class="folderView__button fv-is-menu-open js-fv-open-actions"></button>
-                                 {% set types = ['access','delete','properties','play','show_results','edit','copy'] %}
-                                 <div class="folderView__actions">
-                                     {% for key, action in el.actions %}
-                                         {% if key in types %}
-                                             {% if action.link | length %}
-                                                 <input type="submit"
-                                                        id="{{ action.link }}"
-                                                        name="{{ action.link }}"
-                                                        class="folderView__action fv-is-{{ key }} js-fv-action"
-                                                        title="{{ key }}"
-                                                        value=""/>
-                                             {% elseif (action.url | length) %}
-                                                 <a href="{{ action.url }}" class="folderView__action fv-is-{{ key }} js-folderView-openFile" title="{{ key }}">
-                                                 </a>
-                                             {% endif %}
-                                         {% endif %}
-                                     {% endfor %}
-                                     <button type="button" class="folderView__action fv-is-menu-close js-fv-close-actions"></button>
-                                 </div>
-                             {% endif %}
-                        </li>
-                    {% endfor %}
-                </ul>
-            </div>
-        </main>
-    </section>
-    {{ Form_closeForm() }}
-{% endif %}
+<div class="page-header">
+    <h1>{{ translate('menu_course', '_STORAGE') }}</h1>
+</div>
+
+<div class="std_block">
+    <div class="tabs-wrapper">
+        <ul class="nav nav-tabs">
+            {% for tab in tabs %}
+                <li role="presentation" class="tab-link {{ tab.active ? 'active' : '' }}" data-alias="{{ tab.alias }}"><a href="#{{ tab.alias }}">{{ tab.title }}</a></li>
+            {% endfor %}
+        </ul>
+
+        <div class="tab-content">
+            {% for tab in tabs %}
+                {% include 'container.html.twig' with { tab: tab } %}
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<script>
+const tabs = document.querySelectorAll('.tab-link');
+if (tabs) {
+    tabs.forEach((tab) => {
+        tab.addEventListener('click', clickOnTab);
+    });
+}
+
+function clickOnTab(event) {
+    const target = event.target;
+    const el = target.closest('.tab-link');
+    const linkAlias = el.getAttribute('data-alias');
+    const tabs = document.querySelectorAll('.tab-link');
+    const tab = target.closest('.tab-link');
+    const oldTabContainer = document.querySelector('.tab-content > .active');
+    const tabContainer = document.querySelector('.tab-content > .tab-pane[data-alias=' + linkAlias + ']');
+
+    if (tabs) {
+        tabs.forEach((tab) => {
+            tab.classList.remove('active');
+        });
+    }
+    if (tab) {
+        tab.classList.add('active');
+    }
+
+    if (oldTabContainer) {
+        oldTabContainer.classList.remove('active');
+    }
+    if (tabContainer) {
+        tabContainer.classList.add('active');
+    }
+}
+</script>
