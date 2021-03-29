@@ -13,6 +13,9 @@ class LoLmsController extends LmsController
 
     public $name = 'lo';
 
+    /** @var Services_JSON */
+    protected $json;
+
     /**
      * @var LoLms $model
      */
@@ -20,110 +23,142 @@ class LoLmsController extends LmsController
 
     protected $user_status;
 
+    protected $idCourse;
+
     function init()
     {
-        $type = Get::req('type', DOTY_INT, false);
-        $this->model = new LoLms($type);
+        $this->model = new LoLms();
+        try {
+            $this->model->setDirDb(Get::req('type', DOTY_STRING, LoLms::ORGDIRDB));
+        } catch (\Exception $exception) {
+            $this->model->setDirDb(LoLms::ORGDIRDB);
+        }
+
+        $this->idCourse = $_SESSION['idCourse'];
     }
 
-    private function getFolders($idCourse, $idFolder = false) {
+    private function getFolders($idCourse, $idFolder = false, $type = false)
+    {
+        if ($type) {
+            try {
+                $this->model->setDirDb($type);
+            } catch (\Exception $exception) {
+                $this->model->setDirDb(LoLms::ORGDIRDB);
+            }
+        }
         return array_values($this->model->getFolders($idCourse, $idFolder));
     }
 
-    private function getCurrentState($idCourse,$idFolder = false){
-        return $this->model->getCurrentState($idCourse,$idFolder);
+    private function getCurrentState($idCourse, $idFolder = false)
+    {
+        return $this->model->getCurrentState($idCourse, $idFolder);
     }
 
-    public function show() {
-        $id_course = $_SESSION['idCourse'];
-        
-        $this->render('show', ['data' => $this->getFolders($id_course)]);
+    public function show()
+    {
+        $tabs = [
+            [
+                'active' => true,
+                'alias' => LoLms::HOMEREPODIRDB,
+                'type' => LoLms::HOMEREPODIRDB,
+                'title' => Lang::t('_HOMEREPOROOTNAME', 'storage'),
+                'data' => $this->getFolders($this->idCourse,false,LoLms::ORGDIRDB),
+            ],
+            [
+                'alias' => LoLms::ORGDIRDB,
+                'type' => LoLms::ORGDIRDB,
+                'title' => Lang::t('_ORGROOTNAME', 'storage'),
+                'data' => $this->getFolders($this->idCourse,false,LoLms::ORGDIRDB),
+            ],
+            [
+                'alias' => LoLms::REPODIRDB,
+                'type' => LoLms::REPODIRDB,
+                'title' => Lang::t('_PUBREPOROOTNAME', 'storage'),
+                'data' => $this->getFolders($this->idCourse,false,LoLms::ORGDIRDB),
+            ],
+        ];
+        $this->render('show', ['tabs' => $tabs]);
     }
 
-    public function organization() {
+    public function organization()
+    {
         $this->render('organization', array([
-            'teacher' => true
+            'teacher' => true,
+            'data' => [
+                'alias' => LoLms::ORGDIRDB,
+                'type' => LoLms::ORGDIRDB,
+                'title' => Lang::t('_ORGROOTNAME', 'storage'),
+                'data' => $this->getFolders($this->idCourse),
+            ],
         ]));
     }
 
-    public function get(){
-        $id_course = $_SESSION['idCourse'];
+    public function get()
+    {
         $id = Get::req('id', DOTY_INT, false);
-        header('Content-type:application/json');
         $responseData = [];
-
-        $responseData['data'] = $this->getFolders($id_course, $id);
-        $responseData['currentState'] = serialize([$this->getCurrentState($id_course, 0)]);
-        echo json_encode($responseData);
-
-        die();
+        $responseData['data'] = $this->getFolders($this->idCourse, $id);
+        $responseData['currentState'] = serialize([$this->getCurrentState($this->idCourse, 0)]);
+        echo $this->json->encode($responseData);
     }
 
-    public function delete(){
-        header('Content-type:application/json');
+    public function delete()
+    {
         $id = Get::req('id', DOTY_INT, false);
         $type = Get::req('type', DOTY_INT, false);
-        $id_course = $_SESSION['idCourse'];
-        echo json_encode($this->model->deleteFolder($id_course, $id, $type));
-        die();
+
+        echo $this->json->encode($this->model->deleteFolder($this->idCourse, $id, $type));
     }
 
-    public function rename(){
-        header('Content-type:application/json');
+    public function rename()
+    {
         $id = Get::req('id', DOTY_INT, false);
         $newName = Get::req('newName', DOTY_STRING, false);
-        $id_course = $_SESSION['idCourse'];
-        echo json_encode($this->model->renameFolder($id_course, $id, $newName));
-        die();
+
+        echo $this->json->encode($this->model->renameFolder($this->idCourse, $id, $newName));
     }
 
-    public function move(){
-        header('Content-type:application/json');
+    public function move()
+    {
         $id = Get::req('id', DOTY_INT, false);
         $newParentId = Get::req('newParentId', DOTY_INT, false);
-        $id_course = $_SESSION['idCourse'];
-        echo json_encode($this->model->moveFolder($id_course, $id, $newParentId));
-        die();
+
+        echo $this->json->encode($this->model->moveFolder($this->idCourse, $id, $newParentId));
     }
 
-    public function reorder(){
-        header('Content-type:application/json');
+    public function reorder()
+    {
         $id = Get::req('id', DOTY_INT, false);
         $newParent = Get::req('newParent', DOTY_INT, false);
         $newOrderString = Get::req('newOrder', DOTY_STRING, false);
         $newOrder = explode(",", $newOrderString);
+
+        $responseData = ['success' => false];
+
         if ($id && $newParent !== false) {
-            $id_course = $_SESSION['idCourse'];
-            if ($this->model->reorder($id_course, $id, $newParent, $newOrder ? $newOrder : null)) {
-                echo json_encode([
-                    "success" => true
-                ]);
-                die();
+
+            if ($this->model->reorder($this->idCourse, $id, $newParent, $newOrder ? $newOrder : null)) {
+                $responseData = ['success' => true];
             }
         }
-        echo json_encode([
-            "success" => false
-        ]);
-        die();
+        echo $this->json->encode($responseData);
     }
 
-    public function edit() {
+    public function edit()
+    {
+        $tdb = new OrgDirDb($this->idCourse, array());
 
+        $tree_view = new Org_TreeView($tdb, 'organization');
 
-        require_once( Forma::inc( _lms_.'/modules/organization/orglib.php' ) );
-        $tdb = new OrgDirDb($_SESSION['idCourse'], array());
-
-        $tree_view = new Org_TreeView($tdb, 'organization' );
-
-        require_once Forma::inc(_adm_ . '/lib/lib.sessionsave.php' );
+        require_once Forma::inc(_adm_ . '/lib/lib.sessionsave.php');
         $saveObj = new Session_Save();
-        $saveName = $saveObj->getName('organization'.$_SESSION['idCourse'], true);
-        $saveObj->save( $saveName, $tree_view->getState() );
+        $saveName = $saveObj->getName('organization' . $_SESSION['idCourse'], true);
+        $saveObj->save($saveName, $tree_view->getState());
 
         $id = Get::req('id', DOTY_INT, false);
 
-        $folder = $tdb->getFolderById( (string)$id );
-        $lo = createLO( $folder->otherValues[REPOFIELDOBJECTTYPE]);
-        $lo->edit($folder->otherValues[REPOFIELDIDRESOURCE], 'index.php?r=lms/lo/organization&id_course=1' );
+        $folder = $tdb->getFolderById((string)$id);
+        $lo = createLO($folder->otherValues[REPOFIELDOBJECTTYPE]);
+        $lo->edit($folder->otherValues[REPOFIELDIDRESOURCE], 'index.php?r=lms/lo/organization&id_course=1');
     }
 }
