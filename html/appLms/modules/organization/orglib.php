@@ -1692,8 +1692,6 @@ class Org_TreeView extends RepoTreeView {
 			
 			$status = Track_Object::getStatusFromId($folder->id, getLogUserId() );
 
-			$node['status']= Lang::t($status, 's4b', 'framework');
-
 			$node['play'] = '';
 
 			if($folder->otherValues[ORGFIELD_PUBLISHFOR] == PF_TEACHER && $_SESSION['levelCourse'] <= 3) break;
@@ -1792,6 +1790,8 @@ class Org_TreeView extends RepoTreeView {
 						
 				} 
 			}
+
+			$node['status'] = $status;
 			
 			switch( $status ) {
 				case 'not attempted': $img = 'blank.png'; break;
@@ -1833,7 +1833,7 @@ class Org_TreeView extends RepoTreeView {
 						'image' => $this->_getOpLockedImg()
 					];
 
-				} else if( $isPrerequisitesSatisfied && $event->getAccessible()) {
+				} else if( $isPrerequisitesSatisfied && $event->getAccessible() && !checkPerm('lesson', true, 'storage')) {
 
 					error_log($lo_class);
 					if(method_exists($lo_class, 'trackDetails')) {
