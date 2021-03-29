@@ -10,10 +10,8 @@ import FolderView from '../components/FolderView';
 
 var Page = (function () {
 
-  document.addEventListener('DOMContentLoaded', function() {
-    new FolderTree();
-    new FolderView();
-  });
+  window.FolderView = FolderView;
+  window.FolderTree = FolderTree;
 
   function setScroll(elem, action) {
     if (action === 'lock') {

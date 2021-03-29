@@ -42,19 +42,19 @@ class LoLmsController extends LmsController
         $tabs = [
             [
                 'active' => true,
-                'alias' => 'mine',
+                'alias' => 'home',
                 'title' => Lang::t('_HOMEREPOROOTNAME', 'storage'),
-                'data' => $this->getFolders($id_course),
+                'data' => $this->getFolders('home', $id_course),
             ],
             [
-                'alias' => 'objects',
+                'alias' => 'org',
                 'title' => Lang::t('_ORGROOTNAME', 'storage'),
-                'data' => $this->getFolders($id_course),
+                'data' => $this->getFolders('org', $id_course),
             ],
             [
-                'alias' => 'shared',
+                'alias' => 'pub',
                 'title' => Lang::t('_PUBREPOROOTNAME', 'storage'),
-                'data' => $this->getFolders($id_course),
+                'data' => $this->getFolders('pub', $id_course),
             ],
         ];
         $this->render('show', ['tabs' => $tabs]);
@@ -71,10 +71,11 @@ class LoLmsController extends LmsController
     {
         $id_course = $_SESSION['idCourse'];
         $id = Get::req('id', DOTY_INT, false);
+        $type = Get::req('type', DOTY_STRING, 'org');
         header('Content-type:application/json');
         $responseData = [];
 
-        $responseData['data'] = $this->getFolders($id_course, $id);
+        $responseData['data'] = $this->getFolders($type, $id_course, $id);
         $responseData['currentState'] = serialize([$this->getCurrentState($id_course, 0)]);
         echo json_encode($responseData);
 

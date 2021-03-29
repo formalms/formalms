@@ -4,8 +4,8 @@
   <h2>{{ tab.title }}</h2>
   {% if data | length %}
     {{ Form_openForm('orgshow', 'index.php?modname=storage&op=display', false, 'POST') }}
-    <input type="hidden" id="treeview_selected_organization" name="treeview_selected_organization" value="0">
-    <input type="hidden" id="treeview_state_organization" name="treeview_state_organization" value="">
+    <input type="hidden" id="treeview_selected_organization_{{ tab.alias }}" name="treeview_selected_organization" value="0">
+    <input type="hidden" id="treeview_state_organization_{{ tab.alias }}" name="treeview_state_organization" value="">
     <section class="folderTreeView js-folder-tree-view">
         <aside class="folderTreeContent folderTreeContent--one-third">
             <div class="folderTree__actions">
