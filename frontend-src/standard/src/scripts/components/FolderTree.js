@@ -38,8 +38,9 @@ class FolderTree {
           document.querySelector('.context-menu').classList.remove('menu-visible');
         }
       });
-
-      document.addEventListener('click', (e) => { this.clickOnFolder(e, type); });
+    
+      const container = document.querySelector('*[data-container=' + type + ']');
+      container.addEventListener('click', (e) => { this.clickOnFolder(e, type); });
       initSortable();
       initDragDrop();
   }
@@ -47,9 +48,9 @@ class FolderTree {
   clickOnFolder(event, type) {
     const target = event.target;
     const el = target.closest('.folderTree__link');
+    console.log(type, 'clickOnFolder');
 
     if (el) {
-      console.log(type, 'CLICK');
       const isOpen = el.classList.contains('ft-is-folderOpen')
       const noClick = el.classList.contains('ft-no-click');
 

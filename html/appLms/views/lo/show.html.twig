@@ -36,7 +36,7 @@ function clickOnTab(event) {
     const tabs = document.querySelectorAll('.tab-link');
     const tab = target.closest('.tab-link');
     const oldTabContainer = document.querySelector('.tab-content > .active');
-    const tabContainer = document.querySelector('.tab-content > .tab-pane[data-type=' + linktype + ']');
+    const tabContainer = document.querySelector('.tab-content > .tab-pane[data-container=' + linktype + ']');
 
     if (tabs) {
         tabs.forEach((tab) => {

@@ -1,8 +1,7 @@
 {% set data = tab.data %}
 
-<div class="tab-pane {{ tab.active ? 'active' : '' }}" data-type="{{ tab.type }}">
+<div class="tab-pane {{ tab.active ? 'active' : '' }}" data-container="{{ tab.type }}">
   <h2>{{ tab.title }}</h2>
-  {% if data | length %}
     {{ Form_openForm('orgshow', 'index.php?modname=storage&op=display', false, 'POST') }}
     <input type="hidden" id="treeview_selected_organization_{{ tab.type }}" name="treeview_selected_organization" value="0">
     <input type="hidden" id="treeview_state_organization_{{ tab.type }}" name="treeview_state_organization" value="">
@@ -100,5 +99,4 @@
         </main>
     </section>
     {{ Form_closeForm() }}
-  {% endif %}
 </div>

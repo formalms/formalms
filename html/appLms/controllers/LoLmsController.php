@@ -57,17 +57,17 @@ class LoLmsController extends LmsController
                 'active' => true,
                 'type' => LoLms::HOMEREPODIRDB,
                 'title' => Lang::t('_HOMEREPOROOTNAME', 'storage'),
-                'data' => $this->getFolders($this->idCourse,false,LoLms::HOMEREPODIRDB),
+                'data' => $this->getFolders($this->idCourse, false, LoLms::HOMEREPODIRDB),
             ],
             [
                 'type' => LoLms::ORGDIRDB,
                 'title' => Lang::t('_ORGROOTNAME', 'storage'),
-                'data' => $this->getFolders($this->idCourse,false,LoLms::ORGDIRDB),
+                'data' => $this->getFolders($this->idCourse, false, LoLms::ORGDIRDB),
             ],
             [
                 'type' => LoLms::REPODIRDB,
                 'title' => Lang::t('_PUBREPOROOTNAME', 'storage'),
-                'data' => $this->getFolders($this->idCourse,false,LoLms::REPODIRDB),
+                'data' => $this->getFolders($this->idCourse, false, LoLms::REPODIRDB),
             ],
         ];
         $this->render('show', ['tabs' => $tabs]);
@@ -93,6 +93,7 @@ class LoLmsController extends LmsController
         $responseData['data'] = $this->getFolders($this->idCourse, $id);
         $responseData['currentState'] = serialize([$this->getCurrentState($this->idCourse, 0)]);
         echo $this->json->encode($responseData);
+        exit;
     }
 
     public function delete()
@@ -101,6 +102,7 @@ class LoLmsController extends LmsController
         $type = Get::req('type', DOTY_INT, false);
 
         echo $this->json->encode($this->model->deleteFolder($this->idCourse, $id, $type));
+        exit;
     }
 
     public function rename()
@@ -109,6 +111,7 @@ class LoLmsController extends LmsController
         $newName = Get::req('newName', DOTY_STRING, false);
 
         echo $this->json->encode($this->model->renameFolder($this->idCourse, $id, $newName));
+        exit;
     }
 
     public function move()
@@ -117,6 +120,7 @@ class LoLmsController extends LmsController
         $newParentId = Get::req('newParentId', DOTY_INT, false);
 
         echo $this->json->encode($this->model->moveFolder($this->idCourse, $id, $newParentId));
+        exit;
     }
 
     public function reorder()
@@ -135,6 +139,7 @@ class LoLmsController extends LmsController
             }
         }
         echo $this->json->encode($responseData);
+        exit;
     }
 
     public function edit()
