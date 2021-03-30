@@ -7,8 +7,8 @@ import Content from '../twig/content.html.twig';
 
 class FolderTree {
 
-  constructor(tabAlias) {
-      console.log(tabAlias, 'INIT');
+  constructor(type) {
+      console.log(type, 'INIT');
       const btn = document.querySelector('.js-ft-rename-el');
       const inputRename = document.querySelector('.folderTree__rename__input');
     
@@ -39,17 +39,17 @@ class FolderTree {
         }
       });
 
-      document.addEventListener('click', (e) => { this.clickOnFolder(e, tabAlias); });
+      document.addEventListener('click', (e) => { this.clickOnFolder(e, type); });
       initSortable();
       initDragDrop();
   }
 
-  clickOnFolder(event, tabAlias) {
+  clickOnFolder(event, type) {
     const target = event.target;
     const el = target.closest('.folderTree__link');
 
     if (el) {
-      console.log(tabAlias, 'CLICK');
+      console.log(type, 'CLICK');
       const isOpen = el.classList.contains('ft-is-folderOpen')
       const noClick = el.classList.contains('ft-no-click');
 
@@ -75,8 +75,8 @@ class FolderTree {
           const child = Tree(response.data);
           const childView = Content(response.data);
           const folderView = document.querySelector('.folderView');
-          const inputParent = document.querySelector('#treeview_selected_organization_' + tabAlias);
-          const inputState = document.querySelector('#treeview_state_organization_' + tabAlias);
+          const inputParent = document.querySelector('#treeview_selected_organization_' + type);
+          const inputState = document.querySelector('#treeview_state_organization_' + type);
           inputParent.value = elId;
           inputState.value = response.data.currentState;
           if (!el.classList.contains('ft-is-root')) {
