@@ -82,4 +82,50 @@ class LoLms extends Model {
         return $folder->reorder($newParent, $newOrder );
     }
 
+    public function copy($id) {
+        require_once( $GLOBALS['where_framework'].'/lib/lib.sessionsave.php' );
+        $saveObj = new Session_Save();
+        $saveName = $saveObj->getName('crepo',true);
+        $folder = $this->tdb->getFolderById( (string)$id );
+        $saveData = array(	'repo' => 'pubrepo',
+                            'id' => $id,
+                            'objectType' => $folder->otherValues[REPOFIELDOBJECTTYPE],
+                            'name' => $folder->getFolderName(),
+                            'idResource' => $folder->otherValues[REPOFIELDIDRESOURCE]
+                        ); 
+        $saveObj->save( $saveName, $saveData );
+        return true;
+    }
+
+    public function paste($folderId) {
+        require_once($GLOBALS['where_framework'].'/lib/lib.sessionsave.php' );
+        $saveObj = new Session_Save();
+        $saveName = $_GET['crepo'];
+        if( $saveObj->nameExists($saveName) ) {
+            $saveData =& $saveObj->load($saveName);
+
+            $lo = createLO( $saveData['objectType'] );
+            $idResource = $lo->copy((int)$saveData['idResource']);
+            if( $idResource != 0 ) { 
+                $this->tdb->addItem( $folderId, 
+                    $saveData['name'],
+                    $saveData['objectType'], 
+                    $idResource, 
+                    0, /* idCategory */
+                    0, /* idUser */ 
+                    getLogUserId(), /* idAuthor */
+                    '1.0' /* version */, 
+                    '_DIFFICULT_MEDIUM', /* difficult */
+                    '', /* description */
+                    '', /* language */
+                    '', /* resource */
+                    '', /* objective */
+                    date("Y-m-d H:i:s") 
+                );
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

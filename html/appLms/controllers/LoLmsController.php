@@ -28,9 +28,13 @@ class LoLmsController extends LmsController
     function init()
     {
         $this->model = new LoLms();
+        $this->idCourse = $_SESSION['idCourse'];
+
+        $type = Get::req('type', DOTY_STRING, false);
+        $this->model->setTdb($type, $this->idCourse);
+
         $this->json = new Services_JSON();
 
-        $this->idCourse = $_SESSION['idCourse'];
     }
 
     private function getFolders($idCourse, $idFolder = false, $type = false)
@@ -45,9 +49,9 @@ class LoLmsController extends LmsController
         return array_values($this->model->getFolders($idCourse, $idFolder));
     }
 
-    private function getCurrentState($idCourse, $idFolder = false)
+    private function getCurrentState($idFolder = false)
     {
-        return $this->model->getCurrentState($idCourse, $idFolder);
+        return $this->model->getCurrentState($idFolder);
     }
 
     public function show()
@@ -91,7 +95,7 @@ class LoLmsController extends LmsController
         $id = Get::req('id', DOTY_INT, false);
         $responseData = [];
         $responseData['data'] = $this->getFolders($this->idCourse, $id);
-        $responseData['currentState'] = serialize([$this->getCurrentState($this->idCourse, 0)]);
+        $responseData['currentState'] = serialize([$this->getCurrentState(0)]);
         echo $this->json->encode($responseData);
         exit;
     }
@@ -99,9 +103,7 @@ class LoLmsController extends LmsController
     public function delete()
     {
         $id = Get::req('id', DOTY_INT, false);
-        $type = Get::req('type', DOTY_INT, false);
-
-        echo $this->json->encode($this->model->deleteFolder($this->idCourse, $id, $type));
+        echo $this->json->encode($this->model->deleteFolder($id));
         exit;
     }
 
@@ -110,7 +112,7 @@ class LoLmsController extends LmsController
         $id = Get::req('id', DOTY_INT, false);
         $newName = Get::req('newName', DOTY_STRING, false);
 
-        echo $this->json->encode($this->model->renameFolder($this->idCourse, $id, $newName));
+        echo $this->json->encode($this->model->renameFolder($id, $newName));
         exit;
     }
 
@@ -119,7 +121,7 @@ class LoLmsController extends LmsController
         $id = Get::req('id', DOTY_INT, false);
         $newParentId = Get::req('newParentId', DOTY_INT, false);
 
-        echo $this->json->encode($this->model->moveFolder($this->idCourse, $id, $newParentId));
+        echo $this->json->encode($this->model->moveFolder($id, $newParentId));
         exit;
     }
 
@@ -134,7 +136,7 @@ class LoLmsController extends LmsController
 
         if ($id && $newParent !== false) {
 
-            if ($this->model->reorder($this->idCourse, $id, $newParent, $newOrder ? $newOrder : null)) {
+            if ($this->model->reorder($id, $newParent, $newOrder ? $newOrder : null)) {
                 $responseData = ['success' => true];
             }
         }
@@ -144,9 +146,8 @@ class LoLmsController extends LmsController
 
     public function edit()
     {
-        $tdb = new OrgDirDb($this->idCourse, array());
 
-        $tree_view = new Org_TreeView($tdb, 'organization');
+        $tree_view = new Org_TreeView($this->tdb, 'organization');
 
         require_once Forma::inc(_adm_ . '/lib/lib.sessionsave.php');
         $saveObj = new Session_Save();
@@ -155,7 +156,7 @@ class LoLmsController extends LmsController
 
         $id = Get::req('id', DOTY_INT, false);
 
-        $folder = $tdb->getFolderById((string)$id);
+        $folder = $this->tdb->getFolderById((string)$id);
         $lo = createLO($folder->otherValues[REPOFIELDOBJECTTYPE]);
         $lo->edit($folder->otherValues[REPOFIELDIDRESOURCE], 'index.php?r=lms/lo/organization&id_course=1');
     }
