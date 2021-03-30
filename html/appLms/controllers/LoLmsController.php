@@ -29,11 +29,6 @@ class LoLmsController extends LmsController
     {
         $this->model = new LoLms();
         $this->json = new Services_JSON();
-        try {
-            $this->model->setDirDb(Get::req('type', DOTY_STRING, LoLms::ORGDIRDB));
-        } catch (\Exception $exception) {
-            $this->model->setDirDb(LoLms::ORGDIRDB);
-        }
 
         $this->idCourse = $_SESSION['idCourse'];
     }
@@ -42,9 +37,9 @@ class LoLmsController extends LmsController
     {
         if ($type) {
             try {
-                $this->model->setDirDb($type);
+                $this->model->setTdb($type);
             } catch (\Exception $exception) {
-                $this->model->setDirDb(LoLms::ORGDIRDB);
+                $this->model->setTdb(LoLms::ORGDIRDB);
             }
         }
         return array_values($this->model->getFolders($idCourse, $idFolder));
@@ -62,7 +57,7 @@ class LoLmsController extends LmsController
                 'active' => true,
                 'type' => LoLms::HOMEREPODIRDB,
                 'title' => Lang::t('_HOMEREPOROOTNAME', 'storage'),
-                'data' => $this->getFolders($this->idCourse,false,LoLms::ORGDIRDB),
+                'data' => $this->getFolders($this->idCourse,false,LoLms::HOMEREPODIRDB),
             ],
             [
                 'type' => LoLms::ORGDIRDB,
@@ -72,7 +67,7 @@ class LoLmsController extends LmsController
             [
                 'type' => LoLms::REPODIRDB,
                 'title' => Lang::t('_PUBREPOROOTNAME', 'storage'),
-                'data' => $this->getFolders($this->idCourse,false,LoLms::ORGDIRDB),
+                'data' => $this->getFolders($this->idCourse,false,LoLms::REPODIRDB),
             ],
         ];
         $this->render('show', ['tabs' => $tabs]);
