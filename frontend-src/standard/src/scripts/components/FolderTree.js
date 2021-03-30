@@ -11,7 +11,8 @@ class FolderTree {
       console.log(type, 'INIT');
       const btn = document.querySelector('.js-ft-rename-el');
       const inputRename = document.querySelector('.folderTree__rename__input');
-    
+
+      this.type = type;
       this.dragged;
 
       if (document.querySelectorAll('.folderTree__link').length) {
@@ -39,16 +40,24 @@ class FolderTree {
         }
       });
     
-      const container = document.querySelector('*[data-container=' + type + ']');
-      container.addEventListener('click', (e) => { this.clickOnFolder(e, type); });
+      const container = document.querySelector('*[data-container=' + this.type + ']');
+      container.addEventListener('click', (e) => { this.clickOnFolder(e, this.type); });
       initSortable();
       initDragDrop();
   }
 
-  clickOnFolder(event, type) {
+  getApiUrl(action, id, params) {
+    let url = `${Config.apiUrl}lms/lo/${action}&id=${id}`;
+    if (params) {
+      url += '&' + new URLSearchParams(params).toString();
+    }
+    return url;
+  }
+
+  clickOnFolder(event) {
     const target = event.target;
     const el = target.closest('.folderTree__link');
-    console.log(type, 'clickOnFolder');
+    console.log(this.type, 'clickOnFolder');
 
     if (el) {
       const isOpen = el.classList.contains('ft-is-folderOpen')
@@ -71,13 +80,13 @@ class FolderTree {
           el.classList.add('ft-is-folderOpen');
         }
         const elId = el.getAttribute('id');
-        const getLoData = Config.apiUrl + 'lms/lo/get&id=' + elId;
+        const getLoData = this.getApiUrl('get', elId);
         axios.get(getLoData).then( (response) => {
           const child = Tree(response.data);
           const childView = Content(response.data);
           const folderView = document.querySelector('.folderView');
-          const inputParent = document.querySelector('#treeview_selected_organization_' + type);
-          const inputState = document.querySelector('#treeview_state_organization_' + type);
+          const inputParent = document.querySelector('#treeview_selected_organization_' + this.type);
+          const inputState = document.querySelector('#treeview_state_organization_' + this.type);
           inputParent.value = elId;
           inputState.value = response.data.currentState;
           if (!el.classList.contains('ft-is-root')) {
@@ -102,7 +111,7 @@ class FolderTree {
     const value = input.value;
     const el = input.parentNode.parentNode;
     const elId = el.getAttribute('id');
-    const renameLoData = Config.apiUrl + 'lms/lo/rename&id=' + elId + '&newName=' + value;
+    const renameLoData = this.getApiUrl('rename', elId, { newName: value });
 
     axios.get(renameLoData).then().catch( (error) => {
       console.log(error);
@@ -149,7 +158,7 @@ function initSortable() {
 
         console.log('child order: ' + childElementArray);
 
-        const reorderLoData = Config.apiUrl + 'lms/lo/reorder&id=' + currentElementId + '&newParent=' + parentElementId + '&newOrder=' + childElementArray;
+        const reorderLoData = this.getApiUrl('reorder', currentElementId, { newParent: parentElementId, newOrder: childElementArray });
         axios.get(reorderLoData).then().catch( (error) => {
           console.log(error);
         });
@@ -196,7 +205,7 @@ function initDragDrop() {
 
       if (currentEl) {
         if ( (currentElId !== target.id) && (target.classList.contains('is-dropzone')) ) {
-          const reorderLoData = Config.apiUrl + 'lms/lo/reorder&id=' + currentElId + '&newParent=' + event.target.id;
+          const reorderLoData = this.getApiUrl('reorder', currentElId, { newParent: event.target.id });
           axios.get(reorderLoData).then(() => {
             if (target.classList.contains('ft-is-folderOpen') && (currentEl.classList.contains('folderTree__li') )) {
               const nextElementSibling = target.nextElementSibling;
@@ -292,7 +301,7 @@ function contextMenu() {
                         }
                     }
 
-                    const deleteLoData = Config.apiUrl + 'lms/lo/delete&id=' + elId;
+                    const deleteLoData = this.getApiUrl('delete', elId);
                     axios.get(deleteLoData).then().catch( (error) => {
                         console.log(error);
                     });
