@@ -28,6 +28,7 @@ class LoLmsController extends LmsController
     function init()
     {
         $this->model = new LoLms();
+        $this->json = new Services_JSON();
         try {
             $this->model->setDirDb(Get::req('type', DOTY_STRING, LoLms::ORGDIRDB));
         } catch (\Exception $exception) {
@@ -59,19 +60,16 @@ class LoLmsController extends LmsController
         $tabs = [
             [
                 'active' => true,
-                'alias' => LoLms::HOMEREPODIRDB,
                 'type' => LoLms::HOMEREPODIRDB,
                 'title' => Lang::t('_HOMEREPOROOTNAME', 'storage'),
                 'data' => $this->getFolders($this->idCourse,false,LoLms::ORGDIRDB),
             ],
             [
-                'alias' => LoLms::ORGDIRDB,
                 'type' => LoLms::ORGDIRDB,
                 'title' => Lang::t('_ORGROOTNAME', 'storage'),
                 'data' => $this->getFolders($this->idCourse,false,LoLms::ORGDIRDB),
             ],
             [
-                'alias' => LoLms::REPODIRDB,
                 'type' => LoLms::REPODIRDB,
                 'title' => Lang::t('_PUBREPOROOTNAME', 'storage'),
                 'data' => $this->getFolders($this->idCourse,false,LoLms::ORGDIRDB),
