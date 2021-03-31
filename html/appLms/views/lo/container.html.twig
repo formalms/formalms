@@ -7,20 +7,22 @@
     <input type="hidden" id="treeview_state_{{ tab.type }}" name="treeview_state_{{ tab.type }}" value="">
     <section class="folderTreeView js-folder-tree-view">
         <aside class="folderTreeContent folderTreeContent--one-third">
-            <div class="folderTree__actions">
-                <input type="submit"
-                       class="folderTree__btn folderTree__btn--new folderTree__newFolder"
-                       title="{{ translate('_NEW_FOLDER', 'standard') }}"
-                       id="treeview_opnewfolder_{{ tab.type }}"
-                       name="treeview_opnewfolder_{{ tab.type }}"
-                        value="">
-                <input type="submit"
-                       class="folderTree__btn folderTree__btn--new folderTree__newLO"
-                       title="{{ translate('_REPOCREATELO', 'storage') }}"
-                       id="{{ tab.type }}_createLOBegin"
-                       name="{{ tab.type }}_createLOBegin"
-                        value="">
-            </div>
+            {% if tab.edit %}
+                <div class="folderTree__actions">
+                    <input type="submit"
+                        class="folderTree__btn folderTree__btn--new folderTree__newFolder"
+                        title="{{ translate('_NEW_FOLDER', 'standard') }}"
+                        id="treeview_opnewfolder_{{ tab.type }}"
+                        name="treeview_opnewfolder_{{ tab.type }}"
+                            value="">
+                    <input type="submit"
+                        class="folderTree__btn folderTree__btn--new folderTree__newLO"
+                        title="{{ translate('_REPOCREATELO', 'storage') }}"
+                        id="{{ tab.type }}_createLOBegin"
+                        name="{{ tab.type }}_createLOBegin"
+                            value="">
+                </div>
+            {% endif %}
             <nav class="folderTree js-folder-tree">
                 <ul class="folderTree__ul js-folder-root">
                     <li id="0" class="folderTree__li ft-is-parent">
@@ -49,20 +51,22 @@
             </nav>
         </aside>
         <main class="folderViewContent folderViewContent--two-third">
-            <div class="folderTree__actions">
-                <input type="submit"
-                       class="folderTree__btn folderTree__btn--new folderTree__newFolder"
-                       title="{{ translate('_NEW_FOLDER', 'standard') }}"
-                       id="treeview_opnewfolder_{{ tab.type }}"
-                       name="treeview_opnewfolder_{{ tab.type }}"
-                       value="">
-                <input type="submit"
-                       class="folderTree__btn folderTree__btn--new folderTree__newLO"
-                       title="{{ translate('_REPOCREATELO', 'storage') }}"
-                       id="{{ tab.type }}_createLOBegin"
-                       name="{{ tab.type }}_createLOBegin"
-                       value="">
-            </div>
+            {% if tab.edit %}
+                <div class="folderTree__actions">
+                    <input type="submit"
+                        class="folderTree__btn folderTree__btn--new folderTree__newFolder"
+                        title="{{ translate('_NEW_FOLDER', 'standard') }}"
+                        id="treeview_opnewfolder_{{ tab.type }}"
+                        name="treeview_opnewfolder_{{ tab.type }}"
+                        value="">
+                    <input type="submit"
+                        class="folderTree__btn folderTree__btn--new folderTree__newLO"
+                        title="{{ translate('_REPOCREATELO', 'storage') }}"
+                        id="{{ tab.type }}_createLOBegin"
+                        name="{{ tab.type }}_createLOBegin"
+                        value="">
+                </div>
+            {% endif %}
             <div class="folderView">
                 <ul class="folderView__ul js-sortable-view">
                     {% for el in data %}

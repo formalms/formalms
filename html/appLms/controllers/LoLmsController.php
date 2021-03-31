@@ -56,38 +56,40 @@ class LoLmsController extends LmsController
 
     public function show()
     {
+        $this->render('show', [
+            'data' => [
+                'edit' => false,
+                'type' => LoLms::ORGDIRDB,
+                'title' => Lang::t('_ORGROOTNAME', 'storage'),
+                'data' => $this->getFolders($this->idCourse, false, LoLms::ORGDIRDB),
+            ],
+        ]);
+    }
+
+    public function organization()
+    {
         $tabs = [
             [
                 'active' => true,
+                'edit' => true,
                 'type' => LoLms::HOMEREPODIRDB,
                 'title' => Lang::t('_HOMEREPOROOTNAME', 'storage'),
                 'data' => $this->getFolders($this->idCourse, false, LoLms::HOMEREPODIRDB),
             ],
             [
                 'type' => LoLms::ORGDIRDB,
+                'edit' => true,
                 'title' => Lang::t('_ORGROOTNAME', 'storage'),
                 'data' => $this->getFolders($this->idCourse, false, LoLms::ORGDIRDB),
             ],
             [
                 'type' => LoLms::REPODIRDB,
+                'edit' => true,
                 'title' => Lang::t('_PUBREPOROOTNAME', 'storage'),
                 'data' => $this->getFolders($this->idCourse, false, LoLms::REPODIRDB),
             ],
         ];
-        $this->render('show', ['tabs' => $tabs]);
-    }
-
-    public function organization()
-    {
-        $this->render('organization', array([
-            'teacher' => true,
-            'data' => [
-                'alias' => LoLms::ORGDIRDB,
-                'type' => LoLms::ORGDIRDB,
-                'title' => Lang::t('_ORGROOTNAME', 'storage'),
-                'data' => $this->getFolders($this->idCourse),
-            ],
-        ]));
+        $this->render('organization', ['tabs' => $tabs]);
     }
 
     public function get()
