@@ -253,7 +253,7 @@ class Module_Organization extends LmsModule {
 			$saveName = $saveObj->getName('organization'.$_SESSION['idCourse'], true);
 			$saveObj->save( $saveName, $this->treeView->getState() );
 
-			$id_item = importVar('id_item');
+			$id_item = Get::req('id_item', DOTY_INT, 0);
 			$folder = $this->repoDb->getFolderById( $id_item );
 			$idItem = $folder->otherValues[REPOFIELDIDRESOURCE];
 			$lo = createLO($folder->otherValues[REPOFIELDOBJECTTYPE], $idItem);

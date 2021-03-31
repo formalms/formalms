@@ -31,7 +31,12 @@ class LoLmsController extends LmsController
         $this->idCourse = $_SESSION['idCourse'];
 
         $type = Get::req('type', DOTY_STRING, LoLms::ORGDIRDB);
-        $this->model->setTdb($type, $this->idCourse);
+
+        try {
+            $this->model->setTdb($type, $this->idCourse);
+        } catch (\Exception $exception) {
+            $this->model->setTdb(LoLms::ORGDIRDB, $this->idCourse);
+        }
 
         $this->json = new Services_JSON();
 
@@ -49,9 +54,23 @@ class LoLmsController extends LmsController
         return array_values($this->model->getFolders($idCourse, $idFolder));
     }
 
-    private function getCurrentState($idFolder = false)
+    private function getCurrentState($idFolder = false, $type = false)
     {
+        if ($type) {
+            try {
+                $this->model->setTdb($type);
+            } catch (\Exception $exception) {
+                $this->model->setTdb(LoLms::ORGDIRDB);
+            }
+        }
         return $this->model->getCurrentState($idFolder);
+    }
+
+    public function setCurrentState() {
+        $type = Get::req('type', DOTY_STRING, LoLms::ORGDIRDB);
+
+        echo $this->json->encode($this->model->setCurrentState($type));
+        exit;
     }
 
     public function show()
@@ -75,18 +94,21 @@ class LoLmsController extends LmsController
                 'type' => LoLms::HOMEREPODIRDB,
                 'title' => Lang::t('_HOMEREPOROOTNAME', 'storage'),
                 'data' => $this->getFolders($this->idCourse, false, LoLms::HOMEREPODIRDB),
+                'currentState' => serialize([$this->getCurrentState(0, LoLms::HOMEREPODIRDB)]),
             ],
             [
                 'type' => LoLms::ORGDIRDB,
                 'edit' => true,
                 'title' => Lang::t('_ORGROOTNAME', 'storage'),
                 'data' => $this->getFolders($this->idCourse, false, LoLms::ORGDIRDB),
+                'currentState' => serialize([$this->getCurrentState(0, LoLms::ORGDIRDB)]),
             ],
             [
                 'type' => LoLms::REPODIRDB,
                 'edit' => true,
                 'title' => Lang::t('_PUBREPOROOTNAME', 'storage'),
                 'data' => $this->getFolders($this->idCourse, false, LoLms::REPODIRDB),
+                'currentState' => serialize([$this->getCurrentState(0, LoLms::REPODIRDB)]),
             ],
         ];
         $this->render('organization', ['tabs' => $tabs]);

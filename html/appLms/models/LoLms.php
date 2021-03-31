@@ -17,6 +17,16 @@ class LoLms extends Model {
     const REPODIRDB = 'pubrepo';
     const HOMEREPODIRDB = 'homerepo';
 
+    const STORAGE_HOMEREPODIRDB = 'storage_home';
+    const STORAGE_ORGDIRDB = 'storage_course';
+    const STORAGE_REPODIRDB = 'storage_pubrepo';
+
+    const STORAGE_TABS = array(
+        self::HOMEREPODIRDB => self::STORAGE_HOMEREPODIRDB,
+        self::ORGDIRDB => self::STORAGE_ORGDIRDB,
+        self::REPODIRDB => self::STORAGE_REPODIRDB,
+    );
+
     private $tdb = null;
 
     public function LoLMS() {
@@ -59,6 +69,15 @@ class LoLms extends Model {
     public function getCurrentState($idFolder = 0) {
         $tree_view = new Org_TreeView($this->tdb, 'organization' );
         return $tree_view->getCurrentState($idFolder);
+    }
+
+    public function setCurrentState($type) {
+        if (array_key_exists($type, self::STORAGE_TABS)) {
+            $_SESSION['storage'] = serialize(['tabview_storage_status' => self::STORAGE_TABS[$type]]);
+
+            return $_SESSION['storage'];
+        }
+        return false;
     }
 
     public function deleteFolder($id) {
