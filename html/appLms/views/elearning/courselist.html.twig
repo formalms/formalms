@@ -155,7 +155,7 @@
                                {% endif %}
 
 
-                            <div class="course-box__item course-box__item{% if course.dateClosing_year > 0 %} {{ --half }} {% endif %}">
+                            <div class="course-box__item course-box__item{% if course.dateClosing_year > 0 %}--half{% endif %}">
                                 {% if course.can_enter.can %}                                                      
                                    {% block entercourse %}
                                     <a class="forma-button forma-button--orange-hover forma-button--full" title="{{ course.name }}" href="index.php?modname=course&amp;op=aula&amp;idCourse={{ course.idCourse }} " rel= {{ course.rel }}>
