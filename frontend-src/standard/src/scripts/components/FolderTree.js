@@ -8,49 +8,51 @@ import Content from '../twig/content.html.twig';
 class FolderTree {
 
   constructor(type) {
-      console.log(type, 'INIT');
-      const btn = document.querySelector('.js-ft-rename-el');
-      const inputRename = document.querySelector('.folderTree__rename__input');
+    this.type = type;
+    this.container = document.querySelector('*[data-container=' + this.type + ']');
+    this.dragged;
 
-      this.type = type;
-      this.dragged;
+    const btn = this.container.querySelector('.js-ft-rename-el');
+    const inputRename = this.container.querySelector('.folderTree__rename__input');
 
-      if (document.querySelectorAll('.folderTree__link').length) {
-        contextMenu();
-      }
+    if (this.container.querySelectorAll('.folderTree__link').length) {
+      contextMenu(this.container);
+    }
 
-      if (btn) {
-        btn.addEventListener('click', () => {
+    if (btn) {
+      btn.addEventListener('click', () => {
+        this.renameEl();
+      });
+    }
+
+    if (inputRename) {
+      inputRename.addEventListener('keyup', (e) => {
+        if (e.keyCode === 13) {
           this.renameEl();
-        });
-      }
-
-      if (inputRename) {
-        inputRename.addEventListener('keyup', (e) => {
-          if (e.keyCode === 13) {
-            this.renameEl();
-            e.preventDefault();
-          }
-        });
-      }
-
-      document.addEventListener('contextmenu', (event) => {
-        if (event.target.classList.contains('folderTree__rename__input') || event.target.classList.contains('folderTree__rename__btn') ) {
-          document.querySelector('.context-menu').classList.remove('menu-visible');
+          e.preventDefault();
         }
       });
-    
-      const container = document.querySelector('*[data-container=' + this.type + ']');
-      container.addEventListener('click', (e) => { this.clickOnFolder(e, this.type); });
-      initSortable();
-      initDragDrop();
+    }
+
+    this.container.addEventListener('contextmenu', (event) => {
+      if (event.target.classList.contains('folderTree__rename__input') || event.target.classList.contains('folderTree__rename__btn') ) {
+        this.container.querySelector('.context-menu').classList.remove('menu-visible');
+      }
+    });
+  
+    this.container.addEventListener('click', (e) => { this.clickOnFolder(e, this.type); });
+    initSortable(this.container);
+    initDragDrop(this.container);
   }
 
   getApiUrl(action, id, params) {
     let url = `${Config.apiUrl}lms/lo/${action}&id=${id}`;
-    if (params) {
-      url += '&' + new URLSearchParams(params).toString();
+    if (!params) {
+      params = {};
     }
+    params.type = this.type;
+    url += '&' + new URLSearchParams(params).toString();
+
     return url;
   }
 
@@ -64,7 +66,7 @@ class FolderTree {
       const noClick = el.classList.contains('ft-no-click');
 
       if (!noClick) {
-        const els = document.querySelectorAll('.folderTree__link');
+        const els = this.container.querySelectorAll('.folderTree__link');
         if (els) {
           els.forEach(el => {
             el.classList.remove('ft-is-selected');
@@ -84,18 +86,18 @@ class FolderTree {
         axios.get(getLoData).then( (response) => {
           const child = Tree(response.data);
           const childView = Content(response.data);
-          const folderView = document.querySelector('.folderView');
-          const inputParent = document.querySelector('#treeview_selected_organization_' + this.type);
-          const inputState = document.querySelector('#treeview_state_organization_' + this.type);
+          const folderView = this.container.querySelector('.folderView');
+          const inputParent = this.container.querySelector('#treeview_selected_' + this.type);
+          const inputState = this.container.querySelector('#treeview_state_' + this.type);
           inputParent.value = elId;
           inputState.value = response.data.currentState;
           if (!el.classList.contains('ft-is-root')) {
             el.insertAdjacentHTML('afterend',child);
           }
           folderView.innerHTML = childView;
-          contextMenu();
-          initSortable();
-          initDragDrop();
+          contextMenu(this.container);
+          initSortable(this.container);
+          initDragDrop(this.container);
         }).catch( (error) => {
           console.log(error)
         });
@@ -106,8 +108,8 @@ class FolderTree {
   }
 
   renameEl() {
-    const rename = document.querySelector('.folderTree__rename');
-    const input = document.querySelector('.folderTree__rename__input');
+    const rename = this.container.querySelector('.folderTree__rename');
+    const input = this.container.querySelector('.folderTree__rename__input');
     const value = input.value;
     const el = input.parentNode.parentNode;
     const elId = el.getAttribute('id');
@@ -121,13 +123,13 @@ class FolderTree {
     el.childNodes[0].innerHTML = value;
     el.classList.remove('ft-no-click');
 
-    document.querySelector('.folderView').querySelector('.folderView__li[data-id="' + elId + '"]').querySelector('.folderView__label').innerHTML = value;
+    this.container.querySelector('.folderView').querySelector('.folderView__li[data-id="' + elId + '"]').querySelector('.folderView__label').innerHTML = value;
   }
 
 }
 
-function initSortable() {
-  const view = document.querySelector('.js-sortable-view');
+function initSortable(container) {
+  const view = container.querySelector('.js-sortable-view');
 
   if (view) {
     new Sortable.create(view, {
@@ -140,8 +142,8 @@ function initSortable() {
       onUpdate: function (evt) {
         const currentElement = evt.item;
         const currentElementId = currentElement.id;
-        const parentElement = document.querySelector('.ft-is-selected');
-        const childElement = document.querySelector('.folderView__ul').querySelectorAll('.folderView__li');
+        const parentElement = container.querySelector('.ft-is-selected');
+        const childElement = container.querySelector('.folderView__ul').querySelectorAll('.folderView__li');
         const childElementArray = [];
         let parentElementId = 0;
         console.log('current: ' + currentElementId);
@@ -167,17 +169,17 @@ function initSortable() {
   }
 }
 
-function initDragDrop() {
+function initDragDrop(container) {
     let currentEl, currentElId;
 
-    document.addEventListener('dragstart', (event) => {
+    container.addEventListener('dragstart', (event) => {
       if (event.target.classList.contains('is-droppable')) {
         currentEl = event.target;
         currentElId = currentEl.id;
       }
     });
 
-    document.addEventListener('dragover', (event) => {
+    container.addEventListener('dragover', (event) => {
       const target = event.target;
 
       if (currentEl) {
@@ -189,7 +191,7 @@ function initDragDrop() {
       }
     });
 
-    document.addEventListener('dragleave', (event) => {
+    container.addEventListener('dragleave', (event) => {
       const target = event.target;
 
       if (currentEl) {
@@ -199,7 +201,7 @@ function initDragDrop() {
       }
     });
 
-    document.addEventListener('drop', (event) => {
+    container.addEventListener('drop', (event) => {
       const target = event.target;
       target.classList.remove('fv-is-dropped');
 
@@ -217,7 +219,7 @@ function initDragDrop() {
             } else {
               currentEl.remove();
             }
-            document.querySelector('.folderView__li[data-id="' + currentElId + '"]').remove();
+            container.querySelector('.folderView__li[data-id="' + currentElId + '"]').remove();
           }).catch((error) => {
             console.log(error);
           });
@@ -226,14 +228,14 @@ function initDragDrop() {
     });
 }
 
-function contextMenu() {
+function contextMenu(container) {
     contextmenu('.folderTree__link:not(.ft-is-root)', (target) => {
         return [
             {
                 text: 'Rinomina',
                 onClick() {
-                    const rename = document.querySelector('.folderTree__rename');
-                    const renameInput = document.querySelector('.folderTree__rename__input');
+                    const rename = container.querySelector('.folderTree__rename');
+                    const renameInput = container.querySelector('.folderTree__rename__input');
 
                     if (target.classList.contains('folderTree__rename__input') === false) {
                         if (target.hasAttribute('id')) {
@@ -248,7 +250,7 @@ function contextMenu() {
                         renameInput.setAttribute('value', target.textContent);
 
                         // Rendo tutti gli elementi non cliccabile se sono in modalità rinomina
-                        const elsNotClick = document.querySelectorAll('.ft-no-click');
+                        const elsNotClick = container.querySelectorAll('.ft-no-click');
                         if (elsNotClick) {
                             for (let el of elsNotClick) {
                                 el.addEventListener('click', (e) => {
@@ -258,7 +260,7 @@ function contextMenu() {
                         }
 
                         // Stop della propagazione del click se sono su context menu, in alternativa disabilito modifica input se clicco fuori dall'input
-                        document.addEventListener('click', (event) => {
+                        container.addEventListener('click', (event) => {
                             if (event.detail) { // fix trigger click se premo su spazio
                                 const clickInside = rename.contains(event.target);
                                 if (event.target.classList.contains('menu-item-clickable')) {
@@ -291,7 +293,7 @@ function contextMenu() {
                         elId = target.parentNode.getAttribute('id');
                     }
 
-                    document.querySelector('.folderView').querySelector('.folderView__li[data-id="' + elId + '"]').parentNode.remove();
+                    container.querySelector('.folderView').querySelector('.folderView__li[data-id="' + elId + '"]').parentNode.remove();
 
                     if (siblings) {
                         for (let el of siblings) {

@@ -3,22 +3,22 @@
 <div class="tab-pane {{ tab.active ? 'active' : '' }}" data-container="{{ tab.type }}">
   <h2>{{ tab.title }}</h2>
     {{ Form_openForm('orgshow', 'index.php?modname=storage&op=display', false, 'POST') }}
-    <input type="hidden" id="treeview_selected_organization_{{ tab.type }}" name="treeview_selected_organization" value="0">
-    <input type="hidden" id="treeview_state_organization_{{ tab.type }}" name="treeview_state_organization" value="">
+    <input type="hidden" id="treeview_selected_{{ tab.type }}" name="treeview_selected_{{ tab.type }}" value="0">
+    <input type="hidden" id="treeview_state_{{ tab.type }}" name="treeview_state_{{ tab.type }}" value="">
     <section class="folderTreeView js-folder-tree-view">
         <aside class="folderTreeContent folderTreeContent--one-third">
             <div class="folderTree__actions">
                 <input type="submit"
                        class="folderTree__btn folderTree__btn--new folderTree__newFolder"
                        title="{{ translate('_NEW_FOLDER', 'standard') }}"
-                       id="treeview_opnewfolder_organization"
-                       name="treeview_opnewfolder_organization"
+                       id="treeview_opnewfolder_{{ tab.type }}"
+                       name="treeview_opnewfolder_{{ tab.type }}"
                         value="">
                 <input type="submit"
                        class="folderTree__btn folderTree__btn--new folderTree__newLO"
                        title="{{ translate('_REPOCREATELO', 'storage') }}"
-                       id="organization_createLOBegin"
-                       name="organization_createLOBegin"
+                       id="{{ tab.type }}_createLOBegin"
+                       name="{{ tab.type }}_createLOBegin"
                         value="">
             </div>
             <nav class="folderTree js-folder-tree">
@@ -53,14 +53,14 @@
                 <input type="submit"
                        class="folderTree__btn folderTree__btn--new folderTree__newFolder"
                        title="{{ translate('_NEW_FOLDER', 'standard') }}"
-                       id="treeview_opnewfolder_organization"
-                       name="treeview_opnewfolder_organization"
+                       id="treeview_opnewfolder_{{ tab.type }}"
+                       name="treeview_opnewfolder_{{ tab.type }}"
                        value="">
                 <input type="submit"
                        class="folderTree__btn folderTree__btn--new folderTree__newLO"
                        title="{{ translate('_REPOCREATELO', 'storage') }}"
-                       id="organization_createLOBegin"
-                       name="organization_createLOBegin"
+                       id="{{ tab.type }}_createLOBegin"
+                       name="{{ tab.type }}_createLOBegin"
                        value="">
             </div>
             <div class="folderView">

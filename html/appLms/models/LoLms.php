@@ -13,9 +13,9 @@ require_once( Forma::inc( _lms_.'/modules/homerepo/homerepo.php') );
 
 class LoLms extends Model {
 
-    const ORGDIRDB = 'ORGDIRDB';
-    const REPODIRDB = 'REPODIRDB';
-    const HOMEREPODIRDB = 'HOMEREPODIRDB';
+    const ORGDIRDB = 'organization';
+    const REPODIRDB = 'pubrepo';
+    const HOMEREPODIRDB = 'homerepo';
 
     private $tdb = null;
 

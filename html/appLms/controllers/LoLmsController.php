@@ -30,7 +30,7 @@ class LoLmsController extends LmsController
         $this->model = new LoLms();
         $this->idCourse = $_SESSION['idCourse'];
 
-        $type = Get::req('type', DOTY_STRING, false);
+        $type = Get::req('type', DOTY_STRING, LoLms::ORGDIRDB);
         $this->model->setTdb($type, $this->idCourse);
 
         $this->json = new Services_JSON();
