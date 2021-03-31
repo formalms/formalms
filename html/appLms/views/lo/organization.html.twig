@@ -26,7 +26,7 @@ if (tabs) {
         tab.addEventListener('click', saveCurrentState);
 
         new window.FolderTree(tab.getAttribute('data-type'));
-        new window.FolderView();
+        new window.FolderView(tab.getAttribute('data-type'));
     });
 }
 

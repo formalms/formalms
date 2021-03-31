@@ -1,7 +1,6 @@
 {% set data = tab.data %}
 
 <div class="tab-pane {{ tab.active ? 'active' : '' }}" data-container="{{ tab.type }}">
-  <h2>{{ tab.title }}</h2>
     {{ Form_openForm('orgshow', 'index.php?modname=storage&op=display', false, 'POST') }}
     <input type="hidden" id="treeview_selected_{{ tab.type }}" name="treeview_selected_{{ tab.type }}" value="0">
     <input type="hidden" id="treeview_state_{{ tab.type }}" name="treeview_state_{{ tab.type }}" value="{{ tab.currentState }}">
