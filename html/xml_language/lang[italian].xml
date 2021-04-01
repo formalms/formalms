@@ -1731,6 +1731,7 @@ Nella conservazione dei dati verranno osservate accuratezza e precisione per gar
         <key id="organization_chart&amp;_ORG_CHART_IMPORT_SEPARATOR" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Scegli separatore (; o ,)]]></key>
         <key id="organization_chart&amp;_ORG_CHART_IMPORT_USERS" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Importa utenti]]></key>
         <key id="organization_chart&amp;_ORG_CHART_INHERIT" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Discendenti]]></key>
+        <key id="organization_chart&amp;_DIRECTORY" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Cartella]]></key>
         <key id="organization_chart&amp;_ORG_CHART_LIST_FIELDS" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Elenco campi per la cartella]]></key>
         <key id="organization_chart&amp;_ROOT_RENAME" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Rinomina]]></key>
         <key id="organization_chart&amp;_SHOW_SUSPENDED" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Mostra anche gli utenti sospesi]]></key>
@@ -2341,6 +2342,7 @@ Password: [password]]]></key>
         <key id="standard&amp;_COURSE_S_FREE" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Libera]]></key>
         <key id="standard&amp;_COURSE_VALID_TIME" attributes="" save_date="2017-04-11 18:46:49"><![CDATA[Hai superato il limite di tempo]]></key>
         <key id="standard&amp;_CREATE" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Crea]]></key>
+        <key id="standard&amp;_CREATE_NEW" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Crea nuovo]]></key>
         <key id="standard&amp;_CREATION_DATE" attributes="" save_date="2016-09-29 16:01:42"><![CDATA[Data di creazione]]></key>
         <key id="standard&amp;_CREDITS" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Crediti]]></key>
         <key id="standard&amp;_CURRENT_FILE" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[File corrente]]></key>

@@ -7,11 +7,13 @@ import {RenderDashBoardCalendar} from '../modules/DashboardCalendar';
 import { DashboardVideo } from '../modules/DashboardVideo';
 import FolderTree from '../components/FolderTree';
 import FolderView from '../components/FolderView';
+import CreateItem from '../components/CreateItem';
 
 var Page = (function () {
 
   window.FolderView = FolderView;
   window.FolderTree = FolderTree;
+  window.CreateItem = CreateItem;
 
   function setScroll(elem, action) {
     if (action === 'lock') {

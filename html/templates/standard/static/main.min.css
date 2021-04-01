@@ -5578,8 +5578,20 @@ p {
   background-size: 24px; }
 
 .folderTree__actions {
-  padding: 8px;
+  padding: 0px;
   text-align: right; }
+  .folderTree__actions .dropdown {
+    margin-bottom: 12px; }
+    .folderTree__actions .dropdown .btn {
+      display: block;
+      width: 100%;
+      background: none;
+      padding: 12px;
+      transition: .2 all ease-in-out;
+      text-align: right;
+      border: 1px solid #000; }
+    .folderTree__actions .dropdown .dropdown-menu {
+      width: 100%; }
 
 .folderTree__link {
   width: 100%;

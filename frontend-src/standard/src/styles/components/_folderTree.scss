@@ -74,8 +74,23 @@
 }
 
 .folderTree__actions {
-  padding: 8px;
+  padding: 0px;
   text-align: right;
+  .dropdown {
+    margin-bottom: 12px;
+    .btn {
+      display: block;
+      width: 100%;
+      background: none;
+      padding: 12px;
+      transition: .2 all ease-in-out;
+      text-align: right;
+      border: 1px solid #000;
+    }
+    .dropdown-menu {
+      width: 100%;
+    }
+  }
 }
 
 .folderTree__link {
