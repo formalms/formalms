@@ -860,14 +860,21 @@ class FieldList
 	{
 		$acl = &Docebo::user()->getACL();
 		$index = 0;
-
-
 		if ($arr_idst === FALSE) {
 			$arr_idst = $acl->getArrSTGroupsST($acl->getUserGroupsST($idst_user));
 			$index += count($arr_idst);
 		}
 
-		if (count($arr_idst) >= $index) {
+		if ($add_root) {
+			$acl_man = &$acl->getAclManager();
+			$tmp = $acl_man->getGroup(false, '/oc_0');
+			$arr_idst[] = $tmp[0];
+			$tmp = $acl_man->getGroup(false, '/ocd_0');
+			$arr_idst[] = $tmp[0];
+			$index += 2;
+		}
+
+		if (count($arr_idst) > $index) {
 			// Not only roots ocd_0 and oc_0
 			for ($i = 0; $i < count($arr_idst); $i++) {
 				if ($arr_idst[$i] == 1) {
@@ -877,16 +884,16 @@ class FieldList
 		}
 
 		$query = "SELECT ft.id_common, ft.type_field, tft.type_file, tft.type_class, gft.mandatory"
-			. "  FROM ( " . $this->getFieldTable() . " AS ft"
-			. "  JOIN " . $this->getTypeFieldTable() . " AS tft )"
-			. "  JOIN " . $this->getGroupFieldsTable() . " AS gft"
-			. " WHERE ft.lang_code = '" . getLanguage() . "'"
+		. "  FROM ( " . $this->getFieldTable() . " AS ft"
+		. "  JOIN " . $this->getTypeFieldTable() . " AS tft )"
+		. "  JOIN " . $this->getGroupFieldsTable() . " AS gft"
+		. " WHERE ft.lang_code = '" . getLanguage() . "'"
 			. "	 AND ft.type_field = tft.type_field"
 			. "   AND ft.id_common = gft.id_field"
 			. "   AND gft.idst IN ('" . implode("','", $arr_idst) . "')";
 
-		if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN && Docebo::user()->getUserLevelId() != ADMIN_GROUP_ADMIN) {
-			$query .= " AND gft.useraccess <> 'readwrite'"; # Hide invisible;
+		if (Docebo::user()->getUserLevelId() !== ADMIN_GROUP_GODADMIN) {
+			$query.= "   AND gft.useraccess <> 'readwrite'"; # Hide invisible;
 		}
 
 		if ($useraccess !== 'false' && is_array($useraccess)) {
@@ -900,8 +907,7 @@ class FieldList
 			$query .= " ) ";
 		}
 		$query .= " GROUP BY ft.id_common "
-			. " ORDER BY ft.sequence, gft.idst, gft.id_field";
-
+		. " ORDER BY ft.sequence, gft.idst, gft.id_field";
 
 		$play_txt = array();
 		$re_fields = sql_query($query);
