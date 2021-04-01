@@ -6,7 +6,9 @@
                     <span class="folderView__label">{{ el.title }}</span>
                 </div>
                 {% if el.actions %}
-                    <button type="button" class="folderView__button fv-is-menu-open js-fv-open-actions"></button>
+                    <div class="folderView__buttons">
+                        <button type="button" class="folderView__button fv-is-menu-open js-fv-open-actions"></button>
+                    </div>
                     {% set types = ['access','delete','properties','play','show_results','edit','copy'] %}
                     <div class="folderView__actions">
                         {% for key, action in el.actions %}

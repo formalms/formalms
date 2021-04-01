@@ -9,14 +9,17 @@ class FolderTree {
 
   constructor(type) {
     this.type = type;
+    window.type = type;
     this.container = document.querySelector('*[data-container=' + this.type + ']');
     this.dragged;
 
     const btn = this.container.querySelector('.js-ft-rename-el');
     const inputRename = this.container.querySelector('.folderTree__rename__input');
 
-    if (this.container.querySelectorAll('.folderTree__link').length) {
-      contextMenu(this.container);
+    if (!document.querySelector('.js-disable-context-menu')) {
+        if (this.container.querySelectorAll('.folderTree__link').length) {
+            contextMenu(this.container);
+        }
     }
 
     if (btn) {
@@ -39,21 +42,15 @@ class FolderTree {
         this.container.querySelector('.context-menu').classList.remove('menu-visible');
       }
     });
-  
+
     this.container.addEventListener('click', (e) => { this.clickOnFolder(e, this.type); });
-    initSortable(this.container);
-    initDragDrop(this.container);
-  }
 
-  getApiUrl(action, id, params) {
-    let url = `${Config.apiUrl}lms/lo/${action}&id=${id}`;
-    if (!params) {
-      params = {};
+    if (!document.querySelector('.js-disable-sortable')) {
+        initSortable(this.container);
     }
-    params.type = this.type;
-    url += '&' + new URLSearchParams(params).toString();
-
-    return url;
+    if (!document.querySelector('.js-disable-drag-and-drop')) {
+        initDragDrop(this.container);
+    }
   }
 
   clickOnFolder(event) {
@@ -82,7 +79,7 @@ class FolderTree {
           el.classList.add('ft-is-folderOpen');
         }
         const elId = el.getAttribute('id');
-        const getLoData = this.getApiUrl('get', elId);
+        const getLoData = getApiUrl('get', elId);
         axios.get(getLoData).then( (response) => {
           const child = Tree(response.data);
           const childView = Content(response.data);
@@ -95,9 +92,18 @@ class FolderTree {
             el.insertAdjacentHTML('afterend',child);
           }
           folderView.innerHTML = childView;
-          contextMenu(this.container);
-          initSortable(this.container);
-          initDragDrop(this.container);
+
+        if (!document.querySelector('.js-disable-context-menu')) {
+            contextMenu(this.container);
+        }
+
+        if (!document.querySelector('.js-disable-sortable')) {
+            initSortable(this.container);
+        }
+
+        if (!document.querySelector('.js-disable-drag-and-drop')) {
+            initDragDrop(this.container);
+        }
         }).catch( (error) => {
           console.log(error)
         });
@@ -113,7 +119,7 @@ class FolderTree {
     const value = input.value;
     const el = input.parentNode.parentNode;
     const elId = el.getAttribute('id');
-    const renameLoData = this.getApiUrl('rename', elId, { newName: value });
+    const renameLoData = getApiUrl('rename', elId, { newName: value });
 
     axios.get(renameLoData).then().catch( (error) => {
       console.log(error);
@@ -126,6 +132,17 @@ class FolderTree {
     this.container.querySelector('.folderView').querySelector('.folderView__li[data-id="' + elId + '"]').querySelector('.folderView__label').innerHTML = value;
   }
 
+}
+
+function getApiUrl(action, id, params) {
+   let url = `${Config.apiUrl}lms/lo/${action}&id=${id}`;
+   if (!params) {
+      params = {};
+   }
+   params.type = window.type;
+   url += '&' + new URLSearchParams(params).toString();
+
+   return url;
 }
 
 function initSortable(container) {
@@ -160,7 +177,7 @@ function initSortable(container) {
 
         console.log('child order: ' + childElementArray);
 
-        const reorderLoData = this.getApiUrl('reorder', currentElementId, { newParent: parentElementId, newOrder: childElementArray });
+        const reorderLoData = getApiUrl('reorder', currentElementId, { newParent: parentElementId, newOrder: childElementArray });
         axios.get(reorderLoData).then().catch( (error) => {
           console.log(error);
         });
@@ -207,7 +224,7 @@ function initDragDrop(container) {
 
       if (currentEl) {
         if ( (currentElId !== target.id) && (target.classList.contains('is-dropzone')) ) {
-          const reorderLoData = this.getApiUrl('reorder', currentElId, { newParent: event.target.id });
+          const reorderLoData = getApiUrl('reorder', currentElId, { newParent: event.target.id });
           axios.get(reorderLoData).then(() => {
             if (target.classList.contains('ft-is-folderOpen') && (currentEl.classList.contains('folderTree__li') )) {
               const nextElementSibling = target.nextElementSibling;
@@ -303,7 +320,7 @@ function contextMenu(container) {
                         }
                     }
 
-                    const deleteLoData = this.getApiUrl('delete', elId);
+                    const deleteLoData = getApiUrl('delete', elId);
                     axios.get(deleteLoData).then().catch( (error) => {
                         console.log(error);
                     });
