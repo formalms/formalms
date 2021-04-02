@@ -71,7 +71,7 @@ class LoLms extends Model {
         return $tree_view->getCurrentState($idFolder);
     }
 
-    public function setCurrentState($type) {
+    public function setCurrentTab($type) {
         if (array_key_exists($type, self::STORAGE_TABS)) {
             $_SESSION['storage'] = serialize(['tabview_storage_status' => self::STORAGE_TABS[$type]]);
 
@@ -145,6 +145,10 @@ class LoLms extends Model {
             }
         }
         return false;
+    }
+
+    public function addFolderById($selectedNode, $folderName, $idCourse) {
+        return $this->tdb->addFolderById($selectedNode, $folderName, $idCourse);
     }
 
 }

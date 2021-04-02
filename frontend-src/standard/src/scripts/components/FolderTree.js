@@ -56,7 +56,6 @@ class FolderTree {
   clickOnFolder(event) {
     const target = event.target;
     const el = target.closest('.folderTree__link');
-    console.log(this.type, 'clickOnFolder');
 
     if (el) {
       const isOpen = el.classList.contains('ft-is-folderOpen')
@@ -79,7 +78,8 @@ class FolderTree {
           el.classList.add('ft-is-folderOpen');
         }
         const elId = el.getAttribute('id');
-        const getLoData = getApiUrl('get', elId);
+        const getLoData = this.getApiUrl('get', elId);
+
         axios.get(getLoData).then( (response) => {
           const child = Tree(response.data);
           const childView = Content(response.data);

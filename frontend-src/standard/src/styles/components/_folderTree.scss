@@ -32,7 +32,7 @@
   }
 }
 
-.folderTree__rename {
+.folderTree__rename, .createFolder__rename {
   position: absolute;
   top: 0;
   left: 56px;
@@ -45,7 +45,7 @@
   }
 }
 
-.folderTree__rename__input {
+.folderTree__rename__input, .createFolder__input {
   border: 0;
   padding: 0;
   font-size: 16px;
@@ -54,7 +54,7 @@
   padding-right: 48px;
 }
 
-.folderTree__rename__btn {
+.folderTree__rename__btn, .createFolder__btn {
   background: transparent;
   position: absolute;
   right: 0;
@@ -79,13 +79,15 @@
   .dropdown {
     margin-bottom: 12px;
     .btn {
-      display: block;
-      width: 100%;
-      background: none;
-      padding: 12px;
-      transition: .2 all ease-in-out;
-      text-align: right;
-      border: 1px solid #000;
+      &.dropdown-toggle {
+        display: block;
+        width: 100%;
+        background: none;
+        padding: 12px;
+        transition: .2 all ease-in-out;
+        text-align: right;
+        border: 1px solid #000;
+      }
     }
     .dropdown-menu {
       width: 100%;
@@ -93,7 +95,7 @@
   }
 }
 
-.folderTree__link {
+.folderTree__link, .createFolder__link {
   width: 100%;
   text-align: left;
   position: relative;

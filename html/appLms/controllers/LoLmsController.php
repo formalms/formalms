@@ -39,7 +39,6 @@ class LoLmsController extends LmsController
         }
 
         $this->json = new Services_JSON();
-
     }
 
     private function getFolders($idCourse, $idFolder = false, $type = false)
@@ -66,10 +65,11 @@ class LoLmsController extends LmsController
         return $this->model->getCurrentState($idFolder);
     }
 
-    public function setCurrentState() {
+    public function setCurrentTab()
+    {
         $type = Get::req('type', DOTY_STRING, LoLms::ORGDIRDB);
 
-        echo $this->json->encode($this->model->setCurrentState($type));
+        echo $this->json->encode($this->model->setCurrentTab($type));
         exit;
     }
 
@@ -87,6 +87,21 @@ class LoLmsController extends LmsController
 
     public function organization()
     {
+        $lo_types = [
+            [
+                'title' => Lang::t('_DIRECTORY', 'organization_chart'),
+                'type' => 'folder',
+            ]
+        ];
+        $query = "SELECT objectType, className, fileName FROM %lms_lo_types";
+        $rs = sql_query($query);
+        while (list($type, $class, $file) = sql_fetch_row($rs)) {
+            $lo_types[] = [
+                'title' => Lang::t('_LONAME_' . $type, 'storage'),
+                'type' => $type,
+            ];
+        }
+
         $tabs = [
             [
                 'active' => true,
@@ -111,7 +126,10 @@ class LoLmsController extends LmsController
                 'currentState' => serialize([$this->getCurrentState(0, LoLms::REPODIRDB)]),
             ],
         ];
-        $this->render('organization', ['tabs' => $tabs]);
+        $this->render('organization', [
+            'tabs' => $tabs,
+            'lo_types' => $lo_types,
+        ]);
     }
 
     public function get()
@@ -183,5 +201,23 @@ class LoLmsController extends LmsController
         $folder = $this->tdb->getFolderById((string)$id);
         $lo = createLO($folder->otherValues[REPOFIELDOBJECTTYPE]);
         $lo->edit($folder->otherValues[REPOFIELDIDRESOURCE], 'index.php?r=lms/lo/organization&id_course=1');
+    }
+
+    public function createFolder() {
+        $selectedNode = Get::req('selectedNode', DOTY_INT, false);
+        $folderName = Get::req('folderName', DOTY_STRING, false);
+        // $currentState = Get::req('currentState', DOTY_STRING, false);
+        $type = Get::req('type', DOTY_STRING, LoLms::ORGDIRDB);
+
+        $this->model->setCurrentTab($type);
+
+        if (!$folderName) {
+            echo $this->json->encode('Error', 400);
+            exit; 
+        }
+        $this->model->addFolderById($selectedNode, $folderName, $this->idCourse);
+
+        // echo $this->json->encode(true);
+        exit;
     }
 }

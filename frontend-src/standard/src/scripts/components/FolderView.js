@@ -3,7 +3,6 @@ class FolderView {
   constructor(type) {
     this.type = type;
     this.container = document.querySelector('*[data-container=' + this.type + ']');
-    console.log(this.container, 'this.container');
     this.container.addEventListener('click', this.toggleSelectEl);
     this.container.addEventListener('click', this.triggerClick);
   }

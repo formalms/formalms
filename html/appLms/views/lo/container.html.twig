@@ -8,33 +8,7 @@
         <aside class="folderTreeContent folderTreeContent--one-third">
             {% if tab.edit %}
                 <div class="folderTree__actions">
-                    <div class="dropdown" id="createitem_{{ tab.type }}">
-                        <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu_{{ tab.type }}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                            {{ translate('_CREATE_NEW', 'standard') }}
-                            <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenu_{{ tab.type }}">
-                            {% for el in data %}
-                                <li id="{{ el.id }}" data-id="{{ el.id }}" class="folderView__li">
-                                    <div id="{{ el.id }}" class="folderView__el {% if el.type %}fv-is-{{ el.type }}{% else %}fv-is-folder{% endif %}">
-                                        <span class="folderView__label">{{ el.title }}</span>
-                                    </div>
-                                </li>
-                            {% endfor %}
-                        </ul>
-                    </div>
-                    {#<input type="submit"
-                        class="folderTree__btn folderTree__btn--new folderTree__newFolder"
-                        title="{{ translate('_NEW_FOLDER', 'standard') }}"
-                        id="treeview_opnewfolder_{{ tab.type }}"
-                        name="treeview_opnewfolder_{{ tab.type }}"
-                            value="">
-                    <input type="submit"
-                        class="folderTree__btn folderTree__btn--new folderTree__newLO"
-                        title="{{ translate('_REPOCREATELO', 'storage') }}"
-                        id="{{ tab.type }}_createLOBegin"
-                        name="{{ tab.type }}_createLOBegin"
-                            value="">#}
+                    {% include 'create_new_item.html.twig' with { tab: tab, lo_types: lo_types } %}
                 </div>
             {% endif %}
             <nav class="folderTree js-folder-tree">
@@ -65,22 +39,6 @@
             </nav>
         </aside>
         <main class="folderViewContent folderViewContent--two-third">
-            {% if tab.edit %}
-                <div class="folderTree__actions">
-                    {#<input type="submit"
-                        class="folderTree__btn folderTree__btn--new folderTree__newFolder"
-                        title="{{ translate('_NEW_FOLDER', 'standard') }}"
-                        id="treeview_opnewfolder_{{ tab.type }}"
-                        name="treeview_opnewfolder_{{ tab.type }}"
-                        value="">
-                    <input type="submit"
-                        class="folderTree__btn folderTree__btn--new folderTree__newLO"
-                        title="{{ translate('_REPOCREATELO', 'storage') }}"
-                        id="{{ tab.type }}_createLOBegin"
-                        name="{{ tab.type }}_createLOBegin"
-                        value="">#}
-                </div>
-            {% endif %}
             <div class="folderView">
                 <ul class="folderView__ul js-sortable-view">
                     {% for el in data %}

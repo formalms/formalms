@@ -12,7 +12,7 @@
 
         <div class="tab-content">
             {% for tab in tabs %}
-                {% include 'container.html.twig' with { tab: tab } %}
+                {% include 'container.html.twig' with { tab: tab, lo_types: lo_types } %}
             {% endfor %}
         </div>
     </div>
@@ -65,7 +65,7 @@ function saveCurrentState(event) {
 
     $.ajax({
         type: 'POST',
-        url: 'index.php?r=lms/lo/setCurrentState',
+        url: 'index.php?r=lms/lo/setCurrentTab',
         data: {
             type: linktype,
         },
