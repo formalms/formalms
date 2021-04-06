@@ -1644,6 +1644,7 @@ class Org_TreeView extends RepoTreeView {
 			$course = new DoceboCourse($idCourse);
 			
 			$node['actions'] = [];
+			$node['visible_actions'] = [];
             
             $node['idCourse'] = $idCourse;
 
@@ -1702,7 +1703,7 @@ class Org_TreeView extends RepoTreeView {
 			} else if( $isPrerequisitesSatisfied && $event->getAccessible() ) {
 				
 				if (!$node['is_folder']) {
-					$node['actions']['play']=[
+					$node['visible_actions']['play']=[
 						'label' => 'Play',
 						'image' => getPathImage() . '/standard/view.png',
 						'url' => 'index.php?modname=organization&op=custom_playitem&id_item='.$folder->id
@@ -1717,32 +1718,9 @@ class Org_TreeView extends RepoTreeView {
 			
 			if( checkPerm('lesson', true, 'storage') && !$this->playOnly)  {
 
-				if( $idx != 0 ) {
-					$node['actions']['up']=[
-						'link' => $this->id.'['.$this->_getOpUpId().']['.$folder->id.']',
-						'image' => $this->_getOpUpImg()
-					];
-				}
-				if( $idx != count($idLoList) - 1) {
-					$node['actions']['down']=[
-						'link' => $this->id.'['.$this->_getOpDownId().']['.$folder->id.']',
-						'image' => $this->_getOpDownImg()
-					];
-				}
-
 				$node['actions']['access']=[
 					'link' => $this->id.'['.$this->_getAccessId().']['.$folder->id.']',
 					'image' => $this->_getAccessImg()
-				];
-
-				$node['actions']['move']=[
-					'link' => $this->id.'['.$this->_getOpMoveFolderId().']['.$folder->id.']',
-					'image' => $this->_getMoveImage()
-				];
-
-				$node['actions']['moveFolder']=[
-					'image' => $this->_getEditImage(),
-					'url' => 'index.php?r=lms/lo/move&id=' . $folder->id
 				];
 
 				$node['actions']['delete']=[
@@ -1838,7 +1816,7 @@ class Org_TreeView extends RepoTreeView {
 					error_log($lo_class);
 					if(method_exists($lo_class, 'trackDetails')) {
 
-						$node['actions']['show_results']=[
+						$node['visible_actions']['show_results']=[
 							'link' => $this->id.'['.$this->_getShowResultsId().']['.$folder->id.']" ',
 							'image' => $this->_getShowResultsImg(),
 							'url' => 'index.php?modname=organization&op=track_details&type=' . $arrData[REPOFIELDOBJECTTYPE] . '&id_user='.getLogUserId().'&id_org='.$arrData[REPOFIELDIDRESOURCE]

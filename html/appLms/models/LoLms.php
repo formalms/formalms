@@ -28,12 +28,14 @@ class LoLms extends Model {
     );
 
     private $tdb = null;
+    private $treeView = null;
 
     public function LoLMS() {
         $this->setTdb();
     }
 
     public function setTdb($type = LoLms::ORGDIRDB, $idCourse = false) {
+        $this->treeView = $type;
         switch($type) {
             case LoLms::ORGDIRDB: 
                 $this->tdb = new OrgDirDb($idCourse);
@@ -50,7 +52,7 @@ class LoLms extends Model {
     }
 
     public function getLearningObjects($rootId) {
-        $tree_view = new Org_TreeView($this->tdb, 'organization' );
+        $tree_view = new Org_TreeView($this->tdb, $this->treeView );
         return $tree_view->getChildrensDataById($rootId);
     }
 
@@ -67,7 +69,7 @@ class LoLms extends Model {
     }
 
     public function getCurrentState($idFolder = 0) {
-        $tree_view = new Org_TreeView($this->tdb, 'organization');
+        $tree_view = new Org_TreeView($this->tdb, $this->treeView);
         return $tree_view->getCurrentState($idFolder);
     }
 
