@@ -624,10 +624,8 @@ class Question
 	 */
 	function userScore($id_track, $number_time = null)
 	{
-
-
 		$score = 0;
-		$query = "SELECT SUM(score_assigned) AS score_assigned
+		$query = "SELECT score_assigned
 		FROM " . $GLOBALS['prefix_lms'] . "_testtrack_answer
 		WHERE idQuest = '" . (int) $this->id . "'
 		AND idTrack = '" . (int) $id_track . "'";
