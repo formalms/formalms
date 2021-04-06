@@ -1889,8 +1889,10 @@ class UserProfileViewer {
         $html .= '<div class="row comunication">'; //pulsanti certificati-messaggi
 
         if ($perm_certificate) $html .= '<div class="col-xs-4"><a class="btn btn-default" href="index.php?r=lms/mycertificate/show&sop=unregistercourse">' . Lang::t('_MY_CERTIFICATE', 'menu_over') . '</a></div>';
-        if (isset($perm_competence) && $perm_competence) $html .= '<div class="col-xs-4"><a class="btn btn-default" href="index.php?modname=mycompetences&op=mycompetences&op=unregistercourse">' . Lang::t('_COMPETENCES', 'standard') . '</a></div>';
-
+        
+        // BUG FIX LRZ #19834
+        //if (isset($perm_competence) && $perm_competence) $html .= '<div class="col-xs-4"><a class="btn btn-default" href="index.php?modname=mycompetences&op=mycompetences&op=unregistercourse">' . Lang::t('_COMPETENCES', 'standard') . '</a></div>';
+        if (isset($perm_competence) && $perm_competence) $html .= '<div class="col-xs-4"><a class="btn btn-default" href="index.php?modname=mycompetences&op=mycompetences&sop=unregistercourse">' . Lang::t('_COMPETENCES', 'standard') . '</a></div>';
 
         if ($unread_num > 0 && $perm_message) {
             $html .= '<div class="col-xs-4"><a class="btn btn-default" href="index.php?r=message/show&sop=unregistercourse">' . Lang::t('_MESSAGES', 'standard') . '<b class="num_notify"><i style="font-size:.78em">' . $unread_num . '</i></b></a></div>';
@@ -3811,7 +3813,7 @@ class UserProfileData {
 		if(!$this->deleteAvatarData($id_user)) return false;
 
 		if(!isset($file_descriptor['error'])) return false;
-		if($file_descriptor['error'] != UPLOAD_ERR_OK) return false;
+        if($file_descriptor['error'] != UPLOAD_ERR_OK) return false;
 		if($file_descriptor['name'] == '') return false;
 
 		require_once(_base_.'/lib/lib.upload.php');

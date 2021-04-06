@@ -26,7 +26,6 @@ require_once(Forma::inc(_lms_ . '/modules/question/class.break_page.php'));
 require_once(Forma::inc(_lms_ . '/modules/question/class.choice.php'));
 require_once(Forma::inc(_lms_ . '/modules/question/class.choice_multiple.php'));
 require_once(Forma::inc(_lms_ . '/modules/question/class.extended_text.php'));
-require_once(Forma::inc(_lms_ . '/modules/question/class.hot_text.php'));
 require_once(Forma::inc(_lms_ . '/modules/question/class.inline_choice.php'));
 require_once(Forma::inc(_lms_ . '/modules/question/class.numerical.php'));
 require_once(Forma::inc(_lms_ . '/modules/question/class.text_entry.php'));
@@ -546,9 +545,9 @@ class Question
 		FROM " . $GLOBALS['prefix_lms'] . "_testquestanswer 
 		WHERE idQuest = '" . (int) $this->id . "'");
 		while (list($score_correct) = sql_fetch_row($re_answer)) {
-			$max_score = round($max_score + $score_correct, 2);
+			$max_score = $max_score + $score_correct;
 		}
-		return $max_score;
+		return round($max_score, 2);
 	}
 
 	/**
@@ -571,7 +570,7 @@ class Question
 		WHERE idQuest = '" . (int) $this->id . "' AND is_correct = '1'"));
 
 		if (!$num_correct) $score_assigned = 0;
-		else $score_assigned = round($score / $num_correct, 2);
+		else $score_assigned = round($score / $num_correct, 3);
 
 		return round($score_assigned * $num_correct, 2);
 	}
@@ -597,7 +596,7 @@ class Question
 		WHERE idQuest = '" . (int) $this->id . "' AND is_correct = '1'"));
 
 		if (!$num_correct) $score_assigned = 0;
-		else $score_assigned = round($score / $num_correct, 2);
+		else $score_assigned = round($score / $num_correct, 3);
 
 		$re_assign = sql_query("
 		UPDATE " . $GLOBALS['prefix_lms'] . "_testquestanswer 
@@ -625,10 +624,8 @@ class Question
 	 */
 	function userScore($id_track, $number_time = null)
 	{
-
-
 		$score = 0;
-		$query = "SELECT SUM(score_assigned) AS score_assigned
+		$query = "SELECT score_assigned
 		FROM " . $GLOBALS['prefix_lms'] . "_testtrack_answer
 		WHERE idQuest = '" . (int) $this->id . "'
 		AND idTrack = '" . (int) $id_track . "'";

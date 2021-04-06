@@ -187,7 +187,7 @@ class Upload_Question extends Question {
 			.Form::getHidden('idQuest', 'idQuest', $this->id)
 			.Form::getHidden('back_test', 'back_test', $url_encode)
 		
-			.Form::getTextarea($lang->def('_QUESTION'), 'title_quest', 'title_quest', $title_quest), 'content');
+			.Form::getTextarea($lang->def('_QUESTION'), 'title_quest', 'title_quest', stripslashes($title_quest)), 'content');
 		if (count($categories) > 1)
 			$GLOBALS['page']->add(Form::getDropdown( $lang->def('_TEST_QUEST_CATEGORY'), 'idCategory', 'idCategory', $categories), 'content',
 				( isset($_POST['idCategory']) ? $_POST['idCategory'] : $cat_sel ));
@@ -280,14 +280,21 @@ class Upload_Question extends Question {
 		
 		if($this->userDoAnswer($id_track)) $find_prev = true;
 		else $find_prev = false;
+
+		$acceptedTypes = explode(',',Get::sett('file_upload_whitelist'));
+		$index = 0;
+		foreach ($acceptedTypes as $acceptedType) {
+            $acceptedTypes[$index] = '.'.$acceptedType;
+            $index++;
+        }
 		
 		return '<div class="play_question">'
             .'<div>'.$lang->def('_QUEST_'.strtoupper($this->getQuestionType())).'</div>'
 			.'<div class="title_question">'
-			.'<label for="quest_'.$id_quest.'">'.$num_quest.') '.$title_quest.'</label>'
+			.'<label for="quest_'.$id_quest.'">'.$num_quest.') '.stripslashes($title_quest).'</label>'
 			.'</div>'
 			.'<div class="answer_question">&nbsp;'
-			.'<input type="file" id="quest_'.$id_quest.'" name="quest['.$id_quest.']" '
+			.'<input type="file" accept="'.implode(',',$acceptedTypes).'" id="quest_'.$id_quest.'" name="quest['.$id_quest.']" '
 			.( $find_prev && $freeze ? ' disabled="disabled"' : '' ).'/>'
 			.'</div>'
 			.'</div>';
@@ -502,5 +509,3 @@ class Upload_Question extends Question {
 		sendFile($path, $filename, $extens);
 	}
 }
-
-?>

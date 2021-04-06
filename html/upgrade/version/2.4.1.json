@@ -1,0 +1,20 @@
+{
+    "version": {
+        "name": "2.4.1",
+        "number": "20401",
+        "description": "questa è la 2.4.1",
+        "pretty_desc": "2 4 1",
+        "pre": "20401_pre.php",
+        "post": "20401_post.php",
+        "config": "20401_conf.php",
+        "file_sytem": "20401_fs.php",
+        "role": "20401_role.php",
+        "mysql": "20401_db.sql",
+        "date": "2000-01-01 00:00",
+        "status": "stable",
+        "php": {
+            "min": "5.6",
+            "max": "7.0" 
+        }
+    }
+}

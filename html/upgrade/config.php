@@ -16,7 +16,35 @@
 // 1xxxx : forma     versions series 1.x  (formely 1.xx.xx )
 // 2xxxx : forma     versions series 2.x  (formely 2.xx.xx )
 
+function versionSort($a, $b) {
+  return 1 * version_compare($a, $b);
+}
 
+$readFolder = _upgrader_."/version/";
+$subFolders = array();
+$versions = array();
+$arrGlobal = array();
+if ($handle = opendir($readFolder))
+{
+  while ($file = readdir($handle))
+  {
+    if (is_dir("{$readFolder}/{$file}"))
+    {
+      if ($file != "." & $file != "..") $subFolders[] = $file;
+    }
+    else
+    {
+      if ($file != "." & $file != ".." & substr($file, -5) == '.json') {
+        $versions[] = substr($file, 0, -5);
+      }
+    }
+  }
+}
+closedir($handle);
+
+usort($versions, 'versionSort');
+
+// for reference old docebo ce versions
 $GLOBALS['cfg']['versions'] = array(
     '3603' => '3.6.0.3  - Docebo CE',
     '3604' => '3.6.0.4 - Docebo CE',
@@ -26,26 +54,17 @@ $GLOBALS['cfg']['versions'] = array(
     '4020' => '4.0.2 - Docebo CE',
     '4030' => '4.0.3 - Docebo CE',
     '4040' => '4.0.4 - Docebo CE',
-    '4050' => '4.0.5 - Docebo CE',
-    '10000' => '1.0',
-    '10100' => '1.1',
-    '10200' => '1.2',
-    '10300' => '1.3',
-    '10400' => '1.4',
-    '10401' => '1.4.1',
-    '10402' => '1.4.2',
-    '10403' => '1.4.3',
-    '20000' => '2.0',
-    '20100' => '2.1',
-    '20200' => '2.2',
-    '20201' => '2.2.1',
-    '20300' => '2.3.0',
-    '20400' => '2.4.0',
-    '20401' => '2.4.1',
-    '20402' => '2.4.2',
-    '20403' => '2.4.3',
-    '30000' => '3.0.0'
+    '4050' => '4.0.5 - Docebo CE'
 );
+
+foreach ($versions as $version) {
+  $strJsonVer=file_get_contents("{$readFolder}/{$version}.json", 'r');
+  $arrJsonVer=json_decode($strJsonVer,true);
+  $arrGlobal[$arrJsonVer['version']['number']] = $arrJsonVer['version']['name'];
+  $GLOBALS['cfg']['versions'][$arrJsonVer['version']['number']] = $arrJsonVer['version']['name'];
+  $GLOBALS['cfg']['detailversions'][$arrJsonVer['version']['number']] = $arrJsonVer['version'];
+  $GLOBALS['cfg']['endversion'] = $arrJsonVer['version']['number'];
+}
 
 // for reference old docebo ce versions
 $GLOBALS['cfg']['docebo_versions'] = array(
@@ -59,7 +78,5 @@ $GLOBALS['cfg']['docebo_versions'] = array(
     '4040' => '4.0.4',
     '4050' => '4.0.5',
 );
-
-$GLOBALS['cfg']['endversion'] = '30000';
 
 ?>

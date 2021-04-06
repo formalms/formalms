@@ -48,11 +48,17 @@ class DashboardLmsController extends LmsController
             $blocks = $this->model->getBlocksViewData($defaultLayout->getId());
         }
 
+        $langCode = sql_fetch_row(sql_query("SELECT lang_browsercode FROM %adm_lang_language WHERE lang_code = '" . getLanguage() . "'"))[0];
 
-        $this->render('dashboard', [
-            'blocks' => $blocks,
-            'templatePath' => getPathTemplate()
-        ], false,
+        $this->render(
+            'dashboard',
+            [
+                'blocks' => $blocks,
+                'templatePath' => getPathTemplate(),
+                'dashboardLayoutId' => $defaultLayout->getId(),
+                'lang' => $langCode,
+            ],
+            false,
             $blockPaths
         );
     }
@@ -62,12 +68,11 @@ class DashboardLmsController extends LmsController
         $result = ['status' => 200];
         $blockParameter = Get::pReq('block', DOTY_MIXED);
         $actionParameter = Get::pReq('blockAction', DOTY_MIXED);
-        $dashboardParameter = Get::pReq('dashboard', DOTY_MIXED);
+        $dashboardLayoutIdParameter = Get::pReq('dashboardLayoutId', DOTY_MIXED);
 
-        $block = $this->model->getRegisteredBlock($dashboardParameter, $blockParameter);
+        $block = $this->model->getRegisteredBlock($dashboardLayoutIdParameter, $blockParameter);
         if (null !== $block) {
             if (method_exists($block, $actionParameter)) {
-
                 $result['response'] = $block->$actionParameter();
             } else {
                 $result['status'] = 400;

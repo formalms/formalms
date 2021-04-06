@@ -243,7 +243,7 @@ function InsertOption(&$row, $smodel){
     $result_control = $smodel->getInfoEnroll($row['idCourse'], Docebo::user()->getIdSt());
     $not_enrolled = sql_num_rows($result_control) > 0;
     $html = '';
-    if( $not_enrolled && $row['selling'] == 0 && (userCanUnsubscribe($row) || $row["course_demo"] ) ){
+    if( $not_enrolled /*&& $row['selling'] == 0*/ && (userCanUnsubscribe($row) || $row["course_demo"] ) ){
     
         $html .= '<div class="course-box__options dropdown pull-right">
                     <div class="dropdown-toggle" id="courseBoxOptions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">

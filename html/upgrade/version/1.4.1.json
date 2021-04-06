@@ -1,0 +1,20 @@
+{
+    "version": {
+        "name": "1.4.1",
+        "number": "10401",
+        "description": "questa è la 1.4.1",
+        "pretty_desc": "1 4 1",
+        "pre": "10401_pre.php",
+        "post": "10401_post.php",
+        "config": "10401_conf.php",
+        "file_sytem": "10401_fs.php",
+        "role": "10401_role.php",
+        "mysql": "10401_db.sql",
+        "date": "2000-01-01 00:00",
+        "status": "stable",
+        "php": {
+            "min": "5.6",
+            "max": "7.0" 
+        }
+    }
+}

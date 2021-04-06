@@ -1,12 +1,12 @@
 <div class="dashboard__infoBlock dashboard__infoBlock--checkbox">
     <div class="form-group">
-        <label class="dashboard__label" for="{{ block.postData.block }}-{{ index }}-file">{{translate('_checkbox_'~ form.class,'dashboardsetting')}}</label>
+        <label class="dashboard__label" for="{{ block.postData.block }}-{{ index }}-file">{{translate('_CHECKBOX_'~ form.field|upper,'dashboardsetting')}}</label>
 
         <div class="dashboard__infoContainer">
             {% for key,value in form.values %}
 
                 <div class="dashboard__el">
-                    <input type="checkbox" name="{{ form.name }}" class="js-extra-setting checkbox" value="{{ block.postData.block }}_{{ index }}_{{ key }}" {% if block.type == type %}checked="checked"{% endif %} />{{ value }}
+                    <input type="checkbox" name="{{ form.name }}" class="js-extra-setting checkbox" value="{{ block.postData.block }}_{{ index }}_{{ key }}" {% if attribute(block.data, form.name) == block.postData.block ~ '_' ~ index ~ '_' ~ key %}checked="checked"{% endif %} />{{ value }}
                 </div>
 
             {% endfor %}

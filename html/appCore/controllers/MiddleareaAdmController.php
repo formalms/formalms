@@ -36,6 +36,21 @@ class MiddleareaAdmController extends AdmController {
 
 	}
 
+
+	public function menuOrder() {
+
+		$list = $_GET['list'];
+
+		$elements = explode(",", $list);
+		$order = 1;
+		foreach($elements as $element) {
+
+			CoreMenu::updateSequence($element,$order);
+
+			$order++;
+		}
+		echo "true";
+	}
 }
 
 ?>

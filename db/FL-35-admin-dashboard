@@ -1,26 +1,91 @@
+CREATE TABLE IF NOT EXISTS `dashboard_layouts`
+(
+    `id` bigint(20) NOT NULL AUTO_INCREMENT,
+    `name` varchar(255) NOT NULL,
+    `caption` varchar(255) NOT NULL,
+    `status` varchar(255) NOT NULL,
+    `default` tinyint(1) NOT NULL DEFAULT 0,
+    `created_at` timestamp DEFAULT '0000-00-00 00:00:00',
+    `updated_at` timestamp NULL ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (`id`),
+    UNIQUE INDEX `name_idx`(`name`) USING BTREE,
+    INDEX `status_idx`(`status`) USING BTREE
+) ENGINE = InnoDB
+ DEFAULT CHARSET = utf8;
 
-INSERT INTO `core_menu` (`idMenu`, `name`, `image`, `sequence`, `is_active`, `collapse`, `idParent`, `idPlugin`, `of_platform`) VALUES (NULL, '_DASHBOARD_CONFIGURATION', '<i class=\"fa fa-cogs fa-fw\"></i>', '6', 'true', 'true', NULL, NULL, 'framework');
+CREATE TABLE IF NOT EXISTS `dashboard_block_config`
+(
+    `id`           bigint(20)   NOT NULL AUTO_INCREMENT,
+    `block_class`  varchar(255) NOT NULL,
+    `block_config` text         NOT NULL,
+    `position`     bigint(20)   NOT NULL DEFAULT '999',
+    `dashboard_id` bigint(20) NOT NULL,
+    `created_at` timestamp DEFAULT '0000-00-00 00:00:00',
+    `updated_at` timestamp NULL ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (`id`),
+    KEY `block_class_idx` (`block_class`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8;
 
-set @v_idst=LAST_INSERT_ID();
+ALTER TABLE `dashboard_block_config`
+    ADD CONSTRAINT `config_layout_fk` FOREIGN KEY (`dashboard_id`) REFERENCES `dashboard_layouts` (`id`) ON DELETE CASCADE;
 
-INSERT INTO `core_menu_under` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES (NULL, @v_idst, 'dashboardsettings', '_DASHBOARD_CONFIGURATION', '', 'view', 'framework', '1', '', '', 'adm/dashboardsettings/show');
-
-CREATE TABLE `dashboard_blocks` ( `id` BIGINT NOT NULL AUTO_INCREMENT , `block_class` VARCHAR(255) NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
-
-ALTER TABLE `dashboard_blocks` ADD UNIQUE `block_class_unique` (`block_class`);
-
-INSERT INTO `dashboard_blocks` (`id`, `block_class`)
-VALUES
-(1, 'DashboardBlockWelcomeLms'),
-(2, 'DashboardBlockProfileLms'),
-(3, 'DashboardBlockCertificatesLms'),
-(4, 'DashboardBlockMessagesLms'),
-(5, 'DashboardBlockCoursesLms'),
-(6, 'DashboardBlockCourseAdviceLms'),
-(7, 'DashboardBlockCalendarLms');
-
-CREATE TABLE `dashboard_block_config` ( `id` BIGINT NOT NULL AUTO_INCREMENT , `block_class` VARCHAR(255) NOT NULL , `block_config` TEXT NOT NULL , `position` BIGINT NOT NULL DEFAULT '999' , PRIMARY KEY (`id`)) ENGINE = InnoDB;
-
-ALTER TABLE `dashboard_block_config` ADD INDEX `block_class_idx` (`block_class`);
+CREATE TABLE IF NOT EXISTS `dashboard_blocks`
+(
+    `id`          bigint(20)   NOT NULL AUTO_INCREMENT,
+    `block_class` varchar(255) NOT NULL,
+    `created_at` timestamp DEFAULT '0000-00-00 00:00:00',
+    `updated_at` timestamp NULL ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `block_class_unique` (`block_class`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8;
 
 
+INSERT IGNORE INTO `dashboard_blocks` (`id`, `block_class`, `created_at`)
+VALUES (7, 'DashboardBlockCalendarLms', CURRENT_TIMESTAMP),
+       (3, 'DashboardBlockCertificatesLms',CURRENT_TIMESTAMP),
+       (6, 'DashboardBlockAnnouncementsLms',CURRENT_TIMESTAMP),
+       (5, 'DashboardBlockCoursesLms',CURRENT_TIMESTAMP),
+       (4, 'DashboardBlockMessagesLms',CURRENT_TIMESTAMP),
+       (9, 'DashboardBlockWelcomeLms',CURRENT_TIMESTAMP),
+       (8, 'DashboardBlockBannerLms',CURRENT_TIMESTAMP);
+
+INSERT IGNORE INTO learning_middlearea (`obj_index`, `disabled`, `idst_list`, `sequence`)
+VALUES ('tb_dashboard', '1', 'a:0:{}', '0');
+
+
+-- label
+INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes)
+VALUES ('_DASHBOARD', 'middlearea', '');
+
+INSERT IGNORE INTO core_lang_translation (id_text, lang_code, translation_text, save_date)
+VALUES ((SELECT id_text FROM core_lang_text where text_key = '_DASHBOARD' and text_module = 'middlearea'),
+        'english', 'Dashboard', NOW());
+INSERT IGNORE INTO core_lang_translation (id_text, lang_code, translation_text, save_date)
+VALUES ((SELECT id_text FROM core_lang_text where text_key = '_DASHBOARD' and text_module = 'middlearea'),
+        'italian', 'Dashboard', NOW());
+
+INSERT IGNORE INTO `learning_module`
+VALUES (47, 'dashboard', 'show', '_DASHBOARD', 'view', '', '', 'all', 'lms/dashboard/show');
+
+SET @max = (SELECT MAX(idMenu) + 1
+            FROM `core_menu`);
+
+INSERT IGNORE INTO `core_menu`(`idMenu`, `name`, `image`, `sequence`, `is_active`, `collapse`, `idParent`, `idPlugin`, `of_platform`)
+VALUES (@max, '_DASHBOARD', '', 4, 'true', 'true', NULL, NULL, 'lms');
+
+INSERT IGNORE INTO `core_menu_under`(`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`,
+                              `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`)
+VALUES (@max, @max, 'course', '_DASHBOARD', NULL, 'view', 'lms', 4, NULL, NULL, 'lms/dashboard/show');
+
+SET @max = (SELECT MAX(idMenu) + 1
+            FROM `core_menu`);
+
+INSERT IGNORE INTO `core_menu`(`idMenu`, `name`, `image`, `sequence`, `is_active`, `collapse`, `idParent`, `idPlugin`, `of_platform`)
+VALUES (@max, '_DASHBOARD_CONFIGURATION', '', 4, 'true', 'true', '5', NULL, 'framework');
+
+INSERT IGNORE INTO `core_menu_under`(`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`,
+                              `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`)
+VALUES (@max, @max, 'dashboardsettings', '_DASHBOARD_CONFIGURATION', '', 'view', 'framework', 1, '', '',
+        'adm/dashboardsettings/show');

@@ -27,7 +27,7 @@ $GLOBALS['UNFILTERED_POST'] = $_POST;
 
 // initialize
 require(_base_.'/lib/lib.bootstrap.php');
-Boot::init(BOOT_DATETIME);
+Boot::init(BOOT_PLUGINS);
 
 // -----------------------------------------------------------------------------
 
@@ -138,5 +138,3 @@ echo $GLOBALS['output'];
 
 // flush buffer
 ob_end_flush();
-
-?>

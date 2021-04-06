@@ -36,15 +36,15 @@ UPDATE `core_setting` SET `pack` = 'ecommerce' WHERE `core_setting`.`param_name`
 DELETE FROM `core_lang_text` WHERE `core_lang_text`.`id_text` = (SELECT clt.`id_text` FROM (SELECT * FROM `core_lang_text`) AS clt WHERE clt.`text_key` = "_ASK_FOR_TREE_COURSE_CODE");
 
 -- task #14734
-UPDATE `core_setting` SET `regroup` = '1' WHERE `core_setting`.`param_name` = 'mail_sender';
-UPDATE `core_setting` SET `regroup` = '1' WHERE `core_setting`.`param_name` = 'customer_help_email';
-UPDATE `core_setting` SET `regroup` = '1' WHERE `core_setting`.`param_name` = 'customer_help_subj_pfx';
-UPDATE `core_setting` SET `regroup` = '1' WHERE `core_setting`.`param_name` = 'send_cc_for_system_emails';
+/* UPDATE `core_setting` SET `regroup` = '1' WHERE `core_setting`.`param_name` = 'mail_sender'; */
+/* UPDATE `core_setting` SET `regroup` = '1' WHERE `core_setting`.`param_name` = 'customer_help_email'; */
+/* UPDATE `core_setting` SET `regroup` = '1' WHERE `core_setting`.`param_name` = 'customer_help_subj_pfx'; */
+/* UPDATE `core_setting` SET `regroup` = '1' WHERE `core_setting`.`param_name` = 'send_cc_for_system_emails'; */
 
 UPDATE `core_setting` SET `pack` = 'email_settings' WHERE `core_setting`.`param_name` = 'mail_sender';
-UPDATE `core_setting` SET `pack` = 'email_settings' WHERE `core_setting`.`param_name` = 'customer_help_email';
-UPDATE `core_setting` SET `pack` = 'email_settings' WHERE `core_setting`.`param_name` = 'customer_help_subj_pfx';
-UPDATE `core_setting` SET `pack` = 'email_settings' WHERE `core_setting`.`param_name` = 'send_cc_for_system_emails';
+/* UPDATE `core_setting` SET `pack` = 'email_settings' WHERE `core_setting`.`param_name` = 'customer_help_email'; */
+/* UPDATE `core_setting` SET `pack` = 'email_settings' WHERE `core_setting`.`param_name` = 'customer_help_subj_pfx'; */
+/* UPDATE `core_setting` SET `pack` = 'email_settings' WHERE `core_setting`.`param_name` = 'send_cc_for_system_emails'; */
 
 UPDATE `core_setting` SET `sequence` = '1' WHERE `core_setting`.`param_name` = 'page_title';
 UPDATE `core_setting` SET `sequence` = '2' WHERE `core_setting`.`param_name` = 'url';
@@ -54,9 +54,9 @@ UPDATE `core_setting` SET `sequence` = '5' WHERE `core_setting`.`param_name` = '
 UPDATE `core_setting` SET `sequence` = '6' WHERE `core_setting`.`param_name` = 'hteditor';
 UPDATE `core_setting` SET `sequence` = '7' WHERE `core_setting`.`param_name` = 'owned_by';
 UPDATE `core_setting` SET `sequence` = '8' WHERE `core_setting`.`param_name` = 'mail_sender';
-UPDATE `core_setting` SET `sequence` = '9' WHERE `core_setting`.`param_name` = 'customer_help_email';
-UPDATE `core_setting` SET `sequence` = '10' WHERE `core_setting`.`param_name` = 'customer_help_subj_pfx';
-UPDATE `core_setting` SET `sequence` = '11' WHERE `core_setting`.`param_name` = 'send_cc_for_system_emails';
+/* UPDATE `core_setting` SET `sequence` = '9' WHERE `core_setting`.`param_name` = 'customer_help_email'; */
+/* UPDATE `core_setting` SET `sequence` = '10' WHERE `core_setting`.`param_name` = 'customer_help_subj_pfx'; */
+/* UPDATE `core_setting` SET `sequence` = '11' WHERE `core_setting`.`param_name` = 'send_cc_for_system_emails'; */
 -- task #14733
 UPDATE `core_setting` SET `regroup` = '8' WHERE `core_setting`.`param_name` = 'ttlSession';
 

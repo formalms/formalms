@@ -482,15 +482,29 @@ class Course_API extends API {
 		}
 
 
-		// -- update status -----
-		if (!empty($user_status)) {
-			$status_arr =$model->getUserStatusList();
+        $status_arr = $model->getUserStatusList();
+        // -- update status -----
+        if (!empty($user_status)) {
+            if (isset($status_arr[$user_status])) {
 
-			if (isset($status_arr[$user_status])) {
-				$ok =$model->updateUserStatus($user_id, $user_status);
-				if (!$ok) { $update_ok =false; }
-			}
-		}
+                if ($model->updateUserStatus($user_id, $user_status)) {
+                    // SET EDIT STATUS SUBSCRIPTION EVENT
+                    $event = new \appCore\Events\Core\Courses\CourseSubscriptionEditStatusEvent();
+                    $userModel = new UsermanagementAdm();
+                    $user = $userModel->getProfileData($user_id);
+
+                    require_once(_lms_ . '/lib/lib.course.php');
+                    $docebo_course = new DoceboCourse($course_id);
+
+                    $event->setUser($user);
+                    $event->setStatus(['id' => $user_status, 'name' => $status_arr[$user_status]]);
+                    $event->setCourse($docebo_course->course_info);
+                    \appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\Courses\CourseSubscriptionEditStatusEvent::EVENT_NAME, $event);
+                } else {
+                    $update_ok = false;
+                }
+            }
+        }
 
 
 		if (!$update_ok) {
@@ -1243,17 +1257,17 @@ public function addClassroom($params) {
     }    
     
     
-    // update an appointment related to an edition
+     // update an appointment related to an edition
     public function upDay($params){
         require_once(_lms_.'/admin/models/ClassroomAlms.php');
         require_once(_lms_.'/lib/lib.date.php');
         
         $output =array();
         
-        $id_day =(is_int($params['id_day']) ? $params['id_day'] : 0);
+        $id_day = (isset($params['id_day']) ? $params['id_day'] : 0);
         
    
-        if (!is_int($id_day)) {
+        if (empty($id_day)) {
             $output['success']=false;
             $output['message']='Missing ID Day: '.$params['id_day']." - ".$params['id_day'];
             return $output;
@@ -1275,12 +1289,8 @@ public function addClassroom($params) {
             $output['message']='Missing Course ID'.$params['course_id'];
             return $output;
         }
-
+                        
         $model = new ClassroomAlms($course_id, $id_date);
-
-        $res =false;
-            
-        
         
         $array_day = $model->classroom_man->getDateDay($id_date);
         
@@ -1289,7 +1299,7 @@ public function addClassroom($params) {
         $array_day[$id_day]['pause_end'] = substr(Format::dateDb($params['edition_date_selected'], 'date'),0,10).' '.$params['edition_pe_hours'].':'.$params['edition_pe_minutes'].':00';
         $array_day[$id_day]['date_end'] = substr(Format::dateDb($params['edition_date_selected'], 'date'),0,10).' '.$params['edition_e_hours'].':'.$params['edition_e_minutes'].':00';
         $array_day[$id_day]['classroom'] = $params['edition_classroom'];
-        
+                      
 
         
         $classroom_man = new DateManager();

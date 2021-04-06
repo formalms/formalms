@@ -1089,7 +1089,7 @@ class Associate_Question extends Question {
 		WHERE idQuest = '".(int)$this->id."'"));
 		
 		if(!$num_correct) $score_assigned = 0;
-		else $score_assigned = round($score / $num_correct, 2);
+		else $score_assigned = round($score / $num_correct, 3);
 		
 		return round($score_assigned * $num_correct, 2);
 	}
@@ -1115,7 +1115,7 @@ class Associate_Question extends Question {
 		WHERE idQuest = '".(int)$this->id."'"));
 		
 		if(!$num_correct) $score_assigned = 0;
-		else $score_assigned = round($score / $num_correct, 2);
+		else $score_assigned = round($score / $num_correct, 3);
 		
 		if($try) return round($score_assigned * $num_correct, 2);
 		

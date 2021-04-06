@@ -92,6 +92,7 @@ function organization_property_prereqisites(&$treeView, $idItem, &$form, &$lang)
 
 	$GLOBALS['page']->add( $form->getHidden('selfPrerequisites', 'selfPrerequisites', $values['selfPrerequisites']) );
 	$GLOBALS['page']->add( $form->getHidden('isTerminator', 'isTerminator', $values['isTerminator']) );
+	$GLOBALS['page']->add( $form->getHidden('ignoreScore', 'ignoreScore', $values['ignoreScore']) );
 	$GLOBALS['page']->add( $form->getHidden('visibility', 'visibility', $values['visibility']) );
 	$GLOBALS['page']->add( $form->getHidden('milestone', 'milestone', $values['milestone']) );
 	$GLOBALS['page']->add( $form->getHidden('version', 'version', $values['version']) );
@@ -338,6 +339,16 @@ function organization_property_settings(&$treeView, $idItem, &$form, &$lang) {
 												isset($values['obj_height'])?$values['obj_height']:"") 
 							);
 	}
+	// ------------------- ignora score
+	$GLOBALS['page']->add( 
+		$form->getRadioSet( $lang->def( '_IGNORE_SCORE' ), 
+							'ignoreScore', 
+							'ignoreScore', 
+							array( 	$lang->def( '_NO' ) => "0",
+									$lang->def( '_YES' ) => "1"),
+							$values['ignoreScore']) );
+
+	$GLOBALS['page']->add( $form->getBreakRow() );
 }
 
 function organization_property_catalogation(&$treeView, $idItem, &$form, &$lang) {
@@ -347,6 +358,7 @@ function organization_property_catalogation(&$treeView, $idItem, &$form, &$lang)
 	$GLOBALS['page']->add( $treeView->printState() );
 	$GLOBALS['page']->add( $form->getHidden('selfPrerequisites', 'selfPrerequisites', $values['selfPrerequisites']) );
 	$GLOBALS['page']->add( $form->getHidden('isTerminator', 'isTerminator', $values['isTerminator']) );
+	$GLOBALS['page']->add( $form->getHidden('ignoreScore', 'ignoreScore', $values['ignoreScore']) );
 	$GLOBALS['page']->add( $form->getHidden('visibility', 'visibility', $values['visibility']) );
 	$GLOBALS['page']->add( $form->getHidden('description', 'description', $values['description']) );
 	$GLOBALS['page']->add( $form->getHidden('milestone', 'milestone', $values['milestone']) );
@@ -424,6 +436,7 @@ function organization_property_common(&$treeView, $idItem, &$form, &$lang, &$fol
 	if( isset($_POST['stay_on_properties']) ) {
 		$values['selfPrerequisites'] = $_POST['selfPrerequisites'];
 		$values['isTerminator'] = $_POST['isTerminator'];
+		$values['ignoreScore'] = $_POST['ignoreScore'];
 		$values['objectType'] = $_POST['objectType'];
 		$values['idResource'] = $_POST['idResource'];
 		$values['idParam'] = $_POST['idParam'];
@@ -450,6 +463,7 @@ function organization_property_common(&$treeView, $idItem, &$form, &$lang, &$fol
 		
 		$values['title'] = $data[REPOFIELDTITLE];
 		$values['isTerminator'] = $data[ORGFIELDISTERMINATOR];	
+		$values['ignoreScore'] = $data[ORGFIELDIGNORESCORE];
 		$values['objectType'] = $data[REPOFIELDOBJECTTYPE];
 		$values['idResource'] = $data[REPOFIELDIDRESOURCE];
 		$values['idParam'] = $data[ORGFIELDIDPARAM];

@@ -230,8 +230,9 @@ class LangAdmController extends AdmController
     public function exportTask()
     {
         $lang_code = Get::req('lang_code', DOTY_STRING, '');
+        $text_items = Get::req('text_items', DOTY_MIXED, []);
 
-        $this->model->exportTranslation($lang_code);
+        $this->model->exportTranslation($lang_code, $text_items);
     }
 
     public function importTask()
@@ -333,7 +334,7 @@ class LangAdmController extends AdmController
             switch ($column) {
 
                 case 'translation_text': {
-                        $res = $this->model->updateTranslation($id_text, $language, $new_value);
+                        $res = $this->model->saveTranslation($id_text, $language, $new_value);
                         $output = array('success' => $res ? true : false);
                         if ($res) $output['new_value'] = stripslashes($new_value);
                         echo $this->json->encode($output);
@@ -388,6 +389,7 @@ class LangAdmController extends AdmController
                 $lang_code_diff,
                 $language_list
             ),
+            'only_empty' => $only_empty,
             'module_list' => $module_list,
             'language_list' => $language_list,
             'language_list_diff' => $language_list_diff,
@@ -417,27 +419,24 @@ class LangAdmController extends AdmController
 
         $start_index = Get::req('start', DOTY_INT, 0);
         $results = Get::req('length', DOTY_MIXED, Get::sett('visuItem', 250));
-        $sort = Get::req('sort', DOTY_MIXED, 'text_module');
-        $dir = Get::req('dir', DOTY_MIXED, 'asc');
+        $sort = $dir = null;
+        if ($order = Get::req('order', DOTY_MIXED)) {
+            $sort = $order[0]['column'];
+            $dir = $order[0]['dir'];
+        }
         $lang_code = Get::req('lang_code', DOTY_ALPHANUM, false);
         $lang_code_diff = Get::req('lang_code_diff', DOTY_ALPHANUM, false);
 
         $search = Get::req('search', DOTY_MIXED, false);
 
-        $la_module = false;
         $la_text = $this->removeSearchRegex($search['value']);
 
 
         $plugin_id = Get::req('plugin_id', DOTY_INT, false);
-
+        $search = [];
         $columns = Get::req('columns', DOTY_MIXED, []);
         foreach ($columns as $column) {
             switch ($column['name']) {
-                case 'text_module':
-                    if (!empty($column['search']['value']) && $column['search']['value'] !== '^') {
-                        $la_module = $this->removeSearchRegex($column['search']['value']);
-                    }
-                    break;
                 case 'plugin_name':
                     if (!empty($column['search']['value']) && $column['search']['value'] !== '^') {
                         $plugins = $this->model->getPluginsList();
@@ -449,8 +448,10 @@ class LangAdmController extends AdmController
                         }
                     }
                     break;
-                default:
-                    break;
+            }
+
+            if (!empty($column['search']['value']) && $column['search']['value'] !== '^') {
+                $search[$column['name']] = $this->removeSearchRegex($column['search']['value']);
             }
         }
 
@@ -458,9 +459,9 @@ class LangAdmController extends AdmController
         if ($only_empty === 'true') $only_empty = true;
         else $only_empty = false;
 
-        $lang_list = $this->model->getAll($start_index, $results, $la_module, $la_text, $lang_code, $lang_code_diff, $only_empty, $sort, $dir, $plugin_id);
+        $lang_list = $this->model->getAll($start_index, $results, $search, $la_text, $lang_code, $lang_code_diff, $only_empty, $sort, $dir, $plugin_id);
 
-        $total_lang = $this->model->getCount($la_module, $la_text, $lang_code, $only_empty);
+        $total_lang = $this->model->getCount($search, $la_text, $lang_code, $only_empty);
 
         $res = array(
             'recordsTotal' => $total_lang,

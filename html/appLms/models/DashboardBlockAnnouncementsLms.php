@@ -21,31 +21,33 @@ defined("IN_FORMA") or die('Direct access is forbidden.');
 class DashboardBlockAnnouncementsLms extends DashboardBlockLms
 {
 
-    public function __construct($jsonConfig)
-    {
-        parent::__construct($jsonConfig);
+	public function __construct($jsonConfig)
+	{
+		parent::__construct($jsonConfig);
 	}
 
-    public function parseConfig($jsonConfig)
-    {
-        return parent::parseBaseConfig($jsonConfig);
-    }
+	public function parseConfig($jsonConfig)
+	{
+		return parent::parseBaseConfig($jsonConfig);
+	}
 
-    public function getAvailableTypesForBlock() {
-        return [
-            DashboardBlockLms::TYPE_1COL,
-            DashboardBlockLms::TYPE_2COL,
-            DashboardBlockLms::TYPE_3COL,
-            DashboardBlockLms::TYPE_4COL
-        ];
-    }
+	public function getAvailableTypesForBlock()
+	{
+		return [
+			DashboardBlockLms::TYPE_1COL,
+			DashboardBlockLms::TYPE_2COL,
+			DashboardBlockLms::TYPE_3COL,
+			DashboardBlockLms::TYPE_4COL
+		];
+	}
 
-    public function getForm()
-    {
-        return [];
-    }
+	public function getForm()
+	{
+		return [];
+	}
 
-	public function getViewData(){
+	public function getViewData()
+	{
 		$data = $this->getCommonViewData();
 		$data['courseAdvices'] = $this->getCourseAdvices();
 
@@ -55,22 +57,26 @@ class DashboardBlockAnnouncementsLms extends DashboardBlockLms
 	/**
 	 * @return string
 	 */
-	public function getViewPath(){
+	public function getViewPath()
+	{
 		return $this->viewPath;
 	}
 
 	/**
 	 * @return string
 	 */
-	public function getViewFile(){
+	public function getViewFile()
+	{
 		return $this->viewFile;
 	}
 
-	public function getLink(){
+	public function getLink()
+	{
 		return '#';
 	}
 
-	public function getRegisteredActions(){
+	public function getRegisteredActions()
+	{
 		return [];
 	}
 
@@ -135,10 +141,11 @@ class DashboardBlockAnnouncementsLms extends DashboardBlockLms
 
 	private function getAdvicesForCourses($courses, $limit = 0, $offset = 0)
 	{
-		$query = "SELECT idAdvice, title, description, important, author, posted 
-					FROM " . $GLOBALS['prefix_lms'] . "_advice
-					WHERE idCourse IN (" . implode(',', $courses) . ")
-					ORDER BY posted DESC ";
+		$query = "SELECT a.idAdvice, a.title, a.description, a.important, a.author, a.posted, a.idCourse, c.name AS courseName 
+					FROM " . $GLOBALS['prefix_lms'] . "_advice AS a
+					INNER JOIN " . $GLOBALS['prefix_lms'] . "_course AS c ON c.idCourse = a.idCourse
+					WHERE a.idCourse IN (" . implode(',', $courses) . ")
+					ORDER BY a.posted DESC ";
 
 		if ($limit > 0) {
 			$query .= " LIMIT $limit";
@@ -156,7 +163,8 @@ class DashboardBlockAnnouncementsLms extends DashboardBlockLms
 		return $result;
 	}
 
-	private function getAdviceData($advice){
+	private function getAdviceData($advice)
+	{
 
 		$date = new DateTime($advice['posted']);
 
@@ -167,6 +175,8 @@ class DashboardBlockAnnouncementsLms extends DashboardBlockLms
 			'important' => $advice['important'],
 			'author' => $advice['author'],
 			'posted' => $advice['posted'],
+			'idCourse' => $advice['idCourse'],
+			'courseName' => $advice['courseName'],
 			'date' => $date->format('d/m/Y')
 		];
 

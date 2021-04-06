@@ -210,13 +210,33 @@ $date_picker_param = 'data-provide="datepicker" data-date-autoclose=true data-da
                                     return data;
                                 }
                             };
-                        }
-                        if (this.edit.type === 'date') {
+                        } else if (this.edit.type === 'date') {
                             this.render = function(data, type, row, meta) {
                                 if (type === 'display') {
                                     if (data) {
                                         return $.datepicker.formatDate(_thisColumn.edit.format || ($.datepicker.regional[document.documentElement.lang] || $.datepicker.regional['']).dateFormat, new Date(data));
                                     } else {
+                                        return data;
+                                    }
+                                } else {
+                                    return data;
+                                }
+                            };
+                        } else if (this.edit.type === 'text') {
+                            this.render = function(data, type, row, meta) {
+                                console.log(data, type)
+                                if (type === 'display') {
+                                    if (data) {
+                                        return data;
+                                    }
+                                } else {
+                                    return data;
+                                }
+                            };
+                        } else if (this.edit.type === 'textarea') {
+                            this.render = function(data, type, row, meta) {
+                                if (type === 'display') {
+                                    if (data) {
                                         return data;
                                     }
                                 } else {
@@ -278,11 +298,14 @@ $date_picker_param = 'data-provide="datepicker" data-date-autoclose=true data-da
                                     });
                                     edit_form.append(edit_form_date_view);
                                     edit_form.append(edit_form_date);
-                                } else {
-                                    edit_form.append('<input type="' + (_thisColumn.edit.type || 'text') + '" name="new_value">');
+                                } else if (_thisColumn.edit.type === 'textarea') {
+                                    edit_form.append('<textarea name="new_value" maxlength="255">' + cell.data() + '</textarea>');
+                                } else { // Default input text with type (text, number, ...)
+                                    edit_form.append('<input type="' + (_thisColumn.edit.type || 'text') + '" name="new_value" value="' + cell.data() + '">');
                                 }
-                                edit_form.append('<button type="submit" class="btn btn-primary ft-edit-save">Save</button>');
-                                edit_form.append('<button type="reset" class="btn btn-default ft-edit-cancel">Cancel</button>');
+                                edit_form.append('<div class="button-container">');
+                                edit_form.find('.button-container').append('<button type="submit" class="btn btn-primary ft-edit-save">Save</button>');
+                                edit_form.find('.button-container').append('<button type="reset" class="btn btn-default ft-edit-cancel">Cancel</button>');
                                 $(this).append(edit_form);
                             }
                         }
@@ -590,6 +613,7 @@ $date_picker_param = 'data-provide="datepicker" data-date-autoclose=true data-da
         /**
          * Instance DataTable with the given options.
          */
+
         var datatable = this._datatable = dom.DataTable(_options);
 
         datatable.on('click', '.formatable-action', function(e) {
@@ -767,6 +791,7 @@ $date_picker_param = 'data-provide="datepicker" data-date-autoclose=true data-da
         },
         initSearchBar: function() {
             try {
+                console.log("?!?!!?")
                 table = this.instance.table()
                 $('.dataTables_scrollHeadInner thead tr').clone().appendTo('.dataTables_scrollHeadInner thead');
                 c = ((table.selectable_row()) ? 0 : 1)
