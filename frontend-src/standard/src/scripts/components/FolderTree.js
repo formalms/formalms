@@ -9,7 +9,6 @@ class FolderTree {
 
   constructor(type) {
     this.type = type;
-    window.type = type;
     this.container = document.querySelector('*[data-container=' + this.type + ']');
     this.dragged;
 
@@ -63,50 +62,57 @@ class FolderTree {
 
       if (!noClick) {
         const els = this.container.querySelectorAll('.folderTree__link');
+
         if (els) {
           els.forEach(el => {
             el.classList.remove('ft-is-selected');
             if (!el.classList.contains('ft-has-child')) {
-              el.classList.remove('ft-is-folderOpen');
+              // el.classList.remove('ft-is-folderOpen');
             }
           });
         }
         el.classList.add('ft-is-selected');
-        if (isOpen && (!el.classList.contains('ft-is-root')) ) {
-          el.parentNode.querySelector('.folderTree__ul').remove();
+
+        if (isOpen && !el.classList.contains('ft-is-root')) {
+          el.classList.remove('ft-is-folderOpen');
+          const uls = el.parentNode.querySelectorAll('.folderTree__ul');
+          uls.forEach(ul => {
+            ul.remove();
+          });
         } else {
           el.classList.add('ft-is-folderOpen');
-        }
-        const elId = el.getAttribute('id');
-        const getLoData = this.getApiUrl('get', elId);
 
-        axios.get(getLoData).then( (response) => {
-          const child = Tree(response.data);
-          const childView = Content(response.data);
-          const folderView = this.container.querySelector('.folderView');
-          const inputParent = this.container.querySelector('#treeview_selected_' + this.type);
-          const inputState = this.container.querySelector('#treeview_state_' + this.type);
-          inputParent.value = elId;
-          inputState.value = response.data.currentState;
-          if (!el.classList.contains('ft-is-root')) {
-            el.insertAdjacentHTML('afterend',child);
-          }
-          folderView.innerHTML = childView;
+          const elId = el.getAttribute('data-id');
+          const getLoData = getApiUrl('get', elId, { type: this.type });
 
-        if (!document.querySelector('.js-disable-context-menu')) {
-            contextMenu(this.container);
-        }
+          axios.get(getLoData).then((response) => {
+            const child = Tree(response.data);
+            const childView = Content(response.data);
+            const folderView = this.container.querySelector('.folderView');
+            const inputParent = this.container.querySelector('#treeview_selected_' + this.type);
+            const inputState = this.container.querySelector('#treeview_state_' + this.type);
+            inputParent.value = elId;
+            inputState.value = response.data.currentState;
+            if (!el.classList.contains('ft-is-root')) {
+              el.insertAdjacentHTML('afterend', child);
+            }
+            folderView.innerHTML = childView;
 
-        if (!document.querySelector('.js-disable-sortable')) {
-            initSortable(this.container);
-        }
+            if (!document.querySelector('.js-disable-context-menu')) {
+              contextMenu(this.container);
+            }
 
-        if (!document.querySelector('.js-disable-drag-and-drop')) {
-            initDragDrop(this.container);
+            if (!document.querySelector('.js-disable-sortable')) {
+              initSortable(this.container);
+            }
+
+            if (!document.querySelector('.js-disable-drag-and-drop')) {
+              initDragDrop(this.container);
+            }
+          }).catch((error) => {
+            console.log(error)
+          });
         }
-        }).catch( (error) => {
-          console.log(error)
-        });
         event.preventDefault();
       }
     }
@@ -118,7 +124,7 @@ class FolderTree {
     const input = this.container.querySelector('.folderTree__rename__input');
     const value = input.value;
     const el = input.parentNode.parentNode;
-    const elId = el.getAttribute('id');
+    const elId = el.getAttribute('data-id');
     const renameLoData = getApiUrl('rename', elId, { newName: value });
 
     axios.get(renameLoData).then().catch( (error) => {
@@ -139,7 +145,6 @@ function getApiUrl(action, id, params) {
    if (!params) {
       params = {};
    }
-   params.type = window.type;
    url += '&' + new URLSearchParams(params).toString();
 
    return url;
@@ -300,14 +305,14 @@ function contextMenu(container) {
                     let siblings;
                     let elId;
 
-                    if (target.hasAttribute('id')) {
+                    if (target.hasAttribute('data-id')) {
                         siblings = target.parentNode.children;
                         target.parentNode.querySelector('.folderTree__link').remove();
-                        elId = target.getAttribute('id');
+                        elId = target.getAttribute('data-id');
                     } else {
                         siblings = target.parentNode.parentNode.children;
                         target.parentNode.parentNode.querySelector('.folderTree__link').remove();
-                        elId = target.parentNode.getAttribute('id');
+                        elId = target.parentNode.getAttribute('data-id');
                     }
 
                     container.querySelector('.folderView').querySelector('.folderView__li[data-id="' + elId + '"]').parentNode.remove();

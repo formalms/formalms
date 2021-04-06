@@ -26,7 +26,7 @@ class FolderView {
       const id = el.id;
       if (el.classList.contains('js-folderView-folder')) {
         console.log(this, 'this.container click');
-        this.querySelector('.js-folder-tree').querySelector('.folderTree__link[id="' + id + '"]').click();
+        this.querySelector('.js-folder-tree').querySelector('.folderTree__link[data-id="' + id + '"]').click();
       } else if (el.classList.contains('js-folderView-file')) {
         el.querySelector('.fv-is-play').click();
       }

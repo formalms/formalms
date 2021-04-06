@@ -20,6 +20,7 @@
 
 <script>
 const tabs = document.querySelectorAll('.tab-link');
+const activeTab = document.querySelector('.tab-link.active');
 if (tabs) {
     tabs.forEach((tab) => {
         tab.addEventListener('click', clickOnTab);
@@ -29,6 +30,10 @@ if (tabs) {
         new window.FolderView(tab.getAttribute('data-type'));
         new window.CreateItem(tab.getAttribute('data-type'));
     });
+
+    /*if (activeTab) {
+        setCurrentTab(activeTab.getAttribute('data-type'));
+    }*/
 }
 
 function clickOnTab(event) {
@@ -58,20 +63,22 @@ function clickOnTab(event) {
     }
 }
 
-function saveCurrentState(event) {
-    const target = event.target;
-    const el = target.closest('.tab-link');
-    const linktype = el.getAttribute('data-type');
-
+function setCurrentTab(linktype) {
     $.ajax({
         type: 'POST',
         url: 'index.php?r=lms/lo/setCurrentTab',
         data: {
             type: linktype,
         },
-        success: function() {
-
-        }
     });
 }
+
+function saveCurrentState(event) {
+    const target = event.target;
+    const el = target.closest('.tab-link');
+    const linktype = el.getAttribute('data-type');
+
+    setCurrentTab(linktype);
+}
+
 </script>

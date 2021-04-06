@@ -67,7 +67,7 @@ class LoLms extends Model {
     }
 
     public function getCurrentState($idFolder = 0) {
-        $tree_view = new Org_TreeView($this->tdb, 'organization' );
+        $tree_view = new Org_TreeView($this->tdb, 'organization');
         return $tree_view->getCurrentState($idFolder);
     }
 

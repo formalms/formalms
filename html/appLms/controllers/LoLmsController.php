@@ -102,9 +102,16 @@ class LoLmsController extends LmsController
             ];
         }
 
+
+        $activeTab = $status = [];
+        if (isset($_SESSION['storage'])) {
+            $status = unserialize($_SESSION['storage']);
+            $activeTab = $status['tabview_storage_status'];
+        }
+
         $tabs = [
             [
-                'active' => true,
+                'active' => LoLms::STORAGE_TABS[LoLms::HOMEREPODIRDB] == $activeTab,
                 'edit' => true,
                 'type' => LoLms::HOMEREPODIRDB,
                 'title' => Lang::t('_HOMEREPOROOTNAME', 'storage'),
@@ -112,6 +119,7 @@ class LoLmsController extends LmsController
                 'currentState' => serialize([$this->getCurrentState(0, LoLms::HOMEREPODIRDB)]),
             ],
             [
+                'active' => LoLms::STORAGE_TABS[LoLms::ORGDIRDB] == $activeTab,
                 'type' => LoLms::ORGDIRDB,
                 'edit' => true,
                 'title' => Lang::t('_ORGROOTNAME', 'storage'),
@@ -119,6 +127,7 @@ class LoLmsController extends LmsController
                 'currentState' => serialize([$this->getCurrentState(0, LoLms::ORGDIRDB)]),
             ],
             [
+                'active' => LoLms::STORAGE_TABS[LoLms::REPODIRDB] == $activeTab,
                 'type' => LoLms::REPODIRDB,
                 'edit' => true,
                 'title' => Lang::t('_PUBREPOROOTNAME', 'storage'),
@@ -203,7 +212,8 @@ class LoLmsController extends LmsController
         $lo->edit($folder->otherValues[REPOFIELDIDRESOURCE], 'index.php?r=lms/lo/organization&id_course=1');
     }
 
-    public function createFolder() {
+    public function createFolder()
+    {
         $selectedNode = Get::req('selectedNode', DOTY_INT, false);
         $folderName = Get::req('folderName', DOTY_STRING, false);
         // $currentState = Get::req('currentState', DOTY_STRING, false);
@@ -213,7 +223,7 @@ class LoLmsController extends LmsController
 
         if (!$folderName) {
             echo $this->json->encode('Error', 400);
-            exit; 
+            exit;
         }
         $this->model->addFolderById($selectedNode, $folderName, $this->idCourse);
 

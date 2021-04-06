@@ -13,15 +13,15 @@
             {% endif %}
             <nav class="folderTree js-folder-tree">
                 <ul class="folderTree__ul js-folder-root">
-                    <li id="0" class="folderTree__li ft-is-parent">
-                        <button id="0"
+                    <li data-id="0" class="folderTree__li ft-is-parent">
+                        <button data-id="0"
                                 type="button"
                                 class="folderTree__link ft-is-root ft-is-selected ft-is-folder ft-is-folderOpen is-dropzone"><span>{{ translate('_LEVEL', 'standard' )}}</span></button>
                         <ul class="folderTree__ul js-sortable-tree">
                             {% for el in data %}
                                 {% if el.is_folder %}
-                                    <li id="{{ el.id }}" class="folderTree__li {% if el.childCount > 0 %}ft-is-parent{% endif %} is-droppable" draggable="true">
-                                        <button id="{{ el.id }}"
+                                    <li data-id="{{ el.id }}" class="folderTree__li {% if el.childCount > 0 %}ft-is-parent{% endif %} is-droppable" draggable="true">
+                                        <button data-id="{{ el.id }}"
                                                 type="button"
                                                 class="folderTree__link ft-is-folder {% if el.childCount > 0 %}ft-has-child{% endif %} is-dropzone"><span>{{ el.title }}</span></button>
                                     </li>
@@ -42,8 +42,8 @@
             <div class="folderView">
                 <ul class="folderView__ul js-sortable-view">
                     {% for el in data %}
-                         <li id="{{ el.id }}" data-id="{{ el.id }}" class="folderView__li {% if el.type %}is-droppable js-folderView-file{% else %}is-dropzone js-folderView-folder{% endif %}">
-                            <div id="{{ el.id }}" class="folderView__el {% if el.type %}fv-is-{{ el.type }}{% else %}fv-is-folder{% endif %}">
+                         <li data-id="{{ el.id }}" class="folderView__li {% if el.type %}is-droppable js-folderView-file{% else %}is-dropzone js-folderView-folder{% endif %}">
+                            <div data-id="{{ el.id }}" class="folderView__el {% if el.type %}fv-is-{{ el.type }}{% else %}fv-is-folder{% endif %}">
                                 <span class="folderView__label">{{ el.title }}</span>
                             </div>
                              {% if el.actions %}
@@ -56,7 +56,6 @@
                                          {% if key in types %}
                                              {% if action.link | length %}
                                                  <input type="submit"
-                                                        id="{{ action.link }}"
                                                         name="{{ action.link }}"
                                                         class="folderView__action fv-is-{{ key }} js-fv-action"
                                                         title="{{ key }}"
