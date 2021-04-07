@@ -23,7 +23,7 @@ class FolderView {
     const el = event.target;
 
     if (el) {
-      const id = el.id;
+      const id = el.getAttribute('data-id');
       if (el.classList.contains('js-folderView-folder')) {
         console.log(this, 'this.container click');
         this.querySelector('.js-folder-tree').querySelector('.folderTree__link[data-id="' + id + '"]').click();
