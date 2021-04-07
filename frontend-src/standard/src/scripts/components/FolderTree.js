@@ -67,7 +67,7 @@ class FolderTree {
           els.forEach(el => {
             el.classList.remove('ft-is-selected');
             if (!el.classList.contains('ft-has-child')) {
-              // el.classList.remove('ft-is-folderOpen');
+              el.classList.remove('ft-is-folderOpen');
             }
           });
         }
@@ -79,40 +79,41 @@ class FolderTree {
           uls.forEach(ul => {
             ul.remove();
           });
-        } else {
-          el.classList.add('ft-is-folderOpen');
-
-          const elId = el.getAttribute('data-id');
-          const getLoData = getApiUrl('get', elId, { type: this.type });
-
-          axios.get(getLoData).then((response) => {
-            const child = Tree(response.data);
-            const childView = Content(response.data);
-            const folderView = this.container.querySelector('.folderView');
-            const inputParent = this.container.querySelector('#treeview_selected_' + this.type);
-            const inputState = this.container.querySelector('#treeview_state_' + this.type);
-            inputParent.value = elId;
-            inputState.value = response.data.currentState;
-            if (!el.classList.contains('ft-is-root')) {
-              el.insertAdjacentHTML('afterend', child);
-            }
-            folderView.innerHTML = childView;
-
-            if (!document.querySelector('.js-disable-context-menu')) {
-              contextMenu(this.container);
-            }
-
-            if (!document.querySelector('.js-disable-sortable')) {
-              initSortable(this.container);
-            }
-
-            if (!document.querySelector('.js-disable-drag-and-drop')) {
-              initDragDrop(this.container);
-            }
-          }).catch((error) => {
-            console.log(error)
-          });
         }
+
+        el.classList.add('ft-is-folderOpen');
+
+       const elId = el.getAttribute('data-id');
+       const getLoData = getApiUrl('get', elId, { type: this.type });
+
+       axios.get(getLoData).then((response) => {
+         const child = Tree(response.data);
+         const childView = Content(response.data);
+         const folderView = this.container.querySelector('.folderView');
+         const inputParent = this.container.querySelector('#treeview_selected_' + this.type);
+         const inputState = this.container.querySelector('#treeview_state_' + this.type);
+         inputParent.value = elId;
+         inputState.value = response.data.currentState;
+         if (!el.classList.contains('ft-is-root')) {
+           el.insertAdjacentHTML('afterend', child);
+         }
+         folderView.innerHTML = childView;
+
+         if (!document.querySelector('.js-disable-context-menu')) {
+           contextMenu(this.container);
+         }
+
+         if (!document.querySelector('.js-disable-sortable')) {
+           initSortable(this.container);
+         }
+
+         if (!document.querySelector('.js-disable-drag-and-drop')) {
+           initDragDrop(this.container);
+         }
+       }).catch((error) => {
+         console.log(error)
+       });
+
         event.preventDefault();
       }
     }
