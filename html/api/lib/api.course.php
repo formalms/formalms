@@ -1204,7 +1204,7 @@ class Course_API extends API
         }
 
         $response['days'] = $model->classroom_man->getDateDay($idDate);
-
+        unset($response['data']);
         return $response;
     }
 
@@ -1254,10 +1254,13 @@ class Course_API extends API
                 $response['success'] = false;
                 $response['message'] = 'Error deleting day';
             }
+        } else {
+            $response['success'] = false;
+            $response['message'] = 'Day does not exists';
         }
 
         $response['days'] = $model->classroom_man->getDateDay($idDate);
-
+        unset($response['data']);
         return $response;
     }
 
@@ -1483,7 +1486,7 @@ class Course_API extends API
         }
 
         $response['days'] = $model->classroom_man->getDateDay($idDate);
-
+        unset($response['data']);
         return $response;
     }
 
