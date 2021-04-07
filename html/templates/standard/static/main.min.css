@@ -5616,6 +5616,9 @@ p {
   .folderTree__link.ft-is-selected, .createFolder__link.ft-is-selected {
     font-weight: bold; }
 
+.createFolder__input_err {
+  color: red; }
+
 .ft-has-child:after {
   content: '';
   display: block;

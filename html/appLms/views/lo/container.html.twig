@@ -6,11 +6,6 @@
     <input type="hidden" id="treeview_state_{{ tab.type }}" name="treeview_state_{{ tab.type }}" value="{{ tab.currentState }}">
     <section class="folderTreeView js-folder-tree-view">
         <aside class="folderTreeContent folderTreeContent--one-third">
-            {% if tab.edit %}
-                <div class="folderTree__actions">
-                    {% include 'create_new_item.html.twig' with { tab: tab, lo_types: lo_types } %}
-                </div>
-            {% endif %}
             <nav class="folderTree js-folder-tree">
                 <ul class="folderTree__ul js-folder-root">
                     <li data-id="0" class="folderTree__li ft-is-parent">
@@ -39,6 +34,11 @@
             </nav>
         </aside>
         <main class="folderViewContent folderViewContent--two-third">
+                {% if tab.edit %}
+                    <div class="folderTree__actions">
+                        {% include 'create_new_item.html.twig' with { tab: tab, lo_types: lo_types } %}
+                    </div>
+                {% endif %}
             <div class="folderView">
                 <ul class="folderView__ul js-sortable-view">
                     {% for el in data %}

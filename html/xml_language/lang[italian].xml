@@ -2764,6 +2764,7 @@ Password: [password]]]></key>
         <key id="storage&amp;_SELECTTEST" attributes="" save_date="2017-05-05 11:49:08"><![CDATA[Seleziona il test:]]></key>
         <key id="storage&amp;_SELECT_VIDEO_TYPE" attributes="" save_date="2017-04-11 18:48:21"><![CDATA[Scegli la larghezza di banda]]></key>
         <key id="storage&amp;_TARGETMOVEFOLDER" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Selezionare la cartella in cui spostare la cartella]]></key>
+        <key id="storage&amp;_NAME_REQUIRED" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Inserisci un nome]]></key>
       </module>
       <module id="subscribe">
         <key id="subscribe&amp;_ABSENT" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Assenza]]></key>

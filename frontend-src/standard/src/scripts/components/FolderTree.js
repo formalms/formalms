@@ -42,7 +42,7 @@ class FolderTree {
       }
     });
 
-    this.container.addEventListener('click', (e) => { this.clickOnFolder(e); });
+    this.container.addEventListener('click', (e) => { this.clickOnFolder(e, this.container, this.type); });
 
     if (!document.querySelector('.js-disable-sortable')) {
       initSortable(this.container);
@@ -52,9 +52,11 @@ class FolderTree {
     }
   }
 
-  clickOnFolder(event) {
+  clickOnFolder(event, container, type) {
     const target = event.target;
     const el = target.closest('.folderTree__link');
+    this.container = container;
+    this.type = type;
 
     if (el) {
       const isOpen = el.classList.contains('ft-is-folderOpen')

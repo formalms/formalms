@@ -2746,6 +2746,7 @@ Username: [userid]
         <key id="storage&amp;_SELECTTEST" attributes="" save_date="2017-05-05 11:49:16"><![CDATA[Select the test:]]></key>
         <key id="storage&amp;_SELECT_VIDEO_TYPE" attributes="" save_date="2017-04-11 18:42:57"><![CDATA[Select the bandwidth]]></key>
         <key id="storage&amp;_TARGETMOVEFOLDER" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Select destination folder]]></key>
+        <key id="storage&amp;_NAME_REQUIRED" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Insert a name]]></key>
       </module>
       <module id="subscribe">
         <key id="subscribe&amp;_ABSENT" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Absence]]></key>

@@ -222,12 +222,12 @@ class LoLmsController extends LmsController
         $this->model->setCurrentTab($type);
 
         if (!$folderName) {
-            echo $this->json->encode('Error', 400);
-            exit;
+            header('HTTP/1.1 400');
+            echo $this->json->encode(['error' => Lang::t('_NAME_REQUIRED', 'storage')]);
+        } else {
+            $this->model->addFolderById($selectedNode, $folderName, $this->idCourse);
+            echo $this->json->encode(true);
         }
-        $this->model->addFolderById($selectedNode, $folderName, $this->idCourse);
-
-        // echo $this->json->encode(true);
         exit;
     }
 }

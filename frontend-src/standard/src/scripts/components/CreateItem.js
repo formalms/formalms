@@ -59,6 +59,7 @@ class CreateItem {
   }
   
   createNewFolder(event, createFolderForm) {
+    this.showErr();
     const text = createFolderForm.querySelector('.createFolder__input').value;
     const authentic_request = createFolderForm.querySelector('input[name=authentic_request]').value;
     const dropdownBtn = this.container.querySelector('#dropdownMenuBtn_' + this.type);
@@ -74,7 +75,7 @@ class CreateItem {
     const apiUrl = this.getApiUrl('createFolder', null, params);
 
     axios.get(apiUrl).then((response) => {
-      if (response.data >= 0) {
+      if (response) {
         dropdownBtn.classList.remove('hidden');
         dropdown.classList.remove('hidden');
         createFolderForm.classList.add('hidden');
@@ -82,15 +83,22 @@ class CreateItem {
 
         // Refresh tree of parent node
         this.container.querySelector('.folderTree__link.ft-is-folder[data-id="' + selectedNodeId + '"]').click();
-        this.container.querySelector('.folderTree__link.ft-is-folder[data-id="' + selectedNodeId + '"]').click();
-      } else {
-        console.log(response.data, 'error');
       }
-    }).catch( (error) => {
-      console.log(error)
+    }).catch((error) => {
+      this.showErr(error.response.data.error);
     });
 
     event.preventDefault();
+  }
+
+  showErr(msg) {
+    const err = this.container.querySelector('.createFolder__input_err');
+    if (msg) {
+      err.innerHTML = msg;
+      err.classList.remove('hidden');
+    } else {
+      err.classList.add('hidden');
+    }
   }
 
   clickOnType(event) {
