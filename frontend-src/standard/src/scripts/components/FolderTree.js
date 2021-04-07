@@ -61,7 +61,7 @@ class FolderTree {
       const noClick = el.classList.contains('ft-no-click');
 
       if (!noClick) {
-        const els = window.container.querySelectorAll('.folderTree__link');
+        const els = this.container.querySelectorAll('.folderTree__link');
 
         if (els) {
           els.forEach(el => {
