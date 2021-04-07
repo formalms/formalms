@@ -98,15 +98,15 @@ class FolderTree {
          folderView.innerHTML = childView;
 
          if (!document.querySelector('.js-disable-context-menu')) {
-           contextMenu(this.container);
+           contextMenu(this.container, this.type);
          }
 
          if (!document.querySelector('.js-disable-sortable')) {
-           initSortable(this.container);
+           initSortable(this.container, this.type);
          }
 
          if (!document.querySelector('.js-disable-drag-and-drop')) {
-           initDragDrop(this.container);
+           initDragDrop(this.container, this.type);
          }
        }).catch((error) => {
          console.log(error)
@@ -148,7 +148,7 @@ function getApiUrl(action, id, params) {
   return url;
 }
 
-function initSortable(container) {
+function initSortable(container, type) {
   const view = container.querySelector('.js-sortable-view');
 
   if (view) {
@@ -160,8 +160,9 @@ function initSortable(container) {
       invertSwap: true,
       swapThreshold: 0.43,
       onUpdate: function (evt) {
+        console.log(evt, 'evt');
         const currentElement = evt.item;
-        const currentElementId = currentElement.id;
+        const currentElementId = currentElement.getAttribute('data-id');
         const parentElement = container.querySelector('.ft-is-selected');
         const childElement = container.querySelector('.folderView__ul').querySelectorAll('.folderView__li');
         const childElementArray = [];
@@ -174,13 +175,13 @@ function initSortable(container) {
         }
 
         childElement.forEach(el => {
-          const elId = el.id;
+          const elId = el.getAttribute('data-id');
           childElementArray.push(elId);
         });
 
         console.log('child order: ' + childElementArray);
 
-        const reorderLoData = getApiUrl('reorder', currentElementId, { type: this.type, newParent: parentElementId, newOrder: childElementArray });
+        const reorderLoData = getApiUrl('reorder', currentElementId, { type, newParent: parentElementId, newOrder: childElementArray });
         axios.get(reorderLoData).then().catch( (error) => {
           console.log(error);
         });
@@ -189,13 +190,14 @@ function initSortable(container) {
   }
 }
 
-function initDragDrop(container) {
+function initDragDrop(container, type) {
     let currentEl, currentElId;
 
     container.addEventListener('dragstart', (event) => {
       if (event.target.classList.contains('is-droppable')) {
         currentEl = event.target;
         currentElId = currentEl.id;
+        console.log(currentEl.id, 'currentEl.id');
       }
     });
 
@@ -203,6 +205,7 @@ function initDragDrop(container) {
       const target = event.target;
 
       if (currentEl) {
+        console.log(target.id, 'target.id');
         if ( (currentElId !== target.id) && (target.classList.contains('is-dropzone')) ) {
           console.log('drag over')
           target.classList.add('fv-is-dropped');
@@ -223,11 +226,12 @@ function initDragDrop(container) {
 
     container.addEventListener('drop', (event) => {
       const target = event.target;
+      console.log(event.target.id, 'event.target.id');
       target.classList.remove('fv-is-dropped');
 
       if (currentEl) {
         if ( (currentElId !== target.id) && (target.classList.contains('is-dropzone')) ) {
-          const reorderLoData = getApiUrl('reorder', currentElId, { type: this.type, newParent: event.target.id });
+          const reorderLoData = getApiUrl('reorder', currentElId, { type, newParent: event.target.id });
           axios.get(reorderLoData).then(() => {
             if (target.classList.contains('ft-is-folderOpen') && (currentEl.classList.contains('folderTree__li') )) {
               const nextElementSibling = target.nextElementSibling;
@@ -248,7 +252,7 @@ function initDragDrop(container) {
     });
 }
 
-function contextMenu(container) {
+function contextMenu(container, type) {
   contextmenu('.folderTree__link:not(.ft-is-root)', (target) => {
     return [
       {
@@ -322,7 +326,7 @@ function contextMenu(container) {
             }
           }
 
-          const deleteLoData = getApiUrl('delete', elId, { type: this.type });
+          const deleteLoData = getApiUrl('delete', elId, { type });
           axios.get(deleteLoData).then().catch((error) => {
             console.log(error);
           });
