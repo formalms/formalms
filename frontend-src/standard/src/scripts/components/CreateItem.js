@@ -31,7 +31,7 @@ class CreateItem {
 
     if (types) {
       types.forEach(type => {
-        type.addEventListener('click', (e) => { this.clickOnType(e, this.container, this.type) });
+        type.addEventListener('click', (e) => { this.clickOnType(e) });
       });
     }
     if (treeLinks) {
@@ -41,7 +41,14 @@ class CreateItem {
     }
     const createFolderForm = this.container.querySelector('.createFolderForm');
     const createFolderBtn = createFolderForm.querySelector('.createFolder__btn');
-    createFolderBtn.addEventListener('click', (e) => { this.createNewFolder(e, this.type, this.container, createFolderForm) });
+    const folderInputText = createFolderForm.querySelector('.createFolder__input');
+    createFolderBtn.addEventListener('click', (e) => { this.createNewFolder(e, createFolderForm) });
+    folderInputText.addEventListener('keypress', (e) => {
+      if (e.keyCode === 13) {
+        this.createNewFolder(e, createFolderForm);
+        return false;
+      }
+    });
   }
 
   clickOnFolder(event) {
@@ -50,18 +57,18 @@ class CreateItem {
     this.selectedNodeId = elId;
     event.preventDefault();
   }
-
-  createNewFolder(event, type, container, createFolderForm) {
+  
+  createNewFolder(event, createFolderForm) {
     const text = createFolderForm.querySelector('.createFolder__input').value;
     const authentic_request = createFolderForm.querySelector('input[name=authentic_request]').value;
-    const dropdownBtn = container.querySelector('#dropdownMenuBtn_' + type);
-    const dropdown = container.querySelector('#dropdownMenu_' + type);
+    const dropdownBtn = this.container.querySelector('#dropdownMenuBtn_' + this.type);
+    const dropdown = this.container.querySelector('#dropdownMenu_' + this.type);
     const selectedNodeId = this.selectedNodeId ? this.selectedNodeId : 0;
 
     const params = {
       folderName: text,
       selectedNode: selectedNodeId,
-      type,
+      type: this.type,
       authentic_request,
     }
     const apiUrl = this.getApiUrl('createFolder', null, params);
@@ -74,7 +81,8 @@ class CreateItem {
         createFolderForm.querySelector('.createFolder__input').value = '';
 
         // Refresh tree of parent node
-        container.querySelector('.folderTree__link.ft-is-folder[data-id="' + selectedNodeId + '"]').click();
+        this.container.querySelector('.folderTree__link.ft-is-folder[data-id="' + selectedNodeId + '"]').click();
+        this.container.querySelector('.folderTree__link.ft-is-folder[data-id="' + selectedNodeId + '"]').click();
       } else {
         console.log(response.data, 'error');
       }
@@ -85,11 +93,11 @@ class CreateItem {
     event.preventDefault();
   }
 
-  clickOnType(event, container, type) {
+  clickOnType(event) {
     const el = event.target;
-    const dropdownBtn = container.querySelector('#dropdownMenuBtn_' + type);
-    const dropdown = container.querySelector('#dropdownMenu_' + type);
-    const createFolderForm = container.querySelector('.createFolderForm');
+    const dropdownBtn = this.container.querySelector('#dropdownMenuBtn_' + this.type);
+    const dropdown = this.container.querySelector('#dropdownMenu_' + this.type);
+    const createFolderForm = this.container.querySelector('.createFolderForm');
 
     if (el) {
       const type = el.getAttribute('data-id');
@@ -111,7 +119,6 @@ class CreateItem {
       }
       event.preventDefault();
     }
-
   }
 
 }

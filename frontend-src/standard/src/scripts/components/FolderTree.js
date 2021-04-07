@@ -16,9 +16,9 @@ class FolderTree {
     const inputRename = this.container.querySelector('.folderTree__rename__input');
 
     if (!document.querySelector('.js-disable-context-menu')) {
-        if (this.container.querySelectorAll('.folderTree__link').length) {
-            contextMenu(this.container);
-        }
+      if (this.container.querySelectorAll('.folderTree__link').length) {
+        contextMenu(this.container);
+      }
     }
 
     if (btn) {
@@ -42,13 +42,13 @@ class FolderTree {
       }
     });
 
-    this.container.addEventListener('click', (e) => { this.clickOnFolder(e, this.type); });
+    this.container.addEventListener('click', (e) => { this.clickOnFolder(e); });
 
     if (!document.querySelector('.js-disable-sortable')) {
-        initSortable(this.container);
+      initSortable(this.container);
     }
     if (!document.querySelector('.js-disable-drag-and-drop')) {
-        initDragDrop(this.container);
+      initDragDrop(this.container);
     }
   }
 
@@ -61,7 +61,7 @@ class FolderTree {
       const noClick = el.classList.contains('ft-no-click');
 
       if (!noClick) {
-        const els = this.container.querySelectorAll('.folderTree__link');
+        const els = window.container.querySelectorAll('.folderTree__link');
 
         if (els) {
           els.forEach(el => {
@@ -115,7 +115,6 @@ class FolderTree {
         event.preventDefault();
       }
     }
-
   }
 
   renameEl() {
@@ -124,7 +123,7 @@ class FolderTree {
     const value = input.value;
     const el = input.parentNode.parentNode;
     const elId = el.getAttribute('data-id');
-    const renameLoData = getApiUrl('rename', elId, { newName: value });
+    const renameLoData = getApiUrl('rename', elId, { type: this.type, newName: value });
 
     axios.get(renameLoData).then().catch( (error) => {
       console.log(error);
@@ -140,13 +139,13 @@ class FolderTree {
 }
 
 function getApiUrl(action, id, params) {
-   let url = `${Config.apiUrl}lms/lo/${action}&id=${id}`;
-   if (!params) {
-      params = {};
-   }
-   url += '&' + new URLSearchParams(params).toString();
+  let url = `${Config.apiUrl}lms/lo/${action}&id=${id}`;
+  if (!params) {
+    params = {};
+  }
+  url += '&' + new URLSearchParams(params).toString();
 
-   return url;
+  return url;
 }
 
 function initSortable(container) {
@@ -181,7 +180,7 @@ function initSortable(container) {
 
         console.log('child order: ' + childElementArray);
 
-        const reorderLoData = getApiUrl('reorder', currentElementId, { newParent: parentElementId, newOrder: childElementArray });
+        const reorderLoData = getApiUrl('reorder', currentElementId, { type: this.type, newParent: parentElementId, newOrder: childElementArray });
         axios.get(reorderLoData).then().catch( (error) => {
           console.log(error);
         });
@@ -205,9 +204,9 @@ function initDragDrop(container) {
 
       if (currentEl) {
         if ( (currentElId !== target.id) && (target.classList.contains('is-dropzone')) ) {
-            console.log('drag over')
-            target.classList.add('fv-is-dropped');
-            event.preventDefault();
+          console.log('drag over')
+          target.classList.add('fv-is-dropped');
+          event.preventDefault();
         }
       }
     });
@@ -228,7 +227,7 @@ function initDragDrop(container) {
 
       if (currentEl) {
         if ( (currentElId !== target.id) && (target.classList.contains('is-dropzone')) ) {
-          const reorderLoData = getApiUrl('reorder', currentElId, { newParent: event.target.id });
+          const reorderLoData = getApiUrl('reorder', currentElId, { type: this.type, newParent: event.target.id });
           axios.get(reorderLoData).then(() => {
             if (target.classList.contains('ft-is-folderOpen') && (currentEl.classList.contains('folderTree__li') )) {
               const nextElementSibling = target.nextElementSibling;
@@ -250,89 +249,87 @@ function initDragDrop(container) {
 }
 
 function contextMenu(container) {
-    contextmenu('.folderTree__link:not(.ft-is-root)', (target) => {
-        return [
-            {
-                text: 'Rinomina',
-                onClick() {
-                    const rename = container.querySelector('.folderTree__rename');
-                    const renameInput = container.querySelector('.folderTree__rename__input');
+  contextmenu('.folderTree__link:not(.ft-is-root)', (target) => {
+    return [
+      {
+        text: 'Rinomina',
+        onClick() {
+          const rename = container.querySelector('.folderTree__rename');
+          const renameInput = container.querySelector('.folderTree__rename__input');
 
-                    if (target.classList.contains('folderTree__rename__input') === false) {
-                        if (target.hasAttribute('id')) {
-                            target.classList.add('ft-no-click');
-                            target.appendChild(rename);
-                        } else {
-                            target.parentNode.classList.add('ft-no-click');
-                            target.parentNode.appendChild(rename);
-                        }
-                        rename.classList.add('is-show');
-                        renameInput.focus();
-                        renameInput.setAttribute('value', target.textContent);
-
-                        // Rendo tutti gli elementi non cliccabile se sono in modalità rinomina
-                        const elsNotClick = container.querySelectorAll('.ft-no-click');
-                        if (elsNotClick) {
-                            for (let el of elsNotClick) {
-                                el.addEventListener('click', (e) => {
-                                    e.preventDefault();
-                                })
-                            }
-                        }
-
-                        // Stop della propagazione del click se sono su context menu, in alternativa disabilito modifica input se clicco fuori dall'input
-                        container.addEventListener('click', (event) => {
-                            if (event.detail) { // fix trigger click se premo su spazio
-                                const clickInside = rename.contains(event.target);
-                                if (event.target.classList.contains('menu-item-clickable')) {
-                                    event.stopPropagation();
-                                } else {
-                                    if (!clickInside) {
-                                        renameInput.blur();
-                                        rename.classList.remove('is-show');
-                                    }
-                                }
-                            }
-                        });
-                    }
-
-                }
-            },
-            {
-                text: 'Elimina',
-                onClick() {
-                    let siblings;
-                    let elId;
-
-                    if (target.hasAttribute('data-id')) {
-                        siblings = target.parentNode.children;
-                        target.parentNode.querySelector('.folderTree__link').remove();
-                        elId = target.getAttribute('data-id');
-                    } else {
-                        siblings = target.parentNode.parentNode.children;
-                        target.parentNode.parentNode.querySelector('.folderTree__link').remove();
-                        elId = target.parentNode.getAttribute('data-id');
-                    }
-
-                    container.querySelector('.folderView').querySelector('.folderView__li[data-id="' + elId + '"]').parentNode.remove();
-
-                    if (siblings) {
-                        for (let el of siblings) {
-                            if (el.classList.contains('folderTree__ul')) {
-                                el.classList.remove('folderTree__ul');
-                            }
-                        }
-                    }
-
-                    const deleteLoData = getApiUrl('delete', elId);
-                    axios.get(deleteLoData).then().catch( (error) => {
-                        console.log(error);
-                    });
-
-                }
+          if (target.classList.contains('folderTree__rename__input') === false) {
+            if (target.hasAttribute('id')) {
+              target.classList.add('ft-no-click');
+              target.appendChild(rename);
+            } else {
+              target.parentNode.classList.add('ft-no-click');
+              target.parentNode.appendChild(rename);
             }
-        ]
-    })
+            rename.classList.add('is-show');
+            renameInput.focus();
+            renameInput.setAttribute('value', target.textContent);
+
+            // Rendo tutti gli elementi non cliccabile se sono in modalità rinomina
+            const elsNotClick = container.querySelectorAll('.ft-no-click');
+            if (elsNotClick) {
+              for (let el of elsNotClick) {
+                el.addEventListener('click', (e) => {
+                  e.preventDefault();
+                })
+              }
+            }
+
+            // Stop della propagazione del click se sono su context menu, in alternativa disabilito modifica input se clicco fuori dall'input
+            container.addEventListener('click', (event) => {
+              if (event.detail) { // fix trigger click se premo su spazio
+                const clickInside = rename.contains(event.target);
+                if (event.target.classList.contains('menu-item-clickable')) {
+                  event.stopPropagation();
+                } else {
+                  if (!clickInside) {
+                    renameInput.blur();
+                    rename.classList.remove('is-show');
+                  }
+                }
+              }
+            });
+          }
+        }
+      },
+      {
+        text: 'Elimina',
+        onClick() {
+          let siblings;
+          let elId;
+
+          if (target.hasAttribute('data-id')) {
+            siblings = target.parentNode.children;
+            target.parentNode.querySelector('.folderTree__link').remove();
+            elId = target.getAttribute('data-id');
+          } else {
+            siblings = target.parentNode.parentNode.children;
+            target.parentNode.parentNode.querySelector('.folderTree__link').remove();
+            elId = target.parentNode.getAttribute('data-id');
+          }
+
+          container.querySelector('.folderView').querySelector('.folderView__li[data-id="' + elId + '"]').parentNode.remove();
+
+          if (siblings) {
+            for (let el of siblings) {
+              if (el.classList.contains('folderTree__ul')) {
+                el.classList.remove('folderTree__ul');
+              }
+            }
+          }
+
+          const deleteLoData = getApiUrl('delete', elId, { type: this.type });
+          axios.get(deleteLoData).then().catch((error) => {
+            console.log(error);
+          });
+        }
+      }
+    ];
+  });
 }
 
 export default FolderTree
