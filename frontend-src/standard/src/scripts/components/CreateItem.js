@@ -50,7 +50,7 @@ class CreateItem {
     this.selectedNodeId = elId;
     event.preventDefault();
   }
-  
+
   createNewFolder(event, type, container, createFolderForm) {
     const text = createFolderForm.querySelector('.createFolder__input').value;
     const authentic_request = createFolderForm.querySelector('input[name=authentic_request]').value;
@@ -74,7 +74,6 @@ class CreateItem {
         createFolderForm.querySelector('.createFolder__input').value = '';
 
         // Refresh tree of parent node
-        container.querySelector('.folderTree__link.ft-is-folder[data-id="' + selectedNodeId + '"]').click();
         container.querySelector('.folderTree__link.ft-is-folder[data-id="' + selectedNodeId + '"]').click();
       } else {
         console.log(response.data, 'error');
@@ -112,7 +111,7 @@ class CreateItem {
       }
       event.preventDefault();
     }
-    
+
   }
 
 }
