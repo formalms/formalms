@@ -66,14 +66,14 @@ class FolderTree {
         if (els) {
           els.forEach(el => {
             el.classList.remove('ft-is-selected');
-            if (!el.classList.contains('ft-has-child')) {
+            if (!el.classList.contains('ft-has-child') && !el.classList.contains('ft-is-root')) {
               el.classList.remove('ft-is-folderOpen');
             }
           });
         }
         el.classList.add('ft-is-selected');
 
-        if (isOpen && !el.classList.contains('ft-is-root')) {
+        if (isOpen) {
           el.classList.remove('ft-is-folderOpen');
           const uls = el.parentNode.querySelectorAll('.folderTree__ul');
           uls.forEach(ul => {
@@ -94,9 +94,7 @@ class FolderTree {
          const inputState = this.container.querySelector('#treeview_state_' + this.type);
          inputParent.value = elId;
          inputState.value = response.data.currentState;
-         if (!el.classList.contains('ft-is-root')) {
-           el.insertAdjacentHTML('afterend', child);
-         }
+         el.insertAdjacentHTML('afterend', child);
          folderView.innerHTML = childView;
 
          if (!document.querySelector('.js-disable-context-menu')) {
