@@ -309,21 +309,6 @@ class OrgDirDb extends RepoDirDb {
 		parent::renameFolder( $folder2, $folderName );
 		parent::renameFolder( $folder, $folderName2 );
 	}
-
-	function reorder ($idToMove, $newParent, $newOrder = []) {
-		$folderToMove = $this->getFolderById($idToMove);
-		$parent = $this->getFolderById($newParent);
-		$folderToMove->move( $parent );
-		
-		if (count($newOrder) > 0) {
-			foreach ($newOrder as $index => $id) {
-				$folder = $this->getFolderById($id);
-				$folderName = substr('00000000' . ($index + 1), -8);
-				parent::renameFolder( $folder, $parent->path + "/" + $folderName );
-			}
-		}
-		return true;
-	}
 	
 	function addFolderById( $idParent, $folderName, $idCourse = FALSE ) {
 		$this->org_title = $folderName;

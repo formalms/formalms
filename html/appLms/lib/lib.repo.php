@@ -408,6 +408,25 @@ class RepoDirDb extends TreeDb {
 		// remove all records from repo
 		parent::deleteAllTree();
 	}
+
+	function reorder($idToMove, $newParent, $newOrder = [])
+	{
+		$folderToMove = $this->getFolderById($idToMove);
+		$parent = $this->getFolderById($newParent);
+		$folderToMove->move($parent);
+
+		if (
+			count($newOrder) > 0
+		) {
+			foreach ($newOrder as $index => $id) {
+				$folder = $this->getFolderById($id);
+				$folderName = substr('00000000' . ($index + 1), -8);
+				parent::renameFolder($folder, $parent->path + "/" + $folderName);
+			}
+		}
+		return true;
+	}
+
 }
 
 class RepoTreeView extends TreeView {
