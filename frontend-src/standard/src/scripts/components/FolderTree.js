@@ -261,7 +261,7 @@ function contextMenu(container, type) {
           const renameInput = container.querySelector('.folderTree__rename__input');
 
           if (target.classList.contains('folderTree__rename__input') === false) {
-            if (target.hasAttribute('id')) {
+            if (target.hasAttribute('data-id')) {
               target.classList.add('ft-no-click');
               target.appendChild(rename);
             } else {
