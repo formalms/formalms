@@ -199,8 +199,7 @@ function initDragDrop(container, type) {
     container.addEventListener('dragstart', (event) => {
       if (event.target.classList.contains('is-droppable')) {
         currentEl = event.target;
-        currentElId = currentEl.id;
-        console.log(currentEl.id, 'currentEl.id');
+        currentElId = currentEl.getAttribute('data-id');
       }
     });
 
@@ -208,9 +207,7 @@ function initDragDrop(container, type) {
       const target = event.target;
 
       if (currentEl) {
-        console.log(target.id, 'target.id');
-        if ( (currentElId !== target.id) && (target.classList.contains('is-dropzone')) ) {
-          console.log('drag over')
+        if ( (currentElId !== target.getAttribute('data-id')) && (target.classList.contains('is-dropzone')) ) {
           target.classList.add('fv-is-dropped');
           event.preventDefault();
         }
@@ -221,7 +218,7 @@ function initDragDrop(container, type) {
       const target = event.target;
 
       if (currentEl) {
-        if ((currentElId !== target.id) && (target.classList.contains('is-dropzone'))) {
+        if ((currentElId !== target.getAttribute('data-id')) && (target.classList.contains('is-dropzone'))) {
           target.classList.remove('fv-is-dropped');
         }
       }
@@ -229,12 +226,11 @@ function initDragDrop(container, type) {
 
     container.addEventListener('drop', (event) => {
       const target = event.target;
-      console.log(event.target.id, 'event.target.id');
       target.classList.remove('fv-is-dropped');
 
       if (currentEl) {
-        if ( (currentElId !== target.id) && (target.classList.contains('is-dropzone')) ) {
-          const reorderLoData = getApiUrl('reorder', currentElId, { type, newParent: event.target.id });
+        if ( (currentElId !== target.getAttribute('data-id')) && (target.classList.contains('is-dropzone')) ) {
+          const reorderLoData = getApiUrl('reorder', currentElId, { type, newParent: event.target.getAttribute('data-id') });
           axios.get(reorderLoData).then(() => {
             if (target.classList.contains('ft-is-folderOpen') && (currentEl.classList.contains('folderTree__li') )) {
               const nextElementSibling = target.nextElementSibling;
