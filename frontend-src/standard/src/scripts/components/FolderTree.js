@@ -45,10 +45,10 @@ class FolderTree {
     this.container.addEventListener('click', (e) => { this.clickOnFolder(e, this.container, this.type); });
 
     if (!document.querySelector('.js-disable-sortable')) {
-      initSortable(this.container);
+      initSortable(this.container, this.type);
     }
     if (!document.querySelector('.js-disable-drag-and-drop')) {
-      initDragDrop(this.container);
+      initDragDrop(this.container, this.type);
     }
   }
 
@@ -77,11 +77,11 @@ class FolderTree {
 
         if (isOpen) {
           el.classList.remove('ft-is-folderOpen');
-          const uls = el.parentNode.querySelectorAll('.folderTree__ul');
-          uls.forEach(ul => {
-            ul.remove();
-          });
         }
+        const uls = el.parentNode.querySelectorAll('.folderTree__ul');
+        uls.forEach(ul => {
+          ul.remove();
+        });
 
         el.classList.add('ft-is-folderOpen');
 
@@ -182,6 +182,7 @@ function initSortable(container, type) {
         });
 
         console.log('child order: ' + childElementArray);
+        console.log('type: ' + type);
 
         const reorderLoData = getApiUrl('reorder', currentElementId, { type, newParent: parentElementId, newOrder: childElementArray });
         axios.get(reorderLoData).then().catch( (error) => {

@@ -101,6 +101,12 @@ class CreateItem {
     }
   }
 
+  getNewLoUrl(type) {
+    const selectedNodeId = this.selectedNodeId ? this.selectedNodeId : 0;
+
+    return `index.php?modname=storage&op=display&${this.type}_createLOSel=1&radiolo=${type}&treeview_selected_${this.type}=${selectedNodeId}`;
+  }
+
   clickOnType(event) {
     const el = event.target;
     const dropdownBtn = this.container.querySelector('#dropdownMenuBtn_' + this.type);
@@ -114,16 +120,7 @@ class CreateItem {
         dropdown.classList.add('hidden');
         createFolderForm.classList.remove('hidden');
       } else {
-        /*
-          http://formalms.local/appLms/index.php?modname=storage&op=display&homerepo_createLOSel=1
-
-          radiolo: glossary
-          treeview_selected_homerepo: 24
-          treeview_idplayitem_homerepo: 0
-          treeview_state_homerepo: a:1:{i:0;a:5:{i:24;a:3:{i:27;i:27;i:28;i:28;i:29;i:29;}i:34;i:34;i:25;i:25;i:26;i:26;i:33;i:33;}}
-          homerepo[REPO_ID_SELECTIONSTATE]: %5B%5D
-          homerepo_createLOSel: Nuovo
-        */
+        location.href = this.getNewLoUrl(type);
       }
       event.preventDefault();
     }

@@ -95,18 +95,19 @@ class LoLmsController extends LmsController
         ];
         $query = "SELECT objectType, className, fileName FROM %lms_lo_types";
         $rs = sql_query($query);
-        while (list($type, $class, $file) = sql_fetch_row($rs)) {
+        while (list($type) = sql_fetch_row($rs)) {
             $lo_types[] = [
                 'title' => Lang::t('_LONAME_' . $type, 'storage'),
                 'type' => $type,
             ];
         }
 
-
         $activeTab = $status = [];
         if (isset($_SESSION['storage'])) {
             $status = unserialize($_SESSION['storage']);
             $activeTab = $status['tabview_storage_status'];
+        } else {
+            $activeTab = LoLms::STORAGE_TABS[LoLms::HOMEREPODIRDB];
         }
 
         $tabs = [

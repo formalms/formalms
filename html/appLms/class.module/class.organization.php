@@ -397,7 +397,7 @@ class Module_Organization extends LmsModule {
 				$saveObj->save( $saveName, $this->treeView->getState() );
 
 				// start learning object creation
-				$lo = createLO( $_POST['radiolo'] );
+				$lo = createLO( $_REQUEST['radiolo'] );
 
 				if($lo !== false) {
 					$lo->create( 'index.php?modname='.$modname

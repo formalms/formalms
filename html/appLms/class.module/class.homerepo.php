@@ -47,7 +47,7 @@ class Module_Homerepo extends LmsModule {
 				$this->repoDb =& $this->treeView->tdb;
 				$ready = TRUE;
 				$saveObj->delete( $saveName );
-				$this->treeView->extendedParsing( $_POST, $_POST, $_POST);
+				$this->treeView->extendedParsing( $_REQUEST, $_REQUEST, $_REQUEST);
 				$this->treeView->refreshTree();
 			}
 		}
@@ -73,10 +73,10 @@ class Module_Homerepo extends LmsModule {
 				$ready = TRUE;
 				$saveObj->delete( $saveName );
 				//$this->treeView->extendedParsing( $_POST, $_POST, $_POST);
-				$this->treeView->parsePositionData($_POST, $_POST, $_POST);
+				$this->treeView->parsePositionData($_REQUEST, $_REQUEST, $_REQUEST);
 				$this->treeView->refreshTree();
 			} else {
-				$this->treeView->parsePositionData($_POST, $_POST, $_POST);
+				$this->treeView->parsePositionData($_REQUEST, $_REQUEST, $_REQUEST);
 			}
 		}
 		if( $this->select_destination ) {
@@ -192,7 +192,7 @@ class Module_Homerepo extends LmsModule {
 				$saveObj->save( $saveName, $this->treeView->getState() );
 
 				// start learning object creation
-				$lo = createLO( $_POST['radiolo'] );
+				$lo = createLO( $_REQUEST['radiolo'] );
 				$lo->create( 'index.php?modname='.$modname
 							.'&op=display&shr='.$saveName.'&'
 							.$this->treeView->_getOpCreateLOEnd().'=1' );
@@ -287,5 +287,3 @@ class Module_Homerepo extends LmsModule {
 		}
 	}
 }
-
-?>

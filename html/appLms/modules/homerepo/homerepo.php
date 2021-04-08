@@ -77,7 +77,7 @@ function homerepo(&$treeView) {
 		break;
 		case 'createLOSel':
 			global $modname;
-			$lo = createLO( $_POST['radiolo'] );
+			$lo = createLO( $_REQUEST['radiolo'] );
 			$lo->create( 'index.php?modname'.$modname.'&amp;op=created' );
 		break;
 		case 'properties':

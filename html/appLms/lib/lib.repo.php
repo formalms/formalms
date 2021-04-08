@@ -628,7 +628,7 @@ class RepoTreeView extends TreeView {
 			$this->op = 'createLO';
 		} elseif( isset( $arrayState[$this->_getOpCreateLOSel()] )) {
 			$this->op = 'createLOSel';
-			$this->creatingObjectType = $_POST['radiolo'];
+			$this->creatingObjectType = $_REQUEST['radiolo'];
 		} elseif( isset( $_GET[$this->_getOpCreateLOEnd()] ) ) {
 			// get result and id resource
 			$this->op = 'createLOEnd';
