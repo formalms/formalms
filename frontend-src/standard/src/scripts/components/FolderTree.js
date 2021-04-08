@@ -17,7 +17,7 @@ class FolderTree {
 
     if (!document.querySelector('.js-disable-context-menu')) {
       if (this.container.querySelectorAll('.folderTree__link').length) {
-        contextMenu(this.container);
+        contextMenu(this.container, this.type);
       }
     }
 
@@ -162,27 +162,21 @@ function initSortable(container, type) {
       invertSwap: true,
       swapThreshold: 0.43,
       onUpdate: function (evt) {
-        console.log(evt, 'evt');
         const currentElement = evt.item;
         const currentElementId = currentElement.getAttribute('data-id');
         const parentElement = container.querySelector('.ft-is-selected');
         const childElement = container.querySelector('.folderView__ul').querySelectorAll('.folderView__li');
         const childElementArray = [];
         let parentElementId = 0;
-        console.log('current: ' + currentElementId);
 
         if (parentElement) {
-          parentElementId = parentElement ? parentElement.id : 0;
-          console.log('parent: ' + parentElementId);
+          parentElementId = parentElement ? parentElement.getAttribute('data-id') : 0;
         }
 
         childElement.forEach(el => {
           const elId = el.getAttribute('data-id');
           childElementArray.push(elId);
         });
-
-        console.log('child order: ' + childElementArray);
-        console.log('type: ' + type);
 
         const reorderLoData = getApiUrl('reorder', currentElementId, { type, newParent: parentElementId, newOrder: childElementArray });
         axios.get(reorderLoData).then().catch( (error) => {
@@ -306,16 +300,19 @@ function contextMenu(container, type) {
           let elId;
 
           if (target.hasAttribute('data-id')) {
-            siblings = target.parentNode.children;
-            target.parentNode.querySelector('.folderTree__link').remove();
             elId = target.getAttribute('data-id');
+            siblings = target.parentNode.children;
+            if (target.parentNode) {
+              target.parentNode.querySelector('.folderTree__link').remove();
+            } else {
+              target.remove();
+            }
           } else {
             siblings = target.parentNode.parentNode.children;
             target.parentNode.parentNode.querySelector('.folderTree__link').remove();
             elId = target.parentNode.getAttribute('data-id');
+            container.querySelector('.folderView').querySelector('.folderView__li[data-id="' + elId + '"]').parentNode.remove();
           }
-
-          container.querySelector('.folderView').querySelector('.folderView__li[data-id="' + elId + '"]').parentNode.remove();
 
           if (siblings) {
             for (let el of siblings) {
