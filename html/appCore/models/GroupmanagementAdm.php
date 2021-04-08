@@ -213,6 +213,8 @@ class GroupmanagementAdm extends Model {
 	public function deleteGroup($idst) {
 		$output = false;
 
+		$info_group = $this->getGroupInfo($idst);
+
 		$query = "DELETE FROM %adm_group WHERE idst=".(int)$idst." LIMIT 1";
 		$res = $this->db->query($query);
 
@@ -226,6 +228,8 @@ class GroupmanagementAdm extends Model {
 			*/
 			if ($this->deleteGroupMembers($idst)) $output = true;
 		}
+
+		Events::trigger('core.group.deleted', ['id_group' => $idst, 'info_group' => $info_group]);
 
 		return $output;
 	}
@@ -287,6 +291,8 @@ class GroupmanagementAdm extends Model {
 				$output = $this->db->query($query);
 			}
 		}
+
+		Events::trigger('core.group.edited', ['id_group' => $idst, 'info_group' => $info]);
 
 		return $output;
 	}
@@ -364,6 +370,8 @@ class GroupmanagementAdm extends Model {
 				$preference->addAdminTree($idst, $user_id);
 			}
 		}
+
+		Events::trigger('core.group.created', ['id_group' => $idst, 'info_group' => $info]);
 
 		return $output;
 	}
