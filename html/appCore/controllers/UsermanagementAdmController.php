@@ -1443,11 +1443,7 @@ class UsermanagementAdmController extends AdmController
 				$output['node'] = $nodedata;
 				$output['id_parent'] = $id_parent;
 
-				//TODO: EVT_OBJECT (§)
-				//$event = new \appCore\Events\Core\User\UsersManagementOrgChartCreateNodeEvent();
-				//$event->setNode($nodedata);
-				//TODO: EVT_LAUNCH (&)
-				//\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementOrgChartCreateNodeEvent::EVENT_NAME, $event);
+				Events::trigger('core.orgchart.created', ['node' => $nodedata]);
 
 				// adding custom fields (if any)
 				$vett_custom_org = $this->model->getCustomOrg();
@@ -1479,11 +1475,8 @@ class UsermanagementAdmController extends AdmController
 		$id = Get::req('node_id', DOTY_INT, -1);
 
 		if ($id > 0) {
-			//TODO: EVT_OBJECT (§)
-			//$event = new \appCore\Events\Core\User\UsersManagementOrgChartDeleteNodeEvent();
-			//$event->setNode($this->model->getFolderById($id));
-			//TODO: EVT_LAUNCH (&)
-			//\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementOrgChartDeleteNodeEvent::EVENT_NAME, $event);
+
+			Events::trigger('core.orgchart.deleted', ['node' => $this->model->getFolderById($id)]);
 
 			$output['success'] = $this->model->deleteFolder($id, true);
 		}
@@ -1528,12 +1521,8 @@ class UsermanagementAdmController extends AdmController
 			//$output['new_name'] = ($code != "" ? '['.$code.'] ' : '').$langs[getLanguage()];
 			$output['new_name'] = $this->_formatFolderCode($id, $code) . $langs[getLanguage()];
 
-			//TODO: EVT_OBJECT (§)
-			//$event = new \appCore\Events\Core\User\UsersManagementOrgChartEditNodeEvent();
-			//$event->setOldNode($old_node);
-			//$event->setNode($this->model->getFolderById($id));
-			//TODO: EVT_LAUNCH (&)
-			//\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementOrgChartEditNodeEvent::EVENT_NAME, $event);
+			Events::trigger('core.orgchart.edited', ['node' => $this->model->getFolderById($id), 'old_node' => $old_node]);
+
 		} else {
 			$output['success'] = false;
 			$output['message'] = Lang::t('_CONNECTION_ERROR');
