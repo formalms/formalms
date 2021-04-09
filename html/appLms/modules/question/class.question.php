@@ -835,6 +835,21 @@ class Question
 
 		return $answers;
 	}
+
+	protected function testQuestAnswerExists($trackTest)
+	{
+		$idTrack = (int)$trackTest->idTrack;
+		$idQuest = (int)$this->id;
+		$number_time = (int)($trackTest->getNumberOfAttempt() + 1);
+
+		$track_query = "SELECT idTrack FROM " . $GLOBALS['prefix_lms'] . "_testtrack_answer
+										WHERE idTrack = $idTrack AND idQuest = $idQuest AND number_time = $number_time";
+
+		$res = sql_query($track_query);
+		list($exists) = sql_fetch_row($res);
+
+		return (bool)$exists;
+	}
 }
 
 
