@@ -309,27 +309,35 @@ class ExtendedText_Question extends Question {
 	 */
 	function storeAnswer(Track_Test $trackTest, &$source, $can_overwrite = false ) {
 
-		$can_overwrite = $can_overwrite && !$trackTest->getTestObj()->isRetainAnswersHistory();
-		$result = true;
-		
-		if($this->userDoAnswer($trackTest->idTrack)) {
+		if ($this->userDoAnswer($trackTest->idTrack) && !$trackTest->getTestObj()->isRetainAnswersHistory()) {
 			if(!$can_overwrite) return true;
 			if(!$this->deleteAnswer($trackTest->idTrack)) return false;
 		}
-		
-		if(isset($source['quest'][$this->id])) {
-				
-			//answer checked by the user 
-			$track_query = "
-			INSERT INTO ".$GLOBALS['prefix_lms']."_testtrack_answer ( idTrack, idQuest, idAnswer, score_assigned, more_info, user_answer, number_time )
-			VALUES (
-				'".(int)$trackTest->idTrack."',
-				'".(int)$this->id."', 
-				'0', 
-				'0', 
-				'".$source['quest'][$this->id]."',
-				1,
-				'".(int)($trackTest->getNumberOfAttempt()+1)."')";
+
+		if (isset($source['quest'][$this->id])) {
+			if ($this->testQuestAnswerExists($trackTest)) {
+				// UPDATE
+				$track_query = "
+					UPDATE " . $GLOBALS['prefix_lms'] . "_testtrack_answer SET 
+						idAnswer = '0', 
+						more_info = '" . $source['quest'][$this->id] . "'
+					WHERE 
+						idTrack = " . (int)$trackTest->idTrack . "
+						AND idQuest = " . (int)$this->id . " 
+						AND number_time = " . (int)($trackTest->getNumberOfAttempt() + 1);
+			} else {
+				//answer checked by the user 
+				$track_query = "
+				INSERT INTO " . $GLOBALS['prefix_lms'] . "_testtrack_answer ( idTrack, idQuest, idAnswer, score_assigned, more_info, user_answer, number_time )
+				VALUES (
+					'" . (int)$trackTest->idTrack . "',
+					'" . (int)$this->id . "', 
+					'0', 
+					'0', 
+					'" . $source['quest'][$this->id] . "',
+					1,
+					'" . (int)($trackTest->getNumberOfAttempt() + 1) . "')";
+			}
 			return sql_query($track_query);
 		}
 	}

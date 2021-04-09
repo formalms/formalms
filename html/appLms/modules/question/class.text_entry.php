@@ -463,7 +463,6 @@ class TextEntry_Question extends Question {
 
 		if ($this->userDoAnswer($trackTest->idTrack) && !$trackTest->getTestObj()->isRetainAnswersHistory()) {
 			if($can_overwrite) {
-				
 				return $this->updateAnswer($trackTest->idTrack, $source);
 			}
 			else return false;
