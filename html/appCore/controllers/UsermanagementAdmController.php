@@ -1430,6 +1430,12 @@ class UsermanagementAdmController extends AdmController
 		} else {
 			$id_parent = Get::req('id_parent', DOTY_INT, -1);
 			if ($id_parent < 0) $id_parent = 0;
+
+			Events::trigger('core.orgchart.creating', ['node' => array( 'label' => ($code != "" ? '[' . $code . '] ' : '') . $this->model->getFolderTranslation($id, getLanguage()),
+																		'is_leaf' => true,
+																		'count_content' => 0
+																	)]);
+
 			$id = $this->model->addFolder($id_parent, $langs, $code);
 			if ($id > 0) {
 				$output['success'] = true;
@@ -1476,9 +1482,13 @@ class UsermanagementAdmController extends AdmController
 
 		if ($id > 0) {
 
-			Events::trigger('core.orgchart.deleted', ['node' => $this->model->getFolderById($id)]);
+			$node = $this->model->getFolderById($id);
+			
+			Events::trigger('core.orgchart.deleting', ['node' => $node]);
 
 			$output['success'] = $this->model->deleteFolder($id, true);
+
+			Events::trigger('core.orgchart.deleted', ['node' => $node]);
 		}
 		echo $this->json->encode($output);
 	}
@@ -1505,6 +1515,16 @@ class UsermanagementAdmController extends AdmController
 		$template_arr = getTemplateList();
 		$langs = Get::req('modfolder', DOTY_MIXED, false);
 		$old_node = $this->model->getFolderById($id);
+
+		$new_node = new stdClass();
+		$new_node->idOrg = $id;
+		$new_node->code = $code;
+		$new_node->template_id = $template_id;
+		$new_node->template_arr = $template_arr;
+		$new_node->langs = $langs;
+
+		Events::trigger('core.orgchart.editing', ['node' => $new_node, 'old_node' => $old_node]);
+
 		$res = $this->model->modFolderCodeAndTemplate($id, $code, $template_arr[$template_id]);
 		$res = $this->model->renameFolder($id, $langs);
 		// update custom field for org LRZ
