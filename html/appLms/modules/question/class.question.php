@@ -65,7 +65,7 @@ class Question
 	 * @access public
 	 * @author Fabio Pirovano (fabio@docebo.com)
 	 */
-	function Question($id)
+	function __construct($id)
 	{
 		$this->db = DbConn::getInstance();
 		if ($id !== NULL) {
@@ -460,11 +460,18 @@ class Question
 	 * @access public
 	 * @author Fabio Pirovano (fabio@docebo.com)
 	 */
-	function deleteAnswer($id_track)
-	{
+    function deleteAnswer($id_track, $numberTime = '')
+    {
+        $query = "DELETE FROM " . $GLOBALS['prefix_lms'] . "_testtrack_answer 
+		WHERE idTrack = '" . (int)$id_track . "' AND 
+			idQuest = '" . $this->id . "'";
 
-		return true;
-	}
+        if (!empty($numberTime) && is_numeric($numberTime)) {
+            $query .= " AND number_time = '" . $numberTime . "'";
+        }
+
+        return sql_query($query);
+    }
 
 	/**
 	 * force a score to a question
@@ -835,6 +842,21 @@ class Question
 
 		return $answers;
 	}
+
+	protected function testQuestAnswerExists($trackTest)
+	{
+		$idTrack = (int)$trackTest->idTrack;
+		$idQuest = (int)$this->id;
+		$number_time = (int)($trackTest->getNumberOfAttempt() + 1);
+
+		$track_query = "SELECT idTrack FROM " . $GLOBALS['prefix_lms'] . "_testtrack_answer
+										WHERE idTrack = $idTrack AND idQuest = $idQuest AND number_time = $number_time";
+
+		$res = sql_query($track_query);
+		list($exists) = sql_fetch_row($res);
+
+		return (bool)$exists;
+	}
 }
 
 
@@ -851,9 +873,6 @@ class QuestionRaw
 	var $answers 		= array();
 	var $extra_info 	= array();
 
-	function QuestionRaw()
-	{
-	}
 
 	function setCategoryFromName($category_name, $autocreate_categories = false)
 	{
@@ -885,7 +904,4 @@ class AnswerRaw
 	var $score_correct 	= 0;
 	var $score_penalty 	= 0;
 
-	function AnswerRaw()
-	{
-	}
 }
