@@ -54,7 +54,7 @@
   padding-right: 48px;
 }
 
-.folderTree__rename__btn, .createFolder__btn {
+.folderTree__rename__btn, .createFolder__btn, .cancelCreateFolder__btn {
   background: transparent;
   position: absolute;
   right: 0;
@@ -69,8 +69,21 @@
     image: url('images/folderTree/icon-check.svg');
     repeat: no-repeat;
     position: center;
-    size: 24px;
+    size: 18px;
   };
+
+  &:hover {
+    background-color: #ff6c00;
+    border-color: #ff6c00;
+    transition: all .2s ease-in-out;
+  }
+}
+
+.cancelCreateFolder__btn {
+  right: 48px;
+  background: {
+    image: url('images/folderView/icon-delete.svg');
+  }
 }
 
 .folderTree__actions {

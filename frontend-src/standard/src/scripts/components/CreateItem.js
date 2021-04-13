@@ -41,8 +41,18 @@ class CreateItem {
     }
     const createFolderForm = this.container.querySelector('.createFolderForm');
     const createFolderBtn = createFolderForm.querySelector('.createFolder__btn');
+    const cancelCreateFolderBtn = createFolderForm.querySelector('.cancelCreateFolder__btn');
     const folderInputText = createFolderForm.querySelector('.createFolder__input');
+
     createFolderBtn.addEventListener('click', (e) => { this.createNewFolder(e, createFolderForm) });
+    cancelCreateFolderBtn.addEventListener('click', () => {
+      const dropdownBtn = this.container.querySelector('#dropdownMenuBtn_' + this.type);
+      dropdownBtn.classList.remove('hidden');
+      dropdown.classList.remove('hidden');
+      createFolderForm.classList.add('hidden');
+      createFolderForm.querySelector('.createFolder__input').value = '';
+    });
+
     folderInputText.addEventListener('keypress', (e) => {
       if (e.keyCode === 13) {
         this.createNewFolder(e, createFolderForm);
