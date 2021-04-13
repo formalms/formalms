@@ -18,6 +18,7 @@ class FolderTree {
     if (!document.querySelector('.js-disable-context-menu')) {
       if (this.container.querySelectorAll('.folderTree__link').length) {
         contextMenu(this.container, this.type);
+        this.initArrows(this.container, this.type);
       }
     }
 
@@ -42,24 +43,26 @@ class FolderTree {
       }
     });
 
-    this.container.addEventListener('click', (e) => { this.clickOnFolder(e, this.container, this.type); });
+    this.container.querySelectorAll('.ft-is-folder').forEach(el => {
+      el.addEventListener('click', (e) => {
+        this.clickOnFolder(e.target, this.container, this.type);
+      });
+    });
 
-    if (!document.querySelector('.js-disable-sortable')) {
+    if (!this.container.querySelector('.js-disable-sortable')) {
       initSortable(this.container, this.type);
     }
-    if (!document.querySelector('.js-disable-drag-and-drop')) {
+    if (!this.container.querySelector('.js-disable-drag-and-drop')) {
       initDragDrop(this.container, this.type);
     }
   }
 
-  clickOnFolder(event, container, type) {
-    const target = event.target;
-    const el = target.closest('.folderTree__link');
+  clickOnFolder(el, container, type, op) {
     this.container = container;
     this.type = type;
 
     if (el) {
-      const isOpen = el.classList.contains('ft-is-folderOpen')
+      const isOpen = el.classList.contains('ft-is-folderOpen');
       const noClick = el.classList.contains('ft-no-click');
 
       if (!noClick) {
@@ -83,6 +86,10 @@ class FolderTree {
           ul.remove();
         });
 
+        if (op == 'close') {
+          return; // don't open
+        }
+
         el.classList.add('ft-is-folderOpen');
 
        const elId = el.getAttribute('data-id');
@@ -100,7 +107,7 @@ class FolderTree {
          folderView.innerHTML = childView;
 
          if (!document.querySelector('.js-disable-context-menu')) {
-           contextMenu(this.container, this.type);
+          contextMenu(this.container, this.type);
          }
 
          if (!document.querySelector('.js-disable-sortable')) {
@@ -138,6 +145,15 @@ class FolderTree {
     this.container.querySelector('.folderView').querySelector('.folderView__li[data-id="' + elId + '"]').querySelector('.folderView__label').innerHTML = value;
   }
 
+  initArrows(container, type) {
+    container.querySelectorAll('.ft-is-parent .arrow').forEach(arrow => {
+      arrow.addEventListener('click', () => {
+        const op = arrow.getAttribute('data-op');
+        this.clickOnFolder(arrow.closest('.folderTree__li').querySelector('.folderTree__link'), container, type, op);
+        arrow.setAttribute('data-op', op == 'open' ? 'close' : 'open');
+      });
+    });
+  }
 }
 
 function getApiUrl(action, id, params) {
@@ -244,6 +260,7 @@ function initDragDrop(container, type) {
       }
     });
 }
+
 
 function contextMenu(container, type) {
   contextmenu('.folderTree__link:not(.ft-is-root)', (target) => {

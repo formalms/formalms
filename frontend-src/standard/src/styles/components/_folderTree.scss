@@ -142,21 +142,30 @@
   color: red;
 }
 
-.ft-has-child {
-
-  &:after {
-    content:'';
+.ft-is-parent {
+  .arrow {
     display: block;
     position: absolute;
-    left: 10px;
-    top: 50%;
+    margin-top: 25px;
+    margin-left: 10px;
     transform: translateY(-50%);
     border-top: 4px solid transparent;
     border-bottom: 4px solid transparent;
     border-left: 4px solid #000;
+    border-right: none;
     transition: all .2s ease-in-out;
+    width: 0;
+    height: 0;
+    background: none;
+    z-index: 99;
+    pointer-events: all;
+    &.opened {
+      border-top: 4px solid #000;
+      border-bottom: none;
+      border-left: 4px solid transparent;
+      border-right: 4px solid transparent;
+    }
   }
-
 }
 
 .ft-is-folder {

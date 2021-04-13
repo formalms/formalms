@@ -16,6 +16,9 @@
                             {% for el in data %}
                                 {% if el.is_folder %}
                                     <li data-id="{{ el.id }}" class="folderTree__li {% if el.childCount > 0 %}ft-is-parent{% endif %} is-droppable" draggable="true">
+                                        {% if el.childCount > 0 %}
+                                            <button class="arrow" data-op="open"></button>
+                                        {% endif %}
                                         <button data-id="{{ el.id }}"
                                                 type="button"
                                                 class="folderTree__link ft-is-folder {% if el.childCount > 0 %}ft-has-child{% endif %} is-dropzone"><span>{{ el.title }}</span></button>
