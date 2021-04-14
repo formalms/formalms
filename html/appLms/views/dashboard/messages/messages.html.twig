@@ -26,7 +26,12 @@
                         {% if not block.perm %}
                             <p class="d-alt-text text-center">{{ block.data.alternative_text }}</p>
                         {% else %}
-                            <h3 class="d-title">{{ translate('_MESSAGES', 'standard') }}</h3>
+                            <h3 class="d-title">
+                                {% if block.title is empty %}
+                                    {{ translate('_DASHBOARDBLOCKMESSAGELMS','dashboard') }}
+                                {% else %}
+                                    {{ block.title }}
+                                {% endif %}</h3>
                             {% if block.messages and block.messages|length > 0 %}
                                 {% for message in block.messages %}
                                     <div class="d-item">

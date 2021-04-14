@@ -31,9 +31,9 @@ class DashboardBlockCoursesLms extends DashboardBlockLms
     }
 
     public function parseConfig($jsonConfig)
-    {
-        return parent::parseBaseConfig($jsonConfig);
-    }
+	{
+		$this->parseBaseConfig($jsonConfig);
+	}
 
     public function getAvailableTypesForBlock()
     {
@@ -43,11 +43,6 @@ class DashboardBlockCoursesLms extends DashboardBlockLms
             DashboardBlockLms::TYPE_3COL,
             DashboardBlockLms::TYPE_4COL
         ];
-    }
-
-    public function getForm()
-    {
-        return [];
     }
 
     public function getViewData()
