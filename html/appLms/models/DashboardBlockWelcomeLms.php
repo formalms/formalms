@@ -27,9 +27,9 @@ class DashboardBlockWelcomeLms extends DashboardBlockLms
     }
 
     public function parseConfig($jsonConfig)
-    {
-        return parent::parseBaseConfig($jsonConfig);
-    }
+	{
+		$this->parseBaseConfig($jsonConfig);
+	}
 
     public function getAvailableTypesForBlock()
     {
@@ -43,9 +43,11 @@ class DashboardBlockWelcomeLms extends DashboardBlockLms
 
     public function getForm()
     {
-        return [
-            DashboardBlockForm::getFormItem($this, 'welcome_text', DashboardBlockForm::FORM_TYPE_TEXT, false),
-        ];
+        $form = parent::getForm();
+
+        $form[] = DashboardBlockForm::getFormItem($this, 'welcome_text', DashboardBlockForm::FORM_TYPE_TEXT, false);
+
+        return $form;
     }
 
     public function getViewData()
