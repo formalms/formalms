@@ -21,6 +21,8 @@
 <script>
 const tabs = document.querySelectorAll('.tab-link');
 const activeTab = document.querySelector('.tab-link.active');
+window.type = document.querySelector('.tab-content > .active').getAttribute('data-container');
+
 if (tabs) {
     tabs.forEach((tab) => {
         tab.addEventListener('click', clickOnTab);
@@ -40,8 +42,7 @@ function clickOnTab(event) {
     const tab = target.closest('.tab-link');
     const oldTabContainer = document.querySelector('.tab-content > .active');
     const tabContainer = document.querySelector('.tab-content > .tab-pane[data-container=' + linktype + ']');
-    window.type = linktype;
-
+    
     if (tabs) {
         tabs.forEach((tab) => {
             tab.classList.remove('active');
@@ -73,6 +74,8 @@ function saveCurrentState(event) {
     const target = event.target;
     const el = target.closest('.tab-link');
     const linktype = el.getAttribute('data-type');
+    window.type = linktype;
+    console.log(linktype, 'LT');
 
     setCurrentTab(linktype);
 }

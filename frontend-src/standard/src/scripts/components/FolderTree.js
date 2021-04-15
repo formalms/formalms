@@ -17,20 +17,20 @@ class FolderTree {
 
     if (!document.querySelector('.js-disable-context-menu')) {
       if (this.container.querySelectorAll('.folderTree__link').length) {
-        contextMenu(this.container, this.type);
+        contextMenu();
       }
     }
 
     if (btn) {
       btn.addEventListener('click', () => {
-        this.renameEl(this.container, this.type);
+        this.renameEl();
       });
     }
 
     if (inputRename) {
       inputRename.addEventListener('keyup', (e) => {
         if (e.keyCode === 13) {
-          this.renameEl(this.container, this.type);
+          this.renameEl();
           e.preventDefault();
         }
       });
@@ -112,7 +112,7 @@ class FolderTree {
           folderView.innerHTML = childView;
 
           if (!document.querySelector('.js-disable-context-menu')) {
-            contextMenu(this.container, this.type);
+            contextMenu();
           }
 
           if (!document.querySelector('.js-disable-sortable')) {
@@ -129,18 +129,19 @@ class FolderTree {
     }
   }
 
-  renameEl(container, type) {
+  renameEl() {
+    const type = window.type;
+    const container = document.querySelector('*[data-container=' + type + ']');
     const rename = container.querySelector('.folderTree__rename');
     const input = container.querySelector('.folderTree__rename__input');
     console.log(type, 'type');
-    console.log(this.type, 'this.type');
     console.log(container, 'container');
     const value = input ? input.value : null;
     console.log(input, 'input');
     console.log(value, 'value');
     const el = input.parentNode.parentNode;
     const elId = el.getAttribute('data-id');
-    const renameLoData = getApiUrl('rename', elId, { type: type, newName: value });
+    const renameLoData = getApiUrl('rename', elId, { type, newName: value });
 
     axios.get(renameLoData).then().catch( (error) => {
       console.log(error);
@@ -270,7 +271,10 @@ function initDragDrop(container, type) {
     });
 }
 
-function contextMenu(container, type) {
+function contextMenu() {
+  const type = window.type;
+  const container = document.querySelector('*[data-container=' + type + ']');
+
   contextmenu('.folderTree__link:not(.ft-is-root)', (target) => {
     return [
       {
