@@ -23,14 +23,14 @@ class FolderTree {
 
     if (btn) {
       btn.addEventListener('click', () => {
-        this.renameEl();
+        this.renameEl(this.container, this.type);
       });
     }
 
     if (inputRename) {
       inputRename.addEventListener('keyup', (e) => {
         if (e.keyCode === 13) {
-          this.renameEl();
+          this.renameEl(this.container, this.type);
           e.preventDefault();
         }
       });
@@ -61,7 +61,9 @@ class FolderTree {
     let el = event.target.closest('.folderTree__link');
     if (!el) {
       const li = event.target.closest('.folderTree__li');
-      el = li.querySelector('.folderTree__link');
+      if (li) {
+        el = li.querySelector('.folderTree__link');
+      }
     }
 
     if (el) {
@@ -127,13 +129,18 @@ class FolderTree {
     }
   }
 
-  renameEl() {
-    const rename = this.container.querySelector('.folderTree__rename');
-    const input = this.container.querySelector('.folderTree__rename__input');
-    const value = input.value;
+  renameEl(container, type) {
+    const rename = container.querySelector('.folderTree__rename');
+    const input = container.querySelector('.folderTree__rename__input');
+    console.log(type, 'type');
+    console.log(this.type, 'this.type');
+    console.log(container, 'container');
+    const value = input ? input.value : null;
+    console.log(input, 'input');
+    console.log(value, 'value');
     const el = input.parentNode.parentNode;
     const elId = el.getAttribute('data-id');
-    const renameLoData = getApiUrl('rename', elId, { type: this.type, newName: value });
+    const renameLoData = getApiUrl('rename', elId, { type: type, newName: value });
 
     axios.get(renameLoData).then().catch( (error) => {
       console.log(error);
@@ -143,7 +150,10 @@ class FolderTree {
     el.childNodes[0].innerHTML = value;
     el.classList.remove('ft-no-click');
 
-    this.container.querySelector('.folderView__li[data-id="' + elId + '"]').querySelector('.folderView__label').innerHTML = value;
+    const li = container.querySelector('.folderView__li[data-id="' + elId + '"]');
+    if (li) {
+      li.querySelector('.folderView__label').innerHTML = value;
+    }
   }
 }
 
@@ -268,6 +278,13 @@ function contextMenu(container, type) {
         onClick() {
           const rename = container.querySelector('.folderTree__rename');
           const renameInput = container.querySelector('.folderTree__rename__input');
+
+          if (!rename || !renameInput) {
+            console.log(type, 'type');
+            console.log(rename, 'NO rename 1');
+            console.log(renameInput, 'NO renameInput 1');
+            return
+          }
 
           if (target.classList.contains('folderTree__rename__input') === false) {
             if (target.hasAttribute('data-id')) {

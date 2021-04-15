@@ -163,6 +163,8 @@ class LoLmsController extends LmsController
     {
         $id = Get::req('id', DOTY_INT, false);
         $newName = Get::req('newName', DOTY_STRING, false);
+        $type = Get::req('type', DOTY_STRING, LoLms::ORGDIRDB);
+        $this->model->setCurrentTab($type);
 
         echo $this->json->encode($this->model->renameFolder($id, $newName));
         exit;
@@ -219,7 +221,6 @@ class LoLmsController extends LmsController
         $folderName = Get::req('folderName', DOTY_STRING, false);
         // $currentState = Get::req('currentState', DOTY_STRING, false);
         $type = Get::req('type', DOTY_STRING, LoLms::ORGDIRDB);
-
         $this->model->setCurrentTab($type);
 
         if (!$folderName) {
