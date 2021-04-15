@@ -18,7 +18,6 @@ class FolderTree {
     if (!document.querySelector('.js-disable-context-menu')) {
       if (this.container.querySelectorAll('.folderTree__link').length) {
         contextMenu(this.container, this.type);
-        this.initArrows(this.container, this.type);
       }
     }
 
@@ -43,10 +42,8 @@ class FolderTree {
       }
     });
 
-    this.container.querySelectorAll('.ft-is-folder').forEach(el => {
-      el.addEventListener('click', (e) => {
-        this.clickOnFolder(e.target, this.container, this.type);
-      });
+    this.container.addEventListener('click', (event) => {
+      this.clickOnFolder(event, this.container, this.type);
     });
 
     if (!this.container.querySelector('.js-disable-sortable')) {
@@ -57,9 +54,15 @@ class FolderTree {
     }
   }
 
-  clickOnFolder(el, container, type, op) {
+  clickOnFolder(event, container, type) {
     this.container = container;
     this.type = type;
+
+    let el = event.target.closest('.folderTree__link');
+    if (!el) {
+      const li = event.target.closest('.folderTree__li');
+      el = li.querySelector('.folderTree__link');
+    }
 
     if (el) {
       const isOpen = el.classList.contains('ft-is-folderOpen');
@@ -78,50 +81,48 @@ class FolderTree {
         }
         el.classList.add('ft-is-selected');
 
-        if (isOpen) {
-          el.classList.remove('ft-is-folderOpen');
-        }
         const uls = el.parentNode.querySelectorAll('.folderTree__ul');
         uls.forEach(ul => {
           ul.remove();
         });
 
-        if (op == 'close') {
-          return; // don't open
+        if (isOpen) {
+          el.classList.remove('ft-is-folderOpen');
+          if (event.target.classList.contains('arrow')) {
+            return; // don't open
+          }
         }
 
         el.classList.add('ft-is-folderOpen');
 
-       const elId = el.getAttribute('data-id');
-       const getLoData = getApiUrl('get', elId, { type: this.type });
+        const elId = el.getAttribute('data-id');
+        const getLoData = getApiUrl('get', elId, { type: this.type });
 
-       axios.get(getLoData).then((response) => {
-         const child = Tree(response.data);
-         const childView = Content(response.data);
-         const folderView = this.container.querySelector('.folderView');
-         const inputParent = this.container.querySelector('#treeview_selected_' + this.type);
-         const inputState = this.container.querySelector('#treeview_state_' + this.type);
-         inputParent.value = elId;
-         inputState.value = response.data.currentState;
-         el.insertAdjacentHTML('afterend', child);
-         folderView.innerHTML = childView;
+        axios.get(getLoData).then((response) => {
+          const child = Tree(response.data);
+          const childView = Content(response.data);
+          const folderView = this.container.querySelector('.folderView');
+          const inputParent = this.container.querySelector('#treeview_selected_' + this.type);
+          const inputState = this.container.querySelector('#treeview_state_' + this.type);
+          inputParent.value = elId;
+          inputState.value = response.data.currentState;
+          el.insertAdjacentHTML('afterend', child);
+          folderView.innerHTML = childView;
 
-         if (!document.querySelector('.js-disable-context-menu')) {
-          contextMenu(this.container, this.type);
-         }
+          if (!document.querySelector('.js-disable-context-menu')) {
+            contextMenu(this.container, this.type);
+          }
 
-         if (!document.querySelector('.js-disable-sortable')) {
-           initSortable(this.container, this.type);
-         }
+          if (!document.querySelector('.js-disable-sortable')) {
+            initSortable(this.container, this.type);
+          }
 
-         if (!document.querySelector('.js-disable-drag-and-drop')) {
-           initDragDrop(this.container, this.type);
-         }
-       }).catch((error) => {
-         console.log(error)
-       });
-
-        event.preventDefault();
+          if (!document.querySelector('.js-disable-drag-and-drop')) {
+            initDragDrop(this.container, this.type);
+          }
+        }).catch((error) => {
+          console.log(error)
+        });
       }
     }
   }
@@ -142,17 +143,7 @@ class FolderTree {
     el.childNodes[0].innerHTML = value;
     el.classList.remove('ft-no-click');
 
-    this.container.querySelector('.folderView').querySelector('.folderView__li[data-id="' + elId + '"]').querySelector('.folderView__label').innerHTML = value;
-  }
-
-  initArrows(container, type) {
-    container.querySelectorAll('.ft-is-parent .arrow').forEach(arrow => {
-      arrow.addEventListener('click', () => {
-        const op = arrow.getAttribute('data-op');
-        this.clickOnFolder(arrow.closest('.folderTree__li').querySelector('.folderTree__link'), container, type, op);
-        arrow.setAttribute('data-op', op == 'open' ? 'close' : 'open');
-      });
-    });
+    this.container.querySelector('.folderView__li[data-id="' + elId + '"]').querySelector('.folderView__label').innerHTML = value;
   }
 }
 
@@ -195,7 +186,12 @@ function initSortable(container, type) {
         });
 
         const reorderLoData = getApiUrl('reorder', currentElementId, { type, newParent: parentElementId, newOrder: childElementArray });
-        axios.get(reorderLoData).then().catch( (error) => {
+        axios.get(reorderLoData).then(() => {
+          const parentEl = container.querySelector('.folderTree__link[data-id="' + parentElementId + '"]');
+          if (parentEl) {
+            parentEl.click();
+          }
+        }).catch( (error) => {
           console.log(error);
         });
       }
@@ -252,7 +248,10 @@ function initDragDrop(container, type) {
             } else {
               currentEl.remove();
             }
-            container.querySelector('.folderView__li[data-id="' + currentElId + '"]').remove();
+            const el = container.querySelector('.folderView__li[data-id="' + currentElId + '"]')
+            if (el) {
+              el.remove();
+            }
           }).catch((error) => {
             console.log(error);
           });
@@ -260,7 +259,6 @@ function initDragDrop(container, type) {
       }
     });
 }
-
 
 function contextMenu(container, type) {
   contextmenu('.folderTree__link:not(.ft-is-root)', (target) => {
@@ -328,7 +326,10 @@ function contextMenu(container, type) {
             siblings = target.parentNode.parentNode.children;
             target.parentNode.parentNode.querySelector('.folderTree__link').remove();
             elId = target.parentNode.getAttribute('data-id');
-            container.querySelector('.folderView').querySelector('.folderView__li[data-id="' + elId + '"]').parentNode.remove();
+            const parentEl = container.querySelector('.folderView__li[data-id="' + elId + '"]').parentNode;
+            if (parentEl) {
+              parentEl.remove();
+            }
           }
 
           if (siblings) {
@@ -339,10 +340,17 @@ function contextMenu(container, type) {
             }
           }
 
-          const deleteLoData = getApiUrl('delete', elId, { type });
-          axios.get(deleteLoData).then().catch((error) => {
-            console.log(error);
-          });
+          if (confirm('Sei sicuro di voler eliminare questo elemento?')) {
+            const deleteLoData = getApiUrl('delete', elId, { type });
+            axios.get(deleteLoData).then(() => {
+              const parentEl = container.querySelector('.folderView__li[data-id="' + elId + '"]');
+              if (parentEl) {
+                parentEl.remove();
+              }
+            }).catch((error) => {
+              console.log(error);
+            });
+          }
         }
       }
     ];
