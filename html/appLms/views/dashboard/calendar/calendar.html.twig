@@ -15,10 +15,10 @@
     <div class="d-col d-col--12 {{ class }}">
         <div class="d-calendar d-widget">
             <h3 class="d-title">
-                {% if block.title is empty %}
+                {% if block.data.title is empty %}
                     {{ translate('_DASHBOARDBLOCKCALENDARLMS','dashboard') }}
                 {% else %}
-                    {{ block.title }}
+                    {{ block.data.title }}
                 {% endif %}
             </h3>
             <div class="d-calendar__item js-dashboard-calendar"

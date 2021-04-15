@@ -27,10 +27,10 @@
                             <p class="d-alt-text text-center">{{ block.data.alternative_text }}</p>
                         {% else %}
                             <h3 class="d-title">
-                                {% if block.title is empty %}
+                                {% if block.data.title is empty %}
                                     {{ translate('_DASHBOARDBLOCKMESSAGELMS','dashboard') }}
                                 {% else %}
-                                    {{ block.title }}
+                                    {{ block.data.title }}
                                 {% endif %}</h3>
                             {% if block.messages and block.messages|length > 0 %}
                                 {% for message in block.messages %}
