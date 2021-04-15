@@ -46,10 +46,15 @@ class DashboardLmsController extends LmsController
         $blockPaths = [];
         if ($defaultLayout) {
             $blocks = $this->model->getBlocksViewData($defaultLayout->getId());
+
+            /** @var DashboardBlockLms $block */
+            foreach ($this->model->getEnabledBlocks($defaultLayout->getId()) as $block){
+                $blockPaths[] = $block->getViewPath();
+            }
         }
 
         $langModel = new LangAdm();
-        $langCode = $langModel->getLanguage(getLanguage())->lang_browsercode;
+        $langCode = $langModel->getLanguage(Lang::get())->lang_browsercode;
 
         $this->render(
             'dashboard',

@@ -85,7 +85,7 @@ abstract class DashboardBlockLms extends Model
         $this->parseBaseConfig($jsonConfig);
         $this->parseConfig($jsonConfig);
 
-        $this->viewPath = strtolower(str_replace('DashboardBlock', '', str_replace('Lms', '', get_class($this))));
+        $this->viewPath = _base_ . '/' . _folder_lms_ . '/views/dashboard/' . strtolower(str_replace('DashboardBlock', '', str_replace('Lms', '', get_class($this))));
         $this->viewFile = strtolower(str_replace('DashboardBlock', '', str_replace('Lms', '', get_class($this))));
     }
 
@@ -244,7 +244,7 @@ abstract class DashboardBlockLms extends Model
 
     protected function getViewName()
     {
-        return sprintf('%s/%s.html.twig', $this->getViewPath(), $this->getViewFile());
+        return sprintf('%s.html.twig', $this->getViewFile());
     }
 
     protected function getDataFromCourse($course, $status = true)

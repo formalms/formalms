@@ -145,6 +145,10 @@ class Controller
             case "twig":
                 $path = Forma::inc($path . '/' . $this->_mvc_name . '/' . $view_name . $extension);
                 $view_path = dirname($path);
+
+                foreach ($paths as $path) {
+                    \appCore\Template\TwigManager::getInstance()->addPathInLoader($path);
+                }
                 echo \appCore\Template\TwigManager::getInstance()->render($view_name . $extension, $data_for_view, $view_path);
                 break;
             default:

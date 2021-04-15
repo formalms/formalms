@@ -40,9 +40,13 @@ class DashboardLms extends Model
     /**
      * @return mixed
      */
-    public function getEnabledBlocks()
+    public function getEnabledBlocks($dashboardId = false)
     {
-        return $this->dashboardSettingsModel->getEnabledBlocks();
+        $data = [];
+        if (false !== $dashboardId && array_key_exists($dashboardId, $this->dashboardSettingsModel->getEnabledBlocks())) {
+            $data = $this->dashboardSettingsModel->getEnabledBlocks()[$dashboardId];
+        }
+        return $data;
     }
 
     public function getBlocksViewData($dashboardId = false)
