@@ -1,8 +1,8 @@
 var $ = require('jquery');
-const TinyMce = require('../components/tinymce');
+import TinyMce from '../components/tinymce';
 
 const TextEditor = (function() {
-  $(document).ready(function() {
+  $(document).ready(function () {
     return new TinyMce();
   });
 })();
