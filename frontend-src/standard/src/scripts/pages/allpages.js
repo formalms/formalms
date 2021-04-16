@@ -1,6 +1,7 @@
 require('../modules/course-box');
 require('../modules/folder-view');
 require('../modules/slider-menu');
+require('../modules/text-editor');
 require('../modules/modal-accordion');
 
 var Page = (function() {
