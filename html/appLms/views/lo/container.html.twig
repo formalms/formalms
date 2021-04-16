@@ -57,15 +57,20 @@
                                  <div class="folderView__actions">
                                      {% for key, action in el.actions %}
                                          {% if key in types %}
-                                             {% if action.link | length %}
-                                                 <input type="submit"
-                                                        name="{{ action.link }}"
-                                                        class="folderView__action fv-is-{{ key }} js-fv-action"
-                                                        title="{{ key }}"
-                                                        value=""/>
-                                             {% elseif (action.url | length) %}
-                                                 <a href="{{ action.url }}" class="folderView__action fv-is-{{ key }} js-folderView-openFile" title="{{ key }}">
-                                                 </a>
+                                             {% if key == 'copy' %}
+                                                 <button type="button" class="folderView__button fv-is-{{ key }} js-fv-open-overlay" title="{{ key }}"></button>
+                                             {% else %}
+                                                 {% if action.link | length %}
+                                                     <input type="submit"
+                                                            id="{{ action.link }}"
+                                                            name="{{ action.link }}"
+                                                            class="folderView__action fv-is-{{ key }} js-fv-action"
+                                                            title="{{ key }}"
+                                                            value=""/>
+                                                 {% elseif (action.url | length) %}
+                                                     <a href="{{ action.url }}" class="folderView__action fv-is-{{ key }}" title="{{ key }}">
+                                                     </a>
+                                                 {% endif %}
                                              {% endif %}
                                          {% endif %}
                                      {% endfor %}

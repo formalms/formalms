@@ -7,6 +7,8 @@ class FolderView {
     this.container.addEventListener('click', this.triggerClick);
   }
 
+
+
   toggleSelectEl(event) {
     const el = event.target;
 
@@ -32,6 +34,7 @@ class FolderView {
       }
     }
   }
+
 }
 
 export default FolderView;

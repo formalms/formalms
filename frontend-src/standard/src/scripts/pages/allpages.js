@@ -8,12 +8,14 @@ import { DashboardVideo } from '../modules/DashboardVideo';
 import FolderTree from '../components/FolderTree';
 import FolderView from '../components/FolderView';
 import CreateItem from '../components/CreateItem';
+import CopyItem from '../components/CopyItem';
 
 var Page = (function () {
 
   window.FolderView = FolderView;
   window.FolderTree = FolderTree;
   window.CreateItem = CreateItem;
+  window.CopyItem = CopyItem;
 
   function setScroll(elem, action) {
     if (action === 'lock') {

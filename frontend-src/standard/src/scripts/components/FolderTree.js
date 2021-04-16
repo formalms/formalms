@@ -55,6 +55,7 @@ class FolderTree {
     if (!this.container.querySelector('.js-disable-drag-and-drop')) {
       initDragDrop(this.container, this.type);
     }
+
   }
 
   clickOnFolder(el, container, type, op) {
@@ -117,6 +118,7 @@ class FolderTree {
          if (!document.querySelector('.js-disable-drag-and-drop')) {
            initDragDrop(this.container, this.type);
          }
+
        }).catch((error) => {
          console.log(error)
        });

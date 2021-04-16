@@ -1,0 +1,20 @@
+<div class="folderView__copyOverlay">
+    <div class="folderView__copyOverlay__content">
+        <button class="folderView__copyOverlay__close js-fv-close-overlay"></button>
+        <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenuBtn_copy" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+            {{ translate('_SELECT TARGET TAB', 'standard') }}
+            <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" id="dropdownMenu_copy" aria-labelledby="dropdownMenu_copy">
+            {% for tab in tabs %}
+                {% if tab.active is empty %}
+                    <li class="folderView__li js-fv-copy-target" data-type="{{ tab.type }}">
+                        <div class="folderView__el">
+                            <span class="folderView__label">{{ tab.title }}</span>
+                        </div>
+                    </li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    </div>
+</div>
