@@ -48,7 +48,8 @@
     "react": "16.2.0",
     "react-dom": "^16.13.1",
     "reset-css": "2.2.1",
-    "slick-carousel": "1.8.1"
+    "slick-carousel": "1.8.1",
+    "tinymce": "^5.7.1"
   },
   "scripts": {
     "unminified-css": "node-sass src/styles/main.scss ../../html/templates/standard/static/main.min.css",
