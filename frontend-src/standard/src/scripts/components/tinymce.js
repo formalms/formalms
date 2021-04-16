@@ -1,10 +1,44 @@
 import Config from '../config/config';
-const tinymce = require('tinymce');
+import tinymce from 'tinymce/tinymce';
+
+import 'tinymce/icons/default';
+import 'tinymce/themes/silver';
+
+import 'tinymce/plugins/advlist';
+import 'tinymce/plugins/autolink';
+import 'tinymce/plugins/lists';
+import 'tinymce/plugins/link';
+import 'tinymce/plugins/image';
+import 'tinymce/plugins/charmap';
+import 'tinymce/plugins/print';
+import 'tinymce/plugins/preview';
+import 'tinymce/plugins/hr';
+import 'tinymce/plugins/anchor';
+import 'tinymce/plugins/pagebreak';
+import 'tinymce/plugins/searchreplace';
+import 'tinymce/plugins/wordcount';
+import 'tinymce/plugins/visualblocks';
+import 'tinymce/plugins/visualchars';
+import 'tinymce/plugins/code';
+import 'tinymce/plugins/fullscreen';
+import 'tinymce/plugins/insertdatetime';
+import 'tinymce/plugins/media';
+import 'tinymce/plugins/nonbreaking';
+import 'tinymce/plugins/save';
+import 'tinymce/plugins/table';
+import 'tinymce/plugins/contextmenu';
+import 'tinymce/plugins/directionality';
+import 'tinymce/plugins/emoticons';
+import 'tinymce/plugins/template';
+import 'tinymce/plugins/paste';
+import 'tinymce/plugins/textcolor';
+import 'tinymce/plugins/colorpicker';
+import 'tinymce/plugins/textpattern';
+import 'tinymce/plugins/imagetools';
 
 class TinyMce {
 
-  constructor(options) {
-    console.log(options);
+  constructor() {
     this.init();
   }
 
@@ -20,13 +54,13 @@ class TinyMce {
 
   init() {
     this.initComplex('tinymce_complex');
-    this.initComplex('tinymce_simple');
+    this.initSimple('tinymce_simple');
   }
 
   initComplex(editor_selector) {
     tinymce.init({
       mode: 'textareas',
-      theme: 'silver',
+      skin: false,
       branding: false,
       editor_selector,
       forced_root_block: false,
@@ -70,8 +104,8 @@ class TinyMce {
 
   initSimple(editor_selector) {
     tinymce.init({
-      mode : 'textareas',
-      theme : 'silver',
+      mode: 'textareas',
+      skin: false,
       editor_selector,
       forced_root_block : false,
       force_p_newlines : false,
