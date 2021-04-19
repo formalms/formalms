@@ -1535,7 +1535,8 @@ class Org_TreeView extends RepoTreeView {
 	}
 
 	function countChildren($parentId) {
-		$query = "SELECT count(*) as countChildren FROM %lms_organization"
+		$tdb = $this->tdb->table;
+		$query = "SELECT count(*) as countChildren FROM $tdb"
 				." WHERE idParent = ".(int)$parentId . " AND objectType = '' ";
 		$rs = sql_query($query);
 		if( sql_num_rows($rs) == 1) {
