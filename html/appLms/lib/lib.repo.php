@@ -427,6 +427,38 @@ class RepoDirDb extends TreeDb {
 		return true;
 	}
 
+	function renameFolder( &$folder, $newName ) {
+		$this->org_title = $newName;
+		$this->org_objectType = $folder->otherValues[REPOFIELDOBJECTTYPE];
+		$this->org_idResource = $folder->otherValues[REPOFIELDIDRESOURCE];
+		$this->org_idCategory = $folder->otherValues[REPOFIELDIDCATEGORY];
+		$this->org_idUser = $folder->otherValues[REPOFIELDIDUSER];
+		$this->org_idAuthor = $folder->otherValues[REPOFIELDIDAUTHOR];
+		$this->org_version = $folder->otherValues[REPOFIELDVERSION];
+		$this->org_difficult = $folder->otherValues[REPOFIELDDIFFICULT];
+		$this->org_description = $folder->otherValues[REPOFIELDDESCRIPTION];
+		$this->org_language = $folder->otherValues[REPOFIELDLANGUAGE];
+		$this->org_resource = $folder->otherValues[REPOFIELDRESOURCE];
+		$this->org_objective = $folder->otherValues[REPOFIELDOBJECTIVE];
+		$this->org_dateInsert = $folder->otherValues[REPOFIELDDATEINSERT];
+		
+		$this->org_idCourse = $folder->otherValues[ORGFIELDIDCOURSE];
+		$this->org_prerequisites = $folder->otherValues[ORGFIELDPREREQUISITES];
+		$this->org_isTerminator = $folder->otherValues[ORGFIELDISTERMINATOR];
+		$this->org_idParam = $folder->otherValues[ORGFIELDIDPARAM];
+		$this->org_visible = $folder->otherValues[ORGFIELDVISIBLE];
+		$this->org_milestone = $folder->otherValues[ORGFIELDMILESTONE];
+		
+		$this->org_width = $folder->otherValues[ORGFIELD_WIDTH];
+		$this->org_height = $folder->otherValues[ORGFIELD_HEIGHT];
+		$this->org_publish_from = $folder->otherValues[ORGFIELD_PUBLISHFROM];
+		$this->org_publish_to = $folder->otherValues[ORGFIELD_PUBLISHTO];
+		$this->org_access = $folder->otherValues[ORGFIELD_ACCESS];
+		$this->org_publish_for = $folder->otherValues[ORGFIELD_PUBLISHFOR];
+		
+		return $this->changeOtherData( $folder );
+	}
+
 }
 
 class RepoTreeView extends TreeView {
