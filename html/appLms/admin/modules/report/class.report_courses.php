@@ -643,9 +643,17 @@ class Report_Courses extends Report {
 					.($all_courses ? "" : " AND c.idCourse IN (".implode(',', $course_selected).")")
 					." GROUP BY c.idCourse, p.id_quest"
 					." ORDER BY c.idCourse, p.id_quest";
-
+           
+           
+                           
+                     
 		$result = sql_query($query);
 
+        
+        //echo "query_course: ". $query;   
+
+        
+        
 		$course_doc = array();
 		$question_id = array();
 		$question_answer = array();
@@ -656,6 +664,10 @@ class Report_Courses extends Report {
 			$question_id[$row['id_quest']] = $row['id_quest'];
 		}
 		
+        
+         
+        
+        
 		//apply sub admin filters, if needed
 		if( !$view_all_perm ) {
 			//filter users
@@ -679,7 +691,8 @@ class Report_Courses extends Report {
 							." WHERE id_quest IN (".implode(',', $question_id).")"
 							." GROUP BY id_quest";
 			}
-
+            
+            
 			$result = sql_query($query);
 
 			while($row = sql_fetch_assoc($result))
@@ -689,6 +702,7 @@ class Report_Courses extends Report {
 				$question_answer[$row['id_quest']]['everage_value'] = number_format(($row['sum_answer'] / $row['num_answer']), 2);
 			}
 
+            
 			return $this->_printTable_doc($type, $course_doc, $question_answer, $ref['columns_filter']['showed_cols']);
 		}
 	}
@@ -725,7 +739,7 @@ class Report_Courses extends Report {
 			$course_selected = array_intersect($admin_courses['course'], $course_selected);
 		}
 		
-		$query =	"SELECT c.idCourse, c.code, c.name, c.idCategory, c.status, c.create_date, p.id_quest"
+		$query =	"SELECT c.idCourse, c.code, c.name, c.idCategory, c.status, c.create_date, p.id_quest, title_quest"
 					." FROM ".$GLOBALS['prefix_lms']."_course AS c"
 					." JOIN ".$GLOBALS['prefix_lms']."_organization AS o ON o.idCourse = c.idCourse"
 					." JOIN ".$GLOBALS['prefix_lms']."_pollquest AS p ON p.id_poll = o.idResource"
@@ -738,10 +752,11 @@ class Report_Courses extends Report {
 		$course_doc = array();
 		$question_id = array();
 		$question_answer = array();
-
+        
 		while($row = sql_fetch_assoc($result))
 		{
-			$course_doc[$row['idCourse']] = $row;
+			// TICKET: #19866 - overwrite sam index for quest in course_doc 
+            $course_doc[$row['id_quest']] = $row;
 			$question_id[$row['id_quest']] = $row['id_quest'];
 		}
 
@@ -771,7 +786,8 @@ class Report_Courses extends Report {
 			}
 
 			$result = sql_query($query);
-
+                     
+            
 			while($row = sql_fetch_assoc($result))
 			{
 				$question_answer[$row['id_quest']]['min_value'] = (float)$row['min_answer'];
@@ -779,6 +795,8 @@ class Report_Courses extends Report {
 				$question_answer[$row['id_quest']]['everage_value'] = number_format(($row['sum_answer'] / $row['num_answer']), 2);
 			}
 
+      
+            
 			return $this->_printTable_course($type, $course_doc, $question_answer, $ref['columns_filter']['showed_cols']);
 		}
 	}
@@ -1969,7 +1987,7 @@ class Report_Courses extends Report {
 		$buffer = new ReportTablePrinter($type);
 
 		$output = '';
-
+                
 		$lang =& DoceboLanguage::createInstance('report', 'framework');
 		$glang =& DoceboLanguage::createInstance('admin_course_managment', 'lms');
 
@@ -1990,7 +2008,11 @@ class Report_Courses extends Report {
 			CST_CONCLUDED 	=> $glang->def('_CST_CONCLUDED'),
 			CST_CANCELLED 	=> $glang->def('_CST_CANCELLED'));
 
-		$colspan_course = 0;
+		$colspan_course = 1;
+
+        
+        
+        
 		if(in_array('_CODE_COURSE', $filter_cols)) $colspan_course++;
 		$colspan_course++;
 		if(in_array('_COURSE_CATEGORY', $filter_cols)) $colspan_course++;
@@ -2008,7 +2030,7 @@ class Report_Courses extends Report {
 			);
 
 		$th2 = array();
-
+        $th2[] = $glang->def('_QUEST_TEXT');
 		if (in_array('_CODE_COURSE', $filter_cols)) $th2[] = $glang->def('_COURSE_CODE');
 		$th2[] = $glang->def('_COURSE_NAME');
 		if (in_array('_COURSE_CATEGORY', $filter_cols)) $th2[] = $glang->def('_CATEGORY');
@@ -2026,10 +2048,12 @@ class Report_Courses extends Report {
 		$buffer->closeHeader();
 		$buffer->openBody();
 
+        
 		foreach($course as $course_info)
 		{
 			$trow = array();
 
+            $trow[] = addslashes($course_info['title_quest']);
 			if (in_array('_CODE_COURSE', $filter_cols)) $trow[] = addslashes($course_info['code']);
 			$trow[] = addslashes($course_info['name']);
 			if (in_array('_COURSE_CATEGORY', $filter_cols)) $trow[] = $array_category[$course_info['idCategory']];
