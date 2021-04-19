@@ -259,8 +259,6 @@ class FolderTree {
     const elId = el.getAttribute('data-id');
     const renameLoData = getApiUrl('rename', elId, { type, newName: value });
 
-    console.log(el, 'PARENT');
-
     axios.get(renameLoData).then((res) => {
       if (res) {
         rename.classList.remove('is-show');
@@ -268,7 +266,6 @@ class FolderTree {
         el.classList.remove('ft-no-click');
 
         const li = container.querySelector('.folderView__li[data-id="' + elId + '"]');
-        console.log(li, 'LI');
         if (li) {
           li.querySelector('.folderView__label').innerHTML = value;
         }
@@ -374,7 +371,7 @@ function initDragDrop(container, type) {
           axios.get(reorderLoData).then(() => {
             if (target.classList.contains('ft-is-folderOpen') && (currentEl.classList.contains('folderTree__li') )) {
               const nextElementSibling = target.nextElementSibling;
-              if (nextElementSibling.classList.contains('folderTree__ul')) {
+              if (nextElementSibling && nextElementSibling.classList.contains('folderTree__ul')) {
                 nextElementSibling.appendChild(currentEl);
               } else {
                 currentEl.remove();
