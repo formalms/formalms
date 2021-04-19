@@ -17,7 +17,7 @@
                                 {% if el.is_folder %}
                                     <li data-id="{{ el.id }}" class="folderTree__li {% if el.childCount > 0 %}ft-is-parent{% endif %} is-droppable" draggable="true">
                                         {% if el.childCount > 0 %}
-                                            <button class="arrow"></button>
+                                            <button type="button" class="arrow"></button>
                                         {% endif %}
                                         <button data-id="{{ el.id }}"
                                                 type="button"
@@ -28,20 +28,14 @@
                         </ul>
                     </li>
                 </ul>
-                <div class="folderTree__rename">
-                    <input type="text" value="" class="folderTree__rename__input"
-                           onfocus="this.value = null; this.value = value"
-                            onkeypress="return !(window.event && window.event.keyCode == 13);"/>
-                    <button class="folderTree__rename__btn js-ft-rename-el" type="button"></button>
-                </div>
             </nav>
         </aside>
         <main class="folderViewContent folderViewContent--two-third">
-                {% if tab.edit %}
-                    <div class="folderTree__actions">
-                        {% include 'create_new_item.html.twig' with { tab: tab, lo_types: lo_types } %}
-                    </div>
-                {% endif %}
+            {% if tab.edit %}
+                <div class="folderTree__actions">
+                    {% include 'create_new_item.html.twig' with { tab: tab, lo_types: lo_types } %}
+                </div>
+            {% endif %}
             <div class="folderView">
                 <ul class="folderView__ul js-sortable-view">
                     {% for el in data %}
