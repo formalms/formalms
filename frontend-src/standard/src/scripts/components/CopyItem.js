@@ -16,7 +16,6 @@ class CopyItem {
       document.querySelectorAll('.js-fv-copy-target').forEach(el => {
          el.addEventListener('click', () => {
             const targetType = el.getAttribute('data-type');
-
             this.copyElement(targetType);
          })
       })
@@ -29,6 +28,14 @@ class CopyItem {
       if (el.classList.contains('js-fv-open-overlay')) {
          document.querySelector('.folderView__copyOverlay').classList.add('is-shown');
          el.closest('.folderView__li').classList.add('is-ready-for-copy');
+
+         document.querySelectorAll('.js-fv-copy-target').forEach(el => {
+            if (el.getAttribute('data-type') === window.type) {
+               el.style.display = 'none'
+            } else {
+               el.style.display = 'block'
+            }
+         });
       }
    }
 
@@ -37,10 +44,11 @@ class CopyItem {
       document.querySelector('.folderView__li.is-ready-for-copy').classList.remove('is-ready-for-copy');
    }
 
-   copyElement(type) {
+   copyElement(newtype) {
       const currentElementId = document.querySelector('.is-ready-for-copy').getAttribute('data-id');
+      const type = window.type
 
-      const copyLoData = getApiUrl('copy', currentElementId, { type });
+      const copyLoData = getApiUrl('copy', currentElementId, { newtype, type });
       axios.get(copyLoData).then().catch( (error) => {
          console.log(error);
       });

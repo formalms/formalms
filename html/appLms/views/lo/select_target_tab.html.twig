@@ -7,13 +7,11 @@
         </button>
         <ul class="dropdown-menu" id="dropdownMenu_copy" aria-labelledby="dropdownMenu_copy">
             {% for tab in tabs %}
-                {% if tab.active is empty %}
-                    <li class="folderView__li js-fv-copy-target" data-type="{{ tab.type }}">
-                        <div class="folderView__el">
-                            <span class="folderView__label">{{ tab.title }}</span>
-                        </div>
-                    </li>
-                {% endif %}
+                <li class="folderView__li js-fv-copy-target" data-type="{{ tab.type }}">
+                    <div class="folderView__el">
+                        <span class="folderView__label">{{ tab.title }}</span>
+                    </div>
+                </li>
             {% endfor %}
         </ul>
     </div>
