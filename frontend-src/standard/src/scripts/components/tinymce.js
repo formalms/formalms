@@ -2,7 +2,10 @@ import Config from '../config/config';
 import tinymce from 'tinymce/tinymce';
 
 import 'tinymce/icons/default';
-import 'tinymce/themes/silver';
+
+import 'tinymce/themes/silver/theme';
+import 'tinymce/skins/ui/oxide/skin.css';
+import 'tinymce/skins/ui/oxide/content.css';
 
 import 'tinymce/plugins/advlist';
 import 'tinymce/plugins/autolink';
@@ -42,8 +45,8 @@ class TinyMce {
     this.init();
   }
 
-  getApiUrl(params) {
-    let url = Config.apiUrl;
+  getApiUrl(slug, params) {
+    let url = `${Config.apiUrl}${slug}`;
     if (!params) {
       params = {};
     }
@@ -58,6 +61,8 @@ class TinyMce {
   }
 
   initComplex(editor_selector) {
+    const obj = this;
+
     tinymce.init({
       mode: 'textareas',
       skin: false,
@@ -91,7 +96,7 @@ class TinyMce {
       file_picker_callback: function (callback, value, meta) {
         tinymce.activeEditor.windowManager.openUrl({
           title: 'Forma File Browser',
-          url: `${this.getApiUrl({ type: meta.filetype })}`,
+          url: `${obj.getApiUrl('image_selection', { type: meta.filetype })}`,
           width: 800,
           height: 600,
           resizable: true,
@@ -103,6 +108,8 @@ class TinyMce {
   }
 
   initSimple(editor_selector) {
+    const obj = this;
+
     tinymce.init({
       mode: 'textareas',
       skin: false,
@@ -130,7 +137,7 @@ class TinyMce {
       file_picker_callback: function (callback, value, meta) {
         tinymce.activeEditor.windowManager.openUrl({
           title: 'Forma File Browser',
-          url: `${this.getApiUrl({ type: meta.filetype })}`,
+          url: `${obj.getApiUrl('image_selection', { type: meta.filetype })}`,
           width: 800,
           height: 600,
           resizable: true,
