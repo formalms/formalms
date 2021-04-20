@@ -103,17 +103,18 @@ class LoLms extends Model {
         return $folder->reorder($newParent, $newOrder );
     }
 
-    public function copy($id) {
+    public function copy($id, $fromType) {
         require_once( $GLOBALS['where_framework'].'/lib/lib.sessionsave.php' );
         $saveObj = new Session_Save();
         $saveName = $saveObj->getName('crepo',true);
         $folder = $this->tdb->getFolderById( (string)$id );
-        $saveData = array(	'repo' => 'pubrepo',
-                            'id' => $id,
-                            'objectType' => $folder->otherValues[REPOFIELDOBJECTTYPE],
-                            'name' => $folder->getFolderName(),
-                            'idResource' => $folder->otherValues[REPOFIELDIDRESOURCE]
-                        ); 
+        $saveData = array(
+            'repo' => $fromType,
+            'id' => $id,
+            'objectType' => $folder->otherValues[REPOFIELDOBJECTTYPE],
+            'name' => $folder->otherValues[REPOFIELDTITLE],
+            'idResource' => $folder->otherValues[REPOFIELDIDRESOURCE]
+        );
         $saveObj->save( $saveName, $saveData );
         return true;
     }
@@ -121,9 +122,8 @@ class LoLms extends Model {
     public function paste($folderId) {
         require_once($GLOBALS['where_framework'].'/lib/lib.sessionsave.php' );
         $saveObj = new Session_Save();
-        $saveName = $_GET['crepo'];
-        if( $saveObj->nameExists($saveName) ) {
-            $saveData =& $saveObj->load($saveName);
+        if( $saveObj->nameExists("crepo") ) {
+            $saveData =& $saveObj->load("crepo");
 
             $lo = createLO( $saveData['objectType'] );
             $idResource = $lo->copy((int)$saveData['idResource']);

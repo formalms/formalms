@@ -232,4 +232,16 @@ class LoLmsController extends LmsController
         }
         exit;
     }
+
+    public function copy() {
+        $id = Get::req('id', DOTY_INT, false);
+        $fromType = Get::req('type', DOTY_STRING, LoLms::ORGDIRDB);
+        $newtype = Get::req('newtype', DOTY_STRING, false);
+        if($this->model->copy($id, $fromType)) {
+            $this->model->setTdb($newtype);
+            $this->model->paste(0);
+        }
+        echo $this->json->encode(true);
+        exit();
+    }
 }
