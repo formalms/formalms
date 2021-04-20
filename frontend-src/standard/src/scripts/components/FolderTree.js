@@ -203,41 +203,23 @@ class FolderTree {
         {
           text: 'Elimina',
           onClick() {
-            let siblings;
-            let elId;
-
-            if (target.hasAttribute('data-id')) {
-              elId = target.getAttribute('data-id');
-              siblings = target.parentNode.children;
-              if (target.parentNode) {
-                target.parentNode.querySelector('.folderTree__link').remove();
-              } else {
-                target.remove();
-              }
-            } else {
-              siblings = target.parentNode.parentNode.children;
-              target.parentNode.parentNode.querySelector('.folderTree__link').remove();
-              elId = target.parentNode.getAttribute('data-id');
-              const parentEl = container.querySelector('.folderView__li[data-id="' + elId + '"]').parentNode;
-              if (parentEl) {
-                parentEl.remove();
-              }
-            }
-
-            if (siblings) {
-              for (let el of siblings) {
-                if (el.classList.contains('folderTree__ul')) {
-                  el.classList.remove('folderTree__ul');
-                }
-              }
-            }
+            const elId = target.getAttribute('data-id');
 
             if (confirm('Sei sicuro di voler eliminare questo elemento?')) {
               const deleteLoData = getApiUrl('delete', elId, { type });
               axios.get(deleteLoData).then(() => {
-                const parentEl = container.querySelector('.folderView__li[data-id="' + elId + '"]');
-                if (parentEl) {
-                  parentEl.remove();
+                const elTree = container.querySelector('.folderTree__li[data-id="' + elId + '"]');
+                if (elTree) {
+                  const ul = elTree.parentNode;
+                  elTree.remove();
+
+                  if (!ul.querySelector('li')) {
+                    ul.remove();
+                  }
+                }
+                const el = container.querySelector('.folderView__li[data-id="' + elId + '"]');
+                if (el) {
+                  el.remove();
                 }
               }).catch((error) => {
                 console.log(error);

@@ -28,27 +28,42 @@ class FolderView {
     const el = event.target;
 
     if (el) {
-      if (el.classList.contains('fv-is-delete')) {
-        event.preventDefault();
-        
-        const li = el.closest('.folderView__li');
-        const id = li.getAttribute('data-id');
+      event.preventDefault();
 
+      const li = el.closest('.folderView__li');
+      if (!li) {
+        return;
+      }
+      const elId = li.getAttribute('data-id');
+
+      if (!elId) {
+        return;
+      }
+      
+      if (el.classList.contains('fv-is-delete')) {
         if (confirm('Sei sicuro di voler eliminare questo elemento?')) {
-          const deleteLoData = getApiUrl('delete', id, { type });
+          const deleteLoData = getApiUrl('delete', elId, { type });
           axios.get(deleteLoData).then(() => {
-            li.remove();
-            const item = container.querySelector('.folderTree__li[data-id="' + id + '"]');
-            if (item) {
-              item.remove();
+            console.log(li, elId);
+            const elTree = container.querySelector('.folderTree__li[data-id="' + elId + '"]');
+            if (elTree) {
+              const ul = elTree.parentNode;
+              elTree.remove();
+
+              if (!ul.querySelector('li')) {
+                ul.remove();
+              }
+            }
+            const el = container.querySelector('.folderView__li[data-id="' + elId + '"]');
+            if (el) {
+              el.remove();
             }
           }).catch((error) => {
             console.log(error);
           });
         }
       } else if (el.classList.contains('js-folderView-folder')) {
-        const id = el.getAttribute('data-id');
-        container.querySelector('.folderTree__link[data-id="' + id + '"]').click();
+        container.querySelector('.folderTree__link[data-id="' + elId + '"]').click();
       } else if (el.classList.contains('js-folderView-file')) {
         el.querySelector('.fv-is-play').click();
       }
