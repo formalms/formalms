@@ -89,12 +89,15 @@
 .folderTree__actions {
   padding: 0px;
   text-align: right;
+  display: flex;
+  justify-content: flex-end;
+
   .dropdown {
     margin-bottom: 12px;
     .btn {
       &.dropdown-toggle {
         display: block;
-        width: 100%;
+        min-width: 240px;
         background: none;
         padding: 12px;
         transition: .2 all ease-in-out;
@@ -104,7 +107,23 @@
     }
     .dropdown-menu {
       width: 100%;
+      max-height: 270px;
+      overflow-y: auto;
     }
+  }
+}
+
+.folderView__li {
+
+  .folderTree__actions & {
+    height: 48px;
+  }
+}
+
+.folderView__el {
+
+  .folderTree__actions & {
+    background-size: 18px auto;
   }
 }
 

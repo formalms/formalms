@@ -77,6 +77,10 @@
     right: 0;
     transition: all .5s ease-in-out;
   }
+
+  .sortable-chosen & {
+    opacity: 0;
+  }
 }
 
 .folderView__action,
@@ -108,7 +112,8 @@
   right: 0;
   opacity: 1;
 
-  .fv-is-selected & {
+  .fv-is-selected &,
+  .sortable-chosen & {
     opacity: 0;
   }
 }
