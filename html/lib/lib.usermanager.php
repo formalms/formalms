@@ -355,6 +355,7 @@ class UserManager
             'hour_request_limit' => $this->_option->getOption('hour_request_limit'),
             'privacy_policy' => $this->_option->getOption('privacy_policy'),
             'mail_sender' => $this->_option->getOption('mail_sender'),
+            'mail_sender_name_from' => $this->_option->getOption('mail_sender_name_from'),
             'field_tree' => $this->_option->getOption('field_tree')
         );
         return $this->_render->getRegister(
@@ -605,6 +606,7 @@ class UserManager
 
                 //compose e-mail --------------------------------------------
                 $mail_sender = $this->_option->getOption('mail_sender');
+                $mail_sender_name_from = $this->_option->getOption('mail_sender_name_from');
 
                 /*$from = "From: ".$mail_sender.$GLOBALS['mail_br'];
             $intestazione  = "MIME-Version: 1.0".$GLOBALS['mail_br'];
@@ -631,7 +633,7 @@ class UserManager
                     $mail_text,
                     false,
                     array(/*MAIL_REPLYTO => $fromemail,*/
-                        MAIL_SENDER_ACLNAME => false
+                        MAIL_SENDER_ACLNAME => $mail_sender_name_from
                     )
                 );
 
@@ -658,6 +660,7 @@ class UserManager
 
                 //compose e-mail --------------------------------------------
                 $mail_sender = $this->_option->getOption('mail_sender');
+                $mail_sender_name_from = $this->_option->getOption('mail_sender_name_from');
 
                 /*$from = "From: ".$mail_sender.$GLOBALS['mail_br'];
             $intestazione  = "MIME-Version: 1.0".$GLOBALS['mail_br'];
@@ -691,7 +694,7 @@ class UserManager
                     $mail_text,
                     false,
                     array(/*MAIL_REPLYTO => $fromemail,*/
-                        MAIL_SENDER_ACLNAME => false
+                        MAIL_SENDER_ACLNAME => $mail_sender_name_from
                     )
                 );
 
@@ -1745,6 +1748,7 @@ class UserManagerRenderer
 
         // Send mail
         $admin_mail = $options['mail_sender'];
+        $sender_name = $options['mail_sender_name_from'];
 
         // FIX BUG 399
         //$link = str_replace('&amp;', '&', $opt_link.( strpos($opt_link, '?') === false ? '?' : '&' ).'random_code='.$random_code);
@@ -1770,7 +1774,7 @@ class UserManagerRenderer
 
             $mailer = DoceboMailer::getInstance();
 
-            if (!$mailer->SendMail($admin_mail, $_POST['register']['email'], Lang::t('_MAIL_OBJECT', 'register'), $text, false, array(MAIL_REPLYTO => $admin_mail, MAIL_SENDER_ACLNAME => false))) {
+            if (!$mailer->SendMail($admin_mail, $_POST['register']['email'], Lang::t('_MAIL_OBJECT', 'register'), $text, false, array(MAIL_REPLYTO => $admin_mail, MAIL_SENDER_ACLNAME => $sender_name))) {
 
 
                 if ($registration_code_type == 'code_module') {
@@ -1806,7 +1810,7 @@ class UserManagerRenderer
 
 
             $mailer = DoceboMailer::getInstance();
-            if (!$mailer->SendMail($admin_mail, $_POST['register']['email'], Lang::t('_MAIL_OBJECT_SELF', 'register'), $text_self, false, false)) {
+            if (!$mailer->SendMail($admin_mail, $_POST['register']['email'], Lang::t('_MAIL_OBJECT_SELF', 'register'), $text_self, false, array(MAIL_REPLYTO => $admin_mail, MAIL_SENDER_ACLNAME => $sender_name))) {
                 $this->error = true;
                 $errors = ['registration' => false, 'error' => $this->error, 'msg' => $lang->def('_OPERATION_FAILURE')];
             } else {

@@ -100,18 +100,21 @@ function getCurrentDomain($idOrg = null)
 		return false;
 	}
 
-	$domains = json_decode($domains, true) ?: [];
+	$domains_tmp = json_decode($domains, true) ?: [];
+	$domains = [];
 
-	foreach ($domains as $item) {
-		if ($idOrg && $item['node'] == $idOrg && $item['domain']) {
-			return 'https://' . $item['domain'] . '/';
-		} else {
-			$sql = "SELECT idParent FROM core_org_chart_tree WHERE idOrg = $idOrg";
-			$query = sql_query($sql);
-			$node = sql_fetch_object($query);
-			if ($node && $node->idParent) {
-				return getCurrentDomain($node->idParent);
-			}
+	foreach ($domains_tmp as $item) {
+		$domains[$item['node']] = $item;
+	}
+
+	if ($idOrg && isset($domains[$idOrg]) && $domains[$idOrg]['domain']) {
+		return 'https://' . $domains[$idOrg]['domain'] . '/';
+	} else {
+		$sql = "SELECT idParent FROM core_org_chart_tree WHERE idOrg = $idOrg";
+		$query = sql_query($sql);
+		$node = sql_fetch_object($query);
+		if ($node && $node->idParent) {
+			return getCurrentDomain($node->idParent);
 		}
 	}
 	return Get::site_url();

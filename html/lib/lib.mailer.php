@@ -52,19 +52,7 @@ class DoceboMailer extends \PHPMailer\PHPMailer\PHPMailer
     //var $reset_to_default = true;
 
     //default config for phpmailer, to set any time we send a mail, except for user-defined params
-    var $default_conf = array(
-        MAIL_MULTIMODE => MAIL_SINGLE,
-        MAIL_SENDER_ACLNAME => false,
-        MAIL_RECIPIENT_ACLNAME => false,
-        MAIL_REPLYTO_ACLNAME => false,
-        MAIL_HTML => true,
-        MAIL_WORDWRAP => 0,
-        MAIL_CHARSET => 'Utf-8',
-        MAIL_SINGLETO => true
-        //MAIL_ = ;
-        //MAIL_ = ;
-    );
-
+    private $default_conf = [];
 
     //the constructor
     function __construct()
@@ -74,6 +62,18 @@ class DoceboMailer extends \PHPMailer\PHPMailer\PHPMailer
         //set initial default value
         $this->ResetToDefault();
 
+        $this->default_conf = [
+            MAIL_MULTIMODE => MAIL_SINGLE,
+            MAIL_SENDER_ACLNAME => Get::sett('use_sender_aclname', false),
+            MAIL_RECIPIENTSCC => Get::sett('send_cc_for_system_emails', ''),
+            MAIL_RECIPIENTSBCC => Get::sett('send_ccn_for_system_emails', ''),
+            MAIL_RECIPIENT_ACLNAME => false,
+            MAIL_REPLYTO_ACLNAME => false,
+            MAIL_HTML => true,
+            MAIL_WORDWRAP => 0,
+            MAIL_CHARSET => 'Utf-8',
+            MAIL_SINGLETO => true,
+        ];
     }
 
 
@@ -162,8 +162,8 @@ class DoceboMailer extends \PHPMailer\PHPMailer\PHPMailer
         if (isset($params[MAIL_CHARSET])) $conf_arr[MAIL_CHARSET] = $params[MAIL_CHARSET];
         if (isset($params[MAIL_REPLYTO])) $conf_arr[MAIL_REPLYTO] = $params[MAIL_REPLYTO];
 
-        if (isset($params[MAIL_RECIPIENTSCC])) $conf_arr[MAIL_RECIPIENTSCC] = $params[MAIL_RECIPIENTSCC];
-        if (isset($params[MAIL_RECIPIENTSBCC])) $conf_arr[MAIL_RECIPIENTSBCC] = $params[MAIL_RECIPIENTSBCC];
+        if (isset($params[MAIL_RECIPIENTSCC])) $conf_arr[MAIL_RECIPIENTSCC] = isset($params[MAIL_RECIPIENTSCC]) ? $params[MAIL_RECIPIENTSCC] : $this->default_conf[MAIL_RECIPIENTSCC] ;
+        if (isset($params[MAIL_RECIPIENTSBCC])) $conf_arr[MAIL_RECIPIENTSBCC] = isset($params[MAIL_RECIPIENTSBCC]) ? $params[MAIL_RECIPIENTSBCC] : $this->default_conf[MAIL_RECIPIENTSBCC];
 
         $_sender = '';
         $_recipients = array();
@@ -216,7 +216,7 @@ class DoceboMailer extends \PHPMailer\PHPMailer\PHPMailer
         $this->From = $_sender;
         if ($conf_arr[MAIL_SENDER_ACLNAME]) {
             $temp = $this->acl_man->getUserByEmail($sender);
-            $this->FromName = $temp[ACL_INFO_FIRSTNAME] . ' ' . $temp[ACL_INFO_LASTNAME];
+            $this->FromName = $conf_arr[MAIL_SENDER_ACLNAME] !== true ? $conf_arr[MAIL_SENDER_ACLNAME] : $temp[ACL_INFO_FIRSTNAME] . ' ' . $temp[ACL_INFO_LASTNAME];
         }
         //----------------------------------------------------------------------------
 
@@ -344,6 +344,13 @@ class DoceboMailer extends \PHPMailer\PHPMailer\PHPMailer
                 }
             }
 
+            if (Get::sett('send_ccn_for_system_emails', '') !== '') {
+                $arr_ccn_for_system_emails = explode(' ', Get::sett('send_ccn_for_system_emails'));
+                foreach ($arr_ccn_for_system_emails as &$user_ccn_for_system_emails) {
+                    $this->addBCC($user_ccn_for_system_emails);
+                }
+            }
+
         }
         //----------------------------------------------------------------------------
 
@@ -363,6 +370,3 @@ class DoceboMailer extends \PHPMailer\PHPMailer\PHPMailer
     }
 
 }
-
-
-?>

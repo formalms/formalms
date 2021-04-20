@@ -11,21 +11,9 @@
 |   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
-require_once( dirname(__FILE__).'/class.question.php' );
+require_once(Forma::inc(_lms_ . '/modules/question/class.question.php' ));
 
 class Associate_Question extends Question {
-	
-	/**
-	 * class constructor
-	 * 
-	 * @param int	the unique database identifer of a question 
-	 * 
-	 * @access public
-	 * @author Fabio Pirovano (fabio@docebo.com)
-	 */
-	function Associate_Question( $id ) {
-		parent::Question($id);
-	}
 	
 	/**
 	 * this function is useful for question recognize
@@ -1009,6 +997,9 @@ class Associate_Question extends Question {
 			if(!$can_overwrite) return true;
 			if(!$this->deleteAnswer($trackTest->idTrack)) return false;
 		}
+        elseif ($trackTest->getTestObj()->isRetainAnswersHistory() && $this->testQuestAnswerExists($trackTest)) {
+            $this->deleteAnswer($trackTest->idTrack, ($trackTest->getNumberOfAttempt() + 1));
+        }
 		
 		$re_answer = sql_query("
 		SELECT idAnswer, is_correct, score_correct, score_incorrect 
@@ -1052,25 +1043,6 @@ class Associate_Question extends Question {
 	}
 	
 	/**
-	 * delete the old answer
-	 * 
-	 * @param  int		$id_track	the relative id_track
-	 * 
-	 * @return bool	true if success false otherwise
-	 * 
-	 * @access public
-	 * @author Fabio Pirovano (fabio@docebo.com)
-	 */
-	function deleteAnswer( $id_track ) {
-		
-		
-		return sql_query("
-		DELETE FROM ".$GLOBALS['prefix_lms']."_testtrack_answer 
-		WHERE idTrack = '".(int)$id_track."' AND 
-			idQuest = '".$this->id."'");
-	}
-	
-	/**
 	 * set the maximum score for the question
 	 * 
 	 * @param 	double 	$score	the score that you want to set
@@ -1089,7 +1061,7 @@ class Associate_Question extends Question {
 		WHERE idQuest = '".(int)$this->id."'"));
 		
 		if(!$num_correct) $score_assigned = 0;
-		else $score_assigned = round($score / $num_correct, 2);
+		else $score_assigned = round($score / $num_correct, 3);
 		
 		return round($score_assigned * $num_correct, 2);
 	}
@@ -1115,7 +1087,7 @@ class Associate_Question extends Question {
 		WHERE idQuest = '".(int)$this->id."'"));
 		
 		if(!$num_correct) $score_assigned = 0;
-		else $score_assigned = round($score / $num_correct, 2);
+		else $score_assigned = round($score / $num_correct, 3);
 		
 		if($try) return round($score_assigned * $num_correct, 2);
 		

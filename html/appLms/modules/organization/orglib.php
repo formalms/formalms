@@ -28,7 +28,7 @@ define("ORGFIELD_PUBLISHFROM", 21);
 define("ORGFIELD_PUBLISHTO", 22);
 define("ORGFIELD_ACCESS", 23);
 define("ORGFIELD_PUBLISHFOR", 24);
-
+define("ORGFIELDIGNORESCORE", 25);
 define("ACLKINDGROUP", "group");
 define("ACLKINDUSER", "user");
 
@@ -46,6 +46,7 @@ class OrgDirDb extends RepoDirDb
 	var $org_idCourse;
 	var $org_prerequisites;
 	var $org_isTerminator;
+	var $org_ignoreScore;
 	var $org_idParam;
 	var $org_visible;
 	var $org_milestone;
@@ -150,7 +151,7 @@ class OrgDirDb extends RepoDirDb
 		$parent = parent::_getOtherFields($tname);
 		if ($tname === FALSE)
 			return $parent . ", idCourse, prerequisites,"
-				. " isTerminator, idParam, visible, milestone, width, height, publish_from, publish_to, access, publish_for ";
+				. " isTerminator, idParam, visible, milestone, width, height, publish_from, publish_to, access, publish_for, ignoreScore ";
 		else
 			return   $parent . ", "
 				. $tname . ".idCourse,"
@@ -165,7 +166,8 @@ class OrgDirDb extends RepoDirDb
 				. $tname . ".publish_from, "
 				. $tname . ".publish_to, "
 				. $tname . ".access, "
-				. $tname . ".publish_for ";
+				. $tname . ".publish_for, "
+				.$tname.".ignoreScore ";
 	}
 
 	function _getOtherValues()
@@ -183,8 +185,8 @@ class OrgDirDb extends RepoDirDb
 			. ($this->org_publish_from == '' ? "''" : "'" . $this->org_publish_from . "'") . ", "
 			. ($this->org_publish_to == '' ? "''" : "'" . $this->org_publish_to . "'") . ", "
 			. ($this->org_access == '' ? "''" : "'" . $this->org_access . "'") . ", "
-			. ($this->org_publish_for == '' ? "''" : "'" . $this->org_publish_for . "'") . " ";
-	}
+			.( $this->org_publish_for == '' ? "''" : "'".$this->org_publish_for."'" ).", "
+			.(int)$this->org_ignoreScore." ";	}
 
 	function _getOtherUpdates()
 	{
@@ -202,7 +204,8 @@ class OrgDirDb extends RepoDirDb
 			. " publish_from=" . ($this->org_publish_from == NULL ? 'NULL' : "'" . $this->org_publish_from . "'") . ", "
 			. " publish_to=" . ($this->org_publish_to == NULL ? 'NULL' : "'" . $this->org_publish_to . "'") . ", "
 			. " access=" . ($this->org_access == NULL ? 'NULL' : "'" . $this->org_access . "'") . ", "
-			. " publish_for=" . ($this->org_publish_for == NULL ? 'NULL' : "'" . $this->org_publish_for . "'") . " ";
+			." publish_for=".( $this->org_publish_for == NULL ? 'NULL' : "'".$this->org_publish_for."'" ).", "
+			." ignoreScore=".(int)$this->org_ignoreScore." ";
 	}
 
 	function _getOtherTables($tname = FALSE)
@@ -358,6 +361,8 @@ class OrgDirDb extends RepoDirDb
 		$this->org_publish_from = NULL;
 		$this->org_publish_to = NULL;
 		$this->org_publish_for = '';
+		$this->org_ignoreScore = (Get::sett('ignore_score', 'on') == "on" ? 1 : 0 );
+		
 
 		if ($idCourse === FALSE)
 			$this->org_idCourse = $this->idCourse;
@@ -401,6 +406,7 @@ class OrgDirDb extends RepoDirDb
 
 		$this->org_prerequisites = '';
 		$this->org_isTerminator = 0;
+		$this->org_ignoreScore = (Get::sett('ignore_score', 'on') == "on" ? 1 : 0 );
 		$this->org_visible = 1;
 		if ($idCourse === FALSE)
 			$this->org_idCourse = $this->idCourse;
@@ -448,6 +454,7 @@ class OrgDirDb extends RepoDirDb
 		$this->org_objectType = $objectType;
 		$this->org_prerequisites = '';
 		$this->org_isTerminator = 0;
+		$this->org_ignoreScore = (Get::sett('ignore_score', 'on') == "on" ? 1 : 0 );
 		$this->org_idResource = $idResource;
 		$this->org_visible = 1;
 		if ($idCourse === FALSE)
@@ -513,6 +520,7 @@ class OrgDirDb extends RepoDirDb
 		$this->org_publish_to = $folder->otherValues[ORGFIELD_PUBLISHTO];
 		$this->org_access = $folder->otherValues[ORGFIELD_ACCESS];
 		$this->org_publish_for = $folder->otherValues[ORGFIELD_PUBLISHFOR];
+		$this->org_ignoreScore = $folder->otherValues[ORGFIELDIGNORESCORE];
 
 		$this->changeOtherData($folder);
 	}
@@ -594,6 +602,10 @@ class OrgDirDb extends RepoDirDb
 			? $arrData['isTerminator']
 			: $folder->otherValues[ORGFIELDISTERMINATOR];
 
+		$this->org_ignoreScore = isset($arrData['ignoreScore'])
+									?$arrData['ignoreScore']
+									:$folder->otherValues[ORGFIELDIGNORESCORE];
+									
 		$this->org_idParam = $folder->otherValues[ORGFIELDIDPARAM];
 		$this->org_visible = isset($arrData['visibility'])
 			? $arrData['visibility']

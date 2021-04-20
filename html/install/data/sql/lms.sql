@@ -2084,7 +2084,6 @@ INSERT INTO `learning_module` (`idModule`, `module_name`, `default_op`, `default
 (18, 'htmlfront', 'showhtml', '_HTMLFRONT', 'view', 'class.htmlfront.php', 'Module_Htmlfront', '', ''),
 (19, 'forum', 'forum', '_FORUM', 'view', 'class.forum.php', 'Module_Forum', '', ''),
 (20, 'wiki', 'main', '_WIKI', 'view', 'class.wiki.php', 'Module_Wiki', '', ''),
-(21, 'chat', 'chat', '_CHAT', 'view', 'class.chat.php', 'Module_Chat', '', ''),
 (22, 'conference', 'list', '_VIDEOCONFERENCE', 'view', 'class.conference.php', 'Module_Conference', '', ''),
 (23, 'project', 'project', '_PROJECT', 'view', 'class.project.php', 'Module_Project', '', ''),
 (24, 'groups', 'groups', '_GROUPS', 'view', 'class.groups.php', 'Module_Groups', '', ''),
@@ -2183,6 +2182,7 @@ CREATE TABLE IF NOT EXISTS `learning_organization` (
   `publish_to` datetime DEFAULT NULL,
   `access` varchar(255) DEFAULT NULL,
   `publish_for` int(1) NOT NULL DEFAULT '0',
+  `ignoreScore` TINYINT( 4 ) NOT NULL DEFAULT '0',
   PRIMARY KEY (`idOrg`),
   KEY `idParent` (`idParent`),
   KEY `path` (`path`)
@@ -2499,7 +2499,6 @@ INSERT INTO `learning_quest_type` (`type_quest`, `type_file`, `type_class`, `seq
 ('choice', 'class.choice.php', 'Choice_Question', 1),
 ('choice_multiple', 'class.choice_multiple.php', 'ChoiceMultiple_Question', 2),
 ('extended_text', 'class.extended_text.php', 'ExtendedText_Question', 3),
-('hot_text', 'class.hot_text.php', 'HotText_Question', 6),
 ('inline_choice', 'class.inline_choice.php', 'InlineChoice_Question', 5),
 ('text_entry', 'class.text_entry.php', 'TextEntry_Question', 4),
 ('title', 'class.title.php', 'Title_Question', 9),
@@ -3466,6 +3465,7 @@ VALUES (7, 'DashboardBlockCalendarLms', CURRENT_TIMESTAMP),
        (6, 'DashboardBlockAnnouncementsLms',CURRENT_TIMESTAMP),
        (5, 'DashboardBlockCoursesLms',CURRENT_TIMESTAMP),
        (4, 'DashboardBlockMessagesLms',CURRENT_TIMESTAMP),
+       (9, 'DashboardBlockWelcomeLms',CURRENT_TIMESTAMP),
        (8, 'DashboardBlockBannerLms',CURRENT_TIMESTAMP);
 
 INSERT IGNORE INTO learning_middlearea (`obj_index`, `disabled`, `idst_list`, `sequence`)

@@ -1756,227 +1756,252 @@ function review ($object_test , $id_param)
 
 function user_report ($idUser , $idTest , $id_param = false , $id_track = false , $mvc = false)
 {
-	if (! checkPerm ('view' , true , 'organization') && ! checkPerm ('view' , true , 'storage')) die("You can't access");
-	$lang =& DoceboLanguage::createInstance ('test');
+    if (! checkPerm ('view' , true , 'organization') && ! checkPerm ('view' , true , 'storage')) die("You can't access");
+    $lang =& DoceboLanguage::createInstance ('test');
 
-	if ($id_param !== false) {
-		require_once (_lms_ . '/lib/lib.param.php');
+    if ($id_param !== false) {
+        require_once (_lms_ . '/lib/lib.param.php');
 
-		$idReference = getLOParam ($id_param , 'idReference');
+        $idReference = getLOParam ($id_param , 'idReference');
 
-		if (! Track_Test::isTrack ($idUser , $idTest , $idReference)) return;
+        if (! Track_Test::isTrack ($idUser , $idTest , $idReference)) return;
 
-		//load existing info track
-		$track_info = Track_Test::getTrackInfo ($idUser , $idTest , $idReference);
-		$idTrack = $track_info[ 'idTrack' ];
-	} else {
+        //load existing info track
+        $track_info = Track_Test::getTrackInfo ($idUser , $idTest , $idReference);
+        $idTrack = $track_info[ 'idTrack' ];
+    } else {
 
-		$idTrack = $id_track;
-	}
-	//test info---------------------------------------------------------
-	list($title , $mod_doanswer , $point_type , $point_required , $question_random_number ,
-		$show_score , $show_score_cat , $show_doanswer ,
-		$show_solution , $order_type) = sql_fetch_row (sql_query ("
+        $idTrack = $id_track;
+    }
+    //test info---------------------------------------------------------
+    list($title , $mod_doanswer , $point_type , $point_required , $question_random_number ,
+        $show_score , $show_score_cat , $show_doanswer , $order_type) = sql_fetch_row (sql_query ("
 	SELECT  title, mod_doanswer, point_type, point_required, question_random_number, 
 			show_score, show_score_cat, show_doanswer, 
-			show_solution, order_type
+			 order_type
 	FROM %lms_test
 	WHERE idTest = '" . (int) $idTest . "'"));
 
-	list($score , $bonus_score , $date_attempt , $date_attempt_mod) = sql_fetch_row (sql_query ("
+    list($score , $bonus_score , $date_attempt , $date_attempt_mod) = sql_fetch_row (sql_query ("
 	SELECT score, bonus_score, date_attempt, date_attempt_mod 
 	FROM %lms_testtrack
 	WHERE idTrack = '" . (int) $idTrack . "'"));
 
-	$point_do = $bonus_score;
-	$max_score = 0;
-	$num_manual = 0;
-	$manual_score = 0;
-	$quest_sequence_number = 1;
-	$report_test = '';
-	$point_do_cat = array ();
-	/*
-	$reQuest = sql_query("
-	SELECT q.idQuest, q.type_quest, t.type_file, t.type_class, q.idCategory
-	FROM ".$GLOBALS['prefix_lms']."_testquest AS q JOIN ".$GLOBALS['prefix_lms']."_quest_type AS t
-	WHERE q.idTest = '".$idTest."' AND q.type_quest = t.type_quest
-	ORDER BY q.sequence");*/
-	if ($order_type >= 2) {
-		$re_visu_quest = sql_query ("SELECT idQuest
+    require_once($GLOBALS['where_lms'].'/class.module/track.test.php');
+    require_once($GLOBALS['where_lms'].'/lib/lib.test.php' );
+
+    $test_man       = new TestManagement($idTest);
+    $play_man       = new PlayTestManagement($idTest, Docebo::user()->getIdst(), $idTrack, $test_man);
+    $test_info      = $test_man->getTestAllInfo();
+    $score_status   = $play_man->getScoreStatus();
+
+    if ($score_status === 'passed') $incomplete = FALSE;
+    elseif ($score_status === 'valid') {
+        $track_info = $play_man->getTrackAllInfo();
+
+        if ($track_info['score'] >= $test_info['point_required'])
+            $incomplete = FALSE;
+        else
+            $incomplete = TRUE;
+    } else {
+        $incomplete = TRUE;
+    }
+    $show_solution = false;
+    if( $test_info['show_solution'] == 1 )
+        $show_solution = true;
+    elseif($test_info['show_solution'] == 2 && !$incomplete )
+        $show_solution = true;
+
+    $point_do = $bonus_score;
+    $max_score = 0;
+    $num_manual = 0;
+    $manual_score = 0;
+    $quest_sequence_number = 1;
+    $report_test = '';
+    $point_do_cat = array ();
+    /*
+    $reQuest = sql_query("
+    SELECT q.idQuest, q.type_quest, t.type_file, t.type_class, q.idCategory
+    FROM ".$GLOBALS['prefix_lms']."_testquest AS q JOIN ".$GLOBALS['prefix_lms']."_quest_type AS t
+    WHERE q.idTest = '".$idTest."' AND q.type_quest = t.type_quest
+    ORDER BY q.sequence");*/
+    if ($order_type >= 2) {
+        $re_visu_quest = sql_query ("SELECT idQuest
 		FROM %lms_testtrack_quest
 		WHERE idTrack = '" . (int) $idTrack . "' ");
 
-		while (list($id_q) = sql_fetch_row ($re_visu_quest)) $quest_see[] = $id_q;
+        while (list($id_q) = sql_fetch_row ($re_visu_quest)) $quest_see[] = $id_q;
 
-		$query_question = "
+        $query_question = "
 		SELECT q.idQuest, q.type_quest, t.type_file, t.type_class, q.idCategory 
 		FROM %lms_testquest AS q JOIN %lms_quest_type AS t
-		WHERE q.idTest = '" . $idTest . "' AND q.type_quest = t.type_quest AND  q.idQuest IN (" . implode (',', $quest_see) . ")
+		WHERE q.idTest = '" . $idTest . "' AND q.type_quest = t.type_quest AND  q.idQuest IN (" . implode ($quest_see , ',') . ")
 		ORDER BY q.sequence";
 
 
-	} else {
-		$query_question = "
+    } else {
+        $query_question = "
 		SELECT q.idQuest, q.type_quest, t.type_file, t.type_class, q.idCategory 
 		FROM %lms_testquest AS q JOIN %lms_quest_type AS t
 		WHERE q.idTest = '" . $idTest . "' AND q.type_quest = t.type_quest 
 		ORDER BY q.sequence";
-	}
+    }
 
-	$reQuest = sql_query ($query_question);
-	while (list($id_quest , $type_quest , $type_file , $type_class , $id_cat) = sql_fetch_row ($reQuest)) {
+    $reQuest = sql_query ($query_question);
+    while (list($id_quest , $type_quest , $type_file , $type_class , $id_cat) = sql_fetch_row ($reQuest)) {
 
-		require_once (Forma::inc(_lms_ . '/modules/question/' . $type_file));
+        require_once (Forma::inc (_folder_lms_ . '/modules/question/' . $type_file));
 
-		$quest_point_do = 0;
+        $quest_point_do = 0;
 
-		$quest_obj = eval("return new $type_class( $id_quest );");
-		$quest_point_do = $quest_obj->userScore ($idTrack);
+        $quest_obj = eval("return new $type_class( $id_quest );");
+        $quest_point_do = $quest_obj->userScore ($idTrack);
 
-		$quest_max_score = $quest_obj->getMaxScore ();
-		if (($type_quest != 'title') && ($type_quest != 'break_page')) {
-			$review = $quest_obj->displayUserResult ($idTrack ,
-				($type_quest != 'title' ? $quest_sequence_number++ : $quest_sequence_number) ,
-				$show_solution);
+        $quest_max_score = $quest_obj->getMaxScore ();
+        if (($type_quest != 'title') && ($type_quest != 'break_page')) {
+            $review = $quest_obj->displayUserResult ($idTrack ,
+                ($type_quest != 'title' ? $quest_sequence_number++ : $quest_sequence_number) ,
+                $show_solution);
 
-			$report_test .= '<div class="test_quest_review_container">'
-				. $review[ 'quest' ];
+            $report_test .= '<div class="test_quest_review_container">'
+                . $review[ 'quest' ];
 
-			if ($review[ 'score' ] !== false) {
-				$report_test .= '<div class="test_answer_comment">'
-					. '<div class="test_score_note">' . $lang->def ('_SCORE') . ' : ';
-				if ($quest_obj->getScoreSetType () == 'manual' && ! $review[ 'manual_assigned' ]) {
-					$report_test .= $lang->def ('_NOT_ASSIGNED');
-				} else {
+            if ($review[ 'score' ] !== false) {
+                $report_test .= '<div class="test_answer_comment">'
+                    . '<div class="test_score_note">' . $lang->def ('_SCORE') . ' : ';
+                if ($quest_obj->getScoreSetType () == 'manual' && ! $review[ 'manual_assigned' ]) {
+                    $report_test .= $lang->def ('_NOT_ASSIGNED');
+                } else {
 
-					if ($review[ 'score' ] > 0) {
-						$report_test .= '<span class="test_score_positive">' . $review[ 'score' ] . '</span>';
-					} else {
-						$report_test .= '<span class="test_score_negative">' . $review[ 'score' ] . '</span>';
-					}
-				}
-				$report_test .= '</div>'
-					. '</div>';
-			}
+                    if ($review[ 'score' ] > 0) {
+                        $report_test .= '<span class="test_score_positive">' . $review[ 'score' ] . '</span>';
+                    } else {
+                        $report_test .= '<span class="test_score_negative">' . $review[ 'score' ] . '</span>';
+                    }
+                }
+                $report_test .= '</div>'
+                    . ($review[ 'comment' ] != '' ? $review[ 'comment' ] : '')
+                    . '</div>';
+            }
 
-			$report_test .=
-				//.( $review['comment'] != '' ? $review['comment'] : '' )
-				'</div>' . "\n";
-		}
-		if ($quest_obj->getScoreSetType () == 'manual') {
-			++$num_manual;
-			$manual_score = round ($manual_score + $quest_max_score , 2);
-		}
+            $report_test .=
+                //.( $review['comment'] != '' ? $review['comment'] : '' )
+                '</div>' . "\n";
+        }
+        if ($quest_obj->getScoreSetType () == 'manual') {
+            ++$num_manual;
+            $manual_score = round ($manual_score + $quest_max_score , 2);
+        }
 
 
-		$point_do = round ($point_do + $quest_point_do , 2);
+        $point_do = round ($point_do + $quest_point_do , 2);
 
-		$max_score = round ($max_score + $quest_max_score , 2);
-		if (isset($point_do_cat[ $id_cat ])) {
-			//** LRZ    bug fix #9171
-			//$point_do_cat[$id_cat] = round(point_do + $point_do_cat[$id_cat], 2);
-			$point_do_cat[ $id_cat ] = round ($quest_point_do + $point_do_cat[ $id_cat ] , 2);
-		} else {
-			//** LRZ    bug fix #9171
-			//$point_do_cat[$id_cat] = point_do;
-			$point_do_cat[ $id_cat ] = $quest_point_do;
-		}
-	}
+        $max_score = round ($max_score + $quest_max_score , 2);
+        if (isset($point_do_cat[ $id_cat ])) {
+            //** LRZ    bug fix #9171
+            //$point_do_cat[$id_cat] = round(point_do + $point_do_cat[$id_cat], 2);
+            $point_do_cat[ $id_cat ] = round ($quest_point_do + $point_do_cat[ $id_cat ] , 2);
+        } else {
+            //** LRZ    bug fix #9171
+            //$point_do_cat[$id_cat] = point_do;
+            $point_do_cat[ $id_cat ] = $quest_point_do;
+        }
+    }
 
-	//output variable, used in mvc mode
-	$output = "";
+    //output variable, used in mvc mode
+    $output = "";
 
-	$str = "";
-	if (! $mvc) $str .= '<div class="std_block">';
-	$str .= '<div class="title">' . $lang->def ('_TITLE') . ' : ' . $title . '</div><br />';
-	if ($mvc) {
-		$output .= $str;
-	} else {
-		$GLOBALS[ 'page' ]->add ($str , 'content');
-	}
+    $str = "";
+    if (! $mvc) $str .= '<div class="std_block">';
+    $str .= '<div class="title">' . $lang->def ('_TITLE') . ' : ' . $title . '</div><br />';
+    if ($mvc) {
+        $output .= $str;
+    } else {
+        $GLOBALS[ 'page' ]->add ($str , 'content');
+    }
 
-	if ($point_type != '1') $save_score = $point_do;
-	else $save_score = round (round ($point_do / $max_score , 2) * 100 , 2);
+    if ($point_type != '1') $save_score = $point_do;
+    else $save_score = round (round ($point_do / $max_score , 2) * 100 , 2);
 
-	if ($show_score && $point_type != '1') {
+    if ($show_score && $point_type != '1') {
 
-		$str = '<span class="test_score_note">' . $lang->def ('_TEST_TOTAL_SCORE') . '</span> ' . $point_do . ' / ' . $max_score . '<br />';
-		if ($mvc) {
-			$output .= $str;
-		} else {
-			$GLOBALS[ 'page' ]->add ($str , 'content');
-		}
-		if ($num_manual != 0) {
-			$str = '<br /><span class="test_score_note">' . $lang->def (/*'_TEST_MANUAL_SCORE_REPORT'*/
-					'_TEST_MANUAL_SCORE') . '</span> '
-				. $manual_score . ' ' . $lang->def ('_TEST_SCORES') . '<br />';
-			if ($mvc) {
-				$output .= $str;
-			} else {
-				$GLOBALS[ 'page' ]->add ($str , 'content');
-			}
-		}
-	}
-	if ($show_score && $point_type == '1') {
+        $str = '<span class="test_score_note">' . $lang->def ('_TEST_TOTAL_SCORE') . '</span> ' . $point_do . ' / ' . $max_score . '<br />';
+        if ($mvc) {
+            $output .= $str;
+        } else {
+            $GLOBALS[ 'page' ]->add ($str , 'content');
+        }
+        if ($num_manual != 0) {
+            $str = '<br /><span class="test_score_note">' . $lang->def (/*'_TEST_MANUAL_SCORE_REPORT'*/
+                    '_TEST_MANUAL_SCORE') . '</span> '
+                . $manual_score . ' ' . $lang->def ('_TEST_SCORES') . '<br />';
+            if ($mvc) {
+                $output .= $str;
+            } else {
+                $GLOBALS[ 'page' ]->add ($str , 'content');
+            }
+        }
+    }
+    if ($show_score && $point_type == '1') {
 
-		$str = '<span class="test_score_note">' . $lang->def ('_TEST_TOTAL_SCORE') . '</span> ' . $save_score . ' %' . '<br />';
-		if ($mvc) {
-			$output .= $str;
-		} else {
-			$GLOBALS[ 'page' ]->add ($str , 'content');
-		}
-		if ($num_manual != 0) {
-			$str = '<br /><span class="test_score_note">' . $lang->def (/*'_TEST_MANUAL_SCORE_REPORT'*/
-					'_TEST_MANUAL_SCORE') . '</span> '
-				. $manual_score . ' ' . $lang->def ('_TEST_SCORES') . '<br />';
-			if ($mvc) {
-				$output .= $str;
-			} else {
-				$GLOBALS[ 'page' ]->add ($str , 'content');
-			}
-		}
-	}
-	if ($show_score_cat) {
+        $str = '<span class="test_score_note">' . $lang->def ('_TEST_TOTAL_SCORE') . '</span> ' . $save_score . ' %' . '<br />';
+        if ($mvc) {
+            $output .= $str;
+        } else {
+            $GLOBALS[ 'page' ]->add ($str , 'content');
+        }
+        if ($num_manual != 0) {
+            $str = '<br /><span class="test_score_note">' . $lang->def (/*'_TEST_MANUAL_SCORE_REPORT'*/
+                    '_TEST_MANUAL_SCORE') . '</span> '
+                . $manual_score . ' ' . $lang->def ('_TEST_SCORES') . '<br />';
+            if ($mvc) {
+                $output .= $str;
+            } else {
+                $GLOBALS[ 'page' ]->add ($str , 'content');
+            }
+        }
+    }
+    if ($show_score_cat) {
 
-		$category = array ();
-		$reQuestCat = sql_query ("
+        $category = array ();
+        $reQuestCat = sql_query ("
 		SELECT idCategory 
 		FROM %lms_testquest
 		WHERE idTest = '" . $idTest . "' AND idCategory != 0");
-		while (list($id_cat) = sql_fetch_row ($reQuestCat)) $category[] = $id_cat;
+        while (list($id_cat) = sql_fetch_row ($reQuestCat)) $category[] = $id_cat;
 
 
-		if (! empty($category)) {
+        if (! empty($category)) {
 
-			require_once (_lms_ . '/lib/lib.questcategory.php');
+            require_once (_lms_ . '/lib/lib.questcategory.php');
 
-			$categories = Questcategory::getInfoAboutCategory ($category);
-			$str = '<br /><span class="test_score_note">' . $lang->def ('_TEST_CATEGORY_SCORE') . '</span><br />';
-			if ($mvc) {
-				$output .= $str;
-			} else {
-				$GLOBALS[ 'page' ]->add ($str , 'content');
-			}
+            $categories = Questcategory::getInfoAboutCategory ($category);
+            $str = '<br /><span class="test_score_note">' . $lang->def ('_TEST_CATEGORY_SCORE') . '</span><br />';
+            if ($mvc) {
+                $output .= $str;
+            } else {
+                $GLOBALS[ 'page' ]->add ($str , 'content');
+            }
 
-			foreach($categories as $id_cat => $name_cat){
+            while (list($id_cat , $name_cat) = each ($categories)) {
 
-				$str = $name_cat . ', ' . $lang->def ('_TEST_SCORES') . ': '
-					. (isset($point_do_cat[ $id_cat ]) ? $point_do_cat[ $id_cat ] : 0) . '<br />';
-				if ($mvc) {
-					$output .= $str;
-				} else {
-					$GLOBALS[ 'page' ]->add ($str , 'content');
-				}
-			}
-		}
-	}
-	$str = '<br /><br /><div class="test_answer_space">' . $report_test . '</div>';
-	if (! $mvc) $str .= '</div>'; //end stdblock div
-	if ($mvc) {
-		return $output;
-	} else {
-		$GLOBALS[ 'page' ]->add ($str , 'content');
-	}
+                $str = $name_cat . ', ' . $lang->def ('_TEST_SCORES') . ': '
+                    . (isset($point_do_cat[ $id_cat ]) ? $point_do_cat[ $id_cat ] : 0) . '<br />';
+                if ($mvc) {
+                    $output .= $str;
+                } else {
+                    $GLOBALS[ 'page' ]->add ($str , 'content');
+                }
+            }
+        }
+    }
+    $str = '<br /><br /><div class="test_answer_space">' . $report_test . '</div>';
+    if (! $mvc) $str .= '</div>'; //end stdblock div
+    if ($mvc) {
+        return $output;
+    } else {
+        $GLOBALS[ 'page' ]->add ($str , 'content');
+    }
 }
 
 
