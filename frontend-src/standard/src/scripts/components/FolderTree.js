@@ -8,7 +8,10 @@ import Content from '../twig/content.html.twig';
 class FolderTree {
 
   constructor(type) {
+    this._this = this
     this.type = type;
+    this.currentEl;
+    this.currentElId;
     this.container = document.querySelector('*[data-container=' + this.type + ']');
     this.dragged;
 
@@ -47,10 +50,11 @@ class FolderTree {
     });
 
     if (!this.container.querySelector('.js-disable-sortable')) {
-      initSortable(this.container, this.type);
+      this.initSortable(this.container, this.type);
     }
     if (!this.container.querySelector('.js-disable-drag-and-drop')) {
-      initDragDrop(this.container, this.type);
+      this.removeDragDropListener(this.container);
+      this.initDragDrop(this.container);
     }
   }
 
@@ -116,11 +120,12 @@ class FolderTree {
           }
 
           if (!document.querySelector('.js-disable-sortable')) {
-            initSortable(this.container, this.type);
+            this.initSortable(this.container, this.type);
           }
 
           if (!document.querySelector('.js-disable-drag-and-drop')) {
-            initDragDrop(this.container, this.type);
+            this.removeDragDropListener(this.container);
+            this.initDragDrop(this.container);
           }
         }).catch((error) => {
           console.log(error)
@@ -258,6 +263,121 @@ class FolderTree {
       console.log(error);
     });
   }
+
+  removeDragDropListener(container) {
+    container.removeEventListener('dragstart', this.onDragStart)
+    container.removeEventListener('dragover', this.onDragOver)
+    container.removeEventListener('dragleave', this.onDragLeave)
+    container.removeEventListener('drop', this.onDrop)
+  }
+
+  initDragDrop(container) {
+    container.addEventListener('dragstart', this.onDragStart)
+    container.addEventListener('dragover', this.onDragOver)
+    container.addEventListener('dragleave', this.onDragLeave)
+    container.addEventListener('drop', this.onDrop)
+  }
+
+  onDragStart(event) {
+    if (event.target.classList.contains('is-droppable')) {
+      this.currentEl = event.target;
+      this.currentElId = this.currentEl.getAttribute('data-id');
+    }
+  }
+
+  onDragOver(event) {
+    const target = event.target;
+
+    if (this.currentEl) {
+      if ( (this.currentElId !== target.getAttribute('data-id')) && (target.classList.contains('is-dropzone')) ) {
+        target.classList.add('fv-is-dropped');
+        event.preventDefault();
+      }
+    }
+  }
+
+  onDragLeave(event) {
+    const target = event.target;
+
+    if (this.currentEl) {
+      if ((this.currentElId !== target.getAttribute('data-id')) && (target.classList.contains('is-dropzone'))) {
+        target.classList.remove('fv-is-dropped');
+      }
+    }
+  }
+
+  onDrop(event) {
+    const target = event.target;
+    target.classList.remove('fv-is-dropped');
+
+    if (this.currentEl) {
+      if ( (this.currentElId !== target.getAttribute('data-id')) &&
+         (target.classList.contains('is-dropzone')) ){
+        const type = window.type;
+        const reorderLoData = getApiUrl('reorder', this.currentElId, { type, newParent: event.target.getAttribute('data-id') });
+        axios.get(reorderLoData).then(() => {
+          if (target.classList.contains('ft-is-folderOpen') && (this.currentEl.classList.contains('folderTree__li') )) {
+            const nextElementSibling = target.nextElementSibling;
+            if (nextElementSibling && nextElementSibling.classList.contains('folderTree__ul')) {
+              nextElementSibling.appendChild(this.currentEl);
+            } else {
+              this.currentEl.remove();
+            }
+          } else {
+            this.currentEl.remove();
+          }
+          const el = this.container.querySelector('.folderView__li[data-id="' + this.currentElId + '"]')
+          if (el) {
+            el.remove();
+          }
+        }).catch((error) => {
+          console.log(error);
+        });
+      }
+    }
+  }
+
+  initSortable(container, type) {
+    const view = container.querySelector('.js-sortable-view');
+
+    if (view) {
+      new Sortable.create(view, {
+        draggable: '.folderView__li',
+        animation: 150,
+        easing: 'cubic-bezier(1, 0, 0, 1)',
+        fallbackOnBody: true,
+        invertSwap: true,
+        swapThreshold: 0.43,
+        onUpdate: function (evt) {
+          const currentElement = evt.item;
+          const currentElementId = currentElement.getAttribute('data-id');
+          const parentElement = container.querySelector('.ft-is-selected');
+          const childElement = container.querySelector('.folderView__ul').querySelectorAll('.folderView__li');
+          const childElementArray = [];
+          let parentElementId = 0;
+
+          if (parentElement) {
+            parentElementId = parentElement ? parentElement.getAttribute('data-id') : 0;
+          }
+
+          childElement.forEach(el => {
+            const elId = el.getAttribute('data-id');
+            childElementArray.push(elId);
+          });
+
+          const reorderLoData = getApiUrl('reorder', currentElementId, { type, newParent: parentElementId, newOrder: childElementArray });
+          axios.get(reorderLoData).then(() => {
+            const parentEl = container.querySelector('.folderTree__link[data-id="' + parentElementId + '"]');
+            if (parentEl) {
+              parentEl.click();
+            }
+          }).catch( (error) => {
+            console.log(error);
+          });
+        }
+      });
+    }
+  }
 }
 
 function getApiUrl(action, id, params) {
@@ -268,109 +388,6 @@ function getApiUrl(action, id, params) {
   url += '&' + new URLSearchParams(params).toString();
 
   return url;
-}
-
-function initSortable(container, type) {
-  const view = container.querySelector('.js-sortable-view');
-
-  if (view) {
-    new Sortable.create(view, {
-      draggable: '.folderView__li',
-      animation: 150,
-      easing: 'cubic-bezier(1, 0, 0, 1)',
-      fallbackOnBody: true,
-      invertSwap: true,
-      swapThreshold: 0.43,
-      onUpdate: function (evt) {
-        const currentElement = evt.item;
-        const currentElementId = currentElement.getAttribute('data-id');
-        const parentElement = container.querySelector('.ft-is-selected');
-        const childElement = container.querySelector('.folderView__ul').querySelectorAll('.folderView__li');
-        const childElementArray = [];
-        let parentElementId = 0;
-
-        if (parentElement) {
-          parentElementId = parentElement ? parentElement.getAttribute('data-id') : 0;
-        }
-
-        childElement.forEach(el => {
-          const elId = el.getAttribute('data-id');
-          childElementArray.push(elId);
-        });
-
-        const reorderLoData = getApiUrl('reorder', currentElementId, { type, newParent: parentElementId, newOrder: childElementArray });
-        axios.get(reorderLoData).then(() => {
-          const parentEl = container.querySelector('.folderTree__link[data-id="' + parentElementId + '"]');
-          if (parentEl) {
-            parentEl.click();
-          }
-        }).catch( (error) => {
-          console.log(error);
-        });
-      }
-    });
-  }
-}
-
-function initDragDrop(container, type) {
-    let currentEl, currentElId;
-
-    container.addEventListener('dragstart', (event) => {
-      if (event.target.classList.contains('is-droppable')) {
-        currentEl = event.target;
-        currentElId = currentEl.getAttribute('data-id');
-      }
-    });
-
-    container.addEventListener('dragover', (event) => {
-      const target = event.target;
-
-      if (currentEl) {
-        if ( (currentElId !== target.getAttribute('data-id')) && (target.classList.contains('is-dropzone')) ) {
-          target.classList.add('fv-is-dropped');
-          event.preventDefault();
-        }
-      }
-    });
-
-    container.addEventListener('dragleave', (event) => {
-      const target = event.target;
-
-      if (currentEl) {
-        if ((currentElId !== target.getAttribute('data-id')) && (target.classList.contains('is-dropzone'))) {
-          target.classList.remove('fv-is-dropped');
-        }
-      }
-    });
-
-    container.addEventListener('drop', (event) => {
-      const target = event.target;
-      target.classList.remove('fv-is-dropped');
-
-      if (currentEl) {
-        if ( (currentElId !== target.getAttribute('data-id')) && (target.classList.contains('is-dropzone')) ) {
-          const reorderLoData = getApiUrl('reorder', currentElId, { type, newParent: event.target.getAttribute('data-id') });
-          axios.get(reorderLoData).then(() => {
-            if (target.classList.contains('ft-is-folderOpen') && (currentEl.classList.contains('folderTree__li') )) {
-              const nextElementSibling = target.nextElementSibling;
-              if (nextElementSibling && nextElementSibling.classList.contains('folderTree__ul')) {
-                nextElementSibling.appendChild(currentEl);
-              } else {
-                currentEl.remove();
-              }
-            } else {
-              currentEl.remove();
-            }
-            const el = container.querySelector('.folderView__li[data-id="' + currentElId + '"]')
-            if (el) {
-              el.remove();
-            }
-          }).catch((error) => {
-            console.log(error);
-          });
-        }
-      }
-    });
 }
 
 export default FolderTree

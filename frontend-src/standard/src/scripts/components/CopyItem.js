@@ -24,18 +24,9 @@ class CopyItem {
 
    openOverlay(event) {
       const el = event.target;
-
       if (el.classList.contains('js-fv-open-overlay')) {
          document.querySelector('.folderView__copyOverlay').classList.add('is-shown');
          el.closest('.folderView__li').classList.add('is-ready-for-copy');
-
-         document.querySelectorAll('.js-fv-copy-target').forEach(el => {
-            if (el.getAttribute('data-type') === window.type) {
-               el.style.display = 'none'
-            } else {
-               el.style.display = 'block'
-            }
-         });
       }
    }
 
@@ -49,7 +40,13 @@ class CopyItem {
       const type = window.type
 
       const copyLoData = getApiUrl('copy', currentElementId, { newtype, type });
-      axios.get(copyLoData).then().catch( (error) => {
+      axios.get(copyLoData).then(() => {
+         const container = document.querySelector('*[data-container=' + newtype + ']');
+
+         this.closeOverlay();
+         document.querySelector('.tab-link[data-type="' + newtype + '"]').click();
+         container.querySelector('.ft-is-root').click();
+      }).catch( (error) => {
          console.log(error);
       });
    }
