@@ -148,16 +148,28 @@ class LoLmsController extends LmsController
             $type = $lo['typeId'];
             $id = $lo['id'];
             $lo["actions"] = [];
-            if(!$lo["is_folder"] && $lo["play"]) {
-                $lo["actions"][] = [
-                    "name" => "play",
-                    "active" => true,
-                    "type" => "href",
-                    "content" => "index.php?modname=organization&op=custom_playitem&id_item=$id",
-                    "showIcon" => false,
-                    "icon" => "css-class1",
-                    "label" => "Play",
-                ];
+            if(!$lo["is_folder"]) {
+                if ($lo["play"] && !$lo['canEdit']) {
+                    $lo["actions"][] = [
+                        "name" => "play",
+                        "active" => true,
+                        "type" => "href",
+                        "content" => "index.php?modname=organization&op=custom_playitem&id_item=$id",
+                        "showIcon" => false,
+                        "icon" => "icon-play",
+                        "label" => "Play",
+                    ];
+                } else if ($lo['canEdit']) {
+                    $lo["actions"][] = [
+                        "name" => "play",
+                        "active" => true,
+                        "type" => "href",
+                        "content" => "index.php?modname=organization&op=custom_playitem&edit=1&id_item=$id",
+                        "showIcon" => false,
+                        "icon" => "icon-play",
+                        "label" => "Play",
+                    ];
+                }
             }
             if ($lo['canEdit']) {
                 if(!$lo["is_folder"]) {
@@ -208,7 +220,7 @@ class LoLmsController extends LmsController
                     $lo["actions"][] = [
                         "name" => "copy",
                         "active" => true,
-                        "type" => "link",
+                        "type" => "ajax",
                         "content" => "index.php?r=lms/lo/copy&id=$id&type=$type&newType=",
                         "showIcon" => true,
                         "icon" => "icon-copy",
