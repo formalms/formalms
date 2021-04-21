@@ -96,7 +96,7 @@ class TinyMce {
       file_picker_callback: function (callback, value, meta) {
         tinymce.activeEditor.windowManager.openUrl({
           title: 'Forma File Browser',
-          url: `${obj.getApiUrl('image_selection', { type: meta.filetype })}`,
+          url: `${obj.getApiUrl('adm/mediagallery/show', { type: meta.filetype })}`,
           width: 800,
           height: 600,
           resizable: true,
@@ -137,7 +137,7 @@ class TinyMce {
       file_picker_callback: function (callback, value, meta) {
         tinymce.activeEditor.windowManager.openUrl({
           title: 'Forma File Browser',
-          url: `${obj.getApiUrl('image_selection', { type: meta.filetype })}`,
+          url: `${obj.getApiUrl('adm/mediagallery/show', { type: meta.filetype })}`,
           width: 800,
           height: 600,
           resizable: true,
