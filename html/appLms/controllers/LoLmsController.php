@@ -153,7 +153,7 @@ class LoLmsController extends LmsController
                     $lo["actions"][] = [
                         "name" => "play",
                         "active" => true,
-                        "type" => "href",
+                        "type" => "link",
                         "content" => "index.php?modname=organization&op=custom_playitem&id_item=$id",
                         "showIcon" => false,
                         "icon" => "icon-play",
@@ -163,7 +163,7 @@ class LoLmsController extends LmsController
                     $lo["actions"][] = [
                         "name" => "play",
                         "active" => true,
-                        "type" => "href",
+                        "type" => "link",
                         "content" => "index.php?modname=organization&op=custom_playitem&edit=1&id_item=$id",
                         "showIcon" => false,
                         "icon" => "icon-play",
