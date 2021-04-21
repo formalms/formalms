@@ -1624,6 +1624,8 @@ class Org_TreeView extends RepoTreeView {
 
 			$node['html'] = $html;
 
+			$node['typeId'] = $this->id;
+
             $node['title']= $this->getFolderPrintName( $folder );
 
             $idCourse = $folder->otherValues[ORGFIELDIDCOURSE];
@@ -1652,16 +1654,10 @@ class Org_TreeView extends RepoTreeView {
 
 			if($folder->otherValues[ORGFIELD_PUBLISHFOR] == PF_ATTENDANCE && !$this->presence()) {
 
-				
-
 			} else if($isPrerequisitesSatisfied && $event->getAccessible()){
-				
-						$node['active'] = true;
-				
+				$node['active'] = true;				
 			}
 
-			// find extra data and check if the node is a folder or a LO
-            
             if (is_array($arrData) && !empty($arrData)) {
                 $node['is_folder']= ($arrData[REPOFIELDOBJECTTYPE] === '');
             } else {
@@ -1679,8 +1675,6 @@ class Org_TreeView extends RepoTreeView {
 			
 			$status = Track_Object::getStatusFromId($folder->id, getLogUserId() );
 
-			$node['play'] = '';
-
 			if($folder->otherValues[ORGFIELD_PUBLISHFOR] == PF_TEACHER && $_SESSION['levelCourse'] <= 3) break;
 			if($folder->otherValues[ORGFIELD_PUBLISHFOR] == PF_ATTENDANCE && !$this->presence()) {
 
@@ -1689,11 +1683,7 @@ class Org_TreeView extends RepoTreeView {
 			} else if( $isPrerequisitesSatisfied && $event->getAccessible() ) {
 				
 				if (!$node['is_folder']) {
-					$node['visible_actions']['play']=[
-						'label' => 'Play',
-						'image' => getPathImage() . '/standard/view.png',
-						'url' => 'index.php?modname=organization&op=custom_playitem&id_item='.$folder->id
-					];
+					$node['play']=true;
 				}
 				
 				$node['locked'] = false;
@@ -1704,25 +1694,7 @@ class Org_TreeView extends RepoTreeView {
 			
 			if( checkPerm('lesson', true, 'storage') && !$this->playOnly)  {
 
-				$node['actions']['access']=[
-					'link' => $this->id.'['.$this->_getAccessId().']['.$folder->id.']',
-					'image' => $this->_getAccessImg()
-				];
-
-				$node['actions']['delete']=[
-					'link' => $this->id.'['.$this->_getDeleteUrl().']['.$folder->id.']',
-					'image' => $this->_getDeleteImage(),
-					'url' => 'index.php?r=lms/lo/delete&id=' . $folder->id
-				];
-
-				$node['actions']['rename']=[
-					'image' => $this->_getEditImage(),
-					'url' => 'index.php?r=lms/lo/rename&id=' . $folder->id
-				];
-
-				$tree .= '<img src="'.$this->_getDeleteImage().'" alt="'.$this->_getDeleteAlt().'" /> '
-				.'<input type="submit" class="TreeViewAction" value="'.$this->_getDeleteLabel().'"'
-				.' name="'.$this->_getDeleteUrl().'" />';
+				$node['canEdit'] = true;
 
 				$canBeCategorized = false;
 				if (is_object($lo_class)){
@@ -1730,28 +1702,11 @@ class Org_TreeView extends RepoTreeView {
 				}
 				
 				if ($canBeCategorized) {
-					$node['actions']['categorize']=[
-						'link' => 'link + '.$this->id.'['.$this->_getCategorizeId().']['.$folder->id.']',
-						'image' => $this->_getCategorizeImg()
-					];
+					$node['canBeCategorized'] = true;
 				}
-				$node['actions']['properties']=[
-					'link' => ''.$this->id.'['.$this->_getPropertiesId().']['.$folder->id.']',
-					'image' => $this->_getPropertiesImg()
-				];
 				
 				if( !$node['is_folder'] ) {
-					$node['actions']['copy'] = [
-						'link' => ''.$this->id.'['.$this->_getOpCopyLOId().']['.$folder->id.']',
-						'image' => $this->_getCopyImage()
-					];
-					$node['actions']['edit'] = [
-						'link' => ''.$this->id.'['.$this->_getOpEditLOId().']['.$folder->id.']',
-						'image' => $this->_getEditImage(),
-						'url' => 'index.php?r=lms/lo/edit&id=' . $folder->id
-					];
 					$node['play_teacher'] = 'index.php?modname=organization&amp;op=custom_playitem&amp;edit=1&amp;id_item='.$folder->id.'';
-						
 				} 
 			}
 
@@ -1781,52 +1736,26 @@ class Org_TreeView extends RepoTreeView {
             $node['properties']=$folder->properties;
                         
 			$node['img_path'] = Get::rel_path('files_lms') . '/lo/';
-			
-
-
-
-
-
-
-
+	
+			$node['locked'] = false;
 			if( !$node['is_folder'] ) {
 				if($arrData[ORGFIELD_PUBLISHFOR] == PF_ATTENDANCE && !$this->presence()) {
-
-					$node['actions']['locked']=[
-						'link' => $this->id.'['.$this->_getOpLockedId().']['.$folder->id.']" ',
-						'image' => $this->_getOpLockedImg()
-					];
-
+					$node['locked'] = true;
 				} else if( $isPrerequisitesSatisfied && $event->getAccessible() && !checkPerm('lesson', true, 'storage')) {
-
-					error_log($lo_class);
 					if(method_exists($lo_class, 'trackDetails')) {
-
-						$node['visible_actions']['show_results']=[
-							'link' => $this->id.'['.$this->_getShowResultsId().']['.$folder->id.']" ',
-							'image' => $this->_getShowResultsImg(),
-							'url' => 'index.php?modname=organization&op=track_details&type=' . $arrData[REPOFIELDOBJECTTYPE] . '&id_user='.getLogUserId().'&id_org='.$arrData[REPOFIELDIDRESOURCE]
+						$node["track_detail"] = [
+							"type" => $arrData[REPOFIELDOBJECTTYPE],
+							"is_user" => getLogUserId(),
+							"id_org" => $arrData[REPOFIELDIDRESOURCE]
 						];
 					}
 				} else {
-					$node['actions']['locked']=[
-						'link' => $this->id.'['.$this->_getOpLockedId().']['.$folder->id.']" ',
-						'image' => $this->_getOpLockedImg()
-					];
+					$node['locked'] = true;
 				}
 			} else {
 				$node['childCount'] = (int)$this->countChildren($folder->id);
 			}
 
-
-
-
-
-
-
-
-
-			
 			$res[$idLo] = $node;
 			$idx++;
 		}
