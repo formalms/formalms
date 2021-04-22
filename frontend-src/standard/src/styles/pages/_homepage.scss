@@ -41,7 +41,7 @@
 
   @include breakpoint($tablet) {
     margin: 0 auto;
-    border-radius: 5px;
+    border-radius: $border-radius;
   }
 }
 
