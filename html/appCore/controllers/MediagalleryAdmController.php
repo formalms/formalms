@@ -16,15 +16,19 @@ class MediagalleryAdmController extends AdmController
 
     public function show()
     {
+        require_once(Get::rel_path('lib') . '/formatable/formatable.php');
+        Util::get_css(Get::rel_path('lib') . '/formatable/formatable.css', true, true);
+
+        $type = Get::req("type", DOTY_STRING, null);
+        $authentic_request = Util::getSignature();
+
         /* if (!Docebo::user()->isAnonymous()) {
             die("You can't access!");
         }*/
 
-        $type = Get::req("type", DOTY_STRING, null);
-
         $this->render("show", [
             'type' => $type,
-            'mediaList' => $this->getMediaList(),
+            'authentic_request' => $authentic_request,
         ]);
     }
 
@@ -43,8 +47,10 @@ class MediagalleryAdmController extends AdmController
         }
     }
 
-    private function getMediaList()
+    public function listTask()
     {
+        $type = Get::req("type", DOTY_STRING, null);
+
         define("_USER_FPATH_INTERNAL", "/common/users/");
         define("_USER_FPATH", $GLOBALS["where_files_relative"] . _USER_FPATH_INTERNAL);
 
@@ -95,6 +101,6 @@ class MediagalleryAdmController extends AdmController
             }
         }
 
-        return $results;
+        die(json_encode($results));
     }
 }
