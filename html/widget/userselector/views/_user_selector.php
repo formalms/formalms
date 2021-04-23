@@ -9,8 +9,8 @@
  */
 //js global variable name
 $_varname = 'UserSelector_'.$id;
-$event = new \appLms\Events\Widget\UserSelectorRenderJSScriptEvent();
-\appCore\Events\DispatcherManager::dispatch(\appLms\Events\Widget\UserSelectorRenderJSScriptEvent::EVENT_NAME, $event);
+// $event = new \appLms\Events\Widget\UserSelectorRenderJSScriptEvent();
+// \appCore\Events\DispatcherManager::dispatch(\appLms\Events\Widget\UserSelectorRenderJSScriptEvent::EVENT_NAME, $event);
 
 ?>
 
@@ -122,8 +122,8 @@ $rel_action_bottom = '<span>'
 $id_org = isset($data_for_view['id_org'])?$data_for_view['id_org']:0;
 $fields = array('id', 'userid', 'firstname', 'lastname', '_dyn_field_0', '_dyn_field_1', '_dyn_field_2', 'valid');
 
-$event = new \appLms\Events\Widget\UserSelectorBeforeRenderEvent($id_org, $_varname, $columns_arr, $fields);
-\appCore\Events\DispatcherManager::dispatch(\appLms\Events\Widget\UserSelectorBeforeRenderEvent::EVENT_NAME, $event);
+// $event = new \appLms\Events\Widget\UserSelectorBeforeRenderEvent($id_org, $_varname, $columns_arr, $fields);
+// \appCore\Events\DispatcherManager::dispatch(\appLms\Events\Widget\UserSelectorBeforeRenderEvent::EVENT_NAME, $event);
 
 $this->widget('table', array(
 	'id' => 'user_selector_table_' . $id,

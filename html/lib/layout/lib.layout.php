@@ -1,8 +1,5 @@
 <?php
 
-use appCore\Events\Core\Catalogue\ExternalCatalogueLink;
-use Symfony\Component\EventDispatcher\EventDispatcher;
-
 defined("IN_FORMA") or die('Direct access is forbidden.');
 
 /* ======================================================================== \

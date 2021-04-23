@@ -20,16 +20,10 @@ class SettingAdm extends Model
 
 	protected $table;
 
-	/**
-	 * @var SmtpAdm
-	 */
-	protected $smtpAdm;
-
 	public function __construct()
 	{
 		$this->db = DbConn::getInstance();
 		$this->table = $GLOBALS['prefix_fw'] . '_setting';
-		$this->smtpAdm = SmtpAdm::getInstance();
 	}
 
 	public function getPerm()
@@ -52,7 +46,7 @@ class SettingAdm extends Model
 		WHERE hide_in_modify = '0'
 		ORDER BY regroup ");
 
-		$event = new \appCore\Events\Core\ConfigGetRegroupUnitsEvent();
+		// $event = new \appCore\Events\Core\ConfigGetRegroupUnitsEvent();
 
 		$names = array(
 			1 => 'Main_options',
@@ -69,9 +63,13 @@ class SettingAdm extends Model
 			13 => 'Twig'
 		);
 
-		$event->setGroupUnits($names);
-		\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\ConfigGetRegroupUnitsEvent::EVENT_NAME, $event);
-		$names = $event->getGroupUnits();
+		if(SmtpAdm::isEnabledDatabase()) {
+			$names[SmtpAdm::SMTP_GROUP] = 'Smtp Settings';
+		}
+
+		// $event->setGroupUnits($names);
+		// \appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\ConfigGetRegroupUnitsEvent::EVENT_NAME, $event);
+		// $names = $event->getGroupUnits();
 
 		$group = array();
 		while (list($id_regroup) = sql_fetch_row($re_regroup)) {

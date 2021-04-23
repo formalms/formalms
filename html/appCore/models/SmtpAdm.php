@@ -82,11 +82,11 @@ final class SmtpAdm extends Model
     {
         parent::__construct();
 
-        \appCore\Events\DispatcherManager::addListener(\appCore\Events\Core\ConfigGetRegroupUnitsEvent::EVENT_NAME, function (\appCore\Events\Core\ConfigGetRegroupUnitsEvent $event) {
-            if (self::isEnabledDatabase()) {
-                $event->addGroupUnit(self::SMTP_GROUP, 'Smtp Settings');
-            }
-        });
+        // \appCore\Events\DispatcherManager::addListener(\appCore\Events\Core\ConfigGetRegroupUnitsEvent::EVENT_NAME, function (\appCore\Events\Core\ConfigGetRegroupUnitsEvent $event) {
+        //     if (self::isEnabledDatabase()) {
+        //         $event->addGroupUnit(self::SMTP_GROUP, 'Smtp Settings');
+        //     }
+        // });
 
         $this->table = $GLOBALS['prefix_fw'] . '_setting';
         $this->fetchData();

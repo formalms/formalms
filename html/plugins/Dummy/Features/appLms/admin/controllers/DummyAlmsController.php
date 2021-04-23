@@ -41,11 +41,13 @@ class DummyAlmsController extends AlmsController {
 
     public function render_call() {
 
-		$event = new DummyEvent();
+		// $event = new DummyEvent();
 
-		\appCore\Events\DispatcherManager::dispatch(DummyEvent::EVENT_NAME, $event);
+		// \appCore\Events\DispatcherManager::dispatch(DummyEvent::EVENT_NAME, $event);
 
-        $params['foo']=$event->getFoo();
+        // $params['foo']=$event->getFoo();
+
+        $params['foo'] = 'bar';
 
         $this->render('render_call', $params);
     }

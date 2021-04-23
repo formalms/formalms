@@ -489,17 +489,17 @@ class Course_API extends API {
 
                 if ($model->updateUserStatus($user_id, $user_status)) {
                     // SET EDIT STATUS SUBSCRIPTION EVENT
-                    $event = new \appCore\Events\Core\Courses\CourseSubscriptionEditStatusEvent();
-                    $userModel = new UsermanagementAdm();
-                    $user = $userModel->getProfileData($user_id);
+                    // $event = new \appCore\Events\Core\Courses\CourseSubscriptionEditStatusEvent();
+                    // $userModel = new UsermanagementAdm();
+                    // $user = $userModel->getProfileData($user_id);
 
-                    require_once(_lms_ . '/lib/lib.course.php');
-                    $docebo_course = new DoceboCourse($course_id);
+                    // require_once(_lms_ . '/lib/lib.course.php');
+                    // $docebo_course = new DoceboCourse($course_id);
 
-                    $event->setUser($user);
-                    $event->setStatus(['id' => $user_status, 'name' => $status_arr[$user_status]]);
-                    $event->setCourse($docebo_course->course_info);
-                    \appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\Courses\CourseSubscriptionEditStatusEvent::EVENT_NAME, $event);
+                    // $event->setUser($user);
+                    // $event->setStatus(['id' => $user_status, 'name' => $status_arr[$user_status]]);
+                    // $event->setCourse($docebo_course->course_info);
+                    // \appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\Courses\CourseSubscriptionEditStatusEvent::EVENT_NAME, $event);
                 } else {
                     $update_ok = false;
                 }
