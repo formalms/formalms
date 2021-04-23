@@ -28,7 +28,7 @@ class FolderView {
     const el = event.target;
 
     if (el) {
-      event.preventDefault();
+      //event.preventDefault();
 
       const li = el.closest('.folderView__li');
       if (!li) {
@@ -39,7 +39,7 @@ class FolderView {
       if (!elId) {
         return;
       }
-      
+
       if (el.classList.contains('fv-is-delete')) {
         if (confirm('Sei sicuro di voler eliminare questo elemento?')) {
           const deleteLoData = getApiUrl('delete', elId, { type });
