@@ -16,8 +16,7 @@ class MediagalleryAdmController extends AdmController
 
     public function show()
     {
-        require_once(Get::rel_path('lib') . '/formatable/formatable.php');
-        Util::get_css(Get::rel_path('lib') . '/formatable/formatable.css', true, true);
+        require_once Forma::inc(_lib_ . '/formatable/include.php');
 
         $type = Get::req("type", DOTY_STRING, null);
         $authentic_request = Util::getSignature();

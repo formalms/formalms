@@ -1,4 +1,5 @@
 import Config from '../config/config';
+
 import tinymce from 'tinymce/tinymce';
 
 import 'tinymce/icons/default';
@@ -42,20 +43,26 @@ import 'tinymce/plugins/imagetools';
 class TinyMce {
 
   constructor() {
-    this.init();
+    const arInput = document.querySelector(['input[name=authentic_request]']);
+
+    if (arInput) {
+      const authentic_request = arInput.value;
+      this.init(authentic_request);
+    }
   }
 
   getPopupUrl(slug, params) {
-    let url = `${Config.apiUrl}${slug}`;
-    if (!params) {
-      params = {};
+    let url = `${Config.baseUrl}/appCore/index.php?r=${slug}`;
+    if (params) {
+      url += '&' + new URLSearchParams(params).toString();
     }
-    url += '&' + new URLSearchParams(params).toString();
 
     return url;
   }
 
-  init() {
+  init(authentic_request) {
+    this.authentic_request = authentic_request;
+
     this.initComplex('tinymce_complex');
     this.initSimple('tinymce_simple');
   }
@@ -96,7 +103,7 @@ class TinyMce {
       file_picker_callback: function (callback, value, meta) {
         tinymce.activeEditor.windowManager.openUrl({
           title: 'Forma File Browser',
-          url: `${obj.getPopupUrl('adm/mediagallery/show', { type: meta.filetype })}`,
+          url: `${obj.getPopupUrl('adm/mediagallery/show', { type: meta.filetype, authentic_request: obj.authentic_request })}`,
           width: 800,
           height: 600,
           resizable: true,
