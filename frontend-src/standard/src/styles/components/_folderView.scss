@@ -83,6 +83,19 @@
   }
 }
 
+.folderView__visibleActions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  position: absolute;
+  top: 8px;
+  right: 56px;
+
+  .fv-is-teacher-area & {
+    display: none;
+  }
+}
+
 .folderView__action,
 .folderView__button {
   background: transparent;
@@ -106,6 +119,17 @@
   }
 }
 
+.folderView__status {
+  width: 48px;
+  height: 48px;
+  margin: 0 4px;
+  background: {
+    repeat: no-repeat;
+    position: center;
+    size: 24px;
+  };
+}
+
 .folderView__buttons {
   position: absolute;
   top: 8px;
@@ -113,7 +137,8 @@
   opacity: 1;
 
   .fv-is-selected &,
-  .sortable-chosen & {
+  .sortable-chosen &,
+  .fv-is-student-area & {
     opacity: 0;
   }
 }
@@ -187,6 +212,22 @@
   background-image: url('images/folderView/icon-vertical-dots.svg');
 }
 
+.fv-is-scormorg {
+  background-image: url('images/folderView/icon-scorm.svg');
+}
+
+.fv-is-attempted {
+  background-image: url('images/folderView/icon-attempted.svg');
+}
+
+.fv-is-completed {
+  background-image: url('images/folderView/icon-completed.svg');
+}
+
+.fv-is-failed {
+  background-image: url('images/folderView/icon-failed.svg');
+}
+
 .folderView__copyOverlay {
   position: fixed;
   top: 0;
@@ -246,4 +287,19 @@
   margin-right: auto;
   display: block;
   padding-bottom: 5px;
+}
+
+.fv-is-student-area {
+
+  .fv-is-locked {
+    opacity: .5;
+    pointer-events: none;
+    cursor: default;
+    background: {
+      image: url('images/folderView/icon-lock.svg');
+      repeat: no-repeat;
+      position: 97% center;
+    };
+  }
+
 }

@@ -10,7 +10,7 @@
             {% endfor %}
         </ul>
 
-        <div class="tab-content">
+        <div class="tab-content fv-is-teacher-area">
             {% for tab in tabs %}
                 {% include 'container.html.twig' with { tab: tab, lo_types: lo_types } %}
             {% endfor %}
@@ -46,7 +46,7 @@ function clickOnTab(event) {
     const tab = target.closest('.tab-link');
     const oldTabContainer = document.querySelector('.tab-content > .active');
     const tabContainer = document.querySelector('.tab-content > .tab-pane[data-container=' + linktype + ']');
-    
+
     if (tabs) {
         tabs.forEach((tab) => {
             tab.classList.remove('active');
