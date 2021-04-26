@@ -1641,6 +1641,8 @@ class Org_TreeView extends RepoTreeView {
 
 			$node['active'] = false;
 
+			$node['locked'] = false;
+
 			$node['id'] = $folder->id;
 
 			$node['resource'] = $folder->otherValues[REPOFIELDIDRESOURCE];
@@ -1730,11 +1732,10 @@ class Org_TreeView extends RepoTreeView {
                         
 			$node['img_path'] = Get::rel_path('files_lms') . '/lo/';
 	
-			$node['locked'] = false;
 			if( !$node['is_folder'] ) {
 				if($arrData[ORGFIELD_PUBLISHFOR] == PF_ATTENDANCE && !$this->presence()) {
 					$node['locked'] = true;
-				} else if( $isPrerequisitesSatisfied && $event->getAccessible() && !checkPerm('lesson', true, 'storage')) {
+				} else if( $isPrerequisitesSatisfied && $event->getAccessible()) {
 					if(method_exists($lo_class, 'trackDetails')) {
 						$node["track_detail"] = [
 							"type" => $arrData[REPOFIELDOBJECTTYPE],
