@@ -46,6 +46,45 @@ class MediagalleryAdmController extends AdmController
         }
     }
 
+    public function deleteTask()
+    {
+        $user_id  = (int)Docebo::user()->getIdSt();
+        $id = Get::req("id", DOTY_STRING, null);
+
+        define("_USER_FPATH_INTERNAL", "/common/users/");
+        define("_USER_FPATH", $GLOBALS["where_files_relative"] . _USER_FPATH_INTERNAL);
+
+        require_once(_base_ . '/lib/lib.mimetype.php');
+        require_once(_base_ . '/lib/lib.multimedia.php');
+
+        if (!$this->canAccessPersonalMedia()) {
+            die("You can't access!");
+        }
+
+        $results = null;
+
+        $qtxt = "SELECT * FROM " . $GLOBALS["prefix_fw"] . "_user_file WHERE user_idst='" . $user_id . "' AND id = $id";
+        $q = sql_query($qtxt);
+
+        if (($q) && (sql_num_rows($q) > 0)) {
+            if ($row = sql_fetch_array($q)) {
+                $file = empty($row["media_url"]) ? _USER_FPATH . rawurlencode($row["real_fname"]) : $row["media_url"];
+
+                $results = [
+                    'id' => $row['id'],
+                    'file' => $file,
+                ];
+
+                // Delete file
+                @unlink($file);
+                $qtxt = "DELETE FROM " . $GLOBALS["prefix_fw"] . "_user_file WHERE user_idst='" . $user_id . "' AND id = $id";
+                $q = sql_query($qtxt);
+            }
+        }
+
+        die(json_encode($results));
+    }
+
     public function listTask()
     {
         $type = Get::req("type", DOTY_STRING, null);
@@ -69,7 +108,9 @@ class MediagalleryAdmController extends AdmController
 
         $path = (strlen(dirname($_SERVER['PHP_SELF'])) != 1 ? dirname($_SERVER['PHP_SELF']) : '') . '/';
         $path .= $GLOBALS["where_files_relative"];
-        $results = [];
+        $results = [
+            'data' => [],
+        ];
 
         if (($q) && (sql_num_rows($q) > 0)) {
             while ($row = sql_fetch_array($q)) {
@@ -86,7 +127,7 @@ class MediagalleryAdmController extends AdmController
                     $type = getMediaType($row["fname"]);
                 }
 
-                $results[] = [
+                $results['data'][] = [
                     'id' => $row['id'],
                     'user_idst' => $row['user_idst'],
                     'type' => $type,
@@ -98,6 +139,8 @@ class MediagalleryAdmController extends AdmController
                     'url' => $site_url . $row['real_fname'],
                 ];
             }
+            $results['recordsFiltered'] = sql_num_rows($q);
+            $results['recordsTotal'] = sql_num_rows($q);
         }
 
         die(json_encode($results));
