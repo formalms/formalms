@@ -50,7 +50,8 @@ class LoLmsController extends LmsController
                 $this->model->setTdb(LoLms::ORGDIRDB);
             }
         }
-        return array_values($this->model->getFolders($idCourse, $idFolder));
+        $loData = array_values($this->model->getFolders($idCourse, $idFolder));
+        return $this->formatLoData($loData);
     }
 
     private function getCurrentState($idFolder = false, $type = false)
@@ -248,9 +249,8 @@ class LoLmsController extends LmsController
     {
         $id = Get::req('id', DOTY_INT, false);
         $responseData = [];
-        $loData = $this->getFolders($this->idCourse, $id);
+        $responseData['data'] = $this->getFolders($this->idCourse, $id);
         $responseData['currentState'] = serialize([$this->getCurrentState(0)]);
-        $responseData['data'] = $this->formatLoData($loData);
         echo $this->json->encode($responseData);
         exit;
     }
