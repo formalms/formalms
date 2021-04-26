@@ -21,17 +21,16 @@
  * @abstract
  */
 
-require_once(Docebo::inc(_folder_lms_ . '/modules/question/class.associate.php'));
-require_once(Docebo::inc(_folder_lms_ . '/modules/question/class.break_page.php'));
-require_once(Docebo::inc(_folder_lms_ . '/modules/question/class.choice.php'));
-require_once(Docebo::inc(_folder_lms_ . '/modules/question/class.choice_multiple.php'));
-require_once(Docebo::inc(_folder_lms_ . '/modules/question/class.extended_text.php'));
-require_once(Docebo::inc(_folder_lms_ . '/modules/question/class.hot_text.php'));
-require_once(Docebo::inc(_folder_lms_ . '/modules/question/class.inline_choice.php'));
-require_once(Docebo::inc(_folder_lms_ . '/modules/question/class.numerical.php'));
-require_once(Docebo::inc(_folder_lms_ . '/modules/question/class.text_entry.php'));
-require_once(Docebo::inc(_folder_lms_ . '/modules/question/class.title.php'));
-require_once(Docebo::inc(_folder_lms_ . '/modules/question/class.upload.php'));
+require_once(Forma::inc(_lms_ . '/modules/question/class.associate.php'));
+require_once(Forma::inc(_lms_ . '/modules/question/class.break_page.php'));
+require_once(Forma::inc(_lms_ . '/modules/question/class.choice.php'));
+require_once(Forma::inc(_lms_ . '/modules/question/class.choice_multiple.php'));
+require_once(Forma::inc(_lms_ . '/modules/question/class.extended_text.php'));
+require_once(Forma::inc(_lms_ . '/modules/question/class.inline_choice.php'));
+require_once(Forma::inc(_lms_ . '/modules/question/class.numerical.php'));
+require_once(Forma::inc(_lms_ . '/modules/question/class.text_entry.php'));
+require_once(Forma::inc(_lms_ . '/modules/question/class.title.php'));
+require_once(Forma::inc(_lms_ . '/modules/question/class.upload.php'));
 
 class Question
 {
@@ -461,18 +460,18 @@ class Question
 	 * @access public
 	 * @author Fabio Pirovano (fabio@docebo.com)
 	 */
-    function deleteAnswer($id_track, $numberTime = '')
-    {
-        $query = "DELETE FROM " . $GLOBALS['prefix_lms'] . "_testtrack_answer 
+	function deleteAnswer($id_track, $numberTime = '')
+	{
+		$query = "DELETE FROM " . $GLOBALS['prefix_lms'] . "_testtrack_answer 
 		WHERE idTrack = '" . (int)$id_track . "' AND 
 			idQuest = '" . $this->id . "'";
 
-        if (!empty($numberTime) && is_numeric($numberTime)) {
-            $query .= " AND number_time = '" . $numberTime . "'";
-        }
+		if (!empty($numberTime) && is_numeric($numberTime)) {
+			$query .= " AND number_time = '" . $numberTime . "'";
+		}
 
-        return sql_query($query);
-    }
+		return sql_query($query);
+	}
 
 	/**
 	 * force a score to a question
@@ -704,8 +703,7 @@ class Question
 		if (!is_array($raw_quest->answers)) return $new_id_quest;
 
 		reset($raw_quest->answers);
-		while (list(, $raw_answer) = each($raw_quest->answers)) {
-
+		foreach ($raw_quest as $raw_answer) {
 			//insert answer
 			$ins_answer_query = "
 			INSERT INTO " . $GLOBALS['prefix_lms'] . "_testquestanswer 
@@ -844,6 +842,21 @@ class Question
 
 		return $answers;
 	}
+
+	protected function testQuestAnswerExists($trackTest)
+	{
+		$idTrack = (int)$trackTest->idTrack;
+		$idQuest = (int)$this->id;
+		$number_time = (int)($trackTest->getNumberOfAttempt() + 1);
+
+		$track_query = "SELECT idTrack FROM " . $GLOBALS['prefix_lms'] . "_testtrack_answer
+										WHERE idTrack = $idTrack AND idQuest = $idQuest AND number_time = $number_time";
+
+		$res = sql_query($track_query);
+		list($exists) = sql_fetch_row($res);
+
+		return (bool)$exists;
+	}
 }
 
 
@@ -890,5 +903,4 @@ class AnswerRaw
 	var $comment 		= false;
 	var $score_correct 	= 0;
 	var $score_penalty 	= 0;
-
 }
