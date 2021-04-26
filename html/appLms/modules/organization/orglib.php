@@ -477,13 +477,6 @@ class OrgDirDb extends RepoDirDb {
 		return $this->changeOtherData( $folder );
 	}
 	
-	// overload to modify folder internal name to avoid conflicts 
-	// and send it to the end of parent
-	function moveFolder( &$folder, &$parentFolder ) {
-		// change folder name
-		parent::moveFolder( $folder, $parentFolder, $this->getNewPos( $parentFolder->id ) );
-	}
-	
 	function _strip($data, $cond) { return ( $cond ? stripslashes($data) : $data  ); }
 	
 	function modifyItem( $arrData, $idCourse = FALSE, $strips = false ) {

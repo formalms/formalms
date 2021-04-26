@@ -288,6 +288,7 @@ class LoLmsController extends LmsController
         $newParent = Get::req('newParent', DOTY_INT, false);
         $newOrderString = Get::req('newOrder', DOTY_STRING, false);
         $newOrder = explode(",", $newOrderString);
+        $newOrder = array_filter($newOrder);
 
         $responseData = ['success' => false];
 

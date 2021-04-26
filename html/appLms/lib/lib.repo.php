@@ -421,7 +421,7 @@ class RepoDirDb extends TreeDb {
 			foreach ($newOrder as $index => $id) {
 				$folder = $this->getFolderById($id);
 				$folderName = substr('00000000' . ($index + 1), -8);
-				parent::renameFolder($folder, $parent->path + "/" + $folderName);
+				parent::renameFolder($folder, $folderName);
 			}
 		}
 		return true;
