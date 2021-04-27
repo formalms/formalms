@@ -2435,6 +2435,7 @@ Password: [password]]]></key>
         <key id="standard&amp;_FIELD_NAME" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Nome campo]]></key>
         <key id="standard&amp;_FILE" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[File]]></key>
         <key id="standard&amp;_FILENAME" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Nome file]]></key>
+        <key id="standard&amp;_FILEMIME" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Tipo di file]]></key>
         <key id="standard&amp;_FILESIZE" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Dimensione file]]></key>
         <key id="standard&amp;_FILE_MANAGER" attributes="" save_date="2017-04-11 18:47:04"><![CDATA[Gestore file]]></key>
         <key id="standard&amp;_FILE_SURE_DEL" attributes="" save_date="2017-04-11 18:47:04"><![CDATA[Sei sicuro di voler eliminare questo file?]]></key>
@@ -2684,6 +2685,7 @@ Password: [password]]]></key>
         <key id="standard&amp;_UNTIL_COMPLETED" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Fino a che non è completato/passato]]></key>
         <key id="standard&amp;_UP" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Su]]></key>
         <key id="standard&amp;_UPLOAD" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Carica file]]></key>
+        <key id="standard&amp;_MEDIA_URL" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Media URL]]></key>
         <key id="standard&amp;_URL" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Indirizzo]]></key>
         <key id="standard&amp;_USER" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Utente]]></key>
         <key id="standard&amp;_USERNAME" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Username]]></key>
