@@ -2390,6 +2390,7 @@ Username: [userid]
         <key id="standard&amp;_FIELD_NAME" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Field name]]></key>
         <key id="standard&amp;_FILE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[File]]></key>
         <key id="standard&amp;_FILENAME" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[File name]]></key>
+        <key id="standard&amp;_FILEMIME" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[File type]]></key>
         <key id="standard&amp;_FILE_MANAGER" attributes="" save_date="2017-04-11 18:38:45"><![CDATA[File manager]]></key>
         <key id="standard&amp;_FILTER" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Filter by]]></key>
         <key id="standard&amp;_FILTER_ALL_CONDS" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[All conditions must be satisfied]]></key>
@@ -2637,6 +2638,7 @@ Username: [userid]
         <key id="standard&amp;_UNTIL_COMPLETED" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Until not completed/passed]]></key>
         <key id="standard&amp;_UP" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Up]]></key>
         <key id="standard&amp;_UPLOAD" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Upload file(s)]]></key>
+        <key id="standard&amp;_MEDIA_URL" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Media URL]]></key>
         <key id="standard&amp;_URL" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[URL]]></key>
         <key id="standard&amp;_USER" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[User]]></key>
         <key id="standard&amp;_USERNAME" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Username]]></key>
