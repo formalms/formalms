@@ -93,9 +93,6 @@ function organization( &$treeView ) {
 			organization_showerror($treeView);
 		break;
 		case 'itemdone':
-			organization_itemdone( $treeView, (int)$_GET[$treeView->_getOpPlayEnd()], (int)getLogUserId() );
-			//refresh the tree 
-		// no break, we would display after LO completition
 		default:
 			organization_display( $treeView );
 		break;
@@ -262,36 +259,6 @@ function organization_play( &$treeView, $idItem ) {
 					$idResource );
 					
 	$lo->play($idResource, $idParams, $back_url);
-}
-
-function organization_itemdone( &$treeView, $idItem, $idUser ) {
-	
-	$lang =& DoceboLanguage::createInstance('organization', 'lms');
-	
-	require_once($GLOBALS['where_lms'].'/class.module/track.object.php');
-	require_once($GLOBALS['where_lms'].'/lib/lib.stats.php');
-
-	$tdb = $treeView->getTreeDb();
-	$item = $tdb->getFolderById( $idItem );
-	$values = $item->otherValues;
-	$objectType = $values[REPOFIELDOBJECTTYPE];
-	$idResource = $values[REPOFIELDIDRESOURCE];
-	$idParams = $values[ORGFIELDIDPARAM];
-	$isTerminator = $values[ORGFIELDISTERMINATOR];
-	$idCourse = $tdb->idCourse;
-	
-	if( $isTerminator ) {
-		
-		require_once($GLOBALS['where_lms'].'/lib/lib.course.php');
-		$idTrack = Track_Object::getIdTrackFromCommon( $idItem, $idUser );
-		$track = createLOTrack( $idTrack, $objectType, $idResource, $idParams, "" );
-		if( $track->getStatus() == 'completed' || $track->getStatus() == 'passed' ) {
-			if( !saveTrackStatusChange((int)$idUser, (int)$idCourse , _CUS_END) ) {
-				errorCommunication($lang->def( '_OPERATION_FAILURE' ));
-				return;
-			}
-		}
-	}
 }
 
 function import() {
