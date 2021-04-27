@@ -14,20 +14,32 @@
 class MediagalleryAdmController extends AdmController
 {
 
-    public function show()
+    public function show($type = null, $msg = null)
     {
         require_once Forma::inc(_lib_ . '/formatable/include.php');
 
-        $type = Get::req("type", DOTY_STRING, null);
+        if (!$type) {
+            $type = Get::req("type", DOTY_STRING, null);
+        }
         $authentic_request = Util::getSignature();
 
-        /* if (!Docebo::user()->isAnonymous()) {
+        if (Docebo::user()->isAnonymous()) {
             die("You can't access!");
-        }*/
+        }
+
+        $p_size = intval(ini_get('post_max_size'));
+        $u_size = intval(ini_get('upload_max_filesize'));
+        $comparison = array($p_size, $u_size);
+        if (!is_null($max_size)) {
+            $comparison[] = (int)$max_size;
+        }
+        $max_kb = min($comparison);
 
         $this->render("show", [
             'type' => $type,
             'authentic_request' => $authentic_request,
+            'max_upload_size' => $max_kb,
+            'msg' => $msg,
         ]);
     }
 
@@ -44,6 +56,71 @@ class MediagalleryAdmController extends AdmController
         } else {
             return false;
         }
+    }
+
+    public function uploadTask()
+    {
+        if (!$this->canAccessPersonalMedia()) {
+            die("You can't access!");
+        }
+
+        include_once(_base_ . '/lib/lib.upload.php');
+        include_once(_base_ . '/lib/lib.multimedia.php');
+
+        $user_id = Docebo::user()->getIdSt();
+        $type = Get::req("type", DOTY_STRING, null);
+        $msg = $error = null;
+
+        if ((isset($_FILES["file"]["name"])) && (!empty($_FILES["file"]["name"]))) {
+            $fname             = $_FILES["file"]["name"];
+            $size             = $_FILES["file"]["size"];
+            $tmp_fname         = $_FILES["file"]["tmp_name"];
+            $real_fname     = $user_id . '_' . mt_rand(0, 100) . '_' . time() . '_' . $fname;
+
+            $valid_ext = explode(",", Get::sett('file_upload_whitelist', ''));
+            $ext = strtolower(end(explode(".", $fname)));
+            if (!in_array($ext, $valid_ext)) {
+                $error = Lang::t('_INVALID_EXTENSION', 'standard');
+            } else {
+                sl_open_fileoperations();
+
+                define("_USER_FPATH_INTERNAL", "/common/users/");
+                define("_USER_FPATH", $GLOBALS["where_files_relative"] . _USER_FPATH_INTERNAL);
+
+                $f1 = sl_upload($tmp_fname, _USER_FPATH_INTERNAL . $real_fname);
+                sl_close_fileoperations();
+                if (!$f1) {
+                    // upload error
+                    $error = Lang::t('_ERROR_UPLOAD', 'standard');
+                }
+            }
+        } else {
+            $media_url = $_POST["media_url"];
+            $fname = "";
+            $real_fname = "";
+
+            if (!empty($media_url)) {
+                if (isYouTube($media_url)) {
+                    $fname = str_replace("http://www.", "", strtolower($media_url));
+                } else {
+                    $fname = basename($media_url);
+                    $fname = (strpos($fname, "?") !== FALSE ? preg_replace("/(\?.*)/", "", $fname) : $fname);
+                }
+            }
+        }
+
+        if ($error) {
+            $msg = ['class' => 'danger', 'text' => $error];
+        } else {
+            $qtxt = "INSERT INTO " . $GLOBALS["prefix_fw"] . "_user_file ";
+            $qtxt .= " ( user_idst, type, fname, real_fname, media_url, size, uldate ) VALUES ";
+            $qtxt .= " ($user_id, '$type', '$fname', '" . addslashes($real_fname) . "', '$media_url', '$size', NOW())";
+            sql_query($qtxt);
+
+            $msg = ['class' => 'success', 'text' => 'Media caricato con successo'];
+        }
+
+        return $this->show($type, $msg);
     }
 
     public function deleteTask()
