@@ -67,11 +67,13 @@ class DashboardsettingsAdm extends Model
         $result = $this->db->query($query_blocks);
 
         while ($block = $this->db->fetch_assoc($result)) {
-            /** @var DashboardBlockLms $blockObj */
-            $blockObj = new $block['block_class']($block['block_config']);
-            $blockObj->setOrder($block['position']);
+            if (file_exists(_lms_ . '/models/' . $block['block_class'] . '.php')) {
+                /** @var DashboardBlockLms $blockObj */
+                $blockObj = new $block['block_class']($block['block_config']);
+                $blockObj->setOrder($block['position']);
 
-            $this->enabledBlocks[$block['dashboard_id']][] = $blockObj;
+                $this->enabledBlocks[$block['dashboard_id']][] = $blockObj;
+            }
         }
     }
 
@@ -83,12 +85,14 @@ class DashboardsettingsAdm extends Model
         $result = $this->db->query($query_blocks);
 
         while ($block = $this->db->fetch_assoc($result)) {
+            if (file_exists(_lms_ . '/models/' . $block['block_class'] . '.php')) {
 
-            require_once Forma::inc(_lms_ . '/models/' . $block['block_class'] . '.php');
-            /** @var DashboardBlockLms $blockObj */
-            $blockObj = new $block['block_class']('');
+                require_once Forma::inc(_lms_ . '/models/' . $block['block_class'] . '.php');
+                /** @var DashboardBlockLms $blockObj */
+                $blockObj = new $block['block_class']('');
 
-            $this->installedBlocks[] = $blockObj;
+                $this->installedBlocks[] = $blockObj;
+            }
         }
     }
 
