@@ -23,6 +23,17 @@ class MediagalleryAdmController extends AdmController
         }
         $authentic_request = Util::getSignature();
 
+        switch ($type) {
+            case 'image':
+                $accepted_mime = 'image/x-png,image/gif,image/jpeg';
+                break;
+            case 'media':
+                $accepted_mime = 'video/mp4,video/x-m4v,video/*';
+                break;
+            default:
+                $accepted_mime = '*';
+        }
+
         if (Docebo::user()->isAnonymous()) {
             die("You can't access!");
         }
@@ -38,6 +49,7 @@ class MediagalleryAdmController extends AdmController
         $this->render("show", [
             'type' => $type,
             'authentic_request' => $authentic_request,
+            'accepted_mime' => $accepted_mime,
             'max_upload_size' => $max_kb,
             'msg' => $msg,
         ]);
@@ -169,9 +181,6 @@ class MediagalleryAdmController extends AdmController
         define("_USER_FPATH_INTERNAL", "/common/users/");
         define("_USER_FPATH", $GLOBALS["where_files_relative"] . _USER_FPATH_INTERNAL);
 
-        // define("POPUP_MOD_NAME", "mod_media");
-        // $lang = &DoceboLanguage::createInstance('popup_' . POPUP_MOD_NAME, 'framework');
-
         require_once(_base_ . '/lib/lib.mimetype.php');
         require_once(_base_ . '/lib/lib.multimedia.php');
 
@@ -180,7 +189,7 @@ class MediagalleryAdmController extends AdmController
         }
 
         $user_id     = (int)Docebo::user()->getIdSt();
-        $qtxt = "SELECT * FROM " . $GLOBALS["prefix_fw"] . "_user_file WHERE user_idst='" . $user_id . "'";
+        $qtxt = "SELECT * FROM " . $GLOBALS["prefix_fw"] . "_user_file WHERE user_idst='" . $user_id . "' AND type = '$type'";
         $q = sql_query($qtxt);
 
         $path = (strlen(dirname($_SERVER['PHP_SELF'])) != 1 ? dirname($_SERVER['PHP_SELF']) : '') . '/';
@@ -210,7 +219,7 @@ class MediagalleryAdmController extends AdmController
                     'type' => $type,
                     'fname' => $row['fname'],
                     'real_fname' => $row['real_fname'],
-                    'size' => $row['size'],
+                    'size' => str_replace('.', ',', round($row['size'] / 1024, 2)) . ' Kb',
                     'uldate' => $row['uldate'],
                     'file' => $file,
                     'url' => $site_url . $row['real_fname'],
