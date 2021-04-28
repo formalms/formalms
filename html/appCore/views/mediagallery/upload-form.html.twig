@@ -6,7 +6,7 @@
       <div class="form-group">
         <label for="file" class="col-xs-3 control-label">{{ translate('_FILENAME', 'standard') }}</label>
         <div class="col-xs-9">
-          <input type="file" class="fileupload" id="file" name="file">
+          <input type="file" class="fileupload" id="file" name="file" accept="{{ accepted_mime }}">
           {% if max_upload_size %}<span>(Max. {{ max_upload_size }} Mb)</span>{% endif %} 
         </div>
         <div class="nofloat"></div>

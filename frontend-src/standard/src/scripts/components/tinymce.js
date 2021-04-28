@@ -117,6 +117,17 @@ class TinyMce {
   initSimple(editor_selector) {
     const obj = this;
 
+    window.addEventListener('message', function (event) {
+      var data = event.data;
+
+      // Do something with the data received here
+      if (data.mceAction == 'setUrl') {
+        var inputUrl = $('.tox-form input[type=url]');
+        inputUrl.val(data.value);
+        tinymce.activeEditor.windowManager.close();
+      }
+    });
+
     tinymce.init({
       mode: 'textareas',
       skin: false,
