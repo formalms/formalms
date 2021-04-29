@@ -207,10 +207,10 @@ class MediagalleryAdmController extends AdmController
                 }
 
                 if (!empty($row["media_url"])) {
-                    $type = getMediaType($row["media_url"]);
+                    // $type = getMediaType($row["media_url"]);
                     $site_url = $row["media_url"];
                 } else {
-                    $type = getMediaType($row["fname"]);
+                    // $type = getMediaType($row["fname"]);
                 }
 
                 $results['data'][] = [
