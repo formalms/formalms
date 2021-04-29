@@ -143,13 +143,14 @@ class LoLmsController extends LmsController
         ]);
     }
 
-    function formatLoData($loData) {
+    function formatLoData($loData)
+    {
         $results = [];
         foreach ($loData as $lo) {
             $type = $lo['typeId'];
             $id = $lo['id'];
             $lo["actions"] = [];
-            if(!$lo["is_folder"]) {
+            if (!$lo["is_folder"]) {
                 if ($lo["play"] && !$lo['canEdit']) {
                     $lo["actions"][] = [
                         "name" => "play",
@@ -173,7 +174,7 @@ class LoLmsController extends LmsController
                 }
             }
             if ($lo['canEdit']) {
-                if(!$lo["is_folder"]) {
+                if (!$lo["is_folder"]) {
                     $lo["actions"][] = [
                         "name" => "edit",
                         "active" => true,
@@ -217,7 +218,7 @@ class LoLmsController extends LmsController
                     ];
                 }
 
-                if(!$lo["is_folder"]) {
+                if (!$lo["is_folder"]) {
                     $lo["actions"][] = [
                         "name" => "copy",
                         "active" => true,
@@ -238,9 +239,8 @@ class LoLmsController extends LmsController
                     "icon" => "icon-delete",
                     "label" => "Delete",
                 ];
-                
             }
-            $results []= $lo;
+            $results[] = $lo;
         }
         return $results;
     }
@@ -304,17 +304,18 @@ class LoLmsController extends LmsController
 
     public function edit()
     {
+        $id = Get::req('id', DOTY_INT, false);
+        $type = Get::req('type', DOTY_STRING, LoLms::ORGDIRDB);
 
-        $tree_view = new Org_TreeView($this->tdb, 'organization');
+        $tdb = $this->model->setTdb($type, $_SESSION['idCourse']);
+        $tree_view = new Org_TreeView($tdb, 'organization');
 
         require_once Forma::inc(_adm_ . '/lib/lib.sessionsave.php');
         $saveObj = new Session_Save();
         $saveName = $saveObj->getName('organization' . $_SESSION['idCourse'], true);
         $saveObj->save($saveName, $tree_view->getState());
 
-        $id = Get::req('id', DOTY_INT, false);
-
-        $folder = $this->tdb->getFolderById((string)$id);
+        $folder = $tdb->getFolderById((string)$id);
         $lo = createLO($folder->otherValues[REPOFIELDOBJECTTYPE]);
         $lo->edit($folder->otherValues[REPOFIELDIDRESOURCE], 'index.php?r=lms/lo/organization&id_course=1');
     }
@@ -337,11 +338,12 @@ class LoLmsController extends LmsController
         exit;
     }
 
-    public function copy() {
+    public function copy()
+    {
         $id = Get::req('id', DOTY_INT, false);
         $fromType = Get::req('type', DOTY_STRING, LoLms::ORGDIRDB);
         $newtype = Get::req('newtype', DOTY_STRING, false);
-        if($this->model->copy($id, $fromType)) {
+        if ($this->model->copy($id, $fromType)) {
             $this->model->setTdb($newtype);
             $this->model->paste(0);
         }

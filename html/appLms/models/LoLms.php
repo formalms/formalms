@@ -49,6 +49,7 @@ class LoLms extends Model {
             default:
                 throw new Error('Missing directory type in LoLms constructor');
         }
+        return $this->tdb;
     }
 
     public function getLearningObjects($rootId) {
