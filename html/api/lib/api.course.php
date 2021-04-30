@@ -798,6 +798,9 @@ class Course_API extends API
         $response['course_id'] = (int)$id_course;
         $response['course_code'] = $course_info['code'];
         $response['course_name'] = $course_info['name'];
+        // if ( strlen($course_info['box_description']) >=50 ){
+        //     $course_info['box_description'] = substr($course_info['box_description'], 0, 47) . '...';
+        // }
         $response['box_description'] = $course_info['box_description'];
         if ((int)$course_info['idCourse'] == 0) $response['message'] = "Course not found";
     

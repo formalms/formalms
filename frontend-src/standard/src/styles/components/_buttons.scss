@@ -12,6 +12,7 @@
 // </a>
 //
 // Style guide: 2.1
+
 .forma-button {
   display: inline-block;
   width: 100%;
@@ -25,9 +26,9 @@
   line-height: 40px;
   color: $white;
   background: $dark-orange;
-  border: 2px solid $dark-orange;
+  // border: 2px solid $dark-orange;
   font-family: $font;
-  font-size: 11px;
+  font-size: 12px;
   border-radius: $border-radius;
   outline: none;
   box-shadow: none;
@@ -49,6 +50,8 @@
 
   &:focus {
     text-decoration: none;
+    background-color: $light-orange;
+    color: $white;
   }
 
   .user-panel & {
@@ -100,7 +103,13 @@
   &:hover {
     background: $orange;
     color: $white;
-    border-color: $orange;
+    // border-color: $orange;
+    .forma-button__label:after {
+      animation-duration: 500ms;
+      animation-name: formaButtonLabelAfter;
+      animation-iteration-count: infinite;
+      animation-direction: alternate;
+    }
   }
 }
 
@@ -262,7 +271,7 @@
 //
 // Style guide: 2.9
 .forma-button--orange {
-  border: solid 2px $orange;
+  // border: solid 2px $orange;
   background: $white;
   color: $orange;
 
@@ -280,6 +289,16 @@
   }
 }
 
+@keyframes formaButtonLabelAfter {
+  from {
+    margin-left: 6px;
+  }
+
+  to {
+    margin-left: 15px;
+  }
+}
+
 .forma-button__label {
   position: relative;
   display: inline-block;
@@ -288,10 +307,12 @@
   text-decoration: inherit;
 
   &:after {
-    content: '\f101';
+    position: absolute;
+    content: '\f178';
+    // content: '\f061';
     font-family: $icon;
     font-size: inherit;
-    color: rgba(255, 255, 255, 0.7);
+    color: $white;
     margin-left: 6px;
 
     .d-courses &,

@@ -216,10 +216,11 @@ class ElearningLmsController extends LmsController
         
         foreach ($courselist as $k => $course_array) {
             $courselist[$k]['can_enter'] = Man_Course::canEnterCourse($courselist[$k]);
-            if ( strlen($course_array['name']) >=50 ){
+            $courselist[$k]['totalname'] = $course_array['name'];
+            if ( strlen($course_array['name']) >=150 ){
                 $courselist[$k]['tooltipClass'] =  'has-forma-tooltip';
                 $courselist[$k]['tooltipElement'] =  '<div class="forma-tooltip">'.$course_array['name'].'</div>';
-                $courselist[$k]['name'] = substr($course_array['name'], 0, 50) . '...';                
+                $courselist[$k]['name'] = substr($course_array['name'], 0, 147) . '...';
             } else {
                 $courselist[$k]['tooltipClass'] =  '';
                 $courselist[$k]['tooltipElement'] =  '';
