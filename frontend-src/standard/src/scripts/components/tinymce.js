@@ -98,7 +98,7 @@ class TinyMce {
       theme_advanced_buttons3: '',
       theme_advanced_toolbar_location: 'top',
       theme_advanced_toolbar_align: 'center',
-      height: '250px',
+      height: '450px',
       width: '100%',
       file_picker_callback: function (callback, value, meta) {
         tinymce.activeEditor.windowManager.openUrl({
@@ -150,7 +150,7 @@ class TinyMce {
       theme_advanced_buttons3 : '',
       theme_advanced_toolbar_location : 'top',
       theme_advanced_toolbar_align : 'center',
-      height:'250px',
+      height:'450px',
       width:'100%',
       file_picker_callback: function (callback, value, meta) {
         tinymce.activeEditor.windowManager.openUrl({
