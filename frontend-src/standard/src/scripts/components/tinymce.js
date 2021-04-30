@@ -1,7 +1,6 @@
-import Config from '../config/config';
-
 import tinymce from 'tinymce/tinymce';
 
+import Config from '../modules/Config';
 import 'tinymce/icons/default';
 
 import 'tinymce/themes/silver/theme';
@@ -52,7 +51,7 @@ class TinyMce {
   }
 
   getPopupUrl(slug, params) {
-    let url = `${Config.baseUrl}/appCore/index.php?r=${slug}`;
+    let url = `${Config.baseUrl()}/appCore/index.php?r=${slug}`;
     if (params) {
       url += '&' + new URLSearchParams(params).toString();
     }
