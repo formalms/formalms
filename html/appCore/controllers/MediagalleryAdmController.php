@@ -46,7 +46,7 @@ class MediagalleryAdmController extends AdmController
         }
         $max_kb = min($comparison);
 
-        $this->render("show", [
+        $this->render('show', [
             'type' => $type,
             'authentic_request' => $authentic_request,
             'accepted_mime' => $accepted_mime,
