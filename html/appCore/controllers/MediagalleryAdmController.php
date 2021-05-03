@@ -14,7 +14,7 @@
 class MediagalleryAdmController extends AdmController
 {
 
-    public function show($type = null, $msg = null)
+    public function showTask($type = null, $msg = null)
     {
         require_once Forma::inc(_lib_ . '/formatable/include.php');
 
