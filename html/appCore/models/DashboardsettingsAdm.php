@@ -67,7 +67,8 @@ class DashboardsettingsAdm extends Model
         $result = $this->db->query($query_blocks);
 
         while ($block = $this->db->fetch_assoc($result)) {
-            if (file_exists(_lms_ . '/models/' . $block['block_class'] . '.php')) {
+            $blockClass = Forma::inc(_lms_ . '/models/' . $block['block_class'] . '.php');
+            if (file_exists($blockClass)) {
                 /** @var DashboardBlockLms $blockObj */
                 $blockObj = new $block['block_class']($block['block_config']);
                 $blockObj->setOrder($block['position']);
@@ -85,9 +86,10 @@ class DashboardsettingsAdm extends Model
         $result = $this->db->query($query_blocks);
 
         while ($block = $this->db->fetch_assoc($result)) {
-            if (file_exists(_lms_ . '/models/' . $block['block_class'] . '.php')) {
+            $blockClass = Forma::inc(_lms_ . '/models/' . $block['block_class'] . '.php');
+            if (file_exists($blockClass)) {
 
-                require_once Forma::inc(_lms_ . '/models/' . $block['block_class'] . '.php');
+                require_once $blockClass;
                 /** @var DashboardBlockLms $blockObj */
                 $blockObj = new $block['block_class']('');
 
