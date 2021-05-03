@@ -85,6 +85,19 @@ class LoLms extends Model {
 
     public function deleteFolder($id) {
         $folder = $this->tdb->getFolderById( (string)$id);
+        $lo = createLO( $folder->otherValues[REPOFIELDOBJECTTYPE] );
+        if ($lo) {
+            // delete categorized resource
+            require_once(_lms_.'/lib/lib.kbres.php');
+            $kbres =new KbRes();
+            $kbres->deleteResourceFromItem(
+                $folder->otherValues[REPOFIELDIDRESOURCE],
+                $folder->otherValues[REPOFIELDOBJECTTYPE],
+                'course_lo'
+            );
+            // ---------------------------
+            $lo->del( $folder->otherValues[REPOFIELDIDRESOURCE] );
+        }
         return $this->tdb->_deleteTree( $folder );
     }
 
