@@ -70,11 +70,11 @@ module.exports = {
   },
   plugins: [
     new HardSourceWebpackPlugin(),
-    new UglifyJSPlugin({
+    /*new UglifyJSPlugin({
       uglifyOptions: {
         sourceMap: false,
         comments: false
       }
-    })
+    })*/
   ]
 };
