@@ -314,8 +314,6 @@ class FolderTree {
       const parentId = target.getAttribute('data-id');
       if ((this.currentElId !== parentId) && (target.classList.contains('is-dropzone'))) {
         const type = window.type;
-        console.log(parentId, 'target.id');
-        console.log(this.currentElId, 'this.currentElId');
 
         const reorderLoData = getApiUrl('reorder', this.currentElId, { type, newParent: parentId });
         axios.get(reorderLoData).then(() => {
@@ -329,13 +327,19 @@ class FolderTree {
           } else {
             this.currentEl.remove();
           }
-          const el = this.querySelector('.folderView__li[data-id="' + this.currentElId + '"]')
+          const el = this.querySelector('.folderView__li[data-id="' + this.currentElId + '"]');
+
+          // Refresh
           this.querySelector('.folderTree__link.ft-is-root').click();
-          if (target.querySelector('.arrow')) {
-            // Open parent dir after refresh
-            target.querySelector('.arrow').click();
-            target.classList.add('ft-is-folderOpen');
-          }
+          
+          setTimeout(() => {
+            const parentLiArrow = document.querySelector('.folderTree__li[data-id="' + parentId + '"] .arrow');
+
+            if (parentLiArrow) {
+              // Open parent dir after refresh
+              parentLiArrow.click();
+            }
+          }, 500);
 
           if (el) {
             el.remove();

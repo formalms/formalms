@@ -31561,8 +31561,6 @@ var FolderTree = function () {
         var parentId = target.getAttribute('data-id');
         if (this.currentElId !== parentId && target.classList.contains('is-dropzone')) {
           var type = window.type;
-          console.log(parentId, 'target.id');
-          console.log(this.currentElId, 'this.currentElId');
 
           var reorderLoData = getApiUrl('reorder', this.currentElId, { type: type, newParent: parentId });
           axios.get(reorderLoData).then(function () {
@@ -31577,12 +31575,18 @@ var FolderTree = function () {
               _this3.currentEl.remove();
             }
             var el = _this3.querySelector('.folderView__li[data-id="' + _this3.currentElId + '"]');
+
+            // Refresh
             _this3.querySelector('.folderTree__link.ft-is-root').click();
-            if (target.querySelector('.arrow')) {
-              // Open parent dir after refresh
-              target.querySelector('.arrow').click();
-              target.classList.add('ft-is-folderOpen');
-            }
+
+            setTimeout(function () {
+              var parentLiArrow = document.querySelector('.folderTree__li[data-id="' + parentId + '"] .arrow');
+
+              if (parentLiArrow) {
+                // Open parent dir after refresh
+                parentLiArrow.click();
+              }
+            }, 500);
 
             if (el) {
               el.remove();
