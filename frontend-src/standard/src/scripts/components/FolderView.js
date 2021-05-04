@@ -10,8 +10,6 @@ class FolderView {
     this.container.addEventListener('click', (e) => { this.triggerClick(e, this.container, this.type) });
   }
 
-
-
   toggleSelectEl(event) {
     const el = event.target;
 
@@ -28,8 +26,6 @@ class FolderView {
     const el = event.target;
 
     if (el) {
-      //event.preventDefault();
-
       const li = el.closest('.folderView__li');
       if (!li) {
         return;
@@ -69,7 +65,6 @@ class FolderView {
       }
     }
   }
-
 }
 
 function getApiUrl(action, id, params) {
