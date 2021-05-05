@@ -91,7 +91,7 @@ function inspage() {
 		}		
 	}
 
-	Util::jump_to( $back_url.'&id_lo='.$idPage.'&create_result=1' );
+	Util::jump_to( $back_url.'&lo_type=htmlpage&id_lo='.$idPage.'&create_result=1' );
 }
 
 // XXX: modpage

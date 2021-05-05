@@ -54,6 +54,8 @@ class LoLms extends Model {
 
     public function getLearningObjects($rootId) {
         $tree_view = new Org_TreeView($this->tdb, $this->treeView );
+        $tree_view->creatingObjectType = $_REQUEST['lo_type'];
+        $tree_view->parsePositionData($_REQUEST, $_REQUEST, $_REQUEST);
         return $tree_view->getChildrensDataById($rootId);
     }
 
