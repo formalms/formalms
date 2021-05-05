@@ -6,24 +6,53 @@ class FolderView {
   constructor(type) {
     this.type = type;
     this.container = document.querySelector('*[data-container=' + this.type + ']');
-    this.container.addEventListener('click', this.toggleSelectEl);
-    this.container.addEventListener('click', (e) => { this.triggerClick(e, this.container, this.type) });
+    this.container.addEventListener('click', (e) => { this.toggleSelectEl(e); });
+    this.container.addEventListener('dblclick', (e) => { this.triggerClick(e); });
+    this.emptySelectedItems();
+  }
+
+  getContainer() {
+    return this.container;
+  }
+
+  getType() {
+    return this.type;
+  }
+
+  getSelectedItems() {
+    return this.selectedItems;
+  }
+
+  emptySelectedItems() {
+    this.selectedItems = {};
+  }
+
+  toggleSelectedItem(el, id) {
+    this.selectedItems[id] = !this.selectedItems[id];
+    
+    const li = el.closest('.folderView__li');
+
+    if (!li) {
+      return;
+    }
+
+    if (this.selectedItems[id]) {
+      li.classList.add('fv-is-selected');
+    } else {
+      li.classList.remove('fv-is-selected');
+    }
+    return this.selectedItems[id];
   }
 
   toggleSelectEl(event) {
     const el = event.target;
-
-    if (el && (el.classList.contains('js-fv-open-actions'))) {
-      el.closest('.folderView__li').classList.add('fv-is-selected');
-    }
-
-    if (el && (el.classList.contains('js-fv-close-actions'))) {
-      el.closest('.folderView__li').classList.remove('fv-is-selected');
-    }
+    this.toggleSelectedItem(el, el.getAttribute('data-id'));
   }
 
-  triggerClick(event, container, type) {
+  triggerClick(event) {
     const el = event.target;
+    const container = this.getContainer();
+    const type = this.getType();
     event.preventDefault();
 
     if (el) {
@@ -41,7 +70,6 @@ class FolderView {
         if (confirm('Sei sicuro di voler eliminare questo elemento?')) {
           const deleteLoData = getApiUrl('delete', elId, { type });
           axios.get(deleteLoData).then(() => {
-            console.log(li, elId);
             const elTree = container.querySelector('.folderTree__li[data-id="' + elId + '"]');
             if (elTree) {
               const ul = elTree.parentNode;

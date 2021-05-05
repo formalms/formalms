@@ -280,13 +280,29 @@ class FolderTree {
 
   onDragStart(event) {
     if (event.target.classList.contains('is-droppable')) {
-      this.currentEl = event.target;
-      this.currentElId = this.currentEl.getAttribute('data-id');
+      // this.currentEl = event.target;
+      // this.currentElId = this.currentEl.getAttribute('data-id');
+
+      const container = event.target.closest('.folderView__ul');
+      this.currentEls = container.querySelectorAll('.fv-is-selected');
+      this.currentElsIds = [];
+      this.currentEls.forEach((item) => {
+        this.currentElsIds.push(parseInt(item.getAttribute('data-id')));
+      });
+
+      // Single drop
+      if (this.currentElsIds.length == 0) {
+        this.currentEls = [event.target];
+        this.currentElsIds.push(parseInt(event.target.getAttribute('data-id')));
+      }
+      console.log(this.currentEls, 'selectedItems DRAG START');
+      console.log(this.currentElsIds, 'selectedItems Ids DRAG START');
     }
   }
 
   onDragOver(event) {
     const target = event.target;
+    console.log(this.currentElsIds, 'selectedItems DRAG OVER');
 
     if (this.currentEl) {
       if ( (this.currentElId !== target.getAttribute('data-id')) && (target.classList.contains('is-dropzone')) ) {
@@ -298,6 +314,7 @@ class FolderTree {
 
   onDragLeave(event) {
     const target = event.target;
+    console.log(this.currentElsIds, 'selectedItems DRAG LEAVE');
 
     if (this.currentEl) {
       if ((this.currentElId !== target.getAttribute('data-id')) && (target.classList.contains('is-dropzone'))) {
@@ -308,6 +325,7 @@ class FolderTree {
 
   onDrop(event) {
     const target = event.target;
+    console.log(this.currentElsIds, 'selectedItems DROP');
     target.classList.remove('fv-is-dropped');
 
     if (this.currentEl) {
