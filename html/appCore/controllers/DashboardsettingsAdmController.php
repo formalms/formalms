@@ -80,6 +80,7 @@ class DashboardsettingsAdmController extends AdmController
             ],
             'showUrl' => './index.php?r=adm/dashboardsettings/show',
             'editUrl' => './index.php?r=adm/dashboardsettings/edit',
+            'permissionUrl' => './index.php?r=adm/dashboardsettings/permission',
             'cloneUrl' => './index.php?r=adm/dashboardsettings/clone',
             'templatePath' => getPathTemplate(),
         ];
@@ -117,6 +118,59 @@ class DashboardsettingsAdmController extends AdmController
         $this->render('edit', $data);
     }
 
+    // add permission to layout
+    public function permission(){
+        $dashboardId = Get::req('dashboard', DOTY_INT, false);
+        
+        require_once(_base_ . '/lib/lib.userselector.php');
+        require_once(_base_ . '/lib/lib.form.php');        
+        
+        $man_ma = new Man_MiddleArea();
+        $acl_manager = new DoceboACLManager();
+        $user_select = new UserSelector();
+
+        // tab of user selector
+        $user_select->show_user_selector = TRUE;
+        $user_select->show_group_selector = true;
+        $user_select->show_orgchart_selector = true;
+        $user_select->show_orgchart_simple_selector = true;
+        $user_select->show_fncrole_selector = true;
+        $user_select->multi_choice = true;        
+   
+                         
+        $selected = $this->model->getObjIdstList($dashboardId);
+        
+        if (is_array($selected)) $user_select->resetSelection($selected);
+
+        // cancell
+        if(isset($_POST['cancelselector'])){
+            
+          Util::jump_to('index.php?r=adm/dashboardsettings/show');  
+        }
+        
+        // save
+        if (isset($_POST['okselector'])) {
+
+            $selected = $user_select->getSelection($_POST);
+            
+            $re = $this->model->setObjIdstList($dashboardId, $selected);
+            
+            Util::jump_to('index.php?r=adm/dashboardsettings/show&result=' . ($re ? 'ok' : 'err'));
+        }        
+        
+        // add field hidden id_dashboard
+        $user_select->addFormInfo(Form::getHidden('dashboard', 'dashboard', $dashboardId));
+         
+         // view selector user
+        $user_select->loadSelector('index.php?r=adm/dashboardsettings/permission',
+             Lang::t('_VIEW_PERMISSION', 'standard'),
+            false,
+            true); 
+        
+    }
+    
+    
+    
     public function clone()
     {
         $dashboardId = Get::req('dashboard', DOTY_INT, false);

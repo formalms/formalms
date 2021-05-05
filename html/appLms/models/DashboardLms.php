@@ -90,4 +90,46 @@ class DashboardLms extends Model
         }
         return false;
     }
+    
+    
+    // check if current user has access to dashboard-id
+    public function currentCanAccessObj($dashboardId) {
+        $vett_cache = array();
+            
+        $query = "SELECT id_dashboard, idst_list FROM dashboard_permission where id_dashboard=".$dashboardId;
+
+       
+        $re_query = $this->db->query($query);
+        
+        while(list($id_dashboard, $idst_list) = sql_fetch_row($re_query)) {            
+            $vett_cache[$id_dashboard] = unserialize($idst_list);
+        }
+                   
+        $user_assigned = Docebo::user()->getArrSt();
+ 
+        if(isset($vett_cache[$dashboardId])) {
+            if($vett_cache[$dashboardId] == '' || empty($vett_cache[$dashboardId])) return true;
+            
+            $intersect = array_intersect($user_assigned, $vett_cache[$dashboardId]);
+        } else {
+            return true;
+        }
+        
+        return !empty($intersect);
+    }     
+    
+    
+    public function getListLayout(){
+     
+        $query = "select id,name from dashboard_layouts";
+        $re_query = $this->db->query($query);
+        $out = array();
+        while(list($id_dashboard, $name) = sql_fetch_row($re_query)) {
+            
+            $out[$id_dashboard] = $name;
+        }        
+        
+        return $out;
+    } 
+    
 }
