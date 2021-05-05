@@ -200,24 +200,31 @@ function getStatStatusCount($stat_idUser, $stat_idCourse, $arrStauts) {
  **/
 function saveTrackStatusChange( $idUser, $idCourse, $status ) {
     
-    $new_data = ['status' => $status];
-
+    list($prev_status) = sql_fetch_row(sql_query("
+        SELECT status
+        FROM %lms_courseuser
+        WHERE idUser = '".(int)$idUser."' AND idCourse = '".(int)$idCourse."'")); 
+       
+    
+    $new_data = ['status' => $status, "prev_status" => $prev_status];
     $data = Events::trigger('lms.course_user.updating', [
         'id_user' => $idUser,
         'id_course' => $idCourse,
         'new_data' => $new_data,
     ]);
+    
 
     $status = $data['new_data']['status'];
 	
 	require_once(_lms_.'/lib/lib.course.php');
 
+    /*
 	list($prev_status) = sql_fetch_row(sql_query("
 		SELECT status
 		FROM %lms_courseuser
 		WHERE idUser = '".(int)$idUser."' AND idCourse = '".(int)$idCourse."'")
 	);
-	
+	     */ 
 	$extra = '';
 	if($prev_status != $status) {
 		switch($status) {
