@@ -107,7 +107,7 @@ class UserSelector {
 	 * @param string $selector_id the id of the main array with the selections in it
 	 * @return array the idsts selected
 	 */
-	public function getSelection($arrayData, $selector_id=false) {
+	public function getSelection($arrayData = [], $selector_id=false) {
 		$selector_id = (empty($selector_id) ? 'main_selector' : $selector_id);
 		$userselector_input_post = Get::pReq('userselector_input', DOTY_MIXED, array());
 		$userselector_input_get = Get::gReq('userselector_input', DOTY_MIXED, array());
