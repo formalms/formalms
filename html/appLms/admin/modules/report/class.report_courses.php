@@ -353,6 +353,10 @@ class Report_Courses extends Report {
 				.Form::getCloseFieldset()
 
 				.Form::getOpenFieldset($lang->def('_STATS_FIELDS_INFO'), 'fieldset_course_fields')
+                
+                // ADD COL WAITING
+                .Form::getCheckBox($lang->def('_WAITING','standard'), 'col_waiting', 'cols[]', '_WAITING', is_showed('_WAITING', $ref))
+                
 				.Form::getCheckBox($lang->def('_USER_STATUS_SUBS'), 'col_inscr', 'cols[]', '_INSCR', is_showed('_INSCR', $ref))
 				.Form::getCheckBox($lang->def('_MUSTBEGIN'), 'col_mustbegin', 'cols[]', '_MUSTBEGIN', is_showed('_MUSTBEGIN', $ref))
 				.Form::getCheckBox($lang->def('_USER_STATUS_BEGIN'), 'col_user_status_begin', 'cols[]', '_USER_STATUS_BEGIN', is_showed('_USER_STATUS_BEGIN', $ref))
@@ -1063,7 +1067,7 @@ class Report_Courses extends Report {
 					.($only_students ? " AND cu.level = 3 " : "");
 				if($start_time != '' && $start_time != '0000-00-00') $query_course_user .= " AND greatest(coalesce(cu.date_complete, 0), coalesce(cu.date_first_access, 0), coalesce(cu.date_inscr), 0) >= '".$start_time."' ";
 				if($end_time != '' && $end_time != '0000-00-00') $query_course_user .= " AND greatest(coalesce(cu.date_complete, 0), coalesce(cu.date_first_access, 0), coalesce(cu.date_inscr), 0) <= '".$end_time."'";
-
+                
 				$num_iscr 		= array();
 				$num_nobegin 	= array();
 				$num_itinere 	= array();
@@ -1082,7 +1086,7 @@ class Report_Courses extends Report {
 						case _CUS_SUBSCRIBED : {
 							if(isset($num_nobegin[$id_c])) ++$num_nobegin[$id_c];
 							else $num_nobegin[$id_c] = 1;
-						};break;
+						};break; 
 						case _CUS_BEGIN : {
 							if(isset($num_itinere[$id_c])) ++$num_itinere[$id_c];
 							else $num_itinere[$id_c] = 1;
@@ -1163,7 +1167,7 @@ class Report_Courses extends Report {
 						.($only_students ? " AND cu.level = 3 " : "");
 					if($start_time != '' && $start_time != '0000-00-00') $query_course_user .= " AND cu.date_complete >= '".$start_time."' ";
 					if($end_time != '' && $end_time != '0000-00-00') $query_course_user .= " AND cu.date_complete <= '".$end_time."'  AND cu.level='3'";
-
+                    
 					$num_iscr 		= array();
 					$num_nobegin 	= array();
 					$num_itinere 	= array();
@@ -1189,7 +1193,7 @@ class Report_Courses extends Report {
 							//complete
 							if(isset($num_end[$id_c])) ++$num_end[$id_c];
 							else $num_end[$id_c] = 1;
-						}
+						}               
 						$effective_user[] = $id_u;
 					}
 					if(!empty($group_user)) {
@@ -1355,6 +1359,9 @@ class Report_Courses extends Report {
 					$time_in_course = array();
 					$effective_user = array();
 
+                    
+         
+                    
 					//$re_course_user = sql_query($query_course_user);
 					//while(list($id_u, $id_c, $fisrt_access, $date_complete) = sql_fetch_row($re_course_user)) {
 					$re_course_user = sql_query($query_course_user);
@@ -1510,7 +1517,8 @@ class Report_Courses extends Report {
 		}
 
 		$colspan_stats = 0;
-		if(in_array('_INSCR', $filter_cols)) $colspan_stats += ($show_percent ? 2 : 1);
+		if(in_array('_WAITING', $filter_cols)) $colspan_stats += ($show_percent ? 2 : 1);
+        if(in_array('_INSCR', $filter_cols)) $colspan_stats += ($show_percent ? 2 : 1);
 		if(in_array('_MUSTBEGIN', $filter_cols)) $colspan_stats += ($show_percent ? 2 : 1);
 		if(in_array('_USER_STATUS_BEGIN', $filter_cols)) $colspan_stats += ($show_percent ? 2 : 1);
 		if(in_array('_COMPLETECOURSE', $filter_cols)) $colspan_stats += ($show_percent ? 2 : 1);
@@ -1525,7 +1533,11 @@ class Report_Courses extends Report {
 		$th2 = array();
 		$th2[] = array('colspan'=>$colspan_course, 'value'=>'');
 		if ($show_classrooms_editions) $th2[] = array('colspan'=> $colspan_classrooms_editions, 'style'=>'align-center', 'value' => Lang::t('_CLASSROOM', 'classroom'));
-		if (in_array('_INSCR', $filter_cols)) $th2[] = array('colspan'=>($show_percent ? 2 : 1),'style'=>'align-center', 'value'=> "<b>".$rg_lang->def('_USER_STATUS_SUBS')."</b>");
+		
+        
+if (in_array('_WAITING', $filter_cols)) $th2[] = array('colspan'=>($show_percent ? 2 : 1),'style'=>'align-center', 'value'=> "<b>".$rg_lang->def('_WAITING','standard')."</b>");        
+        
+        if (in_array('_INSCR', $filter_cols)) $th2[] = array('colspan'=>($show_percent ? 2 : 1),'style'=>'align-center', 'value'=> "<b>".$rg_lang->def('_USER_STATUS_SUBS')."</b>");
 		if (in_array('_MUSTBEGIN', $filter_cols)) $th2[] = array('colspan'=>($show_percent ? 2 : 1), 'style'=>'align-center', 'value'=> "<b>".$rg_lang->def('_MUSTBEGIN')."</b>");
 		if (in_array('_USER_STATUS_BEGIN', $filter_cols)) $th2[] = array('colspan'=>($show_percent ? 2 : 1), 'style'=>'align-center', 'value'=>"<b>".$rg_lang->def('_USER_STATUS_BEGIN')."</b>");
 		if (in_array('_COMPLETECOURSE', $filter_cols)) $th2[] = array('colspan'=>($show_percent ? 2 : 1), 'style'=>'align-center', 'value'=> "<b>".$rg_lang->def('_COMPLETED')."</b>");
@@ -1548,9 +1560,11 @@ class Report_Courses extends Report {
 		if (in_array('_DATE_END', $filter_cols)) $th3[] = array('style'=>'align-center', 'value'=>$lang->def('_DATE_END'));
 		if (in_array('_TIME_BEGIN', $filter_cols)) $th3[] = array('style'=>'align-center', 'value'=>$lang->def('_HOUR_BEGIN'));
 		if (in_array('_TIME_END', $filter_cols)) $th3[] = array('style'=>'align-center', 'value'=>$lang->def('_HOUR_END'));
-		if (in_array('_MAX_NUM_SUBSCRIBED', $filter_cols)) $th3[] = array('style'=>'align-center', 'value'=>$lang->def('_MAX_NUM_SUBSCRIBE'));
+		
 		if (in_array('_MIN_NUM_SUBSCRIBED', $filter_cols)) $th3[] = array('style'=>'align-center', 'value'=>$lang->def('_MIN_NUM_SUBSCRIBE'));
-		if (in_array('_CREDITS', $filter_cols)) $th3[] = array('style'=>'align-center', 'value'=>Lang::t('_CREDITS', 'standard'));
+		if (in_array('_MAX_NUM_SUBSCRIBED', $filter_cols)) $th3[] = array('style'=>'align-center', 'value'=>$lang->def('_MAX_NUM_SUBSCRIBE'));
+        
+        if (in_array('_CREDITS', $filter_cols)) $th3[] = array('style'=>'align-center', 'value'=>Lang::t('_CREDITS', 'standard'));
 		if (in_array('_PRICE', $filter_cols)) $th3[] = $lang->def('_COURSE_PRIZE');
 		if (in_array('_ADVANCE', $filter_cols)) $th3[] = $lang->def('_COURSE_ADVANCE');
 		if (in_array('_COURSE_TYPE', $filter_cols)) $th3[] = array('style'=>'align-center', 'value'=>$lang->def('_COURSE_TYPE'));
@@ -1570,8 +1584,15 @@ class Report_Courses extends Report {
 		}
 
 
-		if (in_array('_INSCR', $filter_cols)){ $th3[] = array('style'=>'align-center', 'value'=>$rg_lang->def('_NUM','report'));
+        if (in_array('_WAITING', $filter_cols)){
+         $th3[] = array('style'=>'align-center', 'value'=>$rg_lang->def('_NUM','report'));
+        if ($show_percent) $th3[] = array('style'=>'align-center', 'value'=>$rg_lang->def('_PERC')); }       
+        
+		if (in_array('_INSCR', $filter_cols)){
+         $th3[] = array('style'=>'align-center', 'value'=>$rg_lang->def('_NUM','report'));
         if ($show_percent) $th3[] = array('style'=>'align-center', 'value'=>$rg_lang->def('_PERC')); }
+        
+        
 		if (in_array('_MUSTBEGIN', $filter_cols)) { $th3[] = array('style'=>'align-center', 'value'=>$rg_lang->def('_NUM','report')); if ($show_percent) $th3[] = array('style'=>'align-center', 'value'=>$rg_lang->def('_PERC')); }
 		if (in_array('_USER_STATUS_BEGIN', $filter_cols)) { $th3[] = array('style'=>'align-center', 'value'=>$rg_lang->def('_NUM','report')); if ($show_percent) $th3[] = array('style'=>'align-center', 'value'=>$rg_lang->def('_PERC')); }
 		if (in_array('_COMPLETECOURSE', $filter_cols)) { $th3[] = array('style'=>'align-center', 'value'=>$rg_lang->def('_NUM','report')); if ($show_percent) $th3[] = array('style'=>'align-center', 'value'=>$rg_lang->def('_PERC')); }
@@ -1590,7 +1611,7 @@ class Report_Courses extends Report {
 		$buffer->closeHeader();
 
 		$i = 0;
-		$tot_iscr = $tot_itinere = $tot_nobegin = $tot_comple = '';
+		$tot_waiting = $tot_iscr = $tot_itinere = $tot_nobegin = $tot_comple = '';
 		$tot_perc_itinere = $tot_perc_nobegin = $tot_perc_comple = '';
 		$total_time = 0;
 
@@ -1706,8 +1727,10 @@ class Report_Courses extends Report {
 			if (in_array('_DATE_END', $filter_cols)) $trow[] = array('style'=>'align-center', 'value'=>$_date_end);
 			if (in_array('_TIME_BEGIN', $filter_cols)) $trow[] = ($info_course['hour_begin']<0 ? '' : $info_course['hour_begin']);
 			if (in_array('_TIME_END', $filter_cols)) $trow[] = ($info_course['hour_end']<0 ? '' : $info_course['hour_end']);
-			if (in_array('_MAX_NUM_SUBSCRIBED', $filter_cols)) $trow[] = ($info_course['max_num_subscribe'] ? $info_course['max_num_subscribe'] : '');
+            
 			if (in_array('_MIN_NUM_SUBSCRIBED', $filter_cols)) $trow[] = ($info_course['min_num_subscribe'] ? $info_course['min_num_subscribe'] : '');
+            if (in_array('_MAX_NUM_SUBSCRIBED', $filter_cols)) $trow[] = ($info_course['max_num_subscribe'] ? $info_course['max_num_subscribe'] : '');
+			
 			if (in_array('_CREDITS', $filter_cols)) $trow[] = (isset($info_course['credits']) ? $info_course['credits'] : '');
 			if (in_array('_PRICE', $filter_cols)) $trow[] = ($info_course['prize'] != '' ? $info_course['prize'] : '0');
 			if (in_array('_ADVANCE', $filter_cols)) $trow[] = ($info_course['advance'] != '' ? $info_course['advance'] : '0');
@@ -1739,6 +1762,17 @@ class Report_Courses extends Report {
 
 			if( isset($num_iscr[$index]) )
 			{
+                
+                if(in_array('_WAITING', $filter_cols))
+                {
+                    $in_waiting = $this->getInWaitingCourse($info_course['idCourse']);
+                    $trow[] = array('style'=>'img-cell', 'value'=>$in_waiting);
+                    if ($show_percent) $trow[] = array('style'=>'img-cell', 'value'=>'-');
+                    $tot_waiting = $tot_waiting + $in_waiting;
+                }                
+                
+                
+                
 				if(in_array('_INSCR', $filter_cols))
 				{
 					$trow[] = array('style'=>'img-cell', 'value'=>$num_iscr[$index]);
@@ -1822,8 +1856,12 @@ class Report_Courses extends Report {
 					}
 				}
 			}
-			else
+			else         
 			{
+                
+                if(in_array('_WAITING', $filter_cols)) {
+                    $trow[] = ''; }                
+                
 				if(in_array('_INSCR', $filter_cols)) {
 					$trow[] = ''; }
 
@@ -1861,6 +1899,12 @@ class Report_Courses extends Report {
 
 		$tfoot = array( array('colspan'=>($colspan_course + $colspan_classrooms_editions), 'value'=>$lang->def('_TOTAL')) );
 
+        if (in_array('_WAITING', $filter_cols)) {
+            $tfoot[] = $tot_waiting;
+            if ($show_percent) $tfoot[] = '-';
+        }           
+        
+        
 		if (in_array('_INSCR', $filter_cols)) {
             $tfoot[] = $tot_iscr;
             if ($show_percent) $tfoot[] = '-';
@@ -1889,7 +1933,14 @@ class Report_Courses extends Report {
 		return $buffer->get();
 	}
 
-
+    function getInWaitingCourse($idCourse){
+        $query = "select sum(waiting) from learning_courseuser where idCourse=".$idCourse." and waiting=1";
+        list($in_waiting) = sql_fetch_row(sql_query($query));
+        if($in_waiting==null) $in_waiting=0;
+        return $in_waiting;
+                           
+        
+    }
 
 	//Doc valutation
 	function _printTable_doc($type, $course, $stats, $filter_cols)
