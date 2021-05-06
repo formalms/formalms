@@ -324,7 +324,7 @@ class FolderTree {
           if (target.classList.contains('ft-is-folderOpen') && (this.currentEl.classList.contains('folderTree__li') )) {
             target.nextElementSibling.appendChild(this.currentEl);
           } else {
-            this.querySelector('.folderTree__li[data-id="' + this.currentElId + '"]').remove();
+            this.querySelector('*[data-id="' + this.currentElId + '"]').remove();
           }
 
           if (!parentLi.querySelector('.arrow')) {
