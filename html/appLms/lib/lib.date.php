@@ -348,13 +348,13 @@ class DateManager
     
     public function getClassromByID($id_classroom)
     {
-        $query =    "SELECT name, location "
+        $query =    "SELECT name, location,street, city, zip_code "
                     ." FROM ".$this->classroom_table .", ".$this->location_table
                     ." WHERE idClassroom = ".$id_classroom ." and ".$this->location_table.".location_id=".$this->classroom_table.".location_id";
                     
-        list($name,$location) = sql_fetch_row(sql_query($query));
+        list($name,$location, $street, $city, $zip_code ) = sql_fetch_row(sql_query($query));
 
-        return $location." - ".$name;
+        return $location. " - ". $name."  ".$street. "  ".$city." ". $zip_code. "";
     }    
     
     
@@ -577,6 +577,8 @@ class DateManager
 			$res[$i]['date_begin'] = $row['date_begin'];
 			$res[$i]['date_end'] = $row['date_end'];
             $res[$i]['classroom'] = $this->getClassromByID($row['classroom']);
+
+            
 			$i++;
 		}
 
