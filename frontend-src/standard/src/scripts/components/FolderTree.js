@@ -264,6 +264,12 @@ class FolderTree {
     });
   }
 
+  refreshFolderTreeView(parentID) {
+    if (parentID) {
+     //const target = document.querySelector('.folderTree__li[data-id=' + elID + '"]')
+    }
+  }
+
   removeDragDropListener(container) {
     container.removeEventListener('dragstart', this.onDragStart)
     container.removeEventListener('dragover', this.onDragOver)
@@ -331,7 +337,7 @@ class FolderTree {
 
           // Refresh
           this.querySelector('.folderTree__link.ft-is-root').click();
-          
+
           setTimeout(() => {
             const parentLiArrow = document.querySelector('.folderTree__li[data-id="' + parentId + '"] .arrow');
 
