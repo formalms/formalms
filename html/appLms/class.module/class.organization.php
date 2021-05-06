@@ -400,7 +400,7 @@ class Module_Organization extends LmsModule {
 				$lo = createLO( $_REQUEST['radiolo'] );
 
 				if($lo !== false) {
-					$lo->create( 'index.php?r=lms/lo/organization&type=organization'
+					$lo->create( 'index.php?r=lms/lo/organization&type=organization&lo_type=' . $lo->getObjectType()
 								.'&'.$this->treeView->_getOpCreateLOEnd().'=1' );			
 				} else {
                    
