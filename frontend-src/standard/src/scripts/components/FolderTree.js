@@ -264,12 +264,6 @@ class FolderTree {
     });
   }
 
-  refreshFolderTreeView(parentID) {
-    if (parentID) {
-     //const target = document.querySelector('.folderTree__li[data-id=' + elID + '"]')
-    }
-  }
-
   removeDragDropListener(container) {
     container.removeEventListener('dragstart', this.onDragStart)
     container.removeEventListener('dragover', this.onDragOver)
@@ -323,29 +317,20 @@ class FolderTree {
 
         const reorderLoData = getApiUrl('reorder', this.currentElId, { type, newParent: parentId });
         axios.get(reorderLoData).then(() => {
-          if (target.classList.contains('ft-is-folderOpen') && (this.currentEl.classList.contains('folderTree__li') )) {
-            const nextElementSibling = target.nextElementSibling;
-            if (nextElementSibling && nextElementSibling.classList.contains('folderTree__ul')) {
-              nextElementSibling.appendChild(this.currentEl);
-            } else {
-              this.currentEl.remove();
-            }
-          } else {
-            this.currentEl.remove();
-          }
           const el = this.querySelector('.folderView__li[data-id="' + this.currentElId + '"]');
+          const parentLi = this.querySelector('.folderTree__li[data-id="' + parentId + '"]');
+          const parentButton = this.querySelector('.folderTree__li[data-id="' + parentId + '"]');
 
-          // Refresh
-          this.querySelector('.folderTree__link.ft-is-root').click();
+          if (target.classList.contains('ft-is-folderOpen') && (this.currentEl.classList.contains('folderTree__li') )) {
+            target.nextElementSibling.appendChild(this.currentEl);
+          } else {
+            this.querySelector('.folderTree__li[data-id="' + this.currentElId + '"]').remove();
+          }
 
-          setTimeout(() => {
-            const parentLiArrow = document.querySelector('.folderTree__li[data-id="' + parentId + '"] .arrow');
-
-            if (parentLiArrow) {
-              // Open parent dir after refresh
-              parentLiArrow.click();
-            }
-          }, 500);
+          if (!parentLi.querySelector('.arrow')) {
+            parentLi.innerHTML = '<button type="button" class="arrow"></button>' + parentLi.innerHTML
+          }
+          parentButton.click()
 
           if (el) {
             el.remove();
