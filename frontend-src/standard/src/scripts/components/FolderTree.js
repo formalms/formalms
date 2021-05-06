@@ -265,23 +265,34 @@ class FolderTree {
   }
 
   removeDragDropListener(container) {
-    container.removeEventListener('dragstart', this.onDragStart)
-    container.removeEventListener('dragover', this.onDragOver)
-    container.removeEventListener('dragleave', this.onDragLeave)
-    container.removeEventListener('drop', this.onDrop)
+    container.removeEventListener('dragstart', this.onDragStart.bind(this))
+    container.removeEventListener('dragover', this.onDragOver.bind(this))
+    container.removeEventListener('dragleave', this.onDragLeave.bind(this))
+    container.removeEventListener('drop', this.onDrop.bind(this))
   }
 
   initDragDrop(container) {
-    container.addEventListener('dragstart', this.onDragStart)
-    container.addEventListener('dragover', this.onDragOver)
-    container.addEventListener('dragleave', this.onDragLeave)
-    container.addEventListener('drop', this.onDrop)
+    container.addEventListener('dragstart', this.onDragStart.bind(this))
+    container.addEventListener('dragover', this.onDragOver.bind(this))
+    container.addEventListener('dragleave', this.onDragLeave.bind(this))
+    container.addEventListener('drop', this.onDrop.bind(this))
+  }
+
+  selectItems(container) {
+    container.querySelectorAll('.folderView__li').forEach((item) => {
+      item.classList.remove('fv-is-selected');
+      const item_id = parseInt(item.getAttribute('data-id'));
+
+      if (this.currentElsIds.includes(item_id)) {
+        item.classList.add('fv-is-selected');
+      }
+    });
   }
 
   onDragStart(event) {
     if (event.target.classList.contains('is-droppable')) {
-      // this.currentEl = event.target;
-      // this.currentElId = this.currentEl.getAttribute('data-id');
+      this.currentEl = event.target;
+      this.currentElId = parseInt(this.currentEl.getAttribute('data-id'));
 
       const container = event.target.closest('.folderView__ul');
       this.currentEls = container.querySelectorAll('.fv-is-selected');
@@ -291,21 +302,20 @@ class FolderTree {
       });
 
       // Single drop
-      if (this.currentElsIds.length == 0) {
+      if (!this.currentElsIds.includes(this.currentElId)) {
         this.currentEls = [event.target];
-        this.currentElsIds.push(parseInt(event.target.getAttribute('data-id')));
+        this.currentElsIds = [this.currentElId];
+        this.selectItems(container);
       }
-      console.log(this.currentEls, 'selectedItems DRAG START');
-      console.log(this.currentElsIds, 'selectedItems Ids DRAG START');
     }
   }
 
   onDragOver(event) {
     const target = event.target;
-    console.log(this.currentElsIds, 'selectedItems DRAG OVER');
+    // console.log(this.currentElsIds, 'selectedItems DRAG OVER');
 
-    if (this.currentEl) {
-      if ( (this.currentElId !== target.getAttribute('data-id')) && (target.classList.contains('is-dropzone')) ) {
+    if (this.currentElsIds) {
+      if (!this.currentElsIds.includes(target.getAttribute('data-id')) && (target.classList.contains('is-dropzone'))) {
         target.classList.add('fv-is-dropped');
         event.preventDefault();
       }
@@ -314,10 +324,10 @@ class FolderTree {
 
   onDragLeave(event) {
     const target = event.target;
-    console.log(this.currentElsIds, 'selectedItems DRAG LEAVE');
+    // console.log(this.currentElsIds, 'selectedItems DRAG LEAVE');
 
     if (this.currentEl) {
-      if ((this.currentElId !== target.getAttribute('data-id')) && (target.classList.contains('is-dropzone'))) {
+      if (this.currentElsIds.includes(target.getAttribute('data-id')) && (target.classList.contains('is-dropzone'))) {
         target.classList.remove('fv-is-dropped');
       }
     }
@@ -375,8 +385,12 @@ class FolderTree {
     const view = container.querySelector('.js-sortable-view');
 
     if (view) {
+      console.log(Sortable);
       new Sortable.create(view, {
         draggable: '.folderView__li',
+        multiDrag: true, // Enable the plugin
+        multiDragKey: 'Meta',
+        selectedClass: 'xxselected',
         animation: 150,
         easing: 'cubic-bezier(1, 0, 0, 1)',
         fallbackOnBody: true,

@@ -25,28 +25,40 @@ class FolderView {
 
   emptySelectedItems() {
     this.selectedItems = {};
+    this.container = this.getContainer();
+
+    // Unselect all
+    this.container.querySelectorAll('.fv-is-selected').forEach((item) => {
+      item.classList.remove('fv-is-selected');
+    });
   }
 
-  toggleSelectedItem(el, id) {
-    this.selectedItems[id] = !this.selectedItems[id];
-    
+  toggleSelectedItem(el, id, notEmpty) {
     const li = el.closest('.folderView__li');
 
     if (!li) {
       return;
     }
 
-    if (this.selectedItems[id]) {
-      li.classList.add('fv-is-selected');
+    if (notEmpty) {
+      this.selectedItems[id] = !this.selectedItems[id];
+
+      if (this.selectedItems[id]) {
+        li.classList.add('fv-is-selected');
+      } else {
+        li.classList.remove('fv-is-selected');
+      }
     } else {
-      li.classList.remove('fv-is-selected');
+      this.emptySelectedItems();
+      this.selectedItems[id] = true;
+      li.classList.add('fv-is-selected');
     }
     return this.selectedItems[id];
   }
 
   toggleSelectEl(event) {
     const el = event.target;
-    this.toggleSelectedItem(el, el.getAttribute('data-id'));
+    this.toggleSelectedItem(el, el.getAttribute('data-id'), (event.ctrlKey || event.metaKey));
   }
 
   triggerClick(event) {

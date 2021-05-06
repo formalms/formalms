@@ -31505,52 +31505,65 @@ var FolderTree = function () {
   }, {
     key: 'removeDragDropListener',
     value: function removeDragDropListener(container) {
-      container.removeEventListener('dragstart', this.onDragStart);
-      container.removeEventListener('dragover', this.onDragOver);
-      container.removeEventListener('dragleave', this.onDragLeave);
-      container.removeEventListener('drop', this.onDrop);
+      container.removeEventListener('dragstart', this.onDragStart.bind(this));
+      container.removeEventListener('dragover', this.onDragOver.bind(this));
+      container.removeEventListener('dragleave', this.onDragLeave.bind(this));
+      container.removeEventListener('drop', this.onDrop.bind(this));
     }
   }, {
     key: 'initDragDrop',
     value: function initDragDrop(container) {
-      container.addEventListener('dragstart', this.onDragStart);
-      container.addEventListener('dragover', this.onDragOver);
-      container.addEventListener('dragleave', this.onDragLeave);
-      container.addEventListener('drop', this.onDrop);
+      container.addEventListener('dragstart', this.onDragStart.bind(this));
+      container.addEventListener('dragover', this.onDragOver.bind(this));
+      container.addEventListener('dragleave', this.onDragLeave.bind(this));
+      container.addEventListener('drop', this.onDrop.bind(this));
+    }
+  }, {
+    key: 'selectItems',
+    value: function selectItems(container) {
+      var _this3 = this;
+
+      container.querySelectorAll('.folderView__li').forEach(function (item) {
+        item.classList.remove('fv-is-selected');
+        var item_id = parseInt(item.getAttribute('data-id'));
+
+        if (_this3.currentElsIds.includes(item_id)) {
+          item.classList.add('fv-is-selected');
+        }
+      });
     }
   }, {
     key: 'onDragStart',
     value: function onDragStart(event) {
-      var _this3 = this;
+      var _this4 = this;
 
       if (event.target.classList.contains('is-droppable')) {
-        // this.currentEl = event.target;
-        // this.currentElId = this.currentEl.getAttribute('data-id');
+        this.currentEl = event.target;
+        this.currentElId = parseInt(this.currentEl.getAttribute('data-id'));
 
         var container = event.target.closest('.folderView__ul');
         this.currentEls = container.querySelectorAll('.fv-is-selected');
         this.currentElsIds = [];
         this.currentEls.forEach(function (item) {
-          _this3.currentElsIds.push(parseInt(item.getAttribute('data-id')));
+          _this4.currentElsIds.push(parseInt(item.getAttribute('data-id')));
         });
 
         // Single drop
-        if (this.currentElsIds.length == 0) {
+        if (!this.currentElsIds.includes(this.currentElId)) {
           this.currentEls = [event.target];
-          this.currentElsIds.push(parseInt(event.target.getAttribute('data-id')));
+          this.currentElsIds = [this.currentElId];
+          this.selectItems(container);
         }
-        console.log(this.currentEls, 'selectedItems DRAG START');
-        console.log(this.currentElsIds, 'selectedItems Ids DRAG START');
       }
     }
   }, {
     key: 'onDragOver',
     value: function onDragOver(event) {
       var target = event.target;
-      console.log(this.currentElsIds, 'selectedItems DRAG OVER');
+      // console.log(this.currentElsIds, 'selectedItems DRAG OVER');
 
-      if (this.currentEl) {
-        if (this.currentElId !== target.getAttribute('data-id') && target.classList.contains('is-dropzone')) {
+      if (this.currentElsIds) {
+        if (!this.currentElsIds.includes(target.getAttribute('data-id')) && target.classList.contains('is-dropzone')) {
           target.classList.add('fv-is-dropped');
           event.preventDefault();
         }
@@ -31560,10 +31573,10 @@ var FolderTree = function () {
     key: 'onDragLeave',
     value: function onDragLeave(event) {
       var target = event.target;
-      console.log(this.currentElsIds, 'selectedItems DRAG LEAVE');
+      // console.log(this.currentElsIds, 'selectedItems DRAG LEAVE');
 
       if (this.currentEl) {
-        if (this.currentElId !== target.getAttribute('data-id') && target.classList.contains('is-dropzone')) {
+        if (this.currentElsIds.includes(target.getAttribute('data-id')) && target.classList.contains('is-dropzone')) {
           target.classList.remove('fv-is-dropped');
         }
       }
@@ -31571,7 +31584,7 @@ var FolderTree = function () {
   }, {
     key: 'onDrop',
     value: function onDrop(event) {
-      var _this4 = this;
+      var _this5 = this;
 
       var target = event.target;
       console.log(this.currentElsIds, 'selectedItems DROP');
@@ -31584,20 +31597,20 @@ var FolderTree = function () {
 
           var reorderLoData = getApiUrl('reorder', this.currentElId, { type: type, newParent: parentId });
           axios.get(reorderLoData).then(function () {
-            if (target.classList.contains('ft-is-folderOpen') && _this4.currentEl.classList.contains('folderTree__li')) {
+            if (target.classList.contains('ft-is-folderOpen') && _this5.currentEl.classList.contains('folderTree__li')) {
               var nextElementSibling = target.nextElementSibling;
               if (nextElementSibling && nextElementSibling.classList.contains('folderTree__ul')) {
-                nextElementSibling.appendChild(_this4.currentEl);
+                nextElementSibling.appendChild(_this5.currentEl);
               } else {
-                _this4.currentEl.remove();
+                _this5.currentEl.remove();
               }
             } else {
-              _this4.currentEl.remove();
+              _this5.currentEl.remove();
             }
-            var el = _this4.querySelector('.folderView__li[data-id="' + _this4.currentElId + '"]');
+            var el = _this5.querySelector('.folderView__li[data-id="' + _this5.currentElId + '"]');
 
             // Refresh
-            _this4.querySelector('.folderTree__link.ft-is-root').click();
+            _this5.querySelector('.folderTree__link.ft-is-root').click();
 
             setTimeout(function () {
               var parentLiArrow = document.querySelector('.folderTree__li[data-id="' + parentId + '"] .arrow');
@@ -31610,8 +31623,8 @@ var FolderTree = function () {
 
             if (el) {
               el.remove();
-              _this4.currentElId = null;
-              _this4.currentEl = null;
+              _this5.currentElId = null;
+              _this5.currentEl = null;
             }
           }).catch(function (error) {
             console.log(error);
@@ -31625,8 +31638,12 @@ var FolderTree = function () {
       var view = container.querySelector('.js-sortable-view');
 
       if (view) {
+        console.log(_sortableCompleteEsm2.default);
         new _sortableCompleteEsm2.default.create(view, {
           draggable: '.folderView__li',
+          multiDrag: true, // Enable the plugin
+          multiDragKey: 'Meta',
+          selectedClass: 'xxselected',
           animation: 150,
           easing: 'cubic-bezier(1, 0, 0, 1)',
           fallbackOnBody: true,
@@ -36283,22 +36300,34 @@ var FolderView = function () {
     key: 'emptySelectedItems',
     value: function emptySelectedItems() {
       this.selectedItems = {};
+      this.container = this.getContainer();
+
+      // Unselect all
+      this.container.querySelectorAll('.fv-is-selected').forEach(function (item) {
+        item.classList.remove('fv-is-selected');
+      });
     }
   }, {
     key: 'toggleSelectedItem',
-    value: function toggleSelectedItem(el, id) {
-      this.selectedItems[id] = !this.selectedItems[id];
-
+    value: function toggleSelectedItem(el, id, notEmpty) {
       var li = el.closest('.folderView__li');
 
       if (!li) {
         return;
       }
 
-      if (this.selectedItems[id]) {
-        li.classList.add('fv-is-selected');
+      if (notEmpty) {
+        this.selectedItems[id] = !this.selectedItems[id];
+
+        if (this.selectedItems[id]) {
+          li.classList.add('fv-is-selected');
+        } else {
+          li.classList.remove('fv-is-selected');
+        }
       } else {
-        li.classList.remove('fv-is-selected');
+        this.emptySelectedItems();
+        this.selectedItems[id] = true;
+        li.classList.add('fv-is-selected');
       }
       return this.selectedItems[id];
     }
@@ -36306,7 +36335,7 @@ var FolderView = function () {
     key: 'toggleSelectEl',
     value: function toggleSelectEl(event) {
       var el = event.target;
-      this.toggleSelectedItem(el, el.getAttribute('data-id'));
+      this.toggleSelectedItem(el, el.getAttribute('data-id'), event.ctrlKey || event.metaKey);
     }
   }, {
     key: 'triggerClick',
