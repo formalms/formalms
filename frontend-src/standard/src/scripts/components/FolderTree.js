@@ -385,12 +385,11 @@ class FolderTree {
     const view = container.querySelector('.js-sortable-view');
 
     if (view) {
-      console.log(Sortable);
       new Sortable.create(view, {
         draggable: '.folderView__li',
         multiDrag: true, // Enable the plugin
         multiDragKey: 'Meta',
-        selectedClass: 'xxselected',
+        selectedClass: 'fv-is-selected',
         animation: 150,
         easing: 'cubic-bezier(1, 0, 0, 1)',
         fallbackOnBody: true,
