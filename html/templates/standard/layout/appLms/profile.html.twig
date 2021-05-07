@@ -1,4 +1,5 @@
-<li class="green_menu">                                
+<!-- # Codice originale -->
+<!-- <li class="green_menu">                                
     <div id="o-wrapper" class="o-wrapper">
         <button id="c-button--slide-right" class="c-button" >
             <a data-toggle="dropdown" href="#" title="{{ translate('_PROFILE', 'menu_course') }}">
@@ -6,7 +7,46 @@
             </a>
         </button>
     </div>
+</li> -->
+
+
+<!-- # Codice test -->
+<!-- <li class="green_menu">                                
+    <div id="o-wrapper" class="o-wrapper">
+        <button id="c-button--slide-right" class="c-button" >
+            <a data-toggle="dropdown" href="#" title="{{ translate('_PROFILE', 'menu_course') }}">
+                <span class="username icon--profile">{{ user.getUserName() }}
+                    {% if user.avatar != '' %}
+                    <img class="user-profile__img" src="{{user.avatar}}" alt="{{user.name}}" />
+                  {% else %}
+                    <img class="user-profile__img" src="{{templatePath}}/static/images/profile.png" alt="{{user.name}}" />
+                  {% endif %}
+                </span>
+            </a>
+        </button>
+    </div>
+</li> -->
+
+
+<!-- # Codice nuovo: -->
+<li class="green_menu">                                
+    <div id="o-wrapper" class="o-wrapper">
+        <button id="c-button--slide-right" class="c-button header__profile__button" >
+                <span class="header__profile__name">{{ user.getUserName() }}</span>
+                <picture class="header__profile__picture">
+                    <!-- <img src="http://forma.local/templates/standard/static/images/icons/top-menu/icon--profile.svg" alt=""> -->
+                    <img src="http://forma.local/files/appCore/photo/19858a_98_1619733081" alt="">
+                </picture>
+        </button>
+    </div>
 </li>
+
+
+
+
+
+
+
 <div id="c-menu--slide-right" class="c-menu c-menu--slide-right user-panel">
     <div class="container-fluid">
         <div class="row">

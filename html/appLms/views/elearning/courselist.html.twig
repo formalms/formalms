@@ -164,84 +164,93 @@
 
 
 
-                    {% block closingdate %}
-                        <div class="course-box__closingdate">
-                            {% if course.dateClosing_year > 0 %}
-                                <span class="course-box__closingdatetext">{{ translate('_CLOSING_DATE', 'course') }}</span>
-                                <span class="course-box__closingdatevalue">{{ course.dateClosing_day}} {{ course.dateClosing_month }} {{ course.dateClosing_year }}</span>
-                            {% endif %}
-                        </div>
-                    {% endblock %}
-
-
-
-                    <div class="course-box__extrainformation">
-                        {% if (course.course_type == 'classroom' and course.editions|length) > 0 %}
-                                <div class="course-box__next">
-                            {% block nextlesson %} 
-                                {{ translate('_NEXT_LESSON', 'course') }}<br> {{ course.next_lesson }}
-                            {% endblock %}
-                                </div>
-                        
-
-                                <div class="course-box__allDates">
-                                    <a href="javascript:;" onclick="openAllDatesPopup({{ course.idCourse }})">{{ translate('_SHOW_ALL_DATES', 'course') }}</a>
-                                                                                                        
-                                    <div class="show-all-dates-popup" data-overlay="course-{{ course.idCourse }}">
-                                        <div id="pop_up_container" class="yui-module yui-overlay yui-panel">
-                                            <a class="container-close" href="javascript:;" onclick="closeAllDatesPopup({{ course.idCourse }})"></a>
-                                            <div class="hd" id="pop_up_container_h">{{ course.name }}</div>
-                                            <div class="bd">
-                                                <div class="edition_container">
-                                                    <table class="edition_table">
-                                                        <thead>
-                                                            <tr>
-                                                                <th>{{ translate('_DAY', 'course') }}</th>
-                                                                <th>{{ translate('_HOUR_BEGIN', 'course') }}</th>
-                                                                <th>{{ translate('_HOUR_END', 'course') }}</th>
-                                                                <th>{{ translate('_LOCATION_INFO', 'classroom') }}</th>  
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            {% for id_edition, days in course.editions %} 
-                                                                <tr><td colspan=4>{{ translate('_EDITION') }}:&nbsp; {{ days.name }}<td></tr> 
-                                                                {% if course.userCanUnsubscribe %}    
-                                                                    <tr><td colspan=4><a href="javascript:confirmDialog('{{ course.name }}','{{ course.idCourse }}','{{ id_edition }}')">{{ translate('_SELF_UNSUBSCRIBE', 'course') }}</a><td></tr>
-                                                                {% endif %}  
-                                                                {% for day in days.days%}  
-                                                                        <tr> 
-                                                                            {% if day.day in course.next_lesson %}
-                                                                            
-                                                                            <td><b>{{ day.day}}</b></td> 
-                                                                            <td><b>{{ day.begin}}</b></td>
-                                                                            <td><b>{{ day.end}}</b></td>
-                                                                            <td><b>{{ day.classroom}}</b></td>
-                                                                            
-                                                                            {% else %} 
-                                                                                
-                                                                            <td>{{ day.day}}</td> 
-                                                                            <td>{{ day.begin}}</td>
-                                                                            <td>{{ day.end}}</td>
-                                                                            <td>{{ day.classroom}}</td>
-                                                                            {% endif %}   
-                                                                        </tr>
-                                                                {% endfor %}  
-                                                            {% endfor %}
-                                                        
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>    
-                        {% endif %}
-                    </div>
 
 
 
                     {# <div class="course-box__item course-box__item{% if course.dateClosing_year > 0 %}--half{% endif %}"> #}
                     <div class="course-box__cta">
+
+
+
+
+
+                        {% block closingdate %}
+                            {% if course.dateClosing_year > 0 %}
+                            <div class="course-box__closingdate">
+                                <span class="course-box__closingdate__text">{{ translate('_CLOSING_DATE', 'course') }}</span>
+                                <span class="course-box__closingdate__value">{{ course.dateClosing_day}} {{ course.dateClosing_month }} {{ course.dateClosing_year }}</span>
+                            </div>
+                            {% endif %}
+                        {% endblock %}
+
+
+
+
+
+
+                        {% if (course.course_type == 'classroom' and course.editions|length) > 0 %}
+                        <div class="course-box__extrainformation">
+                            <div class="course-box__next">
+                            {% block nextlesson %} 
+                                <span class="course-box__next__text">{{ translate('_NEXT_LESSON', 'course') }}</span>
+                                <span class="course-box__next__value">{{ course.next_lesson }}</span>
+                            {% endblock %}
+                            </div>
+                            <div class="course-box__allDates">
+                                <a href="javascript:;" onclick="openAllDatesPopup({{ course.idCourse }})">{{ translate('_SHOW_ALL_DATES', 'course') }}</a>
+                                <div class="show-all-dates-popup" data-overlay="course-{{ course.idCourse }}">
+                                    <div id="pop_up_container" class="yui-module yui-overlay yui-panel">
+                                        <a class="container-close" href="javascript:;" onclick="closeAllDatesPopup({{ course.idCourse }})"></a>
+                                        <div class="hd" id="pop_up_container_h">{{ course.name }}</div>
+                                        <div class="bd">
+                                            <div class="edition_container">
+                                                <table class="edition_table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>{{ translate('_DAY', 'course') }}</th>
+                                                            <th>{{ translate('_HOUR_BEGIN', 'course') }}</th>
+                                                            <th>{{ translate('_HOUR_END', 'course') }}</th>
+                                                            <th>{{ translate('_LOCATION_INFO', 'classroom') }}</th>  
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {% for id_edition, days in course.editions %} 
+                                                            <tr><td colspan=4>{{ translate('_EDITION') }}:&nbsp; {{ days.name }}<td></tr> 
+                                                            {% if course.userCanUnsubscribe %}    
+                                                                <tr><td colspan=4><a href="javascript:confirmDialog('{{ course.name }}','{{ course.idCourse }}','{{ id_edition }}')">{{ translate('_SELF_UNSUBSCRIBE', 'course') }}</a><td></tr>
+                                                            {% endif %}  
+                                                            {% for day in days.days%}  
+                                                                    <tr> 
+                                                                        {% if day.day in course.next_lesson %}
+                                                                        
+                                                                        <td><b>{{ day.day}}</b></td> 
+                                                                        <td><b>{{ day.begin}}</b></td>
+                                                                        <td><b>{{ day.end}}</b></td>
+                                                                        <td><b>{{ day.classroom}}</b></td>
+                                                                        
+                                                                        {% else %} 
+                                                                            
+                                                                        <td>{{ day.day}}</td> 
+                                                                        <td>{{ day.begin}}</td>
+                                                                        <td>{{ day.end}}</td>
+                                                                        <td>{{ day.classroom}}</td>
+                                                                        {% endif %}   
+                                                                    </tr>
+                                                            {% endfor %}  
+                                                        {% endfor %}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+    
+
+
+
                         {% if course.can_enter.can %}                                                      
                             {% block entercourse %}
                             <a class="forma-button course-box__cta__button" title="{{ course.name }}" href="index.php?modname=course&amp;op=aula&amp;idCourse={{ course.idCourse }} " rel= {{ course.rel }}>
