@@ -57,6 +57,7 @@
     line-height: 38px;
     font-size: 14px;
     transition: display 0.2s ease 0s;
+    color: var(--color-0-500) !important;
     &:before {
       content: "";
       font-family: $icon;
@@ -160,6 +161,17 @@
   }
 }
 
+.forma-quick-search-form .navbar-extra > * {
+  float: none !important;
+}  
+@include breakpoint(ipad) {
+
+
+  #middlearea #course_search_label {
+    width: 70% !important;
+    margin: 0 auto;
+  }
+}
 
 .filterBar__buttonsList {
   display: flex;
@@ -273,8 +285,9 @@
     padding: 0;
     text-align: center;
     line-height: 38px;
-    border-radius: 5px;
-    border: 1px solid $white-opacity-3;
+    border-radius: $border-radius;
+    border: 0;
+    background-color: var(--color-0-100);
   }
 }
 
