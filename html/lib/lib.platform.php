@@ -34,7 +34,7 @@ class PlatformManager {
 		else return sql_query($query);
 	}
 
-	function &createInstance() {
+	public static function &createInstance() {
 
 		if(!isset($GLOBALS['platform_manager'])) {
 			$GLOBALS['platform_manager'] = new PlatformManager();
