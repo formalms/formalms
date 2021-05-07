@@ -1,89 +1,16 @@
-// Top-bar
-//
-// This is the top-bar of the site
-//
-// Style guide: 4
+.buttonsBar {
+  margin-bottom: 1rem;
+  cursor: move; /* fallback if grab cursor is unsupported */
+  cursor: grab;
+  cursor: -moz-grab;
+  cursor: -webkit-grab;
+  &:active {
+    cursor: grabbing;
+    cursor: -moz-grabbing;
+    cursor: -webkit-grabbing;
+  }
+}
 
-// This is the top-bar of the site
-//
-// Markup:
-// <ul class="nav nav-tabs hidden-xs">
-//   <li class="active">
-//     <a class="" href="#">Home</a>
-//   </li>
-//   <li class="">
-//     <a class="" href="#">E-Learning</a>
-//   </li>
-//   <li class="">
-//     <a class="" href="#">Catalogo</a>
-//   </li>
-// </ul>
-// <ul class="nav nav-tabs visible-xs">
-//   <script type="text/javascript">
-//     (function ($) {
-//       $(window).load(function () {
-//         var dropdown_title = $('.tabs-dropdown').find('.active').text();
-//         $('.dropdown-title').html(dropdown_title);
-//       })
-//     })(jQuery);
-//   </script>
-//   <li class="dropdown">
-//     <a href="javascript:void(0)" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true"
-//        aria-expanded="false">
-//       <span class="dropdown-title">E-Learning</span> &nbsp;<span class="caret"></span>
-//     </a>
-//     <ul class="dropdown-menu dropdown-menu-left tabs-dropdown">
-//       <li>
-//         <a href="#">Home</a>
-//       </li>
-//       <li class="active">
-//         <a href="#">E-Learning</a>
-//       </li>
-//       <li>
-//         <a href="#">Percorsi formativi</a>
-//       </li>
-//       <li>
-//         <a href="#">Libreria contenuti</a>
-//       </li>
-//       <li>
-//         <a href="#">Comunicazioni</a>
-//       </li>
-//       <li>
-//         <a href="#">Classe</a>
-//       </li>
-//       <li>
-//         <a href="#">Catalogo Corsi</a>
-//       </li>
-//       <li>
-//        <a href="#">Videoconferenza</a>
-//       </li>
-//     </ul>
-//   </li>
-// </ul>
-// <ul class="nav nav-pills">
-//   <li class="">
-//     <a class="icon--all" href="#">Tutti i corsi aperti</a>
-//   </li>
-//   <li class="">
-//     <a class=" icon--concluded" href="#">Conclusi</a>
-//   </li>
-//   <li class="">
-//     <a class=" icon--active" href="#">In itinere</a>
-//   </li>
-// </ul>
-//
-// Style guide: 4.1
-
-// Default Tab
-//
-// Markup:
-// <ul class="nav nav-tabs hidden-xs">
-//   <li class="">
-//     <a class="" href="#">Home</a>
-//   </li>
-// </ul>
-//
-// Style guide: 4.2
 .nav.nav-tabs {
   &:not(.bordered) {
     border: none;
@@ -99,9 +26,6 @@
     height: 40px;
     margin-right: 9px;
     margin-bottom: 0;
-    background-color: $gray-4;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
     font-family: $font;
     font-size: 13px;
     font-weight: bold;
@@ -122,18 +46,14 @@
       height: 40px;
       padding: 12px 35px;
       color: $gray-2;
-      border: none;
-      background-color: $gray-4;
-      border-top-left-radius: 5px;
-      border-top-right-radius: 5px;
+      background-color: var(--color-0-050) !important;
+      border-radius: 100vh !important;
       transition: color 0.2s ease 0s;
       text-transform: uppercase;
       display: block;
 
       &:hover {
-        color: $dark-orange;
-        background-color: $gray-4;
-        border: none;
+        background-color: var(--color-0-100) !important;
       }
 
       &:focus {
@@ -143,9 +63,12 @@
 
     &.active > a {
       width: 100%;
-      background-color: $dark-orange !important;
+      background-color: var(--color-1-300) !important;
       border: none !important;
-      color: $white !important;
+      color: var(--color-1-020) !important;
+      &:hover {
+        background-color: var(--color-1-400) !important;
+      }
     }
   }
 
@@ -184,470 +107,322 @@
   }
 }
 
-.nav.nav-tabs.visible-xs {
-  width: 100%;
-  border: none;
+
+
+
+
+
+
+
+
+
+.filterBar__searchInput input {
+  // background-color: black;
+  border: 0 !important;
 }
 
-// Active Tab
-//
-// Markup:
-// <ul class="nav nav-tabs hidden-xs">
-//   <li class="active">
-//     <a class="" href="javascript:void(0);">Home</a>
-//   </li>
-// </ul>
-//
-// Style guide: 4.3
 
-// Filters (left)
-//
-// Markup:
-// <ul class="nav nav-pills">
-//   <li class="">
-//     <a class="icon--all" href="#">Tutti i corsi aperti</a>
-//   </li>
-//   <li class="">
-//     <a class="icon--concluded" href="#">Conclusi</a>
-//   </li>
-//   <li class="">
-//     <a class="icon--active" href="#">In itinere</a>
-//   </li>
-// </ul>
-//
-// Style guide: 4.4
 
-.nav.nav-pills {
-  //height: 125px;
-  height: auto;
-  margin-top: -1px;
-  background-color: $dark-orange;
-  border-bottom-left-radius: 5px;
-  border-bottom-right-radius: 5px;
-  padding: {
-    top: 0;
-    right: 20px;
-    bottom: 0;
-    left: 0;
-  }
 
-  @include breakpoint($tablet) {
-    height: 60px;
-    margin: 0;
-  }
 
-  li {
-    position: relative;
-    display: inline-block;
-    margin: {
-      top: 0 !important;
-      right: 0 !important;
-      bottom: 0 !important;
-      left: 20px !important;
-    }
-    font-family: $font;
-    font-size: 12px;
-    line-height: 60px;
-
-    @include breakpoint($tablet) {
-      line-height: 60px;
-    }
-
-    &.selected {
-      a {
-        background-color: $dark-orange;
-
-        padding: 0;
-        color: $white;
-        padding: {
-          top: 0;
-          right: 0;
-          bottom: 0;
-          left: 40px;
-        }
-
-        &:before {
-          content: "";
-          position: absolute;
-          top: 15px;
-          left: 0;
-          width: 30px;
-          height: 30px;
-          background-position: center;
-          background-size: contain;
-          background-repeat: no-repeat;
-        }
-
-        &:hover {
-          background-color: $dark-orange;
-        }
-      }
-    }
-
-    a {
-      padding: 0;
-      color: $white;
-      padding: {
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 40px;
-      }
-
-      &:before {
-        content: "";
-        position: absolute;
-        top: 15px;
-        left: 0;
-        width: 30px;
-        height: 30px;
-        background-position: center;
-        background-size: contain;
-        background-repeat: no-repeat;
-      }
-
-      &:hover {
-        background-color: $dark-orange;
-        color: $white;
-      }
-    }
-  }
-}
-
-.tabs_filter {
-  top: 55px !important;
-  width: 100%;
-
-  @include breakpoint($tablet) {
-    top: 45px !important;
-    width: auto;
-  }
-}
-
-// This is the mobile top-bar
-//
-// <ul class="nav nav-tabs visible-xs">
-//   <script type="text/javascript">
-//     (function ($) {
-//       $(window).load(function () {
-//         var dropdown_title = $('.tabs-dropdown').find('.active').text();
-//         $('.dropdown-title').html(dropdown_title);
-//       })
-//     })(jQuery);
-//   </script>
-//   <li class="dropdown">
-//     <a href="javascript:void(0)" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true"
-//        aria-expanded="false">
-//       <span class="dropdown-title">E-Learning</span> &nbsp;<span class="caret"></span>
-//     </a>
-//     <ul class="dropdown-menu dropdown-menu-left tabs-dropdown">
-//       <li>
-//         <a href="#">Home</a>
-//       </li>
-//       <li class="active">
-//         <a href="#">E-Learning</a>
-//       </li>
-//       <li>
-//         <a href="#">Percorsi formativi</a>
-//       </li>
-//       <li>
-//         <a href="#">Libreria contenuti</a>
-//       </li>
-//       <li>
-//         <a href="#">Comunicazioni</a>
-//       </li>
-//       <li>
-//         <a href="#">Classe</a>
-//       </li>
-//       <li>
-//         <a href="#">Catalogo Corsi</a>
-//       </li>
-//       <li>
-//        <a href="#">Videoconferenza</a>
-//       </li>
-//     </ul>
-//   </li>
-// </ul>
-//
-// Style guide: 4.5
-.nav.nav-tabs.visible-xs {
-  height: 46px;
-  padding: 0;
-  background-color: $dark-orange;
-  border-top-left-radius: 5px;
-  border-top-right-radius: 5px;
-
-  .dropdown {
+.html {
+  .tabs_filter {
+    top: 55px !important;
     width: 100%;
-    height: 100%;
-
-    .dropdown-toggle {
-      width: calc(100% - 36px);
-      margin: 0 18px;
-      padding: 0;
-      line-height: 44px;
-      font-family: $font;
-      font-size: 16px;
-      text-transform: uppercase;
-      color: white;
-      border: 0;
-      border-bottom: 1px solid $orange;
-
-      &:hover,
-      &:focus {
-        background-color: $dark-orange;
-      }
-
-      .caret {
-        float: right;
-        border: 0;
-        position: relative;
-
-        &:before {
-          content: "\f107";
-          font-family: $icon;
-          color: $orange;
-          font-size: 18px;
-          line-height: 46px;
-          position: absolute;
-          left: -11px;
-        }
-      }
-    }
-
-    &.open {
-      .dropdown-toggle {
-        background-color: transparent;
-      }
-
-      .dropdown-menu {
-        width: 100%;
-        padding: 0;
-        background-color: $gray-4;
-        border: none;
-        box-shadow: none;
-
-        li {
-          a {
-            padding: 0 18px;
-            color: $gray-2;
-            font-family: $font;
-            line-height: 44px;
-            border-bottom: 1px solid $gray-1;
-            text-transform: uppercase;
-          }
-
-          &.active {
-            a {
-              background-image: none;
-              background-color: transparent;
-              color: $dark-orange;
-              font-weight: bold;
-            }
-          }
-
-          &:last-child {
-            a {
-              border-bottom: none;
-            }
-          }
-        }
-      }
-    }
-  }
-}
-
-.simple_search_box {
-  .navbar-form {
-    border: 0;
-    padding: 0 18px;
-    box-shadow: none;
-    margin: 0;
-
+  
     @include breakpoint($tablet) {
-      padding: 10px 15px;
+      top: 45px !important;
+      width: auto;
     }
   }
-}
-
-.forma-quick-search-form {
-  border: none;
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
-  background-color: $dark-orange;
-  padding: 0;
-
-  .navbar-collapse {
+  
+  .nav.nav-tabs.visible-xs {
+    width: 100%;
+    border: none;
+  }
+  
+  
+  .nav.nav-tabs.visible-xs {
+    height: 46px;
     padding: 0;
-    border: none;
-    box-shadow: none;
-  }
-
-  > .navbar {
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
-  }
-
-  .navbar-collapse.collapsing ~ .navbar-header,
-  .collapse.navbar-collapse ~ .navbar-header {
-    .filter-open {
-      display: inline-block;
-      &:before {
-        content: "\f107";
-      }
-    }
-
-    .filter-closed {
-      display: none;
-    }
-  }
-
-  .navbar-collapse.in {
-    overflow-y: visible;
-  }
-
-  .collapse.navbar-collapse.in ~ .navbar-header {
-    .filter-open {
-      display: none;
-    }
-
-    .filter-closed {
-      display: inline-block;
-      &:before {
-        content: "\f106";
-      }
-    }
-  }
-
-  .navbar {
-    margin: 0;
-    border: none;
-
-    .navbar-header {
-      padding: 20px;
-
-      @include breakpoint($ipad) {
-        padding: 0;
-      }
-    }
-  }
-
-  .navbar-extra {
-    @include breakpoint($tablet) {
-      display: flex;
-      padding-right: 15px;
-      margin-top: 15px;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    @include breakpoint($ipad) {
-      margin-top: 0;
-    }
-
-    & > * {
-      display: block;
+    background-color: $dark-orange;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+  
+    .dropdown {
       width: 100%;
-      padding: 0 20px;
-      text-align: left;
-      float: none !important;
-
-      @include breakpoint($tablet) {
-        width: auto;
+      height: 100%;
+  
+      .dropdown-toggle {
+        width: calc(100% - 36px);
+        margin: 0 18px;
         padding: 0;
+        line-height: 44px;
+        font-family: $font;
+        font-size: 16px;
+        text-transform: uppercase;
+        color: white;
+        border: 0;
+        border-bottom: 1px solid $gray-3;
+  
+        &:hover,
+        &:focus {
+          background-color: $gray-3;
+        }
+  
+        .caret {
+          float: right;
+          border: 0;
+          position: relative;
+  
+          &:before {
+            content: "\f107";
+            font-family: $icon;
+            color: $gray-3;
+            font-size: 18px;
+            line-height: 46px;
+            position: absolute;
+            left: -11px;
+          }
+        }
       }
-
-      .bootstrap-select {
-        margin: 0 !important;
-
-        @include breakpoint($tablet) {
-          min-width: 220px;
+  
+      &.open {
+        .dropdown-toggle {
+          background-color: transparent;
+        }
+  
+        .dropdown-menu {
+          width: 100%;
+          padding: 0;
+          background-color: $gray-4;
+          border: none;
+          box-shadow: none;
+  
+          li {
+            a {
+              padding: 0 18px;
+              color: $gray-2;
+              font-family: $font;
+              line-height: 44px;
+              border-bottom: 1px solid $gray-1;
+              text-transform: uppercase;
+            }
+  
+            &.active {
+              a {
+                background-image: none;
+                background-color: transparent;
+                color: $dark-orange;
+                font-weight: bold;
+              }
+            }
+  
+            &:last-child {
+              a {
+                border-bottom: none;
+              }
+            }
+          }
         }
       }
     }
   }
 
-  .filter-label {
-    width: auto;
-    padding-right: 25px;
-    position: relative;
-    text-align: center;
-    text-transform: uppercase;
-    line-height: 38px;
-    font-size: 14px;
-    transition: display 0.2s ease 0s;
 
-    &:before {
-      content: "";
-      font-family: $icon;
-      color: $orange;
-      position: absolute;
-      right: 0;
-      line-height: 38px;
-      font-size: 20px;
+  #global_conf {
+    .tab-content .tab-pane {
+      h2 {
+        font-size: 24px;
+        font-weight: bold;
+        color: #666;
+        display: block;
+        margin-bottom: 20px;
+      }
+      h3 {
+        font-size: 20px;
+        font-weight: bold;
+        color: #666;
+        text-transform: capitalize;
+        margin-bottom: 20px;
+        display: block;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #666;
+      }
+      select {
+        display: inline-block;
+        width: 28rem;
+        max-width: 100%;
+        margin-right: 0;
+      }
     }
   }
-
-  .navbar-toggle {
-    width: 100%;
-    margin: 0;
-    padding: 0;
-    text-align: center;
-    line-height: 38px;
-    border-radius: 5px;
-    border: 1px solid $white-opacity-3;
+  .HTML_COMMENTATO1 {
+    all: unset;
+    // Top-bar
+    //
+    // This is the top-bar of the site
+    //
+    // Style guide: 4
+    
+    // This is the top-bar of the site
+    //
+    // Markup:
+    // <ul class="nav nav-tabs hidden-xs">
+    //   <li class="active">
+    //     <a class="" href="#">Home</a>
+    //   </li>
+    //   <li class="">
+    //     <a class="" href="#">E-Learning</a>
+    //   </li>
+    //   <li class="">
+    //     <a class="" href="#">Catalogo</a>
+    //   </li>
+    // </ul>
+    // <ul class="nav nav-tabs visible-xs">
+    //   <script type="text/javascript">
+    //     (function ($) {
+      //       $(window).load(function () {
+        //         var dropdown_title = $('.tabs-dropdown').find('.active').text();
+        //         $('.dropdown-title').html(dropdown_title);
+        //       })
+        //     })(jQuery);
+        //   </script>
+        //   <li class="dropdown">
+        //     <a href="javascript:void(0)" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true"
+        //        aria-expanded="false">
+        //       <span class="dropdown-title">E-Learning</span> &nbsp;<span class="caret"></span>
+        //     </a>
+        //     <ul class="dropdown-menu dropdown-menu-left tabs-dropdown">
+        //       <li>
+        //         <a href="#">Home</a>
+        //       </li>
+        //       <li class="active">
+        //         <a href="#">E-Learning</a>
+        //       </li>
+        //       <li>
+        //         <a href="#">Percorsi formativi</a>
+        //       </li>
+        //       <li>
+        //         <a href="#">Libreria contenuti</a>
+        //       </li>
+        //       <li>
+        //         <a href="#">Comunicazioni</a>
+        //       </li>
+        //       <li>
+        //         <a href="#">Classe</a>
+        //       </li>
+        //       <li>
+        //         <a href="#">Catalogo Corsi</a>
+        //       </li>
+        //       <li>
+        //        <a href="#">Videoconferenza</a>
+        //       </li>
+        //     </ul>
+        //   </li>
+        // </ul>
+        // <ul class="nav nav-pills">
+        //   <li class="">
+        //     <a class="icon--all" href="#">Tutti i corsi aperti</a>
+        //   </li>
+        //   <li class="">
+        //     <a class=" icon--concluded" href="#">Conclusi</a>
+        //   </li>
+        //   <li class="">
+        //     <a class=" icon--active" href="#">In itinere</a>
+        //   </li>
+        // </ul>
+        //
+        // Style guide: 4.1
+        
+        // Default Tab
+        //
+        // Markup:
+        // <ul class="nav nav-tabs hidden-xs">
+        //   <li class="">
+        //     <a class="" href="#">Home</a>
+        //   </li>
+        // </ul>
+        //
+        // Style guide: 4.2
   }
-
-  .btn-group.bootstrap-select {
-    @include breakpoint($tablet) {
-      float: left;
-    }
-  }
-
-  .input-group {
-    text-align: left;
+  .HTML_COMMENTATO2 {
+    display: none;
+    // Active Tab
+    //
+    // Markup:
+    // <ul class="nav nav-tabs hidden-xs">
+    //   <li class="active">
+    //     <a class="" href="javascript:void(0);">Home</a>
+    //   </li>
+    // </ul>
+    //
+    // Style guide: 4.3
+  
+    // Filters (left)
+    //
+    // Markup:
+    // <ul class="nav nav-pills">
+    //   <li class="">
+    //     <a class="icon--all" href="#">Tutti i corsi aperti</a>
+    //   </li>
+    //   <li class="">
+    //     <a class="icon--concluded" href="#">Conclusi</a>
+    //   </li>
+    //   <li class="">
+    //     <a class="icon--active" href="#">In itinere</a>
+    //   </li>
+    // </ul>
+    //
+    // Style guide: 4.4
+  
+  
+    // This is the mobile top-bar
+    //
+    // <ul class="nav nav-tabs visible-xs">
+    //   <script type="text/javascript">
+    //     (function ($) {
+    //       $(window).load(function () {
+    //         var dropdown_title = $('.tabs-dropdown').find('.active').text();
+    //         $('.dropdown-title').html(dropdown_title);
+    //       })
+    //     })(jQuery);
+    //   </script>
+    //   <li class="dropdown">
+    //     <a href="javascript:void(0)" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true"
+    //        aria-expanded="false">
+    //       <span class="dropdown-title">E-Learning</span> &nbsp;<span class="caret"></span>
+    //     </a>
+    //     <ul class="dropdown-menu dropdown-menu-left tabs-dropdown">
+    //       <li>
+    //         <a href="#">Home</a>
+    //       </li>
+    //       <li class="active">
+    //         <a href="#">E-Learning</a>
+    //       </li>
+    //       <li>
+    //         <a href="#">Percorsi formativi</a>
+    //       </li>
+    //       <li>
+    //         <a href="#">Libreria contenuti</a>
+    //       </li>
+    //       <li>
+    //         <a href="#">Comunicazioni</a>
+    //       </li>
+    //       <li>
+    //         <a href="#">Classe</a>
+    //       </li>
+    //       <li>
+    //         <a href="#">Catalogo Corsi</a>
+    //       </li>
+    //       <li>
+    //        <a href="#">Videoconferenza</a>
+    //       </li>
+    //     </ul>
+    //   </li>
+    // </ul>
+    //
+    // Style guide: 4.5
   }
 }
 
-#course_search_filter_set1,
-#course_search_filter_reset {
-  display: block;
-  font-size: 12px;
-  line-height: 20px;
-  color: $white;
-
-  &:hover {
-    text-decoration: underline;
-  }
-}
-
-#course_search_filter_set1 ~ br {
-  display: none;
-}
-#global_conf {
-  .tab-content .tab-pane {
-    h2 {
-      font-size: 24px;
-      font-weight: bold;
-      color: #666;
-      display: block;
-      margin-bottom: 20px;
-    }
-    h3 {
-      font-size: 20px;
-      font-weight: bold;
-      color: #666;
-      text-transform: capitalize;
-      margin-bottom: 20px;
-      display: block;
-      padding-bottom: 10px;
-      border-bottom: 1px solid #666;
-    }
-    select {
-      display: inline-block;
-      width: 28rem;
-      max-width: 100%;
-      margin-right: 0;
-    }
-  }
-}
