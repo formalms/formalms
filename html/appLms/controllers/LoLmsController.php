@@ -293,13 +293,11 @@ class LoLmsController extends LmsController
         $responseData = ['success' => false];
 
         if ($id && $newParent !== false) {
-
-            if ($this->model->reorder($id, $newParent, $newOrder ? $newOrder : null)) {
+            if ($this->model->reorder($id, $newParent, $newOrder)) {
                 $responseData = ['success' => true];
             }
         }
-        echo $this->json->encode($responseData);
-        exit;
+        die($this->json->encode($responseData));
     }
 
     public function edit()

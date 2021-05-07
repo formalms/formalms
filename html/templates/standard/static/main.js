@@ -31218,23 +31218,20 @@ var axios = __webpack_require__(2);
 
 var FolderTree = function () {
   function FolderTree(type) {
-    var _this = this;
+    var _this2 = this;
 
     _classCallCheck(this, FolderTree);
 
-    this._this = this;
-    this.type = type;
-    this.currentEl;
-    this.currentElId;
-    this.container = document.querySelector('*[data-container=' + this.type + ']');
-    this.dragged;
+    var _this = this;
+    _this.type = type;
+    _this.container = document.querySelector('*[data-container=' + _this.type + ']');
 
     var btn = document.querySelector('.js-ft-rename-el');
     var inputRename = document.querySelector('.folderTree__rename__input');
 
     if (!document.querySelector('.js-disable-context-menu')) {
-      if (this.container.querySelectorAll('.folderTree__link').length) {
-        this.contextMenu();
+      if (_this.container.querySelectorAll('.folderTree__link').length) {
+        _this.contextMenu();
       }
     }
 
@@ -31253,33 +31250,29 @@ var FolderTree = function () {
       });
     }
 
-    this.container.addEventListener('contextmenu', function (event) {
+    _this.container.addEventListener('contextmenu', function (event) {
       if (event.target.classList.contains('folderTree__rename__input') || event.target.classList.contains('folderTree__rename__btn')) {
         _this.container.querySelector('.context-menu').classList.remove('menu-visible');
       }
     });
 
-    this.container.addEventListener('click', function (event) {
-      _this.clickOnFolder(event, _this.container, _this.type);
+    _this.container.addEventListener('click', function (event) {
+      _this2.clickOnFolder(event);
     });
 
-    if (!this.container.querySelector('.js-disable-sortable')) {
-      this.initSortable(this.container, this.type);
+    if (!_this.container.querySelector('.js-disable-sortable')) {
+      _this.initSortable();
     }
-    if (!this.container.querySelector('.js-disable-drag-and-drop')) {
-      this.removeDragDropListener(this.container);
-      this.initDragDrop(this.container);
+    if (!_this.container.querySelector('.js-disable-drag-and-drop')) {
+      _this.removeDragDropListener();
+      _this.initDragDrop();
     }
   }
 
   _createClass(FolderTree, [{
     key: 'clickOnFolder',
-    value: function clickOnFolder(event, container, type) {
-      var _this2 = this;
-
-      this.container = container;
-      this.type = type;
-
+    value: function clickOnFolder(event) {
+      var _this = this;
       var el = event.target.closest('.folderTree__link');
       if (!el) {
         var li = event.target.closest('.folderTree__li');
@@ -31293,7 +31286,7 @@ var FolderTree = function () {
         var noClick = el.classList.contains('ft-no-click');
 
         if (!noClick) {
-          var els = this.container.querySelectorAll('.folderTree__link');
+          var els = _this.container.querySelectorAll('.folderTree__link');
 
           if (els) {
             els.forEach(function (el) {
@@ -31320,30 +31313,25 @@ var FolderTree = function () {
           el.classList.add('ft-is-folderOpen');
 
           var elId = el.getAttribute('data-id');
-          var getLoData = getApiUrl('get', elId, { type: this.type });
+          var getLoData = _this.getApiUrl('get', elId, { type: _this.type });
 
           axios.get(getLoData).then(function (response) {
             var child = (0, _treeHtml2.default)(response.data);
             var childView = (0, _contentHtml2.default)(response.data);
-            var folderView = _this2.container.querySelector('.folderView');
-            var inputParent = _this2.container.querySelector('#treeview_selected_' + _this2.type);
-            var inputState = _this2.container.querySelector('#treeview_state_' + _this2.type);
+            var folderView = _this.container.querySelector('.folderView');
+            var inputParent = _this.container.querySelector('#treeview_selected_' + _this.type);
+            var inputState = _this.container.querySelector('#treeview_state_' + _this.type);
             inputParent.value = elId;
             inputState.value = response.data.currentState;
             el.insertAdjacentHTML('afterend', child);
             folderView.innerHTML = childView;
 
             if (!document.querySelector('.js-disable-context-menu')) {
-              _this2.contextMenu();
+              _this.contextMenu();
             }
 
             if (!document.querySelector('.js-disable-sortable')) {
-              _this2.initSortable(_this2.container, _this2.type);
-            }
-
-            if (!document.querySelector('.js-disable-drag-and-drop')) {
-              _this2.removeDragDropListener(_this2.container);
-              _this2.initDragDrop(_this2.container);
+              _this.initSortable();
             }
           }).catch(function (error) {
             console.log(error);
@@ -31354,9 +31342,7 @@ var FolderTree = function () {
   }, {
     key: 'contextMenu',
     value: function contextMenu() {
-      var type = window.type;
-      var container = document.querySelector('*[data-container=' + type + ']');
-      var obj = this;
+      var _this = this;
 
       (0, _easycontext.contextmenu)('.folderTree__link:not(.ft-is-root)', function (target) {
         return [{
@@ -31371,14 +31357,14 @@ var FolderTree = function () {
 
             if (btn) {
               btn.addEventListener('click', function () {
-                obj.renameEl();
+                _this.renameEl();
               });
             }
 
             if (inputRename) {
               inputRename.addEventListener('keyup', function (e) {
                 if (e.keyCode === 13) {
-                  obj.renameEl();
+                  _this.renameEl();
                   e.preventDefault();
                 }
               });
@@ -31397,7 +31383,7 @@ var FolderTree = function () {
               renameInput.setAttribute('value', target.textContent);
 
               // Rendo tutti gli elementi non cliccabili se sono in modalità rinomina
-              var elsNotClick = container.querySelectorAll('.ft-no-click');
+              var elsNotClick = _this.container.querySelectorAll('.ft-no-click');
               if (elsNotClick) {
                 var _iteratorNormalCompletion = true;
                 var _didIteratorError = false;
@@ -31428,7 +31414,7 @@ var FolderTree = function () {
               }
 
               // Stop della propagazione del click se sono su context menu, in alternativa disabilito modifica input se clicco fuori dall'input
-              container.addEventListener('click', function (event) {
+              _this.container.addEventListener('click', function (event) {
                 if (event.detail) {
                   // fix trigger click se premo su spazio
                   var clickInside = rename.contains(event.target);
@@ -31450,9 +31436,9 @@ var FolderTree = function () {
             var elId = target.getAttribute('data-id');
 
             if (confirm('Sei sicuro di voler eliminare questo elemento?')) {
-              var deleteLoData = getApiUrl('delete', elId, { type: type });
+              var deleteLoData = _this.getApiUrl('delete', elId, { type: _this.type });
               axios.get(deleteLoData).then(function () {
-                var elTree = container.querySelector('.folderTree__li[data-id="' + elId + '"]');
+                var elTree = _this.container.querySelector('.folderTree__li[data-id="' + elId + '"]');
                 if (elTree) {
                   var ul = elTree.parentNode;
                   elTree.remove();
@@ -31461,7 +31447,7 @@ var FolderTree = function () {
                     ul.remove();
                   }
                 }
-                var el = container.querySelector('.folderView__li[data-id="' + elId + '"]');
+                var el = _this.container.querySelector('.folderView__li[data-id="' + elId + '"]');
                 if (el) {
                   el.remove();
                 }
@@ -31476,14 +31462,14 @@ var FolderTree = function () {
   }, {
     key: 'renameEl',
     value: function renameEl() {
-      var type = window.type;
-      var container = document.querySelector('*[data-container=' + type + ']');
-      var rename = container.querySelector('.folderTree__rename');
+      var _this3 = this;
+
+      var rename = this.container.querySelector('.folderTree__rename');
       var input = rename.querySelector('.folderTree__rename__input');
       var value = input ? input.value : null;
       var el = input.closest('.folderTree__li');
       var elId = el.getAttribute('data-id');
-      var renameLoData = getApiUrl('rename', elId, { type: type, newName: value });
+      var renameLoData = this.getApiUrl('rename', elId, { type: this.type, newName: value });
 
       axios.get(renameLoData).then(function (res) {
         if (res) {
@@ -31491,7 +31477,7 @@ var FolderTree = function () {
           el.querySelector('span').innerHTML = value;
           el.classList.remove('ft-no-click');
 
-          var li = container.querySelector('.folderView__li[data-id="' + elId + '"]');
+          var li = _this3.container.querySelector('.folderView__li[data-id="' + elId + '"]');
           if (li) {
             li.querySelector('.folderView__label').innerHTML = value;
           }
@@ -31504,30 +31490,30 @@ var FolderTree = function () {
     }
   }, {
     key: 'removeDragDropListener',
-    value: function removeDragDropListener(container) {
-      container.removeEventListener('dragstart', this.onDragStart.bind(this));
-      container.removeEventListener('dragover', this.onDragOver.bind(this));
-      container.removeEventListener('dragleave', this.onDragLeave.bind(this));
-      container.removeEventListener('drop', this.onDrop.bind(this));
+    value: function removeDragDropListener() {
+      this.container.removeEventListener('dragstart', this.onDragStart.bind(this));
+      this.container.removeEventListener('dragover', this.onDragOver.bind(this));
+      this.container.removeEventListener('dragleave', this.onDragLeave.bind(this));
+      this.container.removeEventListener('drop', this.onDrop.bind(this));
     }
   }, {
     key: 'initDragDrop',
-    value: function initDragDrop(container) {
-      container.addEventListener('dragstart', this.onDragStart.bind(this));
-      container.addEventListener('dragover', this.onDragOver.bind(this));
-      container.addEventListener('dragleave', this.onDragLeave.bind(this));
-      container.addEventListener('drop', this.onDrop.bind(this));
+    value: function initDragDrop() {
+      this.container.addEventListener('dragstart', this.onDragStart.bind(this));
+      this.container.addEventListener('dragover', this.onDragOver.bind(this));
+      this.container.addEventListener('dragleave', this.onDragLeave.bind(this));
+      this.container.addEventListener('drop', this.onDrop.bind(this));
     }
   }, {
     key: 'selectItems',
-    value: function selectItems(container) {
-      var _this3 = this;
+    value: function selectItems() {
+      var _this4 = this;
 
-      container.querySelectorAll('.folderView__li').forEach(function (item) {
+      this.container.querySelectorAll('.folderView__li').forEach(function (item) {
         item.classList.remove('fv-is-selected');
         var item_id = parseInt(item.getAttribute('data-id'));
 
-        if (_this3.currentElsIds.includes(item_id)) {
+        if (_this4.currentElsIds.includes(item_id)) {
           item.classList.add('fv-is-selected');
         }
       });
@@ -31535,32 +31521,31 @@ var FolderTree = function () {
   }, {
     key: 'onDragStart',
     value: function onDragStart(event) {
-      var _this4 = this;
+      var _this5 = this;
 
       if (event.target.classList.contains('is-droppable')) {
         this.currentEl = event.target;
         this.currentElId = parseInt(this.currentEl.getAttribute('data-id'));
 
-        var container = event.target.closest('.folderView__ul');
-        this.currentEls = container.querySelectorAll('.fv-is-selected');
+        this.currentEls = this.container.querySelectorAll('.fv-is-selected');
         this.currentElsIds = [];
         this.currentEls.forEach(function (item) {
-          _this4.currentElsIds.push(parseInt(item.getAttribute('data-id')));
+          _this5.currentElsIds.push(parseInt(item.getAttribute('data-id')));
         });
 
         // Single drop
         if (!this.currentElsIds.includes(this.currentElId)) {
           this.currentEls = [event.target];
           this.currentElsIds = [this.currentElId];
-          this.selectItems(container);
+          this.selectItems();
         }
+        console.log(this.currentElsIds, 'this.currentElsIds onDragStart');
       }
     }
   }, {
     key: 'onDragOver',
     value: function onDragOver(event) {
       var target = event.target;
-      // console.log(this.currentElsIds, 'selectedItems DRAG OVER');
 
       if (this.currentElsIds) {
         if (!this.currentElsIds.includes(target.getAttribute('data-id')) && target.classList.contains('is-dropzone')) {
@@ -31573,59 +31558,42 @@ var FolderTree = function () {
     key: 'onDragLeave',
     value: function onDragLeave(event) {
       var target = event.target;
-      // console.log(this.currentElsIds, 'selectedItems DRAG LEAVE');
 
-      if (this.currentEl) {
-        if (this.currentElsIds.includes(target.getAttribute('data-id')) && target.classList.contains('is-dropzone')) {
+      if (this.currentElsIds) {
+        if (!this.currentElsIds.includes(target.getAttribute('data-id')) && target.classList.contains('is-dropzone')) {
           target.classList.remove('fv-is-dropped');
         }
       }
     }
   }, {
+    key: 'refresh',
+    value: function refresh() {
+      this.container.querySelector('.folderTree__link.ft-is-root').click();
+      this.currentElId = null;
+      this.currentEl = null;
+      this.currentElsId = null;
+      this.currentEls = null;
+    }
+  }, {
     key: 'onDrop',
     value: function onDrop(event) {
-      var _this5 = this;
+      var _this6 = this;
 
       var target = event.target;
-      console.log(this.currentElsIds, 'selectedItems DROP');
       target.classList.remove('fv-is-dropped');
 
-      if (this.currentEl) {
-        var parentId = target.getAttribute('data-id');
-        if (this.currentElId !== parentId && target.classList.contains('is-dropzone')) {
+      if (this.currentElsIds) {
+        var parentId = parseInt(target.getAttribute('data-id'));
+
+        if (!this.currentElsIds.includes(parentId) && target.classList.contains('is-dropzone')) {
           var type = window.type;
 
-          var reorderLoData = getApiUrl('reorder', this.currentElId, { type: type, newParent: parentId });
+          console.log(this.currentElsIds, '-> ' + parentId);
+
+          var reorderLoData = this.getApiUrl('reorder', this.currentElsIds, { type: type, newParent: parentId });
           axios.get(reorderLoData).then(function () {
-            if (target.classList.contains('ft-is-folderOpen') && _this5.currentEl.classList.contains('folderTree__li')) {
-              var nextElementSibling = target.nextElementSibling;
-              if (nextElementSibling && nextElementSibling.classList.contains('folderTree__ul')) {
-                nextElementSibling.appendChild(_this5.currentEl);
-              } else {
-                _this5.currentEl.remove();
-              }
-            } else {
-              _this5.currentEl.remove();
-            }
-            var el = _this5.querySelector('.folderView__li[data-id="' + _this5.currentElId + '"]');
-
             // Refresh
-            _this5.querySelector('.folderTree__link.ft-is-root').click();
-
-            setTimeout(function () {
-              var parentLiArrow = document.querySelector('.folderTree__li[data-id="' + parentId + '"] .arrow');
-
-              if (parentLiArrow) {
-                // Open parent dir after refresh
-                parentLiArrow.click();
-              }
-            }, 500);
-
-            if (el) {
-              el.remove();
-              _this5.currentElId = null;
-              _this5.currentEl = null;
-            }
+            _this6.refresh();
           }).catch(function (error) {
             console.log(error);
           });
@@ -31634,16 +31602,17 @@ var FolderTree = function () {
     }
   }, {
     key: 'initSortable',
-    value: function initSortable(container, type) {
-      var view = container.querySelector('.js-sortable-view');
+    value: function initSortable() {
+      var _this = this;
+      var view = this.container.querySelector('.js-sortable-view');
 
       if (view) {
-        console.log(_sortableCompleteEsm2.default);
         new _sortableCompleteEsm2.default.create(view, {
           draggable: '.folderView__li',
+          dataIdAttr: 'data-id',
           multiDrag: true, // Enable the plugin
-          multiDragKey: 'Meta',
-          selectedClass: 'xxselected',
+          multiDragKey: 'Meta', // Fix 'ctrl' or 'Meta' button pressed
+          selectedClass: 'fv-is-selected',
           animation: 150,
           easing: 'cubic-bezier(1, 0, 0, 1)',
           fallbackOnBody: true,
@@ -31652,26 +31621,19 @@ var FolderTree = function () {
           onUpdate: function onUpdate(evt) {
             var currentElement = evt.item;
             var currentElementId = currentElement.getAttribute('data-id');
-            var parentElement = container.querySelector('.ft-is-selected');
-            var childElement = container.querySelector('.folderView__ul').querySelectorAll('.folderView__li');
+            var parentElement = _this.container.querySelector('.ft-is-selected');
+            var childElement = _this.container.querySelector('.folderView__ul').querySelectorAll('.folderView__li');
             var childElementArray = [];
-            var parentElementId = 0;
-
-            if (parentElement) {
-              parentElementId = parentElement ? parentElement.getAttribute('data-id') : 0;
-            }
+            var parentElementId = parentElement ? parentElement.getAttribute('data-id') : 0;
 
             childElement.forEach(function (el) {
               var elId = el.getAttribute('data-id');
               childElementArray.push(elId);
             });
 
-            var reorderLoData = getApiUrl('reorder', currentElementId, { type: type, newParent: parentElementId, newOrder: childElementArray });
+            var reorderLoData = _this.getApiUrl('reorder', currentElementId, { type: _this.type, newParent: parentElementId, newOrder: childElementArray });
             axios.get(reorderLoData).then(function () {
-              var parentEl = container.querySelector('.folderTree__link[data-id="' + parentElementId + '"]');
-              if (parentEl) {
-                parentEl.click();
-              }
+              _this.refresh();
             }).catch(function (error) {
               console.log(error);
             });
@@ -31679,20 +31641,21 @@ var FolderTree = function () {
         });
       }
     }
+  }, {
+    key: 'getApiUrl',
+    value: function getApiUrl(action, id, params) {
+      var url = _config2.default.apiUrl + 'lms/lo/' + action + '&id=' + id;
+      if (!params) {
+        params = {};
+      }
+      url += '&' + new URLSearchParams(params).toString();
+
+      return url;
+    }
   }]);
 
   return FolderTree;
 }();
-
-function getApiUrl(action, id, params) {
-  var url = _config2.default.apiUrl + 'lms/lo/' + action + '&id=' + id;
-  if (!params) {
-    params = {};
-  }
-  url += '&' + new URLSearchParams(params).toString();
-
-  return url;
-}
 
 exports.default = FolderTree;
 
@@ -35442,7 +35405,7 @@ module.exports = function(context) { return template.render(context); }
 /***/ (function(module, exports, __webpack_require__) {
 
 var twig = __webpack_require__(5).twig,
-    template = twig({id:"173232ac88d6e49cfeff3c4612fcc521ba63782ba64517f52e434c3bfe945b7e19e1af085ece47cb8186df6865d16090f74d6b80c7c5dbef5a9d7716882c3fed", data:[{"type":"logic","token":{"type":"Twig.logic.type.if","stack":[{"type":"Twig.expression.type.variable","value":"data","match":["data"]},{"type":"Twig.expression.type.key.period","key":"length"},{"type":"Twig.expression.type.number","value":0,"match":["0",null]},{"type":"Twig.expression.type.operator.binary","value":">","precidence":8,"associativity":"leftToRight","operator":">"}],"output":[{"type":"raw","value":"    <ul class=\"folderView__ul js-sortable-view\">\n        "},{"type":"logic","token":{"type":"Twig.logic.type.for","key_var":null,"value_var":"el","expression":[{"type":"Twig.expression.type.variable","value":"data","match":["data"]}],"output":[{"type":"raw","value":"            <li data-id=\""},{"type":"output","stack":[{"type":"Twig.expression.type.variable","value":"el","match":["el"]},{"type":"Twig.expression.type.key.period","key":"id"}]},{"type":"raw","value":"\" class=\"folderView__li is-droppable "},{"type":"logic","token":{"type":"Twig.logic.type.if","stack":[{"type":"Twig.expression.type.variable","value":"el","match":["el"]},{"type":"Twig.expression.type.key.period","key":"type"}],"output":[{"type":"raw","value":"js-folderView-file"}]}},{"type":"logic","token":{"type":"Twig.logic.type.else","match":["else"],"output":[{"type":"raw","value":"is-dropzone js-folderView-folder"}]}},{"type":"raw","value":" "},{"type":"logic","token":{"type":"Twig.logic.type.if","stack":[{"type":"Twig.expression.type.variable","value":"el","match":["el"]},{"type":"Twig.expression.type.key.period","key":"locked"}],"output":[{"type":"raw","value":"fv-is-locked"}]}},{"type":"raw","value":"\">\n                <div data-id=\""},{"type":"output","stack":[{"type":"Twig.expression.type.variable","value":"el","match":["el"]},{"type":"Twig.expression.type.key.period","key":"id"}]},{"type":"raw","value":"\" class=\"folderView__el "},{"type":"logic","token":{"type":"Twig.logic.type.if","stack":[{"type":"Twig.expression.type.variable","value":"el","match":["el"]},{"type":"Twig.expression.type.key.period","key":"type"}],"output":[{"type":"raw","value":"fv-is-"},{"type":"output","stack":[{"type":"Twig.expression.type.variable","value":"el","match":["el"]},{"type":"Twig.expression.type.key.period","key":"type"}]}]}},{"type":"logic","token":{"type":"Twig.logic.type.else","match":["else"],"output":[{"type":"raw","value":"fv-is-folder"}]}},{"type":"raw","value":"\">\n                    <span class=\"folderView__label\">"},{"type":"output","stack":[{"type":"Twig.expression.type.variable","value":"el","match":["el"]},{"type":"Twig.expression.type.key.period","key":"title"}]},{"type":"raw","value":"</span>\n                </div>\n                <div class=\"folderView__visibleActions\">\n                    "},{"type":"logic","token":{"type":"Twig.logic.type.if","stack":[{"type":"Twig.expression.type.variable","value":"el","match":["el"]},{"type":"Twig.expression.type.key.period","key":"status"},{"type":"Twig.expression.type.array.start","value":"[","match":["["]},{"type":"Twig.expression.type.string","value":"attempted"},{"type":"Twig.expression.type.comma"},{"type":"Twig.expression.type.string","value":"completed"},{"type":"Twig.expression.type.comma"},{"type":"Twig.expression.type.string","value":"failed"},{"type":"Twig.expression.type.array.end","value":"]","match":["]"]},{"type":"Twig.expression.type.operator.binary","value":"in","precidence":8,"associativity":"leftToRight","operator":"in"}],"output":[{"type":"raw","value":"                        <div class=\"folderView__status fv-is-"},{"type":"output","stack":[{"type":"Twig.expression.type.variable","value":"el","match":["el"]},{"type":"Twig.expression.type.key.period","key":"status"}]},{"type":"raw","value":"\" title=\""},{"type":"output","stack":[{"type":"Twig.expression.type.variable","value":"el","match":["el"]},{"type":"Twig.expression.type.key.period","key":"status"}]},{"type":"raw","value":"\"></div>\n                    "}]}},{"type":"raw","value":"                </div>\n                "},{"type":"logic","token":{"type":"Twig.logic.type.if","stack":[{"type":"Twig.expression.type.variable","value":"el","match":["el"]},{"type":"Twig.expression.type.key.period","key":"actions"}],"output":[{"type":"raw","value":"                    <div class=\"folderView__buttons\">\n                        <button type=\"button\" class=\"folderView__button fv-is-menu-open js-fv-open-actions\"></button>\n                    </div>\n                    <div class=\"folderView__actions\">\n                        "},{"type":"logic","token":{"type":"Twig.logic.type.for","key_var":null,"value_var":"action","expression":[{"type":"Twig.expression.type.variable","value":"el","match":["el"]},{"type":"Twig.expression.type.key.period","key":"actions"}],"output":[{"type":"raw","value":"                            "},{"type":"logic","token":{"type":"Twig.logic.type.if","stack":[{"type":"Twig.expression.type.variable","value":"action","match":["action"]},{"type":"Twig.expression.type.key.period","key":"name"},{"type":"Twig.expression.type.string","value":"copy"},{"type":"Twig.expression.type.operator.binary","value":"==","precidence":9,"associativity":"leftToRight","operator":"=="}],"output":[{"type":"raw","value":"                                <button type=\"button\" class=\"folderView__button fv-is-"},{"type":"output","stack":[{"type":"Twig.expression.type.variable","value":"action","match":["action"]},{"type":"Twig.expression.type.key.period","key":"name"}]},{"type":"raw","value":" js-fv-open-overlay\" title=\""},{"type":"output","stack":[{"type":"Twig.expression.type.variable","value":"action","match":["action"]},{"type":"Twig.expression.type.key.period","key":"label"}]},{"type":"raw","value":"\"></button>\n                            "}]}},{"type":"logic","token":{"type":"Twig.logic.type.else","match":["else"],"output":[{"type":"raw","value":"                                "},{"type":"logic","token":{"type":"Twig.logic.type.if","stack":[{"type":"Twig.expression.type.variable","value":"action","match":["action"]},{"type":"Twig.expression.type.key.period","key":"type"},{"type":"Twig.expression.type.string","value":"submit"},{"type":"Twig.expression.type.operator.binary","value":"==","precidence":9,"associativity":"leftToRight","operator":"=="}],"output":[{"type":"raw","value":"                                    <input type=\"submit\"\n                                           id=\""},{"type":"output","stack":[{"type":"Twig.expression.type.variable","value":"action","match":["action"]},{"type":"Twig.expression.type.key.period","key":"content"}]},{"type":"raw","value":"\"\n                                           name=\""},{"type":"output","stack":[{"type":"Twig.expression.type.variable","value":"action","match":["action"]},{"type":"Twig.expression.type.key.period","key":"content"}]},{"type":"raw","value":"\"\n                                           class=\"folderView__action fv-is-"},{"type":"output","stack":[{"type":"Twig.expression.type.variable","value":"action","match":["action"]},{"type":"Twig.expression.type.key.period","key":"name"}]},{"type":"raw","value":" js-fv-action\"\n                                           title=\""},{"type":"output","stack":[{"type":"Twig.expression.type.variable","value":"action","match":["action"]},{"type":"Twig.expression.type.key.period","key":"label"}]},{"type":"raw","value":"\"\n                                           value=\"\"/>\n                                "}]}},{"type":"logic","token":{"type":"Twig.logic.type.elseif","stack":[{"type":"Twig.expression.type.subexpression.end","value":")","match":[")"],"expression":true,"params":[{"type":"Twig.expression.type.variable","value":"action","match":["action"]},{"type":"Twig.expression.type.key.period","key":"type"},{"type":"Twig.expression.type.string","value":"link"},{"type":"Twig.expression.type.operator.binary","value":"==","precidence":9,"associativity":"leftToRight","operator":"=="}]}],"output":[{"type":"raw","value":"                                    <a href=\""},{"type":"output","stack":[{"type":"Twig.expression.type.variable","value":"action","match":["action"]},{"type":"Twig.expression.type.key.period","key":"content"}]},{"type":"raw","value":"\" class=\"folderView__action fv-is-"},{"type":"output","stack":[{"type":"Twig.expression.type.variable","value":"action","match":["action"]},{"type":"Twig.expression.type.key.period","key":"name"}]},{"type":"raw","value":"\" title=\""},{"type":"output","stack":[{"type":"Twig.expression.type.variable","value":"action","match":["action"]},{"type":"Twig.expression.type.key.period","key":"label"}]},{"type":"raw","value":"\">\n                                    </a>\n                                "}]}},{"type":"raw","value":"                            "}]}},{"type":"raw","value":"                        "}]}},{"type":"raw","value":"                        <button type=\"button\" class=\"folderView__action fv-is-menu-close js-fv-close-actions\"></button>\n                    </div>\n                "}]}},{"type":"raw","value":"            </li>\n        "}]}},{"type":"raw","value":"    </ul>\n"}]}},{"type":"logic","token":{"type":"Twig.logic.type.else","match":["else"],"output":[{"type":"raw","value":"    <div class=\"text-center\">Nessun elemento presente</div>\n"}]}}], allowInlineIncludes: true, rethrow: true});
+    template = twig({id:"173232ac88d6e49cfeff3c4612fcc521ba63782ba64517f52e434c3bfe945b7e19e1af085ece47cb8186df6865d16090f74d6b80c7c5dbef5a9d7716882c3fed", data:[{"type":"logic","token":{"type":"Twig.logic.type.if","stack":[{"type":"Twig.expression.type.variable","value":"data","match":["data"]},{"type":"Twig.expression.type.key.period","key":"length"},{"type":"Twig.expression.type.number","value":0,"match":["0",null]},{"type":"Twig.expression.type.operator.binary","value":">","precidence":8,"associativity":"leftToRight","operator":">"}],"output":[{"type":"raw","value":"    <ul class=\"folderView__ul js-sortable-view\">\n        "},{"type":"logic","token":{"type":"Twig.logic.type.for","key_var":null,"value_var":"el","expression":[{"type":"Twig.expression.type.variable","value":"data","match":["data"]}],"output":[{"type":"raw","value":"            <li data-id=\""},{"type":"output","stack":[{"type":"Twig.expression.type.variable","value":"el","match":["el"]},{"type":"Twig.expression.type.key.period","key":"id"}]},{"type":"raw","value":"\" class=\"folderView__li is-droppable is-dropzone "},{"type":"logic","token":{"type":"Twig.logic.type.if","stack":[{"type":"Twig.expression.type.variable","value":"el","match":["el"]},{"type":"Twig.expression.type.key.period","key":"type"}],"output":[{"type":"raw","value":"js-folderView-file"}]}},{"type":"logic","token":{"type":"Twig.logic.type.else","match":["else"],"output":[{"type":"raw","value":"js-folderView-folder"}]}},{"type":"raw","value":" "},{"type":"logic","token":{"type":"Twig.logic.type.if","stack":[{"type":"Twig.expression.type.variable","value":"el","match":["el"]},{"type":"Twig.expression.type.key.period","key":"locked"}],"output":[{"type":"raw","value":"fv-is-locked"}]}},{"type":"raw","value":"\">\n                <div data-id=\""},{"type":"output","stack":[{"type":"Twig.expression.type.variable","value":"el","match":["el"]},{"type":"Twig.expression.type.key.period","key":"id"}]},{"type":"raw","value":"\" class=\"folderView__el "},{"type":"logic","token":{"type":"Twig.logic.type.if","stack":[{"type":"Twig.expression.type.variable","value":"el","match":["el"]},{"type":"Twig.expression.type.key.period","key":"type"}],"output":[{"type":"raw","value":"fv-is-"},{"type":"output","stack":[{"type":"Twig.expression.type.variable","value":"el","match":["el"]},{"type":"Twig.expression.type.key.period","key":"type"}]}]}},{"type":"logic","token":{"type":"Twig.logic.type.else","match":["else"],"output":[{"type":"raw","value":"fv-is-folder"}]}},{"type":"raw","value":"\">\n                    <span class=\"folderView__label\">"},{"type":"output","stack":[{"type":"Twig.expression.type.variable","value":"el","match":["el"]},{"type":"Twig.expression.type.key.period","key":"id"}]},{"type":"raw","value":" - "},{"type":"output","stack":[{"type":"Twig.expression.type.variable","value":"el","match":["el"]},{"type":"Twig.expression.type.key.period","key":"title"}]},{"type":"raw","value":"</span>\n                </div>\n                <div class=\"folderView__visibleActions\">\n                    "},{"type":"logic","token":{"type":"Twig.logic.type.if","stack":[{"type":"Twig.expression.type.variable","value":"el","match":["el"]},{"type":"Twig.expression.type.key.period","key":"status"},{"type":"Twig.expression.type.array.start","value":"[","match":["["]},{"type":"Twig.expression.type.string","value":"attempted"},{"type":"Twig.expression.type.comma"},{"type":"Twig.expression.type.string","value":"completed"},{"type":"Twig.expression.type.comma"},{"type":"Twig.expression.type.string","value":"failed"},{"type":"Twig.expression.type.array.end","value":"]","match":["]"]},{"type":"Twig.expression.type.operator.binary","value":"in","precidence":8,"associativity":"leftToRight","operator":"in"}],"output":[{"type":"raw","value":"                        <div class=\"folderView__status fv-is-"},{"type":"output","stack":[{"type":"Twig.expression.type.variable","value":"el","match":["el"]},{"type":"Twig.expression.type.key.period","key":"status"}]},{"type":"raw","value":"\" title=\""},{"type":"output","stack":[{"type":"Twig.expression.type.variable","value":"el","match":["el"]},{"type":"Twig.expression.type.key.period","key":"status"}]},{"type":"raw","value":"\"></div>\n                    "}]}},{"type":"raw","value":"                </div>\n                "},{"type":"logic","token":{"type":"Twig.logic.type.if","stack":[{"type":"Twig.expression.type.variable","value":"el","match":["el"]},{"type":"Twig.expression.type.key.period","key":"actions"}],"output":[{"type":"raw","value":"                    <div class=\"folderView__buttons\">\n                        <button type=\"button\" class=\"folderView__button fv-is-menu-open js-fv-open-actions\"></button>\n                    </div>\n                    <div class=\"folderView__actions\">\n                        "},{"type":"logic","token":{"type":"Twig.logic.type.for","key_var":null,"value_var":"action","expression":[{"type":"Twig.expression.type.variable","value":"el","match":["el"]},{"type":"Twig.expression.type.key.period","key":"actions"}],"output":[{"type":"raw","value":"                            "},{"type":"logic","token":{"type":"Twig.logic.type.if","stack":[{"type":"Twig.expression.type.variable","value":"action","match":["action"]},{"type":"Twig.expression.type.key.period","key":"name"},{"type":"Twig.expression.type.string","value":"copy"},{"type":"Twig.expression.type.operator.binary","value":"==","precidence":9,"associativity":"leftToRight","operator":"=="}],"output":[{"type":"raw","value":"                                <button type=\"button\" class=\"folderView__button fv-is-"},{"type":"output","stack":[{"type":"Twig.expression.type.variable","value":"action","match":["action"]},{"type":"Twig.expression.type.key.period","key":"name"}]},{"type":"raw","value":" js-fv-open-overlay\" title=\""},{"type":"output","stack":[{"type":"Twig.expression.type.variable","value":"action","match":["action"]},{"type":"Twig.expression.type.key.period","key":"label"}]},{"type":"raw","value":"\"></button>\n                            "}]}},{"type":"logic","token":{"type":"Twig.logic.type.else","match":["else"],"output":[{"type":"raw","value":"                                "},{"type":"logic","token":{"type":"Twig.logic.type.if","stack":[{"type":"Twig.expression.type.variable","value":"action","match":["action"]},{"type":"Twig.expression.type.key.period","key":"type"},{"type":"Twig.expression.type.string","value":"submit"},{"type":"Twig.expression.type.operator.binary","value":"==","precidence":9,"associativity":"leftToRight","operator":"=="}],"output":[{"type":"raw","value":"                                    <input type=\"submit\"\n                                           id=\""},{"type":"output","stack":[{"type":"Twig.expression.type.variable","value":"action","match":["action"]},{"type":"Twig.expression.type.key.period","key":"content"}]},{"type":"raw","value":"\"\n                                           name=\""},{"type":"output","stack":[{"type":"Twig.expression.type.variable","value":"action","match":["action"]},{"type":"Twig.expression.type.key.period","key":"content"}]},{"type":"raw","value":"\"\n                                           class=\"folderView__action fv-is-"},{"type":"output","stack":[{"type":"Twig.expression.type.variable","value":"action","match":["action"]},{"type":"Twig.expression.type.key.period","key":"name"}]},{"type":"raw","value":" js-fv-action\"\n                                           title=\""},{"type":"output","stack":[{"type":"Twig.expression.type.variable","value":"action","match":["action"]},{"type":"Twig.expression.type.key.period","key":"label"}]},{"type":"raw","value":"\"\n                                           value=\"\"/>\n                                "}]}},{"type":"logic","token":{"type":"Twig.logic.type.elseif","stack":[{"type":"Twig.expression.type.subexpression.end","value":")","match":[")"],"expression":true,"params":[{"type":"Twig.expression.type.variable","value":"action","match":["action"]},{"type":"Twig.expression.type.key.period","key":"type"},{"type":"Twig.expression.type.string","value":"link"},{"type":"Twig.expression.type.operator.binary","value":"==","precidence":9,"associativity":"leftToRight","operator":"=="}]}],"output":[{"type":"raw","value":"                                    <a href=\""},{"type":"output","stack":[{"type":"Twig.expression.type.variable","value":"action","match":["action"]},{"type":"Twig.expression.type.key.period","key":"content"}]},{"type":"raw","value":"\" class=\"folderView__action fv-is-"},{"type":"output","stack":[{"type":"Twig.expression.type.variable","value":"action","match":["action"]},{"type":"Twig.expression.type.key.period","key":"name"}]},{"type":"raw","value":"\" title=\""},{"type":"output","stack":[{"type":"Twig.expression.type.variable","value":"action","match":["action"]},{"type":"Twig.expression.type.key.period","key":"label"}]},{"type":"raw","value":"\">\n                                    </a>\n                                "}]}},{"type":"raw","value":"                            "}]}},{"type":"raw","value":"                        "}]}},{"type":"raw","value":"                        <button type=\"button\" class=\"folderView__action fv-is-menu-close js-fv-close-actions\"></button>\n                    </div>\n                "}]}},{"type":"raw","value":"            </li>\n        "}]}},{"type":"raw","value":"    </ul>\n"}]}},{"type":"logic","token":{"type":"Twig.logic.type.else","match":["else"],"output":[{"type":"raw","value":"    <div class=\"text-center\">Nessun elemento presente</div>\n"}]}}], allowInlineIncludes: true, rethrow: true});
 
 module.exports = function(context) { return template.render(context); }
 
@@ -36266,17 +36229,20 @@ var axios = __webpack_require__(2);
 
 var FolderView = function () {
   function FolderView(type) {
-    var _this = this;
+    var _this2 = this;
 
     _classCallCheck(this, FolderView);
 
     this.type = type;
     this.container = document.querySelector('*[data-container=' + this.type + ']');
     this.container.addEventListener('click', function (e) {
-      _this.toggleSelectEl(e);
+      _this2.toggleSelectEl(e);
+    });
+    this.container.addEventListener('click', function (e) {
+      _this2.triggerClick(e);
     });
     this.container.addEventListener('dblclick', function (e) {
-      _this.triggerClick(e);
+      _this2.triggerDblClick(e);
     });
     this.emptySelectedItems();
   }
@@ -36333,17 +36299,15 @@ var FolderView = function () {
     }
   }, {
     key: 'toggleSelectEl',
-    value: function toggleSelectEl(event) {
-      var el = event.target;
-      this.toggleSelectedItem(el, el.getAttribute('data-id'), event.ctrlKey || event.metaKey);
+    value: function toggleSelectEl(e) {
+      var el = e.target;
+      this.toggleSelectedItem(el, el.getAttribute('data-id'), e.ctrlKey || e.metaKey);
     }
   }, {
     key: 'triggerClick',
-    value: function triggerClick(event) {
-      var el = event.target;
-      var container = this.getContainer();
-      var type = this.getType();
-      event.preventDefault();
+    value: function triggerClick(e) {
+      var el = e.target;
+      var _this = this;
 
       if (el) {
         var li = el.closest('.folderView__li');
@@ -36357,19 +36321,21 @@ var FolderView = function () {
         }
 
         if (el.classList.contains('fv-is-delete')) {
+          e.preventDefault();
           if (confirm('Sei sicuro di voler eliminare questo elemento?')) {
-            var deleteLoData = getApiUrl('delete', elId, { type: type });
+            var deleteLoData = _this.getApiUrl('delete', elId, { type: _this.type });
             axios.get(deleteLoData).then(function () {
-              var elTree = container.querySelector('.folderTree__li[data-id="' + elId + '"]');
+              var elTree = _this.container.querySelector('.folderTree__li[data-id="' + elId + '"]');
               if (elTree) {
                 var ul = elTree.parentNode;
                 elTree.remove();
 
                 if (!ul.querySelector('li')) {
+                  // Last element in parent dir
                   ul.remove();
                 }
               }
-              var el = container.querySelector('.folderView__li[data-id="' + elId + '"]');
+              var el = _this.container.querySelector('.folderView__li[data-id="' + elId + '"]');
               if (el) {
                 el.remove();
               }
@@ -36377,27 +36343,48 @@ var FolderView = function () {
               console.log(error);
             });
           }
-        } else if (el.classList.contains('js-folderView-folder')) {
-          container.querySelector('.folderTree__link[data-id="' + elId + '"]').click();
         } else if (el.classList.contains('js-folderView-file')) {
           el.querySelector('.fv-is-play').click();
         }
       }
     }
+  }, {
+    key: 'triggerDblClick',
+    value: function triggerDblClick(e) {
+      var el = e.target;
+      var _this = this;
+
+      if (el) {
+        var li = el.closest('.folderView__li');
+        if (!li) {
+          return;
+        }
+        var elId = li.getAttribute('data-id');
+
+        if (!elId) {
+          return;
+        }
+
+        if (el.classList.contains('js-folderView-folder')) {
+          _this.container.querySelector('.folderTree__link[data-id="' + elId + '"]').click();
+        }
+      }
+    }
+  }, {
+    key: 'getApiUrl',
+    value: function getApiUrl(action, id, params) {
+      var url = _config2.default.apiUrl + 'lms/lo/' + action + '&id=' + id;
+      if (!params) {
+        params = {};
+      }
+      url += '&' + new URLSearchParams(params).toString();
+
+      return url;
+    }
   }]);
 
   return FolderView;
 }();
-
-function getApiUrl(action, id, params) {
-  var url = _config2.default.apiUrl + 'lms/lo/' + action + '&id=' + id;
-  if (!params) {
-    params = {};
-  }
-  url += '&' + new URLSearchParams(params).toString();
-
-  return url;
-}
 
 exports.default = FolderView;
 

@@ -7,7 +7,8 @@ class FolderView {
     this.type = type;
     this.container = document.querySelector('*[data-container=' + this.type + ']');
     this.container.addEventListener('click', (e) => { this.toggleSelectEl(e); });
-    this.container.addEventListener('dblclick', (e) => { this.triggerClick(e); });
+    this.container.addEventListener('click', (e) => { this.triggerClick(e); });
+    this.container.addEventListener('dblclick', (e) => { this.triggerDblClick(e); });
     this.emptySelectedItems();
   }
 
@@ -56,16 +57,14 @@ class FolderView {
     return this.selectedItems[id];
   }
 
-  toggleSelectEl(event) {
-    const el = event.target;
-    this.toggleSelectedItem(el, el.getAttribute('data-id'), (event.ctrlKey || event.metaKey));
+  toggleSelectEl(e) {
+    const el = e.target;
+    this.toggleSelectedItem(el, el.getAttribute('data-id'), (e.ctrlKey || e.metaKey));
   }
 
-  triggerClick(event) {
-    const el = event.target;
-    const container = this.getContainer();
-    const type = this.getType();
-    event.preventDefault();
+  triggerClick(e) {
+    const el = e.target;
+    const _this = this;
 
     if (el) {
       const li = el.closest('.folderView__li');
@@ -79,19 +78,20 @@ class FolderView {
       }
 
       if (el.classList.contains('fv-is-delete')) {
+        e.preventDefault();
         if (confirm('Sei sicuro di voler eliminare questo elemento?')) {
-          const deleteLoData = getApiUrl('delete', elId, { type });
+          const deleteLoData = _this.getApiUrl('delete', elId, { type: _this.type });
           axios.get(deleteLoData).then(() => {
-            const elTree = container.querySelector('.folderTree__li[data-id="' + elId + '"]');
+            const elTree = _this.container.querySelector('.folderTree__li[data-id="' + elId + '"]');
             if (elTree) {
               const ul = elTree.parentNode;
               elTree.remove();
 
-              if (!ul.querySelector('li')) {
+              if (!ul.querySelector('li')) { // Last element in parent dir
                 ul.remove();
               }
             }
-            const el = container.querySelector('.folderView__li[data-id="' + elId + '"]');
+            const el = _this.container.querySelector('.folderView__li[data-id="' + elId + '"]');
             if (el) {
               el.remove();
             }
@@ -99,23 +99,42 @@ class FolderView {
             console.log(error);
           });
         }
-      } else if (el.classList.contains('js-folderView-folder')) {
-        container.querySelector('.folderTree__link[data-id="' + elId + '"]').click();
       } else if (el.classList.contains('js-folderView-file')) {
         el.querySelector('.fv-is-play').click();
       }
     }
   }
-}
 
-function getApiUrl(action, id, params) {
-  let url = `${Config.apiUrl}lms/lo/${action}&id=${id}`;
-  if (!params) {
-    params = {};
+  triggerDblClick(e) {
+    const el = e.target;
+    const _this = this;
+
+    if (el) {
+      const li = el.closest('.folderView__li');
+      if (!li) {
+        return;
+      }
+      const elId = li.getAttribute('data-id');
+
+      if (!elId) {
+        return;
+      }
+
+      if (el.classList.contains('js-folderView-folder')) {
+        _this.container.querySelector('.folderTree__link[data-id="' + elId + '"]').click();
+      }
+    }
   }
-  url += '&' + new URLSearchParams(params).toString();
 
-  return url;
+  getApiUrl(action, id, params) {
+    let url = `${Config.apiUrl}lms/lo/${action}&id=${id}`;
+    if (!params) {
+      params = {};
+    }
+    url += '&' + new URLSearchParams(params).toString();
+
+    return url;
+  }
 }
 
 export default FolderView;
