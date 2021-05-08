@@ -1,3 +1,4 @@
+import 'regenerator-runtime/runtime'
 import { contextmenu } from 'easycontext';
 import Config from '../config/config';
 const axios = require('axios');
@@ -97,29 +98,8 @@ class FolderTree {
         el.classList.add('ft-is-folderOpen');
 
         const elId = el.getAttribute('data-id');
-        const getLoData = _this.getApiUrl('get', elId, { type: _this.type });
-
-        axios.get(getLoData).then((response) => {
-          const child = Tree(response.data);
-          const childView = Content(response.data);
-          const folderView = _this.container.querySelector('.folderView');
-          const inputParent = _this.container.querySelector('#treeview_selected_' + _this.type);
-          const inputState = _this.container.querySelector('#treeview_state_' + _this.type);
-          inputParent.value = elId;
-          inputState.value = response.data.currentState;
-          el.insertAdjacentHTML('afterend', child);
-          folderView.innerHTML = childView;
-
-          if (!document.querySelector('.js-disable-context-menu')) {
-            _this.contextMenu();
-          }
-
-          if (!document.querySelector('.js-disable-sortable')) {
-            _this.initSortable();
-          }
-        }).catch((error) => {
-          console.log(error)
-        });
+        const LoData = _this.getApiUrl('get', elId, { type: _this.type });
+        this.getLoData(LoData, el, elId)
       }
     }
   }
@@ -338,12 +318,7 @@ class FolderTree {
         console.log(this.currentElsIds, '-> ' + parentId);
 
         const reorderLoData = this.getApiUrl('reorder', this.currentElsIds, { type, newParent: parentId });
-        axios.get(reorderLoData).then(() => {
-          // Refresh
-          this.refresh();
-        }).catch((error) => {
-          console.log(error);
-        });
+        this.getReorderLoData(reorderLoData);
       }
     }
   }
@@ -378,11 +353,7 @@ class FolderTree {
           });
 
           const reorderLoData = _this.getApiUrl('reorder', currentElementId, { type: _this.type, newParent: parentElementId, newOrder: childElementArray });
-          axios.get(reorderLoData).then(() => {
-            _this.refresh();
-          }).catch( (error) => {
-            console.log(error);
-          });
+          _this.getReorderLoData(reorderLoData);
         }
       });
     }
@@ -396,6 +367,55 @@ class FolderTree {
     url += '&' + new URLSearchParams(params).toString();
 
     return url;
+  }
+
+  async getReorderLoData(endpoint) {
+    try {
+      await axios.get(endpoint).then(() => {
+        this.refresh();
+      }).catch( (error) => {
+        console.log(error);
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  async getLoData(endpoint, el , elId) {
+    try {
+      await axios.get(endpoint).then((response) => {
+        const child = Tree(response.data);
+        const childView = Content(response.data);
+        const folderView = this.container.querySelector('.folderView');
+        const inputParent = this.container.querySelector('#treeview_selected_' + this.type);
+        const inputState = this.container.querySelector('#treeview_state_' + this.type);
+        inputParent.value = elId;
+        inputState.value = response.data.currentState;
+
+        if (el.classList.contains('ft-is-root')) {
+          el.parentNode.childNodes.forEach(node => {
+            if ( (node.classList) && (node.classList.contains('folderTree__ul'))) {
+              node.remove();
+            }
+          })
+        }
+
+        el.insertAdjacentHTML('afterend', child);
+        folderView.innerHTML = childView;
+
+        if (!document.querySelector('.js-disable-context-menu')) {
+          this.contextMenu();
+        }
+
+        if (!document.querySelector('.js-disable-sortable')) {
+          this.initSortable();
+        }
+      }).catch((error) => {
+        console.log(error)
+      });
+    } catch (e) {
+      console.log(e);
+    }
   }
 }
 
