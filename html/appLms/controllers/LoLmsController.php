@@ -88,6 +88,8 @@ class LoLmsController extends LmsController
 
     public function organization()
     {
+        checkPerm('lesson', false, 'storage');
+
         $lo_types = [
             [
                 'title' => Lang::t('_DIRECTORY', 'organization_chart'),
@@ -143,7 +145,7 @@ class LoLmsController extends LmsController
         ]);
     }
 
-    function formatLoData($loData)
+    private function formatLoData($loData)
     {
         $results = [];
         foreach ($loData as $lo) {
@@ -257,6 +259,8 @@ class LoLmsController extends LmsController
 
     public function delete()
     {
+        checkPerm('lesson', false, 'storage');
+
         $id = Get::req('id', DOTY_INT, false);
         echo $this->json->encode($this->model->deleteFolder($id));
         exit;
@@ -264,6 +268,8 @@ class LoLmsController extends LmsController
 
     public function rename()
     {
+        checkPerm('lesson', false, 'storage');
+
         $id = Get::req('id', DOTY_INT, false);
         $newName = Get::req('newName', DOTY_STRING, false);
         $type = Get::req('type', DOTY_STRING, LoLms::ORGDIRDB);
@@ -275,6 +281,8 @@ class LoLmsController extends LmsController
 
     public function move()
     {
+        checkPerm('lesson', false, 'storage');
+
         $id = Get::req('id', DOTY_INT, false);
         $newParentId = Get::req('newParentId', DOTY_INT, false);
 
@@ -284,6 +292,8 @@ class LoLmsController extends LmsController
 
     public function reorder()
     {
+        checkPerm('lesson', false, 'storage');
+        
         $id = Get::req('id', DOTY_INT, false);
         $newParent = Get::req('newParent', DOTY_INT, false);
         $newOrderString = Get::req('newOrder', DOTY_STRING, false);
@@ -304,6 +314,8 @@ class LoLmsController extends LmsController
 
     public function edit()
     {
+        checkPerm('lesson', false, 'storage');
+
         $id = Get::req('id', DOTY_INT, false);
         $type = Get::req('type', DOTY_STRING, LoLms::ORGDIRDB);
 
@@ -322,6 +334,8 @@ class LoLmsController extends LmsController
 
     public function createFolder()
     {
+        checkPerm('lesson', false, 'storage');
+        
         $selectedNode = Get::req('selectedNode', DOTY_INT, false);
         $folderName = Get::req('folderName', DOTY_STRING, false);
         // $currentState = Get::req('currentState', DOTY_STRING, false);
@@ -340,6 +354,8 @@ class LoLmsController extends LmsController
 
     public function copy()
     {
+        checkPerm('lesson', false, 'storage');
+
         $id = Get::req('id', DOTY_INT, false);
         $fromType = Get::req('type', DOTY_STRING, LoLms::ORGDIRDB);
         $newtype = Get::req('newtype', DOTY_STRING, false);
