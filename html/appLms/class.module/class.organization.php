@@ -258,15 +258,9 @@ class Module_Organization extends LmsModule {
 			$idItem = $folder->otherValues[REPOFIELDIDRESOURCE];
 			$lo = createLO($folder->otherValues[REPOFIELDOBJECTTYPE], $idItem);
 			if(isset($_GET['edit']) && $_GET['edit']) {
-
-				$back_url = 'index.php?modname='.$modname
-						.'&op=custom_enditem&edit=1&id_item='
-						.$id_item;
+				$back_url = 'index.php?r=lms/lo/organization';
 			} else {
-
-				$back_url = 'index.php?modname='.$modname
-						.'&op=custom_enditem&id_item='
-						.$id_item;
+				$back_url = 'index.php?r=lms/lo/show';
 			}
 			require_once Forma::inc(_lms_ . '/class.module/track.object.php');
 	
