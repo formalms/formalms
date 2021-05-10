@@ -31534,7 +31534,6 @@ var FolderTree = function () {
           this.currentElsIds = [this.currentElId];
           this.selectItems();
         }
-        console.log(this.currentElsIds, 'this.currentElsIds onDragStart');
       }
     }
   }, {
@@ -31563,6 +31562,18 @@ var FolderTree = function () {
   }, {
     key: 'refresh',
     value: function refresh() {
+      var _this6 = this;
+
+      var openedEls = this.container.querySelectorAll('.ft-is-folderOpen');
+      this.openedIds = [];
+
+      openedEls.forEach(function (item) {
+        var id = item.getAttribute('data-id');
+        if (id > 0) {
+          _this6.openedIds.push(id);
+        }
+      });
+
       this.container.querySelector('.folderTree__link.ft-is-root').click();
       this.currentElId = null;
       this.currentEl = null;
@@ -31579,8 +31590,6 @@ var FolderTree = function () {
         var parentId = parseInt(target.getAttribute('data-id'));
 
         if (!this.currentElsIds.includes(parentId) && target.classList.contains('is-dropzone')) {
-          console.log(this.currentElsIds, '-> ' + parentId);
-
           var reorderLoData = this.getApiUrl('reorder', this.currentElsIds, { type: this.type, newParent: parentId });
           this.getReorderLoData(reorderLoData);
         }
@@ -31638,7 +31647,7 @@ var FolderTree = function () {
     key: 'getReorderLoData',
     value: function () {
       var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(endpoint) {
-        var _this6 = this;
+        var _this7 = this;
 
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
@@ -31647,7 +31656,7 @@ var FolderTree = function () {
                 _context.prev = 0;
                 _context.next = 3;
                 return axios.get(endpoint).then(function () {
-                  _this6.refresh();
+                  _this7.refresh();
                 }).catch(function (error) {
                   console.log(error);
                 });
@@ -31680,7 +31689,7 @@ var FolderTree = function () {
     key: 'getLoData',
     value: function () {
       var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(endpoint, el, elId, clickOnArrow) {
-        var _this7 = this;
+        var _this8 = this;
 
         return regeneratorRuntime.wrap(function _callee2$(_context2) {
           while (1) {
@@ -31691,8 +31700,8 @@ var FolderTree = function () {
                 return axios.get(endpoint).then(function (response) {
                   var child = (0, _treeHtml2.default)(response.data);
                   var childView = (0, _contentHtml2.default)(response.data);
-                  var inputParent = _this7.container.querySelector('#treeview_selected_' + _this7.type);
-                  var inputState = _this7.container.querySelector('#treeview_state_' + _this7.type);
+                  var inputParent = _this8.container.querySelector('#treeview_selected_' + _this8.type);
+                  var inputState = _this8.container.querySelector('#treeview_state_' + _this8.type);
                   inputParent.value = elId;
                   inputState.value = response.data.currentState;
 
@@ -31706,16 +31715,23 @@ var FolderTree = function () {
 
                   el.insertAdjacentHTML('afterend', child);
                   if (!clickOnArrow) {
-                    var folderView = _this7.container.querySelector('.folderView');
+                    var folderView = _this8.container.querySelector('.folderView');
                     folderView.innerHTML = childView;
                   }
 
                   if (!document.querySelector('.js-disable-context-menu')) {
-                    _this7.contextMenu();
+                    _this8.contextMenu();
                   }
 
                   if (!document.querySelector('.js-disable-sortable')) {
-                    _this7.initSortable();
+                    _this8.initSortable();
+                  }
+
+                  if (elId == 0) {
+                    _this8.openedIds.forEach(function (id) {
+                      console.log(id);
+                      _this8.container.querySelector('button[data-id="' + id + '"]').click();
+                    });
                   }
                 }).catch(function (error) {
                   console.log(error);

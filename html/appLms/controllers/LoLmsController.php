@@ -284,7 +284,7 @@ class LoLmsController extends LmsController
 
     public function reorder()
     {
-        $id = Get::req('id', DOTY_INT, false);
+        $ids = Get::req('id', DOTY_MIXED, '');
         $newParent = Get::req('newParent', DOTY_INT, false);
         $newOrderString = Get::req('newOrder', DOTY_STRING, false);
         $newOrder = explode(",", $newOrderString);
@@ -292,9 +292,12 @@ class LoLmsController extends LmsController
 
         $responseData = ['success' => false];
 
-        if ($id && $newParent !== false) {
-            if ($this->model->reorder($id, $newParent, $newOrder)) {
-                $responseData = ['success' => true];
+        if ($ids && $newParent !== false) {
+            $ids_arr = explode(',', $ids);
+            foreach ($ids_arr as $id) {
+                if ($this->model->reorder($id, $newParent, $newOrder)) {
+                    $responseData = ['success' => true];
+                }
             }
         }
         die($this->json->encode($responseData));

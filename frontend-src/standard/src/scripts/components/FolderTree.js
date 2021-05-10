@@ -284,7 +284,6 @@ class FolderTree {
         this.currentElsIds = [this.currentElId];
         this.selectItems();
       }
-      console.log(this.currentElsIds, 'this.currentElsIds onDragStart');
     }
   }
 
@@ -310,6 +309,16 @@ class FolderTree {
   }
 
   refresh() {
+    const openedEls = this.container.querySelectorAll('.ft-is-folderOpen');
+    this.openedIds = [];
+
+    openedEls.forEach((item) => {
+      let id = item.getAttribute('data-id');
+      if (id > 0) {
+        this.openedIds.push(id);
+      }
+    });
+
     this.container.querySelector('.folderTree__link.ft-is-root').click();
     this.currentElId = null;
     this.currentEl = null;
@@ -325,8 +334,6 @@ class FolderTree {
       const parentId = parseInt(target.getAttribute('data-id'));
 
       if (!this.currentElsIds.includes(parentId) && target.classList.contains('is-dropzone')) {
-        console.log(this.currentElsIds, '-> ' + parentId);
-
         const reorderLoData = this.getApiUrl('reorder', this.currentElsIds, { type: this.type, newParent: parentId });
         this.getReorderLoData(reorderLoData);
       }
@@ -421,6 +428,13 @@ class FolderTree {
 
         if (!document.querySelector('.js-disable-sortable')) {
           this.initSortable();
+        }
+
+        if (elId == 0) {
+          this.openedIds.forEach((id) => {
+            console.log(id);
+            this.container.querySelector('button[data-id="' + id + '"]').click();
+          });
         }
       }).catch((error) => {
         console.log(error)
