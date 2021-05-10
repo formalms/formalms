@@ -871,44 +871,6 @@ class CatalogLms extends Model
 		}
 	}
 
-	// check if current user completed the course
-	private function checkIsCompleted($idCourseIncatalog)
-	{
-		$query = "select status from %lms_courseuser where idUser=" . Docebo::user()->getIdSt() . " and idCourse=" . $idCourseIncatalog;
-		list($status) = sql_fetch_row(sql_query($query));
-
-		return $status;
-	}
-
-	// 1 check if the course is part of COURSE PATH
-	// 2 check if there is a prerequisites, and eventually if it is satisfied
-	public function canEnterCoursecatalog($idCourse)
-	{
-
-
-		$id_path = 0;
-		$output = 1;
-		$sql_path = "select id_path, prerequisites from %lms_coursepath_courses where id_item=" . $idCourse . " and prerequisites <> ''";
-		list($id_path, $prerequisites) = sql_fetch_row(sql_query($sql_path));
-
-		// if course in path
-		if ($id_path > 0) {
-			$vett_prerequisites = explode(",", $prerequisites);
-
-			$countCourseCompleted = 0;
-
-			//check if each course in prerequisites is completed
-			foreach ($vett_prerequisites as $key => $value) {
-				if ($this->checkIsCompleted($value) == 2) $countCourseCompleted++;
-			}
-
-			$output = 0;
-			if (count($vett_prerequisites) == $countCourseCompleted) $output = 1;
-		}
-
-
-		return $output;
-	}
 
 	public function GetGlobalJsonTree($id_catalogue)
 	{
