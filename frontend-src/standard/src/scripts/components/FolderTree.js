@@ -78,6 +78,7 @@ class FolderTree {
             el.classList.remove('ft-is-selected');
             if (!el.classList.contains('ft-has-child') && !el.classList.contains('ft-is-root')) {
               el.classList.remove('ft-is-folderOpen');
+              event.target.classList.remove('opened');
             }
           });
         }
@@ -88,18 +89,29 @@ class FolderTree {
           ul.remove();
         });
 
+        const clickOnArrow = event.target.classList.contains('arrow');
         if (isOpen) {
           el.classList.remove('ft-is-folderOpen');
-          if (event.target.classList.contains('arrow')) {
+          if (clickOnArrow) {
+            event.target.classList.remove('opened');
             return; // don't open
+          }
+        } else {
+          if (clickOnArrow) {
+            event.target.classList.add('opened');
+          } else {
+            const li = event.target.closest('.folderTree__li');
+            const arrow = li.querySelector('.arrow');
+            arrow.classList.add('opened');
           }
         }
 
         el.classList.add('ft-is-folderOpen');
+        event.target.classList.add('opened');
 
         const elId = el.getAttribute('data-id');
         const LoData = _this.getApiUrl('get', elId, { type: _this.type });
-        this.getLoData(LoData, el, elId)
+        this.getLoData(LoData, el, elId, clickOnArrow);
       }
     }
   }
@@ -313,11 +325,9 @@ class FolderTree {
       const parentId = parseInt(target.getAttribute('data-id'));
 
       if (!this.currentElsIds.includes(parentId) && target.classList.contains('is-dropzone')) {
-        const type = window.type;
-
         console.log(this.currentElsIds, '-> ' + parentId);
 
-        const reorderLoData = this.getApiUrl('reorder', this.currentElsIds, { type, newParent: parentId });
+        const reorderLoData = this.getApiUrl('reorder', this.currentElsIds, { type: this.type, newParent: parentId });
         this.getReorderLoData(reorderLoData);
       }
     }
@@ -381,12 +391,11 @@ class FolderTree {
     }
   }
 
-  async getLoData(endpoint, el , elId) {
+  async getLoData(endpoint, el , elId, clickOnArrow) {
     try {
       await axios.get(endpoint).then((response) => {
         const child = Tree(response.data);
         const childView = Content(response.data);
-        const folderView = this.container.querySelector('.folderView');
         const inputParent = this.container.querySelector('#treeview_selected_' + this.type);
         const inputState = this.container.querySelector('#treeview_state_' + this.type);
         inputParent.value = elId;
@@ -401,7 +410,10 @@ class FolderTree {
         }
 
         el.insertAdjacentHTML('afterend', child);
-        folderView.innerHTML = childView;
+        if (!clickOnArrow) {
+          const folderView = this.container.querySelector('.folderView');
+          folderView.innerHTML = childView;
+        }
 
         if (!document.querySelector('.js-disable-context-menu')) {
           this.contextMenu();

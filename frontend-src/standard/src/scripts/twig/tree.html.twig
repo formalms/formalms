@@ -3,7 +3,7 @@
         {% if el.is_folder %}
             <li data-id="{{ el.id }}" class="folderTree__li {% if el.childCount > 0 %}ft-is-parent{% endif %} is-droppable" draggable="true">
                 {% if el.childCount > 0 %}
-                    <button type="button" class="arrow"></button>
+                    <span class="arrow"></span>
                 {% endif %}
                 <button data-id="{{ el.id }}"
                     type="button"
