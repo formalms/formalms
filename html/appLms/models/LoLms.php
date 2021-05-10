@@ -30,7 +30,7 @@ class LoLms extends Model {
     private $tdb = null;
     private $treeView = null;
 
-    public function LoLMS() {
+    public function __construct() {
         $this->setTdb();
     }
 
