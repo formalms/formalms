@@ -3473,11 +3473,23 @@ class SubscriptionAlmsController extends AlmsController
 
         // manage min & max enroll
         $class_subManager = new CourseSubscribe_Manager();
-        $tot_subscribe = $class_subManager->getTotalUserSubscribed($id_course);
+        $tot_subscribe_w = $class_subManager->getTotalUserSubscribed($id_course);
+        
+        require_once(_lms_.'/admin/models/CourseAlms.php');
+        $model_course = new CourseAlms();
+        
+        $tot_subscribe = $model_course->getUserInCourse($id_course);
+        $tot_overbooking = $model_course->getUserInOverbooking($id_course);
+        $tot_waiting = $model_course->getUserInWaiting($id_course);
+
+        //echo $tot_subscribe."<br>".$tot_waiting."<br>".$tot_overbooking."<br>".$tot_subscribe_w;
+        
         $msg_info_course = "";
         if((int)$course_info['min_num_subscribe']>0) $msg_info_course = $lang->def('_MIN_NUM_SUBSCRIBE', 'course').": <b>".(int)$course_info['min_num_subscribe']."</b><br>";
         if((int)$course_info['max_num_subscribe']>0) $msg_info_course = $msg_info_course.$lang->def('_MAX_NUM_SUBSCRIBE', 'course').": <b>".(int)$course_info['max_num_subscribe']."</b><br>";
-        $msg_info_course = $msg_info_course.$lang->def('_COURSE_USERISCR', 'course').": <b>".$tot_subscribe."</b>";
+         
+        $msg_info_course = $msg_info_course.$lang->def('_COURSE_USERISCR', 'course').": <b>".($tot_subscribe-$tot_overbooking-$tot_waiting )."</b>";
+         
         $GLOBALS['page']->add($msg_info_course,'content');
                      
    
@@ -3537,7 +3549,12 @@ class SubscriptionAlmsController extends AlmsController
 				if ($is_classroom) $content[] = ($info['code'] != '' ? '[' . $info['code'] . '] ' : '') . $info['name'];
 				$content[] = $subscribed . ' [' . $users_name[$id_sub_by][ACL_INFO_EMAIL] . ']';
                 $content[] = $this->getDateEnroll($id_user,$id_course);
-				$content[] = $is_overbooking ? $lang->def('_OVERBOOKING') : $lang->def('_USERWAITING','Course') ;
+                
+                if($info['status']==4){
+				    $content[] =  $lang->def('_OVERBOOKING');
+                }else{
+                    $content[] = $lang->def('_USERWAITING','Course') ;
+                }    
 
 				if ($is_overbooking) {
 
@@ -3589,7 +3606,7 @@ class SubscriptionAlmsController extends AlmsController
 				. Form::closeElementSpace()
 				. Form::openButtonSpace()
 				. '<br />'
-				. Form::getButton('subscribe', 'subscribe', $lang->def('_SAVE'))
+                . Form::getButton('subscribe', 'subscribe', $lang->def('_SAVE'))
 				. Form::getButton('cancelselector', 'cancelselector', $lang->def('_UNDO'))
 				. Form::closeButtonSpace()
 				. Form::closeForm(),
