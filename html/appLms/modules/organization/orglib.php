@@ -1699,10 +1699,6 @@ class Org_TreeView extends RepoTreeView {
 				if ($canBeCategorized) {
 					$node['canBeCategorized'] = true;
 				}
-				
-				if( !$node['is_folder'] ) {
-					$node['play_teacher'] = 'index.php?modname=organization&amp;op=custom_playitem&amp;edit=1&amp;id_item='.$folder->id.'';
-				} 
 			}
 
 			$node['status'] = $status;
