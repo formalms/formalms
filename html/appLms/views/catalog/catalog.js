@@ -61,7 +61,7 @@ function subscriptionCoursePathPopUp(id_path) {
 
 function subscriptionPopUp(id_course, id_date, id_edition, selling) {
   var course_info = '&id_course=' + id_course + '&id_date=' + id_date + '&id_edition=' + id_edition + '&selling=' + selling;
-  var _iframe = YAHOO.util.Selector.query('#overlay_iframe');
+
 
   YAHOO.util.Connect.asyncRequest("POST", glob_serverUrl + 'subscribeInfo&',
       {

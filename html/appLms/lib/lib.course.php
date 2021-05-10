@@ -829,14 +829,28 @@ class Man_Course {
 		$now = time();
 		$expiring = false;
 
-        // if course has editions, evaluate these first of all
-        if ($course['course_edition']=="1"){
-            // retrieve editions 
-            $select_edition  = " SELECT e.date_begin, e.date_end ";
-            $select_edition .= " FROM ".$GLOBALS["prefix_lms"]."_course_editions AS e "
-                ." JOIN ".$GLOBALS["prefix_lms"]."_course_editions_user AS u ";
-            $select_edition .= " WHERE e.status IN ('".CST_AVAILABLE."','".CST_EFFECTIVE."') AND e.id_course = '".$course['idCourse']."' AND e.id_edition = u.id_edition AND u.id_user = '".getLogUserId()."'";
+        // checking edition appointmens: works for classroom cours. Even for Classroom ?
+        if ($course['course_edition']=="1" || $course['course_type']=="classroom" ){
+            
+            if ($course['course_edition']=="1") {
+                $select_edition  = " SELECT e.date_begin, e.date_end ";
+                $select_edition .= " FROM ".$GLOBALS["prefix_lms"]."_course_editions AS e "
+                    ." JOIN ".$GLOBALS["prefix_lms"]."_course_editions_user AS u ";
+                $select_edition .= " WHERE e.status IN ('".CST_AVAILABLE."','".CST_EFFECTIVE."') AND e.id_course = '".$course['idCourse']."' AND e.id_edition = u.id_edition AND u.id_user = '".getLogUserId()."'";
+            }
+            
+            if ($course['course_type']=="classroom") {
+                $select_edition = 'select id_course, cdd.id_date, cdd.date_begin, cdd.date_end from  %lms_course_date_day cdd 
+                     join %lms_course_date cd on (cdd.id_date = cd.id_date)
+                     join %lms_course_date_user cdu on (cdu.id_date = cd.id_date)
+                     join %lms_course lc on (lc.idCourse = cd.id_course )
+                     where lc.idCourse = '.$course['idCourse'].' and lc.status IN ('.CST_AVAILABLE.','.CST_EFFECTIVE.') and 
+                        (cd.status  = 0 ) and (cdu.id_user ='.Docebo::user()->getIdSt().')  order by cdd.id_date';
+                        
+            }
+            
             $re_edition = sql_query($select_edition);
+            // retrieve editions 
             $canEnd   = false;
             $canStart = false;
             // evaluate date_begin and date_end only for active editions
@@ -844,12 +858,14 @@ class Man_Course {
             while ($edition_elem = sql_fetch_assoc($re_edition)) {
 				$datetime1 = new DateTime('now');
 				$datetime2 = new DateTime($edition_elem['date_end']);
-            	$interval = $datetime1->getTimestamp() - $datetime2->getTimestamp();
+                $datetime3 = new DateTime($edition_elem['date_begin']);
+            	$interval1 = $datetime1->getTimestamp() - $datetime2->getTimestamp();
+                $interval2 = $datetime1->getTimestamp() - $datetime3->getTimestamp();
 
-                if (is_null($edition_elem['date_end']) || $edition_elem['date_end'] == '0000-00-00 00:00:00' || $interval <= 0) {
+                if (is_null($edition_elem['date_end']) || $edition_elem['date_end'] == '0000-00-00 00:00:00' || $interval1 <= 0) {
                     $canEnd = $canEnd || true;
                 }
-                if ($canEnd && (is_null($edition_elem['date_begin']) || $edition_elem['date_begin'] == '0000-00-00' || strcmp(date('Y-m-d'), $edition_elem['date_begin']) >= 0)) {
+                if ($canEnd && (is_null($edition_elem['date_begin']) || $edition_elem['date_begin'] == '0000-00-00' || $interval2 > 0)) {
                     $canStart = $canStart || true;
                 }                    
             }
@@ -860,6 +876,7 @@ class Man_Course {
                 return array('can' => false, 'reason' => 'course_edition_date_begin', 'expiring_in' => 1);
             }                
         }
+        
 
 		if($level_id != ADMIN_GROUP_GODADMIN && $course['sub_start_date'] != '0000-00-00') {
 			$date01=new DateTime($course['sub_start_date']);
@@ -917,10 +934,10 @@ class Man_Course {
 		if(!is_null($date_expire_validity) && $date_expire_validity !== '0000-00-00 00:00:00' && strcmp(date('Y-m-d H:i:s'), $date_expire_validity) >= 0)
 			return array('can' => false, 'reason' => 'subscription_expired', 'expiring_in' => $expiring);
 
-		if($course['course_status'] == CST_CANCELLED)
+		if($course['status'] == CST_CANCELLED)
 			return array('can' => false, 'reason' => 'course_status', 'expiring_in' => $expiring);
 
-		if($course['course_status'] == CST_PREPARATION)
+		if($course['status'] == CST_PREPARATION)
 		{
 			if($level > 3)
 				return array('can' => true, 'reason' => 'user_status', 'expiring_in' => $expiring);
@@ -928,7 +945,7 @@ class Man_Course {
 				return array('can' => false, 'reason' => 'course_status', 'expiring_in' => $expiring);
 		}
 
-		if($course['course_status'] == CST_CONCLUDED)
+		if($course['status'] == CST_CONCLUDED)
 		{
 			if($status == _CUS_END || $level > 3)
 				return array('can' => true, 'reason' => 'user_status', 'expiring_in' => $expiring);

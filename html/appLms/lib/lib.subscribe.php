@@ -360,7 +360,9 @@ class CourseSubscribe_Manager
 
 	public function subscribeUserToCourse($id_user, $id_course, $level = 3, $waiting = 0, $date_begin_validity = false, $date_expire_validity = false)
 	{
-		if($this->controlSubscription($id_user, $id_course))
+		
+        
+        if($this->controlSubscription($id_user, $id_course))
             return true;
             
         $data = Events::trigger('lms.course_user.creating', [
@@ -381,10 +383,12 @@ class CourseSubscribe_Manager
 					." (idUser, idCourse, level, waiting, subscribed_by, date_inscr"
 					.($date_begin_validity ? ", date_begin_validity" : "")
 					.($date_expire_validity ? ", date_expire_validity" : "")
+                    .($waiting ? ", status":"")
 					.")"
 					." VALUES ('".$id_user."', '".$id_course."', '".$level."', '".(int)$waiting."', '".getLogUserId()."', '".date('Y-m.d H:i:s')."'"
 					.($date_begin_validity ? ", '".substr($date_begin_validity, 0, 10)."'" : "")
 					.($date_expire_validity ? ", '".substr($date_expire_validity, 0, 10)."'" : "")
+                    .($waiting ? ",".-2:"")
 					.")";
 
         $res = sql_query($query);
