@@ -396,11 +396,12 @@ class Module_Organization extends LmsModule {
 				$saveName = $saveObj->getName('organization'.$_SESSION['idCourse'], true);
 				$saveObj->save( $saveName, $this->treeView->getState() );
 
+				$parentId = (int) $_REQUEST['treeview_selected_organization'];
 				// start learning object creation
 				$lo = createLO( $_REQUEST['radiolo'] );
 
 				if($lo !== false) {
-					$lo->create( 'index.php?r=lms/lo/organization&type=organization&lo_type=' . $lo->getObjectType()
+					$lo->create( 'index.php?r=lms/lo/organization&type=organization&parentId=' . $parentId . '&lo_type=' . $lo->getObjectType()
 								.'&'.$this->treeView->_getOpCreateLOEnd().'=1' );			
 				} else {
                    
