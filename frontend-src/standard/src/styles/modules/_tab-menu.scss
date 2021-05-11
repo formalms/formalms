@@ -1,5 +1,4 @@
 .buttonsBar {
-  margin-bottom: 1rem;
   cursor: move; /* fallback if grab cursor is unsupported */
   cursor: grab;
   cursor: -moz-grab;
@@ -11,7 +10,13 @@
   }
 }
 
+// .tabs-wrapper {
+//   margin-bottom: 1rem;
+// }
+
 .nav.nav-tabs {
+  margin-bottom: 1rem;
+  
   &:not(.bordered) {
     border: none;
 

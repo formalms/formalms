@@ -12,7 +12,7 @@
                 $count = 0;
                 $statusFilters = $_model->getFilterStatusCourse(Docebo::user()->getIdst());
 
-                $html = '<ul class="filterBar__buttonsList nav nav-pills">';
+                $html = '<ul class="filterBar nav nav-pills">';
 
                 foreach($statusFilters as $key => $value )
                {
