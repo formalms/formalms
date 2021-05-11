@@ -258,15 +258,9 @@ class Module_Organization extends LmsModule {
 			$idItem = $folder->otherValues[REPOFIELDIDRESOURCE];
 			$lo = createLO($folder->otherValues[REPOFIELDOBJECTTYPE], $idItem);
 			if(isset($_GET['edit']) && $_GET['edit']) {
-
-				$back_url = 'index.php?modname='.$modname
-						.'&op=custom_enditem&edit=1&id_item='
-						.$id_item;
+				$back_url = 'index.php?r=lms/lomanager/show';
 			} else {
-
-				$back_url = 'index.php?modname='.$modname
-						.'&op=custom_enditem&id_item='
-						.$id_item;
+				$back_url = 'index.php?r=lms/lo/show';
 			}
 			require_once Forma::inc(_lms_ . '/class.module/track.object.php');
 	
@@ -396,13 +390,13 @@ class Module_Organization extends LmsModule {
 				$saveName = $saveObj->getName('organization'.$_SESSION['idCourse'], true);
 				$saveObj->save( $saveName, $this->treeView->getState() );
 
+				$parentId = (int) $_REQUEST['treeview_selected_organization'];
 				// start learning object creation
 				$lo = createLO( $_REQUEST['radiolo'] );
 
 				if($lo !== false) {
-					$lo->create( 'index.php?modname='.$modname
-								.'&op=display&sor='.$saveName.'&'
-								.$this->treeView->_getOpCreateLOEnd().'=1' );
+					$lo->create( 'index.php?r=lms/lomanager/show&type=organization&parentId=' . $parentId . '&lo_type=' . $lo->getObjectType()
+								.'&'.$this->treeView->_getOpCreateLOEnd().'=1' );			
 				} else {
                    
 					$GLOBALS['page']->addStart(
