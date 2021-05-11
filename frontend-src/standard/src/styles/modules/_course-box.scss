@@ -59,7 +59,7 @@ $course-box-border: 2px;
   flex-direction: row;
   justify-content: space-evenly;
   align-content: center;
-  min-width: 50px;
+  min-width: 25px;
   max-width: max-content;
   top: 4px;
   left: 4px;
@@ -74,6 +74,12 @@ $course-box-border: 2px;
     display: flex;
     width: 24px;
     height: auto;
+    align-items: center;
+    justify-content: center;
+
+    .fa {
+      opacity: 0.7;
+    }
 
     &:before {
       position: absolute;
