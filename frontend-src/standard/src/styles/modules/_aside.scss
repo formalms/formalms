@@ -137,7 +137,7 @@
     &.node-treeview1 {
       &:hover {
         cursor: pointer;
-        background-color: $dark-orange !important;
+        background-color: var(--color-1-350) !important;
         color: $white !important;
       }
     }

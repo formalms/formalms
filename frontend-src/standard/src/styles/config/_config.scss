@@ -138,7 +138,8 @@ $grid-max-width: 1268px;
 /// transition base props
 /// @type Number
 /// @group transition
-$transition-base: all 0.2s ease-in 0s;
+
+$transition-base: all 110ms ease-in-out;
 
 
 $dashboard-popup-bg: #F3ECEC;
