@@ -114,15 +114,15 @@
   }
 
   .list-group-item {
-    height: 36px;
-    margin-bottom: 6px;
+    height: 32px;
+    margin-bottom: 5px;
     padding: {
       top: 0;
       right: 8px;
       bottom: 0;
       left: 14px;
     }
-    line-height: 36px;
+    line-height: 32px;
     position: relative;
     border-radius: $border-radius;
     transition: $transition-base;
