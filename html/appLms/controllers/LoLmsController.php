@@ -27,6 +27,8 @@ class LoLmsController extends LmsController
 
     function init()
     {
+        checkPerm('view', false, 'organization');
+
         $this->model = new LoLms();
         $this->idCourse = $_SESSION['idCourse'];
 
