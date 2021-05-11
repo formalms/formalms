@@ -34,6 +34,18 @@ class LomanagerLmsController extends LmsController
 
         $type = Get::req('type', DOTY_STRING, LomanagerLms::ORGDIRDB);
 
+        switch ($type) {
+            case LomanagerLms::ORGDIRDB:
+                checkPerm('lesson', false, 'storage');
+                break;
+            case LomanagerLms::REPODIRDB:
+                checkPerm('public', false, 'storage');
+                break;
+            case LomanagerLms::HOMEREPODIRDB:
+                checkPerm('home', false, 'storage');
+                break;
+        }
+
         try {
             $this->model->setTdb($type, $this->idCourse);
         } catch (\Exception $exception) {
@@ -101,32 +113,37 @@ class LomanagerLmsController extends LmsController
             $activeTab = LomanagerLms::STORAGE_TABS[LomanagerLms::HOMEREPODIRDB];
         }
 
-        $tabs = [
-            [
+        $tabs = [];
+        if(checkPerm('home', true, 'storage')) {
+            $tabs[] = [
                 'active' => LomanagerLms::STORAGE_TABS[LomanagerLms::HOMEREPODIRDB] == $activeTab,
                 'edit' => true,
                 'type' => LomanagerLms::HOMEREPODIRDB,
                 'title' => Lang::t('_HOMEREPOROOTNAME', 'storage'),
                 'data' => $this->getFolders($this->idCourse, false, LomanagerLms::HOMEREPODIRDB),
                 'currentState' => serialize([$this->getCurrentState(0, LomanagerLms::HOMEREPODIRDB)]),
-            ],
-            [
+            ];
+        }
+        if(checkPerm('lesson', true, 'storage')) {
+            $tabs[] = [
                 'active' => LomanagerLms::STORAGE_TABS[LomanagerLms::ORGDIRDB] == $activeTab,
                 'type' => LomanagerLms::ORGDIRDB,
                 'edit' => true,
                 'title' => Lang::t('_ORGROOTNAME', 'storage'),
                 'data' => $this->getFolders($this->idCourse, false, LomanagerLms::ORGDIRDB),
                 'currentState' => serialize([$this->getCurrentState(0, LomanagerLms::ORGDIRDB)]),
-            ],
-            [
+            ];
+        }
+        if(checkPerm('public', true, 'storage')) {
+            $tabs[] = [
                 'active' => LomanagerLms::STORAGE_TABS[LomanagerLms::REPODIRDB] == $activeTab,
                 'type' => LomanagerLms::REPODIRDB,
                 'edit' => true,
                 'title' => Lang::t('_PUBREPOROOTNAME', 'storage'),
                 'data' => $this->getFolders($this->idCourse, false, LomanagerLms::REPODIRDB),
                 'currentState' => serialize([$this->getCurrentState(0, LomanagerLms::REPODIRDB)]),
-            ],
-        ];
+            ];
+        }
         $this->render('show', [
             'tabs' => $tabs,
             'lo_types' => $lo_types,
