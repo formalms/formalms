@@ -31239,6 +31239,16 @@ var FolderTree = function () {
       }
     }
 
+    document.querySelectorAll('.tab-link').forEach(function (tab) {
+      tab.addEventListener('click', function (e) {
+        var tabEl = e.target.closest('.tab-link');
+        if (tabEl) {
+          _this.type = tabEl.getAttribute('data-type');
+          _this.container = document.querySelector('*[data-container=' + _this.type + ']');
+        }
+      });
+    });
+
     if (btn) {
       btn.addEventListener('click', function () {
         _this.renameEl();
@@ -31292,6 +31302,10 @@ var FolderTree = function () {
         if (!noClick) {
           var els = _this.container.querySelectorAll('.folderTree__link');
 
+          _this.setOpenedDirs();
+
+          var clickOnArrow = event.target.classList.contains('arrow');
+
           if (els) {
             els.forEach(function (el) {
               el.classList.remove('ft-is-selected');
@@ -31301,14 +31315,15 @@ var FolderTree = function () {
               }
             });
           }
-          el.classList.add('ft-is-selected');
+          if (!clickOnArrow) {
+            el.classList.add('ft-is-selected');
+          }
 
           var uls = el.parentNode.querySelectorAll('.folderTree__ul');
           uls.forEach(function (ul) {
             ul.remove();
           });
 
-          var clickOnArrow = event.target.classList.contains('arrow');
           if (isOpen) {
             el.classList.remove('ft-is-folderOpen');
             if (clickOnArrow) {
@@ -31321,12 +31336,13 @@ var FolderTree = function () {
             } else {
               var _li = event.target.closest('.folderTree__li');
               var arrow = _li.querySelector('.arrow');
-              arrow.classList.add('opened');
+              if (arrow) {
+                arrow.classList.add('opened');
+              }
             }
           }
 
           el.classList.add('ft-is-folderOpen');
-          event.target.classList.add('opened');
 
           var elId = el.getAttribute('data-id');
           var LoData = _this.getApiUrl('get', elId, { type: _this.type });
@@ -31428,6 +31444,8 @@ var FolderTree = function () {
         }, {
           text: 'Elimina',
           onClick: function onClick() {
+            var _this3 = this;
+
             var elId = target.getAttribute('data-id');
 
             if (confirm('Sei sicuro di voler eliminare questo elemento?')) {
@@ -31445,6 +31463,7 @@ var FolderTree = function () {
                 var el = _this.container.querySelector('.folderView__li[data-id="' + elId + '"]');
                 if (el) {
                   el.remove();
+                  _this3.closest('.context-menu').classList.remove('menu-visible');
                 }
               }).catch(function (error) {
                 console.log(error);
@@ -31457,7 +31476,7 @@ var FolderTree = function () {
   }, {
     key: 'renameEl',
     value: function renameEl() {
-      var _this3 = this;
+      var _this4 = this;
 
       var rename = this.container.querySelector('.folderTree__rename');
       var input = rename.querySelector('.folderTree__rename__input');
@@ -31472,7 +31491,7 @@ var FolderTree = function () {
           el.querySelector('span').innerHTML = value;
           el.classList.remove('ft-no-click');
 
-          var li = _this3.container.querySelector('.folderView__li[data-id="' + elId + '"]');
+          var li = _this4.container.querySelector('.folderView__li[data-id="' + elId + '"]');
           if (li) {
             li.querySelector('.folderView__label').innerHTML = value;
           }
@@ -31502,13 +31521,13 @@ var FolderTree = function () {
   }, {
     key: 'selectItems',
     value: function selectItems() {
-      var _this4 = this;
+      var _this5 = this;
 
       this.container.querySelectorAll('.folderView__li').forEach(function (item) {
         item.classList.remove('fv-is-selected');
         var item_id = parseInt(item.getAttribute('data-id'));
 
-        if (_this4.currentElsIds.includes(item_id)) {
+        if (_this5.currentElsIds.includes(item_id)) {
           item.classList.add('fv-is-selected');
         }
       });
@@ -31516,7 +31535,7 @@ var FolderTree = function () {
   }, {
     key: 'onDragStart',
     value: function onDragStart(event) {
-      var _this5 = this;
+      var _this6 = this;
 
       if (event.target.classList.contains('is-droppable')) {
         this.currentEl = event.target;
@@ -31525,7 +31544,7 @@ var FolderTree = function () {
         this.currentEls = this.container.querySelectorAll('.fv-is-selected');
         this.currentElsIds = [];
         this.currentEls.forEach(function (item) {
-          _this5.currentElsIds.push(parseInt(item.getAttribute('data-id')));
+          _this6.currentElsIds.push(parseInt(item.getAttribute('data-id')));
         });
 
         // Single drop
@@ -31560,9 +31579,9 @@ var FolderTree = function () {
       }
     }
   }, {
-    key: 'refresh',
-    value: function refresh() {
-      var _this6 = this;
+    key: 'setOpenedDirs',
+    value: function setOpenedDirs() {
+      var _this7 = this;
 
       var openedEls = this.container.querySelectorAll('.ft-is-folderOpen');
       this.openedIds = [];
@@ -31570,9 +31589,21 @@ var FolderTree = function () {
       openedEls.forEach(function (item) {
         var id = item.getAttribute('data-id');
         if (id > 0) {
-          _this6.openedIds.push(id);
+          _this7.openedIds.push(id);
         }
       });
+    }
+  }, {
+    key: 'setSelectedDir',
+    value: function setSelectedDir() {
+      var item = this.container.querySelector('.ft-is-selected');
+      this.selectedId = item ? item.getAttribute('data-id') : 0;
+    }
+  }, {
+    key: 'refresh',
+    value: function refresh() {
+      this.setOpenedDirs();
+      this.setSelectedDir();
 
       this.container.querySelector('.folderTree__link.ft-is-root').click();
       this.currentElId = null;
@@ -31616,10 +31647,13 @@ var FolderTree = function () {
           onUpdate: function onUpdate(evt) {
             var currentElement = evt.item;
             var currentElementId = currentElement.getAttribute('data-id');
-            var parentElement = _this.container.querySelector('.ft-is-selected');
+
+            // Get parent dir from tree element
+            var treeElement = _this.container.querySelector('.folderTree__li[data-id="' + currentElementId + '"]');
+            var parentElement = treeElement ? treeElement.closest('.ft-is-parent') : null;
+            var parentElementId = parentElement ? parentElement.getAttribute('data-id') : 0;
             var childElement = _this.container.querySelector('.folderView__ul').querySelectorAll('.folderView__li');
             var childElementArray = [];
-            var parentElementId = parentElement ? parentElement.getAttribute('data-id') : 0;
 
             childElement.forEach(function (el) {
               var elId = el.getAttribute('data-id');
@@ -31647,7 +31681,7 @@ var FolderTree = function () {
     key: 'getReorderLoData',
     value: function () {
       var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(endpoint) {
-        var _this7 = this;
+        var _this8 = this;
 
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
@@ -31656,7 +31690,7 @@ var FolderTree = function () {
                 _context.prev = 0;
                 _context.next = 3;
                 return axios.get(endpoint).then(function () {
-                  _this7.refresh();
+                  _this8.refresh();
                 }).catch(function (error) {
                   console.log(error);
                 });
@@ -31689,19 +31723,20 @@ var FolderTree = function () {
     key: 'getLoData',
     value: function () {
       var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(endpoint, el, elId, clickOnArrow) {
-        var _this8 = this;
+        var _this;
 
         return regeneratorRuntime.wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
-                _context2.prev = 0;
-                _context2.next = 3;
+                _this = this;
+                _context2.prev = 1;
+                _context2.next = 4;
                 return axios.get(endpoint).then(function (response) {
                   var child = (0, _treeHtml2.default)(response.data);
                   var childView = (0, _contentHtml2.default)(response.data);
-                  var inputParent = _this8.container.querySelector('#treeview_selected_' + _this8.type);
-                  var inputState = _this8.container.querySelector('#treeview_state_' + _this8.type);
+                  var inputParent = _this.container.querySelector('#treeview_selected_' + _this.type);
+                  var inputState = _this.container.querySelector('#treeview_state_' + _this.type);
                   inputParent.value = elId;
                   inputState.value = response.data.currentState;
 
@@ -31715,44 +31750,57 @@ var FolderTree = function () {
 
                   el.insertAdjacentHTML('afterend', child);
                   if (!clickOnArrow) {
-                    var folderView = _this8.container.querySelector('.folderView');
+                    var folderView = _this.container.querySelector('.folderView');
                     folderView.innerHTML = childView;
                   }
 
                   if (!document.querySelector('.js-disable-context-menu')) {
-                    _this8.contextMenu();
+                    _this.contextMenu();
                   }
 
                   if (!document.querySelector('.js-disable-sortable')) {
-                    _this8.initSortable();
+                    _this.initSortable();
                   }
 
                   if (elId == 0) {
-                    _this8.openedIds.forEach(function (id) {
-                      console.log(id);
-                      _this8.container.querySelector('button[data-id="' + id + '"]').click();
-                    });
+                    if (_this.openedIds) {
+                      _this.openedIds.forEach(function (id) {
+                        if (id != _this.selectedId) {
+                          var arrow = _this.container.querySelector('.ft-is-parent[data-id="' + id + '"] .arrow');
+                          if (arrow) {
+                            arrow.click();
+                          }
+                        }
+                      });
+                    }
+                    if (_this.selectedId != 0) {
+                      var dir = _this.container.querySelector('.folderTree__link[data-id="' + _this.selectedId + '"]');
+                      if (dir) {
+                        dir.classList.add('ft-is-selected');
+                        dir.click();
+                      }
+                    }
                   }
                 }).catch(function (error) {
                   console.log(error);
                 });
 
-              case 3:
-                _context2.next = 8;
+              case 4:
+                _context2.next = 9;
                 break;
 
-              case 5:
-                _context2.prev = 5;
-                _context2.t0 = _context2['catch'](0);
+              case 6:
+                _context2.prev = 6;
+                _context2.t0 = _context2['catch'](1);
 
                 console.log(_context2.t0);
 
-              case 8:
+              case 9:
               case 'end':
                 return _context2.stop();
             }
           }
-        }, _callee2, this, [[0, 5]]);
+        }, _callee2, this, [[1, 6]]);
       }));
 
       function getLoData(_x2, _x3, _x4, _x5) {

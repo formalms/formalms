@@ -22,6 +22,16 @@ class FolderTree {
       }
     }
 
+    document.querySelectorAll('.tab-link').forEach((tab) => {
+      tab.addEventListener('click', (e) => {
+        let tabEl = e.target.closest('.tab-link');
+        if (tabEl) {
+          _this.type = tabEl.getAttribute('data-type');
+          _this.container = document.querySelector('*[data-container=' + _this.type + ']');
+        }
+      });
+    });
+
     if (btn) {
       btn.addEventListener('click', () => {
         _this.renameEl();
@@ -73,6 +83,10 @@ class FolderTree {
       if (!noClick) {
         const els = _this.container.querySelectorAll('.folderTree__link');
 
+        _this.setOpenedDirs();
+
+        const clickOnArrow = event.target.classList.contains('arrow');
+
         if (els) {
           els.forEach(el => {
             el.classList.remove('ft-is-selected');
@@ -82,14 +96,15 @@ class FolderTree {
             }
           });
         }
-        el.classList.add('ft-is-selected');
+        if (!clickOnArrow) {
+          el.classList.add('ft-is-selected');
+        }
 
         const uls = el.parentNode.querySelectorAll('.folderTree__ul');
         uls.forEach(ul => {
           ul.remove();
         });
 
-        const clickOnArrow = event.target.classList.contains('arrow');
         if (isOpen) {
           el.classList.remove('ft-is-folderOpen');
           if (clickOnArrow) {
@@ -102,12 +117,13 @@ class FolderTree {
           } else {
             const li = event.target.closest('.folderTree__li');
             const arrow = li.querySelector('.arrow');
-            arrow.classList.add('opened');
+            if (arrow) {
+              arrow.classList.add('opened');
+            }
           }
         }
 
         el.classList.add('ft-is-folderOpen');
-        event.target.classList.add('opened');
 
         const elId = el.getAttribute('data-id');
         const LoData = _this.getApiUrl('get', elId, { type: _this.type });
@@ -205,6 +221,7 @@ class FolderTree {
                 const el = _this.container.querySelector('.folderView__li[data-id="' + elId + '"]');
                 if (el) {
                   el.remove();
+                  this.closest('.context-menu').classList.remove('menu-visible');
                 }
               }).catch((error) => {
                 console.log(error);
@@ -308,7 +325,7 @@ class FolderTree {
     }
   }
 
-  refresh() {
+  setOpenedDirs() {
     const openedEls = this.container.querySelectorAll('.ft-is-folderOpen');
     this.openedIds = [];
 
@@ -318,6 +335,16 @@ class FolderTree {
         this.openedIds.push(id);
       }
     });
+  }
+
+  setSelectedDir() {
+    const item = this.container.querySelector('.ft-is-selected');
+    this.selectedId = item ? item.getAttribute('data-id') : 0;
+  }
+
+  refresh() {
+    this.setOpenedDirs();
+    this.setSelectedDir();
 
     this.container.querySelector('.folderTree__link.ft-is-root').click();
     this.currentElId = null;
@@ -359,10 +386,13 @@ class FolderTree {
         onUpdate: function (evt) {
           const currentElement = evt.item;
           const currentElementId = currentElement.getAttribute('data-id');
-          const parentElement = _this.container.querySelector('.ft-is-selected');
+
+          // Get parent dir from tree element
+          const treeElement = _this.container.querySelector('.folderTree__li[data-id="' + currentElementId + '"]');
+          const parentElement = treeElement ? treeElement.closest('.ft-is-parent') : null;
+          const parentElementId = parentElement ? parentElement.getAttribute('data-id') : 0;
           const childElement = _this.container.querySelector('.folderView__ul').querySelectorAll('.folderView__li');
           const childElementArray = [];
-          const parentElementId = parentElement ? parentElement.getAttribute('data-id') : 0;
 
           childElement.forEach(el => {
             const elId = el.getAttribute('data-id');
@@ -399,12 +429,13 @@ class FolderTree {
   }
 
   async getLoData(endpoint, el , elId, clickOnArrow) {
+    const _this = this;
     try {
       await axios.get(endpoint).then((response) => {
         const child = Tree(response.data);
         const childView = Content(response.data);
-        const inputParent = this.container.querySelector('#treeview_selected_' + this.type);
-        const inputState = this.container.querySelector('#treeview_state_' + this.type);
+        const inputParent = _this.container.querySelector('#treeview_selected_' + _this.type);
+        const inputState = _this.container.querySelector('#treeview_state_' + _this.type);
         inputParent.value = elId;
         inputState.value = response.data.currentState;
 
@@ -418,23 +449,36 @@ class FolderTree {
 
         el.insertAdjacentHTML('afterend', child);
         if (!clickOnArrow) {
-          const folderView = this.container.querySelector('.folderView');
+          const folderView = _this.container.querySelector('.folderView');
           folderView.innerHTML = childView;
         }
 
         if (!document.querySelector('.js-disable-context-menu')) {
-          this.contextMenu();
+          _this.contextMenu();
         }
 
         if (!document.querySelector('.js-disable-sortable')) {
-          this.initSortable();
+          _this.initSortable();
         }
 
         if (elId == 0) {
-          this.openedIds.forEach((id) => {
-            console.log(id);
-            this.container.querySelector('button[data-id="' + id + '"]').click();
-          });
+          if (_this.openedIds) {
+            _this.openedIds.forEach((id) => {
+              if (id != _this.selectedId) {
+                let arrow = _this.container.querySelector('.ft-is-parent[data-id="' + id + '"] .arrow');
+                if (arrow) {
+                  arrow.click();
+                }
+              }
+            });
+          }
+          if (_this.selectedId != 0) {
+            let dir = _this.container.querySelector('.folderTree__link[data-id="' + _this.selectedId + '"]');
+            if (dir) {
+              dir.classList.add('ft-is-selected');
+              dir.click();
+            }
+          }
         }
       }).catch((error) => {
         console.log(error)
