@@ -7,7 +7,7 @@
 .filterBar {
   border-radius: $border-radius;
 }
-.forma-quick-search-form.filterBar {
+.filterBar {
   background-color: var(--color-0-050) !important;
 }
 
@@ -140,6 +140,7 @@
     @include breakpoint($ipad) {
       margin-top: 0;
       padding: 0 15px;
+      margin-bottom: 1rem;
     }
   
     & > * {
