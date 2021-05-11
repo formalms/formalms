@@ -258,7 +258,7 @@ class Module_Organization extends LmsModule {
 			$idItem = $folder->otherValues[REPOFIELDIDRESOURCE];
 			$lo = createLO($folder->otherValues[REPOFIELDOBJECTTYPE], $idItem);
 			if(isset($_GET['edit']) && $_GET['edit']) {
-				$back_url = 'index.php?r=lms/lo/organization';
+				$back_url = 'index.php?r=lms/lomanager/show';
 			} else {
 				$back_url = 'index.php?r=lms/lo/show';
 			}
@@ -395,7 +395,7 @@ class Module_Organization extends LmsModule {
 				$lo = createLO( $_REQUEST['radiolo'] );
 
 				if($lo !== false) {
-					$lo->create( 'index.php?r=lms/lo/organization&type=organization&parentId=' . $parentId . '&lo_type=' . $lo->getObjectType()
+					$lo->create( 'index.php?r=lms/lomanager/show&type=organization&parentId=' . $parentId . '&lo_type=' . $lo->getObjectType()
 								.'&'.$this->treeView->_getOpCreateLOEnd().'=1' );			
 				} else {
                    
