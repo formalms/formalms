@@ -18,7 +18,7 @@ class FolderTree {
 
     if (!document.querySelector('.js-disable-context-menu')) {
       if (_this.container.querySelectorAll('.folderTree__link').length) {
-        _this.contextMenu();
+        _this.refresh();
       }
     }
 
@@ -135,80 +135,94 @@ class FolderTree {
   contextMenu() {
     const _this = this;
 
-    contextmenu('.folderTree__link:not(.ft-is-root)', (target) => {
-      return [
-        {
-          text: 'Rinomina',
-          onClick() {
-            const renameOrig = document.querySelector('.folderTree__rename');
-            const rename = renameOrig.cloneNode(true);
-            const renameInput = rename.querySelector('.folderTree__rename__input');
+    document.querySelectorAll('.context-menu').forEach((menu) => {
+      menu.remove();
+    });
 
-            const btn = rename.querySelector('.js-ft-rename-el');
-            const inputRename = rename.querySelector('.folderTree__rename__input');
+    contextmenu('.folderTree__link:not(.ft-is-root), .folderView__li', (target) => {
+      _this.currentEls = _this.container.querySelectorAll('.fv-is-selected');
+      console.log(_this.currentEls, target);
+      _this.currentElsIds = [];
+      _this.currentEls.forEach((item) => {
+        _this.currentElsIds.push(parseInt(item.getAttribute('data-id')));
+      });
 
-            if (btn) {
-              btn.addEventListener('click', () => {
+      if (_this.currentElsIds.length == 0) {
+        _this.currentElsIds = [target.getAttribute('data-id')];
+      }
+
+      const renameBtn = {
+        text: 'Rinomina',
+        onClick() {
+          const renameOrig = document.querySelector('.folderTree__rename');
+          const rename = renameOrig.cloneNode(true);
+          const renameInput = rename.querySelector('.folderTree__rename__input');
+
+          const btn = rename.querySelector('.js-ft-rename-el');
+          const inputRename = rename.querySelector('.folderTree__rename__input');
+
+          if (btn) {
+            btn.addEventListener('click', () => {
+              _this.renameEl();
+            });
+          }
+
+          if (inputRename) {
+            inputRename.addEventListener('keyup', (e) => {
+              if (e.keyCode === 13) {
                 _this.renameEl();
-              });
-            }
+                e.preventDefault();
+              }
+            });
+          }
 
-            if (inputRename) {
-              inputRename.addEventListener('keyup', (e) => {
-                if (e.keyCode === 13) {
-                  _this.renameEl();
+          if (target.classList.contains('folderTree__rename__input') === false) {
+            if (target.hasAttribute('data-id')) {
+              target.classList.add('ft-no-click');
+              target.appendChild(rename);
+            } else {
+              target.parentNode.classList.add('ft-no-click');
+              target.parentNode.appendChild(rename);
+            }
+            rename.classList.add('is-show');
+            renameInput.focus();
+            renameInput.setAttribute('value', target.textContent);
+
+            // Rendo tutti gli elementi non cliccabili se sono in modalità rinomina
+            const elsNotClick = _this.container.querySelectorAll('.ft-no-click');
+            if (elsNotClick) {
+              for (let el of elsNotClick) {
+                el.addEventListener('click', (e) => {
                   e.preventDefault();
-                }
-              });
+                })
+              }
             }
 
-            if (target.classList.contains('folderTree__rename__input') === false) {
-              if (target.hasAttribute('data-id')) {
-                target.classList.add('ft-no-click');
-                target.appendChild(rename);
-              } else {
-                target.parentNode.classList.add('ft-no-click');
-                target.parentNode.appendChild(rename);
-              }
-              rename.classList.add('is-show');
-              renameInput.focus();
-              renameInput.setAttribute('value', target.textContent);
-
-              // Rendo tutti gli elementi non cliccabili se sono in modalità rinomina
-              const elsNotClick = _this.container.querySelectorAll('.ft-no-click');
-              if (elsNotClick) {
-                for (let el of elsNotClick) {
-                  el.addEventListener('click', (e) => {
-                    e.preventDefault();
-                  })
-                }
-              }
-
-              // Stop della propagazione del click se sono su context menu, in alternativa disabilito modifica input se clicco fuori dall'input
-              _this.container.addEventListener('click', (event) => {
-                if (event.detail) { // fix trigger click se premo su spazio
-                  const clickInside = rename.contains(event.target);
-                  if (event.target.classList.contains('menu-item-clickable')) {
-                    event.stopPropagation();
-                  } else {
-                    if (!clickInside) {
-                      renameInput.blur();
-                      rename.classList.remove('is-show');
-                    }
+            // Stop della propagazione del click se sono su context menu, in alternativa disabilito modifica input se clicco fuori dall'input
+            _this.container.addEventListener('click', (event) => {
+              if (event.detail) { // fix trigger click se premo su spazio
+                const clickInside = rename.contains(event.target);
+                if (event.target.classList.contains('menu-item-clickable')) {
+                  event.stopPropagation();
+                } else {
+                  if (!clickInside) {
+                    renameInput.blur();
+                    rename.classList.remove('is-show');
                   }
                 }
-              });
-            }
+              }
+            });
           }
-        },
-        {
-          text: 'Elimina',
-          onClick() {
-            const elId = target.getAttribute('data-id');
+        }
+      };
 
-            if (confirm('Sei sicuro di voler eliminare questo elemento?')) {
-              const deleteLoData = _this.getApiUrl('delete', elId, { type: _this.type });
-              axios.get(deleteLoData).then(() => {
+      const deleteBtn = {
+        text: 'Elimina',
+        onClick() {
+          if (confirm('Sei sicuro di voler eliminare questo elemento?')) {
+            const deleteLoData = _this.getApiUrl('delete', null, { type: _this.type, ids: _this.currentElsIds });
+            axios.get(deleteLoData).then(() => {
+              _this.currentElsIds.forEach((elId) => {
                 const elTree = _this.container.querySelector('.folderTree__li[data-id="' + elId + '"]');
                 if (elTree) {
                   const ul = elTree.parentNode;
@@ -221,25 +235,31 @@ class FolderTree {
                 const el = _this.container.querySelector('.folderView__li[data-id="' + elId + '"]');
                 if (el) {
                   el.remove();
-                  this.closest('.context-menu').classList.remove('menu-visible');
+                  document.querySelector('.context-menu').classList.remove('menu-visible');
                 }
-              }).catch((error) => {
-                console.log(error);
               });
-            }
+            }).catch((error) => {
+              console.log(error);
+            });
           }
         }
+      };
+
+      return [
+        renameBtn,
+        deleteBtn,
       ];
     });
   }
 
   renameEl() {
-    const rename = this.container.querySelector('.folderTree__rename');
+    const _this = this;
+    const rename = _this.container.querySelector('.folderTree__rename');
     const input = rename.querySelector('.folderTree__rename__input');
     const value = input ? input.value : null;
-    const el = input.closest('.folderTree__li');
+    const el = input.closest('.folderTree__li') ? input.closest('.folderTree__li') : input;
     const elId = el.getAttribute('data-id');
-    const renameLoData = this.getApiUrl('rename', elId, { type: this.type, newName: value });
+    const renameLoData = _this.getApiUrl('rename', elId, { type: this.type, newName: value });
 
     axios.get(renameLoData).then((res) => {
       if (res) {
@@ -247,7 +267,7 @@ class FolderTree {
         el.querySelector('span').innerHTML = value;
         el.classList.remove('ft-no-click');
 
-        const li = this.container.querySelector('.folderView__li[data-id="' + elId + '"]');
+        const li = _this.container.querySelector('.folderView__li[data-id="' + elId + '"]');
         if (li) {
           li.querySelector('.folderView__label').innerHTML = value;
         }
@@ -347,10 +367,6 @@ class FolderTree {
     this.setSelectedDir();
 
     this.container.querySelector('.folderTree__link.ft-is-root').click();
-    this.currentElId = null;
-    this.currentEl = null;
-    this.currentElsId = null;
-    this.currentEls = null;
   }
 
   onDrop(event) {
@@ -407,9 +423,12 @@ class FolderTree {
   }
 
   getApiUrl(action, id, params) {
-    let url = `${Config.apiUrl}lms/lo/${action}&id=${id}`;
+    let url = `${Config.apiUrl}lms/lo/${action}`;
     if (!params) {
       params = {};
+    }
+    if (id) {
+      params.id = id;
     }
     url += '&' + new URLSearchParams(params).toString();
 
@@ -461,6 +480,8 @@ class FolderTree {
           _this.initSortable();
         }
 
+        console.log(_this.openedIds);
+
         if (elId == 0) {
           if (_this.openedIds) {
             _this.openedIds.forEach((id) => {
@@ -472,7 +493,7 @@ class FolderTree {
               }
             });
           }
-          if (_this.selectedId != 0) {
+          if (_this.selectedId > 0) {
             let dir = _this.container.querySelector('.folderTree__link[data-id="' + _this.selectedId + '"]');
             if (dir) {
               dir.classList.add('ft-is-selected');
@@ -480,6 +501,7 @@ class FolderTree {
             }
           }
         }
+        _this.selectedId = null;
       }).catch((error) => {
         console.log(error)
       });

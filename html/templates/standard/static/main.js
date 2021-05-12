@@ -31235,7 +31235,7 @@ var FolderTree = function () {
 
     if (!document.querySelector('.js-disable-context-menu')) {
       if (_this.container.querySelectorAll('.folderTree__link').length) {
-        _this.contextMenu();
+        _this.refresh();
       }
     }
 
@@ -31355,8 +31355,23 @@ var FolderTree = function () {
     value: function contextMenu() {
       var _this = this;
 
-      (0, _easycontext.contextmenu)('.folderTree__link:not(.ft-is-root)', function (target) {
-        return [{
+      document.querySelectorAll('.context-menu').forEach(function (menu) {
+        menu.remove();
+      });
+
+      (0, _easycontext.contextmenu)('.folderTree__link:not(.ft-is-root), .folderView__li', function (target) {
+        _this.currentEls = _this.container.querySelectorAll('.fv-is-selected');
+        console.log(_this.currentEls, target);
+        _this.currentElsIds = [];
+        _this.currentEls.forEach(function (item) {
+          _this.currentElsIds.push(parseInt(item.getAttribute('data-id')));
+        });
+
+        if (_this.currentElsIds.length == 0) {
+          _this.currentElsIds = [target.getAttribute('data-id')];
+        }
+
+        var renameBtn = {
           text: 'Rinomina',
           onClick: function onClick() {
             var renameOrig = document.querySelector('.folderTree__rename');
@@ -31441,49 +31456,50 @@ var FolderTree = function () {
               });
             }
           }
-        }, {
+        };
+
+        var deleteBtn = {
           text: 'Elimina',
           onClick: function onClick() {
-            var _this3 = this;
-
-            var elId = target.getAttribute('data-id');
-
             if (confirm('Sei sicuro di voler eliminare questo elemento?')) {
-              var deleteLoData = _this.getApiUrl('delete', elId, { type: _this.type });
+              var deleteLoData = _this.getApiUrl('delete', null, { type: _this.type, ids: _this.currentElsIds });
               axios.get(deleteLoData).then(function () {
-                var elTree = _this.container.querySelector('.folderTree__li[data-id="' + elId + '"]');
-                if (elTree) {
-                  var ul = elTree.parentNode;
-                  elTree.remove();
+                _this.currentElsIds.forEach(function (elId) {
+                  var elTree = _this.container.querySelector('.folderTree__li[data-id="' + elId + '"]');
+                  if (elTree) {
+                    var ul = elTree.parentNode;
+                    elTree.remove();
 
-                  if (!ul.querySelector('li')) {
-                    ul.remove();
+                    if (!ul.querySelector('li')) {
+                      ul.remove();
+                    }
                   }
-                }
-                var el = _this.container.querySelector('.folderView__li[data-id="' + elId + '"]');
-                if (el) {
-                  el.remove();
-                  _this3.closest('.context-menu').classList.remove('menu-visible');
-                }
+                  var el = _this.container.querySelector('.folderView__li[data-id="' + elId + '"]');
+                  if (el) {
+                    el.remove();
+                    document.querySelector('.context-menu').classList.remove('menu-visible');
+                  }
+                });
               }).catch(function (error) {
                 console.log(error);
               });
             }
           }
-        }];
+        };
+
+        return [renameBtn, deleteBtn];
       });
     }
   }, {
     key: 'renameEl',
     value: function renameEl() {
-      var _this4 = this;
-
-      var rename = this.container.querySelector('.folderTree__rename');
+      var _this = this;
+      var rename = _this.container.querySelector('.folderTree__rename');
       var input = rename.querySelector('.folderTree__rename__input');
       var value = input ? input.value : null;
-      var el = input.closest('.folderTree__li');
+      var el = input.closest('.folderTree__li') ? input.closest('.folderTree__li') : input;
       var elId = el.getAttribute('data-id');
-      var renameLoData = this.getApiUrl('rename', elId, { type: this.type, newName: value });
+      var renameLoData = _this.getApiUrl('rename', elId, { type: this.type, newName: value });
 
       axios.get(renameLoData).then(function (res) {
         if (res) {
@@ -31491,7 +31507,7 @@ var FolderTree = function () {
           el.querySelector('span').innerHTML = value;
           el.classList.remove('ft-no-click');
 
-          var li = _this4.container.querySelector('.folderView__li[data-id="' + elId + '"]');
+          var li = _this.container.querySelector('.folderView__li[data-id="' + elId + '"]');
           if (li) {
             li.querySelector('.folderView__label').innerHTML = value;
           }
@@ -31521,13 +31537,13 @@ var FolderTree = function () {
   }, {
     key: 'selectItems',
     value: function selectItems() {
-      var _this5 = this;
+      var _this3 = this;
 
       this.container.querySelectorAll('.folderView__li').forEach(function (item) {
         item.classList.remove('fv-is-selected');
         var item_id = parseInt(item.getAttribute('data-id'));
 
-        if (_this5.currentElsIds.includes(item_id)) {
+        if (_this3.currentElsIds.includes(item_id)) {
           item.classList.add('fv-is-selected');
         }
       });
@@ -31535,7 +31551,7 @@ var FolderTree = function () {
   }, {
     key: 'onDragStart',
     value: function onDragStart(event) {
-      var _this6 = this;
+      var _this4 = this;
 
       if (event.target.classList.contains('is-droppable')) {
         this.currentEl = event.target;
@@ -31544,7 +31560,7 @@ var FolderTree = function () {
         this.currentEls = this.container.querySelectorAll('.fv-is-selected');
         this.currentElsIds = [];
         this.currentEls.forEach(function (item) {
-          _this6.currentElsIds.push(parseInt(item.getAttribute('data-id')));
+          _this4.currentElsIds.push(parseInt(item.getAttribute('data-id')));
         });
 
         // Single drop
@@ -31581,7 +31597,7 @@ var FolderTree = function () {
   }, {
     key: 'setOpenedDirs',
     value: function setOpenedDirs() {
-      var _this7 = this;
+      var _this5 = this;
 
       var openedEls = this.container.querySelectorAll('.ft-is-folderOpen');
       this.openedIds = [];
@@ -31589,7 +31605,7 @@ var FolderTree = function () {
       openedEls.forEach(function (item) {
         var id = item.getAttribute('data-id');
         if (id > 0) {
-          _this7.openedIds.push(id);
+          _this5.openedIds.push(id);
         }
       });
     }
@@ -31606,10 +31622,6 @@ var FolderTree = function () {
       this.setSelectedDir();
 
       this.container.querySelector('.folderTree__link.ft-is-root').click();
-      this.currentElId = null;
-      this.currentEl = null;
-      this.currentElsId = null;
-      this.currentEls = null;
     }
   }, {
     key: 'onDrop',
@@ -31669,9 +31681,12 @@ var FolderTree = function () {
   }, {
     key: 'getApiUrl',
     value: function getApiUrl(action, id, params) {
-      var url = _config2.default.apiUrl + 'lms/lo/' + action + '&id=' + id;
+      var url = _config2.default.apiUrl + 'lms/lo/' + action;
       if (!params) {
         params = {};
+      }
+      if (id) {
+        params.id = id;
       }
       url += '&' + new URLSearchParams(params).toString();
 
@@ -31681,7 +31696,7 @@ var FolderTree = function () {
     key: 'getReorderLoData',
     value: function () {
       var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(endpoint) {
-        var _this8 = this;
+        var _this6 = this;
 
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
@@ -31690,7 +31705,7 @@ var FolderTree = function () {
                 _context.prev = 0;
                 _context.next = 3;
                 return axios.get(endpoint).then(function () {
-                  _this8.refresh();
+                  _this6.refresh();
                 }).catch(function (error) {
                   console.log(error);
                 });
@@ -31762,6 +31777,8 @@ var FolderTree = function () {
                     _this.initSortable();
                   }
 
+                  console.log(_this.openedIds);
+
                   if (elId == 0) {
                     if (_this.openedIds) {
                       _this.openedIds.forEach(function (id) {
@@ -31773,7 +31790,7 @@ var FolderTree = function () {
                         }
                       });
                     }
-                    if (_this.selectedId != 0) {
+                    if (_this.selectedId > 0) {
                       var dir = _this.container.querySelector('.folderTree__link[data-id="' + _this.selectedId + '"]');
                       if (dir) {
                         dir.classList.add('ft-is-selected');
@@ -31781,6 +31798,7 @@ var FolderTree = function () {
                       }
                     }
                   }
+                  _this.selectedId = null;
                 }).catch(function (error) {
                   console.log(error);
                 });
