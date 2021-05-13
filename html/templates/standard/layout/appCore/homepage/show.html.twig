@@ -1,7 +1,7 @@
 <div class="homepage__row homepage__row--login homepage__row--gray no-padding">
 
     <div class="visible-xs">
-        {{ evalPhp('Layout::get_catalogue') }}
+        {{ Layout_getCatalogue() }}
     </div>
     {% if not under_maintenence %}
         {% if baseLogin is defined %}
@@ -21,15 +21,15 @@
                         </div>
                     {% endif %}
                 {% else %}
-                    <h3>{{ translate('_ACCESS_LOCK', 'login') }}</h3>
+                    <h3>{{ Lang_translate('_ACCESS_LOCK', 'login') }}</h3>
                     <p>{{ block_attempts }}</p>
                 {% endif %}
                 {% if socialLogin is not defined %}
                     <nav class="homepage__links">
                         {% if isSelfRegistrationActive != false %}
-                            <a href="{{ evalPhp('Get::rel_path', ['base']) }}/index.php?r={{ constant('_register_') }}">{{ translate('_REGISTER', 'login') }}</a>
+                            <a href="{{ Get_relPath('base') }}/index.php?r={{ constant('_register_') }}">{{ Lang_translate('_REGISTER', 'login') }}</a>
                         {% endif %}
-                        <a href="{{ evalPhp('Get::rel_path', ['base']) }}/index.php?r={{ constant('_lostpwd_') }}">{{ translate('_LOG_LOSTPWD', 'login') }}</a>
+                        <a href="{{ Get_relPath('base') }}/index.php?r={{ constant('_lostpwd_') }}">{{ Lang_translate('_LOG_LOSTPWD', 'login') }}</a>
                     </nav>
                 {% endif %}
             </div>
@@ -38,7 +38,7 @@
             <div class="col-xs-12 col-sm-6">
                 <div class="social-login">
                     <p class="social-login__title">
-                        <span>{{ translate('_SOCIAL_LOGIN','login') }}</span>
+                        <span>{{ Lang_translate('_SOCIAL_LOGIN','login') }}</span>
                     </p>
                     <div class="social-login__list">
                         {% for login in socialLogin %}
@@ -48,17 +48,17 @@
                 </div>
                 <nav class="homepage__links">
                     {% if isSelfRegistrationActive != false %}
-                        <a href="{{ evalPhp('Get::rel_path', ['base']) }}/index.php?r={{ constant('_register_') }}">{{ translate('_REGISTER', 'login') }}</a>
+                        <a href="{{ Get_relPath('base') }}/index.php?r={{ constant('_register_') }}">{{ Lang_translate('_REGISTER', 'login') }}</a>
                     {% endif %}
-                    <a href="{{ evalPhp('Get::rel_path', ['base']) }}/index.php?r={{ constant('_lostpwd_') }}">{{ translate('_LOG_LOSTPWD', 'login') }}</a>
+                    <a href="{{ Get_relPath('base') }}/index.php?r={{ constant('_lostpwd_') }}">{{ Lang_translate('_LOG_LOSTPWD', 'login') }}</a>
                 </nav>
             </div>
         {% endif %}
     {% else %}
         <div class="box">
-            <h3>{{ translate('_MAINTENANCE', 'configuration') }}</h3>
+            <h3>{{ Lang_translate('_MAINTENANCE', 'configuration') }}</h3>
             <div class="text">
-                {{ translate('_MAINTENANCE_TEXT', 'login') }}
+                {{ Lang_translate('_MAINTENANCE_TEXT', 'login') }}
             </div>
         </div>
     {% endif %}

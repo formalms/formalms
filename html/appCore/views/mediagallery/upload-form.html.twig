@@ -4,7 +4,7 @@
       <input type="hidden" id="authentic_request_popup_form" name="authentic_request" value="{{ authentic_request }}">
 
       <div class="form-group">
-        <label for="file" class="col-xs-3 control-label">{{ translate('_FILENAME', 'standard') }}</label>
+        <label for="file" class="col-xs-3 control-label">{{ Lang_translate('_FILENAME', 'standard') }}</label>
         <div class="col-xs-9">
           <input type="file" class="fileupload" id="file" name="file" accept="{{ accepted_mime }}">
           {% if max_upload_size %}<span>(Max. {{ max_upload_size }} Mb)</span>{% endif %} 
@@ -12,7 +12,7 @@
         <div class="nofloat"></div>
       </div>
       <div class="form-group">
-        <label for="media_url" class="col-xs-3 control-label">{{ translate('_MEDIA_URL', 'standard') }}</label>
+        <label for="media_url" class="col-xs-3 control-label">{{ Lang_translate('_MEDIA_URL', 'standard') }}</label>
         <div class="col-xs-9">
           <input type="text" class="form-control" id="media_url" name="media_url">
         </div>
@@ -22,15 +22,15 @@
     <div class="form-group text-right">
       <input type="hidden" name="authentic_request" value="{{ authentic_request }}">
       <input type="hidden" name="type" value="{{ type }}">
-      <input type="submit" class="button btn btn-primary" id="save" name="save" value="{{ translate('_UPLOAD', 'standard') }}">
-      <input type="reset" class="button btn btn-default" id="popup_form_undo" name="undo" value="{{ translate('_CANCEL', 'standard') }}">
+      <input type="submit" class="button btn btn-primary" id="save" name="save" value="{{ Lang_translate('_UPLOAD', 'standard') }}">
+      <input type="reset" class="button btn btn-default" id="popup_form_undo" name="undo" value="{{ Lang_translate('_CANCEL', 'standard') }}">
       <div class="nofloat"></div>
     </div>
   </form>
   {% if msg %}
     <div class="alert alert-{{ msg.class }} text-center">{{ msg.text }}</div>
   {% endif %}
-  <button id="popup_form_toggler" type="button" class="button btn btn-primary">{{ translate('_UPLOAD', 'standard') }}</button>
+  <button id="popup_form_toggler" type="button" class="button btn btn-primary">{{ Lang_translate('_UPLOAD', 'standard') }}</button>
 </div>
 
 <script>

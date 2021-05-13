@@ -9,9 +9,9 @@
     <div class="course-info__peopletxt">
         <a href="{{route.profile.url}}&id_user={{user.idst}}" class="course-info__peoplename text-orange">{{ user.name}}</a>
         {% if user.biography != '' %}
-            <a class="course-info__peoplebio js-infocourse-bio-trigger" href="#" data-title="{{ user.name}}" data-image="{{ avatar}}" data-role="{{role}}">{{translate('_BIOGRAPHY','course')}}</a>
+            <a class="course-info__peoplebio js-infocourse-bio-trigger" href="#" data-title="{{ user.name}}" data-image="{{ avatar}}" data-role="{{role}}">{{Lang_translate('_BIOGRAPHY','course')}}</a>
         {% endif %}
-        <a class="forma-button course-info__peoplecta" href="{{ route.message.url }}&idst={{ user.idst }}&signature={{ evalPhp('Util::getSignature') }}&sop=unregistercourse'">{{translate('_MESSAGE','course')}}</a>
+        <a class="forma-button course-info__peoplecta" href="{{ route.message.url }}&idst={{ user.idst }}&signature={{ Util_getSignature() }}&sop=unregistercourse'">{{Lang_translate('_MESSAGE','course')}}</a>
         <div class="clear"></div>
         <div class="hidden js-infocourse-bio-text">
             {{ user.biography}}

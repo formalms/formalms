@@ -1,13 +1,13 @@
     {% if total_category == 0  %}
           <div class="row">
-                <div class="col-sm-12" id="div_course"><br><p align="center"><img src='{{ evalPhp('Layout::path') }}images/standard/loadbar.gif'></p></div>
+                <div class="col-sm-12" id="div_course"><br><p align="center"><img src='{{ Layout_getPath() }}images/standard/loadbar.gif'></p></div>
           <div>
     {% else %}
             <div class="row">
                 <div class="col-sm-4">
                     <div id="treeview1" class="aside"></div>
                 </div>    
-                <div class="col-sm-8" id="div_course"><br><p align="center"><img src='{{ evalPhp('Layout::path') }}images/standard/loadbar.gif'></p></div>
+                <div class="col-sm-8" id="div_course"><br><p align="center"><img src='{{ Layout_getPath() }}images/standard/loadbar.gif'></p></div>
             <div>
     {% endif %}           
 
@@ -19,7 +19,7 @@
 
             function callAjaxCatalog(id_category) {
 
-                str_loading = "{{ evalPhp('Layout::path') }}images/standard/loadbar.gif";
+                str_loading = "{{ Layout_getPath() }}images/standard/loadbar.gif";
                 $("#div_course").html("<br><p align='center'><img src='" + str_loading + "'></p>");
                 var type_course = getCurrentTypeCourse();
                 var posting = $.get(
@@ -71,7 +71,7 @@
                 })
                 var category_tree = [
                     {
-                        text: "&nbsp;&nbsp;{{ translate('_ALL_COURSES') }}",
+                        text: "&nbsp;&nbsp;{{ Lang_translate('_ALL_COURSES') }}",
                         href: "#Category",
                         id_cat: 0,
                         state: {
@@ -110,7 +110,7 @@
         </script>
         {% else %}
             <script type="text/javascript">
-                $("#div_course").html("<br><p align='center'>{{ translate('_NO_CATEGORY_TODISPLAY','catalogue') }}</p>");
+                $("#div_course").html("<br><p align='center'>{{ Lang_translate('_NO_CATEGORY_TODISPLAY','catalogue') }}</p>");
             </script>
          {% endif %}   
         </div>           

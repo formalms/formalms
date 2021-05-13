@@ -1,24 +1,24 @@
 {{ Get_title({
-    'index.php?r=adm/lang/show' : translate('_LANGUAGE', 'admin_lang'),
-    '':translate('_IMPORT', 'admin_lang')
+    'index.php?r=adm/lang/show' : Lang_translate('_LANGUAGE', 'admin_lang'),
+    '':Lang_translate('_IMPORT', 'admin_lang')
 },false) }}
 <div class="container">
     <div class="row">
         <div class="col d-col--12--desktop">
             {{ Form_openForm('import_lang', 'index.php?r=adm/lang/doimport', false, 'post', 'multipart/form-data') }}
 
-            {{ Form_getRadioHoriz(translate('_IMPORT_TYPE','admin_lang'),'import_type','import_type',importTypes,defaultType) }}
+            {{ Form_getRadioHoriz(Lang_translate('_IMPORT_TYPE','admin_lang'),'import_type','import_type',importTypes,defaultType) }}
 
-            {{ Form_getDropdown(translate('_LANGUAGE', 'admin_lang'), 'lang_id', 'lang_id', coreLangs) }}
+            {{ Form_getDropdown(Lang_translate('_LANGUAGE', 'admin_lang'), 'lang_id', 'lang_id', coreLangs) }}
 
-            {{ Form_getFilefield(translate('_FILE', 'admin_lang'), 'lang_file', 'lang_file') }}
+            {{ Form_getFilefield(Lang_translate('_FILE', 'admin_lang'), 'lang_file', 'lang_file') }}
 
-            {{ Form_getCheckbox(translate('_OVERWRITE_EXISTENT', 'admin_lang'), 'overwrite', 'overwrite', '1') }}
-            {{ Form_getCheckbox(translate('_DO_NOT_ADD_MISS', 'admin_lang'), 'noadd_miss', 'noadd_miss', '1') }}
+            {{ Form_getCheckbox(Lang_translate('_OVERWRITE_EXISTENT', 'admin_lang'), 'overwrite', 'overwrite', '1') }}
+            {{ Form_getCheckbox(Lang_translate('_DO_NOT_ADD_MISS', 'admin_lang'), 'noadd_miss', 'noadd_miss', '1') }}
 
             {{ Form_openButtonSpace() }}
-            {{ Form_getButton('save', 'save', translate('_SAVE', 'admin_lang')) }}
-            {{ Form_getButton('undo', 'undo', translate('_UNDO', 'admin_lang')) }}
+            {{ Form_getButton('save', 'save', Lang_translate('_SAVE', 'admin_lang')) }}
+            {{ Form_getButton('undo', 'undo', Lang_translate('_UNDO', 'admin_lang')) }}
             {{ Form_closeButtonSpace() }}
 
             {{ Form_closeForm() }}

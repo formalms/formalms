@@ -215,7 +215,7 @@ class ElearningLmsController extends LmsController
         $courselist = $model->findAll($conditions, $params);
         
         foreach ($courselist as $k => $course_array) {
-            $courselist[$k]['can_enter'] = Man_Course::canEnterCourse($courselist[$k]);
+            $courselist[$k]['canEnter'] = Man_Course::canEnterCourse($courselist[$k])['can'];
             $courselist[$k]['totalname'] = $course_array['name'];
             if ( strlen($course_array['name']) >=150 ){
                 $courselist[$k]['tooltipClass'] =  'has-forma-tooltip';

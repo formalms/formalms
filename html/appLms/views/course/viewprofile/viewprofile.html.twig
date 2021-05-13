@@ -14,29 +14,29 @@
     {% endif %}
 
     <div class="{{first_col_width}} {{special_user_wrapper}}">
-      <div class="box-title">{{ translate('_PROFILE', 'profile') }}</div>
+      <div class="box-title">{{ Lang_translate('_PROFILE', 'profile') }}</div>
       <div class="col-sm-4 user-profile__column {{ special_user_profile }}">
         <div class="user-profile__infocontainer">
           <div>
             <div class="user-profile__content">
-              <div class="course-info__label">{{ translate('_USERNAME', 'course') }}</div>
+              <div class="course-info__label">{{ Lang_translate('_USERNAME', 'course') }}</div>
               <div class="course-info__value text--gray">{{user.name}}</div>
             </div>
 
             <div class="user-profile__content">
-              <div class="course-info__label">{{ translate('_FIRSTNAME', 'standard') }}</div>
+              <div class="course-info__label">{{ Lang_translate('_FIRSTNAME', 'standard') }}</div>
               <div class="course-info__value text--gray">{{user.firstname}}</div>
             </div>
 
             <div class="user-profile__content">
-              <div class="course-info__label">{{ translate('_LASTNAME', 'standard') }}</div>
+              <div class="course-info__label">{{ Lang_translate('_LASTNAME', 'standard') }}</div>
               <div class="course-info__value text--gray">{{user.lastname}}</div>
             </div>
           </div>
 
           <div class="user-profile__imgcontainer">
             <div class="user-profile__content">
-              <div class="course-info__label">{{ translate('_AVATAR', 'standard') }}</div>
+              <div class="course-info__label">{{ Lang_translate('_AVATAR', 'standard') }}</div>
               {% if user.avatar != '' %}
                 <img class="user-profile__img" src="{{user.avatar}}" alt="{{user.name}}" />
               {% else %}
@@ -46,18 +46,18 @@
           </div>
         </div>
 
-        <div class="course-info__label">{{ translate('_EMAIL', 'standard') }}</div>
+        <div class="course-info__label">{{ Lang_translate('_EMAIL', 'standard') }}</div>
         <div class="course-info__value text--gray">
           <a class="user-profile__namelink" href="mailto:{{user.email}}" target="_blank">{{user.email}}</a>
         </div>
-        <a class="forma-button user-profile__cta" href="{{ route.message.url }}&idst={{ user.idst }}&signature={{ evalPhp('Util::getSignature') }}&sop=unregistercourse">
-          {{translate('_MESSAGE','course')}}
+        <a class="forma-button user-profile__cta" href="{{ route.message.url }}&idst={{ user.idst }}&signature={{ Util_getSignature() }}&sop=unregistercourse">
+          {{Lang_translate('_MESSAGE','course')}}
         </a>
       </div>
 
       {% if user.biography != '' %}
         <div class="col-sm-8 user-profile__column">
-          <div class="course-info__label">{{ translate('_BIOGRAPHY', 'course') }}</div>
+          <div class="course-info__label">{{ Lang_translate('_BIOGRAPHY', 'course') }}</div>
           <div class="course-info__value text--gray">{{ user.biography }}</div>
         </div>
       {% endif %}
@@ -65,24 +65,24 @@
 
     <div class="col-sm-3">
       <div class="user-profile__column">
-        <div class="box-title">{{ translate('_ACTIVITY', 'standard') }}</div>
+        <div class="box-title">{{ Lang_translate('_ACTIVITY', 'standard') }}</div>
         <div class="user-profile__content">
-          <div class="course-info__label">{{ translate('_REGISTER_DATE', 'profile') }}</div>
+          <div class="course-info__label">{{ Lang_translate('_REGISTER_DATE', 'profile') }}</div>
           <div class="course-info__value text--gray">{{user.registerDate}}</div>
         </div>
         <div class="user-profile__content">
-          <div class="course-info__label">{{ translate('_FORUM_MESSAGE', 'profile') }}</div>
+          <div class="course-info__label">{{ Lang_translate('_FORUM_MESSAGE', 'profile') }}</div>
           <div class="course-info__value text--gray">{{userStats.forum_post}}</div>
         </div>
         <div class="user-profile__content">
-          <div class="course-info__label">{{ translate('_LOADED_FILE', 'standard') }}</div>
+          <div class="course-info__label">{{ Lang_translate('_LOADED_FILE', 'standard') }}</div>
           <div class="course-info__value text--gray">{{userStats.loaded_file}}</div>
         </div>
       </div>
 
       <div class="user-profile__column">
-        <div class="box-title">{{ translate('_COMMUNITY', 'profile') }}</div>
-        <div class="course-info__label">{{ translate('_LAST_PROFILE_VIEW', 'profile') }}</div>
+        <div class="box-title">{{ Lang_translate('_COMMUNITY', 'profile') }}</div>
+        <div class="course-info__label">{{ Lang_translate('_LAST_PROFILE_VIEW', 'profile') }}</div>
         <div class="course-info__value text--gray">
 
           {% for user in lastViews %}

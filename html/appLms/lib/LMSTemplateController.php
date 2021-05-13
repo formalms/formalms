@@ -17,7 +17,7 @@ final class LMSTemplateController extends TemplateController {
     private $model;
 
     protected function __construct() {
-        
+
         $this->model = new LMSTemplateModel();
 
         $this->setLayout($this->model->selectLayout());
@@ -33,12 +33,12 @@ final class LMSTemplateController extends TemplateController {
         $this->showCart();
         $this->showProfile();
         $this->showHelpDesk(); // Temporary solution before helpdesk refactoring.
-        
+
         parent::show();
     }
 
     private function showLogo() {
-        
+
         $this->render('logo', 'logo', array(
             'user'          => $this->model->getUser()
           , 'logo'          => $this->model->getLogo()
@@ -53,15 +53,15 @@ final class LMSTemplateController extends TemplateController {
 
       $certificates = $model->loadMyCertificates(false, false);
 
-      
-      
+
+
       $availables = 0;
       foreach ($certificates as $cert) {
         if ($cert[4] == '0000-00-00' || $cert[4] == '' ) { // $cert['on_date']
           $availables++;
         }
       }
-      
+
       return $availables+ $model->countAggrCertsToRelease();
     }
 
@@ -74,11 +74,12 @@ final class LMSTemplateController extends TemplateController {
           , 'currentPage'   => $this->model->getCurrentPage()
           , 'perm_certificate'   => $ma->currentCanAccessObj('mo_7')
           , 'notGeneratedCertificates'   => $this->notGeneratedCertificates()
+          ,  'adminRoles' => [ADMIN_GROUP_GODADMIN,ADMIN_GROUP_ADMIN ]
         ));
     }
 
     private function showCart() {
-        
+
         $this->render('cart', 'cart', array(
             'user'          => $this->model->getUser()
           , 'cart'          => $this->model->getCart()
@@ -87,8 +88,8 @@ final class LMSTemplateController extends TemplateController {
     }
 
     private function showProfile() {
-        
-   
+
+
         $this->render('profile', 'profile', array(
             'user'              => $this->model->getUser()
           , 'profile'           => $this->model->getProfile()
@@ -109,6 +110,7 @@ final class LMSTemplateController extends TemplateController {
           , 'userDetails'   => $this->model->getUserDetails()
           , 'email'         => $this->model->getHelpDeskEmail()
           , 'currentPage'   => $this->model->getCurrentPage()
+            , 'helpDeskEmail' => $this->model->getUserDetails()[ACL_in]
         ));
     }
 }

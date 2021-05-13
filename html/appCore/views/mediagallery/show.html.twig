@@ -31,14 +31,14 @@ function getApiMediaUrl(slug, params) {
 			searching: false,
 			paging: false,
 			columns: [  // definisco le colonne
-					{ data: 'fname', title: '{{ translate("_FILENAME", "standard") }}', sortable: true, width: 'auto' , 
+					{ data: 'fname', title: '{{ Lang_translate("_FILENAME", "standard") }}', sortable: true, width: 'auto' ,
 						render: function(data, type, row, meta) {
 							return '<a href="' + row.url + '" target="_blank">'+ data +'</a>';
 						}
 					},
-					{ data: 'size', title: '{{ translate("_FILESIZE", "standard") }}', sortable: true, width: 'auto' },
-					{ data: 'type', title: '{{ translate("_FILEMIME", "standard") }}', sortable: true, width: 'auto' },
-					{ data: 'preview', title: '{{ translate("_PREVIEW", "standard") }}', sortable: false, width: '20%', 
+					{ data: 'size', title: '{{ Lang_translate("_FILESIZE", "standard") }}', sortable: true, width: 'auto' },
+					{ data: 'type', title: '{{ Lang_translate("_FILEMIME", "standard") }}', sortable: true, width: 'auto' },
+					{ data: 'preview', title: '{{ Lang_translate("_PREVIEW", "standard") }}', sortable: false, width: '20%',
 						render: function(data, type, row, meta) {
 							var media = null;
 
@@ -98,7 +98,7 @@ function getApiMediaUrl(slug, params) {
 				});
 
 				$('.btn-del').click(function(e) {
-					if (confirm("{{ translate('_FILE_SURE_DEL', 'standard') }}")) {
+					if (confirm("{{ Lang_translate('_FILE_SURE_DEL', 'standard') }}")) {
 						var btn = $(this);
 						// Delete a media
 						$.ajax({

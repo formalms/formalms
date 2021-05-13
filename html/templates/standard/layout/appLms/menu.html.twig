@@ -1,23 +1,24 @@
 {% for item in menu %}
     {# {{ dump(item) }} #}
-    {% if evalPhp('checkRole', [item.role]) %} {# TODO: se sottomenù hanno permesso, visualizza comunque #}
-        {% if evalPhp('count', [item.submenu]) %}
-            <li class="dropdown" >
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ translate(item.name, 'menu_over') }}<span class="caret"></span></a>
+    {% if Util_checkRole(item.role) %} {# TODO: se sottomenù hanno permesso, visualizza comunque #}
+        {% if item.submenu|length > 0 %}
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                   aria-expanded="false">{{ Lang_translate(item.name, 'menu_over') }}<span class="caret"></span></a>
                 <ul class="dropdown-menu">
-                {% for subitem in item.submenu %}
-                    <li{% if subitem.active %} class="active"{% endif %}>
-                        <a href="{{ item.url }}" title="{{ translate(item.name, 'menu_over') }}">
-                            {% if item.image %}{{ item.image|raw }}{% else %}{{ translate(item.name, 'menu_over') }}{% endif %}
-                        </a>
-                    </li>
-                {% endfor %}
+                    {% for subitem in item.submenu %}
+                        <li{% if subitem.active %} class="active"{% endif %}>
+                            <a href="{{ item.url }}" title="{{ Lang_translate(item.name, 'menu_over') }}">
+                                {% if item.image %}{{ item.image|raw }}{% else %}{{ Lang_translate(item.name, 'menu_over') }}{% endif %}
+                            </a>
+                        </li>
+                    {% endfor %}
                 </ul>
             </li>
         {% else %}
             <li{% if ((currentPage.isMVC == true and item.mvc_path == currentPage.MVC) or (currentPage.isMVC == false and item.module_name == currentPage.modname and item.default_op == currentPage.op)) %} class="active"{% endif %}>
-                <a href="{{ item.url }}" title="{{ translate(item.name, 'menu_over') }}">
-                    {% if item.image %}{{ item.image|raw }}{% else %}{{ translate(item.name, 'menu_over') }}{% endif %}
+                <a href="{{ item.url }}" title="{{ Lang_translate(item.name, 'menu_over') }}">
+                    {% if item.image %}{{ item.image|raw }}{% else %}{{ Lang_translate(item.name, 'menu_over') }}{% endif %}
                 </a>
             </li>
         {% endif %}
@@ -29,17 +30,18 @@
         <span class="badge badge-danger">{{ notGeneratedCertificates }}</span>
         <a href="index.php?r=lms/mycertificate/show&sop=unregistercourse" class="no-border-right no-before">
             <div class="has-forma-tooltip">
-                <div class="forma-tooltip down">{{ translate('_CERTIFICATE_DOWNLOAD', 'menu_over') }}</div>
-                <span class="glyphicon glyphicon-bell top-menu__label">{{ translate('_MY_CERTIFICATE', 'menu_over') }}</span>
+                <div class="forma-tooltip down">{{ Lang_translate('_CERTIFICATE_DOWNLOAD', 'menu_over') }}</div>
+                <span class="glyphicon glyphicon-bell top-menu__label">{{ Lang_translate('_MY_CERTIFICATE', 'menu_over') }}</span>
             </div>
         </a>
     </li>
 {% endif %}
 
-{% if evalPhp('in_array', [user.getUserLevelId(), [evalPhp('constant', ['ADMIN_GROUP_GODADMIN']), evalPhp('constant', ['ADMIN_GROUP_ADMIN'])]]) %}
+{% if user.getUserLevelId() in adminRoles %}
     <li class="green_menu">
-        <a href="{{ evalPhp('Get::rel_path', ['adm']) }}" class="no-border-right no-before" title="{{ translate('_GO_TO_FRAMEWORK', 'menu_over') }}">
-            <span class="glyphicon glyphicon-cog top-menu__label">{{ translate('_GO_TO_FRAMEWORK', 'menu_over') }}</span>
+        <a href="{{ Get_relPath('adm') }}" class="no-border-right no-before"
+           title="{{ Lang_translate('_GO_TO_FRAMEWORK', 'menu_over') }}">
+            <span class="glyphicon glyphicon-cog top-menu__label">{{ Lang_translate('_GO_TO_FRAMEWORK', 'menu_over') }}</span>
         </a>
     </li>
 {% endif %}
