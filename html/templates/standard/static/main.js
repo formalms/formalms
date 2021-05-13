@@ -31230,12 +31230,8 @@ var FolderTree = function () {
     _this.type = type;
     _this.container = document.querySelector('*[data-container=' + _this.type + ']');
 
-    var btn = document.querySelector('.js-ft-rename-el');
-    var inputRename = document.querySelector('.folderTree__rename__input');
-
     if (!document.querySelector('.js-disable-context-menu')) {
       if (_this.container.querySelectorAll('.folderTree__link').length) {
-        _this.refresh();
         _this.contextMenu();
       }
     }
@@ -31249,21 +31245,6 @@ var FolderTree = function () {
         }
       });
     });
-
-    if (btn) {
-      btn.addEventListener('click', function () {
-        _this.renameEl();
-      });
-    }
-
-    if (inputRename) {
-      inputRename.addEventListener('keyup', function (e) {
-        if (e.keyCode === 13) {
-          _this.renameEl();
-          e.preventDefault();
-        }
-      });
-    }
 
     _this.container.addEventListener('contextmenu', function (event) {
       if (event.target.classList.contains('folderTree__rename__input') || event.target.classList.contains('folderTree__rename__btn')) {
@@ -31460,6 +31441,11 @@ var FolderTree = function () {
           }
         };
 
+        var copyBtn = {
+          text: 'Copia',
+          onClick: function onClick() {}
+        };
+
         var deleteBtn = {
           text: 'Elimina',
           onClick: function onClick() {
@@ -31489,7 +31475,9 @@ var FolderTree = function () {
           }
         };
 
-        return [renameBtn, deleteBtn];
+        var buttons = _this.currentElsIds.length > 1 ? [copyBtn, deleteBtn] : [renameBtn, copyBtn, deleteBtn];
+
+        return buttons;
       });
     }
   }, {
@@ -31498,19 +31486,24 @@ var FolderTree = function () {
       var _this = this;
       var rename = _this.container.querySelector('.folderTree__rename');
       var input = rename.querySelector('.folderTree__rename__input');
-      var value = input ? input.value : null;
-      var el = input.closest('.folderTree__li') ? input.closest('.folderTree__li') : input;
+      var value = input.value;
+      var el = input.closest('.folderTree__li') ? input.closest('.folderTree__li') : input.closest('.folderView__li');
       var elId = el.getAttribute('data-id');
       var renameLoData = _this.getApiUrl('rename', elId, { type: this.type, newName: value });
 
       axios.get(renameLoData).then(function (res) {
         if (res) {
           rename.classList.remove('is-show');
-          el.querySelector('span').innerHTML = value;
-          el.classList.remove('ft-no-click');
+          var treeEl = _this.container.querySelector('.folderTree__link[data-id="' + elId + '"] span');
+          if (treeEl) {
+            console.log(elId, 'treeEl');
+            treeEl.innerHTML = value;
+            el.classList.remove('ft-no-click');
+          }
 
           var li = _this.container.querySelector('.folderView__li[data-id="' + elId + '"]');
           if (li) {
+            console.log(value, 'li');
             li.querySelector('.folderView__label').innerHTML = value;
           }
 
@@ -31783,6 +31776,7 @@ var FolderTree = function () {
                     if (_this.openedIds) {
                       _this.openedIds.forEach(function (id) {
                         if (id != _this.selectedId) {
+                          console.log(_this.container.querySelectorAll('.ft-is-parent'));
                           var arrow = _this.container.querySelector('.ft-is-parent[data-id="' + id + '"] .arrow');
                           if (arrow) {
                             arrow.click();

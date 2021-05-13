@@ -13,12 +13,8 @@ class FolderTree {
     _this.type = type;
     _this.container = document.querySelector('*[data-container=' + _this.type + ']');
 
-    const btn = document.querySelector('.js-ft-rename-el');
-    const inputRename = document.querySelector('.folderTree__rename__input');
-
     if (!document.querySelector('.js-disable-context-menu')) {
       if (_this.container.querySelectorAll('.folderTree__link').length) {
-        _this.refresh();
         _this.contextMenu();
       }
     }
@@ -32,21 +28,6 @@ class FolderTree {
         }
       });
     });
-
-    if (btn) {
-      btn.addEventListener('click', () => {
-        _this.renameEl();
-      });
-    }
-
-    if (inputRename) {
-      inputRename.addEventListener('keyup', (e) => {
-        if (e.keyCode === 13) {
-          _this.renameEl();
-          e.preventDefault();
-        }
-      });
-    }
 
     _this.container.addEventListener('contextmenu', (event) => {
       if (event.target.classList.contains('folderTree__rename__input') || event.target.classList.contains('folderTree__rename__btn') ) {
@@ -219,6 +200,13 @@ class FolderTree {
         }
       };
 
+      const copyBtn = {
+        text: 'Copia',
+        onClick() {
+          
+        }
+      };
+
       const deleteBtn = {
         text: 'Elimina',
         onClick() {
@@ -248,10 +236,9 @@ class FolderTree {
         }
       };
 
-      return [
-        renameBtn,
-        deleteBtn,
-      ];
+      const buttons = _this.currentElsIds.length > 1 ? [copyBtn, deleteBtn] : [renameBtn, copyBtn, deleteBtn];
+
+      return buttons;
     });
   }
 
@@ -259,19 +246,24 @@ class FolderTree {
     const _this = this;
     const rename = _this.container.querySelector('.folderTree__rename');
     const input = rename.querySelector('.folderTree__rename__input');
-    const value = input ? input.value : null;
-    const el = input.closest('.folderTree__li') ? input.closest('.folderTree__li') : input;
+    const value = input.value;
+    const el = input.closest('.folderTree__li') ? input.closest('.folderTree__li') : input.closest('.folderView__li');
     const elId = el.getAttribute('data-id');
     const renameLoData = _this.getApiUrl('rename', elId, { type: this.type, newName: value });
 
     axios.get(renameLoData).then((res) => {
       if (res) {
         rename.classList.remove('is-show');
-        el.querySelector('span').innerHTML = value;
-        el.classList.remove('ft-no-click');
+        const treeEl = _this.container.querySelector('.folderTree__link[data-id="' + elId + '"] span');
+        if (treeEl) {
+          console.log(elId, 'treeEl');
+          treeEl.innerHTML = value;
+          el.classList.remove('ft-no-click');
+        }
 
         const li = _this.container.querySelector('.folderView__li[data-id="' + elId + '"]');
         if (li) {
+          console.log(value, 'li');
           li.querySelector('.folderView__label').innerHTML = value;
         }
 
@@ -487,6 +479,7 @@ class FolderTree {
           if (_this.openedIds) {
             _this.openedIds.forEach((id) => {
               if (id != _this.selectedId) {
+                console.log(_this.container.querySelectorAll('.ft-is-parent'));
                 let arrow = _this.container.querySelector('.ft-is-parent[data-id="' + id + '"] .arrow');
                 if (arrow) {
                   arrow.click();
