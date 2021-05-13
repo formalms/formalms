@@ -13,6 +13,13 @@ namespace appCore\Template;
   |   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
   \ ======================================================================== */
 
+use appCore\Template\Extenstions\FormExtension;
+use appCore\Template\Extenstions\GetExtension;
+use appCore\Template\Extenstions\LangExtension;
+use appCore\Template\Extenstions\LayoutExtension;
+use appCore\Template\Extenstions\TemplateExtension;
+use appCore\Template\Extenstions\UtilExtension;
+
 class TwigManager
 {
 
@@ -30,19 +37,13 @@ class TwigManager
             'cache' => $debug ? false : _files_ . '/cache/twig',
             'debug' => $debug
         ));
-
-        $this->twig->addFunction(new \Twig\TwigFunction('translate', function ($key, $module = false, $substitution = array(), $lang_code = false, $default = false) {
-            return \Lang::t($key, $module, $substitution, $lang_code, $default);
-        }));
-        $this->twig->addFunction(new \Twig\TwigFunction('evalPhp', function ($phpCode, $args = array()) {
-            return call_user_func_array($phpCode, $args);
-        }, array(
-            'is_safe' => array('html')
-        )));
+        $this->addDefaultPaths();
         $this->twig->addExtension(new FormExtension());
         $this->twig->addExtension(new GetExtension());
+        $this->twig->addExtension(new LangExtension());
+        $this->twig->addExtension(new LayoutExtension());
+        $this->twig->addExtension(new UtilExtension());
         $this->twig->addGlobal('GLOBALS', $GLOBALS);
-        $this->twig->addGlobal('Docebo', Docebo);
         if ($debug) {
             $this->twig->addExtension(new \Twig\Extension\DebugExtension());
         }
@@ -65,7 +66,22 @@ class TwigManager
         return self::$instance;
     }
 
-    public function addPathInLoader($view_path){
+    private function addDefaultPaths()
+    {
+        $defaultPaths = [
+            _adm_ . '/views',
+            _lms_ . '/views',
+            _lms_ . '/admin/views',
+            _templates_ . '/' . getTemplate() . '/layout'
+        ];
+
+        foreach ($defaultPaths as $path) {
+            $this->addPathInLoader($path);
+        }
+    }
+
+    public function addPathInLoader($view_path)
+    {
 
         $this->twig->getLoader()->addPath($view_path);
     }

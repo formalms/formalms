@@ -2,7 +2,7 @@
 
 
 {% block content %}
-  {% if (block.type == '4-col') %}
+    {% if (block.type == '4-col') %}
         {% set class =  ' d-col--12--desktop' %}
     {% elseif (block.type == '3-col') %}
         {% set class =  ' d-col--9--desktop' %}
@@ -13,17 +13,23 @@
     {% endif %}
 
     <div class="d-col d-col--12 {{ class }}">
-    <div class="d-calendar d-widget">
-      <h3 class="d-title">
-        {{ translate('_CALENDAR','standard') }}
-      </h3>
-      <div class="d-calendar__item js-dashboard-calendar" data-action="{{ block.enabledActions | join(',') }}"></div>
+        <div class="d-calendar d-widget">
+            <h3 class="d-title">
+                {% if block.data.title is empty %}
+                    {{ Lang_translate('_DASHBOARDBLOCKCALENDARLMS','dashboard') }}
+                {% else %}
+                    {{ block.data.title }}
+                {% endif %}
+            </h3>
+            <div class="d-calendar__item js-dashboard-calendar"
+                 data-action="{{ block.enabledActions | join(',') }}"></div>
+        </div>
     </div>
-  </div>
-  <script>
-    window.dashboardCalendarAjaxUrl = '{{ block.ajaxUrl }}';
-    window.dashboardCalendarAjaxSignature = '{{ block.postData.signature }}';
-    window.dashboardCalendarAjaxPostData = '{{ block.postData.block }}';
-  </script>
+    <script>
+        window.dashboardCalendarAjaxUrl = '{{ block.ajaxUrl }}';
+        window.dashboardCalendarAjaxSignature = '{{ block.postData.signature }}';
+        window.dashboardCalendarAjaxPostData = '{{ block.postData.block }}';
+        window.lang = '{{ lang }}';
+    </script>
 
 {% endblock %}

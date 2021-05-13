@@ -26,7 +26,6 @@ require_once(Forma::inc(_lms_ . '/modules/question/class.break_page.php'));
 require_once(Forma::inc(_lms_ . '/modules/question/class.choice.php'));
 require_once(Forma::inc(_lms_ . '/modules/question/class.choice_multiple.php'));
 require_once(Forma::inc(_lms_ . '/modules/question/class.extended_text.php'));
-require_once(Forma::inc(_lms_ . '/modules/question/class.hot_text.php'));
 require_once(Forma::inc(_lms_ . '/modules/question/class.inline_choice.php'));
 require_once(Forma::inc(_lms_ . '/modules/question/class.numerical.php'));
 require_once(Forma::inc(_lms_ . '/modules/question/class.text_entry.php'));
@@ -66,7 +65,7 @@ class Question
 	 * @access public
 	 * @author Fabio Pirovano (fabio@docebo.com)
 	 */
-	function Question($id)
+	function __construct($id)
 	{
 		$this->db = DbConn::getInstance();
 		if ($id !== NULL) {
@@ -461,11 +460,18 @@ class Question
 	 * @access public
 	 * @author Fabio Pirovano (fabio@docebo.com)
 	 */
-	function deleteAnswer($id_track)
-	{
+    function deleteAnswer($id_track, $numberTime = '')
+    {
+        $query = "DELETE FROM " . $GLOBALS['prefix_lms'] . "_testtrack_answer 
+		WHERE idTrack = '" . (int)$id_track . "' AND 
+			idQuest = '" . $this->id . "'";
 
-		return true;
-	}
+        if (!empty($numberTime) && is_numeric($numberTime)) {
+            $query .= " AND number_time = '" . $numberTime . "'";
+        }
+
+        return sql_query($query);
+    }
 
 	/**
 	 * force a score to a question
@@ -546,9 +552,9 @@ class Question
 		FROM " . $GLOBALS['prefix_lms'] . "_testquestanswer 
 		WHERE idQuest = '" . (int) $this->id . "'");
 		while (list($score_correct) = sql_fetch_row($re_answer)) {
-			$max_score = round($max_score + $score_correct, 2);
+			$max_score = $max_score + $score_correct;
 		}
-		return $max_score;
+		return round($max_score, 2);
 	}
 
 	/**
@@ -571,7 +577,7 @@ class Question
 		WHERE idQuest = '" . (int) $this->id . "' AND is_correct = '1'"));
 
 		if (!$num_correct) $score_assigned = 0;
-		else $score_assigned = round($score / $num_correct, 2);
+		else $score_assigned = round($score / $num_correct, 3);
 
 		return round($score_assigned * $num_correct, 2);
 	}
@@ -597,7 +603,7 @@ class Question
 		WHERE idQuest = '" . (int) $this->id . "' AND is_correct = '1'"));
 
 		if (!$num_correct) $score_assigned = 0;
-		else $score_assigned = round($score / $num_correct, 2);
+		else $score_assigned = round($score / $num_correct, 3);
 
 		$re_assign = sql_query("
 		UPDATE " . $GLOBALS['prefix_lms'] . "_testquestanswer 
@@ -625,10 +631,8 @@ class Question
 	 */
 	function userScore($id_track, $number_time = null)
 	{
-
-
 		$score = 0;
-		$query = "SELECT SUM(score_assigned) AS score_assigned
+		$query = "SELECT score_assigned
 		FROM " . $GLOBALS['prefix_lms'] . "_testtrack_answer
 		WHERE idQuest = '" . (int) $this->id . "'
 		AND idTrack = '" . (int) $id_track . "'";
@@ -838,6 +842,21 @@ class Question
 
 		return $answers;
 	}
+
+	protected function testQuestAnswerExists($trackTest)
+	{
+		$idTrack = (int)$trackTest->idTrack;
+		$idQuest = (int)$this->id;
+		$number_time = (int)($trackTest->getNumberOfAttempt() + 1);
+
+		$track_query = "SELECT idTrack FROM " . $GLOBALS['prefix_lms'] . "_testtrack_answer
+										WHERE idTrack = $idTrack AND idQuest = $idQuest AND number_time = $number_time";
+
+		$res = sql_query($track_query);
+		list($exists) = sql_fetch_row($res);
+
+		return (bool)$exists;
+	}
 }
 
 
@@ -854,9 +873,6 @@ class QuestionRaw
 	var $answers 		= array();
 	var $extra_info 	= array();
 
-	function QuestionRaw()
-	{
-	}
 
 	function setCategoryFromName($category_name, $autocreate_categories = false)
 	{
@@ -888,7 +904,4 @@ class AnswerRaw
 	var $score_correct 	= 0;
 	var $score_penalty 	= 0;
 
-	function AnswerRaw()
-	{
-	}
 }

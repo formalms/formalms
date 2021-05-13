@@ -1978,7 +1978,7 @@ class CoursereportLmsController extends LmsController
 			// XXX: Find test
 			$test_info = &$test_man->getTestInfo(array($id_test));
 
-			Util::jump_to('index.php?r=lms/coursereport/testreport&idTest=' . $id_test . '&idTrack=' . $id_track . '&testName=' . $test_info[$id_test]['title'] . '&studentName=' . $user_name);
+			Util::jump_to('index.php?r=lms/coursereport/testreport&idTest=' . $id_test . '&idTrack=' . $id_track . '&testName=' . html_entity_decode(strip_tags(urldecode($test_info[$id_test]['title']))) . '&studentName=' . $user_name);
 		} else {
 			die("You can't access");
 		}
@@ -3515,7 +3515,6 @@ class CoursereportLmsController extends LmsController
 
 			switch ($quest['type_quest']) {
 				case "inline_choice":
-				case "hot_text":
 				case "choice_multiple":
 				case "choice": {
 
@@ -3834,7 +3833,6 @@ class CoursereportLmsController extends LmsController
 		foreach ($quests as $quest) {
 			switch ($quest['type_quest']) {
 				case "inline_choice":
-				case "hot_text":
 				case "choice_multiple":
 				case "choice":
 					$cont_h = array(

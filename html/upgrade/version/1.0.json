@@ -1,0 +1,20 @@
+{
+    "version": {
+        "name": "1.0",
+        "number": "10000",
+        "description": "questa è la 1.0",
+        "pretty_desc": "1 0",
+        "pre": "10000_pre.php",
+        "post": "10000_post.php",
+        "config": "10000_conf.php",
+        "file_sytem": "10000_fs.php",
+        "role": "10000_role.php",
+        "mysql": "10000_db.sql",
+        "date": "2000-01-01 00:00",
+        "status": "stable",
+        "php": {
+            "min": "5.6",
+            "max": "7.0" 
+        }
+    }
+}

@@ -4,6 +4,7 @@
 class DashboardBlockForm
 {
     const FORM_TYPE_TEXT = 'text';
+    const FORM_TYPE_NUMBER = 'number';
     const FORM_TYPE_IMAGE = 'image';
     const FORM_TYPE_FILE = 'file';
     const FORM_TYPE_TEXTAREA = 'textarea';
@@ -12,7 +13,7 @@ class DashboardBlockForm
     const FORM_TYPE_URL = 'url';
     const FORM_TYPE_SELECT = 'select';
 
-    const ALLOWED_FORM_TYPES = [self::FORM_TYPE_TEXT, self::FORM_TYPE_IMAGE, self::FORM_TYPE_FILE, self::FORM_TYPE_TEXTAREA, self::FORM_TYPE_CHECKBOX, self::FORM_TYPE_RADIO, self::FORM_TYPE_URL, self::FORM_TYPE_SELECT];
+    const ALLOWED_FORM_TYPES = [self::FORM_TYPE_TEXT, self::FORM_TYPE_NUMBER, self::FORM_TYPE_IMAGE, self::FORM_TYPE_FILE, self::FORM_TYPE_TEXTAREA, self::FORM_TYPE_CHECKBOX, self::FORM_TYPE_RADIO, self::FORM_TYPE_URL, self::FORM_TYPE_SELECT];
 
     public static function getFormItem($block, $name, $type, $required = false, $values = [], $attr = [])
     {
@@ -29,7 +30,7 @@ class DashboardBlockForm
         /** @var DashboardBlockLms $blockObj */
         $blockObj = new $block($data);
 
-        if ($blockObj->isFirstInsert()){
+        if ($blockObj->isFirstInsert()) {
             return $errors;
         }
 
@@ -40,18 +41,18 @@ class DashboardBlockForm
             if (!array_key_exists($formItem->getName(), $blockObj->getData()) && $formItem->isRequired()) {
                 $errors[] = [
                     'field' => $formItem->getField(),
-                    'error' => sprintf(Lang::t('_VALUE_IS_REQUIRED','dashboardsetting'), $formItem->getField())
+                    'error' => sprintf(Lang::t('_VALUE_IS_REQUIRED', 'dashboardsetting'), $formItem->getField())
                 ];
             } elseif (array_key_exists($formItem->getName(), $blockObj->getData())) {
                 $value = $blockObj->getData()[$formItem->getName()];
+
                 switch ($formItem->getType()) {
                     case DashboardBlockForm::FORM_TYPE_SELECT:
                     case DashboardBlockForm::FORM_TYPE_RADIO:
-                    case DashboardBlockForm::FORM_TYPE_CHECKBOX:
                         if (!in_array($value, array_keys($formItem->getValues()))) {
                             $errors[] = [
                                 'field' => $formItem->getField(),
-                                'error' => sprintf(Lang::t('_VALUE_IS_NOT_VALID','dashboardsetting'), $value)
+                                'error' => sprintf(Lang::t('_VALUE_IS_NOT_VALID', 'dashboardsetting'), $value)
                             ];
                         }
                         break;
@@ -59,12 +60,21 @@ class DashboardBlockForm
                         if (!filter_var($value, FILTER_VALIDATE_URL)) {
                             $errors[] = [
                                 'field' => $formItem->getField(),
-                                'error' => sprintf(Lang::t('_VALUE_IS_NOT_VALID','dashboardsetting'), $value)
+                                'error' => sprintf(Lang::t('_VALUE_IS_NOT_VALID', 'dashboardsetting'), $value)
                             ];
                         }
                         break;
+                    case DashboardBlockForm::FORM_TYPE_CHECKBOX:
                     case DashboardBlockForm::FORM_TYPE_FILE:
                     case DashboardBlockForm::FORM_TYPE_IMAGE:
+                        break;
+                    case DashboardBlockForm::FORM_TYPE_NUMBER:
+                        if (!is_numeric($value)) {
+                            $errors[] = [
+                                'field' => $formItem->getField(),
+                                'error' => sprintf(Lang::t('_VALUE_IS_NOT_VALID', 'dashboardsetting'), $value)
+                            ];
+                        }
                         break;
                     case DashboardBlockForm::FORM_TYPE_TEXT:
                     case DashboardBlockForm::FORM_TYPE_TEXTAREA:

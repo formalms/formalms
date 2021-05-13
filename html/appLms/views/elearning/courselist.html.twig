@@ -1,0 +1,90 @@
+<script language="javascript">
+    function confirmDialog(title, id_course, id_date) {
+        closeAllDatesPopup(id_course);
+        $('<div></div>').appendTo('body')
+            .html("<div><h6>{{ Lang_translate('_SELF_UNSUBSCRIBE', 'course') }}</h6></div>")
+            .dialog({
+                modal: true,
+                title: title,
+                autoOpen: true,
+                width: '200',
+                height: '150',
+                resizable: false,
+                buttons: {
+                    {{ Lang_translate('_CONFIRM', 'standard') }}:
+
+                        function() {
+                            var posting = $.get(
+                                'ajax.server.php', {
+                                    r: 'elearning/self_unsubscribe',
+                                    id_course: id_course,
+                                    id_date: id_date
+                                }
+                            );
+                            posting.done(function(responseText) {
+                                var ft = $("#course_search_filter_text").val();
+                                var ctype = $("#course_search_filter_type").selectpicker().val();
+                                var category = $('#course_search_filter_cat').selectpicker().val();
+                                var cyear = $("#course_search_filter_year").selectpicker().val();
+                                var json_status = $('.js-label-menu-filter.selected').attr('data-value');
+                                $("#div_course").html("<br><p align='center'><img src='{{ Layout_getPath() }}images/standard/loadbar.gif'></p>");
+                               var posting = $.get('ajax.server.php?r=elearning/all&rnd={{ date().timestamp }}&filter_text=' + ft + '&filter_type=' + ctype + '&filter_cat=' + category + '&filter_status=' + json_status + '&filter_year=' + cyear, {});
+                                posting.done(function(responseText) {
+                                    $("#div_course").html(responseText);
+                                });
+                            });
+                            posting.fail(function() {
+                                alert('unsubscribe failed')
+                            })
+                            $(this).dialog("close");
+                        }
+
+                        ,
+                    {{ Lang_translate('_UNDO', 'standard') }}:
+
+                        function() {
+                            $(this).dialog("close");
+                        }
+                },
+                open: function(event, ui) {
+                    $(".ui-dialog-titlebar-close", ui.dialog | ui).hide();
+                },
+                close: function(event, ui) {
+                    $(this).remove();
+                }
+            });
+    }
+
+
+    function openAllDatesPopup($id) {
+        $('*[data-overlay="course-' + $id + '"]').fadeIn();
+    }
+
+    function closeAllDatesPopup($id) {
+        $('*[data-overlay="course-' + $id + '"]').fadeOut();
+    }
+</script>
+
+
+<link rel="shortcut icon" href="../favicon.ico">
+
+
+<div id='container'>
+    <h1 class="page-header col-xs-12"><strong> {{filter_type}} </strong></h1>
+    <div class="clearfix row" id='mia_area_{{stato_corso}}'>
+        {% if courselist is empty %}
+            <div class="col-xs-12">
+        {% block emptycourselist %} <p>{{ Lang_translate('_NO_CONTENT', 'standard') }}</p> {% endblock %}
+            </div>
+       {% endif %}
+
+        {% for course in courselist %}
+
+            <div class="col-xs-12 col-md-4 col-lg-3 mycourses-list">
+
+                {% include 'partials/course-box.html.twig' with { 'course': course } %}
+            </div>
+       {% endfor%}
+            </div>
+    </div>
+</div>

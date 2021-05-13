@@ -328,6 +328,11 @@ class FieldList
 		if ($manual_id_field === false)
 			$user_groups = $acl->getUserGroupsST($id_user);
 
+		if (count($user_groups) > 2 && isset($user_groups[1]) && isset($user_groups[2])) {
+			// Not only roots ocd_0 and oc_0
+			unset($user_groups[1]);
+		}
+
 		$query = "SELECT ft.id_common, ft.type_field, ftt.type_file, ftt.type_class, ft.translation, gft.mandatory, gft.useraccess "
 			. "FROM " . $this->getFieldTable() . " AS ft "
 			. "	JOIN " . $this->getGroupFieldsTable() . " AS gft "
@@ -879,14 +884,17 @@ class FieldList
 		}
 
 		$query = "SELECT ft.id_common, ft.type_field, tft.type_file, tft.type_class, gft.mandatory"
-			. "  FROM ( " . $this->getFieldTable() . " AS ft"
-			. "  JOIN " . $this->getTypeFieldTable() . " AS tft )"
-			. "  JOIN " . $this->getGroupFieldsTable() . " AS gft"
-			. " WHERE ft.lang_code = '" . getLanguage() . "'"
+		. "  FROM ( " . $this->getFieldTable() . " AS ft"
+		. "  JOIN " . $this->getTypeFieldTable() . " AS tft )"
+		. "  JOIN " . $this->getGroupFieldsTable() . " AS gft"
+		. " WHERE ft.lang_code = '" . getLanguage() . "'"
 			. "	 AND ft.type_field = tft.type_field"
 			. "   AND ft.id_common = gft.id_field"
-			. "   AND gft.idst IN ('" . implode("','", $arr_idst) . "')"
-			. "   AND gft.useraccess <> 'readwrite'"; # Hide invisible;
+			. "   AND gft.idst IN ('" . implode("','", $arr_idst) . "')";
+
+		if (Docebo::user()->getUserLevelId() !== ADMIN_GROUP_GODADMIN) {
+			$query.= "   AND gft.useraccess <> 'readwrite'"; # Hide invisible;
+		}
 
 		if ($useraccess !== 'false' && is_array($useraccess)) {
 			$query .= " AND ( ";
@@ -899,7 +907,7 @@ class FieldList
 			$query .= " ) ";
 		}
 		$query .= " GROUP BY ft.id_common "
-			. " ORDER BY ft.sequence, gft.idst, gft.id_field";
+		. " ORDER BY ft.sequence, gft.idst, gft.id_field";
 
 		$play_txt = array();
 		$re_fields = sql_query($query);
@@ -1018,12 +1026,31 @@ class FieldList
 	 **/
 	function isFilledFieldsForUser($idst_user, $arr_idst = FALSE)
 	{
-		$index = 0;
+
+
+
 		$acl = &Docebo::user()->getACL();
-		if ($arr_idst === FALSE) {
-			$arr_idst = $acl->getUserGroupsST($idst_user);
-			$index = count($arr_idst);
+		$error_message = array();
+
+		// #BUG - 19799
+		$acl_man = Docebo::user()->getAclManager();
+		if (isset($_SESSION['usermanagement']['selected_node']) && $_SESSION['usermanagement']['selected_node'] != 0) {
+			$arr_idst = array();
+			$tmp = $acl_man->getGroup(false, '/oc_' . $_SESSION['usermanagement']['selected_node']);
+			$arr_idst[] = $tmp[0];
+			$tmp = $acl_man->getGroup(false, '/ocd_' . $_SESSION['usermanagement']['selected_node']);
+			$arr_idst[] = $tmp[0];
+			$acl = &Docebo::user()->getACL();
+			$arr_idst = $acl->getArrSTGroupsST($arr_idst);
 		}
+
+
+		$index = 0;
+		if ($arr_idst === FALSE) {
+			$arr_idst = $acl->getArrSTGroupsST($acl->getUserGroupsST($idst_user));
+			$index += count($arr_idst);
+		}
+
 		$acl_man = &$acl->getAclManager();
 		$tmp = $acl_man->getGroup(false, '/oc_0');
 		$arr_idst[] = $tmp[0];
@@ -1040,19 +1067,21 @@ class FieldList
 			}
 		}
 
+
+
 		$query = "SELECT ft.id_common, ft.type_field, tft.type_file, tft.type_class, gft.mandatory"
 			. "  FROM ( " . $this->getFieldTable() . " AS ft"
 			. "  JOIN " . $this->getTypeFieldTable() . " AS tft )"
 			. "  JOIN " . $this->getGroupFieldsTable() . " AS gft"
 			. " WHERE ft.lang_code = '" . getLanguage() . "'"
-			. "	 AND ft.type_field = tft.type_field"
+			. "     AND ft.type_field = tft.type_field"
 			. "   AND ft.id_common = gft.id_field"
-			. "   AND gft.idst IN ('" . implode("','", $arr_idst) . "')"
-			. " GROUP BY ft.id_common ";
+			. "   AND gft.idst IN ('" . implode("','", $arr_idst) . "')";
+
+		$query .= " GROUP BY ft.id_common ";
 
 
 
-		$error_message = array();
 
 		$mandatory_filled 	= true;
 		$field_valid 		= true;

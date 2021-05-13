@@ -3,7 +3,7 @@
     <table class="table table-bordered display" style="width:100%" id="langdiff"></table>
     <button id="translate-btn" class="button btn btn-danger dahsboard__button--save js-save-block" type="submit">
         <i class="fa fa-spinner fa-spin"></i>
-        {{ translate('_TRANSLATELANG', 'admin_lang') }}
+        {{ Lang_translate('_TRANSLATELANG', 'admin_lang') }}
     </button>
 </form>
 
@@ -14,12 +14,12 @@
         var body = {{ body | json_encode(constant('JSON_HEX_APOS')) | raw }};
 
         var columns = [
-            {data: 'id', title: '{{ translate('_ID', 'standard') }}', sortable: true},
-            {data: 'text_module', title: '{{ translate('_MODULE', 'standard') }}', sortable: true},
-            {data: 'text_key', title: '{{ translate('_KEY', 'standard') }}', sortable: true},
-            {data: 'plugin_name', title: '{{ translate('_PLUGIN', 'standard') }}', sortable: true},
-            {data: 'translation_text', title: '{{ translate('_TRANSLATION', 'standard') }}', sortable: true},
-            {data: 'translation_text_diff', title: '{{ translate('_CORE_TRANSLATION', 'standard') }}', sortable: true}
+            {data: 'id', title: '{{ Lang_translate('_ID', 'standard') }}', sortable: true},
+            {data: 'text_module', title: '{{ Lang_translate('_MODULE', 'standard') }}', sortable: true},
+            {data: 'text_key', title: '{{ Lang_translate('_KEY', 'standard') }}', sortable: true},
+            {data: 'plugin_name', title: '{{ Lang_translate('_PLUGIN', 'standard') }}', sortable: true},
+            {data: 'translation_text', title: '{{ Lang_translate('_TRANSLATION', 'standard') }}', sortable: true},
+            {data: 'translation_text_diff', title: '{{ Lang_translate('_CORE_TRANSLATION', 'standard') }}', sortable: true}
         ];
         var rows = [];
 

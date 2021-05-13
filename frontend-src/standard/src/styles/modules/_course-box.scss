@@ -1,739 +1,800 @@
-// Course Box
-//
-// These are the restyled course boxes<br />
-//
-// Style guide: 3
 
-// My courses
-//
-// This is the restyled course box used in My Courses<br />
-// <strong>NB: The 'style' attributes are just for this representation only, when implementing
-// be sure to delete them.</strong><br />
-//
-// Markup:
-//  <div style="max-width: 404px;">
-//    <div class="course-box">
-//      <div class="course-box__item">
-//        <div class="course-box__title course-icon--active">Lorem ipsum dolor sit amet</div>
-//      </div>
-//      <div class="course-box__item course-box__item--no-padding">
-//        <div class="course-box__img">
-//          <img src="" alt="">
-//          <div class="course-box__img-title">lorem ipsum</div>
-//        </div>
-//      </div>
-//      <div class="course-box__item">
-//        <div class="course-box__owner course-box__owner--5">Amministratore</div>
-//		  <div class="course-box__options dropdown pull-right">
-//			<div class="dropdown-toggle" id="courseBoxOptions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-//			  <i class="glyphicon glyphicon-option-horizontal"></i>
-//			</div>
-//			<ul class="dropdown-menu" aria-labelledby="courseBoxOptions">
-//			  <li><a href="javascript:void(0)">option 1</a></li>
-//			  <li><a href="javascript:void(0)">option 2</a></li>
-//			  <li><a href="javascript:void(0)">option 3</a></li>
-//			</ul>
-//		  </div>
-//        <div class="course-box__desc">
-//          Lorem Ipsum dolor sit amet, consectetur adipiscing elit. Facilis ponatur
-//          infinito oderis obruamus. Effectices, terroribus cognosci elegans totam
-//          atilli arare p minuendas.
-//        </div>
-//      </div>
-//      <div class="course-box__item course-box__item--half course-box__item--no-padding">
-//        <div class="course-box__date-text">31 agosto 2016</div>
-//		  <p class="course-box__show-dates js-course-box-open-dates-modal"><i class="glyphicon glyphicon-play"></i> &nbsp; show all dates</p>
-//		  <div class="course-box__modal">
-//			<div class="course-box__modal__header">
-//			  <p class="course-box__modal__title">Course title</p>
-//			  <button type="button" class="close-button js-course-box-close-dates-modal">
-//				<span class="close-button__icon"></span>
-//				<span class="close-button__label">close</span>
-//			  </button>
-//			</div>
-//			<div class="course-box__modal__content">
-//			  <div class="course-box__modal__entry">
-//				<p class="course-box__modal__title">Next lesson</p>
-//				<table class="course-box__modal__lesson">
-//				  <tr>
-//					<td>Name:</td>
-//					<td>Lesson name</td>
-//				  </tr>
-//				  <tr>
-//					<td>Code:</td>
-//					<td>####</td>
-//				  </tr>
-//				  <tr>
-//					<td>Date begin:</td>
-//					<td>yyyy/mm/dd</td>
-//				  </tr>
-//				  <tr>
-//					<td>Date end:</td>
-//					<td>yyyy/mm/dd</td>
-//				  </tr>
-//				  <tr>
-//					<td>Location:</td>
-//					<td>place</td>
-//				  </tr>
-//				</table>
-//			  </div>
-//			  <div class="course-box__modal__entry">
-//				<p class="course-box__modal__title">Others</p>
-//				<table class="course-box__modal__lesson">
-//				  <tr>
-//					  <td>Name:</td>
-//					  <td>Lesson name</td>
-//				  </tr>
-//				  <tr>
-//					  <td>Code:</td>
-//					  <td>####</td>
-//				  </tr>
-//				  <tr>
-//					  <td>Date begin:</td>
-//					  <td>yyyy/mm/dd</td>
-//				  </tr>
-//				  <tr>
-//					  <td>Date end:</td>
-//					  <td>yyyy/mm/dd</td>
-//				  </tr>
-//				  <tr>
-//					  <td>Location:</td>
-//					  <td>place</td>
-//				  </tr>
-//				</table>
-//			  </div>
-//			</div>
-//			<div class="course-box__modal__footer">
-//			  <button type="button" class="forma-button">Discard</button>
-//			</div>
-//		  </div>
-//      </div>
-//      <div class="course-box__item course-box__item--half course-box__item--no-padding">
-//        <a class="forma-button forma-button--orange-hover forma-button--full" href="">
-//          <span class="forma-button__label">
-//            Entra nel corso
-//          </span>
-//        </a>
-//      </div>
-//    </div>
-//  </div>
-//
-// Style guide: 3.1
+// course-box scss variables
+$course-box-border: 2px;
 
-// Course Catalogue
-//
-// This is the restyled course box used in Course Catalogue<br />
-// <strong>NB: The 'style' attributes are just for this representation only, when implementing
-// be sure to delete them.</strong><br />
-// Also the id attribute of the forma-button here is used by YUI, so when the refactor ends<br />
-// it will likely disappear.
-//
-// Markup:
-//  <div style="max-width: 404px;">
-//    <div class="course-box">
-//      <div class="course-box__item">
-//        <div class="course-box__title">Lorem ipsum dolor sit amet</div>
-//      </div>
-//      <div class="course-box__item course-box__item--no-padding">
-//        <div class="course-box__img">
-//          <img src="" alt="">
-//          <div class="course-box__img-title">lorem ipsum</div>
-//        </div>
-//      </div>
-//      <div class="course-box__item">
-//        <div class="course-box__desc">
-//          Lorem Ipsum dolor sit amet, consectetur adipiscing elit. Facilis ponatur
-//          infinito oderis obruamus. Effectices, terroribus cognosci elegans totam
-//          atilli arare p minuendas.
-//        </div>
-//      </div>
-//      <div class="course-box__item">
-//        <div class="course-box__date-box calendar-icon--check">31 agosto 2016</div>
-//        <i class="fa fa-angle-right" aria-hidden="true"></i>
-//        <div class="course-box__date-box course-box__date-box--end calendar-icon--green-cross">30 novembre 2017</div>
-//      </div>
-//      <div class="course-box__item" id="">
-//        <a class="forma-button forma-button--orange-hover forma-button--full" href="">
-//          <span class="forma-button__label">
-//            Entra nel corso
-//          </span>
-//        </a>
-//      </div>
-//    </div>
-//  </div>
-//
-// Style guide: 3.2
+.page-header {
+  border-bottom: 0 !important;
+}
 
+// main div
 .course-box {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
   width: 100%;
-  min-height: 465px;
-  margin-bottom: 15px;
-  padding-bottom: 15px;
-  border: 2px solid $gray-4;
-  border-radius: 5px;
+  min-height: 305px;
+  margin-bottom: 25px;
+  border-radius: $border-radius;
   font-family: $font;
   overflow: hidden;
-  transition: border 0.4s ease 0s, box-shadow 0.4s ease 0s;
-  max-height: 565px;
+  border: solid $course-box-border $gray-4;
+  transition:
+    // transform 0.2s ease 0s,
+    box-shadow 0.3s ease 0s
+  ;
+  cursor: default;
+  // @include breakpoint($tablet) {
+  //   max-width: 404px;
+  // }
+}
+:is(.course-box--disabled,.course-box--disabled *) {
+  filter: grayscale(100%);
+  pointer-events: none;
+  opacity: 0.8;
+  // user-select: none;
+}
 
-  &:hover {
-    border: 2px solid $orange;
-    box-shadow: $gray-3 0px 5px 20px 0px;
-
-    .course-box__img-title {
-      background-color: $orange--hover;
-    }
-  }
-
-  .mycourses-list & {
-    position: relative;
-    // padding-bottom: 50px;
-  }
-
-  @include breakpoint($tablet) {
-    //max-width: 404px;
+.course-box:hover {
+  box-shadow: $gray-4 5px 5px 0 0;
+  // transform: scale(1.01,1.01);
+  // border: $course-box-border solid $gray-3;
+  // border-bottom: $course-box-border solid $orange;
+  // border-right: $course-box-border solid $orange;
+  .course-box__cover {
+    background-position: 55% 55%;
+    transition: background-position 300ms ease-in-out;
   }
 }
 
-.course-box__item {
+.course-box > * {
   width: 100%;
-  padding: {
-    left: 15px;
-    right: 15px;
-  }
   overflow: hidden;
   position: relative;
-
-  &:first-child {
-    height: 70px;
-
-    @include breakpoint($tablet) {
-    }
-
-    @include breakpoint($ipad) {
-    }
-  }
-
-  &:nth-child(3) {
-    padding-top: 16px;
-    min-height: 90px;
-  }
 }
 
-.course-box__item--no-padding {
-  padding: 0;
-}
+.course-box__header {
+  position: absolute;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-content: center;
+  min-width: 25px;
+  max-width: max-content;
+  top: 4px;
+  left: 4px;
+  height: 25px;
+  background: rgba(255,255,255,0.2);
+  border-radius: 100vh;
+  padding: 3px 0;
 
-.course-box__item--half {
-  width: 100%;
-  float: left;
-  padding: {
-    left: 30px;
-    right: 30px;
-  }
+  .course-box__icon {
+    position: relative;
+    flex: 0 0 auto;
+    display: flex;
+    width: 24px;
+    height: auto;
+    align-items: center;
+    justify-content: center;
 
-  @include breakpoint($tablet) {
-    width: 50%;
-    padding: {
-      left: 30px;
-      right: 0;
+    .fa {
+      opacity: 0.7;
     }
-  }
-}
 
-.course-box__item--half + .course-box__item--half {
-  padding: {
-    left: 30px;
-    right: 30px;
-  }
-
-  @include breakpoint($tablet) {
-    padding: {
+    &:before {
+      position: absolute;
+      content: "";
+      width: 100%;
+      height: 100%;
       left: 0;
-      right: 30px;
+      top: 0;
+      border-radius: 50%;
+      background: {
+        position: center;
+        repeat: no-repeat;
+        size: contain;
+        // color: $white;
+      }
+    }
+  }
+
+}
+
+.course-box__nav {
+  position: absolute;
+  top: 3px;
+  right: 3px;
+  width: 200px;
+  height: 100px;
+  // border-radius: 50%;
+  background: transparent !important;
+
+  .course-box__options {
+    margin: 0 !important;
+    
+    .dropdown-toggle {
+      $dropdownToggleSize: 19px;
+      width: $dropdownToggleSize;
+      height: $dropdownToggleSize;
+      display: grid;
+      place-content: center;
+      color: $gray-2;
+      cursor: pointer;
+      z-index: 1000;
+      border: 1px solid red;
+      border-radius: 50%;
+      background: white;
+      padding: 10px;
+      border: 1px solid $gray-3;
+
+      &:before {
+        content: "";
+        width: $dropdownToggleSize;
+        height: $dropdownToggleSize;
+        position: absolute;
+        top: 0;
+        left: 0;
+        // border: solid 1px $gray-2;
+        // border-radius: 50%;
+      }
+
+      &:hover {
+        color: $dark-orange;
+
+        // &:before {
+        //   border-color: $dark-orange;
+        // }
+      }
+    }
+
+    .dropdown-menu {
+      padding: 3px 0;
+      top: calc(100% + 1px);
+      right: 0;
+      border: solid 1px $gray-3;
+      box-shadow: none;
+      z-index: 1000;
+      border-radius: $border-radius;
+
+      a {
+        font-size: 10px;
+        text-transform: uppercase;
+        color: $color-red-1;
+
+        &:hover,
+        &:focus,
+        &:active {
+          background: transparent;
+          color: $orange;
+        }
+      }
     }
   }
 }
 
-.course-box__title {
-  position: relative;
-  width: 100%;
-  min-height: 70px;
-  max-height: 123px;
-  padding: {
-    top: 10px;
-    right: 15px;
-    bottom: 25px;
-  }
-  color: $anthracite;
+.course-box__category {
+  position: absolute;
+  padding: 4px 10px 3px;
+  top: 116px;
+  left: 5px;
+  background: rgba(255,255,255,0.8);
+  border-radius: 100vh;
   font-weight: 600;
-  font-size: 16px;
-  line-height: 1.45;
-
-  &[class^="course-box__title icon--"] {
-    padding: {
-      right: 30px;
-      bottom: 15px;
-    }
-  }
-
-  &:before {
-    content: "";
-    width: 30px;
-    height: 30px;
-    position: absolute;
-    right: 0;
-    top: 20px;
-    background: {
-      position: center;
-      repeat: no-repeat;
-      size: contain;
-    }
-  }
+  text-transform: uppercase;
+  font-size: 9px;
+  line-height: 9px;
+  width: max-content;
 }
 
-.course-box__img {
+.course-box__cover {
   position: relative;
   height: 140px;
   background: {
     image: url(images/course-box/course-box-bg.png);
     repeat: no-repeat;
-    size: cover;
-    position: center;
   }
+  background-position: 50% 50%;
+  background-size: cover;
+  transition: background-position 300ms ease-in-out;
 }
 
-.course-box__img-title {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  height: auto;
-  min-height: 35px;
-  padding: 10px 30px;
-  background-color: $black-opacity-2;
-  color: $white;
-  text-transform: uppercase;
-  font-size: 12px;
-  transition: background-color 0.4s ease 0s;
-}
-
-.course-box__owner {
-  position: relative;
-  float: left;
-  padding: {
-    top: 8px;
-    bottom: 8px;
-    left: 40px;
-  }
-  font-size: 12px;
+.course-box__title {
+  padding: 10px 3px 3px 9px;
+  height: 54px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  font-size: 14px;
   font-weight: bold;
-  text-transform: uppercase;
-  color: $gray-2;
+  // background-color: ivory;
+}
 
-  &:before {
-    content: "";
-    position: absolute;
-    left: 0;
-    bottom: 6px;
-    width: 30px;
-    height: 30px;
-    background: {
-      position: center;
-      repeat: no-repeat;
-      size: contain;
+.course-box__description {
+  padding: 0 9px 0 9px;
+  color: $gray-1;
+  font-size: 11px;
+  line-height: 1.3em;
+  overflow: hidden;
+  height: 48px;
+  // background-color: lightblue;
+}
+
+.course-box__closingdate {
+  width: 100%;
+  font-size: 9px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding-left: 9px;
+  background-color: lightblue !important;
+
+ .course-box__closingdate__text {
+   display: block;
+   &:after {
+    content: ': ';
+  }
+ }
+ .course-box__closingdate__value {
+   display: block;
+   font-weight: bold;
+ }
+}
+
+.course-box__extrainformation {
+  flex: 1 1 50%;
+  // background: #eee;
+  // min-height: 31px;
+  // padding-left: 9px;
+  font-size: 9px;
+  // background-color: plum;
+  display: flex;
+  align-items: center;
+  & > * {
+    display: inline-block;
+  }
+  .course-box__next {
+    flex: 1 0 61%;
+    padding-left: 6px;
+    .course-box__next__text {
+      display: block;
+      &::after {
+        content: ': ';
+      }
+    }
+    .course-box__next__value {
+      display: block;
+      font-weight: bold;
+    }
+  }
+  .course-box__allDates {
+    flex: 1 0 39%;
+    padding-right: 1.4rem;
+    a {
+      color: $orange;
+      text-decoration: none;
+      &:hover {
+        text-decoration: underline;
+      }
     }
   }
 }
 
-.course-box__options {
-  position: absolute;
-  top: 10px;
-  right: 30px;
 
-  @include breakpoint($ipad) {
-    top: 20px;
-    right: 30px;
+.course-box__cta {
+  margin: auto auto 0 auto;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+
+  .course-box__cta__button {
+    flex: 0 0 50%;
+    height: 100%;
+    // border-top-left-radius: 100vh;
+    // max-height: 100%;
+    // line-height: 100%;
+    // font-size: 14px;   
+    background: $color-red-1;
+    margin: auto 0 0 auto;
+    position: relative;
+    border-bottom-right-radius: 0;
+    &::before {
+      position: absolute;
+      content: '';
+      left: -20px;
+      top: 0;
+      bottom: 0;
+      width: 21px;
+      background-color: $color-red-1;
+      clip-path: polygon(100% 0, 105% 100%, 0 100%);
+      transition: all 0.4s ease 0s;
+    }
+    &:hover {
+      background: $orange;
+      color: $white;
+      .forma-button__label:after {
+        animation-duration: 400ms;
+        animation-name: formaButtonLabelAfter;
+        animation-iteration-count: infinite;
+        animation-direction: alternate;
+      }
+      &::before {
+        background: $orange;
+      }
+    }
+
+  .forma-button__label {
+    left: -1rem;
   }
 
-  .dropdown-toggle {
-    width: 30px;
-    height: 30px;
-    margin-right: -15px;
-    line-height: 32px;
-    text-align: center;
+
+    .course-box__modal__footer & {
+      width: auto;
+      min-width: 140px;
+      max-width: 100%;
+      float: right;
+      background-color: $gray-3;
+    }
+
+    &.forma-button--disabled {
+      border: 0;
+      font-size: .8em !important;
+      font-style: italic;
+    }
+  
+  }
+}
+
+
+
+
+
+
+
+// Verify if the code below is necessary
+div {
+  .course-box__date-box {
+    position: relative;
+    width: calc(50% - 10px);
+    height: 50px;
+    padding-left: 40px;
+    line-height: 50px;
+    float: left;
     color: $gray-2;
-    cursor: pointer;
+    font-size: 12px;
+    border: 1px solid $gray-3;
+    border-radius: 5px;
 
     &:before {
       content: "";
-      width: 30px;
-      height: 30px;
       position: absolute;
-      top: 0;
-      left: 0;
-      border: solid 1px $gray-2;
-      border-radius: 50%;
+      top: 14px;
+      left: 9px;
+      width: 20px;
+      height: 20px;
+      background: {
+        position: center;
+        repeat: no-repeat;
+        size: contain;
+      }
+    }
+
+    @include breakpoint($tablet) {
+      height: 50px;
+    }
+  }
+
+  .course-box__date-box--end {
+    color: $green;
+    border-color: $lime;
+  }
+
+  .course-box__date-box--no-date {
+    color: $gray-3;
+    border-color: $gray-3;
+
+    &:before {
+      left: 50%;
+      transform: translateX(-50%);
+    }
+  }
+
+  i + .course-box__date-box {
+    margin-right: 0;
+    margin-bottom: 20px;
+  }
+
+  .course-box__date-box + i {
+    float: left;
+    margin: 0 6px;
+    padding-top: 18px;
+    color: $gray-2;
+  }
+
+  .course-box__dl-course-supply,
+  .course-box__show-dates {
+    margin-top: 5px;
+    font-size: 10px;
+    text-decoration: none;
+    color: $dark-orange;
+    cursor: pointer;
+    transition: color 0.25s ease 0s;
+
+    .glyphicon {
+      font-size: 8px;
+      line-height: 10px;
     }
 
     &:hover {
-      color: $dark-orange;
-
-      &:before {
-        border-color: $dark-orange;
-      }
+      text-decoration: underline;
+      color: $orange;
     }
   }
 
-  .dropdown-menu {
-    padding: 3px 0;
-    top: calc(100% + 4px);
-    right: -15px;
-    border: solid 1px $gray-3;
-    box-shadow: none;
+  .course-box__dl-course-supply {
+    display: inline-block;
+  }
 
-    a {
-      font-size: 10px;
+  .course-box__modal {
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: -999;
+    background-color: $white;
+    opacity: 0;
+    visibility: hidden;
+    transition: {
+      property: z-index, opacity, visibility;
+      duration: 0s, 0.25s;
+      timing-function: ease-out;
+      delay: 0.25s, 0s;
+    }
+
+    @include breakpoint($tablet) {
+      width: 472px;
+      height: auto;
+      max-height: 510px;
+      top: 50%;
+      left: calc(50% - 236px);
+      transform: translateY(-50%);
+      border: solid 1px $gray-2;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    &.is-open {
+      transition-delay: 0s;
+      z-index: 99999;
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+
+  .course-box__modal__header {
+    overflow: hidden;
+    padding: 20px 25px;
+  }
+
+  .course-box__modal__content {
+    padding: 0 25px;
+  }
+
+  .course-box__modal__footer {
+    overflow: hidden;
+    padding: 15px;
+  }
+
+  .course-box__modal__entry {
+    border-top: solid 1px $gray-3;
+
+    &:first-child {
+      border-top-color: $dark-orange;
+    }
+
+    &:nth-child(n + 2) {
+      margin-top: 35px;
+    }
+
+    &:last-child {
+      padding-bottom: 35px;
+      margin-bottom: 45px;
+      border-bottom: solid 1px $gray-3;
+    }
+  }
+
+  .course-box__modal__title {
+    font-size: 18px;
+    line-height: 20px;
+    color: $gray-2;
+
+    .course-box__modal__header & {
+      max-width: calc(100% - 90px);
+      padding: 5px 0;
+      float: left;
       text-transform: uppercase;
-      color: $gray-2;
-
-      &:hover,
-      &:focus,
-      &:active {
-        background: transparent;
-        color: $orange;
-      }
     }
-  }
-}
 
-.course-box__desc {
-  padding-top: 4px;
-  clear: both;
-  margin-bottom: 30px;
-  color: $gray-1;
-  font-size: 16px;
-  line-height: 1.625;
-  overflow: hidden;
+    .course-box__modal__entry & {
+      padding: 15px 0;
+    }
 
-  @include breakpoint($tablet) {
-    font-size: 16px;
-    height: 78px;
-  }
-}
-
-.course-box__date-text {
-  color: $gray-2;
-  font-size: 14px;
-  font-weight: 600;
-
-  span {
-    font-weight: normal;
-  }
-}
-
-.course-box__date-box {
-  position: relative;
-  width: calc(50% - 10px);
-  height: 50px;
-  padding-left: 40px;
-  line-height: 50px;
-  float: left;
-  color: $gray-2;
-  font-size: 12px;
-  border: 1px solid $gray-3;
-  border-radius: 5px;
-
-  &:before {
-    content: "";
-    position: absolute;
-    top: 14px;
-    left: 9px;
-    width: 20px;
-    height: 20px;
-    background: {
-      position: center;
-      repeat: no-repeat;
-      size: contain;
+    .course-box__modal__entry:first-child & {
+      color: $orange;
     }
   }
 
-  @include breakpoint($tablet) {
-    height: 50px;
-  }
-}
-
-.course-box__date-box--end {
-  color: $green;
-  border-color: $lime;
-}
-
-.course-box__date-box--no-date {
-  color: $gray-3;
-  border-color: $gray-3;
-
-  &:before {
-    left: 50%;
-    transform: translateX(-50%);
-  }
-}
-
-i + .course-box__date-box {
-  margin-right: 0;
-  margin-bottom: 20px;
-}
-
-.course-box__date-box + i {
-  float: left;
-  margin: 0 6px;
-  padding-top: 18px;
-  color: $gray-2;
-}
-
-.course-box__dl-course-supply,
-.course-box__show-dates {
-  margin-top: 5px;
-  font-size: 10px;
-  text-decoration: none;
-  color: $dark-orange;
-  cursor: pointer;
-  transition: color 0.25s ease 0s;
-
-  .glyphicon {
-    font-size: 8px;
-    line-height: 10px;
-  }
-
-  &:hover {
-    text-decoration: underline;
-    color: $orange;
-  }
-}
-
-.course-box__dl-course-supply {
-  display: inline-block;
-}
-
-.course-box__modal {
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: -999;
-  background-color: $white;
-  opacity: 0;
-  visibility: hidden;
-  transition: {
-    property: z-index, opacity, visibility;
-    duration: 0s, 0.25s;
-    timing-function: ease-out;
-    delay: 0.25s, 0s;
-  }
-
-  @include breakpoint($tablet) {
-    width: 472px;
-    height: auto;
-    max-height: 510px;
-    top: 50%;
-    left: calc(50% - 236px);
-    transform: translateY(-50%);
-    border: solid 1px $gray-2;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  }
-
-  &.is-open {
-    transition-delay: 0s;
-    z-index: 99999;
-    opacity: 1;
-    visibility: visible;
-  }
-}
-
-.course-box__modal__header {
-  overflow: hidden;
-  padding: 20px 25px;
-}
-
-.course-box__modal__content {
-  padding: 0 25px;
-}
-
-.course-box__modal__footer {
-  overflow: hidden;
-  padding: 15px;
-}
-
-.course-box__modal__entry {
-  border-top: solid 1px $gray-3;
-
-  &:first-child {
-    border-top-color: $dark-orange;
-  }
-
-  &:nth-child(n + 2) {
-    margin-top: 35px;
-  }
-
-  &:last-child {
-    padding-bottom: 35px;
-    margin-bottom: 45px;
-    border-bottom: solid 1px $gray-3;
-  }
-}
-
-.course-box__modal__title {
-  font-size: 18px;
-  line-height: 20px;
-  color: $gray-2;
-
-  .course-box__modal__header & {
-    max-width: calc(100% - 90px);
-    padding: 5px 0;
-    float: left;
-    text-transform: uppercase;
-  }
-
-  .course-box__modal__entry & {
-    padding: 15px 0;
-  }
-
-  .course-box__modal__entry:first-child & {
-    color: $orange;
-  }
-}
-
-.course-box__modal__lesson {
-  table-layout: fixed;
-  width: 100%;
-  font-size: 14px;
-  color: $gray-2;
-
-  @include breakpoint(480px) {
-    table-layout: auto;
-    width: auto;
-    font-size: 16px;
-  }
-
-  &:nth-of-type(n + 2) {
-    margin-top: 15px;
-  }
-
-  .course-box__modal__entry:nth-child(n + 2) & {
-    .mycourses-list & {
-      opacity: 0.64;
-    }
-  }
-
-  td {
-    vertical-align: middle;
+  .course-box__modal__lesson {
+    table-layout: fixed;
+    width: 100%;
+    font-size: 14px;
+    color: $gray-2;
 
     @include breakpoint(480px) {
-      min-width: 140px;
+      table-layout: auto;
+      width: auto;
+      font-size: 16px;
+    }
+
+    &:nth-of-type(n + 2) {
+      margin-top: 15px;
+    }
+
+    .course-box__modal__entry:nth-child(n + 2) & {
+      .mycourses-list & {
+        opacity: 0.64;
+      }
+    }
+
+    td {
+      vertical-align: middle;
+
+      @include breakpoint(480px) {
+        min-width: 140px;
+      }
     }
   }
-}
 
-.close-button {
-  .course-box__modal__header & {
-    float: right;
-  }
-}
-
-.forma-button {
-  .course-box & {
-    max-height: 44px;
-    overflow: hidden;
+  .close-button {
+    .course-box__modal__header & {
+      float: right;
+    }
   }
 
-  .course-box__modal__footer & {
-    width: auto;
-    min-width: 140px;
-    max-width: 100%;
-    float: right;
-    background-color: $gray-3;
+  .box_edizioni {
+    .course-box & {
+      display: none;
+    }
   }
-}
 
-.box_edizioni {
-  .course-box & {
-    display: none;
+  .mycourses-list {
+    @include breakpoint($ipad) {
+      padding-left: 7.5px;
+      padding-right: 7.5px;
+    }
   }
+
 }
 
-.mycourses-list {
-  @include breakpoint($ipad) {
-    padding-left: 7.5px;
-    padding-right: 7.5px;
-  }
-}
 
-.course-box__extraInfo {
-  width: calc(100% - 30px);
-  margin-left: 15px;
-  margin-top: 5px;
-  clear: both;
-  font-size: 0;
-  min-height: 31px;
-  position: absolute;
-  left: 15px;
-  bottom: 15px;
-}
 
-.course-box__next,
-.course-box__allDates {
-  width: 50%;
-  display: inline-block;
-}
 
-.course-box__next {
-  font-size: 12px;
-  color: #999999;
-  position: relative;
-  padding-left: 20px;
-}
 
-.course-box__next:before,
-.course-box__allDates:after,
-.course-box__allDates:before {
-  content: "";
-  display: block;
-  position: absolute;
-  left: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 0;
-  height: 0;
-  border-style: solid;
-  border-width: 8.5px 0 8.5px 9px;
-  border-color: transparent transparent transparent #979797;
-  opacity: 0.6;
-}
 
-.course-box__allDates:after,
-.course-box__allDates:before {
-  top: 18px;
-}
 
-.course-box__allDates:before {
-  left: 10px;
-}
 
-.course-box__next div {
-  font-size: 14px;
-  font-weight: bold;
-}
 
-.course-box__allDates {
-  font-size: 13px;
-  font-weight: bold;
-  vertical-align: top;
-  position: relative;
-  padding-left: 23px;
-  padding-top: 10px;
-}
 
-.course-box__allDates a {
-  color: #c84000;
-  text-decoration: underline;
+
+
+
+
+
+
+
+
+// code to hide
+.HTML_structure--NOT-REAL-CSS {
+  display: none;
+  // Course Box
+  //
+  // These are the restyled course boxes<br />
+  //
+  // Style guide: 3
+
+  // My courses
+  //
+  // This is the restyled course box used in My Courses<br />
+  // <strong>NB: The 'style' attributes are just for this representation only, when implementing
+  // be sure to delete them.</strong><br />
+  //
+  // Markup:
+  //  <div style="max-width: 404px;">
+  //    <div class="course-box">
+  //      <div class="course-box__item">
+  //        <div class="course-box__title course-icon--active">Lorem ipsum dolor sit amet</div>
+  //      </div>
+  //      <div class="course-box__item course-box__item--no-padding">
+  //        <div class="course-box__img">
+  //          <img src="" alt="">
+  //          <div class="course-box__img-title">lorem ipsum</div>
+  //        </div>
+  //      </div>
+  //      <div class="course-box__item">
+  //        <div class="course-box__owner course-box__owner--5">Amministratore</div>
+  //		  <div class="course-box__options dropdown pull-right">
+  //			<div class="dropdown-toggle" id="courseBoxOptions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+  //			  <i class="glyphicon glyphicon-option-horizontal"></i>
+  //			</div>
+  //			<ul class="dropdown-menu" aria-labelledby="courseBoxOptions">
+  //			  <li><a href="javascript:void(0)">option 1</a></li>
+  //			  <li><a href="javascript:void(0)">option 2</a></li>
+  //			  <li><a href="javascript:void(0)">option 3</a></li>
+  //			</ul>
+  //		  </div>
+  //        <div class="course-box__desc">
+  //          Lorem Ipsum dolor sit amet, consectetur adipiscing elit. Facilis ponatur
+  //          infinito oderis obruamus. Effectices, terroribus cognosci elegans totam
+  //          atilli arare p minuendas.
+  //        </div>
+  //      </div>
+  //      <div class="course-box__item course-box__item--half course-box__item--no-padding">
+  //        <div class="course-box__date-text">31 agosto 2016</div>
+  //		  <p class="course-box__show-dates js-course-box-open-dates-modal"><i class="glyphicon glyphicon-play"></i> &nbsp; show all dates</p>
+  //		  <div class="course-box__modal">
+  //			<div class="course-box__modal__header">
+  //			  <p class="course-box__modal__title">Course title</p>
+  //			  <button type="button" class="close-button js-course-box-close-dates-modal">
+  //				<span class="close-button__icon"></span>
+  //				<span class="close-button__label">close</span>
+  //			  </button>
+  //			</div>
+  //			<div class="course-box__modal__content">
+  //			  <div class="course-box__modal__entry">
+  //				<p class="course-box__modal__title">Next lesson</p>
+  //				<table class="course-box__modal__lesson">
+  //				  <tr>
+  //					<td>Name:</td>
+  //					<td>Lesson name</td>
+  //				  </tr>
+  //				  <tr>
+  //					<td>Code:</td>
+  //					<td>####</td>
+  //				  </tr>
+  //				  <tr>
+  //					<td>Date begin:</td>
+  //					<td>yyyy/mm/dd</td>
+  //				  </tr>
+  //				  <tr>
+  //					<td>Date end:</td>
+  //					<td>yyyy/mm/dd</td>
+  //				  </tr>
+  //				  <tr>
+  //					<td>Location:</td>
+  //					<td>place</td>
+  //				  </tr>
+  //				</table>
+  //			  </div>
+  //			  <div class="course-box__modal__entry">
+  //				<p class="course-box__modal__title">Others</p>
+  //				<table class="course-box__modal__lesson">
+  //				  <tr>
+  //					  <td>Name:</td>
+  //					  <td>Lesson name</td>
+  //				  </tr>
+  //				  <tr>
+  //					  <td>Code:</td>
+  //					  <td>####</td>
+  //				  </tr>
+  //				  <tr>
+  //					  <td>Date begin:</td>
+  //					  <td>yyyy/mm/dd</td>
+  //				  </tr>
+  //				  <tr>
+  //					  <td>Date end:</td>
+  //					  <td>yyyy/mm/dd</td>
+  //				  </tr>
+  //				  <tr>
+  //					  <td>Location:</td>
+  //					  <td>place</td>
+  //				  </tr>
+  //				</table>
+  //			  </div>
+  //			</div>
+  //			<div class="course-box__modal__footer">
+  //			  <button type="button" class="forma-button">Discard</button>
+  //			</div>
+  //		  </div>
+  //      </div>
+  //      <div class="course-box__item course-box__item--half course-box__item--no-padding">
+  //        <a class="forma-button forma-button--orange-hover forma-button--full" href="">
+  //          <span class="forma-button__label">
+  //            Entra nel corso
+  //          </span>
+  //        </a>
+  //      </div>
+  //    </div>
+  //  </div>
+  //
+  // Style guide: 3.1
+
+  // Course Catalogue
+  //
+  // This is the restyled course box used in Course Catalogue<br />
+  // <strong>NB: The 'style' attributes are just for this representation only, when implementing
+  // be sure to delete them.</strong><br />
+  // Also the id attribute of the forma-button here is used by YUI, so when the refactor ends<br />
+  // it will likely disappear.
+  //
+  // Markup:
+  //  <div style="max-width: 404px;">
+  //    <div class="course-box">
+  //      <div class="course-box__item">
+  //        <div class="course-box__title">Lorem ipsum dolor sit amet</div>
+  //      </div>
+  //      <div class="course-box__item course-box__item--no-padding">
+  //        <div class="course-box__img">
+  //          <img src="" alt="">
+  //          <div class="course-box__img-title">lorem ipsum</div>
+  //        </div>
+  //      </div>
+  //      <div class="course-box__item">
+  //        <div class="course-box__desc">
+  //          Lorem Ipsum dolor sit amet, consectetur adipiscing elit. Facilis ponatur
+  //          infinito oderis obruamus. Effectices, terroribus cognosci elegans totam
+  //          atilli arare p minuendas.
+  //        </div>
+  //      </div>
+  //      <div class="course-box__item">
+  //        <div class="course-box__date-box calendar-icon--check">31 agosto 2016</div>
+  //        <i class="fa fa-angle-right" aria-hidden="true"></i>
+  //        <div class="course-box__date-box course-box__date-box--end calendar-icon--green-cross">30 novembre 2017</div>
+  //      </div>
+  //      <div class="course-box__item" id="">
+  //        <a class="forma-button forma-button--orange-hover forma-button--full" href="">
+  //          <span class="forma-button__label">
+  //            Entra nel corso
+  //          </span>
+  //        </a>
+  //      </div>
+  //    </div>
+  //  </div>
+  //
+  // Style guide: 3.2
+}
+.course-box--OLD-COMMENTED-CSS {
+  display: none;
+  // .course-box__item--half {
+  //   width: 100%;
+  //   float: left;
+  //   padding: {
+  //     left: 30px;
+  //     right: 30px;
+  //   }
+
+  //   @include breakpoint($tablet) {
+  //     width: 50%;
+  //     padding: {
+  //       left: 30px;
+  //       right: 0;
+  //     }
+  //   }
+  // }
+
+  // .course-box__item--half + .course-box__item--half {
+  //   padding: {
+  //     left: 30px;
+  //     right: 30px;
+  //   }
+
+  //   @include breakpoint($tablet) {
+  //     padding: {
+  //       left: 0;
+  //       right: 30px;
+  //     }
+  //   }
+  // }
+  // .course-box__item--no-padding {
+  //   padding: 0;
+  // }
 }

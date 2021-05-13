@@ -217,13 +217,17 @@ class ProfileLmsController extends LmsController {
                             </tr>
                         </thead>
                         <tbody>';
+                        
+             // BUG: LRZ no count 
+             // #19820                         
+            $total = 0;                        
             foreach ($course_data as $ctype => $cdata) {
 
                 if (count($cdata) > 0) {
 
                     $no_cdata = false;
 
-                    $total = 0;
+                 //   $total = 0;
                     foreach ($cdata as $id_course => $data) {
 
                         $table .= '<tr class="table-credit__row">

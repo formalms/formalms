@@ -382,7 +382,7 @@ class DbConn {
 	 * real_escape_string info todo:edit
 	 * @return string
 	 */
-    public function real_escape_string(){}
+    public function real_escape_string($res){}
 
     /**
 	 * Return the current time

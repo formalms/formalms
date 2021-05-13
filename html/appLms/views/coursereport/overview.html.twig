@@ -22,27 +22,27 @@
         <thead>
         <tr>
             <th colspan="2" class="transparent"></th>
-            <th colspan="7">{{ translate('_INFO','coursereport') }}</th>
-            <th colspan="7">{{ translate('_DETAILS','standard') }}</th>
+            <th colspan="7">{{ Lang_translate('_INFO','coursereport') }}</th>
+            <th colspan="7">{{ Lang_translate('_DETAILS','standard') }}</th>
             <th class="transparent"></th>
         </tr>
         <tr>
             <td></td>
             <td></td>
             <td></td>
-            <td>{{ translate('_TYPE','standard') }}</td>
-            <td>{{ translate('_TEST_QUEST_MAXTESTSCORE','test') }}</td>
-            <td>{{ translate('_REQUIRED_SCORE','standard') }}</td>
-            <td>{{ translate('_WEIGHT','coursereport') }}</td>
-            <td>{{ translate('_SHOW_TO_USER','coursereport') }}</td>
-            <td>{{ translate('_USE_FOR_FINAL','coursereport') }}</td>
-            <td>{{ translate('_PASSED','coursereport') }}</td>
-            <td>{{ translate('_NOT_PASSED','coursereport') }}</td>
-            <td>{{ translate('_NOT_CHECKED','coursereport') }}</td>
-            <td>{{ translate('_AVERANGE','standard') }}</td>
-            <td>{{ translate('_MAX_SCORE','standard') }}</td>
-            <td>{{ translate('_MIN_SCORE','standard') }}</td>
-            <td>{{ translate('_SHOW_IN_DETAIL','test') }}</td>
+            <td>{{ Lang_translate('_TYPE','standard') }}</td>
+            <td>{{ Lang_translate('_TEST_QUEST_MAXTESTSCORE','test') }}</td>
+            <td>{{ Lang_translate('_REQUIRED_SCORE','standard') }}</td>
+            <td>{{ Lang_translate('_WEIGHT','coursereport') }}</td>
+            <td>{{ Lang_translate('_SHOW_TO_USER','coursereport') }}</td>
+            <td>{{ Lang_translate('_USE_FOR_FINAL','coursereport') }}</td>
+            <td>{{ Lang_translate('_PASSED','coursereport') }}</td>
+            <td>{{ Lang_translate('_NOT_PASSED','coursereport') }}</td>
+            <td>{{ Lang_translate('_NOT_CHECKED','coursereport') }}</td>
+            <td>{{ Lang_translate('_AVERANGE','standard') }}</td>
+            <td>{{ Lang_translate('_MAX_SCORE','standard') }}</td>
+            <td>{{ Lang_translate('_MIN_SCORE','standard') }}</td>
+            <td>{{ Lang_translate('_SHOW_IN_DETAIL','test') }}</td>
             <td></td>
         </tr>
         </thead>
@@ -111,11 +111,11 @@
 </div>
 
 <div class="button--add">
-    <span>{{ translate('_ADD_ACTIVITY','coursereport') }}</span>
+    <span>{{ Lang_translate('_ADD_ACTIVITY','coursereport') }}</span>
     <ul class="dropdown">
-        <li><a href="index.php?r=lms/coursereport/addactivity">{{ translate('_ADD_ACTIVITY_TITLE','coursereport') }}</a>
+        <li><a href="index.php?r=lms/coursereport/addactivity">{{ Lang_translate('_ADD_ACTIVITY_TITLE','coursereport') }}</a>
         </li>
-        <li><a href="index.php?r=lms/coursereport/addscorm">{{ translate('_ADD_SCORM_RESULTS','coursereport') }}</a>
+        <li><a href="index.php?r=lms/coursereport/addscorm">{{ Lang_translate('_ADD_SCORM_RESULTS','coursereport') }}</a>
         </li>
     </ul>
 </div>
@@ -180,9 +180,9 @@
         });
 
         function format ( d ) {
-            const label4 = '{{ translate('_TEST_QUEST_MAXTESTSCORE','test') }}';
-            const label5 = '{{ translate('_REQUIRED_SCORE','standard') }}';
-            const label6 = '{{ translate('_WEIGHT','coursereport') }}';
+            const label4 = '{{ Lang_translate('_TEST_QUEST_MAXTESTSCORE','test') }}';
+            const label5 = '{{ Lang_translate('_REQUIRED_SCORE','standard') }}';
+            const label6 = '{{ Lang_translate('_WEIGHT','coursereport') }}';
 
             // `d` is the original data object for the row
             return '<table cellpadding="5" cellspacing="0" border="0" class="extra-info">'+

@@ -58,7 +58,7 @@ Class Step2Controller extends StepController {
 	function versionList() {
 
 		$current_version =$this->getCurrentVersion();
-		$end_version =getVersionIntNumber($GLOBALS['cfg']['endversion']);
+		$end_version = (int)$GLOBALS['cfg']['endversion'];
 
 		if ($current_version == $end_version) {
 			$current_version =end(array_keys($GLOBALS['cfg']['versions']));
@@ -108,7 +108,7 @@ Class Step2Controller extends StepController {
 		$res['mime_ct']=(function_exists('mime_content_type') || (class_exists('file') && method_exists('finfo', 'file')) ? 'ok' : 'err');
 
 		$current_version =$this->getCurrentVersion();
-		$end_version =getVersionIntNumber($GLOBALS['cfg']['endversion']);
+		$end_version = (int)$GLOBALS['cfg']['endversion'];
 
 		if ($current_version == $end_version) {
 			$res['upg_not_needed']=true;
@@ -135,6 +135,7 @@ Class Step2Controller extends StepController {
 
 
 	function checkStrictMode() {
+		return true;
 		$qtxt ="SELECT @@GLOBAL.sql_mode AS res";
 		$q =sql_query($qtxt);
 		list($r1)=sql_fetch_row($q);
@@ -189,7 +190,6 @@ Class Step2Controller extends StepController {
 					case "lms": {
 						$specific_dir_to_check = array(
 							'files/' . $dirprefix .'Lms/certificate',
-							'files/' . $dirprefix .'Lms/chat',
 							'files/' . $dirprefix .'Lms/course',
 							'files/' . $dirprefix .'Lms/forum',
 							'files/' . $dirprefix .'Lms/item',

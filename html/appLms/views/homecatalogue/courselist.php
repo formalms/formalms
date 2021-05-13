@@ -27,7 +27,7 @@ function TruncateText($the_text, $size)
 
 <div class="col-md-12">
     <div class="main">
-        <div id="cbp-vm" class="cbp-vm-switcher cbp-vm-view-grid" style="padding: 0;">
+        <div id="cbp-vm" class="cbp-vm-switcher cbp-vm-view-gridx" style="padding: 0;">
 <!--            <ul>-->
 <!--    <pre>--><?php //var_dump($row); ?><!--</pre>-->
     <div class="row">
@@ -153,7 +153,26 @@ function TruncateText($the_text, $size)
                             <div class="course-box__desc">
                                 ' . TruncateText($row['box_description'], 120) . '
                             </div>
-                        </div>';
+                        ';
+
+            if (/*userCanUnsubscribe($row) || */
+                $row["course_demo"]
+            ) {
+                $action .= '
+                            <div class="course-box__options dropdown pull-right">
+                                <div class="dropdown-toggle" id="courseBoxOptions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                    <i class="glyphicon glyphicon-option-horizontal"></i>
+                                </div>
+                                <ul class="dropdown-menu" aria-labelledby="courseBoxOptions">';
+                /*if (userCanUnsubscribe($row)) {
+                            $action .= '<li><a href="javascript:confirmDialog(\'' . $row['name'] . '\', ' . $row['idCourse'] . ", " . key($display_info[$row['idCourse']]) . ');">' . Lang::t('_SELF_UNSUBSCRIBE', 'course') . '</a><li>';
+                        }*/
+                if ($row["course_demo"]) {
+                    $action .= '<li><a href="index.php?r=lms/homecatalogue/downloadDemoMaterial&amp;course_id=' . $row['idCourse'] . '">' . Lang::t('_COURSE_DEMO', 'course') . '</a></li>';
+                }
+                $action .= '</ul></div>';
+            }
+            $action .= '</div>';
 
 //            $strClassStyle = 'style="background-color: transparent;"';
 //            if ($data_inizio != "0000-00-00" && $data_end != "0000-00-00") $strClassStyle = "";

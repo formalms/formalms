@@ -766,7 +766,10 @@ function generateCode() {
 								$new_code .= chr(mt_rand(97, 122));
 						}
 					}
-					elseif ($use_number && $use_low_letter) {
+					
+                    // BUG LRZ
+                    //elseif ($use_number && $use_low_letter) {
+                    elseif ($use_number && $use_high_letter) {
 						for ($a = 0; $a < 10; $a++) {
 							$seed = mt_rand(0, 10);
 
@@ -776,7 +779,10 @@ function generateCode() {
 								$new_code .= chr(mt_rand(65, 90));
 						}
 					}
-					elseif ($use_number && $use_high_letter) {
+                    
+                    //LRZ
+					//elseif ($use_number && $use_high_letter) {
+                    elseif ($use_number && $use_low_letter) {
 						for ($a = 0; $a < 10; $a++) {
 							$seed = mt_rand(0, 10);
 
@@ -801,11 +807,15 @@ function generateCode() {
 							for ($a = 0; $a < 10; $a++)
 								$new_code .= mt_rand(0, 9);
 
-						if ($use_low_letter)
+                         // LRZ       
+						//if ($use_low_letter)
+                        if ($use_high_letter)
 							for ($a = 0; $a < 10; $a++)
 								$new_code .= chr(mt_rand(65, 90));
 
-						if ($use_high_letter)
+                        // LRZ        
+						//if ($use_high_letter)
+                        if ($use_low_letter)
 							for ($a = 0; $a < 10; $a++)
 								$new_code .= chr(mt_rand(97, 122));
 					}

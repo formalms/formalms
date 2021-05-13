@@ -22,24 +22,56 @@
             <div class="d-grid">
                 <div class="d-row d-user-profile__padder">
                     <div class="d-col d-col--12">
-                        <div class="d-user-profile__avatar-wrapper">
-                            <img src="{{ avatarUrl }}" alt="" class="d-user-profile__img">
+                        <div class="d-message">
+                        {% if not block.perm %}
+                            <p class="d-alt-text text-center">{{ block.data.alternative_text }}</p>
+                        {% else %}
+                            <h3 class="d-title">
+                                {% if block.data.title is empty %}
+                                    {{ Lang_translate('_DASHBOARDBLOCKMESSAGELMS','dashboard') }}
+                                {% else %}
+                                    {{ block.data.title }}
+                                {% endif %}</h3>
+                            {% if block.messages and block.messages|length > 0 %}
+                                {% for message in block.messages %}
+                                    <div class="d-item">
+                                        <div class="d-title text-center">
+                                            {{ message.sender }}
+                                        </div>
+                                        {% if message.course %}
+                                            <div class="d-subtitle text-center">
+                                                {{ message.course }} {% if message.course_code %}[{{ message.course_code }}]{% endif %}
+                                            </div>
+                                        {% endif %}
+                                        <div class="d-date text-center">
+                                            {{ message.posted | date("d-m-Y H:i") }}
+                                        </div>
+                                        <div class="d-subject text-center">
+                                            <a href="index.php?r=message/read&amp;from=out&amp;id_message={{ message.idMessage }}">{{ message.title }}</a>
+                                        </div>
+                                        {% if message.attach %}
+                                            <div class="d-link text-center">
+                                                <a class="ico-wt-sprite subs_pdf" alt="{{ message.attach }}" href="index.php?r=message/download&amp;id_message={{ message.idMessage }}" title="{{ Lang_translate('_DOWNLOAD', 'certificate') }}"><span>{{ Lang_translate('_ATTACHMENT', 'standard') }}</span></a>
+                                            </div>
+                                        {% endif %}
+                                        {% if message.textof %}
+                                            <div class="d-description">
+                                                <p>{{ message.textof | raw }}</p>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                {% endfor %}
+                            {% else %}
+				                <div class="alert alert-danger text-center">{{ Lang_translate('_DASHBOARD_BLOCKMESSAGES_NO_RECORDS', 'dashboard') }}</div>
+                            {% endif %}
+
+                            {% if block.data.show_button %}
+                                <a class="forma-button forma-button--orange-hover forma-button--full d-button--message text-center" title="" href="{{ block.link }}">
+                                    <span class="forma-button__label">{{ Lang_translate('_MESSAGES', 'standard') }}</span>
+                                </a>
+                            {% endif %}
+                        {% endif %}
                         </div>
-                        <div class="d-user-profile__content-wrapper">
-                            <p class="d-user-profile__text">
-                                Ciao,
-                            </p>
-                            <p class="d-user-profile__text">
-                                {{ block.user.firstname ~ ' ' ~  block.user.lastname }}
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="d-row d-user-profile__padder">
-                    <div class="d-col d-col--6">
-                        <a class="forma-button forma-button--orange-hover forma-button--full d-button--mess" title="" href="{{ blocks[3].link }}">
-                            <span class="forma-button__label">{{ translate('_MESSAGES', 'standard') }}</span>
-                        </a>
                     </div>
                 </div>
             </div>

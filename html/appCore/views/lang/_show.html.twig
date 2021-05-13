@@ -1,12 +1,12 @@
 {{ Get_title({
-	'index.php?r=adm/lang/show' : translate('_LANGUAGE', 'admin_lang'),
-	'':translate('_IMPORT', 'admin_lang')
+	'index.php?r=adm/lang/show' : Lang_translate('_LANGUAGE', 'admin_lang'),
+	'':Lang_translate('_IMPORT', 'admin_lang')
 },false) }}
 
 <table class="table table-bordered display" style="width:100%" id="langlist"></table>
 <br>
-<a id="addlang_bottom" href="ajax.adm_server.php?r=adm/lang/addmask" class="ico-wt-sprite subs_add" title="{{ translate('_ADD', 'standard') }}"><span>{{ translate('_ADD', 'standard') }}</span></a>
-<a href="index.php?r=adm/lang/import" class="ico-wt-sprite subs_import" title="{{ translate('_IMPORT', 'standard') }}"><span>{{ translate('_IMPORT', 'standard') }}</span></a>
+<a id="addlang_bottom" href="ajax.adm_server.php?r=adm/lang/addmask" class="ico-wt-sprite subs_add" title="{{ Lang_translate('_ADD', 'standard') }}"><span>{{ Lang_translate('_ADD', 'standard') }}</span></a>
+<a href="index.php?r=adm/lang/import" class="ico-wt-sprite subs_import" title="{{ Lang_translate('_IMPORT', 'standard') }}"><span>{{ Lang_translate('_IMPORT', 'standard') }}</span></a>
 
 <!-- Modal confirm -->
 <div class="modal" id="confirmModal" style="display: none; z-index: 9999;">
@@ -15,8 +15,8 @@
             <div class="modal-body" data-val="body">
             </div>
             <div class="modal-footer">
-                <button type="button" id="yes" class="btn btn-primary" data-val="yes">{{ translate('_YES', 'standard') }}</button>
-                <button type="button" class="btn btn-default" data-val="no">{{ translate('_NO', 'standard') }}</button>
+                <button type="button" id="yes" class="btn btn-primary" data-val="yes">{{ Lang_translate('_YES', 'standard') }}</button>
+                <button type="button" class="btn btn-default" data-val="no">{{ Lang_translate('_NO', 'standard') }}</button>
             </div>
         </div>
     </div>
@@ -36,7 +36,7 @@
         }
 
         var delFunc = function(id) {
-            confirmDialog("#confirmModal", {{ translate('_AREYOUSURE', 'standard') }}, function() {
+            confirmDialog("#confirmModal", {{ Lang_translate('_AREYOUSURE', 'standard') }}, function() {
                 alert("SIIII!")
             });
         };
@@ -44,29 +44,29 @@
         var body = {{ langList | json_encode(constant('JSON_HEX_APOS')) | raw }};
 
         var columns = [
-            {data: 'lang_code', title: '{{ translate('_LANGUAGE', 'admin_lang') }}', sortable: true},
-            {data: 'lang_description', title: '{{ translate('_DESCRIPTION', 'admin_lang') }}', sortable: true},
-            {data: 'lang_direction', title: '{{ translate('_ORIENTATION', 'admin_lang') }}', sortable: true},
-            {data: 'lang_stats', title: '{{ translate('_STATISTICS', 'admin_lang') }}', sortable: true},
-            {data: 'lang_translate', title: '<span class="ico-sprite subs_elem"><span>{{ translate("_TRANSLATELANG", "admin_lang") }}</span></span>', sortable: true},
-            {data: 'lang_diff', title: '<span class="ico-sprite subs_diff"><span>{{ translate("_DIFF_LANG", "admin_lang") }}</span></span>', sortable: true},
-            {data: 'lang_export', title: '<span class="ico-sprite subs_download"><span>{{ translate("_EXPORT_XML", "admin_lang") }}</span></span>', sortable: true},
-            {data: 'lang_mod', title: '<span class="ico-sprite subs_mod"><span>{{ translate("_MOD", "admin_lang") }}</span></span>', sortable: true},
-            {data: 'lang_del', title: '<span class="ico-sprite subs_del"><span>{{ translate("_DEL", "admin_lang") }}</span></span>', sortable: true}
+            {data: 'lang_code', title: '{{ Lang_translate('_LANGUAGE', 'admin_lang') }}', sortable: true},
+            {data: 'lang_description', title: '{{ Lang_translate('_DESCRIPTION', 'admin_lang') }}', sortable: true},
+            {data: 'lang_direction', title: '{{ Lang_translate('_ORIENTATION', 'admin_lang') }}', sortable: true},
+            {data: 'lang_stats', title: '{{ Lang_translate('_STATISTICS', 'admin_lang') }}', sortable: true},
+            {data: 'lang_translate', title: '<span class="ico-sprite subs_elem"><span>{{ Lang_translate("_TRANSLATELANG", "admin_lang") }}</span></span>', sortable: true},
+            {data: 'lang_diff', title: '<span class="ico-sprite subs_diff"><span>{{ Lang_translate("_DIFF_LANG", "admin_lang") }}</span></span>', sortable: true},
+            {data: 'lang_export', title: '<span class="ico-sprite subs_download"><span>{{ Lang_translate("_EXPORT_XML", "admin_lang") }}</span></span>', sortable: true},
+            {data: 'lang_mod', title: '<span class="ico-sprite subs_mod"><span>{{ Lang_translate("_MOD", "admin_lang") }}</span></span>', sortable: true},
+            {data: 'lang_del', title: '<span class="ico-sprite subs_del"><span>{{ Lang_translate("_DEL", "admin_lang") }}</span></span>', sortable: true}
 
         ];
         var rows = [];
 
         body.forEach(function (item, k) {
-            link = '<a id="'+item.id+'" href="'+item.lang_translate+'" class="ico-sprite subs_elem" title="{{ translate("_TRANSLATELANG", "admin_lang") }}"><span></span></a>'
+            link = '<a id="'+item.id+'" href="'+item.lang_translate+'" class="ico-sprite subs_elem" title="{{ Lang_translate("_TRANSLATELANG", "admin_lang") }}"><span></span></a>'
             item.lang_translate = link;
-            link = '<a id="'+item.id+'" href="'+item.lang_diff+'" class="ico-sprite subs_diff" title="{{ translate("_DIFF_LANG", "admin_lang") }}"><span></span></a>'
+            link = '<a id="'+item.id+'" href="'+item.lang_diff+'" class="ico-sprite subs_diff" title="{{ Lang_translate("_DIFF_LANG", "admin_lang") }}"><span></span></a>'
             item.lang_diff = link;
-            link = '<a id="'+item.id+'" href="'+item.lang_export+'" class="ico-sprite subs_download" title="{{ translate("_EXPORT_XML", "admin_lang") }}"><span></span></a>'
+            link = '<a id="'+item.id+'" href="'+item.lang_export+'" class="ico-sprite subs_download" title="{{ Lang_translate("_EXPORT_XML", "admin_lang") }}"><span></span></a>'
             item.lang_export = link;
-            link = '<a id="'+item.id+'" href="'+item.lang_mod+'" class="ico-sprite subs_mod" title="{{ translate("_MOD", "admin_lang") }}"><span></span></a>'
+            link = '<a id="'+item.id+'" href="'+item.lang_mod+'" class="ico-sprite subs_mod" title="{{ Lang_translate("_MOD", "admin_lang") }}"><span></span></a>'
             item.lang_mod = link;
-            link = '<a id="'+item.id+'" href="'+item.lang_del+'" class="ico-sprite subs_del" title="{{ translate("_DEL", "admin_lang") }}"><span></span></a>'
+            link = '<a id="'+item.id+'" href="'+item.lang_del+'" class="ico-sprite subs_del" title="{{ Lang_translate("_DEL", "admin_lang") }}"><span></span></a>'
             item.lang_del = link;
 
             rows.push(Object.assign({}, item));

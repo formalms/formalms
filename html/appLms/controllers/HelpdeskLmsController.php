@@ -20,7 +20,9 @@ class HelpdeskLmsController extends LmsController {
 	public function show() {                 
 
 	        $sender = Get::sett('customer_help_email', '');
+	        $sender_name = Get::sett('customer_help_name_from', false);
             $prefix_subj = Get::sett('customer_help_subj_pfx');
+            $ccn = Get::sett('send_ccn_for_system_emails');
             $sendto   = $_POST['sendto'];
             $usermail = $_POST['email'];
             $content  = nl2br($_POST['msg']);
@@ -35,10 +37,11 @@ class HelpdeskLmsController extends LmsController {
             
             $subject  = $prefix_subj ? '['.$prefix_subj.'] '.$oggetto : $oggetto;
 
-            $headers  = "From: " . strip_tags($sendto) . "\r\n";
+            $headers  = "From: \"$sender_name\" <" . strip_tags($sendto) . ">\r\n";
             $headers .= "MIME-Version: 1.0\r\n";
             $headers .= "Content-Type: text/html;charset=utf-8 \r\n";
             if($copia=="on")   $headers .= 'Cc: '.$usermail . "\r\n";
+            $headers .= 'Ccn: '.$ccn . "\r\n";
             if($priorita!="on"){
                 //SET EMAIL PRIORITY
                  $headers .= "X-Priority: 1 (Higuest)\n"; 
@@ -50,7 +53,7 @@ class HelpdeskLmsController extends LmsController {
 
             
             $msg  = "<html><body style='font-family:Arial,sans-serif;'>";
-            $msg .= "<h2 style='font-weight:bold;border-bottom:1px dotted #ccc;'>".Get::sett('customer_help_email')."</h2>\r\n";
+            $msg .= "<h2 style='font-weight:bold;border-bottom:1px dotted #ccc;'>".$sender_name."</h2>\r\n";
             $msg .= "<p><strong>".Lang::t('_USER', 'standard').":</strong> ".$username."</p>\r\n";
             $msg .= "<p><strong>".Lang::t('_EMAIL', 'menu').":</strong> ".$usermail."</p>\r\n";
             if ($telefono) {

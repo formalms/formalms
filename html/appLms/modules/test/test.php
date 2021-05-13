@@ -190,7 +190,7 @@ function modtestgui($object_test)
     $lang = &DoceboLanguage::createInstance('test');
 
     YuiLib::load('table');
-    Util::get_js(_folder_lms_ . '/modules/quest_bank/ajax.quest_bank.js', true, true);
+    Util::get_js(_lms_ . '/modules/quest_bank/ajax.quest_bank.js', true, true);
 
     // ----------------------------------------------------------------------------------------
 
@@ -325,7 +325,7 @@ function modtestgui($object_test)
             ((($type != 'break_page') && ($type != 'title')) ? '<span class="text_bold">' . ($quest_num++) . '</span>' : ''),
             $lang->def('_QUEST_ACRN_' . strtoupper($type)),
             '<div style="text-align:center;">' . $category_name . '</div>',
-            '<div style="width:300px;">' . $title . '</div>'
+            '<div style="width:300px;">' . stripslashes($title) . '</div>'
         );
 
         // Customfields content
@@ -808,7 +808,7 @@ function delquest()
                     $lang->def('_AREYOUSURE'),
                     '<span class="text_bold">' . $lang->def('_TYPE') . ' : </span>'
                         . $lang->def('_QUEST_ACRN_' . strtoupper($type_quest)) . ' - ' . $lang->def('_QUEST_' . strtoupper($type_quest)) . '<br />'
-                        . '<span class="text_bold">' . $lang->def('_QUESTION') . ' : </span>' . $title_quest,
+                        . '<span class="text_bold">' . $lang->def('_QUESTION') . ' : </span>' . stripslashes($title_quest),
 
                     true,
                     'index.php?modname=test&amp;op=delquest&amp;idQuest=' . $idQuest . '&amp;back_url=' . $url_coded . '&amp;confirm=1',
@@ -1479,7 +1479,7 @@ function modassigntime()
         SET display_type = '1'
         WHERE idTest = '$idTest'");
         if ($re) {
-            foreach($_REQUEST ['new_difficult_quest'] as $idQuest => $difficult) {   
+            while (list($idQuest, $difficult) = each($_REQUEST['new_difficult_quest'])) {
                 $re &= sql_query("
                 UPDATE " . $GLOBALS['prefix_lms'] . "_testquest
                 SET difficult = '" . $difficult . "', 

@@ -1,30 +1,40 @@
 {{ Get_title({
-    'index.php?r=adm/lang/show' : translate('_LANGUAGE', 'admin_lang'),
-    '':translate('_TRANSLATELANG', 'admin_lang')
+    'index.php?r=adm/lang/show' : Lang_translate('_LANGUAGE', 'admin_lang'),
+    '':Lang_translate('_TRANSLATELANG', 'admin_lang')
 },false) }}
 
 <div class="std_blockx">
     <div class="container-back">
-        <a href="index.php?r=adm/lang/show"><span>{{ translate('_BACK', 'standard')|raw }}</span></a>
+        <a href="index.php?r=adm/lang/show"><span>{{ Lang_translate('_BACK', 'standard')|raw }}</span></a>
     </div>
 
-    <a id="addlang_top" href="#" class="ico-wt-sprite subs_add" title="{{ translate('_ADD', 'standard') }}"><span>{{ translate('_ADD', 'standard') }}</span></a>
+    <a id="addlang_top" href="#" class="ico-wt-sprite subs_add" title="{{ Lang_translate('_ADD', 'standard') }}"><span>{{ Lang_translate('_ADD', 'standard') }}</span></a>
     <br><br>
     <div class="search_form">
         {{ Form_openForm('lang_filters', 'index.php?r=adm/lang/list', false, false, '','','row') }}
-        <div class="lang-filter col-xs-12 col-sm-2">
-            <label for="lang_code">{{ translate('_LANGUAGE', 'admin_lang') }}</label>:
+        <div class="lang-filter col-xs-12 col-sm-4">
+            <label for="lang_code">{{ Lang_translate('_LANGUAGE', 'admin_lang') }}</label>:
             {{ Form_getInputDropdown("search_d", "lang_code", "lang_code", language_list, selected_language, ' onchange="DataTable_lang_table.reload();"') }}
         </div>
-        <div class="lang-confr-filter  col-xs-12 col-sm-3">
-            <label for="lang_code_diff">{{ translate('_LANG_COMPARE', 'admin_lang') }}</label>:
+        <div class="lang-confr-filter  col-xs-12 col-sm-4">
+            <label for="lang_code_diff">{{ Lang_translate('_LANG_COMPARE', 'admin_lang') }}</label>:
             {{ Form_getInputDropdown("search_d", "lang_code_diff", "lang_code_diff", language_list, selected_language_diff, ' onchange="DataTable_lang_table.reload();"') }}
+        </div>
+        <div class="lang-confr-filter  col-xs-12 col-sm-4">
+            <label for="only_empty">{{ Lang_translate('_ONLY_EMPTY', 'admin_lang') }}</label>:<br>
+            {{ Form_getInputCheckbox("only_empty", "only_empty", "true", only_empty, ' onchange="DataTable_lang_table.reload();"') }}
         </div>
         {{ Form_closeForm() }}
     </div>
 </div>
 
-<table class="table table-bordered display" style="width:100%" id="lang_table"></table>
+<form id="form_langs">
+    <table class="table table-bordered display" style="width:100%" id="lang_table"></table>
+    <button id="export-btn" class="button btn btn-primary dahsboard__button--save js-save-block" type="submit" disabled="disabled">
+        <i class="fa fa-spinner fa-spin" style="display:none;"></i>
+        {{ Lang_translate('_EXPORT_XML', 'admin_lang') }}
+    </button>
+</form>
 
 <!-- Modal confirm -->
 <div class="modal" id="confirmModal" style="display: none; z-index: 9999;">
@@ -33,8 +43,8 @@
             <div class="modal-body" data-val="body">
             </div>
             <div class="modal-footer">
-                <button type="button" id="yes" class="btn btn-primary" data-val="yes">{{ translate('_YES', 'standard') }}</button>
-                <button type="button" class="btn btn-default" data-val="no">{{ translate('_NO', 'standard') }}</button>
+                <button type="button" id="yes" class="btn btn-primary" data-val="yes">{{ Lang_translate('_YES', 'standard') }}</button>
+                <button type="button" class="btn btn-default" data-val="no">{{ Lang_translate('_NO', 'standard') }}</button>
             </div>
         </div>
     </div>
@@ -47,8 +57,8 @@
             <div class="modal-body">
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" onclick="translateKey()">{{ translate('_CONFIRM', 'standard') }}</button>
-                <button type="button" class="btn btn-default" onclick="$('#addModal').modal('hide');">{{ translate('_CANCEL', 'standard') }}</button>
+                <button type="button" class="btn btn-primary" onclick="translateKey()">{{ Lang_translate('_CONFIRM', 'standard') }}</button>
+                <button type="button" class="btn btn-default" onclick="$('#addModal').modal('hide');">{{ Lang_translate('_CANCEL', 'standard') }}</button>
             </div>
         </div>
     </div>
@@ -67,7 +77,7 @@
     }
 
     var delFunc = function(id) {
-        confirmDialog("#confirmModal", "{{ translate('_AREYOUSURE', 'standard') }}", function() {
+        confirmDialog("#confirmModal", "{{ Lang_translate('_AREYOUSURE', 'standard') }}", function() {
             $.ajax({
                 type: 'POST',
                 url: 'ajax.adm_server.php?r=adm/lang/deleteKey',
@@ -198,7 +208,7 @@
     var rows = [];
 
     body.forEach(function (item, k) {
-        link = '<a id="' + item.id + '" onclick="delFunc(' + item.id + ')" href="#" class="ico-sprite subs_del" title="{{ translate("_DEL", "admin_lang") }}"><span></span></a>'
+        link = '<a id="' + item.id + '" onclick="delFunc(' + item.id + ')" href="#" class="ico-sprite subs_del" title="{{ Lang_translate("_DEL", "admin_lang") }}"><span></span></a>'
         item.delete = link;
         rows.push(Object.assign({}, item));
     });
@@ -206,46 +216,46 @@
     var columns = [
         {
             data: 'text_module',
-            title: "{{ translate('_LANG_MODULE ', 'admin_lang ') }}",
+            title: "{{ Lang_translate('_LANG_MODULE ', 'admin_lang ') }}",
             sortable: true,
             searchable: true
         },
         {
             data: 'text_key',
-            title: "{{ translate('_LANG_KEY ', 'admin_lang ') }}",
+            title: "{{ Lang_translate('_LANG_KEY ', 'admin_lang ') }}",
             sortable: true,
             searchable: false
         },
         {
             data: 'plugin_name',
-            title: "{{ translate('_PLUGIN_NAME ', 'admin_lang ') }}",
+            title: "{{ Lang_translate('_PLUGIN_NAME ', 'admin_lang ') }}",
             sortable: false,
             searchable: true
         },
         {
             data: 'translation_text',
-            title: "{{ translate('_LANG_TRANSLATION ', 'admin_lang ') }}",
+            title: "{{ Lang_translate('_LANG_TRANSLATION ', 'admin_lang ') }}",
             sortable: true,
             searchable: false,
             edit: {
-                type: 'text',
+                type: 'textarea',
             },
         },
         {
             data: 'translation_text_diff',
-            title: "{{ translate('_LANG_COMPARE ', 'admin_lang ') }}",
+            title: "{{ Lang_translate('_LANG_COMPARE ', 'admin_lang ') }}",
             sortable: true,
             searchable: false
         },
         {
             data: 'save_date',
-            title: "{{ translate('_DATE ', 'admin_lang ') }}",
+            title: "{{ Lang_translate('_DATE ', 'admin_lang ') }}",
             sortable: true,
             searchable: false
         },
         {
             data: 'delete',
-            title: "{{ translate('_DEL ', 'standard ') }}",
+            title: "{{ Lang_translate('_DEL ', 'standard ') }}",
             sortable: false,
             searchable: false
         }
@@ -255,9 +265,10 @@
         DataTable_lang_table = $('#lang_table').on('xhr.dt', function (e, settings, json, xhr) {
             if (json.data.length > 0) {
                 json.data.forEach(function (item, index) {
-                    link = '<a id="' + item.id + '" href="#" onclick="delFunc(' + item.id + ')" class="ico-sprite subs_del" title="{{ translate("_DEL", "admin_lang") }}"><span></span></a>'
+                    link = '<a id="' + item.id + '" href="#" onclick="delFunc(' + item.id + ')" class="ico-sprite subs_del" title="{{ Lang_translate("_DEL", "admin_lang") }}"><span></span></a>'
                     item.delete = link;
                 });
+                $($.fn.dataTable.tables(true)).DataTable().columns.adjust();
             }
             // Note no return - manipulate the data directly in the JSON object.
         }).FormaTable({
@@ -270,13 +281,28 @@
                 data: function (d) {
                     d.lang_code = $("#lang_code").val();
                     d.lang_code_diff = $("#lang_code_diff").val();
+                    d.only_empty = $("#only_empty").is(":checked");
+                },
+                complete: function(json) {
+                    $("#lang_table .select-checkbox, .buttons-select-all, .buttons-select-none").click(function(e) {
+                        setTimeout(function() {
+                            if ($("#lang_table tr.selected").length > 0) {
+                                $("#export-btn").attr("disabled", false);
+                            } else {
+                                $("#export-btn").attr("disabled", true);
+                            }
+                        }, 100);
+                    });
+                    
+                    return json;
                 },
                 url: 'ajax.adm_server.php?r=adm/lang/get',
             },
             paging: true,
+            pageLength: 25,
             searching: true,
             columns,
-            dom: 'Bfrtip',
+            dom: 'Blfrtip',
             stateSave: true,
             deferRender: true,
             edit: {
@@ -289,16 +315,101 @@
             },
             'columnDefs': [
                 {
-                    'targets': 0
+                    'targets': 0,
+                    'checkboxes': {
+                    'selectRow': true
+                    }
                 }
             ],
             'select': {
-                'all': false
+                'all': true,
+                'style': 'multi',
             },
+            orderCellsTop: true,
+            fixedHeader: true,
         });
-        DataTable_lang_table.searchBar.init('#lang_table');
-        //report_table.searchBar.redraw()
-        DataTable_lang_table.searchBar.show();
+
+        // Setup - add a text input to each header cell
+        columns.forEach(function(item, i) {
+            if (i > 0 && i < 6) {
+                var title = item.data;
+                var searchPlaceholder = "{{ Lang_translate('_SEARCH', 'standard') }}";
+                var cell = $('.dataTables_scrollHeadInner .dataTable thead tr th:nth-child(' + (i + 1) +')')
+                if (i == 3) {
+                    var plugins = {{ plugins_ids|json_encode()|raw }};
+                    var selectPlugins = '<select class="form-control input-sm">';
+
+                    for (const [key, value] of Object.entries(plugins)) {
+                        selectPlugins += '<option value="' + key + '">' + value + '</option>';
+                    }
+                    selectPlugins += '</select>';
+                    cell.append('<br>' + selectPlugins);
+                } else if (i == 1) {
+                    var modules = {{ module_list|json_encode()|raw }};
+                    var selectModules = '<select class="form-control input-sm">';
+
+                    for (const [key, value] of Object.entries(modules)) {
+                        selectModules += '<option value="' + key + '">' + value + '</option>';
+                    }
+                    selectModules += '</select>';
+                    cell.append('<br>' + selectModules);
+                } else {
+                    cell.append('<br><input type="text" class="form-control input-sm" placeholder="' + searchPlaceholder + '" />');
+                }
+                var table = $($.fn.dataTable.tables(true)).DataTable();
+                table.columns.adjust();
+        
+                cell.find('input').on('keyup', function () {
+                    if (table.column(i).search() !== this.value ) {
+                        table
+                            .column(i)
+                            .search(this.value)
+                            .draw();
+                    }
+                });
+                cell.find('select').on('change', function () {
+                    if (table.column(i).search() !== this.value ) {
+                        table
+                            .column(i)
+                            .search(this.value)
+                            .draw();
+                    }
+                });
+            }
+        });
+        // DataTable_lang_table.searchBar.init('#lang_table');
+        // DataTable_lang_table.searchBar.redraw()
+        // DataTable_lang_table.searchBar.show();
+    });
+
+    $('#form_langs').on('submit', function(e) {
+        e.preventDefault();
+
+        if (!$("#lang_table tr.selected").length) {
+            return;
+        }
+
+        var selectedIds = DataTable_lang_table._selection.rows;
+
+        params = {
+            text_items: selectedIds, 
+            lang_code: $("#lang_code").val()
+        };
+
+        $("#export-btn .fa-spin").show();
+        $("#export-btn").attr("disabled", true);
+
+        $.ajax({
+            type: 'POST',
+            url: 'ajax.adm_server.php?r=adm/lang/export',
+            data: params,
+            success: function(data) {
+                $("#export-btn .fa-spin").hide();
+                $("#export-btn").attr("disabled", false);
+
+                downloadString(data, "application/xml", "lang[" + params.lang_code + "].xml");
+            }
+        });
     });
 
     $("#addlang_top").click(function(e) {
@@ -308,12 +419,25 @@
             dataType: "json",
             success: function(data) {
                 if (data.success) {
-                    console.log($("#addModal"))
                     $("#addModal").find('.modal-body').html(data.body)
                     $("#addModal").modal('show');
                 }
             }
         });
     });
+
+    function downloadString(text, fileType, fileName) {
+        var blob = new Blob([text], { type: fileType });
+
+        var a = document.createElement('a');
+        a.download = fileName;
+        a.href = URL.createObjectURL(blob);
+        a.dataset.downloadurl = [fileType, a.download, a.href].join(':');
+        a.style.display = "none";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        setTimeout(function() { URL.revokeObjectURL(a.href); }, 1500);
+    }
 </script>
 </div>

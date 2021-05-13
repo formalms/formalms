@@ -74,7 +74,7 @@
 
 
     $(document).ready(function () {
-        $('body').append('<div id="toTop" class="btn btn-info"><span class="glyphicon glyphicon-chevron-up"></span>{{ translate('_BACKTOTOP', 'faq') }}</div>');
+        $('body').append('<div id="toTop" class="btn btn-info"><span class="glyphicon glyphicon-chevron-up"></span>{{ Lang_translate('_BACKTOTOP', 'faq') }}</div>');
         $(window).scroll(function () {
             if ($(this).scrollTop() != 0) {
                 $('#toTop').fadeIn();
@@ -105,11 +105,11 @@
     <ul id="catalog_nav" class="nav nav-tabs hidden-xs">
         
         {% if show_general_catalogue_tab %} 
-            <li class="active"><a href="index.php?r=catalog/show&amp;id_catalogue=0"> {{ translate('_CATALOGUE') }}</a></li>
+            <li class="active"><a href="index.php?r=catalog/show&amp;id_catalogue=0"> {{ Lang_translate('_CATALOGUE') }}</a></li>
        {% endif %}
        
        {% if show_empty_catalogue_tab %}
-            <li class="active"><a href="#">{{ translate('_CATALOGUE') }}</a></li>
+            <li class="active"><a href="#">{{ Lang_translate('_CATALOGUE') }}</a></li>
         {% endif %}
         
         {% if show_user_catalogue_tab %}  
@@ -132,12 +132,12 @@
 
 </div>
 <div class="tab_subnav">
-    <ul class="nav nav-pills">
+    <ul class="filterBar nav nav-pills">
         <li>
             <select class='form-control' id="typeCourse">
-                <option value=''>{{ translate('_ALL') }}</option>
-                <option value='elearning'>{{ translate('_ELEARNING', 'catalogue') }}</option>
-                <option value='classroom'>{{ translate('_CLASSROOM_COURSE', 'cart') }}</option>
+                <option value=''>{{ Lang_translate('_ALL') }}</option>
+                <option value='elearning'>{{ Lang_translate('_ELEARNING', 'catalogue') }}</option>
+                <option value='classroom'>{{ Lang_translate('_CLASSROOM_COURSE', 'cart') }}</option>
             </select>
         </li>
     </ul>

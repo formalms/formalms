@@ -1,13 +1,13 @@
 {% extends "base.html.twig" %}
 
 {% block stylesheet %}
-    <link rel="stylesheet" type="text/css" href="{{ evalPhp('Layout::path') }}style/lms.css"/>
-    <link rel="stylesheet" type="text/css" href="{{ evalPhp('Layout::path') }}style/lms-to-review.css"/>
-    <link rel="stylesheet" type="text/css" href="{{ evalPhp('Layout::path') }}style/lms-menu.css"/>
+    <link rel="stylesheet" type="text/css" href="{{ Layout_getPath() }}style/lms.css"/>
+    <link rel="stylesheet" type="text/css" href="{{ Layout_getPath() }}style/lms-to-review.css"/>
+    <link rel="stylesheet" type="text/css" href="{{ Layout_getPath() }}style/lms-menu.css"/>
 {% endblock %}
 
 {% block javascript %}
-    <script type="text/javascript" src="{{ evalPhp('Get::rel_path', ['base']) }}/lib/js_utils.js"></script>
+    <script type="text/javascript" src="{{ Get_relPath('base') }}/lib/js_utils.js"></script>
         <script>
             $(function() {
                 // feedback
@@ -21,7 +21,7 @@
 
 {% block content %}
     <!-- blind nav -->
-    {{ evalPhp('Layout::zone', ['blind_navigation']) }}
+    {{ Layout_getZone('blind_navigation') }}
     <!-- container -->
     <div id="container">
 
@@ -32,24 +32,24 @@
         <!-- menu_over -->
         <div id="menu_over" class="layout_menu_over">
         <!-- feedback -->
-            {{ evalPhp('Layout::zone', ['feedback']) }}
-            {{ evalPhp('Layout::cart') }} <!-- ????? -->
+            {{ Layout_getZone('feedback') }}
+            {{ Layout_getCart() }} <!-- ????? -->
 
             <!-- header -->
             <header class="header white-bg">
                 <nav>
                     <div class="row-fluid" id="lms_menu_container" >
                         <div class="navbar-header">
-                            {{ evalPhp('Layout::zone', ['logo']) }}
+                            {{ Layout_getZone('logo') }}
                             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
                                 <span class="glyphicon glyphicon-align-justify"></span>
                             </button>
                         </div>
                         <div id="navbar" class="navbar-collapse collapse">
                             <ul class="nav navbar-nav">
-                                {{ evalPhp('Layout::zone', ['main-menu']) }}
-                                {{ evalPhp('Layout::zone', ['cart']) }} <!-- ????? -->
-                                {{ evalPhp('Layout::zone', ['profile']) }}
+                                {{ Layout_getZone('main-menu') }}
+                                {{ Layout_getZone('cart') }} <!-- ????? -->
+                                {{ Layout_getZone('profile') }}
                             </ul>
                         </div>
                         <div id="c-mask" class="c-mask"></div>
@@ -58,7 +58,7 @@
             </header>
 
             {# Temporary solution before helpdesk refactoring. #}
-            {{ evalPhp('Layout::zone', ['helpdesk']) }}
+            {{ Layout_getZone('helpdesk') }}
             {# ############################################### #}
 
         </div>
@@ -70,7 +70,7 @@
         {#{{ <div class="layout_colum_container"> }}#}
         <div class="row lms-user-content-wrapper">
             <div class="container-fluid">
-                {{ evalPhp('Layout::zone', ['content']) }}
+                {{ Layout_getZone('content') }}
 
                 <div class="nofloat"></div>
             </div>
@@ -78,17 +78,17 @@
     </div>
     <!-- footer  -->
     <div id="footer" class="layout_footer">
-        {{ evalPhp('Layout::zone', ['footer']) }}
-            {{ evalPhp('Layout::copyright') }}
+        {{ Layout_getZone('footer') }}
+            {{ Layout_getCopyright() }}
     </div>
 
 
 
 
     <!-- scripts -->
-    {{ evalPhp('Layout::zone', ['scripts']) }}
+    {{ Layout_getZone('scripts') }}
     <!-- debug -->
-    {{ evalPhp('Layout::zone', ['debug']) }}
+    {{ Layout_getZone('debug') }}
     <!-- def_lang -->
-    {{ evalPhp('Layout::zone', ['def_lang']) }}
+    {{ Layout_getZone('def_lang') }}
 {% endblock %}

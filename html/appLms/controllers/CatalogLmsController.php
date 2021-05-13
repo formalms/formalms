@@ -128,7 +128,7 @@ class CatalogLmsController extends LmsController
             $course_array[$row['idCourse']]['userCanUnsubscribe']  = $this->userCanUnsubscribe($row);
             // check course starting and ending day && pre-requisite for course in course_path
             if ($course_array[$row['idCourse']]['is_enrolled']) {
-                $course_array[$row['idCourse']]['canEnter'] = Man_Course::canEnterCourse($row)['can'];                
+                $course_array[$row['idCourse']]['access'] = Man_Course::canEnterCourse($row)['can'];
             } else {
                 $course_array[$row['idCourse']]['canEnter']  = false;
             }

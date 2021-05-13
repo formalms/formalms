@@ -11,7 +11,9 @@
         "tecnickcom/tcpdf": "^6.3",
         "ircmaxell/password-compat": "^1.0",
         "patchwork/utf8": "^1.3",
-        "vanilla/htmlawed": "^2.2"
+        "vanilla/htmlawed": "^2.2",
+        "ext-simplexml": "*",
+        "ext-json": "*"
     },
     "require-dev": {
         "roave/security-advisories": "dev-master",

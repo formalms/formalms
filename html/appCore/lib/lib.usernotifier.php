@@ -136,7 +136,7 @@ class DoceboUserNotifier extends DoceboEventConsumer {
 				false,
 				array(
 					MAIL_REPLYTO => Get::sett('sender_event'),
-					MAIL_SENDER_ACLNAME => false
+					MAIL_SENDER_ACLNAME => Get::sett('use_sender_aclname')
 				)
 			);
 		}

@@ -262,7 +262,7 @@ class LangAdm extends Model
      * @param bool $only_empty return only untranslated words for the selected language
      * @return array
      */
-    public function getAll($ini, $rows, $module = false, $text = false, $lang_code = false, $lang_code_diff = false, $only_empty = false, $sort = false, $dir = false, $plugin_id = false)
+    public function getAll($ini, $rows, $search = [], $text = false, $lang_code = false, $lang_code_diff = false, $only_empty = false, $sort = false, $dir = false, $plugin_id = false)
     {
 
         if (!$lang_code) $lang_code = getLanguage();
@@ -293,23 +293,45 @@ class LangAdm extends Model
 			WHERE 1 ";
         }
 
-        if ($module != false) $qtxt .= " AND lt.text_module LIKE  '" . $module . "' ";
-        if ($text != false && $only_empty == false) $qtxt .= " AND ( ta.translation_text LIKE  '%" . $text . "%' OR lt.text_key LIKE  '%" . $text . "%' ) ";
+        if ($search) {
+            foreach ($search as $k => $v) {
+                switch ($k) {
+                    case "translation_text":
+                        $qtxt .= " AND ta.$k LIKE  '%" . $v . "%' ";
+                        break;
+                    case "translation_text_diff":
+                        $qtxt .= " AND tad.translation_text LIKE  '%" . $v . "%' ";
+                        break;
+                    case "plugin_name":
+                        if ($v) {
+                            $qtxt .= " AND p.plugin_id = $v";
+                        }
+                        break;
+                    default:
+                        $qtxt .= " AND $k LIKE  '%" . $v . "%' ";
+                        break;
+                }
+            }
+        }
+        if ($text != false && $only_empty == false) $qtxt .= " AND ( ta.translation_text LIKE  '%" . $text . "%' OR tad.translation_text LIKE  '%" . $text . "%' OR lt.text_key LIKE  '%" . $text . "%' OR p.name LIKE  '%" . $text . "%' ) ";
         if ($only_empty != false) $qtxt .= " AND ta.translation_text IS NULL";
         if ($plugin_id != false) $qtxt .= " AND lt.plugin_id = " . (int)$plugin_id;
 
         $dir = $this->clean_dir($dir);
         switch ($sort) {
-            case "text_key":
+            case "1":
+                $qtxt .= " ORDER BY lt.text_module " . $dir . ", ta.translation_text ASC";
+                break;
+            case "2":
                 $qtxt .= " ORDER BY lt.text_key " . $dir . ", ta.translation_text ASC";
                 break;
-            case "translation_text":
+            case "4":
                 $qtxt .= " ORDER BY ta.translation_text " . $dir . "";
                 break;
-            case "translation_text_diff":
+            case "5":
                 $qtxt .= " ORDER BY translation_text_diff " . $dir . "";
                 break;
-            case "save_date":
+            case "6":
                 $qtxt .= " ORDER BY ta.save_date " . $dir . "";
                 break;
             default:
@@ -449,7 +471,7 @@ class LangAdm extends Model
      * @param bool $only_empty return only untranslated words for the selected language
      * @return array
      */
-    public function getCount($module = false, $text = false, $lang_code = false, $only_empty = false)
+    public function getCount($search = [], $text = false, $lang_code = false, $only_empty = false)
     {
 
         if (!$lang_code) $lang_code = getLanguage();
@@ -457,8 +479,30 @@ class LangAdm extends Model
 		SELECT COUNT(*)
 		FROM  %adm_lang_text AS lt
 		LEFT JOIN %adm_lang_translation AS ta ON ( lt.id_text = ta.id_text AND ta.lang_code = '" . $lang_code . "')
+        LEFT JOIN core_plugin AS p ON ( lt.plugin_id = p.plugin_id )
 		WHERE 1 ";
-        if ($module != false) $qtxt .= " AND lt.text_module LIKE  '" . $module . "' ";
+
+        if ($search) {
+            foreach ($search as $k => $v) {
+                switch ($k) {
+                    case "translation_text":
+                        $qtxt .= " AND ta.$k LIKE  '%" . $v . "%' ";
+                        break;
+                    case "translation_text_diff":
+                        $qtxt .= " AND tad.translation_text LIKE  '%" . $v . "%' ";
+                        break;
+                    case "plugin_name":
+                        if ($v) {
+                            $qtxt .= " AND p.plugin_id = $v";
+                        }
+                        break;
+                    default:
+                        $qtxt .= " AND $k LIKE  '%" . $v . "%' ";
+                        break;
+                }
+            }
+        }
+
         if ($text != false && $only_empty == false) $qtxt .= " AND ta.translation_text LIKE '%" . $text . "%' ";
         if ($only_empty != false) $qtxt .= " AND ta.translation_text IS NULL";
 
@@ -649,7 +693,7 @@ class LangAdm extends Model
         return $this->db->query($query);
     }
 
-    public function exportTranslation($lang_code)
+    public function exportTranslation($lang_code, $text_items = null)
     {
 
         $doc = new DOMDocument('1.0');
@@ -702,7 +746,7 @@ class LangAdm extends Model
             $elemModule->setAttribute("id", $module);
             $elemPlatform->appendChild($elemModule);
 
-            $arrTranslations = Docebo::langManager()->getModuleLangTranslations('all', $module, $lang_code, '', false, false, true);
+            $arrTranslations = Docebo::langManager()->getModuleLangTranslations('all', $module, $lang_code, '', false, false, true, $text_items);
             foreach ($arrTranslations as $tran) {
                 $elem = $doc->createElement("key");
                 $elem->setAttribute('id', Docebo::langManager()->composeKey($tran[1], $module, 'all'));
@@ -766,7 +810,8 @@ class LangAdm extends Model
             foreach ($keys as $key) {
 
                 $text_module = $key->parentNode->getAttribute('id');
-                $text_key = array_pop(explode("&", str_replace('&amp;', '&', $key->getAttribute('id'))));
+                $array = explode("&", str_replace('&amp;', '&', $key->getAttribute('id')));
+                $text_key = array_pop($array);
                 $text_savedt = $key->getAttribute('save_date');
                 $translation = $this->cleanImport($key->nodeValue);
 

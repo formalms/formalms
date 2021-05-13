@@ -54,6 +54,101 @@ class CourseAlms extends Model
         );
     }
 
+    
+    public function getUserInOverbooking($idCourse){
+    $userlevelid = Docebo::user()->getUserLevelId();
+        if ($userlevelid != ADMIN_GROUP_GODADMIN) {
+            require_once(_base_ . '/lib/lib.preference.php');
+            $adminManager = new AdminPreference();
+            $acl_man = &Docebo::user()->getAclManager();
+
+            $admin_courses = $adminManager->getAdminCourse(Docebo::user()->getIdST());
+
+            $admin_tree = $adminManager->getAdminTree(Docebo::user()->getIdST());
+            $admin_users = $acl_man->getAllUsersFromIdst($admin_tree);
+        }
+
+        $query = "select COUNT(cu.idUser) as num_overbooking"
+            . " FROM %lms_course AS c"
+            . " LEFT JOIN %lms_courseuser AS cu ON c.idCourse = cu.idCourse and cu.idCourse=".$idCourse
+            . ($userlevelid != ADMIN_GROUP_GODADMIN
+                ? (!empty($admin_users) ? " AND cu.idUser IN (" . implode(',', $admin_users) . ")" : " AND cu.idUser IN (0)")
+                : '')
+            . " WHERE c.course_type <> 'assessment' and cu.status=4";
+            
+            
+            $res = sql_query($query);
+            list($num_overbooking) = sql_fetch_row($res);
+        
+            return $num_overbooking;
+    }
+    
+    
+    
+    public function getUserInWaiting($idCourse){
+    $userlevelid = Docebo::user()->getUserLevelId();
+        if ($userlevelid != ADMIN_GROUP_GODADMIN) {
+            require_once(_base_ . '/lib/lib.preference.php');
+            $adminManager = new AdminPreference();
+            $acl_man = &Docebo::user()->getAclManager();
+
+            $admin_courses = $adminManager->getAdminCourse(Docebo::user()->getIdST());
+
+            $admin_tree = $adminManager->getAdminTree(Docebo::user()->getIdST());
+            $admin_users = $acl_man->getAllUsersFromIdst($admin_tree);
+        }
+
+        $query = "select COUNT(cu.idUser) as num_overbooking"
+            . " FROM %lms_course AS c"
+            . " LEFT JOIN %lms_courseuser AS cu ON c.idCourse = cu.idCourse and cu.idCourse=".$idCourse
+            . ($userlevelid != ADMIN_GROUP_GODADMIN
+                ? (!empty($admin_users) ? " AND cu.idUser IN (" . implode(',', $admin_users) . ")" : " AND cu.idUser IN (0)")
+                : '')
+            . " WHERE c.course_type <> 'assessment' and cu.status=-2 ";
+            
+            
+            $res = sql_query($query);
+            list($num_overbooking) = sql_fetch_row($res);
+        
+            return $num_overbooking;
+    }    
+    
+    
+    public function getUserInCourse($idCourse){
+    $userlevelid = Docebo::user()->getUserLevelId();
+        if ($userlevelid != ADMIN_GROUP_GODADMIN) {
+            require_once(_base_ . '/lib/lib.preference.php');
+            $adminManager = new AdminPreference();
+            $acl_man = &Docebo::user()->getAclManager();
+
+            $admin_courses = $adminManager->getAdminCourse(Docebo::user()->getIdST());
+
+            $admin_tree = $adminManager->getAdminTree(Docebo::user()->getIdST());
+            $admin_users = $acl_man->getAllUsersFromIdst($admin_tree);
+        }
+
+        $query = "select COUNT(cu.idUser) as num_users"
+            . " FROM %lms_course AS c"
+            . " LEFT JOIN %lms_courseuser AS cu ON c.idCourse = cu.idCourse and cu.idCourse=".$idCourse
+            . ($userlevelid != ADMIN_GROUP_GODADMIN
+                ? (!empty($admin_users) ? " AND cu.idUser IN (" . implode(',', $admin_users) . ")" : " AND cu.idUser IN (0)")
+                : '')
+            . " WHERE c.course_type <> 'assessment' ";
+            
+        
+        
+          
+            $res = sql_query($query);
+            list($num_overbooking) = sql_fetch_row($res);
+        
+        
+        
+            return $num_overbooking;
+    }    
+    
+    
+    
+    
     public function getCourseNumber($filter = false)
     {
         $query = "SELECT COUNT(*)"
@@ -279,6 +374,8 @@ class CourseAlms extends Model
         $query .= " GROUP BY c.idCourse"
             . " ORDER BY " . $sort . " " . $dir;
 
+
+            
         if ((int) $results > 0) $query .= " LIMIT " . (int) $start_index . ", " . (int) $results;
 
         return sql_query($query);
@@ -401,13 +498,13 @@ class CourseAlms extends Model
         // restriction on course status ------------------------------------------
         $user_status = 0;
         if (isset($data_params['user_status']))
-            foreach(data_params['user_status'] as $status => $v )
+            foreach (data_params['user_status'] as $status => $v)
                 $user_status |= (1 << $status);
 
         // level that will be showed in the course --------------------------------
         $show_level = 0;
         if (isset($data_params['course_show_level']))
-            foreach(data_params['course_show_level'] as $lv => $v )
+            foreach (data_params['course_show_level'] as $lv => $v)
                 $show_level |= (1 << $lv);
 
         // save the file uploaded -------------------------------------------------
@@ -758,13 +855,13 @@ class CourseAlms extends Model
         // restriction on course status ------------------------------------------
         $user_status = 0;
         if (isset($data_params['user_status']))
-            foreach($data_params ['user_status'] as $status => $val)
+            foreach ($data_params['user_status'] as $status => $val)
                 $user_status |= (1 << $status);
 
         // level that will be showed in the course --------------------------------
         $show_level = 0;
         if (isset($data_params['course_show_level']))
-            foreach($data_params ['course_show_level'] as $lv => $val)
+            foreach ($data_params['course_show_level'] as $lv => $val)
                 $show_level |= (1 << $lv);
 
         // save the file uploaded -------------------------------------------------
@@ -1049,7 +1146,7 @@ class CourseAlms extends Model
         }
 
         $res['res'] = '_ok_course';
-        
+
         $new_course = new DoceboCourse($id_course);
         Events::trigger('lms.course.updated', ['id_course' => $id_course, 'old_course' => $course_man, 'new_course' => $new_course]);
 
@@ -1539,16 +1636,14 @@ class CourseAlms extends Model
 
     protected function getInfoClassroom($id_user, $id_course)
     {
+        $query = "SELECT cd.code, cd.name
+                 FROM %lms_course_date AS cd
+                 INNER JOIN %lms_course_date_user cdu ON cd.id_date = cdu.id_date
+                 WHERE id_course = $id_course
+                 AND cdu.id_user = $id_user
+                 ORDER BY cd.id_date DESC LIMIT 1";
+        // AND cdu.date_complete <> '0000-00-00 00:00:00'
 
-        $query =    "SELECT code, name"
-            . " FROM %lms_course_date, %lms_course_date_user
-                         WHERE id_course = '" . $id_course . "' and %lms_course_date_user.id_date=%lms_course_date.id_date and id_user=" . $id_user;
-
-
-
-        $date = sql_fetch_row(sql_query($query));
-        if ($date == false) $date = '';
-
-        return $date;
+        return sql_fetch_row(sql_query($query)) ?: '';
     }
 }

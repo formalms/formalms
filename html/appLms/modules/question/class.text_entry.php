@@ -11,13 +11,9 @@
 |   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
-require_once( dirname(__FILE__).'/class.question.php' );
+require_once(Forma::inc(_lms_ . '/modules/question/class.question.php' ));
 
 class TextEntry_Question extends Question {
-	
-	function TextEntry_Question( $id ) {
-		parent::Question( $id );
-	}
 	
 	function getQuestionType() {
 		return 'text_entry';
@@ -48,7 +44,7 @@ class TextEntry_Question extends Question {
 			( 	'".(int)$idTest."', 
 				'".(int)$_REQUEST['idCategory']."', 
 				'".$this->getQuestionType()."', 
-				'".$_REQUEST['title_quest']."',
+				'".addslashes($_REQUEST['title_quest'])."',
 				'".(int)$_REQUEST['difficult']."', 
 				'".(int)$_REQUEST['time_assigned']."', 
 				'".$this->_getNextSequence($idTest)."', 
@@ -73,7 +69,7 @@ class TextEntry_Question extends Question {
 			( idQuest, is_correct, answer, comment, score_correct, score_incorrect ) VALUES 
 			( 	'".$idQuest."', 
 				'1', 
-				'".strtolower($_REQUEST['answer'])."', 
+				'".strtolower(addslashes($_REQUEST['answer']))."', 
 				'".$_REQUEST['comment']."', 
 				'".$this->_checkScore($_REQUEST['score_correct'])."', 
 				'".$this->_checkScore($_REQUEST['score_incorrect'])."' ) ";
@@ -187,7 +183,7 @@ class TextEntry_Question extends Question {
 			UPDATE ".$GLOBALS['prefix_lms']	."_testquest 
 			SET idCategory = '".$_REQUEST['idCategory']."', 
 				type_quest = '".$this->getQuestionType()."', 
-				title_quest = '".$_REQUEST['title_quest']."', 
+				title_quest = '".addslashes($_REQUEST['title_quest'])."', 
 				difficult = '".$_REQUEST['difficult']."',
 				time_assigned = '".$_REQUEST['time_assigned']."'
 			WHERE idQuest = '".(int)$this->id."'";
@@ -200,7 +196,7 @@ class TextEntry_Question extends Question {
 			//modify answer
 			$mod_answer_query = "
 			UPDATE ".$GLOBALS['prefix_lms']	."_testquestanswer 
-			SET answer = '".strtolower($_REQUEST['answer'])."',
+			SET answer = '".strtolower(addslashes($_REQUEST['answer']))."',
 				comment = '".$_REQUEST['comment']."',
 				score_correct = '".$this->_checkScore($_REQUEST['score_correct'])."', 
 				score_incorrect = '".$this->_checkScore($_REQUEST['score_incorrect'])."'
@@ -463,10 +459,11 @@ class TextEntry_Question extends Question {
 
 		if ($this->userDoAnswer($trackTest->idTrack) && !$trackTest->getTestObj()->isRetainAnswersHistory()) {
 			if($can_overwrite) {
-				
 				return $this->updateAnswer($trackTest->idTrack, $source);
 			}
 			else return false;
+		} elseif ($trackTest->getTestObj()->isRetainAnswersHistory() && $this->testQuestAnswerExists($trackTest)) {
+			$this->deleteAnswer($trackTest->idTrack, ($trackTest->getNumberOfAttempt() + 1));
 		}
 		
 		$re_answer = sql_query("
@@ -518,25 +515,6 @@ class TextEntry_Question extends Question {
 		UPDATE ".$GLOBALS['prefix_lms']	."_testtrack_answer 
 		SET score_assigned = '".( $is_correct ? $score_corr : -$score_incorr )."', 
 			more_info = '".$source['quest'][$this->id]."' 
-		WHERE idTrack = '".(int)$id_track."' AND 
-			idQuest = '".$this->id."'");
-	}
-	
-	/**
-	 * delete the old answer
-	 * 
-	 * @param  int		$id_track	the relative id_track
-	 * 
-	 * @return bool	true if success false otherwise
-	 * 
-	 * @access public
-	 * @author Fabio Pirovano (fabio@docebo.com)
-	 */
-	function deleteAnswer( $id_track ) {
-		
-		
-		return sql_query("
-		DELETE FROM ".$GLOBALS['prefix_lms']	."_testtrack_answer 
 		WHERE idTrack = '".(int)$id_track."' AND 
 			idQuest = '".$this->id."'");
 	}

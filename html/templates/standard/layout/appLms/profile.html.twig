@@ -1,21 +1,65 @@
-<li class="green_menu">                                
+<!-- # Codice originale -->
+<!-- <li class="green_menu">
     <div id="o-wrapper" class="o-wrapper">
         <button id="c-button--slide-right" class="c-button" >
-            <a data-toggle="dropdown" href="#" title="{{ translate('_PROFILE', 'menu_course') }}">
+            <a data-toggle="dropdown" href="#" title="{{ Lang_translate('_PROFILE', 'menu_course') }}">
                 <span class="username icon--profile">{{ user.getUserName() }}</span>
             </a>
         </button>
     </div>
+</li> -->
+
+
+<!-- # Codice test -->
+<!-- <li class="green_menu">
+    <div id="o-wrapper" class="o-wrapper">
+        <button id="c-button--slide-right" class="c-button" >
+            <a data-toggle="dropdown" href="#" title="{{ Lang_translate('_PROFILE', 'menu_course') }}">
+                <span class="username icon--profile">{{ user.getUserName() }}
+                    {% if user.avatar != '' %}
+                    <img class="user-profile__img" src="{{user.avatar}}" alt="{{user.name}}" />
+                  {% else %}
+                    <img class="user-profile__img" src="{{templatePath}}/static/images/profile.png" alt="{{user.name}}" />
+                  {% endif %}
+                </span>
+            </a>
+        </button>
+    </div>
+</li> -->
+
+
+<!-- # Codice nuovo: -->
+<li class="green_menu">
+    <div id="o-wrapper" class="o-wrapper">
+        <button id="c-button--slide-right" class="c-button header__profile__button" >
+                <span class="header__profile__name">{{ user.getUserName() }}</span>
+                <picture class="header__profile__picture">
+
+                    {% if user.hasAvatar() %}
+                        <img src="{{ user.getAvatar() }}" alt="{{ user.getUserName() }}">
+                    {% else %}
+                        <img src="{{ Get_getTemplatePath() }}static/images/icons/top-menu/icon--profile.svg" alt="{{ user.getUserName() }}">
+                    {% endif %}
+                </picture>
+        </button>
+    </div>
 </li>
+
+
+
+
+
+
+
 <div id="c-menu--slide-right" class="c-menu c-menu--slide-right user-panel">
     <div class="container-fluid">
         <div class="row">
             <div class="col-xs-6">
-                <a href="javascript:void(0)" class="c-menu__close"><span class="glyphicon glyphicon-remove">{{ translate('_PROFILE', 'profile') }}</span></a>
+                <a href="javascript:void(0)" class="c-menu__close"><span class="glyphicon glyphicon-remove">{{ Lang_translate('_PROFILE', 'profile') }}</span></a>
             </div>
             <div class="col-xs-6">
-                <a title="{{ translate('_LOGOUT', 'standard') }}" href="{{ evalPhp('Get::rel_path', ['base']) }}/index.php?r={{ evalPhp('constant', ['_logout_']) }}">
-                    <span class="glyphicon glyphicon-off">{{ translate('_LOGOUT', 'standard') }}</span>
+                <a title="{{ Lang_translate('_LOGOUT', 'standard') }}" href="{{ Get_relPath('base') }}/index.php?r={{ Util_getConstant('_logout_') }}">
+                    <span class="glyphicon glyphicon-off">{{ Lang_translate('_LOGOUT', 'standard') }}</span>
                 </a>
             </div>
         </div>
@@ -23,10 +67,10 @@
             {% if profile or credits %}
                 <div class="tabnav__label-wrapper">
                 {% if profile %}
-                    <div class="tabnav__label selected" data-tab="profile">{{ translate('_PROFILE', 'profile') }}</div>
+                    <div class="tabnav__label selected" data-tab="profile">{{ Lang_translate('_PROFILE', 'profile') }}</div>
                 {% endif %}
                 {% if credits %}
-                    <div class="tabnav__label{% if not profile %} selected{% endif %}" data-tab="credits">{{ translate('_TIME_PERIODS', 'standard') }}</div>
+                    <div class="tabnav__label{% if not profile %} selected{% endif %}" data-tab="credits">{{ Lang_translate('_TIME_PERIODS', 'standard') }}</div>
                 {% endif %}
                 </div>
             {% endif %}
@@ -55,13 +99,13 @@
                 {{ news|raw }}
             </div>
         </div>
-        {% if evalPhp('count', [languages]) > 1 %}
+        {% if languages|length > 1 %}
         <div class="row lang">
             <div class="col-xs-6">
-                <p>{{ translate('_CHANGELANG', 'register') }}</p>
+                <p>{{ Lang_translate('_CHANGELANG', 'register') }}</p>
             </div>
             <div class="col-xs-6">
-                {{ evalPhp('Layout::buildLanguages') }}
+                {{ Layout_buildLanguage() }}
             </div>
         </div>
         {% endif %}

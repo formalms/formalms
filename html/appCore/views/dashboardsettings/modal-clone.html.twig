@@ -1,0 +1,92 @@
+<div class="modal" id="cloneModal" style="display: none; z-index: 9999;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body" data-val="body">
+                <label>{{ Lang_translate('_DASHBOARD_SETTING_CLONE_LAYOUT', 'dashboardsetting') }}</label>
+                <form class="dashboard__add" style="display: block;">
+                    <div class="form-group">
+                        <label>{{ Lang_translate('_DASHBOARD_SETTING_LAYOUT_NAME', 'dashboardsetting') }}</label>
+                        <input name="name" placeholder="{{ Lang_translate('_DASHBOARD_SETTING_LAYOUT_NAME', 'dashboardsetting') }}" class="form-control" type="text" value="">
+                        <p class="text text-danger" style="display: none;"></p>
+                    </div>
+
+                    <input name="id" type="hidden">
+
+                    <div class="form-group">
+                        <label>{{ Lang_translate('_DASHBOARD_SETTING_LAYOUT_CAPTION', 'dashboardsetting') }}</label>
+                        <textarea name="caption" maxlength="255" placeholder="{{ Lang_translate('_DASHBOARD_SETTING_LAYOUT_CAPTION', 'dashboardsetting') }}" class="form-control textarea"></textarea>
+                        <p class="text text-danger" style="display: none;"></p>
+                    </div>
+
+                    <div class="dashboard__select dashboard__select--layout">
+                        <label>{{ Lang_translate('_DASHBOARD_SETTING_SELECT_STATUS', 'dashboardsetting') }}</label>
+                        <select name="status" class="form-control js-select-layout">
+                            <option value="draft">
+                                {{ Lang_translate('_DASHBOARD_SETTING_DRAFT_STATUS', 'dashboardsetting') }}
+                            </option>
+                            <option value="publish">
+                                {{ Lang_translate('_DASHBOARD_SETTING_PUBLISH_STATUS', 'dashboardsetting') }}
+                            </option>
+                        </select>
+                        <p class="text text-danger" style="display: none;"></p>
+                    </div>
+
+                    <div class="dashboard__message dashboard_layout__ok">{{ Lang_translate('_DASHBOARD_LAYOUT_SAVE_MESSAGE_OK', 'dashboardsetting') }}</div>
+                    <div class="dashboard__message dashboard_layout__ko">{{ Lang_translate('_DASHBOARD_LAYOUT_SAVE_MESSAGE_KO', 'dashboardsetting') }}</div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="yes" class="btn btn-primary" data-val="yes">{{ Lang_translate('_CLONE', 'standard') }}</button>
+                <button type="button" class="btn btn-default" data-val="no">{{ Lang_translate('_CANCEL', 'standard') }}</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="application/javascript">
+
+  function cloneDialog(modalSelector, onConfirm) {
+    var fClose = function() {
+        modal.modal("hide");
+    };
+    var modal = $(modalSelector);
+    modal.modal("show");
+    modal.find("*[data-val=yes]").unbind().bind('click', onConfirm);
+    modal.find("*[data-val=no]").unbind().bind("click", fClose);
+  }
+
+  function cloneFunc(id) {
+    var form = $("#cloneModal form");
+    form.find('.text-danger').slideUp().html('');
+
+    $.ajax({
+        type: 'GET',
+        url: 'ajax.adm_server.php?r=adm/dashboardsettings/clone',
+        data: { dashboard: id },
+        success: function(data) {
+            data = JSON.parse(data).data;
+
+            form.find('input[name=name]').val(data.dashboard.name);
+            form.find('textarea[name=caption]').val(data.dashboard.caption);
+            form.find('input[name=id]').val(data.dashboard.id);
+
+            cloneDialog("#cloneModal", function() {
+                $.ajax({
+                    type: 'POST',
+                    url: data.ajaxUrl.cloneLayout,
+                    data: form.serialize(),
+                    success: function(data) {
+                        table.reload();
+                        $("#cloneModal").modal("hide");
+                    },
+                    error: function(err) {
+                        $.each(err.responseJSON, function(k, item) {
+                            form.find('*[name=' + k + ']').parents('.form-group').find('p').html(item).slideDown();
+                        });
+                    },
+                });
+            });     
+        }
+    });
+  };
+</script>

@@ -1,124 +1,54 @@
+<div class="page-header">
+    <h1 class="title">{{ Lang_translate('_DASHBOARD', 'standard') }}</h1>
+</div>
 
 <div class="d-grid">
     <div class="d-row">
         <div class="dashboard__actions is-block">
-            <button id="btn-new-layout" class="btn btn-primary dahsboard__button--add js-add-layout">{{ translate('_DASHBOARD_SETTING_ADD_NEW_LAYOUT', 'dashboardsetting') }}</button>
+            <button id="btn-new-layout" class="btn btn-primary dahsboard__button--add js-add-layout">{{ Lang_translate('_DASHBOARD_SETTING_ADD_NEW_LAYOUT', 'dashboardsetting') }}</button>
 
             <form id="form-layout" class="dashboard__add">
-                <h3>{{ translate('_DASHBOARD_SETTING_INSERT_NEW_LAYOUT', 'dashboardsetting') }}</h3>
-
                 <div class="form-group">
-                    <label>{{ translate('_DASHBOARD_SETTING_LAYOUT_NAME', 'dashboardsetting') }}</label>
-                    <input name="name" placeholder="{{ translate('_DASHBOARD_SETTING_LAYOUT_NAME', 'dashboardsetting') }}" class="form-control" type="text" value="">
+                    <label>{{ Lang_translate('_DASHBOARD_SETTING_LAYOUT_NAME', 'dashboardsetting') }}</label>
+                    <input name="name" placeholder="{{ Lang_translate('_DASHBOARD_SETTING_LAYOUT_NAME', 'dashboardsetting') }}" class="form-control" type="text" value="">
                 </div>
 
                 <div class="form-group">
-                    <label>{{ translate('_DASHBOARD_SETTING_LAYOUT_CAPTION', 'dashboardsetting') }}</label>
-                    <textarea name="caption" placeholder="{{ translate('_DASHBOARD_SETTING_LAYOUT_CAPTION', 'dashboardsetting') }}" class="form-control textarea"></textarea>
+                    <label>{{ Lang_translate('_DASHBOARD_SETTING_LAYOUT_CAPTION', 'dashboardsetting') }}</label>
+                    <textarea name="caption" maxlength="255" placeholder="{{ Lang_translate('_DASHBOARD_SETTING_LAYOUT_CAPTION', 'dashboardsetting') }}" class="form-control textarea"></textarea>
                 </div>
 
                 <div class="dashboard__select dashboard__select--layout">
+                    <label>{{ Lang_translate('_DASHBOARD_SETTING_SELECT_STATUS', 'dashboardsetting') }}</label>
                     <select name="status" class="form-control js-select-layout">
-                        <option value="" selected>-- {{ translate('_DASHBOARD_SETTING_SELECT_STATUS', 'dashboardsetting') }} --</option>
-
                         <option value="draft">
-                            {{ translate('_DASHBOARD_SETTING_DRAFT_STATUS', 'dashboardsetting') }}
+                            {{ Lang_translate('_DASHBOARD_SETTING_DRAFT_STATUS', 'dashboardsetting') }}
                         </option>
                         <option value="publish">
-                            {{ translate('_DASHBOARD_SETTING_PUBLISH_STATUS', 'dashboardsetting') }}
+                            {{ Lang_translate('_DASHBOARD_SETTING_PUBLISH_STATUS', 'dashboardsetting') }}
                         </option>
                     </select>
                 </div>
 
-                <button type="submit" class="btn btn-primary dahsboard__button--add js-add-layout btn-block">{{ translate('_DASHBOARD_SETTING_CREATE_NEW_LAYOUT', 'dashboardsetting') }}</button>
+                <button type="submit" class="btn btn-primary dahsboard__button--add js-add-layout btn-block">{{ Lang_translate('_DASHBOARD_SETTING_CREATE_NEW_LAYOUT', 'dashboardsetting') }}</button>
 
-                <div class="dashboard__message dashboard_layout__ok">{{ translate('_DASHBOARD_LAYOUT_SAVE_MESSAGE_OK', 'dashboardsetting') }}</div>
-                <div class="dashboard__message dashboard_layout__ko">{{ translate('_DASHBOARD_LAYOUT_SAVE_MESSAGE_KO', 'dashboardsetting') }}</div>
+                <div class="dashboard__message dashboard_layout__ok">{{ Lang_translate('_DASHBOARD_LAYOUT_SAVE_MESSAGE_OK', 'dashboardsetting') }}</div>
+                <div class="dashboard__message dashboard_layout__ko">{{ Lang_translate('_DASHBOARD_LAYOUT_SAVE_MESSAGE_KO', 'dashboardsetting') }}</div>
             </form>
         </div>
     </div>
-        <table class="table table-striped table-bordered display" style="width:100%" id="layouts"></table>
+    <table class="table table-striped table-bordered display" style="width:100%" id="layouts"></table>
 </div>
 
-
-{% if dashboardId %}
-    <div class="js-router--dashboard dashboard">
-        <div class="d-grid">
-            <div class="d-row">
-                <div id="dashboard-sortable" class="dashboard__container">
-                    {% for block in enabledBlocks %}
-                        {% if block.enabled %}
-                            {% set index = loop.index0 %}
-                            <div id="{{ block.postData.block }}-{{ index }}"
-                                class="dashboard__block dashboard__block--{{ block.type }}"
-                                data-block="{{ block.postData.block }}"
-                                data-type="{{ block.type }}"
-                                data-action="{{ block.registeredActions | join(',') }}">
-                                <div class="dashboard__content">
-                                    <button class="dashboard__remove js-remove-block" data-block="{{ block.postData.block }}-{{ index }}"></button>
-                                    <div class="dashboard__title">{{ translate('_'~block.postData.block,'dashboardsetting') }}</div>
-                                    <div class="dashboard__image">
-                                        <img src="{{ block.templatePath }}static/images/dashboard-placeholder/{{ block.postData.block }}-placeholder.jpg" class="dashboard__image">
-                                    </div>
-                                    <div class="dashboard__info">
-                                        {% if block.registeredActions | length %}
-                                            <div class="dashboard__infoBlock">
-                                                <div class="dashboard__label">{{ translate('_ENABLED_ACTIONS', 'dashboardsetting') }}</div>
-                                                <div class="dashboard__infoContainer">
-                                                    <div class="dashboard__el">
-                                                        {% for action in block.enabledActions %}
-                                                            <label>
-                                                                <input name="registeredAction[{{ loop.index0 }}]"
-                                                                    type="checkbox" value="{{ action }}"
-                                                                    {% if action in block.registeredActions %}checked{% endif %} />{{ translate('_'~action,'dashboardsetting') }}
-                                                            </label>
-                                                        {% endfor %}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        {% endif %}
-
-                                        {% include 'block-form.html.twig' %}
-                                    </div>
-                                </div>
-                            </div>
-                        {% endif %}
-                    {% endfor %}
-                </div>
-                <div class="dashboard__actionsx">
-                    <div class="dashboard__add">
-                        <div class="dashboard__select dashboard__select--block">
-                            <select class="form-control js-select-block">
-                                <option value="" selected>{{ translate('_DASHBOARD_SETTING_SELECT_BLOCK', 'dashboardsetting') }}</option>
-                                {% for block in installedBlocks %}
-                                    <option value="{{ block.postData.block }}"
-                                        data-type="{{ block.availableTypes|json_encode() }}"
-                                        data-action="{{ block.registeredActions|json_encode() }}"
-                                        data-form="{{ block.form|json_encode() }}">
-                                        {{ translate('_'~block.postData.block, 'dashboardsetting') }}
-                                    </option>
-                                {% endfor %}
-                            </select>
-                            <div class="dashboard__error">{{ translate('_DASHBOARD_SETTING_BLOCK_REQUIRED','dashboardsetting') }}</div>
-                        </div>
-                        <div class="dashboard__select dashboard__select--type">
-                            <select class="form-control js-select-type"></select>
-                        </div>
-                        <button class="btn btn-primary dahsboard__button--add js-add-block">{{ translate('_DASHBOARD_SETTING_ADD_NEW_BLOCK', 'dashboardsetting') }}</button>
-                    </div>
-                    <button class="button btn btn-danger dahsboard__button--save js-save-block btn-block">{{ translate('_DASHBOARD_SETTING_SAVE', 'dashboardsetting') }}
-                    </button>
-                    <div class="dashboard__message dashboard__ok">{{ translate('_DASHBOARD_SETTING_SAVE_MESSAGE_OK', 'dashboardsetting') }}</div>
-                    <div class="dashboard__message dashboard__ko">{{ translate('_DASHBOARD_SETTING_SAVE_MESSAGE_KO', 'dashboardsetting') }}</div>
-                </div>
-            </div>
-        </div>
-    </div>
-{% endif %}
+{% include 'modal-clone.html.twig' %}
 
 <script type="application/javascript">
+
     $(function () {
-        const dashboardId = "{{ dashboardId ?: 'null' }}";
+        const showUrl = "{{ showUrl }}";
+        const editUrl = "{{ editUrl }}";
+        const permissionUrl = "{{ permissionUrl }}";
+        const cloneUrl = "{{ cloneUrl }}";
         const dashboardSortable = $("#dashboard-sortable");
         const selectBlock = $('.js-select-block');
         const selectType = $('.js-select-type');
@@ -145,7 +75,6 @@
         }
 
         initSortable();
-        uploadFileCheck();
         formLayout.slideUp();
 
         table = layoutsTable.FormaTable({
@@ -154,36 +83,53 @@
             serverSide: true,
             paging: false,
             columns: [  // definisco le colonne
-                { data: 'id', title: '{{ translate("_ID", "standard") }}', sortable: false, 
-                    render: function(data, type, row, meta) {
-                        return '<a href="{{ showUrl }}' + '&amp;dashboard=' + row.id + '">' + row.id + '</a>';
-                    }
-                },
-                { data: 'name', title: '{{ translate("_DASHBOARD_LAYOUT", "dashboardsetting") }}', sortable: false, width: 'auto', edit: { type: 'text' } },
-                { data: 'caption', title: '{{ translate("_DASHBOARD_LAYOUT_CAPTION", "dashboardsetting") }}', sortable: false, width: 'auto', edit: { type: 'text' } },
-                { data: 'status', title: '{{ translate("_DASHBOARD_LAYOUT_STATUS", "dashboardsetting") }}', sortable: false, width: '25%',
+                { data: 'name', title: '{{ Lang_translate("_DASHBOARD_LAYOUT", "dashboardsetting") }}', sortable: false, width: 'auto', edit: { type: 'text' } },
+                { data: 'caption', title: '{{ Lang_translate("_DASHBOARD_LAYOUT_CAPTION", "dashboardsetting") }}', sortable: false, width: 'auto', edit: { type: 'textarea' } },
+                { data: 'status', title: '{{ Lang_translate("_DASHBOARD_LAYOUT_STATUS", "dashboardsetting") }}', sortable: false, width: '25%',
                     edit: {
                         type: 'select',
                         options: {
-                            'draft': "{{ translate('_DASHBOARD_STATUS_DRAFT', 'dashboardsetting') }}",
-                            'publish': "{{ translate('_DASHBOARD_STATUS_PUBLISH', 'dashboardsetting') }}",
+                            'draft': "{{ Lang_translate('_DASHBOARD_STATUS_DRAFT', 'dashboardsetting') }}",
+                            'publish': "{{ Lang_translate('_DASHBOARD_STATUS_PUBLISH', 'dashboardsetting') }}",
                         }
                     }, 
                     render: function(data, type, row, meta) {
                         return row.status;
                     }
                 },
-                { data: 'default', title: '{{ translate("_DASHBOARD_LAYOUT_DEFAULT", "dashboardsetting") }}', sortable: false, width: '10%', 
+                { data: 'default', title: '{{ Lang_translate("_DASHBOARD_LAYOUT_DEFAULT", "dashboardsetting") }}', sortable: false, width: '10%',
                     render: function(data, type, row, meta) {
                         var checked = row.default ? 'disabled checked' : '';
                         return '<div class="text-center"><input class="default_check" type="checkbox" value="1" data-id="' + row.id + '" ' + checked + '></div>';
                     }
                 },
+                { data: 'clone', title: '&nbsp;', sortable: false, width: '10%', 
+                    render: function(data, type, row, meta) {
+                        return '<div class="text-center"><a onclick="cloneFunc(' + row.id + ')" href="#" class="btn btn-primary"><i class="glyphicon glyphicon-duplicate"></i> </a></div>';
+                    }
+                },
+                { data: 'edit', title: '&nbsp;', sortable: false, width: '10%', 
+                    render: function(data, type, row, meta) {
+                        return '<div class="text-center"><a href="' + editUrl + '&dashboard=' + row.id + '" class="btn btn-warning"><i class="glyphicon glyphicon-pencil"></i> </a></div>';
+                    }
+                },
+
+                { data: 'permission', title: '&nbsp;', sortable: false, width: '10%', 
+                    render: function(data, type, row, meta) {
+                        return '<div class="text-center"><a href="' + permissionUrl + '&dashboard=' + row.id + '" class="btn btn-success"><i class="glyphicon glyphicon-user"></i> </a></div>';
+                    }
+                }, 
+
                 { data: 'delete', title: '&nbsp;', sortable: false, width: '10%', 
                     render: function(data, type, row, meta) {
                         return '<div class="text-center"><button type="button" class="btn btn-danger btn-del" data-id="' + row.id + '"><i class="glyphicon glyphicon-trash"></i> </button></div>';
                     }
                 },
+                
+                
+               
+                
+                
             ],
             ajax: {
                 url: '{{ ajaxUrl.getLayouts }}',
@@ -191,7 +137,7 @@
             },
             drawCallback: function() {
                 $('.btn-del').click(function(e) {
-                    if (confirm("{{ translate('_DASHBOARD_LAYOUT_SURE_DEL', 'dashboardsetting') }}")) {
+                    if (confirm("{{ Lang_translate('_DASHBOARD_LAYOUT_SURE_DEL', 'dashboardsetting') }}")) {
                         var delBtn = $(this);
                         // DELETE A LAYOUT
                         $.ajax({
@@ -229,8 +175,6 @@
                         }
                     });
                 });
-
-                $("#layouts tr[id={{ dashboardId }}]").addClass('selected');
             },
             edit: {
                 url: '{{ ajaxUrl.editInlineLayout }}',
@@ -281,168 +225,6 @@
             });
         });
 
-        // SALVATAGGIO DATI BLOCK
-        saveField.click(function () {
-            let response = {};
-            const blocks = $('.dashboard__block');
-
-            if (blocks) {
-                for (i = 0; i < blocks.length; i++) {
-                    const block = blocks[i].getAttribute('data-block');
-                    const type = blocks[i].getAttribute('data-type');
-                    const action = blocks[i].getAttribute('data-action').split(',');
-                    const firstInsert = blocks[i].getAttribute('data-first-insert');
-                    const extraElement = blocks[i].querySelectorAll('.js-extra-setting');
-                    let extraSettings = {};
-
-                    response[i] = {
-                        'block': block,
-                        'settings': {
-                            'position': i + 1,
-                            'type': type,
-                            'enabled': true,
-                            'enabledActions': action,
-                            'firstInsert': firstInsert,
-                            'data': {}
-                        }
-                    }
-
-                    if (extraElement.length) {
-
-                        for (let i = 0; i < extraElement.length; i++) {
-                            const key = extraElement[i].getAttribute('name');
-                            const value = extraElement[i].value;
-                            const typeEl = extraElement[i].getAttribute('type');
-
-                            switch (typeEl) {
-                                case 'checkbox':
-                                    if (extraElement[i].checked) {
-                                        if (extraSettings[key]) {
-                                            extraSettings[key] += '|' + value;
-                                        } else {
-                                            extraSettings[key] = value;
-                                        }
-                                    }
-                                    break;
-                                case 'radio':
-                                    if (extraElement[i].checked) {
-                                        extraSettings[key] = value;
-                                    }
-                                    break;
-                                case 'file':
-                                case 'image':
-                                    const fileUrl = extraElement[i].getAttribute('data-url');
-                                    if (fileUrl) {
-                                        extraSettings[key] = fileUrl;
-                                    }
-                                    break;
-                                default:
-                                    if (value) {
-                                        extraSettings[key] = value;
-                                    }
-                            }
-
-                        }
-
-                        response[i]['settings']['data'] = {...response[i]['settings']['data'], ...extraSettings};
-                    }
-
-                }
-            }
-
-            $.ajax({
-                url: '{{ ajaxUrl.save }}&dashboard=' + dashboardId,
-                type: 'POST',
-                data: {
-                    settings: response
-                },
-                beforeSend: () => {
-                    saveField.attr('disabled', true);
-                    $('.dashboard__message').css('display', 'none');
-                },
-                success: () => {
-                    saveField.removeAttr('disabled');
-                    $('.dashboard__ok').css('display', 'block');
-
-                },
-                error: err => {
-                    console.log(err)
-                    $('.dashboard__ko').css('display', 'block');
-                }
-            })
-
-        });
-
-        // MOSTRA TYPES IN BASE AL BLOCCO SCELTO
-        selectBlock.change(function () {
-            const types = $(this).children('option:selected').attr('data-type');
-            const actions = $(this).children('option:selected').attr('data-action');
-            selectType.find('option').remove();
-            selectAction.find('label').remove();
-            selectType.parent('.dashboard__select').fadeOut();
-            selectAction.parent('.dashboard__select').fadeOut();
-
-            if (JSON.parse(types).length) {
-                const typesJSON = JSON.parse(types);
-                selectBlock.parent('.dashboard__select').removeClass('is-required');
-                selectType.parent('.dashboard__select').fadeIn();
-
-                for (i = 0; i < typesJSON.length; i++) {
-                    selectType.append('<option value="' + typesJSON[i] + '">' + typesJSON[i] + '</option>')
-                }
-            } else {
-                selectType.parent('.dashboard__select').fadeOut();
-            }
-        });
-
-        // AGGIUNGE BLOCCO
-        addBlock.click(function () {
-            const selectBlockValue = selectBlock.children('option:selected').val();
-            const selectBlockTitle = selectBlock.children('option:selected').text();
-            const selectTypeValue = selectType.children('option:selected').val();
-            const countBlocks = $('.dashboard__block').length + 2;
-
-            if (selectBlockValue.length > 0) {
-                selectBlock.parent('.dashboard__select').removeClass('is-required');
-
-                $.ajax({
-                    url: '{{ ajaxUrl.getBlockType }}&block=' + selectBlockValue + '&index=' + countBlocks + '&type=' + selectTypeValue,
-                    type: 'GET',
-                    success: (data) => {
-
-                        dashboardSortable.append(data);
-                        initSortable(true);
-                        $('html, body').animate({
-                            scrollTop: $('#' + selectBlockValue + '-' + countBlocks).offset().top
-                        }, 1000);
-
-                        uploadFileCheck();
-                    },
-                    error: err => {
-                        console.log(err)
-                        $('.dashboard__ko').css('display', 'block');
-                    }
-                })
-            } else {
-                selectBlock.parent('.dashboard__select').addClass('is-required');
-            }
-        });
-
-        // RIMUOVE BLOCCO
-        $(document).on('click', '.js-remove-block', function () {
-            const blockToRemove = $(this).attr('data-block');
-            $('#' + blockToRemove).remove();
-            initSortable(true);
-        });
-
-        // MODIFICA DIMENSIONE BLOCCO
-        $(document).on('change', '.js-type-block', function () {
-            const blockToChange = $(this).attr('data-block');
-            const newType = $(this).val();
-            $('#' + blockToChange).removeAttr('class').addClass('dashboard__block').addClass('dashboard__block--' + newType).attr('data-type', newType);
-            initSortable(true);
-        });
-
         function initSortable(reinit) {
             if (reinit) {
                 dashboardSortable.sortable('destroy');
@@ -467,71 +249,6 @@
                 blockAction.removeAttr('style');
             }
         }
-
-        function uploadFileCheck() {
-            const inputFile = document.querySelectorAll('.js-upload-file');
-
-            for (let i = 0; i < inputFile.length; i++) {
-                const item = inputFile[i];
-                item.addEventListener('change', () => {
-                    const formData = new FormData();
-                    const error = item.parentNode.parentNode.querySelector('.dashboard__error');
-                    formData.append('file', item.files[0], item.files[0].name);
-                    error.style.display = 'none';
-
-                    if (item.classList.contains('form-control-image')) {
-
-                        if (isFileImage(item.files[0]) > 0) {
-                            uploadFileAjax(formData, item)
-                        } else {
-                            error.style.display = 'block';
-                        }
-                    } else {
-                        const acceptedExtensions = item.getAttribute('data-types');
-
-                        if (isFileOther(item.files[0], acceptedExtensions) > 0) {
-                            uploadFileAjax(formData, item);
-                        } else {
-                            error.style.display = 'block';
-                        }
-                    }
-
-                })
-            }
-
-        }
-
-        function uploadFileAjax(formData, item) {
-            const block = item.getAttribute('data-block');
-            const field = item.getAttribute('id');
-            $.ajax({
-                url: '{{ ajaxUrl.uploadFile }}&block=' + block + '&field=' + field,
-                data: formData,
-                processData: false,
-                contentType: false,
-                type: 'POST',
-                success: function (data) {
-                    const response = JSON.parse(data);
-                    let imageUrl = '';
-                    if (response.status == 200) {
-                        imageUrl = response.file;
-                        $(item).parents(".dashboard__infoContainer").find('img').attr("src", imageUrl).fadeIn();
-                    }
-                    item.setAttribute('data-url', imageUrl);
-                }
-            });
-        }
-
-        function isFileImage(file) {
-            const acceptedImageTypes = ['image/gif', 'image/jpeg', 'image/png'];
-            return file && $.inArray(file['type'], acceptedImageTypes)
-        }
-
-        function isFileOther(file, extensions) {
-            const acceptedFileTypes = extensions;
-            return file && $.inArray(file['type'], acceptedFileTypes.split(','))
-        }
-
     });
 </script>
 
@@ -635,6 +352,7 @@
         display: block;
         text-align: center;
         font-weight: 800;
+        word-break: break-all;
     }
 
     .dashboard__infoContainer {
@@ -678,6 +396,12 @@
 
     #form-layout {
         display: none;
+    }
+    #form-layout textarea {
+        min-width: 100%;
+        max-width: 100%;
+        min-height: 100px;
+        max-height: 200px;
     }
 
     .dashboard__block {
@@ -752,6 +476,11 @@
         flex-direction: column;
     }
 
+    .dashboard__actions.is-fixed {
+        z-index: 10;
+        margin-top: 10px;
+    }
+
     @media all and (min-width: 1024px) {
         .dashboard__actions, .dashboard_layout__actions {
             width: 25%;
@@ -759,6 +488,7 @@
 
         .dashboard__actions.is-fixed {
             position: fixed;
+            margin-top: 10px;
             right: 0;
         }
     }

@@ -1,6 +1,7 @@
 // Homepage
 //
 // Style guide: 12
+
 .homepage {
   height: auto; /* Importante per posizione corretta bootstrap datepicker */
   max-height: initial; /* Importante per posizione corretta bootstrap datepicker */
@@ -35,13 +36,13 @@
   max-width: 760px;
   position: relative;
   margin: 0 auto;
-  background-color: $white;
+  // background-color: $white;
   box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.15);
   overflow: visible;
 
   @include breakpoint($tablet) {
     margin: 0 auto;
-    border-radius: 5px;
+    border-radius: $border-radius;
   }
 }
 
@@ -89,7 +90,7 @@ p {
   padding-top: 15px;
   padding-bottom: 15px;
   overflow: visible;
-  background-color: transparent;
+  background-color: $white;
   border-bottom: solid 3px $dark-orange;
   position: relative;
   text-align: left;
@@ -97,22 +98,70 @@ p {
   @include breakpoint($tablet) {
     padding-top: 38px;
     padding-bottom: 34px;
-    margin-bottom: 12px;
+    // margin-bottom: 12px;
     border: none;
   }
+}
+.pull-right {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  margin-top: 1rem;
+}
+.select-language > .hidden-xs {
+  visibility: hidden;
 }
 
 .homepage__row--login {
   padding-top: 14px;
   padding-bottom: 47px;
+  position: relative;
+  backdrop-filter: blur(5px);
 
   @include breakpoint($tablet) {
     padding-top: 32px;
   }
+
+  &::before {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+
+    background:black;
+    // background:rgba(0,0,0,0.8);
+
+    filter:blur(4px);
+    -o-filter:blur(4px);
+    -ms-filter:blur(4px);
+    -moz-filter:blur(4px);
+    -webkit-filter:blur(4px);
+  }
 }
 
-.homepage__row--gray {
-  background-color: $gray-5;
+
+.homepage__row--login.homepage__row--gray {
+  background-color: rgba($gray-5,0.2);
+}
+
+:is(.homepage__row--gray.homepage__back,.homepage__row--gray.homepage__back ~ .homepage__row--gray, .homepage__back ~ .homepage__form--lost-pwd,.homepage__back ~ .homepage__row) {
+  background-color: $white;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+.homepage__row--footer {
+  background-color: $white;
+}
+.homepage__back ~ .row {
+  margin: 0;
+}
+.homepage__row--login.homepage__row--gray ~ .homepage__row {
+  background-color: $white;
+}
+
+.homepage__row--login.homepage__row--gray + .homepage__row {
+  padding-top: 2rem;
 }
 
 .homepage__row--form {
@@ -199,12 +248,28 @@ p {
     margin: 0 4px;
     line-height: 1;
     font-size: 12px;
-    text-decoration: underline;
-    color: #666666;
+    text-decoration: none;
+    color: #000;
+
+    &:hover {
+      text-decoration: underline;
+    }
 
     &:nth-child(n + 2) {
-      padding-left: 8px;
-      border-left: solid 2px currentColor;
+      padding-left: 3px;
+      // border-left: solid 1px currentColor;
+    }
+    &[href$="register"]::before {
+      content: "\f090";
+      font-family: 'FontAwesome';
+      font-weight: 300;
+      margin-right: .5rem;
+    }
+    &[href$="lostpwd"]::before {
+      content: "\f29c";
+      font-family: 'FontAwesome';
+      font-weight: 300;
+      margin-right: .5rem;
     }
 
     .homepage__row--login & {
@@ -303,6 +368,11 @@ a.forma-button {
   .homepage__row & {
     width: auto;
     margin-top: 15px;
+  }
+}
+.homepage__row--header {
+  a.forma-button {
+    margin-top: 0;
   }
 }
 
@@ -471,7 +541,30 @@ a.forma-button {
     }
   }
 }
+.forma-button--orange.js-show-collapsed-text {
+  border: 0;
+  position: relative;
+  &::after {
+    position: absolute;
+    content: "\f175";
+    right: -.5rem;
+    top: 0;
+    font-family: 'FontAwesome';
+    font-weight: 300;
+  }
+    &:hover {
+    background: $white;
+    color: var(--color-1-700);
+    border: 0;
 
+  }
+}
+.homepage #login_pwd:invalid ~ #login {
+  display: none;
+}
+:is(.homepage #login_userid, .homepage #login_pwd) {
+  background: rgba($white,0.6);
+}
 // Template
 //
 // Markup:

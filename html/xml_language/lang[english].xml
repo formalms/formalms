@@ -471,9 +471,11 @@
         <key id="configuration&amp;_CONF_GLOBAL" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Common]]></key>
         <key id="configuration&amp;_CONF_LMS" attributes="" save_date="2017-04-10 13:01:52"><![CDATA[E-learning]]></key>
         <key id="configuration&amp;_COURSE_BLOCK" attributes="" save_date="2017-11-09 18:11:39"><![CDATA[Show catalogue in login page]]></key>
+        <key id="configuration&amp;_IGNORE_SCORE" attributes="" save_date="2017-11-09 18:11:31"><![CDATA[Ignore mastery score]]></key>
         <key id="configuration&amp;_COURSE_QUOTA" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Limit for the maximum total size of contents uploaded into the course (MB)]]></key>
         <key id="configuration&amp;_CURRENCY_SYMBOL" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Currency symbol (will be displayed at user side)]]></key>
         <key id="configuration&amp;_CUSTOMER_HELP_EMAIL" attributes="" save_date="2017-04-10 14:55:02"><![CDATA[Help Desk email]]></key>
+        <key id="configuration&amp;_CUSTOMER_HELP_NAME_FROM" attributes="" save_date="2017-03-15 12:09:35"><![CDATA[Name from Help Desk]]></key>
         <key id="configuration&amp;_CUSTOMER_HELP_SUBJ_PFX" attributes="" save_date="2019-10-24 10:42:45"><![CDATA[Prefix for help email subject]]></key>
         <key id="configuration&amp;_CUSTOMER_HELP_SUBJ_PLACEHOLDER" attributes="" save_date="2017-04-10 16:37:21"><![CDATA[Help Desk subject prefix]]></key>
         <key id="configuration&amp;_CUSTOM_FIELDS_MANDATORY_FOR_ADMIN" attributes="" save_date="2017-05-05 12:03:05"><![CDATA[Mandatory customfields]]></key>
@@ -521,6 +523,7 @@
         <key id="configuration&amp;_LIST_DB_UPGRADES" attributes="" save_date="2017-04-10 12:21:42"><![CDATA[DB SQL scripts log]]></key>
         <key id="configuration&amp;_MAGIC_QUOTES_GPC" attributes="" save_date="2015-09-30 15:32:22"><![CDATA[Configuration of "magic_quotes_gpc"]]></key>
         <key id="configuration&amp;_MAIL_SENDER" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Registrations and Lost passwords email sender]]></key>
+        <key id="configuration&amp;_MAIL_SENDER_NAME_FROM" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Sender name of registration emails and automatic password recovery procedure]]></key>
         <key id="configuration&amp;_MAINTENANCE" attributes="" save_date="2017-05-10 19:01:34"><![CDATA[Maintenance mode]]></key>
         <key id="configuration&amp;_MAINTENANCE_PW" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Maintenance Password]]></key>
         <key id="configuration&amp;_MAIN_OPTIONS" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Main options]]></key>
@@ -618,7 +621,9 @@
         <key id="configuration&amp;_SCO_DIRECT_PLAY" attributes="" save_date="2017-07-07 12:46:08"><![CDATA[Allow the usage of direct links from external sources to SCORM chapters (sco and asset)]]></key>
         <key id="configuration&amp;_SECURITY" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Security related]]></key>
         <key id="configuration&amp;_SENDER_EVENT" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Sender email address for alert messages]]></key>
+        <key id="configuration&amp;_USE_SENDER_ACLNAME" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Sender name from for alert messages]]></key>
         <key id="configuration&amp;_SEND_CC_FOR_SYSTEM_EMAILS" attributes="" save_date="2017-04-10 12:02:38"><![CDATA[Add the following address as CC for all the email sent by the platform]]></key>
+        <key id="configuration&amp;_SEND_CCN_FOR_SYSTEM_EMAILS" attributes="" save_date="2017-04-10 12:02:38"><![CDATA[Add the following address as CCN for all the email sent by the platform]]></key>
         <key id="configuration&amp;_SERVERINFO" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Server configuration]]></key>
         <key id="configuration&amp;_SERVER_ADDR" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Server address]]></key>
         <key id="configuration&amp;_SERVER_ADMIN" attributes="" save_date="2017-04-10 14:54:56"><![CDATA[Server admin email]]></key>
@@ -1024,6 +1029,55 @@ Otherwise, you must register in our system, following this link: <br />
         <key id="dashboard&amp;_URL_SUPPORTLMS" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[forma.lms open source community]]></key>
         <key id="dashboard&amp;_USERS_PANEL" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Users info]]></key>
         <key id="dashboard&amp;_WAITING_SUBSCRIPTION" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Waiting subscription]]></key>
+        <key id="dashboard&amp;_DASHBOARD_BLOCKMESSAGES_NO_RECORDS" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[There are no messages]]></key>
+        <key id="dashboard&amp;_DASHBOARD_BLOCKCERTIFICATES_NO_RECORDS" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[There are no certificates]]></key>
+      </module>
+      <module id="dashboardsetting">
+        <key id="dashboardsetting&amp;_DASHBOARD_SETTING_ADD_NEW_LAYOUT" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Create a new dashboard]]></key>
+        <key id="dashboardsetting&amp;_DASHBOARD_SETTING_INSERT_NEW_LAYOUT" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Insert new dashboard]]></key>
+        <key id="dashboardsetting&amp;_DASHBOARD_SETTING_LAYOUT_NAME" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Dashboard name]]></key>
+        <key id="dashboardsetting&amp;_DASHBOARD_SETTING_SELECT_STATUS" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Select a status]]></key>
+        <key id="dashboardsetting&amp;_DASHBOARD_SETTING_DRAFT_STATUS" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Draft]]></key>
+        <key id="dashboardsetting&amp;_DASHBOARD_SETTING_PUBLISH_STATUS" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Published]]></key>
+        <key id="dashboardsetting&amp;_DASHBOARD_SETTING_CREATE_NEW_LAYOUT" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Create new dashboard]]></key>
+        <key id="dashboardsetting&amp;_DASHBOARD_LAYOUT_SAVE_MESSAGE_OK" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Dashboard created successfully]]></key>
+        <key id="dashboardsetting&amp;_DASHBOARD_LAYOUT_SAVE_MESSAGE_KO" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[The dashboard could not be created, please check the data entered]]></key>
+        <key id="dashboardsetting&amp;_ENABLED_ACTIONS" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Actions enabled]]></key>
+        <key id="dashboardsetting&amp;_DASHBOARD_SETTING_SELECT_BLOCK" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Select block]]></key>
+        <key id="dashboardsetting&amp;_DASHBOARD_SETTING_BLOCK_REQUIRED" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Block required]]></key>
+        <key id="dashboardsetting&amp;_DASHBOARD_SETTING_ADD_NEW_BLOCK" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Insert a new block]]></key>
+        <key id="dashboardsetting&amp;_DASHBOARD_SETTING_SAVE" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Save]]></key>
+        <key id="dashboardsetting&amp;_DASHBOARD_SETTING_SAVE_MESSAGE_OK" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Dashboard saved successfully]]></key>
+        <key id="dashboardsetting&amp;_DASHBOARD_NO_LAYOUTS" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[There is no layout]]></key>
+        <key id="dashboardsetting&amp;_DASHBOARD_SETTING_SAVE_MESSAGE_KO" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[The dashboard could not be saved, please check the data entered]]></key>
+        <key id="dashboardsetting&amp;_IMAGE_DASHBOARDBLOCKBANNERLMS_COVER" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Cover image]]></key>
+        <key id="dashboardsetting&amp;_INPUT_DASHBOARDBLOCKBANNERLMS_VIDEO" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Youtube / vimeo video url]]></key>
+        <key id="dashboardsetting&amp;_INPUT_DASHBOARDBLOCKCERTIFICATESLMS_ALTERNATIVE_TEXT" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Alternative text]]></key>
+        <key id="dashboardsetting&amp;_CHECKBOX_DASHBOARDBLOCKCERTIFICATESLMS_SHOW_BUTTON" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Show button]]></key>
+        <key id="dashboardsetting&amp;_INPUT_DASHBOARDBLOCKCERTIFICATESLMS_MAX_LAST_RECORDS" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Maximum number of visible certificates]]></key>
+        <key id="dashboardsetting&amp;_INPUT_DASHBOARDBLOCKMESSAGESLMS_ALTERNATIVE_TEXT" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Alternative text]]></key>
+        <key id="dashboardsetting&amp;_INPUT_DASHBOARDBLOCKWELCOMELMS_WELCOME_TEXT" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Welcome message (translation key)]]></key>
+        <key id="dashboardsetting&amp;_CHECKBOX_DASHBOARDBLOCKMESSAGESLMS_SHOW_BUTTON" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Show button]]></key>
+        <key id="dashboardsetting&amp;_INPUT_DASHBOARDBLOCKMESSAGESLMS_MAX_LAST_RECORDS" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Maximum number of visible messages]]></key>
+        <key id="dashboardsetting&amp;_DASHBOARDBLOCKWELCOMELMS" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Welcome message]]></key>
+        <key id="dashboardsetting&amp;_DASHBOARDBLOCKBANNERLMS" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Image / video banner]]></key>
+        <key id="dashboardsetting&amp;_DASHBOARDBLOCKCERTIFICATESLMS" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Certificates]]></key>
+        <key id="dashboardsetting&amp;_DASHBOARDBLOCKMESSAGESLMS" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Messages]]></key>
+        <key id="dashboardsetting&amp;_DASHBOARDBLOCKANNOUNCEMENTSLMS" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Ads]]></key>
+        <key id="dashboardsetting&amp;_DASHBOARDBLOCKCALENDARLMS" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Calendar]]></key>
+        <key id="dashboardsetting&amp;_DASHBOARDBLOCKCOURSESLMS" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Courses]]></key>
+        <key id="dashboardsetting&amp;_DASHBOARDBLOCKCALENDARLMS_GETELEARNINGCALENDAR" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[E-Learning Courses]]></key>
+        <key id="dashboardsetting&amp;_DASHBOARDBLOCKCALENDARLMS_GETCLASSROOMCALENDAR" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Classes Courses]]></key>
+        <key id="dashboardsetting&amp;_DASHBOARDBLOCKCALENDARLMS_GETRESERVATIONCALENDAR" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Reservations]]></key>
+        <key id="dashboardsetting&amp;_DASHBOARD_LAYOUT" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Dashboard]]></key>
+        <key id="dashboardsetting&amp;_DASHBOARD_LAYOUT_STATUS" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Dashboard status]]></key>
+        <key id="dashboardsetting&amp;_DASHBOARD_STATUS_DRAFT" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Draft]]></key>
+        <key id="dashboardsetting&amp;_DASHBOARD_STATUS_PUBLISH" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Pubblished]]></key>
+        <key id="dashboardsetting&amp;_DASHBOARD_LAYOUT_DEFAULT" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Default]]></key>
+        <key id="dashboardsetting&amp;_DASHBOARD_DELETE_LAYOUT" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Dashboard]]></key>
+        <key id="dashboardsetting&amp;_DASHBOARD_WELCOME_MESSAGE" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Hi <strong>[firstname] [lastname]</strong>,
+welcome to the platform <strong>[platform]</strong>]]></key>
+        <key id="dashboardsetting&amp;_DASHBOARD_LAYOUT_SURE_DEL" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Are you sure you want to delete this dashboard?]]></key>
       </module>
       <module id="email">
         <key id="email&amp;_ALERT_SUBJECT" attributes="email" save_date="2017-03-14 16:10:41"><![CDATA[New announcement]]></key>
@@ -1691,6 +1745,7 @@ In handling this information, accuracy and precision shall be met to ensure the 
         <key id="organization&amp;_SHOW_INTERACTIONS" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Interactions]]></key>
         <key id="organization&amp;_TIME" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Elapsed time]]></key>
         <key id="organization&amp;_VIEWTREE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Show menu]]></key>
+        <key id="organization&amp;_IGNORE_SCORE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Ignore score]]></key>
       </module>
       <module id="organization_chart">
         <key id="organization_chart&amp;_ASSIGNED_EXTRAFIELD" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Node Fields]]></key>
@@ -2389,6 +2444,7 @@ Username: [userid]
         <key id="standard&amp;_FIELD_NAME" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Field name]]></key>
         <key id="standard&amp;_FILE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[File]]></key>
         <key id="standard&amp;_FILENAME" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[File name]]></key>
+        <key id="standard&amp;_FILEMIME" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[File type]]></key>
         <key id="standard&amp;_FILE_MANAGER" attributes="" save_date="2017-04-11 18:38:45"><![CDATA[File manager]]></key>
         <key id="standard&amp;_FILTER" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Filter by]]></key>
         <key id="standard&amp;_FILTER_ALL_CONDS" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[All conditions must be satisfied]]></key>
@@ -2636,6 +2692,7 @@ Username: [userid]
         <key id="standard&amp;_UNTIL_COMPLETED" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Until not completed/passed]]></key>
         <key id="standard&amp;_UP" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Up]]></key>
         <key id="standard&amp;_UPLOAD" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Upload file(s)]]></key>
+        <key id="standard&amp;_MEDIA_URL" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Media URL]]></key>
         <key id="standard&amp;_URL" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[URL]]></key>
         <key id="standard&amp;_USER" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[User]]></key>
         <key id="standard&amp;_USERNAME" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Username]]></key>

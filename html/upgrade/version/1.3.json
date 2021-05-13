@@ -1,0 +1,20 @@
+{
+    "version": {
+        "name": "1.3",
+        "number": "10300",
+        "description": "questa è la 1.3",
+        "pretty_desc": "1 3",
+        "pre": "10300_pre.php",
+        "post": "10300_post.php",
+        "config": "10300_conf.php",
+        "file_sytem": "10300_fs.php",
+        "role": "10300_role.php",
+        "mysql": "10300_db.sql",
+        "date": "2000-01-01 00:00",
+        "status": "stable",
+        "php": {
+            "min": "5.6",
+            "max": "7.0" 
+        }
+    }
+}

@@ -620,44 +620,59 @@ class DoceboConnectorDoceboUsers extends DoceboConnector {
 			//Assign the user to correct folder
 			
 			if($tree_code) {
-				
-				$tree_codes = explode('#', $tree_code);
-				
-				$readed_folders = array();
-                foreach($tree_codes as $tree_code )
-                {
-					
-					$dir_code = stripslashes($tree_code);
-					if(isset($this->org_chart_code[$dir_code])) {
-						
-						$readed_folders[] = $this->org_chart_code[$dir_code];
-					}
-				}
-				if(!isset($this->user_org_chart[$idst])) $this->user_org_chart[$idst] = array();
-				$to_add = array_diff($readed_folders, $this->user_org_chart[$idst]);
-				$to_del = array_diff($this->user_org_chart[$idst], $readed_folders);
-		
-				foreach($to_add as $id_dir) {
-					
-					$idst_oc_folder = $this->org_chart_group['/oc_'.$id_dir];
-					$idst_ocd_folder = $this->org_chart_group['/ocd_'.$id_dir];
-						
-					Docebo::aclm()->addToGroup($idst_oc_folder, $idst);
-					Docebo::aclm()->addToGroup($idst_ocd_folder, $idst); 
-                    
+
+                $tree_codes = explode('#', $tree_code);
+
+                $readed_folders = [];
+                foreach ($tree_codes as $tree_code) {
+
+                    $dir_code = stripslashes($tree_code);
+                    if (isset($this->org_chart_code[$dir_code])) {
+
+                        $readed_folders[] = $this->org_chart_code[$dir_code];
+                    }
+                }
+
+                if (!isset($this->user_org_chart[$idst])) {
+                    $this->user_org_chart[$idst] = [];
+                }
+
+                $to_add = $readed_folders;
+                if (!array_key_exists($idst, $this->inserted_user_org_chart)) {
+                    $this->inserted_user_org_chart[$idst] = [];
+                }
+
+                foreach ($to_add as $orgChart) {
+                    if (!in_array($orgChart, $this->inserted_user_org_chart[$idst])) {
+                        $this->inserted_user_org_chart[$idst][] = $orgChart;
+                    }
+                }
+
+                //Docebo::aclm()->removeFromAllGroup($idst);
+                $query = 'select %adm_group.idst as idst from %adm_group join %adm_group_members on %adm_group.idst = %adm_group_members.idst where %adm_group_members.idstMember = ' . $idst . ' AND %adm_group.groupid like "/oc%"';
+                $result = sql_query($query);
+                $idstMembers = [];
+                while (list($idstMember) = sql_fetch_row($result)) {
+
+                    $idstMembers[] = $idstMember;
+                }
+
+                Docebo::aclm()->removeFromGroup($idst, $idstMembers);
+
+                foreach ($this->inserted_user_org_chart[$idst] as $id_dir) {
+
+                    $idst_oc_folder = $this->org_chart_group['/oc_' . $id_dir];
+                    $idst_ocd_folder = $this->org_chart_group['/ocd_' . $id_dir];
+
+                    Docebo::aclm()->addToGroup($idst_oc_folder, $idst);
+                    Docebo::aclm()->addToGroup($idst_ocd_folder, $idst);
+
+
                     // adding to enrollment rules for org, if any
                     $enrollrules = new EnrollrulesAlms();
                     $users = array($idst);
-                    $enrollrules->newRules('_NEW_IMPORTED_USER', $users, 'all', $id_dir);                    
-				}
-				foreach($to_del as $id_dir) {
-					
-					$idst_oc_folder = $this->org_chart_group['/oc_'.$id_dir];
-					$idst_ocd_folder = $this->org_chart_group['/ocd_'.$id_dir];
-						
-					Docebo::aclm()->removeFromGroup($idst_oc_folder, $idst);
-					Docebo::aclm()->removeFromGroup($idst_ocd_folder, $idst);
-				}
+                    $enrollrules->newRules('_NEW_IMPORTED_USER', $users, 'all', $id_dir);
+                }
 			}
 			//  -------------------------------------------------------------------
 			$result = TRUE;

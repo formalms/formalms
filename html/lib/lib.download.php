@@ -32,11 +32,11 @@
  */
 function sendFile($path, $filename, $ext = NULL, $sendname = NULL)
 {
-
-    \appCore\Events\DispatcherManager::addListener(
-        \appCore\Events\Core\FileSystem\DownloadEvent::EVENT_NAME,
-        'sendFileFromFS'
-	);
+	sendFileFromFS($path, $filename, $ext, $sendname);  //TODO: EVT_OBJECT (§)
+    //\appCore\Events\DispatcherManager::addListener(
+    //    \appCore\Events\Core\FileSystem\DownloadEvent::EVENT_NAME,
+    //    'sendFileFromFS'
+	//);
 
 	//TODO: EVT_OBJECT (§)
 	//$event = new \appCore\Events\Core\FileSystem\DownloadEvent($path, $filename, $ext, $sendname);
@@ -50,12 +50,13 @@ function sendFile($path, $filename, $ext = NULL, $sendname = NULL)
  * @param \appCore\Events\Core\FileSystem\DownloadEvent $event
  * @return bool
  */
-function sendFileFromFS(\appCore\Events\Core\FileSystem\DownloadEvent $event){
+//function sendFileFromFS(\appCore\Events\Core\FileSystem\DownloadEvent $event){ //TODO: EVT_OBJECT (§)
+function sendFileFromFS($path, $filename, $ext, $sendname) {
 	if (Get::cfg('uploadType') == 'fs' || Get::cfg('uploadType') == 'ftp' || Get::cfg('uploadType', null) == null) {
-		$path = $event->getPath();
-		$filename = $event->getFilename();
-		$ext = $event->getExt();
-		$sendname = $event->getSendname();
+		//$path = $event->getPath(); //TODO: EVT_OBJECT (§)
+		//$filename = $event->getFilename(); //TODO: EVT_OBJECT (§)
+		//$ext = $event->getExt(); //TODO: EVT_OBJECT (§)
+		//$sendname = $event->getSendname(); //TODO: EVT_OBJECT (§)
 
 		//empty and close buffer
 		if (!(_files_ == substr($path, 0, strlen(_files_)))) {

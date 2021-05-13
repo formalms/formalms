@@ -57,9 +57,9 @@
 // Style guide: 8.1
 
 .aside {
-  padding: 20px;
+  padding: 4px;
   border: 2px solid $gray-4;
-  border-radius: 5px;
+  border-radius: $border-radius;
   font-family: $font;
 
   .indent {
@@ -71,7 +71,7 @@
   .icon.expand-icon {
     width: 10px;
     height: 15px;
-    margin-right: 5px;
+    margin-right: 2px;
     //top: 50%;
     //transform: translateY(-50%);
     display: inline;
@@ -114,17 +114,17 @@
   }
 
   .list-group-item {
-    height: 40px;
-    margin-bottom: 10px;
+    height: 32px;
+    margin-bottom: 5px;
     padding: {
       top: 0;
-      right: 12px;
+      right: 8px;
       bottom: 0;
-      left: 20px;
+      left: 14px;
     }
-    line-height: 40px;
+    line-height: 32px;
     position: relative;
-    border-radius: 5px;
+    border-radius: $border-radius;
     transition: $transition-base;
     white-space: nowrap;
     overflow: hidden;
@@ -137,13 +137,13 @@
     &.node-treeview1 {
       &:hover {
         cursor: pointer;
-        background-color: $dark-orange !important;
+        background-color: var(--color-1-350) !important;
         color: $white !important;
       }
     }
 
     &:first-child {
-      padding-left: 35px;
+      padding-left: 25px;
 
       .glyphicon-chevron-down {
         &:before {

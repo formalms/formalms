@@ -34,7 +34,6 @@ INSERT INTO `learning_module_new` (`idModule`, `module_name`, `default_op`, `def
 (18, 'htmlfront', 'showhtml', '_HTMLFRONT', 'view', 'class.htmlfront.php', 'Module_Htmlfront', '', ''),
 (19, 'forum', 'forum', '_FORUM', 'view', 'class.forum.php', 'Module_Forum', '', ''),
 (20, 'wiki', 'main', '_WIKI', 'view', 'class.wiki.php', 'Module_Wiki', '', ''),
-(21, 'chat', 'chat', '_CHAT', 'view', 'class.chat.php', 'Module_Chat', '', ''),
 (22, 'conference', 'list', '_VIDEOCONFERENCE', 'view', 'class.conference.php', 'Module_Conference', '', ''),
 (23, 'project', 'project', '_PROJECT', 'view', 'class.project.php', 'Module_Project', '', ''),
 (24, 'groups', 'groups', '_GROUPS', 'view', 'class.groups.php', 'Module_Groups', '', ''),

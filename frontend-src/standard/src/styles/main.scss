@@ -14,6 +14,7 @@
 @import 'utils/helpers';
 @import 'utils/icons';
 @import 'utils/grid';
+@import 'utils/colors';
 
 //COMPONENTS
 @import 'components/router';
@@ -27,6 +28,7 @@
 @import 'components/icons';
 @import 'components/modal';
 @import 'components/dashboard/main';
+@import 'components/show-all-dates';
 
 //MODULES
 @import 'modules/layout';
@@ -35,6 +37,7 @@
 @import 'modules/fake-grid';
 @import 'modules/tab-menu';
 @import 'modules/footer';
+@import 'modules/form';
 @import 'modules/top-menu';
 @import 'modules/user-panel';
 @import 'modules/social-login';
@@ -45,6 +48,7 @@
 @import 'modules/section-course';
 @import 'modules/slider-menu';
 @import 'modules/course-info';
+@import 'modules/filterbar';
 
 //PAGES
 @import 'pages/homepage';

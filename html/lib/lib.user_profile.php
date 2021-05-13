@@ -1373,7 +1373,7 @@ class UserProfileViewer {
 			}
 
 
-            // GRIFO - LRZ - add admin profile name
+            //# GRIFO - LRZ - add admin profile name
             $stato_admin = $acl_man->getUserLevelId($this->_user_profile->getIdUser());
             $str_admin = ' ';
             $name_admin_profile = '';
@@ -1392,24 +1392,30 @@ class UserProfileViewer {
 		}
         
         
-        //Grifo: ticket #19467 
-        $html .= '<tr><th scope="col" colspan="2" id="up_type2">Gestito da:</th></tr>';        
-        $str_manage_org_by = $this->getManagerOrgBy($this->_user_profile->getIdUser());
-        $str_manage_group_by = $this->getManagerGroupBy($this->_user_profile->getIdUser());
-        $str_manage_role_by = $this->getMaganerRoleBy($this->_user_profile->getIdUser());
-        $str_manage_user = $this->getManageUser($this->_user_profile->getIdUser());
-        
-        
-        $no_admin = true;
-        if($str_manage_org_by['cont']>0)           { $html .= $this->getUIRowCode($lv_lang->def('_ORGCHART'), substr($str_manage_org_by['content'], 0, -3) );  $no_admin = false;};
-        if($str_manage_role_by['cont']>0) { $html .= $this->getUIRowCode($lv_lang->def('_FUNCTIONAL_ROLE'),substr($str_manage_role_by['content'], 0, -3) ); $no_admin = false;}
-        if($str_manage_group_by['cont']>0){ $html .= $this->getUIRowCode($lv_lang->def('_GROUPS'),substr($str_manage_group_by['content'], 0, -3) ); $no_admin = false;}        
-        if($str_manage_user['cont']>0)             { $html .= $this->getUIRowCode("Direttamente da", substr($str_manage_user['content'], 0, -3) ); $no_admin = false;}
-        
-        if($no_admin == true) $html .= '<tr><td colspan=2 align=center>- Nessun amministratore -</td></tr>';  
-        
-        $html .= '<tr><td ></td></tr>';          
-        
+        // Grifo: ticket #19467 
+        // view only admin profile CR: #19813
+        $level_current_user = Docebo::user()->user_level;
+         if(
+               $level_current_user  == ADMIN_GROUP_GODADMIN ||
+               $level_current_user  == ADMIN_GROUP_ADMIN  
+            )  {      
+            $html .= '<tr><th scope="col" colspan="2" id="up_type2">Gestito da:</th></tr>';        
+            $str_manage_org_by = $this->getManagerOrgBy($this->_user_profile->getIdUser());
+            $str_manage_group_by = $this->getManagerGroupBy($this->_user_profile->getIdUser());
+            $str_manage_role_by = $this->getMaganerRoleBy($this->_user_profile->getIdUser());
+            $str_manage_user = $this->getManageUser($this->_user_profile->getIdUser());
+            
+            
+            $no_admin = true;
+            if($str_manage_org_by['cont']>0)           { $html .= $this->getUIRowCode($lv_lang->def('_ORGCHART'), substr($str_manage_org_by['content'], 0, -3) );  $no_admin = false;};
+            if($str_manage_role_by['cont']>0) { $html .= $this->getUIRowCode($lv_lang->def('_FUNCTIONAL_ROLE'),substr($str_manage_role_by['content'], 0, -3) ); $no_admin = false;}
+            if($str_manage_group_by['cont']>0){ $html .= $this->getUIRowCode($lv_lang->def('_GROUPS'),substr($str_manage_group_by['content'], 0, -3) ); $no_admin = false;}        
+            if($str_manage_user['cont']>0)             { $html .= $this->getUIRowCode("Direttamente da", substr($str_manage_user['content'], 0, -3) ); $no_admin = false;}
+            
+            if($no_admin == true) $html .= '<tr><td colspan=2 align=center>- Nessun amministratore -</td></tr>';  
+            
+            $html .= '<tr><td ></td></tr>'.$stato_admin;          
+        }
         
         
 		if($viewer == $this->_id_user) {
@@ -2163,7 +2169,10 @@ class UserProfileViewer {
         $html .= '<div class="row comunication">'; //pulsanti certificati-messaggi
 
         if ($perm_certificate) $html .= '<div class="col-xs-4"><a class="btn btn-default" href="index.php?r=lms/mycertificate/show&sop=unregistercourse">' . Lang::t('_MY_CERTIFICATE', 'menu_over') . '</a></div>';
-        if (isset($perm_competence) && $perm_competence) $html .= '<div class="col-xs-4"><a class="btn btn-default" href="index.php?modname=mycompetences&op=mycompetences&op=unregistercourse">' . Lang::t('_COMPETENCES', 'standard') . '</a></div>';
+        
+        // BUG FIX LRZ: #19834
+        //if (isset($perm_competence) && $perm_competence) $html .= '<div class="col-xs-4"><a class="btn btn-default" href="index.php?modname=mycompetences&op=mycompetences&op=unregistercourse">' . Lang::t('_COMPETENCES', 'standard') . '</a></div>';
+        if (isset($perm_competence) && $perm_competence) $html .= '<div class="col-xs-4"><a class="btn btn-default" href="index.php?modname=mycompetences&op=mycompetences&sop=unregistercourse">' . Lang::t('_COMPETENCES', 'standard') . '</a></div>';
 
 
         if ($unread_num > 0 && $perm_message) {
@@ -3759,7 +3768,7 @@ class UserProfileData {
 		if(isset($this->_teacher_data[$id_user]['is_teacher'])) return $this->_teacher_data[$id_user]['is_teacher'];
 
 		$re = Man_CourseUser::getUserWithLevelFilter(array('4', '5', '6', '7'), array($id_user));
-		$this->_teacher_data[$id_user]['is_teacher'] = !empty($re);
+        $this->_teacher_data[$id_user]['is_teacher'] = !empty($re);
 		return $this->_teacher_data[$id_user]['is_teacher'];
 	}
 
@@ -3771,7 +3780,7 @@ class UserProfileData {
 		if($id_user == $sender) return false;
 		$is_friend 	= $this->isFriend($sender, $id_user, false);
 		$is_teacher = $this->isTeacher($sender);
-		$fal 		= $this->getFieldAccessList($id_user);
+        $fal         = $this->getFieldAccessList($id_user);
 
 		$can_send = false;
 		switch($fal['message_recipients']) {

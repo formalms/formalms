@@ -67,8 +67,6 @@ class DashboardsettingsAdmController extends AdmController
         require_once(Get::rel_path('lib') . '/formatable/formatable.php');
         Util::get_css(Get::rel_path('lib') . '/formatable/formatable.css', true, true);
 
-        $dashboardId = Get::req('dashboard', DOTY_INT, false);
-
         $data = [
             'ajaxUrl' => [
                 'save' => 'ajax.adm_server.php?r=adm/dashboardsettings/save',
@@ -81,14 +79,117 @@ class DashboardsettingsAdmController extends AdmController
                 'getBlockType' => 'ajax.adm_server.php?r=adm/dashboardsettings/getBlockTypeForm',
             ],
             'showUrl' => './index.php?r=adm/dashboardsettings/show',
-            'installedBlocks' => $this->model->getInstalledBlocksCommonViewData(),
-            'enabledBlocks' => $this->model->getEnabledBlocksCommonViewData($dashboardId),
+            'editUrl' => './index.php?r=adm/dashboardsettings/edit',
+            'permissionUrl' => './index.php?r=adm/dashboardsettings/permission',
+            'cloneUrl' => './index.php?r=adm/dashboardsettings/clone',
             'templatePath' => getPathTemplate(),
-            'dashboardId' => $dashboardId
         ];
 
         //render view
         $this->render('show', $data);
+    }
+
+    public function edit()
+    {
+        $dashboardId = Get::req('dashboard', DOTY_INT, false);
+        $dashboard = $this->model->getLayout($dashboardId);
+
+        $data = [
+            'ajaxUrl' => [
+                'save' => 'ajax.adm_server.php?r=adm/dashboardsettings/save',
+                'saveLayout' => 'ajax.adm_server.php?r=adm/dashboardsettings/saveLayout',
+                'cloneLayout' => 'ajax.adm_server.php?r=adm/dashboardsettings/cloneLayout',
+                'editInlineLayout' => 'ajax.adm_server.php?r=adm/dashboardsettings/editInlineLayout',
+                'delLayout' => 'ajax.adm_server.php?r=adm/dashboardsettings/delLayout',
+                'defaultLayout' => 'ajax.adm_server.php?r=adm/dashboardsettings/defaultLayout',
+                'uploadFile' => 'ajax.adm_server.php?r=adm/dashboardsettings/uploadFile',
+                'getLayouts' => 'ajax.adm_server.php?r=adm/dashboardsettings/getLayouts',
+                'getBlockType' => 'ajax.adm_server.php?r=adm/dashboardsettings/getBlockTypeForm',
+            ],
+            'showUrl' => './index.php?r=adm/dashboardsettings/show',
+            'installedBlocks' => $this->model->getInstalledBlocksCommonViewData(),
+            'enabledBlocks' => $this->model->getEnabledBlocksCommonViewData($dashboardId),
+            'templatePath' => getPathTemplate(),
+            'dashboard' => $dashboard,
+            'dashboardId' => $dashboardId,
+        ];
+
+        //render view
+        $this->render('edit', $data);
+    }
+
+    // add permission to layout
+    public function permission(){
+        $dashboardId = Get::req('dashboard', DOTY_INT, false);
+        
+        require_once(_base_ . '/lib/lib.userselector.php');
+        require_once(_base_ . '/lib/lib.form.php');        
+        
+        $man_ma = new Man_MiddleArea();
+        $acl_manager = new DoceboACLManager();
+        $user_select = new UserSelector();
+
+        // tab of user selector
+        $user_select->show_user_selector = TRUE;
+        $user_select->show_group_selector = true;
+        $user_select->show_orgchart_selector = true;
+        $user_select->show_orgchart_simple_selector = true;
+        $user_select->show_fncrole_selector = true;
+        $user_select->multi_choice = true;        
+   
+                         
+        $selected = $this->model->getObjIdstList($dashboardId);
+        
+        if (is_array($selected)) $user_select->resetSelection($selected);
+
+        // cancell
+        if(isset($_POST['cancelselector'])){
+            
+          Util::jump_to('index.php?r=adm/dashboardsettings/show');  
+        }
+        
+        // save
+        if (isset($_POST['okselector'])) {
+
+            $selected = $user_select->getSelection($_POST);
+            
+            $re = $this->model->setObjIdstList($dashboardId, $selected);
+            
+            Util::jump_to('index.php?r=adm/dashboardsettings/show&result=' . ($re ? 'ok' : 'err'));
+        }        
+        
+        // add field hidden id_dashboard
+        $user_select->addFormInfo(Form::getHidden('dashboard', 'dashboard', $dashboardId));
+         
+         // view selector user
+        $user_select->loadSelector('index.php?r=adm/dashboardsettings/permission',
+             Lang::t('_VIEW_PERMISSION', 'standard'),
+            false,
+            true); 
+        
+    }
+    
+    
+    
+    public function clone()
+    {
+        $dashboardId = Get::req('dashboard', DOTY_INT, false);
+        $dashboard = $this->model->getLayout($dashboardId);
+
+        $data = [
+            'ajaxUrl' => [
+                'cloneLayout' => 'ajax.adm_server.php?r=adm/dashboardsettings/cloneLayout',
+            ],
+            'dashboard' => $dashboard,
+            'dashboardId' => $dashboardId,
+        ];
+
+        $res = array(
+            'data' => $data
+        );
+
+        echo $this->json->encode($res);
+        exit;
     }
 
     public function getLayouts()
@@ -137,6 +238,7 @@ class DashboardsettingsAdmController extends AdmController
         $caption = Get::pReq('caption', DOTY_MIXED);
         $status = Get::pReq('status', DOTY_MIXED);
         $default = Get::pReq('default', DOTY_BOOL);
+
         $data = [
             'name' => $name,
             'caption' => $caption,
@@ -151,9 +253,6 @@ class DashboardsettingsAdmController extends AdmController
         if (!isset($data['name']) || !$data['name']) {
             $errors['name'] = Lang::t('_VALUE_IS_NOT_VALID', 'dashboardsetting');
         }
-        if (!isset($data['caption']) || !$data['caption']) {
-            $errors['caption'] = Lang::t('_VALUE_IS_NOT_VALID', 'dashboardsetting');
-        }
         if (!isset($data['status']) || !$data['status']) {
             $errors['status'] = Lang::t('_VALUE_IS_NOT_VALID', 'dashboardsetting');
         }
@@ -164,9 +263,59 @@ class DashboardsettingsAdmController extends AdmController
         if ($errors) {
             $status = 400;
             $response['errors'] = $errors;
+        } else if (!$this->model->saveLayout($data)) {
+            $response['errors'] = [];
         } else {
             $status = 200;
-            $this->model->saveLayout($data);
+        }
+
+        echo $this->json_response($status, $response);
+        exit;
+    }
+
+    public function cloneLayout()
+    {
+        $id = Get::pReq('id', DOTY_INT);
+        $name = Get::pReq('name', DOTY_MIXED);
+        $caption = Get::pReq('caption', DOTY_MIXED);
+        $status = Get::pReq('status', DOTY_MIXED);
+
+        $dashboard = $this->model->getLayout($id);
+
+        $data = [
+            'name' => $name,
+            'caption' => $caption,
+            'status' => $status,
+        ];
+
+        $response = [];
+
+        // Validation
+        $errors = [];
+        if (!isset($data['name']) || !$data['name']) {
+            $errors['name'] = Lang::t('_VALUE_IS_NOT_VALID', 'dashboardsetting');
+        }
+        if (!isset($data['status']) || !$data['status']) {
+            $errors['status'] = Lang::t('_VALUE_IS_NOT_VALID', 'dashboardsetting');
+        }
+
+        if ($errors) {
+            $status = 400;
+            $response['errors'] = $errors;
+        } else if (!$res = $this->model->saveLayout($data)) {
+            $status = 400;
+            $response['name'] = Lang::t('_VALUE_IS_NOT_VALID', 'dashboardsetting');
+        } else {
+            $status = 200;
+            $res = sql_query("SELECT id FROM `dashboard_layouts` ORDER BY id DESC LIMIT 1");
+            $row = sql_fetch_object($res);
+            $dashboard_new_id = $row->id;
+
+            $sql = "INSERT INTO dashboard_block_config (block_class, block_config, position, dashboard_id)
+            SELECT block_class, block_config, position, '$dashboard_new_id'
+            FROM dashboard_block_config
+            WHERE dashboard_id = $id";
+            $response = sql_query($sql);
         }
 
         echo $this->json_response($status, $response);

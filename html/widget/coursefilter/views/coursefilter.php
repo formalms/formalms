@@ -9,17 +9,24 @@ $str_all = Lang::t("_ALL_COURSE_TYPE", 'course');
 
 ?>
 
-<div class="quick_search_form navbar<?php echo isset($css_class) && $css_class != "" ? " " . $css_class : ""; ?> forma-quick-search-form">
-    <?php if ($common_options): ?>
-        <div class="common_options">
+<nav class="forma-quick-search-form filterBar quick_search_form navbar<?php echo isset($css_class) && $css_class != "" ? " " . $css_class : ""; ?>">
+    <?php //if ($common_options): ?>
+        <div>
             <?php echo $common_options; ?>
         </div>
-    <?php endif; ?>
+    <?php //endif; ?>
 
-    <nav class="navbar">
-        <div class="collapse navbar-collapse" id="filter-container">
+    <div class="filterBar__legacyContainer">
+
+
+
+
+
+        <div class="filterBar__advanced collapse navbar-collapse" id="filter-container">
             <div class="simple_search_box" id="<?php echo $id; ?>_simple_filter_options" style="display: block;">
-                <div class="navbar-form form-group">
+
+
+                <div class="filterBar__mainsearch navbar-form form-group">
 
                     <?php echo $list_category ? $list_category : ""; ?>
                     <select id="course_search_filter_type" name="filter_type" class="selectpicker" data-width=""
@@ -76,13 +83,14 @@ $str_all = Lang::t("_ALL_COURSE_TYPE", 'course');
                         
                     </script>
                     
-                    <div class="input-group">
-                        <a href='#' id='<?php echo $id; ?>_filter_set1'><?php echo Lang::t('_FILTER_APPLY', 'standard'); ?></a><br><br>
-                        <a href='#' id='<?php echo $id; ?>_filter_reset'><?php echo Lang::t('_FILTER_RESET', 'report'); ?></a>
+
+                    <div class="filterBar__searchAndReset input-group">
+                        <a href='#' class="filterBar__search" id='<?php echo $id; ?>_filter_set1'>Cerca<?php // echo Lang::t('_FILTER_APPLY', 'standard'); ?></a>
+                        <a href='#' class="filterBar__reset" id='<?php echo $id; ?>_filter_reset'>Azzera <?php //echo Lang::t('_FILTER_RESET', 'report'); ?></a>
                     </div>
 
 
-                    <div class="input-group">
+                    <div class="filterBar__searchInput input-group">
                         <?php echo Form::getInputTextfield("form-control", $id . "_filter_text", "filter_text", $filter_text, '', 255, 'equired data-toggle="popover" data-content="' . Lang::t('_INSERT', 'standard') . " " . strtolower(Lang::t('_COURSE_NAME', 'standard')) . '" placeholder=' . $str_search); ?>
                         <div class="input-group-btn">
                             <button type="submit" class="btn btn-default" id="<?php echo $id . "_filter_set2"; ?>"
@@ -90,16 +98,28 @@ $str_all = Lang::t("_ALL_COURSE_TYPE", 'course');
                                 <span class="glyphicon glyphicon-search"></span>
                             </button>
                         </div>
-                    </div>
-                </div>
+                    </div><!-- filterBar__searchInput -->
+
+                </div><!-- filterBar__mainsearch -->
+
+
+
             </div>
         </div>
 
+
+
+
+
         <?php if ($inline_filters) : ?>
-          <div class="navbar-extra"><?php echo $inline_filters; ?></div>
+          <div class="filterBar__buttons navbar-extra"><?php echo $inline_filters; ?></div>
         <?php endif ?>
 
-        <div class="navbar-header">
+
+
+
+
+        <div class="filterBar__mobile navbar-header">
             <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#filter-container">
                 <span class="filter-label filter-open">
                     <?php echo Lang::t("_FILTER_TAB_OPEN", 'standard'); ?>
@@ -109,11 +129,12 @@ $str_all = Lang::t("_ALL_COURSE_TYPE", 'course');
                 </span>
             </button>
         </div>
-    </nav>
 
 
 
-</div>
+    </div>
+</nav>
+
 
 
 <?php if ($js_callback_set || $js_callback_reset): ?>

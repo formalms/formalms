@@ -1,0 +1,634 @@
+<div class="page-header">
+    <h1 class="title">{{ Lang_translate('_DASHBOARD', 'standard') }}</h1>
+    <ul class="breadcrumb">
+        <li>{{ Lang_translate('_DASHBOARD', 'standard') }}</li>
+        <li><b>{{ dashboard.name }}<b></li>
+    </ul>
+
+    <div class="std_block"><div class="container-back">
+	    <a href="{{ showUrl }}">&lt;&lt; {{ Lang_translate('_BACK', 'standard') }}</a>
+    </div>
+</div>
+
+<div class="js-router--dashboard dashboard">
+    <div class="d-grid">
+        <div class="d-row">
+            <div id="dashboard-sortable" class="dashboard__container">
+                {% for block in enabledBlocks %}
+                    {% if block.enabled %}
+                        {% set index = loop.index0 %}
+                        <div id="{{ block.postData.block }}-{{ index }}"
+                            class="dashboard__block dashboard__block--{{ block.type }}"
+                            data-block="{{ block.postData.block }}"
+                            data-type="{{ block.type }}"
+                            data-action="{{ block.registeredActions | join(',') }}">
+                            <div class="dashboard__content">
+                                <button class="dashboard__remove js-remove-block" data-block="{{ block.postData.block }}-{{ index }}"></button>
+                                <div class="dashboard__title">{{ Lang_translate('_'~block.postData.block|upper,'dashboardsetting') }}</div>
+                                <div class="dashboard__image">
+                                    <img src="{{ block.templatePath }}static/images/dashboard-placeholder/{{ block.postData.block }}-placeholder.jpg" class="dashboard__image">
+                                </div>
+                                <div class="dashboard__info">
+                                    {% if block.registeredActions | length %}
+                                        <div class="dashboard__infoBlock">
+                                            <div class="dashboard__label">{{ Lang_translate('_ENABLED_ACTIONS', 'dashboardsetting') }}</div>
+                                            <div class="dashboard__infoContainer">
+                                                <div class="dashboard__elx">
+                                                    {% for action in block.enabledActions %}
+                                                        <label class="d-block" style="display:block;">
+                                                            <input name="registeredAction[{{ loop.index0 }}]"
+                                                                type="checkbox" value="{{ action }}"
+                                                                {% if action in block.registeredActions %}checked{% endif %} />{{ Lang_translate('_'~block.postData.block|upper~'_'~action|upper,'dashboardsetting') }}
+                                                        </label>
+                                                    {% endfor %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+
+                                    {% include 'block-form.html.twig' %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <div class="dashboard__actionsx">
+                <div class="dashboard__add">
+                    <div class="dashboard__select dashboard__select--block">
+                        <select class="form-control js-select-block">
+                            <option value="" selected>{{ Lang_translate('_DASHBOARD_SETTING_SELECT_BLOCK', 'dashboardsetting') }}</option>
+                            {% for block in installedBlocks %}
+                                <option value="{{ block.postData.block }}"
+                                    data-type="{{ block.availableTypes|json_encode() }}"
+                                    data-action="{{ block.registeredActions|json_encode() }}"
+                                    data-form="{{ block.form|json_encode() }}">
+                                    {{ Lang_translate('_'~block.postData.block|upper, 'dashboardsetting') }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                        <div class="dashboard__error">{{ Lang_translate('_DASHBOARD_SETTING_BLOCK_REQUIRED','dashboardsetting') }}</div>
+                    </div>
+                    <div class="dashboard__select dashboard__select--type">
+                        <select class="form-control js-select-type"></select>
+                    </div>
+                    <button class="btn btn-primary dahsboard__button--add js-add-block">{{ Lang_translate('_DASHBOARD_SETTING_ADD_NEW_BLOCK', 'dashboardsetting') }}</button>
+                </div>
+                <button class="button btn btn-danger dahsboard__button--save js-save-block btn-block">{{ Lang_translate('_DASHBOARD_SETTING_SAVE', 'dashboardsetting') }}
+                </button>
+                <div class="dashboard__message dashboard__ok">{{ Lang_translate('_DASHBOARD_SETTING_SAVE_MESSAGE_OK', 'dashboardsetting') }}</div>
+                <div class="dashboard__message dashboard__ko">{{ Lang_translate('_DASHBOARD_SETTING_SAVE_MESSAGE_KO', 'dashboardsetting') }}</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="application/javascript">
+    $(function () {
+        const dashboardId = "{{ dashboardId }}";
+        const showUrl = "{{ showUrl }}";
+        const dashboardSortable = $("#dashboard-sortable");
+        const selectBlock = $('.js-select-block');
+        const selectType = $('.js-select-type');
+        const selectAction = $('.js-select-action');
+        const addBlock = $('.js-add-block');
+        const saveField = $('.js-save-block');
+        const blockAction = $('.dashboard__actions');
+        const blockActionWidth = blockAction.width();
+        const windowWidth = $(window).width();
+        const templatePath = "{{ templatePath }}";
+        const btnNewLayout = $('#btn-new-layout');
+        const addLayoutBtn = $('.js-add-layout');
+        const layoutsTable = $('#layouts');
+        let openedLayoutForm = false;
+
+        initSortable();
+        uploadFileCheck();
+
+        // SALVATAGGIO DATI BLOCK
+        saveField.click(function () {
+            let response = {};
+            const blocks = $('.dashboard__block');
+
+            if (blocks) {
+                for (i = 0; i < blocks.length; i++) {
+                    const block = blocks[i].getAttribute('data-block');
+                    const type = blocks[i].getAttribute('data-type');
+                    const action = blocks[i].getAttribute('data-action').split(',');
+                    const firstInsert = blocks[i].getAttribute('data-first-insert');
+                    const extraElement = blocks[i].querySelectorAll('.js-extra-setting');
+                    let extraSettings = {};
+
+                    response[i] = {
+                        'block': block,
+                        'settings': {
+                            'position': i + 1,
+                            'type': type,
+                            'enabled': true,
+                            'enabledActions': action,
+                            'firstInsert': firstInsert,
+                            'data': {}
+                        }
+                    }
+
+                    if (extraElement.length) {
+
+                        for (let i = 0; i < extraElement.length; i++) {
+                            const key = extraElement[i].getAttribute('name');
+                            const value = extraElement[i].value;
+                            const typeEl = extraElement[i].getAttribute('type');
+
+                            switch (typeEl) {
+                                case 'checkbox':
+                                    if (extraElement[i].checked) {
+                                        if (extraSettings[key]) {
+                                            extraSettings[key] += '|' + value;
+                                        } else {
+                                            extraSettings[key] = value;
+                                        }
+                                    }
+                                    break;
+                                case 'radio':
+                                    if (extraElement[i].checked) {
+                                        extraSettings[key] = value;
+                                    }
+                                    break;
+                                case 'file':
+                                case 'image':
+                                    const fileUrl = extraElement[i].getAttribute('data-url');
+                                    if (fileUrl) {
+                                        extraSettings[key] = fileUrl;
+                                    }
+                                    break;
+                                default:
+                                    if (value) {
+                                        extraSettings[key] = value;
+                                    }
+                            }
+
+                        }
+
+                        response[i]['settings']['data'] = {...response[i]['settings']['data'], ...extraSettings};
+                    }
+
+                }
+            }
+
+            $.ajax({
+                url: '{{ ajaxUrl.save }}&dashboard=' + dashboardId,
+                type: 'POST',
+                data: {
+                    settings: response
+                },
+                beforeSend: () => {
+                    saveField.attr('disabled', true);
+                    $('.dashboard__message').css('display', 'none');
+                },
+                success: () => {
+                    saveField.removeAttr('disabled');
+                    $('.dashboard__ok').css('display', 'block');
+
+                },
+                error: err => {
+                    console.log(err)
+                    $('.dashboard__ko').css('display', 'block');
+                }
+            })
+
+        });
+
+        // MOSTRA TYPES IN BASE AL BLOCCO SCELTO
+        selectBlock.change(function () {
+            const types = $(this).children('option:selected').attr('data-type');
+            const actions = $(this).children('option:selected').attr('data-action');
+            selectType.find('option').remove();
+            selectAction.find('label').remove();
+            selectType.parent('.dashboard__select').fadeOut();
+            selectAction.parent('.dashboard__select').fadeOut();
+
+            if (JSON.parse(types).length) {
+                const typesJSON = JSON.parse(types);
+                selectBlock.parent('.dashboard__select').removeClass('is-required');
+                selectType.parent('.dashboard__select').fadeIn();
+
+                for (i = 0; i < typesJSON.length; i++) {
+                    selectType.append('<option value="' + typesJSON[i] + '">' + typesJSON[i] + '</option>')
+                }
+            } else {
+                selectType.parent('.dashboard__select').fadeOut();
+            }
+        });
+
+        // AGGIUNGE BLOCCO
+        addBlock.click(function () {
+            const selectBlockValue = selectBlock.children('option:selected').val();
+            const selectBlockTitle = selectBlock.children('option:selected').text();
+            const selectTypeValue = selectType.children('option:selected').val();
+            const countBlocks = $('.dashboard__block').length + 2;
+
+            if (selectBlockValue.length > 0) {
+                selectBlock.parent('.dashboard__select').removeClass('is-required');
+
+                $.ajax({
+                    url: '{{ ajaxUrl.getBlockType }}&block=' + selectBlockValue + '&index=' + countBlocks + '&type=' + selectTypeValue,
+                    type: 'GET',
+                    success: (data) => {
+
+                        dashboardSortable.append(data);
+                        // initSortable(true);
+                        $('html, body').animate({
+                            scrollTop: $('#' + selectBlockValue + '-' + countBlocks).offset().top
+                        }, 1000);
+
+                        uploadFileCheck();
+                    },
+                    error: err => {
+                        console.log(err)
+                        $('.dashboard__ko').css('display', 'block');
+                    }
+                })
+            } else {
+                selectBlock.parent('.dashboard__select').addClass('is-required');
+            }
+        });
+
+        // RIMUOVE BLOCCO
+        $(document).on('click', '.js-remove-block', function () {
+            const blockToRemove = $(this).attr('data-block');
+            $('#' + blockToRemove).remove();
+            // initSortable(true);
+        });
+
+        // MODIFICA DIMENSIONE BLOCCO
+        $(document).on('change', '.js-type-block', function () {
+            const blockToChange = $(this).attr('data-block');
+            const newType = $(this).val();
+            $('#' + blockToChange).removeAttr('class').addClass('dashboard__block').addClass('dashboard__block--' + newType).attr('data-type', newType);
+            // initSortable(true);
+        });
+
+        function initSortable(reinit) {
+            if (reinit) {
+                dashboardSortable.sortable('destroy');
+                dashboardSortable.unbind();
+            }
+            dashboardSortable.sortable({
+                connectWith: "#dashboard-sortable"
+            });
+        }
+
+        function uploadFileCheck() {
+            const inputFile = document.querySelectorAll('.js-upload-file');
+
+            for (let i = 0; i < inputFile.length; i++) {
+                const item = inputFile[i];
+                item.addEventListener('change', () => {
+                    const formData = new FormData();
+                    const error = item.parentNode.parentNode.querySelector('.dashboard__error');
+                    formData.append('file', item.files[0], item.files[0].name);
+                    error.style.display = 'none';
+
+                    if (item.classList.contains('form-control-image')) {
+
+                        if (isFileImage(item.files[0]) > 0) {
+                            uploadFileAjax(formData, item)
+                        } else {
+                            error.style.display = 'block';
+                        }
+                    } else {
+                        const acceptedExtensions = item.getAttribute('data-types');
+
+                        if (isFileOther(item.files[0], acceptedExtensions) > 0) {
+                            uploadFileAjax(formData, item);
+                        } else {
+                            error.style.display = 'block';
+                        }
+                    }
+
+                })
+            }
+
+        }
+
+        function uploadFileAjax(formData, item) {
+            const block = item.getAttribute('data-block');
+            const field = item.getAttribute('id');
+            $.ajax({
+                url: '{{ ajaxUrl.uploadFile }}&block=' + block + '&field=' + field,
+                data: formData,
+                processData: false,
+                contentType: false,
+                type: 'POST',
+                success: function (data) {
+                    const response = JSON.parse(data);
+                    let imageUrl = '';
+                    if (response.status == 200) {
+                        imageUrl = response.file;
+                        $(item).parents(".dashboard__infoContainer").find('img').attr("src", imageUrl).fadeIn();
+                    }
+                    item.setAttribute('data-url', imageUrl);
+                }
+            });
+        }
+
+        function isFileImage(file) {
+            const acceptedImageTypes = ['image/gif', 'image/jpeg', 'image/png'];
+            return file && $.inArray(file['type'], acceptedImageTypes)
+        }
+
+        function isFileOther(file, extensions) {
+            const acceptedFileTypes = extensions;
+            return file && $.inArray(file['type'], acceptedFileTypes.split(','))
+        }
+
+    });
+</script>
+
+<style type="text/css">
+    .dashboard .d-row {
+        align-items: flex-start;
+        justify-content: space-between;
+        flex-direction: column-reverse;
+    }
+
+    @media all and (min-width: 1024px) {
+        .dashboard .d-row {
+            flex-direction: row;
+        }
+    }
+
+    .dashboard__select__title {
+        margin-bottom: 5px;
+    }
+
+    .dashboard__info {
+        width: calc(100% - 20px);
+        position: relative;
+        bottom: 10px;
+        left: 10px;
+    }
+
+    .dashboard__title {
+        display: block;
+        width: 100%;
+        text-align: center;
+        font-size: 12px;
+        font-weight: bold;
+        margin-bottom: 10px;
+        word-break: break-all;
+    }
+
+    .dashboard__image {
+        display: block;
+        width: 100%;
+        text-align: center;
+        font-size: 12px;
+        font-weight: bold;
+        margin-bottom: 15px;
+        word-break: break-all;
+    }
+
+    .dashboard__input {
+        display: block;
+        width: 100%;
+        text-align: center;
+        font-size: 12px;
+        font-weight: bold;
+        margin-bottom: 10px;
+        word-break: break-all;
+    }
+
+    .dashboard__select {
+        display: block;
+        width: 100%;
+        text-align: center;
+        font-size: 12px;
+        font-weight: bold;
+        margin-bottom: 15px;
+        word-break: break-all;
+    }
+
+    .dashboard__infoBlock {
+        padding: 15px 15px 0 15px;
+        border: 1px solid #ccc;
+        margin-bottom: 15px;
+        background-color: #efefef;
+    }
+
+    .dashboard__infoBlock .dashboard__error {
+        text-align: center;
+        margin-top: 5px;
+    }
+
+    .dashboard__helper {
+        font-size: 12px;
+        margin-top: 10px;
+        text-align: center;
+        color: #666;
+        font-style: italic;
+    }
+
+    .dashboard__checkbox {
+        display: block;
+        width: 100%;
+        text-align: center;
+        font-size: 12px;
+        font-weight: bold;
+        margin-bottom: 10px;
+        word-break: break-all;
+    }
+
+    .dashboard__label {
+        margin-bottom: 10px;
+        text-transform: uppercase;
+        display: block;
+        text-align: center;
+        font-weight: 800;
+        word-break: break-all;
+    }
+
+    .dashboard__infoContainer {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .dashboard__el {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 10px;
+        margin-left: 10px;
+    }
+
+
+    .dashboard__el input[type=checkbox],
+    .dashboard__el input[type=radio] {
+        margin: 0 5px 0 0;
+    }
+
+    .dashboard__title--sources {
+        margin-top: 10px;
+    }
+
+    .dashboard__container {
+        background: #e2e1e0;
+        display: flex;
+        flex-wrap: wrap;
+        width: 100%;
+        padding: 10px;
+    }
+
+    @media all and (min-width: 1024px) {
+
+        .dashboard__container {
+            width: 74%;
+        }
+    }
+
+    #form-layout {
+        display: none;
+    }
+
+    .dashboard__block {
+        padding: 5px;
+        box-sizing: border-box;
+        flex-basis: 100%;
+    }
+
+    .dashboard__content {
+        background-color: #fff;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+        transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
+        height: 100%;
+        position: relative;
+        padding: 25px 10px 125px 10px;
+        cursor: grab;
+    }
+
+    .dashboard__message {
+        padding: 10px;
+        text-align: center;
+        margin-top: 10px;
+        display: none;
+    }
+
+    .dashboard_layout__ok, .dashboard__ok {
+        color: #155724;
+        background-color: #d4edda;
+        border-color: #c3e6cb;
+    }
+
+    .dashboard_layout__ko, .dashboard__ko {
+        color: #721c24;
+        background-color: #f8d7da;
+        border-color: #f5c6cb;
+    }
+
+    .dashboard__image {
+        max-width: 100%;
+        height: auto;
+    }
+
+    .dashboard__content:focus {
+        cursor: grabbing;
+    }
+
+    .dashboard__content:hover {
+        box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+    }
+
+    .dashboard__remove {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        font-size: 16px;
+        background-color: transparent;
+        border: 0;
+        width: 15px;
+        height: 15px;
+        background-image: url('../templates/standard/static/images/icons/user-panel/icon--up-close.png');
+        background-size: cover;
+    }
+
+    .dashboard__remove:hover {
+        background-image: url('../templates/standard/static/images/icons/user-panel/icon--up-close-hover.png');
+    }
+
+    .dashboard__actions, .dashboard_layout__actions {
+        width: 100%;
+        display: flex;
+        justify-content: flex-end;
+        flex-direction: column;
+    }
+
+    .dashboard__actions.is-fixed {
+        z-index: 10;
+        margin-top: 10px;
+    }
+
+    @media all and (min-width: 1024px) {
+        .dashboard__actions, .dashboard_layout__actions {
+            width: 25%;
+        }
+
+        .dashboard__actions.is-fixed {
+            position: fixed;
+            margin-top: 10px;
+            right: 0;
+        }
+    }
+
+    .dashboard__select.is-required select {
+        border: 1px solid #ff0000;
+    }
+
+    .dashboard__select.is-required .dashboard__error {
+        display: block;
+    }
+
+    .dashboard__error {
+        display: none;
+        color: #ff0000;
+    }
+
+    .dashboard__add {
+        display: flex;
+        flex-direction: column;
+        padding: 20px;
+        background-color: #efefef;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        margin-bottom: 40px;
+    }
+
+    .dashboard__add .dashboard__select {
+        margin-bottom: 20px;
+    }
+
+    @media all and (min-width: 1024px) {
+
+        .dashboard__block--4-col {
+            flex-basis: 100%;
+        }
+
+        .dashboard__block--3-col {
+            flex-basis: 75%;
+        }
+
+        .dashboard__block--2-col {
+            flex-basis: 50%;
+        }
+
+        .dashboard__block--1-col {
+            flex-basis: 25%;
+        }
+
+    }
+
+    .dashboard__select--type,
+    .dashboard__select--action {
+        display: none;
+    }
+
+</style>

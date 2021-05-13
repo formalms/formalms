@@ -63,7 +63,7 @@
     margin: 0;
 }
 
-/* TABS */
+/* TABS
 .nav-tabs {
     border: none;
 }
@@ -104,7 +104,7 @@
     .tab_subnav .content {
         padding-top: 116px;
     }
-}
+} */
 
 /* dropdown tabs */
 .nav-tabs > li a.dropdown-toggle,

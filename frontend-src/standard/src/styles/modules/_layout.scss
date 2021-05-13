@@ -140,3 +140,13 @@ body {
 div#container {
   min-height: calc(100% - 86px);
 }
+
+.dataTables_wrapper {
+  .dataTables_filter {
+    float: right;
+  }
+  .dataTables_length {
+    float: right;
+    margin-left: 1rem;
+  }
+}

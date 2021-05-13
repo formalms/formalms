@@ -15,18 +15,20 @@
   position: absolute;
   top: 0;
   left: 50%;
-  z-index: 99;
-  transform: translate(-50%, -100%) translateY(-45px);
-  transform: translate3d(-50%, -100%, 0) translateY(-45px);
-  border-radius: 5px;
+  z-index: 99999;
+  // transform: translate(-50%, -100%) translateY(-15px);
+  // transform: translate3d(-50%, -100%, 0) translateY(-45px);
+  border-radius: $border-radius;
   background-color: $orange;
-  font-size: 12px;
+  font-size: 1.2rem;
+  line-height: 1.4rem;
   text-align: center;
   color: $white;
   opacity: 0;
   visibility: hidden;
   transition: {
-    property: transform, opacity, visibility;
+    // property: transform, opacity, visibility;
+    property: opacity, visibility;
     duration: 0.4s;
     timing-function: ease;
     delay: 0s;
@@ -35,20 +37,20 @@
   &:after {
     content: "";
     position: absolute;
-    bottom: 1px;
+    bottom: 0;
     left: 50%;
-    transform: translate(-50%, 100%);
-    border: {
-      top: solid 12px $orange;
-      right: solid 6px transparent;
-      bottom: none;
-      left: solid 6px transparent;
-    }
+    // transform: translate(-10%, 100%);
   }
   &.down {
     &:after {
-      transform: translate(-50%, 100%) translateY(-285px);
-      transform: translate3d(-50%, -100%) translateY(-285px);
+      border: {
+        top: none;
+        right: solid 6px transparent;
+        bottom: solid 12px $orange;
+        left: solid 6px transparent;
+      }
+        transform: translate(-50%, 100%) translateY(-285px);
+      // transform: translate3d(-50%, -100%) translateY(-285px);
     }
   }
   &.left {
@@ -57,7 +59,7 @@
 
   .has-forma-tooltip:hover & {
     transform: translate(-50%, -100%) translateY(-15px);
-    transform: translate3d(-50%, -100%, 0) translateY(-15px);
+    // transform: translate3d(-50%, -100%, 0) translateY(-15px);
     opacity: 1;
     visibility: visible;
   }
@@ -67,11 +69,14 @@
   overflow: visible !important;
   &:hover {
     .forma-tooltip.down {
+      top: 125px;
+      z-index: 1;
       &:after {
         transform: translate(-50%, 0%);
-        border-top: none;
-        border-right: solid 6px transparent;
-        border-left: solid 6px transparent;
+        // border-top: none;
+        // border-bottom: 12px solid $orange;
+        // border-right: solid 6px transparent;
+        // border-left: solid 6px transparent;
         bottom: 100%;
       }
     }

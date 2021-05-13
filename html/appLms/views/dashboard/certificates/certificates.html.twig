@@ -22,27 +22,77 @@
             <div class="d-grid">
                 <div class="d-row d-user-profile__padder">
                     <div class="d-col d-col--12">
-                        <div class="d-user-profile__avatar-wrapper">
-                            <img src="{{ avatarUrl }}" alt="" class="d-user-profile__img">
+                        <div class="d-cert">
+                        {% if not block.perm %}
+                            <p class="d-alt-text text-center">{{ block.data.alternative_text }}</p>
+                        {% else %}
+                            <h3 class="d-title">
+                                {% if block.data.title is empty %}
+                                    {{ Lang_translate('_DASHBOARDBLOCKCERTIFICATELMS','dashboard') }}
+                                {% else %}
+                                    {{ block.data.title }}
+                                {% endif %}</h3>
+                            {% if block.certificates and block.certificates|length > 0 %}
+                                {% for certificate in block.certificates %}
+                                    <div class="d-item">
+                                        <div class="d-title text-center">
+                                        {{ certificate.course_name }}
+                                        </div>
+                                        <div class="d-subtitle text-center">
+                                        {{ certificate.name_certificate }}
+                                        </div>
+                                        {% if certificate.on_date %}
+                                            <div class="d-date text-center">
+                                            {{ certificate.on_date | date("d-m-Y H:i") }}
+                                            </div>
+                                        {% endif %}
+                                        {#% if certificate.date_complete %}
+                                            <div class="d-date">
+                                            {{ certificate.date_complete | date("d-m-Y H:i") }}
+                                            </div>
+                                        {% endif %#}
+                                        {% if certificate.cert_file %}
+                                            <div class="d-link text-center">
+                                                <a class="ico-wt-sprite subs_pdf" alt="{{ certificate.cert_file }}" href="?r=mycertificate/downloadCert&amp;id_certificate={{ certificate.id_certificate }}&amp;id_course={{ certificate.idCourse }}" title="{{ Lang_translate('_DOWNLOAD', 'certificate') }}"><span>{{ Lang_translate('_DOWNLOAD', 'certificate') }}</span></a>
+                                            </div>
+                                        {% else %}
+                                            <div class="d-link text-center">
+                                                <a class="ico-wt-sprite subs_pdf" alt="{{ Lang_translate('_GENERATE', 'certificate') }}" href="#" onclick="genCertificate({{ certificate.idCourse }}, {{ certificate.id_certificate }})" title="{{ Lang_translate('_GENERATE', 'certificate') }}"><span>{{ Lang_translate('_GENERATE', 'certificate') }}</span></a>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                {% endfor %}
+                            {% else %}
+				                <div class="alert alert-danger text-center">{{ Lang_translate('_DASHBOARD_BLOCKCERTIFICATES_NO_RECORDS', 'dashboard') }}</div>
+                            {% endif %}
+
+                            {% if block.data.show_button %}
+                                <a class="forma-button forma-button--orange-hover forma-button--full d-button--cert text-center" title="" href="{{ block.link }}">
+                                    <span class="forma-button__label">{{ Lang_translate('_MY_CERTIFICATE', 'menu_over') }}</span>
+                                </a>
+                            {% endif %}
+                        {% endif %}
                         </div>
-                        <div class="d-user-profile__content-wrapper">
-                            <p class="d-user-profile__text">
-                                Ciao,
-                            </p>
-                            <p class="d-user-profile__text">
-                                {{ block.user.firstname ~ ' ' ~  block.user.lastname }}
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="d-row d-user-profile__padder">
-                    <div class="d-col d-col--6">
-                        <a class="forma-button forma-button--orange-hover forma-button--full d-button--cert" title="" href="{{ blocks[2].link }}">
-                            <span class="forma-button__label">{{ translate('_MY_CERTIFICATE', 'menu_over') }}</span>
-                        </a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+<script>
+    function genCertificate(id_course, id_certificate) {
+      var posting = $.get(
+        'index.php', {
+          r: 'mycertificate/downloadCert',
+          id_certificate,
+          id_course,
+        }
+      );
+      posting.done(function(responseText) {
+        location.reload();
+      });
+      posting.fail(function() {
+        alert("Error generating certificate: " + id_certificate + " - " + id_course + " - ");
+      })
+    }
+</script>
 {% endblock %}

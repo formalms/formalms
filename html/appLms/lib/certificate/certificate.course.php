@@ -162,11 +162,22 @@ class CertificateSubs_Course extends CertificateSubstitution
 
 				$qdates = "SELECT dd.date_begin, dd.pause_begin, dd.pause_end, dd.date_end
                              FROM learning_course_date_day AS dd
-                             JOIN learning_course_date AS d
-                             JOIN learning_classroom AS c
-                             ON ( dd.classroom = c.idClassroom AND d.id_date = dd.id_date )
+														 INNER JOIN learning_course_date AS d ON dd.id_date = d.id_date
                              INNER JOIN learning_course_date_user ON learning_course_date_user.id_date = d.id_date
-                             WHERE d.id_course = " . (int)$this->id_course . " AND learning_course_date_user.id_user=" . $this->id_user;
+														 WHERE d.id_course = " . (int)$this->id_course . " AND learning_course_date_user.id_user=" . $this->id_user;
+
+				$query = "SELECT cd.id_date
+                 FROM %lms_course_date AS cd
+                 INNER JOIN %lms_course_date_user cdu ON cd.id_date = cdu.id_date
+                 WHERE id_course = " . $this->id_course . "
+                 AND cdu.id_user = " . $this->id_user . "
+                 ORDER BY cd.id_date DESC LIMIT 1;";
+				// AND cdu.date_complete <> '0000-00-00 00:00:00'
+				list($id_date) = sql_fetch_row(sql_query($query));
+
+				if ($id_date) {
+					$qdates .= " AND d.id_date = $id_date";
+				}
 				$qdates = sql_query($qdates);
 
 				$subs['[ed_dates_subscribed]'] = '';
