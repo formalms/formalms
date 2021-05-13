@@ -250,7 +250,7 @@ Class SubscriptionAlms extends Model
 		return $res;
 	}
 
-	public function subscribeUser($id_user, $level, $waiting, $date_begin_validity = FALSE, $date_expire_validity = FALSE) {
+	public function subscribeUser($id_user, $level, $waiting, $overbooking, $date_begin_validity = FALSE, $date_expire_validity = FALSE) {
 		if($this->id_edition != 0) {
 			require_once(_lms_.'/lib/lib.edition.php');
 			$edition_man = new EditionManager();
@@ -262,7 +262,7 @@ Class SubscriptionAlms extends Model
 		} else {
 			require_once(_lms_.'/lib/lib.subscribe.php');
 			$subscribe_man = new CourseSubscribe_Manager();
-			return $subscribe_man->subscribeUserToCourse($id_user, $this->id_course, $level, $waiting, $date_begin_validity, $date_expire_validity);
+			return $subscribe_man->subscribeUserToCourse($id_user, $this->id_course, $level, $waiting, $overbooking, $date_begin_validity, $date_expire_validity);
 		}
 	}
 

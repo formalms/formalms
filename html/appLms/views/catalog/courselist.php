@@ -16,60 +16,7 @@
 
 
 <?php
-require_once(_lms_ . '/lib/lib.middlearea.php');
-$ma = new Man_MiddleArea();
-//   $category = $this->model->getMinorCategory($std_link, true);
-$html = '';
-$path_course = $GLOBALS['where_files_relative'] . '/appLms/' . Get::sett('pathcourse') . '/';
-$current_catalogue = $smodel->current_catalogue;
 
-
-
-function classroomCourse(&$row, &$smodel){
-    
-    $user_classroom = $smodel->classroom_man->getUserDateForCourse(Docebo::user()->getIdSt(), $row['idCourse']);
-    if (count($user_classroom)>0){  // user already enrolled.
-        $action .= '<a class="forma-button forma-button--orange-hover" href="index.php?modname=course&op=aula&idCourse=' . $row['idCourse'] . ' "'
-                        . ' title="' . $_text . '"><span class="forma-button__label">'
-                        . Lang::t('_USER_STATUS_ENTER', 'catalogue') . '</span>'
-                        . '</a>';
-    }  else {
-        // get all editions of a course with status available
-        $classrooms = $smodel->classroom_man->getCourseDate($row['idCourse'], false);
-        if (count($classrooms) == 0) {
-            $action .= '<a class="forma-button forma-button--disabled">
-                        <span class="forma-button__label">' . Lang::t('_NO_EDITIONS', 'catalogue') . '</span>
-                    </a>';
-        }  else {
-            if ($row['selling'] == 0) {
-                switch ($row['subscribe_method']) {
-                    case 2:
-                        // free
-                        $action .= '<a class="forma-button forma-button--green forma-button--orange-hover" href="javascript:;" onclick="courseSelection(\'' . $row['idCourse'] . '\', \'0\')" title="' . Lang::t('_SUBSCRIBE', 'catalogue') . '"><span class="forma-button__label">' . Lang::t('_SUBSCRIBE', 'catalogue') . '</span></a>';
-                        break;
-                    case 1:
-                        // moderate
-                        $action .= '<a class="forma-button forma-button--green forma-button--orange-hover" href="javascript:;" onclick="courseSelection(\'' . $row['idCourse'] . '\', \'0\')" title="' . Lang::t('_SUBSCRIBE', 'catalogue') . '"><span class="forma-button__label">' . Lang::t('_COURSE_S_MODERATE', 'catalogue') . '</span></a>';
-                        break;
-                    case 0:
-                        // only admin
-                        $action .= '<a class="forma-button forma-button--orange-hover">
-                                        <span class="forma-button__label">' . Lang::t('_COURSE_S_GODADMIN', 'catalogue') . '</span>
-                                    </a>';
-                        break;
-                }                    
-            } else {
-                    if (isset($_SESSION['lms_cart'][$row['idCourse']]['classroom'])) {
-                        $action .= '<p class="subscribed">' . Lang::t('_ALL_EDITION_BUYED', 'catalogue') . '</p>';
-                    }  else {
-                        $action .= '<a href="javascript:;" onclick="courseSelection(\'' . $row['idCourse'] . '\', \'1\')" title="' . Lang::t('_ADD_TO_CART', 'catalogue') . '"><p class="can_subscribe">' . Lang::t('_ADD_TO_CART', 'catalogue') . '</p></a>';
-                    }
-            }    
-        }
-    }
-    return $action;
- 
-}
 
 
 function editionElearning(&$row, &$smodel){
@@ -101,89 +48,29 @@ function editionElearning(&$row, &$smodel){
 
 
 
-function getEditionInfo(&$row, &$smodel){
-    $classrooms = $smodel->classroom_man->getCourseDate($row['idCourse'], false);
-    $_edition = array();
-    foreach ($classrooms as $classroom_info){
-         $_edition['id_date'] = $classroom_info['id_date'];
-         $_edition['id_course'] = $classroom_info['id_course'];
-         $_edition['code'] = $classroom_info['code'];
-         $_edition['name'] = $classroom_info['name'];
-         $_edition['startDate']  = $classroom_info['date_begin'];
-         $_edition['endDate']  = $classroom_info['date_end'];
-         $_edition['unsubscribe_date_limit'] = $classroom_info['unsubscribe_date_limit'];
-         $_edition['subscribed'] =  $smodel->classroom_man->controlDateUserSubscriptions(Docebo::user()->getIdSt(),$_edition['id_date']) ;
-         $_edition['days'] = $smodel->classroom_man->getDateDayDateDetails($_edition['id_date']) ;
-         $ret_array[] = $_edition;
-    }                 
-    return $ret_array;
-    
-}
-
-
-function classroomActionButton($is_enrolled, $unsubscribe_date_limit, &$row){
-
-    if ($is_enrolled ) {
-        // 0 only admin
-        // 1 moderate 
-        // 2 free un_subscribe
-        switch ($row['auto_unsubscribe']) {
-            case 0:
-               return Lang::t('_USER_STATUS_ENTER', 'catalogue');
-            case 1:
-            case 2:
-                if (strtotime("now") < strtotime($unsubscribe_date_limit)) {            
-                    return Lang::t('_UNSUBSCRIBE', 'course');
-                } else {
-                    return Lang::t('_USER_STATUS_ENTER', 'catalogue');    
-                } 
-        }
-    } else {
-        return Lang::t('_SUBSCRIBE', 'course');
-    }
-
-}
-
-
 ?>
 
         <script type="text/javascript">
         
                 function chooseEdition(id_course){
                     var posting = $.get(
-                                            'ajax.server.php',
-                                                {
-                                                    r: 'catalog/chooseEdition',
-                                                    id_course: id_course,
-                                                    type_course: $( "#typeCourse" ).val(),
-                                                    id_catalogue: <?php echo $id_catalogue ?>,
-                                                    id_category: $('#treeview1').treeview('getSelected')[0] ? 
-                                                        $('#treeview1').treeview('getSelected')[0].id_cat : null
-                                                }
-                                            );
-                                            posting.done(function (responseText) {
-                                                t = JSON.parse(responseText)
-                                                $('<div></div>').appendTo('body')
-                                                .html("<div>"+t.body +"</div>")
-                                                .dialog({
-                                                    modal: true, 
-                                                     title: "dialog_title", 
-                                                     autoOpen: true,
-                                                     resizable: false,
-                                                     buttons: {
-                                                         chiudi: function() {$(this).dialog("close"); }
-                                                     },
-                                                     width: 500
-                                                 })                    
-                                                
-                                            });
-                                            posting.fail(function () {
-                                                alert('unsubscribe failed')
-                                            })                                
-
-                    
-                    
-                    
+                            'ajax.server.php',
+                                {
+                                    r: 'catalog/chooseEdition',
+                                    id_course: id_course,
+                                    type_course: $( "#typeCourse" ).val(),
+                                    id_catalogue: <?php echo $id_catalogue ?>,
+                                    id_category: $('#treeview1').treeview('getSelected')[0] ? 
+                                        $('#treeview1').treeview('getSelected')[0].id_cat : null
+                                }
+                            );
+                            posting.done(function (r) {
+                                $('body').prepend(r)
+                                $('#myModal').css("margin-top", $('body').height() / 2 - $('.modal-content').height() / 2 - 300) ;       $('#myModal').modal('show')
+                            });
+                            posting.fail(function () {
+                                alert('unsubscribe failed')
+                            })                                
                 }
                                     
                 function confirmDialog(dialog_title, dialog_body, op, id_course, id_date, id_edition, overbooking){

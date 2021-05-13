@@ -29,7 +29,7 @@
                     <?php } else { ?>    
                         <a class="forma-button forma-button--green forma-button--orange-hover" href="javascript:;" 
                             onclick ="confirmDialog('<?=Lang::t('_SUBSCRIBE', 'catalogue')?>',
-                                       '<?=$course['name']?>', 'catalog/subscribeToCourse', '<?=$course['idCourse']?>', '0','0','1')">
+                                       '<?=$course['escaped_name']?>', 'catalog/subscribeToCourse', '<?=$course['idCourse']?>', '0','0','1')">
                             <span class="forma-button__label"><?=Lang::t('_USER_STATUS_OVERBOOKING', 'subscribe')?></span>
                         </a>
                     <?php } ?>    
@@ -39,13 +39,13 @@
                                 <?php if ($course['subscribe_method'] == 2) { ?>
                                         <a class="forma-button forma-button--green forma-button--orange-hover" href="javascript:;" 
                                         onclick ="confirmDialog('<?=Lang::t('_SUBSCRIBE', 'catalogue')?>',
-                                                 '<?=$course['name']?>', 'catalog/subscribeToCourse', '<?=$course['idCourse']?>', '0','0','0')">
+                                                 '<?=$course['escaped_name']?>', 'catalog/subscribeToCourse', '<?=$course['idCourse']?>', '0','0','0')">
                                             <span class="forma-button__label"><?=Lang::t('_SUBSCRIBE', 'catalogue')?></span>
                                         </a>
                                  <?php } elseif ($course['subscribe_method'] == 1) {  ?>      
                                         <a class="forma-button forma-button--green forma-button--orange-hover" href="javascript:;" 
                                             onclick ="confirmDialog('<?=Lang::t('_SUBSCRIBE', 'catalogue')?>',
-                                                     '<?=$course['name']?>', 'catalog/subscribeToCourse', '<?=$course['idCourse']?>', '0','0','0')">
+                                                     '<?=$course['escaped_name']?>', 'catalog/subscribeToCourse', '<?=$course['idCourse']?>', '0','0','0')">
                                             <span class="forma-button__label"><?=Lang::t('_COURSE_S_MODERATE', 'catalogue')?></span>
                                         </a>
                                  <?php } elseif ($course['subscribe_method'] == 0) {  ?> 
@@ -62,7 +62,7 @@
                                 <?php } else {  ?>
                                     <a class="forma-button forma-button--green forma-button--orange-hover" href="javascript:;" 
                                                 onclick ="confirmDialog('<?=Lang::t('_CONFIRM_ADD_TO_CART', 'catalogue')?>',
-                                                 '<?=$course['name']?>'+'<br><br>'+
+                                                 '<?=$course['escaped_name']?>'+'<br><br>'+
                                                  '<?=Get::sett('currency_symbol', '&euro;')?>
                                                  <?=$course['prize']?>','catalog/addToCart', '<?=$course['idCourse']?>', '0','0','0')">
                                         <span class="forma-button__label"><?=Lang::t('_ADD_TO_CART', 'catalogue')?></span>
