@@ -31236,6 +31236,7 @@ var FolderTree = function () {
     if (!document.querySelector('.js-disable-context-menu')) {
       if (_this.container.querySelectorAll('.folderTree__link').length) {
         _this.refresh();
+        _this.contextMenu();
       }
     }
 
@@ -31361,7 +31362,6 @@ var FolderTree = function () {
 
       (0, _easycontext.contextmenu)('.folderTree__link:not(.ft-is-root), .folderView__li', function (target) {
         _this.currentEls = _this.container.querySelectorAll('.fv-is-selected');
-        console.log(_this.currentEls, target);
         _this.currentElsIds = [];
         _this.currentEls.forEach(function (item) {
           _this.currentElsIds.push(parseInt(item.getAttribute('data-id')));

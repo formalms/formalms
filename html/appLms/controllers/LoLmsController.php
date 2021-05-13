@@ -258,13 +258,15 @@ class LoLmsController extends LmsController
     public function delete()
     {
         $id = Get::req('id', DOTY_INT, false);
-        $ids = Get::req('ids', DOTY_MIXED, []);
+        $ids = Get::req('ids', DOTY_MIXED, null);
 
         $ids = $ids ? explode(',', $ids) : [$id];
 
         $res = [];
         foreach ($ids as $id) {
-            $res[] = $this->model->deleteFolder($id);
+            if ($id > 0) {
+                $res[] = $this->model->deleteFolder($id);
+            }
         }
 
         die($this->json->encode($res));
