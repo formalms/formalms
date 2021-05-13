@@ -24,7 +24,10 @@ class FolderView {
 
   triggerClick(event, container, type) {
     const el = event.target;
-    event.preventDefault();
+
+    if (el.tagName === 'BUTTON') {
+      event.preventDefault();
+    }
 
     if (el) {
       const li = el.closest('.folderView__li');
