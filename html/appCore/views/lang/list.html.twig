@@ -1,27 +1,27 @@
 {{ Get_title({
-    'index.php?r=adm/lang/show' : translate('_LANGUAGE', 'admin_lang'),
-    '':translate('_TRANSLATELANG', 'admin_lang')
+    'index.php?r=adm/lang/show' : Lang_translate('_LANGUAGE', 'admin_lang'),
+    '':Lang_translate('_TRANSLATELANG', 'admin_lang')
 },false) }}
 
 <div class="std_blockx">
     <div class="container-back">
-        <a href="index.php?r=adm/lang/show"><span>{{ translate('_BACK', 'standard')|raw }}</span></a>
+        <a href="index.php?r=adm/lang/show"><span>{{ Lang_translate('_BACK', 'standard')|raw }}</span></a>
     </div>
 
-    <a id="addlang_top" href="#" class="ico-wt-sprite subs_add" title="{{ translate('_ADD', 'standard') }}"><span>{{ translate('_ADD', 'standard') }}</span></a>
+    <a id="addlang_top" href="#" class="ico-wt-sprite subs_add" title="{{ Lang_translate('_ADD', 'standard') }}"><span>{{ Lang_translate('_ADD', 'standard') }}</span></a>
     <br><br>
     <div class="search_form">
         {{ Form_openForm('lang_filters', 'index.php?r=adm/lang/list', false, false, '','','row') }}
         <div class="lang-filter col-xs-12 col-sm-4">
-            <label for="lang_code">{{ translate('_LANGUAGE', 'admin_lang') }}</label>:
+            <label for="lang_code">{{ Lang_translate('_LANGUAGE', 'admin_lang') }}</label>:
             {{ Form_getInputDropdown("search_d", "lang_code", "lang_code", language_list, selected_language, ' onchange="DataTable_lang_table.reload();"') }}
         </div>
         <div class="lang-confr-filter  col-xs-12 col-sm-4">
-            <label for="lang_code_diff">{{ translate('_LANG_COMPARE', 'admin_lang') }}</label>:
+            <label for="lang_code_diff">{{ Lang_translate('_LANG_COMPARE', 'admin_lang') }}</label>:
             {{ Form_getInputDropdown("search_d", "lang_code_diff", "lang_code_diff", language_list, selected_language_diff, ' onchange="DataTable_lang_table.reload();"') }}
         </div>
         <div class="lang-confr-filter  col-xs-12 col-sm-4">
-            <label for="only_empty">{{ translate('_ONLY_EMPTY', 'admin_lang') }}</label>:<br>
+            <label for="only_empty">{{ Lang_translate('_ONLY_EMPTY', 'admin_lang') }}</label>:<br>
             {{ Form_getInputCheckbox("only_empty", "only_empty", "true", only_empty, ' onchange="DataTable_lang_table.reload();"') }}
         </div>
         {{ Form_closeForm() }}
@@ -32,7 +32,7 @@
     <table class="table table-bordered display" style="width:100%" id="lang_table"></table>
     <button id="export-btn" class="button btn btn-primary dahsboard__button--save js-save-block" type="submit" disabled="disabled">
         <i class="fa fa-spinner fa-spin" style="display:none;"></i>
-        {{ translate('_EXPORT_XML', 'admin_lang') }}
+        {{ Lang_translate('_EXPORT_XML', 'admin_lang') }}
     </button>
 </form>
 
@@ -43,8 +43,8 @@
             <div class="modal-body" data-val="body">
             </div>
             <div class="modal-footer">
-                <button type="button" id="yes" class="btn btn-primary" data-val="yes">{{ translate('_YES', 'standard') }}</button>
-                <button type="button" class="btn btn-default" data-val="no">{{ translate('_NO', 'standard') }}</button>
+                <button type="button" id="yes" class="btn btn-primary" data-val="yes">{{ Lang_translate('_YES', 'standard') }}</button>
+                <button type="button" class="btn btn-default" data-val="no">{{ Lang_translate('_NO', 'standard') }}</button>
             </div>
         </div>
     </div>
@@ -57,8 +57,8 @@
             <div class="modal-body">
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" onclick="translateKey()">{{ translate('_CONFIRM', 'standard') }}</button>
-                <button type="button" class="btn btn-default" onclick="$('#addModal').modal('hide');">{{ translate('_CANCEL', 'standard') }}</button>
+                <button type="button" class="btn btn-primary" onclick="translateKey()">{{ Lang_translate('_CONFIRM', 'standard') }}</button>
+                <button type="button" class="btn btn-default" onclick="$('#addModal').modal('hide');">{{ Lang_translate('_CANCEL', 'standard') }}</button>
             </div>
         </div>
     </div>
@@ -77,7 +77,7 @@
     }
 
     var delFunc = function(id) {
-        confirmDialog("#confirmModal", "{{ translate('_AREYOUSURE', 'standard') }}", function() {
+        confirmDialog("#confirmModal", "{{ Lang_translate('_AREYOUSURE', 'standard') }}", function() {
             $.ajax({
                 type: 'POST',
                 url: 'ajax.adm_server.php?r=adm/lang/deleteKey',
@@ -208,7 +208,7 @@
     var rows = [];
 
     body.forEach(function (item, k) {
-        link = '<a id="' + item.id + '" onclick="delFunc(' + item.id + ')" href="#" class="ico-sprite subs_del" title="{{ translate("_DEL", "admin_lang") }}"><span></span></a>'
+        link = '<a id="' + item.id + '" onclick="delFunc(' + item.id + ')" href="#" class="ico-sprite subs_del" title="{{ Lang_translate("_DEL", "admin_lang") }}"><span></span></a>'
         item.delete = link;
         rows.push(Object.assign({}, item));
     });
@@ -216,25 +216,25 @@
     var columns = [
         {
             data: 'text_module',
-            title: "{{ translate('_LANG_MODULE ', 'admin_lang ') }}",
+            title: "{{ Lang_translate('_LANG_MODULE ', 'admin_lang ') }}",
             sortable: true,
             searchable: true
         },
         {
             data: 'text_key',
-            title: "{{ translate('_LANG_KEY ', 'admin_lang ') }}",
+            title: "{{ Lang_translate('_LANG_KEY ', 'admin_lang ') }}",
             sortable: true,
             searchable: false
         },
         {
             data: 'plugin_name',
-            title: "{{ translate('_PLUGIN_NAME ', 'admin_lang ') }}",
+            title: "{{ Lang_translate('_PLUGIN_NAME ', 'admin_lang ') }}",
             sortable: false,
             searchable: true
         },
         {
             data: 'translation_text',
-            title: "{{ translate('_LANG_TRANSLATION ', 'admin_lang ') }}",
+            title: "{{ Lang_translate('_LANG_TRANSLATION ', 'admin_lang ') }}",
             sortable: true,
             searchable: false,
             edit: {
@@ -243,19 +243,19 @@
         },
         {
             data: 'translation_text_diff',
-            title: "{{ translate('_LANG_COMPARE ', 'admin_lang ') }}",
+            title: "{{ Lang_translate('_LANG_COMPARE ', 'admin_lang ') }}",
             sortable: true,
             searchable: false
         },
         {
             data: 'save_date',
-            title: "{{ translate('_DATE ', 'admin_lang ') }}",
+            title: "{{ Lang_translate('_DATE ', 'admin_lang ') }}",
             sortable: true,
             searchable: false
         },
         {
             data: 'delete',
-            title: "{{ translate('_DEL ', 'standard ') }}",
+            title: "{{ Lang_translate('_DEL ', 'standard ') }}",
             sortable: false,
             searchable: false
         }
@@ -265,7 +265,7 @@
         DataTable_lang_table = $('#lang_table').on('xhr.dt', function (e, settings, json, xhr) {
             if (json.data.length > 0) {
                 json.data.forEach(function (item, index) {
-                    link = '<a id="' + item.id + '" href="#" onclick="delFunc(' + item.id + ')" class="ico-sprite subs_del" title="{{ translate("_DEL", "admin_lang") }}"><span></span></a>'
+                    link = '<a id="' + item.id + '" href="#" onclick="delFunc(' + item.id + ')" class="ico-sprite subs_del" title="{{ Lang_translate("_DEL", "admin_lang") }}"><span></span></a>'
                     item.delete = link;
                 });
                 $($.fn.dataTable.tables(true)).DataTable().columns.adjust();
@@ -333,7 +333,7 @@
         columns.forEach(function(item, i) {
             if (i > 0 && i < 6) {
                 var title = item.data;
-                var searchPlaceholder = "{{ translate('_SEARCH', 'standard') }}";
+                var searchPlaceholder = "{{ Lang_translate('_SEARCH', 'standard') }}";
                 var cell = $('.dataTables_scrollHeadInner .dataTable thead tr th:nth-child(' + (i + 1) +')')
                 if (i == 3) {
                     var plugins = {{ plugins_ids|json_encode()|raw }};

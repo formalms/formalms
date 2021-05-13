@@ -1,8 +1,8 @@
 <div class="dashboard__infoBlock dashboard__infoBlock--input">
     <div class="form-group">
-        <label class="dashboard__label" for="{{ block.postData.block }}-{{ index }}-file">{{translate('_URL_'~ form.field|upper,'dashboardsetting')}}</label>
+        <label class="dashboard__label" for="{{ block.postData.block }}-{{ index }}-file">{{Lang_translate('_URL_'~ form.field|upper,'dashboardsetting')}}</label>
         <div class="dashboard__infoContainer">
-            <input class="form-control js-extra-setting" name="{{ form.name }}" type="url" placeholder="{{ translate('_URL_'~ form.field|upper, 'dashboardsetting')}}" data-block="{{ block.postData.block }}-{{ loop.index0 }}">
+            <input class="form-control js-extra-setting" name="{{ form.name }}" type="url" placeholder="{{ Lang_translate('_URL_'~ form.field|upper, 'dashboardsetting')}}" data-block="{{ block.postData.block }}-{{ loop.index0 }}">
         </div>
     </div>
 </div>

@@ -1,0 +1,114 @@
+<script type="text/javascript">
+    YAHOO.util.Event.onDOMReady(function () {
+        initialize('{{ Lang_translate('_UNDO', 'standard') }}');
+    });
+
+    var lb = new LightBox();
+    lb.back_url = 'index.php?r=lms/catalog/show&sop=unregistercourse';
+
+    var Config = {};
+    Config.langs = {_CLOSE: '{{ Lang_translate('_UNDO', 'standard') }}'};
+    lb.init(Config);
+
+    function chooseEdition(id_course) {
+        var idCategory = $('#treeview1').treeview('getSelected')[0] ?
+            $('#treeview1').treeview('getSelected')[0].id_cat : null;
+
+        $.get('ajax.server.php',
+            {
+                r: 'catalog/chooseEdition',
+                id_course: id_course,
+                type_course: $("#typeCourse").val(),
+                id_catalogue: {{ id_catalogue }},
+                id_category: idCategory
+            }
+        )
+            .done(function (responseText) {
+                t = JSON.parse(responseText)
+                $('<div></div>').appendTo('body')
+                    .html("<div>" + t.body + "</div>")
+                    .dialog({
+                        modal: true,
+                        title: "dialog_title",
+                        autoOpen: true,
+                        resizable: false,
+                        buttons: {
+                            chiudi: function () {
+                                $(this).dialog("close");
+                            }
+                        },
+                        width: 500
+                    })
+            })
+            .fail(function () {
+                alert('unsubscribe failed')
+            });
+    }
+
+    function confirmDialog(dialog_title, dialog_body, op, id_course, id_date, id_edition, overbooking) {
+
+        $('<div></div>').appendTo('body')
+            .html("<div style='text-align:center'><h6>" + dialog_body + "</h6></div>")
+            .dialog({
+                modal: true,
+                title: dialog_title,
+                autoOpen: true,
+                resizable: false,
+                buttons: {
+        {{ Lang_translate('_confirm','standard') }} :
+
+        function () {
+            var posting = $.get(
+                'ajax.server.php',
+                {
+                    r: op,
+                    id_course: id_course,
+                    id_date: id_date,
+                    id_edition: id_edition,
+                    overbooking: overbooking,
+                    type_course: $("#typeCourse").val(),
+                    id_catalogue: {{ id_catalogue }},
+                    id_category: $('#treeview1').treeview('getSelected')[0] ?
+                        $('#treeview1').treeview('getSelected')[0].id_cat : null
+                }
+            )
+                .done(function (responseText) {
+                    if (op == 'catalog/addToCart') {
+                        $('#menu_over').load(document.URL + '  #menu_over');
+                    }
+
+                    $("#div_course").html(responseText);
+                })
+                .fail(function () {
+                    alert('unsubscribe failed')
+                })
+            $(this).dialog("close");
+        }
+
+    ,
+        {{ Lang_translate('_UNDO','standard') }} :
+
+        function () {
+            $(this).dialog("close");
+        }
+    },
+        open: function (event, ui) {
+            $(".ui-dialog-titlebar-close", ui.dialog | ui).hide();
+        }
+    ,
+        close: function (event, ui) {
+            $(this).remove();
+        }
+    })
+        ;
+    }
+</script>
+
+<div id="cbp-vm" class="" style="margin-top: 15px;">
+    {% for course in course_category %}
+
+        <div class="col-xs-offset-1 col-xs-10 col-md-offset-0 col-md-4">
+            {% include 'partials/course-box.html.twig' with { 'course': course } %}
+        </div>
+    {% endfor %}
+</div>

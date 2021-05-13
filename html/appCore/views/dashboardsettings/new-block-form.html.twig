@@ -7,7 +7,7 @@
      data-action="{{ block.registeredActions | join(',') }}" data-first-insert="true">
     <div class="dashboard__content">
         <button class="dashboard__remove js-remove-block" data-block="{{ block.postData.block }}-{{ index }}"></button>
-        <div class="dashboard__title">{{ translate('_'~block.postData.block|upper,'dashboardsetting') }}</div>
+        <div class="dashboard__title">{{ Lang_translate('_'~block.postData.block|upper,'dashboardsetting') }}</div>
         <div class="dashboard__image">
             <img src="{{ block.templatePath }}static/images/dashboard-placeholder/{{ block.postData.block }}-placeholder.jpg"
                  class="dashboard__image">
@@ -15,14 +15,14 @@
         <div class="dashboard__info">
             {% if block.registeredActions | length %}
                 <div class="dashboard__infoBlock">
-                    <div class="dashboard__label">{{ translate('_ENABLED_ACTIONS', 'dashboardsetting') }}</div>
+                    <div class="dashboard__label">{{ Lang_translate('_ENABLED_ACTIONS', 'dashboardsetting') }}</div>
                     <div class="dashboard__infoContainer">
                         <div class="dashboard__elx">
                             {% for action in block.enabledActions %}
                                 <label class="d-block" style="display:block;">
                                     <input name="registeredAction[{{ loop.index0 }}]"
                                         type="checkbox" value="{{ action }}"
-                                        {% if action in block.registeredActions %}checked{% endif %} />{{ translate('_'~block.postData.block|upper~'_'~action|upper,'dashboardsetting') }}
+                                        {% if action in block.registeredActions %}checked{% endif %} />{{ Lang_translate('_'~block.postData.block|upper~'_'~action|upper,'dashboardsetting') }}
                                 </label>
                             {% endfor %}
                         </div>

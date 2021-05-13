@@ -1,13 +1,13 @@
 <div class="dashboard__infoBlock dashboard__infoBlock--file">
     <div class="form-group">
-        <label class="dashboard__label" for="{{ block.postData.block }}-{{ index }}-file">{{translate('_file_'~ form.field|upper,'dashboardsetting')}}</label>
+        <label class="dashboard__label" for="{{ block.postData.block }}-{{ index }}-file">{{Lang_translate('_file_'~ form.field|upper,'dashboardsetting')}}</label>
 
         <div class="dashboard__infoContainer">
             <input type="file" name="{{ form.name }}" class="form-control-file js-extra-setting js-upload-file" id="{{ form.field }}" data-block="{{ block.postData.block }}" data-types="{{ block.allowedFileMimeTypes|join(',') }}" data-url="{{ attribute(block.data, form.name)}}">
             <input type="hidden" class="form-control-file" id="{{ block.postData.block }}-{{ index }}-file-string" data-block="{{ block.postData.block }}-{{ index }}">
         </div>
 
-        <div class="dashboard__helper">{{ translate('_DASHBOARD_SETTING_FILE_ALLOWED_TYPES', 'dashboardsetting') }} {{ block.allowedFileTypes|join(', ') }}</div>
-        <div class="dashboard__error">{{ translate('_DASHBOARD_SETTING_FILE_TYPE_ERROR', 'dashboardsetting') }}<br> {{ block.allowedFileTypes|join(', ') }}</div>
+        <div class="dashboard__helper">{{ Lang_translate('_DASHBOARD_SETTING_FILE_ALLOWED_TYPES', 'dashboardsetting') }} {{ block.allowedFileTypes|join(', ') }}</div>
+        <div class="dashboard__error">{{ Lang_translate('_DASHBOARD_SETTING_FILE_TYPE_ERROR', 'dashboardsetting') }}<br> {{ block.allowedFileTypes|join(', ') }}</div>
     </div>
 </div>

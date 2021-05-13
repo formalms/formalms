@@ -1,39 +1,39 @@
 <div class="page-header">
-    <h1 class="title">{{ translate('_DASHBOARD', 'standard') }}</h1>
+    <h1 class="title">{{ Lang_translate('_DASHBOARD', 'standard') }}</h1>
 </div>
 
 <div class="d-grid">
     <div class="d-row">
         <div class="dashboard__actions is-block">
-            <button id="btn-new-layout" class="btn btn-primary dahsboard__button--add js-add-layout">{{ translate('_DASHBOARD_SETTING_ADD_NEW_LAYOUT', 'dashboardsetting') }}</button>
+            <button id="btn-new-layout" class="btn btn-primary dahsboard__button--add js-add-layout">{{ Lang_translate('_DASHBOARD_SETTING_ADD_NEW_LAYOUT', 'dashboardsetting') }}</button>
 
             <form id="form-layout" class="dashboard__add">
                 <div class="form-group">
-                    <label>{{ translate('_DASHBOARD_SETTING_LAYOUT_NAME', 'dashboardsetting') }}</label>
-                    <input name="name" placeholder="{{ translate('_DASHBOARD_SETTING_LAYOUT_NAME', 'dashboardsetting') }}" class="form-control" type="text" value="">
+                    <label>{{ Lang_translate('_DASHBOARD_SETTING_LAYOUT_NAME', 'dashboardsetting') }}</label>
+                    <input name="name" placeholder="{{ Lang_translate('_DASHBOARD_SETTING_LAYOUT_NAME', 'dashboardsetting') }}" class="form-control" type="text" value="">
                 </div>
 
                 <div class="form-group">
-                    <label>{{ translate('_DASHBOARD_SETTING_LAYOUT_CAPTION', 'dashboardsetting') }}</label>
-                    <textarea name="caption" maxlength="255" placeholder="{{ translate('_DASHBOARD_SETTING_LAYOUT_CAPTION', 'dashboardsetting') }}" class="form-control textarea"></textarea>
+                    <label>{{ Lang_translate('_DASHBOARD_SETTING_LAYOUT_CAPTION', 'dashboardsetting') }}</label>
+                    <textarea name="caption" maxlength="255" placeholder="{{ Lang_translate('_DASHBOARD_SETTING_LAYOUT_CAPTION', 'dashboardsetting') }}" class="form-control textarea"></textarea>
                 </div>
 
                 <div class="dashboard__select dashboard__select--layout">
-                    <label>{{ translate('_DASHBOARD_SETTING_SELECT_STATUS', 'dashboardsetting') }}</label>
+                    <label>{{ Lang_translate('_DASHBOARD_SETTING_SELECT_STATUS', 'dashboardsetting') }}</label>
                     <select name="status" class="form-control js-select-layout">
                         <option value="draft">
-                            {{ translate('_DASHBOARD_SETTING_DRAFT_STATUS', 'dashboardsetting') }}
+                            {{ Lang_translate('_DASHBOARD_SETTING_DRAFT_STATUS', 'dashboardsetting') }}
                         </option>
                         <option value="publish">
-                            {{ translate('_DASHBOARD_SETTING_PUBLISH_STATUS', 'dashboardsetting') }}
+                            {{ Lang_translate('_DASHBOARD_SETTING_PUBLISH_STATUS', 'dashboardsetting') }}
                         </option>
                     </select>
                 </div>
 
-                <button type="submit" class="btn btn-primary dahsboard__button--add js-add-layout btn-block">{{ translate('_DASHBOARD_SETTING_CREATE_NEW_LAYOUT', 'dashboardsetting') }}</button>
+                <button type="submit" class="btn btn-primary dahsboard__button--add js-add-layout btn-block">{{ Lang_translate('_DASHBOARD_SETTING_CREATE_NEW_LAYOUT', 'dashboardsetting') }}</button>
 
-                <div class="dashboard__message dashboard_layout__ok">{{ translate('_DASHBOARD_LAYOUT_SAVE_MESSAGE_OK', 'dashboardsetting') }}</div>
-                <div class="dashboard__message dashboard_layout__ko">{{ translate('_DASHBOARD_LAYOUT_SAVE_MESSAGE_KO', 'dashboardsetting') }}</div>
+                <div class="dashboard__message dashboard_layout__ok">{{ Lang_translate('_DASHBOARD_LAYOUT_SAVE_MESSAGE_OK', 'dashboardsetting') }}</div>
+                <div class="dashboard__message dashboard_layout__ko">{{ Lang_translate('_DASHBOARD_LAYOUT_SAVE_MESSAGE_KO', 'dashboardsetting') }}</div>
             </form>
         </div>
     </div>
@@ -83,21 +83,21 @@
             serverSide: true,
             paging: false,
             columns: [  // definisco le colonne
-                { data: 'name', title: '{{ translate("_DASHBOARD_LAYOUT", "dashboardsetting") }}', sortable: false, width: 'auto', edit: { type: 'text' } },
-                { data: 'caption', title: '{{ translate("_DASHBOARD_LAYOUT_CAPTION", "dashboardsetting") }}', sortable: false, width: 'auto', edit: { type: 'textarea' } },
-                { data: 'status', title: '{{ translate("_DASHBOARD_LAYOUT_STATUS", "dashboardsetting") }}', sortable: false, width: '25%',
+                { data: 'name', title: '{{ Lang_translate("_DASHBOARD_LAYOUT", "dashboardsetting") }}', sortable: false, width: 'auto', edit: { type: 'text' } },
+                { data: 'caption', title: '{{ Lang_translate("_DASHBOARD_LAYOUT_CAPTION", "dashboardsetting") }}', sortable: false, width: 'auto', edit: { type: 'textarea' } },
+                { data: 'status', title: '{{ Lang_translate("_DASHBOARD_LAYOUT_STATUS", "dashboardsetting") }}', sortable: false, width: '25%',
                     edit: {
                         type: 'select',
                         options: {
-                            'draft': "{{ translate('_DASHBOARD_STATUS_DRAFT', 'dashboardsetting') }}",
-                            'publish': "{{ translate('_DASHBOARD_STATUS_PUBLISH', 'dashboardsetting') }}",
+                            'draft': "{{ Lang_translate('_DASHBOARD_STATUS_DRAFT', 'dashboardsetting') }}",
+                            'publish': "{{ Lang_translate('_DASHBOARD_STATUS_PUBLISH', 'dashboardsetting') }}",
                         }
                     }, 
                     render: function(data, type, row, meta) {
                         return row.status;
                     }
                 },
-                { data: 'default', title: '{{ translate("_DASHBOARD_LAYOUT_DEFAULT", "dashboardsetting") }}', sortable: false, width: '10%', 
+                { data: 'default', title: '{{ Lang_translate("_DASHBOARD_LAYOUT_DEFAULT", "dashboardsetting") }}', sortable: false, width: '10%',
                     render: function(data, type, row, meta) {
                         var checked = row.default ? 'disabled checked' : '';
                         return '<div class="text-center"><input class="default_check" type="checkbox" value="1" data-id="' + row.id + '" ' + checked + '></div>';
@@ -137,7 +137,7 @@
             },
             drawCallback: function() {
                 $('.btn-del').click(function(e) {
-                    if (confirm("{{ translate('_DASHBOARD_LAYOUT_SURE_DEL', 'dashboardsetting') }}")) {
+                    if (confirm("{{ Lang_translate('_DASHBOARD_LAYOUT_SURE_DEL', 'dashboardsetting') }}")) {
                         var delBtn = $(this);
                         // DELETE A LAYOUT
                         $.ajax({

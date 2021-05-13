@@ -1,12 +1,12 @@
 <div class="page-header">
-    <h1 class="title">{{ translate('_DASHBOARD', 'standard') }}</h1>
+    <h1 class="title">{{ Lang_translate('_DASHBOARD', 'standard') }}</h1>
     <ul class="breadcrumb">
-        <li>{{ translate('_DASHBOARD', 'standard') }}</li>
+        <li>{{ Lang_translate('_DASHBOARD', 'standard') }}</li>
         <li><b>{{ dashboard.name }}<b></li>
     </ul>
 
     <div class="std_block"><div class="container-back">
-	    <a href="{{ showUrl }}">&lt;&lt; {{ translate('_BACK', 'standard') }}</a>
+	    <a href="{{ showUrl }}">&lt;&lt; {{ Lang_translate('_BACK', 'standard') }}</a>
     </div>
 </div>
 
@@ -24,21 +24,21 @@
                             data-action="{{ block.registeredActions | join(',') }}">
                             <div class="dashboard__content">
                                 <button class="dashboard__remove js-remove-block" data-block="{{ block.postData.block }}-{{ index }}"></button>
-                                <div class="dashboard__title">{{ translate('_'~block.postData.block|upper,'dashboardsetting') }}</div>
+                                <div class="dashboard__title">{{ Lang_translate('_'~block.postData.block|upper,'dashboardsetting') }}</div>
                                 <div class="dashboard__image">
                                     <img src="{{ block.templatePath }}static/images/dashboard-placeholder/{{ block.postData.block }}-placeholder.jpg" class="dashboard__image">
                                 </div>
                                 <div class="dashboard__info">
                                     {% if block.registeredActions | length %}
                                         <div class="dashboard__infoBlock">
-                                            <div class="dashboard__label">{{ translate('_ENABLED_ACTIONS', 'dashboardsetting') }}</div>
+                                            <div class="dashboard__label">{{ Lang_translate('_ENABLED_ACTIONS', 'dashboardsetting') }}</div>
                                             <div class="dashboard__infoContainer">
                                                 <div class="dashboard__elx">
                                                     {% for action in block.enabledActions %}
                                                         <label class="d-block" style="display:block;">
                                                             <input name="registeredAction[{{ loop.index0 }}]"
                                                                 type="checkbox" value="{{ action }}"
-                                                                {% if action in block.registeredActions %}checked{% endif %} />{{ translate('_'~block.postData.block|upper~'_'~action|upper,'dashboardsetting') }}
+                                                                {% if action in block.registeredActions %}checked{% endif %} />{{ Lang_translate('_'~block.postData.block|upper~'_'~action|upper,'dashboardsetting') }}
                                                         </label>
                                                     {% endfor %}
                                                 </div>
@@ -57,27 +57,27 @@
                 <div class="dashboard__add">
                     <div class="dashboard__select dashboard__select--block">
                         <select class="form-control js-select-block">
-                            <option value="" selected>{{ translate('_DASHBOARD_SETTING_SELECT_BLOCK', 'dashboardsetting') }}</option>
+                            <option value="" selected>{{ Lang_translate('_DASHBOARD_SETTING_SELECT_BLOCK', 'dashboardsetting') }}</option>
                             {% for block in installedBlocks %}
                                 <option value="{{ block.postData.block }}"
                                     data-type="{{ block.availableTypes|json_encode() }}"
                                     data-action="{{ block.registeredActions|json_encode() }}"
                                     data-form="{{ block.form|json_encode() }}">
-                                    {{ translate('_'~block.postData.block|upper, 'dashboardsetting') }}
+                                    {{ Lang_translate('_'~block.postData.block|upper, 'dashboardsetting') }}
                                 </option>
                             {% endfor %}
                         </select>
-                        <div class="dashboard__error">{{ translate('_DASHBOARD_SETTING_BLOCK_REQUIRED','dashboardsetting') }}</div>
+                        <div class="dashboard__error">{{ Lang_translate('_DASHBOARD_SETTING_BLOCK_REQUIRED','dashboardsetting') }}</div>
                     </div>
                     <div class="dashboard__select dashboard__select--type">
                         <select class="form-control js-select-type"></select>
                     </div>
-                    <button class="btn btn-primary dahsboard__button--add js-add-block">{{ translate('_DASHBOARD_SETTING_ADD_NEW_BLOCK', 'dashboardsetting') }}</button>
+                    <button class="btn btn-primary dahsboard__button--add js-add-block">{{ Lang_translate('_DASHBOARD_SETTING_ADD_NEW_BLOCK', 'dashboardsetting') }}</button>
                 </div>
-                <button class="button btn btn-danger dahsboard__button--save js-save-block btn-block">{{ translate('_DASHBOARD_SETTING_SAVE', 'dashboardsetting') }}
+                <button class="button btn btn-danger dahsboard__button--save js-save-block btn-block">{{ Lang_translate('_DASHBOARD_SETTING_SAVE', 'dashboardsetting') }}
                 </button>
-                <div class="dashboard__message dashboard__ok">{{ translate('_DASHBOARD_SETTING_SAVE_MESSAGE_OK', 'dashboardsetting') }}</div>
-                <div class="dashboard__message dashboard__ko">{{ translate('_DASHBOARD_SETTING_SAVE_MESSAGE_KO', 'dashboardsetting') }}</div>
+                <div class="dashboard__message dashboard__ok">{{ Lang_translate('_DASHBOARD_SETTING_SAVE_MESSAGE_OK', 'dashboardsetting') }}</div>
+                <div class="dashboard__message dashboard__ko">{{ Lang_translate('_DASHBOARD_SETTING_SAVE_MESSAGE_KO', 'dashboardsetting') }}</div>
             </div>
         </div>
     </div>

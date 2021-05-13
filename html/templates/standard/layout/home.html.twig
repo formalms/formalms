@@ -1,5 +1,5 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="{{ evalPhp('Layout::lang_code') }}">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="{{ Layout_getLangCode() }}">
 <head>
 	<!--Fix funzionamento scorm su IE9-->
 	<meta http-equiv="x-ua-compatible" content="IE=11" />
@@ -7,26 +7,26 @@
 
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-	<title>{{ evalPhp('Layout::title') }}</title>
-	{{ evalPhp('Layout::zone', ['meta']) }}
-	<link rel="shortcut icon" href="{{ evalPhp('Layout::path') }}images/favicon.png" type="image/png" />
-	<link rel="shortcut icon" href="{{ evalPhp('Layout::path') }}images/favicon.ico" />
+	<title>{{ Layout_getTitle() }}</title>
+	{{ Layout_getZone('meta') }}
+	<link rel="shortcut icon" href="{{ Layout_getPath() }}images/favicon.png" type="image/png" />
+	<link rel="shortcut icon" href="{{ Layout_getPath() }}images/favicon.ico" />
 	<!-- reset and font stylesheet -->
-	{{ evalPhp('Layout::resetter') }}
+	{{ Layout_getResetter() }}
 	<!-- common stylesheet -->
-	<link rel="stylesheet" type="text/css" href="{{ evalPhp('Layout::path') }}style/base.css" />
-	<link rel="stylesheet" type="text/css" href="{{ evalPhp('Layout::path') }}style/lms-home.css" />
+	<link rel="stylesheet" type="text/css" href="{{ Layout_getPath() }}style/base.css" />
+	<link rel="stylesheet" type="text/css" href="{{ Layout_getPath() }}style/lms-home.css" />
 
     {% if custom_css_path is defined %}
 		<link rel="stylesheet" type="text/css" href="{{ custom_css_path }}" />
     {% endif %}
-	{{ evalPhp('Layout::rtl') }}
+	{{ Layout_getRtl() }}
 	<!-- specific stylesheet -->
-	{{ evalPhp('YuiLib::load', ['base']) }}
+	{{ Yui_load('base') }}
 	<!-- printer stylesheet-->
-	{{ evalPhp('Layout::accessibility') }}
+	{{ Layout_getAccessibility() }}
 	<!-- Page Head area -->
-	{{ evalPhp('Layout::zone', ['page_head']) }}
+	{{ Layout_getZone('page_head') }}
 
 	<!-- JQuery, Bootstrap  -->
 	{% block jquery_core %}
@@ -58,7 +58,7 @@
     To use or edit the not minified css uncomment this portion of code
     <link rel="stylesheet" type="text/css" href="{{ layout_path }}static/main.css">
     -->
-	<script type="text/js" src="{{ evalPhp('Layout::path') }}static/main.js"></script>
+	<script type="text/js" src="{{ Layout_getPath() }}static/main.js"></script>
 </head>
 <body class="homepage js-router--homepage">
 {% if under_maintenence == false %}
@@ -66,33 +66,33 @@
 <main class="homepage__content content-margin">
 	<div class="homepage__row homepage__row--header">
 		<a href="index.php">
-			<img class="left_logo" src="{{ evalPhp('Layout::path') }}images/company_logo.png" alt="Left logo" />
+			<img class="left_logo" src="{{ Layout_getPath() }}images/company_logo.png" alt="Left logo" />
 		</a>
 		<div class="pull-right">
             {% if lang_number > 1 %}        
 			<div class="select-language">
-				<span class="hidden-xs">{{ evalPhp('Lang::t', ['_CHANGELANG', 'register']) }}: </span>{{ evalPhp('Layout::change_lang') }}
+				<span class="hidden-xs">{{ Lang_translate('_CHANGELANG', 'register') }}: </span>{{ Layout_getChangeLang() }}
 			</div>
             {% endif %}
 			<div class="hidden-xs">
-				{{ evalPhp('Layout::get_catalogue')  }}
+				{{ Layout_getCatalogue()  }}
 			</div>
 		</div>
 	</div>
-	{{ evalPhp('Layout::zone', ['content']) }}
+	{{ Layout_getZone('content') }}
 </main>
 <!-- footer -->
 <footer class="homepage__footer">
-	{{ evalPhp('Layout::zone', ['footer']) }}
-	{{ evalPhp('Layout::copyright') }}
+	{{ Layout_getZone('footer') }}
+	{{ Layout_getCopyright() }}
 </footer>
 {% endif %}
 <!-- def lang -->
-{{ evalPhp('Layout::zone', ['def_lang']) }}
+{{ Layout_getZone('def_lang') }}
 <!-- scripts -->
-{{ evalPhp('Layout::zone', ['scripts']) }}
+{{ Layout_getZone('scripts') }}
 <!-- end scripts -->
-{{ evalPhp('Layout::zone', ['debug']) }}
-{{ evalPhp('Layout::analytics') }}
+{{ Layout_getZone('debug') }}
+{{ Layout_getAnalytics() }}
 </body>
 </html>

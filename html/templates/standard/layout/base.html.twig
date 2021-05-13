@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ evalPhp('Layout::lang_code') }}">
+<html lang="{{ Layout_getLangCode() }}">
 
 <head>
      {% block compatibility %}
@@ -54,7 +54,7 @@
     <link rel="stylesheet" type="text/css" href="{{ layout_path }}style/font-awesome/css/font-awesome.min.css" />
 
     <!-- to be eliminated -->    
-    {{ yuiLib}}
+    {{ yuiLib }}
     <!-- printer stylesheet-->
     <link rel="stylesheet" type="text/css" href="{{ layout_path }}style/print.css" media="print"/>
     {{ accessibility|raw }}

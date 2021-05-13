@@ -1,7 +1,7 @@
 <?php
 
 
-namespace appCore\Template;
+namespace appCore\Template\Extenstions;
 
 require_once(_base_.'/lib/lib.form.php');
 
@@ -9,7 +9,6 @@ use Twig\TwigFunction;
 
 class FormExtension extends \Twig\Extension\AbstractExtension
 {
-
     public function getFunctions()
     {
         return [

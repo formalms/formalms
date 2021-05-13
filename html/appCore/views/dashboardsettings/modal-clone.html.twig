@@ -2,42 +2,42 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-body" data-val="body">
-                <label>{{ translate('_DASHBOARD_SETTING_CLONE_LAYOUT', 'dashboardsetting') }}</label>
+                <label>{{ Lang_translate('_DASHBOARD_SETTING_CLONE_LAYOUT', 'dashboardsetting') }}</label>
                 <form class="dashboard__add" style="display: block;">
                     <div class="form-group">
-                        <label>{{ translate('_DASHBOARD_SETTING_LAYOUT_NAME', 'dashboardsetting') }}</label>
-                        <input name="name" placeholder="{{ translate('_DASHBOARD_SETTING_LAYOUT_NAME', 'dashboardsetting') }}" class="form-control" type="text" value="">
+                        <label>{{ Lang_translate('_DASHBOARD_SETTING_LAYOUT_NAME', 'dashboardsetting') }}</label>
+                        <input name="name" placeholder="{{ Lang_translate('_DASHBOARD_SETTING_LAYOUT_NAME', 'dashboardsetting') }}" class="form-control" type="text" value="">
                         <p class="text text-danger" style="display: none;"></p>
                     </div>
 
                     <input name="id" type="hidden">
 
                     <div class="form-group">
-                        <label>{{ translate('_DASHBOARD_SETTING_LAYOUT_CAPTION', 'dashboardsetting') }}</label>
-                        <textarea name="caption" maxlength="255" placeholder="{{ translate('_DASHBOARD_SETTING_LAYOUT_CAPTION', 'dashboardsetting') }}" class="form-control textarea"></textarea>
+                        <label>{{ Lang_translate('_DASHBOARD_SETTING_LAYOUT_CAPTION', 'dashboardsetting') }}</label>
+                        <textarea name="caption" maxlength="255" placeholder="{{ Lang_translate('_DASHBOARD_SETTING_LAYOUT_CAPTION', 'dashboardsetting') }}" class="form-control textarea"></textarea>
                         <p class="text text-danger" style="display: none;"></p>
                     </div>
 
                     <div class="dashboard__select dashboard__select--layout">
-                        <label>{{ translate('_DASHBOARD_SETTING_SELECT_STATUS', 'dashboardsetting') }}</label>
+                        <label>{{ Lang_translate('_DASHBOARD_SETTING_SELECT_STATUS', 'dashboardsetting') }}</label>
                         <select name="status" class="form-control js-select-layout">
                             <option value="draft">
-                                {{ translate('_DASHBOARD_SETTING_DRAFT_STATUS', 'dashboardsetting') }}
+                                {{ Lang_translate('_DASHBOARD_SETTING_DRAFT_STATUS', 'dashboardsetting') }}
                             </option>
                             <option value="publish">
-                                {{ translate('_DASHBOARD_SETTING_PUBLISH_STATUS', 'dashboardsetting') }}
+                                {{ Lang_translate('_DASHBOARD_SETTING_PUBLISH_STATUS', 'dashboardsetting') }}
                             </option>
                         </select>
                         <p class="text text-danger" style="display: none;"></p>
                     </div>
 
-                    <div class="dashboard__message dashboard_layout__ok">{{ translate('_DASHBOARD_LAYOUT_SAVE_MESSAGE_OK', 'dashboardsetting') }}</div>
-                    <div class="dashboard__message dashboard_layout__ko">{{ translate('_DASHBOARD_LAYOUT_SAVE_MESSAGE_KO', 'dashboardsetting') }}</div>
+                    <div class="dashboard__message dashboard_layout__ok">{{ Lang_translate('_DASHBOARD_LAYOUT_SAVE_MESSAGE_OK', 'dashboardsetting') }}</div>
+                    <div class="dashboard__message dashboard_layout__ko">{{ Lang_translate('_DASHBOARD_LAYOUT_SAVE_MESSAGE_KO', 'dashboardsetting') }}</div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" id="yes" class="btn btn-primary" data-val="yes">{{ translate('_CLONE', 'standard') }}</button>
-                <button type="button" class="btn btn-default" data-val="no">{{ translate('_CANCEL', 'standard') }}</button>
+                <button type="button" id="yes" class="btn btn-primary" data-val="yes">{{ Lang_translate('_CLONE', 'standard') }}</button>
+                <button type="button" class="btn btn-default" data-val="no">{{ Lang_translate('_CANCEL', 'standard') }}</button>
             </div>
         </div>
     </div>
