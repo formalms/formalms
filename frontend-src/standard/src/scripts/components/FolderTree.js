@@ -78,13 +78,17 @@ class FolderTree {
     }
 
     if (el) {
+      const elId = el.getAttribute('data-id');
       const isOpen = el.classList.contains('ft-is-folderOpen');
       const noClick = el.classList.contains('ft-no-click');
 
       if (!noClick) {
         const els = _this.container.querySelectorAll('.folderTree__link');
 
-        _this.setOpenedDirs();
+
+        if (elId == 0) {
+          _this.setOpenedDirs();
+        }
 
         const clickOnArrow = event.target.classList.contains('arrow');
 
@@ -126,7 +130,6 @@ class FolderTree {
 
         el.classList.add('ft-is-folderOpen');
 
-        const elId = el.getAttribute('data-id');
         const LoData = _this.getApiUrl('get', elId, { type: _this.type });
         this.getLoData(LoData, el, elId, clickOnArrow);
       }
@@ -479,8 +482,6 @@ class FolderTree {
         if (!document.querySelector('.js-disable-sortable')) {
           _this.initSortable();
         }
-
-        console.log(_this.openedIds);
 
         if (elId == 0) {
           if (_this.openedIds) {

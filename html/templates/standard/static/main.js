@@ -31297,13 +31297,16 @@ var FolderTree = function () {
       }
 
       if (el) {
+        var elId = el.getAttribute('data-id');
         var isOpen = el.classList.contains('ft-is-folderOpen');
         var noClick = el.classList.contains('ft-no-click');
 
         if (!noClick) {
           var els = _this.container.querySelectorAll('.folderTree__link');
 
-          _this.setOpenedDirs();
+          if (elId == 0) {
+            _this.setOpenedDirs();
+          }
 
           var clickOnArrow = event.target.classList.contains('arrow');
 
@@ -31345,7 +31348,6 @@ var FolderTree = function () {
 
           el.classList.add('ft-is-folderOpen');
 
-          var elId = el.getAttribute('data-id');
           var LoData = _this.getApiUrl('get', elId, { type: _this.type });
           this.getLoData(LoData, el, elId, clickOnArrow);
         }
@@ -31776,8 +31778,6 @@ var FolderTree = function () {
                   if (!document.querySelector('.js-disable-sortable')) {
                     _this.initSortable();
                   }
-
-                  console.log(_this.openedIds);
 
                   if (elId == 0) {
                     if (_this.openedIds) {
