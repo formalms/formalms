@@ -115,6 +115,7 @@ class CatalogLmsController extends LmsController
         {
             
             $course_array[$row['idCourse']] = $row;
+            $course_array[$row['idCourse']]['escaped_name'] = addslashes($course_array[$row['idCourse']]['name']);
             if ($row['use_logo_in_courselist'] && $row['img_course']) {
                 $course_array[$row['idCourse']]['img_course'] = $path_course.$row['img_course'];
              };   
@@ -136,7 +137,7 @@ class CatalogLmsController extends LmsController
             if ($course_array[$row['idCourse']]['course_type'] =='elearning') {
                 if ($course_array[$row['idCourse']]['is_enrolled']) {
                     list($status, $waiting, $level) = sql_fetch_row($result_control);
-                    $course_array[$row['idCourse']]['waiting'] = $waiting;
+                    $course_array[$row['idCourse']]['waiting'] = ($waiting || $status == 4 ); // 4 = overbooked
                     $course_array[$row['idCourse']]['level'] = $level;
                     if (!$waiting) {
                         if ($course_array[$row['idCourse']]['canEnter']) {
@@ -160,14 +161,14 @@ class CatalogLmsController extends LmsController
                 }
             }
             
-            /* 
+             
             
             if ($course_array[$row['idCourse']]['course_type'] =='classroom') {
                 $d = new DateManager();
-                $course_array[$row['idCourse']]['edition_exists']  = (count($d->getCourseDate($row['idCourse'], false)) > 0);
+                $course_array[$row['idCourse']]['edition_exists']  = (count($d->getAvailableDate($row['idCourse'], false)) > 0);
             
             }    
-            */
+            
             
             
             
@@ -472,8 +473,8 @@ class CatalogLmsController extends LmsController
         $selling = Get::req('selling', DOTY_INT, 0);
 
         $res = $this->model->courseSelectionInfo($id_course, $selling);
+        $this->render('classroom_window', $res);
 
-        echo $this->json->encode($res);
     }
     
 
@@ -501,7 +502,7 @@ class CatalogLmsController extends LmsController
         $id_course = Get::req('id_course', DOTY_INT, 0);
         $id_date = Get::req('id_date', DOTY_INT, 0);
         $id_edition = Get::req('id_edition', DOTY_INT, 0);
-        $overbooking = Get::req('overbooking', DOTY_INT, 0);
+        $overbooking = (Get::req('overbooking', DOTY_INT, 0) == 1);
 
         $id_user = Docebo::user()->getIdSt();
 
@@ -517,11 +518,10 @@ class CatalogLmsController extends LmsController
 
         if (count($level_idst) == 0 || $level_idst[1] == '')
             $level_idst = &$docebo_course->createCourseLevel($id_course);
-
-        $waiting = 0;
-
-        if ($course_info['subscribe_method'] != 2 || $overbooking)
-            $waiting = 1;
+        
+        $waiting = $course_info['subscribe_method'] != 2 ;
+            
+            
 
         $userlevel_subscrip = $this->get_userlevel_subscription($id_user);    //UG
 
@@ -529,7 +529,7 @@ class CatalogLmsController extends LmsController
         $this->acl_man->addToGroup($level_idst[$userlevel_subscrip], $id_user);    //UG
 
         //UG        if($model->subscribeUser($id_user, 3, $waiting))
-        if ($model->subscribeUser($id_user, $userlevel_subscrip, $waiting))        //UG
+        if ($model->subscribeUser($id_user, $userlevel_subscrip, $waiting, $overbooking))        //UG
         {
             $res['success'] = true;
             $res['new_status_code'] = '';

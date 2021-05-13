@@ -1020,7 +1020,29 @@ class Man_Course {
 		return array('can' => true, 'reason' => '', 'expiring_in' => $expiring);
 	}
 
-	function getNumberOfCoursesForCategories($show_rules  = 0) {
+	
+    
+    function getClassroomTeachers($id_course){
+    
+        $q = 'select  id_user, lcdu.id_date, u.firstname, u.lastname, lcd.code, lcd.name 
+             from %lms_course_date_user lcdu, %lms_course_date lcd, %adm_user u, %lms_courseuser lcu
+             where lcd.id_date = lcdu.id_date and 
+              u.idst = lcdu.id_user  AND
+              lcu.idUser = lcdu.id_user
+              and lcu.idCourse = lcd.id_course AND
+              lcd.id_course = '.(int)$id_course.' AND lcu.level = 6';
+        $rs = sql_query($q);
+        while($r = sql_fetch_assoc($rs)) {
+
+            $teachers[$r['id_date']] =$r;
+        }
+        return $teachers;          
+    }
+    
+    
+    
+    
+    function getNumberOfCoursesForCategories($show_rules  = 0) {
 
 		$courses = array();
 		$query_course = "
@@ -2757,8 +2779,6 @@ function firstPage( $idMain = false ) {
 		}
 	}
 }
-
-
 
 
 //retrieve course types
