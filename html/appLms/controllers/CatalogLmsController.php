@@ -166,9 +166,12 @@ class CatalogLmsController extends LmsController
             if ($course_array[$row['idCourse']]['course_type'] =='classroom') {
                 $d = new DateManager();
                 $course_array[$row['idCourse']]['edition_exists']  = (count($d->getAvailableDate($row['idCourse'], false)) > 0);
-            
-            }    
-            
+            }
+            if ($course_array[$row['idCourse']]['course_type'] === 'classroom') {
+                $course_array[$row['idCourse']]['editions'] = $model->_getClassDisplayInfo($k, $courselist[$k]);
+            } else {
+                $course_array[$row['idCourse']]['editions'] = false;
+            }
             
             
             
@@ -473,8 +476,8 @@ class CatalogLmsController extends LmsController
         $selling = Get::req('selling', DOTY_INT, 0);
 
         $res = $this->model->courseSelectionInfo($id_course, $selling);
-        $this->render('classroom_window', $res);
-
+        //$this->render('classroom_window', $res);
+        echo $this->json->encode($res);
     }
     
 
