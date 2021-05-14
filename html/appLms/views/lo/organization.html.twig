@@ -79,7 +79,6 @@ function saveCurrentState(event) {
     const el = target.closest('.tab-link');
     const linktype = el.getAttribute('data-type');
     window.type = linktype;
-    console.log(linktype, 'LT');
 
     setCurrentTab(linktype);
 }

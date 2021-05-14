@@ -31342,6 +31342,7 @@ var FolderTree = function () {
       document.querySelectorAll('.context-menu').forEach(function (menu) {
         menu.remove();
       });
+      _this.container = document.querySelector('*[data-container=' + _this.type + ']');
 
       (0, _easycontext.contextmenu)('.folderTree__link:not(.ft-is-root), .folderView__li', function (target) {
         _this.currentEls = _this.container.querySelectorAll('.fv-is-selected');
@@ -31481,29 +31482,38 @@ var FolderTree = function () {
       });
     }
   }, {
+    key: 'setActiveTab',
+    value: function setActiveTab() {
+      var _this = this;
+
+      _this.type = document.querySelector('.tab-link.active').getAttribute('data-type');
+      _this.container = document.querySelector('*[data-container=' + _this.type + ']');
+    }
+  }, {
     key: 'renameEl',
     value: function renameEl() {
       var _this = this;
-      var rename = _this.container.querySelector('.folderTree__rename');
+
+      _this.setActiveTab();
+
+      var rename = document.querySelector('.folderTree__rename.is-show');
       var input = rename.querySelector('.folderTree__rename__input');
       var value = input.value;
       var el = input.closest('.folderTree__li') ? input.closest('.folderTree__li') : input.closest('.folderView__li');
       var elId = el.getAttribute('data-id');
-      var renameLoData = _this.getApiUrl('rename', elId, { type: this.type, newName: value });
+      var renameLoData = _this.getApiUrl('rename', elId, { type: _this.type, newName: value });
 
       axios.get(renameLoData).then(function (res) {
         if (res) {
           rename.classList.remove('is-show');
           var treeEl = _this.container.querySelector('.folderTree__link[data-id="' + elId + '"] span');
           if (treeEl) {
-            console.log(elId, 'treeEl');
             treeEl.innerHTML = value;
             el.classList.remove('ft-no-click');
           }
 
           var li = _this.container.querySelector('.folderView__li[data-id="' + elId + '"]');
           if (li) {
-            console.log(value, 'li');
             li.querySelector('.folderView__label').innerHTML = value;
           }
 
@@ -31776,7 +31786,6 @@ var FolderTree = function () {
                     if (_this.openedIds) {
                       _this.openedIds.forEach(function (id) {
                         if (id != _this.selectedId) {
-                          console.log(_this.container.querySelectorAll('.ft-is-parent'));
                           var arrow = _this.container.querySelector('.ft-is-parent[data-id="' + id + '"] .arrow');
                           if (arrow) {
                             arrow.click();

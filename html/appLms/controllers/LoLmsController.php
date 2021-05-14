@@ -351,14 +351,16 @@ class LoLmsController extends LmsController
 
     public function copy()
     {
-        $id = Get::req('id', DOTY_INT, false);
+        $ids = Get::req('ids', DOTY_MIXED, false);
         $fromType = Get::req('type', DOTY_STRING, LoLms::ORGDIRDB);
         $newtype = Get::req('newtype', DOTY_STRING, false);
-        if ($this->model->copy($id, $fromType)) {
-            $this->model->setTdb($newtype);
-            $this->model->paste(0);
+
+        foreach ($ids as $id) {
+            if ($id > 0 && $this->model->copy($id, $fromType)) {
+                $this->model->setTdb($newtype);
+                $this->model->paste(0);
+            }
         }
-        echo $this->json->encode(true);
-        exit();
+        die($this->json->encode(true));
     }
 }
