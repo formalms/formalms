@@ -31444,7 +31444,12 @@ var FolderTree = function () {
 
         var copyBtn = {
           text: 'Copia',
-          onClick: function onClick() {}
+          onClick: function onClick() {
+            _this.currentElsIds.forEach(function (id) {
+              document.querySelector('.folderView__li[data-id="' + id + '"]').classList.add('is-ready-for-copy');
+            });
+            document.querySelector('.folderView__copyOverlay').classList.add('is-shown');
+          }
         };
 
         var deleteBtn = {
@@ -37254,8 +37259,6 @@ var FolderView = function () {
               console.log(error);
             });
           }
-        } else if (el.classList.contains('js-folderView-file')) {
-          el.querySelector('.fv-is-play').click();
         }
       }
     }
@@ -37278,6 +37281,8 @@ var FolderView = function () {
 
         if (el.classList.contains('js-folderView-folder')) {
           _this.container.querySelector('.folderTree__link[data-id="' + elId + '"]').click();
+        } else if (el.classList.contains('js-folderView-file')) {
+          el.querySelector('.fv-is-play').click();
         }
       }
     }
@@ -37507,13 +37512,15 @@ var axios = __webpack_require__(2);
 
 var CopyItem = function () {
    function CopyItem() {
-      var _this = this;
+      var _this2 = this;
 
       _classCallCheck(this, CopyItem);
 
+      var _this = this;
+
       document.addEventListener('click', this.openOverlay);
       document.querySelector('.js-fv-close-overlay').addEventListener('click', function () {
-         _this.closeOverlay();
+         _this2.closeOverlay();
       });
       document.addEventListener('keydown', function () {
          if (event.key === 'Escape') {
@@ -37546,36 +37553,43 @@ var CopyItem = function () {
    }, {
       key: 'copyElement',
       value: function copyElement(newtype) {
-         var _this2 = this;
-
-         var currentElementId = document.querySelector('.is-ready-for-copy').getAttribute('data-id');
+         var _this = this;
+         var ids = [];
          var type = window.type;
 
-         var copyLoData = getApiUrl('copy', currentElementId, { newtype: newtype, type: type });
+         document.querySelectorAll('.is-ready-for-copy').forEach(function (item) {
+            ids.push(item.getAttribute('data-id'));
+         });
+
+         var copyLoData = _this.getApiUrl('copy', null, { newtype: newtype, type: type, ids: ids });
          axios.get(copyLoData).then(function () {
             var container = document.querySelector('*[data-container=' + newtype + ']');
 
-            _this2.closeOverlay();
+            _this.closeOverlay();
             document.querySelector('.tab-link[data-type="' + newtype + '"]').click();
             container.querySelector('.ft-is-root').click();
          }).catch(function (error) {
             console.log(error);
          });
       }
+   }, {
+      key: 'getApiUrl',
+      value: function getApiUrl(action, id, params) {
+         var url = _config2.default.apiUrl + 'lms/lo/' + action;
+         if (!params) {
+            params = {};
+         }
+         if (id) {
+            params.id = id;
+         }
+         url += '&' + new URLSearchParams(params).toString();
+
+         return url;
+      }
    }]);
 
    return CopyItem;
 }();
-
-function getApiUrl(action, id, params) {
-   var url = _config2.default.apiUrl + 'lms/lo/' + action + '&id=' + id;
-   if (!params) {
-      params = {};
-   }
-   url += '&' + new URLSearchParams(params).toString();
-
-   return url;
-}
 
 exports.default = CopyItem;
 

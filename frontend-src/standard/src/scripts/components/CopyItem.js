@@ -4,22 +4,23 @@ const axios = require('axios');
 class CopyItem {
 
    constructor() {
+      const _this = this;
+
       document.addEventListener('click', this.openOverlay);
       document.querySelector('.js-fv-close-overlay').addEventListener('click', () => {
          this.closeOverlay();
       });
       document.addEventListener('keydown', () => {
          if (event.key === 'Escape') {
-            this.closeOverlay();
+            _this.closeOverlay();
          }
       });
       document.querySelectorAll('.js-fv-copy-target').forEach(el => {
          el.addEventListener('click', () => {
             const targetType = el.getAttribute('data-type');
-            this.copyElement(targetType);
+            _this.copyElement(targetType);
          })
       })
-
    }
 
    openOverlay(event) {
@@ -36,14 +37,19 @@ class CopyItem {
    }
 
    copyElement(newtype) {
-      const currentElementId = document.querySelector('.is-ready-for-copy').getAttribute('data-id');
+      const _this = this;
+      let ids = [];
       const type = window.type
 
-      const copyLoData = getApiUrl('copy', currentElementId, { newtype, type });
+      document.querySelectorAll('.is-ready-for-copy').forEach((item) => {
+         ids.push(item.getAttribute('data-id'));
+      });
+
+      const copyLoData = _this.getApiUrl('copy', null, { newtype, type, ids });
       axios.get(copyLoData).then(() => {
          const container = document.querySelector('*[data-container=' + newtype + ']');
 
-         this.closeOverlay();
+         _this.closeOverlay();
          document.querySelector('.tab-link[data-type="' + newtype + '"]').click();
          container.querySelector('.ft-is-root').click();
       }).catch( (error) => {
@@ -51,16 +57,18 @@ class CopyItem {
       });
    }
 
-}
-
-function getApiUrl(action, id, params) {
-   let url = `${Config.apiUrl}lms/lo/${action}&id=${id}`;
-   if (!params) {
-      params = {};
+   getApiUrl(action, id, params) {
+     let url = `${Config.apiUrl}lms/lo/${action}`;
+     if (!params) {
+       params = {};
+     }
+     if (id) {
+       params.id = id;
+     }
+     url += '&' + new URLSearchParams(params).toString();
+ 
+     return url;
    }
-   url += '&' + new URLSearchParams(params).toString();
-
-   return url;
 }
 
 export default CopyItem;

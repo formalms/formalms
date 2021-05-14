@@ -99,8 +99,6 @@ class FolderView {
             console.log(error);
           });
         }
-      } else if (el.classList.contains('js-folderView-file')) {
-        el.querySelector('.fv-is-play').click();
       }
     }
   }
@@ -122,6 +120,8 @@ class FolderView {
 
       if (el.classList.contains('js-folderView-folder')) {
         _this.container.querySelector('.folderTree__link[data-id="' + elId + '"]').click();
+      } else if (el.classList.contains('js-folderView-file')) {
+        el.querySelector('.fv-is-play').click();
       }
     }
   }

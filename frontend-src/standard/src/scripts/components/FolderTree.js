@@ -204,7 +204,10 @@ class FolderTree {
       const copyBtn = {
         text: 'Copia',
         onClick() {
-          
+          _this.currentElsIds.forEach((id) => {
+            document.querySelector('.folderView__li[data-id="' + id + '"]').classList.add('is-ready-for-copy');
+          });
+          document.querySelector('.folderView__copyOverlay').classList.add('is-shown');
         }
       };
 
