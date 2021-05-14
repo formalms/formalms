@@ -19,6 +19,7 @@ use appCore\Template\Extenstions\LangExtension;
 use appCore\Template\Extenstions\LayoutExtension;
 use appCore\Template\Extenstions\TemplateExtension;
 use appCore\Template\Extenstions\UtilExtension;
+use appCore\Template\Extenstions\YuiExtension;
 
 class TwigManager
 {
@@ -43,6 +44,7 @@ class TwigManager
         $this->twig->addExtension(new LangExtension());
         $this->twig->addExtension(new LayoutExtension());
         $this->twig->addExtension(new UtilExtension());
+        $this->twig->addExtension(new YuiExtension());
         $this->twig->addGlobal('GLOBALS', $GLOBALS);
         if ($debug) {
             $this->twig->addExtension(new \Twig\Extension\DebugExtension());

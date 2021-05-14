@@ -330,17 +330,10 @@ class Layout
     {
 
         $minimized = ($GLOBALS['cfg']['do_debug'] ? '' : '.min');
-        $retArray = [];
+        $retArray = [
+            'debug' => $GLOBALS['cfg']['do_debug']
+        ];
         // base.html.twig
-        $retArray['layout_path'] = self::path();
-        $retArray['layout_zone_meta'] = self::zone('meta');
-        $retArray['layout_meta'] = self::meta();
-        $retArray['layout_title'] = self::title();
-        $retArray['yuiLib'] = YuiLib::load('base');
-        $retArray['accessibility'] = Layout::accessibility();
-        $retArray['layout_zone_page_head'] = self::zone('page_head');
-        $retArray['layout_rtl'] = self::zone('rtl');
-        $retArray['layout_analytics'] = self::analytics();
         $retArray['jqueryLib'] = JQueryLib::loadJQuery($minimized);
         $retArray['boostrap'] = JQueryLib::loadBootstrap($minimized);
         $retArray['locale_calendar'] = JQueryLib::loadCalenderLocal();

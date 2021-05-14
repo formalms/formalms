@@ -1,0 +1,42 @@
+{% extends 'partials/course-box.html.twig' %}
+{% set courseBoxClasses = [] %}
+{% if not course.canEnter and not course.is_enrolled %}
+    {% set courseBoxClasses = courseBoxClasses|merge(['course-box--disabled']) %}
+{% endif %}
+
+
+{% block classRoomButton %}
+    {% if course.selling == 0 %}
+        {% if course.subscribe_method == 2 or course.subscribe_method == 1 %}
+            <a class="forma-button course-box__cta__button" title="{{ course.name }}"
+               href="javascript:void(0)"
+               onclick="courseSelection({{ course.idCourse }})"
+               rel= {{ course.rel }}>
+                {% if course.subscribe_method == 2 %}
+                    <span class="forma-button__label">{{ Lang_translate('_SUBSCRIBE', 'catalogue') }}</span>
+                {% else %}
+                    <span class="forma-button__label">{{ Lang_translate('_COURSE_S_MODERATE', 'catalogue') }}</span>
+                {% endif %}
+            </a>
+        {% elseif course.subscribe_method == 0 %}
+            <a class="forma-button course-box__cta__button" title="{{ course.name }}"
+               rel= {{ course.rel }}>
+                <span class="forma-button__label">{{ Lang_translate('_COURSE_S_GODADMIN', 'catalogue') }}</span>
+            </a>
+        {% endif %}
+    {% else %}
+
+    {% endif %}
+{% endblock %}
+
+ {% block entercourse %}
+     {% if course.course_type == 'classroom' %}
+         {{ block('classRoomButton') }}
+     {% elseif course.course_type == 'classroom' %}
+
+     {% else %}
+
+     {% endif %}
+ {% endblock %}
+
+
