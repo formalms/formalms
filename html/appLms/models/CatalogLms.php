@@ -78,7 +78,7 @@ class CatalogLms extends Model
 	{
 
 		$query_lo = "select org.idOrg, org.idCourse, org.objectType from (SELECT o.idOrg, o.idCourse, o.objectType 
-              FROM %lms_organization AS o WHERE o.objectType != '' AND o.idCourse IN (" . $row['idCourse'] . ") ORDER BY o.path) as org 
+              FROM %lms_organization AS o WHERE o.objectType != '' AND o.idCourse IN (" . $idCourse . ") ORDER BY o.path) as org 
               GROUP BY org.idCourse";
 
 		$result_lo = sql_query($query_lo);

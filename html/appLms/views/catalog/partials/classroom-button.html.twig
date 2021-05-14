@@ -1,0 +1,44 @@
+{% block classRoomButton %}
+    {% if course.edition_exists %}
+        {% if course.is_enrolled %}
+            {% if course.canEnter %}
+                <a class="forma-button course-box__cta__button" title="{{ course.name }}"
+                   href="index.php?modname=course&op=aula&idCourse={{ course.idCourse }}"
+                   rel="{{ course.rel }}">
+                    <span class="forma-button__label">{{ Lang_translate('_USER_STATUS_ENTER', 'catalogue') }}</span>
+                </a>
+            {% else %}
+                <a class="forma-button forma-button--disabled" rel="{{ course.rel }}" href="javascript:void(0);">
+                    <span class="forma-button__label">
+                        {{ Lang_translate('_DISABLED', 'course') }}
+                    </span>
+                </a>
+            {% endif %}
+        {% else %}
+            {% if course.selling == 0 %}
+                {% if course.subscribe_method == 2 or course.subscribe_method == 1 %}
+                    <a class="forma-button course-box__cta__button" title="{{ course.name }}"
+                       onclick="chooseEdition({{ course.idCourse }})"
+                       rel="{{ course.rel }}">
+                        {% if course.subscribe_method == 2 %}
+                            <span class="forma-button__label">{{ Lang_translate('_SUBSCRIBE', 'catalogue') }}</span>
+                        {% else %}
+                            <span class="forma-button__label">{{ Lang_translate('_COURSE_S_MODERATE', 'catalogue') }}</span>
+                        {% endif %}
+                    </a>
+                {% elseif course.subscribe_method == 0 %}
+                    <a class="forma-button course-box__cta__button" title="{{ course.name }}"
+                       rel="{{ course.rel }}" href="javascript:void(0);" >
+                        <span class="forma-button__label">{{ Lang_translate('_COURSE_S_GODADMIN', 'catalogue') }}</span>
+                    </a>
+                {% endif %}
+            {% endif %}
+        {% endif %}
+    {% else %}
+        <a class="forma-button forma-button--disabled" href="javascript:void(0);" title="{{ course.name }}">
+            <span class="forma-button__label">
+                {{ Lang_translate('_NO_EDITIONS_AVAILABLE', 'course') }}
+            </span>
+        </a>
+    {% endif %}
+{% endblock %}

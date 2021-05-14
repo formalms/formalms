@@ -99,7 +99,8 @@
                                                 <tbody>
                                                 {% for id_edition, days in course.editions %}
                                                     <tr>
-                                                        <td colspan=4>{{ Lang_translate('_EDITION') }}:&nbsp; {{ days.name }}
+                                                        <td colspan=4>{{ Lang_translate('_EDITION') }}
+                                                            :&nbsp; {{ days.name }}
                                                         <td>
                                                     </tr>
                                                     {% if course.userCanUnsubscribe %}
@@ -112,14 +113,11 @@
                                                     {% for day in days.days %}
                                                         <tr>
                                                             {% if day.day in course.next_lesson %}
-
                                                                 <td><b>{{ day.day }}</b></td>
                                                                 <td><b>{{ day.begin }}</b></td>
                                                                 <td><b>{{ day.end }}</b></td>
                                                                 <td><b>{{ day.classroom }}</b></td>
-
                                                             {% else %}
-
                                                                 <td>{{ day.day }}</td>
                                                                 <td>{{ day.begin }}</td>
                                                                 <td>{{ day.end }}</td>
