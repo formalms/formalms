@@ -1,9 +1,3 @@
-{% set courseBoxClasses = [] %}
-
-{% if not course.canEnter %}
-    {% set courseBoxClasses = courseBoxClasses|merge(['course-box--disabled']) %}
-{% endif %}
-
 {% block courseBox %}
     <article class="course-box {{ courseBoxClasses|join(' ') }}">
 

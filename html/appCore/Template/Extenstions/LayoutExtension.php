@@ -23,7 +23,6 @@ class LayoutExtension extends \Twig\Extension\AbstractExtension
             new TwigFunction('Layout_getCopyright', [\Layout::class, 'copyright'], ['is_safe' => ['html']]),
             new TwigFunction('Layout_getCatalogue', [\Layout::class, 'get_catalogue'], ['is_safe' => ['html']]),
             new TwigFunction('Layout_getAccessibility', [\Layout::class, 'accessibility'], ['is_safe' => ['html']]),
-            new TwigFunction('Layout_getAccessibility', [\Layout::class, 'accessibility'], ['is_safe' => ['html']]),
             new TwigFunction('Layout_buildLanguage', [\Layout::class, 'buildLanguages'], ['is_safe' => ['html']]),
             new TwigFunction('Layout_getCart', [\Layout::class, 'cart'], ['is_safe' => ['html']]),
             new TwigFunction('Layout_getChangeLang', [\Layout::class, 'change_lang'], ['is_safe' => ['html']])
