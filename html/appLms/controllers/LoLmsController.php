@@ -55,6 +55,7 @@ class LoLmsController extends LmsController
                 'edit' => false,
                 'title' => Lang::t('_ORGROOTNAME', 'storage'),
                 'data' => $this->getFolders($this->idCourse, false),
+                'type' => 'organization',
             ],
         ]);
     }
