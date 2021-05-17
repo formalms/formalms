@@ -98,7 +98,7 @@ class CatalogLmsController extends LmsController
         $id_catalogue = Get::req('id_catalogue', DOTY_INT, 0);
         
 
-        $course_category = $this->prepareCourseInfo($this->model->getCourseList($typeCourse, 1, $id_catalogue, $id_category));
+        $course_category = $this->model->getCourseList($typeCourse, 1, $id_catalogue, $id_category);
         
         $this->render('courselist', compact("course_category", "id_catalogue")); 
     }
@@ -113,12 +113,12 @@ class CatalogLmsController extends LmsController
 
          while ($row = sql_fetch_assoc($rs)) 
         {
-            
+
             $course_array[$row['idCourse']] = $row;
             $course_array[$row['idCourse']]['escaped_name'] = addslashes($course_array[$row['idCourse']]['name']);
             if ($row['use_logo_in_courselist'] && $row['img_course']) {
                 $course_array[$row['idCourse']]['img_course'] = $path_course.$row['img_course'];
-             };   
+             }
              
             if ( $row['box_description'] > 120) {
                 $course_array[$row['idCourse']]['box_description'] = substr($row['box_description'],0,120).'...';
@@ -146,7 +146,7 @@ class CatalogLmsController extends LmsController
                             $course_array[$row['idCourse']]['str_rel'] = "";
                             if ($obj_type == "scormorg" && $level <= 3 && $row['direct_play'] == 1) {
                                 //  joseph, added curly bracket :)
-                                $course_array[$row['idCourse']]['str_rel'] = " rel='lightbox'";                                
+                                $course_array[$row['idCourse']]['str_rel'] = " rel='lightbox'";
                             }
                         }
                     }
@@ -160,30 +160,22 @@ class CatalogLmsController extends LmsController
                     }    
                 }
             }
-            
-             
-            
-            if ($course_array[$row['idCourse']]['course_type'] =='classroom') {
-                $d = new DateManager();
-                $course_array[$row['idCourse']]['edition_exists']  = (count($d->getAvailableDate($row['idCourse'], false)) > 0);
-            }
+
             if ($course_array[$row['idCourse']]['course_type'] === 'classroom') {
-                $course_array[$row['idCourse']]['editions'] = $model->_getClassDisplayInfo($k, $courselist[$k]);
+
+                $course_array[$row['idCourse']]['editions'] = $model->_getClassDisplayInfo($row['idCourse'], $course_array[$row['idCourse']]);
             } else {
                 $course_array[$row['idCourse']]['editions'] = false;
             }
-            
-            
-            
-            
-            $course_array[$row['idCourse']]['show_options'] = 
+
+            $course_array[$row['idCourse']]['show_options'] =
                                                          // unsubscribe
-                                                        ($course_array[$row['idCourse']]['userCanUnsubscribe']  && $course_array[$row['idCourse']]['is_enrolled'])  
+                                                        ($course_array[$row['idCourse']]['userCanUnsubscribe']  && $course_array[$row['idCourse']]['is_enrolled'])
                                                               ||  // demo material
                                                         (
-                                                            $course_array[$row['idCourse']]["course_demo"] && 
+                                                            $course_array[$row['idCourse']]["course_demo"] &&
                                                             (
-                                                                ($course_array[$row['idCourse']]["level"] > 3) 
+                                                                ($course_array[$row['idCourse']]["level"] > 3)
                                                                 || 
                                                                 (!$course_array[$row['idCourse']]['waiting']  && $course_array[$row['idCourse']]['canEnter'])
                                                             )
@@ -191,7 +183,7 @@ class CatalogLmsController extends LmsController
                                                         
                                                         
                 
-                
+
         }
         return $course_array;            
         

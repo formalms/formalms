@@ -82,8 +82,6 @@ class ElearningLms extends Model
 
 	public function findAll($conditions, $params)
 	{
-
-
 		$db = DbConn::getInstance();
 
 		// exclude course belonging to pathcourse in which the user is enrolled as a student  
@@ -99,9 +97,6 @@ class ElearningLms extends Model
 				$exclude_pathcourse = " and c.idCourse not in (" . implode(',', $excl) . " )";
 			}
 		}
-
-
-
 
 		$query = "SELECT c.idCourse, c.course_type, c.idCategory, c.code, c.name, c.description, c.box_description, c.difficult, c.status AS course_status, c.level_show_user, "
 			. "	  c.course_edition, c.sub_start_date, c.sub_end_date, "

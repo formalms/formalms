@@ -196,6 +196,116 @@ class CatalogLms extends Model
 		return $result;
 	}
 
+	public function getCatalogCourseList($type = '', $page = 1, $id_catalog, $id_category){
+
+        require_once(_lms_ . '/lib/lib.catalogue.php');
+        $cat_man = new Catalogue_Manager();
+
+        $user_catalogue = $cat_man->getUserAllCatalogueId(Docebo::user()->getIdSt());
+        $category_filter = ($id_category == 0 || $id_category == null ? '' : ' and idCategory=' . $id_category);
+        $cat_list_filter = "";
+        if ($id_catalog > 0) {
+            $q = "select idEntry from learning_catalogue_entry where idCatalogue=" . $id_catalog . " and type_of_entry='course'";
+            $r = sql_query($q);
+            while (list($idcat) = sql_fetch_row($r)) {
+                $cat_array[] = $idcat;
+            }
+            $cat_list_filter = " and idCourse in (" . implode(",", $cat_array) . ")";
+        }
+
+        switch ($type) {
+            case 'elearning':
+                $filter = " AND course_type = '" . $type . "'";
+                $base_link = 'index.php?r=catalog/elearningCourse&amp;page=' . $page;
+                if (count($user_catalogue) > 0) {
+                    $courses = array();
+
+                    foreach ($user_catalogue as $id_cat) {
+                        $catalogue_course = $cat_man->getCatalogueCourse($id_cat);
+
+                        $courses = array_merge($courses, $catalogue_course);
+                    }
+
+                    $filter .= " AND idCourse IN (" . implode(',', $courses) . ")";
+                }
+                break;
+            case 'classroom':
+                $filter = " AND course_type = '" . $type . "'";
+                $base_link = 'index.php?r=catalog/classroomCourse&amp;page=' . $page;
+                if (count($user_catalogue) > 0) {
+                    $courses = array();
+
+                    foreach ($user_catalogue as $id_cat) {
+                        $catalogue_course = $cat_man->getCatalogueCourse($id_cat);
+
+                        $courses = array_merge($courses, $catalogue_course);
+                    }
+
+                    $filter .= " AND idCourse IN (" . implode(',', $courses) . ")";
+                }
+                break;
+            case 'new':
+                $filter = " AND create_date >= '" . date('Y-m-d', mktime(0, 0, 0, date('m'), ((int) date('d') - 7), date('Y'))) . "'";
+                $base_link = 'index.php?r=catalog/newCourse&amp;page=' . $page;
+                if (count($user_catalogue) > 0) {
+                    $courses = array();
+
+                    foreach ($user_catalogue as $id_cat) {
+                        $catalogue_course = $cat_man->getCatalogueCourse($id_cat);
+
+                        $courses = array_merge($courses, $catalogue_course);
+                    }
+
+                    $filter .= " AND idCourse IN (" . implode(',', $courses) . ")";
+                }
+                break;
+            case 'catalogue':
+                $id_catalogue = Get::req('id_cata', DOTY_INT, '0');
+                $base_link = 'index.php?r=catalog/catalogueCourse&amp;id_cat=' . $id_catalogue . '&amp;page=' . $page;
+
+                $catalogue_course = $cat_man->getCatalogueCourse($id_catalogue);
+                $filter = " AND idCourse IN (" . implode(',', $catalogue_course) . ")";
+                break;
+            default:
+                $filter = '';
+                $base_link = 'index.php?r=catalog/allCourse&amp;page=' . $page;
+
+                // var_dump($user_catalogue);
+
+                if (count($user_catalogue) > 0) {
+                    $courses = array();
+
+                    foreach ($user_catalogue as $id_cat) {
+                        $catalogue_course = $cat_man->getCatalogueCourse($id_cat);
+
+                        $courses = array_merge($courses, $catalogue_course);
+                    }
+
+                    $filter .= " AND idCourse IN (" . implode(',', $courses) . ")";
+                }
+                break;
+        }
+
+
+        $query = "SELECT *"
+            . " FROM %lms_course"
+            . " WHERE status NOT IN (" . CST_PREPARATION . ", " . CST_CONCLUDED . ", " . CST_CANCELLED . ")"
+            . " AND course_type <> 'assessment'"
+            . " AND (                       
+						(can_subscribe=2 AND (sub_end_date = '0000-00-00' OR sub_end_date >= '" . date('Y-m-d') . "') AND
+                         (sub_start_date = '0000-00-00' OR '" . date('Y-m-d') . "' >= sub_start_date)) OR
+                        (can_subscribe=1)
+					) "
+            . $filter
+            . $category_filter
+            . $cat_list_filter
+            . " ORDER BY name";
+
+
+        $result = sql_query($query);
+        return $result;
+    }
+
 	public function getTotalCourseNumber($type = '')
 	{
 		require_once(_lms_ . '/lib/lib.catalogue.php');
@@ -305,6 +415,53 @@ class CatalogLms extends Model
 
 		return $res;
 	}
+
+    public function _getClassDisplayInfo($id_course, &$course_array)
+    {
+        require_once(_lms_.'/lib/lib.date.php');
+        $dm = new DateManager();
+        $cl = new ClassroomLms();
+        $course_editions =$cl->getUserEditionsInfo(Docebo::user()->idst,$id_course );
+        $out = [];
+        $course_array['next_lesson']  = '-';
+        $next_lesson_array = [];
+        $currentDate = new DateTime();
+
+        // user can be enrolled in more than one edition (as a teacher or crazy student....)
+        foreach ($course_editions[$id_course] as $id_date => $obj_data ) {
+            // skip if course if over or not available
+            $end_course = New DateTime(Format::date($obj_data -> date_max, 'datetime'));
+            if ($end_course > $currentDate && $obj_data -> status == 0  ) {
+                $out[$id_date]['code'] = $obj_data -> code;
+                $out[$id_date]['name'] = $obj_data -> name;
+                $out[$id_date]['date_begin'] = $obj_data -> date_min;
+                $out[$id_date]['date_end'] = $obj_data -> date_max;
+                $array_day =  $dm->getDateDayDateDetails($obj_data->id_date);
+
+                foreach ($array_day as $id => $day) {
+                    $out[$id_date]['days'][$id]['classroom'] = $day['classroom'];
+                    $out[$id_date]['days'][$id]['day'] = Format::date($day['date_begin'], 'date');
+                    $out[$id_date]['days'][$id]['begin'] = Format::date($day['date_begin'], 'time');
+                    $out[$id_date]['days'][$id]['end'] = Format::date($day['date_end'], 'time');
+                    $next_lesson_array[$id_date.','.$id] = New DateTime(Format::date($day['date_begin'], 'datetime'));
+                }
+            }
+
+        }
+
+        // calculating what's next lession will be; safe mode in case of more editions with different days
+        if (count($next_lesson_array > 0)) {
+            asort($next_lesson_array);
+            foreach ($next_lesson_array as $k => $v) {
+                if ( $v > $currentDate ) {
+                    $j = explode(',', $k);
+                    $course_array['next_lesson'] = $out[$j[0]]['days'][$j[1]]['day'].' '.$out[$j[0]]['days'][$j[1]]['begin'];
+                    break;
+                }
+            }
+        }
+        return $out;
+    }
 
 	public function getUserCatalogue($id_user)
 	{

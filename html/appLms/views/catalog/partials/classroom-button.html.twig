@@ -1,5 +1,5 @@
 {% block classRoomButton %}
-    {% if course.edition_exists %}
+    {% if course.editions %}
         {% if course.is_enrolled %}
             {% if course.canEnter %}
                 <a class="forma-button course-box__cta__button" title="{{ course.name }}"
