@@ -88,6 +88,8 @@ class LomanagerLms extends Model {
         $tab = self::STORAGE_ORGDIRDB;
         if(isset($_SESSION['storage'])) {
             $tab = unserialize($_SESSION['storage'])['tabview_storage_status'];
+        } else {
+            $this->setCurrentTab($tab);
         }
         return $tab;
     }
