@@ -112,7 +112,7 @@ class FolderTree {
         el.classList.add('ft-is-folderOpen');
 
         const LoData = _this.getApiUrl('get', elId, { type: _this.type });
-        this.getLoData(LoData, el, elId, clickOnArrow);
+        _this.getLoData(LoData, el, elId, clickOnArrow);
       }
     }
   }
@@ -232,6 +232,7 @@ class FolderTree {
                   el.remove();
                   document.querySelector('.context-menu').classList.remove('menu-visible');
                 }
+                _this.refresh();
               });
             }).catch((error) => {
               console.log(error);
@@ -399,7 +400,7 @@ class FolderTree {
         draggable: '.folderView__li',
         dataIdAttr: 'data-id',
         multiDrag: true, // Enable the plugin
-        multiDragKey: 'Meta', // Fix 'ctrl' or 'Meta' button pressed
+        // multiDragKey: 'Meta', // Fix 'ctrl' or 'Meta' button pressed
         selectedClass: 'fv-is-selected',
         animation: 150,
         easing: 'cubic-bezier(1, 0, 0, 1)',
@@ -465,7 +466,7 @@ class FolderTree {
         inputParent.value = elId;
         inputState.value = response.data.currentState;
 
-        if (el.classList.contains('ft-is-root')) {
+        if (el && el.classList.contains('ft-is-root')) {
           el.parentNode.childNodes.forEach(node => {
             if ( (node.classList) && (node.classList.contains('folderTree__ul'))) {
               node.remove();
@@ -473,7 +474,9 @@ class FolderTree {
           })
         }
 
-        el.insertAdjacentHTML('afterend', child);
+        if (el) {
+          el.insertAdjacentHTML('afterend', child);
+        }
         if (!clickOnArrow) {
           const folderView = _this.container.querySelector('.folderView');
           folderView.innerHTML = childView;
@@ -491,9 +494,9 @@ class FolderTree {
           if (_this.openedIds) {
             _this.openedIds.forEach((id) => {
               if (id != _this.selectedId) {
-                let arrow = _this.container.querySelector('.ft-is-parent[data-id="' + id + '"] .arrow');
+                let arrow = _this.container.querySelector('.folderTree__li[data-id="' + id + '"] .arrow');
                 if (arrow) {
-                  arrow.click();
+                  arrow.click(); // ???
                 }
               }
             });

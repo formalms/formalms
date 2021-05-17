@@ -89,6 +89,8 @@ class FolderView {
 
               if (!ul.querySelector('li')) { // Last element in parent dir
                 ul.remove();
+                // Refresh tree of parent node
+                _this.container.querySelector('.folderTree__link.ft-is-folder[data-id="' + elId + '"]').click();
               }
             }
             const el = _this.container.querySelector('.folderView__li[data-id="' + elId + '"]');

@@ -31330,7 +31330,7 @@ var FolderTree = function () {
           el.classList.add('ft-is-folderOpen');
 
           var LoData = _this.getApiUrl('get', elId, { type: _this.type });
-          this.getLoData(LoData, el, elId, clickOnArrow);
+          _this.getLoData(LoData, el, elId, clickOnArrow);
         }
       }
     }
@@ -31473,6 +31473,7 @@ var FolderTree = function () {
                     el.remove();
                     document.querySelector('.context-menu').classList.remove('menu-visible');
                   }
+                  _this.refresh();
                 });
               }).catch(function (error) {
                 console.log(error);
@@ -31659,7 +31660,7 @@ var FolderTree = function () {
           draggable: '.folderView__li',
           dataIdAttr: 'data-id',
           multiDrag: true, // Enable the plugin
-          multiDragKey: 'Meta', // Fix 'ctrl' or 'Meta' button pressed
+          // multiDragKey: 'Meta', // Fix 'ctrl' or 'Meta' button pressed
           selectedClass: 'fv-is-selected',
           animation: 150,
           easing: 'cubic-bezier(1, 0, 0, 1)',
@@ -31765,7 +31766,7 @@ var FolderTree = function () {
                   inputParent.value = elId;
                   inputState.value = response.data.currentState;
 
-                  if (el.classList.contains('ft-is-root')) {
+                  if (el && el.classList.contains('ft-is-root')) {
                     el.parentNode.childNodes.forEach(function (node) {
                       if (node.classList && node.classList.contains('folderTree__ul')) {
                         node.remove();
@@ -31773,7 +31774,9 @@ var FolderTree = function () {
                     });
                   }
 
-                  el.insertAdjacentHTML('afterend', child);
+                  if (el) {
+                    el.insertAdjacentHTML('afterend', child);
+                  }
                   if (!clickOnArrow) {
                     var folderView = _this.container.querySelector('.folderView');
                     folderView.innerHTML = childView;
@@ -31791,9 +31794,9 @@ var FolderTree = function () {
                     if (_this.openedIds) {
                       _this.openedIds.forEach(function (id) {
                         if (id != _this.selectedId) {
-                          var arrow = _this.container.querySelector('.ft-is-parent[data-id="' + id + '"] .arrow');
+                          var arrow = _this.container.querySelector('.folderTree__li[data-id="' + id + '"] .arrow');
                           if (arrow) {
-                            arrow.click();
+                            arrow.click(); // ???
                           }
                         }
                       });
@@ -37249,6 +37252,8 @@ var FolderView = function () {
                 if (!ul.querySelector('li')) {
                   // Last element in parent dir
                   ul.remove();
+                  // Refresh tree of parent node
+                  _this.container.querySelector('.folderTree__link.ft-is-folder[data-id="' + elId + '"]').click();
                 }
               }
               var el = _this.container.querySelector('.folderView__li[data-id="' + elId + '"]');
@@ -37355,7 +37360,7 @@ var CreateItem = function () {
   }, {
     key: 'initDropdown',
     value: function initDropdown() {
-      var _this = this;
+      var _this2 = this;
 
       var dropdown = this.container.querySelector('#dropdownMenu_' + this.type);
       var types = dropdown.querySelectorAll('.itemType');
@@ -37364,14 +37369,14 @@ var CreateItem = function () {
       if (types) {
         types.forEach(function (type) {
           type.addEventListener('click', function (e) {
-            _this.clickOnType(e);
+            _this2.clickOnType(e);
           });
         });
       }
       if (treeLinks) {
         treeLinks.forEach(function (l) {
           l.addEventListener('click', function (e) {
-            _this.clickOnFolder(e);
+            _this2.clickOnFolder(e);
           });
         });
       }
@@ -37381,10 +37386,10 @@ var CreateItem = function () {
       var folderInputText = createFolderForm.querySelector('.createFolder__input');
 
       createFolderBtn.addEventListener('click', function (e) {
-        _this.createNewFolder(e, createFolderForm);
+        _this2.createNewFolder(e, createFolderForm);
       });
       cancelCreateFolderBtn.addEventListener('click', function () {
-        var dropdownBtn = _this.container.querySelector('#dropdownMenuBtn_' + _this.type);
+        var dropdownBtn = _this2.container.querySelector('#dropdownMenuBtn_' + _this2.type);
         dropdownBtn.classList.remove('hidden');
         dropdown.classList.remove('hidden');
         createFolderForm.classList.add('hidden');
@@ -37393,7 +37398,7 @@ var CreateItem = function () {
 
       folderInputText.addEventListener('keypress', function (e) {
         if (e.keyCode === 13) {
-          _this.createNewFolder(e, createFolderForm);
+          _this2.createNewFolder(e, createFolderForm);
           return false;
         }
       });
@@ -37409,22 +37414,21 @@ var CreateItem = function () {
   }, {
     key: 'createNewFolder',
     value: function createNewFolder(event, createFolderForm) {
-      var _this2 = this;
-
+      var _this = this;
       this.showErr();
       var text = createFolderForm.querySelector('.createFolder__input').value;
       var authentic_request = createFolderForm.querySelector('input[name=authentic_request]').value;
-      var dropdownBtn = this.container.querySelector('#dropdownMenuBtn_' + this.type);
-      var dropdown = this.container.querySelector('#dropdownMenu_' + this.type);
-      var selectedNodeId = this.selectedNodeId ? this.selectedNodeId : 0;
+      var dropdownBtn = _this.container.querySelector('#dropdownMenuBtn_' + _this.type);
+      var dropdown = _this.container.querySelector('#dropdownMenu_' + _this.type);
+      var selectedNodeId = _this.selectedNodeId ? _this.selectedNodeId : 0;
 
       var params = {
         folderName: text,
         selectedNode: selectedNodeId,
-        type: this.type,
+        type: _this.type,
         authentic_request: authentic_request
       };
-      var apiUrl = this.getApiUrl('createFolder', null, params);
+      var apiUrl = _this.getApiUrl('createFolder', null, params);
 
       axios.get(apiUrl).then(function (response) {
         if (response) {
@@ -37434,18 +37438,52 @@ var CreateItem = function () {
           createFolderForm.querySelector('.createFolder__input').value = '';
 
           // Refresh tree of parent node
-          _this2.container.querySelector('.folderTree__link.ft-is-folder[data-id="' + selectedNodeId + '"]').click();
+          _this.refresh(selectedNodeId);
         }
       }).catch(function (error) {
-        _this2.showErr(error.response.data.error);
+        _this.showErr(error.response.data.error);
       });
 
       event.preventDefault();
     }
   }, {
+    key: 'setOpenedDirs',
+    value: function setOpenedDirs() {
+      var _this = this;
+      var openedEls = _this.container.querySelectorAll('.ft-is-folderOpen');
+      this.openedIds = [];
+
+      openedEls.forEach(function (item) {
+        var id = item.getAttribute('data-id');
+        if (id > 0) {
+          _this.openedIds.push(id);
+        }
+      });
+    }
+  }, {
+    key: 'setSelectedDir',
+    value: function setSelectedDir() {
+      var _this = this;
+      var item = _this.container.querySelector('.ft-is-selected');
+      _this.selectedId = item ? item.getAttribute('data-id') : 0;
+    }
+  }, {
+    key: 'refresh',
+    value: function refresh(selectedId) {
+      var _this = this;
+      _this.setOpenedDirs();
+      if (selectedId) {
+        _this.selectedId = selectedId;
+      } else {
+        _this.setSelectedDir();
+      }
+      _this.container.querySelector('.folderTree__link.ft-is-root').click();
+    }
+  }, {
     key: 'showErr',
     value: function showErr(msg) {
-      var err = this.container.querySelector('.createFolder__input_err');
+      var _this = this;
+      var err = _this.container.querySelector('.createFolder__input_err');
       if (msg) {
         err.innerHTML = msg;
         err.classList.remove('hidden');
@@ -37455,18 +37493,20 @@ var CreateItem = function () {
     }
   }, {
     key: 'getNewLoUrl',
-    value: function getNewLoUrl(type) {
-      var selectedNodeId = this.selectedNodeId ? this.selectedNodeId : 0;
+    value: function getNewLoUrl() {
+      var _this = this;
+      var selectedNodeId = _this.selectedNodeId ? _this.selectedNodeId : 0;
 
-      return 'index.php?modname=storage&op=display&' + this.type + '_createLOSel=1&radiolo=' + type + '&treeview_selected_' + this.type + '=' + selectedNodeId;
+      return 'index.php?modname=storage&op=display&' + _this.type + '_createLOSel=1&radiolo=' + _this + '&treeview_selected_' + _this.type + '=' + selectedNodeId;
     }
   }, {
     key: 'clickOnType',
     value: function clickOnType(event) {
+      var _this = this;
       var el = event.target;
-      var dropdownBtn = this.container.querySelector('#dropdownMenuBtn_' + this.type);
-      var dropdown = this.container.querySelector('#dropdownMenu_' + this.type);
-      var createFolderForm = this.container.querySelector('.createFolderForm');
+      var dropdownBtn = _this.container.querySelector('#dropdownMenuBtn_' + _this.type);
+      var dropdown = _this.container.querySelector('#dropdownMenu_' + _this.type);
+      var createFolderForm = _this.container.querySelector('.createFolderForm');
 
       if (el) {
         var type = el.getAttribute('data-id');
@@ -37475,7 +37515,7 @@ var CreateItem = function () {
           dropdown.classList.add('hidden');
           createFolderForm.classList.remove('hidden');
         } else {
-          location.href = this.getNewLoUrl(type);
+          location.href = _this.getNewLoUrl();
         }
         event.preventDefault();
       }
