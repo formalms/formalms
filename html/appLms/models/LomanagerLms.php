@@ -21,12 +21,6 @@ class LomanagerLms extends Model {
     const STORAGE_ORGDIRDB = 'storage_course';
     const STORAGE_REPODIRDB = 'storage_pubrepo';
 
-    const STORAGE_TABS = array(
-        self::HOMEREPODIRDB => self::STORAGE_HOMEREPODIRDB,
-        self::ORGDIRDB => self::STORAGE_ORGDIRDB,
-        self::REPODIRDB => self::STORAGE_REPODIRDB,
-    );
-
     private $tdb = null;
     private $treeView = null;
 
@@ -35,7 +29,6 @@ class LomanagerLms extends Model {
     }
 
     public function setTdb($type = self::ORGDIRDB, $idCourse = false) {
-        $this->treeView = $type;
         switch($type) {
             case self::ORGDIRDB: 
                 $this->tdb = new OrgDirDb($idCourse);
@@ -49,15 +42,25 @@ class LomanagerLms extends Model {
             default:
                 throw new Error('Missing directory type in self constructor');
         }
+        $this->treeView = new Org_TreeView($this->tdb, $type);
         return $this->tdb;
     }
 
+    public function getTdb()
+    {
+        return $this->tdb;
+    }
+
+    public function getTreeView()
+    {
+        return $this->treeView;
+    }
+
     public function getLearningObjects($rootId) {
-        $tree_view = new Org_TreeView($this->tdb, $this->treeView );
-        $tree_view->creatingObjectType = $_REQUEST['lo_type'];
-        $tree_view->selectedFolder = $_REQUEST['parentId'];
-        $tree_view->parsePositionData($_REQUEST, $_REQUEST, $_REQUEST);
-        return $tree_view->getChildrensDataById($rootId);
+        $this->treeView->creatingObjectType = $_REQUEST['lo_type'];
+        $this->treeView->selectedFolder = $_REQUEST['parentId'];
+        $this->treeView->parsePositionData($_REQUEST, $_REQUEST, $_REQUEST);
+        return $this->treeView->getChildrensDataById($rootId);
     }
 
     public function getFolders($collection_id, $id = 0) {
@@ -73,17 +76,20 @@ class LomanagerLms extends Model {
     }
 
     public function getCurrentState($idFolder = 0) {
-        $tree_view = new Org_TreeView($this->tdb, $this->treeView);
-        return $tree_view->getCurrentState($idFolder);
+        return $this->treeView->getCurrentState($idFolder);
     }
 
-    public function setCurrentTab($type) {
-        if (array_key_exists($type, self::STORAGE_TABS)) {
-            $_SESSION['storage'] = serialize(['tabview_storage_status' => self::STORAGE_TABS[$type]]);
+    public function setCurrentTab($tab) {
+        $_SESSION['storage'] = serialize(['tabview_storage_status' => $tab]);
+        return $_SESSION['storage'];
+    }
 
-            return $_SESSION['storage'];
+    public function getCurrentTab() {
+        $tab = self::STORAGE_ORGDIRDB;
+        if(isset($_SESSION['storage'])) {
+            $tab = unserialize($_SESSION['storage'])['tabview_storage_status'];
         }
-        return false;
+        return $tab;
     }
 
     public function deleteFolder($id) {
@@ -170,4 +176,124 @@ class LomanagerLms extends Model {
         return $this->tdb->addFolderById($selectedNode, $folderName, $idCourse);
     }
 
+    public function getLoTypes()
+    {
+        $query = "SELECT objectType AS type FROM %lms_lo_types";
+        $rs = sql_query($query);
+
+        $lo_types = [
+            [
+                'type' => 'folder',
+                'title' => Lang::t('_DIRECTORY', 'organization_chart'),
+            ]
+        ];
+        while ($lo_type = sql_fetch_assoc($rs)) {
+            $lo_type['title'] = Lang::t("_LONAME_{$lo_type['type']}", 'storage');
+            $lo_types[] = $lo_type;
+        }
+        
+        return $lo_types;
+    }
+
+    public function formatLoData($loData)
+    {
+        $results = [];
+        foreach ($loData as $lo) {
+            $type = $lo['typeId'];
+            $id = $lo['id'];
+            $lo["actions"] = [];
+            if (!$lo["is_folder"]) {
+                if ($lo["play"] && !$lo['canEdit']) {
+                    $lo["actions"][] = [
+                        "name" => "play",
+                        "active" => true,
+                        "type" => "link",
+                        "content" => "index.php?modname=organization&op=custom_playitem&id_item=$id",
+                        "showIcon" => false,
+                        "icon" => "icon-play",
+                        "label" => "Play",
+                    ];
+                } else if ($lo['canEdit']) {
+                    $lo["actions"][] = [
+                        "name" => "play",
+                        "active" => true,
+                        "type" => "link",
+                        "content" => "index.php?modname=organization&op=custom_playitem&edit=1&id_item=$id",
+                        "showIcon" => false,
+                        "icon" => "icon-play",
+                        "label" => "Play",
+                    ];
+                }
+            }
+            if ($lo['canEdit']) {
+                if (!$lo["is_folder"]) {
+                    $lo["actions"][] = [
+                        "name" => "edit",
+                        "active" => true,
+                        "type" => "link",
+                        "content" => "index.php?r=lms/lomanager/edit&id=$id&type=$type",
+                        "showIcon" => true,
+                        "icon" => "icon-edit",
+                        "label" => "Edit",
+                    ];
+                }
+
+                $lo["actions"][] = [
+                    "name" => "properties",
+                    "active" => true,
+                    "type" => "submit",
+                    "content" => "${type}[org_opproperties][$id]",
+                    "showIcon" => true,
+                    "icon" => "icon-properties",
+                    "label" => "Properties",
+                ];
+
+                $lo["actions"][] = [
+                    "name" => "access",
+                    "active" => true,
+                    "type" => "submit",
+                    "content" => "${type}[org_opaccess][$id]",
+                    "showIcon" => true,
+                    "icon" => "icon-access",
+                    "label" => "Access",
+                ];
+
+                if ($lo['canBeCategorized']) {
+                    $lo["actions"][] = [
+                        "name" => "categorize",
+                        "active" => true,
+                        "type" => "submit",
+                        "content" => "${type}[org_opcategorize][$id]",
+                        "showIcon" => true,
+                        "icon" => "icon-categorize",
+                        "label" => "Categorize",
+                    ];
+                }
+
+                if (!$lo["is_folder"]) {
+                    $lo["actions"][] = [
+                        "name" => "copy",
+                        "active" => true,
+                        "type" => "ajax",
+                        "content" => "index.php?r=lms/lomanager/copy&id=$id&type=$type&newType=",
+                        "showIcon" => true,
+                        "icon" => "icon-copy",
+                        "label" => "Copy",
+                    ];
+                }
+
+                $lo["actions"][] = [
+                    "name" => "delete",
+                    "active" => true,
+                    "type" => "link",
+                    "content" => "index.php?r=lms/lomanager/delete&id=$id&type=$type",
+                    "showIcon" => true,
+                    "icon" => "icon-delete",
+                    "label" => "Delete",
+                ];
+            }
+            $results[] = $lo;
+        }
+        return $results;
+    }
 }
