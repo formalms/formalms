@@ -1,10 +1,12 @@
 {% extends 'partials/course-box.html.twig' %}
 {% set courseBoxClasses = [] %}
-{% if not course.edition_exists or ( course.is_enrolled and not course.canEnter) %}
+
+{% if course.editions == false or not course.canEnter %}
     {% set courseBoxClasses = courseBoxClasses|merge(['course-box--disabled']) %}
 {% endif %}
 
 {% block entercourse %}
+
     {% if course.course_type == 'classroom' %}
         {% include 'partials/classroom-button.html.twig' with { 'course': course } %}
     {% elseif course.course_type == 'elearning' %}
