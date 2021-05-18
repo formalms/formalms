@@ -6,28 +6,112 @@ class FolderView {
   constructor(type) {
     this.type = type;
     this.container = document.querySelector('*[data-container=' + this.type + ']');
-    this.container.addEventListener('click', this.toggleSelectEl);
-    this.container.addEventListener('click', (e) => { this.triggerClick(e, this.container, this.type) });
+    this.container.addEventListener('click', (e) => { this.toggleSelectEl(e); });
+    this.container.addEventListener('click', (e) => { this.triggerClick(e); });
+    this.container.addEventListener('dblclick', (e) => { this.triggerDblClick(e); });
+    this.emptySelectedItems();
   }
 
-  toggleSelectEl(event) {
-    const el = event.target;
+  getContainer() {
+    return this.container;
+  }
 
-    if (el && (el.classList.contains('js-fv-open-actions'))) {
-      el.closest('.folderView__li').classList.add('fv-is-selected');
+  getType() {
+    return this.type;
+  }
+
+  getSelectedItems() {
+    return this.selectedItems;
+  }
+
+  emptySelectedItems() {
+    this.selectedItems = {};
+    this.container = this.getContainer();
+
+    // Unselect all
+    this.container.querySelectorAll('.fv-is-selected').forEach((item) => {
+      item.classList.remove('fv-is-selected');
+    });
+  }
+
+  toggleSelectedItem(el, id, notEmpty) {
+    const li = el.closest('.folderView__li');
+
+    if (!li) {
+      return;
     }
 
-    if (el && (el.classList.contains('js-fv-close-actions'))) {
-      el.closest('.folderView__li').classList.remove('fv-is-selected');
+    if (notEmpty) {
+      this.selectedItems[id] = !this.selectedItems[id];
+
+      if (this.selectedItems[id]) {
+        li.classList.add('fv-is-selected');
+      } else {
+        li.classList.remove('fv-is-selected');
+      }
+    } else {
+      this.emptySelectedItems();
+      this.selectedItems[id] = true;
+      li.classList.add('fv-is-selected');
+    }
+    return this.selectedItems[id];
+  }
+
+  toggleSelectEl(e) {
+    const el = e.target;
+    this.toggleSelectedItem(el, el.getAttribute('data-id'), (e.ctrlKey || e.metaKey));
+  }
+
+  triggerClick(e) {
+    const el = e.target;
+    const _this = this;
+
+    if (el) {
+      if (el.tagName === 'BUTTON') {
+        e.preventDefault();
+      }
+      
+      const li = el.closest('.folderView__li');
+      if (!li) {
+        return;
+      }
+      const elId = li.getAttribute('data-id');
+
+      if (!elId) {
+        return;
+      }
+
+      if (el.classList.contains('fv-is-delete')) {
+        e.preventDefault();
+        if (confirm('Sei sicuro di voler eliminare questo elemento?')) {
+          const deleteLoData = _this.getApiUrl('delete', elId, { type: _this.type });
+          axios.get(deleteLoData).then(() => {
+            const elTree = _this.container.querySelector('.folderTree__li[data-id="' + elId + '"]');
+            if (elTree) {
+              const ul = elTree.parentNode;
+              elTree.remove();
+
+              if (!ul.querySelector('li')) { // Last element in parent dir
+                ul.remove();
+                // Refresh tree of parent node
+                _this.container.querySelector('.folderTree__link.ft-is-folder[data-id="' + elId + '"]').click();
+              }
+            }
+            const el = _this.container.querySelector('.folderView__li[data-id="' + elId + '"]');
+            if (el) {
+              el.remove();
+            }
+          }).catch((error) => {
+            console.log(error);
+          });
+        }
+      }
     }
   }
 
-  triggerClick(event, container, type) {
-    const el = event.target;
-
-    if (el.tagName === 'BUTTON') {
-      event.preventDefault();
-    }
+  triggerDblClick(e) {
+    const el = e.target;
+    const _this = this;
 
     if (el) {
       const li = el.closest('.folderView__li');
@@ -40,45 +124,23 @@ class FolderView {
         return;
       }
 
-      if (el.classList.contains('fv-is-delete')) {
-        if (confirm('Sei sicuro di voler eliminare questo elemento?')) {
-          const deleteLoData = getApiUrl('delete', elId, { type });
-          axios.get(deleteLoData).then(() => {
-            console.log(li, elId);
-            const elTree = container.querySelector('.folderTree__li[data-id="' + elId + '"]');
-            if (elTree) {
-              const ul = elTree.parentNode;
-              elTree.remove();
-
-              if (!ul.querySelector('li')) {
-                ul.remove();
-              }
-            }
-            const el = container.querySelector('.folderView__li[data-id="' + elId + '"]');
-            if (el) {
-              el.remove();
-            }
-          }).catch((error) => {
-            console.log(error);
-          });
-        }
-      } else if (el.classList.contains('js-folderView-folder')) {
-        container.querySelector('.folderTree__link[data-id="' + elId + '"]').click();
+      if (el.classList.contains('js-folderView-folder')) {
+        _this.container.querySelector('.folderTree__link[data-id="' + elId + '"]').click();
       } else if (el.classList.contains('js-folderView-file')) {
         el.querySelector('.fv-is-play').click();
       }
     }
   }
-}
 
-function getApiUrl(action, id, params) {
-  let url = `${Config.apiUrl}lms/lo/${action}&id=${id}`;
-  if (!params) {
-    params = {};
+  getApiUrl(action, id, params) {
+    let url = `${Config.apiUrl}lms/lo/${action}&id=${id}`;
+    if (!params) {
+      params = {};
+    }
+    url += '&' + new URLSearchParams(params).toString();
+
+    return url;
   }
-  url += '&' + new URLSearchParams(params).toString();
-
-  return url;
 }
 
 export default FolderView;

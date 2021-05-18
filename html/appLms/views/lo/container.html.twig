@@ -17,7 +17,7 @@
                                 {% if el.is_folder %}
                                     <li data-id="{{ el.id }}" class="folderTree__li {% if el.childCount > 0 %}ft-is-parent{% endif %} is-droppable" draggable="true">
                                         {% if el.childCount > 0 %}
-                                            <button type="button" class="arrow"></button>
+                                            <span class="arrow"></span>
                                         {% endif %}
                                         <button data-id="{{ el.id }}"
                                                 type="button"
@@ -39,7 +39,7 @@
             <div class="folderView">
                 <ul class="folderView__ul js-sortable-view">
                     {% for el in data %}
-                         <li data-id="{{ el.id }}" class="folderView__li is-droppable is-dropzone {% if el.type %}js-folderView-file{% else %}js-folderView-folder{% endif %} {% if el.locked %}fv-is-locked{% endif %}">
+                         <li data-id="{{ el.id }}" class="folderView__li is-droppable {% if el.type %}js-folderView-file{% else %}js-folderView-folder is-dropzone{% endif %} {% if el.locked %}fv-is-locked{% endif %}">
                             <div data-id="{{ el.id }}" class="folderView__el {% if el.type %}fv-is-{{ el.type }}{% else %}fv-is-folder{% endif %}">
                                 <span class="folderView__label">{{ el.title }}</span>
                             </div>

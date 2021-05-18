@@ -165,12 +165,13 @@
   .arrow {
     display: block;
     position: absolute;
+    cursor: pointer;
     margin-top: 25px;
     margin-left: 10px;
     transform: translateY(-50%);
-    border-top: 3px solid transparent;
-    border-bottom: 3px solid transparent;
-    border-left: 5px solid #000;
+    border-top: 4px solid transparent;
+    border-bottom: 4px solid transparent;
+    border-left: 6px solid #000;
     border-right: none;
     transition: all .2s ease-in-out;
     width: 0;
@@ -179,10 +180,10 @@
     z-index: 99;
     pointer-events: all;
     &.opened {
-      border-top: 5px solid #000;
+      border-top: 6px solid #000;
       border-bottom: none;
-      border-left: 3px solid transparent;
-      border-right: 3px solid transparent;
+      border-left: 4px solid transparent;
+      border-right: 4px solid transparent;
     }
   }
 }

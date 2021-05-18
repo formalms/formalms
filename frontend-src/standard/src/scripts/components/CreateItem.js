@@ -69,20 +69,21 @@ class CreateItem {
   }
   
   createNewFolder(event, createFolderForm) {
+    const _this = this;
     this.showErr();
     const text = createFolderForm.querySelector('.createFolder__input').value;
     const authentic_request = createFolderForm.querySelector('input[name=authentic_request]').value;
-    const dropdownBtn = this.container.querySelector('#dropdownMenuBtn_' + this.type);
-    const dropdown = this.container.querySelector('#dropdownMenu_' + this.type);
-    const selectedNodeId = this.selectedNodeId ? this.selectedNodeId : 0;
+    const dropdownBtn = _this.container.querySelector('#dropdownMenuBtn_' + _this.type);
+    const dropdown = _this.container.querySelector('#dropdownMenu_' + _this.type);
+    const selectedNodeId = _this.selectedNodeId ? _this.selectedNodeId : 0;
 
     const params = {
       folderName: text,
       selectedNode: selectedNodeId,
-      type: this.type,
+      type: _this.type,
       authentic_request,
     }
-    const apiUrl = this.getApiUrl('createFolder', null, params);
+    const apiUrl = _this.getApiUrl('createFolder', null, params);
 
     axios.get(apiUrl).then((response) => {
       if (response) {
@@ -92,17 +93,48 @@ class CreateItem {
         createFolderForm.querySelector('.createFolder__input').value = '';
 
         // Refresh tree of parent node
-        this.container.querySelector('.folderTree__link.ft-is-folder[data-id="' + selectedNodeId + '"]').click();
+        _this.refresh(selectedNodeId);
       }
     }).catch((error) => {
-      this.showErr(error.response.data.error);
+      _this.showErr(error.response.data.error);
     });
 
     event.preventDefault();
   }
 
+  setOpenedDirs() {
+    const _this = this;
+    const openedEls = _this.container.querySelectorAll('.ft-is-folderOpen');
+    this.openedIds = [];
+
+    openedEls.forEach((item) => {
+      let id = item.getAttribute('data-id');
+      if (id > 0) {
+        _this.openedIds.push(id);
+      }
+    });
+  }
+
+  setSelectedDir() {
+    const _this = this;
+    const item = _this.container.querySelector('.ft-is-selected');
+    _this.selectedId = item ? item.getAttribute('data-id') : 0;
+  }
+
+  refresh(selectedId) {
+    const _this = this;
+    _this.setOpenedDirs();
+    if (selectedId) {
+      _this.selectedId = selectedId;
+    } else {
+      _this.setSelectedDir();
+    }
+    _this.container.querySelector('.folderTree__link.ft-is-root').click();
+  }
+
   showErr(msg) {
-    const err = this.container.querySelector('.createFolder__input_err');
+    const _this = this;
+    const err = _this.container.querySelector('.createFolder__input_err');
     if (msg) {
       err.innerHTML = msg;
       err.classList.remove('hidden');
@@ -111,17 +143,19 @@ class CreateItem {
     }
   }
 
-  getNewLoUrl(type) {
-    const selectedNodeId = this.selectedNodeId ? this.selectedNodeId : 0;
+  getNewLoUrl() {
+    const _this = this;
+    const selectedNodeId = _this.selectedNodeId ? _this.selectedNodeId : 0;
 
-    return `index.php?modname=storage&op=display&${this.type}_createLOSel=1&radiolo=${type}&treeview_selected_${this.type}=${selectedNodeId}`;
+    return `index.php?modname=storage&op=display&${_this.type}_createLOSel=1&radiolo=${_this}&treeview_selected_${_this.type}=${selectedNodeId}`;
   }
 
   clickOnType(event) {
+    const _this = this;
     const el = event.target;
-    const dropdownBtn = this.container.querySelector('#dropdownMenuBtn_' + this.type);
-    const dropdown = this.container.querySelector('#dropdownMenu_' + this.type);
-    const createFolderForm = this.container.querySelector('.createFolderForm');
+    const dropdownBtn = _this.container.querySelector('#dropdownMenuBtn_' + _this.type);
+    const dropdown = _this.container.querySelector('#dropdownMenu_' + _this.type);
+    const createFolderForm = _this.container.querySelector('.createFolderForm');
 
     if (el) {
       const type = el.getAttribute('data-id');
@@ -130,7 +164,7 @@ class CreateItem {
         dropdown.classList.add('hidden');
         createFolderForm.classList.remove('hidden');
       } else {
-        location.href = this.getNewLoUrl(type);
+        location.href = _this.getNewLoUrl();
       }
       event.preventDefault();
     }
