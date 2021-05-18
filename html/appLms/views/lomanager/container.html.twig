@@ -1,9 +1,9 @@
 {% set data = tab.data %}
 
-<div class="tab-pane {{ tab.active ? 'active' : '' }}" data-container="{{ tab.type }}">
+<div class="tab-pane {{ tab.active ? 'active' : '' }}" data-container="{{ tab.controller }}">
     {{ Form_openForm('orgshow', 'index.php?modname=storage&op=display', false, 'POST') }}
-    <input type="hidden" id="treeview_selected_{{ tab.type }}" name="treeview_selected_{{ tab.type }}" value="0">
-    <input type="hidden" id="treeview_state_{{ tab.type }}" name="treeview_state_{{ tab.type }}" value="{{ tab.currentState }}">
+    <input type="hidden" id="treeview_selected_{{ tab.controller }}" name="treeview_selected_{{ tab.controller }}" value="0">
+    <input type="hidden" id="treeview_state_{{ tab.controller }}" name="treeview_state_{{ tab.controller }}" value="{{ tab.currentState }}">
     <section class="folderTreeView js-folder-tree-view">
         <aside class="folderTreeContent folderTreeContent--one-third">
             <nav class="folderTree js-folder-tree">
@@ -17,7 +17,7 @@
                                 {% if el.is_folder %}
                                     <li data-id="{{ el.id }}" class="folderTree__li {% if el.childCount > 0 %}ft-is-parent{% endif %} is-droppable" draggable="true">
                                         {% if el.childCount > 0 %}
-                                            <button type="button" class="arrow"></button>
+                                            <span type="button" class="arrow"></span>
                                         {% endif %}
                                         <button data-id="{{ el.id }}"
                                                 type="button"

@@ -10,20 +10,6 @@ class CreateItem {
     this.initDropdown();
   }
 
-  getApiUrl(action, id, params) {
-    let url = `${Config.apiUrl}lms/lo/${action}`;
-    if (id) {
-      url += `&id=${id}`;
-    }
-    if (!params) {
-      params = {};
-    }
-    params.type = this.type;
-    url += '&' + new URLSearchParams(params).toString();
-
-    return url;
-  }
-
   initDropdown() {
     const dropdown = this.container.querySelector('#dropdownMenu_' + this.type);
     const types = dropdown.querySelectorAll('.itemType');
@@ -80,10 +66,9 @@ class CreateItem {
     const params = {
       folderName: text,
       selectedNode: selectedNodeId,
-      type: _this.type,
       authentic_request,
     }
-    const apiUrl = _this.getApiUrl('createFolder', null, params);
+    const apiUrl = _this.getApiUrl(_this.type, 'createFolder', params);
 
     axios.get(apiUrl).then((response) => {
       if (response) {
@@ -168,6 +153,16 @@ class CreateItem {
       }
       event.preventDefault();
     }
+  }
+
+  getApiUrl(controller, action, params) {
+    let url = `${Config.apiUrl}lms/${controller}/${action}`;
+    if (!params) {
+      params = {};
+    }
+    url += '&' + new URLSearchParams(params).toString();
+
+    return url;
   }
 
 }

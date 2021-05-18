@@ -6,7 +6,7 @@
     <div class="tabs-wrapper">
         <ul class="nav nav-tabs">
             {% for tab in tabs %}
-                <li role="presentation" class="tab-link {{ tab.active ? 'active' : '' }}" data-type="{{ tab.type }}"><a href="#{{ tab.type }}">{{ tab.title }}</a></li>
+                <li role="presentation" class="tab-link {{ tab.active ? 'active' : '' }}" data-type="{{ tab.controller }}"><a href="#{{ tab.controller }}">{{ tab.title }}</a></li>
             {% endfor %}
         </ul>
 

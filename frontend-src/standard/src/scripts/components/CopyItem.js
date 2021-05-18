@@ -45,7 +45,7 @@ class CopyItem {
          ids.push(item.getAttribute('data-id'));
       });
 
-      const copyLoData = _this.getApiUrl('copy', null, { newtype, type, ids });
+      const copyLoData = _this.getApiUrl(type, 'copy', { ids });
       axios.get(copyLoData).then(() => {
          const container = document.querySelector('*[data-container=' + newtype + ']');
 
@@ -57,13 +57,10 @@ class CopyItem {
       });
    }
 
-   getApiUrl(action, id, params) {
-     let url = `${Config.apiUrl}lms/lo/${action}`;
+   getApiUrl(controller, action, params) {
+     let url = `${Config.apiUrl}lms/${controller}/${action}`;
      if (!params) {
        params = {};
-     }
-     if (id) {
-       params.id = id;
      }
      url += '&' + new URLSearchParams(params).toString();
  

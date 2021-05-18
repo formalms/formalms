@@ -111,7 +111,7 @@ class FolderTree {
 
         el.classList.add('ft-is-folderOpen');
 
-        const LoData = _this.getApiUrl('get', elId, { type: _this.type });
+        const LoData = _this.getApiUrl(_this.type, 'get', { id: elId });
         _this.getLoData(LoData, el, elId, clickOnArrow);
       }
     }
@@ -215,7 +215,7 @@ class FolderTree {
         text: 'Elimina',
         onClick() {
           if (confirm('Sei sicuro di voler eliminare questo elemento?')) {
-            const deleteLoData = _this.getApiUrl('delete', null, { type: _this.type, ids: _this.currentElsIds });
+            const deleteLoData = _this.getApiUrl(_this.type, 'delete', { ids: _this.currentElsIds });
             axios.get(deleteLoData).then(() => {
               _this.currentElsIds.forEach((elId) => {
                 const elTree = _this.container.querySelector('.folderTree__li[data-id="' + elId + '"]');
@@ -264,7 +264,7 @@ class FolderTree {
     const value = input.value;
     const el = input.closest('.folderTree__li') ? input.closest('.folderTree__li') : input.closest('.folderView__li');
     const elId = el.getAttribute('data-id');
-    const renameLoData = _this.getApiUrl('rename', elId, { type: _this.type, newName: value });
+    const renameLoData = _this.getApiUrl(_this.type, 'rename', { id: elId, newName: value });
 
     axios.get(renameLoData).then((res) => {
       if (res) {
@@ -385,7 +385,7 @@ class FolderTree {
       const parentId = parseInt(target.getAttribute('data-id'));
 
       if (!this.currentElsIds.includes(parentId) && target.classList.contains('is-dropzone')) {
-        const reorderLoData = this.getApiUrl('reorder', this.currentElsIds, { type: this.type, newParent: parentId });
+        const reorderLoData = this.getApiUrl(this.type, 'reorder', { ids: this.currentElsIds, newParent: parentId });
         this.getReorderLoData(reorderLoData);
       }
     }
@@ -423,20 +423,17 @@ class FolderTree {
             childElementArray.push(elId);
           });
 
-          const reorderLoData = _this.getApiUrl('reorder', currentElementId, { type: _this.type, newParent: parentElementId, newOrder: childElementArray });
+          const reorderLoData = _this.getApiUrl(_this.type, 'reorder', { id: currentElementId, newParent: parentElementId, newOrder: childElementArray });
           _this.getReorderLoData(reorderLoData);
         }
       });
     }
   }
 
-  getApiUrl(action, id, params) {
-    let url = `${Config.apiUrl}lms/lo/${action}`;
+  getApiUrl(controller, action, params) {
+    let url = `${Config.apiUrl}lms/${controller}/${action}`;
     if (!params) {
       params = {};
-    }
-    if (id) {
-      params.id = id;
     }
     url += '&' + new URLSearchParams(params).toString();
 

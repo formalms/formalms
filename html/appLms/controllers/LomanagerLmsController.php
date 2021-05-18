@@ -22,6 +22,9 @@ class LomanagerLmsController extends LmsController
 
     public function init()
     {
+        if (isset($_SESSION['idCourse'])) {
+            $this->idCourse = (int)$_SESSION['idCourse'];
+        }
         checkPerm('view', false, 'storage');
         $this->json = new Services_JSON();
         $this->model = new LomanagerLms();
@@ -29,7 +32,7 @@ class LomanagerLmsController extends LmsController
     }
 
     protected function setTab()
-    {        
+    {
     }
 
     protected function getFolders($idCourse, $idFolder = false)
@@ -52,13 +55,13 @@ class LomanagerLmsController extends LmsController
         $repo_tab = new LomanagerrepoLmsController();
 
         $tabs = [];
-        if($tab = $homerepo_tab->getTab()) {
+        if ($tab = $homerepo_tab->getTab()) {
             $tabs[] = $tab;
         }
-        if($tab = $organization_tab->getTab()) {
+        if ($tab = $organization_tab->getTab()) {
             $tabs[] = $tab;
         }
-        if($tab = $repo_tab->getTab()) {
+        if ($tab = $repo_tab->getTab()) {
             $tabs[] = $tab;
         }
 
@@ -86,8 +89,15 @@ class LomanagerLmsController extends LmsController
 
     public function delete()
     {
-        $id = Get::req('id', DOTY_INT, false);
-        echo $this->json->encode($this->model->deleteFolder($id));
+        $idsString = Get::req('ids', DOTY_MIXED, false);
+        $ids = explode(',', $idsString);
+
+        $responseData = [];
+        foreach ($ids as $id) {
+            $res = $this->model->deleteFolder($id);
+            $responseData[] = ['success' => $res, 'id' => $id];
+        }
+        echo $this->json->encode($res);
         exit;
     }
 
@@ -110,18 +120,19 @@ class LomanagerLmsController extends LmsController
 
     public function reorder()
     {
-        $id = Get::req('id', DOTY_INT, false);
+        $idsString = Get::req('ids', DOTY_MIXED, false);
+        $ids = explode(',', $idsString);
         $newParent = Get::req('newParent', DOTY_INT, false);
         $newOrderString = Get::req('newOrder', DOTY_STRING, false);
         $newOrder = explode(",", $newOrderString);
         $newOrder = array_filter($newOrder);
 
-        $responseData = ['success' => false];
+        $responseData = [];
 
-        if ($id && $newParent !== false) {
-
-            if ($this->model->reorder($id, $newParent, $newOrder ? $newOrder : null)) {
-                $responseData = ['success' => true];
+        if ($ids && $newParent !== false) {
+            foreach ($ids as $id) {
+                $res = $this->model->reorder($id, $newParent, $newOrder ? $newOrder : null);
+                $responseData[] = ['success' => $res, 'id' => $id];
             }
         }
         echo $this->json->encode($responseData);
