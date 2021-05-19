@@ -105,23 +105,32 @@ class LomanagerLmsController extends LmsController
     {
         $id = Get::req('id', DOTY_INT, false);
         $newName = Get::req('newName', DOTY_STRING, false);
+        // $type = Get::req('type', DOTY_STRING, LoLms::ORGDIRDB);
+        // $this->model->setCurrentTab($type);
         echo $this->json->encode($this->model->renameFolder($id, $newName));
         exit;
     }
 
     public function move()
     {
-        $id = Get::req('id', DOTY_INT, false);
-        $newParentId = Get::req('newParentId', DOTY_INT, false);
+        $idsString = Get::req('ids', DOTY_MIXED, false);
+        $ids = explode(',', $idsString);
+        $newParent = Get::req('newParent', DOTY_INT, false);
 
-        echo $this->json->encode($this->model->moveFolder($id, $newParentId));
-        exit;
+        $responseData = [];
+
+        if ($ids && $newParent !== false) {
+            // Move in a folder
+            foreach ($ids as $id) {
+                $res = $this->model->moveFolder($id, $newParent);
+                $responseData[] = ['success' => $res, 'id' => $id];
+            }
+        }
+        die($this->json->encode($responseData));
     }
 
     public function reorder()
     {
-        $idsString = Get::req('ids', DOTY_MIXED, false);
-        $ids = explode(',', $idsString);
         $newParent = Get::req('newParent', DOTY_INT, false);
         $newOrderString = Get::req('newOrder', DOTY_STRING, false);
         $newOrder = explode(",", $newOrderString);
@@ -129,14 +138,12 @@ class LomanagerLmsController extends LmsController
 
         $responseData = [];
 
-        if ($ids && $newParent !== false) {
-            foreach ($ids as $id) {
-                $res = $this->model->reorder($id, $newParent, $newOrder ? $newOrder : null);
-                $responseData[] = ['success' => $res, 'id' => $id];
-            }
+        if ($id = Get::req('id', DOTY_INT, false)) {
+            // Only change order
+            $res = $this->model->reorder($id, $newParent, $newOrder ? $newOrder : null);
+            $responseData = ['success' => $res, 'id' => $id];
         }
-        echo $this->json->encode($responseData);
-        exit;
+        die($this->json->encode($responseData));
     }
 
     public function edit()

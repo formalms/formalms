@@ -329,6 +329,7 @@ class FolderTree {
         this.currentElsIds = [this.currentElId];
         this.selectItems();
       }
+      console.log(this.currentElsIds, 'this.currentElsIds');
     }
   }
 
@@ -385,7 +386,7 @@ class FolderTree {
       const parentId = parseInt(target.getAttribute('data-id'));
 
       if (!this.currentElsIds.includes(parentId) && target.classList.contains('is-dropzone')) {
-        const reorderLoData = this.getApiUrl(this.type, 'reorder', { ids: this.currentElsIds, newParent: parentId });
+        const reorderLoData = this.getApiUrl(this.type, 'move', { ids: this.currentElsIds, newParent: parentId });
         this.getReorderLoData(reorderLoData);
       }
     }
