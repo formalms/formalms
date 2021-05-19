@@ -1,6 +1,4 @@
-const UglifyJSPlugin = require('uglifyjs-webpack-plugin');		
 const path = require('path');
-const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
 
 module.exports = {
   entry: {
@@ -19,8 +17,11 @@ module.exports = {
         loaders: ['style-loader', 'css-loader', 'sass-loader']
       },
       {
+        test: /\.less$/,
+        loaders: ["style-loader", "css-loader", "less-loader"]
+      }, {
         test: /\.css$/,
-        loaders: ['style-loader', 'css-loader', 'sass-loader']
+        loaders: ["style-loader", "css-loader"]
       },
       {
         test: /\.js$/,
@@ -33,7 +34,7 @@ module.exports = {
       },
       {
         test: /\.js$/,
-        exclude: [/(node_modules)/],
+        exclude: /(node_modules)/,
         use: {
           loader: 'babel-loader',
           options: {
@@ -69,12 +70,5 @@ module.exports = {
     }
   },
   plugins: [
-    new HardSourceWebpackPlugin(),
-    /*new UglifyJSPlugin({
-      uglifyOptions: {
-        sourceMap: false,
-        comments: false
-      }
-    })*/
   ]
 };

@@ -14,7 +14,11 @@
     <div class="d-col d-col--12 {{ class }}">
       <div class="d-advise d-widget">
         <h3 class="d-title">
-          {{ translate('_DASHBOARDBLOCKANNOUNCEMENTSLMS','dashboardsetting') }}
+            {% if block.data.title is empty %}
+                {{ translate('_DASHBOARDBLOCKANNOUNCEMENTSLMS','dashboard') }}
+            {% else %}
+                {{ block.data.title }}
+            {% endif %}
         </h3>
         {% for advise in block.courseAdvices %}
           <div class="d-advise__item has-forma-tooltip" style="position: relative">

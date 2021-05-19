@@ -440,6 +440,8 @@ class FunctionalrolesAdm extends Model {
 		//validate role's assigned group (0 = 'no group')
 		if ((int)$id_group < 0) $id_group = 0;
 
+		Events::trigger('core.role.creating', ['id_group' => $id_group, 'langs' => $langs]);
+
 		//create a new group
 		$idst = false;
 		$query = "SELECT MAX(groupid) FROM %adm_group WHERE groupid LIKE '/fncroles/%'";
@@ -475,6 +477,9 @@ class FunctionalrolesAdm extends Model {
 					." VALUES ".implode(",", $conditions);
 				$res = $this->db->query($query);
 				$output = ($res ? $idst : false);
+
+				Events::trigger('core.role.created', ['idst' => $idst, 'id_group' => $id_group, 'langs' => $langs]);
+
 				return $output;
 			}
 		}

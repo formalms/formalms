@@ -29,9 +29,9 @@ class DashboardBlockBannerLms extends DashboardBlockLms
     }
 
     public function parseConfig($jsonConfig)
-    {
-        return parent::parseBaseConfig($jsonConfig);
-    }
+	{
+		$this->parseBaseConfig($jsonConfig);
+	}
 
     public function getAvailableTypesForBlock()
     {
@@ -45,10 +45,14 @@ class DashboardBlockBannerLms extends DashboardBlockLms
 
     public function getForm()
     {
-        return [
+        $form = parent::getForm();
+
+        array_push(
+            $form,
             DashboardBlockForm::getFormItem($this, 'cover', DashboardBlockForm::FORM_TYPE_IMAGE, false),
-            DashboardBlockForm::getFormItem($this, 'video', DashboardBlockForm::FORM_TYPE_TEXT, false),
-        ];
+            DashboardBlockForm::getFormItem($this, 'video', DashboardBlockForm::FORM_TYPE_TEXT, false));
+
+        return $form;
     }
 
     public function getViewData()

@@ -26,7 +26,12 @@
                         {% if not block.perm %}
                             <p class="d-alt-text text-center">{{ block.data.alternative_text }}</p>
                         {% else %}
-                            <h3 class="d-title">{{ translate('_MY_CERTIFICATE', 'menu_over') }}</h3>
+                            <h3 class="d-title">
+                                {% if block.data.title is empty %}
+                                    {{ translate('_DASHBOARDBLOCKCERTIFICATELMS','dashboard') }}
+                                {% else %}
+                                    {{ block.data.title }}
+                                {% endif %}</h3>
                             {% if block.certificates and block.certificates|length > 0 %}
                                 {% for certificate in block.certificates %}
                                     <div class="d-item">

@@ -1,7 +1,9 @@
 require('../modules/course-box');
 require('../modules/folder-view');
 require('../modules/slider-menu');
+require('../modules/text-editor');
 require('../modules/modal-accordion');
+
 import { InfoCourse } from '../modules/InfoCourse';
 import { RenderDashBoardCalendar } from '../modules/DashboardCalendar';
 import { DashboardVideo } from '../modules/DashboardVideo';

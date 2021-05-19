@@ -16,7 +16,11 @@
     <div class="d-col d-col--12 {{ class }}">
         <div class="d-courses d-widget">
             <h3 class="d-title">
-                {{ translate('_NEXT_COURSES','standard') }}
+                {% if block.data.title is empty %}
+                    {{ translate('_DASHBOARDBLOCKCOURSESLMS','dashboard') }}
+                {% else %}
+                    {{ block.data.title }}
+                {% endif %}
             </h3>
             {% for course in block.courses %}
                 {% if status > 0 %}

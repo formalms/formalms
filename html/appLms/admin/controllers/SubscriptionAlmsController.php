@@ -3412,6 +3412,14 @@ class SubscriptionAlmsController extends AlmsController
 
 	/****** End coursepaths ****************************************************/
 
+    
+    function getDateEnroll($id_user, $id_course){
+        $query = "select date_inscr from learning_courseuser where idUser=".$id_user." and idCourse=".$id_course;
+        list($date_enroll) = sql_fetch_row(sql_query($query));
+                                                               
+       return $date_enroll; 
+    }
+    
 	function waitinguser()
 	{
 		if (!$this->permissions['moderate']) die("You can't access");
@@ -3463,8 +3471,31 @@ class SubscriptionAlmsController extends AlmsController
 			'content'
 		);
 
-		$tb = new Table(0, $lang->def('_SELECT_WHO_CONFIRM'), $lang->def('_SUMMARY_SELECT_WHO_CONFIRM'));
+        // manage min & max enroll
+        $class_subManager = new CourseSubscribe_Manager();
+        $tot_subscribe_w = $class_subManager->getTotalUserSubscribed($id_course);
+        
+        require_once(_lms_.'/admin/models/CourseAlms.php');
+        $model_course = new CourseAlms();
+        
+        $tot_subscribe = $model_course->getUserInCourse($id_course);
+        $tot_overbooking = $model_course->getUserInOverbooking($id_course);
+        $tot_waiting = $model_course->getUserInWaiting($id_course);
 
+        //echo $tot_subscribe."<br>".$tot_waiting."<br>".$tot_overbooking."<br>".$tot_subscribe_w;
+        
+        $msg_info_course = "";
+        if((int)$course_info['min_num_subscribe']>0) $msg_info_course = $lang->def('_MIN_NUM_SUBSCRIBE', 'course').": <b>".(int)$course_info['min_num_subscribe']."</b><br>";
+        if((int)$course_info['max_num_subscribe']>0) $msg_info_course = $msg_info_course.$lang->def('_MAX_NUM_SUBSCRIBE', 'course').": <b>".(int)$course_info['max_num_subscribe']."</b><br>";
+         
+        $msg_info_course = $msg_info_course.$lang->def('_COURSE_USERISCR', 'course').": <b>".($tot_subscribe-$tot_overbooking-$tot_waiting )."</b>";
+         
+        $GLOBALS['page']->add($msg_info_course,'content');
+                     
+   
+		$tb = new Table(0, $lang->def('_SELECT_WHO_CONFIRM'), $lang->def('_SUMMARY_SELECT_WHO_CONFIRM'));
+   
+        $tb->setTableId("tb_wait");                                                       
 		$type_h = array();
 		$type_h[] = '';
 		$type_h[] = '';
@@ -3481,7 +3512,8 @@ class SubscriptionAlmsController extends AlmsController
 		$content_h[] = $lang->def('_FULLNAME');
 		$content_h[] = $lang->def('_LEVEL');
 		if ($is_classroom) $content_h[] = $lang->def('_CLASSROOM');
-		$content_h[] = $lang->def('_SUBSCRIBED_BY');
+        $content_h[] = $lang->def('_SUBSCRIBED_BY');
+		$content_h[] = $lang->def('_DATE_INSCR', 'report');
 		$content_h[] = $lang->def('_STATUS');
 		$content_h[] = $lang->def('_APPROVE');
 		$content_h[] = $lang->def('_DENY');
@@ -3516,7 +3548,13 @@ class SubscriptionAlmsController extends AlmsController
 				$content[] = $levels[$info['level']];
 				if ($is_classroom) $content[] = ($info['code'] != '' ? '[' . $info['code'] . '] ' : '') . $info['name'];
 				$content[] = $subscribed . ' [' . $users_name[$id_sub_by][ACL_INFO_EMAIL] . ']';
-				$content[] = $is_overbooking ? $lang->def('_OVERBOOKING') : $arr_status[$info['status']];
+                $content[] = $this->getDateEnroll($id_user,$id_course);
+                
+                if($info['status']==4){
+				    $content[] =  $lang->def('_OVERBOOKING');
+                }else{
+                    $content[] = $lang->def('_USERWAITING','Course') ;
+                }    
 
 				if ($is_overbooking) {
 
@@ -3563,17 +3601,19 @@ class SubscriptionAlmsController extends AlmsController
 			$tb->getTable()
 				. '<br />'
 				. Form::openElementSpace()
-				. Form::getSimpleTextarea($lang->def('_SUBSCRIBE_ACCEPT'), 'subscribe_accept', 'subscribe_accept')
-				. Form::getSimpleTextarea($lang->def('_SUBSCRIBE_REFUSE'), 'subscribe_refuse', 'subscribe_refuse')
+				. Form::getTextarea($lang->def('_SUBSCRIBE_ACCEPT'), 'subscribe_accept', 'subscribe_accept', $lang->def('_APPROVED_SUBSCRIBED_TEXT','email'))
+				. Form::getTextarea($lang->def('_SUBSCRIBE_REFUSE'), 'subscribe_refuse', 'subscribe_refuse', $lang->def('_DENY_SUBSCRIBED_TEXT','email'))
 				. Form::closeElementSpace()
 				. Form::openButtonSpace()
 				. '<br />'
-				. Form::getButton('subscribe', 'subscribe', $lang->def('_SAVE'))
+                . Form::getButton('subscribe', 'subscribe', $lang->def('_SAVE'))
 				. Form::getButton('cancelselector', 'cancelselector', $lang->def('_UNDO'))
 				. Form::closeButtonSpace()
 				. Form::closeForm(),
 			'content'
 		);
+        
+        
 		$GLOBALS['page']->add('</div>', 'content');
 	}
 
@@ -3611,7 +3651,7 @@ class SubscriptionAlmsController extends AlmsController
 		AND edition_id='" . (int) $edition_id . "'");
 	}
 
-	function approveusers()
+    function approveusers()
 	{
 		if (!$this->permissions['moderate']) die("You can't access");
 
@@ -3644,11 +3684,19 @@ class SubscriptionAlmsController extends AlmsController
 
 				if ($action == 0) {
 					// approved -----------------------------------------------
-
+                    // add event approved
+                    $data = Events::trigger('lms.course_user.approved', [
+                        'id_user' => $id_user,
+                        'id_course' => $id_course,
+                        'approved_by' => Docebo::user()->idst
+                    ]);                    
+                                
+                    
 					$text_query = "
 					UPDATE " . $GLOBALS['prefix_lms'] . "_courseuser
 					SET waiting = 0,
-						status = '" . _CUS_SUBSCRIBED . "'
+						status = '" . _CUS_SUBSCRIBED . "',
+                        date_inscr = '".date('Y-m.d H:i:s')."'
 					WHERE idCourse = '" . $id_course . "' AND idUser = '" . $id_user . "' ";
 					$text_query .= "AND edition_id='" . $edition_id . "'";
 					$result = sql_query($text_query);
@@ -3656,7 +3704,13 @@ class SubscriptionAlmsController extends AlmsController
 					$re &= $result;
 				} elseif ($action == 1) {
 					// refused --------------------------------------------------
-
+                    // add event refused
+                    $data = Events::trigger('lms.course_user.refused', [
+                        'id_user' => $id_user,
+                        'id_course' => $id_course,
+                        'refused_by' => Docebo::user()->idst
+                    ]);                     
+                    
 					$level = $waiting_users['users_info'][$id_user]['level'];
 					$sub_by = $waiting_users['users_info'][$id_user]['subscribed_by'];
 					$result = $this->removeSubscription($id_course, $id_user, $group_levels[$level], $edition_id);
@@ -3668,6 +3722,11 @@ class SubscriptionAlmsController extends AlmsController
 					if ($result) $deny_user[] = $id_user;
 					$re &= $result;
 				}
+                
+                
+                
+                
+                
 			}
 		}
 		if (!empty($tot_deny)) {

@@ -34,10 +34,10 @@ function loadHeaderHTMLEditor() {
 
 	switch($ht) {
 		//using tiny_mce
-		case 'tinymce':
+		/*case 'tinymce':
 			Util::get_js(Get::rel_path('base').'/addons/tiny_mce/tinymce.min.js', true, true);
 			Util::get_js(Get::rel_path('base').'/addons/tiny_mce/forma.js', true, true); 
-		break;
+		break;*/
 
 		case 'yui':
 			$js = array(	'element'	=> 'element-beta-min.js',

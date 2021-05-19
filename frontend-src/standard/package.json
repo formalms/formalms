@@ -14,8 +14,8 @@
     "clean-css-cli": "4.1.10",
     "copyfiles": "1.2.0",
     "css-loader": "0.28.10",
-    "eslint": "4.12.1",
-    "eslint-loader": "1.9.0",
+    "eslint": "^4.12.1",
+    "eslint-loader": "^1.9.0",
     "eslint-plugin-react": "7.7.0",
     "hard-source-webpack-plugin": "0.5.11",
     "jsdoc": "^3.6.4",
@@ -29,7 +29,7 @@
     "style-loader": "0.20.2",
     "twig": "1.10.5",
     "twig-loader": "0.3.1",
-    "uglifyjs-webpack-plugin": "1.2.2",
+    "uglifyjs-webpack-plugin": "^1.3.0",
     "webpack": "3.10.0"
   },
   "dependencies": {
@@ -48,11 +48,13 @@
     "react": "16.2.0",
     "react-dom": "^16.13.1",
     "reset-css": "2.2.1",
-    "slick-carousel": "1.8.1"
+    "slick-carousel": "1.8.1",
+    "tinymce": "^5.7.1"
   },
   "scripts": {
     "unminified-css": "node-sass src/styles/main.scss ../../html/templates/standard/static/main.min.css",
     "post-css": "./node_modules/postcss-cli/bin/postcss --use autoprefixer --autoprefixer.browsers 'last 12 versions' -o ../../html/templates/standard/static//main.min.css ../../html/templates/standard/static//main.min.css",
+    "dev": "webpack --watch --config dev.config.js",
     "js": "webpack --config build.config.js -p --progress",
     "build": "npm run js && npm run unminified-css",
     "jsonize": "./node_modules/.bin/ciffi-jsonize",
