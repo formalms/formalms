@@ -50,25 +50,24 @@ class CreateItem {
   clickOnFolder(event) {
     const el = event.target;
     const elId = el.getAttribute('data-id');
-    this.selectedNodeId = elId;
+    this.selectedId = elId;
     event.preventDefault();
   }
   
   createNewFolder(event, createFolderForm) {
     const _this = this;
+
     this.showErr();
     const text = createFolderForm.querySelector('.createFolder__input').value;
     const authentic_request = createFolderForm.querySelector('input[name=authentic_request]').value;
     const dropdownBtn = _this.container.querySelector('#dropdownMenuBtn_' + _this.type);
     const dropdown = _this.container.querySelector('#dropdownMenu_' + _this.type);
-    const selectedNodeId = _this.selectedNodeId ? _this.selectedNodeId : 0;
 
-    const params = {
+    const apiUrl = _this.getApiUrl(_this.type, 'createFolder', {
       folderName: text,
-      selectedNode: selectedNodeId,
+      selectedNode: _this.selectedId,
       authentic_request,
-    }
-    const apiUrl = _this.getApiUrl(_this.type, 'createFolder', params);
+    });
 
     axios.get(apiUrl).then((response) => {
       if (response) {
@@ -78,7 +77,7 @@ class CreateItem {
         createFolderForm.querySelector('.createFolder__input').value = '';
 
         // Refresh tree of parent node
-        _this.refresh(selectedNodeId);
+        _this.refresh();
       }
     }).catch((error) => {
       _this.showErr(error.response.data.error);
@@ -106,14 +105,10 @@ class CreateItem {
     _this.selectedId = item ? item.getAttribute('data-id') : 0;
   }
 
-  refresh(selectedId) {
+  refresh() {
     const _this = this;
     _this.setOpenedDirs();
-    if (selectedId) {
-      _this.selectedId = selectedId;
-    } else {
-      _this.setSelectedDir();
-    }
+    _this.setSelectedDir();
     _this.container.querySelector('.folderTree__link.ft-is-root').click();
   }
 
@@ -130,9 +125,9 @@ class CreateItem {
 
   getNewLoUrl() {
     const _this = this;
-    const selectedNodeId = _this.selectedNodeId ? _this.selectedNodeId : 0;
+    const selectedId = _this.selectedId ? _this.selectedId : 0;
 
-    return `index.php?modname=storage&op=display&${_this.type}_createLOSel=1&radiolo=${_this}&treeview_selected_${_this.type}=${selectedNodeId}`;
+    return `index.php?modname=storage&op=display&${_this.type}_createLOSel=1&radiolo=${_this}&treeview_selected_${_this.type}=${selectedId}`;
   }
 
   clickOnType(event) {

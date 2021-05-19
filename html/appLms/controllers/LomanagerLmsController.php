@@ -120,7 +120,6 @@ class LomanagerLmsController extends LmsController
         $responseData = [];
 
         if ($ids && $newParent !== false) {
-            // Move in a folder
             foreach ($ids as $id) {
                 $res = $this->model->moveFolder($id, $newParent);
                 $responseData[] = ['success' => $res, 'id' => $id];
@@ -139,7 +138,6 @@ class LomanagerLmsController extends LmsController
         $responseData = [];
 
         if ($id = Get::req('id', DOTY_INT, false)) {
-            // Only change order
             $res = $this->model->reorder($id, $newParent, $newOrder ? $newOrder : null);
             $responseData = ['success' => $res, 'id' => $id];
         }
@@ -177,14 +175,25 @@ class LomanagerLmsController extends LmsController
 
     public function copy()
     {
-        $id = Get::req('id', DOTY_INT, false);
-        $fromType = Get::req('type', DOTY_STRING, LomanagerLms::ORGDIRDB);
+        $fromType = Get::req('type', DOTY_STRING, false);
         $newtype = Get::req('newtype', DOTY_STRING, false);
-        if ($this->model->copy($id, $fromType)) {
-            $this->model->setTdb($newtype);
-            $this->model->paste(0);
+
+        $types = [
+            'lomanagerorganization' => $this->model::ORGDIRDB,
+            'lomanagerhomerepo' => $this->model::REPODIRDB,
+            'lomanagerrepo' => $this->model::HOMEREPODIRDB,
+        ];
+
+        if ($ids = Get::req('ids', DOTY_MIXED, false)) {
+            $ids_arr = explode(',', $ids);
+            foreach ($ids_arr as $id) {
+                if ($id > 0 && $this->model->copy($id, $types[$fromType])) {
+                    $this->model->setTdb($types[$newtype]);
+                    $this->model->paste(0);
+                    $this->model->setTdb($types[$fromType]);
+                }
+            }
         }
-        echo $this->json->encode(true);
-        exit();
+        die($this->json->encode(true));
     }
 }

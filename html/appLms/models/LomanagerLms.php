@@ -150,25 +150,30 @@ class LomanagerLms extends Model {
         if( $saveObj->nameExists("crepo") ) {
             $saveData =& $saveObj->load("crepo");
 
-            $lo = createLO( $saveData['objectType'] );
-            $idResource = $lo->copy((int)$saveData['idResource']);
-            if( $idResource != 0 ) { 
-                $this->tdb->addItem( $folderId, 
-                    $saveData['name'],
-                    $saveData['objectType'], 
-                    $idResource, 
-                    0, /* idCategory */
-                    0, /* idUser */ 
-                    getLogUserId(), /* idAuthor */
-                    '1.0' /* version */, 
-                    '_DIFFICULT_MEDIUM', /* difficult */
-                    '', /* description */
-                    '', /* language */
-                    '', /* resource */
-                    '', /* objective */
-                    date("Y-m-d H:i:s") 
-                );
-                return true;
+            if ($saveData['objectType']) {
+                $lo = createLO( $saveData['objectType'] );
+                $idResource = $lo->copy((int)$saveData['idResource']);
+                if( $idResource != 0 ) { 
+                    $this->tdb->addItem( $folderId, 
+                        $saveData['name'],
+                        $saveData['objectType'], 
+                        $idResource, 
+                        0, /* idCategory */
+                        0, /* idUser */ 
+                        getLogUserId(), /* idAuthor */
+                        '1.0' /* version */, 
+                        '_DIFFICULT_MEDIUM', /* difficult */
+                        '', /* description */
+                        '', /* language */
+                        '', /* resource */
+                        '', /* objective */
+                        date("Y-m-d H:i:s") 
+                    );
+                    return true;
+                }
+            } else if (isset($_SESSION['idCourse'])) {
+                // It's a directory
+                return $this->tdb->addFolderById(0, $saveData['name'], $_SESSION['idCourse']);
             }
         }
         return false;

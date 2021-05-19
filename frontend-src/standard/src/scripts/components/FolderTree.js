@@ -329,7 +329,6 @@ class FolderTree {
         this.currentElsIds = [this.currentElId];
         this.selectItems();
       }
-      console.log(this.currentElsIds, 'this.currentElsIds');
     }
   }
 

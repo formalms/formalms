@@ -39,13 +39,12 @@ class CopyItem {
    copyElement(newtype) {
       const _this = this;
       let ids = [];
-      const type = window.type
 
       document.querySelectorAll('.is-ready-for-copy').forEach((item) => {
          ids.push(item.getAttribute('data-id'));
       });
 
-      const copyLoData = _this.getApiUrl(type, 'copy', { ids });
+      const copyLoData = _this.getApiUrl(window.type, 'copy', { ids, newtype, type: window.type });
       axios.get(copyLoData).then(() => {
          const container = document.querySelector('*[data-container=' + newtype + ']');
 
