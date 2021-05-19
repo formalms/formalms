@@ -845,36 +845,27 @@ class Man_Course {
                      join %lms_course_date_user cdu on (cdu.id_date = cd.id_date)
                      join %lms_course lc on (lc.idCourse = cd.id_course )
                      where lc.idCourse = '.$course['idCourse'].' and lc.status IN ('.CST_AVAILABLE.','.CST_EFFECTIVE.') and 
-                        (cd.status  = 0 ) and (cdu.id_user ='.Docebo::user()->getIdSt().')  order by cdd.id_date';
+                        (cd.status  = 0 ) and (cdu.id_user ='.Docebo::user()->getIdSt().')  order by cdd.date_begin';
                         
             }
             
             $re_edition = sql_query($select_edition);
             // retrieve editions 
             $canEnd   = false;
-            $canStart = false;
             // evaluate date_begin and date_end only for active editions
             // if no editions is active returns subscription_expired
             while ($edition_elem = sql_fetch_assoc($re_edition)) {
 				$datetime1 = new DateTime('now');
 				$datetime2 = new DateTime($edition_elem['date_end']);
-                $datetime3 = new DateTime($edition_elem['date_begin']);
             	$interval1 = $datetime1->getTimestamp() - $datetime2->getTimestamp();
-                $interval2 = $datetime1->getTimestamp() - $datetime3->getTimestamp();
 
-                if (is_null($edition_elem['date_end']) || $edition_elem['date_end'] == '0000-00-00 00:00:00' || $interval1 <= 0) {
+                if (is_null($edition_elem['date_end']) || $edition_elem['date_end'] == '0000-00-00 00:00:00' || $interval1 >= 0) {
                     $canEnd = $canEnd || true;
                 }
-                if ($canEnd && (is_null($edition_elem['date_begin']) || $edition_elem['date_begin'] == '0000-00-00' || $interval2 > 0)) {
-                    $canStart = $canStart || true;
-                }                    
             }
             if (!$canEnd){
                 return array('can' => false, 'reason' => 'course_edition_date_end');
             }            
-            if (!$canStart){
-                return array('can' => false, 'reason' => 'course_edition_date_begin', 'expiring_in' => 1);
-            }                
         }
         
 
@@ -1033,8 +1024,8 @@ class Man_Course {
               lcd.id_course = '.(int)$id_course.' AND lcu.level = 6';
         $rs = sql_query($q);
         while($r = sql_fetch_assoc($rs)) {
-
-            $teachers[$r['id_date']] =$r;
+            
+            $teachers[$r['id_date']][] = $r['firstname'].' '.$r['lastname'];
         }
         return $teachers;          
     }

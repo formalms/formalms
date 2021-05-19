@@ -250,7 +250,7 @@ Class SubscriptionAlms extends Model
 		return $res;
 	}
 
-	public function subscribeUser($id_user, $level, $waiting, $overbooking, $date_begin_validity = FALSE, $date_expire_validity = FALSE) {
+	public function subscribeUser($id_user, $level, $waiting, $overbooking = 0, $date_begin_validity = FALSE, $date_expire_validity = FALSE) {
 		if($this->id_edition != 0) {
 			require_once(_lms_.'/lib/lib.edition.php');
 			$edition_man = new EditionManager();

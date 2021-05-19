@@ -2,71 +2,34 @@
     YAHOO.util.Event.onDOMReady(function () {
         initialize("<?php echo Lang::t('_UNDO', 'standard'); ?>");
     });
-</script>
 
-<script type="text/javascript">
+
+
     var lb = new LightBox();
     lb.back_url = 'index.php?r=lms/catalog/show&sop=unregistercourse';
 
     var Config = {};
     Config.langs = {_CLOSE: '<?php echo Lang::t('_CLOSE', 'standard'); ?>'};
     lb.init(Config);  
-</script>
 
-
-
-<?php
-
-
-
-function editionElearning(&$row, &$smodel){
-    $editions = $smodel->edition_man->getEditionAvailableForCourse(Docebo::user()->getIdSt(), $row['idCourse']);
-    
-    if (count($editions) == 0) {
-        $action .= '<a href="javascript:void(0);" class="forma-button forma-button--disabled">
-                        <p class="forma-button__label">' . Lang::t('_NO_EDITIONS', 'catalogue') . '</p>
-                    </a>';
-    } else {
-        if ($row['selling'] == 0) {
-            $action .= '<a class="forma-button forma-button--green forma-button--orange-hover" href="javascript:;" onclick="courseSelection(\'' . $row['idCourse'] . '\', \'0\')" title="' . Lang::t('_SUBSCRIBE', 'catalogue') . '"><span class="forma-button__label">' . Lang::t('_SUBSCRIBE', 'catalogue') . '</span></a>';
-        } else {
-            $edition_in_chart = array();
-            if (isset($_SESSION['lms_cart'][$row['idCourse']]['editions']))
-                $edition_in_chart = $_SESSION['lms_cart'][$row['idCourse']]['editions'];
-
-            $editions = array_diff($editions, $edition_in_chart);
-
-            if (count($editions) == 0)
-                $action .= '<p class="subscribed">' . Lang::t('_ALL_EDITION_BUYED', 'catalogue') . '</p>';
-            else
-                $action .= '<a href="javascript:;" onclick="courseSelection(\'' . $row['idCourse'] . '\', \'1\')" title="' . Lang::t('_ADD_TO_CART', 'catalogue') . '"><p class="can_subscribe">' . Lang::t('_ADD_TO_CART', 'catalogue') . '</p></a>';
-        }
-    }
-    return $action;    
-}
-
-
-
-
-?>
-
-        <script type="text/javascript">
         
                 function chooseEdition(id_course){
+                    
                     var posting = $.get(
                             'ajax.server.php',
                                 {
                                     r: 'catalog/chooseEdition',
                                     id_course: id_course,
                                     type_course: $( "#typeCourse" ).val(),
-                                    id_catalogue: <?php echo $id_catalogue ?>,
+                                    id_catalogue: '<?=$id_catalogue ?>',
                                     id_category: $('#treeview1').treeview('getSelected')[0] ? 
                                         $('#treeview1').treeview('getSelected')[0].id_cat : null
                                 }
                             );
                             posting.done(function (r) {
                                 $('body').prepend(r)
-                                $('#myModal').css("margin-top", $('body').height() / 2 - $('.modal-content').height() / 2 - 300) ;       $('#myModal').modal('show')
+                                $('#myModal').css("margin-top", $('body').height() / 2 - $('.modal-content').height() / 2 - 300) ;       
+                                $('#myModal').modal('show')
                             });
                             posting.fail(function () {
                                 alert('unsubscribe failed')
