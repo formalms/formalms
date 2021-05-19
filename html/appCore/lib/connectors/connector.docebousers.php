@@ -733,34 +733,7 @@ class DoceboConnectorDoceboUsers extends DoceboConnector
                     }
                 }
 
-                //Docebo::aclm()->removeFromAllGroup($idst);
-                $query = 'select %adm_group.idst as idst from %adm_group join %adm_group_members on %adm_group.idst = %adm_group_members.idst where %adm_group_members.idstMember = ' . $idst . ' AND %adm_group.groupid like "/oc%"';
-                $result = sql_query($query);
-                $idstMembers = [];
-                while (list($idstMember) = sql_fetch_row($result)) {
-
-                    $idstMembers[] = $idstMember;
-                }
-
-                Docebo::aclm()->removeFromGroup($idst, $idstMembers);
-
-                require_once(_lms_ . '/lib/lib.course.php');
-
-                $query = 'select idCourse from `%lms_courseuser` where `idUser` = ' . $idst;
-
-                $result = sql_query($query);
-
-                while (list($idCourse) = sql_fetch_row($result)) {
-
-                    $docebo_course = new DoceboCourse($idCourse);
-                    $level_idst = &$docebo_course->getCourseLevel($idCourse);
-
-                    Docebo::aclm()->addToGroup($level_idst[3], $idst);
-
-                    $model = new SubscriptionAlms($idCourse, false, false);
-                    $model->subscribeUser($idst, 3, 0);
-                }
-
+                Docebo::aclm()->removeFromAllGroup($idst);
 
                 foreach ($this->inserted_user_org_chart[$idst] as $id_dir) {
 
