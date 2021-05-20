@@ -15,12 +15,12 @@ class LomanagerrepoLmsController extends LomanagerLmsController
     protected function setTab()
     {
         checkPerm('public', false, 'storage');
-        $this->model->setTdb(LomanagerLms::HOMEREPODIRDB, $_SESSION['idCourse']);
+        $this->model->setTdb(LomanagerLms::REPODIRDB, $_SESSION['idCourse']);
     }
 
     public function setCurrentTab()
     {
-        $this->model->setCurrentTab(LomanagerLms::STORAGE_HOMEREPODIRDB);
+        $this->model->setCurrentTab(LomanagerLms::STORAGE_REPODIRDB);
         echo json_encode(true);
         exit;
     }
@@ -29,7 +29,8 @@ class LomanagerrepoLmsController extends LomanagerLmsController
     {        
         if (checkPerm('public', true, 'storage')) {
             return [
-                'active' => $this->model->getCurrentTab() === LomanagerLms::STORAGE_HOMEREPODIRDB,
+                'active' => $this->model->getCurrentTab() === LomanagerLms::STORAGE_REPODIRDB,
+                'type' => LomanagerLms::REPODIRDB,
                 'controller' => 'lomanagerrepo',
                 'edit' => true,
                 'title' => Lang::t('_PUBREPOROOTNAME', 'storage'),

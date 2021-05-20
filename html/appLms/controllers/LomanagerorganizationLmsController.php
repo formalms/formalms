@@ -30,6 +30,7 @@ class LomanagerorganizationLmsController extends LomanagerLmsController
         if (checkPerm('lesson', true, 'storage')) {
             return [
                 'active' => $this->model->getCurrentTab() === LomanagerLms::STORAGE_ORGDIRDB,
+                'type' => LomanagerLms::ORGDIRDB,
                 'controller' => 'lomanagerorganization',
                 'edit' => true,
                 'title' => Lang::t('_ORGROOTNAME', 'storage'),
