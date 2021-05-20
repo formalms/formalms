@@ -15,7 +15,7 @@ $_varname = 'UserSelector_'.$id;
 ?>
 
 <script type="text/javascript">
-	<?php echo $event->getPrependScript(); ?>
+	<?php //echo $event->getPrependScript(); ?>
 	var <?php echo $_varname; ?> = new UserSelector("<?php echo $id; ?>", {
 		imgPath: '<?php echo Get::tmpl_path(); ?>',
 		langs: {
@@ -129,8 +129,8 @@ $this->widget('table', array(
 	'id' => 'user_selector_table_' . $id,
 	'ajaxUrl' => 'ajax.adm_server.php?r=widget/userselector/getusertabledata&id_org='.$id_org.(isset($learning_filter) ? '&learning_filter='.$learning_filter : ''),
 	'sort' => 'userid',
-	'columns' => $event->getColumns(),
-	'fields' => $event->getFields(),
+	'columns' => $columns_arr,//$event->getColumns(),
+	'fields' => $fields, //$event->getFields(),
 	'stdSelection' => true,
 	'stdSelectionField' => '_checked',
 	'selectAllAdditionalFilter' => $_varname . '.selectAllAdditionalFilter()',
