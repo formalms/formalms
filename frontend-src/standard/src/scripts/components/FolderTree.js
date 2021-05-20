@@ -1,6 +1,5 @@
 import 'regenerator-runtime/runtime'
 import { contextmenu } from 'easycontext';
-import Config from '../config/config';
 const axios = require('axios');
 import Sortable from 'sortablejs/modular/sortable.complete.esm.js';
 import Tree from '../twig/tree.html.twig';
@@ -8,8 +7,10 @@ import Content from '../twig/content.html.twig';
 
 class FolderTree {
 
-  constructor(type) {
+  constructor(baseApiUrl, controller, type) {
     const _this = this;
+    _this.baseApiUrl = baseApiUrl;
+    _this.controller = controller;
     _this.type = type;
     _this.container = document.querySelector('*[data-container=' + _this.type + ']');
 
@@ -111,8 +112,8 @@ class FolderTree {
 
         el.classList.add('ft-is-folderOpen');
 
-        const LoData = _this.getApiUrl(_this.type, 'get', { id: elId });
-        _this.getLoData(LoData, el, elId, clickOnArrow);
+        const Data = _this.getApiUrl('get', { id: elId });
+        _this.getData(Data, el, elId, clickOnArrow);
       }
     }
   }
@@ -215,8 +216,8 @@ class FolderTree {
         text: 'Elimina',
         onClick() {
           if (confirm('Sei sicuro di voler eliminare questo elemento?')) {
-            const deleteLoData = _this.getApiUrl(_this.type, 'delete', { ids: _this.currentElsIds });
-            axios.get(deleteLoData).then(() => {
+            const deleteData = _this.getApiUrl('delete', { ids: _this.currentElsIds });
+            axios.get(deleteData).then(() => {
               _this.currentElsIds.forEach((elId) => {
                 const elTree = _this.container.querySelector('.folderTree__li[data-id="' + elId + '"]');
                 if (elTree) {
@@ -264,9 +265,9 @@ class FolderTree {
     const value = input.value;
     const el = input.closest('.folderTree__li') ? input.closest('.folderTree__li') : input.closest('.folderView__li');
     const elId = el.getAttribute('data-id');
-    const renameLoData = _this.getApiUrl(_this.type, 'rename', { id: elId, newName: value });
+    const renameData = _this.getApiUrl('rename', { id: elId, newName: value });
 
-    axios.get(renameLoData).then((res) => {
+    axios.get(renameData).then((res) => {
       if (res) {
         rename.classList.remove('is-show');
         const treeEl = _this.container.querySelector('.folderTree__link[data-id="' + elId + '"] span');
@@ -385,8 +386,8 @@ class FolderTree {
       const parentId = parseInt(target.getAttribute('data-id'));
 
       if (!this.currentElsIds.includes(parentId) && target.classList.contains('is-dropzone')) {
-        const reorderLoData = this.getApiUrl(this.type, 'move', { ids: this.currentElsIds, newParent: parentId });
-        this.getReorderLoData(reorderLoData);
+        const reorderData = this.getApiUrl('move', { ids: this.currentElsIds, newParent: parentId });
+        this.getReorderData(reorderData);
       }
     }
   }
@@ -401,7 +402,7 @@ class FolderTree {
         dataIdAttr: 'data-id',
         multiDrag: true, // Enable the plugin
         // multiDragKey: 'Meta', // Fix 'ctrl' or 'Meta' button pressed
-        selectedClass: 'fv-is-selected',
+        selectedClass: 'fv-is-selectedx',
         animation: 150,
         easing: 'cubic-bezier(1, 0, 0, 1)',
         fallbackOnBody: true,
@@ -423,15 +424,15 @@ class FolderTree {
             childElementArray.push(elId);
           });
 
-          const reorderLoData = _this.getApiUrl(_this.type, 'reorder', { id: currentElementId, newParent: parentElementId, newOrder: childElementArray });
-          _this.getReorderLoData(reorderLoData);
+          const reorderData = _this.getApiUrl('reorder', { id: currentElementId, newParent: parentElementId, newOrder: childElementArray });
+          _this.getReorderData(reorderData);
         }
       });
     }
   }
 
-  getApiUrl(controller, action, params) {
-    let url = `${Config.apiUrl}lms/${controller}/${action}`;
+  getApiUrl(action, params) {
+    let url = `${this.baseApiUrl}/${action}`;
     if (!params) {
       params = {};
     }
@@ -440,7 +441,7 @@ class FolderTree {
     return url;
   }
 
-  async getReorderLoData(endpoint) {
+  async getReorderData(endpoint) {
     try {
       await axios.get(endpoint).then(() => {
         this.refresh();
@@ -452,7 +453,7 @@ class FolderTree {
     }
   }
 
-  async getLoData(endpoint, el , elId, clickOnArrow) {
+  async getData(endpoint, el , elId, clickOnArrow) {
     const _this = this;
     try {
       await axios.get(endpoint).then((response) => {

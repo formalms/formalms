@@ -1,9 +1,10 @@
-import Config from '../config/config';
 const axios = require('axios');
 
 class FolderView {
 
-  constructor(type) {
+  constructor(baseApiUrl, controller, type) {
+    this.baseApiUrl = baseApiUrl;
+    this.controller = controller;
     this.type = type;
     this.container = document.querySelector('*[data-container=' + this.type + ']');
     this.container.addEventListener('click', (e) => { this.toggleSelectEl(e); });
@@ -84,7 +85,7 @@ class FolderView {
       if (el.classList.contains('fv-is-delete')) {
         e.preventDefault();
         if (confirm('Sei sicuro di voler eliminare questo elemento?')) {
-          const deleteLoData = _this.getApiUrl(_this.type, 'delete', { id: elId });
+          const deleteLoData = _this.getApiUrl('delete', { id: elId });
           axios.get(deleteLoData).then(() => {
             const elTree = _this.container.querySelector('.folderTree__li[data-id="' + elId + '"]');
             if (elTree) {
@@ -132,8 +133,8 @@ class FolderView {
     }
   }
 
-  getApiUrl(controller, action, params) {
-    let url = `${Config.apiUrl}lms/${controller}/${action}`;
+  getApiUrl(action, params) {
+    let url = `${this.baseApiUrl}/${action}`;
     if (!params) {
       params = {};
     }

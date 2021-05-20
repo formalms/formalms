@@ -6,7 +6,9 @@
     <div class="tabs-wrapper">
         <ul class="nav nav-tabs">
             {% for tab in tabs %}
-                <li role="presentation" class="tab-link {{ tab.active ? 'active' : '' }}" data-type="{{ tab.controller }}"><a href="#{{ tab.controller }}">{{ tab.title }}</a></li>
+                <li role="presentation" class="tab-link {{ tab.active ? 'active' : '' }}" data-type="{{ tab.type }}" data-controller="{{ tab.controller }}">
+                    <a href="#{{ tab.type }}">{{ tab.title }}</a>
+                </li>
             {% endfor %}
         </ul>
 
@@ -27,60 +29,16 @@ const activeTab = document.querySelector('.tab-link.active');
 window.type = document.querySelector('.tab-content > .active').getAttribute('data-container');
 
 if (tabs) {
+    let controllers = [];
     tabs.forEach((tab) => {
-        tab.addEventListener('click', clickOnTab);
-        tab.addEventListener('click', saveCurrentState);
-
-        new window.FolderTree(tab.getAttribute('data-type'));
-        new window.FolderView(tab.getAttribute('data-type'));
-        new window.CreateItem(tab.getAttribute('data-type'));
-    });
-   new window.CopyItem();
-}
-
-function clickOnTab(event) {
-    const target = event.target;
-    const el = target.closest('.tab-link');
-    const linktype = el.getAttribute('data-type');
-    const tabs = document.querySelectorAll('.tab-link');
-    const tab = target.closest('.tab-link');
-    const oldTabContainer = document.querySelector('.tab-content > .active');
-    const tabContainer = document.querySelector('.tab-content > .tab-pane[data-container=' + linktype + ']');
-
-    if (tabs) {
-        tabs.forEach((tab) => {
-            tab.classList.remove('active');
+        controllers.push({
+            tab: tab,
+            controller: tab.getAttribute('data-controller'),
+            selector: tab.getAttribute('data-type'),
         });
-    }
-    if (tab) {
-        tab.classList.add('active');
-    }
-
-    if (oldTabContainer) {
-        oldTabContainer.classList.remove('active');
-    }
-    if (tabContainer) {
-        tabContainer.classList.add('active');
-    }
-}
-
-function setCurrentTab(linktype) {
-    $.ajax({
-        type: 'POST',
-        url: 'index.php?r=lms/lo/setCurrentTab',
-        data: {
-            type: linktype,
-        },
     });
-}
 
-function saveCurrentState(event) {
-    const target = event.target;
-    const el = target.closest('.tab-link');
-    const linktype = el.getAttribute('data-type');
-    window.type = linktype;
-
-    setCurrentTab(linktype);
+    new window.TeacherLearningObject(controllers);
 }
 
 </script>

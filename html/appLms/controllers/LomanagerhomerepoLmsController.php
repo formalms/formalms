@@ -26,12 +26,13 @@ class LomanagerhomerepoLmsController extends LomanagerLmsController
     }
 
     public function getTab()
-    {        
+    {
         if (checkPerm('home', true, 'storage')) {
             return [
                 'active' => $this->model->getCurrentTab() === LomanagerLms::STORAGE_HOMEREPODIRDB,
                 'type' => LomanagerLms::HOMEREPODIRDB,
                 'controller' => 'lomanagerhomerepo',
+                'type' => $this->model::HOMEREPODIRDB,
                 'edit' => true,
                 'title' => Lang::t('_HOMEREPOROOTNAME', 'storage'),
                 'data' => $this->getFolders($_SESSION['idCourse'], false),

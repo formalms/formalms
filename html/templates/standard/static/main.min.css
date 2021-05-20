@@ -5766,6 +5766,10 @@ p {
 .folderView__label {
   pointer-events: none; }
 
+.fv-is-selecteds {
+  background-color: red;
+  font-weight: bold; }
+
 .fv-is-selected {
   background-color: #ffe4ce;
   font-weight: bold; }

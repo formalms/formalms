@@ -1,9 +1,9 @@
-<div class="dropdown" id="createitem_{{ tab.controller }}">
-    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenuBtn_{{ tab.controller }}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+<div class="dropdown" id="createitem_{{ tab.type }}">
+    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenuBtn_{{ tab.type }}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
         {{ translate('_CREATE_NEW', 'standard') }}
         <span class="caret"></span>
     </button>
-    <ul class="dropdown-menu" id="dropdownMenu_{{ tab.controller }}" aria-labelledby="dropdownMenu_{{ tab.controller }}">
+    <ul class="dropdown-menu" id="dropdownMenu_{{ tab.type }}" aria-labelledby="dropdownMenu_{{ tab.type }}">
         {% for el in lo_types %}
             <li id="type_{{ el.type }}" data-id="{{ el.type }}" class="folderView__li itemType">
                 <div class="folderView__el {% if el.type %}fv-is-{{ el.type }}{% else %}fv-is-folder{% endif %}">

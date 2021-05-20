@@ -105,8 +105,6 @@ class LomanagerLmsController extends LmsController
     {
         $id = Get::req('id', DOTY_INT, false);
         $newName = Get::req('newName', DOTY_STRING, false);
-        // $type = Get::req('type', DOTY_STRING, LoLms::ORGDIRDB);
-        // $this->model->setCurrentTab($type);
         echo $this->json->encode($this->model->renameFolder($id, $newName));
         exit;
     }
@@ -178,19 +176,13 @@ class LomanagerLmsController extends LmsController
         $fromType = Get::req('type', DOTY_STRING, false);
         $newtype = Get::req('newtype', DOTY_STRING, false);
 
-        $types = [
-            'lomanagerorganization' => $this->model::ORGDIRDB,
-            'lomanagerhomerepo' => $this->model::REPODIRDB,
-            'lomanagerrepo' => $this->model::HOMEREPODIRDB,
-        ];
-
         if ($ids = Get::req('ids', DOTY_MIXED, false)) {
             $ids_arr = explode(',', $ids);
             foreach ($ids_arr as $id) {
-                if ($id > 0 && $this->model->copy($id, $types[$fromType])) {
-                    $this->model->setTdb($types[$newtype]);
+                if ($id > 0 && $this->model->copy($id, $fromType)) {
+                    $this->model->setTdb($newtype);
                     $this->model->paste(0);
-                    $this->model->setTdb($types[$fromType]);
+                    $this->model->setTdb($fromType);
                 }
             }
         }

@@ -1,10 +1,10 @@
-import Config from '../config/config';
 const axios = require('axios');
 
 class CopyItem {
 
-   constructor() {
+   constructor(baseApiUrl) {
       const _this = this;
+      _this.baseApiUrl = baseApiUrl;
 
       document.addEventListener('click', this.openOverlay);
       document.querySelector('.js-fv-close-overlay').addEventListener('click', () => {
@@ -44,7 +44,7 @@ class CopyItem {
          ids.push(item.getAttribute('data-id'));
       });
 
-      const copyLoData = _this.getApiUrl(window.type, 'copy', { ids, newtype, type: window.type });
+      const copyLoData = _this.getApiUrl('copy', { ids, newtype, type: window.type });
       axios.get(copyLoData).then(() => {
          const container = document.querySelector('*[data-container=' + newtype + ']');
 
@@ -56,14 +56,14 @@ class CopyItem {
       });
    }
 
-   getApiUrl(controller, action, params) {
-     let url = `${Config.apiUrl}lms/${controller}/${action}`;
-     if (!params) {
-       params = {};
-     }
-     url += '&' + new URLSearchParams(params).toString();
- 
-     return url;
+   getApiUrl(action, params) {
+      let url = `${this.baseApiUrl}/${action}`;
+      if (!params) {
+        params = {};
+      }
+      url += '&' + new URLSearchParams(params).toString();
+  
+      return url;
    }
 }
 

@@ -5,17 +5,11 @@ require('../modules/modal-accordion');
 import { InfoCourse } from '../modules/InfoCourse';
 import {RenderDashBoardCalendar} from '../modules/DashboardCalendar';
 import { DashboardVideo } from '../modules/DashboardVideo';
-import FolderTree from '../components/FolderTree';
-import FolderView from '../components/FolderView';
-import CreateItem from '../components/CreateItem';
-import CopyItem from '../components/CopyItem';
+import TeacherLearningObject from '../modules/TeacherLearningObject';
 
 var Page = (function () {
 
-  window.FolderView = FolderView;
-  window.FolderTree = FolderTree;
-  window.CreateItem = CreateItem;
-  window.CopyItem = CopyItem;
+  window.TeacherLearningObject = TeacherLearningObject;
 
   function setScroll(elem, action) {
     if (action === 'lock') {

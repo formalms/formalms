@@ -26,12 +26,13 @@ class LomanagerrepoLmsController extends LomanagerLmsController
     }
 
     public function getTab()
-    {        
+    {
         if (checkPerm('public', true, 'storage')) {
             return [
                 'active' => $this->model->getCurrentTab() === LomanagerLms::STORAGE_REPODIRDB,
                 'type' => LomanagerLms::REPODIRDB,
                 'controller' => 'lomanagerrepo',
+                'type' => $this->model::REPODIRDB,
                 'edit' => true,
                 'title' => Lang::t('_PUBREPOROOTNAME', 'storage'),
                 'data' => $this->getFolders($_SESSION['idCourse'], false),

@@ -1,9 +1,9 @@
-import Config from '../config/config';
 const axios = require('axios');
 
 class CreateItem {
 
-  constructor(type) {
+  constructor(baseApiUrl, type) {
+    this.baseApiUrl = baseApiUrl;
     this.type = type;
     this.container = document.querySelector('*[data-container=' + this.type + ']');
 
@@ -63,7 +63,7 @@ class CreateItem {
     const dropdownBtn = _this.container.querySelector('#dropdownMenuBtn_' + _this.type);
     const dropdown = _this.container.querySelector('#dropdownMenu_' + _this.type);
 
-    const apiUrl = _this.getApiUrl(_this.type, 'createFolder', {
+    const apiUrl = _this.getApiUrl('createFolder', {
       folderName: text,
       selectedNode: _this.selectedId,
       authentic_request,
@@ -123,11 +123,11 @@ class CreateItem {
     }
   }
 
-  getNewLoUrl() {
+  getNewLoUrl(type) {
     const _this = this;
     const selectedId = _this.selectedId ? _this.selectedId : 0;
 
-    return `index.php?modname=storage&op=display&${_this.type}_createLOSel=1&radiolo=${_this}&treeview_selected_${_this.type}=${selectedId}`;
+    return `index.php?modname=storage&op=display&${_this.type}_createLOSel=1&radiolo=${type}&treeview_selected_${_this.type}=${selectedId}`;
   }
 
   clickOnType(event) {
@@ -144,14 +144,14 @@ class CreateItem {
         dropdown.classList.add('hidden');
         createFolderForm.classList.remove('hidden');
       } else {
-        location.href = _this.getNewLoUrl();
+        location.href = _this.getNewLoUrl(type);
       }
       event.preventDefault();
     }
   }
 
-  getApiUrl(controller, action, params) {
-    let url = `${Config.apiUrl}lms/${controller}/${action}`;
+  getApiUrl(action, params) {
+    let url = `${this.baseApiUrl}/${action}`;
     if (!params) {
       params = {};
     }
