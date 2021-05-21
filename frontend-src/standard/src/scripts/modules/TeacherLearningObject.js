@@ -10,16 +10,18 @@ class TeacherLearningObject {
     this.controllers = controllers;
 
     this.controllers.forEach(controller => {
-      new FolderTree(this.getBaseApiUrl(controller.controller), controller.controller, controller.selector);
-      new FolderView(this.getBaseApiUrl(controller.controller), controller.controller, controller.selector);
-      new CreateItem(this.getBaseApiUrl(controller.controller), controller.selector);
+      let baseUrl = this.getBaseApiUrl(controller.controller);
+      new FolderTree(baseUrl, controller.controller, controller.selector);
+      new FolderView(baseUrl, controller.controller, controller.selector);
+      new CreateItem(baseUrl, controller.selector);
 
-      controller.tab.addEventListener('click', this.clickOnTab);
+      controller.tab.addEventListener('click', this.clickOnTab.bind(this));
     });
     new CopyItem(this.getBaseApiUrl('lomanager'));
   }
 
   clickOnTab(event) {
+    const _this = this;
     const target = event.target;
     const el = target.closest('.tab-link');
     const linktype = el.getAttribute('data-type');
@@ -29,8 +31,8 @@ class TeacherLearningObject {
     const oldTabContainer = document.querySelector('.tab-content > .active');
     const tabContainer = document.querySelector('.tab-content > .tab-pane[data-container=' + linktype + ']');
 
-    this.currentType = linktype;
-    this.currentController = linkcontroller;
+    _this.currentType = linktype;
+    _this.currentController = linkcontroller;
 
     if (tabs) {
       tabs.forEach((tab) => {
@@ -47,7 +49,7 @@ class TeacherLearningObject {
     if (tabContainer) {
       tabContainer.classList.add('active');
     }
-    this.setCurrentTab();
+    _this.setCurrentTab();
   }
 
   setCurrentTab() {

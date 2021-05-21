@@ -13,6 +13,8 @@ class FolderTree {
     _this.controller = controller;
     _this.type = type;
     _this.container = document.querySelector('*[data-container=' + _this.type + ']');
+   
+    _this.getStatus();// From localStorage
 
     if (!document.querySelector('.js-disable-context-menu')) {
       if (_this.container.querySelectorAll('.folderTree__link').length) {
@@ -67,9 +69,9 @@ class FolderTree {
       if (!noClick) {
         const els = _this.container.querySelectorAll('.folderTree__link');
 
-
         if (elId == 0) {
-          _this.setOpenedDirs();
+          // Refresh
+          // _this.setOpenedDirs();
         }
 
         const clickOnArrow = event.target.classList.contains('arrow');
@@ -111,6 +113,11 @@ class FolderTree {
         }
 
         el.classList.add('ft-is-folderOpen');
+        if (elId != 0) {
+          // Not a refresh
+          _this.setOpenedDirs();
+          _this.setSelectedDir();
+        }
 
         const Data = _this.getApiUrl('get', { id: elId });
         _this.getData(Data, el, elId, clickOnArrow);
@@ -364,11 +371,28 @@ class FolderTree {
         this.openedIds.push(id);
       }
     });
+    this.storeStatus();
   }
 
   setSelectedDir() {
     const item = this.container.querySelector('.ft-is-selected');
     this.selectedId = item ? item.getAttribute('data-id') : 0;
+    this.storeStatus();
+  }
+
+  storeStatus() {
+    localStorage.setItem('openedIds', this.openedIds);
+    localStorage.setItem('selectedId', this.selectedId);
+  }
+
+  getStatus() {
+    const _this = this;
+    _this.openedIds = localStorage.getItem('openedIds') ? localStorage.getItem('openedIds').split(',') : [];
+    _this.selectedId = localStorage.getItem('selectedId');
+    
+    setTimeout(function() {
+      _this.container.querySelector('.folderTree__link.ft-is-root').click();
+    }, 500);
   }
 
   refresh() {
@@ -414,14 +438,22 @@ class FolderTree {
 
           // Get parent dir from tree element
           const treeElement = _this.container.querySelector('.folderTree__li[data-id="' + currentElementId + '"]');
-          const parentElement = treeElement ? treeElement.closest('.ft-is-parent') : null;
+          const parentElement = treeElement ? treeElement.parentNode.closest('.ft-is-parent') : null;
           const parentElementId = parentElement ? parentElement.getAttribute('data-id') : 0;
           const childElement = _this.container.querySelector('.folderView__ul').querySelectorAll('.folderView__li');
           const childElementArray = [];
+          console.log(parentElementId, 'parentElementId');
+
+          if (currentElementId == parentElementId) {
+            console.log('non puoi spostare un elemento dentro se stesso');
+            return;
+          }
 
           childElement.forEach(el => {
             const elId = el.getAttribute('data-id');
-            childElementArray.push(elId);
+            if (parentElementId != elId) {
+              childElementArray.push(elId);
+            }
           });
 
           const reorderData = _this.getApiUrl('reorder', { id: currentElementId, newParent: parentElementId, newOrder: childElementArray });

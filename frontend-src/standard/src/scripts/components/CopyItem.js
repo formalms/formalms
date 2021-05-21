@@ -44,7 +44,7 @@ class CopyItem {
          ids.push(item.getAttribute('data-id'));
       });
 
-      const copyLoData = _this.getApiUrl('copy', { ids, newtype, type: window.type });
+      const copyLoData = _this.getApiUrl('copy', { ids: ids, newtype, type: window.type });
       axios.get(copyLoData).then(() => {
          const container = document.querySelector('*[data-container=' + newtype + ']');
 
