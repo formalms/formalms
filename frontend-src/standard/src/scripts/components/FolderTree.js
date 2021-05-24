@@ -68,12 +68,6 @@ class FolderTree {
 
       if (!noClick) {
         const els = _this.container.querySelectorAll('.folderTree__link');
-
-        if (elId == 0) {
-          // Refresh
-          // _this.setOpenedDirs();
-        }
-
         const clickOnArrow = event.target.classList.contains('arrow');
 
         if (els) {
@@ -116,7 +110,6 @@ class FolderTree {
 
         el.classList.add('ft-is-folderOpen');
         if (elId != 0) {
-          console.log(elId, 'SET');
           // Not a refresh
           _this.setOpenedDirs();
           _this.setSelectedDir();

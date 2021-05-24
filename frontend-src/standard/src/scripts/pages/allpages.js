@@ -6,10 +6,12 @@ import { InfoCourse } from '../modules/InfoCourse';
 import {RenderDashBoardCalendar} from '../modules/DashboardCalendar';
 import { DashboardVideo } from '../modules/DashboardVideo';
 import TeacherLearningObject from '../modules/TeacherLearningObject';
+import StudentLearningObject from '../modules/StudentLearningObject';
 
 var Page = (function () {
 
   window.TeacherLearningObject = TeacherLearningObject;
+  window.StudentLearningObject = StudentLearningObject;
 
   function setScroll(elem, action) {
     if (action === 'lock') {
