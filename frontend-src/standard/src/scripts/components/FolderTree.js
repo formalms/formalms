@@ -13,7 +13,8 @@ class FolderTree {
     _this.controller = controller;
     _this.type = type;
     _this.container = document.querySelector('*[data-container=' + _this.type + ']');
-   
+    _this.checkExist = false;
+
     _this.getStatus();// From localStorage
 
     if (!document.querySelector('.js-disable-context-menu')) {
@@ -387,7 +388,7 @@ class FolderTree {
     const _this = this;
     _this.openedIds = localStorage.getItem('openedIds') ? localStorage.getItem('openedIds').split(',') : [];
     _this.selectedId = localStorage.getItem('selectedId');
-    
+
     setTimeout(function() {
       _this.container.querySelector('.folderTree__link.ft-is-root').click();
     }, 1000);
@@ -429,7 +430,7 @@ class FolderTree {
         easing: 'cubic-bezier(1, 0, 0, 1)',
         fallbackOnBody: true,
         invertSwap: true,
-        swapThreshold: 0.43,
+        swapThreshold: 0.13,
         onUpdate: function (evt) {
           const currentElement = evt.item;
           const currentElementId = currentElement.getAttribute('data-id');
@@ -469,14 +470,20 @@ class FolderTree {
   }
 
   async getReorderData(endpoint) {
-    try {
-      await axios.get(endpoint).then(() => {
-        this.refresh();
-      }).catch( (error) => {
-        console.log(error);
-      });
-    } catch (e) {
-      console.log(e);
+    const _this = this;
+
+    if (!_this.checkExist) {
+      _this.checkExist = true;
+      try {
+        await axios.get(endpoint).then(() => {
+          this.refresh();
+          _this.checkExist = false;
+        }).catch( (error) => {
+          console.log(error);
+        });
+      } catch (e) {
+        console.log(e);
+      }
     }
   }
 
