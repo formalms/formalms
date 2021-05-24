@@ -98,6 +98,8 @@ class FolderTree {
           el.classList.remove('ft-is-folderOpen');
           if (clickOnArrow) {
             event.target.classList.remove('opened');
+            _this.setOpenedDirs();
+            _this.setSelectedDir();
             return; // don't open
           }
         } else {
@@ -114,6 +116,7 @@ class FolderTree {
 
         el.classList.add('ft-is-folderOpen');
         if (elId != 0) {
+          console.log(elId, 'SET');
           // Not a refresh
           _this.setOpenedDirs();
           _this.setSelectedDir();
