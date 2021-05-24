@@ -376,7 +376,9 @@ class FolderTree {
 
   setSelectedDir() {
     const item = this.container.querySelector('.ft-is-selected');
-    this.selectedId = item ? item.getAttribute('data-id') : 0;
+    if (item) {
+      this.selectedId = item.getAttribute('data-id');
+    }
     this.storeStatus();
   }
 
@@ -392,7 +394,7 @@ class FolderTree {
     
     setTimeout(function() {
       _this.container.querySelector('.folderTree__link.ft-is-root').click();
-    }, 500);
+    }, 1000);
   }
 
   refresh() {
@@ -436,16 +438,13 @@ class FolderTree {
           const currentElement = evt.item;
           const currentElementId = currentElement.getAttribute('data-id');
 
-          // Get parent dir from tree element
-          const treeElement = _this.container.querySelector('.folderTree__li[data-id="' + currentElementId + '"]');
-          const parentElement = treeElement ? treeElement.parentNode.closest('.ft-is-parent') : null;
+          // Get parent dir from selected tree element
+          const parentElement = _this.container.querySelector('.ft-is-parent .ft-is-selected');
           const parentElementId = parentElement ? parentElement.getAttribute('data-id') : 0;
           const childElement = _this.container.querySelector('.folderView__ul').querySelectorAll('.folderView__li');
           const childElementArray = [];
-          console.log(parentElementId, 'parentElementId');
 
           if (currentElementId == parentElementId) {
-            console.log('non puoi spostare un elemento dentro se stesso');
             return;
           }
 
