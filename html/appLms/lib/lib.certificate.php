@@ -697,6 +697,8 @@ class Certificate
 
 	function updateCertificateCourseAssign($id_course, $list_of_assign, $list_of_assign_ex, $point_required, $minutes_required)
 	{
+		$course = new DoceboCourse($id_course);
+
 		$query =	"DELETE FROM " . $GLOBALS['prefix_lms'] . "_certificate_course"
 			. " WHERE id_course = " . $id_course;
 
@@ -710,7 +712,10 @@ class Certificate
 					$query =	"INSERT INTO " . $GLOBALS['prefix_lms'] . "_certificate_course"
 						. " (id_certificate, id_course, available_for_status, minutes_required)"
 						. " VALUES (" . (int)$id_cert . ", " . (int)$id_course . ", " . (int)$status . ", " . (int)$minutes . ")";
-
+						
+						$certificate_info = $this->getCertificateInfo($id_cert);
+						Events::trigger('lms.course_certificate.assigned', ['id_course' => $id_course, 'course' => $course, 'id_cert' => $id_cert, 'certificate_info' => $certificate_info, 'status' => $status, 'minutes' => $minutes, 'point_required' => $point_required]);
+				
 					if (!sql_query($query))
 						return false;
 				}
@@ -722,6 +727,9 @@ class Certificate
 						. " (id_certificate, id_course, available_for_status, point_required)"
 						. " VALUES (" . (int)$id_cert . ", " . (int)$id_course . ", " . (int)$status . ", " . (int)$point_required . ")";
 
+					$certificate_info = $this->getCertificateInfo($id_cert);
+					Events::trigger('lms.course_certificate.assigned', ['id_course' => $id_course, 'course' => $course, 'id_cert' => $id_cert, 'certificate_info' => $certificate_info, 'status' => $status, 'minutes' => $minutes, 'point_required' => $point_required]);
+				
 					if (!sql_query($query))
 						return false;
 				}

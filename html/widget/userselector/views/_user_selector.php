@@ -9,13 +9,13 @@
  */
 //js global variable name
 $_varname = 'UserSelector_'.$id;
-$event = new \appLms\Events\Widget\UserSelectorRenderJSScriptEvent();
-\appCore\Events\DispatcherManager::dispatch(\appLms\Events\Widget\UserSelectorRenderJSScriptEvent::EVENT_NAME, $event);
+// $event = new \appLms\Events\Widget\UserSelectorRenderJSScriptEvent();
+// \appCore\Events\DispatcherManager::dispatch(\appLms\Events\Widget\UserSelectorRenderJSScriptEvent::EVENT_NAME, $event);
 
 ?>
 
 <script type="text/javascript">
-	<?php echo $event->getPrependScript(); ?>
+	<?php //echo $event->getPrependScript(); ?>
 	var <?php echo $_varname; ?> = new UserSelector("<?php echo $id; ?>", {
 		imgPath: '<?php echo Get::tmpl_path(); ?>',
 		langs: {
@@ -122,15 +122,15 @@ $rel_action_bottom = '<span>'
 $id_org = isset($data_for_view['id_org'])?$data_for_view['id_org']:0;
 $fields = array('id', 'userid', 'firstname', 'lastname', '_dyn_field_0', '_dyn_field_1', '_dyn_field_2', 'valid');
 
-$event = new \appLms\Events\Widget\UserSelectorBeforeRenderEvent($id_org, $_varname, $columns_arr, $fields);
-\appCore\Events\DispatcherManager::dispatch(\appLms\Events\Widget\UserSelectorBeforeRenderEvent::EVENT_NAME, $event);
+// $event = new \appLms\Events\Widget\UserSelectorBeforeRenderEvent($id_org, $_varname, $columns_arr, $fields);
+// \appCore\Events\DispatcherManager::dispatch(\appLms\Events\Widget\UserSelectorBeforeRenderEvent::EVENT_NAME, $event);
 
 $this->widget('table', array(
 	'id' => 'user_selector_table_' . $id,
 	'ajaxUrl' => 'ajax.adm_server.php?r=widget/userselector/getusertabledata&id_org='.$id_org.(isset($learning_filter) ? '&learning_filter='.$learning_filter : ''),
 	'sort' => 'userid',
-	'columns' => $event->getColumns(),
-	'fields' => $event->getFields(),
+	'columns' => $columns_arr,//$event->getColumns(),
+	'fields' => $fields, //$event->getFields(),
 	'stdSelection' => true,
 	'stdSelectionField' => '_checked',
 	'selectAllAdditionalFilter' => $_varname . '.selectAllAdditionalFilter()',

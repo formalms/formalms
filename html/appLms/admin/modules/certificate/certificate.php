@@ -400,6 +400,12 @@ function savecertificate() {
         if(!sql_query($query_insert)) Util::jump_to('index.php?modname=certificate&op=certificate&result=err');
 
         list($id_certificate) = sql_fetch_row(sql_query("SELECT LAST_INSERT_ID()"));
+
+        require_once(Forma::inc(_lms_.'/lib/lib.certificate.php'));
+        $certificate = new Certificate();
+        $certificate_info = $certificate->getCertificateInfo($id_certificate);
+        Events::trigger('lms.certificater.created', ['id_certificate' => $id_certificate, 'certificate_info' => $certificate_info]);
+        
         Util::jump_to('index.php?modname=certificate&op=elemcertificate&id_certificate='.$id_certificate);
     }
 }
@@ -414,11 +420,20 @@ function delcertificate() {
 
     if(Get::req('confirm', DOTY_INT, 0) == 1) {
 
+        require_once(Forma::inc(_lms_.'/lib/lib.certificate.php'));
+        $certificate = new Certificate();
+        $certificate_info = $certificate->getCertificateInfo($id_certificate);
+        
         $query_certificate = "
         DELETE FROM ".$GLOBALS['prefix_lms']."_certificate
         WHERE id_certificate = '".$id_certificate."'";
         if(!sql_query($query_certificate)) Util::jump_to('index.php?modname=certificate&op=certificate&result=err_del');
-        else Util::jump_to('index.php?modname=certificate&op=certificate&result=ok');
+        else { 
+
+            Events::trigger('lms.certificater.created', ['id_certificate' => $id_certificate, 'certificate_info' => $certificate_info]);
+
+            Util::jump_to('index.php?modname=certificate&op=certificate&result=ok');
+        }
     } else {
 
         list($name, $descr) = sql_fetch_row(sql_query("

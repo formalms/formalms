@@ -787,6 +787,10 @@ class CompetencesAdm extends Model {
 					." VALUES ".implode(",", $conditions);
 				$res = $this->db->query($query);
 				$output = ($res ? $id : false);
+
+				$competence = $this->getCompetenceInfo($id);
+				Events::trigger('lms.competence.created', ['id_competence' => $id, 'competence' => $competence]);
+
 				return $output;
 			}
 		} else {
@@ -862,6 +866,9 @@ class CompetencesAdm extends Model {
 			}
 		}
 
+		$competence = $this->getCompetenceInfo($id_competence);
+		Events::trigger('lms.competence.edited', ['id_competence' => $id_competence, 'competence' => $competence]);
+
 		return $output;
 	}
 
@@ -882,6 +889,9 @@ class CompetencesAdm extends Model {
 			$res = $this->db->query($query);
 		}
 
+		$competence = $this->getCompetenceInfo($id_competence);
+		Events::trigger('lms.competence.edited', ['id_competence' => $id_competence, 'competence' => $competence]);
+		
 		return ($res ? true : false);
 	}
 
@@ -1086,6 +1096,8 @@ class CompetencesAdm extends Model {
 			$this->trackOperation($id_competence, array_keys($users), $params);
 		}
 
+		Events::trigger('core.competence_user.assigned', ['id_competence' => $id_competence, 'users' => $users]);
+
 		return $res ? true : false;
 	}
 
@@ -1142,6 +1154,8 @@ class CompetencesAdm extends Model {
 			$params->score_total = 0;
 			$this->trackOperation($id_competence, $users, $params);
 		}
+
+		Events::trigger('core.competence_user.unassigned', ['id_competence' => $id_competence, 'users' => $users]);
 
 		return $res ? true : false;
 	}
