@@ -50,4 +50,11 @@ class LoLms extends Model {
         $tree_view = new Org_TreeView($this->tdb, $this->treeView);
         return $tree_view->getCurrentState($idFolder);
     }
+
+    public function getFolderTree() {
+        $root_folder = $this->treeView->tdb->getFolderById(0);
+        $tree = [$root_folder->id => []];
+        $tree = $this->treeView->getFolderTree($tree);
+        return $tree;
+    }
 }

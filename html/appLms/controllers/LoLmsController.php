@@ -104,6 +104,14 @@ class LoLmsController extends LmsController
         exit;
     }
 
+    public function getFolderTree()
+    {
+        $responseData = [];
+        $responseData['data'] = $this->model->getFolderTree();
+        echo $this->json->encode($responseData);
+        exit;
+    }
+
     public function delete()
     {
         $id = Get::req('id', DOTY_INT, false);

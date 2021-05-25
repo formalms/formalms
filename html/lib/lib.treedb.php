@@ -209,14 +209,14 @@ class TreeDb {
 			die( "Error on $funcname " . sql_error($this->dbconn) );
 	}
 
-	function getChildrensIdById( $idFolder ) {
+	function getChildrensIdById( $idFolder, $onlyFolders = false ) {
 		$fields = $this->_getArrBaseFields( $this->table );
 		$query = "SELECT ".$this->_getDISTINCT(). $fields['id']
 				." FROM ". $this->table.$this->_getOtherTables()
 				.$this->_outJoinFilter($this->table)
 				." WHERE ((". $fields['idParent'] ." = '". (int)$idFolder ."')"
 				.$this->_getFilter($this->table)
-				.") ORDER BY ". $this->_getOrderBy($this->table);
+				.") " . ($onlyFolders ? " AND objectType = ''" : "") . " ORDER BY ". $this->_getOrderBy($this->table);
 		$rs = $this->_executeQuery( $query )
 				or die( sql_error() . " [ $query ]");
 				// or $this->_printSQLError( 'getChildrensById' );

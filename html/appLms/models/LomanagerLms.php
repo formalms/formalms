@@ -75,6 +75,13 @@ class LomanagerLms extends Model {
         return $learning_objects;
     }
 
+    public function getFolderTree() {
+        $root_folder = $this->treeView->tdb->getFolderById(0);
+        $tree = [$root_folder->id => []];
+        $tree = $this->treeView->getFolderTree($tree);
+        return $tree;
+    }
+
     public function getCurrentState($idFolder = 0) {
         return $this->treeView->getCurrentState($idFolder);
     }

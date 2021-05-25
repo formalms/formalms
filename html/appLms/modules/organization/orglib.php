@@ -1547,6 +1547,16 @@ class Org_TreeView extends RepoTreeView {
 		return $this->getLoData($childrens);
 	}
 
+	function getFolderTree($tree){
+		foreach(array_keys($tree) as $id) {
+			$tree[$id] = $this->tdb->getChildrensIdById($id, true);
+			if (is_array($tree[$id]) && count($tree[$id]) > 0) {
+				$tree[$id] = $this->getFolderTree($tree[$id]);
+			}
+		}
+		return $tree;
+	}
+
     function getCurrentState($id)
     {
         $possTree = [];
