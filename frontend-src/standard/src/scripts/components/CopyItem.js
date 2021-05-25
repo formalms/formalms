@@ -33,7 +33,10 @@ class CopyItem {
 
    closeOverlay() {
       document.querySelector('.folderView__copyOverlay').classList.remove('is-shown');
-      document.querySelector('.folderView__li.is-ready-for-copy').classList.remove('is-ready-for-copy');
+      const el = document.querySelector('.folderView__li.is-ready-for-copy');
+      if (el) {
+         el.classList.remove('is-ready-for-copy');
+      }
    }
 
    copyElement(newtype) {
