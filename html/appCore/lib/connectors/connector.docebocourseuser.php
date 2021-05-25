@@ -146,7 +146,7 @@ class DoceboConnector_DoceboCourseUser extends DoceboConnector
 
         $this->tot_row = $tot_row;
 
-        $query = " SELECT";
+        $query = " SELECT %adm_user.idst, ";
 
         $numberCols = count($this->all_cols);
         foreach ($this->all_cols as $index => $column) {
@@ -198,7 +198,7 @@ class DoceboConnector_DoceboCourseUser extends DoceboConnector
 
 
             $idCourse = $row['idCourse'];
-            $idUser = $row['userid'];
+            $idUser = $row['idst'];
             // MANAGE CUSTOM FIELD COURSE
             foreach ($courseCustomFields as $value) {
                 $data[$counter][] = $this->get_value_custom_field_by_type($value[1], $value[2], $idCourse);   //$value[1]."-".$value[2]."  ** ".$idCourse;
@@ -208,10 +208,7 @@ class DoceboConnector_DoceboCourseUser extends DoceboConnector
             // MANAGE CUSTOM FIELD COURSE
             foreach ($userCustomFields as $value) {
                 $data[$counter][] = $this->get_value_custom_field_user_by_type($value[1], $value[2], $idUser); //$value[1]."-".$value[2]."  ** ".$idUser;
-
             }
-
-
             $counter++;
         }
         $counter--;
