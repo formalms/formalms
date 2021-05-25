@@ -91,11 +91,17 @@ class LomanagerLmsController extends LmsController
     {
         $idsString = Get::req('ids', DOTY_MIXED, false);
         $ids = explode(',', $idsString);
+        $id = Get::req('id', DOTY_INT, false);
 
         $responseData = [];
+        if (!$ids && $id) {
+            $ids = [$id];
+        }
         foreach ($ids as $id) {
-            $res = $this->model->deleteFolder($id);
-            $responseData[] = ['success' => $res, 'id' => $id];
+            if ($id) {
+                $res = $this->model->deleteFolder($id);
+                $responseData[] = ['success' => $res, 'id' => $id];
+            }
         }
         echo $this->json->encode($res);
         exit;
