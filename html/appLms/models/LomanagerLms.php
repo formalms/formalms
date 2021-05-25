@@ -8,8 +8,6 @@
 |   http://www.formalms.org                                                 |
 |   License  http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt           |
 \ ======================================================================== */
-require_once( Forma::inc( _lms_.'/modules/organization/orglib.php' ) );
-require_once( Forma::inc( _lms_.'/modules/homerepo/homerepo.php') );
 
 class LomanagerLms extends Model {
 
@@ -23,6 +21,7 @@ class LomanagerLms extends Model {
 
     private $tdb = null;
     private $treeView = null;
+    private $module = null;
 
     public function __construct() {
         $this->setTdb();
@@ -31,13 +30,22 @@ class LomanagerLms extends Model {
     public function setTdb($type = self::ORGDIRDB, $idCourse = false) {
         switch($type) {
             case self::ORGDIRDB: 
+                require_once Forma::inc(_lms_.'/modules/organization/orglib.php');
+                require_once Forma::inc(_lms_ . '/class.module/class.organization.php');
                 $this->tdb = new OrgDirDb($idCourse);
+                $this->module = new Module_Organization();
                 break;
-            case self::REPODIRDB: 
+            case self::REPODIRDB:
+                require_once Forma::inc(_lms_.'/lib/lib.repo.php');
+                require_once Forma::inc(_lms_ . '/class.module/class.pubrepo.php');
                 $this->tdb = new RepoDirDb( $GLOBALS['prefix_lms'].'_repo', getLogUserId());
+                $this->module = new Module_Pubrepo();
                 break;
-            case self::HOMEREPODIRDB: 
+            case self::HOMEREPODIRDB:
+                require_once Forma::inc(_lms_.'/modules/homerepo/homerepo.php');
+                require_once Forma::inc(_lms_ . '/class.module/class.homerepo.php');
                 $this->tdb = new HomerepoDirDb( $GLOBALS['prefix_lms'] .'_homerepo', getLogUserId());
+                $this->module = new Module_Homerepo();
                 break;
             default:
                 throw new Error('Missing directory type in self constructor');
@@ -57,9 +65,6 @@ class LomanagerLms extends Model {
     }
 
     public function getLearningObjects($rootId) {
-        $this->treeView->creatingObjectType = $_REQUEST['lo_type'];
-        $this->treeView->selectedFolder = $_REQUEST['parentId'];
-        $this->treeView->parsePositionData($_REQUEST, $_REQUEST, $_REQUEST);
         return $this->treeView->getChildrensDataById($rootId);
     }
 
@@ -309,5 +314,10 @@ class LomanagerLms extends Model {
             $results[] = $lo;
         }
         return $results;
+    }
+
+    public function completeAction()
+    {
+        $this->module->initialize();
     }
 }

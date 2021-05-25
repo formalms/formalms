@@ -258,7 +258,7 @@ class Module_Organization extends LmsModule {
 			$idItem = $folder->otherValues[REPOFIELDIDRESOURCE];
 			$lo = createLO($folder->otherValues[REPOFIELDOBJECTTYPE], $idItem);
 			if(isset($_GET['edit']) && $_GET['edit']) {
-				$back_url = 'index.php?r=lms/lomanager/show';
+				$back_url = 'index.php?r=lms/lomanagerorganization/show';
 			} else {
 				$back_url = 'index.php?r=lms/lo/show';
 			}
@@ -378,8 +378,7 @@ class Module_Organization extends LmsModule {
 				$saveName = $saveObj->getName('organization'.$_SESSION['idCourse'], true);
 				$saveObj->save( $saveName, $this->treeView->getState() );
 
-				$GLOBALS['page']->add( $this->treeView->LOSelector($modname, 'index.php?modname='.$modname
-							.'&op=display&sor='.$saveName.'&'
+				$GLOBALS['page']->add( $this->treeView->LOSelector($modname, 'index.php?r=lms/lomanagerorganization/completeAction&op=display&sor='.$saveName.'&'
 							.$this->treeView->_getOpCreateLOEnd().'=1'), 'content');
 			break;
 			case 'createLOSel':
@@ -395,8 +394,8 @@ class Module_Organization extends LmsModule {
 				$lo = createLO( $_REQUEST['radiolo'] );
 
 				if($lo !== false) {
-					$lo->create( 'index.php?r=lms/lomanager/show&type=organization&parentId=' . $parentId . '&lo_type=' . $lo->getObjectType()
-								.'&'.$this->treeView->_getOpCreateLOEnd().'=1' );			
+					$lo->create( 'index.php?r=lms/lomanagerorganization/completeAction&op=display&sor='.$saveName.'&'
+					.$this->treeView->_getOpCreateLOEnd().'=1' );			
 				} else {
                    
 					$GLOBALS['page']->addStart(
@@ -437,8 +436,7 @@ class Module_Organization extends LmsModule {
 				$lo = createLO( $folder->otherValues[REPOFIELDOBJECTTYPE]);
 
 				$idItem = $folder->otherValues[REPOFIELDIDRESOURCE];
-				$back_url = 'index.php?modname='.$modname
-							.'&op=organization&sor='.$saveName.'&'
+				$back_url = 'index.php?r=lms/lomanagerorganization/completeAction&op=organization&sor='.$saveName.'&'
 							.$this->treeView->_getOpPlayEnd()
 							.'='.$folder->id;
 
@@ -459,11 +457,9 @@ class Module_Organization extends LmsModule {
 				if( $saveObj->nameExists($saveName) ) {
 					$saveData =& $saveObj->load($saveName);
 					$saveObj->delete($saveName);
-					Util::jump_to( ' index.php?modname='.$modname
-							.'&op='.$saveData['repo'] );
+					Util::jump_to( ' index.php?r=lms/lomanagerorganization/completeAction&op='.$saveData['repo'] );
 				}
-				Util::jump_to( ' index.php?modname='.$modname
-							.'&op=display' );
+				Util::jump_to( 'index.php?r=lms/lomanagerorganization/completeAction&op=display' );
 			break;
 			case 'copyLO':
 				global $modname;
@@ -479,8 +475,7 @@ class Module_Organization extends LmsModule {
 									'idResource' => $folder->otherValues[REPOFIELDIDRESOURCE]
 								);
 				$saveObj->save( $saveName, $saveData );
-				Util::jump_to( ' index.php?modname='.$modname
-							.'&op=display&crepo='.$saveName.'&'
+				Util::jump_to( 'index.php?r=lms/lomanagerorganization/completeAction&op=display&crepo='.$saveName.'&'
 							.$this->treeView->_getOpCopyLOSel().'=1' );
 			case "display" :
 			case "organization" :

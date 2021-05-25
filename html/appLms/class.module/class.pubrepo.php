@@ -176,8 +176,7 @@ class Module_Pubrepo extends LmsModule {
 				$saveName = $saveObj->getName('pubrepo'.getLogUserId(),true);
 				$saveObj->save( $saveName, $this->treeView->getState() );
 				
-				$GLOBALS['page']->add( $this->treeView->LOSelector($modname, 'index.php?modname='.$modname
-							.'&op=display&spr='.$saveName.'&'
+				$GLOBALS['page']->add( $this->treeView->LOSelector($modname, 'index.php?r=lms/lomanagerrepo/completeAction&op=display&spr='.$saveName.'&'
 							.$this->treeView->_getOpCreateLOEnd().'=1'),
 							'content');
 			break;
@@ -191,8 +190,7 @@ class Module_Pubrepo extends LmsModule {
 				
 				// start learning object creation
 				$lo = createLO( $_REQUEST['radiolo'] );
-				$lo->create( 'index.php?modname='.$modname
-							.'&op=display&spr='.$saveName.'&'
+				$lo->create( 'index.php?r=lms/lomanagerrepo/completeAction&op=display&spr='.$saveName.'&'
 							.$this->treeView->_getOpCreateLOEnd().'=1' );
 			break;
 			case 'editLO':
@@ -205,8 +203,7 @@ class Module_Pubrepo extends LmsModule {
 				
 				$folder = $this->repoDb->getFolderById( $this->treeView->getSelectedFolderId() );
 				$lo = createLO( $folder->otherValues[REPOFIELDOBJECTTYPE]);
-				$lo->edit($folder->otherValues[REPOFIELDIDRESOURCE], 'index.php?modname='.$modname
-							.'&op=display&spr='.$saveName.'&'
+				$lo->edit($folder->otherValues[REPOFIELDIDRESOURCE], 'index.php?r=lms/lomanagerrepo/completeAction&op=display&spr='.$saveName.'&'
 							.$this->treeView->_getOpEditLOEnd().'=1' );
 			break;
 			case 'playitem':
@@ -221,8 +218,7 @@ class Module_Pubrepo extends LmsModule {
 				$lo = createLO( $folder->otherValues[REPOFIELDOBJECTTYPE]);
 				$idItem = $folder->otherValues[REPOFIELDIDRESOURCE];
 	
-				$back_url = 'index.php?modname='.$modname
-							.'&op=pubrepo&spr='.$saveName.'&'
+				$back_url = 'index.php?r=lms/lomanagerrepo/completeAction&op=pubrepo&spr='.$saveName.'&'
 							.$this->treeView->_getOpPlayEnd()
 							.'='.$folder->id;
 							
@@ -242,11 +238,9 @@ class Module_Pubrepo extends LmsModule {
 				if( $saveObj->nameExists($saveName) ) {
 					$saveData =& $saveObj->load($saveName);
 					$saveObj->delete($saveName);
-					Util::jump_to( ' index.php?modname='.$modname
-							.'&op='.$saveData['repo'] );
+					Util::jump_to( 'index.php?r=lms/lomanagerrepo/completeAction&op='.$saveData['repo'] );
 				}
-				Util::jump_to( ' index.php?modname='.$modname
-							.'&op=display' );
+				Util::jump_to( 'index.php?r=lms/lomanagerrepo/completeAction&op=display' );
 			break;
 			case 'copyLO':
 				global $modname;
@@ -262,8 +256,7 @@ class Module_Pubrepo extends LmsModule {
 									'idResource' => $folder->otherValues[REPOFIELDIDRESOURCE]
 								); 
 				$saveObj->save( $saveName, $saveData );
-				Util::jump_to( ' index.php?modname='.$modname
-							.'&op=display&crepo='.$saveName.'&'
+				Util::jump_to( 'index.php?r=lms/lomanagerrepo/completeAction&op=display&crepo='.$saveName.'&'
 							.$this->treeView->_getOpCopyLOSel().'=1' );
 			case 'createLOEnd':
 				// insertion managed by extendParsing

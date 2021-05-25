@@ -166,7 +166,7 @@ class LomanagerLmsController extends LmsController
 
         $folder = $this->model->getTdb()->getFolderById((string)$id);
         $lo = createLO($folder->otherValues[REPOFIELDOBJECTTYPE]);
-        $lo->edit($folder->otherValues[REPOFIELDIDRESOURCE], 'index.php?r=lms/lomanager/show');
+        $lo->edit($folder->otherValues[REPOFIELDIDRESOURCE], 'index.php?r=lms/lomanager/completeAction');
     }
 
     public function createFolder()
@@ -200,5 +200,11 @@ class LomanagerLmsController extends LmsController
             }
         }
         die($this->json->encode(true));
+    }
+
+    public function completeAction()
+    {
+        $this->model->completeAction();
+        Util::jump_to('index.php?r=lms/lomanager/show');
     }
 }
