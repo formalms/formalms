@@ -91,10 +91,9 @@ class LomanagerLmsController extends LmsController
     {
         $idsString = Get::req('ids', DOTY_MIXED, false);
         $ids = explode(',', $idsString);
-        $id = Get::req('id', DOTY_INT, false);
 
         $responseData = [];
-        if (!$ids && $id) {
+        if ($id = Get::req('id', DOTY_INT, false)) {
             $ids = [$id];
         }
         foreach ($ids as $id) {
