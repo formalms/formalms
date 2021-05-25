@@ -41,7 +41,7 @@ class DoceboConnector_DoceboCourseUser extends DoceboConnector
         ['date_subscription', 'date', '%lms_courseuser.date_inscr'],
         ['last_finish', 'text', '%lms_courseuser.date_complete'],
         ['status', 'text', '%lms_courseuser.status'],
-        ['userid', 'text', '%lms_courseuser.idUser'],
+        ['userid', 'text', '%adm_user.userid'],
     ];
 
 
@@ -150,11 +150,10 @@ class DoceboConnector_DoceboCourseUser extends DoceboConnector
 
         $numberCols = count($this->all_cols);
         foreach ($this->all_cols as $index => $column) {
-            if ($index < $numberCols-1){
-                $query .= sprintf(' %s as %s,',$column[2],$column[0]);
-            }
-            else {
-                $query .= sprintf(' %s as %s',$column[2],$column[0]);
+            if ($index < $numberCols - 1) {
+                $query .= sprintf(' %s as %s,', $column[2], $column[0]);
+            } else {
+                $query .= sprintf(' %s as %s', $column[2], $column[0]);
             }
         }
 
@@ -194,7 +193,7 @@ class DoceboConnector_DoceboCourseUser extends DoceboConnector
         foreach ($result as $row) {
             foreach ($this->all_cols as $column) {
 
-                $data[$counter][] = $row[$column[0]];
+                $data[$counter][] = $this->getParsedTextfield($row[$column[0]]);
             }
 
 
@@ -452,6 +451,16 @@ class DoceboConnector_DoceboCourseUser extends DoceboConnector
 
     }
 
+    function getParsedTextfield($value)
+    {
+        $test = preg_match("/^\//", $value);
+
+        if ($test === 1) {
+            $value = substr($value, 1);
+        }
+        return $value;
+    }
+
 
     function get_cols_descripor()
     {
@@ -460,7 +469,6 @@ class DoceboConnector_DoceboCourseUser extends DoceboConnector
 
         // get custom field of course and put in property "vett_custom"
         $courseCustomFields = $this->get_custom_field_course();
-
 
         //get custom field user
         $userCustomFields = $this->get_custom_field_user();
@@ -473,7 +481,7 @@ class DoceboConnector_DoceboCourseUser extends DoceboConnector
 
         $col_descriptor = array();
         foreach ($this->all_cols as $col) {
-            $isMandatory = in_array($col[0],$this->mandatory_cols);
+            $isMandatory = in_array($col[0], $this->mandatory_cols);
 
             $col_descriptor[] = array(
                 DOCEBOIMPORT_COLNAME => $lang->def('_' . strtoupper($col[0])),
