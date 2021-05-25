@@ -1549,10 +1549,16 @@ class Org_TreeView extends RepoTreeView {
 
 	function getFolderTree($tree){
 		foreach(array_keys($tree) as $id) {
-			$tree[$id] = $this->tdb->getChildrensIdById($id, true);
-			if (is_array($tree[$id]) && count($tree[$id]) > 0) {
-				$tree[$id] = $this->getFolderTree($tree[$id]);
+			$folder = $this->tdb->getFolderById($id);
+			$tree[$id] = [
+				"id" => $id,
+				"name" => $folder->otherValues[REPOFIELDTITLE],
+				"children" =>$this->tdb->getChildrensIdById($id, true),
+			];
+			if (is_array($tree[$id]["children"]) && count($tree[$id]["children"]) > 0) {
+				$tree[$id]["children"] = $this->getFolderTree($tree[$id]["children"]);
 			}
+			$tree[$id]["children"] = array_values($tree[$id]["children"]);
 		}
 		return $tree;
 	}
