@@ -11,9 +11,11 @@
                     <li data-id="0" class="folderTree__li ft-is-parent">
                         <button data-id="0"
                                 type="button"
-                                class="folderTree__link ft-is-root ft-is-selected ft-is-folder ft-is-folderOpen is-dropzone"><span>{{ translate('_LEVEL', 'standard' )}}</span></button>
+                                class="folderTree__link ft-is-root ft-is-selected ft-is-folder ft-is-folderOpen is-dropzone">
+                            <span>{{ translate('_LEVEL', 'standard' )}}</span>
+                        </button>
                         <ul class="folderTree__ul js-sortable-tree">
-                            {% for el in data %}
+                            {#{% for el in data %}
                                 {% if el.is_folder %}
                                     <li data-id="{{ el.id }}" class="folderTree__li {% if el.childCount > 0 %}ft-is-parent{% endif %} is-droppable" draggable="true">
                                         {% if el.childCount > 0 %}
@@ -24,7 +26,7 @@
                                                 class="folderTree__link ft-is-folder {% if el.childCount > 0 %}ft-has-child{% endif %} is-dropzone"><span>{{ el.title }}</span></button>
                                     </li>
                                 {% endif %}
-                            {% endfor %}
+                            {% endfor %}#}
                         </ul>
                     </li>
                 </ul>
@@ -37,7 +39,7 @@
                 </div>
             {% endif %}
             <div class="folderView">
-                <ul class="folderView__ul js-sortable-view">
+                {#<ul class="folderView__ul js-sortable-view">
                     {% for el in data %}
                          <li data-id="{{ el.id }}" class="folderView__li {% if el.type %}is-droppable js-folderView-file{% else %}is-dropzone js-folderView-folder{% endif %} {% if el.locked %}fv-is-locked{% endif %}">
                             <div data-id="{{ el.id }}" class="folderView__el {% if el.type %}fv-is-{{ el.type }}{% else %}fv-is-folder{% endif %}">
@@ -75,7 +77,7 @@
                              {% endif %}
                         </li>
                     {% endfor %}
-                </ul>
+                </ul>#}
             </div>
         </main>
     </section>

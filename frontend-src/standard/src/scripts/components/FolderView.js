@@ -1,16 +1,24 @@
+import ContextMenu from '../components/ContextMenu';
+import Content from '../twig/content.html.twig';
+import Sortable from 'sortablejs/modular/sortable.complete.esm.js';
 const axios = require('axios');
 
 class FolderView {
 
   constructor(baseApiUrl, controller, type) {
-    this.baseApiUrl = baseApiUrl;
-    this.controller = controller;
-    this.type = type;
-    this.container = document.querySelector('*[data-container=' + this.type + ']');
-    this.container.addEventListener('click', (e) => { this.toggleSelectEl(e); });
-    this.container.addEventListener('click', (e) => { this.triggerClick(e); });
-    this.container.addEventListener('dblclick', (e) => { this.triggerDblClick(e); });
-    this.emptySelectedItems();
+    const _this = this;
+    _this.contextMenu = new ContextMenu();
+
+    _this.baseApiUrl = baseApiUrl;
+    _this.controller = controller;
+    _this.type = type;
+    _this.container = document.querySelector('*[data-container=' + _this.type + ']');
+    _this.container.addEventListener('click', (e) => { _this.toggleSelectEl(e); });
+    _this.container.addEventListener('click', (e) => { _this.triggerClick(e); });
+    _this.container.addEventListener('dblclick', (e) => { _this.triggerDblClick(e); });
+    _this.emptySelectedItems();
+
+    _this.getData(_this.getApiUrl('get'));
   }
 
   getContainer() {
@@ -61,6 +69,123 @@ class FolderView {
   toggleSelectEl(e) {
     const el = e.target;
     this.toggleSelectedItem(el, el.getAttribute('data-id'), (e.ctrlKey || e.metaKey));
+  }
+
+  initSortable() {
+    const _this = this;
+    const view = this.container.querySelector('.js-sortable-view');
+
+    if (view) {
+      new Sortable.create(view, {
+        draggable: '.folderView__li',
+        dataIdAttr: 'data-id',
+        multiDrag: true, // Enable the plugin
+        // multiDragKey: 'Meta', // Fix 'ctrl' or 'Meta' button pressed
+        selectedClass: 'fv-is-selectedx',
+        animation: 150,
+        easing: 'cubic-bezier(1, 0, 0, 1)',
+        fallbackOnBody: true,
+        invertSwap: true,
+        swapThreshold: 0.13,
+        onUpdate: function (evt) {
+          const currentElement = evt.item;
+          const currentElementId = currentElement.getAttribute('data-id');
+
+          // Get parent dir from selected tree element
+          const parentElement = _this.container.querySelector('.ft-is-parent .ft-is-selected');
+          const parentElementId = parentElement ? parentElement.getAttribute('data-id') : 0;
+          const childElement = _this.container.querySelector('.folderView__ul').querySelectorAll('.folderView__li');
+          const childElementArray = [];
+
+          if (currentElementId == parentElementId) {
+            return;
+          }
+
+          childElement.forEach(el => {
+            const elId = el.getAttribute('data-id');
+            if (parentElementId != elId) {
+              childElementArray.push(elId);
+            }
+          });
+
+          _this.reorderData(_this.getApiUrl('reorder', { id: currentElementId, newParent: parentElementId, newOrder: childElementArray }));
+        }
+      });
+    }
+  }
+
+  async reorderData(endpoint) {
+    const _this = this;
+
+    if (!_this.checkExist) {
+      _this.checkExist = true;
+      try {
+        await axios.get(endpoint).then(() => {
+          _this.getData(_this.getApiUrl('get'));
+          _this.checkExist = false;
+        }).catch( (error) => {
+          console.log(error);
+        });
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  }
+
+  async getData(endpoint, el , elId) {
+    const _this = this;
+    try {
+      await axios.get(endpoint).then((response) => {
+        const childView = Content(response.data);
+        const inputParent = _this.container.querySelector('#treeview_selected_' + _this.type);
+        const inputState = _this.container.querySelector('#treeview_state_' + _this.type);
+        inputParent.value = elId;
+        inputState.value = response.data.currentState;
+
+        if (el && el.classList.contains('ft-is-root')) {
+          el.parentNode.childNodes.forEach(node => {
+            if ( (node.classList) && (node.classList.contains('folderTree__ul'))) {
+              node.remove();
+            }
+          })
+        }
+        
+        const folderView = _this.container.querySelector('.folderView');
+        folderView.innerHTML = childView;
+
+        if (!document.querySelector('.js-disable-context-menu')) {
+          _this.contextMenu.set(_this.type);
+        }
+        if (!document.querySelector('.js-disable-sortable')) {
+          _this.initSortable();
+        }
+
+        if (elId == 0) {
+          if (_this.openedIds) {
+            _this.openedIds.forEach((id) => {
+              if (id != _this.selectedId) {
+                let arrow = _this.container.querySelector('.folderTree__li[data-id="' + id + '"] .arrow');
+                if (arrow) {
+                  arrow.click(); // ???
+                }
+              }
+            });
+          }
+          if (_this.selectedId > 0) {
+            let dir = _this.container.querySelector('.folderTree__link[data-id="' + _this.selectedId + '"]');
+            if (dir) {
+              dir.classList.add('ft-is-selected');
+              dir.click();
+            }
+          }
+        }
+        _this.selectedId = null;
+      }).catch((error) => {
+        console.log(error)
+      });
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   triggerClick(e) {

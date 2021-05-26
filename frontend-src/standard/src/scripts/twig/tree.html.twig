@@ -1,16 +1,24 @@
-<ul class="folderTree__ul js-sortable-tree">
+{% macro tree_links(data) %}
+    {% import _self as macros %}
     {% for el in data %}
-        {% if el.is_folder %}
-            <li data-id="{{ el.id }}" class="folderTree__li {% if el.childCount > 0 %}ft-is-parent{% endif %} is-droppable" draggable="true">
-                {% if el.childCount > 0 %}
-                    <span class="arrow"></span>
-                {% endif %}
-                <button data-id="{{ el.id }}"
-                    type="button"
-                    class="folderTree__link ft-is-folder {% if el.childCount > 0 %}ft-has-child{% endif %} is-dropzone">
-                    <span>{{ el.title }}</span>
-                </button>
-            </li>
-        {% endif %}
+        <li data-id="{{ el.id }}" class="folderTree__li {% if el.children %}ft-is-parent{% endif %} is-droppable" draggable="true">
+            {% if el.children.length > 0 %}
+                <span class="arrow"></span>
+            {% endif %}
+            <button data-id="{{ el.id }}"
+                type="button"
+                class="folderTree__link ft-is-folder {% if el.children.length > 0 %}ft-has-child{% endif %} is-dropzone">
+                <span>{{ el.name }}</span>
+            </button>
+            {% if el.children %}
+                <ul class="folderTree__ul js-sortable-tree hidden">
+                    {{ macros.tree_links(el.children) }}
+                </ul>
+            {% endif %}
+        </li>
     {% endfor %}
-</ul>
+{% endmacro %}
+
+{% import _self as macros %}
+
+{{ macros.tree_links(data) }}

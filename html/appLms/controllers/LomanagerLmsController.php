@@ -50,19 +50,18 @@ class LomanagerLmsController extends LmsController
     {
         $lo_types = $this->model->getLoTypes();
 
-        $homerepo_tab = new LomanagerhomerepoLmsController();
-        $organization_tab = new LomanagerorganizationLmsController();
-        $repo_tab = new LomanagerrepoLmsController();
+        $tabs_controllers = [
+            new LomanagerhomerepoLmsController(),
+            new LomanagerorganizationLmsController(),
+            new LomanagerrepoLmsController(),
+        ];
 
         $tabs = [];
-        if ($tab = $homerepo_tab->getTab()) {
-            $tabs[] = $tab;
-        }
-        if ($tab = $organization_tab->getTab()) {
-            $tabs[] = $tab;
-        }
-        if ($tab = $repo_tab->getTab()) {
-            $tabs[] = $tab;
+
+        foreach ($tabs_controllers as $t) {
+            if ($tab = $t->getTab()) {
+                $tabs[] = $tab;
+            }
         }
 
         $this->render('show', [
