@@ -116,8 +116,7 @@ class FolderTree {
           _this.setSelectedDir();
         }
 
-        const Data = _this.getApiUrl('get', { id: elId });
-        _this.getData(Data, el, elId, clickOnArrow);
+        _this.getData(_this.getApiUrl('get', { id: elId }), el, elId, clickOnArrow);
       }
     }
   }
@@ -401,7 +400,7 @@ class FolderTree {
     this.setOpenedDirs();
     this.setSelectedDir();
 
-    this.container.querySelector('.folderTree__link.ft-is-root').click();
+    this.getData(this.getApiUrl('getfoldertree'));
   }
 
   onDrop(event) {
