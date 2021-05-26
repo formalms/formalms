@@ -110,7 +110,7 @@ class LoLmsController extends LmsController
         $responseData['data'] = $this->model->getFolderTree();
         echo $this->json->encode($responseData);
         exit;
-    }
+    }/* 
 
     public function delete()
     {
@@ -222,5 +222,5 @@ class LoLmsController extends LmsController
             }
         }
         die($this->json->encode(true));
-    }
+    } */
 }
