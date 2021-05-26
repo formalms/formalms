@@ -22,6 +22,8 @@ class LoLms extends Model {
 
     public function setTdb($idCourse = false) {
         $this->tdb = new OrgDirDb($idCourse);
+        $this->tdb->setFilterVisibility( TRUE );
+        $this->tdb->setFilterAccess( Docebo::user()->getArrSt() );
         $this->treeView = new Org_TreeView($this->tdb, "organization");
         return $this->tdb;
     }
