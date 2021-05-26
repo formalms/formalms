@@ -176,7 +176,7 @@ class ElearningLmsController extends LmsController
             $params[':year'] = $filter_year;
         }
 
-        if (!empty($filter_cat) && $filter_cat != '0') {
+        if (!empty($filter_cat) && $filter_cat !== '0') {
             $conditions[] = "(c.idCategory in (:filter_category) )";
             $arr_cat = explode(',', $filter_cat);
             $arr_cat = array_map(
@@ -200,7 +200,7 @@ class ElearningLmsController extends LmsController
             );
             $arr_status = array_unique($arr_status);
             $conditions[] = '(cu.status in (' . implode(",", $arr_status) . ') )';
-        } else if ($filter_status == 'all') {
+        } else if ($filter_status === 'all') {
             $conditions[] = '(c.status <> 3 ) AND c.idCourse NOT IN (
                 SELECT id_course FROM learning_course_date AS dt 
                 INNER JOIN learning_course_date_user du ON dt.id_date = du.id_date
@@ -209,7 +209,7 @@ class ElearningLmsController extends LmsController
         }
 
         // course type: elearning, all, classroom 
-        if ($filter_type != 'all') {
+        if ($filter_type !== 'all') {
             $conditions[] = "c.course_type = ':course_type'";
             $params[':course_type'] = $filter_type;
         }
@@ -217,46 +217,26 @@ class ElearningLmsController extends LmsController
         $courselist = $model->findAll($conditions, $params);
 
         foreach ($courselist as $k => $course_array) {
-            $courselist[$k]['canEnter'] = Man_Course::canEnterCourse($courselist[$k])['can'];
-
-            if (strlen($course_array['nameCategory']) > 1) {
-                $courselist[$k]['nameCategory'] = substr($course_array['nameCategory'], strripos($course_array['nameCategory'], '/') + 1);
-            }
-
-            $courselist[$k]['level_icon'] = $course_array['level'];
-            $courselist[$k]['level_text'] = $this->levels[$course_array['level']];
-            $courselist[$k]['userCanUnsubscribe'] = $this->userCanUnsubscribe($course_array);
-
-            $date_closing = getDate(strtotime(Format::date($course_array['date_end'], 'date')));
-            if ($date_closing['year'] > 0) {
-                $courselist[$k]['dateClosing_year'] = $date_closing['year'];
-                $courselist[$k]['dateClosing_month'] = Lang::t('_MONTH_' . substr('0' . $date_closing['mon'], -2), 'standard');
-                $courselist[$k]['dateClosing_day'] = $date_closing['mday'];
-            }
-            $courselist[$k]['img_course'] = $course_array['img_course'] ? $this->path_course . $course_array['img_course'] : Get::tmpl_path() . 'images/course/course_nologo.png';
-            if ($course_array['course_type'] === 'classroom') {
-                $courselist[$k]['editions'] = $model->_getClassDisplayInfo($k, $courselist[$k]);
-            } else {
-                $courselist[$k]['editions'] = false;
-            }
-            $courselist[$k]['name'] = Util::purge($courselist[$k]['name']);
-            $courselist[$k]['rel'] = ($courselist[$k]['direct_play'] == 1 &&
-            $courselist[$k]['level'] <= 3 && $courselist[$k]['first_lo_type'] = $courselist[$k]['first_lo_type'] === 'scormorg' ? "lightbox" : '');
-
-
+            $course = CourseLms::getCourseParsedData($course_array);
+            $course['courseBoxEnabled'] = CourseLms::isBoxEnabledForElearningAndClassroomInElearning($course);
+            $courselist[$k] = $course;
         }
         switch ($filter_type) {
             case "elearning":
                 $ft = Lang::t('_ELEARNING', 'catalogue');
+                break;
             case "classroom":
                 $ft = Lang::t('_CLASSROOM_COURSE', 'cart');
+                break;
             case "all":
                 $ft = Lang::t('_ALL_COURSES', 'standard');
+                break;
+            default:
+                break;
         }
 
 
         require_once(_lms_ . '/lib/lib.middlearea.php');
-        $ma = new Man_MiddleArea();
         $this->render('courselist', [
             'path_course' => $this->path_course,
             'courselist' => $courselist,
@@ -372,23 +352,6 @@ class ElearningLmsController extends LmsController
         }
 
         Util::jump_to($jump_url);
-    }
-
-
-    private function userCanUnsubscribe(&$course)
-    {
-        $now = new DateTime();
-
-        $courseUnsubscribeDateLimit = (null !== $course['course_unsubscribe_date_limit'] ? DateTime::createFromFormat('Y-m-d H:i:s', $course['course_unsubscribe_date_limit']) : DateTime::createFromFormat('Y-m-d', '2199-01-01'));
-        $dateUnsubscribeDateLimit = (null !== $course['date_unsubscribe_date_limit'] ? DateTime::createFromFormat('Y-m-d H:i:s', $course['date_unsubscribe_date_limit']) :
-            DateTime::createFromFormat('Y-m-d', '2199-01-01'));
-
-        if (((int)$course['auto_unsubscribe'] == 2 || (int)$course['auto_unsubscribe'] == 1) && ($now < $courseUnsubscribeDateLimit || $now < $dateUnsubscribeDateLimit)) {
-
-            return true;
-        }
-
-        return false;
     }
 
 

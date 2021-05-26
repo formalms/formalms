@@ -48,94 +48,85 @@ class CatalogLmsController extends LmsController
     public function show()
     {
         $id_catalogue = Get::req('id_catalogue', DOTY_INT, 0);
-        $typeCourse = Get::req('type_course', DOTY_STRING, '');
         $user_catalogue = $this->model->getUserCatalogue(Docebo::user()->getIdSt());
-        $s = Get::sett('on_catalogue_empty') == 'on';
-        
-        $show_general_catalogue_tab = (Get::sett('on_catalogue_empty') == 'on' && count($user_catalogue) === 0);
-        $show_empty_catalogue_tab =  (Get::sett('on_catalogue_empty') != 'on' && count($user_catalogue) === 0);
+        $onCatalogueEmptySetting = Get::sett('on_catalogue_empty') == 'on';
+
+        $show_general_catalogue_tab = ($onCatalogueEmptySetting && count($user_catalogue) === 0);
+        $show_empty_catalogue_tab = (!$onCatalogueEmptySetting && count($user_catalogue) === 0);
         $show_user_catalogue_tab = count($user_catalogue) > 0;
         $tab_actived = false;
-         
-        $this->render('catalog_header', 
-            compact("id_catalogue", "user_catalogue", "show_general_catalogue_tab", "show_empty_catalogue_tab", "show_user_catalogue_tab", "tab_actived"));
 
 
         $catalogue = '';
         $total_category = 0;
-            
-        if (!$show_empty_catalogue_tab) {           
-            if ($show_general_catalogue_tab ) {
-                $starting_catalogue = 0;            
-            } 
-            
-            if (count($user_catalogue) >0 ) {
-                if ($id_catalogue == 0) { 
+
+        if (!$show_empty_catalogue_tab) {
+            if ($show_general_catalogue_tab) {
+                $starting_catalogue = 0;
+            }
+
+            if (count($user_catalogue) > 0) {
+                if ($id_catalogue === 0) {
                     reset($user_catalogue);
                     $key = key($user_catalogue);
-                    $starting_catalogue= $user_catalogue[$key]['idCatalogue'];
+                    $starting_catalogue = $user_catalogue[$key]['idCatalogue'];
                 } else {
                     $starting_catalogue = $id_catalogue;
-                }    
-            } 
+                }
+            }
             $catalogue = $this->model->GetGlobalJsonTree($starting_catalogue);
             $total_category = count($catalogue);
         }
-        $my_js_path = Get::rel_path('lms');
-        $this->render('catalog_tree', compact('total_category', 'show_empty_catalogue_tab', 'starting_catalogue', 'total_category', 'catalogue', 'my_js_path'));
+        $this->render('catalog', ['data' => compact('id_catalogue', 'user_catalogue', 'show_general_catalogue_tab', 'show_empty_catalogue_tab', 'show_user_catalogue_tab', 'tab_actived', 'total_category', 'show_empty_catalogue_tab', 'starting_catalogue', 'total_category', 'catalogue')]);
     }
-
-
 
     // AJAX: display courses from selected catalogue, category, courses
     public function allCourseForma()
     {
-
         $id_category = Get::req('id_category', DOTY_INT, 0);
         $typeCourse = Get::req('type_course', DOTY_STRING, '');
         $id_catalogue = Get::req('id_catalogue', DOTY_INT, 0);
-        
 
-        $course_category = $this->prepareCourseInfo($this->model->getCourseList($typeCourse, 1, $id_catalogue, $id_category));
-        
-        $this->render('courselist', compact("course_category", "id_catalogue")); 
+        $courses = $this->model->getCatalogCourseList($typeCourse, 1, $id_catalogue, $id_category);
+
+        $this->render('courselist', ['data' => compact('courses', 'id_catalogue')]);
     }
-    
-    
-     private function prepareCourseInfo(&$rs) {
-        
-        
+
+
+    private function prepareCourseInfo(&$rs)
+    {
+
+
         $course_array = [];
         $path_course = $GLOBALS['where_files_relative'] . '/appLms/' . Get::sett('pathcourse');
         $model = new CatalogLms();
 
-         while ($row = sql_fetch_assoc($rs)) 
-        {
-            
+        while ($row = sql_fetch_assoc($rs)) {
+
             $course_array[$row['idCourse']] = $row;
             $course_array[$row['idCourse']]['escaped_name'] = addslashes($course_array[$row['idCourse']]['name']);
             if ($row['use_logo_in_courselist'] && $row['img_course']) {
-                $course_array[$row['idCourse']]['img_course'] = $path_course.$row['img_course'];
-             };   
-             
-            if ( $row['box_description'] > 120) {
-                $course_array[$row['idCourse']]['box_description'] = substr($row['box_description'],0,120).'...';
+                $course_array[$row['idCourse']]['img_course'] = $path_course . $row['img_course'];
+            };
+
+            if ($row['box_description'] > 120) {
+                $course_array[$row['idCourse']]['box_description'] = substr($row['box_description'], 0, 120) . '...';
             };
             $result_control = $model->getInfoEnroll($row['idCourse'], Docebo::user()->getIdSt());
             $course_array[$row['idCourse']]['is_enrolled'] = sql_num_rows($result_control) > 0;
-            $course_array[$row['idCourse']]['userCanUnsubscribe']  = $this->userCanUnsubscribe($row);
+            $course_array[$row['idCourse']]['userCanUnsubscribe'] = CourseLms::userCanUnsubscribe($row);
             // check course starting and ending day && pre-requisite for course in course_path
             if ($course_array[$row['idCourse']]['is_enrolled']) {
                 $course_array[$row['idCourse']]['canEnter'] = Man_Course::canEnterCourse($row)['can'];
             } else {
-                $course_array[$row['idCourse']]['canEnter']  = false;
+                $course_array[$row['idCourse']]['canEnter'] = false;
             }
 
             // elearning actions buttons
-            if ($course_array[$row['idCourse']]['course_type'] =='elearning') {
+            if ($course_array[$row['idCourse']]['course_type'] == 'elearning') {
                 if ($course_array[$row['idCourse']]['is_enrolled']) {
                     list($status, $waiting, $level) = sql_fetch_row($result_control);
-                    $course_array[$row['idCourse']]['waiting'] = ($waiting || $status == 4 ); // 4 = overbooked
+                    $course_array[$row['idCourse']]['waiting'] = ($waiting || $status == 4); // 4 = overbooked
                     $course_array[$row['idCourse']]['level'] = $level;
                     if (!$waiting) {
                         if ($course_array[$row['idCourse']]['canEnter']) {
@@ -144,67 +135,38 @@ class CatalogLmsController extends LmsController
                             $course_array[$row['idCourse']]['str_rel'] = "";
                             if ($obj_type == "scormorg" && $level <= 3 && $row['direct_play'] == 1) {
                                 //  joseph, added curly bracket :)
-                                $course_array[$row['idCourse']]['str_rel'] = " rel='lightbox'";                                
+                                $course_array[$row['idCourse']]['str_rel'] = " rel='lightbox'";
                             }
                         }
                     }
                 } else {
                     if ($row['max_num_subscribe'] != 0) {
-                        $course_array[$row['idCourse']]['course_full']  = $model->enrolledStudent($row['idCourse']) >= $row['max_num_subscribe'];
-                    } 
+                        $course_array[$row['idCourse']]['course_full'] = $model->enrolledStudent($row['idCourse']) >= $row['max_num_subscribe'];
+                    }
                 }
             }
-            
-            if ($course_array[$row['idCourse']]['course_type'] =='classroom') {
+
+            if ($course_array[$row['idCourse']]['course_type'] === 'classroom') {
                 $d = new DateManager();
-                $course_array[$row['idCourse']]['edition_exists']  = (count($d->getAvailableDate($row['idCourse'], false)) > 0);
-            
+                $course_array[$row['idCourse']]['edition_exists'] = (count($d->getAvailableDate($row['idCourse'])) > 0);
+
             }
-            
+
             if (!$course_array[$row['idCourse']]['course_full'] && $row['selling']) {
                 $course_array[$row['idCourse']]['in_cart'] = isset($_SESSION['lms_cart'][$row['idCourse']]);
-            }    
-    
-            
-            
-            
-            $course_array[$row['idCourse']]['show_options'] = 
-                                                         // unsubscribe
-                                                        ($course_array[$row['idCourse']]['userCanUnsubscribe']  && $course_array[$row['idCourse']]['is_enrolled'])  
-                                                              ||  // demo material
-                                                        (
-                                                            $course_array[$row['idCourse']]["course_demo"] && 
-                                                            (
-                                                                ($course_array[$row['idCourse']]["level"] > 3) 
-                                                                || 
-                                                                (!$course_array[$row['idCourse']]['waiting']  && $course_array[$row['idCourse']]['canEnter'])
-                                                            )
-                                                        );
-                                                        
-                                                        
-                
-                
+            }
+
+
+            $course_array[$row['idCourse']]['show_options'] =
+                // unsubscribe
+                ($course_array[$row['idCourse']]['userCanUnsubscribe'] && $course_array[$row['idCourse']]['is_enrolled'])
+                ||  // demo material
+                ($course_array[$row['idCourse']]["course_demo"] && (($course_array[$row['idCourse']]["level"] > 3) || (!$course_array[$row['idCourse']]['waiting'] && $course_array[$row['idCourse']]['canEnter']))
+                );
         }
-        return $course_array;            
-        
+        return $course_array;
+
     }
-    
-    private function userCanUnsubscribe(&$course){
-        $now = new DateTime();
-
-        $courseUnsubscribeDateLimit = (null !== $course['unsubscribe_date_limit'] ? DateTime::createFromFormat('Y-m-d H:i:s',$course['unsubscribe_date_limit']) : null);
-
-        if (($course['auto_unsubscribe'] == 2 || $course['auto_unsubscribe'] == 1) && ( ($courseUnsubscribeDateLimit == null ) ||
-                                                                                        ($courseUnsubscribeDateLimit != null &&  $now < $courseUnsubscribeDateLimit ) 
-                                                                                         )) {  
-        
-
-            return true;
-        }
-        return false;
-    } 
-
-
 
     public function newCourse()
     {
@@ -454,15 +416,15 @@ class CatalogLmsController extends LmsController
     public function chooseEdition()
     {
         $id_course = Get::req('id_course', DOTY_INT, 0);
-        $type_course = Get::req('type_course', DOTY_STRING, 'elearning'); 
+        $type_course = Get::req('type_course', DOTY_STRING, 'elearning');
         $id_catalogue = Get::req('id_catalogue', DOTY_INT, 0);
-        $id_category = Get::req('id_category', DOTY_INT, 0); 
+        $id_category = Get::req('id_category', DOTY_INT, 0);
         $res = $this->model->courseSelectionInfo($id_course);
-        $this->render('classroom_window', array("id_course"=>$id_course, "available_classrooms"=>$res['available_classrooms'], "teachers"=>$res['teachers'], 
-                                                 "type_course"=>$type_course, "id_catalogue"=>$id_catalogue, "id_category"=>$id_category ));
+        $this->render('classroom_window', array("id_course" => $id_course, "available_classrooms" => $res['available_classrooms'], "teachers" => $res['teachers'],
+            "type_course" => $type_course, "id_catalogue" => $id_catalogue, "id_category" => $id_category));
 
     }
-    
+
 
     //UG  select a user subscription level
     function get_userlevel_subscription($idu)
@@ -504,10 +466,9 @@ class CatalogLmsController extends LmsController
 
         if (count($level_idst) == 0 || $level_idst[1] == '')
             $level_idst = &$docebo_course->createCourseLevel($id_course);
-        
-        $waiting = $course_info['subscribe_method'] != 2 ;
-            
-            
+
+        $waiting = $course_info['subscribe_method'] != 2;
+
 
         $userlevel_subscrip = $this->get_userlevel_subscription($id_user);    //UG
 
@@ -581,7 +542,7 @@ class CatalogLmsController extends LmsController
 
                 $control_user = array_search(getLogUserId(), $array_user);
 
-                $query =    "SELECT COUNT(*)"
+                $query = "SELECT COUNT(*)"
                     . " FROM " . Get::cfg('prefix_fw') . "_admin_course"
                     . " WHERE idst_user = '" . $id_user . "'"
                     . " AND type_of_entry = 'course'"
@@ -592,7 +553,7 @@ class CatalogLmsController extends LmsController
                 /*if($control)
                     $recipients[] = $id_user;*/
 
-                $query =    "SELECT COUNT(*)"
+                $query = "SELECT COUNT(*)"
                     . " FROM " . Get::cfg('prefix_fw') . "_admin_course"
                     . " WHERE idst_user = '" . $id_user . "'"
                     . " AND type_of_entry = 'coursepath'"
@@ -608,7 +569,7 @@ class CatalogLmsController extends LmsController
                 /*if($control)
                     $recipients[] = $id_user;*/
 
-                $query =    "SELECT COUNT(*)"
+                $query = "SELECT COUNT(*)"
                     . " FROM " . Get::cfg('prefix_fw') . "_admin_course"
                     . " WHERE idst_user = '" . $id_user . "'"
                     . " AND type_of_entry = 'catalogue'"
@@ -679,7 +640,7 @@ class CatalogLmsController extends LmsController
 
             $users_subsc = array($id_user);
 
-            $re &= $subs_man->multipleSubscribe($users_subsc, $courses, 3);
+            $re = $subs_man->multipleSubscribe($users_subsc, $courses, 3);
         }
 
         $res['success'] = true;
@@ -709,7 +670,7 @@ class CatalogLmsController extends LmsController
         $res['success'] = true;
         $res['message'] = UIFeedback::info(Lang::t('_COURSE_ADDED_IN_CART', 'catalogue'), true);
 
-        if ($id_edition != 0 || $id_date != 0) {
+        if ($id_edition !== 0 || $id_date !== 0) {
             $must_change_status = $this->model->controlSubscriptionRemaining($id_course);
             $res['new_status'] = '';
 
@@ -764,19 +725,19 @@ class CatalogLmsController extends LmsController
             foreach ($enroll_array[$id_course] as $k => $obj) {
                 //moderated self unsubscribe
                 if ($cinfo['auto_unsubscribe'] == 1) {
-                    $res = $smodel->setUnsubscribeRequest($id_user, $id_course, $id_edition, $obj ->id_date); 
+                    $res = $smodel->setUnsubscribeRequest($id_user, $id_course, $id_edition, $obj->id_date);
                 }
                 //directly unsubscribe user
                 if ($cinfo['auto_unsubscribe'] == 2) {
-                    $res = $smodel->unsubscribeUser($id_user, $id_course, $id_edition, $obj ->id_date);
+                    $res = $smodel->unsubscribeUser($id_user, $id_course, $id_edition, $obj->id_date);
                 }
-                
+
             }
-            
+
         }
 
-        
-        if ($cinfo['course_type']  == 'elearning') {
+
+        if ($cinfo['course_type'] == 'elearning') {
             if ($cinfo['auto_unsubscribe'] == 1) {
                 //moderated self unsubscribe
                 $res = $smodel->setUnsubscribeRequest($id_user, $id_course, $id_edition, $id_date);
@@ -786,9 +747,8 @@ class CatalogLmsController extends LmsController
                 //directly unsubscribe user
                 $res = $smodel->unsubscribeUser($id_user, $id_course, $id_edition, $id_date);
             }
-        } 
-        
-           
+        }
+
 
         if ($res) {
             $this->allCourseForma();

@@ -274,11 +274,11 @@ class Catalogue_Manager {
 	/**
 	 * @param	int	$id_user 	the idst of a user
 	 *
-	 * @return	string 	the id of the catalogues assigned to the assed user
+	 * @return	array the array ids of the catalogues assigned to the assed user
 	 */
-	function &getUserAllCatalogueId($id_user) {
+	function getUserAllCatalogueId($id_user) {
 
-		$catalogues 	= array();
+		$catalogues 	= [];
 		$user_groups 	= $this->acl->getSTGroupsST($id_user);
 
 		if(empty($user_groups)) return $catalogues;

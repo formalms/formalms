@@ -11,16 +11,14 @@
     lb.init(Config);
 
     function chooseEdition(id_course) {
-        var idCategory = $('#treeview1').treeview('getSelected')[0] ?
-            $('#treeview1').treeview('getSelected')[0].id_cat : null;
 
         $.get('ajax.server.php',
             {
                 r: 'catalog/chooseEdition',
                 id_course: id_course,
                 type_course: $("#typeCourse").val(),
-                id_catalogue: {{ id_catalogue }},
-                id_category: idCategory
+                id_catalogue: {{ data.id_catalogue }},
+                id_category: window.catalog.selectedCategory
             }
         )
             .done(function (responseText) {
@@ -55,9 +53,7 @@
                 autoOpen: true,
                 resizable: false,
                 buttons: {
-        {{ Lang_translate('_confirm','standard') }} :
-
-        function () {
+        {{ Lang_translate('_confirm','standard') }} : function () {
             var posting = $.get(
                 'ajax.server.php',
                 {
@@ -67,9 +63,8 @@
                     id_edition: id_edition,
                     overbooking: overbooking,
                     type_course: $("#typeCourse").val(),
-                    id_catalogue: {{ id_catalogue }},
-                    id_category: $('#treeview1').treeview('getSelected')[0] ?
-                        $('#treeview1').treeview('getSelected')[0].id_cat : null
+                    id_catalogue: {{ data.id_catalogue }},
+                    id_category: window.catalog.selectedCategory
                 }
             )
                 .done(function (responseText) {
@@ -83,12 +78,8 @@
                     alert('unsubscribe failed')
                 })
             $(this).dialog("close");
-        }
-
-    ,
-        {{ Lang_translate('_UNDO','standard') }} :
-
-        function () {
+        },
+        {{ Lang_translate('_UNDO','standard') }} : function () {
             $(this).dialog("close");
         }
     },
@@ -105,8 +96,7 @@
 </script>
 
 <div id="cbp-vm" class="" style="margin-top: 15px;">
-    {% for course in course_category %}
-
+    {% for course in data.courses %}
         <div class="col-xs-offset-1 col-xs-10 col-md-offset-0 col-md-4">
             {% include 'partials/catalog-course-box.html.twig' with { 'course': course } %}
         </div>
