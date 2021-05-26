@@ -27,7 +27,7 @@ class LoLms extends Model {
     }
 
     public function getLearningObjects($rootId) {
-        return $this->tree_view->getChildrensDataById($rootId);
+        return $this->treeView->getChildrensDataById($rootId);
     }
 
     public function getFolders($collection_id, $id = 0) {
@@ -43,7 +43,7 @@ class LoLms extends Model {
     }
 
     public function getCurrentState($idFolder = 0) {
-        return $this->tree_view->getCurrentState($idFolder);
+        return $this->treeView->getCurrentState($idFolder);
     }
 
     public function getFolderTree() {
