@@ -1548,17 +1548,25 @@ class Org_TreeView extends RepoTreeView {
 	}
 
 	function getFolderTree($tree){
-		foreach(array_keys($tree) as $id) {
-			$folder = $this->tdb->getFolderById($id);
-			$tree[$id] = [
-				"id" => $id,
-				"name" => $folder->otherValues[REPOFIELDTITLE],
-				"children" =>$this->tdb->getChildrensIdById($id, true),
-			];
-			if (is_array($tree[$id]["children"]) && count($tree[$id]["children"]) > 0) {
-				$tree[$id]["children"] = $this->getFolderTree($tree[$id]["children"]);
+		$ids = array_keys($tree);
+		$info = $this->getLoData($ids);
+		$loToShow = array_keys($info);
+		foreach($ids as $id) {
+			if (in_array($id, $loToShow)) {
+				$folder = $this->tdb->getFolderById($id);
+				$tree[$id] = [
+					"id" => $id,
+					"name" => $folder->otherValues[REPOFIELDTITLE],
+					"children" =>$this->tdb->getChildrensIdById($id, true),
+					"isPrerequisitesSatisfied" => $info[$id]["isPrerequisitesSatisfied"],
+					"active" => $info[$id]["active"],
+					"locked" => $info[$id]["locked"],
+				];
+				if (is_array($tree[$id]["children"]) && count($tree[$id]["children"]) > 0) {
+					$tree[$id]["children"] = $this->getFolderTree($tree[$id]["children"]);
+				}
+				$tree[$id]["children"] = array_values($tree[$id]["children"]);
 			}
-			$tree[$id]["children"] = array_values($tree[$id]["children"]);
 		}
 		return $tree;
 	}
