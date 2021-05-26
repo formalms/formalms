@@ -1,0 +1,183 @@
+{% include 'partials/catalog_header.html.twig' with { 'data': data } %}
+
+{% if data.total_category == 0 %}
+<div class="row">
+    <div class="col-sm-12" id="div_course"><br>
+        <p align="center"><img src='{{ Layout_getPath() }}images/standard/loadbar.gif'></p></div>
+    <div>
+        {% else %}
+        <div class="row">
+            <div class="col-sm-3">
+                <div id="treeview1" class="aside"></div>
+            </div>
+            <div class="col-sm-9" id="div_course"><br>
+                <p align="center"><img src='{{ Layout_getPath() }}images/standard/loadbar.gif'></p></div>
+            <div>
+                {% endif %}
+
+                {% if not data.show_empty_catalogue_tab %}
+                    <script type="text/javascript" src="{{ Layout_getPath('lms') }}/views/catalog/catalog.js"></script>
+                    <script type="text/javascript">
+                        window.catalog = {};
+                        var $treeview = $("#treeview1");
+                        window.catalog.selectedCategory = null;
+
+                        function callAjaxCatalog(id_category) {
+                            window.catalog.selectedCategory = id_category;
+                            str_loading = "{{ Layout_getPath() }}images/standard/loadbar.gif";
+                            $("#div_course").html("<br><p align='center'><img src='{{ Layout_getPath() }}images/standard/loadbar.gif'></p>");
+                            var type_course = getCurrentTypeCourse();
+                            var posting = $.get(
+                                'ajax.server.php',
+                                {
+                                    r: 'catalog/allCourseForma',
+                                    id_category: id_category,
+                                    type_course: type_course,
+                                    id_catalogue: {{ data.starting_catalogue }}
+                                }
+                            );
+                            posting.done(function (responseText) {
+                                $("#div_course").html(responseText);
+                            });
+                            posting.fail(function () {
+                                $("#div_course").html('course catalogue load failed')
+                            })
+                        }
+
+                        function checkSticky() {
+                            var windowHeight = $(window).height();
+                            var treeviewHeight = $treeview.innerHeight();
+                            $treeview.css({maxHeight: windowHeight - 200, overflowY: 'auto'});
+                            $(".container-fluid").css("height", "auto");
+
+                            if (window.innerWidth >= 768 && $('#div_course').offset().top - $(window).scrollTop() <= 70) {
+                                $treeview.css({maxHeight: windowHeight - 190, overflowY: 'auto'});
+                                $treeview.css({width: $treeview.parent().width(), position: 'fixed', top: '70px'});
+                            } else {
+                                $treeview.css({position: 'static'});
+                            }
+                        }
+
+                        $(function () {
+                            callAjaxCatalog(0);
+                            a_node =  {{ data.catalogue|json_encode|raw }}
+
+                                // Alphabetical sort
+                                $.each(a_node, function (k, cat) {
+                                    if (cat.nodes) {
+                                        var result = Object.keys(cat.nodes).map(function (key) {
+                                            return cat.nodes[key];
+                                        });
+                                        result = result.sort(function (a, b) {
+                                            return (a['text'] < b['text']) ? -1 : (a['text'] > b['text']) ? 1 : 0;
+                                        })
+                                        cat.nodes = result;
+                                    }
+                                })
+                            var category_tree = [
+                                {
+                                    text: "&nbsp;&nbsp;{{ Lang_translate('_ALL_COURSES') }}",
+                                    href: "#Category",
+                                    id_cat: 0,
+                                    state: {
+                                        checked: true,
+                                        selected: true
+                                    },
+                                    showIcon: true,
+                                    nodes: a_node
+                                }
+                            ];
+                            $treeview.treeview({
+                                data: category_tree,
+                                enableLinks: false,
+                                backColor: "#ffffff",
+                                color: "#000000",
+                                levels: 2,
+                                onhoverColor: '#F5F5F5',
+                                showTags: true,
+                                multiSelect: false,
+                                selectedBackColor: "#C84000",
+
+                                onNodeSelected: function (event, node) {
+                                    var id_cat = node.id_cat ? node.id_cat : node.nodeId;
+
+                                    callAjaxCatalog(id_cat);
+                                },
+                                onNodeUnselected: function (event, node) {
+                                }
+                            });
+
+                            // sticky feature
+                            checkSticky();
+                            window.addEventListener('scroll', checkSticky, true);
+                            window.addEventListener('resize', checkSticky, true);
+                        });
+
+
+                        function enrollClassroom(id_date, overbooking) {
+                            event.preventDefault();
+                            var posting = $.get(
+                                'ajax.server.php',
+                                {
+                                    r: 'catalog/subscribeToCourse',
+                                    id_course: '<?=$id_course?>',
+                                    id_date: id_date,
+                                    overbooking: overbooking,
+                                    type_course: '<?=$type_course?>',
+                                    id_catalogue: '<?=$id_catalogue ?>',
+                                    id_category: window.selectedCategory
+                                }
+                            );
+                            posting.done(function (responseText) {
+                                /*if (op == 'catalog/addToCart') {
+                                    $('#menu_over').load(document.URL +  '  #menu_over');
+                                }; */
+                                $("#div_course").html(responseText);
+                            });
+                            posting.fail(function () {
+                                alert('unsubscribe failed')
+                            })
+                            $('#myModal').modal('hide')
+
+                        }
+
+                        function addToCart(id_date) {
+                            event.preventDefault();
+                            var posting = $.get(
+                                'ajax.server.php',
+                                {
+                                    r: 'catalog/addToCart',
+                                    id_course: '<?=$id_course?>',
+                                    id_date: id_date,
+                                    type_course: '<?=$type_course?>',
+                                    id_catalogue: '<?=$id_catalogue ?>',
+                                    id_category: '<?=$id_category?>'
+                                }
+                            );
+                            posting.done(function (responseText) {
+                                $('#menu_over').load(document.URL + '  #menu_over');
+                                $("#div_course").html(responseText);
+                            });
+                            posting.fail(function () {
+                                alert('unsubscribe failed')
+                            })
+                            $('#myModal').modal('hide')
+
+                        }
+
+
+
+                    </script>
+                {% else %}
+                    <script type="text/javascript">
+                        $("#div_course").html("<br><p align='center'>{{ Lang_translate('_NO_CATEGORY_TODISPLAY','catalogue') }}</p>");
+                    </script>
+                {% endif %}
+            </div>
+            
+        
+  
+  
+  
+  
+

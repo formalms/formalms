@@ -202,7 +202,7 @@ class DbConn {
 
 	/**
 	 * Perform a query on the database (variable number of argument)
-	 * @return reouce_id
+	 * @return resource_id
 	 * @param $query string
 	 */
 	public function query($query) {}

@@ -1,4 +1,117 @@
 {% block classRoomButton %}
+
+<div id="course-box__modal_{{ course.courseId }}" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="course-box__modal_{{ course.courseId }}"><b>{{ course.course_name }}</b>
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="accordion" id="course-box__modal_accordion_{{ course.courseId }}">
+                    {% for classroomInfo in course.available_classrooms %}
+                    <div class="card">
+                        <div class="card-header" id="course-box__modal_accordion_heading_{{ classroomInfo.id_date }}">
+                            <h2 class="mb-0">
+                                <button class="btn btn-link" type="button" data-toggle="collapse"
+                                        data-target="#collapse_{{ classroomInfo.id_date }}"
+                                        aria-expanded="false"
+                                        aria-controls="collapse_{{ classroomInfo.id_date }}">
+                                    <a href='#'>{{ classroomInfo.name }}</a>
+                                </button>
+                                {% if classroomInfo.selling %}
+                                    {% if classroomInfo.in_cart %}
+                                        <button type="button"
+                                                class="btn btn-info">{{ Lang_translate('_CLASSROOM_IN_CART', 'catalogue') }}</button>
+                                    {% else %}
+                                        <button type="button" class="btn btn-success">
+                                            {{ Lang_translate('_ADD_TO_CART', 'catalogue') }}
+                                            ({{ classroomInfo.price }}
+                                            {{ Get_getSetting('currency_symbol', '&euro;') }})
+                                        </button>
+                                    {% endif %}
+                                {% else %}
+                                    {% if classroomInfo.full %}
+                                        {% if classroomInfo.overbooking %}
+                                            <button type="button"
+                                                    class="btn btn-info">{{ Lang_translate('_USER_STATUS_OVERBOOKING', 'subscribe') }} </button>
+                                        {% else %}
+                                            <button type="button" class="btn btn-danger">
+                                                {{ Lang_translate('_MAX_NUM_SUBSCRIBE', 'course') }}
+                                            </button>
+                                        {% endif %}
+                                    {% else %}
+                                        <button type="button"
+                                                class="btn btn-success">{{ Lang_translate('_SUBSCRIBE', 'catalogue') }}</button>
+                                    {% endif %}
+                                {% endif %}
+                            </h2>
+                        </div>
+                        <br>
+                        <div id="collapse_{{ classroomInfo.id_date }}" class="collapse"
+                             aria-labelledby="course-box__modal_accordion_heading_{{ classroomInfo.id_date }}" data-parent="#course-box__modal_accordion_{{ course.courseId }}">
+                            <div class="card-body">
+                                <div class="edition_container">
+                                    <table class="edition_table">
+                                        <thead>
+                                        <tr>
+                                            <th>{{ Lang_translate('_DAY', 'course') }}</th>
+                                            <th>{{ Lang_translate('_HOUR_BEGIN', 'course') }}</th>
+                                            <th>{{ Lang_translate('_HOUR_END', 'course') }}</th>
+                                            <th>{{ Lang_translate('_LOCATION_INFO', 'classroom') }}</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for id_edition, days in course.editions %}
+                                            <tr>
+                                                <td colspan=4>{{ Lang_translate('_EDITION') }}
+                                                    :&nbsp; {{ days.name }}
+                                                <td>
+                                            </tr>
+                                            {% if course.userCanUnsubscribe %}
+                                                <tr>
+                                                    <td colspan=4><a
+                                                                href="javascript:confirmDialog('{{ course.name }}','{{ course.idCourse }}','{{ id_edition }}')">{{ Lang_translate('_SELF_UNSUBSCRIBE', 'course') }}</a>
+                                                    <td>
+                                                </tr>
+                                            {% endif %}
+                                            {% for day in classroomInfo.days %}
+                                                <tr>
+                                                    {% if day.day in course.next_lesson %}
+                                                        <td><b>{{ day.day }}</b></td>
+                                                        <td><b>{{ day.begin }}</b></td>
+                                                        <td><b>{{ day.end }}</b></td>
+                                                        <td><b>{{ day.classroom }}</b></td>
+                                                    {% else %}
+                                                        <td>{{ day.day }}</td>
+                                                        <td>{{ day.begin }}</td>
+                                                        <td>{{ day.end }}</td>
+                                                        <td>{{ day.classroom }}</td>
+                                                    {% endif %}
+                                                </tr>
+                                            {% endfor %}
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div> <!-- end card body -->
+                        </div> <!-- end card-->
+                        {% endfor %}
+                    </div> <!-- end accordion-->
+                </div> <!-- end modal body-->
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary"
+                            data-dismiss="modal">{{ Lang_translate('_CLOSE') }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {# -------------------------------------------------- #}
+
     {% if course.editions %}
         {% if course.is_enrolled %}
             {% if course.canEnter %}
@@ -18,17 +131,23 @@
             {% if course.selling == 0 %}
                 {% if course.subscribe_method == 2 or course.subscribe_method == 1 %}
                     <a class="forma-button course-box__cta__button" title="{{ course.name }}"
-                       onclick="chooseEdition({{ course.idCourse }})"
-                       rel="{{ course.rel }}">
+                       rel="{{ course.rel }}" data-target="course-box__modal_{{ course.courseId }}">
                         {% if course.subscribe_method == 2 %}
                             <span class="forma-button__label">{{ Lang_translate('_SUBSCRIBE', 'catalogue') }}</span>
                         {% else %}
                             <span class="forma-button__label">{{ Lang_translate('_COURSE_S_MODERATE', 'catalogue') }}</span>
                         {% endif %}
                     </a>
+
+                    <button class="btn btn-link" type="button" data-toggle="collapse"
+                            data-target="#collapse_{{ classroomInfo.id_date }}"
+                            aria-expanded="false"
+                            aria-controls="collapse_{{ classroomInfo.id_date }}">
+                        <a href='#'>{{ classroomInfo.name }}</a>
+                    </button>
                 {% elseif course.subscribe_method == 0 %}
                     <a class="forma-button course-box__cta__button" title="{{ course.name }}"
-                       rel="{{ course.rel }}" href="javascript:void(0);" >
+                       rel="{{ course.rel }}" href="javascript:void(0);">
                         <span class="forma-button__label">{{ Lang_translate('_COURSE_S_GODADMIN', 'catalogue') }}</span>
                     </a>
                 {% endif %}
