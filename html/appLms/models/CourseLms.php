@@ -145,7 +145,10 @@ class CourseLms extends Model
         $parsedData['name'] = Util::purge($parsedData['name']);
 
         if ($parsedData['use_logo_in_courselist']) {
-            $parsedData['img_course'] = $parsedData['img_course'] ? $path_course . $parsedData['img_course'] : Get::tmpl_path() . 'images/course/course_nologo.png';
+            $parsedData['img_course'] = $parsedData['img_course'] && is_file($path_course . $parsedData['img_course']) ? $path_course . $parsedData['img_course'] : Get::tmpl_path() . 'images/course/course_nologo.png';
+        }
+        else {
+            $parsedData['img_course'] = Get::tmpl_path() . 'images/course/course_nologo.png';
         }
 
         if (strlen($parsedData['nameCategory']) > 1) {
