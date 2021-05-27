@@ -187,7 +187,7 @@ class CourseLms extends Model
                         $parsedData['rel'] = $parsedData['useLightBox'] ? "lightbox" : '';
                     }
                 } else {
-                    if ($parsedData['max_num_subscribe'] !== 0) {
+                    if ($parsedData['max_num_subscribe'] > 0) {
                         $parsedData['course_full'] = self::enrolledStudent($parsedData['idCourse']) >= $parsedData['max_num_subscribe'];
                     }
                 }
@@ -266,11 +266,11 @@ class CourseLms extends Model
                 }
             }
         } else {
-            if (!$course['course_full']) {
-                if (!$course['allow_overbooking']) {
-                    $courseBoxEnabled = false;
-                } else {
+            if ($course['course_full']) {
+                if ($course['allow_overbooking']) {
                     $courseBoxEnabled = true;
+                } else {
+                    $courseBoxEnabled = false;
                 }
             } else {
                 if ((int)$course['selling'] === 0) {
