@@ -14,7 +14,8 @@ $_columns = array(
 	array('key' => 'date_begin', 'label' => Lang::t('_DATE_BEGIN', 'course'), 'sortable' => true),
 	array('key' => 'date_end', 'label' => Lang::t('_DATE_END', 'course'), 'sortable' => true),
 	array('key' => 'classroom', 'label' => Lang::t('_CLASSROOM', 'course')),
-	array('key' => 'students', 'label' => Lang::t('_STUDENTS', 'coursereport'), 'className' => 'img-cell')
+	array('key' => 'students', 'label' => Lang::t('_STUDENTS', 'coursereport'), 'className' => 'img-cell') ,
+    array('key' => 'registro', 'label' => Get::img('standard/date.png', Lang::t('_MOD', 'course')), 'className' => 'img-cell')
 );
 
 if ($permissions['subscribe']) {
@@ -42,7 +43,7 @@ $_params = array(
 	'sort'			=> 'name',
 	'dir'			=> 'asc',
 	'columns'		=> $_columns,
-	'fields'		=> array('id_date', 'code', 'name', 'status', 'date_begin', 'date_end', 'classroom', 'students', 'num_subscribe', 'subscription', 'presence', 'mod', 'del'),
+	'fields'		=> array('id_date', 'code', 'name', 'status', 'date_begin','registro', 'date_end', 'classroom', 'students', 'num_subscribe', 'subscription', 'presence', 'mod', 'del'),
 	'show'			=> 'table',
 	'editorSaveEvent' => ''
 );

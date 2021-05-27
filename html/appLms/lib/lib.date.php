@@ -1449,7 +1449,11 @@ class DateManager
 				'user_subscribed' => $user_subscribed,
 				'mod' => '<a href="index.php?r=alms/classroom/modclassroom&id_course='.$id_course.'&amp;id_date='.$id_date.'">'.Get::img('standard/edit.png', Lang::t('_MOD', 'course')).'</a>',
 				'del' => 'ajax.adm_server.php?r=alms/classroom/delclassroom&id_course='.$id_course.'&amp;id_date='.$id_date,
-				'unsubscribe_date_limit' => $unsubscribe_date_limit);
+				'unsubscribe_date_limit' => $unsubscribe_date_limit,
+                'registro' => '<a href="index.php?r=alms/classroom/registro&id_course='.$id_course.'&amp;id_date='.$id_date.'">'. Get::img('standard/date.png', 'Apri').'</a>'
+                
+                
+                );
 		}
 
 		return $res;
