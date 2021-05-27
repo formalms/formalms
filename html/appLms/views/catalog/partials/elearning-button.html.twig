@@ -1,4 +1,5 @@
 {% block elearningButton %}
+
     {% if course.is_enrolled %}
         {% if course.waiting %}
             <a class="forma-button forma-button--disabled" href="javascript:void(0);" title="{{ course.name }}">
