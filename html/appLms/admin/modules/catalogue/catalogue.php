@@ -643,6 +643,15 @@ function addToCatologue($memebers, $id_catalogue) {
 		( idCatalogue, idst_member ) VALUES
 		( '".$id_catalogue."', '".$id_m."' )";
 		$re &= sql_query($query_insert);
+        
+        // add event member, user in core_group_member
+        $data = Events::trigger('lms.catalog_entity.add', [
+            'idCatalogue' => $id_catalogue,
+            'idst_member' => $id_m
+        ]);         
+        
+        
+        
 	}
 	reset($memebers);
 	return $re;
@@ -655,10 +664,18 @@ function removeFromCatologue($memebers, $id_catalogue) {
   foreach($memebers as $id_m)  
   {
 
+        // remove event member
+        $data = Events::trigger('lms.catalog_entity.del', [
+            'idCatalogue' => $id_catalogue,
+            'idst_member' => $id_m
+        ]);       
+      
 		$query_delete = "
 		DELETE FROM ".$GLOBALS['prefix_lms']."_catalogue_member
 		WHERE idCatalogue = '".$id_catalogue."' AND idst_member = '".$id_m."'";
 		$re &= sql_query($query_delete);
+        
+        
 	}
 	reset($memebers);
 	return $re;
@@ -678,7 +695,7 @@ function modcatalogueassoc() {
 	$out =& $GLOBALS['page'];
 
 	$user_select = new UserSelector();
-	$user_select->show_user_selector = FALSE;
+	$user_select->show_user_selector = true;
 	$user_select->show_group_selector = TRUE;
 	$user_select->show_orgchart_selector = TRUE;
 	$user_select->show_orgchart_simple_selector = FALSE;
@@ -713,7 +730,7 @@ function modcatalogueassoc() {
 		$re = true;
 		$re &= addToCatologue($to_add, $id_catalogue);
 		$re &= removeFromCatologue($to_del, $id_catalogue);
-
+                      
 		Util::jump_to('index.php?modname=catalogue&op=catlist&result='.( $re ? 'ok' : 'err' ));
 	}
 
