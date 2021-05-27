@@ -112,7 +112,7 @@
     </div>
     {# -------------------------------------------------- #}
 
-    {% if course.editions %}
+    {% if course.edition_exists %}
         {% if course.is_enrolled %}
             {% if course.canEnter %}
                 <a class="forma-button course-box__cta__button" title="{{ course.name }}"
