@@ -12,25 +12,15 @@ class FolderTree {
     _this.controller = controller;
     _this.type = type;
     _this.container = document.querySelector('*[data-container=' + _this.type + ']');
-    _this.checkExist = false;
 
-    _this.getStatus();// From localStorage
-    _this.refresh();// From localStorage
-
-    if (!document.querySelector('.js-disable-context-menu')) {
-      if (_this.container.querySelectorAll('.folderTree__link').length) {
-        _this.contextMenu.set(_this.type);
-      }
-    }
-
-    document.querySelectorAll('.tab-link').forEach((tab) => {
-      tab.addEventListener('click', (e) => {
-        let tabEl = e.target.closest('.tab-link');
-        if (tabEl) {
-          _this.type = tabEl.getAttribute('data-type');
-          _this.container = document.querySelector('*[data-container=' + _this.type + ']');
-        }
-      });
+    _this.container.addEventListener('createTreeItem', (e) => {
+      _this.refresh(e.detail.selectedId);
+    });
+    _this.container.addEventListener('deleteTreeItem', () => {
+      _this.refresh();
+    });
+    _this.container.addEventListener('click', (event) => {
+      this.clickOnFolder(event);
     });
 
     _this.container.addEventListener('contextmenu', (event) => {
@@ -39,13 +29,14 @@ class FolderTree {
       }
     });
 
-    _this.container.addEventListener('click', (event) => {
-      this.clickOnFolder(event);
-    });
+    _this.initDragDrop();
+    _this.getStatus();// From localStorage
+    _this.refresh();
   }
 
   clickOnFolder(event) {
     const _this = this;
+    event.preventDefault();
 
     // Try to get clicked dir
     let el = event.target.closest('.folderTree__link');
@@ -62,10 +53,10 @@ class FolderTree {
 
     const elId = el.getAttribute('data-id');
 
-    if (elId == 0) {
-      _this.refresh();
-      return;
-    }
+    // dispatch openDir event
+    _this.container.dispatchEvent(new CustomEvent('openDir', {
+      detail: { selectedId: elId, }
+    }));
 
     const isOpen = el.classList.contains('ft-is-folderOpen');
     const clickOnArrow = event.target.classList.contains('arrow');
@@ -85,7 +76,10 @@ class FolderTree {
       if (clickOnArrow) {
         event.target.classList.remove('opened');
         el.classList.remove('ft-is-folderOpen');
-        childrenUl.classList.add('hidden');
+
+        if (childrenUl) {
+          childrenUl.classList.add('hidden');
+        }
       } else {
         el.classList.add('ft-is-selected');
       }
@@ -102,22 +96,20 @@ class FolderTree {
           el.classList.add('ft-is-folderOpen');
         }
       }
-      childrenUl.classList.remove('hidden');
+      if (childrenUl) {
+        childrenUl.classList.remove('hidden');
+      }
     }
-  }
 
-  removeDragDropListener() {
-    this.container.removeEventListener('dragstart', this.onDragStart.bind(this))
-    this.container.removeEventListener('dragover', this.onDragOver.bind(this))
-    this.container.removeEventListener('dragleave', this.onDragLeave.bind(this))
-    this.container.removeEventListener('drop', this.onDrop.bind(this))
+    _this.setOpenedDirs();
+    _this.setSelectedDir();
   }
 
   initDragDrop() {
-    this.container.addEventListener('dragstart', this.onDragStart.bind(this))
-    this.container.addEventListener('dragover', this.onDragOver.bind(this))
-    this.container.addEventListener('dragleave', this.onDragLeave.bind(this))
-    this.container.addEventListener('drop', this.onDrop.bind(this))
+    this.container.addEventListener('dragstart', this.onDragStart.bind(this));
+    this.container.addEventListener('dragover', this.onDragOver.bind(this));
+    this.container.addEventListener('dragleave', this.onDragLeave.bind(this));
+    this.container.addEventListener('drop', this.onDrop.bind(this));
   }
 
   selectItems() {
@@ -202,20 +194,16 @@ class FolderTree {
     const _this = this;
     _this.openedIds = localStorage.getItem('openedIds') ? localStorage.getItem('openedIds').split(',') : [];
     _this.selectedId = localStorage.getItem('selectedId');
-
-    _this.refresh();
   }
 
-  refresh() {
+  refresh(parentId) {
     const _this = this;
 
-    _this.setOpenedDirs();
-    _this.setSelectedDir();
+    if (parentId >= 0) {
+      _this.selectedId = parentId;
+    }
 
     _this.getData(_this.getApiUrl('getfoldertree'));
-
-    _this.removeDragDropListener();
-    _this.initDragDrop();
   }
 
   onDrop(event) {
@@ -234,18 +222,14 @@ class FolderTree {
   async reorderData(endpoint) {
     const _this = this;
 
-    if (!_this.checkExist) {
-      _this.checkExist = true;
-      try {
-        await axios.get(endpoint).then(() => {
-          this.refresh();
-          _this.checkExist = false;
-        }).catch( (error) => {
-          console.log(error);
-        });
-      } catch (e) {
-        console.log(e);
-      }
+    try {
+      await axios.get(endpoint).then(() => {
+        _this.refresh();
+      }).catch( (error) => {
+        console.log(error);
+      });
+    } catch (e) {
+      console.log(e);
     }
   }
 
@@ -257,8 +241,6 @@ class FolderTree {
 
         const treeView = _this.container.querySelector('.folderTree__ul .folderTree__ul');
         treeView.innerHTML = tree;
-
-        _this.contextMenu.set(_this.baseApiUrl, _this.type);
 
         if (_this.openedIds) {
           _this.openedIds.forEach((id) => {
@@ -277,6 +259,7 @@ class FolderTree {
             dir.click();
           }
         }
+        _this.contextMenu.set(_this.baseApiUrl, _this.type);
       }).catch((error) => {
         console.log(error)
       });

@@ -14,7 +14,12 @@ class ContextMenu {
     });
     _this.container = document.querySelector('*[data-container=' + _this.type + ']');
 
+    if (!_this.container) {
+      return;
+    }
+    
     contextmenu('.folderTree__link:not(.ft-is-root), .folderView__li', (target) => {
+      console.log(target);
       _this.currentEls = _this.container.querySelectorAll('.fv-is-selected');
       _this.currentElsIds = [];
       _this.currentEls.forEach((item) => {

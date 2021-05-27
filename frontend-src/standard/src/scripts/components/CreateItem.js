@@ -14,15 +14,21 @@ class CreateItem {
     const dropdown = this.container.querySelector('#dropdownMenu_' + this.type);
     const types = dropdown.querySelectorAll('.itemType');
     const treeLinks = this.container.querySelectorAll('.folderTree__li');
+    const folderView = this.container.querySelectorAll('.folderView');
 
     if (types) {
       types.forEach(type => {
-        type.addEventListener('click', (e) => { this.clickOnType(e) });
+        type.addEventListener('click', this.clickOnType.bind(this));
       });
     }
     if (treeLinks) {
       treeLinks.forEach(l => {
-        l.addEventListener('click', (e) => { this.clickOnFolder(e) });
+        l.addEventListener('dblclick', this.clickOnFolder.bind(this));
+      });
+    }
+    if (folderView) {
+      folderView.forEach(l => {
+        l.addEventListener('dblclick', this.clickOnFolder.bind(this));
       });
     }
     const createFolderForm = this.container.querySelector('.createFolderForm');
@@ -50,7 +56,10 @@ class CreateItem {
   clickOnFolder(event) {
     const el = event.target;
     const elId = el.getAttribute('data-id');
-    this.selectedId = elId;
+    if (elId >= 0) {
+      this.selectedId = elId;
+    }
+
     event.preventDefault();
   }
   
@@ -65,7 +74,7 @@ class CreateItem {
 
     const apiUrl = _this.getApiUrl('createFolder', {
       folderName: text,
-      selectedNode: _this.selectedId,
+      selectedNode: _this.selectedId ? _this.selectedId : 0,
       authentic_request,
     });
 
@@ -76,8 +85,10 @@ class CreateItem {
         createFolderForm.classList.add('hidden');
         createFolderForm.querySelector('.createFolder__input').value = '';
 
-        // Refresh tree of parent node
-        _this.refresh();
+        // dispatch createdItem event
+        _this.container.dispatchEvent(new CustomEvent('createTreeItem', {
+          detail: { selectedId: _this.selectedId, }
+        }));
       }
     }).catch((error) => {
       _this.showErr(error.response.data.error);
@@ -103,13 +114,6 @@ class CreateItem {
     const _this = this;
     const item = _this.container.querySelector('.ft-is-selected');
     _this.selectedId = item ? item.getAttribute('data-id') : 0;
-  }
-
-  refresh() {
-    const _this = this;
-    _this.setOpenedDirs();
-    _this.setSelectedDir();
-    _this.container.querySelector('.folderTree__link.ft-is-root').click();
   }
 
   showErr(msg) {

@@ -12,13 +12,22 @@ class FolderView {
     _this.baseApiUrl = baseApiUrl;
     _this.controller = controller;
     _this.type = type;
+    _this.selectedId = 0;
+
     _this.container = document.querySelector('*[data-container=' + _this.type + ']');
     _this.container.addEventListener('click', (e) => { _this.toggleSelectEl(e); });
     _this.container.addEventListener('click', (e) => { _this.triggerClick(e); });
     _this.container.addEventListener('dblclick', (e) => { _this.triggerDblClick(e); });
     _this.emptySelectedItems();
 
-    _this.getData(_this.getApiUrl('get'));
+    _this.container.addEventListener('createTreeItem', (e) => {
+      _this.refresh(e.detail.selectedId);
+    });
+    _this.container.addEventListener('openDir', (e) => {
+      _this.refresh(e.detail.selectedId);
+    });
+
+    _this.refresh();
   }
 
   getContainer() {
@@ -27,6 +36,15 @@ class FolderView {
 
   getType() {
     return this.type;
+  }
+
+  refresh(parentId) {
+    const _this = this;
+
+    if (parentId >= 0) {
+      _this.selectedId = parentId;
+    }
+    _this.getData(_this.getApiUrl('get', { id: _this.selectedId }));
   }
 
   getSelectedItems() {
@@ -116,40 +134,24 @@ class FolderView {
 
   async reorderData(endpoint) {
     const _this = this;
-
-    if (!_this.checkExist) {
-      _this.checkExist = true;
-      try {
-        await axios.get(endpoint).then(() => {
-          _this.getData(_this.getApiUrl('get'));
-          _this.checkExist = false;
-        }).catch( (error) => {
-          console.log(error);
-        });
-      } catch (e) {
-        console.log(e);
-      }
+    try {
+      await axios.get(endpoint).then(() => {
+        _this.getData(_this.getApiUrl('get'), { id: _this.selectedId });
+      }).catch( (error) => {
+        console.log(error);
+      });
+    } catch (e) {
+      console.log(e);
     }
   }
 
-  async getData(endpoint, el , elId) {
+  async getData(endpoint) {
     const _this = this;
     try {
-      await axios.get(endpoint).then((response) => {
-        const childView = Content(response.data);
-        const inputParent = _this.container.querySelector('#treeview_selected_' + _this.type);
-        const inputState = _this.container.querySelector('#treeview_state_' + _this.type);
-        inputParent.value = elId;
-        inputState.value = response.data.currentState;
+      const params = _this.selectedId ? { id: _this.selectedId } : null;
 
-        if (el && el.classList.contains('ft-is-root')) {
-          el.parentNode.childNodes.forEach(node => {
-            if ( (node.classList) && (node.classList.contains('folderTree__ul'))) {
-              node.remove();
-            }
-          })
-        }
-        
+      await axios.get(endpoint, params).then((response) => {
+        const childView = Content(response.data);
         const folderView = _this.container.querySelector('.folderView');
         folderView.innerHTML = childView;
 
@@ -159,27 +161,6 @@ class FolderView {
         if (!document.querySelector('.js-disable-sortable')) {
           _this.initSortable();
         }
-
-        if (elId == 0) {
-          if (_this.openedIds) {
-            _this.openedIds.forEach((id) => {
-              if (id != _this.selectedId) {
-                let arrow = _this.container.querySelector('.folderTree__li[data-id="' + id + '"] .arrow');
-                if (arrow) {
-                  arrow.click(); // ???
-                }
-              }
-            });
-          }
-          if (_this.selectedId > 0) {
-            let dir = _this.container.querySelector('.folderTree__link[data-id="' + _this.selectedId + '"]');
-            if (dir) {
-              dir.classList.add('ft-is-selected');
-              dir.click();
-            }
-          }
-        }
-        _this.selectedId = null;
       }).catch((error) => {
         console.log(error)
       });
@@ -214,22 +195,17 @@ class FolderView {
           axios.get(deleteLoData).then(() => {
             const elTree = _this.container.querySelector('.folderTree__li[data-id="' + elId + '"]');
             if (elTree) {
-              const ul = elTree.parentNode;
               elTree.remove();
-
-              if (!ul.querySelector('li')) { // Last element in parent dir
-                ul.remove();
-                // Refresh tree of parent node
-                const parent = _this.container.querySelector('.folderTree__link.ft-is-folder[data-id="' + elId + '"]');
-                if (parent) {
-                  parent.click();
-                }
-              }
             }
             const el = _this.container.querySelector('.folderView__li[data-id="' + elId + '"]');
             if (el) {
               el.remove();
             }
+
+            // dispatch deletedItem event
+            _this.container.dispatchEvent(new CustomEvent('deleteTreeItem', {
+              detail: { selectedId: elId, }
+            }));
           }).catch((error) => {
             console.log(error);
           });
@@ -254,8 +230,11 @@ class FolderView {
       }
 
       if (el.classList.contains('js-folderView-folder')) {
-        _this.container.querySelector('.folderTree__link[data-id="' + elId + '"]').click();
+        // It's dir
+        _this.selectedId = elId;
+        _this.refresh();
       } else if (el.classList.contains('js-folderView-file')) {
+        // It's object
         el.querySelector('.fv-is-play').click();
       }
     }
