@@ -1,4 +1,3 @@
-import ContextMenu from '../components/ContextMenu';
 import Content from '../twig/content.html.twig';
 import Sortable from 'sortablejs/modular/sortable.complete.esm.js';
 const axios = require('axios');
@@ -7,7 +6,6 @@ class FolderView {
 
   constructor(baseApiUrl, controller, type) {
     const _this = this;
-    _this.contextMenu = new ContextMenu();
 
     _this.baseApiUrl = baseApiUrl;
     _this.controller = controller;
@@ -137,6 +135,9 @@ class FolderView {
     try {
       await axios.get(endpoint).then(() => {
         _this.getData(_this.getApiUrl('get'), { id: _this.selectedId });
+
+        // dispatch reorderData event
+        _this.container.dispatchEvent(new CustomEvent('reorderData'));
       }).catch( (error) => {
         console.log(error);
       });
@@ -155,11 +156,12 @@ class FolderView {
         const folderView = _this.container.querySelector('.folderView');
         folderView.innerHTML = childView;
 
-        if (!document.querySelector('.js-disable-context-menu')) {
-          _this.contextMenu.set(_this.type);
-        }
         if (!document.querySelector('.js-disable-sortable')) {
           _this.initSortable();
+        }
+        if (!_this.container.querySelector('.js-disable-context-menu')) {
+          // dispatch refreshContextMenu event
+          document.dispatchEvent(new CustomEvent('refreshContextMenu', { detail: { controller: _this.controller }}));
         }
       }).catch((error) => {
         console.log(error)

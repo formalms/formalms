@@ -52,7 +52,6 @@ class CopyItem {
          const container = document.querySelector('*[data-container=' + newtype + ']');
 
          _this.closeOverlay();
-         console.log(newtype, 'newtype');
          document.querySelector('.tab-link[data-type="' + newtype + '"]').click();
          container.querySelector('.ft-is-root').click();
       }).catch( (error) => {

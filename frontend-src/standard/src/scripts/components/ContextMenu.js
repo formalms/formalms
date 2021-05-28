@@ -4,22 +4,27 @@ const axios = require('axios');
 
 class ContextMenu {
 
-  set(baseApiUrl, type) {
+  constructor(baseApiUrl) {
+    this.baseApiUrl = baseApiUrl;
+  }
+
+  setContainerByTarget(target) {
     const _this = this;
-    _this.baseApiUrl = baseApiUrl;
-    _this.type = type;
+
+    _this.container = target.closest('*[data-container]');
+    _this.type = _this.container.getAttribute('data-container');
+  }
+
+  set(selector) {
+    const _this = this;
 
     document.querySelectorAll('.context-menu').forEach((menu) => {
       menu.remove();
     });
-    _this.container = document.querySelector('*[data-container=' + _this.type + ']');
-
-    if (!_this.container) {
-      return;
-    }
     
-    contextmenu('.folderTree__link:not(.ft-is-root), .folderView__li', (target) => {
-      console.log(target);
+    contextmenu(selector, (target) => {
+      _this.setContainerByTarget(target);
+
       _this.currentEls = _this.container.querySelectorAll('.fv-is-selected');
       _this.currentElsIds = [];
       _this.currentEls.forEach((item) => {
@@ -129,7 +134,10 @@ class ContextMenu {
                   el.remove();
                   document.querySelector('.context-menu').classList.remove('menu-visible');
                 }
-                // Refresh tree
+                // dispatch deletedItem event
+                _this.container.dispatchEvent(new CustomEvent('deleteTreeItem', {
+                  detail: { selectedId: elId, }
+                }));
               });
             }).catch((error) => {
               console.log(error);
@@ -138,9 +146,7 @@ class ContextMenu {
         }
       };
 
-      const buttons = _this.currentElsIds.length > 1 ? [copyBtn, deleteBtn] : [renameBtn, copyBtn, deleteBtn];
-
-      return buttons;
+      return _this.currentElsIds.length > 1 ? [copyBtn, deleteBtn] : [renameBtn, copyBtn, deleteBtn];
     });
   }
 

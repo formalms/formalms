@@ -23,7 +23,7 @@ class CreateItem {
     }
     if (treeLinks) {
       treeLinks.forEach(l => {
-        l.addEventListener('dblclick', this.clickOnFolder.bind(this));
+        l.addEventListener('click', this.clickOnFolder.bind(this));
       });
     }
     if (folderView) {
@@ -95,25 +95,6 @@ class CreateItem {
     });
 
     event.preventDefault();
-  }
-
-  setOpenedDirs() {
-    const _this = this;
-    const openedEls = _this.container.querySelectorAll('.ft-is-folderOpen');
-    this.openedIds = [];
-
-    openedEls.forEach((item) => {
-      let id = item.getAttribute('data-id');
-      if (id > 0) {
-        _this.openedIds.push(id);
-      }
-    });
-  }
-
-  setSelectedDir() {
-    const _this = this;
-    const item = _this.container.querySelector('.ft-is-selected');
-    _this.selectedId = item ? item.getAttribute('data-id') : 0;
   }
 
   showErr(msg) {

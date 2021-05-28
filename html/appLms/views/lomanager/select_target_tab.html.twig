@@ -4,7 +4,7 @@
         <span class="folderView__copyOverlay__title">{{ translate('_Copy element in', 'standard' )}}</span>
         <ul class="dropdown-menu show">
             {% for tab in tabs %}
-                <li class="folderView__li js-fv-copy-target" data-type="{{ tab.controller }}">
+                <li class="folderView__li js-fv-copy-target" data-type="{{ tab.type }}" data-controller="{{ tab.controller }}">
                     <div class="folderView__el">
                         <span class="folderView__label">{{ tab.title }}</span>
                     </div>

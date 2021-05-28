@@ -1,13 +1,12 @@
 import 'regenerator-runtime/runtime'
 const axios = require('axios');
-import ContextMenu from '../components/ContextMenu';
 import Tree from '../twig/tree.html.twig';
 
 class FolderTree {
 
   constructor(baseApiUrl, controller, type) {
     const _this = this;
-    _this.contextMenu = new ContextMenu();
+
     _this.baseApiUrl = baseApiUrl;
     _this.controller = controller;
     _this.type = type;
@@ -19,19 +18,16 @@ class FolderTree {
     _this.container.addEventListener('deleteTreeItem', () => {
       _this.refresh();
     });
+    _this.container.addEventListener('reorderData', () => {
+      _this.refresh();
+    });
     _this.container.addEventListener('click', (event) => {
       this.clickOnFolder(event);
     });
 
-    _this.container.addEventListener('contextmenu', (event) => {
-      if (event.target.classList.contains('folderTree__rename__input') || event.target.classList.contains('folderTree__rename__btn') ) {
-        _this.container.querySelector('.context-menu').classList.remove('menu-visible');
-      }
-    });
-
     _this.initDragDrop();
     _this.getStatus();// From localStorage
-    _this.refresh();
+    _this.getData(_this.getApiUrl('getfoldertree'));
   }
 
   clickOnFolder(event) {
@@ -259,7 +255,10 @@ class FolderTree {
             dir.click();
           }
         }
-        _this.contextMenu.set(_this.baseApiUrl, _this.type);
+        if (!_this.container.querySelector('.js-disable-context-menu')) {
+          // dispatch refreshContextMenu event
+          document.dispatchEvent(new CustomEvent('refreshContextMenu', { detail: { controller: _this.controller }}));
+        }
       }).catch((error) => {
         console.log(error)
       });

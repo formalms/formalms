@@ -3,21 +3,40 @@ import FolderTree from '../components/FolderTree';
 import FolderView from '../components/FolderView';
 import CreateItem from '../components/CreateItem';
 import CopyItem from '../components/CopyItem';
+import ContextMenu from '../components/ContextMenu';
 
 class TeacherLearningObject {
 
   constructor(controllers) {
-    this.controllers = controllers;
+    const _this = this;
 
-    this.controllers.forEach(controller => {
+    _this.controllers = controllers;
+
+    _this.controllers.forEach(controller => {
       let baseUrl = this.getBaseApiUrl(controller.controller);
       new FolderTree(baseUrl, controller.controller, controller.selector);
       new FolderView(baseUrl, controller.controller, controller.selector);
       new CreateItem(baseUrl, controller.selector);
 
-      controller.tab.addEventListener('click', this.clickOnTab.bind(this));
+      controller.tab.addEventListener('click', _this.clickOnTab.bind(this));
     });
     new CopyItem(this.getBaseApiUrl('lomanager'));
+    document.addEventListener('refreshContextMenu', (e) => {
+      _this.refreshContextMenu(e.detail.controller);
+    });
+  }
+
+  refreshContextMenu(controller) {
+    const _this = this;
+
+    _this.contextMenu = new ContextMenu(this.getBaseApiUrl(controller));
+    _this.contextMenu.set('.folderTree__link:not(.ft-is-root), .folderView__li');
+
+    document.addEventListener('contextmenu', (event) => {
+      if (event.target.classList.contains('folderTree__rename__input') || event.target.classList.contains('folderTree__rename__btn') ) {
+        document.querySelector('.context-menu').classList.remove('menu-visible');
+      }
+    });
   }
 
   clickOnTab(event) {
