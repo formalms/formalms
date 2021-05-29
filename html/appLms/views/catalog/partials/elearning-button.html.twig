@@ -31,7 +31,7 @@
                 </a>
             {% else %}
                 <a class="forma-button course-box__cta__button" title="{{ course.name }}"
-                   onclick="confirmDialog('{{ Lang_translate('_SUBSCRIBE', 'catalogue') }}','{{ course.name }}','catalog/subscribeToCourse','{{ course.idCourse }}', '0','0','1')"
+                   onclick="confirmDialog('{{ Lang_translate('_SUBSCRIBE', 'catalogue') }}','{{ course.escaped_name }}','catalog/subscribeToCourse','{{ course.idCourse }}', '1')"
                    rel="{{ course.rel }}">
                     <span class="forma-button__label">{{ Lang_translate('_USER_STATUS_OVERBOOKING', 'subscribe') }}</span>
                 </a>
@@ -40,7 +40,7 @@
             {% if course.selling == 0 %}
                 {% if course.subscribe_method == 2 or course.subscribe_method == 1 %}
                     <a class="forma-button course-box__cta__button" title="{{ course.name }}"
-                       onclick="confirmDialog('{{ Lang_translate('_SUBSCRIBE', 'catalogue') }}','{{ course.name }}','catalog/subscribeToCourse','{{ course.idCourse }}', '0','0','0')"
+                       onclick="confirmDialog('{{ Lang_translate('_SUBSCRIBE', 'catalogue') }}','{{ course.escaped_name }}','catalog/subscribeToCourse','{{ course.idCourse }}', '0')"
                        rel="{{ course.rel }}">
                         {% if course.subscribe_method == 2 %}
                             <span class="forma-button__label">{{ Lang_translate('_SUBSCRIBE', 'catalogue') }}</span>
@@ -62,13 +62,9 @@
                     </a>
                 {% else %}
                     <a class="forma-button course-box__cta__button" title="{{ course.name }}"
-                       onclick="confirmDialog('{{ Lang_translate('_CONFIRM_ADD_TO_CART', 'catalogue') }}','{{ course.name }} <br><br> {{ Get_getSetting('currency_symbol', '&euro;') }} {{ course.price }}','catalog/addToCart','{{ course.idCourse }}', '0','0','0')"
+                       onclick="confirmDialog('{{ Lang_translate('_CONFIRM_ADD_TO_CART', 'catalogue') }}','{{ course.escaped_name }} <br><br> {{ Get_getSetting('currency_symbol', '&euro;') }} {{ course.prize }}','catalog/addToCart','{{ course.idCourse }}', '0')"
                        rel="{{ course.rel }}">
-                        {% if course.subscribe_method == 2 %}
-                            <span class="forma-button__label">{{ Lang_translate('_SUBSCRIBE', 'catalogue') }}</span>
-                        {% else %}
-                            <span class="forma-button__label">{{ Lang_translate('_COURSE_S_MODERATE', 'catalogue') }}</span>
-                        {% endif %}
+                            <span class="forma-button__label">{{ Lang_translate('_ADD_TO_CART', 'catalogue') }}</span>
                     </a>
                 {% endif %}
             {% endif %}

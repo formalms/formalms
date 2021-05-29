@@ -142,7 +142,9 @@ class CourseLms extends Model
         $infoEnroll = self::getInfoEnroll($course['idCourse'], Docebo::user()->getIdSt());
 
         $parsedData = $course;
-        $parsedData['name'] = Util::purge($parsedData['name']);
+       
+        $parsedData['name'] = strip_tags($parsedData['name']); // this for course boxes 
+        $parsedData['escaped_name'] = Util::purge($parsedData['name']); // and this for javascript calls
 
         if ($parsedData['use_logo_in_courselist']) {
             $parsedData['img_course'] = $parsedData['img_course'] && is_file($path_course . $parsedData['img_course']) ? $path_course . $parsedData['img_course'] : Get::tmpl_path() . 'images/course/course_nologo.png';
@@ -175,10 +177,10 @@ class CourseLms extends Model
         $parsedData['editions'] = false;
         $parsedData['course_full'] = false;
         $parsedData['in_cart'] = false;
+        $parsedData['waiting'] = ($infoEnroll['waiting'] || $infoEnroll['status'] == 4); // 4 = overbooked        
         switch ($parsedData['course_type']) {
             case 'elearning':
                 if (!empty($infoEnroll)) {
-                    $parsedData['waiting'] = ($infoEnroll['waiting'] || $infoEnroll['status'] === 4); // 4 = overbooked
                     $parsedData['level'] = $infoEnroll['level'];
                     if (!$infoEnroll['waiting'] && $parsedData['canEnter']) {
                         $learningObject = self::getInfoLastLearningObject($parsedData['idCourse']);
@@ -209,7 +211,7 @@ class CourseLms extends Model
                 break;
         }
 
-        if ($parsedData['course_full'] && $parsedData['selling']) {
+        if (!$parsedData['course_full'] && $parsedData['selling']) {
             $parsedData['in_cart'] = isset($_SESSION['lms_cart'][$parsedData['idCourse']]);
         }
 
@@ -217,7 +219,7 @@ class CourseLms extends Model
 
         if ($parsedData['userCanUnsubscribe'] && $parsedData['is_enrolled']) {
             $showOptions = true;
-        } elseif ($parsedData['course_demo'] && ($parsedData['level'] > 3 || ($parsedData['waiting'] && $parsedData['canEnter']))) {
+        } elseif ($parsedData['course_demo'] && ($parsedData['level'] > 3 || (!$parsedData['waiting'] && $parsedData['canEnter']))) {
             $showOptions = true;
         }
 
@@ -228,46 +230,16 @@ class CourseLms extends Model
         return $parsedData;
     }
 
+    // if in my courses, I am enrolled, so I need to unenroll if option enabled
     public static function isBoxEnabledForElearningAndClassroomInElearning($course)
     {
-        if ($course['canEnter']) {
-            $courseBoxEnabled = true;
-        }
-        if ($course['is_enrolled']) {
-            if ($course['canEnter']) {
-                $courseBoxEnabled = true;
-            }
-        } else {
-            if (!$course['course_full']) {
-                if ((int)$course['selling'] === 0) {
-                    switch ($course['subscribe_method']) {
-                        case 1:
-                        case 2:
-                            $courseBoxEnabled = true;
-                            break;
-                        default:
-                            $courseBoxEnabled = false;
-                            break;
-                    }
-                }
-            }
-        }
-
-        return $courseBoxEnabled;
+        return true; 
     }
 
     public static function isBoxEnabledForElearningInCatalogue($course)
     {
-        if ($course['is_enrolled']) {
-            if ($course['waiting']) {
-                $courseBoxEnabled = false;
-            } else {
-                if ($course['canEnter']) {
-                    $courseBoxEnabled = true;
-                } else {
-                    $courseBoxEnabled = false;
-                }
-            }
+        if ($course['is_enrolled']) {  // if enrolled always show enabled (I need to unenroll myself if option enabled)
+                $courseBoxEnabled = true;
         } else {
             if ($course['course_full']) {
                 if ($course['allow_overbooking']) {
@@ -298,13 +270,9 @@ class CourseLms extends Model
 
     public static function isBoxEnabledForClassroomInCatalogue($course)
     {
-        if ($course['edition_exists'] || $course['is_enrolled']) {
+        if ($course['edition_exists'] || $course['is_enrolled']) { // if enrolled always show enabled (I need to unenroll myself if option enabled)
             if ($course['is_enrolled']) {
-                if ($course['canEnter']) {
-                    $courseBoxEnabled = true;
-                } else {
-                    $courseBoxEnabled = false;
-                }
+                $courseBoxEnabled = true;
             } else {
                 if ((int)$course['selling'] === 0) {
                     switch ((int)$course['subscribe_method']) {
@@ -447,13 +415,15 @@ class CourseLms extends Model
     public static function userCanUnsubscribe(&$course)
     {
         $now = new DateTime();
-        $defaultTrueDate = new DateTime('today +1 minute');
+        $defaultTrueDate = new DateTime('2999-01-01');
 
-        $courseUnsubscribeDateLimit = (null !== $course['course_unsubscribe_date_limit'] ? DateTime::createFromFormat('Y-m-d H:i:s', $course['course_unsubscribe_date_limit']) : $defaultTrueDate);
+        $courseUnsubscribeDateLimit = (null !== $course['unsubscribe_date_limit'] ? DateTime::createFromFormat('Y-m-d H:i:s', $course['unsubscribe_date_limit']) : $defaultTrueDate);
+        
+        /* need to get course editions unsubscribe date limit
         $dateUnsubscribeDateLimit = (null !== $course['date_unsubscribe_date_limit'] ? DateTime::createFromFormat('Y-m-d H:i:s', $course['date_unsubscribe_date_limit']) :
             $defaultTrueDate);
-
-        if (((int)$course['auto_unsubscribe'] === 2 || (int)$course['auto_unsubscribe'] === 1) && ($now < $courseUnsubscribeDateLimit || $now < $dateUnsubscribeDateLimit)) {
+        */    
+        if (((int)$course['auto_unsubscribe'] === 2 || (int)$course['auto_unsubscribe'] === 1) && ($now < $courseUnsubscribeDateLimit )) {
             return true;
         }
         return false;

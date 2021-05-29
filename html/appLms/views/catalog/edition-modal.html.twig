@@ -1,0 +1,154 @@
+{% block editionModal %}
+<script type="text/javascript">
+
+function enrollClassroom(id_date, overbooking) {
+            event.preventDefault(); 
+            var posting = $.get(
+                'ajax.server.php',
+                    {
+                        r: 'catalog/subscribeToCourse',
+                        id_course: '{{ id_course }}',
+                        id_date: id_date,
+                        overbooking: overbooking,
+                        type_course: '{{ type_course }}',
+                        id_catalogue: '{{ id_catalogue }}',
+                        id_category: '{{ id_category }}'
+                    }
+                );
+                posting.done(function (responseText) {
+                    $("#div_course").html(responseText);
+                });
+                posting.fail(function () {
+                    alert('unsubscribe failed')
+                })
+                $('#myModal').modal('hide')                                     
+    
+}
+
+function addToCart(id_date) {
+            event.preventDefault(); 
+            var posting = $.get(
+                'ajax.server.php',
+                    {
+                        r: 'catalog/addToCart',
+                        id_course: '{{ id_course }}',
+                        id_date: id_date,
+                        type_course: '{{ type_course }}',
+                        id_catalogue: '{{ id_catalogue }}',
+                        id_category: '{{ id_category }}'
+                    }
+                );
+                posting.done(function (responseText) {
+                    $('#menu_over').load(document.URL +  '  #menu_over');                                                    
+                    $("#div_course").html(responseText);
+                });
+                posting.fail(function () {
+                    alert('unsubscribe failed')
+                })
+                $('#myModal').modal('hide')                                     
+    
+} 
+
+</script>
+
+<div id="myModal" class="modal fade" id="formaModalCenter" tabindex="-1" role="dialog" aria-labelledby="formaModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="formaModalCenterTitle"><b>{{ course_name }}</b></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      {% block editionModalBody %}
+      <div class="modal-body">
+            {% block editionAccordion %}            
+            <div class="accordion" id="accordionMain">
+            {% for classroom_info in available_classrooms %}
+                {% block editionCard %}                                
+                  <div class="card">
+                    {% block editionCardHeader %} 
+                    <div class="card-header" id="heading{{ classroom_info.id_date }}">
+                      <h2 class="mb-0">
+                        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse{{ classroom_info.id_date }}" aria-expanded="false" aria-controls="collapse{{ classroom_info.id_date }}">
+                          <a href='#'>{{ classroom_info.name }}</a>
+                        </button>
+                        {% if classroom_info.selling %}
+                            {% if classroom_info.in_cart %}
+                                <button type="button" class="btn btn-info">{{ Lang_translate('_CLASSROOM_IN_CART', 'catalogue') }}</button>
+                            {% else %}
+                                <button type="button" class="btn btn-success" onclick="addToCart( '{{ classroom_info.id_date }}')">
+                                        {{ Lang_translate('_ADD_TO_CART', 'catalogue') }} ({{ classroom_info.price }} {{ Get_getSetting('currency_symbol', '&euro;' ) }} )
+                                </button>        
+                            {% endif %}    
+                        {% else %}    
+                            {% if classroom_info.full %}
+                                    {% if classroom_info.overbooking %}
+                                        <button type="button" class="btn btn-info" onclick="enrollClassroom('{{ classroom_info.id_date }}',1)" >
+                                        {{ Lang_translate('_USER_STATUS_OVERBOOKING', 'subscribe') }}
+                                        </button>
+                                    {% else %}    
+                                        <button type="button" class="btn btn-danger">
+                                        {{ Lang_translate('_MAX_NUM_SUBSCRIBE', 'course') }} ({{ classroom_info.max_par }})
+                                        </button>
+                                    {% endif %}    
+                            {% else %}        
+                                        <button type="button" class="btn btn-success" onclick="enrollClassroom( '{{ classroom_info.id_date }}',0)" >
+                                        {{ Lang_translate('_SUBSCRIBE', 'catalogue') }}
+                                        </button>
+                            {% endif %}
+                        {% endif %}    
+                      </h2>
+                    </div>
+                    {% endblock %}
+                    <br>
+                    <div id="collapse{{ classroom_info.id_date }}" class="collapse" aria-labelledby="heading{{ classroom_info.id_date }}" data-parent="#accordionMain">
+                      {% block editionCardBody %} 
+                      <div class="card-body">
+                        <div class="table-responsive">
+                            <div><b>{{ Lang_translate('_THEACER_LIST', 'course') }}</b><br>
+                            {% for key, teachers_name in teachers %}
+                                {% if key == classroom_info.id_date %}
+                                    {{ teachers_name | join(',') }}
+                                {% endif %}
+                            {% endfor %}
+                            </div><br>
+                             <table class="table table-condensed"">
+                                <thead>
+                                    <tr>
+                                        <th>{{ Lang_translate('_DATE', 'course') }}</th>
+                                        <th>{{ Lang_translate('_HOUR_BEGIN', 'course') }}</th>
+                                        <th>{{ Lang_translate('_HOUR_END', 'course') }}</th>
+                                        <th>{{ Lang_translate('_LOCATION', 'classroom') }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                {% for day in classroom_info.days %}
+                                    <tr>
+                                    <td>{{ day.date_begin|date("Y/m/d") }}</td>
+                                    <td>{{ day.date_begin|date("H:i") }}</td>
+                                    <td>{{ day.date_end|date("H:i") }}</td>
+                                    <td>{{ day.classroom }}</td>
+                                    </tr>
+                                 {% endfor %}   
+                                 </tbody>
+                             </table>
+                       </div>
+                    </div> <!-- end card body -->
+                    {% endblock %}      
+                  </div> <!-- end card-->
+                  {% endblock %}                                                  
+                  <br>
+            {% endfor %}
+            </div> <!-- end accordion--> 
+            {% endblock %}    
+      </div> <!-- end modal body-->
+      {% endblock %}
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ Lang_translate('_CLOSE') }}</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

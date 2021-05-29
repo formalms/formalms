@@ -93,81 +93,6 @@ class CatalogLmsController extends LmsController
     }
 
 
-    private function prepareCourseInfo(&$rs)
-    {
-
-
-        $course_array = [];
-        $path_course = $GLOBALS['where_files_relative'] . '/appLms/' . Get::sett('pathcourse');
-        $model = new CatalogLms();
-
-        while ($row = sql_fetch_assoc($rs)) {
-
-            $course_array[$row['idCourse']] = $row;
-            $course_array[$row['idCourse']]['escaped_name'] = addslashes($course_array[$row['idCourse']]['name']);
-            if ($row['use_logo_in_courselist'] && $row['img_course']) {
-                $course_array[$row['idCourse']]['img_course'] = $path_course . $row['img_course'];
-            };
-
-            if ($row['box_description'] > 120) {
-                $course_array[$row['idCourse']]['box_description'] = substr($row['box_description'], 0, 120) . '...';
-            };
-            $result_control = $model->getInfoEnroll($row['idCourse'], Docebo::user()->getIdSt());
-            $course_array[$row['idCourse']]['is_enrolled'] = sql_num_rows($result_control) > 0;
-            $course_array[$row['idCourse']]['userCanUnsubscribe'] = CourseLms::userCanUnsubscribe($row);
-            // check course starting and ending day && pre-requisite for course in course_path
-            if ($course_array[$row['idCourse']]['is_enrolled']) {
-                $course_array[$row['idCourse']]['canEnter'] = Man_Course::canEnterCourse($row)['can'];
-            } else {
-                $course_array[$row['idCourse']]['canEnter'] = false;
-            }
-
-            // elearning actions buttons
-            if ($course_array[$row['idCourse']]['course_type'] == 'elearning') {
-                if ($course_array[$row['idCourse']]['is_enrolled']) {
-                    list($status, $waiting, $level) = sql_fetch_row($result_control);
-                    $course_array[$row['idCourse']]['waiting'] = ($waiting || $status == 4); // 4 = overbooked
-                    $course_array[$row['idCourse']]['level'] = $level;
-                    if (!$waiting) {
-                        if ($course_array[$row['idCourse']]['canEnter']) {
-                            $result_lo = $model->getInfoLO($row['idCourse']);
-                            list($id_org, $id_course, $obj_type) = sql_fetch_row($result_lo);
-                            $course_array[$row['idCourse']]['str_rel'] = "";
-                            if ($obj_type == "scormorg" && $level <= 3 && $row['direct_play'] == 1) {
-                                //  joseph, added curly bracket :)
-                                $course_array[$row['idCourse']]['str_rel'] = " rel='lightbox'";
-                            }
-                        }
-                    }
-                } else {
-                    if ($row['max_num_subscribe'] != 0) {
-                        $course_array[$row['idCourse']]['course_full'] = $model->enrolledStudent($row['idCourse']) >= $row['max_num_subscribe'];
-                    }
-                }
-            }
-
-            if ($course_array[$row['idCourse']]['course_type'] === 'classroom') {
-                $d = new DateManager();
-                $course_array[$row['idCourse']]['edition_exists'] = (count($d->getAvailableDate($row['idCourse'])) > 0);
-
-            }
-
-            if (!$course_array[$row['idCourse']]['course_full'] && $row['selling']) {
-                $course_array[$row['idCourse']]['in_cart'] = isset($_SESSION['lms_cart'][$row['idCourse']]);
-            }
-
-
-            $course_array[$row['idCourse']]['show_options'] =
-                // unsubscribe
-                ($course_array[$row['idCourse']]['userCanUnsubscribe'] && $course_array[$row['idCourse']]['is_enrolled'])
-                ||  // demo material
-                ($course_array[$row['idCourse']]["course_demo"] && (($course_array[$row['idCourse']]["level"] > 3) || (!$course_array[$row['idCourse']]['waiting'] && $course_array[$row['idCourse']]['canEnter']))
-                );
-        }
-        return $course_array;
-
-    }
-
     public function newCourse()
     {
         require_once(_base_ . '/lib/lib.navbar.php');
@@ -420,8 +345,8 @@ class CatalogLmsController extends LmsController
         $id_catalogue = Get::req('id_catalogue', DOTY_INT, 0);
         $id_category = Get::req('id_category', DOTY_INT, 0);
         $res = $this->model->courseSelectionInfo($id_course);
-        $this->render('classroom_window', array("id_course" => $id_course, "available_classrooms" => $res['available_classrooms'], "teachers" => $res['teachers'],
-            "type_course" => $type_course, "id_catalogue" => $id_catalogue, "id_category" => $id_category));
+        $this->render('edition-modal', array("id_course" => $id_course, "available_classrooms" => $res['available_classrooms'], "teachers" => $res['teachers'],
+            "course_name" => $res['course_name'], "type_course" => $type_course, "id_catalogue" => $id_catalogue, "id_category" => $id_category));
 
     }
 
@@ -467,7 +392,7 @@ class CatalogLmsController extends LmsController
         if (count($level_idst) == 0 || $level_idst[1] == '')
             $level_idst = &$docebo_course->createCourseLevel($id_course);
 
-        $waiting = $course_info['subscribe_method'] != 2;
+        $waiting = $course_info['subscribe_method'] == 1; // need approval
 
 
         $userlevel_subscrip = $this->get_userlevel_subscription($id_user);    //UG
