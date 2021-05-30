@@ -242,6 +242,7 @@ class CourseSubscribe_Manager
 
 		$waiting = (is_array($filter) && isset($filter['waiting']) && $filter['waiting']);
 		$query .= " AND s.waiting = '".($waiting ? "1" : "0")."' ";
+        $query .= " AND s.status <> 4 "; // exclude overbooking user
 
 		if(Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN)
 		{
@@ -378,6 +379,17 @@ class CourseSubscribe_Manager
         $waiting = $data['waiting'];
         $date_begin_validity = $data['date_begin_validity'];
         $date_expire_validity = $data['date_expire_validity'];
+        
+        if ($waiting && $overbooking ) {
+            $new_status = 4;
+        } else {
+            if ($waiting) {
+                $new_status = -2;
+            }
+            if ($overbooking) {
+                $new_status = 4;
+            }
+        }
 
 		$query =	"INSERT INTO ".$this->subscribe_table
 					." (idUser, idCourse, level, waiting, subscribed_by, date_inscr"
@@ -388,8 +400,7 @@ class CourseSubscribe_Manager
 					." VALUES ('".$id_user."', '".$id_course."', '".$level."', '".(int)$waiting."', '".getLogUserId()."', '".date('Y-m.d H:i:s')."'"
 					.($date_begin_validity ? ", '".substr($date_begin_validity, 0, 10)."'" : "")
 					.($date_expire_validity ? ", '".substr($date_expire_validity, 0, 10)."'" : "")
-                    .($waiting ? ",".-2:"")
-                    .($overbooking ? ",4":"")
+                    .($waiting || $overbooking ? ",".$new_status:"")
 					.")";
 
         $res = sql_query($query);

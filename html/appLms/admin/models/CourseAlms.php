@@ -68,13 +68,15 @@ class CourseAlms extends Model
             $admin_users = $acl_man->getAllUsersFromIdst($admin_tree);
         }
 
+        // skipping those that are both in ovebooking and waiting (admin approval course + overbooking) otherwise they are couted twice
+        
         $query = "select COUNT(cu.idUser) as num_overbooking"
             . " FROM %lms_course AS c"
             . " LEFT JOIN %lms_courseuser AS cu ON c.idCourse = cu.idCourse and cu.idCourse=".$idCourse
             . ($userlevelid != ADMIN_GROUP_GODADMIN
                 ? (!empty($admin_users) ? " AND cu.idUser IN (" . implode(',', $admin_users) . ")" : " AND cu.idUser IN (0)")
                 : '')
-            . " WHERE c.course_type <> 'assessment' and cu.status=4";
+            . " WHERE c.course_type <> 'assessment' and cu.status=4 and cu.waiting = 0"; 
             
             
             $res = sql_query($query);
@@ -82,6 +84,36 @@ class CourseAlms extends Model
         
             return $num_overbooking;
     }
+    
+    
+    public function getFirstOverbooked($idCourse){
+        $userlevelid = Docebo::user()->getUserLevelId();
+        if ($userlevelid != ADMIN_GROUP_GODADMIN) {
+            require_once(_base_ . '/lib/lib.preference.php');
+            $adminManager = new AdminPreference();
+            $acl_man = &Docebo::user()->getAclManager();
+
+            $admin_courses = $adminManager->getAdminCourse(Docebo::user()->getIdST());
+
+            $admin_tree = $adminManager->getAdminTree(Docebo::user()->getIdST());
+            $admin_users = $acl_man->getAllUsersFromIdst($admin_tree);
+        }
+
+        $query = "select idUser"
+            . " FROM %lms_courseuser "
+            . " WHERE status=4" 
+            . ($userlevelid != ADMIN_GROUP_GODADMIN
+                ? (!empty($admin_users) ? " AND idUser IN (" . implode(',', $admin_users) . ")" : " AND cu.idUser IN (0)")
+                : '')
+            . " order by date_inscr ASC LIMIT 1";    
+            $res = sql_query($query);
+            
+            list($overbooked_user) = sql_fetch_row($res);
+        
+            return $overbooked_user;
+    }    
+    
+    
     
     
     
@@ -98,7 +130,7 @@ class CourseAlms extends Model
             $admin_users = $acl_man->getAllUsersFromIdst($admin_tree);
         }
 
-        $query = "select COUNT(cu.idUser) as num_overbooking"
+        $query = "select COUNT(cu.idUser) as num_waiting"
             . " FROM %lms_course AS c"
             . " LEFT JOIN %lms_courseuser AS cu ON c.idCourse = cu.idCourse and cu.idCourse=".$idCourse
             . ($userlevelid != ADMIN_GROUP_GODADMIN
@@ -108,9 +140,9 @@ class CourseAlms extends Model
             
             
             $res = sql_query($query);
-            list($num_overbooking) = sql_fetch_row($res);
+            list($num_waiting) = sql_fetch_row($res);
         
-            return $num_overbooking;
+            return $num_waiting;
     }    
     
     
@@ -1507,11 +1539,11 @@ class CourseAlms extends Model
 
         $query = "SELECT idCourse, COUNT(*) FROM %lms_courseuser "
             . " WHERE idCourse IN (" . implode(",", $courses) . ") "
-            . " AND LEVEL = 3 AND waiting <= 0 "
+            . " AND LEVEL = 3 AND waiting <= 0 and status = 0 "
             . " GROUP BY idCourse";
         $class_real_count = "SELECT cu.idCourse,COUNT(*) FROM %lms_courseuser AS cu JOIN %lms_course_date AS cd JOIN %lms_course_date_user AS cdu "
             . " ON (cd.id_date = cdu.id_date AND cd.id_course = cu.idCourse AND cu.idUser = cdu.id_user) "
-            . " WHERE cu.idCourse IN (" . implode(",", $courses) . ") AND cu.level = 3 GROUP BY cu.idCourse";
+            . " WHERE cu.idCourse IN (" . implode(",", $courses) . ") AND cu.level = 3 and cu.status = 0 GROUP BY cu.idCourse";
 
         $res = sql_query($query);
         $res1 = sql_query($class_real_count);

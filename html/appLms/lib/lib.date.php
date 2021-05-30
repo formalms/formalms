@@ -733,6 +733,16 @@ class DateManager
 
 		return sql_query($query);
 	}
+    
+    public function setDateOverbooking($id_date, $id_user, $overbooking_status) {
+        $query =    "UPDATE ".$this->user_date_table
+                    ." SET overbooking = ".$overbooking_status
+                    ." WHERE id_date = ".$id_date
+                    ." AND id_user = ".$id_user;
+        return sql_query($query);
+        
+    }
+    
 
 	public function toggleDateFinished($id_date, $id_user)
 	{
@@ -1672,7 +1682,7 @@ class DateManager
 			$overbooking_users = $this->getDateOverbookingUsers($id_date);
 			if ($cinfo['overbooking'] > 0 && !empty($overbooking_users)) {
 				if (($cinfo['user_subscribed'] - count($overbooking_users)) < $cinfo['max_par']) {
-					$this->setFirstOverbookingUser($id_date);
+					$this->setFirstOverbookingUser($id_date, $id_course);
 				}
 			}
 		}
@@ -1767,7 +1777,7 @@ class DateManager
 	}
 
 
-	public function setFirstOverbookingUser($id_date) {
+	public function setFirstOverbookingUser($id_date, $id_course) {
 		$query = "SELECT * FROM ".$this->user_date_table." "
 			." WHERE id_date = ".(int)$id_date." AND overbooking = 1 "
 			." ORDER BY date_subscription ASC LIMIT 1";
@@ -1777,8 +1787,19 @@ class DateManager
 			$query = "UPDATE ".$this->user_date_table." SET overbooking = 0 "
 				." WHERE id_date = ".$obj->id_date." AND id_user = ".$obj->id_user;
 			$res = sql_query($query);
+            
+            $subModel = new SubscriptionAlms();
+            $subModel->id_course = $id_course;
+            $course_info = $subModel->getCourseInfoForSubscription();
+            $status = ($course_info['subscribe_method'] == 1 ? -2 : 0); // check for need approval
+
+            $query = "UPDATE ".$this->courseuser_table." SET status = ".$status
+                    . ($status == -2 ? ' ,waiting=1':'')
+                    ." WHERE idCourse = ".$id_course." AND iduser = ".$obj->id_user;
+            $res = $res && sql_query($query);   
+            
 		}
-		return $res ? TRUE : FALSE;
+		return $res;
 	}
 
 	public function checkHasValidUnsubscribePeriod($id_course, $id_user)
