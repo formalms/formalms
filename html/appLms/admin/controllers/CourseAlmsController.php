@@ -465,9 +465,10 @@ Class CourseAlmsController extends AlmsController
 				}
 			}
 
-			$num_subscribed = $row['subscriptions'] - $row['pending'];
 
             $num_overbooking = $this->model->getUserInOverbooking($row['idCourse']);
+            
+            $num_subscribed = $row['subscriptions'] - ($row['pending'] + $num_overbooking);
             
 			$list[ $row['idCourse'] ] = array(
 				'id' => $row['idCourse'],
@@ -481,7 +482,7 @@ Class CourseAlmsController extends AlmsController
 						? '<a href="index.php?r='.$this->base_link_subscription.'/waitinguser&id_course='.$row['idCourse'].'" title="'.Lang::t('_WAITING', 'course').'">'.($row['pending']+$num_overbooking).'</a>'    
 						: '' ),
 				'user' => ($row['course_type'] !== 'classroom' && $row['course_edition'] != 1 
-						? '<a class="nounder" href="index.php?r='.$this->base_link_subscription.'/show&amp;id_course='.$row['idCourse'].'" title="'.Lang::t('_SUBSCRIPTION', 'course').'">'.($num_subscribed-$num_overbooking).' '.Get::img('standard/moduser.png', Lang::t('_SUBSCRIPTION', 'course')).'</a>'
+						? '<a class="nounder" href="index.php?r='.$this->base_link_subscription.'/show&amp;id_course='.$row['idCourse'].'" title="'.Lang::t('_SUBSCRIPTION', 'course').'">'.$num_subscribed.' '.Get::img('standard/moduser.png', Lang::t('_SUBSCRIPTION', 'course')).'</a>'
 						: ''),
 				'edition' => ($row['course_type'] === 'classroom' 
 						? '<a href="index.php?r='.$this->base_link_classroom.'/classroom&amp;id_course='.$row['idCourse'].'" title="'.Lang::t('_CLASSROOM_EDITION', 'course').'">'.$this->model->classroom_man->getDateNumber($row['idCourse'], true).'</a>' : ($row['course_edition'] == 1 ? '<a href="index.php?r='.$this->base_link_edition.'/show&amp;id_course='.$row['idCourse'].'" title="'.Lang::t('_EDITIONS', 'course').'">'.$this->model->edition_man->getEditionNumber($row['idCourse']).'</a>'
