@@ -4,13 +4,14 @@ const axios = require('axios');
 
 class FolderView {
 
-  constructor(baseApiUrl, controller, type) {
+  constructor(baseApiUrl, controller, type, disabledActions) {
     const _this = this;
 
     _this.baseApiUrl = baseApiUrl;
     _this.controller = controller;
     _this.type = type;
     _this.selectedId = 0;
+    _this.disabledActions = disabledActions;
 
     _this.container = document.querySelector('*[data-container=' + _this.type + ']');
     _this.container.addEventListener('click', (e) => { _this.toggleSelectEl(e); });
@@ -22,6 +23,9 @@ class FolderView {
       _this.refresh(e.detail.selectedId);
     });
     _this.container.addEventListener('openDir', (e) => {
+      _this.refresh(e.detail.selectedId);
+    });
+    _this.container.addEventListener('refreshTree', (e) => {
       _this.refresh(e.detail.selectedId);
     });
 
@@ -110,7 +114,11 @@ class FolderView {
           // Get parent dir from selected tree element
           const parentElement = _this.container.querySelector('.ft-is-parent .ft-is-selected');
           const parentElementId = parentElement ? parentElement.getAttribute('data-id') : 0;
-          const childElement = _this.container.querySelector('.folderView__ul').querySelectorAll('.folderView__li');
+          const childrenUl = _this.container.querySelector('.folderView__ul');
+          if (!childrenUl) {
+            return;
+          }
+          const childElement = childrenUl.querySelectorAll('.folderView__li');
           const childElementArray = [];
 
           if (currentElementId == parentElementId) {
@@ -162,6 +170,13 @@ class FolderView {
         if (!_this.container.querySelector('.js-disable-context-menu')) {
           // dispatch refreshContextMenu event
           document.dispatchEvent(new CustomEvent('refreshContextMenu', { detail: { controller: _this.controller }}));
+        }
+
+        if (_this.disabledActions) {
+          const buttons = document.querySelectorAll('.folderView__actions');
+          buttons.forEach((folderButtons) => {
+            folderButtons.classList.add('hidden');
+          });
         }
       }).catch((error) => {
         console.log(error)
@@ -216,6 +231,17 @@ class FolderView {
     }
   }
 
+  /*selectItems() {
+    this.container.querySelectorAll('.folderView__li').forEach((item) => {
+      item.classList.remove('fv-is-selected');
+      const item_id = parseInt(item.getAttribute('data-id'));
+
+      if (this.currentElsIds.includes(item_id)) {
+        item.classList.add('fv-is-selected');
+      }
+    });
+  }*/
+
   triggerDblClick(e) {
     const el = e.target;
     const _this = this;
@@ -237,7 +263,7 @@ class FolderView {
         _this.refresh();
       } else if (el.classList.contains('js-folderView-file')) {
         // It's object
-        el.querySelector('.fv-is-play').click();
+        window.location = el.querySelector('.fv-is-play').getAttribute('href');
       }
     }
   }

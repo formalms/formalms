@@ -7,7 +7,7 @@ class StudentLearningObject {
   constructor(controller) {
     let baseUrl = this.getBaseApiUrl('lo');
     new FolderTree(baseUrl, controller.controller, controller.selector);
-    new FolderView(baseUrl, controller.controller, controller.selector);
+    new FolderView(baseUrl, controller.controller, controller.selector, true);
   }
 
   getBaseApiUrl(controller, action) {

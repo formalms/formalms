@@ -32,8 +32,10 @@ class ContextMenu {
       });
 
       if (_this.currentElsIds.length == 0) {
-        _this.currentElsIds = [target.getAttribute('data-id')];
+        _this.currentElsIds = [parseInt(target.getAttribute('data-id'))];
       }
+
+      console.log(_this.currentElsIds, '_this.currentElsIds contextmenu');
 
       const renameBtn = {
         text: 'Rinomina',
@@ -104,11 +106,9 @@ class ContextMenu {
         text: 'Copia',
         onClick() {
           _this.currentElsIds.forEach((id) => {
-            const el = document.querySelector('.folderView__li[data-id="' + id + '"]');
-            if (el) {
-              el.classList.add('is-ready-for-copy');
-            }
+            _this.container.querySelector('li[data-id="' + parseInt(id) + '"]').classList.add('is-ready-for-copy');
           });
+
           document.querySelector('.folderView__copyOverlay').classList.add('is-shown');
         }
       };
