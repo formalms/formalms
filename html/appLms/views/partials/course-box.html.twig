@@ -68,7 +68,7 @@
 
         {% block courseBoxCta %}
             <div class="course-box__cta">
-                {% if (course.course_type == 'classroom' and course.editions|length) > 0 %}
+                {% if course.course_type == 'classroom' and course.editions|length > 0 %}
                     {% if "course-box--disabled" not in courseBoxClasses %}
                         <div class="course-box__extrainformation">
                             {% block courseBoxMyCoursesNextLesson %}
