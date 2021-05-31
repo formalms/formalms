@@ -230,12 +230,11 @@ class CatalogLms extends Model
                 break;
         }
         if (count($user_catalogue) > 0) {
-            $catalogue_courses = [];
             foreach ($user_catalogue as $id_cat) {
-                $catalogue_courses[] = $cat_man->getCatalogueCourse($id_cat);
-
+                $catalogue_courses = $cat_man->getCatalogueCourse($id_cat);
+                $courses = array_merge($courses, $catalogue_courses);
             }
-            $courses = array_merge($courses, $catalogue_courses);
+
         }
 
         if (count($courses) > 0) {

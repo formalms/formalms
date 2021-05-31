@@ -116,7 +116,7 @@
 
             {% for catalogue, catalogueInfo in data.user_catalogue %}
            
-                {% if ((id_catalogue == 0 or id_catalogue == catalogue)and not(tab_actived)) %} 
+                {% if ((data.id_catalogue == 0 or data.id_catalogue == catalogue) and not(tab_actived)) %} 
                     {% set active = 'active' %}
                     {% set tab_actived = true %}
                 {% else %}
