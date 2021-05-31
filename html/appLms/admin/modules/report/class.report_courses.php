@@ -1775,22 +1775,30 @@ if (in_array('_WAITING', $filter_cols)) $th2[] = array('colspan'=>($show_percent
                 
 				if(in_array('_INSCR', $filter_cols))
 				{
-					$trow[] = array('style'=>'img-cell', 'value'=>$num_iscr[$index]);
+                    // enrolled 
+                    $iscr = $num_iscr[$index] - $in_waiting;
+                    
+					$trow[] = array('style'=>'img-cell', 'value'=>$iscr);
                     if ($show_percent) $trow[] = array('style'=>'img-cell', 'value'=>'-');
                     
-				}
-				$tot_iscr += $num_iscr[$index];
+				    $tot_iscr += $iscr;
+                }
+				
 
 				//no begin course
 				if(in_array('_MUSTBEGIN', $filter_cols))
 				{
+                    
 					if(isset($num_nobegin[$index]))
 					{
-						$perc = (($num_nobegin[$index] / $num_iscr[$index])*100);
-						$tot_nobegin += $num_nobegin[$index];
+                        
+                        $num_nobegin = $num_nobegin[$index] - $in_waiting;
+                        
+						$perc = (($num_nobegin / $num_iscr[$index])*100);
+						$tot_nobegin += $num_nobegin;
 						$tot_perc_nobegin += $perc;
 
-						$trow[] = array('style'=>'img-cell', 'value'=>$num_nobegin[$index]);
+						$trow[] = array('style'=>'img-cell', 'value'=>$num_nobegin);
 						if ($show_percent) $trow[] = array('style'=>'img-cell', 'value'=>number_format($perc , 2, '.', '').'%');
 					}
 					else
@@ -1934,9 +1942,25 @@ if (in_array('_WAITING', $filter_cols)) $th2[] = array('colspan'=>($show_percent
 	}
 
     function getInWaitingCourse($idCourse){
-        $query = "select sum(waiting) from learning_courseuser where idCourse=".$idCourse." and waiting=1";
+        $query = "select count(*) as c from learning_courseuser where idCourse=".$idCourse." and waiting=1";
+         
+        $current_level = Docebo::user()->getUserLevelId();
+        // get users of admin
+        if($current_level==ADMIN_GROUP_ADMIN) {
+            require_once(_base_ . '/lib/lib.aclmanager.php');
+            $acl_manager = $aclManager = Docebo::user()->getACLManager();
+            $idst_admin = $aclManager->getGroupST(ADMIN_GROUP_ADMIN);
+            $users = $aclManager->getGroupUMembersNumber($idst_admin);
+            $str_users = implode(",",$users);
+            
+            $query = $query." and idUser in (".$str_users.")";    
+        }
+        
+        $rs = sql_query($query);
+ 
         list($in_waiting) = sql_fetch_row(sql_query($query));
         if($in_waiting==null) $in_waiting=0;
+       
         return $in_waiting;
                            
         
