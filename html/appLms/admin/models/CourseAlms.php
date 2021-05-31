@@ -103,8 +103,9 @@ class CourseAlms extends Model
             . " FROM %lms_courseuser "
             . " WHERE status=4" 
             . ($userlevelid != ADMIN_GROUP_GODADMIN
-                ? (!empty($admin_users) ? " AND idUser IN (" . implode(',', $admin_users) . ")" : " AND cu.idUser IN (0)")
+                ? (!empty($admin_users) ? " AND idUser IN (" . implode(',', $admin_users) . ")" : " AND idUser IN (0)")
                 : '')
+            . " AND idCourse = ".$idCourse    
             . " order by date_inscr ASC LIMIT 1";    
             $res = sql_query($query);
             
