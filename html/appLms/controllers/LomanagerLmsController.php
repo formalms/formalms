@@ -190,6 +190,7 @@ class LomanagerLmsController extends LmsController
 
         if ($ids = Get::req('ids', DOTY_MIXED, false)) {
             $ids_arr = explode(',', $ids);
+            $this->model->setTdb($fromType);
             foreach ($ids_arr as $id) {
                 if ($id > 0 && $this->model->copy($id, $fromType)) {
                     $this->model->setTdb($newtype);

@@ -102,21 +102,12 @@ class FolderTree {
   }
 
   initDragDrop() {
-    this.container.addEventListener('dragstart', this.onDragStart.bind(this));
-    this.container.addEventListener('dragover', this.onDragOver.bind(this));
-    this.container.addEventListener('dragleave', this.onDragLeave.bind(this));
-    this.container.addEventListener('drop', this.onDrop.bind(this));
-  }
+    const _this = this;
 
-  selectItems() {
-    this.container.querySelectorAll('.folderView__li').forEach((item) => {
-      item.classList.remove('fv-is-selected');
-      const item_id = parseInt(item.getAttribute('data-id'));
-
-      if (this.currentElsIds.includes(item_id)) {
-        item.classList.add('fv-is-selected');
-      }
-    });
+    _this.container.addEventListener('dragstart', this.onDragStart.bind(this));
+    _this.container.addEventListener('dragover', this.onDragOver.bind(this));
+    _this.container.addEventListener('dragleave', this.onDragLeave.bind(this));
+    _this.container.addEventListener('drop', this.onDrop.bind(this));
   }
 
   onDragStart(event) {
@@ -134,8 +125,9 @@ class FolderTree {
       if (!this.currentElsIds.includes(this.currentElId)) {
         this.currentEls = [event.target];
         this.currentElsIds = [this.currentElId];
-        this.selectItems();
+        // this.selectItems();
       }
+      console.log(this.currentEls, 'onDragStart');
     }
   }
 
@@ -156,6 +148,20 @@ class FolderTree {
     if (this.currentElsIds) {
       if (!this.currentElsIds.includes(target.getAttribute('data-id')) && target.classList.contains('is-dropzone')) {
         target.classList.remove('fv-is-dropped');
+      }
+    }
+  }
+
+  onDrop(event) {
+    const target = event.target;
+    target.classList.remove('fv-is-dropped');
+    event.preventDefault();
+
+    if (this.currentElsIds) {
+      const parentId = parseInt(target.getAttribute('data-id'));
+
+      if (!this.currentElsIds.includes(parentId) && target.classList.contains('is-dropzone')) {
+        this.reorderData(this.getApiUrl('move', { ids: this.currentElsIds, newParent: parentId }));
       }
     }
   }
@@ -200,19 +206,11 @@ class FolderTree {
     }
 
     _this.getData(_this.getApiUrl('getfoldertree'));
-  }
 
-  onDrop(event) {
-    const target = event.target;
-    target.classList.remove('fv-is-dropped');
-
-    if (this.currentElsIds) {
-      const parentId = parseInt(target.getAttribute('data-id'));
-
-      if (!this.currentElsIds.includes(parentId) && target.classList.contains('is-dropzone')) {
-        this.reorderData(this.getApiUrl('move', { ids: this.currentElsIds, newParent: parentId }));
-      }
-    }
+    // dispatch refreshTree event
+    _this.container.dispatchEvent(new CustomEvent('refreshTree', {
+      detail: { selectedId: _this.selectedId, }
+    }));
   }
 
   async reorderData(endpoint) {
@@ -241,9 +239,9 @@ class FolderTree {
         if (_this.openedIds) {
           _this.openedIds.forEach((id) => {
             if (id != _this.selectedId) {
-              let arrow = _this.container.querySelector('.folderTree__li[data-id="' + id + '"] .arrow');
-              if (arrow) {
-                arrow.click();
+              let subtree = _this.container.querySelector('.folderTree__li[data-id="' + id + '"] .folderTree__ul.hidden');
+              if (subtree) {
+                subtree.classList.remove('hidden');
               }
             }
           });
