@@ -11,22 +11,9 @@
 |   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
-require_once( dirname(__FILE__).'/class.question.php' );
+require_once(Forma::inc(_lms_ . '/modules/question/class.question.php' ));
 
 class BreakPage_Question extends Question {
-	
-	var $id;
-	
-	/**
-	 * function BreakPage_Question( $id )
-	 *
-	 * @param int $id 	the id of the question
-	 * @return nothing
-	 */
-	function BreakPage_Question( $id ) {
-		
-		parent::Question( $id );
-	}
 	
 	/**
 	 * function getQuestionType()

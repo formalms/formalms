@@ -169,6 +169,11 @@ class DashboardsettingsAdm extends Model
 
     public function delLayout($id_layout)
     {
+        
+        // delete permission
+        $query = "DELETE FROM dashboard_permission WHERE id_dashboard = $id_layout";        
+        $this->db->query($query);        
+        
         $query = "DELETE FROM `dashboard_layouts` WHERE id = $id_layout";
         return $this->db->query($query);
     }
@@ -202,4 +207,41 @@ class DashboardsettingsAdm extends Model
     {
         return $this->layouts;
     }
+    
+    
+    // check permission dashboard
+    public function setObjIdstList($dashboardId, $idst_list) {
+        
+        $idst_list = serialize($idst_list);      
+                            
+        $query = "SELECT id_dashboard FROM dashboard_permission WHERE id_dashboard = ".$dashboardId;
+       
+        $exists = sql_num_rows($this->db->query($query));
+        
+        if(!$exists) {            
+            $query = "INSERT INTO dashboard_permission ( id_dashboard, idst_list) VALUES ( ".$dashboardId.", '".$idst_list."' ) ";
+        } else {
+            $query = "UPDATE dashboard_permission  SET idst_list = '".$idst_list."'   WHERE id_dashboard = ".$dashboardId;
+        }
+                                           
+        return  $this->db->query($query);
+    }
+        
+    // get user list permission of dashboard
+    public function getObjIdstList($dashboardId) {
+    
+        $query = "SELECT idst_list FROM dashboard_permission WHERE id_dashboard= ".$dashboardId;
+
+        $re_query = $this->db->query($query);
+        if(!$re_query) return false;
+        
+        list($idst_list) = sql_fetch_row($re_query);
+                                              
+        if($idst_list && is_string($idst_list)) return unserialize(($idst_list));
+        return array();
+    }    
+        
+    
+    
+    
 }

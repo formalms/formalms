@@ -24,7 +24,7 @@
                             data-action="{{ block.registeredActions | join(',') }}">
                             <div class="dashboard__content">
                                 <button class="dashboard__remove js-remove-block" data-block="{{ block.postData.block }}-{{ index }}"></button>
-                                <div class="dashboard__title">{{ translate('_'~block.postData.block,'dashboardsetting') }}</div>
+                                <div class="dashboard__title">{{ translate('_'~block.postData.block|upper,'dashboardsetting') }}</div>
                                 <div class="dashboard__image">
                                     <img src="{{ block.templatePath }}static/images/dashboard-placeholder/{{ block.postData.block }}-placeholder.jpg" class="dashboard__image">
                                 </div>
@@ -33,12 +33,12 @@
                                         <div class="dashboard__infoBlock">
                                             <div class="dashboard__label">{{ translate('_ENABLED_ACTIONS', 'dashboardsetting') }}</div>
                                             <div class="dashboard__infoContainer">
-                                                <div class="dashboard__el">
+                                                <div class="dashboard__elx">
                                                     {% for action in block.enabledActions %}
-                                                        <label>
+                                                        <label class="d-block" style="display:block;">
                                                             <input name="registeredAction[{{ loop.index0 }}]"
                                                                 type="checkbox" value="{{ action }}"
-                                                                {% if action in block.registeredActions %}checked{% endif %} />{{ translate('_'~action,'dashboardsetting') }}
+                                                                {% if action in block.registeredActions %}checked{% endif %} />{{ translate('_'~block.postData.block|upper~'_'~action|upper,'dashboardsetting') }}
                                                         </label>
                                                     {% endfor %}
                                                 </div>
@@ -63,7 +63,7 @@
                                     data-type="{{ block.availableTypes|json_encode() }}"
                                     data-action="{{ block.registeredActions|json_encode() }}"
                                     data-form="{{ block.form|json_encode() }}">
-                                    {{ translate('_'~block.postData.block, 'dashboardsetting') }}
+                                    {{ translate('_'~block.postData.block|upper, 'dashboardsetting') }}
                                 </option>
                             {% endfor %}
                         </select>
@@ -102,7 +102,7 @@
         const layoutsTable = $('#layouts');
         let openedLayoutForm = false;
 
-        // initSortable();
+        initSortable();
         uploadFileCheck();
 
         // SALVATAGGIO DATI BLOCK
@@ -266,6 +266,16 @@
             $('#' + blockToChange).removeAttr('class').addClass('dashboard__block').addClass('dashboard__block--' + newType).attr('data-type', newType);
             // initSortable(true);
         });
+
+        function initSortable(reinit) {
+            if (reinit) {
+                dashboardSortable.sortable('destroy');
+                dashboardSortable.unbind();
+            }
+            dashboardSortable.sortable({
+                connectWith: "#dashboard-sortable"
+            });
+        }
 
         function uploadFileCheck() {
             const inputFile = document.querySelectorAll('.js-upload-file');
@@ -434,6 +444,7 @@
         display: block;
         text-align: center;
         font-weight: 800;
+        word-break: break-all;
     }
 
     .dashboard__infoContainer {

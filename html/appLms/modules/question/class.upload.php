@@ -11,22 +11,9 @@
 |   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
-require_once( dirname(__FILE__).'/class.question.php' );
+require_once(Forma::inc(_lms_ . '/modules/question/class.question.php' ));
 
 class Upload_Question extends Question {
-	
-	var $id;
-	
-	/**
-	 * function ExtendedText_Question( $id )
-	 *
-	 * @param int $id 	the id of the question
-	 * @return nothing
-	 */
-	function Upload_Question( $id ) {
-		
-		parent::Question( $id );
-	}
 	
 	/**
 	 * function getQuestionType()
@@ -280,6 +267,13 @@ class Upload_Question extends Question {
 		
 		if($this->userDoAnswer($id_track)) $find_prev = true;
 		else $find_prev = false;
+
+		$acceptedTypes = explode(',',Get::sett('file_upload_whitelist'));
+		$index = 0;
+		foreach ($acceptedTypes as $acceptedType) {
+            $acceptedTypes[$index] = '.'.$acceptedType;
+            $index++;
+        }
 		
 		return '<div class="play_question">'
             .'<div>'.$lang->def('_QUEST_'.strtoupper($this->getQuestionType())).'</div>'
@@ -287,7 +281,7 @@ class Upload_Question extends Question {
 			.'<label for="quest_'.$id_quest.'">'.$num_quest.') '.stripslashes($title_quest).'</label>'
 			.'</div>'
 			.'<div class="answer_question">&nbsp;'
-			.'<input type="file" id="quest_'.$id_quest.'" name="quest['.$id_quest.']" '
+			.'<input type="file" accept="'.implode(',',$acceptedTypes).'" id="quest_'.$id_quest.'" name="quest['.$id_quest.']" '
 			.( $find_prev && $freeze ? ' disabled="disabled"' : '' ).'/>'
 			.'</div>'
 			.'</div>';
@@ -317,6 +311,9 @@ class Upload_Question extends Question {
 			}
 			else return false;
 		}
+		elseif ($trackTest->getTestObj()->isRetainAnswersHistory() && $this->testQuestAnswerExists($trackTest)) {
+            $this->deleteAnswer($trackTest->idTrack, ($trackTest->getNumberOfAttempt() + 1));
+        }
 		
 		$savefile = '';
 		//save file--------------------------------------------------------
@@ -383,8 +380,8 @@ class Upload_Question extends Question {
 	 * @access public
 	 * @author Fabio Pirovano (fabio@docebo.com)
 	 */
-	function deleteAnswer( $id_track ) {
-		
+	function deleteAnswer( $id_track, $numberTime = '') {
+
 		require_once(_base_.'/lib/lib.upload.php');;
 		
 		list($file_path) = sql_fetch_row(sql_query("
@@ -397,10 +394,7 @@ class Upload_Question extends Question {
 		sl_unlink($path.$file_path);
 		sl_close_fileoperations();
 		
-		return sql_query("
-		DELETE FROM ".$GLOBALS['prefix_lms']."_testtrack_answer 
-		WHERE idTrack = '".(int)$id_track."' AND 
-			idQuest = '".$this->id."'");
+		return parent::deleteAnswer($id_track,$numberTime);
 	}
 	
 	/**

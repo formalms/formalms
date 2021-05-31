@@ -14,8 +14,8 @@
     "clean-css-cli": "4.1.10",
     "copyfiles": "1.2.0",
     "css-loader": "0.28.10",
-    "eslint": "4.12.1",
-    "eslint-loader": "1.9.0",
+    "eslint": "^4.12.1",
+    "eslint-loader": "^1.9.0",
     "eslint-plugin-react": "7.7.0",
     "hard-source-webpack-plugin": "0.5.11",
     "jsdoc": "^3.6.6",
@@ -53,6 +53,7 @@
     "react-dom": "^16.14.0",
     "reset-css": "2.2.1",
     "slick-carousel": "1.8.1",
+    "tinymce": "^5.7.1",
     "sortablejs": "^1.13.0",
     "twigjs": "0.0.4",
     "uglify-js": "^3.13.0"

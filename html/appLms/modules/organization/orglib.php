@@ -11,9 +11,9 @@
 |   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
-require_once(_base_.'/lib/lib.treedb.php' );
-require_once(_base_.'/lib/lib.treeview.php' );
-require_once( $GLOBALS['where_lms'].'/lib/lib.repo.php' );
+require_once(_base_ . '/lib/lib.treedb.php');
+require_once(_base_ . '/lib/lib.treeview.php');
+require_once($GLOBALS['where_lms'] . '/lib/lib.repo.php');
 
 define("ORGFIELDIDCOURSE", 13);
 define("ORGFIELDPREREQUISITES", 14);
@@ -28,9 +28,9 @@ define("ORGFIELD_PUBLISHFROM", 21);
 define("ORGFIELD_PUBLISHTO", 22);
 define("ORGFIELD_ACCESS", 23);
 define("ORGFIELD_PUBLISHFOR", 24);
-
+define("ORGFIELDIGNORESCORE", 25);
 define("ACLKINDGROUP", "group");
-define("ACLKINDUSER", "user" );
+define("ACLKINDUSER", "user");
 
 // lo visibility
 define("PF_ALL_USER",	"-3");
@@ -45,19 +45,20 @@ class OrgDirDb extends RepoDirDb {
 	var $org_idCourse;
 	var $org_prerequisites;
 	var $org_isTerminator;
+	var $org_ignoreScore;
 	var $org_idParam;
 	var $org_visible;
 	var $org_milestone;
-	
+
 	var $org_width;
 	var $org_height;
 	var $org_publish_for;
 	var $org_publish_from;
 	var $org_publish_to;
 	var $org_access;
-	
+
 	var $idCourse;
-	
+
 	// to filter on types
 	var $filterTypes = NULL;
 	// to filter on visibility
@@ -66,143 +67,145 @@ class OrgDirDb extends RepoDirDb {
 	var $filterAccess = FALSE;
 
 	var $user_presence = TRUE;
-	
+
 	// Constructor of OrgDirDb class
 	// set idCourse to current idCourse or to
 	// parameter $idCourse
 	function OrgDirDb($idCourse = FALSE) {
-		if( $idCourse === FALSE )
+		if ($idCourse === FALSE)
 			$this->idCourse = $_SESSION['idCourse'];
 		else
 			$this->idCourse = $idCourse;
 		parent::RepoDirDb($GLOBALS['prefix_lms'] . '_organization');
-		$this->fields = array( 'id' => 'idOrg', 'idParent' => 'idParent', 'path' => 'path', 'lev' => 'lev' );
+		$this->fields = array('id' => 'idOrg', 'idParent' => 'idParent', 'path' => 'path', 'lev' => 'lev');
 	}
 	// , '.$prefix.'_organization_access';
 	function setFilterTypes( $lotypes ) {
 		$this->filterTypes = $lotypes;
 	}
-	
+
 	function setFilterVisibility( $fv = TRUE ) {
 		$this->filterVisibility = $fv;
 	}
-	
+
 	function setFilterAccess( $idUser = FALSE ) {
 		$this->filterAccess = $idUser;
 	}
-	
+
 	function extractPrerequisites( $idItem, &$prerequisistes ) {
-		if( $prerequisistes == '' ) 
+		if ($prerequisistes == '')
 			return NULL;
-		$arrPre = explode( ',', $prerequisistes );
+		$arrPre = explode(',', $prerequisistes);
 		$arrResult = array();
-		while( list($key, $val) = each( $arrPre ) ) {
-			if( strncmp( $val, $idItem, strlen($idItem) ) != 0 ) {
+		while (list($key, $val) = each($arrPre)) {
+			if (strncmp($val, $idItem, strlen($idItem)) != 0) {
 				$arrResult[] = $val;
 			}
 		}
-		return implode( ',', $arrResult);
+		return implode(',', $arrResult);
 	}
-	
+
 	function extractSelfPrerequisites( $idItem, &$prerequisites ) {
-		if( $prerequisites == '' )
+		if ($prerequisites == '')
 			return '*';
 		$result = '*';
-		$arrPre = explode( ',', $prerequisites );
-		while( list($key, $val) = each( $arrPre ) ) {
-			if( strncmp( $val, $idItem, strlen($idItem) ) == 0 ) {
-				$arrSelf = explode( '=', $val);
-				if( count( $arrSelf ) > 1 )
+		$arrPre = explode(',', $prerequisites);
+		while (list($key, $val) = each($arrPre)) {
+			if (strncmp($val, $idItem, strlen($idItem)) == 0) {
+				$arrSelf = explode('=', $val);
+				if (count($arrSelf) > 1)
 					$result = $arrSelf[1];
 				else
 					$result = '*';
-				unset( $arrPre[$key] );
+				unset($arrPre[$key]);
 			}
 		}
-		$prerequisites = implode( ',', $arrPre);
+		$prerequisites = implode(',', $arrPre);
 		return $result;
 	}
-	
+
 	function makePrerequisites( $idItem, $prerequisites, $selfPrerequisites ) {
-		if( $selfPrerequisites == '*' ) { 
+		if ($selfPrerequisites == '*') {
 			return $prerequisites;
-		} else if( $prerequisites == '' ) {
-			$prerequisites = $idItem.'='.$selfPrerequisites;
+		} else if ($prerequisites == '') {
+			$prerequisites = $idItem . '=' . $selfPrerequisites;
 		} else {
-			$prerequisites .= ','.$idItem.'='.$selfPrerequisites;
+			$prerequisites .= ',' . $idItem . '=' . $selfPrerequisites;
 		}
 		return $prerequisites;
 	}
-	
+
 	// Organization are stored in a table with the structure requested by
 	// TreeDb to manage tree. In addition the table contains 
 	// title, idObject, idCourse
 	function _getOtherFields($tname = FALSE) {
-	    $parent = parent::_getOtherFields($tname);
-		if( $tname === FALSE )
-			return $parent.", idCourse, prerequisites,"
-					." isTerminator, idParam, visible, milestone, width, height, publish_from, publish_to, access, publish_for ";
+		$parent = parent::_getOtherFields($tname);
+		if ($tname === FALSE)
+			return $parent . ", idCourse, prerequisites,"
+				. " isTerminator, idParam, visible, milestone, width, height, publish_from, publish_to, access, publish_for, ignoreScore ";
 		else
-			return   $parent.", "
-					.$tname.".idCourse,"
-					.$tname.".prerequisites,"
-					.$tname.".isTerminator, "
-					.$tname.".idParam, "
-					.$tname.".visible, "
-					.$tname.".milestone, "
-					
-					.$tname.".width, "
-					.$tname.".height, "
-					.$tname.".publish_from, "
-					.$tname.".publish_to, "
-					.$tname.".access, "
-					.$tname.".publish_for ";
+			return   $parent . ", "
+				. $tname . ".idCourse,"
+				. $tname . ".prerequisites,"
+				. $tname . ".isTerminator, "
+				. $tname . ".idParam, "
+				. $tname . ".visible, "
+				. $tname . ".milestone, "
+
+				. $tname . ".width, "
+				. $tname . ".height, "
+				. $tname . ".publish_from, "
+				. $tname . ".publish_to, "
+				. $tname . ".access, "
+				. $tname . ".publish_for, "
+				.$tname.".ignoreScore ";
 	}
-	
+
 	function _getOtherValues() {
-		return parent::_getOtherValues().", '"
-				.(int)$this->org_idCourse."', '"
-				.$this->org_prerequisites."', '"
-				.(int)$this->org_isTerminator."', '"
-				.(int)$this->org_idParam."', '"
-				.(int)$this->org_visible."', '"
-				.$this->org_milestone."', "
-				
-				.(int)$this->org_width.", "
-				.(int)$this->org_height.", "
-				.( $this->org_publish_from == '' ? "''" : "'".$this->org_publish_from."'" ).", "
-				.( $this->org_publish_to == '' ? "''" : "'".$this->org_publish_to."'" ).", "
-				.( $this->org_access == '' ? "''" : "'".$this->org_access."'" ).", "
-				.( $this->org_publish_for == '' ? "''" : "'".$this->org_publish_for."'" )." ";
-	}
-	
+		return parent::_getOtherValues() . ", '"
+			. (int)$this->org_idCourse . "', '"
+			. $this->org_prerequisites . "', '"
+			. (int)$this->org_isTerminator . "', '"
+			. (int)$this->org_idParam . "', '"
+			. (int)$this->org_visible . "', '"
+			. $this->org_milestone . "', "
+
+			. (int)$this->org_width . ", "
+			. (int)$this->org_height . ", "
+			. ($this->org_publish_from == '' ? "''" : "'" . $this->org_publish_from . "'") . ", "
+			. ($this->org_publish_to == '' ? "''" : "'" . $this->org_publish_to . "'") . ", "
+			. ($this->org_access == '' ? "''" : "'" . $this->org_access . "'") . ", "
+			.( $this->org_publish_for == '' ? "''" : "'".$this->org_publish_for."'" ).", "
+			.(int)$this->org_ignoreScore." ";	}
+
 	function _getOtherUpdates() {
-		
-		return parent::_getOtherUpdates().", "
-				." idCourse='".(int)$this->org_idCourse."',"
-				." prerequisites='".$this->org_prerequisites."',"
-				." isTerminator='".(int)$this->org_isTerminator."', "
-				." idParam='".(int)$this->org_idParam."', "
-				." visible='".(int)$this->org_visible."', "
-				." milestone='".$this->org_milestone."', "
-				
-				." width=".(int)$this->org_width.", "
-				." height=".(int)$this->org_height.", "
-				." publish_from=".( $this->org_publish_from == NULL ? 'NULL' : "'".$this->org_publish_from."'" ).", "
-				." publish_to=".( $this->org_publish_to == NULL ? 'NULL' : "'".$this->org_publish_to."'" ).", "
-				." access=".( $this->org_access == NULL ? 'NULL' : "'".$this->org_access."'" ).", "
-				." publish_for=".( $this->org_publish_for == NULL ? 'NULL' : "'".$this->org_publish_for."'" )." ";
+
+		return parent::_getOtherUpdates() . ", "
+			. " idCourse='" . (int)$this->org_idCourse . "',"
+			. " prerequisites='" . $this->org_prerequisites . "',"
+			. " isTerminator='" . (int)$this->org_isTerminator . "', "
+			. " idParam='" . (int)$this->org_idParam . "', "
+			. " visible='" . (int)$this->org_visible . "', "
+			. " milestone='" . $this->org_milestone . "', "
+
+			. " width=" . (int)$this->org_width . ", "
+			. " height=" . (int)$this->org_height . ", "
+			. " publish_from=" . ($this->org_publish_from == NULL ? 'NULL' : "'" . $this->org_publish_from . "'") . ", "
+			. " publish_to=" . ($this->org_publish_to == NULL ? 'NULL' : "'" . $this->org_publish_to . "'") . ", "
+			. " access=" . ($this->org_access == NULL ? 'NULL' : "'" . $this->org_access . "'") . ", "
+			." publish_for=".( $this->org_publish_for == NULL ? 'NULL' : "'".$this->org_publish_for."'" ).", "
+			." ignoreScore=".(int)$this->org_ignoreScore." ";
 	}
-	
+
 	function _getOtherTables($tname = FALSE) {
-		if( $this->filterAccess !== FALSE ) {
-			if( $tname === FALSE )
-				return   ' LEFT JOIN '.$GLOBALS['prefix_lms'].'_organization_access'
-						.' ON ( '.$GLOBALS['prefix_lms'].'_organization.idOrg = '.$GLOBALS['prefix_lms'].'_organization_access.idOrgAccess )';
+		if ($this->filterAccess !== FALSE) {
+			if ($tname === FALSE)
+				return   ' LEFT JOIN ' . $GLOBALS['prefix_lms'] . '_organization_access'
+					. ' ON ( ' . $GLOBALS['prefix_lms'] . '_organization.idOrg = ' . $GLOBALS['prefix_lms'] . '_organization_access.idOrgAccess )';
 			else
-				return   ' LEFT JOIN '.$GLOBALS['prefix_lms'].'_organization_access'
-						.' ON ( '.$tname.'.idOrg = '.$GLOBALS['prefix_lms'].'_organization_access.idOrgAccess )';
-		} else 
+				return   ' LEFT JOIN ' . $GLOBALS['prefix_lms'] . '_organization_access'
+					. ' ON ( ' . $tname . '.idOrg = ' . $GLOBALS['prefix_lms'] . '_organization_access.idOrgAccess )';
+		} else
 			return "";
 	}
 
@@ -213,51 +216,51 @@ class OrgDirDb extends RepoDirDb {
 		} else
 			return FALSE;*/
 	}
-	
+
 	// overload.
 	// filter organization on idCourse
 	// filterTypes if they are.
 	// visibility in set filterVisibility
 	function _getFilter($tname = FALSE) {
 		$result = "";
-		if( $tname === FALSE ) {
-			$result = " AND (idCourse = '".$this->idCourse."')";
-			if( $this->filterTypes !== NULL )
-				$result .= " AND (objectType IN ( '".implode("','",$this->filterTypes)."' ))";
-			if( $this->filterVisibility ) {
+		if ($tname === FALSE) {
+			$result = " AND (idCourse = '" . $this->idCourse . "')";
+			if ($this->filterTypes !== NULL)
+				$result .= " AND (objectType IN ( '" . implode("','", $this->filterTypes) . "' ))";
+			if ($this->filterVisibility) {
 				$result .= " AND (visible = '1' )";
 				$result .= " AND (NOW() > publish_from OR publish_from = '0000-00-00 00:00:00' OR publish_from IS NULL)";
 			}
 		} else {
-			$result = " AND (".$tname.".idCourse = '".$this->idCourse."')";
-			if( $this->filterTypes !== NULL )
-				$result .= " AND (".$tname.".objectType IN ( '".implode("','",$this->filterTypes)."' ))";
-			if( $this->filterVisibility ) {
+			$result = " AND (" . $tname . ".idCourse = '" . $this->idCourse . "')";
+			if ($this->filterTypes !== NULL)
+				$result .= " AND (" . $tname . ".objectType IN ( '" . implode("','", $this->filterTypes) . "' ))";
+			if ($this->filterVisibility) {
 				$result .= " AND (" . $tname . ".visible = '1' )";
 				$result .= " AND (NOW() > " . $tname . ".publish_from OR " . $tname . ".publish_from = '0000-00-00 00:00:00' OR " . $tname . ".publish_from IS NULL)";
 			}
 		}
-		if( $this->filterAccess !== FALSE ) {
+		if ($this->filterAccess !== FALSE) {
 			$result .= " AND ( "
-				."(".$GLOBALS['prefix_lms']."_organization_access.kind IN ('user','group') "
-				." 	AND ".$GLOBALS['prefix_lms']."_organization_access.value IN ('".join("','",$this->filterAccess)."'))"				
-				." OR (".$GLOBALS['prefix_lms']."_organization_access.idOrgAccess IS NULL AND ".$tname.".objectType != 'test360')"
-				.")";
+				. "(" . $GLOBALS['prefix_lms'] . "_organization_access.kind IN ('user','group') "
+				. " 	AND " . $GLOBALS['prefix_lms'] . "_organization_access.value IN ('" . join("','", $this->filterAccess) . "'))"
+				. " OR (" . $GLOBALS['prefix_lms'] . "_organization_access.idOrgAccess IS NULL AND " . $tname . ".objectType != 'test360')"
+				. ")";
 		}
 		return $result;
 	}
-	
+
 	function isDISTINCT() { return TRUE; }
-	
+
 	function getMaxChildPos( $idFolder ) {
 		$query = "SELECT MAX(SUBSTRING_INDEX(path, '/', -1))"
-				." FROM ". $this->table
-				." WHERE (". $this->fields['idParent'] ." = '". (int)$idFolder ."')"
-				.$this->_getFilter();
-		$rs = sql_query( $query ) 
-				or die( "Error [$query] ". sql_error() );
-		if( sql_num_rows( $rs ) == 1 ) {
-			list( $result ) = sql_fetch_row( $rs );
+			. " FROM " . $this->table
+			. " WHERE (" . $this->fields['idParent'] . " = '" . (int)$idFolder . "')"
+			. $this->_getFilter();
+		$rs = sql_query($query)
+			or die("Error [$query] " . sql_error());
+		if (sql_num_rows($rs) == 1) {
+			list($result) = sql_fetch_row($rs);
 			return $result;
 		} else {
 			return '00000001';
@@ -265,51 +268,51 @@ class OrgDirDb extends RepoDirDb {
 	}
 
 	function getNewPos( $idFolder ) {
-		return substr('00000000' .($this->getMaxChildPos( $idFolder )+1), -8);
+		return substr('00000000' . ($this->getMaxChildPos($idFolder) + 1), -8);
 	}
-	
+
 	function moveUp( $idFolder ) {
-		$folder = $this->getFolderById( $idFolder );
+		$folder = $this->getFolderById($idFolder);
 		// $parent = $this->tdb->getFolderById( $folder->idParent );
-		$arrIdSiblings = $this->getChildrensIdById( $folder->idParent );
-		if( !is_array( $arrIdSiblings ) )
+		$arrIdSiblings = $this->getChildrensIdById($folder->idParent);
+		if (!is_array($arrIdSiblings))
 			return;
-		$pos = array_search( $idFolder, $arrIdSiblings );
-		if( $pos === NULL || $pos === FALSE ) // prior to php 4.2.0 and after
+		$pos = array_search($idFolder, $arrIdSiblings);
+		if ($pos === NULL || $pos === FALSE) // prior to php 4.2.0 and after
 			return;
-		if( $pos == 0 ) // I know it's possible the merge with previous if but this is clear ...
+		if ($pos == 0) // I know it's possible the merge with previous if but this is clear ...
 			return;
-		$folder2 = $this->getFolderById( $arrIdSiblings[$pos-1] );
-		$tmpArr = explode( '/', $folder->path );
-		$folderName = $tmpArr[count($tmpArr)-1];
-		$tmpArr = explode( '/', $folder2->path );
-		$folderName2 = $tmpArr[count($tmpArr)-1];
-		parent::renameFolder( $folder, $folderName2."tmp" );
-		parent::renameFolder( $folder2, $folderName );
-		parent::renameFolder( $folder, $folderName2 );
+		$folder2 = $this->getFolderById($arrIdSiblings[$pos - 1]);
+		$tmpArr = explode('/', $folder->path);
+		$folderName = $tmpArr[count($tmpArr) - 1];
+		$tmpArr = explode('/', $folder2->path);
+		$folderName2 = $tmpArr[count($tmpArr) - 1];
+		parent::renameFolder($folder, $folderName2 . "tmp");
+		parent::renameFolder($folder2, $folderName);
+		parent::renameFolder($folder, $folderName2);
 	}
-	
+
 	function moveDown( $idFolder ) {
-		$folder = $this->getFolderById( $idFolder );
+		$folder = $this->getFolderById($idFolder);
 		// $parent = $this->tdb->getFolderById( $folder->idParent );
-		$arrIdSiblings = $this->getChildrensIdById( $folder->idParent );
-		if( !is_array( $arrIdSiblings ) )
+		$arrIdSiblings = $this->getChildrensIdById($folder->idParent);
+		if (!is_array($arrIdSiblings))
 			return;
-		$pos = array_search( $idFolder, $arrIdSiblings );
-		if( $pos === NULL || $pos === FALSE ) // prior to php 4.2.0 and after
+		$pos = array_search($idFolder, $arrIdSiblings);
+		if ($pos === NULL || $pos === FALSE) // prior to php 4.2.0 and after
 			return;
-		if( $pos == (count($arrIdSiblings)-1) ) 
+		if ($pos == (count($arrIdSiblings) - 1))
 			return;
-		$folder2 = $this->getFolderById( $arrIdSiblings[$pos+1] );
-		$tmpArr = explode( '/', $folder->path );
-		$folderName = $tmpArr[count($tmpArr)-1];
-		$tmpArr = explode( '/', $folder2->path );
-		$folderName2 = $tmpArr[count($tmpArr)-1];
-		parent::renameFolder( $folder, $folderName2."tmp" );
-		parent::renameFolder( $folder2, $folderName );
-		parent::renameFolder( $folder, $folderName2 );
+		$folder2 = $this->getFolderById($arrIdSiblings[$pos + 1]);
+		$tmpArr = explode('/', $folder->path);
+		$folderName = $tmpArr[count($tmpArr) - 1];
+		$tmpArr = explode('/', $folder2->path);
+		$folderName2 = $tmpArr[count($tmpArr) - 1];
+		parent::renameFolder($folder, $folderName2 . "tmp");
+		parent::renameFolder($folder2, $folderName);
+		parent::renameFolder($folder, $folderName2);
 	}
-	
+
 	function addFolderById( $idParent, $folderName, $idCourse = FALSE ) {
 		$this->org_title = $folderName;
 		$this->org_objectType = '';
@@ -324,31 +327,33 @@ class OrgDirDb extends RepoDirDb {
 		$this->org_resource = '';
 		$this->org_objective = '';
 		$this->org_dateInsert = '';
-		
+
 		$this->org_prerequisites = '';
 		$this->org_isTerminator = 0;
 		$this->org_idParam = 0;
 		$this->org_visible = 1;
 		$this->org_milestone = '-';
-		
+
 		$this->org_width = '';
 		$this->org_height = '';
 		$this->org_publish_from = NULL;
 		$this->org_publish_to = NULL;
 		$this->org_publish_for = '';
+		$this->org_ignoreScore = (Get::sett('ignore_score', 'on') == "on" ? 1 : 0 );
 		
-		if( $idCourse === FALSE ) 
+
+		if ($idCourse === FALSE)
 			$this->org_idCourse = $this->idCourse;
 		else
 			$this->org_idCourse = $idCourse;
-		TreeDb::addFolderById( $idParent, $this->getNewPos( $idParent ));
+		TreeDb::addFolderById($idParent, $this->getNewPos($idParent));
 	}
-	
+
 	function addItem( 	$idParent, $title, $objectType, $idResource, $idCategory,
 						$idUser, $idAuthor, $version, $difficult, $description,
 						$language, $resource, $objective, $dateInsert,
 						$otherData = NULL, $idCourse = FALSE ) {
-		require_once($GLOBALS['where_lms'].'/lib/lib.param.php');
+		require_once($GLOBALS['where_lms'] . '/lib/lib.param.php');
 		$this->org_title = $title;
 		$this->org_objectType = $objectType;
 		$this->org_idResource = $idResource;
@@ -365,83 +370,85 @@ class OrgDirDb extends RepoDirDb {
 
 		$this->org_prerequisites = '';
 		$this->org_isTerminator = 0;
+		$this->org_ignoreScore = (Get::sett('ignore_score', 'on') == "on" ? 1 : 0 );
 		$this->org_visible = 1;
-		if( $idCourse === FALSE )
+		if ($idCourse === FALSE)
 			$this->org_idCourse = $this->idCourse;
 		else
 			$this->org_idCourse = $idCourse;
 
-		require_once(_lms_.'/lib/lib.module.php');
-		$lo = createLO( $objectType );
+		require_once(_lms_ . '/lib/lib.module.php');
+		$lo = createLO($objectType);
 
 		if ($lo) { // Add object to the uncategorized resources
-			require_once(_lms_.'/lib/lib.kbres.php');
-			$kbres =new KbRes();
-			$lang =(isset($_SESSION['idCourse']) && defined("LMS") ? Docebo::course()->getValue('lang_code') : false);
+			require_once(_lms_ . '/lib/lib.kbres.php');
+			$kbres = new KbRes();
+			$lang = (isset($_SESSION['idCourse']) && defined("LMS") ? Docebo::course()->getValue('lang_code') : false);
 			$kbres->saveUncategorizedResource($title, $idResource, $objectType, 'course_lo', $this->org_idCourse, false, $lang);
 		}
-						
+
 		$arrParamsInfo = $lo->getParamInfo();
-		if( $arrParamsInfo !== FALSE ) {
-			$param = current( $arrParamsInfo );
-			$this->org_idParam = setLOParam( NULL, $param['param_name'], '');
-			next( $arrParamsInfo );
-			while( $param = current( $arrParamsInfo ) ) {
-				setLOParam( $this->org_idParam, $param['param_name'], '');
-				next( $arrParamsInfo );
+		if ($arrParamsInfo !== FALSE) {
+			$param = current($arrParamsInfo);
+			$this->org_idParam = setLOParam(NULL, $param['param_name'], '');
+			next($arrParamsInfo);
+			while ($param = current($arrParamsInfo)) {
+				setLOParam($this->org_idParam, $param['param_name'], '');
+				next($arrParamsInfo);
 			}
-			reset( $arrParamsInfo );
+			reset($arrParamsInfo);
 		} else {
-			$this->org_idParam = setLOParam( NULL, 'idReference', '');
+			$this->org_idParam = setLOParam(NULL, 'idReference', '');
 		}
 
-		$idReference = TreeDb::addFolderById( $idParent, $this->getNewPos( $idParent ));
-		setLOParam( $this->org_idParam, 'idReference', $idReference);
+		$idReference = TreeDb::addFolderById($idParent, $this->getNewPos($idParent));
+		setLOParam($this->org_idParam, 'idReference', $idReference);
 		return $idReference;
 	}
-	
+
 	function addItemById( $idParent, $idObject, $idCourse = FALSE ) {
-		require_once($GLOBALS['where_lms'].'/lib/lib.param.php');
+		require_once($GLOBALS['where_lms'] . '/lib/lib.param.php');
 		$query = "SELECT `title`, `objectType`, `idResource`"
-			." FROM ".$GLOBALS['prefix_lms']."_homerepo"
-			." WHERE idObject='". (int)$idObject . "'";
-		list( $title, $objectType, $idResource ) = sql_fetch_row(sql_query($query));
+			. " FROM " . $GLOBALS['prefix_lms'] . "_homerepo"
+			. " WHERE idObject='" . (int)$idObject . "'";
+		list($title, $objectType, $idResource) = sql_fetch_row(sql_query($query));
 		$this->org_idObject = $idObject;
 		$this->org_title = $title;
 		$this->org_objectType = $objectType;
-		$this->org_prerequisites = '';	
+		$this->org_prerequisites = '';
 		$this->org_isTerminator = 0;
+		$this->org_ignoreScore = (Get::sett('ignore_score', 'on') == "on" ? 1 : 0 );
 		$this->org_idResource = $idResource;
 		$this->org_visible = 1;
-		if( $idCourse === FALSE ) 
+		if ($idCourse === FALSE)
 			$this->org_idCourse = $this->idCourse;
 		else
 			$this->org_idCourse = $idCourse;
-		
+
 		// creation of custom params
 		$lo = createLO( $this->org_objectType, 
-						$this->org_idResource, 
-						NULL, 
+			$this->org_idResource,
+			NULL,
 						array() );
 		$arrParamsInfo = $lo->getParamInfo();
-		if( $arrParamsInfo !== FALSE ) {
-			$param = current( $arrParamsInfo );
-			$this->org_idParam = setLOParam( NULL, $param['param_name'], '');
-			next( $arrParamsInfo );
-			while( $param = current( $arrParamsInfo ) ) {
-				setLOParam( $this->org_idParam, $param['param_name'], '');
-				next( $arrParamsInfo );
+		if ($arrParamsInfo !== FALSE) {
+			$param = current($arrParamsInfo);
+			$this->org_idParam = setLOParam(NULL, $param['param_name'], '');
+			next($arrParamsInfo);
+			while ($param = current($arrParamsInfo)) {
+				setLOParam($this->org_idParam, $param['param_name'], '');
+				next($arrParamsInfo);
 			}
-			reset( $arrParamsInfo );
+			reset($arrParamsInfo);
 		} else {
-			$this->org_idParam = setLOParam( NULL, 'idReference', '');
+			$this->org_idParam = setLOParam(NULL, 'idReference', '');
 		}
-		
-		$idReference = parent::addFolderById( $idParent, $this->getNewPos( $idParent ));
-		setLOParam( $this->org_idParam, 'idReference', $idReference);
+
+		$idReference = parent::addFolderById($idParent, $this->getNewPos($idParent));
+		setLOParam($this->org_idParam, 'idReference', $idReference);
 		return $idReference;
 	}
-	
+
 	/** change normal behavior. 
 	 *  NOTE: In organizations rename change title field not path 
 	 **/
@@ -459,49 +466,50 @@ class OrgDirDb extends RepoDirDb {
 		$this->org_resource = $folder->otherValues[REPOFIELDRESOURCE];
 		$this->org_objective = $folder->otherValues[REPOFIELDOBJECTIVE];
 		$this->org_dateInsert = $folder->otherValues[REPOFIELDDATEINSERT];
-		
+
 		$this->org_idCourse = $folder->otherValues[ORGFIELDIDCOURSE];
 		$this->org_prerequisites = $folder->otherValues[ORGFIELDPREREQUISITES];
 		$this->org_isTerminator = $folder->otherValues[ORGFIELDISTERMINATOR];
 		$this->org_idParam = $folder->otherValues[ORGFIELDIDPARAM];
 		$this->org_visible = $folder->otherValues[ORGFIELDVISIBLE];
 		$this->org_milestone = $folder->otherValues[ORGFIELDMILESTONE];
-		
+
 		$this->org_width = $folder->otherValues[ORGFIELD_WIDTH];
 		$this->org_height = $folder->otherValues[ORGFIELD_HEIGHT];
 		$this->org_publish_from = $folder->otherValues[ORGFIELD_PUBLISHFROM];
 		$this->org_publish_to = $folder->otherValues[ORGFIELD_PUBLISHTO];
 		$this->org_access = $folder->otherValues[ORGFIELD_ACCESS];
 		$this->org_publish_for = $folder->otherValues[ORGFIELD_PUBLISHFOR];
-		
+		$this->org_ignoreScore = $folder->otherValues[ORGFIELDIGNORESCORE];
+
 		return $this->changeOtherData( $folder );
 	}
-	
+
 	function _strip($data, $cond) { return ( $cond ? stripslashes($data) : $data  ); }
-	
+
 	function modifyItem( $arrData, $idCourse = FALSE, $strips = false ) {
-		$folder = $this->getFolderById( $arrData['idItem'] );
-		
-		require_once(_base_.'/lib/lib.tab.php' );
-	
-		$tv = new TabView( 'organization_properties', '#' );
-		
-		$tv->addTab( new TabElemDefault( 'prereqisites','', getPathImage().'standard/property.png' ) );
-		$tv->addTab( new TabElemDefault( 'settings', '', getPathImage().'standard/property.png' ) );
+		$folder = $this->getFolderById($arrData['idItem']);
+
+		require_once(_base_ . '/lib/lib.tab.php');
+
+		$tv = new TabView('organization_properties', '#');
+
+		$tv->addTab(new TabElemDefault('prereqisites', '', getPathImage() . 'standard/property.png'));
+		$tv->addTab(new TabElemDefault('settings', '', getPathImage() . 'standard/property.png'));
 		//$tv->addTab( new TabElemDefault( 'catalogation', '', getPathImage().'standard/edit.png' ) );
-		
-		$tv->parseInput( $_POST, $_POST );
-		
+
+		$tv->parseInput($_POST, $_POST);
+
 		$prerequisite = '';
-		
+
 		if($tv->getActiveTab() === 'prereqisites')
 		{
-			if(isset($arrData['organization']['REPO_OP_SELECTITEM']))
+			if (isset($arrData['organization']['REPO_OP_SELECTITEM']))
 				$prerequisite = implode(',', $arrData['organization']['REPO_OP_SELECTITEM']);
 		}
 		else
 			$prerequisite = $arrData['prerequisites'];
-		
+
 		// unmodifiable values
 		$this->org_objectType = $folder->otherValues[REPOFIELDOBJECTTYPE];
 		$this->org_idResource = $folder->otherValues[REPOFIELDIDRESOURCE];
@@ -509,177 +517,181 @@ class OrgDirDb extends RepoDirDb {
 		$this->org_idAuthor = $folder->otherValues[REPOFIELDIDAUTHOR];
 		$this->org_dateInsert = $folder->otherValues[REPOFIELDDATEINSERT];
 
-		
-		$this->org_title = isset($arrData['title'])
-									? $this->_strip($arrData['title'], $strips)
-									:stripslashes($folder->otherValues[REPOFIELDTITLE]);
-		$this->org_idCategory = isset($arrData['idCategory'])
-									?$arrData['idCategory']
-									:$folder->otherValues[REPOFIELDIDCATEGORY];
-		$this->org_version = isset($arrData['version'])
-									?$arrData['version']
-									:$folder->otherValues[REPOFIELDVERSION];
-		$this->org_difficult = isset($arrData['difficult'])
-									?$arrData['difficult']
-									:$folder->otherValues[REPOFIELDDIFFICULT];
-		$this->org_description = isset($arrData['description'])
-									? $this->_strip($arrData['description'], $strips)
-									:$folder->otherValues[REPOFIELDDESCRIPTION];
-		$this->org_language = isset( $arrData['language'])
-									?$this->_strip($arrData['language'], $strips)
-									:$folder->otherValues[REPOFIELDLANGUAGE];
-		$this->org_resource = isset( $arrData['resource'])
-									?$this->_strip($arrData['resource'], $strips)
-									:$folder->otherValues[REPOFIELDRESOURCE];
-		$this->org_objective = isset($arrData['objective'])
-									? $this->_strip($arrData['objective'], $strips)
-									:$folder->otherValues[REPOFIELDOBJECTIVE];
 
-		if( isset($arrData['prerequisites']) )
-			$this->org_prerequisites = $this->makePrerequisites( $arrData['idItem'], $prerequisite, $arrData['selfPrerequisites'] );
+		$this->org_title = isset($arrData['title'])
+			? $this->_strip($arrData['title'], $strips)
+			: stripslashes($folder->otherValues[REPOFIELDTITLE]);
+		$this->org_idCategory = isset($arrData['idCategory'])
+			? $arrData['idCategory']
+			: $folder->otherValues[REPOFIELDIDCATEGORY];
+		$this->org_version = isset($arrData['version'])
+			? $arrData['version']
+			: $folder->otherValues[REPOFIELDVERSION];
+		$this->org_difficult = isset($arrData['difficult'])
+			? $arrData['difficult']
+			: $folder->otherValues[REPOFIELDDIFFICULT];
+		$this->org_description = isset($arrData['description'])
+			? $this->_strip($arrData['description'], $strips)
+			: $folder->otherValues[REPOFIELDDESCRIPTION];
+		$this->org_language = isset($arrData['language'])
+			? $this->_strip($arrData['language'], $strips)
+			: $folder->otherValues[REPOFIELDLANGUAGE];
+		$this->org_resource = isset($arrData['resource'])
+			? $this->_strip($arrData['resource'], $strips)
+			: $folder->otherValues[REPOFIELDRESOURCE];
+		$this->org_objective = isset($arrData['objective'])
+			? $this->_strip($arrData['objective'], $strips)
+			: $folder->otherValues[REPOFIELDOBJECTIVE];
+
+		if (isset($arrData['prerequisites']))
+			$this->org_prerequisites = $this->makePrerequisites($arrData['idItem'], $prerequisite, $arrData['selfPrerequisites']);
 		else
-		    $this->org_prerequisites = $folder->otherValues[ORGFIELDPREREQUISITES];
+			$this->org_prerequisites = $folder->otherValues[ORGFIELDPREREQUISITES];
 
 		$this->org_isTerminator = isset($arrData['isTerminator'])
-									?$arrData['isTerminator']
-									:$folder->otherValues[ORGFIELDISTERMINATOR];
+			? $arrData['isTerminator']
+			: $folder->otherValues[ORGFIELDISTERMINATOR];
+
+		$this->org_ignoreScore = isset($arrData['ignoreScore'])
+									?$arrData['ignoreScore']
+									:$folder->otherValues[ORGFIELDIGNORESCORE];
 									
 		$this->org_idParam = $folder->otherValues[ORGFIELDIDPARAM];
 		$this->org_visible = isset($arrData['visibility'])
-									?$arrData['visibility']
-									:$folder->otherValues[ORGFIELDVISIBLE];
+			? $arrData['visibility']
+			: $folder->otherValues[ORGFIELDVISIBLE];
 
-		if( $idCourse === FALSE ) 
+		if ($idCourse === FALSE)
 			$this->org_idCourse = $this->idCourse;
 		else
-			$this->org_idCourse = $idCourse;		
+			$this->org_idCourse = $idCourse;
 
-									
-		if( isset($arrData['milestone']) ) {
+
+		if (isset($arrData['milestone'])) {
 			$this->org_milestone = $arrData['milestone'];
 			/* reset milestone */
 			if( $this->org_milestone != '-' 
 				&& $this->org_milestone != $folder->otherValues[ORGFIELDMILESTONE] )
-				$this->_resetMilestone( $this->org_milestone, $this->org_idCourse );
+				$this->_resetMilestone($this->org_milestone, $this->org_idCourse);
 		} else {
 			$this->org_milestone = $folder->otherValues[ORGFIELDMILESTONE];
 		}
-		
+
 		$this->org_width = isset($arrData['obj_width'])
-									?$arrData['obj_width']
-									:$folder->otherValues[ORGFIELD_WIDTH];
-		
+			? $arrData['obj_width']
+			: $folder->otherValues[ORGFIELD_WIDTH];
+
 		$this->org_height = isset($arrData['obj_height'])
-									?$arrData['obj_height']
-									:$folder->otherValues[ORGFIELD_HEIGHT];
-		
+			? $arrData['obj_height']
+			: $folder->otherValues[ORGFIELD_HEIGHT];
+
 		$arrData['publish_from'] = Format::dateDb($arrData['publish_from'], 'date');
 		$arrData['publish_to'] = Format::dateDb($arrData['publish_to'], 'date');
-		
-		if($arrData['publish_from'] > $arrData['publish_to'] && $arrData['publish_to'] != "") {
+
+		if ($arrData['publish_from'] > $arrData['publish_to'] && $arrData['publish_to'] != "") {
 			$temp = $arrData['publish_from'];
 			$arrData['publish_from'] = $arrData['publish_to'];
 			$arrData['publish_to'] = $temp;
 		}
-		
+
 		$this->org_publish_from = isset($arrData['publish_from'])
-									?$arrData['publish_from']
-									:$folder->otherValues[ORGFIELD_PUBLISHFROM];
-									
+			? $arrData['publish_from']
+			: $folder->otherValues[ORGFIELD_PUBLISHFROM];
+
 		$this->org_publish_to = isset($arrData['publish_to'])
-									?$arrData['publish_to']
-									:$folder->otherValues[ORGFIELD_PUBLISHTO];
-			
+			? $arrData['publish_to']
+			: $folder->otherValues[ORGFIELD_PUBLISHTO];
+
 		$this->org_access = $folder->otherValues[ORGFIELD_ACCESS];
 
 		$this->org_publish_for = isset($arrData['publish_for'])
-									?$arrData['publish_for']
-									:$folder->otherValues[ORGFIELD_PUBLISHFOR];
-		
-		$this->changeOtherData( $folder );
-		
-		if( isset($arrData['accessGroups']) ){
-			if( $arrData['accessGroups'] == '' )
+			? $arrData['publish_for']
+			: $folder->otherValues[ORGFIELD_PUBLISHFOR];
+
+		$this->changeOtherData($folder);
+
+		if (isset($arrData['accessGroups'])) {
+			if ($arrData['accessGroups'] == '')
 				$arrGroups = array();
 			else
 				$arrGroups = Util::unserialize(urldecode($arrData['accessGroups']));
-			
-			if( $arrData['accessUsers'] == '' )
+
+			if ($arrData['accessUsers'] == '')
 				$arrUsers = array();
 			else
 				$arrUsers = Util::unserialize(urldecode($arrData['accessUsers']));
-			
-			$this->setAccess( $arrData['idItem'], $arrGroups, $arrUsers );
+
+			$this->setAccess($arrData['idItem'], $arrGroups, $arrUsers);
 		}
-			
-		if( $this->org_objectType != '' && isset($arrData['customParam'])) {
+
+		if ($this->org_objectType != '' && isset($arrData['customParam'])) {
 			// ---- custom LO parameters
-			
+
 			$lo = createLO(	$this->org_objectType,
-							$this->org_idResource,
-							$this->org_idParam,
+				$this->org_idResource,
+				$this->org_idParam,
 							array() );
 			$arrParamsInfo = $lo->getParamInfo();
-			
-			if( $arrParamsInfo !== FALSE ) {
-				require_once($GLOBALS['where_lms'].'/lib/lib.param.php');
-				while( $param = current($arrParamsInfo) ) {
-					if( isset( $arrData[$param['param_name']] ) ){
-						setLOParam( $this->org_idParam, $param['param_name'], $arrData[$param['param_name']] );
+
+			if ($arrParamsInfo !== FALSE) {
+				require_once($GLOBALS['where_lms'] . '/lib/lib.param.php');
+				while ($param = current($arrParamsInfo)) {
+					if (isset($arrData[$param['param_name']])) {
+						setLOParam($this->org_idParam, $param['param_name'], $arrData[$param['param_name']]);
 					}
-					next( $arrParamsInfo );
+					next($arrParamsInfo);
 				}
 			}
 		}
 	}
-	
+
 	function _resetMilestone( $milestone, $idCourse ) {
-		$query = "UPDATE ".$this->table
-				."   SET milestone = '-'"
-				." WHERE milestone = '".$milestone."'"
-				."   AND  idCourse = '".(int)$idCourse."'";
-		return sql_query( $query );
+		$query = "UPDATE " . $this->table
+			. "   SET milestone = '-'"
+			. " WHERE milestone = '" . $milestone . "'"
+			. "   AND  idCourse = '" . (int)$idCourse . "'";
+		return sql_query($query);
 	}
-	
+
 	function getMilestone( $milestone, $idCourse ) {
-		$query = "SELECT idOrg FROM ".$this->table
-				." WHERE milestone = '".$milestone."'"
-				."   AND  idCourse = '".(int)$idCourse."'";
+		$query = "SELECT idOrg FROM " . $this->table
+			. " WHERE milestone = '" . $milestone . "'"
+			. "   AND  idCourse = '" . (int)$idCourse . "'";
 		$rs = sql_query($query);
-		if( sql_num_rows($rs) == 1) {
+		if (sql_num_rows($rs) == 1) {
 			list($idFolder) = sql_fetch_row($rs);
-			$folder = $this->getFolderById( $idFolder );
+			$folder = $this->getFolderById($idFolder);
 			return $folder;
 		} else {
 			return FALSE;
 		}
 	}
-	
+
 	function _deleteTree( $folder ) {
-		if( parent::_deleteTree( $folder ) ) {
-			$query = "SELECT idOrg, prerequisites FROM ".$this->table
-					." WHERE FIND_IN_SET( '".$folder->id."', prerequisites ) > 0";
+		if (parent::_deleteTree($folder)) {
+			$query = "SELECT idOrg, prerequisites FROM " . $this->table
+				. " WHERE FIND_IN_SET( '" . $folder->id . "', prerequisites ) > 0";
 			$rs = sql_query($query);
 			if ($rs)
 				$num_rows = sql_num_rows($rs);
 			else
 				$num_rows = 0;
 			if ($num_rows)
-				while( list($idOrg, $prerequisites) = sql_fetch_row($rs) ) {
-					$arrPrequisites = explode(',',$prerequisites);
-					$key = array_search( $folder->id, $arrPrequisites );
-					unset( $arrPrequisites[$key] );
-					$prerequisites = implode(',',$arrPrequisites);
-					sql_query( "UPDATE ".$this->table
-								."   SET prerequisites='".$prerequisites."' "
-								." WHERE idOrg='".$idOrg."'" );
-				$this->deleteAllAccessUG($idOrg);
+				while (list($idOrg, $prerequisites) = sql_fetch_row($rs)) {
+					$arrPrequisites = explode(',', $prerequisites);
+					$key = array_search($folder->id, $arrPrequisites);
+					unset($arrPrequisites[$key]);
+					$prerequisites = implode(',', $arrPrequisites);
+					sql_query("UPDATE " . $this->table
+						. "   SET prerequisites='" . $prerequisites . "' "
+						. " WHERE idOrg='" . $idOrg . "'");
+					$this->deleteAllAccessUG($idOrg);
 				}
 			return TRUE;
-		} else 
+		} else
 			return FALSE;
 	}
-	
+
 	/**
 	 * function deleteAllTree()
 	 *	Delete all items in tree, all folders, all records!
@@ -687,17 +699,17 @@ class OrgDirDb extends RepoDirDb {
 	 **/
 	function deleteAllTree() {
 		// loop on all items
-		require_once($GLOBALS['where_lms'].'/lib/lib.param.php');
-		require_once($GLOBALS['where_lms'].'/class.module/track.object.php');
+		require_once($GLOBALS['where_lms'] . '/lib/lib.param.php');
+		require_once($GLOBALS['where_lms'] . '/class.module/track.object.php');
 		$nullVal = NULL;
-		$coll = $this->getFoldersCollection( $nullVal );
-		while( $folder = $coll->getNext() ) {
-			if( $folder->otherValues[REPOFIELDIDRESOURCE] != 0 ) {
-				$lo = createLO(	$folder->otherValues[REPOFIELDOBJECTTYPE]);
+		$coll = $this->getFoldersCollection($nullVal);
+		while ($folder = $coll->getNext()) {
+			if ($folder->otherValues[REPOFIELDIDRESOURCE] != 0) {
+				$lo = createLO($folder->otherValues[REPOFIELDOBJECTTYPE]);
 				$this->deleteAllAccessUG($folder->id);
-				delAllLOParam( $folder->otherValues[ORGFIELDIDPARAM] );
+				delAllLOParam($folder->otherValues[ORGFIELDIDPARAM]);
 				Track_Object::delIdTrackFromCommon($folder->id);
-				if( $lo->del($folder->otherValues[REPOFIELDIDRESOURCE]) === FALSE ) {
+				if ($lo->del($folder->otherValues[REPOFIELDIDRESOURCE]) === FALSE) {
 					return FALSE;
 				}
 			}
@@ -706,7 +718,7 @@ class OrgDirDb extends RepoDirDb {
 		TreeDb::deleteAllTree();
 		return TRUE;
 	}
-	
+
 	/**
 	 * @internal
 	 * Get users or groups access for an object in organization
@@ -717,20 +729,20 @@ class OrgDirDb extends RepoDirDb {
 	 */
 	function _getAccessUG( $idOrgAccess, $kind ) {
 		return true;
-		
-		$query = "SELECT value FROM ".$GLOBALS['prefix_lms']."_organization_access"
-				." WHERE idOrgAccess = '".(int)$idOrgAccess."'"
-				."   AND kind = '".$kind."'";
-		$rs = sql_query( $query );
-		if( $rs === FALSE ) {
-			errorCommunication( "ERROR in query ".$query );
+
+		$query = "SELECT value FROM " . $GLOBALS['prefix_lms'] . "_organization_access"
+			. " WHERE idOrgAccess = '" . (int)$idOrgAccess . "'"
+			. "   AND kind = '" . $kind . "'";
+		$rs = sql_query($query);
+		if ($rs === FALSE) {
+			errorCommunication("ERROR in query " . $query);
 			exit(0);
 		} else {
 			$result = array();
-			while( list( $id ) = sql_fetch_row( $rs ) ) 
+			while (list($id) = sql_fetch_row($rs))
 				$result[] = $id;
 			return $result;
-		}		
+		}
 	}
 	/**
 	 *	Get groups access for an object in organization
@@ -740,10 +752,10 @@ class OrgDirDb extends RepoDirDb {
 	 */
 	function getAccessGroups( $idOrgAccess ) {
 		return true;
-		
-		return $this->_getAccessUG( $idOrgAccess, ACLKINDGROUP );
+
+		return $this->_getAccessUG($idOrgAccess, ACLKINDGROUP);
 	}
-	
+
 	/**
 	 *	Get users access for an object in organization
 	 *	@param int $idOrgAccess id of the organization item
@@ -752,10 +764,10 @@ class OrgDirDb extends RepoDirDb {
 	 */
 	function getAccessUsers( $idOrgAccess ) {
 		return true;
-		
-		return $this->_getAccessUG( $idOrgAccess, ACLKINDUSER );
+
+		return $this->_getAccessUG($idOrgAccess, ACLKINDUSER);
 	}
-	
+
 	/**
 	 *	@internal
 	 * 	Insert an user or group to access list of object
@@ -765,37 +777,37 @@ class OrgDirDb extends RepoDirDb {
 	 **/
 	function _insertAccessUG( $idOrgAccess, $kind, $id ) {
 		return true;
-		
-		$query = "INSERT INTO ".$GLOBALS['prefix_lms']."_organization_access"
-				." (idOrgAccess, kind, value) VALUES ("
-				." '".(int)$idOrgAccess."','".$kind."','".(int)$id."')";
-		$rs = sql_query( $query );
-		if( $rs === FALSE ) { 
-			if( sql_errno() == 1062 ) {
+
+		$query = "INSERT INTO " . $GLOBALS['prefix_lms'] . "_organization_access"
+			. " (idOrgAccess, kind, value) VALUES ("
+			. " '" . (int)$idOrgAccess . "','" . $kind . "','" . (int)$id . "')";
+		$rs = sql_query($query);
+		if ($rs === FALSE) {
+			if (sql_errno() == 1062) {
 				// duplicate entry. This is not a error that should block
 				return;
 			} else {
-				errorCommunication( "Error on query ".$query );
-				exit( 0 );
+				errorCommunication("Error on query " . $query);
+				exit(0);
 			}
 		}
 	}
-	
+
 	/**
 	 * Remove all user and groups from access list of object
 	 * @param int $idOrgAccess id of the item to set access to
 	 **/
 	function deleteAllAccessUG( $idOrgAccess ) {
-		$query = "DELETE FROM ".$GLOBALS['prefix_lms']."_organization_access"
-				." WHERE idOrgAccess = '".(int)$idOrgAccess."'";
-		$rs = sql_query( $query );
-		if( $rs === FALSE ) { 
-			errorCommunication( "Error on query ".$query );
-			exit( 0 );
-		}		
+		$query = "DELETE FROM " . $GLOBALS['prefix_lms'] . "_organization_access"
+			. " WHERE idOrgAccess = '" . (int)$idOrgAccess . "'";
+		$rs = sql_query($query);
+		if ($rs === FALSE) {
+			errorCommunication("Error on query " . $query);
+			exit(0);
+		}
 	}
-	 
-	
+
+
 	/**
 	 *	@internal
 	 *	Remove an user or grouo from access list of object
@@ -804,17 +816,17 @@ class OrgDirDb extends RepoDirDb {
 	 *	@param int $id id of user or group to add to ACL of object
 	 **/
 	function _deleteAccessUG( $idOrgAccess, $kind, $id ) {
-		$query = "DELETE FROM ".$GLOBALS['prefix_lms']."_organization_access"
-				." WHERE idOrgAccess = '".(int)$idOrgAccess."'"
-				."   AND kind = '".$kind."'"
-				."   AND value = '".(int)$id."'";
-		$rs = sql_query( $query );
-		if( $rs === FALSE ) { 
-			errorCommunication( "Error on query ".$query );
-			exit( 0 );
+		$query = "DELETE FROM " . $GLOBALS['prefix_lms'] . "_organization_access"
+			. " WHERE idOrgAccess = '" . (int)$idOrgAccess . "'"
+			. "   AND kind = '" . $kind . "'"
+			. "   AND value = '" . (int)$id . "'";
+		$rs = sql_query($query);
+		if ($rs === FALSE) {
+			errorCommunication("Error on query " . $query);
+			exit(0);
 		}
 	}
-	
+
 	/** 
 	 *	@internal
 	 *	Update user or group access to object. 
@@ -825,21 +837,21 @@ class OrgDirDb extends RepoDirDb {
 	 **/
 	function _setAccessUG( $idOrgAccess, $kind, $arrId ) {
 		return true;
-		$arrCurrId = $this->_getAccessUG( $idOrgAccess, $kind );
+		$arrCurrId = $this->_getAccessUG($idOrgAccess, $kind);
 
-		while( list( $currKey, $currId ) = each($arrCurrId) ) {
-			$pos = array_search( $currId, $arrId );
-			if( $pos === FALSE ) {
-				$this->_deleteAccessUG( $idOrgAccess, $kind, $currId );
+		while (list($currKey, $currId) = each($arrCurrId)) {
+			$pos = array_search($currId, $arrId);
+			if ($pos === FALSE) {
+				$this->_deleteAccessUG($idOrgAccess, $kind, $currId);
 			} else {
-				unset( $arrId[$pos]);
+				unset($arrId[$pos]);
 			}
 		}
 		// now in $arrId they are only $id to insert
-		while( list( $newKey, $newId ) = each( $arrId ) )
-			$this->_insertAccessUG( $idOrgAccess, $kind, $newId );
+		while (list($newKey, $newId) = each($arrId))
+			$this->_insertAccessUG($idOrgAccess, $kind, $newId);
 	}
-	
+
 	/**
 	 *	Set access for an object in organization
 	 *	To reset all access simply assign empry arrays
@@ -853,118 +865,118 @@ class OrgDirDb extends RepoDirDb {
 	 **/
 	function setAccess( $idOrgAccess, $idGroups, $idUsers ) {
 		return true;
-		if( $idGroups !== NULL )
-			$this->_setAccessUG( $idOrgAccess, ACLKINDGROUP, $idGroups );
-		if( $idUsers !== NULL )
-			$this->_setAccessUG( $idOrgAccess, ACLKINDUSER, $idUsers );
+		if ($idGroups !== NULL)
+			$this->_setAccessUG($idOrgAccess, ACLKINDGROUP, $idGroups);
+		if ($idUsers !== NULL)
+			$this->_setAccessUG($idOrgAccess, ACLKINDUSER, $idUsers);
 	}
-	
+
 	/**
 	 * 	Return an array with all groups of the course that have a prof as owner
 	 * 	@return array all groups of course with a prof as user
 	 */
 	function getAllGroups() {
-		$query = "SELECT idGroup, groupName FROM ".$GLOBALS['prefix_lms']."_coursegroup"
-				." WHERE idCourse = '".(int)$this->idCourse."'"
-				."   AND level >= 6 ";
-		$rs = sql_query( $query );
-		if( $rs === FALSE ) {
-			errorCommunication( "Error in query ".$query );
-			exit( 0 );
+		$query = "SELECT idGroup, groupName FROM " . $GLOBALS['prefix_lms'] . "_coursegroup"
+			. " WHERE idCourse = '" . (int)$this->idCourse . "'"
+			. "   AND level >= 6 ";
+		$rs = sql_query($query);
+		if ($rs === FALSE) {
+			errorCommunication("Error in query " . $query);
+			exit(0);
 		}
 		$result = array();
-		while( list( $idGroup, $groupName ) = sql_fetch_row( $rs ) )
+		while (list($idGroup, $groupName) = sql_fetch_row($rs))
 			$result[$idGroup] = $groupName;
 		return $result;
 	}
-	
+
 	/**
 	 * 	Return an array with all the users of the course
 	 * 	@return array all users of course
 	 */
 	function getAllUsers() {
 		$query = "SELECT u.idUser, u.userid "
-				." FROM ".$GLOBALS['prefix_lms']."_courseuser cu, ".$GLOBALS['prefix_lms']."_user u "
-				." WHERE idCourse = '".(int)$this->idCourse."'"
-				."   AND u.idUser = cu.idUser ";
-		$rs = sql_query( $query );
-		if( $rs === FALSE ) {
-			errorCommunication( "Error in query ".$query );
-			exit( 0 );
+			. " FROM " . $GLOBALS['prefix_lms'] . "_courseuser cu, " . $GLOBALS['prefix_lms'] . "_user u "
+			. " WHERE idCourse = '" . (int)$this->idCourse . "'"
+			. "   AND u.idUser = cu.idUser ";
+		$rs = sql_query($query);
+		if ($rs === FALSE) {
+			errorCommunication("Error in query " . $query);
+			exit(0);
 		}
 		$result = array();
-		while( list( $idUser, $userid ) = sql_fetch_row( $rs ) )
+		while (list($idUser, $userid) = sql_fetch_row($rs))
 			$result[$idUser] = $userid;
 		return $result;
 	}
 	//****************************************************************************
-	
+
 	function __getAccess( $idOrgAccess, $userlist = false ) {
 		$query = "SELECT value FROM %lms_organization_access"
-				." WHERE idOrgAccess = '".(int)$idOrgAccess."'";
-		$rs = sql_query( $query );
+			. " WHERE idOrgAccess = '" . (int)$idOrgAccess . "'";
+		$rs = sql_query($query);
 		$result = array();
-		while( list( $id ) = sql_fetch_row( $rs ) )
+		while (list($id) = sql_fetch_row($rs))
 			$result[] = $id;
 		return $result;
 	}
-	
+
 	function __setAccess( $idOrgAccess, $selection, $relation = '' ) {
-		$acl_man =& Docebo::user()->getAclManager();
+		$acl_man = &Docebo::user()->getAclManager();
 
 		$id_groups = $acl_man->getAllGroupsFromSelection($selection);
 
-		if ($relation != ''){
+		if ($relation != '') {
 			$idst_element = current($selection);
-			if(array_search($idst_element, $id_groups) !== false)
+			if (array_search($idst_element, $id_groups) !== false)
 				$type = 'group';
 			else
 				$type = 'user';
 
 			$query = "DELETE FROM %lms_organization_access"
-					. " WHERE idOrgAccess = " . (int)$idOrgAccess . " AND kind = '" . $type . "' AND value = '" . (int)$idst_element . "'";
+				. " WHERE idOrgAccess = " . (int)$idOrgAccess . " AND kind = '" . $type . "' AND value = '" . (int)$idst_element . "'";
 			sql_query($query);
 
 			if ($relation != 'NULL') {
 				$query = "INSERT INTO %lms_organization_access"
-						. " (idOrgAccess, kind, value, params) VALUES ("
-						. " '" . (int)$idOrgAccess . "','" . $type . "','" . (int)$idst_element . "','" . $relation . "')";
+					. " (idOrgAccess, kind, value, params) VALUES ("
+					. " '" . (int)$idOrgAccess . "','" . $type . "','" . (int)$idst_element . "','" . $relation . "')";
 
 				sql_query($query);
 			}
 		} else {
 			$query_old_values = "SELECT value, params FROM %lms_organization_access"
-					. " WHERE idOrgAccess = " . (int)$idOrgAccess;
+				. " WHERE idOrgAccess = " . (int)$idOrgAccess;
 			$re_old_values = sql_query($query_old_values);
 
 			$old_relations = array();
-			while(list($old_value, $old_relation) = sql_fetch_row($re_old_values)) {
+			while (list($old_value, $old_relation) = sql_fetch_row($re_old_values)) {
 				$old_relations[$old_value] = $old_relation;
 			}
 
 			$query = "DELETE FROM %lms_organization_access"
-					. " WHERE idOrgAccess = " . (int)$idOrgAccess;
+				. " WHERE idOrgAccess = " . (int)$idOrgAccess;
 			sql_query($query);
 
 			foreach($selection as $idst_element)
 			{
-				if(array_search($idst_element, $id_groups) !== false)
+				if (array_search($idst_element, $id_groups) !== false)
 					$type = 'group';
 				else
 					$type = 'user';
 
 				$query =	"INSERT INTO %lms_organization_access"
-						." (idOrgAccess, kind, value, params) VALUES ("
-						." '".(int)$idOrgAccess."','".$type."','".(int)$idst_element."','".$old_relations[$idst_element]."')";
+					. " (idOrgAccess, kind, value, params) VALUES ("
+					. " '" . (int)$idOrgAccess . "','" . $type . "','" . (int)$idst_element . "','" . $old_relations[$idst_element] . "')";
 
 				sql_query($query);
 			}
 		}
 	}
-	
+
 	function __deleteAccess( $idOrgAccess ) {
 		$db = DbConn::getInstance();
-		$query = "UPDATE ".$GLOBALS['prefix_lms']."_organization SET access='' WHERE idOrg='".$idOrgAccess."'";
+		$query = "UPDATE " . $GLOBALS['prefix_lms'] . "_organization SET access='' WHERE idOrg='" . $idOrgAccess . "'";
 		return $res = $db->query($query);
 	}
 
@@ -972,14 +984,14 @@ class OrgDirDb extends RepoDirDb {
 }
 
 class Org_TreeView extends RepoTreeView {
-	
+
 	/** bool $playOnly if true show only play action */
 	var $playOnly = FALSE;
-	
+
 	function Org_TreeView($tdb, $id, $rootname = 'root') {
-    parent::__construct($tdb, $id, $rootname);
-  }
-	
+		parent::__construct($tdb, $id, $rootname);
+	}
+
 	function _getPropertiesId() { return 'org_opproperties'; }
 	function _getCategorizeId() { return 'org_opcategorize'; }
 	function _getAccessId() { return 'org_opaccess'; }
@@ -1012,47 +1024,47 @@ class Org_TreeView extends RepoTreeView {
 	function _getAccessImg() { return getPathImage().'standard/moduser.png'; }
 	function _getOpLockedImg() { return getPathImage().'standard/locked.png'; }
 	function _getShowResultsImg() { return getPathImage().'standard/report.png'; }
-	
+
 	function _getOpLockedId() { return 'locked_item_'; }
-	
+
 	function _getOtherActions() {
-		if( $this->playOnly ) return array();
-		$langRepo =& DoceboLanguage::createInstance('storage', 'lms');
-		if( $this->isFolderSelected() ) {
+		if ($this->playOnly) return array();
+		$langRepo = &DoceboLanguage::createInstance('storage', 'lms');
+		if ($this->isFolderSelected()) {
 			$stackData = $this->getSelectedFolderData();
 			$arrData = $stackData['folder']->otherValues;
 			$isFolder = ($arrData[REPOFIELDOBJECTTYPE] === '');
-			if( !$isFolder )
+			if (!$isFolder)
 				return array();
-					/*array(	array($this->_getOpEditLO(), $langRepo->def('_MOD'), getPathImage().'standard/edit.png' ),
+			/*array(	array($this->_getOpEditLO(), $langRepo->def('_MOD'), getPathImage().'standard/edit.png' ),
 								array($this->_getOpCopyLO(), $langRepo->def('_REPOCOPYLO'), getPathImage().'dup.png' )
 							);*/
 		}
-		return array( array($this->_getOpCreateLO(), $langRepo->def('_REPOCREATELO'), getPathImage().'standard/add.png' )	);
+		return array(array($this->_getOpCreateLO(), $langRepo->def('_REPOCREATELO'), getPathImage() . 'standard/add.png'));
 	}
 
 	function canMove() { 
 		return FALSE;
 		/*if( $this->playOnly ) return FALSE;
-		return $this->isFolderSelected();*/ 
+		return $this->isFolderSelected();*/
 	}
 	function canRename() { 
 		return FALSE;
 		/*if( $this->playOnly ) return FALSE;
-		return $this->isFolderSelected();*/ 
+		return $this->isFolderSelected();*/
 	}
-	
+
 	function canAdd() {
-		if( $this->playOnly ) return FALSE;
-		if( $this->isFolderSelected() ) {
+		if ($this->playOnly) return FALSE;
+		if ($this->isFolderSelected()) {
 			$stackData = $this->getSelectedFolderData();
 			$arrData = $stackData['folder']->otherValues;
 			$isFolder = ($arrData[REPOFIELDOBJECTTYPE] === '');
-			if( !$isFolder ) return array();
+			if (!$isFolder) return array();
 		}
-		return TRUE; 
-	}	
-	
+		return TRUE;
+	}
+
 	function canDelete() { 
 		return FALSE;
 		/*if( $this->playOnly ) return FALSE;
@@ -1064,137 +1076,137 @@ class Org_TreeView extends RepoTreeView {
 		} 
 		return TRUE;*/
 	}
-	
+
 	function canInlineMove() {	return $this->withActions && !$this->playOnly; }
 	function canInlineRename() { return FALSE; /*$this->withActions && !$this->playOnly;*/ }
 	function canInlineDelete() { return $this->withActions && !$this->playOnly; }
-	
+
 	function canInlineMoveItem( &$stack, $level ) {
-		if( $level == 0 ) 
+		if ($level == 0)
 			return FALSE;
-		return TRUE; 
+		return TRUE;
 	}
 	function canInlineRenameItem( &$stack, $level ) {
 		return FALSE;
 		/*if( $level == 0 ) 
 			return FALSE;
-		return TRUE;*/ 
+		return TRUE;*/
 	}
 	function canInlineDeleteItem( &$stack, $level ) {
-		if( $level == 0 ) 
+		if ($level == 0)
 			return FALSE;
-		if( $stack[$level]['isLeaf'] === FALSE )
+		if ($stack[$level]['isLeaf'] === FALSE)
 			return FALSE;
 		else
 			return TRUE;
 	}
 
 	function getFolderPrintName( &$folder ) {
-		if( isset( $folder->otherValues[REPOFIELDTITLE] ) )
+		if (isset($folder->otherValues[REPOFIELDTITLE]))
 			return str_replace('"', '&quot;', strip_tags($folder->otherValues[REPOFIELDTITLE]));
 		else
-			return parent::getFolderPrintName( $folder );
+			return parent::getFolderPrintName($folder);
 	}
-	
+
 	function expandPath( $path ) {
 		$arrId = array();
 		$splitPath = explode('/', $path);
-		unset( $splitPath[0] );
+		unset($splitPath[0]);
 		$path = '';
-		foreach( $splitPath as $tok ) {
+		foreach ($splitPath as $tok) {
 			$path .= '/' . $tok;
 
-			$folder = $this->tdb->getFolderByPath( $path );
+			$folder = $this->tdb->getFolderByPath($path);
 			$arrId[] = $folder->id;
 		}
 		$this->pathToExpand = array_flip($arrId);
 	}
-	
+
 	function extendedParsing( $arrayState, $arrayExpand, $arrayCompress ) {
-		parent::extendedParsing( $arrayState, $arrayExpand, $arrayCompress );
-		
-		if( isset($_GET['org_access']) ) {
+		parent::extendedParsing($arrayState, $arrayExpand, $arrayCompress);
+
+		if (isset($_GET['org_access'])) {
 			$this->op = 'org_access';
 			$this->opContextId = $_GET['idItem'];
 		}
-		if( isset( $arrayState['stay_on_categorize'] ) ) {
+		if (isset($arrayState['stay_on_categorize'])) {
 			$this->op = 'org_categorize';
 			$this->opContextId = $arrayState['idItem'];
 		}
-		if( isset( $arrayState['org_categorize_cancel'] ) )
+		if (isset($arrayState['org_categorize_cancel']))
 			$this->op = 'display';
-		if( isset( $arrayState['org_categorize_save'] ) )  {
-			require_once(dirname(__FILE__).'/orgcategorize.php');
+		if (isset($arrayState['org_categorize_save'])) {
+			require_once(dirname(__FILE__) . '/orgcategorize.php');
 			organization_categorize_save($this, $arrayState['idItem']);
 			$this->op = 'display';
 		}
-		if( isset( $arrayState['org_categorize_switch_subcat'] ) )  {			
-			require_once(dirname(__FILE__).'/orgcategorize.php');
+		if (isset($arrayState['org_categorize_switch_subcat'])) {
+			require_once(dirname(__FILE__) . '/orgcategorize.php');
 			organization_categorize_switch_subcat($this, $arrayState['idItem']);
 			$this->op = 'org_categorize';
 			$this->opContextId = $arrayState['idItem'];
 		}
-		if( isset( $arrayState['stay_on_properties'] ) ) {
+		if (isset($arrayState['stay_on_properties'])) {
 			$this->op = 'org_properties';
 			$this->opContextId = $arrayState['idItem'];
 		}
-		if( isset( $arrayState['org_properties_cancel'] ) ) 
+		if (isset($arrayState['org_properties_cancel']))
 			$this->op = 'display';
-		if( isset( $arrayState['org_properties_ok'] ) ) {
-			$arrayState['prerequisites'] = implode( ',', $this->itemSelectedMulti );
+		if (isset($arrayState['org_properties_ok'])) {
+			$arrayState['prerequisites'] = implode(',', $this->itemSelectedMulti);
 			if( $arrayState['prerequisites'] != '' && $arrayState['prerequisites']{0} == ',' ){
-				$arrayState['prerequisites'] = substr($arrayState['prerequisites'],1);
+				$arrayState['prerequisites'] = substr($arrayState['prerequisites'], 1);
 			}
 			//LRZ: mem info for custom field of LO
-            require_once(_adm_ . '/lib/lib.customfield.php');  
-            $extra_field = new CustomFieldList();
-            $extra_field->setFieldArea("LO_OBJECT");
-            $extra_field->storeFieldsForObj($arrayState['idItem']);
+			require_once(_adm_ . '/lib/lib.customfield.php');
+			$extra_field = new CustomFieldList();
+			$extra_field->setFieldArea("LO_OBJECT");
+			$extra_field->storeFieldsForObj($arrayState['idItem']);
 			// end manage custom field for lo_object
-			
-			$this->tdb->modifyItem( $arrayState, false, true );
+
+			$this->tdb->modifyItem($arrayState, false, true);
 			$this->op = 'display';
 		}
-		
-		if( isset($arrayState[$this->id]) ) {
-			foreach($arrayState[$this->id] as $key => $action) {
-				if( $key == $this->_getAccessId()) {
-					if( is_array( $action ) )
+
+		if (isset($arrayState[$this->id])) {
+			foreach ($arrayState[$this->id] as $key => $action) {
+				if ($key == $this->_getAccessId()) {
+					if (is_array($action))
 						$this->opContextId = key($action);
 					$this->op = $this->_getAccessId();
-				} elseif( $key == $this->_getOpUpId() ) {
-					if( is_array( $action ) ) {
+				} elseif ($key == $this->_getOpUpId()) {
+					if (is_array($action)) {
 						$id = key($action);
-						$this->tdb->moveUp( $id );
+						$this->tdb->moveUp($id);
 						$this->refresh = TRUE;
 					}
-				} elseif( $key == $this->_getOpDownId() ) {
-					if( is_array( $action ) ) {
+				} elseif ($key == $this->_getOpDownId()) {
+					if (is_array($action)) {
 						$id = key($action);
-						$this->tdb->moveDown( $id );
+						$this->tdb->moveDown($id);
 						$this->refresh = TRUE;
 					}
-				} elseif( $key == $this->_getPropertiesId() ) {
-					if( is_array( $action ) ) {
+				} elseif ($key == $this->_getPropertiesId()) {
+					if (is_array($action)) {
 						$id = key($action);
 						$this->op = $this->_getPropertiesId();
 						$this->opContextId = $id;
 					}
-				} elseif( $key == $this->_getCategorizeId() ) {
-					if( is_array( $action ) ) {
+				} elseif ($key == $this->_getCategorizeId()) {
+					if (is_array($action)) {
 						$id = key($action);
 						$this->op = $this->_getCategorizeId();
 						$this->opContextId = $id;
 					}
-				} elseif( $key == $this->_getSelectedId() && !checkPerm('lesson', true, 'storage')) {
-					if( is_array( $action ) ) {
+				} elseif ($key == $this->_getSelectedId() && !checkPerm('lesson', true, 'storage')) {
+					if (is_array($action)) {
 						$id = key($action);
-						if( strlen( $id ) > 0 ) {
-							$folder = $this->tdb->getFolderById( (int)$id );
-							if( $folder->otherValues[REPOFIELDOBJECTTYPE] != '' ) {
-								require_once($GLOBALS['where_lms'].'/class.module/track.object.php');
-								if( Track_Object::isPrerequisitesSatisfied( 
-											$folder->otherValues[ORGFIELDPREREQUISITES], 
+						if (strlen($id) > 0) {
+							$folder = $this->tdb->getFolderById((int)$id);
+							if ($folder->otherValues[REPOFIELDOBJECTTYPE] != '') {
+								require_once($GLOBALS['where_lms'] . '/class.module/track.object.php');
+								if (Track_Object::isPrerequisitesSatisfied(
+									$folder->otherValues[ORGFIELDPREREQUISITES],
 											getLogUserId() ) ) {
 									$this->op = 'playitem';
 									$this->itemToPlay = $id;
@@ -1205,15 +1217,15 @@ class Org_TreeView extends RepoTreeView {
 				}
 			}
 		}
-		foreach( $arrayState as $nameField => $valueField ) {
-			if( strstr( $nameField, $this->_getSelectedId() ) && !checkPerm('lesson', TRUE, 'storage') ) {
-				$id = substr( $nameField, strlen($this->_getSelectedId()) );
-				if( strlen( $id ) > 0 ) {
-					$folder = $this->tdb->getFolderById( (int)$id );
-					if( isset($folder->otherValues[REPOFIELDOBJECTTYPE]) && $folder->otherValues[REPOFIELDOBJECTTYPE] != '' ) {
-						require_once($GLOBALS['where_lms'].'/class.module/track.object.php');
-						if( Track_Object::isPrerequisitesSatisfied( 
-									$folder->otherValues[ORGFIELDPREREQUISITES], 
+		foreach ($arrayState as $nameField => $valueField) {
+			if (strstr($nameField, $this->_getSelectedId()) && !checkPerm('lesson', TRUE, 'storage')) {
+				$id = substr($nameField, strlen($this->_getSelectedId()));
+				if (strlen($id) > 0) {
+					$folder = $this->tdb->getFolderById((int)$id);
+					if (isset($folder->otherValues[REPOFIELDOBJECTTYPE]) && $folder->otherValues[REPOFIELDOBJECTTYPE] != '') {
+						require_once($GLOBALS['where_lms'] . '/class.module/track.object.php');
+						if (Track_Object::isPrerequisitesSatisfied(
+							$folder->otherValues[ORGFIELDPREREQUISITES],
 									getLogUserId() ) ) {
 							$this->op = 'playitem';
 							$this->itemToPlay = $id;
@@ -1222,17 +1234,17 @@ class Org_TreeView extends RepoTreeView {
 				}
 			}
 		}
-		if( $this->pathToExpand != NULL ) {
-			if( is_array($this->expandList) ) 
+		if ($this->pathToExpand != NULL) {
+			if (is_array($this->expandList))
 				$this->expandList = $this->expandList + $this->pathToExpand;
 			else
 				$this->expandList = $this->pathToExpand;
 		}
 	}
-	
+
 	function printElement(&$stack, $level) {
 
-		include_once (_base_.'/appLms/Events/Lms/OrgPropertiesPrintEvent.php');
+		include_once(_base_ . '/appLms/Events/Lms/OrgPropertiesPrintEvent.php');
 		$event = new \appLms\Events\Lms\OrgPropertiesPrintEvent();
 
         $event->setElement($stack[$level]['folder']);
@@ -1243,36 +1255,36 @@ class Org_TreeView extends RepoTreeView {
         $event->setId($this->id);
 
 		\appCore\Events\DispatcherManager::dispatch(\appLms\Events\Lms\OrgPropertiesPrintEvent::EVENT_NAME, $event);
-		
+
 		if (!$event->getDisplayable()) {
 			return '';
 		}
 
-		require_once($GLOBALS['where_lms'].'/class.module/track.object.php');
-		
+		require_once($GLOBALS['where_lms'] . '/class.module/track.object.php');
+
 		// $out = '<div class="TreeViewRowBase">';
 		$out = '<td>';
-		$id = ($stack[$level]['isExpanded'])?($this->_getCompressActionId()):($this->_getExpandActionId());
+		$id = ($stack[$level]['isExpanded']) ? ($this->_getCompressActionId()) : ($this->_getExpandActionId());
 		$id .= $stack[$level]['folder']->id;
-		for( $i = 0; $i <= $level; $i++ ) {
-			list( $classImg, $imgFileName, $imgAlt ) = $this->getImage($stack,$i,$level);
-			if( $i != ($level-1) || $stack[$level]['isLeaf'] ) {
-				$out .= '<img src="'.getPathImage().$imgFileName.'" '
-						.'class="'.$classImg.'" alt="'.$imgAlt.'" '
-						.'title="'.$imgAlt.'" />';
+		for ($i = 0; $i <= $level; $i++) {
+			list($classImg, $imgFileName, $imgAlt) = $this->getImage($stack, $i, $level);
+			if ($i != ($level - 1) || $stack[$level]['isLeaf']) {
+				$out .= '<img src="' . getPathImage() . $imgFileName . '" '
+					. 'class="' . $classImg . '" alt="' . $imgAlt . '" '
+					. 'title="' . $imgAlt . '" />';
 			} else {
-				$out .= '<input type="submit" class="'.$classImg.'" value="'
-					.'" name="'. $id .'" id="seq_'. $stack[$level]['idSeq'] .'img" />';
+				$out .= '<input type="submit" class="' . $classImg . '" value="'
+					. '" name="' . $id . '" id="seq_' . $stack[$level]['idSeq'] . 'img" />';
 			}
 		}
-		if( $stack[$level]['folder']->id == $this->selectedFolder ) {
+		if ($stack[$level]['folder']->id == $this->selectedFolder) {
 			$this->selectedFolderData = $stack[$level];
 			$classStyle = 'TreeItemSelected';
 		} else {
 			$classStyle = 'TreeItem';
 		}
 		$out .= $this->getPreFolderName($stack[$level]['folder']);
-		
+
 		// find extra data and check if the node is a folder or a LO		
 		$arrData = $stack[$level]['folder']->otherValues;
 		if (is_array($arrData) && !empty($arrData)) {
@@ -1280,245 +1292,245 @@ class Org_TreeView extends RepoTreeView {
 		} else {
 			$isFolder = true;
 		}
-		
-		$lo_type = $arrData[REPOFIELDOBJECTTYPE];
-        $lo_class = createLO($lo_type);
 
-		if (!is_object($lo_class) && !$isFolder ){
+		$lo_type = $arrData[REPOFIELDOBJECTTYPE];
+		$lo_class = createLO($lo_type);
+
+		if (!is_object($lo_class) && !$isFolder) {
 			return '';
 		}
 
 		//check for void selection
-		if(is_array($arrData) && isset($arrData[ORGFIELD_ACCESS]) && $this->playOnly) {
-		  //if (!$this->userSelector->isUserInSelection(getLogUserId(), $arrData[ORGFIELD_ACCESS])) return false;
+		if (is_array($arrData) && isset($arrData[ORGFIELD_ACCESS]) && $this->playOnly) {
+			//if (!$this->userSelector->isUserInSelection(getLogUserId(), $arrData[ORGFIELD_ACCESS])) return false;
 			if (!empty($arrData[ORGFIELD_ACCESS]) && !in_array(Docebo::user()->getIdst(), $arrData[ORGFIELD_ACCESS])) return false; //?!?
 		}
 
 
 		// read width and hieght param
 		$lb_param = "";
-		if(!$isFolder) {
-			if($arrData[ORGFIELD_WIDTH] != '' && $arrData[ORGFIELD_WIDTH] != '0') $lb_param .= ";width=".$arrData[ORGFIELD_WIDTH]."";
-			if($arrData[ORGFIELD_HEIGHT] != '' && $arrData[ORGFIELD_HEIGHT] != '0') $lb_param .= ";height=".$arrData[ORGFIELD_HEIGHT]."";
+		if (!$isFolder) {
+			if ($arrData[ORGFIELD_WIDTH] != '' && $arrData[ORGFIELD_WIDTH] != '0') $lb_param .= ";width=" . $arrData[ORGFIELD_WIDTH] . "";
+			if ($arrData[ORGFIELD_HEIGHT] != '' && $arrData[ORGFIELD_HEIGHT] != '0') $lb_param .= ";height=" . $arrData[ORGFIELD_HEIGHT] . "";
 		}
 
 
 
 
 		// folder are input and LO are link only in the play area
-		if($isFolder || (checkPerm('lesson', true, 'storage') && !$this->playOnly)) {
-			
-			$out .= '<input type="submit" class="'.$classStyle.'" value="'
-				.$this->getFolderPrintName( $stack[$level]['folder'])
-				.'" name="'
-				. $this->_getSelectedId().$stack[$level]['folder']->id
-				.'" id="seq_'. $stack[$level]['idSeq'] .'" '
-				.$this->getFolderPrintOther($stack[$level]['folder'])
-				.' />';
+		if ($isFolder || (checkPerm('lesson', true, 'storage') && !$this->playOnly)) {
+
+			$out .= '<input type="submit" class="' . $classStyle . '" value="'
+				. $this->getFolderPrintName($stack[$level]['folder'])
+				. '" name="'
+				. $this->_getSelectedId() . $stack[$level]['folder']->id
+				. '" id="seq_' . $stack[$level]['idSeq'] . '" '
+				. $this->getFolderPrintOther($stack[$level]['folder'])
+				. ' />';
 		} else {
 
 			$isPrerequisitesSatisfied = Track_Object::isPrerequisitesSatisfied(
-											$stack[$level]['folder']->otherValues[ORGFIELDPREREQUISITES],
+				$stack[$level]['folder']->otherValues[ORGFIELDPREREQUISITES],
 											getLogUserId() );
 
-			if($arrData[ORGFIELD_PUBLISHFOR] == PF_TEACHER && $_SESSION['levelCourse'] <= 3) return false;
+			if ($arrData[ORGFIELD_PUBLISHFOR] == PF_TEACHER && $_SESSION['levelCourse'] <= 3) return false;
 
 
-			if($arrData[ORGFIELD_PUBLISHFOR] == PF_ATTENDANCE && !$this->presence()) {
+			if ($arrData[ORGFIELD_PUBLISHFOR] == PF_ATTENDANCE && !$this->presence()) {
 
-				$out .= ' <span class="'.$classStyle.'" ' .
-							'id="'.$this->id.'_'.$this->_getOpPlayItemId().'_'.$stack[$level]['folder']->id.'" ' .
-							'name="'.$this->id.'['.$this->_getOpPlayItemId().']['.$stack[$level]['folder']->id.']">'
-								.$this->getFolderPrintName( $stack[$level]['folder']).
-							'</span>';
+				$out .= ' <span class="' . $classStyle . '" ' .
+					'id="' . $this->id . '_' . $this->_getOpPlayItemId() . '_' . $stack[$level]['folder']->id . '" ' .
+					'name="' . $this->id . '[' . $this->_getOpPlayItemId() . '][' . $stack[$level]['folder']->id . ']">'
+					. $this->getFolderPrintName($stack[$level]['folder']) .
+					'</span>';
 			} else if($isPrerequisitesSatisfied && $event->getAccessible()) {
 
-				$out .= ' <a '.( $lo_class->showInLightbox() ? ' rel="lightbox'.$lb_param.'"' : '' ).' class="'.$classStyle.'" ' .
-							'id="'.$this->id.'_'.$this->_getOpPlayItemId().'_'.$stack[$level]['folder']->id.'" ' .
-							'name="'.$this->id.'['.$this->_getOpPlayItemId().']['.$stack[$level]['folder']->id.']" ' .
-							'href="index.php?modname=organization&amp;op=custom_playitem&amp;id_item='.$stack[$level]['folder']->id.'" ' .
-							'title="'.$this->getFolderPrintName( $stack[$level]['folder']).'">'
-								.$this->getFolderPrintName( $stack[$level]['folder']).
-							'</a>';
+				$out .= ' <a ' . ($lo_class->showInLightbox() ? ' rel="lightbox' . $lb_param . '"' : '') . ' class="' . $classStyle . '" ' .
+					'id="' . $this->id . '_' . $this->_getOpPlayItemId() . '_' . $stack[$level]['folder']->id . '" ' .
+					'name="' . $this->id . '[' . $this->_getOpPlayItemId() . '][' . $stack[$level]['folder']->id . ']" ' .
+					'href="index.php?modname=organization&amp;op=custom_playitem&amp;id_item=' . $stack[$level]['folder']->id . '" ' .
+					'title="' . $this->getFolderPrintName($stack[$level]['folder']) . '">'
+					. $this->getFolderPrintName($stack[$level]['folder']) .
+					'</a>';
 			} else {
 
-				$out .= ' <span class="'.$classStyle.'" ' .
-							'id="'.$this->id.'_'.$this->_getOpPlayItemId().'_'.$stack[$level]['folder']->id.'" ' .
-							'name="'.$this->id.'['.$this->_getOpPlayItemId().']['.$stack[$level]['folder']->id.']">'
-								.$this->getFolderPrintName( $stack[$level]['folder']).
-							'</span>';
+				$out .= ' <span class="' . $classStyle . '" ' .
+					'id="' . $this->id . '_' . $this->_getOpPlayItemId() . '_' . $stack[$level]['folder']->id . '" ' .
+					'name="' . $this->id . '[' . $this->_getOpPlayItemId() . '][' . $stack[$level]['folder']->id . ']">'
+					. $this->getFolderPrintName($stack[$level]['folder']) .
+					'</span>';
 			}
 		}
-		
+
 		// $out .= '</div>';
-		
-		$out .= $this->printActions( $stack, $level );
-				
-		if( $level > 0 ) {
-			if( checkPerm('lesson', true, 'storage') && !$this->playOnly ) {
-				if( $this->withActions == FALSE ) 
+
+		$out .= $this->printActions($stack, $level);
+
+		if ($level > 0) {
+			if (checkPerm('lesson', true, 'storage') && !$this->playOnly) {
+				if ($this->withActions == FALSE)
 					return $out;
-				if( $stack[$level]['isFirst'] ) {
+				if ($stack[$level]['isFirst']) {
 					$out .=  '<div class="TVActionEmpty">&nbsp;</div>';
 				} else {
-					$out .= '<input type="image" class="tree_view_image" ' 
-					.' src="'.$this->_getOpUpImg().'"'
-					.' id="'.$this->id.'_'.$this->_getOpUpId().'_'.$stack[$level]['folder']->id.'" '
-					.' name="'.$this->id.'['.$this->_getOpUpId().']['.$stack[$level]['folder']->id.']" '
-					.' title="'.$this->_getOpUpTitle().': '.$this->getFolderPrintName( $stack[$level]['folder']).'" '
-					.' alt="'.$this->_getOpUpTitle().': '.$this->getFolderPrintName( $stack[$level]['folder']).'" />';
+					$out .= '<input type="image" class="tree_view_image" '
+						. ' src="' . $this->_getOpUpImg() . '"'
+						. ' id="' . $this->id . '_' . $this->_getOpUpId() . '_' . $stack[$level]['folder']->id . '" '
+						. ' name="' . $this->id . '[' . $this->_getOpUpId() . '][' . $stack[$level]['folder']->id . ']" '
+						. ' title="' . $this->_getOpUpTitle() . ': ' . $this->getFolderPrintName($stack[$level]['folder']) . '" '
+						. ' alt="' . $this->_getOpUpTitle() . ': ' . $this->getFolderPrintName($stack[$level]['folder']) . '" />';
 				}
-				if( $stack[$level]['isLast'] ) {
+				if ($stack[$level]['isLast']) {
 					$out .=  '<div class="TVActionEmpty">&nbsp;</div>';
 				} else {
-					$out .= '<input type="image" class="tree_view_image" ' 
-					.' src="'.$this->_getOpDownImg().'"'
-					.' id="'.$this->id.'_'.$this->_getOpDownId().'_'.$stack[$level]['folder']->id.'" '
-					.' name="'.$this->id.'['.$this->_getOpDownId().']['.$stack[$level]['folder']->id.']" '
-					.' title="'.$this->_getOpDownTitle().': '.$this->getFolderPrintName( $stack[$level]['folder']).'" '
-					.' alt="'.$this->_getOpDownTitle().': '.$this->getFolderPrintName( $stack[$level]['folder']).'" />';
+					$out .= '<input type="image" class="tree_view_image" '
+						. ' src="' . $this->_getOpDownImg() . '"'
+						. ' id="' . $this->id . '_' . $this->_getOpDownId() . '_' . $stack[$level]['folder']->id . '" '
+						. ' name="' . $this->id . '[' . $this->_getOpDownId() . '][' . $stack[$level]['folder']->id . ']" '
+						. ' title="' . $this->_getOpDownTitle() . ': ' . $this->getFolderPrintName($stack[$level]['folder']) . '" '
+						. ' alt="' . $this->_getOpDownTitle() . ': ' . $this->getFolderPrintName($stack[$level]['folder']) . '" />';
 				}
-				$out .= '<input type="image" class="tree_view_image" ' 
-					.' src="'.$this->_getAccessImg().'"'
-					.' id="'.$this->id.'_'.$this->_getAccessId().'_'.$stack[$level]['folder']->id.'" '
-					.' name="'.$this->id.'['.$this->_getAccessId().']['.$stack[$level]['folder']->id.']" '
-					.' title="'.$this->_getAccessTitle().': '.$this->getFolderPrintName( $stack[$level]['folder']).'" '
-					.' alt="'.$this->_getAccessTitle().': '.$this->getFolderPrintName( $stack[$level]['folder']).'" />';
+				$out .= '<input type="image" class="tree_view_image" '
+					. ' src="' . $this->_getAccessImg() . '"'
+					. ' id="' . $this->id . '_' . $this->_getAccessId() . '_' . $stack[$level]['folder']->id . '" '
+					. ' name="' . $this->id . '[' . $this->_getAccessId() . '][' . $stack[$level]['folder']->id . ']" '
+					. ' title="' . $this->_getAccessTitle() . ': ' . $this->getFolderPrintName($stack[$level]['folder']) . '" '
+					. ' alt="' . $this->_getAccessTitle() . ': ' . $this->getFolderPrintName($stack[$level]['folder']) . '" />';
 			}
 			$arrData = $stack[$level]['folder']->otherValues;
 			$isFolder = ($arrData[REPOFIELDOBJECTTYPE] === '');
-			
-			if( is_array($arrData) ) {
-				
-				switch( $this->kind ) {
+
+			if (is_array($arrData)) {
+
+				switch ($this->kind) {
 					case 'prerequisites':
 						$out .= '<input type="text" value="" name="'
-							.$this->_getPrerequisitesId().$stack[$level]['folder']->id .'" />';
-					break;
+							. $this->_getPrerequisitesId() . $stack[$level]['folder']->id . '" />';
+						break;
 					default:
-						if( checkPerm('lesson', true, 'storage') && !$this->playOnly ) {
-							if( $this->withActions == FALSE ){
+						if (checkPerm('lesson', true, 'storage') && !$this->playOnly) {
+							if ($this->withActions == FALSE) {
 								return $out;
 							}
 							$canBeCategorized = false;
-							if (is_object($lo_class)){
+							if (is_object($lo_class)) {
 								$canBeCategorized = $lo_class->canBeCategorized();
 							}
-							
+
 							if ($canBeCategorized) {
 								$out .= '<input type="image" class="tree_view_image" '
-									.' src="'.$this->_getCategorizeImg().'"'
-									.' id="'.$this->id.'_'.$this->_getCategorizeId().'_'.$stack[$level]['folder']->id.'" '
-									.' name="'.$this->id.'['.$this->_getCategorizeId().']['.$stack[$level]['folder']->id.']" '
-									.' title="'.$this->_getCategorizeTitle().': '.$this->getFolderPrintName( $stack[$level]['folder']).'" '
-									.' alt="'.$this->_getCategorizeTitle().': '.$this->getFolderPrintName( $stack[$level]['folder']).'" />';
+									. ' src="' . $this->_getCategorizeImg() . '"'
+									. ' id="' . $this->id . '_' . $this->_getCategorizeId() . '_' . $stack[$level]['folder']->id . '" '
+									. ' name="' . $this->id . '[' . $this->_getCategorizeId() . '][' . $stack[$level]['folder']->id . ']" '
+									. ' title="' . $this->_getCategorizeTitle() . ': ' . $this->getFolderPrintName($stack[$level]['folder']) . '" '
+									. ' alt="' . $this->_getCategorizeTitle() . ': ' . $this->getFolderPrintName($stack[$level]['folder']) . '" />';
 							}
 							else {
-								$out .='<div class="TVActionEmpty">&nbsp;</div>';
+								$out .= '<div class="TVActionEmpty">&nbsp;</div>';
 							}
-							$out .= '<input type="image" class="tree_view_image" ' 
-								.' src="'.$this->_getPropertiesImg().'"'
-								.' id="'.$this->id.'_'.$this->_getPropertiesId().'_'.$stack[$level]['folder']->id.'" '
-								.' name="'.$this->id.'['.$this->_getPropertiesId().']['.$stack[$level]['folder']->id.']" '
-								.' title="'.$this->_getPropertiesTitle().': '.$this->getFolderPrintName( $stack[$level]['folder']).'" '
-								.' alt="'.$this->_getPropertiesTitle().': '.$this->getFolderPrintName( $stack[$level]['folder']).'" />';
-							if( !$isFolder ) {
-								$out .= '<input type="image" class="tree_view_image" ' 
-									.' src="'.$this->_getCopyImage().'"'
-									.' id="'.$this->id.'_'.$this->_getOpCopyLOId().'_'.$stack[$level]['folder']->id.'" '
-									.' name="'.$this->id.'['.$this->_getOpCopyLOId().']['.$stack[$level]['folder']->id.']" '
-									.' title="'.$this->_getOpCopyTitle().': '.$this->getFolderPrintName( $stack[$level]['folder']).'" '
-									.' alt="'.$this->_getOpCopyTitle().': '.$this->getFolderPrintName( $stack[$level]['folder']).'" />';
+							$out .= '<input type="image" class="tree_view_image" '
+								. ' src="' . $this->_getPropertiesImg() . '"'
+								. ' id="' . $this->id . '_' . $this->_getPropertiesId() . '_' . $stack[$level]['folder']->id . '" '
+								. ' name="' . $this->id . '[' . $this->_getPropertiesId() . '][' . $stack[$level]['folder']->id . ']" '
+								. ' title="' . $this->_getPropertiesTitle() . ': ' . $this->getFolderPrintName($stack[$level]['folder']) . '" '
+								. ' alt="' . $this->_getPropertiesTitle() . ': ' . $this->getFolderPrintName($stack[$level]['folder']) . '" />';
+							if (!$isFolder) {
+								$out .= '<input type="image" class="tree_view_image" '
+									. ' src="' . $this->_getCopyImage() . '"'
+									. ' id="' . $this->id . '_' . $this->_getOpCopyLOId() . '_' . $stack[$level]['folder']->id . '" '
+									. ' name="' . $this->id . '[' . $this->_getOpCopyLOId() . '][' . $stack[$level]['folder']->id . ']" '
+									. ' title="' . $this->_getOpCopyTitle() . ': ' . $this->getFolderPrintName($stack[$level]['folder']) . '" '
+									. ' alt="' . $this->_getOpCopyTitle() . ': ' . $this->getFolderPrintName($stack[$level]['folder']) . '" />';
 
 								//if ($arrData[REPOFIELDOBJECTTYPE] != 'scormorg') {
-									$out .= '<input type="image" class="tree_view_image" '
-										.' src="'.$this->_getEditImage().'"'
-										.' id="'.$this->id.'_'.$this->_getOpEditLOId().'_'.$stack[$level]['folder']->id.'" '
-										.' name="'.$this->id.'['.$this->_getOpEditLOId().']['.$stack[$level]['folder']->id.']" '
-										.' title="'.$this->_getOpEditTitle().': '.$this->getFolderPrintName( $stack[$level]['folder']).'" '
-										.' alt="'.$this->_getOpEditTitle().': '.$this->getFolderPrintName( $stack[$level]['folder']).'" />';
+								$out .= '<input type="image" class="tree_view_image" '
+									. ' src="' . $this->_getEditImage() . '"'
+									. ' id="' . $this->id . '_' . $this->_getOpEditLOId() . '_' . $stack[$level]['folder']->id . '" '
+									. ' name="' . $this->id . '[' . $this->_getOpEditLOId() . '][' . $stack[$level]['folder']->id . ']" '
+									. ' title="' . $this->_getOpEditTitle() . ': ' . $this->getFolderPrintName($stack[$level]['folder']) . '" '
+									. ' alt="' . $this->_getOpEditTitle() . ': ' . $this->getFolderPrintName($stack[$level]['folder']) . '" />';
 								/*}
 								else {
 									$out .='<div class="TVActionEmpty">&nbsp;</div>';
 								}*/
-								
-								$out .= '<a '.( $lo_class->showInLightbox() ? ' rel="lightbox'.$lb_param.'"' : '' ).' class="tree_view_image" ' .
-									'id="'.$this->id.'_'.$this->_getOpPlayItemId().'_'.$stack[$level]['folder']->id.'" ' .
-									'name="'.$this->id.'['.$this->_getOpPlayItemId().']['.$stack[$level]['folder']->id.']" ' .
-									'href="index.php?modname=organization&amp;op=custom_playitem&amp;edit=1&amp;id_item='.$stack[$level]['folder']->id.'" ' .
-									'title="'.$this->getFolderPrintName( $stack[$level]['folder']).'">' 
-										.'<img src="'.$this->_getOpPlayItemImg().'"'
-										.' alt="'.$this->_getOpPlayTitle().': '.$this->getFolderPrintName( $stack[$level]['folder']).'" />' .
+
+								$out .= '<a ' . ($lo_class->showInLightbox() ? ' rel="lightbox' . $lb_param . '"' : '') . ' class="tree_view_image" ' .
+									'id="' . $this->id . '_' . $this->_getOpPlayItemId() . '_' . $stack[$level]['folder']->id . '" ' .
+									'name="' . $this->id . '[' . $this->_getOpPlayItemId() . '][' . $stack[$level]['folder']->id . ']" ' .
+									'href="index.php?modname=organization&amp;op=custom_playitem&amp;edit=1&amp;id_item=' . $stack[$level]['folder']->id . '" ' .
+									'title="' . $this->getFolderPrintName($stack[$level]['folder']) . '">'
+									. '<img src="' . $this->_getOpPlayItemImg() . '"'
+									. ' alt="' . $this->_getOpPlayTitle() . ': ' . $this->getFolderPrintName($stack[$level]['folder']) . '" />' .
 									'</a>';
 									
 							} else {
 								$out .=  '<div class="TVActionEmpty"></div>';
 							}
-						} else if( !$isFolder ) {
-							
-							if($arrData[ORGFIELD_PUBLISHFROM] != '' && $arrData[ORGFIELD_PUBLISHFROM] != '0000-00-00 00:00:00') {
-								if($arrData[ORGFIELD_PUBLISHFROM] > date("Y-m-d H:i:s")) return false;
+						} else if (!$isFolder) {
+
+							if ($arrData[ORGFIELD_PUBLISHFROM] != '' && $arrData[ORGFIELD_PUBLISHFROM] != '0000-00-00 00:00:00') {
+								if ($arrData[ORGFIELD_PUBLISHFROM] > date("Y-m-d H:i:s")) return false;
 							}
-							if($arrData[ORGFIELD_PUBLISHTO] != '' && $arrData[ORGFIELD_PUBLISHTO] != '0000-00-00 00:00:00') {
-								if($arrData[ORGFIELD_PUBLISHTO] < date("Y-m-d H:i:s")) return false;
+							if ($arrData[ORGFIELD_PUBLISHTO] != '' && $arrData[ORGFIELD_PUBLISHTO] != '0000-00-00 00:00:00') {
+								if ($arrData[ORGFIELD_PUBLISHTO] < date("Y-m-d H:i:s")) return false;
 							}
-							
+
 							$status = Track_Object::getStatusFromId(
-										$stack[$level]['folder']->id,
+								$stack[$level]['folder']->id,
 										getLogUserId() );
 
-							if($arrData[ORGFIELD_PUBLISHFOR] == PF_TEACHER && $_SESSION['levelCourse'] <= 3) return false;
-							if($arrData[ORGFIELD_PUBLISHFOR] == PF_ATTENDANCE && !$this->presence()) {
+							if ($arrData[ORGFIELD_PUBLISHFOR] == PF_TEACHER && $_SESSION['levelCourse'] <= 3) return false;
+							if ($arrData[ORGFIELD_PUBLISHFOR] == PF_ATTENDANCE && !$this->presence()) {
 
 								$out .= '<input type="image" class="tree_view_image" '
-									.' src="'.$this->_getOpLockedImg().'"'
-									.' id="'.$this->id.'_'.$this->_getOpLockedId().'_'.$stack[$level]['folder']->id.'" '
-									.' name="'.$this->id.'['.$this->_getOpLockedId().']['.$stack[$level]['folder']->id.']" '
-									.' title="'.$this->_getOpLockedTitle().': '.$this->getFolderPrintName( $stack[$level]['folder']).'" '
-									.' alt="'.$this->_getOpLockedTitle().': '.$this->getFolderPrintName( $stack[$level]['folder']).'" />';
+									. ' src="' . $this->_getOpLockedImg() . '"'
+									. ' id="' . $this->id . '_' . $this->_getOpLockedId() . '_' . $stack[$level]['folder']->id . '" '
+									. ' name="' . $this->id . '[' . $this->_getOpLockedId() . '][' . $stack[$level]['folder']->id . ']" '
+									. ' title="' . $this->_getOpLockedTitle() . ': ' . $this->getFolderPrintName($stack[$level]['folder']) . '" '
+									. ' alt="' . $this->_getOpLockedTitle() . ': ' . $this->getFolderPrintName($stack[$level]['folder']) . '" />';
 
 							} else if( $isPrerequisitesSatisfied && $event->getAccessible()) {
 
-                                if(method_exists($lo_class, 'trackDetails')) {
+								if (method_exists($lo_class, 'trackDetails')) {
 									$out .= '<a class="tree_view_image" '
-										.'id="'.$this->id.'_'.$this->_getShowResultsId().'_'.$stack[$level]['folder']->id.'" '
-										.'name="'.$this->id.'['.$this->_getShowResultsId().']['.$stack[$level]['folder']->id.']" '
-										.'href="index.php?modname=organization&amp;op=track_details&amp;type=' . $arrData[REPOFIELDOBJECTTYPE] . '&amp;id_user='.getLogUserId().'&amp;id_org='.$arrData[REPOFIELDIDRESOURCE].'" '
-										.'title="'.$this->_getShowResultsTitle().': '.$this->getFolderPrintName( $stack[$level]['folder']).'">'
-											.'<img src="'.$this->_getShowResultsImg().'"'
-											.' alt="'.$this->_getShowResultsTitle().': '.$this->getFolderPrintName( $stack[$level]['folder']).'" />'
+										. 'id="' . $this->id . '_' . $this->_getShowResultsId() . '_' . $stack[$level]['folder']->id . '" '
+										. 'name="' . $this->id . '[' . $this->_getShowResultsId() . '][' . $stack[$level]['folder']->id . ']" '
+										. 'href="index.php?modname=organization&amp;op=track_details&amp;type=' . $arrData[REPOFIELDOBJECTTYPE] . '&amp;id_user=' . getLogUserId() . '&amp;id_org=' . $arrData[REPOFIELDIDRESOURCE] . '" '
+										. 'title="' . $this->_getShowResultsTitle() . ': ' . $this->getFolderPrintName($stack[$level]['folder']) . '">'
+										. '<img src="' . $this->_getShowResultsImg() . '"'
+										. ' alt="' . $this->_getShowResultsTitle() . ': ' . $this->getFolderPrintName($stack[$level]['folder']) . '" />'
 										.'</a>';
 								}
 								else
 								{
-									$out .= '<img src="'.getPathImage().'blank.png" class="OrgStatus"'
-									.' alt="'. Lang::t($status, 'standard', 'framework').'" title="'. Lang::t($status, 'standard', 'framework').': '.$this->getFolderPrintName( $stack[$level]['folder']).'" />';
+									$out .= '<img src="' . getPathImage() . 'blank.png" class="OrgStatus"'
+										. ' alt="' . Lang::t($status, 'standard', 'framework') . '" title="' . Lang::t($status, 'standard', 'framework') . ': ' . $this->getFolderPrintName($stack[$level]['folder']) . '" />';
 								}
 							} else {
-								$out .= '<input type="image" class="tree_view_image" ' 
-									.' src="'.$this->_getOpLockedImg().'"'
-									.' id="'.$this->id.'_'.$this->_getOpLockedId().'_'.$stack[$level]['folder']->id.'" '
-									.' name="'.$this->id.'['.$this->_getOpLockedId().']['.$stack[$level]['folder']->id.']" '
-									.' title="'.$this->_getOpLockedTitle().': '.$this->getFolderPrintName( $stack[$level]['folder']).'" '
-									.' alt="'.$this->_getOpLockedTitle().': '.$this->getFolderPrintName( $stack[$level]['folder']).'" />';
+								$out .= '<input type="image" class="tree_view_image" '
+									. ' src="' . $this->_getOpLockedImg() . '"'
+									. ' id="' . $this->id . '_' . $this->_getOpLockedId() . '_' . $stack[$level]['folder']->id . '" '
+									. ' name="' . $this->id . '[' . $this->_getOpLockedId() . '][' . $stack[$level]['folder']->id . ']" '
+									. ' title="' . $this->_getOpLockedTitle() . ': ' . $this->getFolderPrintName($stack[$level]['folder']) . '" '
+									. ' alt="' . $this->_getOpLockedTitle() . ': ' . $this->getFolderPrintName($stack[$level]['folder']) . '" />';
 							}
-							
-							switch( $status ) {
+
+							switch ($status) {
 								case 'not attempted': $img = 'blank.png'; break;
 								case 'ab-initio': $img = 'ab-initio.png'; break;
 								case 'attempted': $img = 'attempted.png'; break;
-								case 'passed': 
+								case 'passed':
 								case 'completed': $img = 'completed.png'; break;
 								case 'failed': $img = 'fail.png'; break;
 							}
 							$out .= '<img src="'.getPathImage().'lobject/'.$img
 								.'" class="OrgStatus" alt="'. Lang::t($status, 'standard', 'framework').'" title="'. Lang::t($status, 'standard', 'framework').': '.$this->getFolderPrintName( $stack[$level]['folder']).'" />';
-							
+
 							foreach ($event->getAction() as $action){
 								$out .= $action;
 							}
 						}
-					break;
+						break;
 				}
 			}
 
@@ -1572,7 +1584,7 @@ class Org_TreeView extends RepoTreeView {
 	}
 
     function getCurrentState($id)
-    {
+	{
         $possTree = [];
 
         $childrensRoot = $this->_getChildrens($id);
@@ -1782,12 +1794,12 @@ class Org_TreeView extends RepoTreeView {
 		$isFirst = TRUE;
 
 		// check if the user attende the course
-		if($GLOBALS['course_descriptor']->getValue('course_type') == 'classroom') {
-			require_once(_lms_.'/lib/lib.date.php');
+		if ($GLOBALS['course_descriptor']->getValue('course_type') == 'classroom') {
+			require_once(_lms_ . '/lib/lib.date.php');
 			$man_date = new DateManager();
 			$this->user_presence = $man_date->checkUserPresence(getLogUserId(), $_SESSION['idCourse']);
 		}
-		
+
 		$tree = $this->printState();
 		$coll = $this->_retrieveData();
 		$stack = array();
@@ -1795,13 +1807,13 @@ class Org_TreeView extends RepoTreeView {
 		$count = 0;
 
 		// $tree .= '<div class="TreeViewContainer">'."\n";
-		$tree .= '<div class="panel panel-default panel-treeview">'."\n";
+		$tree .= '<div class="panel panel-default panel-treeview">' . "\n";
 
 		$tree .= '<div class="panel-heading">';
 		$tree .= $this->printElement($stack, $level);
 		$tree .= '</div>';
-		
-		$tree .= '<table class="table table-striped table-hover">'."\n";
+
+		$tree .= '<table class="table table-striped table-hover">' . "\n";
 		$folder = $this->tdb->getRootFolder();
 		$stack[$level] = array();
 		$stack[$level]['folder'] = $folder;
@@ -1818,54 +1830,54 @@ class Org_TreeView extends RepoTreeView {
 
 		$level++;
 
-		if( $coll !== FALSE ) {
-			while( $folder = $coll->getNext() ) {
-				
-				list($key, $val) = each( $stack[$level-1]['childs'] );
+		if ($coll !== FALSE) {
+			while ($folder = $coll->getNext()) {
+
+				list($key, $val) = each($stack[$level - 1]['childs']);
 				$stack[$level] = array();
 				$stack[$level]['folder'] = $folder;
 				$stack[$level]['childs'] = $val;
 				$stack[$level]['isFirst'] = $isFirst;
 				$isFirst = FALSE;
 
-				if( current( $stack[$level-1]['childs'] ) ) {
+				if (current($stack[$level - 1]['childs'])) {
 					$stack[$level]['isLast'] = false;
 				} else {
 					$stack[$level]['isLast'] = true;
 				}
 
-				if( is_array($val) ) {
+				if (is_array($val)) {
 					$stack[$level]['isExpanded'] = TRUE;
 				} else {
 					$stack[$level]['isExpanded'] = FALSE;
 				}
 
-				if( $folder->countChildrens() > 0 )
+				if ($folder->countChildrens() > 0)
 					$stack[$level]['isLeaf'] = FALSE;
 				else
 					$stack[$level]['isLeaf'] = TRUE;
 
 
-				$stack[$level]['idSeq'] = $stack[$level-1]['idSeq'].'.'.$folder->id;
+				$stack[$level]['idSeq'] = $stack[$level - 1]['idSeq'] . '.' . $folder->id;
 
 				$row_content = $this->printElement($stack, $level);
-				
-				if($row_content !== false) {
+
+				if ($row_content !== false) {
 					$count++;
 					// if( $count % 2 == 0 )
 					// 	$tree .= '<div class="TreeViewRowOdd" id="row_'.$stack[$level]['idSeq'].'">';
 					// else
 					// 	$tree .= '<div class="TreeViewRowEven" id="row_'.$stack[$level]['idSeq'].'">';
-					$tree .= '<tr id="row_'.$stack[$level]['idSeq'].'">';
+					$tree .= '<tr id="row_' . $stack[$level]['idSeq'] . '">';
 					$tree .= $row_content;
 					// $tree .= '</div>';
 					$tree .= '</tr>';
-	
-					if( is_array($val) ) {
+
+					if (is_array($val)) {
 						$level++;
 						$isFirst = TRUE;
-					} else if( $stack[$level]['isLast'] ) {
-						while( $stack[$level]['isLast'] && $level > 1 ) $level--;
+					} else if ($stack[$level]['isLast']) {
+						while ($stack[$level]['isLast'] && $level > 1) $level--;
 					}
 				}
 			}
@@ -1880,18 +1892,18 @@ class Org_TreeView extends RepoTreeView {
 		print_r( $this->compressList );
 		echo "-->\n"; */
 
-		$tree .= '</table>'."\n";
-		$tree .= '</div>'."\n";
+		$tree .= '</table>' . "\n";
+		$tree .= '</div>' . "\n";
 		return $tree;
 	}
-	
+
 	function getImage( &$stack, $currLev, $maxLev ) {
-		if( $currLev > 0 && $currLev == $maxLev ) {
+		if ($currLev > 0 && $currLev == $maxLev) {
 			$arrData = $stack[$currLev]['folder']->otherValues;
-			if( is_array($arrData) && $arrData[REPOFIELDOBJECTTYPE] != '' )
-				return array( 'TreeViewImage', 'lobject/'.$arrData[REPOFIELDOBJECTTYPE].'.png', $arrData[REPOFIELDOBJECTTYPE]);
-		}	
-		return parent::getImage( $stack, $currLev, $maxLev );
+			if (is_array($arrData) && $arrData[REPOFIELDOBJECTTYPE] != '')
+				return array('TreeViewImage', 'lobject/' . $arrData[REPOFIELDOBJECTTYPE] . '.png', $arrData[REPOFIELDOBJECTTYPE]);
+		}
+		return parent::getImage($stack, $currLev, $maxLev);
 	}
 
 	function presence()

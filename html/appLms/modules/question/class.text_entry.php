@@ -11,13 +11,9 @@
 |   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
-require_once( dirname(__FILE__).'/class.question.php' );
+require_once(Forma::inc(_lms_ . '/modules/question/class.question.php' ));
 
 class TextEntry_Question extends Question {
-	
-	function TextEntry_Question( $id ) {
-		parent::Question( $id );
-	}
 	
 	function getQuestionType() {
 		return 'text_entry';
@@ -463,10 +459,11 @@ class TextEntry_Question extends Question {
 
 		if ($this->userDoAnswer($trackTest->idTrack) && !$trackTest->getTestObj()->isRetainAnswersHistory()) {
 			if($can_overwrite) {
-				
 				return $this->updateAnswer($trackTest->idTrack, $source);
 			}
 			else return false;
+		} elseif ($trackTest->getTestObj()->isRetainAnswersHistory() && $this->testQuestAnswerExists($trackTest)) {
+			$this->deleteAnswer($trackTest->idTrack, ($trackTest->getNumberOfAttempt() + 1));
 		}
 		
 		$re_answer = sql_query("
@@ -518,25 +515,6 @@ class TextEntry_Question extends Question {
 		UPDATE ".$GLOBALS['prefix_lms']	."_testtrack_answer 
 		SET score_assigned = '".( $is_correct ? $score_corr : -$score_incorr )."', 
 			more_info = '".$source['quest'][$this->id]."' 
-		WHERE idTrack = '".(int)$id_track."' AND 
-			idQuest = '".$this->id."'");
-	}
-	
-	/**
-	 * delete the old answer
-	 * 
-	 * @param  int		$id_track	the relative id_track
-	 * 
-	 * @return bool	true if success false otherwise
-	 * 
-	 * @access public
-	 * @author Fabio Pirovano (fabio@docebo.com)
-	 */
-	function deleteAnswer( $id_track ) {
-		
-		
-		return sql_query("
-		DELETE FROM ".$GLOBALS['prefix_lms']	."_testtrack_answer 
 		WHERE idTrack = '".(int)$id_track."' AND 
 			idQuest = '".$this->id."'");
 	}

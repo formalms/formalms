@@ -42,19 +42,48 @@ class DashboardLmsController extends LmsController
     {
         checkPerm('view', true, $this->_mvc_name);
         $defaultLayout = $this->model->getDefaultLayout();
+        
+        // manage permission template
+        $idTemplate = $defaultLayout->getId();
+        $listLayout = $this->model->getListLayout();
+        foreach($listLayout as $key => $name){
+            $check_perm = $this->model->currentCanAccessObj($key);    
+            if($check_perm){
+                $idTemplate = $key;                       
+                  break; 
+            }      
+        }
+        
+        
         $blocks = [];
         $blockPaths = [];
+        
+        
+        
         if ($defaultLayout) {
-            $blocks = $this->model->getBlocksViewData($defaultLayout->getId());
+            $blocks = $this->model->getBlocksViewData($idTemplate);
+
+            /** @var DashboardBlockLms $block */
+            foreach ($this->model->getEnabledBlocks($idTemplate) as $block){
+                $blockPaths[] = $block->getViewPath();
+            }
         }
+        
+        
+        
 
+        $langModel = new LangAdm();
+        $langCode = $langModel->getLanguage(Lang::get())->lang_browsercode;
 
-        $this->render('dashboard',
+        $this->render(
+            'dashboard',
             [
                 'blocks' => $blocks,
                 'templatePath' => getPathTemplate(),
-                'dashboardLayoutId' => $defaultLayout->getId()
-            ], false,
+                'dashboardLayoutId' => $defaultLayout ? $defaultLayout->getId() : null,
+                'lang' => $langCode,
+            ],
+            false,
             $blockPaths
         );
     }

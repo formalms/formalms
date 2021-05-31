@@ -21,7 +21,7 @@
             {{ Form_getInputDropdown("search_d", "lang_code_diff", "lang_code_diff", language_list, selected_language_diff, ' onchange="DataTable_lang_table.reload();"') }}
         </div>
         <div class="lang-confr-filter  col-xs-12 col-sm-4">
-            <label for="only_empty">{{ translate('_ONLY_EMPTY', 'admin_lang') }}</label>:
+            <label for="only_empty">{{ translate('_ONLY_EMPTY', 'admin_lang') }}</label>:<br>
             {{ Form_getInputCheckbox("only_empty", "only_empty", "true", only_empty, ' onchange="DataTable_lang_table.reload();"') }}
         </div>
         {{ Form_closeForm() }}
@@ -293,14 +293,16 @@
                             }
                         }, 100);
                     });
+                    
                     return json;
                 },
                 url: 'ajax.adm_server.php?r=adm/lang/get',
             },
             paging: true,
+            pageLength: 25,
             searching: true,
             columns,
-            dom: 'Bfrtip',
+            dom: 'Blfrtip',
             stateSave: true,
             deferRender: true,
             edit: {
@@ -323,6 +325,57 @@
                 'all': true,
                 'style': 'multi',
             },
+            orderCellsTop: true,
+            fixedHeader: true,
+        });
+
+        // Setup - add a text input to each header cell
+        columns.forEach(function(item, i) {
+            if (i > 0 && i < 6) {
+                var title = item.data;
+                var searchPlaceholder = "{{ translate('_SEARCH', 'standard') }}";
+                var cell = $('.dataTables_scrollHeadInner .dataTable thead tr th:nth-child(' + (i + 1) +')')
+                if (i == 3) {
+                    var plugins = {{ plugins_ids|json_encode()|raw }};
+                    var selectPlugins = '<select class="form-control input-sm">';
+
+                    for (const [key, value] of Object.entries(plugins)) {
+                        selectPlugins += '<option value="' + key + '">' + value + '</option>';
+                    }
+                    selectPlugins += '</select>';
+                    cell.append('<br>' + selectPlugins);
+                } else if (i == 1) {
+                    var modules = {{ module_list|json_encode()|raw }};
+                    var selectModules = '<select class="form-control input-sm">';
+
+                    for (const [key, value] of Object.entries(modules)) {
+                        selectModules += '<option value="' + key + '">' + value + '</option>';
+                    }
+                    selectModules += '</select>';
+                    cell.append('<br>' + selectModules);
+                } else {
+                    cell.append('<br><input type="text" class="form-control input-sm" placeholder="' + searchPlaceholder + '" />');
+                }
+                var table = $($.fn.dataTable.tables(true)).DataTable();
+                table.columns.adjust();
+        
+                cell.find('input').on('keyup', function () {
+                    if (table.column(i).search() !== this.value ) {
+                        table
+                            .column(i)
+                            .search(this.value)
+                            .draw();
+                    }
+                });
+                cell.find('select').on('change', function () {
+                    if (table.column(i).search() !== this.value ) {
+                        table
+                            .column(i)
+                            .search(this.value)
+                            .draw();
+                    }
+                });
+            }
         });
         // DataTable_lang_table.searchBar.init('#lang_table');
         // DataTable_lang_table.searchBar.redraw()

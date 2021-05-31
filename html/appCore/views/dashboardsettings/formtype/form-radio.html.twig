@@ -1,6 +1,6 @@
 <div class="dashboard__infoBlock dashboard__infoBlock--radio">
     <div class="form-group">
-        <label class="dashboard__label" for="{{ block.postData.block }}-{{ index }}-file">{{translate('_RADIO_'~ form.class,'dashboardsetting')}}</label>
+        <label class="dashboard__label" for="{{ block.postData.block }}-{{ index }}-file">{{translate('_RADIO_'~ form.field|upper,'dashboardsetting')}}</label>
 
         <div class="dashboard__infoContainer">
             {% for key,value in form.values %}

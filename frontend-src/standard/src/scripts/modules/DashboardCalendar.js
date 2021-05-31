@@ -1,9 +1,9 @@
 import { Calendar } from '@fullcalendar/core';
-import itLocale from '@fullcalendar/core/locales/it';
 import dayGridPlugin from '@fullcalendar/daygrid';
+import initialLocaleCode from '@fullcalendar/core/locales/it';
 
 export const RenderDashBoardCalendar = () => {
-  const els = document.querySelectorAll('.js-dashboard-calendar')
+  const els = document.querySelectorAll('.js-dashboard-calendar');
 
   if (els.length) {
     for (let i = 0; i < els.length; i++) {
@@ -22,10 +22,9 @@ export const RenderDashBoardCalendar = () => {
         }
       }*/
 
-
       const calendar = new Calendar(els[i], {
         plugins: [dayGridPlugin],
-        locale: itLocale,
+        locale: initialLocaleCode,
         height: 'auto',
         eventSources: [
           {
@@ -44,6 +43,7 @@ export const RenderDashBoardCalendar = () => {
                   successCallback(
                       parsedData.response.map((item) => {
                         return {
+                          id: item.id,
                           title: item.title,
                           start: item.startDate,
                           type: item.type,
@@ -80,6 +80,7 @@ export const RenderDashBoardCalendar = () => {
                   successCallback(
                       parsedData.response.map((item) => {
                         return {
+                          id: item.id,
                           title: item.title,
                           start: item.startDate,
                           type: item.type,
@@ -116,6 +117,7 @@ export const RenderDashBoardCalendar = () => {
                   successCallback(
                       parsedData.response.map((item) => {
                         return {
+                          id: item.id,
                           title: item.title,
                           start: item.startDate,
                           type: item.type,
@@ -136,12 +138,13 @@ export const RenderDashBoardCalendar = () => {
             color: '#007CC8'
           },
         ],
-        eventClick: function() {
-          // renderPopup(event);
-          // console.log(item)
+        eventClick: function(item) {
+          const id = item.event.id;          
+          const url = `index.php?modname=course&op=aula&idCourse=${id}`;
+
+          window.location = url;
         },
         eventRender: function(item) {
-          // console.log(item);
           if (item.event.extendedProps.status) {
             item.el.classList.add('is-open');
           } else {
@@ -150,6 +153,10 @@ export const RenderDashBoardCalendar = () => {
           renderPopup(item);
         }
       });
+
+      if (initialLocaleCode != window.lang) {
+        calendar.setOption('locale', window.lang);
+      }
 
       calendar.render();
     }
@@ -163,7 +170,6 @@ const renderPopup = (item) => {
   const desc = item.event.extendedProps.description;
   const hours = item.event.extendedProps.hours;
   const title = item.event.title;
-  // console.log(item.event)
 
   el += '<div class="d-popup">';
   el += '<div class="d-popup__item is-' + type + '">';

@@ -562,7 +562,7 @@ class Man_Course {
 				." FROM %lms_courseuser AS cu  JOIN %lms_course_date AS cd "
 				." JOIN %lms_course_date_user AS cdu ON (cd.id_course = cu.idCourse AND "
 				." cd.id_date = cdu.id_date AND cu.idUser=cdu.id_user) "
-				." WHERE cd.id_course = ".(int)$id_course." AND (cu.waiting = 1 OR cdu.overbooking = 1)";
+				." WHERE cd.id_course = ".(int)$id_course." AND (cu.waiting = 1 OR cdu.overbooking = 1 or cu.status=4)";
             
             // BUG FIX 2469: SELECT ONLY THE USER BELONGING TO THE ADMIN                
             $query .= ($userlevelid != ADMIN_GROUP_GODADMIN
@@ -592,7 +592,7 @@ class Man_Course {
 			$query_courseuser = "
 			SELECT idUser, level, subscribed_by, status
 			FROM ".$GLOBALS['prefix_lms']."_courseuser
-			WHERE idCourse = '".$id_course."' AND waiting = '1' AND  edition_id = '".$edition_id."'";
+			WHERE idCourse = '".$id_course."' AND (waiting = '1' or status=4) AND  edition_id = '".$edition_id."'";
             $query_courseuser .= ($userlevelid != ADMIN_GROUP_GODADMIN
                 ? ( !empty($admin_users) ? " AND idUser IN (".implode(',', $admin_users).")" : " AND idUser IN (0)" )
                 : '' );
@@ -2535,7 +2535,7 @@ function logIntoCourse($id_course, $gotofirst_page = true) {
 	if ($first_page['mvc_path'] != "") {
 		$jumpurl = 'index.php?r='.$first_page['mvc_path'].'&id_module_sel='.$first_page['idModule'];
 	} else {
-		$jumpurl = 'index.php?modname='.$first_page['modulename'].'&op='.$first_page['op'].'&id_module_sel='.$first_page['idModule'];
+	$jumpurl = 'index.php?modname='.$first_page['modulename'].'&op='.$first_page['op'].'&id_module_sel='.$first_page['idModule'];
 	}
 
 	

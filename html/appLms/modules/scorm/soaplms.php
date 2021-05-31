@@ -224,8 +224,25 @@ class SOAPLMS {
 			$itemobj = new Scorm_Item( NULL, FALSE, NULL, $dbconn, false, $arrItemTrackData['idscorm_item'] );
 			if( $itemobj ) {
 				
+				// get ignoreScore
+				$query = "SELECT idCourse "
+				."FROM %lms_organization "
+				."WHERE idOrg = '".(int)$idReference."' ";
+				list($idCourse) = sql_fetch_row(sql_query($query));
+				require_once( Forma::inc( _lms_.'/modules/organization/orglib.php' ) );
+				$repoDb = new OrgDirDb( $idCourse );
+				$item = $repoDb->getFolderById( $idReference );
+				$values = $item->otherValues;
+				$ignoreScore = (isset($values[ORGFIELDIGNORESCORE]) && $values[ORGFIELDIGNORESCORE]);
+
 				/* remember in 1.3 masteryscore = completionthreshold */
-				if( strlen($itemobj->adlcp_masteryscore) > 0 ) {
+				
+				// force ignorescore if score_raw not provided
+				if ($trackobj->getParam(SCORM_RTE_PROGRESS, false) == NULL) {
+					$ignoreScore = true;
+				}
+
+				if( strlen($itemobj->adlcp_masteryscore) > 0  && !$ignoreScore) {
 					$lesson_status = computeCompletionStatus($trackobj, $itemobj->adlcp_masteryscore );
 				} else {
 					$lesson_status =  $trackobj->getParam(SCORM_RTE_LESSONSTATUS, false);

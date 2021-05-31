@@ -16,7 +16,11 @@
     <div class="d-col d-col--12 {{ class }}">
         <div class="d-courses d-widget">
             <h3 class="d-title">
-                {{ translate('_NEXT_COURSES','standard') }}
+                {% if block.data.title is empty %}
+                    {{ translate('_DASHBOARDBLOCKCOURSESLMS','dashboard') }}
+                {% else %}
+                    {{ block.data.title }}
+                {% endif %}
             </h3>
             {% for course in block.courses %}
                 {% if status > 0 %}
@@ -26,7 +30,7 @@
                 {% endif %}
 
                 <a class="d-courses__item has-icon--{{ course.type }}" target="_self"
-                   href="/appLms/index.php?modname=course&op=aula&idCourse={{ course.id }}">
+                   href="index.php?modname=course&amp;op=aula&amp;idCourse={{ course.id }}">
                     <div class="d-courses__img-wrapper">
                         <img class="d-courses__img"
                              src="{% if course.img != '' %} {{ course.img }} {% else %}{{ templatePath }}static/images/course-placeholder.png {% endif %}"/>
@@ -59,7 +63,7 @@
 
             <div class="d-courses__cta-wrapper">
                 <a class="forma-button forma-button--orange-hover forma-button--full d-button--cert" title=""
-                   href="/appLms/index.php?r=elearning/show&sop=unregistercourse">
+                   href="index.php?r=elearning/show&amp;sop=unregistercourse">
                     <span class="forma-button__label">{{ translate('_ALL_COURSES', 'standard') }}</span>
                 </a>
             </div>

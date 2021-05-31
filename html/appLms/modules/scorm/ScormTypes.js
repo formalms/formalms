@@ -458,6 +458,9 @@ function checkScormType( scormType, scormSubType, value, scormVersion ) {
 		case "CMIString4096":
 			return scormTypes_checkLen( 4096, value );
 			break;
+		case "CMIString64000":
+			return scormTypes_checkLen( 64000, value );
+			break;
 		case "CMITime":
 			return scormTypes_checkCMITime( value );
 			break;

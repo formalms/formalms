@@ -1,6 +1,6 @@
 <div class="dashboard__infoBlock dashboard__infoBlock--select">
     <label class="dashboard__label"
-           for="{{ block.postData.block }}-{{ index }}-file">{{ translate('_SELECT_'~ form.class,'dashboardsetting') }}</label>
+           for="{{ block.postData.block }}-{{ index }}-file">{{ translate('_SELECT_'~ form.field|upper,'dashboardsetting') }}</label>
 
     <select name="{{ form.name }}" class="dashboard__select form-control js-extra-setting"
             data-block="{{ block.postData.block }}-{{ index }}">

@@ -49,7 +49,6 @@ class DashboardBlockForm
                 switch ($formItem->getType()) {
                     case DashboardBlockForm::FORM_TYPE_SELECT:
                     case DashboardBlockForm::FORM_TYPE_RADIO:
-                    case DashboardBlockForm::FORM_TYPE_CHECKBOX:
                         if (!in_array($value, array_keys($formItem->getValues()))) {
                             $errors[] = [
                                 'field' => $formItem->getField(),
@@ -65,6 +64,7 @@ class DashboardBlockForm
                             ];
                         }
                         break;
+                    case DashboardBlockForm::FORM_TYPE_CHECKBOX:
                     case DashboardBlockForm::FORM_TYPE_FILE:
                     case DashboardBlockForm::FORM_TYPE_IMAGE:
                         break;

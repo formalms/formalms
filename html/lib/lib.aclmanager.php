@@ -1907,6 +1907,9 @@ class DoceboACLManager
                 //." ('".$idst."','".$idstMember."','".$filter."')";
                 . implode(",", $values);
             return $this->_executeQuery($query);
+
+            Events::trigger('core.orgchart_user.assigned', ['idst' => $idst, 'idstMember' => $idstMember]);
+
         } else {
             return false;
         }
@@ -1963,6 +1966,9 @@ class DoceboACLManager
                 . " WHERE idst = '" . (int)$idst . "'"
                 . "   AND idstMember IN (" . implode(',', $del_list) . ")"
                 . "   AND filter = '" . $filter . "'";
+
+            Events::trigger('core.orgchart_user.unassigned', ['idst' => $idst, 'idstMember' => $idstMember]);
+
             return $this->_executeQuery($query);
         } else
             return true;

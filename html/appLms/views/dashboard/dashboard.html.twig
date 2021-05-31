@@ -4,9 +4,15 @@
     </script>
     <div class="d-grid">
         <div class="d-row">
-            {% for block in blocks %}
-                {% include block.view with {'block': block } %}
-            {% endfor %}
+            {% if blocks | length %}
+                {% for block in blocks %}
+                    {% include block.view with {'block': block } %}
+                {% endfor %}
+            {% else %}
+                <div class="middlearea_container col-md-12">
+                    <div class="alert alert-danger text-center">{{ translate('_DASHBOARD_NO_LAYOUTS', 'dashboardsetting') }}</div>
+                </div>
+            {% endif %}
         </div>
     </div>
 </div>

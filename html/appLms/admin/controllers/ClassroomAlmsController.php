@@ -683,5 +683,180 @@ Class ClassroomAlmsController extends AlmsController {
 			break;
 		}
 	}
+    
+    
+    
+ // EXPORT EXCEL IN PDF
+    public function registro(){
+        
+
+    require_once(Forma::inc(_base_.'/lib/pdf/lib.pdf.php'));
+
+        //Course info
+      $id_course = Get::req('id_course', DOTY_INT, 0);
+      $id_date = Get::req('id_date', DOTY_INT, 0);
+      
+      $query = "SELECT  name FROM learning_course WHERE idCourse=" . $id_course;
+      $res = sql_query($query);
+      $row = sql_fetch_array($res);
+      $course_name = $row[0];      
+      
+                                   
+      $query = "SELECT code, name FROM learning_course_date WHERE id_course=" . $id_course . " AND id_date=" . $id_date;
+      $res = sql_query($query);
+      $row = sql_fetch_array($res);
+      $course_code = $row[0];
+      $edition_name = $row[1];
+
+      // giornata info
+      $query = "select date_begin, pause_begin , pause_end, date_end from learning_course_date_day where id_date=".$id_date;
+      $res = sql_query($query);
+      
+      list(  $date_begin , $pause_begin, $pause_end, $date_end) = sql_fetch_row($res)  ;
+      $day = date_format(date_create($date_begin) , 'd-m-Y');
+      $date_begin = date_format(date_create($date_begin) , 'G:i');
+      $pause_begin = date_format(date_create($pause_begin) , 'G:i');
+      $pause_end = date_format(date_create($pause_end) , 'G:i');
+      $date_end = date_format(date_create($date_end) , 'G:i');
+      
+      
+    $html = '
+    
+    <div><br></div>
+
+    <table cellspacing="0" cellpadding="1" border="1" >
+
+    </table>
+    <div><br></div>
+    <br><font color="navy" size="15"><b>'.Lang::t('_CLASSROOM_COURSE', 'cart').':</b> &nbsp;'.$course_name.'</font><br>
+    <br><font color="navy" size="15"><b>'.Lang::t('_EDITION', 'standard').':</b> &nbsp;'.$edition_name.'</font><br>
+    <h3>'.Lang::t('_DAY', 'standard').': '.$day.' - '.Lang::t('_START', 'standard').': '.$date_begin.' - '.Lang::t('_PAUSE_BEGIN', 'course').': '.$pause_begin.' - '.Lang::t('_PAUSE_END', 'course').': '.$pause_end.' - fine: '.$date_end.'</h3>';
+
+ 
+    $html = $html.'<div><table  cellpadding="12" border="1"  align="center"  width="100%">
+                <tr  >
+                    <td align=center width="10%" colspan=1 ><b>N.</b></td>
+                    <td align=center width="25%"><b>'.Lang::t('_NAME', 'standard').'</b></td>
+                    <td align=center width="25%"><b>'.Lang::t('_LASTNAME', 'standard').'</b></td>
+                    <td align=center width="20%"><b>'.Lang::t('_SIGNATURE', 'standard').'</b></td>
+                    <td align=center width="20%"><b>'.Lang::t('_SIGNATURE', 'standard').'</b></td>
+                </tr>';
+  
+      
+      
+      
+      //ONLY STUDENT  
+      $query = "SELECT U.userid, U.firstname, U.lastname, U.idst 
+      FROM 
+      learning_course_date_user L,
+      core_user U,
+      learning_courseuser 
+      WHERE L.id_user=U.idst 
+      AND L.id_date=" . $id_date . "
+       AND
+      learning_courseuser.idUser = U.idst 
+      and learning_courseuser.idCourse=".$id_course."
+      and  learning_courseuser.level=3 ORDER BY lastname";
+
+                                                                                                   
+      $res = sql_query($query);
+      
+      $cont=1;  
+                
+  while ($row = sql_fetch_array($res)) {
+                         
+
+          $str_formazione = "";
+          $str_aggiornamento= "";          
+
+                        
+          $html = $html. "<tr height='40'>";
+          $html = $html. "<td align=center>".$cont."</td>";
+          $html = $html. "<td align=center>". $row[1]."</td>";
+          $html = $html. "<td align=center>" . $row[2]."</td>";
+          
+          $html = $html. "<td align=center>" . "" ."</td>";
+          $html = $html. "<td align=center>" . ""."</td>";
+          
+  
+          $html = $html. "</tr>";
+          $cont++;
+          
+      }      
+                      
+                
+                
+                
+     $html = $html."</table></div>";               
+ 
+      
+      $html = $html.'<br><br>';
+      $html = $html.'<table border="1" width="75%" cellspacing="0" cellpadding="12" border="1"  align="center">
+                        <tr>
+                             <td><b>'.Lang::t('_LEVEL_6', 'levels').'</b></td>
+                             <td><b>'.Lang::t('_DATE', 'course').'</b></td>
+                             <td><b>'.Lang::t('_SIGNATURE', 'standard').'</b></td>
+                        </tr>';
+       
+      $query = "SELECT  U.firstname, U.lastname, U.idst 
+      FROM 
+      learning_course_date_user L,
+      core_user U,
+      learning_courseuser 
+      WHERE L.id_user=U.idst 
+      AND L.id_date=" . $id_date . "
+       AND
+      learning_courseuser.idUser = U.idst 
+      and learning_courseuser.idCourse=".$id_course."
+      and  learning_courseuser.level=6
+      
+      ORDER BY lastname";       
+       
+        
+        $res = sql_query($query);
+        while ($row = sql_fetch_array($res)) {     
+                                                                                       
+              $html = $html.'<tr >
+                                <td >'.$row[0].'. '.$row[1].'</td>
+                                <td></td>   
+                                <td></td>
+                            </tr>
+              ';
+        }
+        $html = $html .'</table>';
+        
+        
+        
+        $name="registro_".$id_course."-".$id_date;
+        $bgimage = "";
+        $orientation = "L";
+
+ 
+        $this->getPdf($html, $name, $bgimage, $orientation, false, false);
+    }
+    
+    
+    // estrai PDF
+    function getPdf($html, $name, $img = false, $orientation = 'L', $download = true, $facs_simile = false, $for_saving = false)
+    {
+        require_once(Forma::inc(_base_.'/lib/pdf/lib.pdf.php'));
+
+        $pdf = new PDF($orientation);
+     
+        $pdf->SetFont('dejavusans', '', 10);
+        $pdf->SetMargins(5, 10, 5);
+            
+        $pdf->SetAutoPageBreak(TRUE,12);    
+                 
+        $pdf->setPrintFooter(true);         
+                      
+        $pdf->getPdf($html, $name, $img, $download, $facs_simile, $for_saving);
+    
+    
+    }     
+    
+    
+    
+    
 }
 ?>

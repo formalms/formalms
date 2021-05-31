@@ -54,6 +54,101 @@ class CourseAlms extends Model
         );
     }
 
+    
+    public function getUserInOverbooking($idCourse){
+    $userlevelid = Docebo::user()->getUserLevelId();
+        if ($userlevelid != ADMIN_GROUP_GODADMIN) {
+            require_once(_base_ . '/lib/lib.preference.php');
+            $adminManager = new AdminPreference();
+            $acl_man = &Docebo::user()->getAclManager();
+
+            $admin_courses = $adminManager->getAdminCourse(Docebo::user()->getIdST());
+
+            $admin_tree = $adminManager->getAdminTree(Docebo::user()->getIdST());
+            $admin_users = $acl_man->getAllUsersFromIdst($admin_tree);
+        }
+
+        $query = "select COUNT(cu.idUser) as num_overbooking"
+            . " FROM %lms_course AS c"
+            . " LEFT JOIN %lms_courseuser AS cu ON c.idCourse = cu.idCourse and cu.idCourse=".$idCourse
+            . ($userlevelid != ADMIN_GROUP_GODADMIN
+                ? (!empty($admin_users) ? " AND cu.idUser IN (" . implode(',', $admin_users) . ")" : " AND cu.idUser IN (0)")
+                : '')
+            . " WHERE c.course_type <> 'assessment' and cu.status=4";
+            
+            
+            $res = sql_query($query);
+            list($num_overbooking) = sql_fetch_row($res);
+        
+            return $num_overbooking;
+    }
+    
+    
+    
+    public function getUserInWaiting($idCourse){
+    $userlevelid = Docebo::user()->getUserLevelId();
+        if ($userlevelid != ADMIN_GROUP_GODADMIN) {
+            require_once(_base_ . '/lib/lib.preference.php');
+            $adminManager = new AdminPreference();
+            $acl_man = &Docebo::user()->getAclManager();
+
+            $admin_courses = $adminManager->getAdminCourse(Docebo::user()->getIdST());
+
+            $admin_tree = $adminManager->getAdminTree(Docebo::user()->getIdST());
+            $admin_users = $acl_man->getAllUsersFromIdst($admin_tree);
+        }
+
+        $query = "select COUNT(cu.idUser) as num_overbooking"
+            . " FROM %lms_course AS c"
+            . " LEFT JOIN %lms_courseuser AS cu ON c.idCourse = cu.idCourse and cu.idCourse=".$idCourse
+            . ($userlevelid != ADMIN_GROUP_GODADMIN
+                ? (!empty($admin_users) ? " AND cu.idUser IN (" . implode(',', $admin_users) . ")" : " AND cu.idUser IN (0)")
+                : '')
+            . " WHERE c.course_type <> 'assessment' and cu.status=-2 ";
+            
+            
+            $res = sql_query($query);
+            list($num_overbooking) = sql_fetch_row($res);
+        
+            return $num_overbooking;
+    }    
+    
+    
+    public function getUserInCourse($idCourse){
+    $userlevelid = Docebo::user()->getUserLevelId();
+        if ($userlevelid != ADMIN_GROUP_GODADMIN) {
+            require_once(_base_ . '/lib/lib.preference.php');
+            $adminManager = new AdminPreference();
+            $acl_man = &Docebo::user()->getAclManager();
+
+            $admin_courses = $adminManager->getAdminCourse(Docebo::user()->getIdST());
+
+            $admin_tree = $adminManager->getAdminTree(Docebo::user()->getIdST());
+            $admin_users = $acl_man->getAllUsersFromIdst($admin_tree);
+        }
+
+        $query = "select COUNT(cu.idUser) as num_users"
+            . " FROM %lms_course AS c"
+            . " LEFT JOIN %lms_courseuser AS cu ON c.idCourse = cu.idCourse and cu.idCourse=".$idCourse
+            . ($userlevelid != ADMIN_GROUP_GODADMIN
+                ? (!empty($admin_users) ? " AND cu.idUser IN (" . implode(',', $admin_users) . ")" : " AND cu.idUser IN (0)")
+                : '')
+            . " WHERE c.course_type <> 'assessment' ";
+            
+        
+        
+          
+            $res = sql_query($query);
+            list($num_overbooking) = sql_fetch_row($res);
+        
+        
+        
+            return $num_overbooking;
+    }    
+    
+    
+    
+    
     public function getCourseNumber($filter = false)
     {
         $query = "SELECT COUNT(*)"
@@ -279,6 +374,8 @@ class CourseAlms extends Model
         $query .= " GROUP BY c.idCourse"
             . " ORDER BY " . $sort . " " . $dir;
 
+
+            
         if ((int) $results > 0) $query .= " LIMIT " . (int) $start_index . ", " . (int) $results;
 
         return sql_query($query);

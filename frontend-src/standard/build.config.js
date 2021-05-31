@@ -19,6 +19,10 @@ module.exports = {
         loaders: ['style-loader', 'css-loader', 'sass-loader']
       },
       {
+        test: /\.css$/,
+        loaders: ['style-loader', 'css-loader', 'sass-loader']
+      },
+      {
         test: /\.js$/,
         enforce: 'pre',
         loader: 'eslint-loader',
@@ -29,7 +33,7 @@ module.exports = {
       },
       {
         test: /\.js$/,
-        exclude: /(node_modules)/,
+        exclude: [/(node_modules)/],
         use: {
           loader: 'babel-loader',
           options: {
@@ -66,11 +70,11 @@ module.exports = {
   },
   plugins: [
     new HardSourceWebpackPlugin(),
-    new UglifyJSPlugin({
+    /*new UglifyJSPlugin({
       uglifyOptions: {
         sourceMap: false,
         comments: false
       }
-    })
+    })*/
   ]
 };

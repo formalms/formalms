@@ -8,7 +8,7 @@ td.ft-edit:not(.ft-edit-open):hover {
 }
 
 form.ft-edit-popup {
-  position: absolute;
+  position: relative;
   left: 0;
   top: 0;
   z-index: 10;

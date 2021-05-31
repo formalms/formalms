@@ -348,13 +348,13 @@ class DateManager
     
     public function getClassromByID($id_classroom)
     {
-        $query =    "SELECT name, location "
+        $query =    "SELECT name, location,street, city, zip_code "
                     ." FROM ".$this->classroom_table .", ".$this->location_table
                     ." WHERE idClassroom = ".$id_classroom ." and ".$this->location_table.".location_id=".$this->classroom_table.".location_id";
                     
-        list($name,$location) = sql_fetch_row(sql_query($query));
+        list($name,$location, $street, $city, $zip_code ) = sql_fetch_row(sql_query($query));
 
-        return $location." - ".$name;
+        return $location. " - ". $name."  ".$street. "  ".$city." ". $zip_code. "";
     }    
     
     
@@ -577,6 +577,8 @@ class DateManager
 			$res[$i]['date_begin'] = $row['date_begin'];
 			$res[$i]['date_end'] = $row['date_end'];
             $res[$i]['classroom'] = $this->getClassromByID($row['classroom']);
+
+            
 			$i++;
 		}
 
@@ -1447,7 +1449,11 @@ class DateManager
 				'user_subscribed' => $user_subscribed,
 				'mod' => '<a href="index.php?r=alms/classroom/modclassroom&id_course='.$id_course.'&amp;id_date='.$id_date.'">'.Get::img('standard/edit.png', Lang::t('_MOD', 'course')).'</a>',
 				'del' => 'ajax.adm_server.php?r=alms/classroom/delclassroom&id_course='.$id_course.'&amp;id_date='.$id_date,
-				'unsubscribe_date_limit' => $unsubscribe_date_limit);
+				'unsubscribe_date_limit' => $unsubscribe_date_limit,
+                'registro' => '<a href="index.php?r=alms/classroom/registro&id_course='.$id_course.'&amp;id_date='.$id_date.'">'. Get::img('standard/date.png', 'Apri').'</a>'
+                
+                
+                );
 		}
 
 		return $res;

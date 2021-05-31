@@ -115,6 +115,37 @@ class UsermanagementAdm extends Model
 		return $output;
 	}
 
+    public static function getOrgGroups($idOrg, $descendants)
+    {
+        $db = DbConn::getInstance();
+        $output = array();
+        if ($descendants) {
+            list($left, $right) = self::_getFolderLimits($idOrg);
+            $query = "SELECT idOrg FROM %adm_org_chart_tree WHERE iLeft>=" . $left . " AND iRight<=" . $right;
+            $res = $db->query($query);
+            $arr_org = array();
+            while (list($id_org) = $db->fetch_row($res)) {
+                $arr_org[] = "'/oc_" . $id_org . "'";
+                $arr_org[] = "'/ocd_" . $id_org . "'";
+            }
+            if ($idOrg == 0) {
+                $arr_org[] = "'/oc_0'";
+                $arr_org[] = "'/ocd_0'";
+            }
+            $query = "SELECT idst FROM %adm_group WHERE groupid IN (" . implode(",", $arr_org) . ")";
+            $res = $db->query($query);
+            while (list($idg) = $db->fetch_row($res)) {
+                $output[] = $idg;
+            }
+        } else {
+            $query = "SELECT idst FROM %adm_group WHERE groupid='/oc_" . (int)$idOrg . "' OR groupid='/ocd_" . (int)$idOrg . "'";
+            $res = $db->query($query);
+            while (list($idst) = $db->fetch_row($res))
+                $output[] = $idst;
+        }
+        return $output;
+    }
+
 
 	public function _getRootGroups()
 	{
@@ -1513,6 +1544,25 @@ class UsermanagementAdm extends Model
 		}
 		return $row;
 	}
+
+    protected static function _getFolderLimits($idOrg)
+    {
+        $db = DbConn::getInstance();
+        if ($idOrg <= 0) {
+            $query = "SELECT MIN(iLeft), MAX(iRight) FROM %adm_org_chart_tree";
+            $res = $db->query($query);
+            $row = $db->fetch_row($res);
+            if (is_array($row)) {
+                $row[0]--;
+                $row[1]++;
+            }
+        } else {
+            $query = "SELECT iLeft, iRight, lev FROM %adm_org_chart_tree WHERE idOrg=" . (int)$idOrg;
+            $res = $db->query($query);
+            $row = $db->fetch_row($res);
+        }
+        return $row;
+    }
 
 	/*
 	 * returns an ordered list of ids (like a path)

@@ -1,0 +1,125 @@
+<div class="layout_colum_container">
+	{% include 'upload-form.html.twig' %}
+	<table class="table table-striped table-bordered display" style="width:100%" id="mediaTable"></table>
+	<div class="nofloat"></div>
+</div>
+
+<style>
+#main-menu, #footer {
+	display: none;
+}
+</style>
+
+<!-- scripts -->		
+<script>
+
+function getApiMediaUrl(slug, params) {
+	let url = `${window.config.baseUrl()}/appCore/index.php?r=${slug}`;
+	if (params) {
+		url += '&' + new URLSearchParams(params).toString();
+	}
+
+	return url;
+}
+
+(function() {
+	const tableEl = $('#mediaTable');
+		var table = tableEl.FormaTable({
+			rowId: "id",
+			processing: true,
+			serverSide: true,
+			searching: false,
+			paging: false,
+			columns: [  // definisco le colonne
+					{ data: 'fname', title: '{{ translate("_FILENAME", "standard") }}', sortable: true, width: 'auto' , 
+						render: function(data, type, row, meta) {
+							return '<a href="' + row.url + '" target="_blank">'+ data +'</a>';
+						}
+					},
+					{ data: 'size', title: '{{ translate("_FILESIZE", "standard") }}', sortable: true, width: 'auto' },
+					{ data: 'type', title: '{{ translate("_FILEMIME", "standard") }}', sortable: true, width: 'auto' },
+					{ data: 'preview', title: '{{ translate("_PREVIEW", "standard") }}', sortable: false, width: '20%', 
+						render: function(data, type, row, meta) {
+							var media = null;
+
+							switch(row.type) {
+								case 'image':
+									media = '<img src="' + row.url + '" height="auto" width="160">';
+									break;
+								case 'media':
+									media = '<i class="fa fa-play-circle-o fa-5x"></i>';
+									break;
+								default:
+									media = '<i class="fa fa-file-o fa-5x"></i>';
+							}
+							return '<div class="text-center"><a href="' + row.url + '" target="_blank">'+ media +'</a></div>';
+						}
+					},
+					{ data: 'select', title: '&nbsp;', sortable: false, width: '10%', 
+						render: function(data, type, row, meta) {
+							return '\
+								<div class="text-center">\
+									<button type="button" class="btn btn-success btn-select" data-id="' + row.id + '" data-url="' + row.url + '">\
+										<i class="glyphicon glyphicon-check"></i>\
+									</button>\
+								</div>';
+						}
+					},
+					{ data: 'delete', title: '&nbsp;', sortable: false, width: '10%', 
+						render: function(data, type, row, meta) {
+							return '\
+								<div class="text-center">\
+									<button type="button" class="btn btn-danger btn-del" data-id="' + row.id + '">\
+										<i class="glyphicon glyphicon-trash"></i>\
+									</button>\
+								</div>';
+						}
+					},
+			],
+			ajax: {
+				url: getApiMediaUrl('adm/mediagallery/list'),
+				type: "POST",
+				data: {
+					type: '{{ type }}',
+					authentication_request: '{{ authentication_request }}',
+				}
+			},
+			drawCallback: function() {
+				$('.btn-select').click(function(e) {
+					var btn = $(this);
+
+					// Select a media by dispatch event
+					window.parent.postMessage({
+						mceAction: 'setUrl',
+						value: btn.data('url'),
+					}, '*');
+
+					return false;
+				});
+
+				$('.btn-del').click(function(e) {
+					if (confirm("{{ translate('_FILE_SURE_DEL', 'standard') }}")) {
+						var btn = $(this);
+						// Delete a media
+						$.ajax({
+							url: getApiMediaUrl('adm/mediagallery/delete'),
+							type: "POST",
+							data: { id: btn.data('id') },
+							beforeSend: () => {
+								btn.attr('disabled', true);
+							},
+							success: (response) => {
+								btn.attr('disabled', false);
+								table.reload();
+							},
+							error: err => {
+								console.log(err);
+								btn.attr('disabled', false);
+							},
+						});
+					}
+				});
+			},
+		});
+})();
+</script>

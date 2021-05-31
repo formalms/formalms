@@ -1,6 +1,6 @@
 <div class="dashboard__infoBlock dashboard__infoBlock--input">
     <div class="form-group">
-        <label class="dashboard__label" for="{{ block.postData.block }}-{{ loop.index0 }}-textearea">{{translate('_TEXT_AREA','dashboardsetting')}}</label>
+        <label class="dashboard__label" for="{{ block.postData.block }}-{{ loop.index0 }}-textearea">{{ translate('_TEXT_AREA_'~ form.field|upper,'dashboardsetting') }}</label>
         <div class="dashboard__infoContainer">
             <textarea class="form-control tinymce_complex js-extra-setting" id="{{ block.postData.block }}-{{ loop.index0 }}-textarea" name="{{ form.name }}" rows="7" cols="52" ></textarea>
         </div>

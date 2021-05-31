@@ -30,9 +30,9 @@ class DashboardBlockCalendarLms extends DashboardBlockLms
     }
 
     public function parseConfig($jsonConfig)
-    {
-        return parent::parseBaseConfig($jsonConfig);
-    }
+	{
+		$this->parseBaseConfig($jsonConfig);
+	}
 
     public function getAvailableTypesForBlock()
     {
@@ -70,12 +70,6 @@ class DashboardBlockCalendarLms extends DashboardBlockLms
     public function getLink()
     {
         return '#';
-    }
-
-    public function getForm()
-    {
-        return [
-        ];
     }
 
     public function getRegisteredActions()

@@ -74,6 +74,7 @@ switch ($op) {
 
             $help_email = Get::sett('customer_help_email', '');
             $help_pfx = Get::sett('customer_help_subj_pfx', '');
+            $help_name_from = Get::sett('customer_help_name_from', false);
 
             $subject = (!empty($help_pfx) ? "[" . $help_pfx . "] " : "");
             $subject .= chelpCheckField($_POST["help_req_subject"]);
@@ -122,7 +123,10 @@ switch ($op) {
 
             $mailer = new DoceboMailer();
             $mailer->IsHTML(true);
-            $res = $mailer->SendMail($help_email, $help_email, $subject, $msg, false, array(MAIL_REPLYTO => $user_email, MAIL_SENDER_ACLNAME => false));
+            $res = $mailer->SendMail($help_email, $help_email, $subject, $msg, false, [
+                MAIL_REPLYTO => $user_email, 
+                MAIL_SENDER_ACLNAME => $help_name_from
+            ]);
 
             $output = array('success' => $res);
             if (!$res) $output['message'] = UIFeedback::perror(Lang::t('_OPERATION_FAILURE', 'menu'));
@@ -280,6 +284,3 @@ function _parse_ua_find($search, &$key, &$result)
 
     return false;
 }
-
-
-?>

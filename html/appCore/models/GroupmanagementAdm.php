@@ -213,6 +213,10 @@ class GroupmanagementAdm extends Model {
 	public function deleteGroup($idst) {
 		$output = false;
 
+		$info_group = $this->getGroupInfo($idst);
+
+		Events::trigger('core.group.deleting', ['id_group' => $idst, 'info_group' => $info_group]);
+
 		$query = "DELETE FROM %adm_group WHERE idst=".(int)$idst." LIMIT 1";
 		$res = $this->db->query($query);
 
@@ -226,6 +230,8 @@ class GroupmanagementAdm extends Model {
 			*/
 			if ($this->deleteGroupMembers($idst)) $output = true;
 		}
+
+		Events::trigger('core.group.deleted', ['id_group' => $idst, 'info_group' => $info_group]);
 
 		return $output;
 	}
@@ -263,6 +269,8 @@ class GroupmanagementAdm extends Model {
 	public function saveGroupInfo($idst, $info) {
 		$output = false;
 
+		Events::trigger('core.group.editing', ['id_group' => $idst, 'info_group' => $info]);
+
 		if ($idst > 0 && (is_array($info) || is_object($info))) {
 			$output = true;
 			$conditions = array();
@@ -288,12 +296,16 @@ class GroupmanagementAdm extends Model {
 			}
 		}
 
+		Events::trigger('core.group.edited', ['id_group' => $idst, 'info_group' => $info]);
+
 		return $output;
 	}
 
 
 	public function createGroup($info) {
 		$output = false;
+
+		Events::trigger('core.group.creating', ['info_group' => $info]);
 
 		if (is_array($info) || is_object($info)) {
 
@@ -365,6 +377,8 @@ class GroupmanagementAdm extends Model {
 			}
 		}
 
+		Events::trigger('core.group.created', ['id_group' => $idst, 'info_group' => $info]);
+
 		return $output;
 	}
 
@@ -420,6 +434,8 @@ class GroupmanagementAdm extends Model {
 				$res = $this->db->query($query);
 			}
 		}
+
+        Events::trigger('core.group_member.assigned', ['idst' => $idst, 'members' => $members]);
 
 		return $res;
 	}
@@ -757,6 +773,9 @@ class GroupmanagementAdm extends Model {
 				$output = $res ? true : false;
 			}
 		}
+
+		Events::trigger('core.group_member.unassigned', ['id_group' => $id_group, 'users' => $users]);
+
 		return $output;
 	}
 

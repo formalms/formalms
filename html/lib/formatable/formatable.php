@@ -613,6 +613,7 @@ $date_picker_param = 'data-provide="datepicker" data-date-autoclose=true data-da
         /**
          * Instance DataTable with the given options.
          */
+
         var datatable = this._datatable = dom.DataTable(_options);
 
         datatable.on('click', '.formatable-action', function(e) {
