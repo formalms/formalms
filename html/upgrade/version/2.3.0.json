@@ -2,11 +2,19 @@
     "version": {
         "name": "2.3.0",
         "number": "20300",
-        "description": "2.3.0",
-        "pretty_version": "2.3.0",
+        "description": "questa è la 2.3.0",
+        "pretty_desc": "2 3 0",
         "pre": "20300_pre.php",
         "post": "20300_post.php",
-        "config": "20300_config.php",
-        "file_sytem": "20300_fs.php"
+        "config": "20300_conf.php",
+        "file_sytem": "20300_fs.php",
+        "role": "20300_role.php",
+        "mysql": "20300_db.sql",
+        "date": "2000-01-01 00:00",
+        "status": "stable",
+        "php": {
+            "min": "5.6",
+            "max": "7.0" 
+        }
     }
 }

@@ -85,7 +85,6 @@ function checkFolderPerm() {
 				case "lms": {
 					$specific_dir_to_check = array(
 						'files/appLms/certificate',
-						'files/appLms/chat',
 						'files/appLms/forum',
 						'files/appLms/htmlpages',
 						'files/appLms/item',

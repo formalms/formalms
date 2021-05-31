@@ -2,11 +2,19 @@
     "version": {
         "name": "1.2",
         "number": "10200",
-        "description": "1.2",
-        "pretty_version": "1.2",
+        "description": "questa è la 1.2",
+        "pretty_desc": "1 2",
         "pre": "10200_pre.php",
         "post": "10200_post.php",
-        "config": "10200_config.php",
-        "file_sytem": "10200_fs.php"
+        "config": "10200_conf.php",
+        "file_sytem": "10200_fs.php",
+        "role": "10200_role.php",
+        "mysql": "10200_db.sql",
+        "date": "2000-01-01 00:00",
+        "status": "stable",
+        "php": {
+            "min": "5.6",
+            "max": "7.0" 
+        }
     }
 }

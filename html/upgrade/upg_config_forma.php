@@ -40,7 +40,7 @@ else {
 	$to_upgrade_arr =getToUpgradeArray();
 }
 
-$last_ver =getVersionIntNumber($GLOBALS['cfg']['endversion']);
+$last_ver = (int)$GLOBALS['cfg']['endversion'];
 
 $fn_config = _base_.'/config.php';
 
@@ -66,7 +66,7 @@ if ($_SESSION['upgrade_ok']) {
 		$GLOBALS['debug'] .=" <br/>" . "Upgrading config to version: ".$msg_version;
 
 		// --- config upgrade -----------------------------------------------------------
-		$fn =_upgrader_.'/data/upg_conf/'.$current_ver.'_conf.php';
+		$fn =_upgrader_.'/data/upg_conf/'.$GLOBALS['cfg']['detailversions'][$current_ver]['config'];
 
 		if (file_exists($fn)) {
 			$GLOBALS['debug'] .=  " <br/>" . "Source upgrade config file: " . $fn ;

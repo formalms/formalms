@@ -17,7 +17,7 @@
 // 2xxxx : forma     versions series 2.x  (formely 2.xx.xx )
 
 function versionSort($a, $b) {
-  return -1 * version_compare($a, $b);
+  return 1 * version_compare($a, $b);
 }
 
 $readFolder = _upgrader_."/version/";
@@ -34,7 +34,7 @@ if ($handle = opendir($readFolder))
     }
     else
     {
-      if ($file != "." & $file != "..") {
+      if ($file != "." & $file != ".." & substr($file, -5) == '.json') {
         $versions[] = substr($file, 0, -5);
       }
     }
@@ -43,7 +43,6 @@ if ($handle = opendir($readFolder))
 closedir($handle);
 
 usort($versions, 'versionSort');
-$versions = array_reverse($versions);
 
 // for reference old docebo ce versions
 $GLOBALS['cfg']['versions'] = array(
@@ -63,6 +62,8 @@ foreach ($versions as $version) {
   $arrJsonVer=json_decode($strJsonVer,true);
   $arrGlobal[$arrJsonVer['version']['number']] = $arrJsonVer['version']['name'];
   $GLOBALS['cfg']['versions'][$arrJsonVer['version']['number']] = $arrJsonVer['version']['name'];
+  $GLOBALS['cfg']['detailversions'][$arrJsonVer['version']['number']] = $arrJsonVer['version'];
+  $GLOBALS['cfg']['endversion'] = $arrJsonVer['version']['number'];
 }
 
 // for reference old docebo ce versions
@@ -77,7 +78,5 @@ $GLOBALS['cfg']['docebo_versions'] = array(
     '4040' => '4.0.4',
     '4050' => '4.0.5',
 );
-
-$GLOBALS['cfg']['endversion'] = '29301'; //30000  29301 3.0.0.alpha.1 recuperarlo dalla core version
 
 ?>
