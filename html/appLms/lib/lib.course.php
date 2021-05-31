@@ -2531,7 +2531,14 @@ function logIntoCourse($id_course, $gotofirst_page = true) {
 	$first_page = firstPage();
 	$_SESSION['current_main_menu']	= $first_page['idMain'];
 	$_SESSION['sel_module_id']		= $first_page['idModule'];
+
+	if ($first_page['mvc_path'] != "") {
+		$jumpurl = 'index.php?r='.$first_page['mvc_path'].'&id_module_sel='.$first_page['idModule'];
+	} else {
 	$jumpurl = 'index.php?modname='.$first_page['modulename'].'&op='.$first_page['op'].'&id_module_sel='.$first_page['idModule'];
+	}
+
+	
 
 
 
@@ -2714,7 +2721,7 @@ function firstPage( $idMain = false ) {
     require_once(_lms_ . '/lib/lib.permission.php');
 
 	$query_main = "
-	SELECT module.idModule, main.idMain, module.module_name, module.default_op, module.token_associated
+	SELECT module.idModule, main.idMain, module.module_name, module.default_op, module.token_associated, module.mvc_path
 	FROM ( ".$GLOBALS['prefix_lms']."_menucourse_main AS main JOIN
 		".$GLOBALS['prefix_lms']."_menucourse_under AS un ) JOIN
 		".$GLOBALS['prefix_lms']."_module AS module
@@ -2725,11 +2732,11 @@ function firstPage( $idMain = false ) {
 	ORDER BY main.sequence, un.sequence";
 	$re_main = sql_query($query_main);
 
-	while(list($id_module, $main, $module_name, $default_op, $token) = sql_fetch_row($re_main)) {
+	while(list($id_module, $main, $module_name, $default_op, $token, $mvc_path) = sql_fetch_row($re_main)) {
 
 		if(checkPerm($token, true, $module_name)) {
 
-			return array('idModule'=> $id_module, 'idMain' => $main, 'modulename' => $module_name, 'op' => $default_op);
+			return array('idModule'=> $id_module, 'idMain' => $main, 'modulename' => $module_name, 'op' => $default_op, 'mvc_path' => $mvc_path);
 		}
 	}
 }
