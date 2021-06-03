@@ -32,7 +32,6 @@ class FolderTree {
 
   clickOnFolder(event) {
     const _this = this;
-    event.preventDefault();
 
     // Try to get clicked dir
     let el = event.target.closest('.folderTree__link');

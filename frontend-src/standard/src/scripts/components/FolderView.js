@@ -194,8 +194,9 @@ class FolderView {
       if (el.tagName === 'BUTTON') {
         e.preventDefault();
       }
-      
+
       const li = el.closest('.folderView__li');
+
       if (!li) {
         return;
       }
