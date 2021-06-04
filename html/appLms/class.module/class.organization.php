@@ -258,7 +258,7 @@ class Module_Organization extends LmsModule {
 			$idItem = $folder->otherValues[REPOFIELDIDRESOURCE];
 			$lo = createLO($folder->otherValues[REPOFIELDOBJECTTYPE], $idItem);
 			if(isset($_GET['edit']) && $_GET['edit']) {
-				$back_url = 'index.php?r=lms/lomanagerorganization/show';
+				$back_url = 'index.php?r=lms/lomanager/show';
 			} else {
 				$back_url = 'index.php?r=lms/lo/show';
 			}
