@@ -55,27 +55,7 @@ function pubrepo(&$treeView) {
 }
 
 function pubrepo_display( &$treeView ) {
-	// print conainer div and form
-	global $modname, $op;
-	$GLOBALS['page']->add( '<div class="std_block">' );
-	$GLOBALS['page']->add( '<form id="pubreposhow" method="post"'
-	.' action="index.php?modname='.$modname.'&op='.$op.'"'
-	.' >'."\n"
-	.'<input type="hidden" id="authentic_request_pubr" name="authentic_request" value="'.Util::getSignature().'" />' );
-	
-	if( funAccess('moditem','MOD', TRUE, 'pubrepo' ) ) {
-		$treeView->withActions = TRUE;
-	} else {
-		$tdb = $treeView->getTreeDb();
-	}
-	$GLOBALS['page']->add( $treeView->load() );
-	if( funAccess('moditem','MOD', TRUE, 'pubrepo' ) ) {
-		$GLOBALS['page']->add( $treeView->loadActions() );
-	}
-
-	$GLOBALS['page']->add( '</form>' );
-	// print form for import action
-	$GLOBALS['page']->add( '</div>' );
+	Util::jump_to('index.php?r=lms/lomanager/show');
 }
 
 function pubrepo_opfolder(&$treeView, $op) {

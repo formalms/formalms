@@ -132,27 +132,7 @@ function homerepo(&$treeView) {
 }
 
 function homerepo_display( &$treeView ) {
-	// print conainer div and form
-	global $modname, $op;
-	$GLOBALS['page']->add( '<div class="std_block">' );
-	$GLOBALS['page']->add( '<form id="homereposhow" method="post"'
-		.' action="index.php?modname='.$modname.'&amp;op='.$op.'"'
-		.' >'."\n"
-		.'<input type="hidden" id="authentic_request_hrs" name="authentic_request" value="'.Util::getSignature().'" />');
-	
-	if( funAccess('moditem','MOD', TRUE, 'homerepo' ) ) {
-		$treeView->withActions = TRUE;
-	} else {
-		$tdb = $treeView->getTreeDb();
-	}
-	$GLOBALS['page']->add( $treeView->load() );
-	if( funAccess('moditem','MOD', TRUE, 'homerepo' ) ) {
-		$GLOBALS['page']->add( $treeView->loadActions() );
-	}
-
-	$GLOBALS['page']->add( '</form>' );
-	// print form for import action
-	$GLOBALS['page']->add( '</div>' );
+	Util::jump_to('index.php?r=lms/lomanager/show');
 }
 
 function homerepo_opfolder(&$treeView, $op) {
