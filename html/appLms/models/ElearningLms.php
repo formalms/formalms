@@ -93,7 +93,7 @@ class ElearningLms extends Model
 			}
 		}
 
-		$query = "SELECT c.idCourse, c.course_type, c.idCategory, c.code, c.name, c.description, c.box_description, c.difficult, c.status AS course_status, c.level_show_user, "
+		$query = "SELECT c.idCourse, c.course_type, c.idCategory, c.code, c.name, c.description, c.box_description, c.difficult, c.status AS status, c.level_show_user, "
 			. "	  c.course_edition, c.sub_start_date, c.sub_end_date, "
 			. "    c.max_num_subscribe, c.create_date, "
 			. "    c.direct_play, c.img_othermaterial, c.course_demo, c.use_logo_in_courselist, c.img_course, c.lang_code, "
