@@ -328,6 +328,9 @@ class FieldList
 		if ($manual_id_field === false)
 			$user_groups = $acl->getUserGroupsST($id_user);
 
+		if (count($user_groups) > 2 && isset($user_groups[1]) && isset($user_groups[2])) {
+			// Not only roots ocd_0 and oc_0
+			unset($user_groups[1]);
 		}
 
 		$query = "SELECT ft.id_common, ft.type_field, ftt.type_file, ftt.type_class, ft.translation, gft.mandatory, gft.useraccess "
