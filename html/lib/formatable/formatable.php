@@ -299,7 +299,8 @@ $date_picker_param = 'data-provide="datepicker" data-date-autoclose=true data-da
                                     edit_form.append(edit_form_date_view);
                                     edit_form.append(edit_form_date);
                                 } else if (_thisColumn.edit.type === 'textarea') {
-                                    edit_form.append('<textarea name="new_value" maxlength="255">' + cell.data() + '</textarea>');
+                                    //#19883
+                                    edit_form.append('<textarea name="new_value">' + cell.data() + '</textarea>');
                                 } else { // Default input text with type (text, number, ...)
                                     edit_form.append('<input type="' + (_thisColumn.edit.type || 'text') + '" name="new_value" value="' + cell.data() + '">');
                                 }
