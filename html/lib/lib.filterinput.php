@@ -215,9 +215,11 @@ class FilterInput
     {
 
         if (is_array($str)) {
-            $new_array = array();
+            $new_array = [];
             foreach ($str as $key => $val) {
-                if (!$is_files_arr || $key == 'tmp_name') $new_array[$this->clean_input_keys($key)] = $this->clean_input_data($val);
+                if (!$is_files_arr || $key == 'tmp_name'){
+                    $new_array[$this->clean_input_keys($key)] = $this->clean_input_data($val);
+                }
             }
             return $new_array;
         }

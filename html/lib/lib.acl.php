@@ -35,11 +35,11 @@ class DoceboACL {
 	 * @param mixed $dbconn the connection to database or FALSE to use default connection
 	 * @param mixed $prefix the prefix of the database or FLASE to use default prefix
 	 */
-	function DoceboACL( $dbconn = FALSE, $prefix = FALSE ) {
+	public function __construct($dbconn = FALSE, $prefix = FALSE ) {
 		$this->aclManager = new DoceboACLManager($dbconn, $prefix );
 	}
 
-	function &getACLManager() {
+	public function getACLManager() {
 		return $this->aclManager;
 	}
 

@@ -199,7 +199,7 @@ class DoceboACLManager
      * @param mixed $dbconn the connection to database or FALSE to use default connection
      * @param mixed $prefix the prefix of the database or FLASE to use default prefix
      */
-    function DoceboACLManager($dbconn = FALSE, $prefix = FALSE)
+    function __construct($dbconn = FALSE, $prefix = FALSE)
     {
         $this->dbconn = ($dbconn === FALSE) ? $GLOBALS['dbConn'] : $dbconn;
         $this->prefix = ($prefix === FALSE) ? $GLOBALS['prefix_fw'] : $prefix;

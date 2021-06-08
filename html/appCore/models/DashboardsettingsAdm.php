@@ -39,14 +39,34 @@ class DashboardsettingsAdm extends Model
         $result = sql_query($query);
         $this->layouts = [];
 
-        while ($layout = sql_fetch_object($result)) {
+        foreach ($result as $layout) {
             /** @var DashboardLayoutLms $layoutObj */
             $layoutObj = new DashboardLayoutLms();
-            $layoutObj->setId($layout->id);
-            $layoutObj->setName($layout->name);
-            $layoutObj->setCaption($layout->caption);
-            $layoutObj->setStatus($layout->status);
-            $layoutObj->setDefault($layout->default);
+            $layoutObj->setId($layout['id']);
+            $layoutObj->setName($layout['name']);
+            $layoutObj->setCaption($layout['caption']);
+            $layoutObj->setStatus($layout['status']);
+            $layoutObj->setDefault($layout['default']);
+
+            $this->layouts[] = $layoutObj;
+        }
+
+        if (count($this->layouts) === 0) {
+            $layout = [
+                'name' => 'Default Layout',
+                'caption' => 'Default Layout Caption',
+                'status' => 'publish',
+                'default' => true
+            ];
+
+            $this->saveLayout($layout);
+
+            $layoutObj = new DashboardLayoutLms();
+            $layoutObj->setId('');
+            $layoutObj->setName($layout['name']);
+            $layoutObj->setCaption($layout['caption']);
+            $layoutObj->setStatus($layout['status']);
+            $layoutObj->setDefault($layout['default']);
 
             $this->layouts[] = $layoutObj;
         }
@@ -54,10 +74,12 @@ class DashboardsettingsAdm extends Model
 
     public function getLayout($id)
     {
-        $query = "SELECT `id`, `name`, `caption`, `status`, `default` FROM `dashboard_layouts` WHERE id = $id";
-        $result = sql_query($query);
-
-        return sql_fetch_object($result);
+        return array_filter(
+            $this->layouts,
+            function ($e) use (&$id) {
+                return $e->id === $id;
+            }
+        );
     }
 
     public function loadEnabledBlocks()
@@ -79,7 +101,6 @@ class DashboardsettingsAdm extends Model
 
     public function loadInstalledBlocks()
     {
-
         $query_blocks = "SELECT `id`, `block_class` FROM `dashboard_blocks`";
 
         $result = $this->db->query($query_blocks);
@@ -148,14 +169,16 @@ class DashboardsettingsAdm extends Model
         $name = $layout['name'];
         $caption = $layout['caption'] ?: ' ';
         $status = $layout['status'];
+        $default = ($layout['default'] === true || $layout['default'] === 1);
 
         $query = "SELECT COUNT(*) AS count FROM `dashboard_layouts`";
         $res = $this->db->query($query);
         $res = sql_fetch_array($res);
-        $default = $res['count'] ? 0 : 1;
+        if ($res['count'] && $default === false) {
+            $default = $res['count'] ? 0 : 1;
+        }
 
-        $sql = "
-            INSERT INTO `dashboard_layouts` ( `name`, `caption`, `status`, `default`, `created_at`) 
+        $sql = "INSERT INTO `dashboard_layouts` ( `name`, `caption`, `status`, `default`, `created_at`) 
             VALUES ( '" . addslashes($name) . "', '" . addslashes($caption) . "', '" . addslashes($status) . "', " . $default . ", CURRENT_TIMESTAMP)";
 
         return sql_query($sql);
@@ -169,11 +192,11 @@ class DashboardsettingsAdm extends Model
 
     public function delLayout($id_layout)
     {
-        
+
         // delete permission
-        $query = "DELETE FROM dashboard_permission WHERE id_dashboard = $id_layout";        
-        $this->db->query($query);        
-        
+        $query = "DELETE FROM dashboard_permission WHERE id_dashboard = $id_layout";
+        $this->db->query($query);
+
         $query = "DELETE FROM `dashboard_layouts` WHERE id = $id_layout";
         return $this->db->query($query);
     }
@@ -207,41 +230,41 @@ class DashboardsettingsAdm extends Model
     {
         return $this->layouts;
     }
-    
-    
+
+
     // check permission dashboard
-    public function setObjIdstList($dashboardId, $idst_list) {
-        
-        $idst_list = serialize($idst_list);      
-                            
-        $query = "SELECT id_dashboard FROM dashboard_permission WHERE id_dashboard = ".$dashboardId;
-       
+    public function setObjIdstList($dashboardId, $idst_list)
+    {
+
+        $idst_list = serialize($idst_list);
+
+        $query = "SELECT id_dashboard FROM dashboard_permission WHERE id_dashboard = " . $dashboardId;
+
         $exists = sql_num_rows($this->db->query($query));
-        
-        if(!$exists) {            
-            $query = "INSERT INTO dashboard_permission ( id_dashboard, idst_list) VALUES ( ".$dashboardId.", '".$idst_list."' ) ";
+
+        if (!$exists) {
+            $query = "INSERT INTO dashboard_permission ( id_dashboard, idst_list) VALUES ( " . $dashboardId . ", '" . $idst_list . "' ) ";
         } else {
-            $query = "UPDATE dashboard_permission  SET idst_list = '".$idst_list."'   WHERE id_dashboard = ".$dashboardId;
+            $query = "UPDATE dashboard_permission  SET idst_list = '" . $idst_list . "'   WHERE id_dashboard = " . $dashboardId;
         }
-                                           
-        return  $this->db->query($query);
+
+        return $this->db->query($query);
     }
-        
+
     // get user list permission of dashboard
-    public function getObjIdstList($dashboardId) {
-    
-        $query = "SELECT idst_list FROM dashboard_permission WHERE id_dashboard= ".$dashboardId;
+    public function getObjIdstList($dashboardId)
+    {
+
+        $query = "SELECT idst_list FROM dashboard_permission WHERE id_dashboard= " . $dashboardId;
 
         $re_query = $this->db->query($query);
-        if(!$re_query) return false;
-        
+        if (!$re_query) return false;
+
         list($idst_list) = sql_fetch_row($re_query);
-                                              
-        if($idst_list && is_string($idst_list)) return unserialize(($idst_list));
+
+        if ($idst_list && is_string($idst_list)) return unserialize(($idst_list));
         return array();
-    }    
-        
-    
-    
-    
+    }
+
+
 }

@@ -476,8 +476,6 @@ class CourseAlms extends Model
         $array_lang = Docebo::langManager()->getAllLangCode();
         $array_lang[] = 'none';
 
-        $acl_man = &Docebo::user()->getAclManager();
-
         $id_custom = $data_params['selected_menu'];
 
         // calc quota limit

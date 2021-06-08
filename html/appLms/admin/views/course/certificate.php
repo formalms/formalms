@@ -10,7 +10,7 @@ echo getTitleArea(array(
 <?php
 	echo	Form::openForm('certificate_form', 'index.php?r='.$base_link_course.'/certificate')
 			.Form::getHidden('id_course', 'id_course', $id_course)
-			.Form::getTextfield(Lang::t('_EX_CERT_POINT_REQUIRED', 'certificate'), 'point_required', 'point_required', 255, $point_required)
+			//.Form::getTextfield(Lang::t('_EX_CERT_POINT_REQUIRED', 'certificate'), 'point_required', 'point_required', 255, $point_required)
 			.$tb->getTable()
 			.Form::openButtonSpace()
 			.Form::getButton('assign', 'assign', Lang::t('_SAVE'))
