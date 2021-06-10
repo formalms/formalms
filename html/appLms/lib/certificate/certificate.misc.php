@@ -16,12 +16,10 @@ require_once(dirname(__FILE__).'/certificate.base.php');
 class CertificateSubs_Misc extends CertificateSubstitution {
 
 	function getSubstitutionTags() {
-		
-		$lang =& DoceboLanguage::createInstance('certificate', 'lms');
-		
+
 		$subs = array();
-		$subs['[today]'] 			= $lang->def('_COURSE_TODAY');
-		$subs['[year]'] 			= $lang->def('_COURSE_YEAR');
+		$subs['[today]'] 			= Lang::t('_COURSE_TODAY','certificate', 'lms');
+		$subs['[year]'] 			= Lang::t('_COURSE_YEAR','certificate', 'lms');
 		return $subs;
 	}
 	

@@ -115,8 +115,6 @@ class Selector_Catalogue {
 		require_once(_base_.'/lib/lib.table.php');
 		require_once(_base_.'/lib/lib.form.php');
 
-		$lang =& DoceboLanguage::createInstance('catalogue', 'lms');
-
 		// Filter
 		$this->filter['catalogue_name'] = ( isset($_POST['cat_filter_name']) ? $_POST['cat_filter_name'] : '' );
 		if($this->show_filter === true) {
@@ -140,7 +138,7 @@ class Selector_Catalogue {
 		}
 		// End Filter
 
-		$tb = new Table(Get::sett('visuItem'), $lang->def('_CATALOGUE'), $lang->def('_CATALOGUE_SUMMARY'));
+		$tb = new Table(Get::sett('visuItem'), Lang::t('_CATALOGUE','catalogue', 'lms'), Lang::t('_CATALOGUE_SUMMARY','catalogue', 'lms'));
 
 		$tb->initNavBar('ini_cat', 'button');
 		$ini = $tb->getSelectedElement();
@@ -190,9 +188,9 @@ class Selector_Catalogue {
 
 		$type_h = array('image', '', '', '');
 		$cont_h = array(
-			'<span class="access-only">'.$lang->def('_CATALOGUE_SELECTION').'</span>',
-			$lang->def('_NAME'),
-			$lang->def('_DESCRIPTION')
+			'<span class="access-only">'.Lang::t('_CATALOGUE_SELECTION','catalogue', 'lms').'</span>',
+			Lang::t('_NAME','catalogue', 'lms'),
+			Lang::t('_DESCRIPTION','catalogue', 'lms')
 		);
 		$tb->setColsStyle($type_h);
 		$tb->addHead($cont_h);

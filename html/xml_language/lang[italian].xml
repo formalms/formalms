@@ -372,6 +372,8 @@
         <key id="certificate&amp;_TOTAL_TIME_SECOND" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Tempo totale trascorso nel corso (secondi)]]></key>
         <key id="certificate&amp;_TO_RELEASE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Da rilasciare]]></key>
         <key id="certificate&amp;_USER_FOR_META_CERTIFICATE_ASSIGN" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Seleziona gli utenti a cui vanno assegnati i meta certificati]]></key>
+        <key id="certificate&amp;_SCORM_TITLE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Titolo Scorm]]></key>
+        <key id="certificate&amp;_SCORM_SCORE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Punteggio]]></key>
       </module>
       <module id="chat">
         <key id="chat&amp;_CHAT_DESCRIPTION" attributes="" save_date="2017-04-05 12:21:27"><![CDATA[Chatta con gli altri utenti di questo corso, clicca sul link qui sotto per aprire la finestra della chat.
