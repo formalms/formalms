@@ -81,7 +81,7 @@ class CoursereportLms extends Model
 
         $this->idSource = $idSource;
 
-        $this->courseReports = array();
+        $this->courseReports = [];
     }
 
     /**
@@ -107,7 +107,7 @@ class CoursereportLms extends Model
      */
     public function getCourseReports()
     {
-        if (count($this->courseReports) == 0) {
+        if (count($this->courseReports) === 0) {
             $this->grabCourseReports();
         }
         return $this->courseReports;
@@ -170,7 +170,7 @@ class CoursereportLms extends Model
 //        $tot_report = 0;
 
         // XXX: Update if needed
-        if ($tot_report == 0) {
+        if ($tot_report === 0) {
             $report_man->initializeCourseReport($org_tests);
         } else {
 
@@ -240,8 +240,11 @@ class CoursereportLms extends Model
      */
     public function getReportsFilteredBySourceOf($sourceOf = null)
     {
-        $result = array();
+        $result = [];
 
+        if (count($this->courseReports) === 0) {
+            $this->grabCourseReports();
+        }
         foreach ($this->courseReports as $courseReport) {
 
             if ($sourceOf === null || $courseReport->getSourceOf() === $sourceOf) {
@@ -258,9 +261,9 @@ class CoursereportLms extends Model
      */
     public function getCourseReportsVisibleInDetail()
     {
-        $result = array();
+        $result = [];
 
-        if (count($this->courseReports) == 0) {
+        if (count($this->courseReports) === 0) {
             $this->grabCourseReports();
         }
 
@@ -280,7 +283,7 @@ class CoursereportLms extends Model
     public function getReportsForFinal()
     {
 
-        $reports = array();
+        $reports = [];
 
         foreach ($this->courseReports as $courseReport) {
 
@@ -316,7 +319,7 @@ class CoursereportLms extends Model
 
     public function getReportsId($sourceOf = null)
     {
-        $responseArray = array();
+        $responseArray = [];
 
         foreach ($this->courseReports as $courseReport) {
 
@@ -331,7 +334,7 @@ class CoursereportLms extends Model
 
     public function getSourcesId($sourceOf = null)
     {
-        $responseArray = array();
+        $responseArray = [];
 
         if (count($this->courseReports) == 0) {
             $this->grabCourseReports();

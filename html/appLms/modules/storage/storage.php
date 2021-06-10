@@ -35,14 +35,13 @@ function &load_state() {
 function &create_TabView( $op ) {
 	global $_tab_op_map;
 	$tv = new TabView( 'storage', 'index.php?modname=storage&op=display' );
-	$lang =& DoceboLanguage::createInstance('storage', 'lms');
 	
 	if( checkPerm('home', true, 'storage') )
-		$tv->addTab( new TabElemDefault( 'storage_home', $lang->def('_HOMEREPOROOTNAME'), getPathImage().'area_title/homerepo.gif' ) );
+		$tv->addTab( new TabElemDefault( 'storage_home', Lang::t('_HOMEREPOROOTNAME','storage'), getPathImage().'area_title/homerepo.gif' ) );
 	if( checkPerm('lesson', true, 'storage') )
-		$tv->addTab( new TabElemDefault( 'storage_course', $lang->def('_ORGROOTNAME'), getPathImage().'area_title/organizations.gif' ) );
+		$tv->addTab( new TabElemDefault( 'storage_course', Lang::t('_ORGROOTNAME','storage'), getPathImage().'area_title/organizations.gif' ) );
 	if( checkPerm('public', true, 'storage') )
-		$tv->addTab( new TabElemDefault( 'storage_pubrepo', $lang->def('_PUBREPOROOTNAME'), getPathImage().'area_title/pubrepo.gif' ) );
+		$tv->addTab( new TabElemDefault( 'storage_pubrepo', Lang::t('_PUBREPOROOTNAME','storage'), getPathImage().'area_title/pubrepo.gif' ) );
 	
 	$extra_data = load_state();
 	
@@ -91,8 +90,6 @@ function storage_display() {
 	$tv = create_TabView( $GLOBALS['op'] );
 	
 	$repo =& create_activeTab($tv);
-        
-	$lang =& DoceboLanguage::createInstance('storage', 'lms');
 	
 	$repo->initialize();
 	$GLOBALS['page']->setWorkingZone('content');
@@ -117,7 +114,7 @@ function storage_display() {
 	$GLOBALS['page']->add( $repo->getExtraBottom() );
 	
 	//setup dialog popups
-	$lang =& DoceboLanguage::CreateInstance('standard', 'framework');
+
 	require_once(_base_.'/lib/lib.dialog.php');
 	switch ( $tv->getActiveTab() ) {
 	    case 'storage_course': { 
@@ -125,9 +122,9 @@ function storage_display() {
 		       'orgshow',
 		       'index.php?modname=storage&op=organization',
 		       'input[name*=treeview_opdeletefolder_organization]',
-		       $lang->def('_AREYOUSURE'),
-		       $lang->def('_CONFIRM'),
-		       $lang->def('_UNDO'),
+		       Lang::t('_AREYOUSURE','standard'),
+               Lang::t('_CONFIRM','standard'),
+               Lang::t('_UNDO','standard'),
 		       'function(o) { return o.title; }',
 		       'organization_treeview_opdeletefolder_organization_',
 		       'treeview_selected_organization',
@@ -138,9 +135,9 @@ function storage_display() {
 		       'homereposhow',
 		       'index.php?modname=storage&op=homerepo',
 		       'input[name*=treeview_opdeletefolder_homerepo]',
-		       $lang->def('_AREYOUSURE'),
-		       $lang->def('_CONFIRM'),
-		       $lang->def('_UNDO'),
+                Lang::t('_AREYOUSURE','standard'),
+                Lang::t('_CONFIRM','standard'),
+                Lang::t('_UNDO','standard'),
 		       'function(o) { return o.title; }',
 		       'homerepo_treeview_opdeletefolder_homerepo_',
 		       'treeview_selected_homerepo',
@@ -151,9 +148,9 @@ function storage_display() {
 		       'pubreposhow',
 		       'index.php?modname=storage&op=pubrepo',
 		       'input[name*=treeview_opdeletefolder_pubrepo]',
-		       $lang->def('_AREYOUSURE'),
-		       $lang->def('_CONFIRM'),
-		       $lang->def('_UNDO'),
+                Lang::t('_AREYOUSURE','standard'),
+                Lang::t('_CONFIRM','standard'),
+                Lang::t('_UNDO','standard'),
 		       'function(o) { return o.title; }',
 		       'pubrepo_treeview_opdeletefolder_pubrepo_',
 		       'treeview_selected_pubrepo',
