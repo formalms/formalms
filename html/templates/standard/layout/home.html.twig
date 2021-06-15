@@ -33,6 +33,13 @@
 		{{ jqueryLib|raw }}
 	{% endblock %}
 
+	<script type="text/javascript">
+
+		window.frontend = {};
+		window.frontend.config = JSON.parse('{{ clientConfig|json_encode|raw }}');
+
+	</script>
+
 	{% block bootstrap %}
 		{{ boostrap|raw }}
 	{% endblock %}

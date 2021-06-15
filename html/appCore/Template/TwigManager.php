@@ -13,6 +13,8 @@ namespace appCore\Template;
   |   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
   \ ======================================================================== */
 
+use appCore\Template\Services\ClientService;
+
 class TwigManager
 {
 
@@ -41,6 +43,8 @@ class TwigManager
         )));
         $this->twig->addExtension(new FormExtension());
         $this->twig->addExtension(new GetExtension());
+
+        $this->twig->addGlobal('clientConfig', (new ClientService())->getConfig());
         $this->twig->addGlobal('GLOBALS', $GLOBALS);
         $this->twig->addGlobal('Docebo', Docebo);
         if ($debug) {
