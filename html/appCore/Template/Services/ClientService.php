@@ -4,7 +4,7 @@ namespace appCore\Template\Services;
 
 class ClientService
 {
-    public const coreFolders = [
+    const coreFolders = [
         'appLms',
         'appCore',
         'appScs',
