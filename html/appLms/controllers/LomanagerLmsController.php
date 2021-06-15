@@ -51,9 +51,9 @@ class LomanagerLmsController extends LmsController
         $lo_types = $this->model->getLoTypes();
 
         $tabs_controllers = [
-            //new LomanagerhomerepoLmsController(),
+            // new LomanagerhomerepoLmsController(), // TODO commenta prima di committare
             new LomanagerorganizationLmsController(),
-            //new LomanagerrepoLmsController(),
+            // new LomanagerrepoLmsController(), // TODO commenta prima di committare
         ];
 
         $tabs = [];

@@ -108,7 +108,6 @@ class ContextMenu {
           _this.currentElsIds.forEach((id) => {
             _this.container.querySelector('li[data-id="' + parseInt(id) + '"]').classList.add('is-ready-for-copy');
           });
-
           document.querySelector('.folderView__copyOverlay').classList.add('is-shown');
         }
       };

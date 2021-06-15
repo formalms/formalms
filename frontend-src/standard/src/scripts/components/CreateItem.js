@@ -141,7 +141,7 @@ class CreateItem {
       params = {};
     }
     url += '&' + new URLSearchParams(params).toString();
-
+    console.log(action, this.baseApiUrl);
     return url;
   }
 

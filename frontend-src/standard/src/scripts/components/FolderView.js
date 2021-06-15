@@ -229,6 +229,9 @@ class FolderView {
           });
         }
       }
+      if (el.classList.contains('fv-is-copy')) {
+        li.classList.add('is-ready-for-copy');
+      }
     }
   }
 
