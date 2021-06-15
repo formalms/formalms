@@ -38,7 +38,7 @@ class ClientService
 
             $path = '';
             foreach ($requestUriArray as $requestUriItem) {
-                if (!empty($requestUriItem) && !in_array($requestUriItem, self::coreFolders, true) && strpos('index.php',$requestUriItem) > 0) {
+                if (!empty($requestUriItem) && (!in_array($requestUriItem, self::coreFolders, true) || strpos('index.php',$requestUriItem) > 0)) {
                     $path .= sprintf('/%s', $requestUriItem);
                 }
             }
