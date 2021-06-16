@@ -24,14 +24,22 @@ class ContextMenu {
     
     contextmenu(selector, (target) => {
       _this.setContainerByTarget(target);
-      // console.log(target, _this.container);
-      _this.currentEls = _this.container.querySelectorAll('.fv-is-selected');
+      
+      // todo
+      /*
+      if(target.classList.contains('folderTree__link')) { // se clicco su una voce del folder tree
+        _this.currentEls = _this.container.querySelectorAll('.ft-is-selected');
+      } else {
+        _this.currentEls = _this.container.querySelectorAll('.fv-is-selected');
+      }
+      */
+      
       _this.currentElsIds = [];
       _this.currentEls.forEach((item) => {
         _this.currentElsIds.push(parseInt(item.getAttribute('data-id')));
         // console.log(item);
       });
-
+      console.log(target, _this.container, _this.currentElsIds);
       if (_this.currentElsIds.length == 0) {
         _this.currentElsIds = [parseInt(target.getAttribute('data-id'))];
       }
