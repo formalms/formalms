@@ -1,4 +1,3 @@
-import Config from '../config/config';
 import FolderTree from '../components/FolderTree';
 import FolderView from '../components/FolderView';
 
@@ -11,7 +10,7 @@ class StudentLearningObject {
   }
 
   getBaseApiUrl(controller, action) {
-    let url = `${Config.apiUrl}lms/${controller}`;
+    let url = `${window.frontend.config.url.appLms}/index.php?r=lms/${controller}`;
     if (action) {
       url += `/${action}`;
     }

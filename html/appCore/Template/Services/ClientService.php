@@ -4,7 +4,7 @@ namespace appCore\Template\Services;
 
 class ClientService
 {
-    public const coreFolders = [
+    const coreFolders = [
         'appLms',
         'appCore',
         'appScs',
@@ -34,11 +34,13 @@ class ClientService
             $http = isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) !== 'off' ? 'https' : 'http';
             $hostname = $_SERVER['HTTP_HOST'];
 
-            $requestUriArray = explode('/', $_SERVER['REQUEST_URI']);
+
+            $requestUriArray = explode('index.php', $_SERVER['REQUEST_URI']);
+            $requestUriArray = explode('/', $requestUriArray[0]);
 
             $path = '';
             foreach ($requestUriArray as $requestUriItem) {
-                if (!empty($requestUriItem) && !in_array($requestUriItem, self::coreFolders, true) && strpos('index.php',$requestUriItem) > 0) {
+                if (!empty($requestUriItem) && !in_array($requestUriItem, self::coreFolders, true)) {
                     $path .= sprintf('/%s', $requestUriItem);
                 }
             }
