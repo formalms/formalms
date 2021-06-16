@@ -31,7 +31,7 @@ class ClientService
     {
         $baseUrl = '';
         if (isset($_SERVER['HTTP_HOST'])) {
-            $http = isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) !== 'off' ? 'https' : 'http';
+            $http = (isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) !== 'off') || strtolower($_SERVER['HTTP_X_FORWARDED_PROTO']) === 'https' ? 'https' : 'http';
             $hostname = $_SERVER['HTTP_HOST'];
 
 
