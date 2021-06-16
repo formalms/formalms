@@ -238,10 +238,7 @@ class FolderTree {
         if (_this.openedIds) {
           _this.openedIds.forEach((id) => {
             if (id != _this.selectedId) {
-              let subtree = _this.container.querySelector('.folderTree__li[data-id="' + id + '"] .folderTree__ul.hidden');
-              if (subtree) {
-                subtree.classList.remove('hidden');
-              }
+              _this._setAsOpen.call(_this, id);
             }
           });
         }
@@ -272,6 +269,21 @@ class FolderTree {
     url += '&' + new URLSearchParams(params).toString();
 
     return url;
+  }
+
+  /**
+   * Set graphically the folder as "open"
+   * @param {*} id 
+   */
+  _setAsOpen(id) {
+    let subtree = this.container.querySelector('.folderTree__li[data-id="' + id + '"] .folderTree__ul.hidden');
+    let directoryButton = this.container.querySelector('.folderTree__li[data-id="' + id + '"] button.folderTree__link');
+    directoryButton.classList.add('ft-is-folderOpen');
+    let arrowSpan = this.container.querySelector('.folderTree__li[data-id="' + id + '"] span.arrow');
+    arrowSpan.classList.add('opened');
+    if (subtree) {
+      subtree.classList.remove('hidden');
+    }
   }
 }
 

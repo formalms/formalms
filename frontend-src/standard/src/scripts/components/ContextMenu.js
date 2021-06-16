@@ -24,11 +24,12 @@ class ContextMenu {
     
     contextmenu(selector, (target) => {
       _this.setContainerByTarget(target);
-
+      // console.log(target, _this.container);
       _this.currentEls = _this.container.querySelectorAll('.fv-is-selected');
       _this.currentElsIds = [];
       _this.currentEls.forEach((item) => {
         _this.currentElsIds.push(parseInt(item.getAttribute('data-id')));
+        // console.log(item);
       });
 
       if (_this.currentElsIds.length == 0) {
@@ -117,6 +118,7 @@ class ContextMenu {
         onClick() {
           if (confirm('Sei sicuro di voler eliminare questo elemento?')) {
             const deleteData = _this.getApiUrl('delete', { ids: _this.currentElsIds });
+            console.log(_this.currentElsIds);
             axios.get(deleteData).then(() => {
               _this.currentElsIds.forEach((elId) => {
                 const elTree = _this.container.querySelector('.folderTree__li[data-id="' + elId + '"]');
