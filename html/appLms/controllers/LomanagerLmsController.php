@@ -38,7 +38,17 @@ class LomanagerLmsController extends LmsController
     protected function getFolders($idCourse, $idFolder = false)
     {
         $loData = array_values($this->model->getFolders($idCourse, $idFolder));
-        return $this->model->formatLoData($loData);
+        switch($loData[0]['typeId']) {
+            case LomanagerLms::ORGDIRDB: 
+                return LomanagerorganizationLmsController::formatLoData($loData);
+                break;
+            case LomanagerLms::REPODIRDB:
+                return LomanagerrepoLmsController::formatLoData($loData);
+                break;
+            case LomanagerLms::HOMEREPODIRDB:
+                return LomanagerhomerepoLmsController::formatLoData($loData);
+                break;
+        }
     }
 
     protected function getCurrentState($idFolder = false)
@@ -51,9 +61,9 @@ class LomanagerLmsController extends LmsController
         $lo_types = $this->model->getLoTypes();
 
         $tabs_controllers = [
-            // new LomanagerhomerepoLmsController(), // TODO commenta prima di committare
+            new LomanagerhomerepoLmsController(),
             new LomanagerorganizationLmsController(),
-            // new LomanagerrepoLmsController(), // TODO commenta prima di committare
+            new LomanagerrepoLmsController(),
         ];
 
         $tabs = [];

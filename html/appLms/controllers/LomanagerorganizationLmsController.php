@@ -42,4 +42,106 @@ class LomanagerorganizationLmsController extends LomanagerLmsController
             return null;
         }
     }
+
+    public static function formatLoData($loData)
+    {
+        $results = [];
+        foreach ($loData as $lo) {
+            $type = $lo['typeId'];
+            $id = $lo['id'];
+            $lo["actions"] = [];
+            if (!$lo["is_folder"]) {
+                if ($lo["play"] && !$lo['canEdit']) {
+                    $lo["actions"][] = [
+                        "name" => "play",
+                        "active" => true,
+                        "type" => "link",
+                        "content" => "index.php?modname=organization&op=custom_playitem&id_item=$id",
+                        "showIcon" => false,
+                        "icon" => "icon-play",
+                        "label" => "Play",
+                    ];
+                } else if ($lo['canEdit']) {
+                    $lo["actions"][] = [
+                        "name" => "play",
+                        "active" => true,
+                        "type" => "link",
+                        "content" => "index.php?modname=organization&op=custom_playitem&edit=1&id_item=$id",
+                        "showIcon" => false,
+                        "icon" => "icon-play",
+                        "label" => "Play",
+                    ];
+                }
+            }
+            if ($lo['canEdit']) {
+                if (!$lo["is_folder"]) {
+                    $lo["actions"][] = [
+                        "name" => "edit",
+                        "active" => true,
+                        "type" => "link",
+                        "content" => "index.php?r=lms/lomanagerorganization/edit&id=$id&type=$type",
+                        "showIcon" => true,
+                        "icon" => "icon-edit",
+                        "label" => "Edit",
+                    ];
+                }
+
+                $lo["actions"][] = [
+                    "name" => "properties",
+                    "active" => true,
+                    "type" => "submit",
+                    "content" => "${type}[org_opproperties][$id]",
+                    "showIcon" => true,
+                    "icon" => "icon-properties",
+                    "label" => "Properties",
+                ];
+
+                $lo["actions"][] = [
+                    "name" => "access",
+                    "active" => true,
+                    "type" => "submit",
+                    "content" => "${type}[org_opaccess][$id]",
+                    "showIcon" => true,
+                    "icon" => "icon-access",
+                    "label" => "Access",
+                ];
+
+                if ($lo['canBeCategorized']) {
+                    $lo["actions"][] = [
+                        "name" => "categorize",
+                        "active" => true,
+                        "type" => "submit",
+                        "content" => "${type}[org_opcategorize][$id]",
+                        "showIcon" => true,
+                        "icon" => "icon-categorize",
+                        "label" => "Categorize",
+                    ];
+                }
+
+                if (!$lo["is_folder"]) {
+                    $lo["actions"][] = [
+                        "name" => "copy",
+                        "active" => true,
+                        "type" => "ajax",
+                        "content" => "index.php?r=lms/lomanagerorganization/copy&id=$id&type=$type&newType=",
+                        "showIcon" => true,
+                        "icon" => "icon-copy",
+                        "label" => "Copy",
+                    ];
+                }
+
+                $lo["actions"][] = [
+                    "name" => "delete",
+                    "active" => true,
+                    "type" => "link",
+                    "content" => "index.php?r=lms/lomanagerorganization/delete&id=$id&type=$type",
+                    "showIcon" => true,
+                    "icon" => "icon-delete",
+                    "label" => "Delete",
+                ];
+            }
+            $results[] = $lo;
+        }
+        return $results;
+    }
 }

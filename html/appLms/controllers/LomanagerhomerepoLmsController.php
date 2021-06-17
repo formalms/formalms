@@ -41,4 +41,74 @@ class LomanagerhomerepoLmsController extends LomanagerLmsController
             return null;
         }
     }
+
+    public static function formatLoData($loData)
+    {
+        $results = [];
+        foreach ($loData as $lo) {
+            $type = $lo['typeId'];
+            $id = $lo['id'];
+            $lo["actions"] = [];
+            if (!$lo["is_folder"]) {
+                if ($lo["play"] && !$lo['canEdit']) {
+                    $lo["actions"][] = [
+                        "name" => "play",
+                        "active" => true,
+                        "type" => "link",
+                        "content" => "index.php?modname=organization&op=custom_playitem&id_item=$id",
+                        "showIcon" => false,
+                        "icon" => "icon-play",
+                        "label" => "Play",
+                    ];
+                } else if ($lo['canEdit']) {
+                    $lo["actions"][] = [
+                        "name" => "play",
+                        "active" => true,
+                        "type" => "link",
+                        "content" => "index.php?modname=organization&op=custom_playitem&edit=1&id_item=$id",
+                        "showIcon" => false,
+                        "icon" => "icon-play",
+                        "label" => "Play",
+                    ];
+                }
+            }
+            if ($lo['canEdit']) {
+                if (!$lo["is_folder"]) {
+                    $lo["actions"][] = [
+                        "name" => "edit",
+                        "active" => true,
+                        "type" => "link",
+                        "content" => "index.php?r=lms/lomanagerhomerepo/edit&id=$id&type=$type",
+                        "showIcon" => true,
+                        "icon" => "icon-edit",
+                        "label" => "Edit",
+                    ];
+                }
+
+                if (!$lo["is_folder"]) {
+                    $lo["actions"][] = [
+                        "name" => "copy",
+                        "active" => true,
+                        "type" => "ajax",
+                        "content" => "index.php?r=lms/lomanagerhomerepo/copy&id=$id&type=$type&newType=",
+                        "showIcon" => true,
+                        "icon" => "icon-copy",
+                        "label" => "Copy",
+                    ];
+                }
+
+                $lo["actions"][] = [
+                    "name" => "delete",
+                    "active" => true,
+                    "type" => "link",
+                    "content" => "index.php?r=lms/lomanagerhomerepo/delete&id=$id&type=$type",
+                    "showIcon" => true,
+                    "icon" => "icon-delete",
+                    "label" => "Delete",
+                ];
+            }
+            $results[] = $lo;
+        }
+        return $results;
+    }
 }
