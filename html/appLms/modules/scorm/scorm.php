@@ -254,11 +254,11 @@ function moditem($object_item) {
 
 	}
 
-	cout( getTitleArea($lang->getLangText('_SCORMIMGSECTION'), 'scorm')
+	$GLOBALS['page']->add( getTitleArea($lang->getLangText('_SCORMIMGSECTION'), 'scorm')
 		.'<div class="std_block">'
 		.getBackUi($object_item->back_url.'&amp;edit_result=0', $lang->getLangText('_BACK_TOLIST' ))
 		.$tb->getTable()
-		.'</div>' );
+		.'</div>', 'content');
 }
 
 function play($aidResource, $aidReference, $aback_url, $aautoplay, $aplayertemplate, $environment = 'course_lo' ) {
