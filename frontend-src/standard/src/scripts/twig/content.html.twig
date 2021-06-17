@@ -6,7 +6,7 @@
                     <span class="folderView__label">{{ el.title }}</span>
                 </div>
                 <div class="folderView__visibleActions">
-                    {% if el.status in ['attempted', 'completed', 'failed'] %}
+                    {% if el.status %}
                         <div class="folderView__status fv-is-{{ el.status }}" title="{{ el.status }}"></div>
                     {% endif %}
                 </div>
