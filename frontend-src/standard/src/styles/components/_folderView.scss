@@ -225,11 +225,15 @@
   background-image: url('images/folderView/icon-scorm.svg');
 }
 
-.fv-is-attempted {
+.fv-is-attempted,
+.fv-is-incomplete,
+.fv-is-not-attempted,
+.fv-is-ab-initio {
   background-image: url('images/folderView/icon-attempted.svg');
 }
 
-.fv-is-completed {
+.fv-is-completed,
+.fv-is-passed {
   background-image: url('images/folderView/icon-completed.svg');
 }
 
