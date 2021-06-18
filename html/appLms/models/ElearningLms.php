@@ -93,7 +93,7 @@ class ElearningLms extends Model
 			}
 		}
 
-		$query = "SELECT c.idCourse, c.course_type, c.idCategory, c.code, c.name, c.description, c.box_description, c.difficult, c.status AS status, c.level_show_user, "
+		$query = "SELECT c.idCourse, c.course_type, c.idCategory, c.code, c.name, c.description, c.box_description, c.difficult, c.status, c.level_show_user, "
 			. "	  c.course_edition, c.sub_start_date, c.sub_end_date, "
 			. "    c.max_num_subscribe, c.create_date, "
 			. "    c.direct_play, c.img_othermaterial, c.course_demo, c.use_logo_in_courselist, c.img_course, c.lang_code, "
@@ -202,17 +202,21 @@ class ElearningLms extends Model
 		$res = $db->query($query);
 		if ($res && $db->num_rows($res) > 0) {
 			while (list($status_course) = $db->fetch_row($res)) {
-
-				if ($status_course == 0) $str_status_course =  Lang::t('_NEW', 'standard');
-				if ($status_course == 1) $str_status_course =  Lang::t('_USER_STATUS_BEGIN', 'standard');
-				if ($status_course == 2) $str_status_course =  Lang::t('_COMPLETED', 'standard');
-
-				if ($status_course >= 0) $output[$status_course] = $str_status_course;
+                switch ($status_course) {
+                    case 0:
+                        $output[$status_course] = Lang::t('_NEW', 'standard');
+                        break;
+                    case 1:
+                        $output[$status_course] = Lang::t('_USER_STATUS_BEGIN', 'standard');
+                        break;
+                    case 2:
+                        $output[$status_course] = Lang::t('_COMPLETED', 'standard');
+                        break;
+                }
 			}
 		}
 		return $output;
 	}
-
 
 
 

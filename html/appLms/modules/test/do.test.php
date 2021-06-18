@@ -1850,8 +1850,8 @@ function user_report ($idUser , $idTest , $id_param = false , $id_track = false 
     $reQuest = sql_query ($query_question);
     while (list($id_quest , $type_quest , $type_file , $type_class , $id_cat) = sql_fetch_row ($reQuest)) {
 
-        require_once (Forma::inc (_folder_lms_ . '/modules/question/' . $type_file));
-
+        require_once (Forma::inc (_lms_ . '/modules/question/' . $type_file));
+                                                                                  
         $quest_point_do = 0;
 
         $quest_obj = eval("return new $type_class( $id_quest );");
