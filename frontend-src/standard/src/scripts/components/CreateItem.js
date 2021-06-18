@@ -35,7 +35,7 @@ class CreateItem {
     const createFolderBtn = createFolderForm.querySelector('.createFolder__btn');
     const cancelCreateFolderBtn = createFolderForm.querySelector('.cancelCreateFolder__btn');
     const folderInputText = createFolderForm.querySelector('.createFolder__input');
-
+    
     createFolderBtn.addEventListener('click', (e) => { this.createNewFolder(e, createFolderForm) });
     cancelCreateFolderBtn.addEventListener('click', () => {
       const dropdownBtn = this.container.querySelector('#dropdownMenuBtn_' + this.type);
@@ -67,7 +67,9 @@ class CreateItem {
     const _this = this;
 
     this.showErr();
+
     const text = createFolderForm.querySelector('.createFolder__input').value;
+    
     const authentic_request = createFolderForm.querySelector('input[name=authentic_request]').value;
     const dropdownBtn = _this.container.querySelector('#dropdownMenuBtn_' + _this.type);
     const dropdown = _this.container.querySelector('#dropdownMenu_' + _this.type);
@@ -129,6 +131,8 @@ class CreateItem {
         dropdownBtn.classList.add('hidden');
         dropdown.classList.add('hidden');
         createFolderForm.classList.remove('hidden');
+        // Focus on folder title input
+        createFolderForm.querySelector('.createFolder__input').focus();
       } else {
         location.href = _this.getNewLoUrl(type);
       }

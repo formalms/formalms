@@ -33,6 +33,7 @@ class ContextMenu {
         _this.currentEls = _this.container.querySelectorAll('.fv-is-selected');
       }
       */
+      _this.currentEls = _this.container.querySelectorAll('.fv-is-selected');
       
       _this.currentElsIds = [];
       _this.currentEls.forEach((item) => {
@@ -79,9 +80,10 @@ class ContextMenu {
               target.parentNode.classList.add('ft-no-click');
               target.parentNode.appendChild(rename);
             }
-            rename.classList.add('is-show');
+            rename.classList.add('is-show');  
             renameInput.focus();
-            renameInput.setAttribute('value', target.textContent);
+            renameInput.value = target.getElementsByTagName('span')[0].outerText;
+            renameInput.setAttribute('value', target.getElementsByTagName('span').outerText);
 
             // Rendo tutti gli elementi non cliccabili se sono in modalità rinomina
             const elsNotClick = _this.container.querySelectorAll('.ft-no-click');
@@ -155,7 +157,7 @@ class ContextMenu {
         }
       };
 
-      return _this.currentElsIds.length > 1 ? [copyBtn, deleteBtn] : [renameBtn, copyBtn, deleteBtn];
+      return _this.currentElsIds.length > 1 ? [copyBtn, deleteBtn] : [renameBtn, copyBtn/*, deleteBtn*/];
     });
   }
 
