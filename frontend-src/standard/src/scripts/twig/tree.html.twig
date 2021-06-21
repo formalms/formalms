@@ -1,7 +1,8 @@
 {% macro tree_links(data) %}
     {% import _self as macros %}
     {% for el in data %}
-        <li data-id="{{ el.id }}" class="folderTree__li {% if el.children %}ft-is-parent{% endif %} is-droppable" draggable="true">
+        <li data-id="{{ el.id }}" class="folderTree__li {% if el.children %}ft-is-parent{% endif %} is-droppable" 
+            draggable="true">
             {% if el.children.length > 0 %}
                 <span class="arrow"></span>
             {% endif %}

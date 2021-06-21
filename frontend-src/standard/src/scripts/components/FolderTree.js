@@ -102,7 +102,7 @@ class FolderTree {
 
   initDragDrop() {
     const _this = this;
-
+    
     _this.container.addEventListener('dragstart', this.onDragStart.bind(this));
     _this.container.addEventListener('dragover', this.onDragOver.bind(this));
     _this.container.addEventListener('dragleave', this.onDragLeave.bind(this));
@@ -229,11 +229,18 @@ class FolderTree {
   async getData(endpoint) {
     const _this = this;
     try {
+      console.log(document.body.classList.contains('teacher-area'));
       await axios.get(endpoint).then((response) => {
+        console.log(Tree);
         const tree = Tree({ data: response.data.data[0].children });
 
         const treeView = _this.container.querySelector('.folderTree__ul .folderTree__ul');
         treeView.innerHTML = tree;
+
+        // Disable draggable in student-area
+        if(document.body.classList.contains('student-area')) {
+          treeView.querySelectorAll('li').forEach(b=>b.removeAttribute('draggable'));
+        }
 
         if (_this.openedIds) {
           _this.openedIds.forEach((id) => {

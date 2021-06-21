@@ -4,6 +4,7 @@ import FolderView from '../components/FolderView';
 class StudentLearningObject {
 
   constructor(controller) {
+    document.body.classList.add('student-area');
     let baseUrl = this.getBaseApiUrl('lo');
     new FolderTree(baseUrl, controller.controller, controller.selector);
     new FolderView(baseUrl, controller.controller, controller.selector, true);

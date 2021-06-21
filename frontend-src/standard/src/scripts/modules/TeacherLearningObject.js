@@ -8,7 +8,7 @@ class TeacherLearningObject {
 
   constructor(controllers) {
     const _this = this;
-
+    document.body.classList.add('teacher-area');
     _this.controllers = controllers;
 
     _this.controllers.forEach(controller => {
