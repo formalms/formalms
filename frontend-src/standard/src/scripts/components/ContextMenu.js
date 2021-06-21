@@ -123,7 +123,15 @@ class ContextMenu {
       const deleteBtn = {
         text: 'Elimina',
         onClick() {
-          if (confirm('Sei sicuro di voler eliminare questo elemento?')) {
+          let objectsNames = [];
+          _this.currentEls.forEach(element => {
+            if(element.classList.contains('folderTree__link')) {
+              objectsNames.push(element.querySelector('span').outerText);
+            } else {
+              objectsNames.push(element.querySelector('.folderView__el span').outerText);
+            }
+          });
+          if (confirm(`Sei sicuro di voler eliminare ${objectsNames.length === 1 ? 'l\'elemento' : 'gli elementi'} "${objectsNames.join(',')}"?`)) {
             const deleteData = _this.getApiUrl('delete', { ids: _this.currentElsIds });
             console.log(_this.currentElsIds);
             axios.get(deleteData).then(() => {
