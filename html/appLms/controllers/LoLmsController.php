@@ -67,6 +67,7 @@ class LoLmsController extends LmsController
             $type = $lo['typeId'];
             $id = $lo['id'];
             $lo["actions"] = [];
+            $lo["visible_actions"] = [];
             if (!$lo["is_folder"]) {
                 $lo["actions"][] = [
                     "name" => "play",
@@ -78,7 +79,7 @@ class LoLmsController extends LmsController
                     "label" => "Play",
                 ];
                 if ($lo['track_detail']) {
-                    $lo["actions"][] = [
+                    $lo["visible_actions"][] = [
                         "name" => "tracking",
                         "active" => true,
                         "type" => "link",
