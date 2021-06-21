@@ -38,7 +38,7 @@ function getCompilationTable($id_user, $id_test)
     if(isset($_GET['back']) && $_GET['back'])
         $back = getBackUi( 'index.php?modname=course&amp;op=mycourses&amp;sop=unregistercourse' , Lang::t('_BACK', 'standard', 'framework') );
     else
-        $back = getBackUi( 'index.php?modname=organization' , Lang::t('_BACK', 'standard', 'framework') );
+        $back = getBackUi( 'index.php?r=lms/lo/show' , Lang::t('_BACK', 'standard', 'framework') );
 
     // Parch per link in reportcard
     if(isset($_GET['back']) && $_GET['back'] && $_GET['back'] == "gradebook" )
@@ -269,7 +269,7 @@ function getTrackingTable($id_user, $id_org) {
 	if(isset($_GET['back']) && $_GET['back'])
 		$back = getBackUi( 'index.php?modname=course&amp;op=mycourses&amp;sop=unregistercourse' , $lang->def('_BACK', 'standard', 'framework') );
 	else
-		$back = getBackUi( 'index.php?modname=organization' , $lang->def('_BACK') );
+		$back = getBackUi( 'index.php?r=lms/lo/show' , $lang->def('_BACK') );
 	cout( $back, 'content' );
 	cout( $tb->getTable(), 'content' );
 	cout( $back, 'content' );
