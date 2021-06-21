@@ -62,7 +62,8 @@ class LomanagerLmsController extends LmsController
 
         $tabs_controllers = [
             // TODO PULLA CON REBASE!!!!!!!
-            //new LomanagerhomerepoLmsController(), // TODO commenta prima di committare
+            //new LomanagerhomerepoLmsController(), 
+            // TODO commenta prima di committare
             new LomanagerorganizationLmsController(),
             //new LomanagerrepoLmsController(), // TODO commenta prima di committare
         ];
