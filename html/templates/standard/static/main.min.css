@@ -5900,8 +5900,7 @@ p {
     opacity: 0; }
 
 .fv-is-play {
-  background-image: url("images/folderView/icon-eye.svg");
-  display: none; }
+  background-image: url("images/folderView/icon-eye.svg"); }
 
 .fv-is-edit {
   background-image: url("images/folderView/icon-edit.svg"); }
