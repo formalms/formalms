@@ -452,10 +452,11 @@ function addforum ()
 
         //.Form::getLabel('emoticons', $lang->def('_EMOTICONS'))
         //.'<select class="dropdown" id="emoticons" name="emoticons">'
+        . Form::getCheckbox (Lang::t ('_ALL_THREADS_PRIVATE') , 'all_threads_private' , 'all_threads_private' , 1)
         . '<div id="emoticon_menu_box">
 		<input type="button" id="emoticon_btn" name="emoticon_btn" value="' . Lang::t ('_EMOTICONS') . '">
 		</div>'
-        . Form::getCheckbox (Lang::t ('_ALL_THREADS_PRIVATE') , 'all_threads_private' , 'all_threads_private' , 1)
+        //. Form::getCheckbox (Lang::t ('_ALL_THREADS_PRIVATE') , 'all_threads_private' , 'all_threads_private' , 1)
         //. Form::getTextfield (Lang::t ('_MAX_THREADS_PER_USER') , 'max_threads_per_user' , 'max_threads_per_user' , Lang::t ('_MAX_THREADS_PER_USER') , '' , '' , '' , '' , 'number')
         . '<select class="dropdown" style="display: none;" id="emoticons" name="emoticons">'
         , 'content');
@@ -631,10 +632,11 @@ function modforum ()
         . Form::openFormLine ()
         //.Form::getLabel('emoticons', $lang->def('_EMOTICONS'))
         //.'<select id="emoticons" name="emoticons">'
-        . '<div id="emoticon_menu_box">
-		<input type="button" id="emoticon_btn" name="emoticon_btn" value="' . Lang::t ('_EMOTICONS') . '">
-		</div>'
         . Form::getCheckbox (Lang::t ('_ALL_THREADS_PRIVATE') , 'all_threads_private' , 'all_threads_private' , 1 , ($threadsArePrivate === '1' ? true : false))
+        . '<div id="emoticon_menu_box">
+		        <input type="button" id="emoticon_btn" name="emoticon_btn" value="' . Lang::t ('_EMOTICONS') . '">
+		   </div>'
+        //. Form::getCheckbox (Lang::t ('_ALL_THREADS_PRIVATE') , 'all_threads_private' , 'all_threads_private' , 1 , ($threadsArePrivate === '1' ? true : false))
         //. Form::getTextfield (Lang::t ('_MAX_THREADS_PER_USER') , 'max_threads_per_user' , 'max_threads_per_user' , Lang::t ('_MAX_THREADS_PER_USER') , $maxThreads , '' , '' , '' , 'number')
         . '<select class="dropdown" style="display: none;" id="emoticons" name="emoticons">'
         , 'content');
