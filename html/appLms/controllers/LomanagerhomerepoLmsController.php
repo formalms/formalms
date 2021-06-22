@@ -50,27 +50,15 @@ class LomanagerhomerepoLmsController extends LomanagerLmsController
             $id = $lo['id'];
             $lo["actions"] = [];
             if (!$lo["is_folder"]) {
-                if ($lo["play"] && !$lo['canEdit']) {
-                    $lo["actions"][] = [
-                        "name" => "play",
-                        "active" => true,
-                        "type" => "link",
-                        "content" => "index.php?modname=organization&op=custom_playitem&id_item=$id",
-                        "showIcon" => false,
-                        "icon" => "icon-play",
-                        "label" => "Play",
-                    ];
-                } else if ($lo['canEdit']) {
-                    $lo["actions"][] = [
-                        "name" => "play",
-                        "active" => true,
-                        "type" => "link",
-                        "content" => "index.php?modname=organization&op=custom_playitem&edit=1&id_item=$id",
-                        "showIcon" => false,
-                        "icon" => "icon-play",
-                        "label" => "Play",
-                    ];
-                }
+                $lo["actions"][] = [
+                    "name" => "play",
+                    "active" => true,
+                    "type" => "submit",
+                    "content" => "homerepo[treeview_opplayitem_homerepo][$id]",
+                    "showIcon" => true,
+                    "icon" => "icon-play",
+                    "label" => "Play",
+                ];
             }
             if ($lo['canEdit']) {
                 if (!$lo["is_folder"]) {
