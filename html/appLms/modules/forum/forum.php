@@ -439,6 +439,7 @@ function forum ()
 
 function addforum ()
 {
+
     checkPerm ('mod');
 
     require_once (_base_ . '/lib/lib.form.php');
@@ -458,10 +459,11 @@ function addforum ()
         . Form::openFormLine ()
         //.Form::getLabel('emoticons', $lang->def('_EMOTICONS'))
         //.'<select class="dropdown" id="emoticons" name="emoticons" '.$onchange.'>'
+        . Form::getCheckbox (Lang::t ('_ALL_THREADS_PRIVATE') , 'all_threads_private' , 'all_threads_private' , 1)
         . '<div id="emoticon_menu_box">
 		<input type="button" id="emoticon_btn" name="emoticon_btn" value="' . $lang->def ('_EMOTICONS') . '">
 		</div>'
-        . Form::getCheckbox (Lang::t ('_ALL_THREADS_PRIVATE') , 'all_threads_private' , 'all_threads_private' , 1)
+        //. Form::getCheckbox (Lang::t ('_ALL_THREADS_PRIVATE') , 'all_threads_private' , 'all_threads_private' , 1)
         // commented because of #14540 - REMOVE MAX THREAD OPTION
 //        . Form::getTextfield (Lang::t ('_MAX_THREADS_PER_USER') , 'max_threads_per_user' , 'max_threads_per_user' , Lang::t ('_MAX_THREADS_PER_USER') , '' , '' , '' , '' , 'number')
         . '<select class="dropdown" style="display: none;" id="emoticons" name="emoticons">'
@@ -599,11 +601,12 @@ function modforum ()
         . Form::openFormLine ()
         //.Form::getLabel('emoticons', $lang->def('_EMOTICONS'))
         //.'<select class="dropdown" id="emoticons" name="emoticons" hello '.$onchange.'>'
-        . '<div id="emoticon_menu_box">
-		<input type="button" id="emoticon_btn" name="emoticon_btn" value="' . $lang->def ('_EMOTICONS') . '">
-		</div>'
         . Form::getCheckbox (Lang::t ('_ALL_THREADS_PRIVATE') , 'all_threads_private' , 'all_threads_private' , 1 , ($threadsArePrivate === '1' ? true : false))
-        . Form::getTextfield (Lang::t ('_MAX_THREADS_PER_USER') , 'max_threads_per_user' , 'max_threads_per_user' , Lang::t ('_MAX_THREADS_PER_USER') , $maxThreads , '' , '' , '' , 'number')
+        . '<div id="emoticon_menu_box">
+		        <input type="button" id="emoticon_btn" name="emoticon_btn" value="' . $lang->def ('_EMOTICONS') . '">
+		   </div>'
+        //. Form::getCheckbox (Lang::t ('_ALL_THREADS_PRIVATE') , 'all_threads_private' , 'all_threads_private' , 1 , ($threadsArePrivate === '1' ? true : false))
+        //. Form::getTextfield (Lang::t ('_MAX_THREADS_PER_USER') , 'max_threads_per_user' , 'max_threads_per_user' , Lang::t ('_MAX_THREADS_PER_USER') , $maxThreads , '' , '' , '' , 'number')
         . '<select class="dropdown" style="display: none;" id="emoticons" name="emoticons">'
         , 'content');
     /*$templ = dir(getPathImage().'emoticons/');
