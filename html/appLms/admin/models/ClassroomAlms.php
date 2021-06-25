@@ -22,7 +22,8 @@ Class ClassroomAlms extends Model {
 	protected $id_date;
 
 	public function __construct($id_course = 0, $id_date = 0) {
-		require_once(_lms_.'/lib/lib.date.php');
+        parent::__construct();
+	    require_once(_lms_.'/lib/lib.date.php');
 		require_once(_lms_.'/lib/lib.course.php');
 
 		$this->id_course = $id_course;
@@ -31,6 +32,7 @@ Class ClassroomAlms extends Model {
 		$this->classroom_man = new DateManager();
 		$this->course_man = new Man_Course();
 		$this->acl_man =& Docebo::user()->getAclManager();
+
 	}
 
 	public function getPerm()
