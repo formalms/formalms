@@ -3,6 +3,7 @@ import FolderView from '../components/FolderView';
 import CreateItem from '../components/CreateItem';
 import CopyItem from '../components/CopyItem';
 import ContextMenu from '../components/ContextMenu';
+import Lightbox from '../components/LightBox';
 
 class TeacherLearningObject {
 
@@ -14,8 +15,29 @@ class TeacherLearningObject {
     _this.controllers.forEach(controller => {
       let baseUrl = this.getBaseApiUrl(controller.controller);
       new FolderTree(baseUrl, controller.controller, controller.selector);
-      new FolderView(baseUrl, controller.controller, controller.selector);
+      _this.folderViewInstance = new FolderView(baseUrl, controller.controller, controller.selector);
       new CreateItem(baseUrl, controller.selector);
+      
+      // Prevent db function on SCORM, open Lightbox instead
+      _this.folderViewInstance.filterDBClickEvents.push((el) => {
+        if(el.querySelector('.fv-is-scormorg')) {
+          new Lightbox().open('scorm-modal', function(modal) {
+            modal.Title = el.querySelector('.folderView__label').innerHTML;
+            modal.InjectIframe(el.querySelector('.fv-is-play').getAttribute('href'), {
+              width: '100%',
+              height: '100%',
+              id: 'overlay_iframe'
+            });
+          }, function() {
+            try {
+              window.frames['overlay_iframe'].uiPlayer.closePlayer(true, window);
+            } catch (e) {
+                window.overlay_iframe.uiPlayer.closePlayer(true, window);
+            }
+          });
+          return false;
+        }
+      });
 
       controller.tab.addEventListener('click', _this.clickOnTab.bind(this));
     });

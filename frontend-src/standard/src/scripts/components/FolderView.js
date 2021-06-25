@@ -4,6 +4,7 @@ const axios = require('axios');
 
 class FolderView {
 
+
   constructor(baseApiUrl, controller, type, disabledActions) {
     const _this = this;
 
@@ -12,6 +13,7 @@ class FolderView {
     _this.type = type;
     _this.selectedId = 0;
     _this.disabledActions = disabledActions;
+    _this.filterDBClickEvents = [];
 
     _this.container = document.querySelector('*[data-container=' + _this.type + ']');
     _this.container.addEventListener('click', (e) => { _this.toggleSelectEl(e); });
@@ -258,6 +260,17 @@ class FolderView {
       const elId = li.getAttribute('data-id');
 
       if (!elId) {
+        return;
+      }
+
+      let proceed = true;
+      _this.filterDBClickEvents.forEach(event => {
+        if(proceed) {
+          proceed = event(el);
+        }
+      });
+
+      if(!proceed) {
         return;
       }
 

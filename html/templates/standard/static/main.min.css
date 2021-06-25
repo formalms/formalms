@@ -6091,6 +6091,91 @@ p {
   display: block;
   transform: translate(-50%, -70%) scale(1); }
 
+.modal {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center; }
+  .modal .modal-navbar {
+    position: absolute;
+    top: 0px;
+    width: 100%;
+    z-index: 2;
+    padding: 10px 25px 10px 25px;
+    position: absolute; }
+    .modal .modal-navbar .modal-title {
+      float: left;
+      max-width: 220px; }
+      .modal .modal-navbar .modal-title h1 {
+        color: white;
+        font-size: 35px;
+        font-weight: bold; }
+    .modal .modal-navbar .modal-exit {
+      float: right; }
+      .modal .modal-navbar .modal-exit:hover {
+        cursor: pointer; }
+      .modal .modal-navbar .modal-exit #mdiv {
+        border-radius: 50%;
+        padding: 10px;
+        border: 3px solid white;
+        height: 52px;
+        width: 52px; }
+      .modal .modal-navbar .modal-exit .mdiv {
+        height: 25px;
+        width: 2px;
+        margin-left: 12px;
+        background-color: white;
+        transform: rotate(45deg);
+        Z-index: 1; }
+      .modal .modal-navbar .modal-exit .md {
+        height: 25px;
+        width: 2px;
+        background-color: #cccccc;
+        transform: rotate(90deg);
+        Z-index: 2; }
+  .modal.open {
+    visibility: visible;
+    opacity: 1;
+    transition-delay: 0s;
+    z-index: 99999;
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    left: 0;
+    right: 0; }
+  .modal-bg {
+    position: absolute;
+    background: #c83f00f0;
+    width: 100%;
+    height: 100%; }
+  .modal-container {
+    border-radius: 10px;
+    background: #fff;
+    position: relative;
+    padding: 30px; }
+  .modal-close {
+    position: absolute;
+    right: 15px;
+    top: 15px;
+    outline: none;
+    appearance: none;
+    color: red;
+    background: none;
+    border: 0px;
+    font-weight: bold;
+    cursor: pointer; }
+  .modal .modal-container {
+    height: 95%;
+    width: 60%; }
+    .modal .modal-container .content-wrapper {
+      height: 100%;
+      width: 100%; }
+
 * {
   outline: none !important;
   box-sizing: border-box; }
