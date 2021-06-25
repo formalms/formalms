@@ -26,7 +26,8 @@ class TeacherLearningObject {
             modal.InjectIframe(el.querySelector('.fv-is-play').getAttribute('href'), {
               width: '100%',
               height: '100%',
-              id: 'overlay_iframe'
+              id: 'overlay_iframe',
+              name: 'overlay_iframe'
             });
           }, function() {
             try {
