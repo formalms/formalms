@@ -660,7 +660,7 @@ La chat si aprirà in una finestra di pop-up]]></key>
         <key id="configuration&amp;_SOCIAL_FB_ACTIVE" attributes="" save_date="2017-03-15 17:49:50"><![CDATA[Utilizza l'interfacciamento e il Single Sign On di Facebook]]></key>
         <key id="configuration&amp;_SOCIAL_FB_API" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Codice per l'API di Facebook]]></key>
         <key id="configuration&amp;_SOCIAL_FB_SECRET" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Codice segreto Facebook]]></key>
-        <key id="configuration&amp;_SOCIAL_GOOGLE_ACTIVE" attributes="" save_date="2017-03-15 10:42:05"><![CDATA[Utilizza l'interfacciamento e il Single Sign On di Google<br/>(usa redirect uri: 
+        <key id="configuration&amp;_SOCIAL_GOOGLE_ACTIVE" attributes="" save_date="2017-03-15 10:42:05"><![CDATA[Utilizza l'interfacciamento e il Single Sign On di Google<br/>(usa redirect uri:
 http://server/path/index.php?modname=login) \]]></key>
         <key id="configuration&amp;_SOCIAL_GOOGLE_CLIENT_ID" attributes="" save_date="2017-04-10 14:37:38"><![CDATA[Google Client ID]]></key>
         <key id="configuration&amp;_SOCIAL_GOOGLE_SECRET" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Codice segreto Google]]></key>
@@ -830,6 +830,7 @@ http://server/path/index.php?modname=login) \]]></key>
         <key id="course&amp;_NO_COURSE_FOUND" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Nessun corso trovato per la selezione corrente]]></key>
         <key id="course&amp;_OTHER_OPTION" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Altre opzioni]]></key>
         <key id="course&amp;_OTHER_USER_MATERIAL" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Materiale per gli altri ruoli]]></key>
+        <key id="course&amp;_OVERVIEW" attributes="" save_date="2018-06-19 23:07:03"><![CDATA[Overview]]></key>
         <key id="course&amp;_PARTIAL_TIME" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Tempo parziale]]></key>
         <key id="course&amp;_PAUSE_BEGIN" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Inizio pausa]]></key>
         <key id="course&amp;_PAUSE_END" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Fine pausa]]></key>

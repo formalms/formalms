@@ -644,6 +644,7 @@
         <key id="course&amp;_NO_COURSE_DATA" attributes="" save_date="2018-11-19 14:16:44"><![CDATA[Kurs uten startdato]]></key>
         <key id="course&amp;_NO_COURSE_FOUND" attributes="" save_date="2018-11-19 14:16:36"><![CDATA[Ingen kurs]]></key>
         <key id="course&amp;_OTHER_OPTION" attributes="" save_date="2018-11-19 14:16:51"><![CDATA[Andre innstillinger]]></key>
+        <key id="course&amp;_OVERVIEW" attributes="" save_date="2018-11-19 14:18:26"><![CDATA[Oversikt]]></key>
         <key id="course&amp;_PROGRESS_ALL" attributes="" save_date="2018-11-22 16:00:15"><![CDATA[Element]]></key>
         <key id="course&amp;_PROGRESS_BAR_TEXT" attributes="" save_date="2018-11-17 20:05:35"><![CDATA[framdrift]]></key>
         <key id="course&amp;_PROGRESS_COMPLETED" attributes="" save_date="2018-11-17 20:05:26"><![CDATA[Fullført]]></key>
@@ -1847,7 +1848,7 @@
         <key id="user_managment&amp;_ONLY_CREATE" attributes="" save_date="2018-11-20 08:32:00"><![CDATA[Kun opprette]]></key>
         <key id="user_managment&amp;_ONLY_UPDATE" attributes="" save_date="2018-11-20 08:32:05"><![CDATA[Kun oppdatere]]></key>
         <key id="user_managment&amp;_PASSWORD_TO_INSERT" attributes="" save_date="2018-11-20 08:36:47"><![CDATA[Opprett passord]]></key>
-        <key id="user_managment&amp;_REACH_NUMBERS_OF_ATTEMPT" attributes="" save_date="2018-11-20 08:35:01"><![CDATA[	
+        <key id="user_managment&amp;_REACH_NUMBERS_OF_ATTEMPT" attributes="" save_date="2018-11-20 08:35:01"><![CDATA[
 Du har [attempt] mislykkede innloggingsforsøk. Av sikkerhetsgrunner må du nå vente [time] minutter før du forsøker igjen]]></key>
         <key id="user_managment&amp;_REGISTER_TYPE_ADMIN" attributes="" save_date="2018-11-20 08:33:50"><![CDATA[Kun av administrator]]></key>
         <key id="user_managment&amp;_REGISTER_TYPE_MODERATE" attributes="" save_date="2018-11-20 08:33:42"><![CDATA[Selvregistrering krever godkjenning]]></key>
