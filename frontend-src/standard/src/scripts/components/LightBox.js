@@ -83,7 +83,8 @@ class ModalElement {
   }
 
   Close() {
-    this.GetModal().classList.remove('open');
+    // this.GetModal().classList.remove('open');
+    this.GetModal().remove();
     // TODO reset
     if(this._OnCloseEvent) {
       this._OnCloseEvent(this);

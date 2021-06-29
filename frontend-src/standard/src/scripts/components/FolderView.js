@@ -280,7 +280,11 @@ class FolderView {
         _this.refresh();
       } else if (el.classList.contains('js-folderView-file')) {
         // It's object
-        window.location = el.querySelector('.fv-is-play').getAttribute('href');
+        if (el.querySelector('.fv-is-play').hasAttribute('href')) {
+          window.location = el.querySelector('.fv-is-play').getAttribute('href');
+        } else {
+          el.querySelector('.fv-is-play').click();
+        }
       }
     }
   }

@@ -820,6 +820,7 @@ Piemēram: $user@domain2.domain1 (priekš W2k3)]]></key>
         <key id="course&amp;_NOENTER" attributes="" save_date="2020-05-26 13:01:36"><![CDATA[Piekļuve liegta]]></key>
         <key id="course&amp;_NO_COURSE_DATA" attributes="" save_date="2020-05-26 13:01:47"><![CDATA[Kurss bez sākuma datuma]]></key>
         <key id="course&amp;_NO_COURSE_FOUND" attributes="" save_date="2020-05-26 13:01:56"><![CDATA[Kursi nav atrasti]]></key>
+        <key id="course&amp;_OVERVIEW" attributes="" save_date="2020-05-26 15:24:26"><![CDATA[Pārskats]]></key>
         <key id="course&amp;_OTHER_OPTION" attributes="" save_date="2020-05-26 13:02:06"><![CDATA[Citas iespējas]]></key>
         <key id="course&amp;_OTHER_USER_MATERIAL" attributes="" save_date="2020-05-26 13:02:19"><![CDATA[Materiāli citām lomām]]></key>
         <key id="course&amp;_PARTIAL_TIME" attributes="" save_date="2020-05-26 13:02:26"><![CDATA[Sesijas laiks]]></key>
@@ -1060,7 +1061,7 @@ Lietotājvārds: [userid]]]></key>
         <key id="email&amp;_NEW_FORUM_BODY" attributes="email" save_date="2020-05-26 17:59:02"><![CDATA[Jauns forums pievienots kursam '[course]' adresē [url] Tēma: [title] [text]]]></key>
         <key id="email&amp;_NEW_MESSAGE_INSERT_IN_THREAD" attributes="email" save_date="2020-05-26 18:00:35"><![CDATA[Ir jauna ziņā pavedienā kam sekojat
  [url] > [course] > [forum_title] > [thread_title]]]></key>
-        <key id="email&amp;_NEW_THREAD_INSERT_IN_FORUM" attributes="email" save_date="2020-05-27 18:59:04"><![CDATA[Ir jauns pavediens forumā 
+        <key id="email&amp;_NEW_THREAD_INSERT_IN_FORUM" attributes="email" save_date="2020-05-27 18:59:04"><![CDATA[Ir jauns pavediens forumā
 <a href="[url]">[url]</a> > [course] > [forum_title]
 
  Nosaukums: [thread_title]]]></key>

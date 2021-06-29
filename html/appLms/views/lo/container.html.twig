@@ -44,6 +44,21 @@
                                 <span class="folderView__label">{{ el.title }}</span>
                             </div>
                             <div class="folderView__visibleActions">
+                                {% if el.visible_actions | length %}
+                                    {% for action in el.visible_actions %}
+                                        {% if action.type == 'submit' %}
+                                            <input type="submit"
+                                                   id="{{ action.content }}"
+                                                   name="{{ action.content }}"
+                                                   class="folderView__action fv-is-{{ action.name }} js-fv-action"
+                                                   title="{{ action.label }}"
+                                                   value=""/>
+                                        {% elseif (action.type == 'link') %}
+                                            <a href="{{ action.content }}" class="folderView__action fv-is-{{ action.name }}" title="{{ action.label }}">
+                                            </a>
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endif %}
                                 {% if el.status %}
                                     <div class="folderView__status fv-is-{{ el.status }}" title="{{ el.status }}"></div>
                                 {% endif %}
