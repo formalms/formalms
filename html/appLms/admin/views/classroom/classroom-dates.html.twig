@@ -26,20 +26,79 @@
         {{ Form_openForm('date', action ) }}
         {{ Form_openElementSpace() }}
 
-        {% for day in postData.days %}
 
-            <tr>
-                <th scope="row">{{ day.id_day }}</th>
-                <td>{{ day.date }}</td>
-                <td>{{ day.date_begin }}</td>
-                <td>{{ day.date_end }}</td>
-                <td>{{ day.pause_begin }}</td>
-                <td>{{ day.pause_end }}</td>
-                <td>{{ day.classroom }}</td>
-                <td>Edit</td>
-                <td>Delete</td>
-            </tr>
-        {% endfor %}
+
+
+
+
+
+        <div class="edit-classroom-dates">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">Date</th>
+                    <th scope="col">Ora inizio</th>
+                    <th scope="col">Ora fine</th>
+                    <th scope="col">Ora inizio pausa</th>
+                    <th scope="col">Ora fine pausa</th>
+                    <th scope="col">Classe</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for day in postData.days %}
+
+                    <tr data-date="{{ day.date }}" data-date_begin="{{ day.date_begin }}" data-date_end="{{ day.date_end }}" data-pause_begin="{{ day.pause_begin }}" data-pause_end="{{ day.pause_end }}" data-classroom="{{ day.classroom }}">
+                        <th scope="row">{{ day.date }}</th>
+                        <td>{{ day.date_begin|date("H:i") }}</td>
+                        <td>{{ day.date_end|date("H:i") }}</td>
+                        <td>{{ day.pause_begin|date("H:i") }}</td>
+                        <td>{{ day.pause_end|date("H:i") }}</td>
+                        <td>{{ day.classroom }}</td>
+                        <td><a class="js-edit" href="javascript:void(0)" >Edit</a></td>
+                        <td>Delete</td>
+                    </tr>
+                {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
+
+
+        <div class="add-classroom-dates">
+            <div class="form-group">
+                <label for="exampleFormControlFile1">Date</label>
+                <input class="form-control" type="text" placeholder="Default input">
+            </div>
+            <div class="form-group">
+                <label for="exampleFormControlFile1">Ora inizio</label>
+                <input class="form-control" type="text" placeholder="Default input">
+            </div>
+            <div class="form-group">
+                <label for="exampleFormControlFile1">Ora fine</label>
+                <input class="form-control" type="text" placeholder="Default input">
+            </div>
+            <div class="form-group">
+                <label for="exampleFormControlFile1">Ora inizio pausa</label>
+                <input class="form-control" type="text" placeholder="Default input">
+            </div>
+            <div class="form-group">
+                <label for="exampleFormControlFile1">Ora inizio fine</label>
+                <input class="form-control" type="text" placeholder="Default input">
+            </div>
+            <div class="form-group">
+                <label for="exampleFormControlSelect1">Classrom</label>
+                <select class="form-control" id="exampleFormControlSelect1">
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                </select>
+            </div>
+        </div>
+
+
+
 
         {{ Form_closeElementSpace() }}
         {{ Form_openButtonSpace() }}
@@ -50,3 +109,34 @@
     </div>
 
 </div>
+
+
+<script type="text/javascript">
+
+    var js_edit = document.getElementsByClassName('js-edit');
+
+    for (let item of js_edit) {
+        item.addEventListener('click', editRow)
+    };
+
+    function editRow(e) {
+        e.preventDefault()
+        var rowData = rowDataset(e)
+        console.log(rowData)
+    };
+
+    function rowDataset(e) {
+        var row = e.target.parentNode.parentNode
+        return row.dataset;
+    };
+
+
+
+
+
+
+
+
+
+
+</script>
