@@ -25,7 +25,22 @@
 
         {{ Form_openForm('date', action ) }}
         {{ Form_openElementSpace() }}
-        
+
+        {% for day in postData.days %}
+
+            <tr>
+                <th scope="row">{{ day.id_day }}</th>
+                <td>{{ day.date }}</td>
+                <td>{{ day.date_begin }}</td>
+                <td>{{ day.date_end }}</td>
+                <td>{{ day.pause_begin }}</td>
+                <td>{{ day.pause_end }}</td>
+                <td>{{ day.classroom }}</td>
+                <td>Edit</td>
+                <td>Delete</td>
+            </tr>
+        {% endfor %}
+
         {{ Form_closeElementSpace() }}
         {{ Form_openButtonSpace() }}
         {{ Form_getButton('save', 'save', Lang_translate('_SAVE', 'course')) }}

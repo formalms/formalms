@@ -496,6 +496,12 @@ class ClassroomAlmsController extends AlmsController
 
         $data = $this->model->getDateInfoFromPost();
 
+        $arrayDays = $this->model->getDateDay();
+
+        foreach ($arrayDays as $index => $arrayDay){
+            $arrayDays[$index]['date'] = Format::date($arrayDay['date_begin'], 'date');
+        }
+
         $this->render('classroom-dates',
             [
                 'action' => sprintf('index.php?r=%s/classroomDates&id_course=%s&id_date=%s', $this->baseLinkClassroom, $this->idCourse, $this->idDate),
@@ -505,7 +511,7 @@ class ClassroomAlmsController extends AlmsController
                 'courseBaseLink' => $this->baseLinkCourse,
                 'classroomBaseLink' => $this->baseLinkClassroom,
                 'postData' => [
-                    'dates' => Get::req('dates', DOTY_JSONDECODE, []),
+                    'days' => Get::req('days', DOTY_MIXED, $arrayDays),
                 ],
                 'availableStatuses' => $this->model->getStatusForDropdown(),
                 'availableTestTypes' => $this->model->getTestTypeForDropdown()
