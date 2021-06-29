@@ -1,11 +1,13 @@
 import Content from '../twig/content.html.twig';
 import Sortable from 'sortablejs/modular/sortable.complete.esm.js';
+import LearningView from '../modules/Base/LearningView';
 const axios = require('axios');
 
-class FolderView {
+class FolderView extends LearningView {
 
 
   constructor(baseApiUrl, controller, type, disabledActions) {
+    super();
     const _this = this;
 
     _this.baseApiUrl = baseApiUrl;
@@ -33,6 +35,7 @@ class FolderView {
 
     _this.refresh();
   }
+
 
   getContainer() {
     return this.container;

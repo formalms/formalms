@@ -1,37 +1,38 @@
 import FolderTree from '../components/FolderTree';
 import FolderView from '../components/FolderView';
-import Lightbox from '../components/LightBox';
+import LearningObject from './Base/LearningObject';
 
-class StudentLearningObject {
+class StudentLearningObject extends LearningObject {
 
   constructor(controller) {
-    const _this = this;
+    super();
+    //const _this = this; deprecato
     document.body.classList.add('student-area');
     let baseUrl = this.getBaseApiUrl('lo');
     new FolderTree(baseUrl, controller.controller, controller.selector);
-    _this.folderViewInstance = new FolderView(baseUrl, controller.controller, controller.selector);
+    this.folderViewInstance = new FolderView(baseUrl, controller.controller, controller.selector);
 
-    _this.folderViewInstance.filterDBClickEvents.push((el) => {
+    // Event on fv-is-scormorg
+    this.folderViewInstance.filterDBClickEvents.push((el) => {
       if(el.querySelector('.fv-is-scormorg')) {
-        new Lightbox().open('scorm-modal', function(modal) {
-          modal.Title = el.querySelector('.folderView__label').innerHTML;
-          modal.InjectIframe(el.querySelector('.fv-is-play').getAttribute('href'), {
-            width: '100%',
-            height: '100%',
-            id: 'overlay_iframe',
-            name: 'overlay_iframe'
-          });
-        }, function() {
-          try {
-            window.frames['overlay_iframe'].uiPlayer.closePlayer(true, window);
-          } catch (e) {
-            window.overlay_iframe.uiPlayer.closePlayer(true, window);
-          }
-        });
+        this.scormLightbox(el.querySelector('.fv-is-play'), el.querySelector('.folderView__label').innerHTML);
         return false;
+      } else if(el.querySelector('.fv-is-scormorg')) {
+        console.log(el);
       }
     });
+
+    // Event on fv-is-play
+    this.folderViewInstance.addEvent('fv-is-play', (e, el) => {
+      if(el.parentNode.parentNode.querySelector('.fv-is-scormorg')) {
+        e.preventDefault();
+        this.scormLightbox(el, el.parentElement.parentElement.querySelector('.folderView__label').innerHTML);
+      }
+    });
+
   }
+
+
 
   getBaseApiUrl(controller, action) {
     let url = `${window.frontend.config.url.appLms}/index.php?r=lms/${controller}`;

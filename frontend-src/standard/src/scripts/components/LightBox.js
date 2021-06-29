@@ -11,6 +11,7 @@
 
   open(label = 'modal-' + this.ActiveModals.length, onOpen = null, onClose = null) {
     var modalCreated = new ModalElement(label);
+    console.log(modalCreated);
     modalCreated.Open(onOpen);
     modalCreated.OnClose = onClose;
     this.ActiveModals.push({
@@ -28,6 +29,7 @@
 class ModalElement { 
 
   constructor(modalClass = '', target = '#lms_main_container') {
+    this.ModalClass = modalClass;
     this.DOMElWrapper = this.Create(modalClass, target);
     this._OnCloseEvent = null;
   }
@@ -83,9 +85,8 @@ class ModalElement {
   }
 
   Close() {
-    // this.GetModal().classList.remove('open');
+    document.querySelector(`.${this.ModalClass}`).remove();
     this.GetModal().remove();
-    // TODO reset
     if(this._OnCloseEvent) {
       this._OnCloseEvent(this);
     }
