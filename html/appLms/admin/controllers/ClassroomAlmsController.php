@@ -29,9 +29,11 @@ class ClassroomAlmsController extends AlmsController
     protected $data;
     protected $permissions;
 
-    protected $base_link_course;
-    protected $base_link_classroom;
-    protected $base_link_subscription;
+    /** @var string */
+    protected $baseLinkCourse = 'alms/course';
+
+    /** @var string */
+    protected $baseLinkClassroom = 'alms/classroom';
 
     public function init()
     {
@@ -43,10 +45,6 @@ class ClassroomAlmsController extends AlmsController
         $this->idDate = Get::req('id_date', DOTY_INT, 0);
 
         $this->model = new ClassroomAlms($this->idCourse, $this->idDate);
-
-        $this->base_link_course = 'alms/course';
-        $this->base_link_classroom = 'alms/classroom';
-        $this->base_link_subscription = 'alms/subscription';
 
         $this->permissions = array(
             'view' => checkPerm('view', true, 'course', 'lms'),
@@ -91,8 +89,8 @@ class ClassroomAlmsController extends AlmsController
         $this->render('edition', array(
             'model' => $this->model,
             'permissions' => $this->permissions,
-            'base_link_course' => $this->base_link_course,
-            'base_link_classroom' => $this->base_link_classroom,
+            'base_link_course' => $this->baseLinkCourse,
+            'base_link_classroom' => $this->baseLinkClassroom,
             'course_name' => $course_name
         ));
     }
@@ -344,114 +342,96 @@ class ClassroomAlmsController extends AlmsController
 
     }
 
-    protected function addclassroom()
+    public function addclassroom()
     {
-        require_once(_base_ . '/lib/lib.form.php');
-
-        //Course info
-
-        //Step info
-        $step = Get::req('step', DOTY_INT, 1);
-
         if (isset($_POST['back']) || isset($_POST['undo'])) {
-            Util::jump_to('index.php?r=' . $this->base_link_classroom . '/classroom&id_course=' . $this->model->getIdCourse());
+            Util::jump_to('index.php?r=' . $this->baseLinkClassroom . '/classroom&id_course=' . $this->model->getIdCourse());
         }
+        if (isset($_POST['save'])) {
 
+            if ($this->model->saveNewDate()) {
+                Util::jump_to('index.php?r=' . $this->baseLinkClassroom . '/classroom&id_course=' . $this->model->getIdCourse() . '&result=ok_ins');
+            }
+        }
         $course_info = $this->model->getCourseInfo();
 
-        $this->render('edit_classroom', [
+        $this->render('classroom', [
+            'action' => sprintf('index.php?r=%s/addclassroom&id_course=%s', $this->baseLinkClassroom, $this->idCourse),
+            'edit' => false,
             'idCourse' => $this->idCourse,
             'idDate' => $this->idDate,
             'courseInfo' => $course_info,
-            'courseBaseLink' => $this->base_link_course,
-            'classroomBaseLink' => $this->base_link_classroom,
+            'courseBaseLink' => $this->baseLinkCourse,
+            'classroomBaseLink' => $this->baseLinkClassroom,
+            'postData' => [
+                'name' => Get::req('name', DOTY_STRING, $course_info['name']),
+                'code' => Get::req('code', DOTY_STRING, $course_info['code']),
+                'description' => Get::req('description', DOTY_STRING, $course_info['description']),
+                'mediumTime' => Get::req('mediumTime', DOTY_STRING, $course_info['mediumTime']),
+                'maxNumSubscribes' => Get::req('maxNumSubscribes', DOTY_STRING, ''),
+                'price' => Get::req('price', DOTY_STRING, ''),
+                'status' => Get::req('status', DOTY_STRING, ''),
+                'test' => Get::req('test', DOTY_STRING, ''),
+                'overbooking' => Get::req('overbooking', DOTY_BOOL, false),
+                'subStartDate' => Get::req('subStartDate', DOTY_STRING, ''),
+                'subEndDate' => Get::req('subEndDate', DOTY_STRING, ''),
+                'unsubscribeDateLimit' => Get::req('unsubscribeDateLimit', DOTY_STRING, ''),
+            ],
+            'availableStatuses' => $this->model->getStatusForDropdown(),
+            'availableTestTypes' => $this->model->getTestTypeForDropdown()
         ]);
-        /*
-        switch ($step) {
-            case '0':
-                Util::jump_to('index.php?r=' . $this->base_link_classroom . '/classroom&id_course=' . $this->model->getIdCourse());
-                break;
 
-            case '1':
-
-                break;
-
-            case '2':
-                $date_info = $this->model->getDateInfoFromPost();
-                $date_info['sub_start_date'] = ($date_info['sub_start_date'] === '' ? '00-00-0000' : $date_info['sub_start_date']);
-                $date_info['sub_end_date'] = ($date_info['sub_end_date'] === '' ? '00-00-0000' : $date_info['sub_end_date']);
-                $date_info['unsubscribe_date_limit'] = ($date_info['unsubscribe_date_limit'] === '' ? '00-00-0000' : $date_info['unsubscribe_date_limit']);
-                if (strcmp($date_info['sub_start_date'], $date_info['sub_end_date']) > 0 && $date_info['sub_end_date'] !== '00-00-0000') {
-                    $course_info = $this->model->getCourseInfo();
-
-                    $this->render('add_step_1', array(
-                        'model' => $this->model,
-                        'course_info' => $course_info,
-                        'base_link_course' => $this->base_link_course,
-                        'base_link_classroom' => $this->base_link_classroom,
-                        'hasError' => '_SUBSCRIPTION_DATE',
-                        'availability_info' => ''
-                    ));
-                    return;
-                }
-                $this->render('add_step_2', array(
-                    'model' => $this->model,
-                    'base_link_course' => $this->base_link_course,
-                    'base_link_classroom' => $this->base_link_classroom
-                ));
-                break;
-
-            case '3':
-
-                //check availability
-                $date_info = $this->model->getDateInfoFromPost();
-                $array_day_tmp = explode(',', $date_info['date_selected']);
-                $array_day = array();
-                for ($i = 0; $i < count($array_day_tmp); $i++) {
-                    $array_day[$i]['date_begin'] = $array_day_tmp[$i] . ' ' . $_POST['b_hours_' . $i] . ':' . $_POST['b_minutes_' . $i] . ':00';
-                    $array_day[$i]['pause_begin'] = $array_day_tmp[$i] . ' ' . $_POST['pb_hours_' . $i] . ':' . $_POST['pb_minutes_' . $i] . ':00';
-                    $array_day[$i]['pause_end'] = $array_day_tmp[$i] . ' ' . $_POST['pe_hours_' . $i] . ':' . $_POST['pe_minutes_' . $i] . ':00';
-                    $array_day[$i]['date_end'] = $array_day_tmp[$i] . ' ' . $_POST['e_hours_' . $i] . ':' . $_POST['e_minutes_' . $i] . ':00';
-                    $array_day[$i]['classroom'] = $_POST['classroom_' . $i];
-                }
-
-                $availability_info = $this->model->checkDateAvailability($array_day);
-                if (!empty($availability_info)) {
-                    $this->render('add_step_2', array(
-                        'model' => $this->model,
-                        'base_link_course' => $this->base_link_course,
-                        'base_link_classroom' => $this->base_link_classroom,
-                        'hasError' => '',
-                        'availability_info' => $availability_info
-                    ));
-                    return;
-                }
-
-                //save class info
-                if ($this->model->saveNewDate())
-                    Util::jump_to('index.php?r=' . $this->base_link_classroom . '/classroom&id_course=' . $this->model->getIdCourse() . '&result=ok_ins');
-                Util::jump_to('index.php?r=' . $this->base_link_classroom . '/classroom&id_course=' . $this->model->getIdCourse() . '&result=err_ins');
-                break;
-        }*/
     }
 
-    protected function modclassroom()
+    public function modclassroom()
     {
-        require_once(_base_ . '/lib/lib.form.php');
+        if (isset($_POST['back']) || isset($_POST['undo'])) {
+            Util::jump_to('index.php?r=' . $this->baseLinkClassroom . '/classroom&id_course=' . $this->model->getIdCourse());
+        }
+        if (isset($_POST['save'])) {
 
-        //Step info
-        $step = Get::req('step', DOTY_INT, 1);
+            if ($this->model->updateDate()) {
+                Util::jump_to('index.php?r=' . $this->baseLinkClassroom . '/classroom&id_course=' . $this->model->getIdCourse() . '&result=ok_ins');
+            }
+        }
+        $course_info = $this->model->getDateInfo();
 
-        if (isset($_POST['back']))
-            $step -= 2;
+        $date_info = $this->model->getDateInfo();
 
-        if (isset($_POST['undo']))
-            $step = 0;
+        $this->render('classroom',
+            [
+                'action' => sprintf('index.php?r=%s/modclassroom&id_course=%s', $this->baseLinkClassroom, $this->idCourse),
+                'edit' => true,
+                'idCourse' => $this->idCourse,
+                'idDate' => $this->idDate,
+                'courseInfo' => $course_info,
+                'courseBaseLink' => $this->baseLinkCourse,
+                'classroomBaseLink' => $this->baseLinkClassroom,
+                'postData' => [
+                    'name' => Get::req('name', DOTY_STRING, $course_info['name']),
+                    'code' => Get::req('code', DOTY_STRING, $course_info['code']),
+                    'description' => Get::req('description', DOTY_STRING, $course_info['description']),
+                    'mediumTime' => Get::req('mediumTime', DOTY_STRING, $course_info['mediumTime']),
+                    'maxNumSubscribes' => Get::req('maxNumSubscribes', DOTY_STRING, ''),
+                    'price' => Get::req('price', DOTY_STRING, $course_info['price']),
+                    'status' => Get::req('status', DOTY_STRING, $course_info['status']),
+                    'test' => Get::req('test', DOTY_STRING, $course_info['test']),
+                    'overbooking' => Get::req('overbooking', DOTY_BOOL, $course_info['overbooking']),
+                    'subStartDate' => Get::req('subStartDate', DOTY_STRING, Format::date($course_info['sub_start_date'], 'date')),
+                    'subEndDate' => Get::req('subEndDate', DOTY_STRING, Format::date($course_info['sub_end_date'], 'date')),
+                    'dateBegin' => Format::date($date_info['date_begin'], 'date'),
+                    'unsubscribeDateLimit' => Get::req('unsubscribeDateLimit', DOTY_STRING, Format::date($course_info['unsubscribe_date_limit'], 'date'))
+                ],
+                'availableStatuses' => $this->model->getStatusForDropdown(),
+                'availableTestTypes' => $this->model->getTestTypeForDropdown()
+            ]
+        );
+        /*
 
         switch ($step) {
             // jump back (undo)
             case '0':
-                Util::jump_to('index.php?r=' . $this->base_link_classroom . '/classroom&amp;id_course=' . $this->model->getIdCourse());
+                Util::jump_to('index.php?r=' . $this->baseLinkClassroom . '/classroom&amp;id_course=' . $this->model->getIdCourse());
                 break;
             // editions info
             case '1':
@@ -462,8 +442,8 @@ class ClassroomAlmsController extends AlmsController
                 $this->render('mod_step_1', array('model' => $this->model,
                     'date_info' => $date_info,
                     'array_day' => $array_day,
-                    'base_link_course' => $this->base_link_course,
-                    'base_link_classroom' => $this->base_link_classroom));
+                    'base_link_course' => $this->baseLinkCourse,
+                    'base_link_classroom' => $this->baseLinkClassroom));
                 break;
             //daily hours and classroom
             case '2':
@@ -479,8 +459,8 @@ class ClassroomAlmsController extends AlmsController
                         'model' => $this->model,
                         'date_info' => $date_info,
                         'array_day' => $array_day,
-                        'base_link_course' => $this->base_link_course,
-                        'base_link_classroom' => $this->base_link_classroom,
+                        'base_link_course' => $this->baseLinkCourse,
+                        'base_link_classroom' => $this->baseLinkClassroom,
                         'err_avail' => '_SUBSCRIPTION_DATE',
                         'availability_info' => ''
                     ));
@@ -489,16 +469,48 @@ class ClassroomAlmsController extends AlmsController
 
                 $this->render('mod_step_2', array('model' => $this->model,
                     'date_info' => $date_info,
-                    'base_link_course' => $this->base_link_course,
-                    'base_link_classroom' => $this->base_link_classroom));
+                    'base_link_course' => $this->baseLinkCourse,
+                    'base_link_classroom' => $this->baseLinkClassroom));
                 break;
             // saving collected datas
             case '3':
                 if ($this->model->updateDate())
-                    Util::jump_to('index.php?r=' . $this->base_link_classroom . '/classroom&amp;id_course=' . $this->model->getIdCourse() . '&amp;result=ok_mod');
-                Util::jump_to('index.php?r=' . $this->base_link_classroom . '/classroom&amp;id_course=' . $this->model->getIdCourse() . '&amp;result=err_mod');
+                    Util::jump_to('index.php?r=' . $this->baseLinkClassroom . '/classroom&amp;id_course=' . $this->model->getIdCourse() . '&amp;result=ok_mod');
+                Util::jump_to('index.php?r=' . $this->baseLinkClassroom . '/classroom&amp;id_course=' . $this->model->getIdCourse() . '&amp;result=err_mod');
                 break;
+        }*/
+    }
+
+    public function classroomDates()
+    {
+        if (isset($_POST['back']) || isset($_POST['undo'])) {
+            Util::jump_to('index.php?r=' . $this->baseLinkClassroom . '/classroom&id_course=' . $this->model->getIdCourse());
         }
+        if (isset($_POST['save'])) {
+
+            if ($this->model->updateDate()) {
+                Util::jump_to('index.php?r=' . $this->baseLinkClassroom . '/classroom&id_course=' . $this->model->getIdCourse() . '&result=ok_ins');
+            }
+        }
+        $course_info = $this->model->getDateInfo();
+
+        $data = $this->model->getDateInfoFromPost();
+
+        $this->render('classroom-dates',
+            [
+                'action' => sprintf('index.php?r=%s/classroomDates&id_course=%s&id_date=%s', $this->baseLinkClassroom, $this->idCourse, $this->idDate),
+                'idCourse' => $this->idCourse,
+                'idDate' => $this->idDate,
+                'courseInfo' => $course_info,
+                'courseBaseLink' => $this->baseLinkCourse,
+                'classroomBaseLink' => $this->baseLinkClassroom,
+                'postData' => [
+                    'dates' => Get::req('dates', DOTY_JSONDECODE, []),
+                ],
+                'availableStatuses' => $this->model->getStatusForDropdown(),
+                'availableTestTypes' => $this->model->getTestTypeForDropdown()
+            ]
+        );
     }
 
     protected function delPopUp()
@@ -509,7 +521,7 @@ class ClassroomAlmsController extends AlmsController
 
         $res = array('message' => Lang::t('_AREYOUSURE', 'course', array('[name]' => $date_info['name'], '[code]' => $date_info['code'])),
             'title' => Lang::t('_DEL_COURSE_EDITION', 'course'),
-            'action' => 'ajax.adm_server.php?r=' . $this->base_link_classroom . '/delclassroom&id_course=' . $this->model->getIdCourse() . '&id_date=' . $this->model->getIdDate(),
+            'action' => 'ajax.adm_server.php?r=' . $this->baseLinkClassroom . '/delclassroom&id_course=' . $this->model->getIdCourse() . '&id_date=' . $this->model->getIdDate(),
             'success' => true);
 
         $this->data = $this->json->encode($res);
@@ -628,12 +640,12 @@ class ClassroomAlmsController extends AlmsController
 
         if (isset($_POST['save'])) {
             if ($this->model->savePresence()) {
-                Util::jump_to('index.php?r=' . $this->base_link_classroom . '/classroom&amp;id_course=' . $this->model->getIdCourse() . '&result=ok');
+                Util::jump_to('index.php?r=' . $this->baseLinkClassroom . '/classroom&amp;id_course=' . $this->model->getIdCourse() . '&result=ok');
             } else {
-                Util::jump_to('index.php?r=' . $this->base_link_classroom . '/classroom&amp;id_course=' . $this->model->getIdCourse() . '&result=err_pres');
+                Util::jump_to('index.php?r=' . $this->baseLinkClassroom . '/classroom&amp;id_course=' . $this->model->getIdCourse() . '&result=err_pres');
             }
         } elseif (isset($_POST['undo'])) {
-            Util::jump_to('index.php?r=' . $this->base_link_classroom . '/classroom&amp;id_course=' . $this->model->getIdCourse());
+            Util::jump_to('index.php?r=' . $this->baseLinkClassroom . '/classroom&amp;id_course=' . $this->model->getIdCourse());
         }
 
         $cmodel = new CourseAlms();
@@ -642,8 +654,8 @@ class ClassroomAlmsController extends AlmsController
 
         $this->render('presence', array(
             'model' => $this->model,
-            'base_link_course' => $this->base_link_course,
-            'base_link_classroom' => $this->base_link_classroom,
+            'base_link_course' => $this->baseLinkCourse,
+            'base_link_classroom' => $this->baseLinkClassroom,
             'course_name' => $course_name
         ));
     }

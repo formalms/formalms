@@ -24,6 +24,12 @@ class ClientService
         foreach (self::coreFolders as $coreFolder) {
             $config['url'][$coreFolder] = sprintf('%s/%s', $baseUrl, $coreFolder);
         }
+        $config['lang'] = [
+            'course' => [
+                '_CORSO' => 'corso'
+            ],
+            'coursereport' => [],
+        ];
         return $config;
     }
 

@@ -363,7 +363,7 @@ class DateManager
 	{
 		$query =	"SELECT dt.*, MIN(dy.date_begin) AS date_begin, MAX(dy.date_end) AS date_end, COUNT(dy.id_day) as num_day, COUNT(DISTINCT du.id_user) as user_subscribed"
 					." FROM ".$this->date_table." as dt"
-					." JOIN ".$this->day_date_table." as dy ON dy.id_date = dt.id_date"
+					." LEFT JOIN ".$this->day_date_table." as dy ON dy.id_date = dt.id_date"
 					." LEFT JOIN ".$this->user_date_table." as du ON du.id_date = dt.id_date"
 					." WHERE dt.id_date = ".$id_date
 					." GROUP BY dt.id_date"
@@ -1366,7 +1366,7 @@ class DateManager
 
 		$query =	"SELECT dt.id_date, dt.code, dt.name, dt.status, MIN(dy.date_begin) AS date_begin, MAX(dy.date_end) AS date_end, COUNT(dy.id_day) as num_day, COUNT(DISTINCT du.id_user) as user_subscribed, dt.unsubscribe_date_limit"
 					." FROM ".$this->date_table." as dt"
-					." JOIN ".$this->day_date_table." as dy ON dy.id_date = dt.id_date"
+					." LEFT JOIN ".$this->day_date_table." as dy ON dy.id_date = dt.id_date"
 					." LEFT JOIN ".$this->user_date_table." as du ON du.id_date = dt.id_date"
 					." LEFT JOIN ".$this->user_table." AS u ON u.idst = du.id_user"
 					." WHERE dt.id_course = ".$id_course

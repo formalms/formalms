@@ -1,0 +1,37 @@
+<div class="std_block">
+    <div class="container">
+        {% set courseUrl = 'index.php?r=' ~ courseBaseLink ~ '/show' %}
+
+        {% set classUrl = 'index.php?r=' ~ classroomBaseLink ~ '/classroom&id_course=' ~ idCourse %}
+
+
+        {% set title = Lang_translate('_MOD_DATES', 'course') ~ ': ' ~ postData.name %}
+
+        {% if postdata.dateBegin is not empty %}
+            {% set title = title ~ ' (' ~ postData.dateBegin ~ ')' %}
+        {% endif %}
+
+        {{ Get_title(
+            {
+                (courseUrl) : Lang_translate('_COURSE', 'course'),
+                (classUrl) : Lang_translate('_CLASSROOM', 'course'),
+                '': title
+            },false) }}
+
+        {% if error %}
+            {% set errorTranslate = Lang_translate((error), 'course') %}
+            {{ UiFeedback_error(errorTranslate) }}
+        {% endif %}
+
+        {{ Form_openForm('date', action ) }}
+        {{ Form_openElementSpace() }}
+        
+        {{ Form_closeElementSpace() }}
+        {{ Form_openButtonSpace() }}
+        {{ Form_getButton('save', 'save', Lang_translate('_SAVE', 'course')) }}
+        {{ Form_getButton('undo', 'undo', Lang_translate('_UNDO', 'course')) }}
+        {{ Form_closeElementSpace() }}
+        {{ Form_closeForm() }}
+    </div>
+
+</div>

@@ -1,0 +1,55 @@
+<div class="std_block">
+    <div class="container">
+        {% set courseUrl = 'index.php?r=' ~ courseBaseLink ~ '/show' %}
+
+        {% set classUrl = 'index.php?r=' ~ classroomBaseLink ~ '/classroom&id_course=' ~ idCourse %}
+
+        {% if edit is empty or not edit %}
+            {% set title = Lang_translate('_ADD', 'course') %}
+        {% else %}
+            {% set title = Lang_translate('_MOD', 'course') ~ ': ' ~ postData.name %}
+
+            {% if postdata.dateBegin is not empty %}
+                {% set title = title ~ ' (' ~ postData.dateBegin ~ ')' %}
+            {% endif %}
+        {% endif %}
+
+        {{ Get_title(
+            {
+                (courseUrl) : Lang_translate('_COURSE', 'course'),
+                (classUrl) : Lang_translate('_CLASSROOM', 'course'),
+                '': title
+            },false) }}
+
+        {% if error %}
+            {% set errorTranslate = Lang_translate((error), 'course') %}
+            {{ UiFeedback_error(errorTranslate) }}
+        {% endif %}
+
+        {{ Form_openForm('date', action ) }}
+        {{ Form_openElementSpace() }}
+        {{ Form_getTextfield( Lang_translate('_CODE', 'course') , 'code', 'code', 255, postData.code ) }}
+        {{ Form_getTextfield(Lang_translate('_NAME', 'course') , 'name', 'name', 255, postData.name ) }}
+        {{ Form_getTextarea(Lang_translate('_DESCRIPTION', 'course'), 'description', 'description', postData.description|escape) }}
+        {{ Form_getTextfield( Lang_translate('_MEDIUM_TIME', 'course'), 'mediumTime', 'mediumTime', 255, postData.mediumTime) }}
+        {{ Form_getTextfield( Lang_translate('_MAX_NUM_SUBSCRIBE', 'course') , 'maxNumSubscribes', 'max_par', 255, postData.maxNumSubscribes) }}
+        {{ Form_getTextfield( Lang_translate('_COURSE_PRIZE', 'course'), 'price', 'price', 255, postData.price) }}
+        {{ Form_getDropdown( Lang_translate('_STATUS', 'course'), 'status', 'status', availableStatuses|raw, postData.status) }}
+        {{ Form_getDropdown( Lang_translate('_FINAL_SCORE', 'course'), 'test', 'test', availableTestTypes|raw, postData.test) }}
+        <div class="form_line_l">
+            <p><label for="overbooking" class="floating">{{ Lang_translate('_ALLOW_OVERBOOKING', 'course') }} </label>
+            </p>
+            {{ Form_getInputCheckbox('overbooking', 'overbooking', 1, postData.overbooking, false) }}
+        </div>
+        {{ Form_getDatefield( Lang_translate('_SUBSCRIPTION_DATE_BEGIN', 'course'), 'subStartDate', 'subStartDate', postData.subStartDate ) }}
+        {{ Form_getDatefield( Lang_translate('_SUBSCRIPTION_DATE_END', 'course'), 'subEndDate', 'subEndDate', postData.subEndDate ) }}
+        {{ Form_getDatefield( Lang_translate('_UNSUBSCRIBE_DATE_LIMIT', 'course'), 'unsubscribeDateLimit', 'unsubscribeDateLimit', postData.unsubscribeDateLimit) }}
+        {{ Form_closeElementSpace() }}
+        {{ Form_openButtonSpace() }}
+        {{ Form_getButton('save', 'save', Lang_translate('_SAVE', 'course')) }}
+        {{ Form_getButton('undo', 'undo', Lang_translate('_UNDO', 'course')) }}
+        {{ Form_closeElementSpace() }}
+        {{ Form_closeForm() }}
+    </div>
+
+</div>
