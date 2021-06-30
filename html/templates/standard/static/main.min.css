@@ -6030,6 +6030,15 @@ p {
   background-repeat: no-repeat;
   background-position: 97% center; }
 
+.actions-wrapper {
+  overflow: hidden;
+  width: fit-content;
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 500px;
+  height: 64px; }
+
 /* 
  * Text only tooltip 
  * <span data-customTooltip="text-here">Hover</span>

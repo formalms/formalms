@@ -11,6 +11,7 @@
                     </span>
                     
                 </div>
+                <div class="actions-wrapper">
                 <div class="folderView__visibleActions">
                     {% if el.visible_actions | length %}
                         {% for action in el.visible_actions %}
@@ -31,7 +32,9 @@
                         <div class="folderView__status fv-is-{{ el.status }}" title="{{ el.status }}"></div>
                     {% endif %}
                 </div>
+                </div>
                 {% if el.actions %}
+                <div class="actions-wrapper">
                     <div class="folderView__buttons">
                         <button type="button" class="folderView__button fv-is-menu-open js-fv-open-actions"></button>
                     </div>
@@ -54,6 +57,7 @@
                             {% endif %}
                         {% endfor %}
                         <button type="button" class="folderView__action fv-is-menu-close js-fv-close-actions"></button>
+                    </div>
                     </div>
                 {% endif %}
             </li>
