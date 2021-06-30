@@ -1,3 +1,39 @@
+<style>
+
+    .add-classroom-dates .col-box-end-button {
+        display: flex;
+        align-items: flex-end;
+    }
+
+    .add-classroom-dates .col-box-end-button .box-classroom {
+
+        align-items: center;
+        margin-right: 15px;
+    }
+
+    .add-classroom-dates .btn {
+        border-radius: 8px;
+    }
+
+    .add-classroom-dates .btn-save{
+        background: #2D8CFF;
+        color: white;
+    }
+
+    .add-classroom-dates .btn-delete{
+        background: transparent;
+        color: #2D8CFF;
+    }
+
+    .add-classroom-dates .select-box {
+        margin-left: 5px;
+    }
+
+
+
+</style>
+
+
 <div class="std_block">
     <div class="container">
         {% set courseUrl = 'index.php?r=' ~ courseBaseLink ~ '/show' %}
@@ -33,6 +69,20 @@
 
 
         <div class="edit-classroom-dates">
+
+            <div id="js-row-hidden" class="hidden">
+                <!--<tr data-date="#day_date#" data-date_begin="#dataset_day_date_begin#" data-date_end="#dataset_day_date_end#" data-pause_begin="#dataset_day_pause_begin#" data-pause_end="#dataset_day_pause_end#" data-classroom="#dataset_day_classroom#">
+                    <th scope="row">#day_date#</th>
+                    <td>#day_date_begin#</td>
+                    <td>#day_date_end#</td>
+                    <td>#day_pause_begin#</td>
+                    <td>#day_pause_end#</td>
+                    <td>#day_classroom#</td>
+                    <td><a class="js-edit" href="javascript:void(0)" >Edit</a></td>
+                    <td><a class="js-delete" href="javascript:void(0)" >Delete</a></td>
+                </tr>-->
+            </div>
+
             <table class="table">
                 <thead>
                 <tr>
@@ -44,7 +94,7 @@
                     <th scope="col">Classe</th>
                 </tr>
                 </thead>
-                <tbody>
+                <tbody id="js-table-body">
                 {% for day in postData.days %}
 
                     <tr data-date="{{ day.date }}" data-date_begin="{{ day.date_begin }}" data-date_end="{{ day.date_end }}" data-pause_begin="{{ day.pause_begin }}" data-pause_end="{{ day.pause_end }}" data-classroom="{{ day.classroom }}">
@@ -55,7 +105,7 @@
                         <td>{{ day.pause_end|date("H:i") }}</td>
                         <td>{{ day.classroom }}</td>
                         <td><a class="js-edit" href="javascript:void(0)" >Edit</a></td>
-                        <td>Delete</td>
+                        <td><a class="js-delete" href="javascript:void(0)" >Delete</a></td>
                     </tr>
                 {% endfor %}
 
@@ -65,39 +115,52 @@
 
 
         <div class="add-classroom-dates">
-            <div class="form-group">
-                <label for="exampleFormControlFile1">Date</label>
-                <input class="form-control" type="text" placeholder="Default input">
-            </div>
-            <div class="form-group">
-                <label for="exampleFormControlFile1">Ora inizio</label>
-                <input class="form-control" type="text" placeholder="Default input">
-            </div>
-            <div class="form-group">
-                <label for="exampleFormControlFile1">Ora fine</label>
-                <input class="form-control" type="text" placeholder="Default input">
-            </div>
-            <div class="form-group">
-                <label for="exampleFormControlFile1">Ora inizio pausa</label>
-                <input class="form-control" type="text" placeholder="Default input">
-            </div>
-            <div class="form-group">
-                <label for="exampleFormControlFile1">Ora inizio fine</label>
-                <input class="form-control" type="text" placeholder="Default input">
-            </div>
-            <div class="form-group">
-                <label for="exampleFormControlSelect1">Classrom</label>
-                <select class="form-control" id="exampleFormControlSelect1">
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                    <option>4</option>
-                    <option>5</option>
-                </select>
+            <div class="row mb-4">
+                <div class="col">
+                    <div class="form-outline">
+                        <label for="form-day_date">Date</label>
+                        <input class="form-control" id="form-day_date" type="date">
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-outline">
+                        <label class="form-label" for="form-day_date_begin">Ora inizio</label>
+                        <input type="time" id="form-day_date_begin" class="form-control" />
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-outline">
+                        <label class="form-label" for="form-day_date_end">Ora fine</label>
+                        <input type="time" id="form-day_date_end" class="form-control" />
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-outline">
+                        <label class="form-label" for="form-day_pause_begin">Ora inizio pausa</label>
+                        <input type="time" id="form-day_pause_begin" class="form-control" />
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-outline">
+                        <label class="form-label" for="form-day_pause_end">Ora inizio pausa</label>
+                        <input type="time" id="form-day_pause_end" class="form-control" />
+                    </div>
+                </div>
+                <div class="col col-box-end-button">
+                    <div class="form-outline box-classroom">
+                        <label for="form-day_classroom">Classrom</label>
+                        <select class="form-control select-box" id="form-day_classroom">
+                            <option>1</option>
+                            <option>2</option>
+                        </select>
+                    </div>
+                    <div class="form-outline">
+                        <button class="btn btn-save" id="js-classroom-dates-save">Save</button>
+                        <button class="btn btn-delete">Delete</button>
+                    </div>
+                </div>
             </div>
         </div>
-
-
 
 
         {{ Form_closeElementSpace() }}
@@ -113,16 +176,34 @@
 
 <script type="text/javascript">
 
-    var js_edit = document.getElementsByClassName('js-edit');
+    var jsEdit = document.getElementsByClassName('js-edit');
+    var jsDelete = document.getElementsByClassName('js-delete');
 
-    for (let item of js_edit) {
+    for (let item of jsEdit) {
         item.addEventListener('click', editRow)
+    };
+
+    for (let item of jsDelete) {
+        item.addEventListener('click', deleteRow)
     };
 
     function editRow(e) {
         e.preventDefault()
         var rowData = rowDataset(e)
-        console.log(rowData)
+       /* document.getElementById('form-day_date').value = rowData.date.replaceAll('-' , '/') + '00:00:00'; */
+        document.getElementById('form-day_date').valueAsDate = new Date(Date.parse(rowData.date));
+        document.getElementById('form-day_date_begin').value = rowData.date_begin;
+        document.getElementById('form-day_date_end');
+        document.getElementById('form-day_pause_begin');
+        document.getElementById('form-day_pause_end');
+        document.getElementById('form-day_classroom');
+        console.log(rowData.date.replaceAll('-' , '/'))
+        console.log( new Date(rowData.date))
+    };
+
+    function deleteRow(e) {
+        e.preventDefault()
+        e.target.parentNode.parentNode.remove();
     };
 
     function rowDataset(e) {
@@ -131,8 +212,60 @@
     };
 
 
+    var jsClassroomSave = document.getElementById('js-classroom-dates-save');
 
+    jsClassroomSave.addEventListener('click', function (e) {
+        e.preventDefault();
+        var date = document.getElementById('form-day_date');
+        var dateBegin = document.getElementById('form-day_date_begin');
+        var dateEnd = document.getElementById('form-day_date_end');
+        var pauseBegin = document.getElementById('form-day_pause_begin');
+        var pauseEnd = document.getElementById('form-day_pause_end');
+        var classroom = document.getElementById('form-day_classroom');
+        var newTableRow = document.getElementById('js-row-hidden').innerHTML;
 
+       if (!date.value == '' && !dateBegin.value == '' && !dateEnd.value == '' && !pauseBegin.value == '' && !pauseEnd.value == '' && !classroom.value == '') {
+           newTableRow = newTableRow.replace('<!--', '').replace('-->', '');
+           newTableRow = newTableRow.replaceAll('#day_date#', formattedDate(new Date(date.value)));
+           newTableRow = newTableRow.replace('#day_date_begin#', dateBegin.value).replace('#dataset_day_date_begin#', date.value + ' ' + dateBegin.value);
+           newTableRow = newTableRow.replace('#day_date_end#', dateEnd.value).replace('#dataset_day_date_end#', date.value + ' ' + dateEnd.value);
+           newTableRow = newTableRow.replace('#day_pause_begin#', pauseBegin.value).replace('#dataset_day_pause_begin#', date.value + ' ' + pauseBegin.value);
+           newTableRow = newTableRow.replace('#day_pause_end#', pauseEnd.value).replace('#dataset_day_pause_end#', date.value + ' ' + pauseEnd.value);
+           newTableRow = newTableRow.replace('#day_classroom#', classroom.value).replace('#dataset_day_classroom#', classroom.value);
+
+           var tableBody = document.getElementById("js-table-body");
+           tableBody.insertAdjacentHTML('beforeend', newTableRow);
+
+           var lastRow = tableBody.rows.item(tableBody.rows.length -1);
+
+           var jsEdit = lastRow.getElementsByClassName('js-edit');
+           var jsDelete = lastRow.getElementsByClassName('js-delete');
+
+           for (let item of jsEdit) {
+               item.addEventListener('click', editRow)
+
+           };
+
+           for (let item of jsDelete) {
+               item.addEventListener('click', deleteRow)
+           };
+
+       }else {
+           alert('devi inserire tutti i valori')
+       }
+
+    })
+
+    function formattedDate(d = new Date) {
+        let month = String(d.getMonth() + 1);
+        let day = String(d.getDate());
+        const year = String(d.getFullYear());
+
+        if (month.length < 2) month = '0' + month;
+        if (day.length < 2) day = '0' + day;
+
+        return `${day}-${month}-${year}`;
+    }
 
 
 
