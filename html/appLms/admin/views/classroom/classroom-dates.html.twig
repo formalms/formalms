@@ -15,12 +15,12 @@
         border-radius: 8px;
     }
 
-    .add-classroom-dates .btn-save{
+    .add-classroom-dates .btn-save {
         background: #2D8CFF;
         color: white;
     }
 
-    .add-classroom-dates .btn-delete{
+    .add-classroom-dates .btn-delete {
         background: transparent;
         color: #2D8CFF;
     }
@@ -28,7 +28,6 @@
     .add-classroom-dates .select-box {
         margin-left: 5px;
     }
-
 
 
 </style>
@@ -63,11 +62,6 @@
         {{ Form_openElementSpace() }}
 
 
-
-
-
-
-
         <div class="edit-classroom-dates">
 
             <div id="js-row-hidden" class="hidden">
@@ -97,15 +91,17 @@
                 <tbody id="js-table-body">
                 {% for day in postData.days %}
 
-                    <tr data-date="{{ day.date }}" data-date_begin="{{ day.date_begin }}" data-date_end="{{ day.date_end }}" data-pause_begin="{{ day.pause_begin }}" data-pause_end="{{ day.pause_end }}" data-classroom="{{ day.classroom }}">
+                    <tr data-date="{{ day.date }}" data-date_begin="{{ day.date_begin }}"
+                        data-date_end="{{ day.date_end }}" data-pause_begin="{{ day.pause_begin }}"
+                        data-pause_end="{{ day.pause_end }}" data-classroom="{{ day.classroom }}">
                         <th scope="row">{{ day.date }}</th>
                         <td>{{ day.date_begin|date("H:i") }}</td>
                         <td>{{ day.date_end|date("H:i") }}</td>
                         <td>{{ day.pause_begin|date("H:i") }}</td>
                         <td>{{ day.pause_end|date("H:i") }}</td>
                         <td>{{ day.classroom }}</td>
-                        <td><a class="js-edit" href="javascript:void(0)" >Edit</a></td>
-                        <td><a class="js-delete" href="javascript:void(0)" >Delete</a></td>
+                        <td><a class="js-edit" href="javascript:void(0)">Edit</a></td>
+                        <td><a class="js-delete" href="javascript:void(0)">Delete</a></td>
                     </tr>
                 {% endfor %}
 
@@ -125,25 +121,25 @@
                 <div class="col">
                     <div class="form-outline">
                         <label class="form-label" for="form-day_date_begin">Ora inizio</label>
-                        <input type="time" id="form-day_date_begin" class="form-control" />
+                        <input type="time" id="form-day_date_begin" class="form-control"/>
                     </div>
                 </div>
                 <div class="col">
                     <div class="form-outline">
                         <label class="form-label" for="form-day_date_end">Ora fine</label>
-                        <input type="time" id="form-day_date_end" class="form-control" />
+                        <input type="time" id="form-day_date_end" class="form-control"/>
                     </div>
                 </div>
                 <div class="col">
                     <div class="form-outline">
                         <label class="form-label" for="form-day_pause_begin">Ora inizio pausa</label>
-                        <input type="time" id="form-day_pause_begin" class="form-control" />
+                        <input type="time" id="form-day_pause_begin" class="form-control"/>
                     </div>
                 </div>
                 <div class="col">
                     <div class="form-outline">
                         <label class="form-label" for="form-day_pause_end">Ora inizio pausa</label>
-                        <input type="time" id="form-day_pause_end" class="form-control" />
+                        <input type="time" id="form-day_pause_end" class="form-control"/>
                     </div>
                 </div>
                 <div class="col col-box-end-button">
@@ -181,24 +177,32 @@
 
     for (let item of jsEdit) {
         item.addEventListener('click', editRow)
-    };
+    }
+    ;
 
     for (let item of jsDelete) {
         item.addEventListener('click', deleteRow)
-    };
+    }
+    ;
 
     function editRow(e) {
         e.preventDefault()
         var rowData = rowDataset(e)
-       /* document.getElementById('form-day_date').value = rowData.date.replaceAll('-' , '/') + '00:00:00'; */
-        document.getElementById('form-day_date').valueAsDate = new Date(Date.parse(rowData.date));
-        document.getElementById('form-day_date_begin').value = rowData.date_begin;
-        document.getElementById('form-day_date_end');
-        document.getElementById('form-day_pause_begin');
-        document.getElementById('form-day_pause_end');
+        /** 01-07-2021*/
+        var date = stringToDate(rowData.date,'dd-MM-yyyy','-');
+        date.setHours( date.getHours() + 2 );
+
+        document.getElementById('form-day_date').valueAsDate = date;
+
+        var date = rowData.date_begin.split(" ");
+        document.getElementById('form-day_date_begin').value = date[1];
+        date = rowData.date_end.split(" ");
+        document.getElementById('form-day_date_end').value = date[1];
+        date = rowData.pause_begin.split(" ");
+        document.getElementById('form-day_pause_begin').value = date[1];
+        date = rowData.pause_end.split(" ");
+        document.getElementById('form-day_pause_end').value = date[1];
         document.getElementById('form-day_classroom');
-        console.log(rowData.date.replaceAll('-' , '/'))
-        console.log( new Date(rowData.date))
     };
 
     function deleteRow(e) {
@@ -224,35 +228,37 @@
         var classroom = document.getElementById('form-day_classroom');
         var newTableRow = document.getElementById('js-row-hidden').innerHTML;
 
-       if (!date.value == '' && !dateBegin.value == '' && !dateEnd.value == '' && !pauseBegin.value == '' && !pauseEnd.value == '' && !classroom.value == '') {
-           newTableRow = newTableRow.replace('<!--', '').replace('-->', '');
-           newTableRow = newTableRow.replaceAll('#day_date#', formattedDate(new Date(date.value)));
-           newTableRow = newTableRow.replace('#day_date_begin#', dateBegin.value).replace('#dataset_day_date_begin#', date.value + ' ' + dateBegin.value);
-           newTableRow = newTableRow.replace('#day_date_end#', dateEnd.value).replace('#dataset_day_date_end#', date.value + ' ' + dateEnd.value);
-           newTableRow = newTableRow.replace('#day_pause_begin#', pauseBegin.value).replace('#dataset_day_pause_begin#', date.value + ' ' + pauseBegin.value);
-           newTableRow = newTableRow.replace('#day_pause_end#', pauseEnd.value).replace('#dataset_day_pause_end#', date.value + ' ' + pauseEnd.value);
-           newTableRow = newTableRow.replace('#day_classroom#', classroom.value).replace('#dataset_day_classroom#', classroom.value);
+        if (!date.value == '' && !dateBegin.value == '' && !dateEnd.value == '' && !pauseBegin.value == '' && !pauseEnd.value == '' && !classroom.value == '') {
+            newTableRow = newTableRow.replace('<!--', '').replace('-->', '');
+            newTableRow = newTableRow.replaceAll('#day_date#', formattedDate(new Date(date.value)));
+            newTableRow = newTableRow.replace('#day_date_begin#', dateBegin.value).replace('#dataset_day_date_begin#', date.value + ' ' + dateBegin.value);
+            newTableRow = newTableRow.replace('#day_date_end#', dateEnd.value).replace('#dataset_day_date_end#', date.value + ' ' + dateEnd.value);
+            newTableRow = newTableRow.replace('#day_pause_begin#', pauseBegin.value).replace('#dataset_day_pause_begin#', date.value + ' ' + pauseBegin.value);
+            newTableRow = newTableRow.replace('#day_pause_end#', pauseEnd.value).replace('#dataset_day_pause_end#', date.value + ' ' + pauseEnd.value);
+            newTableRow = newTableRow.replace('#day_classroom#', classroom.value).replace('#dataset_day_classroom#', classroom.value);
 
-           var tableBody = document.getElementById("js-table-body");
-           tableBody.insertAdjacentHTML('beforeend', newTableRow);
+            var tableBody = document.getElementById("js-table-body");
+            tableBody.insertAdjacentHTML('beforeend', newTableRow);
 
-           var lastRow = tableBody.rows.item(tableBody.rows.length -1);
+            var lastRow = tableBody.rows.item(tableBody.rows.length - 1);
 
-           var jsEdit = lastRow.getElementsByClassName('js-edit');
-           var jsDelete = lastRow.getElementsByClassName('js-delete');
+            var jsEdit = lastRow.getElementsByClassName('js-edit');
+            var jsDelete = lastRow.getElementsByClassName('js-delete');
 
-           for (let item of jsEdit) {
-               item.addEventListener('click', editRow)
+            for (let item of jsEdit) {
+                item.addEventListener('click', editRow)
 
-           };
+            }
+            ;
 
-           for (let item of jsDelete) {
-               item.addEventListener('click', deleteRow)
-           };
+            for (let item of jsDelete) {
+                item.addEventListener('click', deleteRow)
+            }
+            ;
 
-       }else {
-           alert('devi inserire tutti i valori')
-       }
+        } else {
+            alert('devi inserire tutti i valori')
+        }
 
     })
 
@@ -267,9 +273,17 @@
         return `${day}-${month}-${year}`;
     }
 
-
-
-
-
+    function stringToDate(_date,_format,_delimiter)
+    {
+        var formatLowerCase=_format.toLowerCase();
+        var formatItems=formatLowerCase.split(_delimiter);
+        var dateItems=_date.split(_delimiter);
+        var monthIndex=formatItems.indexOf("mm");
+        var dayIndex=formatItems.indexOf("dd");
+        var yearIndex=formatItems.indexOf("yyyy");
+        var month=parseInt(dateItems[monthIndex]);
+        month-=1;
+        return new Date(dateItems[yearIndex],month,dateItems[dayIndex]);
+    }
 
 </script>
