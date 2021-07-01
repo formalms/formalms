@@ -854,18 +854,21 @@ class Man_Course {
             $canEnd   = false;
             // evaluate date_begin and date_end only for active editions
             // if no editions is active returns subscription_expired
-            while ($edition_elem = sql_fetch_assoc($re_edition)) {
-				$datetime1 = new DateTime('now');
-				$datetime2 = new DateTime($edition_elem['date_end']);
-            	$interval1 = $datetime1->getTimestamp() - $datetime2->getTimestamp();
+            
+           if($level_id != ADMIN_GROUP_GODADMIN  ) {
+                while ($edition_elem = sql_fetch_assoc($re_edition)) {
+				    $datetime1 = new DateTime('now');
+				    $datetime2 = new DateTime($edition_elem['date_end']);
+            	    $interval1 = $datetime1->getTimestamp() - $datetime2->getTimestamp();
 
-                if (is_null($edition_elem['date_end']) || $edition_elem['date_end'] == '0000-00-00 00:00:00' || $interval1 >= 0) {
-                    $canEnd = $canEnd || true;
+                    if (is_null($edition_elem['date_end']) || $edition_elem['date_end'] == '0000-00-00 00:00:00' || $interval1 >= 0) {
+                        $canEnd = $canEnd || true; 
+                    }
                 }
-            }
-            if (!$canEnd){
-                return array('can' => false, 'reason' => 'course_edition_date_end');
-            }            
+                if (!$canEnd){
+                    return array('can' => false, 'reason' => 'course_edition_date_end');
+                }
+           }                 
         }
         
 

@@ -200,7 +200,7 @@ class CourseLms extends Model
             case 'classroom':
                 $d = new DateManager();
                 $parsedData['edition_exists'] = (count($d->getAvailableDate($parsedData['idCourse'])) > 0);
-                if ($parsedData['canEnter']) {
+                if ( $parsedData['is_enrolled']) {
                     $parsedData['editions'] = self::getAllClassDisplayInfo($parsedData['idCourse'], $parsedData);
                 }
                 else {
@@ -316,12 +316,13 @@ class CourseLms extends Model
         $course_array['next_lesson'] = '-';
         $next_lesson_array = [];
         $currentDate = new DateTime();
+        $a = $currentDate->format('Y-m-d H:i:s');
 
         // user can be enrolled in more than one edition (as a teacher or crazy student....)
         foreach ($course_editions[$id_course] as $id_date => $obj_data) {
             // skip if course if over or not available
             $end_course = new DateTime(Format::date($obj_data->date_max, 'datetime'));
-            if ($end_course > $currentDate && $obj_data->status === 0) {
+            if ($end_course > $currentDate && $obj_data->status == 0) {
                 $out[$id_date]['code'] = $obj_data->code;
                 $out[$id_date]['name'] = $obj_data->name;
                 $out[$id_date]['date_begin'] = $obj_data->date_min;

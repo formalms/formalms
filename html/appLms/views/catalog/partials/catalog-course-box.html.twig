@@ -1,6 +1,11 @@
 {% extends 'partials/course-box.html.twig' %}
 {% block courseBoxMyCoursesNextLesson %}{% endblock %}
 {% block courseBoxHeader %}{% endblock %}
+{% block courseBoxCategory %}
+        <div class="course-box__category">
+            {{ course.course_type }}
+        </div>
+{% endblock %}
 
 {% block unsubscribe %}
     <li>
@@ -12,12 +17,12 @@
          </a>
 
     </li>
+    
 {% endblock %}
 
 
 
 {% set courseBoxClasses = [] %}
-
 
 
 
@@ -31,7 +36,5 @@
         {% include 'partials/classroom-button.html.twig' with { 'course': course } %}
     {% elseif course.course_type == 'elearning' %}
         {% include 'partials/elearning-button.html.twig' with { 'course': course } %}
-    {% else %}
-
     {% endif %}
 {% endblock %}

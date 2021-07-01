@@ -69,36 +69,40 @@ function addToCart(id_date) {
                   <div class="card">
                     {% block editionCardHeader %} 
                     <div class="card-header" id="heading{{ classroom_info.id_date }}">
-                      <h2 class="mb-0">
-                        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse{{ classroom_info.id_date }}" aria-expanded="false" aria-controls="collapse{{ classroom_info.id_date }}">
-                          <a href='#'>{{ classroom_info.name }}</a>
-                        </button>
-                        {% if classroom_info.selling %}
-                            {% if classroom_info.in_cart %}
-                                <button type="button" class="btn btn-info">{{ Lang_translate('_CLASSROOM_IN_CART', 'catalogue') }}</button>
-                            {% else %}
-                                <button type="button" class="btn btn-success" onclick="addToCart( '{{ classroom_info.id_date }}')">
-                                        {{ Lang_translate('_ADD_TO_CART', 'catalogue') }} ({{ classroom_info.price }} {{ Get_getSetting('currency_symbol', '&euro;' ) }} )
-                                </button>        
+                      <div class="row">
+                        <div class="col-md-8">
+                                <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse{{ classroom_info.id_date }}" aria-expanded="false" aria-controls="collapse{{ classroom_info.id_date }}">
+                                  <a href='#'>{{ classroom_info.name }}</a>
+                                </button>
+                        </div>
+                        <div class="col-md-4">                            
+                            {% if classroom_info.selling %}
+                                {% if classroom_info.in_cart %}
+                                    <button type="button" class="btn btn-info">{{ Lang_translate('_CLASSROOM_IN_CART', 'catalogue') }}</button>
+                                {% else %}
+                                    <button type="button" class="btn btn-success" onclick="addToCart( '{{ classroom_info.id_date }}')">
+                                            {{ Lang_translate('_ADD_TO_CART', 'catalogue') }} ({{ classroom_info.price }} {{ Get_getSetting('currency_symbol', '&euro;' ) }} )
+                                    </button>        
+                                {% endif %}    
+                            {% else %}    
+                                {% if classroom_info.full %}
+                                        {% if classroom_info.overbooking %}
+                                            <button type="button" class="btn btn-info" onclick="enrollClassroom('{{ classroom_info.id_date }}',1)" >
+                                            {{ Lang_translate('_USER_STATUS_OVERBOOKING', 'subscribe') }}
+                                            </button>
+                                        {% else %}    
+                                            <button type="button" class="btn btn-danger">
+                                            {{ Lang_translate('_MAX_NUM_SUBSCRIBE', 'course') }} ({{ classroom_info.max_par }})
+                                            </button>
+                                        {% endif %}    
+                                {% else %}        
+                                            <button type="button" class="btn btn-success" onclick="enrollClassroom( '{{ classroom_info.id_date }}',0)" >
+                                            {{ Lang_translate('_SUBSCRIBE', 'catalogue') }}
+                                            </button>
+                                {% endif %}
                             {% endif %}    
-                        {% else %}    
-                            {% if classroom_info.full %}
-                                    {% if classroom_info.overbooking %}
-                                        <button type="button" class="btn btn-info" onclick="enrollClassroom('{{ classroom_info.id_date }}',1)" >
-                                        {{ Lang_translate('_USER_STATUS_OVERBOOKING', 'subscribe') }}
-                                        </button>
-                                    {% else %}    
-                                        <button type="button" class="btn btn-danger">
-                                        {{ Lang_translate('_MAX_NUM_SUBSCRIBE', 'course') }} ({{ classroom_info.max_par }})
-                                        </button>
-                                    {% endif %}    
-                            {% else %}        
-                                        <button type="button" class="btn btn-success" onclick="enrollClassroom( '{{ classroom_info.id_date }}',0)" >
-                                        {{ Lang_translate('_SUBSCRIBE', 'catalogue') }}
-                                        </button>
-                            {% endif %}
-                        {% endif %}    
-                      </h2>
+                        </div>    
+                      </div>
                     </div>
                     {% endblock %}
                     <br>
@@ -107,12 +111,16 @@ function addToCart(id_date) {
                       <div class="card-body">
                         <div class="table-responsive">
                             <div><b>{{ Lang_translate('_THEACER_LIST', 'course') }}</b><br>
+                            {% set num_teachers = 0%}
                             {% for key, teachers_name in teachers %}
                                 {% if key == classroom_info.id_date %}
                                     {{ teachers_name | join(',') }}
+                                    {% set num_teachers = teachers_name|length %}
                                 {% endif %}
                             {% endfor %}
                             </div><br>
+                            <div>{{ Lang_translate('_MAX_NUM_SUBSCRIBE', 'course') }}: {{classroom_info.max_par}}</div>
+                            <div>{{ Lang_translate('_ENROL_COUNT', 'standard') }}: {{ classroom_info.user_subscribed - num_teachers }}</div>
                              <table class="table table-condensed"">
                                 <thead>
                                     <tr>

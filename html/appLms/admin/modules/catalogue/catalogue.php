@@ -227,7 +227,7 @@ function mancatalogue($load_id = false) {
 	$out->add(
 		getTitleArea($title_area, 'catalogue' )
 		.'<div class="std_block">'
-		.Form::openForm('mancatalogue', 'index.php?modname=catalogue&amp;op=savecatalogue')
+		.Form::openForm('mancatalogue', 'index.php?modname=catalogue&amp;op=savecatalogue&of_platform=lms')
 		.( $load_id === false ? '' : Form::getHidden('id_cat', 'id_cat', $load_id) )
 		.Form::openElementSpace()
 		.Form::getTextfield($lang->def('_NAME'), 'name', 'name', 255, $name)
