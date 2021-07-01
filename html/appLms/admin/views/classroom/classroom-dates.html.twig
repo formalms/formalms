@@ -1,5 +1,9 @@
 <style>
 
+    .add-classroom-dates {
+        display: none;
+    }
+
     .add-classroom-dates .col-box-end-button {
         display: flex;
         align-items: flex-end;
@@ -29,6 +33,16 @@
         margin-left: 5px;
     }
 
+    .edit-classroom-dates .edit-classroom-dates--new-date {
+        display: flex;
+        justify-content: flex-end;
+        margin-bottom: 10px;
+    }
+
+    .edit-classroom-dates .edit-classroom-dates--new-date p {
+        color: #2D8CFF;
+        cursor: pointer;
+    }
 
 </style>
 
@@ -90,7 +104,6 @@
                 </thead>
                 <tbody id="js-table-body">
                 {% for day in postData.days %}
-
                     <tr data-date="{{ day.date }}" data-date_begin="{{ day.date_begin }}"
                         data-date_end="{{ day.date_end }}" data-pause_begin="{{ day.pause_begin }}"
                         data-pause_end="{{ day.pause_end }}" data-classroom="{{ day.classroom }}">
@@ -101,45 +114,49 @@
                         <td>{{ day.pause_end|date("H:i") }}</td>
                         <td>{{ day.classroom }}</td>
                         <td><a class="js-edit" href="javascript:void(0)">Edit</a></td>
-                        <td><a class="js-delete" href="javascript:void(0)">Delete</a></td>
+                        <td><a class="js-delete" href="javascript:void(0)" data-swal-toast-template="#my-template" >Delete</a></td>
                     </tr>
                 {% endfor %}
-
                 </tbody>
             </table>
+            <div class="edit-classroom-dates--new-date">
+                <div class="edit-classroom-dates--new-date-box">
+                    <p id="js-button-new-row">Inserisci una nuova riga</p>
+                </div>
+            </div>
         </div>
 
 
-        <div class="add-classroom-dates">
+        <div class="add-classroom-dates" id="js-add-classroom-dates" style="display: none">
             <div class="row mb-4">
                 <div class="col">
                     <div class="form-outline">
                         <label for="form-day_date">Date</label>
-                        <input class="form-control" id="form-day_date" type="date">
+                        <input class="form-control"  id="form-day_date" type="date">
                     </div>
                 </div>
                 <div class="col">
                     <div class="form-outline">
                         <label class="form-label" for="form-day_date_begin">Ora inizio</label>
-                        <input type="time" id="form-day_date_begin" class="form-control"/>
+                        <input value="09:00" type="time" id="form-day_date_begin" class="form-control"/>
                     </div>
                 </div>
                 <div class="col">
                     <div class="form-outline">
                         <label class="form-label" for="form-day_date_end">Ora fine</label>
-                        <input type="time" id="form-day_date_end" class="form-control"/>
+                        <input type="time" value="18:00" id="form-day_date_end" class="form-control"/>
                     </div>
                 </div>
                 <div class="col">
                     <div class="form-outline">
                         <label class="form-label" for="form-day_pause_begin">Ora inizio pausa</label>
-                        <input type="time" id="form-day_pause_begin" class="form-control"/>
+                        <input type="time" value="12:00" id="form-day_pause_begin" class="form-control"/>
                     </div>
                 </div>
                 <div class="col">
                     <div class="form-outline">
-                        <label class="form-label" for="form-day_pause_end">Ora inizio pausa</label>
-                        <input type="time" id="form-day_pause_end" class="form-control"/>
+                        <label class="form-label" for="form-day_pause_end">Ora fine pausa</label>
+                        <input type="time" value="14:00" id="form-day_pause_end" class="form-control"/>
                     </div>
                 </div>
                 <div class="col col-box-end-button">
@@ -152,7 +169,7 @@
                     </div>
                     <div class="form-outline">
                         <button class="btn btn-save" id="js-classroom-dates-save">Save</button>
-                        <button class="btn btn-delete">Delete</button>
+                        <button class="btn btn-delete" id="js-classroom-dates-delete">Delete</button>
                     </div>
                 </div>
             </div>
@@ -169,11 +186,21 @@
 
 </div>
 
-
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script type="text/javascript">
 
     var jsEdit = document.getElementsByClassName('js-edit');
     var jsDelete = document.getElementsByClassName('js-delete');
+    var jsAddNewRow = document.querySelector('#js-button-new-row');
+
+    jsAddNewRow.addEventListener('click', function () {
+        var editClassroomDate = document.querySelector('#js-add-classroom-dates');
+        if (editClassroomDate.style.display === 'none') {
+            editClassroomDate.style.display = 'block';
+        } else {
+            editClassroomDate.style.display = 'none';
+        }
+    })
 
     for (let item of jsEdit) {
         item.addEventListener('click', editRow)
@@ -181,28 +208,42 @@
     ;
 
     for (let item of jsDelete) {
-        item.addEventListener('click', deleteRow)
+            item.addEventListener('click', deleteRow)
     }
     ;
 
     function editRow(e) {
         e.preventDefault()
+
+        var editClassroomDate = document.querySelector('#js-add-classroom-dates');
+        if (editClassroomDate.style.display === 'none') {
+            editClassroomDate.style.display = 'block';
+        }
+
         var rowData = rowDataset(e)
         /** 01-07-2021*/
-        var date = stringToDate(rowData.date,'dd-MM-yyyy','-');
-        date.setHours( date.getHours() + 2 );
+        var date = stringToDate(rowData.date, 'dd-MM-yyyy', '-');
+        date.setHours(date.getHours() + 2);
 
         document.getElementById('form-day_date').valueAsDate = date;
 
-        var date = rowData.date_begin.split(" ");
-        document.getElementById('form-day_date_begin').value = date[1];
+        date = rowData.date_begin.split(" ");
+        if (date.length > 1) {
+            document.getElementById('form-day_date_begin').value = date[1];
+        }
         date = rowData.date_end.split(" ");
-        document.getElementById('form-day_date_end').value = date[1];
+        if (date.length > 1) {
+            document.getElementById('form-day_date_end').value = date[1];
+        }
         date = rowData.pause_begin.split(" ");
-        document.getElementById('form-day_pause_begin').value = date[1];
+        if (date.length > 1) {
+            document.getElementById('form-day_pause_begin').value = date[1];
+        }
         date = rowData.pause_end.split(" ");
-        document.getElementById('form-day_pause_end').value = date[1];
-        document.getElementById('form-day_classroom');
+        if (date.length > 1) {
+            document.getElementById('form-day_pause_end').value = date[1];
+        }
+        document.getElementById('form-day_classroom').value = rowData.classroom;
     };
 
     function deleteRow(e) {
@@ -228,39 +269,68 @@
         var classroom = document.getElementById('form-day_classroom');
         var newTableRow = document.getElementById('js-row-hidden').innerHTML;
 
-        if (!date.value == '' && !dateBegin.value == '' && !dateEnd.value == '' && !pauseBegin.value == '' && !pauseEnd.value == '' && !classroom.value == '') {
-            newTableRow = newTableRow.replace('<!--', '').replace('-->', '');
-            newTableRow = newTableRow.replaceAll('#day_date#', formattedDate(new Date(date.value)));
-            newTableRow = newTableRow.replace('#day_date_begin#', dateBegin.value).replace('#dataset_day_date_begin#', date.value + ' ' + dateBegin.value);
-            newTableRow = newTableRow.replace('#day_date_end#', dateEnd.value).replace('#dataset_day_date_end#', date.value + ' ' + dateEnd.value);
-            newTableRow = newTableRow.replace('#day_pause_begin#', pauseBegin.value).replace('#dataset_day_pause_begin#', date.value + ' ' + pauseBegin.value);
-            newTableRow = newTableRow.replace('#day_pause_end#', pauseEnd.value).replace('#dataset_day_pause_end#', date.value + ' ' + pauseEnd.value);
-            newTableRow = newTableRow.replace('#day_classroom#', classroom.value).replace('#dataset_day_classroom#', classroom.value);
+        console.log(date.value)
 
-            var tableBody = document.getElementById("js-table-body");
-            tableBody.insertAdjacentHTML('beforeend', newTableRow);
+        if (date.value.indexOf(date.value) > -1) {
+            if (!date.value == '' && !dateBegin.value == '' && !dateEnd.value == '' && !pauseBegin.value == '' && !pauseEnd.value == '' && !classroom.value == '') {
+                newTableRow = newTableRow.replace('<!--', '').replace('-->', '');
+                newTableRow = newTableRow.replaceAll('#day_date#', formattedDate(new Date(date.value)));
+                newTableRow = newTableRow.replace('#day_date_begin#', dateBegin.value).replace('#dataset_day_date_begin#', date.value + ' ' + dateBegin.value);
+                newTableRow = newTableRow.replace('#day_date_end#', dateEnd.value).replace('#dataset_day_date_end#', date.value + ' ' + dateEnd.value);
+                newTableRow = newTableRow.replace('#day_pause_begin#', pauseBegin.value).replace('#dataset_day_pause_begin#', date.value + ' ' + pauseBegin.value);
+                newTableRow = newTableRow.replace('#day_pause_end#', pauseEnd.value).replace('#dataset_day_pause_end#', date.value + ' ' + pauseEnd.value);
+                newTableRow = newTableRow.replace('#day_classroom#', classroom.value).replace('#dataset_day_classroom#', classroom.value);
 
-            var lastRow = tableBody.rows.item(tableBody.rows.length - 1);
+                var tableBody = document.getElementById("js-table-body");
+                tableBody.insertAdjacentHTML('beforeend', newTableRow);
 
-            var jsEdit = lastRow.getElementsByClassName('js-edit');
-            var jsDelete = lastRow.getElementsByClassName('js-delete');
+                var lastRow = tableBody.rows.item(tableBody.rows.length - 1);
 
-            for (let item of jsEdit) {
-                item.addEventListener('click', editRow)
+                var jsEdit = lastRow.getElementsByClassName('js-edit');
+                var jsDelete = lastRow.getElementsByClassName('js-delete');
 
+                isSuccess()
+
+                for (let item of jsEdit) {
+                    item.addEventListener('click', editRow)
+                };
+
+                for (let item of jsDelete) {
+                    item.addEventListener('click', deleteRow)
+                };
+
+            } else {
+                isError()
             }
-            ;
-
-            for (let item of jsDelete) {
-                item.addEventListener('click', deleteRow)
-            }
-            ;
-
         } else {
-            alert('devi inserire tutti i valori')
+
+            alert('la data è gia inserita')
         }
 
-    })
+    });
+
+
+
+
+    var jsClassroomDelete = document.getElementById('js-classroom-dates-delete');
+
+    jsClassroomDelete.addEventListener('click', function (e) {
+        e.preventDefault()
+        var newTableRow = document.getElementById('js-row-hidden').innerHTML;
+
+        newTableRow = newTableRow.replace('<!--', '').replace('-->', '');
+        newTableRow = newTableRow.replaceAll('#day_date#', '');
+        newTableRow = newTableRow.replace('#day_date_begin#', '');
+        newTableRow = newTableRow.replace('#day_date_end#', '');
+        newTableRow = newTableRow.replace('#day_pause_begin#', '');
+        newTableRow = newTableRow.replace('#day_pause_end#', '');
+        newTableRow = newTableRow.replace('#day_classroom#', '');
+
+        console.log(newTableRow)
+    });
+
+
+
 
     function formattedDate(d = new Date) {
         let month = String(d.getMonth() + 1);
@@ -273,17 +343,31 @@
         return `${day}-${month}-${year}`;
     }
 
-    function stringToDate(_date,_format,_delimiter)
-    {
-        var formatLowerCase=_format.toLowerCase();
-        var formatItems=formatLowerCase.split(_delimiter);
-        var dateItems=_date.split(_delimiter);
-        var monthIndex=formatItems.indexOf("mm");
-        var dayIndex=formatItems.indexOf("dd");
-        var yearIndex=formatItems.indexOf("yyyy");
-        var month=parseInt(dateItems[monthIndex]);
-        month-=1;
-        return new Date(dateItems[yearIndex],month,dateItems[dayIndex]);
+    function stringToDate(_date, _format, _delimiter) {
+        var formatLowerCase = _format.toLowerCase();
+        var formatItems = formatLowerCase.split(_delimiter);
+        var dateItems = _date.split(_delimiter);
+        var monthIndex = formatItems.indexOf("mm");
+        var dayIndex = formatItems.indexOf("dd");
+        var yearIndex = formatItems.indexOf("yyyy");
+        var month = parseInt(dateItems[monthIndex]);
+        month -= 1;
+        return new Date(dateItems[yearIndex], month, dateItems[dayIndex]);
     }
+
+    function isError () {
+        Swal.fire({
+            title: 'Devi inserire tutti i valori!',
+            icon: 'error',
+        })
+    }
+
+    function isSuccess () {
+        Swal.fire({
+            title: 'Valori inseriti',
+            icon: 'success',
+        })
+    }
+
 
 </script>
