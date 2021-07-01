@@ -10,7 +10,7 @@ if(isset($err_avail))
 
 <?php
 
-echo	Form::openForm('add_date', 'index.php?r='.$base_link_classroom.'/modclassroom&amp;id_course='.$model->getIdCourse().'&amp;id_date='.$model->getIdDate())
+echo	Form::openForm('add_date', 'index.php?r='.$base_link_classroom.'/updateClassroom&amp;id_course='.$model->getIdCourse().'&amp;id_date='.$model->getIdDate())
 		.Form::getHidden('step', 'step', '2')
 		.Form::openElementSpace()
 		.Form::getTextfield(Lang::t('_CODE', 'course'), 'code', 'code', 255, (isset($date_info['code']) ? $date_info['code'] : $_POST['code']))

@@ -198,11 +198,11 @@ class DateManager
 		return sql_query($query);
 	}
 
-	public function insDateDay($id_date, $array_day)
+	public function updateDateDay($idDate, $arrayDays)
 	{
 		$res = false;
 
-		if($this->clearDateDay($id_date))
+		/*if($this->clearDateDay($id_date))
 		{
 			$query =	"INSERT INTO ".$this->day_date_table
 						." (id_day, id_date, classroom, date_begin, date_end, pause_begin, pause_end)";
@@ -221,7 +221,11 @@ class DateManager
 			}
 
 			return sql_query($query);
-		}
+		}*/
+
+        foreach ($arrayDays as $idDay => $dayInfo){
+
+        }
 		return $res;
 	}
 
@@ -1447,7 +1451,7 @@ class DateManager
 				'presence' => '<a href="index.php?r=alms/classroom/presence&id_course='.$id_course.'&amp;id_date='.$id_date.'">'.Lang::t('_ATTENDANCE', 'course').'</a>',
 				'num_day' => $num_day,
 				'user_subscribed' => $user_subscribed,
-				'mod' => '<a href="index.php?r=alms/classroom/modclassroom&id_course='.$id_course.'&amp;id_date='.$id_date.'">'.Get::img('standard/edit.png', Lang::t('_MOD', 'course')).'</a>',
+				'mod' => '<a href="index.php?r=alms/classroom/updateClassroom&id_course='.$id_course.'&amp;id_date='.$id_date.'">'.Get::img('standard/edit.png', Lang::t('_MOD', 'course')).'</a>',
 				'del' => 'ajax.adm_server.php?r=alms/classroom/delclassroom&id_course='.$id_course.'&amp;id_date='.$id_date,
 				'unsubscribe_date_limit' => $unsubscribe_date_limit,
                 'registro' => '<a href="index.php?r=alms/classroom/registro&id_course='.$id_course.'&amp;id_date='.$id_date.'">'. Get::img('standard/date.png', 'Apri').'</a>'

@@ -342,15 +342,15 @@ class ClassroomAlmsController extends AlmsController
 
     }
 
-    public function addclassroom()
+    public function addClassroom()
     {
         if (isset($_POST['back']) || isset($_POST['undo'])) {
             Util::jump_to('index.php?r=' . $this->baseLinkClassroom . '/classroom&id_course=' . $this->model->getIdCourse());
         }
         if (isset($_POST['save'])) {
 
-            if ($this->model->saveNewDate()) {
-                Util::jump_to('index.php?r=' . $this->baseLinkClassroom . '/classroom&id_course=' . $this->model->getIdCourse() . '&result=ok_ins');
+            if ($idDate = $this->model->saveNewDate()) {
+                Util::jump_to('index.php?r=' . $this->baseLinkClassroom . '/updateClassroomDateDays&id_course=' . $this->model->getIdCourse() . '&id_date=' . $idDate);
             }
         }
         $course_info = $this->model->getCourseInfo();
@@ -383,7 +383,7 @@ class ClassroomAlmsController extends AlmsController
 
     }
 
-    public function modclassroom()
+    public function updateClassroom()
     {
         if (isset($_POST['back']) || isset($_POST['undo'])) {
             Util::jump_to('index.php?r=' . $this->baseLinkClassroom . '/classroom&id_course=' . $this->model->getIdCourse());
@@ -400,7 +400,7 @@ class ClassroomAlmsController extends AlmsController
 
         $this->render('classroom',
             [
-                'action' => sprintf('index.php?r=%s/modclassroom&id_course=%s', $this->baseLinkClassroom, $this->idCourse),
+                'action' => sprintf('index.php?r=%s/updateClassroom&id_course=%s', $this->baseLinkClassroom, $this->idCourse),
                 'edit' => true,
                 'idCourse' => $this->idCourse,
                 'idDate' => $this->idDate,
@@ -481,30 +481,29 @@ class ClassroomAlmsController extends AlmsController
         }*/
     }
 
-    public function classroomDates()
+    public function updateClassroomDateDays()
     {
         if (isset($_POST['back']) || isset($_POST['undo'])) {
             Util::jump_to('index.php?r=' . $this->baseLinkClassroom . '/classroom&id_course=' . $this->model->getIdCourse());
         }
         if (isset($_POST['save'])) {
+            $arrayDays = $this->model->getDateDay();
 
-            if ($this->model->updateDate()) {
+            if ($this->model->updateDateDays($arrayDays)) {
                 Util::jump_to('index.php?r=' . $this->baseLinkClassroom . '/classroom&id_course=' . $this->model->getIdCourse() . '&result=ok_ins');
             }
         }
         $course_info = $this->model->getDateInfo();
 
-        $data = $this->model->getDateInfoFromPost();
-
         $arrayDays = $this->model->getDateDay();
 
-        foreach ($arrayDays as $index => $arrayDay){
+        foreach ($arrayDays as $index => $arrayDay) {
             $arrayDays[$index]['date'] = Format::date($arrayDay['date_begin'], 'date');
         }
 
         $this->render('classroom-dates',
             [
-                'action' => sprintf('index.php?r=%s/classroomDates&id_course=%s&id_date=%s', $this->baseLinkClassroom, $this->idCourse, $this->idDate),
+                'action' => sprintf('index.php?r=%s/updateClassroomDateDays&id_course=%s&id_date=%s', $this->baseLinkClassroom, $this->idCourse, $this->idDate),
                 'idCourse' => $this->idCourse,
                 'idDate' => $this->idDate,
                 'courseInfo' => $course_info,

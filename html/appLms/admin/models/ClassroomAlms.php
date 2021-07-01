@@ -287,9 +287,9 @@ class ClassroomAlms extends Model
 
         if ($id_date) {
             if ($countDays > 0) {
-                return $this->classroom_man->insDateDay($id_date, $array_day);
+                return $this->classroom_man->updateDateDay($id_date, $array_day);
             }
-            return true;
+            return $id_date;
         }
         return false;
     }
@@ -355,12 +355,17 @@ class ClassroomAlms extends Model
 
         if ($res) {
             if ($countDays > 0) {
-                return $this->classroom_man->insDateDay($this->id_date, $array_day);
+                return $this->classroom_man->updateDateDay($this->id_date, $array_day);
             }
             return true;
         }
 
         return false;
+    }
+
+    public function updateDateDays($days)
+    {
+        return $this->classroom_man->updateDateDay($this->id_date, $days);
     }
 
     public function delClassroom()

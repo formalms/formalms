@@ -73,7 +73,7 @@ if ($date_list) {
 
 		modFormatter: function(elLiner, oRecord, oColumn, oData) {
 			var id = oRecord.getData("id_classroom");
-			elLiner.innerHTML = '<a href="index.php?r=alms/location/modclassroom&amp;id_classroom='+id+'" '
+			elLiner.innerHTML = '<a href="index.php?r=alms/location/updateClassroom&amp;id_classroom='+id+'" '
 				+'class="ico-sprite subs_mod" title="<?php echo Lang::t('_MOD', 'standard'); ?>">'
 				+'<span><?php echo Lang::t('_MOD', 'standard'); ?></span></a>';
 		},

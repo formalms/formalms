@@ -104,7 +104,7 @@ function changeClassroom()
 <?php
 	$data = $model->getDateInfoFromPost();
 
-	echo	Form::openForm('add_date_2', 'index.php?r='.$base_link_classroom.'/modclassroom&amp;id_course='.$model->getIdCourse().'&amp;id_date='.$model->getIdDate())
+	echo	Form::openForm('add_date_2', 'index.php?r='.$base_link_classroom.'/updateClassroom&amp;id_course='.$model->getIdCourse().'&amp;id_date='.$model->getIdDate())
 			.Form::getHidden('step', 'step', '3')
 			.Form::getHidden('code', 'code', stripslashes($data['code']))
 			.Form::getHidden('name', 'name', stripslashes($data['name']))

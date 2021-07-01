@@ -1184,7 +1184,7 @@ class Course_API extends API
                 });
 
                 $classroom_man = new DateManager();
-                $result = $classroom_man->insDateDay($idDate, $arrayDays);
+                $result = $classroom_man->updateDateDay($idDate, $arrayDays);
 
                 if ($result !== false) {
                     $response['success'] = true;
@@ -1240,7 +1240,7 @@ class Course_API extends API
             sort($arrayDays);
 
             $classroom_man = new DateManager();
-            $result = $classroom_man->insDateDay($idDate, $arrayDays);
+            $result = $classroom_man->updateDateDay($idDate, $arrayDays);
 
             if ($result) {
                 $response['success'] = true;
@@ -1461,7 +1461,7 @@ class Course_API extends API
 
 
                     $classroom_man = new DateManager();
-                    $result = $classroom_man->insDateDay($idDate, $arrayDays);
+                    $result = $classroom_man->updateDateDay($idDate, $arrayDays);
 
                     if ($result) {
                         $response['success'] = true;
