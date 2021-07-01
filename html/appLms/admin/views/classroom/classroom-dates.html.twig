@@ -79,7 +79,7 @@
         <div class="edit-classroom-dates">
 
             <div id="js-row-hidden" class="hidden">
-                <!--<tr data-date="#day_date#" data-date_begin="#dataset_day_date_begin#" data-date_end="#dataset_day_date_end#" data-pause_begin="#dataset_day_pause_begin#" data-pause_end="#dataset_day_pause_end#" data-classroom="#dataset_day_classroom#">
+                <!--<tr data-day_id="#day_id#" data-date="#day_date#" data-date_begin="#dataset_day_date_begin#" data-date_end="#dataset_day_date_end#" data-pause_begin="#dataset_day_pause_begin#" data-pause_end="#dataset_day_pause_end#" data-classroom="#dataset_day_classroom#">
                     <th scope="row">#day_date#</th>
                     <td>#day_date_begin#</td>
                     <td>#day_date_end#</td>
@@ -104,7 +104,8 @@
                 </thead>
                 <tbody id="js-table-body">
                 {% for day in postData.days %}
-                    <tr data-date="{{ day.date }}" data-date_begin="{{ day.date_begin }}"
+
+                    <tr data-day_id="{{ day.id }}" data-date="{{ day.date }}" data-date_begin="{{ day.date_begin }}"
                         data-date_end="{{ day.date_end }}" data-pause_begin="{{ day.pause_begin }}"
                         data-pause_end="{{ day.pause_end }}" data-classroom="{{ day.classroom }}">
                         <th scope="row">{{ day.date }}</th>
@@ -114,9 +115,11 @@
                         <td>{{ day.pause_end|date("H:i") }}</td>
                         <td>{{ day.classroom }}</td>
                         <td><a class="js-edit" href="javascript:void(0)">Edit</a></td>
-                        <td><a class="js-delete" href="javascript:void(0)" data-swal-toast-template="#my-template" >Delete</a></td>
+                        <td><a class="js-delete" href="javascript:void(0)" data-swal-toast-template="#my-template">Delete</a>
+                        </td>
                     </tr>
                 {% endfor %}
+
                 </tbody>
             </table>
             <div class="edit-classroom-dates--new-date">
@@ -129,10 +132,11 @@
 
         <div class="add-classroom-dates" id="js-add-classroom-dates" style="display: none">
             <div class="row mb-4">
+                <input type="hidden" id="form-day_id">
                 <div class="col">
                     <div class="form-outline">
                         <label for="form-day_date">Date</label>
-                        <input class="form-control"  id="form-day_date" type="date">
+                        <input class="form-control" id="form-day_date" type="date">
                     </div>
                 </div>
                 <div class="col">
@@ -178,8 +182,8 @@
 
         {{ Form_closeElementSpace() }}
         {{ Form_openButtonSpace() }}
-        {{ Form_getButton('save', 'save', Lang_translate('_SAVE', 'course')) }}
-        {{ Form_getButton('undo', 'undo', Lang_translate('_UNDO', 'course')) }}
+        {{ Form_getButton('js-save', 'save', Lang_translate('_SAVE', 'course')) }}
+        {{ Form_getButton('js-undo', 'undo', Lang_translate('_UNDO', 'course')) }}
         {{ Form_closeElementSpace() }}
         {{ Form_closeForm() }}
     </div>
@@ -193,6 +197,8 @@
     var jsDelete = document.getElementsByClassName('js-delete');
     var jsAddNewRow = document.querySelector('#js-button-new-row');
 
+    var lastInsertedRowId = -1;
+
     jsAddNewRow.addEventListener('click', function () {
         var editClassroomDate = document.querySelector('#js-add-classroom-dates');
         if (editClassroomDate.style.display === 'none') {
@@ -203,30 +209,62 @@
     })
 
     for (let item of jsEdit) {
-        item.addEventListener('click', editRow)
+        item.addEventListener('click', editRow);
     }
-    ;
+
 
     for (let item of jsDelete) {
-            item.addEventListener('click', deleteRow)
+        item.addEventListener('click', deleteRow);
     }
-    ;
+
+    document.getElementById('js-save').addEventListener('click', saveData);
+
+    function saveData(e) {
+        e.preventDefault();
+
+        var postData = [];
+        var tableBody = getTableBody();
+
+        for (let row of tableBody.rows) {
+
+            var dataset = row.dataset;
+
+            postData.push({
+                'id': (typeof dataset.day_id !== 'undefined' ? dataset.day_id : ''),
+                'classroom': dataset.classroom,
+                'date_begin': dataset.date_begin,
+                'date_end': dataset.date_end,
+                'pause_begin': dataset.pause_begin,
+                'pause_end': dataset.pause_end
+            });
+        }
+
+        console.log(postData);
+
+    }
+
+    function getTableBody() {
+        return document.getElementById("js-table-body");
+    }
 
     function editRow(e) {
-        e.preventDefault()
-
+        e.preventDefault();
         var editClassroomDate = document.querySelector('#js-add-classroom-dates');
         if (editClassroomDate.style.display === 'none') {
             editClassroomDate.style.display = 'block';
         }
 
-        var rowData = rowDataset(e)
-        /** 01-07-2021*/
+        var rowData = getRowDatasetFromEvent(e);
+
+        document.getElementById('form-day_id').value = rowData.day_id;
+
+        /** convert date string to date object (date string format 01-07-2021) */
         var date = stringToDate(rowData.date, 'dd-MM-yyyy', '-');
         date.setHours(date.getHours() + 2);
 
         document.getElementById('form-day_date').valueAsDate = date;
 
+        /** split date_begin string to use only time */
         date = rowData.date_begin.split(" ");
         if (date.length > 1) {
             document.getElementById('form-day_date_begin').value = date[1];
@@ -244,23 +282,23 @@
             document.getElementById('form-day_pause_end').value = date[1];
         }
         document.getElementById('form-day_classroom').value = rowData.classroom;
-    };
+    }
 
     function deleteRow(e) {
         e.preventDefault()
         e.target.parentNode.parentNode.remove();
-    };
+    }
 
-    function rowDataset(e) {
+    function getRowDatasetFromEvent(e) {
         var row = e.target.parentNode.parentNode
         return row.dataset;
-    };
-
+    }
 
     var jsClassroomSave = document.getElementById('js-classroom-dates-save');
 
     jsClassroomSave.addEventListener('click', function (e) {
         e.preventDefault();
+        var id = document.getElementById('form-day_id');
         var date = document.getElementById('form-day_date');
         var dateBegin = document.getElementById('form-day_date_begin');
         var dateEnd = document.getElementById('form-day_date_end');
@@ -269,19 +307,44 @@
         var classroom = document.getElementById('form-day_classroom');
         var newTableRow = document.getElementById('js-row-hidden').innerHTML;
 
-        console.log(date.value)
+        var tableBody = getTableBody();
 
-        if (date.value.indexOf(date.value) > -1) {
-            if (!date.value == '' && !dateBegin.value == '' && !dateEnd.value == '' && !pauseBegin.value == '' && !pauseEnd.value == '' && !classroom.value == '') {
-                newTableRow = newTableRow.replace('<!--', '').replace('-->', '');
-                newTableRow = newTableRow.replaceAll('#day_date#', formattedDate(new Date(date.value)));
-                newTableRow = newTableRow.replace('#day_date_begin#', dateBegin.value).replace('#dataset_day_date_begin#', date.value + ' ' + dateBegin.value);
-                newTableRow = newTableRow.replace('#day_date_end#', dateEnd.value).replace('#dataset_day_date_end#', date.value + ' ' + dateEnd.value);
-                newTableRow = newTableRow.replace('#day_pause_begin#', pauseBegin.value).replace('#dataset_day_pause_begin#', date.value + ' ' + pauseBegin.value);
-                newTableRow = newTableRow.replace('#day_pause_end#', pauseEnd.value).replace('#dataset_day_pause_end#', date.value + ' ' + pauseEnd.value);
-                newTableRow = newTableRow.replace('#day_classroom#', classroom.value).replace('#dataset_day_classroom#', classroom.value);
+        
+        if (date.value !== '' && dateBegin.value !== '' && dateEnd.value !== '' && pauseBegin.value !== '' && pauseEnd.value !== '' && classroom.value !== '') {
+            newTableRow = newTableRow.replace('<!--', '').replace('-->', '');
+            newTableRow = newTableRow.replaceAll('#day_date#', formattedDate(new Date(date.value)));
+            newTableRow = newTableRow.replace('#day_date_begin#', dateBegin.value).replace('#dataset_day_date_begin#', date.value + ' ' + dateBegin.value);
+            newTableRow = newTableRow.replace('#day_date_end#', dateEnd.value).replace('#dataset_day_date_end#', date.value + ' ' + dateEnd.value);
+            newTableRow = newTableRow.replace('#day_pause_begin#', pauseBegin.value).replace('#dataset_day_pause_begin#', date.value + ' ' + pauseBegin.value);
+            newTableRow = newTableRow.replace('#day_pause_end#', pauseEnd.value).replace('#dataset_day_pause_end#', date.value + ' ' + pauseEnd.value);
+            newTableRow = newTableRow.replace('#day_classroom#', classroom.value).replace('#dataset_day_classroom#', classroom.value);
 
-                var tableBody = document.getElementById("js-table-body");
+            if (typeof id.value !== 'undefined' && id.value !== '') {
+
+                for (let row of tableBody.rows) {
+                    var dataset = row.dataset;
+
+                    if (dataset.day_id === id.value) {
+                        newTableRow = newTableRow.replace('#day_id#', id.value);
+                        row.innerHTML = newTableRow;
+
+                        jsEdit = row.getElementsByClassName('js-edit');
+                        jsDelete = row.getElementsByClassName('js-delete');
+
+                        for (let item of jsEdit) {
+                            item.addEventListener('click', editRow);
+                        }
+
+                        for (let item of jsDelete) {
+                            item.addEventListener('click', deleteRow);
+                        }
+                        console.log(newTableRow);
+                    }
+                }
+            } else {
+
+                newTableRow = newTableRow.replace('#day_id#', lastInsertedRowId);
+                lastInsertedRowId--;
                 tableBody.insertAdjacentHTML('beforeend', newTableRow);
 
                 var lastRow = tableBody.rows.item(tableBody.rows.length - 1);
@@ -289,18 +352,16 @@
                 var jsEdit = lastRow.getElementsByClassName('js-edit');
                 var jsDelete = lastRow.getElementsByClassName('js-delete');
 
-                isSuccess()
+                //isSuccess()
 
                 for (let item of jsEdit) {
                     item.addEventListener('click', editRow)
-                };
+                }
 
                 for (let item of jsDelete) {
                     item.addEventListener('click', deleteRow)
-                };
+                }
 
-            } else {
-                isError()
             }
         } else {
 
@@ -309,27 +370,12 @@
 
     });
 
-
-
-
     var jsClassroomDelete = document.getElementById('js-classroom-dates-delete');
 
     jsClassroomDelete.addEventListener('click', function (e) {
         e.preventDefault()
-        var newTableRow = document.getElementById('js-row-hidden').innerHTML;
 
-        newTableRow = newTableRow.replace('<!--', '').replace('-->', '');
-        newTableRow = newTableRow.replaceAll('#day_date#', '');
-        newTableRow = newTableRow.replace('#day_date_begin#', '');
-        newTableRow = newTableRow.replace('#day_date_end#', '');
-        newTableRow = newTableRow.replace('#day_pause_begin#', '');
-        newTableRow = newTableRow.replace('#day_pause_end#', '');
-        newTableRow = newTableRow.replace('#day_classroom#', '');
-
-        console.log(newTableRow)
     });
-
-
 
 
     function formattedDate(d = new Date) {
@@ -355,19 +401,18 @@
         return new Date(dateItems[yearIndex], month, dateItems[dayIndex]);
     }
 
-    function isError () {
+    function isError() {
         Swal.fire({
             title: 'Devi inserire tutti i valori!',
             icon: 'error',
         })
     }
 
-    function isSuccess () {
+    function isSuccess() {
         Swal.fire({
             title: 'Valori inseriti',
             icon: 'success',
         })
     }
-
 
 </script>
