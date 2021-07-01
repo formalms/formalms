@@ -3,12 +3,13 @@ import FolderView from '../components/FolderView';
 import CreateItem from '../components/CreateItem';
 import CopyItem from '../components/CopyItem';
 import ContextMenu from '../components/ContextMenu';
-import Lightbox from '../components/LightBox';
+import LearningObject from './Base/LearningObject';
 
-class TeacherLearningObject {
+class TeacherLearningObject extends LearningObject {
 
   constructor(controllers) {
-    const _this = this;
+    super();
+    const _this = this; // deprecato, da rimuovere
     document.body.classList.add('teacher-area');
     _this.controllers = controllers;
 
@@ -18,30 +19,28 @@ class TeacherLearningObject {
       _this.folderViewInstance = new FolderView(baseUrl, controller.controller, controller.selector);
       new CreateItem(baseUrl, controller.selector);
       
-      // Prevent db function on SCORM, open Lightbox instead
-      _this.folderViewInstance.filterDBClickEvents.push((el) => {
+      // Event on fv-is-scormorg
+      this.folderViewInstance.filterDBClickEvents.push((el) => {
         if(el.querySelector('.fv-is-scormorg')) {
-          new Lightbox().open('scorm-modal', function(modal) {
-            modal.Title = el.querySelector('.folderView__label').innerHTML;
-            modal.InjectIframe(el.querySelector('.fv-is-play').getAttribute('href'), {
-              width: '100%',
-              height: '100%',
-              id: 'overlay_iframe',
-              name: 'overlay_iframe'
-            });
-          }, function() {
-            try {
-              window.frames['overlay_iframe'].uiPlayer.closePlayer(true, window);
-            } catch (e) {
-                window.overlay_iframe.uiPlayer.closePlayer(true, window);
-            }
-          });
+          this.scormLightbox(el.querySelector('.fv-is-play'), el.querySelector('.folderView__label').innerHTML);
           return false;
+        } else if(el.querySelector('.fv-is-scormorg')) {
+          console.log(el);
         }
       });
+      
+      // Event on fv-is-play
+      this.folderViewInstance.addEvent('fv-is-play', (e, el) => {
+        if(el.parentNode.parentNode.querySelector('.fv-is-scormorg')) {
+          e.preventDefault();
+          this.scormLightbox(el, el.parentElement.parentElement.querySelector('.folderView__label').innerHTML);
+        }
+      }, document.querySelector(`[data-container="${controller.selector}"]`));
+
 
       controller.tab.addEventListener('click', _this.clickOnTab.bind(this));
     });
+    
     new CopyItem(this.getBaseApiUrl('lomanager'));
     document.addEventListener('refreshContextMenu', (e) => {
       _this.refreshContextMenu(e.detail.controller);

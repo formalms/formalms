@@ -1,10 +1,17 @@
 {% if data.length > 0 %}
     <ul class="folderView__ul js-sortable-view">
         {% for el in data %}
-            <li data-id="{{ el.id }}" class="folderView__li is-droppable {% if el.type %}js-folderView-file{% else %}js-folderView-folder is-dropzone{% endif %} {% if el.locked %}fv-is-locked{% endif %}">
+            <li data-id="{{ el.id }}" class="folderView__li is-droppable {% if el.description %}has-tooltip{% endif %} {% if el.type %}js-folderView-file{% else %}js-folderView-folder is-dropzone{% endif %} {% if el.locked %}fv-is-locked{% endif %}">
                 <div data-id="{{ el.id }}" class="folderView__el {% if el.type %}fv-is-{{ el.type }}{% else %}fv-is-folder{% endif %}">
-                    <span class="folderView__label">{{ el.title }}</span>
+                    <span class="folderView__label">
+                        {{ el.title }}
+                        {% if el.description %}
+                            <div class="tooltip-div">{{ el.description }}</div>
+                        {% endif %}
+                    </span>
+                    
                 </div>
+                <div class="actions-wrapper">
                 <div class="folderView__visibleActions">
                     {% if el.visible_actions | length %}
                         {% for action in el.visible_actions %}
@@ -25,7 +32,9 @@
                         <div class="folderView__status fv-is-{{ el.status }}" title="{{ el.status }}"></div>
                     {% endif %}
                 </div>
+                </div>
                 {% if el.actions %}
+                <div class="actions-wrapper">
                     <div class="folderView__buttons">
                         <button type="button" class="folderView__button fv-is-menu-open js-fv-open-actions"></button>
                     </div>
@@ -48,6 +57,7 @@
                             {% endif %}
                         {% endfor %}
                         <button type="button" class="folderView__action fv-is-menu-close js-fv-close-actions"></button>
+                    </div>
                     </div>
                 {% endif %}
             </li>

@@ -1,11 +1,13 @@
 import Content from '../twig/content.html.twig';
 import Sortable from 'sortablejs/modular/sortable.complete.esm.js';
+import LearningView from '../modules/Base/LearningView';
 const axios = require('axios');
 
-class FolderView {
+class FolderView extends LearningView {
 
 
   constructor(baseApiUrl, controller, type, disabledActions) {
+    super();
     const _this = this;
 
     _this.baseApiUrl = baseApiUrl;
@@ -18,6 +20,10 @@ class FolderView {
     _this.container = document.querySelector('*[data-container=' + _this.type + ']');
     _this.container.addEventListener('click', (e) => { _this.toggleSelectEl(e); });
     _this.container.addEventListener('click', (e) => { _this.triggerClick(e); });
+    // Tap
+    _this.onClickOrTap(_this.container, (e) => {
+      _this.triggerDblClick(e)
+    }, true /** only tap */);
     _this.container.addEventListener('dblclick', (e) => { _this.triggerDblClick(e); });
     _this.emptySelectedItems();
 
@@ -33,6 +39,7 @@ class FolderView {
 
     _this.refresh();
   }
+
 
   getContainer() {
     return this.container;
@@ -251,7 +258,7 @@ class FolderView {
   triggerDblClick(e) {
     const el = e.target;
     const _this = this;
-
+    
     if (el) {
       const li = el.closest('.folderView__li');
       if (!li) {

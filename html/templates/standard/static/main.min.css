@@ -5804,7 +5804,7 @@ p {
   color: #000;
   position: relative;
   height: 64px;
-  overflow: hidden; }
+  overflow: visible; }
   .folderView__copyOverlay__content .folderView__li {
     height: 48px; }
 
@@ -5815,7 +5815,7 @@ p {
   align-items: center;
   pointer-events: none;
   padding: 8px 16px 8px 56px;
-  overflow: hidden;
+  overflow: visible;
   background-repeat: no-repeat;
   background-position: 16px center;
   background-size: 24px auto; }
@@ -5824,7 +5824,8 @@ p {
     justify-content: center; }
 
 .folderView__label {
-  pointer-events: none; }
+  pointer-events: none;
+  padding: 10px; }
 
 .fv-is-selecteds {
   background-color: red;
@@ -6029,6 +6030,15 @@ p {
   background-repeat: no-repeat;
   background-position: 97% center; }
 
+.actions-wrapper {
+  overflow: hidden;
+  width: fit-content;
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 500px;
+  height: 64px; }
+
 /* 
  * Text only tooltip 
  * <span data-customTooltip="text-here">Hover</span>
@@ -6174,6 +6184,18 @@ p {
     .modal .modal-container .content-wrapper {
       height: 100%;
       width: 100%; }
+
+/* Portrait */
+@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: portrait) and (-webkit-min-device-pixel-ratio: 1) {
+  .modal .modal-container {
+    width: 100%;
+    height: 75%; } }
+
+/* Landscape */
+@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 1) {
+  .modal .modal-container {
+    width: 100%;
+    height: 75%; } }
 
 * {
   outline: none !important;
