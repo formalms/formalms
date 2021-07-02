@@ -141,6 +141,10 @@ class ClassroomAlms extends Model
         return $this->classroom_man->getTestTypeForDropdown();
     }
 
+    public function getClassroomForDropdown() {
+        return $this->classroom_man->getClassroomForDropdown();
+    }
+
     public function getDateInfoFromPost()
     {
         $res = array();
@@ -361,6 +365,11 @@ class ClassroomAlms extends Model
         }
 
         return false;
+    }
+
+    public function removeDateDay($days){
+
+        return $this->classroom_man->removeDateDay($this->id_date, $days);
     }
 
     public function updateDateDays($days)

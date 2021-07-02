@@ -350,7 +350,7 @@ class ClassroomAlmsController extends AlmsController
         if (isset($_POST['save'])) {
 
             if ($idDate = $this->model->saveNewDate()) {
-                Util::jump_to('index.php?r=' . $this->baseLinkClassroom . '/updateClassroomDateDays&id_course=' . $this->model->getIdCourse() . '&id_date=' . $idDate);
+                Util::jump_to('index.php?r=' . $this->baseLinkClassroom . '/classroomDateDays&id_course=' . $this->model->getIdCourse() . '&id_date=' . $idDate);
             }
         }
         $course_info = $this->model->getCourseInfo();
@@ -431,7 +431,7 @@ class ClassroomAlmsController extends AlmsController
         switch ($step) {
             // jump back (undo)
             case '0':
-                Util::jump_to('index.php?r=' . $this->baseLinkClassroom . '/classroom&amp;id_course=' . $this->model->getIdCourse());
+                Util::jump_to('index.php?r=' . $this->baseLinkClassroom . '/classroom&id_course=' . $this->model->getIdCourse());
                 break;
             // editions info
             case '1':
@@ -475,23 +475,31 @@ class ClassroomAlmsController extends AlmsController
             // saving collected datas
             case '3':
                 if ($this->model->updateDate())
-                    Util::jump_to('index.php?r=' . $this->baseLinkClassroom . '/classroom&amp;id_course=' . $this->model->getIdCourse() . '&amp;result=ok_mod');
-                Util::jump_to('index.php?r=' . $this->baseLinkClassroom . '/classroom&amp;id_course=' . $this->model->getIdCourse() . '&amp;result=err_mod');
+                    Util::jump_to('index.php?r=' . $this->baseLinkClassroom . '/classroom&id_course=' . $this->model->getIdCourse() . '&result=ok_mod');
+                Util::jump_to('index.php?r=' . $this->baseLinkClassroom . '/classroom&id_course=' . $this->model->getIdCourse() . '&result=err_mod');
                 break;
         }*/
     }
 
-    public function updateClassroomDateDays()
+    public function classroomDateDays()
     {
-        if (isset($_POST['back']) || isset($_POST['undo'])) {
-            Util::jump_to('index.php?r=' . $this->baseLinkClassroom . '/classroom&id_course=' . $this->model->getIdCourse());
-        }
-        if (isset($_POST['save'])) {
-            $arrayDays = $this->model->getDateDay();
+        $postData = Get::pReq('data', DOTY_MIXED, []);
+        $removedDays = Get::pReq('removedDays', DOTY_MIXED, []);
+        if (!empty($postData)) {
 
-            if ($this->model->updateDateDays($arrayDays)) {
-                Util::jump_to('index.php?r=' . $this->baseLinkClassroom . '/classroom&id_course=' . $this->model->getIdCourse() . '&result=ok_ins');
+            $this->model->removeDateDay($removedDays);
+            $result = $this->model->updateDateDays($postData);
+
+            $response = [
+                'success' => 'true',
+                'days' => $this->model->getDateDay()
+            ];
+
+            if ($result) {
+                $response['url'] = 'index.php?r=' . $this->baseLinkClassroom . '/classroom&id_course=' . $this->model->getIdCourse() . '&result=ok_ins';
             }
+            echo json_encode($response);
+            return;
         }
         $course_info = $this->model->getDateInfo();
 
@@ -503,17 +511,22 @@ class ClassroomAlmsController extends AlmsController
 
         $this->render('classroom-dates',
             [
-                'action' => sprintf('index.php?r=%s/updateClassroomDateDays&id_course=%s&id_date=%s', $this->baseLinkClassroom, $this->idCourse, $this->idDate),
+                'actions' =>
+                    [
+                        'save' => sprintf('ajax.adm_server.php?r=%s/classroomDateDays&id_course=%s&id_date=%s', $this->baseLinkClassroom, $this->idCourse, $this->idDate),
+                        'back' => sprintf('index.php?r=%s/classroom&id_course=%s', $this->baseLinkClassroom, $this->idCourse)
+                    ],
                 'idCourse' => $this->idCourse,
                 'idDate' => $this->idDate,
                 'courseInfo' => $course_info,
                 'courseBaseLink' => $this->baseLinkCourse,
                 'classroomBaseLink' => $this->baseLinkClassroom,
                 'postData' => [
-                    'days' => Get::req('days', DOTY_MIXED, $arrayDays),
+                    'days' => $arrayDays,
                 ],
                 'availableStatuses' => $this->model->getStatusForDropdown(),
-                'availableTestTypes' => $this->model->getTestTypeForDropdown()
+                'availableTestTypes' => $this->model->getTestTypeForDropdown(),
+                'availableClassrooms' => $this->model->getClassroomForDropdown()
             ]
         );
     }
@@ -564,11 +577,6 @@ class ClassroomAlmsController extends AlmsController
 
     protected function export()
     {
-//      define("IN_FORMA", "ok");
-//      include('../config.php');
-//      error_reporting(0);
-//      $db = sql_connect($cfg['db_host'], $cfg['db_user'], $cfg['db_pass']);
-//      sql_select_db($cfg['db_name']);
 
         $today = getdate();
         $mday = $today['mday'];
@@ -645,12 +653,12 @@ class ClassroomAlmsController extends AlmsController
 
         if (isset($_POST['save'])) {
             if ($this->model->savePresence()) {
-                Util::jump_to('index.php?r=' . $this->baseLinkClassroom . '/classroom&amp;id_course=' . $this->model->getIdCourse() . '&result=ok');
+                Util::jump_to('index.php?r=' . $this->baseLinkClassroom . '/classroom&id_course=' . $this->model->getIdCourse() . '&result=ok');
             } else {
-                Util::jump_to('index.php?r=' . $this->baseLinkClassroom . '/classroom&amp;id_course=' . $this->model->getIdCourse() . '&result=err_pres');
+                Util::jump_to('index.php?r=' . $this->baseLinkClassroom . '/classroom&id_course=' . $this->model->getIdCourse() . '&result=err_pres');
             }
         } elseif (isset($_POST['undo'])) {
-            Util::jump_to('index.php?r=' . $this->baseLinkClassroom . '/classroom&amp;id_course=' . $this->model->getIdCourse());
+            Util::jump_to('index.php?r=' . $this->baseLinkClassroom . '/classroom&id_course=' . $this->model->getIdCourse());
         }
 
         $cmodel = new CourseAlms();

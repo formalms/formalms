@@ -182,36 +182,47 @@ class DateManager
         return sql_query($query);
     }
 
+    public function removeDateDay($idDate, $arrayDays)
+    {
+        foreach ($arrayDays as $index => $dayInfo) {
+            $query = "DELETE FROM $this->day_date_table  WHERE ID_DATE = $idDate AND id = " . $dayInfo['day_id'];
+            DbConn::getInstance()->query($query);
+        }
+    }
+
     public function updateDateDay($idDate, $arrayDays)
     {
-        $res = false;
+        $res = true;
 
-        $days = $this->getDateDay($idDate);
+        usort($arrayDays, function ($a, $b) {
+            $time1 = strtotime($a['date_begin']);
+            $time2 = strtotime($b['date_begin']);
+            return $time1 > $time2;
+        });
 
-        /*if($this->clearDateDay($id_date))
-		{
-			$query =	"INSERT INTO ".$this->day_date_table
-						." (id_day, id_date, classroom, date_begin, date_end, pause_begin, pause_end)";
 
-			$first = true;
+        foreach ($arrayDays as $index => $dayInfo) {
 
-			foreach($array_day as $id_day => $day_info)
-			{
-				if($first)
-				{
-					$first = false;
-					$query .= " VALUES (".$id_day.", ".$id_date.", ".$day_info['classroom'].", '".$day_info['date_begin']."', '".$day_info['date_end']."', '".$day_info['pause_begin']."', '".$day_info['pause_end']."')";
-				}
-				else
-					$query .= ", (".$id_day.", ".$id_date.", ".$day_info['classroom'].", '".$day_info['date_begin']."', '".$day_info['date_end']."', '".$day_info['pause_begin']."', '".$day_info['pause_end']."')";
-			}
+            if ((int)$dayInfo['day_id'] < 0) {
 
-			return sql_query($query);
-		}*/
-
-        foreach ($arrayDays as $idDay => $dayInfo) {
-
+                $query = "INSERT INTO " . $this->day_date_table . " (id_day, id_date, classroom, date_begin, date_end, pause_begin, pause_end)  VALUES (" . $index . ", " . $idDate . ", " . $dayInfo['classroom'] . ", '" . $dayInfo['date_begin'] . "', '" . $dayInfo['date_end'] . "', '" . $dayInfo['pause_begin'] . "', '" . $dayInfo['pause_end'] . "')";
+            } else {
+//UPDATE `forma_dev`.`learning_course_date_day` SET `id_day` = 1, `id_date` = 33, `classroom` = 1, `date_begin` = '2021-07-03 00:00:00', `date_end` = '2021-07-03 00:00:00', `pause_begin` = '2021-07-03 00:00:00', `pause_end` = '2021-07-03 00:00:00', `created_at` = '2021-07-02 13:35:31', `updated_at` = NULL WHERE `id` = 63;
+                $query = "UPDATE " . $this->day_date_table .
+                    " SET `id_day` = " . $index . ",".
+                    " `classroom` = '" . $dayInfo['classroom'] . "',".
+                    " `date_begin` = '" . $dayInfo['date_begin'] ."',".
+                    " `date_end` = '" . $dayInfo['date_end'] ."',".
+                    " `pause_begin` = '" . $dayInfo['pause_begin'] ."',".
+                    " `pause_end` = '" . $dayInfo['pause_end'] ."'".
+                    " WHERE `id_date` = " . $idDate . " AND `id` =" . $dayInfo['day_id'];
+            }
+            $res = DbConn::getInstance()->query($query);
+            if ($res === false) {
+                return $res;
+            }
         }
+
         return $res;
     }
 
@@ -366,10 +377,10 @@ class DateManager
 
     public function getDateDay($id_date)
     {
-        $query = "SELECT *"
-            . " FROM " . $this->day_date_table
-            . " WHERE id_date = " . $id_date
-            . " ORDER BY date_begin";
+        $query = 'SELECT *, DATE_FORMAT(date_begin, "%d-%m-%Y") as date'
+            . ' FROM ' . $this->day_date_table
+            . ' WHERE id_date = ' . $id_date
+            . ' ORDER BY date_begin';
 
         $result = sql_query($query);
 
