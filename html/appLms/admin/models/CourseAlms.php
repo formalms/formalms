@@ -87,25 +87,9 @@ class CourseAlms extends Model
     
     
     public function getFirstOverbooked($idCourse){
-        $userlevelid = Docebo::user()->getUserLevelId();
-        if ($userlevelid != ADMIN_GROUP_GODADMIN) {
-            require_once(_base_ . '/lib/lib.preference.php');
-            $adminManager = new AdminPreference();
-            $acl_man = &Docebo::user()->getAclManager();
-
-            $admin_courses = $adminManager->getAdminCourse(Docebo::user()->getIdST());
-
-            $admin_tree = $adminManager->getAdminTree(Docebo::user()->getIdST());
-            $admin_users = $acl_man->getAllUsersFromIdst($admin_tree);
-        }
-
-        $query = "select idUser"
+            $query = "select idUser"
             . " FROM %lms_courseuser "
-            . " WHERE status=4" 
-            . ($userlevelid != ADMIN_GROUP_GODADMIN
-                ? (!empty($admin_users) ? " AND idUser IN (" . implode(',', $admin_users) . ")" : " AND idUser IN (0)")
-                : '')
-            . " AND idCourse = ".$idCourse    
+            . " WHERE status=4 AND idCourse = ".$idCourse    
             . " order by date_inscr ASC LIMIT 1";    
             $res = sql_query($query);
             
