@@ -72,7 +72,7 @@ class CertificateSubs_Course extends CertificateSubstitution
             $man_course = new DoceboCourse($this->id_course);
 
             $query = "SELECT idUser"
-                . " FROM " . $GLOBALS['prefix_lms'] . "_courseuser"
+                . " FROM %lms_courseuser"
                 . " WHERE idCourse = '" . $this->id_course . "'"
                 . " AND level = '6'";
             $result = sql_query($query);
@@ -112,9 +112,9 @@ class CertificateSubs_Course extends CertificateSubstitution
 
 
                 $query = "SELECT date_begin "
-                    . "FROM " . $GLOBALS['prefix_lms'] . "_course_editions INNER JOIN " . $GLOBALS['prefix_lms'] . "_course_editions_user ON "
-                    . $GLOBALS['prefix_lms'] . "_course_editions_user.id_edition = " . $GLOBALS['prefix_lms'] . "_course_editions.id_edition "
-                    . "where " . $GLOBALS['prefix_lms'] . "_course_editions .id_course = " . $this->id_course . " and " . $GLOBALS['prefix_lms'] . "_course_editions_user.id_user = " . $this->id_user;
+                    . "FROM %lms_course_editions INNER JOIN %lms_course_editions_user ON "
+                    . $GLOBALS['prefix_lms'] . "_course_editions_user.id_edition = %lms_course_editions.id_edition "
+                    . "where %lms_course_editions .id_course = " . $this->id_course . " and %lms_course_editions_user.id_user = " . $this->id_user;
                 $result = sql_query($query);
 
 
@@ -130,11 +130,11 @@ class CertificateSubs_Course extends CertificateSubstitution
                 $date_arr = array();
 
                 $qtxt = "SELECT d.id_date, MIN( dd.date_begin ) AS date_begin, MAX( dd.date_end ) AS date_end, d.name
-												 FROM " . $GLOBALS['prefix_lms'] . "_course_date_day AS dd
-												 JOIN " . $GLOBALS['prefix_lms'] . "_course_date AS d
+												 FROM %lms_course_date_day AS dd
+												 JOIN %lms_course_date AS d
                                                  ON (d.id_date = dd.id_date)
-				              	 LEFT JOIN " . $GLOBALS['prefix_lms'] . "_course_date_user ON " . $GLOBALS['prefix_lms'] . "_course_date_user.id_date = d.id_date
-                				 WHERE d.id_course = " . (int)$this->id_course . "  and " . $GLOBALS['prefix_lms'] . "_course_date_user.id_user=" . $this->id_user . "
+				              	 LEFT JOIN %lms_course_date_user ON %lms_course_date_user.id_date = d.id_date
+                				 WHERE d.id_course = " . (int)$this->id_course . "  and %lms_course_date_user.id_user=" . $this->id_user . " AND dd.deleted = 0" . "
                 				 GROUP BY dd.id_date";
 
 
@@ -142,12 +142,12 @@ class CertificateSubs_Course extends CertificateSubstitution
 
 
                 $qtxt = "SELECT distinct c.name AS class_name
-                             FROM " . $GLOBALS['prefix_lms'] . "_course_date_day AS dd
-                             JOIN " . $GLOBALS['prefix_lms'] . "_course_date AS d
-                             JOIN " . $GLOBALS['prefix_lms'] . "_classroom AS c
+                             FROM %lms_course_date_day AS dd
+                             JOIN %lms_course_date AS d
+                             JOIN %lms_classroom AS c
                              ON ( dd.classroom = c.idClassroom AND d.id_date = dd.id_date )
-                             LEFT JOIN " . $GLOBALS['prefix_lms'] . "_course_date_user ON " . $GLOBALS['prefix_lms'] . "_course_date_user.id_date = d.id_date
-                             WHERE d.id_course = " . (int)$this->id_course . "  and " . $GLOBALS['prefix_lms'] . "_course_date_user.id_user=" . $this->id_user;
+                             LEFT JOIN %lms_course_date_user ON %lms_course_date_user.id_date = d.id_date
+                             WHERE d.id_course = " . (int)$this->id_course . "  and %lms_course_date_user.id_user=" . $this->id_user;
 
                 $result = sql_query($qtxt);
                 $num_pv = 0;
@@ -161,7 +161,7 @@ class CertificateSubs_Course extends CertificateSubstitution
                              FROM learning_course_date_day AS dd
 														 INNER JOIN learning_course_date AS d ON dd.id_date = d.id_date
                              INNER JOIN learning_course_date_user ON learning_course_date_user.id_date = d.id_date
-														 WHERE d.id_course = " . (int)$this->id_course . " AND learning_course_date_user.id_user=" . $this->id_user;
+														 WHERE d.id_course = " . (int)$this->id_course . " AND learning_course_date_user.id_user=" . $this->id_user . " AND dd.deleted = 0";
 
                 $query = "SELECT cd.id_date
                  FROM %lms_course_date AS cd
@@ -198,13 +198,13 @@ class CertificateSubs_Course extends CertificateSubstitution
                     $subs['[teacher_list]'] = $subs['[teacher_list_inverse]'] = null;
 
                     $query = "SELECT idUser"
-                        . " FROM " . $GLOBALS['prefix_lms'] . "_courseuser"
+                        . " FROM %lms_courseuser"
                         . " WHERE idCourse = '" . $this->id_course . "'"
                         . " AND level = '6'"
                         . " AND idUser IN "
                         . " ("
                         . " SELECT id_user"
-                        . " FROM " . $GLOBALS['prefix_lms'] . "_course_date_user"
+                        . " FROM %lms_course_date_user"
                         . " WHERE id_date = " . $id_date
                         . " )";
 

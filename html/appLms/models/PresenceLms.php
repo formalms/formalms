@@ -77,7 +77,7 @@ class PresenceLms extends Model
 					." FROM %lms_course_date as dt"
 					." JOIN %lms_course_date_day as dy ON dy.id_date = dt.id_date"
 					." LEFT JOIN %lms_course_date_user as du ON du.id_date = dt.id_date"
-					." WHERE dt.id_date IN (".implode(',',$array_date).")"
+					." WHERE dt.id_date IN (".implode(',',$array_date).")  AND dy.deleted = 0"
 					." GROUP BY dt.id_date"
 					." ORDER BY date_begin DESC";
 
@@ -98,7 +98,8 @@ class PresenceLms extends Model
 	{
 		$query =	"SELECT DISTINCT classroom"
 					." FROM %lms_course_date_day"
-					." WHERE id_date = ".$id_date;
+					." WHERE id_date = ".$id_date
+                    ." AND deleted = 0";
 
 		$result = sql_query($query);
 		$array_classroom = array();

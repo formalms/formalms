@@ -44,7 +44,7 @@ Class SubscriptionAlms extends Model
 	public function setIdDate($id_date) { $this->id_date = (int)$id_date; }
 
 
-	public function loadUser($start_index, $results, $sort, $dir, $filter = false) {
+	public function loadUser($start_index = false, $results = false, $sort = false, $dir = false, $filter = false) {
 		if($this->id_edition != 0) {
 			require_once(_lms_.'/lib/lib.edition.php');
 			$edition_man = new EditionManager();
@@ -318,13 +318,13 @@ Class SubscriptionAlms extends Model
 		$subscribe_man = new CourseSubscribe_Manager();
 		return $subscribe_man->updateUserDateBeginValidityInCourse($id_user, $this->id_course, $new_date_begin);
 	}
-	
+
 	public function updateUserDateExpireValidity($id_user, $new_date_expire) {
 		require_once(_lms_.'/lib/lib.subscribe.php');
 		$subscribe_man = new CourseSubscribe_Manager();
 		return $subscribe_man->updateUserDateExpireValidityInCourse($id_user, $this->id_course, $new_date_expire);
 	}
-	
+
 	public function updateUserStatus($id_user, $new_status)
 	{
 		if($this->id_edition != 0)

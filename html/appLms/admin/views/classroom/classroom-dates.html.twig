@@ -39,7 +39,18 @@
         margin-bottom: 10px;
     }
 
-    .edit-classroom-dates .edit-classroom-dates--new-date p {
+    .edit-classroom-dates .edit-classroom-dates--new-date span {
+        color: #2D8CFF;
+        cursor: pointer;
+    }
+
+    .edit-classroom-dates .edit-classroom-dates--update-dates {
+        display: flex;
+        justify-content: flex-end;
+        margin-bottom: 10px;
+    }
+
+    .edit-classroom-dates .edit-classroom-dates--update-dates span {
         color: #2D8CFF;
         cursor: pointer;
     }
@@ -118,8 +129,9 @@
                         <td>{{ day.pause_begin|date("H:i") }}</td>
                         <td>{{ day.pause_end|date("H:i") }}</td>
                         <td>{{ classroom|raw }}</td>
-                        <td><a class="js-edit" href="javascript:void(0)">Edit</a></td>
-                        <td><a class="js-delete" href="javascript:void(0)" data-swal-toast-template="#my-template">Delete</a>
+                        <td><a class="js-edit" href="javascript:void(0)">{{ Lang_translate('_EDIT','course') }}</a></td>
+                        <td><a class="js-delete" href="javascript:void(0)"
+                               data-swal-toast-template="#my-template">{{ Lang_translate('_DELETE','course') }}</a>
                         </td>
                     </tr>
                 {% endfor %}
@@ -128,7 +140,8 @@
             </table>
             <div class="edit-classroom-dates--new-date">
                 <div class="edit-classroom-dates--new-date-box">
-                    <p id="js-button-new-row">Inserisci una nuova riga</p>
+                    <span id="js-button-new-row">Inserisci una nuova riga</span>&nbsp;&nbsp;&nbsp;
+                    <span id="js-button-update-row">Modifica orari</span>
                 </div>
             </div>
         </div>
@@ -137,7 +150,7 @@
         <div class="add-classroom-dates" id="js-add-classroom-dates" style="display: none">
             <div class="row mb-4">
                 <input type="hidden" id="form-day_id">
-                <div class="col">
+                <div class="col form-data-default">
                     <div class="form-outline">
                         <label for="form-day_date">Date</label>
                         <input class="form-control" id="form-day_date" type="date" required>
@@ -178,8 +191,12 @@
                         </select>
                     </div>
                     <div class="form-outline">
-                        <button class="btn btn-save" id="js-classroom-dates-save">Save</button>
-                        <button class="btn btn-delete" id="js-classroom-dates-delete">Delete</button>
+                        <button class="btn btn-delete"
+                                id="js-classroom-dates-delete">{{ Lang_translate('_UNDO','course') }}</button>
+                        <button class="btn btn-save form-data-default"
+                                id="js-classroom-dates-save">{{ Lang_translate('_SAVE','course') }}</button>
+                        <button class="btn btn-save hidden form-data-hours"
+                                id="js-set-hours">{{ Lang_translate('_SET','course') }}</button>
                     </div>
                 </div>
             </div>
@@ -187,6 +204,9 @@
 
 
         {{ Form_openButtonSpace() }}
+
+        <label for="sendCalendar">{{ Lang_translate('_SEND_CALENDAR', 'course') }}</label>:
+        {{ Form_getInputCheckbox("sendCalendar", "sendCalendar", "true", 1,'') }}
         {{ Form_getButton('js-undo', 'undo', Lang_translate('_UNDO', 'course')) }}
         {{ Form_getButton('js-save', 'save', Lang_translate('_SAVE', 'course')) }}
         {{ Form_closeElementSpace() }}
@@ -214,6 +234,35 @@
     }
 
     document.getElementById('js-button-new-row').addEventListener('click', function (e) {
+        var elementsToHide = document.getElementsByClassName('form-data-hours')
+        for (let element of elementsToHide) {
+            if (!element.classList.contains('hidden')) {
+                element.classList.add('hidden');
+            }
+        }
+        var elementsToHide = document.getElementsByClassName('form-data-default')
+        for (let element of elementsToHide) {
+            if (element.classList.contains('hidden')) {
+                element.classList.remove('hidden');
+            }
+        }
+        showForm(e)
+        clearForm()
+    })
+
+    document.getElementById('js-button-update-row').addEventListener('click', function (e) {
+        var elementsToHide = document.getElementsByClassName('form-data-default')
+        for (let element of elementsToHide) {
+            if (!element.classList.contains('hidden')) {
+                element.classList.add('hidden');
+            }
+        }
+        var elementsToHide = document.getElementsByClassName('form-data-hours')
+        for (let element of elementsToHide) {
+            if (element.classList.contains('hidden')) {
+                element.classList.remove('hidden');
+            }
+        }
         showForm(e)
         clearForm()
     })
@@ -232,13 +281,15 @@
 
     document.getElementById('js-classroom-dates-save').addEventListener('click', saveForm);
 
+    document.getElementById('js-set-hours').addEventListener('click', updateHours);
+
     document.getElementById('js-classroom-dates-delete').addEventListener('click', hideForm);
 
     function saveForm(e) {
         e.preventDefault();
         var id = document.getElementById('form-day_id').value;
         var date = document.getElementById('form-day_date').value;
-        var dateFormatted = formattedDate(new Date(date));
+        var dateFormatted = dateToString(new Date(date));
         var dateBegin = document.getElementById('form-day_date_begin').value;
         var dateEnd = document.getElementById('form-day_date_end').value;
         var pauseBegin = document.getElementById('form-day_pause_begin').value;
@@ -249,19 +300,42 @@
             document.getElementById('form-day_date').classList.add('input-not-valid');
             return;
         }
-        if (insertedDays.includes(dateFormatted)) {
+        if ((typeof id === 'undefined' || id === '') && insertedDays.includes(dateFormatted)) {
             showError('Data già presente');
             return;
         }
 
         document.getElementById('form-day_date').classList.remove('input-not-valid');
 
-        insertOrUpdateRow(id,date,dateFormatted,dateBegin,dateEnd,pauseBegin,pauseEnd,classroom);
+        insertOrUpdateRow(id, date, dateFormatted, dateBegin, dateEnd, pauseBegin, pauseEnd, classroom);
         clearForm();
         loadInsertedDays();
     }
 
-    function insertOrUpdateRow(id,date,dateFormatted,dateBegin,dateEnd,pauseBegin,pauseEnd,classroom) {
+    function updateHours(e) {
+        e.preventDefault();
+        var dateBegin = document.getElementById('form-day_date_begin').value;
+        var dateEnd = document.getElementById('form-day_date_end').value;
+        var pauseBegin = document.getElementById('form-day_pause_begin').value;
+        var pauseEnd = document.getElementById('form-day_pause_end').value;
+        var classroom = document.getElementById('form-day_classroom').value;
+
+        var tableBody = getTableBody();
+        for (let row of tableBody.rows) {
+
+            var date = stringToDate(row.dataset.date, 'DD-MM-YYYY');
+            row.dataset.date = dateToString(date, 'YYYY-MM-DD')
+            var dateFormatted = dateToString(date, 'DD-MM-YYYY');
+            console.log(row.dataset.date);
+            console.log(dateFormatted);
+            insertOrUpdateRow(row.dataset.day_id, row.dataset.date, dateFormatted, dateBegin, dateEnd, pauseBegin, pauseEnd, classroom);
+        }
+
+
+        clearForm();
+    }
+
+    function insertOrUpdateRow(id, date, dateFormatted, dateBegin, dateEnd, pauseBegin, pauseEnd, classroom) {
         var tableBody = getTableBody();
 
         var newTableRow = document.getElementById('js-row-hidden').innerHTML;
@@ -355,12 +429,15 @@
             postData.push(JSON.parse(JSON.stringify(row.dataset)));
         }
 
+        sendCalendar = document.getElementById('sendCalendar').checked;
+
         $.ajax({
             type: "post",
             url: "{{ actions.save|raw }}",
             data: {
+                'sendCalendar':sendCalendar,
                 'data': postData,
-                'removedDays' : removedDays
+                'removedDays': removedDays
             },
             beforeSend: function () {
 
@@ -368,28 +445,29 @@
             success: function (data) {
                 data = JSON.parse(data);
 
-                if (data.success){
-                    for(let day of data.days ){
+                if (data.success) {
+                    for (let day of data.days) {
                         date = day.date_begin.split(" ");
                         if (date.length > 1) {
                             day.date_begin = date[1].substring(0, 5);
                         }
-                        date = rowData.date_end.split(" ");
+                        date = day.date_end.split(" ");
                         if (date.length > 1) {
                             day.date_end = date[1].substring(0, 5);
                         }
-                        date = rowData.pause_begin.split(" ");
+                        date = day.pause_begin.split(" ");
                         if (date.length > 1) {
                             day.pause_begin = date[1].substring(0, 5);
                         }
-                        date = rowData.pause_end.split(" ");
+                        date = day.pause_end.split(" ");
                         if (date.length > 1) {
                             day.pause_end = date[1].substring(0, 5);
                         }
 
-                        insertOrUpdateRow(day.id,day.date,formattedDate(new Date(day.date)),day.date_begin,day.date_end,day.pause_begin,day.pause_end,day.classroom)
+                        insertOrUpdateRow(day.id, day.date, dateToString(new Date(day.date)), day.date_begin, day.date_end, day.pause_begin, day.pause_end, day.classroom)
                     }
                 }
+                document.getElementById('sendCalendar').checked = false;
             },
             complete: function () {
             },
@@ -415,7 +493,7 @@
         document.getElementById('form-day_id').value = rowData.day_id;
 
         /** convert date string to date object (date string format 01-07-2021) */
-        var date = stringToDate(rowData.date, 'dd-MM-yyyy', '-');
+        var date = stringToDate(rowData.date, 'DD-MM-YYYY');
         date.setHours(date.getHours() + 2);
 
         document.getElementById('form-day_date').valueAsDate = date;
@@ -443,7 +521,7 @@
     function deleteRow(e) {
         e.preventDefault()
         var row = e.target.parentNode.parentNode
-        if (row.dataset.day_id > 0){
+        if (row.dataset.day_id > 0) {
             removedDays.push(JSON.parse(JSON.stringify(row.dataset)));
             insertedDays.pop(row.dataset.date);
         }
@@ -455,27 +533,14 @@
         return row.dataset;
     }
 
-    function formattedDate(d = new Date) {
-        let month = String(d.getMonth() + 1);
-        let day = String(d.getDate());
-        const year = String(d.getFullYear());
+    function dateToString(date = new Date, format = 'DD-MM-YYYY') {
 
-        if (month.length < 2) month = '0' + month;
-        if (day.length < 2) day = '0' + day;
-
-        return `${day}-${month}-${year}`;
+        return moment(date).format(format);
     }
 
-    function stringToDate(_date, _format, _delimiter) {
-        var formatLowerCase = _format.toLowerCase();
-        var formatItems = formatLowerCase.split(_delimiter);
-        var dateItems = _date.split(_delimiter);
-        var monthIndex = formatItems.indexOf("mm");
-        var dayIndex = formatItems.indexOf("dd");
-        var yearIndex = formatItems.indexOf("yyyy");
-        var month = parseInt(dateItems[monthIndex]);
-        month -= 1;
-        return new Date(dateItems[yearIndex], month, dateItems[dayIndex]);
+    function stringToDate(_date, _format) {
+
+        return moment(_date, _format).toDate();
     }
 
     function showError(text) {

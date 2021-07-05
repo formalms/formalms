@@ -261,6 +261,9 @@ class Boot
 
         self::log("Load mailer library.");
         require_once(Forma::inc(_base_ . '/lib/lib.mailer.php'));
+
+        self::log("Load Calendar library.");
+        require_once Forma::inc(_lib_ .'/calendar/CalendarManager.php');
     }
 
     /**

@@ -318,6 +318,11 @@ class ClassroomAlms extends Model
         return $this->classroom_man->getDateDay($this->id_date);
     }
 
+
+    public function getAllDateDay(){
+        return $this->classroom_man->getAllDateDay($this->id_date);
+    }
+
     public function getDateString()
     {
         $array_day = $this->getDateDay();

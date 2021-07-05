@@ -925,6 +925,7 @@ class Course_API extends API
         }
         $params['course_lang'] = (isset($params['course_lang']) ? $params['course_lang'] : 'italian');
         $params['course_medium_time'] = (isset($params['course_medium_time']) ? $params['course_medium_time'] : false);
+        $params['send_calendar'] = (isset($params['send_calendar']) ? $params['send_calendar'] : false);
         $params['course_name'] = (isset($params['course_name']) ? $params['course_name'] : false);
         $params['course_prize'] = (isset($params['course_prize']) ? $params['course_prize'] : false);
         $params['course_progress'] = (isset($params['course_progress']) ? 1 : 0);
@@ -1055,7 +1056,7 @@ class Course_API extends API
     {
         $db = DbConn::getInstance();
         $query = "select max(id_day) as max_id FROM learning_course_date_day "
-            . " WHERE    ID_DATE = " . $idDate;
+            . " WHERE    ID_DATE = " . $idDate ." AND deleted = 0";
         $q = $db->query($query);
         $course_info = $db->fetch_assoc($q);
 
@@ -1316,6 +1317,7 @@ class Course_API extends API
         }
         $params['course_lang'] = (($params['course_lang']) ? $params['course_lang'] : $course_info['lang_code']);
         $params['course_medium_time'] = (($params['course_medium_time']) ? $params['course_medium_time'] : $course_info['mediumTime']);
+        $params['send_calendar'] = (($params['send_calendar']) ? $params['send_calendar'] : $course_info['sendCalendar']);
         $params['course_name'] = (($params['course_name']) ? $params['course_name'] : $course_info['name']);
         $params['course_prize'] = (($params['course_price']) ? $params['course_price'] : $course_info['prize']);
         $params['course_progress'] = (($params['course_progress']) ? 1 : 0);

@@ -11,6 +11,7 @@ Get::title(array(
 //$event->setPostData($course);
 
 ?>
+
 <div class="std_block">
     <?php
     echo(Form::openForm('maskcourse_form', 'index.php?r=' . $base_link_course . '/' . ($id_course === false ? 'newcourse' : 'modcourse'), false, 'post', 'multipart/form-data')
@@ -152,6 +153,7 @@ Get::title(array(
         )
         . Form::getTextfield(Lang::t('_DAY_OF_VALIDITY', 'course'), 'course_day_of', 'course_day_of', '10', $course['valid_time'])
         . Form::getTextfield(Lang::t('_MEDIUM_TIME', 'course'), 'course_medium_time', 'course_medium_time', '10', $course['mediumTime'])
+        . Form::getCheckbox(Lang::t('_SEND_CALENDAR', 'course'), 'send_calendar', 'send_calendar', 1, $course["sendCalendar"])
         . Form::getCloseFieldset()
 
         . Form::openCollasableFieldset(Lang::t('_COURSE_SPECIAL_OPTION', 'course'))

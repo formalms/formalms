@@ -1126,6 +1126,7 @@ class Report extends \ReportPlugin
             $query = "SELECT d.*, MIN(dd.date_begin) AS date_1, MAX(dd.date_end) AS date_2 "
                 . " FROM %lms_course_date AS d JOIN %lms_course_date_day AS dd ON (d.id_date = dd.id_date) "
                 . (!$filter_allcourses ? " AND d.id_course IN (" . implode(',', $filter_courseselection) . ") " : "")
+                . " AND dd.deleted = 0"
                 . " GROUP BY dd.id_date";
             $res = sql_query($query);
             while ($obj = sql_fetch_object($res)) {

@@ -11,6 +11,8 @@
 |   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
+require_once(Forma::inc(_base_ . '/lib/lib.upload.php'));
+
 class ClassroomAlmsController extends AlmsController
 {
 
@@ -396,8 +398,6 @@ class ClassroomAlmsController extends AlmsController
         }
         $course_info = $this->model->getDateInfo();
 
-        $date_info = $this->model->getDateInfo();
-
         $this->render('classroom',
             [
                 'action' => sprintf('index.php?r=%s/updateClassroom&id_course=%s', $this->baseLinkClassroom, $this->idCourse),
@@ -419,72 +419,22 @@ class ClassroomAlmsController extends AlmsController
                     'overbooking' => Get::req('overbooking', DOTY_BOOL, $course_info['overbooking']),
                     'subStartDate' => Get::req('subStartDate', DOTY_STRING, Format::date($course_info['sub_start_date'], 'date')),
                     'subEndDate' => Get::req('subEndDate', DOTY_STRING, Format::date($course_info['sub_end_date'], 'date')),
-                    'dateBegin' => Format::date($date_info['date_begin'], 'date'),
+                    'dateBegin' => Format::date($course_info['date_begin'], 'date'),
                     'unsubscribeDateLimit' => Get::req('unsubscribeDateLimit', DOTY_STRING, Format::date($course_info['unsubscribe_date_limit'], 'date'))
                 ],
                 'availableStatuses' => $this->model->getStatusForDropdown(),
                 'availableTestTypes' => $this->model->getTestTypeForDropdown()
             ]
         );
-        /*
 
-        switch ($step) {
-            // jump back (undo)
-            case '0':
-                Util::jump_to('index.php?r=' . $this->baseLinkClassroom . '/classroom&id_course=' . $this->model->getIdCourse());
-                break;
-            // editions info
-            case '1':
-                $date_info = $this->model->getDateInfo();
-
-                $array_day = $this->model->getDateDay();
-
-                $this->render('mod_step_1', array('model' => $this->model,
-                    'date_info' => $date_info,
-                    'array_day' => $array_day,
-                    'base_link_course' => $this->baseLinkCourse,
-                    'base_link_classroom' => $this->baseLinkClassroom));
-                break;
-            //daily hours and classroom
-            case '2':
-                $date_info_mod = $this->model->getDateInfoFromPost();
-                $date_info = $this->model->getDateInfo();
-                $date_info_mod['sub_start_date'] = ($date_info_mod['sub_start_date'] === '' ? '00-00-0000' : $date_info_mod['sub_start_date']);
-                $date_info_mod['sub_end_date'] = ($date_info_mod['sub_end_date'] === '' ? '00-00-0000' : $date_info_mod['sub_end_date']);
-                $date_info_mod['unsubscribe_date_limit'] = ($date_info_mod['unsubscribe_date_limit'] === '' ? '00-00-0000' : $date_info_mod['unsubscribe_date_limit']);
-                if (strcmp($date_info_mod['sub_start_date'], $date_info_mod['sub_end_date']) > 0 && $date_info['sub_end_date'] !== '00-00-0000') {
-                    $array_day = $this->model->getDateDay();
-
-                    $this->render('mod_step_1', array(
-                        'model' => $this->model,
-                        'date_info' => $date_info,
-                        'array_day' => $array_day,
-                        'base_link_course' => $this->baseLinkCourse,
-                        'base_link_classroom' => $this->baseLinkClassroom,
-                        'err_avail' => '_SUBSCRIPTION_DATE',
-                        'availability_info' => ''
-                    ));
-                    return;
-                }
-
-                $this->render('mod_step_2', array('model' => $this->model,
-                    'date_info' => $date_info,
-                    'base_link_course' => $this->baseLinkCourse,
-                    'base_link_classroom' => $this->baseLinkClassroom));
-                break;
-            // saving collected datas
-            case '3':
-                if ($this->model->updateDate())
-                    Util::jump_to('index.php?r=' . $this->baseLinkClassroom . '/classroom&id_course=' . $this->model->getIdCourse() . '&result=ok_mod');
-                Util::jump_to('index.php?r=' . $this->baseLinkClassroom . '/classroom&id_course=' . $this->model->getIdCourse() . '&result=err_mod');
-                break;
-        }*/
     }
 
     public function classroomDateDays()
     {
         $postData = Get::pReq('data', DOTY_MIXED, []);
         $removedDays = Get::pReq('removedDays', DOTY_MIXED, []);
+        $sendCalendar = Get::pReq('sendCalendar', DOTY_BOOL, false);
+
         if (!empty($postData)) {
 
             $this->model->removeDateDay($removedDays);
@@ -498,16 +448,16 @@ class ClassroomAlmsController extends AlmsController
             if ($result) {
                 $response['url'] = 'index.php?r=' . $this->baseLinkClassroom . '/classroom&id_course=' . $this->model->getIdCourse() . '&result=ok_ins';
             }
+
+            if ($sendCalendar) {
+                $this->sendCalendar();
+            }
             echo json_encode($response);
             return;
         }
-        $course_info = $this->model->getDateInfo();
+        $dateInfo = $this->model->getDateInfo();
 
         $arrayDays = $this->model->getDateDay();
-
-        foreach ($arrayDays as $index => $arrayDay) {
-            $arrayDays[$index]['date'] = Format::date($arrayDay['date_begin'], 'date');
-        }
 
         $this->render('classroom-dates',
             [
@@ -518,7 +468,7 @@ class ClassroomAlmsController extends AlmsController
                     ],
                 'idCourse' => $this->idCourse,
                 'idDate' => $this->idDate,
-                'courseInfo' => $course_info,
+                'courseInfo' => $dateInfo,
                 'courseBaseLink' => $this->baseLinkCourse,
                 'classroomBaseLink' => $this->baseLinkClassroom,
                 'postData' => [
@@ -529,6 +479,56 @@ class ClassroomAlmsController extends AlmsController
                 'availableClassrooms' => $this->model->getClassroomForDropdown()
             ]
         );
+    }
+
+    private function sendCalendar()
+    {
+
+        $subscriptionModel = new SubscriptionAlms($this->idCourse, false, $this->idDate);
+
+        $users = $subscriptionModel->loadUser();
+
+        foreach ($users as $user) {
+
+            $user = Docebo::user()->getAclManager()->getUserMappedData(Docebo::user()->getAclManager()->getUser($user['id_user'], false));
+
+            if (!empty($user['email'])) {
+
+                $calendar = CalendarManager::getCalendarForDateDays($this->idCourse, $this->idDate, $user['idst']);
+
+                $file = tmpfile();
+                fwrite($file, $calendar['data']);
+
+
+                $filePath = _files_ . '/' . _folder_lms_ . '/calendar/' . $calendar['name'];
+
+                copy(stream_get_meta_data($file)['uri'], $filePath);
+
+
+                $mail_sender_name_from = Get::sett('mail_sender_name_from');
+
+
+                $mail_text = Lang::t('_COURSE_DATE_CALENDAR_MAILTEXT', 'course');
+                $mail_text = str_replace(['[url]', '[userid]'], [Get::site_url(), $user['userid']], $mail_text);
+
+                //if(!@mail($user_info[ACL_INFO_EMAIL], $lang->def('_LOST_USERID_TITLE'), $mail_text, $from.$intestazione)) {
+
+                $mailer = DoceboMailer::getInstance();
+                $subject = Lang::t('_COURSE_DATE_CALENDAR_MAILTEXT_TITLE', 'course');
+                $success = $mailer->SendMail(
+                    Get::sett('sender_event'),
+                    $user['email'],
+                    $subject,
+                    $mail_text,
+                    $filePath,
+                    array(
+                        MAIL_REPLYTO => Get::sett('sender_event'),
+                        MAIL_SENDER_ACLNAME => Get::sett('use_sender_aclname')
+                    )
+                );
+            }
+        }
+
     }
 
     protected function delPopUp()
@@ -876,6 +876,14 @@ class ClassroomAlmsController extends AlmsController
         $pdf->getPdf($html, $name, $img, $download, $facs_simile, $for_saving);
 
 
+    }
+
+    public function generateCalendarForDate($idDate)
+    {
+
+        $arrayDays = $this->model->getDateDay();
+
+        $data = CalendarManager::getCalendarForClassroomDays($arrayDays);
     }
 
 

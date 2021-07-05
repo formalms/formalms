@@ -292,7 +292,7 @@ class DashboardBlockCalendarLms extends DashboardBlockLms
                 LEFT JOIN %lms_classroom cr ON cdd.classroom = cr.idClassroom
                 LEFT JOIN %lms_class_location cl ON cr.location_id = cl.location_id
                 WHERE cd.id_course = " . $course['course_id'] . "
-                AND cdu.id_user = " . Docebo::user()->getId()
+                AND cdu.id_user = " . Docebo::user()->getId() . " AND cdd.deleted = 0"
             );
 
             while ($row = $this->db->fetch_obj($q)) {

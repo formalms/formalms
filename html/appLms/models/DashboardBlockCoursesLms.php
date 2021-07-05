@@ -126,6 +126,7 @@ class DashboardBlockCoursesLms extends DashboardBlockLms
 		            	WHERE cd.id_course = $id
 		            	AND cdu.id_user = " . Docebo::user()->getId() . "
 		            	AND date_begin >= '$midnight'
+		            	AND cdd.deleted = 0
 		            	ORDER BY date_begin ASC
 	            	");
 

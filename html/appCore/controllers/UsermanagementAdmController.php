@@ -3039,7 +3039,7 @@ class UsermanagementAdmController extends AdmController
 
 			for ($i = 0; $i < count($users); $i++) {
 
-				$uma = new UsermanagementAdm;
+				$uma = new UsermanagementAdm();
 				$reg_code = null;
 				if ($nodes = $uma->getUserFolders($users[$i])) {
 					$idst_oc = array_keys($nodes)[0];

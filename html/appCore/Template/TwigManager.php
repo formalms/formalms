@@ -21,6 +21,12 @@ use appCore\Template\Extenstions\UiFeedbackExtension;
 use appCore\Template\Extenstions\UtilExtension;
 use appCore\Template\Extenstions\YuiExtension;
 use appCore\Template\Services\ClientService;
+use Twig\Extension\OptimizerExtension;
+use Twig\Extensions\ArrayExtension;
+use Twig\Extensions\DateExtension;
+use Twig\Extensions\I18nExtension;
+use Twig\Extensions\IntlExtension;
+use Twig\Extensions\TextExtension;
 
 class TwigManager
 {
@@ -40,13 +46,19 @@ class TwigManager
             'debug' => $debug
         ));
         $this->addDefaultPaths();
+        $this->twig->addExtension(new ArrayExtension());
+        $this->twig->addExtension(new DateExtension());
         $this->twig->addExtension(new FormExtension());
         $this->twig->addExtension(new GetExtension());
+        $this->twig->addExtension(new IntlExtension());
+        $this->twig->addExtension(new I18nExtension());
         $this->twig->addExtension(new LangExtension());
         $this->twig->addExtension(new LayoutExtension());
         $this->twig->addExtension(new UiFeedbackExtension());
         $this->twig->addExtension(new UtilExtension());
         $this->twig->addExtension(new YuiExtension());
+        $this->twig->addExtension(new TextExtension());
+
         $this->twig->addFunction(new \Twig\TwigFunction('evalPhp', function ($phpCode, $args = array()) {
             return call_user_func_array($phpCode, $args);
         }, array(
