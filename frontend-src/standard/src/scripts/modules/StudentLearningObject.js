@@ -17,8 +17,8 @@ class StudentLearningObject extends LearningObject {
       if(el.querySelector('.fv-is-scormorg')) {
         this.scormLightbox(el.querySelector('.fv-is-play'), el.querySelector('.folderView__label').innerHTML);
         return false;
-      } else if(el.querySelector('.fv-is-scormorg')) {
-        console.log(el);
+      } else {
+        return true;
       }
     });
 
