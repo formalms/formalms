@@ -14,6 +14,13 @@
 class MediagalleryAdmController extends AdmController
 {
 
+    public function init(){
+        if (!$this->canAccessPersonalMedia()) {
+            die("You can't access!");
+        }
+    }
+    
+    
     public function show($type = null, $msg = null)
     {
         require_once Forma::inc(_lib_ . '/formatable/include.php');
