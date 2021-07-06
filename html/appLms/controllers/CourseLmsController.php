@@ -56,7 +56,7 @@ class CourseLmsController extends LmsController
             $acl_man = Docebo::user()->getAclManager();
             $lang =& DoceboLanguage::createInstance('course');
             $course = $GLOBALS['course_descriptor']->getAllInfo();
-            $levels = CourseLevel::getLevels();
+            $levels = [1=>'Guest',2=>'Ghost',3=>'Student',4=>'Tutor',5=>'Mentor',6=>'Instructor',7=>'Administrator'];
         } catch (\Exception $exception) {
 
         }
@@ -151,8 +151,7 @@ class CourseLmsController extends LmsController
             'course' => $course
         ];
 
-        // var_dump($course);
-        $this->render('infocourse/infocourse', $data);
+        $this->render('infocourse', $data);
     }
 
     private function statusNoEnter($perm, $status)
@@ -166,7 +165,7 @@ class CourseLmsController extends LmsController
 
         $acl_man = Docebo::user()->getAclManager();
 
-        $user = $acl_man->getUser($idUser);
+        $user = $acl_man->getUser($idUser, false);
 
         $last_view = $this->userProfileDataManager->getUserProfileViewList($idUser, 15);
         $friend_list =& $this->userProfileDataManager->getUserFriend($idUser);
@@ -184,7 +183,7 @@ class CourseLmsController extends LmsController
             ]
         ];
 
-        $this->render('viewprofile/viewprofile', $data);
+        $this->render('viewprofile', $data);
     }
 }
 
