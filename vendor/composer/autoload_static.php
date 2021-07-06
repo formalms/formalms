@@ -19,7 +19,6 @@ class ComposerStaticInit55be261e43ea9d9e8fd0d9beb1b1fe8f
         'T' => 
         array (
             'Twig\\Extra\\String\\' => 18,
-            'Twig\\Extensions\\' => 16,
             'Twig\\' => 5,
         ),
         'S' => 
@@ -38,10 +37,6 @@ class ComposerStaticInit55be261e43ea9d9e8fd0d9beb1b1fe8f
         'Twig\\Extra\\String\\' => 
         array (
             0 => __DIR__ . '/..' . '/twig/string-extra',
-        ),
-        'Twig\\Extensions\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/twig/extensions/src',
         ),
         'Twig\\' => 
         array (
@@ -80,10 +75,6 @@ class ComposerStaticInit55be261e43ea9d9e8fd0d9beb1b1fe8f
     public static $prefixesPsr0 = array (
         'T' => 
         array (
-            'Twig_Extensions_' => 
-            array (
-                0 => __DIR__ . '/..' . '/twig/extensions/lib',
-            ),
             'Twig_' => 
             array (
                 0 => __DIR__ . '/..' . '/twig/twig/lib',

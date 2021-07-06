@@ -109,15 +109,6 @@ private static $installed = array (
       ),
       'reference' => '95c812666f3e91db75385749fe219c5e494c7f95',
     ),
-    'twig/extensions' => 
-    array (
-      'pretty_version' => 'v1.5.4',
-      'version' => '1.5.4.0',
-      'aliases' => 
-      array (
-      ),
-      'reference' => '57873c8b0c1be51caa47df2cdb824490beb16202',
-    ),
     'twig/string-extra' => 
     array (
       'pretty_version' => 'v3.3.1',
