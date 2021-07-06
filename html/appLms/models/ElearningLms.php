@@ -313,7 +313,7 @@ class ElearningLms extends Model
         }
         
         // calculating what's next lession will be; safe mode in case of more editions with different days
-        if (count($next_lesson_array > 0)) {
+        if (count($next_lesson_array) > 0) {
             asort($next_lesson_array);
             foreach ($next_lesson_array as $k => $v) {
                 if ( $v > $currentDate ) {
