@@ -293,7 +293,7 @@ class ElearningLms extends Model
         // user can be enrolled in more than one edition (as a teacher or crazy student....)
         foreach ($course_editions[$id_course] as $id_date => $obj_data ) {
             // skip if course if over or not available
-            $end_course = New DateTime(Format::date($obj_data -> date_max, 'datetime'));
+            $end_course = new DateTime(Format::date($obj_data -> date_max, 'datetime'));
             if ($end_course > $currentDate && $obj_data -> status == 0  ) {   
                 $out[$id_date]['code'] = $obj_data -> code;
                 $out[$id_date]['name'] = $obj_data -> name;
@@ -306,7 +306,7 @@ class ElearningLms extends Model
                     $out[$id_date]['days'][$id]['day'] = Format::date($day['date_begin'], 'date');
                     $out[$id_date]['days'][$id]['begin'] = Format::date($day['date_begin'], 'time');
                     $out[$id_date]['days'][$id]['end'] = Format::date($day['date_end'], 'time');
-                    $next_lesson_array[$id_date.','.$id] = New DateTime(Format::date($day['date_begin'], 'datetime'));
+                    $next_lesson_array[$id_date.','.$id] = new DateTime(Format::date($day['date_begin'], 'datetime'));
                 }
             }    
 
