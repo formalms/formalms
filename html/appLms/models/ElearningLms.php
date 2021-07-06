@@ -13,12 +13,7 @@
 
 class ElearningLms extends Model
 {
-
 	protected $_t_order = false;
-
-	public function  __construct()
-	{
-	}
 
 	/**
 	 * This function return the correct order to use when you wish to diplay the a
@@ -28,7 +23,7 @@ class ElearningLms extends Model
 	 *							array('u', 'c')
 	 * @return <string> the order to use in a ORDER BY clausole
 	 */
-	protected function _resolveOrder($t_name = array('', ''))
+	protected function _resolveOrder($t_name = ['', ''])
 	{
 		// read order for the course from database
 		if ($this->_t_order == false) {
@@ -37,7 +32,7 @@ class ElearningLms extends Model
 			if ($t_order != false) {
 
 				$arr_order_course = explode(',', $t_order);
-				$arr_temp = array();
+				$arr_temp = [];
 				foreach ($arr_order_course as $key => $value) {
 
 					switch ($value) {
@@ -63,7 +58,7 @@ class ElearningLms extends Model
 		foreach ($t_name as $key => $value) {
 			if ($value != '') $t_name[$key] = $value . '.';
 		}
-		return str_replace(array('?u.', '?c.'), $t_name, $this->_t_order);
+		return str_replace(['?u.', '?c.'], $t_name, $this->_t_order);
 	}
 
 	public function compileWhere($conditions, $params)
@@ -71,7 +66,7 @@ class ElearningLms extends Model
 
 		if (!is_array($conditions)) return "1";
 
-		$where = array();
+		$where = [];
 		$find = array_keys($params);
 		foreach ($conditions as $key => $value) {
 
@@ -82,8 +77,6 @@ class ElearningLms extends Model
 
 	public function findAll($conditions, $params)
 	{
-
-
 		$db = DbConn::getInstance();
 
 		// exclude course belonging to pathcourse in which the user is enrolled as a student  
@@ -100,14 +93,11 @@ class ElearningLms extends Model
 			}
 		}
 
-
-
-
-		$query = "SELECT c.idCourse, c.course_type, c.idCategory, c.code, c.name, c.description, c.box_description, c.difficult, c.status AS course_status, c.level_show_user, "
+		$query = "SELECT c.idCourse, c.course_type, c.idCategory, c.code, c.name, c.description, c.box_description, c.difficult, c.status, c.level_show_user, "
 			. "	  c.course_edition, c.sub_start_date, c.sub_end_date, "
 			. "    c.max_num_subscribe, c.create_date, "
 			. "    c.direct_play, c.img_othermaterial, c.course_demo, c.use_logo_in_courselist, c.img_course, c.lang_code, "
-			. "	  c.course_vote, c.hour_end , "
+			. "	  c.course_vote, c.hour_end , c.hour_begin, "
 			. "    c.date_begin, c.date_end, c.valid_time, c.show_result, c.userStatusOp, c.auto_unsubscribe, c.unsubscribe_date_limit as course_unsubscribe_date_limit, "
 
 			. "    cu.status AS user_status, cu.level, cu.date_inscr, cu.date_first_access, cu.date_complete, cu.waiting,"
@@ -121,14 +111,14 @@ class ElearningLms extends Model
 			. " WHERE " . $this->compileWhere($conditions, $params)
 			. ($_SESSION['id_common_label'] > 0 ? " AND c.idCourse IN (SELECT id_course FROM %lms_label_course WHERE id_common_label = '" . $_SESSION['id_common_label'] . "')" : "")
 			. $exclude_pathcourse
-			. " ORDER BY " . $this->_resolveOrder(array('cu', 'c'));
-
+			. " ORDER BY " . $this->_resolveOrder(['cu', 'c']);
 
 		$rs = $db->query($query);
 
-		$result = array();
-		$courses = array();
-		while ($data = $db->fetch_assoc($rs)) {
+		$result = [];
+		$courses = [];
+		foreach ($rs as $data){
+		//while ($data = $db->fetch_assoc($rs)) {
 
 			$data['enrolled'] = 0;
 			$data['numof_waiting'] = 0;
@@ -152,7 +142,7 @@ class ElearningLms extends Model
 					. " WHERE c.idCourse IN (" . implode(',', $courses) . ") "
 					. " GROUP BY c.idCourse"
 			);
-			while ($data = $db->fetch_assoc($re_enrolled)) {
+            foreach ($re_enrolled as $data){
 
 				$result[$data['idCourse']]['enrolled'] = $data['numof_associated'] - $data['numof_waiting'];
 				$result[$data['idCourse']]['numof_waiting'] = $data['numof_waiting'];
@@ -163,12 +153,9 @@ class ElearningLms extends Model
 			$query_lo = "select org.idOrg, org.idCourse, org.objectType from (SELECT o.idOrg, o.idCourse, o.objectType 
                           FROM %lms_organization AS o WHERE o.objectType != '' AND o.idCourse IN (" . implode(',', $courses) . ") ORDER BY o.path) as org 
                           GROUP BY org.idCourse ";
-
-
-
 			// find first LO type
 			$re_firstlo = $db->query($query_lo);
-			while ($data = $db->fetch_assoc($re_firstlo)) {
+            foreach ($re_firstlo as $data){
 				$result[$data['idCourse']]['first_lo_type'] = $data['objectType'];
 			}
 		}
@@ -179,7 +166,7 @@ class ElearningLms extends Model
 
 	public function getFilterYears($id_user)
 	{
-		$output = array(0 => Lang::t("_ALL_YEARS", 'course'));
+		$output = [0 => Lang::t("_ALL_YEARS", 'course')];
 		$db = DbConn::getInstance();
 
 		$query = "SELECT DISTINCT YEAR(cu.date_inscr) AS inscr_year "
@@ -206,26 +193,26 @@ class ElearningLms extends Model
 	public function getFilterStatusCourse($id_user)
 	{
 
-
 		$output['all'] = Lang::t('_ALL_OPEN', 'course');
 
 		$db = DbConn::getInstance();
 
-
 		$query =  "SELECT DISTINCT status AS status_course  FROM learning_courseuser WHERE learning_courseuser.idUser = " . (int)$id_user;
-
-
-
 
 		$res = $db->query($query);
 		if ($res && $db->num_rows($res) > 0) {
 			while (list($status_course) = $db->fetch_row($res)) {
-
-				if ($status_course == 0) $str_status_course =  Lang::t('_NEW', 'standard');
-				if ($status_course == 1) $str_status_course =  Lang::t('_USER_STATUS_BEGIN', 'standard');
-				if ($status_course == 2) $str_status_course =  Lang::t('_COMPLETED', 'standard');;
-
-				if ($status_course >= 0) $output[$status_course] = $str_status_course;
+                switch ($status_course) {
+                    case 0:
+                        $output[$status_course] = Lang::t('_NEW', 'standard');
+                        break;
+                    case 1:
+                        $output[$status_course] = Lang::t('_USER_STATUS_BEGIN', 'standard');
+                        break;
+                    case 2:
+                        $output[$status_course] = Lang::t('_COMPLETED', 'standard');
+                        break;
+                }
 			}
 		}
 		return $output;
@@ -269,7 +256,7 @@ class ElearningLms extends Model
 	{
 		require_once(_lms_ . '/lib/lib.coursepath.php');
 		$cp_man = new Coursepath_Manager();
-		$output = array();
+		$output = [];
 		$cp_list = $cp_man->getUserSubscriptionsInfo($id_user);
 		if (!empty($cp_list)) {
 			$cp_list = array_keys($cp_list);
@@ -277,54 +264,6 @@ class ElearningLms extends Model
 		}
 		return $output;
 	}
-    
-    
-    public function _getClassDisplayInfo($id_course, &$course_array)
-    {
-        require_once(_lms_.'/lib/lib.date.php');
-        $dm = new DateManager();
-        $cl = new ClassroomLms();
-        $course_editions =$cl->getUserEditionsInfo(Docebo::user()->idst,$id_course );
-        $out = [];
-        $course_array['next_lesson']  = '-';
-        $next_lesson_array = [];
-        $currentDate = new DateTime();   
-             
-        // user can be enrolled in more than one edition (as a teacher or crazy student....)
-        foreach ($course_editions[$id_course] as $id_date => $obj_data ) {
-            // skip if course if over or not available
-            $end_course = new DateTime(Format::date($obj_data -> date_max, 'datetime'));
-            if ($end_course > $currentDate && $obj_data -> status == 0  ) {   
-                $out[$id_date]['code'] = $obj_data -> code;
-                $out[$id_date]['name'] = $obj_data -> name;
-                $out[$id_date]['date_begin'] = $obj_data -> date_min;
-                $out[$id_date]['date_end'] = $obj_data -> date_max;
-                $array_day =  $dm->getDateDayDateDetails($obj_data->id_date);
-
-                foreach ($array_day as $id => $day) {
-                    $out[$id_date]['days'][$id]['classroom'] = $day['classroom'];
-                    $out[$id_date]['days'][$id]['day'] = Format::date($day['date_begin'], 'date');
-                    $out[$id_date]['days'][$id]['begin'] = Format::date($day['date_begin'], 'time');
-                    $out[$id_date]['days'][$id]['end'] = Format::date($day['date_end'], 'time');
-                    $next_lesson_array[$id_date.','.$id] = new DateTime(Format::date($day['date_begin'], 'datetime'));
-                }
-            }    
-
-        }
-        
-        // calculating what's next lession will be; safe mode in case of more editions with different days
-        if (count($next_lesson_array) > 0) {
-            asort($next_lesson_array);
-            foreach ($next_lesson_array as $k => $v) {
-                if ( $v > $currentDate ) {
-                    $j = explode(',', $k);
-                    $course_array['next_lesson'] = $out[$j[0]]['days'][$j[1]]['day'].' '.$out[$j[0]]['days'][$j[1]]['begin'];
-                    break;
-                }           
-            }
-        }    
-       return $out;
-    }
 
 
 	private function getCategory($idCat)
