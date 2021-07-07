@@ -169,7 +169,7 @@ class FolderView extends LearningView {
       const params = _this.selectedId ? { id: _this.selectedId } : null;
 
       await axios.get(endpoint, params).then((response) => {
-        const childView = Content(response.data);
+        const childView = Content({items: response.data, isStudent: document.querySelector('.fv-is-student-area') ? true : false});
         const folderView = _this.container.querySelector('.folderView');
         folderView.innerHTML = childView;
 

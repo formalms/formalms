@@ -1,6 +1,7 @@
 /**
  * Lightbox
  */
+ // import Content from '../twig/li.html.twig';
 
  class Lightbox {
 
