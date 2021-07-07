@@ -5863,6 +5863,7 @@ p {
 .folderView__el {
   display: flex;
   height: 100%;
+  max-width: 370px;
   justify-content: space-between;
   align-items: center;
   pointer-events: none;
@@ -5917,11 +5918,11 @@ p {
 
 .folderView__action,
 .folderView__button {
-  background: transparent;
   cursor: pointer;
   width: 48px;
   height: 48px;
   border-radius: 50%;
+  background-color: #ffe4ce;
   border: 1px solid #000;
   margin: 0 4px;
   transition: all .2s ease-in-out;
