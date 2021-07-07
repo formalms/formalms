@@ -1,5 +1,5 @@
 
-import Lightbox from '../../components/LightBox';
+import ModalElement from '../../components/Modal';
 
 
 class LearningObject {
@@ -9,21 +9,18 @@ class LearningObject {
   }
 
   scormLightbox(el, title) {
-    new Lightbox().open('scorm-modal', function(modal) {
-      modal.Title = title;
-      modal.InjectIframe(el.getAttribute('href'), {
-        width: '100%',
-        height: '100%',
-        id: 'overlay_iframe',
-        name: 'overlay_iframe'
-      });
-    }, function() {
+
+    const lightbox = new ModalElement('scorm-modal');
+    lightbox.Content = `<iframe src="${el.getAttribute('href')}" frameborder="false" width="100%" height="100%" id="overlay_iframe" name="overlay_iframe">`;
+    lightbox.Title = title;
+    lightbox.OnClose = () => {
       try {
         window.frames['overlay_iframe'].uiPlayer.closePlayer(true, window);
       } catch (e) {
         window.overlay_iframe.uiPlayer.closePlayer(true, window);
       }
-    });
+    } 
+    lightbox.Open();
   }
 
 }

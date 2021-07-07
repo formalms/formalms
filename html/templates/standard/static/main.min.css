@@ -6250,6 +6250,166 @@ p {
     width: 100%;
     height: 75%; } }
 
+/* #007a96*/
+.forma-drop-zone {
+  position: relative;
+  font-family: 'PT Sans Narrow', sans-serif;
+  background-color: #373a3d;
+  background-image: -webkit-linear-gradient(top, #373a3d, #313437);
+  background-image: -moz-linear-gradient(top, #373a3d, #313437);
+  background-image: linear-gradient(top, #373a3d, #313437);
+  border-radius: 5px;
+  min-height: 200px;
+  width: 100%;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box; }
+  .forma-drop-zone:hover {
+    cursor: pointer; }
+    .forma-drop-zone:hover .fd-middle-wrapper {
+      border: 6px dashed #ef7c2f;
+      color: #ef7c2f; }
+  .forma-drop-zone .fd-middle-wrapper {
+    text-align: center;
+    color: #767676;
+    background-color: #2E3134;
+    padding: 40px 50px;
+    border: 6px dashed #555555;
+    text-transform: uppercase; }
+
+.fd-list {
+  font-family: 'PT Sans Narrow', sans-serif;
+  width: 80%;
+  margin: 0 auto;
+  border: 1px solid silver;
+  width: 95%;
+  padding: 15px;
+  border-radius: 0px 0px 10px 10px;
+  position: relative;
+  margin-bottom: 15px; }
+  .fd-list .columns {
+    position: relative;
+    display: flex;
+    margin-bottom: 20px; }
+  .fd-list .fd-list-column.fd-list-files-column {
+    flex: 0.5;
+    max-width: 345px;
+    padding: 15px;
+    background-color: #373a3d;
+    border-radius: 20px; }
+    .fd-list .fd-list-column.fd-list-files-column .fd-list-file {
+      padding: 15px;
+      font-size: 16px;
+      border-radius: 10px;
+      margin: 0px 0px 2px 0px;
+      display: flex; }
+      .fd-list .fd-list-column.fd-list-files-column .fd-list-file .file-detail {
+        flex: 0.9; }
+        .fd-list .fd-list-column.fd-list-files-column .fd-list-file .file-detail:hover {
+          cursor: pointer; }
+      .fd-list .fd-list-column.fd-list-files-column .fd-list-file .action-delete {
+        flex: 0.1; }
+        .fd-list .fd-list-column.fd-list-files-column .fd-list-file .action-delete .button {
+          font-weight: bold;
+          font-size: 13px;
+          border-radius: 100%;
+          border: 2px solid white;
+          width: 17px;
+          height: 16px;
+          text-align: center;
+          background: #bcbcbc;
+          color: #464646; }
+        .fd-list .fd-list-column.fd-list-files-column .fd-list-file .action-delete:hover {
+          cursor: pointer; }
+    .fd-list .fd-list-column.fd-list-files-column .separator {
+      list-style: none;
+      margin: 8px;
+      border-top: 1px solid #2b2e31;
+      border-bottom: 1px solid #3d4043; }
+  .fd-list .fd-list-files-column .fd-list-file .name {
+    flex: 0.9;
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+    max-width: 250px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; }
+  .fd-list .fd-list-files-column .fd-list-file .size {
+    font-weight: normal;
+    font-style: normal;
+    color: #7f7f7f;
+    display: block; }
+  .fd-list .fd-edit-column {
+    flex: 1;
+    padding: 15px; }
+  .fd-list .form-group {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin: 0 0 20px; }
+    .fd-list .form-group:last-child {
+      margin: 0; }
+    .fd-list .form-group label {
+      display: block;
+      margin: 0 0 10px;
+      color: rgba(0, 0, 0, 0.6);
+      font-size: 12px;
+      font-weight: 500;
+      line-height: 1;
+      text-transform: uppercase;
+      letter-spacing: 0.2em; }
+    .fd-list .form-group input {
+      outline: none;
+      display: block;
+      background: rgba(0, 0, 0, 0.1);
+      width: 100%;
+      border: 0;
+      border-radius: 4px;
+      box-sizing: border-box;
+      padding: 12px 20px;
+      color: rgba(0, 0, 0, 0.6);
+      font-family: inherit;
+      font-size: inherit;
+      font-weight: 500;
+      line-height: inherit;
+      transition: 0.3s ease; }
+      .fd-list .form-group input:focus {
+        color: rgba(0, 0, 0, 0.8); }
+    .fd-list .form-group textarea {
+      outline: none;
+      display: block;
+      background: rgba(0, 0, 0, 0.1);
+      width: 100%;
+      border: 0;
+      border-radius: 4px;
+      box-sizing: border-box;
+      padding: 12px 20px;
+      color: rgba(0, 0, 0, 0.6);
+      font-family: inherit;
+      font-size: inherit;
+      font-weight: 500;
+      line-height: inherit;
+      transition: 0.3s ease; }
+    .fd-list .form-group button {
+      outline: none;
+      background: #ef7c2f;
+      width: 100%;
+      border: 0;
+      border-radius: 4px;
+      padding: 12px 20px;
+      color: #FFFFFF;
+      font-family: inherit;
+      font-size: inherit;
+      font-weight: 500;
+      line-height: inherit;
+      text-transform: uppercase;
+      cursor: pointer; }
+
 * {
   outline: none !important;
   box-sizing: border-box; }
