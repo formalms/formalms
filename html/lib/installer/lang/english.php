@@ -147,6 +147,7 @@ define("_START","Start");
 define("_END","Final");
 define("_INVALID_CONFIG_FILE", "Invalid config.php file; please make sure it is from a release matching the version specified in the \"Start\" field");
 define("_UPGRADE_NOT_NEEDED","You already have the latest version of forma.lms, no need to upgrade.");
+define("_UPGRADE_NOT_NEEDED_FILE_IS_LATER","Your forma.lms version seems to be later than tha one you want to upgrade,so no need to upgrade.");
 
 define("_USEFUL_LINKS", "Useful links");
 

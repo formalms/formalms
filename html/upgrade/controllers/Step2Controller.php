@@ -110,6 +110,12 @@ class Step2Controller extends StepController
 
         if ($current_version == $end_version) {
             $res['upg_not_needed'] = true;
+            $res['upg_not_needed_text'] = Lang::t('_UPGRADE_NOT_NEEDED');
+        }
+        if ($current_version > $end_version) {
+            $res['upg_not_needed'] = true;
+            $res['upg_not_needed_text'] = Lang::t('_UPGRADE_NOT_NEEDED_FILE_IS_LATER');
+
         }
 
         if (version_compare($current_version, '3600', '>=') &&

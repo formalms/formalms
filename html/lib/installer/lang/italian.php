@@ -244,6 +244,7 @@ define("_START","Iniziale");
 define("_END","Finale");
 define("_INVALID_CONFIG_FILE", "File config.php non valido; assicurati che sia della versione di forma.lms specificata alla voce \"Iniziale\"");
 define("_UPGRADE_NOT_NEEDED","Hai già l'ultima versione di forma.lms; non è necessario aggiornare.");
+define("_UPGRADE_NOT_NEEDED_FILE_IS_LATER","Sembra che la tua versione di forma.lms  sia successiva a quella dell'aggiornamento, nessun aggiornamento è necessario.");
 
 define("_USEFUL_LINKS", "Link utili");
 
