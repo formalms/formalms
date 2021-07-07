@@ -50,7 +50,7 @@ class TwigManager
         $this->twig->addExtension(new DateExtension());
         $this->twig->addExtension(new FormExtension());
         $this->twig->addExtension(new GetExtension());
-        $this->twig->addExtension(new IntlExtension());
+        //$this->twig->addExtension(new IntlExtension());
         $this->twig->addExtension(new I18nExtension());
         $this->twig->addExtension(new LangExtension());
         $this->twig->addExtension(new LayoutExtension());
