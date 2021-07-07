@@ -1,6 +1,6 @@
-{% if data.length > 0 %}
+{% if items.data.length > 0 %}
     <ul class="folderView__ul js-sortable-view">
-        {% for el in data %}
+        {% for el in items.data %}
             <li data-id="{{ el.id }}" class="folderView__li is-droppable {% if el.description %}has-tooltip{% endif %} {% if el.type %}js-folderView-file{% else %}js-folderView-folder is-dropzone{% endif %} {% if el.locked %}fv-is-locked{% endif %}">
                 <div data-id="{{ el.id }}" class="folderView__el {% if el.type %}fv-is-{{ el.type }}{% else %}fv-is-folder{% endif %}">
                     <span class="folderView__label">
@@ -33,7 +33,7 @@
                     {% endif %}
                 </div>
                 </div>
-                {% if el.actions %}
+                {% if el.actions.length and not isStudent %}
                 <div class="actions-wrapper">
                     <div class="folderView__buttons">
                         <button type="button" class="folderView__button fv-is-menu-open js-fv-open-actions"></button>
@@ -58,7 +58,7 @@
                         {% endfor %}
                         <button type="button" class="folderView__action fv-is-menu-close js-fv-close-actions"></button>
                     </div>
-                    </div>
+                </div>
                 {% endif %}
             </li>
         {% endfor %}
