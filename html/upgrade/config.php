@@ -15,30 +15,27 @@
 //  4xxx : docebo ce versions series 4.x.x
 // 1xxxx : forma     versions series 1.x  (formely 1.xx.xx )
 // 2xxxx : forma     versions series 2.x  (formely 2.xx.xx )
+require_once '../appCore/versions.php';
 
-function versionSort($a, $b) {
-  return 1 * version_compare($a, $b);
+function versionSort($a, $b)
+{
+    return 1 * version_compare($a, $b);
 }
 
-$readFolder = _upgrader_."/version/";
+$readFolder = _upgrader_ . "/version/";
 $subFolders = array();
 $versions = array();
 $arrGlobal = array();
-if ($handle = opendir($readFolder))
-{
-  while ($file = readdir($handle))
-  {
-    if (is_dir("{$readFolder}/{$file}"))
-    {
-      if ($file != "." & $file != "..") $subFolders[] = $file;
+if ($handle = opendir($readFolder)) {
+    while ($file = readdir($handle)) {
+        if (is_dir("{$readFolder}/{$file}")) {
+            if ($file != "." & $file != "..") $subFolders[] = $file;
+        } else {
+            if ($file != "." & $file != ".." & substr($file, -5) == '.json') {
+                $versions[] = substr($file, 0, -5);
+            }
+        }
     }
-    else
-    {
-      if ($file != "." & $file != ".." & substr($file, -5) == '.json') {
-        $versions[] = substr($file, 0, -5);
-      }
-    }
-  }
 }
 closedir($handle);
 
@@ -58,13 +55,16 @@ $GLOBALS['cfg']['versions'] = array(
 );
 
 foreach ($versions as $version) {
-  $strJsonVer=file_get_contents("{$readFolder}/{$version}.json", 'r');
-  $arrJsonVer=json_decode($strJsonVer,true);
-  $arrGlobal[$arrJsonVer['version']['number']] = $arrJsonVer['version']['name'];
-  $GLOBALS['cfg']['versions'][$arrJsonVer['version']['number']] = $arrJsonVer['version']['name'];
-  $GLOBALS['cfg']['detailversions'][$arrJsonVer['version']['number']] = $arrJsonVer['version'];
-  $GLOBALS['cfg']['endversion'] = $arrJsonVer['version']['number'];
+    $strJsonVer = file_get_contents("{$readFolder}/{$version}.json", 'r');
+    $arrJsonVer = json_decode($strJsonVer, true);
+    $arrGlobal[$arrJsonVer['version']['number']] = $arrJsonVer['version']['name'];
+    $GLOBALS['cfg']['versions'][$arrJsonVer['version']['number']] = $arrJsonVer['version']['name'];
+    $GLOBALS['cfg']['detailversions'][$arrJsonVer['version']['number']] = $arrJsonVer['version'];
+    if (strcmp($arrJsonVer['version']['name'], _file_version_) === 0) {
+        $GLOBALS['cfg']['endversion'] = $arrJsonVer['version']['number'];
+    }
 }
+
 
 // for reference old docebo ce versions
 $GLOBALS['cfg']['docebo_versions'] = array(
