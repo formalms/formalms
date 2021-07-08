@@ -98,8 +98,8 @@
                     <td>#day_pause_begin#</td>
                     <td>#day_pause_end#</td>
                     <td>#day_classroom#</td>
-                    <td><a class="js-edit" href="javascript:void(0)" >Edit</a></td>
-                    <td><a class="js-delete" href="javascript:void(0)" >Delete</a></td>
+                    <td><a class="js-edit" href="javascript:void(0)">{{ Lang_translate('_EDIT','course') }}</a></td>
+                    <td><a class="js-delete" href="javascript:void(0)">{{ Lang_translate('_DELETE','course') }}</a></td>
                 </tr>-->
             </div>
 
@@ -130,8 +130,7 @@
                         <td>{{ day.pause_end|date("H:i") }}</td>
                         <td>{{ classroom|raw }}</td>
                         <td><a class="js-edit" href="javascript:void(0)">{{ Lang_translate('_EDIT','course') }}</a></td>
-                        <td><a class="js-delete" href="javascript:void(0)"
-                               data-swal-toast-template="#my-template">{{ Lang_translate('_DELETE','course') }}</a>
+                        <td><a class="js-delete" href="javascript:void(0)">{{ Lang_translate('_DELETE','course') }}</a>
                         </td>
                     </tr>
                 {% endfor %}
@@ -206,9 +205,9 @@
         {{ Form_openButtonSpace() }}
 
         <label for="sendCalendar">{{ Lang_translate('_SEND_CALENDAR', 'course') }}</label>:
-        {{ Form_getInputCheckbox("sendCalendar", "sendCalendar", "true", 1,'') }}
+        {{ Form_getInputCheckbox("sendCalendar", "sendCalendar", "1", courseInfo.sendCalendar,'') }}
         {{ Form_getButton('js-undo', 'undo', Lang_translate('_UNDO', 'course')) }}
-        {{ Form_getButton('js-save', 'save', Lang_translate('_SAVE', 'course')) }}
+        {{ Form_getButton('js-save', 'save', Lang_translate('_SAVE', 'course'),'','disabled') }}
         {{ Form_closeElementSpace() }}
 
     </div>
@@ -310,6 +309,7 @@
         insertOrUpdateRow(id, date, dateFormatted, dateBegin, dateEnd, pauseBegin, pauseEnd, classroom);
         clearForm();
         loadInsertedDays();
+        enableSaveButton();
     }
 
     function updateHours(e) {
@@ -331,8 +331,8 @@
             insertOrUpdateRow(row.dataset.day_id, row.dataset.date, dateFormatted, dateBegin, dateEnd, pauseBegin, pauseEnd, classroom);
         }
 
-
         clearForm();
+        enableSaveButton();
     }
 
     function insertOrUpdateRow(id, date, dateFormatted, dateBegin, dateEnd, pauseBegin, pauseEnd, classroom) {
@@ -397,15 +397,28 @@
     }
 
     function hideForm(e) {
-        e.preventDefault()
+        e.preventDefault();
         var editClassroomDate = document.getElementById('js-add-classroom-dates');
         editClassroomDate.style.display = 'none';
     }
 
     function showForm(e) {
-        e.preventDefault()
+        e.preventDefault();
         var editClassroomDate = document.getElementById('js-add-classroom-dates');
         editClassroomDate.style.display = 'block';
+    }
+
+    function enableSaveButton(){
+        if (document.getElementById('js-save').hasAttribute('disabled')){
+            document.getElementById('js-save').removeAttribute('disabled');
+        }
+
+    }
+
+    function disableSaveButton(){
+        if (!document.getElementById('js-save').hasAttribute('disabled')){
+            document.getElementById('js-save').setAttribute('disabled','disabled');
+        }
     }
 
     function clearForm() {
@@ -429,7 +442,7 @@
             postData.push(JSON.parse(JSON.stringify(row.dataset)));
         }
 
-        sendCalendar = document.getElementById('sendCalendar').checked;
+        sendCalendar = document.getElementById('sendCalendar').checked ? '1' : '0';
 
         $.ajax({
             type: "post",
@@ -464,10 +477,12 @@
                             day.pause_end = date[1].substring(0, 5);
                         }
 
-                        insertOrUpdateRow(day.id, day.date, dateToString(new Date(day.date)), day.date_begin, day.date_end, day.pause_begin, day.pause_end, day.classroom)
+
+                        insertOrUpdateRow(day.id, day.date, day.date, day.date_begin, day.date_end, day.pause_begin, day.pause_end, day.classroom)
                     }
                 }
                 document.getElementById('sendCalendar').checked = false;
+                disableSaveButton();
             },
             complete: function () {
             },
@@ -526,6 +541,7 @@
             insertedDays.pop(row.dataset.date);
         }
         row.remove();
+        enableSaveButton();
     }
 
     function getRowDatasetFromEvent(e) {

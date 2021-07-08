@@ -433,9 +433,9 @@ class ClassroomAlmsController extends AlmsController
     {
         $postData = Get::pReq('data', DOTY_MIXED, []);
         $removedDays = Get::pReq('removedDays', DOTY_MIXED, []);
-        $sendCalendar = Get::pReq('sendCalendar', DOTY_BOOL, false);
+        $sendCalendar = (bool)Get::pReq('sendCalendar', DOTY_BOOL, false);
 
-        if (!empty($postData)) {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $this->model->removeDateDay($removedDays);
             $result = $this->model->updateDateDays($postData);
@@ -449,15 +449,14 @@ class ClassroomAlmsController extends AlmsController
                 $response['url'] = 'index.php?r=' . $this->baseLinkClassroom . '/classroom&id_course=' . $this->model->getIdCourse() . '&result=ok_ins';
             }
 
+
             if ($sendCalendar) {
+
                 $this->sendCalendar();
             }
             echo json_encode($response);
             return;
         }
-        $dateInfo = $this->model->getDateInfo();
-
-        $arrayDays = $this->model->getDateDay();
 
         $this->render('classroom-dates',
             [
@@ -468,11 +467,12 @@ class ClassroomAlmsController extends AlmsController
                     ],
                 'idCourse' => $this->idCourse,
                 'idDate' => $this->idDate,
-                'courseInfo' => $dateInfo,
+                'courseInfo' => $this->model->getCourseInfo(),
+                'dateInfo' => $this->model->getDateInfo(),
                 'courseBaseLink' => $this->baseLinkCourse,
                 'classroomBaseLink' => $this->baseLinkClassroom,
                 'postData' => [
-                    'days' => $arrayDays,
+                    'days' => $this->model->getDateDay(),
                 ],
                 'availableStatuses' => $this->model->getStatusForDropdown(),
                 'availableTestTypes' => $this->model->getTestTypeForDropdown(),
