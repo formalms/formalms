@@ -6257,7 +6257,7 @@ p {
 .forma-drop-zone {
   position: relative;
   font-family: 'PT Sans Narrow', sans-serif;
-  background-color: #373a3d;
+  background-color: white;
   background-image: -webkit-linear-gradient(top, #373a3d, #313437);
   background-image: -moz-linear-gradient(top, #373a3d, #313437);
   background-image: linear-gradient(top, #373a3d, #313437);
