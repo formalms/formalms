@@ -1,11 +1,13 @@
 import ModalTwig from '../twig/modal.html.twig';
+import FormaPlugin from './FormaPlugin';
 
 /**
  * Modal
  */
-class ModalElement { 
+class ModalElement extends FormaPlugin { 
 
   constructor(modalClass = '', target = '#lms_main_container') {
+    super();
     this.ModalClass = modalClass;
     this.Target = target;
     this.Title = 'Title';
@@ -33,12 +35,6 @@ class ModalElement {
       });
     });
     return modalDiv;
-  }
-
-  CreateElementFromHTML(htmlString) {
-    var div = document.createElement('div');
-    div.innerHTML = htmlString.trim();
-    return div.firstChild; 
   }
 
   Open(onOpen) {
