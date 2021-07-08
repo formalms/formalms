@@ -42,8 +42,8 @@ class CalendarManager
             $event->setSummary($date['name']);
             $event->setDescription($date['description']);
             if ($row['deleted']) {
-                $event->setStatus(\Eluceo\iCal\Domain\Entity\Event::EVENT_STATUS_CANCELLED);
-                $event->setMethod(\Eluceo\iCal\Domain\Entity\Event::EVENT_METHOD_CANCEL);
+                $event->setStatus(\Eluceo\iCal\Domain\Enum\StatusType::CANCELLED());
+                $event->setMethod(\Eluceo\iCal\Domain\Enum\MethodType::CANCELLED());
             }
             $event->setOrganizer(new \Eluceo\iCal\Domain\ValueObject\Organizer(
                 new \Eluceo\iCal\Domain\ValueObject\EmailAddress(Get::sett('sender_event')),
