@@ -45,7 +45,8 @@ function additem( $object_item ) {
 
 function insitem() {
 	//checkPerm('view', false, 'storage');
-	
+	echo json_encode(['files' => $_FILES,'request'=> $_REQUEST]);
+	die();
 	require_once(_base_.'/lib/lib.upload.php');
 	
 	$back_url = urldecode($_POST['back_url']);
