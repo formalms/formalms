@@ -20,7 +20,7 @@ function additem( $object_item ) {
 	
 	require_once(_base_.'/lib/lib.form.php');
 	
-	$GLOBALS['page']->add(getTitleArea($lang->def('_SECTIONNAME_ITEM'), 'item')
+	/*$GLOBALS['page']->add(getTitleArea($lang->def('_SECTIONNAME_ITEM'), 'item')
 		.'<div class="std_block">'
 		.getBackUi( Util::str_replace_once('&', '&amp;', $object_item->back_url).'&amp;create_result=0', $lang->def('_BACK') )
 		
@@ -38,6 +38,9 @@ function additem( $object_item ) {
 		.Form::closeButtonSpace()
 		.Form::closeForm()
 		.'</div>', 'content');
+*/
+
+    $GLOBALS['page']->add(\appCore\Template\TwigManager::getInstance()->render('upload-file.html.twig',[],_lms_.'/views/lo'), 'content');
 }
 
 function insitem() {

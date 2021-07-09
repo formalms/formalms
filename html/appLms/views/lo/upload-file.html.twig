@@ -1,0 +1,16 @@
+<div class="std_block">
+
+    {{ Form_openForm('itemform', 'index.php?modname=item&amp;op=insitem', 'std_form', 'post', 'multipart/form-data') }}
+    {{ Form_openElementSpace() }}
+
+    {{ Form_getHidden('back_url', 'back_url', 'back_url') }}
+    {{ Form_getTextfield( translate('_TITLE'), 'title', 'title', 100, translate('_TITLE')) }}
+    {{ Form_getFilefield( translate('_FILE'), 'file', 'attach') }}
+
+    {{ Form_getTextarea(translate('_DESCRIPTION'), 'description', 'description', translate('_DESCRIPTION')) }}
+    {{ Form_closeElementSpace() }}
+    {{ Form_openButtonSpace() }}
+    {{ Form_getButton('additem', 'additem', translate('_INSERT')) }}
+    {{ Form_closeButtonSpace() }}
+    {{ Form_closeForm() }}
+</div>
