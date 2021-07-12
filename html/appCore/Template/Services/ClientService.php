@@ -17,7 +17,7 @@ class ClientService
     public function getConfig(): array
     {
         $config = [];
-
+        $config['signature'] = \Util::getSignature();
         $baseUrl = $this->getBaseUrl();
 
         $config['url']['base'] = $baseUrl;

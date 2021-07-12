@@ -2,7 +2,6 @@
 import DropzoneTwig from './../twig/dropzone.html.twig';
 import FormaPlugin from './FormaPlugin';
 
-
 /**
  * FormaDropZone
  * ex: HTMLElement.FormaFileUploader();
@@ -29,12 +28,18 @@ class FormaDropZone extends FormaPlugin {
     return this.Element.querySelector('[type="submit"]');
   }
 
+  set Uploading(valBool) {
+    this._Uploading = valBool;
+    this.RenderList();
+  }
+
   constructor(idOrClassOrElement = null, options =  {}) {
     super();
     // Properties
     this.Name = 'FormaDropZone';
     this.FilesList = [];
     this.Element = null;
+    this._Uploading = false;
     this.SelectedIndexFile = null;
     this.Options = {
       ListWrapper: '#drop-zone-list',
@@ -112,7 +117,15 @@ class FormaDropZone extends FormaPlugin {
       });
       this.SubmitButton.addEventListener('click', () => {
         if(this.Options.OnSubmitClick) {
-          this.Options.OnSubmitClick(this.FilesList);
+          const obj = {
+            formData: new FormData(),
+            info: this.FilesList
+          }
+          this.FilesList.forEach((file, index) => {
+            obj.formData.append(`file${index}`, file);
+          });
+          obj.formData.append('info', JSON.stringify(this.FilesList));
+          this.Options.OnSubmitClick.call(this, obj);
         }
       });
     }
@@ -142,10 +155,6 @@ class FormaDropZone extends FormaPlugin {
     this.FileEditColumn.querySelector('.description-input-wrapper textarea.description').value = this.FilesList[index].description;
   }
 
-  Error(message = '') {
-    throw `${this.Name}: ${message}`
-  }
-
   /**
    * Render list and attach events
    * @param {} filesList 
@@ -154,10 +163,14 @@ class FormaDropZone extends FormaPlugin {
   RenderList(filesList = this.FilesList) {
     const view = DropzoneTwig({
       files: filesList.map(file => { file.formatted_size = this.FormatBytes(file.size); return file; }),
-      submitText: this.Options.SubmitText
+      submitText: this.Options.SubmitText,
+      uploading: this._Uploading
     });
     this.Element.innerHTML = view;
     this.AttachEvents();
+    if(null != this.SelectedIndexFile) {
+      this.SelectFile(this.SelectedIndexFile);
+    }
     return view;
   }
 
@@ -169,3 +182,5 @@ class FormaDropZone extends FormaPlugin {
 Element.prototype.FormaFileUploader = function(options) {
   new FormaDropZone(this, options);
 }
+
+module.exports = FormaDropZone;
