@@ -9,11 +9,17 @@ import {RenderDashBoardCalendar} from '../modules/DashboardCalendar';
 import { DashboardVideo } from '../modules/DashboardVideo';
 import TeacherLearningObject from '../modules/TeacherLearningObject';
 import StudentLearningObject from '../modules/StudentLearningObject';
+// eslint-disable-next-line no-unused-vars
+import FormaDropZone from './../components/Dropzone';
+import Axios from 'axios';
+
 
 var Page = (function() {
 
   window.TeacherLearningObject = TeacherLearningObject;
   window.StudentLearningObject = StudentLearningObject;
+  window.FormaDropZone = FormaDropZone;
+  window.Axios = Axios;
 
   function setScroll(elem, action) {
     if (action === 'lock') {

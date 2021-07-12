@@ -4,7 +4,7 @@ import CreateItem from '../components/CreateItem';
 import CopyItem from '../components/CopyItem';
 import ContextMenu from '../components/ContextMenu';
 import LearningObject from './Base/LearningObject';
-import Dropzone from '../components/Dropzone';
+
 class TeacherLearningObject extends LearningObject {
 
   constructor(controllers) {
@@ -12,14 +12,13 @@ class TeacherLearningObject extends LearningObject {
     const _this = this; // deprecato, da rimuovere
     document.body.classList.add('teacher-area');
     _this.controllers = controllers;
-
+    
     _this.controllers.forEach(controller => {
       let baseUrl = this.getBaseApiUrl(controller.controller);
       new FolderTree(baseUrl, controller.controller, controller.selector);
       _this.folderViewInstance = new FolderView(baseUrl, controller.controller, controller.selector);
       new CreateItem(baseUrl, controller.selector);
-      // todo rimuovere
-      console.log(Dropzone);
+
       // Event on fv-is-scormorg
       this.folderViewInstance.filterDBClickEvents.push((el) => {
         if(el.querySelector('.fv-is-scormorg')) {

@@ -6,6 +6,7 @@
 class FormaPlugin {
 
   constructor() {
+    this.Name = '';
     this._Polyfills();
   }
 
@@ -24,6 +25,10 @@ class FormaPlugin {
     var div = document.createElement('div');
     div.innerHTML = htmlString.trim();
     return div.firstChild; 
+  }
+
+  Error(message = '') {
+    throw `${this.Name}: ${message}`
   }
 
   _Polyfills() {

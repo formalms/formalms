@@ -1,16 +1,20 @@
-<div class="std_block">
 
-    {{ Form_openForm('itemform', 'index.php?modname=item&amp;op=insitem', 'std_form', 'post', 'multipart/form-data') }}
-    {{ Form_openElementSpace() }}
+<div id="forma-uploader"></div>
+<script>
+    console.log(window.frontend.config);
+    Axios.defaults.headers.post['X-Signature'] = window.frontend.config.signature;
+    Axios.defaults.headers.post['Content-Type'] = 'multipart/form-data';
+    document.getElementById('forma-uploader').FormaFileUploader({
+        OnSubmitClick: function(obj) {  
+            this.Uploading = true;          
+            Axios({
+                method: 'post',
+                url: `${window.frontend.config.url.appLms}/index.php?modname=item&op=insitem`,
+                data: obj.formData
+            }).then(res => {
+                this.Uploading = false;
+            });
+        }
+    });
+</script>
 
-    {{ Form_getHidden('back_url', 'back_url', 'back_url') }}
-    {{ Form_getTextfield( translate('_TITLE'), 'title', 'title', 100, translate('_TITLE')) }}
-    {{ Form_getFilefield( translate('_FILE'), 'file', 'attach') }}
-
-    {{ Form_getTextarea(translate('_DESCRIPTION'), 'description', 'description', translate('_DESCRIPTION')) }}
-    {{ Form_closeElementSpace() }}
-    {{ Form_openButtonSpace() }}
-    {{ Form_getButton('additem', 'additem', translate('_INSERT')) }}
-    {{ Form_closeButtonSpace() }}
-    {{ Form_closeForm() }}
-</div>

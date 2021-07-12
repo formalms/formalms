@@ -245,10 +245,11 @@ class FilterInput
      */
     protected function clean_input_keys($str)
     {
+        /*
         if (!preg_match('#^[&a-zA-Z0-9\.\/\\:_\s-]+$#uD', $str)) {
             exit('Disallowed key characters in global data.');
         }
-
+        */
         return $str;
     }
 
