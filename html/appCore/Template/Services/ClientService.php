@@ -24,6 +24,7 @@ class ClientService
         foreach (self::coreFolders as $coreFolder) {
             $config['url'][$coreFolder] = sprintf('%s/%s', $baseUrl, $coreFolder);
         }
+        $config['signature'] = \Util::getSignature();
         $config['lang'] = [
             'course' => [
                 '_CORSO' => 'corso'

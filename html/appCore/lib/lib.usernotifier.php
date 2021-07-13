@@ -44,6 +44,7 @@ class DoceboUserNotifier extends DoceboEventConsumer {
 
 		// recover event information
 		$arr_recipients 	= explode( ',', $event->getProperty('recipientid') );
+		/** @var EventMessageComposer $msg_composer */
         $msg_composer 		= unserialize(urldecode($event->getProperty('MessageComposer')));
 		$msg_composer->after_unserialize();
 		$force_email_send 	= $event->getProperty('force_email_send');
@@ -93,6 +94,7 @@ class DoceboUserNotifier extends DoceboEventConsumer {
 				$this->_sendMail(
 					$msg_composer->getSubject('email', $lang_code),
 					$msg_composer->getBody('email', $lang_code),
+					$msg_composer->getAttachments(),
 					$arr_mail_recipients[$lang_code],
 					$users_info
 				);
@@ -114,7 +116,7 @@ class DoceboUserNotifier extends DoceboEventConsumer {
 		return true;
 	}
 
-	function _sendMail($subject, $body, &$mail_recipients, &$users_info = false) {
+	function _sendMail($subject, $body,$attachments, &$mail_recipients, &$users_info = false) {
 
 		$mailer = DoceboMailer::getInstance();
 		$acl_man = Docebo::user()->getAclManager();
@@ -133,7 +135,7 @@ class DoceboUserNotifier extends DoceboEventConsumer {
 				Get::sett('sender_event'), $mail,
 				$subject,
 				$base_body,
-				false,
+				$attachments,
 				array(
 					MAIL_REPLYTO => Get::sett('sender_event'),
 					MAIL_SENDER_ACLNAME => Get::sett('use_sender_aclname')

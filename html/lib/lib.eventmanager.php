@@ -188,19 +188,21 @@ class DoceboEventManager {
 
 class EventMessageComposer {
 
-	var $module;
+	protected $module;
 
-	var $platform;
+	protected $platform;
 
-	var $lang;
+	protected $lang;
 
-	var $arr_subject;
+	protected $arr_subject;
 
-	var $arr_body;
+	protected $arr_body;
 
-	var $subject_composed;
+	protected $subject_composed;
 
-	var $body_composed;
+	protected $body_composed;
+
+	protected $attachments;
 
 	/**
 	 * @param string 	$module 		the module name
@@ -213,7 +215,7 @@ class EventMessageComposer {
 	 *		), ...
 	 *	)
 	 */
-	public function  __construct($module = false, $platform = false, $arr_subject = false, $arr_body = false) {
+	public function  __construct($module = false, $platform = false, $arr_subject = false, $arr_body = false, $attachments = []) {
 
 		$this->module 		= 'email';
 		$this->platform 	= false;
@@ -221,6 +223,7 @@ class EventMessageComposer {
 		$this->arr_body 	= $arr_body;
 		$this->subject_composed = false;
 		$this->body_composed = false;
+		$this->attachments = [];
 	}
 
 	function setSubject($array_info, $media = false) {
@@ -295,6 +298,24 @@ class EventMessageComposer {
 		}
 		return $compose;
 	}
+
+    /**
+     * @param array $attachments
+     * @return EventMessageComposer
+     */
+    public function setAttachments(array $attachments): EventMessageComposer
+    {
+        $this->attachments = $attachments;
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getAttachments(): array
+    {
+        return $this->attachments;
+    }
 	
 	function prepare_serialize() {
 		unset($this->lang);
@@ -338,6 +359,7 @@ function createNewAlert(	$class,$module,$section,$priority,$description,
 	$msg_composer->prepare_serialize(); // __sleep is preferred but i preferr this method
 	$event->setProperty('MessageComposer', addslashes(rawurlencode(serialize($msg_composer))) );
 	$event->setProperty('force_email_send', ( $force_email_send === false ? 'false' : 'true' ) );
+	$event->setProperty('attachments', $msg_composer->getAttachments());
 	DoceboEventManager::dispatch($event);
 }
 

@@ -20,8 +20,6 @@ define('_DATE_TEST_TYPE_WEB', 0);
 define('_DATE_TEST_TYPE_PAPER', 1);
 define('_DATE_TEST_TYPE_NONE', 2);
 
-require_once Forma::inc(_lib_ .'/calendar/CalendarManager.php');
-
 class DateManager
 {
 
@@ -168,10 +166,15 @@ class DateManager
 
     public function removeDateDay($idDate, $arrayDays)
     {
+        $result = true;
         foreach ($arrayDays as $dayInfo) {
             $query = "UPDATE %lms_course_date_day SET `deleted` = 1 WHERE `id_date` = " . $idDate . " AND `id` =" . $dayInfo['day_id'];
-            DbConn::getInstance()->query($query);
+            $res = DbConn::getInstance()->query($query);
+            if ($res === false) {
+                $result = $res;
+            }
         }
+        return $result;
     }
 
     public function updateDateDay($idDate, $arrayDays)
@@ -184,7 +187,6 @@ class DateManager
             return $time1 > $time2;
         });
 
-
         foreach ($arrayDays as $index => $dayInfo) {
 
             if ((int)$dayInfo['day_id'] < 0) {
@@ -192,18 +194,21 @@ class DateManager
                 $query = "INSERT INTO %lms_course_date_day (id_day, id_date, classroom, date_begin, date_end, pause_begin, pause_end, calendarId)  VALUES 
                 (" . $index . ", " . $idDate . ", " . $dayInfo['classroom'] . ", '" . $dayInfo['date_begin'] . "', '" . $dayInfo['date_end'] . "', '" . $dayInfo['pause_begin'] . "', '" . $dayInfo['pause_end'] . "','" . CalendarManager::generateUniqueCalendarId() . "')";
             } else {
-//UPDATE `forma_dev`.`learning_course_date_day` SET `id_day` = 1, `id_date` = 33, `classroom` = 1, `date_begin` = '2021-07-03 00:00:00', `date_end` = '2021-07-03 00:00:00', `pause_begin` = '2021-07-03 00:00:00', `pause_end` = '2021-07-03 00:00:00', `created_at` = '2021-07-02 13:35:31', `updated_at` = NULL WHERE `id` = 63;
                 $query = "UPDATE %lms_course_date_day " .
                     " SET `id_day` = " . $index . "," .
                     " `classroom` = '" . $dayInfo['classroom'] . "'," .
                     " `date_begin` = '" . $dayInfo['date_begin'] . "'," .
                     " `date_end` = '" . $dayInfo['date_end'] . "'," .
                     " `pause_begin` = '" . $dayInfo['pause_begin'] . "'," .
-                    " `pause_end` = '" . $dayInfo['pause_end'] . "'" .
-                    " WHERE `id_date` = " . $idDate . " AND `id` =" . $dayInfo['day_id'];
+                    " `pause_end` = '" . $dayInfo['pause_end'] . "'";
+
+                if (empty($dayInfo['calendarId'])){
+                    $query .= ", `calendarId` = '" . CalendarManager::generateUniqueCalendarId() . "'";
+                }
+                $query .= " WHERE `id_date` = " . $idDate . " AND `id` =" . $dayInfo['day_id'];
             }
-            $res = DbConn::getInstance()->query($query);
-            if ($res === false) {
+            $result = DbConn::getInstance()->query($query);
+            if ($result === false) {
                 return $res;
             }
         }
@@ -755,9 +760,7 @@ class DateManager
         $res = sql_query($query);
 
         if ($res) {
-            $query = "DELETE FROM " . $this->presence_date_table
-                . " WHERE id_user = " . $id_user
-                . " AND id_date = " . $id_date;
+            $query = "DELETE FROM %lms_course_date_presence WHERE id_user = " . $id_user . " AND id_date = " . $id_date;
 
             $res = sql_query($query);
         }
@@ -897,8 +900,7 @@ class DateManager
     public function getUserPresenceForDate($id_date)
     {
         $query = "SELECT *"
-            . " FROM " . $this->presence_date_table
-            . " WHERE id_date = " . $id_date;
+            . " FROM %lms_course_date_presence WHERE id_date = " . $id_date;
 
         if (Docebo::user()->getUserLevelId() == ADMIN_GROUP_ADMIN) {
             require_once(_base_ . '/lib/lib.preference.php');
@@ -917,8 +919,7 @@ class DateManager
 
     private function clearDatePresence($id_date)
     {
-        $query = "DELETE FROM " . $this->presence_date_table
-            . " WHERE id_date = " . $id_date;
+        $query = "DELETE FROM %lms_course_date_presence WHERE id_date = " . $id_date;
 
         return sql_query($query);
     }
@@ -938,9 +939,7 @@ class DateManager
             $first = true;
             $test_type = $this->getTestType($id_date);
 
-            $query = "INSERT INTO " . $this->presence_date_table
-                . " (`day`, `id_date`, `id_user`, `id_day`, `presence`, `score`, `note`)"
-                . " VALUES";
+            $query = "INSERT INTO %lms_course_date_presence (`day`, `id_date`, `id_user`, `id_day`, `presence`, `score`, `note`) VALUES ";
 
             foreach ($user as $id_user => $user_info) {
                 $num_day = 0;
@@ -1160,8 +1159,7 @@ class DateManager
         foreach ($course_date as $date_info) {
             if (array_search($date_info['id_date'], $user_date) !== false) {
                 $query = "SELECT SUM(presence) AS sum_presence, COUNT(*) AS tot_day"
-                    . " FROM " . $this->presence_date_table
-                    . " WHERE id_date = " . (int)$date_info['id_date']
+                    . " FROM %lms_course_date_presence WHERE id_date = " . (int)$date_info['id_date']
                     . " AND id_user = " . (int)$id_user
                     . " GROUP BY id_date, id_user";
                 $re = sql_query($query);

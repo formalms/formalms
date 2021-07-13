@@ -141,7 +141,8 @@ class ClassroomAlms extends Model
         return $this->classroom_man->getTestTypeForDropdown();
     }
 
-    public function getClassroomForDropdown() {
+    public function getClassroomForDropdown()
+    {
         return $this->classroom_man->getClassroomForDropdown();
     }
 
@@ -313,14 +314,15 @@ class ClassroomAlms extends Model
         return $date_info;
     }
 
-    public function getDateDay()
+    public function getDateDay($idDate = null)
     {
-        return $this->classroom_man->getDateDay($this->id_date);
+        return $this->classroom_man->getDateDay($idDate ?? $this->id_date);
     }
 
 
-    public function getAllDateDay(){
-        return $this->classroom_man->getAllDateDay($this->id_date);
+    public function getAllDateDay($idDate = null)
+    {
+        return $this->classroom_man->getAllDateDay($idDate ?? $this->id_date);
     }
 
     public function getDateString()
@@ -372,7 +374,8 @@ class ClassroomAlms extends Model
         return false;
     }
 
-    public function removeDateDay($days){
+    public function removeDateDay($days)
+    {
 
         return $this->classroom_man->removeDateDay($this->id_date, $days);
     }
@@ -556,6 +559,23 @@ class ClassroomAlms extends Model
             $output[] = $id_classroom;
         }
         return $output;
+    }
+
+    public function sendCalendarToAllSubscribers(){
+
+        $subscriptionModel = new SubscriptionAlms($this->id_course, false, $this->id_date);
+
+        $users = $subscriptionModel->loadUser();
+
+        $calendarMailer = new CalendarMailer();
+        foreach ($users as $user) {
+
+            $user = Docebo::user()->getAclManager()->getUserMappedData(Docebo::user()->getAclManager()->getUser($user['id_user'], false));
+
+            $calendar = CalendarManager::getCalendarDataContainerForDateDays((int)$this->id_course,(int)$this->id_date,(int)$user['idst']);
+
+            $calendarMailer->sendCalendarToUser($calendar,$user);
+        }
     }
 
 

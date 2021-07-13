@@ -11,7 +11,14 @@ class CalendarManager
         return Uuid::v4()->toRfc4122();
     }
 
-    public static function getCalendarForDateDays($idCourse, $idDate, $idUser = false, $immediateOutput = false)
+    /**
+     * @param int $idCourse
+     * @param int $idDate
+     * @param int $idUser
+     * @param false $immediateOutput
+     * @return CalendarDataContainer
+     */
+    public static function getCalendarDataContainerForDateDays(int $idCourse, int $idDate, ?int $idUser = -1, bool $immediateOutput = false)
     {
         $classroomModel = new ClassroomAlms($idCourse, $idDate);
         $calendar = new \Eluceo\iCal\Domain\Entity\Calendar();
@@ -24,7 +31,7 @@ class CalendarManager
         $classrooms = $classroomModel->getClassroomForDropdown();
 
         $idOrganization = null;
-        if (!empty($idUser)) {
+        if ($idUser > 0) {
             $uma = new UsermanagementAdm();
 
             if ($nodes = $uma->getUserFolders($idUser)) {
@@ -85,22 +92,17 @@ class CalendarManager
 
             $calendar->addEvent($event);
         }
-
-        $componentFactory = new \Eluceo\iCal\Presentation\Factory\CalendarFactory();
-        $calendarComponent = $componentFactory->createCalendar($calendar);
-
         $fileName = $date['name'] . '.ics';
+
+        $calendarContainer = new CalendarDataContainer($fileName, $calendar);
+
         if ($immediateOutput) {
-// 4. Set HTTP headers.
-            header('Content-Type: text/calendar; charset=utf-8');
-            header('Content-Disposition: attachment; filename="' . $fileName . '"');
-            echo $calendarComponent;
+
+            $calendarContainer->download();
+
         }
 
-        return [
-            'name' => $fileName,
-            'data' => $calendarComponent
-        ];
+        return $calendarContainer;
     }
 
 }

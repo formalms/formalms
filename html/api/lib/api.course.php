@@ -68,6 +68,24 @@ class Course_API extends API
      * @param $params
      * @return array
      */
+    private function _getAndValidateSendCalendarFromParams($params)
+    {
+        $sendCalendar = (bool)($params['sendCalendar'] ?? false);
+
+        $response['success'] = true;
+        $response['data'] = $sendCalendar;
+        if (empty($sendCalendar)) {
+            $response['success'] = false;
+            $response['message'] = 'Missing or Wrong SendCalendar' . $params['sendCalendar'];
+        }
+
+        return $response;
+    }
+
+    /**
+     * @param $params
+     * @return array
+     */
     private function _getAndValidateCourseIdCourseFromParams($params)
     {
         $courseId = ($params['course_id'] ?? '');
@@ -468,6 +486,13 @@ class Course_API extends API
             $msg_composer->setBodyLangText('email', '_APPROVED_SUBSCRIBED_TEXT', $array_subst);
 
             $recipients = array($user_id);
+
+            if ($course_info['sendCalendar']) {
+
+                $uinfo = Docebo::aclm()->getUser($user_id, false);
+                $calendar = CalendarManager::getCalendarDataContainerForDateDays((int)$courseId, (int)$classroom_id, (int)$uinfo[ACL_INFO_IDST]);
+                $msg_composer->setAttachments([$calendar->getFile()]);
+            }
 
             if (!empty($recipients)) {
                 createNewAlert('UserCourseInsertedApi', 'subscribe', 'insert', '1', 'User subscribed API', $recipients, $msg_composer);
@@ -1056,7 +1081,7 @@ class Course_API extends API
     {
         $db = DbConn::getInstance();
         $query = "select max(id_day) as max_id FROM learning_course_date_day "
-            . " WHERE    ID_DATE = " . $idDate ." AND deleted = 0";
+            . " WHERE    ID_DATE = " . $idDate . " AND deleted = 0";
         $q = $db->query($query);
         $course_info = $db->fetch_assoc($q);
 
@@ -1113,6 +1138,12 @@ class Course_API extends API
     public function addDay($params)
     {
         require_once(_lms_ . '/admin/models/ClassroomAlms.php');
+
+        $response = $this->_getAndValidateSendCalendarFromParams($params);
+        $sendCalendar = $response['data'];
+        if (!$response['success']) {
+            return $response;
+        }
 
         $response = $this->_getAndValidateIdDateFromParams($params);
         $idDate = $response['data'];
@@ -1174,15 +1205,7 @@ class Course_API extends API
             }
 
             if (!$error) {
-                array_push($arrayDays, $arrayDay);
-
-                usort($arrayDays, function ($fromCompare, $toCompare) {
-                    $dateBeginFromCompare = new DateTime($fromCompare['date_begin']);
-
-                    $dateBeginToCompare = new DateTime($toCompare['date_begin']);
-
-                    return $dateBeginFromCompare > $dateBeginToCompare;
-                });
+                $arrayDays[] = $arrayDay;
 
                 $classroom_man = new DateManager();
                 $result = $classroom_man->updateDateDay($idDate, $arrayDays);
@@ -1190,6 +1213,10 @@ class Course_API extends API
                 if ($result !== false) {
                     $response['success'] = true;
                     $response['id_day'] = $result;
+
+                    if ($sendCalendar) {
+                        $model->sendCalendarToAllSubscribers();
+                    }
                 } else {
                     $response['success'] = false;
                     $response['message'] = 'Error creating day';
@@ -1211,6 +1238,12 @@ class Course_API extends API
     {
         require_once(_lms_ . '/admin/models/ClassroomAlms.php');
         require_once(_lms_ . '/lib/lib.date.php');
+
+        $response = $this->_getAndValidateSendCalendarFromParams($params);
+        $sendCalendar = $response['data'];
+        if (!$response['success']) {
+            return $response;
+        }
 
         $response = $this->_getAndValidateIdDayFromParams($params);
         $idDay = $response['data'];
@@ -1234,19 +1267,29 @@ class Course_API extends API
 
         $arrayDays = $model->classroom_man->getDateDay($idDate);
 
-        if (array_key_exists($idDay, $arrayDays)) {
+        $dayExists = array_search($idDay, array_column($arrayDays, 'id'));
+        if ($dayExists) {
 
-            unset($arrayDays[$idDay]);
+            //unset($arrayDays[$idDay]);
+            $result = $model->classroom_man->removeDateDay($idDate, [
+                [
+                    'day_id' => $idDay
+                ]
+            ]);
 
-            sort($arrayDays);
+            /*sort($arrayDays);
 
             $classroom_man = new DateManager();
             $result = $classroom_man->updateDateDay($idDate, $arrayDays);
-
+            */
             if ($result) {
                 $response['success'] = true;
                 $response['day_delete'] = $idDay;
                 $response['id_date'] = $idDate;
+
+                if ($sendCalendar) {
+                    $model->sendCalendarToAllSubscribers();
+                }
 
             } else {
                 $response['success'] = false;
@@ -1397,6 +1440,12 @@ class Course_API extends API
         require_once(_lms_ . '/admin/models/ClassroomAlms.php');
         require_once(_lms_ . '/lib/lib.date.php');
 
+        $response = $this->_getAndValidateSendCalendarFromParams($params);
+        $sendCalendar = $response['data'];
+        if (!$response['success']) {
+            return $response;
+        }
+
         $response = $this->_getAndValidateIdDayFromParams($params);
         $idDay = $response['data'];
         if (!$response['success']) {
@@ -1420,7 +1469,8 @@ class Course_API extends API
         $arrayDays = $model->classroom_man->getDateDay($idDate);
 
         $error = false;
-        if (array_key_exists($idDay, $arrayDays)) {
+        $dayExists = array_search($idDay, array_column($arrayDays, 'id'));
+        if ($dayExists) {
 
             if (!empty($params['edition_date_selected']) && ($this->_validateDate($params['edition_date_selected']) || $this->_validateDate($params['edition_date_selected'], 'Y-m-d'))) {
                 if ($this->_validateDate($params['edition_date_selected'], 'Y-m-d')) {
@@ -1469,6 +1519,10 @@ class Course_API extends API
                         $response['success'] = true;
                         $response['id_date'] = $idDate;
                         $response['id_day'] = $idDay;
+
+                        if ($sendCalendar) {
+                            $model->sendCalendarToAllSubscribers();
+                        }
                     } else {
                         $response['success'] = false;
                         $response['message'] = 'Error during update day ';
@@ -2396,7 +2450,7 @@ class Course_API extends API
         $response = [];
 
 
-        if (empty(meta_cert_id)) {
+        if (empty($meta_cert_id)) {
             $response['success'] = false;
             $response['message'] = 'Missing meta_cert_id ' . $meta_cert_id;
             return $response;
@@ -2594,6 +2648,27 @@ class Course_API extends API
         return $response;
 
 
+    }
+
+    public function getCalendar($params)
+    {
+        $response = $this->_getAndValidateIdDateFromParams($params);
+        $idDate = $response['data'];
+        if (!$response['success']) {
+            return $response;
+        }
+
+        $response = $this->_getAndValidateCourseIdCourseFromParams($params);
+        $courseId = $response['data'];
+        if (!$response['success']) {
+            return $response;
+        }
+
+        $calendarContainer = CalendarManager::getCalendarDataContainerForDateDays($courseId, $idDate);
+
+        $response['data'] = $calendarContainer->getFileUrl();
+
+        return $response;
     }
 
 
@@ -2845,7 +2920,12 @@ class Course_API extends API
                     $response = $this->copyImgFromCourse($params);
                 }
                 break;
-
+            case 'getCalendar':
+            case 'getcalendar':
+                {
+                    $response = $this->getCalendar($params);
+                }
+                break;
             default:
                 $response = parent::call($name, $params);
         }

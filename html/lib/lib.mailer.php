@@ -78,7 +78,7 @@ class DoceboMailer extends \PHPMailer\PHPMailer\PHPMailer
 
 
     //return instance of the class
-    function &getInstance()
+    static function getInstance()
     {
         if (!isset($GLOBALS['mailer'])) {
             $GLOBALS['mailer'] = new DoceboMailer();

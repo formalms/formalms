@@ -264,6 +264,9 @@ class Boot
 
         self::log("Load Calendar library.");
         require_once Forma::inc(_lib_ .'/calendar/CalendarManager.php');
+        require_once Forma::inc(_lib_ .'/calendar/CalendarDataContainer.php');
+        require_once Forma::inc(_lib_ .'/calendar/CalendarMailer.php');
+
     }
 
     /**
