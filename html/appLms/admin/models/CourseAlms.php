@@ -415,6 +415,7 @@ class CourseAlms extends Model
                 'valid_time' => '0',
                 'mediumTime' => '0',
                 'sendCalendar' => '0',
+                'calendarId' => '',
                 'min_num_subscribe' => '0',
                 'max_num_subscribe' => '0',
                 'allow_overbooking' => '',
@@ -635,6 +636,7 @@ class CourseAlms extends Model
 
             mediumTime          = '" . $data_params['course_medium_time'] . "',
             sendCalendar        = '" . (isset($data_params['send_calendar']) ? 1 : 0) . "',
+            calendarId          = '" . CalendarManager::generateUniqueCalendarId() . "',
             permCloseLO         = '" . $data_params['course_em'] . "',
             userStatusOp        = '" . $user_status . "',
             difficult           = '" . $data_params['course_difficult'] . "',

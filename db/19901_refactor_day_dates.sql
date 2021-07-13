@@ -9,5 +9,5 @@ ALTER TABLE `learning_course_date_day`
     DROP INDEX `id_date`,
     ADD INDEX `id_day_date`(`id_day`, `id_date`) USING BTREE;
 
-ALTER TABLE `learning_course` ADD COLUMN `sendCalendar` tinyint(1) NULL DEFAULT 0 AFTER `completion_validity_time`;
+ALTER TABLE `learning_course` ADD COLUMN `sendCalendar` tinyint(1) NULL DEFAULT 0;
 ALTER TABLE `learning_course` ADD COLUMN `calendarId` varchar(255) NOT NULL AFTER `sendCalendar`;
