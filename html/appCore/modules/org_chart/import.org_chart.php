@@ -132,7 +132,14 @@ class ImportUser extends DoceboImport_Destination
 			DOCEBOIMPORT_COLMANDATORY => false,
 			DOCEBOIMPORT_DATATYPE => 'text'
 		);
-
+		
+		$this->cols_descriptor[] = array(
+			DOCEBOIMPORT_COLNAME => Lang::t('_LANGUAGE', 'standard'),
+			DOCEBOIMPORT_COLID => 'language',
+			DOCEBOIMPORT_COLMANDATORY => false,
+			DOCEBOIMPORT_DATATYPE => 'text'
+		);
+		
 		sql_free_result($rs);
 
 		foreach ($this->arr_fields as $field_id => $field_info) {
@@ -528,6 +535,12 @@ class ImportUser extends DoceboImport_Destination
 
 				// -- add to group level ----------------------------------------------
 				$acl_manager->addToGroup($this->userlevel, $idst);
+			}
+			// --------------------------------------------------------------------
+			if(isset($row['language']) && $row['language'] != '') {
+				$row['language'] = strtolower($row['language']);
+				$user_pref =new UserPreferences($idst);
+				$user_pref->setPreference('ui.language', $row['language']);
 			}
 			// --------------------------------------------------------------------
 			if (isset($row['tree_name']) && $row['tree_name'] != '') {
