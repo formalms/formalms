@@ -190,7 +190,8 @@ Class SubscriptionAlms extends Model
 				'medium_time' => $course_info['mediumTime'],
 				'course_type' => $course_info['course_type'],
 				'date_begin' => $edition_info['date_begin'],
-				'date_end' => $edition_info['date_end']
+				'date_end' => $edition_info['date_end'],
+                'sendCalendar' => $course_info['sendCalendar']
 			);
 		}
 		elseif($this->id_date != 0)
@@ -213,7 +214,8 @@ Class SubscriptionAlms extends Model
 				'medium_time' => $course_info['mediumTime'],
 				'course_type' => $course_info['course_type'],
 				'date_begin' => $date_info['date_begin'],
-				'date_end' => $date_info['date_end']
+				'date_end' => $date_info['date_end'],
+                'sendCalendar' => $course_info['sendCalendar']
 			);
 		}
 		else
@@ -230,7 +232,8 @@ Class SubscriptionAlms extends Model
 				'medium_time' => $course_info['mediumTime'],
 				'course_type' => $course_info['course_type'],
 				'date_begin' => $course_info['date_begin'],
-				'date_end' => $course_info['date_end']
+				'date_end' => $course_info['date_end'],
+                'sendCalendar' => $course_info['sendCalendar']
 			);
 		}
 
