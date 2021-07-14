@@ -33,6 +33,22 @@ class FormaDropZone extends FormaPlugin {
     this.RenderList();
   }
 
+  set SuccessMessage(text) {
+    this._Uploading = false;
+    this._ErrorMessage = null;
+    this.Reset();
+    this._SuccessMessage = text;
+    this.RenderList();
+  }
+
+  set ErrorMessage(text) {
+    this._Uploading = false;
+    this._SuccessMessage = null;
+    this.Reset();
+    this._ErrorMessage = text;
+    this.RenderList();
+  }
+
   constructor(idOrClassOrElement = null, options =  {}) {
     super();
     // Properties
@@ -41,6 +57,8 @@ class FormaDropZone extends FormaPlugin {
     this.Element = null;
     this._Uploading = false;
     this.SelectedIndexFile = null;
+    this._SuccessMessage = null;
+    this._ErrorMessage = null;
     this.Options = {
       ListWrapper: '#drop-zone-list',
       SubmitText: 'Upload files',
@@ -139,6 +157,8 @@ class FormaDropZone extends FormaPlugin {
         item.description = '';
       }
     })
+    this._SuccessMessage = null;
+    this._ErrorMessage = null;
     return list;
   }
 
@@ -155,6 +175,15 @@ class FormaDropZone extends FormaPlugin {
     this.FileEditColumn.querySelector('.description-input-wrapper textarea.description').value = this.FilesList[index].description;
   }
 
+  Reset() {
+    this.FilesList = [];
+    this._SuccessMessage = null;
+    this._ErrorMessage = null;
+    this._Uploading = false;
+    this.SelectedIndexFile = null;
+    this.RenderList();
+  }
+
   /**
    * Render list and attach events
    * @param {} filesList 
@@ -164,7 +193,9 @@ class FormaDropZone extends FormaPlugin {
     const view = DropzoneTwig({
       files: filesList.map(file => { file.formatted_size = this.FormatBytes(file.size); return file; }),
       submitText: this.Options.SubmitText,
-      uploading: this._Uploading
+      uploading: this._Uploading,
+      success: this._SuccessMessage,
+      error: this._ErrorMessage
     });
     this.Element.innerHTML = view;
     this.AttachEvents();

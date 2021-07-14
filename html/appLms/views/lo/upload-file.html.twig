@@ -12,7 +12,7 @@
                 url: `${window.frontend.config.url.appLms}/index.php?modname=item&op=insitem`,
                 data: obj.formData
             }).then(res => {
-                this.Uploading = false;
+                this.SuccessMessage = 'Files correttamente caricati';
             });
         }
     });
