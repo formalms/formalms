@@ -1,3 +1,4 @@
+
 <div id="drop-zone" class="forma-drop-zone {% if files.length %}has-files{% endif %}">
   <div class="fd-middle-wrapper">
     <span>Browse or drop here the files</span>
@@ -41,4 +42,13 @@
         </div>
     </div>
   </div>
+{% endif %}
+{% if success or error %}
+  <hr/>
+  {% if success %} 
+    <div class="fd-alert fd-alert-success">{{ success }}</div>
+  {% endif %}
+  {% if error %} 
+    <div class="alert alert-danger">{{ error }}</div>
+  {% endif %}
 {% endif %}
