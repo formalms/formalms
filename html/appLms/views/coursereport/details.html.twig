@@ -2,14 +2,14 @@
     <select class="filter js-user-level-filter is-disabled" style="position: relative" disabled>
         {% for i in 0..7 %}
             {% if loop.first %}
-                <option value="false" selected>{{ translate('_ALL') }}</option>
+                <option value="false" selected>{{ Lang_translate('_ALL') }}</option>
             {% else %}
-                <option value="{{ loop.index0 }}">{{ translate('_LEVEL_'~loop.index0) }}</option>
+                <option value="{{ loop.index0 }}">{{ Lang_translate('_LEVEL_'~loop.index0) }}</option>
             {% endif %}
         {% endfor %}
     </select>
     <select class="filter js-editions-filter is-disabled" style="position: relative; display: none;" disabled></select>
-    <div class="button--exportcsv"><a href="index.php?r=lms/coursereport/export">{{ translate('_EXPORT_CSV','standard') }}</a></div>
+    <div class="button--exportcsv"><a href="index.php?r=lms/coursereport/export">{{ Lang_translate('_EXPORT_CSV','standard') }}</a></div>
 </div>
 
 <div class="table-responsive">
@@ -22,12 +22,12 @@
                 </th>
             </tr>
             <tr class="js-table-course-headers">
-                <th>{{ translate('_STUDENTS','coursereport') }}</th>
+                <th>{{ Lang_translate('_STUDENTS','coursereport') }}</th>
                 <th>
                     <select class="filter js-user-detail-filter is-disabled" disabled>
                     </select>
                 </th>
-                <th class="js-final-score text-center">{{ translate('_FINAL_SCORE','standard') }}
+                <th class="js-final-score text-center">{{ Lang_translate('_FINAL_SCORE','standard') }}
                     <div class="final-buttons-container">
                         <a class="js-finals-filter round-report" href="#" data-reportid=""><i class="fa fa-calculator" aria-hidden="true"></i></a>
                         <a class="js-finals-filter redo-final" href="#" data-reportid=""><i class="fa fa-refresh" aria-hidden="true"></i></a>

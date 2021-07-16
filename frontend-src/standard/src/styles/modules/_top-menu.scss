@@ -1,4 +1,6 @@
-// Top-menu
+.HTML__COMMENTATO {
+  display: none;
+  // Top-menu
 //
 // This is the top-menu of the site
 //
@@ -62,11 +64,15 @@
 // </header>
 //
 // Style guide: 6.1
+  
+}
+
+
 header.header {
   height: 73px;
   //padding: 0 36px 0 30px;
   padding: 0;
-  border-bottom: 2px solid $dark-orange;
+  border-bottom: 2px solid $gray-5;
   position: fixed;
 
   @include breakpoint($tablet) {
@@ -157,7 +163,6 @@ header.header {
 
         @include breakpoint($tablet) {
           text-transform: uppercase;
-          border-right: 1px solid $gray-3;
         }
 
         @media (min-width: 768px) and (max-width: 1023px) {
@@ -167,7 +172,6 @@ header.header {
         &:first-child {
           @include breakpoint($tablet) {
             padding-left: 0;
-            border-right: 1px solid $gray-3;
           }
         }
 
@@ -219,7 +223,7 @@ header.header {
               width: 35px;
               height: 35px;
               display: inline-block;
-              border: 1px solid $gray-3;
+              // border: 1px solid $gray-3;
               border-radius: 50%;
               background-size: 20px;
               background-repeat: no-repeat;
@@ -360,8 +364,8 @@ header.header {
                   right: -48px;
                   width: 35px;
                   height: 35px;
-                  border-radius: 50%;
-                  border: 1px solid $dark-orange;
+                  border-radius: $border-radius;
+                  border: 1px solid $gray-3;
                   background-position: center;
                   background-size: 13px;
                   background-repeat: no-repeat;
@@ -499,5 +503,47 @@ header.header {
 
   @include breakpoint($ipad) {
     display: none;
+  }
+}
+
+
+
+.header__profilecontainer {
+  background-color: plum;
+  object-fit: contain;
+}
+
+
+
+.header__profile__button {
+  display: flex;
+  margin: 0 !important;
+  width: 150px !important;
+  justify-content: space-between;
+  align-items: stretch;
+  .header__profile__name {
+    flex: 1;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+    justify-content: flex-end;
+    padding-right: .6rem;
+  }
+  .header__profile__picture {
+    flex: 0 0 32px;
+    height: 32px;
+    img {
+      width: 100%;
+      max-height: 100%;
+      border-radius: $border-radius;
+    }
+  }
+}
+
+
+.navbar-nav {
+  .badge {
+    background-color: var(--color-2-400);
   }
 }

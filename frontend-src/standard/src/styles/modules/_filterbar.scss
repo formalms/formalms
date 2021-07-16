@@ -1,0 +1,323 @@
+
+
+
+
+// # nav class="filterBar quick_search_form navbar"
+
+.filterBar {
+  border-radius: $border-radius;
+}
+.filterBar {
+  background-color: var(--color-0-050) !important;
+}
+
+// Open & Close effects
+.filterBar {
+  .navbar-collapse {
+    padding: 0;
+    border: none;
+    box-shadow: none;
+  }
+  .navbar-collapse.collapsing ~ .navbar-header,
+  .collapse.navbar-collapse ~ .navbar-header {
+    .filter-open {
+      display: inline-block;
+      &:before {
+        content: "\f107";
+        color: white;
+      }
+    }
+    .filter-closed {
+      display: none;
+    }
+  }
+  .navbar-collapse.in {
+    overflow-y: visible;
+  }
+  .collapse.navbar-collapse.in ~ .navbar-header {
+    .filter-open {
+      display: none;
+    }
+    .filter-closed {
+      display: inline-block;
+      &:before {
+        content: "\f106";
+      }
+    }
+  }
+}
+
+.filter-label {
+  .filterBar & {
+    width: auto;
+    padding-right: 25px;
+    position: relative;
+    text-align: center;
+    text-transform: uppercase;
+    line-height: 38px;
+    font-size: 14px;
+    transition: display 0.2s ease 0s;
+    color: var(--color-0-500) !important;
+    &:before {
+      content: "";
+      font-family: $icon;
+      color: white;
+      position: absolute;
+      right: 0;
+      line-height: 38px;
+      font-size: 20px;
+    }
+  }  
+}
+
+
+
+
+// # filterBar__advanced
+
+
+
+.filterBar__mainsearch {
+  border: 0;
+  padding: 0 18px;
+  box-shadow: none;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+
+  @include breakpoint($tablet) {
+    padding: 10px 15px;
+  }
+}
+
+.filterBar__mainsearch {
+  .btn-group.bootstrap-select {
+    @include breakpoint($tablet) {
+      float: left;
+    }
+  }
+}
+
+.filterBar__searchAndReset {
+  display: flex !important;
+  width: 130px;
+}
+
+:is(#course_search_filter_set1, #course_search_filter_reset) {
+  @extend %filterBarGlobalButton;
+  font-size: 13px;
+  height: 100%;
+  width: 48px;
+  border-radius: 7px;
+  margin: 0 3px;
+}
+
+
+#course_search_filter_reset {
+  color: var(--color-0-400);
+  font-style: italic;
+}
+
+
+.filterBar__searchInput {
+  margin-right: 0;
+  margin-left: auto;
+}
+
+
+// # filterBar__buttons
+
+.filterBar__buttons {
+  .filterBar & {
+    // background-color: var(--color-0-300);
+    @include breakpoint($tablet) {
+      display: flex;
+      
+      justify-content: space-between;
+      align-items: center;
+    }
+  
+    @include breakpoint($ipad) {
+      margin-top: 0;
+      padding: 0 15px;
+      margin-bottom: 1rem;
+    }
+  
+    & > * {
+      
+  
+      @include breakpoint($tablet) {
+        width: auto;
+        padding: 0;
+      }
+  
+      .bootstrap-select {
+        margin: 0 !important;
+  
+        @include breakpoint($tablet) {
+          min-width: 220px;
+        }
+      }
+    }
+  }
+}
+
+.forma-quick-search-form .navbar-extra > * {
+  float: none !important;
+}  
+@include breakpoint(ipad) {
+
+
+  #middlearea #course_search_label {
+    width: 70% !important;
+    margin: 0 auto;
+  }
+}
+
+.filterBar__buttonsList {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  padding: 1rem 15px;
+
+  @include breakpoint($tablet) {
+    height: 60px;
+    margin: 0;
+  }
+
+  @include breakpoint(ipad) {
+    padding: 0 15px;
+  }
+
+
+}
+
+.filterBar__button {
+  position: relative;
+  display: inline-block;
+  min-width: max-content;
+  margin: {
+    top: 0 !important;
+    right: 2rem !important;
+    bottom: 0 !important;
+    left: 0 !important;
+  }
+
+  @include breakpoint($tablet) {
+    line-height: 60px;
+  }
+}
+
+.filterBar__button + .filterBar__button {
+  margin-top: 1rem !important;
+  @include breakpoint($ipad) {
+    margin-top: 0 !important;
+  }
+}
+
+
+.filterBar__buttonLink {
+  @extend %filterBarGlobalButton;
+
+  .filterBar__button & {
+    border-radius: 100vh;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    padding: {
+      top: 0;
+      right: 10px;
+      bottom: 0;
+      left: 44px;
+    }
+  
+    &:before {
+      content: "";
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      left: 7px;
+      width: 30px;
+      height: 30px;
+      background-position: center;
+      background-size: contain;
+      background-repeat: no-repeat;
+    }
+
+    &:hover {
+      background-color: var(--color-0-020);
+    }
+
+  }
+
+  .filterBar__button.selected & {
+    background-color: var(--color-0-005) !important;
+    color: var(--color-0-700);
+    box-shadow: 0 0 2px 2px var(--color-0-050);
+    &:hover {
+      background-color: white !important;
+    }
+  }
+}
+
+
+
+
+
+
+
+// # filterBar__mobile
+
+
+
+.filterBar__mobile {
+  padding: 20px;
+
+  @include breakpoint($ipad) {
+    padding: 0;
+  }
+}
+
+
+.navbar-toggle {
+  .filterBar__mobile & {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    line-height: 38px;
+    border-radius: $border-radius;
+    border: 0;
+    background-color: var(--color-0-100);
+  }
+}
+
+
+
+
+
+// # shared button
+
+%filterBarGlobalButton {
+  color: var(--color-0-550);
+  background-color: var(--color-0-050);
+  // box-shadow: var(--color-0-250) 2px 2px 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  transition:
+    background-color 100ms ease-in-out,
+    color 100ms ease-in-out,
+    box-shadow 100ms ease-in-out,
+    transform 100ms ease-in-out;
+  &:hover {
+    // box-shadow: var(--color-0-350) 2px 2px 0 0;
+    text-decoration: none;
+    background-color: var(--color-0-020);
+    color: var(--color-0-600);
+  }
+  &:active {
+    transform: scale(0.95,0.95);
+  }
+}

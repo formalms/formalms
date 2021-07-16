@@ -1,0 +1,40 @@
+{% extends 'partials/course-box.html.twig' %}
+{% block courseBoxMyCoursesNextLesson %}{% endblock %}
+{% block courseBoxHeader %}{% endblock %}
+{% block courseBoxCategory %}
+        <div class="course-box__category">
+            {{ course.course_type }}
+        </div>
+{% endblock %}
+
+{% block unsubscribe %}
+    <li>
+        <a href="javascript:confirmDialog( '{{ Lang_translate('_SELF_UNSUBSCRIBE', 'course') }}',
+                                            '{{ course.escaped_name }}',
+                                            'catalog/self_unsubscribe', 
+                                            {{ course.idCourse }})">
+            {{ Lang_translate('_SELF_UNSUBSCRIBE', 'course') }}
+         </a>
+
+    </li>
+    
+{% endblock %}
+
+
+
+{% set courseBoxClasses = [] %}
+
+
+
+
+{% if not course.courseBoxEnabled %}
+    {% set courseBoxClasses = courseBoxClasses|merge(['course-box--disabled']) %}
+{% endif %}
+
+{% block entercourse %}
+    {% if course.course_type == 'classroom' %}
+        {% include 'partials/classroom-button.html.twig' with { 'course': course } %}
+    {% elseif course.course_type == 'elearning' %}
+        {% include 'partials/elearning-button.html.twig' with { 'course': course } %}
+    {% endif %}
+{% endblock %}

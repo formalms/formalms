@@ -10,8 +10,6 @@ class LangExtension extends \Twig\Extension\AbstractExtension
     {
         return [
             new TwigFunction('Lang_translate', [\Lang::class, 't'], ['is_safe' => ['html']]),
-            new TwigFunction('translate', [\Lang::class, 't'], ['is_safe' => ['html']]),
-
         ];
     }
 }

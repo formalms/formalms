@@ -154,6 +154,301 @@ class CourseLms extends Model
         return $result;
     }
 
+    public static function getCourseParsedData($course)
+    {
+        $path_course = $GLOBALS['where_files_relative'] . '/appLms/' . Get::sett('pathcourse') . '/';
+        $levels = CourseLevel::getLevels();
+        $infoEnroll = self::getInfoEnroll($course['idCourse'], Docebo::user()->getIdSt());
+
+        $parsedData = $course;
+
+        $parsedData['name'] = strip_tags($parsedData['name']); // this for course boxes
+        $parsedData['escaped_name'] = Util::purge($parsedData['name']); // and this for javascript calls
+
+        if ($parsedData['use_logo_in_courselist']) {
+            $parsedData['img_course'] = $parsedData['img_course'] && is_file($path_course . $parsedData['img_course']) ? $path_course . $parsedData['img_course'] : Get::tmpl_path() . 'images/course/course_nologo.png';
+        }
+        else {
+            $parsedData['img_course'] = Get::tmpl_path() . 'images/course/course_nologo.png';
+        }
+
+        if (strlen($parsedData['nameCategory']) > 1) {
+            $parsedData['nameCategory'] = substr($parsedData['nameCategory'], strripos($parsedData['nameCategory'], '/') + 1);
+        }
+
+        $parsedData['level_icon'] = $parsedData['level'];
+        $parsedData['level_text'] = $levels[$parsedData['level']];
+        $parsedData['userCanUnsubscribe'] = self::userCanUnsubscribe($parsedData);
+
+        $date_closing = getDate(strtotime(Format::date($parsedData['date_end'], 'date')));
+        if ($date_closing['year'] > 0) {
+            $parsedData['dateClosing_year'] = $date_closing['year'];
+            $parsedData['dateClosing_month'] = Lang::t('_MONTH_' . substr('0' . $date_closing['mon'], -2), 'standard');
+            $parsedData['dateClosing_day'] = $date_closing['mday'];
+        }
+        $parsedData['is_enrolled'] = !empty($infoEnroll);
+
+        if ($parsedData['is_enrolled']) {
+            $parsedData['canEnter'] = (new Man_Course)->canEnterCourse($parsedData)['can'];
+        } else {
+            $parsedData['canEnter'] = false;
+        }
+        $parsedData['editions'] = false;
+        $parsedData['course_full'] = false;
+        $parsedData['in_cart'] = false;
+        $parsedData['waiting'] = ($infoEnroll['waiting'] || $infoEnroll['status'] == 4); // 4 = overbooked
+        switch ($parsedData['course_type']) {
+            case 'elearning':
+                if (!empty($infoEnroll)) {
+                    $parsedData['level'] = $infoEnroll['level'];
+                    if (!$infoEnroll['waiting'] && $parsedData['canEnter']) {
+                        $learningObject = self::getInfoLastLearningObject($parsedData['idCourse']);
+                        if ($learningObject['obj_type'] === 'scormorg' && $parsedData['level'] <= 3 && $parsedData['direct_play'] === 1) {
+                            $parsedData['useLightBox'] = true;
+                        } else {
+                            $parsedData['useLightBox'] = false;
+                        }
+                        $parsedData['rel'] = $parsedData['useLightBox'] ? "lightbox" : '';
+                    }
+                } else {
+                    if ($parsedData['max_num_subscribe'] > 0) {
+                        $parsedData['course_full'] = self::enrolledStudent($parsedData['idCourse']) >= $parsedData['max_num_subscribe'];
+                    }
+                }
+                break;
+            case 'classroom':
+                $d = new DateManager();
+                $parsedData['edition_exists'] = (count($d->getAvailableDate($parsedData['idCourse'])) > 0);
+                if ( $parsedData['is_enrolled']) {
+                    $parsedData['editions'] = self::getAllClassDisplayInfo($parsedData['idCourse'], $parsedData);
+                }
+                else {
+                    $parsedData['editions'] = (new CatalogLms())->courseSelectionInfo($parsedData['idCourse']);
+                }
+                break;
+            default:
+                break;
+        }
+
+        if (!$parsedData['course_full'] && $parsedData['selling']) {
+            $parsedData['in_cart'] = isset($_SESSION['lms_cart'][$parsedData['idCourse']]);
+        }
+
+        $showOptions = false;
+
+        if ($parsedData['userCanUnsubscribe'] && $parsedData['is_enrolled']) {
+            $showOptions = true;
+        } elseif ($parsedData['course_demo'] && ($parsedData['level'] > 3 || (!$parsedData['waiting'] && $parsedData['canEnter']))) {
+            $showOptions = true;
+        }
+
+        $parsedData['show_options'] = $showOptions;
+
+        $parsedData['courseBoxEnabled'] = false;
+
+        return $parsedData;
+    }
+
+    // if in my courses, I am enrolled, so I need to unenroll if option enabled
+    public static function isBoxEnabledForElearningAndClassroomInElearning($course)
+    {
+        return true;
+    }
+
+    public static function isBoxEnabledForElearningInCatalogue($course)
+    {
+        if ($course['is_enrolled']) {  // if enrolled always show enabled (I need to unenroll myself if option enabled)
+                $courseBoxEnabled = true;
+        } else {
+            if ($course['course_full']) {
+                if ($course['allow_overbooking']) {
+                    $courseBoxEnabled = true;
+                } else {
+                    $courseBoxEnabled = false;
+                }
+            } else {
+                if ((int)$course['selling'] === 0) {
+                    switch ((int)$course['subscribe_method']) {
+                        case 1:
+                        case 2:
+                            $courseBoxEnabled = true;
+                            break;
+                        case 0:
+                        default:
+                            $courseBoxEnabled = false;
+                            break;
+                    }
+                } else {
+                    $courseBoxEnabled = true;
+                }
+            }
+        }
+
+        return $courseBoxEnabled;
+    }
+
+    public static function isBoxEnabledForClassroomInCatalogue($course)
+    {
+        if ($course['edition_exists'] || $course['is_enrolled']) { // if enrolled always show enabled (I need to unenroll myself if option enabled)
+            if ($course['is_enrolled']) {
+                $courseBoxEnabled = true;
+            } else {
+                if ((int)$course['selling'] === 0) {
+                    switch ((int)$course['subscribe_method']) {
+                        case 1:
+                        case 2:
+                            $courseBoxEnabled = true;
+                            break;
+                        default:
+                            $courseBoxEnabled = false;
+                            break;
+                    }
+                } else {
+                    $courseBoxEnabled = true;
+                }
+            }
+        } else {
+            $courseBoxEnabled = false;
+        }
+
+        return $courseBoxEnabled;
+    }
+
+    public static function enrolledStudent($idCourse)
+    {
+        $query = "SELECT COUNT(*)"
+            . " FROM %lms_courseuser"
+            . " WHERE idCourse = '" . $idCourse . "'";
+
+
+        list($enrolled) = sql_fetch_row(sql_query($query));
+        return $enrolled;
+    }
+
+    public static function getAllClassDisplayInfo($id_course, &$course_array)
+    {
+        require_once(_lms_ . '/lib/lib.date.php');
+        $dm = new DateManager();
+        $cl = new ClassroomLms();
+        $course_editions = $cl->getUserEditionsInfo(Docebo::user()->idst, $id_course);
+        $out = [];
+        $course_array['next_lesson'] = '-';
+        $next_lesson_array = [];
+        $currentDate = new DateTime();
+        $a = $currentDate->format('Y-m-d H:i:s');
+
+        // user can be enrolled in more than one edition (as a teacher or crazy student....)
+        foreach ($course_editions[$id_course] as $id_date => $obj_data) {
+            // skip if course if over or not available
+            $end_course = new DateTime(Format::date($obj_data->date_max, 'datetime'));
+            if ($end_course > $currentDate && $obj_data->status == 0) {
+                $out[$id_date]['code'] = $obj_data->code;
+                $out[$id_date]['name'] = $obj_data->name;
+                $out[$id_date]['date_begin'] = $obj_data->date_min;
+                $out[$id_date]['date_end'] = $obj_data->date_max;
+                $array_day = $dm->getDateDayDateDetails($obj_data->id_date);
+
+                foreach ($array_day as $id => $day) {
+                    $out[$id_date]['days'][$id]['classroom'] = $day['classroom'];
+                    $out[$id_date]['days'][$id]['day'] = Format::date($day['date_begin'], 'date');
+                    $out[$id_date]['days'][$id]['begin'] = Format::date($day['date_begin'], 'time');
+                    $out[$id_date]['days'][$id]['end'] = Format::date($day['date_end'], 'time');
+                    $next_lesson_array[$id_date . ',' . $id] = new DateTime(Format::date($day['date_begin'], 'datetime'));
+                }
+            }
+
+        }
+
+        // calculating what's next lession will be; safe mode in case of more editions with different days
+        if (count($next_lesson_array) > 0) {
+            asort($next_lesson_array);
+            foreach ($next_lesson_array as $k => $v) {
+                if ($v > $currentDate) {
+                    $j = explode(',', $k);
+                    $course_array['next_lesson'] = $out[$j[0]]['days'][$j[1]]['day'] . ' ' . $out[$j[0]]['days'][$j[1]]['begin'];
+                    break;
+                }
+            }
+        }
+        return $out;
+    }
+
+    public function courseSelectionInfo($id_course)
+    {
+
+        $query = "SELECT name, selling, prize"
+            . " FROM %lms_course"
+            . " WHERE idCourse = " . (int) $id_course;
+
+        list($course_name, $selling, $price) = sql_fetch_row(sql_query($query));
+        $classrooms = $this->classroom_man->getCourseDate($id_course, false);
+        $classroom_not_confirmed = $this->classroom_man->getNotConfirmetDateForCourse($id_course);
+        // cutting not confirmed classrooms
+        $available_classrooms = array_diff_key($classrooms, $classroom_not_confirmed);
+        $full_classrooms = $this->classroom_man->getFullDateForCourse($id_course);
+        $overbooking_classrooms = $this->classroom_man->getOverbookingDateForCourse($id_course);
+        foreach ($available_classrooms as  $id_date => $classroom_info){
+            $available_classrooms[$id_date]['in_cart'] = isset($_SESSION[$id_course]['classroom'][$id_date]);
+            $available_classrooms[$id_date]['selling'] =  $selling;
+            $available_classrooms[$id_date]['price'] =  $price;
+            $available_classrooms[$id_date]['days'] = $this->classroom_man->getDateDayDateDetails($id_date);
+            $available_classrooms[$id_date]['full'] = isset($full_classrooms[$id_date]);
+            $available_classrooms[$id_date]['overbooking'] = isset($overbooking_classrooms[$id_date]);
+
+
+        }
+        $teachers = array_intersect_key($this->course_man->getClassroomTeachers($id_course), $available_classrooms);
+        return compact('available_classrooms', 'teachers', 'course_name');
+
+    }
+
+    public static function getInfoEnroll($idCourse, $idUser)
+    {
+        $responseData = [];
+        $query = "SELECT status, waiting, level"
+            . " FROM %lms_courseuser"
+            . " WHERE idCourse = " . $idCourse
+            . " AND idUser = " . $idUser;
+        $result = Docebo::db()->query($query);
+
+        if (Docebo::db()->affected_rows() > 0) {
+            $responseData = Docebo::db()->fetch_assoc($result);
+        }
+        return $responseData;
+    }
+
+
+    public static function getInfoLastLearningObject($idCourse)
+    {
+        $responseData = [];
+
+        $query = "SELECT idOrg, idCourse, objectType FROM learning_organization WHERE objectType != '' AND idCourse  = $idCourse ORDER BY path limit 1";
+
+        $result = Docebo::db()->query($query);
+
+        if (Docebo::db()->affected_rows() > 0) {
+            $responseData = Docebo::db()->fetch_assoc($result);
+        }
+        return $responseData;
+    }
+
+    public static function userCanUnsubscribe(&$course)
+    {
+        $now = new DateTime();
+        $defaultTrueDate = new DateTime('2999-01-01');
+
+        $courseUnsubscribeDateLimit = (null !== $course['unsubscribe_date_limit'] ? DateTime::createFromFormat('Y-m-d H:i:s', $course['unsubscribe_date_limit']) : $defaultTrueDate);
+
+        /* need to get course editions unsubscribe date limit
+        $dateUnsubscribeDateLimit = (null !== $course['date_unsubscribe_date_limit'] ? DateTime::createFromFormat('Y-m-d H:i:s', $course['date_unsubscribe_date_limit']) :
+            $defaultTrueDate);
+        */
+        if (((int)$course['auto_unsubscribe'] === 2 || (int)$course['auto_unsubscribe'] === 1) && ($now < $courseUnsubscribeDateLimit )) {
+            return true;
+        }
+        return false;
+    }
+
     /**
      * @return bool
      * @throws CourseIdNotSetException

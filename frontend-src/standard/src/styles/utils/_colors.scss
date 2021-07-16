@@ -1,0 +1,73 @@
+:root {
+    --color-0: hsl(0, 0%, 40%);
+    --color-0-005: hsl(0, 0%, 99.5%);
+    --color-0-010: hsl(0, 0%, 99%);
+    --color-0-020: hsl(0, 0%, 98%);
+    --color-0-030: hsl(0, 0%, 97%);
+    --color-0-040: hsl(0, 0%, 96%);
+    --color-0-050: hsl(0, 0%, 95%);
+    --color-0-100: hsl(0, 0%, 90%);
+    --color-0-150: hsl(0, 0%, 85%);
+    --color-0-200: hsl(0, 0%, 80%);
+    --color-0-250: hsl(0, 0%, 75%);
+    --color-0-300: hsl(0, 0%, 70%);
+    --color-0-350: hsl(0, 0%, 65%);
+    --color-0-400: hsl(0, 0%, 60%);
+    --color-0-450: hsl(0, 0%, 55%);
+    --color-0-500: hsl(0, 0%, 50%);
+    --color-0-550: hsl(0, 0%, 35%);
+    --color-0-600: hsl(0, 0%, 30%);
+    --color-0-700: hsl(0, 0%, 20%);
+    --color-0-800: hsl(0, 0%, 10%);
+    --color-0-900: hsl(0, 0%, 0%);
+
+    --color-1: #ED6D05;
+    --color-1-020: hsl(27, 96%, 98%);
+    --color-1-050: hsl(27, 96%, 95%);
+    --color-1-100: hsl(27, 96%, 90%);
+    --color-1-200: hsl(27, 96%, 80%);
+    --color-1-300: hsl(27, 96%, 70%);
+    --color-1-350: hsl(27, 96%, 65%);
+    --color-1-400: hsl(27, 96%, 60%);
+    --color-1-450: hsl(27, 96%, 53%);
+    --color-1-500: hsl(27, 96%, 47%); // this is the main one
+    --color-1-550: hsl(27, 96%, 42%);
+    --color-1-600: hsl(27, 96%, 38%);
+    --color-1-700: hsl(27, 96%, 30%);
+    --color-1-800: hsl(27, 96%, 20%);
+    --color-1-900: hsl(27, 96%, 10%);
+
+    --color-2: #E73E1B;
+    --color-2-200: hsl(19, 100%, 80%);
+    --color-2-400: hsl(19, 100%, 60%);
+    --color-2-500: hsl(19, 100%, 39%);
+    --color-2-600: hsl(19, 100%, 30%);
+
+    --color-3: #20c200;
+
+    --color-Alberto-10-maggio-2021: #eb6c05;
+}
+
+
+
+
+
+
+$gray-1: rgba(102, 102, 102, 1);
+/// gray color, normal
+/// @type rgba color
+/// @group colors
+$gray-2: rgba(153, 153, 153, 1);
+/// gray color, light
+/// @type rgba color
+/// @group colors
+$gray-3: rgba(194, 194, 194, 1);
+/// gray color, lighter
+/// @type rgba color
+/// @group colors
+$gray-4: rgba(236, 236, 236, 1);
+/// gray color, lighter
+/// @type rgba color
+/// @group colors
+$gray-5: rgba(246, 246, 246, 1);
+$gray-204: rgba(204, 204, 204, 1);

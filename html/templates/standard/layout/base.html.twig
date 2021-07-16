@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ evalPhp('Layout::lang_code') }}">
+<html lang="{{ Layout_getLangCode() }}">
 
 <head>
      {% block compatibility %}
@@ -8,20 +8,20 @@
     
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>{{ layout_title | raw }}</title>
+    <title>{{ Layout_getTitle() }}</title>
     <!-- zone  -->
-    {{ layout_zone_meta}}
+    {{ Layout_getZone('meta') }}
     <!-- meta  -->
-    {{ layout_meta | raw }}
-    <link rel="shortcut icon" href="{{layout_path}}images/favicon.png" type="image/png"/>
-    <link rel="shortcut icon" href="{{layout_path}}images/favicon.ico"/>
+    {{ Layout_getMeta() }}
+    <link rel="shortcut icon" href="{{ Layout_getPath() }}images/favicon.png" type="image/png"/>
+    <link rel="shortcut icon" href="{{ Layout_getPath() }}images/favicon.ico"/>
 
     <!-- reset and font stylesheet -->
-    {{ resetter|raw }}
+    {{ Layout_getResetter() }}
     
     <!-- JQuery, Bootstrap  -->
     {% block jquery_core %}
-    {{ jqueryLib|raw }}    
+        {{ jqueryLib|raw }}
     {% endblock %}
 
     <script type="text/javascript">
@@ -56,21 +56,21 @@
     
 
     <!-- specific stylesheet -->    
-    <link rel="stylesheet" type="text/css" href="{{ layout_path }}style/base.css"/>    
-    <link rel="stylesheet" type="text/css" href="{{ layout_path }}style/responsive.css"/>
-    <link rel="stylesheet" type="text/css" href="{{ layout_path }}style/font-awesome/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="{{ Layout_getPath() }}style/base.css"/>
+    <link rel="stylesheet" type="text/css" href="{{ Layout_getPath() }}style/responsive.css"/>
+    <link rel="stylesheet" type="text/css" href="{{ Layout_getPath() }}style/font-awesome/css/font-awesome.min.css" />
 
     <!-- to be eliminated -->    
-    {{ yuiLib}}
+    {{ Yui_load() }}
     <!-- printer stylesheet-->
-    <link rel="stylesheet" type="text/css" href="{{ layout_path }}style/print.css" media="print"/>
-    {{ accessibility|raw }}
+    <link rel="stylesheet" type="text/css" href="{{ Layout_getPath() }}style/print.css" media="print"/>
+    {{ Layout_getAccessibility() }}
     <!-- Page Head area -->
-    {{ layout_zone_page_head|raw }}
-    {{ layout_rtl|raw }}
+    {{ Layout_getZone('page_head') }}
+    {{ Layout_getRtl() }}
     {% block pagehead %}
     {% endblock %}
-    
+
     
     <!-- Custom css area -->    
     {% block stylesheet %}
@@ -78,17 +78,17 @@
 
     <!-- Custom Javascripts area -->
 
-    <script type="text/javascript" src="{{ layout_path }}script/tabnav.js"></script>
-    <script type="text/javascript" src="{{ layout_path }}static/main.js"></script>
+    <script type="text/javascript" src="{{ Layout_getPath() }}script/tabnav.js"></script>
+    <script type="text/javascript" src="{{ Layout_getPath() }}static/main.js"></script>
 
   {% block javascript %}
     {% endblock %}
 
     <!-- Restyling -->
-    <link rel="stylesheet" type="text/css" href="{{ layout_path }}static/main.min.css">
+    <link rel="stylesheet" type="text/css" href="{{ Layout_getPath() }}static/main.min.css">
     <!--
     To use or edit the not minified css uncomment this portion of code
-    <link rel="stylesheet" type="text/css" href="{{ layout_path }}static/main.css">
+    <link rel="stylesheet" type="text/css" href="{{ Layout_getPath() }}static/main.css">
     -->
     {% if custom_css_path is defined %}
     <link rel="stylesheet" type="text/css" href="{{ custom_css_path }}" />
@@ -99,7 +99,7 @@
     {#<div class="container-fluid">      #}
     {% block content %}
     {% endblock %}
-        {{ layout_analytics|raw }}
+        {{ Layout_getAnalytics() }}
     {#</div>#}
 </body>
 </html>

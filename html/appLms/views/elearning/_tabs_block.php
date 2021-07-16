@@ -12,18 +12,18 @@
                 $count = 0;
                 $statusFilters = $_model->getFilterStatusCourse(Docebo::user()->getIdst());
 
-                $html = '<ul class="nav nav-pills">';
+                $html = '<ul class="filterBar nav nav-pills">';
 
                 foreach($statusFilters as $key => $value )
                {
 
                     if ($count === 0) {
-                        $html .= '<li class="selected js-label-menu-filter" data-value="' . $key . '">';
+                        $html .= '<li class="selected js-label-menu-filter filterBar__button" data-value="' . $key . '">';
                     } else {
-                        $html .= '<li class="js-label-menu-filter" data-value="' . $key . '">';
+                        $html .= '<li class="js-label-menu-filter filterBar__button" data-value="' . $key . '">';
                     }
 
-                    $html .= '<a class="icon--filter-' . $key . '" href="#" >' . $value . '</a>';
+                    $html .= '<a class="icon--filter-' . $key . ' filterBar__buttonLink" href="#" >' . $value . '</a>';
                     $html .= '</li>';
                     $count++;
                 }

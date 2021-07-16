@@ -1,0 +1,71 @@
+{% block classRoomButton %}
+    {% if course.edition_exists %}
+        {% if course.is_enrolled %}
+            {% if course.waiting %}
+                <a class="forma-button forma-button--disabled" href="javascript:void(0);" title="{{ course.name }}">
+                    <span class="forma-button__label">
+                        {{ Lang_translate('_WAITING', 'catalogue') }}
+                    </span>
+                </a>
+            {% else %}
+                {% if course.canEnter %}
+                    <a class="forma-button course-box__cta__button" title="{{ course.name }}"
+                       href="index.php?modname=course&op=aula&idCourse={{ course.idCourse }}"
+                       rel="{{ course.rel }}">
+                        <span class="forma-button__label">{{ Lang_translate('_USER_STATUS_ENTER', 'catalogue') }}</span>
+                    </a>
+                {% else %}
+                    <a class="forma-button forma-button--disabled" rel="{{ course.rel }}" href="javascript:void(0);">
+                        <span class="forma-button__label">
+                            {{ Lang_translate('_DISABLED', 'course') }}
+                        </span>
+                    </a>
+                {% endif %}
+            {% endif %}    
+        {% else %}
+            {% if course.selling == 0 %}
+                {% if course.subscribe_method == 2 or course.subscribe_method == 1 %}
+                    <a class="forma-button course-box__cta__button" title="{{ course.name }}"
+                       rel="{{ course.rel }}" data-target="course-box__modal_{{ course.courseId }}"
+                       onclick ="chooseEdition({{ course.idCourse }})">
+                        {% if course.subscribe_method == 2 %}
+                            <span class="forma-button__label">{{ Lang_translate('_SUBSCRIBE', 'catalogue') }}</span>
+                        {% else %}
+                            <span class="forma-button__label">{{ Lang_translate('_COURSE_S_MODERATE', 'catalogue') }}</span>
+                        {% endif %}
+                    </a>
+
+                    <button class="btn btn-link" type="button" data-toggle="collapse"
+                            data-target="#collapse_{{ classroomInfo.id_date }}"
+                            aria-expanded="false"
+                            aria-controls="collapse_{{ classroomInfo.id_date }}">
+                        <a href='#'>{{ classroomInfo.name }}</a>
+                    </button>
+                {% elseif course.subscribe_method == 0 %}
+                    <a class="forma-button course-box__cta__button" title="{{ course.name }}"
+                       rel="{{ course.rel }}" href="javascript:void(0);">
+                        <span class="forma-button__label">{{ Lang_translate('_COURSE_S_GODADMIN', 'catalogue') }}</span>
+                    </a>
+                {% endif %}
+            {% else %}    
+                {% if course.in_cart %}
+                    <a href="javascript:void(0);" class="forma-button forma-button--orange-hover">
+                        <p class="forma-button__label">{{ Lang_translate('_COURSE_IN_CART', 'catalogue') }}</p>
+                    </a>
+                {% else %}    
+                    <a class="forma-button forma-button--green forma-button--orange-hover" href="javascript:;" 
+                        onclick ="chooseEdition({{ course.idCourse }})">    
+                        <span class="forma-button__label">{{ Lang_translate('_ADD_TO_CART', 'catalogue') }}</span>
+                    </a>                                
+                {% endif %}    
+                
+            {% endif %}
+        {% endif %}
+    {% else %}
+        <a class="forma-button forma-button--disabled" href="javascript:void(0);" title="{{ course.name }}">
+            <span class="forma-button__label">
+                {{ Lang_translate('_NO_AVAILABLE_EDITIONS', 'catalogue') }}
+            </span>
+        </a>
+    {% endif %}
+{% endblock %}

@@ -253,7 +253,7 @@ Class SubscriptionAlms extends Model
 		return $res;
 	}
 
-	public function subscribeUser($id_user, $level, $waiting, $date_begin_validity = FALSE, $date_expire_validity = FALSE) {
+	public function subscribeUser($id_user, $level, $waiting, $overbooking = 0, $date_begin_validity = FALSE, $date_expire_validity = FALSE) {
 		if($this->id_edition != 0) {
 			require_once(_lms_.'/lib/lib.edition.php');
 			$edition_man = new EditionManager();
@@ -265,7 +265,7 @@ Class SubscriptionAlms extends Model
 		} else {
 			require_once(_lms_.'/lib/lib.subscribe.php');
 			$subscribe_man = new CourseSubscribe_Manager();
-			return $subscribe_man->subscribeUserToCourse($id_user, $this->id_course, $level, $waiting, $date_begin_validity, $date_expire_validity);
+			return $subscribe_man->subscribeUserToCourse($id_user, $this->id_course, $level, $waiting, $overbooking, $date_begin_validity, $date_expire_validity);
 		}
 	}
 
@@ -274,16 +274,36 @@ Class SubscriptionAlms extends Model
 		if ($this->id_edition != 0) {
 			require_once(_lms_.'/lib/lib.edition.php');
 			$edition_man = new EditionManager();
-			return $edition_man->delUserFromEdition($id_user, $this->id_course, $this->id_edition);
+			$ret = $edition_man->delUserFromEdition($id_user, $this->id_course, $this->id_edition);
 		} elseif ($this->id_date != 0) {
 			require_once(_lms_.'/lib/lib.date.php');
 			$date_man = new DateManager();
-			return $date_man->delUserFromDate($id_user, $this->id_course, $this->id_date);
+			$ret = $date_man->delUserFromDate($id_user, $this->id_course, $this->id_date);
 		} else {
 			require_once(_lms_.'/lib/lib.subscribe.php');
 			$subscribe_man = new CourseSubscribe_Manager();
-			return $subscribe_man->delUserFromCourse($id_user, $this->id_course);
+			$ret = $subscribe_man->delUserFromCourse($id_user, $this->id_course);
+            /* enrolling first  overbooked user , if any */            
+            if ($ret ) {
+                $cmodel = new CourseAlms();    
+                $user_to_enroll = $cmodel->getFirstOverbooked($this->id_course);
+                if ($user_to_enroll) {
+                    $course_info = $this->getCourseInfoForSubscription();
+                    $status = ($course_info['subscribe_method'] == 1 ? -2 : 0); // check for need approval
+                    
+                    $query = "UPDATE %lms_courseuser  SET status = ".$status
+                    . ($status == -2 ? ' ,waiting=1':'')
+                    ." WHERE idCourse = ".$this->id_course." AND iduser = ".$user_to_enroll;
+                    $ret = sql_query($query);   
+                }
+            }            
+            
+            
 		}
+
+        return $ret;
+        
+        
 	}
 
 
@@ -360,6 +380,18 @@ Class SubscriptionAlms extends Model
 
 				$date_man->setDateFinished($this->id_date, $id_user);
 			}
+            
+            require_once(_lms_.'/lib/lib.date.php');
+            $date_man = new DateManager();
+            if($new_status == _CUS_OVERBOOKING) {
+                $date_man->setDateOverbooking($this->id_date, $id_user, 1);
+            } else {
+                $date_man->setDateOverbooking($this->id_date, $id_user, 0);
+            }
+            
+            if($new_status == _CUS_OVERBOOKING) {
+            
+            }    
 
 			return $subscribe_man->updateUserStatusInCourse($id_user, $this->id_course, $new_status);
 		}
@@ -899,7 +931,7 @@ Class SubscriptionAlms extends Model
 		// check and send message for unsibscription moderated
 		if ( ($res) && (int)$cinfo['auto_unsubscribe'] == 1 ) {
 			//moderated self unsubscribe
-			$userinfo = $this->acl_man->getUser($id_user);
+			$userinfo = $this->acl_man->getUser($id_user, false);
 			$array_subst = array('[url]' => Get::site_url(),
 				'[course]' => $cinfo['name'],
 				'[firstname]' => $userinfo[ACL_INFO_FIRSTNAME],

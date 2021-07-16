@@ -138,7 +138,8 @@ $grid-max-width: 1268px;
 /// transition base props
 /// @type Number
 /// @group transition
-$transition-base: all 0.2s ease-in 0s;
+
+$transition-base: all 110ms ease-in-out;
 
 
 $dashboard-popup-bg: #F3ECEC;
@@ -146,3 +147,8 @@ $elearning-color: #A478EA;
 $classroom-color: #007CC8;
 $dashboard-popup-title: #7D7C7C;
 $dashboard-popup-desc: #6B6B6B;
+
+
+$border-radius: 2px;
+$color-red-1: hsl(19, 100%, 39%);
+$color-red-2: hsl(19, 100%, 48%);

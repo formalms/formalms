@@ -1,65 +1,3 @@
-<?php
-
-
-function ShowCatalogue($user_catalogue)
-{
-    if (Get::sett('on_catalogue_empty') == 'on') {
-        if (count($user_catalogue) === 0) {
-            showGeneralCatalogueTab();
-        } else {
-            showUserCatalogueTab($user_catalogue);
-        }
-    } else {
-        if (count($user_catalogue) > 0) {
-            showUserCatalogueTab($user_catalogue);
-        } else {
-            showEmptyCatalogueTab();
-        }
-
-    }
-}
-
-// display assigned catalogues
-function showUserCatalogueTab($user_catalogue)
-{
-    $i = 0;
-    foreach ($user_catalogue as $id_catalogue => $cat_info) {
-        if ((Get::req('id_catalogue', DOTY_INT, 0) === 0 && $i === 0) || (Get::req('id_catalogue', DOTY_INT, 0) === $id_catalogue)) {
-            $active = "class='active'";
-            $i = 1;
-            $current_catalogue_id = $id_catalogue;
-            echo PHP_EOL . '<script>current_catalogue=' . $id_catalogue . ';</script>' . PHP_EOL;
-        }
-        echo '<li ' . $active . '>'
-            . '<a href="index.php?r=catalog/show&amp;id_catalogue=' . $id_catalogue . '">'
-            . '' . $cat_info['name'] . ''
-            . '</a>'
-            . '</li>';
-        $active = '';
-    }
-    return;
-}
-
-// display general catalogue
-function showGeneralCatalogueTab()
-{
-    echo '<li class="active"><a href="index.php?r=catalog/show&amp;id_catalogue=0">' . Lang::t('_CATALOGUE') . '</a></li>' .
-        PHP_EOL . '<script>current_catalogue=0;</script>' . PHP_EOL;
-
-}
-
-function showEmptyCatalogueTab()
-{
-    echo '<li class="active">'
-        . '<a href="#">'
-        . Lang::t('_CATALOGUE')
-        . '</a>'
-        . '</li>';
-}
-
-?>
-
-
 <style>
 
     .material-switch > input[type="checkbox"] {
@@ -126,10 +64,9 @@ function showEmptyCatalogueTab()
 
 </style>
 
-
 <script language="javascript">
 
-
+    current_catalogue={{ data.id_catalogue }};
     function getCurrentTypeCourse() {
         c = getCookie('catalog[' + current_catalogue + '].type_course');
         return (c == '' ? '' : c)
@@ -137,7 +74,7 @@ function showEmptyCatalogueTab()
 
 
     $(document).ready(function () {
-        $('body').append('<div id="toTop" class="btn btn-info"><span class="glyphicon glyphicon-chevron-up"></span><?php echo Lang::t('_BACKTOTOP', 'faq') ?></div>');
+        $('body').append('<div id="toTop" class="btn btn-info"><span class="glyphicon glyphicon-chevron-up"></span>{{ Lang_translate('_BACKTOTOP', 'faq') }}</div>');
         $(window).scroll(function () {
             if ($(this).scrollTop() != 0) {
                 $('#toTop').fadeIn();
@@ -163,24 +100,45 @@ function showEmptyCatalogueTab()
 
 </script>
 
-
+<div class="middlearea_container middlearea_container--margintop-small">
 <div class="tabs-wrapper">
     <ul id="catalog_nav" class="nav nav-tabs hidden-xs">
-        <?php
-        ShowCatalogue($user_catalogue);
-        ?>
+        
+        {% if data.show_general_catalogue_tab %}
+            <li class="active"><a href="index.php?r=catalog/show&amp;id_catalogue=0"> {{ Lang_translate('_CATALOGUE') }}</a></li>
+       {% endif %}
+       
+       {% if data.show_empty_catalogue_tab %}
+            <li class="active"><a href="#">{{ Lang_translate('_CATALOGUE') }}</a></li>
+        {% endif %}
+        
+        {% if data.show_user_catalogue_tab %}
+
+            {% for catalogue, catalogueInfo in data.user_catalogue %}
+           
+                {% if ((data.id_catalogue == 0 or data.id_catalogue == catalogue) and not(tab_actived)) %} 
+                    {% set active = 'active' %}
+                    {% set tab_actived = true %}
+                {% else %}
+                    {% set active = '' %} 
+                {% endif %}              
+                <li class="{{ active }}"><a href="index.php?r=catalog/show&amp;id_catalogue={{ catalogue }}"> {{ catalogueInfo.name }} </a></li>
+            {% endfor %}           
+        {% endif %}
+        
+        
+        
     </ul>
 
 </div>
 <div class="tab_subnav">
-    <ul class="nav nav-pills">
+    <ul class="filterBar nav nav-pills">
         <li>
             <select class='form-control' id="typeCourse">
-                <option value=''><?php echo Lang::t('_ALL') ?></option>
-                <option value='elearning'><?php echo Lang::t('_ELEARNING', 'catalogue') ?></option>
-                <option value='classroom'><?php echo Lang::t('_CLASSROOM_COURSE', 'cart') ?></option>
+                <option value=''>{{ Lang_translate('_ALL') }}</option>
+                <option value='elearning'>{{ Lang_translate('_ELEARNING', 'catalogue') }}</option>
+                <option value='classroom'>{{ Lang_translate('_CLASSROOM_COURSE', 'cart') }}</option>
             </select>
         </li>
     </ul>
 </div>
- 

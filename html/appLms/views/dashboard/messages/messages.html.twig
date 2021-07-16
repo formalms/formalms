@@ -28,7 +28,7 @@
                         {% else %}
                             <h3 class="d-title">
                                 {% if block.data.title is empty %}
-                                    {{ translate('_DASHBOARDBLOCKMESSAGELMS','dashboard') }}
+                                    {{ Lang_translate('_DASHBOARDBLOCKMESSAGELMS','dashboard') }}
                                 {% else %}
                                     {{ block.data.title }}
                                 {% endif %}</h3>
@@ -51,7 +51,7 @@
                                         </div>
                                         {% if message.attach %}
                                             <div class="d-link text-center">
-                                                <a class="ico-wt-sprite subs_pdf" alt="{{ message.attach }}" href="index.php?r=message/download&amp;id_message={{ message.idMessage }}" title="{{ translate('_DOWNLOAD', 'certificate') }}"><span>{{ translate('_ATTACHMENT', 'standard') }}</span></a>
+                                                <a class="ico-wt-sprite subs_pdf" alt="{{ message.attach }}" href="index.php?r=message/download&amp;id_message={{ message.idMessage }}" title="{{ Lang_translate('_DOWNLOAD', 'certificate') }}"><span>{{ Lang_translate('_ATTACHMENT', 'standard') }}</span></a>
                                             </div>
                                         {% endif %}
                                         {% if message.textof %}
@@ -62,12 +62,12 @@
                                     </div>
                                 {% endfor %}
                             {% else %}
-				                <div class="alert alert-danger text-center">{{ translate('_DASHBOARD_BLOCKMESSAGES_NO_RECORDS', 'dashboard') }}</div>
+				                <div class="alert alert-danger text-center">{{ Lang_translate('_DASHBOARD_BLOCKMESSAGES_NO_RECORDS', 'dashboard') }}</div>
                             {% endif %}
 
                             {% if block.data.show_button %}
                                 <a class="forma-button forma-button--orange-hover forma-button--full d-button--message text-center" title="" href="{{ block.link }}">
-                                    <span class="forma-button__label">{{ translate('_MESSAGES', 'standard') }}</span>
+                                    <span class="forma-button__label">{{ Lang_translate('_MESSAGES', 'standard') }}</span>
                                 </a>
                             {% endif %}
                         {% endif %}

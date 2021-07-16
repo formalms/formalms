@@ -17,7 +17,7 @@
         <div class="d-courses d-widget">
             <h3 class="d-title">
                 {% if block.data.title is empty %}
-                    {{ translate('_DASHBOARDBLOCKCOURSESLMS','dashboard') }}
+                    {{ Lang_translate('_DASHBOARDBLOCKCOURSESLMS','dashboard') }}
                 {% else %}
                     {{ block.data.title }}
                 {% endif %}
@@ -64,7 +64,7 @@
             <div class="d-courses__cta-wrapper">
                 <a class="forma-button forma-button--orange-hover forma-button--full d-button--cert" title=""
                    href="index.php?r=elearning/show&amp;sop=unregistercourse">
-                    <span class="forma-button__label">{{ translate('_ALL_COURSES', 'standard') }}</span>
+                    <span class="forma-button__label">{{ Lang_translate('_ALL_COURSES', 'standard') }}</span>
                 </a>
             </div>
         </div>

@@ -1,0 +1,5 @@
+{% extends 'partials/course-box.html.twig' %}
+{% set courseBoxClasses = [] %}
+{% if not course.courseBoxEnabled %}
+    {% set courseBoxClasses = courseBoxClasses|merge(['course-box--disabled']) %}
+{% endif %}

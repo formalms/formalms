@@ -131,7 +131,7 @@
     </ul>
 </div>
 <div class="tab_subnav forma-quick-search-form">
-    <ul class="nav nav-pills">
+    <ul class="filterBar nav nav-pills">
         <li>
             <select class='form-control' id="typeCourse" onchange="javascript:loadCourseType();">
                 <option value=''><?php echo Lang::t('_ALL') ?></option>

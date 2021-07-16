@@ -1,0 +1,73 @@
+{% block elearningButton %}
+
+    {% if course.is_enrolled %}
+        {% if course.waiting %}
+            <a class="forma-button forma-button--disabled" href="javascript:void(0);" title="{{ course.name }}">
+                <span class="forma-button__label">
+                    {{ Lang_translate('_WAITING', 'catalogue') }}
+                </span>
+            </a>
+        {% else %}
+            {% if course.canEnter %}
+                <a class="forma-button course-box__cta__button" title="{{ course.name }}"
+                   href="index.php?modname=course&op=aula&idCourse={{ course.idCourse }}"
+                   rel="{{ course.rel }}">
+                    <span class="forma-button__label">{{ Lang_translate('_USER_STATUS_ENTER', 'catalogue') }}</span>
+                </a>
+            {% else %}
+                <a class="forma-button forma-button--disabled" rel="{{ course.rel }}" href="javascript:void(0);">
+                    <span class="forma-button__label">
+                        {{ Lang_translate('_DISABLED', 'course') }}
+                    </span>
+                </a>
+            {% endif %}
+        {% endif %}
+    {% else %}
+        {% if course.course_full %}
+            {% if not course.allow_overbooking %}
+                <a class="forma-button course-box__cta__button" title="{{ course.name }}"
+                   rel="{{ course.rel }}" href="javascript:void(0);">
+                    <span class="forma-button__label">{{ Lang_translate('_MAX_NUM_SUBSCRIBE', 'course') }} ({{ course.max_num_subscribe }})</span>
+                </a>
+            {% else %}
+                <a class="forma-button course-box__cta__button" title="{{ course.name }}"
+                   onclick="confirmDialog('{{ Lang_translate('_SUBSCRIBE', 'catalogue') }}','{{ course.escaped_name }}','catalog/subscribeToCourse','{{ course.idCourse }}', '1')"
+                   rel="{{ course.rel }}">
+                    <span class="forma-button__label">{{ Lang_translate('_USER_STATUS_OVERBOOKING', 'subscribe') }}</span>
+                </a>
+            {% endif %}
+        {% else %}
+            {% if course.selling == 0 %}
+                {% if course.subscribe_method == 2 or course.subscribe_method == 1 %}
+                    <a class="forma-button course-box__cta__button" title="{{ course.name }}"
+                       onclick="confirmDialog('{{ Lang_translate('_SUBSCRIBE', 'catalogue') }}','{{ course.escaped_name }}','catalog/subscribeToCourse','{{ course.idCourse }}', '0')"
+                       rel="{{ course.rel }}">
+                        {% if course.subscribe_method == 2 %}
+                            <span class="forma-button__label">{{ Lang_translate('_SUBSCRIBE', 'catalogue') }}</span>
+                        {% else %}
+                            <span class="forma-button__label">{{ Lang_translate('_COURSE_S_MODERATE', 'catalogue') }}</span>
+                        {% endif %}
+                    </a>
+                {% elseif course.subscribe_method == 0 %}
+                    <a class="forma-button course-box__cta__button" title="{{ course.name }}"
+                       rel="{{ course.rel }}" href="javascript:void(0);">
+                        <span class="forma-button__label">{{ Lang_translate('_COURSE_S_GODADMIN', 'catalogue') }}</span>
+                    </a>
+                {% endif %}
+            {% else %}
+                {% if course.in_cart %}
+                    <a class="forma-button course-box__cta__button" title="{{ course.name }}"
+                       rel="{{ course.rel }}" href="javascript:void(0);">
+                        <span class="forma-button__label">{{ Lang_translate('_COURSE_IN_CART', 'catalogue') }}</span>
+                    </a>
+                {% else %}
+                    <a class="forma-button course-box__cta__button" title="{{ course.name }}"
+                       onclick="confirmDialog('{{ Lang_translate('_CONFIRM_ADD_TO_CART', 'catalogue') }}','{{ course.escaped_name }} <br><br> {{ Get_getSetting('currency_symbol', '&euro;') }} {{ course.prize }}','catalog/addToCart','{{ course.idCourse }}', '0')"
+                       rel="{{ course.rel }}">
+                            <span class="forma-button__label">{{ Lang_translate('_ADD_TO_CART', 'catalogue') }}</span>
+                    </a>
+                {% endif %}
+            {% endif %}
+        {% endif %}
+    {% endif %}
+{% endblock %}

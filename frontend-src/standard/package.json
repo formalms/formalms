@@ -39,6 +39,7 @@
     "@fullcalendar/core": "^4.4.2",
     "@fullcalendar/daygrid": "^4.4.2",
     "@shopify/draggable": "^1.0.0-beta.8",
+    "agentkeepalive": "^4.1.4",
     "axios": "^0.19.2",
     "babel-polyfill": "^6.26.0",
     "bootstrap-sass": "3.3.7",

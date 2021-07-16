@@ -103,8 +103,8 @@ class ElearningLmsController extends LmsController
                 Util::jump_to('index.php?r=lms/catalog/show&op=unregistercourse');
         }
 
-        $block_list = [];        
-        $tb_label = (Get::sett('use_course_label', false) == 'off'? false: true);
+        $block_list = [];
+        $tb_label = (Get::sett('use_course_label', false) == 'off' ? false : true);
         if (!$tb_label) {
             $_SESSION['id_common_label'] = 0;
         } else {
@@ -112,14 +112,13 @@ class ElearningLmsController extends LmsController
             $_SESSION['id_common_label'] = $id_common_label;
             $block_list['labels'] = true;
         }
-        
 
 
         if ($tb_label) {
             require_once(_lms_ . '/admin/models/LabelAlms.php');
             $label_model = new LabelAlms();
             $user_label = $label_model->getLabelForUser(Docebo::user()->getId());
-            $this->render('_tabs_block', ['block_list' => $block_list, 'use_label' => $tb_label, 'label' => $user_label, 'current_label' => $id_common_label]);                
+            $this->render('_tabs_block', ['block_list' => $block_list, 'use_label' => $tb_label, 'label' => $user_label, 'current_label' => $id_common_label]);
         } else {
             $this->render('_tabs_block', ['block_list' => $block_list, 'use_label' => $tb_label]);
         }
@@ -177,12 +176,14 @@ class ElearningLmsController extends LmsController
             $params[':year'] = $filter_year;
         }
 
-        if (!empty($filter_cat) && $filter_cat != '0') {
+        if (!empty($filter_cat) && $filter_cat !== '0') {
             $conditions[] = "(c.idCategory in (:filter_category) )";
             $arr_cat = explode(',', $filter_cat);
-			$arr_cat = array_map(
-				function($value) { return (int)$value; },
-				$arr_cat
+            $arr_cat = array_map(
+                function ($value) {
+                    return (int)$value;
+                },
+                $arr_cat
             );
             $arr_cat = array_unique($arr_cat);
             $params[':filter_category'] = implode(",", $arr_cat);
@@ -191,79 +192,51 @@ class ElearningLmsController extends LmsController
         // course status : all status, new, completed, in progress
         if ($filter_status !== '' && $filter_status !== 'all') {
             $arr_status = explode(',', $filter_status);
-			$arr_status = array_map(
-				function($value) { return (int)$value; },
-				$arr_status
+            $arr_status = array_map(
+                function ($value) {
+                    return (int)$value;
+                },
+                $arr_status
             );
             $arr_status = array_unique($arr_status);
             $conditions[] = '(cu.status in (' . implode(",", $arr_status) . ') )';
-        }
-        else if ($filter_status == 'all') {
+        } else if ($filter_status === 'all') {
             $conditions[] = '(c.status <> 3 ) AND c.idCourse NOT IN (
                 SELECT id_course FROM learning_course_date AS dt 
                 INNER JOIN learning_course_date_user du ON dt.id_date = du.id_date
-                WHERE dt.id_course = c.idCourse AND status IN (1,2) AND du.id_user = '.$params[':id_user'].'
+                WHERE dt.id_course = c.idCourse AND status IN (1,2) AND du.id_user = ' . $params[':id_user'] . '
             ) ';
         }
 
         // course type: elearning, all, classroom 
-        if ($filter_type != 'all') {
+        if ($filter_type !== 'all') {
             $conditions[] = "c.course_type = ':course_type'";
             $params[':course_type'] = $filter_type;
         }
 
         $courselist = $model->findAll($conditions, $params);
-        
+
         foreach ($courselist as $k => $course_array) {
-            $courselist[$k]['can_enter'] = Man_Course::canEnterCourse($courselist[$k]);
-            if ( strlen($course_array['name']) >=50 ){
-                $courselist[$k]['tooltipClass'] =  'has-forma-tooltip';
-                $courselist[$k]['tooltipElement'] =  '<div class="forma-tooltip">'.$course_array['name'].'</div>';
-                $courselist[$k]['name'] = substr($course_array['name'], 0, 50) . '...';                
-            } else {
-                $courselist[$k]['tooltipClass'] =  '';
-                $courselist[$k]['tooltipElement'] =  '';
-            }
-            if (strlen($course_array['nameCategory']) > 1 )
-                $courselist[$k]['nameCategory'] = substr($course_array['nameCategory'], strripos($course_array['nameCategory'],'/')+1);
-            $courselist[$k]['level_icon'] = $course_array['level'];
-            $courselist[$k]['level_text'] = $this->levels[$course_array['level']]; 
-            $courselist[$k]['userCanUnsubscribe'] = $this->userCanUnsubscribe($course_array);
-            
-            $date_closing = getDate(strtotime(Format::date($course_array['date_end'], 'date'))); 
-            if ( $date_closing['year'] > 0 ) {
-                $courselist[$k]['dateClosing_year'] = $date_closing['year'];
-                $courselist[$k]['dateClosing_month'] = Lang::t('_MONTH_'.substr('0'.$date_closing['mon'], -2), 'standard');
-                $courselist[$k]['dateClosing_day'] = $date_closing['mday'];
-            }
-           $courselist[$k]['img_course'] = $course_array['img_course'] ?  $this->path_course . $course_array['img_course'] : Get::tmpl_path() . 'images/course/course_nologo.png';
-           if ($course_array['course_type'] == 'classroom' ) {
-                $courselist[$k]['editions'] =  $model->_getClassDisplayInfo($k, $courselist[$k]);
-           } else  {
-               $courselist[$k]['editions'] = false;
-           }
-            $courselist[$k]['name'] = Util::purge($courselist[$k]['name']);
-            $courselist[$k]['rel'] =  ($courselist[$k]['direct_play'] == 1 && 
-                                       $courselist[$k]['level'] <= 3 && 
-                                       $courselist[$k]['first_lo_type'] == 'scormorg' ?  "lightbox" : '');
-           
-                 
+            $course = CourseLms::getCourseParsedData($course_array);
+            $course['courseBoxEnabled'] = CourseLms::isBoxEnabledForElearningAndClassroomInElearning($course);
+            $courselist[$k] = $course;
         }
         switch ($filter_type) {
             case "elearning":
                 $ft = Lang::t('_ELEARNING', 'catalogue');
+                break;
             case "classroom":
                 $ft = Lang::t('_CLASSROOM_COURSE', 'cart');
+                break;
             case "all":
-                $ft =  Lang::t('_ALL_COURSES', 'standard');
+                $ft = Lang::t('_ALL_COURSES', 'standard');
+                break;
+            default:
+                break;
         }
-        
-        
-        
-        
+
 
         require_once(_lms_ . '/lib/lib.middlearea.php');
-        $ma = new Man_MiddleArea();
         $this->render('courselist', [
             'path_course' => $this->path_course,
             'courselist' => $courselist,
@@ -275,27 +248,28 @@ class ElearningLmsController extends LmsController
             'current_user' => $params[':id_user']
         ]);
     }
-    
-    public function allLabelTask(){
+
+    public function allLabelTask()
+    {
         require_once(_lms_ . '/admin/models/LabelAlms.php');
         $label_model = new LabelAlms();
         $user_label = $label_model->getLabelForUser(Docebo::user()->getId());
-        $ret ="";
-        foreach($user_label as $id_common_label => $label_info) {
-           $url = "index.php?r=elearning/show&amp;id_common_label=".$id_common_label;
-           $ret .=    '<div class="label_container">'
-                        .'<a class="no_decoration" href="'.$url.'">'
-                            .'<span class="label_image_cont">'
-                                .'<img class="label_image" src="'.($label_info['image'] !== '' ? $GLOBALS['where_files_relative'].'/appLms/label/'.$label_info['image'] : Get::tmpl_path('base').'images/course/label_image.png').'" />'
-                            .'</span>'
-                            .'<span class="label_info_con">'
-                                .'<span class="label_title">'.$label_info['title'].'</span>'
-                                .($label_info['description'] !== '' ? '<br /><span id="label_description_'.$id_common_label.'" class="label_description" title="'.html_entity_decode($label_info['description']).'">'.$label_info['description'].'</span>' : '')
-                            .'</span>'
-                        .'</a>'
-                    .'</div>';
+        $ret = "";
+        foreach ($user_label as $id_common_label => $label_info) {
+            $url = "index.php?r=elearning/show&amp;id_common_label=" . $id_common_label;
+            $ret .= '<div class="label_container">'
+                . '<a class="no_decoration" href="' . $url . '">'
+                . '<span class="label_image_cont">'
+                . '<img class="label_image" src="' . ($label_info['image'] !== '' ? $GLOBALS['where_files_relative'] . '/appLms/label/' . $label_info['image'] : Get::tmpl_path('base') . 'images/course/label_image.png') . '" />'
+                . '</span>'
+                . '<span class="label_info_con">'
+                . '<span class="label_title">' . $label_info['title'] . '</span>'
+                . ($label_info['description'] !== '' ? '<br /><span id="label_description_' . $id_common_label . '" class="label_description" title="' . html_entity_decode($label_info['description']) . '">' . $label_info['description'] . '</span>' : '')
+                . '</span>'
+                . '</a>'
+                . '</div>';
         }
-        echo $ret;                
+        echo $ret;
     }
 
     /**
@@ -379,28 +353,6 @@ class ElearningLmsController extends LmsController
 
         Util::jump_to($jump_url);
     }
-
-    
-    
-    private function userCanUnsubscribe(&$course)
-    {
-        $now = new DateTime();
-
-        $courseUnsubscribeDateLimit = (null !== $course['course_unsubscribe_date_limit'] ? DateTime::createFromFormat('Y-m-d H:i:s', $course['course_unsubscribe_date_limit']) : DateTime::createFromFormat('Y-m-d', '2199-01-01'));
-        $dateUnsubscribeDateLimit = (null !== $course['date_unsubscribe_date_limit'] ? DateTime::createFromFormat('Y-m-d H:i:s', $course['date_unsubscribe_date_limit']) :
-         DateTime::createFromFormat('Y-m-d', '2199-01-01'));
-
-        if (((int)$course['auto_unsubscribe'] == 2 || (int)$course['auto_unsubscribe'] == 1) && ($now < $courseUnsubscribeDateLimit || $now < $dateUnsubscribeDateLimit)) {
-
-            return true;
-        }
-
-        return false;
-    }
-    
-    
-    
-    
 
 
 }

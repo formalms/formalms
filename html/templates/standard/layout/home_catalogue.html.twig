@@ -8,42 +8,42 @@
                                 
 {% block content %}
 
-  {{ evalPhp('Layout::zone', ['meta']) }}
-  {{ evalPhp('Layout::meta') }}
-  {{ evalPhp('Layout::rtl') }}
+  {{ Layout_getZone('meta') }}
+  {{ Layout_getMeta() }}
+  {{ Layout_getRtl() }}
 
   <!-- specific stylesheet -->
 
 
 
   <!-- blind nav -->
-  {{ evalPhp('Layout::zone', ['blind_navigation']) }}
+  {{ Layout_getZone('blind_navigation') }}
 
   {#<div class="webcontent-catalogue">#}
   <div id="container">
     <div class="container-fluid external-catalogue">
 
-      {{ evalPhp('Layout::zone', ['content']) }}
+      {{ Layout_getZone('content') }}
 
     </div>
 
     <!-- footer -->
     <div class="layout_footer">
-      {{ evalPhp('Layout::zone', ['footer']) }}
-      {{ evalPhp('Layout::copyright') }}
+      {{ Layout_getZone('footer') }}
+      {{ Layout_getCopyright() }}
     </div>
   </div>
 
   <!-- def lang -->
-  {{ evalPhp('Layout::zone', ['def_lang']) }}
+  {{ Layout_getZone('def_lang') }}
 
   <!-- scripts -->
-  {{ evalPhp('Layout::zone', ['scripts']) }}
+  {{ Layout_getZone('scripts') }}
 
   <!-- end scripts -->
-  {{ evalPhp('Layout::zone', ['debug']) }}
+  {{ Layout_getZone('debug') }}
 
-  {{ evalPhp('Layout::analytics') }}
+  {{ Layout_getAnalytics() }}
 
 
 {% endblock %}

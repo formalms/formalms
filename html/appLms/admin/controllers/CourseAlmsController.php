@@ -101,12 +101,12 @@ class CourseAlmsController extends AlmsController
 
     public function show()
     {
-        if (isset($_GET['res']) && $_GET['res'] !== '')
+        if (isset($_GET['res']) && $_GET['res'] !== '') {
             UIFeedback::info(Lang::t('_OPERATION_SUCCESSFUL', 'standard'));
-
-        if (isset($_GET['err']) && $_GET['err'] !== '')
+        }
+        if (isset($_GET['err']) && $_GET['err'] !== '') {
             UIFeedback::error(Lang::t('_OPERATION_FAILURE', 'standard'));
-
+        }
         $params = array();
 
         if (!isset($_SESSION['course_filter'])) {
@@ -130,8 +130,9 @@ class CourseAlmsController extends AlmsController
 
         $filter_open = false;
 
-        if ($descendants || $waiting)
+        if ($descendants || $waiting) {
             $filter_open = true;
+        }
 
         $filter = array(
             'classroom' => $classroom,
@@ -164,9 +165,12 @@ class CourseAlmsController extends AlmsController
 
     protected function _getSessionTreeData($index, $default = false)
     {
-        if (!$index || !is_string($index)) return false;
-        if (!isset($_SESSION['course_category']['filter_status'][$index]))
+        if (!$index || !is_string($index)) {
+            return false;
+        }
+        if (!isset($_SESSION['course_category']['filter_status'][$index])) {
             $_SESSION['course_category']['filter_status'][$index] = $default;
+        }
         return $_SESSION['course_category']['filter_status'][$index];
     }
 
@@ -182,20 +186,23 @@ class CourseAlmsController extends AlmsController
         $_SESSION['course_filter']['waiting'] = Get::req('waiting', DOTY_MIXED, false);
         $_SESSION['course_filter']['text'] = Get::req('text', DOTY_STRING, '');
 
-        if ($_SESSION['course_filter']['classroom'] === 'false')
+        if ($_SESSION['course_filter']['classroom'] === 'false') {
             $_SESSION['course_filter']['classroom'] = false;
-        else
+        } else {
             $_SESSION['course_filter']['classroom'] = true;
+        }
 
-        if ($_SESSION['course_filter']['descendants'] === 'false')
+        if ($_SESSION['course_filter']['descendants'] === 'false') {
             $_SESSION['course_filter']['descendants'] = false;
-        else
+        } else {
             $_SESSION['course_filter']['descendants'] = true;
+        }
 
-        if ($_SESSION['course_filter']['waiting'] === 'false')
+        if ($_SESSION['course_filter']['waiting'] === 'false') {
             $_SESSION['course_filter']['waiting'] = false;
-        else
+        } else {
             $_SESSION['course_filter']['waiting'] = true;
+        }
 
         echo $this->json->encode(array('success' => true));
     }
@@ -262,7 +269,8 @@ class CourseAlmsController extends AlmsController
                     $ref =& $result;
                     foreach ($folders as $folder) {
                         if ($folder > 0) {
-                            for ($i = 0; $i < count($ref); $i++) {
+                            $count = count($ref);
+                            for ($i = 0; $i < $count; $i++) {
                                 if ($ref[$i]['node']['id'] == $folder) {
                                     $ref[$i]['children'] = array();
                                     $ref =& $ref[$i]['children'];
@@ -275,10 +283,11 @@ class CourseAlmsController extends AlmsController
                         while (list($id_category, $idParent, $path, $lev, $left, $right, $associated_courses) = $db->fetch_row($childrens)) {
                             $is_leaf = ($right - $left) == 1;
                             $node_options = $this->_getNodeActions($id_category, $is_leaf, $associated_courses);
+                            $labelArray = explode('/', $path);
                             $ref[] = array(
                                 'node' => array(
                                     'id' => $id_category,
-                                    'label' => end(explode('/', $path)),
+                                    'label' => end($labelArray),
                                     'is_leaf' => $is_leaf,
                                     'count_content' => (int)(($right - $left - 1) / 2),
                                     'options' => $node_options));
@@ -291,10 +300,10 @@ class CourseAlmsController extends AlmsController
                         $is_leaf = ($right - $left) == 1;
 
                         $node_options = $this->_getNodeActions($id_category, $is_leaf, $associated_courses);
-
+                        $pathArray = explode('/', $path);
                         $result[] = array(
                             'id' => $id_category,
-                            'label' => end(explode('/', $path)),
+                            'label' => end($pathArray),
                             'is_leaf' => $is_leaf,
                             'count_content' => (int)(($right - $left - 1) / 2),
                             'options' => $node_options); //change this
@@ -420,8 +429,9 @@ class CourseAlmsController extends AlmsController
 
         $filter_open = false;
 
-        if ($descendants || $waiting)
+        if ($descendants || $waiting) {
             $filter_open = true;
+        }
 
         $filter = array(
             'id_category' => $id_category,
@@ -457,24 +467,22 @@ class CourseAlmsController extends AlmsController
                 }
             }
 
-            $num_subscribed = $row['subscriptions'] - $row['pending'];
-
             $num_overbooking = $this->model->getUserInOverbooking($row['idCourse']);
+
+            $num_subscribed = $row['subscriptions'] - ($row['pending'] + $num_overbooking);
 
             $list[$row['idCourse']] = array(
                 'id' => $row['idCourse'],
                 'code' => $row['code'],
                 'name' => $row['name'],
                 'type' => Lang::t('_' . strtoupper($row['course_type'])),
-
                 'type_id' => $course_type,
-
                 'wait' => (/*$row['course_type'] !== 'classroom' && */
                 ($row['course_edition'] != 1 && $row['pending'] != 0) || $num_overbooking > 0
                     ? '<a href="index.php?r=' . $this->base_link_subscription . '/waitinguser&id_course=' . $row['idCourse'] . '" title="' . Lang::t('_WAITING', 'course') . '">' . ($row['pending'] + $num_overbooking) . '</a>'
                     : ''),
                 'user' => ($row['course_type'] !== 'classroom' && $row['course_edition'] != 1
-                    ? '<a class="nounder" href="index.php?r=' . $this->base_link_subscription . '/show&amp;id_course=' . $row['idCourse'] . '" title="' . Lang::t('_SUBSCRIPTION', 'course') . '">' . ($num_subscribed - $num_overbooking) . ' ' . Get::img('standard/moduser.png', Lang::t('_SUBSCRIPTION', 'course')) . '</a>'
+                    ? '<a class="nounder" href="index.php?r=' . $this->base_link_subscription . '/show&amp;id_course=' . $row['idCourse'] . '" title="' . Lang::t('_SUBSCRIPTION', 'course') . '">' . $num_subscribed . ' ' . Get::img('standard/moduser.png', Lang::t('_SUBSCRIPTION', 'course')) . '</a>'
                     : ''),
                 'edition' => ($row['course_type'] === 'classroom'
                     ? '<a href="index.php?r=' . $this->base_link_classroom . '/classroom&amp;id_course=' . $row['idCourse'] . '" title="' . Lang::t('_CLASSROOM_EDITION', 'course') . '">' . $this->model->classroom_man->getDateNumber($row['idCourse'], true) . '</a>' : ($row['course_edition'] == 1 ? '<a href="index.php?r=' . $this->base_link_edition . '/show&amp;id_course=' . $row['idCourse'] . '" title="' . Lang::t('_EDITIONS', 'course') . '">' . $this->model->edition_man->getEditionNumber($row['idCourse']) . '</a>'
@@ -572,10 +580,9 @@ class CourseAlmsController extends AlmsController
             $result_sel = sql_query($query_sel);
             $list_sel = sql_fetch_array($result_sel);
 
-            foreach ($list_sel as $k => $v)
+            foreach ($list_sel as $k => $v) {
                 $list_sel[$k] = sql_escape_string($v);
-
-            $new_course_dup = 0;
+            }
 
             $new_file_array = array();
 
@@ -1090,11 +1097,7 @@ class CourseAlmsController extends AlmsController
 
             // , $list_of_assign_obj, $list_of_who
 
-            if (!$cert->updateCertificateCourseAssign($id_course,
-                $_POST['certificate_assign'],
-                $_POST['certificate_ex_assign'],
-                $point_required,
-                $_POST['certificate_assign_minutes'])) {
+            if (!$cert->updateCertificateCourseAssign($id_course, $_POST['certificate_assign'], $_POST['certificate_ex_assign'], $point_required, $_POST['certificate_assign_minutes'])) {
                 Util::jump_to('index.php?r=' . $this->base_link_course . '/show&err=_up_cert_err');
             } else {
                 Util::jump_to('index.php?r=' . $this->base_link_course . '/show&res=_up_cert_ok');
@@ -1104,7 +1107,7 @@ class CourseAlmsController extends AlmsController
 
             $all_languages = Docebo::langManager()->getAllLanguages(true);
             $languages = array();
-            foreach ($all_languages as $k => $v){
+            foreach ($all_languages as $k => $v) {
                 $languages[$v['code']] = $v['description'];
             }
 
@@ -1140,10 +1143,12 @@ class CourseAlmsController extends AlmsController
 
             $view_cert = false;
             if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
-                if (checkPerm('view', true, 'certificate', 'lms'))
+                if (checkPerm('view', true, 'certificate', 'lms')) {
                     $view_cert = true;
-            } else
+                }
+            } else {
                 $view_cert = true;
+            }
 
             foreach ($certificate_list as $id_cert => $cert) {
                 $cont = array();
@@ -1200,9 +1205,9 @@ class CourseAlmsController extends AlmsController
             return;
         }
 
-        if (isset($_POST['undo']))
+        if (isset($_POST['undo'])) {
             Util::jump_to('index.php?r=' . $this->base_link_course . '/show');
-
+        }
         $id_course = Get::req('id_course', DOTY_INT, 0);
 
         if (isset($_POST['assign'])) {
@@ -1215,8 +1220,9 @@ class CourseAlmsController extends AlmsController
             $course_man = new Man_Course();
 
             $levels =& $course_man->getCourseIdstGroupLevel($id_course);
-            if (empty($levels) || implode('', $levels) == '')
+            if (empty($levels) || implode('', $levels) == '') {
                 $levels =& DoceboCourse::createCourseLevel($id_course);
+            }
 
             $course_man->removeCourseRole($id_course);
             $course_man->removeCourseMenu($id_course);
@@ -1245,8 +1251,10 @@ class CourseAlmsController extends AlmsController
                 Docebo::user()->SaveInSession();
             }
 
-            if ($result)
+            if ($result) {
                 Util::jump_to('index.php?r=' . $this->base_link_course . '/show&res=_up_menu_ok');
+            }
+
             Util::jump_to('index.php?r=' . $this->base_link_course . '/show&res=_up_menu_err');
         } else {
             require_once($GLOBALS['where_lms'] . '/lib/lib.manmenu.php');
@@ -1292,11 +1300,13 @@ class CourseAlmsController extends AlmsController
 
             $result = $this->model->insCourse($_POST);
             $url = 'index.php?r=' . $this->base_link_course . '/show';
-            foreach ($result as $key => $value)
+            foreach ($result as $key => $value) {
                 $url .= '&' . $key . '=' . $value;
+            }
             Util::jump_to($url);
-        } else
+        } else {
             $this->coursemask();
+        }
     }
 
     public function modcourse()
@@ -1309,8 +1319,9 @@ class CourseAlmsController extends AlmsController
             return;
         }
 
-        if (isset($_POST['undo']))
+        if (isset($_POST['undo'])) {
             Util::jump_to('index.php?r=' . $this->base_link_course . '/show');
+        }
 
         $id_course = Get::req('id_course', DOTY_INT, 0);
 
@@ -1327,11 +1338,13 @@ class CourseAlmsController extends AlmsController
 
             $result = $this->model->upCourse($id_course, $_POST);
             $url = 'index.php?r=' . $this->base_link_course . '/show';
-            foreach ($result as $key => $value)
+            foreach ($result as $key => $value) {
                 $url .= '&' . $key . '=' . $value;
+            }
             Util::jump_to($url);
-        } else
+        } else {
             $this->coursemask($id_course);
+        }
     }
 
     public function delcourse()
@@ -1342,14 +1355,17 @@ class CourseAlmsController extends AlmsController
             return;
         }
 
-        if (Get::cfg('demo_mode'))
+        if (Get::cfg('demo_mode')) {
             die('Cannot del course during demo mode.');
+        }
 
         if (isset($_GET['confirm'])) {
             $id_course = Get::req('id_course', DOTY_INT, 0);
 
             $op_res = $this->model->delCourse($id_course);
-            if ($op_res && isset($_SESSION['idCourse']) && $_SESSION['idCourse'] == $id_course) unset($_SESSION['idCourse']);
+            if ($op_res && isset($_SESSION['idCourse']) && $_SESSION['idCourse'] == $id_course) {
+                unset($_SESSION['idCourse']);
+            }
             $res = array('success' => $op_res);
 
             echo $this->json->encode($res);
