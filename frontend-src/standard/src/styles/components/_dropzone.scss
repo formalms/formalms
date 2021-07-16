@@ -1,12 +1,12 @@
 /* #007a96*/
 .forma-drop-zone {
 	position: relative;
-	font-family: 'PT Sans Narrow', sans-serif;
+	font-family: inherit;
 	background-color: $white;
 	background-image: -webkit-linear-gradient(top, #373a3d, #313437);
 	background-image: -moz-linear-gradient(top, #373a3d, #313437);
 	background-image: linear-gradient(top, #373a3d, #313437);
-	border-radius: 5px;
+	border-radius: 0px;
 	min-height: 200px;
 	width: 100%;
 	padding: 20px;
@@ -25,7 +25,7 @@
 		}
 	}
 	&.has-files {
-		border-radius: 5px 5px 0px 0px;
+		border-radius: 0px 0px 0px 0px;
 	}
 	.fd-middle-wrapper {
 		text-align: center;
@@ -71,7 +71,7 @@
 }
 
 .fd-list {
-	font-family: 'PT Sans Narrow', sans-serif;
+	font-family: inherit;
 	width: 80%;
 	margin: 0 auto;
 	border: 1px solid silver;
