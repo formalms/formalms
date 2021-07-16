@@ -87,7 +87,7 @@ if (!Docebo::user()->isAnonymous()) {
             $fileIndex = 'file' . $index;
             $error = false;
             if (empty(trim($fileItem['title']))) {
-                $response['status'] = false
+                $response['status'] = false;
                 $response['errors']['files'][$fileIndex] = Lang::t('_ITEM_DOES_NOT_HAVE_TITLE', 'item');
                 $error = true;
             }
