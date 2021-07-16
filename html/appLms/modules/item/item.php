@@ -87,7 +87,7 @@ if (!Docebo::user()->isAnonymous()) {
             $fileIndex = 'file' . $index;
             $error = false;
             if (empty(trim($fileItem['title']))) {
-                $response['errors']['files'][$fileIndex] = Lang::t('_ITEM_DOES_NOT_HAVE_TITLE', 'item'));
+                $response['errors']['files'][$fileIndex] = Lang::t('_ITEM_DOES_NOT_HAVE_TITLE', 'item');
                 $error = true;
             }
 
@@ -108,7 +108,7 @@ if (!Docebo::user()->isAnonymous()) {
                     sl_open_fileoperations();
                     if (!sl_upload($file['tmp_name'], $path . $savefile)) {
                         sl_close_fileoperations();
-                        $response['errors']['files'][$fileIndex] = Lang::t('_FILE_ERROR_UPLOAD', 'item'));
+                        $response['errors']['files'][$fileIndex] = Lang::t('_FILE_ERROR_UPLOAD', 'item');
                     }
                     sl_close_fileoperations();
                 } else {
