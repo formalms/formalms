@@ -6206,9 +6206,9 @@ p {
   position: relative;
   font-family: inherit;
   background-color: white;
-  background-image: -webkit-linear-gradient(top, #373a3d, #313437);
-  background-image: -moz-linear-gradient(top, #373a3d, #313437);
-  background-image: linear-gradient(top, #373a3d, #313437);
+  background-image: -webkit-linear-gradient(top, #bababa, #bababa);
+  background-image: -moz-linear-gradient(top, #bababa, #bababa);
+  background-image: linear-gradient(top, #bababa, #bababa);
   border-radius: 0px;
   min-height: 200px;
   width: 100%;
@@ -6229,7 +6229,7 @@ p {
   .forma-drop-zone .fd-middle-wrapper {
     text-align: center;
     color: #767676;
-    background-color: #2E3134;
+    background-color: #bababa;
     padding: 40px 50px;
     border: 6px dashed #555555;
     text-transform: uppercase; }
@@ -6244,7 +6244,35 @@ p {
   border-color: #b2dba1;
   color: #3c763d;
   background-color: #dff0d8;
-  border-color: #d6e9c6; }
+  border-color: #d6e9c6;
+  display: flex;
+  align-items: center; }
+  .fd-alert-success .success-message {
+    font-size: 22px; }
+  .fd-alert-success .success-icon__tip, .fd-alert-success .success-icon__long {
+    display: block;
+    position: absolute;
+    height: 4px;
+    background-color: #a3ff3f;
+    border-radius: 10px; }
+  .fd-alert-success .success-icon__tip {
+    width: 2.4em;
+    top: 4.3em;
+    left: 1.4em;
+    transform: rotate(45deg);
+    animation: tipInPlace 300ms ease-in-out;
+    animation-fill-mode: forwards;
+    animation-delay: 180ms;
+    visibility: hidden; }
+  .fd-alert-success .success-icon__long {
+    width: 4em;
+    transform: rotate(-45deg);
+    top: 3.7em;
+    left: 2.75em;
+    animation: longInPlace 140ms ease-in-out;
+    animation-fill-mode: forwards;
+    visibility: hidden;
+    animation-delay: 440ms; }
 
 .fd-alert {
   text-shadow: 0 1px 0 white;
@@ -6395,6 +6423,48 @@ p {
       line-height: inherit;
       text-transform: uppercase;
       cursor: pointer; }
+
+.success-icon {
+  display: inline-block;
+  width: 8em;
+  height: 8em;
+  font-size: 20px;
+  border-radius: 50%;
+  border: 4px solid #96df8f;
+  background-color: #fff;
+  position: relative;
+  overflow: hidden;
+  transform-origin: center;
+  animation: showSuccess 180ms ease-in-out;
+  transform: scale(0.5); }
+
+@keyframes showSuccess {
+  from {
+    transform: scale(0); }
+  to {
+    transform: scale(1); } }
+
+@keyframes tipInPlace {
+  from {
+    width: 0em;
+    top: 0em;
+    left: -1.6em; }
+  to {
+    width: 2.4em;
+    top: 4.3em;
+    left: 1.4em;
+    visibility: visible; } }
+
+@keyframes longInPlace {
+  from {
+    width: 0em;
+    top: 5.1em;
+    left: 3.2em; }
+  to {
+    width: 4em;
+    top: 3.7em;
+    left: 2.75em;
+    visibility: visible; } }
 
 .lds-ellipsis {
   display: inline-block;
@@ -6774,7 +6844,7 @@ div#container {
       height: 50px; } }
 
 .course-box__date-box--end {
-  color: #70d800;
+  color: #4cc93f;
   border-color: #aeff00; }
 
 .course-box__date-box--no-date {
@@ -9064,7 +9134,7 @@ header.header {
 .homepage .fa-check {
   margin: 20px auto;
   font-size: 54px;
-  color: #70d800; }
+  color: #4cc93f; }
 
 .homepage__text {
   color: #404040;
@@ -9206,4 +9276,4 @@ header.header {
   margin-right: 5px; }
   .user-profile__namelink:hover {
     text-decoration: underline;
-    color: #70d800; }
+    color: #4cc93f; }
