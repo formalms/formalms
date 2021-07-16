@@ -1,52 +1,59 @@
-
-<div id="drop-zone" class="forma-drop-zone {% if files.length %}has-files{% endif %}">
-  <div class="fd-middle-wrapper">
-    <span>Browse or drop here the files</span>
-  </div>
-  <input type="file" multiple style="display:none;" id="fd-file-input">
-</div>
-{% if files.length %}
-  <div id="drop-zone-list">
-    <div>
-        <div class="fd-list">
-          <div class="columns">
-              <div class="fd-list-column fd-list-files-column">
-                {% for file in files %}
-                  <div class="fd-list-file">
-                      <div class="file-detail" data-index="{{ loop.index - 1 }}">
-                        <div class="name">{{ file.title }}</div>
-                        <div class="size">{{ file.formatted_size }}</div>
-                      </div>
-                      <div class="action-delete">
-                        <div class="button">X</div>
-                      </div>
-                  </div>
-                {% endfor %}
-              </div>
-              <div class="fd-list-column fd-edit-column">
-                <div>
-                    <div class="form-group title-input-wrapper"><label>Title</label><input type="text" class="title"></div>
-                    <div class="form-group description-input-wrapper"><label>Description</label><textarea class="description"></textarea></div>
-                </div>
-              </div>
-          </div>
-          <div class="form-group">
-            <button type="submit">
-              {% if uploading %}
-                <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
-              {% else %}
-                {{ submitText }}
-              {% endif %}
-            </button>
-          </div>
-        </div>
+{% if not success %}
+  <div id="drop-zone" class="forma-drop-zone {% if files.length %}has-files{% endif %}">
+    <div class="fd-middle-wrapper">
+      <span>Browse or drop here the files</span>
     </div>
+    <input type="file" multiple style="display:none;" id="fd-file-input">
   </div>
+  {% if files.length %}
+    <div id="drop-zone-list">
+      <div>
+          <div class="fd-list">
+            <div class="columns">
+                <div class="fd-list-column fd-list-files-column">
+                  {% for file in files %}
+                    <div class="fd-list-file">
+                        <div class="file-detail" data-index="{{ loop.index - 1 }}">
+                          <div class="name">{{ file.title }}</div>
+                          <div class="size">{{ file.formatted_size }}</div>
+                        </div>
+                        <div class="action-delete">
+                          <div class="button">X</div>
+                        </div>
+                    </div>
+                  {% endfor %}
+                </div>
+                <div class="fd-list-column fd-edit-column">
+                  <div>
+                      <div class="form-group title-input-wrapper"><label>Title</label><input type="text" class="title"></div>
+                      <div class="form-group description-input-wrapper"><label>Description</label><textarea class="description"></textarea></div>
+                  </div>
+                </div>
+            </div>
+            <div class="form-group">
+              <button type="submit">
+                {% if uploading %}
+                  <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+                {% else %}
+                  {{ submitText }}
+                {% endif %}
+              </button>
+            </div>
+          </div>
+      </div>
+    </div>
+  {% endif %}
 {% endif %}
 {% if success or error %}
   <hr/>
   {% if success %} 
-    <div class="fd-alert fd-alert-success">{{ success }}</div>
+    <div class="fd-alert fd-alert-success">
+      <div class="success-icon">
+        <div class="success-icon__tip"></div>
+        <div class="success-icon__long"></div>
+      </div>
+      <div class="success-message">{{ success }}</div>
+    </div>
   {% endif %}
   {% if error %} 
     <div class="alert alert-danger">{{ error }}</div>

@@ -15,7 +15,7 @@
                 if (res.data.errors) {
 
                 } else {
-                    this.SuccessMessage = 'Files correttamente caricati';
+                    this.SuccessMessage = obj.info.length <= 1 ? `E' stato creato un nuovo materiale didattico` : `Sono stati creati ${obj.info.length} nuovi materiali didattici`;
 
                     setTimeout(function () {
                         window.location = res.data.back_url
