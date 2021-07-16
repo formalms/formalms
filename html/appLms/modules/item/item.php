@@ -48,45 +48,53 @@ if (!Docebo::user()->isAnonymous()) {
     {
         require_once(_base_ . '/lib/lib.upload.php');
         $response = [];
-        $back_url = Get::pReq('back_url',DOTY_MIXED,'');
+        $response['status'] = true;
+        $back_url = Get::pReq('back_url', DOTY_MIXED, '');
         //checkPerm('view', false, 'storage');
 
         $idCourse = $_SESSION['idCourse'];
-        if (isset($idCourse) && defined("LMS")) {
-            $quota = $GLOBALS['course_descriptor']->getQuotaLimit();
-            $used = $GLOBALS['course_descriptor']->getUsedSpace();
-
-            if (Util::exceed_quota($_FILES['attach']['tmp_name'], $quota, $used)) {
-
-                $response['errors'][] = Lang::t('_QUOTA_EXCEDED','item');
-                echo json_encode($response);
-                die();
-            }
-        }
-
 
         try {
             $filesInfo = json_decode($_REQUEST['info'], true, 512, JSON_THROW_ON_ERROR);
         } catch (JsonException $e) {
             $response['status'] = false;
-            $response['errors'][] = Lang::t('_INPUT_IS_NOT_VALID','item');
+            $response['errors'][] = Lang::t('_INPUT_IS_NOT_VALID', 'item');
             echo json_encode($response);
             die();
+        }
+
+        if (isset($idCourse) && defined("LMS")) {
+            $quota = $GLOBALS['course_descriptor']->getQuotaLimit();
+            $used = $GLOBALS['course_descriptor']->getUsedSpace();
+
+            $totalSize = 0;
+            foreach ($filesInfo as $index => $fileItem) {
+                $file = $_FILES['file' . $index];
+
+                $totalSize += Get::dir_size($file['tmp_name']);
+            }
+            if (Util::exceed_quota('', $quota, $used, $totalSize)) {
+
+                $response['errors']['quota'] = Lang::t('_QUOTA_EXCEDED', 'item');
+                echo json_encode($response);
+                die();
+            }
         }
 
         $idLessons = [];
         foreach ($filesInfo as $index => $fileItem) {
 
+            $fileIndex = 'file' . $index;
             $error = false;
             if (empty(trim($fileItem['title']))) {
-                $response['errors'][] = sprintf(Lang::t('_ITEM_AT_INDEX_DOES_NOT_HAVE_TITLE','item'), $index);
+                $response['errors']['files'][$fileIndex] = Lang::t('_ITEM_DOES_NOT_HAVE_TITLE', 'item'));
                 $error = true;
             }
 
-            $file = $_FILES['file' . $index];
+            $file = $_FILES[$fileIndex];
 
             if (empty($file['name'])) {
-                $response['errors'][] = sprintf(Lang::t('_FILE_AT_INDEX_IS_UNSPECIFIED','item'), $index);
+                $response['errors']['files'][$fileIndex] = Lang::t('_FILE_IS_UNSPECIFIED', 'item');
                 $error = true;
             }
 
@@ -100,19 +108,18 @@ if (!Docebo::user()->isAnonymous()) {
                     sl_open_fileoperations();
                     if (!sl_upload($file['tmp_name'], $path . $savefile)) {
                         sl_close_fileoperations();
-                        $response['errors'][] = sprintf(Lang::t('_FILE_AT_INDEX_ERROR_UPLOAD','item'), $index);
-                        Lang::t('_ERROR_UPLOAD');
+                        $response['errors']['files'][$fileIndex] = Lang::t('_FILE_ERROR_UPLOAD', 'item'));
                     }
                     sl_close_fileoperations();
                 } else {
-                    $response['errors'][] = sprintf(Lang::t('_FILE_AT_INDEX_ERROR_UPLOAD','item'), $index);
+                    $response['errors']['files'][$fileIndex] = Lang::t('_FILE_ERROR_UPLOAD', 'item');
                 }
 
                 $insert_query = "INSERT INTO %lms_materials_lesson  SET author = '" . getLogUserId() . "', title = '" . $fileItem['title'] . "', description = '" . $fileItem['description'] . "', path = '$savefile'";
 
                 if (!sql_query($insert_query)) {
                     sl_unlink($path . $savefile);
-                    $response['errors'][] = sprintf(Lang::t('_FILE_AT_INDEX_OPERATION_FAILURE','item'), $index);
+                    $response['errors']['files'][$fileIndex] = Lang::t('_FILE_OPERATION_FAILURE', 'item');
 
                 }
                 if (isset($_SESSION['idCourse']) && defined("LMS")) $GLOBALS['course_descriptor']->addFileToUsedSpace(_files_ . $path . $savefile);
@@ -121,7 +128,7 @@ if (!Docebo::user()->isAnonymous()) {
             }
         }
 
-        $response['back_url'] = str_replace( '&amp;','&',$back_url . '&id_los=' . implode(',',$idLessons) . '&create_result=3');
+        $response['back_url'] = str_replace('&amp;', '&', $back_url . '&id_los=' . implode(',', $idLessons) . '&create_result=3');
 
         echo json_encode($response);
         die();
