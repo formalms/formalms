@@ -5,9 +5,7 @@ export XDEBUG_MODE=coverage
 MAKEFLAGS += --warn-undefined-variables
 SHELL := bash
 PATH := $(CURDIR)/vendor/bin:$(PATH)
-PSALM_FLAGS ?=
-PHPUNIT_FLAGS ?=
-INFECTION_FLAGS ?=
+CURRENT_PATH := $(CURDIR)
 
 .PHONY: help
 help:
@@ -30,7 +28,7 @@ fix: fix-code-style fix-composer
 .PHONY: fix-code-style
 fix-code-style: dependencies
 fix-code-style:
-	tools/php-cs-fixer/vendor/bin/php-cs-fixer -- fix
+	$(CURRENT_PATH)/tools/php-cs-fixer/vendor/bin/php-cs-fixer --config=$(CURRENT_PATH)/tools/php-cs-fixer/.php-cs-fixer.php fix
 
 .PHONY: fix-composer
 fix-composer: dependencies

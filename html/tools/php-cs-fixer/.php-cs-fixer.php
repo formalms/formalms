@@ -12,17 +12,8 @@ with this source code in the file LICENSE.
 EOF;
 
 $finder = PhpCsFixer\Finder::create()
-    ->in(__DIR__ . '/api')
-    ->in(__DIR__ . '/appCore')
-    ->in(__DIR__ . '/appLms')
-    ->in(__DIR__ . '/appScs')
-    ->in(__DIR__ . '/cron')
-    ->in(__DIR__ . '/eventListeners')
-    ->in(__DIR__ . '/Exceptions')
-    ->in(__DIR__ . '/install')
-    ->in(__DIR__ . '/lib')
-    ->in(__DIR__ . '/upgrade')
-    ->in(__DIR__ . '/widget');
+    ->exclude(__DIR__ . '/../../vendor')
+    ->in(__DIR__ . '/../../');
 
 return (new PhpCsFixer\Config())
     ->setRules([
