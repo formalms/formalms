@@ -13,14 +13,13 @@ namespace appCore\Template;
   |   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
   \ ======================================================================== */
 
-use appCore\Template\Extensions\FormExtension;
-use appCore\Template\Extensions\GetExtension;
-use appCore\Template\Extensions\LangExtension;
-use appCore\Template\Extensions\LayoutExtension;
-use appCore\Template\Extensions\UiFeedbackExtension;
-use appCore\Template\Extensions\UtilExtension;
-use appCore\Template\Extensions\YuiExtension;
-use appCore\Template\Extensions\TemplateExtension;
+use appCore\Template\Extenstions\FormExtension;
+use appCore\Template\Extenstions\GetExtension;
+use appCore\Template\Extenstions\LangExtension;
+use appCore\Template\Extenstions\LayoutExtension;
+use appCore\Template\Extenstions\UiFeedbackExtension;
+use appCore\Template\Extenstions\UtilExtension;
+use appCore\Template\Extenstions\YuiExtension;
 use appCore\Template\Services\ClientService;
 use Twig\Extension\OptimizerExtension;
 use Twig\Extensions\ArrayExtension;
@@ -47,33 +46,20 @@ class TwigManager
             'debug' => $debug
         ));
         $this->addDefaultPaths();
-        $this->twig->addExtension(new ArrayExtension());
-        $this->twig->addExtension(new DateExtension());
         $this->twig->addExtension(new FormExtension());
         $this->twig->addExtension(new GetExtension());
         //$this->twig->addExtension(new IntlExtension());
-        $this->twig->addExtension(new I18nExtension());
         $this->twig->addExtension(new LangExtension());
         $this->twig->addExtension(new LayoutExtension());
         $this->twig->addExtension(new UiFeedbackExtension());
         $this->twig->addExtension(new UtilExtension());
         $this->twig->addExtension(new YuiExtension());
-        $this->twig->addExtension(new TextExtension());
-        $this->twig->addExtension(new TemplateExtension());
 
         $this->twig->addGlobal('clientConfig', addslashes(json_encode(ClientService::getInstance()->getConfig())));
         $this->twig->addGlobal('GLOBALS', $GLOBALS);
         if ($debug) {
             $this->twig->addExtension(new \Twig\Extension\DebugExtension());
         }
-    }
-
-    /**
-     * @return \Twig\Environment
-     */
-    private function getTwig(): \Twig\Environment
-    {
-        return $this->twig;
     }
 
     /**
@@ -119,10 +105,6 @@ class TwigManager
         }
 
         return $this->twig->render($view_name, $data_for_view);
-    }
-
-    public function addExtention(\Twig\Extension\AbstractExtension $twigExtention) {
-        $this->twig->addExtension($twigExtention);
     }
 
     public static function getCacheDir()

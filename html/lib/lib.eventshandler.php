@@ -14,7 +14,7 @@ defined('IN_FORMA') or die('Direct access is forbidden.');
 
 /**
  * Events handler class.
- * 
+ *
  * @internal used by Events class.
  */
 final class EventsHandler
@@ -46,7 +46,7 @@ final class EventsHandler
      */
     public function trigger($eventName, $arguments = [])
     {
-        $event = $this->dispatcher->dispatch(new FormaEvent(null, $arguments),$eventName);
+        $event = $this->dispatcher->dispatch(new FormaEvent(null, $arguments), $eventName);
         return $event->getArguments();
     }
 
