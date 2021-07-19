@@ -517,12 +517,15 @@ class CourseAlmsController extends AlmsController
                 $list[$id_course]['students'] = isset($count_students[$id_course]) ? $count_students[$id_course] : '0';
             }
         }
-        //TODO: EVT_OBJECT (§)
-        //$event = new \appCore\Events\Core\Courses\CoursesListEvent($list, $course_res, $course_with_cert, $course_with_competence);
-        //TODO: EVT_LAUNCH (&)
-        //\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\Courses\CoursesListEvent::EVENT_NAME_LIST, $event);
 
-        //$list = $event->getCoursesList();
+        $eventData = Events::trigger('core.course.list', [
+            'courses' => $list,
+            'courseRes' => $course_res,
+            'courseWithCert' => $course_with_cert,
+            'courseWithCompetence' => $course_with_competence
+        ]);
+
+        $list = $eventData['courses'];
 
         $result = array(
             'totalRecords' => $total_course,

@@ -194,7 +194,9 @@ class SubscriptionAlmsController extends AlmsController
             'fieldlist' => $f_list,
             'fieldlist_js' => $f_list_js,
             'selected' => $f_selected,
-            'hidden_validity' => false
+            'hidden_validity' => false,
+            'sendCalendar' => $course_info['sendCalendar']
+
         );
 
         $this->render('show', $params);
