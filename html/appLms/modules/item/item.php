@@ -56,7 +56,13 @@ if (!Docebo::user()->isAnonymous()) {
         $idCourse = $_SESSION['idCourse'];
 
         try {
-            $filesInfo = json_decode($_REQUEST['info'], true, 512, JSON_THROW_ON_ERROR);
+            $filesInfo = json_decode($_REQUEST['info'], true);
+            if (empty($filesInfo)){
+                $response['status'] = false;
+                $response['errors'][] = Lang::t('_INPUT_IS_NOT_VALID', 'item');
+                echo json_encode($response);
+                die();
+            }
         } catch (JsonException $e) {
             $response['status'] = false;
             $response['errors'][] = Lang::t('_INPUT_IS_NOT_VALID', 'item');
