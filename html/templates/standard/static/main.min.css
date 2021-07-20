@@ -6274,7 +6274,12 @@ p {
     visibility: hidden;
     animation-delay: 440ms; }
 
+.fd-error-preview {
+  color: red;
+  font-size: 12px; }
+
 .fd-alert {
+  width: 100%;
   text-shadow: 0 1px 0 white;
   -webkit-box-shadow: inset 0 1px 0 white, 0 1px 2px black;
   box-shadow: inset 0 1px 0 white, 0 1px 2px black;
@@ -6282,6 +6287,8 @@ p {
   margin-bottom: 20px;
   border: 1px solid transparent;
   border-radius: 4px; }
+  .fd-alert:empty {
+    display: none; }
 
 .fd-alert-danger {
   background-image: -webkit-linear-gradient(top, #f2dede 0, #e7c3c3 100%);
@@ -6313,14 +6320,15 @@ p {
     flex: 0.5;
     max-width: 345px;
     padding: 15px;
-    background-color: #373a3d;
     border-radius: 20px; }
     .fd-list .fd-list-column.fd-list-files-column .fd-list-file {
       padding: 15px;
       font-size: 16px;
-      border-radius: 10px;
+      border-bottom: 1px solid grey;
       margin: 0px 0px 2px 0px;
       display: flex; }
+      .fd-list .fd-list-column.fd-list-files-column .fd-list-file.selected {
+        background: #e9e9e9; }
       .fd-list .fd-list-column.fd-list-files-column .fd-list-file .file-detail {
         flex: 0.9; }
         .fd-list .fd-list-column.fd-list-files-column .fd-list-file .file-detail:hover {
@@ -6329,7 +6337,10 @@ p {
         flex: 0.1; }
         .fd-list .fd-list-column.fd-list-files-column .fd-list-file .action-delete .button {
           font-weight: bold;
-          font-size: 11px;
+          font-size: 8px;
+          padding: 2px;
+          align-items: center;
+          text-align: center;
           border-radius: 100%;
           border: 2px solid white;
           width: 17px;
@@ -6348,7 +6359,7 @@ p {
     flex: 0.9;
     font-size: 16px;
     font-weight: bold;
-    color: white;
+    color: #595959;
     max-width: 250px;
     white-space: nowrap;
     overflow: hidden;
@@ -6376,7 +6387,7 @@ p {
       font-weight: 500;
       line-height: 1;
       text-transform: uppercase;
-      letter-spacing: 0.2em; }
+      letter-spacing: inherit; }
     .fd-list .form-group input {
       outline: none;
       display: block;

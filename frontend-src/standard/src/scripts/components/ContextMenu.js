@@ -15,6 +15,8 @@ class ContextMenu {
     _this.type = _this.container.getAttribute('data-container');
   }
 
+ // todo NASCONDI COPIA per le cartelle
+
   set(selector) {
     const _this = this;
 
@@ -24,15 +26,15 @@ class ContextMenu {
     
     contextmenu(selector, (target) => {
       _this.setContainerByTarget(target);
-      /*
+      
       if(target.classList.contains('folderTree__link')) { // se clicco su una voce del folder tree
         _this.currentEls = _this.container.querySelectorAll('.ft-is-selected');
       } else {
         _this.currentEls = _this.container.querySelectorAll('.fv-is-selected');
       }
-      */
+      // TODO qui questo fix crea altri problemi
       // ? The object on which the actions of the context menu affect must be the object the menu is linked to, not the selected items
-      _this.currentEls = [target];
+      //_this.currentEls = [target];
       
       _this.currentElsIds = [];
       _this.currentEls.forEach((item) => {

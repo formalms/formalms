@@ -16,6 +16,9 @@
                         <div class="file-detail" data-index="{{ loop.index - 1 }}">
                           <div class="name">{{ file.title }}</div>
                           <div class="size">{{ file.formatted_size }}</div>
+                          {% if errors and errors.files and errors.files[file.indexedName] %}
+                            <span class="fd-error-preview">This object contains an error</span>
+                          {% endif %}
                         </div>
                         <div class="action-delete">
                           <div class="button">X</div>
@@ -25,12 +28,22 @@
                 </div>
                 <div class="fd-list-column fd-edit-column">
                   <div>
-                      <div class="form-group title-input-wrapper"><label>Title</label><input type="text" class="title"></div>
-                      <div class="form-group description-input-wrapper"><label>Description</label><textarea class="description"></textarea></div>
+                      <div class="fd-alert fd-alert-danger error"></div>
+                      <div class="form-group title-input-wrapper">
+                        <label>Title</label>
+                        <input type="text" class="title">
+                      </div>
+                      <div class="form-group description-input-wrapper">
+                        <label>Description</label>
+                        <textarea class="description"></textarea>
+                      </div>
                   </div>
                 </div>
             </div>
             <div class="form-group">
+              {% if errors and errors.files %}
+                <span class="fd-alert fd-alert-danger">Errors occurred. Please check your documents and try again</span>
+              {% endif %}
               <button type="submit">
                 {% if uploading %}
                   <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
