@@ -46,6 +46,7 @@ if (!Docebo::user()->isAnonymous()) {
 
     function insitem()
     {
+
         require_once(_base_ . '/lib/lib.upload.php');
         $response = [];
         $response['status'] = true;
