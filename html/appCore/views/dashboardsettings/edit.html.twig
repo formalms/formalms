@@ -25,15 +25,20 @@
                             <div class="dashboard__content">
                                 <button class="dashboard__remove js-remove-block" data-block="{{ block.postData.block }}-{{ index }}"></button>
                                 <div class="dashboard__title">{{ Lang_translate('_'~block.postData.block|upper,'dashboardsetting') }}</div>
+                                {#
                                 <div class="dashboard__image">
                                     <img src="{{ block.templatePath }}static/images/dashboard-placeholder/{{ block.postData.block }}-placeholder.jpg" class="dashboard__image">
                                 </div>
+                                #}
+
+                                <div class="dashboard__description">{{ Lang_translate('_'~block.postData.block|upper~'_DESCRIPTION','dashboardsetting') }}</div>
+
                                 <div class="dashboard__info">
                                     {% if block.registeredActions | length %}
                                         <div class="dashboard__infoBlock">
                                             <div class="dashboard__label">{{ Lang_translate('_ENABLED_ACTIONS', 'dashboardsetting') }}</div>
                                             <div class="dashboard__infoContainer">
-                                                <div class="dashboard__elx">
+                                                <div class="dashboard__el">
                                                     {% for action in block.enabledActions %}
                                                         <label class="d-block" style="display:block;">
                                                             <input name="registeredAction[{{ loop.index0 }}]"
@@ -453,8 +458,12 @@
         align-items: center;
     }
 
+    .dashboard__infoContainer .dashboard__el .checkbox {
+        display: inline-block;
+    }
+
     .dashboard__el {
-        display: flex;
+
         align-items: center;
         justify-content: center;
         margin-right: 10px;
@@ -465,6 +474,7 @@
     .dashboard__el input[type=checkbox],
     .dashboard__el input[type=radio] {
         margin: 0 5px 0 0;
+
     }
 
     .dashboard__title--sources {
@@ -630,5 +640,12 @@
     .dashboard__select--action {
         display: none;
     }
+
+    .dashboard__content .dashboard__description {
+        font-weight: 300;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
 
 </style>

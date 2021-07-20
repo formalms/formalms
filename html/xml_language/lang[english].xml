@@ -1034,6 +1034,13 @@ Otherwise, you must register in our system, following this link: <br />
         <key id="dashboard&amp;_WAITING_SUBSCRIPTION" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Waiting subscription]]></key>
         <key id="dashboard&amp;_DASHBOARD_BLOCKMESSAGES_NO_RECORDS" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[There are no messages]]></key>
         <key id="dashboard&amp;_DASHBOARD_BLOCKCERTIFICATES_NO_RECORDS" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[There are no certificates]]></key>
+        <key id="dashboard&amp;_DASHBOARDBLOCKWELCOMELMS" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Welcome message]]></key>
+        <key id="dashboard&amp;_DASHBOARDBLOCKBANNERLMS" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Image / video banner]]></key>
+        <key id="dashboard&amp;_DASHBOARDBLOCKCERTIFICATELMS" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Certificates]]></key>
+        <key id="dashboard&amp;_DASHBOARDBLOCKMESSAGELMS" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Messages]]></key>
+        <key id="dashboard&amp;_DASHBOARDBLOCKANNOUNCEMENTSLMS" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Announcements]]></key>
+        <key id="dashboard&amp;_DASHBOARDBLOCKCALENDARLMS" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Calendar]]></key>
+        <key id="dashboard&amp;_DASHBOARDBLOCKCOURSESLMS" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Courses]]></key>
       </module>
       <module id="dashboardsetting">
         <key id="dashboardsetting&amp;_DASHBOARD_SETTING_ADD_NEW_LAYOUT" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Create a new dashboard]]></key>
@@ -1066,7 +1073,7 @@ Otherwise, you must register in our system, following this link: <br />
         <key id="dashboardsetting&amp;_DASHBOARDBLOCKBANNERLMS" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Image / video banner]]></key>
         <key id="dashboardsetting&amp;_DASHBOARDBLOCKCERTIFICATESLMS" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Certificates]]></key>
         <key id="dashboardsetting&amp;_DASHBOARDBLOCKMESSAGESLMS" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Messages]]></key>
-        <key id="dashboardsetting&amp;_DASHBOARDBLOCKANNOUNCEMENTSLMS" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Ads]]></key>
+        <key id="dashboardsetting&amp;_DASHBOARDBLOCKANNOUNCEMENTSLMS" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Announcements]]></key>
         <key id="dashboardsetting&amp;_DASHBOARDBLOCKCALENDARLMS" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Calendar]]></key>
         <key id="dashboardsetting&amp;_DASHBOARDBLOCKCOURSESLMS" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Courses]]></key>
         <key id="dashboardsetting&amp;_DASHBOARDBLOCKCALENDARLMS_GETELEARNINGCALENDAR" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[E-Learning Courses]]></key>
@@ -1078,9 +1085,31 @@ Otherwise, you must register in our system, following this link: <br />
         <key id="dashboardsetting&amp;_DASHBOARD_STATUS_PUBLISH" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Pubblished]]></key>
         <key id="dashboardsetting&amp;_DASHBOARD_LAYOUT_DEFAULT" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Default]]></key>
         <key id="dashboardsetting&amp;_DASHBOARD_DELETE_LAYOUT" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Dashboard]]></key>
-        <key id="dashboardsetting&amp;_DASHBOARD_WELCOME_MESSAGE" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Hi <strong>[firstname] [lastname]</strong>,
-welcome to the platform <strong>[platform]</strong>]]></key>
+        <key id="dashboardsetting&amp;_DASHBOARD_WELCOME_MESSAGE" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Hi <strong>[firstname] [lastname]</strong>, welcome to the platform <strong>[platform]</strong>]]></key>
         <key id="dashboardsetting&amp;_DASHBOARD_LAYOUT_SURE_DEL" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Are you sure you want to delete this dashboard?]]></key>
+
+        <key id="dashboardsetting&amp;_INPUT_DASHBOARDBLOCKMESSAGESLMS_TITLE" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Title]]></key>
+        <key id="dashboardsetting&amp;_INPUT_DASHBOARDBLOCKCALENDARLMS_TITLE" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Title]]></key>
+        <key id="dashboardsetting&amp;_INPUT_DASHBOARDBLOCKCOURSESLMS_TITLE" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Title]]></key>
+        <key id="dashboardsetting&amp;_INPUT_DASHBOARDBLOCKANNOUNCEMENTSLMS_TITLE" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Title]]></key>
+        <key id="dashboardsetting&amp;_INPUT_DASHBOARDBLOCKCERTIFICATESLMS_TITLE" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Title]]></key>
+        <key id="dashboardsetting&amp;_INPUT_DASHBOARDBLOCKWELCOMELMS_TITLE" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Title]]></key>
+        <key id="dashboardsetting&amp;_INPUT_DASHBOARDBLOCKBANNERLMS_TITLE" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Title]]></key>
+
+        <key id="dashboardsetting&amp;_DASHBOARDBLOCKMESSAGESLMS_DESCRIPTION" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Description Message]]></key>
+        <key id="dashboardsetting&amp;_DASHBOARDBLOCKCALENDARLMS_DESCRIPTION" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Description Calendar]]></key>
+        <key id="dashboardsetting&amp;_DASHBOARDBLOCKCOURSESLMS_DESCRIPTION" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Description Course]]></key>
+        <key id="dashboardsetting&amp;_DASHBOARDBLOCKANNOUNCEMENTSLMS_DESCRIPTION" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Description Announcement]]></key>
+        <key id="dashboardsetting&amp;_DASHBOARDBLOCKCERTIFICATESLMS_DESCRIPTION" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Description Certificates]]></key>
+        <key id="dashboardsetting&amp;_DASHBOARDBLOCKWELCOMELMS_DESCRIPTION" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Description Welcome]]></key>
+        <key id="dashboardsetting&amp;_DASHBOARDBLOCKBANNERLMS_DESCRIPTION" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Description Banner]]></key>
+
+
+        <key id="dashboardsetting&amp;_DASHBOARD_SETTING_IMAGE_ALLOWED_TYPES" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Accepted images]]></key>
+        <key id="dashboardsetting&amp;_DASHBOARD_SETTING_IMAGE_TYPE_ERROR" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Error: accepted images  ]]></key>
+        <key id="dashboardsetting&amp;_DASHBOARD_SETTING_FILE_ALLOWED_TYPES" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[No file selected  ]]></key>
+        <key id="dashboardsetting&amp;_DASHBOARD_SETTING_FILE_TYPE_ERROR" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Error: no file selected  ]]></key>
+
       </module>
       <module id="email">
         <key id="email&amp;_ALERT_SUBJECT" attributes="email" save_date="2017-03-14 16:10:41"><![CDATA[New announcement]]></key>
