@@ -91,27 +91,35 @@ class FormaDropZone extends FormaPlugin {
 
   AttachEvents() {
     // Click on element upload file selection
-    this.DropZone.removeEventListener('click', () => {});
-    this.DropZone.addEventListener('click', () => {
-      this.FileInput.click();
-    });
+    if(this.DropZone) {
+      this.DropZone.removeEventListener('click', () => {});
+      this.DropZone.addEventListener('click', () => {
+        this.FileInput.click();
+      });
+    }
     // ... on file selection change rendere the list
-    this.FileInput.removeEventListener('change', () => {});
-    this.FileInput.addEventListener('change', (e) => {
-      this.FilesList = this.FilesList.concat(Array.from(e.target.files));
-      this.RenderList();
-      this.SelectFile(this.FilesList.length - 1);
-    });
+    if(this.FileInput) {
+      this.FileInput.removeEventListener('change', () => {});
+      this.FileInput.addEventListener('change', (e) => {
+        this.FilesList = this.FilesList.concat(Array.from(e.target.files));
+        this.RenderList();
+        this.SelectFile(this.FilesList.length - 1);
+      });
+    }
     // Drag events
     ['dragenter', 'dragleave', 'dragover', 'drop'].forEach(eventName => {
       if(eventName === 'drop') {
-        this.DropZone.addEventListener(eventName, (event) => { 
-          this[eventName.charAt(0).toUpperCase() + eventName.slice(1)](event)
-        }, false);
+        if(this.DropZone) {
+          this.DropZone.addEventListener(eventName, (event) => { 
+            this[eventName.charAt(0).toUpperCase() + eventName.slice(1)](event)
+          }, false);
+        }
       } else {
-        this.DropZone.addEventListener(eventName, (event) => {
-          event.preventDefault()
-        });
+        if(this.DropZone) {
+          this.DropZone.addEventListener(eventName, (event) => {
+            event.preventDefault()
+          });
+        }
       }
     });
     // On click on file
@@ -125,10 +133,13 @@ class FormaDropZone extends FormaPlugin {
         // Delete file
         fileNode.querySelector('.action-delete').addEventListener('click', function() {
           _dropzoneInstance.FilesList.splice(this.getAttribute('data-index'), 1);
+          _dropzoneInstance.RemoveError(this.getAttribute('data-index'));
           _dropzoneInstance.FilesList = [ ..._dropzoneInstance.FilesList ];
-          _dropzoneInstance.RenderList();
+          _dropzoneInstance.RenderList(this.FilesList, 0);
           if(_dropzoneInstance.FilesList.length) {
-            _dropzoneInstance.SelectFile(0);
+            setTimeout(() => {
+              _dropzoneInstance.SelectFile(0);
+            }, 500);
           }
         })
       })
@@ -184,10 +195,25 @@ class FormaDropZone extends FormaPlugin {
     if(this.DropZoneList.querySelector('.selected')) {
       this.DropZoneList.querySelector('.selected').classList.remove('selected');
     }
+    console.log(this.FileNodes, index);
     this.FileNodes[index].classList.add('selected');
     this.FileEditColumn.querySelector('.title-input-wrapper input.title').value = this.FilesList[index].title;
     this.FileEditColumn.querySelector('.error').innerText = this.GetError(`file${index}`);
     this.FileEditColumn.querySelector('.description-input-wrapper textarea.description').value = this.FilesList[index].description;
+  }
+
+  RemoveError(index) {
+    if(!this._Errors) {
+      return null;
+    } else {
+      if(this._Errors && this._Errors.files) {
+        Object.keys(this._Errors.files).forEach(keyFile => {
+          if(`file${index}` === keyFile) {
+            delete this._Errors.files[keyFile];
+          }
+        });
+      }
+    }
   }
 
   GetError(name) {
@@ -212,7 +238,7 @@ class FormaDropZone extends FormaPlugin {
    * @param {} filesList 
    * @returns 
    */
-  RenderList(filesList = this.FilesList) {
+  RenderList(filesList = this.FilesList, forceSelect = null) {
     const view = DropzoneTwig({
       errors: this._Errors,
       files: filesList.map((file, index) => { 
@@ -227,8 +253,12 @@ class FormaDropZone extends FormaPlugin {
     });
     this.Element.innerHTML = view;
     this.AttachEvents();
-    if(null != this.SelectedIndexFile) {
-      this.SelectFile(this.SelectedIndexFile);
+    if(forceSelect != null) {
+      this.SelectFile(forceSelect);
+    } else {
+      if(null != this.SelectedIndexFile) {
+        this.SelectFile(this.SelectedIndexFile);
+      }
     }
     return view;
   }
