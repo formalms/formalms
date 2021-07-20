@@ -8,10 +8,15 @@
     <div class="dashboard__content">
         <button class="dashboard__remove js-remove-block" data-block="{{ block.postData.block }}-{{ index }}"></button>
         <div class="dashboard__title">{{ Lang_translate('_'~block.postData.block|upper,'dashboardsetting') }}</div>
-        <div class="dashboard__image">
+        {#
+            <div class="dashboard__image">
             <img src="{{ block.templatePath }}static/images/dashboard-placeholder/{{ block.postData.block }}-placeholder.jpg"
                  class="dashboard__image">
-        </div>
+            </div>
+        #}
+
+        <div class="dashboard__description">{{ Lang_translate('_'~block.postData.block|upper,'dashboardsetting') }}</div>
+
         <div class="dashboard__info">
             {% if block.registeredActions | length %}
                 <div class="dashboard__infoBlock">
