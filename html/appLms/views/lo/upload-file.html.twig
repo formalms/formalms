@@ -17,8 +17,8 @@
                 if (res.data.errors) {
                     this.Errors = res.data.errors;
                 } else {
-                    this.SuccessMessage = obj.info.length <= 1 ? `E' stato creato un nuovo materiale didattico` : `Sono stati creati ${obj.info.length} nuovi materiali didattici`;
-
+                    this.SuccessMessage = obj.info.length <= 1 ? `E' stato creato un nuovo materiale didattico. Redirect fra 2 secondi...` : `Sono stati creati ${obj.info.length} nuovi materiali didattici`;
+                    console.log(res.data.back_url);
                     setTimeout(function () {
                         window.location = res.data.back_url
                     }, 2000);
