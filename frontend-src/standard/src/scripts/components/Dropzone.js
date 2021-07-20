@@ -16,6 +16,10 @@ class FormaDropZone extends FormaPlugin {
     return this.Element.querySelector('#drop-zone');
   }
 
+  get DropZoneList() {
+    return this.Element.querySelector('#drop-zone-list');
+  }
+
   get FileEditColumn() {
     return this.Element.querySelector('.fd-edit-column');
   }
@@ -30,6 +34,11 @@ class FormaDropZone extends FormaPlugin {
 
   set Uploading(valBool) {
     this._Uploading = valBool;
+    this.RenderList();
+  }
+
+  set Errors(errorsObj) {
+    this._Errors = errorsObj;
     this.RenderList();
   }
 
@@ -55,6 +64,7 @@ class FormaDropZone extends FormaPlugin {
     this.Name = 'FormaDropZone';
     this.FilesList = [];
     this.Element = null;
+    this._Errors = {};
     this._Uploading = false;
     this.SelectedIndexFile = null;
     this._SuccessMessage = null;
@@ -171,8 +181,21 @@ class FormaDropZone extends FormaPlugin {
 
   SelectFile(index) {
     this.SelectedIndexFile = index;
+    if(this.DropZoneList.querySelector('.selected')) {
+      this.DropZoneList.querySelector('.selected').classList.remove('selected');
+    }
+    this.FileNodes[index].classList.add('selected');
     this.FileEditColumn.querySelector('.title-input-wrapper input.title').value = this.FilesList[index].title;
+    this.FileEditColumn.querySelector('.error').innerText = this.GetError(`file${index}`);
     this.FileEditColumn.querySelector('.description-input-wrapper textarea.description').value = this.FilesList[index].description;
+  }
+
+  GetError(name) {
+    if(!this._Errors) {
+      return null;
+    } else {
+      return this._Errors.files ? this._Errors.files[name] ? this._Errors.files[name] : null : null;
+    }
   }
 
   Reset() {
@@ -191,7 +214,12 @@ class FormaDropZone extends FormaPlugin {
    */
   RenderList(filesList = this.FilesList) {
     const view = DropzoneTwig({
-      files: filesList.map(file => { file.formatted_size = this.FormatBytes(file.size); return file; }),
+      errors: this._Errors,
+      files: filesList.map((file, index) => { 
+        file.formatted_size = this.FormatBytes(file.size); 
+        file.indexedName = `file${index}`;
+        return file; 
+      }),
       submitText: this.Options.SubmitText,
       uploading: this._Uploading,
       success: this._SuccessMessage,

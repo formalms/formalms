@@ -57,19 +57,12 @@ if (!Docebo::user()->isAnonymous()) {
 
         try {
             $filesInfo = json_decode($_REQUEST['info'], true);
-            if (empty($filesInfo)){
-                $response['status'] = false;
-                $response['errors'][] = Lang::t('_INPUT_IS_NOT_VALID', 'item');
-                echo json_encode($response);
-                die();
-            }
         } catch (JsonException $e) {
             $response['status'] = false;
             $response['errors'][] = Lang::t('_INPUT_IS_NOT_VALID', 'item');
             echo json_encode($response);
             die();
         }
-
         if (isset($idCourse) && defined("LMS")) {
             $quota = $GLOBALS['course_descriptor']->getQuotaLimit();
             $used = $GLOBALS['course_descriptor']->getUsedSpace();
@@ -87,6 +80,7 @@ if (!Docebo::user()->isAnonymous()) {
                 die();
             }
         }
+
 
         $idLessons = [];
         foreach ($filesInfo as $index => $fileItem) {

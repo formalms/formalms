@@ -86,7 +86,12 @@
 		}
 	}
 }
+.fd-error-preview {
+	color: red;
+	font-size: 12px;
+}
 .fd-alert {
+	width: 100%;
 	text-shadow: 0 1px 0 rgb(255, 255, 255);
 	-webkit-box-shadow: inset 0 1px 0 rgb(255, 255, 255), 0 1px 2px rgb(0, 0, 0,);
 	box-shadow: inset 0 1px 0 rgb(255, 255, 255), 0 1px 2px rgb(0, 0, 0);
@@ -94,6 +99,9 @@
 	margin-bottom: 20px;
 	border: 1px solid transparent;
 	border-radius: 4px;
+	&:empty {
+		display: none;
+	}
 }
 .fd-alert-danger {
 	background-image: -webkit-linear-gradient(top,#f2dede 0,#e7c3c3 100%);
@@ -128,14 +136,17 @@
 		flex: 0.5;
 		max-width: 345px;
 		padding: 15px;
-		background-color: #373a3d;
+		// background-color: #373a3d;
 		border-radius: 20px;
 		.fd-list-file {
 			padding: 15px;
 			font-size: 16px;
-			border-radius: 10px;
+			border-bottom: 1px solid grey;
 			margin: 0px 0px 2px 0px;
 			display: flex;
+			&.selected {
+				background: #e9e9e9;
+			}
 			.file-detail {
 				flex: 0.9;
 				&:hover {
@@ -146,9 +157,12 @@
 				flex: 0.1;
 				.button {
 					font-weight: bold;
-					font-size: 11px;
+					font-size: 8px;
+					padding: 2px;
+					align-items: center;
+					text-align: center;
 					border-radius: 100%;
-					border: 2px solid $white;
+					border: 2px solid white;
 					width: 17px;
 					height: 16px;
 					text-align: center;
@@ -173,7 +187,7 @@
 				flex: 0.9;
 				font-size: 16px;
 				font-weight: bold;
-				color: $white;
+				color: #595959;
 				max-width: 250px;
 				white-space: nowrap;
 				overflow: hidden;
@@ -207,7 +221,7 @@
 			font-weight: 500;
 			line-height: 1;
 			text-transform: uppercase;
-			letter-spacing: 0.2em;
+			letter-spacing: inherit;
 		}
 		input {
 			outline: none;

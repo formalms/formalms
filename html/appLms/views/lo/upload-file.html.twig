@@ -5,6 +5,7 @@
     Axios.defaults.headers.post['Content-Type'] = 'multipart/form-data';
     document.getElementById('forma-uploader').FormaFileUploader({
         OnSubmitClick: function (obj) {
+            this.Errors = {};
             obj.formData.append('back_url', '{{ back_url }}')
             this.Uploading = true;
             Axios({
@@ -12,8 +13,9 @@
                 url: `${window.frontend.config.url.appLms}/index.php?modname=item&op=insitem`,
                 data: obj.formData
             }).then(res => {
+                this.Uploading = false;
                 if (res.data.errors) {
-
+                    this.Errors = res.data.errors;
                 } else {
                     this.SuccessMessage = obj.info.length <= 1 ? `E' stato creato un nuovo materiale didattico` : `Sono stati creati ${obj.info.length} nuovi materiali didattici`;
 
