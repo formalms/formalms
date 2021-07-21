@@ -15,8 +15,6 @@ class ContextMenu {
     _this.type = _this.container.getAttribute('data-container');
   }
 
- // todo NASCONDI COPIA per le cartelle
-
   set(selector) {
     const _this = this;
 
@@ -26,20 +24,23 @@ class ContextMenu {
     
     contextmenu(selector, (target) => {
       _this.setContainerByTarget(target);
-      
+      _this.currentEls = [];
+
       if(target.classList.contains('folderTree__link')) { // se clicco su una voce del folder tree
-        _this.currentEls = _this.container.querySelectorAll('.ft-is-selected');
+        _this.currentEls = Array.prototype.slice.call(_this.container.querySelectorAll('.ft-is-selected'));
       } else {
-        _this.currentEls = _this.container.querySelectorAll('.fv-is-selected');
+        _this.currentEls = Array.prototype.slice.call(_this.container.querySelectorAll('.fv-is-selected'));
       }
-      // TODO qui questo fix crea altri problemi
+
       // ? The object on which the actions of the context menu affect must be the object the menu is linked to, not the selected items
-      //_this.currentEls = [target];
-      
+      const targetFound = _this.currentEls.find(element => element.getAttribute('data-id') === target.getAttribute('data-id'));
+      if(!targetFound) {
+        _this.currentEls.push(target);
+      }
+
       _this.currentElsIds = [];
       _this.currentEls.forEach((item) => {
         _this.currentElsIds.push(parseInt(item.getAttribute('data-id')));
-        // console.log(item);
       });
       
       if (_this.currentElsIds.length == 0) {
@@ -164,7 +165,16 @@ class ContextMenu {
         }
       };
 
-      return _this.currentElsIds.length > 1 ? [copyBtn, deleteBtn] : [renameBtn, copyBtn, deleteBtn];
+      const foundFolder = _this.currentEls.find(element => element.classList.contains('js-folderView-folder'));
+      let buttons = [];
+      if(_this.currentElsIds.length <= 1) {
+        buttons.push(renameBtn);
+      }
+      if(!foundFolder) {
+        buttons.push(copyBtn);
+      }
+      buttons.push(deleteBtn);
+      return buttons;
     });
   }
 
