@@ -242,20 +242,7 @@ function modtestgui($object_test)
         'content'
     );
 
-    // $event = new \appLms\Events\Lms\TestConfigurationTabsRenderEvent($object_test, $url_encode, $lang);
 
-    // $event->addTab('_TEST_MODALITY', '<li>' . '<a href="index.php?modname=test&amp;op=defmodality&amp;idTest='
-    //     . $object_test->getId() . '&amp;back_url=' . $url_encode . '" title="' . $lang->def('_TEST_MODALITY') . '">'
-    //     . $lang->def('_TEST_MODALITY') . '</a>' . '</li>');
-    // $event->addTab('_TEST_COMPILE_TIME', '<li>' . '<a href="index.php?modname=test&amp;op=deftime&amp;idTest='
-    //     . $object_test->getId() . '&amp;back_url=' . $url_encode . '" title="' . $lang->def('_TEST_COMPILE_TIME') . '">'
-    //     . $lang->def('_TEST_COMPILE_TIME') . '</a>' . '</li>');
-    // $event->addTab('_TEST_POINT_ASSIGNEMENT', '<li>' . '<a href="index.php?modname=test&amp;op=defpoint&amp;idTest='
-    //     . $object_test->getId() . '&amp;back_url=' . $url_encode . '" title="' . $lang->def('_TEST_POINT_ASSIGNEMENT') . '">'
-    //     . $lang->def('_TEST_POINT_ASSIGNEMENT') . '</a>' . '</li>');
-    // $event->addTab('_FEEDBACK_MANAGEMENT', '<li>' . '<a href="index.php?modname=test&amp;op=feedbackman&amp;idTest='
-    //     . $object_test->getId() . '&amp;back_url=' . $url_encode . '" title="' . $lang->def('_FEEDBACK_MANAGEMENT') . '">'
-    //     . $lang->def('_FEEDBACK_MANAGEMENT') . '</a>' . '</li>');
 
     $tabs[] = '<li>' . '<a href="index.php?modname=test&amp;op=defmodality&amp;idTest='
         . $object_test->getId() . '&amp;back_url=' . $url_encode . '" title="' . $lang->def('_TEST_MODALITY') . '">'
@@ -276,7 +263,15 @@ function modtestgui($object_test)
         . $lang->def ('_COURSEREPORT_MANAGEMENT') . '</a>' . '</li>');
 
     */
-    // \appCore\Events\DispatcherManager::dispatch(\appLms\Events\Lms\TestConfigurationTabsRenderEvent::EVENT_NAME, $event);
+    $testConfigurations = Events::trigger('lms.test.configuration_tabs_render',[
+        'objectTest'=> $object_test,
+        'url' => $url_encode,
+        'lang' => $lang,
+        'tabs' => $tabs
+    ]);
+
+    $tabs = $testConfigurations['tabs'];
+
 
     $GLOBALS['page']->add('<ul class="link_list_inline">', 'content');
     // foreach ($event->getTabs() as $tab) {
@@ -1148,7 +1143,7 @@ function defmodality()
     // $event->addFormElementForSection('<label for="show_solution_yes_if_passed">' . $lang->def('_YES_IF_PASSED') . '</label>', \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
     // $event->addFormElementForSection('<br /><br />', \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
     // $event->addFormElementForSection(Form::getCloseFieldset(), \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
-    
+
     $section_str = "";
     $section_str .= Form::getTextfield($lang->def('_MAX_ATTEMPT'), 'max_attempt', 'max_attempt', 3, $max_attempt);
     $section_str .= Form::getCheckBox($lang->def('_RETAIN_ANSWERS_HISTORY'), 'retain_answers_history', 'retain_answers_history', 1, $retain_answers_history);
