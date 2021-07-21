@@ -1,6 +1,6 @@
 <div class="dropdown" id="createitem_{{ tab.type }}">
     <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenuBtn_{{ tab.type }}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-        {{ translate('_CREATE_NEW', 'standard') }}
+        {{ Lang_translate('_CREATE_NEW', 'standard') }}
         <span class="caret"></span>
     </button>
     <ul class="dropdown-menu" id="dropdownMenu_{{ tab.type }}" aria-labelledby="dropdownMenu_{{ tab.type }}">
@@ -16,7 +16,7 @@
     <div class="row createFolderForm hidden">
         <div class="col-lg-12">
             <div class="createFolder__link ft-is-folder">
-                <input type="text" class="createFolder__input" placeholder="{{ translate('_ORGFOLDERNAME', 'storage') }}">
+                <input type="text" class="createFolder__input" placeholder="{{ Lang_translate('_ORGFOLDERNAME', 'storage') }}">
                 <button class="btn cancelCreateFolder__btn" type="reset"></button>
                 <button class="btn createFolder__btn" type="button"></button>
                 <input type="hidden" name="authentic_request" value="{{ evalPhp('Util::getSignature') }}" />
