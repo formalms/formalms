@@ -71,6 +71,11 @@ class SettingAdm extends Model
 		// \appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\ConfigGetRegroupUnitsEvent::EVENT_NAME, $event);
 		// $names = $event->getGroupUnits();
 
+        $eventNames = Events::trigger('core.config.get_group_units', ['names' => $names]);
+		$names = $eventNames['names'];
+
+
+
 		$group = array();
 		while (list($id_regroup) = sql_fetch_row($re_regroup)) {
 			if (key_exists($id_regroup, $names)) {
