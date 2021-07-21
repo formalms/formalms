@@ -41,7 +41,7 @@ function quest_edit($type_quest, $idQuest, $back_test) {
 	
 	require_once(Forma::inc(_lms_.'/modules/question/'.$type_file));
 	
-	$quest_obj = eval("return new $type_class( $idQuest );");
+	$quest_obj = new $type_class( $idQuest );
 	
 	$quest_obj->edit($back_test);
 }

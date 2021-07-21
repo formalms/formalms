@@ -1103,7 +1103,7 @@ class PlayTestManagement {
 			require_once(Forma::inc(_lms_.'/modules/question/'.$type_file));
 			require_once(Forma::inc(_lms_.'/class.module/track.test.php'));
 			$trackTest = new Track_Test($this->id_track);
-			$quest_obj = eval("return new $type_class( $id_quest );");
+			$quest_obj = new $type_class( $id_quest );
 			$storing   = $quest_obj->storeAnswer( $trackTest, $_POST, $can_overwrite );
 		}
 	}

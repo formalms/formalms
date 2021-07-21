@@ -175,8 +175,6 @@ class Question
 
 	function _fixAnswerSequence()
 	{
-
-
 		$re_answer = sql_query("
 		SELECT idAnswer 
 		FROM " . $GLOBALS['prefix_lms'] . "_testquestanswer 
