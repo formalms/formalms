@@ -33,6 +33,8 @@ if ($permissions['del'] && !Get::cfg('demo_mode')) {
 	$_columns[] = array('key' => 'del', 'label' => Get::img('standard/delete.png', Lang::t('_DEL', 'course')), 'formatter'=>'doceboDelete', 'className' => 'img-cell');
 }
 
+$event = Events::trigger('core.course.edition.columns.listing', ['columns' => $_columns, 'fields' => ['id_date', 'code', 'name', 'status', 'date_begin','registro', 'date_end', 'classroom', 'students', 'num_subscribe', 'subscription', 'presence', 'mod', 'del']]);
+
 
 $_params = array(
 	'id'			=> 'classroom_edition_table',
@@ -42,8 +44,8 @@ $_params = array(
 	'results'		=> Get::sett('visuItem', 25),
 	'sort'			=> 'name',
 	'dir'			=> 'asc',
-	'columns'		=> $_columns,
-	'fields'		=> array('id_date', 'code', 'name', 'status', 'date_begin','registro', 'date_end', 'classroom', 'students', 'num_subscribe', 'subscription', 'presence', 'mod', 'del'),
+	'columns'		=> $event['columns'],
+	'fields'		=> $event['fields'],
 	'show'			=> 'table',
 	'editorSaveEvent' => ''
 );

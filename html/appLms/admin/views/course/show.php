@@ -28,8 +28,8 @@
     $modifica = $languages['_MOD'];
     $cancella = $languages['_DEL'];
     $nome = $languages['_NAME'];
-      
-      
+
+
      $info_course ='<style>
               @media
         only screen and (max-width: 870px),
@@ -51,10 +51,10 @@
                     #yuievtautoid-0 td:nth-of-type(13):before { content: "'.$cancella.'"; } 
                     }        
                     </style>
-                ';   
-    
+                ';
+
      echo $info_course;
-    //*********************** 
+    //***********************
 
 
 $_tree_params = array(
@@ -138,6 +138,12 @@ if ($permissions['mod'])
 if ($permissions['del'] && !Get::cfg('demo_mode'))
 	$columns_arr[] = array('key' => 'del', 'label' => Get::sprite('subs_del', Lang::t('_DEL', 'course')), 'formatter'=>'doceboDelete', 'className' => 'img-cell1');
 
+$fields = array('id', 'code', 'name', 'type', 'type_id', 'students', 'wait', 'user', 'edition', 'certificate', 'certreleased', 'competences', 'menu', 'dup', 'mod', 'del');
+
+$event = Events::trigger('core.course.columns.listing', ['columns' => $columns_arr, 'fields' => $fields]);
+
+
+
 $_table_params = array(
 	'id'			=> 'course_table',
 	'ajaxUrl'		=> 'ajax.adm_server.php?r='.$base_link_course.'/getcourselist',
@@ -146,8 +152,8 @@ $_table_params = array(
 	'results'		=> Get::sett('visuItem', 25),
 	'sort'			=> 'name',
 	'dir'			=> 'asc',
-	'columns'		=> $columns_arr,
-	'fields' => array('id', 'code', 'name', 'type', 'type_id', 'students', 'wait', 'user', 'edition', 'certificate', 'certreleased', 'competences', 'menu', 'dup', 'mod', 'del'),
+	'columns'		=> $event['columns'],
+	'fields' => $event['fields'],
 	'show' => 'table',
 	'delDisplayField' => 'name',
 	'generateRequest' => 'Courses.requestBuilder'

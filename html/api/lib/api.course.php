@@ -587,6 +587,18 @@ class Course_API extends API
                     // $event->setStatus(['id' => $user_status, 'name' => $status_arr[$user_status]]);
                     // $event->setCourse($docebo_course->course_info);
                     // \appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\Courses\CourseSubscriptionEditStatusEvent::EVENT_NAME, $event);
+
+                   /* $event = Events::trigger('core.coursesubscriptioneditstatus.event', ['user' => $user_id, 'status' => $user_status, 'course' => $course]);
+                    $userModel = new UsermanagementAdm();
+                    $user = $userModel->getProfileData($user_id);
+
+                    require_once(_lms_ . '/lib/lib.course.php');
+                    $docebo_course = new DoceboCourse($courseId);
+
+                    $event['user'];
+                    $event->setStatus(['id' => $user_status, 'name' => $status_arr[$user_status]]);
+                    $event->setCourse($docebo_course->course_info);
+                    \appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\Courses\CourseSubscriptionEditStatusEvent::EVENT_NAME, $event)*/;
                 } else {
                     $update_ok = false;
                 }
@@ -875,7 +887,7 @@ class Course_API extends API
     // Adding Course Category:
     // Input param:
     // category_id: category id of the parent category; category is created on root if no parent ID passed
-    // node_name: category name 
+    // node_name: category name
     public function addCategory($params)
     {
 
@@ -1634,7 +1646,7 @@ class Course_API extends API
     }
 
 
-    // 
+    //
     public function deleteCourse($params)
     {
         require_once(_lms_ . '/lib/lib.course.php');
@@ -2772,7 +2784,7 @@ class Course_API extends API
                 }
                 break;
 
-            // LRZ 
+            // LRZ
             case 'addCategory':
             case 'addcategory':
                 {
@@ -2880,7 +2892,7 @@ class Course_API extends API
                 }
                 break;
 
-            //META CERTIFICATE 
+            //META CERTIFICATE
             case 'assignMetaUser':
             case 'assignmetauser':
                 {

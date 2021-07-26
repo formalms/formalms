@@ -524,6 +524,12 @@ class CourseAlmsController extends AlmsController
 
         //$list = $event->getCoursesList();
 
+
+        $eventResult = Events::trigger('core.course.data.listing', ['coursesList' => $list, 'courses' => $course_res, 'coursesWithCertificates' => $course_with_cert, 'coursesWithCompetences' => $course_with_competence]);
+
+        $list = $eventResult['coursesList'];
+
+
         $result = array(
             'totalRecords' => $total_course,
             'startIndex' => $start_index,
@@ -1501,7 +1507,7 @@ class CourseAlmsController extends AlmsController
         $custom_field_array = $fman->getFlatAllFields();
 
         $data_certificate = $this->model->getListTototalUserCertificate($id_course, $id_certificate, $custom_field_array);
-        // pushing empty element at the top of array  
+        // pushing empty element at the top of array
         foreach ($data_certificate as $key => $value) {
             array_unshift($data_certificate[$key], '');
         }

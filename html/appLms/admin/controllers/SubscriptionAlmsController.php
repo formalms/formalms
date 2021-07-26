@@ -751,6 +751,10 @@ class SubscriptionAlmsController extends AlmsController
             }
         }
 
+        $eventResults = Events::trigger('core.users.list', ['list' => $list, 'link' => $this->link, 'idCourse' => $this->id_course, 'idEdition' => $this->id_edition, 'idDate' => $this->id_date]);
+
+        $list = $eventResults['list'];
+
         $result = array(
             'totalRecords' => $total_user,
             'startIndex' => $start_index,
@@ -953,6 +957,9 @@ class SubscriptionAlmsController extends AlmsController
                                     break;
                                 default:
                             }
+
+                            Events::trigger('core.course.subscription.status.updated', ['user' => $user, 'status' => ['id' => $new_value, 'name' => $status[$new_value]], 'course' => $docebo_course->course_info]);
+
                         } else
                             echo $this->json->encode(array('succes' => false));
                     }
