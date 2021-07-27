@@ -3448,9 +3448,9 @@ class CoursereportLmsController extends LmsController
 			Util::jump_to('index.php?r=coursereport/coursereport');
 		}
 
-		require_once($GLOBALS['where_lms'] . '/lib/lib.test.php');
-		require_once($GLOBALS['where_lms'] . '/modules/question/class.question.php');
-		require_once($GLOBALS['where_lms'] . '/class.module/track.test.php');
+		require_once(Forma::inc(_lms_ . '/lib/lib.test.php'));
+		require_once(Forma::inc(_lms_ . '/modules/question/class.question.php'));
+		require_once(Forma::inc(_lms_ . '/class.module/track.test.php'));
 
 		Util::get_js(Get::rel_path('base') . '/appLms/views/coursereport/js/testquestion.js', true, true);
 		Util::get_css(Get::rel_path('base') . '/appLms/views/coursereport/css/testquestion.css', true, true);

@@ -108,8 +108,8 @@ class qformat_gift {
         return true;
     }
     function defaultquestion() {
-        
-        require_once($GLOBALS['where_lms'].'/modules/question/class.question.php');
+
+        require_once(Forma::inc(_lms_ . '/modules/question/class.question.php'));
         $question = new QuestionRaw();
 		
         return $question;

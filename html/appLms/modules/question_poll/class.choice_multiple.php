@@ -11,7 +11,7 @@
 |   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
-require_once(_lms_.'/modules/question_poll/class.question.php' );
+require_once(Forma::inc(_lms_ .'/modules/question_poll/class.question.php'));
 
 class ChoiceMultiple_QuestionPoll extends QuestionPoll {
 	

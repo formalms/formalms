@@ -13,7 +13,7 @@
 
 if(!defined('IN_FORMA')) die('You cannot access this file directly');
 
-require_once(_lms_.'/modules/question_poll/class.question.php' );
+require_once(Forma::inc(_lms_ .'/modules/question_poll/class.question.php'));
 
 class CourseValutation_QuestionPoll extends QuestionPoll {
 

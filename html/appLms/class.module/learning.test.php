@@ -11,8 +11,8 @@
 |   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
-require_once(Docebo::inc(_folder_lms_.'/class.module/learning.object.php'));
-require_once(Docebo::inc(_folder_lms_.'/modules/question/class.question.php'));
+require_once(Forma::inc(_folder_lms_.'/class.module/learning.object.php'));
+require_once(Forma::inc(_folder_lms_.'/modules/question/class.question.php'));
 
 class Learning_Test extends Learning_Object {
 

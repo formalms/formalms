@@ -11,7 +11,8 @@
 |   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
-require_once( dirname(__FILE__).'/class.question.php' );
+require_once(Forma::inc(_lms_ .'/modules/question_poll/class.question.php'));
+
 
 class ExtendedText_QuestionPoll extends QuestionPoll {
 	
