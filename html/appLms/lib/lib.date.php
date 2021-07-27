@@ -150,6 +150,7 @@ class DateManager
 
         $result = sql_query($query);
 
+        
         if ($result) {
             $res = sql_insert_id();
             return $res;
@@ -441,7 +442,7 @@ class DateManager
             . " SET `code` = '" . $code . "',"
             . " name = '" . $name . "',"
             . " description = '" . $description . "',"
-            . " medium_time = " . $medium_time . ","
+            . " medium_time = " . (int)$medium_time . ","
             . " max_par = '" . $max_par . "',"
             . " price = '" . $price . "',"
             . " overbooking = " . $overbooking . ","
@@ -790,7 +791,7 @@ class DateManager
     public function getStatusForDropdown()
     {
         return array(_DATE_STATUS_PREPARATION => $this->lang->def('_CST_PREPARATION', 'course'),
-            _DATE_STATUS_ACTIVE => $this->lang->def('_CST_CONFIRMED', 'course'),
+            _DATE_STATUS_ACTIVE => $this->lang->def('_CST_AVAILABLE', 'course'),
             _DATE_STATUS_FINISHED => $this->lang->def('_CST_CONCLUDED', 'course'),
             _DATE_STATUS_CANCELLED => $this->lang->def('_CST_CANCELLED', 'course'));
     }
@@ -1749,6 +1750,16 @@ class DateManager
     }
 
 
+    public function setDateOverbooking($id_date, $id_user, $overbooking_status) {
+        $query =    "UPDATE %lms_course_date_user"
+                    ." SET overbooking = ".$overbooking_status
+                    ." WHERE id_date = ".$id_date
+                    ." AND id_user = ".$id_user;
+        return sql_query($query);
+        
+    }
+    
+    // This function select the earliest user that has made the subscription with overbooking flag active, and if any, change the flag
     public function setFirstOverbookingUser($id_date)
     {
         $query = "SELECT * FROM %lms_course_date_user "

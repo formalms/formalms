@@ -736,7 +736,7 @@ INSERT INTO `core_event_class` (`idClass`, `class`, `platform`, `description`) V
 (44, 'UserCourseInsertedModerators', 'lms-a', ''),
 (45, 'UserCourseSuspendedSuperAdmin', 'framework', ''),
 (46, 'UserRegistrationSuperadmins', 'lms-a', ''),
-(50, 'PurchaseCourse', 'lms', '');
+(50, 'UserCourseInsertOverbooking', 'lms-a', '');
 
 -- --------------------------------------------------------
 
@@ -809,6 +809,7 @@ INSERT INTO `core_event_consumer_class` (`idConsumer`, `idClass`) VALUES
 (1, 44),
 (1, 45),
 (1, 46);
+(1, 50);
 
 -- --------------------------------------------------------
 
@@ -858,7 +859,9 @@ INSERT INTO `core_event_manager` (`idEventMgr`, `idClass`, `permission`, `channe
 (43, 43, 'not_used', 'email', '_EVENT_RECIPIENTS_USER', 'godadmin,admin,user'),
 (44, 44, 'not_used', 'email', '_EVENT_RECIPIENTS_TEACHER', 'admin'),
 (45, 45, 'not_used', 'email', '_EVENT_RECIPIENTS_TEACHER_GOD', 'godadmin,admin,user'),
-(46, 46, 'not_used', 'email', '_EVENT_RECIPIENTS_MODERATORS_GOD', 'admin');
+(46, 46, 'not_used', 'email', '_EVENT_RECIPIENTS_MODERATORS_GOD', 'admin')
+(50, 50, 'mandatory', 'email', '_EVENT_RECIPIENTS_MODERATORS_GOD', 'admin');
+
 
 -- --------------------------------------------------------
 
