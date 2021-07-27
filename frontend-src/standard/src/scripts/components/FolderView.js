@@ -6,14 +6,16 @@ const axios = require('axios');
 class FolderView extends LearningView {
 
 
-  constructor(baseApiUrl, controller, type, disabledActions) {
+  constructor(baseApiUrl, controller, type, disabledActions, folderTreeInstance) {
     super();
     const _this = this;
 
     _this.baseApiUrl = baseApiUrl;
     _this.controller = controller;
     _this.type = type;
-    _this.selectedId = 0;
+    _this.isReady = false;
+    _this.selectedId = folderTreeInstance.getSelectedId();
+
     _this.disabledActions = disabledActions;
     _this.filterDBClickEvents = [];
 
@@ -28,16 +30,24 @@ class FolderView extends LearningView {
     _this.emptySelectedItems();
 
     _this.container.addEventListener('createTreeItem', (e) => {
-      _this.refresh(e.detail.selectedId);
+      if(_this.isReady) {
+        _this.refresh(e.detail.selectedId);
+      }
     });
     _this.container.addEventListener('openDir', (e) => {
-      _this.refresh(e.detail.selectedId);
+      if(_this.isReady) {
+        _this.refresh(e.detail.selectedId);
+      }
     });
     _this.container.addEventListener('refreshTree', (e) => {
-      _this.refresh(e.detail.selectedId);
+      if(_this.isReady) {
+        _this.refresh(e.detail.selectedId);
+      }
     });
-
-    _this.refresh();
+    _this.container.addEventListener('folderTreeIsReady', (e) => {
+      _this.refresh(e.detail.selectedId);
+      _this.isReady = true;
+    });
   }
 
 
@@ -167,7 +177,7 @@ class FolderView extends LearningView {
     const _this = this;
     try {
       const params = _this.selectedId ? { id: _this.selectedId } : null;
-
+      console.log('REQUEST', _this.selectedId); 
       await axios.get(endpoint, params).then((response) => {
         const childView = Content({items: response.data, isStudent: document.querySelector('.fv-is-student-area') ? true : false});
         const folderView = _this.container.querySelector('.folderView');
@@ -280,7 +290,7 @@ class FolderView extends LearningView {
       if(!proceed) {
         return;
       }
-
+      console.log(el);
       if (el.classList.contains('js-folderView-folder')) {
         // It's dir
         _this.selectedId = elId;

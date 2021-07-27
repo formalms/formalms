@@ -38,6 +38,7 @@
             {% endif %}
             <div class="folderView">
                 <ul class="folderView__ul js-sortable-view">
+                {#
                     {% for el in data %}
                          <li data-id="{{ el.id }}" class="folderView__li is-droppable {% if el.type %}js-folderView-file{% else %}js-folderView-folder is-dropzone{% endif %} {% if el.locked %}fv-is-locked{% endif %}">
                             <div data-id="{{ el.id }}" class="folderView__el {% if el.type %}fv-is-{{ el.type }}{% else %}fv-is-folder{% endif %}">
@@ -93,6 +94,7 @@
                              {% endif %}
                         </li>
                     {% endfor %}
+                    #}
                 </ul>
             </div>
         </main>

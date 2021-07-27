@@ -33,30 +33,40 @@
                     {% endif %}
                 </div>
                 </div>
-                {% if el.actions.length and not isStudent %}
+                {% if el.actions.length %}
                 <div class="actions-wrapper">
-                    <div class="folderView__buttons">
-                        <button type="button" class="folderView__button fv-is-menu-open js-fv-open-actions"></button>
-                    </div>
+                    {% if not isStudent %}
+                        <div class="folderView__buttons">
+                            <button type="button" class="folderView__button fv-is-menu-open js-fv-open-actions"></button>
+                        </div>
+                    {% endif %}
                     <div class="folderView__actions">
                         {% for action in el.actions %}
-                            {% if action.name == 'copy' %}
-                                <button type="button" class="folderView__button fv-is-{{ action.name }} js-fv-open-overlay" title="{{ action.label }}"></button>
+                            {% if not isStudent %}
+                                {% if action.name == 'copy' %}
+                                    <button type="button" class="folderView__button fv-is-{{ action.name }} js-fv-open-overlay" title="{{ action.label }}"></button>
+                                {% else %}
+                                    {% if action.type == 'submit' %}
+                                        <input type="submit"
+                                            id="{{ action.content }}"
+                                            name="{{ action.content }}"
+                                            class="folderView__action fv-is-{{ action.name }} js-fv-action"
+                                            title="{{ action.label }}"
+                                            value=""/>
+                                    {% elseif (action.type == 'link') %}
+                                        <a href="{{ action.content }}" class="folderView__action fv-is-{{ action.name }}" title="{{ action.label }}">
+                                        </a>
+                                    {% endif %}
+                                {% endif %}
                             {% else %}
-                                {% if action.type == 'submit' %}
-                                    <input type="submit"
-                                           id="{{ action.content }}"
-                                           name="{{ action.content }}"
-                                           class="folderView__action fv-is-{{ action.name }} js-fv-action"
-                                           title="{{ action.label }}"
-                                           value=""/>
-                                {% elseif (action.type == 'link') %}
-                                    <a href="{{ action.content }}" class="folderView__action fv-is-{{ action.name }}" title="{{ action.label }}">
-                                    </a>
+                                {% if action.name == 'play' and isStudent %}
+                                    <a href="{{ action.content }}" class="folderView__action fv-is-{{ action.name }}" title="{{ action.label }}"></a>
                                 {% endif %}
                             {% endif %}
                         {% endfor %}
-                        <button type="button" class="folderView__action fv-is-menu-close js-fv-close-actions"></button>
+                        {% if not isStudent %}
+                            <button type="button" class="folderView__action fv-is-menu-close js-fv-close-actions"></button>
+                        {% endif %}
                     </div>
                 </div>
                 {% endif %}

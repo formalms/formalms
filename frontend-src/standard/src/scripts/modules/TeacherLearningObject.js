@@ -15,10 +15,10 @@ class TeacherLearningObject extends LearningObject {
     
     _this.controllers.forEach(controller => {
       let baseUrl = this.getBaseApiUrl(controller.controller);
-      new FolderTree(baseUrl, controller.controller, controller.selector);
-      _this.folderViewInstance = new FolderView(baseUrl, controller.controller, controller.selector);
+      let folderTreeInstance = new FolderTree(baseUrl, controller.controller, controller.selector);
+      
+      _this.folderViewInstance = new FolderView(baseUrl, controller.controller, controller.selector, null, folderTreeInstance);
       new CreateItem(baseUrl, controller.selector);
-
       // Event on fv-is-scormorg
       this.folderViewInstance.filterDBClickEvents.push((el) => {
         if(el.querySelector('.fv-is-scormorg')) {
@@ -37,8 +37,8 @@ class TeacherLearningObject extends LearningObject {
         }
       }, document.querySelector(`[data-container="${controller.selector}"]`));
 
-
       controller.tab.addEventListener('click', _this.clickOnTab.bind(this));
+    
     });
     
     new CopyItem(this.getBaseApiUrl('lomanager'));

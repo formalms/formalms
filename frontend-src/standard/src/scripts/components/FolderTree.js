@@ -6,7 +6,7 @@ class FolderTree {
 
   constructor(baseApiUrl, controller, type) {
     const _this = this;
-
+    this.onLoad = null;
     _this.baseApiUrl = baseApiUrl;
     _this.controller = controller;
     _this.type = type;
@@ -186,6 +186,10 @@ class FolderTree {
     this.storeStatus();
   }
 
+  getSelectedId() {
+    return this.selectedId;
+  }
+
   storeStatus() {
     localStorage.setItem('openedIds', this.openedIds);
     localStorage.setItem('selectedId', this.selectedId);
@@ -259,6 +263,12 @@ class FolderTree {
         if (!_this.container.querySelector('.js-disable-context-menu')) {
           // dispatch refreshContextMenu event
           document.dispatchEvent(new CustomEvent('refreshContextMenu', { detail: { controller: _this.controller }}));
+        }
+        _this.container.dispatchEvent(new CustomEvent('folderTreeIsReady', {
+          detail: { selectedId: _this.getSelectedId(), }
+        }));
+        if(_this.onLoad) {
+          _this.onLoad();
         }
       }).catch((error) => {
         console.log(error)

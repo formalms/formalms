@@ -9,26 +9,26 @@ class StudentLearningObject extends LearningObject {
     //const _this = this; deprecato
     document.body.classList.add('student-area');
     let baseUrl = this.getBaseApiUrl('lo');
-    new FolderTree(baseUrl, controller.controller, controller.selector);
-    this.folderViewInstance = new FolderView(baseUrl, controller.controller, controller.selector);
+    let folderTreeInstance = new FolderTree(baseUrl, controller.controller, controller.selector);
 
-    // Event on fv-is-scormorg
-    this.folderViewInstance.filterDBClickEvents.push((el) => {
-      if(el.querySelector('.fv-is-scormorg')) {
-        this.scormLightbox(el.querySelector('.fv-is-play'), el.querySelector('.folderView__label').innerHTML);
-        return false;
-      } else {
-        return true;
-      }
-    });
+    this.folderViewInstance = new FolderView(baseUrl, controller.controller, controller.selector, null, folderTreeInstance);
+      // Event on fv-is-scormorg
+      this.folderViewInstance.filterDBClickEvents.push((el) => {
+        if(el.querySelector('.fv-is-scormorg')) {
+          this.scormLightbox(el.querySelector('.fv-is-play'), el.querySelector('.folderView__label').innerHTML);
+          return false;
+        } else {
+          return true; 
+        }
+      });
 
-    // Event on fv-is-play
-    this.folderViewInstance.addEvent('fv-is-play', (e, el) => {
-      if(el.parentNode.parentNode.querySelector('.fv-is-scormorg')) {
-        e.preventDefault();
-        this.scormLightbox(el, el.parentElement.parentElement.querySelector('.folderView__label').innerHTML);
-      }
-    });
+      // Event on fv-is-play
+      this.folderViewInstance.addEvent('fv-is-play', (e, el) => {
+        if(el.parentNode.parentNode.querySelector('.fv-is-scormorg')) {
+          e.preventDefault();
+          this.scormLightbox(el, el.parentElement.parentElement.querySelector('.folderView__label').innerHTML);
+        }
+      });
 
   }
 
