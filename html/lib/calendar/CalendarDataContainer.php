@@ -33,6 +33,7 @@ class CalendarDataContainer
      */
     public function getData()
     {
+
         $componentFactory = new \Eluceo\iCal\Presentation\Factory\CalendarFactory();
         return $componentFactory->createCalendar($this->calendar);
     }

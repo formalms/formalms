@@ -169,13 +169,36 @@ class DateManager
     {
         $result = true;
         foreach ($arrayDays as $dayInfo) {
+            if (empty($dayInfo['calendarId'])) {
+                $query = "UPDATE %lms_course_date_day SET `calendarId` = '" . CalendarManager::generateUniqueCalendarId() . "' WHERE `id_date` = " . $idDate . " AND `id` =" . $dayInfo['day_id'];
+                DbConn::getInstance()->query($query);
+            }
+
             $query = "UPDATE %lms_course_date_day SET `deleted` = 1 WHERE `id_date` = " . $idDate . " AND `id` =" . $dayInfo['day_id'];
             $res = DbConn::getInstance()->query($query);
+
             if ($res === false) {
                 $result = $res;
             }
         }
         return $result;
+    }
+
+    public function generateCalendarIdForDateDay($idDate, $idDay)
+    {
+        $query = 'SELECT calendarId FROM %lms_course_date_day WHERE id_date = ' . $idDate;
+
+        list($calendarId) = sql_fetch_row(sql_query($query));
+
+        if (empty($calendarId)) {
+
+            $calendarId = CalendarManager::generateUniqueCalendarId();
+            $query = "UPDATE %lms_course_date_day SET `calendarId` = '" . $calendarId . "' WHERE id_date = " . $idDate . " AND `id` =" . $idDay;
+
+            sql_query($query);
+        }
+
+        return $calendarId;
     }
 
     public function updateDateDay($idDate, $arrayDays)
@@ -438,6 +461,8 @@ class DateManager
     //public function upDate($id_date, $code, $name, $max_par, $price, $overbooking, $status, $test_type)
     public function upDate($id_date, $code, $name, $description, $medium_time, $max_par, $price, $overbooking, $status, $test_type, $sub_start_date, $sub_end_date, $unsubscribe_date_limit)
     {
+        $this->generateCalendarIdForDate($id_date);
+
         $query = "UPDATE %lms_course_date "
             . " SET `code` = '" . $code . "',"
             . " name = '" . $name . "',"
@@ -454,6 +479,23 @@ class DateManager
             . " WHERE id_date = " . $id_date;
 
         return sql_query($query);
+    }
+
+    public function generateCalendarIdForDate($idDate)
+    {
+        $query = 'SELECT calendarId FROM %lms_course_date WHERE id_date = ' . $idDate;
+
+        list($calendarId) = sql_fetch_row(sql_query($query));
+
+        if (empty($calendarId)) {
+
+            $calendarId = CalendarManager::generateUniqueCalendarId();
+
+            $query = "UPDATE %lms_course_date SET `calendarId` = '" . $calendarId . "' WHERE id_date = " . $idDate;
+
+            sql_query($query);
+        }
+        return $calendarId;
     }
 
     public function delDate($id_date)

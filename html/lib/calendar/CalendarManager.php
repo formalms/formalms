@@ -20,15 +20,27 @@ class CalendarManager
      */
     public static function getCalendarDataContainerForDateDays(int $idCourse, int $idDate, ?int $idUser = -1, bool $immediateOutput = false)
     {
+        $dateManager = new DateManager();
+        $dateManager->generateCalendarIdForDate($idDate);
+        $timezoneString = Get::sett('timezone', 'Europe/Rome');
+
         $classroomModel = new ClassroomAlms($idCourse, $idDate);
+
+        $dateInfo = $classroomModel->getDateInfo();
+
         $calendar = new \Eluceo\iCal\Domain\Entity\Calendar();
         $calendar->setProductIdentifier(Get::sett('page_title'));
+        $timezone = new \Eluceo\iCal\Domain\Entity\TimeZone($timezoneString);
+        $calendar->addTimeZone($timezone);
+        $calendar->setCalId($dateInfo['calendarId']);
+        $calendar->setName(sprintf('%s - %s', Get::sett('page_title'), $dateInfo['name']));
 
         $date = $classroomModel->getDateInfo();
 
         $days = $classroomModel->getAllDateDay();
 
         $classrooms = $classroomModel->getClassroomForDropdown();
+
 
         $idOrganization = null;
         if ($idUser > 0) {
@@ -45,12 +57,16 @@ class CalendarManager
 
         foreach ($days as $row) {
 
+            if (empty($row['calendarId'])) {
+                $row['calendarId'] = $dateManager->generateCalendarIdForDateDay($idDate, $row['id']);
+            }
+
             $event = new \Eluceo\iCal\Domain\Entity\Event(new \Eluceo\iCal\Domain\ValueObject\UniqueIdentifier($row['calendarId']));
             $event->setSummary($date['name']);
             $event->setDescription($date['description']);
             if ($row['deleted']) {
-                $event->setStatus(\Eluceo\iCal\Domain\Enum\StatusType::CANCELLED());
-                $event->setMethod(\Eluceo\iCal\Domain\Enum\MethodType::CANCELLED());
+                $event->setStatus(\Eluceo\iCal\Domain\Enum\Status::CANCELLED());
+                $event->setMethod(\Eluceo\iCal\Domain\Enum\Method::CANCELLED());
             }
             $event->setOrganizer(new \Eluceo\iCal\Domain\ValueObject\Organizer(
                 new \Eluceo\iCal\Domain\ValueObject\EmailAddress(Get::sett('sender_event')),
@@ -69,8 +85,8 @@ class CalendarManager
 
             $event->setOccurrence(
                 new \Eluceo\iCal\Domain\ValueObject\TimeSpan(
-                    new \Eluceo\iCal\Domain\ValueObject\DateTime(DateTimeImmutable::createFromFormat('Y-m-d H:i:s', $row['date_begin']), true),
-                    new \Eluceo\iCal\Domain\ValueObject\DateTime(DateTimeImmutable::createFromFormat('Y-m-d H:i:s', $row['date_end']), true)
+                    new \Eluceo\iCal\Domain\ValueObject\DateTime(DateTimeImmutable::createFromFormat('Y-m-d H:i:s', $row['date_begin'], new DateTimeZone($timezoneString)), true),
+                    new \Eluceo\iCal\Domain\ValueObject\DateTime(DateTimeImmutable::createFromFormat('Y-m-d H:i:s', $row['date_end'], new DateTimeZone($timezoneString)), true)
                 )
             );
 

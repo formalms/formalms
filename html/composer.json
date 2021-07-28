@@ -21,7 +21,7 @@
         "ext-simplexml": "*",
         "ext-json": "*",
         "symfony/uid": "^5.3",
-        "eluceo/ical": "dev-feature/event-status-and-method",
+        "eluceo/ical": "dev-feature/calendar-id-name-description",
         "twig/string-extra": "^3.3",
         "twig/extensions": "^1.5"
     },

@@ -28,6 +28,7 @@
 
         {{ Form_openForm('date', action ) }}
         {{ Form_openElementSpace() }}
+        {{ Form_getHidden('id_date','id_date',idDate) }}
         {{ Form_getTextfield( Lang_translate('_CODE', 'course') , 'code', 'code', 255, postData.code ) }}
         {{ Form_getTextfield(Lang_translate('_NAME', 'course') , 'name', 'name', 255, postData.name ) }}
         {{ Form_getTextarea(Lang_translate('_DESCRIPTION', 'course'), 'description', 'description', postData.description|escape) }}

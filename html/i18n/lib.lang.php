@@ -155,7 +155,7 @@ class Lang
 	{
 
 		if ($override) self::$_module = $module;
-		self::lang_code(getLanguage());
+		self::lang_code(Lang::get());
 		self::load_module($module, $lang_code);
 	}
 
