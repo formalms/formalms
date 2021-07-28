@@ -271,6 +271,7 @@ Class SubscriptionAlms extends Model
 
 
 	public function delUser($id_user) {
+		$cmodel = new CourseAlms($this->id_course, $this->id_date, $this->id_edition); 
 		if ($this->id_edition != 0) {
 			require_once(_lms_.'/lib/lib.edition.php');
 			$edition_man = new EditionManager();
@@ -278,32 +279,170 @@ Class SubscriptionAlms extends Model
 		} elseif ($this->id_date != 0) {
 			require_once(_lms_.'/lib/lib.date.php');
 			$date_man = new DateManager();
+            // managing overbooked user on course_date_user here
 			$ret = $date_man->delUserFromDate($id_user, $this->id_course, $this->id_date);
-		} else {
-			require_once(_lms_.'/lib/lib.subscribe.php');
-			$subscribe_man = new CourseSubscribe_Manager();
-			$ret = $subscribe_man->delUserFromCourse($id_user, $this->id_course);
-            /* enrolling first  overbooked user , if any */            
-            if ($ret ) {
-                $cmodel = new CourseAlms();    
-                $user_to_enroll = $cmodel->getFirstOverbooked($this->id_course);
-                if ($user_to_enroll) {
-                    $course_info = $this->getCourseInfoForSubscription();
-                    $status = ($course_info['subscribe_method'] == 1 ? -2 : 0); // check for need approval
-                    
-                    $query = "UPDATE %lms_courseuser  SET status = ".$status
-                    . ($status == -2 ? ' ,waiting=1':'')
-                    ." WHERE idCourse = ".$this->id_course." AND iduser = ".$user_to_enroll;
-                    $ret = sql_query($query);   
-                }
-            }            
-            
-            
-		}
+			
+        }  else {
+            require_once(_lms_.'/lib/lib.subscribe.php');
+            $subscribe_man = new CourseSubscribe_Manager();
+            $ret = $subscribe_man->delUserFromCourse($id_user, $this->id_course);
+        } 
+        /* enrolling first overbooked user, if any */            
+        if ($ret) {
+			$user_to_enroll = $cmodel->getFirstOverbooked();
+			if ($user_to_enroll) {
+				$course_info = $this->getCourseInfoForSubscription();
+				$status = ($course_info['subscribe_method'] == 1 ? -2 : 0); // check for need approval
+				
+				$query = "UPDATE %lms_courseuser  SET status = " . $status
+				. ($status == -2 ? ' ,waiting=1':'')
+				." WHERE idCourse = ".$this->id_course." AND iduser = ".$user_to_enroll;
+			
+				$sql_query_res = sql_query($query);
 
+				if($sql_query_res) {
+
+					require_once(_lms_ . '/lib/lib.course.php');
+					require_once(_lms_ . '/lib/lib.levels.php');
+					$acl_man = Docebo::user()->getAclManager();
+
+					$event = $status < 0 ? "UserCourseInsertModerate" : "UserCourseInserted";
+					$isEventEnabled = getEnabledEvent($event);
+
+					if($isEventEnabled) {
+						// message to user that is waiting
+						require_once(_base_ . '/lib/lib.eventmanager.php');
+
+						$msg_composer = new EventMessageComposer('subscribe', 'lms');
+						$description_event = "User subscribed";
+						if ($status < 0) { // Waiting
+							$description_event .= " with moderation";
+							$subject_key = "_NEW_USER_SUBS_WAITING_SUBJECT";
+							$body_key = "_NEW_USER_SUBS_WAITING_TEXT";
+						} else {
+							$subject_key = "_NEW_USER_SUBSCRIBED_SUBJECT";
+							$body_key = "_NEW_USER_SUBSCRIBED_TEXT_MODERATORS";
+						}
+						$array_subst = array(
+							'[url]' => Get::site_url(),
+							'[course]' => $course_info['name'],
+							'[firstname]' => $userinfo[ACL_INFO_FIRSTNAME], //istantiate user_info with the user to enroll if you want to enable this
+							'[lastname]' => $userinfo[ACL_INFO_LASTNAME],
+							'[userid]' => $acl_man->relativeId($userinfo[ACL_INFO_USERID])
+						);
+
+						$msg_composer->setSubjectLangText('email', $subject_key, false);
+						$msg_composer->setBodyLangText('email', $body_key, $array_subst);
+						 // message to user that is waiting
+						require_once(_base_ . '/lib/lib.eventmanager.php');
+
+
+						$acl = &Docebo::user()->getAcl();
+						$acl_man = &$this->acl_man;
+
+						$recipients = array();
+
+						// get all superadmins 
+						// no mail to superadmin
+						/* 
+							$idst_group_god_admin = $acl->getGroupST(ADMIN_GROUP_GODADMIN); 
+						$recipients = $acl_man->getGroupMembers($idst_group_god_admin);
+						*/
+
+						// get all admins
+						$idst_group_admin = $acl->getGroupST(ADMIN_GROUP_ADMIN);
+						$idst_admin = $acl_man->getGroupMembers($idst_group_admin);
+
+						require_once(_adm_ . '/lib/lib.adminmanager.php');
+
+						foreach ($idst_admin as $id_user) {
+							$adminManager = new AdminManager();
+							$acl_manager = &$acl_man;
+
+							// st = organization, get all orgs related to the user
+							$idst_associated = $adminManager->getAdminTree($id_user);
+
+							$array_user = &$acl_manager->getAllUsersFromIdst($idst_associated);
+							$array_user = array_unique($array_user) ;
+							
+							$control_user = array_search(getLogUserId(), $array_user);
+							if ($control_user === 0) {
+								$control_user = true;
+							}
+
+							$query = "SELECT COUNT(*)"
+								. " FROM " . Get::cfg('prefix_fw') . "_admin_course"
+								. " WHERE idst_user = '" . $id_user . "'"
+								. " AND type_of_entry = 'course'"
+								. " AND id_entry in (-1,0," . $id_course . ")";
+
+							list($control_course) = sql_fetch_row(sql_query($query));
+							
+							$query = "SELECT COUNT(*)"
+								. " FROM " . Get::cfg('prefix_fw') . "_admin_course"
+								. " WHERE idst_user = '" . $id_user . "'"
+								. " AND type_of_entry = 'coursepath'"
+								. " AND id_entry IN"
+								. " ("
+								. " SELECT id_path"
+								. " FROM " . Get::cfg('prefix_lms') . "_coursepath_courses"
+								. " WHERE id_item = '" . $id_course . "'"
+								. " )";
+
+							list($control_coursepath) = sql_fetch_row(sql_query($query));
+
+							$query = "SELECT COUNT(*)"
+								. " FROM " . Get::cfg('prefix_fw') . "_admin_course"
+								. " WHERE idst_user = '" . $id_user . "'"
+								. " AND type_of_entry = 'catalogue'"
+								. " AND id_entry IN"
+								. " ("
+								. " SELECT idCatalogue"
+								. " FROM " . Get::cfg('prefix_lms') . "_catalogue_entry"
+								. " WHERE idEntry = '" . $id_course . "'"
+								. " )";
+
+							list($control_catalogue) = sql_fetch_row(sql_query($query));
+
+							if ($control_user && ($control_course || $control_coursepath || $control_catalogue))
+								$recipients[] = $id_user;
+						}
+
+						$recipients = array_unique($recipients);
+
+						createNewAlert($event, 'subscribe', 'insert', '1', $description_event, $recipients, $msg_composer);
+					}
+					
+					// Notify the user that is entering to the course
+
+					$user_info = $acl_man->getUser($user_to_enroll, false);
+					$array_subst = array(
+						'[url]' => Get::site_url(),
+						'[course]' => $course_info['name'],
+						'[firstname]' => $user_info[ACL_INFO_FIRSTNAME], 
+						'[lastname]' => $user_info[ACL_INFO_LASTNAME],
+						'[userid]' => $acl_man->relativeId($user_info[ACL_INFO_USERID])
+					);
+
+					$recipients = array($user_info[ACL_INFO_EMAIL]);  
+					require_once(_adm_.'/lib/lib.usernotifier.php');               
+					$user_notification = new DoceboUserNotifier("");
+					$attachments = false;
+					$user_info_arr = array($user_info);
+					if($status < 0) { // Waiting
+						$subject = Lang::t("NEXT_USER_IN_WAITING_SUBJECT", "email"); 
+						$email_body = Lang::t("NEXT_USER_IN_WAITING_BODY", "email", $array_subst);
+					} else {
+						$subject = Lang::t("NEXT_USER_ENTERED_SUBJECT", "email"); 
+						$email_body = Lang::t("NEXT_USER_ENTERED_BODY", "email", $array_subst);  
+					}
+					$user_notification->_sendMail($subject, $email_body, $attachments, $recipients, $user_info_arr);  
+					return true;
+				}
+				return $sql_query_res;
+			}
+		}        
         return $ret;
-        
-        
 	}
 
 
@@ -387,11 +526,7 @@ Class SubscriptionAlms extends Model
                 $date_man->setDateOverbooking($this->id_date, $id_user, 1);
             } else {
                 $date_man->setDateOverbooking($this->id_date, $id_user, 0);
-            }
-            
-            if($new_status == _CUS_OVERBOOKING) {
-            
-            }    
+			}
 
 			return $subscribe_man->updateUserStatusInCourse($id_user, $this->id_course, $new_status);
 		}

@@ -394,13 +394,11 @@ class CatalogLmsController extends LmsController
 
         $waiting = $course_info['subscribe_method'] == 1; // need approval
 
-
         $userlevel_subscrip = $this->get_userlevel_subscription($id_user);    //UG
 
-        //UG        $this->acl_man->addToGroup($level_idst[3], $id_user);
         $this->acl_man->addToGroup($level_idst[$userlevel_subscrip], $id_user);    //UG
 
-        //UG        if($model->subscribeUser($id_user, 3, $waiting))
+
         if ($model->subscribeUser($id_user, $userlevel_subscrip, $waiting, $overbooking))        //UG
         {
             $res['success'] = true;
@@ -423,30 +421,23 @@ class CatalogLmsController extends LmsController
             }
 
 
-            $array_subst = array(
-                '[url]' => Get::site_url(),
-                '[course]' => $course_info['name'],
-                '[firstname]' => $userinfo[ACL_INFO_FIRSTNAME],
-                '[lastname]' => $userinfo[ACL_INFO_LASTNAME]
-            );
-
             // message to user that is waiting
             require_once(_base_ . '/lib/lib.eventmanager.php');
-            $msg_composer = new EventMessageComposer('subscribe', 'lms');
 
-            $msg_composer->setSubjectLangText('email', '_NEW_USER_SUBS_WAITING_SUBJECT', false);
-            $msg_composer->setBodyLangText('email', '_NEW_USER_SUBS_WAITING_TEXT', $array_subst);
-
-            $msg_composer->setSubjectLangText('sms', '_NEW_USER_SUBS_WAITING_SUBJECT_SMS', false);
-            $msg_composer->setBodyLangText('sms', '_NEW_USER_SUBS_WAITING_TEXT_SMS', $array_subst);
 
             $acl = &Docebo::user()->getAcl();
             $acl_man = &$this->acl_man;
 
             $recipients = array();
 
-            $idst_group_god_admin = $acl->getGroupST(ADMIN_GROUP_GODADMIN);
-            $recipients = $acl_man->getGroupMembers($idst_group_god_admin);
+            // get all superadmins 
+            // no mail to superadmin
+            /* 
+                $idst_group_god_admin = $acl->getGroupST(ADMIN_GROUP_GODADMIN); 
+               $recipients = $acl_man->getGroupMembers($idst_group_god_admin);
+            */
+
+            // get all admins
             $idst_group_admin = $acl->getGroupST(ADMIN_GROUP_ADMIN);
             $idst_admin = $acl_man->getGroupMembers($idst_group_admin);
 
@@ -456,27 +447,28 @@ class CatalogLmsController extends LmsController
                 $adminManager = new AdminManager();
                 $acl_manager = &$acl_man;
 
+                // st = organization, get all orgs related to the user
                 $idst_associated = $adminManager->getAdminTree($id_user);
 
                 $array_user = &$acl_manager->getAllUsersFromIdst($idst_associated);
 
-                $array_user = array_unique($array_user);
+                $array_user = array_unique($array_user) ;
 
-                $array_user[] = $array_user[0];
-                unset($array_user[0]);
-
+                
                 $control_user = array_search(getLogUserId(), $array_user);
+                if ($control_user === 0) {
+                    $control_user = true;
+                }
 
                 $query = "SELECT COUNT(*)"
                     . " FROM " . Get::cfg('prefix_fw') . "_admin_course"
                     . " WHERE idst_user = '" . $id_user . "'"
                     . " AND type_of_entry = 'course'"
-                    . " AND id_entry = '" . $id_course . "'";
+                    . " AND id_entry in (-1,0," . $id_course . ")";
 
                 list($control_course) = sql_fetch_row(sql_query($query));
-
-                /*if($control)
-                    $recipients[] = $id_user;*/
+                
+                
 
                 $query = "SELECT COUNT(*)"
                     . " FROM " . Get::cfg('prefix_fw') . "_admin_course"
@@ -490,9 +482,6 @@ class CatalogLmsController extends LmsController
                     . " )";
 
                 list($control_coursepath) = sql_fetch_row(sql_query($query));
-
-                /*if($control)
-                    $recipients[] = $id_user;*/
 
                 $query = "SELECT COUNT(*)"
                     . " FROM " . Get::cfg('prefix_fw') . "_admin_course"
@@ -513,7 +502,46 @@ class CatalogLmsController extends LmsController
 
             $recipients = array_unique($recipients);
 
-            createNewAlert('UserCourseInsertModerate', 'subscribe', 'insert', '1', 'User subscribed with moderation', $recipients, $msg_composer);
+            $array_subst = array(
+                '[url]' => Get::site_url(),
+                '[course]' => $course_info['name'],
+                '[firstname]' => $userinfo[ACL_INFO_FIRSTNAME],
+                '[lastname]' => $userinfo[ACL_INFO_LASTNAME]
+            );
+            
+            $msg_composer = new EventMessageComposer('subscribe', 'lms');
+            if ($overbooking) {
+                $subject_key = "_NEW_USER_OVERBOOKING_SUBSCRIBED_SUBJECT";
+                $body_key = "_NEW_USER_OVERBOOKING_SUBSCRIBED_TEXT";
+
+                $msg_composer->setSubjectLangText('email', $subject_key, false);
+                $msg_composer->setBodyLangText('email', $body_key, $array_subst);
+
+                $msg_composer->setSubjectLangText('sms', $subject_key . '_SMS', false);
+                $msg_composer->setBodyLangText('sms', $body_key . '_SMS', $array_subst);
+                createNewAlert('UserCourseInsertOverbooking', 'subscribe', 'insert', '1', 'User overbooked subscribed with moderation', $recipients, $msg_composer);
+            } else {
+                $description = "User subscribed";
+                if ($waiting) {
+                    $description .= " with moderation";
+                    $subject_key = "_NEW_USER_SUBS_WAITING_SUBJECT";
+                    $body_key = "_NEW_USER_SUBS_WAITING_TEXT";
+                    $myevent = "UserCourseInsertModerate";
+                } else {
+                    $subject_key = "_NEW_USER_SUBSCRIBED_SUBJECT";
+                    $body_key = "_NEW_USER_SUBSCRIBED_TEXT_MODERATORS";
+                    $myevent = "UserCourseInserted";
+                }
+
+                $msg_composer->setSubjectLangText('email', $subject_key, false);
+                $msg_composer->setBodyLangText('email', $body_key, $array_subst);
+                
+                $msg_composer->setSubjectLangText('sms', '_TO_NEW_USER_TEXT_SMS', false);
+                $msg_composer->setBodyLangText('sms', '_TO_NEW_USER_TEXT_SMS', $array_subst);
+
+                createNewAlert($myevent, 'subscribe', 'insert', '1', $description, $recipients, $msg_composer);
+            }
+                    
 
             $res['message'] = UIFeedback::info(Lang::t('_SUBSCRIPTION_CORRECT', 'catalogue'), true);
         } else {
