@@ -3770,6 +3770,7 @@ p {
 .forma-button {
   display: inline-block;
   width: 100%;
+  max-width: 140px;
   padding: 0;
   text-align: center;
   text-decoration: none;
@@ -3831,8 +3832,18 @@ p {
 .forma-button--disabled {
   pointer-events: none;
   background: white;
-  border: 2px solid #c2c2c2;
-  color: #c2c2c2; }
+  color: #c2c2c2;
+  position: relative; }
+  .forma-button--disabled::before {
+    position: absolute;
+    content: '';
+    left: -20px;
+    top: 0;
+    bottom: 0;
+    width: 21px;
+    background-color: white;
+    clip-path: polygon(100% 0, 105% 100%, 0 100%);
+    transition: all 0.4s ease 0s; }
   .forma-button--disabled .forma-button__label:before {
     content: '\f023';
     font-family: "FontAwesome";
@@ -6867,7 +6878,8 @@ div#container {
       content: ': '; }
   .course-box__closingdate .course-box__closingdate__value {
     display: block;
-    font-weight: bold; }
+    font-weight: bold;
+    padding-right: 0.3rem; }
 
 .course-box__extrainformation {
   flex: 1 1 50%;
@@ -9056,7 +9068,8 @@ header.header {
   padding: 0 14px;
   overflow: hidden;
   line-height: 1.5;
-  text-align: center; }
+  text-align: center;
+  background: white; }
   @media (min-width: 768px) {
     .homepage__row {
       padding: 0 30px; } }
@@ -9296,7 +9309,11 @@ header.header {
 
 .homepage__row--login .logout, .homepage__row--login
 .login_failed {
-  color: #ff6c00; }
+  color: #c84000;
+  font-size: 1rem;
+  background: white;
+  padding: .3rem;
+  margin-bottom: 3rem; }
 
 .homepage__row--form .form-control.has-error {
   border: solid 2px #ff6c00; }

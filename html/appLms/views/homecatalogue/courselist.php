@@ -52,7 +52,7 @@ function TruncateText($the_text, $size)
                 } else {
                     $action = '
                         <div class="course-box__item">
-                            <a class="forma-button forma-button--disabled">
+                            <a class="forma-button">
                                 <span class="forma-button__label">' . Lang::t('_NO_AVAILABLE_EDITIONS', 'catalogue') . '</span>
                             </a>
                         </div>';

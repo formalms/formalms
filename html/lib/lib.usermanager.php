@@ -1971,7 +1971,7 @@ class UserManagerRenderer
             . Form::getBreakRow()
             . Form::closeElementSpace();
 
-        $out .= '<div class="homepage__row row">'
+        $out .= '<div class="homepage__row">'
             . '<div class="col-xs-12 col-sm-6 col-sm-offset-3">'
             //. '<button type="submit" class="forma-button forma-button--black">Registrati</button>'
             . Form::getButton('reg_button', 'reg_button', $lang->def('_REGISTER'), ' forma-button forma-button--black ')
@@ -2280,7 +2280,7 @@ class UserManagerRenderer
             }
         }
 
-        $out .= '<div class="homepage__row row">'
+        $out .= '<div class="homepage__row">'
             . '<div class="col-xs-12 col-sm-6 col-sm-offset-3">'
             //. '<button type="submit" class="forma-button forma-button--black">Registrati</button>'
             . Form::getButton('reg_button', 'reg_button', $lang->def('_REGISTER'), ' forma-button forma-button--black ')

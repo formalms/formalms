@@ -16,6 +16,7 @@
 .forma-button {
   display: inline-block;
   width: 100%;
+  max-width: 140px;
   //padding: 14px 20px;
   padding: 0;
   //height: 40px;
@@ -124,8 +125,20 @@
 .forma-button--disabled {
   pointer-events: none;
   background: $white;
-  border: 2px solid $gray-3;
+  // border: 2px solid $gray-3;
   color: $gray-3;
+  position: relative;
+  &::before {
+    position: absolute;
+    content: '';
+    left: -20px;
+    top: 0;
+    bottom: 0;
+    width: 21px;
+    background-color: white;
+    clip-path: polygon(100% 0, 105% 100%, 0 100%);
+    transition: all 0.4s ease 0s;
+  }
 
   .forma-button__label {
     &:before {
