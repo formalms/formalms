@@ -195,10 +195,12 @@ class ClassroomAlms extends Model
         $tb->addHead($cont_h);
 
         $days = array();
-        if ($id_date != 0)
+        if ((int)$id_date > 0) {
             $days = $this->classroom_man->getDateDayForControl($id_date);
+        }
 
-        for ($i = 0; $i < count($array_day); $i++) {
+        $arrayLenght = count($array_day);
+        for ($i = 0; $i < $arrayLenght; $i++) {
             if (isset($days[$array_day[$i]])) {
                 $b_hours = $days[$array_day[$i]]['b_hours'];
                 $b_minutes = $days[$array_day[$i]]['b_minutes'];
@@ -297,11 +299,6 @@ class ClassroomAlms extends Model
             return $id_date;
         }
         return false;
-    }
-
-    public function saveDateDay($idDate)
-    {
-
     }
 
     public function getDateInfo()
@@ -561,7 +558,8 @@ class ClassroomAlms extends Model
         return $output;
     }
 
-    public function sendCalendarToAllSubscribers(){
+    public function sendCalendarToAllSubscribers()
+    {
 
         $subscriptionModel = new SubscriptionAlms($this->id_course, false, $this->id_date);
 
@@ -572,9 +570,9 @@ class ClassroomAlms extends Model
 
             $user = Docebo::user()->getAclManager()->getUserMappedData(Docebo::user()->getAclManager()->getUser($user['id_user'], false));
 
-            $calendar = CalendarManager::getCalendarDataContainerForDateDays((int)$this->id_course,(int)$this->id_date,(int)$user['idst']);
+            $calendar = CalendarManager::getCalendarDataContainerForDateDays((int)$this->id_course, (int)$this->id_date, (int)$user['idst']);
 
-            $calendarMailer->sendCalendarToUser($calendar,$user);
+            $calendarMailer->sendCalendarToUser($calendar, $user);
         }
     }
 

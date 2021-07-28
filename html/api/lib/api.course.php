@@ -1101,7 +1101,7 @@ class Course_API extends API
         $index = $this->getMaxDateDay($idDate);
         $idDay = $index + 1;
 
-        $query = "INSERT INTO learning_course_date_day"
+        $query = "INSERT INTO %lms_course_date_day"
             . " (id_day, id_date, classroom, date_begin, date_end, pause_begin, pause_end)";
 
         $query .= " VALUES (" . $idDay . ", " . $idDate . ", " . $day_info[0]['classroom'] . ", '" . $day_info[0]['date_begin'] . "', '" . $day_info[0]['date_end'] . "', '" . $day_info[0]['pause_begin'] . "', '" . $day_info[0]['pause_end'] . "')";

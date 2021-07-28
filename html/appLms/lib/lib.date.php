@@ -140,17 +140,17 @@ class DateManager
         $query = "INSERT INTO %lms_course_date "
             . " (`id_course`, `code`, `name`, `description`, `medium_time`, "
             . " `max_par`, `price`, `overbooking`, `test_type`, `status`, "
-            . " `sub_start_date`, `sub_end_date`, `unsubscribe_date_limit`) "
+            . " `sub_start_date`, `sub_end_date`, `unsubscribe_date_limit`, `calendarId`) "
             . " VALUES (" . (int)$id_course . ", '" . $code . "', '" . $name . "', "
             . " '" . $description . "', '" . $medium_time . "', " . (int)$max_par . ", "
             . " '" . $price . "', " . ($overbooking ? '1' : '0') . ", " . $test_type . ", "
             . " " . $status . ", '" . $sub_start_date . "', '" . $sub_end_date . "', "
-            . " '" . $unsubscribe_date_limit . "')";
+            . " '" . $unsubscribe_date_limit . "','" . CalendarManager::generateUniqueCalendarId() . "')";
         //." VALUES (".$id_course.", '".Util::strip_slashes($code)."', '".Util::strip_slashes($name)."', '".Util::strip_slashes($description)."', '".$medium_time."', ".(int)$max_par.", '".Util::strip_slashes($price)."', ".$overbooking.", ".$test_type.", ".$status.")";
 
         $result = sql_query($query);
 
-        
+
         if ($result) {
             $res = sql_insert_id();
             return $res;
@@ -203,7 +203,7 @@ class DateManager
                     " `pause_begin` = '" . $dayInfo['pause_begin'] . "'," .
                     " `pause_end` = '" . $dayInfo['pause_end'] . "'";
 
-                if (empty($dayInfo['calendarId'])){
+                if (empty($dayInfo['calendarId'])) {
                     $query .= ", `calendarId` = '" . CalendarManager::generateUniqueCalendarId() . "'";
                 }
                 $query .= " WHERE `id_date` = " . $idDate . " AND `id` =" . $dayInfo['day_id'];
@@ -1750,15 +1750,16 @@ class DateManager
     }
 
 
-    public function setDateOverbooking($id_date, $id_user, $overbooking_status) {
-        $query =    "UPDATE %lms_course_date_user"
-                    ." SET overbooking = ".$overbooking_status
-                    ." WHERE id_date = ".$id_date
-                    ." AND id_user = ".$id_user;
+    public function setDateOverbooking($id_date, $id_user, $overbooking_status)
+    {
+        $query = "UPDATE %lms_course_date_user"
+            . " SET overbooking = " . $overbooking_status
+            . " WHERE id_date = " . $id_date
+            . " AND id_user = " . $id_user;
         return sql_query($query);
-        
+
     }
-    
+
     // This function select the earliest user that has made the subscription with overbooking flag active, and if any, change the flag
     public function setFirstOverbookingUser($id_date)
     {
