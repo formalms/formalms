@@ -295,11 +295,11 @@ function getTable($tb, $title = null, $id)
             <tr>
                 <th colspan="6"><b>'. Lang::t($title, 'statistic').'</b></th>
             </tr>'.
-            $table_head
-          .'</thead>
+        $table_head
+        .'</thead>
           <tbody>'.
-            $table_body
-          .'</tbody>
+        $table_body
+        .'</tbody>
         </table>'
 
         .'<script>
@@ -328,10 +328,10 @@ function userdetails()
     $inv = importVar('inv', true, 0);
     $link = 'index.php?modname=statistic&amp;op=userdetails&amp;id=' . $idst_user . '';
 
-    $nav_bar = new NavBar('ini', Get::sett('visuItem'), 0, 'link');
-    $nav_bar->setLink($link . '&amp;ord=' . $ord . '&amp;inv=' . $inv);
-    if (!isset($_GET['p_ini'])) $ini = $nav_bar->getSelectedElement();
-    else $ini = $_GET['p_ini'];
+    //$nav_bar = new NavBar('ini', Get::sett('visuItem'), 0, 'link');
+    //$nav_bar->setLink($link . '&amp;ord=' . $ord . '&amp;inv=' . $inv);
+    //if (!isset($_GET['p_ini'])) $ini = $nav_bar->getSelectedElement();
+    //else $ini = $_GET['p_ini'];
 
     $lang =& DoceboLanguage::createInstance('statistic', 'lms');
     $acl_man = Docebo::user()->getAclManager();
@@ -391,13 +391,6 @@ function userdetails()
     //$query_track .= " LIMIT " . $ini . ", " . Get::sett('visuItem');
     $re_tracks = sql_query($query_track);
 
-    $query_tot_track = "
-	SELECT COUNT(*) 
-	FROM " . $GLOBALS['prefix_lms'] . "_tracksession 
-	WHERE idCourse = '" . (int)$_SESSION['idCourse'] . "' AND idUser = '" . $idst_user . "'";
-    list($tot_elem) = sql_fetch_row(sql_query($query_tot_track));
-    $nav_bar->setElementTotal($tot_elem);
-
     $GLOBALS['page']->add(
         getTitleArea($page_title, 'statistic')
         //. '<div class="std_block">'
@@ -447,16 +440,12 @@ function userdetails()
             '<span class="text_bold">' . (isset($mods_names[$last_module]) ? $mods_names[$last_module] : $last_module) . '</span> [' . $last_op . ']'
         );
         if (Get::sett('tracking') == 'on') {
-            $cont[] = '<a href="index.php?modname=statistic&amp;op=sessiondetails&amp;id=' . $idst_user . '&amp;id_enter=' . $id_enter . '&amp;p_ini=' . $ini
+            $cont[] = '<a href="index.php?modname=statistic&amp;op=sessiondetails&amp;id=' . $idst_user . '&amp;id_enter=' . $id_enter
                 . '&amp;sid=' . $session_id . '" '
                 . 'title="' . $lang->def('_VIEW_SESSION_DETAILS') . ' : ' . $start . '">'
                 . '<img src="' . getPathImage() . 'standard/view.png" alt="' . $lang->def('_VIEW_SESSION_DETAILS_ALT') . ' : ' . $start . '" /></a>';
         };
         $tb->addBody($cont);
-        $chart_data[] = array(
-            'x_axis' => $start,
-            'y_axis' => $how
-        );
     }
 
     $hours = (int)($tot_time / 3600);
@@ -465,30 +454,12 @@ function userdetails()
     if ($minutes < 10) $minutes = '0' . $minutes;
     if ($seconds < 10) $seconds = '0' . $seconds;
 
-    $table_head = '';
-    foreach ($tb->table_head as $row) {
-        $table_head.= '<tr>';
-        foreach ($row->cells as $cell) {
-            $table_head.='<th>'.$cell->label.'</th>';
-        }
-        $table_head.= '</tr>';
-    }
 
-    $table_body = '';
-    foreach ($tb->table_body as $row) {
-        $table_body.= '<tr>';
-        foreach ($row->cells as $cell) {
-            $table_body.='<td>'.$cell->label.'</td>';
-        }
-        $table_body.= '</tr>';
-    }
 
-    $json = new Services_JSON();
     cout(
         '<div>'
         . '<span class="text_bold">' . $lang->def('_USER_TOTAL_TIME') . ' : </span>' . $hours . 'h ' . $minutes . 'm ' . $seconds . 's '
         . getTable($tb, '_USERS_LIST_DETAILS_CAPTION', 'stats_user_details')
-        . $nav_bar->getNavBar($ini)
         . getBackUi('index.php?modname=statistic&amp;op=statistic', $lang->def('_BACK'))
         . '</div>', 'content');
 }
