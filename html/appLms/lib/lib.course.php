@@ -892,17 +892,6 @@ class Man_Course {
 			}
 		}
         
-		if($course['date_end'] != '0000-00-00') {
-			$date01=new DateTime($course['date_end']);
-			$time_end=$date01->format('U');
-			if(isset($course['hour_end']) && $course['hour_end']!=-1){
-				$hour_end = $course['hour_end'];
-				$seconds = strtotime("1970-01-01 $hour_end UTC");
-				$time_end += seconds;
-			}
-			$exp_time = $time_end - $now;
-			if($exp_time > 0) $expiring = round($exp_time / (24*60*60));
-		}
 		if($course['valid_time'] != '0' && $course['valid_time'] != '' && $course['date_first_access'] != '' && $course['level']<=3) {
 
 			$time_first_access = fromDatetimeToTimestamp($course['date_first_access']);
@@ -920,6 +909,8 @@ class Man_Course {
 					." WHERE idCourse = '".$course['idCourse']."'"
 					." AND idUser = '".getLogUserId()."'";
 
+
+                    
 		list($date_begin_validity, $date_expire_validity, $status, $level) = $db->fetch_row(sql_query($query));
 
 		if(!is_null($date_begin_validity) && $date_begin_validity !== '0000-00-00 00:00:00' && strcmp(date('Y-m-d H:i:s'), $date_begin_validity) <= 0)
@@ -927,7 +918,7 @@ class Man_Course {
 
 		if(!is_null($date_expire_validity) && $date_expire_validity !== '0000-00-00 00:00:00' && strcmp(date('Y-m-d H:i:s'), $date_expire_validity) >= 0)
 			return array('can' => false, 'reason' => 'subscription_expired', 'expiring_in' => $expiring);
-
+        
 		if($course['status'] == CST_CANCELLED)
 			return array('can' => false, 'reason' => 'course_status', 'expiring_in' => $expiring);
 
@@ -936,7 +927,7 @@ class Man_Course {
 			if($level > 3)
 				return array('can' => true, 'reason' => 'user_status', 'expiring_in' => $expiring);
 			else
-				return array('can' => false, 'reason' => 'course_status', 'expiring_in' => $expiring);
+				return array('can' => false, 'reason' => 'course_status - '.CST_PREPARATION, 'expiring_in' => $expiring);
 		}
 
 		if($course['status'] == CST_CONCLUDED)
@@ -953,10 +944,15 @@ class Man_Course {
 		if(isset($course['waiting']) && $course['waiting'] >= 1) return array('can' => false, 'reason' => 'waiting', 'expiring_in' => $expiring);
 		// control if the course is elapsed
 		if($course['date_begin'] != '0000-00-00') {
+            $date01=new DateTime($course['date_begin']);
+            $time_start=$date01->format('U');
+			if(isset($course['hour_begin']) && $course['hour_begin']!=-1){
+				$hour_begin = $course['hour_begin'];
+				$seconds = strtotime("1970-01-01 $hour_begin UTC");
+				$time_start = (int)$time_start + (int)$seconds;
+			}
 
-			$time_begin = fromDatetimeToTimestamp($course['date_begin']);
-
-			if($now < $time_begin) return array('can' => false, 'reason' => 'course_date', 'expiring_in' => $expiring);
+			if($now < $time_start) return array('can' => false, 'reason' => 'course_date', 'expiring_in' => $expiring);
 		}
 		if($course['date_end'] != '0000-00-00') {
 			$date01=new DateTime($course['date_end']);
@@ -968,6 +964,9 @@ class Man_Course {
 			}
 			if($now > $time_end) return array('can' => false, 'reason' => 'course_date', 'expiring_in' => $expiring);
 		}
+        
+        
+        
 		if($course['valid_time'] != '0' && $course['valid_time'] != '' && $course['date_first_access'] != '') {
 
 			$time_first_access = fromDatetimeToTimestamp($course['date_first_access']);

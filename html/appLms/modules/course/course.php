@@ -467,7 +467,7 @@ function userCourseList(&$url, $use_tab = true, $page_add = true) {
 	$select_course = ""
 	." SELECT c.idCourse, c.course_type, c.idCategory, c.code, c.name, c.description, c.lang_code, c.difficult, " 
 	."	c.subscribe_method, c.date_begin, c.date_end, c.max_num_subscribe, "
-	."	c.selling, c.prize, c.create_date, c.status AS course_status, c.course_edition, " 
+	."	c.selling, c.prize, c.create_date, c.status, c.course_edition, " 
 	."	c.classrooms, c.img_othermaterial, c.course_demo, c.course_vote, "
 	."	c.can_subscribe, c.sub_start_date, c.sub_end_date, c.valid_time, c.userStatusOp, c.show_result, u.status AS user_status, u.level "
 	

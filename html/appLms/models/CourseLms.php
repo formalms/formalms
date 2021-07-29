@@ -13,26 +13,7 @@
 
 class CourseLms extends Model
 {
-
     protected $_t_order = false;
-
-    protected $idCourse;
-
-    public function __construct($idCourse = false)
-    {
-        parent::__construct();
-        $this->idCourse = $idCourse;
-    }
-
-    /**
-     * @throws CourseIdNotSetException
-     */
-    private function checkIdCourseOrThrow()
-    {
-        if (empty($this->idCourse)) {
-            throw new CourseIdNotSetException();
-        }
-    }
 
     /**
      * This function return the correct order to use when you wish to diplay the a
@@ -161,8 +142,8 @@ class CourseLms extends Model
         $infoEnroll = self::getInfoEnroll($course['idCourse'], Docebo::user()->getIdSt());
 
         $parsedData = $course;
-
-        $parsedData['name'] = strip_tags($parsedData['name']); // this for course boxes
+       
+        $parsedData['name'] = strip_tags($parsedData['name']); // this for course boxes 
         $parsedData['escaped_name'] = Util::purge($parsedData['name']); // and this for javascript calls
 
         if ($parsedData['use_logo_in_courselist']) {
@@ -178,15 +159,31 @@ class CourseLms extends Model
 
         $parsedData['level_icon'] = $parsedData['level'];
         $parsedData['level_text'] = $levels[$parsedData['level']];
-        $parsedData['userCanUnsubscribe'] = self::userCanUnsubscribe($parsedData);
 
+
+        
+        //LRZ:  if validity day is setting
+        $date_first_access = fromDatetimeToTimestamp(self::getDateFirstAccess($course['idCourse'], Docebo::user()->getIdSt()));
+        if ( $parsedData['valid_time'] > 0 && $date_first_access>0) {
+            $time_expired = $date_first_access + ($parsedData['valid_time']  * 24 * 3600 )  ;            
+            $parsedData['dateClosing_year'] = date("Y", $time_expired);
+            $parsedData['dateClosing_month'] = Lang::t('_MONTH_' . substr('0' . date("m", $time_expired), -2), 'standard');
+            $parsedData['dateClosing_day'] = date("d", $time_expired);
+        }         
+        
+        
         $date_closing = getDate(strtotime(Format::date($parsedData['date_end'], 'date')));
         if ($date_closing['year'] > 0) {
             $parsedData['dateClosing_year'] = $date_closing['year'];
             $parsedData['dateClosing_month'] = Lang::t('_MONTH_' . substr('0' . $date_closing['mon'], -2), 'standard');
             $parsedData['dateClosing_day'] = $date_closing['mday'];
         }
+        
         $parsedData['is_enrolled'] = !empty($infoEnroll);
+        if ($parsedData['is_enrolled'] ) {
+            $parsedData['level']  =  $infoEnroll['level'];          
+        }
+
 
         if ($parsedData['is_enrolled']) {
             $parsedData['canEnter'] = (new Man_Course)->canEnterCourse($parsedData)['can'];
@@ -196,7 +193,7 @@ class CourseLms extends Model
         $parsedData['editions'] = false;
         $parsedData['course_full'] = false;
         $parsedData['in_cart'] = false;
-        $parsedData['waiting'] = ($infoEnroll['waiting'] || $infoEnroll['status'] == 4); // 4 = overbooked
+        $parsedData['waiting'] = ($infoEnroll['waiting'] || $infoEnroll['status'] == 4); // 4 = overbooked        
         switch ($parsedData['course_type']) {
             case 'elearning':
                 if (!empty($infoEnroll)) {
@@ -229,30 +226,35 @@ class CourseLms extends Model
             default:
                 break;
         }
+        
+        $parsedData['userCanUnsubscribe'] = self::userCanUnsubscribe($parsedData);        
 
         if (!$parsedData['course_full'] && $parsedData['selling']) {
             $parsedData['in_cart'] = isset($_SESSION['lms_cart'][$parsedData['idCourse']]);
         }
 
-        $showOptions = false;
-
-        if ($parsedData['userCanUnsubscribe'] && $parsedData['is_enrolled']) {
-            $showOptions = true;
-        } elseif ($parsedData['course_demo'] && ($parsedData['level'] > 3 || (!$parsedData['waiting'] && $parsedData['canEnter']))) {
-            $showOptions = true;
-        }
-
-        $parsedData['show_options'] = $showOptions;
+        $parsedData['show_options'] = $parsedData['course_demo'] || 
+                                     ($parsedData['userCanUnsubscribe'] && $parsedData['is_enrolled'] );
 
         $parsedData['courseBoxEnabled'] = false;
 
         return $parsedData;
     }
 
+    
+    private function getDateFirstAccess($id_course, $id_user){
+        $query = "select date_first_access from learning_courseuser where idCourse=".$id_course." and idUser=".$id_user;
+        
+
+        list($date_first_access) = sql_fetch_row(sql_query($query));
+        return $date_first_access;        
+    }
+    
+    
     // if in my courses, I am enrolled, so I need to unenroll if option enabled
     public static function isBoxEnabledForElearningAndClassroomInElearning($course)
     {
-        return true;
+        return true; 
     }
 
     public static function isBoxEnabledForElearningInCatalogue($course)
@@ -335,7 +337,6 @@ class CourseLms extends Model
         $course_array['next_lesson'] = '-';
         $next_lesson_array = [];
         $currentDate = new DateTime();
-        $a = $currentDate->format('Y-m-d H:i:s');
 
         // user can be enrolled in more than one edition (as a teacher or crazy student....)
         foreach ($course_editions[$id_course] as $id_date => $obj_data) {
@@ -346,6 +347,7 @@ class CourseLms extends Model
                 $out[$id_date]['name'] = $obj_data->name;
                 $out[$id_date]['date_begin'] = $obj_data->date_min;
                 $out[$id_date]['date_end'] = $obj_data->date_max;
+                $out[$id_date]['unsubscribe_date_limit'] = $obj_data->unsubscribe_date_limit;
                 $array_day = $dm->getDateDayDateDetails($obj_data->id_date);
 
                 foreach ($array_day as $id => $day) {
@@ -353,6 +355,7 @@ class CourseLms extends Model
                     $out[$id_date]['days'][$id]['day'] = Format::date($day['date_begin'], 'date');
                     $out[$id_date]['days'][$id]['begin'] = Format::date($day['date_begin'], 'time');
                     $out[$id_date]['days'][$id]['end'] = Format::date($day['date_end'], 'time');
+                    $out[$id_date]['days'][$id]['full_date'] = $day['date_begin'];
                     $next_lesson_array[$id_date . ',' . $id] = new DateTime(Format::date($day['date_begin'], 'datetime'));
                 }
             }
@@ -435,91 +438,46 @@ class CourseLms extends Model
     public static function userCanUnsubscribe(&$course)
     {
         $now = new DateTime();
-        $defaultTrueDate = new DateTime('2999-01-01');
+        $defaultTrueDate = new DateTime('2999-01-01');        
+        
+        if ($course['course_type'] == 'classroom') {
+            if ((int)$course['auto_unsubscribe'] === 2) {
+                $editionKey = array_key_first($course['editions']);
+                
+                if ($course['editions'][$editionKey]['unsubscribe_date_limit'] != null 
+                    && $course['editions'][$editionKey]['unsubscribe_date_limit'] != '0000-00-00 00:00:00'){
+                        
+                        $unsub_date_limit = $course['editions'][$editionKey]['unsubscribe_date_limit'];
+                        $unsub_date_limit = DateTime::createFromFormat('Y-m-d H:i:s',$unsub_date_limit);
+                } else {
+                    $unsub_date_limit = $defaultTrueDate;
+                }
+                $edition_not_started = true;
+                foreach($course['editions'][$editionKey]['days'] as $k=>$day) {
+                    $next_day = $day['full_date'];
+                    $next_day = DateTime::createFromFormat('Y-m-d H:i:s',$next_day);
+                    $edition_not_started =  $edition_not_started && ( $now < $next_day );
+                    if (!$edition_not_started) {
+                        break;
+                    }
+                }
+                return ($now <  $unsub_date_limit && $edition_not_started);
+            } else {
+                return false;
+            }
+        }  else {
+            // if course date end, cannot unenroll
+            $courseDateEnd = DateTime::createFromFormat('Y-m-d', $course['date_end']);
+            if ($course['date_end'] != null && $course['date_end'] != '0000-00-00' && $now > $courseDateEnd) {
+                return false;
+            } 
 
-        $courseUnsubscribeDateLimit = (null !== $course['unsubscribe_date_limit'] ? DateTime::createFromFormat('Y-m-d H:i:s', $course['unsubscribe_date_limit']) : $defaultTrueDate);
-
-        /* need to get course editions unsubscribe date limit
-        $dateUnsubscribeDateLimit = (null !== $course['date_unsubscribe_date_limit'] ? DateTime::createFromFormat('Y-m-d H:i:s', $course['date_unsubscribe_date_limit']) :
-            $defaultTrueDate);
-        */
-        if (((int)$course['auto_unsubscribe'] === 2 || (int)$course['auto_unsubscribe'] === 1) && ($now < $courseUnsubscribeDateLimit )) {
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * @return bool
-     * @throws CourseIdNotSetException
-     */
-    public function isHtmlFront(): bool
-    {
-        $this->checkIdCourseOrThrow();
-
-        $sql_exist = "select count(id_course) as exist from learning_htmlfront where id_course=" . $this->idCourse;
-        $qres = sql_query($sql_exist);
-        list($exist) = sql_fetch_row($qres);
-
-        if ((int)$exist === 1) {
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * @return string
-     * @throws CourseIdNotSetException
-     */
-    public function getHtmlFront(): string
-    {
-        $this->checkIdCourseOrThrow();
-
-        $query = "SELECT textof FROM %lms_htmlfront WHERE id_course = '$this->idCourse'";
-        $result =  Docebo::db()->query($query);
-
-        foreach (Docebo::db()->fetch_assoc($result) as $item) {
-            return (string)$item['textof'];
-        }
-        return '';
-    }
-
-    /**
-     * @param $html
-     * @return bool
-     * @throws CourseIdNotSetException
-     */
-    public function saveHtmlFront($html): bool
-    {
-        $this->checkIdCourseOrThrow();
-
-        if ($this->isHtmlFront()) {
-
-            $query = "UPDATE %lms_htmlfront SET textof = '" . addslashes($html) . "' WHERE id_course = $this->idCourse";
-        } else {
-            $query = "INSERT INTO %lms_htmlfront ( id_course, textof) VALUES ($this->idCourse,'" . addslashes($html) . "')";
-        }
-
-        $result = Docebo::db()->query($query);
-
-        if ($result === false){
+            $courseUnsubscribeDateLimit = (null !== $course['unsubscribe_date_limit'] ? DateTime::createFromFormat('Y-m-d H:i:s', $course['unsubscribe_date_limit']) : $defaultTrueDate);
+            if (((int)$course['auto_unsubscribe'] === 2 || (int)$course['auto_unsubscribe'] === 1) && ($now < $courseUnsubscribeDateLimit )) {
+                return true;
+            }
             return false;
         }
-        return true;
     }
 
-    public function deleteHtmlFront(){
-
-        $this->checkIdCourseOrThrow();
-
-        $query = "DELETE FROM %lms_htmlfront WHERE id_course = $this->idCourse";
-
-        $result = Docebo::db()->query($query);
-
-        if ($result === false){
-            return false;
-        }
-        return true;
-    }
-
-}
+}   

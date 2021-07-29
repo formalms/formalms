@@ -616,7 +616,7 @@ class DateManager
         $query = "SELECT date_begin, date_end, classroom"
             . " FROM %lms_course_date_day"
             . " WHERE id_date = " . $id_date
-            . ' AND deleted = 0';
+            . ' AND deleted = 0 order by id_day';
 
         $result = sql_query($query);
 
@@ -1669,7 +1669,7 @@ class DateManager
         $subscribe_man = new CourseSubscribe_Manager();
 
         if (!$subscribe_man->controlSubscription($id_user, $id_course))
-            $subscribe_man->subscribeUserToCourse($id_user, $id_course, $level, $waiting, $date_begin_validity, $date_expire_validity);
+            $subscribe_man->subscribeUserToCourse($id_user, $id_course, $level, $waiting, $date_begin_validity, $date_expire_validity, $is_overbooking);
         else
             $subscribe_man->updateForNewDateSubscribe($id_user, $id_course, $waiting);
 

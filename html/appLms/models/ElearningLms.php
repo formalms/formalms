@@ -93,15 +93,12 @@ class ElearningLms extends Model
 			}
 		}
 
-
-
-
-		$query = "SELECT c.idCourse, c.course_type, c.idCategory, c.code, c.name, c.description, c.box_description, c.difficult, c.status AS course_status, c.level_show_user, "
+		$query = "SELECT c.idCourse, c.course_type, c.idCategory, c.code, c.name, c.description, c.box_description, c.difficult,  c.status, c.level_show_user, "
 			. "	  c.course_edition, c.sub_start_date, c.sub_end_date, "
 			. "    c.max_num_subscribe, c.create_date, "
 			. "    c.direct_play, c.img_othermaterial, c.course_demo, c.use_logo_in_courselist, c.img_course, c.lang_code, "
-			. "	  c.course_vote, c.hour_end , "
-			. "    c.date_begin, c.date_end, c.valid_time, c.show_result, c.userStatusOp, c.auto_unsubscribe, c.unsubscribe_date_limit as course_unsubscribe_date_limit, "
+			. "	  c.course_vote, c.hour_end , c.hour_begin, "
+			. "    c.date_begin, c.date_end, c.valid_time, c.show_result, c.userStatusOp, c.auto_unsubscribe, c.unsubscribe_date_limit , "
 
 			. "    cu.status AS user_status, cu.level, cu.date_inscr, cu.date_first_access, cu.date_complete, cu.waiting,"
 
@@ -223,6 +220,7 @@ class ElearningLms extends Model
 
 
 
+
 	// LR: list category of subscription
 	public function getListCategory($idUser, $completePath = true)
 	{
@@ -251,6 +249,9 @@ class ElearningLms extends Model
 		return $output;
 	}
 
+
+
+
 	public function getUserCoursePathCourses($id_user)
 	{
 		require_once(_lms_ . '/lib/lib.coursepath.php');
@@ -263,6 +264,7 @@ class ElearningLms extends Model
 		}
 		return $output;
 	}
+
 
 	private function getCategory($idCat)
 	{

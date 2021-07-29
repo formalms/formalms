@@ -399,7 +399,7 @@ class CatalogLmsController extends LmsController
         $this->acl_man->addToGroup($level_idst[$userlevel_subscrip], $id_user);    //UG
 
 
-        if ($model->subscribeUser($id_user, $userlevel_subscrip, $waiting, $overbooking))        //UG
+        if ($model->subscribeUser($id_user, $userlevel_subscrip, $waiting, false, false, $overbooking))        //UG
         {
             $res['success'] = true;
             $res['new_status_code'] = '';

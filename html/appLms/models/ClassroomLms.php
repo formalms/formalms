@@ -179,7 +179,7 @@ class ClassroomLms extends Model
         }
 
         $output = array();
-        $query = "SELECT d.id_date, d.id_course, d.code, d.name, d.status
+        $query = "SELECT d.id_date, d.id_course, d.code, d.name, d.status, d.unsubscribe_date_limit
 			FROM %lms_course_date AS d
 			JOIN %lms_course_date_user AS du ON (du.id_date = d.id_date)
 			WHERE du.id_user = " . (int)$id_user . " AND d.id_course IN (" . implode(",", $courses) . ")";

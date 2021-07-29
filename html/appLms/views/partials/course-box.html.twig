@@ -26,35 +26,35 @@
                 </div>
             {% endif %}
         {% endblock %}
-        {% if course.show_options %}
-            <nav class="course-box__nav">
-                <div class="course-box__options dropdown pull-right">
-                    <div class="dropdown-toggle" id="courseBoxOptions" data-toggle="dropdown" aria-haspopup="true"
-                         aria-expanded="true">
-                        <i class="glyphicon glyphicon-option-horizontal"></i>
+        {% block show_options %}
+            {% if course.show_options %}
+                <nav class="course-box__nav">
+                    <div class="course-box__options dropdown pull-right">
+                        <div class="dropdown-toggle" id="courseBoxOptions" data-toggle="dropdown" aria-haspopup="true"
+                             aria-expanded="true">
+                            <i class="glyphicon glyphicon-option-horizontal"></i>
+                        </div>
+
+                        <ul class="dropdown-menu" aria-labelledby="courseBoxOptions">
+                            {% if course.userCanUnsubscribe  and course.is_enrolled  %}
+                                {% block unsubscribe %}
+                                    <li>
+                                        <a href="javascript:confirmDialog('{{ course.name }}', {{ course.idCourse }})">{{ Lang_translate('_SELF_UNSUBSCRIBE', 'course') }}</a>
+                                    </li>
+                                {% endblock %}
+                            {% endif %}
+                            {% if course.course_demo %}
+                                {% block demo %}
+                                    <li>
+                                        <a href="index.php?r=catalog/downloadDemoMaterial&amp;course_id={{ course.idCourse }}"> {{ Lang_translate('_COURSE_DEMO', 'course') }}</a>
+                                    </li>
+                                {% endblock %}
+                            {% endif %}
+                        </ul>
                     </div>
-
-                    <ul class="dropdown-menu" aria-labelledby="courseBoxOptions">
-                        {% if course.userCanUnsubscribe  and course.is_enrolled %}
-                            {% block unsubscribe %}
-                                <li>
-                                    <a href="javascript:confirmDialog('{{ course.name }}', {{ course.idCourse }})">{{ Lang_translate('_SELF_UNSUBSCRIBE', 'course') }}</a>
-                                </li>
-                            {% endblock %}
-                        {% endif %}
-                        {% if course.course_demo and (course.level > 3 or not course.waiting and course.canEnter) %}
-                            {% block demo %}
-                                <li>
-                                    <a href="index.php?r=catalog/downloadDemoMaterial&amp;course_id={{ course.idCourse }}"> {{ Lang_translate('_COURSE_DEMO', 'course') }}</a>
-                                </li>
-                            {% endblock %}
-                        {% endif %}
-                    </ul>
-                </div>
-            </nav>
-        {% endif %}
-
-
+                </nav>
+            {% endif %}
+        {% endblock %}
 
         {% block courseBoxTitle %}
             <h3 class="course-box__title">{{ course.name }}</h3>
@@ -66,12 +66,13 @@
             <div class="course-box__description"> {{ course.box_description }} </div>
         {% endblock %}
 
-        {% block courseBoxCta %}
-            <div class="course-box__cta">
-                {% if course.course_type == 'classroom' and course.editions|length > 0 %}
-                    {% if "course-box--disabled" not in courseBoxClasses %}
-                        <div class="course-box__extrainformation">
-                            {% block courseBoxMyCoursesNextLesson %}
+        {% block courseBoxDdate %}
+            {% if course.course_type == 'classroom' and course.editions|length > 0 %}
+                {% if "course-box--disabled" not in courseBoxClasses %}
+
+                    <div class="course-box__extrainformation">
+                    {% block extra_information %}
+                        {% block courseBoxMyCoursesNextLesson %}
                             <div class="course-box__next">
                                 <span class="course-box__next__text">{{ Lang_translate('_NEXT_LESSON', 'course') }}</span>
                                 <span class="course-box__next__value">{{ course.next_lesson }}</span>
@@ -132,20 +133,31 @@
                                     </div>
                                 </div>
                             </div>
-                            {% endblock %}
-                        </div>
-                    {% endif %}
-                {% else %}
-                    {% block closingdate %}
-                        {% if course.dateClosing_year > 0 %}
-                            <div class="course-box__closingdate">
-                                <span class="course-box__closingdate__text">{{ Lang_translate('_CLOSING_DATA', 'course') }}</span>
-                                <span class="course-box__closingdate__value">{{ course.dateClosing_day }} {{ course.dateClosing_month }} {{ course.dateClosing_year }}</span>
-                            </div>
-                        {% endif %}
+                        {% endblock %}
                     {% endblock %}
-                {% endif %}
+                    </div>
 
+                {% endif %}
+            {% else %}
+                {% block closingdate %}
+                    <div class="date_container">
+                    {% if course.dateClosing_year > 0 %}
+
+                        <div class="course-box__closingdate glyphicon glyphicon-calendar ">
+                        {% block closingdate_internal %}
+                            <span class="course-box__closingdate__text">{{ Lang_translate('_CLOSING_DATA', 'course') }}</span>
+                             <span class="course-box__closingdate__value">{{ course.dateClosing_day }} {{ course.dateClosing_month }} {{ course.dateClosing_year }}</span>
+                        {% endblock %}
+                        </div>
+
+                    {% endif %}
+                    </div>
+                {% endblock %}
+            {% endif %}
+        {% endblock %}
+
+        {% block courseBoxCta %}
+            <div class="course-box__cta">
                 {% block entercourse %}
                     {% if course.canEnter %}
 

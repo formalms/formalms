@@ -359,7 +359,8 @@ class CourseSubscribe_Manager
 		return $res;
 	}
 
-	public function subscribeUserToCourse($id_user, $id_course, $level = 3, $waiting = 0, $overbooking = 0, $date_begin_validity = false, $date_expire_validity = false)
+	public function subscribeUserToCourse($id_user, $id_course, $level = 3, $waiting = 0, $date_begin_validity = false, 
+                                            $date_expire_validity = false, $overbooking = 0)
 	{
 		
         
@@ -552,7 +553,7 @@ class CourseSubscribe_Manager
 		}
 
 		if ($this->db->query($query)) {
-            $current_data = ['status' => $new_status];           
+            $current_data = ['status' => $new_status, 'prev_status' => $oldStatus];           
             Events::trigger('lms.course_user.updated', [
                 'id_user' => $id_user,
                 'id_course' => $id_course,

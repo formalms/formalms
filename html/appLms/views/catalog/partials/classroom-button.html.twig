@@ -31,7 +31,9 @@
                         {% if course.subscribe_method == 2 %}
                             <span class="forma-button__label">{{ Lang_translate('_SUBSCRIBE', 'catalogue') }}</span>
                         {% else %}
-                            <span class="forma-button__label">{{ Lang_translate('_COURSE_S_MODERATE', 'catalogue') }}</span>
+                            {% block classroom_moderate_enrollment %}
+                                <span class="forma-button__label">{{ Lang_translate('_COURSE_S_MODERATE', 'catalogue') }}</span>
+                            {% endblock %}
                         {% endif %}
                     </a>
 
@@ -41,6 +43,7 @@
                             aria-controls="collapse_{{ classroomInfo.id_date }}">
                         <a href='#'>{{ classroomInfo.name }}</a>
                     </button>
+
                 {% elseif course.subscribe_method == 0 %}
                     <a class="forma-button course-box__cta__button" title="{{ course.name }}"
                        rel="{{ course.rel }}" href="javascript:void(0);">
@@ -62,10 +65,18 @@
             {% endif %}
         {% endif %}
     {% else %}
-        <a class="forma-button forma-button--disabled" href="javascript:void(0);" title="{{ course.name }}">
-            <span class="forma-button__label">
-                {{ Lang_translate('_NO_AVAILABLE_EDITIONS', 'catalogue') }}
-            </span>
-        </a>
+                {% if course.canEnter %}
+                    <a class="forma-button course-box__cta__button" title="{{ course.name }}"
+                       href="index.php?modname=course&op=aula&idCourse={{ course.idCourse }}"
+                       rel="{{ course.rel }}">
+                        <span class="forma-button__label">{{ Lang_translate('_USER_STATUS_ENTER', 'catalogue') }}</span>
+                    </a>
+                {% else %}
+                    <a class="forma-button forma-button--disabled" href="javascript:void(0);" title="{{ course.name }}">
+                        <span class="forma-button__label">
+                            {{ Lang_translate('_NO_AVAILABLE_EDITIONS', 'catalogue') }}
+                        </span>
+                    </a>
+                {% endif %}
     {% endif %}
 {% endblock %}

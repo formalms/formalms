@@ -253,21 +253,21 @@ Class SubscriptionAlms extends Model
 		return $res;
 	}
 
-	public function subscribeUser($id_user, $level, $waiting, $overbooking = 0, $date_begin_validity = FALSE, $date_expire_validity = FALSE) {
-		if($this->id_edition != 0) {
-			require_once(_lms_.'/lib/lib.edition.php');
-			$edition_man = new EditionManager();
-			return $edition_man->subscribeUserToEdition($id_user, $this->id_course, $this->id_edition, $level, $waiting, $date_begin_validity, $date_expire_validity);
-		}	elseif($this->id_date != 0)	{
-			require_once(_lms_.'/lib/lib.date.php');
-			$date_man = new DateManager();
-			return $date_man->subscribeUserToDate($id_user, $this->id_course, $this->id_date, $level, $waiting, $date_begin_validity, $date_expire_validity);
-		} else {
-			require_once(_lms_.'/lib/lib.subscribe.php');
-			$subscribe_man = new CourseSubscribe_Manager();
-			return $subscribe_man->subscribeUserToCourse($id_user, $this->id_course, $level, $waiting, $overbooking, $date_begin_validity, $date_expire_validity);
-		}
-	}
+    public function subscribeUser($id_user, $level, $waiting, $date_begin_validity = FALSE, $date_expire_validity = FALSE, $overbooking = 0) {
+        if($this->id_edition != 0) {
+            require_once(_lms_.'/lib/lib.edition.php');
+            $edition_man = new EditionManager();
+            return $edition_man->subscribeUserToEdition($id_user, $this->id_course, $this->id_edition, $level, $waiting, $date_begin_validity, $date_expire_validity);
+        }    elseif($this->id_date != 0)    { // classroom enrollment
+            require_once(_lms_.'/lib/lib.date.php');
+            $date_man = new DateManager();
+            return $date_man->subscribeUserToDate($id_user, $this->id_course, $this->id_date, $level, $waiting, $date_begin_validity, $date_expire_validity);
+        } else {
+            require_once(_lms_.'/lib/lib.subscribe.php'); // elearning enrollment
+            $subscribe_man = new CourseSubscribe_Manager();
+            return $subscribe_man->subscribeUserToCourse($id_user, $this->id_course, $level, $waiting, $date_begin_validity, $date_expire_validity, $overbooking );
+        }
+    }
 
 
 	public function delUser($id_user) {
@@ -281,7 +281,7 @@ Class SubscriptionAlms extends Model
 			$date_man = new DateManager();
             // managing overbooked user on course_date_user here
 			$ret = $date_man->delUserFromDate($id_user, $this->id_course, $this->id_date);
-			
+			// Rimossa funzione inserita precedentemente perchè già presente nella delUserFromDate -> removeUserFromDate
         }  else {
             require_once(_lms_.'/lib/lib.subscribe.php');
             $subscribe_man = new CourseSubscribe_Manager();
@@ -289,6 +289,7 @@ Class SubscriptionAlms extends Model
         } 
         /* enrolling first overbooked user, if any */            
         if ($ret) {
+			// For classroom courses, be sure that is enabled overbooking in the course, not in the edition, or this method will return null
 			$user_to_enroll = $cmodel->getFirstOverbooked();
 			if ($user_to_enroll) {
 				$course_info = $this->getCourseInfoForSubscription();
@@ -304,6 +305,8 @@ Class SubscriptionAlms extends Model
 
 					require_once(_lms_ . '/lib/lib.course.php');
 					require_once(_lms_ . '/lib/lib.levels.php');
+					require_once(_base_ . '/lib/lib.eventmanager.php');
+
 					$acl_man = Docebo::user()->getAclManager();
 
 					$event = $status < 0 ? "UserCourseInsertModerate" : "UserCourseInserted";
@@ -311,7 +314,6 @@ Class SubscriptionAlms extends Model
 
 					if($isEventEnabled) {
 						// message to user that is waiting
-						require_once(_base_ . '/lib/lib.eventmanager.php');
 
 						$msg_composer = new EventMessageComposer('subscribe', 'lms');
 						$description_event = "User subscribed";
@@ -334,7 +336,6 @@ Class SubscriptionAlms extends Model
 						$msg_composer->setSubjectLangText('email', $subject_key, false);
 						$msg_composer->setBodyLangText('email', $body_key, $array_subst);
 						 // message to user that is waiting
-						require_once(_base_ . '/lib/lib.eventmanager.php');
 
 
 						$acl = &Docebo::user()->getAcl();
@@ -435,6 +436,8 @@ Class SubscriptionAlms extends Model
 					} else {
 						$subject = Lang::t("NEXT_USER_ENTERED_SUBJECT", "email"); 
 						$email_body = Lang::t("NEXT_USER_ENTERED_BODY", "email", $array_subst);  
+						$calendar = CalendarManager::getCalendarDataContainerForDateDays((int)$this->id_course, (int)$this->id_date, (int)$user_info[ACL_INFO_IDST]);
+                		$attachments = [$calendar->getFile()];
 					}
 					$user_notification->_sendMail($subject, $email_body, $attachments, $recipients, $user_info_arr);  
 					return true;
