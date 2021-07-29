@@ -3792,6 +3792,8 @@ p {
   @media (min-width: 1280px) {
     .forma-button {
       font-size: 13px; } }
+  .homepage .forma-button {
+    font-size: 11px; }
   .forma-button:hover {
     text-decoration: none;
     color: white; }

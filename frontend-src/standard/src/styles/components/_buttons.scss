@@ -44,6 +44,10 @@
     font-size: 13px;
   }
 
+  .homepage & {
+    font-size: 11px;
+  }
+
   &:hover {
     text-decoration: none;
     color: $white;
