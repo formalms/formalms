@@ -388,7 +388,7 @@ function userdetails()
         };
             break;
     }
-    $query_track .= " LIMIT " . $ini . ", " . Get::sett('visuItem');
+    //$query_track .= " LIMIT " . $ini . ", " . Get::sett('visuItem');
     $re_tracks = sql_query($query_track);
 
     $query_tot_track = "
