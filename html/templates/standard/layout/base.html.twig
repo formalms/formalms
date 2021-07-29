@@ -5,7 +5,7 @@
      {% block compatibility %}
     		<meta http-equiv="X-UA-Compatible" content="IE=edge">
      {% endblock %}
-    
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>{{ Layout_getTitle() }}</title>
@@ -18,49 +18,48 @@
 
     <!-- reset and font stylesheet -->
     {{ Layout_getResetter() }}
-    
+
     <!-- JQuery, Bootstrap  -->
     {% block jquery_core %}
         {{ jqueryLib|raw }}
     {% endblock %}
 
     <script type="text/javascript">
-
         window.frontend = {};
-        window.frontend.config = JSON.parse('{{ clientConfig|json_encode|raw }}');
+        window.frontend.config = JSON.parse('{{ clientConfig|raw }}');
 
     </script>
 
     {% block bootstrap %}
     {{ boostrap|raw }}
-    
+
     <script>$.fn.bootstrapBtn = $.fn.button.noConflict();</script>
     {% endblock %}
-    
-    
+
+
     {% block jsAddons %}
-    <!-- addons: js -->    
-    {{ jsAddons|raw }}    
+    <!-- addons: js -->
+    {{ jsAddons|raw }}
     {% endblock %}
 
     {% block css_addons %}
-    <!-- addons: css -->    
-    {{ cssAddons|raw }}    
+    <!-- addons: css -->
+    {{ cssAddons|raw }}
     {% endblock %}
-    
+
     {% block locale_calendar %}
-    <!-- locale data format -->        
+    <!-- locale data format -->
     {{ locale_calendar|raw }}
     {% endblock %}
 
-    
 
-    <!-- specific stylesheet -->    
+
+    <!-- specific stylesheet -->
     <link rel="stylesheet" type="text/css" href="{{ Layout_getPath() }}style/base.css"/>
     <link rel="stylesheet" type="text/css" href="{{ Layout_getPath() }}style/responsive.css"/>
     <link rel="stylesheet" type="text/css" href="{{ Layout_getPath() }}style/font-awesome/css/font-awesome.min.css" />
 
-    <!-- to be eliminated -->    
+    <!-- to be eliminated -->
     {{ Yui_load() }}
     <!-- printer stylesheet-->
     <link rel="stylesheet" type="text/css" href="{{ Layout_getPath() }}style/print.css" media="print"/>
@@ -71,8 +70,8 @@
     {% block pagehead %}
     {% endblock %}
 
-    
-    <!-- Custom css area -->    
+
+    <!-- Custom css area -->
     {% block stylesheet %}
     {% endblock %}
 

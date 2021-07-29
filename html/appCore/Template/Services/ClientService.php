@@ -4,6 +4,19 @@ namespace appCore\Template\Services;
 
 class ClientService
 {
+    private static self $clientService;
+
+    private \LangAdm $langAdm;
+
+    private function __construct()
+    {
+        $this->langAdm = new \LangAdm();
+    }
+
+    public static function getInstance(){
+        return self::$clientService ?? new ClientService();
+    }
+
     const coreFolders = [
         'appLms',
         'appCore',
@@ -25,11 +38,12 @@ class ClientService
             $config['url'][$coreFolder] = sprintf('%s/%s', $baseUrl, $coreFolder);
         }
         $config['signature'] = \Util::getSignature();
+
+
         $config['lang'] = [
-            'course' => [
-                '_CORSO' => 'corso'
-            ],
-            'coursereport' => [],
+            'enabledLanguages' => self::getInstance()->langAdm->getLangList(),
+            'currentLanguage' => \Lang::getDefault(),
+            'translations' => self::getInstance()->langAdm->langTranslation()
         ];
         return $config;
     }
@@ -40,7 +54,6 @@ class ClientService
         if (isset($_SERVER['HTTP_HOST'])) {
             $http = (isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) !== 'off') || strtolower($_SERVER['HTTP_X_FORWARDED_PROTO']) === 'https' ? 'https' : 'http';
             $hostname = $_SERVER['HTTP_HOST'];
-
 
             $requestUriArray = explode('index.php', $_SERVER['REQUEST_URI']);
             $requestUriArray = explode('/', $requestUriArray[0]);

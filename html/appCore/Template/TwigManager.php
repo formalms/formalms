@@ -64,7 +64,7 @@ class TwigManager
         }, array(
             'is_safe' => array('html')
         )));
-        $this->twig->addGlobal('clientConfig', (new ClientService())->getConfig());
+        $this->twig->addGlobal('clientConfig', addslashes(json_encode(ClientService::getInstance()->getConfig())));
         $this->twig->addGlobal('GLOBALS', $GLOBALS);
         if ($debug) {
             $this->twig->addExtension(new \Twig\Extension\DebugExtension());
