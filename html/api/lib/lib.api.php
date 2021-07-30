@@ -200,10 +200,15 @@ class API
     public function call($name, $params)
     {
         // Loads user information according to the external user data provided:
-        $params = $this->fillParamsFrom($params, $_POST);
-        $params = $this->checkExternalUser($params, $_POST);
+        $params = $this->populateParams($params);
 
         return $this->$name($params);
+    }
+
+    private function populateParams($params){
+        $params = $this->fillParamsFrom($params, $_POST);
+        $params = $this->checkExternalUser($params, $_POST);
+        return $params;
     }
 
     static public function Execute($auth_code, $module, $function, $params)
@@ -226,6 +231,7 @@ class API
 
         $result = $api_obj->checkAuthentication($auth_code);
         if ($result['success']) {
+            $params = $api_obj->populateParams($params);
             $result = $api_obj->call($function, $params);
         }
 
