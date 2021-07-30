@@ -390,10 +390,17 @@ class User_API extends API {
 			$output['details']=$params;
 		}
 		else {
-				
+
+		    if(!empty($params['password_encoded'])){
+		        $password = $params['password_encoded'];
+            }
+		    else{
+		        $password = (new DoceboACLManager())->encrypt($params['password']);
+            }
+
 			$qtxt ="SELECT idst FROM %adm_user WHERE
 					userid='/".$params['userid']."' AND 
-					pass='".(!empty($params['password_encoded']) ? $params['password'] : md5($params['password']))."'";
+					pass='".$password."'";
 
 			$q =$this->db->query($qtxt);
 
