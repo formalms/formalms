@@ -199,6 +199,9 @@ class API
 
     public function call($name, $params)
     {
+        // Loads user information according to the external user data provided:
+        $params = $this->fillParamsFrom($params, $_POST);
+        $params = $this->checkExternalUser($params, $_POST);
 
         return $this->$name($params);
     }

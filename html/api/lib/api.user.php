@@ -1156,9 +1156,6 @@ class User_API extends API {
 	public function call($name, $params) {
 		$output = false;
 
-		// Loads user information according to the external user data provided:
-		$params =$this->checkExternalUser($params, $_POST);
-
 		if (!empty($params[0]) && !isset($params['idst'])) {
 			$params['idst']=$params[0]; //params[0] should contain user idst
 		}

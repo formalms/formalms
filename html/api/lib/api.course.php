@@ -2682,11 +2682,6 @@ class Course_API extends API
     {
         $response = false;
 
-        // Loads user information according to the external user data provided:
-        $params = $this->fillParamsFrom($params, $_POST);
-        $params = $this->checkExternalUser($params, $_POST);
-
-
         if (!empty($params[0]) && !isset($params['idst'])) {
             $params['idst'] = $params[0]; //params[0] should contain user idst
         }
