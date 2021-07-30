@@ -1,6 +1,8 @@
 
 import DropzoneTwig from './../twig/dropzone.html.twig';
 import FormaPlugin from './FormaPlugin';
+import Lang from './../helpers/Lang';
+
 
 /**
  * FormaDropZone
@@ -71,7 +73,7 @@ class FormaDropZone extends FormaPlugin {
     this._ErrorMessage = null;
     this.Options = {
       ListWrapper: '#drop-zone-list',
-      SubmitText: 'Upload files',
+      SubmitText: Lang.Translation('dropzone._UPLOAD_FILES'),
       OnSubmitClick: null
     };
 
@@ -79,7 +81,10 @@ class FormaDropZone extends FormaPlugin {
     this.watch('FilesList', this.OnFilesListChange);
 
     Object.assign(this.Options, options);
-    
+    if(options.SubmitText) {
+      this.Options.SubmitText = Lang.Translation(options.SubmitText);
+    }
+
     // Init
     if(!idOrClassOrElement) {
       this.Error(`constructor() -> undefined target reference ${idOrClassOrElement}`);
@@ -195,7 +200,6 @@ class FormaDropZone extends FormaPlugin {
     if(this.DropZoneList.querySelector('.selected')) {
       this.DropZoneList.querySelector('.selected').classList.remove('selected');
     }
-    console.log(this.FileNodes, index);
     this.FileNodes[index].classList.add('selected');
     this.FileEditColumn.querySelector('.title-input-wrapper input.title').value = this.FilesList[index].title;
     this.FileEditColumn.querySelector('.error').innerText = this.GetError(`file${index}`);

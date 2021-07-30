@@ -1,7 +1,8 @@
+
 {% if not success %}
   <div id="drop-zone" class="forma-drop-zone {% if files.length %}has-files{% endif %}">
     <div class="fd-middle-wrapper">
-      <span>Browse or drop here the files</span>
+      <span>{{ Lang_translate('_BROWSE_OR_DROP_HERE', 'dropzone') }}</span>
     </div>
     <input type="file" multiple style="display:none;" id="fd-file-input">
   </div>
@@ -17,7 +18,7 @@
                           <div class="name">{{ file.title }}</div>
                           <div class="size">{{ file.formatted_size }}</div>
                           {% if errors and errors.files and errors.files[file.indexedName] %}
-                            <span class="fd-error-preview">This object contains an error</span>
+                            <span class="fd-error-preview">{{ Lang_translate('_OBJECT_CONTAINS_ERROR', 'dropzone') }}</span>
                           {% endif %}
                         </div>
                         <div class="action-delete" data-index="{{ loop.index - 1 }}">
@@ -30,11 +31,11 @@
                   <div>
                       <div class="fd-alert fd-alert-danger error"></div>
                       <div class="form-group title-input-wrapper">
-                        <label>Title</label>
+                        <label>{{ Lang_translate('_TITLE', 'dropzone') }}</label>
                         <input type="text" class="title">
                       </div>
                       <div class="form-group description-input-wrapper">
-                        <label>Description</label>
+                        <label>{{ Lang_translate('_DESCRIPTION', 'dropzone') }}</label>
                         <textarea class="description"></textarea>
                       </div>
                   </div>
@@ -42,7 +43,7 @@
             </div>
             <div class="form-group">
               {% if errors and errors.files %}
-                <span class="fd-alert fd-alert-danger">Errors occurred. Please check your documents and try again</span>
+                <span class="fd-alert fd-alert-danger">{{ Lang_translate('_ERRORS_OCCURRED', 'dropzone') }}</span>
               {% endif %}
               <button type="submit">
                 {% if uploading %}
