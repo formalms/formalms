@@ -382,7 +382,7 @@ class User_API extends API {
 	 * @return array 
 	 */
 	private function getUserDetailsFromCredentials($params) {
-		$output =array();
+		$output =[];
 		
 		if (empty($params['userid']) || empty($params['password'])) {
 			$output['success']=false;
@@ -390,23 +390,39 @@ class User_API extends API {
 			$output['details']=$params;
 		}
 		else {
-
+            $userIdst = '';
 		    if(!empty($params['password_encoded'])){
 		        $password = $params['password_encoded'];
-            }
-		    else{
-		        $password = (new DoceboACLManager())->encrypt($params['password']);
-            }
 
-			$qtxt ="SELECT idst FROM %adm_user WHERE
-					userid='/".$params['userid']."' AND 
+                $qtxt ="SELECT idst FROM %adm_user WHERE
+					userid = '".$this->aclManager->absoluteId($params['userid']) ."' AND 
 					pass='".$password."'";
 
-			$q =$this->db->query($qtxt);
+                $q =$this->db->query($qtxt);
 
-			if ($q && $this->db->num_rows($q) > 0) {				
-				$row =$this->db->fetch_assoc($q);
-				$output =$this->getUserDetails($row['idst']);
+                if ($q && $this->db->num_rows($q) > 0) {
+                    $row = $this->db->fetch_obj($q);
+
+                    $userIdst = $row->idst;
+                }
+            }
+		    else{
+                $password = $params['password'];
+
+		        $query = "SELECT * FROM %adm_user WHERE "
+                    ." userid = '".$this->aclManager->absoluteId($params['userid'])."'";
+                $res = $this->db->query($query);
+
+                if($this->db->num_rows($res) > 0) {
+                    $row = $this->db->fetch_obj($res);
+                    if ($this->aclManager->password_verify_update($password,$row->pass,$row->idst)){
+                        $userIdst = $row->idst;
+                    }
+                }
+            }
+
+            if(!empty($userIdst)){
+				$output =$this->getUserDetails($userIdst);
 			}
 			else {
 				$output['success'] = false;
