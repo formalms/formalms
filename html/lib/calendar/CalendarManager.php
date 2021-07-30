@@ -30,8 +30,7 @@ class CalendarManager
 
         $calendar = new \Eluceo\iCal\Domain\Entity\Calendar();
         $calendar->setProductIdentifier(Get::sett('page_title'));
-        $timezone = new \Eluceo\iCal\Domain\Entity\TimeZone($timezoneString);
-        $calendar->addTimeZone($timezone);
+        $datetimezone = new DateTimeZone($timezoneString);
         $calendar->setCalId($dateInfo['calendarId']);
         $calendar->setName(sprintf('%s - %s', Get::sett('page_title'), $dateInfo['name']));
 
@@ -57,31 +56,45 @@ class CalendarManager
 
         foreach ($days as $row) {
 
+            $timezone = \Eluceo\iCal\Domain\Entity\TimeZone::createFromPhpDateTimeZone($datetimezone,
+                DateTimeImmutable::createFromFormat('Y-m-d H:i:s', $row['date_begin'], $datetimezone),
+                DateTimeImmutable::createFromFormat('Y-m-d H:i:s', $row['date_end'], $datetimezone)
+            );
+            $calendar->addTimeZone($timezone);
+
+
             if (empty($row['calendarId'])) {
                 $row['calendarId'] = $dateManager->generateCalendarIdForDateDay($idDate, $row['id']);
             }
 
             $event = new \Eluceo\iCal\Domain\Entity\Event(new \Eluceo\iCal\Domain\ValueObject\UniqueIdentifier($row['calendarId']));
             $event->setSummary($date['name']);
-            $event->setDescription($date['description']);
+
+            $event->setDescription(strip_tags($date['description']));
+
             if ($row['deleted']) {
                 $event->setStatus(\Eluceo\iCal\Domain\Enum\Status::CANCELLED());
                 $event->setMethod(\Eluceo\iCal\Domain\Enum\Method::CANCELLED());
             }
+
+
             $event->setOrganizer(new \Eluceo\iCal\Domain\ValueObject\Organizer(
                 new \Eluceo\iCal\Domain\ValueObject\EmailAddress(Get::sett('sender_event')),
                 Get::sett('use_sender_aclname', '')
             ));
 
+
             if (array_key_exists((int)$row['classroom'], $classrooms)) {
+                $classroomString = strip_tags($classrooms[(int)$row['classroom']]);
                 $event->setLocation(
-                    (new \Eluceo\iCal\Domain\ValueObject\Location(getCurrentDomain($idOrganization) ?: Get::site_url(), $classrooms[(int)$row['classroom']]))
+                    (new \Eluceo\iCal\Domain\ValueObject\Location(getCurrentDomain($idOrganization) ?: Get::site_url(), $classroomString))
                 );
             } else {
                 $event->setLocation(
                     (new \Eluceo\iCal\Domain\ValueObject\Location(getCurrentDomain($idOrganization) ?: Get::site_url(), getCurrentDomain($idOrganization) ?: Get::site_url()))
                 );
             }
+
 
             $event->setOccurrence(
                 new \Eluceo\iCal\Domain\ValueObject\TimeSpan(

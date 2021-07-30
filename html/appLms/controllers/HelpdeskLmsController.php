@@ -19,7 +19,7 @@ class HelpdeskLmsController extends LmsController {
                     
 	public function show() {                 
 
-	        $sender = Get::sett('customer_help_email', '');
+	        $sender = Get::sett('mail_sender',  '');
 	        $sender_name = Get::sett('customer_help_name_from', false);
             $prefix_subj = Get::sett('customer_help_subj_pfx');
             $ccn = Get::sett('send_ccn_for_system_emails');
