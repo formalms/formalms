@@ -387,6 +387,8 @@ class CoursereportLmsController extends LmsController
 
 								// $event = new \appLms\Events\Lms\TestCousereportEvent($testObj);
 
+
+
 								$type = $testObj->getObjectType();
 								$id = $info_report->getIdSource();
 								$name = $testObj->getTitle();
@@ -428,8 +430,12 @@ class CoursereportLmsController extends LmsController
 
 
 								// \appCore\Events\DispatcherManager::dispatch(\appLms\Events\Lms\TestCousereportEvent::EVENT_NAME, $event);
+                                // $chartLink = $event->getOverViewTestQuestionLink();
 
-								// $chartLink = $event->getOverViewTestQuestionLink();
+                                $eventResult = Events::trigger('lms.test.coursereport.coursereport', ['object_test' => $testObj, 'overViewTestQuestionLink' => $chartLink]);
+                                $chartLink = $eventResult['overViewTestQuestionLink'];
+
+
 							}
 							break;
 						case CoursereportLms::SOURCE_OF_SCOITEM: {
@@ -1035,7 +1041,7 @@ class CoursereportLmsController extends LmsController
 																'link' => "javascript:void(0)",
 																'active' => false
 															);
-															
+
                                                             // $courseReportDetailEvent->addValue($value);
 															$courseReportDetailValues[] = $value;
 														} else {

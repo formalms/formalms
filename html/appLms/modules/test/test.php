@@ -243,7 +243,6 @@ function modtestgui($object_test)
     );
 
 
-
     $tabs[] = '<li>' . '<a href="index.php?modname=test&amp;op=defmodality&amp;idTest='
         . $object_test->getId() . '&amp;back_url=' . $url_encode . '" title="' . $lang->def('_TEST_MODALITY') . '">'
         . $lang->def('_TEST_MODALITY') . '</a>' . '</li>';
@@ -263,14 +262,9 @@ function modtestgui($object_test)
         . $lang->def ('_COURSEREPORT_MANAGEMENT') . '</a>' . '</li>');
 
     */
-    $testConfigurations = Events::trigger('lms.test.configuration_tabs_render',[
-        'objectTest'=> $object_test,
-        'url' => $url_encode,
-        'lang' => $lang,
-        'tabs' => $tabs
-    ]);
+    $eventResult = Events::trigger('lms.test.configuration_tabs_render', ['object_test' => $object_test, 'url_encode' => $url_encode, 'lang' => $lang, 'tabs' => $tabs ]);
 
-    $tabs = $testConfigurations['tabs'];
+    $tabs = $eventResult['tabs'];
 
 
     $GLOBALS['page']->add('<ul class="link_list_inline">', 'content');

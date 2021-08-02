@@ -1543,25 +1543,45 @@ function showResult ($object_test , $id_param)
 
 		if(sql_num_rows($re_category)) {
 
-		   $GLOBALS['page']->add('<br />'
-			  .'<table summary="'.$lang->def('_TEST_CATEGORY_SCORE').'" class="category_score">'
-			  .'<caption>'.$lang->def('_TEST_CATEGORY_SCORE').'</caption>'
-			  .'<thead>'
-				 .'<tr>'
-					.'<th>'.$lang->def('_TEST_QUEST_CATEGORY').'</th>'
-					.'<th class="number">'.$lang->def('_TEST_QUEST_NUMBER').'</th'
-					.'<th class="number">'.$lang->def('_TEST_TOTAL_SCORE').'</th>'
-				 .'</tr>'
-			  .'</thead>'
-			  .'<tbody>', 'content');
+            $categorytable = '<br />'
+                . '<table summary="' . $lang->def('_TEST_CATEGORY_SCORE') . '" class="category_score">'
+                . '<caption>' . $lang->def('_TEST_CATEGORY_SCORE') . '</caption>'
+                . '<thead>'
+                . '<tr>'
+                . '<th>' . $lang->def('_TEST_QUEST_CATEGORY') . '</th>'
+                . '<th class="number">' . $lang->def('_TEST_QUEST_NUMBER') . '</th'
+                . '<th class="number">' . $lang->def('_TEST_TOTAL_SCORE') . '</th>'
+                . '</tr>'
+                . '</thead>'
+                . '<tbody>';
+
 		   $i=0;
+            $categoryScoreData = [];
 		   while(list($id_cat, $name_cat, $quest_number) = sql_fetch_row($re_category)) {
-			  $GLOBALS['page']->add('<tr><td>'.$name_cat.'</td>'
-				  .'<td class="number">'.$array_question_number[(int)$id_cat].'</td>'
-				  .'<td class="number">'.( isset($point_do_cat[$id_cat]) ? $point_do_cat[$id_cat] : 0 ).'</td></tr>'
-			  , 'content');
+               $categorytable .= '<tr><td>' . $name_cat . '</td>'
+                   . '<td class="number">' . $array_question_number[(int) $id_cat] . '</td>'
+                   . '<td class="number">' . (isset($point_do_cat[$id_cat]) ? $point_do_cat[$id_cat] : 0) . '</td></tr>';
+
+               $categoryScoreData[] = [
+                   'idCategory' => $id_cat,
+                   'nameCategory' => $name_cat,
+                   'maxCategoryQuestions' => $array_question_number[(int) $id_cat],
+                   'score' => (isset($point_do_cat[$id_cat]) ? $point_do_cat[$id_cat] : 0),
+               ];
 			  $i++;
 		   }
+
+            $categorytable .= '</tbody></table>';
+
+           $eventResult = Events::trigger('lms.test.completed.category.showing',
+               [
+                   'objectTest' => $object_test,
+                   'user' => Docebo::user(),
+                   'scoreCategoryData' => $categoryScoreData,
+                   'scoreCategoryTable' => $categorytable
+               ]);
+
+
 			/*
 			$GLOBALS['page']->add('<br />'
 				.'<span class="test_score_note">'.$lang->def('_TEST_CATEGORY_SCORE').'</span><br />', 'content');
@@ -1571,10 +1591,11 @@ function showResult ($object_test , $id_param)
 					.( isset($point_do_cat[$id_cat]) ? $point_do_cat[$id_cat] : 0 ).'<br />', 'content');
 			}
 			*/
-			$GLOBALS[ 'page' ]->add ('</tbody></table>' , 'content');
+            $GLOBALS['page']->add($eventResult['scoreCategoryTable'], 'content');
 		}
 	}
 	$GLOBALS[ 'page' ]->add ('<br /><br />' , 'content');
+
 
 	//--- if chart visualization enabled, then show it ---------------------------
 

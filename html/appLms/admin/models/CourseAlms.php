@@ -803,10 +803,12 @@ class CourseAlms extends Model
         }
 
         $course = new DoceboCourse($id_course);
-        Events::trigger('lms.course.created', ['id_course' => $id_course, 'course' => $course]);
+        Events::trigger('lms.course.created', ['id_course' => $id_course, 'course' => $course, 'parameters' => $data_params]);
 
         return $res;
     }
+
+
 
     public function upCourse($id_course = null, $data_params = null)
     {
