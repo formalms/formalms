@@ -121,12 +121,12 @@ class HomepageAdm extends Model {
         $sender         = $this->options->getOption('mail_sender');
         $sender_name         = $this->options->getOption('mail_sender_name_from');
         $recipients     = $user_info[ACL_INFO_EMAIL];
-        $subject        = Lang::t("_LOST_USERID_TITLE", "register");
+        $subject        = Lang::t("_LOST_USERID_TITLE", "register", array(), $acl_man->getSettingValueOfUsers('ui.language', array($user_info[ACL_INFO_IDST]))[$user_info[ACL_INFO_IDST]]);
         $body           = Lang::t("_LOST_USERID_MAILTEXT", "register", array(
             '[date_request]'    => date("d-m-Y"),
             '[url]'             => Get::site_url(),
             '[userid]'          => $acl_man->relativeId($user_info[ACL_INFO_USERID])
-        ));
+        ), $acl_man->getSettingValueOfUsers('ui.language', array($user_info[ACL_INFO_IDST]))[$user_info[ACL_INFO_IDST]]);
         $attachments    = false;
         $params         = array(MAIL_SENDER_ACLNAME => $sender_name);
         
@@ -160,11 +160,11 @@ class HomepageAdm extends Model {
         $sender         = $this->options->getOption('mail_sender');
         $sender_name    = $this->options->getOption('mail_sender_name_from');
         $recipients     = $user_info[ACL_INFO_EMAIL];
-        $subject        = Lang::t("_LOST_PWD_TITLE", "register");
+        $subject        = Lang::t("_LOST_PWD_TITLE", "register", array(), $acl_man->getSettingValueOfUsers('ui.language', array($user_info[ACL_INFO_IDST]))[$user_info[ACL_INFO_IDST]]);
         $body           = Lang::t("_LOST_PWD_MAILTEXT", "register", array(
             '[link]'    => Get::site_url() . "index.php?r=" . _newpwd_ . "&code=" . $code,
             '[userid]'  => $acl_man->relativeId($user_info[ACL_INFO_USERID]),
-        ));
+        ), $acl_man->getSettingValueOfUsers('ui.language', array($user_info[ACL_INFO_IDST]))[$user_info[ACL_INFO_IDST]]);
         $attachments    = false;
         $params         = array(MAIL_SENDER_ACLNAME => $sender_name);
         
