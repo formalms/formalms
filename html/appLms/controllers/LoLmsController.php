@@ -64,8 +64,8 @@ class LoLmsController extends LmsController
     {
         $results = [];
         foreach ($loData as $lo) {
-            $type = $lo['typeId'];
             $id = $lo['id'];
+            $lo['image_type'] = LomanagerLmsController::getLearningObjectIcon($lo);
             $lo["actions"] = [];
             $lo["visible_actions"] = [];
             if (!$lo["is_folder"]) {

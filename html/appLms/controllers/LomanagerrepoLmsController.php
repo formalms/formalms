@@ -50,6 +50,7 @@ class LomanagerrepoLmsController extends LomanagerLmsController
         foreach ($loData as $lo) {
             $type = $lo['typeId'];
             $id = $lo['id'];
+            $lo['image_type'] = self::getLearningObjectIcon($lo);
             $lo["actions"] = [];
             if (!$lo["is_folder"]) {
                 $lo["actions"][] = [

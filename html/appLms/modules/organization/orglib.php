@@ -1756,7 +1756,7 @@ class Org_TreeView extends RepoTreeView {
 				$node['image_type'] = $folder->otherValues[1];
 			}
 
-			if(!key_exists('image_type', $node)){
+			if(!array_key_exists('image_type', $node)){
 				$node['image_type'] = 'folder';
 			}
 

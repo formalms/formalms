@@ -38,8 +38,8 @@ class LomanagerLmsController extends LmsController
     protected function getFolders($idCourse, $idFolder = false)
     {
         $loData = array_values($this->model->getFolders($idCourse, $idFolder));
-        switch($loData[0]['typeId']) {
-            case LomanagerLms::ORGDIRDB: 
+        switch ($loData[0]['typeId']) {
+            case LomanagerLms::ORGDIRDB:
                 return LomanagerorganizationLmsController::formatLoData($loData);
                 break;
             case LomanagerLms::REPODIRDB:
@@ -61,7 +61,7 @@ class LomanagerLmsController extends LmsController
         $lo_types = $this->model->getLoTypes();
 
         $tabs_controllers = [
-            new LomanagerhomerepoLmsController(), 
+            new LomanagerhomerepoLmsController(),
             new LomanagerorganizationLmsController(),
             new LomanagerrepoLmsController(),
         ];
@@ -216,5 +216,20 @@ class LomanagerLmsController extends LmsController
     {
         $this->model->completeAction();
         Util::jump_to('index.php?r=lms/lomanager/show');
+    }
+
+    public static function getLearningObjectIcon($learningObject)
+    {
+        switch ($learningObject['type']) {
+            case 'item':
+                $resource = DbConn::getInstance()->query("SELECT  title, path FROM %lms_materials_lesson WHERE idLesson = " . (int)$learningObject['resource']);
+
+                $result = DbConn::getInstance()->fetch_assoc($resource);
+                $fileTypeArray = explode('.', $result['path']);
+
+                return end($fileTypeArray);
+            default:
+                return $learningObject['image_type'];
+        }
     }
 }
