@@ -81,6 +81,7 @@ class FormaDropZone extends FormaPlugin {
     this.watch('FilesList', this.OnFilesListChange);
 
     Object.assign(this.Options, options);
+
     if(options.SubmitText) {
       this.Options.SubmitText = Lang.Translation(options.SubmitText);
     }
