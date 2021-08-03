@@ -34,6 +34,7 @@ class ClientService
         $baseUrl = $this->getBaseUrl();
 
         $config['url']['base'] = $baseUrl;
+        $config['url']['template'] = $baseUrl .'/'._folder_templates_.'/'. getTemplate();
         foreach (self::coreFolders as $coreFolder) {
             $config['url'][$coreFolder] = sprintf('%s/%s', $baseUrl, $coreFolder);
         }
