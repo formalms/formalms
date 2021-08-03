@@ -21,7 +21,7 @@ if (!Docebo::user()->isAnonymous()) {
 
         require_once(_base_ . '/lib/lib.form.php');
 
-        /*$GLOBALS['page']->add(getTitleArea($lang->def('_SECTIONNAME_ITEM'), 'item')
+        $GLOBALS['page']->add(getTitleArea($lang->def('_SECTIONNAME_ITEM'), 'item')
             .'<div class="std_block">'
             .getBackUi( Util::str_replace_once('&', '&amp;', $object_item->back_url).'&amp;create_result=0', $lang->def('_BACK') )
 
@@ -39,14 +39,15 @@ if (!Docebo::user()->isAnonymous()) {
             .Form::closeButtonSpace()
             .Form::closeForm()
             .'</div>', 'content');
-    */
 
-        $GLOBALS['page']->add(\appCore\Template\TwigManager::getInstance()->render('upload-file.html.twig', ['back_url' => $object_item->back_url], _lms_ . '/views/lo'), 'content');
+        //@TODO to enable dropzone uncomment this
+        //$GLOBALS['page']->add(\appCore\Template\TwigManager::getInstance()->render('upload-file.html.twig', ['back_url' => $object_item->back_url], _lms_ . '/views/lo'), 'content');
     }
 
     function insitem()
     {
-
+        //@TODO to enable dropzone uncomment this
+        /*
         require_once(_base_ . '/lib/lib.upload.php');
         $response = [];
         $response['status'] = true;
@@ -136,7 +137,63 @@ if (!Docebo::user()->isAnonymous()) {
         $response['back_url'] = str_replace('&amp;', '&', $back_url . '&id_los=' . implode(',', $idLessons) . '&create_result=3');
 
         echo json_encode($response);
-        die();
+        die();*/
+
+        require_once(_base_.'/lib/lib.upload.php');
+
+        $back_url = urldecode($_POST['back_url']);
+
+        //scanning title
+        if(trim($_POST['title']) == "") $_POST['title'] = Lang::t('_NOTITLE');
+
+        //save file
+        if($_FILES['attach']['name'] == '') {
+
+            $_SESSION['last_error'] = Lang::t('_FILEUNSPECIFIED');
+            Util::jump_to( $back_url.'&create_result=0' );
+        } else {
+            if(isset($_SESSION['idCourse']) && defined("LMS")) {
+                $quota = $GLOBALS['course_descriptor']->getQuotaLimit();
+                $used = $GLOBALS['course_descriptor']->getUsedSpace();
+
+                if(Util::exceed_quota($_FILES['attach']['tmp_name'], $quota, $used)) {
+
+                    $_SESSION['last_error'] = Lang::t('_QUOTA_EXCEDED');
+                    Util::jump_to( $back_url.'&create_result=0' );
+                }
+            }
+            $path = '/appLms/'.Get::sett('pathlesson');
+            $savefile = ( isset($_SESSION['idCourse']) ? $_SESSION['idCourse'] : '0' ).'_'.mt_rand(0,100).'_'.time().'_'.$_FILES['attach']['name'];
+            $savefile = str_replace("'", "\'", $savefile);//Patch file con apostrofo
+            if(!file_exists( _files_.$path.$savefile )) {
+                sl_open_fileoperations();
+                if(!sl_upload($_FILES['attach']['tmp_name'], $path.$savefile)) {
+                    sl_close_fileoperations();
+                    $_SESSION['last_error'] = Lang::t('_ERROR_UPLOAD');
+                    Util::jump_to( $back_url.'&create_result=0' );
+                }
+                sl_close_fileoperations();
+            } else {
+                $_SESSION['last_error'] = Lang::t('_ERROR_UPLOAD');
+                Util::jump_to( $back_url.'&create_result=0' );
+            }
+        }
+
+        $insert_query = "
+	INSERT INTO ".$GLOBALS['prefix_lms']."_materials_lesson 
+	SET author = '".getLogUserId()."',
+		title = '".$_POST['title']."',
+		description = '".$_POST['description']."',
+		path = '$savefile'";
+
+        if(!sql_query($insert_query)) {
+            sl_unlink($GLOBALS['prefix_lms'].$savefile );
+            $_SESSION['last_error'] = Lang::t('_OPERATION_FAILURE');
+            Util::jump_to( $back_url.'&create_result=0' );
+        }
+        if(isset($_SESSION['idCourse']) && defined("LMS")) $GLOBALS['course_descriptor']->addFileToUsedSpace(_files_.$path.$savefile);
+        list($idLesson) = sql_fetch_row(sql_query("SELECT LAST_INSERT_ID()"));
+        Util::jump_to( $back_url.'&id_lo='.$idLesson.'&create_result=1' );
     }
 
 //= XXX: edit=====================================================================
