@@ -227,7 +227,7 @@ class LomanagerLmsController extends LmsController
                 $result = DbConn::getInstance()->fetch_assoc($resource);
                 $fileTypeArray = explode('.', $result['path']);
 
-                return end($fileTypeArray);
+                return strtolower(end($fileTypeArray));
             default:
                 return $learningObject['image_type'];
         }
