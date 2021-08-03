@@ -55,7 +55,7 @@ if ($_SESSION['upgrade_ok']) {
 	// --- pre upgrade -----------------------------------------------------------
 	$fn =_upgrader_.'/data/upg_data/'.$GLOBALS['cfg']['detailversions'][$current_ver]['pre'];
 
-	if (file_exists($fn)) {
+    if (file_exists($fn) && !is_dir($fn)) {
 		$GLOBALS['debug'] .=  " <br/>" . "Source pre-upgrade file: " . $fn ;
 		require($fn);
 		$func ='preUpgrade'.$current_ver;
@@ -70,7 +70,7 @@ if ($_SESSION['upgrade_ok']) {
 	if ($_SESSION['upgrade_ok']) {
 		// --- sql upgrade -----------------------------------------------------------
 		$fn =_upgrader_.'/data/upg_data/'.$GLOBALS['cfg']['detailversions'][$current_ver]['mysql'];
-		if (file_exists($fn)) {
+        if (file_exists($fn) && !is_dir($fn)) {
 			$GLOBALS['debug'] .=  " <br/>" . "Upgrade db with file: " . $fn ;
 			$res =importSqlFile($fn, $allowed_err_codes);
 			if (!$res['ok']) {
@@ -82,7 +82,7 @@ if ($_SESSION['upgrade_ok']) {
 	if ($_SESSION['upgrade_ok']) {
 		// --- post upgrade ----------------------------------------------------------
 		$fn =_upgrader_.'/data/upg_data/'.$GLOBALS['cfg']['detailversions'][$current_ver]['post'];
-		if (file_exists($fn)) {
+        if (file_exists($fn) && !is_dir($fn)) {
 			$GLOBALS['debug'] .=  " <br/>" . "Source post-upgrade file: " . $fn ;
 			require($fn);
 			$func ='postUpgrade'.$current_ver;
@@ -101,7 +101,7 @@ if ($_SESSION['upgrade_ok']) {
 		// --- roles -----------------------------------------------------------------
 		require_once(_lib_.'/installer/lib.role.php');
 		$fn =_upgrader_.'/data/upg_data/'.$GLOBALS['cfg']['detailversions'][$current_ver]['role'];
-		if (file_exists($fn)) {
+		if (file_exists($fn) && !is_dir($fn)) {
 			$GLOBALS['debug'] .=  " <br/>" . "Source role-upgrade file: " . $fn ;
 			require($fn);
 			$func ='upgradeUsersRoles'.$current_ver;
