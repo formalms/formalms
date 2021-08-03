@@ -24,8 +24,8 @@
         posting.done(function (r) 
             {
                 $('body').prepend(r)
-                $('#myModal').css("margin-top", $('body').height() / 2 - $('.modal-content').height() / 2 - 300) ;       
-                $('#myModal').modal('show')
+                $('#formaModal').css("margin-top", $('body').height() / 2 - $('.modal-content').height() / 2 - 300) ;
+                $('#formaModal').modal('show')
             });
         posting.fail(function () 
             {

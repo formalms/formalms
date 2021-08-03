@@ -409,7 +409,7 @@ if(!Docebo::user()->isAnonymous() && isset($_SESSION['idCourse'])) {
                   cout('<div class="col-sm-9" >','menu_over');
                   cout('<div class="col-md-7"><div><h1>'.Docebo::course()->getValue('name').'</h1></div></div>
                         <div class="col-md-4"><div>'.$info_panel_progress.'</div></div>
-                        <div class="col-md-1"><div><br> <button type="button" class="btn btn-sm" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-stats"></span></button></div></div>
+                        <div class="col-md-1"><div><br> <button type="button" class="btn btn-sm" data-toggle="modal" data-target="#formaModal"><span class="glyphicon glyphicon-stats"></span></button></div></div>
                         ' ,'menu_over');  
                   cout('</div></div>&nbsp;','menu_over');
                                 
@@ -456,7 +456,7 @@ if(!Docebo::user()->isAnonymous() && isset($_SESSION['idCourse'])) {
     
     $pop_up_modal = '<!-- Trigger the modal with a button -->
                         <!-- Modal -->
-                        <div id="myModal" class="modal fade" role="dialog">
+                        <div id="formaModal" class="modal fade" role="dialog">
                           <div class="modal-dialog">
 
                             <!-- Modal content-->

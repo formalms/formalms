@@ -71,6 +71,19 @@
     background: #383838f0;
     right: 0;
   }
+  &.in {
+    visibility: visible;
+    display: block;
+    opacity: 1;
+    transition-delay: 0s;
+    z-index: 99999;
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    left: 0;
+    background: #383838f0;
+    right: 0;
+  }
   &-bg {
     position: absolute;
     background: #383838f0;
