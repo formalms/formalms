@@ -1,6 +1,7 @@
 import 'regenerator-runtime/runtime'
 import { contextmenu } from 'easycontext';
 const axios = require('axios');
+import Lang from './../helpers/Lang';
 
 class ContextMenu {
 
@@ -48,7 +49,7 @@ class ContextMenu {
       }
 
       const renameBtn = {
-        text: 'Rinomina',
+        text: Lang.Translation('_RENAME', 'learningObjectContextMenu'),
         onClick() {
           const renameOrig = document.querySelector('.folderTree__rename');
           const rename = renameOrig.cloneNode(true);
@@ -114,7 +115,7 @@ class ContextMenu {
       };
 
       const copyBtn = {
-        text: 'Copia',
+        text: Lang.Translation('_COPY', 'learningObjectContextMenu'),
         onClick() {
           _this.currentElsIds.forEach((id) => {
             _this.container.querySelector('li[data-id="' + parseInt(id) + '"]').classList.add('is-ready-for-copy');
@@ -124,7 +125,7 @@ class ContextMenu {
       };
 
       const deleteBtn = {
-        text: 'Elimina',
+        text: Lang.Translation('_DELETE', 'learningObjectContextMenu'),
         onClick() {
           let objectsNames = [];
           _this.currentEls.forEach(element => {

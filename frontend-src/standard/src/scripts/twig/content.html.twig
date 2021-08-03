@@ -12,7 +12,7 @@
                     
                 </div>
                 <div class="actions-wrapper">
-                <div class="folderView__visibleActions">
+                <div class="folderView__visibleActions" {% if isStudent %}style="right: 0;"{% endif %}>
                     {% if el.visible_actions | length %}
                         {% for action in el.visible_actions %}
                             {% if action.type == 'submit' %}
@@ -34,7 +34,7 @@
                 </div>
                 </div>
                 {% if el.actions.length %}
-                <div class="actions-wrapper">
+                <div class="actions-wrapper" {% if isStudent %}style="z-index: -1"{% endif %}>
                     {% if not isStudent %}
                         <div class="folderView__buttons">
                             <button type="button" class="folderView__button fv-is-menu-open js-fv-open-actions"></button>

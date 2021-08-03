@@ -4041,6 +4041,13 @@ p {
   .close-button:hover .close-button__label {
     color: #ff6c00; }
 
+.create-object-button {
+  background: #B2CE4F !important;
+  color: white;
+  font-weight: bold;
+  text-shadow: 0 0 black;
+  border-color: transparent !important; }
+
 .forma-quick-search-form .bootstrap-select {
   width: 100% !important;
   margin: 0;
@@ -4250,7 +4257,8 @@ p {
   border: 1px solid #c2c2c2;
   box-shadow: none !important;
   border-radius: 0;
-  color: #333; }
+  color: #333;
+  max-width: 100%; }
   .forma-dropdown__selected:hover,
   .forma-dropdown__toggle:hover {
     background-color: #c2c2c2;
