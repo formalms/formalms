@@ -3786,6 +3786,8 @@ p {
   box-shadow: none;
   cursor: pointer;
   transition: all 0.4s ease 0s; }
+  .forma-button.dropdown-toggle {
+    max-width: initial !important; }
   @media (min-width: 768px) {
     .forma-button {
       font-size: 11px; } }

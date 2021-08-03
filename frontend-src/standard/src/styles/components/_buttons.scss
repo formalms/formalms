@@ -35,6 +35,9 @@
   box-shadow: none;
   cursor: pointer;
   transition: all 0.4s ease 0s;
+  &.dropdown-toggle {
+    max-width: initial !important;
+  }
 
   @include breakpoint($tablet) {
     font-size: 11px;
