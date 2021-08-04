@@ -134,7 +134,7 @@ class CoursereportLms extends Model
             . " WHERE id_course = '" . $this->idCourse . "'";
         list($tot_report) = sql_fetch_row(sql_query($query_tot_report));
 
-        if ($tot_report == 1) {
+        if ((int)$tot_report === 1) {
 
             $query_final_tot_report = "SELECT COUNT(*) "
                 . " FROM " . $GLOBALS['prefix_lms'] . "_coursereport "
@@ -170,7 +170,7 @@ class CoursereportLms extends Model
 //        $tot_report = 0;
 
         // XXX: Update if needed
-        if ($tot_report === 0) {
+        if ((int)$tot_report === 0) {
             $report_man->initializeCourseReport($org_tests);
         } else {
 
