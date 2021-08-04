@@ -336,7 +336,7 @@ class CoursereportLms extends Model
     {
         $responseArray = [];
 
-        if (count($this->courseReports) == 0) {
+        if (count($this->courseReports) === 0) {
             $this->grabCourseReports();
         }
         foreach ($this->courseReports as $courseReport) {
