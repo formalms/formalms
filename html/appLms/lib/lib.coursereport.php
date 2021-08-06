@@ -13,9 +13,24 @@
 
 class CourseReportManager
 {
+    /** @var int */
+    protected $idCourse;
 
-    function CourseReportManager()
+    public function __construct($idCourse = null)
     {
+        if ($idCourse === null) {
+            $this->idCourse = (int)$_SESSION['idCourse'];
+        } else {
+            $this->idCourse = (int)$idCourse;
+        }
+    }
+
+    /**
+     * @return int
+     */
+    public function getIdCourse()
+    {
+        return $this->idCourse;
     }
 
     function getNextSequence()
@@ -23,14 +38,14 @@ class CourseReportManager
 
         $query_seq = "
 		SELECT sequence
-		FROM " . $GLOBALS['prefix_lms'] . "_coursereport 
-		WHERE id_course = '" . $_SESSION['idCourse'] . "' AND source_of = 'final_vote'";
+		FROM %lms_coursereport 
+		WHERE id_course = '" . $this->idCourse . "' AND source_of = 'final_vote'";
         list($seq) = sql_fetch_row(sql_query($query_seq));
 
         $query_seq = "
-		UPDATE " . $GLOBALS['prefix_lms'] . "_coursereport 
+		UPDATE %lms_coursereport 
 		SET sequence = sequence + 1 
-		WHERE id_course = '" . $_SESSION['idCourse'] . "' AND source_of = 'final_vote'";
+		WHERE id_course = '" . $this->idCourse . "' AND source_of = 'final_vote'";
         sql_query($query_seq);
 
         return $seq;
@@ -38,12 +53,10 @@ class CourseReportManager
 
     function &getStudentId()
     {
+        require_once(Forma::inc(_lms_ . '/lib/lib.course.php'));
 
-        require_once($GLOBALS['where_lms'] . '/lib/lib.course.php');
-
-        $course_user = array();
         $course_man = new Man_Course();
-        $course_user = $course_man->getIdUserOfLevel($_SESSION['idCourse'], 3);
+        $course_user = $course_man->getIdUserOfLevel($this->idCourse, 3);
 
         return $course_user;
     }
@@ -51,10 +64,10 @@ class CourseReportManager
     function &getTest()
     {
 
-        require_once($GLOBALS['where_lms'] . '/lib/lib.orgchart.php');
+        require_once(Forma::inc(_lms_ . '/lib/lib.orgchart.php'));
         require_once(Forma::inc(_lms_ . '/class.module/learning.test.php'));
 
-        $org_man = new OrganizationManagement($_SESSION['idCourse']);
+        $org_man = new OrganizationManagement($this->idCourse);
         $tests =& $org_man->getAllLoAbsoluteIdWhereType(Learning_Test::getTestTypes());
 
         return $tests;
@@ -62,11 +75,14 @@ class CourseReportManager
 
     function initializeCourseReport($id_tests)
     {
+        $this->addFinalVoteToReport();
+        $this->addTestToReport($id_tests, 1);
+    }
 
-        $query_test = "
-		INSERT INTO " . $GLOBALS['prefix_lms'] . "_coursereport 
+    public function addFinalVoteToReport(){
+        $query_test = "INSERT INTO %lms_coursereport 
 		( id_course, max_score, required_score, weight, show_to_user, use_for_final, source_of, id_source, sequence ) VALUES (
-			'" . $_SESSION['idCourse'] . "',
+			'" . $this->idCourse . "',
 			'100', 
 			'60',
 			'0',
@@ -77,7 +93,6 @@ class CourseReportManager
 			'1'
 		)";
         sql_query($query_test);
-        $this->addTestToReport($id_tests, 1);
     }
 
     function addTestToReport($id_tests, $from_sequence)
@@ -86,19 +101,18 @@ class CourseReportManager
 
         $plus = count($id_tests);
         $query_seq = "
-		UPDATE " . $GLOBALS['prefix_lms'] . "_coursereport 
+		UPDATE %lms_coursereport 
 		SET sequence = sequence + " . $plus . " 
-		WHERE id_course = '" . $_SESSION['idCourse'] . "'";
+		WHERE id_course = '" . $this->idCourse . "'";
         sql_query($query_seq);
 
         $test_info = $test_man->getTestInfo($id_tests);
-        foreach( $id_tests as $id_test => $title )
-        {
+        foreach ($id_tests as $id_test => $title) {
 
             $query_test = "
-			INSERT INTO " . $GLOBALS['prefix_lms'] . "_coursereport 
+			INSERT INTO %lms_coursereport 
 			( id_course, max_score, required_score, weight, show_to_user, use_for_final, source_of, id_source, sequence ) VALUES (
-				'" . $_SESSION['idCourse'] . "',
+				'" . $this->idCourse . "',
 				'" . $test_man->getMaxScore($id_test) . "', 
 				'" . $test_man->getRequiredScore($id_test) . "',
 				'100',
@@ -113,22 +127,47 @@ class CourseReportManager
 
     }
 
+    public function removeDuplicatedReports($idCourse)
+    {
+        $report_man = new CourseReportManager($idCourse);
+        $org_tests =& $report_man->getTest();
+        foreach ($org_tests as $org_test){
+
+        }
+    }
+
+    public function testReportExists($idCourse, $idTest)
+    {
+        return count($this->getTestReports($idCourse, $idTest)) > 0;
+    }
+
+    public function getTestReports($idCourse, $idTest)
+    {
+        $query = "SELECT * from %lms_coursereport WHERE id_course=${idCourse} AND id_source=${$idTest} AND source_of='test'";
+
+        $result = DbConn::getInstance()->query($query);
+
+        $reports = [];
+        foreach ($result as $item) {
+            $reports[] = $item;
+        }
+        return $reports;
+    }
+
     function updateTestReport($id_tests)
     {
-
         $test_man = new GroupTestManagement();
         $tests_list = $test_man->getTestInfo($id_tests);
 
-        foreach( $tests_list as $id_test => $test_info )
-      {
+        foreach ($tests_list as $id_test => $test_info) {
 
             $query_test = "
-			UPDATE " . $GLOBALS['prefix_lms'] . "_coursereport 
+			UPDATE %lms_coursereport 
 			SET required_score = '" . $test_info['point_required'] . "' "
                 . ($test_info['order_type'] != 2 ? ", "
                     . " max_score = '" . $test_man->getMaxScore($id_test) . "' " : '') . ", "
                 . " required_score = " . $test_man->getRequiredScore($id_test) . " "
-                . " WHERE id_course = '" . $_SESSION['idCourse'] . "' AND 
+                . " WHERE id_course = '" . $this->idCourse . "' AND 
 				source_of = 'test' AND 
 				id_source = '" . $id_test . "'";
             sql_query($query_test);
@@ -142,10 +181,10 @@ class CourseReportManager
 
         if (empty($id_tests)) return;
 
-        $query_test = "DELETE FROM " . $GLOBALS['prefix_lms'] . "_coursereport 
-		WHERE id_course = '" . $_SESSION['idCourse'] . "' AND
+        $query_test = "DELETE FROM %lms_coursereport 
+		WHERE id_course = '" . $this->idCourse . "' AND
 			source_of = 'test' AND 
-			id_source IN ( " . implode(',', $id_tests) . " )";
+			id_report IN ( " . implode(',', $id_tests) . " )";
         sql_query($query_test);
 
         $this->repairSequence();
@@ -156,23 +195,23 @@ class CourseReportManager
 
         $query_select = "
 		SELECT id_report
-		FROM " . $GLOBALS['prefix_lms'] . "_coursereport 
-		WHERE id_course = '" . $_SESSION['idCourse'] . "' AND source_of <> 'final_vote'
+		FROM %lms_coursereport 
+		WHERE id_course = '" . $this->idCourse . "' AND source_of <> 'final_vote'
 		ORDER BY sequence";
         $re_select = sql_query($query_select);
         $i = 1;
         while (list($id_report) = sql_fetch_row($re_select)) {
 
             $query_seq = "
-			UPDATE " . $GLOBALS['prefix_lms'] . "_coursereport 
+			UPDATE %lms_coursereport 
 			SET sequence = '" . $i++ . "' 
-			WHERE id_course = '" . $_SESSION['idCourse'] . "' AND id_report = '$id_report'";
+			WHERE id_course = '" . $this->idCourse . "' AND id_report = '$id_report'";
             sql_query($query_seq);
         }
         $query_seq = "
-		UPDATE " . $GLOBALS['prefix_lms'] . "_coursereport 
+		UPDATE %lms_coursereport 
 		SET sequence = '" . $i . "' 
-		WHERE id_course = '" . $_SESSION['idCourse'] . "' AND source_of = 'final_vote'";
+		WHERE id_course = '" . $this->idCourse . "' AND source_of = 'final_vote'";
         sql_query($query_seq);
 
     }
@@ -193,7 +232,7 @@ class CourseReportManager
         if (!is_array($reports_id)) return $data;
         $query_scores = "
 			SELECT id_report, id_user, date_attempt, score, score_status, comment 
-			FROM " . $GLOBALS['prefix_lms'] . "_coursereport_score 
+			FROM %lms_coursereport_score 
 			WHERE id_report IN ( " . implode(',', $reports_id) . " )";
         if ($id_user !== false && !empty($id_user)) $query_scores .= " AND id_user IN ( " . implode(',', $id_user) . " )";
         $re_scores = sql_query($query_scores);
@@ -210,13 +249,12 @@ class CourseReportManager
 
         $old_scores =& $this->getReportsScores(array($id_report));
         $re = true;
-        foreach( $users_scores as $idst_user => $score )
-        {
+        foreach ($users_scores as $idst_user => $score) {
 
             if (!isset($old_scores[$id_report][$idst_user])) {
 
                 $query_scores = "
-				INSERT INTO " . $GLOBALS['prefix_lms'] . "_coursereport_score
+				INSERT INTO %lms_coursereport_score
 				( id_report, id_user, date_attempt, score, score_status, comment ) VALUES ( 
 					'" . $id_report . "', 
 					'" . $idst_user . "', 
@@ -227,7 +265,7 @@ class CourseReportManager
             } else {
 
                 $query_scores = "
-				UPDATE " . $GLOBALS['prefix_lms'] . "_coursereport_score
+				UPDATE %lms_coursereport_score
 				SET date_attempt = '" . Format::dateDb($date_attempts[$idst_user], 'date') . "', 
 					score = '" . $score . "', 
 					score_status = 'valid',
@@ -254,7 +292,7 @@ class CourseReportManager
         $re = true;
         $query_scores = "
 		SELECT id_user, score, score_status
-		FROM " . $GLOBALS['prefix_lms'] . "_coursereport_score
+		FROM %lms_coursereport_score
 		WHERE id_report = " . $id_report . " ";
         if ($id_users !== FALSE) $query_scores .= " AND idUser IN ( " . implode(',', $id_users) . " ) ";
         $re_scores = sql_query($query_scores);
@@ -263,7 +301,7 @@ class CourseReportManager
             if ($score_status == 'valid') {
 
                 $query_scores = "
-				UPDATE " . $GLOBALS['prefix_lms'] . "_coursereport_score
+				UPDATE %lms_coursereport_score
 				SET score = '" . round($score) . "'
 				WHERE id_report = '" . $id_report . "' AND id_user = '" . $user . "'";
                 $re &= sql_query($query_scores);
@@ -276,7 +314,7 @@ class CourseReportManager
     {
 
         $query_scores = "
-		DELETE FROM " . $GLOBALS['prefix_lms'] . "_coursereport_score
+		DELETE FROM %lms_coursereport_score
 		WHERE id_report = '" . $id_report . "'";
         return sql_query($query_scores);
     }
@@ -285,7 +323,7 @@ class CourseReportManager
     {
 
         $query_scores = "
-		DELETE FROM " . $GLOBALS['prefix_lms'] . "_coursereport 
+		DELETE FROM %lms_coursereport 
 		WHERE id_report = '" . $id_report . "'";
         $re = sql_query($query_scores);
 
@@ -307,7 +345,7 @@ class CourseReportManager
     {
 
         $query_ins_report = "
-		INSERT INTO " . $GLOBALS['prefix_lms'] . "_coursereport 
+		INSERT INTO %lms_coursereport 
 		( id_course, title, max_score, required_score, weight, show_to_user, use_for_final, source_of, id_source, sequence ) VALUES (
 			'" . $id_course . "', 
 			'" . $source['title'] . "', 
@@ -339,7 +377,7 @@ class CourseReportManager
             }
 
             $query_upd_report = "
-		UPDATE " . $GLOBALS['prefix_lms'] . "_coursereport
+		UPDATE %lms_coursereport
 		SET title = '" . $source->getTitle() . "',
 			weight = '" . $source->getWeight() . "',
 			max_score = '" . $source->getMaxScore() . "',
@@ -353,7 +391,7 @@ class CourseReportManager
             $id_source = isset($source['id_source']) ? $source['id_source'] : '0';
 
             $query_upd_report = "
-		UPDATE " . $GLOBALS['prefix_lms'] . "_coursereport
+		UPDATE %lms_coursereport
 		SET title = '" . $source['title'] . "',
 			weight = '" . $source['weight'] . "',
 			max_score = '" . $source['max_score'] . "',
@@ -376,7 +414,7 @@ class CourseReportManager
 
         // Delete report
         $query_del_report = "
-		DELETE FROM " . $GLOBALS['prefix_lms'] . "_coursereport
+		DELETE FROM %lms_coursereport
 		WHERE id_course = '" . $id_course . "' AND id_report = '" . $id_report . "' 
 			AND source_of = 'activity' AND id_source = '0'";
         return sql_query($query_del_report);
@@ -388,8 +426,8 @@ class CourseReportManager
         $re = array();
         $query_scores = "
 		SELECT s.id_user, r.id_course, s.score, s.score_status
-		FROM " . $GLOBALS['prefix_lms'] . "_coursereport AS r
-			JOIN " . $GLOBALS['prefix_lms'] . "_coursereport_score AS s
+		FROM %lms_coursereport AS r
+			JOIN %lms_coursereport_score AS s
 		WHERE r.source_of = 'final_vote' 
 			AND s.id_report = r.id_report ";
         $query_scores .= " AND s.id_user = '" . $id_user . "'";
@@ -413,8 +451,8 @@ class CourseReportManager
         $re = array();
         $query_scores = "
 		SELECT s.id_user, r.id_course, s.score, s.score_status, r.max_score
-		FROM " . $GLOBALS['prefix_lms'] . "_coursereport AS r
-			JOIN " . $GLOBALS['prefix_lms'] . "_coursereport_score AS s
+		FROM %lms_coursereport AS r
+			JOIN %lms_coursereport_score AS s
 		WHERE r.source_of = 'final_vote' 
 			AND s.id_report = r.id_report ";
         $query_scores .= " AND s.id_user IN ( " . implode(',', $arr_users) . " )";
