@@ -375,7 +375,7 @@ class SubscriptionAlmsController extends AlmsController
 								$msg_composer->setBodyLangText('sms', '_NEW_USER_SUBSCRIBED_TEXT_SMS', $array_subst);
 
 								// send message to the user subscribed
-								createNewAlert('UserCourseInserted', 'subscribe', 'insert', '1', 'User subscribed', $user_selected, $msg_composer, $send_alert);
+								createNewAlert('UserCourseInserted', 'subscribe', 'insert', '1', 'User subscribed', $user_selected, $msg_composer, $send_alert, true);
 							}
 
 						}
@@ -590,7 +590,7 @@ class SubscriptionAlmsController extends AlmsController
 				$msg_composer->setBodyLangText('sms', '_NEW_USER_SUBSCRIBED_TEXT_SMS', $array_subst);
 
 				// send message to the user subscribed
-				createNewAlert('UserCourseInserted', 'subscribe', 'insert', '1', 'User subscribed', array_keys($user_selected), $msg_composer, $send_alert);
+				createNewAlert('UserCourseInserted', 'subscribe', 'insert', '1', 'User subscribed', array_keys($user_selected), $msg_composer, $send_alert, true);
 			}
 
 			$user_selected = array();
@@ -719,7 +719,13 @@ class SubscriptionAlmsController extends AlmsController
 			}
 		}
 
-		$result = array(
+        $event = new \appCore\Events\Core\User\UsersListEvent($list, $this->link,$this->id_course,$this->id_edition,$this->id_date );
+
+        \appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersListEvent::EVENT_NAME_LIST, $event);
+
+        $list = $event->getUsersList();
+
+        $result = array(
 			'totalRecords' => $total_user,
 			'startIndex' => $start_index,
 			'sort' => $sort,
@@ -1100,7 +1106,7 @@ class SubscriptionAlmsController extends AlmsController
 
 					// send message to the user subscribed
 					$users = array($id_user);
-					createNewAlert('UserCourseInserted', 'subscribe', 'insert', '1', 'User subscribed', $users, $msg_composer, $send_alert);
+					createNewAlert('UserCourseInserted', 'subscribe', 'insert', '1', 'User subscribed', $users, $msg_composer, $send_alert, true);
 				}
 
 				// Moderator notification

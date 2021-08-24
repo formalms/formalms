@@ -149,10 +149,22 @@ $columns[] = array("key"=>"date_unset", "label"=>$icon_unset, 'formatter' => 'Su
 
 $columns[] = array('key' => 'del', 'label' => Get::img('standard/delete.png', Lang::t('_DEL', 'subscribe')), 'formatter'=>'doceboDelete', 'className' => 'img-cell');
 
+$event = new \appCore\Events\Core\User\UsersShowEvent();
+
+$event->setColumns($columns);
+
+$event->setHiddenValidity($hidden_validity);
+
+
 $tfields = array('id', 'userid', 'fullname', 'level', 'status', 'date_begin', 'date_expire', 'date_begin_timestamp', 'date_expire_timestamp', 'del', 'overbooking');
 for ($i=0; $i<$num_var_fields; $i++) {
 	$tfields[] = '_dyn_field_'.$i;
 }
+
+$event->setFields($tfields);
+
+\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersShowEvent::USERS_SHOW_COLUMNS, $event);
+
 
 $this->widget('table', array(
 	'id'			=> 'subscribed_table',
@@ -162,9 +174,9 @@ $this->widget('table', array(
 	'results'		=> Get::sett('visuItem', 25),
 	'sort'			=> 'userid',
 	'dir'			=> 'asc',
-	'columns'		=> $columns,
-	'fields'		=> $tfields,
-	'stdSelection' => true,
+    'columns'		=> $event->getColumns(),
+    'fields'		=> $event->getFields(),
+    'stdSelection' => true,
 	'selectAllAdditionalFilter' => 'Subscription.selectAllAdditionalFilter()',
 	'rel_actions' => array($rel_action.$count_selected_over, $rel_action.$count_selected_bottom),
 	'delDisplayField' => 'userid',

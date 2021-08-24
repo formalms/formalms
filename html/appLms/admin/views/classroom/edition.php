@@ -32,6 +32,16 @@ if ($permissions['del'] && !Get::cfg('demo_mode')) {
 	$_columns[] = array('key' => 'del', 'label' => Get::img('standard/delete.png', Lang::t('_DEL', 'course')), 'formatter'=>'doceboDelete', 'className' => 'img-cell');
 }
 
+$event = new \appCore\Events\Core\Courses\CoursesShowEvent();
+
+$event->setColumns($_columns);
+
+$event->setFields(array('id_date', 'code', 'name', 'status', 'date_begin', 'date_end', 'classroom', 'students', 'num_subscribe', 'subscription', 'presence', 'mod', 'del'));
+
+\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\Courses\CoursesShowEvent::COURSE_EDITION_SHOW_COLUMNS, $event);
+
+$_columns = $event->getColumns();
+
 
 $_params = array(
 	'id'			=> 'classroom_edition_table',
@@ -41,9 +51,9 @@ $_params = array(
 	'results'		=> Get::sett('visuItem', 25),
 	'sort'			=> 'name',
 	'dir'			=> 'asc',
-	'columns'		=> $_columns,
-	'fields'		=> array('id_date', 'code', 'name', 'status', 'date_begin', 'date_end', 'classroom', 'students', 'num_subscribe', 'subscription', 'presence', 'mod', 'del'),
-	'show'			=> 'table',
+    'columns'		=> $event->getColumns(),
+    'fields'		=> $event->getFields(),
+    'show'			=> 'table',
 	'editorSaveEvent' => ''
 );
 

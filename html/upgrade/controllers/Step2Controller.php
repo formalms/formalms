@@ -58,10 +58,11 @@ Class Step2Controller extends StepController {
 	function versionList() {
 
 		$current_version =$this->getCurrentVersion();
-		$end_version =getVersionIntNumber($GLOBALS['cfg']['endversion']);
+        $versions = array_keys($GLOBALS['cfg']['versions']);
+        $end_version =getVersionIntNumber(end($versions));
 
 		if ($current_version == $end_version) {
-			$current_version =end(array_keys($GLOBALS['cfg']['versions']));
+			$current_version =end($versions);
 		}
 
 		$txt = '<select id="start_version" name="start_version">';

@@ -96,7 +96,13 @@ Class ClassroomAlmsController extends AlmsController {
 		$total_course = $model->getCourseEditionNumber();
 		$array_edition = $model->loadCourseEdition($start_index, $results, $sort, $dir);
 
-		$result = array(
+        $event = new \appCore\Events\Core\Courses\CoursesEditionListEvent($array_edition, $id_course);
+
+        \appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\Courses\CoursesEditionListEvent::EVENT_NAME_LIST, $event);
+
+        $array_edition = $event->getCoursesEditions();
+        
+        $result = array(
 				'totalRecords' => $total_course,
 				'startIndex' => $start_index,
 				'sort' => $sort,

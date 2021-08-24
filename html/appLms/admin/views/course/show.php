@@ -31,8 +31,8 @@ $languages = array(
       $modifica = $languages['_MOD'];
       $cancella = $languages['_DEL'];
       $nome = $languages['_NAME'];
-      
-      
+
+
      $info_course ='<style>
               @media
         only screen and (max-width: 870px),
@@ -54,12 +54,12 @@ $languages = array(
                     #yuievtautoid-0 td:nth-of-type(13):before { content: "'.$cancella.'"; } 
                     }        
                     </style>
-                ';   
-    
+                ';
+
      echo  $info_course;
     //*********************** 
 
-                      
+
 
 
 
@@ -146,6 +146,17 @@ if ($permissions['mod'])
 if ($permissions['del'] && !Get::cfg('demo_mode'))
 	$columns_arr[] = array('key' => 'del', 'label' => Get::sprite('subs_del', Lang::t('_DEL', 'course')), 'formatter'=>'doceboDelete', 'className' => 'img-cell1');
 
+
+
+$event = new \appCore\Events\Core\Courses\CoursesShowEvent();
+
+$event->setColumns($columns_arr);
+
+$event->setFields(array('id', 'code', 'name', 'type', 'type_id', 'students', 'wait', 'user', 'edition', 'certificate', 'certreleased', 'competences', 'test', 'menu', 'dup', 'mod', 'del'));
+
+\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\Courses\CoursesShowEvent::COURSE_SHOW_COLUMNS, $event);
+
+
 $_table_params = array(
 	'id'			=> 'course_table',
 	'ajaxUrl'		=> 'ajax.adm_server.php?r='.$base_link_course.'/getcourselist',
@@ -154,9 +165,9 @@ $_table_params = array(
 	'results'		=> Get::sett('visuItem', 25),
 	'sort'			=> 'name',
 	'dir'			=> 'asc',
-	'columns'		=> $columns_arr,
-	'fields' => array('id', 'code', 'name', 'type', 'type_id', 'students', 'wait', 'user', 'edition', 'certificate', 'certreleased', 'competences', 'menu', 'dup', 'mod', 'del'),
-	'show' => 'table',
+    'columns'		=> $event->getColumns(),
+    'fields'        => $event->getFields(),
+    'show'          => 'table',
 	'delDisplayField' => 'name',
 	'generateRequest' => 'Courses.requestBuilder'
 );
