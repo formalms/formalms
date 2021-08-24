@@ -157,7 +157,7 @@ class PluginmanagerAdm extends Model
                     } else {
                         $check = array_merge($dependencies, $check);
                         if ($dependence) {
-                            $check = $check = array_merge(array("name" => $manifest['name'], "version" => $manifest['version']), $check);
+                            $check = array_merge(array("name" => $manifest['name'], "version" => $manifest['version']), $check);
                         }
                         break;
                     }
@@ -325,6 +325,7 @@ class PluginmanagerAdm extends Model
                 }
             }
         }
+        $GLOBALS['plugin_errors'] = $res['log'];
         return $res;
     }
 

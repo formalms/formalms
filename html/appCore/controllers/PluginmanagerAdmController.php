@@ -23,7 +23,12 @@ class PluginmanagerAdmController extends AdmController {
         $feedback = "";
         switch ($res = Get::req('result', DOTY_ALPHANUM, "")) {
 			case 'ok': $feedback = Lang::t('_OPERATION_SUCCESSFUL', 'standard'); break;
-			case 'err': $feedback = Lang::t('_OPERATION_FAILURE', 'standard'); break;
+			case 'err':
+			    $feedback = Lang::t('_OPERATION_FAILURE', 'standard');
+			    if (array_key_exists('plugin_errors',$GLOBALS) && !empty($GLOBALS['plugin_errors'])){
+                    $feedback .= "\n". $GLOBALS['plugin_errors'];
+                }
+			break;
             default:
 
 		}
@@ -127,7 +132,7 @@ class PluginmanagerAdmController extends AdmController {
             Util::jump_to('index.php?r=adm/pluginmanager/show&result=ok');
         } else {
             Util::jump_to('index.php?r=adm/pluginmanager/show&result=err');
-        }        
+        }
     }
 
     public function purge(){
