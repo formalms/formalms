@@ -1,3 +1,4 @@
+ALTER TABLE `learning_course_date_day` ROW_FORMAT=DYNAMIC;
 ALTER TABLE `learning_course_date_day`
     ADD COLUMN `id` int(11) NOT NULL AUTO_INCREMENT FIRST,
     ADD COLUMN `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP AFTER `pause_end`,
@@ -9,5 +10,6 @@ ALTER TABLE `learning_course_date_day`
     DROP INDEX `id_date`,
     ADD INDEX `id_day_date`(`id_day`, `id_date`) USING BTREE;
 
+ALTER TABLE `learning_course` ROW_FORMAT=DYNAMIC;
 ALTER TABLE `learning_course` ADD COLUMN `sendCalendar` tinyint(1) NULL DEFAULT 0;
 ALTER TABLE `learning_course` ADD COLUMN `calendarId` varchar(255) NOT NULL AFTER `sendCalendar`;
