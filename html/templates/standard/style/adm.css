@@ -72,8 +72,8 @@ html, body {}
 
 /*----------------------------------------------------------------------------------*/
 .sm-forma {
-  border-top: 2px solid #C84000;
-  border-bottom: 1px solid #C84000;
+  border-top: 2px solid var(--color-2);
+  border-bottom: 1px solid var(--color-2);
   background: white;
 }
 .sm-forma a, .sm-forma a:hover, .sm-forma a:focus, .sm-forma a:active {
@@ -118,7 +118,7 @@ html, body {}
 }
 
  .sm-forma a:hover {
-    background: #C84000; 
+    background: var(--color-2);
  }
 
 .sm-forma li {
@@ -244,7 +244,7 @@ html, body {}
     height: 0;
     border-width: 6px 4.02px 0 4.02px;
     border-style: solid dashed dashed dashed;
-    border-color: #C84000 transparent transparent transparent;
+    border-color: var(--color-2) transparent transparent transparent;
     background: transparent;
     -webkit-border-radius: 0;
     -moz-border-radius: 0;
@@ -298,7 +298,7 @@ html, body {}
     border-radius: 0;
   }
   .sm-forma ul a:hover, .sm-forma ul a:focus, .sm-forma ul a:active, .sm-forma ul a.highlighted {
-    background: #C84000;
+    background: var(--color-2);
     color: white;
     -webkit-box-shadow: none;
     -moz-box-shadow: none;
@@ -472,12 +472,12 @@ html, body {}
   .sm-forma a.forma-admin-logo {
     padding: 6px;
     margin-left: 25px;
-    background-color: #c84000;
+    background-color: var(--color-2);
     border-radius: 0;
   }
 
   .sm-forma a.forma-admin-logo:hover {
-    background-color: #c84000;
+    background-color: var(--color-2);
     border-radius: 0;
     padding: 6px;
   }

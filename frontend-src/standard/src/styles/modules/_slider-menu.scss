@@ -118,20 +118,20 @@
     font-family: $font;
     transition: $transition-base;
     &:hover {
-      color: $orange;
+      color: var(--color-1-550);
     }
   }
 
   &.is-selected {
     a {
-      color: $orange;
+      color: var(--color-1-550);
       font-weight: bold;
     }
   }
 }
 
 .slider-menu__item--selected-area {
-  color: $orange;
+  color: var(--color-1-550);
 }
 
 .slider-menu__arrow {

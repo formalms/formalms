@@ -18,7 +18,7 @@
   }
 
   tr:nth-child(odd) & {
-    background-color: $gray-5;
+    background-color: var(--color-0-050);
   }
 }
 
@@ -28,7 +28,7 @@
   text-align: center;
 
   tr:nth-child(odd) & {
-    background-color: $gray-4 !important;
+    background-color: var(--color-0-070) !important;
   }
 }
 

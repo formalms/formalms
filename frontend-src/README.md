@@ -151,9 +151,9 @@ In the config.scss we declare all the variables we need, for example:
 
 
 ```
-$dark-orange: rgba(200, 64, 0, 1);
-$orange: rgba(255, 108, 0, 1);
-$orange--hover: rgba(255, 108, 0, .5);
+var(--color-3): rgba(200, 64, 0, 1);
+var(--color-1-550): rgba(255, 108, 0, 1);
+var(--color-1-550)--hover: rgba(255, 108, 0, .5);
 ```
 
 Those variables are used for colours. 
@@ -183,8 +183,8 @@ Let's take for example the code inside _buttons.scss:
   text-transform: uppercase;
   text-shadow: none;
   line-height: 12px;
-  color: $white;
-  background: $dark-orange;
+  color: var(--color-0-000);
+  background: var(--color-3);
   font-family: $font;
   font-size: 11px;
   border: none;
@@ -286,7 +286,7 @@ styles like for example the _homepage.scss file:
     size: cover;
     position: 50% 50%;
     repeat: no-repeat;
-    color: $white;
+    color: var(--color-0-000);
   }
 }
     
@@ -294,10 +294,10 @@ styles like for example the _homepage.scss file:
   padding: 0;
   margin: 30px auto;
   text-align: center;
-  color: $white;
+  color: var(--color-0-000);
 
   a {
-    color: $white;
+    color: var(--color-0-000);
   }
 }
 ```

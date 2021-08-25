@@ -59,8 +59,8 @@ _background:url(../images/standard/updates.png) 0 0 no-repeat transparent;}
 .edition_container, .dash-course{position:relative;clear:none;margin:.6em 0.5em;padding:0 0 1em 0;border-bottom:1px solid #cccccc; min-height: 72px; }
 .dash-course img.clogo{display:inline-block;border:2px solid #cccccc;max-width:100px;max-height:70px;padding:2px;margin:0px;}
 .dash-course img.cnologo{padding:5px 20px;background:#ffffff;}
-.dash-course h2{color:#C84000; font-size: 20px;}
-.dash-course h2 a{color:#C84000; font-size: 20px;}
+.dash-course h2{color:var(--color-2); font-size: 20px;}
+.dash-course h2 a{color:var(--color-2); font-size: 20px;}
 .course_support_info {padding:.2em .4em;}
 .status_subscribed h2{background:#efefef;}
 .status_subscribed h2 a{}
@@ -89,7 +89,7 @@ div.kb_res_list div.line div.tags{font-size:90%;margin-top:0.6em;}
 .games_chart{float:right;text-align:center;}
 .games_chart #standings_chart{width:400px;height:250px;}
 .edition_container .edition_subscribe, .catalog_action{min-width:190px;text-align:center;background:#f5f5f5;font-size:90%; color:#000000}
-.subscribed{padding:10px;background:#c84000;color:#fff;text-transform: uppercase;}
+.subscribed{padding:10px;background:var(--color-2);color:#fff;text-transform: uppercase;}
 .subscribed:before {  content: "\f061";position: absolute;right:4em;padding: 0 1px;font-family: FontAwesome;-webkit-transform: translateZ(0);transform: translateZ(0);}
 .edition_container .edition_subscribe a p,  .can_subscribe{padding: 10px;background: #1bac2c;color: #fff;text-transform: uppercase;font-weight:400; display: block;margin-top: 10px;}
 .edition_container .edition_subscribe a p:before,  .can_subscribe:before { content: "\f061";position: absolute;right:4em;padding: 0 1px;font-family: FontAwesome;-webkit-transform:translateZ(0);
@@ -98,16 +98,16 @@ div.kb_res_list div.line div.tags{font-size:90%;margin-top:0.6em;}
 #statistic_chart{width:80%;height:250px;margin:0 auto;}
 #tag_cloud{margin:0 1em 1em;}
 #tag_cloud .yui-content{background:#ffffff;}
-div.label_container{border:3px solid #c84000;display:inline;float:left;font-weight:normal;height:80px;margin:20px 2% 20px 2%;position:relative;text-decoration:none;width:29%;overflow:hidden;}
+div.label_container{border:3px solid var(--color-2);display:inline;float:left;font-weight:normal;height:80px;margin:20px 2% 20px 2%;position:relative;text-decoration:none;width:29%;overflow:hidden;}
 span.label_image_cont{width:72px;height:98%;position:absolute;text-align:center;}
 span.label_info_con{display:block;padding:4px 4px 4px 76px;}
 img.label_image{max-width:64px;padding:4px;}
 span.label_title{font-size:108%;font-weight:bold;margin:0.83em 0px;}
 span.label_description{border-top:2px solid #446dd6;display:block;margin-top:5px;padding-top:5px;font-size:90%;}
 div.coursepath_container{margin-bottom:15px;}
-span.expand_path_info{font-weight:bold;color:#C84000;padding:5px;}
-span.coursepath_percentage{font-weight:bold;color:#C84000;}
-td.course_type{padding-left:15px;padding-right:15px;text-align:right;width:80px;color:#C84000;}
+span.expand_path_info{font-weight:bold;color:var(--color-2);padding:5px;}
+span.coursepath_percentage{font-weight:bold;color:var(--color-2);}
+td.course_type{padding-left:15px;padding-right:15px;text-align:right;width:80px;color:var(--color-2);}
 div.coursepath_description{background-color:#efefef;font-size:90%;}
 div.coursepath_description  div.textof{padding:10px;}
 div.coursepath_action{float:left;margin-top:5px;margin-bottom:5px;}
@@ -200,14 +200,14 @@ div.coursepath_details{background-color:#f7f7f7;border-top:3px solid #d1d1d1;bor
 }
 
 .yui-skin-sam .yui-panel .edition_subscribe a .can_subscribe_moderation {
-    color: #F6A623;
-    border: 1px solid #F6A623;
+    color: var(--color-5);
+    border: 1px solid var(--color-5);
     float: right;
 }
 
 .yui-skin-sam .yui-panel .edition_subscribe a .alert_subscribe {
     clear: both;
-    color: #F6A623;
+    color: var(--color-5);
     position: relative;
     top: 4px;
     display: none;
@@ -244,7 +244,7 @@ div.coursepath_details{background-color:#f7f7f7;border-top:3px solid #d1d1d1;bor
     right: 85px;
     top: 4px;
     border-radius: 50%;
-    background-color: #F6A623;
+    background-color: var(--color-5);
     width: 14px;
     height: 14px;
     background-image: url('../static/images/icons/icon--info.svg');
@@ -255,7 +255,7 @@ div.coursepath_details{background-color:#f7f7f7;border-top:3px solid #d1d1d1;bor
 
 .moderation-alert {
     position: relative;
-    color: #F6A623;
+    color: var(--color-5);
     padding-left: 20px;
     line-height: 24px;
 }
@@ -272,7 +272,7 @@ div.coursepath_details{background-color:#f7f7f7;border-top:3px solid #d1d1d1;bor
 .edition__title {
     background: transparent;
     border: 0;
-    color: #F6A623;
+    color: var(--color-5);
     font-size: 12px;
     font-weight: bold;
     position: relative;
@@ -324,7 +324,7 @@ div.coursepath_details{background-color:#f7f7f7;border-top:3px solid #d1d1d1;bor
     position: absolute;
     left: 0;
     top: 4px;
-    background-color: #F6A623;
+    background-color: var(--color-5);
     color: #fff;
     border-radius: 50%;
     width: 14px;
@@ -363,9 +363,9 @@ div.coursepath_details{background-color:#f7f7f7;border-top:3px solid #d1d1d1;bor
 }
 
 .edition_table thead {
-    background-color: #FFF1D9;
-    color: #F6A623;
-    border-right: 1px solid #FFF1D9;
+    background-color: var(--color-5-100);
+    color: var(--color-5);
+    border-right: 1px solid var(--color-5-100);
 }
 
 .edition_table thead th {
@@ -375,11 +375,11 @@ div.coursepath_details{background-color:#f7f7f7;border-top:3px solid #d1d1d1;bor
 }
 
 .edition_table tbody tr {
-    border-right: 1px solid #FFF1D9;
+    border-right: 1px solid var(--color-5-100);
 }
 
 .edition_table tbody td {
-    border-left: 1px solid #FFF1D9;
+    border-left: 1px solid var(--color-5-100);
     line-height: 16px;
     padding-left: 5px;
     font-weight: normal;
@@ -387,7 +387,7 @@ div.coursepath_details{background-color:#f7f7f7;border-top:3px solid #d1d1d1;bor
 }
 
 .edition_table tbody tr:nth-child(2n) {
-    background-color: #FFF1D9;
+    background-color: var(--color-5-100);
 }
 
 .edition__twocol {

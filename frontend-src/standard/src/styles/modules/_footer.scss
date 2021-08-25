@@ -19,21 +19,21 @@
 // Style guide: 9.1
 .layout_footer {
   padding-top: 30px;
-  border-top: 2px solid $dark-orange;
+  border-top: 2px solid var(--color-3);
   text-align: center;
-  background-color: $white; 
+  background-color: var(--color-0-000);
 
   .powered_by {
     .ownedby {
       font-size: 14px;
-      color: $gray-1;
+      color: var(--color-0-600);
     }
 
     .poweredby {
       font-size: 12px;
 
       a {
-        color: $gray-3;
+        color: var(--color-0-250);
         text-decoration: none;
       }
     }

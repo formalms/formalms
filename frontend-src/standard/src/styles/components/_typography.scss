@@ -53,7 +53,7 @@ p {
 }
 
 .box-title {
-  color: $orange;
+  color: var(--color-1-550);
   font-family: $font;
   font-weight: bold;
   font-size: 12px;
@@ -75,7 +75,7 @@ p {
 .page-subtitle {
   font-family: $font;
   font-size: 24px;
-  color: $anthracite;
+  color: var(--color-0-870);
   margin-bottom: 20px;
   margin-top: 20px;
 
@@ -87,18 +87,18 @@ p {
 }
 
 .text--gray {
-  color: $gray-1
+  color: var(--color-0-600)
 }
 
 .text--green {
-  color: $green
+  color: var(--color-6)
 }
 
 .text--orange {
-  color: $orange
+  color: var(--color-1-550)
 }
 
 .text--red {
-  color: $red
+  color: var(--color-4)
 }
 

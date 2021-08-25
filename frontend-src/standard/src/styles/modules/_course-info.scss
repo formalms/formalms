@@ -45,7 +45,7 @@
   width: 100%;
   display: block;
   font-size: 9px;
-  color: $gray-2;
+  color: var(--color-0-400);
   margin-bottom: 5px;
   text-transform: uppercase;
 
@@ -70,7 +70,7 @@
 
 .course-info__link {
   text-decoration: none;
-  color: $orange;
+  color: var(--color-1-550);
   font-family: $font;
   margin-right: 7px;
 
@@ -116,7 +116,7 @@
   width: 64px;
   height: 64px;
   border-radius: 50%;
-  background-color: $orange;
+  background-color: var(--color-1-550);
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center center;
@@ -132,7 +132,7 @@
 .course-info__peoplename {
   display: block;
   font-size: 14px;
-  color: $orange;
+  color: var(--color-1-550);
   margin-bottom: 16px;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -145,7 +145,7 @@
 }
 
 .course-info__peoplename--modal {
-  color: $white;
+  color: var(--color-0-000);
   width: calc(100% - 124px);
   margin-bottom: 0;
   text-overflow: inherit;
@@ -160,7 +160,7 @@
 
 .course-info__peoplebio {
   text-decoration: underline;
-  color: $gray-1;
+  color: var(--color-0-600);
   font-size: 12px;
   float: left;
   margin-right: 20px;
@@ -188,8 +188,8 @@
   line-height: 22px;
   padding-left: 10px;
   padding-right: 10px;
-  background-color: $light-orange;
-  border-color: $light-orange;
+  background-color: var(--color-3-450);
+  border-color: var(--color-3-450);
 
   @include breakpoint($tablet) {
     font-size: 10px;

@@ -60,10 +60,10 @@
       height: 100%;
       padding-right: 25px;
       padding-left: 20px;
-      border: 1px solid $gray-4;
+      border: 1px solid var(--color-0-070);
       font-family: $font;
       background-image: none;
-      background-color: $white;
+      background-color: var(--color-0-000);
       box-shadow: none;
       border-top-left-radius: 5px;
       border-bottom-left-radius: 5px;
@@ -71,7 +71,7 @@
       border-bottom-right-radius: 5px;
 
       .filter-option {
-        color: $gray-2;
+        color: var(--color-0-400);
         font-size: 14px;
       }
 
@@ -91,21 +91,21 @@
 
           &:before {
             content: '\f107';
-            color: $dark-orange;
+            color: var(--color-3);
             font-size: 18px;
           }
         }
       }
 
       &:hover {
-        background-color: $white;
-        border: 1px solid $gray-4;
+        background-color: var(--color-0-000);
+        border: 1px solid var(--color-0-070);
       }
 
       &:active,
       &:focus {
-        background-color: $white;
-        border: 1px solid $gray-4;
+        background-color: var(--color-0-000);
+        border: 1px solid var(--color-0-070);
         box-shadow: none;
       }
 
@@ -114,8 +114,8 @@
       }
 
       &:active:hover {
-        background-color: $white;
-        border: 1px solid $gray-4;
+        background-color: var(--color-0-000);
+        border: 1px solid var(--color-0-070);
       }
 
       &:not(.pseudo-class-first-child) {
@@ -129,8 +129,8 @@
 
       button {
         max-width: 100%;
-        background-color: $white !important;
-        border: 1px solid $gray-2 !important;
+        background-color: var(--color-0-000) !important;
+        border: 1px solid var(--color-0-400) !important;
         box-shadow: none !important;
         border-bottom-width: 0 !important;
         border-bottom-left-radius: 0 !important;
@@ -166,7 +166,7 @@
 
       &.inner {
         width: 100%;
-        border: 1px solid $gray-2 !important;
+        border: 1px solid var(--color-0-400) !important;
         border-top-left-radius: 0 !important;
         border-top-right-radius: 0 !important;
         border-bottom-left-radius: 5px !important;
@@ -187,7 +187,7 @@
           &:active,
           &:focus {
             background-image: none;
-            background-color: $white;
+            background-color: var(--color-0-000);
           }
 
           span.text {
@@ -203,7 +203,7 @@
 
         &:hover {
           background-image: none;
-          background-color: $white;
+          background-color: var(--color-0-000);
           cursor: pointer;
         }
 
@@ -213,7 +213,7 @@
           height: 20px;
           margin-top: 0 !important;
           padding-top: 1px;
-          border: 1px solid $gray-3;
+          border: 1px solid var(--color-0-250);
           border-radius: 5px;
           text-align: center;
           position: absolute;
@@ -223,7 +223,7 @@
           &:before {
             content: '\f00c';
             font-family: $icon;
-            color: $gray-1;
+            color: var(--color-0-600);
             opacity: 0;
           }
         }
@@ -320,11 +320,11 @@
       width: 100%;
       height: 100%;
       border-radius: 5px !important;
-      border: 2px solid $orange;
+      border: 2px solid var(--color-1-550);
       font-family: $font;
 
       &:focus {
-        border: 2px solid $orange;
+        border: 2px solid var(--color-1-550);
         box-shadow: none;
       }
 
@@ -348,7 +348,7 @@
 
         .glyphicon.glyphicon-search {
           font-family: $icon;
-          color: $dark-orange;
+          color: var(--color-3);
 
           &:before {
             content: '\f002';
@@ -377,15 +377,15 @@
   display: block;
   height: 100%;
   float: left;
-  background: $white;
-  border: 1px solid $gray-3;
+  background: var(--color-0-000);
+  border: 1px solid var(--color-0-250);
   box-shadow: none !important;
   border-radius: 0;
   color: #333;
   max-width: 100%;
   &:hover {
-    background-color: $gray-3;
-    color: $white;
+    background-color: var(--color-0-250);
+    color: var(--color-0-000);
   }
 }
 
@@ -421,11 +421,11 @@
 
 .forma-dropdown {
   border-radius: 5px;
-  border: 1px solid $gray-3;
+  border: 1px solid var(--color-0-250);
   transition: $transition-base;
 
   &:hover {
-    border-color: $orange;
+    border-color: var(--color-1-550);
   }
 
   li > a {
@@ -434,7 +434,7 @@
     transition: $transition-base;
 
     &:hover {
-      color: $orange;
+      color: var(--color-1-550);
     }
   }
 
@@ -445,7 +445,7 @@
       top: none;
       left: none;
       bottom: none;
-      right: 1px solid $gray-3;
+      right: 1px solid var(--color-0-250);
     }
   }
 
@@ -453,7 +453,7 @@
     border: none;
 
     &:hover {
-      background-color: $white;
+      background-color: var(--color-0-000);
       color: initial;
     }
   }

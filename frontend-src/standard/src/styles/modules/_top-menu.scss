@@ -72,7 +72,7 @@ header.header {
   height: 73px;
   //padding: 0 36px 0 30px;
   padding: 0;
-  border-bottom: 2px solid $gray-5;
+  border-bottom: 2px solid var(--color-0-050);
   position: fixed;
 
   @include breakpoint($tablet) {
@@ -183,13 +183,13 @@ header.header {
         a {
           height: 14px;
           padding: 0;
-          color: $gray-1;
+          color: var(--color-0-600);
           transition: color 0.2s ease 0s;
           line-height: 1;
 
           &:hover {
             background-color: transparent;
-            color: $orange;
+            color: var(--color-1-550);
           }
 
           .title-with-icon {
@@ -211,7 +211,7 @@ header.header {
 
             &:hover {
               &:before {
-                border-color: $orange;
+                border-color: var(--color-1-550);
               }
             }
 
@@ -223,7 +223,7 @@ header.header {
               width: 35px;
               height: 35px;
               display: inline-block;
-              // border: 1px solid $gray-3;
+              // border: 1px solid var(--color-0-250);
               border-radius: 50%;
               background-size: 20px;
               background-repeat: no-repeat;
@@ -287,7 +287,7 @@ header.header {
 
         &.active {
           a {
-            color: $orange;
+            color: var(--color-1-550);
           }
         }
 
@@ -312,11 +312,11 @@ header.header {
 
               a {
                 .username {
-                  color: $orange;
+                  color: var(--color-1-550);
 
                   &:before {
                     background-image: url('#{$assets}images/icons/top-menu/icon--profile-hover.svg');
-                    border: 1px solid $orange;
+                    border: 1px solid var(--color-1-550);
                   }
                 }
               }
@@ -326,7 +326,7 @@ header.header {
             a {
               width: 100%;
               display: inline-block;
-              background-color: $white;
+              background-color: var(--color-0-000);
               line-height: 1;
               text-decoration: none;
               border-right: none !important;
@@ -353,7 +353,7 @@ header.header {
                 &:hover {
                   &:before {
                     background-image: url('#{$assets}images/icons/top-menu/icon--profile-hover.svg');
-                    border: 1px solid $orange;
+                    border: 1px solid var(--color-1-550);
                   }
                 }
 
@@ -365,7 +365,7 @@ header.header {
                   width: 35px;
                   height: 35px;
                   border-radius: $border-radius;
-                  border: 1px solid $gray-3;
+                  border: 1px solid var(--color-0-250);
                   background-position: center;
                   background-size: 13px;
                   background-repeat: no-repeat;
@@ -405,7 +405,7 @@ header.header {
         float: left;
         margin-top: 10px;
         padding: 20px;
-        background-color: $gray-4;
+        background-color: var(--color-0-070);
 
         @media (min-width: 768px) and (max-width: 1023px) {
           display: block !important;
@@ -422,7 +422,7 @@ header.header {
             height: 70px;
             margin-bottom: 10px;
             padding: 15px 20px;
-            background-color: $white;
+            background-color: var(--color-0-000);
             border-radius: 5px;
             font-weight: bold;
 
@@ -445,7 +445,7 @@ header.header {
               position: relative;
               line-height: 40px;
               margin-right: 40px;
-              border-right: 2px solid $gray-4;
+              border-right: 2px solid var(--color-0-070);
 
               &:before {
                 content: '\f105';
@@ -453,7 +453,7 @@ header.header {
                 right: -35px;
                 font-family: $icon;
                 font-size: 23px;
-                color: $dark-orange;
+                color: var(--color-3);
               }
 
               .glyphicon {
@@ -498,7 +498,7 @@ header.header {
   margin-bottom: 6px;
   text-align: center;
   font-family: $font;
-  color: $gray-2;
+  color: var(--color-0-400);
   font-size: 16px;
 
   @include breakpoint($ipad) {
@@ -544,6 +544,6 @@ header.header {
 
 .navbar-nav {
   .badge {
-    background-color: var(--color-2-400);
+    background-color: var(--color-3-400);
   }
 }

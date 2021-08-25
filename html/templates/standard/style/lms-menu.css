@@ -229,7 +229,7 @@ img.course_logo.sponsor {
 	background-color:#9c0000;
 	border: 1px solid #9c0000;
 	background: -webkit-gradient(linear, left top, left bottom, from(#CC0000), to(#9c0000));
-	background: -moz-linear-gradient(top,  #C84000, #993300);
+	background: -moz-linear-gradient(top,  var(--color-2), #993300);
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#CC0000', endColorstr='#9c0000',GradientType=0 ); /* IE6-9 */
 	box-shadow:0 1px 0 #DD5860 inset;
 }
@@ -238,7 +238,7 @@ img.course_logo.sponsor {
     background-color: #9c0000;
     border: 1px solid #9c0000;
 	background: -webkit-gradient(linear, left top, left bottom, from(#9c0000), to(#CC0000));
-	background: -moz-linear-gradient(top,  #C84000,  #C84000);
+	background: -moz-linear-gradient(top,  var(--color-2),  var(--color-2));
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#9c0000', endColorstr='#CC0000',GradientType=0 ); /* IE6-9 */
     box-shadow: 0 1px 0 #DD5860 inset;
 }

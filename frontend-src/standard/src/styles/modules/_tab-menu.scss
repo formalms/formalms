@@ -50,7 +50,7 @@
       width: 100%;
       height: 40px;
       padding: 12px 35px;
-      color: $gray-2;
+      color: var(--color-0-400);
       background-color: var(--color-0-050) !important;
       border-radius: 100vh !important;
       transition: color 0.2s ease 0s;
@@ -62,7 +62,7 @@
       }
 
       &:focus {
-        color: $gray-2;
+        color: var(--color-0-400);
       }
     }
 
@@ -102,7 +102,7 @@
       text-align: left;
 
       &.active {
-        background-color: $gray-204;
+        background-color: var(--color-0-400)04;
       }
     }
 
@@ -150,7 +150,7 @@
   .nav.nav-tabs.visible-xs {
     height: 46px;
     padding: 0;
-    background-color: $dark-orange;
+    background-color: var(--color-3);
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
   
@@ -168,11 +168,11 @@
         text-transform: uppercase;
         color: white;
         border: 0;
-        border-bottom: 1px solid $gray-3;
+        border-bottom: 1px solid var(--color-0-250);
   
         &:hover,
         &:focus {
-          background-color: $gray-3;
+          background-color: var(--color-0-250);
         }
   
         .caret {
@@ -183,7 +183,7 @@
           &:before {
             content: "\f107";
             font-family: $icon;
-            color: $gray-3;
+            color: var(--color-0-250);
             font-size: 18px;
             line-height: 46px;
             position: absolute;
@@ -200,17 +200,17 @@
         .dropdown-menu {
           width: 100%;
           padding: 0;
-          background-color: $gray-4;
+          background-color: var(--color-0-070);
           border: none;
           box-shadow: none;
   
           li {
             a {
               padding: 0 18px;
-              color: $gray-2;
+              color: var(--color-0-400);
               font-family: $font;
               line-height: 44px;
-              border-bottom: 1px solid $gray-1;
+              border-bottom: 1px solid var(--color-0-600);
               text-transform: uppercase;
             }
   
@@ -218,7 +218,7 @@
               a {
                 background-image: none;
                 background-color: transparent;
-                color: $dark-orange;
+                color: var(--color-3);
                 font-weight: bold;
               }
             }

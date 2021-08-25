@@ -2,12 +2,12 @@
   font-family: $font;
 
   .fc-button{
-    background-color: $white!important;
+    background-color: var(--color-0-000)!important;
     border: none!important;
   }
 
   .fc-today-button {
-    color: $anthracite;
+    color: var(--color-0-870);
   }
   
   .fc-day-top {
@@ -15,13 +15,13 @@
   }
 
   .fc-sun {
-    color: $orange;
+    color: var(--color-1-550);
   }
 
   .fc-left {
     > h2 {
       font-weight: $bold;
-      color: $orange;
+      color: var(--color-1-550);
     }
   }
 
@@ -50,13 +50,13 @@
     
     &.is-open {
       &:before {
-        background-color: $green;
+        background-color: var(--color-6);
       }
     }
     
     &.is-closed {
       &:before {
-        background-color: $orange;
+        background-color: var(--color-1-550);
       }
     }
 
@@ -103,7 +103,7 @@
 
   .fc-icon-chevron-left,
   .fc-icon-chevron-right {
-    color: $orange;
+    color: var(--color-1-550);
   }
 }
 

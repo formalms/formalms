@@ -178,7 +178,7 @@
   max-height: calc(100vh - 70px);
   top: 60px;
   overflow: scroll;
-  background-color: $gray-4;
+  background-color: var(--color-0-070);
   transform: translateX(100%);
   font-family: $font;
   text-align: left;
@@ -189,9 +189,9 @@
     width: 320px;
     //height: 712px;
     //height: auto;
-    background-color: $white;
+    background-color: var(--color-0-000);
     border-radius: 5px;
-    box-shadow: $gray-3 0px 5px 20px 0px;
+    box-shadow: var(--color-0-250) 0px 5px 20px 0px;
     transform: translateX(350px);
   }
 
@@ -205,12 +205,12 @@
 
   .container-fluid {
     padding: 0 15px;
-    background-color: $gray-4;
+    background-color: var(--color-0-070);
 
     @include breakpoint($tablet) {
       background-color: transparent;
       padding: 0 9px;
-      //background-color: $gray-5;
+      //background-color: var(--color-0-050);
     }
 
     .row {
@@ -228,7 +228,7 @@
         margin-bottom: 15px;
 
         @include breakpoint($tablet) {
-          border-bottom: 1px solid $gray-3;
+          border-bottom: 1px solid var(--color-0-250);
           margin-top: 0;
           margin-bottom: 0;
           padding: 9px 0;
@@ -238,7 +238,7 @@
           span {
             width: auto;
             font-family: $font;
-            color: $gray-2;
+            color: var(--color-0-400);
             line-height: 32px;
             font-size: 12px;
             text-transform: uppercase;
@@ -290,7 +290,7 @@
             left: 0;
             right: inherit;
             font-family: $icon;
-            color: $dark-orange;
+            color: var(--color-3);
             text-align: center;
 
             @include breakpoint($tablet) {
@@ -328,7 +328,7 @@
         padding-bottom: 15px;
         padding-top: 19px;
         border: none;
-        background-color: $white;
+        background-color: var(--color-0-000);
         border-top-left-radius: 5px;
         border-top-right-radius: 5px;
 
@@ -367,7 +367,7 @@
 
             &:first-child {
               height: 17px;
-              color: $gray-3;
+              color: var(--color-0-250);
 
               .glyphicon.glyphicon-pencil {
                 width: 100%;
@@ -395,7 +395,7 @@
             }
 
             &:nth-child(2) {
-              color: $gray-1;
+              color: var(--color-0-600);
               font-weight: bold;
               font-size: 12px;
 
@@ -405,7 +405,7 @@
             }
 
             &:last-child {
-              color: $gray-1;
+              color: var(--color-0-600);
               font-size: 12px;
 
               @include breakpoint($tablet) {
@@ -423,7 +423,7 @@
 
       &.comunication {
         padding: 10px 0 20px;
-        background-color: $white;
+        background-color: var(--color-0-000);
 
         @include breakpoint($tablet) {
           background-color: transparent;
@@ -444,7 +444,7 @@
 
       &.career {
         //tabella carriera
-        background-color: $white;
+        background-color: var(--color-0-000);
         padding: 0;
 
         @include breakpoint($tablet) {
@@ -460,7 +460,7 @@
             padding-right: 10px;
             position: relative;
             font-weight: bold;
-            background-color: $white;
+            background-color: var(--color-0-000);
             overflow: hidden;
             font-size: 16px;
             text-transform: none;
@@ -475,7 +475,7 @@
 
             &:before {
               content: "";
-              background-color: $gray-4;
+              background-color: var(--color-0-070);
               width: 100%;
               height: 1px;
               position: absolute;
@@ -492,7 +492,7 @@
               &:before {
                 content: "\f111";
                 font-family: $icon;
-                color: $dark-orange;
+                color: var(--color-3);
                 position: absolute;
                 left: 0;
                 top: 50%;
@@ -501,14 +501,14 @@
               }
 
               .badge {
-                background-color: $white;
-                color: $black;
+                background-color: var(--color-0-000);
+                color: var(--color-0-1000);
                 padding: 0;
                 font-size: 14px;
 
                 a {
                   &:hover {
-                    color: $black;
+                    color: var(--color-0-1000);
                   }
                 }
               }
@@ -519,19 +519,19 @@
 
       &.course-subscription {
         //iscrizione al corso
-        background-color: $white;
+        background-color: var(--color-0-000);
 
         @include breakpoint($tablet) {
           margin: 0 -9px 0 -9px;
           border-top-left-radius: 5px;
           border-top-right-radius: 5px;
-          background-color: $gray-5;
+          background-color: var(--color-0-050);
         }
 
         .col-xs-12 {
           padding: 20px 9px;
           position: relative;
-          background-color: $gray-5;
+          background-color: var(--color-0-050);
           border-top-left-radius: 5px;
           border-top-right-radius: 5px;
 
@@ -549,9 +549,9 @@
               height: 40px;
 
               &:focus {
-                border-color: $orange;
+                border-color: var(--color-1-550);
                 box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075),
-                  0 0 8px $orange;
+                  0 0 8px var(--color-1-550);
               }
 
               &::-webkit-input-placeholder,
@@ -575,12 +575,12 @@
 
       &.news {
         //news carousel
-        background-color: $white;
+        background-color: var(--color-0-000);
         margin: 0;
 
         @include breakpoint($tablet) {
           margin: 0 -9px 0 -9px;
-          background-color: $gray-5;
+          background-color: var(--color-0-050);
           border-bottom-left-radius: 5px;
           border-bottom-right-radius: 5px;
         }
@@ -593,12 +593,12 @@
           overflow: hidden;
           font-size: 16px;
           text-transform: none;
-          background-color: $gray-5;
+          background-color: var(--color-0-050);
           z-index: 20;
         }
 
         .col-xs-12 {
-          background-color: $gray-5;
+          background-color: var(--color-0-050);
           border-bottom-left-radius: 5px;
           border-bottom-right-radius: 5px;
 
@@ -631,7 +631,7 @@
       }
 
       &.lang {
-        background-color: $white;
+        background-color: var(--color-0-000);
         border-bottom-left-radius: 5px;
         border-bottom-right-radius: 5px;
 
@@ -647,7 +647,7 @@
 
             p {
               font-family: $font;
-              color: $gray-3;
+              color: var(--color-0-250);
               line-height: 40px;
             }
           }
@@ -686,7 +686,7 @@
         margin: 30px 0;
         text-align: center;
         font-family: $font;
-        color: $gray-2;
+        color: var(--color-0-400);
         font-size: 16px;
 
         @include breakpoint($tablet) {
@@ -702,7 +702,7 @@
 
   .table-credit-wrapper {
     border-radius: 5px;
-    border: 1px solid $gray-2;
+    border: 1px solid var(--color-0-400);
     overflow: hidden;
   }
 
@@ -713,14 +713,14 @@
 
   .table-credit__row {
     line-height: 40px;
-    border-top: 1px solid $gray-4;
+    border-top: 1px solid var(--color-0-070);
 
     &:first-child {
       border-top: none;
     }
 
     td {
-      border-right: 1px solid $gray-2;
+      border-right: 1px solid var(--color-0-400);
 
       &:first-child {
         padding-left: 10px;
@@ -734,16 +734,16 @@
   }
 
   .table-credit__row--head {
-    background-color: $ochre;
-    color: $white;
+    background-color: var(--color-5);
+    color: var(--color-0-000);
     font-weight: bold;
     border-radius: 5px;
   }
 
   .table-credit__row--footer {
-    background-color: $gray-4;
+    background-color: var(--color-0-070);
     font-weight: bold;
-    color: $anthracite-light;
+    color: var(--color-0-750);
     border-radius: 5px;
   }
 

@@ -11,7 +11,7 @@
   width: 130px;
   height: auto;
   padding: 7px;
-  background-color: $dashboard-popup-bg;
+  background-color: var(--color-dashboard-popup-bg);
   border-radius: 6px;
   position: relative;
 }
@@ -27,7 +27,7 @@
   position: relative;
 
   .is-elearning & {
-    color: $elearning-color;
+    color: var(--color-elearning);
 
     &:before {
       content: '';
@@ -44,7 +44,7 @@
   }
 
   .is-classroom & {
-    color: $classroom-color;
+    color: var(--color-classroom);
 
     &:before {
       content: '';
@@ -68,7 +68,7 @@
   font-weight: $bold;
   line-height: 14px;
   overflow: hidden;
-  color: $dashboard-popup-desc;
+  color: var(--color-dashboard-popup-desc);
 }
 
 .d-popup__category {
@@ -77,7 +77,7 @@
   font-weight: $bold;
   line-height: 14px;
   overflow: hidden;
-  color: $dashboard-popup-title;
+  color: var(--color-dashboard-popup-title);
 }
 
 .d-popup__hours {
@@ -85,7 +85,7 @@
   font-size: 12px;
   font-weight: $regular;
   line-height: 17px; 
-  color: $dashboard-popup-desc;
+  color: var(--color-dashboard-popup-desc);
 }
 
 .d-popup__title {
@@ -98,7 +98,7 @@
   font-weight: $bold;
   line-height: 14px;
   overflow: hidden;
-  color: $dashboard-popup-title;
+  color: var(--color-dashboard-popup-title);
   position: relative;
   
   &:before {
@@ -111,11 +111,11 @@
     left: 0;
 
     .is-open & {
-      background-color: $green;
+      background-color: var(--color-6);
     }
     
     .is-closed & {
-      background-color: $orange;
+      background-color: var(--color-1-550);
     }
   }
 
@@ -126,7 +126,7 @@
   height: 0;
   border-style: solid;
   border-width: 0 12px 12px 12px;
-  border-color: transparent transparent $dashboard-popup-bg transparent;
+  border-color: transparent transparent var(--color-dashboard-popup-bg) transparent;
   @include center-object(x, absolute);
   top: -12px;
 }

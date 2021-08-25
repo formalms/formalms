@@ -34,83 +34,6 @@ $bold: 700;
 /// @type Number
 /// @group font
 $extra-bold: 800;
-/// white color
-/// @type rgba color
-/// @group colors
-$white: rgba(255, 255, 255, 1);
-/// white color opacity
-/// @type rgba color
-/// @group colors
-$white-opacity-3: rgba(255, 255, 255, 0.3);
-/// black color
-/// @type rgba color
-/// @group colors
-$black: rgba(0, 0, 0, 1);
-/// red color, mostly used for alerts
-/// @type rgba color
-/// @group colors
-$red: rgb(255, 1, 1);
-/// dark orange color, mostly used for buttons
-/// @type rgba color
-/// @group colors
-$dark-orange: rgba(200, 64, 0, 1);
-/// orange color, mostly used for buttons hover
-/// @type rgba color
-/// @group colors
-$orange: rgba(255, 108, 0, 1);
-/// light orange color, mostly used for buttons on course section
-/// @type rgba color
-/// @group colors
-$light-orange: #FA6C06;
-/// orange hover color used in the coursebox module
-/// @type rgba color
-/// @group colors
-$orange--hover: rgba(255, 108, 0, 0.5);
-/// orange hover color used in the coursebox module
-/// @type rgba color
-/// @group colors
-$black-opacity-2: rgba(0, 0, 0, 0.2);
-/// ochre color, mostly used for check icons
-/// @type rgba color
-/// @group colors
-$ochre: rgba(246, 166, 35, 1);
-/// anthracite color, mostly used for text
-/// @type rgba color
-/// @group colors
-$anthracite: rgba(34, 34, 34, 1);
-/// anthracite-light color, mostly used for alt text
-/// @type rgba color
-/// @group colors
-$anthracite-light: rgba(64, 64, 64, 1);
-/// gray color, darkest
-/// @type rgba color
-/// @group colors
-$gray-1: rgba(102, 102, 102, 1);
-/// gray color, normal
-/// @type rgba color
-/// @group colors
-$gray-2: rgba(153, 153, 153, 1);
-/// gray color, light
-/// @type rgba color
-/// @group colors
-$gray-3: rgba(194, 194, 194, 1);
-/// gray color, lighter
-/// @type rgba color
-/// @group colors
-$gray-4: rgba(236, 236, 236, 1);
-/// gray color, lighter
-/// @type rgba color
-/// @group colors
-$gray-5: rgba(246, 246, 246, 1);
-$gray-204: rgba(204, 204, 204, 1);
-/// green color, used for buttons and checks
-/// @type rgba color
-/// @group colors
-$green: rgba(112, 216, 0, 1);
-/// lime color, used for borders
-/// @type rgba color
-/// @group colors
-$lime: rgba(174, 255, 0, 1);
 /// forma mobile breakpoint (mobile first)
 /// @type Number + px
 /// @group breakpoint
@@ -141,14 +64,4 @@ $grid-max-width: 1268px;
 
 $transition-base: all 110ms ease-in-out;
 
-
-$dashboard-popup-bg: #F3ECEC;
-$elearning-color: #A478EA;
-$classroom-color: #007CC8;
-$dashboard-popup-title: #7D7C7C;
-$dashboard-popup-desc: #6B6B6B;
-
-
 $border-radius: 2px;
-$color-red-1: hsl(19, 100%, 39%);
-$color-red-2: hsl(19, 100%, 48%);

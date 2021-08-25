@@ -11,7 +11,7 @@
   font-weight: $bold;
   font-size: 10px;
   line-height: 14px;
-  color: $anthracite;
+  color: var(--color-0-870);
 }
 
 .d-advise__title {
@@ -19,7 +19,7 @@
   font-weight: $bold;
   font-size: 14px;
   line-height: 17px;
-  color: $orange;
+  color: var(--color-1-550);
   overflow: hidden;
 }
 
@@ -28,6 +28,6 @@
   font-weight: $regular;
   font-size: 14px;
   line-height: 17px;
-  color: $anthracite;
+  color: var(--color-0-870);
   overflow: hidden;
 }

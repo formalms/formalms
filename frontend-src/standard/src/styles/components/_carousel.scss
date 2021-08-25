@@ -9,7 +9,7 @@
       content: '';
       height: 1px;
       width: 100%;
-      background-color: $dark-orange;
+      background-color: var(--color-3);
       position: absolute;
       top: -8px;
     }
@@ -20,7 +20,7 @@
       display: block;
       font-family: $font;
       font-size: 14px;
-      color: $gray-1;
+      color: var(--color-0-600);
     }
 
     h3 {
@@ -54,14 +54,14 @@
       position: absolute;
       bottom: 0;
       font-size: 12px;
-      color: $gray-3;
+      color: var(--color-0-250);
 
       &:before {
         content: '';
         position: absolute;
         width: 14px;
         height: 1px;
-        background-color: $gray-3;
+        background-color: var(--color-0-250);
         left: 0;
         top: 50%;
         transform: translateY(-50%);
@@ -79,14 +79,14 @@
         height: 10px;
         margin: 0 5px 0 0;
         padding: 0 !important;
-        border: 1px solid $gray-3;
+        border: 1px solid var(--color-0-250);
         transition: border-color 0.2s ease-in 0s,
           background-color 0.2s ease-in 0s;
       }
 
       li.active {
-        border: 1px solid $dark-orange;
-        background-color: $dark-orange;
+        border: 1px solid var(--color-3);
+        background-color: var(--color-3);
       }
     }
   }

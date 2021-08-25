@@ -25,9 +25,9 @@
   text-transform: uppercase;
   text-shadow: none;
   line-height: 40px;
-  color: $white;
-  background: $dark-orange;
-  // border: 2px solid $dark-orange;
+  color: var(--color-0-000);
+  background: var(--color-3);
+  // border: 2px solid var(--color-3);
   font-family: $font;
   font-size: 12px;
   border-radius: $border-radius;
@@ -53,13 +53,13 @@
 
   &:hover {
     text-decoration: none;
-    color: $white;
+    color: var(--color-0-000);
   }
 
   &:focus {
     text-decoration: none;
-    background-color: $light-orange;
-    color: $white;
+    background-color: var(--color-3-450);
+    color: var(--color-0-000);
   }
 
   .user-panel & {
@@ -109,9 +109,9 @@
 // Style guide: 2.1.1
 .forma-button--orange-hover {
   &:hover {
-    background: $orange;
-    color: $white;
-    // border-color: $orange;
+    background: var(--color-1-550);
+    color: var(--color-0-000);
+    // border-color: var(--color-1-550);
     .forma-button__label:after {
       animation-duration: 500ms;
       animation-name: formaButtonLabelAfter;
@@ -131,9 +131,9 @@
 // Style guide: 2.2
 .forma-button--disabled {
   pointer-events: none;
-  background: $white;
-  // border: 2px solid $gray-3;
-  color: $gray-3;
+  background: var(--color-0-000);
+  // border: 2px solid var(--color-0-250);
+  color: var(--color-0-250);
   position: relative;
   &::before {
     position: absolute;
@@ -151,7 +151,7 @@
     &:before {
       content: '\f023';
       font-family: $icon;
-      color: $gray-2;
+      color: var(--color-0-400);
       padding-right: 5px;
     }
 
@@ -174,8 +174,8 @@
 //
 // Style guide: 2.3
 .forma-button--green {
-  background: $green;
-  border: 2px solid $green;
+  background: var(--color-6);
+  border: 2px solid var(--color-6);
 }
 
 // Green Bordered Button
@@ -188,13 +188,13 @@
 // Style guide: 2.4
 .forma-button--green-border {
   background-color: transparent;
-  border: solid 2px $green;
-  color: $green;
+  border: solid 2px var(--color-6);
+  color: var(--color-6);
 
   &:hover {
-    background-color: $green;
-    border-color: $green;
-    color: $white;
+    background-color: var(--color-6);
+    border-color: var(--color-6);
+    color: var(--color-0-000);
   }
 }
 
@@ -208,8 +208,8 @@
 // Style guide: 2.5
 .forma-button--gray {
   pointer-events: none;
-  background: $gray-3;
-  border: 2px solid $gray-3;
+  background: var(--color-0-250);
+  border: 2px solid var(--color-0-250);
 }
 
 // Black Button
@@ -221,8 +221,8 @@
 //
 // Style guide: 2.6
 .forma-button--black {
-  background: $black;
-  border: 2px solid $black;
+  background: var(--color-0-1000);
+  border: 2px solid var(--color-0-1000);
 
   .forma-button__label {
     &:after {
@@ -249,16 +249,16 @@
 //
 // Style guide: 2.7
 .forma-button--white {
-  background: $white;
-  color: $dark-orange;
-  border: 2px solid $white;
+  background: var(--color-0-000);
+  color: var(--color-3);
+  border: 2px solid var(--color-0-000);
 
   &:hover {
-    color: $dark-orange;
+    color: var(--color-3);
   }
 
   &:focus {
-    color: $dark-orange;
+    color: var(--color-3);
   }
 }
 
@@ -272,13 +272,13 @@
 // Style guide: 2.8
 .forma-button--border {
   background-color: transparent;
-  border: solid 2px $dark-orange;
-  color: $dark-orange;
+  border: solid 2px var(--color-3);
+  color: var(--color-3);
 
   &:hover {
-    background-color: $dark-orange;
-    border-color: $dark-orange;
-    color: $white;
+    background-color: var(--color-3);
+    border-color: var(--color-3);
+    color: var(--color-0-000);
   }
 }
 
@@ -291,21 +291,21 @@
 //
 // Style guide: 2.9
 .forma-button--orange {
-  // border: solid 2px $orange;
-  background: $white;
-  color: $orange;
+  // border: solid 2px var(--color-1-550);
+  background: var(--color-0-000);
+  color: var(--color-1-550);
 
   &:hover {
-    background-color: $orange;
-    color: $white;
+    background-color: var(--color-1-550);
+    color: var(--color-0-000);
 
     &:focus {
-      color: $white;
+      color: var(--color-0-000);
     }
   }
 
   &:focus {
-    color: $orange;
+    color: var(--color-1-550);
   }
 }
 
@@ -332,7 +332,7 @@
     // content: '\f061';
     font-family: $icon;
     font-size: inherit;
-    color: $white;
+    color: var(--color-0-000);
     margin-left: 6px;
 
     .d-courses &,
@@ -375,9 +375,9 @@
 input[type='submit'].btn.btn-default {
   .user-panel & {
     font-family: $font;
-    background-color: $anthracite-light;
+    background-color: var(--color-0-750);
     text-transform: uppercase;
-    color: $white;
+    color: var(--color-0-000);
     background-image: none;
     border: 0;
     border-radius: 5px !important;
@@ -402,15 +402,15 @@ a.btn.btn-default {
     font-family: $font;
     text-transform: uppercase;
     font-size: 12px;
-    background-color: $black;
+    background-color: var(--color-0-1000);
     text-shadow: none;
-    color: $white;
+    color: var(--color-0-000);
     border: 0;
     border-radius: 5px;
 
     &:hover {
-      background-color: $black;
-      color: $white;
+      background-color: var(--color-0-1000);
+      color: var(--color-0-000);
     }
   }
 }
@@ -444,8 +444,8 @@ a.btn.btn-default {
   height: 30px;
   position: relative;
   vertical-align: middle;
-  background-color: $anthracite-light;
-  color: $white;
+  background-color: var(--color-0-750);
+  color: var(--color-0-000);
   transition: background-color 0.25s ease 0s;
 
   &:before,
@@ -456,7 +456,7 @@ a.btn.btn-default {
     position: absolute;
     top: calc(50% - 1px);
     left: calc(50% - 10px);
-    background-color: $white;
+    background-color: var(--color-0-000);
   }
 
   &:before {
@@ -468,7 +468,7 @@ a.btn.btn-default {
   }
 
   .close-button:hover & {
-    background-color: $orange;
+    background-color: var(--color-1-550);
   }
 }
 
@@ -478,11 +478,11 @@ a.btn.btn-default {
   margin-left: 10px;
   font-size: 12px;
   text-transform: uppercase;
-  color: $gray-2;
+  color: var(--color-0-400);
   transition: color 0.25s ease 0s;
 
   .close-button:hover & {
-    color: $orange;
+    color: var(--color-1-550);
   }
 }
 

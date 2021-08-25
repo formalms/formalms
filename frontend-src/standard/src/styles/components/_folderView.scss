@@ -62,7 +62,7 @@
 }
 
 .fv-is-selected {
-  background-color: #ffe4ce;
+  background-color: var(--color-1-100);
   font-weight: bold;
 }
 
@@ -109,7 +109,7 @@
   width: 48px;
   height: 48px;
   border-radius: 50%;
-  background-color: #ffe4ce;
+  background-color: var(--color-1-100);
   border: 1px solid #000;
   margin: 0 4px;
   transition: all .2s ease-in-out;

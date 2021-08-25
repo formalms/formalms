@@ -6,28 +6,28 @@
     .d-title {
       font-weight: $bold;
       font-size: 14px;
-      color: $orange;
+      color: var(--color-1-550);
       padding: 3px;
     }
     .d-date {
       font-weight: $bold;
       font-size: 10px;
-      color: $anthracite;
+      color: var(--color-0-870);
     }
     .d-link {
       font-weight: $bold;
       font-size: 12px;
-      color: $anthracite;
+      color: var(--color-0-870);
       padding: 6px;
       &:hover {
-        color: $orange;
+        color: var(--color-1-550);
       }
     }
     .d-subtitle {
       font-weight: $regular;
       font-size: 14px;
       padding: 3px;
-      color: $anthracite;
+      color: var(--color-0-870);
     }
   }
 }

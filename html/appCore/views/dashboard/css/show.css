@@ -4,7 +4,7 @@
 
 .graph__nav {
     padding: 5px 10px;
-    background-color: #c84000;
+    background-color: var(--color-2);
 }
 
 .graph__nav ul {
@@ -39,12 +39,12 @@
 }
 
 .graph__label:hover {
-    color: #c84000;
+    color: var(--color-2);
     background-color: #eee;
 }
 
 .graph__label.selected {
-    color: #c84000;
+    color: var(--color-2);
     background-color: #eee;
 }
 

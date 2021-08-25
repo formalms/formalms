@@ -79,7 +79,7 @@
 .d-course__title {
   height: 34px;
   font-weight: $bold;
-  color: $orange;
+  color: var(--color-1-550);
   line-height: 17px;
   overflow: hidden;
 }
@@ -94,7 +94,7 @@
       width: 9px;
       height: 9px;
       @include center-object(y, absolute);
-      background-color: $orange;
+      background-color: var(--color-1-550);
       border-radius: 50%;
       left: -12px;
     }
@@ -106,7 +106,7 @@
       width: 9px;
       height: 9px;
       @include center-object(y, absolute);
-      background-color: $green;
+      background-color: var(--color-6);
       border-radius: 50%;
       left: -12px;
     }
@@ -151,14 +151,14 @@
     height: 0;
     border-style: solid;
     border-width: 6px 0 6px 10px;
-    border-color: transparent transparent transparent $green;
+    border-color: transparent transparent transparent var(--color-6);
     @include center-object(y, absolute);
     left: -11px;
   }
 }
 
 .d-courses__desc {
-  color: $orange;
+  color: var(--color-1-550);
   font-weight: $bold;
   height: 34px;
   overflow: hidden;

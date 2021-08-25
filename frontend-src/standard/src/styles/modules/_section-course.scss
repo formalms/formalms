@@ -85,7 +85,7 @@
 .section-coourse__img {
   display: inline-block;
   padding: 2px;
-  border: 1px solid $gray-204;
+  border: 1px solid var(--color-0-400)04;
 
   @include breakpoint($ipad) {
     max-width: 70%;
@@ -106,9 +106,9 @@
 .section-coourse__menu {
   overflow: visible;
   border-bottom: none;
-  background-color: $gray-5;
+  background-color: var(--color-0-050);
   ul li a:hover {
-    color: $dark-orange;
+    color: var(--color-3);
   }
   .prv,
   .nxt {
@@ -118,7 +118,7 @@
     padding: 5px;
   }
   ul li a.active {
-    color: $dark-orange;
+    color: var(--color-3);
   }
 
   @include breakpoint($tablet) {
@@ -134,7 +134,7 @@
   }
 
   @include breakpoint($tablet) {
-    background-color: $gray-5;
+    background-color: var(--color-0-050);
   }
 }
 
@@ -163,7 +163,7 @@
 
 .section-coourse__progress-container {
   padding: 4px;
-  border: 1px solid $gray-3;
+  border: 1px solid var(--color-0-250);
   border-radius: 5px;
   margin-top: 30px;
 
@@ -187,7 +187,7 @@
 
     span {
       padding-left: 10px;
-      color: $white;
+      color: var(--color-0-000);
     }
 
     &[aria-valuenow='0'] span {
@@ -202,7 +202,7 @@
 
 .progress-bar-warning--black {
   span {
-    color: $black !important;
+    color: var(--color-0-1000) !important;
   }
 }
 
@@ -216,7 +216,7 @@
     bottom: 20px;
   }
   position: relative;
-  background-color: $gray-5;
+  background-color: var(--color-0-050);
 
   &:before {
     width: calc(100% - 60px);
@@ -225,27 +225,27 @@
     position: absolute;
     top: 0;
     left: 30px;
-    background-color: $gray-4;
+    background-color: var(--color-0-070);
   }
 }
 
 .slider-menu {
   .section-coourse__menu-horizontal & {
-    border-bottom: solid 1px $gray-4;
+    border-bottom: solid 1px var(--color-0-070);
   }
 }
 
 .forma-dropdown__selected {
   &:hover {
-    background-color: $white;
-    color: $orange;
+    background-color: var(--color-0-000);
+    color: var(--color-1-550);
   }
 }
 
 #course-info-boot + #yui-main-boot {
   .page-header {
     h1 {
-      color: $orange;
+      color: var(--color-1-550);
       font-family: $font;
       font-weight: bold;
       font-size: 18px;

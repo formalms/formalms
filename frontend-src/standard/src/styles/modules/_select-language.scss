@@ -23,14 +23,14 @@
   margin-left: 3px;
   font-weight: bold;
   text-decoration: none !important;
-  color: $black;
+  color: var(--color-0-1000);
 }
 
 .fa {
   #change_language & {
     margin-left: 6px;
     font-weight: normal;
-    color: $orange;
+    color: var(--color-1-550);
   }
 }
 
@@ -53,10 +53,10 @@
     display: block;
     padding: 0 8px;
     text-decoration: none !important;
-    color: $black;
+    color: var(--color-0-1000);
 
     &:hover {
-      color: $orange;
+      color: var(--color-1-550);
     }
   }
 }

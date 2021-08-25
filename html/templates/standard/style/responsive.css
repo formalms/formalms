@@ -49,7 +49,7 @@
 .layout_footer {
     padding: 20px 0;
     background: #fff !important;
-    border-top: solid 4px #C84000;
+    border-top: solid 4px var(--color-2);
     height: auto !important;
     font-size: 100% !important;
 }
@@ -75,8 +75,8 @@
     color: inherit;
 }
 .nav-tabs > li.active a {
-    background-color: #C84000 !important;
-    border-color: #C84000 !important;
+    background-color: var(--color-2) !important;
+    border-color: var(--color-2) !important;
     color: #fff !important;
 }
 #container .nav-tabs > li.active a * {
@@ -87,14 +87,14 @@
 }
 .tab_subnav .nav {
     padding: 5px 10px;
-    background-color: #C84000;
+    background-color: var(--color-2);
 }
 .tab_subnav .nav a {
     padding: 10px;
     color: #fff;
 }
 .tab_subnav .nav a:hover, .tab_subnav .nav li.selected a {
-    color: #C84000;
+    color: var(--color-2);
     background-color: #eee;
 }
 .tab_subnav .content {
@@ -110,7 +110,7 @@
 .nav-tabs > li a.dropdown-toggle,
 .nav-tabs > li a.dropdown-toggle:hover,
 .nav-tabs > li a.dropdown-toggle:focus {
-    background-color: #C84000 !important;
+    background-color: var(--color-2) !important;
     border-color: #ccc;
     outline: none;
     color: #fff !important;

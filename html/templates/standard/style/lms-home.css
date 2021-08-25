@@ -14,18 +14,18 @@ body{font:13px/1.231 arial,sans-serif;color:#333333;background:#fff;*font-size:s
 .header,.content,.footer,.webcontent, .external_page{position:relative;width:900px;margin:0 auto;padding:0;}
 .webcontent-catalogue {position:relative;width:80%;margin:0 auto;padding:0;}
 .header{height:70px; padding:5px 0;}
-.header .cat_link{text-decoration:none;color:#C84000;}
+.header .cat_link{text-decoration:none;color:var(--color-2);}
 .header .catalogue{position:absolute;bottom:10px;right:215px;font-size:90%;letter-spacing:1px;}
 .header .select-language{position:absolute;bottom:10px;right:15px;font-size:90%;letter-spacing:1px;}
 .header #main_title{position:absolute;bottom:10px;left:0px;width:221px;height:53px;background:url(../images/company_logo.png) no-repeat 0 100%;overflow:hidden;}
 .header #main_title a{display:block;width:221px;height:53px;padding:0 300px 0;}
-.content{width:898px;height:372px;background:url(../images/login/image.jpg) no-repeat 0 0;border:1px solid #C84000;}
+.content{width:898px;height:372px;background:url(../images/login/image.jpg) no-repeat 0 0;border:1px solid var(--color-2);}
 .content h2 {position:relative;color:#fff;font-size:180%;font-weight:normal;margin:0;padding:0 14px;}
 .content .login-box, .content .login-box-social{float:right;width:31%;height:342px;background:url(../images/login/bg_login.png) repeat 0 0;padding:15px 0; margin:0 20px;}
 .content #login_confirm{margin:20px 28px;padding:0;}
 .content #login_confirm p,.content #login_confirm div {}
 .content #login_confirm label {font-size:90%;font-weight:bold;margin:0 10px 4px 0;}
-.content #login_confirm input.textfield {font-size:100%;font-weight:normal;margin:4px 0;padding:2px;width:218px;border:1px solid #C84000;}
+.content #login_confirm input.textfield {font-size:100%;font-weight:normal;margin:4px 0;padding:2px;width:218px;border:1px solid var(--color-2);}
 .content #login_confirm input#login{background:#929B00;border:0px none;color:#ffffff;font-size:100%;font-weight:bold;padding:3px 18px;margin:6px 0;}
 .content #social_login{float:right;zoom:1;margin-right:10px;}
 .content #social_login span{ font-weight: bold; }
@@ -34,12 +34,12 @@ body{font:13px/1.231 arial,sans-serif;color:#333333;background:#fff;*font-size:s
 .content #service_msg{font-size:90%;position:relative;width:100%;}
 .content .logout{display:block;padding:3px 18px;background:url(../images/login/bg_login.png) repeat 0 0;}
 .content .login_failed{display:block;color:#ffffff;background:#EE1111;padding:3px 18px;-khtml-opacity:.80; -moz-opacity:.80; -ms-filter:"alpha(opacity=80)"; filter:alpha(opacity=80); opacity:.80; }
-.content .homecatalogue{position:absolute;top:15px;left:25px;font-size:90%;letter-spacing:1px;padding:5px;background-color:#C84000}
+.content .homecatalogue{position:absolute;top:15px;left:25px;font-size:90%;letter-spacing:1px;padding:5px;background-color:var(--color-2)}
 .content .homecatalogue a{text-decoration:none;color:#ffffff}
 .content .homecatalogue a:hover{text-decoration:underline;}
 
-.footer{background:#C84000;height:21px;font-size:90%;}
-.footer-catalogue{background:#C84000;height:21px;font-size:90%; width:100%}
+.footer{background:var(--color-2);height:21px;font-size:90%;}
+.footer-catalogue{background:var(--color-2);height:21px;font-size:90%; width:100%}
 
 .footer #link{margin-top:3px;padding:3px 16px 4px;}
 .footer-catalogue #link{margin-top:3px;padding:3px 16px 4px;}
@@ -60,13 +60,13 @@ body{font:13px/1.231 arial,sans-serif;color:#333333;background:#fff;*font-size:s
 
 
 .webcontent .box {margin:10px 5px;}
-.webcontent h3 {margin:0 0 10px;padding:0;font-size:140%;color:#C84000;}
+.webcontent h3 {margin:0 0 10px;padding:0;font-size:140%;color:var(--color-2);}
 .webcontent p {margin:0 0 6px;}
 /* XXX:register class ======================================*/
 .reg_note{font-weight:bold;margin:1em 0 0;padding:0.20em;}
 .reg_form{padding:0.40em;}
 .reg_title_privacy{margin:24px auto 4px;padding:0.20em;width:70%;color:#ffffff;;font-weight:bold;}
-.privacy_box{margin:0 auto;padding:0.40em;width:90%;max-height:150px;overflow:auto;background:#ffffff;border:1px solid #C84000;}
+.privacy_box{margin:0 auto;padding:0.40em;width:90%;max-height:150px;overflow:auto;background:#ffffff;border:1px solid var(--color-2);}
 .reg_form_button{text-align:right;margin:0 auto;padding:0.40em;}
 .reg_button{cursor:pointer;font-weight:bold;}
 ul.reg_instruction{margin:0.20em 0.20em 1em;padding:4px 12px 4px 24px;}
@@ -76,10 +76,10 @@ ul.reg_instruction li{list-style-type:square;margin:2px;}
 .lostpwd_box{margin:1em;padding:0.60em 0.60em 0 0.60em;}
 .lostpwd_logo{margin:0 0.40em;padding:0;}
 .lostpwd_box span{font-weight:bold;}
-.form_right{margin:0.60em 0 0 0;padding:0.40em;text-align:right;color:#ffffff;font-weight:bold;background:#C84000;}
+.form_right{margin:0.60em 0 0 0;padding:0.40em;text-align:right;color:#ffffff;font-weight:bold;background:var(--color-2);}
 .form_right .textfield{margin:0 14px; width:auto; padding:0; border:1px solid #4180ac;}
 /* external page management ======================================*/
-.external_page{background:#C84000;}
+.external_page{background:var(--color-2);}
 .external_page ul#main_menu{position:relative;left:0px;padding: 10px 7px;font-size:0.8em;}
 .external_page ul#main_menu li{display:inline;margin:0 0 0 10px;border-right:1px solid #fff;}
 .external_page ul#main_menu li.last{border:0px none;}

@@ -9,11 +9,11 @@
   font-size: 20px;
   font-weight: bold;
   text-transform: uppercase;
-  color: $orange;
+  color: var(--color-1-550);
 }
 
 .folder-view__filters {
-  border-bottom: solid 4px $dark-orange;
+  border-bottom: solid 4px var(--color-3);
 }
 
 .folder-view__link {

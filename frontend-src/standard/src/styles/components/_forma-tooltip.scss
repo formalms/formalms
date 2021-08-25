@@ -19,11 +19,11 @@
   // transform: translate(-50%, -100%) translateY(-15px);
   // transform: translate3d(-50%, -100%, 0) translateY(-45px);
   border-radius: $border-radius;
-  background-color: $orange;
+  background-color: var(--color-1-550);
   font-size: 1.2rem;
   line-height: 1.4rem;
   text-align: center;
-  color: $white;
+  color: var(--color-0-000);
   opacity: 0;
   visibility: hidden;
   transition: {
@@ -46,7 +46,7 @@
       border: {
         top: none;
         right: solid 6px transparent;
-        bottom: solid 12px $orange;
+        bottom: solid 12px var(--color-1-550);
         left: solid 6px transparent;
       }
         transform: translate(-50%, 100%) translateY(-285px);
@@ -74,7 +74,7 @@
       &:after {
         transform: translate(-50%, 0%);
         // border-top: none;
-        // border-bottom: 12px solid $orange;
+        // border-bottom: 12px solid var(--color-1-550);
         // border-right: solid 6px transparent;
         // border-left: solid 6px transparent;
         bottom: 100%;
@@ -90,7 +90,7 @@
         transform: translate(-100%, 0%);
         border-top: solid 6px transparent;
         border-right: none;
-        border-left: solid 12px $orange;
+        border-left: solid 12px var(--color-1-550);
         border-bottom: solid 6px transparent;
         bottom: calc(50% - 6px);
         right: -23px;
