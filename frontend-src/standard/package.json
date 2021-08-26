@@ -65,10 +65,11 @@
     "post-css": "./node_modules/postcss-cli/bin/postcss --use autoprefixer --autoprefixer.browsers 'last 12 versions' -o ../../html/templates/standard/static//main.min.css ../../html/templates/standard/static//main.min.css",
     "dev": "webpack --watch --config dev.config.js",
     "js": "webpack --config build.config.js -p --progress",
-    "build": "npm run js && npm run unminified-css",
+    "build": "npm run js && npm run css",
+    "build-unminified": "npm run js && npm run unminified-css",
     "jsonize": "./node_modules/.bin/ciffi-jsonize",
     "prettier": "./node_modules/.bin/prettier --write --single-quote '**/*.{jsx,js,json,scss}'",
-    "css": "./node_modules/.bin/node-sass src/styles/main.scss ../../html/templates/standard/static/main.min.css --output-style compressed",
+    "css": "node-sass src/styles/main.scss ../../html/templates/standard/static/main.min.css --output-style compressed",
     "styleguide": "npm run css && rm -rf ../../html/templates/standard/static/../styleguide && ./node_modules/.bin/kss-node --source ./src/styles/ --destination ../../html/templates/standard/static/../styleguide --css ../../../addons/jquery/bootstrap/css/bootstrap-3.3.6.min.css --css ../../../addons/jquery/bootstrap/css/bootstrap-theme-3.3.6.min.css --css ../../../addons/jquery/swipe/style.min.css --css ../style/base.css --css ../style/lms.css --css ../static/main.min.css --js ../../../addons/jquery/core/jquery-1.12.3.min.js --js ../../../addons/jquery/core/ui/js/jquery-ui-1.11.4.min.js --js ../../../addons/jquery/bootstrap/js/bootstrap-3.3.6.min.js --js ../static/main.js"
   }
 }

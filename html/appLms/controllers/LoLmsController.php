@@ -50,6 +50,10 @@ class LoLmsController extends LmsController
 
     public function show()
     {
+        if (array_key_exists('last_error', $_SESSION) && !empty($_SESSION['last_error'])) {
+            UIFeedback::error($_SESSION['last_error']);
+        }
+
         $this->render('show', [
             'data' => [
                 'edit' => false,
@@ -83,7 +87,7 @@ class LoLmsController extends LmsController
                         "name" => "tracking",
                         "active" => true,
                         "type" => "link",
-                        "content" => 'index.php?modname=organization&amp;op=track_details&amp;type=' . $lo['track_detail']["type"] . '&amp;id_user='.$lo['track_detail']["is_user"].'&amp;id_org='.$lo['track_detail']["id_org"].'"',
+                        "content" => 'index.php?modname=organization&amp;op=track_details&amp;type=' . $lo['track_detail']["type"] . '&amp;id_user=' . $lo['track_detail']["is_user"] . '&amp;id_org=' . $lo['track_detail']["id_org"] . '"',
                         "showIcon" => false,
                         "icon" => "icon-chart",
                         "label" => "Tracking",

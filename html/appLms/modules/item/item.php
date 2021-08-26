@@ -118,14 +118,14 @@ if (!Docebo::user()->isAnonymous()) {
                     sl_close_fileoperations();
                 } else {
                     $response['status'] = false;
-                    $response['errors']['files'][$fileIndex] = Lang::t('_FILE_ERROR_UPLOAD', 'item');
+                    $response['errors']['files'][$fileIndex] = Lang::t('_FILE_ERROR_UPLOAD_FILE_EXISTS', 'item');
                 }
 
                 $insert_query = "INSERT INTO %lms_materials_lesson  SET author = '" . getLogUserId() . "', title = '" . $fileItem['title'] . "', description = '" . $fileItem['description'] . "', path = '$savefile'";
 
                 if (!sql_query($insert_query)) {
                     sl_unlink($path . $savefile);
-                    $response['errors']['files'][$fileIndex] = Lang::t('_FILE_OPERATION_FAILURE', 'item');
+                    $response['errors']['files'][$fileIndex] = Lang::t('_FILE_ERROR_UPLOAD_MATERIAL_LESSON_INSER_FAIL', 'item');
 
                 }
                 if (isset($_SESSION['idCourse']) && defined("LMS")) $GLOBALS['course_descriptor']->addFileToUsedSpace(_files_ . $path . $savefile);
@@ -174,7 +174,7 @@ if (!Docebo::user()->isAnonymous()) {
                 }
                 sl_close_fileoperations();
             } else {
-                $_SESSION['last_error'] = Lang::t('_ERROR_UPLOAD');
+                $_SESSION['last_error'] = Lang::t('_ERROR_UPLOAD_FILE_EXISTS');
                 Util::jump_to( $back_url.'&create_result=0' );
             }
         }
@@ -188,7 +188,7 @@ if (!Docebo::user()->isAnonymous()) {
 
         if(!sql_query($insert_query)) {
             sl_unlink($GLOBALS['prefix_lms'].$savefile );
-            $_SESSION['last_error'] = Lang::t('_OPERATION_FAILURE');
+            $_SESSION['last_error'] = Lang::t('_ERROR_UPLOAD_MATERIAL_LESSON_INSER_FAIL');
             Util::jump_to( $back_url.'&create_result=0' );
         }
         if(isset($_SESSION['idCourse']) && defined("LMS")) $GLOBALS['course_descriptor']->addFileToUsedSpace(_files_.$path.$savefile);
