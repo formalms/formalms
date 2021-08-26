@@ -58,8 +58,9 @@ class LomanagerLmsController extends LmsController
 
     public function show()
     {
-        if (array_key_exists('last_error', $_SESSION) && !empty($_SESSION['last_error'])) {
-            UIFeedback::error($_SESSION['last_error']);
+        if (Forma::errorExists()) {
+            UIFeedback::error(Forma::getError());
+            Forma::removeError();
         }
 
         $lo_types = $this->model->getLoTypes();
