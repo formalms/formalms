@@ -522,7 +522,9 @@ class CourseSubscribe_Manager
 
 	public function updateUserStatusInCourse($id_user, $id_course, $new_status, $new_date_complete = "") {
 
-
+		if (!empty($new_date_complete)){
+			$this->updateUserDateCompleteInCourse($id_user,$id_course,$new_date_complete);
+		}
 
 	    // saving the old user status for the actual course
 	    $queryStatus = "SELECT status"

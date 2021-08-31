@@ -108,7 +108,7 @@ class SubscriptionAlmsController extends AlmsController
                 $message = 'You don\'t have the required permission';
                 break;
             case "no options selected":
-                $message = "";
+                $message = 'You have not selected any options';
                 break;
         }
         return $message;
