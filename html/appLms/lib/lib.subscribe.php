@@ -522,11 +522,7 @@ class CourseSubscribe_Manager
 
 	public function updateUserStatusInCourse($id_user, $id_course, $new_status, $new_date_complete = "") {
 
-		if (!empty($new_date_complete)){
-			$this->updateUserDateCompleteInCourse($id_user,$id_course,$new_date_complete);
-		}
-
-	    // saving the old user status for the actual course
+		// saving the old user status for the actual course
 	    $queryStatus = "SELECT status"
 	                   . " FROM " . $this->subscribe_table
 	                   . " WHERE idUser = '" . $id_user . "'"
@@ -561,6 +557,9 @@ class CourseSubscribe_Manager
                 'id_course' => $id_course,
                 'new_data' => $current_data,
             ]);
+			if (!empty($new_date_complete)){
+				$this->updateUserDateCompleteInCourse($id_user,$id_course,$new_date_complete);
+			}
 			if($new_status == _CUS_END) {
 				//require_once($GLOBALS['where_lms'].'/lib/lib.competences.php');
 				//$cman = new Competences_Manager();
