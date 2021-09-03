@@ -56,6 +56,16 @@
   padding: 10px;
 }
 
+@media only screen and (max-width: 600px) {
+  .folderView__label {
+    max-width: 210px !important;
+  }
+  .fv-is-tracking {
+    display: none !important;
+  }
+}
+
+
 .fv-is-selecteds {
   background-color: red;
   font-weight: bold;

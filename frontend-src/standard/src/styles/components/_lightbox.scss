@@ -22,7 +22,6 @@
       text-overflow: ellipsis;
       h1 {
         color: white;
-        font-size: 35px;
         font-weight: bold;
       }
     }
@@ -115,6 +114,26 @@
     .content-wrapper {
       height: 100%;
       width: 100%;
+    }
+  }
+  &.scorm-modal {
+    .title {
+      h1 {
+        font-size: 20px;
+      }
+    }
+    .modal-navbar {
+      height: 45px;
+      #mdiv {
+        padding: 5px;
+        border: 2px solid white;
+        height: 40px;
+        width: 40px;
+      }
+    }
+    .modal-container {
+      width: 90%;
+      height: 92%;
     }
   }
 }
