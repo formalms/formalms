@@ -17,8 +17,12 @@ class MycertificateLmsController extends LmsController
 
     protected $id_user;
 
+    /** @var Services_JSON */
     protected $json;
+
+    /** @var MycertificateLms */
     protected $model;
+    /** @var Certificate */
     protected $certificate;
 
     public function init()

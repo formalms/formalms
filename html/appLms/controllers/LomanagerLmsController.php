@@ -58,9 +58,8 @@ class LomanagerLmsController extends LmsController
 
     public function show()
     {
-        if (Forma::errorExists()) {
-            UIFeedback::error(Forma::getError());
-            Forma::removeError();
+        if (Forma::errorsExists()) {
+            UIFeedback::error(Forma::getFormattedErrors(true));
         }
 
         $lo_types = $this->model->getLoTypes();

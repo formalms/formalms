@@ -50,9 +50,8 @@ class LoLmsController extends LmsController
 
     public function show()
     {
-        if (Forma::errorExists()) {
-            UIFeedback::error(Forma::getError());
-            Forma::removeError();
+        if (Forma::errorsExists()) {
+            UIFeedback::error(Forma::getFormattedErrors(true));
         }
 
         $this->render('show', [

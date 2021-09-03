@@ -138,7 +138,7 @@ if (!Docebo::user()->isAnonymous()) {
 
         echo json_encode($response);
         die();*/
-
+        Forma::removeErrors();
         require_once(_base_.'/lib/lib.upload.php');
 
         $back_url = urldecode($_POST['back_url']);
@@ -149,7 +149,8 @@ if (!Docebo::user()->isAnonymous()) {
         //save file
         if($_FILES['attach']['name'] == '') {
 
-            $_SESSION['last_error'] = Lang::t('_FILEUNSPECIFIED');
+            Forma::addError(Lang::t('_FILEUNSPECIFIED'));
+
             Util::jump_to( $back_url.'&create_result=0' );
         } else {
             if(isset($_SESSION['idCourse']) && defined("LMS")) {
@@ -158,7 +159,7 @@ if (!Docebo::user()->isAnonymous()) {
 
                 if(Util::exceed_quota($_FILES['attach']['tmp_name'], $quota, $used)) {
 
-                    $_SESSION['last_error'] = Lang::t('_QUOTA_EXCEDED');
+                    Forma::addError(Lang::t('_QUOTA_EXCEDED'));
                     Util::jump_to( $back_url.'&create_result=0' );
                 }
             }
@@ -169,12 +170,12 @@ if (!Docebo::user()->isAnonymous()) {
                 sl_open_fileoperations();
                 if(!sl_upload($_FILES['attach']['tmp_name'], $path.$savefile)) {
                     sl_close_fileoperations();
-                    $_SESSION['last_error'] = Lang::t('_ERROR_UPLOAD');
+                    Forma::addError(Lang::t('_ERROR_UPLOAD'));
                     Util::jump_to( $back_url.'&create_result=0' );
                 }
                 sl_close_fileoperations();
             } else {
-                $_SESSION['last_error'] = Lang::t('_ERROR_UPLOAD_FILE_EXISTS');
+                Forma::addError(Lang::t('_ERROR_UPLOAD_FILE_EXISTS'));
                 Util::jump_to( $back_url.'&create_result=0' );
             }
         }
@@ -188,7 +189,7 @@ if (!Docebo::user()->isAnonymous()) {
 
         if(!sql_query($insert_query)) {
             sl_unlink($GLOBALS['prefix_lms'].$savefile );
-            $_SESSION['last_error'] = Lang::t('_ERROR_UPLOAD_MATERIAL_LESSON_INSER_FAIL');
+            Forma::addError(Lang::t('_ERROR_UPLOAD_MATERIAL_LESSON_INSER_FAIL'));
             Util::jump_to( $back_url.'&create_result=0' );
         }
         if(isset($_SESSION['idCourse']) && defined("LMS")) $GLOBALS['course_descriptor']->addFileToUsedSpace(_files_.$path.$savefile);
@@ -261,7 +262,7 @@ if (!Docebo::user()->isAnonymous()) {
             if (!sl_unlink($path . $old_file)) {
 
                 sl_close_fileoperations();
-                $_SESSION['last_error'] = Lang::t('_OPERATION_FAILURE', 'item', 'lms');
+                Forma::addError(Lang::t('_OPERATION_FAILURE', 'item', 'lms'));
                 Util::jump_to($back_url . '&id_lo=' . (int)$_POST['idItem'] . '&mod_result=0');
             }
             $GLOBALS['course_descriptor']->subFileToUsedSpace(false, $size);
@@ -273,7 +274,7 @@ if (!Docebo::user()->isAnonymous()) {
 
             if (Util::exceed_quota($_FILES['attach']['tmp_name'], $quota, $used)) {
 
-                $_SESSION['last_error'] = Lang::t('_QUOTA_EXCEDED');
+                Forma::addError(Lang::t('_QUOTA_EXCEDED'));
                 Util::jump_to($back_url . '&create_result=0');
             }
 
@@ -285,13 +286,13 @@ if (!Docebo::user()->isAnonymous()) {
                 if (!sl_upload($_FILES['attach']['tmp_name'], $path . $savefile)) {
 
                     sl_close_fileoperations();
-                    $_SESSION['last_error'] = Lang::t('_ERROR_UPLOAD', 'item', 'lms');
+                    Forma::addError(Lang::t('_ERROR_UPLOAD', 'item', 'lms'));
                     Util::jump_to($back_url . '&id_lo=' . (int)$_POST['idItem'] . '&mod_result=0');
                 }
                 sl_close_fileoperations();
             } else {
 
-                $_SESSION['last_error'] = Lang::t('_ERROR_UPLOAD', 'item', 'lms');
+                Forma::addError(Lang::t('_ERROR_UPLOAD', 'item', 'lms'));
                 Util::jump_to($back_url . '&id_lo=' . (int)$_POST['idItem'] . '&mod_result=0');
             }
             $new_file = ", path = '" . $savefile . "'";
@@ -306,7 +307,7 @@ if (!Docebo::user()->isAnonymous()) {
 
         if (!sql_query($insert_query)) {
             sl_unlink($path . $savefile);
-            $_SESSION['last_error'] = Lang::t('_OPERATION_FAILURE', 'item', 'lms');
+            Forma::addError(Lang::t('_OPERATION_FAILURE', 'item', 'lms'));
             Util::jump_to($back_url . '&id_lo=' . (int)$_POST['idItem'] . '&mod_result=0');
         }
         if (isset($_SESSION['idCourse']) && defined("LMS")) {

@@ -852,7 +852,7 @@ class Certificate
 
 
         $re = sql_query($query_certificate);
-        echo sql_error();
+
         if ((sql_num_rows($re) > 0)) {
             if (!$download)
                 return;

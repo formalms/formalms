@@ -67,26 +67,70 @@ class Forma
         return $file;
     }
 
-
-    public static function setError(string $error)
+    public static function initErrors(): void
     {
-        $_SESSION['last_error'] = $error;
+        if (!is_array($_SESSION['errors'])) {
+            $_SESSION['errors'] = [];
+        }
     }
 
-    public static function removeError()
+    public static function addError(string $error): string
     {
-        unset($_SESSION['last_error']);
+        self::initErrors();
+
+        $_SESSION['errors'][] = $error;
+
+        return $error;
     }
 
-    public static function errorExists()
+    public static function removeLastError(): void
     {
-        return array_key_exists('last_error', $_SESSION) && !empty($_SESSION['last_error']);
+        if (is_array($_SESSION['errors']) && count($_SESSION['errors']) > 0) {
+            unset($_SESSION['errors'][count($_SESSION['errors']) - 1]);
+        }
     }
 
-    public static function getError()
+    public static function removeErrors(): void
     {
-        return $_SESSION['last_error'];
+        $_SESSION['errors'] = [];
     }
 
+    public static function errorsExists(): bool
+    {
+        self::initErrors();
+        return count($_SESSION['errors']) > 0;
+    }
 
+    public static function getLastError($removeErrors = false): string
+    {
+        $errors = self::getErrors();
+        return end($errors);
+    }
+
+    public static function getErrors($removeErrors = false): array
+    {
+        self::initErrors();
+        $errors = $_SESSION['errors'];
+        if ($removeErrors) {
+            self::removeErrors();
+        }
+        return $errors;
+    }
+
+    public static function getFormattedErrors($removeErrors = false): string
+    {
+        $errors = self::getErrors();
+        $errorString = '';
+        foreach ($errors as $error) {
+            if (empty($errorString)) {
+                $errorString .= sprintf('%s', $error);
+            } else {
+                $errorString .= sprintf('\n%s', $error);
+            }
+        }
+        if ($removeErrors) {
+            self::removeErrors();
+        }
+        return $errorString;
+    }
 }
