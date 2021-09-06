@@ -46,10 +46,13 @@ class ModalElement extends FormaPlugin {
   }
 
   Close() {
-    document.querySelector(`.${this.ModalClass}`).remove();
-    this.GetModal().remove();
     if(this._OnCloseEvent) {
       this._OnCloseEvent(this);
+    }
+    document.querySelector(`.${this.ModalClass}`).remove();
+    const m = this.GetModal();
+    if(m) {
+      m.remove();
     }
   }
 

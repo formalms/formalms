@@ -22,7 +22,7 @@ class TeacherLearningObject extends LearningObject {
       // Event on fv-is-scormorg
       this.folderViewInstance.filterDBClickEvents.push((el) => {
         if(el.querySelector('.fv-is-scormorg')) {
-          this.scormLightbox(el.querySelector('.fv-is-play'), el.querySelector('.folderView__label').innerHTML);
+          this.scormLightbox(el.querySelector('.fv-is-play'), el.querySelector('.folderView__label').innerHTML, controller.selector);
           return false;
         } else {
           return true;
@@ -33,7 +33,7 @@ class TeacherLearningObject extends LearningObject {
       this.folderViewInstance.addEvent('fv-is-play', (e, el) => {
         if(el.parentNode.parentNode.querySelector('.fv-is-scormorg')) {
           e.preventDefault();
-          this.scormLightbox(el, el.parentElement.parentElement.querySelector('.folderView__label').innerHTML);
+          this.scormLightbox(el, el.parentElement.parentElement.querySelector('.folderView__label').innerHTML, controller.selector);
         }
       }, document.querySelector(`[data-container="${controller.selector}"]`));
 

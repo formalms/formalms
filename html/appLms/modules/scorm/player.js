@@ -367,7 +367,7 @@ ScormPlayer.prototype.blankPageLoaded = function() {
 ScormPlayer.prototype.closePlayer = function() {
 	
 	window.top.onbeforeunload = null;
-	window.top.location.href = playerConfig.lms_base_url + "" + playerConfig.backurl;
+	// window.top.location.href = playerConfig.lms_base_url + "" + playerConfig.backurl;
 }
 
 ScormPlayer.prototype.addActionQueue = function( action ) {

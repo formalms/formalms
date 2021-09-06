@@ -61,10 +61,11 @@ class FolderView extends LearningView {
 
   refresh(parentId) {
     const _this = this;
-
+    
     if (parentId >= 0) {
       _this.selectedId = parentId;
     }
+   
     _this.getData(_this.getApiUrl('get', { id: _this.selectedId }));
   }
 
