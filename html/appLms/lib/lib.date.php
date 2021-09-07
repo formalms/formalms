@@ -509,7 +509,7 @@ class DateManager
         foreach ($subscribed as $id_user) {
 
             $control = $this->removeUserFromDate($id_user, $id_date, $id_course);
-            if (!$control) {
+            if ($control) {
 
                 //require_once (_lms_.'/admin/modules/subscribe/subscribe.php');
                 require_once(_lms_ . '/lib/lib.course.php');
@@ -525,8 +525,14 @@ class DateManager
 
                 $group_levels = $docebo_course->getCourseLevel($id_course);
                 $user_levels = getSubscribedLevel($id_course, false, false, 0);
-
-                removeSubscription($id_course, $id_user, $group_levels[$user_levels[$id_user]], 0, $date_begin, $date_end);
+                
+                                                
+                                                
+                if (!$this->controlUserSubscriptions($id_user,$id_course)) 
+                {
+                    $s = new SubscriptionAlmsController();
+                    $s->removeSubscription($id_course, $id_user, $group_levels[$user_levels[$id_user]], 0, $date_begin, $date_end);
+                }                         
             }
         }
 

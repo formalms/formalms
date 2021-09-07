@@ -829,50 +829,8 @@ class Man_Course {
 		$now = time();
 		$expiring = false;
 
-        // checking edition appointmens: works for classroom cours. Even for Classroom ?
-        if ($course['course_edition']=="1" || $course['course_type']=="classroom" ){
-            
-            if ($course['course_edition']=="1") {
-                $select_edition  = " SELECT e.date_begin, e.date_end ";
-                $select_edition .= " FROM ".$GLOBALS["prefix_lms"]."_course_editions AS e "
-                    ." JOIN ".$GLOBALS["prefix_lms"]."_course_editions_user AS u ";
-                $select_edition .= " WHERE e.status IN ('".CST_AVAILABLE."','".CST_EFFECTIVE."') AND e.id_course = '".$course['idCourse']."' AND e.id_edition = u.id_edition AND u.id_user = '".getLogUserId()."'";
-            }
-            
-            if ($course['course_type']=="classroom") {
-                $select_edition = 'select id_course, cdd.id_date, cdd.date_begin, cdd.date_end from  %lms_course_date_day cdd 
-                     join %lms_course_date cd on (cdd.id_date = cd.id_date)
-                     join %lms_course_date_user cdu on (cdu.id_date = cd.id_date)
-                     join %lms_course lc on (lc.idCourse = cd.id_course )
-                     where lc.idCourse = '.$course['idCourse'].' and lc.status IN ('.CST_AVAILABLE.','.CST_EFFECTIVE.') and 
-                        (cd.status  = 0 ) and (cdu.id_user ='.Docebo::user()->getIdSt().')  order by cdd.date_begin';
-                        
-            }
-            
-            $re_edition = sql_query($select_edition);
-            // retrieve editions 
-            $canEnd   = false;
-            // evaluate date_begin and date_end only for active editions
-            // if no editions is active returns subscription_expired
-            
-           if($level_id != ADMIN_GROUP_GODADMIN  ) {
-                while ($edition_elem = sql_fetch_assoc($re_edition)) {
-				    $datetime1 = new DateTime('now');
-				    $datetime2 = new DateTime($edition_elem['date_end']);
-            	    $interval1 = $datetime1->getTimestamp() - $datetime2->getTimestamp();
 
-                    if (is_null($edition_elem['date_end']) || $edition_elem['date_end'] == '0000-00-00 00:00:00' || $interval1 >= 0) {
-                        $canEnd = $canEnd || true; 
-                    }
-                }
-                if (!$canEnd){
-                    return array('can' => false, 'reason' => 'course_edition_date_end');
-                }
-           }                 
-        }
-        
-
-		if($level_id != ADMIN_GROUP_GODADMIN && $course['sub_start_date'] != '0000-00-00') {
+		if($level_id != ADMIN_GROUP_GODADMIN && $course['sub_start_date'] != '0000-00-00' && !is_null($course['sub_start_date'])) {
 			$date01=new DateTime($course['sub_start_date']);
 			$exp_time = $date01->format('U') - $now;
 
@@ -881,7 +839,7 @@ class Man_Course {
 			}
 		}
         
-		if($level_id != ADMIN_GROUP_GODADMIN && $course['sub_end_date'] != '0000-00-00') {
+		if($level_id != ADMIN_GROUP_GODADMIN && $course['sub_end_date'] != '0000-00-00' && !is_null($course['sub_end_date'])) {
 			$date01=new DateTime($course['sub_end_date']);
 	        // BUG: ticket 19753
             //$exp_time = $now - $date01->format('U');
