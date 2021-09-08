@@ -1601,6 +1601,12 @@ class Org_TreeView extends RepoTreeView {
 
 	function getLoData( $idLoList ){
 
+		if ($GLOBALS['course_descriptor']->getValue('course_type') == 'classroom') {
+			require_once(_lms_ . '/lib/lib.date.php');
+			$man_date = new DateManager();
+			$this->user_presence = $man_date->checkUserPresence(getLogUserId(), $_SESSION['idCourse']);
+		}
+
 		$idLoList = (array)$idLoList;
 		include_once (_base_.'/customscripts/appLms/Events/Lms/OrgPropertiesPrintEvent.php');		
 		require_once _lms_ . '/lib/lib.kbres.php';
@@ -1684,7 +1690,7 @@ class Org_TreeView extends RepoTreeView {
 			$node['resource'] = $folder->otherValues[REPOFIELDIDRESOURCE];
 
 			if($folder->otherValues[ORGFIELD_PUBLISHFOR] == PF_ATTENDANCE && !$this->presence()) {
-
+				$node['active'] = false;
 			} else if($isPrerequisitesSatisfied && $event->getAccessible()){
 				$node['active'] = true;				
 			}
