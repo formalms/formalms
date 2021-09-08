@@ -110,6 +110,19 @@ class PDF extends TCPDF
     {
         @ob_end_clean();
 
+        $doc = new DOMDocument();
+        $doc->loadHTML($html);
+        $xpath = new DOMXPath($doc);
+        $nodelist = $xpath->query("//img"); # "/images/image.jpg"
+
+        foreach ($nodelist as $node){
+            $value = $node->attributes->getNamedItem('src')->nodeValue;
+            $value = str_replace(' ','%20',$value);
+            $node->attributes->getNamedItem('src')->nodeValue = $value;
+        }
+
+        $html = $doc->saveHTML();
+
         $query = "SELECT lang_browsercode, lang_direction"
             . " FROM " . $GLOBALS['prefix_fw'] . "_lang_language"
             . " WHERE lang_code = '" . getLanguage() . "'";
