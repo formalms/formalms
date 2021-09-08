@@ -21,9 +21,6 @@ class LearningObject {
           window.overlay_iframe.uiPlayer.closePlayer(true, window);
         }
       }
-      if(type) {
-        console.log(type);
-      }
       const container = document.querySelector('*[data-container=' + type + ']');
       container.dispatchEvent(new CustomEvent('refreshTree', {
         detail: { selectedId: window.localStorage.getItem('selectedId') } 

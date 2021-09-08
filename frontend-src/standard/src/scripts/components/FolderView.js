@@ -29,6 +29,30 @@ class FolderView extends LearningView {
     _this.container.addEventListener('dblclick', (e) => { _this.triggerDblClick(e); });
     _this.emptySelectedItems();
 
+    /*
+    var elm1 = _this.container
+    var timeout;
+    var lastTap = 0;
+    elm1.addEventListener('touchend', function(event) {
+        var currentTime = new Date().getTime();
+        var tapLength = currentTime - lastTap;
+        clearTimeout(timeout);
+        if (tapLength < 500 && tapLength > 0) {
+            _this.triggerDblClick(event)
+            event.preventDefault(); 
+        } else {
+            
+            timeout = setTimeout(function() {
+                
+                clearTimeout(timeout);
+            }, 500);
+        }
+        lastTap = currentTime;
+    });
+    */
+    
+
+
     _this.container.addEventListener('createTreeItem', (e) => {
       if(_this.isReady) {
         _this.refresh(e.detail.selectedId);
@@ -48,6 +72,7 @@ class FolderView extends LearningView {
       _this.refresh(e.detail.selectedId);
       _this.isReady = true;
     });
+
   }
 
 
@@ -267,16 +292,22 @@ class FolderView extends LearningView {
   }*/
 
   triggerDblClick(e) {
-    const el = e.target;
+    let el = e.target;
     const _this = this;
-    
+
+    if(el.classList.contains('actions-wrapper')){
+        el = el.closest('li')
+    }
+
     if (el) {
       const li = el.closest('.folderView__li');
+      
+
       if (!li) {
         return;
       }
       const elId = li.getAttribute('data-id');
-
+      
       if (!elId) {
         return;
       }
@@ -291,7 +322,7 @@ class FolderView extends LearningView {
       if(!proceed) {
         return;
       }
-      console.log(el);
+
       if (el.classList.contains('js-folderView-folder')) {
         // It's dir
         _this.selectedId = elId;
