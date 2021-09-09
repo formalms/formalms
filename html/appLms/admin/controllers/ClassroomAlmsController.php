@@ -109,7 +109,7 @@ class ClassroomAlmsController extends AlmsController
         $total_course = $this->model->getCourseEditionNumber();
         $array_edition = $this->model->loadCourseEdition($start_index, $results, $sort, $dir);
 
-        $evendData = Events::trigger('core.course.edition.list',[
+        $evendData = Events::trigger('core.course.edition.data.listing',[
             'idCourse'=> $this->idCourse,
             'editions' => $array_edition
         ]);

@@ -518,19 +518,16 @@ class CourseAlmsController extends AlmsController
             }
         }
 
-        $eventData = Events::trigger('core.course.list', [
-            'courses' => $list,
-            'courseRes' => $course_res,
-            'courseWithCert' => $course_with_cert,
-            'courseWithCompetence' => $course_with_competence
-        ]);
 
-        $list = $eventData['courses'];
+        $eventData = Events::trigger('core.course.data.listing',
+            [
+                'coursesList' => $list,
+                'coursesResult' => $course_res,
+                'coursesWithCertificates' => $course_with_cert,
+                'coursesWithCompetences' => $course_with_competence
+            ]);
 
-
-        $eventResult = Events::trigger('core.course.data.listing', ['coursesList' => $list, 'courses' => $course_res, 'coursesWithCertificates' => $course_with_cert, 'coursesWithCompetences' => $course_with_competence]);
-
-        $list = $eventResult['coursesList'];
+        $list = $eventData['coursesList'];
 
 
         $result = array(
