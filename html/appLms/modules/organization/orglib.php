@@ -1634,7 +1634,7 @@ class Org_TreeView extends RepoTreeView {
 			\appCore\Events\DispatcherManager::dispatch(\appLms\Events\Lms\OrgPropertiesPrintEvent::EVENT_NAME, $event);
 
 			if (!$event->getDisplayable()) {
-				break;
+				continue;
 			}
 
 			$kbres = new KbRes();
@@ -1704,15 +1704,15 @@ class Org_TreeView extends RepoTreeView {
 
 
 			if($folder->otherValues[ORGFIELD_PUBLISHFROM] != '' && $folder->otherValues[ORGFIELD_PUBLISHFROM] != '0000-00-00 00:00:00') {
-				if($folder->otherValues[ORGFIELD_PUBLISHFROM] > date("Y-m-d H:i:s")) break;
+				if($folder->otherValues[ORGFIELD_PUBLISHFROM] > date("Y-m-d H:i:s")) continue;
 			}
 			if($folder->otherValues[ORGFIELD_PUBLISHTO] != '' && $folder->otherValues[ORGFIELD_PUBLISHTO] != '0000-00-00 00:00:00') {
-				if($folder->otherValues[ORGFIELD_PUBLISHTO] < date("Y-m-d H:i:s")) break;
+				if($folder->otherValues[ORGFIELD_PUBLISHTO] < date("Y-m-d H:i:s")) continue;
 			}
 			
 			$status = Track_Object::getStatusFromId($folder->id, getLogUserId() );
 
-			if($folder->otherValues[ORGFIELD_PUBLISHFOR] == PF_TEACHER && $_SESSION['levelCourse'] <= 3) break;
+			if($folder->otherValues[ORGFIELD_PUBLISHFOR] == PF_TEACHER && $_SESSION['levelCourse'] <= 3) continue;
 			if($folder->otherValues[ORGFIELD_PUBLISHFOR] == PF_ATTENDANCE && !$this->presence()) {
 
 				$node['locked'] = true;
