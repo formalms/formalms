@@ -158,7 +158,7 @@ class ClassroomAlms extends Model
         $res['test'] = Get::req('test', DOTY_INT, 0);
         $res['status'] = Get::req('status', DOTY_INT, 0);
         $res['date_selected'] = Get::req('date_selected', DOTY_MIXED, '');
-        $res['medium_time'] = Get::req('medium_time', DOTY_INT, 0);
+        $res['mediumTime'] = Get::req('mediumTime', DOTY_INT, 0);
         $res['description'] = Get::req('description', DOTY_MIXED, '');
         $res['sub_start_date'] = Get::req('sub_start_date', DOTY_MIXED, '');
         $res['sub_end_date'] = Get::req('sub_end_date', DOTY_MIXED, '');
@@ -358,8 +358,10 @@ class ClassroomAlms extends Model
             $array_day[$i]['date_end'] = $array_day_tmp[$i] . ' ' . $_POST['e_hours_' . $i] . ':' . $_POST['e_minutes_' . $i] . ':00';
             $array_day[$i]['classroom'] = $_POST['classroom_' . $i];
         }
+        
 
-        $res = $this->classroom_man->upDate($this->id_date, $date_info['code'], $date_info['name'], $date_info['description'], $date_info['mediumTime'], $date_info['maxNumSubscribes'], $date_info['price'], $date_info['overbooking'], $date_info['status'], $date_info['test'], Format::dateDb($date_info['sub_start_date'], 'date') . ' 00:00:00', Format::dateDb($date_info['sub_end_date'], 'date') . ' 00:00:00', Format::dateDb($date_info['unsubscribe_date_limit'], 'date') . ' 00:00:00');
+
+        $res = $this->classroom_man->upDate($this->id_date, $date_info['code'], $date_info['name'], $date_info['description'], $date_info['mediumTime'], $date_info['max_par'], $date_info['price'], $date_info['overbooking'], $date_info['status'], $date_info['test'], Format::dateDb($date_info['sub_start_date'], 'date') . ' 00:00:00', Format::dateDb($date_info['sub_end_date'], 'date') . ' 00:00:00', Format::dateDb($date_info['unsubscribe_date_limit'], 'date') . ' 00:00:00');
 
         if ($res) {
             if ($countDays > 0) {
