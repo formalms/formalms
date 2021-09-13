@@ -1622,6 +1622,15 @@ class SubscriptionAlmsController extends AlmsController
 
                     $course_info = $course_man->getCourseInfo($id_course);
 
+                    $user_selected = array();
+                    if ($_POST['subs']) {
+                        $subs = explode(",", $_POST['subs']);
+                        foreach ($subs as $sub) {
+                            list($user, $level) = explode(":", $sub);
+                            $user_selected[$user] = $level;
+                        }
+                    }
+
                     if ($course_info['course_type'] !== 'classroom' && $course_info['course_edition'] == 0) {
                         $model = new SubscriptionAlms($id_course);
 
@@ -1646,16 +1655,6 @@ class SubscriptionAlmsController extends AlmsController
 
                             if (!$direct_subscribe)
                                 $waiting = 1;
-
-                            $user_selected = array();
-                            if ($_POST['subs']) {
-                                $subs = $_POST['subs'];
-                                $subs = explode(",", $_POST['subs']);
-                                foreach ($subs as $sub) {
-                                    list($user, $level) = explode(":", $sub);
-                                    $user_selected[$user] = $level;
-                                }
-                            }
 
                             foreach ($user_selected as $id_user => $lv_sel) {
                                 if (!$limited_subscribe || $max_subscribe) {
@@ -1698,9 +1697,12 @@ class SubscriptionAlmsController extends AlmsController
                                 $user_subscribed = array();
                                 $user_waiting = array();
 
-                                if (!$direct_subscribe)
+                                if (!$direct_subscribe) 
+                                {
                                     $waiting = 1;
-                                foreach ($_POST['user_level_sel'] as $id_user => $lv_sel) {
+                                }    
+                                foreach ($user_selected as $id_user => $lv_sel) 
+                                {
                                     if (!$limited_subscribe || $max_subscribe) {
                                         if ($lv_sel != 0) {
                                             //$this->acl_man->addToGroup($level_idst[$lv_sel], $id_user);

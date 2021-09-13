@@ -17,7 +17,7 @@ echo getTitleArea($title);
 
 	$this->widget(	'table', array(
 					'id'		=> 'edition_table',
-					'styles'	=> $model->getEditionTableStyle(),
+					//'styles'	=> $model->getEditionTableStyle(),
 					'header'	=> $model->getEditionTableHeader(),
 					'data'		=> $model->getEditionTableContent($courses),
 					'summary'	=> Lang::t('_COURSE', 'course'),
