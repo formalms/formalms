@@ -1319,10 +1319,11 @@ class SubscriptionAlmsController extends AlmsController
                     $new_date_complete = Get::req('multimod_date_complete', DOTY_STRING, "");
                     $new_date_complete = Format::dateDb($new_date_complete, 'date');
                     $new_status = Get::req('multimod_status', DOTY_INT, -999);
-                    if (in_array($new_status, array_keys($this->model->getUserStatusList()))) {
+                    if (in_array($new_status, array_keys($this->model->getUserStatusList()))) 
+                    {
                         $res2 = $sman->updateUserStatusInCourse($users_list, $this->id_course, $new_status, $new_date_complete);
                     }
-
+                      
                     foreach ($users_list as $user) {
                         switch ((int)$new_status) {
                             case _CUS_SUSPEND:
@@ -3788,7 +3789,7 @@ class SubscriptionAlmsController extends AlmsController
             $msg_composer = new EventMessageComposer();
 
             $msg_composer->setSubjectLangText('email', '_APPROVED_SUBSCRIBED_SUBJECT', false);
-            $msg_composer->setBodyLangText('email', "\n\n" . $_POST['subscribe_accept'], array(), true);
+	        $msg_composer->setBodyLangText('email',  $_POST['subscribe_accept'], $array_subst);
 
             $msg_composer->setBodyLangText('sms', '_APPROVED_SUBSCRIBED_TEXT_SMS', $array_subst);
 
@@ -3814,10 +3815,8 @@ class SubscriptionAlmsController extends AlmsController
         if (!empty($deny_user)) {
 
             $msg_composer = new EventMessageComposer();
-
             $msg_composer->setSubjectLangText('email', '_DENY_SUBSCRIBED_SUBJECT', false);
-            $msg_composer->setBodyLangText('email', "\n\n" . $_POST['subscribe_refuse'], array(), true);
-
+	        $msg_composer->setBodyLangText('email', "\n\n" . $_POST['subscribe_refuse'], $array_subst);
             $msg_composer->setSubjectLangText('sms', '_DENY_SUBSCRIBED_SUBJECT_SMS', false);
             $msg_composer->setBodyLangText('sms', '_DENY_SUBSCRIBED_TEXT_SMS', $array_subst);
 
