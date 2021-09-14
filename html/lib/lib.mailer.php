@@ -41,7 +41,7 @@ define("MAIL_REPLYTO", "replyto");
 define("MAIL_RESET", "reset");
 
 
-class DoceboMailer extends PHPMailer
+class DoceboMailer extends PHPMailer\PHPMailer\PHPMailer
 {
     //internal acl_manager instance
     var $acl_man;
