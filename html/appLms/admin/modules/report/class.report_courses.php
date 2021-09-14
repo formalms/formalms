@@ -1123,15 +1123,18 @@ class Report_Courses extends Report
                     $filter_cols,
                     $show_percent,
                     $show_classrooms_editions,
-                    $classrooms_editions_info
+                    $classrooms_editions_info,
+                    true,
+                    ''
                 );
 
             } else {
 
+                $first = true;
                 reset($org_name);
                 foreach ($org_name as $idst_group => $folder_name) {
                     if ($first) {
-                        $first = FALSE;
+                        //$first = FALSE;
                     } else {
                         $output .= '<br /><br /><br />';
                     }
@@ -1219,9 +1222,14 @@ class Report_Courses extends Report
                         $filter_cols,
                         $show_percent,
                         $show_classrooms_editions,
-                        $classrooms_editions_info
+                        $classrooms_editions_info,
+                        $first,
+                        $output
                     );
 
+                    if ($first) {
+                        $first = FALSE;
+                    }
                 }
             }
 
@@ -1313,7 +1321,9 @@ class Report_Courses extends Report
                     $filter_cols,
                     $show_percent,
                     $show_classrooms_editions,
-                    $classrooms_editions_info
+                    $classrooms_editions_info,
+                    true,
+                    ''
                 );
 
             } else {
@@ -1323,7 +1333,7 @@ class Report_Courses extends Report
                 foreach ($org_name as $idst_group => $folder_name) {
 
                     if ($first) {
-                        $first = FALSE;
+                        //$first = FALSE;
                     } else {
                         $output .= '<br /><br /><br />';
                     }
@@ -1416,9 +1426,14 @@ class Report_Courses extends Report
                         $filter_cols,
                         $show_percent,
                         $show_classrooms_editions,
-                        $classrooms_editions_info
+                        $classrooms_editions_info,
+                        $first,
+                        $output
                     );
 
+                    if ($first) {
+                        //$first = FALSE;
+                    }
                 }
             }
 
@@ -1458,10 +1473,21 @@ class Report_Courses extends Report
         $filter_cols,
         $show_percent,
         $show_classrooms_editions,
-        &$classrooms_editions_info)
+        &$classrooms_editions_info,
+        $first = true,
+        $output = '')
     {
         require_once(_lms_ . '/admin/modules/report/report_tableprinter.php');
         $buffer = new ReportTablePrinter($type);
+
+        if (!$first && $type == "xls"){
+            $buffer->buffer="";
+        }
+
+        if ($first && $type == "xls" && $buffer->buffer != ""){
+            $buffer->buffer= $buffer->buffer.$output;
+        }
+
 
         //**** LRZ
         require_once($GLOBALS['where_framework'] . '/lib/lib.customfield.php');
