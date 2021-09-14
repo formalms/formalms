@@ -696,8 +696,9 @@ function userCourseList(&$url, $use_tab = true, $page_add = true) {
                                     $course_stats['cert_relesable']++;
                                 }
 			}
-		}
-	}
+		
+    }
+
 	
 	if(sql_num_rows($re_course)) sql_data_seek($re_course, 0);
 	
@@ -949,7 +950,9 @@ function userCourseList(&$url, $use_tab = true, $page_add = true) {
 			$GLOBALS['page']->add('</div>', 'content');
 	}
 	if($course_stats['cert_relesable'] < 0) $course_stats['cert_relesable'] = 0;
-	return $course_stats;
+	
+    }
+    return $course_stats;
 }
 
 function dashmyassess(&$url, $lang, $cinfo, $index) {
