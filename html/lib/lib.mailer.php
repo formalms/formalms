@@ -240,7 +240,7 @@ class DoceboMailer extends PHPMailer
         $this->Subject = $subject;
         if (isset($params[MAIL_HTML])) {
 
-            $html = \appCore\Template\TwigManager::getInstance()->render('/mail/mail.html.twig', ['subject' => $subject, 'body' => $body],_templates_ . '/' . getTemplate() . '/layout');
+            $html = \appCore\Template\TwigManager::getInstance()->render('/mail/mail.html.twig', ['subject' => $subject, 'body' => $body],_templates_ . '/standard/layout');
             $this->msgHTML($html);
 
         } else {
