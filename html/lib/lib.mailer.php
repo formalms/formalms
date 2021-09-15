@@ -43,8 +43,8 @@ define("MAIL_RESET", "reset");
 
 class DoceboMailer extends PHPMailer
 {
-    //internal acl_manager instance
-    var $acl_man;
+    //internal $aclManager instance
+    var $aclManager;
 
 
     var $utf8_trans_tbl; //Utf-8 translation table
@@ -57,7 +57,7 @@ class DoceboMailer extends PHPMailer
     //the constructor
     function __construct()
     {
-        $this->acl_man = new DoceboACLManager();
+        $this->aclManager = new DoceboACLManager();
 
         //set initial default value
         $this->ResetToDefault();
@@ -136,39 +136,25 @@ class DoceboMailer extends PHPMailer
     //sendmail function
     function SendMail($sender, $recipients, &$subject, &$body, $attachments = false, $params = false)
     {
+        $output = [];
         if (Get::cfg('demo_mode')) {
             $this->ResetToDefault();
             return false;
         }
-        //analyze params, can be a string or an associative array
-        if (is_string($params)) {
-            //parse string params (TO DO)
-            //...
-            $temp = $params;
-            $params = array();
-            //parse $temp ...
-        } elseif (!is_array($params)) $params = array();
 
-        //set properties, overwrite default props if  redefined in $params ...
-        if (isset($params[MAIL_WORDWRAP])) $conf_arr[MAIL_WORDWRAP] = $params[MAIL_WORDWRAP];
-        if (isset($params[MAIL_HTML])) $conf_arr[MAIL_HTML] = $params[MAIL_HTML];
-        if (isset($params[MAIL_SINGLETO])) $conf_arr[MAIL_SINGLETO] = $params[MAIL_SINGLETO];
+        if (is_string($recipients)){
+            $recipient = $recipients;
+            $recipients = [];
+            $recipients[] = $recipient;
+        }
 
-        $conf_arr[MAIL_SENDER_ACLNAME] = (isset($params[MAIL_SENDER_ACLNAME]) ? $params[MAIL_SENDER_ACLNAME] : $this->default_conf[MAIL_SENDER_ACLNAME]);
-        $conf_arr[MAIL_RECIPIENT_ACLNAME] = (isset($params[MAIL_RECIPIENT_ACLNAME]) ? $params[MAIL_RECIPIENT_ACLNAME] : $this->default_conf[MAIL_RECIPIENT_ACLNAME]);
-        $conf_arr[MAIL_REPLYTO_ACLNAME] = (isset($params[MAIL_REPLYTO_ACLNAME]) ? $params[MAIL_REPLYTO_ACLNAME] : $this->default_conf[MAIL_REPLYTO_ACLNAME]);
-        $conf_arr[MAIL_MULTIMODE] = (isset($params[MAIL_MULTIMODE]) ? $params[MAIL_MULTIMODE] : $this->default_conf[MAIL_MULTIMODE]);
+        if (is_string($attachments)){
+            $attachment = $attachments;
+            $attachments = [];
+            $attachments[] = $attachment;
+        }
 
-        if (isset($params[MAIL_CHARSET])) $conf_arr[MAIL_CHARSET] = $params[MAIL_CHARSET];
-        if (isset($params[MAIL_REPLYTO])) $conf_arr[MAIL_REPLYTO] = $params[MAIL_REPLYTO];
-
-        if (isset($params[MAIL_RECIPIENTSCC])) $conf_arr[MAIL_RECIPIENTSCC] = isset($params[MAIL_RECIPIENTSCC]) ? $params[MAIL_RECIPIENTSCC] : $this->default_conf[MAIL_RECIPIENTSCC] ;
-        if (isset($params[MAIL_RECIPIENTSBCC])) $conf_arr[MAIL_RECIPIENTSBCC] = isset($params[MAIL_RECIPIENTSBCC]) ? $params[MAIL_RECIPIENTSBCC] : $this->default_conf[MAIL_RECIPIENTSBCC];
-
-        $_sender = '';
-        $_recipients = array();
-        $_replyto = array();
-        //$_attachments = array();
+        $params = array_merge($this->default_conf, $params);
 
         //check each time because global configuration may have changed since last call
 
@@ -176,55 +162,38 @@ class DoceboMailer extends PHPMailer
             $this->IsSMTP();
             $this->Hostname = SmtpAdm::getInstance()->getHost();
             $this->Host = SmtpAdm::getInstance()->getHost();
-            if (SmtpAdm::getInstance()->getPort() !== '') {
+            if (!empty(SmtpAdm::getInstance()->getPort())) {
                 $this->Port = SmtpAdm::getInstance()->getPort();
             }
             $smtp_user = SmtpAdm::getInstance()->getUser();
-			if (!empty($smtp_user)) {
+            if (!empty($smtp_user)) {
                 $this->Username = $smtp_user;
                 $this->Password = SmtpAdm::getInstance()->getPwd();
                 $this->SMTPAuth = true;
             } else {
                 $this->SMTPAuth = false;
             }
-			$this->SMTPSecure = SmtpAdm::getInstance()->getSecure();	// secure: '' , 'ssl', 'tsl'
-	        $this->SMTPAutoTLS = SmtpAdm::getInstance()->isAutoTls();
-            $this->SMTPDebug = SmtpAdm::getInstance()->getDebug();	// debug level 0,1,2,3,...
+            $this->SMTPSecure = SmtpAdm::getInstance()->getSecure();    // secure: '' , 'ssl', 'tsl'
+            $this->SMTPAutoTLS = SmtpAdm::getInstance()->isAutoTls();
+            $this->SMTPDebug = SmtpAdm::getInstance()->getDebug();    // debug level 0,1,2,3,...
             // Add To in mail header SMTP
-            if (is_string($recipients)) {
-                $this->addCustomHeader("To", $recipients);
-            }
-		} else {
+        } else {
             $this->IsMail();
         }
 
         //configure sending address
         //----------------------------------------------------------------------------
-        if (is_int($sender)) { // TODO: ??
-            //idst
-            //...
-        } elseif (is_string($sender)) {
-            //should check if $from is a valid email address with a regular expression
-            $_sender = $sender;
-        } else {
-            //handle invalid recipient case
-            //...
-        }
-
-        $this->From = $_sender;
-        if ($conf_arr[MAIL_SENDER_ACLNAME]) {
-            $temp = $this->acl_man->getUserByEmail($sender);
-            $this->FromName = $conf_arr[MAIL_SENDER_ACLNAME] !== true ? $conf_arr[MAIL_SENDER_ACLNAME] : $temp[ACL_INFO_FIRSTNAME] . ' ' . $temp[ACL_INFO_LASTNAME];
+        $this->From = $sender;
+        if ($params[MAIL_SENDER_ACLNAME]) {
+            $temp = $this->aclManager->getUserByEmail($sender);
+            $this->FromName = $params[MAIL_SENDER_ACLNAME] !== true ? $params[MAIL_SENDER_ACLNAME] : $temp[ACL_INFO_FIRSTNAME] . ' ' . $temp[ACL_INFO_LASTNAME];
         }
         //----------------------------------------------------------------------------
 
         //configure attachments
         //----------------------------------------------------------------------------
-        if (is_string($attachments)) {
-            //single attachment
-            $this->addAttachment($attachments);
-        } elseif (is_array($attachments)) {
-            foreach ($attachments as $key => $value) {
+        if (count($attachments) > 0) {
+            foreach ($attachments as $value) {
                 //maybe check if file exists, if necessary ...
                 $this->addAttachment($value);
             }
@@ -234,20 +203,21 @@ class DoceboMailer extends PHPMailer
 
         //configure replyto(s)
         //----------------------------------------------------------------------------
-        if (isset($conf_arr[MAIL_REPLYTO])) {
+        $replyTo = [];
+        if (isset($params[MAIL_REPLYTO])) {
             //retrieve replyto(s) from params
-            if (is_string($conf_arr[MAIL_REPLYTO])) {
-                $_replyto[] = $conf_arr[MAIL_REPLYTO];
-            } elseif (is_array($conf_arr[MAIL_REPLYTO])) {
-                foreach ($conf_arr[MAIL_REPLYTO] as $key => $value) {
-                    $_replyto[] = $value;
+            if (is_string($params[MAIL_REPLYTO])) {
+                $replyTo[] = $params[MAIL_REPLYTO];
+            } elseif (is_array($params[MAIL_REPLYTO])) {
+                foreach ($params[MAIL_REPLYTO] as $value) {
+                    $replyTo[] = $value;
                 }
             }
         }
-        foreach ($_replyto as $key => $value) {
+        foreach ($replyTo as $value) {
 
-            if ($conf_arr[MAIL_REPLYTO_ACLNAME]) {
-                $temp = $this->acl_man->getUserByEmail($value);
+            if ($params[MAIL_REPLYTO_ACLNAME]) {
+                $temp = $this->aclManager->getUserByEmail($value);
                 $this->AddReplyTo($value, $temp[ACL_INFO_FIRSTNAME] . ' ' . $temp[ACL_INFO_LASTNAME]);
             } else {
                 $this->AddReplyTo($value);
@@ -255,55 +225,51 @@ class DoceboMailer extends PHPMailer
         }
         //----------------------------------------------------------------------------
 
-        if (isset($conf_arr[MAIL_CHARSET])) {
-            $this->CharSet = $conf_arr[MAIL_CHARSET];
+        if (isset($params[MAIL_CHARSET])) {
+            $this->CharSet = $params[MAIL_CHARSET];
         }
 
-        if (isset($conf_arr[MAIL_WORDWRAP])) {
-            $this->WordWrap = $conf_arr[MAIL_WORDWRAP];
+        if (isset($params[MAIL_WORDWRAP])) {
+            $this->WordWrap = $params[MAIL_WORDWRAP];
         }
 
-        if (isset($conf_arr[MAIL_HTML])) {
-            $this->IsHTML($conf_arr[MAIL_HTML]);
-        }
-
-        if (isset($conf_arr[MAIL_SINGLETO])) {
-            $this->SingleTo = $conf_arr[MAIL_SINGLETO];
+        if (isset($params[MAIL_HTML])) {
+            $this->IsHTML($params[MAIL_HTML]);
         }
 
         $this->Subject = $subject;
-        $this->Body = $body;
-        $this->AltBody = $this->ConvertToPlain_UTF8($body);
+        if (isset($params[MAIL_HTML])) {
 
-        //configure recipient(s) and send mail(s)
-        //----------------------------------------------------------------------------
-        if (is_string($recipients)) {
+            $html = \appCore\Template\TwigManager::getInstance()->render('/mail/mail.html.twig', ['subject' => $subject, 'body' => $body],_templates_ . '/' . getTemplate() . '/layout');
+            $this->msgHTML($html);
 
-            $_recipients[] = $recipients;
-        } elseif (is_array($recipients)) {
-
-            //multiple sending ...
-            foreach ($recipients as $key => $value) {
-                $_recipients[] = $value;
-            }
         } else {
-            $this->ResetToDefault();
-            return false;
+            $this->Body = $body;
+            $this->AltBody = $this->ConvertToPlain_UTF8($body);
         }
 
+
         // MAIL_RECIPIENTSCC
-        if (isset($conf_arr[MAIL_RECIPIENTSCC])) {
-            $arr_mail_recipientscc = explode(' ', $conf_arr[MAIL_RECIPIENTSCC]);
+        if (isset($params[MAIL_RECIPIENTSCC])) {
+            $arr_mail_recipientscc = explode(' ', $params[MAIL_RECIPIENTSCC]);
             foreach ($arr_mail_recipientscc as $user_mail_recipientscc) {
-                $this->addCC($user_mail_recipientscc);
+                try {
+                    $this->addCC($user_mail_recipientscc);
+                } catch (\PHPMailer\PHPMailer\Exception $e) {
+
+                }
             }
         }
 
         // MAIL_RECIPIENTSBCC
-        if (isset($conf_arr[MAIL_RECIPIENTSBCC])) {
-            $arr_mail_recipientsbcc = explode(' ', $conf_arr[MAIL_RECIPIENTSBCC]);
+        if (isset($params[MAIL_RECIPIENTSBCC])) {
+            $arr_mail_recipientsbcc = explode(' ', $params[MAIL_RECIPIENTSBCC]);
             foreach ($arr_mail_recipientsbcc as $user_mail_recipientsbcc) {
-                $this->addBCC($user_mail_recipientsbcc);
+                try {
+                    $this->addBCC($user_mail_recipientsbcc);
+                } catch (\PHPMailer\PHPMailer\Exception $e) {
+
+                }
             }
         }
 
@@ -311,44 +277,52 @@ class DoceboMailer extends PHPMailer
         if (Get::sett('send_cc_for_system_emails', '') !== '') {
             $arr_cc_for_system_emails = explode(' ', Get::sett('send_cc_for_system_emails'));
             foreach ($arr_cc_for_system_emails as $user_cc_for_system_emails) {
-                $this->addCC($user_cc_for_system_emails);
+                try {
+                    $this->addCC($user_cc_for_system_emails);
+                } catch (\PHPMailer\PHPMailer\Exception $e) {
+                }
             }
         }
 
         if (Get::sett('send_ccn_for_system_emails', '') !== '') {
             $arr_ccn_for_system_emails = explode(' ', Get::sett('send_ccn_for_system_emails'));
             foreach ($arr_ccn_for_system_emails as $user_ccn_for_system_emails) {
-                $this->addBCC($user_ccn_for_system_emails);
+                try {
+                    $this->addBCC($user_ccn_for_system_emails);
+                } catch (\PHPMailer\PHPMailer\Exception $e) {
+
+                }
             }
         }
         //----------------------------------------------------------------------------
 
-        foreach ($_recipients as $key => $value) {
+        foreach ($recipients as $recipient) {
 
-            if ($conf_arr[MAIL_RECIPIENT_ACLNAME]) {
-
-                $temp = $this->acl_man->getUserByEmail($value);
+            if ($params[MAIL_RECIPIENT_ACLNAME]) {
+                $temp = $this->aclManager->getUserByEmail($recipient);
                 $name = $temp[ACL_INFO_FIRSTNAME] . ' ' . $temp[ACL_INFO_LASTNAME];
             } else {
-
-                $name = $value;
+                $name = $recipient;
             }
 
-            switch ($conf_arr[MAIL_MULTIMODE]) {
-                //case MAIL_CC     : if ($this->isValidAddress(Get::sett('send_cc_for_system_emails', ''))) $this->addCC(Get::sett('send_cc_for_system_emails')); break;//$this->AddCC($value,$name); break; //not supported yet
-                case MAIL_CC     :
-                    $this->AddCC($value, $name);
-                    break;
-                case MAIL_BCC    :
-                    $this->AddBCC($value, $name);
-                    break;
-                case MAIL_SINGLE :
-                default:
-                    $this->addAddress($value, $name);
-                    break;
+            try {
+                switch ($params[MAIL_MULTIMODE]) {
+                    case MAIL_CC     :
+                        $this->AddCC($recipient, $name);
+                        break;
+                    case MAIL_BCC    :
+                        $this->AddBCC($recipient, $name);
+                        break;
+                    case MAIL_SINGLE :
+                    default:
+                        $this->addAddress($recipient, $name);
+                        break;
+                }
+            } catch (\PHPMailer\PHPMailer\Exception $e) {
+
             }
 
-            $output .= ' - ' . $this->send();
+            $output[$recipient] = $this->send();
             $this->ClearAddresses();
         }
 
