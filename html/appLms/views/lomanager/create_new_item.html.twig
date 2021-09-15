@@ -19,7 +19,7 @@
                 <input type="text" class="createFolder__input" placeholder="{{ Lang_translate('_ORGFOLDERNAME', 'storage') }}">
                 <button class="btn cancelCreateFolder__btn" type="reset"></button>
                 <button class="btn createFolder__btn" type="button"></button>
-                <input type="hidden" name="authentic_request" value="{{ evalPhp('Util::getSignature') }}" />
+                <input type="hidden" name="authentic_request" value="{{ Util_getSignature() }}" />
             </div>
             <div class="createFolder__input_err hidden"></div>
         </div>

@@ -118,7 +118,7 @@ class DoceboUserNotifier extends DoceboEventConsumer {
 
 	function _sendMail($subject, $body,$attachments, &$mail_recipients, &$users_info = false) {
 
-		$mailer = DoceboMailer::getInstance();
+		$mailer = FormaMailer::getInstance();
 		$acl_man = Docebo::user()->getAclManager();
 
 		foreach($mail_recipients as $id => $mail) {
@@ -132,7 +132,8 @@ class DoceboUserNotifier extends DoceboEventConsumer {
 			}
 
 			$mailer->SendMail(
-				Get::sett('sender_event'), $mail,
+				Get::sett('sender_event'),
+				[$mail],
 				$subject,
 				$base_body,
 				$attachments,

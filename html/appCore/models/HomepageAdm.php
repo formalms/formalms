@@ -127,12 +127,9 @@ class HomepageAdm extends Model {
             '[url]'             => Get::site_url(),
             '[userid]'          => $acl_man->relativeId($user_info[ACL_INFO_USERID])
         ), $acl_man->getSettingValueOfUsers('ui.language', array($user_info[ACL_INFO_IDST]))[$user_info[ACL_INFO_IDST]]);
-        $attachments    = false;
         $params         = array(MAIL_SENDER_ACLNAME => $sender_name);
-        
-        $mailer = DoceboMailer::getInstance();
-        
-        if($mailer->SendMail($sender, $recipients, $subject, $body, $attachments, $params)) return SUCCESS_SEND_LOST_PWD;
+        $mailer = FormaMailer::getInstance();
+        if($mailer->SendMail($sender, [$recipients], $subject, $body, [], $params)) return SUCCESS_SEND_LOST_PWD;
         else return FAILURE_SEND_LOST_PWD;
     }
     
@@ -165,12 +162,11 @@ class HomepageAdm extends Model {
             '[link]'    => Get::site_url() . "index.php?r=" . _newpwd_ . "&code=" . $code,
             '[userid]'  => $acl_man->relativeId($user_info[ACL_INFO_USERID]),
         ), $acl_man->getSettingValueOfUsers('ui.language', array($user_info[ACL_INFO_IDST]))[$user_info[ACL_INFO_IDST]]);
-        $attachments    = false;
         $params         = array(MAIL_SENDER_ACLNAME => $sender_name);
         
-        $mailer = DoceboMailer::getInstance();
+        $mailer = FormaMailer::getInstance();
 
-        if($mailer->SendMail($sender, $recipients, $subject, $body, $attachments, $params)) return SUCCESS_SEND_LOST_PWD;
+        if($mailer->SendMail($sender, [$recipients], $subject, $body, [], $params)) return SUCCESS_SEND_LOST_PWD;
         else return FAILURE_SEND_LOST_PWD;
     }
     

@@ -121,9 +121,9 @@ switch ($op) {
             $msg .= "RESOLUTION: " . Get::req("help_req_resolution", DOTY_STRING, "") . $br_char;
             $msg .= "FLASH: " . Get::req("help_req_flash_installed", DOTY_STRING, "") . $br_char;
 
-            $mailer = new DoceboMailer();
+            $mailer = new FormaMailer();
             $mailer->IsHTML(true);
-            $res = $mailer->SendMail($help_email, $help_email, $subject, $msg, false, [
+            $res = $mailer->SendMail($help_email, [$help_email], $subject, $msg, [], [
                 MAIL_REPLYTO => $user_email, 
                 MAIL_SENDER_ACLNAME => $help_name_from
             ]);

@@ -59,11 +59,6 @@ class TwigManager
         $this->twig->addExtension(new YuiExtension());
         $this->twig->addExtension(new TextExtension());
 
-        $this->twig->addFunction(new \Twig\TwigFunction('evalPhp', function ($phpCode, $args = array()) {
-            return call_user_func_array($phpCode, $args);
-        }, array(
-            'is_safe' => array('html')
-        )));
         $this->twig->addGlobal('clientConfig', addslashes(json_encode(ClientService::getInstance()->getConfig())));
         $this->twig->addGlobal('GLOBALS', $GLOBALS);
         if ($debug) {
@@ -104,17 +99,12 @@ class TwigManager
 
     public function addPathInLoader($view_path)
     {
-
         $this->twig->getLoader()->addPath($view_path);
     }
 
     public function render($view_name, $data_for_view, $view_path = null)
     {
-        if ($view_path == null) {
-            throw new \Exception('mvc_name cannot be null!');
-        }
-
-        if (!$this->twig->getLoader()->exists($view_name)) {
+        if (!empty($view_path) && !$this->twig->getLoader()->exists($view_name)) {
             $this->twig->getLoader()->addPath($view_path);
         }
 

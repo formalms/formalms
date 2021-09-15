@@ -625,14 +625,14 @@ class UserManager
                 //if(!@mail($user_info[ACL_INFO_EMAIL], $lang->def('_LOST_USERID_TITLE'), $mail_text, $from.$intestazione)) {
 
 
-                $mailer = DoceboMailer::getInstance();
+                $mailer = FormaMailer::getInstance();
                 $success = $mailer->SendMail(
                     $mail_sender,
-                    $user_info[ACL_INFO_EMAIL],
+                    [$user_info[ACL_INFO_EMAIL]],
                     $lang->def('_LOST_USERID_TITLE'),
                     $mail_text,
-                    false,
-                    array(/*MAIL_REPLYTO => $fromemail,*/
+                    [],
+                    array(
                         MAIL_SENDER_ACLNAME => $mail_sender_name_from
                     )
                 );
@@ -686,14 +686,14 @@ class UserManager
                 $mail_text = str_replace('[link]', $link, $lang->def('_LOST_PWD_MAILTEXT'));
 
 
-                $mailer = DoceboMailer::getInstance();
+                $mailer = FormaMailer::getInstance();
                 $success = $mailer->SendMail(
                     $mail_sender,
-                    $user_info[ACL_INFO_EMAIL],
+                    [$user_info[ACL_INFO_EMAIL]],
                     $lang->def('_LOST_PWD_TITLE'),
                     $mail_text,
-                    false,
-                    array(/*MAIL_REPLYTO => $fromemail,*/
+                    [],
+                    array(
                         MAIL_SENDER_ACLNAME => $mail_sender_name_from
                     )
                 );
@@ -1772,9 +1772,9 @@ class UserManagerRenderer
 
 
 
-            $mailer = DoceboMailer::getInstance();
+            $mailer = FormaMailer::getInstance();
 
-            if (!$mailer->SendMail($admin_mail, $_POST['register']['email'], Lang::t('_MAIL_OBJECT', 'register'), $text, false, array(MAIL_REPLYTO => $admin_mail, MAIL_SENDER_ACLNAME => $sender_name))) {
+            if (!$mailer->SendMail($admin_mail, [$_POST['register']['email']], Lang::t('_MAIL_OBJECT', 'register'), $text, [], array(MAIL_REPLYTO => $admin_mail, MAIL_SENDER_ACLNAME => $sender_name))) {
 
 
                 if ($registration_code_type == 'code_module') {
@@ -1809,8 +1809,8 @@ class UserManagerRenderer
 
 
 
-            $mailer = DoceboMailer::getInstance();
-            if (!$mailer->SendMail($admin_mail, $_POST['register']['email'], Lang::t('_MAIL_OBJECT_SELF', 'register'), $text_self, false, array(MAIL_REPLYTO => $admin_mail, MAIL_SENDER_ACLNAME => $sender_name))) {
+            $mailer = FormaMailer::getInstance();
+            if (!$mailer->SendMail($admin_mail, [$_POST['register']['email']], Lang::t('_MAIL_OBJECT_SELF', 'register'), $text_self, [], array(MAIL_REPLYTO => $admin_mail, MAIL_SENDER_ACLNAME => $sender_name))) {
                 $this->error = true;
                 $errors = ['registration' => false, 'error' => $this->error, 'msg' => $lang->def('_OPERATION_FAILURE')];
             } else {

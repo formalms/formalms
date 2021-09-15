@@ -275,7 +275,7 @@ $report_uuid_prefix = 'uuid';
 require_once(_base_ . '/lib/lib.upload.php');
 
 
-$mailer = DoceboMailer::getInstance();
+$mailer = FormaMailer::getInstance();
 
 require_once(_base_ . '/lib/lib.json.php');
 $json = new Services_JSON();
@@ -415,8 +415,7 @@ if ($lock_stream) {
                     $recipients, //recipients
                     $subject, //subject
                     $body, //body
-                    $attachment,
-                    $attachmentName
+                    [$attachmentName => $attachment],
                 //params
                 )) {
                     report_log($row['filter_name'] . ': Error while sending mail.' . $mailer->ErrorInfo);

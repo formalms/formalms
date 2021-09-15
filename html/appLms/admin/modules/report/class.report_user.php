@@ -981,31 +981,23 @@ class Report_User extends Report
 
             case 'send_mail_confirm':
                 {
-                    $subject = importVar('mail_object', false, '[' . $lang->def('_SUBJECT') . ']');//'[No subject]');
-                    $body = importVar('mail_body', false, '');
+                    $subject = Get::req('mail_object', DOTY_STRING, '[' . $lang->def('_SUBJECT') . ']');//'[No subject]');
+                    $body = $_REQUEST['mail_body'] ?? '';
                     $acl_man = new DoceboACLManager();
                     $sender = Get::sett('sender_event');
                     $mail_recipients = Util::unserialize(urldecode(Get::req('mail_recipients', DOTY_STRING, '')));
 
-                    // prepare intestation for email
-                    $from = "From: " . $sender . $GLOBALS['mail_br'];
-                    $header = "MIME-Version: 1.0" . $GLOBALS['mail_br']
-                        . "Content-type: text/html; charset=" . getUnicode() . $GLOBALS['mail_br'];
-                    $header .= "Return-Path: " . Get::sett('sender_event') . $GLOBALS['mail_br'];
-                    //$header .= "Reply-To: ".Get::sett('sender_event').$GLOBALS['mail_br'];
-                    $header .= "X-Sender: " . Get::sett('sender_event') . $GLOBALS['mail_br'];
-                    $header .= "X-Mailer: PHP/" . phpversion() . $GLOBALS['mail_br'];
 
                     // send mail
                     $arr_recipients = array();
                     foreach ($mail_recipients as $recipient) {
                         $rec_data = $acl_man->getUser($recipient, false);
-                        //mail($rec_data[ACL_INFO_EMAIL] , stripslashes($subject), stripslashes(nl2br($body)), $from.$header."\r\n");
+                        //mail($rec_data[ACL_INFO_EMAIL] , $subject, $body, $from.$header."\r\n");
                         $arr_recipients[] = $rec_data[ACL_INFO_EMAIL];
                     }
-                    $mailer = DoceboMailer::getInstance();
-                    $mailer->addReplyTo(Get::sett('sender_event') . $GLOBALS['mail_br']);
-                    $mailer->SendMail($sender, $arr_recipients, stripslashes($subject), stripslashes(nl2br($body)));
+                    $mailer = FormaMailer::getInstance();
+                    $mailer->addReplyTo(Get::sett('sender_event'));
+                    $mailer->SendMail($sender, $arr_recipients, $subject, $body);
 
                     $result = getResultUi($lang->def('_OPERATION_SUCCESSFUL'));
 
@@ -2207,12 +2199,12 @@ class Report_User extends Report
                     $arr_recipients = array();
                     foreach ($mail_recipients as $recipient) {
                         $rec_data = $acl_man->getUser($recipient, false);
-                        //mail($rec_data[ACL_INFO_EMAIL] , stripslashes($subject), stripslashes(nl2br($body)), $from.$header."\r\n");
+                        //mail($rec_data[ACL_INFO_EMAIL] , $subject, $body, $from.$header."\r\n");
                         $arr_recipients[] = $rec_data[ACL_INFO_EMAIL];
                     }
-                    $mailer = DoceboMailer::getInstance();
+                    $mailer = FormaMailer::getInstance();
                     $mailer->addReplyTo(Get::sett('sender_event') . $GLOBALS['mail_br']);
-                    $mailer->SendMail($sender, $arr_recipients, stripslashes($subject), stripslashes(nl2br($body)));
+                    $mailer->SendMail($sender, $arr_recipients, $subject, $body);
 
                     $result = getResultUi($lang->def('_OPERATION_SUCCESSFUL'));
 
@@ -2700,12 +2692,12 @@ class Report_User extends Report
                     $arr_recipients = array();
                     foreach ($mail_recipients as $recipient) {
                         $rec_data = $acl_man->getUser($recipient, false);
-                        //mail($rec_data[ACL_INFO_EMAIL] , stripslashes($subject), stripslashes(nl2br($body)), $from.$header."\r\n");
+                        //mail($rec_data[ACL_INFO_EMAIL] , $subject, $body, $from.$header."\r\n");
                         $arr_recipients[] = $rec_data[ACL_INFO_EMAIL];
                     }
-                    $mailer = DoceboMailer::getInstance();
+                    $mailer = FormaMailer::getInstance();
                     $mailer->addReplyTo(Get::sett('sender_event') . $GLOBALS['mail_br']);
-                    $mailer->SendMail($sender, $arr_recipients, stripslashes($subject), stripslashes(nl2br($body)));
+                    $mailer->SendMail($sender, $arr_recipients, $subject, $body);
 
                     $result = getResultUi($lang->def('_OPERATION_SUCCESSFUL'));
 
@@ -3414,12 +3406,12 @@ class Report_User extends Report
                     $arr_recipients = array();
                     foreach ($mail_recipients as $recipient) {
                         $rec_data = $acl_man->getUser($recipient, false);
-                        //mail($rec_data[ACL_INFO_EMAIL] , stripslashes($subject), stripslashes(nl2br($body)), $from.$header."\r\n");
+                        //mail($rec_data[ACL_INFO_EMAIL] , $subject, $body, $from.$header."\r\n");
                         $arr_recipients[] = $rec_data[ACL_INFO_EMAIL];
                     }
-                    $mailer = DoceboMailer::getInstance();
+                    $mailer = FormaMailer::getInstance();
                     $mailer->addReplyTo(Get::sett('sender_event') . $GLOBALS['mail_br']);
-                    $mailer->SendMail($sender, $arr_recipients, stripslashes($subject), stripslashes(nl2br($body)));
+                    $mailer->SendMail($sender, $arr_recipients, $subject, $body);
 
                     $result = getResultUi($lang->def('_OPERATION_SUCCESSFUL'));
 
@@ -4654,12 +4646,12 @@ class Report_User extends Report
                     $arr_recipients = array();
                     foreach ($mail_recipients as $recipient) {
                         $rec_data = $acl_man->getUser($recipient, false);
-                        //mail($rec_data[ACL_INFO_EMAIL] , stripslashes($subject), stripslashes(nl2br($body)), $from.$header."\r\n");
+                        //mail($rec_data[ACL_INFO_EMAIL] , $subject, $body, $from.$header."\r\n");
                         $arr_recipients[] = $rec_data[ACL_INFO_EMAIL];
                     }
-                    $mailer = DoceboMailer::getInstance();
+                    $mailer = FormaMailer::getInstance();
                     $mailer->addReplyTo(Get::sett('sender_event') . $GLOBALS['mail_br']);
-                    $mailer->SendMail($sender, $arr_recipients, stripslashes($subject), stripslashes(nl2br($body)));
+                    $mailer->SendMail($sender, $arr_recipients, $subject, $body);
 
                     $result = getResultUi($lang->def('_OPERATION_SUCCESSFUL'));
 
