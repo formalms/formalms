@@ -36,7 +36,7 @@ define("MAIL_REPLYTO_ACLNAME", "use_replyto_aclname");
 //property name: reply to parameters
 define("MAIL_REPLYTO", "replyto");
 
-define('MAIL_HEADERS','headers');
+define('MAIL_HEADERS', 'headers');
 
 //specify if class properties should be reset after sending
 define("MAIL_RESET", "reset");
@@ -107,7 +107,9 @@ class FormaMailer extends PHPMailer\PHPMailer\PHPMailer
         ];
 
         foreach ($defaultPaths as $path) {
-            \appCore\Template\TwigManager::getInstance()->addPathInLoader($path);
+            if (file_exists($path)) {
+                \appCore\Template\TwigManager::getInstance()->addPathInLoader($path);
+            }
         }
     }
 
@@ -261,11 +263,11 @@ class FormaMailer extends PHPMailer\PHPMailer\PHPMailer
         $this->Subject = $subject;
         if (isset($params[MAIL_HTML])) {
 
-            $eventResponse = Events::trigger('core.mail.template.rendering',['layout' => $this->mailTemplate, 'subject' => $subject,'body' => $body, 'otherParams' => []]);
+            $eventResponse = Events::trigger('core.mail.template.rendering', ['layout' => $this->mailTemplate, 'subject' => $subject, 'body' => $body, 'otherParams' => []]);
 
-            $html = \appCore\Template\TwigManager::getInstance()->render($eventResponse['layout'], ['subject' => $eventResponse['subject'], 'body' => $eventResponse['body'], 'otherParams'=> $eventResponse['otherParams']]);
+            $html = \appCore\Template\TwigManager::getInstance()->render($eventResponse['layout'], ['subject' => $eventResponse['subject'], 'body' => $eventResponse['body'], 'otherParams' => $eventResponse['otherParams']]);
 
-            $eventResponse = Events::trigger('core.mail.template.rendered',['html' => $html, 'subject' => $subject,'body' => $body, 'otherParams' => []]);
+            $eventResponse = Events::trigger('core.mail.template.rendered', ['html' => $html, 'subject' => $subject, 'body' => $body, 'otherParams' => []]);
 
             $this->msgHTML($eventResponse['html']);
 

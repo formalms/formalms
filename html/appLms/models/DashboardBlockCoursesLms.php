@@ -129,14 +129,13 @@ class DashboardBlockCoursesLms extends DashboardBlockLms
 		            	AND cdd.deleted = 0
 		            	ORDER BY date_begin ASC
 	            	");
-
-                    while ($row = sql_fetch_object($q)) {
-                        if (!$row->date_begin || !$row->date_end) {
+                    foreach ($q as $row){
+                        if (!$row['date_begin'] || !$row['date_end']) {
                             break;
                         }
 
-                        $course['startDateString'] = $course['startDate'] = date("d-m-Y", strtotime($row->date_begin));
-                        $course['endDateString'] = $course['endDate'] = date("H:i", strtotime($row->date_begin)) . ' ' . date("H:i", strtotime($row->date_end));
+                        $course['startDateString'] = $course['startDate'] = date("d-m-Y", strtotime($row['date_begin']));
+                        $course['endDateString'] = $course['endDate'] = date("H:i", strtotime($row['date_begin'])) . ' ' . date("H:i", strtotime($row['date_end']));
 
                         if (isset($course['dates'])) {
                             unset($course['dates']);
@@ -202,7 +201,7 @@ class DashboardBlockCoursesLms extends DashboardBlockLms
         $rs = $this->db->query($query);
 
         $result = [];
-        while ($course = $this->db->fetch_assoc($rs)) {
+        foreach ($rs as $course){
 
             $courseData = $this->getDataFromCourse($course);
 
@@ -259,7 +258,7 @@ class DashboardBlockCoursesLms extends DashboardBlockLms
         $rs = $this->db->query($query);
 
         $dates = [];
-        while ($date = $this->db->fetch_assoc($rs)) {
+        foreach ($rs as $date) {
 
             if ($date['date_start_date'] !== '0000-00-00 00:00:00') {
                 $startDate = new DateTime($date['date_start_date']);
