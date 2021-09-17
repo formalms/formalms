@@ -167,4 +167,4 @@ class TinyMce {
 
 }
 
-export default TinyMce
+export default TinyMce;

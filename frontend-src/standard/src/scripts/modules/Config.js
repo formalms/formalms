@@ -1,5 +1,5 @@
 var Config = (function() {
-  return {
+  let newVar = {
     baseUrl: () => {
       const prefixes = [
         'appCore',
@@ -17,7 +17,8 @@ var Config = (function() {
       });
       return res;
     }
-  }
+  };
+  return newVar;
 })();
 
 module.exports = Config;
