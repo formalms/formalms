@@ -969,7 +969,7 @@ class Report_User extends Report {
 
 			case 'send_mail_confirm': {
 				$subject = importVar('mail_object', false, '['.$lang->def('_SUBJECT').']' );//'[No subject]');
-                $body = $_REQUEST['mail_body'] ?? '';
+                $body = $_REQUEST['mail_body'] ? $_REQUEST['mail_body'] : '';
 				$acl_man = new DoceboACLManager();
                 $sender = Get::sett('sender_event');
 				$mail_recipients = Util::unserialize(urldecode(Get::req('mail_recipients', DOTY_STRING, '')));
