@@ -226,7 +226,7 @@ $course-box-border: 2px;
   justify-content: flex-start;
   align-items: center;
   padding-left: 9px;
-  background-color: lightblue !important;
+  background-color: var(--color-0-050) !important;
 
  .course-box__closingdate__text {
    display: block;

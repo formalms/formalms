@@ -9,15 +9,13 @@
 // Style guide: 11
 .forma-tooltip {
   display: block;
-  width: 155px;
+  width: 156px;
   padding: 17px 12px;
   height: auto;
   position: absolute;
   top: 0;
   left: 50%;
   z-index: 99999;
-  // transform: translate(-50%, -100%) translateY(-15px);
-  // transform: translate3d(-50%, -100%, 0) translateY(-45px);
   border-radius: $border-radius;
   background-color: var(--color-1-550);
   font-size: 1.2rem;
@@ -29,9 +27,9 @@
   transition: {
     // property: transform, opacity, visibility;
     property: opacity, visibility;
-    duration: 0.4s;
+    duration: 0.7s;
     timing-function: ease;
-    delay: 0s;
+    delay: 0.2ms;
   }
 
   &:after {
@@ -39,9 +37,10 @@
     position: absolute;
     bottom: 0;
     left: 50%;
-    // transform: translate(-10%, 100%);
   }
   &.down {
+    left: -61px;
+    top: -200px;
     &:after {
       border: {
         top: none;
@@ -49,8 +48,8 @@
         bottom: solid 12px var(--color-1-550);
         left: solid 6px transparent;
       }
-        transform: translate(-50%, 100%) translateY(-285px);
-      // transform: translate3d(-50%, -100%) translateY(-285px);
+      //transform: translate(0%, 100%) translateY(-285px);
+
     }
   }
   &.left {
@@ -58,7 +57,7 @@
   }
 
   .has-forma-tooltip:hover & {
-    transform: translate(-50%, -100%) translateY(-15px);
+    transform: translate(0%, -100%) translateY(-15px);
     // transform: translate3d(-50%, -100%, 0) translateY(-15px);
     opacity: 1;
     visibility: visible;

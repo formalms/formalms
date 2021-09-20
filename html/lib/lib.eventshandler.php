@@ -46,7 +46,7 @@ final class EventsHandler
      */
     public function trigger($eventName, $arguments = [])
     {
-        $event = $this->dispatcher->dispatch($eventName, new FormaEvent(null, $arguments));
+        $event = $this->dispatcher->dispatch(new FormaEvent(null, $arguments),$eventName);
         return $event->getArguments();
     }
 

@@ -21,6 +21,7 @@ require_once(_lms_ . '/lib/lib.middlearea.php');
  */
 class DashboardBlockCertificatesLms extends DashboardBlockLms
 {
+    const MAX_CERTIFICATES = 3;
 
     public function __construct($jsonConfig)
     {
@@ -96,7 +97,7 @@ class DashboardBlockCertificatesLms extends DashboardBlockLms
     private function getCertificates()
     {
         if (!$limit = (int)$this->data['max_last_records']) {
-            return;
+            $limit = self::MAX_CERTIFICATES;
         }
 
         return $this->getCertificatesForBlock($limit);

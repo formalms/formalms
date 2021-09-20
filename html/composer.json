@@ -8,11 +8,11 @@
     ],
     "require": {
         "php": ">=7.4",
-        "symfony/event-dispatcher": "^3.3",
-        "twig/twig": "^2.0",
-        "lusitanian/oauth": "~0.8.10",
-        "phpmailer/phpmailer": "^6.0",
-        "ezyang/htmlpurifier": "^4.10.0",
+        "symfony/event-dispatcher": "^v5.3",
+        "twig/twig": "^v2.14",
+        "lusitanian/oauth": "^v0.8",
+        "phpmailer/phpmailer": "^v6.5",
+        "ezyang/htmlpurifier": "^v4.13",
         "pclzip/pclzip": "^2.8",
         "tecnickcom/tcpdf": "^6.3",
         "ircmaxell/password-compat": "^1.0",
@@ -27,9 +27,9 @@
     },
     "require-dev": {
         "roave/security-advisories": "dev-master",
-        "phing/phing": "^2.13.0",
+        "phing/phing": "^2.13",
         "simpletest/simpletest": "^1.1",
-        "symfony/var-dumper": "^3.3",
+        "symfony/var-dumper": "^v5.3",
         "phpunit/phpunit": "^6.5"
     },
     "authors": [
