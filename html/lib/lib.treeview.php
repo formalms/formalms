@@ -79,7 +79,9 @@ class TreeView {
 	// lang object
 	var $lang = NULL;
 
-	function TreeView($tdb, $id, $rootname = 'root') {
+	protected $aclManager;
+
+	function __construct($tdb, $id, $rootname = 'root') {
 		$this->tdb = $tdb;
 		$this->id = $id;
 		$this->posTree = array(0);
@@ -90,6 +92,7 @@ class TreeView {
 		$this->op = '';
 		$this->rootname = $rootname;
 		$this->lang =& DoceboLanguage::createInstance('treeview', 'framework');
+		$this->aclManager = new DoceboACLManager();
 	}
 
 	function setLanguage( &$lang ) {

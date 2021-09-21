@@ -2962,11 +2962,6 @@ class UsermanagementAdmController extends AdmController
 		$to_update = Get::req('to_change', DOTY_MIXED, array());
 		$count_updated = 0;
 
-		if (!empty($to_update)) {
-			foreach ($to_update as $property) {
-			}
-		}
-
 		//read input data
 		$sel_properties = Get::req('multimod_sel', DOTY_MIXED, array());
 		$pref_properties = Get::req('multimod_selpref', DOTY_MIXED, array());
@@ -3035,11 +3030,19 @@ class UsermanagementAdmController extends AdmController
 		$acl_man = &Docebo::user()->getAclManager();
 
 		//send email alert
-		if (isset($sel_properties['send_alert']) && isset($sel_properties['password']) && $info->password != "") {
+		if (isset($sel_properties['send_alert']) && isset($sel_properties['password']) && !empty($info->password)) {
+            $uma = new UsermanagementAdm();
 
-			for ($i = 0; $i < count($users); $i++) {
+            $acl_manager = \Docebo::user()->getAclManager();
 
-				$uma = new UsermanagementAdm();
+            $permission_godadmin = $acl_manager->getGroupST(ADMIN_GROUP_GODADMIN);
+            $permission_admin = $acl_manager->getGroupST(ADMIN_GROUP_ADMIN);
+
+            $adminRecipients = $acl_manager->getGroupAllUser($permission_godadmin);
+            $adminRecipients = array_merge($adminRecipients,$acl_manager->getGroupAllUser($permission_admin));
+
+			for ($i = 0, $iMax = count($users); $i < $iMax; $i++) {
+
 				$reg_code = null;
 				if ($nodes = $uma->getUserFolders($users[$i])) {
 					$idst_oc = array_keys($nodes)[0];
@@ -3057,15 +3060,40 @@ class UsermanagementAdmController extends AdmController
 				);
 
 				require_once(_base_ . '/lib/lib.eventmanager.php');
-				$e_msg = new EventMessageComposer();
+                $msg_composer = new EventMessageComposer();
 
-				$e_msg->setSubjectLangText('email', '_REGISTERED_USER_SBJ', false);
-				$e_msg->setBodyLangText('email', '_REGISTERED_USER_TEXT', $array_subst);
+                $msg_composer->setSubjectLangText('email', '_MODIFIED_USER_SBJ', false);
+                $msg_composer->setBodyLangText('email', '_MODIFIED_USER_TEXT', $array_subst);
 
-				$e_msg->setBodyLangText('sms', '_REGISTERED_USER_TEXT_SMS', $array_subst);
+                $msg_composer->setBodyLangText('sms', '_MODIFIED_USER_TEXT_SMS', $array_subst);
+                if(!empty($info->password)){
+                    $msg_composer->setBodyLangText('email', '_PASSWORD_CHANGED', array('[password]' => $info->password));
+                    $msg_composer->setBodyLangText('sms', '_PASSWORD_CHANGED_SMS', array('[password]' => $info->password));
+                }
 
-				$recipients = array($users[$i]);
-				createNewAlert('UserNew', 'directory', 'edit', '1', 'New user created', $recipients, $e_msg, true);
+                createNewAlert(	'UserMod', 'directory', 'edit', '1', 'User '.$users[$i].' was modified',
+                    [$users[$i]], $msg_composer );
+
+                $uinfo = Docebo::aclm()->getUser($users[$i], false);
+
+                $array_subst = [
+                    '[url]' => Get::site_url(),
+                    '[dynamic_link]' => getCurrentDomain($reg_code) ?: Get::site_url(),
+                    '[firstname]' => $uinfo[ACL_INFO_FIRSTNAME],
+                    '[lastname]' => $uinfo[ACL_INFO_LASTNAME],
+                    '[username]' => $users[$i]
+                ];
+
+                // message to user that is odified
+                $msg_composer = new EventMessageComposer();
+
+                $msg_composer->setSubjectLangText('email', '_EVENT_MOD_USER_SBJ', false);
+                $msg_composer->setBodyLangText('email', '_EVENT_MOD_USER_TEXT', $array_subst);
+
+                $msg_composer->setBodyLangText('sms', '_EVENT_MOD_USER_TEXT_SMS', $array_subst);
+
+                createNewAlert(	'UserModSuperAdmin', 'directory', 'edit', '1', 'User '.$users[$i].' was modified',
+                    $adminRecipients, $msg_composer );
 			}
 		}
 
@@ -3073,7 +3101,7 @@ class UsermanagementAdmController extends AdmController
 		if (isset($sel_properties['link_reset_password'])) {
 			require_once(_base_ . '/appCore/models/HomepageAdm.php');
 			$homepageAdmModel = new HomepageAdm();
-			for ($i = 0; $i < count($users); $i++) {
+			for ($i = 0, $iMax = count($users); $i < $iMax; $i++) {
 				$res = $homepageAdmModel->sendLostPwd($acl_man->getUserid($users[$i]));
 			}
 		}

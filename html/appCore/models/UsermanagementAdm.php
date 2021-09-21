@@ -2362,27 +2362,73 @@ class UsermanagementAdm extends Model
 
 	public function randomPassword($idst)
 	{
-		$acl_manager = &Docebo::user()->getAclManager();
 		$new_password = $this->aclManager->random_password();
-		$userid = $acl_manager->getUserid($idst, false);
+		$userid = $this->aclManager->getUserid($idst, false);
 		if ($this->changePassword($idst, $new_password)) {
-			$array_subst = array(
-				'[url]' => Get::site_url(),
-				'[userid]' => $userid,
-				'[password]' => $new_password
-			);
-			require_once(_base_ . '/lib/lib.eventmanager.php');
-			$e_msg = new EventMessageComposer();
 
-			$e_msg->setSubjectLangText('email', '_MODIFIED_USER_SBJ', false);
-			$e_msg->setBodyLangText('email', '_MODIFIED_USER_TEXT', $array_subst);
-			$e_msg->setBodyLangText('email', '_PASSWORD_CHANGED', $array_subst);
+            $permission_godadmin = $this->aclManager->getGroupST(ADMIN_GROUP_GODADMIN);
+            $permission_admin = $this->aclManager->getGroupST(ADMIN_GROUP_ADMIN);
 
-			$recipients = array($idst);
-			createNewAlert('UserMod', 'directory', 'edit', '1', 'New user created', $recipients, $e_msg, true);
+            $adminRecipients = $this->aclManager->getGroupAllUser($permission_godadmin);
+            $adminRecipients = array_merge($adminRecipients,$this->aclManager->getGroupAllUser($permission_admin));
+
+            $reg_code = null;
+            $uma = new UsermanagementAdm();
+            if ($nodes = $uma->getUserFolders($userid)) {
+                $idst_oc = array_keys($nodes)[0];
+
+                if ($query = sql_query("SELECT idOrg FROM %adm_org_chart_tree WHERE idst_oc = $idst_oc LIMIT 1")) {
+                    $reg_code = sql_fetch_object($query)->idOrg;
+                }
+            }
+
+            $array_subst = array(
+                '[url]' => Get::site_url(),
+                '[userid]' => $this->aclManager->getUserid($userid),
+                '[dynamic_link]' => getCurrentDomain($reg_code) ?: Get::site_url(),
+                '[password]' => $new_password
+            );
+
+            require_once(_base_ . '/lib/lib.eventmanager.php');
+            $msg_composer = new EventMessageComposer();
+
+            $msg_composer->setSubjectLangText('email', '_MODIFIED_USER_SBJ', false);
+            $msg_composer->setBodyLangText('email', '_MODIFIED_USER_TEXT', $array_subst);
+
+            $msg_composer->setBodyLangText('sms', '_MODIFIED_USER_TEXT_SMS', $array_subst);
+            if(!empty($new_password)){
+                $msg_composer->setBodyLangText('email', '_PASSWORD_CHANGED', array('[password]' => $new_password));
+                $msg_composer->setBodyLangText('sms', '_PASSWORD_CHANGED_SMS', array('[password]' => $new_password));
+            }
+
+            createNewAlert(	'UserMod', 'directory', 'edit', '1', 'User '.$userid.' was modified',
+                [$userid], $msg_composer );
+
+            $uinfo = Docebo::aclm()->getUser($userid, false);
+
+            $array_subst = [
+                '[url]' => Get::site_url(),
+                '[dynamic_link]' => getCurrentDomain($reg_code) ?: Get::site_url(),
+                '[firstname]' => $uinfo[ACL_INFO_FIRSTNAME],
+                '[lastname]' => $uinfo[ACL_INFO_LASTNAME],
+                '[username]' => $userid
+            ];
+
+            // message to user that is odified
+            $msg_composer = new EventMessageComposer();
+
+            $msg_composer->setSubjectLangText('email', '_EVENT_MOD_USER_SBJ', false);
+            $msg_composer->setBodyLangText('email', '_EVENT_MOD_USER_TEXT', $array_subst);
+
+            $msg_composer->setBodyLangText('sms', '_EVENT_MOD_USER_TEXT_SMS', $array_subst);
+
+            createNewAlert(	'UserModSuperAdmin', 'directory', 'edit', '1', 'User '.$userid.' was modified',
+                $adminRecipients, $msg_composer );
 
 			return true;
-		} else return false;
+		}
+
+        return false;
 	}
 
 	public function changePassword($idst, $new_password, $force_changepwd = 0)

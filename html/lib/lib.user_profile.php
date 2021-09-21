@@ -431,12 +431,23 @@ class UserProfile {
 
 						$uinfo = Docebo::aclm()->getUser($this->_id_user, false);
 
-						$array_subst = array(
-							'[url]' => Get::site_url(),
-							'[firstname]' => $uinfo[ACL_INFO_FIRSTNAME],
-							'[lastname]' => $uinfo[ACL_INFO_LASTNAME],
-							'[username]' => $uinfo[ACL_INFO_USERID]
-						);
+                        $reg_code = null;
+                        $uma = new UsermanagementAdm();
+                        if ($nodes = $uma->getUserFolders($this->_id_user)) {
+                            $idst_oc = array_keys($nodes)[0];
+
+                            if ($query = sql_query("SELECT idOrg FROM %adm_org_chart_tree WHERE idst_oc = $idst_oc LIMIT 1")) {
+                                $reg_code = sql_fetch_object($query)->idOrg;
+                            }
+                        }
+
+                        $array_subst = array(
+                            '[url]' => Get::site_url(),
+                            '[dynamic_link]' => getCurrentDomain($reg_code) ?: Get::site_url(),
+                            '[firstname]' => $uinfo[ACL_INFO_FIRSTNAME],
+                            '[lastname]' => $uinfo[ACL_INFO_LASTNAME],
+                            '[username]' => $this->_id_user
+                        );
 
 						// message to user that is odified
 						$msg_composer = new EventMessageComposer();
@@ -452,10 +463,10 @@ class UserProfile {
 						$permission_admin = $acl_manager->getGroupST(ADMIN_GROUP_ADMIN);
 
 						$recipients = $acl_manager->getGroupAllUser($permission_godadmin);
-						$users = array_merge($users,$acl_manager->getGroupAllUser($permission_admin));
+						$recipients = array_merge($recipients,$acl_manager->getGroupAllUser($permission_admin));
 
 						createNewAlert(	'UserModSuperAdmin', 'directory', 'edit', '1', 'User '.$uinfo[ACL_INFO_USERID].' was modified',
-							$users, $msg_composer );
+							$recipients, $msg_composer );
 
 						return getResultUi($this->_lang->def('_OPERATION_SUCCESSFULPROFILE')).$this->getProfile();
 					}
