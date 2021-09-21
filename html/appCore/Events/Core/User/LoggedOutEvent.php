@@ -2,7 +2,7 @@
 
 namespace appCore\Events\Core\User;
 
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 class LoggedOutEvent extends Event
 {

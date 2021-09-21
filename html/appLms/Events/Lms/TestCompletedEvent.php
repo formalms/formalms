@@ -2,7 +2,7 @@
 namespace appLms\Events\Lms;
 
 use Behat\Mink\Exception\Exception;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 use appCore\lib\Sms\SmsGatewayManager;
 
 class TestCompletedEvent extends Event

@@ -1,7 +1,7 @@
 <?php
 namespace appCore\Events\Core\FileSystem;
 
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * Class UploadEvent

@@ -2,7 +2,7 @@
 
 namespace appLms\Events\Transaction;
 
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 class TransactionPaidEvent extends Event {
     

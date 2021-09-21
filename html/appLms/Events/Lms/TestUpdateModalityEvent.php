@@ -1,7 +1,7 @@
 <?php
 namespace appLms\Events\Lms;
 
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 class TestUpdateModalityEvent extends Event
 {

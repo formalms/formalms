@@ -2,7 +2,7 @@
 
 namespace appCore\Events\Core\Courses;
 
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 class CoursesListEvent extends Event
 {

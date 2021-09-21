@@ -3,7 +3,7 @@
 namespace appLms\Events\Lms;
 
 use Behat\Mink\Exception\Exception;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 class CourseReportDetailEvent extends Event
 {

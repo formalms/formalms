@@ -1,7 +1,7 @@
 <?php
 namespace appLms\Events\Api;
 
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * Class ApiUserRegistrationEvent

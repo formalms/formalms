@@ -1,7 +1,7 @@
 <?php
 namespace appCore\Events\Core\Courses;
 
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * Class CourseSubscriptionRemoveEvent

@@ -1,7 +1,7 @@
 <?php
 namespace appCore\Events\Core;
 
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 class ConfigGetRegroupUnitsEvent extends Event
 {
