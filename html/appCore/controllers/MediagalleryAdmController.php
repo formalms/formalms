@@ -38,8 +38,8 @@ class MediagalleryAdmController extends AdmController
             die("You can't access!");
         }
 
-        $p_size = intval(ini_get('post_max_size'));
-        $u_size = intval(ini_get('upload_max_filesize'));
+        $p_size = (int)ini_get('post_max_size');
+        $u_size = (int)ini_get('upload_max_filesize');
         $comparison = array($p_size, $u_size);
         if (!is_null($max_size)) {
             $comparison[] = (int)$max_size;
@@ -89,9 +89,11 @@ class MediagalleryAdmController extends AdmController
             $tmp_fname         = $_FILES["file"]["tmp_name"];
             $real_fname     = $user_id . '_' . mt_rand(0, 100) . '_' . time() . '_' . $fname;
 
-            $valid_ext = explode(",", Get::sett('file_upload_whitelist', ''));
-            $ext = strtolower(end(explode(".", $fname)));
-            if (!in_array($ext, $valid_ext)) {
+            $upload_whitelist =Get::sett('file_upload_whitelist', 'rar,exe,zip,jpg,gif,png,txt,csv,rtf,xml,doc,docx,xls,xlsx,ppt,pptx,odt,ods,odp,pdf,xps,mp4,mp3,flv,swf,mov,wav,ogg,flac,wma,wmv,jpeg');
+            $upload_whitelist_arr =explode(',', trim($upload_whitelist, ','));
+            $array = explode(".", $fname);
+            $ext = strtolower(end($array));
+            if (!in_array($ext, $upload_whitelist_arr)) {
                 $error = Lang::t('_INVALID_EXTENSION', 'standard');
             } else {
                 sl_open_fileoperations();

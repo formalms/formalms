@@ -16,6 +16,9 @@ define("GROUP_FIELD_NORMAL", "Normal");
 define("GROUP_FIELD_DESCEND", "Descend");
 define("GROUP_FIELD_INHERIT", "Inherit");
 
+require_once(_base_ . '/lib/lib.eventmanager.php');
+
+
 class UsermanagementAdmController extends AdmController
 {
 
@@ -115,30 +118,30 @@ class UsermanagementAdmController extends AdmController
 		$fields = $fman->getFlatAllFields(array('framework', 'lms'));
 
 		$f_list = array(
-            'level' => Lang::t('_LEVEL', 'standard'),
+			'level' => Lang::t('_LEVEL', 'standard'),
 			'email' => Lang::t('_EMAIL', 'standard'),
 			'lastenter' => Lang::t('_DATE_LAST_ACCESS', 'profile'),
 			'register_date' => Lang::t('_DIRECTORY_FILTER_register_date', 'admin_directory'),
 			'language' => Lang::t('_LANGUAGE', 'standard')
-			
+
 		);
 		$f_list = $f_list + $fields;
 		$f_selected = $this->json->decode(Docebo::user()->getPreference('ui.directory.custom_columns'));
 		if ($f_selected == false) {
-			$f_selected = array('level','email', 'lastenter', 'register_date');
+			$f_selected = array('level', 'email', 'lastenter', 'register_date');
 			/*$k_list = array_keys($f_list);
-			$counter = 0;
-			$lastkey = !empty($k_list) ? $k_list[0] : false;
-			while (list($key, $value) = each($f_list) && $counter < $this->numVarFields) {
-				$f_selected[] = $key;
-				$lastkey = $key;
-				$counter++;
-			}
-			if (count($f_selected) < $this->numVarFields) {
-				for ($i=0; $i<($this->numVarFields - $counter); $i++) {
-					$f_selected[] = $lastkey;
-				}
-			}*/
+            $counter = 0;
+            $lastkey = !empty($k_list) ? $k_list[0] : false;
+            while (list($key, $value) = each($f_list) && $counter < $this->numVarFields) {
+                $f_selected[] = $key;
+                $lastkey = $key;
+                $counter++;
+            }
+            if (count($f_selected) < $this->numVarFields) {
+                for ($i=0; $i<($this->numVarFields - $counter); $i++) {
+                    $f_selected[] = $lastkey;
+                }
+            }*/
 		}
 
 		$js_arr = array();
@@ -171,18 +174,18 @@ class UsermanagementAdmController extends AdmController
 				break;
 
 			case 'err_alreadyassigned':
-				{
-					$countassigned = Get::req('count', DOTY_STRING, '');
-					$id_first = Get::req('id_first', DOTY_STRING, '');
-					$profile_user = $this->model->getProfileData($id_first);
+			{
+				$countassigned = Get::req('count', DOTY_STRING, '');
+				$id_first = Get::req('id_first', DOTY_STRING, '');
+				$profile_user = $this->model->getProfileData($id_first);
 
-					if ($countassigned == 1) {
-						$message = getErrorUi(Lang::t('_USER') . ' ' . $profile_user->firstname . ' ' . $profile_user->lastname . ' ' . Lang::t('_ALREADY_ASSIGNED', 'admin_directory'));
-					} else {
-						$message = getErrorUi($countassigned . ' ' . Lang::t('_USERS_ALREADY_ASSIGNED', 'admin_directory') . ' (' . $profile_user->firstname . ' ' . $profile_user->lastname . '...)');
-					}
-					break;
+				if ($countassigned == 1) {
+					$message = getErrorUi(Lang::t('_USER') . ' ' . $profile_user->firstname . ' ' . $profile_user->lastname . ' ' . Lang::t('_ALREADY_ASSIGNED', 'admin_directory'));
+				} else {
+					$message = getErrorUi($countassigned . ' ' . Lang::t('_USERS_ALREADY_ASSIGNED', 'admin_directory') . ' (' . $profile_user->firstname . ' ' . $profile_user->lastname . '...)');
 				}
+				break;
+			}
 			default:
 				$message = "";
 		}
@@ -1020,7 +1023,7 @@ class UsermanagementAdmController extends AdmController
 		if ($users != "") {
 			$arr_users = explode(',', $users);
 			$output['success'] = true;
-			foreach ($arr_users AS $user) {
+			foreach ($arr_users as $user) {
 				if (!$this->model->randomPassword($user)) {
 					$output['success'] = false;
 				}
@@ -1270,11 +1273,11 @@ class UsermanagementAdmController extends AdmController
 				break;
 
 			default:
-				{
-					$output = array();
-					$output['success'] = false;
-					echo $this->json->encode($output);
-				}
+			{
+				$output = array();
+				$output['success'] = false;
+				echo $this->json->encode($output);
+			}
 		} // end switch
 
 	}
@@ -1741,11 +1744,11 @@ class UsermanagementAdmController extends AdmController
 					break;
 
 				default:
-					{
-						$is_mandatory = false;
-						$is_invisible = false;
-						$is_userinherit = false;
-					}
+				{
+					$is_mandatory = false;
+					$is_invisible = false;
+					$is_userinherit = false;
+				}
 			}
 
 			$selected = $def_value != GROUP_FIELD_NO;
@@ -1996,7 +1999,7 @@ class UsermanagementAdmController extends AdmController
 			$recipients = $acl_manager->getGroupAllUser($permission_godadmin);
 			$recipients = array_merge($recipients, $acl_manager->getGroupAllUser($permission_admin));
 
-			foreach ($arr_users as $idst){
+			foreach ($arr_users as $idst) {
 
 				require_once(_base_ . '/lib/lib.eventmanager.php');
 
@@ -2318,7 +2321,7 @@ class UsermanagementAdmController extends AdmController
 						Util::jump_to($base_url . '&res=userid_needed');
 					}
 
-					foreach ($importer->import_map AS $im) {
+					foreach ($importer->import_map as $im) {
 						if ($im != DOCEBOIMPORT_IGNORE && count(array_keys($importer->import_map, $im)) > 1) {
 							Util::jump_to($base_url . '&res=field_repeated');
 						}
@@ -2429,7 +2432,9 @@ class UsermanagementAdmController extends AdmController
 			$acl_man = Docebo::user()->getAclManager();
 			$arr_users = explode(',', $users);
 			$arr_users = array_map(
-				function($value) { return (int)$value; },
+				function ($value) {
+					return (int)$value;
+				},
 				$arr_users
 			);
 			$arr_users = array_unique($arr_users);
@@ -2973,7 +2978,17 @@ class UsermanagementAdmController extends AdmController
 		//send email alert
 		if (isset($sel_properties['send_alert']) && isset($sel_properties['password']) && $info->password != "") {
 
-			for ($i = 0; $i < count($users); $i++) {
+			$uma = new UsermanagementAdm();
+
+			$acl_manager = \Docebo::user()->getAclManager();
+
+			$permission_godadmin = $acl_manager->getGroupST(ADMIN_GROUP_GODADMIN);
+			$permission_admin = $acl_manager->getGroupST(ADMIN_GROUP_ADMIN);
+
+			$adminRecipients = $acl_manager->getGroupAllUser($permission_godadmin);
+			$adminRecipients = array_merge($adminRecipients,$acl_manager->getGroupAllUser($permission_admin));
+
+			for ($i = 0, $iMax = count($users); $i < $iMax; $i++) {
 
 				$array_subst = array(
 					'[url]' => Get::site_url(),
@@ -2981,16 +2996,41 @@ class UsermanagementAdmController extends AdmController
 					'[password]' => $info->password
 				);
 
-				require_once(_base_ . '/lib/lib.eventmanager.php');
-				$e_msg = new EventMessageComposer();
+				$msg_composer = new EventMessageComposer();
 
-				$e_msg->setSubjectLangText('email', '_REGISTERED_USER_SBJ', false);
-				$e_msg->setBodyLangText('email', '_REGISTERED_USER_TEXT', $array_subst);
+				$msg_composer->setSubjectLangText('email', '_MODIFIED_USER_SBJ', false);
+				$msg_composer->setBodyLangText('email', '_MODIFIED_USER_TEXT', $array_subst);
 
-				$e_msg->setBodyLangText('sms', '_REGISTERED_USER_TEXT_SMS', $array_subst);
+				$msg_composer->setBodyLangText('sms', '_MODIFIED_USER_TEXT_SMS', $array_subst);
+				if (!empty($info->password)) {
+					$msg_composer->setBodyLangText('email', '_PASSWORD_CHANGED', array('[password]' => $info->password));
+					$msg_composer->setBodyLangText('sms', '_PASSWORD_CHANGED_SMS', array('[password]' => $info->password));
+				}
+
+				createNewAlert('UserMod', 'directory', 'edit', '1', 'User ' . $users[$i] . ' was modified',
+					[$users[$i]], $msg_composer);
+
+				$uinfo = Docebo::aclm()->getUser($users[$i], false);
+
+				$array_subst = [
+					'[url]' => Get::site_url(),
+					'[firstname]' => $uinfo[ACL_INFO_FIRSTNAME],
+					'[lastname]' => $uinfo[ACL_INFO_LASTNAME],
+					'[username]' => $users[$i]
+				];
+
+				// message to user that is odified
+				$msg_composer = new EventMessageComposer();
+
+				$msg_composer->setSubjectLangText('email', '_EVENT_MOD_USER_SBJ', false);
+				$msg_composer->setBodyLangText('email', '_EVENT_MOD_USER_TEXT', $array_subst);
+
+				$msg_composer->setBodyLangText('sms', '_EVENT_MOD_USER_TEXT_SMS', $array_subst);
 
 				$recipients = array($users[$i]);
-				createNewAlert('UserNew', 'directory', 'edit', '1', 'New user created', $recipients, $e_msg, true);
+				createNewAlert('UserModSuperAdmin', 'directory', 'edit', '1', 'User ' . $users[$i] . ' was modified',
+					$adminRecipients, $msg_composer);
+
 
 			}
 
@@ -3000,7 +3040,7 @@ class UsermanagementAdmController extends AdmController
 		if (isset($sel_properties['link_reset_password'])) {
 			require_once(_base_ . '/appCore/models/HomepageAdm.php');
 			$homepageAdmModel = new HomepageAdm();
-			for ($i = 0; $i < count($users); $i++) {
+			for ($i = 0, $iMax = count($users); $i < $iMax; $i++) {
 				$res = $homepageAdmModel->sendLostPwd($acl_man->getUserid($users[$i]));
 			}
 		}
@@ -3070,11 +3110,11 @@ class UsermanagementAdmController extends AdmController
 				break;
 
 			default:
-				{
-					$output = array();
-					$output['success'] = false;
-					echo $this->json->encode($output);
-				}
+			{
+				$output = array();
+				$output['success'] = false;
+				echo $this->json->encode($output);
+			}
 		} // end switch
 
 	}
