@@ -2,6 +2,7 @@
 namespace appCore\Events;
 
 use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Contracts\EventDispatcher\Event;
 
 /* ======================================================================== \
   |   FORMA - The E-Learning Suite                                            |
@@ -42,8 +43,8 @@ class DispatcherManager {
         return self::$instance;
     }
 
-    public static function dispatch($eventName, \Symfony\Component\EventDispatcher\Event $event = null) {
-        return self::getInstance()->dispatcher->dispatch($eventName, $event);
+    public static function dispatch($eventName, Event $event) {
+        return self::getInstance()->dispatcher->dispatch($event,$eventName);
     }
 
     public static function addListener($eventName, $listener, $priority = 0) {
