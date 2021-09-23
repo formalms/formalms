@@ -2864,7 +2864,7 @@ class Report_User extends Report
             $courses_codes = array();
 
             while (list($id_u, $id_c, $id_e, $date_inscr, $date_first_access, $date_complete, $status, $level,
-                $date_last_access, $u_userid, $u_firstname, $u_lastname, $u_email, $u_valid) = sql_fetch_row($re_course_user)) {
+                 $u_userid, $u_firstname, $u_lastname, $u_email, $u_valid) = sql_fetch_row($re_course_user)) {
 
                 if ($level == '3') { //$report_type === 'course_started' && $level == '3') {
 
@@ -2983,7 +2983,10 @@ class Report_User extends Report
             }
 
             //print course table
-            $this->_printTable_delay($type, $element_to_print, $showed_columns);
+            // #19936  - INSERT RETURN 
+            //$this->_printTable_delay($type, $element_to_print, $showed_columns);
+            return $this->_printTable_delay($type, $element_to_print, $showed_columns);            
+            
             if ($this->use_mail) {
                 $this->_loadEmailActions();
             }
@@ -3091,7 +3094,12 @@ class Report_User extends Report
 
             }
 
-            cout($buffer->get(), 'content');
+            
+           // #19936  - INSERT RETURN  
+           $output = $buffer->get();
+           return $output;            
+           
+           //cout($buffer->get(), 'content');
         }
     }
 

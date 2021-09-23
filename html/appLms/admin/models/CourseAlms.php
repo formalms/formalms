@@ -1264,7 +1264,7 @@ class CourseAlms extends Model
 
         //--- remove course data ---------------------------------------------------
 
-        $query_course = "SELECT imgSponsor, img_course, img_material, img_othermaterial, course_demo, course_type, has_editions
+        $query_course = "SELECT imgSponsor, img_course, img_material, img_othermaterial, course_demo, course_type
             FROM %lms_course
             WHERE idCourse = '" . (int) $id_course . "'";
         $qres = sql_query($query_course);
