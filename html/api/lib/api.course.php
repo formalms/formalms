@@ -1009,7 +1009,7 @@ class Course_API extends API
 
 
         if ($res['res'] == '_ok_course') {
-            $id_course = $this->_getInfoCourseAdd();
+            $id_course = $this->getInfoCourseAdd();
             $response['message'] = $res['res'] . " -  " . $params['course_type'];
             $response['course_id'] = $id_course;
 
