@@ -3522,6 +3522,9 @@ ALTER TABLE `learning_course_date_day`
 ALTER TABLE `learning_course` ADD COLUMN `sendCalendar` tinyint(1) NULL DEFAULT 0;
 ALTER TABLE `learning_course` ADD COLUMN `calendarId` varchar(255) NOT NULL AFTER `sendCalendar`;
 
+ALTER TABLE `learning_course_date` ADD COLUMN `calendarId` varchar(255) NOT NULL;
+ALTER TABLE `learning_course_editions` ADD COLUMN `calendarId` varchar(255) NOT NULL;
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
