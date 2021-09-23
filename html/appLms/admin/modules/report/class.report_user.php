@@ -3095,7 +3095,7 @@ class Report_User extends Report
             }
 
             
-           // #19936  - INSERT RETURN 
+           // #19936  - INSERT RETURN  
            $output = $buffer->get();
            return $output;            
            
