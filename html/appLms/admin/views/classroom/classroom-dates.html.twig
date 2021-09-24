@@ -59,6 +59,48 @@
         border-color: red;
         /* insert your own styles for valid form input */
     }
+    
+    /* need to be shared */
+    .modal-background {
+      display: none; 
+      position: fixed;
+      z-index: 1; 
+      padding-top: 100px; 
+      left: 0;
+      top: 0;
+      width: 100%; 
+      height: 100%; 
+      overflow: auto; 
+      background-color: rgb(0,0,0); 
+      background-color: rgba(0,0,0,0.4); 
+    }
+
+    /* Modal Content */
+    .modal-content {
+      background-color: #fefefe;
+      margin: auto;
+      padding: 20px;
+      border: 3px solid #777;
+      width: 20%;
+      height: 20%
+    }
+
+    /* The Close Button */
+    .close {
+      color: black;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+      color: red;
+      text-decoration: none;
+      cursor: pointer;
+    }   
+        
+    
 
 </style>
 
@@ -107,11 +149,11 @@
                 <thead>
                 <tr>
                     <th scope="col">Date</th>
-                    <th scope="col">Ora inizio</th>
-                    <th scope="col">Ora fine</th>
-                    <th scope="col">Ora inizio pausa</th>
-                    <th scope="col">Ora fine pausa</th>
-                    <th scope="col">Classe</th>
+                    <th scope="col">{{ Lang_translate('_HOUR_BEGIN','course') }}</th>
+                    <th scope="col">{{ Lang_translate('_HOUR_END','course') }}</th>
+                    <th scope="col">{{ Lang_translate('_PAUSE_BEGIN','course') }}</th>
+                    <th scope="col">{{ Lang_translate('_PAUSE_END','course') }}</th>
+                    <th scope="col">{{ Lang_translate('_CLASSROOM','classroom') }}</th>
                 </tr>
                 </thead>
                 <tbody id="js-table-body">
@@ -139,8 +181,8 @@
             </table>
             <div class="edit-classroom-dates--new-date">
                 <div class="edit-classroom-dates--new-date-box">
-                    <span id="js-button-new-row">Inserisci una nuova riga</span>&nbsp;&nbsp;&nbsp;
-                    <span id="js-button-update-row">Modifica orari</span>
+                    <span id="js-button-new-row">{{ Lang_translate('_ADD_DATE_ROW','classroom') }}</span>&nbsp;&nbsp;&nbsp;
+                    <span id="js-button-update-row">{{ Lang_translate('_TIMETALBE_MODIFY','classroom') }}</span>
                 </div>
             </div>
         </div>
@@ -157,31 +199,31 @@
                 </div>
                 <div class="col">
                     <div class="form-outline">
-                        <label class="form-label" for="form-day_date_begin">Ora inizio</label>
+                        <label class="form-label" for="form-day_date_begin">{{ Lang_translate('_HOUR_BEGIN','course') }}</label>
                         <input value="00:00" type="time" id="form-day_date_begin" class="form-control"/>
                     </div>
                 </div>
                 <div class="col">
                     <div class="form-outline">
-                        <label class="form-label" for="form-day_date_end">Ora fine</label>
+                        <label class="form-label" for="form-day_date_end">{{ Lang_translate('_HOUR_END','course') }}</label>
                         <input type="time" value="00:00" id="form-day_date_end" class="form-control"/>
                     </div>
                 </div>
                 <div class="col">
                     <div class="form-outline">
-                        <label class="form-label" for="form-day_pause_begin">Ora inizio pausa</label>
+                        <label class="form-label" for="form-day_pause_begin">{{ Lang_translate('_PAUSE_BEGIN','course') }}</label>
                         <input type="time" value="00:00" id="form-day_pause_begin" class="form-control"/>
                     </div>
                 </div>
                 <div class="col">
                     <div class="form-outline">
-                        <label class="form-label" for="form-day_pause_end">Ora fine pausa</label>
+                        <label class="form-label" for="form-day_pause_end">{{ Lang_translate('_PAUSE_END','course') }}</label>
                         <input type="time" value="00:00" id="form-day_pause_end" class="form-control"/>
                     </div>
                 </div>
                 <div class="col col-box-end-button">
                     <div class="form-outline box-classroom">
-                        <label for="form-day_classroom">Classrom</label>
+                        <label for="form-day_classroom">{{ Lang_translate('_CLASSROOM','classroom') }}</label>
                         <select class="form-control select-box" id="form-day_classroom">
 
                             {% for id,classroom in availableClassrooms %}
@@ -212,9 +254,34 @@
 
     </div>
 </div>
+<div id="myModal" class="modal-background">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <p id="modal-text"></p>
+  </div>
 
-<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</div>
+
 <script type="text/javascript">
+    /* MODAL */
+
+    var modal = document.getElementById("myModal");
+    var span = document.getElementsByClassName("close")[0];
+
+    span.onclick = function() {
+      modal.style.display = "none";
+    }
+
+    window.onclick = function(event) {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    }    
+    
+    
+    /* end modal */
+
+
 
     var availableClassrooms = {{ availableClassrooms|json_encode|raw }}
     var lastInsertedRowId = -1;
@@ -300,7 +367,7 @@
             return;
         }
         if ((typeof id === 'undefined' || id === '') && insertedDays.includes(dateFormatted)) {
-            showError('Data già presente');
+            showError('{{ Lang_translate('_EXISTING_DATA','classroom') }}');
             return;
         }
 
@@ -560,17 +627,13 @@
     }
 
     function showError(text) {
-        Swal.fire({
-            title: text,
-            icon: 'error',
-        })
+        document.getElementById("modal-text").innerText = text
+        modal.style.display = "block";
     }
 
     function showSuccess(text) {
-        Swal.fire({
-            title: text,
-            icon: 'success',
-        })
+        document.getElementById("modal-text").innerText = text
+        modal.style.display = "block";
     }
 
 </script>
