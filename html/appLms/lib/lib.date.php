@@ -1435,7 +1435,7 @@ class DateManager
                 $query = "SELECT COUNT(*) FROM %lms_courseuser AS cu JOIN %lms_course_date AS cd JOIN %lms_course_date_user AS cdu "
                     . " ON (cd.id_date = cdu.id_date AND cd.id_course = cu.idCourse AND cu.idUser = cdu.id_user) "
                     . " WHERE cd.id_date = " . (int)$id_date . " AND cu.level = 3"
-                    . " AND " . $adminManager->getAdminUsersQuery(Docebo::user()->getIdSt(), 'u.id_user');
+                    . " AND " . $adminManager->getAdminUsersQuery(Docebo::user()->getIdSt(), 'cdu.id_user');
 
                 list($num_student) = sql_fetch_row(sql_query($query));
             } else {

@@ -14,9 +14,12 @@ $_columns = array(
 	array('key' => 'date_begin', 'label' => Lang::t('_DATE_BEGIN', 'course'), 'sortable' => true),
 	array('key' => 'date_end', 'label' => Lang::t('_DATE_END', 'course'), 'sortable' => true),
 	array('key' => 'classroom', 'label' => Lang::t('_CLASSROOM', 'course')),
-	array('key' => 'students', 'label' => Lang::t('_STUDENTS', 'coursereport'), 'className' => 'img-cell') ,
-    array('key' => 'registro', 'label' => Get::img('standard/date.png', Lang::t('_MOD', 'course')), 'className' => 'img-cell')
+	array('key' => 'students', 'label' => Lang::t('_STUDENTS', 'coursereport'), 'className' => 'img-cell')
 );
+
+if ($permissions['add'] && $permissions['mod']  && $permissions['del']  ) {
+        $_columns[] =  array('key' => 'registro', 'label' => Get::img('standard/date.png', Lang::t('_MOD', 'course')), 'className' => 'img-cell');
+}
 
 if ($permissions['subscribe']) {
 	$_columns[] = array('key' => 'subscription', 'label' => Get::sprite('subs_users', Lang::t('_SUBSCRIPTION', 'course') ), 'className' => 'img-cell');
