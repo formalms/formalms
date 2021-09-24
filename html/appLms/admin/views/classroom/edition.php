@@ -22,10 +22,8 @@ if ($permissions['add'] && $permissions['mod']  && $permissions['del']  ) {
 }
 
 if ($permissions['subscribe']) {
-	$_columns[] = array('key' => 'subscription', 'label' => Get::sprite('subs_users', Lang::t('_SUBSCRIPTION', 'course') ), 'className' => 'img-cell');
-	((Docebo::user()->preference->getAdminPreference('admin_rules.course_presence_admin') === 'on' && Docebo::user()->getUserLevelId() !== ADMIN_GROUP_GODADMIN) || Docebo::user()->getUserLevelId() === ADMIN_GROUP_GODADMIN
-		? $_columns[] = array('key' => 'presence', 'label' => Lang::t('_ATTENDANCE', 'course'), 'className' => 'img-cell')
-		: '');
+        $_columns[] = array('key' => 'subscription', 'label' => Get::sprite('subs_users', Lang::t('_SUBSCRIPTION', 'course')), 'className' => 'img-cell');
+        $_columns[] = array('key' => 'presence', 'label' => Lang::t('_ATTENDANCE', 'course'), 'className' => 'img-cell');
 }
 
 if ($permissions['mod']) {
