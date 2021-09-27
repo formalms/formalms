@@ -1,4 +1,4 @@
-<?php defined("IN_FORMA") or die('Direct access is forbidden.');
+<?php defined('IN_FORMA') or die('Direct access is forbidden.');
 
 /* ======================================================================== \
 |   FORMA - The E-Learning Suite                                            |
@@ -15,31 +15,31 @@
 
 
 //property name: multisending mode
-define("MAIL_MULTIMODE", "multimode");
+define('MAIL_MULTIMODE', 'multimode');
 //multisending properties
-define("MAIL_SINGLE", "single");
-define("MAIL_CC", "cc");
-define("MAIL_BCC", "bcc");
+define('MAIL_SINGLE', 'single');
+define('MAIL_CC', 'cc');
+define('MAIL_BCC', 'bcc');
 
-define("MAIL_RECIPIENTSCC", "recipientscc");
-define("MAIL_RECIPIENTSBCC", "recipientsbcc");
+define('MAIL_RECIPIENTSCC', 'recipientscc');
+define('MAIL_RECIPIENTSBCC', 'recipientsbcc');
 
-define("MAIL_WORDWRAP", "wordwrap");
-define("MAIL_CHARSET", "charset");
-define("MAIL_HTML", "is_html");
+define('MAIL_WORDWRAP', 'wordwrap');
+define('MAIL_CHARSET', 'charset');
+define('MAIL_HTML', 'is_html');
 
 //property name: use or not acl names (taken from DB, slower if used)
-define("MAIL_SENDER_ACLNAME", "use_sender_aclname");
-define("MAIL_RECIPIENT_ACLNAME", "use_recipient_aclname");
-define("MAIL_REPLYTO_ACLNAME", "use_replyto_aclname");
+define('MAIL_SENDER_ACLNAME', 'use_sender_aclname');
+define('MAIL_RECIPIENT_ACLNAME', 'use_recipient_aclname');
+define('MAIL_REPLYTO_ACLNAME', 'use_replyto_aclname');
 
 //property name: reply to parameters
-define("MAIL_REPLYTO", "replyto");
+define('MAIL_REPLYTO', 'replyto');
 
 define('MAIL_HEADERS', 'headers');
 
 //specify if class properties should be reset after sending
-define("MAIL_RESET", "reset");
+define('MAIL_RESET', 'reset');
 
 
 class FormaMailer extends PHPMailer\PHPMailer\PHPMailer
@@ -106,6 +106,10 @@ class FormaMailer extends PHPMailer\PHPMailer\PHPMailer
             _templates_ . '/' . getTemplate() . '/layout/mail'
         ];
 
+        if (getTemplate() !== 'standard') {
+            $defaultPaths[] = _templates_ . '/standard/layout/mail';
+        }
+
         foreach ($defaultPaths as $path) {
             if (file_exists($path)) {
                 \appCore\Template\TwigManager::getInstance()->addPathInLoader($path);
@@ -120,8 +124,8 @@ class FormaMailer extends PHPMailer\PHPMailer\PHPMailer
         $allowedProtocols = ['http', 'https', 'ftp', 'mailto', 'color', 'background-color'];
 
         $config = HTMLPurifier_Config::createDefault();
-        $allowed_elements = array();
-        $allowed_attributes = array();
+        $allowed_elements = [];
+        $allowed_attributes = [];
 
         $config->set('HTML.AllowedElements', $allowed_elements);
         $config->set('HTML.AllowedAttributes', $allowed_attributes);
@@ -264,8 +268,11 @@ class FormaMailer extends PHPMailer\PHPMailer\PHPMailer
         if (isset($params[MAIL_HTML])) {
 
             $eventResponse = Events::trigger('core.mail.template.rendering', ['layout' => $this->mailTemplate, 'subject' => $subject, 'body' => $body, 'otherParams' => []]);
-
-            $html = \appCore\Template\TwigManager::getInstance()->render($eventResponse['layout'], ['subject' => $eventResponse['subject'], 'body' => $eventResponse['body'], 'otherParams' => $eventResponse['otherParams']]);
+            try {
+                $html = \appCore\Template\TwigManager::getInstance()->render($eventResponse['layout'], ['subject' => $eventResponse['subject'], 'body' => $eventResponse['body'], 'otherParams' => $eventResponse['otherParams']]);
+            } catch (\Exception $exception) {
+                $html = $body;
+            }
 
             $eventResponse = Events::trigger('core.mail.template.rendered', ['html' => $html, 'subject' => $subject, 'body' => $body, 'otherParams' => []]);
 

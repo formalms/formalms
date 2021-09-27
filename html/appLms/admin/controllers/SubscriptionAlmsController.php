@@ -405,6 +405,8 @@ class SubscriptionAlmsController extends AlmsController
                         Util::jump_to('index.php?r=' . $this->link . '/show&id_course=' . $id_course . '&id_edition=' . $id_edition . '&id_date=' . $id_date . '&res=' . $result);
                     }
                     break;
+                default:
+                    throw new \Exception('Unexpected value');
             }
 
             $model->loadSelectedUser($user_selected);

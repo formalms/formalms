@@ -341,8 +341,12 @@ class CourseLms extends Model
         // user can be enrolled in more than one edition (as a teacher or crazy student....)
         foreach ($course_editions[$id_course] as $id_date => $obj_data) {
             // skip if course if over or not available
-            $end_course = new DateTime(Format::date($obj_data->date_max, 'datetime'));
-            if ($end_course > $currentDate && $obj_data->status == 0) {
+            try {
+                $end_course = new DateTime(Format::date($obj_data->date_max, 'datetime'));
+            } catch (Exception $e) {
+                $end_course = clone $currentDate;
+            }
+            if (((int)$obj_data->status === 0) && ($end_course > $currentDate)) {
                 $out[$id_date]['code'] = $obj_data->code;
                 $out[$id_date]['name'] = $obj_data->name;
                 $out[$id_date]['date_begin'] = $obj_data->date_min;
@@ -356,7 +360,13 @@ class CourseLms extends Model
                     $out[$id_date]['days'][$id]['begin'] = Format::date($day['date_begin'], 'time');
                     $out[$id_date]['days'][$id]['end'] = Format::date($day['date_end'], 'time');
                     $out[$id_date]['days'][$id]['full_date'] = $day['date_begin'];
-                    $next_lesson_array[$id_date . ',' . $id] = new DateTime(Format::date($day['date_begin'], 'datetime'));
+
+                    try {
+                        $nextLesson = new DateTime(Format::date($day['date_begin'], 'datetime'));
+                    } catch (Exception $e) {
+                        $nextLesson = '';
+                    }
+                    $next_lesson_array[$id_date . ',' . $id] = $nextLesson;
                 }
             }
 
@@ -444,8 +454,8 @@ class CourseLms extends Model
             if ((int)$course['auto_unsubscribe'] === 2) {
                 $editionKey = array_key_first($course['editions']);
                 
-                if ($course['editions'][$editionKey]['unsubscribe_date_limit'] != null 
-                    && $course['editions'][$editionKey]['unsubscribe_date_limit'] != '0000-00-00 00:00:00'){
+                if (($course['editions'][$editionKey]['unsubscribe_date_limit'] !== null)
+                    && ($course['editions'][$editionKey]['unsubscribe_date_limit'] !== '0000-00-00 00:00:00')){
                         
                         $unsub_date_limit = $course['editions'][$editionKey]['unsubscribe_date_limit'];
                         $unsub_date_limit = DateTime::createFromFormat('Y-m-d H:i:s',$unsub_date_limit);
