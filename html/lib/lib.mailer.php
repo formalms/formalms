@@ -267,14 +267,40 @@ class FormaMailer extends PHPMailer\PHPMailer\PHPMailer
         $this->Subject = $subject;
         if (isset($params[MAIL_HTML])) {
 
-            $eventResponse = Events::trigger('core.mail.template.rendering', ['layout' => $this->mailTemplate, 'subject' => $subject, 'body' => $body, 'otherParams' => []]);
+            $eventResponse = Events::trigger('core.mail.template.rendering',
+                [
+                    'layout' => $this->mailTemplate,
+                    'layoutPath' => '',
+                    'subject' => $subject,
+                    'body' => $body,
+                    'otherParams' => []
+                ]
+            );
+
             try {
-                $html = \appCore\Template\TwigManager::getInstance()->render($eventResponse['layout'], ['subject' => $eventResponse['subject'], 'body' => $eventResponse['body'], 'otherParams' => $eventResponse['otherParams']]);
+                if (!empty($eventResponse['path'])){
+                    \appCore\Template\TwigManager::getInstance()->addPathInLoader($eventResponse['layoutPath']);
+                }
+
+                $html = \appCore\Template\TwigManager::getInstance()->render($eventResponse['layout'],
+                    [
+                        'subject' => $eventResponse['subject'],
+                        'body' => $eventResponse['body'],
+                        'otherParams' => $eventResponse['otherParams']
+                    ]
+                );
             } catch (\Exception $exception) {
                 $html = $body;
             }
 
-            $eventResponse = Events::trigger('core.mail.template.rendered', ['html' => $html, 'subject' => $subject, 'body' => $body, 'otherParams' => []]);
+            $eventResponse = Events::trigger('core.mail.template.rendered',
+                [
+                    'html' => $html,
+                    'subject' => $subject,
+                    'body' => $body,
+                    'otherParams' => $eventResponse['otherParams']
+                ]
+            );
 
             $this->msgHTML($eventResponse['html']);
 
@@ -357,7 +383,16 @@ class FormaMailer extends PHPMailer\PHPMailer\PHPMailer
 
             }
 
-            $output[$recipient] = $this->send();
+            $sent = $this->send();
+
+            Events::trigger('core.mail.sent',
+                [
+                    'sender' => $sender,
+                    'recipient' => $recipient,
+                    'sent' => $sent,
+                ]
+            );
+            $output[$recipient] = $sent;
             $this->ClearAddresses();
         }
 

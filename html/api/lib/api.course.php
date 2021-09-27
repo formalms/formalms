@@ -12,6 +12,16 @@
 \ ======================================================================== */
 
 require_once(_base_ . '/api/lib/lib.api.php');
+require_once Forma::inc(_lms_ . '/lib/lib.course.php');
+require_once Forma::inc(_lms_ . '/lib/lib.certificate.php');
+require_once Forma::inc(_lms_ . '/lib/lib.manmenu.php');
+require_once Forma::inc(_base_ . '/lib/lib.upload.php');
+require_once Forma::inc(_lms_ . '/lib/lib.subscribe.php');
+require_once Forma::inc(_lms_ . '/lib/lib.date.php');
+require_once Forma::inc(_lms_ . '/lib/lib.edition.php');
+require_once Forma::inc(_adm_ . '/lib/lib.field.php');
+require_once Forma::inc(_base_ . '/lib/lib.eventmanager.php');
+require_once Forma::inc(_lms_ . '/lib/category/class.categorytree.php');
 
 class Course_API extends API
 {
@@ -52,10 +62,12 @@ class Course_API extends API
      */
     private function _getAndValidateIdDateFromParams($params)
     {
-        $idDate = ($params['id_date'] ?? '');
+        $idDate = $params['id_date'] ?? '';
 
-        $response['success'] = true;
-        $response['data'] = $idDate;
+        $response = [
+            'success' => true,
+            'data' => $idDate
+        ];
         if (empty($idDate)) {
             $response['success'] = false;
             $response['message'] = 'Missing or Wrong ID Date' . $params['id_date'];
@@ -72,8 +84,11 @@ class Course_API extends API
     {
         $sendCalendar = (bool)($params['sendCalendar'] ?? false);
 
-        $response['success'] = true;
-        $response['data'] = $sendCalendar;
+        $response = [
+            'success' => true,
+            'data' => $sendCalendar
+        ];
+
         if (empty($sendCalendar)) {
             $response['success'] = false;
             $response['message'] = 'Missing or Wrong SendCalendar' . $params['sendCalendar'];
@@ -88,10 +103,13 @@ class Course_API extends API
      */
     private function _getAndValidateCourseIdCourseFromParams($params)
     {
-        $courseId = ($params['course_id'] ?? '');
+        $courseId = $params['course_id'] ?? '';
 
-        $response['success'] = true;
-        $response['data'] = $courseId;
+        $response = [
+            'success' => true,
+            'data' => $courseId
+        ];
+
         if (empty($courseId)) {
             $response['success'] = false;
             $response['message'] = 'Missing or Wrong Course ID' . $params['course_id'];
@@ -102,11 +120,10 @@ class Course_API extends API
 
     public function getCourses($params)
     {
-        require_once(_lms_ . '/lib/lib.course.php');
         $response = [];
 
         $response['success'] = true;
-        $id_category = (isset($params['category']) ? (int)$params['category'] : false);
+        $id_category = isset($params['category']) ? (int)$params['category'] : false;
 
         $course_man = new Man_Course();
         $course_list = $course_man->getAllCoursesWithMoreInfo($id_category);
@@ -149,8 +166,7 @@ class Course_API extends API
     //e-learning editions
     public function getEditions($params)
     {
-        require_once(_lms_ . '/lib/lib.course.php');
-        require_once(_lms_ . '/lib/lib.edition.php');
+
         $response = [];
 
         $response['success'] = true;
@@ -209,8 +225,6 @@ class Course_API extends API
 
     public function getClassrooms($params)
     {
-        require_once(_lms_ . '/lib/lib.course.php');
-        require_once(_lms_ . '/lib/lib.date.php');
         $response = [];
 
         $response['success'] = true;
@@ -292,7 +306,6 @@ class Course_API extends API
 
     protected function getUserStatusId($my_status)
     {
-        require_once(_lms_ . '/lib/lib.subscribe.php');
 
         if ($my_status === false) {
             return false;
@@ -395,8 +408,6 @@ class Course_API extends API
 
     public function addUserSubscription($params)
     {
-        require_once(_lms_ . '/lib/lib.subscribe.php');
-        require_once(_lms_ . '/lib/lib.course.php');
         $response = [];
 
         $response['success'] = true;
@@ -476,7 +487,7 @@ class Course_API extends API
 
         if ($sendMailToUser) {
             // Send Message
-            require_once(_base_ . '/lib/lib.eventmanager.php');
+
 
             $array_subst = array('[url]' => Get::site_url(),
                 '[course]' => $course_info['name']);
@@ -504,8 +515,7 @@ class Course_API extends API
 
     public function updateUserSubscription($params)
     {
-        require_once(_lms_ . '/lib/lib.subscribe.php');
-        require_once(_lms_ . '/lib/lib.course.php');
+
         $response = [];
 
         $response['success'] = true;
@@ -606,8 +616,6 @@ class Course_API extends API
 
     public function deleteUserSubscription($params)
     {
-        require_once(_lms_ . '/lib/lib.subscribe.php');
-        require_once(_lms_ . '/lib/lib.course.php');
         $response = [];
 
         $response['success'] = true;
@@ -674,8 +682,6 @@ class Course_API extends API
 
     public function subscribeUserWithCode($params)
     {
-        require_once(_lms_ . '/lib/lib.subscribe.php');
-        require_once(_lms_ . '/lib/lib.course.php');
         $response = [];
 
         $response['success'] = true;
@@ -730,8 +736,6 @@ class Course_API extends API
      */
     public function getCertificateByUser($params)
     {
-        require_once(_lms_ . '/lib/lib.subscribe.php');
-        require_once(_lms_ . '/lib/lib.course.php');
         $response = [];
 
         $response['success'] = true;
@@ -795,9 +799,6 @@ class Course_API extends API
      */
     public function getCertificateByCourse($params)
     {
-        require_once(_lms_ . '/lib/lib.subscribe.php');
-        require_once(_lms_ . '/lib/lib.course.php');
-        require_once(_adm_ . '/lib/lib.field.php');
 
         $response = [];
 
@@ -886,7 +887,7 @@ class Course_API extends API
         if ($category_name == false) {
             $response = array('success' => false, 'message' => 'Wrong parameters');
         } else {
-            require_once(_lms_ . '/lib/category/class.categorytree.php');
+
             $treecat = new Categorytree();
 
             $new_category_id = $treecat->addFolderById($category_id, $category_name);
@@ -916,7 +917,6 @@ class Course_API extends API
 
     public function addCourse($params)
     {
-        require_once(_lms_ . '/lib/lib.course.php');
 
         $response = [];
         $response['success'] = true;
@@ -1022,10 +1022,6 @@ class Course_API extends API
 
     public function addClassroom($params)
     {
-
-
-        require_once(_lms_ . '/lib/lib.date.php');
-        require_once(_lms_ . '/lib/lib.course.php');
         $response = [];
         $courseId = (isset($params['course_id']) ? $params['course_id'] : '');
 
@@ -1240,7 +1236,6 @@ class Course_API extends API
     public function deleteDay($params)
     {
         require_once(_lms_ . '/admin/models/ClassroomAlms.php');
-        require_once(_lms_ . '/lib/lib.date.php');
 
         $response = $this->_getAndValidateSendCalendarFromParams($params);
         $sendCalendar = $response['data'];
@@ -1311,8 +1306,6 @@ class Course_API extends API
 
     public function updateCourse($params)
     {
-        require_once(_lms_ . '/lib/lib.course.php');
-
         $response = [];
         $response['success'] = true;
 
@@ -1441,7 +1434,6 @@ class Course_API extends API
     public function updateDay($params)
     {
         require_once(_lms_ . '/admin/models/ClassroomAlms.php');
-        require_once(_lms_ . '/lib/lib.date.php');
 
         $response = $this->_getAndValidateSendCalendarFromParams($params);
         $sendCalendar = $response['data'];
@@ -1550,8 +1542,6 @@ class Course_API extends API
     // update date
     public function updateClassroom($params)
     {
-        require_once(_lms_ . '/lib/lib.date.php');
-        require_once(_lms_ . '/lib/lib.course.php');
 
         $response = $this->_getAndValidateIdDateFromParams($params);
         $idDate = $response['data'];
@@ -1637,7 +1627,6 @@ class Course_API extends API
     // 
     public function deleteCourse($params)
     {
-        require_once(_lms_ . '/lib/lib.course.php');
         $response = [];
 
         $courseId = (isset($params['course_id']) ? $params['course_id'] : '');
@@ -1677,9 +1666,6 @@ class Course_API extends API
     {
         if ((int)$id_course <= 0) return false;
 
-        require_once(_lms_ . '/lib/lib.course.php');
-        require_once(_base_ . '/lib/lib.upload.php');
-
         $course_man = new Man_Course();
 
         $course = new DoceboCourse($id_course);
@@ -1711,7 +1697,6 @@ class Course_API extends API
         $qres = sql_query($query_course);
         list($file_sponsor, $file_logo, $file_material, $file_othermaterial, $file_demo, $course_type, $course_edition) = sql_fetch_row($qres);
 
-        require_once(_base_ . '/lib/lib.upload.php');
 
         $path = '/appLms/' . Get::sett('pathcourse');
         if (substr($path, -1) != '/' && substr($path, -1) != '\\') $path .= '/';
@@ -1821,7 +1806,6 @@ class Course_API extends API
 
 
         //--- clear certificates assignments ---------------------------------------
-        require_once(Forma::inc(_lms_ . '/lib/lib.certificate.php'));
         $cman = new Certificate();
         $cman->deleteCourseCertificateAssignments($id_course);
         //--- end certificates assignments -----------------------------------------
@@ -2225,10 +2209,6 @@ class Course_API extends API
             return true;
         }
 
-        require_once(_lms_ . '/lib/lib.course.php');
-        require_once(_lms_ . '/lib/lib.manmenu.php');
-        require_once(_lms_ . '/lib/lib.subscribe.php');
-
         $docebo_course = new DoceboCourse($id_dupcourse);
         $subscribe_man = new CourseSubscribe_Manager();
 
@@ -2498,6 +2478,43 @@ class Course_API extends API
 
     }
 
+    function removeAssociationCertificates($params)
+    {
+        $response = [];
+        $response['success'] = true;
+        try {
+
+            $idCourse = $params['course_id'] ?? '';
+
+            $course_man = new Man_Course();
+            $courseExists = $course_man->courseExists($idCourse);
+
+            if ($courseExists) {
+                $cert = new Certificate();
+                $result = $cert->deleteCourseCertificateAssignments($idCourse);
+
+                if ($result === false) {
+                    $response = [
+                        'success' => false,
+                        'message' => 'Error during remove certificate assign'
+                    ];
+                }
+            } else {
+                $response = [
+                    'success' => false,
+                    'message' => 'Course does not exists :' . $idCourse
+                ];
+            }
+        } catch (\Exception $exception) {
+            $response = [
+                'success' => false,
+                'message' => $exception->getMessage()
+            ];
+        }
+
+        return $response;
+    }
+
     // add association to meta certificate
     function addAssociationCertificates($params)
     {
@@ -2505,41 +2522,54 @@ class Course_API extends API
         $response['success'] = true;
         try {
 
-            require_once(Forma::inc(_lms_ . '/lib/lib.course.php'));
-            require_once(Forma::inc(_lms_ . '/lib/lib.certificate.php'));
-            $cert = new Certificate();
-
-            $idCourse = ($params['course_id'] ?? '');
+            $idCourse = $params['course_id'] ?? '';
             $certificatesRQ = ($params['certificates'] ?? []);
 
-            $certificates = [];
+            $course_man = new Man_Course();
+            $courseExists = $course_man->courseExists($idCourse);
 
-            $excellenceCertificates = [];
+            if ($courseExists) {
 
-            $certificatesAssignMinutes = [];
+                $certificates = [];
 
-            foreach ($certificatesRQ as $certificatesRQItem) {
+                $excellenceCertificates = [];
 
-                if (array_key_exists('id', $certificatesRQItem)) {
-                    $certificates[$certificatesRQItem['id']] = $certificatesRQItem['status'] ?? 0;
-                    $certificatesAssignMinutes[$certificatesRQItem['id']] = $certificatesRQItem['minutes'] ?? 0;
+                $certificatesAssignMinutes = [];
+
+                if (count($certificatesRQ) > 0) {
+                    foreach ($certificatesRQ as $certificatesRQItem) {
+
+                        if (array_key_exists('id', $certificatesRQItem)) {
+                            $certificates[$certificatesRQItem['id']] = $certificatesRQItem['status'] ?? 0;
+                            $certificatesAssignMinutes[$certificatesRQItem['id']] = $certificatesRQItem['minutes'] ?? 0;
+                        }
+                    }
+                    $cert = new Certificate();
+
+                    $result = $cert->updateCertificateCourseAssign($idCourse,
+                        $certificates,
+                        $excellenceCertificates,
+                        $requiredPoint,
+                        $certificatesAssignMinutes);
+
+                    if ($result === false) {
+                        $response = [
+                            'success' => false,
+                            'message' => 'Error during update certificate assign'
+                        ];
+                    }
+                } else {
+                    $response = [
+                        'success' => false,
+                        'message' => 'Certificats must be more than or equal to one'
+                    ];
                 }
-            }
-
-
-            $result = $cert->updateCertificateCourseAssign($idCourse,
-                $certificates,
-                $excellenceCertificates,
-                $requiredPoint,
-                $certificatesAssignMinutes);
-
-            if ($result === false) {
+            } else {
                 $response = [
                     'success' => false,
-                    'message' => 'Error during update certificate assign'
+                    'message' => 'Course does not exists :' . $idCourse
                 ];
             }
-            return $response;
         } catch (\Exception $exception) {
             $response = [
                 'success' => false,
@@ -2558,25 +2588,36 @@ class Course_API extends API
      */
     public function putIntroductionCourse($params)
     {
-        $courseId = ($params['course_id'] ?? '');
-        $html = ($params['text_intro'] ?? '');
+        $courseId = $params['course_id'] ?? '';
+        $html = $_REQUEST['text_intro'] ?? '';
 
         $response = [];
         $response['success'] = true;
         $response['course_id'] = $courseId;
 
-        $courseLms = new CourseLms($courseId);
+        $course_man = new Man_Course();
+        $courseExists = $course_man->courseExists($courseId);
 
-        try {
-            $result = $courseLms->saveHtmlFront($html);
-            if (!$result) {
+        if ($courseExists) {
+
+            $courseLms = new CourseLms($courseId);
+
+            try {
+                $result = $courseLms->saveHtmlFront($html);
+                if (!$result) {
+                    $response['success'] = false;
+                    $response['message'] = 'Error during insert/update intro page';
+                }
+            } catch (\Exception $exception) {
+
                 $response['success'] = false;
-                $response['message'] = 'Error during insert/update intro page';
+                $response['message'] = $exception->getMessage();
             }
-        } catch (\Exception $exception) {
-
-            $response['success'] = false;
-            $response['message'] = $exception->getMessage();
+        } else {
+            $response = [
+                'success' => false,
+                'message' => 'Course does not exists : ' . $courseId
+            ];
         }
 
         return $response;
@@ -2584,22 +2625,32 @@ class Course_API extends API
 
     public function deleteIntroductionCourse($params)
     {
-        $courseId = ($params['course_id'] ?? '');
+        $courseId = $params['course_id'] ?? '';
         $response = [];
         $response['success'] = true;
         $response['course_id'] = $courseId;
+        $course_man = new Man_Course();
+        $courseExists = $course_man->courseExists($courseId);
 
-        $courseLms = new CourseLms($courseId);
-        try {
-            $result = $courseLms->deleteHtmlFront();
-            if (!$result) {
+        if ($courseExists) {
+
+            $courseLms = new CourseLms($courseId);
+            try {
+                $result = $courseLms->deleteHtmlFront();
+                if (!$result) {
+                    $response['success'] = false;
+                    $response['message'] = 'Error during remove intro page';
+                }
+            } catch (\Exception $exception) {
+
                 $response['success'] = false;
-                $response['message'] = 'Error during remove intro page';
+                $response['message'] = $exception->getMessage();
             }
-        } catch (\Exception $exception) {
-
-            $response['success'] = false;
-            $response['message'] = $exception->getMessage();
+        } else {
+            $response = [
+                'success' => false,
+                'message' => 'Course does not exists : ' . $courseId
+            ];
         }
 
         return $response;
@@ -2616,12 +2667,28 @@ class Course_API extends API
         $response = [];
         $response['success'] = true;
 
-        $courseId_from = (isset($params['course_id_from']) ? $params['course_id_from'] : '');
-        $courseId_to = (isset($params['course_id_to']) ? $params['course_id_to'] : '');
+        $courseIdFrom = $params['course_id_from'] ?? '';
+        $courseIdTo = $params['course_id_to'] ?? '';
 
-        if (empty($courseId_to)) {
-            $response['success'] = false;
-            $response['message'] = 'Missing course_id_to ' . $courseId_to;
+        $course_man = new Man_Course();
+        $courseFromExists = $course_man->courseExists($courseIdFrom);
+        $courseToExists = $course_man->courseExists($courseIdTo);
+
+        if (empty($courseFromExists)) {
+
+            $response = [
+                'success' => false,
+                'message' => 'Course From does not exists :' . $courseIdFrom
+            ];
+            return $response;
+        }
+
+        if (empty($courseToExists)) {
+
+            $response = [
+                'success' => false,
+                'message' => 'Course To does not exists :' . $courseIdTo
+            ];
             return $response;
         }
 
@@ -2629,28 +2696,28 @@ class Course_API extends API
         $img_course = '';
 
         // get exist image course source
-        if ($courseId_from > 0) {
-            $sql_img = "select img_course from learning_course where idCourse=" . $params['course_id_from'];
-            $qres = sql_query($sql_img);
-            list($img_course) = sql_fetch_row($qres);
-        }
+
+        $sql_img = "select img_course from learning_course where idCourse=" . $courseIdFrom;
+        $res = sql_query($sql_img);
+        list($img_course) = sql_fetch_row($res);
+
 
         // associate img_course to course destination
-        $sql_img = "update learning_course set img_course = '" . $img_course . "' where idCourse=" . $params['course_id_to'];
+        $sql_img = "update learning_course set img_course = '" . $img_course . "' where idCourse=" . $courseIdTo;
 
         try {
-            $q_img = sql_query($sql_img);
+            $res = sql_query($sql_img);
         } catch (Exception $e) {
-            $response['success'] = false;
+            $response = [
+                'success' => false,
+                'message' => $e->getMessage()
+            ];
         }
 
-
-        $response['course_id_from'] = $courseId_from;
-        $response['course_id_to'] = $courseId_to;
+        $response['course_id_from'] = $courseIdFrom;
+        $response['course_id_to'] = $courseIdTo;
 
         return $response;
-
-
     }
 
     public function getCalendar($params)
@@ -2894,6 +2961,12 @@ class Course_API extends API
             case 'addcertificates':
                 {
                     $response = $this->addAssociationCertificates($params);
+                }
+                break;
+            case 'removeCertificates':
+            case 'removecertificates':
+                {
+                    $response = $this->removeAssociationCertificates($params);
                 }
                 break;
 
