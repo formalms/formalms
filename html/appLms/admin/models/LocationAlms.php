@@ -290,7 +290,7 @@ class LocationAlms extends Model
 
         $query_dates =
             "SELECT substring(lcdd.date_begin,1,10) as date," . (int)$id_classroom . " as idClassroom
-			FROM %lms_course_date as lcd JOIN %lms_course_date_day as lcdd ON lcd.id_date = lcdd.id_date AND lcdd.Classroom = " . (int)$id_classroom . " AND lcdd.deleted = 0";
+            FROM %lms_course_date as lcd JOIN %lms_course_date_day as lcdd ON lcd.id_date = lcdd.id_date AND lcdd.Classroom = " . (int)$id_classroom . " AND lcdd.deleted = 0";
 
 
         $rs = $this->db->query($query_dates);
@@ -396,7 +396,14 @@ class LocationAlms extends Model
         $date3_in = $date3_year . "-" . $date3_month;
 
         $query_dates =
-            "SELECT substring(lcdd.date_begin,1,10) as date, lcd.name as name," . (int)$id_classroom . " as idClassroom
+            "SELECT             
+            DATE_FORMAT(lcdd.date_begin, '%Y-%m-%d') as date,
+            DATE_FORMAT(lcdd.date_begin, '%H:%i') as hour_start,
+            IF(DATE_FORMAT(lcdd.pause_begin,'%H:%i') ='00:00', '-', DATE_FORMAT(lcdd.pause_begin,'%H:%i' )) as pause_begin,
+            IF(DATE_FORMAT(lcdd.pause_end, '%H:%i') = '00:00', '-', DATE_FORMAT(lcdd.pause_end, '%H:%i') ) as pause_end,
+            DATE_FORMAT(lcdd.date_end, '%H:%i') as hour_end,
+            
+            lcd.name as name," . (int)$id_classroom . " as idClassroom
 			FROM %lms_course_date as lcd JOIN %lms_course_date_day as lcdd ON lcd.id_date = lcdd.id_date AND lcdd.Classroom = " . (int)$id_classroom . " AND lcdd.deleted = 0" . "
 				AND ( (substring(lcdd.date_begin,1,7) like '" . $date_in . "%') OR (substring(lcdd.date_begin,1,7) like '" . $date2_in . "%') OR (substring(lcdd.date_begin,1,7) like '" . $date3_in . "%'))     ";
         if ($sort && $dir)
@@ -409,6 +416,7 @@ class LocationAlms extends Model
 
         $result = array();
         while ($date = $this->db->fetch_obj($rs)) {
+            $date->date = Format::date($date->date, 'date');
             $result[] = $date;
         }
         return ($classroom_num > 0) ? $result : false;

@@ -4,6 +4,7 @@
 	Lang::t('_CALENDAR', 'classroom')
 )); ?>
 <div class="std_block">
+    <b><?=$classroomName?></b>    
 	<?php echo getBackUi('index.php?r=alms/location/show_classroom&amp;id_location='.$info->location_id, Lang::t('_BACK')); ?>
 	<div id="classroom_calendar"></div>
 	<div class="nofloat"></div>
@@ -20,7 +21,7 @@
 		cal1.cfg.setProperty("MDY_MONTH_POSITION", 2);
 		cal1.cfg.setProperty("MDY_DAY_POSITION", 3);
 
-		<?php if ($date_list) { foreach(date_list as $value ) { ?>
+		<?php if ($date_list) { foreach($date_list as $value ) { ?>
 			
 			cal1.addRenderer("<?php echo $value; ?>", cal1.renderCellStyleHighlight1);
 
@@ -54,12 +55,24 @@ if ($date_list) {
 			array('key' => 'date',
 				'label' => Lang::t('_DATE', 'lms'),
 				'sortable' => true ),
-			array('key' => 'name',
-				'label' => Lang::t('_COURSE', 'lms'),
+		            array('key' => 'hour_start',
+		                'label' => Lang::t('_HOUR_END', 'course'),
+		                'sortable' => true ),                
+		            array('key' => 'pause_begin',
+		                'label' => Lang::t('_PAUSE_BEGIN', 'course'),
+		                'sortable' => true ),                
+		            array('key' => 'pause_end',
+		                'label' => Lang::t('_PAUSE_END', 'course'),
+		                'sortable' => true ),                
+		            array('key' => 'hour_end',
+		                'label' => Lang::t('_HOUR_END', 'course'),
+		                'sortable' => true ),                
+				array('key' => 'name',
+					'label' => Lang::t('_COURSE', 'lms'),
 				'sortable' => true ),
 		),
 		'generateRequest' => 'Calendar.RequestBuilder',
-		'fields'		=> array('date', 'name'),
+		'fields'		=> array('date', 'hour_start', 'pause_begin', 'pause_end', 'hour_end', 'name'),
 		'delDisplayField' => 'date',
 	));
 }
