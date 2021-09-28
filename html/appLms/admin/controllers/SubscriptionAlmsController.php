@@ -406,6 +406,7 @@ class SubscriptionAlmsController extends AlmsController
                     }
                     break;
                 default:
+                    break;
             }
 
             $model->loadSelectedUser($user_selected);
