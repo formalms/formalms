@@ -107,13 +107,28 @@ class CourseLmsController extends LmsController
 
             $course['quota'] = $quota;
         }
-
+        
+        $obj_course = new DoceboCourse($_SESSION['idCourse']);
+        $info_course = $obj_course->getAllInfo();
+        $id_date = CourseLms::getMyDateCourse($_SESSION['idCourse']);            
+        $info_date =  ($info_course['course_type']=='classroom' ? CourseLms::getInfoDate($id_date): '');
+        
         foreach ($levels as $key => $level) {
 
             if ($course['level_show_user'] & (1 << $key)) {
                 $course['show_users'] = true;
-                $users =& $acl_man->getUsersMappedData(Man_Course::getIdUserOfLevel($_SESSION['idCourse'], $key, $_SESSION['idEdition']));
-
+                if($info_course['course_type']=='classroom'){
+                    
+                    if($_SESSION['levelCourse']==7){
+                        $users =& $acl_man->getUsersMappedData(Man_Course::getIdUserOfLevel($_SESSION['idCourse'], $key, $_SESSION['idEdition']));
+                    }else{
+                        $users =& $acl_man->getUsersMappedData(CourseLms::getIdUserOfLevelDate($_SESSION['idCourse'],$key, $id_date ));
+                        
+                    }
+                
+                }else{
+                    $users =& $acl_man->getUsersMappedData(Man_Course::getIdUserOfLevel($_SESSION['idCourse'], $key, $_SESSION['idEdition']));
+                }
                 $course[$level] = ['name' => $level, 'users' => $users];
             }
         }
@@ -141,6 +156,11 @@ class CourseLmsController extends LmsController
             $course['cannot_enter'][] = $lang->def('_USER_STATUS_END');
 
         }
+        
+        //checking if  message for enabled current user
+        $ma = new Man_MiddleArea();
+        $course['can_access_messages'] = $ma->currentCanAccessObj('mo_message');
+        
 
         $data = [
             'templatePath' => getPathTemplate(),
@@ -148,7 +168,8 @@ class CourseLmsController extends LmsController
                 'message' => ['url' => 'index.php?r=lms/message/directWrite'],
                 'profile' => ['url' => 'index.php?r=lms/course/viewprofile']
             ],
-            'course' => $course
+            'course' => $course,
+            'info_date' => $info_date
         ];
 
         $this->render('infocourse', $data);
@@ -170,6 +191,10 @@ class CourseLmsController extends LmsController
         $last_view = $this->userProfileDataManager->getUserProfileViewList($idUser, 15);
         $friend_list =& $this->userProfileDataManager->getUserFriend($idUser);
         $user_stat = $this->userProfileDataManager->getUserStats($idUser);
+        $ma = new Man_MiddleArea();
+        $can_access_messages = $ma->currentCanAccessObj('mo_message');
+        
+        
 
         $data = [
             'user' => $acl_man->getUserMappedData($user),
@@ -180,7 +205,8 @@ class CourseLmsController extends LmsController
             'route' => [
                 'message' => ['url' => 'index.php?r=lms/message/directWrite'],
                 'profile' => ['url' => 'index.php?r=lms/course/viewprofile']
-            ]
+            ],
+            'can_access_messages' => $can_access_messages
         ];
 
         $this->render('viewprofile', $data);

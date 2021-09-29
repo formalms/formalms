@@ -50,9 +50,11 @@
         <div class="course-info__value text--gray">
           <a class="user-profile__namelink" href="mailto:{{user.email}}" target="_blank">{{user.email}}</a>
         </div>
-        <a class="forma-button user-profile__cta" href="{{ route.message.url }}&idst={{ user.idst }}&signature={{ Util_getSignature() }}&sop=unregistercourse">
-          {{Lang_translate('_MESSAGE','course')}}
-        </a>
+        {% if can_access_messages %}
+            <a class="forma-button user-profile__cta" href="{{ route.message.url }}&idst={{ user.idst }}&signature={{ Util_getSignature() }}&sop=unregistercourse">
+              {{Lang_translate('_MESSAGE','course')}}
+            </a>
+        {% endif %}    
       </div>
 
       {% if user.biography != '' %}

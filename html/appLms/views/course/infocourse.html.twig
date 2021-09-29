@@ -16,7 +16,15 @@
           <div class="course-info__label">{{ Lang_translate('_CODE','course') }}</div>
           <div class="course-info__value text--gray">{{course.code}}</div>
         </div>
-
+	
+        {% if  course.course_type == 'classroom' %}
+    
+	        <div class="course-info__table course-info__table--subscribe-method">
+	          <div class="course-info__label">{{ Lang_translate('_EDITION','course') }}</div>
+	          <div class="course-info__value text--gray">[{{info_date.code}}]<br> {{info_date.name}} </div>
+	        </div>
+     
+        {% endif %}	
         <div class="course-info__table course-info__table--subscribe-method">
           <div class="course-info__label">{{ Lang_translate('_SUBSCRIBE_METHOD','course') }}</div>
           <div class="course-info__value text--gray">{{course.subscribe_method_translate}}</div>

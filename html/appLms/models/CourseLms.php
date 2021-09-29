@@ -580,4 +580,79 @@ class CourseLms extends Model
         return true;
     }
 
-}   
+    // get info partecipat
+    // course_type
+    // level
+    public function getInfoPartecipant($idCourse){
+        $query = "select course_type, level from 
+            learning_course lc, learning_courseuser lcu
+            where lc.idCourse=lcu.idCourse
+            and lc.idCourse=".$idCourse." and idUser=".Docebo::user()->idst;
+
+
+        list($course_type, $level) = sql_fetch_row(sql_query($query));
+
+        $out = array();
+        $out['course_type'] = $course_type;
+        $out['level'] = $level;
+        return $out;
+
+    }
+
+
+    function getIdUserOfLevelDate($id_course, $level,  $id_date) {
+
+        $users = array();
+
+        if($level==7){
+            $query_courseuser = "SELECT cdu.id_user 
+                FROM %lms_course_date_user AS cdu, %lms_courseuser lcu
+                where id_date=".$id_date." and lcu.idCourse=".$id_course." and id_user=idUser and level=".$level." 
+                UNION
+                SELECT cdu.id_user
+                 FROM %lms_course_date_user AS cdu, %lms_courseuser lcu
+                where lcu.idCourse=".$id_course." and id_user=idUser and level=".$level;
+
+        }   else{
+            $query_courseuser = "SELECT cdu.id_user 
+                FROM %lms_course_date_user AS cdu, %lms_courseuser lcu
+                where id_date=".$id_date." and lcu.idCourse=".$id_course." and id_user=idUser and level=".$level;
+        }
+
+
+        $re_courseuser = sql_query($query_courseuser);
+        while(list($id_user) = sql_fetch_row($re_courseuser)) {
+
+            $users[$id_user] = $id_user;
+        }
+        return $users;
+    }
+
+
+    function getInfoDate($idDate){
+        $query = "select code, name from %lms_course_date where id_date=".$idDate;
+
+        list($code, $name) = sql_fetch_row(sql_query($query));
+
+        $out = array();
+        $out['code'] = $code;
+        $out['name'] = $name;
+        return $out;
+
+    }
+
+    function getMyDateCourse($idCourse){
+        $query = "select lcd.id_date from %lms_course_date lcd, %lms_course_date_user lcdu
+            where 
+            lcd.id_date = lcdu.id_date
+            and id_user = ".Docebo::user()->idst." and lcd.id_course=".$idCourse;
+
+
+        list($id_date) = sql_fetch_row(sql_query($query));
+        return $id_date;
+    }
+
+
+
+
+}

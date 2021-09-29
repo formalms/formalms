@@ -11,7 +11,9 @@
         {% if user.biography != '' %}
             <a class="course-info__peoplebio js-infocourse-bio-trigger" href="#" data-title="{{ user.name}}" data-image="{{ avatar}}" data-role="{{role}}">{{Lang_translate('_BIOGRAPHY','course')}}</a>
         {% endif %}
-        <a class="forma-button course-info__peoplecta" href="{{ route.message.url }}&idst={{ user.idst }}&signature={{ Util_getSignature() }}&sop=unregistercourse'">{{Lang_translate('_MESSAGE','course')}}</a>
+        {% if course.can_access_messages %}
+        <a class="forma-button course-info__peoplecta" href="{{ route.message.url }}&idst={{ user.idst }}&signature={{ Util_getSignature() }}&sop=unregistercourse'">   {{Lang_translate('_MESSAGE','course')}}</a>
+        {% endif %}
         <div class="clear"></div>
         <div class="hidden js-infocourse-bio-text">
             {{ user.biography}}
