@@ -109,7 +109,7 @@ class TreeView_CatView extends TreeView {
 		
 		$user_lvl = Docebo::user()->getUserLevelId();
 		
-		parent::TreeView($tdb, $id, $rootname);
+		parent::__construct($tdb, $id, $rootname);
 		$this->can_add = ($user_lvl == ADMIN_GROUP_GODADMIN);
 		$this->can_mod = ($user_lvl == ADMIN_GROUP_GODADMIN);
 		$this->can_del = ($user_lvl == ADMIN_GROUP_GODADMIN);

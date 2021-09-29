@@ -2771,7 +2771,7 @@ class TreeView_WikiView extends TreeView {
 
 	function  TreeView_WikiView($tdb, $id, $rootname = 'root') {
 
-		parent::TreeView($tdb, $id, $rootname);
+		parent::__construct($tdb, $id, $rootname);
 		$this->can_add = true;
 		$this->can_mod = true;
 		$this->can_del = true;
