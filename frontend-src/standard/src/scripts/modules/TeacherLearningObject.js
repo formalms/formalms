@@ -40,8 +40,8 @@ class TeacherLearningObject extends LearningObject {
       controller.tab.addEventListener('click', _this.clickOnTab.bind(this));
     
     });
-    
-    new CopyItem(this.getBaseApiUrl('lomanager'));
+
+    _this.copyItem = new CopyItem(this.getBaseApiUrl('lomanager'));
     document.addEventListener('refreshContextMenu', (e) => {
       _this.refreshContextMenu(e.detail.controller);
     });
@@ -49,7 +49,8 @@ class TeacherLearningObject extends LearningObject {
 
   refreshContextMenu(controller) {
     const _this = this;
-
+    const activeTab = document.querySelector('.tab-content > .active');
+    _this.copyItem.setCurrentType(activeTab.getAttribute('data-container'));
     _this.contextMenu = new ContextMenu(this.getBaseApiUrl(controller));
     _this.contextMenu.set('.folderTree__link:not(.ft-is-root), .folderView__li');
 
@@ -73,7 +74,8 @@ class TeacherLearningObject extends LearningObject {
 
     _this.currentType = linktype;
     _this.currentController = linkcontroller;
-
+    window.type = linktype;
+    _this.copyItem.setCurrentType(linktype);
     if (tabs) {
       tabs.forEach((tab) => {
         tab.classList.remove('active');
