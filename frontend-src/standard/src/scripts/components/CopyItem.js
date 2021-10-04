@@ -52,7 +52,6 @@ class CopyItem {
       document.querySelectorAll('.is-ready-for-copy').forEach((item) => {
          ids.push(item.getAttribute('data-id'));
       });
-      console.log(this.currentType);
       axios.get(_this.getApiUrl('copy', { ids: ids, newtype, type: this.currentType })).then(() => {
          const container = document.querySelector('*[data-container=' + newtype + ']');
 
