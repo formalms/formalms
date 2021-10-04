@@ -11,8 +11,6 @@
 |   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
-if(Docebo::user()->isAnonymous()) die( "You can't access to oragnization");
-
 require_once(_base_.'/lib/lib.tab.php' );
 
 $_tab_op_map = array( 	'homerepo' => 'storage_home',

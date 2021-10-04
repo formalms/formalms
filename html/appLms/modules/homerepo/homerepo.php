@@ -11,8 +11,6 @@
 |   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
-if(!Docebo::user()->isAnonymous()) {
-
 require_once( $GLOBALS['where_lms'].'/lib/lib.repo.php' );
 
 define("REPOFIELDIDOWNER", 13);
@@ -329,9 +327,6 @@ function homerepo_itemproperties( &$treeView, &$arrayData, $idItem ) {
 
 function import( &$treeView ) {	
 	homerepo_import($treeView);
-}
-
-
 }
 
 ?>

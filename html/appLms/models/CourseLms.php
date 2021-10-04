@@ -15,6 +15,23 @@ class CourseLms extends Model
 {
     protected $_t_order = false;
 
+    protected $idCourse;
+
+    public function __construct($idCourse = false)
+    {
+        parent::__construct();
+        $this->idCourse = $idCourse;
+    }
+
+    /**
+     * @throws CourseIdNotSetException
+     */
+    private function checkIdCourseOrThrow()
+    {
+        if (empty($this->idCourse)) {
+            throw new CourseIdNotSetException();
+        }
+    }
     /**
      * This function return the correct order to use when you wish to diplay the a
      * course list for the user.
@@ -488,6 +505,79 @@ class CourseLms extends Model
             }
             return false;
         }
+    }
+
+    /**
+     * @return bool
+     * @throws CourseIdNotSetException
+     */
+    public function isHtmlFront(): bool
+    {
+        $this->checkIdCourseOrThrow();
+
+        $sql_exist = "select count(id_course) as exist from learning_htmlfront where id_course=" . $this->idCourse;
+        $qres = sql_query($sql_exist);
+        list($exist) = sql_fetch_row($qres);
+
+        if ((int)$exist === 1) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * @return string
+     * @throws CourseIdNotSetException
+     */
+    public function getHtmlFront(): string
+    {
+        $this->checkIdCourseOrThrow();
+
+        $query = "SELECT textof FROM %lms_htmlfront WHERE id_course = '$this->idCourse'";
+        $result =  Docebo::db()->query($query);
+
+        foreach (Docebo::db()->fetch_assoc($result) as $item) {
+            return (string)$item['textof'];
+        }
+        return '';
+    }
+
+    /**
+     * @param $html
+     * @return bool
+     * @throws CourseIdNotSetException
+     */
+    public function saveHtmlFront($html): bool
+    {
+        $this->checkIdCourseOrThrow();
+
+        if ($this->isHtmlFront()) {
+
+            $query = "UPDATE %lms_htmlfront SET textof = '" . addslashes($html) . "' WHERE id_course = $this->idCourse";
+        } else {
+            $query = "INSERT INTO %lms_htmlfront ( id_course, textof) VALUES ($this->idCourse,'" . addslashes($html) . "')";
+        }
+
+        $result = Docebo::db()->query($query);
+
+        if ($result === false){
+            return false;
+        }
+        return true;
+    }
+
+    public function deleteHtmlFront(){
+
+        $this->checkIdCourseOrThrow();
+
+        $query = "DELETE FROM %lms_htmlfront WHERE id_course = $this->idCourse";
+
+        $result = Docebo::db()->query($query);
+
+        if ($result === false){
+            return false;
+        }
+        return true;
     }
 
 }   

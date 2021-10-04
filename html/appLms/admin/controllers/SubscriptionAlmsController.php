@@ -406,7 +406,6 @@ class SubscriptionAlmsController extends AlmsController
                     }
                     break;
                 default:
-                    throw new \Exception('Unexpected value');
             }
 
             $model->loadSelectedUser($user_selected);

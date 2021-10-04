@@ -120,22 +120,21 @@ class Course_API extends API
 
     public function getCourses($params)
     {
-        $response = [];
+        $response = ['success' => true, 'courses' => []];
 
-        $response['success'] = true;
         $id_category = isset($params['category']) ? (int)$params['category'] : false;
 
         $course_man = new Man_Course();
         $course_list = $course_man->getAllCoursesWithMoreInfo($id_category);
 
 
-        foreach ($course_list as $key => $course_info) {
+        foreach ($course_list as $course_info) {
             if ($category = $course_info['idCategory']) {
                 $category = $course_man->getCategory($category)['path'];
             } else {
                 $category = null;
             }
-            $response['course_info'][] = array(
+            $response['courses'][] = array(
                 'course_id' => $course_info['idCourse'],
                 'code' => str_replace('&', '&amp;', $course_info['code']),
                 'course_name' => str_replace('&', '&amp;', $course_info['name']),
@@ -1976,6 +1975,65 @@ class Course_API extends API
 
     }
 
+    public function copyLearningObjects($params)
+    {
+        require_once(_lms_.'/class.module/class.definition.php');
+        require_once(_lms_.'/lib/lib.module.php');
+        $response = $this->validateCopyParams($params);
+
+        if ($response['success']) {
+            $fromType = $params['fromType'];
+            $newtype = $params['toType'];
+            $idCourse = $params['idCourse'];
+            $_SESSION['idCourse'] = $idCourse;
+            $learningObjectIds = explode(',', $params['learningObjectIds']);
+
+            if (count($learningObjectIds) > 0) {
+                $model = new LomanagerLms();
+                foreach ($learningObjectIds as $learningObjectId) {
+                    $model->setTdb($fromType);
+                    if ($learningObjectId > 0 && $model->copy($learningObjectId, $fromType)) {
+                        $model->setTdb($newtype);
+                        $model->paste(0);
+                    }
+                }
+            }
+        }
+
+        return $response;
+    }
+
+    private function validateCopyParams(array $params)
+    {
+        $response = [];
+        $response['success'] = true;
+
+        if (!$this->validateType($params['fromType'])) {
+            $response['success'] = false;
+            $response['message'] = 'From Type is not valid:' . $params['fromType'];
+        }
+
+        if (!$this->validateType($params['toType'])) {
+            $response['success'] = false;
+            $response['message'] = 'To Type is not valid :' . $params['toType'];
+        }
+
+        return $response;
+    }
+
+    private function validateType(string $type)
+    {
+
+        switch ($type) {
+            case LomanagerLms::HOMEREPODIRDB:
+            case LomanagerLms::ORGDIRDB:
+            case LomanagerLms::REPODIRDB:
+                return true;
+            default:
+                return false;
+        }
+    }
+
 
     /**
      * answer of lerning object type test
@@ -2932,6 +2990,11 @@ class Course_API extends API
             case 'getlo':
                 {
                     $response = $this->getLo($params);
+                }
+                break;
+            case 'copyLearningObjects':
+                {
+                    $response = $this->copyLearningObjects($params);
                 }
                 break;
 

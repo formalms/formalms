@@ -11,8 +11,6 @@
 |   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
-if(!Docebo::user()->isLoggedIn() || !isset($_SESSION['idCourse'])) die( "You can't access to oragnization");
-
 require_once( Forma::inc( _lms_.'/modules/organization/orglib.php' ) );
 require_once( _lms_.'/lib/lib.stats.php' );
 
