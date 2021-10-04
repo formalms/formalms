@@ -750,68 +750,70 @@ CREATE TABLE IF NOT EXISTS `learning_competence_user` (
 
 CREATE TABLE IF NOT EXISTS `learning_course` (
   `idCourse` int(11) NOT NULL AUTO_INCREMENT,
-  `idCategory` int(11) NOT NULL DEFAULT '0',
-  `code` varchar(50) NOT NULL DEFAULT '',
-  `name` varchar(255) NOT NULL DEFAULT '',
-  `box_description` TEXT NOT NULL,
-  `description` text NOT NULL,
-  `lang_code` varchar(100) NOT NULL DEFAULT '',
-  `status` int(1) NOT NULL DEFAULT '0',
-  `level_show_user` int(11) NOT NULL DEFAULT '0',
-  `subscribe_method` tinyint(1) NOT NULL DEFAULT '0',
-  `linkSponsor` varchar(255) NOT NULL DEFAULT '',
-  `imgSponsor` varchar(255) NOT NULL DEFAULT '',
-  `img_course` varchar(255) NOT NULL DEFAULT '',
-  `img_material` varchar(255) NOT NULL DEFAULT '',
-  `img_othermaterial` varchar(255) NOT NULL DEFAULT '',
-  `course_demo` varchar(255) NOT NULL DEFAULT '',
-  `mediumTime` int(10) unsigned NOT NULL DEFAULT '0',
-  `permCloseLO` tinyint(1) NOT NULL DEFAULT '0',
-  `userStatusOp` int(11) NOT NULL DEFAULT '0',
-  `difficult` enum('veryeasy','easy','medium','difficult','verydifficult') NOT NULL DEFAULT 'medium',
-  `show_progress` tinyint(1) NOT NULL DEFAULT '1',
-  `show_time` tinyint(1) NOT NULL DEFAULT '0',
-  `show_who_online` tinyint(1) NOT NULL DEFAULT '0',
-  `show_extra_info` tinyint(1) NOT NULL DEFAULT '0',
-  `show_rules` tinyint(1) NOT NULL DEFAULT '0',
+  `idCategory` int(11) NOT NULL DEFAULT 0,
+  `code` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `box_description` text CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `description` text CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `lang_code` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `status` int(1) NOT NULL DEFAULT 0,
+  `level_show_user` int(11) NOT NULL DEFAULT 0,
+  `subscribe_method` tinyint(1) NOT NULL DEFAULT 0,
+  `linkSponsor` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `imgSponsor` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `img_course` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `img_material` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `img_othermaterial` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `course_demo` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `mediumTime` int(10) UNSIGNED NOT NULL DEFAULT 0,
+  `permCloseLO` tinyint(1) NOT NULL DEFAULT 0,
+  `userStatusOp` int(11) NOT NULL DEFAULT 0,
+  `difficult` enum('veryeasy','easy','medium','difficult','verydifficult') CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT 'medium',
+  `show_progress` tinyint(1) NOT NULL DEFAULT 1,
+  `show_time` tinyint(1) NOT NULL DEFAULT 0,
+  `show_who_online` tinyint(1) NOT NULL DEFAULT 0,
+  `show_extra_info` tinyint(1) NOT NULL DEFAULT 0,
+  `show_rules` tinyint(1) NOT NULL DEFAULT 0,
   `date_begin` date NOT NULL DEFAULT '0000-00-00',
   `date_end` date NOT NULL DEFAULT '0000-00-00',
-  `hour_begin` varchar(5) NOT NULL DEFAULT '',
-  `hour_end` varchar(5) NOT NULL DEFAULT '',
-  `valid_time` int(10) NOT NULL DEFAULT '0',
-  `max_num_subscribe` int(11) NOT NULL DEFAULT '0',
-  `min_num_subscribe` int(11) NOT NULL DEFAULT '0',
-  `max_sms_budget` double NOT NULL DEFAULT '0',
-  `selling` tinyint(1) NOT NULL DEFAULT '0',
-  `prize` varchar(255) NOT NULL DEFAULT '',
-  `course_type` varchar(255) NOT NULL DEFAULT 'elearning',
-  `policy_point` varchar(255) NOT NULL DEFAULT '',
-  `point_to_all` int(10) NOT NULL DEFAULT '0',
-  `course_edition` tinyint(1) NOT NULL DEFAULT '0',
-  `classrooms` varchar(255) NOT NULL DEFAULT '',
-  `certificates` varchar(255) NOT NULL DEFAULT '',
+  `hour_begin` varchar(5) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `hour_end` varchar(5) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `valid_time` int(10) NOT NULL DEFAULT 0,
+  `max_num_subscribe` int(11) NOT NULL DEFAULT 0,
+  `min_num_subscribe` int(11) NOT NULL DEFAULT 0,
+  `max_sms_budget` double NOT NULL DEFAULT 0,
+  `selling` tinyint(1) NOT NULL DEFAULT 0,
+  `prize` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `course_type` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT 'elearning',
+  `policy_point` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `point_to_all` int(10) NOT NULL DEFAULT 0,
+  `course_edition` tinyint(1) NOT NULL DEFAULT 0,
+  `classrooms` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `certificates` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
   `create_date` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `security_code` varchar(255) NOT NULL DEFAULT '',
-  `imported_from_connection` varchar(255) DEFAULT NULL,
-  `course_quota` varchar(255) NOT NULL DEFAULT '-1',
-  `used_space` varchar(255) NOT NULL DEFAULT '0',
-  `course_vote` double NOT NULL DEFAULT '0',
-  `allow_overbooking` tinyint(1) NOT NULL DEFAULT '0',
-  `can_subscribe` tinyint(1) NOT NULL DEFAULT '0',
-  `sub_start_date` datetime DEFAULT NULL,
-  `sub_end_date` datetime DEFAULT NULL,
-  `advance` varchar(255) NOT NULL DEFAULT '',
-  `autoregistration_code` varchar(255) NOT NULL DEFAULT '',
-  `direct_play` tinyint(1) NOT NULL DEFAULT '0',
-  `use_logo_in_courselist` tinyint(1) NOT NULL DEFAULT '0',
-  `show_result` tinyint(1) unsigned NOT NULL DEFAULT '0',
-  `credits` int(11) NOT NULL DEFAULT '0',
-  `auto_unsubscribe` tinyint(1) NOT NULL DEFAULT '0',
-  `unsubscribe_date_limit` datetime DEFAULT NULL,
-  `id_menucustom` int(11) DEFAULT NULL,
-  PRIMARY KEY (`idCourse`),
-  KEY `fk_menucustom` (`id_menucustom`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
+  `security_code` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `imported_from_connection` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `course_quota` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '-1',
+  `used_space` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '0',
+  `course_vote` double NOT NULL DEFAULT 0,
+  `allow_overbooking` tinyint(1) NOT NULL DEFAULT 0,
+  `can_subscribe` tinyint(1) NOT NULL DEFAULT 0,
+  `sub_start_date` datetime NULL DEFAULT NULL,
+  `sub_end_date` datetime NULL DEFAULT NULL,
+  `advance` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `autoregistration_code` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `direct_play` tinyint(1) NOT NULL DEFAULT 0,
+  `use_logo_in_courselist` tinyint(1) NOT NULL DEFAULT 0,
+  `show_result` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
+  `credits` int(11) NOT NULL DEFAULT 0,
+  `auto_unsubscribe` tinyint(1) NOT NULL DEFAULT 0,
+  `unsubscribe_date_limit` datetime NULL DEFAULT NULL,
+  `id_menucustom` int(11) NULL DEFAULT NULL,
+  `sendCalendar` tinyint(1) NULL DEFAULT 0,
+  `calendarId` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  PRIMARY KEY (`idCourse`) USING BTREE,
+  INDEX `fk_menucustom`(`id_menucustom`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 --
 -- Dump dei dati per la tabella `learning_course`
@@ -1001,16 +1003,21 @@ CREATE TABLE IF NOT EXISTS `learning_course_date` (
 --
 
 CREATE TABLE IF NOT EXISTS `learning_course_date_day` (
-  `id_day` int(11) NOT NULL DEFAULT '0',
-  `id_date` int(11) NOT NULL DEFAULT '0',
-  `classroom` int(11) unsigned NOT NULL DEFAULT '0',
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_day` int(11) NOT NULL DEFAULT 0,
+  `id_date` int(11) NOT NULL DEFAULT 0,
+  `classroom` int(11) UNSIGNED NOT NULL DEFAULT 0,
   `date_begin` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `date_end` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `pause_begin` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `pause_end` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  PRIMARY KEY (`id_day`,`id_date`),
-  KEY `id_date` (`id_date`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `calendarId` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `deleted` tinyint(1) NULL DEFAULT 0,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `id_day_date`(`id_day`, `id_date`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 --
 -- Dump dei dati per la tabella `learning_course_date_day`
@@ -3507,23 +3514,7 @@ INSERT IGNORE INTO `core_menu_under`(`idUnder`, `idMenu`, `module_name`, `defaul
 VALUES (@max, @max, 'dashboardsettings', '_DASHBOARD_CONFIGURATION', '', 'view', 'framework', 1, '', '',
         'adm/dashboardsettings/show');
 
--- #19901 refactor day dates
-ALTER TABLE `learning_course_date_day`
-    ADD COLUMN `id` int(11) NOT NULL AUTO_INCREMENT FIRST,
-    ADD COLUMN `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP AFTER `pause_end`,
-    ADD COLUMN `updated_at` datetime NULL ON UPDATE CURRENT_TIMESTAMP AFTER `created_at`,
-    ADD COLUMN `calendarId` varchar(255) NOT NULL AFTER `pause_end`,
-    ADD COLUMN `deleted` tinyint(1) NULL DEFAULT 0 AFTER `calendarId`,
-    DROP PRIMARY KEY,
-    ADD PRIMARY KEY (`id`) USING BTREE,
-    DROP INDEX `id_date`,
-    ADD INDEX `id_day_date`(`id_day`, `id_date`) USING BTREE;
 
-ALTER TABLE `learning_course` ADD COLUMN `sendCalendar` tinyint(1) NULL DEFAULT 0;
-ALTER TABLE `learning_course` ADD COLUMN `calendarId` varchar(255) NOT NULL AFTER `sendCalendar`;
-
-ALTER TABLE `learning_course_date` ADD COLUMN `calendarId` varchar(255) NOT NULL;
-ALTER TABLE `learning_course_editions` ADD COLUMN `calendarId` varchar(255) NOT NULL;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
