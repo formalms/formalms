@@ -49,7 +49,7 @@ class ClientService
         return $config;
     }
 
-    private function getBaseUrl(): string
+    public function getBaseUrl(): string
     {
         $baseUrl = '';
         if (isset($_SERVER['HTTP_HOST'])) {

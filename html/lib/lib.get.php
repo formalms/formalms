@@ -1,4 +1,6 @@
-<?php defined("IN_FORMA") or die('Direct access is forbidden.');
+<?php use appCore\Template\Services\ClientService;
+
+defined("IN_FORMA") or die('Direct access is forbidden.');
 
 /* ======================================================================== \
 |   FORMA - The E-Learning Suite                                            |
@@ -351,9 +353,7 @@ class Get
 	public static function site_url()
 	{
 		if (!$url = Get::sett('url')) {
-			$url = self::scheme() . '://'
-				. self::server_name() . '/'
-				. self::subdirectory();
+			$url = ClientService::getInstance()->getBaseUrl();
 		}
 		return rtrim($url, '/') . '/';
 	}

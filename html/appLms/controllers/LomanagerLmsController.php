@@ -35,6 +35,11 @@ class LomanagerLmsController extends LmsController
     {
     }
 
+    /**
+     * @param $idCourse
+     * @param false $idFolder
+     * @return array|void
+     */
     protected function getFolders($idCourse, $idFolder = false)
     {
         $loData = array_values($this->model->getFolders($idCourse, $idFolder));
@@ -64,7 +69,7 @@ class LomanagerLmsController extends LmsController
 
         $lo_types = $this->model->getLoTypes();
 
-        $tabs_controllers = [
+        $tabsControllers = [
             new LomanagerhomerepoLmsController(),
             new LomanagerorganizationLmsController(),
             new LomanagerrepoLmsController(),
@@ -72,10 +77,10 @@ class LomanagerLmsController extends LmsController
 
         $tabs = [];
 
-        foreach ($tabs_controllers as $t) {
-            if ($tab = $t->getTab()) {
-                $tabs[] = $tab;
-            }
+        /** @var LomanagerLmsController $controller */
+        foreach ($tabsControllers as $controller) {
+
+            $tabs[] = $controller->getTab();
         }
 
         $this->render('show', [

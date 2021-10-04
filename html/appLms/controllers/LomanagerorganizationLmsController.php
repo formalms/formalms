@@ -37,6 +37,7 @@ class LomanagerorganizationLmsController extends LomanagerLmsController
                 'title' => Lang::t('_ORGROOTNAME', 'storage'),
                 'data' => $this->getFolders($_SESSION['idCourse'], false),
                 'currentState' => serialize([$this->getCurrentState(0)]),
+                'scormPlayerEnabled' => true
             ];
         } else {
             return null;

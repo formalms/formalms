@@ -36,6 +36,7 @@ class LomanagerhomerepoLmsController extends LomanagerLmsController
                 'title' => Lang::t('_HOMEREPOROOTNAME', 'storage'),
                 'data' => $this->getFolders($_SESSION['idCourse'], false),
                 'currentState' => serialize([$this->getCurrentState(0)]),
+                'scormPlayerEnabled' => false
             ];
         } else {
             return null;

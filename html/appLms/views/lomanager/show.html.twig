@@ -6,7 +6,7 @@
     <div class="tabs-wrapper">
         <ul class="nav nav-tabs">
             {% for tab in tabs %}
-                <li role="presentation" class="tab-link {{ tab.active ? 'active' : '' }}" data-type="{{ tab.type }}" data-controller="{{ tab.controller }}">
+                <li role="presentation" class="tab-link {{ tab.active ? 'active' : '' }}" data-type="{{ tab.type }}" data-controller="{{ tab.controller }}" data-scorm_player_enabled="{{ tab.scormPlayerEnabled|raw }}">
                     <a href="#{{ tab.type }}">{{ tab.title }}</a>
                 </li>
             {% endfor %}
@@ -35,6 +35,7 @@ if (tabs) {
             tab: tab,
             controller: tab.getAttribute('data-controller'),
             selector: tab.getAttribute('data-type'),
+            scormPlayerEnabled: tab.getAttribute('data-scorm_player_enabled'),
         });
     });
 

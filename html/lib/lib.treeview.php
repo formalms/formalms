@@ -295,6 +295,16 @@ class TreeView {
 			$this->itemToPlay = (int)$arrayState[$this->_getIdPlayItemId()];
 		}
 
+		if (array_key_exists('treeview_opplayitem_'.$this->id,$arrayState[$this->id])){
+			if (is_array($arrayState[$this->id]['treeview_opplayitem_'.$this->id])){
+				$this->itemToPlay = (int)array_key_first($arrayState[$this->id]['treeview_opplayitem_'.$this->id]);
+
+				if (!isset( $arrayState[$this->_getIdPlayItemId()])){
+					$arrayState[$this->_getIdPlayItemId()] = $this->itemToPlay;
+				}
+				$_POST[$this->_getIdPlayItemId()] = $this->itemToPlay;
+			}
+		}
 		if( isSet( $arrayExpand[$this->_getExpandId()] ) ) {
 			$this->expandList = explode( ',', $arrayExpand[$this->_getExpandId()]);
 		}
