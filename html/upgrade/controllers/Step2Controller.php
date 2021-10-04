@@ -75,11 +75,11 @@ class Step2Controller extends StepController
     {
         $res = array();
 
-        //TODO PHP7x: set const for Minimum PHP required version: 7.0
+        //TODO PHP7x: set const for Minimum PHP required version: 7.4
         //TODO PHP7x: set const for Maximum PHP suggested version: 7.4.x
-        if (version_compare(PHP_VERSION, '7.0', '<')) {
+        if (version_compare(PHP_VERSION, '7.4', '<')) {
             $res['php'] = 'err';
-        } else if (version_compare(PHP_VERSION, '7.5', '>=')) {
+        } else if (version_compare(PHP_VERSION, '8.0', '>=')) {
             $res['php'] = 'warn';
         } else {
             $res['php'] = 'ok';

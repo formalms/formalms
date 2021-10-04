@@ -1977,8 +1977,8 @@ class Course_API extends API
 
     public function copyLearningObjects($params)
     {
-        require_once(_lms_.'/class.module/class.definition.php');
-        require_once(_lms_.'/lib/lib.module.php');
+        require_once(_lms_ . '/class.module/class.definition.php');
+        require_once(_lms_ . '/lib/lib.module.php');
         $response = $this->validateCopyParams($params);
 
         if ($response['success']) {
@@ -1986,12 +1986,17 @@ class Course_API extends API
             $newtype = $params['toType'];
             $idCourse = $params['idCourse'];
             $_SESSION['idCourse'] = $idCourse;
+
+            $idUser = false;
+            if (array_key_exists('idUser', $params) && !empty($params['idUser'])) {
+                $idUser = $params['idUser'];
+            }
             $learningObjectIds = explode(',', $params['learningObjectIds']);
 
             if (count($learningObjectIds) > 0) {
                 $model = new LomanagerLms();
                 foreach ($learningObjectIds as $learningObjectId) {
-                    $model->setTdb($fromType);
+                    $model->setTdb($fromType, $idCourse, $idUser);
                     if ($learningObjectId > 0 && $model->copy($learningObjectId, $fromType)) {
                         $model->setTdb($newtype);
                         $model->paste(0);
@@ -2018,12 +2023,15 @@ class Course_API extends API
             $response['message'] = 'To Type is not valid :' . $params['toType'];
         }
 
+        if (($params['fromType'] === LomanagerLms::HOMEREPODIRDB || $params['toType'] === LomanagerLms::HOMEREPODIRDB) && (!array_key_exists('idUser', $params) || empty($params['idUser']))) {
+            $response['success'] = false;
+            $response['message'] = 'To use ' . LomanagerLms::HOMEREPODIRDB . ' is necessary to send idUser param';
+        }
         return $response;
     }
 
     private function validateType(string $type)
     {
-
         switch ($type) {
             case LomanagerLms::HOMEREPODIRDB:
             case LomanagerLms::ORGDIRDB:

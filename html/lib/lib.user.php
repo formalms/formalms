@@ -706,7 +706,6 @@ class DoceboUser
 
 function getLogUserId()
 {
-
     return Docebo::user()->getIdSt();
 }
 

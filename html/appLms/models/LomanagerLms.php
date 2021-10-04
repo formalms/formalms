@@ -27,7 +27,11 @@ class LomanagerLms extends Model {
         $this->setTdb();
     }
 
-    public function setTdb($type = self::ORGDIRDB, $idCourse = false) {
+    public function setTdb($type = self::ORGDIRDB, $idCourse = false, $idUser = false) {
+        if ($idUser === false){
+            $idUser = getLogUserId();
+        }
+
         switch($type) {
             case self::ORGDIRDB: 
                 require_once Forma::inc(_lms_.'/modules/organization/orglib.php');
@@ -38,13 +42,13 @@ class LomanagerLms extends Model {
             case self::REPODIRDB:
                 require_once Forma::inc(_lms_.'/lib/lib.repo.php');
                 require_once Forma::inc(_lms_ . '/class.module/class.pubrepo.php');
-                $this->tdb = new RepoDirDb( $GLOBALS['prefix_lms'].'_repo', getLogUserId());
+                $this->tdb = new RepoDirDb( $GLOBALS['prefix_lms'].'_repo', $idUser);
                 $this->module = new Module_Pubrepo();
                 break;
             case self::HOMEREPODIRDB:
                 require_once Forma::inc(_lms_.'/modules/homerepo/homerepo.php');
                 require_once Forma::inc(_lms_ . '/class.module/class.homerepo.php');
-                $this->tdb = new HomerepoDirDb( $GLOBALS['prefix_lms'] .'_homerepo', getLogUserId());
+                $this->tdb = new HomerepoDirDb( $GLOBALS['prefix_lms'] .'_homerepo', $idUser);
                 $this->module = new Module_Homerepo();
                 break;
             default:
