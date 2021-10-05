@@ -56,8 +56,19 @@ class ClientService
             $http = (isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) !== 'off') || strtolower($_SERVER['HTTP_X_FORWARDED_PROTO']) === 'https' ? 'https' : 'http';
             $hostname = $_SERVER['HTTP_HOST'];
 
-            $requestUriArray = explode('index.php', $_SERVER['REQUEST_URI']);
-            $requestUriArray = explode('/', $requestUriArray[0]);
+            $possiblePhpEndpoints = [
+                'index.php',
+                'ajax.adm_server.php',
+                'ajax.server.php'
+            ];
+
+            foreach ($possiblePhpEndpoints as $possiblePhpEndpoint) {
+                if (str_contains($_SERVER['REQUEST_URI'],$possiblePhpEndpoint)) {
+                    $requestUriArray = explode($possiblePhpEndpoint, $_SERVER['REQUEST_URI']);
+                    $requestUriArray = explode('/', $requestUriArray[0]);
+                    break;
+                }
+            }
 
             $path = '';
             foreach ($requestUriArray as $requestUriItem) {
