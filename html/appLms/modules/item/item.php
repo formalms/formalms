@@ -21,7 +21,7 @@ if (!Docebo::user()->isAnonymous()) {
 
         require_once(_base_ . '/lib/lib.form.php');
 
-        $GLOBALS['page']->add(getTitleArea($lang->def('_SECTIONNAME_ITEM'), 'item')
+        /*$GLOBALS['page']->add(getTitleArea($lang->def('_SECTIONNAME_ITEM'), 'item')
             .'<div class="std_block">'
             .getBackUi( Util::str_replace_once('&', '&amp;', $object_item->back_url).'&amp;create_result=0', $lang->def('_BACK') )
 
@@ -39,15 +39,14 @@ if (!Docebo::user()->isAnonymous()) {
             .Form::closeButtonSpace()
             .Form::closeForm()
             .'</div>', 'content');
+    */
 
-        //@TODO to enable dropzone uncomment this
-        //$GLOBALS['page']->add(\appCore\Template\TwigManager::getInstance()->render('upload-file.html.twig', ['back_url' => $object_item->back_url], _lms_ . '/views/lo'), 'content');
+        $GLOBALS['page']->add(\appCore\Template\TwigManager::getInstance()->render('upload-file.html.twig', ['back_url' => $object_item->back_url], _lms_ . '/views/lo'), 'content');
     }
 
     function insitem()
     {
-        //@TODO to enable dropzone uncomment this
-        /*
+
         require_once(_base_ . '/lib/lib.upload.php');
         $response = [];
         $response['status'] = true;
