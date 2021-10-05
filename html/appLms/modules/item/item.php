@@ -117,14 +117,14 @@ if (!Docebo::user()->isAnonymous()) {
                     sl_close_fileoperations();
                 } else {
                     $response['status'] = false;
-                    $response['errors']['files'][$fileIndex] = Lang::t('_FILE_ERROR_UPLOAD_FILE_EXISTS', 'item');
+                    $response['errors']['files'][$fileIndex] = Lang::t('_FILE_ERROR_UPLOAD', 'item');
                 }
 
                 $insert_query = "INSERT INTO %lms_materials_lesson  SET author = '" . getLogUserId() . "', title = '" . $fileItem['title'] . "', description = '" . $fileItem['description'] . "', path = '$savefile'";
 
                 if (!sql_query($insert_query)) {
                     sl_unlink($path . $savefile);
-                    $response['errors']['files'][$fileIndex] = Lang::t('_FILE_ERROR_UPLOAD_MATERIAL_LESSON_INSER_FAIL', 'item');
+                    $response['errors']['files'][$fileIndex] = Lang::t('_FILE_OPERATION_FAILURE', 'item');
 
                 }
                 if (isset($_SESSION['idCourse']) && defined("LMS")) $GLOBALS['course_descriptor']->addFileToUsedSpace(_files_ . $path . $savefile);
@@ -136,64 +136,7 @@ if (!Docebo::user()->isAnonymous()) {
         $response['back_url'] = str_replace('&amp;', '&', $back_url . '&id_los=' . implode(',', $idLessons) . '&create_result=3');
 
         echo json_encode($response);
-        die();*/
-        Forma::removeErrors();
-        require_once(_base_.'/lib/lib.upload.php');
-
-        $back_url = urldecode($_POST['back_url']);
-
-        //scanning title
-        if(trim($_POST['title']) == "") $_POST['title'] = Lang::t('_NOTITLE');
-
-        //save file
-        if($_FILES['attach']['name'] == '') {
-
-            Forma::addError(Lang::t('_FILEUNSPECIFIED'));
-
-            Util::jump_to( $back_url.'&create_result=0' );
-        } else {
-            if(isset($_SESSION['idCourse']) && defined("LMS")) {
-                $quota = $GLOBALS['course_descriptor']->getQuotaLimit();
-                $used = $GLOBALS['course_descriptor']->getUsedSpace();
-
-                if(Util::exceed_quota($_FILES['attach']['tmp_name'], $quota, $used)) {
-
-                    Forma::addError(Lang::t('_QUOTA_EXCEDED'));
-                    Util::jump_to( $back_url.'&create_result=0' );
-                }
-            }
-            $path = '/appLms/'.Get::sett('pathlesson');
-            $savefile = ( isset($_SESSION['idCourse']) ? $_SESSION['idCourse'] : '0' ).'_'.mt_rand(0,100).'_'.time().'_'.$_FILES['attach']['name'];
-            $savefile = str_replace("'", "\'", $savefile);//Patch file con apostrofo
-            if(!file_exists( _files_.$path.$savefile )) {
-                sl_open_fileoperations();
-                if(!sl_upload($_FILES['attach']['tmp_name'], $path.$savefile)) {
-                    sl_close_fileoperations();
-                    Forma::addError(Lang::t('_ERROR_UPLOAD'));
-                    Util::jump_to( $back_url.'&create_result=0' );
-                }
-                sl_close_fileoperations();
-            } else {
-                Forma::addError(Lang::t('_ERROR_UPLOAD_FILE_EXISTS'));
-                Util::jump_to( $back_url.'&create_result=0' );
-            }
-        }
-
-        $insert_query = "
-	INSERT INTO ".$GLOBALS['prefix_lms']."_materials_lesson 
-	SET author = '".getLogUserId()."',
-		title = '".$_POST['title']."',
-		description = '".$_POST['description']."',
-		path = '$savefile'";
-
-        if(!sql_query($insert_query)) {
-            sl_unlink($GLOBALS['prefix_lms'].$savefile );
-            Forma::addError(Lang::t('_ERROR_UPLOAD_MATERIAL_LESSON_INSER_FAIL'));
-            Util::jump_to( $back_url.'&create_result=0' );
-        }
-        if(isset($_SESSION['idCourse']) && defined("LMS")) $GLOBALS['course_descriptor']->addFileToUsedSpace(_files_.$path.$savefile);
-        list($idLesson) = sql_fetch_row(sql_query("SELECT LAST_INSERT_ID()"));
-        Util::jump_to( $back_url.'&id_lo='.$idLesson.'&create_result=1' );
+        die();
     }
 
 //= XXX: edit=====================================================================
