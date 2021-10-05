@@ -170,7 +170,7 @@ class LomanagerLms extends Model {
                 $lo = createLO( $saveData['objectType'] );
                 $idResource = $lo->copy((int)$saveData['idResource']);
                 if( $idResource != 0 ) { 
-                    $this->tdb->addItem( $folderId, 
+                    $idReference = $this->tdb->addItem( $folderId,
                         $saveData['name'],
                         $saveData['objectType'], 
                         $idResource, 
@@ -185,7 +185,7 @@ class LomanagerLms extends Model {
                         '', /* objective */
                         date("Y-m-d H:i:s") 
                     );
-                    return true;
+                    return $idReference;
                 }
             } else if (isset($_SESSION['idCourse'])) {
                 // It's a directory

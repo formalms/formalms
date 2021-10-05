@@ -1998,8 +1998,26 @@ class Course_API extends API
                 foreach ($learningObjectIds as $learningObjectId) {
                     $model->setTdb($fromType, $idCourse, $idUser);
                     if ($learningObjectId > 0 && $model->copy($learningObjectId, $fromType)) {
-                        $model->setTdb($newtype);
-                        $model->paste(0);
+                        $model->setTdb($newtype, $idCourse, $idUser);
+                        $idReference = $model->paste(0);
+
+                        if ($idReference > 0) {
+                            $response['learningObjectIds'][] = [
+                                'fromType' => $fromType,
+                                'fromId' => $learningObjectId,
+                                'toType' => $newtype,
+                                'toId' => $idReference,
+                                'success' => true
+                            ];
+                        } else {
+                            $response['learningObjectIds'][] = [
+                                'fromType' => $fromType,
+                                'fromId' => $learningObjectId,
+                                'toType' => $newtype,
+                                'toId' => $idReference,
+                                'success' => $idReference
+                            ];
+                        }
                     }
                 }
             }
