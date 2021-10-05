@@ -2001,23 +2001,15 @@ class Course_API extends API
                         $model->setTdb($newtype, $idCourse, $idUser);
                         $idReference = $model->paste(0);
 
-                        if ($idReference > 0) {
-                            $response['learningObjectIds'][] = [
-                                'fromType' => $fromType,
-                                'fromId' => $learningObjectId,
-                                'toType' => $newtype,
-                                'toId' => $idReference,
-                                'success' => true
-                            ];
-                        } else {
-                            $response['learningObjectIds'][] = [
-                                'fromType' => $fromType,
-                                'fromId' => $learningObjectId,
-                                'toType' => $newtype,
-                                'toId' => $idReference,
-                                'success' => $idReference
-                            ];
-                        }
+                        $response['learningObjectIds'][] = [
+                            'fromType' => $fromType,
+                            'fromId' => $learningObjectId,
+                            'toType' => $newtype,
+                            'toId' => $idReference,
+                            'idCourse' => $idCourse,
+                            'idUser' => $idUser,
+                            'success' => ($idReference > 0)
+                        ];
                     }
                 }
             }
