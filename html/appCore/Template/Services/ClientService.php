@@ -62,12 +62,17 @@ class ClientService
                 'ajax.server.php'
             ];
 
+            $requestUri = $_SERVER['REQUEST_URI'];
             foreach ($possiblePhpEndpoints as $possiblePhpEndpoint) {
-                if (str_contains($_SERVER['REQUEST_URI'],$possiblePhpEndpoint)) {
-                    $requestUriArray = explode($possiblePhpEndpoint, $_SERVER['REQUEST_URI']);
+                if (str_contains($requestUri,$possiblePhpEndpoint)) {
+                    $requestUriArray = explode($possiblePhpEndpoint, $requestUri);
                     $requestUriArray = explode('/', $requestUriArray[0]);
                     break;
                 }
+            }
+
+            if (empty($requestUriArray) && !empty($requestUri)){
+                $requestUriArray = explode('/', $requestUri);
             }
 
             $path = '';
@@ -77,8 +82,8 @@ class ClientService
                 }
             }
             $baseUrl = sprintf("%s://%s%s", $http, $hostname, $path);
-        }
 
+        }
         return $baseUrl;
     }
 }
