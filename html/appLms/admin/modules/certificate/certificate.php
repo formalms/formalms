@@ -126,6 +126,7 @@ function certificate()
     $out->add(getTitleArea($lang->def('_TITLE_CERTIFICATE'), 'certificate')
         . '<div class="std_block">'
         . $form->openForm('certificate_filter', 'index.php?modname=certificate&amp;op=certificate')
+        . $form->getHidden('of_platform', 'of_platform', 'lms')
         . '<div class="quick_search_form">
             <div>
                 <div class="simple_search_box">'
@@ -206,6 +207,7 @@ function list_element_certificate()
     // $out->add( getInfoUi($lang->def('_CERTIFICATE_WARNING')) );
 
     $out->add($form->openForm('structure_certificate', 'index.php?modname=certificate&amp;op=savecertificate', false, false, 'multipart/form-data'));
+    $out->add($form->getHidden('of_platform', 'of_platform', 'lms'));
     $out->add($form->openElementSpace()
 
         . $form->getTextarea($lang->def('_STRUCTURE_CERTIFICATE'), 'structure', 'structure', $structure)
@@ -324,6 +326,7 @@ function editcertificate($load = false)
         . getBackUi('index.php?modname=certificate&amp;op=certificate', $lang->def('_BACK'))
 
         . $form->openForm('adviceform', 'index.php?modname=certificate&amp;op=savecertificate')
+        . $form->getHidden('of_platform', 'of_platform', 'lms')
     );
     if ($load) {
 
@@ -465,6 +468,7 @@ function delcertificate()
             getTitleArea($page_title, 'certificate')
             . '<div class="std_block">'
             . $form->openForm('del_certificate', 'index.php?modname=certificate&amp;op=delcertificate')
+            . $form->getHidden('of_platform', 'of_platform', 'lms')
             . $form->getHidden('id_certificate', 'id_certificate', $id_certificate)
             . getDeleteUi($lang->def('_AREYOUSURE'),
                 '<span>' . $lang->def('_NAME') . ' : </span>' . $name . '<br />'
@@ -553,6 +557,7 @@ function report_certificate()
 
         $out->add(
             $form->openForm('certificate_filter', 'index.php?modname=certificate&amp;op=report_certificate')
+            . $form->getHidden('of_platform', 'of_platform', 'lms')
             . $form->openElementSpace()
             . $form->getTextfield($lang->def('_NAME'), 'name_filter', 'name_filter', '255', (isset($_POST['name_filter']) && $_POST['name_filter'] !== '' ? $_POST['name_filter'] : ''))
             . $form->getTextfield($lang->def('_CODE'), 'code_filter', 'code_filter', '255', (isset($_POST['code_filter']) && $_POST['code_filter'] !== '' ? $_POST['code_filter'] : ''))
