@@ -89,7 +89,7 @@ class Course_API extends API
             'data' => $sendCalendar
         ];
 
-        if (empty($sendCalendar)) {
+        if (!is_bool($sendCalendar)) {
             $response['success'] = false;
             $response['message'] = 'Missing or Wrong SendCalendar' . $params['sendCalendar'];
         }
