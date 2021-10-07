@@ -1,0 +1,5037 @@
+{
+	"info": {
+		"_postman_id": "425f7cce-a61b-4263-8f76-05bd9a0d147f",
+		"name": "FormaLMS API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "API V1",
+			"item": [
+				{
+					"name": "Course",
+					"item": [
+						{
+							"name": "Course - addCourse",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"params = new Array();",
+											"if(pm.request.body.mode === 'formdata'){",
+											"    pm.request.body.formdata.each(function(data){",
+											"        if(!('disabled' in data) || ('disabled' in data && data.disabled != true)){",
+											"            value = data.value;",
+											"            if(data.value.includes('{{') && data.value.includes('}}')){",
+											"",
+											"                key = data.value.replace('{{','').replace('}}','');",
+											"",
+											"                value = pm.environment.get(key);",
+											"            }",
+											"            if (value && value !== '') {",
+											"                params.push(value);",
+											"            }",
+											"        }",
+											"    });",
+											"}",
+											"",
+											"paramsString = params.join(',');",
+											"",
+											"if(paramsString.charAt(paramsString.length - 1) == ','){",
+											"    paramsString = paramsString.slice(0, -1);",
+											"}",
+											"",
+											"api_key = pm.environment.get(\"api_key\");",
+											"api_secret = pm.environment.get(\"api_secret\");",
+											"",
+											"encriptedParams = CryptoJS.SHA1(paramsString+','+api_secret).toString();",
+											"",
+											"console.log(encriptedParams);",
+											"",
+											"token = CryptoJS.enc.Base64.stringify(CryptoJS.enc.Utf8.parse(api_key+':'+encriptedParams));",
+											"",
+											"pm.environment.set('token',token);",
+											"",
+											"console.log(token);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"accept": true
+								}
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Authorization",
+										"value": "FormaLMS  {{token}}",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "advance",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "allow_overbooking",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "selected_menu",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "auto_unsubscribe",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "can_subscribe",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "course_advanced",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "course_autoregistration_code",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "course_code",
+											"value": "test api_2",
+											"type": "text"
+										},
+										{
+											"key": "course_date_begin",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "course_date_end",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "course_day_of",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "course_descr",
+											"value": "descrizione del corso",
+											"type": "text"
+										},
+										{
+											"key": "course_difficult",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "course_edition",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "close_lo_perm",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "course_lang",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "course_medium_time",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "course_name",
+											"value": "test_api_2",
+											"type": "text"
+										},
+										{
+											"key": "course_prize",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "course_progress",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "course_sell",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "course_show_rules",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "course_sponsor_link",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "course_status",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "course_subs",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "course_time",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "course_type",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "credits",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "direct_play",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "idCategory",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "inherit_quota",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "max_num_subscribe",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "min_num_subscribe",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "random_course_autoregistration_code",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "show_result",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "show_who_online",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "sub_end_date",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "sub_start_date",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "unsubscribe_date_limit",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "use_logo_in_courselist",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "use_unsubscribe_date_limit",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "course_user_material",
+											"type": "file",
+											"src": "/Users/giuseppenucifora/Downloads/dettaglio_test.pdf (1).pdf"
+										},
+										{
+											"key": "course_otheruser_material",
+											"type": "file",
+											"src": "/Users/giuseppenucifora/Downloads/dettaglio_test.pdf.pdf"
+										},
+										{
+											"key": "course_demo",
+											"type": "file",
+											"src": "/Users/giuseppenucifora/Downloads/Fattura-9_2021-Fabio-Di-Marzio.pdf"
+										},
+										{
+											"key": "course_sponsor_logo",
+											"type": "file",
+											"src": "/Users/giuseppenucifora/Downloads/fb05b490c3239d96ebfbdf0e557f22eb.jpeg"
+										},
+										{
+											"key": "course_logo",
+											"type": "file",
+											"src": "/Users/giuseppenucifora/Downloads/fb05b490c3239d96ebfbdf0e557f22eb.jpeg"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}{{api_path}}/course/addCourse",
+									"host": [
+										"{{base_url}}{{api_path}}"
+									],
+									"path": [
+										"course",
+										"addCourse"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Course - courses",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"accept": true
+								}
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Authorization",
+										"value": "FormaLMS  {{token}}",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": []
+								},
+								"url": {
+									"raw": "{{base_url}}{{api_path}}/course/courses",
+									"host": [
+										"{{base_url}}{{api_path}}"
+									],
+									"path": [
+										"course",
+										"courses"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Course - addDay",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"accept": true
+								}
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Authorization",
+										"type": "text",
+										"value": "FormaLMS  {{token}}"
+									},
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "course_id",
+											"value": "{{course_id}}",
+											"type": "text"
+										},
+										{
+											"key": "id_date",
+											"value": "{{date_id}}",
+											"type": "text"
+										},
+										{
+											"key": "edition_date_selected",
+											"value": "01-05-2021",
+											"type": "text"
+										},
+										{
+											"key": "sendCalendar",
+											"value": "0",
+											"type": "text"
+										},
+										{
+											"key": "edition_b_hours",
+											"value": "",
+											"type": "text"
+										},
+										{
+											"key": "edition_b_minutes",
+											"value": "",
+											"type": "text"
+										},
+										{
+											"key": "edition_pb_hours",
+											"value": "",
+											"type": "text"
+										},
+										{
+											"key": "edition_pb_minutes",
+											"value": "",
+											"type": "text"
+										},
+										{
+											"key": "edition_pe_hours",
+											"value": "",
+											"type": "text"
+										},
+										{
+											"key": "edition_pe_minutes",
+											"value": "",
+											"type": "text"
+										},
+										{
+											"key": "edition_e_hours",
+											"value": "",
+											"type": "text"
+										},
+										{
+											"key": "edition_e_minutes",
+											"value": "",
+											"type": "text"
+										},
+										{
+											"key": "edition_classroom",
+											"value": "",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}{{api_path}}/course/addDay",
+									"host": [
+										"{{base_url}}{{api_path}}"
+									],
+									"path": [
+										"course",
+										"addDay"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Course - updateDay",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"accept": true
+								}
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Authorization",
+										"type": "text",
+										"value": "FormaLMS  {{token}}"
+									},
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "course_id",
+											"value": "{{course_id}}",
+											"type": "text"
+										},
+										{
+											"key": "id_date",
+											"value": "{{id_date}}",
+											"type": "text"
+										},
+										{
+											"key": "id_day",
+											"value": "0",
+											"type": "text"
+										},
+										{
+											"key": "edition_date_selected",
+											"value": "15-04-2021",
+											"type": "text"
+										},
+										{
+											"key": "sendCalendar",
+											"value": "0",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}{{api_path}}/course/updateDay",
+									"host": [
+										"{{base_url}}{{api_path}}"
+									],
+									"path": [
+										"course",
+										"updateDay"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Course - deleteDay",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"accept": true
+								}
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Authorization",
+										"type": "text",
+										"value": "FormaLMS  {{token}}"
+									},
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "course_id",
+											"value": "{{course_id}}",
+											"type": "text"
+										},
+										{
+											"key": "id_date",
+											"value": "{{id_date}}",
+											"type": "text"
+										},
+										{
+											"key": "id_day",
+											"value": "0",
+											"type": "text"
+										},
+										{
+											"key": "sendCalendar",
+											"value": "0",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}{{api_path}}/course/deleteDay",
+									"host": [
+										"{{base_url}}{{api_path}}"
+									],
+									"path": [
+										"course",
+										"deleteDay"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Course - addUserSubscription",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"accept": true
+								}
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Authorization",
+										"type": "text",
+										"value": "FormaLMS  {{token}}"
+									},
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "idst",
+											"value": "{{user_idst}}",
+											"type": "text"
+										},
+										{
+											"key": "course_id",
+											"value": "{{course_id}}",
+											"type": "text"
+										},
+										{
+											"key": "course_code",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "edition_id",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "edition_code",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "classroom_id",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "classroom_code",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "user_level",
+											"value": "student",
+											"description": "administrator | instructor | mentor | tutor | student | ghost  | guest",
+											"type": "text"
+										},
+										{
+											"key": "sendmail",
+											"value": "false",
+											"description": "true or false",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}{{api_path}}/course/addUserSubscription",
+									"host": [
+										"{{base_url}}{{api_path}}"
+									],
+									"path": [
+										"course",
+										"addUserSubscription"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Course - updateUserSubscription",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"accept": true
+								}
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Authorization",
+										"type": "text",
+										"value": "FormaLMS  {{token}}"
+									},
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "idst",
+											"value": "{{user_idst}}",
+											"type": "text"
+										},
+										{
+											"key": "course_id",
+											"value": "{{course_id}}",
+											"type": "text"
+										},
+										{
+											"key": "course_code",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "edition_id",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "edition_code",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "classroom_id",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "classroom_code",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "user_level",
+											"value": "student",
+											"description": "administrator | instructor | mentor | tutor | student | ghost  | guest",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "user_status",
+											"value": "completed",
+											"description": "waiting_list | to_confirm | subscribed | started | completed | suspended | overbooking",
+											"type": "text",
+											"disabled": true
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}{{api_path}}/course/updateUserSubscription",
+									"host": [
+										"{{base_url}}{{api_path}}"
+									],
+									"path": [
+										"course",
+										"updateUserSubscription"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Course - putIntroductionCourse",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"accept": true
+								}
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Authorization",
+										"type": "text",
+										"value": "FormaLMS  {{token}}"
+									},
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "course_id",
+											"value": "330",
+											"type": "text"
+										},
+										{
+											"key": "text_intro",
+											"value": "{{html}}",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}{{api_path}}/course/putIntroductionCourse",
+									"host": [
+										"{{base_url}}{{api_path}}"
+									],
+									"path": [
+										"course",
+										"putIntroductionCourse"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Course - deleteIntroductionCourse",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"accept": true
+								}
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Authorization",
+										"type": "text",
+										"value": "FormaLMS  {{token}}"
+									},
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "course_id",
+											"value": "{{course_id}}",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}{{api_path}}/course/deleteIntroductionCourse",
+									"host": [
+										"{{base_url}}{{api_path}}"
+									],
+									"path": [
+										"course",
+										"deleteIntroductionCourse"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Course - addCertificates",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"accept": true
+								}
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Authorization",
+										"type": "text",
+										"value": "FormaLMS  {{token}}"
+									},
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "course_id",
+											"value": "330",
+											"type": "text"
+										},
+										{
+											"key": "certificates[0][id]",
+											"value": "4",
+											"type": "text"
+										},
+										{
+											"key": "certificates[0][status]",
+											"value": "0",
+											"type": "text"
+										},
+										{
+											"key": "certificates[1][id]",
+											"value": "33",
+											"type": "text"
+										},
+										{
+											"key": "certificates[1][status]",
+											"value": "0",
+											"type": "text"
+										},
+										{
+											"key": "certificates[1][minutes]",
+											"value": "15",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}{{api_path}}/course/addCertificates",
+									"host": [
+										"{{base_url}}{{api_path}}"
+									],
+									"path": [
+										"course",
+										"addCertificates"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Course - removeCertificates",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"accept": true
+								}
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Authorization",
+										"type": "text",
+										"value": "FormaLMS  {{token}}"
+									},
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "course_id",
+											"value": "330",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}{{api_path}}/course/removeCertificates",
+									"host": [
+										"{{base_url}}{{api_path}}"
+									],
+									"path": [
+										"course",
+										"removeCertificates"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Course - getCalendar",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"accept": true
+								}
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Authorization",
+										"type": "text",
+										"value": "FormaLMS  {{token}}"
+									},
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "course_id",
+											"value": "{{course_id}}",
+											"type": "text"
+										},
+										{
+											"key": "id_date",
+											"value": "{{id_date}}",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}{{api_path}}/course/getCalendar",
+									"host": [
+										"{{base_url}}{{api_path}}"
+									],
+									"path": [
+										"course",
+										"getCalendar"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Course - editions",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"accept": true
+								}
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Authorization",
+										"value": "FormaLMS  {{token}}",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "course_id",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "course_code",
+											"value": "testAdmin",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}{{api_path}}/course/editions",
+									"host": [
+										"{{base_url}}{{api_path}}"
+									],
+									"path": [
+										"course",
+										"editions"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Course - classrooms",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"accept": true
+								}
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Authorization",
+										"value": "FormaLMS  {{token}}",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "course_id",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "course_code",
+											"value": "testAdmin",
+											"type": "text"
+										},
+										{
+											"key": "course",
+											"value": "name",
+											"type": "text",
+											"disabled": true
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}{{api_path}}/course/classrooms",
+									"host": [
+										"{{base_url}}{{api_path}}"
+									],
+									"path": [
+										"course",
+										"classrooms"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Course - addUserSubscription",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"accept": true
+								}
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Authorization",
+										"value": "FormaLMS  {{token}}",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "idst",
+											"value": "{{user_idst}}",
+											"type": "text"
+										},
+										{
+											"key": "course_id",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "course_code",
+											"value": "testAdmin",
+											"type": "text"
+										},
+										{
+											"key": "edition_id",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "edition_code",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "classroom_id",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "classroom_code",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}{{api_path}}/course/addusersubscription",
+									"host": [
+										"{{base_url}}{{api_path}}"
+									],
+									"path": [
+										"course",
+										"addusersubscription"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Course - updateUserSubscription",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"accept": true
+								}
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Authorization",
+										"value": "FormaLMS  {{token}}",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "idst",
+											"value": "{{user_idst}}",
+											"type": "text"
+										},
+										{
+											"key": "course_id",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "course_code",
+											"value": "testAdmin",
+											"type": "text"
+										},
+										{
+											"key": "edition_id",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "edition_code",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "classroom_id",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "classroom_code",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}{{api_path}}/course/updateusersubscription",
+									"host": [
+										"{{base_url}}{{api_path}}"
+									],
+									"path": [
+										"course",
+										"updateusersubscription"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Course - deleteUserSubscription",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"accept": true
+								}
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Authorization",
+										"value": "FormaLMS  {{token}}",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "idst",
+											"value": "{{user_idst}}",
+											"type": "text"
+										},
+										{
+											"key": "course_id",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "course_code",
+											"value": "testAdmin",
+											"type": "text"
+										},
+										{
+											"key": "edition_id",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "edition_code",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "classroom_id",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "classroom_code",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}{{api_path}}/course/deleteusersubscription",
+									"host": [
+										"{{base_url}}{{api_path}}"
+									],
+									"path": [
+										"course",
+										"deleteusersubscription"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Course - subscribeUserWithCode",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"accept": true
+								}
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Authorization",
+										"value": "FormaLMS  {{token}}",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "idst",
+											"value": "{{user_idst}}",
+											"type": "text"
+										},
+										{
+											"key": "reg_code_type",
+											"value": "course",
+											"type": "text"
+										},
+										{
+											"key": "reg_code",
+											"value": "J3KKFMZXEA",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}{{api_path}}/course/subscribeuserwithcode",
+									"host": [
+										"{{base_url}}{{api_path}}"
+									],
+									"path": [
+										"course",
+										"subscribeuserwithcode"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Course - getCertificateByUser",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"accept": true
+								}
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Authorization",
+										"value": "FormaLMS  {{token}}",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "course_id",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "username",
+											"value": "{{user_id}}",
+											"type": "text"
+										},
+										{
+											"key": "firstname",
+											"value": "{{user_firstname}}",
+											"type": "text"
+										},
+										{
+											"key": "lastname",
+											"value": "{{user_lastname}}",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}{{api_path}}/course/getcertificatebyuser",
+									"host": [
+										"{{base_url}}{{api_path}}"
+									],
+									"path": [
+										"course",
+										"getcertificatebyuser"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Course - getCertificateByCourse",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"accept": true
+								}
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Authorization",
+										"value": "FormaLMS  {{token}}",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "course_id",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "username",
+											"value": "{{user_id}}",
+											"type": "text",
+											"disabled": true
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}{{api_path}}/course/getcertificatebycourse",
+									"host": [
+										"{{base_url}}{{api_path}}"
+									],
+									"path": [
+										"course",
+										"getcertificatebycourse"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Course - addCategory",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"accept": true
+								}
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Authorization",
+										"value": "FormaLMS  {{token}}",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "category_id",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "name",
+											"value": "testAdmin2",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}{{api_path}}/course/addcategory",
+									"host": [
+										"{{base_url}}{{api_path}}"
+									],
+									"path": [
+										"course",
+										"addcategory"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Course - updateCategory",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"accept": true
+								}
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Authorization",
+										"value": "FormaLMS  {{token}}",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "idCategory",
+											"value": "10",
+											"type": "text"
+										},
+										{
+											"key": "name",
+											"value": "testAdmin2",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}{{api_path}}/course/updatecategory",
+									"host": [
+										"{{base_url}}{{api_path}}"
+									],
+									"path": [
+										"course",
+										"updatecategory"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Course - updateCourse",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"accept": true
+								}
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Authorization",
+										"value": "FormaLMS  {{token}}",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "advance",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "allow_overbooking",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "selected_menu",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "auto_unsubscribe",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "can_subscribe",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "course_advanced",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "course_autoregistration_code",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "course_code",
+											"value": "test api_2",
+											"type": "text"
+										},
+										{
+											"key": "course_date_begin",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "course_date_end",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "course_day_of",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "course_descr",
+											"value": "descrizione del corso aggiornato da postman",
+											"type": "text"
+										},
+										{
+											"key": "course_difficult",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "course_edition",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "close_lo_perm",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "course_lang",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "course_medium_time",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "course_name",
+											"value": "test_api_2",
+											"type": "text"
+										},
+										{
+											"key": "course_prize",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "course_progress",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "course_sell",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "course_show_rules",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "course_sponsor_link",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "course_status",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "course_subs",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "course_time",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "course_type",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "credits",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "direct_play",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "idCategory",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "inherit_quota",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "max_num_subscribe",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "min_num_subscribe",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "random_course_autoregistration_code",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "show_result",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "show_who_online",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "sub_end_date",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "sub_start_date",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "unsubscribe_date_limit",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "use_logo_in_courselist",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "use_unsubscribe_date_limit",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "course_user_material",
+											"type": "file",
+											"src": "/Users/giuseppenucifora/Downloads/dettaglio_test.pdf (1).pdf"
+										},
+										{
+											"key": "course_otheruser_material",
+											"type": "file",
+											"src": "/Users/giuseppenucifora/Downloads/dettaglio_test.pdf.pdf"
+										},
+										{
+											"key": "course_demo",
+											"type": "file",
+											"src": "/Users/giuseppenucifora/Downloads/Fattura-9_2021-Fabio-Di-Marzio.pdf"
+										},
+										{
+											"key": "course_sponsor_logo",
+											"type": "file",
+											"src": "/Users/giuseppenucifora/Downloads/fb05b490c3239d96ebfbdf0e557f22eb.jpeg"
+										},
+										{
+											"key": "course_logo",
+											"type": "file",
+											"src": "/Users/giuseppenucifora/Downloads/fb05b490c3239d96ebfbdf0e557f22eb.jpeg"
+										},
+										{
+											"key": "course_id",
+											"value": "24",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}{{api_path}}/course/updatecourse",
+									"host": [
+										"{{base_url}}{{api_path}}"
+									],
+									"path": [
+										"course",
+										"updatecourse"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Course - deleteCourse",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"accept": true
+								}
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Authorization",
+										"value": "FormaLMS  {{token}}",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "course_id",
+											"value": "24",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}{{api_path}}/course/deletecourse",
+									"host": [
+										"{{base_url}}{{api_path}}"
+									],
+									"path": [
+										"course",
+										"deletecourse"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Course - copyCourse",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"accept": true
+								}
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Authorization",
+										"value": "FormaLMS  {{token}}",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "course_id",
+											"value": "24",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}{{api_path}}/course/copycourse",
+									"host": [
+										"{{base_url}}{{api_path}}"
+									],
+									"path": [
+										"course",
+										"copycourse"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Course - addClassroom",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var jsonData = JSON.parse(responseBody);",
+											"postman.setEnvironmentVariable(\"date_id\", jsonData.id_date);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"accept": true
+								}
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Authorization",
+										"value": "FormaLMS  {{token}}",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "course_id",
+											"value": "{{course_id}}",
+											"type": "text"
+										},
+										{
+											"key": "classroom_sub_start_date",
+											"value": "09-08-2021",
+											"type": "text"
+										},
+										{
+											"key": "classroom_sub_end_date",
+											"value": "09-08-2021",
+											"type": "text"
+										},
+										{
+											"key": "classroom_unsubscribe_date_limit",
+											"value": "10-09-2021",
+											"type": "text"
+										},
+										{
+											"key": "classroom_code",
+											"value": "",
+											"type": "text"
+										},
+										{
+											"key": "classroom_name",
+											"value": "test api 2",
+											"type": "text"
+										},
+										{
+											"key": "classroom_descr",
+											"value": "test api description",
+											"type": "text"
+										},
+										{
+											"key": "classroom_medium_time",
+											"value": "",
+											"type": "text"
+										},
+										{
+											"key": "classroom_max_users",
+											"value": "",
+											"type": "text"
+										},
+										{
+											"key": "classroom_price",
+											"value": "",
+											"type": "text"
+										},
+										{
+											"key": "classroom_allow_overbooking",
+											"value": "",
+											"type": "text"
+										},
+										{
+											"key": "classroom_status",
+											"value": "",
+											"type": "text"
+										},
+										{
+											"key": "classroom_test_type",
+											"value": "",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}{{api_path}}/course/addClassroom",
+									"host": [
+										"{{base_url}}{{api_path}}"
+									],
+									"path": [
+										"course",
+										"addClassroom"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Course - updateClassroom",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"accept": true
+								}
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Authorization",
+										"value": "FormaLMS  {{token}}",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "id_date",
+											"value": "13",
+											"type": "text"
+										},
+										{
+											"key": "course_id",
+											"value": "21",
+											"type": "text"
+										},
+										{
+											"key": "classroom_code",
+											"value": "agosto",
+											"type": "text"
+										},
+										{
+											"key": "classroom_name",
+											"value": "Corso Prova Postman 2",
+											"type": "text"
+										},
+										{
+											"key": "classroom_descr",
+											"value": "descrizione corso postman 2",
+											"type": "text"
+										},
+										{
+											"key": "classroom_medium_time",
+											"value": "0",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "classroom_max_users",
+											"value": "0",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "classroom_price",
+											"value": "0",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "classroom_allow_overbooking",
+											"value": "0",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "classroom_status",
+											"value": "0",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "classroom_test_type",
+											"value": "0",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "classroom_sub_start_date",
+											"value": "0000-00-00 00:00:00",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "classroom_sub_end_date",
+											"value": "0000-00-00 00:00:00",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "classroom_unsubscribe_date_limit",
+											"value": "0000-00-00 00:00:00",
+											"type": "text",
+											"disabled": true
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}{{api_path}}/course/updateclassroom",
+									"host": [
+										"{{base_url}}{{api_path}}"
+									],
+									"path": [
+										"course",
+										"updateclassroom"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Course - deleteClassroom",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"accept": true
+								}
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Authorization",
+										"value": "FormaLMS  {{token}}",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "id_date",
+											"value": "15",
+											"type": "text"
+										},
+										{
+											"key": "course_id",
+											"value": "21",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}{{api_path}}/course/deleteclassroom",
+									"host": [
+										"{{base_url}}{{api_path}}"
+									],
+									"path": [
+										"course",
+										"deleteclassroom"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Course - getLo",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"accept": true
+								}
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Authorization",
+										"value": "FormaLMS  {{token}}",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "course_id",
+											"value": "{{course_id}}",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}{{api_path}}/course/getlo",
+									"host": [
+										"{{base_url}}{{api_path}}"
+									],
+									"path": [
+										"course",
+										"getlo"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Course - getAnswerTest",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"accept": true
+								}
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Authorization",
+										"value": "FormaLMS  {{token}}",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "id_org",
+											"value": "13",
+											"type": "text"
+										},
+										{
+											"key": "id_user",
+											"value": "{{user_id}}",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}{{api_path}}/course/getanswertest",
+									"host": [
+										"{{base_url}}{{api_path}}"
+									],
+									"path": [
+										"course",
+										"getanswertest"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Course - assignMetaUser",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"accept": true
+								}
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Authorization",
+										"value": "FormaLMS  {{token}}",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "meta_cert_id",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "meta_user_id",
+											"value": "{{user_id}}",
+											"type": "text"
+										},
+										{
+											"key": "meta_course_id",
+											"value": "{{course_id}}",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}{{api_path}}/course/assignmetauser",
+									"host": [
+										"{{base_url}}{{api_path}}"
+									],
+									"path": [
+										"course",
+										"assignmetauser"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Course - addCertificates",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"accept": true
+								}
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Authorization",
+										"value": "FormaLMS  {{token}}",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "course_id",
+											"value": "3",
+											"type": "text"
+										},
+										{
+											"key": "certificates",
+											"value": "2",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}{{api_path}}/course/addcertificates",
+									"host": [
+										"{{base_url}}{{api_path}}"
+									],
+									"path": [
+										"course",
+										"addcertificates"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Course - putIntroductionCourse",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"accept": true
+								}
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Authorization",
+										"value": "FormaLMS  {{token}}",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "course_id",
+											"value": "{{course_id}}",
+											"type": "text"
+										},
+										{
+											"key": "text_intro",
+											"value": "test",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}{{api_path}}/course/putIntroductionCourse",
+									"host": [
+										"{{base_url}}{{api_path}}"
+									],
+									"path": [
+										"course",
+										"putIntroductionCourse"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Course - deleteIntroductionCourse",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"accept": true
+								}
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Authorization",
+										"value": "FormaLMS  {{token}}",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "course_id",
+											"value": "{{course_id}}",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}{{api_path}}/course/deleteintroductioncourse",
+									"host": [
+										"{{base_url}}{{api_path}}"
+									],
+									"path": [
+										"course",
+										"deleteintroductioncourse"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Course - copyImgFromCourse",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"accept": true
+								}
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Authorization",
+										"value": "FormaLMS  {{token}}",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "course_id_from",
+											"value": "3",
+											"type": "text"
+										},
+										{
+											"key": "course_id_to",
+											"value": "5",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}{{api_path}}/course/copyimgfromcourse",
+									"host": [
+										"{{base_url}}{{api_path}}"
+									],
+									"path": [
+										"course",
+										"copyimgfromcourse"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Course - copyLearningObjects",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"accept": true
+								}
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Authorization",
+										"value": "FormaLMS  {{token}}",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "fromType",
+											"value": "homerepo",
+											"description": "homerepo|organization|pubrepo",
+											"type": "text"
+										},
+										{
+											"key": "toType",
+											"value": "organization",
+											"description": "homerepo|organization|pubrepo",
+											"type": "text"
+										},
+										{
+											"key": "learningObjectIds",
+											"value": "163",
+											"type": "text"
+										},
+										{
+											"key": "idCourse",
+											"value": "719",
+											"type": "text"
+										},
+										{
+											"key": "idUser",
+											"value": "52218",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}{{api_path}}/course/copyLearningObjects",
+									"host": [
+										"{{base_url}}{{api_path}}"
+									],
+									"path": [
+										"course",
+										"copyLearningObjects"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "User",
+					"item": [
+						{
+							"name": "User - listUsers",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"accept": true
+								}
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Authorization",
+										"value": "FormaLMS  {{token}}",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": []
+								},
+								"url": {
+									"raw": "{{base_url}}{{api_path}}/user/listUsers",
+									"host": [
+										"{{base_url}}{{api_path}}"
+									],
+									"path": [
+										"user",
+										"listUsers"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "User - countUsers",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"accept": true
+								}
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Authorization",
+										"value": "FormaLMS  {{token}}",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": []
+								},
+								"url": {
+									"raw": "{{base_url}}{{api_path}}/user/countusers?status=all",
+									"host": [
+										"{{base_url}}{{api_path}}"
+									],
+									"path": [
+										"user",
+										"countusers"
+									],
+									"query": [
+										{
+											"key": "status",
+											"value": "all",
+											"description": "active|suspended|all"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "User - checkUsername",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"accept": true
+								}
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Authorization",
+										"type": "text",
+										"value": "FormaLMS  {{token}}"
+									},
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "userid",
+											"value": "{{user_id}}",
+											"type": "text"
+										},
+										{
+											"key": "also_check_as_email",
+											"value": "{{user_email}}",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}{{api_path}}/user/checkUsername",
+									"host": [
+										"{{base_url}}{{api_path}}"
+									],
+									"path": [
+										"user",
+										"checkUsername"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "User - customFields",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"accept": true
+								}
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Authorization",
+										"type": "text",
+										"value": "FormaLMS  {{token}}"
+									},
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "userid",
+											"value": "{{user_id}}",
+											"type": "text"
+										},
+										{
+											"key": "also_check_as_email",
+											"value": "{{user_email}}",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}{{api_path}}/user/customfields",
+									"host": [
+										"{{base_url}}{{api_path}}"
+									],
+									"path": [
+										"user",
+										"customfields"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "User - createUser",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.environment.set('new_user_id','new_user_id_'+Math.random().toString(36).substring(3));",
+											"pm.environment.set('new_user_firstname','new_user_firstname_'+Math.random().toString(36).substring(3));",
+											"pm.environment.set('new_user_lastname','new_user_lastname_'+Math.random().toString(36).substring(3));",
+											"pm.environment.set('new_user_password','new_user_password');",
+											"pm.environment.set('new_user_email','new_user_email_'+Math.random().toString(36).substring(3)+'@formalms.org');",
+											"",
+											"if(!pm.environment.get('new_user_role')){",
+											"    pm.environment.set('new_user_role','student');",
+											"}",
+											"",
+											"if(!pm.environment.get('new_orgchart')){",
+											"    pm.environment.set('new_orgchart','Forma');",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"accept": true
+								}
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Authorization",
+										"type": "text",
+										"value": "FormaLMS  {{token}}"
+									},
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "userid",
+											"value": "{{new_user_id}}",
+											"type": "text"
+										},
+										{
+											"key": "firstname",
+											"value": "{{new_user_firstname}}",
+											"type": "text"
+										},
+										{
+											"key": "lastname",
+											"value": "{{new_user_lastname}}",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "{{new_user_password}}",
+											"type": "text"
+										},
+										{
+											"key": "email",
+											"value": "{{new_user_email}}",
+											"type": "text"
+										},
+										{
+											"key": "role",
+											"value": "{{new_user_role}}",
+											"type": "text"
+										},
+										{
+											"key": "orgchart",
+											"value": "{{new_orgchart}}",
+											"type": "text"
+										},
+										{
+											"key": "valid",
+											"value": "true",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}{{api_path}}/user/createuser",
+									"host": [
+										"{{base_url}}{{api_path}}"
+									],
+									"path": [
+										"user",
+										"createuser"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "User - updateUser",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"accept": true
+								}
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Authorization",
+										"type": "text",
+										"value": "FormaLMS  {{token}}"
+									},
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "idst",
+											"value": "19871",
+											"type": "text"
+										},
+										{
+											"key": "userid",
+											"value": "Ciccio",
+											"type": "text"
+										},
+										{
+											"key": "firstname",
+											"value": "Francesco",
+											"type": "text"
+										},
+										{
+											"key": "lastname",
+											"value": "Rossi",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "rossi12345",
+											"type": "text"
+										},
+										{
+											"key": "email",
+											"value": "f.rossi@gmail.com",
+											"type": "text"
+										},
+										{
+											"key": "signature",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "lastenter",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}{{api_path}}/user/updateuser",
+									"host": [
+										"{{base_url}}{{api_path}}"
+									],
+									"path": [
+										"user",
+										"updateuser"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "User - userDetails",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"accept": true
+								}
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Authorization",
+										"value": "FormaLMS  {{token}}",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "idst",
+											"value": "{{user_idst}}",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}{{api_path}}/user/userdetails",
+									"host": [
+										"{{base_url}}{{api_path}}"
+									],
+									"path": [
+										"user",
+										"userdetails"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "User - deleteUser",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"accept": true
+								}
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Authorization",
+										"value": "FormaLMS  {{token}}",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "idst",
+											"value": "12864",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}{{api_path}}/user/deleteuser",
+									"host": [
+										"{{base_url}}{{api_path}}"
+									],
+									"path": [
+										"user",
+										"deleteuser"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "User - userDetailsByUserId",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"accept": true
+								}
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Authorization",
+										"value": "FormaLMS  {{token}}",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "userid",
+											"value": "Ciccio",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}{{api_path}}/user/userdetailsbyuserid",
+									"host": [
+										"{{base_url}}{{api_path}}"
+									],
+									"path": [
+										"user",
+										"userdetailsbyuserid"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "User - userDetailsFromCredentials",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"accept": true
+								}
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Authorization",
+										"value": "FormaLMS  {{token}}",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "userid",
+											"value": "admin",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "12345",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}{{api_path}}/user/userdetailsfromcredentials",
+									"host": [
+										"{{base_url}}{{api_path}}"
+									],
+									"path": [
+										"user",
+										"userdetailsfromcredentials"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "User - updateUserByUserId",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"accept": true
+								}
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Authorization",
+										"value": "FormaLMS  {{token}}",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "userid",
+											"value": "Ciccio",
+											"type": "text"
+										},
+										{
+											"key": "firstname",
+											"value": "Francesco",
+											"type": "text"
+										},
+										{
+											"key": "lastname",
+											"value": "Rossi",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "rossi12345",
+											"type": "text"
+										},
+										{
+											"key": "email",
+											"value": "f.rossi@gmail.com",
+											"type": "text"
+										},
+										{
+											"key": "signature",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "lastenter",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}{{api_path}}/user/updateuserbyuserid?XDEBUG_SESSION_START=PHPSTORM",
+									"host": [
+										"{{base_url}}{{api_path}}"
+									],
+									"path": [
+										"user",
+										"updateuserbyuserid"
+									],
+									"query": [
+										{
+											"key": "XDEBUG_SESSION_START",
+											"value": "PHPSTORM"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "User - myCourses",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"accept": true
+								}
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Authorization",
+										"value": "FormaLMS  {{token}}",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "idst",
+											"value": "270",
+											"type": "text"
+										},
+										{
+											"key": "filter",
+											"value": "notcompleted",
+											"description": "completed|notcompleted|notstarted",
+											"type": "text"
+										},
+										{
+											"key": "can_enter",
+											"value": "true",
+											"type": "text"
+										},
+										{
+											"key": "course_info",
+											"value": "course_name",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}{{api_path}}/user/mycourses",
+									"host": [
+										"{{base_url}}{{api_path}}"
+									],
+									"path": [
+										"user",
+										"mycourses"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "User - kbSearch",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"accept": true
+								}
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Authorization",
+										"value": "FormaLMS  {{token}}",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "idst",
+											"value": "{{user_idst}}",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}{{api_path}}/user/kbsearch",
+									"host": [
+										"{{base_url}}{{api_path}}"
+									],
+									"path": [
+										"user",
+										"kbsearch"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "User - importExtUsers",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"accept": true
+								}
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Authorization",
+										"value": "FormaLMS  {{token}}",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "userid",
+											"value": "{{user_id}}",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}{{api_path}}/user/importextusers",
+									"host": [
+										"{{base_url}}{{api_path}}"
+									],
+									"path": [
+										"user",
+										"importextusers"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "User - importExtUsersFromEmail",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"accept": true
+								}
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Authorization",
+										"value": "FormaLMS  {{token}}",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "email",
+											"value": "{{user_email}}",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}{{api_path}}/user/importextusersfromemail",
+									"host": [
+										"{{base_url}}{{api_path}}"
+									],
+									"path": [
+										"user",
+										"importextusersfromemail"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "User - checkRegCode",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"accept": true
+								}
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Authorization",
+										"value": "FormaLMS  {{token}}",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "reg_code_type",
+											"value": "tree_course",
+											"description": "tree_course|tree_man|code_module|tree_drop|custom",
+											"type": "text"
+										},
+										{
+											"key": "reg_code",
+											"value": "100",
+											"description": "number|number|string|number|number",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}{{api_path}}/user/checkregcode",
+									"host": [
+										"{{base_url}}{{api_path}}"
+									],
+									"path": [
+										"user",
+										"checkregcode"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "User - assignProfile",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"accept": true
+								}
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Authorization",
+										"value": "FormaLMS  {{token}}",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "userid",
+											"value": "{{user_id}}",
+											"type": "text"
+										},
+										{
+											"key": "also_check_as_email",
+											"value": "{{user_email}}",
+											"type": "text"
+										},
+										{
+											"key": "profile_name",
+											"value": "test",
+											"description": "name of admin profile",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}{{api_path}}/user/assignprofile",
+									"host": [
+										"{{base_url}}{{api_path}}"
+									],
+									"path": [
+										"user",
+										"assignprofile"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "User - adminRevokeUsers",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"accept": true
+								}
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Authorization",
+										"value": "FormaLMS  {{token}}",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "userid",
+											"value": "{{user_id}}",
+											"type": "text"
+										},
+										{
+											"key": "also_check_as_email\n",
+											"value": "{{user_email}}",
+											"type": "text"
+										},
+										{
+											"key": "group_name",
+											"value": "oc_0",
+											"type": "text"
+										},
+										{
+											"key": "orgchart_code",
+											"value": "test lu",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "orgchart_name",
+											"value": "nodopercatalogo",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "single_user",
+											"value": "max",
+											"type": "text",
+											"disabled": true
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}{{api_path}}/user/admin_revokeusers",
+									"host": [
+										"{{base_url}}{{api_path}}"
+									],
+									"path": [
+										"user",
+										"admin_revokeusers"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "User - adminAssignCourses",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"accept": true
+								}
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Authorization",
+										"value": "FormaLMS  {{token}}",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "userid",
+											"value": "{{user_id}}",
+											"type": "text"
+										},
+										{
+											"key": "also_check_as_email",
+											"value": "{{user_email}}",
+											"type": "text"
+										},
+										{
+											"key": "coursepath_names",
+											"value": "testCarmine",
+											"type": "text"
+										},
+										{
+											"key": "catalogue_names",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}{{api_path}}/user/admin_assigncourses",
+									"host": [
+										"{{base_url}}{{api_path}}"
+									],
+									"path": [
+										"user",
+										"admin_assigncourses"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "User - addOrg",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"accept": true
+								}
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Authorization",
+										"value": "FormaLMS  {{token}}",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": []
+								},
+								"url": {
+									"raw": "{{base_url}}{{api_path}}/user/addorg",
+									"host": [
+										"{{base_url}}{{api_path}}"
+									],
+									"path": [
+										"user",
+										"addorg"
+									],
+									"query": [
+										{
+											"key": "name_org",
+											"value": "1",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "User - moveOrg",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"accept": true
+								}
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Authorization",
+										"value": "FormaLMS  {{token}}",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "code",
+											"value": "test lu",
+											"type": "text"
+										},
+										{
+											"key": "parent_org_new",
+											"value": "test lu",
+											"type": "text"
+										},
+										{
+											"key": "name",
+											"value": "italian",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}{{api_path}}/user/moveorg",
+									"host": [
+										"{{base_url}}{{api_path}}"
+									],
+									"path": [
+										"user",
+										"moveorg"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "User - moveOrgUser",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"accept": true
+								}
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Authorization",
+										"value": "FormaLMS  {{token}}",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "id_user",
+											"value": "{{user_id}}",
+											"type": "text"
+										},
+										{
+											"key": "code_new_org",
+											"value": "test lu",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}{{api_path}}/user/moveorguser",
+									"host": [
+										"{{base_url}}{{api_path}}"
+									],
+									"path": [
+										"user",
+										"moveorguser"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "User - removeUserFromOrg",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"accept": true
+								}
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Authorization",
+										"value": "FormaLMS  {{token}}",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "code_org",
+											"value": "23",
+											"type": "text"
+										},
+										{
+											"key": "id_user",
+											"value": "{{user_id}}",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}{{api_path}}/user/removeuserfromorg",
+									"host": [
+										"{{base_url}}{{api_path}}"
+									],
+									"path": [
+										"user",
+										"removeuserfromorg"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "User - renameOrg",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"accept": true
+								}
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Authorization",
+										"value": "FormaLMS  {{token}}",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "code_org",
+											"value": "testAdmin",
+											"type": "text"
+										},
+										{
+											"key": "name_org",
+											"value": "folder",
+											"description": "translation for current language",
+											"type": "text"
+										},
+										{
+											"key": "id_org",
+											"value": "24",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}{{api_path}}/user/renameorg",
+									"host": [
+										"{{base_url}}{{api_path}}"
+									],
+									"path": [
+										"user",
+										"renameorg"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "User - removeOrg",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"accept": true
+								}
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Authorization",
+										"value": "FormaLMS  {{token}}",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "code_org",
+											"value": "testAdmin",
+											"type": "text"
+										},
+										{
+											"key": "name_org",
+											"value": "folder",
+											"description": "translation for current language",
+											"type": "text"
+										},
+										{
+											"key": "id_org",
+											"value": "10",
+											"description": "this is a idOrg in core_org_chart_tree",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}{{api_path}}/user/removeorg",
+									"host": [
+										"{{base_url}}{{api_path}}"
+									],
+									"path": [
+										"user",
+										"removeorg"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Auth",
+					"item": [
+						{
+							"name": "{{base_url}}{{api_path}}/auth/authenticate",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"accept": true
+								}
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Authorization",
+										"type": "text",
+										"value": "FormaLMS  {{token}}"
+									},
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "username",
+											"value": "{{user_id}}",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "{{user_password}}",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}{{api_path}}/auth/authenticate",
+									"host": [
+										"{{base_url}}{{api_path}}"
+									],
+									"path": [
+										"auth",
+										"authenticate"
+									]
+								},
+								"description": "This method is used when \"Single code for platform\" or \"Token generation at every connection\" is enabled."
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Plugins",
+					"item": [
+						{
+							"name": "Notification",
+							"item": [
+								{
+									"name": "Course - Gel Learning Object Short url",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"protocolProfileBehavior": {
+										"disabledSystemHeaders": {
+											"accept": true
+										}
+									},
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "X-Authorization",
+												"value": "FormaLMS  {{token}}",
+												"type": "text"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "userId",
+													"value": "11837",
+													"type": "text"
+												},
+												{
+													"key": "courseId",
+													"value": "303",
+													"type": "text"
+												},
+												{
+													"key": "learningObjectId",
+													"value": "83",
+													"type": "text"
+												},
+												{
+													"key": "learningObjectType",
+													"value": "test",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "{{base_url}}{{api_path}}/notification/getShortUrl",
+											"host": [
+												"{{base_url}}{{api_path}}"
+											],
+											"path": [
+												"notification",
+												"getShortUrl"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"if(!pm.environment.get('course_id')){",
+					"    pm.environment.set('course_id','1');",
+					"}",
+					"",
+					"if(!pm.environment.get('course_id')){",
+					"    pm.environment.set('course_id','1');",
+					"}",
+					"",
+					"function getParamsString(){",
+					"",
+					"    params = new Array();",
+					"    if(pm.request.body.mode === 'formdata'){",
+					"        pm.request.body.formdata.each(function(data){",
+					"            if(!('disabled' in data) || ('disabled' in data && data.disabled != true)){",
+					"                value = data.value;",
+					"                if(data.value.includes('{{') && data.value.includes('}}')){",
+					"",
+					"                    key = data.value.replace('{{','').replace('}}','');",
+					"",
+					"                    value = pm.environment.get(key);",
+					"                }",
+					"                if (value && value !== '') {",
+					"                    params.push(value);",
+					"                }",
+					"            }",
+					"        });",
+					"    }",
+					"",
+					"    paramsString = params.join(',');",
+					"",
+					"    if(paramsString.charAt(paramsString.length - 1) == ','){",
+					"        paramsString = paramsString.slice(0, -1);",
+					"    }",
+					"    return paramsString;",
+					"}",
+					"",
+					"function generateApiKeySecretToken(paramString){",
+					"    console.log('Api Key/Secret Enabled');",
+					"",
+					"    api_key = pm.environment.get(\"api_key\");",
+					"    api_secret = pm.environment.get(\"api_secret\");",
+					"",
+					"    encriptedParams = CryptoJS.SHA1(paramsString+','+api_secret).toString();",
+					"",
+					"    token = CryptoJS.enc.Base64.stringify(CryptoJS.enc.Utf8.parse(api_key+':'+encriptedParams));",
+					"",
+					"    pm.environment.set('token',token);",
+					"}",
+					"",
+					"function generatePlatformCodeToken(paramString){",
+					"    console.log('Platform Code Enabled');",
+					"    platformCode = pm.environment.get(\"platform_code\");",
+					"   ",
+					"    pm.environment.set('token',platformCode);",
+					"}",
+					"",
+					"function generateToken(){",
+					"",
+					"    paramString = getParamsString();",
+					"",
+					"    apiAuthentication = pm.environment.get('api_authentication');",
+					"    ",
+					"    if(apiAuthentication === \"api_key\"){",
+					"        generateApiKeySecretToken(paramString);",
+					"    }",
+					"    else{",
+					"        generatePlatformCodeToken(paramString);",
+					"    }",
+					"}",
+					"",
+					"generateToken();",
+					"",
+					"console.log(pm.environment.get('token'));"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
