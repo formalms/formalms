@@ -6,4 +6,4 @@ VALUES
 
 INSERT INTO core_event_consumer_class (idConsumer, idClass) VALUES (1, @max);
 
-INSERT INTO `core_event_manager` (`idEventMgr`, `idClass`, `permission`, `channel`, `recipients`, `show_level`) VALUES (@max, @max, 'mandatory', 'email', '_EVENT_RECIPIENTS_TEACHER', 'godadmin,admin,user');
+INSERT INTO `core_event_manager` (`idClass`, `permission`, `channel`, `recipients`, `show_level`) VALUES ( @max, 'mandatory', 'email', '_EVENT_RECIPIENTS_TEACHER', 'godadmin,admin,user');

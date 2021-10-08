@@ -18,42 +18,7 @@
 									"listen": "prerequest",
 									"script": {
 										"exec": [
-											"params = new Array();",
-											"if(pm.request.body.mode === 'formdata'){",
-											"    pm.request.body.formdata.each(function(data){",
-											"        if(!('disabled' in data) || ('disabled' in data && data.disabled != true)){",
-											"            value = data.value;",
-											"            if(data.value.includes('{{') && data.value.includes('}}')){",
-											"",
-											"                key = data.value.replace('{{','').replace('}}','');",
-											"",
-											"                value = pm.environment.get(key);",
-											"            }",
-											"            if (value && value !== '') {",
-											"                params.push(value);",
-											"            }",
-											"        }",
-											"    });",
-											"}",
-											"",
-											"paramsString = params.join(',');",
-											"",
-											"if(paramsString.charAt(paramsString.length - 1) == ','){",
-											"    paramsString = paramsString.slice(0, -1);",
-											"}",
-											"",
-											"api_key = pm.environment.get(\"api_key\");",
-											"api_secret = pm.environment.get(\"api_secret\");",
-											"",
-											"encriptedParams = CryptoJS.SHA1(paramsString+','+api_secret).toString();",
-											"",
-											"console.log(encriptedParams);",
-											"",
-											"token = CryptoJS.enc.Base64.stringify(CryptoJS.enc.Utf8.parse(api_key+':'+encriptedParams));",
-											"",
-											"pm.environment.set('token',token);",
-											"",
-											"console.log(token);"
+											""
 										],
 										"type": "text/javascript"
 									}
@@ -348,6 +313,30 @@
 											"key": "course_logo",
 											"type": "file",
 											"src": "/Users/giuseppenucifora/Downloads/fb05b490c3239d96ebfbdf0e557f22eb.jpeg"
+										},
+										{
+											"key": "course_show_level[7]",
+											"value": "7",
+											"description": "7 - Administrator|6 - Instructor|5 - Mentor|4 - Tutor|3 - Student|2 - Ghost|1 - Guest",
+											"type": "text"
+										},
+										{
+											"key": "course_show_level[5]",
+											"value": "5",
+											"description": "7 - Administrator|6 - Instructor|5 - Mentor|4 - Tutor|3 - Student|2 - Ghost|1 - Guest",
+											"type": "text"
+										},
+										{
+											"key": "user_status[0]",
+											"value": "0",
+											"description": "0 - Subscribed|1 - In Progress|2 - Completed|3 - Suspended",
+											"type": "text"
+										},
+										{
+											"key": "user_status[1]",
+											"value": "1",
+											"description": "0 - Subscribed|1 - In Progress|2 - Completed|3 - Suspended",
+											"type": "text"
 										}
 									]
 								},
@@ -5020,7 +5009,7 @@
 					"",
 					"generateToken();",
 					"",
-					"console.log(pm.environment.get('token'));"
+					"console.log(\"Current Token : \"+pm.environment.get('token'));"
 				]
 			}
 		},
