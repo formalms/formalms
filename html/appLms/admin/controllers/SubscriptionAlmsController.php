@@ -1003,47 +1003,49 @@ class SubscriptionAlmsController extends AlmsController
 		echo $this->json->encode($output);
 	}
 
-	public function fastsubscribe()
-	{
-		if (!$this->permissions['subscribe_course']) {
-			$output = array('success' => false, 'message' => $this->_getMessage("no permission"));
-			echo $this->json->encode($output);
-			return;
-		} else if (!$this->checkAdminLimit()) {
-			$output = array('success' => false, 'message' => Lang::t('_SUBSCRIBE_LIMIT_REACHED', 'subscribe'));
-			echo $this->json->encode($output);
-			return;
-		}
+    public function fastsubscribe()
+    {
+        if (!$this->permissions['subscribe_course']) {
+            $output = array('success' => false, 'message' => $this->_getMessage("no permission"));
+            echo $this->json->encode($output);
+            return;
+        }
+        if (!$this->checkAdminLimit()) {
+            $output = array('success' => false, 'message' => Lang::t('_SUBSCRIBE_LIMIT_REACHED', 'subscribe'));
+            echo $this->json->encode($output);
+            return;
+        }
 
-		$id_user = Get::req('idst', DOTY_INT, 0); //user idst
-		$userid = Get::req('userid', DOTY_STRING, ''); //user username
-		$result = false;
+        $id_user = Get::req('idst', DOTY_INT, 0); //user idst
+        $userid = Get::req('userid', DOTY_STRING, ''); //user username
+        $result = false;
 
-		if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
-			require_once(_base_ . '/lib/lib.preference.php');
-			$adminManager = new AdminPreference();
-			$admin_users = $adminManager->getAdminUsers(Docebo::user()->getIdST());
-			$is_admin = true;
-		}
+        if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+            require_once(_base_ . '/lib/lib.preference.php');
+            $adminManager = new AdminPreference();
+            $admin_users = $adminManager->getAdminUsers(Docebo::user()->getIdST());
+            $is_admin = true;
+        }
 
-		//adjust idst to subscribe
-		if ($id_user <= 0) {
-			$id_user = false;
-			if ($userid != '') {
-				$id_user = Docebo::aclm()->getUserST($userid);
-			}
-		}
+        //adjust idst to subscribe
+        if ($id_user <= 0) {
+            $id_user = false;
+            if ($userid != '') {
+                $id_user = Docebo::aclm()->getUserST($userid);
+            }
+        }
 
-		if ($id_user <= 0) {
-			$output = array('success' => false, 'message' => $this->_getMessage("invalid user"));
-			echo $this->json->encode($output);
-			return;
-		}
+        if ($id_user <= 0) {
+            $output = array('success' => false, 'message' => $this->_getMessage("invalid user"));
+            echo $this->json->encode($output);
+            return;
+        }
 
-		if (isset($admin_users) && array_search($id_user, $admin_users) == false && Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
-			$output = array('success' => true);
-			echo $this->json->encode($output);
-		} elseif ($id_user) {
+        if (isset($admin_users) && array_search($id_user, $admin_users, false) === false && Docebo::user()->getUserLevelId() !== ADMIN_GROUP_GODADMIN) {
+            $output = array('success' => false, 'message' => $this->_getMessage("invalid user"));
+            echo $this->json->encode($output);
+            return;
+        } elseif ($id_user) {
 			$level = 3; //student level
 			$waiting = false;
 			$result = $this->model->subscribeUser($id_user, $level, $waiting);
