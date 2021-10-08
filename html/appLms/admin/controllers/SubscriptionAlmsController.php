@@ -1031,7 +1031,8 @@ class SubscriptionAlmsController extends AlmsController
             $output = array('success' => false, 'message' => $this->_getMessage("no permission"));
             echo $this->json->encode($output);
             return;
-        } else if (!$this->checkAdminLimit()) {
+        }
+        if (!$this->checkAdminLimit()) {
             $output = array('success' => false, 'message' => Lang::t('_SUBSCRIBE_LIMIT_REACHED', 'subscribe'));
             echo $this->json->encode($output);
             return;
@@ -1062,9 +1063,10 @@ class SubscriptionAlmsController extends AlmsController
             return;
         }
 
-        if (isset($admin_users) && array_search($id_user, $admin_users) == false && Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
-            $output = array('success' => true);
+        if (isset($admin_users) && array_search($id_user, $admin_users, false) === false && Docebo::user()->getUserLevelId() !== ADMIN_GROUP_GODADMIN) {
+            $output = array('success' => false, 'message' => $this->_getMessage("invalid user"));
             echo $this->json->encode($output);
+            return;
         } elseif ($id_user) {
             $level = 3; //student level
             $waiting = false;
