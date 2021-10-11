@@ -56,7 +56,7 @@ function play( $idResource, $idParams, $back_url ) {
 			$ti->status = 'completed';
 			$ti->update();
 		} else {
-			$ti = new Track_Item( false );
+			$ti = new Track_Item( false,Docebo::user()->getIdSt() );
 			$ti->createTrack( $idReference, $idTrack, getLogUserId(), date('Y-m-d H:i:s'), 'completed', 'item' );
 		}
 	}
