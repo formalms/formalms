@@ -257,14 +257,14 @@ abstract class DashboardBlockLms extends Model
             4 => Lang::t('_CST_CANCELLED', 'course')
         ];
 
-        $dateBegin = trim(str_replace('00:00:00', '', ($status ? $course['course_date_begin'] : $course['course_date_end'])));
+        $dateBegin = trim(str_replace('00:00:00', '', ($status ? $course['course_date_begin'] : $course['course_date_begin'])));
         if ($dateBegin === '0000-00-00') {
             $dateBegin = '';
         } else {
             $startDate = new DateTime($dateBegin);
         }
 
-        $dateEnd = trim(str_replace('00:00:00', '', ($status ? $course['course_date_begin'] : $course['course_date_end'])));
+        $dateEnd = trim(str_replace('00:00:00', '', ($status ? $course['course_date_end'] : $course['course_date_end'])));
         if ($dateEnd === '0000-00-00') {
             $dateEnd = '';
         } else {

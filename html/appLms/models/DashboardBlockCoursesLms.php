@@ -117,9 +117,9 @@ class DashboardBlockCoursesLms extends DashboardBlockLms
             $classRoomCourseList = $this->findAll($classRoomConditions, $classRoomParams, 0);
 
             foreach ($classRoomCourseList as $id => $course) {
-                if ($course['type'] == self::COURSE_TYPE_CLASSROOM) {
-
-                    $q = sql_query("
+                switch ($course['type']){
+                    case self::COURSE_TYPE_CLASSROOM:
+                        $q = sql_query("
 		            	SELECT date_begin, date_end FROM %lms_course_date_day cdd 
 		            	INNER JOIN %lms_course_date cd ON cdd.id_date = cd.id_date 
 						INNER JOIN %lms_course_date_user cdu ON cdd.id_date = cdu.id_date
@@ -129,22 +129,25 @@ class DashboardBlockCoursesLms extends DashboardBlockLms
 		            	AND cdd.deleted = 0
 		            	ORDER BY date_begin ASC
 	            	");
-                    foreach ($q as $row){
-                        if (!$row['date_begin'] || !$row['date_end']) {
-                            break;
+                        foreach ($q as $row){
+                            if (!$row['date_begin'] || !$row['date_end']) {
+                                break;
+                            }
+
+                            $course['startDateString'] = $course['startDate'] = date("d-m-Y", strtotime($row['date_begin']));
+                            $course['endDateString'] = $course['endDate'] = date("H:i", strtotime($row['date_end'])) . ' ' . date("H:i", strtotime($row['date_end']));
+
+                            if (isset($course['dates'])) {
+                                unset($course['dates']);
+                            }
+
+                            $courselist[] = $course;
                         }
-
-                        $course['startDateString'] = $course['startDate'] = date("d-m-Y", strtotime($row['date_begin']));
-                        $course['endDateString'] = $course['endDate'] = date("H:i", strtotime($row['date_end'])) . ' ' . date("H:i", strtotime($row['date_end']));
-
-                        if (isset($course['dates'])) {
-                            unset($course['dates']);
-                        }
-
+                        break;
+                    case self::COURSE_TYPE_ELEARNING:
+                    default:
                         $courselist[] = $course;
-                    }
-                } else {
-                    $courselist[] = $course;
+                        break;
                 }
             }
         }

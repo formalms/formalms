@@ -41,11 +41,11 @@
                         </div>
                         <div class="d-courses__date-wrapper status--{{ status_class }}">
                             {% if course.startDateString != '' %}
-                                <div class="d-courses__date d-courses__date--start">
+                                <div class="d-courses__date d-courses__date--arrow d-courses__date--start">
                                 {{ course.startDateString }}
                                 </div>
                                 {% if course.endDateString != '' %}
-                                    <div class="d-courses__date d-courses__date--endx">
+                                    <div class="d-courses__date d-courses__date--arrow d-courses__date--end">
                                     {{ course.endDateString }}
                                   </div>
                                 {% endif %}

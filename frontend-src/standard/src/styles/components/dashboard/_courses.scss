@@ -122,6 +122,10 @@
 }
 
 .d-courses__date--end {
+
+}
+
+.d-courses__date--arrow {
   padding-left: 22px;
   position: relative;
 
@@ -129,7 +133,7 @@
     content: '';
     width: 14px;
     height: 6px;
-    background-image: url(#{$assets}images/icons/icon--arrow-right-long.svg);
+    background-image: url(#{$assets}images/icons/icon--arrow-right.svg);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
