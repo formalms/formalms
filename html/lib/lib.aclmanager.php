@@ -3054,9 +3054,9 @@ class PeopleDataRetriever extends DataRetriever
     var $custom_join = array();
     var $custom_where = array();
 
-    function PeopleDataRetriever($dbconn = FALSE, $prefix = FALSE)
+    function __construct($dbconn = FALSE, $prefix = FALSE)
     {
-        parent::DataRetriever($dbconn, $prefix);
+        parent::__construct($dbconn, $prefix);
         $this->aclManager = new DoceboACLManager($dbconn, $prefix);
     }
 
@@ -3243,9 +3243,9 @@ class GroupDataRetriever extends DataRetriever
     var $group_filter = false;
     var $platforms_filter = false;
 
-    function GroupDataRetriever($dbconn = FALSE, $prefix = FALSE)
+    function __construct($dbconn = FALSE, $prefix = FALSE)
     {
-        parent::DataRetriever($dbconn, $prefix);
+        parent::__construct($dbconn, $prefix);
         $this->aclManager = new DoceboACLManager($dbconn, $prefix);
     }
 
@@ -3369,10 +3369,10 @@ class GroupMembersDataRetriever extends DataRetriever
 
     var $idstGroup;
 
-    function GroupMembersDataRetriever($idstGroup, $dbconn = FALSE, $prefix = FALSE)
+    function __construct($idstGroup, $dbconn = FALSE, $prefix = FALSE)
     {
         $this->idstGroup = $idstGroup;
-        parent::DataRetriever($dbconn, $prefix);
+        parent::__construct($dbconn, $prefix);
         $this->aclManager = new DoceboACLManager($dbconn, $prefix);
     }
 

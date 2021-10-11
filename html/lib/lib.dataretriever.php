@@ -27,7 +27,7 @@ class DataRetriever {
 	// array of order columns
 	var $orderCols = NULL;
 
-	function DataRetriever( $dbConn, $prefix ) {
+	function __construct( $dbConn, $prefix ) {
 		$this->dbConn = $dbConn;
 		$this->prefix = $prefix;
 		$this->orderCols = array();
