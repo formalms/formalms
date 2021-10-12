@@ -30,6 +30,7 @@ define("_SERVERINFO","Szerver információ");
 define("_SERVER_SOFTWARE","Szerver szoftver: ");
 define("_PHPVERSION","PHP verzió : ");
 define("_MYSQLCLIENT_VERSION","MySQL kliens verzió: ");
+define("_MYSQLSERVER_VERSION","MySQL szerver verzió : ");
 define("_LDAP","LDAP: ");
 define("_ONLY_IF_YU_WANT_TO_USE_IT","Csak akkor vedd figyelembe ezt a figyelmeztetést, ha szükséged van az LDAP használatára ");
 define("_OPENSSL","Openssl : ");

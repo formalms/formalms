@@ -7,9 +7,12 @@
 <ul class="info">
 	<li><?php echo Lang::t('_SERVER_SOFTWARE'); ?>: <span><?php echo $_SERVER['SERVER_SOFTWARE']; ?></span></li>
 	<li class="<?php echo $cl['php']; ?>"><?php echo Lang::t('_PHPVERSION'); ?>: <span><?php echo phpversion(); ?></span></li>
-	<li class="<?php echo $cl['mysql']; ?>"><?php echo Lang::t('_MYSQLCLIENT_VERSION'); ?>: <span><?php
-	preg_match( '/([0-9]+\.[\.0-9]+)/', sql_get_server_info(), $version );
-	echo ( empty($version[1]) ? 'unknow' : $version[1] ); ?></span></li>
+    <li class="<?php echo $cl['mysql_client']; ?>"><?php echo Lang::t('_MYSQLCLIENT_VERSION'); ?>: <span><?php
+            preg_match('/([0-9]+\.[\.0-9]+)/', sql_get_client_info(), $version);
+            echo(empty($version[1]) ? 'unknow' : $version[1]); ?></span></li>
+    <li class="<?php echo $cl['mysql']; ?>"><?php echo Lang::t('_MYSQLSERVER_VERSION'); ?>: <span><?php
+            preg_match('/([0-9]+\.[\.0-9]+)/', sql_get_server_info(), $version);
+            echo(empty($version[1]) ? 'unknow' : $version[1]); ?></span></li>
 	<li class="<?php echo $cl['mbstring']; ?>"><?php echo Lang::t('_MBSTRING'); ?>: <span><?php echo (extension_loaded('mbstring') ? _ON : _OFF); ?></span></li>
 	<li class="<?php echo $cl['mime_ct']; ?>"><?php echo Lang::t('_MIME_CONTENT_TYPE'); ?>: <span><?php echo ($cl['mime_ct'] == 'ok' ? _ON : _OFF); ?></span></li>
 	<li class="<?php echo $cl['fileinfo']; ?>"><?php echo Lang::t('_FILEINFO'); ?>: <span><?php echo (extension_loaded('fileinfo') ? _ON : _OFF.' '._ONLY_IF_YU_WANT_TO_USE_FILEINFO); ?></span></li>

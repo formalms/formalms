@@ -30,6 +30,7 @@ define("_SERVERINFO","Πληροφορίες εξυπηρέτη");
 define("_SERVER_SOFTWARE","Λογισμικό εξυπηρέτη : ");
 define("_PHPVERSION","Έκδοση PHP : ");
 define("_MYSQLCLIENT_VERSION","Έκδοση πελάτη MySQL : ");
+define("_MYSQLSERVER_VERSION","Έκδοση διακομιστή MySQL : ");
 define("_LDAP","LDAP : ");
 define("_ONLY_IF_YU_WANT_TO_USE_IT","Λάβετε υπ' όψιν σας αυτή την προειδοποίηση μόνο εάν χρειάζεστε τη χρήση LDAP ");
 define("_OPENSSL","Openssl : ");

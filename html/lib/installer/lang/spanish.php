@@ -31,6 +31,7 @@ define("_SERVERINFO","Informacion del servidor");
 define("_SERVER_SOFTWARE","Servidor del software : ");
 define("_PHPVERSION","Version de PHP : ");
 define("_MYSQLCLIENT_VERSION","Version de MySQL : ");
+define("_MYSQLSERVER_VERSION","Versión del servidor MySQL : ");
 define("_LDAP","Ldap : ");
 define("_ONLY_IF_YU_WANT_TO_USE_IT","Considere esta advertencia solamente si Ud. necesita usar LDAP ");
 define("_OPENSSL","Openssl : ");

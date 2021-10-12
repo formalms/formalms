@@ -85,14 +85,26 @@ class Step2Controller extends StepController
             $res['php'] = 'ok';
         }
 
-        $driver = array(
+        $driver = [
             'mysqli' => extension_loaded("mysqli")
-        );
+        ];
+
         if (array_filter($driver)) {
             // mysql client version, in php the version number is a string regcut it
             preg_match('/([0-9]+\.[\.0-9]+)/', sql_get_client_info(), $version);
+
+            if (empty($version[1])) $res['mysql_client'] = 'ok';
+            else $res['mysql_client'] = (version_compare($version[1], PHP_VERSION) >= 0 ? 'ok' : 'err');
+        } else {
+            $res['mysql_client'] = 'err';
+        }
+
+        if (array_filter($driver)) {
+            // mysql client version, in php the version number is a string regcut it
+            preg_match('/([0-9]+\.[\.0-9]+)/', sql_get_server_info(), $version);
+
             if (empty($version[1])) $res['mysql'] = 'ok';
-            else $res['mysql'] = (version_compare($version[1], '5.0') >= 0 ? 'ok' : 'err');
+            else $res['mysql'] = (version_compare($version[1], '5.6') >= 0 ? 'ok' : 'err');
         } else {
             $res['mysql'] = 'err';
         }
