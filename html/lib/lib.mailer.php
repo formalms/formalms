@@ -134,7 +134,7 @@ class DoceboMailer extends PHPMailer
     }
 
     //sendmail function
-    function SendMail($sender, $recipients, &$subject, &$body, $attachments = false, $params = false)
+    function SendMail($sender, $recipients, &$subject, &$body, $attachments = [], $params = [])
     {
         $output = [];
         if (Get::cfg('demo_mode')) {
