@@ -3,12 +3,14 @@
 $year = date('Y');
 
 $headerComment = <<<EOF
-This file is part of the Forma package.
+FORMA - The E-Learning Suite
 
-(c) {$year} Giuseppe Nucifora <giuseppe.nucifora@purplenetwork.it>
+Copyright (c) 2013-{$year} (Forma)
+https://www.formalms.org
+License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
 
-This source file is subject to the MIT license that is bundled
-with this source code in the file LICENSE.
+from docebo 4.0.5 CE 2008-2012 (c) docebo
+License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
 EOF;
 
 $finder = PhpCsFixer\Finder::create()
