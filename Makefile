@@ -19,8 +19,10 @@ test: clean fix
 
 .PHONY: dependencies
 dependencies:
-	composer --working-dir=$(CURRENT_PATH)/html install --no-interaction
-	composer --working-dir=$(CURRENT_PATH)/tools/php-cs-fixer install --no-interaction
+	chmod +x composer.phar
+	chmod +x composer-normalize.phar
+	php composer.phar --working-dir=$(CURRENT_PATH)/html install --no-interaction
+	php composer.phar --working-dir=$(CURRENT_PATH)/tools/php-cs-fixer install --no-interaction
 
 .PHONY: fix
 fix: fix-code-style fix-composer
@@ -33,8 +35,8 @@ fix-code-style:
 .PHONY: fix-composer
 fix-composer: dependencies
 fix-composer:
-	composer --working-dir=$(CURRENT_PATH)/html normalize --no-update-lock
-	composer --working-dir=$(CURRENT_PATH)/html update nothing
+	php composer-normalize.phar --no-update-lock $(CURRENT_PATH)/html/composer.json
+	php composer.phar --working-dir=$(CURRENT_PATH)/html update nothing
 
 .PHONY: clean
 clean:
