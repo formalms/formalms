@@ -1,0 +1,22 @@
+{
+  "name": "formalms/prefixer",
+  "require": {
+    "php": ">=7.4"
+  },
+  "require-dev": {
+    "friendsofphp/php-cs-fixer": "3.2.*",
+    "roave/security-advisories": "dev-latest"
+  },
+  "authors": [
+    {
+      "name": "forma.lms project",
+      "email": "info@formalms.org"
+    }
+  ],
+  "config": {
+    "platform": {
+      "php": "7.4"
+    },
+    "vendor-dir": "vendor"
+  }
+}

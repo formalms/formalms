@@ -34,11 +34,14 @@ html/plugins/**
 !html/plugins/ConferenceTeleSkill
 !html/plugins/Dummy/**
 
+#Sezione Tools
+tools/php-cs-fixer/vendor
+tools/php-cs-fixer/vendor/**
+
 # Sezione generica
 .idea/
 html/config.php
 test/behat/behat_config.yml
-courselist.php.bkp
 docs/
 .vscode/**
 .DS_Store
