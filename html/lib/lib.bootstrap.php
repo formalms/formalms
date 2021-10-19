@@ -161,11 +161,23 @@ class Boot
         ini_set('session.use_only_cookies', 1);
         ini_set('session.use_trans_sid', 0);
         ini_set('url_rewriter.tags', '');
-        if ($cfg['session_save_path'] !== false) ini_set("session.save_path", $cfg['session_save_path']);
-        if (isset($cfg['session_save_handler']) && $cfg['session_save_handler'] === 'memcached') {
-            ini_set('session.save_handler', 'memcached');
-            ini_set('memcached.sess_prefix', $_SERVER['HTTP_HOST'] . '.forma.sess.key.');
-            ini_set('memcached.sess_locking', '1');
+        if (!empty($cfg['session_save_path'])) {
+            ini_set('session.save_path', $cfg['session_save_path']);
+        }
+
+        if (!empty($cfg['session_save_handler'])) {
+            switch ($cfg['session_save_handler']) {
+                case 'memcached':
+                    ini_set('session.save_handler', $cfg['session_save_handler']);
+                    ini_set('memcached.sess_prefix', $_SERVER['HTTP_HOST'] . '.forma.sess.key.');
+                    ini_set('memcached.sess_locking', '1');
+                    break;
+                case 'redis':
+                    ini_set('session.save_handler',$cfg['session_save_handler'] );
+                    break;
+                default:
+                    break;
+            }
         }
 
         // set default time zone TZ
