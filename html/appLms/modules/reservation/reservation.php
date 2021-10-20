@@ -690,7 +690,7 @@ function viewUserEvent()
 			//TODO: EVT_LAUNCH (&)
             //\appCore\Events\DispatcherManager::dispatch(\appLms\Events\Lms\UserListEvent::EVENT_NAME, $event);
 
-            $out->add($event->getExportLink(),'content');
+			$out->add('index.php?modname=reservation&amp;op=excel&id_event=' . $id_event, 'content');
 		}
 		else
 		{
