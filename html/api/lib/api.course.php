@@ -139,6 +139,7 @@ class Course_API extends API
                 'code' => str_replace('&', '&amp;', $course_info['code']),
                 'course_name' => str_replace('&', '&amp;', $course_info['name']),
                 'course_description' => str_replace('&', '&amp;', $course_info['description']),
+                'course_box_description' => str_replace('&', '&amp;', $course_info['box_description']),
                 'status' => $course_info['status'],
                 'selling' => $course_info['selling'],
                 'price' => $course_info['prize'],
