@@ -15,7 +15,7 @@ forma.lms 3.0.0
 ---------------------------------------------------------------------------------------
 Release date: 2021 november
 
-
+- #19956 - Add changelog exporter tool
 - Fix coursebox HTML rendering
 - #19954 - fix exception based on old event remove.
 - #19953  Missing idempotence instructions
