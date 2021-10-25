@@ -67,6 +67,14 @@ class TwigManager
     }
 
     /**
+     * @return \Twig\Environment
+     */
+    private function getTwig(): \Twig\Environment
+    {
+        return $this->twig;
+    }
+
+    /**
      * Get the TwigManager instance
      *
      * @param string $mvc_name
@@ -109,6 +117,10 @@ class TwigManager
         }
 
         return $this->twig->render($view_name, $data_for_view);
+    }
+
+    public function addExtention(\Twig\Extension\AbstractExtension $twigExtention) {
+        $this->twig->addExtension($twigExtention);
     }
 
     public static function getCacheDir()
