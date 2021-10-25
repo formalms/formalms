@@ -11,6 +11,1789 @@ FORMA LMS
 RELEASE CHANGELOG
 
 ---------------------------------------------------------------------------------------
+forma.lms 3.0.0
+---------------------------------------------------------------------------------------
+Release date: 2021 november
+
+
+- Fix coursebox HTML rendering
+- #19954 - fix exception based on old event remove.
+- #19953  Missing idempotence instructions
+- Add all templates in ignore excluded standard
+- #19952 - Fix Incorrect MySQL Server check in installer and upgrader - Add MySQL Client version in installer and upgrader
+- Fix deprecated constructors
+- Fix dateStart and dateEnd in next courses dashboard widget
+- Fix first track item exception.
+- Update Postman API - Add 2.4.5 version
+- #19951 - Fix Admin user should not see the author filter in the reports
+- #19950 -  Fix fast subscribe error when admin try to insert a user that has first position in admin users.  array_search($id_user, $admin_users, false) retunrs position 0 and comparison "array_search($id_user, $admin_users, false) == false" is true
+- Add Postman API and Environment
+- fix API date day create and sendCalendar validate
+- #19949 - fix save when is used media gallery
+- fix baseUrl calculate when forma is installed in subforlders
+- #19948 wrong Email sender in help desk
+- Fix api copyLO
+- Fix calculate baseUrl
+- #19947 - Fix scorm play in MyObject and SharedObject
+- Fix installer queries - Update file version with 3.0.0.rc.1
+- Fix Api learning object copy
+- #19935 -  fix copy learning object
+- fix treeview constructor
+- 1)  Peoplebox: in classroom course, shows only users of same edition 2)  If message are disabled, "message" button is not shown
+- remove typo in SubscriptionAlmsController.php throwing exception
+- Add course api to delete certificate association - Fix lib.mailer.php
+- #19943: Classrooma management Added booking starting and ending time in classroom planning
+- #19942 - fix download all certificates zip, that not contains any file
+- Fix Mailer template - Fix datetime exception
+- #19941: Administrator presence management Fixed bug on permission
+- #19940: Administrator: edition management added permission for entering page for adding edition appointments fixed param in query
+- #19939: - Added key string for language management - deleted external CDN link; added a HTML-CSS-Javascript
+- Temp fix to missing columns
+- Fix api add course
+- #19936  - report delay not working export in html, csv, xls.
+- #19936  - report delay not working export in html, csv,xls and ruturn value colums value (email, firstname, lastname)
+- #19937 Course files (logo, demo materiale) are not deleted on course deletion
+- #19934 -  Fix UserModSuperAdmin Notification #19934 - Fix UserMod Notification
+- upgrade event namespaces
+- Fix tooltip - #19932 - Fix dashboard certificate block adding default MAX_CERTIFICATES when value is not set in settings. - Fix coursebox info color - update composer packages
+- fix courses dates check
+- #19932 - fix default image logo in course list block
+- #19932 - Fix Newsletter - Fatal Error on send - Refactor while with foreach in DashboardBlockCoursesLms.php
+- #19931 - Bugfix and refactor mailer library
+- #19930 - Report Course - User: excel table does not correspond to the report processed in html
+- #19929 wrong bracket closure fixed
+- fix load phpmailer
+- fix phpmailer
+- #19928
+- #19927
+- fix orglib
+- #19926 fixed variable names in classroom edition edit
+- #19924
+- Fix Events
+- fix presence prerequisite
+- Fix mobile tab
+- #19925 - Fix load images in pdf when image has space in name.
+- Add icon for poll learning object
+- #19921, #19922, #19923
+- Fix folder view refresh on lightbox close
+- Fix scorm dimension + css mobile (stats icon)
+- Fix multiple mail send - Add Error management
+- #19920 - Fix Course date complete does not set to users in multiple user status editor
+- #19920 - Fix Course date complete does not set to users in multiple user status editor
+- Add Forma::errorExists() - Add Forma::getError() - Add Forma::setError(string $error) - Add Forma::removeError()
+- Add upload feedback error in learning object management
+- Update css colors management
+- add event to manage external catalogue
+- Fix Row Size Too Large Errors during database upgrade
+- fix upgrader queries
+- Fix coursereport
+- #19919 - Fix coursereport generation
+- add new icons
+- Icons twig function
+- Fix mysql version
+- Menu dropdown sistemato dentro del profilo del corso.
+- Fix file_exists check adding is not directory check
+- Fix Error on conflict in Step2Controller during merge. - Add 2.4.4 json on upgrader
+- Fix box layout
+- Add custom image type for items @todo complete FE integration
+- fix typo in installer sql
+- Fix calendar timezone - Fix Helpdesk sender mail
+- Translations class
+- Fix API getUserDetailsFromCredentials
+- Fix API user password encoding
+- Fix API params
+- Fix API params
+- added sending calendar to overbooked user if enrolled in classroom # fixed unsubscribe/entering link on box-course both in mycourses page and catalogue page # fixed enter button on mycourses page
+- remove unused code
+- remove limit of 25 items in user stats table
+- Correzione .forma-button per la homepage
+- Add lang translations in frontend config
+- Add calendar Name for outlook functionality
+- WIP add timezone and calendarID in course_dates and course_editions
+- Edizioni basate sulla task Trello URL https://trello.com/c/UDEEoDte/92-task-19869-css-login-restyling
+- added managing of notification for overbooked users
+- Fixes - folder loading and student action
+- Add version beta.2
+- Crash chmod
+- Fixes buttons - copy, rename of context menu
+- Uploader - print errors
+- Uploader - show errors
+- fix json decode input files
+- add status false in errors
+- add error management
+- completed create multiple items
+- Feedbacks uploader
+- Dropzone 100%
+- add echo json encode request data and file to test dropzone
+- move upload html to twig for new dropzone component
+- Dropzone 100%
+- Scorm modal graphic fixes
+- Fix student area folder view icons
+- Refactoring, graphic fixes, dropzone 50%
+- Fixes buttons - copy, rename of context menu
+- #19917 - Fix bug in associate questions
+- #19916 - Replace OLD events with new event format
+- #19915 - Replace "translate" function with Lang_translate in twig extention
+- Dashboard backoffice/frontoffice translate fields -Add new label description in dashboard blocks
+- #19916 - Replace OLD events with new event format
+- #19915 - Replace "translate" function with Lang_translate in twig extention
+- Uploader - print errors
+- Uploader - show errors
+- Dashboard backoffice/frontoffice translate fields -Add new label description in dashboard blocks
+- fix json decode input files
+- Revert "removed personal gihub oauth key"  This reverts commit bc70589786726c2b9d138eee56986e2b882006ee.
+- Ripristinate old event adding NEW "core.course.edition.list event" - Ripristinate old event adding NEW "core.course.list event" - Add send calendar information string in subscription
+- #19913 - Import users with language
+- add status false in errors
+- add error management
+- completed create multiple items
+- Feedbacks uploader
+- add sendCalendar in courseInfo
+- #19913 - Import users with language
+- add calendar id generation for course
+- Fix date management
+- Dropzone 100%
+- add echo json encode request data and file to test dropzone
+- move upload html to twig for new dropzone component
+- fix old calendar status and method
+- Dropzone 100%
+- #19901 - fix row frontend management - fix save and delete data
+- #19901 - remove not valid columns in upgrader
+- #19901 - Update installer with new date management
+- disable intl twig extention
+- add twig extentions
+- refactor date management for courses
+- WIP date days refactor
+- fix update and merge with carmine commit
+- wip Classroom Dates
+- fix edit row
+- update dates day logic
+- wip repeater dates
+- #19903 wip classroom date days repeater
+- Add Dynamic day dates
+- #19902 - WIP refactor course date mask
+- Update Edit course dates
+- Add new Twig Extentions Edito course dates
+- Revert "#19908 added check for course date_begin parameter"
+- Scorm modal graphic fixes
+- Refactoring, graphic fixes, dropzone 50%
+- Fix student area folder view icons
+- #19910 - Fix upgrader to get file_version as last version to get - Add Alpha 5 version - Fix upgrader if you has already later version as current version you are trying to upgrade.
+- Fix upgrader to get file_version as last version to get - Add Alpha 5 version
+- #19909 Bug when Administrator try to enter TiniMCE media gallery
+- #19908 added check for course date_begin parameter
+- #19907: fixed Course info card
+- fix error in count array elements
+- Version 3.0.0.beta.1
+- Build main.js
+- Fix on double click, now db works on all items
+- #19905 - comments deleted
+- fixed overbooking enrollment
+- #fixed bugs related to courses access from "my courses" page # added course type info to course box in catalogue section # improved edition enrollment modal appearance # added more infos related to edition (max numer permitted, current enrolled users) # fixed bug related to image & tinymce on catalogue description
+- Style fix on actions menu
+- #19894 RESTORED COMMIT - User object Grid - Student statistics not visible - add view_all in install sql script
+- Tap event
+- Scorm Lightbox in Teacher area on click on Eye Icon
+- #19894 RESTORED COMMIT - User object Grid - Student statistics not visible - add view_all in install sql script
+- update translation overview and update xml translation
+- Tooltip 100%
+- build frontend
+- Frontend build
+- #19900 - move all threads before emoticon select in forum and public_forum
+- [fe] - fixed play with submit
+- lo refactor: play per homerepo e pubrepo
+- #19894 - User object Grid - Student statistics not visible - add view_all in install sql script
+- fix back url tracking
+- fix notification icon in public_forum - fix translation notification in forum
+- [fe] - added visible actions
+- lo refactor: move tracking into visible actions
+- Fix close player scorm - add new overlay in student area
+- Scorm modal
+- Disable drag and drop in student area
+- Evolutive, fix eliminazione
+- Evolutive, fix eliminazione
+- # fixed message on user course approval # fixed managing of my courses label # fixed wrong path (do.test.php) # removed lib.conference.1.3.plugins.php
+- Fix eliminazione
+- Fix: rimuovo eliminazione, rinomina cartella, focus su crea directory, tooltip
+- Commit eliminazione cartella foldertree, 5%
+- [fe] - fixed status icons
+- [fe] - added additional status for scorm
+- LO refactor - fix page edit scorm
+- LO refactor - fix actions in tab homerepo and pubrepo - function formatLoData() in controller
+- [fe] - build main.js
+- [fe] - fixed create new LO in sub directory
+- add HTTP_X_FORWARDED_PROTO management in generate url
+- Fix organization: sotto-sotto cartelle
+- fix frontend baseurl generate
+- fix frontend baseurl generate
+- remove php 7.4 syntax
+- [fe] - fixed config baseUrl
+- Fix del pulsante "copia"
+- Add window.frontend object in all templates with base configs.
+- [fe] - fixed config.js
+- fe build
+- # bug when getting user's answer to test: Fixed path constant
+- #19890 - Add tag form scorm items in certificate
+- disable close_handler on second click
+- #19889 - API Evolutive
+- # fixed issue related to user that can not enter course in my course section
+- lo-refactor hidden non-working tabs
+- lo-refactor mudule name from current module
+- Corretto backurl play
+- Version 3.0.0.alpha.4
+- Corretto errore di Merge
+- lo-refactor redirect to lomanager instead of display (temporary WORKAROUND to fix navigation)
+- #19883 eliminato il limite a 255 caratteri per il campo lang translation della gestione lingua
+- fixed folderView actions not clickable and added icon categorize
+- # fixed browsing of user catalogue courses issue
+- # fixed course box
+- remove catalog courselist.php view
+- remove old catalog courseList function
+- #19881: fixed query for getting first overbooked user
+- #19881: Overbooking and waiting list fixing
+- course catalogue refactoring: - added specific window to manage classroom editions - deleted old catalogue files - CatalogLmsController.php: removed function PrepareCourseInfo, minor fixing - CourseLms.php: added escaped:_name property to manage javascript calls, fixed managing of course waiting params, fixed in_cart property, fixed isBoxEnabledForElearningAndClassroomInElearning,    isBoxEnabledForElearningInCatalogue, isBoxEnabledForClassroomInCatalogue, fixed userCanUnsubscribe (need improving for classroom course) - catalog.html.twig: removed to deleted catalog.js - course-box.html.twig: fixed js calls - catalog-course-box.html.twig: removed unuseful block for catalogue course box, overide javascript call - classroom-button.html.twig: update completely for catalogue course boxes - elearning-button.html.twig: added escaped_name for Js call, fixed selling course - course-box.html.twig: fixed managing of "show options" case
+- fix course image
+- fix edition button
+- Fix courseBoxDisabled
+- refactor catalogo
+- # catalogue refactoring
+- WIP catalog refactoring
+- WIP catalog refactoring
+- CSS per sistemare avatar standard
+- Fix Twig YuiExtension load
+- # sorry, forgot to add the new classroom view in previous commit...
+- Remove evalPhp Twig function - Add Twig LangExtension - Add Twig LayoutExtension - Add Twig UtilExtension - Add Twig YuiExtension - Add default Forma view paths in twig loader
+- Miglioramenti colori
+- Perfezionamento degli spazi della side bar del catalogo.
+- Refactoring catalog
+- Box delle icons adesso accetta font-awesome icons <i class="fa">
+- Box delle icons (tipo di corso e ruolo dell'utente) adesso ammette più icone in modo flessibile.
+- Miglioramenti mobile: contrasto colori, larghezza del bottone.
+- Filterbar e popup show all dates.
+- Nuovo @import 'modules/filterbar'
+- Refactoring di .course-box
+- #19869 nuova immagine di sfondo
+- #19869 miglioramenti generali: margini, colori, tasti.
+- La classe .course-box era vuota ed è stata commentata. Tolto il problema che generava l'avviso "Do not use empty rulesets".
+- #19869 Aggiornamento border-radius per la classe .homepage__content
+- Border-radius diventa una variabile SASS. Nuovo standard suggerito: l'angolo quasi-retto di 2px.
+- Aggiunto file per i colori. Utilizzo di HSL per maggior controllo delle sfumature.
+- Nuovo module/_form.scss
+- #19783 - fix calendar api call
+- New version management in upgrade
+- #19783 - fix calendar api call
+- #19825; fixed a couple of problems
+- New version management in upgrade
+- # added specific view for managing classroom course
+- #course catalog refactoring
+- 19882 - Course first page - no MVC menu
+- 19882 - Course first page - no MVC menu
+- Allineamento installazione ed upgrade a Dev
+- #19881: fixed query for getting first overbooked user
+- fix students area + copy
+- report course column waiting
+- #19881: Overbooking and waiting list fixing
+- # course catalogue refactoring: - added specific window to manage classroom editions - deleted old catalogue files - CatalogLmsController.php: removed function PrepareCourseInfo, minor fixing - CourseLms.php: added escaped:_name property to manage javascript calls, fixed managing of course waiting params, fixed in_cart property, fixed isBoxEnabledForElearningAndClassroomInElearning,    isBoxEnabledForElearningInCatalogue, isBoxEnabledForClassroomInCatalogue, fixed userCanUnsubscribe (need improving for classroom course) - catalog.html.twig: removed to deleted catalog.js - course-box.html.twig: fixed js calls - catalog-course-box.html.twig: removed unuseful block for catalogue course box, overide javascript call - classroom-button.html.twig: update completely for catalogue course boxes - elearning-button.html.twig: added escaped_name for Js call, fixed selling course - course-box.html.twig: fixed managing of "show options" case
+- Version 3.0.0.alpha.3
+- ok fix drag&drop + contextMenu
+- fix course image
+- fix edition button
+- Fix courseBoxDisabled
+- Added register functionality for classroom editions
+- Add EVENT in catalogue
+- refactoring manca contextMenu
+- refactor catalogo
+- refactoring folderTree
+- lorefactor: fix visibility and access filters
+- fix puntamento area studenti
+- test video
+- lorefactor: fix typo in lolms
+- lorefactor: fix lolms and lolmscontroller
+- lorefactor visibilità cartelle nella getfoldertree
+- lo-refactor new completeAction page and fix for new objects
+- lorefactor: formattati dati in getFolderTree
+- lo refactor: api for complete tree
+- fix userid in export
+- fix delete singolo da action
+- Fix eliminazione singola oggetto/dir
+- [fe] - fixed double axios
+- ok area studenti
+- fix drop on object
+- add lost functions in UserManagerAdm.php
+- fix sort with objects
+- Remove old Event - test
+- fix refactoring
+- refactoring + teacher wrapper
+- Remove old Event - widget user selector
+- lo refactor - added type back again in tabs and fixed dir db for repo and homerepo
+- # catalogue refactoring
+- fix copy & create folders
+- add cron iotask - increase cron io task data adding : executed, executionDate, scheduledDate - add dynamic management of docebocourseuser columns
+- Fix sort & move
+- lo-refactor set current tab if not set
+- lo-refactor split and extend lomanager controller for tabs
+- fix ctrl select multi items in Windows / Mac
+- WIP catalog refactoring
+- CSS per sistemare avatar standard
+- WIP catalog refactoring
+- Ok copy multiplo sui files
+- Fix rename dir
+- Fix Twig YuiExtension load
+- lo refactor Type parameter in lms/lo/show to make the view working
+- # sorry, forgot to add the new classroom view in previous commit...
+- # added specific view for managing classroom course
+- Remove evalPhp Twig function - Add Twig LangExtension - Add Twig LayoutExtension - Add Twig UtilExtension - Add Twig YuiExtension - Add default Forma view paths in twig loader
+- fix & clean rename
+- [fe] - fixed click on edit and properties
+- test fix refresh openDirs
+- fix eliminazione multipla
+- Aggiunta eliminazione multipla da folderView
+- Miglioramenti colori
+- Perfezionamento degli spazi della side bar del catalogo.
+- Refactoring catalog
+- Box delle icons adesso accetta font-awesome icons <i class="fa">
+- Box delle icons (tipo di corso e ruolo dell'utente) adesso ammette più icone in modo flessibile.
+- Miglioramenti mobile: contrasto colori, larghezza del bottone.
+- Filterbar e popup show all dates.
+- Nuovo @import 'modules/filterbar'
+- Refactoring di .course-box
+- #19869 nuova immagine di sfondo
+- #19869 miglioramenti generali: margini, colori, tasti.
+- La classe .course-box era vuota ed è stata commentata. Tolto il problema che generava l'avviso "Do not use empty rulesets".
+- #19869 Aggiornamento border-radius per la classe .homepage__content
+- Border-radius diventa una variabile SASS. Nuovo standard suggerito: l'angolo quasi-retto di 2px.
+- Aggiunto file per i colori. Utilizzo di HSL per maggior controllo delle sfumature.
+- Nuovo module/_form.scss
+- #19783 - fix calendar api call
+- #19812 - Better version definition - use name files in json
+- New version management in upgrade
+- Gestione overbooking in approvazione
+- #19879 added static reserver word to method
+- Add info classroom
+- #19877: PHP 7.4 compatibility issue
+- #19876 Report course user Added column "Waiting" with the purpouse to list users that are in waiting state related to selected course.
+- #19875 revised the pending user approval function, with relative approval. Approvement enrollment page: - added enrollment informations: min and max enrolled course requirement - added tinymce editor - added default email content - added event             lms.course_user.approved             lms.course_user.refused
+- #19874 Dashboard permission for user. Created dashboard permission table for the association dashboard-> users in file upgrade/data/upg_data/29151_db.sql
+- fix width preview image in tinymce
+- Fix mediagallery function show name
+- view tinymce upload and selection image
+- tinymce fix disabled uglify
+- updated js libraries: linter + uglify
+- fix tiny function name show -> showTask in MediagalleryAdmController + build js pack
+- Fix Block plugin load
+- fix tiny url absolute in window.config
+- Fix tiny_mce media url upload
+- Fix anteprime immagini e media
+- Selettore media
+- Upload + delete images
+- Aggiunta lista ed eliminazione media con preview immagine
+- Hidden header and footer of medias popup
+- added datatable
+- Media Gallery list show
+- fix apply tinymce lib to textareas
+- imported tinymce + watcher on webpack
+- moved tinymce in frontend component
+- lib npm installed
+- Fix fatal error in dashboard when a block is inserted in DB but model file does not exists
+- #19867 - removed course completion called twice
+- #19866 Report questionario gradimento su domanda valutazione corso
+- Add more path in render controller - Fix dashboard logics - Fix blocks title
+- Aggiunto titolo blocchi
+- #19864 - Remove deprecated constructors - fix show answers of last number_times for ET answer type
+- #19864 - Remove deprecated constructors - fix delete answers using retain history - moved deleteAnswer in class question
+- Ctrl exists question + update answer for in extended_text
+- Added link on tooltip dashboard calendar click
+- Dashboard fix default template when doesn't exist
+- #19863 - fix api course add/update/delete day
+- #19863 - fix api course add/update/delete day
+- #19862 - fix sum score in function userScore
+- #19861 - Filter files in upload question with allowed file formats
+- #19860 - Invisible fields for SuperAdmins
+- #19859: fixed CSS class
+- #19856: fixed classroom course unenrollment
+- modificato il webservice - aggiorna giornata edizione aula (up_day)
+- #19854 - report course dates at 00-00-0000
+- modificato il webservice - aggiorna giornata edizione aula (up_day)
+- #19853 Refactoring Elearning (mycourses page) + twig
+- 19852: PHP 7.4 compatibility issue (fewer parameters in call...)
+- fix pagination selector and sort order in languages list
+- modificato il webservice - aggiorna giornata edizione aula (up_day)
+- modificato il webservice - aggiorna giornata edizione aula (up_day)
+- #19851: fixed script
+- #19783 - fix calendar api call
+- #19850 - mail url in assign user in a node Fix getCurrentDomain in subnode user assign
+- fix plugin filter in languages list
+- Added select filter on plugins/modules in language list
+- Repace Docebo::inc() with Forma::inc()
+- Dashboard - added course name in tooltip on announcement block
+- Dashboard calendar lang
+- Dashboard - Fix links courses block
+- fix dashboard welcome block php7.4
+- #19850 - mail url in assign user in a node
+- fix reg mail
+- Fix mail helpdesk
+- Fix lib mail
+- Added name from to all SendMail
+- Fix translate key for announcements block title
+- #19849 - Add configurable "From Name" in mail send
+- #19847 - Remove hot_text question type from tests
+- fix tooltip down
+- #19767 - Add ignoreScore in global setting - upgrade
+- #19767 - Add ignoreScore in global setting - upgrade
+- #19837 aggiunta query in upgrade per la rimozione della chat dal menu
+- #19844 - Error on install platform (dev-25/02/2021) WIP: not yet tested
+- Version 3.0.0.alpha.2
+- #19846 - Uppercase first char during users import
+- Mods/fixes dashboard
+- Added columns filters in dataTable
+- #19845 - Admin & SuperAdmin must be able to see hidden fields in edit user profile
+- #16623 - Risolto Problema con "only update" e "create and update" Fix duplicati
+- Aggiunte traduzioni blocchi
+- Aggiunto welcome message block con traduzione e placeholders
+- Completato box messaggi
+- permessi sui blocchi + lista messaggi
+- #19812 - Better version definition - upgrade config.php - use name files in json
+- #19812 - Better version definition - use name files in json
+- #19812 - Better version definition - reformat json file version
+- #19843 - fix show correct answer in report when show correct answers is enabled
+- #19812 - Better version definition - check on json file format
+- #19812 - Better version definition - new version number, new endversion, new getVersionIntNumber method
+- #19814 - Show materials dots on course catalogue even when course is on sale - added in homecatalogue
+- #19767 - Add ignoreScore in global setting
+- Add property IGNORESCORE to scorm - defalult to YES
+- Add property IGNORESCORE to scorm - replace Docebo::inc -> Forma::inc
+- Changed suspend_data max length for all scorm types
+- Add property IGNORESCORE to scorm
+- #19837 eliminata la funzione di chat
+- #19841 - Grade book "Disallowed key characters in global data" on delete
+- #19840 - User-object grid - link back
+- #19839 - Incorrect scoring of questions on tests
+- #19839 - Incorrect scoring of questions on tests
+- #19838 - Add order functionality in LMS area for menu
+- #19826 - Plugin installation - import xml languages not working
+- fix sortable in dashboard settings
+- Fix upgrader config version path
+- #19834 Pagina bianca quando si clicca sul bottone "Competenze" del menu laterale dx.
+- Frontend build
+- Fix next lessons css "class courses" in front-end
+- Fix php 7.4 function definitions - Add json to composer json - Add simplexml to composer json
+- #19819 FIXED - Download course materials
+- #19827 - Fix DateTime exception in course list when date is not a valid date.
+- Aggiornamento a versione 3.0.alpha.1 (29301) da 3.0.0 (30000)
+- #19783 - fix calendar api call
+- #19824
+- #19822 - Show additional fields if admin can edit a user profile show only assigned fields
+- New version management in upgrade
+- fix messages order by
+- ok generazione cert da block certificates
+- Ok blocco certificati
+- Fix save checkbox settings + show_button layout twig
+- Aggiunte config per messaggio alt + flag pulsante in messaggi e certificati
+- Aggiunti video mp4
+- BANNER : gestire URL generica per video esterno;
+- Inizio funzione clone layout
+- #19825; fixed a couple of problems
+- #19820 calcolo crediti da menu laterale
+- #19807 - Errore caricamento file in domande di un test
+- #19823 - Dynamic URL Default and labels
+- #19822 - Show additional fields if admin can edit a user profile
+- #19820 Calcolo della somma crediti nel menu laterale di destra, nel caso si siano completate attività di tipo elearing e classe.
+- #19810 - Error in changing language Check only_empty
+- #19816 - Stripslashes in question type upload
+- #19815  - fix error during import users anche node changes
+- #19810 - Error in changing language Fix colonne, edit inline con textarea + export traduzioni
+- view only admin profile CR: #19813
+- #19810 - Error in changing language Fix modale per inserimento lingua
+- #19810 - Error in changing language Fix modale per modifica lingua
+- #FL-35 admin dashboard fix mysql 5.5 timestamp
+- Fix certificate edition dates in [ed_dates_subscribed] placeholder
+- #19799: fixed
+- #19811 - API not load plugins and events listener
+- Added css class in custom css for logo admin bg color
+- #19809 - Error with quotes in insert and save advice
+- Fix reorder, auto-open directories, autoselect selected dir after drop
+- Controlli sui singoli tab
+- lo refactor: format lodata for student
+- Aggiunto controllo lato student
+- Divisione controller in lo e lomanager
+- #course catalog refactoring
+- Gestione overbooking in approvazione
+- Controllati permessi docente.
+- Rimosso parametro inutile. Rimosso nodo inutile.
+- Modificato back_url play.
+- Usato metodo corretto per costruttore
+- Autoapertura directory dopo un refresh
+- lo refactor: create LOs in sub folders
+- Fix arrow open function on in treeView
+- [fe] - fixed multiple sinc request
+- #19879 added static reserver word to method
+- lo refactoring: automatically added object type
+- [fe] - fixed drop file
+- multiDrop selector
+- [fe] - fixed refresh after drop
+- [fe] - added drop folder
+- Add info classroom
+- lo refactor: parse postion data in getlearningobj
+- selettore multiplo + start drag
+- #19877: PHP 7.4 compatibility issue
+- #19876 Report course user Added column "Waiting" with the purpouse to list users that are in waiting state related to selected course.
+- #19875 revised the pending user approval function, with relative approval. Approvement enrollment page: - added enrollment informations: min and max enrolled course requirement - added tinymce editor - added default email content - added event             lms.course_user.approved             lms.course_user.refused
+- #19874 Dashboard permission for user. Created dashboard permission table for the association dashboard-> users in file upgrade/data/upg_data/29151_db.sql
+- Fix delete in folderView
+- fix auto-open parent dir on drop
+- fix drag&drop + sort
+- lo refactoring: fix deletefolder
+- fix width preview image in tinymce
+- Fix mediagallery function show name
+- view tinymce upload and selection image
+- tinymce fix disabled uglify
+- updated js libraries: linter + uglify
+- fix tiny function name show -> showTask in MediagalleryAdmController + build js pack
+- Fix Block plugin load
+- fix tiny url absolute in window.config
+- Fix tiny_mce media url upload
+- fix edit lo
+- Fix anteprime immagini e media
+- Selettore media
+- Fix fatal error in dashboard when a block is inserted in DB but model file does not exists
+- Fix fatal error in dashboard when a block is inserted in DB but model file does not exists
+- Upload + delete images
+- #19867 - removed course completion called twice
+- lo refactor: fixed locked
+- lo refactor: actions in controller::getfolder
+- Aggiunta lista ed eliminazione media con preview immagine
+- fix reorder learning object
+- [fe] - added dynamic icons for student area
+- [fe] - fixed hidden actions
+- Hidden header and footer of medias popup
+- Rimozione vecchi eventi
+- added datatable
+- lorefoctor fix type href to link
+- Media Gallery list show
+- add type ajax for copy and play teacher
+- lo refactor: add lodata formatter for folderview
+- [fe] - fixed dropdown create new
+- [fe] - fixed drop and copy item
+- fix apply tinymce lib to textareas
+- fix delete + build js
+- fix delete
+- lo refactor: copy learning object API
+- [fe] - added type and newtype for copy element
+- lo refactor: fix rename
+- learning refactoring: fix count for each tab
+- #19866 Report questionario gradimento su domanda valutazione corso
+- Build con fix rename in oggetti del corso
+- watch + fix rename
+- imported tinymce + watcher on webpack
+- [fe] - added copy feature
+- build with npm 7.9.0
+- moved tinymce in frontend component
+- lib npm installed
+- fix select tab for rename action
+- fix rename front-end
+- Add more path in render controller - Fix dashboard logics - Fix blocks title
+- Fix arrows + toggle open dir
+- Aggiunto titolo blocchi
+- [fe] - fixed data-id
+- toggle open node on arrow click treeView
+- Added cancel button in create folder form
+- #19864 - Remove deprecated constructors - fix show answers of last number_times for ET answer type
+- Added link on tooltip dashboard calendar click
+- #19864 - Remove deprecated constructors - fix delete answers using retain history - moved deleteAnswer in class question
+- Ctrl exists question + update answer for in extended_text
+- fix rename & delete
+- build fix drag&drop merge
+- [fe] - fixed drag and drop
+- Fix reorder for all tabs
+- redirect to create new LO + fix type in reorder
+- Dashboard fix default template when doesn't exist
+- #19863 - fix api course add/update/delete day
+- #19863 - fix api course add/update/delete day
+- Fix creazionne nuova dir con messaggio validazione lato server
+- Fix ordinamento
+- fix select container
+- fix input enter button to create folder
+- [fe] - fixed click on folderView at first loading
+- [fe] - removed required from input createFolder
+- [fe] - fixed new folder in root
+- [fe] - removed duplicate click on folder
+- [fe] - removed toggle on folder
+- lo refactor: rimosse funzioni deprecate da json, e aggiunta lista visible_actions
+- Fix open/close node
+- #19862 - fix sum score in function userScore
+- Create new folder
+- [fe] - fixed getApiUrl
+- #19861 - Filter files in upload question with allowed file formats
+- CreateItem init
+- #19860 - Invisible fields for SuperAdmins
+- Fix click event in FolderView
+- Fix tab selector to create dir/object
+- #19859: fixed CSS class
+- Added flag edit for container + show & organization twig
+- Fix selector for type container
+- fix lo controller, manage tdb type
+- Refactoring make url for api
+- Fix click event for each container + encode json
+- update LoLmsController with new LoLms Model
+- Merge branch 'dev-lo-refactor-peppe' of gitlab.com:formalms.core/formalms-core into dev-lo-refactor-peppe
+- fix alias > type
+- add tab management in show
+- lo refactor: allow setting tdb dynamically, clean code
+- gestione dirdib in lolms
+- init for each tab content
+- Added 3 tabs and translations in objects view
+- #19856: fixed classroom course unenrollment
+- modificato il webservice - aggiorna giornata edizione aula (up_day)
+- modificato il webservice - aggiorna giornata edizione aula (up_day)
+- [fe] - fixed drop
+- #19854 - report course dates at 00-00-0000
+- [fe] - added icons for open and close actions
+- [fe] - new icon open actions
+- count children only folder
+- #19853 Refactoring Elearning (mycourses page) + twig
+- 19852: PHP 7.4 compatibility issue (fewer parameters in call...)
+- fix pagination selector and sort order in languages list
+- modificato il webservice - aggiorna giornata edizione aula (up_day)
+- modificato il webservice - aggiorna giornata edizione aula (up_day)
+- #19851: fixed script
+- #19783 - fix calendar api call
+- #19825; fixed a couple of problems
+- #19850 - mail url in assign user in a node Fix getCurrentDomain in subnode user assign
+- fix plugin filter in languages list
+- Added select filter on plugins/modules in language list
+- Repace Docebo::inc() with Forma::inc()
+- Dashboard - added course name in tooltip on announcement block
+- Dashboard calendar lang
+- Dashboard - Fix links courses block
+- fix dashboard welcome block php7.4
+- #19850 - mail url in assign user in a node
+- added new icons
+- fixed api path and actions
+- fixed api url for stage env
+- added folderTree and folderView icons
+- fix reorder learning object refactoring
+- added dynamic treeview_state_organization
+- add current state in learning object list
+- fix reg mail
+- Fix mail helpdesk
+- Fix lib mail
+- Added name from to all SendMail
+- [fe] - fine tuning folder tree and folder view
+- Fix translate key for announcements block title
+- #19849 - Add configurable "From Name" in mail send
+- [fe] - added interaction between components
+- #19847 - Remove hot_text question type from tests
+- fix tooltip down
+- update folder tree
+- #19767 - Add ignoreScore in global setting - upgrade
+- #19767 - Add ignoreScore in global setting - upgrade
+- #19767 - Add ignoreScore in global setting
+- #19837 aggiunta query in upgrade per la rimozione della chat dal menu
+- #19844 - Error on install platform (dev-25/02/2021) WIP: not yet tested
+- Version 3.0.0.alpha.2
+- #19846 - Uppercase first char during users import
+- Mods/fixes dashboard
+- add reorder method to lolmscontroller
+- Added columns filters in dataTable
+- [fe] - added drag&drop support
+- #19845 - Admin & SuperAdmin must be able to see hidden fields in edit user profile
+- #16623 - Risolto Problema con "only update" e "create and update" Fix duplicati
+- #19812 - Better version definition - upgrade config.php - use name files in json
+- Aggiunte traduzioni blocchi
+- Aggiunto welcome message block con traduzione e placeholders
+- Completato box messaggi
+- permessi sui blocchi + lista messaggi
+- #19812 - Better version definition - use name files in json
+- #19812 - Better version definition - reformat json file version
+- #19812 - Better version definition - check on json file format
+- #19843 - fix show correct answer in report when show correct answers is enabled
+- #19812 - Better version definition - new version number, new endversion, new getVersionIntNumber method
+- #19814 - Show materials dots on course catalogue even when course is on sale - added in homecatalogue
+- Add property IGNORESCORE to scorm - defalult to YES
+- Add property IGNORESCORE to scorm - replace Docebo::inc -> Forma::inc
+- Changed suspend_data max length for all scorm types
+- Add property IGNORESCORE to scorm
+- [fe] - added submit for interactions
+- #19837 eliminata la funzione di chat
+- #19841 - Grade book "Disallowed key characters in global data" on delete
+- #19840 - User-object grid - link back
+- #19839 - Incorrect scoring of questions on tests
+- #19839 - Incorrect scoring of questions on tests
+- #19838 - Add order functionality in LMS area for menu
+- #19826 - Plugin installation - import xml languages not working
+- fix sortable in dashboard settings
+- Fix upgrader config version path
+- #19834 Pagina bianca quando si clicca sul bottone "Competenze" del menu laterale dx.
+- Frontend build
+- Fix next lessons css "class courses" in front-end
+- Fix php 7.4 function definitions - Add json to composer json - Add simplexml to composer json
+- #19819 FIXED - Download course materials
+- #19827 - Fix DateTime exception in course list when date is not a valid date.
+- Aggiornamento a versione 3.0.alpha.1 (29301) da 3.0.0 (30000)
+- #19783 - fix calendar api call
+- #19824
+- #19822 - Show additional fields if admin can edit a user profile show only assigned fields
+- #19825; fixed a couple of problems
+- New version management in upgrade
+- fix messages order by
+- [fe] - folderTreeView progress
+- add child counter in learning object library
+- folderTreeView - added rename and delete item
+- folderTreeView component - initial integration
+- rename and move ajax methods
+- #19773 remove unused code
+- #19773 delete folder
+- editlo as mvc action
+- pagina gestione lo con fancytree
+- gestione icone lo
+- aggiunto tasto play e status dell'lo
+- aggiunte statistiche in orglib aggiunte statistiche in lo lato utente
+- Add fancytree and use it in the teacher area lo
+- fix riga commentata erroneamente orgdir
+- homerepo e repodir
+- prendi id corso dalla sessione
+- #19754 - Access detail in users/objects for all object types
+- Aggiunte tutte le azioni ai lo lato teacher + esempio
+- estratti controlli teacher in getlodata
+- Clean unused files and fix treeview for lo
+- ... segue commit precedente (manca show e addons) Il tutto da rivedere
+- abbozzo lib.tree_window
+- los come ajax (primo esperimento)
+- ok generazione cert da block certificates
+- Fix upgrader config version path
+- Ok blocco certificati
+- Fix save checkbox settings + show_button layout twig
+- #19834 Pagina bianca quando si clicca sul bottone "Competenze" del menu laterale dx.
+- Frontend build
+- Aggiunte config per messaggio alt + flag pulsante in messaggi e certificati
+- Aggiunti video mp4
+- BANNER : gestire URL generica per video esterno;
+- Ok layout clone
+- Inizio funzione clone layout
+- Inizio fixes
+- Aggiunte config per messaggio alt + flag pulsante in messaggi e certificati
+- Fix next lessons css "class courses" in front-end
+- Fix php 7.4 function definitions - Add json to composer json - Add simplexml to composer json
+- Aggiunti video mp4
+- #19819 FIXED - Download course materials
+- BANNER : gestire URL generica per video esterno;
+- #19827 - Fix DateTime exception in course list when date is not a valid date.
+- Aggiornamento a versione 3.0.alpha.1 (29301) da 3.0.0 (30000)
+- Ok layout clone
+- Inizio funzione clone layout
+- #19783 - fix calendar api call
+- #19822 - Show additional fields if admin can edit a user profile show only assigned fields
+- #19824
+- Inizio fixes
+- #19825; fixed a couple of problems
+- New version management in upgrade
+- #19820 calcolo crediti da menu laterale
+- #19807 - Errore caricamento file in domande di un test
+- #19823 - Dynamic URL Default and labels
+- #19822 - Show additional fields if admin can edit a user profile
+- #19820 Calcolo della somma crediti nel menu laterale di destra, nel caso si siano completate attività di tipo elearing e classe.
+- #19810 - Error in changing language Check only_empty
+- #19816 - Stripslashes in question type upload
+- #19815  - fix error during import users anche node changes
+- #19814 - Show materials dots on course catalogue even when course is on sale
+- #19810 - Error in changing language Fix colonne, edit inline con textarea + export traduzioni
+- view only admin profile CR: #19813
+- #19810 - Error in changing language Fix modale per inserimento lingua
+- #19810 - Error in changing language Fix modale per modifica lingua
+- #FL-35 admin dashboard fix mysql 5.5 timestamp
+- Fix certificate edition dates in [ed_dates_subscribed] placeholder
+- #19799: fixed
+- #19811 - API not load plugins and events listener
+- Added css class in custom css for logo admin bg color
+- #19809 - Error with quotes in insert and save advice
+- Fix edition dates in certificate pdf - added tag in summary
+- Fix edition dates in certificate pdf - Fix dates list
+- Fix edition dates in certificate pdf
+- Show edition filter in Gradebook only for class courses
+- Ok modale inserimento chiave traduzione
+- [be] - fix lang search
+- [be] - fix response html delete button #TODO fix show dialog to delete key or langs
+- Confronto + edit inline
+- WIP lingue
+- fix langs
+- Ok import diff + formatable in lista traduzioni per lingua
+- Fix lang import file
+- [be] - implement diff lang during import file
+- [be] - update import type
+- Uniformata vista per import core/file lingue
+- [be] - wip lang translation management
+- #19786 - WIP add feature to import core language from interface
+- #19786 - forma core upgrade now import only new lang keys and not override existent keys
+- #19806 - Show subscription editions dates in certificate template by tag [ed_dates_subscribed]
+- #19805 - Fix email text on user subscription
+- #19804 - fix catalogue change and current active tab and fix code indentation
+- #19803 - SSL error during login with chrome
+- fix wrong include _files_lms_
+- fix wrong include _files_lms_
+- #19801 -  error on coursereport (and more files) ... continue
+- Added edition filter in gradebook detail
+- Fix scorm total time with decimals in session_time
+- #19802 - Fatal error in index platform after merge dashboard put back the old lost modification
+- #19801 -  error on coursereport (and more files)
+- #19801 -  error on coursereport (and more files)
+- #19801 -  error on coursereport (and more files)
+- #19800
+- Chiusura form all'inserimento nuovo layout
+- Aggiunta gestione didascalia su layouts
+- fix frontend dashboard - fix plugin block loading
+- Aggiunto titolo blocchi
+- table wrap
+- no message
+- traduzioni ITA + piccoli fix
+- edit inline dashboard layouts
+- ok gestione default ed eliminazione layouts
+- Spostata gestione layout in FormaTable
+- [be] - merge
+- Start gestione layouts
+- #19783 - WIP aggiunta gestione dashboards
+- Fix merge #19797
+- Reformat event lms.competence
+- Fix total time ISO scorm sessions
+- Fix send email in user course subscription
+- #19797 - Dropdown field in certs list show its ID
+- #10418
+- #19745 - 1111 nel box di conferma iscrizione
+- Risolti prolemi upload scorm in lmshub
+- fix tooltip left
+- added left tooltip
+- #19794 - Solved - View customfield without label
+- #19656 remove magic quotes
+- #19793 fix upload scorm php 7.4
+- #ticket 19791 Corretta traduzione specifica per i certificati e associati al modulo rispettivo
+- remove deprecated Docebo::inc() and replace with Forma::inc()
+- #19788 - fix [php7.4-compatibility] Popup in user creation
+- 19792 - Solved - Error in report plugin with uppercase name
+- Fix catalogue select tab tree
+- Fix tab change catalogue tree
+- #19790 - Solved - Conference BBB - wrong videoconference name
+- Fix num partecipazioni reg val dettaglio utente
+- #19783 - fix languages dashboard
+- #19783 - fix languages
+- fix csv import users mail, dynamic_link node association
+- Fix mail language cron report
+- Fix dynamic_link in import users by csv
+- #19787; missing curly bracket
+- #19787: checkUsername: added user enabled/disabled info
+- Fix course order in aggregated certificate
+- #19782 bug solved for newOrg
+- #19782 bug solved for newOrg service api
+- update changelog with 2.4.2 and 2.4.3 versions
+- Add old version in config
+- update end version
+- #19785 - upgrade composer.phar
+- [be] - remove all addons php libraries and update composer packages
+- [be] - remove addons libraries
+- #16623 - Risolto Problema con "only update" e "create and update" Fix only update
+- Fix hide invisible fields associated to a node in registration form
+- #19784 - Fix database charset check in install.
+- #19783 - Fix Dashboard languages
+- #19781 - Support SCORMs opening popup - workaround by retrying with an asynchronous request (sendBeacon) if the synchronous request fails (response status 0).
+- #19780 - In meta_cert pdf is not visible meta_cert placeholder value
+- #19779 - date field in registration lost value
+- #16623 - Risolto Problema con "only update" e "create and update" Fix only update
+- Fix hide invisible fields associated to a node in registration form
+- #19690 fixing php7.4 issues
+- #19501: added a
+- #19189: passing too few function arguments
+- #19606: user subscribed course list, fullname column set to Lastname Firstname
+- #19775 handle update online errors
+- #19502: fixed wrong translation
+- #19769: removed nusoap library and SOAP API
+- [be] - fix cron report link url if url setting is empty getting baseurl from request.
+- [be] - add inspection template
+- #19772 - Don't show certificates if user_release not checked
+- fix my courses list
+- #19755 - tag teacher_list in certificati corso aula ad edizioni
+- #19768 - Show certificates for students when all courses are completed Show certs if all courses are completed
+- #19768 - Show certificates for students when all courses are completed
+- fix script sql
+- upgrader - changed setting type for template_domain
+- #19765; mnaged permission to enable o disable "edit profile" in back-end menu.
+- [be] - export error inspections
+- #19764: fixed managing of course closing data in case of english language broswer
+- overview statistic translate fix
+- #19763 - Certificates dates sorting format
+- corretto il ws getAnswerTest
+- #19762 - New course buy event Aggiunto placeholders fields
+- #19762 - New course buy event Install/upgrade
+- #19762 - New course buy event
+- #19731 - root/nodes fields selector
+- #1780: in case of classroom courses, the certificate does not print the classrooms appointments in case of missing location indication; modified the query to manage data even in this situation.
+- ticket: 19753 corso disabilitato se fuori dal range di tempo di iscrizione
+- 19761 - RISOLTO - Funzione playFieldForUser() di libreria customfield non funzionante Risolto includendo le classi nella cartella "customfield" invece che "field"
+- 19760 - RISOLTO mettendo class_exist in librerie - Fatal error in creazione oggetto con customfield Fatal error se in oggetto ci sono 2 customfield Fatal error: Cannot redeclare class Field_Textfield in D:\prj\AIA\src\2.4.2\html\appCore\modules\field\class.textfield.php on line 824
+- [be] - add report folder in repository
+- [be] - fix load plugin report files in cron report
+- fix current domain default
+- fix isUseSmtp check
+- fix isUseSmtp check
+- #19750: missing pagination in certificate aggregate listing page
+- #19189: PHP 7.1 compatibilities: Throw on passing too few function arguments
+- #19749 - [be] - disable docebouser connector password update when user exists
+- #19739 - constructor deprecated sintax on php 7.0
+- “versionamento” per aggiornamento inclusioni javascript
+- Fix table head in certificates aggregated detail
+- fix invio dynamic_link (come base url) anche su nodi non configurati
+- fix for v2.4.2
+- Fix gitignore templates
+- #19747: added check on input IDs Array.
+- #19746; substituted the ";" separator with "#" separator
+- #16483
+- #19744 - Option to hide course progress not working
+- Aggiunta lingua lettone
+- Aggiornamento manuale lingue 14/07/2020 - aggiunta lingua Lettone
+- #19741: missing comma in sql query
+- #19740: missing some insert with "ignore", some other instructions do not work.
+- various fixes: use sendBeacon (if possible), check unloading, ...
+- modificati i webservice per la gestione dei meta certificati in funzione del nuovo preocesso
+- Forzatura finish su beforeunload anziché bottone chiusura - riportate modifiche
+- Fix campi in reg valutazioni dettaglio
+- Fix campi aggiuntivi in reg valutazioni dettaglio
+- [be] - update dashboard elements
+- [be] - remove required
+- #19733, #19729; fixed some issues on certificate aggregated and one missing label on certificate management page.
+- [be] - fix css
+- Change POST Headr from HOST to X-HOST
+- [be] - add variable check to receive "on", "true", true
+- Aggiunto al file appLms\modules\scorm\ScormApi.js la forzatura del LMS finish anche alla funzione ScormApiUI.prototype.LMSCommit() come nella funzione ScormApi.prototype.LMSCommit()
+- #19736 - Associations questions total points
+- Aggiunto dynamic_url su iscrizione utente corso
+- #19735 - Fix Wrong category scores shown on test completion
+- Aggiunto url dinamico in reinvio mail credenziali
+- #19722 - async call on page unloading instead of specific finish method
+- Course list fix for php5.6
+- Fix dominio con https prefix
+- Ok domini sottonodi
+- Fix config idOrg
+- fix placeholder link
+- Fix node names
+- fix name select nodes
+- Cambio link se configurazione su nodo
+- salvataggio config con repeaters
+- #19722: If the course passes an integer value, the setvalue fails: forced cast to string param into commonLMSSetValue function.
+- Ok campi config per repeater
+- init config templates
+- #19734 - Same values in empty custom fields in certificates associations
+- #19732 - pagination error in gradebook detail
+- #19731 - root/nodes fields selector fix normal reg with a root discendent required field
+- #19728 - Salvataggio presenze in area docenti
+- #19730: adding user to aggregated certificated management fixed
+- #19731 - root/nodes fields selector
+- #certificate aggregated: fixed DB upgrade for related tables
+- #19690: fixed php 7.1+ (too few arguments) in function calling; fixed some issues related to aggragated certificate installation and upgrade (default date format changed)
+- #added missing twig folder after meta-cert-refactoring merge
+- #pre merge operation
+- Fix merge category in questions list test
+- Aggiunta categoria in lista domande test
+- #deleted garbage
+- #19722 - status completed on SCORM
+- #19724 - Users list for admin in gradebook
+- #19723 - Verification register node-code manually in second step
+- #update upgrade procedure; handled some particular certification cases
+- Aggiunti eventi lms.lo_user.update e lms.lo_user.delete
+- #updated certificate events handler to new event system structure. fixed more 7.4 php issues.
+- Aggiunto environment agli eventi.
+- Cambiato eventi per mettere i dati "dinamici" in un array più generico.
+- Aggiunti eventi lms.lo_user.creating e lms.lo_user.created
+- #19708 - bug + mancata traduzione in catalogo pubblico
+- #19716 - Course boxes hover css
+- #code cleaning: removed no more userd functions, class, files. Fixed 7.4 compatibility issues
+- #19715 - Time problem for format time in scorm tracking 00:00:00.000000
+- Added zeros to time format for scorm objects in U/O
+- Aggiunte costanti priorità
+- Hooks -> listeners
+- #19713 - Import GIFT categories
+- #fixed issues, translated label
+- #19711 - Errata Visualizzazione utenti in EDIT Registro valutazioni
+- # added templates folder
+- # correct .gitgnore uploaded
+- # improved user certificate management
+- #19712 - Direct link on object by SSO access
+- #used event system for managing aggregate certificate
+- #4062
+- #4062
+- #4062
+- #4062
+- #4062
+- Fix menu items
+- #19710 - Fix tooltip down css
+- #19709 - Ordine box corsi e titoli tagliati
+- #19690: fixed each/foreach cycle
+- # changing to event system for managing aggregate certificate: commit 1
+- Meccanismo per listeners core + esempio.
+- #19707 -Errata visualizzazione della pagina LMS comunicazioni
+- fix margin select in global config
+- #19706 - Log su evento disabilitato
+- #19705 - Filtro lista tentativi in registro valutazioni
+- #19703 - Apostrofi in modifica introduzione corso
+- #1
+- #deleting test folder
+- #19701 - Apostrofi in gestione certificati
+- #Aggregate Certificate revision 1
+- #4062
+- Evt: lms.lo.status.update //TODO: EVT_OBJECT (§) //TODO: EVT_LAUNCH (&)
+- Sistemata inclusione che si rompe
+- checkStrictMode, force strict_mode (like), minor changes on install-upgrade
+- Modificato esempio utilizzo evento (evitato di utilizzare userid fisso in creazione utenti).
+- Rimosso meccanismo per accedere ai parametri come oggetto (sporco, incoerente).
+- Corretto calcolo path che non prevedeva percorsi windows.
+- # 19698 On the courseuser connector added the following fields: 1) student status with respect to the course 2) additional course fields 3) additional user fields
+- Aggiornamento event-dispatcher (rimosso behat che impediva l'aggiornamento).
+- Aggiornata versione richiesta PHP (7.0) in composer. Spostato requisito. Forzato esecuzione composer per versione 7.0 di PHP (per garantire la compatibilità minima).
+- #19683 - SCORM - Display ISO-8601 Timeformat
+- #19697 - Removed .vscode folder
+- #19696 - PHP compatibility
+- #19695 - Gestione Feedback autocomplete corsi e competenze
+- Bug #19681 - downloadable certificates for all user states
+- [be] - add dashboard queries in install and upgrade
+- [fe] - build fe
+- [be] - add dashboard query in installer and upgrader.
+- [#20208] - fixed javascript error for calendar
+- [be] - fix validation [be] - dinamic image in welcome [be] - dinamic image, video and video type in block video
+- [be] - remove all filed in calendar
+- [be] - fix upload file extentions
+- [#20208] - fixed upload file
+- [#20208] - added upload file with ajax
+- [be] - fix upload
+- [#20208] - added dynamic settings to response
+- [#20208] - fixed styles dashboard admin
+- [be] - fix validation block [be] - fix layout
+- [be] - implements settings upload file [be] - implements settings save data and validation
+- [be] - update dashboardblockvideo [be] - update dashboardblockwelcome
+- [be] - complete form elements for dashboard settings
+- [fe] - fix calendar margin
+- [BE] - wip dashboard settings forms
+- [be] - fix courses folder name [be] - fix certificate twig error
+- [be] - rename all dashboard folder in lowercase
+- [be] - rename all folders
+- [be] - add dashboard in config appcore
+- [be] - fix assets path
+- [be] - fix class case name for dashboardsettings
+- [be] - rename file in lowercase
+- [be] - rename file
+- [be] - fix dashboard save settings
+- [fe] - build fe
+- [be] - fix dashboard for php56
+- [be] - fix dashboardsettings
+- [be] - fix dashboardsettings
+- [be] - add php retrocompatibility with php56
+- [fe] - riaggiunto dashboardcalendar nel bundle
+- fix visualizzazione overlay video ed embed youtube e vimeo
+- aggiunto trigger js per apertura modale su elementi video della dashboard
+- aggiunta modale per overlay video
+- aggiunto script base per blocco video
+- aggiornata versione node-sass per supporto a node v13
+- aggiunto css blocco video
+- video su dashboard: aggiunta vista e dati dinamici da controller
+- [be] - add video block in dashboard
+- Fix tooltip css height
+- [be] - implement dashboard block settings save in database
+- [fe] - #19555 - added registeredActions for calendar
+- [fe] - 19555 - custom dashboard configuration
+- [be] - implementata logia per mostrare i blocchi da admin
+- #19491 - DATA ISCRIZIONE A UN CORSO AULA NON VISIBILE IN CALENDARIO Fix box prossimi corsi ok
+- #19507 - DASHBOARD - CHANGES TONEXT COURSES INFOS includere anche eventi di oggi (non solo da domani)
+- Traduzioni pulsanti
+- #19491 - DATA ISCRIZIONE A UN CORSO AULA NON VISIBILE IN CALENDARIO Fix box prossimi corsi
+- #19491 - DATA ISCRIZIONE A UN CORSO AULA NON VISIBILE IN CALENDARIO Fix date calendario
+- #19507 - DASHBOARD - CHANGES TONEXT COURSES INFOS fix orari box prossimi corsi
+- #19507 - DASHBOARD - CHANGES TONEXT COURSES INFOS
+- Aggiunto nome corso master e sede in tooltip calendario
+- Mostra nel box corsi, quelli più prossimi
+- #19491 - DATA ISCRIZIONE A UN CORSO AULA NON VISIBILE IN CALENDARIO Fix date lista corsi
+- #19491 - DATA ISCRIZIONE A UN CORSO AULA NON VISIBILE IN CALENDARIO
+- [be] - fix calendar classroom editions
+- [fe] - fix stringa dashboard
+- [be] - change date managment in dashboard
+- [fe] - fix cds popup calendar
+- [be] - fix first load when dashboard il main page
+- [be] - force rename folders lowercase
+- [be] - force rename folders lowercase
+- [be] - force rename folders lowercase
+- [fe] - modifica posizione tooltip
+- [BE] - #FAY-9 IN Add Dashboard in menu and in configuration
+- [be] - dashboard query
+- [be] - vardump
+- [be] - fix course dates [be] - fix dashboard
+- [be] - fix course image [be] - add empty array dates in all course
+- [fe] - completate lavorazioni dashboard
+- [fe] - avanzamento dashboard
+- [fe] - allineamento
+- [fe] - allineamento
+- [fe] - fix funzione anonima dashboard
+- [be] - fix dashboard calendario
+- [be] - fix dashboard calendar
+- [fe] - allineamento
+- [fe] - allineamento
+- [fe] - allineamento
+- [be] - fix dashboard calendar
+- [be] - fix typo
+- [fe] - allineamento
+- [fe] - avanzamento dashboard
+- [fe] - avanzamento dashboard
+- [fe] - avanzamento dashboard
+- [be] - fix dashboard calendar
+- [be] - fix dashboard
+- [fe] - avanzamento dashboard
+- [fe] - avanzamento dashboard
+- [be] - fix dashboard
+- [fe] - avanzamento dasjboard
+- [fe] - avanzamento dasjboard
+- [fe] - avanzamento dasjboard
+- [be] - fix date in courses
+- [be] fix courses
+- [be] - add date in courses [be] - fix calendar
+- [fe] - avanzamento dasjboard
+- [fe] - avanzamento dasjboard
+- [fe] - avanzamento dasjboard
+- [be] - add strip tags for description
+- [be] WIP calendar - add date in courseAdvice
+- [fe] - avanzamento dasjboard
+- [fe] - avanzamento dasjboard
+- [fe] - avanzamento dasjboard
+- [be] - fix status course
+- [fe] - avanzamento dasjboard
+- [fe] - allineamento
+- [be] - implement ajax action to interact with dashboard blocks
+- [be] - implementazione dati annunci corsi dashboard
+- [be] - add link in dashboardBlock components [be] - add data for DashboardBlockCertificates [be] - add data for DashboardBlockCourses [be] - add data for DashboardBlockMessages [be] - add data for DashboardBlockProfile [be] - add sample data for DashboardBlockCourseNews
+- [be] - WIP dashboard
+- [be] - dinamic news block
+- [be] - implement dinamic dashboard block loading
+- Fix require once - add forma_inc
+- # Revert change of commit 46f1e1ad20fc4a61427c79a7d65521d8112707ed which causes the wrong plugins name calculation.
+- Forma::inc does not include plugins' Plugin.php file anymore (add the inclusion in the plugin initialization if needed)
+- Risolto #19688 - Plugin update error (online=false)
+- Added example of plugin initialization in Dummy plugin.
+- Chiamato BOOT_PLUGINS dopo BOOT_SETTING
+- #19691 - Plugins initialization: changed bootstrap steps to add plugins self named file call in order to allow plugins initialization.
+- #19690: endwhile tag with endforeach substitution
+- Fix for OrgPropertiesPrintEvent Event
+- Added cron notification file
+- [be] - update function to protected from private
+- Add courselist event
+- #19687 Languages - Increase text_key field lenght to 255
+- [be] - add course info in installer 3.0
+- [be] - add course info in upgrade 3.0
+- #19680 - Registration with code doesn't work wit advanced registration (tree_drop node)
+- #19683 - Griglia utenti oggetti: Tempo di fruizione 00.00
+- #19682 - Registro valutazioni: numero di compilazioni errate
+- [fe] - fix description in raw format
+- [fe] - user profile - removed mail icon from cta
+- [fe] - caourse info - fix user profile without biography
+- [fe] - course info - minor layout fixes
+- [be] - dynamic last view, friendslist and userStats in user profile
+- [fe] - added link to mail in profile page
+- [fe] - fix css on user profile page.desktop and mobile
+- [fe] - user profile html structure
+- [fe] - removed js action on routing to message, sostituited by a normal href
+- [fe] - fix link profile from image
+- [be] - fix link profile
+- [fe] - added link to users profile
+- [be] - add profile ulr in route
+- [be] - lowercase
+- [be] - create profile action and view in course
+- [fe] - translated "message" label
+- [be] - add directwrite message in message controller [fe] - bind click event in message infocourse
+- [fe] - added default profile image in user profile
+- [fe] - add css modificator for every block
+- [be] - fix cannot_entre in course info
+- [fe] - user biography visible only if present
+- [be] - add dinamic extra info
+- -
+- [fe] - info course dynamic content on user biography
+- [fe] rename html classes and some fixes
+- [fe] - static modal for info course
+- [be] - update all infocourse links and add query to update menu
+- [be] - dynamic administrator, tutor and instructor box
+- [be] - dinamicizzazione FE
+- [fe] - added infocourse modal and some html fix
+- [fe] - added materials block to course list
+- [fe] - added teachers box
+- [fe] - course info init
+- [be] - create controller and view for new courseinfo
+- #19684 - Catalogo esterno alla piatta, resta in download
+- #19680 - Registration with code doesn't work wit advanced registration (tree_drop)
+- #19679 - Corrected wrong method in sql_num_field function
+- Fix tab content
+- #19678: fixato invio notifica a docent quanto studente termina corso
+- #19673 - Problema nella visualizzazione dell'help in modalità mobile
+- ##19186: Complete fixing syntax issues
+- #19186: Start fixing syntax issues
+- #19675 - revert on API authentication check change.
+- #19674 - Thank you page after registration
+- Modificate alcune label, aggiunte traduzioni, aggiunto bugfix cristina
+- Aggiornata versione 2.4.1 a piattaforma
+- Aggiornamento manuale lingue da LANG 20/02/2020
+- #19671: removed externa http call to Yui library; implemented jquery routine for managing the change of tabs position
+- Fix Catalogo
+- Deleter file excel.php
+- #19429 - CERTIFICATES - ALLOW HTML IN COURSE DESCRIPTION
+- #19016: test objects: fixed issue about mandatory answer on Edge and Internet Explorer. Deleted unuseful JS code.
+- [be] - fix installer event disable [be] - add 2.4.1 upgrader sql file
+- #19662 - Implode with historical parameter order
+- #19669 -  Bug Fixes template side
+- #19622 - Problema con destinatari newsletter corso
+- #19597 - Searching Strings for non-string Needle
+- Eventi iscrizione utenti ai corsi: lms.course_user.created lms.course_user.created lms.course_user.updating lms.course_user.updated lms.course_user.deleting lms.course_user.deleted
+- Removed cron files of plugins
+- #19620 - BUG lettere maiuscole
+- Eventi corso: lms.course.creating lms.course.created lms.course.deleting lms.course.deleted lms.course.updating lms.course.updated
+- new notification cron fixed
+- Eventi autenticazione: core.user.logging_in core.user.logged_in core.user.logging_out core.user.logged_out
+- Reso opzionale il passaggio di argomenti.
+- Aggiunti eventi utente: core.user.deleting core.user.deleted core.user.updating core.user.updated
+- Aggiunto esempio che si attacca a core.user.creating per modificare un dato ed aggiornati gli altri esempi.
+- Aggiunto FormaEvent per accedere agli argomenti come oggetto.
+- Passato un solo userdata.
+- #19612: fixed and improved algorithm for computing catalogue tree
+- Fix css profile name menu FE
+- Added cron for test notification Lotify Plugin
+- #19258: changed each occurences of each() function
+- #19618 - Upgrade - incoerenza tra i dati in tabelle - sistemato upgrade di versione 2.3 e 2.4
+- #19618 - Install - incoerenza tra i dati in tabelle
+- #19609 - Upgrader - Bug upgrade 1.3 - 2.x - Aggiunto script sql
+- Bug #19619
+- Fix template menu profile
+- Fix "Call to a member function def() on null in /www/dev.formalms.org/html/dev/lib/lib.user_profile.php on line 1401"
+- Evento core.user.creating e dati utente in core.user.created
+- #19617 SOLVED - Role creation for menu error - by Alessandro Chiodaroli
+- #cert refactoring. removing wrong files
+- #meta cert refactoring: removing some wrong files
+- #19614 fixed single certificate deletion.
+- #19437: added the possibility to import specific user language for imported user.
+- #19615 - Manage mycertificates tabs with an event
+- [be] - #19611 update from mandatory to not_used for event "UserCourseInsertedModerators"
+- Creati i webservice sul modulo corso per le seguenti funzionalità.     Impostare una immagine già esistente in piattaforma come logo del corso (non serve uploadare una nuova immagine)
+- Fix indici filtro categorie
+- [be] - fix multiple activity with same name in course report
+- #19186: PHP 7.2 compatibility
+- #19578 - changed the widget used to select the org chart node for importing new nodes tree
+- #19097 - VIDEO EMBED NOT ALLOWED FOR ADMINISTRATORS Fix intro course
+- [19535] - fixed dataTables pagination in grade book detail
+- #19504 - MAIL RECUPERA PSW: SI DEVE VISUALIZZARE ANCHE L'USERNAME DI CHI INVIA LA MAIL Refactoring
+- #19504 - MAIL RECUPERA PSW: SI DEVE VISUALIZZARE ANCHE L'USERNAME DI CHI INVIA LA MAIL
+- #19575 - MY COURSES - ESTENDERE RICERCA A NOME CATEGORIA
+- #19569 - MYCOURSES - ORDER CATEGOY FILTER ALPHABETICALLY Fix
+- #19569 - MYCOURSES - ORDER CATEGOY FILTER ALPHABETICALLY
+- Rivisto per utilizzare più correttamente le classi di Symfony. Aggiunto esempio listeners.
+- Esempio di utilizzo.
+- Evento e dispatcher
+- #19567 - ISCRIZIONE CON INSERIMENTO MANUALE DEL CODICE ERRATO PERMETTE CMQ DI ISCRIVERSI
+- changelog and readme alligned with files published on public site
+- Updates
+- #19563 - Move HTMLPurifier cache folder into Forma twig cache folder
+- #19470 fix order name
+- #19547 - added enroll policy management in docebousers connector; During the user import (via connector or admin panel) procedure, if a enrollment policy is defined, the users are enrolled to courses even if the rule is disabled; this issue has been fixed.
+- Update lib.aggregated_certificate.php
+- Update lib.aggregated_certificate.php
+- Fix bug + labels
+- webservice: answer of lerning object type test esteso la risposta per tutte le tipologie di domande
+- Update AggregatedcertificateAlmsController.php
+- Labels change
+- #19551 - added more missing translation strings
+- #19548 - Fixed maximum number of login attempts
+- Update .gitignore
+- FINAL GITIGNORE DA DECOMMENTARE!
+- Update .gitignore
+- Update .gitignore
+- Update .gitignore
+- b2
+- c1
+- Update AggregatedcertificateAlmsController.php
+- #19550 - Added missing JS function
+- #19551 - SUBSCRIPTION FROM CATALOGUE (MISSING TRANSLATIONS and COURSE TITLE)
+- bf2
+- bf1
+- Update AggregatedcertificateAlmsController.php
+- Update AggregatedcertificateAlmsController.php
+- Update AggregatedcertificateAlmsController.php
+- Update AggregatedcertificateAlmsController.php
+- Bugfix final
+- bug fix
+- #19552 - META CERT PDF DATA
+- #19549 - NELLA LISTA PRESENZE NON SONO PRESENTI TUTTI GLI ISCRITTI
+- Fix export presences only with students
+- Update MycertificateLms.php
+- refactoring tabelle
+- Update framework.sql
+- [be] - fix gitignore to deploy images
+- [be] - fix dates by editions in overlay courses
+- [be] - fix multiple dates in overlay courses
+- [fe] - fix shadow and bold courses boxes
+- [fe] - fix height course boxes
+- [be] - fix exception in courselist when next_lesson date is not valid for any reason
+- #19543 - Ripristinato file "keep" nella cartella customscripts
+- Aggiornati changelog e readme con data odierna
+- Aggiornate manualmente lingue
+- [be] - fix next date for course in my courses
+- Aggiunto nel webservice dei corsi, per la funzione "getAnswerTest", la data di completamento
+- [be] - #19387 - dinamic data for new edition course layout
+- [19387] - avanzamento modale catalogo
+- [19387] - avanzamento modale catalogo
+- [19387] - avanzamento restyling modale catalogo
+- [19387] - inizio restyling modale catalogo
+- #19541 - Rimuovo File config.old da GIT
+- #18593 - Configurazione enable_plugins - eliminato in tutta la piattaforma e nel config in install ed upgrade
+- Utilizzato Forma::inc in coursestats
+- Diviso permesso schedule_report da mod_report
+- Added label for Additional fields courses in "add course report"
+- Fix labels in meta certificates pdf
+- Learning Object (LO): lo_types mancanti - ora non viene visualizzato più il fatal error se LO type è inesistente
+- #19515 - Voci menu tendina in lista utenti - sistemati if in models usermenegement
+- fix plugin error check
+- #19539 Manage plugin errors The plugin is installed despite the errors, but the user receives graphical feedback that warns him that there have been problems.
+- php 7.1+ compatibility
+- #19483: fixed wrong permission on students course menu
+- Integrate modifiche con libreria cert. aggregati
+- Bug fix
+- #19532 - INSERT DATATABLES Applicato datatables a lista sessioni utente e lista globale utenti (Stat utilizzo)
+- $GLOBALS['where_templates_relative'] non disponibile.
+- Costante _templates_
+- Aggiornamento lingua manuale con lang.formalms.org
+- #19532 - INSERT DATATABLES
+- update sql
+- update v10
+- Modificato Forma::inc per funzionare anche quando la lib non comincia con _base_
+- Language fixes
+- #19454: added configuration option to enable/disable report on demand feature
+- update v9
+- Aggiornata versione a 2.4
+- api_course.php , nel webservice addAssociationCertificate aggiunto in output, l'id della nuova associazione per il meta certificato
+- update v8
+- update v7
+- Sistemato upload e copia scorm con percorso files multitenant
+- Sistemato upload plugin manager
+- Fix api course
+- Update v6
+- update v5
+- #19478 fix translations not working in settings
+- #19528 Fix grafici al plugin system
+- #3630 Miglioramento grafica plugin system
+- Button to set plugin's priority
+- Always display update button
+- Add "missing" to the list of active plugins if there is no fs
+- Update v4
+- update v3
+- #19526: wrong where clause in query string in case of org tree with only root node
+- #19487 - POLITICHE DI ISCRIZIONE: REGISTRAZIONE CON CODICE E MANCATO INSERIMENTO NEL NODO- BUG SULLA 2.3 Fix iscrizione nodo
+- #19487 - POLITICHE DI ISCRIZIONE: REGISTRAZIONE CON CODICE E MANCATO INSERIMENTO NEL NODO- BUG SULLA 2.3
+- in api.course.php corretto il ws addCategory
+- #19359 - BUG SU CAMBIO PASSWORD AL PRIMO ACCESSO- PASSWORD PUÒ ESSERE UGUALE
+- #19518 - Corsi non mostrati in LMS aggiunta solo patch per far funzionare da controllare ed eventualemente sistemare
+- Traduzioni da lang.formalms.org
+- [be] #FL-29 - fix course edition unsubscribe
+- Sistemato upload plugin in pluginmanager + upload scorm
+- Sistemato upload plugin in pluginmanager
+- #19468 - DB performance optimizations
+- Update
+- #19425 #19402 New User and Course API added
+- #19486 - Correzione in inizializzazione scorm 1.2
+- #3596 - Sistemato molti percorsi fisici che usano il percorso relativo (global where_files_relative) e altri percorsi sbagliati
+- #3596 - Costanti non utilizzate cambiato nel codice cambiato:  _base_.'/'._folder_files_" con "_files_"
+- #3596 - Costanti non utilizzate cambiato nel codice "files" con "_folder_files_"
+- #19496 - MODULO HELPDESK
+- #19493 - corrected files folder constants.
+- #19482 - MYCOURSES - CLOSED CLASSROOM EDITION LISTED AS OPEN Fix query
+- #19492 - BUG - FILTRO CATEGORIE CORSI IN PAG CATALOGO
+- Metacert. refactoring v2
+- Update .gitignore
+- #19405 - GENERAL CONFIGURATION PAGE RESTYLING
+- #19405 - GENERAL CONFIGURATION PAGE RESTYLING Fix merge tabs
+- #19485 - ADDING A TAB FOR CUSTOM PLUGIN (removed commented code in privacypolicy/show.php)
+- #19482 - MYCOURSES - CLOSED CLASSROOM EDITION LISTED AS OPEN
+- Fix authentication check for API when Fixed code is used
+- Fix menu helpdesk item
+- Allow to override twig views into customScripts
+- #19449 - USER PROFILE - EXTEND CONFIGURATION OF EDIT MODES Fix link on username
+- #20162 - VOCE DI MENU HELPDESK SBAGLIATA SU MENU MOBILE
+- ticket: 19467 Added in the user profile, management area where you have the ability to see the user from who is administered
+- Added in the user profile, management area where you have the ability to see the user from who is administered
+- Added in the user profile, management area where you have the ability to see the user from who is administered
+- #19369 - Report Scheduler - Add admin permission for scheduler...
+- Complete bar clickable
+- #19449 - USER PROFILE - EXTEND CONFIGURATION OF EDIT MODES Merge
+- fix #19470 Fix another SQL Injection
+- fix #19472 sanitize user input to prevent SQL injection
+- fix #19472 sanitize user input to prevent SQL injection
+- fix sql injection sanitazion
+- fix #19471 sanitize user input to prevent SQL injection
+- fix #19470 sanitize user input to prevent SQL injection
+- #19473 - TENTATIVI PER TEST SOSPESO VISUALIZZATI ERRONEAMENT IN REGISTRO VALUTAZIONI
+- Update .gitignore
+- ConferenceBBB v1.1
+- Uniformato classe base e interfaccia plugin conference. PluginConference non estende più FormaPlugin. PluginConference implementa PluginConferenceInterface. Aggiornata classe Conference in BBB e corretto costruttore.
+- Update 20400_db.sql
+- Update main.min.css
+- #19474 - IL FORM DELL'HELP DESK, UNA VOLTA INVIATA COMUNICAZIONE, NON SI CHIUDE
+- Push modifiche
+- #19430 - TEST SOSPESO IMPOSSIBILE DA SBLOCCARE Fix uniformato records griglia in dettaglio utente
+- #19430 - TEST SOSPESO IMPOSSIBILE DA SBLOCCARE Fix change status after passed/completed
+- #19430 - TEST SOSPESO IMPOSSIBILE DA SBLOCCARE Fix
+- #19430 - TEST SOSPESO IMPOSSIBILE DA SBLOCCARE Fix flag stato oggetti corso (area studente)
+- #19430 - TEST SOSPESO IMPOSSIBILE DA SBLOCCARE Fix queries for scorm prerequisities
+- #19430 - TEST SOSPESO IMPOSSIBILE DA SBLOCCARE Fix queries for prerequisities
+- #19466 - PULSANTE ANNULA IN CONFIGURAZIONE EFFETTUA IL SALVATAGGIO
+- #4249 - ACCESSO AL CORSO DA CATALOGO PRIMA DELL'AVVIO DEL CORSO
+- #19430 - TEST SOSPESO IMPOSSIBILE DA SBLOCCARE
+- ticket: #19465
+- ticket: #19465 in case of enrollment in a classroom edition through web service, the author of the registration was null, because he takes the current user connected who performs the operation.
+- #19453 - UO GRID - TRANSLATE USER STATUS
+- #19462 - RISOLTO - Install plugin compatibility php 7.1+ (too few arguments)
+- #19461 - ERROR ON LO COPY IF A CUSTOM FIELD EXISTS
+- #19432 - APOSTROFO NEL NOME DI UN LO NON POSSIBILE
+- #19431 - APOSTROFO NEI COMMENTI DEI TEST NON FA SALVARE IL TEST (BUG EDITOR DI TESTO SEMPLICE)
+- #16483 - function: TOO FEW ARGUMENTS
+- #19440 - BUG ISCRIZIONE CON CODICE
+- Fix score in gradebook for scorm objects
+- #19454: fixed install issue after branch merge
+- #19449 - USER PROFILE - EXTEND CONFIGURATION OF EDIT MODES
+- #19429 - CERTIFICATES - ALLOW HTML IN COURSE DESCRIPTION
+- #19421 - NUOVO TAG "ASSEGNAZIONE"
+- #19445 - CATALOG - ORDER CATEGORIES ALPHABETICALLY Fix scrollbar
+- 2.3.0.1
+- changelog.txt 2.3
+- fixed  #19446 - ZIP 2.3 without .htaccess file
+- #19445 - CATALOG - ORDER CATEGORIES ALPHABETICALLY
+- #19369 - REPORT SCHEDULER - ADD ADMIN PERMISSION FOR SCHEDULER Hide checkbox for all users in new report
+- [#19435] - fix intestazione gradebook
+- [#19424] - fix size error on ipad
+- [#19434] - fix user panel tab
+- #19369 - REPORT SCHEDULER - ADD ADMIN PERMISSION FOR SCHEDULER Tolto permesso dal upgrader 2.3
+- #19369 - REPORT SCHEDULER - ADD ADMIN PERMISSION FOR SCHEDULER
+- fixed #19436 - REMOVE DB_FULL.SQL
+- #19399 - Inserito valore di configurazione per abilitare i semafori tramite socket nei cron
+- #19399 - Corretta discrepanza di codice tra cron.report.php e report.php
+- #19437  IO TASK - ADD USER LANGUAGE IMPORT TO USERCONNECTOR
+- #19364 #12513 Fiix installer
+- #19400 - RISULTA "COMPILAZIONE IN SOSPESO DEL TEST" ANCHE QUANDO NON C'È STATA ALCUNA COMPILAZIONE PRECEDENTE
+- #19428 - COURSE CONFIG - SHOW "ONLY USERS SUBSCRIBED" NOT WORKING
+- [be] - #19364 - Add sql queries in installer for new notifications
+- #19405 - GENERAL CONFIGURATION PAGE RESTYLING resta da modificare i nomi dei pack = 0 per ogni tab in modo da mostrare il titolo mancante. Essendo ordinati per nome i pack potremmo numerarli.
+- Fix install certificates new permissions
+- [be] - fix autoTls typo
+- Corretto script di upgrade 2.3.0 e versione core 2.3.0
+- Aggiornata versione in upgrade a 2.3
+- Aggiornate lingue prendendole da LANG
+- aggiornata Versione 2.3 in file versions.php
+- Fix merge perm_assign and perm_release in courses list
+- Fix course report lib
+- fix #19411 - impossibile accedere alla pagina di amministrazione corsi... [da verificare]
+- Changelog 2.3
+- #19300: removed some comments
+- #19300: fixed certificate generation popup
+- Fix link on icon printer, certificate release in course list
+- Added install queries
+- #19397; certificate generation popup enabled
+- Incolonnato gruppi pack in settings e sostituito dropdown con tabs
+- #14952 Migliorata procedura di update dei plugin
+- Added icons on permission actions
+- #19396 - NEL REPORT UTENTI "PERCENTUALE" CONTEGGIA ANCHE LE CARTELLE Fix query for dirs
+- #19396 - NEL REPORT UTENTI "PERCENTUALE" CONTEGGIA ANCHE LE CARTELLE Fix objectType
+- usata nuova la funzione getFlatSelection() che restituisce le righe filtrate in funzioni javascript:  - generate_all_certificate  - download_all_certificate
+- #19397 - Errori vari su dev-new-certificate-manage - aggiunta ricerca testuale nei filtri di genera tutti i certificati selezionati
+- #19396 - NEL REPORT UTENTI "PERCENTUALE" CONTEGGIA ANCHE LE CARTELLE
+- nella creazione di un utente, l'assegnazione di un organigramma può essere fatto non solo attraverso il parametro orgchart in cui si assegna il nome, ma anche attreverso orgchart_code, inserendo il code dell'organigramma
+- nella box dei corsi, non viene più preso il percorso della categoria di appartenenza, ma solo la categoria di appartenenza.
+- Modificato il css in cui il div dell'albero degli organigrammi  ora risulta con lo scroll quando supera max-height: 300px
+- Sulla lista utenti, modificato il primo campo di ricarca. l'ordinamento viene fatto inizialmente per il campo "Livello".
+- Fix certificate permissions for release and assign
+- Added certificate permissions for release
+- #19399 - Correzione errori
+- #19399 - Aggiunta nuova modalità di visualizzazione del report: Esegui e invia email
+- #19399 - Aggiunte pianificazioni "Appena possibile" e indicazione orario di esecuzione
+- #19399 - Implementato sistema semaforico
+- #19399 - Integrati script di installazione e upgrade database
+- #19399 - Aggiunta opzione per inviare i link via email
+- #19399 - Modificato il sistema di output di cron.report.php
+- #19399 - Corretto bug sulla conversione dei giorni della settimana
+- #19397 - Risolto - La generazione massiva non funziona (con o senza ricerca)
+- 19398 - utilizzato HTTP_HOST anziché SERVER_NAME
+- #19360 - BUG REGISTRO VALUTAZIONI CON OGGETTI SCORM - NON FUNZIONA IL CALCOLO Fix calc scorm max_score
+- Fix certificate assign permission in course list
+- #19360 - BUG REGISTRO VALUTAZIONI CON OGGETTI SCORM - NON FUNZIONA IL CALCOLO
+- [19385] - fixed scrollbar sidebar course catalogue
+- #19395 - Aggiunti connettori per aggiungere edizioni e utenti-edizioni
+- #19394 - ISCRIZIONE MASSIVA IN UN CORSO DÀ ERRORE
+- Fix query menu
+- #19370 - CERTIFICATES - MANAGE VISIBILITY FOR ADMINS Controller and view
+- #19370 - CERTIFICATES - MANAGE VISIBILITY FOR ADMINS
+- [19366] - update logo forma in admin/frontend
+- #19388 - Risolto problema selezione multipla paginata aggiungendo le chiavi necessarie.
+- #19364 - IMPLEMENTAZIONE NUOVI NOTIFICHE Fix nome corso in corpo email
+- #18806 - Configurazioni iniziali dopo installazione + aggiornamento
+- #11606 - Dicitura storico test
+- #19300: searchBar: preserving search values if toggling show/view research; clearing search values if adding/removing fields
+- # fixing
+- #19364 - IMPLEMENTAZIONE NUOVI NOTIFICHE Fix Super admin notification
+- #19391 - UO GRID EXPORT FIXES
+- #19393: added the possibility to import users in different chart nodes, provided it is defined the code of the destination node in the import file.
+- #12513 - NOTIFICA ADMIN SU UTENTI CREATI
+- #19392: missing autoincrement in create core_task table in installation procedure
+- Fix Fast Subscription multi-click
+- #19364 - IMPLEMENTAZIONE NUOVI NOTIFICHE Added notification on Fast Subscription
+- #19373 - GOOGLE ANALYTICS SU FORMA - FUNZIONA?
+- #19389 - POLITICHE DI ISCRIZIONE - NON SI VISUALIZZANO I NOMI DEI NODI
+- #19390 - Aggiunti apici di apertura.
+- #19365 - gestita data non valorizzata.
+- #19364 - IMPLEMENTAZIONE NUOVI NOTIFICHE
+- Added more info at user detail API
+- #19300: completion version 1 of advanced search bar and applied to new certificate report view
+- Fixed tooltip down position
+- #19381 - HELPDESK FIXES
+- #19368 - Remove social login config from upgraded platforms
+- [be] - #19364 - add new events in upgrader
+- [be] - #SNNF-4 - Fix notification on change node
+- #19300: completion of html rendering of search bar
+- #19147 - FIX REQUIRE ONCE - ADD FORMA_INC
+- #19380 - Invio mail in smtp: to
+- Show bell alert icon in main menu
+- v2.3.0, see also #19364: please create new file upgrade/data/upg_data/20300.sql
+- Added bell menu icon
+- #19376 - Get clientIp from HTTP_X_FORWARDED_FOR header if it is present
+- #19376 - Get clientIp from HTTP_X_FORWARDED_FOR header if it is present
+- #19358 - U/O GRID: INCORRECT DATA IN SCORM DETAILS PAGE Fix last access date
+- #19300 start adding search function
+- #19375 - BUG - CORSI IN VENDITA
+- #19375 - BUG - CORSI IN VENDITA SU CHANGE ECM
+- #19371 - HTML PAGE WON'T SAVE IF CONTAIN APEX
+- Fix azione bottone.
+- Gestione raggruppamenti actions.
+- Fix selezione. Fix vari. Azione su singola riga, selezione e tabella.
+- [fe] - 19366 - fix allineamento menu
+- #19300 added custom fields management
+- [fe] - FL 14 - aggiunto logo forma per admin
+- [fe] - FL 14 - aggiunta icona hamburger mobile
+- [fe] - FL 14 - fix posizionamento logo su mobile
+- [fe] - FL-14 - fix allineamento logo a menu
+- [fe] - FL-14 - fix admin logo
+- [be] - #19311 - fix autoTls
+- #19300 - NEW CERTIFICATE management: start adding functional buttons
+- Fix available certificates notification number
+- #19300 - NEW CERTIFICATE management
+- #19361: fixed call to undefined class method.
+- #18812 - Adds a confirmation message when clearTwigCache is successfully invoked
+- [be] - #19311 - smtp autotls configurazione queries
+- [be] - #SNNF-2 fix translations
+- [be] - #SNNF-2 - Modifica chiavi traduzioni
+- [be] - fix notifica modifica dati utente
+- [be] - fix notifiche
+- Fix notifiche
+- [be] - #SNNF-2 - Update translattion xml files - Fix Sql queries
+- [be] - #SNNF-2 - Add Alert to Administrators for User Suspended in Forma - Add Alert to Administrators for User change Node in Forma - Add Alert to Administrators for update profile in Forma - Add Alert to Administrators and Instructors for user suspended from a course
+- [be] - made smtpdebug and smtpautotls configurable from config.php and BO
+- #19300 - NEW CERTIFICATE management
+- #19300: changed formatable.js in formatable.php to support language translation
+- Added bell-hover icon to standard template
+- Added bell icon to standard template
+- #19354 - TEST - FINAL SCORE STILL VISIBLE WITH OTPION OFF
+- #19300: added language management to formatable
+- #19300 - NEW CERTIFICATE MANAGEMENT
+- #1
+- #19362 - GRADEBOOK - ERROR IN CSV EXPORT IF SCORE MISSING
+- Improve performance on admin UserManagement view
+- #1: certificate php code corrected: #2: started creating forma_tablefiler widget
+- #19358 - GRIGLIA UO: DATI NON COERENTI IN DETTAGLI FUIZIONE SCORM
+- Aggiornato changelog e readme a 2.2.1
+- Aggiornato changelog a 2.2.1
+- Aggiornata versione changelog e readme a 2.2.1
+- #19097 - EMBED VIDEO DA AMMINISTRATORE NON FUNZIONA - DA SUPERADMIN SÌ Fix mod_quest
+- #19097 - EMBED VIDEO DA AMMINISTRATORE NON FUNZIONA - DA SUPERADMIN SÌ
+- #19097 - EMBED VIDEO DA AMMINISTRATORE NON FUNZIONA - DA SUPERADMIN SÌ
+- [fe] - overview registro valutazioni - task FL-5 added toggle fields
+- [fe] - FL-5 - rimossa paginazione
+- [fe] - FL-5 - added support DataTables in registro valutazioni
+- [fe] - overview registro valutazioni - task FL-5 added toggle fields
+- [fe] - FL-5 - rimossa paginazione
+- [fe] - FL-5 - added support DataTables in registro valutazioni
+- #19347 - ADMIN NON VISUALIZZA SEDI A LUI ASSEGNATE
+- #added API for returning and XML structure containing link for issued certificates
+- #19293: fixed the query for checking the unused modules inside a menu
+- aggiornato a 2.2.1 upgrade
+- #19348 - Aggiunta evento login
+- aggiornato a 2.2.1 (da provare)
+- Add CourseCompleteEvent in change course status
+- #19315 - MYCERTIFICATES - INTEGRARE DATATABLES Added Meta table
+- #19345 - IMPOSSIBILE ELIMINARE TRACCIAMENTO SCORM
+- #19343 - ADMIN NON GESTISCE GRUPPI DA LUI CREATI
+- #19342 - WIKI NOT WORKING WITH PHP7
+- #19315 - MYCERTIFICATES - INTEGRARE DATATABLES
+- Fix typo on variable name: password -> pwd
+- piccole correzioni (formattazione)
+- Aggiornamento file version in install a 2.2
+- #19176 - NEW CERTIFICATE ALERT ICON Fix tooltip down
+- #19335 - new custom fields missing on clean installations - Add permission
+- #19176 - NEW CERTIFICATE ALERT ICON
+- #19338 - GRIGLIA UTENTI OGGETTI - STATO DI DEFAULT "NOT ATTEMPTED"
+- #19337 - GRIGLIA UTENTI OGGETTI - MANCA LINK SU STATO UTENTE/OGGETTO
+- #19339 - In scheda utente - ISCRIZIONE CON CODICE - modificato nome variabile passata dal render
+- #19336 - GRIGLIA UTENTI OGGETTI - TRADUZIONE MANCANTE STATO "NON INIZIATO"
+- #19332 - TEST - ERRORE "MODALITÀ FRUIZIONE"
+- #19321 - AUTOISCRIZIONE CON CODICE - POLITICHE DI ISCRIZIONE AI CORSI NON SCATTANO Fix node registration
+- #19321 - AUTOISCRIZIONE CON CODICE - POLITICHE DI ISCRIZIONE AI CORSI NON SCATTANO Fix tree_man setting
+- #19165 - VISUALIZZAZIONE PRIVACY ERRONEAMENTE COLLEGATA A CAMPI OBBLIGATORI
+- #19330 - REGISTRAZIONE AVANZATA - CAMPI SUPPLEMENTARI NON RICHIESTI
+- #19333 - Install - versione fuori da script SQL
+- #19321 - AUTOISCRIZIONE CON CODICE - POLITICHE DI ISCRIZIONE AI CORSI NON SCATTANO
+- Add -> Forma::inc
+- #19325 - GRIGLIA UTENTI OGGETTI: VOCI NON TRADOTTE
+- #19312 - GRIGLIA UTENTI OGGETTI: GLI EXPORT IN CSV E IN XLS NON FUNZIONANO Fix Php config for disabled short-tags <??>
+- #19317 - GRIGLIA U/O - FORMATO TIME
+- Fix typo on variable name: password -> pwd
+- #19319 - INSERIMENTO IMMAGINI IN EDIT
+- #19317 - GRIGLIA U/O - FORMATO TIME
+- #19312 - GRIGLIA UTENTI OGGETTI: GLI EXPORT IN CSV E IN XLS NON FUNZIONANO
+- #19313 - GRIGLIA UTENTI OGGETTI: LA COLONNA COMPLETATO RIPORTA DATI ERRATI
+- #19314 - GRIGLIA UTENTI OGGETTI: SE PRESENTI MOLTI OGGETTI DIDATTICI NON RIPORTA I DATI DEGLI UTENTI
+- Reimplementato edit inline formatable. Aggiunti file di internazionalizzazione datepicker jqueryui.
+- fix #19287 Aggiunte libreria YUI mancanti alla libreria dei contenuti
+- #19306 - GRIGLIA U/O: ERRORE PAGINAZIONE
+- Messo in corretto evento disabilitazione e abilitazione checkbox
+- Modificato javascript popup modifica massiva utente come da richieste
+- Aggiornamento file version in install a 2.2
+- evidenziato il legame fra invio [x] New Password    [x] send new password
+- #19258 - sostituita funzione each deprecata.
+- #3675 - SCORM RESULTS HISTORY DO NOT SHOW
+- #19189 - Richiamata funzione statica in modo statico.
+- #19275 - Massive credentials edit improvements - aggiunti javascript che disabilitano e abilitano coerentemente gli invii mail come richiesto
+- Rimossi vecchi riferimenti social non utilizzati/utilizzabili.
+- piccole correzioni (formattazione)
+- [be] - #19296 - Update Forma::inc() to improve load speed
+- changelog and readme updated
+- #new certificate management; first commit
+- #19293: fixed the query for checking the unused modules inside a menu
+- #19104 fix lms menu's subitems
+- clearTwigCache after update
+- aggiunto ignore e lowercase per tabella core_setting
+- clearTwigCache after update
+- Fix embed htmlpage in insert
+- Fix embed htmlpage
+- aggiunto ignore e lowercase per tabella core_setting
+- Aggiunto controllo esistenza metodo getPerm. Aggiunto metodo getPerm in plugin Dummy. Sistemata installazione menù plug-in Dummy.
+- Impedito riesecuzione update.
+- #14000 Ora i menu inseriti da plugin sono aggiunti con sequence max + 1
+- #14000 ora non si vedono menu relativi a plugin inattivi
+- Corretta installazione menu (#10880)
+- [be] - Fix empty message page in reply message.
+- Aggiunto controllo esistenza metodo getPerm. Aggiunto metodo getPerm in plugin Dummy. Sistemata installazione menù plug-in Dummy.
+- aggiunta gestione tooltip 19286
+- fixed 19094
+- Impedito riesecuzione update.
+- #14000 Ora i menu inseriti da plugin sono aggiunti con sequence max + 1
+- #14000 ora non si vedono menu relativi a plugin inattivi
+- Corretta installazione menu (#10880)
+- Rimossi core_role_members orfani che causavano fallimento su foreign key.
+- #13701 - PROBLEMI CON LIBRERIA CONTENUTI - CATEGORIZZA Viene impedita la categorizzazione per LO che non sono oggetti (ovvero Cartelle)
+- #10896 - #14000 Risolti problemi permessi su menù aggiunti da plug-in. - Aggiunto ruolo su creazione nuovo menù. - Associazione ruolo con plug-in. - Richiesto module_name e associated_token per sfruttare correttamente i permessi.
+- Allineate manualmente traduzioni tra lang e git dev (eseguito merge)
+- #19290 - HTTP RESPONSE POST (SAML): Add check saml response (check query string SAMLResponse), to skip forma signature request
+- [fe] - aggiornata favicon
+- [fe] - aggiornamento logo
+- fix lo_class (isFolder)
+- [fe] - fix g+ bg color
+- [fe] - fixed 19283
+- Riportato modulo 'configuration' in traduzioni configurazione.
+- Parametrizzati in classe LO controlli prima cablati sulla tipologia.
+- #19278 - template version control - sistemato messaggio - aggiunte traduzioni su piattaforma lang.formalms.org/lang
+- #19275 - Massive credentials edit improvements - Invio della mail di notifica standard con il link di cambio password al prossimo login
+- #19124 - Send credentials on users mass modification #19275 - Massive credentials edit improvements
+- Aggiunto messaggio di warningn se il template in uso non è compatibile
+- Se template incompatibile, al login inserivo erroneamente il template standard in sessione. Ora è corretto.
+- Corretto object type nell'evento dell'update dello status dei lo. Aggiunto il tipo di tracking (create/update)
+- Evento per cambio stato dei learning object (complete, start)
+- Aggiunto evento "stampa riga" della tree view dei lo
+- Utilizzato logo Google anziché Google+. Aggiornato riferimento API.
+- Aggiunto controllo di versione del template
+- Corretto doppio /lib
+- Corretta inclusione template tracking con Forma::inc
+- Corrette inclusioni con Forma::inc
+- Corrette inclusioni con Forma::inc.
+- #19264 - TRADUZIONI MANCANTI
+- Fix instantiation Event
+- #191777: managing page break in certificate
+- Aggiornato utilizzo API Google da v1 a v2.
+- Ripristinato currency_symbol
+- Effettuato redirect per menù
+- #19266 - Homepage lms (company_logo) Migliorie e rimozione costante _lms_home_
+- #19266 - Homepage lms (company_logo) Da affinare. Occorre sostituire la costante _lms_home_ con la nuova funzione Get::home_page_req
+- rimossi file obsoleti
+- usare translate in file twig
+- Gestione migliorata tab mycourses.
+- #19262 #19263 Add error message for plugins adm operations
+- #19264 - TRADUZIONI MANCANTI
+- #19189 - Throw on passing too few function arguments Impostati argomenti opzionali.
+- #19200 - Assignment via string index access on an empty string
+- #18593 - ritolto utilizzo configurazione enable_plugins da Forma::inc
+- #10896 Sviluppato - Implementare metodo per aggiungere menù all'installazione di un plugin + esempio aggiornato in plugin dummy
+- include plugin.php se una sua Feature è richiamata. In questo modo è possibile avere i riferimenti al plugin stesso: getPath(), getName,..
+- #10896 Sviluppato - Implementare metodo per aggiungere menù all'installazione di un plugin + esempio aggiornato in plugin dummy
+- Aggiunto can_subscribe ad API
+- #19180 RISOLTO - UPGRADER 2.2 (2.0=>2.2) Helpdesk
+- Corretti url.
+- #19146 - RIMUOVERE AUDITTRAIL_LOGS
+- Corretto recupero categoria.
+- #20027 - PERCENTUALI ERRATE IN REGISTRO VALUTAZIONI
+- Aggiunte informazioni restituite da api lista corsi.
+- Forma::inc per usare include da plugin o customscripts....
+- #19145 - EDIT INLINE SU DATATABLE Fix empty dates and default order
+- risolto errore che bloccava su mia configurazione visualizzazione. Da sistemare e provare
+- #19145 - EDIT INLINE SU DATATABLE Fixes for new library dataTable
+- added libraries js for table-edits
+- reinit table-edits with forma-table
+- #19176 - NEW CERTIFICATE ALERT ICON
+- Fix query count certificates
+- added queries and badge for icon certificates
+- Aggiunti eventi corso cancellato e logout effettuato.
+- #19171 tolto riferimento a Behat
+
+---------------------------------------------------------------------------------------
+forma.lms 2.4.5
+---------------------------------------------------------------------------------------
+Release date: 2021 november
+
+#19951 - Fix Admin user should not see the author filter in the reports
+#19950 - Fix fast subscribe error when admin try to insert a user that has first position in admin users. array_search($id_user, $admin_users, false) retunrs position 0 and comparison "array_search($id_user, $admin_users, false) == false" is true
+- Fix send email on user update
+- fix tinymce
+#19919 - Fix coursereport generation
+#19900 - move all threads before emoticon select in forum and public_forum	830a905fb	carminep89 <carminepepiciello@gmail.com>	23 Jun 2021 at 18:09
+#19890 - Add tag form scorm items in certificate
+#19864 - Remove deprecated constructors - fix show answers of last number_times for ET answer type
+#19863 - fix api course add/update/delete day
+#19862 - fix sum score in function userScore
+#19861 - Filter files in upload question with allowed file formats
+#19860 - Invisible fields for SuperAdmins
+#19854 - report course dates at 00-00-0000
+#19846 - Uppercase first char during users import
+#16623 - Risolto Problema con "only update" e "create and update" Fix duplicati
+#19843 - fix show correct answer in report when show correct answers is enabled
+#19842 - User Object grid - Pagination with many objects
+#19814 - Show materials dots on course catalogue even when course is on sale - added in homecatalogue
+#19841 - Grade book "Disallowed key characters in global data" on delete
+#19840 - User-object grid - link back
+#19839 - Incorrect scoring of questions on tests
+#19836 - fix Error: API not enabled.
+#19827 - Fix DateTime exception in course list when date is not a valid date.
+#19807 - Errore caricamento file in domande di un test
+#19822 - Show additional fields if admin can edit a user profile
+#19816 - Stripslashes in question type upload
+#19815 - fix error during import users anche node changes
+#19814 - Show materials dots on course catalogue even when course is on sale
+#19811 - API not load plugins and events listener
+#19809 - Error with quotes in insert and save advice
+#19806 - fix merge
+#19805 - Fix email text on user subscription
+#19804 - fix catalogue change and current active tab
+#19803 - SSL error during login with chrome
+#19797 - Fix merge
+
+
+---------------------------------------------------------------------------------------
 forma.lms 2.4.3
 ---------------------------------------------------------------------------------------
 Release date: 2020 october
