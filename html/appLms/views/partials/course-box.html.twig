@@ -65,7 +65,7 @@
         {% endblock %}
 
         {% block courseBoxDescription %}
-            <div class="course-box__description"> {{ course.box_description }} </div>
+            <div class="course-box__description"> {{ course.box_description|raw }} </div>
         {% endblock %}
 
         {% block courseBoxCta %}

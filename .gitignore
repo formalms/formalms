@@ -13,7 +13,10 @@ html/files/**
 !html/files/appLms/certificate/certificate_sample.jpg
 !html/files/appLms/label/label_image.png
 # Sezione html/templates
+html/templates/*
+!html/templates/standard
 html/templates/standard/style/custom.css
+
 
 # Sezione Plugin
 html/plugins/**
