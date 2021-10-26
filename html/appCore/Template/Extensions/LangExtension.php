@@ -1,6 +1,6 @@
 <?php
 
-namespace appCore\Template\Extenstions;
+namespace appCore\Template\Extensions;
 
 use Twig\TwigFunction;
 
@@ -10,6 +10,12 @@ class LangExtension extends \Twig\Extension\AbstractExtension
     {
         return [
             new TwigFunction('Lang_translate', [\Lang::class, 't'], ['is_safe' => ['html']]),
+            $this->getOldTranslate(),
         ];
+    }
+
+    /** @deprecated  */
+    private function getOldTranslate(){
+        return new TwigFunction('translate', [\Lang::class, 't'], ['is_safe' => ['html']]);
     }
 }
