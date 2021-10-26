@@ -20,6 +20,7 @@ use appCore\Template\Extensions\LayoutExtension;
 use appCore\Template\Extensions\UiFeedbackExtension;
 use appCore\Template\Extensions\UtilExtension;
 use appCore\Template\Extensions\YuiExtension;
+use appCore\Template\Extensions\TemplateExtension;
 use appCore\Template\Services\ClientService;
 use Twig\Extension\OptimizerExtension;
 use Twig\Extensions\ArrayExtension;
@@ -58,6 +59,7 @@ class TwigManager
         $this->twig->addExtension(new UtilExtension());
         $this->twig->addExtension(new YuiExtension());
         $this->twig->addExtension(new TextExtension());
+        $this->twig->addExtension(new TemplateExtension());
 
         $this->twig->addGlobal('clientConfig', addslashes(json_encode(ClientService::getInstance()->getConfig())));
         $this->twig->addGlobal('GLOBALS', $GLOBALS);
