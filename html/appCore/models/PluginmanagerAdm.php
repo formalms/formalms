@@ -321,6 +321,7 @@ class PluginmanagerAdm extends Model
                 $q = sql_query($qtxt);
                 if (!$q) {
                     $res['log'] .= sql_error() . "\n";
+                    Forma::addError(sql_error());
                     $res['ok'] = FALSE;
                 }
             }
