@@ -367,6 +367,21 @@ abstract class DashboardBlockLms extends Model
         return $path;
     }
 
+    protected function getUser()
+    {
+        $user = Docebo::user();
+        $acl_man = Docebo::user()->getAclManager();
+        $user_info = $acl_man->getUser($user->getIdSt(), false);
+
+        return [
+            'userId' => $user->getIdSt(),
+            'firstname' => $user_info[ACL_INFO_FIRSTNAME],
+            'lastname' => $user_info[ACL_INFO_LASTNAME],
+            'email' => $user_info[ACL_INFO_EMAIL],
+            'avatar' => $user_info[ACL_INFO_AVATAR]
+        ];
+    }
+
 
     public function validate($data)
     {
