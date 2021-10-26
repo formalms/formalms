@@ -1719,7 +1719,7 @@ class Org_TreeView extends RepoTreeView {
 
 				$node['locked'] = true;
 
-			} else if( $isPrerequisitesSatisfied ) // && $event->getAccessible() ) {
+			} else if( $isPrerequisitesSatisfied ){ // && $event->getAccessible() ) {
 				
 				if (!$node['is_folder']) {
 					$node['play']=true;
@@ -1775,7 +1775,7 @@ class Org_TreeView extends RepoTreeView {
 			if( !$node['is_folder'] ) {
 				if($arrData[ORGFIELD_PUBLISHFOR] == PF_ATTENDANCE && !$this->presence()) {
 					$node['locked'] = true;
-				} else if( $isPrerequisitesSatisfied ) // && $event->getAccessible()) {
+				} else if( $isPrerequisitesSatisfied ) { // && $event->getAccessible()) {
 					if(method_exists($lo_class, 'trackDetails')) {
 						$node["track_detail"] = [
 							"type" => $arrData[REPOFIELDOBJECTTYPE],
