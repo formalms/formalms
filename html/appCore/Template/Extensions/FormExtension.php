@@ -1,7 +1,7 @@
 <?php
 
 
-namespace appCore\Template\Extenstions;
+namespace appCore\Template\Extensions;
 
 require_once(_base_.'/lib/lib.form.php');
 

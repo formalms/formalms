@@ -13,13 +13,13 @@ namespace appCore\Template;
   |   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
   \ ======================================================================== */
 
-use appCore\Template\Extenstions\FormExtension;
-use appCore\Template\Extenstions\GetExtension;
-use appCore\Template\Extenstions\LangExtension;
-use appCore\Template\Extenstions\LayoutExtension;
-use appCore\Template\Extenstions\UiFeedbackExtension;
-use appCore\Template\Extenstions\UtilExtension;
-use appCore\Template\Extenstions\YuiExtension;
+use appCore\Template\Extensions\FormExtension;
+use appCore\Template\Extensions\GetExtension;
+use appCore\Template\Extensions\LangExtension;
+use appCore\Template\Extensions\LayoutExtension;
+use appCore\Template\Extensions\UiFeedbackExtension;
+use appCore\Template\Extensions\UtilExtension;
+use appCore\Template\Extensions\YuiExtension;
 use appCore\Template\Services\ClientService;
 use Twig\Extension\OptimizerExtension;
 use Twig\Extensions\ArrayExtension;

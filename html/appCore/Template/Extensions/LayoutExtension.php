@@ -1,6 +1,6 @@
 <?php
 
-namespace appCore\Template\Extenstions;
+namespace appCore\Template\Extensions;
 
 use Twig\TwigFunction;
 
