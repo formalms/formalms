@@ -1673,6 +1673,8 @@ class Course_API extends API
             return false;
         }
 
+        Events::trigger('lms.course.deleting', ['id_course' => $id_course, 'course' => $course]);
+
         //remove course subscribed------------------------------------------
 
         $levels =& $course_man->getCourseIdstGroupLevel($id_course);
@@ -1844,8 +1846,10 @@ class Course_API extends API
         if (!sql_query("DELETE FROM %lms_course WHERE idCourse = '" . $id_course . "'"))
             return false;
 
-        $event = new \appLms\Events\Lms\CourseDeletedEvent($course);
-        \appCore\Events\DispatcherManager::dispatch($event::EVENT_NAME, $event);
+        // $event = new \appLms\Events\Lms\CourseDeletedEvent($course);
+        // \appCore\Events\DispatcherManager::dispatch($event::EVENT_NAME, $event);
+
+        Events::trigger('lms.course.deleted', ['id_course' => $id_course, 'course' => $course]);
 
         return true;
     }
