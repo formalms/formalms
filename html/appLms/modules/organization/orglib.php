@@ -1242,23 +1242,24 @@ class Org_TreeView extends RepoTreeView {
 		}
 	}
 
+	/** @deprecated */
 	function printElement(&$stack, $level) {
 
-		include_once(_base_ . '/appLms/Events/Lms/OrgPropertiesPrintEvent.php');
-		$event = new \appLms\Events\Lms\OrgPropertiesPrintEvent();
+		// include_once(_base_ . '/appLms/Events/Lms/OrgPropertiesPrintEvent.php');
+		// $event = new \appLms\Events\Lms\OrgPropertiesPrintEvent();
 
-        $event->setElement($stack[$level]['folder']);
+        // $event->setElement($stack[$level]['folder']);
 
-        $event->setDisplayable(true);
-        $event->setAccessible(true);
+        // $event->setDisplayable(true);
+        // $event->setAccessible(true);
 
-        $event->setId($this->id);
+        // $event->setId($this->id);
 
-		\appCore\Events\DispatcherManager::dispatch(\appLms\Events\Lms\OrgPropertiesPrintEvent::EVENT_NAME, $event);
+		// \appCore\Events\DispatcherManager::dispatch(\appLms\Events\Lms\OrgPropertiesPrintEvent::EVENT_NAME, $event);
 
-		if (!$event->getDisplayable()) {
-			return '';
-		}
+		// if (!$event->getDisplayable()) {
+		// 	return '';
+		// }
 
 		require_once($GLOBALS['where_lms'] . '/class.module/track.object.php');
 
@@ -1343,7 +1344,7 @@ class Org_TreeView extends RepoTreeView {
 					'name="' . $this->id . '[' . $this->_getOpPlayItemId() . '][' . $stack[$level]['folder']->id . ']">'
 					. $this->getFolderPrintName($stack[$level]['folder']) .
 					'</span>';
-			} else if($isPrerequisitesSatisfied && $event->getAccessible()) {
+			} else if($isPrerequisitesSatisfied) { // && $event->getAccessible()) {
 
 				$out .= ' <a ' . ($lo_class->showInLightbox() ? ' rel="lightbox' . $lb_param . '"' : '') . ' class="' . $classStyle . '" ' .
 					'id="' . $this->id . '_' . $this->_getOpPlayItemId() . '_' . $stack[$level]['folder']->id . '" ' .
@@ -1489,7 +1490,7 @@ class Org_TreeView extends RepoTreeView {
 									. ' title="' . $this->_getOpLockedTitle() . ': ' . $this->getFolderPrintName($stack[$level]['folder']) . '" '
 									. ' alt="' . $this->_getOpLockedTitle() . ': ' . $this->getFolderPrintName($stack[$level]['folder']) . '" />';
 
-							} else if( $isPrerequisitesSatisfied && $event->getAccessible()) {
+							} else if( $isPrerequisitesSatisfied ) { // && $event->getAccessible()) {
 
 								if (method_exists($lo_class, 'trackDetails')) {
 									$out .= '<a class="tree_view_image" '
@@ -1526,9 +1527,9 @@ class Org_TreeView extends RepoTreeView {
 							$out .= '<img src="'.getPathImage().'lobject/'.$img
 								.'" class="OrgStatus" alt="'. Lang::t($status, 'standard', 'framework').'" title="'. Lang::t($status, 'standard', 'framework').': '.$this->getFolderPrintName( $stack[$level]['folder']).'" />';
 
-							foreach ($event->getAction() as $action){
-								$out .= $action;
-							}
+							// foreach ($event->getAction() as $action){
+							// 	$out .= $action;
+							// }
 						}
 						break;
 				}
@@ -1599,6 +1600,7 @@ class Org_TreeView extends RepoTreeView {
         return $possTree;
     }
 
+	/** @deprecated */
 	function getLoData( $idLoList ){
 
 		if ($GLOBALS['course_descriptor']->getValue('course_type') == 'classroom') {
@@ -1621,21 +1623,21 @@ class Org_TreeView extends RepoTreeView {
 
 			$folder = $this->tdb->getFolderById($idLo);
 
-			$event = new \appLms\Events\Lms\OrgPropertiesPrintEvent();
+			// $event = new \appLms\Events\Lms\OrgPropertiesPrintEvent();
 			
-			$event->setElement($folder);
+			// $event->setElement($folder);
 	
-			$event->setDisplayable(true);
+			// $event->setDisplayable(true);
 
-			$event->setAccessible(true);
+			// $event->setAccessible(true);
 	
-			$event->setId($this->id);
+			// $event->setId($this->id);
 	
-			\appCore\Events\DispatcherManager::dispatch(\appLms\Events\Lms\OrgPropertiesPrintEvent::EVENT_NAME, $event);
+			// \appCore\Events\DispatcherManager::dispatch(\appLms\Events\Lms\OrgPropertiesPrintEvent::EVENT_NAME, $event);
 
-			if (!$event->getDisplayable()) {
-				continue;
-			}
+			// if (!$event->getDisplayable()) {
+			// 	continue;
+			// }
 
 			$kbres = new KbRes();
 			$type = $folder->otherValues[REPOFIELDOBJECTTYPE];
@@ -1649,9 +1651,9 @@ class Org_TreeView extends RepoTreeView {
 
 			$html = '';
 
-			foreach ($event->getAction() as $action){
-				$html .= $action;
-			}
+			// foreach ($event->getAction() as $action){
+				// $html .= $action;
+			// }
 
 			$arrData = $folder->otherValues;
 			$lo_type = $arrData[REPOFIELDOBJECTTYPE];
@@ -1677,7 +1679,7 @@ class Org_TreeView extends RepoTreeView {
             
 			$isPrerequisitesSatisfied = Track_Object::isPrerequisitesSatisfied($folder->otherValues[ORGFIELDPREREQUISITES], getLogUserId() );
 
-			$node['isPrerequisitesSatisfied'] = $isPrerequisitesSatisfied && $event->getAccessible();
+			$node['isPrerequisitesSatisfied'] = $isPrerequisitesSatisfied; // && $event->getAccessible();
 
 			if($folder->otherValues[ORGFIELD_PUBLISHFOR] == PF_TEACHER && $_SESSION['levelCourse'] <= 3) break;
 
@@ -1691,7 +1693,7 @@ class Org_TreeView extends RepoTreeView {
 
 			if($folder->otherValues[ORGFIELD_PUBLISHFOR] == PF_ATTENDANCE && !$this->presence()) {
 				$node['active'] = false;
-			} else if($isPrerequisitesSatisfied && $event->getAccessible()){
+			} else if($isPrerequisitesSatisfied) { // && $event->getAccessible()){
 				$node['active'] = true;				
 			}
 
@@ -1717,7 +1719,7 @@ class Org_TreeView extends RepoTreeView {
 
 				$node['locked'] = true;
 
-			} else if( $isPrerequisitesSatisfied && $event->getAccessible() ) {
+			} else if( $isPrerequisitesSatisfied ) // && $event->getAccessible() ) {
 				
 				if (!$node['is_folder']) {
 					$node['play']=true;
@@ -1773,7 +1775,7 @@ class Org_TreeView extends RepoTreeView {
 			if( !$node['is_folder'] ) {
 				if($arrData[ORGFIELD_PUBLISHFOR] == PF_ATTENDANCE && !$this->presence()) {
 					$node['locked'] = true;
-				} else if( $isPrerequisitesSatisfied && $event->getAccessible()) {
+				} else if( $isPrerequisitesSatisfied ) // && $event->getAccessible()) {
 					if(method_exists($lo_class, 'trackDetails')) {
 						$node["track_detail"] = [
 							"type" => $arrData[REPOFIELDOBJECTTYPE],
