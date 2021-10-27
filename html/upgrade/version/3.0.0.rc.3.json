@@ -1,0 +1,20 @@
+{
+    "version": {
+        "name": "3.0.0.rc.3",
+        "number": "29703",
+        "description": "questa è la 3.0.0 rc 3",
+        "pretty_desc": "3 0 0 rc 3",
+        "pre": "29703_pre.php",
+        "post": "29703_post.php",
+        "config": "29703_conf.php",
+        "file_sytem": "29703_fs.php",
+        "role": "29703_role.php",
+        "mysql": "29703_db.sql",
+        "date": "2021-10-26 00:00",
+        "status": "stable",
+        "php": {
+            "min": "7.4",
+            "max": "7.4" 
+        }
+    }
+}
