@@ -2,7 +2,7 @@ import { Calendar } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import initialLocaleCode from '@fullcalendar/core/locales/it';
 
-export const RenderDashBoardCalendar = () => {
+export const DashBoardCalendar = () => {
   const els = document.querySelectorAll('.js-dashboard-calendar');
 
   if (els.length) {
@@ -154,8 +154,8 @@ export const RenderDashBoardCalendar = () => {
         }
       });
 
-      if (initialLocaleCode != window.lang) {
-        calendar.setOption('locale', window.lang);
+      if (initialLocaleCode !== window.frontend.config.lang.currentLangCode) {
+        calendar.setOption('locale', window.frontend.config.lang.currentLangCode);
       }
 
       calendar.render();

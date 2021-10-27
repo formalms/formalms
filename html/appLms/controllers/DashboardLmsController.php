@@ -69,19 +69,12 @@ class DashboardLmsController extends LmsController
             }
         }
         
-        
-        
-
-        $langModel = new LangAdm();
-        $langCode = $langModel->getLanguage(Lang::get())->lang_browsercode;
-
         $this->render(
             'dashboard',
             [
                 'blocks' => $blocks,
                 'templatePath' => getPathTemplate(),
                 'dashboardLayoutId' => $defaultLayout ? $defaultLayout->getId() : null,
-                'lang' => $langCode,
             ],
             false,
             $blockPaths

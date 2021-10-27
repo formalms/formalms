@@ -5,7 +5,7 @@ require('../modules/text-editor');
 require('../modules/modal-accordion');
 
 import { InfoCourse } from '../modules/InfoCourse';
-import {RenderDashBoardCalendar} from '../modules/DashboardCalendar';
+import { DashBoardCalendar } from '../modules/DashboardCalendar';
 import { DashboardVideo } from '../modules/DashboardVideo';
 import TeacherLearningObject from '../modules/TeacherLearningObject';
 import StudentLearningObject from '../modules/StudentLearningObject';
@@ -44,7 +44,7 @@ var Page = (function() {
       }
 
       if ($('.js-dashboard-calendar').length) {
-        RenderDashBoardCalendar();
+        DashBoardCalendar();
       }
 
       if ($('.js-tabnav').length) {
