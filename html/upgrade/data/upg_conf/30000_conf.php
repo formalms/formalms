@@ -25,7 +25,7 @@
 
 // Create this function only if needed, else you can remove it
 // (we check it with function_exists)
-function upgradeConfig29171($config) {
+function upgradeConfig30000($config) {
 
 	$config_sts = 0 ;	// error
 

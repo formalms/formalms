@@ -1,0 +1,20 @@
+{
+    "version": {
+        "name": "3.0.0",
+        "number": "30000",
+        "description": "questa è la 3.0.0",
+        "pretty_desc": "3 0 0",
+        "pre": "30000_pre.php",
+        "post": "30000_post.php",
+        "config": "30000_conf.php",
+        "file_sytem": "30000_fs.php",
+        "role": "30000_role.php",
+        "mysql": "30000_db.sql",
+        "date": "2021-10-30 00:00",
+        "status": "stable",
+        "php": {
+            "min": "7.4",
+            "max": "7.4" 
+        }
+    }
+}
