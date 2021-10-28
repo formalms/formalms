@@ -14,10 +14,10 @@
     <div class="d-col d-col--12 {{ class }}">
         <div class="d-video js-dashboard-video"
              style="background-image: url('{{ block.data.cover }}')"
-             data-video-data-video-url="{{ block.data.video }}" data-video-type="{{ block.data.video_type }}">
+             data-video-id="{{ block.data.video_uuid }}" data-video-data-video-url="{{ block.data.video_id }}" data-video-type="{{ block.data.video_type }}">
         </div>
     </div>
-
-    {% include 'base/videomodal.html.twig' with {'videoref': block.data.video_type ~ "-" ~ block.data.video } %}
-
+    {% if block.data.video_id is not empty and block.data.video_type is not empty %}
+        {% include 'base/videomodal.html.twig' with {'videoref': block.data.video_type ~ "-" ~ block.data.video_id,'videoUuid': block.data.video_uuid  } %}
+    {% endif %}
 {% endblock %}

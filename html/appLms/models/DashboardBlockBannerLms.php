@@ -1,6 +1,8 @@
 <?php
 
 
+use Symfony\Component\Uid\Uuid;
+
 defined("IN_FORMA") or die('Direct access is forbidden.');
 
 /* ======================================================================== \
@@ -24,14 +26,12 @@ class DashboardBlockBannerLms extends DashboardBlockLms
     public function __construct($jsonConfig)
     {
         parent::__construct($jsonConfig);
-
-        $this->setVideoType();
     }
 
     public function parseConfig($jsonConfig)
-	{
-		$this->parseBaseConfig($jsonConfig);
-	}
+    {
+        $this->parseBaseConfig($jsonConfig);
+    }
 
     public function getAvailableTypesForBlock()
     {
@@ -57,6 +57,7 @@ class DashboardBlockBannerLms extends DashboardBlockLms
 
     public function getViewData()
     {
+        $this->parseVideoType();
         $data = $this->getCommonViewData();
 
         return $data;
@@ -78,17 +79,16 @@ class DashboardBlockBannerLms extends DashboardBlockLms
         return $this->viewFile;
     }
 
-    private function setVideoType()
+    private function parseVideoType()
     {
         $data = $this->getData();
 
         if (isset($data['video']) && !isset($_POST['settings']) && !isset($_GET['dashboard'])) {
-            if ($type = $this->determineVideoUrlType($data['video'])) {
-                $data['video_type'] = $type['video_type'];
-                $data['video'] = $type['video_id'];
+            $type = $this->determineVideoUrlType($data['video']);
 
-                $this->setData($data); // TEMP
-            }
+            $data = array_merge($data, $type);
+
+            $this->setData($data); // TEMP
         }
     }
 
@@ -118,6 +118,7 @@ class DashboardBlockBannerLms extends DashboardBlockLms
             $type = 'none';
         }
 
+        $data['video_uuid'] = Uuid::v4()->toRfc4122();
         $data['video_id'] = $video_id;
         $data['video_type'] = $type;
 
