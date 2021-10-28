@@ -1,1 +1,0 @@
-CREATE TABLE dashboard_permission ( id_dashboard INT NOT NULL , idst_list TEXT NOT NULL ); 
