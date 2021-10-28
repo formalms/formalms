@@ -54,20 +54,24 @@ class ClientService
         return $config;
     }
 
+
     public function getBaseUrl(): string
     {
         $baseUrl = '';
         if (isset($_SERVER['HTTP_HOST'])) {
             $http = (isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) !== 'off') || strtolower($_SERVER['HTTP_X_FORWARDED_PROTO']) === 'https' ? 'https' : 'http';
             $hostname = $_SERVER['HTTP_HOST'];
-
-            $possiblePhpEndpoints = [
-                'index.php',
-                'ajax.adm_server.php',
-                'ajax.server.php'
-            ];
+            $possiblePhpEndpoints = [];
 
             $requestUri = $_SERVER['REQUEST_URI'];
+
+            preg_match('/\/(.*?).php/', $requestUri, $match);
+            if(!empty($match)){
+                $possiblePhpEndpoints[] = str_replace('/','',str_replace(self::coreFolders, '', $match[1] . '.php'));
+            }
+
+            $possiblePhpEndpoints[] = '/?';
+
             foreach ($possiblePhpEndpoints as $possiblePhpEndpoint) {
                 if (str_contains($requestUri,$possiblePhpEndpoint)) {
                     $requestUriArray = explode($possiblePhpEndpoint, $requestUri);
@@ -89,6 +93,7 @@ class ClientService
             $baseUrl = sprintf("%s://%s%s", $http, $hostname, $path);
 
         }
+
         return $baseUrl;
     }
 }
