@@ -104,7 +104,7 @@ if (!Docebo::user()->isAnonymous()) {
             if (!$error) {
 
                 $path = '/' . _folder_lms_ . '/' . Get::sett('pathlesson');
-                $savefile = ($idCourse ?? '0') . '_' . random_int(0, 100) . '_' . time() . '_' . $fileItem['title'];
+                $savefile = ($idCourse ?? '0') . '_' . random_int(0, 100) . '_' . time() . '_' . $file['name'];
                 $savefile = str_replace("'", "\'", $savefile);//Patch file con apostrofo
 
                 if (!file_exists(_files_ . $path . $savefile)) {
