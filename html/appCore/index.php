@@ -72,7 +72,9 @@ if (!empty($GLOBALS['req'])){
 
     // load module body
     if(!empty($GLOBALS['modname'])) {
-        $module_cfg->loadBody();
+        if (method_exists($module_cfg, 'loadBody')) {
+            $module_cfg->loadBody();
+        }
     }
 }
 // -----------------------------------------------------------------------------
