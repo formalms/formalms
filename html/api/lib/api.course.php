@@ -1211,8 +1211,6 @@ class Course_API extends API
 
                 if ($result !== false) {
                     $response['success'] = true;
-                    $response['id_day'] = $result;
-
                     if ($sendCalendar) {
                         $model->sendCalendarToAllSubscribers();
                     }
@@ -1228,6 +1226,16 @@ class Course_API extends API
         }
 
         $response['days'] = $model->classroom_man->getDateDay($idDate);
+        $arrayDays = $model->classroom_man->getDateDay($idDate);
+
+        foreach ($arrayDays as $day) {
+            $dateBegin = new DateTime($day['date_begin']);
+
+            if ($dateSelected === $dateBegin->format('Y-m-d')) {
+                $response['id'] = $day['id'];
+                break;
+            }
+        }
         unset($response['data']);
         return $response;
     }
