@@ -1004,6 +1004,7 @@ Se não estiver registado, deve registar-se no nosso sistema, seguindo este <i>l
         <key id="dropzone&amp;_ERRORS_OCCURRED" attributes="" save_date="2021-10-29 11:50:35"><![CDATA[An error has occurred]]></key>
         <key id="dropzone&amp;_OBJECT_CONTAINS_ERROR" attributes="" save_date="2021-10-29 11:49:21"><![CDATA[This file contains an error]]></key>
         <key id="dropzone&amp;_TITLE" attributes="" save_date="2021-10-29 11:49:49"><![CDATA[Title]]></key>
+        <key id="dropzone&amp;_TITLE" attributes="" save_date="2021-10-29 11:49:49"><![CDATA[Upload]]></key>
       </module>
       <module id="email">
         <key id="email&amp;_ALERT_SUBJECT" attributes="email" save_date="2018-12-27 14:01:34"><![CDATA[Novo aviso/informação]]></key>

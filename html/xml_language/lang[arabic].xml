@@ -863,6 +863,7 @@
         <key id="dropzone&amp;_ERRORS_OCCURRED" attributes="" save_date="2021-10-29 11:50:35"><![CDATA[An error has occurred]]></key>
         <key id="dropzone&amp;_OBJECT_CONTAINS_ERROR" attributes="" save_date="2021-10-29 11:49:21"><![CDATA[This file contains an error]]></key>
         <key id="dropzone&amp;_TITLE" attributes="" save_date="2021-10-29 11:49:49"><![CDATA[Title]]></key>
+        <key id="dropzone&amp;_UPLOAD_FILES" attributes="" save_date="2021-10-29 11:49:49"><![CDATA[Upload]]></key>
       </module>
       <module id="email">
         <key id="email&amp;_ALERT_SUBJECT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[اعلان جديد]]></key>

@@ -1120,6 +1120,7 @@ benvenuto sulla piattaforma <strong>[platform]</strong>]]></key>
         <key id="dropzone&amp;_ERRORS_OCCURRED" attributes="" save_date="2021-10-29 11:50:35"><![CDATA[Si è verificato un errore]]></key>
         <key id="dropzone&amp;_OBJECT_CONTAINS_ERROR" attributes="" save_date="2021-10-29 11:49:21"><![CDATA[Questo oggetto contiene un errore]]></key>
         <key id="dropzone&amp;_TITLE" attributes="" save_date="2021-10-29 11:49:49"><![CDATA[Titolo]]></key>
+        <key id="dropzone&amp;_UPLOAD_FILES" attributes="" save_date="2021-10-29 11:49:49"><![CDATA[Carica]]></key>
       </module>
       <module id="email">
         <key id="email&amp;_ALERT_SUBJECT" attributes="email" save_date="2015-09-30 15:32:39"><![CDATA[Nuovo avviso creato]]></key>
