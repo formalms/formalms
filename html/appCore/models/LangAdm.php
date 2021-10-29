@@ -742,19 +742,23 @@ class LangAdm extends Model
 
         $arrModules = Docebo::langManager()->getAllModules();
         foreach ($arrModules as $module) {
-            $elemModule = $doc->createElement("module");
-            $elemModule->setAttribute("id", $module);
-            $elemPlatform->appendChild($elemModule);
 
             $arrTranslations = Docebo::langManager()->getModuleLangTranslations('all', $module, $lang_code, '', false, false, true, $text_items);
-            foreach ($arrTranslations as $tran) {
-                $elem = $doc->createElement("key");
-                $elem->setAttribute('id', Docebo::langManager()->composeKey($tran[1], $module, 'all'));
-                $elem->setAttribute('attributes', $tran[3]);
-                $elem->setAttribute('save_date', $tran[4]);
-                $elemText = $doc->createCDATASection($tran[2]);
-                $elem->appendChild($elemText);
-                $elemModule->appendChild($elem);
+
+            if (count($arrTranslations) > 0) {
+                $elemModule = $doc->createElement("module");
+                $elemModule->setAttribute("id", $module);
+                $elemPlatform->appendChild($elemModule);
+
+                foreach ($arrTranslations as $tran) {
+                    $elem = $doc->createElement("key");
+                    $elem->setAttribute('id', Docebo::langManager()->composeKey($tran[1], $module, 'all'));
+                    $elem->setAttribute('attributes', $tran[3]);
+                    $elem->setAttribute('save_date', $tran[4]);
+                    $elemText = $doc->createCDATASection($tran[2]);
+                    $elem->appendChild($elemText);
+                    $elemModule->appendChild($elem);
+                }
             }
         }
 
