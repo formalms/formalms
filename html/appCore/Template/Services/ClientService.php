@@ -71,6 +71,7 @@ class ClientService
             }
 
             $possiblePhpEndpoints[] = '/?';
+            $possiblePhpEndpoints[] = '/api';
 
             foreach ($possiblePhpEndpoints as $possiblePhpEndpoint) {
                 if (str_contains($requestUri,$possiblePhpEndpoint)) {
