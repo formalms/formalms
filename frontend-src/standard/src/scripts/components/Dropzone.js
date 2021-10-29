@@ -73,7 +73,7 @@ class FormaDropZone extends FormaPlugin {
     this._ErrorMessage = null;
     this.Options = {
       ListWrapper: '#drop-zone-list',
-      SubmitText: Lang.Translation('dropzone._UPLOAD_FILES'),
+      SubmitText: Lang.Translation('_UPLOAD_FILES','dropzone'),
       OnSubmitClick: null
     };
 
