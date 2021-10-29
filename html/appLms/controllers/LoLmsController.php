@@ -40,7 +40,14 @@ class LoLmsController extends LmsController
     private function getFolders($idCourse, $idFolder = false)
     {
         $loData = array_values($this->model->getFolders($idCourse, $idFolder));
-        return $this->formatLoData($loData);
+        $results = $this->formatLoData($loData);
+
+        if (!empty($loData)) {
+            $eventData = Events::trigger(sprintf('lms.course_lo_%s.folder_listing', $loData[0]['typeId']), ['teacher' => false, 'idCourse' => $idCourse, 'idFolder' => $idFolder, 'learningObjects' => $results]);
+            $results = $eventData['learningObjects'];
+        }
+
+        return $results;
     }
 
     private function getCurrentState($idFolder = false)
