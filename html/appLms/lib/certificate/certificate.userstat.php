@@ -185,9 +185,10 @@ class CertificateSubs_UserStat extends CertificateSubstitution
             sort($array_meta_inscr);
             sort($array_meta_access);
 
-            $subs['[meta_complete]'] = $array_meta_complete[0];
-            $subs['[meta_inscr]'] = $array_meta_inscr[0];
-            $subs['[meta_access]'] = $array_meta_access[0];
+
+            $subs['[meta_complete]'] = Format::date($array_meta_complete[0], 'date');
+            $subs['[meta_inscr]'] = Format::date($array_meta_inscr[0], 'date');
+            $subs['[meta_access]'] = Format::date($array_meta_access[0], 'date');
 
             $sql = "
 				SELECT title FROM " . $aggCertLib->table_cert_meta_association . " AS cm 
