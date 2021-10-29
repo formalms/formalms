@@ -855,6 +855,13 @@ U suprotnom, morate se registrirati, koristeći link: <br />
         <key id="dashboard&amp;_USERS_PANEL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Korisnički info]]></key>
         <key id="dashboard&amp;_WAITING_SUBSCRIPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Čekanje upisa]]></key>
       </module>
+      <module id="dropzone">
+        <key id="dropzone&amp;_BROWSE_OR_DROP_HERE" attributes="" save_date="2021-10-29 11:45:49"><![CDATA[Drag and drop files here]]></key>
+        <key id="dropzone&amp;_DESCRIPTION" attributes="" save_date="2021-10-29 11:50:11"><![CDATA[Description]]></key>
+        <key id="dropzone&amp;_ERRORS_OCCURRED" attributes="" save_date="2021-10-29 11:50:35"><![CDATA[An error has occurred]]></key>
+        <key id="dropzone&amp;_OBJECT_CONTAINS_ERROR" attributes="" save_date="2021-10-29 11:49:21"><![CDATA[This file contains an error]]></key>
+        <key id="dropzone&amp;_TITLE" attributes="" save_date="2021-10-29 11:49:49"><![CDATA[Title]]></key>
+      </module>
       <module id="email">
         <key id="email&amp;_ALERT_SUBJECT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[Novo obavještenje]]></key>
         <key id="email&amp;_ALERT_TEXT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[Novo obavještenje je objavljeno za tečaj "[course]"

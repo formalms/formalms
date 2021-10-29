@@ -985,6 +985,13 @@ Ansonsten müssen Sie sich mittels dieses Links registrieren: <br />
         <key id="dashboard&amp;_USERS_PANEL" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Benutzerinformation]]></key>
         <key id="dashboard&amp;_WAITING_SUBSCRIPTION" attributes="" save_date="2019-03-27 17:15:50"><![CDATA[Wartende Einschreibungen]]></key>
       </module>
+      <module id="dropzone">
+        <key id="dropzone&amp;_BROWSE_OR_DROP_HERE" attributes="" save_date="2021-10-29 11:45:49"><![CDATA[Drag and drop files here]]></key>
+        <key id="dropzone&amp;_DESCRIPTION" attributes="" save_date="2021-10-29 11:50:11"><![CDATA[Description]]></key>
+        <key id="dropzone&amp;_ERRORS_OCCURRED" attributes="" save_date="2021-10-29 11:50:35"><![CDATA[An error has occurred]]></key>
+        <key id="dropzone&amp;_OBJECT_CONTAINS_ERROR" attributes="" save_date="2021-10-29 11:49:21"><![CDATA[This file contains an error]]></key>
+        <key id="dropzone&amp;_TITLE" attributes="" save_date="2021-10-29 11:49:49"><![CDATA[Title]]></key>
+      </module>
       <module id="email">
         <key id="email&amp;_ALERT_SUBJECT" attributes="email" save_date="2019-03-27 17:15:50"><![CDATA[Neue Ankündigung]]></key>
         <key id="email&amp;_ALERT_TEXT" attributes="email" save_date="2020-01-16 11:43:53"><![CDATA[Eine neue Ankündigung wurde im Kurs "[course]" veröffentlicht

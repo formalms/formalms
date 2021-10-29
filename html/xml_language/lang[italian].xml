@@ -1114,6 +1114,13 @@ benvenuto sulla piattaforma <strong>[platform]</strong>]]></key>
         <key id="dashboardsetting&amp;_DASHBOARD_SETTING_IMAGE_TYPE_ERROR" attributes="" save_date="2020-11-27 11:26:39"><![CDATA[Errore: tipi di immagini accettati  ]]></key>
 
       </module>
+      <module id="dropzone">
+        <key id="dropzone&amp;_BROWSE_OR_DROP_HERE" attributes="" save_date="2021-10-29 11:45:49"><![CDATA[Trascina e rilascia i file qui]]></key>
+        <key id="dropzone&amp;_DESCRIPTION" attributes="" save_date="2021-10-29 11:50:11"><![CDATA[Descrizione]]></key>
+        <key id="dropzone&amp;_ERRORS_OCCURRED" attributes="" save_date="2021-10-29 11:50:35"><![CDATA[Si è verificato un errore]]></key>
+        <key id="dropzone&amp;_OBJECT_CONTAINS_ERROR" attributes="" save_date="2021-10-29 11:49:21"><![CDATA[Questo oggetto contiene un errore]]></key>
+        <key id="dropzone&amp;_TITLE" attributes="" save_date="2021-10-29 11:49:49"><![CDATA[Titolo]]></key>
+      </module>
       <module id="email">
         <key id="email&amp;_ALERT_SUBJECT" attributes="email" save_date="2015-09-30 15:32:39"><![CDATA[Nuovo avviso creato]]></key>
         <key id="email&amp;_ALERT_TEXT" attributes="email" save_date="2015-09-30 15:32:39"><![CDATA[Un nuovo avviso è stato pubblicato nel corso "[course]"
