@@ -140,7 +140,7 @@ if ($permissions['del'] && !Get::cfg('demo_mode'))
 
 $fields = array('id', 'code', 'name', 'type', 'type_id', 'students', 'wait', 'user', 'edition', 'certificate', 'certreleased', 'competences', 'menu', 'dup', 'mod', 'del');
 
-$event = Events::trigger('core.course.columns.listing', ['columns' => $columns_arr, 'fields' => $fields]);
+$event = Events::trigger('core.course.columns.listing', ['columns' => $columns_arr, 'fields' => $fields, 'permissions' => $permissions]);
 
 
 
