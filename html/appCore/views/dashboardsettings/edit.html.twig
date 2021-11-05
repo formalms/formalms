@@ -122,11 +122,16 @@
                     for (i = 0; i < blocks.length; i++) {
                         const block = blocks[i].getAttribute('data-block');
                         const type = blocks[i].getAttribute('data-type');
-                        const inputActions = blocks[i].querySelector('.dashboard__enabledActions').querySelectorAll("input[type=checkbox]:checked");
+                        const inputActions = blocks[i].querySelector('.dashboard__enabledActions');
+
                         actions = [];
-                        for (j = 0; j < inputActions.length; j++) {
-                            actions.push(inputActions[j].value);
+                        if (inputActions){
+                            enabledActions = inputActions.querySelectorAll("input[type=checkbox]:checked");
+                            for (j = 0; j < inputActions.length; j++) {
+                                actions.push(inputActions[j].value);
+                            }
                         }
+
                         const firstInsert = blocks[i].getAttribute('data-first-insert');
                         const extraElement = blocks[i].querySelectorAll('.js-extra-setting');
                         let extraSettings = {};
