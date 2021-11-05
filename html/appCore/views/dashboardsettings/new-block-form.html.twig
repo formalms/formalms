@@ -18,16 +18,16 @@
         <div class="dashboard__description">{{ Lang_translate('_'~block.postData.block|upper,'dashboardsetting') }}</div>
 
         <div class="dashboard__info">
-            {% if block.registeredActions | length %}
+            {% if block.registeredActions | length > 0 %}
                 <div class="dashboard__infoBlock">
                     <div class="dashboard__label">{{ Lang_translate('_ENABLED_ACTIONS', 'dashboardsetting') }}</div>
-                    <div class="dashboard__infoContainer">
+                    <div class="dashboard__infoContainer dashboard__enabledActions">
                         <div class="dashboard__elx">
-                            {% for action in block.enabledActions %}
+                            {% for action in block.registeredActions %}
                                 <label class="d-block" style="display:block;">
-                                    <input name="registeredAction[{{ loop.index0 }}]"
+                                    <input name="enabledActions[{{ loop.index0 }}]"
                                         type="checkbox" value="{{ action }}"
-                                        {% if action in block.registeredActions %}checked{% endif %} />{{ Lang_translate('_'~block.postData.block|upper~'_'~action|upper,'dashboardsetting') }}
+                                        {% if action in block.enabledActions %}checked{% endif %} />{{ Lang_translate('_'~block.postData.block|upper~'_'~action|upper,'dashboardsetting') }}
                                 </label>
                             {% endfor %}
                         </div>
