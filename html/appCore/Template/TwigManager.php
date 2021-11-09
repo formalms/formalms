@@ -21,6 +21,7 @@ use appCore\Template\Extensions\UiFeedbackExtension;
 use appCore\Template\Extensions\UtilExtension;
 use appCore\Template\Extensions\YuiExtension;
 use appCore\Template\Services\ClientService;
+use Twig\Extension\ExtensionInterface;
 use Twig\Extension\OptimizerExtension;
 use Twig\Extensions\ArrayExtension;
 use Twig\Extensions\DateExtension;
@@ -96,6 +97,11 @@ class TwigManager
     public function addPathInLoader($view_path)
     {
         $this->twig->getLoader()->addPath($view_path);
+    }
+
+    public function addExtension(ExtensionInterface $extension)
+    {
+        $this->twig->addExtension($extension);
     }
 
     public function render($view_name, $data_for_view, $view_path = null)
