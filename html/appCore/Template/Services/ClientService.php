@@ -66,8 +66,17 @@ class ClientService
             $requestUri = $_SERVER['REQUEST_URI'];
 
             preg_match('/\/(.*?).php/', $requestUri, $match);
-            if(!empty($match)){
-                $possiblePhpEndpoints[] = str_replace('/','',str_replace(self::coreFolders, '', $match[1] . '.php'));
+            if (!empty($match)) {
+                $explodedMatch = explode('/', $match[0]);
+                $possiblePhpEndpoint = '';
+                foreach ($explodedMatch as $item) {
+
+                    if (!empty($item) && str_contains($item, '.php')) {
+                        $possiblePhpEndpoint .= str_replace(self::coreFolders, '', $item);
+                    }
+                }
+
+                $possiblePhpEndpoints[] = $possiblePhpEndpoint;
             }
 
             $possiblePhpEndpoints[] = '/?';
