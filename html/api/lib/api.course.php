@@ -770,8 +770,8 @@ class Course_API extends API
 
         $response['certificate_list'] = [];
 
-        $qc = $db->query($qcert);
-        while ($row = $db->fetch_assoc($qc)) {
+        $result = $db->query($qcert);
+        foreach ($result as $row) {
 
             $response['certificate_list'][] = array('course_id' => $row['id_course'],
                 'course_code' => $row['code'],
@@ -837,9 +837,8 @@ class Course_API extends API
 
         $response['certificate_list'] = [];
 
-        $qc = $db->query($qcert);
-        while ($row = $db->fetch_assoc($qc)) {
-
+        $result = $db->query($qcert);
+        foreach ($result as $row) {
 
             $field_man = new FieldList();
             $field_data = $field_man->getFieldsAndValueFromUser($row['idst'], false, true);
@@ -1968,8 +1967,7 @@ class Course_API extends API
 
         $response['success'] = true;
         //$output['query'] = $query;
-        while ($row = $this->db->fetch_assoc($res)) {
-
+        foreach ($res as $row){
 
             $response[]['lo_course'] = array(
                 'nome_lo' => $row['title'],
@@ -2099,18 +2097,17 @@ class Course_API extends API
         $response['date_end_attempt'] = $date_end_attempt;
 
 
-        $qc = $db->query($q_test);
-        while ($row = $db->fetch_assoc($qc)) {
-
+        $result = $db->query($q_test);
+        foreach ($result as $row) {
 
             $vett_quest_answer = [];
-            $vett_quest_answer = $this->getAnswerQuest($row['idQuest']);
-
+            $vett_quest_answer = $this->getAnswerQuest($row['idQuest'], $row['idAnswer']);
 
             $res_esito = 'wrong';
-            if ($row['score_assigned'] > 0) $res_esito = 'correct';
-
-            $response['quest_list'][$row['idQuest']] = array(
+            if ($row['score_assigned'] > 0) {
+                $res_esito = 'correct';
+            }
+            $response['quest_list'][$row['idQuest']] = [
                 'id_quest' => $row['idQuest'],
                 'title_quest' => $row['title_quest'],
                 'score_assigned' => $row['score_assigned'],
@@ -2118,7 +2115,7 @@ class Course_API extends API
                 'response' => $this->getTrackAnswer($row['idTrack'], $row['idQuest']),
                 'esito' => $res_esito
 
-            );
+            ];
 
         }
 
@@ -2134,20 +2131,17 @@ class Course_API extends API
         $db = DbConn::getInstance();
         $sql = "select idAnswer, more_info from learning_testtrack_answer where idTrack=" . $idTrack . " and idQuest=" . $idQuest;
 
-        $qca = $db->query($sql);
-        $response_a = [];
-        while ($row_t = $db->fetch_assoc($qca)) {
-            if ($row_t['idAnswer'] > 0) {
-                $response_a[] = $row_t['idAnswer'];
+        $result = $db->query($sql);
+        $response = [];
+        foreach ($result as $row) {
+            if ($row['idAnswer'] > 0) {
+                $response[] = $row['idAnswer'];
             } else {
-                $response_a[] = $row_t['more_info'];
+                $response[] = $row['more_info'];
             }
 
         }
-
-        return $response_a;
-
-
+        return $response;
     }
 
 
@@ -2159,20 +2153,18 @@ class Course_API extends API
 
         $vett_answer = [];
 
-        $qa = $db->query($q_ans);
+        $result = $db->query($q_ans);
 
-        while ($row_ans = $db->fetch_assoc($qa)) {
-            $vett_answer = [];
-            $vett_answer['id_answer'] = $row_ans['idAnswer'];
-            $vett_answer['sequence'] = $row_ans['sequence'];
-            $vett_answer['answer'] = $row_ans['answer'];
-            $vett_answer['is_correct'] = $row_ans['is_correct'];
+        foreach ($result as $rowAnswer){
 
-            $out[] = $vett_answer;
+            $answer = [];
+            $answer['id_answer'] = $rowAnswer['idAnswer'];
+            $answer['sequence'] = $rowAnswer['sequence'];
+            $answer['answer'] = $rowAnswer['answer'];
+            $answer['is_correct'] = $rowAnswer['is_correct'];
 
+            $out[] = $answer;
         }
-
-
         return $out;
     }
 
