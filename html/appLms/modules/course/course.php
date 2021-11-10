@@ -144,7 +144,7 @@ function mycourses(&$url) {
 
                 $result_int = sql_query($query);*/
 
-                $assocArr = $aggrCertLib->getAssociationLink($id_meta, COURSE, getLogUserId());
+                $assocArr = $aggrCertLib->getAssociationLink($id_meta, AggregatedCertificate::AGGREGATE_CERTIFICATE_TYPE_COURSE, getLogUserId());
 
                 $control = true;
 

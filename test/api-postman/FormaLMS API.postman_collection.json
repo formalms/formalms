@@ -90,7 +90,7 @@
 										},
 										{
 											"key": "course_code",
-											"value": "test api_2",
+											"value": "test api_4",
 											"type": "text"
 										},
 										{
@@ -148,7 +148,7 @@
 										},
 										{
 											"key": "course_name",
-											"value": "test_api_2",
+											"value": "test_api_4",
 											"type": "text"
 										},
 										{
@@ -201,9 +201,9 @@
 										},
 										{
 											"key": "course_type",
-											"value": "",
-											"type": "text",
-											"disabled": true
+											"value": "elearning",
+											"description": "elearning|classroom",
+											"type": "text"
 										},
 										{
 											"key": "credits",
@@ -292,27 +292,29 @@
 										{
 											"key": "course_user_material",
 											"type": "file",
-											"src": "/Users/giuseppenucifora/Downloads/dettaglio_test.pdf (1).pdf"
+											"src": "/Users/giuseppenucifora/Downloads/PastorelliAlberto_Saluteesicurezzasullavoro-lavoratori_20211015161146.pdf",
+											"disabled": true
 										},
 										{
 											"key": "course_otheruser_material",
 											"type": "file",
-											"src": "/Users/giuseppenucifora/Downloads/dettaglio_test.pdf.pdf"
+											"src": "/Users/giuseppenucifora/Downloads/PastorelliAlberto_Saluteesicurezzasullavoro-lavoratori_20211015161146.pdf",
+											"disabled": true
 										},
 										{
 											"key": "course_demo",
 											"type": "file",
-											"src": "/Users/giuseppenucifora/Downloads/Fattura-9_2021-Fabio-Di-Marzio.pdf"
+											"src": []
 										},
 										{
 											"key": "course_sponsor_logo",
 											"type": "file",
-											"src": "/Users/giuseppenucifora/Downloads/fb05b490c3239d96ebfbdf0e557f22eb.jpeg"
+											"src": []
 										},
 										{
 											"key": "course_logo",
 											"type": "file",
-											"src": "/Users/giuseppenucifora/Downloads/fb05b490c3239d96ebfbdf0e557f22eb.jpeg"
+											"src": "/Users/giuseppenucifora/Downloads/vitalaire.jpg"
 										},
 										{
 											"key": "course_show_level[7]",
@@ -1058,6 +1060,86 @@
 									"path": [
 										"course",
 										"addCertificates"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Course - addMetaCertificates",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"accept": true
+								}
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Authorization",
+										"type": "text",
+										"value": "FormaLMS  {{token}}"
+									},
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "meta_certificates[0][meta_cert_id]",
+											"value": "16",
+											"type": "text"
+										},
+										{
+											"key": "meta_certificates[0][name_ass]",
+											"value": "Lean Six Sigma GB ed. GB 33",
+											"type": "text"
+										},
+										{
+											"key": "meta_certificates[0][descr_ass]",
+											"value": "L6S 033 - GB",
+											"type": "text"
+										},
+										{
+											"key": "meta_certificates[1][meta_cert_id]",
+											"value": "16",
+											"type": "text"
+										},
+										{
+											"key": "meta_certificates[1][name_ass]",
+											"value": "Lean Six Sigma GB ed. GB 33 2",
+											"type": "text"
+										},
+										{
+											"key": "meta_certificates[1][descr_ass]",
+											"value": "L6S 033 - GB 2",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}{{api_path}}/course/addMetaCertificates",
+									"host": [
+										"{{base_url}}{{api_path}}"
+									],
+									"path": [
+										"course",
+										"addMetaCertificates"
 									]
 								}
 							},
@@ -2809,66 +2891,6 @@
 									"path": [
 										"course",
 										"assignmetauser"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Course - addCertificates",
-							"event": [
-								{
-									"listen": "prerequest",
-									"script": {
-										"exec": [
-											""
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"protocolProfileBehavior": {
-								"disabledSystemHeaders": {
-									"accept": true
-								}
-							},
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "X-Authorization",
-										"value": "FormaLMS  {{token}}",
-										"type": "text"
-									},
-									{
-										"key": "Accept",
-										"value": "application/json",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "formdata",
-									"formdata": [
-										{
-											"key": "course_id",
-											"value": "3",
-											"type": "text"
-										},
-										{
-											"key": "certificates",
-											"value": "2",
-											"type": "text"
-										}
-									]
-								},
-								"url": {
-									"raw": "{{base_url}}{{api_path}}/course/addcertificates",
-									"host": [
-										"{{base_url}}{{api_path}}"
-									],
-									"path": [
-										"course",
-										"addcertificates"
 									]
 								}
 							},

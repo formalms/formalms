@@ -447,11 +447,11 @@ class AggregatedcertificateAlms extends Model
     function getCoursesInAssociationFromUser($idMeta, $idUser, $type_assoc){
         
          switch($type_assoc) {
-            case COURSE:
+             case AggregatedCertificate::AGGREGATE_CERTIFICATE_TYPE_COURSE:
                 $table = 'course';
                 $field = 'idCourse';
                 break;
-            case COURSE_PATH:
+            case AggregatedCertificate::AGGREGATE_CERTIFICATE_TYPE_COURSE_PATH:
                 $table = 'coursepath';
                 $field = 'idCoursePath';
 
@@ -480,11 +480,11 @@ class AggregatedcertificateAlms extends Model
      function getUserCoursesFromIdsMeta($idUser, $idsMetacertArr, $type_assoc){
         
          switch($type_assoc) {
-            case COURSE:
+            case AggregatedCertificate::AGGREGATE_CERTIFICATE_TYPE_COURSE:
                 $table = 'course';
                 $field = 'idCourse';
                 break;
-            case COURSE_PATH:
+            case AggregatedCertificate::AGGREGATE_CERTIFICATE_TYPE_COURSE_PATH:
                 $table = 'coursepath';
                 $field = 'idCoursePath';
 
@@ -561,8 +561,8 @@ class AggregatedcertificateAlms extends Model
     function getTypeMetacert($id_metacert){
                 
         $coursesTypeArr = array(
-        COURSE => "course",
-        COURSE_PATH => "coursepath"
+        AggregatedCertificate::AGGREGATE_CERTIFICATE_TYPE_COURSE => "course",
+        AggregatedCertificate::AGGREGATE_CERTIFICATE_TYPE_COURSE_PATH => "coursepath"
         );
         
         

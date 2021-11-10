@@ -1,12 +1,14 @@
 <?php defined("IN_FORMA") or die("Direct access is forbidden");
 
-define('COURSE', 0);
-define('COURSE_PATH', 1);
+//define('COURSE', 0);
+//define('COURSE_PATH', 1);
 
 class AggregatedCertificate
 {
 
-
+    const AGGREGATE_CERTIFICATE_TYPE_COURSE = 0;
+    const AGGREGATE_CERTIFICATE_TYPE_COURSE_PATH = 1;
+    const ALLOWED_CERTIFICATE_TYPES = [self::AGGREGATE_CERTIFICATE_TYPE_COURSE,self::AGGREGATE_CERTIFICATE_TYPE_COURSE_PATH];
 
     private $db;
     private $_id_cert;
@@ -30,8 +32,8 @@ class AggregatedCertificate
 
 
         $this->assocTypesArr = array(
-            COURSE => $this->table_cert_meta_association_courses,
-            COURSE_PATH =>  $this->table_cert_meta_association_coursepath
+            self::AGGREGATE_CERTIFICATE_TYPE_COURSE => $this->table_cert_meta_association_courses,
+            self::AGGREGATE_CERTIFICATE_TYPE_COURSE_PATH =>  $this->table_cert_meta_association_coursepath
         );
     }
 
@@ -131,7 +133,6 @@ class AggregatedCertificate
      */
     function getAssociationsMetadata($id_cert = 0, $id_association = 0, $ini = -1)
     {
-
         $query = "SELECT idAssociation, title, description"
             . " FROM " . $this->table_cert_meta_association
             . ($id_cert != 0 ? " WHERE idCertificate = " . $id_cert : '')
@@ -146,7 +147,7 @@ class AggregatedCertificate
         $rs = sql_query($query);
 
         $k = 0;
-        while ($rows = sql_fetch_assoc($rs)) {
+        foreach ($rs as $rows){
             $associationsArr[$k]['idAssociation'] = (int) $rows['idAssociation'];
             $associationsArr[$k]['title'] = $rows['title'];
             $associationsArr[$k]['description'] = $rows['description'];
@@ -238,11 +239,11 @@ class AggregatedCertificate
     {
 
         switch ($type_assoc) {
-            case COURSE:
+            case self::AGGREGATE_CERTIFICATE_TYPE_COURSE:
                 $table = $this->table_cert_meta_association_courses;
                 $field_link = 'idCourse';
                 break;
-            case COURSE_PATH:
+            case self::AGGREGATE_CERTIFICATE_TYPE_COURSE_PATH:
                 $table = $this->table_cert_meta_association_coursepath;
                 $field_link = 'idCoursePath';
                 break;
@@ -282,10 +283,10 @@ class AggregatedCertificate
     {
 
         switch ($type_assoc) {
-            case COURSE:
+            case self::AGGREGATE_CERTIFICATE_TYPE_COURSE:
                 $table = $this->table_cert_meta_association_courses;
                 break;
-            case COURSE_PATH:
+            case self::AGGREGATE_CERTIFICATE_TYPE_COURSE_PATH:
                 $table = $this->table_cert_meta_association_coursepath;
                 break;
             default:
@@ -313,11 +314,11 @@ class AggregatedCertificate
     {
 
         switch ($type_assoc) {
-            case COURSE:
+            case self::AGGREGATE_CERTIFICATE_TYPE_COURSE:
                 $table = $this->table_cert_meta_association_courses;
                 $field_link = 'idCourse';
                 break;
-            case COURSE_PATH:
+            case self::AGGREGATE_CERTIFICATE_TYPE_COURSE_PATH:
                 $table = $this->table_cert_meta_association_coursepath;
                 $field_link = 'idCoursePath';
                 break;
@@ -374,11 +375,11 @@ class AggregatedCertificate
     {
 
         switch ($type_assoc) {
-            case COURSE:
+            case self::AGGREGATE_CERTIFICATE_TYPE_COURSE:
                 $table = $this->table_cert_meta_association_courses;
                 $field = 'idCourse';
                 break;
-            case COURSE_PATH:
+            case self::AGGREGATE_CERTIFICATE_TYPE_COURSE_PATH:
                 $table = $this->table_cert_meta_association_coursepath;
                 $field = 'idCoursePath';
                 break;
@@ -557,8 +558,9 @@ class AggregatedCertificate
                 FROM " . $table . "
                 WHERE idAssociation = " . $id_assoc . " AND idUser = 0";
 
-            if (sql_num_rows(sql_query($q)))
+            if (sql_num_rows(sql_query($q))) {
                 $type_assoc = $key;
+            }
         }
 
         return $type_assoc;
@@ -720,7 +722,7 @@ class AggregatedCertificate
         $this->_idAssoc = intval(Get::req('id_assoc', DOTY_INT));
         $this->_type_assoc = Get::req('type_assoc', DOTY_INT, -1);
 
-        if ($this->_type_assoc == COURSE) {
+        if ($this->_type_assoc == self::AGGREGATE_CERTIFICATE_TYPE_COURSE) {
             $table = $this->table_cert_meta_association_courses;
         } else {
             $table = $this->table_cert_meta_association_coursepath;
@@ -732,7 +734,7 @@ class AggregatedCertificate
                 $sql2 = "SELECT LAST_INSERT_ID() as idAssociation";
                 $row = sql_fetch_assoc(sql_query($sql2));
                 $this->_idAssoc = $row['idAssociation'];
-                if ($this->_type_assoc == COURSE) {
+                if ($this->_type_assoc == self::AGGREGATE_CERTIFICATE_TYPE_COURSE) {
                     $sql1 = "INSERT INTO " . $table . " (idAssociation, idUser, idCourse, idCourseEdition) VALUES ";
                     // insert placeholder for no user selected case
                     $array_course = explode(",", Get::req('selected_courses', DOTY_NUMLIST));
@@ -761,7 +763,7 @@ class AggregatedCertificate
                 . " description ='" . $this->_description . "'"
                 . " WHERE idAssociation = " . $this->_idAssoc;
             $sql1 = "DELETE FROM " . $table . " WHERE idAssociation =" . $this->_idAssoc;
-            if ($this->_type_assoc == COURSE) {
+            if ($this->_type_assoc == self::AGGREGATE_CERTIFICATE_TYPE_COURSE) {
                 $sql2 = "INSERT INTO " . $table . " (idAssociation, idUser, idCourse, idCourseEdition) VALUES ";
                 // insert placeholder for no user selected case
                 $array_course = explode(",", Get::req('selected_courses', DOTY_NUMLIST));
@@ -790,7 +792,7 @@ class AggregatedCertificate
         }
 
         if (count($assocArr) > 0) {
-            if ($this->_type_assoc == COURSE) {
+            if ($this->_type_assoc == self::AGGREGATE_CERTIFICATE_TYPE_COURSE) {
                 return $this->saveCertRowCourse($assocArr);
             } else {
                 return $this->saveCertRowPath($assocArr);
@@ -823,7 +825,7 @@ class AggregatedCertificate
         sql_query('START TRANSACTION');
         if (sql_query($sql1)) {
             sql_query('COMMIT');
-            $this->checkIstantCertification($user_paths, COURSE_PATH);
+            $this->checkIstantCertification($user_paths, self::AGGREGATE_CERTIFICATE_TYPE_COURSE_PATH);
             return true;
         } else {
             sql_query('ROLLBACK');
@@ -863,7 +865,7 @@ class AggregatedCertificate
         sql_query('START TRANSACTION');
         if (sql_query($sql1)) {
             sql_query('COMMIT');
-            $this->checkIstantCertification($user_courses, COURSE);
+            $this->checkIstantCertification($user_courses, self::AGGREGATE_CERTIFICATE_TYPE_COURSE);
             return true;
         } else {
             sql_query('ROLLBACK');
@@ -877,7 +879,7 @@ class AggregatedCertificate
 
         foreach ($user_association as $id_user => $association) {
             $p['id_user'] = $id_user;
-            if ($type_association == COURSE) {
+            if ($type_association == self::AGGREGATE_CERTIFICATE_TYPE_COURSE) {
                 $p['id_course'] = $association[0];
                 $this->releaseNewAggrCertCourses($p);
             } else {
@@ -979,11 +981,11 @@ class AggregatedCertificate
     {
 
         switch ($type_assoc) {
-            case COURSE:
+            case self::AGGREGATE_CERTIFICATE_TYPE_COURSE:
                 $table = $this->table_cert_meta_association_courses;
                 $field_link = "idCourse";
                 break;
-            case COURSE_PATH:
+            case self::AGGREGATE_CERTIFICATE_TYPE_COURSE_PATH:
                 $table = $this->table_cert_meta_association_coursepath;
                 $field_link = "idCoursePath";
                 break;

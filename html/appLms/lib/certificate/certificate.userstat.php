@@ -1,4 +1,4 @@
-<?php defined("IN_FORMA") or die('Direct access is forbidden.');
+<?php defined('IN_FORMA') or die('Direct access is forbidden.');
 
 /* ======================================================================== \
 |   FORMA - The E-Learning Suite                                            |
@@ -74,11 +74,11 @@ class CertificateSubs_UserStat extends CertificateSubstitution
             $assocType = $aggCertLib->getTypeAssoc($this->id_meta, $this->id_user);
 
             switch ($assocType) {
-                case COURSE_PATH:
+                case AggregatedCertificate::AGGREGATE_CERTIFICATE_TYPE_COURSE_PATH:
                     $table_blended = '<table width="100%" cellspacing="1" cellpadding="1" border="1" align="">'
                         . '<thead>'
                         . '<tr>'
-                        . '<td>' . Lang::t('_COURSEPATH') . '</td>'
+                        . '<td width="70%">' . Lang::t('_COURSEPATH') . '</td>'
                         . '<td>' . Lang::t('_TOTAL_SESSION', 'report') . '</td>'
                         . '</tr>'
                         . '</thead>'
@@ -91,10 +91,7 @@ class CertificateSubs_UserStat extends CertificateSubstitution
                         $courses = $coursePath_man->getAllCourses($id_path);
                         $courses_path_time = 0;
                         foreach ($courses as $id_course) {
-                            $query = "SELECT date_complete, date_inscr, date_first_access "
-                                . " FROM " . $GLOBALS['prefix_lms'] . "_courseuser"
-                                . " WHERE idCourse = '" . $id_course . "'"
-                                . " AND idUser = '" . $this->id_user . "'";
+                            $query = 'SELECT date_complete, date_inscr, date_first_access FROM %lms_courseuser WHERE idCourse = \''.$id_course .'\' AND idUser = \''. $this->id_user .'\'';
 
                             list($date_complete_meta, $date_inscr_meta, $date_access_meta) = sql_fetch_row(sql_query($query));
 
@@ -115,7 +112,7 @@ class CertificateSubs_UserStat extends CertificateSubstitution
                         $info_path = $coursePath_man->getCoursepathInfo($id_path);
                         $table_blended .= '<tr>'
                             . '<td>' . $info_path['path_name'] . '</td>'
-                            . '<td>' . $courses_path_time . '</td>'
+                            . '<td align="center">' . $courses_path_time . '</td>'
                             . '</tr>';
 
                     }
@@ -128,22 +125,19 @@ class CertificateSubs_UserStat extends CertificateSubstitution
                     $subs['[table_blended]'] = $table_blended;
                     $subs['[table_course]'] = $subs['[table_blended]'];
                     break;
-                case COURSE:
+                case AggregatedCertificate::AGGREGATE_CERTIFICATE_TYPE_COURSE:
                     $table_course = '<table width="100%" cellspacing="1" cellpadding="1" border="1" align="">'
                         . '<thead>'
                         . '<tr>'
-                        . '<td>' . Lang::t('_COURSE_NAME') . '</td>'
-                        . '<td>' . Lang::t('_COURSE_TYPE', 'course') . '</td>'
-                        . '<td>' . Lang::t('_TOTAL_SESSION', 'report') . '</td>'
+                        . '<td width="50%"><b>' . Lang::t('_COURSE_NAME') . '</b></td>'
+                        . '<td width="30%"><b>' . Lang::t('_COURSE_TYPE', 'course') . '</b></td>'
+                        . '<td width="20%" align="right"><b>' . Lang::t('_TOTAL_SESSION', 'report') . '</b></td>'
                         . '</tr>'
                         . '</thead>'
                         . '<tbody>';
                     $courses = $aggCertLib->getIdsCourse($this->id_meta, $this->id_user);
                     foreach ($courses as $id_course) {
-                        $query = "SELECT date_complete, date_inscr, date_first_access, level"
-                            . " FROM " . $GLOBALS['prefix_lms'] . "_courseuser"
-                            . " WHERE idCourse = '" . $id_course . "'"
-                            . " AND idUser = '" . $this->id_user . "'";
+                        $query = sprintf("SELECT date_complete, date_inscr, date_first_access, level FROM %lms_courseuser WHERE idCourse = '%s' AND idUser = '%s'", $id_course, $this->id_user);
 
                         list($date_complete_meta, $date_inscr_meta, $date_access_meta, $level) = sql_fetch_row(sql_query($query));
 
@@ -179,6 +173,8 @@ class CertificateSubs_UserStat extends CertificateSubstitution
 
                     $subs['[course_scorm_items]'] = $this->getSubstitutionScormItems($id_course, $this->id_user);
                     break;
+                default:
+                    break;
             }
 
             rsort($array_meta_complete);
@@ -190,8 +186,8 @@ class CertificateSubs_UserStat extends CertificateSubstitution
             $subs['[meta_inscr]'] = Format::date($array_meta_inscr[0], 'date');
             $subs['[meta_access]'] = Format::date($array_meta_access[0], 'date');
 
-            $sql = "
-				SELECT title FROM " . $aggCertLib->table_cert_meta_association . " AS cm 
+            $sql = '
+				SELECT title FROM ' . $aggCertLib->table_cert_meta_association . " AS cm 
 				WHERE cm.idAssociation = {$this->id_meta}";
             $q = sql_query($sql);
             $meta = sql_fetch_object($q);

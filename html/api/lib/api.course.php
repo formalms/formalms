@@ -1,4 +1,4 @@
-<?php defined("IN_FORMA") or die('Direct access is forbidden.');
+<?php defined('IN_FORMA') or die('Direct access is forbidden.');
 
 /* ======================================================================== \
 |   FORMA - The E-Learning Suite                                            |
@@ -43,7 +43,7 @@ class Course_API extends API
      */
     private function _getAndValidateIdDayFromParams($params)
     {
-        $idDay = (is_numeric($params['id_day']) ? $params['id_day'] : '');
+        $idDay = is_numeric($params['id_day']) ? $params['id_day'] : '';
 
         $response['success'] = true;
         $response['data'] = $idDay;
@@ -171,8 +171,8 @@ class Course_API extends API
 
         $response['success'] = true;
 
-        $courseId = (isset($params['course_id']) ? (int)$params['course_id'] : false);
-        $course_code = (isset($params['course_code']) ? $params['course_code'] : false);
+        $courseId = isset($params['course_id']) ? (int)$params['course_id'] : false;
+        $course_code = isset($params['course_code']) ? $params['course_code'] : false;
 
         if (empty($courseId) && empty($course_code)) {
             return false;
@@ -229,8 +229,8 @@ class Course_API extends API
 
         $response['success'] = true;
 
-        $courseId = (isset($params['course_id']) ? (int)$params['course_id'] : false);
-        $course_code = (isset($params['course_code']) ? $params['course_code'] : false);
+        $courseId = isset($params['course_id']) ? (int)$params['course_id'] : false;
+        $course_code = isset($params['course_code']) ? $params['course_code'] : false;
 
         if (empty($courseId) && empty($course_code)) {
             return false;
@@ -420,17 +420,17 @@ class Course_API extends API
             $user_id = $params['idst'];
         }
 
-        $courseId = (isset($params['course_id']) ? (int)$params['course_id'] : false);
-        $course_code = (isset($params['course_code']) ? $params['course_code'] : false);
-        $edition_id = (isset($params['edition_id']) ? (int)$params['edition_id'] : false);
-        $edition_code = (isset($params['edition_code']) ? $params['edition_code'] : false);
-        $classroom_id = (isset($params['classroom_id']) ? (int)$params['classroom_id'] : false);
-        $classroom_code = (isset($params['classroom_code']) ? $params['classroom_code'] : false);
+        $courseId = isset($params['course_id']) ? (int)$params['course_id'] : false;
+        $course_code = isset($params['course_code']) ? $params['course_code'] : false;
+        $edition_id = isset($params['edition_id']) ? (int)$params['edition_id'] : false;
+        $edition_code = isset($params['edition_code']) ? $params['edition_code'] : false;
+        $classroom_id = isset($params['classroom_id']) ? (int)$params['classroom_id'] : false;
+        $classroom_code = isset($params['classroom_code']) ? $params['classroom_code'] : false;
 
-        $user_level = $this->getUserLevelId((isset($params['user_level']) ? $params['user_level'] : 'student'));
+        $user_level = $this->getUserLevelId(isset($params['user_level']) ? $params['user_level'] : 'student');
 
 
-        if (!isset($params['sendmail']) || $params['sendmail'] == "") {
+        if (!isset($params['sendmail']) || $params['sendmail'] == '') {
             $sendMailToUser = false;
         } else {
             $sendMailToUser = true;
@@ -527,15 +527,15 @@ class Course_API extends API
             $user_id = $params['idst'];
         }
 
-        $courseId = (isset($params['course_id']) ? (int)$params['course_id'] : false);
-        $course_code = (isset($params['course_code']) ? $params['course_code'] : false);
-        $edition_id = (isset($params['edition_id']) ? (int)$params['edition_id'] : false);
-        $edition_code = (isset($params['edition_code']) ? $params['edition_code'] : false);
-        $classroom_id = (isset($params['classroom_id']) ? (int)$params['classroom_id'] : false);
-        $classroom_code = (isset($params['classroom_code']) ? $params['classroom_code'] : false);
+        $courseId = isset($params['course_id']) ? (int)$params['course_id'] : false;
+        $course_code = isset($params['course_code']) ? $params['course_code'] : false;
+        $edition_id = isset($params['edition_id']) ? (int)$params['edition_id'] : false;
+        $edition_code = isset($params['edition_code']) ? $params['edition_code'] : false;
+        $classroom_id = isset($params['classroom_id']) ? (int)$params['classroom_id'] : false;
+        $classroom_code = isset($params['classroom_code']) ? $params['classroom_code'] : false;
 
-        $user_level = $this->getUserLevelId((isset($params['user_level']) ? $params['user_level'] : false));
-        $user_status = $this->getUserStatusId((isset($params['user_status']) ? $params['user_status'] : false));
+        $user_level = $this->getUserLevelId(isset($params['user_level']) ? $params['user_level'] : false);
+        $user_status = $this->getUserStatusId(isset($params['user_status']) ? $params['user_status'] : false);
 
 
         $acl_man = Docebo::user()->getAclManager();
@@ -627,15 +627,15 @@ class Course_API extends API
             $user_id = $params['idst'];
         }
 
-        $courseId = (isset($params['course_id']) ? (int)$params['course_id'] : false);
-        $course_code = (isset($params['course_code']) ? $params['course_code'] : false);
-        $edition_id = (isset($params['edition_id']) ? (int)$params['edition_id'] : false);
-        $edition_code = (isset($params['edition_code']) ? $params['edition_code'] : false);
-        $classroom_id = (isset($params['classroom_id']) ? (int)$params['classroom_id'] : false);
-        $classroom_code = (isset($params['classroom_code']) ? $params['classroom_code'] : false);
+        $courseId = isset($params['course_id']) ? (int)$params['course_id'] : false;
+        $course_code = isset($params['course_code']) ? $params['course_code'] : false;
+        $edition_id = isset($params['edition_id']) ? (int)$params['edition_id'] : false;
+        $edition_code = isset($params['edition_code']) ? $params['edition_code'] : false;
+        $classroom_id = isset($params['classroom_id']) ? (int)$params['classroom_id'] : false;
+        $classroom_code = isset($params['classroom_code']) ? $params['classroom_code'] : false;
 
-        $user_level = $this->getUserLevelId((isset($params['user_level']) ? $params['user_level'] : false));
-        $user_status = $this->getUserStatusId((isset($params['user_status']) ? $params['user_status'] : false));
+        $user_level = $this->getUserLevelId(isset($params['user_level']) ? $params['user_level'] : false);
+        $user_status = $this->getUserStatusId(isset($params['user_status']) ? $params['user_status'] : false);
 
 
         $acl_man = Docebo::user()->getAclManager();
@@ -760,12 +760,12 @@ class Course_API extends API
         $response['firstname'] = $user_info['firstname'];
         $response['lastname'] = $user_info['lastname'];
         $response['userid'] = $username;
-        if ($response['idst'] == 0) $response['message'] = "User not found";
+        if ($response['idst'] == 0) $response['message'] = 'User not found';
 
 
-        $qcert = "select id_course, name, code, on_date, cert_file from  learning_certificate_assign, learning_course  where id_user=" . $response['idst'] . " and idCourse=id_course";
-        if ($id_course > 0) $qcert = $qcert . " and id_course=" . $id_course;
-        $qcert = $qcert . " order by on_date desc";
+        $qcert = 'select id_course, name, code, on_date, cert_file from  learning_certificate_assign, learning_course  where id_user=' . $response['idst'] . ' and idCourse=id_course';
+        if ($id_course > 0) $qcert = $qcert . ' and id_course=' . $id_course;
+        $qcert = $qcert . ' order by on_date desc';
 
 
         $response['certificate_list'] = [];
@@ -777,7 +777,7 @@ class Course_API extends API
                 'course_code' => $row['code'],
                 'course_name' => $row['name'],
                 'date_generate' => $row['on_date'],
-                'cert_file' => Get::site_url() . "files/appLms/certificate/" . $row['cert_file']
+                'cert_file' => Get::site_url() . 'files/appLms/certificate/' . $row['cert_file']
 
             );
 
@@ -815,8 +815,8 @@ class Course_API extends API
 
 
         $db = DbConn::getInstance();
-        $qtxt = "SELECT idCourse, code, name, box_description  FROM learning_course 
-				WHERE idCourse=" . (int)$id_course;
+        $qtxt = 'SELECT idCourse, code, name, box_description  FROM learning_course 
+				WHERE idCourse=' . (int)$id_course;
         $q = $db->query($qtxt);
         $course_info = $db->fetch_assoc($q);
 
@@ -827,12 +827,12 @@ class Course_API extends API
         //     $course_info['box_description'] = substr($course_info['box_description'], 0, 47) . '...';
         // }
         $response['box_description'] = $course_info['box_description'];
-        if ((int)$course_info['idCourse'] == 0) $response['message'] = "Course not found";
+        if ((int)$course_info['idCourse'] == 0) $response['message'] = 'Course not found';
 
 
-        $qcert = "select id_course, firstname, lastname, userid, idst, on_date, cert_file from  learning_certificate_assign, %adm_user   where id_course=" . $response['course_id'] . " and id_user=idst";
+        $qcert = 'select id_course, firstname, lastname, userid, idst, on_date, cert_file from  learning_certificate_assign, %adm_user   where id_course=' . $response['course_id'] . ' and id_user=idst';
         if ($username != '') $qcert = $qcert . " and userid = '/" . $username . "'";
-        $qcert = $qcert . " order by on_date desc";
+        $qcert = $qcert . ' order by on_date desc';
 
 
         $response['certificate_list'] = [];
@@ -856,7 +856,7 @@ class Course_API extends API
                 'userid' => $row['userid'],
                 'date_generate' => $row['on_date'],
 
-                'cert_file' => Get::site_url() . "files/appLms/certificate/" . $row['cert_file'],
+                'cert_file' => Get::site_url() . 'files/appLms/certificate/' . $row['cert_file'],
 
                 'custom_fields' => $fields
 
@@ -879,8 +879,8 @@ class Course_API extends API
     public function addCategory($params)
     {
 
-        $category_id = (isset($params['category_id']) ? (int)$params['category_id'] : 0);
-        $category_name = (isset($params['name']) ? $params['name'] : false);
+        $category_id = isset($params['category_id']) ? (int)$params['category_id'] : 0;
+        $category_name = isset($params['name']) ? $params['name'] : false;
 
 
         if ($category_name == false) {
@@ -906,7 +906,7 @@ class Course_API extends API
 
 
         $db = DbConn::getInstance();
-        $qtxt = "SELECT max(idCourse) as max_id  FROM learning_course ";
+        $qtxt = 'SELECT max(idCourse) as max_id  FROM learning_course ';
         $q = $db->query($qtxt);
         $course_info = $db->fetch_assoc($q);
 
@@ -920,85 +920,85 @@ class Course_API extends API
         $response = [];
         $response['success'] = true;
 
-        $params['advance'] = (isset($params['advance']) ? $params['advance'] : '');
-        $params['allow_overbooking'] = (isset($params['allow_overbooking']) ? 1 : 0);
-        $params['selected_menu'] = (isset($params['selected_menu']) ? $params['selected_menu'] : 11);
+        $params['advance'] = isset($params['advance']) ? $params['advance'] : '';
+        $params['allow_overbooking'] = isset($params['allow_overbooking']) ? 1 : 0;
+        $params['selected_menu'] = isset($params['selected_menu']) ? $params['selected_menu'] : 11;
         if (empty($params['allow_overbooking'])) {
             unset($params['allow_overbooking']);
         }
-        $params['auto_unsubscribe'] = (isset($params['auto_unsubscribe']) ? 1 : 0);
+        $params['auto_unsubscribe'] = isset($params['auto_unsubscribe']) ? 1 : 0;
         if (empty($params['auto_unsubscribe'])) {
             unset($params['auto_unsubscribe']);
         }
-        $params['can_subscribe'] = (isset($params['can_subscribe']) ? $params['can_subscribe'] : false);
-        $params['course_advanced'] = (isset($params['course_advanced']) ? 1 : 0);
+        $params['can_subscribe'] = isset($params['can_subscribe']) ? $params['can_subscribe'] : false;
+        $params['course_advanced'] = isset($params['course_advanced']) ? 1 : 0;
         if (empty($params['course_advanced'])) {
             unset($params['course_advanced']);
         }
-        $params['course_autoregistration_code'] = (isset($params['course_autoregistration_code']) ? $params['course_autoregistration_code'] : false);
-        $params['course_code'] = (isset($params['course_code']) ? $params['course_code'] : false);
-        $params['course_date_begin'] = (isset($params['course_date_begin']) ? $params['course_date_begin'] : false);
-        $params['course_date_end'] = (isset($params['course_date_end']) ? $params['course_date_end'] : false);
-        $params['course_day_of'] = (isset($params['course_day_of']) ? $params['course_day_of'] : false);
-        $params['course_descr'] = (isset($params['course_descr']) ? $params['course_descr'] : false);
-        $params['course_difficult'] = (isset($params['course_difficult']) ? $params['course_difficult'] : false);
-        $params['course_edition'] = (isset($params['course_edition']) ? 1 : 0);
+        $params['course_autoregistration_code'] = isset($params['course_autoregistration_code']) ? $params['course_autoregistration_code'] : false;
+        $params['course_code'] = isset($params['course_code']) ? $params['course_code'] : false;
+        $params['course_date_begin'] = isset($params['course_date_begin']) ? $params['course_date_begin'] : false;
+        $params['course_date_end'] = isset($params['course_date_end']) ? $params['course_date_end'] : false;
+        $params['course_day_of'] = isset($params['course_day_of']) ? $params['course_day_of'] : false;
+        $params['course_descr'] = isset($params['course_descr']) ? $params['course_descr'] : false;
+        $params['course_difficult'] = isset($params['course_difficult']) ? $params['course_difficult'] : false;
+        $params['course_edition'] = isset($params['course_edition']) ? 1 : 0;
         if (empty($params['course_edition'])) {
             unset($params['course_edition']);
         }
-        $params['course_em'] = (isset($params['close_lo_perm']) ? 1 : 0);
+        $params['course_em'] = isset($params['close_lo_perm']) ? 1 : 0;
         if (empty($params['course_em'])) {
             unset($params['course_em']);
         }
-        $params['course_lang'] = (isset($params['course_lang']) ? $params['course_lang'] : 'italian');
-        $params['course_medium_time'] = (isset($params['course_medium_time']) ? $params['course_medium_time'] : false);
-        $params['send_calendar'] = (isset($params['send_calendar']) ? $params['send_calendar'] : false);
-        $params['course_name'] = (isset($params['course_name']) ? $params['course_name'] : false);
-        $params['course_prize'] = (isset($params['course_prize']) ? $params['course_prize'] : false);
-        $params['course_progress'] = (isset($params['course_progress']) ? 1 : 0);
+        $params['course_lang'] = isset($params['course_lang']) ? $params['course_lang'] : 'italian';
+        $params['course_medium_time'] = isset($params['course_medium_time']) ? $params['course_medium_time'] : false;
+        $params['send_calendar'] = isset($params['send_calendar']) ? $params['send_calendar'] : false;
+        $params['course_name'] = isset($params['course_name']) ? $params['course_name'] : false;
+        $params['course_prize'] = isset($params['course_prize']) ? $params['course_prize'] : false;
+        $params['course_progress'] = isset($params['course_progress']) ? 1 : 0;
         if (empty($params['course_progress'])) {
             unset($params['course_progress']);
         }
-        $params['course_quota'] = (isset($params['course_quota']) ? $params['course_quota'] : false);
-        $params['course_sell'] = (isset($params['course_sell']) ? 1 : 0);
+        $params['course_quota'] = isset($params['course_quota']) ? $params['course_quota'] : false;
+        $params['course_sell'] = isset($params['course_sell']) ? 1 : 0;
         if (empty($params['course_sell'])) {
             unset($params['course_sell']);
         }
-        $params['course_show_rules'] = (isset($params['course_show_rules']) ? $params['course_show_rules'] : false);
-        $params['course_sponsor_link'] = (isset($params['course_sponsor_link']) ? $params['course_sponsor_link'] : false);
-        $params['course_status'] = ((isset($params['course_status']) && $params['course_status']) ? $params['course_status'] : 2);
-        $params['course_subs'] = (isset($params['course_subs']) ? $params['course_subs'] : false);
-        $params['course_time'] = (isset($params['course_time']) ? 1 : 0);
+        $params['course_show_rules'] = isset($params['course_show_rules']) ? $params['course_show_rules'] : false;
+        $params['course_sponsor_link'] = isset($params['course_sponsor_link']) ? $params['course_sponsor_link'] : false;
+        $params['course_status'] = isset($params['course_status']) && $params['course_status'] ? $params['course_status'] : 2;
+        $params['course_subs'] = isset($params['course_subs']) ? $params['course_subs'] : false;
+        $params['course_time'] = isset($params['course_time']) ? 1 : 0;
         if (empty($params['course_time'])) {
             unset($params['course_time']);
         }
-        $params['course_type'] = (isset($params['course_type']) ? $params['course_type'] : false);
-        $params['credits'] = (isset($params['credits']) ? $params['credits'] : false);
-        $params['direct_play'] = (isset($params['direct_play']) ? $params['direct_play'] : false);
+        $params['course_type'] = isset($params['course_type']) ? $params['course_type'] : false;
+        $params['credits'] = isset($params['credits']) ? $params['credits'] : false;
+        $params['direct_play'] = isset($params['direct_play']) ? $params['direct_play'] : false;
         if (empty($params['direct_play'])) {
             unset($params['direct_play']);
         }
-        $params['idCategory'] = (isset($params['idCategory']) ? $params['idCategory'] : false);
-        $params['inherit_quota'] = (isset($params['inherit_quota']) ? 1 : 0);
+        $params['idCategory'] = isset($params['idCategory']) ? $params['idCategory'] : false;
+        $params['inherit_quota'] = isset($params['inherit_quota']) ? 1 : 0;
         if (empty($params['inherit_quota'])) {
             unset($params['inherit_quota']);
         }
-        $params['max_num_subscribe'] = (isset($params['max_num_subscribe']) ? $params['max_num_subscribe'] : false);
-        $params['min_num_subscribe'] = (isset($params['min_num_subscribe']) ? $params['min_num_subscribe'] : false);
-        $params['random_course_autoregistration_code'] = (isset($params['random_course_autoregistration_code']) ? $params['random_course_autoregistration_code'] : false);
-        $params['show_result'] = (isset($params['show_result']) ? 1 : 0);
+        $params['max_num_subscribe'] = isset($params['max_num_subscribe']) ? $params['max_num_subscribe'] : false;
+        $params['min_num_subscribe'] = isset($params['min_num_subscribe']) ? $params['min_num_subscribe'] : false;
+        $params['random_course_autoregistration_code'] = isset($params['random_course_autoregistration_code']) ? $params['random_course_autoregistration_code'] : false;
+        $params['show_result'] = isset($params['show_result']) ? 1 : 0;
         if (empty($params['show_result'])) {
             unset($params['show_result']);
         }
-        $params['show_who_online'] = (isset($params['show_who_online']) ? 1 : 0);
-        $params['sub_end_date'] = (isset($params['sub_end_date']) ? $params['sub_end_date'] : false);
-        $params['sub_start_date'] = (isset($params['sub_start_date']) ? $params['sub_start_date'] : false);
-        $params['unsubscribe_date_limit'] = (isset($params['unsubscribe_date_limit']) ? $params['unsubscribe_date_limit'] : false);
-        $params['use_logo_in_courselist'] = (isset($params['use_logo_in_courselist']) ? 1 : 0);
+        $params['show_who_online'] = isset($params['show_who_online']) ? 1 : 0;
+        $params['sub_end_date'] = isset($params['sub_end_date']) ? $params['sub_end_date'] : false;
+        $params['sub_start_date'] = isset($params['sub_start_date']) ? $params['sub_start_date'] : false;
+        $params['unsubscribe_date_limit'] = isset($params['unsubscribe_date_limit']) ? $params['unsubscribe_date_limit'] : false;
+        $params['use_logo_in_courselist'] = isset($params['use_logo_in_courselist']) ? 1 : 0;
         if (empty($params['use_logo_in_courselist'])) {
             unset($params['use_logo_in_courselist']);
         }
-        $params['use_unsubscribe_date_limit'] = (isset($params['use_unsubscribe_date_limit']) ? 1 : 0);
+        $params['use_unsubscribe_date_limit'] = isset($params['use_unsubscribe_date_limit']) ? 1 : 0;
         if (empty($params['use_unsubscribe_date_limit'])) {
             unset($params['use_unsubscribe_date_limit']);
         }
@@ -1009,7 +1009,7 @@ class Course_API extends API
 
         if ($res['res'] == '_ok_course') {
             $id_course = $this->getInfoCourseAdd();
-            $response['message'] = $res['res'] . " -  " . $params['course_type'];
+            $response['message'] = $res['res'] . ' -  ' . $params['course_type'];
             $response['course_id'] = $id_course;
 
         } else {
@@ -1022,7 +1022,7 @@ class Course_API extends API
     public function addClassroom($params)
     {
         $response = [];
-        $courseId = (isset($params['course_id']) ? $params['course_id'] : '');
+        $courseId = isset($params['course_id']) ? $params['course_id'] : '';
 
         if (empty($courseId)) {
             $response['success'] = false;
@@ -1049,18 +1049,18 @@ class Course_API extends API
 
         $res = $classroom_man->insDate(
             $courseId,
-            (($params['classroom_code']) ? $params['classroom_code'] : false),
-            (($params['classroom_name']) ? $params['classroom_name'] : false),
-            (($params['classroom_descr']) ? $params['classroom_descr'] : false),
-            (($params['classroom_medium_time']) ? $params['classroom_medium_time'] : false),
-            (($params['classroom_max_users']) ? $params['classroom_max_users'] : false),
-            (($params['classroom_price']) ? $params['classroom_price'] : false),
-            (($params['classroom_allow_overbooking']) ? $params['classroom_allow_overbooking'] : false),
-            (($params['classroom_status']) ? $params['classroom_status'] : 0),
-            (($params['classroom_test_type']) ? $params['classroom_test_type'] : 0),
-            (($params['classroom_sub_start_date']) ? $params['classroom_sub_start_date'] : '0000-00-00 00:00:00'),
-            (($params['classroom_sub_end_date']) ? $params['classroom_sub_end_date'] : '0000-00-00 00:00:00'),
-            (($params['classroom_unsubscribe_date_limit']) ? $params['classroom_unsubscribe_date_limit'] : false)
+            $params['classroom_code'] ? $params['classroom_code'] : false,
+            $params['classroom_name'] ? $params['classroom_name'] : false,
+            $params['classroom_descr'] ? $params['classroom_descr'] : false,
+            $params['classroom_medium_time'] ? $params['classroom_medium_time'] : false,
+            $params['classroom_max_users'] ? $params['classroom_max_users'] : false,
+            $params['classroom_price'] ? $params['classroom_price'] : false,
+            $params['classroom_allow_overbooking'] ? $params['classroom_allow_overbooking'] : false,
+            $params['classroom_status'] ? $params['classroom_status'] : 0,
+            $params['classroom_test_type'] ? $params['classroom_test_type'] : 0,
+            $params['classroom_sub_start_date'] ? $params['classroom_sub_start_date'] : '0000-00-00 00:00:00',
+            $params['classroom_sub_end_date'] ? $params['classroom_sub_end_date'] : '0000-00-00 00:00:00',
+            $params['classroom_unsubscribe_date_limit'] ? $params['classroom_unsubscribe_date_limit'] : false
         );
 
         if ($res) {
@@ -1078,8 +1078,8 @@ class Course_API extends API
     private function getMaxDateDay($idDate)
     {
         $db = DbConn::getInstance();
-        $query = "select max(id_day) as max_id FROM learning_course_date_day "
-            . " WHERE    ID_DATE = " . $idDate . " AND deleted = 0";
+        $query = 'select max(id_day) as max_id FROM learning_course_date_day '
+            . ' WHERE    ID_DATE = ' . $idDate . ' AND deleted = 0';
         $q = $db->query($query);
         $course_info = $db->fetch_assoc($q);
 
@@ -1096,10 +1096,10 @@ class Course_API extends API
         $index = $this->getMaxDateDay($idDate);
         $idDay = $index + 1;
 
-        $query = "INSERT INTO %lms_course_date_day"
-            . " (id_day, id_date, classroom, date_begin, date_end, pause_begin, pause_end)";
+        $query = 'INSERT INTO %lms_course_date_day'
+            . ' (id_day, id_date, classroom, date_begin, date_end, pause_begin, pause_end)';
 
-        $query .= " VALUES (" . $idDay . ", " . $idDate . ", " . $day_info[0]['classroom'] . ", '" . $day_info[0]['date_begin'] . "', '" . $day_info[0]['date_end'] . "', '" . $day_info[0]['pause_begin'] . "', '" . $day_info[0]['pause_end'] . "')";
+        $query .= ' VALUES (' . $idDay . ', ' . $idDate . ', ' . $day_info[0]['classroom'] . ", '" . $day_info[0]['date_begin'] . "', '" . $day_info[0]['date_end'] . "', '" . $day_info[0]['pause_begin'] . "', '" . $day_info[0]['pause_end'] . "')";
 
 
         $res = sql_query($query);
@@ -1164,19 +1164,19 @@ class Course_API extends API
                 $dateSelected = substr(Format::dateDb($params['edition_date_selected'], 'date'), 0, 10);
             }
 
-            $dateBeginHours = (array_key_exists('edition_b_hours', $params) && !empty($params['edition_b_hours']) && is_numeric($params['edition_b_hours']) ? $params['edition_b_hours'] : '00');
-            $dateBeginMinutes = (array_key_exists('edition_b_minutes', $params) && !empty($params['edition_b_minutes']) && is_numeric($params['edition_b_minutes']) ? $params['edition_b_minutes'] : '00');
+            $dateBeginHours = array_key_exists('edition_b_hours', $params) && !empty($params['edition_b_hours']) && is_numeric($params['edition_b_hours']) ? $params['edition_b_hours'] : '00';
+            $dateBeginMinutes = array_key_exists('edition_b_minutes', $params) && !empty($params['edition_b_minutes']) && is_numeric($params['edition_b_minutes']) ? $params['edition_b_minutes'] : '00';
 
-            $datePauseBeginHours = (array_key_exists('edition_pb_hours', $params) && !empty($params['edition_pb_hours']) && is_numeric($params['edition_pb_hours']) ? $params['edition_pb_hours'] : '00');
-            $datePauseBeginMinutes = (array_key_exists('edition_pb_minutes', $params) && !empty($params['edition_pb_minutes']) && is_numeric($params['edition_pb_minutes']) ? $params['edition_pb_minutes'] : '00');
+            $datePauseBeginHours = array_key_exists('edition_pb_hours', $params) && !empty($params['edition_pb_hours']) && is_numeric($params['edition_pb_hours']) ? $params['edition_pb_hours'] : '00';
+            $datePauseBeginMinutes = array_key_exists('edition_pb_minutes', $params) && !empty($params['edition_pb_minutes']) && is_numeric($params['edition_pb_minutes']) ? $params['edition_pb_minutes'] : '00';
 
-            $datePauseEndHours = (array_key_exists('edition_pe_hours', $params) && !empty($params['edition_pe_hours']) && is_numeric($params['edition_pe_hours']) ? $params['edition_pe_hours'] : '00');
-            $datePauseEndMinutes = (array_key_exists('edition_pe_minutes', $params) && !empty($params['edition_pe_minutes']) && is_numeric($params['edition_pe_minutes']) ? $params['edition_pe_minutes'] : '00');
+            $datePauseEndHours = array_key_exists('edition_pe_hours', $params) && !empty($params['edition_pe_hours']) && is_numeric($params['edition_pe_hours']) ? $params['edition_pe_hours'] : '00';
+            $datePauseEndMinutes = array_key_exists('edition_pe_minutes', $params) && !empty($params['edition_pe_minutes']) && is_numeric($params['edition_pe_minutes']) ? $params['edition_pe_minutes'] : '00';
 
-            $dateEndHours = (array_key_exists('edition_e_hours', $params) && !empty($params['edition_e_hours']) && is_numeric($params['edition_e_hours']) ? $params['edition_e_hours'] : '00');
-            $dateEndMinutes = (array_key_exists('edition_e_minutes', $params) && !empty($params['edition_e_minutes']) && is_numeric($params['edition_e_minutes']) ? $params['edition_e_minutes'] : '00');
+            $dateEndHours = array_key_exists('edition_e_hours', $params) && !empty($params['edition_e_hours']) && is_numeric($params['edition_e_hours']) ? $params['edition_e_hours'] : '00';
+            $dateEndMinutes = array_key_exists('edition_e_minutes', $params) && !empty($params['edition_e_minutes']) && is_numeric($params['edition_e_minutes']) ? $params['edition_e_minutes'] : '00';
 
-            $classRoom = (array_key_exists('edition_classroom', $params) && !empty($params['edition_classroom']) && is_numeric($params['edition_classroom']) ? $params['edition_classroom'] : '0');
+            $classRoom = array_key_exists('edition_classroom', $params) && !empty($params['edition_classroom']) && is_numeric($params['edition_classroom']) ? $params['edition_classroom'] : '0';
 
 
             $model = new ClassroomAlms($courseId, $idDate);
@@ -1316,7 +1316,7 @@ class Course_API extends API
         $response = [];
         $response['success'] = true;
 
-        $courseId = (isset($params['course_id']) ? $params['course_id'] : '');
+        $courseId = isset($params['course_id']) ? $params['course_id'] : '';
 
         if (empty($courseId)) {
             $response['success'] = false;
@@ -1327,97 +1327,97 @@ class Course_API extends API
 
         $course = new CourseAlms();
         $course_info = $course->getInfo($courseId);
-        $params['advance'] = (($params['advance']) ? $params['advance'] : $course_info['advance']);
-        $params['allow_overbooking'] = (($params['allow_overbooking']) ? 1 : 0);
-        $params['allow_overbooking'] = (($params['allow_overbooking']) ? $params['allow_overbooking'] : $course_info['allow_overbooking']);
+        $params['advance'] = $params['advance'] ? $params['advance'] : $course_info['advance'];
+        $params['allow_overbooking'] = $params['allow_overbooking'] ? 1 : 0;
+        $params['allow_overbooking'] = $params['allow_overbooking'] ? $params['allow_overbooking'] : $course_info['allow_overbooking'];
         if (empty($params['allow_overbooking'])) {
             unset($params['allow_overbooking']);
         }
-        $params['auto_unsubscribe'] = (($params['auto_unsubscribe']) ? 1 : 0);
-        $params['auto_unsubscribe'] = (($params['auto_unsubscribe']) ? $params['auto_unsubscribe'] : $course_info['auto_unsubscribe']);
+        $params['auto_unsubscribe'] = $params['auto_unsubscribe'] ? 1 : 0;
+        $params['auto_unsubscribe'] = $params['auto_unsubscribe'] ? $params['auto_unsubscribe'] : $course_info['auto_unsubscribe'];
         if (empty($params['auto_unsubscribe'])) {
             unset($params['auto_unsubscribe']);
         }
-        $params['can_subscribe'] = (($params['can_subscribe']) ? $params['can_subscribe'] : $course_info['can_subscribe']);
-        $params['course_advanced'] = (($params['course_advanced']) ? 1 : 0);
-        $params['course_advanced'] = (($params['course_advanced']) ? $params['course_advanced'] : $course_info['show_extra_info']);
+        $params['can_subscribe'] = $params['can_subscribe'] ? $params['can_subscribe'] : $course_info['can_subscribe'];
+        $params['course_advanced'] = $params['course_advanced'] ? 1 : 0;
+        $params['course_advanced'] = $params['course_advanced'] ? $params['course_advanced'] : $course_info['show_extra_info'];
         if (empty($params['course_advanced'])) {
             unset($params['course_advanced']);
         }
-        $params['course_autoregistration_code'] = (($params['course_autoregistration_code']) ? $params['course_autoregistration_code'] : $course_info['autoregistration_code']);
-        $params['course_code'] = (($params['course_code']) ? $params['course_code'] : $course_info['code']);
-        $params['course_date_begin'] = (($params['course_date_begin']) ? $params['course_date_begin'] : false);
-        $params['course_date_end'] = (($params['course_date_end']) ? $params['course_date_end'] : false);
-        $params['course_day_of'] = (($params['course_day_of']) ? $params['course_day_of'] : $course_info['valid_time']);
-        $params['course_descr'] = (($params['course_descr']) ? $params['course_descr'] : $course_info['description']);
-        $params['course_difficult'] = (($params['course_difficult']) ? $params['course_difficult'] : $course_info['difficult']);
-        $params['course_edition'] = (($params['course_edition']) ? 1 : 0);
-        $params['course_edition'] = (($params['course_edition']) ? $params['course_edition'] : $course_info['course_edition']);
+        $params['course_autoregistration_code'] = $params['course_autoregistration_code'] ? $params['course_autoregistration_code'] : $course_info['autoregistration_code'];
+        $params['course_code'] = $params['course_code'] ? $params['course_code'] : $course_info['code'];
+        $params['course_date_begin'] = $params['course_date_begin'] ? $params['course_date_begin'] : false;
+        $params['course_date_end'] = $params['course_date_end'] ? $params['course_date_end'] : false;
+        $params['course_day_of'] = $params['course_day_of'] ? $params['course_day_of'] : $course_info['valid_time'];
+        $params['course_descr'] = $params['course_descr'] ? $params['course_descr'] : $course_info['description'];
+        $params['course_difficult'] = $params['course_difficult'] ? $params['course_difficult'] : $course_info['difficult'];
+        $params['course_edition'] = $params['course_edition'] ? 1 : 0;
+        $params['course_edition'] = $params['course_edition'] ? $params['course_edition'] : $course_info['course_edition'];
         if (empty($params['course_edition'])) {
             unset($params['course_edition']);
         }
-        $params['course_em'] = (($params['close_lo_perm']) ? 1 : 0);
-        $params['course_em'] = (($params['course_em']) ? $params['course_em'] : $course_info['permCloseLO']);
+        $params['course_em'] = $params['close_lo_perm'] ? 1 : 0;
+        $params['course_em'] = $params['course_em'] ? $params['course_em'] : $course_info['permCloseLO'];
         if (empty($params['course_em'])) {
             unset($params['course_em']);
         }
-        $params['course_lang'] = (($params['course_lang']) ? $params['course_lang'] : $course_info['lang_code']);
-        $params['course_medium_time'] = (($params['course_medium_time']) ? $params['course_medium_time'] : $course_info['mediumTime']);
-        $params['send_calendar'] = (($params['send_calendar']) ? $params['send_calendar'] : $course_info['sendCalendar']);
-        $params['course_name'] = (($params['course_name']) ? $params['course_name'] : $course_info['name']);
-        $params['course_prize'] = (($params['course_price']) ? $params['course_price'] : $course_info['prize']);
-        $params['course_progress'] = (($params['course_progress']) ? 1 : 0);
-        $params['course_progress'] = (($params['course_progress']) ? $params['course_progress'] : $course_info['show_progress']);
+        $params['course_lang'] = $params['course_lang'] ? $params['course_lang'] : $course_info['lang_code'];
+        $params['course_medium_time'] = $params['course_medium_time'] ? $params['course_medium_time'] : $course_info['mediumTime'];
+        $params['send_calendar'] = $params['send_calendar'] ? $params['send_calendar'] : $course_info['sendCalendar'];
+        $params['course_name'] = $params['course_name'] ? $params['course_name'] : $course_info['name'];
+        $params['course_prize'] = $params['course_price'] ? $params['course_price'] : $course_info['prize'];
+        $params['course_progress'] = $params['course_progress'] ? 1 : 0;
+        $params['course_progress'] = $params['course_progress'] ? $params['course_progress'] : $course_info['show_progress'];
         if (empty($params['course_progress'])) {
             unset($params['course_progress']);
         }
-        $params['course_quota'] = (($params['course_quota']) ? $params['course_quota'] : $course_info['course_quota']);
-        $params['course_sell'] = (($params['course_sell']) ? 1 : 0);
-        $params['course_sell'] = (($params['course_sell']) ? $params['course_sell'] : $course_info['selling']);
+        $params['course_quota'] = $params['course_quota'] ? $params['course_quota'] : $course_info['course_quota'];
+        $params['course_sell'] = $params['course_sell'] ? 1 : 0;
+        $params['course_sell'] = $params['course_sell'] ? $params['course_sell'] : $course_info['selling'];
         if (empty($params['course_sell'])) {
             unset($params['course_sell']);
         }
-        $params['course_show_rules'] = (($params['course_show_rules']) ? $params['course_show_rules'] : $course_info['show_rules']);
-        $params['course_sponsor_link'] = (($params['course_sponsor_link']) ? $params['course_sponsor_link'] : $course_info['linkSponsor']);
-        $params['course_status'] = (($params['course_status']) ? $params['course_status'] : $course_info['status']);
-        $params['course_subs'] = (($params['course_subs']) ? $params['course_subs'] : $course_info['subscribe_method']);
-        $params['course_time'] = (($params['course_time']) ? 1 : 0);
-        $params['course_time'] = (($params['course_time']) ? $params['course_time'] : $course_info['show_time']);
+        $params['course_show_rules'] = $params['course_show_rules'] ? $params['course_show_rules'] : $course_info['show_rules'];
+        $params['course_sponsor_link'] = $params['course_sponsor_link'] ? $params['course_sponsor_link'] : $course_info['linkSponsor'];
+        $params['course_status'] = $params['course_status'] ? $params['course_status'] : $course_info['status'];
+        $params['course_subs'] = $params['course_subs'] ? $params['course_subs'] : $course_info['subscribe_method'];
+        $params['course_time'] = $params['course_time'] ? 1 : 0;
+        $params['course_time'] = $params['course_time'] ? $params['course_time'] : $course_info['show_time'];
         if (empty($params['course_time'])) {
             unset($params['course_time']);
         }
-        $params['course_type'] = (($params['course_type']) ? $params['course_type'] : $course_info['course_type']);
-        $params['credits'] = (($params['credits']) ? $params['credits'] : $course_info['credits']);
-        $params['direct_play'] = (($params['direct_play']) ? 1 : 0);
-        $params['direct_play'] = (($params['direct_play']) ? $params['direct_play'] : $course_info['direct_play']);
+        $params['course_type'] = $params['course_type'] ? $params['course_type'] : $course_info['course_type'];
+        $params['credits'] = $params['credits'] ? $params['credits'] : $course_info['credits'];
+        $params['direct_play'] = $params['direct_play'] ? 1 : 0;
+        $params['direct_play'] = $params['direct_play'] ? $params['direct_play'] : $course_info['direct_play'];
         if (empty($params['direct_play'])) {
             unset($params['direct_play']);
         }
-        $params['idCategory'] = (($params['idCategory']) ? $params['idCategory'] : $course_info['idCategory']);
-        $params['inherit_quota'] = (($params['inherit_quota']) ? 1 : 0);
-        $params['inherit_quota'] = (($params['inherit_quota']) ? $params['inherit_quota'] : $course_info['inherit_quota']);
+        $params['idCategory'] = $params['idCategory'] ? $params['idCategory'] : $course_info['idCategory'];
+        $params['inherit_quota'] = $params['inherit_quota'] ? 1 : 0;
+        $params['inherit_quota'] = $params['inherit_quota'] ? $params['inherit_quota'] : $course_info['inherit_quota'];
         if (empty($params['inherit_quota'])) {
             unset($params['inherit_quota']);
         }
-        $params['max_num_subscribe'] = (($params['max_num_subscribe']) ? $params['max_num_subscribe'] : $course_info['max_num_subscribe']);
-        $params['min_num_subscribe'] = (($params['min_num_subscribe']) ? $params['min_num_subscribe'] : $course_info['min_num_subscribe']);
-        $params['random_course_autoregistration_code'] = (($params['random_course_autoregistration_code']) ? $params['random_course_autoregistration_code'] : false);
-        $params['show_result'] = (($params['show_result']) ? 1 : 0);
-        $params['show_result'] = (($params['show_result']) ? $params['show_result'] : $course_info['show_result']);
+        $params['max_num_subscribe'] = $params['max_num_subscribe'] ? $params['max_num_subscribe'] : $course_info['max_num_subscribe'];
+        $params['min_num_subscribe'] = $params['min_num_subscribe'] ? $params['min_num_subscribe'] : $course_info['min_num_subscribe'];
+        $params['random_course_autoregistration_code'] = $params['random_course_autoregistration_code'] ? $params['random_course_autoregistration_code'] : false;
+        $params['show_result'] = $params['show_result'] ? 1 : 0;
+        $params['show_result'] = $params['show_result'] ? $params['show_result'] : $course_info['show_result'];
         if (empty($params['show_result'])) {
             unset($params['show_result']);
         }
-        $params['show_who_online'] = (($params['show_who_online']) ? 1 : 0);
-        $params['show_who_online'] = (($params['show_who_online']) ? $params['show_who_online'] : $course_info['show_who_online']);
-        $params['sub_end_date'] = (($params['sub_end_date']) ? $params['sub_end_date'] : $course_info['sub_end_date']);
-        $params['sub_start_date'] = (($params['sub_start_date']) ? $params['sub_start_date'] : $course_info['sub_start_date']);
-        $params['unsubscribe_date_limit'] = (($params['unsubscribe_date_limit']) ? $params['unsubscribe_date_limit'] : $course_info['unsubscribe_date_limit']);
-        $params['use_logo_in_courselist'] = (($params['use_logo_in_courselist']) ? 1 : 0);
-        $params['use_logo_in_courselist'] = (($params['use_logo_in_courselist']) ? $params['use_logo_in_courselist'] : $course_info['use_logo_in_courselist']);
+        $params['show_who_online'] = $params['show_who_online'] ? 1 : 0;
+        $params['show_who_online'] = $params['show_who_online'] ? $params['show_who_online'] : $course_info['show_who_online'];
+        $params['sub_end_date'] = $params['sub_end_date'] ? $params['sub_end_date'] : $course_info['sub_end_date'];
+        $params['sub_start_date'] = $params['sub_start_date'] ? $params['sub_start_date'] : $course_info['sub_start_date'];
+        $params['unsubscribe_date_limit'] = $params['unsubscribe_date_limit'] ? $params['unsubscribe_date_limit'] : $course_info['unsubscribe_date_limit'];
+        $params['use_logo_in_courselist'] = $params['use_logo_in_courselist'] ? 1 : 0;
+        $params['use_logo_in_courselist'] = $params['use_logo_in_courselist'] ? $params['use_logo_in_courselist'] : $course_info['use_logo_in_courselist'];
         if (empty($params['use_logo_in_courselist'])) {
             unset($params['use_logo_in_courselist']);
         }
-        $params['use_unsubscribe_date_limit'] = (($params['use_unsubscribe_date_limit']) ? 1 : 0);
+        $params['use_unsubscribe_date_limit'] = $params['use_unsubscribe_date_limit'] ? 1 : 0;
         if (empty($params['use_unsubscribe_date_limit'])) {
             unset($params['use_unsubscribe_date_limit']);
         }
@@ -1493,19 +1493,19 @@ class Course_API extends API
                 }
 
                 if (!$error) {
-                    $dateBeginHours = (array_key_exists('edition_b_hours', $params) && !empty($params['edition_b_hours']) && is_numeric($params['edition_b_hours']) ? $params['edition_b_hours'] : '00');
-                    $dateBeginMinutes = (array_key_exists('edition_b_minutes', $params) && !empty($params['edition_b_minutes']) && is_numeric($params['edition_b_minutes']) ? $params['edition_b_minutes'] : '00');
+                    $dateBeginHours = array_key_exists('edition_b_hours', $params) && !empty($params['edition_b_hours']) && is_numeric($params['edition_b_hours']) ? $params['edition_b_hours'] : '00';
+                    $dateBeginMinutes = array_key_exists('edition_b_minutes', $params) && !empty($params['edition_b_minutes']) && is_numeric($params['edition_b_minutes']) ? $params['edition_b_minutes'] : '00';
 
-                    $datePauseBeginHours = (array_key_exists('edition_pb_hours', $params) && !empty($params['edition_pb_hours']) && is_numeric($params['edition_pb_hours']) ? $params['edition_pb_hours'] : '00');
-                    $datePauseBeginMinutes = (array_key_exists('edition_pb_minutes', $params) && !empty($params['edition_pb_minutes']) && is_numeric($params['edition_pb_minutes']) ? $params['edition_pb_minutes'] : '00');
+                    $datePauseBeginHours = array_key_exists('edition_pb_hours', $params) && !empty($params['edition_pb_hours']) && is_numeric($params['edition_pb_hours']) ? $params['edition_pb_hours'] : '00';
+                    $datePauseBeginMinutes = array_key_exists('edition_pb_minutes', $params) && !empty($params['edition_pb_minutes']) && is_numeric($params['edition_pb_minutes']) ? $params['edition_pb_minutes'] : '00';
 
-                    $datePauseEndHours = (array_key_exists('edition_pe_hours', $params) && !empty($params['edition_pe_hours']) && is_numeric($params['edition_pe_hours']) ? $params['edition_pe_hours'] : '00');
-                    $datePauseEndMinutes = (array_key_exists('edition_pe_minutes', $params) && !empty($params['edition_pe_minutes']) && is_numeric($params['edition_pe_minutes']) ? $params['edition_pe_minutes'] : '00');
+                    $datePauseEndHours = array_key_exists('edition_pe_hours', $params) && !empty($params['edition_pe_hours']) && is_numeric($params['edition_pe_hours']) ? $params['edition_pe_hours'] : '00';
+                    $datePauseEndMinutes = array_key_exists('edition_pe_minutes', $params) && !empty($params['edition_pe_minutes']) && is_numeric($params['edition_pe_minutes']) ? $params['edition_pe_minutes'] : '00';
 
-                    $dateEndHours = (array_key_exists('edition_e_hours', $params) && !empty($params['edition_e_hours']) && is_numeric($params['edition_e_hours']) ? $params['edition_e_hours'] : '00');
-                    $dateEndMinutes = (array_key_exists('edition_e_minutes', $params) && !empty($params['edition_e_minutes']) && is_numeric($params['edition_e_minutes']) ? $params['edition_e_minutes'] : '00');
+                    $dateEndHours = array_key_exists('edition_e_hours', $params) && !empty($params['edition_e_hours']) && is_numeric($params['edition_e_hours']) ? $params['edition_e_hours'] : '00';
+                    $dateEndMinutes = array_key_exists('edition_e_minutes', $params) && !empty($params['edition_e_minutes']) && is_numeric($params['edition_e_minutes']) ? $params['edition_e_minutes'] : '00';
 
-                    $classRoom = (array_key_exists('edition_classroom', $params) && !empty($params['edition_classroom']) && is_numeric($params['edition_classroom']) ? $params['edition_classroom'] : '0');
+                    $classRoom = array_key_exists('edition_classroom', $params) && !empty($params['edition_classroom']) && is_numeric($params['edition_classroom']) ? $params['edition_classroom'] : '0';
 
                     $arrayDays[$idDay]['date_begin'] = $dateSelected . ' ' . $dateBeginHours . ':' . $dateBeginMinutes . ':00';
                     $arrayDays[$idDay]['pause_begin'] = $dateSelected . ' ' . $datePauseBeginHours . ':' . $datePauseBeginMinutes . ':00';
@@ -1583,18 +1583,18 @@ class Course_API extends API
 
         $res = $this->updateDate(
             $idDate,
-            (!empty($params['classroom_code']) ? $params['classroom_code'] : false),
-            (!empty($params['classroom_name']) ? $params['classroom_name'] : false),
-            (!empty($params['classroom_descr']) ? $params['classroom_descr'] : false),
-            (!empty($params['classroom_medium_time']) ? $params['classroom_medium_time'] : false),
-            (!empty($params['classroom_max_users']) ? $params['classroom_max_users'] : 0),
-            (!empty($params['classroom_price']) ? $params['classroom_price'] : null),
-            (!empty($params['classroom_allow_overbooking']) ? $params['classroom_allow_overbooking'] : 0),
-            (!empty($params['classroom_status']) ? $params['classroom_status'] : 0),
-            (!empty($params['classroom_test_type']) ? $params['classroom_test_type'] : 0),
-            (!empty($params['classroom_sub_start_date']) ? $params['classroom_sub_start_date'] : false),
-            (!empty($params['classroom_sub_end_date']) ? $params['classroom_sub_end_date'] : false),
-            (!empty($params['classroom_unsubscribe_date_limit']) ? $params['classroom_unsubscribe_date_limit'] : false)
+            !empty($params['classroom_code']) ? $params['classroom_code'] : false,
+            !empty($params['classroom_name']) ? $params['classroom_name'] : false,
+            !empty($params['classroom_descr']) ? $params['classroom_descr'] : false,
+            !empty($params['classroom_medium_time']) ? $params['classroom_medium_time'] : false,
+            !empty($params['classroom_max_users']) ? $params['classroom_max_users'] : 0,
+            !empty($params['classroom_price']) ? $params['classroom_price'] : null,
+            !empty($params['classroom_allow_overbooking']) ? $params['classroom_allow_overbooking'] : 0,
+            !empty($params['classroom_status']) ? $params['classroom_status'] : 0,
+            !empty($params['classroom_test_type']) ? $params['classroom_test_type'] : 0,
+            !empty($params['classroom_sub_start_date']) ? $params['classroom_sub_start_date'] : false,
+            !empty($params['classroom_sub_end_date']) ? $params['classroom_sub_end_date'] : false,
+            !empty($params['classroom_unsubscribe_date_limit']) ? $params['classroom_unsubscribe_date_limit'] : false
         );
 
         if ($res) {
@@ -1602,7 +1602,7 @@ class Course_API extends API
             $response['id_date'] = $idDate;
         } else {
             $response['success'] = false;
-            $response['message'] = 'Error updating classroom<br>' . $idDate . "<br>- " . $params['classroom_code'] . "<br>- " . $params['classroom_name'];
+            $response['message'] = 'Error updating classroom<br>' . $idDate . '<br>- ' . $params['classroom_code'] . '<br>- ' . $params['classroom_name'];
         }
 
 
@@ -1611,20 +1611,20 @@ class Course_API extends API
 
     private function updateDate($idDate, $code, $name, $description, $medium_time, $max_par, $price, $overbooking, $status, $test_type, $sub_start_date, $sub_end_date, $unsubscribe_date_limit)
     {
-        $query = "UPDATE " . $GLOBALS['prefix_lms'] . "_course_date"
+        $query = 'UPDATE ' . $GLOBALS['prefix_lms'] . '_course_date'
             . " SET code = '" . $code . "',"
             . " name = '" . $name . "',"
             . " description = '" . $description . "',"
             . " medium_time = '" . $medium_time . "',"
             . " max_par = '" . $max_par . "',"
             . " price = '" . $price . "',"
-            . " overbooking = " . $overbooking . ","
-            . " test_type = " . $test_type . ","
-            . " status = " . $status . ","
+            . ' overbooking = ' . $overbooking . ','
+            . ' test_type = ' . $test_type . ','
+            . ' status = ' . $status . ','
             . " sub_start_date = '" . $sub_start_date . "',"
             . " sub_end_date = '" . $sub_end_date . "',"
             . " unsubscribe_date_limit = '" . $unsubscribe_date_limit . "'"
-            . " WHERE id_date = " . $idDate;
+            . ' WHERE id_date = ' . $idDate;
 
 
         return sql_query($query);
@@ -1636,7 +1636,7 @@ class Course_API extends API
     {
         $response = [];
 
-        $courseId = (isset($params['course_id']) ? $params['course_id'] : '');
+        $courseId = isset($params['course_id']) ? $params['course_id'] : '';
 
         if (empty($courseId)) {
             $response['success'] = false;
@@ -1757,13 +1757,13 @@ class Course_API extends API
         $arr_lo_track = [];
         $arr_org_access = [];
 
-        $query = "SELECT * FROM %lms_organization WHERE idCourse = " . (int)$id_course;
+        $query = 'SELECT * FROM %lms_organization WHERE idCourse = ' . (int)$id_course;
         $ores = sql_query($query);
 
         while ($obj = sql_fetch_object($ores)) {
             $deleted = true;
 
-            if ($obj->idResource != 0 && $obj->objectType != "") {
+            if ($obj->idResource != 0 && $obj->objectType != '') {
                 $lo = createLO($obj->objectType);
                 // $deleted = $lo->del($obj->idResource); //delete learning object
             }
@@ -1776,11 +1776,11 @@ class Course_API extends API
         }
 
         //delete all organizations references for the course
-        $query = "DELETE FROM %lms_organization WHERE idCourse = " . (int)$id_course;
+        $query = 'DELETE FROM %lms_organization WHERE idCourse = ' . (int)$id_course;
         $res = sql_query($query);
 
 
-        $query = "DELETE FROM %lms_course WHERE idCourse = " . (int)$id_course;
+        $query = 'DELETE FROM %lms_course WHERE idCourse = ' . (int)$id_course;
         $res = sql_query($query);
 
 
@@ -1793,15 +1793,15 @@ class Course_API extends API
 
         //delete org accesses
         if (!empty($arr_org_access)) {
-            $query = "DELETE FROM %lms_organization_access
-                WHERE idOrgAccess IN (" . implode(",", $arr_org_access) . ")";
+            $query = 'DELETE FROM %lms_organization_access
+                WHERE idOrgAccess IN (' . implode(',', $arr_org_access) . ')';
             $res = sql_query($query);
         }
 
         //delete lo params
         if (!empty($arr_lo_param)) {
-            $query = "DELETE FROM %lms_lo_param
-                WHERE idParam IN (" . implode(",", $arr_lo_param) . ")";
+            $query = 'DELETE FROM %lms_lo_param
+                WHERE idParam IN (' . implode(',', $arr_lo_param) . ')';
         }
 
         //--- end LOs --------------------------------------------------------------
@@ -1846,7 +1846,7 @@ class Course_API extends API
         //--- end competences ------------------------------------------------------
 
         //remove customfield
-        if (!sql_query("DELETE FROM " . $GLOBALS['prefix_fw'] . "_customfield_entry WHERE id_field IN (SELECT id_field FROM core_customfield WHERE area_code = 'COURSE') AND id_obj = '" . $id_course . "'"))
+        if (!sql_query('DELETE FROM ' . $GLOBALS['prefix_fw'] . "_customfield_entry WHERE id_field IN (SELECT id_field FROM core_customfield WHERE area_code = 'COURSE') AND id_obj = '" . $id_course . "'"))
             return false;
 
         //--- finally delete course from courses table -----------------------------
@@ -1869,8 +1869,8 @@ class Course_API extends API
     */
     public function updateCategory($params)
     {
-        $idCategory = (isset($params['idCategory']) ? $params['idCategory'] : '');
-        $name = (isset($params['name']) ? $params['name'] : '');
+        $idCategory = isset($params['idCategory']) ? $params['idCategory'] : '';
+        $name = isset($params['name']) ? $params['name'] : '';
 
         $response = [];
 
@@ -1958,16 +1958,16 @@ class Course_API extends API
     {
 
         $response = [];
-        $query = "SELECT lo.title,lo.idOrg,lo.idCourse,lo.visible,lo.objectType , lc.name
+        $query = 'SELECT lo.title,lo.idOrg,lo.idCourse,lo.visible,lo.objectType , lc.name
                      FROM learning_organization lo, learning_course lc
-                     WHERE lo.idCourse = " . $params['course_id'] . " and lo.idCourse=lc.idCourse";
+                     WHERE lo.idCourse = ' . $params['course_id'] . ' and lo.idCourse=lc.idCourse';
 
 
         $res = $this->db->query($query);
 
         $response['success'] = true;
         //$output['query'] = $query;
-        foreach ($res as $row){
+        foreach ($res as $row) {
 
             $response[]['lo_course'] = array(
                 'nome_lo' => $row['title'],
@@ -2019,7 +2019,7 @@ class Course_API extends API
                             'toId' => $idReference,
                             'idCourse' => $idCourse,
                             'idUser' => $idUser,
-                            'success' => ($idReference > 0)
+                            'success' => $idReference > 0
                         ];
                     }
                 }
@@ -2076,7 +2076,7 @@ class Course_API extends API
 
         // recupera TRACK della risposta del test
         $db = DbConn::getInstance();
-        $qtxt = "SELECT idTrack, idTest, date_end_attempt FROM learning_testtrack where idReference=" . $params['id_org'] . " and idUser=" . $params['id_user'];
+        $qtxt = 'SELECT idTrack, idTest, date_end_attempt FROM learning_testtrack where idReference=' . $params['id_org'] . ' and idUser=' . $params['id_user'];
         $q = $db->query($qtxt);
         $course_info = $db->fetch_assoc($q);
 
@@ -2087,8 +2087,8 @@ class Course_API extends API
 
         $q_test = 'select lta.idQuest, lta.idAnswer , title_quest, score_assigned  , lta.idTrack as idTrack
                     from learning_testtrack_answer lta, learning_testquest ltq
-                    where lta.idTrack=' . $id_track . " 
-                    and lta.idQuest=ltq.idQuest and lta.user_answer=1";
+                    where lta.idTrack=' . $id_track . ' 
+                    and lta.idQuest=ltq.idQuest and lta.user_answer=1';
 
 
         $response['success'] = true;
@@ -2129,7 +2129,7 @@ class Course_API extends API
     private function getTrackAnswer($idTrack, $idQuest)
     {
         $db = DbConn::getInstance();
-        $sql = "select idAnswer, more_info from learning_testtrack_answer where idTrack=" . $idTrack . " and idQuest=" . $idQuest;
+        $sql = 'select idAnswer, more_info from learning_testtrack_answer where idTrack=' . $idTrack . ' and idQuest=' . $idQuest;
 
         $result = $db->query($sql);
         $response = [];
@@ -2149,13 +2149,13 @@ class Course_API extends API
     {
         $db = DbConn::getInstance();
         $out = [];
-        $q_ans = "select idAnswer, sequence, is_correct, answer, score_correct, score_incorrect from learning_testquestanswer where idQuest=" . $idQuest . " order by sequence";
+        $q_ans = 'select idAnswer, sequence, is_correct, answer, score_correct, score_incorrect from learning_testquestanswer where idQuest=' . $idQuest . ' order by sequence';
 
         $vett_answer = [];
 
         $result = $db->query($q_ans);
 
-        foreach ($result as $rowAnswer){
+        foreach ($result as $rowAnswer) {
 
             $answer = [];
             $answer['id_answer'] = $rowAnswer['idAnswer'];
@@ -2220,7 +2220,7 @@ class Course_API extends API
                 create_date, security_code, imported_from_connection, course_quota, used_space, course_vote, allow_overbooking, can_subscribe,
                 sub_start_date, sub_end_date, advance, show_who_online, direct_play, autoregistration_code, use_logo_in_courselist )
                 VALUES
-                ( '" . $list_sel['idCategory'] . "', '" . $list_sel['code'] . "', '" . "Copia di " . $list_sel['name'] . "', '" . $list_sel['description'] . "', '" . $list_sel['lang_code'] . "', '" . $list_sel['status'] . "', '" . $list_sel['level_show_user'] . "',
+                ( '" . $list_sel['idCategory'] . "', '" . $list_sel['code'] . "', '" . 'Copia di ' . $list_sel['name'] . "', '" . $list_sel['description'] . "', '" . $list_sel['lang_code'] . "', '" . $list_sel['status'] . "', '" . $list_sel['level_show_user'] . "',
                 '" . $list_sel['subscribe_method'] . "', '" . $list_sel['linkSponsor'] . "', '" . $list_sel['imgSponsor'] . "', '" . $list_sel['img_course'] . "', '" . $list_sel['img_material'] . "', '" . $list_sel['img_othermaterial'] . "',
                 '" . $list_sel['course_demo'] . "', '" . $list_sel['mediumTime'] . "', '" . $list_sel['permCloseLO'] . "', '" . $list_sel['userStatusOp'] . "', '" . $list_sel['difficult'] . "', '" . $list_sel['show_progress'] . "', '" . $list_sel['show_time'] . "', '" . $list_sel['show_extra_info'] . "',
                 '" . $list_sel['show_rules'] . "', '" . $list_sel['valid_time'] . "', '" . $list_sel['max_num_subscribe'] . "', '" . $list_sel['min_num_subscribe'] . "',
@@ -2246,9 +2246,9 @@ class Course_API extends API
         $query_selmen = "SELECT * FROM %lms_menucourse_main WHERE idCourse = '" . $id_dupcourse . "' ";
         $result_selmen = sql_query($query_selmen);
         while ($list_selmen = sql_fetch_array($result_selmen)) {
-            $query_dupmen = "INSERT INTO %lms_menucourse_main " .
-                " (idCourse, sequence, name, image) " .
-                " VALUES " .
+            $query_dupmen = 'INSERT INTO %lms_menucourse_main ' .
+                ' (idCourse, sequence, name, image) ' .
+                ' VALUES ' .
                 " ( '" . $new_course_dup . "', '" . $list_selmen['sequence'] . "', '" . $list_selmen['name'] . "', '" . $list_selmen['image'] . "' )";
             $result_dupmen = sql_query($query_dupmen);
             $array_seq[$list_selmen['idMain']] = sql_insert_id();
@@ -2265,9 +2265,9 @@ class Course_API extends API
         }
         $result_dupmen = true;
         if (!empty($query_insert_list)) {
-            $query_dupmen = "INSERT INTO %lms_menucourse_under
+            $query_dupmen = 'INSERT INTO %lms_menucourse_under
                     (idMain, idCourse, sequence, idModule, my_name)
-                    VALUES " . implode(",", $query_insert_list);
+                    VALUES ' . implode(',', $query_insert_list);
             $result_dupmen = sql_query($query_dupmen);
         }
 
@@ -2318,15 +2318,15 @@ class Course_API extends API
             }
             $result_dupmen = true;
             if (!empty($query_insert_list)) {
-                $query_dupmen = "INSERT INTO %lms_certificate_course
+                $query_dupmen = 'INSERT INTO %lms_certificate_course
                         (id_certificate, id_course, available_for_status, point_required)
-                        VALUES " . implode(",", $query_insert_list);
+                        VALUES ' . implode(',', $query_insert_list);
                 $result_dupmen = sql_query($query_dupmen);
             }
         }
 
 
-        require_once(Forma::inc(_lms_ . '/modules/organization/orglib.php'));
+        require_once Forma::inc(_lms_ . '/modules/organization/orglib.php');
         require_once(_lms_ . '/lib/lib.param.php');
         require_once(_lms_ . '/class.module/track.object.php');
         require_once(_lms_ . '/class.module/learning.object.php');
@@ -2350,7 +2350,7 @@ class Course_API extends API
             $prereq_map = [];
 
             // retrive all the folders and object, the order by grant that folder are created before the elements contained in them
-            $query = "SELECT * FROM %lms_organization WHERE idCourse = " . (int)$id_dupcourse . " ORDER BY path ASC";
+            $query = 'SELECT * FROM %lms_organization WHERE idCourse = ' . (int)$id_dupcourse . ' ORDER BY path ASC';
             $source_res = sql_query($query);
 
             // Go trough all the entry of learning_organization
@@ -2437,7 +2437,7 @@ class Course_API extends API
             foreach ($prereq_map as $new_id_reference => $old_prerequisites) {
 
                 $new_prerequisites = [];
-                $old_prerequisites = explode(",", $old_prerequisites);
+                $old_prerequisites = explode(',', $old_prerequisites);
                 foreach ($old_prerequisites as $old_p) {
 
                     //a prerequisite can be a pure number or something like 7=NULL, or 7=incomplete
@@ -2446,9 +2446,9 @@ class Course_API extends API
                 }
                 if (!empty($new_prerequisites)) {
 
-                    $query_updcor = "UPDATE %lms_organization "
-                        . "SET prerequisites = '" . implode(",", $new_prerequisites) . "' "
-                        . "WHERE idOrg = " . $new_id_reference . " ";
+                    $query_updcor = 'UPDATE %lms_organization '
+                        . "SET prerequisites = '" . implode(',', $new_prerequisites) . "' "
+                        . 'WHERE idOrg = ' . $new_id_reference . ' ';
                     $result_upcor = sql_query($query_updcor);
                 }
             }
@@ -2464,9 +2464,9 @@ class Course_API extends API
 
             $result_dupmen = true;
             if (!empty($query_insert_list)) {
-                $query_dupmen = "INSERT INTO %lms_htmlfront
+                $query_dupmen = 'INSERT INTO %lms_htmlfront
                         (id_course, textof)
-                        VALUES " . implode(",", $query_insert_list);
+                        VALUES ' . implode(',', $query_insert_list);
                 $result_dupmen = sql_query($query_dupmen);
             }
 
@@ -2479,7 +2479,7 @@ class Course_API extends API
         $response['success'] = true;
         $response['from_course_id'] = $id_dupcourse;
         $response['new_course_id'] = $new_id_course;
-        $response['new_course_name'] = "Copia di " . $list_sel['name'];
+        $response['new_course_name'] = 'Copia di ' . $list_sel['name'];
 
         return $response;
 
@@ -2490,7 +2490,7 @@ class Course_API extends API
     {
 
         $lo_types_cache = [];
-        $query = "SELECT objectType, className, fileName FROM %lms_lo_types";
+        $query = 'SELECT objectType, className, fileName FROM %lms_lo_types';
         $rs = sql_query($query);
         while (list($type, $className, $fileName) = sql_fetch_row($rs)) {
             $lo_types_cache[$type] = array($className, $fileName);
@@ -2508,55 +2508,130 @@ class Course_API extends API
     function assignMetaUser($params)
     {
 
-        $meta_cert_id = (isset($params['meta_cert_id']) ? $params['meta_cert_id'] : '');
-        $meta_user_id = (isset($params['meta_user_id']) ? $params['meta_user_id'] : '');
-        $meta_course_id = (isset($params['meta_course_id']) ? $params['meta_course_id'] : '');
+        $metaCertId = $params['meta_cert_id'] ?? '';
+        $metaUserId = $params['meta_user_id'] ?? '';
+        $metaCourseId = $params['meta_course_id'] ?? '';
         $response = [];
 
 
-        if (empty($meta_cert_id)) {
+        if (empty($metaCertId)) {
             $response['success'] = false;
-            $response['message'] = 'Missing meta_cert_id ' . $meta_cert_id;
+            $response['message'] = 'Missing meta_cert_id ' . $metaCertId;
             return $response;
         }
 
-        if (empty($meta_user_id)) {
+        if (empty($metaUserId)) {
             $response['success'] = false;
-            $response['message'] = 'Missing meta_user_id ' . $meta_user_id;
+            $response['message'] = 'Missing meta_user_id ' . $metaUserId;
             return $response;
         }
 
-        if (empty($meta_course_id)) {
+        if (empty($metaCourseId)) {
             $response['success'] = false;
-            $response['message'] = 'Missing meta_course_id ' . $meta_course_id;
+            $response['message'] = 'Missing meta_course_id ' . $metaCourseId;
             return $response;
         }
 
         // get value course & user
-        $vett_user = explode(",", $meta_user_id);
-        $vett_course = explode(",", $meta_course_id);
+        $users = explode(',', $metaUserId);
+        $courses = explode(',', $metaCourseId);
 
         $response['success'] = true;
-        foreach ($vett_user as $keyUser => $valueUser) {
-            $response['debug_user_' . $valueUser] = $valueUser;
-            foreach ($vett_course as $keyCourse => $valueCourse) {
-                $response['debug_course_' . $valueCourse] = $valueCourse;
-
+        foreach ($users as $idUser) {
+            foreach ($courses as $idCourse) {
                 // assign course to user by association cert id
                 try {
-                    $query_meta = "INSERT INTO %lms_certificate_meta_course (idMetaCertificate, idUser, idCourse,idCourseEdition) 
-                                         VALUES (" . $meta_cert_id . "," . $valueUser . "," . $valueCourse . ",0)";
-                    $result_meta = sql_query($query_meta);
-                } catch (Exception $e) {
+                    $query = 'INSERT INTO %lms_certificate_meta_course (idMetaCertificate, idUser, idCourse,idCourseEdition)  VALUES (' . $metaCertId . ',' . $idUser . ',' . $idCourse . ',0)';
+                    sql_query($query);
+                } catch (Exception $exception) {
                     $response['success'] = false;
+                    $response['messages'] = [
+                        'meta_cert_id' => $metaCertId,
+                        'meta_user_id' => $idUser,
+                        'meta_course_id' => $idCourse,
+                        'message' => $exception->getMessage()
+                    ];
                 }
-
             }
-
         }
 
         return $response;
 
+    }
+
+    function addAssociationMetaCertificates($params)
+    {
+        $response = [];
+        $response['success'] = true;
+
+        try {
+            $metaCertificatesRQ = $params['meta_certificates'] ?? [];
+
+            if (count($metaCertificatesRQ) > 0) {
+                foreach ($metaCertificatesRQ as $metaCertificatesRQItem) {
+                    $metaCertId = $metaCertificatesRQItem['meta_cert_id'] ?? '';
+                    $nameAssociation = $metaCertificatesRQItem['name_ass'] ?? '';
+                    $descrAssociation = $metaCertificatesRQItem['descr_ass'] ?? '';
+                    $metaCertType = (int)($metaCertificatesRQItem['meta_type'] ?? 0);
+
+                    if (empty($metaCertId)) {
+                        $response['success'] = false;
+                        $response['message'] = 'Missing meta_cert_id ' . $metaCertId;
+                        return $response;
+                    }
+
+                    if (empty($nameAssociation)) {
+                        $response['success'] = false;
+                        $response['message'] = 'Missing name_ass ' . $nameAssociation;
+                        return $response;
+                    }
+
+                    // add association to meta cert id
+                    try {
+                        $queryMeta = 'INSERT INTO %lms_aggregated_cert_metadata ( idCertificate, title, description) VALUES (' . $metaCertId . ",'" . $nameAssociation . "','" . $descrAssociation . "')";
+                        sql_query($queryMeta);
+                        // get id new association
+                        $queryAssociation = 'select max(idAssociation) as id_meta from %lms_aggregated_cert_metadata';
+                        $qres = sql_query($queryAssociation);
+                        [$idAssociation] = sql_fetch_row($qres);
+
+                        if ($metaCertType === 0){
+                            $query = 'SELECT idCourse FROM `%lms_certificate_meta_course` WHERE `idMetaCertificate` =' . $metaCertId;
+
+                            $queryResult = sql_query($query);
+                            [$idCourse] = sql_fetch_row($queryResult);
+
+                            $query = 'INSERT INTO `%lms_aggregated_cert_course` (`idAssociation`, `idUser`, `idCourse`, `idCourseEdition`) VALUES ( '.$idAssociation.', 0, '.$idCourse.', 0);';
+                            sql_query($query);
+                        }
+
+                        $response['id_new_associations'][] = [
+                            'meta_cert_id' => $metaCertId,
+                            'name_ass' => $nameAssociation,
+                            'descr_ass' => $descrAssociation,
+                            'id_new_association' => $idAssociation
+                        ];
+                    } catch (Exception $exception) {
+                        $response[] = [
+                            'success' => false,
+                            'message' => $exception->getMessage()
+                        ];
+                    }
+                }
+            } else {
+                $response = [
+                    'success' => false,
+                    'message' => 'Meta Certificates must be more than or equal to one'
+                ];
+            }
+        } catch (\Exception $exception) {
+            $response = [
+                'success' => false,
+                'message' => $exception->getMessage()
+            ];
+        }
+
+        return $response;
     }
 
     function removeAssociationCertificates($params)
@@ -2604,7 +2679,7 @@ class Course_API extends API
         try {
 
             $idCourse = $params['course_id'] ?? '';
-            $certificatesRQ = ($params['certificates'] ?? []);
+            $certificatesRQ = $params['certificates'] ?? [];
 
             $course_man = new Man_Course();
             $courseExists = $course_man->courseExists($idCourse);
@@ -2626,7 +2701,7 @@ class Course_API extends API
                         }
                     }
                     $cert = new Certificate();
-
+                    $requiredPoint = 0;
                     $result = $cert->updateCertificateCourseAssign($idCourse,
                         $certificates,
                         $excellenceCertificates,
@@ -2642,7 +2717,7 @@ class Course_API extends API
                 } else {
                     $response = [
                         'success' => false,
-                        'message' => 'Certificats must be more than or equal to one'
+                        'message' => 'Certificates must be more than or equal to one'
                     ];
                 }
             } else {
@@ -2757,20 +2832,18 @@ class Course_API extends API
 
         if (empty($courseFromExists)) {
 
-            $response = [
+            return [
                 'success' => false,
                 'message' => 'Course From does not exists :' . $courseIdFrom
             ];
-            return $response;
         }
 
         if (empty($courseToExists)) {
 
-            $response = [
+            return [
                 'success' => false,
                 'message' => 'Course To does not exists :' . $courseIdTo
             ];
-            return $response;
         }
 
         // if $course_id_from equal zero, l'img of course destination is image default
@@ -2778,7 +2851,7 @@ class Course_API extends API
 
         // get exist image course source
 
-        $sql_img = "select img_course from learning_course where idCourse=" . $courseIdFrom;
+        $sql_img = 'select img_course from learning_course where idCourse=' . $courseIdFrom;
         $res = sql_query($sql_img);
         list($img_course) = sql_fetch_row($res);
 
@@ -3036,10 +3109,10 @@ class Course_API extends API
                 }
                 break;
 
-            case 'addMetaCertificate':
-            case 'addmetacertificate':
+            case 'addMetaCertificates':
+            case 'addmetacertificates':
                 {
-                    $response = $this->addAssociationMetaCertificate($params);
+                    $response = $this->addAssociationMetaCertificates($params);
                 }
                 break;
 

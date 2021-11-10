@@ -162,7 +162,7 @@ SELECT `idMetaCertificate`, `idUser`, `idCourse`, `idCourseEdition`  from learni
   
 DELETE FROM learning_aggregated_cert_course WHERE idUser = 0; 
 INSERT IGNORE INTO `learning_aggregated_cert_course` (idAssociation, idUser, idCourse, idCourseEdition)  
-SELECT idAssociation, 0 as idUser, idCourse, idCourseEdition  FROM `learning_aggregated_cert_course`;
+SELECT idAssociation, 0 as idUser, idCourse, idCourseEdition  FROM `learning_aggregated_cert_course` group by idAssociation,idCourse,idCourseEdition;
 
 
 CREATE TABLE IF NOT EXISTS `learning_aggregated_cert_coursepath` (
