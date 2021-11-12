@@ -1,4 +1,4 @@
-<?php defined("IN_FORMA") or die("Direct access is forbidden");
+<?php defined('IN_FORMA') or die('Direct access is forbidden');
 
 /* ======================================================================== \
 |   FORMA - The E-Learning Suite                                            |
@@ -44,19 +44,20 @@ class CourseAlms extends Model
 
     public function getPerm()
     {
-        return array(
+        return [
             'view' => 'standard/view.png',
             'add' => 'standard/add.png',
             'mod' => 'standard/edit.png',
             'del' => 'standard/rem.png',
             'moderate' => '',
             'subscribe' => ''
-        );
+        ];
     }
 
-    
-    public function getUserInOverbooking($idCourse){
-    $userlevelid = Docebo::user()->getUserLevelId();
+
+    public function getUserInOverbooking($idCourse)
+    {
+        $userlevelid = Docebo::user()->getUserLevelId();
         if ($userlevelid != ADMIN_GROUP_GODADMIN) {
             require_once(_base_ . '/lib/lib.preference.php');
             $adminManager = new AdminPreference();
@@ -69,38 +70,40 @@ class CourseAlms extends Model
         }
 
         // skipping those that are both in ovebooking and waiting (admin approval course + overbooking) otherwise they are couted twice
-        
-        $query = "select COUNT(cu.idUser) as num_overbooking"
-            . " FROM %lms_course AS c"
-            . " LEFT JOIN %lms_courseuser AS cu ON c.idCourse = cu.idCourse and cu.idCourse=".$idCourse
+
+        $query = 'select COUNT(cu.idUser) as num_overbooking'
+            . ' FROM %lms_course AS c'
+            . ' LEFT JOIN %lms_courseuser AS cu ON c.idCourse = cu.idCourse and cu.idCourse=' . $idCourse
             . ($userlevelid != ADMIN_GROUP_GODADMIN
-                ? (!empty($admin_users) ? " AND cu.idUser IN (" . implode(',', $admin_users) . ")" : " AND cu.idUser IN (0)")
+                ? (!empty($admin_users) ? ' AND cu.idUser IN (' . implode(',', $admin_users) . ')' : ' AND cu.idUser IN (0)')
                 : '')
-            . " WHERE c.course_type <> 'assessment' and cu.status=4 and cu.waiting = 0"; 
-            
-            
-            $res = sql_query($query);
-            list($num_overbooking) = sql_fetch_row($res);
-        
-            return $num_overbooking;
+            . " WHERE c.course_type <> 'assessment' and cu.status=4 and cu.waiting = 0";
+
+
+        $res = sql_query($query);
+        list($num_overbooking) = sql_fetch_row($res);
+
+        return $num_overbooking;
     }
-    
-    
-    public function getFirstOverbooked(){
-        
-            $query = "select idUser"
-            . " FROM %lms_courseuser "
-            . " WHERE status=4 AND idCourse = ".$this->id_course    
-            . " ORDER BY date_inscr ASC LIMIT 1";    
-        
+
+
+    public function getFirstOverbooked()
+    {
+
+        $query = 'select idUser'
+            . ' FROM %lms_courseuser '
+            . ' WHERE status=4 AND idCourse = ' . $this->id_course
+            . ' ORDER BY date_inscr ASC LIMIT 1';
+
         $res = sql_query($query);
         list($overbooked_user) = sql_fetch_row($res);
-    
+
         return $overbooked_user;
     }
 
-    public function getUserInWaiting($idCourse){
-    $userlevelid = Docebo::user()->getUserLevelId();
+    public function getUserInWaiting($idCourse)
+    {
+        $userlevelid = Docebo::user()->getUserLevelId();
         if ($userlevelid != ADMIN_GROUP_GODADMIN) {
             require_once(_base_ . '/lib/lib.preference.php');
             $adminManager = new AdminPreference();
@@ -112,24 +115,25 @@ class CourseAlms extends Model
             $admin_users = $acl_man->getAllUsersFromIdst($admin_tree);
         }
 
-        $query = "select COUNT(cu.idUser) as num_waiting"
-            . " FROM %lms_course AS c"
-            . " LEFT JOIN %lms_courseuser AS cu ON c.idCourse = cu.idCourse and cu.idCourse=".$idCourse
+        $query = 'select COUNT(cu.idUser) as num_waiting'
+            . ' FROM %lms_course AS c'
+            . ' LEFT JOIN %lms_courseuser AS cu ON c.idCourse = cu.idCourse and cu.idCourse=' . $idCourse
             . ($userlevelid != ADMIN_GROUP_GODADMIN
-                ? (!empty($admin_users) ? " AND cu.idUser IN (" . implode(',', $admin_users) . ")" : " AND cu.idUser IN (0)")
+                ? (!empty($admin_users) ? ' AND cu.idUser IN (' . implode(',', $admin_users) . ')' : ' AND cu.idUser IN (0)')
                 : '')
             . " WHERE c.course_type <> 'assessment' and cu.status=-2 ";
-            
-            
-            $res = sql_query($query);
-            list($num_waiting) = sql_fetch_row($res);
-        
-            return $num_waiting;
-    }    
-    
-    
-    public function getUserInCourse($idCourse){
-    $userlevelid = Docebo::user()->getUserLevelId();
+
+
+        $res = sql_query($query);
+        list($num_waiting) = sql_fetch_row($res);
+
+        return $num_waiting;
+    }
+
+
+    public function getUserInCourse($idCourse)
+    {
+        $userlevelid = Docebo::user()->getUserLevelId();
         if ($userlevelid != ADMIN_GROUP_GODADMIN) {
             require_once(_base_ . '/lib/lib.preference.php');
             $adminManager = new AdminPreference();
@@ -141,57 +145,52 @@ class CourseAlms extends Model
             $admin_users = $acl_man->getAllUsersFromIdst($admin_tree);
         }
 
-        $query = "select COUNT(cu.idUser) as num_users"
-            . " FROM %lms_course AS c"
-            . " LEFT JOIN %lms_courseuser AS cu ON c.idCourse = cu.idCourse and cu.idCourse=".$idCourse
+        $query = 'select COUNT(cu.idUser) as num_users'
+            . ' FROM %lms_course AS c'
+            . ' LEFT JOIN %lms_courseuser AS cu ON c.idCourse = cu.idCourse and cu.idCourse=' . $idCourse
             . ($userlevelid != ADMIN_GROUP_GODADMIN
-                ? (!empty($admin_users) ? " AND cu.idUser IN (" . implode(',', $admin_users) . ")" : " AND cu.idUser IN (0)")
+                ? (!empty($admin_users) ? ' AND cu.idUser IN (' . implode(',', $admin_users) . ')' : ' AND cu.idUser IN (0)')
                 : '')
             . " WHERE c.course_type <> 'assessment' ";
-            
-        
-        
-          
-            $res = sql_query($query);
-            list($num_overbooking) = sql_fetch_row($res);
-        
-        
-        
-            return $num_overbooking;
-    }    
-    
-    
-    
-    
+
+
+        $res = sql_query($query);
+        list($num_overbooking) = sql_fetch_row($res);
+
+
+        return $num_overbooking;
+    }
+
+
     public function getCourseNumber($filter = false)
     {
-        $query = "SELECT COUNT(*)"
-            . " FROM %lms_course"
+        $query = 'SELECT COUNT(*)'
+            . ' FROM %lms_course'
             . " WHERE course_type <> 'assessment'";
 
         if ($filter) {
             if (isset($filter['id_category'])) {
                 if (isset($filter['descendants']) && $filter['descendants'])
-                    $query .= " AND idCategory IN (" . implode(',', $this->getCategoryDescendants($filter['id_category'])) . ")";
+                    $query .= ' AND idCategory IN (' . implode(',', $this->getCategoryDescendants($filter['id_category'])) . ')';
                 else
-                    $query .= " AND idCategory = " . (int) $filter['id_category'];
+                    $query .= ' AND idCategory = ' . (int)$filter['id_category'];
             }
             if (isset($filter['text']) && $filter['text'] !== '')
                 $query .= " AND( name LIKE '%" . $filter['text'] . "%'"
                     . " OR code LIKE '%" . $filter['text'] . "%')";
 
             if (isset($filter['waiting']) && $filter['waiting']) {
-                $query_course = "SELECT idCourse"
-                    . " FROM %lms_courseuser"
-                    . " WHERE waiting = 1";
+                $query_course = 'SELECT idCourse'
+                    . ' FROM %lms_courseuser'
+                    . ' WHERE waiting = 1';
 
                 $result = sql_query($query);
-                $id_course_filter = array(0 => 0);
+                $id_course_filter = [0 => 0];
 
                 while (list($id_course_tmp) = sql_fetch_row($result))
                     $id_course_filter[$id_course_tmp] = $id_course_tmp;
 
-                $query .= " AND idCourse IN (" . implode(',', $id_course_filter) . ")";
+                $query .= ' AND idCourse IN (' . implode(',', $id_course_filter) . ')';
             }
 
             if (isset($filter['classroom']) && $filter['classroom'])
@@ -212,7 +211,7 @@ class CourseAlms extends Model
 
                 $user_catalogue = $cat_man->getUserAllCatalogueId(Docebo::user()->getIdSt());
                 if (count($user_catalogue) > 0) {
-                    $courses = array(0);
+                    $courses = [0];
 
                     foreach ($user_catalogue as $id_cat) {
                         $catalogue_course = &$cat_man->getCatalogueCourse($id_cat, true);
@@ -226,7 +225,7 @@ class CourseAlms extends Model
                 } elseif (Get::sett('on_catalogue_empty', 'off') == 'on')
                     $all_courses = true;
             } else {
-                $array_courses = array();
+                $array_courses = [];
                 $array_courses = array_merge($array_courses, $admin_courses['course']);
 
                 if (!empty($admin_courses['coursepath'])) {
@@ -248,9 +247,9 @@ class CourseAlms extends Model
 
             if (!$all_courses) {
                 if (empty($admin_courses['course']))
-                    $query .= " AND 0 ";
+                    $query .= ' AND 0 ';
                 else
-                    $query .= " AND idCourse IN (" . implode(',', $admin_courses['course']) . ") ";
+                    $query .= ' AND idCourse IN (' . implode(',', $admin_courses['course']) . ') ';
             }
         }
 
@@ -261,20 +260,20 @@ class CourseAlms extends Model
 
     public function getCategoryDescendants($id_category)
     {
-        $output = array();
+        $output = [];
 
         if ($id_category != 0) {
-            $query = "SELECT iLeft, iRight FROM %lms_category WHERE idCategory=" . (int) $id_category;
+            $query = 'SELECT iLeft, iRight FROM %lms_category WHERE idCategory=' . (int)$id_category;
             $res = sql_query($query);
             list($left, $right) = sql_fetch_row($res);
 
-            $query = "SELECT idCategory FROM %lms_category WHERE iLeft>=" . $left . " AND iRight<=" . $right;
+            $query = 'SELECT idCategory FROM %lms_category WHERE iLeft>=' . $left . ' AND iRight<=' . $right;
             $res = sql_query($query);
             while (list($id_cat) = sql_fetch_row($res)) $output[] = $id_cat;
         } else {
             $output[] = 0;
 
-            $query = "SELECT idCategory FROM %lms_category";
+            $query = 'SELECT idCategory FROM %lms_category';
             $res = sql_query($query);
             while (list($id_cat) = sql_fetch_row($res)) $output[] = $id_cat;
         }
@@ -296,37 +295,37 @@ class CourseAlms extends Model
             $admin_users = $acl_man->getAllUsersFromIdst($admin_tree);
         }
 
-        $query = "SELECT c.*, COUNT(cu.idUser) as subscriptions, SUM(cu.waiting) as pending"
-            . " FROM %lms_course AS c"
-            . " LEFT JOIN %lms_courseuser AS cu ON c.idCourse = cu.idCourse"
+        $query = 'SELECT c.*, COUNT(cu.idUser) as subscriptions, SUM(cu.waiting) as pending'
+            . ' FROM %lms_course AS c'
+            . ' LEFT JOIN %lms_courseuser AS cu ON c.idCourse = cu.idCourse'
             . ($userlevelid != ADMIN_GROUP_GODADMIN
-                ? (!empty($admin_users) ? " AND cu.idUser IN (" . implode(',', $admin_users) . ")" : " AND cu.idUser IN (0)")
+                ? (!empty($admin_users) ? ' AND cu.idUser IN (' . implode(',', $admin_users) . ')' : ' AND cu.idUser IN (0)')
                 : '')
             . " WHERE c.course_type <> 'assessment'";
 
         if ($filter) {
             if (isset($filter['id_category'])) {
                 if (isset($filter['descendants']) && $filter['descendants'])
-                    $query .= " AND c.idCategory IN (" . implode(',', $this->getCategoryDescendants($filter['id_category'])) . ")";
+                    $query .= ' AND c.idCategory IN (' . implode(',', $this->getCategoryDescendants($filter['id_category'])) . ')';
                 else
-                    $query .= " AND c.idCategory = " . (int) $filter['id_category'];
+                    $query .= ' AND c.idCategory = ' . (int)$filter['id_category'];
             }
             if (isset($filter['text']) && $filter['text'] !== '')
                 $query .= " AND( c.name LIKE '%" . $filter['text'] . "%'"
                     . " OR c.code LIKE '%" . $filter['text'] . "%')";
 
             if (isset($filter['waiting']) && $filter['waiting']) {
-                $query_course = "SELECT idCourse"
-                    . " FROM %lms_courseuser"
-                    . " WHERE waiting = 1";
+                $query_course = 'SELECT idCourse'
+                    . ' FROM %lms_courseuser'
+                    . ' WHERE waiting = 1';
 
                 $result = sql_query($query_course);
-                $id_course_filter = array(0 => 0);
+                $id_course_filter = [0 => 0];
 
                 while (list($id_course_tmp) = sql_fetch_row($result))
                     $id_course_filter[$id_course_tmp] = $id_course_tmp;
 
-                $query .= " AND c.idCourse IN (" . implode(',', $id_course_filter) . ")";
+                $query .= ' AND c.idCourse IN (' . implode(',', $id_course_filter) . ')';
             }
 
             if (isset($filter['classroom']) && $filter['classroom'])
@@ -343,7 +342,7 @@ class CourseAlms extends Model
 
                 $user_catalogue = $cat_man->getUserAllCatalogueId(Docebo::user()->getIdSt());
                 if (count($user_catalogue) > 0) {
-                    $courses = array(0);
+                    $courses = [0];
 
                     foreach ($user_catalogue as $id_cat) {
                         $catalogue_course = &$cat_man->getCatalogueCourse($id_cat, true);
@@ -357,7 +356,7 @@ class CourseAlms extends Model
                 } elseif (Get::sett('on_catalogue_empty', 'off') == 'on')
                     $all_courses = true;
             } else {
-                $array_courses = array();
+                $array_courses = [];
                 $array_courses = array_merge($array_courses, $admin_courses['course']);
 
                 if (!empty($admin_courses['coursepath'])) {
@@ -379,18 +378,17 @@ class CourseAlms extends Model
 
             if (!$all_courses) {
                 if (empty($admin_courses['course']))
-                    $query .= " AND 0 ";
+                    $query .= ' AND 0 ';
                 else
-                    $query .= " AND c.idCourse IN (" . implode(',', $admin_courses['course']) . ") ";
+                    $query .= ' AND c.idCourse IN (' . implode(',', $admin_courses['course']) . ') ';
             }
         }
 
-        $query .= " GROUP BY c.idCourse"
-            . " ORDER BY " . $sort . " " . $dir;
+        $query .= ' GROUP BY c.idCourse'
+            . ' ORDER BY ' . $sort . ' ' . $dir;
 
 
-            
-        if ((int) $results > 0) $query .= " LIMIT " . (int) $start_index . ", " . (int) $results;
+        if ((int)$results > 0) $query .= ' LIMIT ' . (int)$start_index . ', ' . (int)$results;
 
         return sql_query($query);
     }
@@ -398,7 +396,7 @@ class CourseAlms extends Model
     public function getCourseModDetails($id_course = false)
     {
         if ($id_course === false)
-            return array(
+            return [
                 'autoregistration_code' => '',
                 'code' => '',
                 'name' => '',
@@ -448,7 +446,7 @@ class CourseAlms extends Model
                 'course_demo' => '',
                 'auto_unsubscribe' => '0',
                 'unsubscribe_date_limit' => ''
-            );
+            ];
         else {
             $query_course = " SELECT * FROM %lms_course WHERE idCourse = '" . (int)$id_course . "'";
 
@@ -604,13 +602,13 @@ class CourseAlms extends Model
         sl_close_fileoperations();
 
 
-        if ($data_params["can_subscribe"] == "2") {
-            $sub_start_date = Format::dateDb($data_params["sub_start_date"], "date");
-            $sub_end_date = Format::dateDb($data_params["sub_end_date"], "date");
+        if ($data_params['can_subscribe'] == '2') {
+            $sub_start_date = Format::dateDb($data_params['sub_start_date'], 'date');
+            $sub_end_date = Format::dateDb($data_params['sub_end_date'], 'date');
         }
 
-        $date_begin = Format::dateDb($data_params['course_date_begin'], "date");
-        $date_end = Format::dateDb($data_params['course_date_end'], "date");
+        $date_begin = Format::dateDb($data_params['course_date_begin'], 'date');
+        $date_end = Format::dateDb($data_params['course_date_end'], 'date');
 
         // insert the course in database -----------------------------------------------------------
         $hour_begin = '-1';
@@ -642,12 +640,12 @@ class CourseAlms extends Model
             description         = '" . $data_params['course_descr'] . "',
             box_description         = '" . $data_params['course_box_descr'] . "',
             lang_code           = '" . $array_lang[$data_params['course_lang']] . "',
-            STATUS              = '" . (int) $data_params['course_status'] . "',
+            STATUS              = '" . (int)$data_params['course_status'] . "',
             level_show_user     = '" . $show_level . "',
-            subscribe_method    = '" . (int) $data_params['course_subs'] . "',
-            credits             = '" . (int) $data_params['credits'] . "',
+            subscribe_method    = '" . (int)$data_params['course_subs'] . "',
+            credits             = '" . (int)$data_params['credits'] . "',
 
-            create_date         = '" . date("Y-m-d H:i:s") . "',
+            create_date         = '" . date('Y-m-d H:i:s') . "',
 
             linkSponsor         = '" . $data_params['course_sponsor_link'] . "',
             imgSponsor          = '" . $file_sponsor . "',
@@ -669,7 +667,7 @@ class CourseAlms extends Model
             show_who_online     = '" . $data_params['show_who_online'] . "',
 
             show_extra_info     = '" . (isset($data_params['course_advanced']) ? 1 : 0) . "',
-            show_rules          = '" . (int) $data_params['course_show_rules'] . "',
+            show_rules          = '" . (int)$data_params['course_show_rules'] . "',
 
             direct_play         = '" . (isset($data_params['direct_play']) ? 1 : 0) . "',
 
@@ -678,10 +676,10 @@ class CourseAlms extends Model
             hour_begin          = '" . $hour_begin . "',
             hour_end            = '" . $hour_end . "',
 
-            valid_time          = '" . (int) $data_params['course_day_of'] . "',
+            valid_time          = '" . (int)$data_params['course_day_of'] . "',
 
-            min_num_subscribe   = '" . (int) $data_params['min_num_subscribe'] . "',
-            max_num_subscribe   = '" . (int) $data_params['max_num_subscribe'] . "',
+            min_num_subscribe   = '" . (int)$data_params['min_num_subscribe'] . "',
+            max_num_subscribe   = '" . (int)$data_params['max_num_subscribe'] . "',
             selling             = '" . (isset($data_params['course_sell']) ? '1' : '0') . "',
             prize               = '" . $data_params['course_prize'] . "',
 
@@ -691,18 +689,18 @@ class CourseAlms extends Model
 
             course_quota        = '" . $data_params['course_quota'] . "',
             used_space          = '" . $total_file_size . "',
-            allow_overbooking   = '" . (isset($data_params["allow_overbooking"]) ? 1 : 0) . "',
-            can_subscribe       = '" . (int) $data_params["can_subscribe"] . "',
-            sub_start_date      = " . ($data_params["can_subscribe"] == '2' ? "'" . $sub_start_date . "'" : 'NULL') . ",
-            sub_end_date        = " . ($data_params["can_subscribe"] == '2' ? "'" . $sub_end_date . "'" : 'NULL') . ",
+            allow_overbooking   = '" . (isset($data_params['allow_overbooking']) ? 1 : 0) . "',
+            can_subscribe       = '" . (int)$data_params['can_subscribe'] . "',
+            sub_start_date      = " . ($data_params['can_subscribe'] == '2' ? "'" . $sub_start_date . "'" : 'NULL') . ',
+            sub_end_date        = ' . ($data_params['can_subscribe'] == '2' ? "'" . $sub_end_date . "'" : 'NULL') . ",
 
             advance             = '" . $data_params['advance'] . "',
-            show_result         = '" . (isset($data_params["show_result"]) ? 1 : 0) . "',
+            show_result         = '" . (isset($data_params['show_result']) ? 1 : 0) . "',
 
             use_logo_in_courselist = '" . (isset($data_params['use_logo_in_courselist']) ? '1' : '0') . "',
 
-            auto_unsubscribe = '" . (int) $data_params['auto_unsubscribe'] . "',
-            unsubscribe_date_limit = " . (isset($data_params['use_unsubscribe_date_limit']) && $data_params['use_unsubscribe_date_limit'] > 0 ? "'" . Format::dateDb($data_params['unsubscribe_date_limit'], 'date') . "'" : 'NULL') . "";
+            auto_unsubscribe = '" . (int)$data_params['auto_unsubscribe'] . "',
+            unsubscribe_date_limit = " . (isset($data_params['use_unsubscribe_date_limit']) && $data_params['use_unsubscribe_date_limit'] > 0 ? "'" . Format::dateDb($data_params['unsubscribe_date_limit'], 'date') . "'" : 'NULL') . '';
 
         if (isset($data_params['random_course_autoregistration_code'])) {
             $control = 1;
@@ -717,8 +715,8 @@ class CourseAlms extends Model
                         $str .= chr(mt_rand(65, 90));
                 }
 
-                $control_query = "SELECT COUNT(*)" .
-                    " " . $GLOBALS['prefix_lms'] . "_course" .
+                $control_query = 'SELECT COUNT(*)' .
+                    ' ' . $GLOBALS['prefix_lms'] . '_course' .
                     " WHERE autoregistration_code = '" . $str . "'";
 
                 $control_result = sql_query($control_query);
@@ -739,11 +737,11 @@ class CourseAlms extends Model
             if ($file_othermaterial != '') sl_unlink($path . $file_othermaterial);
             if ($file_demo != '') sl_unlink($path . $file_demo);
 
-            return array('err' => '_err_course');
+            return ['err' => '_err_course'];
         }
 
         // recover the id of the course inserted --------------------------------------------
-        list($id_course) = sql_fetch_row(sql_query("SELECT LAST_INSERT_ID()"));
+        list($id_course) = sql_fetch_row(sql_query('SELECT LAST_INSERT_ID()'));
 
         require_once(_lms_ . '/admin/models/LabelAlms.php');
         $label_model = new LabelAlms();
@@ -763,20 +761,20 @@ class CourseAlms extends Model
         if ($GLOBALS['where_scs'] !== false) {
             require_once($GLOBALS['where_scs'] . '/lib/lib.room.php');
 
-            $rules = array(
+            $rules = [
                 'room_name' => $data_params['course_name'],
                 'room_type' => 'course',
                 'id_source' => $id_course
-            );
+            ];
             $re = insertRoom($rules);
         }
         $course_idst = &DoceboCourse::createCourseLevel($id_course);
 
         // create the course menu -----------------------------------------------------------
         if (!createCourseMenuFromCustom($id_custom, $id_course, $course_idst))
-            return array('err' => '_err_coursemenu');
+            return ['err' => '_err_coursemenu'];
 
-        $res = array();
+        $res = [];
 
         if ($quota_exceeded)
             $res['limit_reach'] = 1;
@@ -788,7 +786,7 @@ class CourseAlms extends Model
             // Salvataggio CustomField
             require_once(_adm_ . '/lib/lib.customfield.php');
             $extra_field = new CustomFieldList();
-            $extra_field->setFieldArea("COURSE");
+            $extra_field->setFieldArea('COURSE');
             $extra_field->storeFieldsForObj($id_course);
 
             //AUTO SUBSCRIPTION
@@ -807,7 +805,6 @@ class CourseAlms extends Model
 
         return $res;
     }
-
 
 
     public function upCourse($id_course = null, $data_params = null)
@@ -881,13 +878,13 @@ class CourseAlms extends Model
         $path = '/appLms/' . Get::sett('pathcourse') . (substr($path, -1) != '/' && substr($path, -1) != '\\' ? '/' : '');
 
         $old_file_size = 0;
-        if ((is_array($_FILES) && !empty($_FILES)) || (is_array($data_params["file_to_del"])))
+        if ((is_array($_FILES) && !empty($_FILES)) || (is_array($data_params['file_to_del'])))
             sl_open_fileoperations();
 
         // load user material ---------------------------------------------------------------------------
         $arr_file = $this->manageCourseFile(
             'course_user_material',
-            $data_params["old_course_user_material"],
+            $data_params['old_course_user_material'],
             $path,
             ($quota != 0 ? $quota - $used : false),
             isset($data_params['file_to_del']['course_user_material'])
@@ -901,7 +898,7 @@ class CourseAlms extends Model
         // course otheruser material -------------------------------------------------------------------
         $arr_file = $this->manageCourseFile(
             'course_otheruser_material',
-            $data_params["old_course_otheruser_material"],
+            $data_params['old_course_otheruser_material'],
             $path,
             ($quota != 0 ? $quota - $used : false),
             isset($data_params['file_to_del']['course_otheruser_material'])
@@ -915,7 +912,7 @@ class CourseAlms extends Model
         // course demo-----------------------------------------------------------------------------------
         $arr_file = $this->manageCourseFile(
             'course_demo',
-            $data_params["old_course_demo"],
+            $data_params['old_course_demo'],
             $path,
             ($quota != 0 ? $quota - $used : false),
             isset($data_params['file_to_del']['course_demo'])
@@ -929,7 +926,7 @@ class CourseAlms extends Model
         // course sponsor---------------------------------------------------------------------------------
         $arr_file = $this->manageCourseFile(
             'course_sponsor_logo',
-            $data_params["old_course_sponsor_logo"],
+            $data_params['old_course_sponsor_logo'],
             $path,
             ($quota != 0 ? $quota - $used : false),
             isset($data_params['file_to_del']['course_sponsor_logo']),
@@ -944,7 +941,7 @@ class CourseAlms extends Model
         // course logo-----------------------------------------------------------------------------------
         $arr_file = $this->manageCourseFile(
             'course_logo',
-            $data_params["old_course_logo"],
+            $data_params['old_course_logo'],
             $path,
             ($quota != 0 ? $quota - $used : false),
             isset($data_params['file_to_del']['course_logo']),
@@ -961,12 +958,12 @@ class CourseAlms extends Model
         // ----------------------------------------------------------------------------------------------
         sl_close_fileoperations();
 
-        $date_begin = Format::dateDb($data_params['course_date_begin'], "date");
-        $date_end = Format::dateDb($data_params['course_date_end'], "date");
+        $date_begin = Format::dateDb($data_params['course_date_begin'], 'date');
+        $date_end = Format::dateDb($data_params['course_date_end'], 'date');
 
-        if ($data_params["can_subscribe"] == "2") {
-            $sub_start_date = Format::dateDb($data_params["sub_start_date"], "date");
-            $sub_end_date = Format::dateDb($data_params["sub_end_date"], "date");
+        if ($data_params['can_subscribe'] == '2') {
+            $sub_start_date = Format::dateDb($data_params['sub_start_date'], 'date');
+            $sub_end_date = Format::dateDb($data_params['sub_end_date'], 'date');
         }
 
         $hour_begin = '-1';
@@ -991,19 +988,19 @@ class CourseAlms extends Model
         $data_params = $data['parameters'];
 
         // update database ----------------------------------------------------
-        $query_course = "
-        UPDATE " . $GLOBALS['prefix_lms'] . "_course
+        $query_course = '
+        UPDATE ' . $GLOBALS['prefix_lms'] . "_course
         SET code                = '" . $data_params['course_code'] . "',
             name                = '" . $data_params['course_name'] . "',
-            idCategory          = '" . (int) $data_params['idCategory'] . "',
+            idCategory          = '" . (int)$data_params['idCategory'] . "',
             description         = '" . $data_params['course_descr'] . "',
             box_description         = '" . $data_params['course_box_descr'] . "',
             lang_code           = '" . $array_lang[$data_params['course_lang']] . "',
-            status              = '" . (int) $data_params['course_status'] . "',
+            status              = '" . (int)$data_params['course_status'] . "',
             level_show_user     = '" . $show_level . "',
-            subscribe_method    = '" . (int) $data_params['course_subs'] . "',
-            idCategory          = '" . (int) $data_params['idCategory'] . "',
-            credits             = '" . (int) $data_params['credits'] . "',
+            subscribe_method    = '" . (int)$data_params['course_subs'] . "',
+            idCategory          = '" . (int)$data_params['idCategory'] . "',
+            credits             = '" . (int)$data_params['credits'] . "',
 
             linkSponsor         = '" . $data_params['course_sponsor_link'] . "',
 
@@ -1025,7 +1022,7 @@ class CourseAlms extends Model
             show_who_online     = '" . $data_params['show_who_online'] . "',
 
             show_extra_info     = '" . (isset($data_params['course_advanced']) ? 1 : 0) . "',
-            show_rules          = '" . (int) $data_params['course_show_rules'] . "',
+            show_rules          = '" . (int)$data_params['course_show_rules'] . "',
 
             direct_play         = '" . (isset($data_params['direct_play']) ? 1 : 0) . "',
 
@@ -1034,10 +1031,10 @@ class CourseAlms extends Model
             hour_begin          = '" . $hour_begin . "',
             hour_end            = '" . $hour_end . "',
 
-            valid_time          = '" . (int) $data_params['course_day_of'] . "',
+            valid_time          = '" . (int)$data_params['course_day_of'] . "',
 
-            min_num_subscribe   = '" . (int) $data_params['min_num_subscribe'] . "',
-            max_num_subscribe   = '" . (int) $data_params['max_num_subscribe'] . "',
+            min_num_subscribe   = '" . (int)$data_params['min_num_subscribe'] . "',
+            max_num_subscribe   = '" . (int)$data_params['max_num_subscribe'] . "',
 
             course_type         = '" . $data_params['course_type'] . "',
             point_to_all        = '" . (isset($data_params['point_to_all']) ? $data_params['point_to_all'] : 0) . "',
@@ -1048,10 +1045,10 @@ class CourseAlms extends Model
 
             course_quota        = '" . $data_params['course_quota'] . "',
 
-            allow_overbooking   = '" . (isset($data_params["allow_overbooking"]) ? 1 : 0) . "',
-            can_subscribe       = '" . (int) $data_params["can_subscribe"] . "',
-            sub_start_date      = " . ($data_params["can_subscribe"] == "2" ? "'" . $sub_start_date . "'" : 'NULL') . ",
-            sub_end_date        = " . ($data_params["can_subscribe"] == "2" ? "'" . $sub_end_date . "'" : 'NULL') . ",
+            allow_overbooking   = '" . (isset($data_params['allow_overbooking']) ? 1 : 0) . "',
+            can_subscribe       = '" . (int)$data_params['can_subscribe'] . "',
+            sub_start_date      = " . ($data_params['can_subscribe'] == '2' ? "'" . $sub_start_date . "'" : 'NULL') . ',
+            sub_end_date        = ' . ($data_params['can_subscribe'] == '2' ? "'" . $sub_end_date . "'" : 'NULL') . ",
 
             advance             = '" . $data_params['advance'] . "',
             show_result         = '" . (isset($data_params['show_result']) ? 1 : 0) . "',
@@ -1059,8 +1056,8 @@ class CourseAlms extends Model
 
             use_logo_in_courselist = '" . (isset($data_params['use_logo_in_courselist']) ? '1' : '0') . "',
 
-            auto_unsubscribe = '" . (int) $data_params['auto_unsubscribe'] . "',
-            unsubscribe_date_limit = " . (isset($data_params['use_unsubscribe_date_limit']) && $data_params['use_unsubscribe_date_limit'] > 0 ? "'" . Format::dateDb($data_params['unsubscribe_date_limit'], 'date') . "'" : 'NULL') . "";
+            auto_unsubscribe = '" . (int)$data_params['auto_unsubscribe'] . "',
+            unsubscribe_date_limit = " . (isset($data_params['use_unsubscribe_date_limit']) && $data_params['use_unsubscribe_date_limit'] > 0 ? "'" . Format::dateDb($data_params['unsubscribe_date_limit'], 'date') . "'" : 'NULL') . '';
 
         if (isset($data_params['random_course_autoregistration_code'])) {
             $control = 1;
@@ -1075,8 +1072,8 @@ class CourseAlms extends Model
                         $str .= chr(mt_rand(65, 90));
                 }
 
-                $control_query = "SELECT COUNT(*)" .
-                    " " . $GLOBALS['prefix_lms'] . "_course" .
+                $control_query = 'SELECT COUNT(*)' .
+                    ' ' . $GLOBALS['prefix_lms'] . '_course' .
                     " WHERE autoregistration_code = '" . $str . "'" .
                     " AND idCourse <> '" . $id_course . "'";
 
@@ -1101,7 +1098,7 @@ class CourseAlms extends Model
             if ($file_demo != '') sl_unlink($path . $file_demo);
 
             $course_man->subFileToUsedSpace(false, $old_file_size);
-            return array('err' => '_err_course');
+            return ['err' => '_err_course'];
         }
 
         // cascade modify on all the edition of the course
@@ -1112,7 +1109,7 @@ class CourseAlms extends Model
             $has_classrooms = $cinfo['course_type'] == 'classroom';
 
             if ($has_editions) {
-                $query_editon = "UPDATE %lms_course_editions "
+                $query_editon = 'UPDATE %lms_course_editions '
                     . " SET code = '" . $data_params['course_code'] . "', "
                     . " name = '" . $data_params['course_name'] . "', "
                     . " description  = '" . $data_params['course_descr'] . "' "
@@ -1121,7 +1118,7 @@ class CourseAlms extends Model
             }
 
             if ($has_classrooms) {
-                $query_editon = "UPDATE %lms_course_date "
+                $query_editon = 'UPDATE %lms_course_date '
                     . " SET code = '" . $data_params['course_code'] . "', "
                     . " name = '" . $data_params['course_name'] . "', "
                     . " description  = '" . $data_params['course_descr'] . "' "
@@ -1130,7 +1127,7 @@ class CourseAlms extends Model
             }
         }
 
-        $res = array();
+        $res = [];
 
         if ($quota_exceeded)
             $res['limit_reach'] = 1;
@@ -1138,7 +1135,7 @@ class CourseAlms extends Model
         // Salvataggio CustomField
         require_once(_adm_ . '/lib/lib.customfield.php');
         $extra_field = new CustomFieldList();
-        $extra_field->setFieldArea("COURSE");
+        $extra_field->setFieldArea('COURSE');
         $extra_field->storeFieldsForObj($id_course);
 
         //AUTO SUBSCRIPTION
@@ -1165,13 +1162,13 @@ class CourseAlms extends Model
     public function manageCourseFile($new_file_id, $old_file, $path, $quota_available, $delete_old, $is_image = false, $width = 150, $height = 150)
     {
         $arr_new_file = (isset($_FILES[$new_file_id]) && $_FILES[$new_file_id]['tmp_name'] != '' ? $_FILES[$new_file_id] : false);
-        $return = array(
+        $return = [
             'filename' => $old_file,
             'new_size' => 0,
             'old_size' => 0,
             'error' => false,
             'quota_exceeded' => false
-        );
+        ];
 
         if (($delete_old || $arr_new_file !== false) && $old_file != '') {
             // the flag for file delete is checked or a new file was uploaded ---------------------
@@ -1232,7 +1229,7 @@ class CourseAlms extends Model
 
     public function delCourse($id_course)
     {
-        if ((int) $id_course <= 0) return false;
+        if ((int)$id_course <= 0) return false;
 
         require_once(_lms_ . '/lib/lib.course.php');
         require_once(_base_ . '/lib/lib.upload.php');
@@ -1258,7 +1255,7 @@ class CourseAlms extends Model
         $course_man->removeCourseRole($id_course);
         $course_man->removeCourseMenu($id_course);
 
-        $query = "DELETE FROM %lms_courseuser WHERE idCourse = '" . (int) $id_course . "'";
+        $query = "DELETE FROM %lms_courseuser WHERE idCourse = '" . (int)$id_course . "'";
         $qres = sql_query($query);
         if (!$qres) return false;
 
@@ -1266,7 +1263,7 @@ class CourseAlms extends Model
 
         $query_course = "SELECT imgSponsor, img_course, img_material, img_othermaterial, course_demo, course_type
             FROM %lms_course
-            WHERE idCourse = '" . (int) $id_course . "'";
+            WHERE idCourse = '" . (int)$id_course . "'";
         $qres = sql_query($query_course);
         list($file_sponsor, $file_logo, $file_material, $file_othermaterial, $file_demo, $course_type, $course_edition) = sql_fetch_row($qres);
 
@@ -1318,15 +1315,15 @@ class CourseAlms extends Model
         require_once(_lms_ . '/lib/lib.param.php');
         require_once(_lms_ . '/class.module/track.object.php');
 
-        $arr_lo_param = array();
-        $arr_lo_track = array();
-        $arr_org_access = array();
+        $arr_lo_param = [];
+        $arr_lo_track = [];
+        $arr_org_access = [];
 
-        $query = "SELECT * FROM %lms_organization WHERE idCourse = " . (int) $id_course;
+        $query = 'SELECT * FROM %lms_organization WHERE idCourse = ' . (int)$id_course;
         $ores = sql_query($query);
         while ($obj = sql_fetch_object($ores)) {
             $deleted = true;
-            if ($obj->idResource != 0 && $obj->objectType != "") {
+            if ($obj->idResource != 0 && $obj->objectType != '') {
                 $lo = createLO($obj->objectType);
                 $deleted = $lo->del($obj->idResource); //delete learning object
             }
@@ -1338,7 +1335,7 @@ class CourseAlms extends Model
         }
 
         //delete all organizations references for the course
-        $query = "DELETE FROM %lms_organization WHERE idCourse = " . (int) $id_course;
+        $query = 'DELETE FROM %lms_organization WHERE idCourse = ' . (int)$id_course;
         $res = sql_query($query);
 
         //delete LOs trackings
@@ -1349,15 +1346,15 @@ class CourseAlms extends Model
 
         //delete org accesses
         if (!empty($arr_org_access)) {
-            $query = "DELETE FROM %lms_organization_access
-                WHERE idOrgAccess IN (" . implode(",", $arr_org_access) . ")";
+            $query = 'DELETE FROM %lms_organization_access
+                WHERE idOrgAccess IN (' . implode(',', $arr_org_access) . ')';
             $res = sql_query($query);
         }
 
         //delete lo params
         if (!empty($arr_lo_param)) {
-            $query = "DELETE FROM %lms_lo_param
-                WHERE idParam IN (" . implode(",", $arr_lo_param) . ")";
+            $query = 'DELETE FROM %lms_lo_param
+                WHERE idParam IN (' . implode(',', $arr_lo_param) . ')';
         }
 
         //--- end LOs --------------------------------------------------------------
@@ -1403,7 +1400,7 @@ class CourseAlms extends Model
         //--- end competences ------------------------------------------------------
 
         //remove customfield
-        if (!sql_query("DELETE FROM " . $GLOBALS['prefix_fw'] . "_customfield_entry WHERE id_field IN (SELECT id_field FROM core_customfield WHERE area_code = 'COURSE') AND id_obj = '" . $id_course . "'"))
+        if (!sql_query('DELETE FROM ' . $GLOBALS['prefix_fw'] . "_customfield_entry WHERE id_field IN (SELECT id_field FROM core_customfield WHERE area_code = 'COURSE') AND id_obj = '" . $id_course . "'"))
             return false;
 
         //--- finally delete course from courses table -----------------------------
@@ -1437,12 +1434,12 @@ class CourseAlms extends Model
 
     public function getCategoryForDropdown()
     {
-        $query = "SELECT idCategory, path, lev"
-            . " FROM %lms_category"
-            . " ORDER BY iLeft";
+        $query = 'SELECT idCategory, path, lev'
+            . ' FROM %lms_category'
+            . ' ORDER BY iLeft';
 
         $result = sql_query($query);
-        $res = array('0' => 'root');
+        $res = ['0' => 'root'];
 
         while (list($id_cat, $path, $level) = sql_fetch_row($result)) {
             $name = end(explode('/', $path));
@@ -1461,22 +1458,22 @@ class CourseAlms extends Model
         if ($id_category == 0)
             return 'root';
 
-        $query = "SELECT path"
-            . " FROM %lms_category"
-            . " WHERE idCategory = " . (int) $id_category;
+        $query = 'SELECT path'
+            . ' FROM %lms_category'
+            . ' WHERE idCategory = ' . (int)$id_category;
 
         list($path) = sql_fetch_row(sql_query($query));
 
-        return end(explode("/", $path));
+        return end(explode('/', $path));
     }
 
     public function getCourseWithCertificate()
     {
-        $query = "SELECT DISTINCT id_course"
-            . " FROM %lms_certificate_course";
+        $query = 'SELECT DISTINCT id_course'
+            . ' FROM %lms_certificate_course';
 
         $result = sql_query($query);
-        $res = array();
+        $res = [];
 
         while (list($id_course) = sql_fetch_row($result))
             $res[$id_course] = $id_course;
@@ -1486,11 +1483,11 @@ class CourseAlms extends Model
 
     public function getCourseWithCompetence()
     {
-        $query = "SELECT DISTINCT id_course"
-            . " FROM %lms_competence_course";
+        $query = 'SELECT DISTINCT id_course'
+            . ' FROM %lms_competence_course';
 
         $result = sql_query($query);
-        $res = array();
+        $res = [];
 
         while (list($id_course) = sql_fetch_row($result))
             $res[$id_course] = $id_course;
@@ -1501,34 +1498,32 @@ class CourseAlms extends Model
 
     public function getCoursesStudentsNumber($courses)
     {
-        if (is_numeric($courses)) $courses = array((int) $courses);
+        if (is_numeric($courses)) $courses = [(int)$courses];
         if (!is_array($courses) || empty($courses)) return false;
 
-        $output = array();
-        $query = "SELECT idCourse"
-            . " FROM %lms_course"
-            . " WHERE course_type = 'elearning'"
-            . " AND course_edition = 0"
-            . " AND idCourse IN (" . implode(",", $courses) . ")";
-        $result = sql_query($query);
-        while (list($id_course) = sql_fetch_row($result))
-            $output[$id_course] = 0;
+        $output = [];
+        foreach ($courses as $idCourse) {
+            $output[$idCourse] = 0;
+        }
 
-        $query = "SELECT idCourse, COUNT(*) FROM %lms_courseuser "
-            . " WHERE idCourse IN (" . implode(",", $courses) . ") "
-            . " AND LEVEL = 3 AND waiting <= 0 and status = 0 "
-            . " GROUP BY idCourse";
-        $class_real_count = "SELECT cu.idCourse,COUNT(*) FROM %lms_courseuser AS cu JOIN %lms_course_date AS cd JOIN %lms_course_date_user AS cdu "
-            . " ON (cd.id_date = cdu.id_date AND cd.id_course = cu.idCourse AND cu.idUser = cdu.id_user) "
-            . " WHERE cu.idCourse IN (" . implode(",", $courses) . ") AND cu.level = 3 and cu.status = 0 GROUP BY cu.idCourse";
+        $query = 'SELECT idCourse, COUNT(*) as count FROM %lms_courseuser '
+            . ' WHERE idCourse IN (' . implode(',', $courses) . ') '
+            . ' AND LEVEL = 3 AND waiting <= 0 and status = 0 '
+            . ' GROUP BY idCourse';
 
         $res = sql_query($query);
-        $res1 = sql_query($class_real_count);
-        while (list($id_course, $count) = sql_fetch_row($res)) {
-            $output[$id_course] = $count;
+
+        foreach ($res as $row) {
+            $output[$row['idCourse']] = (int)$row['count'];
         }
-        while (list($id_course_class, $count_class) = sql_fetch_row($res1)) {
-            $output[$id_course_class] = $count_class;
+
+        $class_real_count = 'SELECT cu.idCourse as idCourse,COUNT(*) as count FROM %lms_courseuser AS cu JOIN %lms_course_date AS cd JOIN %lms_course_date_user AS cdu '
+            . ' ON (cd.id_date = cdu.id_date AND cd.id_course = cu.idCourse AND cu.idUser = cdu.id_user) '
+            . ' WHERE cu.idCourse IN (' . implode(',', $courses) . ') AND cu.level = 3 and cu.status >= 1 and cu.status < 4 GROUP BY cu.idCourse';
+
+        $resClass = sql_query($class_real_count);
+        foreach ($resClass as $row) {
+            $output[$row['idCourse']] = (int)$row['count'];
         }
         return $output;
     }
@@ -1566,7 +1561,7 @@ class CourseAlms extends Model
 
     public function isUserSubscribedInCourse($idMember, $idCourse)
     {
-        $query = "SELECT COUNT(*) FROM %lms_courseuser WHERE idUser = " . $idMember . " AND idCourse = " . $idCourse;
+        $query = 'SELECT COUNT(*) FROM %lms_courseuser WHERE idUser = ' . $idMember . ' AND idCourse = ' . $idCourse;
 
         $res = sql_query($query);
 
@@ -1581,43 +1576,55 @@ class CourseAlms extends Model
         $regset = Format::instance();
         $date_format = $regset->date_token;
 
-        $tc  = $GLOBALS['prefix_lms'] . "_certificate as c";
-        $tca = $GLOBALS['prefix_lms'] . "_certificate_assign as ca";
-        $tcc = $GLOBALS['prefix_lms'] . "_certificate_course as cc";
-        $tcu = $GLOBALS['prefix_lms'] . "_courseuser as cu";
-        $tu = $GLOBALS['prefix_fw'] . "_user as u";
+        $tc = $GLOBALS['prefix_lms'] . '_certificate as c';
+        $tca = $GLOBALS['prefix_lms'] . '_certificate_assign as ca';
+        $tcc = $GLOBALS['prefix_lms'] . '_certificate_course as cc';
+        $tcu = $GLOBALS['prefix_lms'] . '_courseuser as cu';
+        $tu = $GLOBALS['prefix_fw'] . '_user as u';
 
         $query = "SELECT u.idst, u.userid, u.firstname, u.lastname,
-                         DATE_FORMAT(cu.date_complete,'" . $date_format . "'), DATE_FORMAT(ca.on_date,'" . $date_format . "'), cu.idUser as id_user,
+                         DATE_FORMAT(cu.date_complete,'" . $date_format . "') as dateComplete, DATE_FORMAT(ca.on_date,'" . $date_format . "') onDate, cu.idUser as id_user,
                          cu.status , cu.idCourse, cc.id_certificate,
                          c.name as name_certificate"
-            . " FROM ( " . $tu . " JOIN " . $tcu . " ON (u.idst = cu.idUser) ) "
-            . " JOIN " . $tcc . " ON cc.id_course = cu.idCourse "
-            . " JOIN " . $tc . " ON c.id_certificate = cc.id_certificate"
-            . " LEFT JOIN " . $tca . " ON ( ca.id_course = cu.idCourse AND ca.id_user=cu.idUser AND ca.id_certificate = cc.id_certificate ) "
-            . " LEFT JOIN (SELECT iduser, idcourse, SUM( (UNIX_TIMESTAMP( lastTime ) - UNIX_TIMESTAMP( enterTime ) ) ) elapsed from learning_tracksession group by iduser, idcourse) t_elapsed on t_elapsed.idcourse=cu.idCourse and cu.idUser = t_elapsed.idUser "
-            . " WHERE 1 "
-            . ($id_certificate != 0 ? " AND cc.id_certificate = " . $id_certificate : "")
-            . " AND coalesce(elapsed,0) >= coalesce(cc.minutes_required,0)*60 "
-            . " AND cu.idCourse='" . (int) $id_course . "'";
+            . ' FROM ( ' . $tu . ' JOIN ' . $tcu . ' ON (u.idst = cu.idUser) ) '
+            . ' JOIN ' . $tcc . ' ON cc.id_course = cu.idCourse '
+            . ' JOIN ' . $tc . ' ON c.id_certificate = cc.id_certificate'
+            . ' LEFT JOIN ' . $tca . ' ON ( ca.id_course = cu.idCourse AND ca.id_user=cu.idUser AND ca.id_certificate = cc.id_certificate ) '
+            . ' LEFT JOIN (SELECT iduser, idcourse, SUM( (UNIX_TIMESTAMP( lastTime ) - UNIX_TIMESTAMP( enterTime ) ) ) elapsed from learning_tracksession group by iduser, idcourse) t_elapsed on t_elapsed.idcourse=cu.idCourse and cu.idUser = t_elapsed.idUser '
+            . ' WHERE 1 '
+            . ($id_certificate != 0 ? ' AND cc.id_certificate = ' . $id_certificate : '')
+            . ' AND coalesce(elapsed,0) >= coalesce(cc.minutes_required,0)*60 '
+            . " AND cu.idCourse='" . (int)$id_course . "'";
 
         $res = sql_query($query);
-        $users = array();
+        $users = [];
         $umodel = new UsermanagementAdm();
 
-        while (list($idst, $userid, $firstname, $lastname, $date_complete, $on_date, $id_user, $status,  $id_course, $id_certificate, $name_certificate) = sql_fetch_row($res)) {
+        foreach ($res as $row) {
+            $idst = $row['idst'];
+            $userid = $row['userid'];
+            $firstname = $row['firstname'];
+            $lastname = $row['lastname'];
+            $date_complete = $row['dateComplete'];
+            $on_date = $row['onDate'];
+            $id_user = $row['id_user'];
+            $status = $row['status'];
+            $id_course = $row['idCourse'];
+            $id_certificate = $row['id_certificate'];
+            $name_certificate = $row['name_certificate'];
+
             foreach ($cf as $i => $value) {
                 $cf[$i] = '';
             }
             $url = 'index.php?modname=certificate&amp;certificate_id=' . $id_certificate . '&amp;course_id=' . $id_course . '&amp;user_id=' . $id_user . '&amp;of_platform=lms';
             if ($on_date != null) {
-                $operation_url = $url . "&amp;op=send_certificate";
-                $cell_down_gen = "<a href='" . $operation_url . "' class='ico-wt-sprite subs_pdf'>" . Lang::t('_DOWNLOAD', 'certificate') . "</a>";
-                $cell_del_cert =  Get::sprite_link('subs_del', $url . '&op=del_report_certificate&from=' . Get::req('from'), Lang::t('_DEL', 'certificate'));
+                $operation_url = $url . '&amp;op=send_certificate';
+                $cell_down_gen = "<a href='" . $operation_url . "' class='ico-wt-sprite subs_pdf'>" . Lang::t('_DOWNLOAD', 'certificate') . '</a>';
+                $cell_del_cert = Get::sprite_link('subs_del', $url . '&op=del_report_certificate&from=' . Get::req('from'), Lang::t('_DEL', 'certificate'));
             } else {
-                $operation_url = $url . "&amp;op=print_certificate";
+                $operation_url = $url . '&amp;op=print_certificate';
                 $generate = 'javascript:print_certificate(' . $id_user . ',' . $id_course . ',' . $id_certificate . ')';
-                $cell_down_gen = "<a href='" . $generate . "' class='ico-wt-sprite subs_pdf'>" . Lang::t('_GENERATE', 'certificate') . "</a>";
+                $cell_down_gen = "<a href='" . $generate . "' class='ico-wt-sprite subs_pdf'>" . Lang::t('_GENERATE', 'certificate') . '</a>';
                 $cell_del_cert = '';
             }
 
@@ -1626,21 +1633,19 @@ class CourseAlms extends Model
                 'lastname' => $lastname, 'firstname' => $firstname
             ];
             // getting custom fields values
-            $cf_values = $umodel->getCustomFieldUserValues(intval($id_user));
+            $cf_values = $umodel->getCustomFieldUserValues((int)$id_user);
             $cf = array_replace($cf, $cf_values);
-            $user2 = array();
+            $user2 = [];
             foreach ($cf as $key => $value) {
                 $user2["cf_$key"] = $value;
             }
-            $user3 =  ['status' => $status, 'name_certificate' => $name_certificate, 'date_complete' => $date_complete, 'on_date' => $on_date, 'cell_down_gen' => $cell_down_gen, 'cell_del_cert' => $cell_del_cert];
-
+            $user3 = ['status' => $status, 'name_certificate' => $name_certificate, 'date_complete' => $date_complete, 'on_date' => $on_date, 'cell_down_gen' => $cell_down_gen, 'cell_del_cert' => $cell_del_cert];
 
             $users[] = array_merge($user1, $user2, $user3);
         }
 
         return $users;
     }
-
 
 
     protected function getInfoClassroom($id_user, $id_course)

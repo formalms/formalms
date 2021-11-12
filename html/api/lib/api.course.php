@@ -2559,72 +2559,107 @@ class Course_API extends API
 
     }
 
-    function addAssociationMetaCertificates($params)
+    function addAssociationAggregateCertificates($params)
     {
+        require_once Forma::inc(_lms_.'/lib/lib.aggregated_certificate.php');
         $response = [];
         $response['success'] = true;
 
         try {
-            $metaCertificatesRQ = $params['meta_certificates'] ?? [];
+            $aggregatedCertificatesRQ = $params['aggregated_certificates'] ?? [];
 
-            if (count($metaCertificatesRQ) > 0) {
-                foreach ($metaCertificatesRQ as $metaCertificatesRQItem) {
-                    $metaCertId = $metaCertificatesRQItem['meta_cert_id'] ?? '';
-                    $nameAssociation = $metaCertificatesRQItem['name_ass'] ?? '';
-                    $descrAssociation = $metaCertificatesRQItem['descr_ass'] ?? '';
-                    $metaCertType = (int)($metaCertificatesRQItem['meta_type'] ?? 0);
+            if (count($aggregatedCertificatesRQ) > 0) {
+                foreach ($aggregatedCertificatesRQ as $index => $aggregatedCertificatesRQItem) {
+                    $certificateId = $aggregatedCertificatesRQItem['cert_id'] ?? '';
+                    $nameAssociation = $aggregatedCertificatesRQItem['name_ass'] ?? '';
+                    $descriptionAssociation = $aggregatedCertificatesRQItem['descr_ass'] ?? '';
+                    $certificateType = (int)($aggregatedCertificatesRQItem['type'] ?? 0);
+                    $courses = (array_key_exists('courses',$aggregatedCertificatesRQItem)  && !empty($aggregatedCertificatesRQItem['courses'])) ? explode(',',$aggregatedCertificatesRQItem['courses']) : [];
+                    $coursesPaths = (array_key_exists('course_paths',$aggregatedCertificatesRQItem) && !empty($aggregatedCertificatesRQItem['course_paths'])) ? explode(',',$aggregatedCertificatesRQItem['course_paths']) : [];
+                    $users = (array_key_exists('users',$aggregatedCertificatesRQItem) && !empty($aggregatedCertificatesRQItem['users'])) ? explode(',',$aggregatedCertificatesRQItem['users']) : [];
 
-                    if (empty($metaCertId)) {
+                    if (empty($certificateId)) {
                         $response['success'] = false;
-                        $response['message'] = 'Missing meta_cert_id ' . $metaCertId;
+                        $response['messages'][$index][] = 'Missing cert_id' . $certificateId;
                         return $response;
                     }
 
                     if (empty($nameAssociation)) {
                         $response['success'] = false;
-                        $response['message'] = 'Missing name_ass ' . $nameAssociation;
+                        $response['messages'][$index][] = 'Missing name_ass ' . $nameAssociation;
+                        return $response;
+                    }
+
+                    if ($certificateType === AggregatedCertificate::AGGREGATE_CERTIFICATE_TYPE_COURSE && empty($courses)) {
+                        $response['success'] = false;
+                        $response['messages'][$index][] = 'Missing courses : ' . implode(',',$courses);
+                        return $response;
+                    }
+
+                    if ($certificateType === AggregatedCertificate::AGGREGATE_CERTIFICATE_TYPE_COURSE_PATH && empty($coursesPaths)) {
+                        $response['success'] = false;
+                        $response['messages'][$index][] = 'Missing courses paths : ' . implode(',',$coursesPaths);
                         return $response;
                     }
 
                     // add association to meta cert id
                     try {
-                        $queryMeta = 'INSERT INTO %lms_aggregated_cert_metadata ( idCertificate, title, description) VALUES (' . $metaCertId . ",'" . $nameAssociation . "','" . $descrAssociation . "')";
+                        $queryMeta = 'INSERT INTO %lms_aggregated_cert_metadata ( idCertificate, title, description) VALUES (' . $certificateId . ",'" . $nameAssociation . "','" . $descriptionAssociation . "')";
                         sql_query($queryMeta);
                         // get id new association
                         $queryAssociation = 'select max(idAssociation) as id_meta from %lms_aggregated_cert_metadata';
                         $qres = sql_query($queryAssociation);
                         [$idAssociation] = sql_fetch_row($qres);
 
-                        if ($metaCertType === 0){
-                            $query = 'SELECT idCourse FROM `%lms_certificate_meta_course` WHERE `idMetaCertificate` =' . $metaCertId;
+                        switch ($certificateType){
+                            case AggregatedCertificate::AGGREGATE_CERTIFICATE_TYPE_COURSE:
+                                foreach ($courses as $idCourse){
+                                    $query = 'INSERT INTO `%lms_aggregated_cert_course` (`idAssociation`, `idUser`, `idCourse`, `idCourseEdition`) VALUES ( '.$idAssociation.', 0, '.$idCourse.', 0);';
+                                    sql_query($query);
 
-                            $queryResult = sql_query($query);
-                            [$idCourse] = sql_fetch_row($queryResult);
+                                    foreach ($users as $idUser){
+                                        $query = 'INSERT INTO `%lms_aggregated_cert_course` (`idAssociation`, `idUser`, `idCourse`, `idCourseEdition`) VALUES ( '.$idAssociation.', '.$idUser.', '.$idCourse.', 0);';
+                                        sql_query($query);
+                                    }
+                                }
+                                break;
+                            case AggregatedCertificate::AGGREGATE_CERTIFICATE_TYPE_COURSE_PATH:
+                                foreach ($coursesPaths as $idCoursePath) {
+                                    $query = 'INSERT INTO `%lms_aggregated_cert_coursepath` (`idAssociation`, `idUser`, `idCoursePath`) VALUES ( ' . $idAssociation . ', 0, ' . $idCoursePath . ')';
+                                    sql_query($query);
 
-                            $query = 'INSERT INTO `%lms_aggregated_cert_course` (`idAssociation`, `idUser`, `idCourse`, `idCourseEdition`) VALUES ( '.$idAssociation.', 0, '.$idCourse.', 0);';
-                            sql_query($query);
+                                    foreach ($users as $idUser){
+                                        $query = 'INSERT INTO `%lms_aggregated_cert_coursepath` (`idAssociation`, `idUser`, `idCoursePath`) VALUES ( ' . $idAssociation . ', '.$idUser.', ' . $idCoursePath . ')';
+                                        sql_query($query);
+                                    }
+                                }
+                                break;
+                            default:
+                                break;
                         }
 
                         $response['id_new_associations'][] = [
-                            'meta_cert_id' => $metaCertId,
+                            'cert_id' => $certificateId,
                             'name_ass' => $nameAssociation,
-                            'descr_ass' => $descrAssociation,
+                            'descr_ass' => $descriptionAssociation,
+                            'type' => $certificateType,
+                            'courses' => $courses,
+                            'course_paths' => $coursesPaths,
+                            'users' => $users,
                             'id_new_association' => $idAssociation
                         ];
                     } catch (Exception $exception) {
-                        $response[] = [
-                            'success' => false,
-                            'message' => $exception->getMessage()
-                        ];
+                        $response['success'] = false;
+                        $response['messages'][$index][] = $exception->getMessage();
                     }
                 }
             } else {
                 $response = [
                     'success' => false,
-                    'message' => 'Meta Certificates must be more than or equal to one'
+                    'message' => 'Aggregated Certificates must be more than or equal to one'
                 ];
             }
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             $response = [
                 'success' => false,
                 'message' => $exception->getMessage()
@@ -3109,10 +3144,10 @@ class Course_API extends API
                 }
                 break;
 
-            case 'addMetaCertificates':
-            case 'addmetacertificates':
+            case 'addAggregateCertificates':
+            case 'addAggregateCertificates':
                 {
-                    $response = $this->addAssociationMetaCertificates($params);
+                    $response = $this->addAssociationAggregateCertificates($params);
                 }
                 break;
 

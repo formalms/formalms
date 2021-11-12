@@ -31,10 +31,10 @@ class AggregatedCertificate
 
 
 
-        $this->assocTypesArr = array(
+        $this->assocTypesArr = [
             self::AGGREGATE_CERTIFICATE_TYPE_COURSE => $this->table_cert_meta_association_courses,
             self::AGGREGATE_CERTIFICATE_TYPE_COURSE_PATH =>  $this->table_cert_meta_association_coursepath
-        );
+        ];
     }
 
     /**
@@ -261,7 +261,7 @@ class AggregatedCertificate
 
         $rs = sql_query($q);
 
-        $assocArr = array();
+        $assocArr = [];
 
 
         while ($row = sql_fetch_array($rs))
@@ -360,7 +360,7 @@ class AggregatedCertificate
 
         $rs = sql_query($q);
 
-        $idsCourseArr = array();
+        $idsCourseArr = [];
         while ($row = sql_fetch_array($rs)) {
 
             $idsCourseArr[] = (int) $row['idCourse'];
@@ -421,7 +421,7 @@ class AggregatedCertificate
 
         $rs = sql_query($q);
 
-        $idsCoursePathArr = array();
+        $idsCoursePathArr = [];
         while ($row = sql_fetch_array($rs)) {
 
             $idsCoursePathArr[] = (int) $row['idCoursePath'];
@@ -500,13 +500,13 @@ class AggregatedCertificate
             . (($req_root) ? '' : ", cat.path ")
             . "FROM %lms_course AS cour "
             . (($req_root) ? '' : "JOIN %lms_category AS cat ")
-            . "WHERE cour.idCategory IN (" . str_replace(array("[", "]"), "", $idCategoryArr) . ")"
+            . "WHERE cour.idCategory IN (" . str_replace(["[", "]"], "", $idCategoryArr) . ")"
             . (($req_root) ? '' : " AND cour.idCategory = cat.idCategory ");
 
 
         $rs = sql_query($q);
 
-        $coursesList = array();
+        $coursesList = [];
 
         $i = 0;
         while ($rows = sql_fetch_assoc($rs)) {
@@ -610,8 +610,8 @@ class AggregatedCertificate
     function insertMetaDataCert($metaDataArr)
     {
 
-        $fields = array();
-        $values = array();
+        $fields = [];
+        $values = [];
 
         if (empty($metaDataArr)) return false; // You never know...
 
@@ -738,7 +738,7 @@ class AggregatedCertificate
                     $sql1 = "INSERT INTO " . $table . " (idAssociation, idUser, idCourse, idCourseEdition) VALUES ";
                     // insert placeholder for no user selected case
                     $array_course = explode(",", Get::req('selected_courses', DOTY_NUMLIST));
-                    $r = array();
+                    $r = [];
                     foreach ($array_course as $the_course) {
                         $r[] = '(' . $this->_idAssoc . ',0,' . $the_course . ', 0)';
                     }
@@ -746,7 +746,7 @@ class AggregatedCertificate
                     $sql1 = "INSERT INTO " . $table . " (idAssociation, idUser, idCoursePath) VALUES ";
                     // insert placeholder for no user selected case
                     $array_path = explode(",", Get::req('selected_idsCoursePath', DOTY_NUMLIST));
-                    $r = array();
+                    $r = [];
                     foreach ($array_path as $the_path) {
                         $r[] = '(' . $this->_idAssoc . ',0,' . $the_path . ')';
                     }
@@ -767,7 +767,7 @@ class AggregatedCertificate
                 $sql2 = "INSERT INTO " . $table . " (idAssociation, idUser, idCourse, idCourseEdition) VALUES ";
                 // insert placeholder for no user selected case
                 $array_course = explode(",", Get::req('selected_courses', DOTY_NUMLIST));
-                $r = array();
+                $r = [];
                 foreach ($array_course as $the_course) {
                     $r[] = '(' . $this->_idAssoc . ',0,' . $the_course . ', 0)';
                 }
@@ -775,7 +775,7 @@ class AggregatedCertificate
                 $sql2 = "INSERT INTO " . $table . " (idAssociation, idUser, idCoursePath) VALUES ";
                 // insert placeholder for no user selected case
                 $array_path = explode(",", Get::req('selected_idsCoursePath', DOTY_NUMLIST));
-                $r = array();
+                $r = [];
                 foreach ($array_path as $the_path) {
                     $r[] = '(' . $this->_idAssoc . ',0,' . $the_path . ')';
                 }
@@ -850,7 +850,7 @@ class AggregatedCertificate
         $sql1 = "INSERT INTO " . $table
             . " ( idAssociation, idUser, idCourse, idCourseEdition )"
             . " VALUES ";
-        $user_courses = array();
+        $user_courses = [];
         foreach ($assocArr as $courseId => $idUsers) {
             foreach ($idUsers as $id => $assoc) {
                 if ($assoc) {
@@ -1063,7 +1063,7 @@ class AggregatedCertificate
     function getIdAssocForUserCourse($id_user, $id_course)
     {
         if ($id_user == null || $id_course  == null) return 0;
-        $id_associations_courses = array();
+        $id_associations_courses = [];
 
         $q = "SELECT assoc_meta.idCertificate, assoc_course.idAssociation, assoc_course.idCourse  FROM "
             . $this->table_cert_meta_association_courses . " as assoc_course," . $this->table_cert_meta_association . " as assoc_meta 
@@ -1088,7 +1088,7 @@ class AggregatedCertificate
     function getIdAssocForUserPath($id_user, $id_path)
     {
         if ($id_user == null || $id_path  == null) return 0;
-        $id_associations_paths = array();
+        $id_associations_paths = [];
         $id_path_str = (is_array($id_path) ? implode(',', $id_path) : $id_path);
 
         $q = "SELECT assoc_meta.idCertificate, assoc_path.idAssociation, assoc_path.idCoursePath FROM "
