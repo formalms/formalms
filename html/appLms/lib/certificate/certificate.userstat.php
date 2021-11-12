@@ -129,9 +129,9 @@ class CertificateSubs_UserStat extends CertificateSubstitution
                     $table_course = '<table width="100%" cellspacing="1" cellpadding="1" border="1" align="">'
                         . '<thead>'
                         . '<tr>'
-                        . '<td width="50%"><b>' . Lang::t('_COURSE_NAME') . '</b></td>'
-                        . '<td width="30%"><b>' . Lang::t('_COURSE_TYPE', 'course') . '</b></td>'
-                        . '<td width="20%" align="right"><b>' . Lang::t('_TOTAL_SESSION', 'report') . '</b></td>'
+                        . '<td width="50%" style="font-size: 14px;"><b>' . Lang::t('_COURSE_NAME') . '</b></td>'
+                        . '<td width="30%" style="font-size: 14px;"><b>' . Lang::t('_COURSE_TYPE', 'course') . '</b></td>'
+                        . '<td width="20%" style="font-size: 14px;" align="right"><b>' . Lang::t('_TOTAL_SESSION', 'report') . '</b></td>'
                         . '</tr>'
                         . '</thead>'
                         . '<tbody>';
@@ -154,17 +154,17 @@ class CertificateSubs_UserStat extends CertificateSubstitution
 
                         $score_course = $rep_man->getUserFinalScore(array($this->id_user), array($this->id_course));
                         $table_course .= '<tr>'
-                            . '<td>' . $course_info['name'] . '</td>'
-                            . '<td>' . $array_coursetype[$course_info['course_type']] . '</td>'
-                            . '<td align="right">' . $course_info['mediumTime'] . '</td>'
+                            . '<td style="font-size: 12px;">' . $course_info['name'] . '</td>'
+                            . '<td style="font-size: 12px;">' . $array_coursetype[$course_info['course_type']] . '</td>'
+                            . '<td style="font-size: 12px;" align="right">' . $course_info['mediumTime'] . '</td>'
                             . '</tr>';
                         $course_time += $course_info['mediumTime'];
 
                         $subs['[course_scorm_items]'] .= $this->getSubstitutionScormItems($id_course, $this->id_user);
                     }
                     $table_course .= '<tr>'
-                        . '<td align="right" colspan="2">' . Lang::t('_TOTAL_TIME') . '</td>'
-                        . '<td align="right">' . $course_time . '</td>'
+                        . '<td align="right" style="font-size: 14px;" colspan="2">' . Lang::t('_TOTAL_TIME') . '</td>'
+                        . '<td align="right" style="font-size: 14px;">' . $course_time . '</td>'
                         . '</tr>'
                         . '</tbody>'
                         . '</table>';
