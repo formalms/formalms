@@ -1066,7 +1066,7 @@
 							"response": []
 						},
 						{
-							"name": "Course - addMetaCertificates",
+							"name": "Course - addAggregateCertificates",
 							"event": [
 								{
 									"listen": "prerequest",
@@ -1101,45 +1101,54 @@
 									"mode": "formdata",
 									"formdata": [
 										{
-											"key": "meta_certificates[0][meta_cert_id]",
+											"key": "aggregated_certificates[0][cert_id]",
 											"value": "16",
 											"type": "text"
 										},
 										{
-											"key": "meta_certificates[0][name_ass]",
-											"value": "Lean Six Sigma GB ed. GB 33",
+											"key": "aggregated_certificates[0][name_ass]",
+											"value": "Lean Six Sigma GB ed. GB 36",
 											"type": "text"
 										},
 										{
-											"key": "meta_certificates[0][descr_ass]",
+											"key": "aggregated_certificates[0][descr_ass]",
 											"value": "L6S 033 - GB",
 											"type": "text"
 										},
 										{
-											"key": "meta_certificates[1][meta_cert_id]",
-											"value": "16",
+											"key": "aggregated_certificates[0][type]",
+											"value": "0",
+											"description": "course => 0,coursePath => 1",
 											"type": "text"
 										},
 										{
-											"key": "meta_certificates[1][name_ass]",
-											"value": "Lean Six Sigma GB ed. GB 33 2",
+											"key": "aggregated_certificates[0][courses]",
+											"value": "330,856",
+											"description": "course ids separated by comma",
 											"type": "text"
 										},
 										{
-											"key": "meta_certificates[1][descr_ass]",
-											"value": "L6S 033 - GB 2",
+											"key": "aggregated_certificates[0][course_paths]",
+											"value": "",
+											"description": "coursePath ids separated by comma",
+											"type": "text"
+										},
+										{
+											"key": "aggregated_certificates[0][users]",
+											"value": "",
+											"description": "user ids separated by comma",
 											"type": "text"
 										}
 									]
 								},
 								"url": {
-									"raw": "{{base_url}}{{api_path}}/course/addMetaCertificates",
+									"raw": "{{base_url}}{{api_path}}/course/addAggregateCertificates",
 									"host": [
 										"{{base_url}}{{api_path}}"
 									],
 									"path": [
 										"course",
-										"addMetaCertificates"
+										"addAggregateCertificates"
 									]
 								}
 							},
