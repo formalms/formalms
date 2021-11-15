@@ -1986,6 +1986,119 @@ class Course_API extends API
 
     }
 
+    public function renameLearningObject($params) 
+    {
+        require_once(_lms_ . '/class.module/class.definition.php');
+        require_once(_lms_ . '/lib/lib.module.php');
+        #require_once(_lms_ . '/lib/lib.permission.php');
+        $response = $this->validateRenameParams($params);
+
+        if ($response['success']) {
+            $fromType = $params['fromType'];
+            $idCourse = $params['idCourse'];
+            $newName = $params['newName'];
+            $learningObjectId = $params['learningObjectId'];
+            $_SESSION['idCourse'] = $idCourse;
+
+            $idUser = false;
+            if (array_key_exists('idUser', $params) && !empty($params['idUser'])) {
+                
+                $idUser = $params['idUser'];
+                $checkAuth = $this->authenticateUserById($idUser);
+                if(!$checkAuth) {
+                    return $response['error'] = 'Not authenitcated user found';
+                }
+               
+            }
+
+            $model = new LomanagerLms();
+            
+            $model->setTdb($fromType, $idCourse, $idUser);
+            $result = $model->renameFolder($learningObjectId, $newName);
+            $response['learningObjectIds'][] = [
+                'fromType' => $fromType,
+                'fromId' => $learningObjectId,
+                'idCourse' => $idCourse,
+                'idUser' => $idUser,
+                'success' => $result
+            ];
+                
+            
+        }
+
+        return $response;
+
+    }
+
+    public function authenticateUserById($idUser) 
+    {
+        require_once(Forma::inc(_base_ . '/lib/lib.user.php'));
+        $user_manager = new DoceboACLManager();
+        $user_info = $user_manager->getUser($idUser, false);
+
+        if ($user_info != false) {
+            $username = $user_info[ACL_INFO_USERID];
+            $du = new DoceboUser($username, $prefix);
+
+            $_SESSION['last_enter'] = $user_info[ACL_INFO_LASTENTER];
+            $du->setLastEnter(date("Y-m-d H:i:s"));
+            $_SESSION['user_enter_mark'] = time();
+            $du->loadUserSectionST();
+            $du->SaveInSession();
+            $GLOBALS['current_user'] =& $du;
+            return $user_info;
+        } else {
+            return false;
+        }
+
+    }
+
+    public function deleteLearningObjects($params) 
+    {
+
+        require_once(_lms_ . '/class.module/class.definition.php');
+        require_once(_lms_ . '/lib/lib.module.php');
+        require_once(_lms_ . '/lib/lib.permission.php');
+        $response = $this->validateDeleteParams($params);
+
+        if ($response['success']) {
+            $fromType = $params['fromType'];
+            $idCourse = $params['idCourse'];
+            $_SESSION['idCourse'] = $idCourse;
+
+            $idUser = false;
+            if (array_key_exists('idUser', $params) && !empty($params['idUser'])) {
+                
+                $idUser = $params['idUser'];
+                $checkAuth = $this->authenticateUserById($idUser);
+                if(!$checkAuth) {
+                    return $response['error'] = 'Not authenitcated user found';
+                }
+               
+            }
+            $learningObjectIds = explode(',', $params['learningObjectIds']);
+
+            if (count($learningObjectIds) > 0) {
+                $model = new LomanagerLms();
+                foreach ($learningObjectIds as $learningObjectId) {
+                    $model->setTdb($fromType, $idCourse, $idUser);
+                    $result = $model->deleteFolder($learningObjectId);
+                    $response['learningObjectIds'][] = [
+                        'fromType' => $fromType,
+                        'fromId' => $learningObjectId,
+                        'idCourse' => $idCourse,
+                        'idUser' => $idUser,
+                        'success' => $result
+                    ];
+                }
+            }
+        }
+
+        return $response;
+
+    }
+
+
     public function copyLearningObjects($params)
     {
         require_once(_lms_ . '/class.module/class.definition.php');
@@ -2050,6 +2163,52 @@ class Course_API extends API
         }
         return $response;
     }
+
+    private function validateDeleteParams(array $params)
+    {
+        $response = [];
+        $response['success'] = true;
+
+        if (!$this->validateType($params['fromType'])) {
+            $response['success'] = false;
+            $response['message'] = 'From Type is not valid:' . $params['fromType'];
+        }
+
+        if ($params['fromType'] === LomanagerLms::HOMEREPODIRDB && (!array_key_exists('idUser', $params) || empty($params['idUser']))) {
+            $response['success'] = false;
+            $response['message'] = 'To use ' . LomanagerLms::HOMEREPODIRDB . ' is necessary to send idUser param';
+        }
+
+        return $response;
+    }
+
+    private function validateRenameParams(array $params) {
+        $response = [];
+        $response['success'] = true;
+
+        if (!isset($params['newName'])) {
+            $response['success'] = false;
+            $response['message'] = 'New name not specified on renaming';
+        }
+
+        if (!isset($params['learningObjectId']) || !(int) $params['learningObjectId'] > 0) {
+            $response['success'] = false;
+            $response['message'] = 'Learning Object not specified on renaming';
+        }
+
+        if (!$this->validateType($params['fromType'])) {
+            $response['success'] = false;
+            $response['message'] = 'From Type is not valid:' . $params['fromType'];
+        }
+
+        if ($params['fromType'] === LomanagerLms::HOMEREPODIRDB && (!array_key_exists('idUser', $params) || empty($params['idUser']))) {
+            $response['success'] = false;
+            $response['message'] = 'To use ' . LomanagerLms::HOMEREPODIRDB . ' is necessary to send idUser param';
+        }
+
+        return $response;
+    }
+     
 
     private function validateType(string $type)
     {
@@ -3128,7 +3287,16 @@ class Course_API extends API
                     $response = $this->copyLearningObjects($params);
                 }
                 break;
-
+            case 'renameLearningObject':
+                {
+                    $response = $this->renameLearningObject($params);
+                }
+                break;
+            case 'deleteLearningObjects':
+                {
+                    $response = $this->deleteLearningObjects($params);
+                }
+                break;
             case 'getAnswerTest':
             case 'getanswertest':
                 {
