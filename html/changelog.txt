@@ -14,9 +14,43 @@ RELEASE CHANGELOG
 ---------------------------------------------------------------------------------------
 forma.lms 2.4.5
 ---------------------------------------------------------------------------------------
-Release date: 2021 august
+Release date: 2021 november
 
+#19951 - Fix Admin user should not see the author filter in the reports
+#19950 - Fix fast subscribe error when admin try to insert a user that has first position in admin users. array_search($id_user, $admin_users, false) retunrs position 0 and comparison "array_search($id_user, $admin_users, false) == false" is true
+- Fix send email on user update
+- fix tinymce
 #19919 - Fix coursereport generation
+#19900 - move all threads before emoticon select in forum and public_forum	830a905fb	carminep89 <carminepepiciello@gmail.com>	23 Jun 2021 at 18:09
+#19890 - Add tag form scorm items in certificate
+#19864 - Remove deprecated constructors - fix show answers of last number_times for ET answer type
+#19863 - fix api course add/update/delete day
+#19862 - fix sum score in function userScore
+#19861 - Filter files in upload question with allowed file formats
+#19860 - Invisible fields for SuperAdmins
+#19854 - report course dates at 00-00-0000
+#19846 - Uppercase first char during users import
+#16623 - Risolto Problema con "only update" e "create and update" Fix duplicati
+#19843 - fix show correct answer in report when show correct answers is enabled
+#19842 - User Object grid - Pagination with many objects
+#19814 - Show materials dots on course catalogue even when course is on sale - added in homecatalogue
+#19841 - Grade book "Disallowed key characters in global data" on delete
+#19840 - User-object grid - link back
+#19839 - Incorrect scoring of questions on tests
+#19836 - fix Error: API not enabled.
+#19827 - Fix DateTime exception in course list when date is not a valid date.
+#19807 - Errore caricamento file in domande di un test
+#19822 - Show additional fields if admin can edit a user profile
+#19816 - Stripslashes in question type upload
+#19815 - fix error during import users anche node changes
+#19814 - Show materials dots on course catalogue even when course is on sale
+#19811 - API not load plugins and events listener
+#19809 - Error with quotes in insert and save advice
+#19806 - fix merge
+#19805 - Fix email text on user subscription
+#19804 - fix catalogue change and current active tab
+#19803 - SSL error during login with chrome
+#19797 - Fix merge
 
 Plus other minor fixes and improvements
 
