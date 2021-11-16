@@ -41,7 +41,7 @@ class Course_API extends API
     /**
      * @return array
      */
-    private function _getAndValidateIdDayFromParams($params)
+    private function getAndValidateIdDayFromParams($params)
     {
         $idDay = is_numeric($params['id_day']) ? $params['id_day'] : '';
 
@@ -60,7 +60,7 @@ class Course_API extends API
      * @param $params
      * @return array
      */
-    private function _getAndValidateIdDateFromParams($params)
+    private function getAndValidateIdDateFromParams($params)
     {
         $idDate = $params['id_date'] ?? '';
 
@@ -80,7 +80,7 @@ class Course_API extends API
      * @param $params
      * @return array
      */
-    private function _getAndValidateSendCalendarFromParams($params)
+    private function getAndValidateSendCalendarFromParams($params)
     {
         $sendCalendar = (bool)($params['sendCalendar'] ?? false);
 
@@ -101,7 +101,7 @@ class Course_API extends API
      * @param $params
      * @return array
      */
-    private function _getAndValidateCourseIdCourseFromParams($params)
+    private function getAndValidateCourseIdCourseFromParams($params)
     {
         $courseId = $params['course_id'] ?? '';
 
@@ -115,8 +115,39 @@ class Course_API extends API
             $response['message'] = 'Missing or Wrong Course ID' . $params['course_id'];
         }
 
+        $course = new CourseAlms();
+        $info = $course->getInfo($courseId);
+        if (empty($info)) {
+            $response['success'] = false;
+            $response['message'] = 'Course not found:' . $params['course_id'];
+        }
+
         return $response;
     }
+
+    /**
+     * @param $params
+     * @return array
+     */
+    private function validateIdDateExistsInCourseFromParams($params)
+    {
+        $courseId = $params['course_id'] ?? '';
+
+        $idDate = $params['id_date'] ?? '';
+
+        $model = new ClassroomAlms($courseId, $idDate);
+
+        $dates = $model->classroom_man->getCourseDate($courseId);
+
+        if (!array_key_exists($idDate, $dates)){
+
+            $response['success'] = false;
+            $response['message'] = 'Date does not exists in course';
+        }
+
+        return $response;
+    }
+
 
     public function getCourses($params)
     {
@@ -1021,24 +1052,9 @@ class Course_API extends API
 
     public function addClassroom($params)
     {
-        $response = [];
-        $courseId = isset($params['course_id']) ? $params['course_id'] : '';
-
-        if (empty($courseId)) {
-            $response['success'] = false;
-            $response['message'] = 'Missing Course ID' . $params['course_id'];
-            return $response;
-        }
-
-        $course = new CourseAlms();
-        $classroom_man = new DateManager();
-
-        $res = false;
-
-        $info = $course->getInfo($courseId);
-        if (empty($info)) {
-            $response['success'] = false;
-            $response['message'] = 'Course not found:' . $params['course_id'];
+        $response = $this->getAndValidateCourseIdCourseFromParams($params);
+        $courseId = $response['data'];
+        if (!$response['success']) {
             return $response;
         }
 
@@ -1137,23 +1153,24 @@ class Course_API extends API
     {
         require_once(_lms_ . '/admin/models/ClassroomAlms.php');
 
-        $response = $this->_getAndValidateSendCalendarFromParams($params);
+        $response = $this->getAndValidateSendCalendarFromParams($params);
         $sendCalendar = $response['data'];
         if (!$response['success']) {
             return $response;
         }
 
-        $response = $this->_getAndValidateIdDateFromParams($params);
+        $response = $this->getAndValidateIdDateFromParams($params);
         $idDate = $response['data'];
         if (!$response['success']) {
             return $response;
         }
 
-        $response = $this->_getAndValidateCourseIdCourseFromParams($params);
-        $courseId = $response['data'];
+        $response = $this->validateIdDateExistsInCourseFromParams($params);
         if (!$response['success']) {
             return $response;
         }
+
+        $error = false;
 
         $model = new ClassroomAlms($courseId, $idDate);
 
@@ -1181,9 +1198,7 @@ class Course_API extends API
 
             $model = new ClassroomAlms($courseId, $idDate);
 
-            $arrayDays = $model->classroom_man->getDateDay($idDate);
 
-            $error = false;
 
             $arrayDay['date_begin'] = $dateSelected . ' ' . $dateBeginHours . ':' . $dateBeginMinutes . ':00';
             $arrayDay['pause_begin'] = $dateSelected . ' ' . $datePauseBeginHours . ':' . $datePauseBeginMinutes . ':00';
@@ -1244,25 +1259,25 @@ class Course_API extends API
     {
         require_once(_lms_ . '/admin/models/ClassroomAlms.php');
 
-        $response = $this->_getAndValidateSendCalendarFromParams($params);
+        $response = $this->getAndValidateSendCalendarFromParams($params);
         $sendCalendar = $response['data'];
         if (!$response['success']) {
             return $response;
         }
 
-        $response = $this->_getAndValidateIdDayFromParams($params);
+        $response = $this->getAndValidateIdDayFromParams($params);
         $idDay = $response['data'];
         if (!$response['success']) {
             return $response;
         }
 
-        $response = $this->_getAndValidateIdDateFromParams($params);
+        $response = $this->getAndValidateIdDateFromParams($params);
         $idDate = $response['data'];
         if (!$response['success']) {
             return $response;
         }
 
-        $response = $this->_getAndValidateCourseIdCourseFromParams($params);
+        $response = $this->getAndValidateCourseIdCourseFromParams($params);
         $courseId = $response['data'];
         if (!$response['success']) {
             return $response;
@@ -1313,14 +1328,9 @@ class Course_API extends API
 
     public function updateCourse($params)
     {
-        $response = [];
-        $response['success'] = true;
-
-        $courseId = isset($params['course_id']) ? $params['course_id'] : '';
-
-        if (empty($courseId)) {
-            $response['success'] = false;
-            $response['message'] = 'Missing Course ID' . $params['course_id'];
+        $response = $this->getAndValidateCourseIdCourseFromParams($params);
+        $courseId = $response['data'];
+        if (!$response['success']) {
             return $response;
         }
 
@@ -1442,26 +1452,31 @@ class Course_API extends API
     {
         require_once(_lms_ . '/admin/models/ClassroomAlms.php');
 
-        $response = $this->_getAndValidateSendCalendarFromParams($params);
+        $response = $this->getAndValidateSendCalendarFromParams($params);
         $sendCalendar = $response['data'];
         if (!$response['success']) {
             return $response;
         }
 
-        $response = $this->_getAndValidateIdDayFromParams($params);
+        $response = $this->getAndValidateIdDayFromParams($params);
         $idDay = $response['data'];
         if (!$response['success']) {
             return $response;
         }
 
-        $response = $this->_getAndValidateIdDateFromParams($params);
+        $response = $this->getAndValidateIdDateFromParams($params);
         $idDate = $response['data'];
         if (!$response['success']) {
             return $response;
         }
 
-        $response = $this->_getAndValidateCourseIdCourseFromParams($params);
+        $response = $this->getAndValidateCourseIdCourseFromParams($params);
         $courseId = $response['data'];
+        if (!$response['success']) {
+            return $response;
+        }
+
+        $response = $this->validateIdDateExistsInCourseFromParams($params);
         if (!$response['success']) {
             return $response;
         }
@@ -1471,7 +1486,7 @@ class Course_API extends API
         $arrayDays = $model->classroom_man->getDateDay($idDate);
 
         $error = false;
-        $dayExists = array_search($idDay, array_column($arrayDays, 'id'));
+        $dayExists = array_search($idDay, array_column($arrayDays, 'id'), true);
         if ($dayExists) {
 
             if (!empty($params['edition_date_selected']) && ($this->_validateDate($params['edition_date_selected']) || $this->_validateDate($params['edition_date_selected'], 'Y-m-d'))) {
@@ -1550,31 +1565,22 @@ class Course_API extends API
     public function updateClassroom($params)
     {
 
-        $response = $this->_getAndValidateIdDateFromParams($params);
+        $response = $this->getAndValidateIdDateFromParams($params);
         $idDate = $response['data'];
         if (!$response['success']) {
             return $response;
         }
 
-        $response = $this->_getAndValidateCourseIdCourseFromParams($params);
+        $response = $this->getAndValidateCourseIdCourseFromParams($params);
         $courseId = $response['data'];
         if (!$response['success']) {
             return $response;
         }
 
-        $course = new CourseAlms();
-        $classroom_man = new DateManager();
-
-        $res = false;
-
-
-        $info = $course->getInfo($courseId);
-        if (empty($info)) {
-            $response['success'] = false;
-            $response['message'] = 'Course not found:' . $params['course_id'];
+        $response = $this->validateIdDateExistsInCourseFromParams($params);
+        if (!$response['success']) {
             return $response;
         }
-
 
         $params['classroom_sub_start_date'] = substr(Format::dateDb($params['classroom_sub_start_date'], 'date'), 0, 10);
         $params['classroom_sub_end_date'] = substr(Format::dateDb($params['classroom_sub_end_date'], 'date'), 0, 10);
@@ -1634,13 +1640,9 @@ class Course_API extends API
     // 
     public function deleteCourse($params)
     {
-        $response = [];
-
-        $courseId = isset($params['course_id']) ? $params['course_id'] : '';
-
-        if (empty($courseId)) {
-            $response['success'] = false;
-            $response['message'] = 'Missing Course ID' . $params['course_id'];
+        $response = $this->getAndValidateCourseIdCourseFromParams($params);
+        $courseId = $response['data'];
+        if (!$response['success']) {
             return $response;
         }
 
@@ -1915,13 +1917,13 @@ class Course_API extends API
     // delete ILT Classroom edition
     public function deteleClassroom($params)
     {
-        $response = $this->_getAndValidateIdDateFromParams($params);
+        $response = $this->getAndValidateIdDateFromParams($params);
         $idDate = $response['data'];
         if (!$response['success']) {
             return $response;
         }
 
-        $response = $this->_getAndValidateCourseIdCourseFromParams($params);
+        $response = $this->getAndValidateCourseIdCourseFromParams($params);
         $courseId = $response['data'];
         if (!$response['success']) {
             return $response;
@@ -3070,13 +3072,13 @@ class Course_API extends API
 
     public function getCalendar($params)
     {
-        $response = $this->_getAndValidateIdDateFromParams($params);
+        $response = $this->getAndValidateIdDateFromParams($params);
         $idDate = $response['data'];
         if (!$response['success']) {
             return $response;
         }
 
-        $response = $this->_getAndValidateCourseIdCourseFromParams($params);
+        $response = $this->getAndValidateCourseIdCourseFromParams($params);
         $courseId = $response['data'];
         if (!$response['success']) {
             return $response;
