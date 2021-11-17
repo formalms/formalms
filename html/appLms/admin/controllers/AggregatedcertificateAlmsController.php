@@ -1109,6 +1109,7 @@ class AggregatedcertificateAlmsController extends AlmsController
         $type_h[] = 'align_center';
 
         $man_courseuser = new Man_CourseUser(DbConn::getInstance());
+        $coursePath_man = new CoursePath_Manager();
         if ($type_assoc === AggregatedCertificate::AGGREGATE_CERTIFICATE_TYPE_COURSE) {
             $course_man = new Man_Course();
             $course_info = $course_man->getAllCourses(false, false, $linksArr);
@@ -1116,7 +1117,7 @@ class AggregatedcertificateAlmsController extends AlmsController
                 $cont_h[] = $course['code'] . ' - ' . $course['name'];
             }
         } else {
-            $coursePath_man = new CoursePath_Manager();
+
             $coursePathInfoArr = $coursePath_man->getCoursepathAllInfo($linksArr);
             foreach ($coursePathInfoArr as $coursePathInfo) {
                 $cont_h[] = $coursePathInfo[COURSEPATH_CODE] . ' - ' . $coursePathInfo[COURSEPATH_NAME];
