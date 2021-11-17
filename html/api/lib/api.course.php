@@ -2074,7 +2074,7 @@ class Course_API extends API
                 $idUser = $params['idUser'];
                 $checkAuth = $this->authenticateUserById($idUser);
                 if(!$checkAuth) {
-                    return $response['error'] = 'Not authenitcated user found';
+                    return $response['error'] = 'Not authenticated user found';
                 }
                
             }
@@ -2176,6 +2176,28 @@ class Course_API extends API
             $response['message'] = 'From Type is not valid:' . $params['fromType'];
         }
 
+        if (!isset($params['learningObjectIds'])) {
+            $response['success'] = false;
+            $response['message'] = 'Learning Objects not specified on deleting';
+        }
+
+        if (!isset($params['idCourse'])) {
+            $response['success'] = false;
+            $response['message'] = 'Course not specified on deleting';
+        } else {
+            $course_man = new Man_Course();
+            $courseExists = $course_man->courseExists((int) $params['idCourse']);
+            if (!$courseExists) {
+                $response['success'] = false;
+                $response['message'] = 'Course not found';
+            }
+        }
+        
+        if (!isset($params['idUser'])) {
+            $response['success'] = false;
+            $response['message'] = 'User not specified on deleting';
+        }
+
         if ($params['fromType'] === LomanagerLms::HOMEREPODIRDB && (!array_key_exists('idUser', $params) || empty($params['idUser']))) {
             $response['success'] = false;
             $response['message'] = 'To use ' . LomanagerLms::HOMEREPODIRDB . ' is necessary to send idUser param';
@@ -2201,6 +2223,23 @@ class Course_API extends API
         if (!$this->validateType($params['fromType'])) {
             $response['success'] = false;
             $response['message'] = 'From Type is not valid:' . $params['fromType'];
+        }
+
+        if (!isset($params['idCourse'])) {
+            $response['success'] = false;
+            $response['message'] = 'Course not specified on deleting';
+        } else {
+            $course_man = new Man_Course();
+            $courseExists = $course_man->courseExists((int) $params['idCourse']);
+            if (!$courseExists) {
+                $response['success'] = false;
+                $response['message'] = 'Course not found';
+            }
+        }
+        
+        if (!isset($params['idUser'])) {
+            $response['success'] = false;
+            $response['message'] = 'User not specified on deleting';
         }
 
         if ($params['fromType'] === LomanagerLms::HOMEREPODIRDB && (!array_key_exists('idUser', $params) || empty($params['idUser']))) {

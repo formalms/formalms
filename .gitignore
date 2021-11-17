@@ -45,3 +45,4 @@ test/behat/behat_config.yml
 docs/
 .vscode/**
 .DS_Store
+html/check.php
