@@ -1,4 +1,4 @@
-<?php defined("IN_FORMA") or die('Direct access is forbidden.');
+<?php defined('IN_FORMA') or die('Direct access is forbidden.');
 
 /* ======================================================================== \
 |   FORMA - The E-Learning Suite                                            |
@@ -40,8 +40,8 @@ function createPreview($src_path, $dst_path, $fn, $width, $height, $forcesize=tr
 
 	// The file
 	$filename = $fn;
-	$ext = strtolower(end(explode(".", $filename)));
-	if(function_exists("getimagesize")) {
+	$ext = strtolower(end(explode('.', $filename)));
+	if(function_exists('getimagesize')) {
 
 		// Get new dimensions
 		list($width_orig, $height_orig) = getimagesize($src_path.$filename);
@@ -57,18 +57,20 @@ function createPreview($src_path, $dst_path, $fn, $width, $height, $forcesize=tr
 			$image = NULL;
 			$image_p = imagecreatetruecolor($width, $height);
 			switch($ext) {
-				case "jpeg" :
-				case "jpg" : {
+				case 'jpeg' :
+				case 'jpg' : {
 
 					$image = imagecreatefromjpeg($src_path.$filename);
 				};break;
-				case "png" : {
+				case 'png' : {
 
 					$image = imagecreatefrompng($src_path.$filename);
 				};break;
-				case "gif" : {
+				case 'gif' : {
 
-					if(!function_exists("imagecreatefromgif")) return -2;
+					if(!function_exists('imagecreatefromgif')) {
+                        return -2;
+                    }
 					$image = imagecreatefromgif($src_path.$filename);
 				};break;
 				default : {
@@ -76,15 +78,18 @@ function createPreview($src_path, $dst_path, $fn, $width, $height, $forcesize=tr
 					return -3;
 				};break;
 			}
-			if($image == NULL) return -2; // can't open the image
+			if($image == NULL) {
+                return -2;
+            } // can't open the image
 			imagecopyresampled($image_p, $image, 0, 0, 0, 0, $width, $height, $width_orig, $height_orig);
 
 		} else {
 			// If there is no need to resize it..
 
 			// If the destination is the same of the source we don't need to do anything..
-			if ($src_path.$filename == $dst_path.$filename)
-				return 1;
+			if ($src_path.$filename == $dst_path.$filename) {
+                return 1;
+            }
 			// TODO:  ...
 			/*else {
 			} */
@@ -94,20 +99,16 @@ function createPreview($src_path, $dst_path, $fn, $width, $height, $forcesize=tr
 		$outname = $dst_path.$fn;
 		sl_unlink($outname);
 
-		if ( (($ext == "jpg") || ($ext == "jpeg")) && (function_exists("imagejpeg"))) {
+		if ( (($ext == 'jpg') || ($ext == 'jpeg')) && (function_exists('imagejpeg'))) {
 			return imagejpeg($image_p, $outname, 90);
 		}
-		else if (($ext == "png") && (function_exists("imagejpeg"))) {
-			$color = ImageColorAt($image_p, 1, 1);
-			imagecolortransparent($image_p, $color);
-			return imagepng($image_p, $outname);
-		}
-		else if (($ext == "gif") && (function_exists("imagegif")) && (function_exists("imagetruecolortopalette"))) {
-			$image_gif = imagetruecolortopalette($image_p, true, 256);
-			return imagegif($image_p, $outname);
-		}
+        if (($ext == 'png') && (function_exists('imagejpeg'))) {
+            $color = ImageColorAt($image_p, 1, 1);
+            imagecolortransparent($image_p, $color);
+            return imagepng($image_p, $outname);
+        }
 
-	}
+    }
 
 }
 
@@ -130,16 +131,21 @@ function createImageFromTmp($tmp_pathfile, $dst_pathfile, $original_name, $width
 
 	require_once(_base_.'/lib/lib.upload.php');
 
-	if(!function_exists("getimagesize") ) {
-		if($if_not_load !== true) return -1;
-		else return uploadImageWitouthResize($tmp_pathfile, $dst_pathfile);
-	}
+	if(!function_exists('getimagesize') ) {
+		if($if_not_load !== true) {
+            return -1;
+        }
+        return uploadImageWitouthResize($tmp_pathfile, $dst_pathfile);
+    }
 
 	$dst_pathfile_rel 	= $GLOBALS['where_files_relative'].$dst_pathfile;
-	$file_extension 	= strtolower(end(explode(".", $original_name)));
+    $array = explode('.', $original_name);
+    $file_extension 	= strtolower(end($array));
 	$img_info 			= @getimagesize($tmp_pathfile);
 
-	if($img_info === false) return -2;
+	if($img_info === false) {
+        return -2;
+    }
 
 	$tmp_width 		= $img_info[0];
 	$tmp_heigth 	= $img_info[1];
@@ -149,12 +155,14 @@ function createImageFromTmp($tmp_pathfile, $dst_pathfile, $original_name, $width
 
 		// I must control if all the required function for resample exists =================================
 		if(!extension_loaded('gd')
-			|| !function_exists("imagecopyresampled")
-			|| !function_exists("imagecreatetruecolor")) {
+			|| !function_exists('imagecopyresampled')
+			|| !function_exists('imagecreatetruecolor')) {
 
-			if($if_not_load !== true) return -1;
-			else return uploadImageWitouthResize($tmp_pathfile, $dst_pathfile);
-		}
+			if($if_not_load !== true) {
+                return -1;
+            }
+            return uploadImageWitouthResize($tmp_pathfile, $dst_pathfile);
+        }
 
 		// Resample
 		if ($width && ($tmp_width < $tmp_heigth)) {
@@ -163,115 +171,82 @@ function createImageFromTmp($tmp_pathfile, $dst_pathfile, $original_name, $width
 			$height = ($width / $tmp_width) * $tmp_heigth;
 		}
 
-		$image 		= NULL;
 		$image_p 	= imagecreatetruecolor($width, $height);
 		switch($file_extension) {
 			// =Jpeg=========================================================================================
-			case "jpeg" :
-			case "jpg" : {
+			case 'jpeg' :
+			case 'jpg' : {
 
-				if(!function_exists("imagecreatefromjpeg")) {
-					if($if_not_load !== true) return -4;
-					else return uploadImageWitouthResize($tmp_pathfile, $dst_pathfile);
-				}
+				if(!function_exists('imagecreatefromjpeg')) {
+					if($if_not_load !== true) {
+                        return -4;
+                    }
+                    return uploadImageWitouthResize($tmp_pathfile, $dst_pathfile);
+                }
 				$image = imagecreatefromjpeg($tmp_pathfile);
-			};break;
+			}
+            break;
 			// =Png==========================================================================================
-			case "png" : {
+			case 'png' : {
 
-				if(!function_exists("imagecreatefrompng")) {
-					if($if_not_load !== true) return -4;
-					else return uploadImageWitouthResize($tmp_pathfile, $dst_pathfile);
-				}
+				if(!function_exists('imagecreatefrompng')) {
+					if($if_not_load !== true) {
+                        return -4;
+                    }
+                    return uploadImageWitouthResize($tmp_pathfile, $dst_pathfile);
+                }
 				$image = imagecreatefrompng($tmp_pathfile);
-			};break;
+			}
+            break;
 			// =Gif==========================================================================================
-			case "gif" : {
+			case 'gif' : {
 
-				if(!function_exists("imagecreatefromgif")) {
-					if($if_not_load !== true) return -4;
-					else return uploadImageWitouthResize($tmp_pathfile, $dst_pathfile);
-				}
+				if(!function_exists('imagecreatefromgif')) {
+					if($if_not_load !== true) {
+                        return -4;
+                    }
+                    return uploadImageWitouthResize($tmp_pathfile, $dst_pathfile);
+                }
 				$image = imagecreatefromgif($tmp_pathfile);
-			};break;
+			}
+            break;
 			// =Unknow format================================================================================
 			default: {
 
-				if($if_not_load !== true) return -3;
-				else return uploadImageWitouthResize($tmp_pathfile, $dst_pathfile);
-			}
+				if($if_not_load !== true) {
+                    return -3;
+                }
+                return uploadImageWitouthResize($tmp_pathfile, $dst_pathfile);
+            }
 		}
 		if($image == NULL) {
-			if($if_not_load !== true) return -2;
-			else return uploadImageWitouthResize($tmp_pathfile, $dst_pathfile);
-		}
+			if($if_not_load !== true) {
+                return -2;
+            }
+            return uploadImageWitouthResize($tmp_pathfile, $dst_pathfile);
+        }
 		if(!imagecopyresampled($image_p, $image, 0, 0, 0, 0, $width, $height, $tmp_width, $tmp_heigth)) {
-			if($if_not_load !== true) return -2;
-			else return uploadImageWitouthResize($tmp_pathfile, $dst_pathfile);
-		}
+			if($if_not_load !== true) {
+                return -2;
+            }
+            return uploadImageWitouthResize($tmp_pathfile, $dst_pathfile);
+        }
 		sl_unlink($dst_pathfile);
-
-		switch($file_extension) {
-
-			case "jpeg" :
-			case "jpg" : {
-
-				if(!function_exists("imagejpeg")) {
-					if($if_not_load !== true) return -4;
-					else return uploadImageWitouthResize($tmp_pathfile, $dst_pathfile);
-				}
-				if (imagejpeg($image_p, $dst_pathfile_rel, 90)) {
-				    return 0;
-                } else {
-					if($if_not_load !== true) return -1;
-					else return uploadImageWitouthResize($tmp_pathfile, $dst_pathfile);
-				}
-			};break;
-			case "png" : {
-
-				if(!function_exists("ImageColorAt")) return -4;
-				if(!function_exists("imagecolortransparent")) {
-					if($if_not_load !== true) return -4;
-					else return uploadImageWitouthResize($tmp_pathfile, $dst_pathfile);
-				}
-				if(!function_exists("imagepng")) return -4;
-
-				$color = ImageColorAt($image_p, 1, 1);
-				imagecolortransparent($image_p, $color);
-				if (imagepng($image_p, $dst_pathfile_rel) > 0) {
-				    return 0;
-                } else {
-					if($if_not_load !== true) return -1;
-					else return uploadImageWitouthResize($tmp_pathfile, $dst_pathfile);
-				}
-			};break;
-			case "gif" : {
-
-				if(!function_exists("imagegif") || !function_exists("imagetruecolortopalette")) {
-					if($if_not_load !== true) return -4;
-					else return uploadImageWitouthResize($tmp_pathfile, $dst_pathfile);
-				}
-
-				$image_gif = imagetruecolortopalette($image_p, true, 256);
-				if (imagegif($image_p, $dst_pathfile_rel) > 0) {
-				    return 0;
-                } else {
-					if($if_not_load !== true) return -1;
-					else return uploadImageWitouthResize($tmp_pathfile, $dst_pathfile);
-				}
-			};break;
-		}
 	}
 	// no resize needed
 	sl_unlink($dst_pathfile);
-	if(sl_upload($tmp_pathfile, $dst_pathfile, $file_extension)) return 0;
+	if(sl_upload($tmp_pathfile, $dst_pathfile, $file_extension)) {
+        return 0;
+    }
 	return -2;
 }
 
 function uploadImageWitouthResize($tmp_pathfile, $dst_pathfile) {
 
 	sl_unlink($dst_pathfile);
-	if(sl_upload($tmp_pathfile, $dst_pathfile)) return 0;
+	if(sl_upload($tmp_pathfile, $dst_pathfile)) {
+        return 0;
+    }
 	return -2;
 }
 
@@ -283,8 +258,9 @@ function uploadImageWitouthResize($tmp_pathfile, $dst_pathfile) {
 function isMedia($fname) {
 	$res=FALSE;
 
-	if (getMediaType($fname) !== FALSE)
-		$res=TRUE;
+	if (getMediaType($fname) !== FALSE) {
+        $res = TRUE;
+    }
 
 	return $res;
 }
@@ -299,49 +275,57 @@ function getMediaType($fname) {
 	$res=FALSE;
 
 	if (preg_match("/http[s]?:\\/\\//i", $fname)) {
-		$res ="streaming";
+		$res = 'streaming';
 		return $res;
 	}
 
-	$ext=end(explode(".", strtolower($fname)));
+	$ext=end(explode('.', strtolower($fname)));
 
 	$image_ext_arr=getImageExtList();
 	$flash_ext_arr=getFlashExtList();
 	$video_ext_arr=getVideoExtList();
 	$audio_ext_arr=getAudioExtList();
 
-	if (in_array($ext, $image_ext_arr))
-		$res="image";
-	else if (in_array($ext, $flash_ext_arr))
-		$res="flash";
-	else if (in_array($ext, $video_ext_arr))
-		$res="video";
-	else if (in_array($ext, $audio_ext_arr))
-		$res="audio";
+	if (in_array($ext, $image_ext_arr)) {
+        $res = 'image';
+    }
+	else {
+        if (in_array($ext, $flash_ext_arr)) {
+            $res = 'flash';
+        } else {
+            if (in_array($ext, $video_ext_arr)) {
+                $res = 'video';
+            } else {
+                if (in_array($ext, $audio_ext_arr)) {
+                    $res = 'audio';
+                }
+            }
+        }
+    }
 
 	return $res;
 }
 
 
 function getImageExtList() {
-	return array("bmp", "jpg", "jpeg", "png", "mng", "gif", "svg");
+	return array('bmp', 'jpg', 'jpeg', 'png', 'mng', 'gif', 'svg');
 }
 
 
 function getFlashExtList() {
-	return array("swf");
+	return array('swf');
 }
 
 
 function getVideoExtList() {
-	return array("avi", "mpg", "mpeg", "divx", "ogm", "wmv", "asf",
-	             "mov", "rm", "mp4", "3gp", "omf", "qt", "moov", "flv", "swf");
+	return array('avi', 'mpg', 'mpeg', 'divx', 'ogm', 'wmv', 'asf',
+        'mov', 'rm', 'mp4', '3gp', 'omf', 'qt', 'moov', 'flv', 'swf');
 }
 
 
 function getAudioExtList() {
-	return array("mp3", "wav", "ogg", "aif", "aiff", "aac", "ac3",
-	             "mpa", "ram", "wma");
+	return array('mp3', 'wav', 'ogg', 'aif', 'aiff', 'aac', 'ac3',
+        'mpa', 'ram', 'wma');
 }
 
 
@@ -361,32 +345,34 @@ function getAudioExtList() {
  */
 function getSwfInfoArray($fname) {
 	$res=array();
-	require_once($GLOBALS["where_framework"]."/addons/swfheader/swfheader.class.php");
+	require_once($GLOBALS['where_framework']. '/addons/swfheader/swfheader.class.php');
 
-	$clean_fname=(strpos($fname, "?") !== FALSE ? preg_replace("/(\?.*)/", "", $fname) : $fname);
+	$clean_fname=(strpos($fname, '?') !== FALSE ? preg_replace("/(\?.*)/", '', $fname) : $fname);
 
 	$swf=new swfheader(FALSE);
 	$swf->loadswf($clean_fname);
 
 	if (!$swf->valid) {
 
-		if (file_exists($clean_fname))
-			$res["error"]=-1; // Invalid SWF file
-		else
-			$res["error"]=-2; // File not found
+		if (file_exists($clean_fname)) {
+            $res['error'] = -1;
+        } // Invalid SWF file
+		else {
+            $res['error'] = -2;
+        } // File not found
 
 	}
 	else {
 
-		$res["error"]=FALSE;
-		$res["fname"]=$swf->fname;
-		$res["magic"]=$swf->magic;
-		$res["version"]=$swf->version;
-		$res["size"]=$swf->size;
-		$res["width"]=$swf->width;
-		$res["height"]=$swf->height;
-		$res["fps"]=$swf->fps[1].".".$swf->fps[0];
-		$res["frames"]=$swf->frames;
+		$res['error']=FALSE;
+		$res['fname']=$swf->fname;
+		$res['magic']=$swf->magic;
+		$res['version']=$swf->version;
+		$res['size']=$swf->size;
+		$res['width']=$swf->width;
+		$res['height']=$swf->height;
+		$res['fps']=$swf->fps[1]. '.' .$swf->fps[0];
+		$res['frames']=$swf->frames;
 
 	}
 
@@ -396,9 +382,9 @@ function getSwfInfoArray($fname) {
 
 function getFlashPluginCode($src, $bgcolor=FALSE, $width=FALSE, $height=FALSE) {
 
-	$res = "";
+	$res = '';
 	$flashvars = FALSE;
-	$pos = strpos($src, "?");
+	$pos = strpos($src, '?');
 	if($pos !== FALSE) {
 		$flashvars = substr($src, $pos+1);
 		$src = substr($src, 0, $pos);
@@ -406,19 +392,19 @@ function getFlashPluginCode($src, $bgcolor=FALSE, $width=FALSE, $height=FALSE) {
 
 	$info = getSwfInfoArray($src);
 
-	if($info["error"] !== FALSE) {
-		return "\n\n<!-- Swf Load Error: ".$info["error"]." - File: ".$src." -->\n\n";
+	if($info['error'] !== FALSE) {
+		return "\n\n<!-- Swf Load Error: ".$info['error']. ' - File: ' .$src." -->\n\n";
 	}
 
-	$bg = ( $bgcolor !== FALSE 	? $bgcolor 	: "#FFFFFF" );
-	$w 	= ( $width !== FALSE 	? $width 	: $info["width"] );
-	$h 	= ( $height !== FALSE 	? $height 	: $info["height"] );
+	$bg = ( $bgcolor !== FALSE 	? $bgcolor 	: '#FFFFFF');
+	$w 	= ( $width !== FALSE 	? $width 	: $info['width'] );
+	$h 	= ( $height !== FALSE 	? $height 	: $info['height'] );
 	if($width !== false && $height === false) {
 		$w = $width;
-		$h = round(($info["height"] /  $info['width']) * $width);
+		$h = round(($info['height'] /  $info['width']) * $width);
 	}
 	if($width === false && $height !== false) {
-		$w = round(($info["width"] /  $info['height']) * $height);
+		$w = round(($info['width'] /  $info['height']) * $height);
 		$h = $height;
 	}
 
@@ -445,25 +431,25 @@ function getFlashPluginCode($src, $bgcolor=FALSE, $width=FALSE, $height=FALSE) {
 function isPossibleEmbedPlay($path, $file_name, $ext=FALSE) {
 
 	if ($ext === FALSE) {
-		$ext=strtolower(end(explode(".", $file_name)));
+		$ext=strtolower(end(explode('.', $file_name)));
 	}
 
 	$rel_path = $GLOBALS['where_files_relative'].$path;
 	switch($ext) {
-		case "jpg" :
-		case "jpeg" :
-		case "png" :
-		case "gif" :
+		case 'jpg' :
+		case 'jpeg' :
+		case 'png' :
+		case 'gif' :
 
-		case "wma" :
-		case "wmv" :
-		case "mpg" :
-		case "avi" :
-		case "mp3" :
-		case "mp4" :
-		case "mov" :
-		case "flv" :
-		case "swf" : { return true; };break;
+		case 'wma' :
+		case 'wmv' :
+		case 'mpg' :
+		case 'avi' :
+		case 'mp3' :
+		case 'mp4' :
+		case 'mov' :
+		case 'flv' :
+		case 'swf' : { return true; };break;
 	}
 	return false;
 }
@@ -472,12 +458,12 @@ function getEmbedPlay($path, $file_name, $ext=FALSE, $width = false, $height = f
 
 	if ($path_from_player === FALSE)
 	{
-		$path_from_player="../../";
+		$path_from_player= '../../';
 		//$path_from_player="";
 	}
 
 	if ($ext === FALSE) {
-		$ext=strtolower(end(explode(".", $file_name)));
+		$ext=strtolower(end(explode('.', $file_name)));
 	}
 
 	if ($force_path) {
@@ -489,10 +475,10 @@ function getEmbedPlay($path, $file_name, $ext=FALSE, $width = false, $height = f
 
 	switch($ext) {
 
-		case "jpg" :
-		case "jpeg" :
-		case "png" :
-		case "gif" :  {
+		case 'jpg' :
+		case 'jpeg' :
+		case 'png' :
+		case 'gif' :  {
 
 			if($width == false && $height === false) { $width = '450';  $height = '450'; }
 			$img_size = @getimagesize($rel_path.$file_name);
@@ -505,15 +491,15 @@ function getEmbedPlay($path, $file_name, $ext=FALSE, $width = false, $height = f
 					: $img_size[1] > $height ? ' height="'.$height.'px"' : '' )
 				.' />';
 		};break;
-		case "wma" : {
+		case 'wma' : {
 
 			return '<object width="'.$width.'" height="'.$height.'">'
 				.'<param name="movie" value="'.$rel_path.$file_name.'"></param>'
 				.'<embed src="'.$rel_path.$file_name.'" type="video/mpeg" width="'.$width.'" height="'.$height.'"></embed>'
 				.'</object>';
 		};break;
-		case "wmv": {
-			$res ="";
+		case 'wmv': {
+			$res = '';
 			$res.='<object width="'.$width.'" height="'.$height.'" classid="CLSID:22D6f312-B0F6-11D0-94AB-0080C74C7E95" type="application/x-oleobject" codebase="http://activex.microsoft.com/activex/controls/mplayer/en/nsmp2inf.cab#Version=6,4,7,1112">';
 			$res.='<param name="filename" value="'.$rel_path.$file_name.'">';
 			$res.='<param name="Showcontrols" value="True">';
@@ -524,30 +510,30 @@ function getEmbedPlay($path, $file_name, $ext=FALSE, $width = false, $height = f
 
 			return $res;
 		} break;
-		case "mpg" : {
+		case 'mpg' : {
 
 			return '<object width="'.$width.'" height="'.$height.'">'
 				.'<param name="movie" value="'.$rel_path.$file_name.'"></param>'
 				.'<embed src="'.$rel_path.$file_name.'" type="video/mpeg" width="'.$width.'" height="'.$height.'"></embed>'
 				.'</object>';
 		};break;
-		case "mov" : {
+		case 'mov' : {
 
 			return '<object width="'.$width.'" height="'.$height.'">'
 				.'<param name="movie" value="'.$rel_path.$file_name.'"></param>'
 				.'<embed src="'.$rel_path.$file_name.'" type="video/quicktime" width="'.$width.'" height="'.$height.'"></embed>'
 				.'</object>';
 		};break;
-		case "flv" : {
+		case 'flv' : {
 
 			return getDoceboFlashPlayer($path_from_player.$path.$file_name, $width, $height);
 		} break;
-		case "swf" : {
+		case 'swf' : {
 
 			return getFlashPluginCode($path.$file_name);
 		};break;
 
-		case "mp3" : {
+		case 'mp3' : {
 
 			$converted_filename = implode('_', array_slice(explode('_', $file_name), 3));
 			$converted_filename = implode('.', array_slice(explode('.', $converted_filename), 0, -1));
@@ -563,7 +549,9 @@ function getEmbedPlay($path, $file_name, $ext=FALSE, $width = false, $height = f
 
 
 		default: {
-			if(!$if_unknow_send) return false;
+			if(!$if_unknow_send) {
+                return false;
+            }
 			require_once(_base_.'/lib/lib.download.php' );
 
 			sendFile($path, $file_name, false);
@@ -575,7 +563,7 @@ function getEmbedPlay($path, $file_name, $ext=FALSE, $width = false, $height = f
 
 
 function getStreamingEmbed($url, $ext=FALSE, $filename=FALSE) {
-	$res ="";
+	$res = '';
 
 	if (isYouTube($url)) {
 		$video_id =getYouTubeId($url);
@@ -587,23 +575,23 @@ function getStreamingEmbed($url, $ext=FALSE, $filename=FALSE) {
 
 		if ($filename === FALSE) {
 			$filename =basename($url);
-			$filename =(strpos($filename, "?") !== FALSE ? preg_replace("/(\?.*)/", "", $filename) : $filename);
+			$filename =(strpos($filename, '?') !== FALSE ? preg_replace("/(\?.*)/", '', $filename) : $filename);
 		}
 
-		$ext =end(explode(".", $filename));
+		$ext =end(explode('.', $filename));
 	}
 
 	switch ($ext) {
 
-		case "flv": {
+		case 'flv': {
 			$res.=getDoceboFlashPlayer($url);
 		} break;
 
-		case "swf": {
+		case 'swf': {
 			$res.=getFlashPluginCode($url);
 		} break;
-		case "wmv": {
-			$res ="";
+		case 'wmv': {
+			$res = '';
 			$res.='<object width="400px"  height="300px" classid="CLSID:22D6f312-B0F6-11D0-94AB-0080C74C7E95" type="application/x-oleobject" codebase="http://activex.microsoft.com/activex/controls/mplayer/en/nsmp2inf.cab#Version=6,4,7,1112">';
 			$res.='<param name="filename" value="'.$url.'">';
 			$res.='<param name="Showcontrols" value="True">';
@@ -624,23 +612,27 @@ function getDoceboFlashPlayer($src, $width = false, $heigth = false) {
 
 	$video =urlencode($src);
 	// TODO: change the video path to have it more flexible
-	return getFlashPluginCode($GLOBALS["where_framework_relative"]."/addons/players/playerDocebo.swf?video=".$video."", false, $width, $heigth);
+	return getFlashPluginCode($GLOBALS['where_framework_relative']. '/addons/players/playerDocebo.swf?video=' .$video. '', false, $width, $heigth);
 }
 
 
 function getDoceboFlashAudioPlayer($src, $song_title = false, $url_server = false, $width = false, $heigth = false) {
 
-	if($song_title === false) Lang::t("_UNTITLED_SONG");
-	if($url_server === false) $url_server = 'null';
+	if($song_title === false) {
+        Lang::t('_UNTITLED_SONG');
+    }
+	if($url_server === false) {
+        $url_server = 'null';
+    }
 	$song_title = urlencode(stripslashes($song_title));
 	$file =urlencode($src);
 	// TODO: change the video path to have it more flexible
-	return getFlashPluginCode($GLOBALS["where_framework_relative"]."/addons/players/playerDoceboMp3.swf?mp3_name=".$file."&song_title=".$song_title."&url_server=".$url_server."", false, $width, $heigth);
+	return getFlashPluginCode($GLOBALS['where_framework_relative']. '/addons/players/playerDoceboMp3.swf?mp3_name=' .$file. '&song_title=' .$song_title. '&url_server=' .$url_server. '', false, $width, $heigth);
 }
 
 
 function isYouTube($url) {
-	$yt ="http://www.youtube.com/watch?v=";
+	$yt = 'http://www.youtube.com/watch?v=';
 	if (strtolower(substr($url, 0, strlen($yt))) == $yt) {
 		$res =TRUE;
 	}
@@ -652,12 +644,12 @@ function isYouTube($url) {
 
 
 function getYouTubeId($url) {
-	return preg_replace("/.*\\?v=([^&?\\s]*)/si", "\$1", $url);
+	return preg_replace("/.*\\?v=([^&?\\s]*)/si", '$1', $url);
 }
 
 
 function getYouTubeCode($video_id) {
-	$res ="";
+	$res = '';
 	$res.='<object width="425" height="350">';
 	$res.='<param name="movie" value="http://www.youtube.com/v/'.$video_id.'"></param>';
 	$res.='<param name="wmode" value="transparent"></param>';

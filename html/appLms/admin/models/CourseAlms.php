@@ -1159,7 +1159,7 @@ class CourseAlms extends Model
         return $res;
     }
 
-    public function manageCourseFile($new_file_id, $old_file, $path, $quota_available, $delete_old, $is_image = false, $width = 150, $height = 150)
+    public function manageCourseFile($new_file_id, $old_file, $path, $quota_available, $delete_old, $is_image = false, $width = 300, $height = 300)
     {
         $arr_new_file = (isset($_FILES[$new_file_id]) && $_FILES[$new_file_id]['tmp_name'] != '' ? $_FILES[$new_file_id] : false);
         $return = [
