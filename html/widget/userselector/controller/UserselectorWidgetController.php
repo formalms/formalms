@@ -255,17 +255,16 @@ class UserselectorWidgetController extends Controller {
 		
 	}
 
-	protected function _assignActions(&$nodes, &$conversion_table) {
-		if (!is_array($nodes)) return;
-		for ($i=0; $i<count($nodes); $i++) {
-			$index = $nodes[$i]['node']['id'];
-			$nodes[$i]['node']['id'] = $conversion_table[0][$index].'_'.$conversion_table[1][$index];
-			$nodes[$i]['node']['options'] = $this->_getNodeActions($nodes[$i]['node']);
-			if (isset($nodes[$i]['children']) && count($nodes[$i]['children']) > 0) {
-				$this->_assignActions($nodes[$i]['children'], $conversion_table);
-			}
-		}
-	}
+    protected function _assignActions(&$nodes)
+    {
+        if (!is_array($nodes)) return;
+        for ($i = 0, $iMax = count($nodes); $i < $iMax; $i++) {
+            $nodes[$i]['node']['options'] = $this->_getNodeActions($nodes[$i]['node']);
+            if (isset($nodes[$i]['children']) && count($nodes[$i]['children']) > 0) {
+                $this->_assignActions($nodes[$i]['children']);
+            }
+        }
+    }
 
 	protected function _getNodeActions($node) {
 		$output = array();
@@ -286,17 +285,15 @@ class UserselectorWidgetController extends Controller {
 		switch ($command) {
 
 			case "expand": {
-				$node_id = Get::req('node_id', DOTY_STRING, "");
-				$idOrg = $this->_getIdOrgByNodeId($node_id);
+                $idOrg = Get::req('node_id', DOTY_STRING, "");
 				$initial = (Get::req('initial', DOTY_INT, 0) > 0 ? true : false);
-				$_conversion_table = $this->user_model->getOrgchartIdstConversionTable();
 
 				if ($initial) {
 					//get selected node from session and set the expanded tree
 					$idOrg = $this->_getSelectedNode();
 					$nodes = $this->user_model->getOrgChartInitialNodes($idOrg, true);
-					//create actions for every node
-					$this->_assignActions($nodes, $_conversion_table);
+                    //create actions for every node
+                    $this->_assignActions($nodes);
 					//set output
 					if (is_array($nodes)) {
 						$output = array(
@@ -311,7 +308,7 @@ class UserselectorWidgetController extends Controller {
 					//extract node data
 					$nodes = $this->user_model->getOrgChartNodes($idOrg, false, false, true);
 					//create actions for every node
-					for ($i=0; $i<count($nodes); $i++) {
+					for ($i=0, $iMax = count($nodes); $i< $iMax; $i++) {
 						$index = $nodes[$i]['id'];
 						$nodes[$i]['id'] = $_conversion_table[0][$index].'_'.$_conversion_table[1][$index];
 						$nodes[$i]['options'] = $this->_getNodeActions($nodes[$i]);
@@ -331,6 +328,8 @@ class UserselectorWidgetController extends Controller {
 				$idOrg = $this->_getIdOrgByNodeId($node_id);
 				$this->_setSelectedNode($idOrg);
 			} break;
+            default:
+                break;
 		}
 		/*$node_id = Get::req('id', DOTY_INT, -1);
 		if ($node_id >= 0) {
