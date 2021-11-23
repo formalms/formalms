@@ -161,7 +161,7 @@ class CertificateSubs_UserStat extends CertificateSubstitution
                         $subs['[course_scorm_items]'] .= $this->getSubstitutionScormItems($id_course, $this->id_user);
                     }
                     $table_course .= '<tr>'
-                        . '<td align="right" style="font-size: 14px;" colspan="2">' . Lang::t('_TOTAL_TIME','report') . '</td>'
+                        . '<td align="right" style="font-size: 14px;">' . Lang::t('_TOTAL_TIME','report') . '</td>'
                         . '<td align="right" style="font-size: 14px;">' . $course_time . '</td>'
                         . '</tr>'
                         . '</tbody>'
