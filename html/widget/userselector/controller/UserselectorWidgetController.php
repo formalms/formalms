@@ -308,9 +308,7 @@ class UserselectorWidgetController extends Controller {
                     //extract node data
                     $nodes = $this->user_model->getOrgChartNodes($idOrg, false, false, true);
                     //create actions for every node
-                    for ($i=0, $iMax = count($nodes); $i< $iMax; $i++) {
-                        $index = $nodes[$i]['id'];
-                        $nodes[$i]['id'] = $_conversion_table[0][$index].'_'.$_conversion_table[1][$index];
+                    for ($i = 0; $i < count($nodes); $i++) {
                         $nodes[$i]['options'] = $this->_getNodeActions($nodes[$i]);
                     }
                     //set output
