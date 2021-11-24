@@ -713,4 +713,29 @@ class Get
 			. '</div>';
 		return $html;
 	}
+
+
+	/**
+	 *
+	 * @param string $type a type specified for now only filterCourse
+
+	 */
+	public static function getRegexUrlMatches(string $type) : array
+	{
+		$results = [];
+
+		switch($type) {
+			case "filterCourse":
+					$pattern = '/filter_+[^=;]+/';
+				break;
+
+			default:
+				return $results;
+			break;
+		}
+
+		preg_match($pattern, http_build_query($_REQUEST), $results);
+		return $results;
+
+	}
 } // end of class Get
