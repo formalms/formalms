@@ -620,14 +620,14 @@ class AggregatedcertificateAlmsController extends AlmsController
             Util::jump_to($this->back_url);
         }
 
-        $r = (int)Get::req('type_assoc', DOTY_INT);
+        $typeAssociation = (int)Get::req('type_assoc', DOTY_INT);
         $operation = Get::req('nextOperation');
-        if ($operation == Lang::t('_NEXT')) {
-            if ($r === AggregatedCertificate::AGGREGATE_CERTIFICATE_TYPE_COURSE) {
+        if ($operation === Lang::t('_NEXT')) {
+            if ($typeAssociation === AggregatedCertificate::AGGREGATE_CERTIFICATE_TYPE_COURSE) {
                 $this->associationCourses();
                 return;
             }
-            if ($r === AggregatedCertificate::AGGREGATE_CERTIFICATE_TYPE_COURSE_PATH) {
+            if ($typeAssociation === AggregatedCertificate::AGGREGATE_CERTIFICATE_TYPE_COURSE_PATH) {
                 $this->associationPaths();
                 return;
             }
@@ -1458,15 +1458,15 @@ class AggregatedcertificateAlmsController extends AlmsController
 
         if (count($nodesArr) > 0) {
 
-            $node = 0;
-            while ($node < count($nodesArr)) { // Processing all nodes with idParent
 
-                $nodesArr[$node]['text'] = end(explode('/', $nodesArr[$node]['text']));
-                if (!$nodesArr[$node]['isLeaf']) {
-                    $nodesArr[$node]['nodes'] = $this->getTreeCategoryAsArray($nodesArr[$node]['idCategory']);
+            foreach ($nodesArr as $index => $node){ // Processing all nodes with idParent
+
+                $nodesArr[$index]['text'] = end(explode('/', $nodesArr[$index]['text']));
+                $nodesArr[$index]['idCategory'] = (int)$nodesArr[$index]['idCategory'];
+                $nodesArr[$index]['level'] = (int)$nodesArr[$index]['level'];
+                if (!$nodesArr[$index]['isLeaf']) {
+                    $nodesArr[$index]['nodes'] = $this->getTreeCategoryAsArray($nodesArr[$index]['idCategory']);
                 }
-                $node++;
-
             }
 
             return $nodesArr;
@@ -1482,9 +1482,9 @@ class AggregatedcertificateAlmsController extends AlmsController
     function getCourseListTask()
     {
 
-        if (isset($_POST['nodesArr'])) {
+        if (isset($_POST['node'])) {
 
-            echo $this->json->encode($this->aggCertLib->getCourseListFromIdCat($_POST['nodesArr']));
+            echo $this->json->encode($this->aggCertLib->getCourseListFromIdCategory($_POST['node']));
 
         }
 

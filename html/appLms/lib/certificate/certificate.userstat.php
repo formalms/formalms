@@ -71,7 +71,7 @@ class CertificateSubs_UserStat extends CertificateSubstitution
             $array_meta_inscr = [];
             $array_meta_access = [];
 
-            $assocType = $aggCertLib->getTypeAssoc($this->id_meta, $this->id_user);
+            $assocType = $aggCertLib->getTypeAssoc($this->id_meta);
 
             switch ($assocType) {
                 case AggregatedCertificate::AGGREGATE_CERTIFICATE_TYPE_COURSE_PATH:
@@ -136,7 +136,7 @@ class CertificateSubs_UserStat extends CertificateSubstitution
                         . '<tbody>';
                     $courses = $aggCertLib->getIdsCourse($this->id_meta, $this->id_user);
                     foreach ($courses as $id_course) {
-                        $query = sprintf("SELECT date_complete, date_inscr, date_first_access, level FROM %lms_courseuser WHERE idCourse = '%s' AND idUser = '%s'", $id_course, $this->id_user);
+                        $query = sprintf("SELECT date_complete, date_inscr, date_first_access, level FROM %s WHERE idCourse = '%s' AND idUser = '%s'",'%lms_courseuser', $id_course, $this->id_user);
 
                         list($date_complete_meta, $date_inscr_meta, $date_access_meta, $level) = sql_fetch_row(sql_query($query));
 
