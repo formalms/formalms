@@ -1242,6 +1242,7 @@ class CourseAlms extends Model
         }
 
         Events::trigger('lms.course.deleting', ['id_course' => $id_course, 'course' => $course]);
+      
 
         //remove course subscribed------------------------------------------
 
@@ -1249,18 +1250,18 @@ class CourseAlms extends Model
         foreach ($levels as $lv => $idst) {
             Docebo::aclm()->deleteGroup($idst);
         }
-
+        
         $alluser = getIDGroupAlluser($id_course);
         Docebo::aclm()->deleteGroup($alluser);
         $course_man->removeCourseRole($id_course);
         $course_man->removeCourseMenu($id_course);
-
+       
         $query = "DELETE FROM %lms_courseuser WHERE idCourse = '" . (int)$id_course . "'";
         $qres = sql_query($query);
         if (!$qres) return false;
 
         //--- remove course data ---------------------------------------------------
-
+       
         $query_course = "SELECT imgSponsor, img_course, img_material, img_othermaterial, course_demo, course_type
             FROM %lms_course
             WHERE idCourse = '" . (int)$id_course . "'";
@@ -1268,7 +1269,7 @@ class CourseAlms extends Model
         list($file_sponsor, $file_logo, $file_material, $file_othermaterial, $file_demo, $course_type, $course_edition) = sql_fetch_row($qres);
 
         require_once(_base_ . '/lib/lib.upload.php');
-
+      
         $path = '/appLms/' . Get::sett('pathcourse');
         if (substr($path, -1) != '/' && substr($path, -1) != '\\') $path .= '/';
         sl_open_fileoperations();
@@ -1278,24 +1279,28 @@ class CourseAlms extends Model
         if ($file_othermaterial != '') sl_unlink($path . $file_othermaterial);
         if ($file_demo != '') sl_unlink($path . $file_demo);
         sl_close_fileoperations();
-
+   
         //if the scs exist delete course rooms
         if ($GLOBALS['where_scs'] !== false) {
             require_once(_scs_ . '/lib/lib.room.php');
             $re = deleteRoom(false, 'course', $id_course);
         }
 
-
+     
         //--- delete classroom or editions -----------------------------------------
         if ($course_type == 'classroom') {
-            require_once(_lms_ . '/admin/model/ClassroomAlms.php');
+            
+            require_once(_lms_ . '/admin/models/ClassroomAlms.php');
+          
             $classroom_model = new ClassroomAlms($id_course);
-
+           
             $classroom = $classroom_model->classroom_man->getDateIdForCourse($id_course);
-
+            
             foreach ($classroom as $id_date)
-                if (!$classroom_model->classroom_man->delDate($id_date))
+                if (!$classroom_model->classroom_man->delDate($id_date)) {
                     return false;
+                }
+               
         } elseif ($course_edition == 1) {
             require_once(_lms_ . '/admin/model/EditionAlms.php');
             $edition_model = new EditionAlms($id_course);
