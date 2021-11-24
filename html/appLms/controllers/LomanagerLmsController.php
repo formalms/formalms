@@ -77,12 +77,21 @@ class LomanagerLmsController extends LmsController
 
         $lo_types = $this->model->getLoTypes();
 
-        $tabsControllers = [
-            new LomanagerhomerepoLmsController(),
-            new LomanagerorganizationLmsController(),
-            new LomanagerrepoLmsController(),
-        ];
+        $tabsControllers = [];
+            
+            
+        if (checkPerm('home', true, 'storage') ) {
+            $tabsControllers[] = new LomanagerhomerepoLmsController();
+        }
+		
+	    if (checkPerm('lesson', true, 'storage') ) {
+            $tabsControllers[] = new LomanagerorganizationLmsController();
+        }
 
+	    if (checkPerm('public', true, 'storage') ) {
+            $tabsControllers[] = new LomanagerrepoLmsController();
+        }
+		
         $tabs = [];
 
         /** @var LomanagerLmsController $controller */
