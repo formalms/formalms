@@ -1534,6 +1534,9 @@ Titolo: [thread_title]]]></key>
         <key id="light_repo&amp;_REPO_NEW_FILE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[nuovi file]]></key>
         <key id="light_repo&amp;_TITLE_LIGHT_REPO" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Repository]]></key>
         <key id="light_repo&amp;_VIEW_USER_FILE_LIST" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Vedi i file dello studente]]></key>
+        <key id="light_repo&amp;_TEACHER_ALERT" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Invia notifica mail ai docenti]]></key>
+        <key id="light_repo&amp;_TEACHER_ALERT_SUBJECT" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Upload avvenuto nella repo [repo_name]]]></key>
+        <key id="light_repo&amp;_TEACHER_ALERT_BODY" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[L'utente [user_id] ha caricato un file nella repository [repo_name] del corso [course_name]]]></key>
       </module>
       <module id="link">
         <key id="link&amp;_ADDLINK" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Aggiungi un link]]></key>

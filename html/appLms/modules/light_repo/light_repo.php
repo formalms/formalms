@@ -109,6 +109,7 @@ function modRepo(&$url) {
 	if($repo == false) {
 		$repo[LR_TITLE] = '';
 		$repo[LR_DESCR] = '';
+		$repo[LR_TEACHER_ALERT] = false;
 	}  
 	
 	cout(
@@ -123,9 +124,10 @@ function modRepo(&$url) {
 		$data[LR_IDCOURSE] = $_SESSION['idCourse'];
 		$data[LR_TITLE] = importVar('repo_title', false, '');
 		$data[LR_DESCR] = importVar('repo_descr', false, '');
-		
+		$data[LR_TEACHER_ALERT] = (int) importVar('repo_teacher_alert');
+
 		if(trim($data[LR_TITLE]) == '') $data[LR_TITLE] = $lang->def('_NOTITLE');
-		
+	
 		if(!$file_man->saveRepo($id_repo, $data)) { 
 			cout(Get::append_alert($lang->def('_ERR_MOD_REPO')), 'content');
 		} else { Util::jump_to( $url->getUrl('result=ok_mod') ); }
@@ -137,19 +139,22 @@ function modRepo(&$url) {
 		
 		.Form::openElementSpace()
 		.Form::getHidden('id_repo', 'id_repo', $id_repo)
-		.Form::getTextfield(	$lang->def('_TITLE'),
+		.Form::getTextfield($lang->def('_TITLE'),
 								'repo_title',
 								'repo_title',
 								255, 
 								importVar('repo_title', false, $repo[LR_TITLE]) )
-		.Form::getTextarea(		$lang->def('_DESCRIPTION'), 
+		.Form::getTextarea($lang->def('_DESCRIPTION'), 
 								'repo_descr', 
 								'repo_descr', 
 								importVar('repo_descr', false, $repo[LR_DESCR]) )
 		
 		.Form::closeElementSpace()
 		.Form::openButtonSpace()
-		
+		.Form::getCheckbox($lang->def('_TEACHER_ALERT','light_repo'), 
+								'repo_teacher_alert', 
+								'repo_teacher_alert', 
+								importVar('repo_teacher_alert', false, 1) )
 		.Form::getButton('save', 'save', $lang->def('_SAVE'))
 		.Form::getButton('undo', 'undo', $lang->def('_UNDO'))
 		
@@ -287,6 +292,42 @@ function modFile(&$url) {
 		$file_info[LR_FILE_POSTDATE] = date("Y-m-d H:i:s");
 		
 		$re = $file_man->saveFile($id_file, $file_info);
+		
+		$repo = $file_man->getRepoDetails($id_repo);
+		if((int) $repo[LR_TEACHER_ALERT]) {
+			$mailer = FormaMailer::getInstance();
+			$teachers = Man_Course::getIdUserOfLevel($_SESSION['idCourse'], '6');
+			$courseInfo = Man_Course::getCourseInfo($_SESSION['idCourse']);
+			$userId = Docebo::user()->getIdst();
+			$teacherRecipients = [];
+			//pick the parmas for translations
+			$arraySubst = [
+				'[repo_name]' => $repo[LR_TITLE],
+				'[course_name]' => $courseInfo['name'],
+				'[user_id]' => $userId
+			];
+			$subject = Lang::t('_TEACHER_ALERT_SUBJECT', 'light_repo', $arraySubst);
+			$baseBody = Lang::t('_TEACHER_ALERT_BODY', 'light_repo', $arraySubst);
+			$attachments = [];
+			$userManager = new DoceboACLManager();
+			foreach($teachers as $teacher) {
+        		$userInfo = $userManager->getUser($teacher, false);
+				$teacherRecipient = $userInfo[ACL_INFO_EMAIL];
+				$mailer->SendMail(
+					Get::sett('sender_event'),
+					[$teacherRecipient],
+					$subject,
+					$baseBody,
+					$attachments,
+					array(
+						MAIL_REPLYTO => Get::sett('sender_event'),
+						MAIL_SENDER_ACLNAME => Get::sett('use_sender_aclname')
+					)
+				);
+			}
+
+	
+		}
 		
 		Util::jump_to($url->getUrl('op='.( $mod_perm ? 'repo_manager_details' : 'repo_my_details' ).'&id_repo='.$id_repo.'&result='.($re?'file_ok':'file_err')));
 	}

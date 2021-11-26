@@ -1534,6 +1534,11 @@ Password: [password]]]></key>
         <key id="light_repo&amp;_REPO_NEW_FILE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[new files]]></key>
         <key id="light_repo&amp;_TITLE_LIGHT_REPO" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Repository]]></key>
         <key id="light_repo&amp;_VIEW_USER_FILE_LIST" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[View student files]]></key>
+        <key id="light_repo&amp;_TEACHER_ALERT" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Send notifications to Teachers]]></key>
+        <key id="light_repo&amp;_TEACHER_ALERT_SUBJECT" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[New upload in the repo [repo_name]]]></key>
+        <key id="light_repo&amp;_TEACHER_ALERT_BODY" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[The user [user_id] uploaded a file in the repo [repo_name] of the course [course_name]]]></key>
+  
+     
       </module>
       <module id="link">
         <key id="link&amp;_ADDLINK" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Add link]]></key>

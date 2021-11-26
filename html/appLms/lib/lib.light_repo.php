@@ -15,7 +15,9 @@ define("LR_ID", 		0);
 define("LR_IDCOURSE", 	1);
 define("LR_TITLE", 		2);
 define("LR_DESCR", 		3);
-define("LR_FILECOUNT", 	4);
+define("LR_TEACHER_ALERT", 	4);
+define("LR_FILECOUNT", 	5);
+
 
 define("LR_FILE_ID", 		0);
 define("LR_FILE_ID_REPO", 	1);
@@ -41,7 +43,8 @@ class LightRepoManager {
 		LR_ID 		=> 'id_repository',
 		LR_IDCOURSE => 'id_course',
 		LR_TITLE 	=> 'repo_title',
-		LR_DESCR 	=> 'repo_descr'
+		LR_DESCR 	=> 'repo_descr',
+		LR_TEACHER_ALERT 	=> 'repo_teacher_alert'
 	);
 	
 	var $_field_file = array(
@@ -108,7 +111,7 @@ class LightRepoManager {
 	}
 	
 	function saveRepo($id_repo, $data) {
-		
+	
 		if($id_repo == 0) {
 			
 			$keys = array();
@@ -127,6 +130,7 @@ class LightRepoManager {
 			}
 			$query = substr($query, 0, -2)." WHERE ".$this->_field_repo[LR_ID]." = ".(int)$id_repo." ";
 		}
+
 		$re = sql_query($query);
 		
 		return $re;
