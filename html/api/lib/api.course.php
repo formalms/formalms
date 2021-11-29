@@ -2705,50 +2705,48 @@ class Course_API extends API
 
 
 // assign meta certificate & course to user
-    function assignMetaUser($params)
+    function assignAggregateCertificateUsers($params)
     {
+        $idAssociation = $params['association_id'] ?? '';
+        $courses = (array_key_exists('courses',$params)  && !empty($params['courses'])) ? explode(',',$params['courses']) : [];
+        $users = (array_key_exists('users',$params) && !empty($params['users'])) ? explode(',',$params['users']) : [];
 
-        $metaCertId = $params['meta_cert_id'] ?? '';
-        $metaUserId = $params['meta_user_id'] ?? '';
-        $metaCourseId = $params['meta_course_id'] ?? '';
         $response = [];
+        $response['success'] = true;
 
-
-        if (empty($metaCertId)) {
+        if (empty($idAssociation)) {
             $response['success'] = false;
-            $response['message'] = 'Missing meta_cert_id ' . $metaCertId;
+            $response['message'] = 'Missing association_id ' . $idAssociation;
+        }
+
+        if (empty($users)) {
+            $response['success'] = false;
+            $response['message'] = 'Missing users : ' . implode(',',$users);
+        }
+
+        if (empty($courses)) {
+            $response['success'] = false;
+            $response['message'] = 'Missing courses : ' . implode(',',$courses);
+        }
+
+        if (!$response['success']){
             return $response;
         }
 
-        if (empty($metaUserId)) {
-            $response['success'] = false;
-            $response['message'] = 'Missing meta_user_id ' . $metaUserId;
-            return $response;
-        }
-
-        if (empty($metaCourseId)) {
-            $response['success'] = false;
-            $response['message'] = 'Missing meta_course_id ' . $metaCourseId;
-            return $response;
-        }
-
-        // get value course & user
-        $users = explode(',', $metaUserId);
-        $courses = explode(',', $metaCourseId);
 
         $response['success'] = true;
         foreach ($users as $idUser) {
             foreach ($courses as $idCourse) {
                 // assign course to user by association cert id
                 try {
-                    $query = 'INSERT INTO %lms_certificate_meta_course (idMetaCertificate, idUser, idCourse,idCourseEdition)  VALUES (' . $metaCertId . ',' . $idUser . ',' . $idCourse . ',0)';
+                    $query = 'INSERT INTO `%lms_aggregated_cert_course` (`idAssociation`, `idUser`, `idCourse`, `idCourseEdition`) VALUES ( '.$idAssociation.', '.$idUser.', '.$idCourse.', 0);';
                     sql_query($query);
                 } catch (Exception $exception) {
                     $response['success'] = false;
-                    $response['messages'] = [
-                        'meta_cert_id' => $metaCertId,
-                        'meta_user_id' => $idUser,
-                        'meta_course_id' => $idCourse,
+                    $response['messages'][] = [
+                        'association_id' => $idAssociation,
+                        'user_id' => $idUser,
+                        'course_id' => $idCourse,
                         'message' => $exception->getMessage()
                     ];
                 }
@@ -2781,24 +2779,25 @@ class Course_API extends API
                     if (empty($certificateId)) {
                         $response['success'] = false;
                         $response['messages'][$index][] = 'Missing cert_id' . $certificateId;
-                        return $response;
                     }
 
                     if (empty($nameAssociation)) {
                         $response['success'] = false;
                         $response['messages'][$index][] = 'Missing name_ass ' . $nameAssociation;
-                        return $response;
+
                     }
 
                     if ($certificateType === AggregatedCertificate::AGGREGATE_CERTIFICATE_TYPE_COURSE && empty($courses)) {
                         $response['success'] = false;
                         $response['messages'][$index][] = 'Missing courses : ' . implode(',',$courses);
-                        return $response;
                     }
 
                     if ($certificateType === AggregatedCertificate::AGGREGATE_CERTIFICATE_TYPE_COURSE_PATH && empty($coursesPaths)) {
                         $response['success'] = false;
                         $response['messages'][$index][] = 'Missing courses paths : ' . implode(',',$coursesPaths);
+                    }
+
+                    if (!$response['success']){
                         return $response;
                     }
 
@@ -3346,15 +3345,15 @@ class Course_API extends API
                 break;
 
             //META CERTIFICATE 
-            case 'assignMetaUser':
-            case 'assignmetauser':
+            case 'assignAggregateCertificateUsers':
+            case 'assignAggregateCertificateUsers':
                 {
-                    $response = $this->assignMetaUser($params);
+                    $response = $this->assignAggregateCertificateUsers($params);
                 }
                 break;
 
             case 'addAggregateCertificates':
-            case 'addAggregateCertificates':
+            case 'addaggregatecertificates':
                 {
                     $response = $this->addAssociationAggregateCertificates($params);
                 }

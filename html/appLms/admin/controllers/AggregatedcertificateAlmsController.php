@@ -1165,6 +1165,7 @@ class AggregatedcertificateAlmsController extends AlmsController
                             } else {
                                 $cont[] = Lang::t('_NOT_ENROLLED', 'certificate');
                             }
+                            break;
                         case AggregatedCertificate::AGGREGATE_CERTIFICATE_TYPE_COURSE_PATH:
                         default:
                             if ($coursePath_man->isEnrolled($id_user, $id_link)) {
