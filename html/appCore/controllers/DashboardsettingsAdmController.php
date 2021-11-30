@@ -134,7 +134,7 @@ class DashboardsettingsAdmController extends AdmController
         $user_select->show_user_selector = TRUE;
         $user_select->show_group_selector = true;
         $user_select->show_orgchart_selector = true;
-        $user_select->show_orgchart_simple_selector = true;
+        $user_select->show_orgchart_simple_selector = false;
         $user_select->show_fncrole_selector = true;
         $user_select->multi_choice = true;
 
