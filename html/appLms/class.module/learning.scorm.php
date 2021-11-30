@@ -25,7 +25,7 @@ class Learning_ScormOrg extends Learning_Object {
 	 * object constructor
 	 **/
 	 
-	function Learning_ScormOrg( $id = NULL, $environment = false ) {
+	function __construct( $id = NULL, $environment = false ) {
 		parent::__construct( $id, $environment );
 
 		$title = '';
