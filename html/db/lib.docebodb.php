@@ -490,6 +490,15 @@ function sql_get_server_info($link=null){
     return $re;
 }
 
+function sql_get_server_version($link = null){
+
+    $db = DbConn::getInstance($link);
+    $re = $db->query('SELECT VERSION() as version');
+
+    $result = sql_fetch_assoc($re);
+    return $result['version'];
+}
+
 function sql_data_seek($result, $row_number){
     $db = DbConn::getInstance();
     $re = $db->data_seek($result, $row_number);

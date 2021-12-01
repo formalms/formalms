@@ -100,11 +100,24 @@ class Step2Controller extends StepController
         }
 
         if (array_filter($driver)) {
-            // mysql client version, in php the version number is a string regcut it
-            preg_match('/([0-9]+\.[\.0-9]+)/', sql_get_server_info(), $version);
 
-            if (empty($version[1])) $res['mysql'] = 'ok';
-            else $res['mysql'] = (version_compare($version[1], '5.6') >= 0 ? 'ok' : 'err');
+            // mysql client version, in php the version number is a string regcut it
+            preg_match('/([\.0-9][\.0-9]+\.[\.0-9]+)/', sql_get_server_version(), $mysqlVersion);
+
+            if (empty($mysqlVersion[1])){
+                $res['mysql'] = 'ok';
+            }
+            else {
+                $checkMysql = version_compare($mysqlVersion[1], '5.6') >= 0;// && version_compare($mysqlVersion[1], '8.0') < 0;
+                $checkMariaDB = version_compare($mysqlVersion[1], '10.3') >= 0;// && version_compare($mysqlVersion[1], '10.4') < 0;
+
+                if ($checkMysql || $checkMariaDB){
+                    $res['mysql'] = 'ok';
+                }
+                else {
+                    $res['mysql'] =  'err';
+                }
+            }
         } else {
             $res['mysql'] = 'err';
         }

@@ -30,7 +30,7 @@ define("_SERVERINFO","Server information");
 define("_SERVER_SOFTWARE","Server mjukvara : ");
 define("_PHPVERSION","PHP Version : ");
 define("_MYSQLCLIENT_VERSION","MySQL Klient Version : ");
-define("_MYSQLSERVER_VERSION","MySQL Server Version : ");
+define("_MYSQLSERVER_VERSION","MySQL/MariaDB Server Version : ");
 define("_LDAP","Ldap : ");
 define("_ONLY_IF_YU_WANT_TO_USE_IT","Beakta denhär varningen endast om du behövar använda LDAP ");
 define("_OPENSSL","Openssl : ");

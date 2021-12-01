@@ -44,9 +44,22 @@ function checkRequirements()
     }
     if (array_filter($driver)) {
         // mysql version, in easyphp the version number is ina string regcut it
-        preg_match('/([0-9]+\.[\.0-9]+)/', sql_get_server_info(), $version);
-        if (empty($version[1])) $res['mysql'] = 'ok';
-        else $res['mysql'] = (version_compare($version[1], '5.6') >= 0 ? 'ok' : 'err');
+        preg_match('/([\.0-9][\.0-9]+\.[\.0-9]+)/', sql_get_server_version(), $mysqlVersion);
+var_dump(sql_get_server_info());
+        if (empty($mysqlVersion[1])){
+            $res['mysql'] = 'ok';
+        }
+        else {
+            $checkMysql = version_compare($mysqlVersion[1], '5.6') >= 0 && version_compare($mysqlVersion[1], '8.0') <= 0;
+            $checkMariaDB = version_compare($mysqlVersion[1], '10.0') >= 0 && version_compare($mysqlVersion[1], '10.7') < 0;
+
+            if ($checkMysql || $checkMariaDB){
+                $res['mysql'] = 'ok';
+            }
+            else {
+                $res['mysql'] =  'err';
+            }
+        }
     } else {
         $res['mysql'] = 'err';
     }

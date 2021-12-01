@@ -240,7 +240,7 @@ INSERT INTO core_event_class ( idClass, class, platform, description )
 VALUES 
 (@max, 'UserCourseInsertOverbooking', 'lms-a', 'A user requests subscription to course that has set overbooking');
 
-INSERT INTO core_event_consumer_class (idConsumer, idClass) VALUES (1, @max);
+INSERT IGNORE INTO core_event_consumer_class (idConsumer, idClass) VALUES (1, @max);
 
 INSERT INTO `core_event_manager` (`idClass`, `permission`, `channel`, `recipients`, `show_level`) VALUES ( @max, 'mandatory', 'email', '_EVENT_RECIPIENTS_TEACHER', 'godadmin,admin,user');
 
