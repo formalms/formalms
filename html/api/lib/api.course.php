@@ -1058,12 +1058,13 @@ class Course_API extends API
             return $response;
         }
 
+        $classroomManager = new DateManager();
 
         $params['classroom_sub_start_date'] = substr(Format::dateDb($params['classroom_sub_start_date'], 'date'), 0, 10);
         $params['classroom_sub_end_date'] = substr(Format::dateDb($params['classroom_sub_end_date'], 'date'), 0, 10);
         $params['classroom_unsubscribe_date_limit'] = substr(Format::dateDb($params['classroom_unsubscribe_date_limit'], 'date'), 0, 10);
 
-        $res = $classroom_man->insDate(
+        $res = $classroomManager->insDate(
             $courseId,
             $params['classroom_code'] ? $params['classroom_code'] : false,
             $params['classroom_name'] ? $params['classroom_name'] : false,
