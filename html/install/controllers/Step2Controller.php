@@ -45,7 +45,7 @@ function checkRequirements()
     if (array_filter($driver)) {
         // mysql version, in easyphp the version number is ina string regcut it
         preg_match('/([\.0-9][\.0-9]+\.[\.0-9]+)/', sql_get_server_version(), $mysqlVersion);
-var_dump(sql_get_server_info());
+
         if (empty($mysqlVersion[1])){
             $res['mysql'] = 'ok';
         }
