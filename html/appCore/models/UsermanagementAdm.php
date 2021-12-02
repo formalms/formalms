@@ -795,8 +795,12 @@ class UsermanagementAdm extends Model
 			$idst_oc0 = $acl_man->getGroupST('/oc_0');
 			if (!$descendants) {
 				if (!in_array($idst_oc0, $admin_info['groups'])) {
-					$admin_info['groups'] = array($idst_oc0);
-					$admin_info['users'] = $admin_info['tree']['users'];
+                    // this code rows give problems in two cases: selecting root org-chart and then "all users" the user selector widget selects only first users page 
+                    // and then in all cases in which a sub-admin clicks "all-users" in users selector widget without org-chart (setting up report, selecting users for enrollment...)
+                    // comment out for now.
+                    
+					// $admin_info['groups'] = array($idst_oc0);
+					// $admin_info['users'] = $admin_info['tree']['users'];
 					//return array();
 				}
 			} else {

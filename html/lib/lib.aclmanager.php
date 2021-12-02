@@ -2227,7 +2227,7 @@ class DoceboACLManager
 
         $inString = (implode(',', $idst) == "" ? "NULL" : implode(',', $idst));
 
-        $query = "SELECT tgm.idstMember"
+        $query = "SELECT DISTINCT tgm.idstMember"
             . "  FROM " . $this->_getTableGroupMembers() . " AS tgm"
             . "  LEFT JOIN " . $this->_getTableUser() . " AS tu"
             . "    ON (tgm.idstMember = tu.idst)"

@@ -1211,7 +1211,7 @@ class AdminPreference
 		foreach($admin_groups as $id_group) {
 			$tmp_admin_groups = array_merge( $tmp_admin_groups, $acl_man->getGroupGDescendants($id_group) );
 		}
-		$admin_groups = array_merge($admin_groups, $tmp_admin_groups);//$admin_groups = $tmp_admin_groups;
+		$admin_groups = array_unique(array_merge($admin_groups, $tmp_admin_groups));
 
 		$admin_userlist = array_merge($admin_users, /*$acl_man->getAllUsersFromIdst($admin_groups)*/$acl_man->getGroupUMembers($admin_groups));
 		if(!empty($admin_users)) $arr_query[] = " $idst_field_name IN (".implode(',', $admin_userlist).") ";
