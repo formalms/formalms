@@ -16,7 +16,6 @@ forma.lms 2.4.5
 ---------------------------------------------------------------------------------------
 Release date: 2021 november
 
-#19985 - fix user selector orgchart error
 #19951 - Fix Admin user should not see the author filter in the reports
 #19950 - Fix fast subscribe error when admin try to insert a user that has first position in admin users. array_search($id_user, $admin_users, false) retunrs position 0 and comparison "array_search($id_user, $admin_users, false) == false" is true
 - Fix send email on user update
