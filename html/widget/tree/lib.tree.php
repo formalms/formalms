@@ -125,9 +125,7 @@ class TreeWidget extends Widget {
 		$this->setOption('ajax_url', $this->ajaxUrl);
 		$this->setOption('langs', $this->languages);
 		$arr_js = array();
-		foreach ($this->options as $name=>$option) {
-            $arr_js[] = $name.':'.$this->json->encode($option);
-        }
+		foreach ($this->options as $name=>$option) $arr_js[] = $name.':'.$this->json->encode($option);
 		return '{'.implode(",", $arr_js).'}';
 	}
 
