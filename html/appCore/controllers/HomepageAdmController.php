@@ -487,10 +487,10 @@ class HomepageAdmController extends AdmController
     {
         $login_user = stripslashes(Get::req('login_user', DOTY_MIXED, false));
         $login_idst = Get::req('use_user_idst', DOTY_MIXED, false);
-
+        $secret = Get::sett('sso_secret', '');
         $redirection = array();
 
-        if (Get::sett('sso_token', "off") != "on" || !$login_user) {
+        if (empty($secret) || Get::sett('sso_token', "off") != "on" || !$login_user) {
 
             $redirection['req'] = _homepage_;
             $redirection['query'] = array(
@@ -506,7 +506,6 @@ class HomepageAdmController extends AdmController
         }
 
         $time = Get::req('time', DOTY_MIXED, '');
-        $secret = Get::sett('sso_secret', "8ca0f69afeacc7022d1e589221072d6bcf87e39c"); // XXX: <- orribile questo default
         $token = strtoupper(Get::req('token', DOTY_MIXED, ''));
         $recalc_token = strtoupper(md5($login_user . ',' . $time . ',' . $secret));
 
