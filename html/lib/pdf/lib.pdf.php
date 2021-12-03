@@ -1,4 +1,4 @@
-<?php defined("IN_FORMA") or die('Direct access is forbidden.');
+<?php defined('IN_FORMA') or die('Direct access is forbidden.');
 
 
 /* ======================================================================== \
@@ -28,7 +28,7 @@ class PDF extends TCPDF
     var $last_rc4_key_c;     //last RC4 computed key
     var $page_delimiter;
 
-    function PDF($orientation = 'P', $unit = 'mm', $format = 'A4', $unicode = true, $encoding = "UTF-8")
+    function PDF($orientation = 'P', $unit = 'mm', $format = 'A4', $unicode = true, $encoding = 'UTF-8')
     {
         parent::__construct($orientation, $unit, $format, $unicode, $encoding);
 
@@ -49,7 +49,7 @@ class PDF extends TCPDF
         $this->setImageScale(PDF_IMAGE_SCALE_RATIO);
 
         // set font
-        $this->SetFont("dejavusans", "", 10);
+        $this->SetFont('dejavusans', '', 10);
 
         // print a line using Cell()
 
@@ -110,10 +110,10 @@ class PDF extends TCPDF
     {
         @ob_end_clean();
 
-        $doc = new DOMDocument();
-        $doc->loadHTML($html);
+        $doc = new DOMDocument(null,$this->encoding);
+        $doc->loadHTML(mb_convert_encoding($html, 'HTML-ENTITIES',$this->encoding));
         $xpath = new DOMXPath($doc);
-        $nodelist = $xpath->query("//img"); # "/images/image.jpg"
+        $nodelist = $xpath->query('//img'); # "/images/image.jpg"
 
         foreach ($nodelist as $node){
             $value = $node->attributes->getNamedItem('src')->nodeValue;
@@ -123,19 +123,19 @@ class PDF extends TCPDF
 
         $html = $doc->saveHTML();
 
-        $query = "SELECT lang_browsercode, lang_direction"
-            . " FROM " . $GLOBALS['prefix_fw'] . "_lang_language"
+        $query = 'SELECT lang_browsercode, lang_direction'
+            . ' FROM ' . $GLOBALS['prefix_fw'] . '_lang_language'
             . " WHERE lang_code = '" . getLanguage() . "'";
         list($lang_code, $lang_direction) = sql_fetch_row(sql_query($query));
 
         if (strpos($lang_code, ';') !== false) {
             $lang_code = current(explode(';', $lang_code));
         }
-        $lg = array();
-        $lg['a_meta_charset'] = "UTF-8";
+        $lg = [];
+        $lg['a_meta_charset'] = $this->encoding;
         $lg['a_meta_dir'] = $lang_direction;
         $lg['a_meta_language'] = $lang_code;
-        $lg['w_page'] = "page";
+        $lg['w_page'] = 'page';
         $this->setLanguageArray($lg);
 
         /**
@@ -152,7 +152,7 @@ class PDF extends TCPDF
          * owner : (inverted logic - only for public-key) when set permits change of encryption and enables all other permissions.
          */
         if ($this->isEncrypted()) {
-            $this->SetProtection(array('modify', 'copy', 'annot-forms', 'fill-forms', 'extract', 'assemble', 'print-high'), '', $this->getPassword());
+            $this->SetProtection(['modify', 'copy', 'annot-forms', 'fill-forms', 'extract', 'assemble', 'print-high'], '', $this->getPassword());
         }
 
         $this->getAliasNbPages();
@@ -166,7 +166,7 @@ class PDF extends TCPDF
             $this->SetFont('dejavusans', '', 40);
             $this->SetTextColor(240, 240, 240);
             $this->RotatedText(15, 50, 'F a c - s i m i l e', 270);
-            $this->SetFont("dejavusans", "", 10);
+            $this->SetFont('dejavusans', '', 10);
             $this->SetTextColor(0, 0, 0);
         }
         $this->setXY(0, 0);
@@ -175,25 +175,27 @@ class PDF extends TCPDF
         $this->page_delimiter = '<!-- pagebreak -->';
         $pages    = explode($this->page_delimiter, $html);
         $cnt       = count($pages);
-        for ($i = 0; $i < $cnt; $i++) {
+        $index = 0;
+        foreach ($pages as $page){
             if ($img != '') {
                 $this->setXY(0, 0);
                 $this->Image($GLOBALS['where_files_relative'] . '/appLms/certificate/' . $img, 0, 0, ($this->CurOrientation == 'P' ? 210 : 298), 0, '', '', '', true);
                 $this->setXY(0, 0);
             }            
             
-            $this->writeHTML($this->page_delimiter . $pages[$i], true, 0, true, 0);
+            $this->writeHTML($this->page_delimiter . $page, true, 0, true, 0);
 
-            if ($i < $cnt - 1) {
+            if ($index < $cnt - 1) {
                  $this->AddPage();
             }
+            $index++;
         }
         $this->lastPage();
 
 
         $name = str_replace(
-            array('\\', '/', ':', '\'', '\*', '?', '"', '<', '>', '|'),
-            array('', '', '', '', '', '', '', '', '', ''),
+            ['\\', '/', ':', '\'', '\*', '?', '"', '<', '>', '|'],
+            ['', '', '', '', '', '', '', '', '', ''],
             $name
         );
 
@@ -213,7 +215,7 @@ class PDF extends TCPDF
         //content type forcing dowlad
         header("Content-type: application/download\n");
         //cache control
-        header("Cache-control: private");
+        header('Cache-control: private');
         //sending creation time
         header('Expires: ' . gmdate('D, d M Y H:i:s') . ' GMT');
         //content type
