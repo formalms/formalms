@@ -1,0 +1,20 @@
+{
+    "version": {
+        "name": "3.0.1",
+        "number": "30001",
+        "description": "questa è la 3.0.1",
+        "pretty_desc": "3 0 1",
+        "pre": "30001_pre.php",
+        "post": "30001_post.php",
+        "config": "30001_conf.php",
+        "file_sytem": "30001_fs.php",
+        "role": "30001_role.php",
+        "mysql": "30001_db.sql",
+        "date": "2021-12-06 00:00",
+        "status": "stable",
+        "php": {
+            "min": "7.4",
+            "max": "7.4" 
+        }
+    }
+}
