@@ -11,6 +11,85 @@ FORMA LMS
 RELEASE CHANGELOG
 
 ---------------------------------------------------------------------------------------
+forma.lms 3.0.1
+---------------------------------------------------------------------------------------
+Release date: 2021 december
+
+- #19995 - resolve sso vulnerability
+- #19975 - fix Certificate special characters print error
+- #19994: Sub Admin and user selector widget Commented out some code rows;deletion to be evaluated for future
+- #Revert0 "#19985 - fix user selector orgchart error"
+- #19993 - fix api course addClassroom
+- # - Fix installer and upgrader mysql Check#19992: fixed class constructor
+- #19991: changed orgchart parameter
+- #19989 - fix aggregate certificate API assign meta user
+- #19989 - fix aggregate certificate detail table
+- #19990 - add feature mail to teachers in upload course file
+- #19989 - Fix aggregate certificate category selector
+- # - Link categorie - atterraggio alla pagina MyCourses in cui passando l'ID della/delle categoria/e in automatico applichi il filtro.
+- #19988 - Fix error when try to delete classroom course with dates
+- #19987 - Fix error in teacher area when user does not have permission to one of organitazion|home|public repo
+- #19986 - fix resize image and increase min image width
+- #19978 - fix total hours in meta certificate layout
+- #19985 - fix user selector orgchart error
+- #19978 - fix meta certificate layout
+- #19979 User/object Grid Cannot check Item object type:. missing default param on class constructor.
+- # - Aggiunte validazioni su api corsi
+- #19984 - fix error 500 in aggregate certificate view detail
+- #19981 - fix addDay API adding validation that idDate exist in course
+- # - Fix certificate layout
+- # - Api rename e delete
+- #19978 -  fix meta certificate layout
+- #19978 - fix aggregated certificates
+- #19978 - Fix aggregate certificate list that shows incorrect course path
+- #19978 - fix API addMetaCertificates 
+- #19978 - fix 3000 upgrade query 
+- #19978 - update postman API 
+- #19978 - fix aggregate certificate certificate Style#19977
+- #19978 - fix exception in getanswertest and refactor old while with foreach cycles
+- #19976 - fix You can't access in new learning object area for normal user.
+- #19964 - fix baseUrl generation
+- # - Ripristinate TwigManager addExtension function that was lost in past merge
+- #19974 -  fix issue when block does not have enabledActions
+- #19974 - fix calendar
+- #19975 - fix Certificate special characters print error
+- # - Ripristinate correct namespace
+- # - test fix composer
+- # - update composer.phar - add composer-normalize.phar - fix prefixer
+- #- Update cs prefixer
+- # - Fix php-cs prefixer
+- # - Fix configuration cs fixer
+- # - WIP Add php-cs-fixer
+- # - Add permissions in event dispatch to permit check in events listeners
+- #19964 - fix baseUrl generation
+- #19971 - fix addDay API
+- #19970 - Ripristinate event to interact with lo objects with new event system
+- # - Add missing translations for Dropzone
+- # - Fix Dropzone submit button
+- # - Add translations for dropzone
+- #19969 - remove empty modules in land export
+- #19968 - Fix exception if createModule try to instantiate a class that does not exists
+- #19967 - Fix meta certificate date formats for tags [meta_complete] [meta_inscr] [meta_access]
+- #19966 - Fix dropzone upload when file does not contains file extension.
+- #19963 - fix banner widget and video modal load.
+- # - Merging upgrade in v3.0.0 - delete sql merged
+- #19964 -  fix baseurl calculate when request has implicit php file
+- # - Merging upgrade in v3.0.0
+- # - Corretto upgrade - Version 3.00.00-rc04
+- #19962 - Fix lang code management in dashboardCalendar to get correct langCode
+- # - Version 3.00.00-rc03
+- # - Fix dashboard block load - Ripristinate DashboardBlockLms function getUser
+- # - Fix Typo generated from old event remove
+- # - Add TWIG Template extensions functions
+- #19961 replaced old event "lms.course.deleted" and added "lms.course.deleting"
+- #19960 - Typo in template folder extension - ripristinate "translate" twig function as "deprecated"
+- #19959 - Fix plugin manager that not show errors during installation/upgrade
+- #19958 - replace lost TwigManager functions
+- #19961 removed old events and deprecated unused functions
+- #19957 added course_box_description
+
+
+---------------------------------------------------------------------------------------
 forma.lms 3.0.0
 ---------------------------------------------------------------------------------------
 Release date: 2021 november
@@ -1761,7 +1840,7 @@ Release date: 2021 november
 - Fix send email on user update
 - fix tinymce
 #19919 - Fix coursereport generation
-#19900 - move all threads before emoticon select in forum and public_forum	830a905fb	carminep89 <carminepepiciello@gmail.com>	23 Jun 2021 at 18:09
+#19900 - move all threads before emoticon select in forum and public_forum
 #19890 - Add tag form scorm items in certificate
 #19864 - Remove deprecated constructors - fix show answers of last number_times for ET answer type
 #19863 - fix api course add/update/delete day
@@ -1804,7 +1883,7 @@ Release date: 2020 october
 #19745 - 1111 nel box di conferma iscrizioneFix campi in registro valutazioni dettaglio
 #19731 - root/nodes fields selector
 #19781 - Support SCORMs opening popup - workaround by retrying with an asynchronous request (sendBeacon) if the synchronous request fails (response status 0).
-#16623 - Risolto Problema con "only update" e "create and update" Fix only update	b4560035	Alessandro Micelli <alessandro.micelli@email.it>	23 Oct 2020 at 10:14
+#16623 - Risolto Problema con "only update" e "create and update" Fix only update
 #1780: in case of classroom courses, the certificate does not print the classrooms appointments in case of missing location indication; modified the query to manage data even in this situation.
 #19761 - RISOLTO - Funzione playFieldForUser() di libreria customfield non funzionante Risolto includendo le classi nella cartella "customfield" invece che "field"
 
