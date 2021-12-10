@@ -135,11 +135,13 @@ class Course_API extends API
 
         $idDate = $params['id_date'] ?? '';
 
+        $response = ['success' => true, 'data' => $idDate];
+
         $model = new ClassroomAlms($courseId, $idDate);
 
         $dates = $model->classroom_man->getCourseDate($courseId);
 
-        if (!array_key_exists($idDate, $dates)){
+        if (!array_key_exists($idDate, $dates)) {
 
             $response['success'] = false;
             $response['message'] = 'Date does not exists in course';
@@ -1197,15 +1199,13 @@ class Course_API extends API
             $classRoom = array_key_exists('edition_classroom', $params) && !empty($params['edition_classroom']) && is_numeric($params['edition_classroom']) ? $params['edition_classroom'] : '0';
 
 
-            $model = new ClassroomAlms($courseId, $idDate);
-
-
-
             $arrayDay['date_begin'] = $dateSelected . ' ' . $dateBeginHours . ':' . $dateBeginMinutes . ':00';
             $arrayDay['pause_begin'] = $dateSelected . ' ' . $datePauseBeginHours . ':' . $datePauseBeginMinutes . ':00';
             $arrayDay['pause_end'] = $dateSelected . ' ' . $datePauseEndHours . ':' . $datePauseEndMinutes . ':00';
             $arrayDay['date_end'] = $dateSelected . ' ' . $dateEndHours . ':' . $dateEndMinutes . ':00';
             $arrayDay['classroom'] = $classRoom;
+
+            $arrayDays = $model->classroom_man->getDateDay($idDate);
 
             foreach ($arrayDays as $day) {
                 $dateBegin = new DateTime($day['date_begin']);
@@ -1989,7 +1989,7 @@ class Course_API extends API
 
     }
 
-    public function renameLearningObject($params) 
+    public function renameLearningObject($params)
     {
         require_once(_lms_ . '/class.module/class.definition.php');
         require_once(_lms_ . '/lib/lib.module.php');
@@ -2005,17 +2005,17 @@ class Course_API extends API
 
             $idUser = false;
             if (array_key_exists('idUser', $params) && !empty($params['idUser'])) {
-                
+
                 $idUser = $params['idUser'];
                 $checkAuth = $this->authenticateUserById($idUser);
-                if(!$checkAuth) {
+                if (!$checkAuth) {
                     return $response['error'] = 'Not authenitcated user found';
                 }
-               
+
             }
 
             $model = new LomanagerLms();
-            
+
             $model->setTdb($fromType, $idCourse, $idUser);
             $result = $model->renameFolder($learningObjectId, $newName);
             $response['learningObjectIds'][] = [
@@ -2025,15 +2025,15 @@ class Course_API extends API
                 'idUser' => $idUser,
                 'success' => $result
             ];
-                
-            
+
+
         }
 
         return $response;
 
     }
 
-    public function authenticateUserById($idUser) 
+    public function authenticateUserById($idUser)
     {
         require_once(Forma::inc(_base_ . '/lib/lib.user.php'));
         $user_manager = new DoceboACLManager();
@@ -2056,7 +2056,7 @@ class Course_API extends API
 
     }
 
-    public function deleteLearningObjects($params) 
+    public function deleteLearningObjects($params)
     {
 
         require_once(_lms_ . '/class.module/class.definition.php');
@@ -2071,13 +2071,13 @@ class Course_API extends API
 
             $idUser = false;
             if (array_key_exists('idUser', $params) && !empty($params['idUser'])) {
-                
+
                 $idUser = $params['idUser'];
                 $checkAuth = $this->authenticateUserById($idUser);
-                if(!$checkAuth) {
+                if (!$checkAuth) {
                     return $response['error'] = 'Not authenticated user found';
                 }
-               
+
             }
             $learningObjectIds = explode(',', $params['learningObjectIds']);
 
@@ -2187,13 +2187,13 @@ class Course_API extends API
             $response['message'] = 'Course not specified on deleting';
         } else {
             $course_man = new Man_Course();
-            $courseExists = $course_man->courseExists((int) $params['idCourse']);
+            $courseExists = $course_man->courseExists((int)$params['idCourse']);
             if (!$courseExists) {
                 $response['success'] = false;
                 $response['message'] = 'Course not found';
             }
         }
-        
+
         if (!isset($params['idUser'])) {
             $response['success'] = false;
             $response['message'] = 'User not specified on deleting';
@@ -2207,7 +2207,8 @@ class Course_API extends API
         return $response;
     }
 
-    private function validateRenameParams(array $params) {
+    private function validateRenameParams(array $params)
+    {
         $response = [];
         $response['success'] = true;
 
@@ -2216,7 +2217,7 @@ class Course_API extends API
             $response['message'] = 'New name not specified on renaming';
         }
 
-        if (!isset($params['learningObjectId']) || !(int) $params['learningObjectId'] > 0) {
+        if (!isset($params['learningObjectId']) || !(int)$params['learningObjectId'] > 0) {
             $response['success'] = false;
             $response['message'] = 'Learning Object not specified on renaming';
         }
@@ -2231,13 +2232,13 @@ class Course_API extends API
             $response['message'] = 'Course not specified on deleting';
         } else {
             $course_man = new Man_Course();
-            $courseExists = $course_man->courseExists((int) $params['idCourse']);
+            $courseExists = $course_man->courseExists((int)$params['idCourse']);
             if (!$courseExists) {
                 $response['success'] = false;
                 $response['message'] = 'Course not found';
             }
         }
-        
+
         if (!isset($params['idUser'])) {
             $response['success'] = false;
             $response['message'] = 'User not specified on deleting';
@@ -2250,7 +2251,7 @@ class Course_API extends API
 
         return $response;
     }
-     
+
 
     private function validateType(string $type)
     {
@@ -2709,8 +2710,8 @@ class Course_API extends API
     function assignAggregateCertificateUsers($params)
     {
         $idAssociation = $params['association_id'] ?? '';
-        $courses = (array_key_exists('courses',$params)  && !empty($params['courses'])) ? explode(',',$params['courses']) : [];
-        $users = (array_key_exists('users',$params) && !empty($params['users'])) ? explode(',',$params['users']) : [];
+        $courses = (array_key_exists('courses', $params) && !empty($params['courses'])) ? explode(',', $params['courses']) : [];
+        $users = (array_key_exists('users', $params) && !empty($params['users'])) ? explode(',', $params['users']) : [];
 
         $response = [];
         $response['success'] = true;
@@ -2722,15 +2723,15 @@ class Course_API extends API
 
         if (empty($users)) {
             $response['success'] = false;
-            $response['message'] = 'Missing users : ' . implode(',',$users);
+            $response['message'] = 'Missing users : ' . implode(',', $users);
         }
 
         if (empty($courses)) {
             $response['success'] = false;
-            $response['message'] = 'Missing courses : ' . implode(',',$courses);
+            $response['message'] = 'Missing courses : ' . implode(',', $courses);
         }
 
-        if (!$response['success']){
+        if (!$response['success']) {
             return $response;
         }
 
@@ -2740,7 +2741,7 @@ class Course_API extends API
             foreach ($courses as $idCourse) {
                 // assign course to user by association cert id
                 try {
-                    $query = 'INSERT INTO `%lms_aggregated_cert_course` (`idAssociation`, `idUser`, `idCourse`, `idCourseEdition`) VALUES ( '.$idAssociation.', '.$idUser.', '.$idCourse.', 0);';
+                    $query = 'INSERT INTO `%lms_aggregated_cert_course` (`idAssociation`, `idUser`, `idCourse`, `idCourseEdition`) VALUES ( ' . $idAssociation . ', ' . $idUser . ', ' . $idCourse . ', 0);';
                     sql_query($query);
                 } catch (Exception $exception) {
                     $response['success'] = false;
@@ -2760,7 +2761,7 @@ class Course_API extends API
 
     function addAssociationAggregateCertificates($params)
     {
-        require_once Forma::inc(_lms_.'/lib/lib.aggregated_certificate.php');
+        require_once Forma::inc(_lms_ . '/lib/lib.aggregated_certificate.php');
         $response = [];
         $response['success'] = true;
 
@@ -2773,9 +2774,9 @@ class Course_API extends API
                     $nameAssociation = $aggregatedCertificatesRQItem['name_ass'] ?? '';
                     $descriptionAssociation = $aggregatedCertificatesRQItem['descr_ass'] ?? '';
                     $certificateType = (int)($aggregatedCertificatesRQItem['type'] ?? 0);
-                    $courses = (array_key_exists('courses',$aggregatedCertificatesRQItem)  && !empty($aggregatedCertificatesRQItem['courses'])) ? explode(',',$aggregatedCertificatesRQItem['courses']) : [];
-                    $coursesPaths = (array_key_exists('course_paths',$aggregatedCertificatesRQItem) && !empty($aggregatedCertificatesRQItem['course_paths'])) ? explode(',',$aggregatedCertificatesRQItem['course_paths']) : [];
-                    $users = (array_key_exists('users',$aggregatedCertificatesRQItem) && !empty($aggregatedCertificatesRQItem['users'])) ? explode(',',$aggregatedCertificatesRQItem['users']) : [];
+                    $courses = (array_key_exists('courses', $aggregatedCertificatesRQItem) && !empty($aggregatedCertificatesRQItem['courses'])) ? explode(',', $aggregatedCertificatesRQItem['courses']) : [];
+                    $coursesPaths = (array_key_exists('course_paths', $aggregatedCertificatesRQItem) && !empty($aggregatedCertificatesRQItem['course_paths'])) ? explode(',', $aggregatedCertificatesRQItem['course_paths']) : [];
+                    $users = (array_key_exists('users', $aggregatedCertificatesRQItem) && !empty($aggregatedCertificatesRQItem['users'])) ? explode(',', $aggregatedCertificatesRQItem['users']) : [];
 
                     if (empty($certificateId)) {
                         $response['success'] = false;
@@ -2790,15 +2791,15 @@ class Course_API extends API
 
                     if ($certificateType === AggregatedCertificate::AGGREGATE_CERTIFICATE_TYPE_COURSE && empty($courses)) {
                         $response['success'] = false;
-                        $response['messages'][$index][] = 'Missing courses : ' . implode(',',$courses);
+                        $response['messages'][$index][] = 'Missing courses : ' . implode(',', $courses);
                     }
 
                     if ($certificateType === AggregatedCertificate::AGGREGATE_CERTIFICATE_TYPE_COURSE_PATH && empty($coursesPaths)) {
                         $response['success'] = false;
-                        $response['messages'][$index][] = 'Missing courses paths : ' . implode(',',$coursesPaths);
+                        $response['messages'][$index][] = 'Missing courses paths : ' . implode(',', $coursesPaths);
                     }
 
-                    if (!$response['success']){
+                    if (!$response['success']) {
                         return $response;
                     }
 
@@ -2811,14 +2812,14 @@ class Course_API extends API
                         $qres = sql_query($queryAssociation);
                         [$idAssociation] = sql_fetch_row($qres);
 
-                        switch ($certificateType){
+                        switch ($certificateType) {
                             case AggregatedCertificate::AGGREGATE_CERTIFICATE_TYPE_COURSE:
-                                foreach ($courses as $idCourse){
-                                    $query = 'INSERT INTO `%lms_aggregated_cert_course` (`idAssociation`, `idUser`, `idCourse`, `idCourseEdition`) VALUES ( '.$idAssociation.', 0, '.$idCourse.', 0);';
+                                foreach ($courses as $idCourse) {
+                                    $query = 'INSERT INTO `%lms_aggregated_cert_course` (`idAssociation`, `idUser`, `idCourse`, `idCourseEdition`) VALUES ( ' . $idAssociation . ', 0, ' . $idCourse . ', 0);';
                                     sql_query($query);
 
-                                    foreach ($users as $idUser){
-                                        $query = 'INSERT INTO `%lms_aggregated_cert_course` (`idAssociation`, `idUser`, `idCourse`, `idCourseEdition`) VALUES ( '.$idAssociation.', '.$idUser.', '.$idCourse.', 0);';
+                                    foreach ($users as $idUser) {
+                                        $query = 'INSERT INTO `%lms_aggregated_cert_course` (`idAssociation`, `idUser`, `idCourse`, `idCourseEdition`) VALUES ( ' . $idAssociation . ', ' . $idUser . ', ' . $idCourse . ', 0);';
                                         sql_query($query);
                                     }
                                 }
@@ -2828,8 +2829,8 @@ class Course_API extends API
                                     $query = 'INSERT INTO `%lms_aggregated_cert_coursepath` (`idAssociation`, `idUser`, `idCoursePath`) VALUES ( ' . $idAssociation . ', 0, ' . $idCoursePath . ')';
                                     sql_query($query);
 
-                                    foreach ($users as $idUser){
-                                        $query = 'INSERT INTO `%lms_aggregated_cert_coursepath` (`idAssociation`, `idUser`, `idCoursePath`) VALUES ( ' . $idAssociation . ', '.$idUser.', ' . $idCoursePath . ')';
+                                    foreach ($users as $idUser) {
+                                        $query = 'INSERT INTO `%lms_aggregated_cert_coursepath` (`idAssociation`, `idUser`, `idCoursePath`) VALUES ( ' . $idAssociation . ', ' . $idUser . ', ' . $idCoursePath . ')';
                                         sql_query($query);
                                     }
                                 }

@@ -261,16 +261,14 @@ class DateManager
 
         $query = "SELECT dt.*, MIN(dy.date_begin) AS date_begin, MAX(dy.date_end) AS date_end, COUNT(dy.id_day) as num_day, COUNT(DISTINCT du.id_user) as user_subscribed"
             . " FROM %lms_course_date as dt"
-            . " JOIN %lms_course_date_day  as dy ON dy.id_date = dt.id_date"
-            . " LEFT JOIN %lms_course_date_user as du ON du.id_date = dt.id_date"
+            . " LEFT OUTER JOIN %lms_course_date_day  as dy ON dy.id_date = dt.id_date"
+            . " LEFT OUTER JOIN %lms_course_date_user as du ON du.id_date = dt.id_date"
             . " WHERE dt.id_course IN (" . implode(",", $id_course) . ") "
-            . ' AND dy.deleted = 0'
             . " GROUP BY dt.id_date"
             . " ORDER BY dy.date_begin"
             . ($num_element > 0 ? " LIMIT " . $ini . "," . $num_element : '');
 
         $result = sql_query($query);
-
 
         while ($row = sql_fetch_assoc($result)) {
             if (strcmp($row['date_begin'], date('Y-m-d H:i:s')) > 0 || $all) {
