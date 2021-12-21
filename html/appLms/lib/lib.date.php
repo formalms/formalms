@@ -1173,26 +1173,20 @@ class DateManager
 
     public function getUserDateForCourse($id_user, $id_course)
     {
-        $acl_manager = $GLOBALS["current_user"]->getAclManager();
-
-        if ($id_user == $acl_manager->getAnonymousId())
-            return [];
-
-        $query = "SELECT id_date"
-            . " FROM %lms_course_date_user "
-            . " WHERE id_user = " . $id_user
-            . " AND id_date IN"
-            . " ("
-            . " SELECT id_date"
-            . " FROM %lms_course_date "
-            . " WHERE id_course = " . $id_course
-            . ")";
-
-        $result = sql_query($query);
         $res = [];
+        $aclManager = $GLOBALS["current_user"]->getAclManager();
 
-        while (list($id_date) = sql_fetch_row($result))
-            $res[] = $id_date;
+        if ($id_user !== $aclManager->getAnonymousId()) {
+
+            $query = "SELECT id_date  FROM %lms_course_date_user   WHERE id_user = " . $id_user
+                . " AND id_date IN (  SELECT id_date  FROM %lms_course_date   WHERE id_course = " . $id_course . ")";
+
+            $result = sql_query($query);
+
+            foreach ($result as $row) {
+                $res[] = $row['id_date'];
+            }
+        }
 
         return $res;
     }
@@ -1215,10 +1209,9 @@ class DateManager
                 list($sum_presence, $tot_day) = sql_fetch_row($re);
                 $tot_day--;
 
-                if ($sum_presence >= $tot_day)
+                if (null !== $sum_presence && null !== $tot_day && $sum_presence >= $tot_day) {
                     return true;
-                else
-                    return false;
+                }
             }
         }
         return false;

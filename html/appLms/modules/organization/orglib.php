@@ -1334,10 +1334,10 @@ class Org_TreeView extends RepoTreeView {
 				$stack[$level]['folder']->otherValues[ORGFIELDPREREQUISITES],
 											getLogUserId() );
 
-			if ($arrData[ORGFIELD_PUBLISHFOR] == PF_TEACHER && $_SESSION['levelCourse'] <= 3) return false;
-
-
-			if ($arrData[ORGFIELD_PUBLISHFOR] == PF_ATTENDANCE && !$this->presence()) {
+			if ($arrData[ORGFIELD_PUBLISHFOR] == PF_TEACHER && $_SESSION['levelCourse'] <= 3) {
+				return false;
+			}
+			else if ($arrData[ORGFIELD_PUBLISHFOR] == PF_ATTENDANCE && !$this->presence()) {
 
 				$out .= ' <span class="' . $classStyle . '" ' .
 					'id="' . $this->id . '_' . $this->_getOpPlayItemId() . '_' . $stack[$level]['folder']->id . '" ' .
@@ -1467,69 +1467,81 @@ class Org_TreeView extends RepoTreeView {
 							} else {
 								$out .=  '<div class="TVActionEmpty"></div>';
 							}
-						} else if (!$isFolder) {
+						} else {
+							if (!$isFolder) {
 
-							if ($arrData[ORGFIELD_PUBLISHFROM] != '' && $arrData[ORGFIELD_PUBLISHFROM] != '0000-00-00 00:00:00') {
-								if ($arrData[ORGFIELD_PUBLISHFROM] > date("Y-m-d H:i:s")) return false;
-							}
-							if ($arrData[ORGFIELD_PUBLISHTO] != '' && $arrData[ORGFIELD_PUBLISHTO] != '0000-00-00 00:00:00') {
-								if ($arrData[ORGFIELD_PUBLISHTO] < date("Y-m-d H:i:s")) return false;
-							}
-
-							$status = Track_Object::getStatusFromId(
-								$stack[$level]['folder']->id,
-										getLogUserId() );
-
-							if ($arrData[ORGFIELD_PUBLISHFOR] == PF_TEACHER && $_SESSION['levelCourse'] <= 3) return false;
-							if ($arrData[ORGFIELD_PUBLISHFOR] == PF_ATTENDANCE && !$this->presence()) {
-
-								$out .= '<input type="image" class="tree_view_image" '
-									. ' src="' . $this->_getOpLockedImg() . '"'
-									. ' id="' . $this->id . '_' . $this->_getOpLockedId() . '_' . $stack[$level]['folder']->id . '" '
-									. ' name="' . $this->id . '[' . $this->_getOpLockedId() . '][' . $stack[$level]['folder']->id . ']" '
-									. ' title="' . $this->_getOpLockedTitle() . ': ' . $this->getFolderPrintName($stack[$level]['folder']) . '" '
-									. ' alt="' . $this->_getOpLockedTitle() . ': ' . $this->getFolderPrintName($stack[$level]['folder']) . '" />';
-
-							} else if( $isPrerequisitesSatisfied ) { // && $event->getAccessible()) {
-
-								if (method_exists($lo_class, 'trackDetails')) {
-									$out .= '<a class="tree_view_image" '
-										. 'id="' . $this->id . '_' . $this->_getShowResultsId() . '_' . $stack[$level]['folder']->id . '" '
-										. 'name="' . $this->id . '[' . $this->_getShowResultsId() . '][' . $stack[$level]['folder']->id . ']" '
-										. 'href="index.php?modname=organization&amp;op=track_details&amp;type=' . $arrData[REPOFIELDOBJECTTYPE] . '&amp;id_user=' . getLogUserId() . '&amp;id_org=' . $arrData[REPOFIELDIDRESOURCE] . '" '
-										. 'title="' . $this->_getShowResultsTitle() . ': ' . $this->getFolderPrintName($stack[$level]['folder']) . '">'
-										. '<img src="' . $this->_getShowResultsImg() . '"'
-										. ' alt="' . $this->_getShowResultsTitle() . ': ' . $this->getFolderPrintName($stack[$level]['folder']) . '" />'
-										.'</a>';
+								if ($arrData[ORGFIELD_PUBLISHFROM] != '' && $arrData[ORGFIELD_PUBLISHFROM] != '0000-00-00 00:00:00') {
+									if ($arrData[ORGFIELD_PUBLISHFROM] > date("Y-m-d H:i:s")) return false;
 								}
-								else
-								{
-									$out .= '<img src="' . getPathImage() . 'blank.png" class="OrgStatus"'
-										. ' alt="' . Lang::t($status, 'standard', 'framework') . '" title="' . Lang::t($status, 'standard', 'framework') . ': ' . $this->getFolderPrintName($stack[$level]['folder']) . '" />';
+								if ($arrData[ORGFIELD_PUBLISHTO] != '' && $arrData[ORGFIELD_PUBLISHTO] != '0000-00-00 00:00:00') {
+									if ($arrData[ORGFIELD_PUBLISHTO] < date("Y-m-d H:i:s")) return false;
 								}
-							} else {
-								$out .= '<input type="image" class="tree_view_image" '
-									. ' src="' . $this->_getOpLockedImg() . '"'
-									. ' id="' . $this->id . '_' . $this->_getOpLockedId() . '_' . $stack[$level]['folder']->id . '" '
-									. ' name="' . $this->id . '[' . $this->_getOpLockedId() . '][' . $stack[$level]['folder']->id . ']" '
-									. ' title="' . $this->_getOpLockedTitle() . ': ' . $this->getFolderPrintName($stack[$level]['folder']) . '" '
-									. ' alt="' . $this->_getOpLockedTitle() . ': ' . $this->getFolderPrintName($stack[$level]['folder']) . '" />';
-							}
 
-							switch ($status) {
-								case 'not attempted': $img = 'blank.png'; break;
-								case 'ab-initio': $img = 'ab-initio.png'; break;
-								case 'attempted': $img = 'attempted.png'; break;
-								case 'passed':
-								case 'completed': $img = 'completed.png'; break;
-								case 'failed': $img = 'fail.png'; break;
-							}
-							$out .= '<img src="'.getPathImage().'lobject/'.$img
-								.'" class="OrgStatus" alt="'. Lang::t($status, 'standard', 'framework').'" title="'. Lang::t($status, 'standard', 'framework').': '.$this->getFolderPrintName( $stack[$level]['folder']).'" />';
+								$status = Track_Object::getStatusFromId(
+									$stack[$level]['folder']->id,
+									getLogUserId());
 
-							// foreach ($event->getAction() as $action){
-							// 	$out .= $action;
-							// }
+								if ($arrData[ORGFIELD_PUBLISHFOR] == PF_TEACHER && $_SESSION['levelCourse'] <= 3) {
+									return false;
+								}
+								else if ($arrData[ORGFIELD_PUBLISHFOR] == PF_ATTENDANCE && !$this->presence()) {
+
+									$out .= '<input type="image" class="tree_view_image" '
+										. ' src="' . $this->_getOpLockedImg() . '"'
+										. ' id="' . $this->id . '_' . $this->_getOpLockedId() . '_' . $stack[$level]['folder']->id . '" '
+										. ' name="' . $this->id . '[' . $this->_getOpLockedId() . '][' . $stack[$level]['folder']->id . ']" '
+										. ' title="' . $this->_getOpLockedTitle() . ': ' . $this->getFolderPrintName($stack[$level]['folder']) . '" '
+										. ' alt="' . $this->_getOpLockedTitle() . ': ' . $this->getFolderPrintName($stack[$level]['folder']) . '" />';
+
+								} else if ($isPrerequisitesSatisfied) { // && $event->getAccessible()) {
+
+									if (method_exists($lo_class, 'trackDetails')) {
+										$out .= '<a class="tree_view_image" '
+											. 'id="' . $this->id . '_' . $this->_getShowResultsId() . '_' . $stack[$level]['folder']->id . '" '
+											. 'name="' . $this->id . '[' . $this->_getShowResultsId() . '][' . $stack[$level]['folder']->id . ']" '
+											. 'href="index.php?modname=organization&amp;op=track_details&amp;type=' . $arrData[REPOFIELDOBJECTTYPE] . '&amp;id_user=' . getLogUserId() . '&amp;id_org=' . $arrData[REPOFIELDIDRESOURCE] . '" '
+											. 'title="' . $this->_getShowResultsTitle() . ': ' . $this->getFolderPrintName($stack[$level]['folder']) . '">'
+											. '<img src="' . $this->_getShowResultsImg() . '"'
+											. ' alt="' . $this->_getShowResultsTitle() . ': ' . $this->getFolderPrintName($stack[$level]['folder']) . '" />'
+											. '</a>';
+									} else {
+										$out .= '<img src="' . getPathImage() . 'blank.png" class="OrgStatus"'
+											. ' alt="' . Lang::t($status, 'standard', 'framework') . '" title="' . Lang::t($status, 'standard', 'framework') . ': ' . $this->getFolderPrintName($stack[$level]['folder']) . '" />';
+									}
+								} else {
+									$out .= '<input type="image" class="tree_view_image" '
+										. ' src="' . $this->_getOpLockedImg() . '"'
+										. ' id="' . $this->id . '_' . $this->_getOpLockedId() . '_' . $stack[$level]['folder']->id . '" '
+										. ' name="' . $this->id . '[' . $this->_getOpLockedId() . '][' . $stack[$level]['folder']->id . ']" '
+										. ' title="' . $this->_getOpLockedTitle() . ': ' . $this->getFolderPrintName($stack[$level]['folder']) . '" '
+										. ' alt="' . $this->_getOpLockedTitle() . ': ' . $this->getFolderPrintName($stack[$level]['folder']) . '" />';
+								}
+
+								switch ($status) {
+									case 'not attempted':
+										$img = 'blank.png';
+										break;
+									case 'ab-initio':
+										$img = 'ab-initio.png';
+										break;
+									case 'attempted':
+										$img = 'attempted.png';
+										break;
+									case 'passed':
+									case 'completed':
+										$img = 'completed.png';
+										break;
+									case 'failed':
+										$img = 'fail.png';
+										break;
+								}
+								$out .= '<img src="' . getPathImage() . 'lobject/' . $img
+									. '" class="OrgStatus" alt="' . Lang::t($status, 'standard', 'framework') . '" title="' . Lang::t($status, 'standard', 'framework') . ': ' . $this->getFolderPrintName($stack[$level]['folder']) . '" />';
+
+								// foreach ($event->getAction() as $action){
+								// 	$out .= $action;
+								// }
+							}
 						}
 						break;
 				}
@@ -1714,8 +1726,10 @@ class Org_TreeView extends RepoTreeView {
 			
 			$status = Track_Object::getStatusFromId($folder->id, getLogUserId() );
 
-			if($folder->otherValues[ORGFIELD_PUBLISHFOR] == PF_TEACHER && $_SESSION['levelCourse'] <= 3) continue;
-			if($folder->otherValues[ORGFIELD_PUBLISHFOR] == PF_ATTENDANCE && !$this->presence()) {
+			if($folder->otherValues[ORGFIELD_PUBLISHFOR] == PF_TEACHER && $_SESSION['levelCourse'] <= 3) {
+				continue;
+			}
+			else if($folder->otherValues[ORGFIELD_PUBLISHFOR] == PF_ATTENDANCE && !$this->presence()) {
 
 				$node['locked'] = true;
 

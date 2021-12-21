@@ -108,7 +108,7 @@ class LoLmsController extends LmsController
 
     public function get()
     {
-        $id = Get::req('id', DOTY_INT, false);
+        $id = Get::req('id', DOTY_INT, 0);
         $responseData = [];
         $responseData['data'] = $this->getFolders($this->idCourse, $id);
         $responseData['currentState'] = serialize([$this->getCurrentState(0)]);
