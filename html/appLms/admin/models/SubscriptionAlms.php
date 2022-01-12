@@ -513,18 +513,14 @@ Class SubscriptionAlms extends Model
 			require_once(_lms_.'/lib/lib.subscribe.php');
 
 			$subscribe_man = new CourseSubscribe_Manager();
+            require_once(_lms_.'/lib/lib.date.php');
 
+            $date_man = new DateManager();
 			if($new_status == _CUS_END)
 			{
-				require_once(_lms_.'/lib/lib.date.php');
-
-				$date_man = new DateManager();
-
 				$date_man->setDateFinished($this->id_date, $id_user);
 			}
-            
-            require_once(_lms_.'/lib/lib.date.php');
-            $date_man = new DateManager();
+
             if($new_status == _CUS_OVERBOOKING) {
                 $date_man->setDateOverbooking($this->id_date, $id_user, 1);
             } else {
@@ -538,6 +534,10 @@ Class SubscriptionAlms extends Model
 			require_once(_lms_.'/lib/lib.subscribe.php');
 
 			$subscribe_man = new CourseSubscribe_Manager();
+            if($new_status == _CUS_END) {
+                $courseModel = new CourseLms($this->id_course);
+                $courseModel->setCourseDateCompleted($id_user);
+            }
 
 			return $subscribe_man->updateUserStatusInCourse($id_user, $this->id_course, $new_status);
 		}

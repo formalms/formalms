@@ -9,6 +9,7 @@
 \ ======================================================================== */
 
 require_once(Forma::inc(_lms_ . '/lib/lib.certificate.php'));
+
 class MycertificateLms extends Model
 {
 
@@ -20,7 +21,7 @@ class MycertificateLms extends Model
 
     public function __construct($id_user)
     {
-        $this->id_user = (int) $id_user;
+        $this->id_user = (int)$id_user;
         $this->certificate = new Certificate();
     }
 
@@ -96,11 +97,11 @@ class MycertificateLms extends Model
     /**
      * In this funct. we need to select all the aggr. certs that has been released or not.
      * The cert. has been released -> there's an entry in the aggr. certs. assignment with the user and id cert.
-     * 
+     *
      * From the user, get all assoc. -> from all assoc, get ids of cert. distinct
      * from the id cert., get all courses and see if they are completed
-     * 
-     * 
+     *
+     *
      * Return an array of all certs available
      */
 
@@ -119,20 +120,21 @@ class MycertificateLms extends Model
             INNER JOIN %lms_aggregated_cert_assign aca ON c.id_certificate = aca.idCertificate
             INNER JOIN %lms_aggregated_cert_coursepath acc ON aca.idAssociation = acc.idAssociation AND acc.idUser = acc.idUser
             INNER JOIN %lms_coursepath cp ON acc.idCoursePath = cp.id_path
-            WHERE aca.idUser = " . intval($this->id_user);
+            WHERE aca.idUser = " . (int)$this->id_user;
 
         $rs = sql_query($q);
-        $prev_idcert = 0;
-        $ii = 0;
-        while ($row = sql_fetch_assoc($rs)) {
+        $currentIdCert = 0;
+        $index = 0;
+        $arrAggregatedCerts = [];
+        foreach ($rs as $row) {
 
-            if ($prev_idcert != $row['id_certificate']) {
-                $arrAggregatedCerts[$ii] = $row;
-                $ii++;
+            if ($currentIdCert !== $row['id_certificate']) {
+                $arrAggregatedCerts[$index] = $row;
+                $index++;
             } else {
-                $arrAggregatedCerts[$ii - 1]['path_name'] = $arrAggregatedCerts[$ii - 1]['path_name'] . " | " . $row['path_name'];
+                $arrAggregatedCerts[$index - 1]['path_name'] = $arrAggregatedCerts[$index - 1]['path_name'] . " | " . $row['path_name'];
             }
-            $prev_idcert = $row['id_certificate'];
+            $currentIdCert = $row['id_certificate'];
         }
 
         $q = "SELECT 
@@ -150,21 +152,22 @@ class MycertificateLms extends Model
             INNER JOIN %lms_aggregated_cert_course acc ON aca.idAssociation = acc.idAssociation
             INNER JOIN %lms_course cc ON acc.idCourse = cc.idCourse AND acc.idUser = aca.idUser
             LEFT JOIN %lms_courseuser cu ON cu.idCourse = acc.idCourse AND cu.idUser = acc.idUser AND cu.status = 2 AND cu.date_complete IS NOT NULL
-            WHERE aca.idUser = " . intval($this->id_user) . " ORDER BY completed ASC";
+            WHERE aca.idUser = " . (int)$this->id_user . " ORDER BY completed, c.id_certificate ASC";
         $rs = sql_query($q);
-        $prev_idcert = 0;
-        while ($row = sql_fetch_assoc($rs)) {
-            if (!$row['completed']) {
-                break;
+        $currentIdCert = 0;
+        foreach ($rs as $row) {
+            if (!$row['completed'] && empty($row['cert_file'])) {
+                continue;
             }
-            if ($prev_idcert != $row['id_certificate']) {
-                $arrAggregatedCerts[$ii] = $row;
-                $ii++;
+            if ($currentIdCert != $row['id_certificate']) {
+                $arrAggregatedCerts[$index] = $row;
+                $index++;
             } else {
-                $arrAggregatedCerts[$ii - 1]['course_name'] = $arrAggregatedCerts[$ii - 1]['course_name'] . " | " . $row['course_name'];
+                $arrAggregatedCerts[$index - 1]['course_name'] = $arrAggregatedCerts[$index - 1]['course_name'] . " | " . $row['course_name'];
             }
-            $prev_idcert = $row['id_certificate'];
+            $currentIdCert = $row['id_certificate'];
         }
+
         return $arrAggregatedCerts;
     }
 
