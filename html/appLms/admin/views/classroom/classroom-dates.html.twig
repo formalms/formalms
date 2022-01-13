@@ -353,6 +353,7 @@
 
     function saveForm(e) {
         e.preventDefault();
+        
         var id = document.getElementById('form-day_id').value;
         var date = document.getElementById('form-day_date').value;
         var dateFormatted = dateToString(new Date(date));
@@ -366,10 +367,12 @@
             document.getElementById('form-day_date').classList.add('input-not-valid');
             return;
         }
-        if ((typeof id === 'undefined' || id === '') && insertedDays.includes(dateFormatted)) {
-            showError('{{ Lang_translate('_EXISTING_DATA','classroom') }}');
-            return;
+
+        if (insertedDays.includes(dateFormatted)) {
+                showError('{{ Lang_translate('_EXISTING_DATA','classroom') }}');
+                return;
         }
+
 
         document.getElementById('form-day_date').classList.remove('input-not-valid');
 

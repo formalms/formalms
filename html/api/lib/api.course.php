@@ -131,6 +131,7 @@ class Course_API extends API
      */
     private function validateIdDateExistsInCourseFromParams($params)
     {
+
         $courseId = $params['course_id'] ?? '';
 
         $idDate = $params['id_date'] ?? '';
@@ -1175,6 +1176,7 @@ class Course_API extends API
 
         $error = false;
 
+   
         $model = new ClassroomAlms($courseId, $idDate);
 
         if (!empty($params['edition_date_selected']) && ($this->_validateDate($params['edition_date_selected']) || $this->_validateDate($params['edition_date_selected'], 'Y-m-d'))) {
@@ -1213,7 +1215,7 @@ class Course_API extends API
                 if ($dateSelected === $dateBegin->format('Y-m-d')) {
                     $error = true;
                     $response['success'] = false;
-                    $response['message'] = 'Date already Exists';
+                    $response['message'] = 'Day already Exists';
                     break;
                 }
             }
@@ -1221,6 +1223,7 @@ class Course_API extends API
             if (!$error) {
                 $arrayDays[] = $arrayDay;
 
+              
                 $classroom_man = new DateManager();
                 $result = $classroom_man->updateDateDay($idDate, $arrayDays);
 
@@ -1503,7 +1506,7 @@ class Course_API extends API
                     if ($dateSelected === $dateBegin->format('Y-m-d')) {
                         $error = true;
                         $response['success'] = false;
-                        $response['message'] = 'Date already Exists';
+                        $response['message'] = 'Day already Exists';
                         break;
                     }
                 }

@@ -205,13 +205,19 @@ class DateManager
     {
         $res = true;
 
+        
         usort($arrayDays, function ($a, $b) {
             $time1 = strtotime($a['date_begin']);
             $time2 = strtotime($b['date_begin']);
             return $time1 > $time2;
         });
 
+        $walkedDates = [];
         foreach ($arrayDays as $index => $dayInfo) {
+
+            if(in_array($dayInfo['date'], $walkedDates)) {
+                continue;
+            }
 
             if ((int)$dayInfo['day_id'] < 0 || !array_key_exists('day_id',$dayInfo)) {
 
@@ -232,6 +238,7 @@ class DateManager
                 $query .= " WHERE `id_date` = " . $idDate . " AND `id` =" . $dayInfo['day_id'];
             }
             $result = DbConn::getInstance()->query($query);
+            $walkedDates[] = $dayInfo['date'];
             if ($result === false) {
                 return $res;
             }

@@ -189,6 +189,7 @@ class DashboardBlockCalendarLms extends DashboardBlockLms
         }
 
         $query .= $exclude_pathcourse;
+        $query .= '	GROUP BY course_id'; //serve per evitare duplicati nei risultati (x es calendario)
 
         switch ($courseType) {
             case self::COURSE_TYPE_CLASSROOM:
@@ -203,11 +204,12 @@ class DashboardBlockCalendarLms extends DashboardBlockLms
         $rs = $this->db->query($query);
 
         $result = array();
-        while ($data = $this->db->fetch_assoc($rs)) {
-
+        foreach($rs as $data) {
+         
             $courseDates = $this->getDatasFromCourse($data);
 
             foreach ($courseDates as $courseDate) {
+
                 $result[] = $courseDate;
             }
         }
@@ -294,6 +296,7 @@ class DashboardBlockCalendarLms extends DashboardBlockLms
                 WHERE cd.id_course = " . $course['course_id'] . "
                 AND cdu.id_user = " . Docebo::user()->getId() . " AND cdd.deleted = 0"
             );
+
 
             while ($row = $this->db->fetch_obj($q)) {
                 $courseData['endDate'] = $courseData['startDate'] = $row->date_begin;
