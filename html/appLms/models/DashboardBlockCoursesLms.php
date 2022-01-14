@@ -135,7 +135,7 @@ class DashboardBlockCoursesLms extends DashboardBlockLms
                             }
 
                             $course['startDateString'] = $course['startDate'] = date("d-m-Y", strtotime($row['date_begin']));
-                            $course['endDateString'] = $course['endDate'] = date("H:i", strtotime($row['date_end'])) . ' ' . date("H:i", strtotime($row['date_end']));
+                            $course['endDateString'] = $course['endDate'] = date("H:i", strtotime($row['date_begin'])) . ' ' . date("H:i", strtotime($row['date_end']));
 
                             if (isset($course['dates'])) {
                                 unset($course['dates']);

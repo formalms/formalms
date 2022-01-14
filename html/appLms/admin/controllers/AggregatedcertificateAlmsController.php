@@ -105,7 +105,6 @@ class AggregatedcertificateAlmsController extends AlmsController
             $params['filter_text'] = $filter_text;
         }
 
-
         // Type for all columns
         $type_h = ['', '', '', 'image', 'image'];
 
@@ -144,7 +143,7 @@ class AggregatedcertificateAlmsController extends AlmsController
 
 
         // Array of all metacertificates to display in the main admin panel
-        $aggregateCertsArr = $this->aggCertLib->getAllAggregatedCerts($ini, false, $filter);
+        $aggregateCertsArr = $this->aggCertLib->getAllAggregatedCerts($ini, false, $params);
 
         $aggregateCertsArrTot = $this->aggCertLib->getAllAggregatedCerts(0, true);
 
