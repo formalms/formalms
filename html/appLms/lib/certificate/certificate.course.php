@@ -15,7 +15,7 @@ class CertificateSubs_Course extends CertificateSubstitution
 
     function getSubstitutionTags()
     {
-        $subs = array();
+        $subs = [];
         if ($this->id_meta !== 0) {
 
         } else {
@@ -63,7 +63,7 @@ class CertificateSubs_Course extends CertificateSubstitution
     function getSubstitution()
     {
 
-        $subs = array();
+        $subs = [];
 
         if ($this->id_meta == 0) {
             require_once($GLOBALS['where_lms'] . '/lib/lib.course.php');
@@ -127,7 +127,7 @@ class CertificateSubs_Course extends CertificateSubstitution
 
             if ($man_course->getValue('course_type') == 'classroom') {
 
-                $date_arr = array();
+                $date_arr = [];
 
                 $qtxt = "SELECT d.id_date, MIN( dd.date_begin ) AS date_begin, MAX( dd.date_end ) AS date_end, d.name
 												 FROM %lms_course_date_day AS dd

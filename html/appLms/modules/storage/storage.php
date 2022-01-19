@@ -13,10 +13,10 @@
 
 require_once(_base_.'/lib/lib.tab.php' );
 
-$_tab_op_map = array( 	'homerepo' => 'storage_home',
+$_tab_op_map = ['homerepo' => 'storage_home',
 						'organization' => 'storage_course',
 						'pubrepo' => 'storage_pubrepo'
-					);
+];
 
 function save_state( &$data ) {
 	$_SESSION['storage'] = serialize($data);
@@ -24,7 +24,7 @@ function save_state( &$data ) {
 
 function &load_state() {
 	
-	$readed = array();
+	$readed = [];
 	if( isset($_SESSION['storage']) ) 
 		 $readed = unserialize( $_SESSION['storage'] );
 	return $readed;

@@ -22,7 +22,7 @@ class TreeModel extends Model {
 	}
 
 	public function getOpenedFolders($id) {
-		$folders = array();
+		$folders = [];
 		if(!$id) return $folders;
 		list($ileft, $iright) = $this->getFolderLimits($id);
 		$query = "SELECT ".$this->t_id." FROM ".$this->tree_table." WHERE iLeft<=".(int)$ileft." AND iRight>=".(int)$iright." AND ".$this->t_id.">0 ORDER BY iLeft";
@@ -36,7 +36,7 @@ class TreeModel extends Model {
 
 	public function getAncestorInfoFolders($id) {
 
-		$folders = array();
+		$folders = [];
 		if ($id <= 0) return $folders;
 		list($ileft, $iright) = $this->getFolderLimits($id);
 		$query = "SELECT id FROM ".$this->tree_table." WHERE iLeft<=".(int)$ileft." AND iRight>=".(int)$iright." AND ".$this->t_id." > 0 ORDER BY iLeft";

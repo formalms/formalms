@@ -17,7 +17,7 @@ class TestConfigurationTabsRenderEvent extends Event
         $this->object_test = $object_test;
         $this->url_encode = $url_encode;
         $this->lang = $lang;
-        $this->configTabs = array();
+        $this->configTabs = [];
     }
 
     /**

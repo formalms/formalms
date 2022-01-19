@@ -61,16 +61,16 @@ function modglossarygui( $object_glos = NULL ) {
 		.'</div><br />'
 	, 'content');
 	
-	$contentArray = array( 
+	$contentArray = [
 		$lang->def('_TERM'),
 		'<img src="'.getPathImage().'standard/edit.png" title="'.$lang->def('_MOD').'" alt="'.$lang->def('_MOD').'" />',
 		'<img src="'.getPathImage().'standard/delete.png" title="'.$lang->def('_DEL').'" alt="'.$lang->def('_DEL').'" />'
-	);
-	$typeArray = array('', 'image', 'image');
+    ];
+	$typeArray = ['', 'image', 'image'];
 	$GLOBALS['page']->add($tableGlossary->addHead($contentArray, $typeArray));
 	while(list($idTerm, $term) = sql_fetch_row($reTerm)) {
 		
-		$content = array( 
+		$content = [
 			$term, 
 			
 			'<a href="index.php?modname=glossary&amp;op=modterm&amp;idTerm='.$idTerm
@@ -80,7 +80,7 @@ function modglossarygui( $object_glos = NULL ) {
 			'<a href="index.php?modname=glossary&amp;op=delterm&amp;idTerm='.$idTerm
 			.'&amp;back_url='.$back_coded.'" title="'.$lang->def('_DEL').'">'
 			.'<img src="'.getPathImage().'standard/delete.png" alt="'.$lang->def('_DEL').'" /></a>'
-		);
+        ];
 		$tableGlossary->addBody($content);
 	}
 	$tableGlossary->addActionAdd('<a href="index.php?modname=glossary&amp;op=addterm&amp;idGlossary='.$object_glos->getId()

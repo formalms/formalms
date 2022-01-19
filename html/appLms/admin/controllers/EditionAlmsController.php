@@ -37,14 +37,14 @@ class EditionAlmsController extends AlmsController {
 		$this->base_link_edition = 'alms/edition';
 		$this->base_link_subscription = 'alms/subscription';
 
-		$this->permissions = array(
+		$this->permissions = [
 			'view'			=> checkPerm('view', true, 'course', 'lms'),
 			'add'				=> checkPerm('add', true, 'course', 'lms'),
 			'mod'				=> checkPerm('mod', true, 'course', 'lms'),
 			'del'				=> checkPerm('del', true, 'course', 'lms'),
 			'moderate'	=> checkPerm('moderate', true, 'course', 'lms'),
 			'subscribe'	=> checkPerm('subscribe', true, 'course', 'lms')
-		);
+        ];
 	}
 
 	protected function _getMessage($code) {
@@ -71,13 +71,13 @@ class EditionAlmsController extends AlmsController {
 		$id_course = Get::req('id_course', DOTY_INT, 0);
 
 		$model = new EditionAlms($id_course);
-		$this->render('show', array(
+		$this->render('show', [
 			'back_link' => $this->_getBackLink(),
 			'model' => $model,
 			'permissions' => $this->permissions,
 			'base_link_course' => $this->base_link_course,
 			'base_link_edition' => $this->base_link_edition
-		));
+        ]);
 	}
 
 	protected function geteditionlist()
@@ -96,13 +96,13 @@ class EditionAlmsController extends AlmsController {
 		$total_edition = $model->getEditionNumber();
 		$array_edition = $model->loadEdition($start_index, $results, $sort, $dir);
 
-		$result = array(	'totalRecords' => $total_edition,
+		$result = ['totalRecords' => $total_edition,
 							'startIndex' => $start_index,
 							'sort' => $sort,
 							'dir' => $dir,
 							'rowsPerPage' => $results,
 							'results' => count($array_edition),
-							'records' => $array_edition);
+							'records' => $array_edition];
 
 		$this->data = $this->json->encode($result);
 
@@ -112,10 +112,10 @@ class EditionAlmsController extends AlmsController {
 	public function add()
 	{
 		if (!$this->permissions['add']) {
-			$this->render('invalid', array(
+			$this->render('invalid', [
 				'message' => $this->_getMessage('no permission'),
 				'back_url' => 'index.php?r=alms/communication/show'
-			));
+            ]);
 			return;
 		}
 
@@ -137,21 +137,21 @@ class EditionAlmsController extends AlmsController {
 			Util::jump_to('index.php?r='.$this->base_link_edition.'/show&id_course='.$model->getIdCourse().'&result=err_ins');
 		}
 		else
-			$this->render('add', array(
+			$this->render('add', [
 					'model' => $model,
 					'course_info' => $course_info,
 					'base_link_course' => $this->base_link_course,
 					'base_link_edition' => $this->base_link_edition
-			));
+            ]);
 	}
 
 	public function edit()
 	{
 		if (!$this->permissions['mod']) {
-			$this->render('invalid', array(
+			$this->render('invalid', [
 				'message' => $this->_getMessage('no permission'),
 				'back_url' => 'index.php?r=alms/communication/show'
-			));
+            ]);
 			return;
 		}
 
@@ -172,18 +172,18 @@ class EditionAlmsController extends AlmsController {
 			Util::jump_to('index.php?r='.$this->base_link_edition.'/show&id_course='.$model->getIdCourse().'&result=err_mod');
 		}
 		else
-			$this->render('edit', array(
+			$this->render('edit', [
 					'model' => $model,
 					'edition_info' => $edition_info,
 					'base_link_course' => $this->base_link_course,
 					'base_link_edition' => $this->base_link_edition
-			));
+            ]);
 	}
 
 	public function del()
 	{
 		if (!$this->permissions['del']) {
-			$output = array('success' => false, 'message' => $this->_getMessage('no permission'));
+			$output = ['success' => false, 'message' => $this->_getMessage('no permission')];
 			echo $this->json->encode($output);
 			return;
 		}
@@ -197,7 +197,7 @@ class EditionAlmsController extends AlmsController {
 
 		$model = new EditionAlms($id_course, $id_edition);
 
-		$res = array('success' => $model->delEdition());
+		$res = ['success' => $model->delEdition()];
 
 		$this->data = $this->json->encode($res);
 

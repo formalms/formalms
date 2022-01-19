@@ -75,7 +75,7 @@ class ExtendedText_Question extends Question
         require_once($GLOBALS['where_lms'] . '/lib/lib.questcategory.php');
         $categories = Questcategory::getCategory();
         //create array of difficult
-        $arr_dufficult = array(5 => '5 - ' . $lang->def('_VERY_HARD'), 4 => '4 - ' . $lang->def('_HARD'), 3 => '3 - ' . $lang->def('_DIFFICULT_MEDIUM'), 2 => '2 - ' . $lang->def('_DIFFICULT_EASY'), 1 => '1 - ' . $lang->def('_DIFFICULT_VERYEASY'));
+        $arr_dufficult = [5 => '5 - ' . $lang->def('_VERY_HARD'), 4 => '4 - ' . $lang->def('_HARD'), 3 => '3 - ' . $lang->def('_DIFFICULT_MEDIUM'), 2 => '2 - ' . $lang->def('_DIFFICULT_EASY'), 1 => '1 - ' . $lang->def('_DIFFICULT_VERYEASY')];
 
         $GLOBALS['page']->add(getTitleArea($lang->def('_TEST_SECTION'), 'test')
             . '<div class="std_block">'
@@ -151,7 +151,7 @@ class ExtendedText_Question extends Question
         require_once($GLOBALS['where_lms'] . '/lib/lib.questcategory.php');
         $categories = Questcategory::getCategory();
         //create array of difficult
-        $arr_dufficult = array(5 => '5 - ' . $lang->def('_VERY_HARD'), 4 => '4 - ' . $lang->def('_HARD'), 3 => '3 - ' . $lang->def('_DIFFICULT_MEDIUM'), 2 => '2 - ' . $lang->def('_DIFFICULT_EASY'), 1 => '1 - ' . $lang->def('_DIFFICULT_VERYEASY'));
+        $arr_dufficult = [5 => '5 - ' . $lang->def('_VERY_HARD'), 4 => '4 - ' . $lang->def('_HARD'), 3 => '3 - ' . $lang->def('_DIFFICULT_MEDIUM'), 2 => '2 - ' . $lang->def('_DIFFICULT_EASY'), 1 => '1 - ' . $lang->def('_DIFFICULT_VERYEASY')];
 
         list($title_quest, $cat_sel, $diff_sel, $sel_time) = sql_fetch_row(sql_query("
 		SELECT title_quest, idCategory, difficult, time_assigned 
@@ -414,10 +414,10 @@ class ExtendedText_Question extends Question
             . '</div>'
             . '</div>';
 
-        return array('quest' => $quest,
+        return ['quest' => $quest,
             'score' => $this->userScore($id_track, $number_time),
             'comment' => '',
-            'manual_assigned' => ($manual_assigned ? true : false));
+            'manual_assigned' => ($manual_assigned ? true : false)];
     }
 }
 

@@ -48,8 +48,8 @@ function loadMaterials($idCourse) {
 	$tb = new Table(0, $lang->def('_MATERIALS'), $lang->def('_MATERIALS_TABLE'));
 	
 	
-	$cont_h = array($lang->def('_TITLE'));
-	$type_h = array('');
+	$cont_h = [$lang->def('_TITLE')];
+	$type_h = [''];
 	if($mod_perm) {
 		
 		$cont_h[] = '<img src="'.getPathImage().'standard/edit.png" alt="'.$lang->def('_MOD').'" />';
@@ -66,9 +66,9 @@ function loadMaterials($idCourse) {
 		
 		while(list($idFile, $title, $file) = sql_fetch_row($re_file)) {
 			
-			$cont = array('<a href="index.php?modname=course&amp;op=downloadcourse&amp;id='.$idFile.'">'
+			$cont = ['<a href="index.php?modname=course&amp;op=downloadcourse&amp;id='.$idFile.'">'
 				.'<img src="'.getPathImage('fw').mimeDetect($file).'" alt="mime-type" />&nbsp;'
-				.$title.'</a>');
+				.$title.'</a>'];
 			if($mod_perm) {
 				$cont[] = '<a href="index.php?modname=course&amp;op=modfiles&amp;id_file='.$idFile.'" title="'.$lang->def('_MOD').' : '.$title.'">'
 					.'<img src="'.getPathImage().'standard/edit.png" alt="'.$lang->def('_MOD').' : '.$title.'" /></a>';
@@ -105,25 +105,25 @@ function infocourse() {
 	$course 	= $GLOBALS['course_descriptor']->getAllInfo();
 	$levels 	= CourseLevel::getLevels();
 	
-	$status_lang = array( 
+	$status_lang = [
 		0 =>$lang->def('_NOACTIVE'), 
 		1 =>$lang->def('_ACTIVE'), 
 		2 =>$lang->def('_CST_CONFIRMED'),
 		3 =>$lang->def('_CST_CONCLUDED'),
-		4 =>$lang->def('_CST_CANCELLED'));
+		4 =>$lang->def('_CST_CANCELLED')];
 	
-	$difficult_lang = array(
+	$difficult_lang = [
 		'veryeasy' => $lang->def('_DIFFICULT_VERYEASY'),
 		'easy' => $lang->def('_DIFFICULT_EASY'),
 		'medium'=> $lang->def('_DIFFICULT_MEDIUM'),
 		'difficult' => $lang->def('_DIFFICULT_DIFFICULT'),
-		'verydifficult' => $lang->def('_DIFFICULT_VERYDIFFICULT'));
+		'verydifficult' => $lang->def('_DIFFICULT_VERYDIFFICULT')];
 	
-	$subs_lang = array(
+	$subs_lang = [
 		0 => $lang->def('_COURSE_S_GODADMIN'),
 		1 => $lang->def('_COURSE_S_MODERATE'),
 		2 => $lang->def('_COURSE_S_FREE'),
-		3 => $lang->def('_COURSE_S_SECURITY_CODE') );
+		3 => $lang->def('_COURSE_S_SECURITY_CODE')];
 	
 	
 	$GLOBALS['page']->add(
@@ -241,12 +241,12 @@ function modcourseinfo() {
 	$form 		= new Form();
 	$levels 	= CourseLevel::getLevels();
 	$array_lang 	= Docebo::langManager()->getAllLangCode();
-	$difficult_lang = array(
+	$difficult_lang = [
 		'veryeasy' => $lang->def('_DIFFICULT_VERYEASY'),
 		'easy' => $lang->def('_DIFFICULT_EASY'),
 		'medium'=> $lang->def('_DIFFICULT_MEDIUM'),
 		'difficult' => $lang->def('_DIFFICULT_DIFFICULT'),
-		'verydifficult' => $lang->def('_DIFFICULT_VERYDIFFICULT'));
+		'verydifficult' => $lang->def('_DIFFICULT_VERYDIFFICULT')];
 	
 	$query_course = "
 	SELECT code, name, description, lang_code, status, level_show_user, subscribe_method, 
@@ -271,13 +271,13 @@ function modcourseinfo() {
 			$lang_code )
 		.$form->getDropdown($lang->def('_DIFFICULTY'), 'course_difficult', 'course_difficult', $difficult_lang,
 			$course['difficult'] )
-		.$form->getDropdown($lang->def('_STATUS'), 'course_status', 'course_status', array(
+		.$form->getDropdown($lang->def('_STATUS'), 'course_status', 'course_status', [
 			CST_PREPARATION => Lang::t('_CST_PREPARATION', 'course'),
 			CST_AVAILABLE 	=> Lang::t('_CST_AVAILABLE', 'course'),
 			CST_EFFECTIVE 	=> Lang::t('_CST_CONFIRMED', 'course'),
 			CST_CONCLUDED 	=> Lang::t('_CST_CONCLUDED', 'course'),
 			CST_CANCELLED 	=> Lang::t('_CST_CANCELLED', 'course')
-		), $course['status'] )
+        ], $course['status'] )
 		.$form->getTextarea($lang->def('_DESCRIPTION'), 'course_descr', 'course_descr', 
 			$course['description'])
 		
@@ -453,13 +453,13 @@ function upcourseinfo() {
 	$msg_composer = new EventMessageComposer();
 	
 	$msg_composer->setSubjectLangText('email', '_ALERT_SUBJECT_MODCOURSE_INFO', false);
-	$msg_composer->setBodyLangText('email', '_ALERT_TEXT_MODCOURSE_INFO', array(	'[url]' => Get::site_url(), 
+	$msg_composer->setBodyLangText('email', '_ALERT_TEXT_MODCOURSE_INFO', ['[url]' => Get::site_url(),
 																		'[course_code]' => $_POST['course_code'], 
-																		'[course]' => $_POST['course_name'] ) );
+																		'[course]' => $_POST['course_name']]);
 	
-	$msg_composer->setBodyLangText('sms', '_ALERT_TEXT_MODCOURSE_INFO_SMS', array(	'[url]' => Get::site_url(), 
+	$msg_composer->setBodyLangText('sms', '_ALERT_TEXT_MODCOURSE_INFO_SMS', ['[url]' => Get::site_url(),
 																		'[course_code]' => $_POST['course_code'], 
-																		'[course]' => $_POST['course_name'] ) );
+																		'[course]' => $_POST['course_name']]);
 	
 	require_once($GLOBALS['where_lms'] . '/lib/lib.course.php'); 
 	$course_man = new Man_Course();
@@ -504,7 +504,7 @@ function addfiles() {
 	
 	$GLOBALS['page']->add(
 		getTitleArea(
-			array('index.php?r=lms/course/infocourse' => $lang->def('_INFO'), $lang->def('_ADDFILES'))
+			['index.php?r=lms/course/infocourse' => $lang->def('_INFO'), $lang->def('_ADDFILES')]
 			, 'infocourse')
 		.'<div class="std_block">'
 		.getBackUi('index.php?r=lms/course/infocourse', $lang->def('_BACK'))
@@ -588,7 +588,7 @@ function modfiles() {
 	
 	$GLOBALS['page']->add(
 		getTitleArea(
-			array('index.php?r=lms/course/infocourse' => $lang->def('_INFO'), $lang->def('_MOD'))
+			['index.php?r=lms/course/infocourse' => $lang->def('_INFO'), $lang->def('_MOD')]
 			, 'infocourse')
 		.'<div class="std_block">'
 		.getBackUi('index.php?r=lms/course/infocourse', $lang->def('_BACK'))
@@ -708,7 +708,7 @@ function remfiles() {
 		//request erase confirm
 		$GLOBALS['page']->add(
 			getTitleArea(
-				array('index.php?r=lms/course/infocourse' => $lang->def('_INFO'), $lang->def('_DEL'))
+				['index.php?r=lms/course/infocourse' => $lang->def('_INFO'), $lang->def('_DEL')]
 				, 'infocourse')
 			.'<div class="std_block">'
 			.getDeleteUi(	$lang->def('_AREYOUSURE'), 
@@ -733,8 +733,8 @@ function viewprofile() {
 	$profile->init('profile', 'framework', 'modname=course&op=profile&infocourse', 'ap');
 	
 	$GLOBALS['page']->add(
-		getTitleArea(	array(	'index.php?r=lms/course/infocourse' => $lang->def('_INFO').': '.$GLOBALS['course_descriptor']->getValue('name'),
-						$profile->resolveUsername() )
+		getTitleArea(	['index.php?r=lms/course/infocourse' => $lang->def('_INFO').': '.$GLOBALS['course_descriptor']->getValue('name'),
+						$profile->resolveUsername()]
 						, 'infocourse')
 		.'<div class="std_block">'
 		.$profile->performAction()

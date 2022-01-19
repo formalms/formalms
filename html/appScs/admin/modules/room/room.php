@@ -45,8 +45,8 @@ function listroom() {
 			.'<div class="std_block">');
 	$tb_room = new Table(0, $lang->def('_ALL_ROOMS'), $lang->def('_ALL_ROOMS_SUMMARY'));
 	
-	$cont_h = array($lang->def('_ROOM_NAME'), $lang->def('_ROOM_TYPE'));
-	$type_h = array('', 'align_center');
+	$cont_h = [$lang->def('_ROOM_NAME'), $lang->def('_ROOM_TYPE')];
+	$type_h = ['', 'align_center'];
 	if($mod_perm) {
 		
 		$cont_h[] = '<img src="'.getPathImage('fw').'standard/edit.png" alt="'.$lang->def('_MOD').'" />';
@@ -63,7 +63,7 @@ function listroom() {
 	$re_rooms = sql_query($query_rooms);
 	while(list($id_room, $room_name, $room_type) = sql_fetch_row($re_rooms)) {
 		
-		$cont = array($room_name);
+		$cont = [$room_name];
 		switch($room_type) {
 			case "course" : 	$cont[] = $lang->def('_COURSE');	break;
 			case "private" : 	$cont[] = $lang->def('_PRIVATE');	break;
@@ -107,11 +107,11 @@ function newroom() {
 	$out->add(getTitleArea($lang->def('_ROOM_MAN'), 'admin_conf')
 			.'<div class="std_block">');
 			
-	$room_types = array(
+	$room_types = [
 		"course" => $lang->def('_COURSE'),
 		"private" => $lang->def('_PRIVATE'), 
 		"public" => $lang->def('_PUBLIC')
-	);
+    ];
 	$out->add(
 		Form::openForm('rules_admin', 'index.php?modname=room&amp;op=insroom')
 		.Form::openElementSpace()
@@ -157,11 +157,11 @@ function modroom() {
 	$out->setWorkingZone('content');
 	$out->add(getTitleArea($lang->def('_ROOM_MAN'), 'admin_conf')
 			.'<div class="std_block">');
-	$room_types = array(
+	$room_types = [
 		"course" => $lang->def('_COURSE'),
 		"private" => $lang->def('_PRIVATE'), 
 		"public" => $lang->def('_PUBLIC')
-	);
+    ];
 	$out->add(
 		Form::openForm('rules_admin', 'index.php?modname=room&amp;op=updroom')
 		.Form::openElementSpace()

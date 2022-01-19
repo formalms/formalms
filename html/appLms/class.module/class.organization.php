@@ -468,12 +468,12 @@ class Module_Organization extends LmsModule {
 				$saveObj = new Session_Save();
 				$saveName = $saveObj->getName('crepo', true);
 				$folder = $this->treeView->tdb->getFolderById( $this->treeView->selectedFolder );
-				$saveData = array(	'repo' => 'organization',
+				$saveData = ['repo' => 'organization',
 									'id' => $this->treeView->getSelectedFolderId(),
 									'objectType' => $folder->otherValues[REPOFIELDOBJECTTYPE],
 									'name' => $folder->otherValues[REPOFIELDTITLE],
 									'idResource' => $folder->otherValues[REPOFIELDIDRESOURCE]
-								);
+                ];
 				$saveObj->save( $saveName, $saveData );
 				Util::jump_to( 'index.php?r=lms/lomanagerorganization/completeAction&op=display&crepo='.$saveName.'&'
 							.$this->treeView->_getOpCopyLOSel().'=1' );

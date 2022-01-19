@@ -40,10 +40,10 @@ class ScsAdminModule {
 		
 		$this->version = '1.0';
 		
-		$this->authors = array(	'Fabio Pirovano <fabio@docebo.it)', 
-								'Emanuele Sandri <esandri@tiscali.it>');
-		$this->mantainers = array(	'Fabio Pirovano <fabio@docebo.it)', 
-									'Emanuele Sandri <esandri@tiscali.it>');
+		$this->authors = ['Fabio Pirovano <fabio@docebo.it)',
+								'Emanuele Sandri <esandri@tiscali.it>'];
+		$this->mantainers = ['Fabio Pirovano <fabio@docebo.it)',
+									'Emanuele Sandri <esandri@tiscali.it>'];
 		
 		$this->descr_short = 'General module : '.$this->module_name;
 		$this->descr_long = 'General module : '.$this->module_name;
@@ -108,7 +108,7 @@ class ScsAdminModule {
 	
 	function getVoiceMenu() {
 		
-		return array();
+		return [];
 	}
 	
 	function useExtraMenu() {
@@ -127,11 +127,11 @@ class ScsAdminModule {
 	// Function for permission managment
 	
 	function getAllToken($op) {
-		return array( 
-			'view' => array( 	'code' => 'view',
+		return [
+			'view' => ['code' => 'view',
 								'name' => '_VIEW',
-								'image' => 'standard/view.png')
-		);
+								'image' => 'standard/view.png']
+        ];
 	}
 	
 	function getPermissionUi( $module_name, $modname, $op, $form_name, $perm ) {
@@ -144,9 +144,9 @@ class ScsAdminModule {
 		$tokens = $this->getAllToken($op);
 		$tb = new Table(0, '', $lang->def('_EDIT_SETTINGS'));
 		
-		$type 	= array('align_left');
-		$c_head = array('');
-		$c_body = array($module_name);
+		$type 	= ['align_left'];
+		$c_head = [''];
+		$c_body = [$module_name];
 		
 		foreach($tokens as $k => $token) {
 			
@@ -174,7 +174,7 @@ class ScsAdminModule {
 	function getSelectedPermission($source_array, $modname, $op) {
 		
 		$tokens 	= $this->getAllToken($op);
-		$perm 		= array();
+		$perm 		= [];
 		
 		foreach($tokens as $k => $token) {
 				

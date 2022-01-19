@@ -32,13 +32,13 @@ if(Docebo::user()->isAnonymous()) {
 	$string = $lang->def('_THANKS_LOGIN_OR_REGISTER');
 	$string = substr($string, strpos($string, '<a'));
 
-	$subst = array( '[name]' => $course_name, '[link_register]' => Get::rel_path("base") . "/index.php?r=" . _register_ );
-	$value = array(
+	$subst = ['[name]' => $course_name, '[link_register]' => Get::rel_path("base") . "/index.php?r=" . _register_];
+	$value = [
 		"next_op" 	=> '',
 		"id" 		=> 'course_editions',
 		"title" 	=> $lang->def('_COURSE_SUBSCRIPTION', 'catalogue'),
 		"content" 	=> str_replace(array_keys($subst), $subst, $string)
-	);
+    ];
 	require_once(_base_.'/lib/lib.json.php');
 
 	$json = new Services_JSON();
@@ -85,7 +85,7 @@ if(Docebo::user()->isAnonymous()) {
 				.'<input type="button" id="close_cart_command" value="'.$lang->def('_CART_POPUP_CLOSE').'" />'
 				.'<input type="submit" name="empty_cart" id="empty_cart" value="'.$lang->def('_CART_POPUP_EMPTY').'" />';
 
-			$value = array('code' => $code, 'button' => $buttons);
+			$value = ['code' => $code, 'button' => $buttons];
 
 			require_once(_base_.'/lib/lib.json.php');
 			$json = new Services_JSON();
@@ -134,7 +134,7 @@ if(Docebo::user()->isAnonymous()) {
 			$where_edition 	= " WHERE idCourse = '".$id_course."' ";
 			$order_edition 	= " ORDER BY date_begin ";
 			$re_edition = sql_query($select_edition.$from_edition.$where_edition.$order_edition);
-			$editions = array();
+			$editions = [];
 			if($re_edition)
 			while($edition_elem = sql_fetch_assoc($re_edition)) {
 
@@ -158,7 +158,7 @@ if(Docebo::user()->isAnonymous()) {
 			}
 
 			$cinfo['theacher_list'] = getSubscribed($cinfo['idCourse'], false, 6, true);
-			$cinfo['edition_list'] = ( isset($editions[$cinfo['idCourse']]) ? $editions[$cinfo['idCourse']] : array() );
+			$cinfo['edition_list'] = ( isset($editions[$cinfo['idCourse']]) ? $editions[$cinfo['idCourse']] : []);
 			$cinfo['edition_available'] = count($cinfo['edition_list']);
 			$cinfo['user_score'] = ( isset($user_score[$cinfo['idCourse']]) ? $user_score[$cinfo['idCourse']] : NULL );
 
@@ -168,7 +168,7 @@ if(Docebo::user()->isAnonymous()) {
 			if($normal_subs == 0) $cinfo['can_subscribe'] = 0;
 			$html = dashcourse($url, $lang, $cinfo, ( isset($usercourses[$cinfo['idCourse']]) ? $usercourses[$cinfo['idCourse']] : false ), 0);
 
-			$value = array("content" => $html, "elem_id" => importVar('elem_id'), "id_course" => importVar('id_course', false, 0));
+			$value = ["content" => $html, "elem_id" => importVar('elem_id'), "id_course" => importVar('id_course', false, 0)];
 
 			require_once(_base_.'/lib/lib.json.php');
 
@@ -214,10 +214,10 @@ if(Docebo::user()->isAnonymous()) {
 
 			$new_score = $man_course->voteCourse(getLogUserId(), $score, $userscore_to_save);
 
-			$value = array( "id_course" => importVar('id_course', true, 0),
+			$value = ["id_course" => importVar('id_course', true, 0),
 						"evaluation" => $evaluation,
 						"new_score" => $new_score,
-						"path_image" => getPathImage().'coursecatalogue/' );
+						"path_image" => getPathImage().'coursecatalogue/'];
 
 			require_once(_base_.'/lib/lib.json.php');
 
@@ -245,13 +245,13 @@ if(Docebo::user()->isAnonymous()) {
 				$string = $lang->def('_THANKS_LOGIN_OR_REGISTER');
 				$string = substr($string, strpos($string, '<a'));
 
-				$subst = array( '[name]' => $course_name, '[link_register]' => Get::rel_path("base") . "/index.php?r=" . _register_ );
-				$value = array(
+				$subst = ['[name]' => $course_name, '[link_register]' => Get::rel_path("base") . "/index.php?r=" . _register_];
+				$value = [
 					"next_op" 	=> '',
 					"id" 		=> 'course_editions',
 					"title" 	=> $lang->def('_COURSE_SUBSCRIPTION', 'catalogue'),
 					"content" 	=> str_replace(array_keys($subst), $subst, $string)
-				);
+                ];
 			} else {
 
 				if (!defined("_ECOM_CURRENCY")) {
@@ -286,8 +286,8 @@ if(Docebo::user()->isAnonymous()) {
 
 				$html = $lang->def('_'.strtoupper($action[0]).'_DESCR');
 
-				$search = array('[course_name]');
-				$replace = array('<b>&quot;'.$cinfo['name'].'&quot;</b>');
+				$search = ['[course_name]'];
+				$replace = ['<b>&quot;'.$cinfo['name'].'&quot;</b>'];
 				switch($action[0]) {
 					case "can_buy" :
 					case "can_reserve" : {
@@ -297,14 +297,14 @@ if(Docebo::user()->isAnonymous()) {
 				}
 				$html = str_replace($search, $replace, $html);
 
-				$value = array(
+				$value = [
 					"next_op" 	=> ( $action[1] != false ? str_replace('&amp;', '&', $action[1]) : '' ),
 					"id" 		=> 'course_action_'.$id_course,
 					"title" 	=> $lang->def('_'.strtoupper($action[0])),
 					"content" 	=> $html,
 					"button" 	=> '<input type="submit" value="'.$lang->def('_CONFIRM').'" name="confirm" id="confirm" />'
 							.'<input type="button" value="'.$lang->def('_UNDO').'" onclick="destroyWindow(\'course_action_'.$id_course.'\')"  id="undo_course_action'.$$id_course.'" />'
-				);
+                ];
 			}
 			require_once(_base_.'/lib/lib.json.php');
 
@@ -330,23 +330,23 @@ if(Docebo::user()->isAnonymous()) {
 				$string = $lang->def('_THANKS_LOGIN_OR_REGISTER');
 				$string = substr($string, strpos($string, '<a'));
 
-				$subst = array( '[name]' => $course_name, '[link_register]' => Get::rel_path("base") . "/index.php?r=" . _register_ );
-				$value = array(
+				$subst = ['[name]' => $course_name, '[link_register]' => Get::rel_path("base") . "/index.php?r=" . _register_];
+				$value = [
 					"next_op" 	=> '',
 					"id" 		=> 'course_editions',
 					"title" 	=> $lang->def('_COURSE_EDITON_SUBSCRIBE', 'catalogue'),
 					"content" 	=> str_replace(array_keys($subst), $subst, $string)
-				);
+                ];
 			} else {
 
 				$lang =& DoceboLanguage::createInstance( 'catalogue', 'lms');
 
-				$value = array(
+				$value = [
 					"next_op" 	=> '',
 					"id" 		=> 'course_editions',
 					"title" 	=> $lang->def('_COURSE_EDITON_SUBSCRIBE', 'catalogue'),
 					"content" 	=> getCourseEditionList(importVar('id_course'))
-				);
+                ];
 			}
 			require_once(_base_.'/lib/lib.json.php');
 
@@ -365,7 +365,7 @@ if(Docebo::user()->isAnonymous()) {
 			$id_course = importVar('id_course', true, 0);
 			$ax_comm = new AjaxComment('course', 'lms');
 
-			$comment_data = array(
+			$comment_data = [
 				AJCOMM_EXTKEY 		=> $id_course,
 				AJCOMM_AUTHOR		=> getLogUserId(),
 				AJCOMM_POSTED 		=> date("Y-m-d H:i:s"),
@@ -373,7 +373,7 @@ if(Docebo::user()->isAnonymous()) {
 				AJCOMM_TREE 		=> '',
 				AJCOMM_PARENT 		=> importVar('reply_to'),
 				AJCOMM_MODERATED 	=> '0'
-			);
+            ];
 
 			$ax_comm->addComment($comment_data);
 
@@ -403,12 +403,12 @@ if(Docebo::user()->isAnonymous()) {
 				$content.=$ax_rend->getAddCommentMask_2($id_course);
 			}
 			$content.="</div>";
-			$value = array(
+			$value = [
 				"next_op" 	=> '',
 				"id" 		=> 'course_comment',
 				"title" 	=> $lang->def('_COMMENTS'),
 				"content" 	=> $content
-			);
+            ];
 
 			require_once(_base_.'/lib/lib.json.php');
 
@@ -457,12 +457,12 @@ if(Docebo::user()->isAnonymous()) {
 			}
 
 			$content.="</div>";
-			$value = array(
+			$value = [
 				"next_op" 	=> '',
 				"id" 		=> 'course_comment',
 				"title" 	=> $lang->def('_COMMENTS'),
 				"content" 	=> $content
-			);
+            ];
 
 			require_once(_base_.'/lib/lib.json.php');
 
@@ -504,12 +504,12 @@ if(Docebo::user()->isAnonymous()) {
 				$content.=$ax_rend->getAddCommentMask_2($id_course);
 			}
 			$content.="</div>";
-			$value = array(
+			$value = [
 				"next_op" 	=> '',
 				"id" 		=> 'course_comment',
 				"title" 	=> $lang->def('_COMMENTS'),
 				"content" 	=> $content
-			);
+            ];
 
 			require_once(_base_.'/lib/lib.json.php');
 
@@ -556,9 +556,9 @@ if(Docebo::user()->isAnonymous()) {
 					}
 					if($ed_info['date_begin'] != '0000-00-00' && $ed_info['date_end'] != '0000-00-00') {
 
-						$html .= ' '.str_replace(	array('[date_begin]', '[date_end]'),
-												array(Format::date($ed_info['date_begin'], 'date'),
-													Format::date($ed_info['date_end'], 'date')),
+						$html .= ' '.str_replace(	['[date_begin]', '[date_end]'],
+												[Format::date($ed_info['date_begin'], 'date'),
+													Format::date($ed_info['date_end'], 'date')],
 												$lang->def('_EDTION_TIME'));
 					}
 					$html .= '<div class="popup_materials">'
@@ -574,12 +574,12 @@ if(Docebo::user()->isAnonymous()) {
 			}
 			$html .= '</ul>';
 
-			$value = array(
+			$value = [
 				"next_op" 	=> '',
 				"id" 		=> 'course_materials',
 				"title" 	=> $lang->def('_MATERIALS'),
 				"content" 	=> $html
-			);
+            ];
 
 			require_once(_base_.'/lib/lib.json.php');
 
@@ -601,12 +601,12 @@ if(Docebo::user()->isAnonymous()) {
 
 			$ext = end(explode('.', $course_demo));
 
-			$value = array(
+			$value = [
 				"next_op" 	=> '',
 				"id" 		=> 'course_materials',
 				"title" 	=> $lang->def('_DEMO'),
 				"content" 	=> getEmbedPlay('/appLms/'.Get::sett('pathcourse'), $course_demo, $ext, '450', '450', false, false, '../../'.$GLOBALS['where_files_relative'])
-			);
+            ];
 			require_once(_base_.'/lib/lib.json.php');
 
 			$json = new Services_JSON();
@@ -618,12 +618,12 @@ if(Docebo::user()->isAnonymous()) {
 			$lang->setGlobal();
 			$lang =& DoceboLanguage::createInstance( 'catalogue', 'framework');
 
-			$value = array(
+			$value = [
 				"next_op" 	=> 'prova',
 				"id" 		=> 'prova',
 				"title" 	=> 'creazione window',
 				"content" 	=> 'prova di creazione di una window'
-			);
+            ];
 
 			require_once(_base_.'/lib/lib.json.php');
 

@@ -153,7 +153,7 @@ class DoceboEventManager {
 				." WHERE ecc.idClass = '".$class_id."'"
 				."   AND ev.idConsumer = ecc.idConsumer";
 		$rs = sql_query($query);
-		$result = array();
+		$result = [];
 		if( $rs === FALSE ) {
 			echo $query;
 			echo "  Errore: ".sql_error();
@@ -161,7 +161,7 @@ class DoceboEventManager {
 		}
 		if( sql_num_rows($rs) > 0 ) {
 			while( list( $id, $class, $file ) = sql_fetch_row( $rs ) )
-				$result[$id] = array( $class, $file );
+				$result[$id] = [$class, $file];
 		}
 		return $result;
 	}
@@ -243,19 +243,19 @@ class EventMessageComposer {
 	function setSubjectLangText($media, $lang_text, $arr_substitution, $simple_text = false) {
 
 		$this->subject_composed = false;
-		$this->arr_subject[$media][] = array(
+		$this->arr_subject[$media][] = [
 			'lang_text' => $lang_text,
 			'lang_substtution' => $arr_substitution,
-			'simple_text' => $simple_text);
+			'simple_text' => $simple_text];
 	}
 
 	function setBodyLangText($media, $lang_text, $arr_substitution, $simple_text = false) {
 
 		$this->body_composed = false;
-		$this->arr_body[$media][] = array(
+		$this->arr_body[$media][] = [
 			'lang_text' => $lang_text,
 			'lang_substtution' => $arr_substitution,
-			'simple_text' => $simple_text);
+			'simple_text' => $simple_text];
 	}
 
 	function getSubject($media, $language) {

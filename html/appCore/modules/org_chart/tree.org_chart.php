@@ -51,12 +51,12 @@ class TreeDb_OrgDb extends TreeDb
     {
 
         $this->table = $table_name;
-        $this->fields = array(
+        $this->fields = [
             'id' => 'idOrg',
             'idParent' => 'idParent',
             'path' => 'path',
             'lev' => 'lev'
-        );
+        ];
     }
 
     function setFolderLang($lang)
@@ -241,7 +241,7 @@ class TreeDb_OrgDb extends TreeDb
             . "  FROM " . $GLOBALS['prefix_fw'] . '_org_chart'
             . " WHERE id_dir = '" . $idFolder . "'";
         $rs = sql_query($query);
-        $arrTranslations = array();
+        $arrTranslations = [];
         while (list($lang_code, $translation) = sql_fetch_row($rs)) {
             $arrTranslations[$lang_code] = $translation;
         }
@@ -268,7 +268,7 @@ class TreeDb_OrgDb extends TreeDb
             . " WHERE CONCAT( '/ocd_', id_dir) IN ('" . implode("','", $arr_groupsid) . "')"
             . "   AND lang_code = '" . $this->getFolderLang() . "'";
         $rs = sql_query($query);
-        $arrTranslations = array();
+        $arrTranslations = [];
         while (list($id_dir, $translation) = sql_fetch_row($rs)) {
             $arrTranslations['/ocd_' . $id_dir] = $translation;
         }
@@ -284,7 +284,7 @@ class TreeDb_OrgDb extends TreeDb
             . " 	CONCAT( '/oc_', id_dir) IN ('" . implode("','", $arr_groupsid) . "') ) "
             . "   AND lang_code = '" . $this->getFolderLang() . "'";
         $rs = sql_query($query);
-        $arrTranslations = array();
+        $arrTranslations = [];
         while (list($id_dir, $translation) = sql_fetch_row($rs)) {
             $arrTranslations[$id_dir] = $translation;
         }
@@ -379,7 +379,7 @@ class TreeDb_OrgDb extends TreeDb
         // the array of path
         $arr_path = $this->getPathFromFolderId($arr_folders);
         // the array of admitted path
-        $this->filter_path = array();
+        $this->filter_path = [];
         foreach ($arr_path as $path) {
             $arr_tok = explode('/', substr($path, 1));
             $tok_path = '';
@@ -407,7 +407,7 @@ class TreeDb_OrgDb extends TreeDb
     {
         $rootFolder =& $this->getRootFolder();
         $arrId = $this->getDescendantsId($rootFolder);
-        $arrResult = array();
+        $arrResult = [];
         $acl =& Docebo::user()->getACL();
         foreach ($arrId as $groupId) {
             $arrResult[] = $acl->getGroupST($this->getGroupId($groupId));
@@ -435,7 +435,7 @@ class TreeDb_OrgDb extends TreeDb
         $arr_id = $aclManager->getGroupsId($arr_idst);
 
         // array of processed idst
-        $arr_processed = array();
+        $arr_processed = [];
 
         $count = 0;
         while (count($arr_idst) > $count) {
@@ -471,11 +471,11 @@ class TreeView_OrgView extends TreeView
 
     var $selector_mode = FALSE;
     var $simple_selector = FALSE;
-    var $itemSelectedMulti = array();
-    var $itemSelectedMulti_alt = array();
+    var $itemSelectedMulti = [];
+    var $itemSelectedMulti_alt = [];
     var $filter_nodes = FALSE;
-    var $printed_items = array();
-    var $printed_items_alt = array();
+    var $printed_items = [];
+    var $printed_items_alt = [];
 
     var $multi_choice = TRUE;
 
@@ -688,35 +688,35 @@ class TreeView_OrgView extends TreeView
         $to_check = ($GLOBALS['modname'] === 'directory' ? 'directory' : 'public_user_admin');
         if ($this->isFolderSelected()) {
             if ($this->isFolderAccessible() && checkPerm('createuser_org_chart', true, $to_check, 'framework')) {
-                return array(
-                    $this->id . $this->_getOpCreateUser() => array($this->id . '[' . $this->_getOpCreateUser() . ']',
+                return [
+                    $this->id . $this->_getOpCreateUser() => [$this->id . '[' . $this->_getOpCreateUser() . ']',
                         $this->lang->def('_NEW_USER'),
-                        getPathImage('fw') . 'standard/user_create.gif'),
-                    $this->id . $this->_getOpImportUsers() => array($this->id . '[' . $this->_getOpImportUsers() . ']',
+                        getPathImage('fw') . 'standard/user_create.gif'],
+                    $this->id . $this->_getOpImportUsers() => [$this->id . '[' . $this->_getOpImportUsers() . ']',
                         $this->lang->def('_ORG_CHART_IMPORT_USERS'),
-                        getPathImage('fw') . 'org_chart/import.gif')
-                );
+                        getPathImage('fw') . 'org_chart/import.gif']
+                ];
             } else {
-                return array();
+                return [];
             }
         }
-        $actions = array(
-            $this->id . $this->_getOpAssignField() => array($this->id . '[' . $this->_getOpAssignField() . ']',
+        $actions = [
+            $this->id . $this->_getOpAssignField() => [$this->id . '[' . $this->_getOpAssignField() . ']',
                 $this->lang->def('_ORGCHART_USER_FIELD'),
-                $this->_getImgAssignField())
-        );
+                $this->_getImgAssignField()]
+        ];
         if (checkPerm('createuser_org_chart', true, $to_check, 'framework')) {
-            $actions[$this->id . $this->_getOpCreateUser()] = array($this->id . '[' . $this->_getOpCreateUser() . ']',
+            $actions[$this->id . $this->_getOpCreateUser()] = [$this->id . '[' . $this->_getOpCreateUser() . ']',
                 $this->lang->def('_NEW_USER'),
-                getPathImage('fw') . 'standard/user_create.gif');
-            $actions[$this->id . $this->_getOpImportUsers()] = array($this->id . '[' . $this->_getOpImportUsers() . ']',
+                getPathImage('fw') . 'standard/user_create.gif'];
+            $actions[$this->id . $this->_getOpImportUsers()] = [$this->id . '[' . $this->_getOpImportUsers() . ']',
                 $this->lang->def('_ORG_CHART_IMPORT_USERS'),
-                getPathImage('fw') . 'org_chart/import.gif');
+                getPathImage('fw') . 'org_chart/import.gif'];
         }
         if ($waiting_user && checkPerm('approve_waiting_user', true, 'directory', 'framework')) {
-            $actions[$this->id . $this->_getOpWaitingUser()] = array($this->id . '[' . $this->_getOpWaitingUser() . ']',
+            $actions[$this->id . $this->_getOpWaitingUser()] = [$this->id . '[' . $this->_getOpWaitingUser() . ']',
                 $this->_getLabelWaitingUser() . ' (' . $waiting_user . ')',
-                $this->_getImgWaitingUser());
+                $this->_getImgWaitingUser()];
         }
         return $actions;
     }
@@ -821,35 +821,35 @@ class TreeView_OrgView extends TreeView
                             }
                         }
 
-                        $array_subst = array(
+                        $array_subst = [
                             '[url]' => Get::site_url(),
                             '[userid]' => $this->aclManager->getUserid($userid),
                             '[dynamic_link]' => getCurrentDomain($reg_code) ?: Get::site_url(),
                             '[password]' => $pass
-                        );
+                        ];
 
                         // message to user that is odified
                         $msg_composer = new EventMessageComposer();
 
                         $msg_composer->setSubjectLangText('email', '_MODIFIED_USER_SBJ', false);
                         $msg_composer->setBodyLangText('email', '_MODIFIED_USER_TEXT', $array_subst);
-                        if ($pass != '') $msg_composer->setBodyLangText('email', '_PASSWORD_CHANGED', array('[password]' => $pass));
+                        if ($pass != '') $msg_composer->setBodyLangText('email', '_PASSWORD_CHANGED', ['[password]' => $pass]);
 
                         $msg_composer->setBodyLangText('sms', '_MODIFIED_USER_TEXT_SMS', $array_subst);
-                        if ($pass != '') $msg_composer->setBodyLangText('sms', '_PASSWORD_CHANGED_SMS', array('[password]' => $pass));
+                        if ($pass != '') $msg_composer->setBodyLangText('sms', '_PASSWORD_CHANGED_SMS', ['[password]' => $pass]);
 
                         createNewAlert('UserMod', 'directory', 'edit', '1', 'User ' . $userid . ' was modified',
                             [$userid], $msg_composer);
 
                         $uinfo = Docebo::aclm()->getUser($idst, false);
 
-                        $array_subst = array(
+                        $array_subst = [
                             '[url]' => Get::site_url(),
                             '[dynamic_link]' => getCurrentDomain($reg_code) ?: Get::site_url(),
                             '[firstname]' => $uinfo[ACL_INFO_FIRSTNAME],
                             '[lastname]' => $uinfo[ACL_INFO_LASTNAME],
                             '[username]' => $userid
-                        );
+                        ];
 
                         // message to user that is odified
                         $msg_composer = new EventMessageComposer();
@@ -876,12 +876,12 @@ class TreeView_OrgView extends TreeView
 
                         $uinfo = Docebo::aclm()->getUser($idst, false);
 
-                        $array_subst = array(
+                        $array_subst = [
                             '[url]' => Get::site_url(),
                             '[firstname]' => $uinfo[ACL_INFO_FIRSTNAME],
                             '[lastname]' => $uinfo[ACL_INFO_LASTNAME],
                             '[username]' => $userid
-                        );
+                        ];
 
                         // message to user that is odified
                         $msg_composer = new EventMessageComposer();
@@ -953,9 +953,9 @@ class TreeView_OrgView extends TreeView
                                     require_once(_base_ . "/lib/lib.eventmanager.php");
                                     $pl_man =& PlatformManager::createInstance();
 
-                                    $array_subst = array('[url]' => Get::site_url(),
+                                    $array_subst = ['[url]' => Get::site_url(),
                                         '[userid]' => $userid,
-                                        '[password]' => $pass);
+                                        '[password]' => $pass];
                                     // message to user that is inserted
                                     $msg_composer = new EventMessageComposer();
 
@@ -965,7 +965,7 @@ class TreeView_OrgView extends TreeView
                                     $msg_composer->setBodyLangText('sms', '_REGISTERED_USER_TEXT_SMS', $array_subst);
 
                                     createNewAlert('UserNew', 'directory', 'edit', '1', 'User ' . $userid . ' created',
-                                        array($userid), $msg_composer);
+                                        [$userid], $msg_composer);
                                     $GLOBALS['page']->add(getResultUi($this->lang->def('_INSERTED_NEW_USER')));
                                 } else {
 
@@ -977,9 +977,9 @@ class TreeView_OrgView extends TreeView
                                     require_once(_base_ . "/lib/lib.eventmanager.php");
                                     $pl_man =& PlatformManager::createInstance();
 
-                                    $array_subst = array('[url]' => Get::site_url(),
+                                    $array_subst = ['[url]' => Get::site_url(),
                                         '[userid]' => $userid,
-                                        '[password]' => $pass);
+                                        '[password]' => $pass];
 
                                     // message to user that is waiting
                                     $msg_composer = new EventMessageComposer();
@@ -991,15 +991,15 @@ class TreeView_OrgView extends TreeView
 
                                     // send message to the user subscribed
                                     createNewAlert('UserNew', 'directory', 'edit', '1', 'User ' . $userid . ' was modified',
-                                        array($userid), $msg_composer);
+                                        [$userid], $msg_composer);
 
                                     // set as recipients all who can approve a waiting user
                                     $msg_c_approve = new EventMessageComposer();
 
                                     $msg_c_approve->setSubjectLangText('email', '_TO_APPROVE_USER_SBJ', false);
-                                    $msg_c_approve->setBodyLangText('email', '_TO_APPROVE_USER_TEXT', array('[url]' => Get::site_url()));
+                                    $msg_c_approve->setBodyLangText('email', '_TO_APPROVE_USER_TEXT', ['[url]' => Get::site_url()]);
 
-                                    $msg_c_approve->setBodyLangText('sms', '_TO_APPROVE_USER_TEXT_SMS', array('[url]' => Get::site_url()));
+                                    $msg_c_approve->setBodyLangText('sms', '_TO_APPROVE_USER_TEXT_SMS', ['[url]' => Get::site_url()]);
                                     $idst_approve = $acl->getRoleST('/framework/admin/directory/approve_waiting_user');
                                     $recipients = $this->aclManager->getAllRoleMembers($idst_approve);
 
@@ -1023,9 +1023,9 @@ class TreeView_OrgView extends TreeView
                             require_once(_base_ . "/lib/lib.eventmanager.php");
                             $pl_man =& PlatformManager::createInstance();
 
-                            $array_subst = array('[url]' => Get::site_url(),
+                            $array_subst = ['[url]' => Get::site_url(),
                                 '[userid]' => $userid,
-                                '[password]' => $pass);
+                                '[password]' => $pass];
                             // message to user that is inserted
                             $msg_composer = new EventMessageComposer();
 
@@ -1035,7 +1035,7 @@ class TreeView_OrgView extends TreeView
                             $msg_composer->setBodyLangText('sms', '_REGISTERED_USER_TEXT_SMS', $array_subst);
 
                             createNewAlert('UserNew', 'directory', 'edit', '1', 'User ' . $userid . ' created',
-                                array($idst), $msg_composer);
+                                [$idst], $msg_composer);
                         }
                         if ($idst !== false) {
 
@@ -1068,8 +1068,8 @@ class TreeView_OrgView extends TreeView
 
                 $pl_man =& PlatformManager::createInstance();
 
-                $array_subst = array('[url]' => Get::site_url(),
-                    '[userid]' => $this->aclManager->relativeId($userid));
+                $array_subst = ['[url]' => Get::site_url(),
+                    '[userid]' => $this->aclManager->relativeId($userid)];
                 // message to user that is inserted
                 $msg_composer = new EventMessageComposer();
 
@@ -1082,7 +1082,7 @@ class TreeView_OrgView extends TreeView
 							array($idst), $msg_composer );*/
 
                 $event =& DoceboEventManager::newEvent('UserDel', 'directory', 'edit', '1', 'User ' . addslashes($userid) . ' deleted');
-                $event->setProperty('recipientid', implode(',', array($idst)));
+                $event->setProperty('recipientid', implode(',', [$idst]));
                 $event->setProperty('subject', $msg_composer->getSubject('email', getLanguage()));
                 $event->setProperty('body', $msg_composer->getBody('email', getLanguage()));
                 $msg_composer->prepare_serialize();
@@ -1106,7 +1106,7 @@ class TreeView_OrgView extends TreeView
                 if (!isset($action[$mand_lang])) {
                     $this->op = 'newfolder';
                 } else {
-                    $folderName = array();
+                    $folderName = [];
                     foreach ($array_lang as $langItem) {
                         $folderName[$langItem] = $arrayState[$this->id]['new_folder'][$langItem];
                     }
@@ -1143,7 +1143,7 @@ class TreeView_OrgView extends TreeView
                     //----------------------------------------------------------
 
                     //if( $filled === true ) {
-                    $folderName = array();
+                    $folderName = [];
                     if ($this->getSelectedFolderId() == '0') {
 
                         // is root
@@ -1188,10 +1188,10 @@ class TreeView_OrgView extends TreeView
                 require_once($GLOBALS['where_framework'] . '/lib/lib.field.php');
 
                 if (isset($arrayState[$this->id]['field_set'])) $arr_fields = $arrayState[$this->id]['field_set'];
-                else $arr_fields = array();
+                else $arr_fields = [];
 
                 if (isset($arrayState[$this->id]['field_mandatory'])) $arr_fields_mandatory = $arrayState[$this->id]['field_mandatory'];
-                else $arr_fields_mandatory = array();
+                else $arr_fields_mandatory = [];
 
                 $fl = new FieldList();
                 $fl->setGroupFieldsTable($GLOBALS['prefix_fw'] . ORGCHAR_FIELDTABLE);
@@ -1217,8 +1217,8 @@ class TreeView_OrgView extends TreeView
                 $this->op = 'assign3_field';
             } elseif ($key === 'save_assignfield') {
                 $arr_fields = $arrayState[$this->id]['field_set'];
-                $arr_fields_mandatory = (isset($arrayState[$this->id]['field_mandatory']) ? $arrayState[$this->id]['field_mandatory'] : array());
-                $arr_fields_useraccess = (isset($arrayState[$this->id]['field_useraccess']) ? $arrayState[$this->id]['field_useraccess'] : array());
+                $arr_fields_mandatory = (isset($arrayState[$this->id]['field_mandatory']) ? $arrayState[$this->id]['field_mandatory'] : []);
+                $arr_fields_useraccess = (isset($arrayState[$this->id]['field_useraccess']) ? $arrayState[$this->id]['field_useraccess'] : []);
                 require_once($GLOBALS['where_framework'] . '/lib/lib.field.php');
                 $fl = new FieldList();
 
@@ -1590,7 +1590,7 @@ class TreeView_OrgView extends TreeView
             $id_folder_desc);
 
         //$idst_group = $aclManager->getGroupST(ORG_CHART_FOLDER_FIELD_GROUP);
-        $arr_fields = $fl->getFieldsFromIdst(array($id_folder), FALSE);
+        $arr_fields = $fl->getFieldsFromIdst([$id_folder], FALSE);
         foreach ($arr_all_fields as $field) {
             $tree .= $form->getCheckbox(
                 $field[FIELD_INFO_TRANSLATION],
@@ -1614,7 +1614,7 @@ class TreeView_OrgView extends TreeView
     {
 
         if (isset($_POST[$this->id]['field_set'])) $arr_fields = $_POST[$this->id]['field_set'];
-        else $arr_fields = array();
+        else $arr_fields = [];
 
         $id_folder = $_POST[$this->id]['id_folder'];
         $id_folder_desc = $_POST[$this->id]['id_folder_desc'];
@@ -1642,7 +1642,7 @@ class TreeView_OrgView extends TreeView
         }
 
         // data from previous selected fields
-        $arr_fields_prev = $fl->getFieldsFromIdst(array($id_folder), FALSE);
+        $arr_fields_prev = $fl->getFieldsFromIdst([$id_folder], FALSE);
 
         foreach ($arr_fields as $id_field) {
             if (isset($arr_fields_prev[$id_field]) && $arr_fields_prev[$id_field][FIELD_INFO_MANDATORY] == 'true')
@@ -1688,20 +1688,20 @@ class TreeView_OrgView extends TreeView
         $arr_all_fields = $fl->getAllFields();
         $idst_group = $tdb->getGroupST($this->getSelectedFolderId());
         $idst_desc = $tdb->getGroupDescendantsST($this->getSelectedFolderId());
-        $arr_fields_normal = $fl->getFieldsFromIdst(array($idst_group));
-        $arr_fields_descend = $fl->getFieldsFromIdst(array($idst_desc));
+        $arr_fields_normal = $fl->getFieldsFromIdst([$idst_group]);
+        $arr_fields_descend = $fl->getFieldsFromIdst([$idst_desc]);
         $arr_idst_inherit = array_merge($acl->getGroupGroupsST($idst_desc), $acl->getGroupGroupsST($idst_group));
         $arr_fields_inherit = $fl->getFieldsFromIdst($arr_idst_inherit);
         if (count($arr_idst_inherit))
             $arr_groupid = $this->aclManager->getGroupsId($arr_idst_inherit);
         else
-            $arr_groupid = array();
+            $arr_groupid = [];
         $arr_tree_translations = $tdb->getFoldersCurrTranslation($arr_groupid);
-        $arr_values = array(
+        $arr_values = [
             $this->lang->def('_NO') => ORG_CHART_FIELD_NO,
             $this->lang->def('_YES') => ORG_CHART_FIELD_NORMAL,
             $this->lang->def('_ORG_CHART_FIELD_DESCEND') => ORG_CHART_FIELD_DESCEND,
-        );
+        ];
         $tree .= $form->getHidden($this->id . '_idst_group',
             $this->id . '[idst_group]',
             $idst_group);
@@ -1774,8 +1774,8 @@ class TreeView_OrgView extends TreeView
         $tree = $form->openElementSpace();
         $tree .= $this->printState();
         // print custom fields status
-        $arr_fields_normal = $fl->getFieldsFromIdst(array($idst_group));
-        $arr_fields_descend = $fl->getFieldsFromIdst(array($idst_desc));
+        $arr_fields_normal = $fl->getFieldsFromIdst([$idst_group]);
+        $arr_fields_descend = $fl->getFieldsFromIdst([$idst_desc]);
         foreach ($arr_fields_descend as $id_field => $field) {
             $arr_fields_normal[$id_field] = $field;
         }
@@ -1882,7 +1882,7 @@ class TreeView_OrgView extends TreeView
         require_once($GLOBALS['where_framework'] . '/lib/lib.field.php');
         $fl = new FieldList();
         $arr_all_fields = $fl->getAllFields();
-        $arr_fields_normal = $fl->getFieldsFromIdst(array($idst_group));
+        $arr_fields_normal = $fl->getFieldsFromIdst([$idst_group]);
         require_once(_base_ . '/lib/lib.form.php');
         $form = new Form();
         $tree = $form->getFormHeader($this->lang->def('_ORG_CHART_LIST_FIELDS'));
@@ -1979,14 +1979,14 @@ class TreeView_OrgView extends TreeView
         $import_charset = isset($_POST['import_charset']) ? $_POST['import_charset'] : 'UTF-8';
         if (trim($import_charset) === '') $import_charset = 'UTF-8';
 
-        $src = new DeceboImport_SourceCSV(array('filename' => _files_ . $path . $savefile,
+        $src = new DeceboImport_SourceCSV(['filename' => _files_ . $path . $savefile,
                 'separator' => $separator,
                 'first_row_header' => $first_row_header,
                 'import_charset' => $import_charset
-            )
+            ]
         );
-        $dst = new ImportUser(array('dbconn' => $GLOBALS['dbConn'],
-            'tree' => &$this));
+        $dst = new ImportUser(['dbconn' => $GLOBALS['dbConn'],
+            'tree' => &$this]);
         $src->connect();
         $dst->connect();
         $importer = new DoceboImport();
@@ -2022,13 +2022,13 @@ class TreeView_OrgView extends TreeView
         if (trim($import_charset) === '') $import_charset = 'UTF-8';
 
         require_once(__DIR__ . '/import.org_chart.php');
-        $src = new DeceboImport_SourceCSV(array('filename' => $filename,
+        $src = new DeceboImport_SourceCSV(['filename' => $filename,
             'separator' => $separator,
             'first_row_header' => $first_row_header,
             'import_charset' => $import_charset
-        ));
-        $dst = new ImportUser(array('dbconn' => $GLOBALS['dbConn'],
-            'tree' => &$this));
+        ]);
+        $dst = new ImportUser(['dbconn' => $GLOBALS['dbConn'],
+            'tree' => &$this]);
         $src->connect();
         $dst->connect();
         $importer = new DoceboImport();
@@ -2050,14 +2050,14 @@ class TreeView_OrgView extends TreeView
             require_once(_base_ . '/lib/lib.table.php');
             $tree .= str_replace("%count%", count($result) - 1, $this->lang->def('_OPERATION_FAILURE'));
             $table = new Table(Get::sett('visuItem'), $this->lang->def('_OPERATION_FAILURE'), $this->lang->def('_OPERATION_FAILURE'));
-            $table->setColsStyle(array('', ''));
-            $table->addHead(array($this->lang->def('_OPERATION_FAILURE'),
+            $table->setColsStyle(['', '']);
+            $table->addHead([$this->lang->def('_OPERATION_FAILURE'),
                 $this->lang->def('_OPERATION_FAILURE')
-            ));
+            ]);
 
             foreach ($result as $key => $err_val) {
                 if ($key != 0) {
-                    $table->addBody(array($key, $err_val));
+                    $table->addBody([$key, $err_val]);
                 }
             }
             $tree .= $table->getTable();

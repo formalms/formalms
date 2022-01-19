@@ -1,8 +1,8 @@
 <?php
-echo getTitleArea(array(
+echo getTitleArea([
 	'index.php?r=adm/competences/show' => Lang::t('_COMPETENCES', 'competences'),
 	Lang::t('_USERS', 'competences')
-));
+]);
 ?>
 <script type="text/javascript">
 var CompetenceUsers = {
@@ -109,17 +109,17 @@ YAHOO.util.Event.onDOMReady(function() {
 $icon_history = '<span class="ico-sprite subs_elem"><span>'.Lang::t('_HISTORY', 'standard').'</span></span>';
 $icon_del = '<span class="ico-sprite subs_del"><span>'.Lang::t('_UNASSIGN', 'competences').'</span></span>';
 
-$columns = array();
-$columns[] = array('key' => 'userid', 'label' => Lang::t('_USERNAME', 'standard'), 'sortable' => true);
-$columns[] = array('key' => 'firstname', 'label' => Lang::t('_FIRSTNAME', 'standard'), 'sortable' => true);
-$columns[] = array('key' => 'lastname', 'label' => Lang::t('_LASTNAME', 'standard'), 'sortable' => true);
-if ($competence_info->type == 'score') $columns[] = array('key' => 'score', 'label' => Lang::t('_SCORE', 'standard'), 'sortable' => true, 'className' => 'img-cell',
-				'editor' => 'new YAHOO.widget.TextboxCellEditor({ validator: YAHOO.widget.DataTable.validateNumber })');
-$columns[] = array('key' => 'last_assign_date', 'label' => Lang::t('_DATE_LAST_COMPLETE', 'subscribe'), 'sortable' => true, 'className' => 'img-cell');
+$columns = [];
+$columns[] = ['key' => 'userid', 'label' => Lang::t('_USERNAME', 'standard'), 'sortable' => true];
+$columns[] = ['key' => 'firstname', 'label' => Lang::t('_FIRSTNAME', 'standard'), 'sortable' => true];
+$columns[] = ['key' => 'lastname', 'label' => Lang::t('_LASTNAME', 'standard'), 'sortable' => true];
+if ($competence_info->type == 'score') $columns[] = ['key' => 'score', 'label' => Lang::t('_SCORE', 'standard'), 'sortable' => true, 'className' => 'img-cell',
+				'editor' => 'new YAHOO.widget.TextboxCellEditor({ validator: YAHOO.widget.DataTable.validateNumber })'];
+$columns[] = ['key' => 'last_assign_date', 'label' => Lang::t('_DATE_LAST_COMPLETE', 'subscribe'), 'sortable' => true, 'className' => 'img-cell'];
 //$columns[] = array('key' => 'date_expire', 'label' => Lang::t('_EXPIRATION_DATE', 'competences'), 'sortable' => true);
 //$columns[] = array('key' => 'is_required', 'label' => Lang::t('_IS_REQUIRED', 'competences'), 'formatter'=>'CompetenceUsers.requiredFormatter', 'className' => 'img-cell');
 //$columns[] = array('key' => 'history', 'label' => $icon_history, 'formatter'=>'CompetenceUsers.historyFormatter', 'className' => 'img-cell');
-$columns[] = array('key' => 'unassign', 'label' => $icon_del, 'formatter'=>'stdDelete', 'className' => 'img-cell');
+$columns[] = ['key' => 'unassign', 'label' => $icon_del, 'formatter'=>'stdDelete', 'className' => 'img-cell'];
 
 $rel_actions = '<a class="ico-wt-sprite subs_add" title="'.Lang::t('_ASSIGN_USERS', 'standard').'" '
 	.'href="index.php?r=adm/competences/assign_users&id_competence='.(int)$competence_info->id_competence.'">'
@@ -130,7 +130,7 @@ $rel_actions = '<a class="ico-wt-sprite subs_add" title="'.Lang::t('_ASSIGN_USER
 			.'<span>'.Lang::t('_EDIT_SCORE', 'competences').'</span></a>'
 		: '');
 
-$this->widget('table', array(
+$this->widget('table', [
 	'id'			=> 'competence_users_table',
 	'ajaxUrl'		=> 'ajax.adm_server.php?r=adm/competences/getuserstabledata',
 	'rowsPerPage'	=> Get::sett('visuItem', 25),
@@ -140,11 +140,11 @@ $this->widget('table', array(
 	'dir'			=> 'asc',
 	'generateRequest' => 'CompetenceUsers.requestBuilder',
 	'columns'		=> $columns,
-	'fields'		=> array('idst', 'userid', 'firstname', 'lastname', 'last_assign_date', 'date_expire', 'is_required', 'score', 'unassign'),
+	'fields'		=> ['idst', 'userid', 'firstname', 'lastname', 'last_assign_date', 'date_expire', 'is_required', 'score', 'unassign'],
 	'delDisplayField' => 'userid',
 	'rel_actions' => $rel_actions,
 	'editorSaveEvent' => 'CompetenceUsers.editorSaveEvent'
-));
+]);
 
 ?>
 </div>

@@ -30,7 +30,7 @@ class Track_Htmlpage extends Track_Object {
 			or errorCommunication( 'getIdTrack:: '.$query );
 		if( sql_num_rows( $rs )  > 0 ) {
 			list( $idTrack ) = sql_fetch_row( $rs );
-			return array( TRUE, $idTrack );
+			return [TRUE, $idTrack];
 		} else if( $createOnFail ) {
 			$query = "INSERT INTO ".$GLOBALS['prefix_lms']."_materials_track"
 					."( idResource, idReference, idUser ) VALUES ("
@@ -38,7 +38,7 @@ class Track_Htmlpage extends Track_Object {
 			sql_query( $query )
 				or errorCommunication( 'getIdTrack' );
 			$idTrack = sql_insert_id();
-			return array( FALSE, $idTrack );
+			return [FALSE, $idTrack];
 		}
 		return FALSE;
 	}

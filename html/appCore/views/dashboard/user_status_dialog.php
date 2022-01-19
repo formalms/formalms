@@ -15,7 +15,7 @@ $body .= '<div id="user_status_viewport"></div>';
 $body .= Form::closeForm();
 
 if (isset($json)) {
-	$output = array();
+	$output = [];
 	$output['header'] = $title;
 	$output['body'] = $body;
 	echo $json->encode($output);

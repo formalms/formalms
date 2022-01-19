@@ -37,8 +37,8 @@ function field_list() {
 	SELECT type_field FROM "
 	.$GLOBALS['prefix_fw']
 	."_customfield_type ORDER BY type_field");
-	$field_av = array();
-	$field_select = array('all_field' => $lang->def('_ALL_FIELD_TYPE'));
+	$field_av = [];
+	$field_select = ['all_field' => $lang->def('_ALL_FIELD_TYPE')];
 	while(list($type_field) = sql_fetch_row($re_field)) {
 		$field_av[] = $type_field;
 		$field_select[] = $lang->def('_'.strtoupper($type_field));
@@ -98,12 +98,12 @@ function field_list() {
 	$img_up = '<img class="valing-middle" src="'.getPathImage().'standard/up.png" alt="'.$std_lang->def('_MOVE_UP').'" />';
 	$img_down = '<img class="valing-middle" src="'.getPathImage().'standard/down.png" alt="'.$std_lang->def('_MOVE_DOWN').'" />';
 
-	$content_h 	= array(
+	$content_h 	= [
 		'<a href="index.php?modname=customfield_manager&amp;op=field_list">'.$lang->def('_CODE').'</a>',	
 		'<a href="index.php?modname=customfield_manager&amp;op=field_list">'.$lang->def('_FIELD_NAME').'</a>',
 		'<a href="index.php?modname=customfield_manager&amp;op=field_list">'.$lang->def('_FIELD_TYPE').'</a>',
-		'<a href="index.php?modname=customfield_manager&amp;op=field_list">'.$lang->def('_FIELD_AREA').'</a>');
-	$type_h 	= array('', '', 'align_center');
+		'<a href="index.php?modname=customfield_manager&amp;op=field_list">'.$lang->def('_FIELD_AREA').'</a>'];
+	$type_h 	= ['', '', 'align_center'];
 
 	$mod_perm = checkPerm('mod', true);
 	$del_perm = checkPerm('del', true);
@@ -126,7 +126,7 @@ function field_list() {
 	$i = 1;
 	while(list($id_field, $type_field, $translation, $area_name, $code) = sql_fetch_row($re_field_display)) {
 
-		$cont = array($code, $translation, $lang->def('_'.strtoupper($type_field)), $area_name);
+		$cont = [$code, $translation, $lang->def('_'.strtoupper($type_field)), $area_name];
 		if($mod_perm) {
 			if($i != $all_fields) {
 			$cont[] = '<a href="index.php?modname=customfield_manager&amp;op=movedown&amp;type_field='

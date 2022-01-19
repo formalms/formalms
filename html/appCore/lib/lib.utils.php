@@ -29,7 +29,7 @@ define("MAX_SIGN_GAP",		3600*8);
 
 class Util  {
 
-	protected static $_js_loaded = array();
+	protected static $_js_loaded = [];
 
 	public static function purge($html) {
 
@@ -219,7 +219,7 @@ class Util  {
 
 		if(defined("IS_AJAX")) {
 			// ajax request, json response
-			$value = array('fatal' => $msg);
+			$value = ['fatal' => $msg];
 			require_once(_base_.'/lib/lib.json.php');
 			$json = new Services_JSON();
 			$msg = $json->encode($value);
@@ -526,7 +526,7 @@ function addCss($name, $platform=FALSE, $folder=FALSE, $add_start=FALSE) {
 	$css_id=$platform.$clean_folder."_".$clean_name;
 
 	if (!isset($GLOBALS["_css_cache"])) {
-		$GLOBALS["_css_cache"]=array();
+		$GLOBALS["_css_cache"]= [];
 	}
 
 	if (!in_array($css_id, $GLOBALS["_css_cache"])) {
@@ -553,7 +553,7 @@ function addCss($name, $platform=FALSE, $folder=FALSE, $add_start=FALSE) {
 function addJs($path, $name) {
 
 	if(!isset($GLOBALS["page"])) return;
-	if(!isset($GLOBALS["_js_cache"])) $GLOBALS["_js_cache"] = array();
+	if(!isset($GLOBALS["_js_cache"])) $GLOBALS["_js_cache"] = [];
 	if(!in_array($path.$name, $GLOBALS["_js_cache"])) {
 
 		$GLOBALS["_js_cache"][] = $path.$name;
@@ -597,9 +597,9 @@ function removeAccents($txt) {
  */
 function getCleanTitle($title, $max_length=FALSE) {
 
-	$to_underscore=array(" ", "/", "\\", "-", ".", "'", ":");
+	$to_underscore= [" ", "/", "\\", "-", ".", "'", ":"];
 
-	$to_null=array("&lt;", "&gt;", ",", ";");
+	$to_null= ["&lt;", "&gt;", ",", ";"];
 	for ($i=33; $i<48; $i++) {
 		$chr=chr($i);
 		if (!in_array($chr, $to_underscore)) {

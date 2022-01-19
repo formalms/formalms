@@ -53,7 +53,7 @@ function pathlist() {
 						." WHERE idUser = '".$id_user."'";
 
 			$result = sql_query($query);
-			$admin_courses['coursepath'] = array();
+			$admin_courses['coursepath'] = [];
 
 			while(list($id_path) = sql_fetch_row($result))
 				$admin_courses['coursepath'][$id_path] = $id_path;
@@ -86,7 +86,7 @@ function pathlist() {
 	$re_pathlist = sql_query($query_pathlist);
 
 	// find subscriptions
-	$subscriptions = array();
+	$subscriptions = [];
 	$query_subcription = "
 	SELECT id_path, COUNT(idUser), SUM(waiting)
 	FROM ".$GLOBALS['prefix_lms']."_coursepath_user
@@ -122,10 +122,10 @@ function pathlist() {
 	}
 	$tb_path = new Table(0, $lang->def('_COURSE_PATH_CAPTION'), $lang->def('_COURSE_PATH_CAPTION'));
 
-	$cont_h = array($lang->def('_CODE'),
+	$cont_h = [$lang->def('_CODE'),
 					$lang->def('_NAME'),
-					$lang->def('_DESCRIPTION'));
-	$type_h = array('course_code', '', '');
+					$lang->def('_DESCRIPTION')];
+	$type_h = ['course_code', '', ''];
    
    // $subscribe_perm = false;
 	$cont_h[] = '<img src="'.getPathImage().'standard/moduser.png" alt="'.$lang->def('_SUBSCRIBE').'" />';
@@ -147,7 +147,7 @@ function pathlist() {
 	$tb_path->addHead($cont_h);
 	while(list($id_path, $path_code, $path_name, $path_descr) = sql_fetch_row($re_pathlist)) {
 
-		$cont = array($path_code, $path_name, $path_descr);
+		$cont = [$path_code, $path_name, $path_descr];
 		if($subscribe_perm) {
 			$url_subscribe = 'index.php?r=alms/subscription/show_coursepath&id_path='.(int)$id_path;
 			$cont[] = '<a href="'.$url_subscribe.'" ' //index.php?modname=coursepath&amp;op=addsubscription&amp;id_path='.$id_path.'&amp;load=1
@@ -220,7 +220,7 @@ function mancoursepath($load_id = false) {
 		list($path_code, $path_name, $path_descr, $subscribe_method) = sql_fetch_row(sql_query($query_pathlist));
 	}
 
-	$title_area = array('index.php?modname=coursepath&amp;op=pathlist' => $lang->def('_COURSEPATH'));
+	$title_area = ['index.php?modname=coursepath&amp;op=pathlist' => $lang->def('_COURSEPATH')];
 	if($load_id === false) {
 
 		$title_area[] = $lang->def('_ADD');
@@ -382,10 +382,10 @@ function pathelem() {
 
 	// retrive all i need about courses name
 	if(isset($courses['course_list'])) $course_info 	= $course_man->getAllCourses(false, 'all', $courses['course_list']);
-	else $course_info = array();
+	else $course_info = [];
 
-	$area_title = array('index.php?modname=coursepath&amp;op=pathlist'=> $lang->def('_COURSEPATH'),
-		$path['path_name']);
+	$area_title = ['index.php?modname=coursepath&amp;op=pathlist'=> $lang->def('_COURSEPATH'),
+		$path['path_name']];
 
 	$GLOBALS['page']->add(getTitleArea($area_title, 'coursepath')
 		.'<div class="std_block">'
@@ -400,8 +400,8 @@ function pathelem() {
 
 	$tb_path = new Table(0, $lang->def('_COURSE_PATH_COURSES_CAPTION'), $lang->def('_COURSE_PATH_COURSES_CAPTION'));
 
-	$cont_h = array($lang->def('_CODE'), $lang->def('_COURSE_NAME'), $lang->def('_PREREQUISITES'));
-	$type_h = array('coursepath_code', 'coursepath_name', '', 'image');
+	$cont_h = [$lang->def('_CODE'), $lang->def('_COURSE_NAME'), $lang->def('_PREREQUISITES')];
+	$type_h = ['coursepath_code', 'coursepath_name', '', 'image'];
 	if($mod_perm) {
 		$cont_h[] = Get::img('standard/down.png', Lang::t('_DOWN', 'coursepath'));
 		$type_h[] = 'image';
@@ -448,7 +448,7 @@ function pathelem() {
 					$user_catalogue = $cat_man->getUserAllCatalogueId(Docebo::user()->getIdSt());
 					if(count($user_catalogue) > 0)
 					{
-						$courses = array(0);
+						$courses = [0];
 
 						foreach($user_catalogue as $id_cat)
 						{
@@ -466,7 +466,7 @@ function pathelem() {
 				}
 				else
 				{
-					$array_courses = array();
+					$array_courses = [];
 					$array_courses = array_merge($array_courses, $admin_courses['course']);
 
 					if(!empty($admin_courses['coursepath']))
@@ -492,8 +492,8 @@ function pathelem() {
       foreach($courses[$id_slot] as $id_item => $prerequisites)
       {
 
-				$cont = array(	$course_info[$id_item]['code'],
-								$course_info[$id_item]['name'] );
+				$cont = [$course_info[$id_item]['code'],
+								$course_info[$id_item]['name']];
 				if($prerequisites != '') $cont[] = coursePathSubstPrer($prerequisites, $course_info );
 				else $cont[] = '';
 				if($mod_perm) {
@@ -618,8 +618,8 @@ function importcourse() {
 		$to_del = array_diff($initial_selection, $selected_courses);
 
 		$re = true;
-		$added_courses = array();
-		$removed_courses = array();
+		$added_courses = [];
+		$removed_courses = [];
     foreach($to_add as $id_c )
     {
 
@@ -660,11 +660,11 @@ function importcourse() {
 	ORDER BY path_name";
 	list($path_name, $path_descr) = sql_fetch_row(sql_query($query_pathlist));
 
-	$page_title = array(
+	$page_title = [
 		'index.php?modname=coursepath&amp;op=pathlist' => $lang->def('_COURSEPATH'),
 		'index.php?modname=coursepath&amp;op=pathelem&amp;id_path='.$id_path => $path_name,
 		$lang->def('_IMPORT_COURSE')
-	);
+    ];
 	$out->add(
 		getTitleArea($page_title, 'coursepath')
 		.'<div class="std_block">'
@@ -721,11 +721,11 @@ function modprerequisites() {
 	// prerequisites of this course
 	$this_course_prer = array_flip(explode(',', $courses_prer[$id_course]));
 
-	$area_title = array(
+	$area_title = [
 		'index.php?modname=coursepath&amp;op=pathlist' => $lang->def('_COURSEPATH'),
 		'index.php?modname=coursepath&amp;op=pathelem&amp;id_path='.$id_path => $path_name,
 		$course_info[$id_course]['name'].' - '.$lang->def('_PREREQUISITES')
-	);
+    ];
 	$out->setWorkingZone('content');
 	$out->add(getTitleArea($area_title, 'coursepath')
 		.'<div class="std_block">'
@@ -738,12 +738,12 @@ function modprerequisites() {
 
 	$tb_path_ass = new Table(0, $lang->def('_PREREQUISITES'), $lang->def('_PREREQUISITES'));
 
-	$cont_h = array(
+	$cont_h = [
 		$lang->def('_PREREQUISITES'),
 		$lang->def('_CODE'),
 		$lang->def('_COURSE_NAME')
-	);
-	$type_h = array('image', '', '');
+    ];
+	$type_h = ['image', '', ''];
 
 	$tb_path_ass->setColsStyle($type_h);
 	$tb_path_ass->addHead($cont_h);
@@ -755,20 +755,20 @@ function modprerequisites() {
 			if(isset($courses_prer[$id_c]) && strpos($courses_prer[$id_c], strval($id_course))) {
 
 				// this course contain the current working course as a  prerequisites
-				$cont = array(
+				$cont = [
 					'<img src="'.getPathImage('lms').'course/locked.gif" alt="'.$lang->def('_LOCKED').'" />',
 					$course['code'],
-					$course['name']);
+					$course['name']];
 			} else {
 
-				$cont = array(
+				$cont = [
 					Form::getInputCheckbox(	'prerequisites_'.$id_c,
 											'prerequisites['.$id_c.']',
 											$id_c,
 											isset($this_course_prer[$id_c]),
 											'' ),
 					'<label for="prerequisites_'.$id_c.'">'.$course['code'].'</label>',
-					'<label for="prerequisites_'.$id_c.'">'.$course['name'].'</label>');
+					'<label for="prerequisites_'.$id_c.'">'.$course['name'].'</label>'];
 			}
 
 			$tb_path_ass->addBody($cont);
@@ -830,7 +830,7 @@ function delcoursepathelem() {
 		require_once(_base_.'/lib/lib.form.php');
 		require_once($GLOBALS['where_lms'].'/lib/lib.course.php');
 
-		$arr_course = array($id_course => $id_course);
+		$arr_course = [$id_course => $id_course];
 		$course_info =& getCoursesInfo($arr_course);
 		$lang	=& DoceboLanguage::createInstance('coursepath', 'lms');
 
@@ -841,11 +841,11 @@ function delcoursepathelem() {
 		ORDER BY path_name";
 		list($path_name) = sql_fetch_row(sql_query($query_pathlist));
 
-		$title_area = array(
+		$title_area = [
 			'index.php?modname=coursepath&amp;op=pathlist' => $lang->def('_COURSEPATH'),
 			'index.php?modname=coursepath&amp;op=pathelem&amp;id_path='.$id_path => $path_name,
 			$lang->def('_DEL')
-		);
+        ];
 
 		$GLOBALS['page']->add(
 			getTitleArea($title_area, 'coursepath')
@@ -884,14 +884,14 @@ function waitingsubscription() {
 	if(isset($_POST['accept'])) {
 
 		$cpath_man = new CoursePath_Manager();
-		$courses = $cpath_man->getAllCourses(array($id_path));
+		$courses = $cpath_man->getAllCourses([$id_path]);
 
 		$subs_man = new CourseSubscribe_Management();
 
 		$re = true;
 		if(isset($_POST['approve_user'])) {
 
-			$users_subsc = array();
+			$users_subsc = [];
       foreach($_POST['approve_user'] as $id_user => $v)
       {
 
@@ -921,7 +921,7 @@ function waitingsubscription() {
 	}
 
 
-	$subscriptions = array();
+	$subscriptions = [];
 	$query_subcription = "
 	SELECT idUser, subscribed_by
 	FROM ".$GLOBALS['prefix_lms']."_coursepath_user
@@ -937,12 +937,12 @@ function waitingsubscription() {
 
 	$tb = new Table(0, $lang->def('_WAITING_USERS'), $lang->def('_WAITING_USERS'));
 
-	$type_h = array('', '', '', 'image', 'image');
-	$cont_h = array($lang->def('_USERNAME'), $lang->def('_FULLNAME'),
+	$type_h = ['', '', '', 'image', 'image'];
+	$cont_h = [$lang->def('_USERNAME'), $lang->def('_FULLNAME'),
 		$lang->def('_SUBSCRIBED_BY'),
 		$lang->def('_APPROVE'),
 		$lang->def('_DENY')
-	);
+    ];
 	$tb->setColsStyle($type_h);
 	$tb->addHead($cont_h);
 
@@ -950,9 +950,9 @@ function waitingsubscription() {
   foreach($users_waiting as $id_user => $user_info)
   {
 
-		$cont = array( $acl_man->relativeId($user_info[ACL_INFO_USERID]),
+		$cont = [$acl_man->relativeId($user_info[ACL_INFO_USERID]),
 						$user_info[ACL_INFO_LASTNAME].' '.$user_info[ACL_INFO_FIRSTNAME],
-						$acl_man->getConvertedUserName($users_waiting[$subs_by[$id_user]]) );
+						$acl_man->getConvertedUserName($users_waiting[$subs_by[$id_user]])];
 
 		$cont[] = Form::getInputCheckbox(
 				'approve_user_'.$id_user,
@@ -979,7 +979,7 @@ function waitingsubscription() {
 	list($path_name) = sql_fetch_row(sql_query($query_pathlist));
 
 	$GLOBALS['page']->add(
-		getTitleArea( array('index.php?modname=coursepath&amp;op=pathlist' => $lang->def('_COURSEPATH'), $path_name)
+		getTitleArea( ['index.php?modname=coursepath&amp;op=pathlist' => $lang->def('_COURSEPATH'), $path_name]
 			, 'coursepath')
 		.'<div class="std_block">'
 		.Form::openForm('deletepath', 'index.php?modname=coursepath&amp;op=waitingsubscription')
@@ -1071,7 +1071,7 @@ function addsubscription() {
 		$cpath_man = new CoursePath_Manager();
 		$subs_man = new CourseSubscribe_Management();
 
-		$courses = $cpath_man->getAllCourses(array($id_path));
+		$courses = $cpath_man->getAllCourses([$id_path]);
 
 		require_once($GLOBALS['where_lms'].'/lib/lib.coursepath.php');
 		$course_man = new Man_Course();
@@ -1082,7 +1082,7 @@ function addsubscription() {
 		{
 			$user_selected_post = urlencode(Util::serialize($user_selected));
 
-			cout(	getTitleArea( array('index.php?modname=coursepath&amp;op=pathlist' => $lang->def('_COURSEPATH'), $path_name), 'coursepath')
+			cout(	getTitleArea( ['index.php?modname=coursepath&amp;op=pathlist' => $lang->def('_COURSEPATH'), $path_name], 'coursepath')
 					.'<div class="std_block">'
 					.Form::openForm('edition_selection_form', 'index.php?modname=coursepath&amp;op=addsubscriptionedition&amp;id_path='.$id_path)
 					.Form::getHidden('users', 'users', $user_selected_post));
@@ -1096,7 +1096,7 @@ function addsubscription() {
 				{
 					$editions = $date_man->getCourseDate($id_course, true);
 
-					$edition_for_dropdown = array();
+					$edition_for_dropdown = [];
 					$edition_for_dropdown[0] = Lang::t('_NONE', 'coursepath');
 
 					foreach($editions as $editions_info)
@@ -1115,7 +1115,7 @@ function addsubscription() {
 				{
 					$editions = $edition_man->getEditionsInfoByCourses($id_course);
 
-					$edition_for_dropdown = array();
+					$edition_for_dropdown = [];
 					$edition_for_dropdown[0] = Lang::t('_NONE', 'coursepath');
 
 					foreach($editions[$id_course] as $editions_info)
@@ -1138,7 +1138,7 @@ function addsubscription() {
 
 			if($subscribe_method != 1 && !checkPerm('moderate', true)) $waiting = 1;
 			else $waiting = 0;
-			$users_subsc =array();
+			$users_subsc = [];
 
 			require_once($GLOBALS['where_lms'].'/lib/lib.coursepath.php');
 			$course_man = new Man_Course();
@@ -1166,7 +1166,7 @@ function addsubscription() {
 	}
 	else
 	{
-		$user_select->setPageTitle(getTitleArea( array('index.php?modname=coursepath&amp;op=pathlist' => $lang->def('_COURSEPATH'), $path_name)
+		$user_select->setPageTitle(getTitleArea( ['index.php?modname=coursepath&amp;op=pathlist' => $lang->def('_COURSEPATH'), $path_name]
 				, 'coursepath'));
 		$user_select->loadSelector('index.php?modname=coursepath&amp;op=addsubscription&amp;id_path='.$id_path,
 				$lang->def('_SUBSCRIBE'),
@@ -1184,9 +1184,9 @@ function addsubscriptionedition()
 	$subs_man = new CourseSubscribe_Management();
 
 	$id_path = Get::req('id_path', DOTY_INT, 0);
-	$user_selected = Util::unserialize(urldecode(Get::req('users', DOTY_MIXED, array())));
+	$user_selected = Util::unserialize(urldecode(Get::req('users', DOTY_MIXED, [])));
 
-	$courses = $cpath_man->getAllCourses(array($id_path));
+	$courses = $cpath_man->getAllCourses([$id_path]);
 
 	if(isset($_POST['undo']) || !isset($_POST['save']))
 		Util::jump_to('index.php?modname=coursepath&amp;op=addsubscription&amp;id_path='.$id_path);
@@ -1202,15 +1202,15 @@ function addsubscriptionedition()
 
 	if($subscribe_method != 1 && !checkPerm('moderate', true)) $waiting = 1;
 	else $waiting = 0;
-	$users_subsc =array();
+	$users_subsc = [];
 
 	$course_man = new Man_Course();
 	$assessment = $course_man->getAllCourses(false, 'assessment', $courses);
 	$classroom = $course_man->getAllCourses(false, 'classroom', $courses);
 	$edition = $course_man->getAllCourses(false, 'edition', $courses);
 
-	$array_id_date = array();
-	$array_id_edition = array();
+	$array_id_date = [];
+	$array_id_edition = [];
 
 	if(!empty($classroom))
 		foreach($classroom as $id_course => $info)
@@ -1308,7 +1308,7 @@ function modslot() {
 		$max_selection = $slot[CP_SLOT_MAX];
 	}
 
-	$title_area = array('index.php?modname=coursepath&amp;op=pathlist' => $lang->def('_COURSEPATH'));
+	$title_area = ['index.php?modname=coursepath&amp;op=pathlist' => $lang->def('_COURSEPATH')];
 	$title_area['index.php?modname=coursepath&amp;op=pathelem&amp;id_path='.$id_path] = $path['path_name'];
 	$title_area[] = $lang->def('_MANAGE_SLOT');
 	$out->add(
@@ -1358,7 +1358,7 @@ function delslot() {
 
 	$slot = $cpath_man->getSlotInfo($id_slot);
 
-	$title_area = array('index.php?modname=coursepath&amp;op=pathlist' => $lang->def('_COURSEPATH'));
+	$title_area = ['index.php?modname=coursepath&amp;op=pathlist' => $lang->def('_COURSEPATH')];
 	$title_area['index.php?modname=coursepath&amp;op=pathelem&amp;id_path='.$id_path] = $path['path_name'];
 	$title_area[] = $lang->def('_DEL_SLOT');
 

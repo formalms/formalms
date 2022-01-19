@@ -29,12 +29,12 @@ class CoursereportLmsController extends LmsController
         /** @var Services_JSON json */
         $this->json = new Services_JSON();
         $this->_mvc_name = "coursereport";
-        $this->permissions = array(
+        $this->permissions = [
             'view' => true,
             'mod' => true
-        );
+        ];
 
-        $this->baseUserFieldListArray = array(
+        $this->baseUserFieldListArray = [
             'id' => Lang::t('_USER_ID', 'standard'),
             'userid' => Lang::t('_USERNAME', 'standard'),
             'firstname' => Lang::t('_FIRSTNAME', 'standard'),
@@ -42,12 +42,12 @@ class CoursereportLmsController extends LmsController
             'email' => Lang::t('_EMAIL', 'standard'),
             'lastenter' => Lang::t('_DATE_LAST_ACCESS', 'profile'),
             'register_date' => Lang::t('_DIRECTORY_FILTER_register_date', 'admin_directory')
-        );
+        ];
 
         $this->completeFieldListArray = $this->baseUserFieldListArray;
 
         $fman = new FieldList();
-        $fields = $fman->getFlatAllFields(array('framework', 'lms'));
+        $fields = $fman->getFlatAllFields(['framework', 'lms']);
 
         foreach ($fields as $key => $val) {
             $this->completeFieldListArray["$key"] = $val;
@@ -252,7 +252,7 @@ class CoursereportLmsController extends LmsController
                                                 break;
                                         }
                                     }
-                                    $results_activity[] = array('id' => CoursereportLms::SOURCE_OF_TEST . "_" . $info_report->getIdSource(), "name" => $testObj->getTitle());
+                                    $results_activity[] = ['id' => CoursereportLms::SOURCE_OF_TEST . "_" . $info_report->getIdSource(), "name" => $testObj->getTitle()];
                                     if ($info_report->isUseForFinal()) {
                                         $results_test[] = $score * $info_report->getWeight();
                                     }
@@ -362,7 +362,7 @@ class CoursereportLmsController extends LmsController
                                 $id = $info_report->getIdSource();
                                 $name = $testObj->getTitle();
 
-                                $results_activity[] = array('id' => $testObj->getObjectType() . "_" . $info_report->getIdSource(), "name" => $name);
+                                $results_activity[] = ['id' => $testObj->getObjectType() . "_" . $info_report->getIdSource(), "name" => $name];
 
                                 if ($mod_perm) {
                                     //$chartLink = 'index.php?modname=coursereport&op=testQuestion&type_filter=' . $type_filter . '&id_test=' . $info_report->getIdSource();
@@ -425,7 +425,7 @@ class CoursereportLmsController extends LmsController
 
                                 $scormItem = new ScormLms($info_report->getIdSource());
 
-                                $results_activity[] = array('id' => $info_report->getSourceOf() . "_" . $scormItem->getIdSource(), "name" => $name);
+                                $results_activity[] = ['id' => $info_report->getSourceOf() . "_" . $scormItem->getIdSource(), "name" => $name];
 
                                 $passed = $scormItem->getPassed() > 0 ? $scormItem->getPassed() : "-";
                                 $notPassed = $scormItem->getNotPassed() > 0 ? $scormItem->getNotPassed() : "-";
@@ -443,7 +443,7 @@ class CoursereportLmsController extends LmsController
                                 $name = strip_tags($info_report->getTitle());
                                 $type = $info_report->getSourceOf();
 
-                                $results_activity[] = array('id' => $info_report->getSourceOf() . "_" . $info_report->getIdSource(), "name" => $name);
+                                $results_activity[] = ['id' => $info_report->getSourceOf() . "_" . $info_report->getIdSource(), "name" => $name];
 
                                 if ($mod_perm) {
                                     //$chartLink = 'index.php?modname=coursereport&op=testQuestion&type_filter=' . $type_filter . '&id_test=' . $info_report->getIdSource();
@@ -467,7 +467,7 @@ class CoursereportLmsController extends LmsController
                         }
                     }
 
-                    $test = array(
+                    $test = [
                         'id' => $id,
                         'idReport' => $info_report->getIdReport(),
                         'name' => $name,
@@ -479,62 +479,62 @@ class CoursereportLmsController extends LmsController
                         'show' => $info_report->isShowToUser(),
                         'final' => $info_report->isUseForFinal(),
                         'showInDetail' => $info_report->isShowInDetail(),
-                        'passed' => array(
+                        'passed' => [
                             'value' => $passed,
                             'link' => $passedLink,
                             'visible' => true,
                             'active' => $passedLinkActive
-                        ),
-                        'not_passed' => array(
+                        ],
+                        'not_passed' => [
                             'value' => $notPassed,
                             'link' => $notPassedLink,
                             'visible' => true,
                             'active' => $notPassedLinkActive
 
-                        ),
-                        'not_checked' => array(
+                        ],
+                        'not_checked' => [
                             'value' => $notChecked,
                             'link' => $notCheckedLink,
                             'visible' => true,
                             'active' => $notCheckedLinkActive
-                        ),
+                        ],
                         'average' => $average,
                         'max_score' => $maxScore,
                         'min_score' => $minScore,
                         'varianza' => $varianza,
-                        'actions' => array(
-                            array(
+                        'actions' => [
+                            [
                                 'icon' => 'bar-chart',
                                 'link' => $chartLink,
                                 'visible' => $chartLinkVisible
-                            ),
-                            array(
+                            ],
+                            [
                                 'icon' => 'edit',
                                 'link' => $editLink,
                                 'visible' => $editLinkVisible
-                            ),
-                            array(
+                            ],
+                            [
                                 'icon' => 'trash',
                                 'link' => $trashLink,
                                 'visible' => $trashLinkVisible
-                            )
-                        )
-                    );
+                            ]
+                        ]
+                    ];
 
                     $tests[] = $test;
                 }
             }
 
-            $ajaxResponse = array(
-                'overview' => array(
+            $ajaxResponse = [
+                'overview' => [
                     'tests' => $tests
-                )
-            );
+                ]
+            ];
         }
 
-        $ajaxResponse['details'] = array(
+        $ajaxResponse['details'] = [
             'activities' => $results_activity
-        );
+        ];
 
         Util::get_js(Get::rel_path('base') . '/appLms/views/coursereport/js/coursereport.js', true, true);
         Util::get_css(Get::rel_path('base') . '/appLms/views/coursereport/css/coursereport.css', true, true);
@@ -754,7 +754,7 @@ class CoursereportLmsController extends LmsController
                         $testObj = Learning_Test::load($info_report->getIdSource());
 
                         // $courseReportDetailEvent = new \appLms\Events\Lms\CourseReportDetailEvent($testObj, $tests_score, $info_report, $idst_user, $acl_man, $user_info);
-                        $courseReportDetailValues = array();
+                        $courseReportDetailValues = [];
 
                         switch ($info_report->getSourceOf()) {
 
@@ -774,13 +774,13 @@ class CoursereportLmsController extends LmsController
                                             case CoursereportLms::TEST_STATUS_NOT_PASSED:
                                             case CoursereportLms::TEST_STATUS_PASSED:
                                                 {
-                                                    $value = array(
+                                                    $value = [
                                                         'icon' => '',
                                                         'showIcon' => false,
                                                         'value' => '-',
                                                         'link' => "javascript:void(0)",
                                                         'active' => false
-                                                    );
+                                                    ];
 
                                                     // $courseReportDetailEvent->addValue($value);
                                                     $courseReportDetailValues[] = $value;
@@ -795,47 +795,47 @@ class CoursereportLmsController extends LmsController
 
                                                         if ($score == $test_details[$info_report->getIdSource()]['max_score']) {
 
-                                                            $value = array(
+                                                            $value = [
                                                                 'icon' => 'cr_max_score',
                                                                 'showIcon' => false,
                                                                 'value' => $score,
                                                                 'link' => "javascript:void(0)",
                                                                 'active' => false
-                                                            );
+                                                            ];
 
                                                             // $courseReportDetailEvent->addValue($value);
                                                             $courseReportDetailValues[] = $value;
 
-                                                            $value = array(
+                                                            $value = [
                                                                 'icon' => 'cr_max_score',
                                                                 'showIcon' => false,
                                                                 'value' => "(" . $tests_score[$info_report->getIdSource()][$idst_user]['times'] . ")",
                                                                 'link' => "index.php?r=lms/coursereport/testreport&idTest=" . $tests_score[$info_report->getIdSource()][$idst_user]['idTest'] . "&idTrack=" . $tests_score[$info_report->getIdSource()][$idst_user]['idTrack'] . "&testName=" . $testObj->getTitle() . "&studentName=" . $acl_man->relativeId($user_info[ACL_INFO_USERID]),
                                                                 'active' => true
-                                                            );
+                                                            ];
 
                                                             // $courseReportDetailEvent->addValue($value);
                                                             $courseReportDetailValues[] = $value;
                                                         } else {
 
-                                                            $value = array(
+                                                            $value = [
                                                                 'icon' => 'cr_max_score',
                                                                 'showIcon' => false,
                                                                 'value' => $score,
                                                                 'link' => "javascript:void(0)",
                                                                 'active' => false
-                                                            );
+                                                            ];
 
                                                             // $courseReportDetailEvent->addValue($value);
                                                             $courseReportDetailValues[] = $value;
 
-                                                            $value = array(
+                                                            $value = [
                                                                 'icon' => '',
                                                                 'showIcon' => false,
                                                                 'value' => "(" . $tests_score[$info_report->getIdSource()][$idst_user]['times'] . ")",
                                                                 'link' => "index.php?r=lms/coursereport/testreport&idTest=" . $tests_score[$info_report->getIdSource()][$idst_user]['idTest'] . "&idTrack=" . $tests_score[$info_report->getIdSource()][$idst_user]['idTrack'] . "&testName=" . $testObj->getTitle() . "&studentName=" . $acl_man->relativeId($user_info[ACL_INFO_USERID]),
                                                                 'active' => true
-                                                            );
+                                                            ];
 
                                                             // $courseReportDetailEvent->addValue($value);
                                                             $courseReportDetailValues[] = $value;
@@ -843,46 +843,46 @@ class CoursereportLmsController extends LmsController
                                                     } else {
 
                                                         if ($score == $test_details[$id_test]['max_score']) {
-                                                            $value = array(
+                                                            $value = [
                                                                 'icon' => 'cr_max_score cr_not_passed',
                                                                 'showIcon' => false,
                                                                 'value' => $score,
                                                                 'link' => "javascript:void(0)",
                                                                 'active' => false
-                                                            );
+                                                            ];
 
                                                             // $courseReportDetailEvent->addValue($value);
                                                             $courseReportDetailValues[] = $value;
 
-                                                            $value = array(
+                                                            $value = [
                                                                 'icon' => 'cr_max_score cr_not_passed',
                                                                 'showIcon' => false,
                                                                 'value' => "(" . $tests_score[$info_report->getIdSource()][$idst_user]['times'] . ")",
                                                                 'link' => "index.php?r=lms/coursereport/testreport&idTest=" . $tests_score[$info_report->getIdSource()][$idst_user]['idTest'] . "&idTrack=" . $tests_score[$info_report->getIdSource()][$idst_user]['idTrack'] . "&testName=" . $testObj->getTitle() . "&studentName=" . $acl_man->relativeId($user_info[ACL_INFO_USERID]),
                                                                 'active' => true
-                                                            );
+                                                            ];
 
                                                             // $courseReportDetailEvent->addValue($value);
                                                             $courseReportDetailValues[] = $value;
                                                         } else {
-                                                            $value = array(
+                                                            $value = [
                                                                 'icon' => 'cr_not_passed',
                                                                 'showIcon' => false,
                                                                 'value' => $score,
                                                                 'link' => "javascript:void(0)",
                                                                 'active' => false
-                                                            );
+                                                            ];
 
                                                             // $courseReportDetailEvent->addValue($value);
                                                             $courseReportDetailValues[] = $value;
 
-                                                            $value = array(
+                                                            $value = [
                                                                 'icon' => 'cr_not_passed',
                                                                 'showIcon' => false,
                                                                 'value' => "(" . $tests_score[$info_report->getIdSource()][$idst_user]['times'] . ")",
                                                                 'link' => "index.php?r=lms/coursereport/testreport&idTest=" . $tests_score[$info_report->getIdSource()][$idst_user]['idTest'] . "&idTrack=" . $tests_score[$info_report->getIdSource()][$idst_user]['idTrack'] . "&testName=" . $testObj->getTitle() . "&studentName=" . $acl_man->relativeId($user_info[ACL_INFO_USERID]),
                                                                 'active' => true
-                                                            );
+                                                            ];
 
                                                             // $courseReportDetailEvent->addValue($value);
                                                             $courseReportDetailValues[] = $value;
@@ -892,26 +892,26 @@ class CoursereportLmsController extends LmsController
                                                 break;
                                             default:
                                             {
-                                                $value = array(
+                                                $value = [
                                                     'icon' => '',
                                                     'showIcon' => false,
                                                     'value' => '-',
                                                     'link' => "javascript:void(0)",
                                                     'active' => false
-                                                );
+                                                ];
 
                                                 // $courseReportDetailEvent->addValue($value);
                                                 $courseReportDetailValues[] = $value;
                                             }
                                         }
                                     } else {
-                                        $value = array(
+                                        $value = [
                                             'icon' => '',
                                             'showIcon' => false,
                                             'value' => '-',
                                             'link' => "javascript:void(0)",
                                             'active' => false
-                                        );
+                                        ];
 
                                         // $courseReportDetailEvent->addValue($value);
                                         $courseReportDetailValues[] = $value;
@@ -933,13 +933,13 @@ class CoursereportLmsController extends LmsController
                                         $results_names[$key] = $info_report->getTitle();
                                     }
 
-                                    $value = array(
+                                    $value = [
                                         'icon' => 'cr_not_check',
                                         'showIcon' => false,
                                         'value' => $scormItem->getScoreRaw(),
                                         'link' => "javascript:void(0)",
                                         'active' => false
-                                    );
+                                    ];
 
                                     // $courseReportDetailEvent->addValue($value);
                                     $courseReportDetailValues[] = $value;
@@ -947,13 +947,13 @@ class CoursereportLmsController extends LmsController
                                     $history = $scormItem->getHistory();
 
                                     if ($history > 0) {
-                                        $value = array(
+                                        $value = [
                                             'icon' => 'cr_not_check',
                                             'showIcon' => false,
                                             'value' => '(' . $history . ')',
                                             'link' => "index.php?r=lms/coursereport/scormreport&idTest=" . $scormItem->getIdTrack(),
                                             'active' => true
-                                        );
+                                        ];
 
                                         // $courseReportDetailEvent->addValue($value);
                                         $courseReportDetailValues[] = $value;
@@ -977,13 +977,13 @@ class CoursereportLmsController extends LmsController
                                         switch ($reports_score[$info_report->getIdReport()][$idst_user]['score_status']) {
                                             case CoursereportLms::TEST_STATUS_NOT_COMPLETED:
                                                 {
-                                                    $value = array(
+                                                    $value = [
                                                         'icon' => '',
                                                         'showIcon' => false,
                                                         'value' => '-',
                                                         'link' => "javascript:void(0)",
                                                         'active' => false
-                                                    );
+                                                    ];
 
                                                     // $courseReportDetailEvent->addValue($value);
                                                     $courseReportDetailValues[] = $value;
@@ -994,36 +994,36 @@ class CoursereportLmsController extends LmsController
                                                     $score = $reports_score[$info_report->getIdReport()][$idst_user]['score'];
                                                     if ($score >= $info_report->getRequiredScore()) {
                                                         if ($score == $info_report->getMaxScore()) {
-                                                            $value = array(
+                                                            $value = [
                                                                 'icon' => 'cr_max_score',
                                                                 'showIcon' => false,
                                                                 'value' => $score,
                                                                 'link' => "javascript:void(0)",
                                                                 'active' => false
-                                                            );
+                                                            ];
 
                                                             // $courseReportDetailEvent->addValue($value);
                                                             $courseReportDetailValues[] = $value;
                                                         } else {
-                                                            $value = array(
+                                                            $value = [
                                                                 'icon' => '',
                                                                 'showIcon' => false,
                                                                 'value' => $score,
                                                                 'link' => "javascript:void(0)",
                                                                 'active' => false
-                                                            );
+                                                            ];
 
                                                             // $courseReportDetailEvent->addValue($value);
                                                             $courseReportDetailValues[] = $value;
                                                         }
                                                     } else {
-                                                        $value = array(
+                                                        $value = [
                                                             'icon' => 'cr_not_passed',
                                                             'showIcon' => false,
                                                             'value' => $score,
                                                             'link' => "javascript:void(0)",
                                                             'active' => false
-                                                        );
+                                                        ];
 
                                                         // $courseReportDetailEvent->addValue($value);
                                                         $courseReportDetailValues[] = $value;
@@ -1032,26 +1032,26 @@ class CoursereportLmsController extends LmsController
                                                 break;
                                             default:
                                             {
-                                                $value = array(
+                                                $value = [
                                                     'icon' => '',
                                                     'showIcon' => false,
                                                     'value' => '-',
                                                     'link' => "javascript:void(0)",
                                                     'active' => false
-                                                );
+                                                ];
 
                                                 // $courseReportDetailEvent->addValue($value);
                                                 $courseReportDetailValues[] = $value;
                                             }
                                         }
                                     } else {
-                                        $value = array(
+                                        $value = [
                                             'icon' => 'cr_not_passed',
                                             'showIcon' => false,
                                             'value' => '-',
                                             'link' => "javascript:void(0)",
                                             'active' => false
-                                        );
+                                        ];
 
                                         // $courseReportDetailEvent->addValue($value);
                                         $courseReportDetailValues[] = $value;
@@ -1206,22 +1206,22 @@ class CoursereportLmsController extends LmsController
             }
         }
 
-        $resposeArray = array(
+        $resposeArray = [
             'names' => $results_names,
-            'details' => array(
+            'details' => [
                 'editions' => $arr_editions,
                 'students' => $students_array,
-                'redo-final' => array('idReport' => $info_final[0]->getIdReport()),
-                'round-report' => array('idReport' => $info_final[0]->getIdReport()),
-                'edit-final' => array('idReport' => $info_final[0]->getIdReport(), 'link' => 'index.php?r=lms/coursereport/finalvote&type_filter=&id_report=' . $info_final[0]->getIdReport())
-            ),
-            'pagination' => array(
+                'redo-final' => ['idReport' => $info_final[0]->getIdReport()],
+                'round-report' => ['idReport' => $info_final[0]->getIdReport()],
+                'edit-final' => ['idReport' => $info_final[0]->getIdReport(), 'link' => 'index.php?r=lms/coursereport/finalvote&type_filter=&id_report=' . $info_final[0]->getIdReport()]
+            ],
+            'pagination' => [
                 'currentPage' => $currentPage,
                 'nextPage' => $nextPage,
                 'currentPaginationLimit' => $paginationLimit,
                 'countPages' => $pagesCount
-            )
-        );
+            ]
+        ];
 
         echo $this->json->encode($resposeArray);
     }
@@ -1284,13 +1284,13 @@ class CoursereportLmsController extends LmsController
         $re_testreport = sql_query($query_testreport);
 
         $test_man = new GroupTestManagement();
-        $test_info = &current($test_man->getTestInfo(array($idTest)));
+        $test_info = &current($test_man->getTestInfo([$idTest]));
         $retainAnswersHistory = (bool)$test_info['retain_answers_history'];
 
-        $page_title = array(
+        $page_title = [
             'index.php?r=coursereport/coursereport' => $lang->def('_TH_TEST_REPORT'),
             strip_tags($testName)
-        );
+        ];
         $out->add(
             getTitleArea($page_title, 'coursereport')
             . '<div class="std_block">'
@@ -1299,27 +1299,27 @@ class CoursereportLmsController extends LmsController
 
         $tb = new Table(0, $testName . ' : ' . $studentName);
 
-        $tableHeaderArray = array(
+        $tableHeaderArray = [
             'N.',
             $lang->def('_DATE'),
             $lang->def('_SCORE'),
             $lang->def('_STATISTICS'),
             $lang->def('_DELETE')
-        );
+        ];
 
 
-        $tb->addHead($tableHeaderArray, array('min-cell', '', ''));
+        $tb->addHead($tableHeaderArray, ['min-cell', '', '']);
 
         $i = 1;
         while (list($date_attempt, $score, $idTest, $idUser, $number_time) = sql_fetch_row($re_testreport)) {
 
-            $tableBodyArray = array(
+            $tableBodyArray = [
                 $i++,
                 $date_attempt,
                 $score,
                 $retainAnswersHistory ? '<a class="ico-sprite subs_chart" href="index.php?r=lms/coursereport/testreview&id_test=' . $idTest . '&id_user=' . $idUser . '&number_time=' . $number_time . '&idTrack=' . $idTrack . '"><span>' . $lang->def('_STATISTICS') . '</span></a>' : '',
                 '<a class="ico-sprite subs_del" href="index.php?r=lms/coursereport/testreview&delete_track=' . md5($idTest . "_" . $idUser . "_" . $number_time) . '&id_test=' . $idTest . '&id_user=' . $idUser . '&number_time=' . $number_time . '&idTrack=' . $idTrack . '"><span>' . $lang->def('_DELETE') . '</span></a>'
-            );
+            ];
 
             $tb->addBody($tableBodyArray);
         }
@@ -1348,24 +1348,24 @@ class CoursereportLmsController extends LmsController
         $re_testreport = sql_query($query_testreport);
 
         $test_man = new GroupTestManagement();
-        $test_info = &current($test_man->getTestInfo(array($idTest)));
+        $test_info = &current($test_man->getTestInfo([$idTest]));
         $retainAnswersHistory = (bool)$test_info['retain_answers_history'];
 
-        $page_title = array(
+        $page_title = [
             'index.php?r=coursereport/coursereport' => $lang->def('_TH_TEST_REPORT'),
             strip_tags($testName)
-        );
+        ];
         $out->add(getTitleArea($page_title, 'coursereport') . '<div class="std_block">' . getBackUi("javascript:history.go(-1)", Lang::t('_BACK', 'standard')));
         $tb = new Table(0, $testName . ' : ' . $studentName);
-        $tb->addHead(array(
+        $tb->addHead([
             'N.',
             $lang->def('_DATE'),
             $lang->def('_SCORE'),
-        ), array('min-cell', '', ''));
+        ], ['min-cell', '', '']);
 
         $i = 1;
         while (list($date_attempt, $score) = sql_fetch_row($re_testreport)) {
-            $tb->addBody(array($i++, $date_attempt, $score));
+            $tb->addBody([$i++, $date_attempt, $score]);
         }
         $out->add($tb->getTable() . '</div>', 'content');
     }
@@ -1438,13 +1438,13 @@ class CoursereportLmsController extends LmsController
         $students_info = &$acl_man->getUsers($id_students);
 
         // XXX: Find test
-        $test_info = &$test_man->getTestInfo(array($id_test));
+        $test_info = &$test_man->getTestInfo([$id_test]);
 
         // XXX: Write in output
-        $page_title = array(
+        $page_title = [
             'index.php?r=coursereport/coursereport' => $lang->def('_COURSEREPORT', 'menu_course'),
             strip_tags($test_info[$id_test]['title'])
-        );
+        ];
         $GLOBALS['page']->add(
             getTitleArea($page_title, 'coursereport')
             . '<div class="std_block">',
@@ -1518,8 +1518,8 @@ class CoursereportLmsController extends LmsController
         $tb = new Table(0, $lang->def('_STUDENTS_VOTE'), $lang->def('_STUDENTS_VOTE'));
 
         if ($chart_options->use_charts) {
-            $type_h = array('', 'align-center', 'align-center', 'image', 'align-center', '', 'image');
-            $cont_h = array(
+            $type_h = ['', 'align-center', 'align-center', 'image', 'align-center', '', 'image'];
+            $cont_h = [
                 $lang->def('_STUDENTS'),
                 $lang->def('_SCORE'),
                 $lang->def('_SHOW_ANSWER'),
@@ -1527,17 +1527,17 @@ class CoursereportLmsController extends LmsController
                 $lang->def('_DATE'),
                 $lang->def('_COMMENTS'),
                 '<img src="' . getPathImage('lms') . 'standard/delete.png" alt="' . $lang->def('_RESET') . '" title="' . $lang->def('_RESET') . '" />'
-            );
+            ];
         } else {
-            $type_h = array('', 'align-center', 'align-center', 'align-center', '', 'image');
-            $cont_h = array(
+            $type_h = ['', 'align-center', 'align-center', 'align-center', '', 'image'];
+            $cont_h = [
                 $lang->def('_STUDENTS'),
                 $lang->def('_SCORE'),
                 $lang->def('_SHOW_ANSWER'),
                 $lang->def('_DATE'),
                 $lang->def('_COMMENTS'),
                 '<img src="' . getPathImage('lms') . 'standard/delete.png" alt="' . $lang->def('_RESET') . '" title="' . $lang->def('_RESET') . '" />'
-            );
+            ];
         }
         $tb->setColsStyle($type_h);
         $tb->addHead($cont_h);
@@ -1574,14 +1574,14 @@ class CoursereportLmsController extends LmsController
                 $lang->def('_SHOW_TO_USER'),
                 'show_to_user',
                 'show_to_user',
-                array('true' => $lang->def('_YES'), 'false' => $lang->def('_NO')),
+                ['true' => $lang->def('_YES'), 'false' => $lang->def('_NO')],
                 $info_report['show_to_user']
             )
             . Form::getDropdown(
                 $lang->def('_USE_FOR_FINAL'),
                 'use_for_final',
                 'use_for_final',
-                array('true' => $lang->def('_YES'), 'false' => $lang->def('_NO')),
+                ['true' => $lang->def('_YES'), 'false' => $lang->def('_NO')],
                 $info_report['use_for_final']
             )
             . Form::getCloseFieldSet()
@@ -1589,7 +1589,7 @@ class CoursereportLmsController extends LmsController
         );
 
         // XXX: retrive scores
-        $tests_score = &$test_man->getTestsScores(array($id_test), $id_students);
+        $tests_score = &$test_man->getTestsScores([$id_test], $id_students);
 
         // XXX: Display user scores
         $i = 0;
@@ -1598,7 +1598,7 @@ class CoursereportLmsController extends LmsController
                 ? $user_info[ACL_INFO_LASTNAME] . ' ' . $user_info[ACL_INFO_FIRSTNAME]
                 : $acl_man->relativeId($user_info[ACL_INFO_USERID]));
 
-            $cont = array(Form::getLabel('user_score_' . $idst_user, $user_name));
+            $cont = [Form::getLabel('user_score_' . $idst_user, $user_name)];
 
             $id_test = $info_report['id_source'];
             if (isset($tests_score[$id_test][$idst_user])) {
@@ -1743,12 +1743,12 @@ class CoursereportLmsController extends LmsController
         $answers = [];
         $tracks = [];
 
-        $test_info = &$test_man->getTestInfo(array($id_test));
+        $test_info = &$test_man->getTestInfo([$id_test]);
 
-        $page_title = array(
+        $page_title = [
             'index.php?r=coursereport/coursereport' => $lang->def('_COURSEREPORT', 'menu_course'),
             'index.php?r=lms/coursereport/testdetail&amp;id_test=' . $id_test => $test_info[$id_test]['title']
-        );
+        ];
 
         $out->add(
             getTitleArea($page_title, 'coursereport')
@@ -1848,14 +1848,14 @@ class CoursereportLmsController extends LmsController
         $user_name = $acl_man->getUserName($id_user);
 
         // XXX: Find test
-        $test_info = &$test_man->getTestInfo(array($id_test));
+        $test_info = &$test_man->getTestInfo([$id_test]);
 
         // XXX: Write in output
-        $page_title = array(
+        $page_title = [
             'index.php?r=coursereport/coursereport' => $lang->def('_COURSEREPORT', 'menu_course'),
             'index.php?r=lms/coursereport/testvote&amp;id_test=' . $id_test => $test_info[$id_test]['title'],
             $user_name
-        );
+        ];
         if (isset($_POST['view_answer'])) {
             $out->add(
                 getTitleArea($page_title, 'coursereport')
@@ -1970,7 +1970,7 @@ class CoursereportLmsController extends LmsController
             $user_name = $acl_man->getUserName($id_user);
 
             // XXX: Find test
-            $test_info = &$test_man->getTestInfo(array($id_test));
+            $test_info = &$test_man->getTestInfo([$id_test]);
 
             Util::jump_to('index.php?r=lms/coursereport/testreport&idTest=' . $id_test . '&idTrack=' . $id_track . '&testName=' . html_entity_decode(strip_tags(urldecode($test_info[$id_test]['title']))) . '&studentName=' . $user_name);
         } else {
@@ -2008,10 +2008,10 @@ class CoursereportLmsController extends LmsController
         $students_info = &$acl_man->getUsers($id_students);
 
         // XXX: Write in output
-        $page_title = array(
+        $page_title = [
             'index.php?r=coursereport/coursereport' => $lang->def('_COURSEREPORT', 'menu_course'),
             strip_tags($lang->def('_FINAL_SCORE'))
-        );
+        ];
         $out->add(
             getTitleArea($page_title, 'coursereport')
             . '<div class="std_block">'
@@ -2074,7 +2074,7 @@ class CoursereportLmsController extends LmsController
                 $lang->def('_SHOW_TO_USER'),
                 'show_to_user',
                 'show_to_user',
-                array('true' => $lang->def('_YES'), 'false' => $lang->def('_NO')),
+                ['true' => $lang->def('_YES'), 'false' => $lang->def('_NO')],
                 $info_report->isShowToUserToString()
             )
             . Form::getCloseFieldSet()
@@ -2083,18 +2083,18 @@ class CoursereportLmsController extends LmsController
 
         /* XXX: scores */
         $tb = new Table(0, $lang->def('_STUDENTS_VOTE'), $lang->def('_STUDENTS_VOTE'));
-        $type_h = array('', 'align-center', 'align-center', 'align-center', '');
-        $cont_h = array(
+        $type_h = ['', 'align-center', 'align-center', 'align-center', ''];
+        $cont_h = [
             $lang->def('_STUDENTS'),
             $lang->def('_SCORE'),
             $lang->def('_DATE'),
             $lang->def('_COMMENTS')
-        );
+        ];
         $tb->setColsStyle($type_h);
         $tb->addHead($cont_h);
 
         // XXX: retrive scores
-        $report_score = &$report_man->getReportsScores(array($id_report));
+        $report_score = &$report_man->getReportsScores([$id_report]);
 
         // XXX: Display user scores
         $i = 0;
@@ -2103,7 +2103,7 @@ class CoursereportLmsController extends LmsController
             $user_name = ($user_info[ACL_INFO_LASTNAME] . $user_info[ACL_INFO_FIRSTNAME]
                 ? $user_info[ACL_INFO_LASTNAME] . ' ' . $user_info[ACL_INFO_FIRSTNAME]
                 : $acl_man->relativeId($user_info[ACL_INFO_USERID]));
-            $cont = array(Form::getLabel('user_score_' . $idst_user, $user_name));
+            $cont = [Form::getLabel('user_score_' . $idst_user, $user_name)];
 
             $cont[] = Form::getInputTextfield(
                 'textfield_nowh',
@@ -2375,10 +2375,10 @@ class CoursereportLmsController extends LmsController
             $info_report = $this->model->getCourseReports()[0];
         }
 
-        $page_title = array(
+        $page_title = [
             'index.php?r=coursereport/coursereport' => $lang->def('_COURSEREPORT', 'menu_course'),
             strip_tags($lang->def('_ADD_ACTIVITY'))
-        );
+        ];
         $out->add(
             getTitleArea($page_title, 'coursereport')
             . '<div class="std_block">'
@@ -2490,14 +2490,14 @@ class CoursereportLmsController extends LmsController
                         $lang->def('_SHOW_TO_USER'),
                         'show_to_user',
                         'show_to_user',
-                        array('true' => $lang->def('_YES'), 'false' => $lang->def('_NO')),
+                        ['true' => $lang->def('_YES'), 'false' => $lang->def('_NO')],
                         $info_report->isShowToUserToString()
                     )
                     . Form::getDropdown(
                         $lang->def('_USE_FOR_FINAL'),
                         'use_for_final',
                         'use_for_final',
-                        array('true' => $lang->def('_YES'), 'false' => $lang->def('_NO')),
+                        ['true' => $lang->def('_YES'), 'false' => $lang->def('_NO')],
                         $info_report->isUseForFinalToString()
                     )
                     . Form::getHidden('title', 'title', $_POST['title'])
@@ -2514,10 +2514,10 @@ class CoursereportLmsController extends LmsController
             }
         }
         // XXX: Write in output
-        $page_title = array(
+        $page_title = [
             'index.php?r=coursereport/coursereport' => $lang->def('_COURSEREPORT', 'menu_course'),
             strip_tags($lang->def('_ADD_ACTIVITY'))
-        );
+        ];
 
         if (!isset($_POST['filtra'])) {
             $query_report = 'SELECT  idResource,title FROM ' . $GLOBALS['prefix_lms'] . "_organization
@@ -2543,7 +2543,7 @@ class CoursereportLmsController extends LmsController
                     $lang->def('_SCORE'),
                     'source_of',
                     'source_of',
-                    array("Scorm Item" => 'scoitem'), //,  "Somma" => 'scormorg_sum', "Media"  =>'scormorg_avg'),
+                    ["Scorm Item" => 'scoitem'], //,  "Somma" => 'scormorg_sum', "Media"  =>'scormorg_avg'),
                     'scoitem'
                 )
 
@@ -2599,10 +2599,10 @@ class CoursereportLmsController extends LmsController
         }
 
 
-        $page_title = array(
+        $page_title = [
             'index.php?r=coursereport/coursereport' => $lang->def('_COURSEREPORT', 'menu_course'),
             strip_tags($lang->def('_ADD_ACTIVITY'))
-        );
+        ];
         $out->add(
             getTitleArea($page_title, 'coursereport')
             . '<div class="std_block">'
@@ -2624,10 +2624,10 @@ class CoursereportLmsController extends LmsController
         }
 
         // XXX: Write in output
-        $page_title = array(
+        $page_title = [
             'index.php?r=coursereport/coursereport' => $lang->def('_COURSEREPORT', 'menu_course'),
             strip_tags($lang->def('_ADD_ACTIVITY'))
-        );
+        ];
         $out->add(
             Form::openForm('addactivity', 'index.php?r=lms/coursereport/addactivity')
             . Form::openElementSpace()
@@ -2664,14 +2664,14 @@ class CoursereportLmsController extends LmsController
                 $lang->def('_SHOW_TO_USER'),
                 'show_to_user',
                 'show_to_user',
-                array('true' => $lang->def('_YES'), 'false' => $lang->def('_NO')),
+                ['true' => $lang->def('_YES'), 'false' => $lang->def('_NO')],
                 $info_report->isShowToUserToString()
             )
             . Form::getDropdown(
                 $lang->def('_USE_FOR_FINAL'),
                 'use_for_final',
                 'use_for_final',
-                array('true' => $lang->def('_YES'), 'false' => $lang->def('_NO')),
+                ['true' => $lang->def('_YES'), 'false' => $lang->def('_NO')],
                 $info_report->isUseForFinalToString()
             )
             . Form::closeElementSpace()
@@ -2731,10 +2731,10 @@ class CoursereportLmsController extends LmsController
         }
 
         // XXX: Write in output
-        $page_title = array(
+        $page_title = [
             'index.php?r=coursereport/coursereport' => $lang->def('_COURSEREPORT', 'menu_course'),
             strip_tags($info_report->getTitle())
-        );
+        ];
         $out->add(
             getTitleArea($page_title, 'coursereport')
             . '<div class="std_block">'
@@ -2831,14 +2831,14 @@ class CoursereportLmsController extends LmsController
                 $lang->def('_SHOW_TO_USER'),
                 'show_to_user',
                 'show_to_user',
-                array('true' => $lang->def('_YES'), 'false' => $lang->def('_NO')),
+                ['true' => $lang->def('_YES'), 'false' => $lang->def('_NO')],
                 $info_report->isShowToUser()
             )
             . Form::getDropdown(
                 $lang->def('_USE_FOR_FINAL'),
                 'use_for_final',
                 'use_for_final',
-                array('true' => $lang->def('_YES'), 'false' => $lang->def('_NO')),
+                ['true' => $lang->def('_YES'), 'false' => $lang->def('_NO')],
                 $info_report->isUseForFinal()
             )
             . Form::getCloseFieldSet()
@@ -2848,14 +2848,14 @@ class CoursereportLmsController extends LmsController
         if ($info_report->getSourceOf() != 'scoitem') {
             /* XXX: scores */
             $tb = new Table(0, $lang->def('_STUDENTS_VOTE'), $lang->def('_STUDENTS_VOTE'));
-            $type_h = array('', 'align-center', 'align-center', '');
+            $type_h = ['', 'align-center', 'align-center', ''];
             $tb->setColsStyle($type_h);
-            $cont_h = array(
+            $cont_h = [
                 $lang->def('_STUDENTS'),
                 $lang->def('_SCORE'),
                 $lang->def('_DATE'),
                 $lang->def('_COMMENTS')
-            );
+            ];
             $tb->addHead($cont_h);
 
             // XXX: Display user scores
@@ -2864,7 +2864,7 @@ class CoursereportLmsController extends LmsController
                 $user_name = ($user_info[ACL_INFO_LASTNAME] . $user_info[ACL_INFO_FIRSTNAME]
                     ? $user_info[ACL_INFO_LASTNAME] . ' ' . $user_info[ACL_INFO_FIRSTNAME]
                     : $acl_man->relativeId($user_info[ACL_INFO_USERID]));
-                $cont = array(Form::getLabel('user_score_' . $idst_user, $user_name));
+                $cont = [Form::getLabel('user_score_' . $idst_user, $user_name)];
 
                 $cont[] = Form::getInputTextfield(
                     'textfield_nowh',
@@ -2968,10 +2968,10 @@ class CoursereportLmsController extends LmsController
         $info_report = sql_fetch_assoc(sql_query($query_report));
 
         // XXX: Write in output
-        $page_title = array(
+        $page_title = [
             'index.php?r=coursereport/coursereport' => $lang->def('_COURSEREPORT', 'menu_course'),
             $lang->def('_DEL') . ' : ' . strip_tags($info_report['title'])
-        );
+        ];
         $out->add(
             getTitleArea($page_title, 'coursereport')
             . '<div class="std_block">'
@@ -3129,11 +3129,11 @@ class CoursereportLmsController extends LmsController
 
         $a_line_1 = [''];
         $a_line_2 = [''];
-        $colums['max_score'] = array($lang->def('_MAX_SCORE'));
-        $colums['required_score'] = array($lang->def('_REQUIRED_SCORE'));
-        $colums['weight'] = array($lang->def('_WEIGHT'));
-        $colums['show_to_user'] = array($lang->def('_SHOW_TO_USER'));
-        $colums['use_for_final'] = array($lang->def('_USE_FOR_FINAL'));
+        $colums['max_score'] = [$lang->def('_MAX_SCORE')];
+        $colums['required_score'] = [$lang->def('_REQUIRED_SCORE')];
+        $colums['weight'] = [$lang->def('_WEIGHT')];
+        $colums['show_to_user'] = [$lang->def('_SHOW_TO_USER')];
+        $colums['use_for_final'] = [$lang->def('_USE_FOR_FINAL')];
 
         $this->model = new CoursereportLms($this->idCourse);
 
@@ -3497,7 +3497,7 @@ class CoursereportLmsController extends LmsController
         $students = getSubscribed((int)$this->idCourse, FALSE, $lev, TRUE, false, false, true);
         $id_students = array_keys($students);
 
-        $test_info = $test_man->getTestInfo(array($idTest));
+        $test_info = $test_man->getTestInfo([$idTest]);
 
         $responseValue['title'] = $test_info[$idTest]['title'];
 
@@ -3670,7 +3670,7 @@ class CoursereportLmsController extends LmsController
         }
 
         //echo json_encode($responseValue);
-        $this->render('testquestion', array('data' => $responseValue));
+        $this->render('testquestion', ['data' => $responseValue]);
     }
 
     public function extendedQuestDetails()
@@ -3680,7 +3680,7 @@ class CoursereportLmsController extends LmsController
         $idTest = Get::pReq('id_test', DOTY_MIXED, 0);
         $idQuest = Get::pReq('id_quest', DOTY_MIXED, 0);
 
-        $result = array('id_quest' => $idQuest);
+        $result = ['id_quest' => $idQuest];
 
         $idTracks = Track_Test::getIdTracksFromTest($idTest);
 
@@ -3688,7 +3688,7 @@ class CoursereportLmsController extends LmsController
 
             $textEntries = TextEntry_Question::getTextEntryFromIdTrackAndIdQuest($idTrack, $idQuest);
             foreach ($textEntries as $textEntry) {
-                $result['answers'][] = array("answer" => $textEntry);
+                $result['answers'][] = ["answer" => $textEntry];
             }
         }
 
@@ -3702,7 +3702,7 @@ class CoursereportLmsController extends LmsController
         $idTest = Get::pReq('id_test', DOTY_MIXED, 0);
         $idQuest = Get::pReq('id_quest', DOTY_MIXED, 0);
 
-        $result = array('id_quest' => $idQuest);
+        $result = ['id_quest' => $idQuest];
 
         $idTracks = Track_Test::getIdTracksFromTest($idTest);
 
@@ -3710,7 +3710,7 @@ class CoursereportLmsController extends LmsController
 
             $textEntries = TextEntry_Question::getTextEntryFromIdTrackAndIdQuest($idTrack, $idQuest);
             foreach ($textEntries as $textEntry) {
-                $result['answers'][] = array("answer" => $textEntry, "filePath" => "index.php?modname=question&amp;op=quest_download&type_quest=upload&id_quest=" . $idQuest . "&id_track=" . $idTrack);
+                $result['answers'][] = ["answer" => $textEntry, "filePath" => "index.php?modname=question&amp;op=quest_download&type_quest=upload&id_quest=" . $idQuest . "&id_track=" . $idTrack];
             }
         }
 
@@ -3723,7 +3723,7 @@ class CoursereportLmsController extends LmsController
 
         checkPerm('view', true, $this->_mvc_name);
 
-        YuiLib::load(array('animation' => 'my_animation.js'));
+        YuiLib::load(['animation' => 'my_animation.js']);
         addJs($GLOBALS['where_lms_relative'] . '/modules/coursereport/', 'ajax.coursereport.js');
 
         require_once(Forma::inc(_base_ . '/lib/lib.table.php'));
@@ -3758,12 +3758,12 @@ class CoursereportLmsController extends LmsController
         $answers = [];
         $tracks = [];
 
-        $test_info = $test_man->getTestInfo(array($id_test));
+        $test_info = $test_man->getTestInfo([$id_test]);
 
-        $page_title = array(
+        $page_title = [
             'index.php?r=lms/coursereport/coursereport' => $lang->def('_COURSEREPORT', 'menu_course'),
             $test_info[$id_test]['title']
-        );
+        ];
 
         $out->add(
             getTitleArea($page_title, 'coursereport')
@@ -3865,13 +3865,13 @@ class CoursereportLmsController extends LmsController
                 case "inline_choice":
                 case "choice_multiple":
                 case "choice":
-                    $cont_h = array(
+                    $cont_h = [
                         $lang->def('_ANSWER'),
                         $lang->def('_PERCENTAGE')
-                    );
-                    $type_h = array(
+                    ];
+                    $type_h = [
                         '', 'image nowrap'
-                    );
+                    ];
 
                     $tb = new Table(0, str_replace('[title]', $quest['title_quest'], $lang->def('_TABLE_QUEST')));
                     $tb->setColsStyle($type_h);
@@ -3928,10 +3928,10 @@ class CoursereportLmsController extends LmsController
                     break;
 
                 case "text_entry":
-                    $cont_h = array(
+                    $cont_h = [
                         $lang->def('_PERCENTAGE_CORRECT')
-                    );
-                    $type_h = array('align-center');
+                    ];
+                    $type_h = ['align-center'];
 
                     $tb = new Table(0, str_replace('[title]', $quest['title_quest'], $lang->def('_TABLE_QUEST_CORRECT_TXT')));
                     $tb->setColsStyle($type_h);
@@ -3960,11 +3960,11 @@ class CoursereportLmsController extends LmsController
                     break;
 
                 case "associate":
-                    $cont_h = array(
+                    $cont_h = [
                         $lang->def('_ANSWER'),
                         $lang->def('_PERCENTAGE_CORRECT')
-                    );
-                    $type_h = array('', 'align-center');
+                    ];
+                    $type_h = ['', 'align-center'];
 
                     $tb = new Table(0, str_replace('[title]', $quest['title_quest'], $lang->def('_TABLE_QUEST_CORRECT_ASS')));
                     $tb->setColsStyle($type_h);
@@ -4019,11 +4019,11 @@ class CoursereportLmsController extends LmsController
         $backUrl = 'index.php?r=lms/coursereport/testvote&id_test=' . (int)$idTest;
         $backUi = getBackUi($backUrl, $lang->def('_BACK'));
 
-        $page_title = array(
+        $page_title = [
             'index.php?r=lms/coursereport/coursereport' => $lang->def('_COURSEREPORT', 'menu_course'),
             $backUrl => strip_tags($title),
             $acl_man->relativeId($user_info[ACL_INFO_USERID])
-        );
+        ];
         cout(getTitleArea($page_title, 'coursereport', $lang->def('_TH_ALT')));
         cout('<div class="stdblock">');
         cout($backUi);

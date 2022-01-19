@@ -4,29 +4,29 @@
 
 //--- SEARCH FILTER -------
 
-$this->widget('tablefilter', array(
+$this->widget('tablefilter', [
 	'id' => 'adminmanager',
 	'css_class' => 'forma-quick-search-form--transparent',
 	'filter_text' => $filter_text,
 	'js_callback_set' => 'AdminManagement.setFilter',
 	'js_callback_reset' => 'AdminManagement.resetFilter'
-));
+]);
 
 
 //--- TABLE -------
 
-$_columns = array(
-	array('key' => 'userid', 'label' => Lang::t('_USERNAME', 'adminmanager'), 'sortable' => true),
-	array('key' => 'firstname', 'label' => Lang::t('_FIRSTNAME', 'adminmanager'), 'sortable' => true),
-	array('key' => 'lastname', 'label' => Lang::t('_LASTNAME', 'adminmanager'), 'sortable' => true)
-);
+$_columns = [
+	['key' => 'userid', 'label' => Lang::t('_USERNAME', 'adminmanager'), 'sortable' => true],
+	['key' => 'firstname', 'label' => Lang::t('_FIRSTNAME', 'adminmanager'), 'sortable' => true],
+	['key' => 'lastname', 'label' => Lang::t('_LASTNAME', 'adminmanager'), 'sortable' => true]
+];
 
-$_profile_column = array(
+$_profile_column = [
 	'key' => 'user_profile',
 	'label' => Lang::t('_ADMIN_RULES', 'adminrules'),
 	'sortable' => true,
 	'formatter' => 'AdminManagement.formatUserProfile'
-);
+];
 if ($permissions['assign_profile']) {
 	$_profile_column['editor'] = 'new YAHOO.widget.DropdownCellEditor({'
 		.'asyncSubmitter: AdminManagement.asyncSubmitter, '
@@ -38,11 +38,11 @@ $_img_users = Get::sprite('subs_users', Lang::t('_ASSIGN_USERS', 'adminmanager')
 $_img_courses = Get::sprite('subs_elem', Lang::t('_COURSES', 'adminmanager'));
 $_img_classlocations = Get::sprite('subs_location', Lang::t('_LOCATION', 'adminmanager'));
 
-if ($permissions['assign_users']) $_columns[] = array('key' => 'users', 'label' => $_img_users, 'className' => 'img-cell', 'formatter' => 'AdminManagement.formatUsers');
-if ($permissions['assign_courses']) $_columns[] = array('key' => 'courses', 'label' => $_img_courses, 'className' => 'img-cell', 'formatter' => 'AdminManagement.formatCourses');
-if ($permissions['assign_courses']) $_columns[] = array('key' => 'classlocations', 'label' => $_img_classlocations, 'className' => 'img-cell', 'formatter' => 'AdminManagement.formatClasslocations');
+if ($permissions['assign_users']) $_columns[] = ['key' => 'users', 'label' => $_img_users, 'className' => 'img-cell', 'formatter' => 'AdminManagement.formatUsers'];
+if ($permissions['assign_courses']) $_columns[] = ['key' => 'courses', 'label' => $_img_courses, 'className' => 'img-cell', 'formatter' => 'AdminManagement.formatCourses'];
+if ($permissions['assign_courses']) $_columns[] = ['key' => 'classlocations', 'label' => $_img_classlocations, 'className' => 'img-cell', 'formatter' => 'AdminManagement.formatClasslocations'];
 
-$this->widget('table', array(
+$this->widget('table', [
 	'id'			=> 'admin_manager_table',
 	'ajaxUrl'		=> 'ajax.adm_server.php?r=adm/adminmanager/getAdmin&',
 	'rowsPerPage'	=> Get::sett('visuItem', 25),
@@ -51,9 +51,9 @@ $this->widget('table', array(
 	'sort'			=> 'userid',
 	'dir'			=> 'asc',
 	'columns'		=> $_columns,
-	'fields'		=> array('id_user', 'userid', 'firstname', 'lastname', 'idst_profile', 'user_profile', 'has_users', 'has_courses', 'has_classlocations'),
+	'fields'		=> ['id_user', 'userid', 'firstname', 'lastname', 'idst_profile', 'user_profile', 'has_users', 'has_courses', 'has_classlocations'],
 	'generateRequest' => 'AdminManagement.requestBuilder'
-));
+]);
 
 ?>
 </div>

@@ -28,7 +28,7 @@ class CategoryFolderTree extends ClientTree {
 		require_once(_base_.'/lib/lib.dialog.php');
 		initDialogs();
 
-		$initialShowedNodes = array();
+		$initialShowedNodes = [];
 		if ($initFromSession) {
 			if (isset($_SESSION['course_category']['tree_status'])) {
 				$tree_status =& $_SESSION['course_category']['tree_status'];
@@ -79,7 +79,7 @@ class CategoryFolderTree extends ClientTree {
 			$_SESSION['course_category']['filter_status']['c_category'] = 0;
 		$treestatus =& $_SESSION['course_category']['filter_status']['c_category'];
 
-		$result = array();
+		$result = [];
 		$folders = $treecat->getOpenedFolders( $treestatus );
 
 		$ref =& $result;
@@ -89,7 +89,7 @@ class CategoryFolderTree extends ClientTree {
 				for ($i=0; $i<count($ref); $i++) {
 					if ($ref[$i]['id'] == $folder) {
 						$ref[$i]['expanded'] = true;
-						$ref[$i]['children'] = array();
+						$ref[$i]['children'] = [];
 						$ref =& $ref[$i]['children'];
 						break;
 					}
@@ -100,7 +100,7 @@ class CategoryFolderTree extends ClientTree {
 			while (list($id_category, $idParent, $path, $lev, $left, $right) = sql_fetch_row($childrens)) {
 				$is_leaf = ($right-$left) == 1;
 				$node_options = getNodeOptions($id_category, $is_leaf);
-				$ref[] = array(
+				$ref[] = [
 					'type' => 'FolderNode',
 					'id' => $id_category,
 					'label' => end(explode('/', $path)),
@@ -108,7 +108,7 @@ class CategoryFolderTree extends ClientTree {
 					'is_leaf' => $is_leaf,
 					'count_content' => (int)(($right-$left-1)/2),
 					'options' => $node_options
-				);
+                ];
 			}
 
 		}

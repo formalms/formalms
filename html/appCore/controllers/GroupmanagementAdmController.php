@@ -25,13 +25,13 @@ class GroupmanagementAdmController extends AdmController {
 		$this->db = DbConn::getInstance();
 		$this->model = new GroupmanagementAdm();
 		$this->json = new Services_JSON();
-		$this->permissions = array(
+		$this->permissions = [
 			'view'						=> checkPerm('view', true, 'groupmanagement'),					//view module
 			'add'							=> checkPerm('add', true, 'groupmanagement'),						//create groups
 			'mod'							=> checkPerm('mod', true, 'groupmanagement'),						//edit groups
 			'del'							=> checkPerm('del', true, 'groupmanagement'),						//delete groups
 			'associate_user'	=> checkPerm('associate_user', true, 'groupmanagement')	//add users/orgbranches/fncroles to the group
-		);
+        ];
 	}
 
 
@@ -57,11 +57,11 @@ class GroupmanagementAdmController extends AdmController {
 		Util::get_js(Get::rel_path('adm').'/views/groupmanagement/groupmanagement.js', true, true);
 		Util::get_js(Get::rel_path('base').'/widget/dialog/dialog.js', true, true);
 
-		$this->render('show', array(
+		$this->render('show', [
 			'permissions' => $this->permissions,
 			'result_message' => "",
 			'filter_text' => ''
-		));
+        ]);
 	}
 
 	/*
@@ -97,23 +97,23 @@ class GroupmanagementAdmController extends AdmController {
 			}
 		}
 
-		$pagination = array(
+		$pagination = [
 			'startIndex' => $startIndex,
 			'results' => $results,
 			'sort' => $sort,
 			'dir' => $dir
-		);
+        ];
 
 		$list = $this->model->getGroupsList($pagination, $filter);
 
 		//format models' data
-		$records = array();
+		$records = [];
 		$acl_man = Docebo::user()->getAclManager();
 		if (is_array($list)) {
 			foreach ($list as $record) {
 				$_groupid = $acl_man->relativeId($record->groupid);
 				$_description = $this->_formatDescription($record->description);
-				$records[] = array(
+				$records[] = [
 					'id' => (int)$record->idst,
 					'groupid' => highlightText($_groupid, $filter),
 					'description' => highlightText($_description, $filter),
@@ -121,11 +121,11 @@ class GroupmanagementAdmController extends AdmController {
 					'membercount' => $record->membercount,
 					'mod' => 'ajax.adm_server.php?r=adm/groupmanagement/mod&id='.(int)$record->idst,
 					'del' => 'ajax.adm_server.php?r=adm/groupmanagement/del&id='.(int)$record->idst
-				);
+                ];
 			}
 		}
 
-		$output = array(
+		$output = [
 			'startIndex' => $startIndex,
 			'recordsReturned' => count($records),
 			'sort' => $sort,
@@ -133,7 +133,7 @@ class GroupmanagementAdmController extends AdmController {
 			'totalRecords' => $total,//$this->model->getTotalGroups($filter),
 			'pageSize' => $rowsPerPage,
 			'records' => $records
-		);
+        ];
 
 		echo $this->json->encode($output);
 	}
@@ -144,7 +144,7 @@ class GroupmanagementAdmController extends AdmController {
 	public function del() {
 		//check permissions: we should have add privileges to create groups
 		if (!$this->permissions['del']) {
-			$output = array('success' => false, 'message' => $this->_getErrorMessage('no permission'));
+			$output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
 			echo $this->json->encode($output);
 			return;
 		}
@@ -161,12 +161,12 @@ class GroupmanagementAdmController extends AdmController {
 	public function mod() {
 		//check permissions: we should have add privileges to create groups
 		if (!$this->permissions['mod']) {
-			$output = array('success' => false, 'message' => $this->_getErrorMessage('no permission'));
+			$output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
 			echo $this->json->encode($output);
 			return;
 		}
 
-		$output = array();
+		$output = [];
 		$id = Get::req('id', DOTY_INT, -1);
 
 		if ($id > 0) {
@@ -188,14 +188,14 @@ class GroupmanagementAdmController extends AdmController {
 	public function moddata() {
 		//check permissions: we should have add privileges to create groups
 		if (!$this->permissions['mod']) {
-			$output = array('success' => false, 'message' => $this->_getErrorMessage('no permission'));
+			$output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
 			echo $this->json->encode($output);
 			return;
 		}
 
 		$id = Get::req('id', DOTY_INT, -1);
 
-		$output = array();
+		$output = [];
 		if ($id > 0) {
 
 			$types = $this->model->getGroupTypes(true);
@@ -206,11 +206,11 @@ class GroupmanagementAdmController extends AdmController {
 			if (!in_array($type, $types)) $type = $types['free'];
 			$show_on_platform = false;
 
-			$info = array(
+			$info = [
 				'groupid' => $groupid,
 				'description' => $description,
 				'type' => $type
-			);
+            ];
 			if ($show_on_platform != false) {
 				$info['show_on_platform'] = 'framework,lms,';
 			}
@@ -280,11 +280,11 @@ class GroupmanagementAdmController extends AdmController {
 					Form::getHidden('is_updating', 'is_updating', 1).
 					Form::getHidden('id_group', 'id_group', $id)
 				);
-				$sel_title = array(
+				$sel_title = [
 					'index.php?r=adm/groupmanagement/show' => Lang::t('_GROUPS', 'admin_directory'),
 					'index.php?r=adm/groupmanagement/show_users&amp;id='.$id => Lang::t('_ASSIGN_USERS', 'admin_directory').': '.Docebo::aclm()->relativeId($group->groupid),
 					Lang::t('_ADD', 'admin_directory')
-				);
+                ];
 				$selector->loadSelector(Util::str_replace_once('&', '&amp;', $jump_url),
 					$sel_title,
 					'',
@@ -306,11 +306,11 @@ class GroupmanagementAdmController extends AdmController {
 			$action = "ajax.adm_server.php?r=adm/groupmanagement/moddata&id=".$idst;
 		} else {
 			$action = "ajax.adm_server.php?r=adm/groupmanagement/creategroup";
-			$group_info = array(
+			$group_info = [
 				'groupid' => '',
 				'description' => '',
 				'type' => 'free'
-			);
+            ];
 		}
 		$body = "";
 		$body .= Form::openForm($idst > 0 ? 'modify_group_'.$idst : 'create_group', $action);
@@ -325,12 +325,12 @@ class GroupmanagementAdmController extends AdmController {
 	public function create() {
 		//check permissions: we should have add privileges to create groups
 		if (!$this->permissions['add']) {
-			$output = array('success' => false, 'message' => $this->_getErrorMessage('no permission'));
+			$output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
 			echo $this->json->encode($output);
 			return;
 		}
 
-		$output = array();
+		$output = [];
 
 		//$action = "ajax.adm_server.php?r=adm/groupmanagement/creategroup";
 		$action = "ajax.adm_server.phpr='.$this->link.'/creategroup";
@@ -346,12 +346,12 @@ class GroupmanagementAdmController extends AdmController {
 	public function creategroup() {
 		//check permissions: we should have add privileges to create groups
 		if (!$this->permissions['mod']) {
-			$output = array('success' => false, 'message' => $this->_getErrorMessage('no permission'));
+			$output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
 			echo $this->json->encode($output);
 			return;
 		}
 
-		$output = array();
+		$output = [];
 		$types = $this->model->getGroupTypes(true);
 
 		$groupid = Get::req('groupid', DOTY_STRING, "");
@@ -360,11 +360,11 @@ class GroupmanagementAdmController extends AdmController {
 		if (!in_array($type, $types)) $type = $types['free'];
 		$show_on_platform = true;//false;
 
-		$info = array(
+		$info = [
 			'groupid' => $groupid,
 			'description' => $description,
 			'type' => $type
-		);
+        ];
 		if ($show_on_platform != false) {
 			$info['show_on_platform'] = 'framework,lms,';
 		}
@@ -385,17 +385,17 @@ class GroupmanagementAdmController extends AdmController {
 	public function groups_autocompleteTask() {
 		$query = Get::req('query', DOTY_STRING, '');
 		$results = Get::req('results', DOTY_INT, Get::sett('visuItem', 25));
-		$output = array('groups' => array());
+		$output = ['groups' => []];
 		if ($query != "") {
 			$groups = $this->model->searchGroupsByGroupid($query, $results, true);
 			$acl_man = Docebo::user()->getAclManager();
 			foreach ($groups as $group) {
 				$_groupid = $acl_man->relativeId($group->groupid);
-				$output['groups'][] = array(
+				$output['groups'][] = [
 					'idst' => $group->idst,
 					'groupid' => $_groupid,
 					'groupid_highlight' => Layout::highlight($_groupid, $query)
-				);
+                ];
 			}
 		}
 		echo $this->json->encode($output);
@@ -412,14 +412,14 @@ class GroupmanagementAdmController extends AdmController {
 		$back_url = "index.php?r=adm/groupmanagement/show";
 
 		if (!$this->permissions['add']) {
-			$this->render('invalid', array(
+			$this->render('invalid', [
 				'message' => $this->_getErrorMessage('no permission'),
 				'back_url' => $back_url
-			));
+            ]);
 			return;
 		}
 
-		$this->render('importusers_step1', array('id_group' => $id_group));
+		$this->render('importusers_step1', ['id_group' => $id_group]);
 	}
 
 
@@ -436,7 +436,7 @@ class GroupmanagementAdmController extends AdmController {
 		if (trim($import_charset) === '') $import_charset = 'UTF-8';
 
 
-		$csv_data= array();
+		$csv_data= [];
 		$file = fopen($_FILES['file_import']['tmp_name'], 'r');
 
 		$first = true;
@@ -450,10 +450,10 @@ class GroupmanagementAdmController extends AdmController {
 
 		$result = $this->model->importGroupMembers($csv_data, $id_group);
 
-		$this->render(	'importusers_step2', array(
+		$this->render(	'importusers_step2', [
 					'info' => $result,
 					'id_group' => $id_group
-		));
+        ]);
 
 	}
 
@@ -473,13 +473,13 @@ class GroupmanagementAdmController extends AdmController {
 		}
 
 		$group = $this->model->getGroupInfo($id_group, true);
-		$this->render('show_users', array(
+		$this->render('show_users', [
 			'id_group' => $id_group,
 			'groupid' => Docebo::aclm()->relativeId($group->groupid),
 			'filter_text' => "",
 			'result_message' => $message,
 			'permissions' => $this->permissions
-		));
+        ]);
 
 	}
 
@@ -496,9 +496,9 @@ class GroupmanagementAdmController extends AdmController {
 		$dir = Get::req('dir', DOTY_STRING, "asc");
 		$filter_text = Get::req('filter_text', DOTY_STRING, '');
 
-		$searchFilter = array(
+		$searchFilter = [
 			'text' => $filter_text
-		);
+        ];
 
 		//get total from database and validate the results count
 		$total = $this->model->getGroupUsersTotal($id_group, $searchFilter);
@@ -511,34 +511,34 @@ class GroupmanagementAdmController extends AdmController {
 		}
 
 		//set pagination argument
-		$pagination = array(
+		$pagination = [
 			'startIndex' => $startIndex,
 			'results' => $results,
 			'sort' => $sort,
 			'dir' => $dir
-		);
+        ];
 
 		//read records from database
 		$list = $this->model->getGroupUsersList($id_group, $pagination, $searchFilter);
 
 		//prepare the data for sending
 		$acl_man = Docebo::user()->getAclManager();
-		$output_results = array();
+		$output_results = [];
 		if (is_array($list) && count($list)>0) {
 			foreach ($list as $idst=>$record) {
 				//prepare output record
-				$output_results[] = array(
+				$output_results[] = [
 					'id' => $record->idst,
 					'userid' => Layout::highlight($acl_man->relativeId($record->userid), $filter_text),
 					'lastname' => Layout::highlight($record->lastname, $filter_text),
 					'firstname' => Layout::highlight($record->firstname, $filter_text),
 					'del'		=> 'ajax.adm_server.php?r='.$this->link.'/del_user&id_user='.(int)$record->idst.'&id_group='.(int)$id_group,
 					'is_group' => $record->is_group
-				);
+                ];
 			}
 		}
 
-		$output = array(
+		$output = [
 			'totalRecords' => $total,
 			'startIndex' => $startIndex,
 			'sort' => $sort,
@@ -546,7 +546,7 @@ class GroupmanagementAdmController extends AdmController {
 			'rowsPerPage' => $rowsPerPage,
 			'results' => count($list),
 			'records' => $output_results
-		);
+        ];
 
 		echo $this->json->encode($output);
 	}
@@ -556,7 +556,7 @@ class GroupmanagementAdmController extends AdmController {
 	public function del_userTask() {
 		//check permissions: we should have add privileges to create groups
 		if (!$this->permissions['associate_user']) {
-			$output = array('success' => false, 'message' => $this->_getErrorMessage('no permission'));
+			$output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
 			echo $this->json->encode($output);
 			return;
 		}
@@ -565,12 +565,12 @@ class GroupmanagementAdmController extends AdmController {
 		$id_group = Get::req('id_group', DOTY_INT, 0);
 		$id_user = Get::req('id_user', DOTY_INT, 0);
 		if (!$id_group || !$id_user) {
-			$output = array('success' => false, 'message' => $this->_getErrorMessage('invalid input'));
+			$output = ['success' => false, 'message' => $this->_getErrorMessage('invalid input')];
 			echo $this->json->encode($output);
 			return;
 		}
 
-		$output = array();
+		$output = [];
 		$res = $this->model->removeUsersFromGroup($id_group, $id_user);
 
 		$output['success'] = $res ? true : false;

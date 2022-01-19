@@ -30,30 +30,30 @@ class OtherFieldsTypes {
   
   public function getInitData($js = true) {
     //produces languages' list variable
-    $temp1 = array( '{ id: "standard", value: "[ '.addslashes( Lang::t('_DEFAULT_LANGUAGE') ).' ]" }' );
+    $temp1 = ['{ id: "standard", value: "[ '.addslashes( Lang::t('_DEFAULT_LANGUAGE') ).' ]" }'];
     foreach (Docebo::langManager()->getAllLanguages() as $lang) {
 			$temp1[] = '{ id: "'.$lang[0].'", value: "'.addslashes( $lang[0].'  ('.$lang[1].')' ).'" }';
 		}
 
 		//produce admin levels list
-		$temp2 = array();
+		$temp2 = [];
 		$arr_admin_levels = $this->acl_man->getAdminLevels();
 		foreach ($arr_admin_levels as $lev=>$idst) {
 			$temp2[] = '{ id: "'.$lev.'", value: "'.addslashes( Lang::t('_DIRECTORY_'.$lev, 'admin_directory') ).'" }';
 		}
 
     if (!$js) {
-      $output = array( 
+      $output = [
 				'languages' => $temp1,
 				'levels' => $temp2
-			);
+      ];
     } else {
       $js_langs = "[".implode(",", $temp1)."]";
 			$js_levels = "[".implode(",", $temp2)."]";
-      $output = array(
+      $output = [
 				'languages' => $js_langs,
 				'levels' => $js_levels
-			);
+      ];
     }
     
     return $output;
@@ -61,10 +61,10 @@ class OtherFieldsTypes {
   
   
   public function getOtherFieldsList() {
-    $list = array(
-      array('id'=>'oth_'._OTHERFIELD_ID_LANGUAGE, 'name'=>addslashes(Lang::t('_LANGUAGE', 'standard')), 'type'=>_OTHERFIELD_TYPE_LANGUAGE, 'standard'=>false),
-      array('id'=>'oth_'._OTHERFIELD_ID_ADMINLEVELS, 'name'=>addslashes(Lang::t('_LEVEL', 'admin_directory')), 'type'=>_OTHERFIELD_TYPE_ADMINLEVELS, 'standard'=>false)
-    );
+    $list = [
+      ['id'=>'oth_'._OTHERFIELD_ID_LANGUAGE, 'name'=>addslashes(Lang::t('_LANGUAGE', 'standard')), 'type'=>_OTHERFIELD_TYPE_LANGUAGE, 'standard'=>false],
+      ['id'=>'oth_'._OTHERFIELD_ID_ADMINLEVELS, 'name'=>addslashes(Lang::t('_LEVEL', 'admin_directory')), 'type'=>_OTHERFIELD_TYPE_ADMINLEVELS, 'standard'=>false]
+    ];
     
     return $list;
   }
@@ -80,7 +80,7 @@ class OtherFieldsTypes {
     
       case _OTHERFIELD_ID_LANGUAGE: {
         if ($filter == "standard") {
-          $temp = array();
+          $temp = [];
           $query = "SELECT id_user FROM %adm_setting_user WHERE path_name='ui.language'";
           $res = $this->db->query($query);
           while ( list($idst) = $this->db->fetch_row($res) ) { $temp[] = $idst; }

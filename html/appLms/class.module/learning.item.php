@@ -174,7 +174,7 @@ class Learning_Item extends Learning_Object {
 		play( $id, $id_param, $back_url );
 	}
 
-	function env_play($id_reference, $back_url, $options = array()) {
+	function env_play($id_reference, $back_url, $options = []) {
 
 		require_once(_lms_.'/modules/item/do.item.php');
 		//$this->id;

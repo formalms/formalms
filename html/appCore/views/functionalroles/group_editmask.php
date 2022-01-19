@@ -65,11 +65,11 @@ $content .= Form::closeForm();
 
 //send output
 if (isset($json)) {
-	$params = array(
+	$params = [
 		'success' => true,
 		'header' => $title,
 		'body' => $content
-	);
+    ];
 	echo $json->encode($params);
 } else {
 	echo '<h2>'.$title.'</h2>';

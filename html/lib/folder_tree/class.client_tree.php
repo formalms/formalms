@@ -18,7 +18,7 @@ class ClientTree {
 
 	public $id = '';
 
-	private $styleSheets = array();
+	private $styleSheets = [];
 
 	protected $jsClassName = 'FolderTree';
 	protected $serverUrl = '';
@@ -26,8 +26,8 @@ class ClientTree {
 	public $useDOMReady = false;
 	public $isGlobalVariable = false;
 
-	protected $langs = array();
-	protected $options = array();
+	protected $langs = [];
+	protected $options = [];
 
 	public function __construct($id) {
 		$this->id = $id;
@@ -35,7 +35,7 @@ class ClientTree {
 
 	//libraries
 	public function initLibraries() {
-		YuiLib::load(array(
+		YuiLib::load([
 			'yahoo-dom-event'=>'yahoo-dom-event.js',
 			'connection'=>'connection-min.js',
 			'dragdrop'=>'dragdrop-min.js',
@@ -49,10 +49,10 @@ class ClientTree {
 			'button'=>'button-min.js', //dialog
 			'treeview'=>'treeview-min.js',
 			'resize'=>'resize-beta-min.js',
-			'selector'=>'selector-beta-min.js'),
-				array(
+			'selector'=>'selector-beta-min.js'],
+				[
 			'assets/skins/sam' => 'skin.css'
-				)
+                ]
 			);
 			Util::get_js(Get::rel_path('base').'/lib/lib.elem_selector.js', true, true);
 			Util::get_js(Get::rel_path('base').'/lib/js_utils.js', true,true);
@@ -83,7 +83,7 @@ class ClientTree {
 		$this->setOption('langs', $this->langs);
 		require_once(_base_.'/lib/lib.json.php');
 		$json = new Services_JSON();
-		$arr_js = array();
+		$arr_js = [];
 		foreach ($this->options as $name=>$option) $arr_js[] = $name.':'.$json->encode($option);
 		return '{'.implode(",", $arr_js).'}';
 	}
@@ -118,11 +118,11 @@ class ClientTree {
 				'.($this->useDOMReady ? '});' : '');
 		}
 
-		$output = array(
+		$output = [
 			'js' => '<script type="text/javascript">'.$js_code.'</script>',
 			'html' => '<div class="folder_tree" id="'.$this->id.'">'.$this->_getHtml().'</div>',
 			'options' => $jsOptions
-		);
+        ];
 
 		if ($noPrint) {
 			return $output;

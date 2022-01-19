@@ -34,7 +34,7 @@ switch($op) {
 		require_once(_base_.'/lib/lib.form.php');
 		$lang =& DoceboLanguage::createInstance('report', 'framework');
 		
-		$output = array();
+		$output = [];
 		$output['title'] = $lang->def('_SAVE_REPORT_TITLE');
 		
 		$output['content'] = //'nome filtro:<input type="text" name="filter_name" value="" />';
@@ -55,17 +55,17 @@ switch($op) {
 	case 'show_recipients_window': {
 		require_once($GLOBALS['where_lms'].'/lib/lib.report.php');
 		$lang =& DoceboLanguage::createInstance('report', 'framework');
-		$output = array(
+		$output = [
 			'success' => true,
 			'header' => Lang::t('_RECIPIENTS', 'standard'),
 			'body' => ''
-		);
+        ];
 
 		$id_sched = Get::req('idsched', DOTY_INT, false);
 
 		if ($id_sched>0) {
 			
-			$tables = array();
+			$tables = [];
 			$records = get_schedule_recipients($id_sched, true);
 
 			foreach ($records AS $type => $list) {
@@ -75,12 +75,12 @@ switch($op) {
 					case 'users':
 						if (!empty($list)) {
 							$tb = new Table();
-							$tb->addHead(array(Lang::t('_USERNAME', 'standard'), Lang::t('_FULLNAME', 'standard')), array('',''));
+							$tb->addHead([Lang::t('_USERNAME', 'standard'), Lang::t('_FULLNAME', 'standard')], ['','']);
 							foreach ($list as $key => $value) {
-								$tb->addBody(array(
+								$tb->addBody([
 									Docebo::aclm()->relativeId($value->name),
 									trim($value->value1.' '.$value->value2)
-								));
+                                ]);
 							}
 							$tables[] = $tb->getTable();
 							unset($tb);
@@ -90,11 +90,11 @@ switch($op) {
 					case 'groups':
 						if (!empty($list)) {
 							$tb = new Table();
-							$tb->addHead(array(Lang::t('_GROUPUSER_groupid', 'organization_chart')), array(''));
+							$tb->addHead([Lang::t('_GROUPUSER_groupid', 'organization_chart')], ['']);
 							foreach ($list as $key => $value) {
-								$tb->addBody(array(
+								$tb->addBody([
 									Docebo::aclm()->relativeId($value->name)
-								));
+                                ]);
 							}
 							$tables[] = $tb->getTable();
 							unset($tb);
@@ -104,13 +104,13 @@ switch($op) {
 					case 'folders':
 						if (!empty($list)) {
 							$tb = new Table();
-							$tb->addHead(array(Lang::t('_ORGFOLDERNAME', 'storage')), array(''));
+							$tb->addHead([Lang::t('_ORGFOLDERNAME', 'storage')], ['']);
 							foreach ($list as $key => $value) {
 								$is_descendants = strpos($obj->value1, 'ocd') !== false;
 
-								$tb->addBody(array(
+								$tb->addBody([
 									$value->name.($is_descendants ? " (+ ".Lang::t('_INHERIT', 'standard').")" : "")
-								));
+                                ]);
 							}
 							$tables[] = $tb->getTable();
 							unset($tb);
@@ -120,11 +120,11 @@ switch($op) {
 					case 'fncroles':
 						if (!empty($list)) {
 							$tb = new Table();
-							$tb->addHead(array(Lang::t('_FNCROLE', 'fncroles')), array(''));
+							$tb->addHead([Lang::t('_FNCROLE', 'fncroles')], ['']);
 							foreach ($list as $key => $value) {
-								$tb->addBody(array(
+								$tb->addBody([
 									$value->name
-								));
+                                ]);
 							}
 							$tables[] = $tb->getTable();
 							unset($tb);
@@ -151,7 +151,7 @@ switch($op) {
 
 
 	case 'save_filter': {
-		$output=array();
+		$output= [];
 		$filter_data = Get::req('filter_data', DOTY_ALPHANUM, ''); //warning: check urlencode-serialize etc.
 		$data = urldecode($filter_data); //put serialized data in DB
 		
@@ -174,7 +174,7 @@ switch($op) {
 
 
 	case 'delete_filter': {
-		$output=array();
+		$output= [];
 		$filter_id = Get::req('filter_id', DOTY_ALPHANUM, '');
 		if (sql_query("DELETE FROM %lms_report_filter WHERE id_filter=$filter_id")) {
 			$output['success']=true;
@@ -186,7 +186,7 @@ switch($op) {
 	} break;
 
 	case 'sched_enable' : {
-		$output=array();
+		$output= [];
 		$success=false;
 		$message='';
 		$id_sched=Get::req('id', DOTY_INT, false);
@@ -202,7 +202,7 @@ switch($op) {
 	} break;
 
 	case 'public_rep': {
-		$output=array();
+		$output= [];
 		$success=false;
 		$message='';
 		$id_rep=Get::req('id', DOTY_INT, false);

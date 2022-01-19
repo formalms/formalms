@@ -9,7 +9,7 @@ interface SmsGatewayInterface
      * @return mixed
      * @throws SmsGatewayException
      */
-    public function send($recipients = array(), $text, $type = null);
+    public function send($recipients = [], $text, $type = null);
 
     /**
      * @return array

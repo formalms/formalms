@@ -62,7 +62,7 @@ class ReservationRoomPermissions {
 	}
 	
 	function getAllReservationPerm($event_id) {
-		$res=array();
+		$res= [];
 
 		$fields="user_idst, perm";
 		$qtxt ="SELECT ".$fields." FROM ".$this->_getReservationPermTable()." WHERE ";

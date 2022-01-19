@@ -28,11 +28,11 @@ class Module_Regional_settings extends Module {
 	}
 	
 	function getAllToken($op) {
-		return array( 
-			'view' => array( 	'code' => 'view',
+		return [
+			'view' => ['code' => 'view',
 								'name' => '_VIEW',
-								'image' => 'standard/view.png')
-		);
+								'image' => 'standard/view.png']
+        ];
 	}
 	
 }

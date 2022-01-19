@@ -36,7 +36,7 @@ class LangAdm extends Model
      */
     public function getPerm()
     {
-        return array();
+        return [];
     }
 
     /**
@@ -92,7 +92,7 @@ class LangAdm extends Model
         if ($startIndex && $results) $query .= " LIMIT " . (int)$startIndex . ", " . (int)$results;
         $rs = $this->db->query($query);
 
-        $result = array();
+        $result = [];
         while ($lang = $this->db->fetch_obj($rs)) {
             $diff = $text->lang_max - $lang->lang_stats;
             if ($diff != 0) $lang->lang_stats .= ' / ' . $text->lang_max . ($diff ? ' (' . $diff . ')' : '');
@@ -119,7 +119,7 @@ class LangAdm extends Model
         if ($startIndex && $results) $query .= " LIMIT " . (int)$startIndex . ", " . (int)$results;
         $rs = $this->db->query($query);
 
-        $result = array();
+        $result = [];
         while ($lang = $this->db->fetch_obj($rs)) {
             $result[$lang->lang_code] = $lang;
         }
@@ -204,7 +204,7 @@ class LangAdm extends Model
             . " FROM %adm_lang_language "
             . " WHERE 1";
         $rs = $this->db->query($query);
-        $result = array();
+        $result = [];
         while (list($lang_code, $lang_description, $lang_direction) = $this->db->fetch_row($rs)) {
 
             $result[$lang_code] = $lang_code;
@@ -223,7 +223,7 @@ class LangAdm extends Model
             . "FROM %adm_lang_text "
             . "ORDER BY text_module";
         $re = $this->db->query($qtxt);
-        $module_list = array();
+        $module_list = [];
         while (list($module) = $this->db->fetch_row($re)) {
 
             $module_list[$module] = $module;
@@ -242,7 +242,7 @@ class LangAdm extends Model
             . "LEFT JOIN %adm_plugin AS p ON ( lt.plugin_id = p.plugin_id ) "
             . "WHERE p.plugin_id IS NOT NULL AND p.active = 1";
         $re = $this->db->query($qtxt);
-        $plugin_id_list = array();
+        $plugin_id_list = [];
         while (list($plugin_id, $name) = $this->db->fetch_row($re)) {
 
             $plugin_id_list[$plugin_id] = $name;
@@ -340,7 +340,7 @@ class LangAdm extends Model
         }
         if ($ini !== false && $rows !== false) $qtxt .= " LIMIT $ini, $rows";
 
-        $data = array();
+        $data = [];
         $result = $this->db->query($qtxt);
         while ($obj = $this->db->fetch_obj($result)) {
 
@@ -378,7 +378,7 @@ class LangAdm extends Model
         $qtxt .= " ORDER BY lt.text_module ASC , ta.translation_text ASC";
 
 
-        $data = array();
+        $data = [];
         $result = $this->db->query($qtxt);
         while ($obj = $this->db->fetch_obj($result)) {
 
@@ -520,11 +520,11 @@ class LangAdm extends Model
 		LEFT JOIN %adm_lang_translation AS ta ON ( lt.id_text = ta.id_text AND ta.lang_code = '" . $lang_code . "')
 		WHERE 1 ";
 
-        $data = array();
+        $data = [];
         $result = $this->db->query($qtxt);
         while ($obj = $this->db->fetch_obj($result)) {
 
-            $data[$obj->text_module][$obj->text_key][(int)$obj->plugin_id] = array($obj->id, $obj->translation_text, $obj->save_date);
+            $data[$obj->text_module][$obj->text_key][(int)$obj->plugin_id] = [$obj->id, $obj->translation_text, $obj->save_date];
         }
         return $data;
     }
@@ -549,7 +549,7 @@ class LangAdm extends Model
 		AND ( coalesce(lt.plugin_id, 0) = 0 OR p.active = 1 " . ($includeDisabledPlugins ? " OR p.active = 0 " : "") . ")
 		ORDER BY p.priority DESC";
 
-        $data = array();
+        $data = [];
         $result = $this->db->query($qtxt);
         while ($obj = $this->db->fetch_obj($result)) {
             if (key_exists($obj->text_key, $data)) {
@@ -579,7 +579,7 @@ class LangAdm extends Model
 		FROM  %adm_lang_text AS lt
 		LEFT JOIN %adm_lang_translation AS ta ON ( lt.id_text = ta.id_text AND ta.lang_code = '" . $lang_code . "') ";
 
-        $data = array();
+        $data = [];
         $result = $this->db->query($qtxt);
         while ($obj = $this->db->fetch_obj($result)) {
 

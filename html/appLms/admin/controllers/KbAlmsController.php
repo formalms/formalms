@@ -27,12 +27,12 @@ class KbAlmsController extends AlmsController {
 		$this->model = new KbAlms();
 		$this->json = new Services_JSON();
 
-		$this->permissions = array(
+		$this->permissions = [
 			'view'	=> checkPerm('view', true, 'kb'),
 			'add'		=> checkPerm('mod', true, 'kb'),
 			'mod'		=> checkPerm('mod', true, 'kb'),
 			'del'		=> checkPerm('mod', true, 'kb')
-		);
+        ];
 	}
 
 
@@ -56,17 +56,17 @@ class KbAlmsController extends AlmsController {
 		$kbres =new KbRes();
 		$res_type_arr =$kbres->getResourceTypeArr(true);
 
-		$res_type_dd_arr =array(
-			0=>Lang::t('_ALL', 'kb'),			
-		);
+		$res_type_dd_arr = [
+			0=>Lang::t('_ALL', 'kb'),
+        ];
 		$res_type_dd_arr+=$res_type_arr;
 
-		$categorized_filter_arr =array(
+		$categorized_filter_arr = [
 			'all'=>Lang::t('_CATEGORIZED_AND_UNCATEGORIZED', 'kb'),
 			'categorized'=>Lang::t('_CATEGORIZED_ONLY', 'kb'),
 			'uncategorized'=>Lang::t('_UNCATEGORIZED_ONLY', 'kb'),
 			//'permissions' => $this->permissions
-		);
+        ];
 
 		$res = Get::req('res', DOTY_STRING, '');
 		$result_message = "";
@@ -75,7 +75,7 @@ class KbAlmsController extends AlmsController {
 			case 'err': $result_message = UIFeedback::error(Lang::t('_OPERATION_FAILURE', 'standard')); break;
 		}
 
-		$this->render('show', array(
+		$this->render('show', [
 				'selected_node' => $this->_getSelectedNode(),
 				'addfolder_markup' => $this->_getAddFolderDialogContent($this->_getSelectedNode()),
 				'filter_text'=>$filter_text,
@@ -83,7 +83,7 @@ class KbAlmsController extends AlmsController {
 				'categorized_filter_arr'=>$categorized_filter_arr,
 				'result_message' => $result_message,
 				'permissions' => $this->permissions
-			)
+            ]
 		);
 	}
 
@@ -96,11 +96,11 @@ class KbAlmsController extends AlmsController {
 
 		$kbres =new KbRes();
 		$all_resources =$kbres->getRawResources();
-		$this->render('add', array(
+		$this->render('add', [
 			'all_resources'=>$all_resources,
 			'filter_text'=>$filter_text,
 			'type'=>$type,
-			)
+            ]
 		);
 	}
 
@@ -147,12 +147,12 @@ class KbAlmsController extends AlmsController {
 			$r_item_id	=Get::req('id', DOTY_INT, 0);
 			$original_name	=Get::req('title', DOTY_STRING, '');
 
-			$this->render('categorize', array(
+			$this->render('categorize', [
 				'r_type'=>$r_type,
 				'r_env'=>$r_env,
 				'r_item_id'=>$r_item_id,
 				'original_name'=>$original_name,
-				)
+                ]
 			);
 		}
 	}
@@ -205,9 +205,9 @@ class KbAlmsController extends AlmsController {
 		}
 		else {
 			
-			$this->render('edit', array(
+			$this->render('edit', [
 					'res_id'=>$res_id
-				)
+                ]
 			);
 		}
 	}
@@ -233,8 +233,8 @@ class KbAlmsController extends AlmsController {
 
 		$tags =$this->model->getAllTagsForResources($res_arr["id_arr"]);
 
-		$list = array();
-		$parent_id =array();
+		$list = [];
+		$parent_id = [];
 		foreach($array_comm as $key => $value) {
 			$id =$array_comm[$key]['res_id'];
 			$r_env =$array_comm[$key]['r_env'];
@@ -283,10 +283,10 @@ class KbAlmsController extends AlmsController {
 		}
 
 
-		$this->model->getParentInfo($parent_id, $array_comm, array('course_lo', 'communication', 'games'));
+		$this->model->getParentInfo($parent_id, $array_comm, ['course_lo', 'communication', 'games']);
 
 
-		$result = array(
+		$result = [
 			'totalRecords' => $total_comm,
 			'startIndex' => $start_index,
 			'sort' => $sort,
@@ -294,7 +294,7 @@ class KbAlmsController extends AlmsController {
 			'rowsPerPage' => $results,
 			'results' => count($array_comm),
 			'records' => $array_comm
-		);
+        ];
 
 		$this->data = $this->json->encode($result);
 		echo $this->data;
@@ -321,7 +321,7 @@ class KbAlmsController extends AlmsController {
 
 		$tot =$data_arr['tot'];
 
-		$result = array(
+		$result = [
 			'totalRecords' => $tot,
 			'startIndex' => $start_index,
 			'sort' => $sort,
@@ -329,7 +329,7 @@ class KbAlmsController extends AlmsController {
 			'rowsPerPage' => $results,
 			'results' => count($data_arr),
 			'records' => $data_arr['data'],
-		);
+        ];
 
 
 		$data = $this->json->encode($result);
@@ -341,8 +341,8 @@ class KbAlmsController extends AlmsController {
 		if (!$this->permissions['mod']) return;
 		
 		$this->model->update(
-			array('force_visible'=>(Get::req('is_active', DOTY_INT, 0) ? 0 : 1)),
-				array('res_id=='=>Get::req('id', DOTY_INT, 0))
+			['force_visible'=>(Get::req('is_active', DOTY_INT, 0) ? 0 : 1)],
+				['res_id=='=>Get::req('id', DOTY_INT, 0)]
 		);
 	}
 
@@ -350,21 +350,21 @@ class KbAlmsController extends AlmsController {
 	protected function _getNodeActions($node) {
 
 		if (!$this->show_actions) {
-			return array();
+			return [];
 		}
 
 		if (is_numeric($node)) {
 			$nodedata = $this->model->getFolderById($node);
-			$node = array(
+			$node = [
 				'id' => $nodedata->node_id,
 				'label' => $this->model->getFolderTranslation($nodedata->node_id, getLanguage()),
 				'is_leaf' => (($nodedata->iRight-$nodedata->iLeft) == 1),
 				'count_content' => (int)(($nodedata->iRight-$nodedata->iLeft-1)/2)
-			);
+            ];
 		}
 		if (!is_array($node)) return false; //unrecognized type for node data
 
-		$actions = array();
+		$actions = [];
 		$id_action = $node['id'];
 		$is_root = ($id_action == 0);
 
@@ -400,29 +400,29 @@ class KbAlmsController extends AlmsController {
 		
 		//rename action
 		if ($this->permissions['mod']) {
-			$actions[] = array(
+			$actions[] = [
 				'id' => 'mod_'.$id_action,
 				'command' => 'modify',
 				'icon' => 'standard/edit.png',
 				'alt' => Lang::t('_MOD', 'standard')
-			);
+            ];
 		}
 
 		//delete action
 		if ($this->permissions['del']) {
 			if ($node['is_leaf'] && !$is_root) {
-				$actions[] = array(
+				$actions[] = [
 					'id' => 'del_'.$id_action,
 					'command' => 'delete',
 					'icon' => 'standard/delete.png',
 					'alt' => Lang::t('_DEL', 'standard')
-				);
+                ];
 			} else {
-				$actions[] = array(
+				$actions[] = [
 					'id' => 'del_'.$id_action,
 					'command' => false,
 					'icon' => 'blank.png'
-				);
+                ];
 			}
 		}
 
@@ -451,7 +451,7 @@ class KbAlmsController extends AlmsController {
 				$this->_assignActions($nodes[$i]['children']);
 			}
 		}
-		return array();
+		return [];
 	}
 
 	public function gettreedata() {
@@ -484,13 +484,13 @@ class KbAlmsController extends AlmsController {
 					}
 					//set output
 					if (is_array($nodes)) {
-						$output = array(
+						$output = [
 							'success' => true,
 							'nodes' => $nodes,
 							'initial' => $initial
-						);
+                        ];
 					} else {
-						$output = array('success' => false);
+						$output = ['success' => false];
 					}
 				} else {
 					//extract node data
@@ -502,29 +502,29 @@ class KbAlmsController extends AlmsController {
 						}
 					}
 					//set output
-					$output = array(
+					$output = [
 						'success' => true,
 						'nodes' => $nodes,
 						'initial' => $initial
-					);
+                    ];
 				}
 				echo $this->json->encode($output);
 			} break;
 
 			case "getmodform": {
 				if (!$this->permissions['mod']) {
-					$output = array('success' => false, 'message' => $this->_getErrorMessage('no permission'));
+					$output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
 					echo $this->json->encode($output);
 					return;
 				}
 
-				$output = array();
+				$output = [];
 				$id = Get::req('node_id', DOTY_INT, -1);
 				if ($id < 0) {
-					$output = array(
+					$output = [
 						'success' => false,
 						'message' => Lang::t('_INVALID_INPUT')
-					);
+                    ];
 				} else {
 					if ($id == 0) {
 						$root_name = Get::sett('title_organigram_chart', Lang::t('_ORG_CHART', 'organization_chart'));
@@ -551,10 +551,10 @@ class KbAlmsController extends AlmsController {
 							.Form::closeForm();
 					}
 
-					$output = array(
+					$output = [
 						'success' => true,
 						'body' => $body
-					);
+                    ];
 				}
 
 				echo $this->json->encode($output);
@@ -564,7 +564,7 @@ class KbAlmsController extends AlmsController {
 
 			case "options": {
 				$id = Get::req('node_id', DOTY_INT, -1);
-				$output = array();
+				$output = [];
 				if ($id <= 0) {
 					$output['success'] = false;
 				} else {
@@ -603,10 +603,10 @@ class KbAlmsController extends AlmsController {
 
 		$output['header'] = Lang::t('_ORGCHART_ADDNODE', 'organization_chart');
 		$output['body'] = $body;
-		$output['buttons'] = array(
-			array('text' => Lang::t('_CONFIRM', 'standard'), 'handler' => 'addfolder_save', 'isDefault' => true),
-			array('text' => Lang::t('_UNDO', 'standard'), 'handler' => 'addfolder_undo')
-		);
+		$output['buttons'] = [
+			['text' => Lang::t('_CONFIRM', 'standard'), 'handler' => 'addfolder_save', 'isDefault' => true],
+			['text' => Lang::t('_UNDO', 'standard'), 'handler' => 'addfolder_undo']
+        ];
 		$output['script'] = '
 				YAHOO.util.Event.addListener("addfolder_form", "submit", function(e) { YAHOO.util.stopEvent(e); });
 				var addfolder_undo = function(e) { Dialog_add_folder_dialog.hide(); };
@@ -641,12 +641,12 @@ class KbAlmsController extends AlmsController {
 
 	function createfolder() {
 		if (!$this->permissions['add']) {
-			$output = array('success' => false, 'message' => $this->_getErrorMessage('no permission'));
+			$output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
 			echo $this->json->encode($output);
 			return;
 		}
 		
-		$output = array();
+		$output = [];
 		$langs = Get::req('langs', DOTY_MIXED, false);
 		if ($langs == false) {
 			$output['success'] = false;
@@ -657,12 +657,12 @@ class KbAlmsController extends AlmsController {
 			$id = $this->model->addFolder($id_parent, $langs);
 			if ($id > 0) {
 				$output['success'] = true;
-				$nodedata = array(
+				$nodedata = [
 					'id' => $id,
 					'label' => $this->model->getFolderTranslation($id, getLanguage()),
 					'is_leaf' => true,
 					'count_content' => 0
-				);
+                ];
 				$nodedata['options'] = $this->_getNodeActions($nodedata);
 				$output['node'] = $nodedata;
 				$output['id_parent'] = $id_parent;
@@ -680,12 +680,12 @@ class KbAlmsController extends AlmsController {
 	 */
 	function modfolder() {
 		if (!$this->permissions['mod']) {
-			$output = array('success' => false, 'message' => $this->_getErrorMessage('no permission'));
+			$output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
 			echo $this->json->encode($output);
 			return;
 		}
 
-		$output = array();
+		$output = [];
 		$id		= Get::req('node_id', DOTY_INT, -1);
 		$langs	= Get::req('modfolder', DOTY_MIXED, false);
 		$res = $this->model->renameFolder($id, $langs);
@@ -704,12 +704,12 @@ class KbAlmsController extends AlmsController {
 	 */
 	function modrootfolder() {
 		if (!$this->permissions['mod']) {
-			$output = array('success' => false, 'message' => $this->_getErrorMessage('no permission'));
+			$output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
 			echo $this->json->encode($output);
 			return;
 		}
 
-		$output = array();
+		$output = [];
 		$root_name = Get::req('modfolder_root', DOTY_STRING, "");
 		$res = $this->model->renameRootFolder($root_name);
 		if ($res) {
@@ -727,12 +727,12 @@ class KbAlmsController extends AlmsController {
 	 */
 	function delfolder() {
 		if (!$this->permissions['del']) {
-			$output = array('success' => false, 'message' => $this->_getErrorMessage('no permission'));
+			$output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
 			echo $this->json->encode($output);
 			return;
 		}
 
-		$output = array('success' => false);
+		$output = ['success' => false];
 		$id = Get::req('node_id', DOTY_INT, -1);
 		if ($id > 0) $output['success'] = $this->model->deleteFolder($id, true);
 		echo $this->json->encode($output);
@@ -746,7 +746,7 @@ class KbAlmsController extends AlmsController {
 
 	public function addfolder_dialog() {
 		if (!$this->permissions['add']) {
-			$output = array('success' => false, 'message' => $this->_getErrorMessage('no permission'));
+			$output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
 			echo $this->json->encode($output);
 			return;
 		}
@@ -754,11 +754,11 @@ class KbAlmsController extends AlmsController {
 		$id_parent = Get::req('id', DOTY_INT, 0);
 		if ($id_parent < 0) $id_parent = 0;
 
-		$this->render('add_folder', array(
+		$this->render('add_folder', [
 			'id_parent' => $id_parent,
 			'title' => Lang::t('_ORGCHART_ADDNODE', 'organization_chart'),
 			'json' => $this->json
-		));
+        ]);
 	}
 
 

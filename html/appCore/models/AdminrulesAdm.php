@@ -29,7 +29,7 @@ class AdminrulesAdm extends Model
 
 	public function getPerm()
 	{
-		return array();
+		return [];
 	}
 
 	public function totalGroup()
@@ -53,7 +53,7 @@ class AdminrulesAdm extends Model
 		($start_index === false ? '' : $query .= " LIMIT ".$start_index.", ".$results);
 
 		$result = sql_query($query);
-		$res = array();
+		$res = [];
 
 		while(list($idst, $groupid) = sql_fetch_row($result))
 		{
@@ -68,7 +68,7 @@ class AdminrulesAdm extends Model
 
 			$name = str_replace($this->rules_path, '', $groupid);
 
-			$res[] = array(
+			$res[] = [
 				'id' => (int)$idst,
 				'idst' => (int)$idst,
 				'groupid' => $name,
@@ -77,7 +77,7 @@ class AdminrulesAdm extends Model
 				'lang' => '<a id="lang_'.$idst.'" href="ajax.adm_server.php?r=adm/adminrules/lang&amp;idst='.$idst.'" class="ico-sprite subs_lang" title="'.Lang::t('_LANG_SETTING', 'adminrules').': '.$name.'"><span>'.Lang::t('_LANG_SETTING', 'adminrules').'</span></a>',
 				'admin_manage' => '<a href="index.php?r=adm/adminrules/admin_manage&amp;idst='.$idst.'" class="ico-sprite '.($have_user ? 'subs_users' : 'fd_notice').'" title="'.Lang::t('_MANAGE_SUBSCRIPTION', 'adminrules').'"><span>'.Lang::t('_MANAGE_SUBSCRIPTION', 'adminrules').'</span></a>',
 				'del' => 'ajax.adm_server.php?r=adm/adminrules/delGroup&amp;idst='.$idst
-			);
+            ];
 		}
 
 		return $res;
@@ -130,7 +130,7 @@ class AdminrulesAdm extends Model
 	{
 		$adm_old_perm = $this->preference->getAdminPerm($idst);
 
-		$array_image = array(
+		$array_image = [
 			'add_category' => 'ico-sprite subs_view',
 			'mod_category' => 'ico-sprite subs_view',
 			'del_category' => 'ico-sprite subs_view',
@@ -148,7 +148,7 @@ class AdminrulesAdm extends Model
 			'add_org' => 'ico-sprite subs_add',
 			'mod_org' => 'ico-sprite subs_mod',
 			'del_org' => 'ico-sprite subs_del'
-		);
+        ];
 
 	require_once(_base_.'/lib/lib.table.php');
 
@@ -177,11 +177,11 @@ class AdminrulesAdm extends Model
 				{
 
 					$tb = new Table(NULL);
-					$th = array(Lang::t($name, 'menu'));
-					$ts = array('');
+					$th = [Lang::t($name, 'menu')];
+					$ts = [''];
 
-					$total_perm = array();
-					$module_perm = array();
+					$total_perm = [];
+					$module_perm = [];
 
 					// CREAZIONE ARRAY PERMESSI
 					list ($total_perm, $module_perm) = $this->createPerm($id_menu, $name, $collapse, $module_name, $default_name, $class_file, $class_name, $mvc_path, $of_platform);
@@ -195,11 +195,11 @@ class AdminrulesAdm extends Model
 
 				$tb = new Table(NULL);
 
-				$th = array(Lang::t($name, 'menu'));
-				$ts = array('');
+				$th = [Lang::t($name, 'menu')];
+				$ts = [''];
 
-				$total_perm = array();
-				$module_perm = array();
+				$total_perm = [];
+				$module_perm = [];
 
 				// CREAZIONE ARRAY PERMESSI
 				list ($total_perm, $module_perm) = $this->createPerm($id_menu, $name, $collapse, $module_name, $default_name, $class_file, $class_name, $mvc_path, $of_platform);
@@ -259,7 +259,7 @@ class AdminrulesAdm extends Model
 							$total_perm[$perm_name] = $img;
 
 							if($collapse === 'true')
-								$th = array('');//array(Lang::t($default_name, 'menu'));
+								$th = [''];//array(Lang::t($default_name, 'menu'));
 						}
 
 						list($perm_idst) = sql_fetch_row(sql_query("SELECT idst FROM %adm_role WHERE roleid = '".$perm_path.$perm_name."'"));
@@ -318,7 +318,7 @@ class AdminrulesAdm extends Model
 						$total_perm[$perm_name] = $info['image'];
 
 						if($collapse === 'true')
-							$th = array('');//array(Lang::t($default_name, 'menu'));
+							$th = [''];//array(Lang::t($default_name, 'menu'));
 					}
 
 					list($perm_idst) = sql_fetch_row(sql_query("SELECT idst FROM %adm_role WHERE roleid = '".$perm_path.$perm_name."'"));
@@ -327,7 +327,7 @@ class AdminrulesAdm extends Model
 			}
 		}
 
-		return array($total_perm, $module_perm);
+		return [$total_perm, $module_perm];
 	}
 	
 	
@@ -354,7 +354,7 @@ class AdminrulesAdm extends Model
 
 					$print_content = false;
 
-					$content = array(Lang::t($default_name, 'menu'));
+					$content = [Lang::t($default_name, 'menu')];
 
 					foreach($total_perm as $perm => $img)
 						if(isset($module_perm[$mvc_name][$perm])){
@@ -373,7 +373,7 @@ class AdminrulesAdm extends Model
 				{
 					$print_content = false;
 
-					$content = array(Lang::t($default_name, 'menu'));
+					$content = [Lang::t($default_name, 'menu')];
 
 					foreach($total_perm as $perm => $img)
 						if(isset($module_perm[$class_name][$perm])) {
@@ -422,15 +422,15 @@ class AdminrulesAdm extends Model
 		($start_index === false ? '' : $query .= " LIMIT ".$start_index.", ".$results);
 
 		$result = sql_query($query);
-		$res = array();
+		$res = [];
 
 		while(list($id_user, $userid, $firstname, $lastname) = sql_fetch_row($result))
 		{
-			$res[] = array(	'id_user' => $id_user,
+			$res[] = ['id_user' => $id_user,
 							'userid' => $this->acl_man->relativeId($userid),
 							'firstname' => $firstname,
 							'lastname' => $lastname,
-							'del' => 'ajax.adm_server.php?r=adm/adminrules/delAdmin&amp;idst='.$idst.'&amp;idstMember='.$id_user);
+							'del' => 'ajax.adm_server.php?r=adm/adminrules/delAdmin&amp;idst='.$idst.'&amp;idstMember='.$id_user];
 		}
 
 		return $res;
@@ -443,7 +443,7 @@ class AdminrulesAdm extends Model
 					." WHERE idst = '".$idst."'";
 
 		$result = sql_query($query);
-		$res = array();
+		$res = [];
 
 		while(list($id_user) = sql_fetch_row($result))
 			$res[$id_user] = $id_user;
@@ -474,9 +474,9 @@ class AdminrulesAdm extends Model
 		return sql_query($query);
 	}
 
-	public function clearAdminAssociation($idst = false, $user_selected = array())
+	public function clearAdminAssociation($idst = false, $user_selected = [])
 	{
-		if (is_numeric($user_selected)) $user_selected = array((int)$user_selected);
+		if (is_numeric($user_selected)) $user_selected = [(int)$user_selected];
 		if (!is_array($user_selected)) return false;
 		if (empty($user_selected)) return true;
 
@@ -498,7 +498,7 @@ class AdminrulesAdm extends Model
 					." WHERE groupid LIKE '".$this->rules_path."%'";
 
 		$result = sql_query($query);
-		$res = array(0 => 0);
+		$res = [0 => 0];
 
 		while(list($idst) = sql_fetch_row($result))
 			$res[$idst] = $idst;
@@ -514,7 +514,7 @@ class AdminrulesAdm extends Model
 					." ORDER BY groupid";
 
 		$result = sql_query($query);
-		$res = array(0 => '('.strtolower(Lang::t('_NONE', 'adminrules')).')');
+		$res = [0 => '('.strtolower(Lang::t('_NONE', 'adminrules')).')'];
 
 		while(list($idst, $groupid) = sql_fetch_row($result))
 			$res[$idst] = str_replace($this->rules_path, '', $groupid);
@@ -539,7 +539,7 @@ class AdminrulesAdm extends Model
 
 	public function saveSingleAdminAssociation($idst, $id_user)
 	{
-		$this->clearAdminAssociation(false, array($id_user));
+		$this->clearAdminAssociation(false, [$id_user]);
 
 		$query =	"INSERT INTO %adm_group_members"
 					." (idst, idstMember)"
@@ -554,7 +554,7 @@ class AdminrulesAdm extends Model
 			$query = "SELECT idst, groupid FROM %adm_group WHERE groupid LIKE '".$this->rules_path."%'";
 			$res = sql_query($query);
 			if (!$res) return false;
-			$output = array();
+			$output = [];
 			while (list($idst, $groupid) = sql_fetch_row($res)) {
 				$output[$idst] = $groupid;
 			}

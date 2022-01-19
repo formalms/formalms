@@ -143,7 +143,7 @@ class Man_Reservation {
 		
 		$result = sql_query($query);
 		
-		$re = array();
+		$re = [];
 		
 		while(list($subscribed) = sql_fetch_row($result))
 		{
@@ -192,7 +192,7 @@ class Man_Reservation {
 		$result = sql_query($query);
 		$num_rows = sql_num_rows($result);
 		
-		$re = array();
+		$re = [];
 		$re[0] = $lang->def('_UNDEFINITED');
 		
 		if($num_rows)
@@ -229,7 +229,7 @@ class Man_Reservation {
 		$result = sql_query($query);
 		$num_rows = sql_num_rows($result);
 		
-		$re = array();
+		$re = [];
 		$re[0] = $lang->def('_UNDEFINITED');
 		
 		if($num_rows)
@@ -247,7 +247,7 @@ class Man_Reservation {
 	 */
 	function getHours()
 	{
-		$re = array();
+		$re = [];
 		
 		$re['00'] = '00';
 		$re['01'] = '01';
@@ -284,7 +284,7 @@ class Man_Reservation {
 	 */
 	function getMinutes()
 	{
-		$re = array();
+		$re = [];
 		
 		$re['00'] = '00';
 		$re['15'] = '15';
@@ -312,7 +312,7 @@ class Man_Reservation {
 		
 		if ($num_rows)
 		{
-			$re = array();
+			$re = [];
 			
 			list($id_event, $id_course, $id_laboratory, $id_category, $title, $description, $date, $max_user, $deadline, $from_time, $to_time) = sql_fetch_row($result);
 			
@@ -336,14 +336,14 @@ class Man_Reservation {
 	
 	function getEventUserMail($id_event)
 	{
-		$mail = array();
+		$mail = [];
 		
-		$idst_user = array();
+		$idst_user = [];
 		$idst_user = $this->getSubscribedUserIdst($id_event);
 		
 		$acl_man =& Docebo::user()->getAclManager();
 		
-		$user_info = array();
+		$user_info = [];
 		$user_info =& $acl_man->getUsers($idst_user);
 		
 		if ($user_info)
@@ -371,7 +371,7 @@ class Man_Reservation {
 		
 		$result = sql_query($query);
 		
-		$re = array();
+		$re = [];
 		
 		while (list($id_event, $title) = sql_fetch_row($result))
 			$re[$id_event] = $title;
@@ -788,7 +788,7 @@ class Man_Reservation {
 		
 		if ($num_rows)
 		{
-			$re = array();
+			$re = [];
 			
 			while (list($id_event, $id_course, $id_laboratory, $id_category, $title, $description, $date, $max_user, $deadline, $from_time, $to_time, $category_name, $laboratory_name) = sql_fetch_row($result))
 			{
@@ -859,7 +859,7 @@ class Man_Reservation {
 		
 		if ($num_rows)
 		{
-			$re = array();
+			$re = [];
 			
 			while (list($id_event, $id_course, $id_laboratory, $id_category, $title, $description, $date, $max_user, $deadline, $from_time, $to_time, $category_name, $laboratory_name) = sql_fetch_row($result))
 			{
@@ -938,7 +938,7 @@ class Man_Reservation {
 		
 		if ($num_rows)
 		{
-			$re = array();
+			$re = [];
 			
 			while (list($id_event, $id_course, $id_laboratory, $id_category, $title, $description, $date, $max_user, $deadline, $from_time, $to_time, $category_name, $laboratory_name) = sql_fetch_row($result))
 			{
@@ -1017,7 +1017,7 @@ class Man_Reservation {
 		
 		if ($num_rows)
 		{
-			$re = array();
+			$re = [];
 			
 			while (list($id_event, $id_course, $id_laboratory, $id_category, $title, $description, $date, $max_user, $deadline, $from_time, $to_time, $category_name, $laboratory_name) = sql_fetch_row($result))
 			{
@@ -1134,7 +1134,7 @@ class Man_Reservation {
 		
 		$result = sql_query($query);
 		
-		$re = array();
+		$re = [];
 		
 		while ($row = sql_fetch_row)
 			$re[$id_event][] = $row[0];
@@ -1154,7 +1154,7 @@ class Man_Reservation {
 		$result = sql_query($query);
 		$num_rows = sql_num_rows($result);
 		
-		$re = array();
+		$re = [];
 		$re[0][CATEGORY_ID] = 0;
 		$re[0][CATEGORY_NAME] = $lang->def('_UNDEFINITED');
 		$re[0][CATEGORY_ID_COURSE] = 0;

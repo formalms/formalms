@@ -64,7 +64,7 @@ if ($rest_params[0]!='' || $rest_params[1]!=_REST_VALIDATOR_PARAM) {
 }
 
 // you may force a different REQUEST_METHOD
-$matches = array();
+$matches = [];
 $rest_method = $_SERVER['REQUEST_METHOD'];
 if (preg_match('/^(.*)!(DELETE|PUT|GET|POST|OPTIONS|HEAD|TRACE|CONNECT)$/', $rest_params[$last_index], $matches)) {
 	//if ($rest_method == 'POST' && preg_match('/^(.*)!(DELETE|PUT|GET|POST|OPTIONS|HEAD|TRACE|CONNECT)$/', $rest_params[$last_index], $matches)) {
@@ -84,7 +84,7 @@ switch($_SERVER['HTTP_ACCEPT']) {
         $GLOBALS['REST_API_ACCEPT'] = _REST_OUTPUT_XML;
         break;
     default:
-        $matches = array();
+        $matches = [];
         if (preg_match('/^(.*)\.(xml|json)$/', $rest_params[$last_index], $matches)) {
             // backward compatibility way
             $rest_params[$last_index] = $matches[1];
@@ -112,7 +112,7 @@ $rest_function	= $rest_params[_REST_APIMETHOD_INDEX]; //the name of module's met
 
 // extract additional parameters from GET string, void and outputtype parameter should be already avoided
 $i = _REST_APIMETHOD_INDEX + 1;
-$rest_subparams = array();
+$rest_subparams = [];
 while ($i<count($rest_params)) {//$numparams) {
 	$rest_subparams[] = $rest_params[$i];
 	$i++;

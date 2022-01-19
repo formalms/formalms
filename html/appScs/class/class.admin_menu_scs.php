@@ -39,7 +39,7 @@ class Admin_Scs extends Admin {
 	 */
 	 function getLevelOne() {
 
-		return array(); // disabling the menu
+		return []; // disabling the menu
 
 		$lang =& DoceboLanguage::createInstance('menu', $this->platform);
 
@@ -51,16 +51,16 @@ class Admin_Scs extends Admin {
 		$re_under = sql_query($query_under);
 		
 
-		$menu = array();
+		$menu = [];
 		while(list($id_main, $module_name, $token, $name, $image, $collapse, $of_platform) = sql_fetch_row($re_under)) {
 
 			if(!isset($menu[$id_main]) && checkPerm($token, true, $module_name, ( $of_platform === NULL ? $this->platform : $of_platform ) )) {
 
-				$menu[$id_main] = array('link' => 'index.php?op=change_main&new_main='.$id_main.'&of_platform='.( $of_platform === NULL ? $this->platform : $of_platform ),
+				$menu[$id_main] = ['link' => 'index.php?op=change_main&new_main='.$id_main.'&of_platform='.( $of_platform === NULL ? $this->platform : $of_platform ),
 									'name' => ( $name != '' ? $lang->def($name)  : '' ),
 									'image' => 'area_title/'.$image,
 									'collapse' => ( $collapse == 'true' ? true : false ),
-									'of_platform' => ( $of_platform === NULL ? $this->platform : $of_platform ));
+									'of_platform' => ( $of_platform === NULL ? $this->platform : $of_platform )];
 			}
 		}
 		return $menu;
@@ -76,10 +76,10 @@ class Admin_Scs extends Admin {
 		$re_menu = sql_query($query_menu);
 		list($name, $image) = sql_fetch_row($re_menu);
 
-		return array(
+		return [
 			'name' => $lang->def($name),
 			'image' => getPathImage('scs').'area_title/'.$image
-		);
+        ];
 	 }
 
 	 /**
@@ -102,15 +102,15 @@ class Admin_Scs extends Admin {
 		 ORDER BY sequence";
 		 $re_menu = sql_query($query_menu);
 
-		 $menu = array();
+		 $menu = [];
 		 while(list($id, $modname, $name, $op, $token, $of_platform) = sql_fetch_row($re_menu)) {
 
 			 if($this->user->matchUserRole('/'.( $of_platform === NULL ? $this->platform : $of_platform ).'/admin/'.$modname.'/'.$token)) {
-				 $menu[$id] = array('modname' => $modname,
+				 $menu[$id] = ['modname' => $modname,
 				 					'op' => $op,
 									'link' => 'index.php?modname='.$modname.'&op='.$op.'&of_platform='.( $of_platform === NULL ? $this->platform : $of_platform ),
 									'name' => ( $name != '' ? $lang->def($name) : $lang->def('_'.strtoupper($modname)) ),
-									'of_platform' => ( $of_platform === NULL ? $this->platform : $of_platform ) );
+									'of_platform' => ( $of_platform === NULL ? $this->platform : $of_platform )];
 			 }
 		 }
 		 return $menu;
@@ -141,11 +141,11 @@ class Admin_Managment_Scs extends Admin_Managment {
 		ORDER BY sequence";
 		$re_menu = sql_query($query_menu);
 
-		$menu = array();
+		$menu = [];
 		while(list($id, $name, $image) = sql_fetch_row($re_menu)) {
 
-		 $menu[$id] = array('name' => $lang->def($name),
-							'image' => '<img src="'.getPathImage('lms').'/menu/'.$image.'" alt="'.$lang->def($name).'" />');
+		 $menu[$id] = ['name' => $lang->def($name),
+							'image' => '<img src="'.getPathImage('lms').'/menu/'.$image.'" alt="'.$lang->def($name).'" />'];
 		}
 		return $menu;
 	}

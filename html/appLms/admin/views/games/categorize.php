@@ -1,7 +1,7 @@
 
 <?php
 
-Util::widget('kbcategorize', array(
+Util::widget('kbcategorize', [
 	'original_name'=>$data['title'],
 	'r_item_id'=>$data['id_resource'],
 	'r_type'=>$data['type_of'],
@@ -9,6 +9,6 @@ Util::widget('kbcategorize', array(
 	'r_param'=>$r_param,
 	'back_url'=>$back_url,
 	'form_url'=>$form_url,
-	));
+]);
 
 ?>

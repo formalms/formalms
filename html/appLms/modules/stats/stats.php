@@ -154,12 +154,12 @@ class StatOrg_TreeView extends Org_TreeView {
 				$this->tdb->stat_filter_on_items = TRUE;
 				$totC = getSubStatStatusCount(	$this->stat_idUser,
 												$this->tdb->idCourse,
-												array( 'completed', 'passed'),
+												['completed', 'passed'],
 												$stack[$level]['folder'],
 												$this->tdb);
 				$totF = getSubStatStatusCount(	$this->stat_idUser,
 												$this->tdb->idCourse,
-												array( 'failed'),
+												['failed'],
 												$stack[$level]['folder'],
 												$this->tdb);
 				$tot = count( $this->tdb->getDescendantsId($stack[$level]['folder']) );
@@ -280,7 +280,7 @@ function statuserfilter() {
 	$aclManager->setContext('/lms/course/'.(int)$_SESSION['idCourse'].'/group');
 
 
-	$arr_groups = array(STATFILTER_ALL_GROUP => $lang->def('_ALL'));
+	$arr_groups = [STATFILTER_ALL_GROUP => $lang->def('_ALL')];
 	foreach( $arr_result_groups as $idst_group => $info_group ) {
 		if( !$info_group[ACL_INFO_GROUPHIDDEN] )
 			$arr_groups[$idst_group] = $aclManager->relativeId($info_group[ACL_INFO_GROUPID]);
@@ -298,7 +298,7 @@ function statuserfilter() {
 	) );
 
 	// ------ Filter on status
-	$arr_status = array( STATFILTER_ALL_STATUS => $lang->def('_FILTERSTATUSSELECTONEOPTION') );
+	$arr_status = [STATFILTER_ALL_STATUS => $lang->def('_FILTERSTATUSSELECTONEOPTION')];
 	$arr_status = $arr_status + $cs->getUserStatus();
 	$out->add( $form->getDropdown(
 		$lang->def('_ORDER_BY'),
@@ -316,7 +316,7 @@ function statuserfilter() {
 
 	//is there more any edition ?
 	if (sql_num_rows($res) > 0) {
-		$arr_editions = array(STATFILTER_ALL_EDITION => $lang->def('_FILTEREDITIONSELECTONEOPTION'));
+		$arr_editions = [STATFILTER_ALL_EDITION => $lang->def('_FILTEREDITIONSELECTONEOPTION')];
 
 		//list of editions for the dropdown, in the format: "[code] name (date_begin - date_end)"
 		while ($einfo = sql_fetch_object($res)) {
@@ -358,7 +358,7 @@ function statuserfilter() {
 
 	//is there more any edition ?
 	if (sql_num_rows($res) > 0) {
-		$arr_date = array(STATFILTER_ALL_EDITION => $lang->def('_FILTEREDITIONSELECTONEOPTION'));
+		$arr_date = [STATFILTER_ALL_EDITION => $lang->def('_FILTEREDITIONSELECTONEOPTION')];
 
 		//list of editions for the dropdown, in the format: "[code] name (date_begin - date_end)"
 		while ($einfo = sql_fetch_object($res)) {
@@ -452,14 +452,14 @@ function statuserfilter() {
                 $total_user = count($students);
 	}
         
-	$content_h 	= array(
+	$content_h 	= [
 		$lang->def('_USERNAME'),
 		$lang->def('_STATS_FULLNAME'),
 		$lang->def('_STATUS'),
 		$lang->def('_LEARNING_OBJECTS'),
 		$lang->def('_PROGRESS')
-		);
-	$type_h 	= array('', '', 'image', 'image', 'image');
+    ];
+	$type_h 	= ['', '', 'image', 'image', 'image'];
 
 	$tabStat->setColsStyle($type_h);
 	$tabStat->addHead($content_h);
@@ -496,11 +496,11 @@ function statuserfilter() {
 													FALSE );
 				$totComplete = getStatStatusCount(	$idst,
 													(int)$_SESSION['idCourse'],
-													array( 'completed', 'passed' )
+													['completed', 'passed']
 													);
 				$totFailed = getStatStatusCount(	$idst,
 													(int)$_SESSION['idCourse'],
-													array( 'failed' )
+													['failed']
 													);
 				$stat_status = $cs->getUserStatusTr( $user_course_info['status'] );
 
@@ -509,11 +509,11 @@ function statuserfilter() {
 				     if($totComplete)
 				     {
 	                    // now print entry
-	        			$content = array('<a href="index.php?modname=stats&amp;op=statoneuser&amp;idUser='.$idst.'" >'
+	        			$content = ['<a href="index.php?modname=stats&amp;op=statoneuser&amp;idUser='.$idst.'" >'
 	        							.$aclManager->relativeId($user_info[ACL_INFO_USERID]).'</a>',
 	        						$user_info[ACL_INFO_LASTNAME].'&nbsp;'.$user_info[ACL_INFO_FIRSTNAME],
 	        						'<a href="index.php?modname=stats&amp;op=modstatus&amp;idUser='.$idst.'">'
-	        						.$stat_status.'</a>');
+	        						.$stat_status.'</a>'];
 
 	        			$content[] = $totComplete.'/'.$totFailed.'/'.$totItems;
 	        			$content[] = renderProgress($totComplete,$totFailed,$totItems);
@@ -523,11 +523,11 @@ function statuserfilter() {
 	            else
 	            {
 	                // now print entry
-	    			$content = array('<a href="index.php?modname=stats&amp;op=statoneuser&amp;idUser='.$idst.'" >'
+	    			$content = ['<a href="index.php?modname=stats&amp;op=statoneuser&amp;idUser='.$idst.'" >'
 	    							.$aclManager->relativeId($user_info[ACL_INFO_USERID]).'</a>',
 	    						$user_info[ACL_INFO_LASTNAME].'&nbsp;'.$user_info[ACL_INFO_FIRSTNAME],
 	    						'<a href="index.php?modname=stats&amp;op=modstatus&amp;idUser='.$idst.'">'
-	    						.$stat_status.'</a>');
+	    						.$stat_status.'</a>'];
 
 	    			$content[] = $totComplete.'/'.$totFailed.'/'.$totItems;
 	    			$content[] = renderProgress($totComplete,$totFailed,$totItems);
@@ -582,10 +582,10 @@ function statoneuser() {
 	$values = $item->otherValues;
 
 	$param = $treeView->printState(FALSE);
-	$arrBack_Url = array( 	'address' => 'index.php?modname=stats&op=statoneuser&idUser='.$treeView->stat_idUser,
+	$arrBack_Url = ['address' => 'index.php?modname=stats&op=statoneuser&idUser='.$treeView->stat_idUser,
 							'end_address' => 'index.php?modname=stats&op=statoneuser&idUser='.$treeView->stat_idUser,
 							'param' => $param
-						);
+    ];
 
 	require_once(_lms_.'/class.module/track.object.php');
 	//find idTrack
@@ -644,13 +644,13 @@ function statcourse() {
 	// ------- Filter on group
 	$arr_idst = $aclManager->getBasePathGroupST('/lms/course/'.(int)$_SESSION['idCourse'].'/');
 	$arr_result_groups = $aclManager->getGroups($arr_idst);
-	$arr_groups = array('' => $lang->def('_ALL'));
+	$arr_groups = ['' => $lang->def('_ALL')];
 
 	$std_content = $aclManager->getContext();
 	$aclManager->setContext('/lms/course/'.(int)$_SESSION['idCourse'].'/group');
 
 
-	$arr_groups = array('' => $lang->def('_ALL'));
+	$arr_groups = ['' => $lang->def('_ALL')];
 	foreach( $arr_result_groups as $idst_group => $info_group ) {
 		if( !$info_group[ACL_INFO_GROUPHIDDEN] )
 			$arr_groups[$idst_group] = $aclManager->relativeId($info_group[ACL_INFO_GROUPID]);
@@ -679,10 +679,10 @@ function statcourse() {
 		$values = $item->otherValues;
 
 		$param = $treeView->printState(FALSE);
-		$arrBack_Url = array('address' => 'index.php?modname=stats&op=statcourse',
+		$arrBack_Url = ['address' => 'index.php?modname=stats&op=statcourse',
 							 'end_address' => 'index.php?modname=stats&op=statcourse',
 							 'param' => $param
-						 );
+        ];
 		$lo = createLOTrack( NULL,
 							$values[REPOFIELDOBJECTTYPE],
 							$values[REPOFIELDIDRESOURCE],
@@ -785,7 +785,7 @@ function statitem() {
 		return;
 	}
 
-	$arr_access = array();
+	$arr_access = [];
 	while( list($value) = sql_fetch_row( $rs ) )
 		$arr_access[] = $value;
 
@@ -809,8 +809,8 @@ function statitem() {
 
 		$result_quest = sql_query($query_quest);
 
-		$type_h = array('');
-		$cont_h = array($lang->def('_ANSWER'));
+		$type_h = [''];
+		$cont_h = [$lang->def('_ANSWER')];
 
 		while (list($id_quest, $title_quest) = sql_fetch_row($result_quest))
 		{
@@ -826,7 +826,7 @@ function statitem() {
 
 			while (list($answer) = sql_fetch_row($result_answer))
 			{
-				$cont = array();
+				$cont = [];
 				$cont[] = $answer;
 
 				$tb->addBody($cont);
@@ -849,7 +849,7 @@ function statitem() {
 		$aclManager->setContext('/lms/course/'.(int)$_SESSION['idCourse'].'/group');
 
 
-		$arr_groups = array(-1 => $lang->def('_ALL'));
+		$arr_groups = [-1 => $lang->def('_ALL')];
 		foreach( $arr_result_groups as $idst_group => $info_group ) {
 			if( !$info_group[ACL_INFO_GROUPHIDDEN] )
 				$arr_groups[$idst_group] = $aclManager->relativeId($info_group[ACL_INFO_GROUPID]);
@@ -866,11 +866,11 @@ function statitem() {
 									$group_filter) );
 
 		// ------ Filter on status
-		$arr_status = array( 	-1 => $lang->def('_FILTERSTATUSSELECTONEOPTION'),
+		$arr_status = [-1 => $lang->def('_FILTERSTATUSSELECTONEOPTION'),
 								_CUS_SUBSCRIBED => $lang->def('_USER_STATUS_SUBS'),
 								_CUS_BEGIN 		=> $lang->def('_USER_STATUS_BEGIN'),
 								_CUS_END 		=> $lang->def('_END'),
-								_CUS_SUSPEND 	=> $lang->def('_SUSPENDED') );
+								_CUS_SUSPEND 	=> $lang->def('_SUSPENDED')];
 		$out->add( $form->getDropdown( 	$lang->def('_STATUS'),
 										'status_filter',
 										'status_filter',
@@ -881,13 +881,13 @@ function statitem() {
 
 
 		//-----------------------------------------
-		$content_h 	= array(
+		$content_h 	= [
 			$lang->def('_USERNAME'),
 			$lang->def('_STATS_FULLNAME'),
 			$lang->def('_STATUS'),
 			$lang->def('_PROGRESS')
-			);
-		$type_h 	= array('', '', 'image', 'image', '');
+        ];
+		$type_h 	= ['', '', 'image', 'image', ''];
 
 		$tabStat->setColsStyle($type_h);
 		$tabStat->addHead($content_h);
@@ -906,12 +906,12 @@ function statitem() {
 					// NOTE: How to get stat_status for users?
 					$stat_status = $cs->getUserStatusTr($user_course_info['status']);
 					$tabStat->addBody(
-						array( '<a href="index.php?modname=stats&amp;op=statoneuseroneitem&amp;idUser='.$idst.'&amp;idItem='.$idItem.'" >'
+						['<a href="index.php?modname=stats&amp;op=statoneuseroneitem&amp;idUser='.$idst.'&amp;idItem='.$idItem.'" >'
 									.$aclManager->relativeId($user_info[ACL_INFO_USERID]).'</a>',
 								$user_info[ACL_INFO_LASTNAME].'&nbsp;'.$user_info[ACL_INFO_FIRSTNAME],
 								$stat_status,
 								printReport( $status, TRUE )
-								)
+                        ]
 						);
 				}
 			}

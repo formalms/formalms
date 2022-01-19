@@ -12,12 +12,12 @@ switch ($step) {
 		echo Form::openElementSpace();
 		echo Form::getFilefield(Lang::t('_GROUP_USER_IMPORT_FILE', 'admin_directory'), 'file_import', 'file_import');
 		//echo Form::getTextfield(Lang::t('_GROUP_USER_IMPORT_SEPARATOR', 'admin_directory'), 'import_separator', 'import_separator', 1, ',');
-		echo Form::getRadioSet(Lang::t('_GROUP_USER_IMPORT_SEPARATOR', 'admin_directory'), 'import_separator', 'import_separator', array(
+		echo Form::getRadioSet(Lang::t('_GROUP_USER_IMPORT_SEPARATOR', 'admin_directory'), 'import_separator', 'import_separator', [
 			Lang::t('_AUTODETECT', 'standard') => 'auto',
 			'<b>,</b>' => 'comma',
 			'<b>;</b>' => 'dotcomma',
 			Lang::t('_MANUAL', 'standard').':&nbsp;'.Form::getInputTextfield('', 'import_separator_manual', 'import_separator_manual', "", "", 255) => 'manual'
-		), 'auto');
+        ], 'auto');
 		echo Form::getCheckbox(Lang::t('_GROUP_USER_IMPORT_HEADER', 'admin_directory'), 'import_first_row_header', 'import_first_row_header', 'true', true);
 		echo Form::getTextfield(Lang::t('_GROUP_USER_IMPORT_CHARSET', 'admin_directory'), 'import_charset', 'import_charset', 20, 'UTF-8');
 
@@ -63,44 +63,44 @@ switch ($step) {
                 echo Form::getRadioSet(Lang::t('_ACTION_ON_USERS', 'user_managment'),
 			'action_on_users',
 			'action_on_users',
-			array(
+			[
 				Lang::t('_CREATE_AND_UPDATE', 'user_managment') => 'create_and_update',
 				Lang::t('_ONLY_CREATE', 'user_managment') => 'only_create',
 				//Lang::t('_CREATE_ALL', 'user_managment') => 'create_all',
 				Lang::t('_ONLY_UPDATE', 'user_managment') => 'only_update'
-			),
+            ],
 			'only_create'
 		);
                 
                 echo Form::getRadioSet(Lang::t('_FORCE_PASSWORD_CHANGE', 'admin_directory'),
 			'pwd_force_change_policy',
 			'pwd_force_change_policy',
-			array(
+			[
 				Lang::t('_NO', 'standard') => 'false',
 				Lang::t('_YES', 'standard') => 'true',
 				Lang::t('_SERVERINFO', 'configuration') => 'by_setting'
-			),
+            ],
 			'false'
 		);
                 
                 echo Form::getRadioSet(Lang::t('_SET_PASSWORD', 'user_managment'),
 			'set_password',
 			'set_password',
-			array(
+			[
 				Lang::t('_FROM_FILE', 'user_managment') => 'from_file',
 				//Lang::t('_INSERT_EMPTY', 'user_managment') => 'insert_empty',
 				Lang::t('_INSERT_ALL', 'user_managment') => 'insert_all'
-			),
+            ],
 			'from_file'
 		);
                 
                 echo Form::getRadioSet(Lang::t('_PASSWORD_TO_INSERT', 'user_managment'),
 			'password_to_insert',
 			'password_to_insert',
-			array(
+			[
 				Lang::t('_AUTOMATIC_PASSWORD', 'user_managment') => 'use_automatic_password',
 				Lang::t('_MANUAL_PASSWORD', 'user_managment').': '.Form::getInputTextfield('', 'manual_password', 'manual_password', '', '', 50) => 'use_manual_password'
-			),
+            ],
 			'use_automatic_password'
 		);
                 //echo Form::getTextfield(Lang::t('_MANUAL_PASSWORD', 'user_managment'), 'manual_password', 'manual_password', 50, '');

@@ -26,10 +26,10 @@ class KbAlms extends Model {
 	}
 
 	public function getPerm() {
-		return array(
+		return [
 			'view'	=> 'standard/view.png',
 			'mod'		=> 'standard/edit.png'
-		);
+        ];
 	}
 
 
@@ -55,7 +55,7 @@ class KbAlms extends Model {
 	 *               plus the id_arr data with only the id of the resouces found.
 	 */
 	public function getResources($folder_id, $start=false, $limit=false, $sort=false, $dir=false, $where=false, $search=false, $count=false, $all_if_root=false, $show_what=true) {
-		$res =array("data"=>array(), "id_arr"=>array(), "count"=>-1);
+		$res = ["data"=> [], "id_arr"=> [], "count"=>-1];
 
 		$fields ="*";
 		$qtxt ="SELECT ".$fields." FROM %lms_kb_res as kr ";
@@ -73,12 +73,12 @@ class KbAlms extends Model {
 
 			$_where ='(';
 
-			$matches =array();
+			$matches = [];
 			preg_match_all("/[\\\\\"]([\\w\\s]+)[\\\\\"]|([\\S]+)/is", $search, $matches);
 			$search_arr =$matches[0];
 			//$res['matches']=$matches; $res['matches']['mm']=$search;
 
-			$where_arr =array();
+			$where_arr = [];
 			foreach($search_arr as $val) {
 				$s =trim($val, '\" '); //remove spaces or quotes
 				if (!empty($s)) {
@@ -92,7 +92,7 @@ class KbAlms extends Model {
 			}
 
 			//$search_arr =explode(" ", $search);
-			$tag_search =array();
+			$tag_search = [];
 			foreach($search_arr as $kw) {
 				if (strlen($kw) > 2) { // we only search words with a length > of 2
 					$tag_search[]="'".trim($kw, '\" ')."'";  //remove spaces or quotes
@@ -108,7 +108,7 @@ class KbAlms extends Model {
 					AND rel.rel_type='tag'";
 
 				$tf_q =$this->db->query($tf_qtxt);
-				$found_by_tag =array();
+				$found_by_tag = [];
 				while($row = $this->db->fetch_array($tf_q)) {
 					if (!in_array($row['res_id'], $found_by_tag)) {
 						$found_by_tag[]=$row['res_id'];
@@ -210,7 +210,7 @@ class KbAlms extends Model {
 	 * of the fields key will be used for the comparation operator
 	 */
 	private function _parseValueArr($fields, $compare=false) {
-		$res =array();
+		$res = [];
 
 		foreach($fields as $key=>$val) {
 			if ($compare) { // caop = compare/assign operator
@@ -241,7 +241,7 @@ class KbAlms extends Model {
 			for ($i=0; $i<count($list); $i++) $list[$i] = (int)$list[$i];
 
 			//languages
-			$names = array();
+			$names = [];
 			$query = "SELECT id_dir, node_title FROM %lms_kb_tree_info WHERE lang_code='".getLanguage()."'";
 			$res = $this->db->query($query);
 			while(list($id_dir, $node_title) = $this->db->fetch_row($res)) {
@@ -281,7 +281,7 @@ class KbAlms extends Model {
 			WHERE t1.parent_id = '".(int)$id_node."' ORDER BY t2.node_title";
 		$re = $this->db->query($search_query);
 
-		$output = array();
+		$output = [];
 		while(list($id, $node_title, $left, $right) = $this->db->fetch_row($re)) {
 			$is_node_visible = true;
 
@@ -322,7 +322,7 @@ class KbAlms extends Model {
 
 			//set node for output
 			if ($is_node_visible)
-				$output[] = array('id'=>$id,'label'=> $label,'is_leaf'=>$is_leaf, 'count_content' => $count, 'style' => $style);
+				$output[] = ['id'=>$id,'label'=> $label,'is_leaf'=>$is_leaf, 'count_content' => $count, 'style' => $style];
 		}
 
 		return array_values($output);
@@ -330,7 +330,7 @@ class KbAlms extends Model {
 
 
 	public function getKbInitialNodes($node_id, $userFilter = false) {
-		$results = array();
+		$results = [];
 
 		$is_subadmin = false;
 		if ($userFilter) {
@@ -350,7 +350,7 @@ class KbAlms extends Model {
 			if ($folder > 0) {
 				for ($i=0; $i<count($ref); $i++) {
 					if ($ref[$i]['node']['id'] == $folder) {
-						$ref[$i]['children'] = array();
+						$ref[$i]['children'] = [];
 						$ref =& $ref[$i]['children'];
 						break;
 					}
@@ -380,14 +380,14 @@ class KbAlms extends Model {
 							$label = $code_label.$node_title;
 							$is_leaf = false;
 							$count = $count_subnodes;
-							$node_options = array();
+							$node_options = [];
 							$style = 'disabled';
 						} else {
 							//not forbidden, check as normal
 							$label = $code_label.$node_title;//end(explode('/', $path));
 							$is_leaf = !$has_visible_subnodes;
 							$count_subnodes = $count_subnodes;
-							$node_options = array();
+							$node_options = [];
 							$style = false;
 						}
 
@@ -397,23 +397,23 @@ class KbAlms extends Model {
 
 					$is_leaf = ($right-$left) == 1;
 					$label = $code_label.$node_title;
-					$node_options = array();//getNodeOptions($id_org, $is_leaf);
+					$node_options = [];//getNodeOptions($id_org, $is_leaf);
 					$count_subnodes = (int)(($right-$left-1)/2);
 					$style = false;
 
 				}
 
 				if ($is_node_visible)
-					$ref[] = array(
-						'node' => array(
+					$ref[] = [
+						'node' => [
 							'id' => $node_id,
 							'label' => $label,
 							'is_leaf' => $is_leaf,
 							'count_content' => $count_subnodes,
 							'options' => $node_options,
 							'style' => $style
-						)
-					);
+                        ]
+                    ];
 			}
 		}
 
@@ -444,7 +444,7 @@ class KbAlms extends Model {
 
 	public function getFolderParents($node_id) {
 		if ($node_id <= 0) {
-			return array();
+			return [];
 		} else {
 			list($iLeft, $iRight) = $this->getFolderLimits($node_id);
 			$qtxt = "SELECT tree.node_id, info.node_title FROM %lms_kb_tree as tree
@@ -454,7 +454,7 @@ class KbAlms extends Model {
 				OR tree.node_id=".(int)$node_id."
 				ORDER BY tree.iLeft DESC";
 			$q =$this->db->query($qtxt);
-			$res =array();
+			$res = [];
 			while($row =$this->db->fetch_assoc($q)) {
 				$res[$row['node_id']]=$row['node_title'];
 			}
@@ -468,7 +468,7 @@ class KbAlms extends Model {
 	 * returns an ordered list of ids (like a path)
 	 */
 	public function getOpenedFolders($node_id) {
-		$folders = array(0);
+		$folders = [0];
 		if ($node_id <= 0) return $folders;
 		list($ileft, $iright) = $this->getFolderLimits($node_id);
 		$query = "SELECT node_id FROM %lms_kb_tree WHERE iLeft<=".$ileft." AND iRight>=".$iright." AND node_id>0 ORDER BY iLeft";
@@ -490,7 +490,7 @@ class KbAlms extends Model {
 			if (count($userFilter) > 0) {
 				$query_filter .= " AND t1.node_id IN (".implode(',', $userFilter).")";
 			} else
-				return array();
+				return [];
 		}
 
 		$lang_code = ($language == false ? getLanguage() : $language);
@@ -500,16 +500,16 @@ class KbAlms extends Model {
 			WHERE t1.parent_id = '".(int)$node_id."' ".$query_filter." ORDER BY t2.node_title";
 		$re = $this->db->query($search_query);
 
-		$output = array();
+		$output = [];
 		while(list($id, $parent, $level, $ileft, $iright, $node_title) = $this->db->fetch_row($re)) {
-			$output[] = array(
+			$output[] = [
 				$id,
 				$parent,
 				$level,
 				$ileft,
 				$iright,
 				$node_title,
-			);
+            ];
 		}
 
 		return $output;
@@ -523,13 +523,13 @@ class KbAlms extends Model {
 		if ($node_id <= 0) { //root node, not present in DB, but it's "virtual"
 			list($left, $right) = $this->getFolderLimits(0);
 			if ($array) {
-				return array(
+				return [
 					'node_id' => 0,
 					'parent_id' => 0,
 					'lev' => 0,
 					'iLeft' => $left,
 					'iRight' => $right
-				);
+                ];
 			} else {
 				$obj = new stdClass();
 				$obj->node_id = 0;
@@ -571,7 +571,7 @@ class KbAlms extends Model {
 
 		$query = "SELECT * FROM %lms_kb_tree_info WHERE id_dir=".(int)$node_id;
 		$res = $this->db->query($query);
-		$output = ($array ? array() : new stdClass());
+		$output = ($array ? [] : new stdClass());
 		while ($row = $this->db->fetch_obj($res)) {
 			if ($array)
 				$output[$row->lang_code] = $row->node_title;
@@ -611,7 +611,7 @@ class KbAlms extends Model {
 			$level = $parent->lev + 1;
 
 			//$this->db->query("START TRANSACTION");
-			$new_limits = array('iLeft' => $parent->iRight, 'iRight' => $parent->iRight);
+			$new_limits = ['iLeft' => $parent->iRight, 'iRight' => $parent->iRight];
 
 			//updating left limits
 			$query = "UPDATE %lms_kb_tree SET iRight=iRight+2 WHERE iRight>=".$new_limits['iRight'];
@@ -633,7 +633,7 @@ class KbAlms extends Model {
 			if ($id) {
 
 				//insert translations in database
-				$conditions = array();
+				$conditions = [];
 				foreach ($langs as $lang_code => $node_title) { //TO DO: check if lang_code exists ...
 					$conditions[] = "(".(int)$id.", '".$lang_code."', '".$node_title."')";
 				}
@@ -659,14 +659,14 @@ class KbAlms extends Model {
 		if ($node_id <= 0) return false;
 
 		list($left, $right) = $this->getFolderLimits($node_id);
-		$limits = array('iLeft'=>$left, 'iRight'=>$right);
+		$limits = ['iLeft'=>$left, 'iRight'=>$right];
 		if ($onlyLeaf) {
 			if ( ((int)$limits['iRight'] - (int)$limits['iLeft']) > 1 ) return FALSE;
 		}
 
 		$query = "SELECT node_id FROM %lms_kb_tree WHERE iLeft>=".$limits['iLeft']." AND iRight<=" .$limits['iRight'];
 		$res = $this->db->query($query);
-		$nodes = array();
+		$nodes = [];
 		while (list($node) = $this->db->fetch_row($res)) $nodes[] = $node;
 
 		$query = "DELETE FROM %lms_kb_tree WHERE iLeft>=".$limits['iLeft']." AND iRight<=" .$limits['iRight'];
@@ -706,7 +706,7 @@ class KbAlms extends Model {
 		$qtxt ="SELECT lang_code FROM %lms_kb_tree_info WHERE id_dir=".(int)$node_id;
 		$q =$this->db->query($qtxt);
 
-		$avail_lang =array();
+		$avail_lang = [];
 		while($row=$this->db->fetch_assoc($q)) {
 			$avail_lang[]=$row['lang_code'];
 		}
@@ -752,7 +752,7 @@ class KbAlms extends Model {
 
 
 	public function getEnvParentInfo($parent_id_arr, $r_env) {
-		$res =array();
+		$res = [];
 		$qtxt ='';
 
 		if (empty($parent_id_arr)) {
@@ -800,14 +800,14 @@ class KbAlms extends Model {
 
 	public function getCoursesVisibleToUser($user_id=false) {
 		require_once(_lms_.'/lib/lib.subscribe.php');
-		$res =array();
+		$res = [];
 		$user_id =($user_id > 0 ? $user_id : getLogUserId());
 
-		$allowed_status =array(
+		$allowed_status = [
 			_CUS_SUBSCRIBED,
 			_CUS_BEGIN,
 			_CUS_END,
-		);
+        ];
 
 		$qtxt ="SELECT t1.idCourse, t2.name, t1.idUser, t1.status FROM  %lms_courseuser as t1,
 			%lms_course as t2
@@ -826,7 +826,7 @@ class KbAlms extends Model {
 
 
 	public function getCommunicationsVisibleToUser($user_id=false) {
-		$res =array();
+		$res = [];
 
 		if (empty($user_id)) {
 			$arr_st =Docebo::user()->getArrst();
@@ -835,7 +835,7 @@ class KbAlms extends Model {
 			$acl =Docebo::user()->getACL();
 			$arr_st =$acl->getUserAllST($user_id);
 		}
-		if (empty($arr_st)) { $arr_st =array(0); }
+		if (empty($arr_st)) { $arr_st = [0]; }
 
 		$qtxt ="SELECT t1.id_comm, t2.title FROM %lms_communication_access as t1,
 			%lms_communication as t2
@@ -852,7 +852,7 @@ class KbAlms extends Model {
 
 
 	public function getGamesVisibleToUser($user_id=false) {
-		$res =array();
+		$res = [];
 
 		if (empty($user_id)) {
 			$arr_st =Docebo::user()->getArrst();
@@ -862,7 +862,7 @@ class KbAlms extends Model {
 			$arr_st =$acl->getUserAllST($user_id);
 		}
 		$arr_st =Docebo::user()->getArrst();
-		if (empty($arr_st)) { $arr_st =array(0); }
+		if (empty($arr_st)) { $arr_st = [0]; }
 
 		$qtxt ="SELECT t1.id_game, t2.title FROM %lms_games_access as t1,
 			%lms_games as t2
@@ -879,12 +879,12 @@ class KbAlms extends Model {
 
 
 	public function getSearchFilter($user_id=false, $filter_text=false, $course_filter=false, $res_id=false) {
-		$res =array(
+		$res = [
 			'show_what'=>(Get::sett('kb_show_uncategorized') == 'on' ? 'all' : 'categorized'),
 			'show_only_visible_by_user'=>(Get::sett('kb_filter_by_user_access') == 'on' ? true : false),
 			'where'=>false,
 			'search'=>'',
-		);
+        ];
 
 		if ($course_filter === false) {
 			$course_filter =-1;
@@ -897,17 +897,17 @@ class KbAlms extends Model {
 
 			$courses_arr = array_keys($this->getCoursesVisibleToUser($user_id));
 			if (empty($courses_arr)) {
-				$courses_arr = array(0);
+				$courses_arr = [0];
 			}
 
 			$comm_arr = array_keys($this->getCommunicationsVisibleToUser($user_id));
 			if (empty($comm_arr)) {
-				$comm_arr = array(0);
+				$comm_arr = [0];
 			}
 
 			$games_arr = array_keys($this->getGamesVisibleToUser($user_id));
 			if (empty($games_arr)) {
-				$games_arr = array(0);
+				$games_arr = [0];
 			}
 
 			$where.="( " .

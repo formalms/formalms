@@ -68,7 +68,7 @@ class qformat_gift {
         // splits up comment around # marks
         // returns an array of true/false feedback
         $bits = explode('#',$comment);
-        $feedback = array('wrong' => $bits[0]);
+        $feedback = ['wrong' => $bits[0]];
         if (count($bits) >= 2) {
             $feedback['right'] = $bits[1];
         } else {
@@ -80,8 +80,8 @@ class qformat_gift {
     function escapedchar_pre($string) {
         //Replaces escaped control characters with a placeholder BEFORE processing
         
-        $escapedcharacters = array("\\:",    "\\#",    "\\=",    "\\{",    "\\}",    "\\~",    "\\n"   );  //dlnsk
-        $placeholders      = array("&&058;", "&&035;", "&&061;", "&&123;", "&&125;", "&&126;", "&&010" );  //dlnsk
+        $escapedcharacters = ["\\:",    "\\#",    "\\=",    "\\{",    "\\}",    "\\~",    "\\n"];  //dlnsk
+        $placeholders      = ["&&058;", "&&035;", "&&061;", "&&123;", "&&125;", "&&126;", "&&010"];  //dlnsk
 
         $string = str_replace("\\\\", "&&092;", $string);
         $string = str_replace($escapedcharacters, $placeholders, $string);
@@ -91,8 +91,8 @@ class qformat_gift {
 
     function escapedchar_post($string) {
         //Replaces placeholders with corresponding character AFTER processing is done
-        $placeholders = array("&&058;", "&&035;", "&&061;", "&&123;", "&&125;", "&&126;", "&&010"); //dlnsk
-        $characters   = array(":",     "#",      "=",      "{",      "}",      "~",      "\n"   ); //dlnsk
+        $placeholders = ["&&058;", "&&035;", "&&061;", "&&123;", "&&125;", "&&126;", "&&010"]; //dlnsk
+        $characters   = [":",     "#",      "=",      "{",      "}",      "~",      "\n"]; //dlnsk
         $string = str_replace($placeholders, $characters, $string);
         return $string;
     }
@@ -117,8 +117,8 @@ class qformat_gift {
 	
 	function readquestions($lines, $autocreate_categories = false) {
      
-        $questions = array();
-        $currentquestion = array();
+        $questions = [];
+        $currentquestion = [];
 
         foreach ($lines as $line) {
             $line = trim($line);
@@ -127,7 +127,7 @@ class qformat_gift {
                     if ($question = $this->readquestion($currentquestion, $autocreate_categories)) {
                         $questions[] = $question;
                     }
-                    $currentquestion = array();
+                    $currentquestion = [];
                 }
             } else {
                 $currentquestion[] = $line;
@@ -215,13 +215,13 @@ class qformat_gift {
                         //$field['code'].'_'.$key.'">'.$value.':</label> '
                     if ($value == $newcf) {
                         // setto l'array cf
-                        $arrValueCustomField [] = array("idField" => $field['id'], "nameField" => $field['code'], "idSon" => $key, "nameSon" => $value);
+                        $arrValueCustomField [] = ["idField" => $field['id'], "nameField" => $field['code'], "idSon" => $key, "nameSon" => $value];
                         $found = true;
                     }
                 }
                 if ($found == false) {
                     // se non lo ha trovato metto valore zero
-                    $arrValueCustomField [] = array("idField" => $field['id'], "nameField" => $field['code'], "idSon" => 0, "nameSon" => "");
+                    $arrValueCustomField [] = ["idField" => $field['id'], "nameField" => $field['code'], "idSon" => 0, "nameSon" => ""];
                 }
                 // tolgo dalla stringa il customfield trattato
                 $text = trim(substr($text, strlen($field['code'])+strlen('\$CUSTOMFIELD:')+strlen($newcf)));
@@ -352,7 +352,7 @@ class qformat_gift {
                 // strip comments to check for TrueFalse question
                 $truefalse_check = trim(substr($answertext, 0, strpos($answertext,"#")));
             }
-            $valid_tf_answers = array("T", "TRUE", "F", "FALSE");
+            $valid_tf_answers = ["T", "TRUE", "F", "FALSE"];
             if(in_array($truefalse_check, $valid_tf_answers)) {
 				
 				$question->qtype = 'truefalse';
@@ -620,8 +620,8 @@ class qformat_gift {
 	function repchar( $text, $format=0 ) {
 	    // escapes 'reserved' characters # = ~ { ) : and removes new lines
 	    // also pushes text through format routine
-	    $reserved = array( '#', '=', '~', '{', '}', ':', "\n","\r");
-	    $escaped =  array( '\#','\=','\~','\{','\}','\:','\n',''  ); //dlnsk
+	    $reserved = ['#', '=', '~', '{', '}', ':', "\n","\r"];
+	    $escaped =  ['\#','\=','\~','\{','\}','\:','\n','']; //dlnsk
 	
 	    $newtext = str_replace( $reserved, $escaped, $text ); 
 	    $format = 0; // turn this off for now

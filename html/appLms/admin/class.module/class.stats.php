@@ -28,11 +28,11 @@ class Module_Stats extends LmsAdminModule {
 	// Function for permission managment
 
 	function getAllToken($op) {
-		return array(
-			'view' => array( 	'code' => 'view',
+		return [
+			'view' => ['code' => 'view',
 								'name' => '_VIEW',
-								'image' => 'standard/view.png')
-		);
+								'image' => 'standard/view.png']
+        ];
 	}
 }
 

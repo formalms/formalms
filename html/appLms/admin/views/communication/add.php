@@ -1,8 +1,8 @@
 <?php
-echo getTitleArea(array(
+echo getTitleArea([
 	'index.php?r=alms/communication/show' => Lang::t('_COMMUNICATIONS', 'communication'),
 	Lang::t('_ADD', 'communication')
-));
+]);
 ?>
 <div class="std_block">
 <?php
@@ -13,11 +13,11 @@ echo Form::openForm('add_comm', 'index.php?r=alms/communication/insert', false, 
 	.Form::openElementSpace()
 	.Form::getTextfield(Lang::t('_TITLE', 'communication'), 'title', 'title', 255, Get::req('title', DOTY_MIXED, $data['title']) )
 	.Form::getDatefield(Lang::t('_DATE', 'communication'), 'publish_date', 'publish_date', Get::req('publish_date', DOTY_MIXED, $data['publish_date']) )
-	.Form::getRadioSet(Lang::t('_TYPE', 'communication'), 'type_of', 'type_of', array(
+	.Form::getRadioSet(Lang::t('_TYPE', 'communication'), 'type_of', 'type_of', [
 		Lang::t('_NONE', 'communication') => 'none',
 		Lang::t('_LONAME_item', 'storage') => 'file',
 		Lang::t('_LONAME_scormorg', 'storage') => 'scorm',
-	), Get::req('type_of', DOTY_STRING, $data['type_of']) )
+    ], Get::req('type_of', DOTY_STRING, $data['type_of']) )
 	.Form::getTextarea(Lang::t('_DESCRIPTION', 'communication'), 'description', 'description', Get::req('description', DOTY_MIXED, $data['description']) )
 
 	.'<div class="quick_search_form qsf_left">'

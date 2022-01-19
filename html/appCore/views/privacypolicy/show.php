@@ -28,27 +28,27 @@ if (isset($result_message)) echo $result_message;
 
 //--- SEARCH FILTER -------
 
-$this->widget('tablefilter', array(
+$this->widget('tablefilter', [
 	'id' => 'privacypolicies',
 	'filter_text' => $filter_text,
 	'js_callback_set' => 'PrivacyPolicis.setFilter',
 	'js_callback_reset' => 'PrivacyPolicies.resetFilter'
-));
+]);
 
 
 //--- TABLE -------
 
-$columns = array(
-	array('key' => 'name', 'label' => Lang::t('_NAME', 'standard'), 'sortable' => true)
-);
-if ($permissions['mod']) $columns[] = array('key' => 'assign', 'label' => Get::sprite('subs_elem', Lang::t('_ASSIGN', 'standard')), 'formatter' => 'PrivacyPolicies.assignformatter', 'className' => 'img-cell');
+$columns = [
+	['key' => 'name', 'label' => Lang::t('_NAME', 'standard'), 'sortable' => true]
+];
+if ($permissions['mod']) $columns[] = ['key' => 'assign', 'label' => Get::sprite('subs_elem', Lang::t('_ASSIGN', 'standard')), 'formatter' => 'PrivacyPolicies.assignformatter', 'className' => 'img-cell'];
 
 
 //if ($permissions['mod']) $columns[] = array('key' => 'mod', 'label' => Get::sprite('subs_mod', Lang::t('_MOD', 'standard')), 'formatter' => 'doceboModify', 'className' => 'img-cell');
-if ($permissions['mod']) $columns[] = array('key' => 'mod', 'label' => Get::sprite('subs_mod', Lang::t('_MOD', 'standard')), 'className' => 'img-cell');
-if ($permissions['del']) $columns[] = array('key' => 'del', 'label' => Get::sprite('subs_del', Lang::t('_DEL', 'standard')), 'formatter' => 'doceboDelete', 'className' => 'img-cell');
+if ($permissions['mod']) $columns[] = ['key' => 'mod', 'label' => Get::sprite('subs_mod', Lang::t('_MOD', 'standard')), 'className' => 'img-cell'];
+if ($permissions['del']) $columns[] = ['key' => 'del', 'label' => Get::sprite('subs_del', Lang::t('_DEL', 'standard')), 'formatter' => 'doceboDelete', 'className' => 'img-cell'];
 
-$params = array(
+$params = [
 	'id' => 'policies_table',
 	'ajaxUrl' => 'ajax.adm_server.php?r=adm/privacypolicy/gettabledata',
 	'rowsPerPage' => Get::sett('visuItem', 25),
@@ -58,15 +58,15 @@ $params = array(
 	'dir' => 'asc',
 	//'checkableRows' => true,
 	'columns' => $columns,
-	'fields' => array('id', 'name', 'is_assigned', 'mod', 'del'),
+	'fields' => ['id', 'name', 'is_assigned', 'mod', 'del'],
 	'generateRequest' => 'PrivacyPolicies.requestBuilder',
 	'stdModifyRenderEvent' => 'PrivacyPolicies.dialogRenderEvent',
 	'delDisplayField' => 'name',
-	'events' => array(
+	'events' => [
 		'beforeRenderEvent' => 'PrivacyPolicies.beforeRenderEvent',
 		'postRenderEvent' => 'PrivacyPolicies.postRenderEvent'
-	)
-);
+    ]
+];
 
 if ($permissions['add']) {
 	$add_link_title = Lang::t('_ADD', 'standard');
@@ -74,19 +74,19 @@ if ($permissions['add']) {
     $add_link_1 = '<a id="add_policy_link_1" class="ico-wt-sprite subs_add" href="index.php?r=adm/privacypolicy/add" title="'.$add_link_title.'"><span>'.$add_link_title.'</span></a>';
 	//$add_link_2 = '<a id="add_policy_link_2" class="ico-wt-sprite subs_add" href="ajax.adm_server.php?r=adm/privacypolicy/add" title="'.$add_link_title.'"><span>'.$add_link_title.'</span></a>';
     $add_link_2 = '<a id="add_policy_link_2" class="ico-wt-sprite subs_add" href="index.php?r=adm/privacypolicy/add" title="'.$add_link_title.'"><span>'.$add_link_title.'</span></a>';
-	$params['rel_actions'] = array($add_link_1, $add_link_2);
+	$params['rel_actions'] = [$add_link_1, $add_link_2];
                       
-	$this->widget('dialog', array(
+	$this->widget('dialog', [
 		//'id' => 'add_policy_dialog',
 		//'dynamicContent' => true,
 		//'ajaxUrl' => 'ajax.adm_server.php?r=adm/privacypolicy/add',
 		//'renderEvent' => 'PrivacyPolicies.dialogRenderEvent',
 		//'callback' => 'function() { this.destroy(); DataTable_policies_table.refresh(); }',
-		'callEvents' => array(
-			array('caller' => 'add_policy_link_1', 'event' => 'click'),
-			array('caller' => 'add_policy_link_2', 'event' => 'click')
-		)
-	));
+		'callEvents' => [
+			['caller' => 'add_policy_link_1', 'event' => 'click'],
+			['caller' => 'add_policy_link_2', 'event' => 'click']
+        ]
+    ]);
     
     
      
@@ -95,22 +95,22 @@ if ($permissions['add']) {
 $this->widget('table', $params);
 
 
-$this->widget('tree', array(
+$this->widget('tree', [
 	'id' => 'assign_orgchart_tree',
 	'ajaxUrl' => 'ajax.adm_server.php?r=adm/usermanagement/gettreedata_create',
 	'treeClass' => 'DialogOrgFolderTree',
 	//'treeFile' => Get::rel_path('adm').'/views/usermanagement/orgchartfoldertree.js',
-	'languages' => array(
+	'languages' => [
 		'_ROOT' => Get::sett('title_organigram_chart', Lang::t('_ORG_CHART', 'organization_chart') )
-	),
+    ],
 	'initialSelectedNode' => 0,
 	'show' => 'tree',
 	'useCheckboxes' => 'true',
-	'initialSelectorData' => array(),
+	'initialSelectorData' => [],
 	'setSelectedNodeOnServer' => false,
 	'hiddenSelection' => 'assign_orgchart_hidden_selection',
 	'runtime' => true
-));
+]);
 
 
 ?>      

@@ -225,7 +225,7 @@ class DashboardBlockCoursesLms extends DashboardBlockLms
     {
         require_once(_lms_ . '/lib/lib.coursepath.php');
         $cp_man = new Coursepath_Manager();
-        $output = array();
+        $output = [];
         $cp_list = $cp_man->getUserSubscriptionsInfo($id_user);
         if (!empty($cp_list)) {
             $cp_list = array_keys($cp_list);
@@ -239,7 +239,7 @@ class DashboardBlockCoursesLms extends DashboardBlockLms
 
         if (!is_array($conditions)) return "1";
 
-        $where = array();
+        $where = [];
         $find = array_keys($params);
         foreach ($conditions as $key => $value) {
 

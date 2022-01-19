@@ -25,12 +25,12 @@ class PrivacypolicyAdmController extends AdmController {
 		$this->db = DbConn::getInstance();
 		$this->model = new PrivacypolicyAdm();
 		$this->json = new Services_JSON();
-		$this->permissions = array(
+		$this->permissions = [
 			'view'	=> checkPerm('view', true, 'privacypolicy'),					//view module
 			'add'	=> checkPerm('mod', true, 'privacypolicy'),						//create policies
 			'mod'	=> checkPerm('mod', true, 'privacypolicy'),						//edit policies
 			'del'	=> checkPerm('del', true, 'privacypolicy')						//delete policies
-		);
+        ];
 	}
 
 
@@ -54,11 +54,11 @@ class PrivacypolicyAdmController extends AdmController {
 		Yuilib::load('tabview,selector');
 		Util::get_js(Get::rel_path('base').'/lib/js_utils.js', true, true);
 
-		$this->render('show', array(
+		$this->render('show', [
 			'permissions' => $this->permissions,
 			'result_message' => "",
 			'filter_text' => ""
-		));
+        ]);
 	}
 
 	/**
@@ -82,32 +82,32 @@ class PrivacypolicyAdmController extends AdmController {
 			}
 		}
 
-		$pagination = array(
+		$pagination = [
 			'startIndex' => $startIndex,
 			'results' => $results,
 			'sort' => $sort,
 			'dir' => $dir
-		);
+        ];
 
 		$list = $this->model->getPoliciesList($pagination, $filter);
 
 		//format models' data
-		$records = array();
+		$records = [];
 		if (is_array($list)) {
 			foreach ($list as $record) {
-				$records[] = array(
+				$records[] = [
 					'id' => (int)$record->id_policy,
 					'name' => highlightText($record->name, $filter),
 					'is_assigned' => $record->is_assigned,
 					//'mod' => 'ajax.adm_server.php?r=adm/privacypolicy/mod&id='.(int)$record->id_policy,
                     'mod' => '<a href="index.php?r=adm/privacypolicy/mod&id='.(int)$record->id_policy.'">'.Get::sprite('subs_mod', Lang::t('_MOD', 'standard')).'</a>',
 					'del' => 'ajax.adm_server.php?r=adm/privacypolicy/del&id='.(int)$record->id_policy
-				);         
+                ];
 			}
 		}
 
 		if (is_array($records)) {
-			$output = array(
+			$output = [
 				'startIndex' => $startIndex,
 				'recordsReturned' => count($records),
 				'sort' => $sort,
@@ -115,7 +115,7 @@ class PrivacypolicyAdmController extends AdmController {
 				'totalRecords' => $total,//$this->model->getTotalGroups($filter),
 				'pageSize' => $rowsPerPage,
 				'records' => $records
-			);
+            ];
 		} else {
 			$output['success'] = false;
 		}
@@ -129,7 +129,7 @@ class PrivacypolicyAdmController extends AdmController {
 	public function delTask() {
 		//check permissions: we should have add privileges to create groups
 		if (!$this->permissions['del']) {
-			$output = array('success' => false, 'message' => $this->_getErrorMessage('no permission'));
+			$output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
 			echo $this->json->encode($output);
 			return;
 		}
@@ -143,12 +143,12 @@ class PrivacypolicyAdmController extends AdmController {
 	public function addTask() {
 		//check permissions
 		if (!$this->permissions['add']) {
-			$output = array('success' => false, 'message' => $this->_getErrorMessage('no permission'));
+			$output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
 			echo $this->json->encode($output);
 			return;
 		}
                  
-		$this->render('policy_editmask', array());
+		$this->render('policy_editmask', []);
         
         /*  
 		$params = array(
@@ -169,17 +169,17 @@ class PrivacypolicyAdmController extends AdmController {
 	public function add_actionTask() {
 		//check permissions: we should have add privileges to create groups
 		if (!$this->permissions['add']) {
-			$output = array('success' => false, 'message' => $this->_getErrorMessage('no permission'));
+			$output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
 			echo $this->json->encode($output);
 			return;
 		}
 
-		$output = array();
+		$output = [];
 		$name = Get::req('name', DOTY_STRING, "");
 		$translations = Get::req('translation', DOTY_MIXED, FALSE);
 
 		$res = $this->model->createPolicy($name, $translations);
-		$output = array('success' => $res ? TRUE : FALSE);
+		$output = ['success' => $res ? TRUE : FALSE];
 
 		echo $this->json->encode($output);
         
@@ -198,17 +198,17 @@ class PrivacypolicyAdmController extends AdmController {
 	public function modTask() {
 		//check permissions
 		if (!$this->permissions['mod']) {
-			$output = array('success' => false, 'message' => $this->_getErrorMessage('no permission'));
+			$output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
 			echo $this->json->encode($output);
 			return;
 		}
 
 		$id_policy = Get::req('id', DOTY_INT, -1);
 		if ($id_policy <= 0) {
-			$output = array(
+			$output = [
 				'success' => false,
 				'message' => UIFeedback::perror($this->_getErrorMessage("failure"))
-			);
+            ];
 			echo $this->json->encode($output);
 			return;
 		}
@@ -219,12 +219,12 @@ class PrivacypolicyAdmController extends AdmController {
 		$info = $this->model->getPolicyInfo($id_policy);
         
         
-		$this->render('policy_editmask', array(
+		$this->render('policy_editmask', [
 			'id_policy' => $id_policy,
 			'name' => $info->name,
             'is_default' => $info->is_default,
 			'translations' => $info->translations
-		));
+        ]);
 
 
           /*         
@@ -245,12 +245,12 @@ class PrivacypolicyAdmController extends AdmController {
 	public function mod_action() {
 		//check permissions: we should have add privileges to create groups
 		if (!$this->permissions['mod']) {
-			$output = array('success' => false, 'message' => $this->_getErrorMessage('no permission'));
+			$output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
 			echo $this->json->encode($output);
 			return;
 		}
 
-		$output = array();
+		$output = [];
 		$id_policy = Get::req('id_policy', DOTY_INT, -1);
 		$name = Get::req('name', DOTY_STRING, "");
         $is_default = Get::req('is_default', DOTY_INT, 0);
@@ -263,7 +263,7 @@ class PrivacypolicyAdmController extends AdmController {
         
  
 		$res = $this->model->updatePolicy($id_policy,  $name,$is_default, $reset_policy,  $translations);
-		$output = array('success' => $res ? TRUE : FALSE);
+		$output = ['success' => $res ? TRUE : FALSE];
 
 		echo $this->json->encode($output);
         
@@ -280,22 +280,22 @@ class PrivacypolicyAdmController extends AdmController {
 		$selection = $this->model->getSelectedOrgchart($id_policy);
 		$already_assigned = $this->model->getAlreadyAssignedOrgchart();
 
-		$this->render('assign_dialog', array(
+		$this->render('assign_dialog', [
 			'id_policy' => $id_policy,
 			'selection' => $selection,
 			'already_assigned' => array_values(array_diff($already_assigned, $selection))
-		));
+        ]);
 
 		$body = ob_get_clean();
 		@ob_start();
 
-		$output = array(
+		$output = [
 			'success' => TRUE,
 			'header' => Lang::t('_ASSIGN_POLICY', 'privacypolicy'),
 			'body' => $body,
 			'selection' => $selection,
 			'disabled' => array_values(array_diff($already_assigned, $selection))
-		);
+        ];
 		echo $this->json->encode($output);
 	}
 
@@ -305,7 +305,7 @@ class PrivacypolicyAdmController extends AdmController {
 		$selection = Get::req('selection', DOTY_STRING, "");
 		$old_selection = Get::req('old_selection', DOTY_STRING, "");
 
-		$output = array();
+		$output = [];
 		
 		$selection = str_replace(",,", ",", $selection);
 		if ($selection[0] == ",") $selection = substr($selection, 1);

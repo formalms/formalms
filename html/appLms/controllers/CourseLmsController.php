@@ -30,10 +30,10 @@ class CourseLmsController extends LmsController
         /** @var Services_JSON json */
         $this->json = new Services_JSON();
         $this->_mvc_name = "course";
-        $this->permissions = array(
+        $this->permissions = [
             'view' => true,
             'mod' => true
-        );
+        ];
 
         $this->userProfileDataManager = new UserProfileData();
 

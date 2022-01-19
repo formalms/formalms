@@ -218,7 +218,7 @@ class InlineChoice_Question extends Question
         require_once($GLOBALS['where_lms'] . '/lib/lib.questcategory.php');
         $categories = Questcategory::getCategory();
         //writing difficult array
-        $arr_dufficult = array(5 => '5 - ' . $lang->def('_VERY_HARD'), 4 => '4 - ' . $lang->def('_HARD'), 3 => '3 - ' . $lang->def('_DIFFICULT_MEDIUM'), 2 => '2 - ' . $lang->def('_DIFFICULT_EASY'), 1 => '1 - ' . $lang->def('_DIFFICULT_VERYEASY'));
+        $arr_dufficult = [5 => '5 - ' . $lang->def('_VERY_HARD'), 4 => '4 - ' . $lang->def('_HARD'), 3 => '3 - ' . $lang->def('_DIFFICULT_MEDIUM'), 2 => '2 - ' . $lang->def('_DIFFICULT_EASY'), 1 => '1 - ' . $lang->def('_DIFFICULT_VERYEASY')];
 
         $GLOBALS['page']->add(getTitleArea($lang->def('_TEST_SECTION'), 'test')
             . '<div class="std_block">'
@@ -377,7 +377,7 @@ class InlineChoice_Question extends Question
         require_once($GLOBALS['where_lms'] . '/lib/lib.questcategory.php');
         $categories = Questcategory::getCategory();
         //writing difficult array
-        $arr_dufficult = array(5 => '5 - ' . $lang->def('_VERY_HARD'), 4 => '4 - ' . $lang->def('_HARD'), 3 => '3 - ' . $lang->def('_DIFFICULT_MEDIUM'), 2 => '2 - ' . $lang->def('_DIFFICULT_EASY'), 1 => '1 - ' . $lang->def('_DIFFICULT_VERYEASY'));
+        $arr_dufficult = [5 => '5 - ' . $lang->def('_VERY_HARD'), 4 => '4 - ' . $lang->def('_HARD'), 3 => '3 - ' . $lang->def('_DIFFICULT_MEDIUM'), 2 => '2 - ' . $lang->def('_DIFFICULT_EASY'), 1 => '1 - ' . $lang->def('_DIFFICULT_VERYEASY')];
 
         //load data
         if (!isset($_POST['answer_id'])) {
@@ -809,9 +809,9 @@ class InlineChoice_Question extends Question
             . '</div>' . "\n"
             . '</div>' . "\n";
 
-        return array('quest' => $quest,
+        return ['quest' => $quest,
             'score' => $this->userScore($id_track, $number_time),
-            'comment' => ($com_is_correct != '' ? $com_is_correct . '<br />' : '') . $comment);
+            'comment' => ($com_is_correct != '' ? $com_is_correct . '<br />' : '') . $comment];
     }
 }
 

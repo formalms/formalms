@@ -32,14 +32,14 @@ class MycertificateLms extends Model
         $sort = Get::req('sort', DOTY_MIXED, 'year');
         $dir = Get::req('dir', DOTY_MIXED, 'desc');
 
-        $filter = array('id_user' => $this->id_user);
+        $filter = ['id_user' => $this->id_user];
         $myCertificates = $this->certificate->getAssignment($filter, $pagination, $count);
 
         if ($count) {
             return $myCertificates;
         }
 
-        $data = array();
+        $data = [];
         foreach ($myCertificates as $cert) {
             if ($this->certificate->certificateAvailableForUser($cert['id_certificate'], $cert['id_course'], $this->id_user)) {
                 $download = '<a class="ico-wt-sprite subs_pdf" id="pdf_download" href="?r=mycertificate/'
@@ -47,21 +47,21 @@ class MycertificateLms extends Model
                     . ' title="' . (isset($cert['on_date']) ? Lang::t('_DOWNLOAD', 'certificate') : Lang::t('_GENERATE', 'certificate')) . '"><span>'
                     . (isset($cert['on_date']) ? Lang::t('_DOWNLOAD', 'certificate') : Lang::t('_GENERATE', 'certificate')) . '</span></a>';
 
-                $data[] = array(
+                $data[] = [
                     'on_date' => substr($cert['on_date'], 0, 10),
                     'code' => $cert['code'],
                     'course_name' => $cert['course_name'],
                     'cert_name' => $cert['cert_name'],
                     'date_complete' => $cert['date_complete'],
                     'download' => $download
-                );
+                ];
             }
         }
 
         if ($order = $_REQUEST['order']) {
             $sort_index = $order[0]['column'];
 
-            $fields = array(
+            $fields = [
                 'year',
                 'code',
                 'course_name',
@@ -69,7 +69,7 @@ class MycertificateLms extends Model
                 'date_complete',
                 'preview',
                 'download',
-            );
+            ];
 
             $sort = $fields[$sort_index];
             $dir = $order[0]['dir'];
@@ -79,7 +79,7 @@ class MycertificateLms extends Model
             return $dir == 'desc' ? strcmp($b[$sort], $a[$sort]) : strcmp($a[$sort], $b[$sort]);
         });
 
-        $data_to_display = array();
+        $data_to_display = [];
         for ($i = $startIndex; $i < ($startIndex + $results) && $i < count($data); $i++) {
             $data_to_display[] = array_values($data[$i]);
         }
@@ -89,7 +89,7 @@ class MycertificateLms extends Model
 
     public function countMyCertificates()
     {
-        $filter = array('id_user' => $this->id_user);
+        $filter = ['id_user' => $this->id_user];
         return $this->certificate->countAssignment($filter);
     }
 

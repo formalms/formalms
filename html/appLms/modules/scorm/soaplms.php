@@ -47,7 +47,7 @@ require_once Forma::inc(_lms_ . '/modules/scorm/scorm_items_track.php');
  * @access public
  **/
 class SOAPLMS {
-	var $__dispatch_map = array(); 
+	var $__dispatch_map = [];
 
 	// Required function by SOAP_Server
 	function __dispatch($methodname)
@@ -62,39 +62,39 @@ class SOAPLMS {
 	{ 
 		// Define the signature of the dispatch map
 		$this->__dispatch_map['Finish'] =
-		array(	'in' => array( 	'idUser' => 'string',
+		['in' => ['idUser' => 'string',
 								'idReference' => 'string',
 								'idscorm_item' => 'string',
 								'environment' => 'string'
-								),
-				'out' => array(	'status' => 'string',
+        ],
+				'out' => ['status' => 'string',
 								'error' => 'string',
-								'errorString' => 'string')
-			);
+								'errorString' => 'string']
+        ];
 		$this->__dispatch_map['GetValue'] =
-		array(	'in' => array( 	'idUser' => 'string',
+		['in' => ['idUser' => 'string',
 								'idReference' => 'string',
 								'idscorm_item' => 'string',
 								'environment' => 'string',
-								'param' => 'string'),
-				'out' => array(	'status' => 'string',
+								'param' => 'string'],
+				'out' => ['status' => 'string',
 								'error' => 'string',
 								'errorString' => 'string',
-								'value' => 'string')
-			);
+								'value' => 'string']
+        ];
 		$this->__dispatch_map['SetValue'] =
-		array(	'in' => array( 	'idUser' => 'string',
+		['in' => ['idUser' => 'string',
 								'idReference' => 'string',
 								'environment' => 'string',
 								'idscorm_item' => 'string',
 								'param' => 'string',
 								'value' => 'string'
-								),
-				'out' => array(	'status' => 'string',
+        ],
+				'out' => ['status' => 'string',
 								'error' => 'string',
 								'errorString' => 'string'
-								)
-			);
+                ]
+        ];
 	} 
 	
 	function Initialize( $idUser, $idReference, $idscorm_item ) {
@@ -331,11 +331,11 @@ class SOAPLMS {
 			$error = "";
 			$errorString = "";
 		} 
-		$arr_result = array(new SOAP_Value('status', 'string', $status),
+		$arr_result = [new SOAP_Value('status', 'string', $status),
 			new SOAP_Value('error', 'string', $error),
 			new SOAP_Value('errorString', 'string', $errorString),
 			new SOAP_Value('value', 'string', $value)
-			);
+        ];
 		//soap__dbgOut($arr_result);
         soap__dbgOut("-GetValue return status = $status, value = $value");
 		return $arr_result;
@@ -400,10 +400,10 @@ class SOAPLMS {
 			$error = "";
 			$errorString = "";
 		} 
-		$arr_result = array(new SOAP_Value('status', 'string', $status),
+		$arr_result = [new SOAP_Value('status', 'string', $status),
 			new SOAP_Value('error', 'string', $error),
 			new SOAP_Value('errorString', 'string', $errorString)
-			);
+        ];
        soap__dbgOut("-SetValue return $status");
        return $arr_result;
 	} 

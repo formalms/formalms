@@ -94,7 +94,7 @@ class DashboardLms extends Model
     
     // check if current user has access to dashboard-id
     public function currentCanAccessObj($dashboardId) {
-        $vett_cache = array();
+        $vett_cache = [];
             
         $query = "SELECT id_dashboard, idst_list FROM dashboard_permission where id_dashboard=".$dashboardId;
 
@@ -123,7 +123,7 @@ class DashboardLms extends Model
      
         $query = "select id,name from dashboard_layouts";
         $re_query = $this->db->query($query);
-        $out = array();
+        $out = [];
         while(list($id_dashboard, $name) = sql_fetch_row($re_query)) {
             
             $out[$id_dashboard] = $name;

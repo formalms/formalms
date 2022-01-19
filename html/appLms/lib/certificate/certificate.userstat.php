@@ -61,9 +61,9 @@ class CertificateSubs_UserStat extends CertificateSubstitution
             $aggCertLib = new AggregatedCertificate();
 
 
-            $array_coursetype = array('elearning' => Lang::t('_COURSE_TYPE_ELEARNING', 'course', 'lms'),
+            $array_coursetype = ['elearning' => Lang::t('_COURSE_TYPE_ELEARNING', 'course', 'lms'),
                 'classroom' => Lang::t('_CLASSROOM', 'course', 'lms'),
-                'web_seminar' => Lang::t('Web seminar'));
+                'web_seminar' => Lang::t('Web seminar')];
 
             $course_time = 0;
             $blended_time = 0;
@@ -105,7 +105,7 @@ class CertificateSubs_UserStat extends CertificateSubstitution
 
                             $rep_man = new CourseReportManager();
 
-                            $score_course = $rep_man->getUserFinalScore(array($this->id_user), array($this->id_course));
+                            $score_course = $rep_man->getUserFinalScore([$this->id_user], [$this->id_course]);
                             $courses_path_time += $course_info['mediumTime'];
                             $course_time += $course_info['mediumTime'];
                         }
@@ -151,7 +151,7 @@ class CertificateSubs_UserStat extends CertificateSubstitution
 
                         $rep_man = new CourseReportManager();
 
-                        $score_course = $rep_man->getUserFinalScore(array($this->id_user), array($this->id_course));
+                        $score_course = $rep_man->getUserFinalScore([$this->id_user], [$this->id_course]);
                         $table_course .= '<tr>'
                             . '<td style="font-size: 12px;">' . $course_info['name'] . '</td>'
                             . '<td style="font-size: 12px;" align="right">' . $course_info['mediumTime'] . '</td>'
@@ -195,7 +195,7 @@ class CertificateSubs_UserStat extends CertificateSubstitution
             require_once($GLOBALS['where_lms'] . '/lib/lib.course.php');
 
             $courseuser = new Man_CourseUser();
-            $course_stat =& $courseuser->getUserCourses($this->id_user, false, false, false, array($this->id_course));
+            $course_stat =& $courseuser->getUserCourses($this->id_user, false, false, false, [$this->id_course]);
 
             if (isset($course_stat[$this->id_course])) {
 
@@ -217,14 +217,14 @@ class CertificateSubs_UserStat extends CertificateSubstitution
             require_once($GLOBALS['where_lms'] . '/lib/lib.orgchart.php');
             $org_man = new OrganizationManagement($this->id_course);
 
-            $score_start = $org_man->getStartObjectScore(array($this->id_user), array($this->id_course));
-            $score_final = $org_man->getFinalObjectScore(array($this->id_user), array($this->id_course));
+            $score_start = $org_man->getStartObjectScore([$this->id_user], [$this->id_course]);
+            $score_final = $org_man->getFinalObjectScore([$this->id_user], [$this->id_course]);
 
 
             require_once($GLOBALS['where_lms'] . '/lib/lib.coursereport.php');
             $rep_man = new CourseReportManager();
 
-            $score_course = $rep_man->getUserFinalScore(array($this->id_user), array($this->id_course));
+            $score_course = $rep_man->getUserFinalScore([$this->id_user], [$this->id_course]);
 
 
             $subs['[test_score_start]'] = (isset($score_start[$this->id_course][$this->id_user]) ? $score_start[$this->id_course][$this->id_user]['score'] : '');

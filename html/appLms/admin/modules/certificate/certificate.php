@@ -57,12 +57,12 @@ function certificate()
     $re_certificate = sql_query($query_certificate);
     list($tot_certificate) = sql_fetch_row(sql_query($query_certificate_tot));
 
-    $type_h = array('', '', '');
-    $cont_h = array(
+    $type_h = ['', '', ''];
+    $cont_h = [
         $lang->def('_CODE'),
         $lang->def('_NAME'),
         $lang->def('_DESCRIPTION')
-    );
+    ];
     if ($mod_perm) {
         $cont_h[] = $lang->def('_TEMPLATE');
         $type_h[] = 'image';
@@ -87,11 +87,11 @@ function certificate()
     $tb->addHead($cont_h);
     while (list($id_certificate, $code, $name, $descr) = sql_fetch_row($re_certificate)) {
         $title = strip_tags($name);
-        $cont = array(
+        $cont = [
             $code,
             $name,
             Util::cut($descr)
-        );
+        ];
         if ($mod_perm) {
 
             $cont[] = '<a href="index.php?modname=certificate&amp;op=elemcertificate&amp;id_certificate=' . $id_certificate . '" title="' . Lang::t('_TEMPLATE', 'certificate') . '">'
@@ -171,10 +171,10 @@ function list_element_certificate()
     $out->setWorkingZone('content');
     $form = new Form();
 
-    $page_title = array(
+    $page_title = [
         'index.php?modname=certificate&amp;op=certificate' => $lang->def('_TITLE_CERTIFICATE'),
         $lang->def('_STRUCTURE_CERTIFICATE')
-    );
+    ];
 
     $out->add(getTitleArea($page_title, 'certificate')
         . '<div class="std_block">'
@@ -231,8 +231,8 @@ function list_element_certificate()
 
     $tb = new Table(0, $lang->def('_TAG_LIST_CAPTION'), $lang->def('_TAG_LIST_SUMMARY'));
 
-    $tb->setColsStyle(array('', ''));
-    $tb->addHead(array($lang->def('_TAG_CODE'), $lang->def('_TAG_DESCRIPTION')));
+    $tb->setColsStyle(['', '']);
+    $tb->addHead([$lang->def('_TAG_CODE'), $lang->def('_TAG_DESCRIPTION')]);
 
     //search query of certificates tag
     $query_format_tag = "
@@ -248,7 +248,7 @@ function list_element_certificate()
             $this_subs = $instance->getSubstitutionTags();
             foreach ($this_subs as $tag => $description) {
 
-                $tb->addBody(array($tag, $description));
+                $tb->addBody([$tag, $description]);
             } // end foreach
         } // end if
     }
@@ -261,11 +261,11 @@ function manageCertificateFile($new_file_id, $old_file, $path, $delete_old, $is_
 {
     require_once(_base_ . '/lib/lib.upload.php');
     $arr_new_file = (isset($_FILES[$new_file_id]) && $_FILES[$new_file_id]['tmp_name'] != '' ? $_FILES[$new_file_id] : false);
-    $return = array('filename' => $old_file,
+    $return = ['filename' => $old_file,
         'new_size' => 0,
         'old_size' => 0,
         'error' => false,
-        'quota_exceeded' => false);
+        'quota_exceeded' => false];
     sl_open_fileoperations();
     if (($delete_old || $arr_new_file !== false) && $old_file != '')
         sl_unlink($path . $old_file);// the flag for file delete is checked or a new file was uploaded ---------------------
@@ -296,7 +296,7 @@ function editcertificate($load = false)
 
     $id_certificate = importVar('id_certificate', true, 0);
     $all_languages = Docebo::langManager()->getAllLanguages();
-    $languages = array();
+    $languages = [];
     foreach ($all_languages as $k => $v) {
         $languages[$v[0]] = $v[1];
     }
@@ -317,10 +317,10 @@ function editcertificate($load = false)
         $base_language = getLanguage();
     }
 
-    $page_title = array(
+    $page_title = [
         'index.php?modname=certificate&amp;op=certificate' => $lang->def('_TITLE_CERTIFICATE'),
         ($load ? $lang->def('_MOD') : $lang->def('_NEW_CERTIFICATE'))
-    );
+    ];
     $out->add(getTitleArea($page_title, 'certificate')
         . '<div class="std_block">'
         . getBackUi('index.php?modname=certificate&amp;op=certificate', $lang->def('_BACK'))
@@ -460,10 +460,10 @@ function delcertificate()
         WHERE id_certificate = '" . $id_certificate . "'"));
 
         $form = new Form();
-        $page_title = array(
+        $page_title = [
             'index.php?modname=certificate&amp;op=certificate' => $lang->def('_TITLE_CERTIFICATE'),
             $lang->def('_DEL')
-        );
+        ];
         $GLOBALS['page']->add(
             getTitleArea($page_title, 'certificate')
             . '<div class="std_block">'
@@ -503,39 +503,39 @@ function report_certificate()
         $id_certificate = importVar('id_certificate', true, 0);
         $man_course = new Man_Course();
 
-        $id_course = array();
+        $id_course = [];
         $id_course = $certificate->getCourseForCertificate($id_certificate);
 
-        $course_info = array();
+        $course_info = [];
 
         $out->add(
-            getTitleArea(array(
+            getTitleArea([
                 'index.php?modname=certificate&amp;op=certificate' => $lang->def('_TITLE_CERTIFICATE'),
                 $lang->def('_COURSES')
-            ))
+            ])
             . '<div class="std_block">'
             . getBackUi('index.php?modname=certificate&amp;op=certificate', $lang->def('_BACK'))
         );
 
         $tb = new Table(Get::sett('visuItem'), $lang->def('_CHOOSE_COURSE'), $lang->def('_COURSE_LIST'));
 
-        $type_h = array('', '', 'min-cell');
-        $cont_h = array(
+        $type_h = ['', '', 'min-cell'];
+        $cont_h = [
             $lang->def('_CODE'),
             $lang->def('_NAME'),
             $lang->def('_CERTIFICATE_REPORT')
-        );
+        ];
 
         $tb->setColsStyle($type_h);
         $tb->addHead($cont_h);
         foreach ($id_course as $course_id) {
             $course_info = $man_course->getCourseInfo($course_id);
-            $cont = array(
+            $cont = [
                 $course_info['code'],
                 '<a href="index.php?r=alms/course/list_certificate&amp;id_certificate=' . $id_certificate . '&amp;id_course=' . $course_id . '&amp;from=manage">'
                 . $course_info['name'] . '</a>',
                 $certificate->getNumberOfCertificateForCourse($id_certificate, $course_info['idCourse'])
-            );
+            ];
             $tb->addBody($cont);
         }
 
@@ -582,22 +582,22 @@ function report_certificate()
 
         $tb = new Table(Get::sett('visuItem'), $lang->def('_CHOOSE_CERTIFICATE'), $lang->def('_CERTIFICATE_LIST'));
 
-        $type_h = array('', '');
-        $cont_h = array(
+        $type_h = ['', ''];
+        $cont_h = [
             $lang->def('_CODE'),
             $lang->def('_NAME'),
             $lang->def('_DESCRIPTION')
-        );
+        ];
         $tb->setColsStyle($type_h);
         $tb->addHead($cont_h);
         foreach ($certificate_info as $info_certificate) {
 
-            $cont = array(
+            $cont = [
                 $info_certificate[CERT_CODE],
                 '<a href="index.php?modname=certificate&amp;op=report_certificate&amp;id_certificate=' . $info_certificate[CERT_ID] . '">'
                 . $info_certificate[CERT_NAME] . '</a>',
                 $info_certificate[CERT_DESCR]
-            );
+            ];
             $tb->addBody($cont);
         }
         $out->add($tb->getTable() . '</div>');
@@ -622,7 +622,7 @@ function del_report_certificate()
     $id_user = importVar('user_id', true, 0);
     $from = Get::req('from', DOTY_MIXED, '');
 
-    $certificate_info = array();
+    $certificate_info = [];
     $certificate_info = $certificate->getCertificateInfo($id_certificate);
 
     $c_infos = $certificate->getInfoForCourseCertificate($id_course, $id_certificate, $id_user);
@@ -658,7 +658,7 @@ function send_zip_certificates()
     require_once(Forma::inc(_lms_ . '/lib/lib.certificate.php'));
     require_once(_base_ . '/lib/lib.download.php');
 
-    $files = array();
+    $files = [];
     $zipName = date("YmdHis") . '_certs.zip';
     $list = explode(',', Get::req('list', DOTY_STRING));
     $list_cert = explode(',', Get::req('list_cert', DOTY_STRING));
@@ -703,7 +703,7 @@ function send_certificate()
 
     $certificate = new Certificate();
 
-    $report_info = array();
+    $report_info = [];
     $report_info = $certificate->getInfoForCourseCertificate($id_course, $id_certificate, $id_user);
     $info_report = current($report_info);
 
@@ -744,7 +744,7 @@ function preview()
     $id_certificate = importVar('id_certificate', true, 0);
 
     $cert = new Certificate();
-    $cert->send_preview_certificate($id_certificate, array());
+    $cert->send_preview_certificate($id_certificate, []);
 }
 
 
@@ -756,7 +756,7 @@ function gen_zip_cert()
 
     $str_rows = importVar('str_rows');
 
-    $files = array();
+    $files = [];
     $zipName = date("YmdHis") . '_certs.zip';
 
     $filePath = _files_ . '/tmp/' . $zipName;

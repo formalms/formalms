@@ -21,7 +21,7 @@ class Learning_Cart
 	public function init()
 	{
 		if(!isset($_SESSION['lms_cart']))
-			$_SESSION['lms_cart'] = array();
+			$_SESSION['lms_cart'] = [];
 	}
 
 	public function cartItemCount()
@@ -50,7 +50,7 @@ class Learning_Cart
 
 	public function emptyCart()
 	{
-		$_SESSION['lms_cart'] = array();
+		$_SESSION['lms_cart'] = [];
 	}
 }
 

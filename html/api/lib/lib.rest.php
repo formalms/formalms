@@ -32,7 +32,7 @@ class RestAPI {
 	static public function HandleError($error=_REST_STANDARD_ERROR, $type=_REST_OUTPUT_XML) {
 
 		$output = '';
-		$temp = array('error'=>$error);
+		$temp = ['error'=>$error];
 		switch ($type) {
 			case _REST_OUTPUT_XML:  {	$output .= API::getXML($temp); } break;
 			case _REST_OUTPUT_JSON: {
@@ -57,7 +57,7 @@ class RestAPI {
 
 		$output = '';
 		$f_msg = $message;
-		$temp = array('debug'=>$f_msg);
+		$temp = ['debug'=>$f_msg];
 		switch ($type) {
 			case _REST_OUTPUT_XML: { $output .= API::getXML($temp); } break;
 			case _REST_OUTPUT_JSON: {

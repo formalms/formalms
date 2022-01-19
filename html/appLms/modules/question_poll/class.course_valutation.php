@@ -274,7 +274,7 @@ class CourseValutation_QuestionPoll extends QuestionPoll {
 		WHERE id_quest = '".(int)$this->id."'
 		ORDER BY sequence");
 
-		$array_answer = array();
+		$array_answer = [];
 
 		while(list($id_answer, $answer) = sql_fetch_row($re_answer))
 			$array_answer[] = $answer;
@@ -430,7 +430,7 @@ class CourseValutation_QuestionPoll extends QuestionPoll {
 			.'<div class="title_question">'.$num_quest.') '.$title_quest.'</div>'
 			.'<div class="answer_question">';
 
-		$answer_info = array();
+		$answer_info = [];
 
 		while(list($answer) = sql_fetch_row($re_answer))
 			$answer_info[] = $answer;
@@ -480,7 +480,7 @@ class CourseValutation_QuestionPoll extends QuestionPoll {
 		ORDER BY sequence";
 		$re_answer = sql_query($query_answer);
 
-		$answer_info = array();
+		$answer_info = [];
 
 		while(list($answer) = sql_fetch_row($re_answer))
 			$answer_info[] = $answer;
@@ -601,7 +601,7 @@ class CourseValutation_QuestionPoll extends QuestionPoll {
 		ORDER BY sequence";
 		$re_answer = sql_query($query_answer);
 
-		$answer_info = array();
+		$answer_info = [];
 
 		while(list($answer) = sql_fetch_row($re_answer))
 			$answer_info[] = $answer;

@@ -1,6 +1,6 @@
 <?php
-	$array_title = array(	'index.php?r=adm/adminrules/show' => Lang::t('_ADMIN_RULES', 'adminrules'),
-							Lang::t('_ADMIN_MENU', 'adminrules').' - '.$model->getGroupName($idst));
+	$array_title = ['index.php?r=adm/adminrules/show' => Lang::t('_ADMIN_RULES', 'adminrules'),
+							Lang::t('_ADMIN_MENU', 'adminrules').' - '.$model->getGroupName($idst)];
 
 	echo	getTitleArea($array_title);
 ?>

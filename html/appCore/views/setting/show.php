@@ -23,7 +23,7 @@
 					.Form::getHidden('active_tab_'.$id, 'active_tab', $id);
 				switch($id) {
 					case SMS_GROUP : {
-						$this->render('sms_group', array());
+						$this->render('sms_group', []);
 					};
 					default: echo '<br />';
 				}

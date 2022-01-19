@@ -36,7 +36,7 @@
                             </ul>
                             <?php
                             if ($permissions['view_user']) {
-                                $this->widget('dialog', array(
+                                $this->widget('dialog', [
                                     'id' => 'status_user_dialog',
                                     'width' => "700px",
                                     'dynamicContent' => true,
@@ -47,14 +47,14 @@
                                     'renderEvent' => 'Dashboard.userStatusRenderEvent',
                                     'confirmOnly' => true,
                                     'fixedCenter' => false,
-                                    'callEvents' => array(
-                                        array('caller' => 'quicklinks_users_status', 'event' => 'click')
-                                    )
-                                ));
+                                    'callEvents' => [
+                                        ['caller' => 'quicklinks_users_status', 'event' => 'click']
+                                    ]
+                                ]);
                             }
 
                             if ($permissions['mod_user']) {
-                                $this->widget('dialog', array(
+                                $this->widget('dialog', [
                                     'id' => 'chgpwd_user_dialog',
                                     'dynamicContent' => true,
                                     'constrainToViewport' => false, //this dialog may be too big to be constrained
@@ -63,14 +63,14 @@
                                     'fixedCenter' => false,
                                     'callback' => 'Dashboard.changePasswordCallback',
                                     'renderEvent' => 'Dashboard.changePasswordRenderEvent',
-                                    'callEvents' => array(
-                                        array('caller' => 'quicklinks_users_chgpwd', 'event' => 'click')
-                                    )
-                                ));
+                                    'callEvents' => [
+                                        ['caller' => 'quicklinks_users_chgpwd', 'event' => 'click']
+                                    ]
+                                ]);
                             }
 
                             if ($permissions['add_user']) {
-                                $this->widget('dialog', array(
+                                $this->widget('dialog', [
                                     'id' => 'create_user_dialog',
                                     'dynamicContent' => true,
                                     'ajaxUrl' => 'this.href',
@@ -79,13 +79,13 @@
                                     'constrainToViewport' => false, //this dialog may be too big to be constrained
                                     'renderEvent' => 'Dashboard.createUserRenderEvent',
                                     'callback' => 'Dashboard.createUserCallback',
-                                    'callEvents' => array(
-                                        array('caller' => 'quicklinks_users_create', 'event' => 'click')
-                                    )
-                                ));
+                                    'callEvents' => [
+                                        ['caller' => 'quicklinks_users_create', 'event' => 'click']
+                                    ]
+                                ]);
 
                                 //orgchart tree in the user creation popup, to be activated at runtime
-                                $this->widget('tree', array(
+                                $this->widget('tree', [
                                     'id' => 'createuser_orgchart_tree',
                                     'ajaxUrl' => 'ajax.adm_server.php?r=adm/usermanagement/gettreedata_create',
                                     'treeClass' => 'DialogOrgFolderTree',
@@ -93,15 +93,15 @@
                                     'initialSelectedNode' => 0,
                                     'show' => 'tree',
                                     'useCheckboxes' => 'true',
-                                    'initialSelectorData' => array(0),
+                                    'initialSelectorData' => [0],
                                     'setSelectedNodeOnServer' => false,
                                     'hiddenSelection' => 'orgchart_hidden_selection',
                                     'runtime' => true,
-                                    'languages' => array(
+                                    'languages' => [
                                         '_ROOT' => Get::sett('title_organigram_chart', Lang::t('_ORG_CHART', 'organization_chart')),
                                         '_LOADING' => Lang::t('_LOADING', 'standard')
-                                    )
-                                ));
+                                    ]
+                                ]);
                             }
                             ?>
                         </div>
@@ -117,7 +117,7 @@
                             </li>
                         </ul>
                         <?php
-                        $this->widget('dialog', array(
+                        $this->widget('dialog', [
                             'id' => 'certificate_dialog',
                             'width' => "700px",
                             'dynamicContent' => true,
@@ -127,10 +127,10 @@
                             'constrainToViewport' => true,
                             'callback' => 'Dashboard.certificateCallback',
                             'renderEvent' => 'Dashboard.certificateRenderEvent',
-                            'callEvents' => array(
-                                array('caller' => 'find_certificate', 'event' => 'click')
-                            )
-                        ));
+                            'callEvents' => [
+                                ['caller' => 'find_certificate', 'event' => 'click']
+                            ]
+                        ]);
                         ?>
                     </div>
                     <?php if (count($reports) > 0) : ?>
@@ -145,7 +145,7 @@
                             echo Form::getButton('export_report_created', 'export_report_created', Lang::t('_EXPORT', 'standard'), true, '', false);
                             echo Form::closeform();
 
-                            $this->widget('dialog', array(
+                            $this->widget('dialog', [
                                 'id' => 'export_report_dialog',
                                 'dynamicContent' => true,
                                 'ajaxUrl' => 'function() { return "ajax.adm_server.php?r=adm/dashboard/exportformat&id_report="+YAHOO.util.Dom.get("report_created_sel").value; }',
@@ -154,10 +154,10 @@
                                 'directSubmit' => true,
                                 'hideAfterSubmit' => true,
                                 'callback' => 'Dashboard.exportCallback',
-                                'callEvents' => array(
-                                    array('caller' => 'export_report_created', 'event' => 'click')
-                                )
-                            ));
+                                'callEvents' => [
+                                    ['caller' => 'export_report_created', 'event' => 'click']
+                                ]
+                            ]);
 
                             ?>
                         </div>
@@ -186,7 +186,7 @@
                             </ul>
                             <?php
                             if ($permissions['subscribe']) {
-                                $this->widget('dialog', array(
+                                $this->widget('dialog', [
                                     'id' => 'subscr_course_dialog',
                                     'dynamicContent' => true,
                                     'ajaxUrl' => 'this.href',
@@ -194,10 +194,10 @@
                                     'fixedCenter' => false,
                                     'callback' => 'Dashboard.subscribeToCourseCallback',
                                     'renderEvent' => 'Dashboard.subscribeToCourseRenderEvent',
-                                    'callEvents' => array(
-                                        array('caller' => 'quicklinks_courses_subscr', 'event' => 'click')
-                                    )
-                                ));
+                                    'callEvents' => [
+                                        ['caller' => 'quicklinks_courses_subscr', 'event' => 'click']
+                                    ]
+                                ]);
                             }
                             ?>
                         </div>
@@ -241,7 +241,7 @@
 
                                     if (!$version['online_version']) {
 
-                                        $version = array('string' => '<b class="red">' . Lang::t('_UNKNOWN_RELEASE', 'dashboard') . '</b>');
+                                        $version = ['string' => '<b class="red">' . Lang::t('_UNKNOWN_RELEASE', 'dashboard') . '</b>'];
                                     } elseif (version_compare($version['online_version'], $version['file_version']) == 1) {
 
                                         echo '<br/>'
@@ -265,7 +265,7 @@
                             </li>
                         </ul>
                         <?php
-                        $this->widget('dialog', array(
+                        $this->widget('dialog', [
                             'id' => 'tech_info_dialog',
                             'dynamicContent' => true,
                             'ajaxUrl' => 'this.href',
@@ -276,10 +276,10 @@
                             'callback' => 'Dashboard.diagnosticCallback',
                             'renderEvent' => 'Dashboard.diagnosticRenderEvent',
                             'confirmOnly' => true,
-                            'callEvents' => array(
-                                array('caller' => 'quicklinks_diagnostic', 'event' => 'click')
-                            )
-                        ));
+                            'callEvents' => [
+                                ['caller' => 'quicklinks_diagnostic', 'event' => 'click']
+                            ]
+                        ]);
                         ?>
                     </div>
                 </div>

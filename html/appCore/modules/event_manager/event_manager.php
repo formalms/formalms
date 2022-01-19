@@ -65,7 +65,7 @@ function event_manager_view($op) {
 
 	$tb_event_classes = new Table(Get::sett('visuItem'), $lang->def('_EVENT_SETTINGS'), $lang->def('_EVENT_SETTINGS'));
 
-	$content_h 	= array(
+	$content_h 	= [
 		$lang->def('_EVENT_PLATFORM'), 
 		$lang->def('_NAME'),
 		//$lang->def('_DESCRIPTION'),
@@ -75,9 +75,9 @@ function event_manager_view($op) {
 		$lang->def('_EMAIL'),
 		$lang->def('_EVENT_CHANNEL_SMS'),
 		$lang->def('_RECIPIENTS')
-		);
+    ];
 	//$type_h 	= array('', '', '', 'image', 'image', 'image', 'image', 'image', '');
-	$type_h 	= array('', '', 'image', 'image','image', 'image', '');
+	$type_h 	= ['', '', 'image', 'image','image', 'image', ''];
 
 	$tb_event_classes->setColsStyle($type_h);
 	$tb_event_classes->addHead($content_h);
@@ -89,7 +89,7 @@ function event_manager_view($op) {
 						." ORDER BY idEventMgr" );
 
 	while( list($idClass,$class,$platform,$description,$idEventMgr,$permission,$channel,$recipients) = sql_fetch_row($rs) ) {
-		$cont = array();
+		$cont = [];
 		$cont[] = $lang->def('_EVENT_PLATFORM_'.$platform);
 		$cont[] = $lang->def('_EVENT_CLASS_'.$class);
 		//$cont[] = $lang->def($description);
@@ -181,14 +181,14 @@ function event_user_view($op) {
 
 	$tb_event_classes = new Table(Get::sett('visuItem'), $lang->def('_EVENT_SETTINGS'), $lang->def('_EVENT_SETTINGS'));
 
-	$content_h 	= array(
+	$content_h 	= [
 		$lang->def('_EVENT_PLATFORM'), 
 		$lang->def('_NAME'),
 		$lang->def('_DESCRIPTION'),
 		$lang->def('_EMAIL'),
 		$lang->def('_EVENT_CHANNEL_SMS'),
-		);
-	$type_h 	= array('', '', '', 'image', 'image');
+    ];
+	$type_h 	= ['', '', '', 'image', 'image'];
 
 	$tb_event_classes->setColsStyle($type_h);
 	$tb_event_classes->addHead($content_h);
@@ -209,7 +209,7 @@ function event_user_view($op) {
 		$channel_sms = in_array('sms',$arr_channel);
 		
 		if( $perm_mandatory || $perm_user_selectable ) {
-			$cont = array();
+			$cont = [];
 			$cont[] = $lang->def('_EVENT_PLATFORM_'.$platform);
 			$cont[] = $lang->def('_EVENT_CLASS_'.$class);
 			$cont[] = $lang->def($description);
@@ -301,7 +301,7 @@ function event_special_view($op) {
 					if( $result1 === FALSE )
 						break;
 					$idClass = sql_insert_id();
-					DoceboEventManager::registerEventConsumer(array($arr_class[$key]), 'DoceboUserNotifier', $GLOBALS['where_framework'].'/lib/lib.usernotifier.php');
+					DoceboEventManager::registerEventConsumer([$arr_class[$key]], 'DoceboUserNotifier', $GLOBALS['where_framework'].'/lib/lib.usernotifier.php');
 					
 					$result1 = sql_query(	"INSERT INTO ".$GLOBALS['prefix_fw']."_event_manager "
 											." (idClass,recipients,show_level) VALUES "
@@ -341,14 +341,14 @@ function event_special_view($op) {
 	
 	$tb_event_classes = new Table(400, $lang->def('_EVENT_SETTINGS'), $lang->def('_EVENT_SETTINGS'));
 
-	$content_h 	= array(
+	$content_h 	= [
 		$lang->def('_EVENT_PLATFORM'), 
 		$lang->def('_NAME'),
 		$lang->def('_DESCRIPTION'),
 		$lang->def('_RECIPIENTS'),
 		'show_level'
-		);
-	$type_h 	= array('', '', '', 'image', 'image', 'image', 'image', 'image', '');
+    ];
+	$type_h 	= ['', '', '', 'image', 'image', 'image', 'image', 'image', ''];
 
 	$tb_event_classes->setColsStyle($type_h);
 	$tb_event_classes->addHead($content_h);
@@ -360,7 +360,7 @@ function event_special_view($op) {
 						." ORDER BY ec.idClass" );
 
 	while( list($idClass,$class,$platform,$description,$idEventMgr,$recipients,$show_level) = sql_fetch_row($rs) ) {
-		$cont = array();
+		$cont = [];
 		$cont[] = $form->getInputTextfield( 	'', 
 											'platform_'.$idClass, 
 											'platform['.$idClass.']',
@@ -403,7 +403,7 @@ function event_special_view($op) {
 											
 		$tb_event_classes->addBody($cont);
 	}
-	$cont = array();
+	$cont = [];
 	
 	$cont[] = $form->getInputTextfield( '', 
 										'platform_0', 

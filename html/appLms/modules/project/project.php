@@ -43,8 +43,8 @@ function project() {
 
 	$tab = new Table(0, $lang->def("_MYPRJ"), $lang->def("_PROJECT_SUMMARY"));
 
-	$content_h = array( $lang->def("_TITLE"), $lang->def("_PROGRESS"), $lang->def("_PERCENTAGE") );
-	$type_h = array( '', '', 'image' );
+	$content_h = [$lang->def("_TITLE"), $lang->def("_PROGRESS"), $lang->def("_PERCENTAGE")];
+	$type_h = ['', '', 'image'];
 	if($mod_perm) {
 		$content_h[] = '<img src="'.getPathImage().'standard/moduser.png" '.
 			'alt="'.$lang->def("_MODPROJECTADMIN").'" title="'.$lang->def("_MODPROJECTADMIN").'" />';
@@ -77,12 +77,12 @@ function project() {
 			$img="progbar_r";
 		}
 
-		$content = array(
+		$content = [
 			'<a href="index.php?modname=project&amp;op=showprj&amp;id='.$val.'">'.$row["ptitle"].'</a>',
 			/* '<img class="'.$class.'" src="'.getPathImage().'prjman/'.$img.'.gif" width="'.( $progtot*2 ).'" alt="'.$lang->def("_PROGRESS").'" />' */
 			renderProgress($progtot, 0, 100, false),
 			$progtot.'%'
-		);
+        ];
 		if ($mod_perm) {
 			if ($row["flag"] == 2) {
 				$content[] = '<a href="index.php?modname=project&amp;op=manprjadmin&amp;id='.$val.'">'
@@ -127,7 +127,7 @@ function project() {
 
 function getUserGrpArray($userid) {
 
-	$user_grp=array();
+	$user_grp= [];
 	$acl=Docebo::user()->getAcl();
 	$user_grp=$acl->getUserGroupsST($userid);
 	$user_grp[]=getLogUserId();
@@ -146,7 +146,7 @@ function user_projects($userid) {
 	$qtxt.="WHERE cid='".$_SESSION["idCourse"]."' AND pgroup IN (".$grp_list.") ";
 	$qtxt.="ORDER BY ptitle"; //echo("\n\n<!-- ".$qtxt." -->\n\n");
 
-	$res = array();
+	$res = [];
 	$q=sql_query($qtxt);
 	if (($q) && (sql_num_rows($q) > 0)) {
 		while ($row=sql_fetch_assoc($q)) {
@@ -184,7 +184,7 @@ function userProjectsList($userid) {
 	$qtxt.="WHERE t1.cid='".$_SESSION["idCourse"]."' AND t1.pgroup IN (".$grp_list.") ";
 	$qtxt.="GROUP BY t1.id ORDER BY t1.ptitle"; //echo("\n\n<!-- ".$qtxt." -->\n\n");
 
-	$res = array();
+	$res = [];
 	$q =sql_query($qtxt);
 	if (($q) && (sql_num_rows($q) > 0)) {
 		while ($row=sql_fetch_assoc($q)) {
@@ -202,7 +202,7 @@ function getGroupsForProject(& $lang) {
 
 	//finding group
 	$db_groups = $acl_man->getBasePathGroupST('/lms/course/'.$_SESSION['idCourse'].'/group/', true);
-	$groups = array();
+	$groups = [];
 	$groups[getLogUserId()] = $lang->def('_YOUONLY');
   foreach($db_groups as $idst => $groupid ){
 
@@ -409,7 +409,7 @@ function is_admin($user, $prjid) { // per maggior leggibilita' del codice
 
 function getAdminList($prjid) {
 
-	$res = array();
+	$res = [];
 
 	$qtxt="SELECT userid FROM ".$GLOBALS["prefix_lms"]."_prj_users WHERE pid='".$prjid."' AND flag='1'";
 	$query=sql_query($qtxt);
@@ -646,7 +646,7 @@ function show_prj() {
 	}
 
 
-	$ta_array=array();
+	$ta_array= [];
 	$ta_array["index.php?modname=project&amp;op=project"]=$lang->def("_PROJECT_MANAGER");
 	$ta_array[]=$row["ptitle"];
 	$out->add(getTitleArea($ta_array, "project"));
@@ -810,12 +810,12 @@ function manprjadmin() {
 				$arr_idstGroup = $aclManager->getGroupsIdstFromBasePath('/lms/course/'.(int)$_SESSION['idCourse'].'/subscribed/');
 				$user_select->setUserFilter('group',$arr_idstGroup);
 			} else {
-				$user_select->setUserFilter('group', array($group));
+				$user_select->setUserFilter('group', [$group]);
 			}
 
 			$user_select->setPageTitle(
-				getTitleArea(array($back_url => $lang->def('_PROJECT_MANAGER'),
-				$lang->def('_PADMINS') ),
+				getTitleArea([$back_url => $lang->def('_PROJECT_MANAGER'),
+				$lang->def('_PADMINS')],
 				'project', $lang->def('_PROJECT_MANAGER')));
 			$user_select->loadSelector('index.php?modname=project&amp;op=manprjadmin&amp;id='.$id,
 					false,
@@ -882,7 +882,7 @@ function edit_news($mode="edit") {
 			$label=$lang->def("_SAVE");
 		}
 		else if ($mode == "new") {
-			$row=Array();
+			$row= [];
 			$label=$lang->def("_SAVE");
 		}
 
@@ -923,7 +923,7 @@ function edit_news($mode="edit") {
 			if ($mode == "edit")
 				$row=sql_fetch_array($query);
 			if ($mode == "new")
-				$row=Array();
+				$row= [];
 			//$out->add("<table border=\"0\" cellpadding=\"4\" cellspacing=\"1\" bgcolor=\"#DDDDEE\" style=\"border-spacing: 1px;\" >\n");
 			$i=0;
 			$out->add("<table><tr>\n");
@@ -1018,7 +1018,7 @@ function edit_todo($mode="edit") {
 			$label=$lang->def("_SAVE");
 		}
 		else if ($mode == "new") {
-			$row=Array();
+			$row= [];
 			$label=$lang->def("_SAVE");
 		}
 
@@ -1055,7 +1055,7 @@ function edit_todo($mode="edit") {
 			if ($mode == "edit")
 				$row=sql_fetch_array($query);
 			if ($mode == "new")
-				$row=Array();
+				$row= [];
 
 			$out->add("<table><tr>\n");
 			$out->add("<td><input type=\"text\" size=\"40\" id=\"ttitle\" name=\"ttitle\" value=\"".( isset($row["ttitle"]) ? $row["ttitle"] : '' )."\" /></td>\n");
@@ -1139,7 +1139,7 @@ function edit_tasks($mode="edit") {
 			$label=$lang->def("_SAVE");
 		}
 		else if ($mode == "new") {
-			$row=Array();
+			$row= [];
 			$label=$lang->def("_SAVE");
 		}
 
@@ -1184,7 +1184,7 @@ function edit_tasks($mode="edit") {
 			if ($mode == "edit")
 				$row=sql_fetch_array($query);
 			if ($mode == "new")
-				$row=Array();
+				$row= [];
 
 			$out->add("<table><tr>\n");
 			$out->add("<td><input type=\"text\" size=\"30\" id=\"tname\" name=\"tname\" value=\"".( isset($row["tname"]) ? $row["tname"] : '' )."\" /></td>\n");
@@ -1297,7 +1297,7 @@ function edit_files($mode="edit") {
 			$label=$lang->def("_SAVE");
 		}
 		else if ($mode == "new") {
-			$row=Array();
+			$row= [];
 			$label=$lang->def("_SAVE");
 		}
 
@@ -1340,7 +1340,7 @@ function edit_files($mode="edit") {
 			if ($mode == "edit")
 				$row=sql_fetch_array($query);
 			if ($mode == "new")
-				$row=Array();
+				$row= [];
 
 			$out->add("<table><tr>\n");
 			if ($mode != "edit")

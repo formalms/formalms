@@ -1,6 +1,6 @@
 <?php
-	$title = array(	'index.php?r='.$this->link_course.'/show' => Lang::t('_COURSE', 'course'),
-				Lang::t('_MULTIPLE_SUBSCRIPTION', 'course'));
+	$title = ['index.php?r='.$this->link_course.'/show' => Lang::t('_COURSE', 'course'),
+				Lang::t('_MULTIPLE_SUBSCRIPTION', 'course')];
 
 	echo	getTitleArea($title)
 			.'<div class="std_block">'

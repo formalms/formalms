@@ -24,12 +24,12 @@ class TableView {
 	protected $fields = null;
 	protected $initialData = null;
 
-	protected $otherOptions = array();
-	protected $jsLanguages = array();
+	protected $otherOptions = [];
+	protected $jsLanguages = [];
 
 	protected $json = null;
 
-	protected $formatters = array();
+	protected $formatters = [];
 
 
 	protected $html_before = '';
@@ -52,7 +52,7 @@ class TableView {
 	public function initLibraries() {
 
 		// load yui
-		YuiLib::load(array(
+		YuiLib::load([
 			'yahoo-dom-event'=>'yahoo-dom-event.js',
 			'connection'=>'connection-min.js',
 			'dragdrop'=>'dragdrop-min.js',
@@ -67,9 +67,9 @@ class TableView {
 			'treeview'=>'treeview-min.js',
 			'resize'=>'resize-beta-min.js',
 			'selector'=>'selector-beta-min.js'
-		), array(
+        ], [
 			'assets/skins/sam' => 'skin.css'
-		));
+        ]);
 
 		// Selector class
 		Util::get_js(Get::rel_path('base').'/lib/lib.elem_selector.js', true,true);
@@ -125,10 +125,10 @@ class TableView {
 		
 		if(!is_array($this->columns)) return '[]';
 
-		$cols = array();
+		$cols = [];
 		foreach ($this->columns as $column) {
 
-			$col_config = array();
+			$col_config = [];
 			foreach ($column as $key => $value) {
 				switch ($key) {
 					/*case 'sortable' : {
@@ -178,7 +178,7 @@ class TableView {
 
 
 	protected function addFormatter($code, $function, $inObject = true) {
-		$this->formatters[$code] = array('function'=>$function, 'in_object'=>$inObject);
+		$this->formatters[$code] = ['function'=>$function, 'in_object'=>$inObject];
 	}
 
 	protected function getCellFormatter($name) {
@@ -199,7 +199,7 @@ class TableView {
 
 	//basic table drawing functions
 	protected function _getJsOptions() {
-		$options = array();
+		$options = [];
 
 		$options[] = 'serverUrl:"'.$this->serverUrl.'"';
 
@@ -256,13 +256,13 @@ class TableView {
 				'.($this->useDOMReady ? '});' : '');
 		}
 
-		$output = array(
+		$output = [
 			'js' => '<script type="text/javascript">'.$js_code.'</script>',
 			'html' => $this->html_before.'<div id="pag-above"></div>'
 			.'<div id="'.$this->id.'">'.$this->_getHtml().'</div>'
 			.'<div id="pag-below"></div>'.$this->html_after,
 			'options' => $jsOptions
-		);
+        ];
 
 		if (!$print) {
 			return $output;

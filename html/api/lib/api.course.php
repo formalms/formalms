@@ -168,7 +168,7 @@ class Course_API extends API
             } else {
                 $category = null;
             }
-            $response['courses'][] = array(
+            $response['courses'][] = [
                 'course_id' => $course_info['idCourse'],
                 'code' => str_replace('&', '&amp;', $course_info['code']),
                 'course_name' => str_replace('&', '&amp;', $course_info['name']),
@@ -189,7 +189,7 @@ class Course_API extends API
                 'img_course' => $course_info['img_course'] ? Get::site_url() . _folder_files_ . '/' . _folder_lms_ . '/' . Get::sett('pathcourse') . $course_info['img_course'] : '',
                 'category_id' => $course_info['idCategory'],
                 'category' => $category
-            );
+            ];
         }
 
 
@@ -233,7 +233,7 @@ class Course_API extends API
         $course = $course_man->getCourseInfo($courseId);
 
         foreach ($course_list[$courseId] as $key => $course_info) {
-            $response[]['course_info'] = array(
+            $response[]['course_info'] = [
                 'course_id' => $course['idCourse'],
                 'edition_id' => $course_info['id_edition'],
                 'code' => str_replace('&', '&amp;', $course_info['code']),
@@ -248,7 +248,7 @@ class Course_API extends API
                 'date_begin' => $course_info['date_begin'],
                 'date_end' => $course_info['date_end'],
                 'course_link' => Get::site_url() . _folder_lms_ . '/index.php?modname=course&amp;op=aula&amp;idCourse=' . $course['idCourse'],
-            );
+            ];
         }
 
         //$output['debug']=print_r($course_list, true).print_r($course, true);
@@ -291,7 +291,7 @@ class Course_API extends API
         $course = $course_man->getCourseInfo($courseId);
 
         foreach ($course_list as $key => $course_info) {
-            $response[]['course_info'] = array(
+            $response[]['course_info'] = [
                 'course_id' => $course['idCourse'],
                 'date_id' => $course_info['id_date'],
                 'code' => str_replace('&', '&amp;', $course_info['code']),
@@ -308,7 +308,7 @@ class Course_API extends API
                 'num_day' => $course_info['num_day'],
                 'classroom' => $course_info['classroom'],
                 'course_link' => Get::site_url() . _folder_lms_ . '/index.php?modname=course&amp;op=aula&amp;idCourse=' . $course['idCourse'],
-            );
+            ];
         }
 
         //$output['debug']=print_r($course_list, true).print_r($course, true);
@@ -324,7 +324,7 @@ class Course_API extends API
             return false;
         }
 
-        $lev_arr = array(
+        $lev_arr = [
             'administrator' => 7,
             'instructor' => 6,
             'mentor' => 5,
@@ -332,7 +332,7 @@ class Course_API extends API
             'student' => 3,
             'ghost' => 2,
             'guest' => 1,
-        );
+        ];
 
         return (int)$lev_arr[$my_level];
     }
@@ -345,7 +345,7 @@ class Course_API extends API
             return false;
         }
 
-        $lev_arr = array(
+        $lev_arr = [
             'waiting_list' => _CUS_WAITING_LIST,
             'to_confirm' => _CUS_CONFIRMED,
             'subscribed' => _CUS_SUBSCRIBED,
@@ -353,7 +353,7 @@ class Course_API extends API
             'completed' => _CUS_END,
             'suspended' => _CUS_SUSPEND,
             'overbooking' => _CUS_OVERBOOKING,
-        );
+        ];
 
         return (int)$lev_arr[$my_status];
     }
@@ -523,14 +523,14 @@ class Course_API extends API
             // Send Message
 
 
-            $array_subst = array('[url]' => Get::site_url(),
-                '[course]' => $course_info['name']);
+            $array_subst = ['[url]' => Get::site_url(),
+                '[course]' => $course_info['name']];
 
             $msg_composer = new EventMessageComposer();
             $msg_composer->setSubjectLangText('email', '_APPROVED_SUBSCRIBED_SUBJECT', false);
             $msg_composer->setBodyLangText('email', '_APPROVED_SUBSCRIBED_TEXT', $array_subst);
 
-            $recipients = array($user_id);
+            $recipients = [$user_id];
 
             if ($course_info['sendCalendar']) {
 
@@ -807,13 +807,13 @@ class Course_API extends API
         $result = $db->query($qcert);
         foreach ($result as $row) {
 
-            $response['certificate_list'][] = array('course_id' => $row['id_course'],
+            $response['certificate_list'][] = ['course_id' => $row['id_course'],
                 'course_code' => $row['code'],
                 'course_name' => $row['name'],
                 'date_generate' => $row['on_date'],
                 'cert_file' => Get::site_url() . 'files/appLms/certificate/' . $row['cert_file']
 
-            );
+            ];
 
         }
 
@@ -879,11 +879,11 @@ class Course_API extends API
 
             $fields = [];
             foreach ($field_data as $field_id => $value) {
-                $fields[] = array('id' => $field_id, 'name' => $value[0], 'value' => $value[1]);
+                $fields[] = ['id' => $field_id, 'name' => $value[0], 'value' => $value[1]];
             }
 
 
-            $response['certificate_list'][] = array(
+            $response['certificate_list'][] = [
                 'idst' => $row['idst'],
                 'firstname' => $row['firstname'],
                 'lastname' => $row['lastname'],
@@ -895,7 +895,7 @@ class Course_API extends API
                 'custom_fields' => $fields
 
 
-            );
+            ];
 
         }
 
@@ -918,16 +918,16 @@ class Course_API extends API
 
 
         if ($category_name == false) {
-            $response = array('success' => false, 'message' => 'Wrong parameters');
+            $response = ['success' => false, 'message' => 'Wrong parameters'];
         } else {
 
             $treecat = new Categorytree();
 
             $new_category_id = $treecat->addFolderById($category_id, $category_name);
             if ($new_category_id != false && $new_category_id > 0) {
-                $response = array('success' => true, 'category_id' => $new_category_id, 'parent_category_id' => $params['category_id']);
+                $response = ['success' => true, 'category_id' => $new_category_id, 'parent_category_id' => $params['category_id']];
             } else {
-                $response = array('success' => false, 'message' => 'Cannot create category');
+                $response = ['success' => false, 'message' => 'Cannot create category'];
             }
         }
 
@@ -1936,7 +1936,7 @@ class Course_API extends API
         require_once(_lms_ . '/admin/models/CourseAlms.php');
         $model = new ClassroomAlms($courseId, $idDate);
 
-        $res = array('success' => $model->delClassroom());
+        $res = ['success' => $model->delClassroom()];
 
         if ($res) {
             $response['success'] = true;
@@ -1975,7 +1975,7 @@ class Course_API extends API
         //$output['query'] = $query;
         foreach ($res as $row) {
 
-            $response[]['lo_course'] = array(
+            $response[]['lo_course'] = [
                 'nome_lo' => $row['title'],
                 'nome_corso' => $row['name'],
                 'id_item' => $row['idOrg'],
@@ -1984,7 +1984,7 @@ class Course_API extends API
                 'tipo' => $row['objectType'],
                 'src' => 'appLms/index.php?modname=organization&amp;op=custom_playitem&amp;id_item=' . $row['idOrg'],
                 'id_item' => $row['idOrg']
-            );
+            ];
         }
 
         return $response;
@@ -2698,7 +2698,7 @@ class Course_API extends API
         $query = 'SELECT objectType, className, fileName FROM %lms_lo_types';
         $rs = sql_query($query);
         while (list($type, $className, $fileName) = sql_fetch_row($rs)) {
-            $lo_types_cache[$type] = array($className, $fileName);
+            $lo_types_cache[$type] = [$className, $fileName];
         }
 
         if (!isset($lo_types_cache[$objectType])) return NULL;

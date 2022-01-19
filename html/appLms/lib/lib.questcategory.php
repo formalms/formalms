@@ -24,7 +24,7 @@ class Questcategory {
 		SELECT idCategory, name 
 		FROM %lms_quest_category
 		ORDER BY name";
-		$categories = array( 0 => Lang::t('_NONE', 'test') );
+		$categories = [0 => Lang::t('_NONE', 'test')];
 		$re_quest_cat = sql_query($query_quest_cat);
 		while(list($id, $title) = sql_fetch_row($re_quest_cat)) {
 			$categories[$id] = $title;
@@ -37,12 +37,12 @@ class Questcategory {
 	function getTestQuestionsCategories($id_test) {
 		if (!$id_test) return FALSE;
 
-		$categories = array( 0 => Lang::t('_NONE', 'test') );
+		$categories = [0 => Lang::t('_NONE', 'test')];
 		//retrieve the categories of the test's questions
 		$query = "SELECT DISTINCT(idCategory) FROM %lms_testquest WHERE idTest = ".(int)$id_test;
 		$res = sql_query($query);
 		if ($res && sql_num_rows($res)>0) {
-			$list = array();
+			$list = [];
 			while (list($id_category) = sql_fetch_row($res)) {
 				$list[] = (int)$id_category;
 			}
@@ -67,7 +67,7 @@ class Questcategory {
 		FROM ".$GLOBALS['prefix_lms']."_quest_category 
 		WHERE idCategory IN ( ".implode(',', $category)." ) 
 		ORDER BY name";
-		$categories = array( 0 => Lang::t('_NONE', 'test') );
+		$categories = [0 => Lang::t('_NONE', 'test')];
 		$re_quest_cat = sql_query($query_quest_cat);
 		while(list($id, $title) = sql_fetch_row($re_quest_cat)) {
 			

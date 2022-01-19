@@ -232,7 +232,7 @@ class Bbb_Manager {
 	 */
 	function _decode_header ( $str ) {
 
-	    $out = array ();
+	    $out = [];
 	    $part = preg_split ( "/\r?\n/", $str, -1, PREG_SPLIT_NO_EMPTY );
 		for( $h = 0; $h < sizeof ( $part ); $h++ ) {
 
@@ -362,10 +362,10 @@ class Bbb_Manager {
 				}
 
 				if ($auth_code) {
-					$other_header = array(
+					$other_header = [
 						_BBB_AUTH_CODE => $auth_code,
 						"Content-type" => "application/x-www-form-urlencoded"
-					);
+                    ];
 					$post = $_parname.urlencode($json->encode($params));
 					$res_json = $fsock->post_request($url, Get::sett('ConferenceBBB_port', '80'), $post, $other_header);
 					if ($res_json) {
@@ -375,7 +375,7 @@ class Bbb_Manager {
 
 			} else {
 				$post = $_parname.urlencode($json->encode($params));
-				$other_header = array("Content-type" => "application/x-www-form-urlencoded");
+				$other_header = ["Content-type" => "application/x-www-form-urlencoded"];
 				if ($method != 'login') $other_header[_BBB_AUTH_CODE] = $this->get_auth_code();
 				$res_json = $fsock->post_request($url, Get::sett('ConferenceBBB_port', '80'), $post, $other_header);
 				if ($res_json) {

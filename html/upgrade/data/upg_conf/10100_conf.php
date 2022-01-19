@@ -31,6 +31,6 @@ function upgradeConfig10100($config) {
 	$config_sts = 1;	// no change required
 	//$config_sts = 2;	// made change
 
-	return array($config_sts,$config);
+	return [$config_sts,$config];
 }
 

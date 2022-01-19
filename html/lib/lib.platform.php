@@ -50,7 +50,7 @@ class PlatformManager {
 		if($db_conn === false) $db_conn->prefix = NULL;
 		else $this->db_conn = $db_conn;
 
-		$this->platform = array();
+		$this->platform = [];
 
 		// load platforms information
 		$query_platform = "
@@ -83,7 +83,7 @@ class PlatformManager {
 
 		$lang =& DoceboLanguage::createInstance('platform', 'framework');
 
-		$platform_list = array();
+		$platform_list = [];
 		foreach($this->platform as $platform_code => $platform_info) {
 
 			if($platform_info['main'] == 'true') {
@@ -111,7 +111,7 @@ class PlatformManager {
 
 		$lang =& DoceboLanguage::createInstance('platform', 'framework');
 
-		$platform_list = array();
+		$platform_list = [];
 		foreach($this->platform as $platform_code => $platform_info) {
 
 			if($platform_info['is_active'] == 'true') {
@@ -127,7 +127,7 @@ class PlatformManager {
 
 		$lang =& DoceboLanguage::createInstance('platform', 'framework');
 
-		$platform_list = array();
+		$platform_list = [];
 		foreach($this->platform as $platform_code => $platform_info) {
 
 			if($GLOBALS['where_'.$platform_code] !== false && $platform_info['is_active'] == 'true')
@@ -310,7 +310,7 @@ class PlatformManager {
 
 
 	function doCommonOperations($action) {
-		$valid_actions=array("login", "logout");
+		$valid_actions= ["login", "logout"];
 		$action=strtolower($action);
 
 		if (!in_array($action, $valid_actions))

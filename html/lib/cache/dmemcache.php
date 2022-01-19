@@ -38,7 +38,7 @@ class DMemcache extends DCache {
 	 * )
 	 * @return bool true if the data was saved successfully, false otherwise
 	 */
-	public function set($key, $data, $options = array()) {
+	public function set($key, $data, $options = []) {
 		//try add first because is more efficent
 		$result = $this->_cache->add(
 			$this->combineKey($key), 

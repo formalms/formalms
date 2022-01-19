@@ -112,7 +112,7 @@ class API
                 {
                     $auth_code = Get::sett('rest_auth_code', false);
 
-                    $headerAuth = str_replace(array('FormaLMS', ' '), '', $_SERVER['HTTP_X_AUTHORIZATION']);
+                    $headerAuth = str_replace(['FormaLMS', ' '], '', $_SERVER['HTTP_X_AUTHORIZATION']);
 
                     if ($code !== $auth_code && $headerAuth !== $auth_code) {
                         $result['message'] = 'Autentication code is not valid';

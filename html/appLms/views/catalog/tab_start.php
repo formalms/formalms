@@ -1,5 +1,5 @@
 <?php
-YuiLib::load(array('animation' => 'my_animation', 'container' => 'container-min', 'container' => 'container_core-min'));
+YuiLib::load(['animation' => 'my_animation', 'container' => 'container-min', 'container' => 'container_core-min']);
 echo Util::get_js(Get::rel_path('lms') . '/views/catalog/catalog.js', true);
 
 require_once(_lms_ . '/lib/lib.middlearea.php');

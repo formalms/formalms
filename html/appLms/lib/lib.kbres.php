@@ -80,7 +80,7 @@ class KbRes {
 
 
 		if(!$q) return false;
-		$res_id_arr =array();
+		$res_id_arr = [];
 		while($row = $this->db->fetch_array($q)) {
 			$id =$row['r_item_id'];
 			$res[$id] =$row;
@@ -115,7 +115,7 @@ class KbRes {
 				$res[$res_id][]=$row["tag_name"];
 			}
 			else {
-				$res[$res_id] =array($row["tag_name"]);
+				$res[$res_id] = [$row["tag_name"]];
 			}
 		}
 
@@ -234,7 +234,7 @@ class KbRes {
 		$q =$this->db->query($qtxt);
 		if (!$q) $res =false;
 
-		$ins_arr =array();
+		$ins_arr = [];
 		while($row = $this->db->fetch_array($q)) {
 			$sco_id =$row["idscorm_item"];
 			$param ='chapter='.$row['item_identifier'];
@@ -394,7 +394,7 @@ class KbRes {
 
 
 	public function readParam($param) {
-		$res =array();
+		$res = [];
 		$arr =explode('&', $param);
 
 		foreach ($arr as $p) {
@@ -418,7 +418,7 @@ class KbRes {
 
 
 	public function getResourceTags($res_id) {
-		$res =array();
+		$res = [];
 
 		$qtxt ="SELECT * FROM %lms_kb_rel as rel
 			JOIN %lms_kb_tag as tag ON (rel.parent_id = tag.tag_id) WHERE
@@ -442,7 +442,7 @@ class KbRes {
 	 */
 	public function getResourceTypeArr($with_label=false) {
 
-		$arr =array( 'faq', 'htmlpage', 'poll',	'scoitem' );
+		$arr = ['faq', 'htmlpage', 'poll',	'scoitem'];
 
 		if (!$with_label) {
 			$res =$arr;
@@ -460,12 +460,12 @@ class KbRes {
 	public function addResourceTag($res_id, $tag) {
 		$res =false;
 		if (!is_array($tag)) {
-			$tag =array($tag);
+			$tag = [$tag];
 		}
 
 		$tags_arr =$this->getTagArray($tag);
 
-		$val_arr =array();
+		$val_arr = [];
 		$qtxt ="INSERT INTO %lms_kb_rel (res_id, parent_id, rel_type) VALUES ";
 		foreach($tags_arr as $tag_id=>$tag_name) {
 			$val_arr[]="('".(int)$res_id."', '".$tag_id."', 'tag')";
@@ -487,7 +487,7 @@ class KbRes {
 	 */
 	public function getTagArray($tag_list) {
 
-		$escaped_tags =array();
+		$escaped_tags = [];
 		foreach ($tag_list as $tag_name) {
 			$escaped_tags[]="'".$tag_name."'";
 		}
@@ -495,7 +495,7 @@ class KbRes {
 		$qtxt ="SELECT * FROM %lms_kb_tag WHERE tag_name IN (".implode(',', $escaped_tags).")";
 		$q =$this->db->query($qtxt);
 
-		$current_tags =array();
+		$current_tags = [];
 		while($row = $this->db->fetch_array($q)) {
 			$current_tags[$row["tag_id"]]=$row["tag_name"];
 		}
@@ -522,7 +522,7 @@ class KbRes {
 	 * @return array
 	 */
 	public function getAllTags($with_id=false) {
-		$res =array();
+		$res = [];
 
 		$qtxt ="SELECT * FROM %lms_kb_tag";
 		$q =$this->db->query($qtxt);
@@ -544,7 +544,7 @@ class KbRes {
    * @return array
    */
   public function getTagUseCount() {
-    $res =array();
+    $res = [];
 
     $qtxt ="SELECT tag.tag_id, tag.tag_name, COUNT(*) as use_count
       FROM %lms_kb_tag as tag
@@ -574,8 +574,8 @@ class KbRes {
 	 */
 	public function setResourceTags($res_id, $tags_arr) {
 
-		$to_add =array();
-		$to_rem =array();
+		$to_add = [];
+		$to_rem = [];
 		$current_tags =$this->getResourceTags($res_id);
 		$tags_not_to_rem =array_diff($tags_arr, $current_tags);
 
@@ -606,7 +606,7 @@ class KbRes {
 
 	public function remResourceTag($res_id, $tag) {
 		if (!is_array($tag)) {
-			$tag =array($tag);
+			$tag = [$tag];
 		}
 
 		$tags_arr =$this->getTagArray($tag);
@@ -620,7 +620,7 @@ class KbRes {
 
 
 	public function getResourceFolders($res_id) {
-		$res =array();
+		$res = [];
 
 		$qtxt ="SELECT rel.parent_id,info.node_title FROM %lms_kb_rel as rel
 			JOIN %lms_kb_tree_info as info ON (rel.parent_id = info.id_dir) WHERE
@@ -645,7 +645,7 @@ class KbRes {
 			AND rel_type='folder'";
 		$q =$this->db->query($qtxt);
 
-		$val_arr =array();
+		$val_arr = [];
 		$qtxt ="INSERT INTO %lms_kb_rel (res_id, parent_id, rel_type) VALUES ";
 		foreach($folder_arr as $folder_id) {
 			$val_arr[]="('".(int)$res_id."', '".$folder_id."', 'folder')";
@@ -664,7 +664,7 @@ class KbRes {
 	 * Read resource data from $_GET
 	 */
 	public function getResDataFromRequest() {
-		$data =array();
+		$data = [];
 
 		$data["r_name"]=Get::req('name', DOTY_STRING, "");
 		$data["r_type"]=Get::req('type', DOTY_STRING, "");
@@ -678,7 +678,7 @@ class KbRes {
 	public function getRawResources() {
 
 		$res =false;
-		$qtxt_arr =array();
+		$qtxt_arr = [];
 
 		$qtxt_arr['course_lo'] ="SELECT title, objectType as type
 			,idResource as item_id, idResource as scorm_org_id FROM %lms_organization";
@@ -690,8 +690,8 @@ class KbRes {
 		//$qtxt_arr['games'] ="";
 
 		$i =0;
-		$sco_arr =array();
-		$org_id_arr =array();
+		$sco_arr = [];
+		$org_id_arr = [];
 		foreach($qtxt_arr as $env=>$qtxt) {
 			$q =$this->db->query($qtxt);
 
@@ -702,7 +702,7 @@ class KbRes {
 
 					if ($type == 'scorm') {
 						$org_id_arr[$i] =$row['scorm_org_id'];
-						$sco_arr[$i] =array();
+						$sco_arr[$i] = [];
 						// we pass it by reference (note the "&");
 						// we will fill this later..
 						$row['sco_arr']=& $sco_arr[$i];
@@ -759,7 +759,7 @@ class KbRes {
 	 * @return array
 	 */
 	public function getAllCategorized($type=false, $no_data=false) {
-		$res =array();
+		$res = [];
 		$where ='1';
 
 		switch ($type) {
@@ -832,7 +832,7 @@ class KbRes {
 		}
 
 
-		$res['data']=array();
+		$res['data']= [];
 
 		$q =$this->db->query($qtxt);
 		$i =0;
@@ -855,7 +855,7 @@ class KbRes {
 	 * @return array
 	 */
 	public function getKbFolders($parent_folder, $sub_lvl) {
-		$res =array();
+		$res = [];
 
 		$kb_model =new KbAlms();
 		$folder =$kb_model->getFolderById($parent_folder, true);
@@ -889,17 +889,17 @@ class KbRes {
     // If we have already a current item processed then we
     // create an empty array to sum it later with the folders
     // array we've already created for the first child
-		$arr =($current != false ? array() : array('folders'=>array()));
+		$arr =($current != false ? [] : ['folders'=> []]);
 
     // if we have a current one then the first child
     // has already been created, and then we start from 1
 		$i =($current === false ? 0 : 1);
 		while ($row =$this->db->fetch_assoc($db_q)) {
-      $arr['folders'][$i]=array(
+      $arr['folders'][$i]= [
         'id'=>$row['node_id'],
         'name'=>$row['node_title'],
         'r_count'=>$row['r_count'],
-      );
+      ];
 			if ($row['lev'] > $prev_lev) {
         // we get the other childs in tmp; note that the last item
         // we retrive has a different level so we put it in the 'last' key
@@ -1002,7 +1002,7 @@ class KbRes {
 	 * @return array
 	 */
 	function getNotToCategorizeArr() {
-		$res =array();
+		$res = [];
 
 		$res[]='poll';
 		$res[]='test';

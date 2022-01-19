@@ -249,12 +249,12 @@ class Module_Pubrepo extends LmsModule {
 				$saveObj = new Session_Save();
 				$saveName = $saveObj->getName('crepo',true);
 				$folder = $this->treeView->tdb->getFolderById( $this->treeView->selectedFolder );
-				$saveData = array(	'repo' => 'pubrepo',
+				$saveData = ['repo' => 'pubrepo',
 									'id' => $this->treeView->getSelectedFolderId(),
 									'objectType' => $folder->otherValues[REPOFIELDOBJECTTYPE],
 									'name' => $folder->getFolderName(),
 									'idResource' => $folder->otherValues[REPOFIELDIDRESOURCE]
-								); 
+                ];
 				$saveObj->save( $saveName, $saveData );
 				Util::jump_to( 'index.php?r=lms/lomanagerrepo/completeAction&op=display&crepo='.$saveName.'&'
 							.$this->treeView->_getOpCopyLOSel().'=1' );

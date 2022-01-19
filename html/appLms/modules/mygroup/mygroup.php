@@ -26,12 +26,12 @@ function group() {
 	
 	$acl_man 		=& Docebo::user()->getAclManager();
 	$acl 			=& Docebo::user()->getAcl();
-	$groups 		=& $acl_man->getAllGroupsId(	array('free', 'moderate', 'private'), 
+	$groups 		=& $acl_man->getAllGroupsId(	['free', 'moderate', 'private'],
 												$search);
 									
 	$user_group_wait =& $acl_man->getPendingGroupOfUser( getLogUserId() );
 	
-	$hidden_group = array();
+	$hidden_group = [];
 	if(!isset($_POST['working']))	{
 		
 		$user_group 	= $acl->getSTGroupsST(getLogUserId());
@@ -42,7 +42,7 @@ function group() {
 			$user_group = $_POST['group_sel'];
 			$hidden_group = array_diff($user_group, $groups);
 		}
-		else $user_group = array();
+		else $user_group = [];
 	}
 	$GLOBALS['page']->add(
 		getTitleArea($lang->def('_MYGROUP'), 'mygroup')
@@ -68,14 +68,14 @@ function group() {
 		
 		$tb = new Table(0, $lang->def('_MYGROUP_CAPTION'), $lang->def('_MYGROUP_SUMMARY'));
 		
-		$type_h = array('image', 'nowrap', '');
-		$cont_h = array('<span class="access-only">'.$lang->def('_SUBSCRIBE').'</span>', 
+		$type_h = ['image', 'nowrap', ''];
+		$cont_h = ['<span class="access-only">'.$lang->def('_SUBSCRIBE').'</span>',
 						$lang->def('_NAME'),
-						$lang->def('_DESCRIPTION') );
+						$lang->def('_DESCRIPTION')];
 		$tb->setColsStyle($type_h);
 		$tb->addHead($cont_h);
     foreach($groups as $id => $info ) {
-			$cont = array();
+			$cont = [];
 			
 			if(isset($user_group[$id])) {
 				
@@ -133,7 +133,7 @@ function savesel() {
 		.'<div class="std_block">'
 	, 'content');
 	
-	$selected = array();
+	$selected = [];
 	if(isset($_POST['group_sel'])) $selected = $_POST['group_sel'];
 	elseif(isset($_POST['group_sel_implode'])) $selected = explode(',', $_POST['group_sel_implode']);
 	
@@ -141,7 +141,7 @@ function savesel() {
 											$selected, 
 											false, 
 											false,
-											array('readonly'));
+											['readonly']);
 	
 	if(isset($_POST['save_field']) || $play_field === false || $play_field == '') {
 		
@@ -155,7 +155,7 @@ function savesel() {
 			$acl	 =& Docebo::user()->getAcl();
 			$acl_man =& Docebo::user()->getAclManager();
 			
-			$groups 		=& $acl_man->getAllGroupsId(array('free', 'moderate'));
+			$groups 		=& $acl_man->getAllGroupsId(['free', 'moderate']);
 			$groups_id 		= array_keys($groups);
 			$user_group 	= $acl->getSTGroupsST(getLogUserId());
 			
@@ -180,9 +180,9 @@ function savesel() {
 				$msg_composer = new EventMessageComposer();
 				
 				$msg_composer->setSubjectLangText('email', '_TO_APPROVE_GROUP_USER_SBJ', false);
-				$msg_composer->setBodyLangText('email', '_TO_APPROVE_GROUP_USER_TEXT', array(	'[url]' => Get::site_url()) );
+				$msg_composer->setBodyLangText('email', '_TO_APPROVE_GROUP_USER_TEXT', ['[url]' => Get::site_url()]);
 				
-				$msg_composer->setBodyLangText('sms', '_TO_APPROVE_GROUP_USER_TEXT_SMS', array(	'[url]' => Get::site_url()) );
+				$msg_composer->setBodyLangText('sms', '_TO_APPROVE_GROUP_USER_TEXT_SMS', ['[url]' => Get::site_url()]);
 				$idst_approve = $acl->getRoleST('/framework/admin/directory/editgroup');
 				$recipients = $acl_man->getAllRoleMembers($idst_approve);
 				

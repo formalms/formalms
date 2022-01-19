@@ -25,7 +25,7 @@ class Field_Country extends Field {
 	var $back;
 	var $back_coded;
 	
-	var $_options = array();
+	var $_options = [];
 
 	/**
 	 * class constructor
@@ -75,7 +75,7 @@ class Field_Country extends Field {
 
 		$back_coded = htmlentities(urlencode($back));
 
-		$array_lang = array();
+		$array_lang = [];
 		$std_lang 		=& DoceboLanguage::createInstance('standard');
 		$lang 			=& DoceboLanguage::createInstance('field');
 		$array_lang 	= Docebo::langManager()->getAllLangCode();
@@ -195,7 +195,7 @@ class Field_Country extends Field {
 	function edit($back) {
 		$back_coded = htmlentities(urlencode($back));
 
-		$array_lang = array();
+		$array_lang = [];
 		$std_lang 		=& DoceboLanguage::createInstance('standard');
 		$lang 			=& DoceboLanguage::createInstance('field');
 		$array_lang 	= Docebo::langManager()->getAllLangCode();
@@ -234,7 +234,7 @@ class Field_Country extends Field {
 				return;
 			}
 
-			$existsing_translation = array();
+			$existsing_translation = [];
 			$re_trans = sql_query("
 			SELECT lang_code
 			FROM ".$this->_getMainTable()."
@@ -536,7 +536,7 @@ class Field_Country extends Field {
 			$value = Field::getFieldValue_Filter( $_POST, $id_field, $field_prefix, '0' );
 		}
 
-		$option = array();
+		$option = [];
 		$option[0] = Lang::t('_DROPDOWN_NOVALUE', 'field');
 		if( is_array( $field_special ) ) {
 			foreach( $field_special as $key_opt => $label_opt ) {
@@ -753,11 +753,11 @@ class Field_Country extends Field {
 
 
 	function storeDirectMultiple( $idst_users, $value, $is_id, $no_overwrite, $int_userid=TRUE ) {
-		if (is_numeric($idst_users)) $idst_users = array($idst_users);
+		if (is_numeric($idst_users)) $idst_users = [$idst_users];
 		if (!is_array($idst_users)) return false;
 		if (empty($idst_users)) return true;
 
-		$arr_existent = array();
+		$arr_existent = [];
 		$arr_new = $idst_users;
 
 		$query = "SELECT id_user, user_entry FROM ".$this->_getUserEntryTable()." "
@@ -782,7 +782,7 @@ class Field_Country extends Field {
 			}
 
 			if (!empty($arr_new)) {
-				$insert_values = array();
+				$insert_values = [];
 				foreach ($arr_new as $idst) {
 					$insert_values[] = "(	'".(int)$idst."', '".(int)$this->id_common."', '0', '".$value."')";
 				}
@@ -805,7 +805,7 @@ class Field_Country extends Field {
 
 		$lang 			=& DoceboLanguage::createInstance('field');
 
-		$sons = array();
+		$sons = [];
 		//find available son
 		
 		$query_tax_country = "
@@ -826,7 +826,7 @@ class Field_Country extends Field {
 	
 	function getClientClassObject() {
     $sons = $this->getAllSon();
-    $temp=array();
+    $temp= [];
     foreach ($sons as $key=>$val) {
       $temp[] = '{value: "'.$key.'", text: "'.$val.'"}';
     }

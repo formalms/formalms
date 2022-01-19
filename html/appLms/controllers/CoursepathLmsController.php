@@ -15,8 +15,8 @@ class CoursepathLmsController extends LmsController
 {
 	public $name = 'coursepath';
 
-	public $ustatus = array();
-	public $cstatus = array();
+	public $ustatus = [];
+	public $cstatus = [];
 
 	public $path_course = '';
 
@@ -33,20 +33,20 @@ class CoursepathLmsController extends LmsController
 		require_once(_lms_.'/lib/lib.subscribe.php');
 		require_once(_lms_.'/lib/lib.levels.php');
 
-		$this->cstatus = array(
+		$this->cstatus = [
 			CST_PREPARATION => '_CST_PREPARATION',
 			CST_AVAILABLE 	=> '_CST_AVAILABLE',
 			CST_EFFECTIVE 	=> '_CST_CONFIRMED',
 			CST_CONCLUDED 	=> '_CST_CONCLUDED',
 			CST_CANCELLED 	=> '_CST_CANCELLED',
-		);
+        ];
 
-		$this->ustatus = array(
+		$this->ustatus = [
 			_CUS_CONFIRMED 		=> '_T_USER_STATUS_CONFIRMED',
 			_CUS_SUBSCRIBED 	=> '_T_USER_STATUS_SUBS',
 			_CUS_BEGIN 			=> '_T_USER_STATUS_BEGIN',
 			_CUS_END 			=> '_T_USER_STATUS_END'
-		);
+        ];
 		
 		$this->path_course = $GLOBALS['where_files_relative'].'/appLms/'.Get::sett('pathcourse').'/';
 
@@ -56,7 +56,7 @@ class CoursepathLmsController extends LmsController
 	public function show()
 	{
             
-            $this->render('_tabs_block', array());      
+            $this->render('_tabs_block', []);
 	}
 
 	public function all()
@@ -78,9 +78,9 @@ class CoursepathLmsController extends LmsController
 		$coursepath_courses = $this->model->getCoursepathCourseDetails(array_keys($user_coursepath));
 
 		if(count($user_coursepath) > 0)
-			$this->render('coursepath', array(	'type' => 'all',
+			$this->render('coursepath', ['type' => 'all',
 												'user_coursepath' => $user_coursepath,
-												'coursepath_courses' => $coursepath_courses));
+												'coursepath_courses' => $coursepath_courses]);
 		else
 			echo Lang::t('_NO_COURSEPATH_IN_SECTION', 'coursepath');
 	}

@@ -41,7 +41,7 @@ function myfriends(&$url) {
 
 		.'<p class="new_elem_link"><a href="'.$url->getUrl('op=searchuser').'">'.$lang->def('_SEARCH_USER').'</a></p>'
 	, 'content');
-	$controlled_id = array();
+	$controlled_id = [];
 	$controlled_id = $my_fr->controlPendentRequest();
 	if (count($controlled_id))
 		for ($i = 0; $i < count($controlled_id); $i++)
@@ -156,7 +156,7 @@ function searchUser(&$url) {
 	$acl_man 	=& Docebo::user()->getAclManager();
 	
 	$GLOBALS['page']->add(
-		getTitleArea( array( $url->getUrl() => $lang->def('_MY_FRIENDS'), $lang->def('_SEARCH_USER') ), 'myfriends')
+		getTitleArea( [$url->getUrl() => $lang->def('_MY_FRIENDS'), $lang->def('_SEARCH_USER')], 'myfriends')
 		.'<div class="std_block">', 'content');
 	
 	if(isset($_POST['send'])) {
@@ -240,7 +240,7 @@ function delfriend(&$url) {
 	
 	
 	$GLOBALS['page']->add(
-		getTitleArea( array( $url->getUrl() => $lang->def('_MY_FRIENDS'), $lang->def('_REMOVE_FRIEND') ), 'myfriends')
+		getTitleArea( [$url->getUrl() => $lang->def('_MY_FRIENDS'), $lang->def('_REMOVE_FRIEND')], 'myfriends')
 		.'<div class="std_block">', 'content');
 	
 	if(isset($_GET['confirm'])) {
@@ -248,7 +248,7 @@ function delfriend(&$url) {
 		if($my_fr->delFriend($id_friend)) Util::jump_to($url->getUrl('result=ok_del'));
 		$GLOBALS['page']->add( getErrorUi($lang->def('_ERR_REMOVE_FRIEND')) );
 	}
-	$ui = $my_fr->getFriendsInfo(array($id_friend));
+	$ui = $my_fr->getFriendsInfo([$id_friend]);
 	if($ui == false) {
 		
 		$GLOBALS['page']->add( getErrorUi($lang->def('_INVALID_FRIEND')) );

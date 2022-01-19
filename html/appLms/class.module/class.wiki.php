@@ -23,21 +23,21 @@ class Module_Wiki extends LmsModule {
 	}
 
 	function getAllToken() {
-		return array(
-			'view' => array( 	'code' => 'view',
+		return [
+			'view' => ['code' => 'view',
 								'name' => '_VIEW',
-								'image' => 'standard/view.png'),
-			'edit' => array( 	'code' => 'edit',
+								'image' => 'standard/view.png'],
+			'edit' => ['code' => 'edit',
 								'name' => '_MOD_WIKI',
-								'image' => 'standard/edit.png'),
-			'admin' => array( 	'code' => 'admin',
+								'image' => 'standard/edit.png'],
+			'admin' => ['code' => 'admin',
 								'name' => '_ADMIN_WIKI',
-								'image' => 'standard/property.png')
-		);
+								'image' => 'standard/property.png']
+        ];
 	}
 
 	function getPermissionsForMenu($op) {
-		return array(
+		return [
 			1 => $this->selectPerm($op, 'view'),
 			2 => $this->selectPerm($op, 'view'),
 			3 => $this->selectPerm($op, 'view'),
@@ -45,7 +45,7 @@ class Module_Wiki extends LmsModule {
 			5 => $this->selectPerm($op, 'view,edit'),
 			6 => $this->selectPerm($op, 'view,edit'),
 			7 => $this->selectPerm($op, 'view,edit,admin')
-		);
+        ];
 	}
 
 }

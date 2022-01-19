@@ -16,10 +16,10 @@ class CalendarMailer extends FormaMailer
             $subject,
             $mail_text,
             [$calendar->getFile()],
-            array(
+            [
                 MAIL_REPLYTO => Get::sett('sender_event'),
                 MAIL_SENDER_ACLNAME => Get::sett('use_sender_aclname')
-            )
+            ]
         );
     }
 }

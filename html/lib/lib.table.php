@@ -339,15 +339,15 @@ class Table {
 
 		$this->cols 			= 0;
 		$this->max_rows 		= $max_rows;
-		$this->cols_class 		= array();
+		$this->cols_class 		= [];
 
 		$this->table_caption 	= $caption;
 		$this->table_summary 	= $summary;
                                    
-		$this->table_head 		= array();
-		$this->table_body 		= array();
-		$this->table_foot 		= array();
-		$this->add_action		= array();
+		$this->table_head 		= [];
+		$this->table_body 		= [];
+		$this->table_foot 		= [];
+		$this->add_action		= [];
 
 		$this->hide_over		= false;
 
@@ -470,7 +470,7 @@ class Table {
 
 		$this->table_body[$row] = new TableRow($style_row, 'expanded', $this->cols, FALSE, $other_code);
 
-		$this->table_body[$row]->addRow(array($label), array($style_row));
+		$this->table_body[$row]->addRow([$label], [$style_row]);
 	}
 
 	public function addBodyCustom($label) {
@@ -482,12 +482,12 @@ class Table {
 
 	public function emptyBody() {
 
-		$this->table_body = array();
+		$this->table_body = [];
 	}
 
 	public function emptyFoot() {
 
-		$this->table_foot = array();
+		$this->table_foot = [];
 	}
 
 	public function addFoot($labels, $style = false) {
@@ -915,12 +915,12 @@ class Table {
 		//math for number of page
 		if($this->maxRowsAtTime == 0) return;
 		if( !is_array($symbol) ) {
-			$symbol = array(
+			$symbol = [
 				'start' => '<img src="'.getPathImage().'standard/start.png" alt="'. Lang::t('_START').'" title="'. Lang::t('_START').'" />',
 				'prev' => '<img src="'.getPathImage().'standard/prev.png" alt="'. Lang::t('_PREV').'" title="'. Lang::t('_PREV').'" />',
 				'next' => '<img src="'.getPathImage().'standard/next.png" alt="'. Lang::t('_NEXT').'" title="'. Lang::t('_NEXT').'" />',
 				'end' => '<img src="'.getPathImage().'standard/end.png" alt="'. Lang::t('_END').'" title="'. Lang::t('_END').'" />'
-			);
+            ];
 		}
 		$nav = '';
 		if($totalRow) {

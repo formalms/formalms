@@ -37,10 +37,10 @@ class LocationAlms extends Model
      */
     public function getPerm()
     {
-        return array(
+        return [
             'view' => 'standard/view.png',
             'mod' => 'standard/edit.png'
-        );
+        ];
     }
 
     public function getLocationList($startIndex = false, $results = false, $sort = false, $dir = false, $filter = false)
@@ -56,7 +56,7 @@ class LocationAlms extends Model
             $query .= " LIMIT " . (int)$startIndex . ", " . (int)$results;
 
         $rs = $this->db->query($query);
-        $result = array();
+        $result = [];
         while ($location = $this->db->fetch_obj($rs)) {
             $result[] = $location;
         }
@@ -82,7 +82,7 @@ class LocationAlms extends Model
         $query = "SELECT location_id FROM %lms_class_location";
         $rs = $this->db->query($query);
         if (!$rs) return false;
-        $output = array();
+        $output = [];
         while (list($id_location) = $this->db->fetch_row($rs)) {
             $output[] = (int)$id_location;
         }
@@ -154,7 +154,7 @@ class LocationAlms extends Model
             $query .= " ORDER BY lc.name";
 
         $rs = $this->db->query($query);
-        $result = array();
+        $result = [];
 
         while ($classroom = $this->db->fetch_obj($rs)) {
             $result[] = $classroom;
@@ -196,7 +196,7 @@ class LocationAlms extends Model
             . " ORDER BY lc.name";
 
         $rs = $this->db->query($query);
-        $result = array();
+        $result = [];
         while ($classroom = $this->db->fetch_obj($rs)) {
             $result[$classroom->idClassroom] = $classroom->name;
         }
@@ -311,7 +311,7 @@ class LocationAlms extends Model
     {
 
         // estrarre tutti i dettagli della classe che recupero tramite l'idclassroom
-        $sort = $this->clean_sort($sort, array('date'));
+        $sort = $this->clean_sort($sort, ['date']);
         $dir = $this->clean_dir($dir);
 
         $query_dates =
@@ -325,7 +325,7 @@ class LocationAlms extends Model
 
         $classroom_num = $this->db->num_rows($rs);
 
-        $result = array();
+        $result = [];
         while ($date = $this->db->fetch_obj($rs)) {
             $result[] = $date;
         }
@@ -350,7 +350,7 @@ class LocationAlms extends Model
     {
 
 
-        $sort = $this->clean_sort($sort, array('date'));
+        $sort = $this->clean_sort($sort, ['date']);
         $dir = $this->clean_dir($dir);
 
         $position = stripos($date, "-");
@@ -414,7 +414,7 @@ class LocationAlms extends Model
 
         $classroom_num = $this->db->num_rows($rs);
 
-        $result = array();
+        $result = [];
         while ($date = $this->db->fetch_obj($rs)) {
             $date->date = Format::date($date->date, 'date');
             $result[] = $date;

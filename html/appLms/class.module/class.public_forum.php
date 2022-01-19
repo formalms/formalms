@@ -40,32 +40,32 @@ class Module_Public_Forum extends LmsModule {
 	}
 	
 	function getAllToken($op) {
-		return array( 
-			'view' => array( 	'code' => 'view',
+		return [
+			'view' => ['code' => 'view',
 								'name' => '_VIEW',
-								'image' => 'standard/view.png'),
-			'write' => array( 	'code' => 'write',
+								'image' => 'standard/view.png'],
+			'write' => ['code' => 'write',
 								'name' => '_REPLY',
-								'image' => 'forum/write.gif'),
-			'upload' => array(	'code' => 'upload',
+								'image' => 'forum/write.gif'],
+			'upload' => ['code' => 'upload',
 								'name' => '_UPPLOAD',
-								'image' => 'forum/upload.gif'),
-			'add' => array( 	'code' => 'add',
+								'image' => 'forum/upload.gif'],
+			'add' => ['code' => 'add',
 								'name' => '_ADD',
-								'image' => 'standard/add.png'),
-			'mod' => array( 	'code' => 'mod',
+								'image' => 'standard/add.png'],
+			'mod' => ['code' => 'mod',
 								'name' => '_MOD',
-								'image' => 'standard/edit.png'),
-			'del' => array( 	'code' => 'del',
+								'image' => 'standard/edit.png'],
+			'del' => ['code' => 'del',
 								'name' => '_DEL',
-								'image' => 'standard/delete.png'),
-			'moderate' => array('code' => 'moderate',
+								'image' => 'standard/delete.png'],
+			'moderate' => ['code' => 'moderate',
 								'name' => '_MODERATE',
-								'image' => 'forum/moderate.gif')/*,
+								'image' => 'forum/moderate.gif']/*,
 			'sema' => array(	'code' => 'sema',
 								'name' => '_SEMA',
 								'image' => 'forum/sema.gif')*/
-		);
+        ];
 	}
 }
 

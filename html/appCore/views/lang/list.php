@@ -1,7 +1,7 @@
-<?php Get::title(array(
+<?php Get::title([
 	'index.php?r=adm/lang/show' => Lang::t('_LANGUAGE', 'admin_lang'),
 	Lang::t('_TRANSLATELANG', 'admin_lang')
-)); ?>
+]); ?>
 <?php include Forma::inc(_lib_ . '/formatable/include.php'); ?>
 
 <div class="std_block">
@@ -230,14 +230,14 @@
 	?>
 </div>
 <?php
-$this->widget('dialog', array(
+$this->widget('dialog', [
 	'id' => 'translation_add',
 	'dynamicContent' => true,
 	'ajaxUrl' => 'ajax.adm_server.php?r=adm/lang/translatemask',
 	'callback' => 'function() { this.destroy(); DataTable_lang_table.refresh(); }',
-	'callEvents' => array(
-		array('caller' => 'add_translation_top', 'event' => 'click'),
-		array('caller' => 'add_translation_bottom', 'event' => 'click')
-	)
-));
+	'callEvents' => [
+		['caller' => 'add_translation_top', 'event' => 'click'],
+		['caller' => 'add_translation_bottom', 'event' => 'click']
+    ]
+]);
 ?>

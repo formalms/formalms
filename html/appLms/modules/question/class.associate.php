@@ -282,7 +282,7 @@ class Associate_Question extends Question
         if (isset($_POST['add_question'])) {
             //insert second group
             $num_group = count($_POST['elem_b']);
-            $id_assigned = array();
+            $id_assigned = [];
             for ($j = 0; $j < $num_group; $j++) {
 
                 $content = base64_decode($_POST['elem_b'][$j]);
@@ -407,7 +407,7 @@ class Associate_Question extends Question
             $categories = Questcategory::getCategory();
 
             //writing difficult array
-            $arr_dufficult = array(5 => '5 - ' . $lang->def('_VERY_HARD'), 4 => '4 - ' . $lang->def('_HARD'), 3 => '3 - ' . $lang->def('_DIFFICULT_MEDIUM'), 2 => '2 - ' . $lang->def('_DIFFICULT_EASY'), 1 => '1 - ' . $lang->def('_DIFFICULT_VERYEASY'));
+            $arr_dufficult = [5 => '5 - ' . $lang->def('_VERY_HARD'), 4 => '4 - ' . $lang->def('_HARD'), 3 => '3 - ' . $lang->def('_DIFFICULT_MEDIUM'), 2 => '2 - ' . $lang->def('_DIFFICULT_EASY'), 1 => '1 - ' . $lang->def('_DIFFICULT_VERYEASY')];
 
 
             $GLOBALS['page']->add(
@@ -491,8 +491,8 @@ class Associate_Question extends Question
 
             //save second group-----------------------------------------------
 
-            $correct_answer = array();
-            $existent_associate = array();
+            $correct_answer = [];
+            $existent_associate = [];
 
             $re_answer_asso = sql_query("
 			SELECT idAnswer
@@ -738,7 +738,7 @@ class Associate_Question extends Question
             require_once($GLOBALS['where_lms'] . '/lib/lib.questcategory.php');
             $categories = Questcategory::getCategory();
             //writing difficult array
-            $arr_dufficult = array(5 => '5 - ' . $lang->def('_VERY_HARD'), 4 => '4 - ' . $lang->def('_HARD'), 3 => '3 - ' . $lang->def('_DIFFICULT_MEDIUM'), 2 => '2 - ' . $lang->def('_DIFFICULT_EASY'), 1 => '1 - ' . $lang->def('_DIFFICULT_VERYEASY'));
+            $arr_dufficult = [5 => '5 - ' . $lang->def('_VERY_HARD'), 4 => '4 - ' . $lang->def('_HARD'), 3 => '3 - ' . $lang->def('_DIFFICULT_MEDIUM'), 2 => '2 - ' . $lang->def('_DIFFICULT_EASY'), 1 => '1 - ' . $lang->def('_DIFFICULT_VERYEASY')];
 
 
             $GLOBALS['page']->add(
@@ -873,7 +873,7 @@ class Associate_Question extends Question
 		FROM " . $GLOBALS['prefix_lms'] . "_testquestanswer_associate 
 		WHERE idQuest = '" . (int)$this->id . "'
 		ORDER BY idAnswer");
-        $new_correct = array();
+        $new_correct = [];
         while (list($idAnswer, $answer) = sql_fetch_row($re_answer)) {
 
             //insert answer
@@ -947,7 +947,7 @@ class Associate_Question extends Question
 		WHERE idQuest = '" . (int)$this->id . "'
 		ORDER BY idAnswer");
 
-        $answer_do = array();
+        $answer_do = [];
         $find_prev = false;
         if ($id_track != 0) {
 
@@ -966,7 +966,7 @@ class Associate_Question extends Question
             }
         }
 
-        $option_associate = array();
+        $option_associate = [];
         $option_associate[0]['prefix'] = '<option value="0"';
         $option_associate[0]['suffix'] = '>' . $lang->def('_NO_ANSWER') . '</option>';
         while (list($id_aa, $answer_associate) = sql_fetch_row($re_associate)) {
@@ -1200,7 +1200,7 @@ class Associate_Question extends Question
             while (list($id_a, $id_sel) = sql_fetch_row($re_answer_do)) $answer_do[$id_a] = $id_sel;
         }
 
-        $option_associate = array();
+        $option_associate = [];
         $option_associate[0] = $lang->def('_NO_ANSWER');
         while (list($id_aa, $answer_associate) = sql_fetch_row($re_associate)) {
 
@@ -1239,9 +1239,9 @@ class Associate_Question extends Question
         $quest .= '</div>'
             . '</div>';
 
-        return array('quest' => $quest,
+        return ['quest' => $quest,
             'score' => $this->userScore($id_track, $number_time),
-            'comment' => $comment);
+            'comment' => $comment];
 
     }
 
@@ -1323,12 +1323,12 @@ class Associate_Question extends Question
         $oQuest->difficult = $difficult;
         $oQuest->time_assigned = $time_assigned;
 
-        $oQuest->answers = array();
-        $oQuest->extra_info = array();
+        $oQuest->answers = [];
+        $oQuest->extra_info = [];
 
         //retriving new answer
         $i = 0;
-        $corres = array();
+        $corres = [];
         $re_answer = sql_query("
 		SELECT idAnswer, is_correct, answer, comment, score_correct, score_incorrect 
 		FROM " . $GLOBALS['prefix_lms'] . "_testquestanswer 
@@ -1356,7 +1356,7 @@ class Associate_Question extends Question
 		WHERE idQuest = '" . (int)$this->id . "'
 		ORDER BY idAnswer");
 
-        $oQuest->extra_info = array();
+        $oQuest->extra_info = [];
         while (list($idAnswer, $answer) = sql_fetch_row($re_answer)) {
 
             $oAnswer = new AnswerRaw();

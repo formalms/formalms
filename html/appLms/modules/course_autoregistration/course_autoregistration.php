@@ -114,7 +114,7 @@ function subscribe()
 					require_once(_lms_.'/lib/lib.course.php');
 					$man_course = new Man_Course();
 
-					$array_course_name = array();
+					$array_course_name = [];
 					$counter = 0;
 
 					require_once(_lms_.'/lib/lib.subscribe.php');

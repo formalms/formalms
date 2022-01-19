@@ -44,7 +44,7 @@ function mod_rule(e) {
 }
 </script>
 <?php
-$this->widget('table', array(
+$this->widget('table', [
 	'id'			=> 'enrollrules',
 	'ajaxUrl'		=> 'ajax.adm_server.php?r=alms/enrollrules/get',
 	'rowsPerPage'	=> Get::sett('visuItem', 25),
@@ -52,19 +52,19 @@ $this->widget('table', array(
 	'results'		=> Get::sett('visuItem', 25),
 	'sort'			=> 'title',
 	'dir'			=> 'asc',
-	'columns'		=> array(
-		array('key' => 'lang_code', 'label' => Lang::t('_LANGUAGE', 'enrollrules'), 'sortable' => true, 'className' => 'img-cell'),
-		array('key' => 'title', 'label' => Lang::t('_TITLE', 'enrollrules'), 'sortable' => true),
-		array('key' => 'rule_type_text', 'label' => Lang::t('_TYPE', 'enrollrules')),
-		array('key' => 'rule_active', 'label' => '<span class="ico-sprite subs_actv"><span>'.Lang::t('_ACTIVE', 'enrollrules').'</span></span>', 'formatter'=>'RulesActiveFormatter', 'className' => 'img-cell'),
-		array('key' => 'mod_elem', 'label' => '<span class="ico-sprite subs_elem"><span>'.Lang::t('_MANAGE', 'enrollrules').'</span></span>', 'className' => 'img-cell'),
-		array('key' => 'mod', 'label' => '<span class="ico-sprite subs_mod"><span>'.Lang::t('_MOD', 'enrollrules').'</span></span>', 'className' => 'img-cell'),
-		array('key' => 'del', 'label' => '<span class="ico-sprite subs_del"><span>'.Lang::t('_DEL', 'enrollrules').'</span></span>', 'formatter'=>'doceboDelete', 'className' => 'img-cell')
-	),
-	'fields' => array('id_rule', 'title', 'lang_code', 'rule_type', 'rule_type_text', 'creation_date', 'rule_active', 'mod_elem', 'mod', 'del'),
+	'columns'		=> [
+		['key' => 'lang_code', 'label' => Lang::t('_LANGUAGE', 'enrollrules'), 'sortable' => true, 'className' => 'img-cell'],
+		['key' => 'title', 'label' => Lang::t('_TITLE', 'enrollrules'), 'sortable' => true],
+		['key' => 'rule_type_text', 'label' => Lang::t('_TYPE', 'enrollrules')],
+		['key' => 'rule_active', 'label' => '<span class="ico-sprite subs_actv"><span>'.Lang::t('_ACTIVE', 'enrollrules').'</span></span>', 'formatter'=>'RulesActiveFormatter', 'className' => 'img-cell'],
+		['key' => 'mod_elem', 'label' => '<span class="ico-sprite subs_elem"><span>'.Lang::t('_MANAGE', 'enrollrules').'</span></span>', 'className' => 'img-cell'],
+		['key' => 'mod', 'label' => '<span class="ico-sprite subs_mod"><span>'.Lang::t('_MOD', 'enrollrules').'</span></span>', 'className' => 'img-cell'],
+		['key' => 'del', 'label' => '<span class="ico-sprite subs_del"><span>'.Lang::t('_DEL', 'enrollrules').'</span></span>', 'formatter'=>'doceboDelete', 'className' => 'img-cell']
+    ],
+	'fields' => ['id_rule', 'title', 'lang_code', 'rule_type', 'rule_type_text', 'creation_date', 'rule_active', 'mod_elem', 'mod', 'del'],
 	'show' => 'table',
 	'delDisplayField' => 'title',
-	'events' => array(
+	'events' => [
 		'beforeRenderEvent' => 'function() {
 			var rlist = YAHOO.util.Selector.query("a[id^=rule_change_]");
 			for (var i=0; i<rlist.length; i++) YAHOO.util.Event.purgeElement(rlist[i]);
@@ -79,17 +79,17 @@ $this->widget('table', array(
 			var mlist = YAHOO.util.Selector.query("a[id^=mod_rules_]");
 			YAHOO.util.Event.addListener(mlist, "click", mod_rule);
 		}'
-	),
-	'rel_actions'	=> array(
+    ],
+	'rel_actions'	=> [
 		'<a id="enrollrules_add_over" class="ico-wt-sprite subs_add" href="index.php?r=alms/enrollrules/add"><span>'.Lang::t('_ADD', 'enrollrules').'</span></a>'
 		.'<a class="ico-wt-sprite subs_elem" href="index.php?r=alms/enrollrules/showlog"><span>'.Lang::t('_SHOW_LOGS', 'enrollrules').'</span></a>'
 		,
 		'<a id="enrollrules_add_below" class="ico-wt-sprite subs_add" href="index.php?r=alms/enrollrules/add"><span>'.Lang::t('_ADD', 'enrollrules').'</span></a>'
 		.'<a class="ico-wt-sprite subs_elem" href="index.php?r=alms/enrollrules/showlog"><span>'.Lang::t('_SHOW_LOGS', 'enrollrules').'</span></a>'
-	),
-));
+    ],
+]);
 
-$this->widget('dialog', array(
+$this->widget('dialog', [
 	'id' => 'add_rules_dialog',
 	'dynamicContent' => true,
 	'ajaxUrl' => '"ajax.adm_server.php?r=alms/enrollrules/add"',
@@ -98,10 +98,10 @@ $this->widget('dialog', array(
 		this.destroy();
 		DataTable_enrollrules.refresh();
 	}',
-	'callEvents' => array(
-		array('caller' => 'enrollrules_add_over', 'event' => 'click'),
-		array('caller' => 'enrollrules_add_below', 'event' => 'click')
-	)
-));
+	'callEvents' => [
+		['caller' => 'enrollrules_add_over', 'event' => 'click'],
+		['caller' => 'enrollrules_add_below', 'event' => 'click']
+    ]
+]);
 ?>
 </div>

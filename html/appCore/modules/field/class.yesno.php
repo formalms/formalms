@@ -45,7 +45,7 @@ class Field_YesNo extends Field {
 
 		$back_coded = htmlentities(urlencode($back));
 
-		$array_lang = array();
+		$array_lang = [];
 		$std_lang 		=& DoceboLanguage::createInstance('standard');
 		$lang 			=& DoceboLanguage::createInstance('field');
 		$array_lang 	= Docebo::langManager()->getAllLangCode();
@@ -164,7 +164,7 @@ class Field_YesNo extends Field {
 	function edit( $back ) {
 		$back_coded = htmlentities(urlencode($back));
 
-		$array_lang = array();
+		$array_lang = [];
 		$std_lang 		=& DoceboLanguage::createInstance('standard');
 		$lang 			=& DoceboLanguage::createInstance('field');
 		$array_lang 	= Docebo::langManager()->getAllLangCode();
@@ -203,7 +203,7 @@ class Field_YesNo extends Field {
 				return;
 			}
 
-			$existsing_translation = array();
+			$existsing_translation = [];
 			$re_trans = sql_query("
 			SELECT lang_code
 			FROM ".$this->_getMainTable()."
@@ -429,9 +429,9 @@ class Field_YesNo extends Field {
         return Form::getRadioSet($translation . ($mandatory ? ' <span class="mandatory">*</span>' : ''),
             'field_' . $this->getFieldType() . '_' . $this->id_common,
             'field_' . $this->getFieldType() . '[' . $this->id_common . ']',
-            array($lang->def('_YES') => 1,
+            [$lang->def('_YES') => 1,
                 $lang->def('_NO') => 2,
-                $lang->def('_NOT_ASSIGNED') => 0),
+                $lang->def('_NOT_ASSIGNED') => 0],
             (int)$user_entry,
             '',
             '');
@@ -477,9 +477,9 @@ class Field_YesNo extends Field {
 		return Form::getRadioSet(	$label,
 									Field::getFieldId_Filter($id_field, $field_prefix),
 									Field::getFieldName_Filter($id_field, $field_prefix),
-									array( 	$lang->def('_YES') => 1,
+									[$lang->def('_YES') => 1,
 											$lang->def('_NO') => 2,
-											$lang->def('_NOT_ASSIGNED') => 0) ,
+											$lang->def('_NOT_ASSIGNED') => 0],
 									$value,
 									$other_after,
 									$other_before);
@@ -615,11 +615,11 @@ class Field_YesNo extends Field {
 
 
 	function storeDirectMultiple( $idst_users, $value, $is_id, $no_overwrite, $int_userid=TRUE ) {
-		if (is_numeric($idst_users)) $idst_users = array($idst_users);
+		if (is_numeric($idst_users)) $idst_users = [$idst_users];
 		if (!is_array($idst_users)) return false;
 		if (empty($idst_users)) return true;
 
-		$arr_existent = array();
+		$arr_existent = [];
 		$arr_new = $idst_users;
 
 		switch(strtolower($value)) {
@@ -662,7 +662,7 @@ class Field_YesNo extends Field {
 			}
 
 			if (!empty($arr_new)) {
-				$insert_values = array();
+				$insert_values = [];
 				foreach ($arr_new as $idst) {
 					$insert_values[] = "(	'".(int)$idst."', '".(int)$this->id_common."', '0', '".$value."')";
 				}

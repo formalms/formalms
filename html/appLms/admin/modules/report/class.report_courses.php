@@ -25,8 +25,8 @@ define('_SUBSTEP_COLUMNS', 1);
 class Report_Courses extends Report
 {
 
-    var $status_u = array();
-    var $status_c = array();
+    var $status_u = [];
+    var $status_c = [];
 
     function Report_Courses()
     {
@@ -41,23 +41,23 @@ class Report_Courses extends Report
         $this->_set_columns_category(_RCS_CATEGORY_DOC_VAL, $this->lang->def('_RCS_CAT_DOC_VAL'), 'get_doc_val_filter', 'show_report_doc_val', '_get_doc_val_query', false);
         $this->_set_columns_category(_RCS_CATEGORY_COURSE_VAL, $this->lang->def('_RCS_CAT_COURSE_VAL'), 'get_course_val_filter', 'show_report_course_val', '_get_course_val_query', false);
 
-        $this->status_c = array(
+        $this->status_c = [
             CST_PREPARATION => $lang->def('_CST_PREPARATION'),//, 'course', 'lms'),
             CST_AVAILABLE => $lang->def('_CST_AVAILABLE'),//, 'course', 'lms'),
             CST_EFFECTIVE => $lang->def('_CST_CONFIRMED'),//, 'course', 'lms'),
             CST_CONCLUDED => $lang->def('_CST_CONCLUDED'),//, 'course', 'lms'),
             CST_CANCELLED => $lang->def('_CST_CANCELLED')//, 'course', 'lms')
-        );
+        ];
 
         $lang =& DoceboLanguage::CreateInstance('course', 'lms');
-        $this->status_u = array(
+        $this->status_u = [
             _CUS_CONFIRMED => $lang->def('_USER_STATUS_CONFIRMED'),//, 'subscribe', 'lms'),
 
             _CUS_SUBSCRIBED => $lang->def('_USER_STATUS_SUBS'),//, 'subscribe', 'lms'),
             _CUS_BEGIN => $lang->def('_USER_STATUS_BEGIN'),//, 'subscribe', 'lms'),
             _CUS_END => $lang->def('_USER_STATUS_END'),//, 'lms'),
             _CUS_SUSPEND => $lang->def('_USER_STATUS_SUSPEND')//, 'subscribe', 'lms')
-        );
+        ];
     }
 
     public function getDynamicFilter($data)
@@ -86,10 +86,10 @@ class Report_Courses extends Report
 
         //set $_POST data in $_SESSION['report_tempdata']
         if (!isset($_SESSION['report_tempdata']['rows_filter'])) {
-            $_SESSION['report_tempdata']['rows_filter'] = array(
+            $_SESSION['report_tempdata']['rows_filter'] = [
                 'all_courses' => true,
-                'selected_courses' => array()
-            );
+                'selected_courses' => []
+            ];
         }
         $ref =& $_SESSION['report_tempdata']['rows_filter'];
         $selector = new Selector_Course();
@@ -165,9 +165,9 @@ class Report_Courses extends Report
         $fman = new CustomFieldList();
 
         $fieldsCourse = $fman->getCustomFields('COURSE');
-        $customCourse = array();
+        $customCourse = [];
         foreach ($fieldsCourse as $keyCourse => $valCourse) {
-            $customCourse[] = array('id' => $keyCourse, 'label' => $valCourse, 'selected' => false);
+            $customCourse[] = ['id' => $keyCourse, 'label' => $valCourse, 'selected' => false];
         }
         //****
 
@@ -187,17 +187,17 @@ class Report_Courses extends Report
 
         //draw page depending on the $substep variable
         if (!isset($_SESSION['report_tempdata']['columns_filter']))
-            $_SESSION['report_tempdata']['columns_filter'] = array(
-                'time_belt' => array('time_range' => '', 'start_date' => '', 'end_date' => ''),
+            $_SESSION['report_tempdata']['columns_filter'] = [
+                'time_belt' => ['time_range' => '', 'start_date' => '', 'end_date' => ''],
                 'org_chart_subdivision' => 0,
                 'show_classrooms_editions' => false,
-                'showed_cols' => array(),
+                'showed_cols' => [],
                 'show_percent' => true,
                 'show_suspended' => false,
                 'only_students' => false,
                 'show_assessment' => false,
-                'custom_fields_course' => array()
-            );
+                'custom_fields_course' => []
+            ];
         $ref = &$_SESSION['report_tempdata']['columns_filter'];
 
         switch ($substep) {
@@ -206,13 +206,13 @@ class Report_Courses extends Report
                 {
                     //set session data
                     if (Get::req('is_updating', DOTY_INT, 0) > 0) {
-                        $ref['showed_cols'] = Get::req('cols', DOTY_MIXED, array());
+                        $ref['showed_cols'] = Get::req('cols', DOTY_MIXED, []);
                         $ref['show_percent'] = (Get::req('show_percent', DOTY_INT, 0) > 0 ? true : false);
-                        $ref['time_belt'] = array(
+                        $ref['time_belt'] = [
                             'time_range' => $_POST['time_belt'],
                             'start_date' => Format::dateDb($_POST['start_time'], 'date'),
                             'end_date' => Format::dateDb($_POST['end_time'], 'date')
-                        );
+                        ];
                         $ref['org_chart_subdivision'] = (isset($_POST['org_chart_subdivision']) ? 1 : 0);
                         $ref['show_classrooms_editions'] = (isset($_POST['show_classrooms_editions']) ? true : false);
                         $ref['show_suspended'] = Get::req('show_suspended', DOTY_INT, 0) > 0;
@@ -244,13 +244,13 @@ class Report_Courses extends Report
                     /*$go_to_second_step = (isset($_POST['go_to_second_step']) ? true : false);
 				$we_are_in_second_step = Get::req('second_step', DOTY_INT, false);*/
 
-                    $time_belt = array(
+                    $time_belt = [
                         0 => $lang->def('_CUSTOM_BELT'),
                         7 => $lang->def('_LAST_WEEK'),
                         31 => $lang->def('_LAST_MONTH'),
                         93 => $lang->def('_LAST_THREE_MONTH'),
                         186 => $lang->def('_LAST_SIX_MONTH'),
-                        365 => $lang->def('_LAST_YEAR'),);
+                        365 => $lang->def('_LAST_YEAR'),];
 
                     cout(
                         Form::openForm('user_report_rows_courses', $jump_url) .
@@ -397,7 +397,7 @@ class Report_Courses extends Report
                         $ref['all_users'] = (Get::req('all_users', DOTY_INT, 0) > 0 ? true : false);
                     } else { //maybe redoundant
                         if (!isset($ref['all_users'])) $ref['all_users'] = false;
-                        if (!isset($ref['users'])) $ref['users'] = array();
+                        if (!isset($ref['users'])) $ref['users'] = [];
                         $user_select->requested_tab = PEOPLEVIEW_TAB;
                         $user_select->resetSelection($ref['users']);
                         //$ref['users'] = array(); it should already have been set to void array, if non existent
@@ -465,12 +465,12 @@ class Report_Courses extends Report
         $glang =& DoceboLanguage::createInstance('admin_course_managment', 'lms');
 
         if (!isset($_SESSION['report_tempdata']['columns_filter']))
-            $_SESSION['report_tempdata']['columns_filter'] = array();
+            $_SESSION['report_tempdata']['columns_filter'] = [];
 
         $ref = &$_SESSION['report_tempdata']['columns_filter'];
 
         if (Get::req('is_updating', DOTY_INT, 0) > 0)
-            $ref['showed_cols'] = Get::req('cols', DOTY_MIXED, array());
+            $ref['showed_cols'] = Get::req('cols', DOTY_MIXED, []);
 
         function is_showed($which, &$arr)
         {
@@ -532,13 +532,13 @@ class Report_Courses extends Report
         $glang =& DoceboLanguage::createInstance('admin_course_managment', 'lms');
 
         if (!isset($_SESSION['report_tempdata']['columns_filter'])) {
-            $_SESSION['report_tempdata']['columns_filter'] = array();
+            $_SESSION['report_tempdata']['columns_filter'] = [];
         }
 
         $ref = &$_SESSION['report_tempdata']['columns_filter'];
 
         if (Get::req('is_updating', DOTY_INT, 0) > 0)
-            $ref['showed_cols'] = Get::req('cols', DOTY_MIXED, array());
+            $ref['showed_cols'] = Get::req('cols', DOTY_MIXED, []);
 
         function is_showed($which, &$arr)
         {
@@ -632,7 +632,7 @@ class Report_Courses extends Report
             if ($all_courses == true) {
                 // get all course
                 $rs = sql_query("SELECT idCourse FROM %lms_course");
-                $course_selected = array();
+                $course_selected = [];
                 while (list($id_course) = sql_fetch_row($rs)) {
                     $course_selected[] = $id_course;
                 }
@@ -663,9 +663,9 @@ class Report_Courses extends Report
         //echo "query_course: ". $query;
 
 
-        $course_doc = array();
-        $question_id = array();
-        $question_answer = array();
+        $course_doc = [];
+        $question_id = [];
+        $question_answer = [];
 
         while ($row = sql_fetch_assoc($result)) {
             $course_doc[$row['idCourse'] . '_' . $row['id_quest']] = $row;
@@ -730,7 +730,7 @@ class Report_Courses extends Report
             if ($all_courses == true) {
                 // get all course
                 $rs = sql_query("SELECT idCourse FROM %lms_course");
-                $course_selected = array();
+                $course_selected = [];
                 while (list($id_course) = sql_fetch_row($rs)) {
                     $course_selected[] = $id_course;
                 }
@@ -754,9 +754,9 @@ class Report_Courses extends Report
 
         $result = sql_query($query);
 
-        $course_doc = array();
-        $question_id = array();
-        $question_answer = array();
+        $course_doc = [];
+        $question_id = [];
+        $question_answer = [];
 
         while ($row = sql_fetch_assoc($result)) {
             // TICKET: #19866 - overwrite sam index for quest in course_doc
@@ -876,7 +876,7 @@ class Report_Courses extends Report
             if ($all_courses) {
                 $all_courses = false;
                 $rs = sql_query("SELECT idCourse FROM %lms_course");
-                $course_selected = array();
+                $course_selected = [];
                 while (list($id_course) = sql_fetch_row($rs)) {
                     $course_selected[] = $id_course;
                 }
@@ -890,7 +890,7 @@ class Report_Courses extends Report
 
                 $user_catalogue = $cat_man->getUserAllCatalogueId(Docebo::user()->getIdSt());
                 if (count($user_catalogue) > 0) {
-                    $courses = array(0);
+                    $courses = [0];
 
                     foreach ($user_catalogue as $id_cat) {
                         $catalogue_course =& $cat_man->getCatalogueCourse($id_cat, true);
@@ -909,9 +909,9 @@ class Report_Courses extends Report
                     $_clist = array_values($admin_courses['course']);
                     $course_selected = array_intersect($course_selected, $_clist);
                 } else
-                    $course_selected = array();
+                    $course_selected = [];
             } else {
-                $array_courses = array();
+                $array_courses = [];
                 $array_courses = array_merge($array_courses, $admin_courses['course']);
 
                 if (!empty($admin_courses['coursepath'])) {
@@ -934,7 +934,7 @@ class Report_Courses extends Report
                     $_clist = array_values($admin_courses['course']);
                     $course_selected = array_intersect($course_selected, $_clist);
                 } else
-                    $course_selected = array();
+                    $course_selected = [];
             }
 
             unset($admin_courses);
@@ -962,7 +962,7 @@ class Report_Courses extends Report
                 $admin_tree = $adminManager->getAdminTree(Docebo::user()->getIdST());
 
                 $org_name_temp = $org_name;
-                $org_name = array();
+                $org_name = [];
                 foreach ($org_name_temp as $id => $value) {
 
                     if (isset($admin_tree[$id])) $org_name[$id] = $value;
@@ -970,7 +970,7 @@ class Report_Courses extends Report
             }
 
         } else {
-            $elem_selected = array();
+            $elem_selected = [];
         }
 
         if (empty($user_selected)) {
@@ -980,7 +980,7 @@ class Report_Courses extends Report
         }
 
         // Retrieve all the course
-        $id_courses = array();
+        $id_courses = [];
         if (!$show_classrooms_editions) {
             $q_courses = "SELECT c.idCourse, c.code, c.name, c.description, c.course_type "
                 . " FROM %lms_course As c "
@@ -988,13 +988,13 @@ class Report_Courses extends Report
                 . " ORDER BY c.code, c.name";
             $r_courses = sql_query($q_courses);
             while (list($id, $code, $name, $description, $course_type) = sql_fetch_row($r_courses)) {
-                $id_courses[$id] = array(
+                $id_courses[$id] = [
                     'id_course' => $id,
                     'code' => $code,
                     'name' => $name,
                     'description' => $description,
                     'course_type' => $course_type
-                );
+                ];
             }
         } else {
             $q_courses = "SELECT c.idCourse, c.code, c.name, c.description, c.course_type, d.id_date "
@@ -1004,13 +1004,13 @@ class Report_Courses extends Report
             $r_courses = sql_query($q_courses);
             while (list($id, $code, $name, $description, $course_type, $id_date) = sql_fetch_row($r_courses)) {
                 $index = $course_type == 'classroom' ? $id . '_' . $id_date : $id;
-                $id_courses[$index] = array(
+                $id_courses[$index] = [
                     'id_course' => $id,
                     'code' => $code,
                     'name' => $name,
                     'description' => $description,
                     'course_type' => $course_type
-                );
+                ];
             }
         }
         if (empty($id_courses)) {
@@ -1018,11 +1018,11 @@ class Report_Courses extends Report
             cout($lang->def('_NULL_COURSE_SELECTION'), 'content');
             return;
         }
-        $id_coursedates = array();
+        $id_coursedates = [];
 
         $date_now = Format::date(date("Y-m-d H:i:s"));
 
-        $classrooms_editions_info = array();
+        $classrooms_editions_info = [];
         if ($show_classrooms_editions) {
             //retrieve classrooms info
             $query = "SELECT d.*, MIN(dd.date_begin) AS date_1, MAX(dd.date_end) AS date_2 "
@@ -1050,12 +1050,12 @@ class Report_Courses extends Report
                 if ($start_time != '' && $start_time != '0000-00-00') $query_course_user .= " AND greatest(coalesce(cu.date_complete, 0), coalesce(cu.date_first_access, 0), coalesce(cu.date_inscr), 0) >= '" . $start_time . "' ";
                 if ($end_time != '' && $end_time != '0000-00-00') $query_course_user .= " AND greatest(coalesce(cu.date_complete, 0), coalesce(cu.date_first_access, 0), coalesce(cu.date_inscr), 0) <= '" . $end_time . "'";
 
-                $num_iscr = array();
-                $num_nobegin = array();
-                $num_itinere = array();
-                $num_end = array();
-                $time_in_course = array();
-                $effective_user = array();
+                $num_iscr = [];
+                $num_nobegin = [];
+                $num_itinere = [];
+                $num_end = [];
+                $time_in_course = [];
+                $effective_user = [];
 
                 $re_course_user = sql_query($query_course_user);
                 while (list($id_u, $id_c, $fisrt_access, $date_complete, $status) = sql_fetch_row($re_course_user)) {
@@ -1164,12 +1164,12 @@ class Report_Courses extends Report
                     if ($start_time != '' && $start_time != '0000-00-00') $query_course_user .= " AND cu.date_complete >= '" . $start_time . "' ";
                     if ($end_time != '' && $end_time != '0000-00-00') $query_course_user .= " AND cu.date_complete <= '" . $end_time . "'  AND cu.level='3'";
 
-                    $num_iscr = array();
-                    $num_nobegin = array();
-                    $num_itinere = array();
-                    $num_end = array();
-                    $time_in_course = array();
-                    $effective_user = array();
+                    $num_iscr = [];
+                    $num_nobegin = [];
+                    $num_itinere = [];
+                    $num_end = [];
+                    $time_in_course = [];
+                    $effective_user = [];
 
                     $re_course_user = sql_query($query_course_user);
                     while (list($id_u, $id_c, $fisrt_access, $date_complete) = sql_fetch_row($re_course_user)) {
@@ -1251,12 +1251,12 @@ class Report_Courses extends Report
                 if ($start_time != '' && $start_time != '0000-00-00') $query_course_user .= " AND cu.date_complete >= '" . $start_time . "' ";
                 if ($end_time != '' && $end_time != '0000-00-00') $query_course_user .= " AND cu.date_complete <= '" . $end_time . "'";
 
-                $num_iscr = array();
-                $num_nobegin = array();
-                $num_itinere = array();
-                $num_end = array();
-                $time_in_course = array();
-                $effective_user = array();
+                $num_iscr = [];
+                $num_nobegin = [];
+                $num_itinere = [];
+                $num_end = [];
+                $time_in_course = [];
+                $effective_user = [];
 
                 $re_course_user = sql_query($query_course_user);
                 while (list($id_u, $id_c, $fisrt_access, $date_complete, $status, $course_type, $id_date) = sql_fetch_row($re_course_user)) {
@@ -1366,12 +1366,12 @@ class Report_Courses extends Report
                     if ($start_time != '' && $start_time != '0000-00-00') $query_course_user .= " AND cu.date_complete >= '" . $start_time . "' ";
                     if ($end_time != '' && $end_time != '0000-00-00') $query_course_user .= " AND cu.date_complete <= '" . $end_time . "'";
 
-                    $num_iscr = array();
-                    $num_nobegin = array();
-                    $num_itinere = array();
-                    $num_end = array();
-                    $time_in_course = array();
-                    $effective_user = array();
+                    $num_iscr = [];
+                    $num_nobegin = [];
+                    $num_itinere = [];
+                    $num_end = [];
+                    $time_in_course = [];
+                    $effective_user = [];
 
 
                     //$re_course_user = sql_query($query_course_user);
@@ -1494,9 +1494,9 @@ class Report_Courses extends Report
         $fman = new CustomFieldList();
 
         $fieldsCourse = $fman->getCustomFields('COURSE');
-        $customCourse = array();
+        $customCourse = [];
         foreach ($fieldsCourse as $keyCourse => $valCourse) {
-            $customCourse[] = array('id' => $keyCourse, 'label' => $valCourse);
+            $customCourse[] = ['id' => $keyCourse, 'label' => $valCourse];
         }
         //****
 
@@ -1559,49 +1559,49 @@ class Report_Courses extends Report
 
         $buffer->openTable(/*$rg_lang->def('_STATISTICS'), $rg_lang->def('_RG_SUMMAMRY_MANAGMENT')*/);
 
-        $th1 = array(
-            array('colspan' => ($colspan_course + $colspan_classrooms_editions), 'style' => 'align-center', 'value' => $lang->def('_COURSE')),
-            array('colspan' => $colspan_stats, 'style' => 'align-center', 'value' => $rg_lang->def('_USERS'))
-        );
+        $th1 = [
+            ['colspan' => ($colspan_course + $colspan_classrooms_editions), 'style' => 'align-center', 'value' => $lang->def('_COURSE')],
+            ['colspan' => $colspan_stats, 'style' => 'align-center', 'value' => $rg_lang->def('_USERS')]
+        ];
 
-        $th2 = array();
-        $th2[] = array('colspan' => $colspan_course, 'value' => '');
-        if ($show_classrooms_editions) $th2[] = array('colspan' => $colspan_classrooms_editions, 'style' => 'align-center', 'value' => Lang::t('_CLASSROOM', 'classroom'));
+        $th2 = [];
+        $th2[] = ['colspan' => $colspan_course, 'value' => ''];
+        if ($show_classrooms_editions) $th2[] = ['colspan' => $colspan_classrooms_editions, 'style' => 'align-center', 'value' => Lang::t('_CLASSROOM', 'classroom')];
 
 
-        if (in_array('_WAITING', $filter_cols)) $th2[] = array('colspan' => ($show_percent ? 2 : 1), 'style' => 'align-center', 'value' => "<b>" . $rg_lang->def('_WAITING', 'standard') . "</b>");
+        if (in_array('_WAITING', $filter_cols)) $th2[] = ['colspan' => ($show_percent ? 2 : 1), 'style' => 'align-center', 'value' => "<b>" . $rg_lang->def('_WAITING', 'standard') . "</b>"];
 
-        if (in_array('_INSCR', $filter_cols)) $th2[] = array('colspan' => ($show_percent ? 2 : 1), 'style' => 'align-center', 'value' => "<b>" . $rg_lang->def('_USER_STATUS_SUBS') . "</b>");
-        if (in_array('_MUSTBEGIN', $filter_cols)) $th2[] = array('colspan' => ($show_percent ? 2 : 1), 'style' => 'align-center', 'value' => "<b>" . $rg_lang->def('_MUSTBEGIN') . "</b>");
-        if (in_array('_USER_STATUS_BEGIN', $filter_cols)) $th2[] = array('colspan' => ($show_percent ? 2 : 1), 'style' => 'align-center', 'value' => "<b>" . $rg_lang->def('_USER_STATUS_BEGIN') . "</b>");
-        if (in_array('_COMPLETECOURSE', $filter_cols)) $th2[] = array('colspan' => ($show_percent ? 2 : 1), 'style' => 'align-center', 'value' => "<b>" . $rg_lang->def('_COMPLETED') . "</b>");
+        if (in_array('_INSCR', $filter_cols)) $th2[] = ['colspan' => ($show_percent ? 2 : 1), 'style' => 'align-center', 'value' => "<b>" . $rg_lang->def('_USER_STATUS_SUBS') . "</b>"];
+        if (in_array('_MUSTBEGIN', $filter_cols)) $th2[] = ['colspan' => ($show_percent ? 2 : 1), 'style' => 'align-center', 'value' => "<b>" . $rg_lang->def('_MUSTBEGIN') . "</b>"];
+        if (in_array('_USER_STATUS_BEGIN', $filter_cols)) $th2[] = ['colspan' => ($show_percent ? 2 : 1), 'style' => 'align-center', 'value' => "<b>" . $rg_lang->def('_USER_STATUS_BEGIN') . "</b>"];
+        if (in_array('_COMPLETECOURSE', $filter_cols)) $th2[] = ['colspan' => ($show_percent ? 2 : 1), 'style' => 'align-center', 'value' => "<b>" . $rg_lang->def('_COMPLETED') . "</b>"];
 
-        $th3 = array();
+        $th3 = [];
 
         if (in_array('_CODE_COURSE', $filter_cols)) $th3[] = $lang->def('_COURSE_CODE');
         $th3[] = $lang->def('_COURSE_NAME');
         if (in_array('_COURSE_CATEGORY', $filter_cols)) $th3[] = $lang->def('_CATEGORY');
-        if (in_array('_COURSESTATUS', $filter_cols)) $th3[] = array('style' => 'align-center', 'value' => $lang->def('_STATUS'));
+        if (in_array('_COURSESTATUS', $filter_cols)) $th3[] = ['style' => 'align-center', 'value' => $lang->def('_STATUS')];
 
         if (in_array('_COURSECATALOGUE', $filter_cols)) $th3[] = $lang->def('_CATALOGUE');
-        if (in_array('_PUBLICATION_DATE', $filter_cols)) $th3[] = array('style' => 'align-center', 'value' => $lang->def('_CREATION_DATE'));
+        if (in_array('_PUBLICATION_DATE', $filter_cols)) $th3[] = ['style' => 'align-center', 'value' => $lang->def('_CREATION_DATE')];
 
         if (in_array('_COURSELABEL', $filter_cols)) $th3[] = $lang->def('_LABEL');
 
-        if (in_array('_LANGUAGE', $filter_cols)) $th3[] = array('style' => 'align-center', 'value' => $lang->def('_COURSE_LANG_METHOD'));
-        if (in_array('_DIFFICULT', $filter_cols)) $th3[] = array('style' => 'align-center', 'value' => $lang->def('_DIFFICULTY'));
-        if (in_array('_DATE_BEGIN', $filter_cols)) $th3[] = array('style' => 'align-center', 'value' => $lang->def('_DATE_BEGIN'));
-        if (in_array('_DATE_END', $filter_cols)) $th3[] = array('style' => 'align-center', 'value' => $lang->def('_DATE_END'));
-        if (in_array('_TIME_BEGIN', $filter_cols)) $th3[] = array('style' => 'align-center', 'value' => $lang->def('_HOUR_BEGIN'));
-        if (in_array('_TIME_END', $filter_cols)) $th3[] = array('style' => 'align-center', 'value' => $lang->def('_HOUR_END'));
+        if (in_array('_LANGUAGE', $filter_cols)) $th3[] = ['style' => 'align-center', 'value' => $lang->def('_COURSE_LANG_METHOD')];
+        if (in_array('_DIFFICULT', $filter_cols)) $th3[] = ['style' => 'align-center', 'value' => $lang->def('_DIFFICULTY')];
+        if (in_array('_DATE_BEGIN', $filter_cols)) $th3[] = ['style' => 'align-center', 'value' => $lang->def('_DATE_BEGIN')];
+        if (in_array('_DATE_END', $filter_cols)) $th3[] = ['style' => 'align-center', 'value' => $lang->def('_DATE_END')];
+        if (in_array('_TIME_BEGIN', $filter_cols)) $th3[] = ['style' => 'align-center', 'value' => $lang->def('_HOUR_BEGIN')];
+        if (in_array('_TIME_END', $filter_cols)) $th3[] = ['style' => 'align-center', 'value' => $lang->def('_HOUR_END')];
 
-        if (in_array('_MIN_NUM_SUBSCRIBED', $filter_cols)) $th3[] = array('style' => 'align-center', 'value' => $lang->def('_MIN_NUM_SUBSCRIBE'));
-        if (in_array('_MAX_NUM_SUBSCRIBED', $filter_cols)) $th3[] = array('style' => 'align-center', 'value' => $lang->def('_MAX_NUM_SUBSCRIBE'));
+        if (in_array('_MIN_NUM_SUBSCRIBED', $filter_cols)) $th3[] = ['style' => 'align-center', 'value' => $lang->def('_MIN_NUM_SUBSCRIBE')];
+        if (in_array('_MAX_NUM_SUBSCRIBED', $filter_cols)) $th3[] = ['style' => 'align-center', 'value' => $lang->def('_MAX_NUM_SUBSCRIBE')];
 
-        if (in_array('_CREDITS', $filter_cols)) $th3[] = array('style' => 'align-center', 'value' => Lang::t('_CREDITS', 'standard'));
+        if (in_array('_CREDITS', $filter_cols)) $th3[] = ['style' => 'align-center', 'value' => Lang::t('_CREDITS', 'standard')];
         if (in_array('_PRICE', $filter_cols)) $th3[] = $lang->def('_COURSE_PRIZE');
         if (in_array('_ADVANCE', $filter_cols)) $th3[] = $lang->def('_COURSE_ADVANCE');
-        if (in_array('_COURSE_TYPE', $filter_cols)) $th3[] = array('style' => 'align-center', 'value' => $lang->def('_COURSE_TYPE'));
+        if (in_array('_COURSE_TYPE', $filter_cols)) $th3[] = ['style' => 'align-center', 'value' => $lang->def('_COURSE_TYPE')];
         if (in_array('_AUTOREGISTRATION_CODE', $filter_cols)) $th3[] = $lang->def('_AUTOREGISTRATION_CODE');
         // LRZ - custom field for courses
         foreach ($customCourse as $keyCourse => $valCourse) {
@@ -1617,41 +1617,41 @@ class Report_Courses extends Report
                 $th3[] = Lang::t('_CODE', 'standard');
             }
             if (in_array('_TH_CLASSROOM_MIN_DATE', $filter_cols)) {
-                $th3[] = array('style' => 'align-center', 'value' => Lang::t('_DATE_BEGIN', 'standard'));
+                $th3[] = ['style' => 'align-center', 'value' => Lang::t('_DATE_BEGIN', 'standard')];
             }
             if (in_array('_TH_CLASSROOM_MAX_DATE', $filter_cols)) {
-                $th3[] = array('style' => 'align-center', 'value' => Lang::t('_DATE_END', 'standard'));
+                $th3[] = ['style' => 'align-center', 'value' => Lang::t('_DATE_END', 'standard')];
             }
         }
 
 
         if (in_array('_WAITING', $filter_cols)) {
-            $th3[] = array('style' => 'align-center', 'value' => $rg_lang->def('_NUM', 'report'));
-            if ($show_percent) $th3[] = array('style' => 'align-center', 'value' => $rg_lang->def('_PERC'));
+            $th3[] = ['style' => 'align-center', 'value' => $rg_lang->def('_NUM', 'report')];
+            if ($show_percent) $th3[] = ['style' => 'align-center', 'value' => $rg_lang->def('_PERC')];
         }
 
         if (in_array('_INSCR', $filter_cols)) {
-            $th3[] = array('style' => 'align-center', 'value' => $rg_lang->def('_NUM', 'report'));
-            if ($show_percent) $th3[] = array('style' => 'align-center', 'value' => $rg_lang->def('_PERC'));
+            $th3[] = ['style' => 'align-center', 'value' => $rg_lang->def('_NUM', 'report')];
+            if ($show_percent) $th3[] = ['style' => 'align-center', 'value' => $rg_lang->def('_PERC')];
         }
 
 
         if (in_array('_MUSTBEGIN', $filter_cols)) {
-            $th3[] = array('style' => 'align-center', 'value' => $rg_lang->def('_NUM', 'report'));
-            if ($show_percent) $th3[] = array('style' => 'align-center', 'value' => $rg_lang->def('_PERC'));
+            $th3[] = ['style' => 'align-center', 'value' => $rg_lang->def('_NUM', 'report')];
+            if ($show_percent) $th3[] = ['style' => 'align-center', 'value' => $rg_lang->def('_PERC')];
         }
         if (in_array('_USER_STATUS_BEGIN', $filter_cols)) {
-            $th3[] = array('style' => 'align-center', 'value' => $rg_lang->def('_NUM', 'report'));
-            if ($show_percent) $th3[] = array('style' => 'align-center', 'value' => $rg_lang->def('_PERC'));
+            $th3[] = ['style' => 'align-center', 'value' => $rg_lang->def('_NUM', 'report')];
+            if ($show_percent) $th3[] = ['style' => 'align-center', 'value' => $rg_lang->def('_PERC')];
         }
         if (in_array('_COMPLETECOURSE', $filter_cols)) {
-            $th3[] = array('style' => 'align-center', 'value' => $rg_lang->def('_NUM', 'report'));
-            if ($show_percent) $th3[] = array('style' => 'align-center', 'value' => $rg_lang->def('_PERC'));
+            $th3[] = ['style' => 'align-center', 'value' => $rg_lang->def('_NUM', 'report')];
+            if ($show_percent) $th3[] = ['style' => 'align-center', 'value' => $rg_lang->def('_PERC')];
         }
 
 
         if (in_array('_TOTAL_SESSION', $filter_cols)) {
-            $th1[] = array('style' => 'align-center', 'value' => $rg_lang->def('_TOTAL_SESSION'));
+            $th1[] = ['style' => 'align-center', 'value' => $rg_lang->def('_TOTAL_SESSION')];
             $th2[] = '';
             $th3[] = '';
         }
@@ -1667,17 +1667,17 @@ class Report_Courses extends Report
         $tot_perc_itinere = $tot_perc_nobegin = $tot_perc_comple = '';
         $total_time = 0;
 
-        $array_status = array(CST_PREPARATION => $lang->def('_CST_PREPARATION', 'course', 'lms'),
+        $array_status = [CST_PREPARATION => $lang->def('_CST_PREPARATION', 'course', 'lms'),
             CST_AVAILABLE => $lang->def('_CST_AVAILABLE', 'course', 'lms'),
             CST_EFFECTIVE => $lang->def('_CST_CONFIRMED', 'course', 'lms'),
             CST_CONCLUDED => $lang->def('_CST_CONCLUDED', 'course', 'lms'),
-            CST_CANCELLED => $lang->def('_CST_CANCELLED', 'course', 'lms'));
+            CST_CANCELLED => $lang->def('_CST_CANCELLED', 'course', 'lms')];
 
         //extract course categories
         $query = "SELECT idCategory, path"
             . " FROM " . $GLOBALS['prefix_lms'] . "_category";
         $result = sql_query($query);
-        $array_category = array(0 => $lang->def('_NONE'));
+        $array_category = [0 => $lang->def('_NONE')];
         while (list($id_cat, $name_cat) = sql_fetch_row($result))
             $array_category[$id_cat] = substr($name_cat, 5, (strlen($name_cat) - 5));//strrpos($name_cat, '/') + 1 );
 
@@ -1686,19 +1686,19 @@ class Report_Courses extends Report
         $query = "SELECT idCatalogue, name"
             . " FROM " . $GLOBALS['prefix_lms'] . "_catalogue";
         $result = sql_query($query);
-        $array_catalogue = array();
+        $array_catalogue = [];
         while (list($id_cat, $name_cat) = sql_fetch_row($result))
             $array_catalogue[$id_cat] = $name_cat;//strrpos($name_cat, '/') + 1 );
 
 
-        $catalogue_entries = array();
+        $catalogue_entries = [];
         $query = "select * FROM " . $GLOBALS['prefix_lms'] . "_catalogue_entry "; //where idst_member in (...)
         $result = sql_query($query);
         while (list($idcat, $entry, $type) = sql_fetch_row($result)) {
             switch ($type) {
                 case 'course':
                     {
-                        if (!isset($catalogue_entries[$entry])) $catalogue_entries[$entry] = array();
+                        if (!isset($catalogue_entries[$entry])) $catalogue_entries[$entry] = [];
                         $catalogue_entries[$entry][] = $idcat;
                     }
                     break;
@@ -1711,13 +1711,13 @@ class Report_Courses extends Report
             } //end switch
         }
 
-        $difficult_trans = array(
+        $difficult_trans = [
             'veryeasy' => Lang::t('_DIFFICULT_VERYEASY', 'standard'),
             'easy' => Lang::t('_DIFFICULT_EASY', 'standard'),
             'medium' => Lang::t('_DIFFICULT_MEDIUM', 'standard'),
             'difficult' => Lang::t('_DIFFICULT_DIFFICULT', 'standard'),
             'verydifficult' => Lang::t('_DIFFICULT_VERYDIFFICULT', 'standard')
-        );
+        ];
 
         $course_man = new Man_Course();
         $buffer->openBody();
@@ -1750,7 +1750,7 @@ class Report_Courses extends Report
                 ? Format::date($info_course['date_end'], 'date')
                 : "";
 
-            $trow = array();
+            $trow = [];
             if (in_array('_CODE_COURSE', $filter_cols)) $trow[] = addslashes($code_c);
             $trow[] = addslashes($name_c);
             if (in_array('_COURSE_CATEGORY', $filter_cols)) $trow[] = $array_category[$info_course['idCategory']];
@@ -1767,19 +1767,19 @@ class Report_Courses extends Report
             }
 
             if (in_array('_COURSECATALOGUE', $filter_cols)) {
-                $temp = array();
+                $temp = [];
                 if (isset($catalogue_entries[$info_course['idCourse']])) {
                     foreach ($catalogue_entries[$info_course['idCourse']] as $idcat)
                         $temp[] = $array_catalogue[$idcat];
                 }
                 $trow[] = implode(', ', $temp);
             }
-            if (in_array('_PUBLICATION_DATE', $filter_cols)) $trow[] = array('style' => 'align-center', 'value' => $_date_create);
+            if (in_array('_PUBLICATION_DATE', $filter_cols)) $trow[] = ['style' => 'align-center', 'value' => $_date_create];
 
             if (in_array('_LANGUAGE', $filter_cols)) $trow[] = $info_course['lang_code'];
             if (in_array('_DIFFICULT', $filter_cols)) $trow[] = isset($difficult_trans[$info_course['difficult']]) ? $difficult_trans[$info_course['difficult']] : "";
-            if (in_array('_DATE_BEGIN', $filter_cols)) $trow[] = array('style' => 'align-center', 'value' => $_date_begin);
-            if (in_array('_DATE_END', $filter_cols)) $trow[] = array('style' => 'align-center', 'value' => $_date_end);
+            if (in_array('_DATE_BEGIN', $filter_cols)) $trow[] = ['style' => 'align-center', 'value' => $_date_begin];
+            if (in_array('_DATE_END', $filter_cols)) $trow[] = ['style' => 'align-center', 'value' => $_date_end];
             if (in_array('_TIME_BEGIN', $filter_cols)) $trow[] = ($info_course['hour_begin'] < 0 ? '' : $info_course['hour_begin']);
             if (in_array('_TIME_END', $filter_cols)) $trow[] = ($info_course['hour_end'] < 0 ? '' : $info_course['hour_end']);
 
@@ -1789,7 +1789,7 @@ class Report_Courses extends Report
             if (in_array('_CREDITS', $filter_cols)) $trow[] = (isset($info_course['credits']) ? $info_course['credits'] : '');
             if (in_array('_PRICE', $filter_cols)) $trow[] = ($info_course['prize'] != '' ? $info_course['prize'] : '0');
             if (in_array('_ADVANCE', $filter_cols)) $trow[] = ($info_course['advance'] != '' ? $info_course['advance'] : '0');
-            if (in_array('_COURSE_TYPE', $filter_cols)) $trow[] = array('style' => 'align-center', 'value' => $this->_translateCourseType($info_course['course_type']));
+            if (in_array('_COURSE_TYPE', $filter_cols)) $trow[] = ['style' => 'align-center', 'value' => $this->_translateCourseType($info_course['course_type'])];
             if (in_array('_AUTOREGISTRATION_CODE', $filter_cols)) $trow[] = $info_course['autoregistration_code'];
 
 
@@ -1814,10 +1814,10 @@ class Report_Courses extends Report
                     $trow[] = $e_name;
                 }
                 if (in_array('_TH_CLASSROOM_MIN_DATE', $filter_cols)) {
-                    $trow[] = array('style' => 'align-center', 'value' => $date_1);
+                    $trow[] = ['style' => 'align-center', 'value' => $date_1];
                 }
                 if (in_array('_TH_CLASSROOM_MAX_DATE', $filter_cols)) {
-                    $trow[] = array('style' => 'align-center', 'value' => $date_2);
+                    $trow[] = ['style' => 'align-center', 'value' => $date_2];
                 }
             }
 
@@ -1826,8 +1826,8 @@ class Report_Courses extends Report
 
                 if (in_array('_WAITING', $filter_cols)) {
                     $in_waiting = $this->getInWaitingCourse($info_course['idCourse']);
-                    $trow[] = array('style' => 'img-cell', 'value' => $in_waiting);
-                    if ($show_percent) $trow[] = array('style' => 'img-cell', 'value' => '-');
+                    $trow[] = ['style' => 'img-cell', 'value' => $in_waiting];
+                    if ($show_percent) $trow[] = ['style' => 'img-cell', 'value' => '-'];
                     $tot_waiting = $tot_waiting + $in_waiting;
                 }
 
@@ -1836,8 +1836,8 @@ class Report_Courses extends Report
                     // enrolled
                     $iscr = $num_iscr[$index] - $in_waiting;
 
-                    $trow[] = array('style' => 'img-cell', 'value' => $iscr);
-                    if ($show_percent) $trow[] = array('style' => 'img-cell', 'value' => '-');
+                    $trow[] = ['style' => 'img-cell', 'value' => $iscr];
+                    if ($show_percent) $trow[] = ['style' => 'img-cell', 'value' => '-'];
 
                     $tot_iscr += $iscr;
                 }
@@ -1854,8 +1854,8 @@ class Report_Courses extends Report
                         $tot_nobegin += $num_nobegin;
                         $tot_perc_nobegin += $perc;
 
-                        $trow[] = array('style' => 'img-cell', 'value' => $num_nobegin);
-                        if ($show_percent) $trow[] = array('style' => 'img-cell', 'value' => number_format($perc, 2, '.', '') . '%');
+                        $trow[] = ['style' => 'img-cell', 'value' => $num_nobegin];
+                        if ($show_percent) $trow[] = ['style' => 'img-cell', 'value' => number_format($perc, 2, '.', '') . '%'];
                     } else {
                         $trow[] = '';
                         if ($show_percent) $trow[] = '';
@@ -1869,11 +1869,11 @@ class Report_Courses extends Report
                         $tot_itinere += $num_itinere[$index];
                         $tot_perc_itinere += $perc;
 
-                        $trow[] = array('style' => 'img-cell', 'value' => $num_itinere[$index]);
-                        if ($show_percent) $trow[] = array('style' => 'img-cell', 'value' => number_format($perc, 2, '.', '') . '%');
+                        $trow[] = ['style' => 'img-cell', 'value' => $num_itinere[$index]];
+                        if ($show_percent) $trow[] = ['style' => 'img-cell', 'value' => number_format($perc, 2, '.', '') . '%'];
                     } else {
-                        $trow[] = array('style' => 'img-cell', 'value' => '');
-                        if ($show_percent) $trow[] = array('style' => 'img-cell', 'value' => '');
+                        $trow[] = ['style' => 'img-cell', 'value' => ''];
+                        if ($show_percent) $trow[] = ['style' => 'img-cell', 'value' => ''];
                     }
                 }
 
@@ -1884,11 +1884,11 @@ class Report_Courses extends Report
                         $tot_comple += $num_end[$index];
                         $tot_perc_comple += $perc;
 
-                        $trow[] = array('style' => 'img-cell', 'value' => $num_end[$index]);
-                        if ($show_percent) $trow[] = array('style' => 'img-cell', 'value' => number_format($perc, 2, '.', '') . '%');
+                        $trow[] = ['style' => 'img-cell', 'value' => $num_end[$index]];
+                        if ($show_percent) $trow[] = ['style' => 'img-cell', 'value' => number_format($perc, 2, '.', '') . '%'];
                     } else {
-                        $trow[] = array('style' => 'img-cell', 'value' => '');
-                        if ($show_percent) $trow[] = array('style' => 'img-cell', 'value' => '');
+                        $trow[] = ['style' => 'img-cell', 'value' => ''];
+                        if ($show_percent) $trow[] = ['style' => 'img-cell', 'value' => ''];
                     }
                 }
 
@@ -1898,11 +1898,11 @@ class Report_Courses extends Report
 
                         $total_time += $time_in_course[$idc];
 
-                        $trow[] = array('style' => 'img-cell', 'value' => (((int)($time_in_course[$idc] / 3600)) . 'h '
+                        $trow[] = ['style' => 'img-cell', 'value' => (((int)($time_in_course[$idc] / 3600)) . 'h '
                             . substr('0' . ((int)(($time_in_course[$idc] % 3600) / 60)), -2) . 'm '
-                            . substr('0' . ((int)($time_in_course[$idc] % 60)), -2) . 's '));
+                            . substr('0' . ((int)($time_in_course[$idc] % 60)), -2) . 's ')];
                     } else {
-                        $trow[] = array('style' => 'img-cell', 'value' => '');
+                        $trow[] = ['style' => 'img-cell', 'value' => ''];
                     }
                 }
             } else {
@@ -1948,7 +1948,7 @@ class Report_Courses extends Report
 
         $buffer->closeBody();
 
-        $tfoot = array(array('colspan' => ($colspan_course + $colspan_classrooms_editions), 'value' => $lang->def('_TOTAL')));
+        $tfoot = [['colspan' => ($colspan_course + $colspan_classrooms_editions), 'value' => $lang->def('_TOTAL')]];
 
         if (in_array('_WAITING', $filter_cols)) {
             $tfoot[] = $tot_waiting;
@@ -2026,17 +2026,17 @@ class Report_Courses extends Report
 
         $result = sql_query($query);
 
-        $array_category = array(0 => $lang->def('_NONE'));
+        $array_category = [0 => $lang->def('_NONE')];
 
         while (list($id_cat, $name_cat) = sql_fetch_row($result))
             $array_category[$id_cat] = substr($name_cat, 5, (strlen($name_cat) - 5));
 
-        $array_status = array(
+        $array_status = [
             CST_PREPARATION => $lang->def('_CST_PREPARATION', 'admin_course_managment', 'lms'),
             CST_AVAILABLE => $glang->def('_CST_AVAILABLE'),
             CST_EFFECTIVE => $glang->def('_CST_CONFIRMED'),
             CST_CONCLUDED => $glang->def('_CST_CONCLUDED'),
-            CST_CANCELLED => $glang->def('_CST_CANCELLED'));
+            CST_CANCELLED => $glang->def('_CST_CANCELLED')];
 
         $colspan_course = 1;
         if (in_array('_CODE_COURSE', $filter_cols)) $colspan_course++;
@@ -2050,12 +2050,12 @@ class Report_Courses extends Report
         if (in_array('_LESS_VOTE', $filter_cols)) $colspan_stats++;
         if (in_array('_MEDIUM_VOTE', $filter_cols)) $colspan_stats++;
 
-        $th1 = array(
-            array('colspan' => $colspan_course, 'value' => $lang->def('_COURSE')),
-            array('colspan' => $colspan_stats, 'value' => $lang->def('_DOC_STATS'))
-        );
+        $th1 = [
+            ['colspan' => $colspan_course, 'value' => $lang->def('_COURSE')],
+            ['colspan' => $colspan_stats, 'value' => $lang->def('_DOC_STATS')]
+        ];
 
-        $th2 = array();
+        $th2 = [];
 
         $th2[] = $glang->def('_QUEST_TEXT');
         if (in_array('_CODE_COURSE', $filter_cols)) $th2[] = $glang->def('_COURSE_CODE');
@@ -2076,7 +2076,7 @@ class Report_Courses extends Report
         $buffer->openBody();
 
         foreach ($course as $course_info) {
-            $trow = array();
+            $trow = [];
 
             $trow[] = addslashes($course_info['title_quest']);
             if (in_array('_CODE_COURSE', $filter_cols)) $trow[] = addslashes($course_info['code']);
@@ -2114,17 +2114,17 @@ class Report_Courses extends Report
 
         $result = sql_query($query);
 
-        $array_category = array(0 => $lang->def('_NONE'));
+        $array_category = [0 => $lang->def('_NONE')];
 
         while (list($id_cat, $name_cat) = sql_fetch_row($result))
             $array_category[$id_cat] = substr($name_cat, 5, (strlen($name_cat) - 5));
 
-        $array_status = array(
+        $array_status = [
             CST_PREPARATION => $lang->def('_CST_PREPARATION', 'admin_course_managment', 'lms'),
             CST_AVAILABLE => $glang->def('_CST_AVAILABLE'),
             CST_EFFECTIVE => $glang->def('_CST_CONFIRMED'),
             CST_CONCLUDED => $glang->def('_CST_CONCLUDED'),
-            CST_CANCELLED => $glang->def('_CST_CANCELLED'));
+            CST_CANCELLED => $glang->def('_CST_CANCELLED')];
 
         $colspan_course = 1;
 
@@ -2140,12 +2140,12 @@ class Report_Courses extends Report
         if (in_array('_LESS_VOTE', $filter_cols)) $colspan_stats++;
         if (in_array('_MEDIUM_VOTE', $filter_cols)) $colspan_stats++;
 
-        $th1 = array(
-            array('colspan' => $colspan_course, 'value' => $lang->def('_COURSE')),
-            array('colspan' => $colspan_stats, 'value' => $lang->def('_DOC_STATS'))
-        );
+        $th1 = [
+            ['colspan' => $colspan_course, 'value' => $lang->def('_COURSE')],
+            ['colspan' => $colspan_stats, 'value' => $lang->def('_DOC_STATS')]
+        ];
 
-        $th2 = array();
+        $th2 = [];
         $th2[] = $glang->def('_QUEST_TEXT');
         if (in_array('_CODE_COURSE', $filter_cols)) $th2[] = $glang->def('_COURSE_CODE');
         $th2[] = $glang->def('_COURSE_NAME');
@@ -2166,7 +2166,7 @@ class Report_Courses extends Report
 
 
         foreach ($course as $course_info) {
-            $trow = array();
+            $trow = [];
 
             $trow[] = addslashes($course_info['title_quest']);
             if (in_array('_CODE_COURSE', $filter_cols)) $trow[] = addslashes($course_info['code']);

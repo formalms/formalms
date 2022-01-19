@@ -35,11 +35,11 @@ class HomecatalogueLms extends Model
 		$this->edition_man = new EditionManager();
 		$this->classroom_man = new DateManager();
 
-		$this->cstatus = array(	CST_PREPARATION => '_CST_PREPARATION',
+		$this->cstatus = [CST_PREPARATION => '_CST_PREPARATION',
 								CST_AVAILABLE 	=> '_CST_AVAILABLE',
 								CST_EFFECTIVE 	=> '_CST_CONFIRMED',
 								CST_CONCLUDED 	=> '_CST_CONCLUDED',
-								CST_CANCELLED 	=> '_CST_CANCELLED');
+								CST_CANCELLED 	=> '_CST_CANCELLED'];
 
 		$this->acl_man =& Docebo::user()->getAclManager();
 	}
@@ -267,17 +267,17 @@ public function getCourseList($type, $page = 1 )
 
 				$row['enrolled'] = $enrolled;
 				$row['create_date'] = Format::date($row['create_date'], 'date');
-				$additional_info =	'<p class="course_support_info">'.Lang::t('_COURSE_INTRO', 'course', array(
+				$additional_info =	'<p class="course_support_info">'.Lang::t('_COURSE_INTRO', 'course', [
 										'[course_type]'		=> $row['course_type'],
 										'[create_date]'		=> $row['create_date'],
 										'[enrolled]'		=> $row['enrolled'],
-										'[course_status]'	=> Lang::t($this->cstatus[$row['status']], 'course')))
+										'[course_status]'	=> Lang::t($this->cstatus[$row['status']], 'course')])
 									.'</p>';
 
 				$action =	'<div class="catalog_action" style="top:5px;" id="action_'.$row['idCourse'].'">'
 							.'<p class="can_subscribe">'
                             // add self_optin
-							.str_replace(array('[login]', '[signin]'), array($login_link, $signin_link), ($register_type === 'self' || $register_type === 'self_optin' || $register_type === 'moderate' ? Lang::t('_REGISTER_FOR_COURSE', 'login') : Lang::t('_REGISTER_FOR_COURSE_NO_REG', 'login')))
+							.str_replace(['[login]', '[signin]'], [$login_link, $signin_link], ($register_type === 'self' || $register_type === 'self_optin' || $register_type === 'moderate' ? Lang::t('_REGISTER_FOR_COURSE', 'login') : Lang::t('_REGISTER_FOR_COURSE_NO_REG', 'login')))
 							.'</p>'
 							.'</div>';
 			}
@@ -332,7 +332,7 @@ public function getCourseList($type, $page = 1 )
 
 		$action =	'<p class="can_subscribe">'
                     // add self_optin
-					.str_replace(array('[login]', '[signin]'), array($login_link, $signin_link), ($register_type === 'self' || $register_type === 'self_optin' || $register_type === 'moderate' ? Lang::t('_REGISTER_FOR_COURSE', 'login') : Lang::t('_REGISTER_FOR_COURSE_NO_REG', 'login')))
+					.str_replace(['[login]', '[signin]'], [$login_link, $signin_link], ($register_type === 'self' || $register_type === 'self_optin' || $register_type === 'moderate' ? Lang::t('_REGISTER_FOR_COURSE', 'login') : Lang::t('_REGISTER_FOR_COURSE_NO_REG', 'login')))
 					.'</p>';
 
 		if($type === 'classroom')
@@ -389,7 +389,7 @@ public function getCourseList($type, $page = 1 )
                     ." ORDER BY path";
 
         $result = sql_query($query);
-        $res = array();
+        $res = [];
 
         while(list($id_cat, $path, $level) = sql_fetch_row($result))
         {
@@ -410,9 +410,9 @@ public function getCourseList($type, $page = 1 )
                 $this->children = $this->getMinorCategoryTree($a_top_cat_key);
                 $this->GetChildTree(array_keys($this->children));
                 if (count($this->the_tree)>0) {
-                    $global_tree[] = array('text'=>$this->the_tree[0]['text'], 'nodes'=>$this->the_tree[0]['nodes'], "href" => "index.php?r=catalog/allCourse&id_cat=".$a_top_cat_key, "id_cat" => $a_top_cat_key);
+                    $global_tree[] = ['text'=>$this->the_tree[0]['text'], 'nodes'=>$this->the_tree[0]['nodes'], "href" => "index.php?r=catalog/allCourse&id_cat=".$a_top_cat_key, "id_cat" => $a_top_cat_key];
                 } else {
-                    $global_tree[] = array('text'=>$val, "href" => "index.php?r=catalog/allCourse&id_cat=".$a_top_cat_key, "id_cat" => $a_top_cat_key);
+                    $global_tree[] = ['text'=>$val, "href" => "index.php?r=catalog/allCourse&id_cat=".$a_top_cat_key, "id_cat" => $a_top_cat_key];
                 }    
             }
             return  $global_tree;              
@@ -432,7 +432,7 @@ public function getCourseList($type, $page = 1 )
             ." AND iRight <= ".$i_right
             ." ORDER BY lev";
             $result = sql_query($query);
-            $res = array();
+            $res = [];
 
             while(list($id_cat, $path, $id_parent, $lev) = sql_fetch_row($result)){
                 $name = end(explode('/', $path));
@@ -454,13 +454,13 @@ public function getCourseList($type, $page = 1 )
                     $this->tree_deep++;
                     $b = $this->GetChildTree(array_keys($this->children[$single_key]['son']));
                     
-                    $leaves[] = array('text'=>$this->children[$single_key]['name'], 'nodes'=>$b, "href" => "index.php?r=homecatalogue/allCourse&id_cat=".$this->children[$single_key]['id_cat'],"id_cat" => $this->children[$single_key]['id_cat'] );
+                    $leaves[] = ['text'=>$this->children[$single_key]['name'], 'nodes'=>$b, "href" => "index.php?r=homecatalogue/allCourse&id_cat=".$this->children[$single_key]['id_cat'],"id_cat" => $this->children[$single_key]['id_cat']];
                     if  ($this->tree_deep==0){
-                        $this->the_tree[] = array('text'=>$leaves[0]['text'], 'nodes'=>$leaves[0]['nodes'], "href" => "index.php?r=homecatalogue/allCourse&id_cat=".$this->children[$single_key]['id_cat'],"id_cat" => $this->children[$single_key]['id_cat'] );
+                        $this->the_tree[] = ['text'=>$leaves[0]['text'], 'nodes'=>$leaves[0]['nodes'], "href" => "index.php?r=homecatalogue/allCourse&id_cat=".$this->children[$single_key]['id_cat'],"id_cat" => $this->children[$single_key]['id_cat']];
                         $this->tree_deep = 0;                   
                     }
                 } else {
-                    $leaves[] = array('text'=>$this->children[$single_key]['name'],  "href" => "index.php?r=homecatalogue/allCourse&id_cat=".$this->children[$single_key]['id_cat'],"id_cat" => $this->children[$single_key]['id_cat']);
+                    $leaves[] = ['text'=>$this->children[$single_key]['name'],  "href" => "index.php?r=homecatalogue/allCourse&id_cat=".$this->children[$single_key]['id_cat'],"id_cat" => $this->children[$single_key]['id_cat']];
                 }
                 if (array_key_exists($single_key, $this->children)) {
                     unset($this->children[$single_key]);   

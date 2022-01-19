@@ -6,13 +6,13 @@ require_once(_installer_.'/lib/lib.lang_import.php');
 require_once _lib_.'/loggers/lib.logger.php';
 require_once(_base_.'/db/lib.docebodb.php');
 
-DbConn::getInstance(false,array(
+DbConn::getInstance(false, [
     'db_type'=>$_SESSION['db_info']['db_type'],
     'db_host'=>$_SESSION['db_info']['db_host'],
     'db_user'=>$_SESSION['db_info']['db_user'],
     'db_pass'=>$_SESSION['db_info']['db_pass'],
     'db_name'=>$_SESSION['db_info']['db_name']
-));
+]);
 
 sql_query("SET NAMES 'utf8'");
 sql_query("SET CHARACTER SET 'utf8'");
@@ -22,7 +22,7 @@ $lang = Get::pReq('lang', DOTY_STRING);
 $upgrade = Get::pReq('upgrade', DOTY_INT);
 
 $lang_arr =array_keys($_SESSION["lang_install"]);
-$pl_arr =array('framework');
+$pl_arr = ['framework'];
 
 $cur['value'] = current($pl_arr);
 next($pl_arr); 
@@ -66,7 +66,7 @@ if (file_exists($fn)) {
 	$LangAdm->importTranslation($fn, false, false);
 }
 
-$res =array();
+$res = [];
 $res['current_lang']=$lang;
 $res['current_platform']=$platform_code;
 $res['next_lang']=$next_lang;

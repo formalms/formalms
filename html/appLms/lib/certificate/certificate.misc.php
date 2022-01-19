@@ -17,7 +17,7 @@ class CertificateSubs_Misc extends CertificateSubstitution {
 
 	function getSubstitutionTags() {
 
-		$subs = array();
+		$subs = [];
 		$subs['[today]'] 			= Lang::t('_COURSE_TODAY','certificate', 'lms');
 		$subs['[year]'] 			= Lang::t('_COURSE_YEAR','certificate', 'lms');
 		return $subs;
@@ -25,7 +25,7 @@ class CertificateSubs_Misc extends CertificateSubstitution {
 	
 	function getSubstitution() {
 		
-		$subs = array();
+		$subs = [];
 		
 		$subs['[today]'] 	= Format::date(date("Y-m-d H:i:s"), 'date');
 		$subs['[year]'] 	= date("Y");

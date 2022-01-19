@@ -23,11 +23,11 @@ require_once( dirname(__FILE__) . '/lib.connector.php' );
 class DoceboConnectorDoceboOrgChart extends DoceboConnector {
   
   	var $last_error = "";
- 	var $all_cols = array(	'idOrg','idParent','path','level');
-	var $mandatory_cols = array('path');
-	var $default_cols = array();
-	var $ignore_cols = array( 'idOrg','idParent','level' );
- 	var $valid_filed_type = array( 'textfield','date','dropdown','yesno');
+ 	var $all_cols = ['idOrg','idParent','path','level'];
+	var $mandatory_cols = ['path'];
+	var $default_cols = [];
+	var $ignore_cols = ['idOrg','idParent','level'];
+ 	var $valid_filed_type = ['textfield','date','dropdown','yesno'];
 	var $cols_descriptor = NULL;
 	var $dbconn = NULL;
 	var $tree = 0;			// idst where to insert the imported tree
@@ -44,7 +44,7 @@ class DoceboConnectorDoceboOrgChart extends DoceboConnector {
 	var $directory = NULL;
 	var $tree_view = NULL;
 		
-	var $arr_folders = array();
+	var $arr_folders = [];
 	/**
 	 * This constructor require the source file name
 	 * @param array $params the array of params
@@ -60,13 +60,13 @@ class DoceboConnectorDoceboOrgChart extends DoceboConnector {
 	}
 	
 	function get_config() {
-		return array( 	'tree' => $this->tree,
+		return ['tree' => $this->tree,
 						'canceled' => $this->canceled,
 						'readwrite' => $this->readwrite,
 						'name' => $this->name,
 						'description' => $this->description,
                         'org_chart_destination' => $this->org_chart_destination,                        
-						'default_lang' => $this->default_lang );
+						'default_lang' => $this->default_lang];
 	}
 	
 	function set_config( $params ) {
@@ -93,7 +93,7 @@ class DoceboConnectorDoceboOrgChart extends DoceboConnector {
 		$this->tree_view = new TreeView_OrgView($orgDb, 'organization_chart', Get::sett('title_organigram_chart'));
 		$this->tree_view->aclManager =& Docebo::aclm();
 
-		list($this->tree_desc) = $this->tree_view->tdb->getDescendantsSTFromST(array($this->tree));
+		list($this->tree_desc) = $this->tree_view->tdb->getDescendantsSTFromST([$this->tree]);
 
 		require_once($GLOBALS['where_framework'].'/lib/lib.field.php');
 		// load language for fields names
@@ -107,31 +107,31 @@ class DoceboConnectorDoceboOrgChart extends DoceboConnector {
 			$this->dbconn = $GLOBALS['dbConn'];
 		}
 	
-		$table_fields = array( 	array('Field' => 'idOrg','Type' => 'text' ),
-								array('Field' => 'idParent','Type' => 'text' ),
-								array('Field' => 'path','Type' => 'text' ),
-								array('Field' => 'level','Type' => 'text' )
-							);
+		$table_fields = [['Field' => 'idOrg','Type' => 'text'],
+								['Field' => 'idParent','Type' => 'text'],
+								['Field' => 'path','Type' => 'text'],
+								['Field' => 'level','Type' => 'text']
+        ];
 	
-		$this->cols_descriptor = array();
+		$this->cols_descriptor = [];
 		foreach( $table_fields as $field_info ) {
 			if( !in_array($field_info['Field'],$this->ignore_cols) ) {
 				$mandatory = in_array($field_info['Field'],$this->mandatory_cols);
 				if( isset($this->default_cols[$field_info['Field']])) {
 					$this->cols_descriptor[] =
-								array(  DOCEBOIMPORT_COLNAME => $lang_dir->def('_DIRECTORY_FILTER_'.$field_info['Field']),
+								[DOCEBOIMPORT_COLNAME => $lang_dir->def('_DIRECTORY_FILTER_'.$field_info['Field']),
 										DOCEBOIMPORT_COLID => $field_info['Field'],
 										DOCEBOIMPORT_COLMANDATORY => $mandatory,
 										DOCEBOIMPORT_DATATYPE => $field_info['Type'],
 										DOCEBOIMPORT_DEFAULT => $this->default_cols[$field_info['Field']]
-										);
+                                ];
 				} else {
 					$this->cols_descriptor[] =
-								array(  DOCEBOIMPORT_COLNAME => $lang_dir->def('_DIRECTORY_FILTER_'.$field_info['Field']),
+								[DOCEBOIMPORT_COLNAME => $lang_dir->def('_DIRECTORY_FILTER_'.$field_info['Field']),
 										DOCEBOIMPORT_COLID => $field_info['Field'],
 										DOCEBOIMPORT_COLMANDATORY => $mandatory,
 										DOCEBOIMPORT_DATATYPE => $field_info['Type']
-										);
+                                ];
 				}
 			}
 		}
@@ -139,29 +139,29 @@ class DoceboConnectorDoceboOrgChart extends DoceboConnector {
 		foreach($arr_fields as $field_id => $field_info) {
 			if( in_array($field_info[FIELD_INFO_TYPE],$this->valid_filed_type) ) {
 				$this->cols_descriptor[] =
-							array(  DOCEBOIMPORT_COLNAME => $field_info[FIELD_INFO_TRANSLATION],
+							[DOCEBOIMPORT_COLNAME => $field_info[FIELD_INFO_TRANSLATION],
 									DOCEBOIMPORT_COLID => $field_id,
 									DOCEBOIMPORT_COLMANDATORY => FALSE,
 									DOCEBOIMPORT_DATATYPE => 'text',
-									);
+                            ];
 			}
 		}
 		
 		$this->tree_view->tdb->setFolderLang($this->default_lang);
-		$arr_foldersid = $this->tree_view->tdb->getFoldersIdFromIdst(array($this->tree));
+		$arr_foldersid = $this->tree_view->tdb->getFoldersIdFromIdst([$this->tree]);
 		$folderid = $arr_foldersid[$this->tree];
 		
 		$root_folder = $this->tree_view->tdb->getFolderById($folderid);
 		$arr_id = $this->tree_view->tdb->getDescendantsId($root_folder);
-		$this->arr_folders = array();
+		$this->arr_folders = [];
 		if( $arr_id !== FALSE ) {
 			$coll_folders = $this->tree_view->tdb->getFoldersCollection($arr_id);
 			// make the new structure
-			$curr_path = array();
+			$curr_path = [];
 			while( ($folder = $coll_folders->getNext()) !== FALSE ) {
 				$curr_path = array_slice($curr_path,0,$folder->level-$root_folder->level-1);
 				$curr_path[] = $folder->otherValues[ORGDB_POS_TRANSLATION];
-				$this->arr_folders[implode('/',$curr_path)] = array('id'=>$folder->id,'inserted'=>FALSE);
+				$this->arr_folders[implode('/',$curr_path)] = ['id'=>$folder->id,'inserted'=>FALSE];
 			}
 		}
 
@@ -172,7 +172,7 @@ class DoceboConnectorDoceboOrgChart extends DoceboConnector {
 		$this->directory = NULL;
 		$this->tree_view = NULL;
 		$this->cols_descriptor = NULL;
-		$this->arr_folders = array();
+		$this->arr_folders = [];
 	}
 
 	function get_type_name() { return "docebo-orgchart"; }	 
@@ -215,7 +215,7 @@ class DoceboConnectorDoceboOrgChart extends DoceboConnector {
 	 * @return integer the number of mandatory columns to import
 	**/
 	function get_tot_mandatory_cols() {
-		$result = array();
+		$result = [];
 		foreach( $this->cols_descriptor as $col ) {
 			if( $col[DOCEBOIMPORT_COLMANDATORY] )
 				$result[] = $col;
@@ -236,12 +236,12 @@ class DoceboConnectorDoceboOrgChart extends DoceboConnector {
 		$parent_path = implode('/',array_slice($path_tokens,0,-1));
 		$name = $path_tokens[count($path_tokens)-1];
         
-		$arr_folder = $this->get_row_bypk(array('path'=> $path));
+		$arr_folder = $this->get_row_bypk(['path'=> $path]);
 		if( $parent_path == '' ) {
 			$this->tree_view->tdb->setFolderLang($this->default_lang);
             $parent_id = (int) $this->org_chart_destination;       
 		} else {
-			$arr_parent_folder = $this->get_row_bypk(array('path'=> $parent_path));
+			$arr_parent_folder = $this->get_row_bypk(['path'=> $parent_path]);
 			$parent_id = $arr_parent_folder['id'];
 		}
 		
@@ -251,7 +251,7 @@ class DoceboConnectorDoceboOrgChart extends DoceboConnector {
 		if( isset($row['lang_titles']))
 			$folderName = addslashes($row['lang_titles']);
 		else
-			$folderName = array();
+			$folderName = [];
 		foreach( $array_lang as $lang) 
 			if( !isset($folderName[$lang]) )
 				$folderName[$lang] = addslashes($name);
@@ -261,7 +261,7 @@ class DoceboConnectorDoceboOrgChart extends DoceboConnector {
                         $umodel = new UsermanagementAdm();
                         $id = $umodel->addFolder($parent_id, $folderName, $row['code']);
 
-			$this->arr_folders[$path] = array( 'id' => $id, 'inserted' => TRUE );
+			$this->arr_folders[$path] = ['id' => $id, 'inserted' => TRUE];
 		} else {
 			$this->tree_view->tdb->updateFolderByIdTranslation( $arr_folder['id'], $folderName );
 			$this->arr_folders[$path]['inserted'] = TRUE;
@@ -271,7 +271,7 @@ class DoceboConnectorDoceboOrgChart extends DoceboConnector {
 		if( isset($row['custom_fields']) )
 			$this->_add_custom_fields( $this->arr_folders[$path]['id'], $row['custom_fields'] );
 		else
-			$this->_add_custom_fields( $this->arr_folders[$path]['id'], array() );
+			$this->_add_custom_fields( $this->arr_folders[$path]['id'], []);
 		
 		return TRUE;
 	}
@@ -296,7 +296,7 @@ class DoceboConnectorDoceboOrgChart extends DoceboConnector {
 			return TRUE;
 		foreach( $this->arr_folders as $path => $arr_folder ) {
 			if( !in_array($path, $arr_pk) )
-				$this->delete_bypk(array('path'=>$path));			
+				$this->delete_bypk(['path'=>$path]);
 		}
 	}
 
@@ -306,7 +306,7 @@ class DoceboConnectorDoceboOrgChart extends DoceboConnector {
 		$counter = 0;
 		foreach( $this->arr_folders as $path => $arr_folder ) {
 			if( $arr_folder['inserted'] === FALSE ) {
-				$this->delete_bypk(array('path'=>$path));
+				$this->delete_bypk(['path'=>$path]);
 				$counter++;
 			}
 		}
@@ -340,7 +340,7 @@ class DoceboConnectorDoceboOrgChart extends DoceboConnector {
 		
 		$arr_all_fields_translation = array_flip($arr_all_fields);
 
-		$arr_fields_value = array();		
+		$arr_fields_value = [];
 		// add selected fields
 		foreach( $arr_fields as $field_translation => $field_data ) {
 			if( isset($arr_all_fields_translation[$field_translation]) ) {
@@ -418,7 +418,7 @@ class DoceboConnectorDoceboOrgChartUI extends DoceboConnectorUI {
 				$arr_selection = $this->directory->getSelection($post);
 				$this->post_params['tree'] = implode(",", $arr_selection);				
 			}
-			$this->directory->resetSelection(array($this->post_params['tree']));
+			$this->directory->resetSelection([$this->post_params['tree']]);
             $this->post_params['org_chart_destination'] =
                             isset($arr_new_params['org_chart_destination'])
                             ? (int)$arr_new_params['org_chart_destination']
@@ -510,20 +510,20 @@ class DoceboConnectorDoceboOrgChartUI extends DoceboConnectorUI {
 	  	$out .= $this->form->getRadioSet( 	$this->lang->def('_ACCESSTYPE'), 
 		  									$this->_get_base_name().'_readwrite', 
 											$this->_get_base_name().'[readwrite]',
-											array( 	$this->lang->def('_READ')  => '1', 
+											[$this->lang->def('_READ')  => '1',
 													$this->lang->def('_WRITE') => '2',
-													$this->lang->def('_READWRITE') => '3'), 
+													$this->lang->def('_READWRITE') => '3'],
 											$this->post_params['readwrite']);
 		// ---- remove or not folders ----
 	  	$out .= $this->form->getRadioSet( 	$this->lang->def('_CANCELED_FOLDER'), 
 		  									$this->_get_base_name().'_canceled', 
 											$this->_get_base_name().'[canceled]',
-											array( 	$this->lang->def('_DONTDELETE') => '1', 
-													$this->lang->def('_DEL') => '2'), 
+											[$this->lang->def('_DONTDELETE') => '1',
+													$this->lang->def('_DEL') => '2'],
 											$this->post_params['canceled']);	
 		// ---- default lang ----
 		$languages = Docebo::langManager()->getAllLangCode();
-		$lang_key = array(); 
+		$lang_key = [];
 		for( $index = 0; $index < count($languages); $index++ ) 
 			$lang_key[$languages[$index]] = $languages[$index]; 
 		$out .= $this->form->getDropdown( 	$this->lang->def('_LANGUAGE'),
@@ -589,7 +589,7 @@ class DoceboConnectorDoceboOrgChartUI extends DoceboConnectorUI {
 }
 
 function doceboorgchart_factory() {
-	return new DoceboConnectorDoceboOrgChart(array());
+	return new DoceboConnectorDoceboOrgChart([]);
 }
 
 ?>

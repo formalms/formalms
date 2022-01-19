@@ -35,7 +35,7 @@ Class Lang {
 
 	static public function getLanguageList($key="code") {
 		// key can be "code" or "language"
-		$res=array();
+		$res= [];
 		if ($key == "code") {
 
 			$res["ar"] = "arabic";
@@ -127,7 +127,7 @@ Class Lang {
 			self::init();
 			StepManager::loadCurrentStep();
 			ob_clean();
-			$res =array();
+			$res = [];
 			$res['intro']=Lang::t('_INSTALLER_INTRO_TEXT');
 			$res['title']=Lang::t('_INTRODUCTION');
 			$res['btn']=Lang::t('_NEXT').' &raquo;';

@@ -10,7 +10,7 @@ class TestGetTypesEvent extends Event
 
     public function __construct()
     {
-        $this->testTypes = array();
+        $this->testTypes = [];
     }
 
     /**

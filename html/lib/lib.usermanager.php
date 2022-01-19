@@ -346,7 +346,7 @@ class UserManager
     function getRegister($opt_link)
     {
 
-        $options = array(
+        $options = [
             'lastfirst_mandatory' => $this->_option->getOption('lastfirst_mandatory'),
             'register_type' => $this->_option->getOption('register_type'),
             'use_advanced_form' => $this->_option->getOption('use_advanced_form'),
@@ -357,7 +357,7 @@ class UserManager
             'mail_sender' => $this->_option->getOption('mail_sender'),
             'mail_sender_name_from' => $this->_option->getOption('mail_sender_name_from'),
             'field_tree' => $this->_option->getOption('field_tree')
-        );
+        ];
         return $this->_render->getRegister(
             $this->_platform,
             $options,
@@ -367,7 +367,7 @@ class UserManager
 
     function confirmRegister()
     {
-        $options = array(
+        $options = [
             'lastfirst_mandatory' => $this->_option->getOption('lastfirst_mandatory'),
             'register_type' => $this->_option->getOption('register_type'),
             'use_advanced_form' => $this->_option->getOption('use_advanced_form'),
@@ -376,7 +376,7 @@ class UserManager
             'hour_request_limit' => $this->_option->getOption('hour_request_limit'),
             'privacy_policy' => $this->_option->getOption('privacy_policy'),
             'field_tree' => $this->_option->getOption('field_tree')
-        );
+        ];
         return $this->_render->confirmRegister(
             $this->_platform,
             $options
@@ -632,9 +632,9 @@ class UserManager
                     $lang->def('_LOST_USERID_TITLE'),
                     $mail_text,
                     [],
-                    array(
+                    [
                         MAIL_SENDER_ACLNAME => $mail_sender_name_from
-                    )
+                    ]
                 );
 
                 if (!$success) {
@@ -693,9 +693,9 @@ class UserManager
                     $lang->def('_LOST_PWD_TITLE'),
                     $mail_text,
                     [],
-                    array(
+                    [
                         MAIL_SENDER_ACLNAME => $mail_sender_name_from
-                    )
+                    ]
                 );
 
                 if (!$success) {
@@ -858,7 +858,7 @@ class UserManager
                 case "tree_drop":
                     {
                         // from the dropdown we will recive the id of the folder
-                        $array_folder = array($reg_code => $reg_code);
+                        $array_folder = [$reg_code => $reg_code];
                         $oc_folders = $uma->getOcFolders($array_folder);
                         if (empty($oc_folders)) {
                             $res = false; // invalid code
@@ -1018,10 +1018,10 @@ class UserManagerRenderer
     function getLoginInfo()
     {
 
-        $info = array(
+        $info = [
             'userid' => Get::req('login_userid', DOTY_STRING),
             'password' => Get::req('login_pwd', DOTY_STRING)
-        );
+        ];
 
         $all_languages = Docebo::langManager()->getAllLangCode();
 
@@ -1198,7 +1198,7 @@ class UserManagerRenderer
         if (!isset($GLOBALS['login_tabindex'])) $GLOBALS['login_tabindex'] = 1;
 
         $all_languages = Docebo::langManager()->getAllLangCode();
-        $all_languages = array_merge(array('default' => $lang->def('_LANGUAGE')), $all_languages);
+        $all_languages = array_merge(['default' => $lang->def('_LANGUAGE')], $all_languages);
 
         if ($this->_style_to_use != false) {
             $GLOBALS['page']->addStart('<link href="' . $this->_style_to_use . '" rel="stylesheet" type="text/css" />' . "\n", 'page_head');
@@ -1324,7 +1324,7 @@ class UserManagerRenderer
         if (!isset($GLOBALS['login_tabindex'])) $GLOBALS['login_tabindex'] = 1;
 
         $all_languages = Docebo::langManager()->getAllLangCode();
-        $all_languages = array_merge(array('default' => $lang->def('_LANGUAGE')), $all_languages);
+        $all_languages = array_merge(['default' => $lang->def('_LANGUAGE')], $all_languages);
 
         $out = '';
 
@@ -1505,7 +1505,7 @@ class UserManagerRenderer
      */
     public function processRegistrationCode(&$acl_man, &$uma, $iduser, $reg_code, $registration_code_type)
     {
-        $res = array('success' => true, 'msg' => '');
+        $res = ['success' => true, 'msg' => ''];
 
         $lang = &DoceboLanguage::createInstance('register', 'lms');
         $code_is_mandatory = (Get::sett('mandatory_code', 'off') == 'on');
@@ -1553,7 +1553,7 @@ class UserManagerRenderer
 
                         $array_course = $this->getCodeCourses($reg_code);
 
-                        $array_folder = array($reg_code => $reg_id);
+                        $array_folder = [$reg_code => $reg_id];
 
                         if (empty($reg_id) && $code_is_mandatory) {
 
@@ -1646,7 +1646,7 @@ class UserManagerRenderer
             }
 
             $enrollrules = new EnrollrulesAlms();
-            $enrollrules->newRules('_NEW_USER', array($iduser), Lang::get(), current($array_folder));
+            $enrollrules->newRules('_NEW_USER', [$iduser], Lang::get(), current($array_folder));
         }
         // and in array_course the courses
         if (!empty($array_course)) {
@@ -1698,7 +1698,7 @@ class UserManagerRenderer
 
         // add base inscription policy
         $enrollrules = new EnrollrulesAlms();
-        $enrollrules->newRules('_NEW_USER', array($iduser), Lang::get());
+        $enrollrules->newRules('_NEW_USER', [$iduser], Lang::get());
 
         // subscribe to groups -----------------------------------------
         if (isset($_POST['group_sel_implode'])) {
@@ -1708,7 +1708,7 @@ class UserManagerRenderer
                 $acl_man->addToGroup($idst, $iduser);
                 // FORMA: added the inscription policy
                 $enrollrules = new EnrollrulesAlms();
-                $enrollrules->applyRulesMultiLang('_LOG_USERS_TO_GROUP', array((string)$iduser), false, (int)$idst, true);
+                $enrollrules->applyRulesMultiLang('_LOG_USERS_TO_GROUP', [(string)$iduser], false, (int)$idst, true);
                 // END FORMA
             }
         }
@@ -1774,7 +1774,7 @@ class UserManagerRenderer
 
             $mailer = FormaMailer::getInstance();
 
-            if (!$mailer->SendMail($admin_mail, [$_POST['register']['email']], Lang::t('_MAIL_OBJECT', 'register'), $text, [], array(MAIL_REPLYTO => $admin_mail, MAIL_SENDER_ACLNAME => $sender_name))) {
+            if (!$mailer->SendMail($admin_mail, [$_POST['register']['email']], Lang::t('_MAIL_OBJECT', 'register'), $text, [], [MAIL_REPLYTO => $admin_mail, MAIL_SENDER_ACLNAME => $sender_name])) {
 
 
                 if ($registration_code_type == 'code_module') {
@@ -1810,7 +1810,7 @@ class UserManagerRenderer
 
 
             $mailer = FormaMailer::getInstance();
-            if (!$mailer->SendMail($admin_mail, [$_POST['register']['email']], Lang::t('_MAIL_OBJECT_SELF', 'register'), $text_self, [], array(MAIL_REPLYTO => $admin_mail, MAIL_SENDER_ACLNAME => $sender_name))) {
+            if (!$mailer->SendMail($admin_mail, [$_POST['register']['email']], Lang::t('_MAIL_OBJECT_SELF', 'register'), $text_self, [], [MAIL_REPLYTO => $admin_mail, MAIL_SENDER_ACLNAME => $sender_name])) {
                 $this->error = true;
                 $errors = ['registration' => false, 'error' => $this->error, 'msg' => $lang->def('_OPERATION_FAILURE')];
             } else {
@@ -1904,7 +1904,7 @@ class UserManagerRenderer
 
         if ($array_folder !== false) {
             if ($folder_group === false)
-                $folder_group = array();
+                $folder_group = [];
             foreach ($array_folder as $id_org_folder)
                 $folder_group[] = Docebo::aclm()->getGroupST('/oc_' . $id_org_folder);
         }
@@ -2006,9 +2006,9 @@ class UserManagerRenderer
                 </div>';
 
         $lang_sel = getLanguage();
-        $full_langs = array();
+        $full_langs = [];
         $langs = Docebo::langManager()->getAllLangCode();
-        $full_langs = array();
+        $full_langs = [];
         foreach ($langs as $v) {
 
             $full_langs[$v] = $v;
@@ -2218,7 +2218,7 @@ class UserManagerRenderer
         } else if ($options['use_advanced_form'] == 'on') {
 
             $acl_man = &Docebo::user()->getAclManager();
-            $groups = &$acl_man->getAllGroupsId(array('free', 'moderate'));
+            $groups = &$acl_man->getAllGroupsId(['free', 'moderate']);
 
             if (!empty($groups)) {
 
@@ -2383,9 +2383,9 @@ class UserManagerRenderer
                 $msg_c_new = new EventMessageComposer();
 
                 $msg_c_new->setSubjectLangText('email', '_TO_NEW_USER_SBJ', false);
-                $msg_c_new->setBodyLangText('email', '_TO_NEW_USER_TEXT', array('[url]' => Get::site_url()));
+                $msg_c_new->setBodyLangText('email', '_TO_NEW_USER_TEXT', ['[url]' => Get::site_url()]);
 
-                $msg_c_new->setBodyLangText('sms', '_TO_NEW_USER_TEXT_SMS', array('[url]' => Get::site_url()));
+                $msg_c_new->setBodyLangText('sms', '_TO_NEW_USER_TEXT_SMS', ['[url]' => Get::site_url()]);
                 $idst_approve = $acl->getRoleST('/framework/admin/directory/approve_waiting_user');
 
                 $recipients = $acl_man->getAllRoleMembers($idst_approve);
@@ -2456,9 +2456,9 @@ class UserManagerRenderer
                 $msg_c_approve = new EventMessageComposer();
 
                 $msg_c_approve->setSubjectLangText('email', '_TO_APPROVE_USER_SBJ', false);
-                $msg_c_approve->setBodyLangText('email', '_TO_APPROVE_USER_TEXT', array('[url]' => Get::site_url()));
+                $msg_c_approve->setBodyLangText('email', '_TO_APPROVE_USER_TEXT', ['[url]' => Get::site_url()]);
 
-                $msg_c_approve->setBodyLangText('sms', '_TO_APPROVE_USER_TEXT_SMS', array('[url]' => Get::site_url()));
+                $msg_c_approve->setBodyLangText('sms', '_TO_APPROVE_USER_TEXT_SMS', ['[url]' => Get::site_url()]);
                 $idst_approve = $acl->getRoleST('/framework/admin/directory/approve_waiting_user');
 
                 $recipients = $acl_man->getAllRoleMembers($idst_approve);
@@ -2803,7 +2803,7 @@ class UserManagerRenderer
             $html .= '<li>' . $lang->def('_REG_PASS_MUST_BE_ALPNUM') . '</li>';
         }
         if ($options['user_pwd_history_length'] > 0) {
-            $html .= '<li>' . Lang::t('_REG_PASS_MUST_DIFF', 'register', array('[diff_pwd]' => $options['user_pwd_history_length'])) . '</li>';
+            $html .= '<li>' . Lang::t('_REG_PASS_MUST_DIFF', 'register', ['[diff_pwd]' => $options['user_pwd_history_length']]) . '</li>';
         }
 
         $html .= '</ul>' . "\n"
@@ -2841,40 +2841,40 @@ class UserManagerRenderer
         $password = new Password($_POST['oldpwd']);
         if (!$password->verify($user_info[ACL_INFO_PASS])) {
 
-            return array(
+            return [
                 'error' => true,
                 'msg' => getErrorUi($lang->def('_ERR_PWD_OLD'))
-            );
+            ];
         }
         // control password
         if (strlen($_POST['newpwd']) < $options['pass_min_char']) {
 
-            return array(
+            return [
                 'error' => true,
                 'msg' => getErrorUi($lang->def('_PASSWORD_TOO_SHORT'))
-            );
+            ];
         }
         if ($_POST['newpwd'] != $_POST['repwd']) {
 
-            return array(
+            return [
                 'error' => true,
                 'msg' => getErrorUi($lang->def('_ERR_PASSWORD_NO_MATCH'))
-            );
+            ];
         }
         if ($_POST['oldpwd'] == $_POST['newpwd']) {
 
-            return array(
+            return [
                 'error' => true,
                 'msg' => getErrorUi($lang->def('_ERR_PWD_SAME_OLD'))
-            );
+            ];
         }
         if ($options['pass_alfanumeric'] == 'on') {
             if (!preg_match('/[a-z]/i', $_POST['newpwd']) || !preg_match('/[0-9]/', $_POST['newpwd'])) {
 
-                return array(
+                return [
                     'error' => true,
                     'msg' => getErrorUi($lang->def('_ERR_PASSWORD_MUSTBE_ALPHA'))
-                );
+                ];
             }
         }
         //check password history
@@ -2884,10 +2884,10 @@ class UserManagerRenderer
             $new_pwd = $acl_man->encrypt($_POST['newpwd']);
             if ($user_info[ACL_INFO_PASS] == $new_pwd) {
 
-                return array(
+                return [
                     'error' => true,
                     'msg' => getErrorUi(str_replace('[diff_pwd]', Get::sett('user_pwd_history_length'), $lang->def('_REG_PASS_MUST_DIFF')))
-                );
+                ];
             }
             $re_pwd = sql_query("SELECT passw "
                 . " FROM " . $GLOBALS['prefix_fw'] . "_password_history"
@@ -2899,10 +2899,10 @@ class UserManagerRenderer
 
                 if ($pwd_history == $new_pwd) {
 
-                    return array(
+                    return [
                         'error' => true,
                         'msg' => getErrorUi(str_replace('[diff_pwd]', Get::sett('user_pwd_history_length'), $lang->def('_REG_PASS_MUST_DIFF')))
-                    );
+                    ];
                 }
                 list($pwd_history) = sql_fetch_row($re_pwd);
             }
@@ -2923,10 +2923,10 @@ class UserManagerRenderer
             0
         );
 
-        return array(
+        return [
             'error' => false,
             'msg' => ''
-        );
+        ];
     }
 }
 
@@ -2954,7 +2954,7 @@ class UserManagerOption
         if ($table === false) $this->_table = $GLOBALS['prefix_fw'] . '_setting';
         else $this->_table = $table;
 
-        $this->_options = array();
+        $this->_options = [];
     }
 
 
@@ -3029,9 +3029,9 @@ class UserManagerOption
     function getRegroupUnit()
     {
 
-        return array(
+        return [
             'user_manager' => Lang::t('_LOG_OPTION', 'user_managment')
-        );
+        ];
     }
 
     /**
@@ -3107,11 +3107,11 @@ class UserManagerOption
                 case "register_tree":
                     {
 
-                        $register_possible_option = array(
+                        $register_possible_option = [
                             'off' => $lang->def('_DONT_USE_TREE_REGISTRATION'),
                             'manual_insert' => $lang->def('_USE_WITH_MANUALEINSERT'),
                             'selection' => $lang->def('_USE_WITH_SELECTION')
-                        );
+                        ];
 
                         $html .= Form::getDropdown(
                             $lang->def('_' . strtoupper($var_name)),

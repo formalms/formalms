@@ -42,7 +42,7 @@ class Field {
 	// Array of default platform that has to be selected for
 	// show in platform value; if can_select_platform is false the
 	// values will be set as hidden fields.
-	var $show_on_platform_default =array();
+	var $show_on_platform_default = [];
 	// If true shows a list of checkbox that allow the user to specify in
 	// wich platforms the field will be available.
 	var $can_select_platform =TRUE;
@@ -89,7 +89,7 @@ class Field {
 			}
 		}
 		else {
-			$arr =array();
+			$arr = [];
 		}
 
 		$this->show_on_platform_default =$arr;
@@ -250,7 +250,7 @@ class Field {
 	 * @access public
 	 **/
 	function getArrFieldValue_Filter( $array_values, $arr_field_id, $field_prefix = FALSE, $skipchar = 0) {
-		$result = array();
+		$result = [];
 		if( $field_prefix !== FALSE ) {
 			if( isset( $array_values[$field_prefix] ) )
 				$array_values = $array_values[$field_prefix];
@@ -746,15 +746,15 @@ class Field {
 
 //------------------------------------------------------------------------------
 	function getFilteredUsers($filter, $exec = true) {
-		$grab = array('field_'.$this->getFieldType() => array($this->id_common => $filter));
-		$request = array(
+		$grab = ['field_'.$this->getFieldType() => [$this->id_common => $filter]];
+		$request = [
 			'cond' => 1,
 			'value' => $this->getFilledVal($grab, true)
-		);
+        ];
 		$query = $this->getFieldQuery($request);
 		////"SELECT id_user FROM ".$this->_getUserEntryTable()." WHERE id_common = '".$this->id_common."' AND user_entry LIKE '%".$this->getFilledVal($filter)."'";
 		if ($exec) {
-			$result = array();
+			$result = [];
 			$res = sql_query($query);
 			while (list($id_user) = sql_fetch_row($res)) $result[] = $id_user;
 			return $result;

@@ -35,11 +35,11 @@ class TemplatelayoutAdmController extends AdmController {
 
 
 	public function showTask() {
-		$this->render('show', array(
+		$this->render('show', [
 			'sort' => $this->_getTableStatus("sort", "name"),
 			'dir' => $this->_getTableStatus("dir", "asc"),
 			'filter_text' => $this->_getTableStatus("filter", "")
-		));
+        ]);
 	}
 
 	public function tabledataTask() {
@@ -59,20 +59,20 @@ class TemplatelayoutAdmController extends AdmController {
 		$params->filter = $filter;
 
 		$templates = $this->model->getTemplates($params);
-		$template_rows = array();
+		$template_rows = [];
 		if (is_array($templates)) {
 			foreach ($templates as $template) {
-				$template_rows[] = array(
+				$template_rows[] = [
 					'id' => $template->id_template,
 					'name' => highlightText($template->name, $filter),
 					'date_creation' => Format::date($template->date_creation, "datetime"),
 					'last_modify' => Format::date($template->last_modify, "datetime"),
 					'del' => 'ajax.adm_server.php?r=adm/templatelayout/delete&id='.(int)$template->id_template,
-				);
+                ];
 			}
 		}
 
-		$output = array(
+		$output = [
 			'startIndex' => $startIndex,
 			'recordsReturned' => count($templates),
 			'sort' => $sort,
@@ -80,14 +80,14 @@ class TemplatelayoutAdmController extends AdmController {
 			'totalRecords' => $this->model->getTotalTemplates($filter),
 			'pageSize' => $page_size,
 			'records' => $template_rows
-		);
+        ];
 
 		echo $this->json->encode($output);
 	}
 
 
 	public function deleteTask() {
-		$output = array('success'=>false);
+		$output = ['success'=>false];
 		$id = Get::req('id', DOTY_INT, -1);
 		if ($id > 0) {
 			$output['success'] = $this->model->deleteTemplate($id);
@@ -106,12 +106,12 @@ class TemplatelayoutAdmController extends AdmController {
 		YuiLib::load('colorpicker');
 		$id = Get::req('id', DOTY_INT, -1);
 		if ($id>0) {
-			$params = array(
+			$params = [
 				'id' => $id,
 				'data' => $this->model->getTemplateData($id)
-			);
+            ];
 		} else {
-			$params = array('error' => Lang::t('_INVALID_TEMPLATE', 'template'));
+			$params = ['error' => Lang::t('_INVALID_TEMPLATE', 'template')];
 		}
 		$this->render("edit", $params);
 	}

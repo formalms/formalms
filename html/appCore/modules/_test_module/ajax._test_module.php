@@ -9,22 +9,22 @@ $dir = Get::req('dir', DOTY_STRING, 'asc');
 
 $query="SELECT idst as id, userid as name, firstname, lastname, email FROM core_user ORDER BY ".$sort." ".$dir." LIMIT ".$startIndex.", ".$results;
 $res = sql_query($query);
-$temp = array();
+$temp = [];
 while ($row = sql_fetch_assoc($res)) {
-	$temp[] = array(
+	$temp[] = [
 		'id' => $row['id'],
 		'name' => $row['name'],
 		'firstname' => $row['firstname'],
 		'lastname' => $row['lastname'],
 		'email' => $row['email']
-	);
+    ];
 
 }
 
 
 list($totalRecords) = sql_fetch_row(sql_query("select count(*) from core_user"));
 
-$output = array(
+$output = [
 	'startIndex' => (int)$startIndex,
 	'recordsReturned' => count($temp),//'results' => count($temp),
 	'pageSize' => $results,
@@ -32,7 +32,7 @@ $output = array(
 	'sort' => $sort,
 	'dir' => $dir,
 	'records' => $temp
-);
+];
 
 
 $json = new Services_JSON();

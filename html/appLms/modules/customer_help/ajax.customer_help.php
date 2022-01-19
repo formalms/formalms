@@ -57,10 +57,10 @@ switch ($op) {
             $body .= Form::getHidden('help_req_flash_installed', 'help_req_flash_installed', '');
             $body .= Form::closeForm();
 
-            $output = array(
+            $output = [
                 'success' => true,
                 'body' => $body
-            );
+            ];
 
             $json = new Services_JSON();
             aout($json->encode($output));
@@ -128,7 +128,7 @@ switch ($op) {
                 MAIL_SENDER_ACLNAME => $help_name_from
             ]);
 
-            $output = array('success' => $res);
+            $output = ['success' => $res];
             if (!$res) $output['message'] = UIFeedback::perror(Lang::t('_OPERATION_FAILURE', 'menu'));
             $json = new Services_JSON();
             aout($json->encode($output));
@@ -164,7 +164,7 @@ function parse_user_agent($u_agent = null)
     $browser = null;
     $version = null;
 
-    $empty = array('platform' => $platform, 'browser' => $browser, 'version' => $version);
+    $empty = ['platform' => $platform, 'browser' => $browser, 'version' => $version];
 
     if (!$u_agent)
         return $empty;
@@ -175,7 +175,7 @@ function parse_user_agent($u_agent = null)
     (?:\ [^;]*)?
     (?:;|$)/imx', $parent_matches[1], $result, PREG_PATTERN_ORDER);
 
-        $priority = array('Android', 'Xbox One', 'Xbox');
+        $priority = ['Android', 'Xbox One', 'Xbox'];
         $result['platform'] = array_unique($result['platform']);
         if (count($result['platform']) > 1) {
             if ($keys = array_intersect($priority, $result['platform'])) {
@@ -271,7 +271,7 @@ function parse_user_agent($u_agent = null)
         $browser = 'NetFront';
     }
 
-    return array('platform' => $platform, 'browser' => $browser, 'version' => $version);
+    return ['platform' => $platform, 'browser' => $browser, 'version' => $version];
 }
 
 function _parse_ua_find($search, &$key, &$result)

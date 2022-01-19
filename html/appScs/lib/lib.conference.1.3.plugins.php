@@ -289,7 +289,7 @@ class Conference_Manager {
 
 		$result = sql_query($query);
 
-		$res = array();
+		$res = [];
 
 		while($row = sql_fetch_assoc($result))
 			$res[] = $row;

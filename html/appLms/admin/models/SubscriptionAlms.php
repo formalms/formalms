@@ -182,7 +182,7 @@ Class SubscriptionAlms extends Model
 
 			$course_info = Man_Course::getCourseInfo($this->id_course);
 
-			$res = array(
+			$res = [
 				'max_num_subscribe' => $edition_info['max_num_subscribe'],
 				'subscribe_method' => $course_info['subscribe_method'],
 				'code' => $edition_info['code'],
@@ -192,7 +192,7 @@ Class SubscriptionAlms extends Model
 				'date_begin' => $edition_info['date_begin'],
 				'date_end' => $edition_info['date_end'],
                 'sendCalendar' => $course_info['sendCalendar']
-			);
+            ];
 		}
 		elseif($this->id_date != 0)
 		{
@@ -206,7 +206,7 @@ Class SubscriptionAlms extends Model
 
 			$course_info = Man_Course::getCourseInfo($this->id_course);
 
-			$res = array(
+			$res = [
 				'max_num_subscribe' => $course_info['max_num_subscribe'],
 				'subscribe_method' => $course_info['subscribe_method'],
 				'code' => $date_info['code'],
@@ -216,7 +216,7 @@ Class SubscriptionAlms extends Model
 				'date_begin' => $date_info['date_begin'],
 				'date_end' => $date_info['date_end'],
                 'sendCalendar' => $course_info['sendCalendar']
-			);
+            ];
 		}
 		else
 		{
@@ -224,7 +224,7 @@ Class SubscriptionAlms extends Model
 
 			$course_info = Man_Course::getCourseInfo($this->id_course);
 
-			$res = array(
+			$res = [
 				'max_num_subscribe' => $course_info['max_num_subscribe'],
 				'subscribe_method' => $course_info['subscribe_method'],
 				'code' => $course_info['code'],
@@ -234,7 +234,7 @@ Class SubscriptionAlms extends Model
 				'date_begin' => $course_info['date_begin'],
 				'date_end' => $course_info['date_end'],
                 'sendCalendar' => $course_info['sendCalendar']
-			);
+            ];
 		}
 
 		return $res;
@@ -325,13 +325,13 @@ Class SubscriptionAlms extends Model
 							$subject_key = "_NEW_USER_SUBSCRIBED_SUBJECT";
 							$body_key = "_NEW_USER_SUBSCRIBED_TEXT_MODERATORS";
 						}
-						$array_subst = array(
+						$array_subst = [
 							'[url]' => Get::site_url(),
 							'[course]' => $course_info['name'],
 							'[firstname]' => $userinfo[ACL_INFO_FIRSTNAME], //istantiate user_info with the user to enroll if you want to enable this
 							'[lastname]' => $userinfo[ACL_INFO_LASTNAME],
 							'[userid]' => $acl_man->relativeId($userinfo[ACL_INFO_USERID])
-						);
+                        ];
 
 						$msg_composer->setSubjectLangText('email', $subject_key, false);
 						$msg_composer->setBodyLangText('email', $body_key, $array_subst);
@@ -341,7 +341,7 @@ Class SubscriptionAlms extends Model
 						$acl = &Docebo::user()->getAcl();
 						$acl_man = &$this->acl_man;
 
-						$recipients = array();
+						$recipients = [];
 
 						// get all superadmins 
 						// no mail to superadmin
@@ -417,19 +417,19 @@ Class SubscriptionAlms extends Model
 					// Notify the user that is entering to the course
 
 					$user_info = $acl_man->getUser($user_to_enroll, false);
-					$array_subst = array(
+					$array_subst = [
 						'[url]' => Get::site_url(),
 						'[course]' => $course_info['name'],
 						'[firstname]' => $user_info[ACL_INFO_FIRSTNAME], 
 						'[lastname]' => $user_info[ACL_INFO_LASTNAME],
 						'[userid]' => $acl_man->relativeId($user_info[ACL_INFO_USERID])
-					);
+                    ];
 
-					$recipients = array($user_info[ACL_INFO_EMAIL]);  
+					$recipients = [$user_info[ACL_INFO_EMAIL]];
 					require_once(_adm_.'/lib/lib.usernotifier.php');               
 					$user_notification = new DoceboUserNotifier("");
 					$attachments = false;
-					$user_info_arr = array($user_info);
+					$user_info_arr = [$user_info];
 					if($status < 0) { // Waiting
 						$subject = Lang::t("NEXT_USER_IN_WAITING_SUBJECT", "email"); 
 						$email_body = Lang::t("NEXT_USER_IN_WAITING_BODY", "email", $array_subst);
@@ -569,15 +569,15 @@ Class SubscriptionAlms extends Model
 					." LIMIT 0, ".$limit;
 
 		$res = $this->db->query($query);
-		$output = array();
+		$output = [];
 		if ($res && $this->db->num_rows($res)>0) {
 			while(list($idst, $userid, $firstname, $lastname) = $this->db->fetch_row($res))
-				$output[] = array(
+				$output[] = [
 					'idst' => $idst,
 					'userid' => $userid,
 					'firstname' => $firstname,
 					'lastname' => $lastname
-				);
+                ];
 		}
 
 		return $output;
@@ -723,7 +723,7 @@ Class SubscriptionAlms extends Model
 				$user_catalogue = $cat_man->getUserAllCatalogueId(Docebo::user()->getIdSt());
 				if(count($user_catalogue) > 0)
 				{
-					$courses = array(0);
+					$courses = [0];
 
 					foreach($user_catalogue as $id_cat)
 					{
@@ -741,7 +741,7 @@ Class SubscriptionAlms extends Model
 			}
 			else
 			{
-				$array_courses = array();
+				$array_courses = [];
 				$array_courses = array_merge($array_courses, $view['course']);
 
 				if(!empty($view['coursepath']))
@@ -880,7 +880,7 @@ Class SubscriptionAlms extends Model
 		$output = FALSE;
 		$res = $this->db->query($query);
 		if ($res) {
-			$output = array();
+			$output = [];
 			while ($obj = $this->db->fetch_obj($res)) {
 				$output[] = $obj;
 			}
@@ -893,11 +893,11 @@ Class SubscriptionAlms extends Model
 	public function getUnsubscribeRequestsList($pagination, $filter, $req_tot=false, $all=false) {
 
 		$first =true;
-		$union_fields =array(
-			'%lms_courseuser'=>array('id_user'=>'idUser', 'res_id'=>'idCourse', 'idCourse'=>'idCourse', 'parent'=>'%lms_course', 'r_type'=>'course'),
-			'%lms_course_editions_user'=>array('id_user'=>'id_user', 'res_id'=>'id_edition', 'idCourse'=>'id_course', 'parent'=>'%lms_course_editions', 'r_type'=>'edition'),
-			'%lms_course_date_user'=>array('id_user'=>'id_user', 'res_id'=>'id_date', 'idCourse'=>'id_course', 'parent'=>'%lms_course_date', 'r_type'=>'classroom'),
-		);
+		$union_fields = [
+			'%lms_courseuser'=> ['id_user'=>'idUser', 'res_id'=>'idCourse', 'idCourse'=>'idCourse', 'parent'=>'%lms_course', 'r_type'=>'course'],
+			'%lms_course_editions_user'=> ['id_user'=>'id_user', 'res_id'=>'id_edition', 'idCourse'=>'id_course', 'parent'=>'%lms_course_editions', 'r_type'=>'edition'],
+			'%lms_course_date_user'=> ['id_user'=>'id_user', 'res_id'=>'id_date', 'idCourse'=>'id_course', 'parent'=>'%lms_course_date', 'r_type'=>'classroom'],
+        ];
 
 		$p ='p'; // $p = parent prefix. $p is set to "c" if the parent table is the same as the course table (%lms_course)
 
@@ -1003,7 +1003,7 @@ Class SubscriptionAlms extends Model
 		$res = $this->db->query($query);
 		if ($res) {
 			if ($all) { // getUnsubscribeRequestsAll
-				$output = array();
+				$output = [];
 				while ($obj = $this->db->fetch_obj($res)) {
 					$output[] = $obj->idUser.'_'.$obj->idCourse;
 				}
@@ -1014,7 +1014,7 @@ Class SubscriptionAlms extends Model
 				}
 			}
 			else { // Normal output
-				$output = array();
+				$output = [];
 				while ($obj = $this->db->fetch_obj($res)) {
 					$output[] = $obj;
 				}
@@ -1026,12 +1026,12 @@ Class SubscriptionAlms extends Model
 
 
 	public function getUnsubscribeRequestsTotal($filter) {
-		return $this->getUnsubscribeRequestsList(array(), $filter, true);
+		return $this->getUnsubscribeRequestsList([], $filter, true);
 	}
 
 
 	public function getUnsubscribeRequestsAll($filter) {
-		return $this->getUnsubscribeRequestsList(array(), $filter, false, true);
+		return $this->getUnsubscribeRequestsList([], $filter, false, true);
 	}
 
 
@@ -1070,12 +1070,12 @@ Class SubscriptionAlms extends Model
 		if ( ($res) && (int)$cinfo['auto_unsubscribe'] == 1 ) {
 			//moderated self unsubscribe
 			$userinfo = $this->acl_man->getUser($id_user, false);
-			$array_subst = array('[url]' => Get::site_url(),
+			$array_subst = ['[url]' => Get::site_url(),
 				'[course]' => $cinfo['name'],
 				'[firstname]' => $userinfo[ACL_INFO_FIRSTNAME],
 				'[lastname]' => $userinfo[ACL_INFO_LASTNAME],
 				'[userid]' => $this->acl_man->relativeId($userinfo[ACL_INFO_USERID])
-				);
+            ];
 
 
 			// message to user that is waiting
@@ -1091,7 +1091,7 @@ Class SubscriptionAlms extends Model
 			$acl =& Docebo::user()->getAcl();
 			$acl_man =& $this->acl_man;
 
-			$recipients = array();
+			$recipients = [];
 
 			$idst_group_god_admin = $acl->getGroupST(ADMIN_GROUP_GODADMIN);
 			$recipients = $acl_man->getGroupMembers($idst_group_god_admin);
@@ -1197,22 +1197,22 @@ Class SubscriptionAlms extends Model
 
 	public function getEditionTableStyle()
 	{
-		return array('', '', 'image');
+		return ['', '', 'image'];
 	}
 
 	public function getEditionTableHeader()
 	{
-		return array(	Lang::t('_CODE', 'course'),
+		return [Lang::t('_CODE', 'course'),
 						Lang::t('_NAME', 'course'),
-						'');
+						''];
 	}
 
 	public function getEditionTableContent($courses) {
 
-		$res = array();
+		$res = [];
 		foreach($courses as $id_course) {
 
-			if($this->controlCoursesWithEdition(array($id_course))) {
+			if($this->controlCoursesWithEdition([$id_course])) {
 
 				$query =	"SELECT code, name, course_type"
 							." FROM %lms_course"
@@ -1232,20 +1232,20 @@ Class SubscriptionAlms extends Model
 					$edition = $classroom_model->loadCourseEdition(false, false, 'date_begin', 'desc');
 				}
 
-				$all_value = array();
+				$all_value = [];
 				foreach($edition as $edition_info) {
 					$all_value[(isset($edition_info['id_date']) ? $edition_info['id_date'] : $edition_info['id_edition'])] =	$edition_info['code'].' - '
 																																.$edition_info['name']
 																																.' ('.(isset($edition_info['id_date']) ? $edition_info['date_begin'] : Format::date($edition_info['date_begin'], 'date')).' - '.(isset($edition_info['id_date']) ? $edition_info['date_end'] : Format::date($edition_info['date_end'], 'date')).')';
 				}
-				$res[] = array(	$code,
+				$res[] = [$code,
 								$name,
 								Form::getInputDropdown(	'dropdown',
 														'edition_'.$id_course,
 														'edition_'.$id_course,
 														$all_value,
 														false,
-														''));
+														'')];
 			}
 		}
 		return $res;
@@ -1270,7 +1270,7 @@ Class SubscriptionAlms extends Model
 		require_once(_lms_.'/lib/lib.coursepath.php');
 		$cman = new CoursePath_Manager();
 
-		$courses = $cman->getAllCourses(array($id_path));
+		$courses = $cman->getAllCourses([$id_path]);
 		if (empty($courses)) {
 			//...
 		}
@@ -1288,7 +1288,7 @@ Class SubscriptionAlms extends Model
 			if (isset($filter['text']) && $filter['text'] != "")
 				$query .= " AND (u.userid LIKE '%".$filter['text']."%' OR u.firstname LIKE '%".$filter['text']."%' OR u.lastname LIKE '%".$filter['text']."%') ";
 
-			$arr_idst = array();
+			$arr_idst = [];
 			if (isset($filter['orgchart']) && $filter['orgchart']>0) {
 				$umodel = new UsermanagementAdm();
 				$use_desc = (isset($filter['descendants']) && $filter['descendants']);
@@ -1345,7 +1345,7 @@ Class SubscriptionAlms extends Model
 
 		$result = sql_query($query);
 		$acl_man = Docebo::user()->getACLManager();
-		$res = array();
+		$res = [];
 		while($obj = sql_fetch_object($result)) {
 			$res[] = $obj;
 		}
@@ -1356,7 +1356,7 @@ Class SubscriptionAlms extends Model
 		require_once(_lms_.'/lib/lib.coursepath.php');
 		$cman = new CoursePath_Manager();
 
-		$courses = $cman->getAllCourses(array($id_path));
+		$courses = $cman->getAllCourses([$id_path]);
 		if (empty($courses)) {
 			//...
 		}
@@ -1373,7 +1373,7 @@ Class SubscriptionAlms extends Model
 			if (isset($filter['text']) && $filter['text'] != "")
 				$query .= " AND (u.userid LIKE '%".$filter['text']."%' OR u.firstname LIKE '%".$filter['text']."%' OR u.lastname LIKE '%".$filter['text']."%') ";
 
-			$arr_idst = array();
+			$arr_idst = [];
 			if (isset($filter['orgchart']) && $filter['orgchart']>0) {
 				$umodel = new UsermanagementAdm();
 				$use_desc = (isset($filter['descendants']) && $filter['descendants']);
@@ -1435,7 +1435,7 @@ Class SubscriptionAlms extends Model
 		require_once(_lms_.'/lib/lib.coursepath.php');
 		$cman = new CoursePath_Manager();
 
-		$courses = $cman->getAllCourses(array($id_path));
+		$courses = $cman->getAllCourses([$id_path]);
 		if (empty($courses)) {
 			//...
 		}
@@ -1452,7 +1452,7 @@ Class SubscriptionAlms extends Model
 			if (isset($filter['text']) && $filter['text'] != "")
 				$query .= " AND (u.userid LIKE '%".$filter['text']."%' OR u.firstname LIKE '%".$filter['text']."%' OR u.lastname LIKE '%".$filter['text']."%') ";
 
-			$arr_idst = array();
+			$arr_idst = [];
 			if (isset($filter['orgchart']) && $filter['orgchart']>0) {
 				$umodel = new UsermanagementAdm();
 				$use_desc = (isset($filter['descendants']) && $filter['descendants']);
@@ -1503,7 +1503,7 @@ Class SubscriptionAlms extends Model
 			$query .=	" AND s.idUser IN (".implode(',', $admin_users).")";
 		}
 
-		$output = array();
+		$output = [];
 		$res = sql_query($query);
 		if ($res) {
 			while (list($idst) = sql_fetch_row($res)) {
@@ -1517,7 +1517,7 @@ Class SubscriptionAlms extends Model
 
 	public function unsubscribeFromCoursepath($id_path, $users) {
 		if ($id_path <= 0) return false;
-		if (is_numeric($users)) $users = array((int)$users);
+		if (is_numeric($users)) $users = [(int)$users];
 		if (!is_array($users)) return false;
 		if (count($users) <= 0) return true;
 		$query = "DELETE FROM %lms_coursepath_user WHERE id_path=".(int)$id_path." "
@@ -1532,7 +1532,7 @@ Class SubscriptionAlms extends Model
 
 		require_once(_lms_.'/lib/lib.coursepath.php');
 		$cman = new CoursePath_Manager();
-		$courses = $cman->getAllCourses(array($id_path));
+		$courses = $cman->getAllCourses([$id_path]);
 		if (empty($courses)) return true;
 
 		$query = "UPDATE %lms_courseuser SET date_begin_validity = NULL, date_expire_validity = NULL "
@@ -1545,7 +1545,7 @@ Class SubscriptionAlms extends Model
 
 	public function subscribeUsersToCoursepath($id_path, $users) {
 		if ($id_path <= 0) return false;
-		if (is_numeric($users)) $users = array((int)$users);
+		if (is_numeric($users)) $users = [(int)$users];
 		if (!is_array($users)) return false;
 		if (count($users) <= 0) return true;
 

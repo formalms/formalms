@@ -332,7 +332,7 @@ class DoceboACLManager
      **/
     function getArrUserST($array_idst_user, $flip = false)
     {
-        $result = array();
+        $result = [];
 
         foreach ($array_idst_user as $index => $idst) {
             if (!is_numeric($idst)) {
@@ -385,7 +385,7 @@ class DoceboACLManager
      **/
     function getArrGroupST($arr_groupid)
     {
-        $result = array();
+        $result = [];
 
         if (!is_array($arr_groupid)) {
             return $result;
@@ -419,9 +419,9 @@ class DoceboACLManager
             . " WHERE groupid LIKE '" . $base_path . "%'";
 
         $rs = $this->_executeQuery($query);
-        $result = array();
+        $result = [];
         if (sql_num_rows($rs) > 0) {
-            $list = array();
+            $list = [];
             while (list($idst, $groupid) = sql_fetch_row($rs)) {
                 $list[$groupid] = $idst;
             }
@@ -643,7 +643,7 @@ class DoceboACLManager
             }
         }
 
-        $users_info = array();
+        $users_info = [];
         $query = "SELECT idst, userid, firstname, lastname, pass, email, random_code, request_on, create_by_admin "
             . " FROM " . $this->_getTableTempUser() . ""
             . " WHERE 1 ";
@@ -803,7 +803,7 @@ class DoceboACLManager
 
         $new_userdata = $data['new_userdata'];
 
-        $arrSET = array();
+        $arrSET = [];
         if (array_key_exists(ACL_INFO_USERID, $new_userdata)) $arrSET['userid'] = $new_userdata[ACL_INFO_USERID];
         if (array_key_exists(ACL_INFO_FIRSTNAME, $new_userdata)) $arrSET['firstname'] = $new_userdata[ACL_INFO_FIRSTNAME];
         if (array_key_exists(ACL_INFO_LASTNAME, $new_userdata)) $arrSET['lastname'] = $new_userdata[ACL_INFO_LASTNAME];
@@ -862,7 +862,7 @@ class DoceboACLManager
      */
     function updateGroup($idst, $groupid = FALSE, $description = FALSE, $hidden = NULL, $type = FALSE, $show_on_platform = FALSE)
     {
-        $arrSET = array();
+        $arrSET = [];
         if ($groupid !== FALSE) $arrSET['groupid'] = $this->absoluteId($groupid);
         if ($description !== FALSE) $arrSET['description'] = $description;
         if ($hidden !== NULL) $arrSET['hidden'] = ($hidden) ? 'true' : 'false';
@@ -887,7 +887,7 @@ class DoceboACLManager
      */
     function updateRole($idst, $roleid = FALSE, $description = FALSE)
     {
-        $arrSET = array();
+        $arrSET = [];
         if ($roleid !== FALSE) $arrSET['roleid'] = $this->absoluteId($roleid);
         if ($description !== FALSE) $arrSET['description'] = $description;
         $colon = '';
@@ -990,7 +990,7 @@ class DoceboACLManager
 
         require_once(_adm_ . '/lib/lib.field.php');
 
-        $idst_del = array();
+        $idst_del = [];
         $result = true;
         if ($idst_single !== false) {
 
@@ -1044,7 +1044,7 @@ class DoceboACLManager
 
     function deleteTempUsers($arr_idst)
     {
-        if (is_numeric($arr_idst)) $arr_idst = array($arr_idst); //handle single user case
+        if (is_numeric($arr_idst)) $arr_idst = [$arr_idst]; //handle single user case
         if (!is_array($arr_idst)) return false; //invalid user data
         if (count($arr_idst) <= 0) return true; //0 users operation: always "successfull"
 
@@ -1293,7 +1293,7 @@ class DoceboACLManager
             }
         }
 
-        $users_info = array();
+        $users_info = [];
         $query = "SELECT idst, userid, firstname, lastname, pass, email, avatar, signature,"
             . " level, lastenter, valid, pwd_expire_at, register_date, lastenter"
             . " FROM " . $this->_getTableUser()
@@ -1357,7 +1357,7 @@ class DoceboACLManager
             . " FROM " . $this->_getTableUser();
         $rs = $this->_executeQuery($query);
 
-        $arr_idst = array();
+        $arr_idst = [];
 
         if (sql_num_rows($rs) > 0) {
             while ($info = sql_fetch_row($rs)) {
@@ -1409,7 +1409,7 @@ class DoceboACLManager
 
         $re_query = $this->_executeQuery($query);
 
-        $users = array();
+        $users = [];
         if (!$re_query) return $users;
         while (list($idst_user, $value) = sql_fetch_row($re_query)) {
 
@@ -1455,7 +1455,7 @@ class DoceboACLManager
         }
         $re_query = $this->_executeQuery($query);
 
-        $users = array();
+        $users = [];
         if (!$re_query) return $users;
         while ($value = sql_fetch_row($re_query)) {
 
@@ -1512,7 +1512,7 @@ class DoceboACLManager
 
         $q = $this->_executeQuery($qtxt);
 
-        $res = array();
+        $res = [];
         if (($q) && (sql_num_rows($q) > 0)) {
             while ($row = sql_fetch_array($q)) {
                 $res[] = $row["idst"];
@@ -1601,7 +1601,7 @@ class DoceboACLManager
      */
     function getGroups($arr_idst)
     {
-        if (!is_array($arr_idst) || empty($arr_idst)) return array();
+        if (!is_array($arr_idst) || empty($arr_idst)) return [];
 
         foreach ($arr_idst as $index => $idst) {
             if (!is_numeric($idst)) {
@@ -1615,7 +1615,7 @@ class DoceboACLManager
             . " ORDER BY groupid ";
         $rs = $this->_executeQuery($query);
         if ($rs && sql_num_rows($rs) > 0) {
-            $arrGroups = array();
+            $arrGroups = [];
             while ($result = sql_fetch_row($rs)) {
                 $result[ACL_INFO_GROUPHIDDEN] = ($result[ACL_INFO_GROUPHIDDEN] == 'true');
                 $arrGroups[$result[ACL_INFO_IDST]] = $result;
@@ -1663,13 +1663,13 @@ class DoceboACLManager
                 . " FROM " . $this->_getTableGroup()
                 . " WHERE idst IN (" . implode(',', $arr_idst) . ")";
             $rs = $this->_executeQuery($query);
-            $arrGroups = array();
+            $arrGroups = [];
             while (list($idst, $groupid) = sql_fetch_row($rs))
                 $arrGroups[$idst] = $groupid;
             return $arrGroups;
         } else {
 
-            return array();
+            return [];
         }
     }
 
@@ -1700,7 +1700,7 @@ class DoceboACLManager
         if ($find_text != false) $query .= " AND ( g.groupid LIKE '%" . $find_text . "%' OR g.description LIKE '%" . $find_text . "%'  ) ";
         $query .= " ORDER BY g.groupid ";
         $rs = $this->_executeQuery($query);
-        $arrGroups = array();
+        $arrGroups = [];
         while (list($idst, $groupid, $description, $type) = sql_fetch_row($rs)) {
 
             $arrGroups[$idst]['groupid'] = $this->relativeId($groupid);
@@ -1739,7 +1739,7 @@ class DoceboACLManager
         }
 
         $rs = $this->_executeQuery($query);
-        $arrGroups = array();
+        $arrGroups = [];
         while (list($idst) = sql_fetch_row($rs))
             $arrGroups[$idst] = $idst;
         return $arrGroups;
@@ -1755,7 +1755,7 @@ class DoceboACLManager
             . " WHERE g.hidden = 'false'";
         $rs = $this->_executeQuery($query);
 
-        $arr_idst = array();
+        $arr_idst = [];
 
         if (sql_num_rows($rs) > 0) {
             while ($info = sql_fetch_row($rs)) {
@@ -1780,7 +1780,7 @@ class DoceboACLManager
 		FROM " . $this->_getTableUserOfGroupWaiting() . "
 		WHERE idst_group = '" . (int)$idst . "'";
         $rs = $this->_executeQuery($query);
-        $idst_user = array();
+        $idst_user = [];
         while (list($id) = sql_fetch_row($rs))
             $idst_user[] = $id;
         $user_info =& $this->getUsers($idst_user);
@@ -1799,7 +1799,7 @@ class DoceboACLManager
 		FROM " . $this->_getTableUserOfGroupWaiting() . "
 		WHERE idst_user = '" . (int)$idst . "'";
         $rs = $this->_executeQuery($query);
-        $idst_user = array();
+        $idst_user = [];
         while (list($id) = sql_fetch_row($rs))
             $idst_group[$id] = $id;
 
@@ -1837,7 +1837,7 @@ class DoceboACLManager
     function getRoleFromBasePath($base_path)
     {
 
-        $role_list = array();
+        $role_list = [];
         $query = "SELECT idst, roleid"
             . " FROM " . $this->_getTableRole()
             . " WHERE roleid LIKE '" . $base_path . "%'";
@@ -1861,7 +1861,7 @@ class DoceboACLManager
             }
         }
 
-        $role_list = array();
+        $role_list = [];
         $query = "SELECT idst, roleid"
             . " FROM " . $this->_getTableRole()
             . " WHERE idst IN ( " . implode(',', $arr_st) . " ) ";
@@ -1891,11 +1891,11 @@ class DoceboACLManager
 
         if (($idst == 0) || ($idstMember == 0)) return true;
 
-        $add_list = (is_numeric($idstMember) ? array($idstMember) : (is_array($idstMember) ? $idstMember : false));
+        $add_list = (is_numeric($idstMember) ? [$idstMember] : (is_array($idstMember) ? $idstMember : false));
         if (!is_array($add_list)) return false;
 
         $add_list = array_values($add_list);
-        $values = array();
+        $values = [];
         for ($i = 0; $i < count($add_list); $i++) {
             $member = (int)$add_list[$i];
             if ($member > 0) $values[] = "('" . $idst . "','" . $member . "','" . $filter . "')";
@@ -1958,7 +1958,7 @@ class DoceboACLManager
         if (!is_numeric($idst)) {
             $idst = false;
         }
-        $del_list = (is_numeric($idstMember) ? array($idstMember) : $idstMember);
+        $del_list = (is_numeric($idstMember) ? [$idstMember] : $idstMember);
 
         if (!is_array($del_list)) return false;
         if (count($del_list) > 0) {
@@ -2082,7 +2082,7 @@ class DoceboACLManager
             . "   AND filter = '" . $filter . "'";
         $rs = $this->_executeQuery($query);
 
-        $arrGroups = array();
+        $arrGroups = [];
         while (list($idst) = sql_fetch_row($rs))
             $arrGroups[] = $idst;
         return $arrGroups;
@@ -2109,7 +2109,7 @@ class DoceboACLManager
             . "   AND filter = '" . $filter . "'";
         $rs = $this->_executeQuery($query);
 
-        $arrGroups = array();
+        $arrGroups = [];
         while (list($idst) = sql_fetch_row($rs))
             $arrGroups[] = $idst;
         return $arrGroups;
@@ -2130,7 +2130,7 @@ class DoceboACLManager
         $query = "SELECT idst FROM " . $this->_getTableRoleMembers()
             . " WHERE idstMember = '" . $idstMember . "'";
         $rs = $this->_executeQuery($query);
-        $arrRoles = array();
+        $arrRoles = [];
         $i = 0;
         while (list($idst) = sql_fetch_row($rs)) {
             if ($flip === false) $arrRoles[] = $idst;
@@ -2160,7 +2160,7 @@ class DoceboACLManager
         $query = "SELECT idst FROM " . $this->_getTableRoleMembers()
             . " WHERE idstMember IN ( " . $inString . " )";
         $rs = $this->_executeQuery($query);
-        $arrRoles = array();
+        $arrRoles = [];
 
         while (list($idst) = sql_fetch_row($rs)) {
 
@@ -2222,7 +2222,7 @@ class DoceboACLManager
                 }
             }
         } else if (!is_array($idst)) {
-            $idst = array((int)$idst);
+            $idst = [(int)$idst];
         }
 
         $inString = (implode(',', $idst) == "" ? "NULL" : implode(',', $idst));
@@ -2240,7 +2240,7 @@ class DoceboACLManager
                 $query .= " AND tu.valid = '1'";
 
         $rs = $this->_executeQuery($query);
-        $arrUsers = array();
+        $arrUsers = [];
         while (list($idst) = sql_fetch_row($rs))
             $arrUsers[] = (int)$idst;
         return $arrUsers;
@@ -2261,7 +2261,7 @@ class DoceboACLManager
                 }
             }
         } else if (!is_array($idst)) {
-            $idst = array((int)$idst);
+            $idst = [(int)$idst];
         }
 
         $inString = (implode(',', $idst) == "" ? "NULL" : implode(',', $idst));
@@ -2274,7 +2274,7 @@ class DoceboACLManager
             . "   AND tgm.filter = '" . $filter . "'"
             . "   AND NOT ISNULL(tg.idst)";
         $rs = $this->_executeQuery($query);
-        $arrGroups = array();
+        $arrGroups = [];
         while (list($idst) = sql_fetch_row($rs))
             $arrGroups[] = (int)$idst;
         return $arrGroups;
@@ -2300,8 +2300,8 @@ class DoceboACLManager
 		}
 		return $arrST;*/
         if (!is_array($idst)) {
-            $arrST = array($idst);
-            $new_st = array($idst);
+            $arrST = [$idst];
+            $new_st = [$idst];
         } else {
             $arrST = $idst;
             $new_st = $idst;
@@ -2321,8 +2321,8 @@ class DoceboACLManager
     {
         $array_idst = $this->getGroupsFromMixedIdst($array_idst);
 
-        $array_ocd = array();
-        $array_oc = array();
+        $array_ocd = [];
+        $array_oc = [];
 
         $query = "SELECT idst"
             . " FROM %adm_group"
@@ -2348,7 +2348,7 @@ class DoceboACLManager
             $array_oc[$idst_oc] = $idst_oc;
         }
 
-        $res = array();
+        $res = [];
 
         foreach ($array_idst as $id_group) {
             if (isset($array_oc[$id_group]))
@@ -2384,7 +2384,7 @@ class DoceboACLManager
 
                 $result = sql_query($query);
                 while (list($idst) = sql_fetch_row($result)) {
-                    $tmp = $this->getAllGroupsFromSelection(array($idst));
+                    $tmp = $this->getAllGroupsFromSelection([$idst]);
                     foreach ($tmp as $idst_t)
                         $res[$idst_t] = $idst_t;
                 }
@@ -2437,7 +2437,7 @@ class DoceboACLManager
             . "   AND tgm.filter = '" . $filter . "'"
             . "   AND NOT ISNULL(tu.idst)";
         $rs = $this->_executeQuery($query);
-        $arrUsers = array();
+        $arrUsers = [];
         while (list($idst) = sql_fetch_row($rs))
             $arrUsers[] = (int)$idst;
         return $arrUsers;
@@ -2482,7 +2482,7 @@ class DoceboACLManager
          *** removed ***/
         $arrST = $this->getGroupGDescendants($idst, $filter);
 
-        if (empty($arrST)) return array();
+        if (empty($arrST)) return [];
 
         $arrUsers = $this->getGroupUMembers($arrST, $filter);
         return $arrUsers;
@@ -2504,7 +2504,7 @@ class DoceboACLManager
         $query = "SELECT idstMember FROM " . $this->_getTableRoleMembers()
             . " WHERE idst = '" . $idst . "'";
         $rs = $this->_executeQuery($query);
-        $arrGroups = array();
+        $arrGroups = [];
         $i = 0;
         while (list($idstMember) = sql_fetch_row($rs)) {
             $arrGroups[] = (int)$idstMember;
@@ -2525,7 +2525,7 @@ class DoceboACLManager
         $query = "SELECT idstMember FROM " . $this->_getTableRoleMembers()
             . " WHERE idst = '" . $idst . "'";
         $rs = $this->_executeQuery($query);
-        $res = array();
+        $res = [];
         $i = 0;
         while (list($idstMember) = sql_fetch_row($rs)) {
             $res[] = (int)$idstMember;
@@ -2542,7 +2542,7 @@ class DoceboACLManager
         $query = "SELECT idstMember FROM " . $this->_getTableRoleMembers()
             . " WHERE idst = '" . $idst . "'";
         $rs = $this->_executeQuery($query);
-        $res = array();
+        $res = [];
         $i = 0;
         while (list($idstMember) = sql_fetch_row($rs)) {
 
@@ -2606,7 +2606,7 @@ class DoceboACLManager
     {
         $list = $this->getBasePathGroupST('/framework/level/');
 
-        $output = array();
+        $output = [];
         $output[ADMIN_GROUP_GODADMIN] = $list[ADMIN_GROUP_GODADMIN];
         $output[ADMIN_GROUP_ADMIN] = $list[ADMIN_GROUP_ADMIN];
         $output[ADMIN_GROUP_USER] = $list[ADMIN_GROUP_USER];
@@ -2623,12 +2623,12 @@ class DoceboACLManager
     function fromUseridToIdst($user_arr)
     {
 
-        $res = array();
+        $res = [];
         if (!is_array($user_arr) || empty($user_arr)) {
             return $res;
         }
 
-        $abs_user_arr = array();
+        $abs_user_arr = [];
         foreach($user_arr as $user_rel )
         {
 
@@ -2666,7 +2666,7 @@ class DoceboACLManager
             . " FROM " . $this->_getTableUser() . " AS u"
             . " WHERE u.idst IN ( " . $inString . " )";
         $rs = $this->_executeQuery($query);
-        $arr_user = array();
+        $arr_user = [];
         if (!$rs) return $arr_user;
         while (list($idst) = sql_fetch_row($rs))
             $arr_user[] = (int)$idst;
@@ -2694,7 +2694,7 @@ class DoceboACLManager
             . " FROM " . $this->_getTableGroup() . " AS g "
             . " WHERE g.idst IN ( " . $inString . " )";
         $rs = $this->_executeQuery($query);
-        $arr_groups = array();
+        $arr_groups = [];
         if (!$rs) return $arr_groups;
         while (list($idst) = sql_fetch_row($rs))
             $arr_groups[] = (int)$idst;
@@ -2788,7 +2788,7 @@ class DoceboACLManager
     function _getTableUserFieldNames()
     {
 
-        $res = array();
+        $res = [];
         $res[ACL_INFO_IDST] = "idst";
         $res[ACL_INFO_USERID] = "userid";
         $res[ACL_INFO_FIRSTNAME] = "firstname";
@@ -2812,7 +2812,7 @@ class DoceboACLManager
      */
     function searchUsers($internal_fields, $extra_fields = FALSE, $idst_filter = FALSE, $ini = FALSE, $vis_item = FALSE)
     {
-        $res = array();
+        $res = [];
 
         $qtxt = $this->_getSearchUsersQuery($internal_fields, $extra_fields, $idst_filter, $ini, $vis_item);
         // echo $qtxt;
@@ -2964,7 +2964,7 @@ class DoceboACLManager
         switch (getType($paths)) {
             case "string" :
                 {
-                $temp = array($paths);
+                $temp = [$paths];
             }
                 break;
 
@@ -2983,7 +2983,7 @@ class DoceboACLManager
 
         if ($temp) {
 
-            $output = array();
+            $output = [];
 
             $query = "SELECT idst "
                 . " FROM " . $this->_getTableGroup() . " AS g "
@@ -3004,14 +3004,14 @@ class DoceboACLManager
 
     function getAllUsersFromSelection($arr_idst)
     {
-        if (is_numeric($arr_idst)) $arr_idst = array((int)$arr_idst);
-        if (!is_array($arr_idst)) return array();
+        if (is_numeric($arr_idst)) $arr_idst = [(int)$arr_idst];
+        if (!is_array($arr_idst)) return [];
 
         $admin_users = $this->getUsersFromMixedIdst($arr_idst);
         $admin_groups = $this->getGroupsFromMixedIdst($arr_idst);
 
         // retrive parent groups
-        $tmp_admin_groups = array();
+        $tmp_admin_groups = [];
         foreach ($admin_groups as $id_group) {
             $tmp_admin_groups = array_merge($tmp_admin_groups, $this->getGroupGDescendants($id_group));
         }
@@ -3050,9 +3050,9 @@ class PeopleDataRetriever extends DataRetriever
 
     var $idNotFilters = NULL;
     var $idFilters = NULL;
-    var $field_filter = array();
-    var $custom_join = array();
-    var $custom_where = array();
+    var $field_filter = [];
+    var $custom_join = [];
+    var $custom_where = [];
 
     function __construct($dbconn = FALSE, $prefix = FALSE)
     {
@@ -3078,7 +3078,7 @@ class PeopleDataRetriever extends DataRetriever
 
     function intersectGroupFilter($arr_idst_group)
     {
-        $arr_users = array();
+        $arr_users = [];
         foreach ($arr_idst_group as $idst_group) {
 
             $arr_users = array_merge($arr_users, $this->aclManager->getGroupUMembers($idst_group));
@@ -3124,7 +3124,7 @@ class PeopleDataRetriever extends DataRetriever
 
     function resetFieldFilter()
     {
-        $this->field_filter = array();
+        $this->field_filter = [];
     }
 
     function addCustomFilter($join_part, $where_part)
@@ -3135,8 +3135,8 @@ class PeopleDataRetriever extends DataRetriever
 
     function resetCustomFilter()
     {
-        $this->custom_join = array();
-        $this->custom_where = array();
+        $this->custom_join = [];
+        $this->custom_where = [];
     }
 
     function getRows($startRow = FALSE, $numRows = FALSE)
@@ -3263,7 +3263,7 @@ class GroupDataRetriever extends DataRetriever
     function getGroupFilter()
     {
 
-        if ($this->group_filter === false) return array();
+        if ($this->group_filter === false) return [];
         return $this->group_filter;
     }
 

@@ -228,11 +228,11 @@ function moditem($object_item) {
 
 	require_once Forma::inc(_lib_ . '/lib.table.php');
 	$tb = new Table();
-	$h_type = array('', '');
-	$h_content = array(
+	$h_type = ['', ''];
+	$h_content = [
 		$lang->def('_NAME'),
 		$lang->def('_LINK')
-	);
+    ];
 
 	$tb->setColsStyle($h_type);
 	$tb->addHead($h_content);
@@ -245,7 +245,7 @@ function moditem($object_item) {
 	$res = sql_query($qry);
 	while($row = sql_fetch_row($res)) {
 
-		$line = array();
+		$line = [];
 		$line[] = $row[2];
 		$line[] = ( $row[1] != 0
 			? Get::abs_path('lms').'/index.php?id_course='.$_SESSION['idCourse'].'&amp;act=playsco&amp;courseid='.$_SESSION['idCourse'].'&amp;id_item='.$id_reference.'&amp;chapter='.$row[0].''

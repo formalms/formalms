@@ -58,7 +58,7 @@ function groupCodeList() {
 
 		$ini = $tb->getSelectedElement();
 
-		$cont_h = array($lang->def('_TITLE'),
+		$cont_h = [$lang->def('_TITLE'),
 			$lang->def('_DESCRIPTION'),
 			$lang->def('_CODE_USED_NUMBER'),
 			Get::sprite('subs_csv', Lang::t('_CODE', 'course')),
@@ -67,9 +67,9 @@ function groupCodeList() {
 			Get::sprite('subs_elem', Lang::t('_COURSES', 'course')),
 			Get::sprite('subs_users', Lang::t('_ASSIGN_USERS', 'course')),
 			Get::sprite('subs_mod', Lang::t('_MOD', 'course')),
-			Get::sprite('subs_del', Lang::t('_DEL', 'course')));
+			Get::sprite('subs_del', Lang::t('_DEL', 'course'))];
 
-		$type_h = array('', '', 'min-cell', 'image', 'image', 'image', 'image', 'image', 'image', 'image');
+		$type_h = ['', '', 'min-cell', 'image', 'image', 'image', 'image', 'image', 'image', 'image'];
 
 		$tb->setColsStyle($type_h);
 		$tb->addHead($cont_h);
@@ -77,7 +77,7 @@ function groupCodeList() {
 		$array_group_code = $code_manager->getCodeGroupsList($ini);
 
 		foreach ($array_group_code as $group_code_info) {
-			$cont = array();
+			$cont = [];
 
 			$cont[] = $group_code_info['title'];
 
@@ -126,8 +126,8 @@ function addGroupCode() {
 
 	$code_manager = new CodeManager();
 
-	cout(getTitleArea(array('index.php?modname=code&amp;op=list' => $lang->def('_CODE'),
-				$lang->def('_ADD')))
+	cout(getTitleArea(['index.php?modname=code&amp;op=list' => $lang->def('_CODE'),
+				$lang->def('_ADD')])
 			. '<div class="std_block">');
 
 	if (Get::req('confirm', DOTY_MIXED, '')) {
@@ -160,8 +160,8 @@ function modGroupCode() {
 
 	$code_manager = new CodeManager();
 
-	cout(getTitleArea(array('index.php?modname=code&amp;op=list' => $lang->def('_CODE'),
-				$lang->def('_MOD')))
+	cout(getTitleArea(['index.php?modname=code&amp;op=list' => $lang->def('_CODE'),
+				$lang->def('_MOD')])
 			. '<div class="std_block">');
 
 	if (Get::req('confirm', DOTY_MIXED, '')) {
@@ -212,8 +212,8 @@ function codeList() {
 
 	$acl_man = Docebo::user()->getAclManager();
 
-	cout(getTitleArea(array('index.php?modname=code&amp;op=list' => $lang->def('_CODE'),
-				$lang->def('_CODE_LIST')))
+	cout(getTitleArea(['index.php?modname=code&amp;op=list' => $lang->def('_CODE'),
+				$lang->def('_CODE_LIST')])
 			. '<div class="std_block">');
 
 	if (isset($_POST['undo_filter']))
@@ -251,14 +251,14 @@ function codeList() {
 
 		$ini = $tb->getSelectedElement();
 
-		$cont_h = array($lang->def('_CODE'),
+		$cont_h = [$lang->def('_CODE'),
 			$lang->def('_USED'),
 			$lang->def('_USERNAME'),
 			$lang->def('_UNLIMITED_USE'),
 			'<img src="'.getPathImage().'standard/edit.png" alt="'.$lang->def('_MOD').'" />',
-			'<img src="'.getPathImage().'standard/delete.png" alt="'.$lang->def('_DEL').'" />');
+			'<img src="'.getPathImage().'standard/delete.png" alt="'.$lang->def('_DEL').'" />'];
 
-		$type_h = array('', 'image', '', 'image', 'image', 'image');
+		$type_h = ['', 'image', '', 'image', 'image', 'image'];
 
 		$tb->setColsStyle($type_h);
 		$tb->addHead($cont_h);
@@ -266,7 +266,7 @@ function codeList() {
 		$array_code = $code_manager->getCodeList($id_code_group, $ini);
 
 		foreach ($array_code as $code_info) {
-			$cont = array();
+			$cont = [];
 
 			$cont[] = $code_info['code'];
 
@@ -345,9 +345,9 @@ function addCode() {
 
 	$id_code_group = Get::req('id_code_group', DOTY_INT, '0');
 
-	cout(getTitleArea(array('index.php?modname=code&amp;op=list' => $lang->def('_CODE'),
+	cout(getTitleArea(['index.php?modname=code&amp;op=list' => $lang->def('_CODE'),
 				'index.php?modname=code&amp;op=code_list&amp;id_code_group='.$id_code_group => $lang->def('_CODE_LIST'),
-				$lang->def('_ADD')))
+				$lang->def('_ADD')])
 			. '<div class="std_block">');
 
 	if (Get::req('confirm', DOTY_MIXED, '')) {
@@ -387,9 +387,9 @@ function modCode() {
 	$code = stripslashes(Get::req('code', DOTY_MIXED, ''));
 	$is_unlimited = $code_manager->codeIsUnlimited($code);
 
-	cout(getTitleArea(array('index.php?modname=code&amp;op=list' => $lang->def('_CODE'),
+	cout(getTitleArea(['index.php?modname=code&amp;op=list' => $lang->def('_CODE'),
 				'index.php?modname=code&amp;op=code_list&amp;id_code_group='.$id_code_group => $lang->def('_CODE_LIST'),
-				$lang->def('_MOD')))
+				$lang->def('_MOD')])
 			. '<div class="std_block">');
 
 	if (Get::req('confirm', DOTY_MIXED, '')) {
@@ -458,8 +458,8 @@ function assignCourse() {
 
 	$selector->resetSelection($array_course_associated);
 
-	cout(getTitleArea(array('index.php?modname=code&amp;op=list' => $lang->def('_CODE'),
-				$lang->def('_COURSES')))
+	cout(getTitleArea(['index.php?modname=code&amp;op=list' => $lang->def('_CODE'),
+				$lang->def('_COURSES')])
 			. '<div class="std_block">');
 
 	$selector->parseForState($_POST);
@@ -504,7 +504,7 @@ function assignTree() {
 		Util::jump_to('index.php?modname=code&amp;op=list&result=err');
 	}
 
-	cout($selector->loadSelector('index.php?modname=code&amp;op=assign_tree&amp;id_code_group='.$id_code_group, array('index.php?modname=code&amp;op=list' => $lang->def('_CODE'), $lang->def('_ASSIGN_USERS')), ''));
+	cout($selector->loadSelector('index.php?modname=code&amp;op=assign_tree&amp;id_code_group='.$id_code_group, ['index.php?modname=code&amp;op=list' => $lang->def('_CODE'), $lang->def('_ASSIGN_USERS')], ''));
 
 	cout('</div>');
 }
@@ -516,8 +516,8 @@ function importCode_step1() {
 
 	$id_code_group = Get::req('id_code_group', DOTY_INT, '0');
 
-	cout(getTitleArea(array('index.php?modname=code&amp;op=list' => $lang->def('_CODE'),
-				$lang->def('_IMPORT')))
+	cout(getTitleArea(['index.php?modname=code&amp;op=list' => $lang->def('_CODE'),
+				$lang->def('_IMPORT')])
 			. '<div class="std_block">');
 
 	$lang = & DoceboLanguage::createInstance('admin_directory', 'framework');
@@ -585,16 +585,16 @@ function importCode_step2() {
 	if (trim($import_charset) === '')
 		$import_charset = 'UTF-8';
 
-	$src = new DeceboImport_SourceCSV(array('filename' => _files_.$path.$savefile,
+	$src = new DeceboImport_SourceCSV(['filename' => _files_.$path.$savefile,
 				'separator' => $separator,
 				'first_row_header' => $first_row_header,
-				'import_charset' => $import_charset));
+				'import_charset' => $import_charset]);
 
 	$src->connect();
 
-	$code_added = array();
-	$code_error = array();
-	$code_present = array();
+	$code_added = [];
+	$code_error = [];
+	$code_present = [];
 
 	if (is_array($row = $src->get_first_row()) && !empty($row)) {
 		$code = addslashes($row[0]);
@@ -643,14 +643,14 @@ function importCode_step2() {
 	if (count($code_present)) {
 		$tb = new Table(false, $lang->def('_CODE_PRESENT'), $lang->def('_CODE_PRESENT'));
 
-		$type_h = array('align_center');
-		$cont_h = array($lang->def('_CODE'));
+		$type_h = ['align_center'];
+		$cont_h = [$lang->def('_CODE')];
 
 		$tb->setColsStyle($type_h);
 		$tb->addHead($cont_h);
 
 		foreach ($code_present as $code) {
-			$cont = array();
+			$cont = [];
 
 			$cont[] = stripslashes($code);
 
@@ -663,14 +663,14 @@ function importCode_step2() {
 	if (count($code_error)) {
 		$tb = new Table(false, $lang->def('_CODE_ERROR'), $lang->def('_CODE_ERROR'));
 
-		$type_h = array('align_center');
-		$cont_h = array($lang->def('_CODE'));
+		$type_h = ['align_center'];
+		$cont_h = [$lang->def('_CODE')];
 
 		$tb->setColsStyle($type_h);
 		$tb->addHead($cont_h);
 
 		foreach ($code_error as $code) {
-			$cont = array();
+			$cont = [];
 
 			$cont[] = stripslashes($code);
 
@@ -839,9 +839,9 @@ function export() {
     $id_code_group = Get::req('id_code_group', DOTY_INT, 0);
 
     if ($id_code_group <= 0) {
-        $this->render('invalid', array(
+        $this->render('invalid', [
             'message' => Lang::t('_INVALID_ID_CODE_GROUP', 'code')
-        ));
+        ]);
         return;
     }
     
@@ -875,7 +875,7 @@ function export() {
 			
         foreach ($array_code as $code_info) {
 
-            $line = array();
+            $line = [];
 
 			$line[] = $code_info['code'];
 

@@ -40,7 +40,7 @@ if(!Docebo::user()->isAnonymous())
 		$acl =& Docebo::user()->getAcl();
 		$user_idst = getLogUserId();
 		
-		$events = array();
+		$events = [];
 		
 		$events = $man_res->viewEvents();
 		
@@ -65,8 +65,8 @@ if(!Docebo::user()->isAnonymous())
 			
 			$ini = $tb->getSelectedElement();
 			
-			$cont_h = array
-			(
+			$cont_h =
+                [
 				$lang->def('_TITLE'),
 				$lang->def('_CATEGORY'),
 				$lang->def('_DATE'),
@@ -75,13 +75,13 @@ if(!Docebo::user()->isAnonymous())
 				$lang->def('_NUMBER_SUBSCRIBED'),
 				$lang->def('_AVAILABLE_PLACES'),
 				$lang->def('_DEADLINE'),
-			);
-			$type_h = array('', '', '', '', '', '', '', '');
+                ];
+			$type_h = ['', '', '', '', '', '', '', ''];
 			if ($mod_perm)
 			{
-				$type_h = array('', '', '', '', '', '', '', '','image', 'image', 'image');//,'image');
-				$cont_h = array
-				(
+				$type_h = ['', '', '', '', '', '', '', '','image', 'image', 'image'];//,'image');
+				$cont_h =
+                    [
 					$lang->def('_TITLE'),
 					$lang->def('_CATEGORY'),
 					$lang->def('_DATE'),
@@ -94,7 +94,7 @@ if(!Docebo::user()->isAnonymous())
 					//'<img src="'.getPathImage().'/standard/add.png" title="'.$lang->def('_ADD_USER').'" alt="'.$lang->def('_ALT_ADD_USER').'" />',
 					'<img src="'.getPathImage().'/standard/edit.png" title="'.$lang->def('_MOD').'" alt="'.$lang->def('_MOD').'" />',
 					'<img src="'.getPathImage().'/standard/delete.png" title="'.$lang->def('_DEL').'" alt="'.$lang->def('_DEL').'" />'
-				);
+                    ];
 			}
 			$tb->setColsStyle($type_h);
 			$tb->addHead($cont_h);
@@ -103,7 +103,7 @@ if(!Docebo::user()->isAnonymous())
 				foreach($events as $event)
 				{
 
-					$count = array();
+					$count = [];
 					
 					$count[] = $event[EVENT_TITLE];
 					$count[] = $event[EVENT_CATEGORY_NAME];
@@ -228,9 +228,9 @@ if(!Docebo::user()->isAnonymous())
 			} 
 		}
 		
-		$course = array();
+		$course = [];
 		$course = $man_course->getAllCourses();
-		$course_id = array();
+		$course_id = [];
 		foreach ($course as $sources)
 			$course_id[$sources['id_course']] = $sources['name'];
 		
@@ -338,7 +338,7 @@ if(!Docebo::user()->isAnonymous())
 			}
 		}
 		
-		$event = array();
+		$event = [];
 		
 		$event = $man_res->getEventInfo($id_event);
 		
@@ -435,7 +435,7 @@ if(!Docebo::user()->isAnonymous())
 		
 		$man_res = new Man_Reservation();
 		
-		$category = array();
+		$category = [];
 		$category = $man_res->viewCategory();
 		
 		$out->add(getTitleArea($lang->def('_CATEGORY')).'<div class="std_block">', 'content');
@@ -457,22 +457,22 @@ if(!Docebo::user()->isAnonymous())
 			
 			$ini = $tb->getSelectedElement();
 			
-			$cont_h = array
-			(
+			$cont_h =
+                [
 				$lang->def('_NAME'),
 				$lang->def('_DESCRIPTION')
-			);
-			$type_h = array('', '');
+                ];
+			$type_h = ['', ''];
 			if ($mod_perm)
 			{
-				$type_h = array('', '', 'image', 'image');
-				$cont_h = array
-				(
+				$type_h = ['', '', 'image', 'image'];
+				$cont_h =
+                    [
 					$lang->def('_NAME'),
 					$lang->def('_DESCRIPTION'),
 					'<img src="'.getPathImage().'/standard/edit.png" title="'.$lang->def('_MOD').'" alt="'.$lang->def('_MOD').'" />',
 					'<img src="'.getPathImage().'/standard/delete.png" title="'.$lang->def('_DEL').'" alt="'.$lang->def('_DEL').'" />'
-				);
+                    ];
 			}
 			
 			$tb->setColsStyle($type_h);
@@ -481,7 +481,7 @@ if(!Docebo::user()->isAnonymous())
 			{
 				foreach($category as $categ)
 				{
-					$count = array();
+					$count = [];
 					
 					$count[] = $categ[CATEGORY_NAME];
 					
@@ -712,7 +712,7 @@ if(!Docebo::user()->isAnonymous())
 		$acl =& Docebo::user()->getAcl();
 		$user_idst = getLogUserId();
 		
-		$events = array();
+		$events = [];
 		
 		$events = $man_res->viewEventsForSubscribedTab();
 		
@@ -741,19 +741,19 @@ if(!Docebo::user()->isAnonymous())
 			
 			$ini = $tb->getSelectedElement();
 			
-			$cont_h = array
-			(
+			$cont_h =
+                [
 				$lang->def('_TITLE'),
 				$lang->def('_DATE'),
 				$lang->def('_NUMBER_SUBSCRIBED'),
 				$lang->def('_DEADLINE'),
-			);
-			$type_h = array('', '', '', '');
+                ];
+			$type_h = ['', '', '', ''];
 			if ($mod_perm)
 			{
-				$type_h = array('', '', '', '', 'image','image', 'image', 'image');
-				$cont_h = array
-				(
+				$type_h = ['', '', '', '', 'image','image', 'image', 'image'];
+				$cont_h =
+                    [
 					$lang->def('_TITLE'),
 					$lang->def('_DATE'),
 					$lang->def('_NUMBER_SUBSCRIBED'),
@@ -762,7 +762,7 @@ if(!Docebo::user()->isAnonymous())
 					'<img src="'.getPathImage().'/standard/add.png" title="'.$lang->def('_ADD_USER').'" alt="'.$lang->def('_ADD_USER').'" />',
 					'<img src="'.getPathImage().'/standard/edit.png" title="'.$lang->def('_MOD').'" alt="'.$lang->def('_MOD').'" />',
 					'<img src="'.getPathImage().'/standard/delete.png" title="'.$lang->def('_DEL').'" alt="'.$lang->def('_DEL').'" />'
-				);
+                    ];
 			}
 			$tb->setColsStyle($type_h);
 			$tb->addHead($cont_h);
@@ -770,7 +770,7 @@ if(!Docebo::user()->isAnonymous())
 			if ($events) {
 			foreach($events as $event)
 			{
-				$count = array();
+				$count = [];
 				
 				$count[] = $event[EVENT_TITLE];
 				$count[] = Format::date($event[EVENT_DATE], 'date'); 
@@ -832,11 +832,11 @@ if(!Docebo::user()->isAnonymous())
 		
 		$user_idst = getLogUserId();
 		
-		$user_subscribed = array();
+		$user_subscribed = [];
 		
 		$user_sunscribed = $man_res->getSubscribedUserIdst($id_event);
 		
-		$user_info = array();
+		$user_info = [];
 		
 		$user_info =& $acl_man->getUsers($user_sunscribed);
 		
@@ -865,26 +865,26 @@ if(!Docebo::user()->isAnonymous())
 			
 			$ini = $tb->getSelectedElement();
 			
-			$cont_h = array
-			(
+			$cont_h =
+                [
 				$lang->def('_USERNAME'),
 				$lang->def('_FIRSTNAME'),
 				$lang->def('_LASTNAME'),
 				$lang->def('_EMAIL'),
-			);
-			$type_h = array('', '', '', '');
+                ];
+			$type_h = ['', '', '', ''];
 			
 			if ($mod_perm)
 			{
-				$cont_h = array
-				(
+				$cont_h =
+                    [
 					$lang->def('_USERNAME'),
 					$lang->def('_FIRSTNAME'),
 					$lang->def('_LASTNAME'),
 					$lang->def('_EMAIL'),
 					'<img src="'.getPathImage().'/standard/delete.png" title="'.$lang->def('_REM_USER').'" alt="'.$lang->def('_REM_USER').'" />'
-				);
-				$type_h = array('', '', '', '', 'img');
+                    ];
+				$type_h = ['', '', '', '', 'img'];
 			}
 			
 			$tb->setColsStyle($type_h);
@@ -893,7 +893,7 @@ if(!Docebo::user()->isAnonymous())
 			{
 				foreach ($user_info as $info_user)
 				{
-					$count = array();
+					$count = [];
 					
 					$count[] = $acl_man->relativeId($info_user[ACL_INFO_USERID]);
 					$count[] = $info_user[ACL_INFO_FIRSTNAME];
@@ -935,11 +935,11 @@ if(!Docebo::user()->isAnonymous())
 		
 		$acl_man =& Docebo::user()->getAclManager();
 		
-		$user_subscribed = array();
+		$user_subscribed = [];
 		
 		$user_sunscribed = $man_res->getSubscribedUserIdst($id_event);
 		
-		$user_info = array();
+		$user_info = [];
 		
 		$user_info =& $acl_man->getUsers($user_sunscribed);
 		
@@ -991,10 +991,10 @@ if(!Docebo::user()->isAnonymous())
 		
 		$man_res = new Man_Reservation();
 		
-		$subscribed = array();
+		$subscribed = [];
 		$subscribed = $man_res->getSubscribedUserIdst($id_event);
 		
-		$subscribed_empty = array();
+		$subscribed_empty = [];
 		
 		$lang =& DoceboLanguage::CreateInstance('reservation');
 		$out =& $GLOBALS['page'];
@@ -1013,7 +1013,7 @@ if(!Docebo::user()->isAnonymous())
 			$user_select->resetSelection($subscribed);
 		
 		$acl_man =& Docebo::user()->getAclManager();
-		$user_select->setUserFilter('exclude', array($acl_man->getAnonymousId()));
+		$user_select->setUserFilter('exclude', [$acl_man->getAnonymousId()]);
 		
 		$user_select->loadSelector('index.php?modname=reservation&amp;op=add_registration&amp;id_course='.$id_course.'&amp;id_event='.$id_event,
 				$lang->def('_SUBSCRIBE_EVENT'),
@@ -1039,10 +1039,10 @@ if(!Docebo::user()->isAnonymous())
 		
 		$user_select = new UserSelector();
 		
-		$user_subscribed = array();
+		$user_subscribed = [];
 		$user_subscribed = $man_res->getSubscribedUserIdst($id_event);
 		
-		$user_selected = array();
+		$user_selected = [];
 		$user_selected = $user_select->getSelection($_POST);
 		
 		$wrong_result = false;
@@ -1171,7 +1171,7 @@ function setRoomViewPerm()
 		list($id_course) = sql_fetch_row(sql_query("SELECT idCourse FROM ".$GLOBALS['prefix_lms']."_reservation_events WHERE idEvent = '".$id_event."'"));
 		
 		$arr_idstGroup = $acl_manager->getGroupsIdstFromBasePath('/lms/course/'.$id_course.'/subscribed/');
-		$me = array(getLogUserId());
+		$me = [getLogUserId()];
 		$mdir->setUserFilter('exclude', $me);
 		$mdir->setUserFilter('group',$arr_idstGroup);
 		//$mdir->setGroupFilter('path', '/lms/course/'.$_SESSION['idCourse'].'/group');

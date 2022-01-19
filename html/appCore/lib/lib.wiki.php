@@ -99,7 +99,7 @@ Class CoreWikiAdmin {
 		if ($this->getTableStyle() !== FALSE)
 			$tab->setTableStyle($this->getTableStyle());
 
-		$head=array($this->lang->def("_TITLE"));
+		$head= [$this->lang->def("_TITLE")];
 
 
 /*		$img ="<img src=\"".getPathImage('fw')."standard/export.gif\" alt=\"".$this->lang->def("_EXPORT")."\" ";
@@ -121,7 +121,7 @@ Class CoreWikiAdmin {
 		$img.="title=\"".$this->lang->def("_DEL")."\" />";
 		$head[]=$img;
 
-		$head_type=array("", "image", "image", "image", "image");
+		$head_type= ["", "image", "image", "image", "image"];
 		if ($view_link !== FALSE) {
 			$head_type[]="image";
 		}
@@ -144,7 +144,7 @@ Class CoreWikiAdmin {
 
 			$id=$data_arr[$i]["wiki_id"];
 
-			$rowcnt=array();
+			$rowcnt= [];
 			$rowcnt[]=$data_arr[$i]["title"];
 
 
@@ -212,7 +212,7 @@ Class CoreWikiAdmin {
 			$title="";
 			$description="";
 			$sel_lang=getLanguage();
-			$other_lang=array();
+			$other_lang= [];
 		}
 		else if ($id > 0) {
 			$todo="edit";
@@ -235,7 +235,7 @@ Class CoreWikiAdmin {
 				$other_lang=explode(",", $info["other_lang"]);
 			}
 			else {
-				$other_lang=array();
+				$other_lang= [];
 			}
 		}
 
@@ -349,7 +349,7 @@ Class CoreWikiAdmin {
 		$um=& UrlManager::getInstance();
 		$ssel=new SimpleSelector(TRUE, $this->lang);
 
-		$perm=array();
+		$perm= [];
 
 		$perm["view"]["img"]=getPathImage('fw')."standard/view.png";
 		$perm["view"]["alt"]=$this->lang->def("_VIEW");
@@ -416,7 +416,7 @@ Class CoreWikiAdmin {
 
 
 	function exportCategory($cat_id) {
-		$cat_exported=array();
+		$cat_exported= [];
 
 
 		$info=$this->wikiManager->getCategoryInfo($cat_id);
@@ -580,7 +580,7 @@ Class CoreWikiAdmin {
 		if ($this->getTableStyle() !== FALSE)
 			$tab->setTableStyle($this->getTableStyle());
 
-		$head=array($this->lang->def("_TITLE"));
+		$head= [$this->lang->def("_TITLE")];
 
 
 		$img ="<img src=\"".getPathImage('fw')."standard/down.png\" alt=\"".$this->lang->def("_MOVE_DOWN")."\" ";
@@ -596,7 +596,7 @@ Class CoreWikiAdmin {
 		$img.="title=\"".$this->lang->def("_DEL")."\" />";
 		$head[]=$img;
 
-		$head_type=array("", "image", "image", "image", "image");
+		$head_type= ["", "image", "image", "image", "image"];
 
 		$tab->setColsStyle($head_type);
 		$tab->addHead($head);
@@ -616,7 +616,7 @@ Class CoreWikiAdmin {
 
 			$id=$data_arr[$i]["faq_id"];
 
-			$rowcnt=array();
+			$rowcnt= [];
 			$rowcnt[]=$data_arr[$i]["title"];
 
 
@@ -793,7 +793,7 @@ Class CoreWikiPublic {
 	var $wikiManager=NULL;
 	var $wiki_id=0;
 	var $wiki_language=FALSE;
-	var $internal_perm =array();
+	var $internal_perm = [];
 
 
 	function CoreWikiPublic($wiki_id) {
@@ -1127,11 +1127,11 @@ Class CoreWikiPublic {
 		$key=$page_code."-".$lang;
 
 		if ((!isset($_SESSION[$history_name])) || (!is_array($_SESSION[$history_name]))) {
-			$_SESSION[$history_name]=array();
+			$_SESSION[$history_name]= [];
 		}
 
 		if (!in_array($key, $_SESSION[$history_name])) {
-			$arr=array();
+			$arr= [];
 			$arr["language"]=$lang;
 			$arr["page_code"]=$page_code;
 			$page_info=$this->wikiManager->getPageInfo($wiki_id, $lang, $page_code);
@@ -1339,7 +1339,7 @@ Class CoreWikiPublic {
 
 
 		$page_id=$page_info["page_id"];
-		$rev=new WikiRevisionManager(array($wiki_id, $page_id, $wiki_lang));
+		$rev=new WikiRevisionManager([$wiki_id, $page_id, $wiki_lang]);
 
 		if ((isset($_GET["version"])) && ($_GET["version"] > 0)) {
 			$version=(int)$_GET["version"];
@@ -1407,7 +1407,7 @@ Class CoreWikiPublic {
 				$version=$page_info["version"];
 				$page_id=$page_info["page_id"];
 
-				$rev=new WikiRevisionManager(array($wiki_id, $page_id, $wiki_lang));
+				$rev=new WikiRevisionManager([$wiki_id, $page_id, $wiki_lang]);
 				$last=$rev->getLastRevision();
 
 				$title=$page_info["title"];
@@ -1482,7 +1482,7 @@ Class CoreWikiPublic {
 		$wiki_lang=$this->getWikiLanguage();
 
 		$form=new Form();
-		$rev=new WikiRevisionManager(array($wiki_id, $page_info["page_id"], $wiki_lang));
+		$rev=new WikiRevisionManager([$wiki_id, $page_info["page_id"], $wiki_lang]);
 
 		if ($vis_item === FALSE)
 			$vis_item=Get::sett('visuItem');
@@ -1494,7 +1494,7 @@ Class CoreWikiPublic {
 		$tab=new Table($vis_item, $table_caption, $table_summary);
 
 
-		$head=array($this->lang->def("_VERSION"));
+		$head= [$this->lang->def("_VERSION")];
 
 		$head[]=$this->lang->def("_AUTHOR");
 		$head[]=$this->lang->def("_DATE");
@@ -1507,7 +1507,7 @@ Class CoreWikiPublic {
 		$img.="title=\"".$this->lang->def("_MOD")."\" />";
 		$head[]="&nbsp;"; //$img;
 
-		$head_type=array("", "", "", "image", "image");
+		$head_type= ["", "", "", "image", "image"];
 
 		$tab->setColsStyle($head_type);
 		$tab->addHead($head);
@@ -1529,7 +1529,7 @@ Class CoreWikiPublic {
 
 		for($i=0; $i<$tot; $i++ ) {
 
-			$rowcnt=array();
+			$rowcnt= [];
 
 			$version=$data_arr[$i]["version"];
 			//rc// $rowcnt[]=$form->getRadio("", "previous_ver_".$version, "previous_ver", $version);
@@ -1586,7 +1586,7 @@ Class CoreWikiPublic {
 
 		$wiki_lang=$this->getWikiLanguage();
 
-		$rev=new WikiRevisionManager(array($wiki_id, $page_info["page_id"], $wiki_lang));
+		$rev=new WikiRevisionManager([$wiki_id, $page_info["page_id"], $wiki_lang]);
 
 		$search_txt=(isset($_POST["search_txt"]) ? $_POST["search_txt"] : "");
 
@@ -1610,8 +1610,8 @@ Class CoreWikiPublic {
 				}
 				else {
 
-					$data =array();
-					$rev->setDefaultKeys(array($wiki_id, $page_id, $wiki_lang));
+					$data = [];
+					$rev->setDefaultKeys([$wiki_id, $page_id, $wiki_lang]);
 					$data =$rev->getLastRevision();
 					$res.=$this->getSearchResult($search_txt, $data, $page_info);
 
@@ -1653,7 +1653,7 @@ Class CoreWikiPublic {
 
 	var $page_code;
 	
-	function parseWikiLinks($txt, $pdf = false, $page_code = array()) {
+	function parseWikiLinks($txt, $pdf = false, $page_code = []) {
 		$this->page_code = $page_code;
 
 		preg_match_all("/\[\[(.*?)\]\]/e", $txt, $matches);
@@ -1750,7 +1750,7 @@ Class CoreWikiManager {
 
 	var $wiki_info=NULL;
 	var $page_info=NULL;
-	var $page_id_arr=array();
+	var $page_id_arr= [];
 
 	var $_wikiNavLinks=FALSE;
 
@@ -1877,8 +1877,8 @@ Class CoreWikiManager {
 	
 	function getWikiList($ini=FALSE, $vis_item=FALSE, $where=FALSE, $source_platform=FALSE) {
 
-		$data_info=array();
-		$data_info["data_arr"]=array();
+		$data_info= [];
+		$data_info["data_arr"]= [];
 
 		$fields="*";
 		$qtxt ="SELECT ".$fields." FROM ".$this->_getWikiTable()." ";
@@ -1936,7 +1936,7 @@ Class CoreWikiManager {
 			$other_lang_arr=$data["other_lang"];
 		}
 		else {
-			$other_lang_arr=array();
+			$other_lang_arr= [];
 		}
 
 		if (in_array($language, $other_lang_arr)) {
@@ -1972,7 +1972,7 @@ Class CoreWikiManager {
 
 
 	function loadWikiInfo($id) {
-		$res=array();
+		$res= [];
 
 		$fields="*";
 		$qtxt ="SELECT ".$fields." FROM ".$this->_getWikiTable()." ";
@@ -2008,7 +2008,7 @@ Class CoreWikiManager {
 			$res["other_lang"]=explode(",", $wiki_info["other_lang"]);
 		}
 		else {
-			$res["other_lang"]=array();
+			$res["other_lang"]= [];
 		}
 
 		return $res;
@@ -2035,12 +2035,12 @@ Class CoreWikiManager {
 
 
 	function getWikiPermList() {
-		return array("view", "edit");
+		return ["view", "edit"];
 	}
 
 
 	function loadWikiPerm($wiki_id) {
-		$res=array();
+		$res= [];
 		$pl=$this->getWikiPermList();
 		$acl_manager=& Docebo::user()->getACLManager();
 
@@ -2050,7 +2050,7 @@ Class CoreWikiManager {
 			$role=$acl_manager->getRole(false, $role_id);
 
 			if (!$role) {
-				$res[$val]=array();
+				$res[$val]= [];
 			}
 			else {
 				$idst=$role[ACL_INFO_IDST];
@@ -2086,7 +2086,7 @@ Class CoreWikiManager {
 				if ((isset($database_items[$val])) && (is_array($database_items[$val])))
 					$to_rem=array_diff(array_keys($database_items[$val]), $selected_items[$val]);
 				else
-					$to_rem=array();
+					$to_rem= [];
 				foreach($to_rem  as $pk=>$pv) {
 					$acl_manager->removeFromRole($idst, $pv);
 				}
@@ -2099,7 +2099,7 @@ Class CoreWikiManager {
 
 
 	function getImportArrFromXml($filename) {
-		$res=array();
+		$res= [];
 
 		require_once(_base_.'/lib/lib.domxml.php');
 		$xml_doc=new DoceboDOMDocument();
@@ -2111,7 +2111,7 @@ Class CoreWikiManager {
 
 			$xpath=new DoceboDOMXPath($xml_doc);
 
-			$cat_info=array();
+			$cat_info= [];
 			$category_node=$xpath->query('/FAQCATEGORY');
 
 			for($i = 0; $i < $category_node->length; $i++) {
@@ -2129,7 +2129,7 @@ Class CoreWikiManager {
 
 				$cat_items=$xpath->query('CATEGORYITEMS/faq', $item);
 
-				$faq_list=array();
+				$faq_list= [];
 				$arr_id=0;
 				for($iFaq = 0; $iFaq < $cat_items->length; $iFaq++) {
 
@@ -2169,7 +2169,7 @@ Class CoreWikiManager {
 
 	function importNewCategory($import_arr) {
 
-		$cat_data=array();
+		$cat_data= [];
 		$cat_data["id"]=0;
 		$cat_data["title"]=addslashes($import_arr["cat_info"]["title"]);
 		$cat_data["description"]=addslashes($import_arr["cat_info"]["description"]);
@@ -2184,7 +2184,7 @@ Class CoreWikiManager {
 
 		foreach ($faq_list as $faq) {
 
-			$fat_data=array();
+			$fat_data= [];
 
 			$faq_data["id"]=0;
 			$faq_data["title"]=addslashes($faq["title"]);
@@ -2199,8 +2199,8 @@ Class CoreWikiManager {
 
 	function getCategoryItems($cat_id, $ini=FALSE, $vis_item=FALSE, $where=FALSE) {
 
-		$data_info=array();
-		$data_info["data_arr"]=array();
+		$data_info= [];
+		$data_info["data_arr"]= [];
 
 		$fields="*";
 		$qtxt ="SELECT ".$fields." FROM ".$this->_getFaqTable()." ";
@@ -2274,7 +2274,7 @@ Class CoreWikiManager {
 	function getPageInfo($wiki_id, $language, $code=FALSE, $id=FALSE) {
 
 		if (($code === FALSE) && ($id === FALSE))
-			return array();
+			return [];
 		else if ($id === FALSE)
 			$id=$this->getPageId($wiki_id, $code);
 
@@ -2314,7 +2314,7 @@ Class CoreWikiManager {
 		$code =rawurldecode($code);
 
 		if (!isset($this->page_id_arr[$wiki_id]))
-			$this->page_id_arr[$wiki_id]=array();
+			$this->page_id_arr[$wiki_id]= [];
 
 		if (!isset($this->page_id_arr[$wiki_id][$code])) {
 			$id=$this->loadPageId($wiki_id, $code);
@@ -2326,7 +2326,7 @@ Class CoreWikiManager {
 
 
 	function getRootPageInfo($wiki_id, $language=FALSE) {
-		$res=array();
+		$res= [];
 
 		if ($language !== FALSE) {
 			$fields="t1.*, t2.title, t2.version, t2.last_update";
@@ -2424,8 +2424,8 @@ Class CoreWikiManager {
 				$res=$this->_executeInsert($qtxt);
 
 				// Adding revision (page text)
-				$rev=new WikiRevisionManager(array($wiki_id, $res, $language));
-				$revision_data=array("content"=>$content);
+				$rev=new WikiRevisionManager([$wiki_id, $res, $language]);
+				$revision_data= ["content"=>$content];
 				$rev->addRevision($revision_data);
 
 				// Adding other page information
@@ -2437,8 +2437,8 @@ Class CoreWikiManager {
 		}
 		else { // Update
 
-			$rev=new WikiRevisionManager(array($wiki_id, $page_id, $language));
-			$revision_data=array("content"=>$content);
+			$rev=new WikiRevisionManager([$wiki_id, $page_id, $language]);
+			$revision_data= ["content"=>$content];
 			$version=$rev->addRevision($revision_data);
 
 			$qtxt ="SELECT * FROM ".$this->getWikiPageInfoTable()." ";
@@ -2533,7 +2533,7 @@ Class CoreWikiManager {
 
 
 	function getLanguageArr($include_other=FALSE) {
-		$res=array();
+		$res= [];
 
 		$lang_arr=Docebo::langManager()->getAllLangCode();
 
@@ -2548,7 +2548,7 @@ Class CoreWikiManager {
 
 
 	function getWikiNavLinks($wiki_id, $page_code) {
-		$res=array();
+		$res= [];
 
 		if ($this->_wikiNavLinks !== FALSE)
 			return $this->_wikiNavLinks;
@@ -2630,7 +2630,7 @@ Class CoreWikiManager {
 
 
 	function searchByTitle($search_txt, $wiki_id, $wiki_lang) {
-		$res=array();
+		$res= [];
 
 		$qtxt ="SELECT page_id FROM ".$this->getWikiPageInfoTable(). " ";
 		$qtxt.="WHERE title LIKE '%".$search_txt."%' AND language='".$wiki_lang."' ";
@@ -2671,12 +2671,12 @@ class TreeDb_WikiDb extends TreeDb {
 		$this->table = $table_name;
 		$this->info_table = $info_table;
 		$this->wiki_lang = $wiki_lang;
-		$this->fields = array(
+		$this->fields = [
 			'id' => 'page_id',
 			'idParent' => 'parent_id',
 			'path' => 'page_path',
 			'lev' => 'lev'
-		);
+        ];
 	}
 
 	function _getOtherTables() { return " LEFT JOIN ".$this->info_table;	}
@@ -2728,7 +2728,7 @@ class TreeDb_WikiDb extends TreeDb {
 
 
 	function &getRootFolder() {
-		$folder = new Folder( $this, array( 0, 0, "/root", 0) );
+		$folder = new Folder( $this, [0, 0, "/root", 0]);
 		return $folder;
 	}
 
@@ -2833,9 +2833,9 @@ class TreeView_WikiView extends TreeView {
 
 		if( $this->isFolderSelected() ) {
 
-			return array();
+			return [];
 		}
-		return array();
+		return [];
 	}
 
 	function getFolderPrintName( &$folder ) {
@@ -2870,10 +2870,10 @@ class TreeView_WikiView extends TreeView {
 		if( $currLev == $maxLev ) {
 			if (($currLev > 0) && ($stack[$maxLev]['isExpanded'])) {
 				if (!$stack[$maxLev]['isLeaf'])
-					$res=array("wiki_page", "wiki/page_open.png", "_PAGE");
+					$res= ["wiki_page", "wiki/page_open.png", "_PAGE"];
 			}
 			else if (($currLev > 0) && (!$stack[$currLev]['isExpanded'])) {
-				$res=array("wiki_page", "wiki/page.png", "_PAGE");
+				$res= ["wiki_page", "wiki/page.png", "_PAGE"];
 			}
 		}
 
@@ -2914,7 +2914,7 @@ class TreeView_WikiView extends TreeView {
 		if(isset($_POST['page']))
 			$pages_selected = $_POST['page'];
 		else
-			$pages_selected = array();
+			$pages_selected = [];
 		
 		$tree = '<div class="TreeViewRowBase">';
 		$id = ($stack[$level]['isExpanded'])?($this->_getCompressActionId()):($this->_getExpandActionId());

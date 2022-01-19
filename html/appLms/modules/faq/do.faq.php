@@ -128,7 +128,7 @@ function play( $object_faq, $id_param) {
 			.Form::closeForm(), 'content');
 		
 		//analyze keyword
-		$keyword_help = array();
+		$keyword_help = [];
 		while(list($keyword) = sql_fetch_row($result)) {
 			$keyword_split = explode(',', $keyword);
 			if(is_array($keyword_split))

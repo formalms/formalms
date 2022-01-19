@@ -47,7 +47,7 @@ class CourseSubscribe_Manager
 		$this->lang =& DoceboLanguage::CreateInstance('levels', 'lms');
 		$this->lang =& DoceboLanguage::CreateInstance('subscribe', 'lms');
 
-		$this->array_user_status = array(
+		$this->array_user_status = [
 											//-4 => $this->lang->def('_USER_STATUS_CANCELLED'),
 											//-3 => '',
 											_CUS_WAITING_LIST => $this->lang->def('_WAITING_USERS'),
@@ -57,15 +57,15 @@ class CourseSubscribe_Manager
 											_CUS_END => $this->lang->def('_USER_STATUS_END'),
 											_CUS_SUSPEND => $this->lang->def('_USER_STATUS_SUSPEND'),
 											_CUS_OVERBOOKING => $this->lang->def('_USER_STATUS_OVERBOOKING')
-		);
+        ];
 
-		$this->array_user_level = array(	1 => $this->lang->def('_LEVEL_1', 'levels', 'lms'),
+		$this->array_user_level = [1 => $this->lang->def('_LEVEL_1', 'levels', 'lms'),
 											2 => $this->lang->def('_LEVEL_2', 'levels', 'lms'),
 											3 => $this->lang->def('_LEVEL_3', 'levels', 'lms'),
 											4 => $this->lang->def('_LEVEL_4', 'levels', 'lms'),
 											5 => $this->lang->def('_LEVEL_5', 'levels', 'lms'),
 											6 => $this->lang->def('_LEVEL_6', 'levels', 'lms'),
-											7 => $this->lang->def('_LEVEL_7', 'levels', 'lms'));
+											7 => $this->lang->def('_LEVEL_7', 'levels', 'lms')];
 	}
 
 	/**
@@ -116,7 +116,7 @@ class CourseSubscribe_Manager
 			if (isset($filter['text']) && $filter['text'] != "")
 				$query .= " AND (u.userid LIKE '%".$filter['text']."%' OR u.firstname LIKE '%".$filter['text']."%' OR u.lastname LIKE '%".$filter['text']."%') ";
 
-			$arr_idst = array();
+			$arr_idst = [];
 			if (isset($filter['orgchart']) && $filter['orgchart']>0) {
 				$umodel = new UsermanagementAdm();
 				$use_desc = (isset($filter['descendants']) && $filter['descendants']);
@@ -194,7 +194,7 @@ class CourseSubscribe_Manager
 			if (isset($filter['text']) && $filter['text'] != "")
 				$query .= " AND (u.userid LIKE '%".$filter['text']."%' OR u.firstname LIKE '%".$filter['text']."%' OR u.lastname LIKE '%".$filter['text']."%') ";
 
-			$arr_idst = array();
+			$arr_idst = [];
 			if (isset($filter['orgchart']) && $filter['orgchart']>0) {
 				$umodel = new UsermanagementAdm();
 				$use_desc = (isset($filter['descendants']) && $filter['descendants']);
@@ -273,7 +273,7 @@ class CourseSubscribe_Manager
 		($start_index === false ? '' : $query .= " LIMIT ".$start_index.", ".$results);
 
 		$result = sql_query($query);
-		$res = array();
+		$res = [];
 
 		while(list($id_user, $userid, $firstname, $lastname, $level, $status, $date_complete, $date_begin_validity, $date_expire_validity, $waiting) = sql_fetch_row($result))
 		{
@@ -286,7 +286,7 @@ class CourseSubscribe_Manager
 			else
 				$user = '';
 
-			$res[] = array(	'sel' => '',
+			$res[] = ['sel' => '',
 							'id_user' => $id_user,
 							'userid' => $this->acl_man->relativeId($userid),
 							'fullname' => $user,
@@ -298,7 +298,7 @@ class CourseSubscribe_Manager
 							'date_begin_validity' => $date_begin_validity,
 							'date_expire_validity' => $date_expire_validity,
 							'waiting' => $waiting > 0,
-							'del' => 'ajax.adm_server.php?r=alms/subscription/delPopUp&id_course='.$id_course.'&id_user='.$id_user);
+							'del' => 'ajax.adm_server.php?r=alms/subscription/delPopUp&id_course='.$id_course.'&id_user='.$id_user];
 		}
 
 		return $res;
@@ -307,7 +307,7 @@ class CourseSubscribe_Manager
 	public function getCourseSubscribedUserIdst($id_course, $no_flat = false, $filter = '')
 	{
 		if (is_numeric($id_course))
-			$arr = array($id_course);
+			$arr = [$id_course];
 		elseif (is_array($id_course) && count($id_course)>0)
 			$arr =& $id_course;
 		else
@@ -328,7 +328,7 @@ class CourseSubscribe_Manager
 			if (isset($filter['text']) && $filter['text'] != "")
 				$query .= " AND (u.userid LIKE '%".$filter['text']."%' OR u.firstname LIKE '%".$filter['text']."%' OR u.lastname LIKE '%".$filter['text']."%') ";
 
-			$arr_idst = array();
+			$arr_idst = [];
 			if (isset($filter['orgchart']) && $filter['orgchart']>0) {
 				$umodel = new UsermanagementAdm();
 				$use_desc = (isset($filter['descendants']) && $filter['descendants']);
@@ -345,7 +345,7 @@ class CourseSubscribe_Manager
 		}
 
 		$result = $this->db->query($query);
-		$res = array();
+		$res = [];
 
 		while (list($id_user, $id_course) = $this->db->fetch_row($result)) {
 			if ($no_flat) {
@@ -483,11 +483,11 @@ class CourseSubscribe_Manager
 		} else {
 			$query .= " = ".(int)$id_user;
 			$query_lvl .= " = ".(int)$id_user;
-			$id_user = array($id_user);
+			$id_user = [$id_user];
 		}
 
 		$result = $this->db->query($query);
-		$old_level = array();
+		$old_level = [];
 
 		while(list($id_user_t, $level) = $this->db->fetch_row($result))
 			   $old_level[$id_user_t] = $level;
@@ -564,7 +564,7 @@ class CourseSubscribe_Manager
 				//require_once($GLOBALS['where_lms'].'/lib/lib.competences.php');
 				//$cman = new Competences_Manager();
 				$cmodel = new CompetencesAdm();
-				$list = is_array($id_user) ? $id_user : array((int)$id_user);
+				$list = is_array($id_user) ? $id_user : [(int)$id_user];
 				foreach ($list as $idst_user) {
 					$res1 = $cmodel->assignCourseCompetencesToUser($id_course, $id_user);//$cman->AssignCourseCompetencesToUser($id_course, $id_user);
 					$res2 = $this->saveTrackStatusChange($id_user, $id_course, $new_status, $oldStatus);
@@ -825,10 +825,10 @@ class CourseSubscribe_Manager
 			$cd = new DoceboCourse($idCourse);
 			$acl_man =& Docebo::user()->getAclManager();
 
-			$array_subst = array(
+			$array_subst = [
 				'[user]' => $acl_man->getUserName($idUser),
 				'[course]' => $cd->getValue('name')
-			);
+            ];
 
 			$msg_composer = new EventMessageComposer();
 
@@ -961,7 +961,7 @@ class CourseSubscribe_Management {
 			$re = true;
 
 			$group_levels 	=& $this->course_man->getCourseIdstGroupLevel($id_course);
-			$user_level 	= $this->course_man->getLevelsOfUsers($id_course, array($id_user));
+			$user_level 	= $this->course_man->getLevelsOfUsers($id_course, [$id_user]);
 
 			$lv = ( is_array($levels) ? $levels[$id_course] : $levels );
 
@@ -1050,7 +1050,7 @@ class CourseSubscribe_Management {
 	 */
 	function subscribeUser($id_user, $id_course, $level_number) {
 
-		return $this->subscribeUsers(array($id_user), $id_course, $level_number);
+		return $this->subscribeUsers([$id_user], $id_course, $level_number);
 	}
 
 	function retriveLogSubscriptionInfo($id_log) {
@@ -1059,7 +1059,7 @@ class CourseSubscribe_Management {
 		"	JOIN %adm_user AS u ON ( u.idst = cu.idUser )".
 		"WHERE rule_log = ".(int)$id_log." ".
 		"ORDER BY u.userid, c.code");
-		$logs = array();
+		$logs = [];
 		while($obj = $this->db->fetch_obj($data)) {
 
 			$logs[] = $obj;
@@ -1069,8 +1069,8 @@ class CourseSubscribe_Management {
 
 	function removeRuleLogSubscription($id_log) {
 
-		$users = array();
-		$courses = array();
+		$users = [];
+		$courses = [];
 		$re = $this->db->query("SELECT idUser, idCourse FROM %lms_courseuser WHERE rule_log = ".(int)$id_log." ");
 		while($obj = $this->db->fetch_obj($re)) {
 
@@ -1134,7 +1134,7 @@ class CourseSubscribe_Management {
 	 */
 	function unsubscribeUser($id_user, $id_course) {
 
-		return $this->unsubscribeUsers(array($id_user), $id_course);
+		return $this->unsubscribeUsers([$id_user], $id_course);
 	}
 
 	/**
@@ -1153,7 +1153,7 @@ class CourseSubscribe_Management {
 		$res = true;
 		while(list($id_course) = sql_fetch_row($re)) {
 
-			$res &= $this->unsubscribeUsers(array($id_user), $id_course);
+			$res &= $this->unsubscribeUsers([$id_user], $id_course);
 		}
 		return $res;
 	}
@@ -1370,7 +1370,7 @@ class CourseSubscribe_Management {
 		DELETE FROM ".$GLOBALS['prefix_lms']."_courseuser
 		WHERE idUser IN ( ".implode(',', $arr_users)." ) AND idCourse = '".$id_course."' AND editon_id = '".$id_edition."'");
 
-		$survivor = array();
+		$survivor = [];
 		$query = "
 		SELECT idUser
 		FROM ".$GLOBALS['prefix_lms']."_courseuser
@@ -1400,7 +1400,7 @@ class CourseSubscribe_Management {
 	 */
 	function unsubscribeUserFromEd($id_user, $id_edition, $id_course = false) {
 
-		return $this->unsubscribeUsersEd(array($id_user), $id_edition, $id_course);
+		return $this->unsubscribeUsersEd([$id_user], $id_edition, $id_course);
 	}
 
 	function subscribeToCourse($id_user, $id_course, $id_date = 0)
@@ -1417,7 +1417,7 @@ class CourseSubscribe_Management {
 					." WHERE idUser = ".$id_user;
 
 		$result = sql_query($query);
-		$courses = array();
+		$courses = [];
 
 		while(list($id_c) = sql_fetch_row($result))
 			$courses[$id_c] = $id_c;

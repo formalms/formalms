@@ -33,7 +33,7 @@ switch($op) {
 		$lang->setGlobal();
 		$lang =& DoceboLanguage::createInstance( $module_name, $platform);
 		
-		$value = array(
+		$value = [
 //			'_TITLE_ASK_A_FRIEND' 	=> $lang->def('_TITLE_ASK_A_FRIEND'),
 //			'_WRITE_ASK_A_FRIEND' 	=> $lang->def('_WRITE_ASK_A_FRIEND'),
 			'_SEND' 		=> $lang->def('_SEND'), 
@@ -45,7 +45,7 @@ switch($op) {
 			'_MESSAGE_TEXT' 		=> $lang->def('_MESSAGE_TEXT'), 
 			'_OPERATION_SUCCESSFUL' 		=> $lang->def('_OPERATION_SUCCESSFUL'), 
 			'_OPERATION_FAILURE' 		=> $lang->def('_OPERATION_FAILURE')
-		);
+        ];
   
 		require_once(_base_.'/lib/lib.json.php');
 		$json = new Services_JSON();
@@ -68,9 +68,9 @@ switch($op) {
 		
 		$my_fr = new MyFriends(getLogUserId());
 		if($my_fr->addFriend($id_friend, MF_WAITING, $message_request)) {
-			$value = array('re' => true);
+			$value = ['re' => true];
 		} else {
-			$value = array('re' => false);
+			$value = ['re' => false];
 		}
 		
 		require_once(_base_.'/lib/lib.json.php');
@@ -94,9 +94,9 @@ switch($op) {
 		$lang =& DoceboLanguage::createInstance( $module_name, $platform);
 		
 		if(MessageModule::quickSendMessage(getLogUserId(), $recipient, $message_subject, $message_text)) {
-			$value = array('re' => true);
+			$value = ['re' => true];
 		} else {
-			$value = array('re' => false);
+			$value = ['re' => false];
 		}
 		require_once(_base_.'/lib/lib.json.php');
 		$json = new Services_JSON();

@@ -21,7 +21,7 @@ class Log {
 	
 	protected static $_start_time = false;
 	
-	private static $_arr_log = array();
+	private static $_arr_log = [];
 	
 	private function __construct() {}
 
@@ -32,7 +32,7 @@ class Log {
 	
 	public static function reset() {
 		
-		self::$_arr_log = array();
+		self::$_arr_log = [];
 	}
 	
 	public static function start() {
@@ -170,13 +170,13 @@ class Log {
 
 		$line--; // adjust line number to 0-based from 1-based
 		if($line < 0 || ($lines = @file($file)) === false || ( $lineCount = count($lines)) <= $line)
-			return array();
+			return [];
 
 		$halfLines = (int)($maxLines / 2);
 		$beginLine = $line - $halfLines > 0 ? $line - $halfLines : 0;
 		$endLine = $line + $halfLines < $lineCount ? $line + $halfLines : $lineCount - 1;
 
-		$sourceLines = array();
+		$sourceLines = [];
 		for($i = $beginLine; $i <= $endLine; ++$i)
 			$sourceLines[$i+1] = $lines[$i];
 		return $sourceLines;

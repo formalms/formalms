@@ -15,16 +15,16 @@ class PluginsLmsController extends LmsController {
 
 	public $name = 'elearning';
 
-	public $ustatus = array();
-	public $cstatus = array();
+	public $ustatus = [];
+	public $cstatus = [];
 
-	public $levels = array();
+	public $levels = [];
 
 	public $path_course = '';
 
 	protected $_default_action = 'show';
 
-	public $info = array();
+	public $info = [];
 
 	public function isTabActive($tab_name) {
 
@@ -50,7 +50,7 @@ class PluginsLmsController extends LmsController {
 
 		require_once(_lms_.'/lib/lib.middlearea.php');
 		$ma = new Man_MiddleArea();
-		$block_list = array();
+		$block_list = [];
 		//if($ma->currentCanAccessObj('user_details_short')) $block_list['user_details_short'] = true;
 		if($ma->currentCanAccessObj('user_details_full')) $block_list['user_details_full'] = true;
 		if($ma->currentCanAccessObj('credits')) $block_list['credits'] = true;
@@ -79,14 +79,14 @@ class PluginsLmsController extends LmsController {
 			if(!empty($block_list))
                 $this->render('_tabs_block', ['block_list' => $block_list, 'use_label' => $tb_label]);
 			else
-				$this->render('_tabs', array());
+				$this->render('_tabs', []);
 		}
 
 		require_once(_lms_.'/lib/lib.middlearea.php');
 		$ma = new Man_MiddleArea();
-		$this->render('pluginslist', array(
+		$this->render('pluginslist', [
 			'pluginslist' => $pluginslist
-		));
+        ]);
 	}
 
 	public function active() {

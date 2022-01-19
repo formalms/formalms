@@ -19,7 +19,7 @@ class CertificateSubs_User extends CertificateSubstitution
     function getSubstitutionTags()
     {
 
-        $subs = array();
+        $subs = [];
         $subs['[meta_assoc]'] = Lang::t('_META_ASSOC', 'certificate', 'lms');
         $subs['[display_name]'] = Lang::t('_DISPLAY_NAME', 'certificate', 'lms');
         $subs['[username]'] = Lang::t('_USERNAME', 'certificate', 'lms');
@@ -41,7 +41,7 @@ class CertificateSubs_User extends CertificateSubstitution
     function getSubstitution()
     {
 
-        $subs = array();
+        $subs = [];
 
         $aclman =& Docebo::user()->getAclManager();
         $user = $aclman->getUser($this->id_user, false);

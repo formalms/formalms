@@ -62,7 +62,7 @@ YAHOO.util.Event.onDOMReady(function(e) {
 </div>
 <?php
 
-$params = array(
+$params = [
 	'id' => 'logtable',
 	'ajaxUrl' => 'ajax.adm_server.php?r='. $this->link.'/getdbupgradestabledata',
 	'rowsPerPage' => Get::sett('visuItem', 25),
@@ -70,18 +70,18 @@ $params = array(
 	'results' => Get::sett('visuItem', 25),
 	'sort' => 'execution_date',
 	'dir' => 'desc',
-	'columns' => array(
-			array('key' => 'script_id', 'label' => Lang::t('_SCRIPT_ID', 'standard'), 'sortable' => true),
-			array('key' => 'script_name', 'label' => Lang::t('_SCRIPT_NAME', 'standard'), 'sortable' => true),		
-			array('key' => 'script_description', 'label' => Lang::t('_SCRIPT_DESCRIPTION', 'standard'), 'sortable' => true),
-			array('key' => 'script_version', 'label' => Lang::t('_SCRIPT_VERSION', 'standard'), 'sortable' => true),
-			array('key' => 'core_version', 'label' => Lang::t('_CORE_VERSION', 'standard'), 'sortable' => true),
-			array('key' => 'creation_date', 'label' => Lang::t('_CREATION_DATE', 'standard'), 'sortable' => true),
-			array('key' => 'execution_date', 'label' => Lang::t('_EXECUTION_DATE', 'standard'), 'sortable' => true)
-		),
-	'fields' => array('script_id', 'script_name', 'script_description', 'script_version', 'core_version', 'creation_date', 'execution_date'),
+	'columns' => [
+			['key' => 'script_id', 'label' => Lang::t('_SCRIPT_ID', 'standard'), 'sortable' => true],
+			['key' => 'script_name', 'label' => Lang::t('_SCRIPT_NAME', 'standard'), 'sortable' => true],
+			['key' => 'script_description', 'label' => Lang::t('_SCRIPT_DESCRIPTION', 'standard'), 'sortable' => true],
+			['key' => 'script_version', 'label' => Lang::t('_SCRIPT_VERSION', 'standard'), 'sortable' => true],
+			['key' => 'core_version', 'label' => Lang::t('_CORE_VERSION', 'standard'), 'sortable' => true],
+			['key' => 'creation_date', 'label' => Lang::t('_CREATION_DATE', 'standard'), 'sortable' => true],
+			['key' => 'execution_date', 'label' => Lang::t('_EXECUTION_DATE', 'standard'), 'sortable' => true]
+    ],
+	'fields' => ['script_id', 'script_name', 'script_description', 'script_version', 'core_version', 'creation_date', 'execution_date'],
 	'generateRequest' => 'LogManagement.requestBuilder'
-);
+];
 
 $this->widget('table', $params);
 

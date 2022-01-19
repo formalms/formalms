@@ -30,49 +30,49 @@ class CourseTableView extends TableView {
 		$this->addFormatter("menu", 'courseFormatters.menu');
 		$this->addFormatter("mod", 'courseFormatters.mod');
 
-		$array_columns = array();
+		$array_columns = [];
 
 		if(checkPerm('mod', true, 'course', 'lms'))
 		{
-			$array_columns[] = array("key"=>"code", "label"=>Lang::t("_CODE",'course', 'lms'), "sortable"=>true, "className"=>'min-cell', 'editor' => 'new YAHOO.widget.TextboxCellEditor({asyncSubmitter: saveData})');
-			$array_columns[] = array("key"=>"name", "label"=>Lang::t("_COURSE_NAME",'course', 'lms'), "sortable"=>true, 'editor' => 'new YAHOO.widget.TextboxCellEditor({asyncSubmitter: saveData})');
+			$array_columns[] = ["key"=>"code", "label"=>Lang::t("_CODE",'course', 'lms'), "sortable"=>true, "className"=>'min-cell', 'editor' => 'new YAHOO.widget.TextboxCellEditor({asyncSubmitter: saveData})'];
+			$array_columns[] = ["key"=>"name", "label"=>Lang::t("_COURSE_NAME",'course', 'lms'), "sortable"=>true, 'editor' => 'new YAHOO.widget.TextboxCellEditor({asyncSubmitter: saveData})'];
 		}
 		else
 		{
-			$array_columns[] = array("key"=>"code", "label"=>Lang::t("_CODE",'course', 'lms'), "sortable"=>true, "className"=>'min-cell');
-			$array_columns[] = array("key"=>"name", "label"=>Lang::t("_COURSE_NAME",'course', 'lms'), "sortable"=>true);
+			$array_columns[] = ["key"=>"code", "label"=>Lang::t("_CODE",'course', 'lms'), "sortable"=>true, "className"=>'min-cell'];
+			$array_columns[] = ["key"=>"name", "label"=>Lang::t("_COURSE_NAME",'course', 'lms'), "sortable"=>true];
 		}
 
-		$array_columns[] = array("key"=>"waiting", "label"=>Lang::t("_WAITING_USERS",'course', 'lms'), "className"=>'img-cell');
+		$array_columns[] = ["key"=>"waiting", "label"=>Lang::t("_WAITING_USERS",'course', 'lms'), "className"=>'img-cell'];
 
 		if(checkPerm('subscribe', true, 'course', 'lms')) {
-			$array_columns[] = array("key"=>"subscriptions", "label"=>Get::img('course/subscribe.png', Lang::t('_SUBSCRIBE','course', 'lms')), "sortable"=>true, "className"=>'img-cell', "formatter"=>$this->getCellFormatter("man_subscr"));
+			$array_columns[] = ["key"=>"subscriptions", "label"=>Get::img('course/subscribe.png', Lang::t('_SUBSCRIBE','course', 'lms')), "sortable"=>true, "className"=>'img-cell', "formatter"=>$this->getCellFormatter("man_subscr")];
 		}
 		if(checkPerm('mod', true, 'course', 'lms'))
 		{
-			$array_columns[] = array("key"=>"classroom", "label"=>Get::img('course/classroom-cal.png', Lang::t('_CLASSROOM','course', 'lms')), "className"=>'img-cell');
-			$array_columns[] = array("key"=>"certificate", "label"=>Get::img('course/certificate.png', Lang::t('_CERTIFICATE', 'certificate', 'lms')), "className"=>'img-cell', "formatter"=>$this->getCellFormatter("certificate"));
-			$array_columns[] = array("key"=>"competence", "label"=>Get::img('course/competences.png', Lang::t('_COMPETENCES', 'competences', 'lms')), "className"=>'img-cell', "formatter"=>$this->getCellFormatter("competence"));
-			$array_columns[] = array("key"=>"menu", "label"=>Get::img('course/menu.png', Lang::t('_ASSIGN_MENU','course', 'lms')), "className"=>'img-cell', "formatter"=>$this->getCellFormatter("menu"));
+			$array_columns[] = ["key"=>"classroom", "label"=>Get::img('course/classroom-cal.png', Lang::t('_CLASSROOM','course', 'lms')), "className"=>'img-cell'];
+			$array_columns[] = ["key"=>"certificate", "label"=>Get::img('course/certificate.png', Lang::t('_CERTIFICATE', 'certificate', 'lms')), "className"=>'img-cell', "formatter"=>$this->getCellFormatter("certificate")];
+			$array_columns[] = ["key"=>"competence", "label"=>Get::img('course/competences.png', Lang::t('_COMPETENCES', 'competences', 'lms')), "className"=>'img-cell', "formatter"=>$this->getCellFormatter("competence")];
+			$array_columns[] = ["key"=>"menu", "label"=>Get::img('course/menu.png', Lang::t('_ASSIGN_MENU','course', 'lms')), "className"=>'img-cell', "formatter"=>$this->getCellFormatter("menu")];
 		}
 
 		if(checkPerm('add', true, 'course', 'lms'))
-			$array_columns[] = array("key"=>"dup", "label"=>Get::img('standard/dup.png', Lang::t('_MAKE_A_COPY','course', 'lms')), "className"=>'img-cell');
+			$array_columns[] = ["key"=>"dup", "label"=>Get::img('standard/dup.png', Lang::t('_MAKE_A_COPY','course', 'lms')), "className"=>'img-cell'];
 
 		if(checkPerm('mod', true, 'course', 'lms'))
-			$array_columns[] = array("key"=>"mod", "label"=>Get::img('standard/edit.png', Lang::t('_MOD','course', 'lms')), "className"=>'img-cell', "formatter"=>$this->getCellFormatter("mod"));
+			$array_columns[] = ["key"=>"mod", "label"=>Get::img('standard/edit.png', Lang::t('_MOD','course', 'lms')), "className"=>'img-cell', "formatter"=>$this->getCellFormatter("mod")];
 
 		if(checkPerm('del', true, 'course', 'lms'))
-			$array_columns[] = array("key"=>"del", "label"=>Get::img('standard/delete.png', Lang::t('_DEL','course', 'lms')), "className"=>'img-cell', "formatter"=>$this->getCellFormatter('delete'));
+			$array_columns[] = ["key"=>"del", "label"=>Get::img('standard/delete.png', Lang::t('_DEL','course', 'lms')), "className"=>'img-cell', "formatter"=>$this->getCellFormatter('delete')];
 
 		$this->columns = $array_columns;
 		
-		$this->fields = array(
+		$this->fields = [
 			"idCourse", "code", "name", "status", "waiting",
 			"subscriptions", "classroom", "certificate", "competence", "menu", "dup", "mod", "del"
-		);
+        ];
 
-		$this->addOption('langs', array(
+		$this->addOption('langs', [
 			'_START'		=> Lang::t('_START','course', 'lms'),
 			'_PREV'			=> Lang::t('_PREV','course', 'lms'),
 			'_NEXT'			=> Lang::t('_NEXT','course', 'lms'),
@@ -86,15 +86,15 @@ class CourseTableView extends TableView {
 			'_AREYOUSURE'	=> Lang::t('_AREYOUSURE','course', 'lms'),
 			'_DEL'			=> Lang::t('_DEL','course', 'lms'),
 			'_SERVER_CONNECTION_ERROR' => Lang::t('_SERVER_CONNECTION_ERROR','course', 'lms')
-		));
+        ]);
 
 		if (!isset($_SESSION['course_category']['filter_status'])) {
-			$_SESSION['course_category']['filter_status'] = array(
+			$_SESSION['course_category']['filter_status'] = [
 				'c_category' => 0,
 				'c_filter' => '',
 				'c_flatview' => true,
 				'c_waiting' => false
-			);
+            ];
 		} else {
 			$filter =& $_SESSION['course_category']['filter_status'];
 			if (!isset($filter['c_category'])) $_SESSION['course_category']['filter_status']['c_category'] = 0;
@@ -107,15 +107,15 @@ class CourseTableView extends TableView {
 		$this->addOption('baseUrl', 'index.php');
 		$this->addOption('imageUrl', Get::tmpl_path('base').'images/');
 		
-		$this->addOption('initialFilter', array(
-				'c_category' => array('operator'=>'', 'value'=>$filter['c_category']),
-				'c_filter' => array('operator'=>'', 'value'=>$filter['c_filter']),
-				'c_flatview' => array('operator'=>'', 'value'=>$filter['c_flatview']),
-				'c_waiting' => array('operator'=>'', 'value'=>$filter['c_waiting']),
-			)
+		$this->addOption('initialFilter', [
+				'c_category' => ['operator'=>'', 'value'=>$filter['c_category']],
+				'c_filter' => ['operator'=>'', 'value'=>$filter['c_filter']],
+				'c_flatview' => ['operator'=>'', 'value'=>$filter['c_flatview']],
+				'c_waiting' => ['operator'=>'', 'value'=>$filter['c_waiting']],
+            ]
 		);
 
-		$this->addOption('deleteDialog', array('id'=>'idCourse', 'name'=>'name'));
+		$this->addOption('deleteDialog', ['id'=>'idCourse', 'name'=>'name']);
 	}
 
 }

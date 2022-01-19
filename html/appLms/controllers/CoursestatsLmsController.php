@@ -23,10 +23,10 @@ class CoursestatsLmsController extends LmsController {
 	public function init() {
 		$this->model = new CoursestatsLms();
 		$this->json = new Services_JSON();
-		$this->permissions = array(
+		$this->permissions = [
 			'view' => true,
 			'mod' => true
-		);
+        ];
 	}
 
 
@@ -75,7 +75,7 @@ class CoursestatsLmsController extends LmsController {
 	protected function _getJsArrayLOStatus()	{
 		$first = true;
 		$output = '[';
-		$list = array(
+		$list = [
 			'failed' => 'failed',
 			'incomplete' => 'incomplete',
 			'not attempted' => 'not attempted',
@@ -83,7 +83,7 @@ class CoursestatsLmsController extends LmsController {
 			'ab-initio' => 'ab-initio',
 			'completed' => 'completed',
 			'passed' => 'passed'
-		);
+        ];
 		foreach($list as $id_status => $status_translation) {
 			if ($first) $first = false; else $output .= ', ';
 			$output .= '{"value":'.$this->json->encode($id_status).',"label":'.$this->json->encode($status_translation).'}';
@@ -108,12 +108,12 @@ class CoursestatsLmsController extends LmsController {
                 
         //apply sub admin filters, if needed
         if( !$view_all_perm ) {
-            $pagination = array(
+            $pagination = [
                     'startIndex' => 0,
                     'results' => 9999999999,
                     'sort' => "",
                     'dir' => "asc"
-            );
+            ];
 
             $list = $this->model->getCourseStatsList($pagination, $id_course, $filter);
 
@@ -133,7 +133,7 @@ class CoursestatsLmsController extends LmsController {
         }
                 
 		$lo_totals = $this->model->getLOsTotalCompleted($id_course);
-		$_arr_js = array();
+		$_arr_js = [];
 		foreach ($lo_totals as $id_lo => $total_lo) {
 			$_arr_js[] = '{id:"lo_totals_'.$id_lo.'", total:"'.$total_lo.' / '.$total_users.'", '
 				.'percent:"'.number_format(($total_lo/$total_users), 2).' %"}';
@@ -144,7 +144,7 @@ class CoursestatsLmsController extends LmsController {
 		$umodel = new UsermanagementAdm();
 		$gmodel = new GroupmanagementAdm();
 
-		$params = array(
+		$params = [
 			'id_course' => $id_course,
 			'lo_list' => $this->model->getCourseLOs($id_course),
 			'filter_text' => "",
@@ -159,7 +159,7 @@ class CoursestatsLmsController extends LmsController {
 			'lo_totals_js' => $lo_totals_js,
 			'status_list' => $this->_getJsArrayStatus(),
 			'permissions' => $this->permissions
-		);
+        ];
 
 		$this->render('show', $params);
 	}
@@ -175,13 +175,13 @@ class CoursestatsLmsController extends LmsController {
 
 		$id_course = Get::req('id_course', DOTY_INT, $_SESSION['idCourse']);
 
-		$pagination = array(
+		$pagination = [
 			'startIndex' => $startIndex,
 			'rowsPerPage' => $rowsPerPage,
 			'results' => $results,
 			'sort' => $sort,
 			'dir' => $dir
-		);
+        ];
 
 		if ($order = $_REQUEST['order']) {
 			$pagination['order_column'] = $order[0]['column'];
@@ -214,7 +214,7 @@ class CoursestatsLmsController extends LmsController {
 		$arr_level = $cman->getUserLevel();
 
 		//format models' data
-		$records = array();
+		$records = [];
 		$acl_man = Docebo::user()->getAclManager();
                 
         //apply sub admin filters, if needed
@@ -238,13 +238,13 @@ class CoursestatsLmsController extends LmsController {
 			$lo_list = $this->model->getCourseLOs($id_course);
 			foreach ($list as $record) {
 				$_userid = $acl_man->relativeId($record->userid);
-				$row = array(
+				$row = [
 					// 'id' => (int)$record->idst,
 					'userid' => '<a href="./index.php?r=coursestats/show_user&id_user='.(int)$record->idst.'">'.Layout::highlight($_userid, $filter_text).'</a>',
 					'firstname' => Layout::highlight($record->lastname, $filter_text).' '.Layout::highlight($record->firstname, $filter_text),
 					'level' => isset($arr_level[$record->level]) ? $arr_level[$record->level] : "",
 					'status' => isset($arr_status[$record->status]) ? $arr_status[$record->status] : "",
-				);
+                ];
 
 				//get LO data
 				$completed = 0;
@@ -306,14 +306,14 @@ class CoursestatsLmsController extends LmsController {
 		$info->last_access = '';
 		$info->date_complete = $course_info->date_complete != "" ? Format::date($course_info->date_complete, 'datetime', true) : Lang::t('_NONE', '');
 
-		$params = array(
+		$params = [
 			'id_course' => $id_course,
 			'id_user' => $id_user,
 			'info' => $info,
 			'status_list_js' => $this->_getJsArrayLOStatus(),
 			'permissions' => $this->permissions,
 			'base_url' => "index.php?r=coursestats/show"
-		);
+        ];
 
 		$this->render('show_user', $params);
 	}
@@ -343,7 +343,7 @@ class CoursestatsLmsController extends LmsController {
 		$total_filtered = $this->model->countTotalCourseUsersStats($id_course, $id_user, $pagination['search'], true);
 
 		//format models' data
-		$records = array();
+		$records = [];
 		$acl_man = Docebo::user()->getAclManager();
 		if (is_array($list)) {
 			$lo_list = $this->model->getCourseLOs($id_course);
@@ -362,7 +362,7 @@ class CoursestatsLmsController extends LmsController {
 					$last_access = $record->first_access;
 				}
 
-				$row = array(
+				$row = [
 					'id' => $record->idOrg,
 					'path' => $path,
 					'LO_name' => $record->title,
@@ -374,7 +374,7 @@ class CoursestatsLmsController extends LmsController {
 					'totaltime' => $this->model->roundTime($record->totaltime),
 					'score' => $record->score,
 					'edit' => $record->edit,
-				);
+                ];
 
 				$records[] = $row;
 			}
@@ -410,7 +410,7 @@ class CoursestatsLmsController extends LmsController {
 		$list = $this->model->getCourseUserStatsList($pagination, $id_course, $id_user);
 
 		//format models' data
-		$records = array();
+		$records = [];
 		$output = '';
 		$acl_man = Docebo::user()->getAclManager();
 		if (is_array($list)) {
@@ -425,7 +425,7 @@ class CoursestatsLmsController extends LmsController {
 				}
 
 				$output.= '<tr>';
-				$row = array(
+				$row = [
 					'LO_name' => $record->title,
 					'LO_type' => $record->objectType,
 					'LO_status' => $record->status != "" ? $record->status : 'not attempted',
@@ -435,7 +435,7 @@ class CoursestatsLmsController extends LmsController {
 					'totaltime' => $this->model->roundTime($record->totaltime),
 					'score' => $record->score,
 					'edit' => $record->edit,
-				);
+                ];
 
 				foreach ($row as $row_data) {
 					$output .= '<td>'.$row_data.'</td>';
@@ -507,7 +507,7 @@ class CoursestatsLmsController extends LmsController {
 		$info->last_complete = $tracked ? Format::date($track_info->last_complete, 'datetime', true) : $never;
 
 		$id_track = $this->model->getTrackId($id_lo, $id_user);
-		$params = array(
+		$params = [
 			'id_course' => $id_course,
 			'id_user' => $id_user,
 			'id_lo' => $id_lo,
@@ -519,7 +519,7 @@ class CoursestatsLmsController extends LmsController {
 			'track_history'=>$track_history,
 			'total_session_time'=>$total_session_time,
 			'permissions' => $this->permissions
-		);
+        ];
 
 		$this->render('show_user_object', $params);
 	}
@@ -552,13 +552,13 @@ class CoursestatsLmsController extends LmsController {
 		$info->first_complete = '';
 		$info->last_complete = '';
 
-		$params = array(
+		$params = [
 			'id_course' => $id_course,
 			'id_lo' => $id_lo,
 			'info' => $info,
 			'object_lo' => $this->model->getLOTrackObject(false, $lo_info->type),
 			'permissions' => $this->permissions
-		);
+        ];
 
 		$this->render('show_object', $params);
 	}
@@ -593,21 +593,21 @@ class CoursestatsLmsController extends LmsController {
 
 	public function inline_editorTask() {
 		if (!$this->permissions['mod']) {
-			$output = array('success' => false, 'message' => $this->_getErrorMessage('no permission'));
+			$output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
 			echo $this->json->encode($output);
 			return;
 		}
 
 		$id_course = isset($_SESSION['idCourse']) && $_SESSION['idCourse']>0 ? $_SESSION['idCourse'] : false;
 		if ((int)$id_course <= 0) {
-			$output = array('success' => false, 'message' => $this->_getErrorMessage('invalid course'));
+			$output = ['success' => false, 'message' => $this->_getErrorMessage('invalid course')];
 			echo $this->json->encode($output);
 			return;
 		}
 
 		$id_user = Get::req('id_user', DOTY_INT, -1);
 		if ($id_user <= 0) {
-			$output = array('success' => false, 'message' => $this->_getErrorMessage('invalid user'));
+			$output = ['success' => false, 'message' => $this->_getErrorMessage('invalid user')];
 			echo $this->json->encode($output);
 			return;
 		}
@@ -616,12 +616,12 @@ class CoursestatsLmsController extends LmsController {
 		$new_value = Get::req('new_value', DOTY_MIXED, false);
 
 		if ($old_value === false || $new_value === false) {
-			$output = array('success' => false, 'message' => $this->_getErrorMessage("invalid data"));
+			$output = ['success' => false, 'message' => $this->_getErrorMessage("invalid data")];
 			echo $this->json->encode($output);
 			return;
 		}
 
-		$output = array();
+		$output = [];
 		$col = Get::req('col', DOTY_STRING, "");
 		switch ($col) {
 			case "status": {
@@ -642,28 +642,28 @@ class CoursestatsLmsController extends LmsController {
     
 	public function user_inline_editorTask() {
 		if (!$this->permissions['mod']) {
-			$output = array('success' => false, 'message' => $this->_getErrorMessage('no permission'));
+			$output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
 			echo $this->json->encode($output);
 			return;
 		}
 
 		$id_course = isset($_SESSION['idCourse']) && $_SESSION['idCourse']>0 ? $_SESSION['idCourse'] : false;
 		if ((int)$id_course <= 0) {
-			$output = array('success' => false, 'message' => $this->_getErrorMessage('invalid course'));
+			$output = ['success' => false, 'message' => $this->_getErrorMessage('invalid course')];
 			echo $this->json->encode($output);
 			return;
 		}
 
 		$id_user = Get::req('id_user', DOTY_INT, -1);
 		if ($id_user <= 0) {
-			$output = array('success' => false, 'message' => $this->_getErrorMessage('invalid user'));
+			$output = ['success' => false, 'message' => $this->_getErrorMessage('invalid user')];
 			echo $this->json->encode($output);
 			return;
 		}
 
 		$id_lo = Get::req('id_lo', DOTY_INT, -1);
 		if ($id_lo <= 0) {
-			$output = array('success' => false, 'message' => $this->_getErrorMessage('invalid lo'));
+			$output = ['success' => false, 'message' => $this->_getErrorMessage('invalid lo')];
 			echo $this->json->encode($output);
 			return;
 		}
@@ -672,7 +672,7 @@ class CoursestatsLmsController extends LmsController {
 		$new_value = Get::req('new_value', DOTY_MIXED, false);
 
 		if ($old_value === false || $new_value === false) {
-			$output = array('success' => false, 'message' => $this->_getErrorMessage("invalid data"));
+			$output = ['success' => false, 'message' => $this->_getErrorMessage("invalid data")];
 			echo $this->json->encode($output);
 			return;
 		}
@@ -732,7 +732,7 @@ class CoursestatsLmsController extends LmsController {
                 $track_lo->createTrack( $idReference, $idTrack, $id_user, date("Y-m-d H:i:s"), 'not attempted', $lo_info->objectType);
         }
 
-		$output = array();
+		$output = [];
 		$col = Get::req('col', DOTY_STRING, "");
 		switch ($col) {
 			case "LO_status": {
@@ -807,7 +807,7 @@ class CoursestatsLmsController extends LmsController {
 		$lo_list = $this->model->getCourseLOs($id_course);
 		$lo_total = count($lo_list);
 
-		$head = array();
+		$head = [];
 		$head[] = $this->_formatCsvValue(Lang::t('_USERNAME', 'standard'), $delimiter);
 		$head[] = $this->_formatCsvValue(Lang::t('_FULLNAME', 'standard'), $delimiter);
 		$head[] = $this->_formatCsvValue(Lang::t('_LEVEL', 'standard'), $delimiter);
@@ -847,7 +847,7 @@ class CoursestatsLmsController extends LmsController {
 
 			if (is_array($records)) {
 				foreach ($records as $record) {
-					$row = array();
+					$row = [];
 					$row[] = $acl_man->relativeId($record->userid);
 					$row[] = $record->firstname.' '.$record->lastname;
 					$row[] = isset($arr_level[$record->level]) ? $arr_level[$record->level] : "";
@@ -861,7 +861,7 @@ class CoursestatsLmsController extends LmsController {
 					$row[] = $num_completed.' / '.$lo_total;
 
 					//format row and produce a string text to add to CSV file
-					$csv_row = array();
+					$csv_row = [];
 					foreach ($row as $row_data) {
 						$csv_row[] = $this->_formatCsvValue($row_data, $delimiter);
 					}
@@ -906,7 +906,7 @@ class CoursestatsLmsController extends LmsController {
 			if (is_array($records)) {
 				foreach ($records as $record) {
 					// Dati anagrafici partecipante
-					$rowa = array();
+					$rowa = [];
 					$rowa[] = Lang::t('_PARTICIPANT_DATA', 'standard')." :";
 					$rowa[] = Lang::t('_USERNAME', 'standard')." : ".$acl_man->relativeId($record->userid);
 					$rowa[] = Lang::t('_FULLNAME', 'standard')." : ".$record->firstname.' '.$record->lastname;
@@ -921,13 +921,13 @@ class CoursestatsLmsController extends LmsController {
 					
 					
 					$num_completed = 0;
-					$csv_row = array();
+					$csv_row = [];
 					foreach ($rowa as $row_data) {
 						$csv_row[] = $this->_formatCsvValue($row_data, $delimiter);
 							}
 					$output .= implode($separator, $csv_row).$line_end;
 					//Intestazione  LO
-					$head = array();
+					$head = [];
 					$head[] = $this->_formatCsvValue(Lang::t('_SUBJECT_NAME', 'standard'), $delimiter);
 					$head[] = $this->_formatCsvValue(Lang::t('_TYPE', 'standard'), $delimiter);
 					$head[] = $this->_formatCsvValue(Lang::t('_STATUS', 'standard'), $delimiter);
@@ -952,8 +952,8 @@ class CoursestatsLmsController extends LmsController {
 							if (is_array($history)) {
 								foreach ($history as $key=>$history_rec) {
 									if ($key == 0) {
-										$row = array();
-										$row = array(
+										$row = [];
+										$row = [
 											'LO_name' => $recordlo->title,
 											'LO_type' => $recordlo->objectType,
 											'LO_status' => $recordlo->status != "" ? $recordlo->status : 'not attempted',
@@ -965,11 +965,11 @@ class CoursestatsLmsController extends LmsController {
 											'history_status' =>  $history_rec[4],
 											'totaltime' => $recordlo->totaltime,
 											'score'=>$recordlo->score
-										);
+                                        ];
 									
 									} else {
-										$row = array();
-										$row = array(
+										$row = [];
+										$row = [
 											'LO_name' => '',
 											'LO_type' => '',
 											'LO_status' => '',
@@ -981,10 +981,10 @@ class CoursestatsLmsController extends LmsController {
 											'history_status' =>  $history_rec[4],
 											'totaltime' => '',
 											'score'=>''
-										);						
+                                        ];
 									}
 									// aggiungi una riga per ogni record storico accessi
-									$csv_row = array();
+									$csv_row = [];
 									foreach ($row as $row_data) {
 										$csv_row[] = $this->_formatCsvValue($row_data, $delimiter);
 									}
@@ -992,8 +992,8 @@ class CoursestatsLmsController extends LmsController {
 								}
 					
 							} else {
-								$row = array();
-								$row = array(
+								$row = [];
+								$row = [
 									'LO_name' => $recordlo->title,
 									'LO_type' => $recordlo->objectType,
 									'LO_status' => $recordlo->status != "" ? $record->status : 'not attempted',
@@ -1005,8 +1005,8 @@ class CoursestatsLmsController extends LmsController {
 									'history_status' =>  'nd',
 									'totaltime' => $recordlo->totaltime,
 									'score'=>$recordlo->score
-								);
-								$csv_row = array();
+                                ];
+								$csv_row = [];
 							
 								foreach ($row as $row_data) {
 									$csv_row[] = $this->_formatCsvValue($row_data, $delimiter);
@@ -1051,7 +1051,7 @@ class CoursestatsLmsController extends LmsController {
 				foreach ($records as $record) {
 					// Dati anagrafici partecipante
 					$output .= '<tr>';
-					$rowa = array();
+					$rowa = [];
 					$rowa[] = Lang::t('_PARTICIPANT_DATA', 'standard')." :";
 					$rowa[] = Lang::t('_USERNAME', 'standard')." : ".$acl_man->relativeId($record->userid);
 					$rowa[] = Lang::t('_FULLNAME', 'standard')." : ".$record->firstname.' '.$record->lastname;
@@ -1071,7 +1071,7 @@ class CoursestatsLmsController extends LmsController {
 					$output .= '</tr>';
 					//Intestazione  LO
 					$output .= '<tr>';
-					$head = array();
+					$head = [];
 					$head[] = Lang::t('_SUBJECT_NAME', 'standard');
 					$head[] = Lang::t('_TYPE', 'standard');
 					$head[] = Lang::t('_STATUS', 'standard');
@@ -1130,7 +1130,7 @@ class CoursestatsLmsController extends LmsController {
 		$output = '<table border="1">';
 		// Dati anagrafici partecipante
 		$output .= '<tr>';
-		$rowa = array();
+		$rowa = [];
 		$rowa[] =  Lang::t('_PARTICIPANT_DATA', 'standard');
 		$rowa[] = Lang::t('_USERNAME', 'standard')." : ".$acl_man->relativeId($info->userid);
 		$rowa[] = Lang::t('_FULLNAME', 'standard')." : ".$info->firstname.' '.$info->lastname;
@@ -1148,7 +1148,7 @@ class CoursestatsLmsController extends LmsController {
 		$output .= '</tr>';
 		//Intestazione  LO
 		$output .= '<tr>';
-		$head = array();
+		$head = [];
 		$head[] = Lang::t('_SUBJECT_NAME', 'standard');
 		$head[] = Lang::t('_TYPE', 'standard');
 		$head[] = Lang::t('_STATUS', 'standard');
@@ -1208,7 +1208,7 @@ class CoursestatsLmsController extends LmsController {
 			if (is_array($records)) {
 				foreach ($records as $record) {
 					// Dati anagrafici partecipante
-					$rowa = array();
+					$rowa = [];
 					$rowa[] = Lang::t('_PARTICIPANT_DATA', 'standard')." :";
 					$rowa[] = Lang::t('_USERNAME', 'standard')." : ".$acl_man->relativeId($record->userid);
 					$rowa[] = Lang::t('_FULLNAME', 'standard')." : ".$record->firstname.' '.$record->lastname;
@@ -1223,13 +1223,13 @@ class CoursestatsLmsController extends LmsController {
 					
 					
 					$num_completed = 0;
-					$csv_row = array();
+					$csv_row = [];
 					foreach ($rowa as $row_data) {
 						$csv_row[] = $this->_formatXlsValue($row_data);
 					}
 					$output .= implode($separator, $csv_row).$line_end;
 					//Intestazione  LO
-					$head = array();
+					$head = [];
 					$head[] = Lang::t('_SUBJECT_NAME', 'standard');
 					$head[] = Lang::t('_TYPE', 'standard');
 					$head[] = Lang::t('_STATUS', 'standard');
@@ -1254,8 +1254,8 @@ class CoursestatsLmsController extends LmsController {
 					
 								foreach ($history as $key=>$history_rec) {
 									if ($key == 0) {
-										$row = array();
-										$row = array(
+										$row = [];
+										$row = [
 											'LO_name' => $recordlo->title,
 											'LO_type' => $recordlo->objectType,
 											'LO_status' => $recordlo->status != "" ? $recordlo->status : 'not attempted',
@@ -1267,11 +1267,11 @@ class CoursestatsLmsController extends LmsController {
 											'history_status' =>  $history_rec[4],
 											'totaltime' => $recordlo->totaltime,
 											'score'=>$recordlo->score
-										);
+                                        ];
 									
 									} else {
-										$row = array();
-										$row = array(
+										$row = [];
+										$row = [
 											'LO_name' => '',
 											'LO_type' => '',
 											'LO_status' => '',
@@ -1283,18 +1283,18 @@ class CoursestatsLmsController extends LmsController {
 											'history_status' =>  $history_rec[4],
 											'totaltime' => '',
 											'score'=>''
-										);						
+                                        ];
 									}
 								 	// aggiungi una riga per ogni record storico accessi
-									$csv_row = array();
+									$csv_row = [];
 									foreach ($row as $row_data) {
 										$csv_row[] = $this->_formatXlsValue($row_data);
 									}
 									$output .= implode($separator, $csv_row).$line_end;
 								}
 							} else {
-								$row = array();
-								$row = array(
+								$row = [];
+								$row = [
 									'LO_name' => $recordlo->title,
 									'LO_type' => $recordlo->objectType,
 									'LO_status' => $recordlo->status != "" ? $record->status : 'not attempted',
@@ -1306,8 +1306,8 @@ class CoursestatsLmsController extends LmsController {
 									'history_status' =>  'nd',
 									'totaltime' => $recordlo->totaltime,
 									'score'=>$recordlo->score
-								);
-								$csv_row = array();
+                                ];
+								$csv_row = [];
 
 								foreach ($row as $row_data) {
 									$csv_row[] = $this->_formatXlsValue($row_data);
@@ -1344,7 +1344,7 @@ class CoursestatsLmsController extends LmsController {
 		
 		$output = "";
 		
-		$head = array();
+		$head = [];
 		$head[] = $this->_formatCsvValue(Lang::t('_NAME', 'standard'), $delimiter);
 		$head[] = $this->_formatCsvValue(Lang::t('_TYPE', 'standard'), $delimiter);
 		$head[] = $this->_formatCsvValue(Lang::t('_STATUS', 'standard'), $delimiter);
@@ -1361,11 +1361,11 @@ class CoursestatsLmsController extends LmsController {
 
 		$list = $this->model->getCourseUserStatsList2csv($pagination, $id_course, $id_user);
 		
-		$records = array();
+		$records = [];
 		$acl_man = Docebo::user()->getAclManager();
 		if (is_array($list)) {
 			foreach ($list as $record) {
-				$row = array(
+				$row = [
 					'LO_name' => $record->title,
 					'LO_type' => $record->objectType,
 					'LO_status' => $record->status != "" ? $record->status : 'not attempted',
@@ -1377,13 +1377,13 @@ class CoursestatsLmsController extends LmsController {
 					'history_status' =>  'nd',
 					'totaltime' => $record->totaltime,
 					'score'=>$record->score
-				);
+                ];
 				$history = $record->history;
 				
 				if (is_array($history)) {
 					foreach ($history as $key=>$history_rec) { 
 						if ($key == 0) {
-							$row = array(
+							$row = [
 								'LO_name' => $record->title,
 								'LO_type' => $record->objectType,
 								'LO_status' => $record->status != "" ? $record->status : 'not attempted',
@@ -1395,11 +1395,11 @@ class CoursestatsLmsController extends LmsController {
 								'history_status' =>  $history_rec[4],
 								'totaltime' => $record->totaltime,
 								'score'=>$record->score
-							);
+                            ];
 							
 						}
 						else {
-							$row = array(
+							$row = [
 								'LO_name' => '',
 								'LO_type' => '',
 								'LO_status' => '',
@@ -1411,19 +1411,19 @@ class CoursestatsLmsController extends LmsController {
 								'history_status' =>  $history_rec[4],
 								'totaltime' => '',
 								'score'=>''
-							);
+                            ];
 							
 							
 						}
 						 // aggiungi una riga per ogni record storico accessi
-						 $csv_row = array();
+						 $csv_row = [];
 						foreach ($row as $row_data) {
 						$csv_row[] = $this->_formatCsvValue($row_data, $delimiter);
 							}
 						$output .= implode($separator, $csv_row).$line_end;
 						} // each
 				} else {
-					$csv_row = array();
+					$csv_row = [];
 					foreach ($row as $row_data) {
 					$csv_row[] = $this->_formatCsvValue($row_data, $delimiter);
 						}

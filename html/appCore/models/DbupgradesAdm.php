@@ -24,7 +24,7 @@ class DbupgradesAdm extends Model {
 
 	public function getPerm()
 	{
-		return array(	'view' => 'standard/view.png');
+		return ['view' => 'standard/view.png'];
 	}
 
 	public function getDbUpgradesTotal($filter = false) {
@@ -48,8 +48,8 @@ class DbupgradesAdm extends Model {
 	}
         
 
-	public function getDbUpgradesList($pagination = array(), $filter = false) {
-		if (!is_array($pagination)) $pagination = array();
+	public function getDbUpgradesList($pagination = [], $filter = false) {
+		if (!is_array($pagination)) $pagination = [];
 
 		$startIndex = (isset($pagination['startIndex']) ? $pagination['startIndex'] : 0);
 		$results = (isset($pagination['results']) ? $pagination['results'] : Get::sett('visuItem', 25));
@@ -90,7 +90,7 @@ class DbupgradesAdm extends Model {
 
 		$res = $this->db->query($query);
 
-		$output = array();
+		$output = [];
 		if ($res) {
 			while ($obj = $this->db->fetch_obj($res)) {
 				$output[] = $obj;

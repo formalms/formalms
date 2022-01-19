@@ -28,7 +28,7 @@ class DynamicUserFilter {
     public $id = '';
     public $use_form_input = true;
 
-    protected $_initial_filters = array();
+    protected $_initial_filters = [];
     protected $_initial_exclusive = true;
     protected $_use_other_fields = true;
 
@@ -52,14 +52,14 @@ class DynamicUserFilter {
 
         $lang =& DoceboLanguage::createInstance('standard', 'framework');
 
-        $fields = array(
-            array('id'=>_STANDARD_FIELDS_PREFIX.'_0', 'name'=>addslashes(Lang::t('_USERNAME', 'standard')),         'type'=>_FIELD_TYPE_TEXT, 'standard'=>true),
-            array('id'=>_STANDARD_FIELDS_PREFIX.'_1', 'name'=>addslashes(Lang::t('_FIRSTNAME', 'standard')),        'type'=>_FIELD_TYPE_TEXT, 'standard'=>true),
-            array('id'=>_STANDARD_FIELDS_PREFIX.'_2', 'name'=>addslashes(Lang::t('_LASTNAME', 'standard')),         'type'=>_FIELD_TYPE_TEXT, 'standard'=>true),
-            array('id'=>_STANDARD_FIELDS_PREFIX.'_3', 'name'=>addslashes(Lang::t('_EMAIL', 'standard')),            'type'=>_FIELD_TYPE_TEXT, 'standard'=>true),
-            array('id'=>_STANDARD_FIELDS_PREFIX.'_4', 'name'=>addslashes(Lang::t('_REGISTER_DATE', 'standard')),    'type'=>_FIELD_TYPE_DATE, 'standard'=>true),
-            array('id'=>_STANDARD_FIELDS_PREFIX.'_5', 'name'=>addslashes(Lang::t('_DATE_LAST_ACCESS', 'standard')), 'type'=>_FIELD_TYPE_DATE, 'standard'=>true)
-        );
+        $fields = [
+            ['id'=>_STANDARD_FIELDS_PREFIX.'_0', 'name'=>addslashes(Lang::t('_USERNAME', 'standard')),         'type'=>_FIELD_TYPE_TEXT, 'standard'=>true],
+            ['id'=>_STANDARD_FIELDS_PREFIX.'_1', 'name'=>addslashes(Lang::t('_FIRSTNAME', 'standard')),        'type'=>_FIELD_TYPE_TEXT, 'standard'=>true],
+            ['id'=>_STANDARD_FIELDS_PREFIX.'_2', 'name'=>addslashes(Lang::t('_LASTNAME', 'standard')),         'type'=>_FIELD_TYPE_TEXT, 'standard'=>true],
+            ['id'=>_STANDARD_FIELDS_PREFIX.'_3', 'name'=>addslashes(Lang::t('_EMAIL', 'standard')),            'type'=>_FIELD_TYPE_TEXT, 'standard'=>true],
+            ['id'=>_STANDARD_FIELDS_PREFIX.'_4', 'name'=>addslashes(Lang::t('_REGISTER_DATE', 'standard')),    'type'=>_FIELD_TYPE_DATE, 'standard'=>true],
+            ['id'=>_STANDARD_FIELDS_PREFIX.'_5', 'name'=>addslashes(Lang::t('_DATE_LAST_ACCESS', 'standard')), 'type'=>_FIELD_TYPE_DATE, 'standard'=>true]
+        ];
         return $fields;
     }
 
@@ -85,7 +85,7 @@ class DynamicUserFilter {
 
         if (!$js) return $fields;
 
-        $temp = array();
+        $temp = [];
         foreach ($fields as $val) {
             $temp[] = '{id: "'.$val['id'].'", name: "'.addslashes($val['name']).'", type: "'.$val['type'].'", standard: '.($val['standard'] ? 'true' : 'false').'}';
         }
@@ -96,7 +96,7 @@ class DynamicUserFilter {
         $fman = new FieldList();
         $types = $fman->getFieldTypesList();
 
-        $temp = array();
+        $temp = [];
         foreach ($types as $key=>$val) {
             require_once(Forma::inc(_adm_.'/modules/field/'.$val['type_file']));
             $quest_obj = eval("return new ".$val['type_class']."( NULL );");
@@ -130,10 +130,10 @@ class DynamicUserFilter {
             $this->_initial_exclusive = ($_data['exclusive'] ? true : false);
             foreach ($_data['filters'] as $filter) {
 
-                $this->_initial_filters[] = array(
+                $this->_initial_filters[] = [
                     'id_field' => $filter['id_field'],
                     'value' => addslashes($filter['value'])
-                );
+                ];
             }
         }
         return $output;
@@ -142,11 +142,11 @@ class DynamicUserFilter {
     public function get($domready = true, $tags = true) {
 
         $lang =& DoceboLanguage::createInstance('report', 'framework');
-        $output = array();
+        $output = [];
 
         $js_initsel = '';
         if (count($this->_initial_filters)>0) {
-            $temp = array();
+            $temp = [];
             foreach ($this->_initial_filters as $filter) {
                 $temp[] = '{id_field: "'.$filter['id_field'].'", value: "'.$filter['value'].'"}';
             }
@@ -295,7 +295,7 @@ class DynamicUserFilter {
     function getUsers($param = false) {
         //retrieve all users matching given conditions
 
-        $output		= array();
+        $output		= [];
         $json		= new Services_JSON(SERVICES_JSON_LOOSE_TYPE);
         $a_obj		= new DoceboACLManager();
         $fman		= new FieldList();
@@ -308,15 +308,15 @@ class DynamicUserFilter {
         $conds		= $filter['filters'];
 
         //return a void array if no conditions specified
-        if (count($conds)<=0) return array();
+        if (count($conds)<=0) return [];
 
         //compose nested query
         // base query /Anonymous
         $base_query = "SELECT idst, userid "
             ." FROM %adm_user ";
-        $std_condition    = array();
-        $in_conditions    = array();
-        $other_conditions = array();
+        $std_condition    = [];
+        $in_conditions    = [];
+        $other_conditions = [];
         foreach ($conds as $cond) {
 
             $id_field	= $cond['id_field'];
@@ -469,7 +469,7 @@ class DynamicUserFilter {
         }
 
         //produce output
-        $output = array();
+        $output = [];
         $re = $this->db->query($query);
         while ($rw = $this->db->fetch_assoc($re)) {
             if ($rw['userid'] != '/Anonymous') $output[] = $rw['idst'];

@@ -1,6 +1,6 @@
 <?php
 
-	$languages = array(
+	$languages = [
 		'_ROOT' => Lang::t('_CATEGORY'),
 		'_YES' => Lang::t('_CONFIRM'),
 		'_NO' => Lang::t('_UNDO'),
@@ -10,16 +10,16 @@
 		'_NAME' => Lang::t('_NAME'),
 		'_MOD' => Lang::t('_MOD'),
 		'_DEL' => Lang::t('_DEL')
-	);
+    ];
 
-	$arguments = array(
+	$arguments = [
 		'id' => 'tree',
 		'ajaxUrl' => 'ajax.adm_server.php?plf=lms&file=category_tree&sf=folder_tree',//'ajax.server.php?r=dummy/testdata',
 		'treeClass' => 'CourseFolderTree',
 		'treeFile' => Get::rel_path('base').'/widget/tree/coursefoldertree.js',
 		'languages' => $languages,
 		'show' => 'tree'
-	);
+    ];
 
 	$this->widget('tree', $arguments);
 

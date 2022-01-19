@@ -38,7 +38,7 @@ class Track_ScormOrg extends Track_Object {
 
 		$this->idResource = $idResource;
 		$this->idParams = $idParams;
-		if($back_url === NULL) $this->back_url = array();
+		if($back_url === NULL) $this->back_url = [];
 		else $this->back_url = $back_url;
 	}
 
@@ -97,7 +97,7 @@ class Track_ScormOrg extends Track_Object {
 			list($id_user, $id_lo, $idTrack) = sql_fetch_row($res);
 
 			//collect data for tracking history table
-			$arr_ids = array();
+			$arr_ids = [];
 			$query = "SELECT idscorm_tracking FROM %lms_scorm_tracking WHERE idUser=".$id_user." AND idReference=".$id_lo;
 			$res = sql_query($query);
 			if ($res) {

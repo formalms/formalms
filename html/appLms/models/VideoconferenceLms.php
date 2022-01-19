@@ -15,7 +15,7 @@ class VideoconferenceLms extends LmsController
 					." WHERE idUser = '".$this->id_user."'";
 
 		$result = sql_query($query);
-		$res = array(0 => 0);
+		$res = [0 => 0];
 
 		while(list($id_course) = sql_fetch_row($result))
 			$res[] = $id_course;
@@ -29,7 +29,7 @@ class VideoconferenceLms extends LmsController
 					." FROM %lms_course";
 
 		$result = sql_query($query);
-		$res = array();
+		$res = [];
 
 		while(list($id_course, $name) = sql_fetch_row($result))
 			$res[$id_course] = $name;
@@ -47,7 +47,7 @@ class VideoconferenceLms extends LmsController
 					." ORDER BY starttime, name";
 
 		$result = sql_query($query);
-		$res = array();
+		$res = [];
 
 		while($row = sql_fetch_assoc($result))
 			$res[$row['id']] = $row;
@@ -64,7 +64,7 @@ class VideoconferenceLms extends LmsController
 					." ORDER BY starttime, name";
 
 		$result = sql_query($query);
-		$res = array();
+		$res = [];
 
 		while($row = sql_fetch_assoc($result))
 			$res[$row['id']] = $row;
@@ -81,7 +81,7 @@ class VideoconferenceLms extends LmsController
 					." ORDER BY starttime, name";
 
 		$result = sql_query($query);
-		$res = array();
+		$res = [];
 
 		while($row = sql_fetch_assoc($result))
 			$res[$row['id']] = $row;

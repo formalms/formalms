@@ -1,4 +1,4 @@
-<?php Get::title(array(Lang::t('_CART', 'cart'))); ?>
+<?php Get::title([Lang::t('_CART', 'cart')]); ?>
 
 <div class="std_block">
 
@@ -9,7 +9,7 @@ $del_sel = '<a class="ico-wt-sprite subs_del" href="javascript:;" onclick="delSe
 
 $rel_action = $empty_cart.' '.$del_sel;
 
-$this->widget('table', array(
+$this->widget('table', [
 	'id'			=> 'cart_table',
 	'ajaxUrl'		=> 'ajax.server.php?r=cart/getCartList',
 	'rowsPerPage'	=> 0,
@@ -17,21 +17,21 @@ $this->widget('table', array(
 	'results'		=> 0,
 	'sort'			=> 'name',
 	'dir'			=> 'asc',
-	'columns'		=> array(
-		array('key' => 'code', 'label' => Lang::t('_CODE', 'cart'), 'sortable' => true),
-		array('key' => 'name', 'label' => Lang::t('_NAME', 'cart'), 'sortable' => true),
-		array('key' => 'type', 'label' => Lang::t('_COURSE_TYPE', 'cart'), 'sortable' => true),
-		array('key' => 'date_begin', 'label' => Lang::t('_DATE_BEGIN', 'cart'), 'sortable' => true),
-		array('key' => 'date_end', 'label' => Lang::t('_DATE_END', 'cart'), 'sortable' => true),
-		array('key' => 'price', 'label' => Lang::t('_COURSE_PRIZE', 'cart'), 'sortable' => true)
-	),
-	'fields'		=> array('id', 'code', 'name', 'type', 'date_begin', 'date_end', 'price', 'action'),
+	'columns'		=> [
+		['key' => 'code', 'label' => Lang::t('_CODE', 'cart'), 'sortable' => true],
+		['key' => 'name', 'label' => Lang::t('_NAME', 'cart'), 'sortable' => true],
+		['key' => 'type', 'label' => Lang::t('_COURSE_TYPE', 'cart'), 'sortable' => true],
+		['key' => 'date_begin', 'label' => Lang::t('_DATE_BEGIN', 'cart'), 'sortable' => true],
+		['key' => 'date_end', 'label' => Lang::t('_DATE_END', 'cart'), 'sortable' => true],
+		['key' => 'price', 'label' => Lang::t('_COURSE_PRIZE', 'cart'), 'sortable' => true]
+    ],
+	'fields'		=> ['id', 'code', 'name', 'type', 'date_begin', 'date_end', 'price', 'action'],
 	'show'			=> 'table',
 	'use_paginator' => false,
 	'print_table_below' => false,
 	'rel_actions'	=> $rel_action,
 	'stdSelection' => true,
-));
+]);
 
 
 ?>

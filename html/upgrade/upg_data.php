@@ -17,7 +17,7 @@ $current_step = Get::gReq('cur_step', DOTY_INT);
 $upg_step = Get::gReq('upg_step', DOTY_INT);
 
 // allowed err codes
-$allowed_err_codes = array();
+$allowed_err_codes = [];
 array_push($allowed_err_codes, 1060); // ER_DUP_FIELDNAME
 array_push($allowed_err_codes, 1068); // ER_MULTIPLE_PRI_KEY
 array_push($allowed_err_codes, 1091); // ER_CANT_DROP_FIELD_OR_KEY
@@ -154,9 +154,9 @@ $GLOBALS['debug'] = $upgrade_msg
 //echo $GLOBALS['debug'];
 
 if ( $_SESSION['upgrade_ok'] ) {
-		$res =array('res'=>'ok', 'msg' => $GLOBALS['debug']);
+		$res = ['res'=>'ok', 'msg' => $GLOBALS['debug']];
 } else {
-		$res =array('res'=>'Error', 'msg' => $GLOBALS['debug']);
+		$res = ['res'=>'Error', 'msg' => $GLOBALS['debug']];
 }
 
 // remove all the echo and put them in the debug zone

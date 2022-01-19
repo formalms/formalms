@@ -40,7 +40,7 @@ class DashboardsettingsAdmController extends AdmController
         Util::get_js(Get::rel_path('base') . '/addons/tiny_mce/tinymce.min.js', true, true);
         Util::get_js(Get::rel_path('base') . '/addons/tiny_mce/forma.js', true, true);
 
-        $this->permissions = array(
+        $this->permissions = [
             'view' => checkPerm('view', true, 'dashboard', 'framework'),
             'view_user' => checkPerm('view', true, 'usermanagement', 'framework'),
             'add_user' => checkPerm('add', true, 'usermanagement', 'framework'),
@@ -55,7 +55,7 @@ class DashboardsettingsAdmController extends AdmController
             'view_games' => checkPerm('view', true, 'games', 'lms'),
             'add_games' => checkPerm('add', true, 'games', 'lms'),
             'subscribe' => checkPerm('subscribe', true, 'course', 'lms'),
-        );
+        ];
     }
 
 
@@ -185,9 +185,9 @@ class DashboardsettingsAdmController extends AdmController
             'dashboardId' => $dashboardId,
         ];
 
-        $res = array(
+        $res = [
             'data' => $data
-        );
+        ];
 
         echo $this->json->encode($res);
         exit;
@@ -382,12 +382,12 @@ class DashboardsettingsAdmController extends AdmController
         header("Cache-Control: no-transform,public,max-age=300,s-maxage=900");
         header('Content-Type: application/json');
 
-        $status = array(
+        $status = [
             200 => '200 OK',
             400 => '400 Bad Request',
             422 => 'Unprocessable Entity',
             500 => '500 Internal Server Error'
-        );
+        ];
         // ok, validation error, or failure
         header('Status: ' . $status[$code]);
 

@@ -43,10 +43,10 @@ YAHOO.util.Event.onDOMReady(function(e) {
 });
 </script>
 <?php
-echo getTitleArea(array(
+echo getTitleArea([
 	'index.php?r='. $this->link.'/show' => Lang::t('_ORGCHART', 'directory'),
 	Lang::t('_DELETED_USER_LIST', 'profile')
-));
+]);
 ?>
 <div class="std_block">
 <?php echo getBackUi('index.php?r='. $this->link.'/show', Lang::t('_BACK', 'standard')); ?>
@@ -63,7 +63,7 @@ echo getTitleArea(array(
 </div>
 <?php
 
-$params = array(
+$params = [
 	'id' => 'deletedtable',
 	'ajaxUrl' => 'ajax.adm_server.php?r='. $this->link.'/getdeleteduserstabledata',
 	'rowsPerPage' => Get::sett('visuItem', 25),
@@ -71,17 +71,17 @@ $params = array(
 	'results' => Get::sett('visuItem', 25),
 	'sort' => 'userid',
 	'dir' => 'desc',
-	'columns' => array(
-			array('key' => 'userid', 'label' => Lang::t('_USERNAME', 'standard'), 'sortable' => true),
-			array('key' => 'firstname', 'label' => Lang::t('_FIRSTNAME', 'standard'), 'sortable' => true),
-			array('key' => 'lastname', 'label' => Lang::t('_LASTNAME', 'standard'), 'sortable' => true),
-			array('key' => 'email', 'label' => Lang::t('_EMAIL', 'standard'), 'sortable' => true),
-			array('key' => 'deletion_date', 'label' => Lang::t('_DELETION_DATE', 'profile'), 'sortable' => true),
-			array('key' => 'deleted_by', 'label' => Lang::t('_DELETED_BY', 'profile'), 'sortable' => true)
-		),
-	'fields' => array('id', 'userid', 'firstname', 'lastname', 'email', 'deletion_date', 'deleted_by'),
+	'columns' => [
+			['key' => 'userid', 'label' => Lang::t('_USERNAME', 'standard'), 'sortable' => true],
+			['key' => 'firstname', 'label' => Lang::t('_FIRSTNAME', 'standard'), 'sortable' => true],
+			['key' => 'lastname', 'label' => Lang::t('_LASTNAME', 'standard'), 'sortable' => true],
+			['key' => 'email', 'label' => Lang::t('_EMAIL', 'standard'), 'sortable' => true],
+			['key' => 'deletion_date', 'label' => Lang::t('_DELETION_DATE', 'profile'), 'sortable' => true],
+			['key' => 'deleted_by', 'label' => Lang::t('_DELETED_BY', 'profile'), 'sortable' => true]
+    ],
+	'fields' => ['id', 'userid', 'firstname', 'lastname', 'email', 'deletion_date', 'deleted_by'],
 	'generateRequest' => 'DeletedManagement.requestBuilder'
-);
+];
 
 $this->widget('table', $params);
 

@@ -23,24 +23,24 @@ class Module_Project extends LmsModule {
 	}
 	
 	function getAllToken() {
-		return array( 
-			'view' => array( 	'code' => 'view',
+		return [
+			'view' => ['code' => 'view',
 								'name' => '_VIEW',
-								'image' => 'standard/view.png'),
-			'add' => array( 	'code' => 'add',
+								'image' => 'standard/view.png'],
+			'add' => ['code' => 'add',
 								'name' => '_ALT',
-								'image' => 'standard/add.png'),								
-			'mod' => array( 	'code' => 'mod',
+								'image' => 'standard/add.png'],
+			'mod' => ['code' => 'mod',
 								'name' => '_MOD',
-								'image' => 'standard/edit.png'),								
-			'del' => array( 	'code' => 'del',
+								'image' => 'standard/edit.png'],
+			'del' => ['code' => 'del',
 								'name' => '_DEL',
-								'image' => 'standard/delete.png')
-		);
+								'image' => 'standard/delete.png']
+        ];
 	}
 
 	function getPermissionsForMenu($op) {
-		return array(
+		return [
 			1 => $this->selectPerm($op, 'view'),
 			2 => $this->selectPerm($op, 'view'),
 			3 => $this->selectPerm($op, 'view'),
@@ -48,7 +48,7 @@ class Module_Project extends LmsModule {
 			5 => $this->selectPerm($op, 'view,mod'),
 			6 => $this->selectPerm($op, 'view,add,mod,del'),
 			7 => $this->selectPerm($op, 'view,add,mod,del')
-		);
+        ];
 	}
 	
 }

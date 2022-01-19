@@ -95,8 +95,8 @@ function getTrackingTable($id_user, $id_org, $idscorm_item, $idReference) {
 
 	$lang = DoceboLanguage::CreateInstance('organization', 'lms');
 
-	$h_type = array('', '', 'image', 'image', '', 'nowrap', 'image', 'image nowrap');
-	$h_content = array(
+	$h_type = ['', '', 'image', 'image', '', 'nowrap', 'image', 'image nowrap'];
+	$h_content = [
 		$lang->def('_NAME'),
 		$lang->def('_STATUS'),
 		$lang->def('_SCORE'),
@@ -105,7 +105,7 @@ function getTrackingTable($id_user, $id_org, $idscorm_item, $idReference) {
 		$lang->def('_TIME'),
 		$lang->def('_ATTEMPTS'),
 		''
-	);
+    ];
 
 	$tb->setColsStyle($h_type);
 	$tb->addHead($h_content);
@@ -114,7 +114,7 @@ function getTrackingTable($id_user, $id_org, $idscorm_item, $idReference) {
 		" FROM ".$GLOBALS['prefix_lms']."_scorm_items_track  ".
 		" WHERE idscorm_organization=$id_org ".
 		" AND idUser=$id_user ";
-	$lessons_status = array();
+	$lessons_status = [];
 	$res = sql_query($query);
 	while (list($id, $s) = sql_fetch_row($res)) {
 		$lessons_status[$id] = $s;
@@ -133,7 +133,7 @@ function getTrackingTable($id_user, $id_org, $idscorm_item, $idReference) {
 	$res = sql_query($qry);
 	while ($row = sql_fetch_assoc($res)) {
 
-		$line = array();
+		$line = [];
 
 		$interactions = '<a href="index.php?modname=stats&op=statoneuseroneiteminteractions&amp;id_user='.$id_user.'&amp;idItem='.$idReference.'&amp;id_track='.$row['id_track'].'">'.$lang->def('_SHOW_INTERACTIONS').'</a>';
         $scorm_history = '<a href="index.php?modname=stats&op=statoneuseroneitemhistory&amp;idUser='.$id_user.'&amp;idItem='.$idReference.'&amp;idItemDetail='.$row['item'].'&amp;backto=statoneuseroneitem">'.$lang->def('_HISTORY').'</a>';
@@ -165,14 +165,14 @@ function getHistoryTable($id_user, $id_org, $idscorm_item, $idReference) {
 
 	$lang = DoceboLanguage::CreateInstance('organization', 'lms');
 
-	$h_type = array('', '', '', '', '');
-	$h_content = array(
+	$h_type = ['', '', '', '', ''];
+	$h_content = [
 		$lang->def('_ATTEMPT'),
 		$lang->def('_STATUS'),
 		$lang->def('_SCORE'),
 		$lang->def('_DATE'),
 		$lang->def('_TIME')
-	);
+    ];
 
 	$tb->setColsStyle($h_type);
 	$tb->addHead($h_content);
@@ -185,7 +185,7 @@ function getHistoryTable($id_user, $id_org, $idscorm_item, $idReference) {
 	$res = sql_query($qry); $i=1;
 	while ($row = sql_fetch_assoc($res)) {
 
-		$line = array();
+		$line = [];
 
 		$line[] = $lang->def('_ATTEMPT').' '.$i;
 		$line[] = $row['lesson_status'];

@@ -133,7 +133,7 @@ class Learning_Test extends Learning_Object {
 		SELECT idTrack 
 		FROM %lms_testtrack
 		WHERE idTest = '".$id."'");
-		$id_tracks = array();
+		$id_tracks = [];
 		while(list($id_t) = sql_fetch_row($re_quest_track)) {
 			$id_tracks[] = $id_t;
 		}
@@ -329,15 +329,15 @@ class Learning_Test extends Learning_Object {
 		$output = false;
 		$query = "SELECT * FROM %lms_test WHERE title LIKE '%".$key."%' OR description LIKE '%".$key."%' ORDER BY title";
 		$res = $this->db->query($query);
-		$results = array();
+		$results = [];
 		if ($res) {
-			$output = array();
+			$output = [];
 			while ($row = $this->db->fetch_obj($res)) {
-				$output[] = array(
+				$output[] = [
 					'id' => $row->idTest,
 					'title' => $row->title,
 					'description' => $row->description
-				);
+                ];
 			}
 		}
 		return $output;
@@ -352,16 +352,16 @@ class Learning_Test extends Learning_Object {
 		//\appCore\Events\DispatcherManager::dispatch(\appLms\Events\Lms\TestGetTypesEvent::EVENT_NAME, $event);
 
 		//return $event->getTestTypes();
-		return array('test');
+		return ['test'];
 	}
 
 	/**
 	 * @param array $excludedTypes
 	 * @return Question[]
 	 */
-	function getQuests($excludedTypes = array('break_page'))
+	function getQuests($excludedTypes = ['break_page'])
 	{
-		$objList = array();
+		$objList = [];
 		$query = "SELECT q.idQuest, q.type_quest, t.type_file, t.type_class
                   FROM %lms_testquest AS q
                   JOIN %lms_quest_type AS t

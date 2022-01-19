@@ -31,19 +31,19 @@ class Module_Conference extends LmsModule {
 	}
 	
 	function getAllToken($op = '') {
-		return array( 
-			'view' => array( 	'code' => 'view',
+		return [
+			'view' => ['code' => 'view',
 								'name' => '_VIEW',
-								'image' => 'standard/view.png'), 
-			'mod' => array( 	'code' => 'mod',
+								'image' => 'standard/view.png'],
+			'mod' => ['code' => 'mod',
 								'name' => '_SCHEDULE',
-								'image' => 'standard/edit.png')
-		);
+								'image' => 'standard/edit.png']
+        ];
 	}
 
 
 	function getPermissionsForMenu($op) {
-		return array(
+		return [
 			1 => $this->selectPerm($op, 'view'),
 			2 => $this->selectPerm($op, 'view'),
 			3 => $this->selectPerm($op, 'view'),
@@ -51,7 +51,7 @@ class Module_Conference extends LmsModule {
 			5 => $this->selectPerm($op, 'view,mod'),
 			6 => $this->selectPerm($op, 'view,mod'),
 			7 => $this->selectPerm($op, 'view,mod')
-		);
+        ];
 	}
 	
 }

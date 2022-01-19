@@ -26,7 +26,7 @@ class PusermanagementLmsController extends UsermanagementAdmController {
 		$this->json = new Services_JSON(SERVICES_JSON_LOOSE_TYPE);
 		$this->numVarFields = 3;
 		$this->sessionPrefix = 'pusermanagement';
-		$this->permissions = array(
+		$this->permissions = [
 			'view'					=> checkPerm('view', true, 'pusermanagement', 'lms'),					//view the module
 			'view_user'				=> checkPerm('view', true, 'pusermanagement', 'lms'),					//view the users list
 			'add_user'				=> checkPerm('add', true, 'pusermanagement', 'lms'),					//create users
@@ -38,18 +38,18 @@ class PusermanagementLmsController extends UsermanagementAdmController {
 			'mod_org'				=> false,//checkPerm('mod_org', true, 'pusermanagement'),		//edit orgchart branches
 			'del_org'				=> false,//checkPerm('mod_org', true, 'pusermanagement'),		//remove orgchart branches
 			'associate_user'		=> checkPerm('mod', true, 'pusermanagement', 'lms') //checkPerm('mod_org', true, 'pusermanagement')			//associate users to orgbranches
-		);
+        ];
 		$this->_mvc_name = 'usermanagement';
 	}
 
 	public function getPerm() {
-		return array(
+		return [
 			'view'					=> 'standard/view.png',
 			'add'					=> 'standard/add.png',
 			'mod'					=> 'standard/edit.png',
 			'del'					=> 'standard/delete.png',
 			'approve_waiting_user'	=> 'standard/wait_alarm.png'
-		);
+        ];
 	}
 
 }

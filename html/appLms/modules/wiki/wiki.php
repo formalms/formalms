@@ -383,7 +383,7 @@ function wikiPdfExport($wiki_id, $all)
 	
 	$pages_selected = $_POST['page'];
 	
-	$page_code_array = array();
+	$page_code_array = [];
 	
 	$query =	"SELECT page_code"
 				." FROM ".$GLOBALS['prefix_fw']."_wiki_page";

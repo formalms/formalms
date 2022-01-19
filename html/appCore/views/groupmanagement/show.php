@@ -28,16 +28,16 @@ $assign_label = '<a href="javascript:return false;" class="ico-sprite subs_users
 $mod_label = '<a href="javascript:return false;" class="ico-sprite subs_mod" title="'.$mod_label_title.'"><span>'.$mod_label_title.'</span></a>';
 $del_label = '<a href="javascript:return false;" class="ico-sprite subs_del" title="'.$del_label_title.'"><span>'.$del_label_title.'</span></a>';
 
-$columns = array(
-	array('key' => 'groupid', 'label' => Lang::t('_NAME', 'standard'), 'sortable' => true),
-	array('key' => 'description', 'label' => Lang::t('_DESCRIPTION', 'standard'), 'sortable' => true)
+$columns = [
+	['key' => 'groupid', 'label' => Lang::t('_NAME', 'standard'), 'sortable' => true],
+	['key' => 'description', 'label' => Lang::t('_DESCRIPTION', 'standard'), 'sortable' => true]
 	//array('key' => 'usercount', 'label' => Lang::t('_USERS', 'standard'), 'sortable' => true, 'className' => 'img-cell'),
-);
-if ($permissions['associate_user']) $columns[] = array('key' => 'assign', 'label' => $assign_label, 'formatter' => 'GroupManagement.assignFormatter', 'className' => 'img-cell');
-if ($permissions['mod']) $columns[] = array('key' => 'mod', 'label' => $mod_label, 'formatter' => 'doceboModify', 'className' => 'img-cell');
-if ($permissions['del']) $columns[] = array('key' => 'del', 'label' => $del_label, 'formatter' => 'doceboDelete', 'className' => 'img-cell');
+];
+if ($permissions['associate_user']) $columns[] = ['key' => 'assign', 'label' => $assign_label, 'formatter' => 'GroupManagement.assignFormatter', 'className' => 'img-cell'];
+if ($permissions['mod']) $columns[] = ['key' => 'mod', 'label' => $mod_label, 'formatter' => 'doceboModify', 'className' => 'img-cell'];
+if ($permissions['del']) $columns[] = ['key' => 'del', 'label' => $del_label, 'formatter' => 'doceboDelete', 'className' => 'img-cell'];
 
-$params = array(
+$params = [
 	'id' => 'grouptable',
 	'ajaxUrl' => 'ajax.adm_server.php?r=adm/groupmanagement/getdata&',
 	'rowsPerPage' => Get::sett('visuItem', 25),
@@ -47,16 +47,16 @@ $params = array(
 	'dir' => 'asc',
 	'checkableRows' => true,
 	'columns' => $columns,
-	'fields' => array('id', 'groupid', 'description', 'usercount', 'membercount', 'mod', 'del'),
+	'fields' => ['id', 'groupid', 'description', 'usercount', 'membercount', 'mod', 'del'],
 	'generateRequest' => 'GroupManagement.requestBuilder',
 	'delDisplayField' => 'groupid'
-);
+];
 
 if ($permissions['add']) {
 	$add_link_title = Lang::t('_NEW', 'admin_directory');
 	$add_link_1 = '<a id="add_group_link_1" class="ico-wt-sprite subs_add" href="ajax.adm_server.php?r=adm/groupmanagement/create" title="'.$add_link_title.'"><span>'.$add_link_title.'</span></a>';
 	$add_link_2 = '<a id="add_group_link_2" class="ico-wt-sprite subs_add" href="ajax.adm_server.php?r=adm/groupmanagement/create" title="'.$add_link_title.'"><span>'.$add_link_title.'</span></a>';
-	$params['rel_actions'] = array($add_link_1, $add_link_2);
+	$params['rel_actions'] = [$add_link_1, $add_link_2];
 }
 
 $this->widget('table', $params);

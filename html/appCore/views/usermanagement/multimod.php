@@ -84,11 +84,11 @@ $mask .= $_close_table;
 $mask .= Form::closeForm();
 
 if (isset($json)) {
-	$output = array(
+	$output = [
 		'success' => true,
 		'header' => $title,
 		'body' => $mask
-	);
+    ];
 	if (isset($GLOBALS['date_inputs']) && !empty($GLOBALS['date_inputs'])) $output['__date_inputs'] = $GLOBALS['date_inputs'];
 	echo $this->json->encode($output);
 } else {

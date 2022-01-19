@@ -21,7 +21,7 @@ class ClassEventManager {
 	var $prefix=NULL;
 	var $dbconn=NULL;
 
-	var $status_info=array();
+	var $status_info= [];
 
 
 	function ClassEventManager($prefix="learning", $dbconn=NULL) {
@@ -76,8 +76,8 @@ class ClassEventManager {
 
 	function getClassEventList($ini=FALSE, $vis_item=FALSE) {
 
-		$data_info=array();
-		$data_info["data_arr"]=array();
+		$data_info= [];
+		$data_info["data_arr"]= [];
 
 		$fields="*";
 		$qtxt ="SELECT ".$fields." FROM ".$this->_getMainTable()." ";
@@ -111,7 +111,7 @@ class ClassEventManager {
 
 
 	function getClassEventArray($include_any=FALSE) {
-		$res=array();
+		$res= [];
 
 		$class_locations=$this->getClassEventList(FALSE, FALSE);
 		$locations_list=$class_locations["data_arr"];
@@ -129,7 +129,7 @@ class ClassEventManager {
 
 
 	function loadClassEventInfo($id) {
-		$res=array();
+		$res= [];
 
 		$fields="*";
 		$qtxt ="SELECT ".$fields." FROM ".$this->_getMainTable()." ";

@@ -36,7 +36,7 @@ function adviceList()
 		WHERE ( idUser IN ( " . implode(',', $user_idst) . " ) AND archivied = '0' )";
 	$re_my_advice = sql_query($query_my_advice);
 
-	$advice_all = array();
+	$advice_all = [];
 	while (list($id) = sql_fetch_row($re_my_advice)) {
 
 		$advice_all[$id] = $id;
@@ -284,7 +284,7 @@ function addadvice()
 	//finding group
 	$acl_man = &Docebo::user()->getAclManager();
 	$db_groups = $acl_man->getBasePathGroupST('/lms/course/' . $_SESSION['idCourse'] . '/group/', true);
-	$groups = array();
+	$groups = [];
 	$groups['me'] = $lang->def('_YOUONLY');
 	foreach ($db_groups as $idst => $groupid) {
 
@@ -296,10 +296,10 @@ function addadvice()
 		$groups[$idst] = $groupid;
 	}
 	$groups['sel_user'] = $lang->def('_MANUAL_USER_SEL');
-	$title = array(
+	$title = [
 		'index.php?modname=advice&amp;op=advice' => $lang->def('_ADVICE'),
 		$lang->def('_ADD_ADVICE')
-	);
+    ];
 
 
 
@@ -353,7 +353,7 @@ function insadvice()
 			break;
 		case "me": {
 
-				$members = array(getLogUserId());
+				$members = [getLogUserId()];
 				$query_insert = "
 				INSERT INTO " . $GLOBALS['prefix_lms'] . "_adviceuser
 				( idUser, idAdvice ) VALUES
@@ -383,21 +383,21 @@ function insadvice()
 	require_once(_base_ . '/lib/lib.eventmanager.php');
 
 	$msg_composer = new EventMessageComposer();
-	$_REQUEST['description'] = str_replace(array('\r', '\n'), '', $_REQUEST['description']);
+	$_REQUEST['description'] = str_replace(['\r', '\n'], '', $_REQUEST['description']);
 	$msg_composer->setSubjectLangText('email', '_ALERT_SUBJECT', false);
-	$msg_composer->setBodyLangText('email', '_ALERT_TEXT', array(
+	$msg_composer->setBodyLangText('email', '_ALERT_TEXT', [
 		'[url]' => Get::site_url(),
 		'[course]' => $GLOBALS['course_descriptor']->getValue('name'),
 		'[title]' => stripslashes($_REQUEST['title']),
 		'[text]' => stripslashes($_REQUEST['description'])
-	));
+    ]);
 
-	$msg_composer->setBodyLangText('sms', '_ALERT_TEXT_SMS', array(
+	$msg_composer->setBodyLangText('sms', '_ALERT_TEXT_SMS', [
 		'[url]' => Get::site_url(),
 		'[course]' => $GLOBALS['course_descriptor']->getValue('name'),
 		'[title]' => stripslashes($_REQUEST['title']),
 		'[text]' => stripslashes($_REQUEST['description'])
-	));
+    ]);
 
 	createNewAlert(
 		'AdviceNew',
@@ -426,10 +426,10 @@ function modadvice()
 		WHERE idAdvice='" . (int)$_GET['idAdvice'] . "'";
 	list($title, $description, $impo) = sql_fetch_row(sql_query($query_advice));
 
-	$page_title = array(
+	$page_title = [
 		'index.php?modname=advice&amp;op=advice' => $lang->def('_ADVICE'),
 		$lang->def('_MOD')
-	);
+    ];
 	$GLOBALS['page']->add(
 		getTitleArea($page_title, 'advice')
 			. '<div class="std_block">'
@@ -496,7 +496,7 @@ function modreader()
 			FROM " . $GLOBALS['prefix_lms'] . "_adviceuser
 			WHERE idAdvice = '" . $id_advice . "'";
 		$re_reader = sql_query($query_reader);
-		$users = array();
+		$users = [];
 		$all_reader = false;
 		while (list($id_user) = sql_fetch_row($re_reader)) {
 
@@ -509,7 +509,7 @@ function modreader()
 				FROM " . $GLOBALS['prefix_lms'] . "_courseuser
 				WHERE idCourse = '" . $_SESSION['idCourse'] . "'";
 			$re_reader = sql_query($query_reader);
-			$users = array();
+			$users = [];
 			while (list($id_user) = sql_fetch_row($re_reader)) {
 
 				$users[] = $id_user;
@@ -518,7 +518,7 @@ function modreader()
 		$user_select->resetSelection($users);
 	}
 	$arr_idstGroup = $aclManager->getGroupsIdstFromBasePath('/lms/course/' . (int)$_SESSION['idCourse'] . '/subscribed/');
-	$me = array(getLogUserId());
+	$me = [getLogUserId()];
 	$user_select->setUserFilter('exclude', $me);
 	$user_select->setUserFilter('group', $arr_idstGroup);
 	$arr_idstUser = $aclManager->getAllUsersFromIdst($arr_idstGroup);
@@ -526,10 +526,10 @@ function modreader()
 	//$user_select->setGroupFilter('path', '/lms/course/'.$_SESSION['idCourse'].'/group');
 
 	$user_select->setPageTitle(getTitleArea(
-		array(
+		[
 			'index.php?modname=advice&amp;op=advice' => $lang->def('_ADVICE'),
 			$lang->def('_VIEW_PERMISSION')
-		),
+        ],
 		'advice'
 	));
 	$user_select->loadSelector(
@@ -558,7 +558,7 @@ function updreader()
 		FROM " . $GLOBALS['prefix_lms'] . "_adviceuser
 		WHERE idAdvice = '" . $id_advice . "'";
 	$re_reader = sql_query($query_reader);
-	$old_users = array();
+	$old_users = [];
 
 	$found = false;
 	$me = getLogUserId();
@@ -572,7 +572,7 @@ function updreader()
 
 	if (!$found) $add_reader[] = $me;
 
-	$dest = array();
+	$dest = [];
 	if (is_array($add_reader)) {
 
 		foreach ($add_reader as $idst) {
@@ -608,19 +608,19 @@ function updreader()
 		$msg_composer = new EventMessageComposer();
 
 		$msg_composer->setSubjectLangText('email', '_ALERT_SUBJECT', false);
-		$msg_composer->setBodyLangText('email', '_ALERT_TEXT', array(
+		$msg_composer->setBodyLangText('email', '_ALERT_TEXT', [
 			'[url]' => Get::site_url(),
 			'[course]' => $GLOBALS['course_descriptor']->getValue('name'),
 			'[title]' => stripslashes($title),
 			'[text]' => stripslashes($description)
-		));
+        ]);
 
-		$msg_composer->setBodyLangText('sms', '_ALERT_TEXT_SMS', array(
+		$msg_composer->setBodyLangText('sms', '_ALERT_TEXT_SMS', [
 			'[url]' => Get::site_url(),
 			'[course]' => $GLOBALS['course_descriptor']->getValue('name'),
 			'[title]' => stripslashes($title),
 			'[text]' => stripslashes($description)
-		));
+        ]);
 
 		createNewAlert(
 			'AdviceNew',
@@ -666,10 +666,10 @@ function deladvice()
 			WHERE idAdvice = '" . (int)$_GET['idAdvice'] . "'"));
 
 		$form = new Form();
-		$page_title = array(
+		$page_title = [
 			'index.php?modname=advice&amp;op=advice' => $lang->def('_ADVICE'),
 			$lang->def('_DEL')
-		);
+        ];
 		$GLOBALS['page']->add(
 			getTitleArea($page_title, 'advice')
 				. '<div class="std_block">'

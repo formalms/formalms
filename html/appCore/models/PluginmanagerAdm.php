@@ -24,16 +24,16 @@ class PluginmanagerAdm extends Model
     {
         $this->db = DbConn::getInstance();
         $this->table = $GLOBALS['prefix_fw'] . '_plugin';
-        $this->plugin_core = array(
+        $this->plugin_core = [
             "FormaAuth"
-        );
+        ];
     }
 
     public function getPerm()
     {
-        return array(
+        return [
             'view' => 'standard/view.png'
-        );
+        ];
     }
 
     /**
@@ -121,22 +121,22 @@ class PluginmanagerAdm extends Model
 
     private static function scan_dir()
     {
-        return array_diff(scandir(_plugins_), array('..', '.'));
+        return array_diff(scandir(_plugins_), ['..', '.']);
     }
 
     private function check_dependencies($manifest, $dependence = false)
     {
         $forma_version = Get::sett("core_version");
-        $check = array();
+        $check = [];
         if (key_exists('forma_version', $manifest)) {
             if (key_exists('min', $manifest['forma_version'])) {
                 if (version_compare($forma_version, $manifest['forma_version']['min']) < 0) {
-                    $check = array("forma.lms" => $manifest['forma_version']['min']);
+                    $check = ["forma.lms" => $manifest['forma_version']['min']];
                 }
             }
             if (key_exists('max', $manifest['forma_version'])) {
                 if (version_compare($manifest['forma_version']['max'], $forma_version) < 0) {
-                    $check = array("name" => "forma.lms", "version" => $manifest['forma_version']['max']);
+                    $check = ["name" => "forma.lms", "version" => $manifest['forma_version']['max']];
                 }
             }
         }
@@ -157,7 +157,7 @@ class PluginmanagerAdm extends Model
                     } else {
                         $check = array_merge($dependencies, $check);
                         if ($dependence) {
-                            $check = $check = array_merge(array("name" => $manifest['name'], "version" => $manifest['version']), $check);
+                            $check = $check = array_merge(["name" => $manifest['name'], "version" => $manifest['version']], $check);
                         }
                         break;
                     }
@@ -169,7 +169,7 @@ class PluginmanagerAdm extends Model
 
     private function is_dependence($name)
     {
-        $dependencies = array();
+        $dependencies = [];
         foreach (self::getInstalledPlugins() as $file => $content) {
 
             $manifest = $this->readPluginManifest($file);
@@ -188,7 +188,7 @@ class PluginmanagerAdm extends Model
     {
         $query = "SELECT * FROM " . $this->table;
         $re = $this->db->query($query);
-        $plugins = array();
+        $plugins = [];
         while ($row = sql_fetch_assoc($re)) {
             if ($row['core'] == 1) {
                 if ($row['active'] == 1) {
@@ -218,7 +218,7 @@ class PluginmanagerAdm extends Model
                 $query = "SELECT * FROM ".$this->table." WHERE  active=1 or core=1 ORDER BY priority ASC";
             }
             $re = $this->db->query($query);
-            $plugins = array();
+            $plugins = [];
             while ($row = sql_fetch_assoc($re)) {
                 if ($row['core'] == 1) {
                     if ($row['active'] == 1) {
@@ -249,7 +249,7 @@ class PluginmanagerAdm extends Model
      */
     public function getPlugins($onlyActive = false)
     {
-        $plugins = array();
+        $plugins = [];
         $dp = opendir(_plugins_);
         //read each plugin in folder
         while ($file = readdir($dp)) {
@@ -305,7 +305,7 @@ class PluginmanagerAdm extends Model
      */
     public function importSqlFile($fn)
     {
-        $res = array('ok' => true, 'log' => '');
+        $res = ['ok' => true, 'log' => ''];
 
         $handle = fopen($fn, "r");
         $content = fread($handle, filesize($fn));
@@ -352,7 +352,7 @@ class PluginmanagerAdm extends Model
             return false;
         }
         if (method_exists('Plugin\\' . $plugin_name . '\\' . $plugin_class, $method)) {
-            $fnResult = call_user_func(array('Plugin\\' . $plugin_name . '\\' . $plugin_class, $method), $plugin_name, $plugin_version);
+            $fnResult = call_user_func(['Plugin\\' . $plugin_name . '\\' . $plugin_class, $method], $plugin_name, $plugin_version);
             return $fnResult === false ? false : true;
         }
     }
@@ -701,8 +701,8 @@ class PluginmanagerAdm extends Model
     public
     static function getPluginCore()
     {
-        $plugins = array_diff(scandir(_plugins_), array('..', '.'));
-        $plugin_list = array();
+        $plugins = array_diff(scandir(_plugins_), ['..', '.']);
+        $plugin_list = [];
         foreach ($plugins as $plugin) {
             if (self::readPluginManifest($plugin, 'core') == "true") {
                 $plugin_list[] = $plugin;

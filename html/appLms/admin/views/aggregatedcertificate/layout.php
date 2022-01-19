@@ -37,8 +37,8 @@
         // Table for tags creation.
     $tb = new Table(0, Lang::t('_TAG_LIST_CAPTION','certificate'), Lang::t('_TAG_LIST_SUMMARY','certificate'));
 
-    $tb->setColsStyle(array('', ''));
-    $tb->addHead(array(Lang::t('_TAG_CODE','certificate'), Lang::t('_TAG_DESCRIPTION','certificate')));
+    $tb->setColsStyle(['', '']);
+    $tb->addHead([Lang::t('_TAG_CODE','certificate'), Lang::t('_TAG_DESCRIPTION','certificate')]);
 
     foreach($certificate_tags as $key => $value){
        
@@ -49,7 +49,7 @@
             $this_subs = $instance->getSubstitutionTags();
             foreach($this_subs as $tag => $description)
             {
-                $tb->addBody(array($tag, $description));
+                $tb->addBody([$tag, $description]);
             }
         }
         

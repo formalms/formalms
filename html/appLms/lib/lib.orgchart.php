@@ -24,7 +24,7 @@ class OrganizationManagement {
 		
 		if($id_course === false) $id_course = $_SESSION['idCourse'];
 		
-		$l_obj = array();
+		$l_obj = [];
 		$query_lo = "
 		SELECT idResource 
 		FROM ".$GLOBALS['prefix_lms']."_organization 
@@ -42,7 +42,7 @@ class OrganizationManagement {
 		
 		if($id_course === false) $id_course = $_SESSION['idCourse'];
 		
-		$l_obj = array();
+		$l_obj = [];
 		$query_lo = "
 		SELECT idOrg, title, idResource  
 		FROM ".$GLOBALS['prefix_lms']."_organization 
@@ -52,14 +52,14 @@ class OrganizationManagement {
 		$re_lo = sql_query($query_lo);
 		while(list($id_org, $title, $id_resource) = sql_fetch_row($re_lo)) {
 			
-			$l_obj[$id_org] = array('id_org' => $id_org, 'title' => $title, 'id_resource' => $id_resource);
+			$l_obj[$id_org] = ['id_org' => $id_org, 'title' => $title, 'id_resource' => $id_resource];
 		}
 		return $l_obj;
 	}
 	
 	function getCountUnreaded($id_user, $courses, &$last_access) {
 		
-		$unreaded = array();
+		$unreaded = [];
 		if(empty($courses)) return $unreaded;
 		
     foreach($courses as $id_c)
@@ -87,7 +87,7 @@ class OrganizationManagement {
 	
 	function objectFilter($arr_course, $filter_type = false) {
 		
-		$l_obj = array();
+		$l_obj = [];
 		$query_lo = "
 		SELECT idCourse, width, height
 		FROM ".$GLOBALS['prefix_lms']."_organization 
@@ -98,14 +98,14 @@ class OrganizationManagement {
 
 		while(list($id_course, $width, $height) = sql_fetch_row($re_lo)) {
 			
-			$l_obj[$id_course] = array($width, $height);
+			$l_obj[$id_course] = [$width, $height];
 		}
 		return $l_obj;
 	}
 	
 	function getStartObjectId($arr_course = false) {
 		
-		$l_obj = array();
+		$l_obj = [];
 		$query_lo = "
 		SELECT idOrg, idResource, objectType, idCourse  
 		FROM ".$GLOBALS['prefix_lms']."_organization 
@@ -115,15 +115,15 @@ class OrganizationManagement {
 		
 		while(list($id_org, $id_resource, $obj_type, $id_course) = sql_fetch_row($re_lo)) {
 			
-			$l_obj[$id_course] = array('id_org' => $id_org, 'id_resource' => $id_resource, 'obj_type' => $obj_type, 'id_course' => $id_course );
+			$l_obj[$id_course] = ['id_org' => $id_org, 'id_resource' => $id_resource, 'obj_type' => $obj_type, 'id_course' => $id_course];
 		}
 		return $l_obj;
 	}
 	
 	function getStartObjectScore($arr_user, $arr_course = false) {
 		
-		$l_obj = array();
-		$score = array();
+		$l_obj = [];
+		$score = [];
 		$query_lo = "
 		SELECT idOrg, idResource, objectType, idCourse  
 		FROM ".$GLOBALS['prefix_lms']."_organization 
@@ -174,7 +174,7 @@ class OrganizationManagement {
 	
 	function getFinalObjectId($arr_course = false) {
 		
-		$l_obj = array();
+		$l_obj = [];
 		$query_lo = "
 		SELECT idOrg, idResource, objectType, idCourse  
 		FROM ".$GLOBALS['prefix_lms']."_organization 
@@ -184,16 +184,16 @@ class OrganizationManagement {
 		
 		while(list($id_org, $id_resource, $obj_type, $id_course) = sql_fetch_row($re_lo)) {
 			
-			$l_obj[$id_course] = array('id_org' => $id_org, 'id_resource' => $id_resource, 'obj_type' => $obj_type, 'id_course' => $id_course );
+			$l_obj[$id_course] = ['id_org' => $id_org, 'id_resource' => $id_resource, 'obj_type' => $obj_type, 'id_course' => $id_course];
 		}
 		return $l_obj;
 	}
 	
 	function getFinalObjectScore($arr_user, $arr_course = false) {
 		
-		$l_obj = array();
-		$r_obj = array();
-		$score = array();
+		$l_obj = [];
+		$r_obj = [];
+		$score = [];
 		$query_lo = "
 		SELECT idOrg, idResource, objectType, idCourse  
 		FROM ".$GLOBALS['prefix_lms']."_organization 

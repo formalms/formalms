@@ -7,9 +7,9 @@ $body = Form::openForm('add_rules', 'ajax.adm_server.php?r=alms/enrollrules/upda
 	.Form::getDropdown(Lang::t('_LANGUAGE', 'enrolluser'), 'lang_code', 'lang_code', $languages, array_search($rule->lang_code, $languages))
 
 	.Form::closeForm();
-$output = array(
+$output = [
 	'success' => true,
 	'header' => Lang::t('_ADD', 'enrolluser'),
 	'body' => $body
-);
+];
 echo $this->json->encode($output);

@@ -27,7 +27,7 @@ class HomepageAdmController extends AdmController
 
         if (!Docebo::user()->isAnonymous()) self::redirect();
 
-        $params = array();
+        $params = [];
 
         $done = Get::req("done", DOTY_MIXED, null);
         $params['done'] = $this->_translateDone($done);
@@ -45,10 +45,10 @@ class HomepageAdmController extends AdmController
 
             $wait = $block_attempts['wait_for'] >= 1 ? (string) $block_attempts['wait_for'] : " < 1";
 
-            $params['block_attempts'] = Lang::t("_REACH_NUMBERS_OF_ATTEMPT", "user_managment", array(
+            $params['block_attempts'] = Lang::t("_REACH_NUMBERS_OF_ATTEMPT", "user_managment", [
                 '[attempt]' => $block_attempts['max_login_attempt'],
                 '[time]' => $wait
-            ));
+            ]);
         }
 
 
@@ -331,16 +331,16 @@ class HomepageAdmController extends AdmController
 
         $code = Get::req("code", DOTY_STRING, "");
 
-        $params = array();
+        $params = [];
         $params["msg"] = "";
 
-        $redirection = array('req' => _homepage_);
+        $redirection = ['req' => _homepage_];
 
         if (!$user_info = $this->model->checkCode($code)) {
 
-            $redirection['query'] = array(
+            $redirection['query'] = [
                 'msg' => INVALID_CODE
-            );
+            ];
             self::redirect($redirection);
         }
 
@@ -363,9 +363,9 @@ class HomepageAdmController extends AdmController
                 default:
                     if ($this->model->setNewPwd($newpwd, $user_info[ACL_INFO_IDST], $code)) {
 
-                        $redirection['query'] = array(
+                        $redirection['query'] = [
                             'done' => NEW_PWD
-                        );
+                        ];
                         self::redirect($redirection);
                     } else {
 
@@ -398,7 +398,7 @@ class HomepageAdmController extends AdmController
         $plugin = Get::req("plugin", DOTY_STRING, "");
         $res = $this->model->login($plugin);
 
-        $redirection = array();
+        $redirection = [];
 
         switch ($res) {
 
@@ -415,9 +415,9 @@ class HomepageAdmController extends AdmController
                 break;
             default:
                 $redirection['req'] = _homepage_;
-                $redirection['query'] = array(
+                $redirection['query'] = [
                     "msg" => $res
-                );
+                ];
                 break;
         }
 
@@ -433,17 +433,17 @@ class HomepageAdmController extends AdmController
 
         AuthenticationManager::logout();
 
-        $redirection = array();
+        $redirection = [];
 
         $redirection['req'] = _homepage_;
         if ($msg) {
-            $redirection['query'] = array(
+            $redirection['query'] = [
                 "msg" => $msg
-            );
+            ];
         } else {
-            $redirection['query'] = array(
+            $redirection['query'] = [
                 "done" => LOGGED_OUT
-            );
+            ];
         }
         self::redirect($redirection);
     }
@@ -451,11 +451,11 @@ class HomepageAdmController extends AdmController
     public function stopconcurrency()
     {
 
-        $redirection = array();
+        $redirection = [];
         $redirection['req'] = _logout_;
-        $redirection['query'] = array(
+        $redirection['query'] = [
             "msg" => USER_CONCURRENCY
-        );
+        ];
         self::redirect($redirection);
     }
 
@@ -464,7 +464,7 @@ class HomepageAdmController extends AdmController
 
         $id_page = Get::req("page", DOTY_INT, null);
 
-        $params = array();
+        $params = [];
         list($params['title'], $params['description']) = $this->model->getWebPage($id_page);
 
         $external_pages = $this->model->getExternalPages();
@@ -488,14 +488,14 @@ class HomepageAdmController extends AdmController
         $login_user = stripslashes(Get::req('login_user', DOTY_MIXED, false));
         $login_idst = Get::req('use_user_idst', DOTY_MIXED, false);
         $secret = Get::sett('sso_secret', '');
-        $redirection = array();
+        $redirection = [];
 
         if (empty($secret) || Get::sett('sso_token', "off") != "on" || !$login_user) {
 
             $redirection['req'] = _homepage_;
-            $redirection['query'] = array(
+            $redirection['query'] = [
                 "msg" => ACCESS_FAILURE // XXX: o SSO_FAILURE?
-            );
+            ];
             self::redirect($redirection);
         }
 
@@ -514,9 +514,9 @@ class HomepageAdmController extends AdmController
         if ($recalc_token != $token || $time + $lifetime < time()) {
 
             $redirection['req'] = _homepage_;
-            $redirection['query'] = array(
+            $redirection['query'] = [
                 "msg" => ACCESS_FAILURE // XXX: o SSO_FAILURE?
-            );
+            ];
             self::redirect($redirection);
         }
 
@@ -538,16 +538,16 @@ class HomepageAdmController extends AdmController
         if (!$user_info) {
 
             $redirection['req'] = _homepage_;
-            $redirection['query'] = array(
+            $redirection['query'] = [
                 "msg" => ACCESS_FAILURE // XXX: o SSO_FAILURE?
-            );
+            ];
             self::redirect($redirection);
         }
 
         $user = new DoceboUser($username, 'public_area');
         Lang::set($user->preference->getLanguage());
 
-        $redirection = array();
+        $redirection = [];
         switch ($this->model->saveUser($user)) {
 
             case PWD_ELAPSED:
@@ -596,9 +596,9 @@ class HomepageAdmController extends AdmController
         self::redirect($redirection);
     }
 
-    private static function makeQueryUrl($redirection = array())
+    private static function makeQueryUrl($redirection = [])
     {
-        $query = array();
+        $query = [];
         if (isset($redirection['modname'])) $query['modname'] = $redirection['modname'];
         if (isset($redirection['op'])) $query['op'] = $redirection['op'];
         if (isset($redirection['req'])) $query['r'] = $redirection['req'];
@@ -612,7 +612,7 @@ class HomepageAdmController extends AdmController
         return $query;
     }
 
-    public static function redirect($redirection = array())
+    public static function redirect($redirection = [])
     {
         $query = self::makeQueryUrl($redirection);
 

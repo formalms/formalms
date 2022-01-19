@@ -27,7 +27,7 @@ class Dashboard {
 	
 	function getBoxContent() {
 		
-		return array();
+		return [];
 	}
 	
 }

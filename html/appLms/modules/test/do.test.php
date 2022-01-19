@@ -85,7 +85,7 @@ function intro ($object_test , $id_param , $deleteLastTrack = false)
 	$prerequisite = $test_man->getPrerequisite ();
 
 	$group_test_man = new GroupTestManagement();
-	$tests_score =& $group_test_man->getTestsScores (array ( $id_test ) , array ( Docebo::user ()->getIdst () ));
+	$tests_score =& $group_test_man->getTestsScores ([$id_test], [Docebo::user ()->getIdst ()]);
 
 	if ($test_info[ 'time_dependent' ] && $test_info[ 'time_assigned' ]) {
 
@@ -274,7 +274,7 @@ function intro ($object_test , $id_param , $deleteLastTrack = false)
 				} else {
 					//we shouldn't get here, except if test options about suspension have been modified
 					//in a second time: in this case update test track data and go on
-					$suspend_info = array ( 'attempts_for_suspension' => 0 );
+					$suspend_info = ['attempts_for_suspension' => 0];
 					$re = Track_Test::updateTrack ($id_track , $suspend_info);
 					$diff_attempts = $test_info[ 'suspension_num_attempts' ];
 					cout (UIFeedback::pnotice ($lang->def ('_ATTEMPTS_REMAINING_BEFORE_SUSPENSION') . ' : ' . $diff_attempts) . '<br /><br />' , 'content');
@@ -292,7 +292,7 @@ function intro ($object_test , $id_param , $deleteLastTrack = false)
 				list($idOrg) = sql_fetch_row (sql_query ($query));
 
 				$conditions = explode ("," , $prerequisite);
-				$req_arr = array ();
+				$req_arr = [];
 				foreach ($conditions as $condition) {
 					if (is_numeric ($condition) && (int) $condition != $idOrg) $req_arr[] = $condition;
 				}
@@ -501,7 +501,7 @@ function resetTrack ($testObj , $id_track)
 	sql_query ($query_quest);
 
 	$now = date ("Y-m-d H:i:s");
-	$new_info = array (
+	$new_info = [
 		'date_attempt' => $now ,
 		'date_end_attempt' => $now ,
 		'date_attempt_mod' => NULL ,
@@ -509,7 +509,7 @@ function resetTrack ($testObj , $id_track)
 		'last_page_saved' => 0 ,
 		'score' => 0 ,
 		'bonus_score' => 0 ,
-		'score_status' => 'not_complete' );
+		'score_status' => 'not_complete'];
 	$re_update = Track_Test::updateTrack ($id_track , $new_info);
 
 	return $re_update;
@@ -666,9 +666,9 @@ function play ($object_test , $id_param)
 			. getBackUi (Util::str_replace_once ('&' , '&amp;' , $object_test->back_url) , $lang->def ('_BACK')) , 'content');
 		return;
 	}
-	$new_info = array (
+	$new_info = [
 		'last_page_seen' => $page_to_display ,
-		'score_status' => 'doing' );
+		'score_status' => 'doing'];
 	if (isset($_POST[ 'page_to_save' ])) {
 
 		if ($test_info[ 'mod_doanswer' ]) {
@@ -940,7 +940,7 @@ function play ($object_test , $id_param)
 	// Page display
 	$GLOBALS[ 'page' ]->add ('<div class="test_answer_space">' , 'content');
 
-	$array_answer = array ();
+	$array_answer = [];
 	$tot_question = 0;
 
 	while (list($idQuest , $type_quest , $type_file , $type_class , $time_assigned) = sql_fetch_row ($re_question)) {
@@ -995,7 +995,7 @@ function play ($object_test , $id_param)
 		Util::get_js (Get::rel_path ('lms') . '/modules/question/question.js' , true , true);
 		cout ('<script type="text/javascript">' , 'content');
 
-		$tot_correct_array = array ();
+		$tot_correct_array = [];
 
 		foreach ($array_answer as $id_quest => $quest_info) {
 			switch ($quest_info[ 'type' ]) {
@@ -1108,9 +1108,9 @@ function saveAndExit ($object_test , $id_param)
 	$previous_page = importVar ('previous_page' , false , false);
 
 	if ($test_info[ 'save_keep' ]) {
-		$new_info = array (
+		$new_info = [
 			'last_page_seen' => $previous_page ,
-			'score_status' => 'not_complete' );
+			'score_status' => 'not_complete'];
 		if (isset($_POST[ 'page_to_save' ])) {
 
 			if ($test_info[ 'mod_doanswer' ]) {
@@ -1207,9 +1207,9 @@ function showResult ($object_test , $id_param)
 
 	$previous_page = importVar ('previous_page' , false , false);
 
-	$new_info = array (
+	$new_info = [
 		'last_page_seen' => $previous_page ,
-		'score_status' => 'doing' );
+		'score_status' => 'doing'];
 
 	if (isset($_POST[ 'page_to_save' ]) && (($_POST[ 'page_to_save' ] > $track_info[ 'last_page_saved' ]) || $test_info[ 'mod_doanswer' ])) {
 
@@ -1230,7 +1230,7 @@ function showResult ($object_test , $id_param)
 	$max_score = 0;
 	$num_manual = 0;
 	$manual_score = 0;
-	$point_do_cat = array ();
+	$point_do_cat = [];
 
 	$re_visu_quest = sql_query ("SELECT idQuest
 	FROM " . $GLOBALS[ 'prefix_lms' ] . "_testtrack_quest
@@ -1323,7 +1323,7 @@ function showResult ($object_test , $id_param)
 
 	// --
 	require_once (_lms_ . '/lib/lib.assessment_rule.php');
-	$score_arr = array ();
+	$score_arr = [];
 	$i = 0;
 	foreach ($point_do_cat as $cat_id => $score) {
 		$score_arr[ $i ][ 'score' ] = $score;
@@ -1422,7 +1422,7 @@ function showResult ($object_test , $id_param)
 	//--- check suspension conditions ----------------------------------------------
 
 	if ($test_info[ 'use_suspension' ]) {
-		$suspend_info = array ();
+		$suspend_info = [];
 		if ($next_status == 'failed') {
 			$suspend_info[ 'attempts_for_suspension' ] = $track_info[ 'attempts_for_suspension' ] + 1;
 
@@ -1531,7 +1531,7 @@ function showResult ($object_test , $id_param)
 
 		$re_category = sql_query ($sql_test);
 
-		$array_question_number = array();
+		$array_question_number = [];
 		list($random_question) = sql_fetch_row(sql_query("SELECT order_info FROM ".$GLOBALS['prefix_lms']."_test WHERE idTest='".$id_test."'"));
 		$json = new Services_JSON(SERVICES_JSON_LOOSE_TYPE);
 		$json_random = $json->decode($random_question);
@@ -1839,7 +1839,7 @@ function user_report ($idUser , $idTest , $id_param = false , $id_track = false 
     $manual_score = 0;
     $quest_sequence_number = 1;
     $report_test = '';
-    $point_do_cat = array ();
+    $point_do_cat = [];
     /*
     $reQuest = sql_query("
     SELECT q.idQuest, q.type_quest, t.type_file, t.type_class, q.idCategory
@@ -1984,7 +1984,7 @@ function user_report ($idUser , $idTest , $id_param = false , $id_track = false 
     }
     if ($show_score_cat) {
 
-        $category = array ();
+        $category = [];
         $reQuestCat = sql_query ("
 		SELECT idCategory 
 		FROM %lms_testquest
@@ -2052,7 +2052,7 @@ function editUserReport ($id_user , $id_test , $id_track , $number_time = null ,
 	$manual_score = 0;
 	$quest_sequence_number = 1;
 	$report_test = '';
-	$point_do_cat = array ();
+	$point_do_cat = [];
 
 	if ($order_type >= 2) {
 		$re_visu_quest = sql_query ("SELECT idQuest
@@ -2185,7 +2185,7 @@ function deleteUserReport ($id_user , $id_test , $id_track , $number_time = null
 
 		$response = sql_query ('SELECT `idQuest`,`idAnswer` FROM ' . $GLOBALS[ 'prefix_lms' ] . '_testtrack_answer WHERE `idTrack`=' . $idTrack . ' AND `number_time`=' . $number_time);
 
-		$quests = array ();
+		$quests = [];
 
 		while (list($idQuest , $idAnswer) = sql_fetch_row ($response)) {
 

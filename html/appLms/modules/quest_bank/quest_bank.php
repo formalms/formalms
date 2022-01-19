@@ -133,9 +133,9 @@ function importquest(&$url) {
 	$supported_format = array_flip($qb_man->supported_format());
 
 	require_once(_lms_.'/lib/lib.questcategory.php');
-	$quest_categories = array(
+	$quest_categories = [
 		0 => $lang->def('_NONE')
-	);
+    ];
 	$cman = new Questcategory();
 	$arr = $cman->getCategory();
 	foreach ($arr as $id_category => $name_category) {
@@ -143,7 +143,7 @@ function importquest(&$url) {
 	}
 	unset($arr);
 
-	$title = array($url->getUrl() => $lang->def('_QUEST_BANK', 'menu_course'), $lang->def('_IMPORT'));
+	$title = [$url->getUrl() => $lang->def('_QUEST_BANK', 'menu_course'), $lang->def('_IMPORT')];
 	cout(
 		getTitleArea($title, 'quest_bank')
 		.'<div class="std_block">'
@@ -181,7 +181,7 @@ function doimportquest(&$url) {
 
 	addCss('style_yui_docebo');
 
-	$title = array($url->getUrl() => $lang_t->def('_QUEST_BANK', 'menu_course'), $lang_t->def('_IMPORT'));
+	$title = [$url->getUrl() => $lang_t->def('_QUEST_BANK', 'menu_course'), $lang_t->def('_IMPORT')];
 	cout( getTitleArea($title, 'quest_bank')
 		.'<div class="std_block">'
 		.getBackUi($url->getUrl(), $lang_t->def('_BACK')), 'content' );
@@ -278,7 +278,7 @@ function exportquest(&$url) {
 			$orgman = new OrganizationManagement($_SESSION['idCourse']);
 			$test =& $orgman->getInfoWhereType('test', $_SESSION['idCourse']);
 
-			cout(	getTitleArea( array( $lang->def('_QUEST_BANK', 'menu_course'), $lang->def('_EXPORT_QUESTIONS', 'storage') )    )
+			cout(	getTitleArea( [$lang->def('_QUEST_BANK', 'menu_course'), $lang->def('_EXPORT_QUESTIONS', 'storage')])
 					.'<div class="std_block yui-skin-docebo yui-skin-sam">', 'content');
                         
                         cout(    '<label>'.$lang->def('_SELECTTEST', 'storage').'</label></br></br>'

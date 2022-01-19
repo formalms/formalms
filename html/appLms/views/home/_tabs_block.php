@@ -3,9 +3,9 @@
     <div class="yui-a">
         <div>
             <?php
-            $this->widget('lms_tab', array(
+            $this->widget('lms_tab', [
                 'active' => 'home'
-            ));
+            ]);
             ?>
         </div>
         <div id="tab_content"></div>

@@ -22,10 +22,10 @@ Class TransactionAlms extends Model {
 
 	public function getPerm()
 	{
-		return array(	'view' => 'standard/view.png',
+		return ['view' => 'standard/view.png',
 						'mod' => 'standard/edit.png',
 						'del' => 'standard/rem.png'
-		);
+        ];
 	}
 
 	public function getTotalTransaction($filter = false)
@@ -71,7 +71,7 @@ Class TransactionAlms extends Model {
 		($start_index === false ? '' : $query .= " LIMIT ".$start_index.", ".$results);
 
 		$result = sql_query($query);
-		$res = array();
+		$res = [];
 
 		while($row = sql_fetch_assoc($result))
 		{
@@ -101,7 +101,7 @@ Class TransactionAlms extends Model {
 					." ORDER BY code, name";
 
 		$res = sql_query($query);
-		$trans['product'] = array();
+		$trans['product'] = [];
 		$price = 0;
 
 		while($row = sql_fetch_assoc($res))

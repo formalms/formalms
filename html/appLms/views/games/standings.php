@@ -1,9 +1,9 @@
 <div>
 	<?php
-	$lmstab = $this->widget('lms_tab', array(
+	$lmstab = $this->widget('lms_tab', [
 		'active' => 'games',
 		'close' => false
-	));
+    ]);
 	?>
 	<div class="nested_tab" id="tab_content">
 		<div id="global_conf" class="yui-navset yui-navset-top">
@@ -65,23 +65,23 @@
 				<h3><?php echo Lang::t('_FIRST_PLACES', 'standard'); ?></h3>
 				<?php
 				$tb = new Table(30);
-				$tb->addHead(array(
+				$tb->addHead([
 					Lang::t('_POSITION', 'games'),
 					Lang::t('_USERNAME', 'standard'),
 					Lang::t('_FULLNAME', 'standard'), 
 					Lang::t('_CURRENT_SCORE', 'standard'),
 					Lang::t('_MAX_SCORE', 'standard'),
-				), array('image', '','','image','image'));
+                ], ['image', '','','image','image']);
 				$i = 1;
 				foreach($standings as $row) {
 
-					$tb->addBody(array(
+					$tb->addBody([
 						$i++,
 						Docebo::aclm()->relativeID($row['userid']),
 						$row['lastname'].' '.$row['firstname'],
 						$row['current_score'],
 						$row['max_score']
-					));
+                    ]);
 				}
 				echo $tb->getTable();
 				?>

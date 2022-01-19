@@ -31,13 +31,13 @@ Class CompetencesAdmController extends AdmController {
 		$this->base_link_course = 'alms/course';
 		$this->base_link_competence = 'adm/competences';
 
-		$this->permissions = array(
+		$this->permissions = [
 			'view'				=> checkPerm('view', true, 'competences'),			//view module
 			'add'				=> checkPerm('mod', true, 'competences'),			//create competences
 			'mod'				=> checkPerm('mod', true, 'competences'),			//edit competences, create/edit/remove categories
 			'del'				=> checkPerm('mod', true, 'competences'),			//delete competences
 			'associate_user'	=> checkPerm('associate_user', true, 'competences') //manage users for competence
-		);
+        ];
 	}
 
 	//--- internal private methods -----------------------------------------------
@@ -59,7 +59,7 @@ Class CompetencesAdmController extends AdmController {
 
 	protected function _getNodeActions($node) {
 		if (!is_array($node)) return false; //unrecognized type for node data
-		$actions = array();
+		$actions = [];
 		$id_action = $node['id'];
 		$is_root = ($id_action == 0);
 
@@ -69,29 +69,29 @@ Class CompetencesAdmController extends AdmController {
 
 		//rename action
 		if ($can_mod) {
-			$actions[] = array(
+			$actions[] = [
 				'id' => 'mod_'.$id_action,
 				'command' => 'modify',
 				'icon' => 'standard/edit.png',
 				'alt' => Lang::t('_MOD', 'standard')
-			);
+            ];
 		}
 
 		//delete action
 		if ($can_del) {
 			if ($node['is_leaf'] && $node['count_objects']<=0 && !$is_root) {
-				$actions[] = array(
+				$actions[] = [
 					'id' => 'del_'.$id_action,
 					'command' => 'delete',
 					'icon' => 'standard/delete.png',
 					'alt' => Lang::t('_DEL', 'standard')
-				);
+                ];
 			} else {
-				$actions[] = array(
+				$actions[] = [
 					'id' => 'del_'.$id_action,
 					'command' => false,
 					'icon' => 'blank.png'
-				);
+                ];
 			}
 		}
 
@@ -101,7 +101,7 @@ Class CompetencesAdmController extends AdmController {
 
 
 	protected function _setCategoriesTreeArray(&$list, &$output, $id_category) {
-		$t_arr = array();
+		$t_arr = [];
 		for ($i=0; $i<count($list); $i++) {
 			if ($list[$i]->id_parent == $id_category) {
 				$t_arr[$list[$i]->id_category] = $list[$i]->name;
@@ -110,11 +110,11 @@ Class CompetencesAdmController extends AdmController {
 		if (count($t_arr) <= 0) return;
 		asort($t_arr);
 		foreach ($t_arr as $key => $value) {
-			$output[$key] = array(
+			$output[$key] = [
 				'id_category' => $key,
 				'label' => $value,
-				'children' => array()
-			);
+				'children' => []
+            ];
 			$this->_setCategoriesTreeArray($list, $output[$key]['children'], $key);
 		}
 	}
@@ -140,10 +140,10 @@ Class CompetencesAdmController extends AdmController {
 	 * extract all categories and compose dropdown list with indentation
 	 */
 	protected function _getCategoriesDropdownList() {
-		$output = array('0' => '(root)');
+		$output = ['0' => '(root)'];
 
 		$categories = $this->model->getAllCategories();
-		$tree_arr = array();
+		$tree_arr = [];
 		$this->_setCategoriesTreeArray($categories, $tree_arr, 0);
 		$this->_setCategoriesTreeDropdown($tree_arr, $output, 0, false);
 		//unset($tree_arr);
@@ -203,7 +203,7 @@ Class CompetencesAdmController extends AdmController {
 
 
 		//render view
-		$this->render('show', array(
+		$this->render('show', [
 			'permissions' => $this->permissions,
 			'selected_node' => $this->_getFromSession('selected_node', 0),
 			'filter_text' => $this->_getFromSession('filter_text', ""),
@@ -218,7 +218,7 @@ Class CompetencesAdmController extends AdmController {
 			'types' => $this->json->encode($arr_types),
 			'typologies_dropdown' => $typologies_dropdown,
 			'types_dropdown' => $types_dropdown
-		));
+        ]);
 	}
 
 
@@ -242,13 +242,13 @@ Class CompetencesAdmController extends AdmController {
 
 					//set output
 					if (is_array($nodes)) {
-						$output = array(
+						$output = [
 							'success' => true,
 							'nodes' => $nodes,
 							'initial' => $initial
-						);
+                        ];
 					} else {
-						$output = array('success' => false);
+						$output = ['success' => false];
 					}
 				} else {
 					//extract node data
@@ -256,7 +256,7 @@ Class CompetencesAdmController extends AdmController {
 
 					//if request is invalid, return error message ...
 					if (!is_array($nodes)) {
-						echo $this->json->encode(array('success' => false));
+						echo $this->json->encode(['success' => false]);
 						return;
 					}
 
@@ -265,11 +265,11 @@ Class CompetencesAdmController extends AdmController {
 						$nodes[$i]['options'] = $this->_getNodeActions($nodes[$i]);
 					}
 					//set output
-					$output = array(
+					$output = [
 						'success' => true,
 						'nodes' => $nodes,
 						'initial' => $initial
-					);
+                    ];
 				}
 				echo $this->json->encode($output);
 			} break;
@@ -281,12 +281,12 @@ Class CompetencesAdmController extends AdmController {
 			case "delete": {
 				//check permissions
 				if (!$this->permissions['mod']) {
-					$output = array('success' => false, 'message' => $this->_getErrorMessage('no permission'));
+					$output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
 					echo $this->json->encode($output);
 					return;
 				}
 
-				$output = array('success' => false);
+				$output = ['success' => false];
 				$id = Get::req('node_id', DOTY_INT, -1);
 				if ($id > 0) $output['success'] = $this->model->deleteCategory($id);
 				echo $this->json->encode($output);
@@ -295,7 +295,7 @@ Class CompetencesAdmController extends AdmController {
 			case "movefolder": {
 				//check permissions
 				if (!$this->permissions['mod']) {
-					$output = array('success' => false, 'message' => $this->_getErrorMessage('no permission'));
+					$output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
 					echo $this->json->encode($output);
 					return;
 				}
@@ -332,9 +332,9 @@ Class CompetencesAdmController extends AdmController {
 		$dir = Get::req('dir', DOTY_STRING, "asc");
 		$filter_text = Get::req('filter_text', DOTY_STRING, '');
 
-		$searchFilter = array(
+		$searchFilter = [
 			'text' => $filter_text
-		);
+        ];
 
 		//get total from database and validate the results count
 		$total = $this->model->getCompetencesTotal($id_category, $descendants, $searchFilter);
@@ -347,12 +347,12 @@ Class CompetencesAdmController extends AdmController {
 		}
 
 		//set pagination argument
-		$pagination = array(
+		$pagination = [
 			'startIndex' => $startIndex,
 			'results' => $results,
 			'sort' => $sort,
 			'dir' => $dir
-		);
+        ];
 
 		//update session pagination and filter values
 		$this->_setInSession('startIndex', $startIndex);
@@ -367,7 +367,7 @@ Class CompetencesAdmController extends AdmController {
 		$list = $this->model->getCompetencesList($id_category, $descendants, $pagination, $searchFilter);
 
 		//prepare the data for sending
-		$output_results = array();
+		$output_results = [];
 		if (is_array($list) && count($list)>0) {
 
 			$_typologies = $this->model->getCompetenceTypologies();
@@ -381,7 +381,7 @@ Class CompetencesAdmController extends AdmController {
 				}
 
 				//prepare output record
-				$output_results[] = array(
+				$output_results[] = [
 					'id' => $record->id_competence,
 					'name' => Layout::highlight($record->name, $filter_text),
 					'description' => Layout::highlight($description, $filter_text),
@@ -391,11 +391,11 @@ Class CompetencesAdmController extends AdmController {
 					'id_type' => $record->type,
 					'users' => $record->users,
 					'del'		=> 'ajax.adm_server.php?r='.$this->base_link_competence.'/del_competence&id='.(int)$record->id_competence,
-				);
+                ];
 			}
 		}
 
-		$output = array(
+		$output = [
 			'totalRecords' => $total,
 			'startIndex' => $startIndex,
 			'sort' => $sort,
@@ -403,7 +403,7 @@ Class CompetencesAdmController extends AdmController {
 			'rowsPerPage' => $rowsPerPage,
 			'results' => count($list),
 			'records' => $output_results
-		);
+        ];
 
 		echo $this->json->encode($output);
 	}
@@ -412,43 +412,43 @@ Class CompetencesAdmController extends AdmController {
 	public function add_categoryTask() {
 		//check permissions
 		if (!$this->permissions['add']) {
-			$output = array('success' => false, 'message' => $this->_getErrorMessage('no permission'));
+			$output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
 			echo $this->json->encode($output);
 			return;
 		}
 
 		$id_parent = Get::req('id', DOTY_INT, -1);
 		if ($id_parent < 0) {
-			$output = array(
+			$output = [
 				'success' => false,
 				'message' => UIFeedback::perror($this->_getErrorMessage("invalid category"))
-			);
+            ];
 			echo $this->json->encode($output);
 			return;
 		}
 
-		$this->render('category_editmask', array(
+		$this->render('category_editmask', [
 			'title' => Lang::t('_NEW_CATEGORY', 'competences'),
 			'id_parent' => $id_parent,
 			'json' => $this->json
-		));
+        ]);
 	}
 
 
 	public function mod_categoryTask() {
 		//check permissions
 		if (!$this->permissions['mod']) {
-			$output = array('success' => false, 'message' => $this->_getErrorMessage('no permission'));
+			$output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
 			echo $this->json->encode($output);
 			return;
 		}
 
 		$id_category = Get::req('id', DOTY_INT, -1);
 		if ($id_category <= 0) {
-			$output = array(
+			$output = [
 				'success' => false,
 				'message' => UIFeedback::perror($this->_getErrorMessage("invalid category"))
-			);
+            ];
 			echo $this->json->encode($output);
 			return;
 		}
@@ -456,12 +456,12 @@ Class CompetencesAdmController extends AdmController {
 		//retrieve category info (name and description
 		$info = $this->model->getCategoryInfo($id_category);
 
-		$this->render('category_editmask', array(
+		$this->render('category_editmask', [
 			'title' => Lang::t('_MOD', 'competences'),
 			'id_category' => $id_category,
 			'category_langs' => $info->langs,
 			'json' => $this->json
-		));
+        ]);
 	}
 
 
@@ -473,19 +473,19 @@ Class CompetencesAdmController extends AdmController {
 
 		$id_category = Get::req('id', DOTY_INT, -1);
 		if ($id_category < 0) {
-			$this->render('invalid', array(
+			$this->render('invalid', [
 				'message' => $this->_getErrorMessage("invalid category"),
 				'back_url' => $back_url
-			));
+            ]);
 			return;
 		}
 
-		$this->render('competence_editmask', array(
+		$this->render('competence_editmask', [
 			'id_category' => $id_category,
 			'competence_typologies' => $this->model->getCompetenceTypologies(),
 			'competence_types' => $this->model->getCompetenceTypes(),
 			'competence_categories' => $this->_getCategoriesDropdownList()
-		));
+        ]);
 	}
 
 
@@ -498,17 +498,17 @@ Class CompetencesAdmController extends AdmController {
 
 		$id_competence = Get::req('id', DOTY_INT, -1);
 		if ($id_competence <= 0) { //invalid competence
-			$this->render('invalid', array(
+			$this->render('invalid', [
 				'message' => $this->_getErrorMessage("invalid competence"),
 				'back_url' => $back_url
-			));
+            ]);
 			return;
 		}
 		
 		//get competence info and prepare data to send to editmask
 		$info = $this->model->getCompetenceInfo($id_competence);
 
-		$this->render('competence_editmask', array(
+		$this->render('competence_editmask', [
 			'id_competence' => $id_competence,
 			'id_category' => $info->id_category,
 			'competence_langs' => $info->langs,
@@ -519,14 +519,14 @@ Class CompetencesAdmController extends AdmController {
 			'competence_typologies' => $this->model->getCompetenceTypologies(),
 			'competence_types' => $this->model->getCompetenceTypes(),
 			'competence_categories' => $this->_getCategoriesDropdownList()
-		));
+        ]);
 	}
 
 
 	public function add_category_actionTask() {
 		//check permissions
 		if (!$this->permissions['add']) {
-			$output = array('success' => false, 'message' => $this->_getErrorMessage('no permission'));
+			$output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
 			echo $this->json->encode($output);
 			return;
 		}
@@ -534,26 +534,26 @@ Class CompetencesAdmController extends AdmController {
 		//set up the data to insert into DB
 		$id_parent = Get::req('id_parent', DOTY_INT, -1);
 		if ($id_parent < 0) {
-			$output = array(
+			$output = [
 				'success' => false,
 				'message' => UIFeedback::perror($this->_getErrorMessage("invalid category"))
-			);
+            ];
 			echo $this->json->encode($output);
 			return;
 		}
-		$names = Get::req('name', DOTY_MIXED, array());
-		$descriptions = Get::req('description', DOTY_MIXED, array());
-		$langs = array();
+		$names = Get::req('name', DOTY_MIXED, []);
+		$descriptions = Get::req('description', DOTY_MIXED, []);
+		$langs = [];
 
 		//validate inputs
 		if (is_array($names)) {
 			//prepare langs array
 			$lang_codes = Docebo::langManager()->getAllLangcode();
 			foreach ($lang_codes as $lang_code) {
-				$langs[$lang_code] = array(
+				$langs[$lang_code] = [
 					'name' => (isset($names[$lang_code]) ? $names[$lang_code] : ''),
 					'description' => (isset($descriptions[$lang_code]) ? $descriptions[$lang_code] : '')
-				);
+                ];
 			}
 		}
 
@@ -561,23 +561,23 @@ Class CompetencesAdmController extends AdmController {
 		$res = $this->model->createCategory($id_parent, $langs);
 		if ($res) {
 			//return node data to add in the treeview of the page
-			$nodedata = array(
+			$nodedata = [
 				'id' => $res,
 				'label' => $this->model->getCategoryName($res, getLanguage()),
 				'is_leaf' => true,
 				'count_objects' => 0
-			);
+            ];
 			$nodedata['options'] = $this->_getNodeActions($nodedata);
-			$output = array(
+			$output = [
 				'success' => true,
 				'node' => $nodedata,
 				'id_parent' => $id_parent
-			);
+            ];
 		} else {
-			$output = array(
+			$output = [
 				'success' => false,
 				'message' => UIFeedback::perror($this->_getErrorMessage("create category"))
-			);
+            ];
 		}
 		echo $this->json->encode($output);
 	}
@@ -586,7 +586,7 @@ Class CompetencesAdmController extends AdmController {
 	public function mod_category_actionTask() {
 		//check permissions
 		if (!$this->permissions['mod']) {
-			$output = array('success' => false, 'message' => $this->_getErrorMessage('no permission'));
+			$output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
 			echo $this->json->encode($output);
 			return;
 		}
@@ -594,26 +594,26 @@ Class CompetencesAdmController extends AdmController {
 		//set up the data to insert into DB
 		$id_category = Get::req('id_category', DOTY_INT, -1);
 		if ($id_category < 0) {
-			$output = array(
+			$output = [
 				'success' => false,
 				'message' => UIFeedback::perror($this->_getErrorMessage("invalid category"))
-			);
+            ];
 			echo $this->json->encode($output);
 			return;
 		}
-		$names = Get::req('name', DOTY_MIXED, array());
-		$descriptions = Get::req('description', DOTY_MIXED, array());
-		$langs = array();
+		$names = Get::req('name', DOTY_MIXED, []);
+		$descriptions = Get::req('description', DOTY_MIXED, []);
+		$langs = [];
 
 		//validate inputs
 		if (is_array($names)) {
 			//prepare langs array
 			$lang_codes = Docebo::langManager()->getAllLangcode();
 			foreach ($lang_codes as $lang_code) {
-				$langs[$lang_code] = array(
+				$langs[$lang_code] = [
 					'name' => (isset($names[$lang_code]) ? $names[$lang_code] : ''),
 					'description' => (isset($descriptions[$lang_code]) ? $descriptions[$lang_code] : '')
-				);
+                ];
 			}
 		}
 
@@ -621,15 +621,15 @@ Class CompetencesAdmController extends AdmController {
 		$res = $this->model->updateCategory($id_category, $langs);
 		if ($res) {
 			$_language = Get::req('lang', DOTY_ALPHANUM, getLanguage());
-			$output = array(
+			$output = [
 				'success' => true,
 				'new_name' => (isset($names[$lang_code]) ? $names[$lang_code] : '')
-			);
+            ];
 		} else {
-			$output = array(
+			$output = [
 				'success' => false,
 				'message' => UIFeedback::perror($this->_getErrorMessage("edit category"))
-			);
+            ];
 		}
 		echo $this->json->encode($output);
 	}
@@ -639,7 +639,7 @@ Class CompetencesAdmController extends AdmController {
 	public function move_categoryTask() {
 		//check permissions
 		if (!$this->permissions['mod']) {
-			$output = array('success' => false, 'message' => $this->_getErrorMessage('no permission'));
+			$output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
 			echo $this->json->encode($output);
 			return;
 		}
@@ -647,7 +647,7 @@ Class CompetencesAdmController extends AdmController {
 		$src = Get::req('src', DOTY_INT, -1);
 		$dest = Get::req('dest', DOTY_INT, -1);
 
-		$output = array();
+		$output = [];
 
 		if ($src <= 0 || $dest < 0) {
 			$output['success'] = false;
@@ -677,10 +677,10 @@ Class CompetencesAdmController extends AdmController {
 		//read inputs
 		$id_category = Get::req('id_category', DOTY_INT, -1);
 		if ($id_category < 0) {
-			$this->render('invalid', array(
+			$this->render('invalid', [
 				'message' => $this->_getErrorMessage("invalid category"),
 				'back_url' => $back_url
-			));
+            ]);
 			return;
 		}
 
@@ -690,16 +690,16 @@ Class CompetencesAdmController extends AdmController {
 		//$params->score = Get::req('score', DOTY_ALPHANUM, '0');
 		//$params->expiration = Get::req('expiration', DOTY_INT, 0);
 
-		$_lang_name = Get::req('name', DOTY_MIXED, array());
-		$_lang_desc = Get::req('description', DOTY_MIXED, array());
+		$_lang_name = Get::req('name', DOTY_MIXED, []);
+		$_lang_desc = Get::req('description', DOTY_MIXED, []);
 
-		$_arr_langs = array();
+		$_arr_langs = [];
 		$arr = Docebo::langManager()->getAllLangcode();
 		foreach ($arr as $lang_code) {
-			$_arr_langs[$lang_code] = array(
+			$_arr_langs[$lang_code] = [
 				'name' => (isset($_lang_name[$lang_code]) ? $_lang_name[$lang_code] : ''),
 				'description' => (isset($_lang_desc[$lang_code]) ? $_lang_desc[$lang_code] : '')
-			);
+            ];
 		}
 		$params->langs = $_arr_langs;
 
@@ -723,10 +723,10 @@ Class CompetencesAdmController extends AdmController {
 		//read inputs
 		$id_competence = Get::req('id_competence', DOTY_INT, -1);
 		if ($id_competence <= 0) {
-			$this->render('invalid', array(
+			$this->render('invalid', [
 				'message' => $this->_getErrorMessage("invalid competence"),
 				'back_url' => $back_url
-			));
+            ]);
 			return;
 		}
 
@@ -737,16 +737,16 @@ Class CompetencesAdmController extends AdmController {
 		//$params->score = Get::req('score', DOTY_ALPHANUM, '0');
 		//$params->expiration = Get::req('expiration', DOTY_INT, 0);
 
-		$_lang_name = Get::req('name', DOTY_MIXED, array());
-		$_lang_desc = Get::req('description', DOTY_MIXED, array());
+		$_lang_name = Get::req('name', DOTY_MIXED, []);
+		$_lang_desc = Get::req('description', DOTY_MIXED, []);
 
-		$_arr_langs = array();
+		$_arr_langs = [];
 		$arr = Docebo::langManager()->getAllLangcode();
 		foreach ($arr as $lang_code) {
-			$_arr_langs[$lang_code] = array(
+			$_arr_langs[$lang_code] = [
 				'name' => (isset($_lang_name[$lang_code]) ? $_lang_name[$lang_code] : ''),
 				'description' => (isset($_lang_desc[$lang_code]) ? $_lang_desc[$lang_code] : '')
-			);
+            ];
 		}
 		$params->langs = $_arr_langs;
 
@@ -760,33 +760,33 @@ Class CompetencesAdmController extends AdmController {
 	public function del_competenceTask() {
 		//check permissions
 		if (!$this->permissions['del']) {
-			$output = array('success' => false, 'message' => $this->_getErrorMessage('no permission'));
+			$output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
 			echo $this->json->encode($output);
 			return;
 		}
 
 		//check associations with course
 		if ($this->model->getCompetenceCoursesTotal(Get::req('id', DOTY_INT, -1)) > 0){
-			$output = array('success' => false, 'message' => UIFeedback::perror(Lang::t('_WITH_COURSE_ASSOCIATIONS', 'competences')));
+			$output = ['success' => false, 'message' => UIFeedback::perror(Lang::t('_WITH_COURSE_ASSOCIATIONS', 'competences'))];
 			echo $this->json->encode($output);
 			return;
 		}
 
 		//check associations with fncrole
 		if ($this->model->getCompetenceFncRolesTotal(Get::req('id', DOTY_INT, -1)) > 0){
-			$output = array('success' => false, 'message' => UIFeedback::perror(Lang::t('_WITH_FNCROLE_ASSOCIATIONS', 'competences')));
+			$output = ['success' => false, 'message' => UIFeedback::perror(Lang::t('_WITH_FNCROLE_ASSOCIATIONS', 'competences'))];
 			echo $this->json->encode($output);
 			return;
 		}
 
 		//check associations with user
 		if ($this->model->getCompetenceUsersTotal(Get::req('id', DOTY_INT, -1)) > 0){
-			$output = array('success' => false, 'message' => UIFeedback::perror(Lang::t('_WITH_USER_ASSOCIATIONS', 'competences')));
+			$output = ['success' => false, 'message' => UIFeedback::perror(Lang::t('_WITH_USER_ASSOCIATIONS', 'competences'))];
 			echo $this->json->encode($output);
 			return;
 		}
 		
-		$output = array('success' => false);
+		$output = ['success' => false];
 		$id = Get::req('id', DOTY_INT, -1);
 		if ($id > 0) $output['success'] = $this->model->deleteCompetence($id);
 		echo $this->json->encode($output);
@@ -803,10 +803,10 @@ Class CompetencesAdmController extends AdmController {
 		//read inputs
 		$id_competence = Get::req('id', DOTY_INT, -1);
 		if ($id_competence <= 0) {
-			$this->render('invalid', array(
+			$this->render('invalid', [
 				'message' => $this->_getErrorMessage("invalid competence"),
 				'back_url' => $back_url
-			));
+            ]);
 			return;
 		}
 
@@ -825,19 +825,19 @@ Class CompetencesAdmController extends AdmController {
 		}
 
 		//render view
-		$this->render('show_users', array(
+		$this->render('show_users', [
 			'filter_text' => "",
 			'competence_info' => $this->model->getCompetenceInfo($id_competence),
 			'result_message' => $result_message,
 			'count_users' => $this->model->getCompetenceUsersTotal($id_competence)
-		));
+        ]);
 	}
 
 
 	public function getuserstabledataTask() {
 		//check permissions
 		if (!$this->permissions['associate_user']) {
-			$output = array('success' => false, 'message' => $this->_getErrorMessage('no permission'));
+			$output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
 			echo $this->json->encode($output);
 			return;
 		}
@@ -851,9 +851,9 @@ Class CompetencesAdmController extends AdmController {
 		$dir = Get::req('dir', DOTY_STRING, "asc");
 		$filter_text = Get::req('filter_text', DOTY_STRING, '');
 
-		$searchFilter = array(
+		$searchFilter = [
 			'text' => $filter_text
-		);
+        ];
 
 		//get total from database and validate the results count
 		$total = $this->model->getCompetenceUsersTotal($id_competence, $searchFilter);
@@ -866,22 +866,22 @@ Class CompetencesAdmController extends AdmController {
 		}
 
 		//set pagination argument
-		$pagination = array(
+		$pagination = [
 			'startIndex' => $startIndex,
 			'results' => $results,
 			'sort' => $sort,
 			'dir' => $dir
-		);
+        ];
 
 		$list = $this->model->getCompetenceUsersList($id_competence, $pagination, $searchFilter);
 
-		$output_results = array();
+		$output_results = [];
 		if (is_array($list)) {
 			$acl_man = Docebo::user()->getAclManager();
 			$required_users = $this->model->getRequiredUsers($id_competence);
 
 			foreach ($list as $user) {
-				$output_results[] = array(
+				$output_results[] = [
 					'idst' => $user->id_user,
 					'userid' => Layout::highlight($acl_man->relativeId($user->userid), $filter_text),
 					'firstname' => Layout::highlight($user->firstname, $filter_text),
@@ -891,11 +891,11 @@ Class CompetencesAdmController extends AdmController {
 					//'is_required' => (in_array($user->id_user, $required_users) ? '1' : '0'),
 					'score' => $user->score_got,
 					'unassign' => 'ajax.adm_server.php?r='.$this->base_link_competence.'/unassign_user&id_competence='.(int)$id_competence.'&id_user='.(int)$user->id_user
-				);
+                ];
 			}
 		}
 
-		$output = array(
+		$output = [
 			'totalRecords' => $total,
 			'startIndex' => $startIndex,
 			'sort' => $sort,
@@ -903,7 +903,7 @@ Class CompetencesAdmController extends AdmController {
 			'rowsPerPage' => $rowsPerPage,
 			'results' => count($list),
 			'records' => $output_results
-		);
+        ];
 
 		echo $this->json->encode($output);
 	}
@@ -920,10 +920,10 @@ Class CompetencesAdmController extends AdmController {
 		//read inputs
 		$id_competence = Get::req('id_competence', DOTY_INT, -1);
 		if ($id_competence <= 0) {
-			$this->render('invalid', array(
+			$this->render('invalid', [
 				'message' => $this->_getErrorMessage("invalid competence"),
 				'back_url' => 'index.php?r='.$this->base_link_competence.'/show'
-			));
+            ]);
 			return;
 		}
 
@@ -936,11 +936,11 @@ Class CompetencesAdmController extends AdmController {
 		$name = $this->model->getCompetenceName($id_competence);
 
 		//page_title
-		$page_title_arr = array(
+		$page_title_arr = [
 			$back_url => Lang::t('_COMPETENCES', 'competences'),
 			$name,
 			Lang::t('_ASSIGN_USERS', 'competences')
-		);
+        ];
 
 		if (isset($_POST['cancelselector'])) {
 
@@ -977,8 +977,8 @@ Class CompetencesAdmController extends AdmController {
 				require_once(_base_.'/lib/lib.table.php');
 				$table = new Table();
 
-				$head_label = array();
-				$head_style = array();
+				$head_label = [];
+				$head_style = [];
 
 				$head_label[] = Lang::t('_USERNAME', 'standard');
 				$head_label[] = Lang::t('_NAME');
@@ -996,7 +996,7 @@ Class CompetencesAdmController extends AdmController {
 				$_std_score = 0;
 				foreach ($_new_users as $id_user) {
 					if (isset($_user_data[$id_user]) && is_object($_user_data[$id_user])) {
-						$line = array();
+						$line = [];
 
 						$line[] = $acl_man->relativeId($_user_data[$id_user]->userid);
 						$line[] = $_user_data[$id_user]->lastname." ".$_user_data[$id_user]->firstname;
@@ -1006,15 +1006,15 @@ Class CompetencesAdmController extends AdmController {
 					}
 				}
 
-				$foot = array();
-				$foot[] = array('label'=>'<b>'.Lang::t('_TOTAL', 'standard').': '.count($_new_users).'</b>', 'colspan'=>2);
+				$foot = [];
+				$foot[] = ['label'=>'<b>'.Lang::t('_TOTAL', 'standard').': '.count($_new_users).'</b>', 'colspan'=>2];
 				$foot[] = Form::getInputTextfield('textfield', '_score_', '_score_', $_std_score, '', 255, '').'<br />'
 					.Form::getButton('set_score', false, Lang::t('_SET', 'standard'))
 					.Form::getButton('reset_score', false, Lang::t('_RESET', 'standard'));
 
 				$table->addFoot($foot);
 
-				$this->render('users_assign', array(
+				$this->render('users_assign', [
 					'id_competence' => $id_competence,
 					'title' => $page_title_arr,
 					'type' => $type,
@@ -1022,10 +1022,10 @@ Class CompetencesAdmController extends AdmController {
 					'table' => $table,
 					'score_std_value' => $_std_score,
 					'del_selection' => implode(",", $_old_users)
-				));
+                ]);
 			
 			} else {
-				$data = array();
+				$data = [];
 				foreach ($_new_users as $id_user) {
 					$data[$id_user] = 1;
 				}
@@ -1047,7 +1047,7 @@ Class CompetencesAdmController extends AdmController {
 
 			//filter selectable user by sub-admin permission
 			$acl_man = Docebo::user()->getAclManager();
-			$user_selector->setUserFilter('exclude', array($acl_man->getAnonymousId()));
+			$user_selector->setUserFilter('exclude', [$acl_man->getAnonymousId()]);
 			if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
 				require_once(_base_.'/lib/lib.preference.php');
 				$adminManager = new AdminPreference();
@@ -1091,15 +1091,15 @@ Class CompetencesAdmController extends AdmController {
 		//read inputs
 		$id_competence = Get::req('id_competence', DOTY_INT, -1);
 		if ($id_competence <= 0) {
-			$this->render('invalid', array(
+			$this->render('invalid', [
 				'message' => $this->_getErrorMessage("invalid competence"),
 				'back_url' => $back_url
-			));
+            ]);
 			return;
 		}
-		$assign = Get::req('assign_score', DOTY_MIXED, array());
+		$assign = Get::req('assign_score', DOTY_MIXED, []);
 		$remove = Get::req('del_selection', DOTY_STRING, "");
-		$del_selection = ($remove != "" ? explode(",", $remove) : array());
+		$del_selection = ($remove != "" ? explode(",", $remove) : []);
 
 		$res1 = $this->model->assignCompetenceUsers($id_competence, $assign, true);
 		$res2 = $this->model->removeCompetenceUsers($id_competence, $del_selection, true);
@@ -1113,19 +1113,19 @@ Class CompetencesAdmController extends AdmController {
 	public function user_history() {
 		$id_competence = Get::req('id_competence', DOTY_INT, -1);
 		if ($id_competence <= 0) {
-			$this->render('invalid', array(
+			$this->render('invalid', [
 				'message' => $this->_getErrorMessage("invalid competence"),
 				'back_url' => 'index.php?r='.$this->base_link_competence.'/show'
-			));
+            ]);
 			return;
 		}
 
 		$id_user = Get::req('id_user', DOTY_INT, -1);
 		if ($id_user <= 0) {
-			$this->render('invalid', array(
+			$this->render('invalid', [
 				'message' => $this->_getErrorMessage("invalid user"),
 				'back_url' => 'index.php?r='.$this->base_link_competence.'/show'
-			));
+            ]);
 			return;
 		}
 
@@ -1137,33 +1137,33 @@ Class CompetencesAdmController extends AdmController {
 	public function unassign_userTask() {
 		//check permissions
 		if (!$this->permissions['associate_user']) {
-			$output = array('success' => false, 'message' => $this->_getErrorMessage('no permission'));
+			$output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
 			echo $this->json->encode($output);
 			return;
 		}
 
 		$id_competence = Get::req('id_competence', DOTY_INT, -1);
 		if ($id_competence <= 0) {
-			$output = array(
+			$output = [
 				'success' => false,
 				'message' => UIFeedback::perror($this->_getErrorMessage("invalid competence"))
-			);
+            ];
 			echo $this->json->encode($output);
 			return;
 		}
 
 		$id_user = Get::req('id_user', DOTY_INT, -1);
 		if ($id_user <= 0) {
-			$output = array(
+			$output = [
 				'success' => false,
 				'message' => UIFeedback::perror($this->_getErrorMessage("invalid user"))
-			);
+            ];
 			echo $this->json->encode($output);
 			return;
 		}
 
 		$res = $this->model->removeCompetenceUsers($id_competence, $id_user, true);
-		$output = array('success' => $res ? true : false);
+		$output = ['success' => $res ? true : false];
 		if (!$res) $output['message'] = Lang::t('_ERROR_WHILE_SAVING', 'standard');
 
 		echo $this->json->encode($output);
@@ -1181,10 +1181,10 @@ Class CompetencesAdmController extends AdmController {
 		//read inputs
 		$id_competence = Get::req('id_competence', DOTY_INT, -1);
 		if ($id_competence <= 0) {
-			$this->render('invalid', array(
+			$this->render('invalid', [
 				'message' => $this->_getErrorMessage("invalid competence"),
 				'back_url' => $base_url
-			));
+            ]);
 			return;
 		}
 
@@ -1195,20 +1195,20 @@ Class CompetencesAdmController extends AdmController {
 		$name = $this->model->getCompetenceName($id_competence);
 
 		//page_title
-		$page_title_arr = array(
+		$page_title_arr = [
 			$base_url => Lang::t('_COMPETENCES', 'competences'),
 			$back_url => Lang::t('_USERS', 'competences').': '.$name,
 			Lang::t('_MOD', 'competences')
-		);
+        ];
 
 		$competence_users = $this->model->getCompetenceUsers($id_competence, true);
 		$users = array_keys($competence_users);
 
 		if (empty($users)) {
-			$this->render('invalid', array(
+			$this->render('invalid', [
 				'message' => $this->_getErrorMessage("no users"),
 				'back_url' => $back_url
-			));
+            ]);
 			return;
 		}
 
@@ -1218,8 +1218,8 @@ Class CompetencesAdmController extends AdmController {
 			require_once(_base_.'/lib/lib.table.php');
 			$table = new Table();
 
-			$head_label = array();
-			$head_style = array();
+			$head_label = [];
+			$head_style = [];
 
 			$head_label[] = Lang::t('_USERNAME', 'standard');
 			$head_label[] = Lang::t('_NAME');
@@ -1237,7 +1237,7 @@ Class CompetencesAdmController extends AdmController {
 			$_std_score = 0;
 			$acl_man = Docebo::user()->getACLManager();
 			foreach (array_keys($_user_data) as $id_user) {
-				$line = array();
+				$line = [];
 
 				$line[] = $acl_man->relativeId($_user_data[$id_user]->userid);
 				$line[] = $_user_data[$id_user]->lastname." ".$_user_data[$id_user]->firstname;
@@ -1254,22 +1254,22 @@ Class CompetencesAdmController extends AdmController {
 				$table->addBody($line);
 			}
 
-			$foot = array();
-			$foot[] = array('label'=>'<b>'.Lang::t('_TOTAL', 'standard').': '.count($users).'</b>', 'colspan'=>2);
+			$foot = [];
+			$foot[] = ['label'=>'<b>'.Lang::t('_TOTAL', 'standard').': '.count($users).'</b>', 'colspan'=>2];
 			$foot[] = Form::getInputTextfield('textfield', '_score_', '_score_', $_std_score, '', 255, '').'<br />'
 				.Form::getButton('set_score', false, Lang::t('_SET', 'standard'))
 				.Form::getButton('reset_score', false, Lang::t('_RESET', 'standard'));
 
 			$table->addFoot($foot);
 
-			$this->render('users_mod', array(
+			$this->render('users_mod', [
 				'id_competence' => $id_competence,
 				'title' => $page_title_arr,
 				'type' => $type,
 				'form_url' => 'index.php?r='.$this->base_link_competence.'/mod_users_action',
 				'table' => $table,
 				'score_std_value' => $_std_score
-			));
+            ]);
 
 		} else {
 			
@@ -1288,10 +1288,10 @@ Class CompetencesAdmController extends AdmController {
 		//read inputs
 		$id_competence = Get::req('id_competence', DOTY_INT, -1);
 		if ($id_competence <= 0) {
-			$this->render('invalid', array(
+			$this->render('invalid', [
 				'message' => $this->_getErrorMessage("invalid competence"),
 				'back_url' => $base_url
-			));
+            ]);
 			return;
 		}
 
@@ -1306,7 +1306,7 @@ Class CompetencesAdmController extends AdmController {
 
 		$count = 0;
 		$success = 0;
-		$values = Get::req('assign_score', DOTY_MIXED, array());
+		$values = Get::req('assign_score', DOTY_MIXED, []);
 		foreach ($values as $id_user => $score) {
 			if (isset($competence_users[$id_user])) {
 				if ($score != $competence_users[$id_user]->score_got) {
@@ -1328,7 +1328,7 @@ Class CompetencesAdmController extends AdmController {
 	public function change_user_scoreTask() {
 		//check permissions
 		if (!$this->permissions['associate_user']) {
-			$output = array('success' => false, 'message' => $this->_getErrorMessage('no permission'));
+			$output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
 			echo $this->json->encode($output);
 			return;
 		}
@@ -1338,7 +1338,7 @@ Class CompetencesAdmController extends AdmController {
 		$old_score = Get::req('old_score', DOTY_FLOAT, -1.0);
 		$new_score = Get::req('new_score', DOTY_FLOAT, -1.0);
 
-		$output = array('success' => true);
+		$output = ['success' => true];
 
 		if ($id_user <= 0) {
 			$output['success'] = false;
@@ -1373,10 +1373,10 @@ Class CompetencesAdmController extends AdmController {
 	public function man_courseTask() {
 		$id_course = Get::req('id_course', DOTY_INT, 0);
 		if ($id_course <= 0) {
-			$this->render('invalid', array(
+			$this->render('invalid', [
 				'message' => $this->_getErrorMessage("invalid course"),
 				'back_url' => $base_url
-			));
+            ]);
 			return;
 		}
 		
@@ -1384,10 +1384,10 @@ Class CompetencesAdmController extends AdmController {
 		$course_info = $cmodel->getInfo($id_course);
 		$course_name = ($course_info['code'] !== '' ? '['.$course_info['code'].'] ' : '').$course_info['name'];
 
-		$title_arr = array(
+		$title_arr = [
 			'index.php?r='.$this->base_link_course.'/show' => Lang::t('_COURSES', 'course'),
 			Lang::t('_COMPETENCES', 'competences').' : '.$course_name
-		);
+        ];
 
 		$res = Get::req('res', DOTY_ALPHANUM, '');
 		$result_message = "";
@@ -1396,14 +1396,14 @@ Class CompetencesAdmController extends AdmController {
 			case 'err_competences': $result_message = Lang::t('_OPERATION_FAILURE', 'standard'); break;
 		}
 
-		$this->render('man_course', array(
+		$this->render('man_course', [
 			'id_course' => $id_course,
 			'has_scores' => $this->model->courseHasScoreCompetences($id_course),
 			'title_arr' => $title_arr,
 			'result_message' => $result_message,
 			'filter_text' => "",
 			'base_link_competence' => $this->base_link_competence
-		));
+        ]);
 	}
 
 	/*
@@ -1414,10 +1414,10 @@ Class CompetencesAdmController extends AdmController {
 
 		$id_course = Get::req('id_course', DOTY_INT, 0);
 		if ($id_course <= 0) {
-			$this->render('invalid', array(
+			$this->render('invalid', [
 				'message' => $this->_getErrorMessage("invalid course"),
 				'back_url' => $base_url
-			));
+            ]);
 			return;
 		}
 
@@ -1434,9 +1434,9 @@ Class CompetencesAdmController extends AdmController {
 
 		} elseif ($save !== false) {
 
-			$selection = Get::req('competences_selection', DOTY_MIXED, array());
+			$selection = Get::req('competences_selection', DOTY_MIXED, []);
 			$selection_str = (is_array($selection) && isset($selection['course_competences_selector']) ? $selection['course_competences_selector'] : "") ;
-			$competences_selected = $selection_str != "" ? explode(",", $selection_str) : array();
+			$competences_selected = $selection_str != "" ? explode(",", $selection_str) : [];
 			$competences_existent = $this->model->getCourseCompetences($id_course);
 
 			//retrieve newly selected competences
@@ -1447,18 +1447,18 @@ Class CompetencesAdmController extends AdmController {
 
 			require_once(_base_.'/lib/lib.table.php');
 			$table = new Table();
-			$label_h = array(
+			$label_h = [
 				Lang::t('_NAME', 'standard'),
 				Lang::t('_DESCRIPTION', 'standard'),
 				Lang::t('_TYPOLOGY', 'competences'),
 				Lang::t('_SCORE', 'competences')
-			);
-			$style_h = array(
+            ];
+			$style_h = [
 				'',
 				'',
 				'img-cell',
 				'img-cell'
-			);
+            ];
 			$table->addHead($label_h, $style_h);
 
 			$counter = 0; //how many score type competences
@@ -1468,7 +1468,7 @@ Class CompetencesAdmController extends AdmController {
 			foreach ($info as $id=>$competence) {
 				if ($competence->type=='score') {
 					$counter++;
-					$line = array();
+					$line = [];
 					$line[] = $competence->langs[$lang_code]['name'];
 					$line[] = $competence->langs[$lang_code]['description'];
 					$line[] = $competence->typology;
@@ -1478,31 +1478,31 @@ Class CompetencesAdmController extends AdmController {
 			}
 
 			if ($counter > 0) {
-				$foot = array(
-					array('colspan'=>3, 'label'=>''),
+				$foot = [
+					['colspan'=>3, 'label'=>''],
 					Form::getInputTextfield('textfield', 'score_assigned', false, $std_value, '', 255, '').'<br />'
 						.Form::getButton('set_score', 'set_score', Lang::t('_SET', 'standard'), false, '', true, false)
 						.Form::getButton('reset_score', 'reset_score', Lang::t('_RESET', 'standard'), false, '', true, false)
-				);
+                ];
 				$table->addFoot($foot);
 
-				$title_arr = array(
+				$title_arr = [
 					'index.php?r='.$this->base_link_course.'/show' => Lang::t('_COURSES', 'course'),
 					$back_url => Lang::t('_COMPETENCES', 'competences'),
 					Lang::t('_SELECT')
-				);
+                ];
 
-				$this->render('course_assign_score', array(
+				$this->render('course_assign_score', [
 					'id_course' => $id_course,
 					'title_arr' => $title_arr,
 					'table' => $table,
 					'del_selection' => (count($_old_competences)>0 ? implode(',', $_old_competences) : ''),
 					'new_selection' => (count($_new_competences)>0 ? implode(',', $_new_competences) : ''),
 					'base_link_competence' => $this->base_link_competence
-				));
+                ]);
 
 			} else {
-				$scores = array();
+				$scores = [];
 				foreach ($_new_competences as $id_competence) {
 					//any competence in here is a flag type competence
 					$scores[$id_competence] = 1;
@@ -1517,21 +1517,21 @@ Class CompetencesAdmController extends AdmController {
 			}
 
 		} else {
-			$title_arr = array(
+			$title_arr = [
 				'index.php?r='.$this->base_link_course.'/show' => Lang::t('_COURSES', 'course'),
 				$back_url => Lang::t('_COMPETENCES', 'competences'),
 				Lang::t('_SELECT', 'competences')
-			);
+            ];
 
 			//render the courses selector
 			$selection = $this->model->getCourseCompetences($id_course);
 
-			$this->render('assign_to_course', array(
+			$this->render('assign_to_course', [
 				'id_course' => $id_course,
 				'title_arr' => $title_arr,
 				'selection' => $selection,
 				'base_link_competence' => $this->base_link_competence
-			));
+            ]);
 		}
 	}
 
@@ -1539,10 +1539,10 @@ Class CompetencesAdmController extends AdmController {
 	public function assign_to_course_actionTask() {
 		$id_course = Get::req('id_course', DOTY_INT, 0);
 		if ($id_course <= 0) {
-			$this->render('invalid', array(
+			$this->render('invalid', [
 				'message' => $this->_getErrorMessage("invalid course"),
 				'back_url' => 'index.php?r='.$this->base_link_competence.'/show'
-			));
+            ]);
 			return;
 		}
 
@@ -1559,13 +1559,13 @@ Class CompetencesAdmController extends AdmController {
 		$scores = Get::req('score_assigned', DOTY_MIXED, false);
 
 		$new_selection_str = Get::req('new_selection', DOTY_STRING, '');
-		$new_selection = ($new_selection_str == "" ? array() : explode(',', $new_selection_str));
+		$new_selection = ($new_selection_str == "" ? [] : explode(',', $new_selection_str));
 
 		$del_selection_str = Get::req('del_selection', DOTY_STRING, '');
-		$del_selection = ($del_selection_str == "" ? array() : explode(',', $del_selection_str));
+		$del_selection = ($del_selection_str == "" ? [] : explode(',', $del_selection_str));
 
 		//prepare scores for DB insertion
-		$_scores = array();
+		$_scores = [];
 		foreach ($new_selection as $id_competence) {
 			$_scores[$id_competence] = array_key_exists($id_competence, $scores) ? $scores[$id_competence] : 1;
 		}
@@ -1591,9 +1591,9 @@ Class CompetencesAdmController extends AdmController {
 		$dir = Get::req('dir', DOTY_STRING, "asc");
 		$filter_text = Get::req('filter_text', DOTY_STRING, '');
 
-		$searchFilter = array(
+		$searchFilter = [
 			'text' => $filter_text
-		);
+        ];
 
 		//get total from database and validate the results count
 		$total = $this->model->getCourseCompetencesTotal($id_course, $searchFilter);
@@ -1606,22 +1606,22 @@ Class CompetencesAdmController extends AdmController {
 		}
 
 		//set pagination argument
-		$pagination = array(
+		$pagination = [
 			'startIndex' => $startIndex,
 			'results' => $results,
 			'sort' => $sort,
 			'dir' => $dir
-		);
+        ];
 
 		//read records from database
 		$list = $this->model->getCourseCompetencesList($id_course, $pagination, $searchFilter);
 
 		//prepare the data for sending
-		$output_results = array();
+		$output_results = [];
 		if (is_array($list) && count($list)>0) {
 			foreach ($list as $idst=>$record) {
 				//prepare output record
-				$output_results[] = array(
+				$output_results[] = [
 					'id' => $record->id_competence,
 					'name' => Layout::highlight($record->name, $filter_text),
 					'description' => Layout::highlight($record->description, $filter_text),
@@ -1629,11 +1629,11 @@ Class CompetencesAdmController extends AdmController {
 					'type' => $record->type,
 					'score' => $record->score,
 					'del'		=> 'ajax.adm_server.php?r='.$this->base_link_competence.'/del_course_competence&id_course='.(int)$id_course.'&id_competence='.(int)$record->id_competence,
-				);
+                ];
 			}
 		}
 
-		$output = array(
+		$output = [
 			'totalRecords' => $total,
 			'startIndex' => $startIndex,
 			'sort' => $sort,
@@ -1641,7 +1641,7 @@ Class CompetencesAdmController extends AdmController {
 			'rowsPerPage' => $rowsPerPage,
 			'results' => count($list),
 			'records' => $output_results
-		);
+        ];
 
 		echo $this->json->encode($output);
 	}
@@ -1654,10 +1654,10 @@ Class CompetencesAdmController extends AdmController {
 	public function mod_course_competencesTask() {
 		$id_course = Get::req('id_course', DOTY_INT, 0);
 		if ($id_course <= 0) {
-			$this->render('invalid', array(
+			$this->render('invalid', [
 				'message' => $this->_getErrorMessage("invalid course"),
 				'back_url' => 'index.php?r='.$this->base_link_competence.'/show'
-			));
+            ]);
 			return;
 		}
 
@@ -1666,18 +1666,18 @@ Class CompetencesAdmController extends AdmController {
 
 		require_once(_base_.'/lib/lib.table.php');
 		$table = new Table();
-		$label_h = array(
+		$label_h = [
 			Lang::t('_NAME', 'standard'),
 			Lang::t('_DESCRIPTION', 'standard'),
 			Lang::t('_TYPOLOGY', 'competences'),
 			Lang::t('_SCORE', 'competences')
-		);
-		$style_h = array(
+        ];
+		$style_h = [
 			'',
 			'',
 			'img-cell',
 			'img-cell'
-		);
+        ];
 		$table->addHead($label_h, $style_h);
 
 		$counter = 0; //how many score type competences
@@ -1687,7 +1687,7 @@ Class CompetencesAdmController extends AdmController {
 		foreach ($info as $id=>$competence) {
 			if ($competence->type=='score') {
 				$counter++;
-				$line = array();
+				$line = [];
 				$line[] = $competence->langs[$lang_code]['name'];
 				$line[] = $competence->langs[$lang_code]['description'];
 				$line[] = $competence->typology;
@@ -1697,25 +1697,25 @@ Class CompetencesAdmController extends AdmController {
 		}
 
 		if ($counter > 0) {
-			$foot = array(
-				array('colspan'=>3, 'label'=>''),
+			$foot = [
+				['colspan'=>3, 'label'=>''],
 				Form::getInputTextfield('textfield', 'score_assigned', false, $std_value, '', 255, '').'<br />'
 					.Form::getButton('set_score', 'set_score', Lang::t('_SET', 'standard'), false, '', true, false)
 					.Form::getButton('reset_score', 'reset_score', Lang::t('_RESET', 'standard'), false, '', true, false)
-			);
+            ];
 			$table->addFoot($foot);
 
-			$title_arr = array(
+			$title_arr = [
 				'index.php?r='.$this->base_link_course.'/show' => Lang::t('_COURSES', 'course'),
 				$back_url => Lang::t('_COMPETENCES', 'competences'),
 				Lang::t('_SCORE')
-			);
+            ];
 
-			$this->render('mod_course_assign_score', array(
+			$this->render('mod_course_assign_score', [
 				'id_course' => $id_course,
 				'title_arr' => $title_arr,
 				'table' => $table
-			));
+            ]);
 		} else {
 			//go back to main page, no score to assign
 			Util::jump_to($back_url);
@@ -1726,10 +1726,10 @@ Class CompetencesAdmController extends AdmController {
 	public function mod_course_competences_actionTask() {
 		$id_course = Get::req('id_course', DOTY_INT, 0);
 		if ($id_course <= 0) {
-			$this->render('invalid', array(
+			$this->render('invalid', [
 				'message' => $this->_getErrorMessage("invalid course"),
 				'back_url' => 'index.php?r='.$this->base_link_competence.'/show'
-			));
+            ]);
 			return;
 		}
 
@@ -1742,7 +1742,7 @@ Class CompetencesAdmController extends AdmController {
 
 		if ($undo) Util::jump_to($back_url);
 
-		$scores = Get::req('score_assigned', DOTY_MIXED, array());
+		$scores = Get::req('score_assigned', DOTY_MIXED, []);
 		$res = $this->model->updateCourseCompetences($id_course, $scores);
 
 		//go back to main page, with result message
@@ -1758,7 +1758,7 @@ Class CompetencesAdmController extends AdmController {
 		$id_course = Get::req('id_course', DOTY_INT, 0);
 		$id_competence = Get::req('id_competence', DOTY_INT, 0);
 
-		$output = array();
+		$output = [];
 		if ($id_course <= 0 || $id_competence <= 0) {
 			$message_text = ($id_course <= 0 ? $this->_getErrorMessage("invalid course") : $this->_getErrorMessage("invalid competence"));
 			$output['success'] = false;
@@ -1777,10 +1777,10 @@ Class CompetencesAdmController extends AdmController {
 	public function view_competence_reportTask() {
 		$id_competence = Get::req('id', DOTY_INT, -1);
 		if ($id_competence <= 0) { //invalid competence
-			$this->render('invalid', array(
+			$this->render('invalid', [
 				'message' => $this->_getErrorMessage("invalid competence"),
 				'back_url' => 'index.php?r='.$this->base_link_competence.'/show'
-			));
+            ]);
 			return;
 		}
 
@@ -1798,28 +1798,28 @@ Class CompetencesAdmController extends AdmController {
 		$icon_history = '<span class="ico-sprite subs_elem"><span>'.Lang::t('_HISTORY', 'standard').'</span></span>';
 
 		$table = new Table();
-		$label_h = array(
+		$label_h = [
 			Lang::t('_USERNAME', 'standard'),
 			Lang::t('_LASTNAME', 'standard'),
 			Lang::t('_FIRSTNAME', 'standard'),
 			Lang::t('_SCORE', 'competences'),
 			Lang::t('_DATE_LAST_COMPLETE', 'subscribe'),
 			$icon_history
-		);
-		$style_h = array(
+        ];
+		$style_h = [
 			'',
 			'',
 			'',
 			'img-cell',
 			'img-cell',
 			'img-cell'
-		);
+        ];
 		$table->addHead($label_h, $style_h);
 
 		$type = $this->model->getCompetenceType($id_competence);
 		$acl_man = Docebo::user()->getACLManager();
 		foreach ($userdata as $id_user => $record) {
-			$line = array();
+			$line = [];
 
 			$line[] = Layout::highlight($acl_man->relativeId($uinfo[$id_user]->userid), $filter_text);
 			$line[] = Layout::highlight($uinfo[$id_user]->lastname, $filter_text);
@@ -1831,11 +1831,11 @@ Class CompetencesAdmController extends AdmController {
 			$table->addBody($line);
 		}
 
-		$this->render('competence_users', array(
+		$this->render('competence_users', [
 			'id_competence' => $id_competence,
 			'filter_text' => $filter_text,
 			'table' => $table
-		));
+        ]);
 
 	}
 
@@ -1844,17 +1844,17 @@ Class CompetencesAdmController extends AdmController {
 	public function competences_autocompleteTask() {
 		$query = Get::req('query', DOTY_STRING, '');
 		$results = Get::Req('results', DOTY_INT, Get::sett('visuItem', 25));
-		$output = array('competences' => array());
+		$output = ['competences' => []];
 		if ($query != "") {
 			$competences = $this->model->searchCompetencesByName($query, $results, true);
 			foreach ($competences as $competence) {
-				$output['competences'][] = array(
+				$output['competences'][] = [
 					'id_competence' => $competence->id_competence,
 					'name' => $competence->name,
 					'name_highlight' => Layout::highlight($competence->name, $query),
 					'type' => $competence->type,
 					'typology' => $competence->typology
-				);
+                ];
 			}
 		}
 		echo $this->json->encode($output);
@@ -1866,7 +1866,7 @@ Class CompetencesAdmController extends AdmController {
 		$id_competence = Get::req('id_competence', DOTY_INT, 0);
 
 		if ($id_competence <= 0) {
-			echo $this->json->encode(array('success' => true));
+			echo $this->json->encode(['success' => true]);
 			return;
 		}
 
@@ -1877,28 +1877,28 @@ Class CompetencesAdmController extends AdmController {
 		$language = Get::req('language', DOTY_STRING, getLanguage());
 
 		if ($new_value === $old_value) {
-			echo $this->json->encode(array('success' => true));
+			echo $this->json->encode(['success' => true]);
 		} else {
 
 			switch ($column) {
 
 				case 'name': {
 					$res = $this->model->updateCompetenceName($id_competence, $new_value, $language);
-					$output = array('success' => $res ? true : false);
+					$output = ['success' => $res ? true : false];
 					if ($res) $output['new_value'] = stripslashes($new_value);
 					echo $this->json->encode($output);
 				} break;
 
 				case 'description': {
 					$res = $this->model->updateCompetenceDescription($id_competence, $new_value, $language);
-					$output = array('success' => $res ? true : false);
+					$output = ['success' => $res ? true : false];
 					if ($res) $output['new_value'] = stripslashes($new_value);
 					echo $this->json->encode($output);
 				} break;
 				
 				case 'typology': {
 					$res = $this->model->updateCompetenceTypology($id_competence, $new_value);
-					$output = array('success' => $res ? true : false);
+					$output = ['success' => $res ? true : false];
 					if ($res) {
 						$typologies = $this->model->getCompetenceTypologies();
 						$output['new_value'] = $typologies[$new_value];
@@ -1908,7 +1908,7 @@ Class CompetencesAdmController extends AdmController {
 
 				case 'type': {
 					$res = $this->model->updateCompetenceType($id_competence, $new_value);
-					$output = array('success' => $res ? true : false);
+					$output = ['success' => $res ? true : false];
 					if ($res) {
 						$types = $this->model->getCompetenceTypes();
 						$output['new_value'] = $types[$new_value];
@@ -1917,7 +1917,7 @@ Class CompetencesAdmController extends AdmController {
 				} break;
 
 				default: {
-					echo $this->json->encode(array('success' => false));
+					echo $this->json->encode(['success' => false]);
 				} break;
 			}
 		}

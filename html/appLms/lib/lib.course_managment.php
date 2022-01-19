@@ -483,15 +483,15 @@ class AdminCourseManagment {
     /**
      * @var array
      */
-    var $course 		= array();
+    var $course 		= [];
     /**
      * @var array
      */
-    var $coursepath 	= array();
+    var $coursepath 	= [];
     /**
      * @var array
      */
-    var $catalogues 	= array();
+    var $catalogues 	= [];
 
     /**
      *
@@ -514,7 +514,7 @@ class AdminCourseManagment {
      */
     function &getUserCourses($id_user) {
 		
-		$courses = array();
+		$courses = [];
 		$query_course = "
 		SELECT id_entry 
 		FROM ".$GLOBALS['prefix_fw']."_admin_course 
@@ -533,7 +533,7 @@ class AdminCourseManagment {
      */
     function &getUserPathCourses($id_user) {
 		
-		$coursepaths = array();
+		$coursepaths = [];
 		$query_coursepath = "
 		SELECT id_entry 
 		FROM ".$GLOBALS['prefix_fw']."_admin_course 
@@ -552,7 +552,7 @@ class AdminCourseManagment {
      */
     function &getUserCatalogues($id_user) {
 		
-		$catalogues = array();
+		$catalogues = [];
 		$query_catalogue = "
 		SELECT id_entry 
 		FROM ".$GLOBALS['prefix_fw']."_admin_course 
@@ -614,7 +614,7 @@ class AdminCourseManagment {
      */
     function getCoursesStats($manual_filter = false) {
 
-		$course_stats = array();
+		$course_stats = [];
 		$course_stats['total'] = 0;
 		$course_stats['active'] = 0;
 		$course_stats['active_seven'] = 0;

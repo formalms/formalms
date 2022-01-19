@@ -15,15 +15,15 @@ class Man_Advice {
 	
 	function getCountUnreaded($id_user, $courses, &$last_access) {
 		
-		if(empty($courses)) return array();
+		if(empty($courses)) return [];
 		
-		$unreaded = array();
+		$unreaded = [];
 		$query_unreaded = "
 		SELECT idCourse, UNIX_TIMESTAMP(posted) 
 		FROM ".$GLOBALS['prefix_lms']."_advice 
 		WHERE author <> '".$id_user."' AND idCourse IN ( ".implode(',', $courses)." ) ";
 		$re_advice = sql_query($query_unreaded);
-		if(!sql_num_rows($re_advice)) return array();
+		if(!sql_num_rows($re_advice)) return [];
 		
 		while(list($id_c, $posted) = sql_fetch_row($re_advice)) {
 			
@@ -54,7 +54,7 @@ class Man_Advice {
 		$db->start_transaction();
 
 		//get all existing advices for the course
-		$arr_id_advice = array();
+		$arr_id_advice = [];
 		$query = "SELECT idAdvice FROM %lms_advice WHERE idCourse = ".(int)$id_course;
 		$res = $db->query($query);
 		while (list($id_advice) = $db->fetch_row($res)) {

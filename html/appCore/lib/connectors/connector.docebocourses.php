@@ -28,34 +28,34 @@ class DoceboConnectorDoceboCourses extends DoceboConnector {
   	var $last_error = "";
  	
  	// name, type
- 	var $all_cols = array( 
-		array( 'code', 'text' ), 
-		array( 'name', 'text' ), 
-		array( 'description', 'text' ), 
-		array( 'lang_code', 'text' ), 
-		array( 'status', 'text' ), 
-		array( 'subscribe_method', 'int' ), 
-		array( 'permCloseLO', 'int' ), 
-		array( 'difficult', 'dropdown' ), 
-		array( 'show_progress', 'int' ), 
-		array( 'show_time', 'int' ), 
-		array( 'show_extra_info', 'int' ), 
-		array( 'show_rules', 'int' ), 
-		array( 'date_begin', 'date' ), 
-		array( 'date_end', 'date' ), 
-		array( 'valid_time', 'int' ), 
-		array( 'max_num_subscribe', 'int' ), 
-		array( 'selling', 'int' ), 
-		array( 'prize', 'int' ),
+ 	var $all_cols = [
+		['code', 'text'],
+		['name', 'text'],
+		['description', 'text'],
+		['lang_code', 'text'],
+		['status', 'text'],
+		['subscribe_method', 'int'],
+		['permCloseLO', 'int'],
+		['difficult', 'dropdown'],
+		['show_progress', 'int'],
+		['show_time', 'int'],
+		['show_extra_info', 'int'],
+		['show_rules', 'int'],
+		['date_begin', 'date'],
+		['date_end', 'date'],
+		['valid_time', 'int'],
+		['max_num_subscribe', 'int'],
+		['selling', 'int'],
+		['prize', 'int'],
             //lp
-		array( 'course_type', 'dropdown' ), 
-		array( 'course_edition', 'int' ), 
-            
-	);
+		['course_type', 'dropdown'],
+		['course_edition', 'int'],
+
+    ];
 	
-	var $mandatory_cols = array('code', 'name');
+	var $mandatory_cols = ['code', 'name'];
 	
-	var $default_cols = array(	'description' 		=> '', 
+	var $default_cols = ['description' 		=> '',
 								'lang_code' 		=> '', 
 								'status' 		=> '0', 
 								'subscribe_method' 	=> '', 
@@ -72,9 +72,9 @@ class DoceboConnectorDoceboCourses extends DoceboConnector {
 								'selling' 		=> '0', 
 								'prize' 		=> '',
                                                                 'course_type'           => 'elearning',
-                                                                'course_edition'        => '0');
+                                                                'course_edition'        => '0'];
 	
-	var $valid_filed_type 		= array( 'text','date','dropdown','yesno');
+	var $valid_filed_type 		= ['text','date','dropdown','yesno'];
 	
 	var $dbconn 				= NULL;
 	
@@ -89,7 +89,7 @@ class DoceboConnectorDoceboCourses extends DoceboConnector {
 	var $std_menu_to_assign 	= false;
 	
 		
-	var $arr_id_inserted 		= array();
+	var $arr_id_inserted 		= [];
 	
 	function DoceboConnectorDoceboCourses($params) {
 		
@@ -104,12 +104,12 @@ class DoceboConnectorDoceboCourses extends DoceboConnector {
 	
 	function get_config() {
 		
-		return array(	'name' => $this->name,
+		return ['name' => $this->name,
 						'description' => $this->description,
 						'readwrite' => $this->readwrite,
 						'sendnotify' => $this->sendnotify, 
 						'on_delete' => $this->on_delete, 
-						'std_menu_to_assign' => $this->std_menu_to_assign );
+						'std_menu_to_assign' => $this->std_menu_to_assign];
 	}
 	
 	function set_config( $params ) {
@@ -161,10 +161,10 @@ class DoceboConnectorDoceboCourses extends DoceboConnector {
 		
 		$lang = DoceboLanguage::createInstance('course', 'lms');
 		
-		$col_descriptor = array();
+		$col_descriptor = [];
 		foreach($this->all_cols as $k => $col) {
 				
-			$col_descriptor[] = array(
+			$col_descriptor[] = [
 				DOCEBOIMPORT_COLNAME 		=> $lang->def('_'.strtoupper($col[0])),
 				DOCEBOIMPORT_COLID			=> $col[0],
 				DOCEBOIMPORT_COLMANDATORY 	=> ( array_search($col[0], $this->mandatory_cols) === FALSE 
@@ -174,7 +174,7 @@ class DoceboConnectorDoceboCourses extends DoceboConnector {
 				DOCEBOIMPORT_DEFAULT 		=> ( $in = array_search($col[0], $this->default_cols) === FALSE 
 													? '' 
 													: $this->default_cols[$in] )
-			);
+            ];
 		}
 		return $col_descriptor;
 	}
@@ -308,10 +308,10 @@ class DoceboConnectorDoceboCourses extends DoceboConnector {
 			
 				require_once($GLOBALS['where_scs'].'/lib/lib.room.php');
 				
-				$rules = array(
+				$rules = [
 							'room_name' => $row['name'], 
 							'room_type' => 'course', 
-							'id_source' => $id_course );
+							'id_source' => $id_course];
 				$admin_rules = getAdminRules();
 				$rules = array_merge($rules, $admin_rules);
 				$re = insertRoom($rules);
@@ -372,13 +372,13 @@ class DoceboConnectorDoceboCourses extends DoceboConnector {
 					$msg_composer = new EventMessageComposer();
 					
 					$msg_composer->setSubjectLangText('email', '_ALERT_SUBJECT', false);
-					$msg_composer->setBodyLangText('email', '_ALERT_TEXT', array(	'[url]' => Get::site_url(), 
+					$msg_composer->setBodyLangText('email', '_ALERT_TEXT', ['[url]' => Get::site_url(),
 																					'[course_code]' => $row['code'], 
-																					'[course]' => $row['name'] ) );
+																					'[course]' => $row['name']]);
 																						
-					$msg_composer->setBodyLangText('sms', '_ALERT_TEXT_SMS', array(	'[url]' => Get::site_url(), 
+					$msg_composer->setBodyLangText('sms', '_ALERT_TEXT_SMS', ['[url]' => Get::site_url(),
 																					'[course_code]' => $row['code'], 
-																					'[course]' => $row['name'] ) );
+																					'[course]' => $row['name']]);
 					
 					require_once($GLOBALS['where_lms'] . '/lib/lib.course.php'); 
 					$course_man = new Man_Course();
@@ -480,7 +480,7 @@ class DoceboConnectorDoceboCoursesUI extends DoceboConnectorUI {
 	var $sh_finish 		= FALSE;
 	var $step_next 		= '';
 	var $step_prev 		= '';
-	var $available_menu = array();
+	var $available_menu = [];
 	
 	function DoceboConnectorDoceboCoursesUI( &$connector ) {
 		
@@ -590,23 +590,23 @@ class DoceboConnectorDoceboCoursesUI extends DoceboConnectorUI {
 	  	$out .= $this->form->getRadioSet( 	$this->lang->def('_ACCESSTYPE'), 
 		  									$this->_get_base_name().'_readwrite', 
 											$this->_get_base_name().'[readwrite]',
-											array( 	$this->lang->def('_READ')  => '1', 
+											[$this->lang->def('_READ')  => '1',
 													$this->lang->def('_WRITE') => '2',
-													$this->lang->def('_READWRITE') => '3'), 
+													$this->lang->def('_READWRITE') => '3'],
 											$this->post_params['readwrite']);
 		// ---- on delete -> delete or unactivate -----
 		$out .= $this->form->getRadioSet( 	$this->lang->def('_CANCELED_COURSES'), 
 		  									$this->_get_base_name().'_on_delete', 
 											$this->_get_base_name().'[on_delete]',
-											array( 	$this->lang->def('_DEACTIVATE')  => '1', 
-													$this->lang->def('_DEL') => '2'), 
+											[$this->lang->def('_DEACTIVATE')  => '1',
+													$this->lang->def('_DEL') => '2'],
 											$this->post_params['on_delete']);
 	  	// ---- access type read/write -----
 	  	$out .= $this->form->getRadioSet( 	$this->lang->def('_SENDNOTIFY'), 
 		  									$this->_get_base_name().'_sendnotify', 
 											$this->_get_base_name().'[sendnotify]',
-											array( 	$this->lang->def('_SEND')  => '1', 
-													$this->lang->def('_DONTSEND') => '2'), 
+											[$this->lang->def('_SEND')  => '1',
+													$this->lang->def('_DONTSEND') => '2'],
 											$this->post_params['sendnotify']);
 													
 		// ---- standard menu to use ----
@@ -620,7 +620,7 @@ class DoceboConnectorDoceboCoursesUI extends DoceboConnectorUI {
 }
 
 function docebocourses_factory() {
-	return new DoceboConnectorDoceboCourses(array());
+	return new DoceboConnectorDoceboCourses([]);
 }
 
 

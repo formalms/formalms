@@ -5,7 +5,7 @@
 // Does not need any php-flash extension, based on raw binary data reading
 //----------------------------------------------------------------------------- 
 //	SWFHEADER CLASS - PHP SWF header parser
-//	Copyright (C) 2004  Carlos Falo Hervás
+//	Copyright (C) 2004  Carlos Falo Hervï¿½s
 //
 //	This library is free software; you can redistribute it and/or
 //	modify it under the terms of the GNU Lesser General Public
@@ -58,7 +58,7 @@ class swfheader {
 		$this->height			= 0 ;
 		$this->size				= 0 ;
 		$this->frames			= 0 ;
-		$this->fps[] 			= Array() ;
+		$this->fps[] 			= [];
 		if ($this->debug) echo "DEBUG: Data values initialized<br>" ;
 	  }
 
@@ -164,7 +164,7 @@ class swfheader {
 					$cval = "" ;
 				  }
 				// Frame rate
-				$this->fps = Array() ;
+				$this->fps = [];
 				for ($i=0;$i<2;$i++) {
 					$t 			= ord(substr($buffer,0,1)) ;
 					$buffer = substr($buffer,1) ;

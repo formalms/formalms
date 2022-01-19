@@ -47,8 +47,8 @@ class PeopleListView extends ListView {
 	var $lang = NULL;
 	var $selector_mode = FALSE;
 	var $tree_mode = FALSE;
-	var $itemSelectedMulti = array();
-	var $printedItems = array();
+	var $itemSelectedMulti = [];
+	var $printedItems = [];
 	var $link_pagination = '';
 
 	var $show_flat_mode_flag = FALSE;
@@ -69,7 +69,7 @@ class PeopleListView extends ListView {
 	var $arr_fields_col_translation = NULL;
 
 	// list of currents filter fields
-	var $arr_fields_filter = array();
+	var $arr_fields_filter = [];
 
 	// Use multi selection?
 	var $use_multi_sel = false;
@@ -83,9 +83,9 @@ class PeopleListView extends ListView {
 
 	// Order columns. An array of fields => boolean
 	// where TRUE = DESC
-	var $arr_fields_order = array(array('userid'=>FALSE));
+	var $arr_fields_order = [['userid'=>FALSE]];
 
-	var $admins_user = array();
+	var $admins_user = [];
 
 	var $mod_perm;
 	var $del_perm;
@@ -104,35 +104,35 @@ class PeopleListView extends ListView {
 	//		filter_base  : TRUE put this field in base filter section
 	//		column_field : TRUE if this is a field for custom columns
 	//		field_type   : the type of field as for custom fields
-	var $add_nat_fields = array(
-								'userid' => array(
+	var $add_nat_fields = [
+								'userid' => [
 													'fieldname' => 'userid',
 													'filter_field' => TRUE,
 													'filter_base' => TRUE,
 													'column_field' => FALSE,
 													'field_type' => 'textfield',
-													),
-								'firstname' => array(
+                                ],
+								'firstname' => [
 													'fieldname' => 'firstname',
 													'filter_field' => TRUE,
 													'filter_base' => TRUE,
 													'column_field' => FALSE,
 													'field_type' => 'textfield'
-													),
-								'lastname' => array(
+                                ],
+								'lastname' => [
 													'fieldname' => 'lastname',
 													'filter_field' => TRUE,
 													'filter_base' => TRUE,
 													'column_field' => FALSE,
 													'field_type' => 'textfield'
-													),
-								'email' => array(
+                                ],
+								'email' => [
 													'fieldname' => 'email',
 													'filter_field' => TRUE,
 													'filter_base' => FALSE,
 													'column_field' => TRUE,
 													'field_type' => 'textfield'
-													)/*,
+                                ]/*,
 								'avatar' => array(
 													'fieldname' => 'avatar',
 													'filter_field' => TRUE,
@@ -141,7 +141,7 @@ class PeopleListView extends ListView {
 													'field_type' => 'upload'
 													)*/
 
-								);
+    ];
 	var $anonymous_idst;
 
 	var $_expand_user;
@@ -208,8 +208,8 @@ class PeopleListView extends ListView {
 		}
 
 		$arr_fields = $this->field_list->getAllFields();
-		$this->arr_fields_translation = array();
-		$this->arr_fields_col_translation = array();
+		$this->arr_fields_translation = [];
+		$this->arr_fields_col_translation = [];
 		foreach( $this->add_nat_fields as $nat_id => $nat_info ) {
 
 			if($nat_info['filter_base'] === FALSE) $field_available++;
@@ -279,16 +279,16 @@ class PeopleListView extends ListView {
 		$this->lang =& DoceboLanguage::createInstance('admin_directory', 'framework');
 
 		$totCol = $this->data->getFieldCount();
-		$colInfos = array();
+		$colInfos = [];
 		if( ($this->selector_mode) && (!$this->use_multi_sel) ) {
-			$colInfos[] = array( 	'hLabel' => '',
+			$colInfos[] = ['hLabel' => '',
 									'hClass' => "image",
 									'fieldClass' => "image",
 									'data' => 'selection',
 									'toDisplay' => true,
-									'sortable' => false );
+									'sortable' => false];
 		}
-		$colInfos[] = array( 	'hLabel' => '<span class="directory_header_label">'
+		$colInfos[] = ['hLabel' => '<span class="directory_header_label">'
 											.$this->lang->def( '_USERNAME' )
 											.'</span>'
 											.'<input type="image" '
@@ -301,8 +301,8 @@ class PeopleListView extends ListView {
 								'fieldClass' => "",
 								'data' => 'userid',
 								'toDisplay' => true,
-								'sortable' => true );
-		$colInfos[] = array( 	'hLabel' => '<span class="directory_header_label">'
+								'sortable' => true];
+		$colInfos[] = ['hLabel' => '<span class="directory_header_label">'
 											.$this->lang->def( '_DIRECTORY_FULLNAME' )
 											.'</span>'
 											.'<input type="image" '
@@ -315,7 +315,7 @@ class PeopleListView extends ListView {
 								'fieldClass' => "",
 								'data' => 'fullname',
 								'toDisplay' => true,
-								'sortable' => true );
+								'sortable' => true];
 		/*$colInfos[] = array( 	'hLabel' => $this->lang->def( '_LASTNAME' ),
 								'hClass' => "",
 								'fieldClass' => "",
@@ -324,7 +324,7 @@ class PeopleListView extends ListView {
 								'sortable' => true );*/
 
 		for( $i = 0; $i < $this->nFields; $i++ ) {
-			$colInfos[] = array( 	'hLabel' => Form::getInputDropdown(
+			$colInfos[] = ['hLabel' => Form::getInputDropdown(
 												'dropdown',
 												DIRECTORY_CFIELD.'_'.$i,
 												$this->id.'['.DIRECTORY_CFIELD.']['.$i.']',
@@ -342,61 +342,61 @@ class PeopleListView extends ListView {
 									'fieldClass' => "directory_custom_columns",
 									'data' => DIRECTORY_CFIELD.'_'.$i,
 									'toDisplay' => true,
-									'sortable' => true );
+									'sortable' => true];
 		}
 		//echo var_dump($colInfos);
 		if( !$this->selector_mode ) {
 			if( !$this->tree_mode ) {
 				if($this->mod_perm) {
-					$colInfos[] = array( 	'hLabel' => '<img src="'.$this->_getEditImage().'" '
+					$colInfos[] = ['hLabel' => '<img src="'.$this->_getEditImage().'" '
 												.'alt="'.$this->lang->def( '_MOD' ).'" '
 												.'title="'.$this->lang->def( '_MOD' ).'" />',
 											'hClass' => "image",
 											'fieldClass' => "image",
 											'data' => 'edit',
 											'toDisplay' => true,
-											'sortable' => false );
+											'sortable' => false];
 
 					if( !$this->flat_mode && $this->show_flat_mode_flag)
-						$colInfos[] = array( 	'hLabel' => '<img src="'.$this->_getRemoveImage().'" '
+						$colInfos[] = ['hLabel' => '<img src="'.$this->_getRemoveImage().'" '
 												.'alt="'.$this->lang->def( '_DIRECTORY_REMOVEPERSON' ).'" '
 												.'title="'.$this->lang->def( '_DIRECTORY_REMOVEPERSON' ).'" />',
 											'hClass' => "image",
 											'fieldClass' => "image",
 											'data' => 'remove',
 											'toDisplay' => true,
-											'sortable' => false );
+											'sortable' => false];
 
-					$colInfos[] = array( 	'hLabel' => '<img src="'.$this->_getSuspendImage().'" '
+					$colInfos[] = ['hLabel' => '<img src="'.$this->_getSuspendImage().'" '
 											.'alt="'.$this->lang->def( '_SUSPEND' ).'" '
 											.'title="'.$this->lang->def( '_SUSPEND' ).'" />',
 										'hClass' => "image",
 										'fieldClass' => "image",
 										'data' => 'valid',
 										'toDisplay' => true,
-										'sortable' => false );
+										'sortable' => false];
 				}
 			}
 			if($this->del_perm) {
-				$colInfos[] = array( 	'hLabel' => '<img src="'.$this->_getDeleteImage().'" '
+				$colInfos[] = ['hLabel' => '<img src="'.$this->_getDeleteImage().'" '
 										.'alt="'.$this->lang->def( '_DEL' ).'" '
 										.'title="'.$this->lang->def( '_DEL' ).'" />',
 									'hClass' => "image",
 									'fieldClass' => "image",
 									'data' => 'delete',
 									'toDisplay' => true,
-									'sortable' => false );
+									'sortable' => false];
 			}
 		}
 		if ($this->use_multi_sel) {
 			$arr=$this->sel_extend->extendListHeader();
 			foreach($arr as $key=>$val) {
-				$colInfos[] = array( 	'hLabel' => $val,
+				$colInfos[] = ['hLabel' => $val,
 										'hClass' => "image",
 										'fieldClass' => "image",
 										'data' => $key,
 										'toDisplay' => true,
-										'sortable' => false );
+										'sortable' => false];
 			}
 		}
 		return $colInfos;
@@ -469,7 +469,7 @@ class PeopleListView extends ListView {
 						}
 					break;
 					case DIRECTORY_ORDER:
-						$arr_order = array();
+						$arr_order = [];
 						foreach( $val as $fieldName => $dummyvar ) {
 							if( isset($this->arr_fields_order[$fieldName] ) ) {
 								if( $this->arr_fields_order[$fieldName] ) {
@@ -507,7 +507,7 @@ class PeopleListView extends ListView {
 						if( is_array( $val ) ) {
 							unset($this->arr_fields_filter[key($val)]);
 						} else {
-							$this->arr_fields_filter = array();
+							$this->arr_fields_filter = [];
 						}
 					break;
 				}
@@ -549,7 +549,7 @@ class PeopleListView extends ListView {
 
 				} else {
 
-					$ed_list = array();
+					$ed_list = [];
 					if($this->editions == false) $this->editions = $GLOBALS['course_descriptor']->getEditionsSimpleList(getLogUserId(), true);
 
 					$this->data->intersectGroupFilter(array_keys($this->editions));
@@ -708,7 +708,7 @@ class PeopleListView extends ListView {
 
 	function _loadAdminIdst() {
 
-		$this->admins_user = array();
+		$this->admins_user = [];
 
 		$aclManager =& Docebo::user()->getAclManager();
 		$arr_levels_id = $aclManager->getAdminLevels();
@@ -756,7 +756,7 @@ class PeopleListView extends ListView {
 
 		$arrResult['fullname'] = ( $arrResult['valid']!='1' && $arrResult['idst'] != $this->anonymous_idst
 					? '<em class="user_suspended">'.$this->lang->def('_SUSPENDED').'</em> '
-					: '' ).join( array( $arrResult['firstname'], $arrResult['lastname'] ), ' ');
+					: '' ).join( [$arrResult['firstname'], $arrResult['lastname']], ' ');
 
 		for( $i = 0; $i < $this->nFields; $i++ ) {
 			if( is_numeric($this->cFields[$i]) )
@@ -885,7 +885,7 @@ class PeopleListView extends ListView {
 			// I'm sure that all filter was applied
 			$rs_all = $this->data->getAllRowsIdst();
 			if( $rs_all !== FALSE ) {
-				$this->itemSelectedMulti = array();
+				$this->itemSelectedMulti = [];
 				while( list($all_idst) = sql_fetch_row($rs_all) )
 					$this->itemSelectedMulti[] = $all_idst;
 			}
@@ -894,8 +894,8 @@ class PeopleListView extends ListView {
 		if( $this->deselect_all ) {
 			// This is not a beautiful position for this operation but at this point
 			// I'm sure that all filter was applied
-			$this->itemSelectedMulti = array();
-			$this->itemSelected = array();
+			$this->itemSelectedMulti = [];
+			$this->itemSelected = [];
 		}
 		require_once(_base_.'/lib/lib.form.php');
 
@@ -914,7 +914,7 @@ class PeopleListView extends ListView {
 			if(isset($GLOBALS['course_descriptor']) && $GLOBALS['course_descriptor']->hasEdition()) {
 
 				// add editions filter ============================================================
-				$ed_list = array();
+				$ed_list = [];
 				if($this->editions == false) $this->editions = $GLOBALS['course_descriptor']->getEditionsSimpleList(getLogUserId(), true);
 
 				$sel = ( isset($_POST[$this->id]['edition_filter'])
@@ -1082,8 +1082,8 @@ class PeopleListView extends ListView {
 
 		$this->rend->setCaption($this->_getTitle());
 
-		$type_h = array();
-		$cont_h = array();
+		$type_h = [];
+		$cont_h = [];
     foreach( $colInfo as $key => $contentCell )
     {
 
@@ -1098,7 +1098,7 @@ class PeopleListView extends ListView {
 
 		while( $values = $this->fetchRecord() ) {
 
-			$colData = array();
+			$colData = [];
 			foreach( $colInfo as $key => $fieldInfo ) {
 				$colData[] = $values[$colInfo[$key]['data']];
 			}
@@ -1168,8 +1168,8 @@ class GroupListView extends ListView {
 
 	var $lang = NULL;
 	var $selector_mode = TRUE;
-	var $itemSelectedMulti = array();
-	var $printedItems = array();
+	var $itemSelectedMulti = [];
+	var $printedItems = [];
 
 	// Use multi selection?
 	var $use_multi_sel = false;
@@ -1247,104 +1247,104 @@ class GroupListView extends ListView {
 	function _getCols() {
 		$this->lang =& DoceboLanguage::createInstance('admin_directory', 'framework');
 		$totCol = $this->data->getFieldCount();
-		$colInfos = array();
+		$colInfos = [];
 		if( ($this->selector_mode) && (!$this->use_multi_sel) ) {
-			$colInfos[] = array( 	'hLabel' => '',
+			$colInfos[] = ['hLabel' => '',
 									'hClass' => "image",
 									'fieldClass' => "image",
 									'data' => 'selection',
 									'toDisplay' => true,
-									'sortable' => false );
+									'sortable' => false];
 		}
-		$colInfos[] = array( 	'hLabel' => $this->lang->def( '_DIRECTORY_GROUPID' ),
+		$colInfos[] = ['hLabel' => $this->lang->def( '_DIRECTORY_GROUPID' ),
 								'hClass' => "",
 								'fieldClass' => "",
 								'data' => 'groupid',
 								'toDisplay' => true,
-								'sortable' => true );
-		$colInfos[] = array( 	'hLabel' => $this->lang->def( '_DESCRIPTION' ),
+								'sortable' => true];
+		$colInfos[] = ['hLabel' => $this->lang->def( '_DESCRIPTION' ),
 								'hClass' => "",
 								'fieldClass' => "",
 								'data' => 'description',
 								'toDisplay' => true,
-								'sortable' => true );
+								'sortable' => true];
 		if( !$this->selector_mode ) {
 
 			if($this->mod_perm) {
-				$colInfos[] = array( 	'hLabel' => '<img src="'.getPathImage('fw').'/directory/group_waiting.gif" '
+				$colInfos[] = ['hLabel' => '<img src="'.getPathImage('fw').'/directory/group_waiting.gif" '
 											.'alt="'.$this->lang->def( '_WAITING_USERS' ).'" '
 											.'title="'.$this->lang->def( '_WAITING_USERS' ).'" />',
 									'hClass' => "image",
 									'fieldClass' => "image",
 									'data' => 'waiting_user',
 									'toDisplay' => true,
-									'sortable' => true );
-				$colInfos[] = array( 	'hLabel' => '<img src="'.getPathImage('fw').'/directory/group_type.gif" '
+									'sortable' => true];
+				$colInfos[] = ['hLabel' => '<img src="'.getPathImage('fw').'/directory/group_type.gif" '
 											.'alt="'.$this->lang->def( '_DIRECTORY_GROUPTYPE' ).'" '
 											.'title="'.$this->lang->def( '_DIRECTORY_GROUPTYPE' ).'" />',
 									'hClass' => "image",
 									'fieldClass' => "image",
 									'data' => 'type',
 									'toDisplay' => true,
-									'sortable' => true );
+									'sortable' => true];
 			}
 			if($this->associate_perm) {
-				$colInfos[] = array( 	'hLabel' => '<img src="'.$this->_getMembersImage().'" '
+				$colInfos[] = ['hLabel' => '<img src="'.$this->_getMembersImage().'" '
 											.'alt="'.$this->lang->def( '_DIRECTORY_MEMBERSGROUP' ).'" '
 											.'title="'.$this->lang->def( '_DIRECTORY_MEMBERSGROUP' ).'" />',
 										'hClass' => "image",
 										'fieldClass' => "image",
 										'data' => 'members',
 										'toDisplay' => true,
-										'sortable' => false );
+										'sortable' => false];
 
-				$colInfos[] = array( 	'hLabel' => '<img src="'.$this->_getAddToImage().'" '
+				$colInfos[] = ['hLabel' => '<img src="'.$this->_getAddToImage().'" '
 											.'alt="'.$this->lang->def( '_DIRECTORY_ADDTOGROUP' ).'" '
 											.'title="'.$this->lang->def( '_DIRECTORY_ADDTOGROUP' ).'" />',
 										'hClass' => "image",
 										'fieldClass' => "image",
 										'data' => 'addto',
 										'toDisplay' => true,
-										'sortable' => false );
-				$colInfos[] = array( 	'hLabel' => '<img src="'.$this->_getAssignFieldImage().'" '
+										'sortable' => false];
+				$colInfos[] = ['hLabel' => '<img src="'.$this->_getAssignFieldImage().'" '
 											.'alt="'.$this->_getAssignFieldAlt().'" '
 											.'title="'.$this->_getAssignFieldLabel().'" />',
 										'hClass' => "image",
 										'fieldClass' => "image",
 										'data' => 'assignfield',
 										'toDisplay' => true,
-										'sortable' => false );
+										'sortable' => false];
 			}
 			if($this->mod_perm) {
-				$colInfos[] = array( 	'hLabel' => '<img src="'.$this->_getEditImage().'" '
+				$colInfos[] = ['hLabel' => '<img src="'.$this->_getEditImage().'" '
 											.'alt="'.$this->lang->def( '_DEL' ).'" '
 											.'title="'.$this->lang->def( '_DEL' ).'" />',
 										'hClass' => "image",
 										'fieldClass' => "image",
 										'data' => 'edit',
 										'toDisplay' => true,
-										'sortable' => false );
+										'sortable' => false];
 			}
 			if($this->del_perm) {
-				$colInfos[] = array( 	'hLabel' => '<img src="'.$this->_getDeleteImage().'" '
+				$colInfos[] = ['hLabel' => '<img src="'.$this->_getDeleteImage().'" '
 											.'alt="'.$this->lang->def( '_DEL' ).'" '
 											.'title="'.$this->lang->def( '_DEL' ).'" />',
 										'hClass' => "image",
 										'fieldClass' => "image",
 										'data' => 'delete',
 										'toDisplay' => true,
-										'sortable' => false );
+										'sortable' => false];
 			}
 		}
 		if ($this->use_multi_sel) {
 			$arr=$this->sel_extend->extendListHeader();
 			foreach($arr as $key=>$val) {
-				$colInfos[] = array( 	'hLabel' => $val,
+				$colInfos[] = ['hLabel' => $val,
 										'hClass' => "image",
 										'fieldClass' => "image",
 										'data' => $key,
 										'toDisplay' => true,
-										'sortable' => false );
+										'sortable' => false];
 			}
 		}
 		return $colInfos;
@@ -1551,7 +1551,7 @@ class GroupListView extends ListView {
 			// I'm sure that all filter was applied
 			$rs_all = $this->data->getAllRowsIdst();
 			if( $rs_all !== FALSE ) {
-				$this->itemSelectedMulti = array();
+				$this->itemSelectedMulti = [];
 				while( list($all_idst) = sql_fetch_row($rs_all) )
 					$this->itemSelectedMulti[] = $all_idst;
 			}
@@ -1569,8 +1569,8 @@ class GroupListView extends ListView {
 		$colInfo = $this->_getCols();
 		$colData = $colInfo;
 		//$out .= $this->rend->WriteHeaderCss($colInfo);
-		$arr_label = array();
-		$arr_style = array();
+		$arr_label = [];
+		$arr_style = [];
 		foreach ($colInfo as $col) {
 			$arr_label[] = $col['hLabel'];
 			$arr_style[] = $col['hClass'];
@@ -1578,7 +1578,7 @@ class GroupListView extends ListView {
 		$this->rend->addHead($arr_label, $arr_style);
 
 		while( $values = $this->fetchRecord() ) {
-			$arr_line = array();
+			$arr_line = [];
 			foreach( $colInfo as $key => $fieldInfo ) {
 				$colData[$key]['data'] = $values[$colInfo[$key]['data']];
 				$arr_line[] = $values[$colInfo[$key]['data']];
@@ -1637,7 +1637,7 @@ class GroupListView extends ListView {
 
 class GroupMembersListView extends ListView {
 
-	var $printedItems = array();
+	var $printedItems = [];
 	function _getMemberTypeImage() { return getPathImage().'directory/addto.gif'; }
 	function _getMemberTypeUser() { return getPathImage().'directory/identity.png'; }
 	function _getMemberTypeGroup() { return getPathImage().'directory/group.gif'; }
@@ -1676,41 +1676,41 @@ class GroupMembersListView extends ListView {
 	function _getCols() {
 		$this->lang =& DoceboLanguage::createInstance('admin_directory', 'framework');
 		$totCol = $this->data->getFieldCount();
-		$colInfos = array();
-		$colInfos[] = array( 	'hLabel' => '',
+		$colInfos = [];
+		$colInfos[] = ['hLabel' => '',
 								'hClass' => "image",
 								'fieldClass' => "image",
 								'data' => 'itemtype',
 								'toDisplay' => true,
-								'sortable' => false );
-		$colInfos[] = array( 	'hLabel' => $this->lang->def( '_DIRECTORY_ITEMID' ),
+								'sortable' => false];
+		$colInfos[] = ['hLabel' => $this->lang->def( '_DIRECTORY_ITEMID' ),
 								'hClass' => "",
 								'fieldClass' => "",
 								'data' => 'iditem',
 								'toDisplay' => true,
-								'sortable' => false );
+								'sortable' => false];
 
-		$colInfos[] = array( 	'hLabel' => $this->lang->def( '_DIRECTORY_FULLNAME' ),
+		$colInfos[] = ['hLabel' => $this->lang->def( '_DIRECTORY_FULLNAME' ),
 								'hClass' => "",
 								'fieldClass' => "",
 								'data' => 'fullname',
 								'toDisplay' => true,
-								'sortable' => false );
-		$colInfos[] = array( 	'hLabel' => $this->lang->def( '_EMAIL' ),
+								'sortable' => false];
+		$colInfos[] = ['hLabel' => $this->lang->def( '_EMAIL' ),
 								'hClass' => "",
 								'fieldClass' => "",
 								'data' => 'email',
 								'toDisplay' => true,
-								'sortable' => false );
+								'sortable' => false];
 
-		$colInfos[] = array( 	'hLabel' => '<img src="'.$this->_getDeleteImage().'" '
+		$colInfos[] = ['hLabel' => '<img src="'.$this->_getDeleteImage().'" '
 										.'alt="'.$this->lang->def( '_DIRECTORY_REMOVEFROMGROUP' ).'" '
 										.'title="'.$this->lang->def( '_DIRECTORY_REMOVEFROMGROUP' ).'" />',
 								'hClass' => "image",
 								'fieldClass' => "image",
 								'data' => 'delete',
 								'toDisplay' => true,
-								'sortable' => false );
+								'sortable' => false];
 		return $colInfos;
 	}
 

@@ -20,11 +20,11 @@ function outPageView($link)
 
     $lang =& DoceboLanguage::createInstance('statistic', 'lms');
     $for = importVar('for', false, 'week');
-    $times = array('day', 'week', 'month', 'year');
+    $times = ['day', 'week', 'month', 'year'];
 
     $dateend = date("Y-m-d H:i:s");
-    $walk = array();
-    $chart_data = array();
+    $walk = [];
+    $chart_data = [];
     switch ($for) {
         case 'day' : {
 
@@ -37,10 +37,10 @@ function outPageView($link)
             for ($i = 1; $i <= $colums; $i++) {
 
                 $c = (($i + $start_num) % $colums);
-                $chart_data[$c] = array(
+                $chart_data[$c] = [
                     'x_axis' => $c,
                     'y_axis' => 0
-                );
+                ];
             }
         };
             break;
@@ -55,10 +55,10 @@ function outPageView($link)
 
                 $c = (($start_num + $i) % $colums) + 1;
                 $walk_name[] = $lang->def('_WEEK_DAY_' . $c . '_SHORT');
-                $chart_data[$c] = array(
+                $chart_data[$c] = [
                     'x_axis' => $lang->def('_WEEK_DAY_' . ($c - 1) . '_SHORT'),
                     'y_axis' => 0
-                );
+                ];
             }
         };
             break;
@@ -76,10 +76,10 @@ function outPageView($link)
                 $c = (($start_num + $i) % $limit);
                 if ($c == 0) $c = $limit;
                 $walk[] = $c;
-                $chart_data[$c] = array(
+                $chart_data[$c] = [
                     'x_axis' => $c,
                     'y_axis' => 0
-                );
+                ];
             }
         };
             break;
@@ -94,10 +94,10 @@ function outPageView($link)
                 $c = (($start_num + $i) % $colums);
                 if ($c == 0) $c = $colums;
                 $walk[] = $c;
-                $chart_data[$c] = array(
+                $chart_data[$c] = [
                     'x_axis' => Lang::t('_MONTH_' . ($c < 10 ? '0' : '') . $c, 'standard'),
                     'y_axis' => 0
-                );
+                ];
             }
         };
             break;
@@ -118,7 +118,7 @@ function outPageView($link)
     }
 
 
-    $page_views = array();
+    $page_views = [];
     $query_stat = "
 	SELECT " . $select . ", COUNT(*) 
 	FROM " . $GLOBALS['prefix_lms'] . "_trackingeneral 
@@ -147,8 +147,8 @@ function outPageView($link)
 
     cout('<div class="statistic_chart" style="height: 300px;"></div>', 'content');
     //var_dump(array_values($chart_data));
-    $labels = array();
-    $series = array();
+    $labels = [];
+    $series = [];
     foreach ($chart_data as $row){
         $labels[] = $row['x_axis'];
         $series[] = $row['y_axis'];
@@ -247,22 +247,22 @@ function statistic()
     $GLOBALS['page']->add('<br />', 'content');
     $tb = new Table(0, $lang->def('_USERS_LIST_CAPTION'), $lang->def('_USERS_LIST_SUMMARY'));
 
-    $type_h = array('', '', '');
-    $cont_h = array(
+    $type_h = ['', '', ''];
+    $cont_h = [
         $lang->def('_USERNAME'),
         $lang->def('_LASTNAME'),
         $lang->def('_FIRSTNAME')
-    );
+    ];
     $tb->setColsStyle($type_h);
     $tb->addHead($cont_h);
     while (list(, $user_info) = each($users_list)) {
-        $cont = array(
+        $cont = [
             '<a href="index.php?modname=statistic&amp;op=userdetails&amp;id=' . $user_info[ACL_INFO_IDST] . '" '
             . 'title="' . $lang->def('_DETAILS') . ' : ' . $acl_man->relativeId($user_info[ACL_INFO_USERID]) . '">'
             . $acl_man->relativeId($user_info[ACL_INFO_USERID]) . '</a>',
             $user_info[ACL_INFO_LASTNAME],
             $user_info[ACL_INFO_FIRSTNAME]
-        );
+        ];
         $tb->addBody($cont);
     }
 
@@ -337,12 +337,12 @@ function userdetails()
     $acl_man = Docebo::user()->getAclManager();
     $user_info =& $acl_man->getUser($idst_user, false);
 
-    $page_title = array(
+    $page_title = [
         'index.php?modname=statistic&amp;op=statistic' => $lang->def('_STATISTICS'),
         ($user_info[ACL_INFO_LASTNAME] . $user_info[ACL_INFO_FIRSTNAME]
             ? $user_info[ACL_INFO_LASTNAME] . ' ' . $user_info[ACL_INFO_FIRSTNAME]
             : $acl_man->relativeId($user_info[ACL_INFO_USERID]))
-    );
+    ];
 
     // Find modulename -> name int his course
     require_once($GLOBALS['where_lms'] . '/lib/lib.course.php');
@@ -398,8 +398,8 @@ function userdetails()
 
     $tb = new Table(0, $lang->def('_USERS_LIST_DETAILS_CAPTION'), $lang->def('_USERS_LIST_DETAILS_SUMMARY'));
 
-    $type_h = array('', '', 'align_center', 'align_center', '');
-    $cont_h = array(
+    $type_h = ['', '', 'align_center', 'align_center', ''];
+    $cont_h = [
         '<a href="' . $link . '&amp;ord=sst&amp;inv=' . ($ord == 'sst' && $inv ? '0' : '1') . '" title="' . $lang->def('_ORD_FOR_SST') . '">'
         . $image_sst . ' ' . $lang->def('_SESSION_STARTED') . '</a>',
         $lang->def('_LAST_ACTION_AT'),
@@ -408,7 +408,7 @@ function userdetails()
         '<a href="' . $link . '&amp;ord=nop&amp;inv=' . ($ord == 'nop' && $inv ? '0' : '1') . '" title="' . $lang->def('_ORD_FOR_NOP') . '">'
         . $image_nop . ' ' . $lang->def('_NUMBER_OF_OP') . '</a>',
         $lang->def('_LAST_OP')
-    );
+    ];
     if (Get::sett('tracking') == 'on') {
         $cont_h[] = '<img src="' . getPathImage() . 'standard/view.png" title="' . $lang->def('_VIEW_SESSION_DETAILS') . '" '
             . 'alt="' . $lang->def('_VIEW_SESSION_DETAILS_ALT') . '" />';
@@ -421,7 +421,7 @@ function userdetails()
     $type_h[2] = 'align_right';
     $tb->setColsStyle($type_h);
     $total_sec = 0;
-    $chart_data = array();
+    $chart_data = [];
     while (list($id_enter, $session_start_at, $last_action_at, $how, $num_op, $last_module, $last_op, $session_id) = sql_fetch_row($re_tracks)) {
 
         $hours = (int)($how / 3600);
@@ -432,13 +432,13 @@ function userdetails()
 
         $readable = $hours . 'h ' . $minutes . 'm ' . $seconds . 's ';
         $start = Format::date($session_start_at);
-        $cont = array(
+        $cont = [
             $start,
             Format::date($last_action_at, false, true),
             $readable,
             $num_op,
             '<span class="text_bold">' . (isset($mods_names[$last_module]) ? $mods_names[$last_module] : $last_module) . '</span> [' . $last_op . ']'
-        );
+        ];
         if (Get::sett('tracking') == 'on') {
             $cont[] = '<a href="index.php?modname=statistic&amp;op=sessiondetails&amp;id=' . $idst_user . '&amp;id_enter=' . $id_enter
                 . '&amp;sid=' . $session_id . '" '
@@ -504,14 +504,14 @@ function sessiondetails()
     $course_man = new Man_Course();
     $mods_names =& $course_man->getModulesName($_SESSION['idCourse']);
 
-    $page_title = array(
+    $page_title = [
         'index.php?modname=statistic&amp;op=statistic' => $lang->def('_STATISTICS'),
         'index.php?modname=statistic&amp;op=userdetails&amp;id=' . $idst_user . '&amp;p_ini=' . $p_ini => (
         $user_info[ACL_INFO_LASTNAME] . $user_info[ACL_INFO_FIRSTNAME]
             ? $user_info[ACL_INFO_LASTNAME] . ' ' . $user_info[ACL_INFO_FIRSTNAME]
             : $acl_man->relativeId($user_info[ACL_INFO_USERID])),
         $lang->def('_VIEW_SESSION_DETAILS')
-    );
+    ];
     $GLOBALS['page']->add(
         getTitleArea($page_title, 'statistic')
         . '<div class="std_block">'
@@ -519,12 +519,12 @@ function sessiondetails()
 
     $tb = new Table(0, $lang->def('_VIEW_SESSION_DETAILS'), $lang->def('_VIEW_SESSION_DETAILS'));
 
-    $type_h = array('', '', '');
-    $cont_h = array(
+    $type_h = ['', '', ''];
+    $cont_h = [
         $lang->def('_DATE'),
         $lang->def('_TYPE_OF_OPERATION'),
         $lang->def('_TIME_IN'),
-    );
+    ];
     $tb->setColsStyle($type_h);
     $tb->addHead($cont_h);
     $type_h[2] = 'align_right';
@@ -543,12 +543,12 @@ function sessiondetails()
             if ($seconds < 10) $seconds = '0' . $seconds;
 
             $readable = $hours . 'h ' . $minutes . 'm ' . $seconds . 's ';
-            $cont = array(
+            $cont = [
                 Format::date($read_previous['timeof'], false, true),
                 '<span class="text_bold">' . (isset($mods_names[$read_previous['function']]) ? $mods_names[$read_previous['function']] : $read_previous['function'])
                 . '</span> [' . $read_previous['type'] . ']',
                 $readable
-            );
+            ];
             $tb->addBody($cont);
         }
         $read_previous = $read;
@@ -572,12 +572,12 @@ function sessiondetails()
         $readable = $hours . 'h ' . $minutes . 'm ' . $seconds . 's ';
     } else $readable = '';
 
-    $cont = array(
+    $cont = [
         Format::date($read_previous['timeof']),
         '<span class="text_bold">' . (isset($mods_names[$read_previous['function']]) ? $mods_names[$read_previous['function']] : $read_previous['function'])
         . '</span> [' . $read_previous['type'] . ']',
         $readable
-    );
+    ];
     $tb->addBody($cont);
     $GLOBALS['page']->add(
         getTable($tb, '_VIEW_SESSION_DETAILS', 'stats_session_detail')

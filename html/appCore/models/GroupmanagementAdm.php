@@ -23,19 +23,19 @@ class GroupmanagementAdm extends Model {
 	}
 
 	public function getPerm() {
-		return array(
+		return [
 			'view'						=> 'standard/view.png',
 			'add'							=> 'standard/add.png',
 			'mod'							=> 'standard/edit.png',
 			'del'							=> 'standard/delete.png',
 			'associate_user'	=> 'standard/moduser.png'
-		);
+        ];
 	}
 
 
-	public function getGroupsList($pagination = array(), $filter = false, $learning_filter = 'none') {
+	public function getGroupsList($pagination = [], $filter = false, $learning_filter = 'none') {
 
-		if (!is_array($pagination)) $pagination = array();
+		if (!is_array($pagination)) $pagination = [];
 
 		$startIndex = (isset($pagination['startIndex']) ? $pagination['startIndex'] : 0);
 		$results = (isset($pagination['results']) ? $pagination['results'] : Get::sett('visuItem', 25));
@@ -88,7 +88,7 @@ class GroupmanagementAdm extends Model {
 					require_once(_lms_.'/lib/lib.course.php');
 					$course_man = new Man_Course();
 					$all_courses = $course_man->getUserCourses(Docebo::user()->getIdSt());
-					$res = array();
+					$res = [];
 					foreach($all_courses as $id_course => $name)
 					{
 						$arr_idst_group = $this->acl_man->getGroupsIdstFromBasePath('/lms/course/'.$id_course.'/group/');
@@ -114,8 +114,8 @@ class GroupmanagementAdm extends Model {
 		$res = $this->db->query($query);
 
 		if ($res) {
-			$output = array();
-			$glist = array();
+			$output = [];
+			$glist = [];
 			while ($obj = $this->db->fetch_obj($res)) {
 				$obj->membercount = 0;
 				$obj->usercount = 0;
@@ -162,7 +162,7 @@ class GroupmanagementAdm extends Model {
 					require_once(_lms_.'/lib/lib.course.php');
 					$course_man = new Man_Course();
 					$all_courses = $course_man->getUserCourses(Docebo::user()->getIdSt());
-					$res = array();
+					$res = [];
 					foreach($all_courses as $id_course => $name)
 					{
 						$arr_idst_group = $this->acl_man->getGroupsIdstFromBasePath('/lms/course/'.$id_course.'/group/');
@@ -201,7 +201,7 @@ class GroupmanagementAdm extends Model {
 		$res = $this->db->query($query);
 		$output = false;
 		if ($res) {
-			$output = array();
+			$output = [];
 			while (list($id_group) = $this->db->fetch_row($res)) {
 				$output[] = $id_group;
 			}
@@ -273,7 +273,7 @@ class GroupmanagementAdm extends Model {
 
 		if ($idst > 0 && (is_array($info) || is_object($info))) {
 			$output = true;
-			$conditions = array();
+			$conditions = [];
 			$acl = Docebo::user()->getAclManager();
 
 			if (is_array($info)) {
@@ -321,8 +321,8 @@ class GroupmanagementAdm extends Model {
 			}
 
 			$output = true;
-			$fields = array('idst');
-			$values = array($idst);
+			$fields = ['idst'];
+			$values = [$idst];
 			$acl = Docebo::user()->getAclManager();
 
 			if (is_array($info)) {
@@ -390,7 +390,7 @@ class GroupmanagementAdm extends Model {
 		$res = $this->db->query($query);
 
 		if ($res) {
-			$output = array();
+			$output = [];
 			while (list($member) = $this->db->fetch_row($res)) {
 				$output[] = $member;
 			}
@@ -408,7 +408,7 @@ class GroupmanagementAdm extends Model {
 	public function saveGroupMembers($idst, $members) {
 		//validate parameters
 		if ($idst <= 0) return false;
-		if (is_numeric($members)) $members = array($members);
+		if (is_numeric($members)) $members = [$members];
 		if (!is_array($members)) return false;
 		if (empty($members)) return true;
 
@@ -423,7 +423,7 @@ class GroupmanagementAdm extends Model {
 
 		//write new members
 		if (count($members) > 0) {
-			$insert_list = array();
+			$insert_list = [];
 			foreach ($members as $member) {
 				if (is_numeric($member) && $member > 0 && $member != $idst) {
 					$insert_list[] = '('.(int)$idst.', '.(int)$member.')';
@@ -442,12 +442,12 @@ class GroupmanagementAdm extends Model {
 
 
 	public function getGroupTypes($no_translation = false) {
-		$output = array(
+		$output = [
 			'free' => $no_translation ? 'free' : Lang::t('_DIRECTORY_GROUPTYPE_FREE', 'admin_directory'),
 			'moderate' => $no_translation ? 'moderate' : Lang::t('_DIRECTORY_GROUPTYPE_MODERATE', 'admin_directory'),
 			'selected' => $no_translation ? 'selected' : Lang::t('_DIRECTORY_GROUPTYPE_PRIVATE', 'admin_directory'),
 			'invisible' => $no_translation ? 'invisible' : Lang::t('_DIRECTORY_GROUPTYPE_INVISIBLE', 'admin_directory')
-		);
+        ];
 
 		return $output;
 	}
@@ -465,7 +465,7 @@ class GroupmanagementAdm extends Model {
 
 	public function searchGroupsByGroupid($query, $limit = false, $filter = false) {
 		if ((int)$limit <= 0) $limit = Get::sett('visuItem', 25);
-		$output = array();
+		$output = [];
 
 		$_qfilter = "";
 		if ($filter) {
@@ -494,7 +494,7 @@ class GroupmanagementAdm extends Model {
 
 
 	public function getGroupsDropdownList() {
-		$output = array('0' => '('.Lang::t('_ALL', 'standard').')');
+		$output = ['0' => '('.Lang::t('_ALL', 'standard').')'];
 
 		$query = "SELECT idst, groupid FROM %adm_group WHERE hidden='false' AND type<>'course' ORDER BY groupid";
 		$res = $this->db->query($query);
@@ -507,12 +507,12 @@ class GroupmanagementAdm extends Model {
 	}
 
 	public function importGroupMembers($users, $id_group) {
-		$output = array(
+		$output = [
 			'total' => 0,
 			'inserted' => 0,
 			'not_inserted' => 0,
 			'duplicated' => 0,
-		);
+        ];
 
 		if (empty($users))
 			return $output;
@@ -529,7 +529,7 @@ class GroupmanagementAdm extends Model {
 
 		$users_list = array_unique($users_list);
 
-		$users_idst = array();
+		$users_idst = [];
 		$query = "SELECT idst, userid FROM %adm_user WHERE userid IN ('".implode("','", $users_list)."') ";
 		$res = $this->db->query($query);
 		while (list($idst, $userid) = $this->db->fetch_row($res))
@@ -539,7 +539,7 @@ class GroupmanagementAdm extends Model {
 			return $output;
 
 		// select estrarre tutti dalla group_memeber
-		$dup = array();
+		$dup = [];
 		$query =	"SELECT idstMember from %adm_group_members where idst = ".$id_group
 				." AND idstMember in ('".implode("','", $users_idst)."') ";
 		$res = $this->db->query($query);
@@ -550,7 +550,7 @@ class GroupmanagementAdm extends Model {
 
 		$counter = 0;
 		$dup_counter = 0;
-		$insert_values = array();
+		$insert_values = [];
 		foreach ($users as $key_u)
 		{
 			if (isset($users_idst[$key_u]))
@@ -586,7 +586,7 @@ class GroupmanagementAdm extends Model {
 		if ($id_group <= 0) return false; //invalid role
 
 		//validate pagination data
-		if (!is_array($pagination)) $pagination = array();
+		if (!is_array($pagination)) $pagination = [];
 		$_startIndex = (isset($pagination['startIndex']) ? (int)$pagination['startIndex'] : 0);
 		$_results = (isset($pagination['results']) ? (int)$pagination['results'] : Get::sett('visuItem', 25));
 		$_sort = 'userid';
@@ -648,7 +648,7 @@ class GroupmanagementAdm extends Model {
 		$res = $this->db->query($query);
 
 		//extract records from database
-		$output = array();
+		$output = [];
 		if ($res && $this->db->num_rows($res)>0) {
 			while ($obj = $this->db->fetch_obj($res)) {
 				$obj->is_group = $obj->idst_group != $id_group;
@@ -711,12 +711,12 @@ class GroupmanagementAdm extends Model {
 
 	public function countUsers($groups) {
 		if (empty($groups)) return false;
-		if (is_numeric($groups)) $groups = array( (int)$groups );
+		if (is_numeric($groups)) $groups = [(int)$groups];
 		if (!is_array($groups)) return false;
 
-		$output = array();
+		$output = [];
 
-		$arr_gm = array();
+		$arr_gm = [];
 		$query = " SELECT gm.idst, COUNT(gm.idstMember) "
 			." FROM %adm_group_members AS gm "
 			." JOIN %adm_user AS u ON (u.idst = gm.idstMember) "
@@ -732,12 +732,12 @@ class GroupmanagementAdm extends Model {
 
 	public function countMembers($groups) {
 		if (empty($groups)) return false;
-		if (is_numeric($groups)) $groups = array( (int)$groups );
+		if (is_numeric($groups)) $groups = [(int)$groups];
 		if (!is_array($groups)) return false;
 
-		$output = array();
+		$output = [];
 
-		$arr_gm = array();
+		$arr_gm = [];
 		$query = " SELECT idst, COUNT(idstMember) "
 			." FROM %adm_group_members "
 			." WHERE idst IN ( SELECT idst FROM %adm_group ) "
@@ -753,7 +753,7 @@ class GroupmanagementAdm extends Model {
 
 	public function removeUsersFromGroup($id_group, $users) {
 		if ((int)$id_group <= 0) return false;
-		if (is_numeric($users)) $users = array((int)$users);
+		if (is_numeric($users)) $users = [(int)$users];
 		if (!is_array($users)) return false;
 		if (empty($users)) return true;
 
@@ -761,7 +761,7 @@ class GroupmanagementAdm extends Model {
 		$query = "SELECT idst FROM %adm_user WHERE idst IN (".implode(",", $users).")";
 		$res = $this->db->query($query);
 		if ($res && $this->db->num_rows($res) > 0) {
-			$to_delete = array();
+			$to_delete = [];
 			while (list($id_user) = $this->db->fetch_row($res)) {
 				$to_delete[] = (int)$id_user;
 			}

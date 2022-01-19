@@ -199,16 +199,16 @@ function register_confirm() {
 
 function login_coursecatalogueJsSetup() {
 
-	YuiLib::load(array(
+	YuiLib::load([
 		'animation' 		=> 'animation-min.js',
 		'dragdrop' 			=> 'dragdrop-min.js',
 		'button' 			=> 'button-min.js',
 		'container' 		=> 'container-min.js',
 		'my_window' 		=> 'windows.js'
-	), array(
+    ], [
 		'container/assets/skins/sam' => 'container.css',
 		'button/assets/skins/sam' => 'button.css'
-	));
+    ]);
 
 	addCss('style_course_list', 'lms');
 	addJs($GLOBALS['where_lms_relative'].'/modules/coursecatalogue/', 'ajax.coursecatalogue.js');
@@ -244,11 +244,11 @@ function externalCourselist() {
 	$lang_c =& DoceboLanguage::createInstance('course');
 
 	// list of tab ---------------------------------------------------------------------------
-	$tab_list = array(
+	$tab_list = [
 		'time' 		=> $lang->def('_TAB_VIEW_TIME'),
 		'category' 	=> $lang->def('_TAB_VIEW_CATEGORY'),
 		'all' 		=> $lang->def('_ALL')
-	);
+    ];
 	if(Get::sett('use_coursepath') == '1') {
 		$tab_list['pathcourse'] = $lang->def('_COURSEPATH');
 	}
@@ -316,13 +316,13 @@ function showdemo() {
 	$back = importVar('back', false, '');
 	if($back == 'details') {
 
-		$page_title = array('index.php?modname=coursecatalogue&amp;op=courselist' => $lang->def('_COURSE_LIST'),
-							$lang->def('_SHOW_DEMO') );
+		$page_title = ['index.php?modname=coursecatalogue&amp;op=courselist' => $lang->def('_COURSE_LIST'),
+							$lang->def('_SHOW_DEMO')];
 	} else {
 
-		$page_title = array('index.php?modname=coursecatalogue&amp;op=courselist' => $lang->def('_COURSE_LIST'),
+		$page_title = ['index.php?modname=coursecatalogue&amp;op=courselist' => $lang->def('_COURSE_LIST'),
 							'index.php?modname=coursecatalogue&amp;op=coursedetails&amp;id_course='.$id_course => $course['name'],
-							$lang->def('_SHOW_DEMO') );
+							$lang->def('_SHOW_DEMO')];
 	}
 	$GLOBALS['page']->add( getTitleArea($page_title, 'course')
 		.'<div class="std_block">'

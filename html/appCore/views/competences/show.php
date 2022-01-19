@@ -39,7 +39,7 @@ YAHOO.util.Event.onDOMReady(function() {
 <span class="title"><?php echo(Lang::t('_ALL_CATEGORIES', 'competences')); ?></span>
 <?php
 
-$_languages = array(
+$_languages = [
 	'_ROOT' => Lang::t('_CATEGORY', 'competences'),
 	'_YES' => Lang::t('_CONFIRM', 'organization_chart'),
 	'_NO' => Lang::t('_UNDO', 'organization_chart'),
@@ -50,11 +50,11 @@ $_languages = array(
 	'_MOD' => Lang::t('_MOD', 'standard'),
 	'_DEL' => Lang::t('_DEL', 'standard'),
 	'_USERS' => Lang::t('_ASSIGN_USERS', 'standard')
-);
+];
 
 
 
-$params = array(
+$params = [
 	'id' => 'competences_tree',
 	'ajaxUrl' => 'ajax.adm_server.php?r=adm/competences/gettreedata',
 	'treeClass' => 'CompetencesFolderTree',
@@ -64,7 +64,7 @@ $params = array(
 	//'rootActions' => $root_node_actions,
 	'show' => 'tree',
 	'dragDrop' => true
-);
+];
 
 if ($permissions['add']) {
 
@@ -77,17 +77,17 @@ if ($permissions['add']) {
 	$params['rel_action'] = $_tree_rel_action;
 
 	//Add category dialog
-	$this->widget('dialog', array(
+	$this->widget('dialog', [
 		'id' => 'add_category_dialog',
 		'dynamicContent' => true,
 		'ajaxUrl' => 'this.href',
 		'dynamicAjaxUrl' => true,
 		'callback' => 'Competences.addCategoryCallback',
 		'renderEvent' => 'Competences.dialogRenderEvent',
-		'callEvents' => array(
-			array('caller' => 'add_category', 'event' => 'click')
-		)
-	));
+		'callEvents' => [
+			['caller' => 'add_category', 'event' => 'click']
+        ]
+    ]);
 }
 
 $this->widget('tree', $params);
@@ -102,22 +102,22 @@ $icon_users = '<span class="ico-sprite subs_users"><span>'.Lang::t('_ASSIGN_USER
 $icon_mod = '<span class="ico-sprite subs_mod"><span>'.Lang::t('_MOD', 'standard').'</span></span>';
 $icon_del = '<span class="ico-sprite subs_del"><span>'.Lang::t('_DEL', 'standard').'</span></span>';
 
-$columns = array(
-	array('key' => 'name', 'label' => Lang::t('_NAME', 'standard'), 'sortable' => true, 
-			'editor' => 'new YAHOO.widget.TextboxCellEditor({asyncSubmitter: Competences.asyncSubmitter})'),
-	array('key' => 'description', 'label' => Lang::t('_DESCRIPTION', 'standard'), 'sortable' => true, 
-			'editor' => 'new YAHOO.widget.TextareaCellEditor({asyncSubmitter: Competences.asyncSubmitter})'),
-	array('key' => 'typology', 'label' => Lang::t('_TYPOLOGY', 'competences'), 'sortable' => true, 'className' => 'img-cell', 
-			'editor' => 'new YAHOO.widget.DropdownCellEditor({asyncSubmitter: Competences.asyncSubmitter, dropdownOptions: '.$typologies_dropdown.'})'),
-	array('key' => 'type', 'label' => Lang::t('_TYPE', 'standard'), 'sortable' => true, 'className' => 'img-cell', 
-			'editor' => 'new YAHOO.widget.DropdownCellEditor({asyncSubmitter: Competences.asyncSubmitter, dropdownOptions: '.$types_dropdown.'})')
-);
-if ($permissions['associate_user']) $columns[] = array('key' => 'users', 'label' => $icon_users, 'formatter'=>'Competences.usersFormatter', 'className' => 'img-cell');
-if ($permissions['mod']) $columns[] = array('key' => 'mod', 'label' => $icon_mod, 'formatter'=>'Competences.modifyFormatter', 'className' => 'img-cell');
-if ($permissions['del']) $columns[] = array('key' => 'del', 'label' => $icon_del, 'formatter'=>'stdDelete', 'className' => 'img-cell');
+$columns = [
+	['key' => 'name', 'label' => Lang::t('_NAME', 'standard'), 'sortable' => true,
+			'editor' => 'new YAHOO.widget.TextboxCellEditor({asyncSubmitter: Competences.asyncSubmitter})'],
+	['key' => 'description', 'label' => Lang::t('_DESCRIPTION', 'standard'), 'sortable' => true,
+			'editor' => 'new YAHOO.widget.TextareaCellEditor({asyncSubmitter: Competences.asyncSubmitter})'],
+	['key' => 'typology', 'label' => Lang::t('_TYPOLOGY', 'competences'), 'sortable' => true, 'className' => 'img-cell',
+			'editor' => 'new YAHOO.widget.DropdownCellEditor({asyncSubmitter: Competences.asyncSubmitter, dropdownOptions: '.$typologies_dropdown.'})'],
+	['key' => 'type', 'label' => Lang::t('_TYPE', 'standard'), 'sortable' => true, 'className' => 'img-cell',
+			'editor' => 'new YAHOO.widget.DropdownCellEditor({asyncSubmitter: Competences.asyncSubmitter, dropdownOptions: '.$types_dropdown.'})']
+];
+if ($permissions['associate_user']) $columns[] = ['key' => 'users', 'label' => $icon_users, 'formatter'=>'Competences.usersFormatter', 'className' => 'img-cell'];
+if ($permissions['mod']) $columns[] = ['key' => 'mod', 'label' => $icon_mod, 'formatter'=>'Competences.modifyFormatter', 'className' => 'img-cell'];
+if ($permissions['del']) $columns[] = ['key' => 'del', 'label' => $icon_del, 'formatter'=>'stdDelete', 'className' => 'img-cell'];
 
 
-$params = array(
+$params = [
 	'id'			=> 'competences_table',
 	'ajaxUrl'		=> 'ajax.adm_server.php?r=adm/competences/gettabledata',
 	'rowsPerPage'	=> $rowsPerPage,//Get::sett('visuItem', 25),
@@ -127,9 +127,9 @@ $params = array(
 	'dir'			=> $dir,//'asc',
 	'generateRequest' => 'Competences.requestBuilder',
 	'columns'		=> $columns,
-	'fields'		=> array('id', 'name', 'description', 'typology', 'type', 'id_typology', 'id_type', 'users', 'mod', 'del'),
+	'fields'		=> ['id', 'name', 'description', 'typology', 'type', 'id_typology', 'id_type', 'users', 'mod', 'del'],
 	'delDisplayField' => 'name',
-);
+];
 
 if ($permissions['add']) {
 	$rel_action_over = '<a id="add_competence_over" class="ico-wt-sprite subs_add" '
@@ -140,7 +140,7 @@ if ($permissions['add']) {
 		.'href="index.php?r=adm/competences/add_competence&id='.(int)$selected_node.'">'
 		.'<span>'.Lang::t('_ADD_COMPETENCE', 'competences').'</span></a>';
 
-	$params['rel_actions'] = array($rel_action_over, $rel_action_bottom);
+	$params['rel_actions'] = [$rel_action_over, $rel_action_bottom];
 }
 
 $this->widget('table', $params);

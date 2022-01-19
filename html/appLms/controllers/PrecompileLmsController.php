@@ -47,7 +47,7 @@ class PrecompileLmsController extends LmsController {
 		$fields_checked = $fieldlist->checkUserMandatoryFields(false);
 
 		if ($this->model->compileRequired()) {
-			$this->render('show', array(
+			$this->render('show', [
 				'result_message' => $result_message,
 				'policy_checked' => $policy_checked,
 				'fields_checked' => $fields_checked,
@@ -55,7 +55,7 @@ class PrecompileLmsController extends LmsController {
 				'policy_text' => $this->model->getPrivacyPolicyText(),
 				'id_user' => Docebo::user()->getIdSt(),
 				'fieldlist' => $fieldlist
-			));
+            ]);
 		} else if ($_REQUEST['r'] == 'precompile/show') {
 			Util::jump_to($this->jump_url);
 		}

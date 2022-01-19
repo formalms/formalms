@@ -50,24 +50,24 @@ class CourseMenuLmsController extends LmsController
             }
 
             // get select menu
-            $id_list = array();
-            $menu_module = array();
+            $id_list = [];
+            $menu_module = [];
             $query = "SELECT idMain AS id, name FROM %lms_menucourse_main WHERE idCourse = ".$this->idCourse." ORDER BY sequence";
             $re_main = $db->query($query);
             while($main = $db->fetch_obj($re_main)) {
 
-                $menu_module[] = array(
+                $menu_module[] = [
                     // 'submenu'=> array(),
                     'id_menu' => $main->id,
                     'name' => Lang::t($main->name, 'menu_course', false, false, $main->name ),
                     'link' => 'id_main_sel='.$main->id
-                );
+                ];
                 $id_list[] = '"menu_lat_'.$main->id.'"';
             }
             $main_menu_id = Get::req('main_menu_id', DOTY_INT, "") ? Get::req('main_menu_id', DOTY_INT, "") : $menu_module[0]['id_menu'];
             // horizontal menu
 
-            $menu_horizontal = array();
+            $menu_horizontal = [];
             $query_menu = 'SELECT mo.idModule AS id, mo.module_name, mo.default_op, mo.default_name, mo.token_associated AS token, mo.mvc_path, under.idMain AS id_main, under.my_name
                             FROM %lms_module AS mo JOIN %lms_menucourse_under AS under ON (mo.idModule = under.idModule) WHERE under.idCourse = '.$this->idCourse.'
                             AND under.idMain = '.$main_menu_id.' ORDER BY under.idMain, under.sequence';
@@ -78,14 +78,14 @@ class CourseMenuLmsController extends LmsController
                 if(checkPerm($obj->token, true, $obj->module_name)) {
                     $GLOBALS['module_assigned_name'][$obj->module_name] = ( $obj->my_name != '' ? $obj->my_name : Lang::t($obj->default_name, 'menu_course') );
 
-                    $menu_horizontal[] = array(
+                    $menu_horizontal[] = [
                         'id_submenu' => $obj->id,
                         'name' => $GLOBALS['module_assigned_name'][$obj->module_name],
                         'link' => ( $obj->mvc_path != ''
                             ? 'index.php?r='.$obj->mvc_path.'&id_module_sel='.$obj->id.'&id_main_sel='.$obj->id_main
                             : 'index.php?modname='.$obj->module_name.'&op='.$obj->default_op.'&id_module_sel='.$obj->id.'&id_main_sel='.$obj->id_main
                         )
-                    );
+                    ];
                 } // end if checkPerm
 
             } // end while
@@ -170,10 +170,10 @@ class CourseMenuLmsController extends LmsController
                     FALSE );
                 $tot_complete = getStatStatusCount(	getLogUserId(),
                     $_SESSION['idCourse'],
-                    array( 'completed', 'passed' ) );
+                    ['completed', 'passed']);
                 $tot_failed = getStatStatusCount(	getLogUserId(),
                     $_SESSION['idCourse'],
-                    array( 'failed' ) );
+                    ['failed']);
 
 
                 $materiali = Lang::t("_PROGRESS_ALL", "course");
@@ -234,11 +234,11 @@ class CourseMenuLmsController extends LmsController
 
             $info_panel .= '</div>'."\n";
 
-            $this->render('coursemenu_lat', array(
+            $this->render('coursemenu_lat', [
                 'dropdown' => $menu_module,
                 'slider' => $menu_horizontal,
                 'course_name' => $course_name,
-                'course_img' => $course_img));
+                'course_img' => $course_img]);
         }
 	}
 
@@ -255,9 +255,9 @@ class CourseMenuLmsController extends LmsController
 		$coursepath_courses = $this->model->getCoursepathCourseDetails(array_keys($user_coursepath));
 
 		if(count($user_coursepath) > 0)
-			$this->render('coursepath', array(	'type' => 'all',
+			$this->render('coursepath', ['type' => 'all',
 												'user_coursepath' => $user_coursepath,
-												'coursepath_courses' => $coursepath_courses));
+												'coursepath_courses' => $coursepath_courses]);
 		else
 			echo Lang::t('_NO_COURSEPATH_IN_SECTION', 'coursepath');
 	}

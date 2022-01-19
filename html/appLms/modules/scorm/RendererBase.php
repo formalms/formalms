@@ -92,7 +92,7 @@ define("SCORMREND_TITLE", "menu_folder_open.gif");
 class RendererDefaultImplementation extends RendererAbstract {
 
 	// 6 class for any deep
-	var $xClasses = array();
+	var $xClasses = [];
  	var $stack;
  	var $deep = 0;
 	var $row = 0;
@@ -108,7 +108,7 @@ class RendererDefaultImplementation extends RendererAbstract {
 	var $linkCustomCallBack = FALSE;
 	
 	function RendererDefaultImplementation() {
-        $this->xClasses[] = array( '0.a', '0.b', '0.c', '0.d', '0.e', '0.f', '0.g', '0.h', '0.i' );
+        $this->xClasses[] = ['0.a', '0.b', '0.c', '0.d', '0.e', '0.f', '0.g', '0.h', '0.i'];
 	}
 
 	function getRowClass() {

@@ -38,7 +38,7 @@ switch($op) {
 		$profile->init('profile', 'framework', 'modname=directory&op=org_manageuser&id_user='.$id_user, 'ap');
 		$profile->enableGodMode();
 		$profile->disableModViewerPolicy();
-		$value = array("content" 	=> $profile->getUserInfo()
+		$value = ["content" 	=> $profile->getUserInfo()
 		 		
 			 	// teacher profile, if the user is a teacher
 			 	//.$profile->getUserTeacherProfile()
@@ -47,7 +47,7 @@ switch($op) {
 				//.$profile->getUserCompetencesList()
 				,
 				"id_user" => $id_user
-		);
+        ];
   
 		require_once(_base_.'/lib/lib.json.php');
 		

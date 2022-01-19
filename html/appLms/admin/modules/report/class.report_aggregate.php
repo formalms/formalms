@@ -59,11 +59,11 @@ class Report_Aggregate extends Report {
 		//update session
 		$ref =& $_SESSION['report_tempdata'];
 		if (!isset($ref['rows_filter'])) {
-			$ref['rows_filter'] = array( //default values
+			$ref['rows_filter'] = [ //default values
 				'select_all' => false,
 				'selection_type' => 'users',
-				'selection' => array()
-			);
+				'selection' => []
+            ];
 		} else {
 			//already resolved in switch block
 		}
@@ -72,7 +72,7 @@ class Report_Aggregate extends Report {
 		switch ($step) {
 
 			case 'sel_type': {
-				$values = array('users' => $this->lang->def('_USERS'), 'groups'=>$this->lang->def('_GROUPS'));
+				$values = ['users' => $this->lang->def('_USERS'), 'groups'=>$this->lang->def('_GROUPS')];
 				$sel_val = (isset($ref['rows_filter']['selection_type']) ? $ref['rows_filter']['selection_type'] : 'users');
 
 				$out  = Form::openForm('selection_type_form', $jump_url);
@@ -105,7 +105,7 @@ class Report_Aggregate extends Report {
 				} else { //maybe redoundant
 					if (!isset($ref['rows_filter']['select_all'])) $ref['rows_filter']['select_all'] = false;
 					if (!isset($ref['rows_filter']['selection_type'])) $ref['rows_filter']['selection_type'] = 'groups';
-					if (!isset($ref['rows_filter']['selection'])) $ref['rows_filter']['selection'] = array();
+					if (!isset($ref['rows_filter']['selection'])) $ref['rows_filter']['selection'] = [];
 					$user_select->resetSelection($ref['rows_filter']['selection']);
 					//$ref['users'] = array(); it should already have been set to void array, if non existent
 				}
@@ -177,11 +177,11 @@ class Report_Aggregate extends Report {
 		$selector = new Selector_Course();
 
 		if (!isset($_SESSION['report_tempdata']['columns_filter'])) {
-			$_SESSION['report_tempdata']['columns_filter'] = array(
+			$_SESSION['report_tempdata']['columns_filter'] = [
 				'all_courses' => true,
-				'selected_courses' => array(),
-				'showed_columns' => array('completed'=>true, 'initinere'=>true, 'notstarted'=>true, 'show_percentages'=>true)
-			);
+				'selected_courses' => [],
+				'showed_columns' => ['completed'=>true, 'initinere'=>true, 'notstarted'=>true, 'show_percentages'=>true]
+            ];
 		}
 		$ref =& $_SESSION['report_tempdata']['columns_filter'];
 
@@ -190,11 +190,11 @@ class Report_Aggregate extends Report {
 			$temp = $selector->getSelection($_POST);
 			$ref['selected_courses'] = $temp;
 			$ref['all_courses'] = (Get::req('all_courses', DOTY_INT, 1)==1 ? true : false);
-			$ref['showed_columns'] = array(
+			$ref['showed_columns'] = [
 				'completed' => (Get::req('cols_completed', DOTY_INT, 0)>0 ? true : false),
 				'initinere' => (Get::req('cols_initinere', DOTY_INT, 0)>0 ? true : false),
 				'notstarted' => (Get::req('cols_notstarted', DOTY_INT, 0)>0 ? true : false),
-				'show_percentages' => (Get::req('cols_show_percentages', DOTY_INT, 0)>0 ? true : false));
+				'show_percentages' => (Get::req('cols_show_percentages', DOTY_INT, 0)>0 ? true : false)];
 		}
 		else
 		{
@@ -233,7 +233,7 @@ class Report_Aggregate extends Report {
 
 		$box->footer = $boxlang->def('_CURRENT_SELECTION').':&nbsp;<span id="csel_foot">'.($ref['all_courses'] ? $boxlang->def('_ALL') : ($temp!='' ? $temp : '0')).'</span>';
 
-		YuiLib::load(array(
+		YuiLib::load([
 			'yahoo'           => 'yahoo-min.js',
 			'yahoo-dom-event' => 'yahoo-dom-event.js',
 			'element'         => 'element-beta-min.js',
@@ -241,9 +241,9 @@ class Report_Aggregate extends Report {
 			'connection'      => 'connection-min.js',
 			'event'           => 'event-min.js',
 			'json'            => 'json-beta-min.js'
-		), array(
+        ], [
 			'/assets/skins/sam' => 'skin.css'
-		));
+        ]);
 		Util::get_js(Get::rel_path('lms').'/admin/modules/report/courses_filter.js', true, true);
 
 		cout('<script type="text/javascript"> '."\n".
@@ -302,7 +302,7 @@ class Report_Aggregate extends Report {
 		$man = new Man_Course();
 		$courses_codes = $man->getAllCourses();
 		if ($all_courses) {
-			$courses = array();
+			$courses = [];
 			foreach ($courses_codes as $key=>$val) $courses[] = $key;
 		}
 /*
@@ -347,7 +347,7 @@ class Report_Aggregate extends Report {
 			{
 				$all_courses = false;
 				$rs = sql_query("SELECT idCourse FROM %lms_course");
-				$course_selected = array();
+				$course_selected = [];
 				while (list($id_course) = sql_fetch_row($rs)) { $course_selected[] = $id_course; }
 			}
 
@@ -363,7 +363,7 @@ class Report_Aggregate extends Report {
 				$user_catalogue = $cat_man->getUserAllCatalogueId(Docebo::user()->getIdSt());
 				if(count($user_catalogue) > 0)
 				{
-					$courses = array(0);
+					$courses = [0];
 
 					foreach($user_catalogue as $id_cat)
 					{
@@ -387,11 +387,11 @@ class Report_Aggregate extends Report {
 					$course_selected = array_intersect($course_selected, $_clist);
 				}
 				else
-					$course_selected = array();
+					$course_selected = [];
 			}
 			else
 			{
-				$array_courses = array();
+				$array_courses = [];
 				$array_courses = array_merge($array_courses, $admin_courses['course']);
 
 				if(!empty($admin_courses['coursepath']))
@@ -419,7 +419,7 @@ class Report_Aggregate extends Report {
 					$course_selected = array_intersect($course_selected, $_clist);
 				}
 				else
-					$course_selected = array();
+					$course_selected = [];
 			}
 
 			unset($admin_courses);
@@ -433,14 +433,14 @@ class Report_Aggregate extends Report {
 			case 'groups': {
 
 				//retrieve all labels
-				$orgchart_labels = array();
+				$orgchart_labels = [];
 				$query = "SELECT * FROM ".$fw."_org_chart WHERE lang_code='".getLanguage()."'";
 				$res = sql_query($query);
 				while ($row = sql_fetch_assoc($res)) {
 					$orgchart_labels[$row['id_dir']] = $row['translation'];
 				}
 
-				$labels = array();
+				$labels = [];
 				$query = "SELECT * FROM ".$fw."_group WHERE (hidden='false' OR groupid LIKE '/oc_%' OR groupid LIKE '/ocd_%') AND type='free'";
 				$res = sql_query($query);
 				while ($row = sql_fetch_assoc($res)) {
@@ -457,15 +457,15 @@ class Report_Aggregate extends Report {
 				}
 
 				$tot_size = 2;
-				$head1 = array( array('colspan'=>2, 'value'=>$this->lang->def('_GROUPS')) );
-				$head2 = array($this->lang->def('_NAME'), $this->lang->def('_TOTAL'));
+				$head1 = [['colspan'=>2, 'value'=>$this->lang->def('_GROUPS')]];
+				$head2 = [$this->lang->def('_NAME'), $this->lang->def('_TOTAL')];
 
 				foreach ($courses as $course) {
-					$head1[] = array(
+					$head1[] = [
 						'value' => ( $courses_codes[$course]['code'] ? '['.$courses_codes[$course]['code'].'] ' : '' )
 									.$courses_codes[$course]['name'],
 						'colspan' => $increment
-					);
+                    ];
 
 					if ($cols['completed']) $head2[] = $this->lang->def('_USER_STATUS_END');
 					if ($cols['completed'] && $cols['show_percentages']) $head2[] = _PERCENT_SIMBOL;
@@ -486,7 +486,7 @@ class Report_Aggregate extends Report {
 				$buffer->closeHeader();
 
 				$tot_users = 0;
-				$course_stats = array();
+				$course_stats = [];
 
 				//for each group, retrieve label and user statistics
 				foreach ($selection as $dir_id=>$group_id) {
@@ -494,7 +494,7 @@ class Report_Aggregate extends Report {
 					if ( $userlevelid != ADMIN_GROUP_GODADMIN && !Docebo::user()->isAnonymous()) { $group_users = array_intersect($group_users, $admin_users); }
 					$users_num = count($group_users);
 
-					$line = array();
+					$line = [];
 					$line[] = $labels[$group_id];
 					$line[] = $users_num;
 					$tot_users += $users_num;
@@ -511,12 +511,12 @@ class Report_Aggregate extends Report {
 						//$tot_completed = 0;
 						while ($row = sql_fetch_assoc($res) ) {
 							if (!isset($course_stats[$row['idCourse']][$group_id])) {
-								$course_stats[$row['idCourse']][$group_id] = array(
+								$course_stats[$row['idCourse']][$group_id] = [
 									'completed' => 0,
 									'initinere' => 0,
 									'notstarted' => 0,
 									'total' => 0
-								);
+                                ];
 							}
 							switch ((int)$row['status']) {
 								case 2: $course_stats[$row['idCourse']][$group_id]['completed']++; break;
@@ -565,7 +565,7 @@ class Report_Aggregate extends Report {
 				$buffer->closeBody();
 				//echo '<pre>'.print_r($course_stats,true).'</pre>';
 				//calc totals
-				$foot = array('', $tot_users);
+				$foot = ['', $tot_users];
 				foreach ($courses as $course) {
 
 					$completed_total = 0;
@@ -616,7 +616,7 @@ class Report_Aggregate extends Report {
                     
                 }   else{
                     
-                    $temp = array();
+                    $temp = [];
                     // resolve the user selection
                     $users     =& $acl->getAllUsersFromIdst($selection);
                     if ( $userlevelid != ADMIN_GROUP_GODADMIN && !Docebo::user()->isAnonymous()) { $users = array_intersect($users, $admin_users); }
@@ -646,11 +646,11 @@ class Report_Aggregate extends Report {
 				while ($row = sql_fetch_array($res) ) {
 
 					if(!isset($temp[$row['idUser']])) {
-						$temp[$row['idUser']] = array (
+						$temp[$row['idUser']] = [
 							'username' => $acl->relativeId($row['userId']),
 							'fullname' => $row['lastname'].' '.$row['firstname'],
-							'courses' => array()
-						);
+							'courses' => []
+                        ];
 					}
 					$temp[$row['idUser']]['courses'][$row['idCourse']] = $row['status'];
 				}
@@ -659,14 +659,14 @@ class Report_Aggregate extends Report {
 
 				//draw table
 				$tot_size = 1;
-				$head2 = array($this->lang->def('_USERNAME'), $this->lang->def('_FULLNAME'));
-				$head1 = array(array('colspan'=>2, 'value'=>$this->lang->def('_USER')));
+				$head2 = [$this->lang->def('_USERNAME'), $this->lang->def('_FULLNAME')];
+				$head1 = [['colspan'=>2, 'value'=>$this->lang->def('_USER')]];
 				foreach ($courses as $course) {
-					$head1[] = array(
+					$head1[] = [
 						'value' => ( $courses_codes[$course]['code'] ? '['.$courses_codes[$course]['code'].'] ' : '' )
 									.$courses_codes[$course]['name'],
 						'colspan' => $increment
-					);
+                    ];
 
 					if ($cols['completed']) $head2[] = $this->lang->def('_USER_STATUS_END');
 					if ($cols['completed'] && $cols['show_percentages']) $head2[] = _PERCENT_SIMBOL;
@@ -686,10 +686,10 @@ class Report_Aggregate extends Report {
 				$buffer->addHeader($head2);
 				$buffer->closeHeader();
 
-				$completed_total = array();
-				$initinere_total = array();
-				$notstarted_total = array();
-				$courses_total = array();
+				$completed_total = [];
+				$initinere_total = [];
+				$notstarted_total = [];
+				$courses_total = [];
 
 				foreach($courses as $course) {
 					$completed_total[$course] = 0;
@@ -700,7 +700,7 @@ class Report_Aggregate extends Report {
 
 				$buffer->openBody();
 				foreach ($temp as $id_user => $table_row) {
-					$line = array();
+					$line = [];
 					$line[] = $table_row['username'];
 					$line[] = $table_row['fullname'];
 					foreach ($courses as $course) {
@@ -736,7 +736,7 @@ class Report_Aggregate extends Report {
 				}
 				$buffer->closeBody();
 
-				$totals_line = array('', '');
+				$totals_line = ['', ''];
 				foreach ($courses as $course) {
 
 					$completed_num = isset($completed_total[$course]) ? $completed_total[$course] : '0';
@@ -790,11 +790,11 @@ class Report_Aggregate extends Report {
 
 
 		if (!isset($_SESSION['report_tempdata']['columns_filter'])) {
-			$_SESSION['report_tempdata']['columns_filter'] = array(
+			$_SESSION['report_tempdata']['columns_filter'] = [
 				'all_categories' => true,
-				'selected_categories' => array(),
-				'showed_columns' => array(/*'completed'=>true, 'initinere'=>true, 'notstarted'=>true, 'show_percentages'=>true*/)
-			);
+				'selected_categories' => [],
+				'showed_columns' => [/*'completed'=>true, 'initinere'=>true, 'notstarted'=>true, 'show_percentages'=>true*/]
+            ];
 		}
 		$ref =& $_SESSION['report_tempdata']['columns_filter'];
 
@@ -803,8 +803,8 @@ class Report_Aggregate extends Report {
 
 		if (isset($_POST['update_tempdata'])) {
 
-			$ref['selected_categories'] = isset($_POST['course_categories_selector_input']) ? explode(",", $_POST['course_categories_selector_input']) : array();
-			$ref['showed_columns'] = array();
+			$ref['selected_categories'] = isset($_POST['course_categories_selector_input']) ? explode(",", $_POST['course_categories_selector_input']) : [];
+			$ref['showed_columns'] = [];
 		} else {
 
 			if ( isset($ref['selected_categories']) && count($ref['selected_categories'])>0 )
@@ -886,12 +886,12 @@ class Report_Aggregate extends Report {
 
 		//course categories names
 		$res = sql_query("SELECT * FROM ".$lms."_category ");
-		$categories_names = array();
-		$categories_limit = array();
+		$categories_names = [];
+		$categories_limit = [];
 		while ($row = sql_fetch_assoc($res)) {
 			$categories_names[ $row['idCategory'] ] = ($row['path']!='/root/' ? end( explode("/", $row['path'])) : Lang::t('_CATEGORY', 'admin_course_management', 'lms'));// Lang::t('_ROOT'));
 			$categories_paths[ $row['idCategory'] ] = ($row['path']!='/root/' ? substr($row['path'], 5, (strlen($row['path'])-5)) : Lang::t('_CATEGORY', 'admin_course_management'));// Lang::t('_ROOT'));
-			$categories_limit[ $row['idCategory'] ] = array($row['iLeft'], $row['iRight']);
+			$categories_limit[ $row['idCategory'] ] = [$row['iLeft'], $row['iRight']];
 		}
 
 		$user_courses = false;
@@ -912,7 +912,7 @@ class Report_Aggregate extends Report {
 				$user_catalogue = $cat_man->getUserAllCatalogueId(Docebo::user()->getIdSt());
 				if(count($user_catalogue) > 0)
 				{
-					$courses = array(0);
+					$courses = [0];
 
 					foreach($user_catalogue as $id_cat)
 					{
@@ -932,7 +932,7 @@ class Report_Aggregate extends Report {
 			}
 			else
 			{
-				$array_courses = array();
+				$array_courses = [];
 				$array_courses = array_merge($array_courses, $admin_courses['course']);
 
 				if(!empty($admin_courses['coursepath']))
@@ -962,16 +962,16 @@ class Report_Aggregate extends Report {
 
 			case 'users': {
 				//table data
-				$data = array();
+				$data = [];
 
-				$head1 = array('');
-				$head2 = array( $this->lang->def('_USER'));
+				$head1 = [''];
+				$head2 = [$this->lang->def('_USER')];
 
-				$totals = array();
+				$totals = [];
 
 				foreach ($categories as $idcat) {
 					$index = (int)str_replace("d", "", $idcat);
-					$head1[] = array('colspan'=>2, 'value'=>$categories_paths[$index]);
+					$head1[] = ['colspan'=>2, 'value'=>$categories_paths[$index]];
 					$head2[] = $this->lang->def('_COMPLETED');
 					$head2[] = $this->lang->def('incomplete');
 
@@ -997,17 +997,17 @@ class Report_Aggregate extends Report {
 						.( $user_courses != false ? " AND c.idCourse IN ( '".implode("','", $user_courses)."' ) " : '' );
 
 					$res = sql_query($query);
-					$temp = array();
+					$temp = [];
 					$total_1 = 0;
 					$total_2 = 0;
 					while ($row = sql_fetch_assoc($res)) {
 						$iduser = $row['idUser'];
 
 						if (!isset($temp[ $iduser ]))
-							$temp[ $iduser ] = array(
+							$temp[ $iduser ] = [
 								'completed' => 0,
 								'not_completed' => 0
-							);
+                            ];
 
 						switch ($row['status']) {
 							case 0:
@@ -1032,7 +1032,7 @@ class Report_Aggregate extends Report {
 				$buffer->closeHeader();
 
 				//retrieve usernames
-				$usernames = array();
+				$usernames = [];
 				$res = sql_query("SELECT idst, userid FROM ".$fw."_user WHERE idst IN (".implode(",", $selection).")");
 				while (list($idst, $userid) = sql_fetch_row($res))
 					$usernames[$idst] = $acl->relativeId( $userid );
@@ -1040,7 +1040,7 @@ class Report_Aggregate extends Report {
 				//user cycle
 				$buffer->openBody();
 				foreach ($selection as $user) {
-					$line = array();
+					$line = [];
 
 					$line[] = ( isset($usernames[ $user ]) ? $usernames[ $user ] : '' );
 					foreach ($categories as $idcat) {
@@ -1061,7 +1061,7 @@ class Report_Aggregate extends Report {
 				$buffer->closeBody();
 
 				//set totals
-				$foot = array('');
+				$foot = [''];
 				foreach ($totals as $total) { $foot[] = $total; }
 				$buffer->setFoot($foot);
 
@@ -1074,17 +1074,17 @@ class Report_Aggregate extends Report {
 
 			case 'groups': {
 				//table data
-				$data = array();
+				$data = [];
 
 				//retrieve all labels
-				$orgchart_labels = array();
+				$orgchart_labels = [];
 				$query = "SELECT * FROM ".$fw."_org_chart WHERE lang_code='".getLanguage()."'";
 				$res = sql_query($query);
 				while ($row = sql_fetch_assoc($res)) {
 					$orgchart_labels[$row['id_dir']] = $row['translation'];
 				}
 
-				$labels = array();
+				$labels = [];
 				//$query = "SELECT * FROM ".$fw."_group WHERE (hidden='false' OR groupid LIKE '/oc_%' OR groupid LIKE '/ocd_%') AND type='free'";
 				$query = "SELECT * FROM ".$fw."_group WHERE groupid LIKE '/oc\_%' OR groupid LIKE '/ocd\_%' OR hidden = 'false' ";
 				$res = sql_query($query);
@@ -1103,8 +1103,8 @@ class Report_Aggregate extends Report {
 
 
 				//solve groups user
-				$solved_groups = array();
-				$subgroups_list = array();
+				$solved_groups = [];
+				$subgroups_list = [];
 				foreach ($selection as $group) {
 					$temp = $acl->getGroupGDescendants($group);
 					$temp[] = $group;
@@ -1115,13 +1115,13 @@ class Report_Aggregate extends Report {
 				}
 
 				$tot_size = 2;
-				$totals = array();
-				$head1 = array( array('colspan'=>2, 'value'=>$this->lang->def('_GROUPS')) );
-				$head2 = array($this->lang->def('_NAME'), $this->lang->def('_TOTAL'));
+				$totals = [];
+				$head1 = [['colspan'=>2, 'value'=>$this->lang->def('_GROUPS')]];
+				$head2 = [$this->lang->def('_NAME'), $this->lang->def('_TOTAL')];
 
 				foreach ($categories as $idcat) {
 					$index = (int)str_replace("d", "", $idcat);
-					$head1[] = array('colspan'=>2, 'value'=>$categories_paths[$index]);
+					$head1[] = ['colspan'=>2, 'value'=>$categories_paths[$index]];
 					$head2[] = $this->lang->def('_COMPLETED');
 					$head2[] = $this->lang->def('incomplete');
 
@@ -1143,17 +1143,17 @@ class Report_Aggregate extends Report {
 						.( $user_courses != false ? " AND c.idCourse IN ( '".implode("','", $user_courses)."' ) " : '' );
 
 					$res = sql_query($query);
-					$temp = array();
+					$temp = [];
 					$total_1 = 0;
 					$total_2 = 0;
 					while ($row = sql_fetch_assoc($res)) {
 						$id_group = $solved_groups[ $row['idGroup'] ];
 
 						if (!isset($temp[ $id_group ]))
-							$temp[ $id_group ] = array(
+							$temp[ $id_group ] = [
 								'completed' => 0,
 								'not_completed' => 0
-							);
+                            ];
 
 						switch ($row['status']) {
 							case 0:
@@ -1186,7 +1186,7 @@ class Report_Aggregate extends Report {
 					if ( $userlevelid != ADMIN_GROUP_GODADMIN && !Docebo::user()->isAnonymous()) { $group_users = array_intersect($group_users, $admin_users); }
 					$users_num = count($group_users);
 
-					$line = array();
+					$line = [];
 					$line[] = $labels[$group_id];
 					$line[] = $users_num;
 					$tot_users += $users_num;
@@ -1211,7 +1211,7 @@ class Report_Aggregate extends Report {
 
 				//totals ...
 
-				$foot = array('', $tot_users);
+				$foot = ['', $tot_users];
 				foreach ($totals as $total) {	$foot[] = $total;	}
 				$buffer->setFoot($foot);
 
@@ -1249,11 +1249,11 @@ class Report_Aggregate extends Report {
 
 
 		if (!isset($_SESSION['report_tempdata']['columns_filter'])) {
-			$_SESSION['report_tempdata']['columns_filter'] = array(
+			$_SESSION['report_tempdata']['columns_filter'] = [
 				'timetype' => 'years',
 				'years' => 1,
 				'months' => 12
-			);
+            ];
 		}
 		$ref =& $_SESSION['report_tempdata']['columns_filter'];
 
@@ -1282,7 +1282,7 @@ class Report_Aggregate extends Report {
 		$box->description = false;
 
 		$year = date('Y');
-		$dropdownyears = array(
+		$dropdownyears = [
 			1 => $year,
 			2 => $year.' - '.($year - 1),
 			3 => $year.' - '.($year - 2),
@@ -1290,7 +1290,7 @@ class Report_Aggregate extends Report {
 			5 => $year.' - '.($year - 4),
 			6 => $year.' - '.($year - 5),
 			7 => $year.' - '.($year - 6),
-		);
+        ];
 		$box->body .= Form::getHidden('update_tempdata', 'update_tempdata', 1);
 		$box->body .= Form::getDropDown($this->lang->def('_RA_CAT_TIME'), 'years', 'years', $dropdownyears, $ref['years']);
 
@@ -1335,7 +1335,7 @@ class Report_Aggregate extends Report {
 		}
 
 		$html = '';
-		$times = array();
+		$times = [];
 		switch ($timetype) {
 			case 'years': {
 				$now = date('Y');
@@ -1349,7 +1349,7 @@ class Report_Aggregate extends Report {
 		switch ($sel_type) {
 
 			case 'users': {
-				$data = array();
+				$data = [];
 
 				$users_list = ($sel_all ? $acl->getAllUsersIdst() : $acl->getAllUsersFromIdst($selection) );
 				$users_list = array_unique($users_list);
@@ -1370,7 +1370,7 @@ class Report_Aggregate extends Report {
 					$data[ $idUser ][ $year ]++;
 				}
 
-				$usernames = array();
+				$usernames = [];
 				$query = "SELECT idst, userid FROM ".$fw."_user WHERE idst IN (".implode(",", $users_list).")";
 				$res = sql_query($query);
 				while ($row = sql_fetch_assoc($res)) {
@@ -1381,7 +1381,7 @@ class Report_Aggregate extends Report {
 				$buffer = new ReportTablePrinter($type, true);
 				$buffer->openTable('','');
 
-				$head = array($this->lang->def('_USER'));
+				$head = [$this->lang->def('_USER')];
 				foreach ($times as $time) {
 					$head[] = $time;
 				}
@@ -1396,7 +1396,7 @@ class Report_Aggregate extends Report {
 				foreach ($users_list as $user) {
 
 					if(!isset($usernames[$user])) break;
-					$line = array();
+					$line = [];
 					$line_total = 0;
 					$line[] = $usernames[$user];
 					foreach ($times as $time) { //years or months
@@ -1429,7 +1429,7 @@ class Report_Aggregate extends Report {
 				$buffer->closeBody();
 
 				//totals
-				$foot = array('');
+				$foot = [''];
 				foreach ($times as $time) {
 					$temp = 0;
 					foreach ($users_list as $user) {
@@ -1450,14 +1450,14 @@ class Report_Aggregate extends Report {
 
 			case 'groups': {
 				//retrieve all labels
-				$orgchart_labels = array();
+				$orgchart_labels = [];
 				$query = "SELECT * FROM ".$fw."_org_chart WHERE lang_code='".getLanguage()."'";
 				$res = sql_query($query);
 				while ($row = sql_fetch_assoc($res)) {
 					$orgchart_labels[$row['id_dir']] = $row['translation'];
 				}
 
-				$labels = array();
+				$labels = [];
 				//$query = "SELECT * FROM ".$fw."_group WHERE (hidden='false' OR groupid LIKE '/oc_%' OR groupid LIKE '/ocd_%') AND type='free'";
 				$query = "SELECT * FROM ".$fw."_group WHERE groupid LIKE '/oc\_%' OR groupid LIKE '/ocd\_%' OR hidden = 'false' ";
 				$res = sql_query($query);
@@ -1476,8 +1476,8 @@ class Report_Aggregate extends Report {
 
 
 				//solve groups user
-				$solved_groups = array();
-				$subgroups_list = array();
+				$solved_groups = [];
+				$subgroups_list = [];
 				foreach ($selection as $group) {
 					$temp = $acl->getGroupGDescendants($group);
 					$temp[] = $group;
@@ -1493,7 +1493,7 @@ class Report_Aggregate extends Report {
 					." FROM ".$lms."_courseuser as cu JOIN ".$fw."_group_members as gm ON (cu.idUser=gm.idstMember) "
 					." WHERE status=2 AND gm.idst IN (".implode(",", $subgroups_list).")";
 
-				$data = array();
+				$data = [];
 				$res = sql_query($query);
 				while ($row = sql_fetch_assoc($res)) {
 					$idGroup = $solved_groups[ $row['idGroup'] ];
@@ -1520,7 +1520,7 @@ class Report_Aggregate extends Report {
 				$buffer = new ReportTablePrinter($type, true);
 				$buffer->openTable('','');
 
-				$head = array($this->lang->def('_GROUPS'), $this->lang->def('_USERS'));
+				$head = [$this->lang->def('_GROUPS'), $this->lang->def('_USERS')];
 				foreach ($times as $time) {
 					$head[] = $time;
 				}
@@ -1538,7 +1538,7 @@ class Report_Aggregate extends Report {
 					if ( $userlevelid != ADMIN_GROUP_GODADMIN && !Docebo::user()->isAnonymous()) { $group_users = array_intersect($group_users, $admin_users); }
 					$users_num = count($group_users);
 
-					$line = array();
+					$line = [];
 					$line_total = 0;
 					$line[] = $labels[$group];
 					$line[] = $users_num;
@@ -1573,7 +1573,7 @@ class Report_Aggregate extends Report {
 				$buffer->closeBody();
 
 				//totals
-				$foot = array('', $tot_users);
+				$foot = ['', $tot_users];
 				foreach ($times as $time) {
 					$temp = 0;
 					foreach ($selection as $group) {
@@ -1616,19 +1616,19 @@ class Report_Aggregate extends Report {
 		if (isset($_POST['undo_filter'])) Util::jump_to($back_url);
 
 		if (!isset($_SESSION['report_tempdata']['columns_filter'])) {
-			$_SESSION['report_tempdata']['columns_filter'] = array(
-				'comm_selection' => array(),
+			$_SESSION['report_tempdata']['columns_filter'] = [
+				'comm_selection' => [],
 				'all_communications' => false,
 				'comm_start_date' => '',
 				'comm_end_date' => ''
-			);
+            ];
 		}
 		$ref =& $_SESSION['report_tempdata']['columns_filter'];
 
 
 		if (isset($_POST['update_tempdata'])) {
 			$ref['all_communications'] = Get::req('all_communications', DOTY_INT, 0) > 0;
-			$ref['comm_selection'] = Get::req('comm_selection', DOTY_MIXED, array());
+			$ref['comm_selection'] = Get::req('comm_selection', DOTY_MIXED, []);
 			$ref['comm_start_date'] = Format::dateDb(Get::req('comm_start_date', DOTY_STRING, ''), 'date');
 			$ref['comm_end_date'] = Format::datedb(Get::req('comm_end_date', DOTY_STRING, ''), 'date');
 		} else {
@@ -1682,11 +1682,11 @@ class Report_Aggregate extends Report {
 		$_ERR_NOCOMM = Lang::t('_EMPTY_SELECTION', 'report');
 		$_ERR_NODATA = Lang::t('_EMPTY_SELECTION', 'report');
 
-		$lang_type = array(
+		$lang_type = [
 			'none' => Lang::t('_NONE', 'communication'),
 			'file' => Lang::t('_LONAME_item', 'storage'),
 			'scorm' => Lang::t('_LONAME_scormorg', 'storage')
-		);
+        ];
 
 		$sel_all = $ref['rows_filter']['select_all'];
 		$arr_selected_users = $ref['rows_filter']['selection']; //list of users selected in the filter (users, groups and org.branches)
@@ -1743,7 +1743,7 @@ class Report_Aggregate extends Report {
 		if ($comm_all) {
 			$query = "SELECT id_comm FROM %lms_communication";
 			$res = $this->db->query($query);
-			$arr_selected_comm = array();
+			$arr_selected_comm = [];
 			while (list($id_comm) = $this->db->fetch_row($res))
 				$arr_selected_comm[] = $id_comm;
 		}
@@ -1768,15 +1768,15 @@ class Report_Aggregate extends Report {
 			." ORDER BY publish_date DESC, title ASC";
 		$res = $this->db->query($query);
 		if ($this->db->num_rows($res) == count($arr_selected_comm)) {
-			$arr_selected_comm = array();
+			$arr_selected_comm = [];
 			while (list($id_comm) = $this->db->fetch_row($res)) {
 				$arr_selected_comm[] = $id_comm;
 			}
 		}
 
-		$arr_comm = array(); //array $id_comm => list of generic idst
-		foreach ($arr_selected_comm as $id_comm) $arr_comm[$id_comm] = array(); //if no users have been assigned to the games, than display as 0 - 0
-		$arr_idst = array(); //flat list of idst
+		$arr_comm = []; //array $id_comm => list of generic idst
+		foreach ($arr_selected_comm as $id_comm) $arr_comm[$id_comm] = []; //if no users have been assigned to the games, than display as 0 - 0
+		$arr_idst = []; //flat list of idst
 		$query = "SELECT * FROM %lms_communication_access WHERE id_comm IN (".implode(",", $arr_selected_comm).")";
 		$res = $this->db->query($query);
 		while (list($id_comm, $idst) = $this->db->fetch_row($res)) {
@@ -1789,7 +1789,7 @@ class Report_Aggregate extends Report {
 			return;
 		}
 
-		$arr_groups = array(); //flat list of group idst
+		$arr_groups = []; //flat list of group idst
 		$query = "SELECT idst FROM %adm_group WHERE idst IN (".implode(",", $arr_idst).")";
 		$res = $this->db->query($query);
 		while (list($idst) = $this->db->fetch_row($res)) {
@@ -1797,8 +1797,8 @@ class Report_Aggregate extends Report {
 		}
 
 		//if any group selected, then extract users and create an array [id_group][id_user]
-		$arr_idst_users_flat = array();
-		$arr_members = array(); //array $idst group => list of idst
+		$arr_idst_users_flat = [];
+		$arr_members = []; //array $idst group => list of idst
 		if (count($arr_groups) > 0) {
 			$query = "SELECT idst, idstMember FROM %adm_group_members WHERE "
 				." idst IN (".implode(",", $arr_groups).")"
@@ -1823,19 +1823,19 @@ class Report_Aggregate extends Report {
 		//users have been extracted by group, now calculate report's rows ----------
 
 		//get communications info data and put it in an array by id_comm => {info}
-		$arr_comm_data = array();
+		$arr_comm_data = [];
 		$query = "SELECT * FROM %lms_communication WHERE id_comm IN (".implode(",", $arr_selected_comm).")";
 		$res = $this->db->query($query);
 		while ($obj = $this->db->fetch_obj($res)) {
-			$arr_comm_data[$obj->id_comm] = array(
+			$arr_comm_data[$obj->id_comm] = [
 				'title' => $obj->title,
 				'type_of' => $obj->type_of,
 				'publish_date' => $obj->publish_date
-			);
+            ];
 		}
 
 		//which selected communication has been seen by selected users?
-		$arr_viewed = array();
+		$arr_viewed = [];
 		$query = "SELECT idReference, COUNT(idUser) as count "
 			." FROM %lms_communication_track WHERE status IN ('completed', 'passed') "
 			." AND idUser IN (".implode(",", $_all_users).") "
@@ -1859,14 +1859,14 @@ class Report_Aggregate extends Report {
 		}
 */
 		//set table properties and buffer
-		$head = array(
+		$head = [
 		Lang::t('_DATE', 'report'),
 			Lang::t('_COMMUNICATIONS_TITLE', 'report'),
 			Lang::t('_COMMUNICATIONS_TYPE', 'report'),
 			Lang::t('_COMMUNICATIONS_SEEN', 'report'),
 			Lang::t('_COMMUNICATIONS_TOTAL', 'report'),
 			Lang::t('_PERCENTAGE', 'report')
-		);
+        ];
 
 
 		$buffer = new ReportTablePrinter();
@@ -1894,7 +1894,7 @@ class Report_Aggregate extends Report {
 			}
 
 			//line (one per communication)
-			$line = array();
+			$line = [];
 			$type_of = $arr_comm_data[$id_comm]['type_of'];
 			$seen = isset($arr_viewed[$id_comm]) ? $arr_viewed[$id_comm] : 0;
 
@@ -1938,19 +1938,19 @@ class Report_Aggregate extends Report {
 		if (isset($_POST['undo_filter'])) Util::jump_to($back_url);
 
 		if (!isset($_SESSION['report_tempdata']['columns_filter'])) {
-			$_SESSION['report_tempdata']['columns_filter'] = array(
-				'comp_selection' => array(),
+			$_SESSION['report_tempdata']['columns_filter'] = [
+				'comp_selection' => [],
 				'all_games' => false,
 				'comp_start_date' => '',
 				'comp_end_date' => ''
-			);
+            ];
 		}
 		$ref =& $_SESSION['report_tempdata']['columns_filter'];
 
 
 		if (isset($_POST['update_tempdata'])) {
 			$ref['all_games'] = Get::req('all_games', DOTY_INT, 0) > 0;
-			$ref['comp_selection'] = Get::req('comp_selection', DOTY_MIXED, array());
+			$ref['comp_selection'] = Get::req('comp_selection', DOTY_MIXED, []);
 			$ref['comp_start_date'] = Format::dateDb(Get::req('comp_start_date', DOTY_STRING, ''), 'date');
 			$ref['comp_end_date'] = Format::datedb(Get::req('comp_end_date', DOTY_STRING, ''), 'date');
 		} else {
@@ -2062,7 +2062,7 @@ class Report_Aggregate extends Report {
 		if ($comp_all) {
 			$query = "SELECT id_game FROM %lms_games";
 			$res = $this->db->query($query);
-			$arr_selected_comp = array();
+			$arr_selected_comp = [];
 			while (list($id_game) = $this->db->fetch_row($res))
 				$arr_selected_comp[] = $id_game;
 		}
@@ -2080,9 +2080,9 @@ class Report_Aggregate extends Report {
 			return;
 		}
 
-		$arr_comp = array(); //array $id_comm => list of generic idst
-		foreach ($arr_selected_comp as $id_game) $arr_comp[$id_game] = array(); //if no users have been assigned to the games, than display as 0 - 0
-		$arr_idst = array(); //flat list of idst
+		$arr_comp = []; //array $id_comm => list of generic idst
+		foreach ($arr_selected_comp as $id_game) $arr_comp[$id_game] = []; //if no users have been assigned to the games, than display as 0 - 0
+		$arr_idst = []; //flat list of idst
 		$query = "SELECT * FROM %lms_games_access WHERE id_comp IN (".implode(",", $arr_selected_comp).")";
 		$res = $this->db->query($query);
 		while (list($id_game, $idst) = $this->db->fetch_row($res)) {
@@ -2095,7 +2095,7 @@ class Report_Aggregate extends Report {
 			return;
 		}
 
-		$arr_groups = array(); //flat list of group idst
+		$arr_groups = []; //flat list of group idst
 		$query = "SELECT idst FROM %adm_group WHERE idst IN (".implode(",", $arr_idst).")";
 		$res = $this->db->query($query);
 		while (list($idst) = $this->db->fetch_row($res)) {
@@ -2103,8 +2103,8 @@ class Report_Aggregate extends Report {
 		}
 
 		//if any group selected, then extract users and create an array [id_group][id_user]
-		$arr_idst_users_flat = array();
-		$arr_members = array(); //array $idst group => list of idst
+		$arr_idst_users_flat = [];
+		$arr_members = []; //array $idst group => list of idst
 		if (count($arr_groups) > 0) {
 			$query = "SELECT idst, idstMember FROM %adm_group_members WHERE "
 				." idst IN (".implode(",", $arr_groups).")"
@@ -2129,20 +2129,20 @@ class Report_Aggregate extends Report {
 		//users have been extracted by group, now calculate report's rows ----------
 
 		//get games info data and put it in an array by id_game => {info}
-		$arr_comp_data = array();
+		$arr_comp_data = [];
 		$query = "SELECT * FROM %lms_games WHERE id_game IN (".implode(",", $arr_selected_comp).")";
 		$res = $this->db->query($query);
 		while ($obj = $this->db->fetch_obj($res)) {
-			$arr_comp_data[$obj->id_game] = array(
+			$arr_comp_data[$obj->id_game] = [
 				'title' => $obj->title,
 				'type_of' => $obj->type_of,
 				'start_date' => $obj->start_date,
 				'end_date' => $obj->end_date
-			);
+            ];
 		}
 
 		//which selected communication has been seen by selected users?
-		$arr_viewed = array();
+		$arr_viewed = [];
 		$query = "SELECT idReference, COUNT(idUser) as count "
 			." FROM %lms_games_track WHERE status IN ('completed', 'passed') "
 			." AND idUser IN (".implode(",", $_all_users).") "
@@ -2156,7 +2156,7 @@ class Report_Aggregate extends Report {
 		}
 
 		//calculate average values, no conditions on the status
-		$arr_average = array();
+		$arr_average = [];
 		$query = "SELECT idReference, AVG(current_score) as average_current_score, "
 			." AVG(max_score) as average_max_score, AVG(num_attempts) as average_num_attempts "
 			." FROM %lms_games_track WHERE idUser IN (".implode(",", $_all_users).") "
@@ -2180,7 +2180,7 @@ class Report_Aggregate extends Report {
 		}
 */
 		//set table properties and buffer
-		$head = array(
+		$head = [
 			Lang::t('_GAMES_TITLE', 'report'),
 			Lang::t('_GAMES_TYPE', 'report'),
 			Lang::t('_FROM', 'standard'),
@@ -2191,7 +2191,7 @@ class Report_Aggregate extends Report {
 			Lang::t('_GAMES_AVG_SCORE', 'report'),
 			Lang::t('_GAMES_AVG_MAX_SCORE', 'report'),
 			Lang::t('_GAMES_AVG_NUM_ATTEMPTS', 'report'),
-		);
+        ];
 
 
 		$buffer = new ReportTablePrinter();
@@ -2219,7 +2219,7 @@ class Report_Aggregate extends Report {
 			}
 
 			//line (one per communication)
-			$line = array();
+			$line = [];
 			$type_of = $arr_comp_data[$id_game]['type_of'];
 			$completed_by = isset($arr_viewed[$id_game]) ? $arr_viewed[$id_game] : 0;
 

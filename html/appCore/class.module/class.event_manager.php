@@ -38,11 +38,11 @@ class Module_Event_Manager extends Module {
 	
 	// Function for permission managment
 	function getAllToken($op) {
-		return array( 
-			'view' => array( 	'code' => 'view_event_manager',
+		return [
+			'view' => ['code' => 'view_event_manager',
 								'name' => '_VIEW',
-								'image' => 'standard/view.png')
-					);
+								'image' => 'standard/view.png']
+        ];
 		$op = $op;
 	}
 

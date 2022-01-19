@@ -67,11 +67,11 @@ if (isset($id_parent)) $content .= Form::getHidden('id_parent', 'id_parent', $id
 $content .= Form::closeForm();
 
 if (isset($json)) {
-	$params = array(
+	$params = [
 		'success' => true,
 		'header' => $title,
 		'body' => $content
-	);
+    ];
 	echo $json->encode($params);
 } else {
 	echo '<h2>'.$title.'</h2>';

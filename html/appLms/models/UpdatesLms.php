@@ -37,7 +37,7 @@ Class UpdatesLms extends Model {
 		
 		if(!isset($_SESSION['updates'])) {
 			$courses_updates = $this->courseUpdates();
-			$u = array(
+			$u = [
 				'elearning'	=> isset($courses_updates['elearning'][0]) ? $courses_updates['elearning'][0] : 0,
 				'classroom'	=> isset($courses_updates['classroom'][0]) ? $courses_updates['classroom'][0] : 0,
 				'catalog'			=> $this->catalogUpdates(),
@@ -45,7 +45,7 @@ Class UpdatesLms extends Model {
 				'games'				=> $this->gamesUpdates(),
 				'communication'		=> $this->communicationUpdates(),
 				'videoconference'	=> $this->videoconferenceUpdates()
-			);
+            ];
 			
 			$assessment = isset($courses_updates['assessment'][0]) ? $courses_updates['assessment'][0] : 0 ;
 			if(isset($courses_updates['assessment'][1])) $assessment = $courses_updates['assessment'][1];
@@ -75,7 +75,7 @@ Class UpdatesLms extends Model {
 		.(!empty($cp_courses) ? " AND (cu.idCourse NOT IN (".implode(",", $cp_courses).") OR cu.status = "._CUS_END.") " : "")
 		." GROUP BY c.course_type, cu.status" );
 
-		$result = array();
+		$result = [];
 		while($o = $this->db->fetch_obj($re)) {
 
 			$result[$o->course_type][$o->status] = $o->count;
@@ -118,7 +118,7 @@ Class UpdatesLms extends Model {
 	
 	public function gamesCounterUpdates() {
 
-		$count = array('unread' => 0, 'history' => 0);
+		$count = ['unread' => 0, 'history' => 0];
 
 		$arrst = Docebo::user()->getArrSt();
 		$qtxt = "SELECT COUNT(*) "
@@ -163,7 +163,7 @@ Class UpdatesLms extends Model {
 
 	public function communicationCounterUpdates() {
 
-		$count = array('unread' => 0, 'history' => 0);
+		$count = ['unread' => 0, 'history' => 0];
 
 		$arrst = Docebo::user()->getArrSt();
 		$qtxt = "SELECT COUNT(*) "
@@ -209,7 +209,7 @@ Class UpdatesLms extends Model {
 
 	public function videoconferenceCounterUpdates() {
 
-		$count = array('live' => 0, 'planned' => 0, 'history' => 0);
+		$count = ['live' => 0, 'planned' => 0, 'history' => 0];
 
 		$qtxt = "SELECT COUNT(*) "
 			." FROM conference_room"

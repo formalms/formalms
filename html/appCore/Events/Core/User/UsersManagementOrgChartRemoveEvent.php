@@ -22,7 +22,7 @@ class UsersManagementOrgChartRemoveEvent extends Event
     {
         
         $this->user = null;
-        $this->users = array();
+        $this->users = [];
     }
 
     /**

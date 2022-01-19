@@ -35,11 +35,11 @@ $_body .= Form::closeForm();
 
 //send output
 if (isset($json)) {
-	$params = array(
+	$params = [
 		'success' => true,
 		'header' => $_title,
 		'body' => $_body
-	);
+    ];
 	echo $json->encode($params);
 } else {
 	echo getTitleArea($_title);

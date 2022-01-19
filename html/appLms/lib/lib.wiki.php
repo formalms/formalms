@@ -72,7 +72,7 @@ Class LmsWikiAdmin extends CoreWikiAdmin {
 
 			$id=$data_arr[$i]["wiki_id"];
 
-			$rowcnt=array();
+			$rowcnt= [];
 			$rowcnt[]=$data_arr[$i]["title"];
 
 			$url =$um->getUrl("op=show&wiki_id=".$id);
@@ -169,9 +169,9 @@ Class LmsWikiAdmin extends CoreWikiAdmin {
 			$tab=new Table(0, $table_caption, $table_summary);
 
 
-			$head=array($this->lang->def("_TITLE"), "");
+			$head= [$this->lang->def("_TITLE"), ""];
 
-			$head_type=array("", "image");
+			$head_type= ["", "image"];
 
 			$tab->setColsStyle($head_type);
 			$tab->addHead($head);
@@ -191,7 +191,7 @@ Class LmsWikiAdmin extends CoreWikiAdmin {
 
 				$id=$data_arr[$i]["wiki_id"];
 
-				$rowcnt=array();
+				$rowcnt= [];
 				$rowcnt[]=$data_arr[$i]["title"];
 				$check_cell ="";
 
@@ -285,7 +285,7 @@ Class LmsWikiManager extends CoreWikiManager {
 
 
 	function getLmsWikiList($course_id=FALSE) {
-		$res =array("list"=>array(), "data"=>array());
+		$res = ["list"=> [], "data"=> []];
 
 		$fields ="t1.course_id, t1.is_owner, t2.*";
 		$qtxt ="SELECT ".$fields." FROM ".$this->_getWikiCourseTable()." as t1, ";
@@ -321,9 +321,9 @@ Class LmsWikiManager extends CoreWikiManager {
 		if ($course_id < 1)
 			return FALSE;
 
-		$data["sel_wiki"] =(isset($data["sel_wiki"]) ? $data["sel_wiki"] : array());
-		$data["db_sel_wiki"] =(isset($data["db_sel_wiki"]) ? $data["db_sel_wiki"] : array());
-		$data["owned_wiki"] =(isset($data["owned_wiki"]) ? $data["owned_wiki"] : array());
+		$data["sel_wiki"] =(isset($data["sel_wiki"]) ? $data["sel_wiki"] : []);
+		$data["db_sel_wiki"] =(isset($data["db_sel_wiki"]) ? $data["db_sel_wiki"] : []);
+		$data["owned_wiki"] =(isset($data["owned_wiki"]) ? $data["owned_wiki"] : []);
 
 		$to_add =array_diff($data["sel_wiki"], $data["db_sel_wiki"]);
 		$to_remove =array_diff($data["db_sel_wiki"], $data["sel_wiki"]);
@@ -332,7 +332,7 @@ Class LmsWikiManager extends CoreWikiManager {
 		$to_remove =array_diff($to_remove, $data["owned_wiki"]);
 
 		$qtxt ="INSERT INTO ".$this->_getWikiCourseTable()." (course_id, wiki_id, is_owner) ";
-		$add_to_query =array();
+		$add_to_query = [];
 		foreach($to_add as $wiki_id) {
 			$add_to_query[]="('".$course_id."', '".$wiki_id."', '0')";
 		}

@@ -1,7 +1,7 @@
-<?php Get::title(array(
+<?php Get::title([
 	'index.php?r=adm/lang/show' => Lang::t('_LANGUAGE', 'admin_lang'),
 	Lang::t('_IMPORT', 'admin_lang')
-)); ?>
+]); ?>
 <div class="std_block">
 <?php
 echo Form::openForm('import_lang', 'index.php?r=adm/lang/doimport', false, 'post', 'multipart/form-data')

@@ -20,12 +20,12 @@ Class TimeperiodsAlms extends Model {
 	}
 
 	public function getPerm() {
-		return array(
+		return [
 			'view' => 'standard/view.png',
 			'add' => 'standrd/add.png',
 			'mod' => 'standard/edit.png',
 			'del' => 'standard/rem.png'
-		);
+        ];
 	}
 
 	/*
@@ -63,7 +63,7 @@ Class TimeperiodsAlms extends Model {
 		if (!$res) return false;
 
 		//prepare records for output
-		$output = array();
+		$output = [];
 		while ($obj = $this->db->fetch_obj($res))
 			$output[] = $obj;
 		
@@ -146,11 +146,11 @@ Class TimeperiodsAlms extends Model {
 	 */
 	function getTimePeriods($labels = false, $objs = false) {
 		
-		if (is_string($labels)) $arr = array($labels);
+		if (is_string($labels)) $arr = [$labels];
 		elseif (is_array($labels) && count($labels)>0) $arr =& $labels;
 		else $labels = false;
 
-		$output = array();
+		$output = [];
 		$query = "SELECT * FROM ".$GLOBALS['prefix_lms']."_time_period "
 			.($labels != false ? " WHERE label IN (".implode(",", $labels).") " : "")
 			." ORDER BY end_date DESC, start_date DESC";

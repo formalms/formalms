@@ -20,11 +20,11 @@ class Selector_Catalogue {
 
 	var $show_filter = true;
 
-	var $filter = array();
+	var $filter = [];
 
 	var $current_page = '';
 
-	var $current_selection = array();
+	var $current_selection = [];
 
 	/**
 	 * Class constructor
@@ -50,11 +50,11 @@ class Selector_Catalogue {
 	 */
 	function getStatus() {
 
-		$status = array(
+		$status = [
 			'page' 					=> $this->current_page,
 			'filter' 				=> serialize($this->filter),
 			'show_filter' 			=> $this->show_filter,
-			'current_selection' 	=> serialize($this->current_selection) );
+			'current_selection' 	=> serialize($this->current_selection)];
 		return serialize($status);
 	}
 
@@ -186,22 +186,22 @@ class Selector_Catalogue {
 
 		$re_catalogue = sql_query($select.$query_catalogue);
 
-		$type_h = array('image', '', '', '');
-		$cont_h = array(
+		$type_h = ['image', '', '', ''];
+		$cont_h = [
 			'<span class="access-only">'.Lang::t('_CATALOGUE_SELECTION','catalogue', 'lms').'</span>',
 			Lang::t('_NAME','catalogue', 'lms'),
 			Lang::t('_DESCRIPTION','catalogue', 'lms')
-		);
+        ];
 		$tb->setColsStyle($type_h);
 		$tb->addHead($cont_h);
 		while(list($id_catalogue, $name, $descr) = sql_fetch_row($re_catalogue)) {
 
-			$tb_content = array(
+			$tb_content = [
 				Form::getInputCheckbox('new_catalogue_selected_'.$id_catalogue, 'new_catalogue_selected['.$id_catalogue.']', $id_catalogue,
 					isset($this->current_selection[$id_catalogue]), ''),
 				'<label for="new_catalogue_selected_'.$id_catalogue.'">'.$name.'</label>',
 				'<label for="new_catalogue_selected_'.$id_catalogue.'">'.$descr.'</label>'
-			);
+            ];
 			$tb->addBody($tb_content);
 			if(isset($this->current_selection[$id_catalogue])) unset($this->current_selection[$id_catalogue]);
 		}
@@ -299,7 +299,7 @@ class Catalogue_Manager {
 	 */
 	function &getUserAllCatalogueInfo($id_user) {
 
-		$catalogues 	= array();
+		$catalogues 	= [];
 		$user_groups 	= $this->acl->getSTGroupsST($id_user);
 		$query = "
 		SELECT DISTINCT cm.idCatalogue, m.name, m.description
@@ -322,7 +322,7 @@ class Catalogue_Manager {
 	 */
 	function getAllCourseOfUser($id_user) {
 
-		$courses 		= array();
+		$courses 		= [];
 		if($id_user == getLogUserId()) $user_groups = Docebo::user()->getArrSt();
 		else $user_groups 	= $this->acl->getSTGroupsST($id_user);
 		$query = "
@@ -347,7 +347,7 @@ class Catalogue_Manager {
 	 */
 	function getAllCoursepathOfUser($id_user) {
 
-		$coursespath 		= array();
+		$coursespath 		= [];
 		$user_groups 	= $this->acl->getSTGroupsST($id_user);
 		$query = "
 		SELECT DISTINCT ce.idEntry
@@ -373,7 +373,7 @@ class Catalogue_Manager {
 					." WHERE idCatalogue = '".$id_cat."'";
 
 		$result = sql_query($query);
-		$res = array();
+		$res = [];
 
 		while(list($id_entry, $type) = sql_fetch_row($result))
 		{
@@ -381,7 +381,7 @@ class Catalogue_Manager {
 				$res[$id_entry] = $id_entry;
 			elseif($for_admin)
 			{
-				$coursepath_course =& $path_man->getAllCourses(array($id_entry));
+				$coursepath_course =& $path_man->getAllCourses([$id_entry]);
 				foreach($coursepath_course as $id_course)
 					$res[$id_course] = $id_course;
 			}
@@ -398,7 +398,7 @@ class Catalogue_Manager {
 				." WHERE idCatalogue = '".$id_cat."'";
 
 		$result = sql_query($query);
-		$res = array();
+		$res = [];
 
 		while(list($id_entry) = sql_fetch_row($result))
 			$res[$id_entry] = $id_entry;
@@ -460,8 +460,8 @@ class AdminCatalogue {
 	 */
 	function getAllCourses($catalogues) {
 
-		$courses = array();
-		if(empty($catalogues)) return array();
+		$courses = [];
+		if(empty($catalogues)) return [];
 		$query = "
 		SELECT DISTINCT ce.idEntry
 		FROM ".$this->_getCataEntryTable()." AS ce
@@ -482,8 +482,8 @@ class AdminCatalogue {
 	 */
 	function getAllCoursePaths($catalogues) {
 
-		$coursepaths = array();
-		if(empty($catalogues)) return array();
+		$coursepaths = [];
+		if(empty($catalogues)) return [];
 		$query = "
 		SELECT DISTINCT ce.idEntry
 		FROM ".$this->_getCataEntryTable()." AS ce

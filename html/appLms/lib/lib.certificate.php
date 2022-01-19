@@ -130,7 +130,7 @@ class Certificate
             $totalrows[] = current($row);
         }
 
-        return array($assignment, $totalrows);
+        return [$assignment, $totalrows];
     }
 
     function countAssignment($filter)
@@ -153,7 +153,7 @@ class Certificate
         $assigned = $this->getAssigned($filter);
         $assignable = $this->getAssignable($filter);
 
-        $assignment = array();
+        $assignment = [];
         foreach ($assigned as $as) {
             $assignment[] = $as;
         }
@@ -161,7 +161,7 @@ class Certificate
             $assignment[] = $as;
         }
 
-        $paginated_assignment = array();
+        $paginated_assignment = [];
         if ($pagination) {
             $offset = $pagination['startIndex'];
             $limit = $offset + $pagination['rowsPerPage'];
@@ -245,7 +245,7 @@ class Certificate
             }
         }
 
-        $assigned = array();
+        $assigned = [];
         $res = sql_query($query);
         while ($row = sql_fetch_assoc($res)) {
             $assigned[] = $row;
@@ -325,7 +325,7 @@ class Certificate
             }
         }
 
-        $assignable = array();
+        $assignable = [];
         $res = sql_query($query);
         while ($row = sql_fetch_assoc($res)) {
             if (
@@ -350,14 +350,14 @@ class Certificate
         $rep_man = new CourseReportManager();
 
         if ($perm_close_lo == 0) {
-            $score_final = $org_man->getFinalObjectScore(array($id_user), array($id_course));
+            $score_final = $org_man->getFinalObjectScore([$id_user], [$id_course]);
 
             if (isset($score_final[$id_course][$id_user]) && $score_final[$id_course][$id_user]['max_score']) {
                 $course_score_final = $score_final[$id_course][$id_user()]['score'];
                 $course_score_final_max = $score_final[$id_course][$id_user()]['max_score'];
             }
         } else {
-            $score_course = $rep_man->getUserFinalScore(array($id_user), array($id_course));
+            $score_course = $rep_man->getUserFinalScore([$id_user], [$id_course]);
 
             if (!empty($score_course)) {
                 $course_score_final = (isset($score_course[$id_user][$id_course]) ? $score_course[$id_user][$id_course]['score'] : false);
@@ -375,7 +375,7 @@ class Certificate
     function getCertificateList($name_filter = false, $code_filter = false)
     {
 
-        $cert = array();
+        $cert = [];
         $query_certificate = '
 		SELECT id_certificate, name, description, base_language, cert_structure, code
 		FROM ' . $GLOBALS['prefix_lms'] . '_certificate'
@@ -403,7 +403,7 @@ class Certificate
     function getCourseCertificateObj($id_course)
     {
 
-        $cert = array();
+        $cert = [];
         $query_certificate = '
                 SELECT id_certificate, certificate_available_for_obj
                 FROM ' . $GLOBALS['prefix_lms'] . "_certificate_course
@@ -419,7 +419,7 @@ class Certificate
     function getCourseCertificateAchi($id_course)
     {
 
-        $cert = array();
+        $cert = [];
         $query_certificate = '
                 SELECT id_certificate, certificate_available_for_who
                 FROM ' . $GLOBALS['prefix_lms'] . "_certificate_course
@@ -454,7 +454,7 @@ class Certificate
     function getCourseCertificate($id_course)
     {
 
-        $cert = array();
+        $cert = [];
         $query_certificate = "
 		SELECT id_certificate, available_for_status, minutes_required
 		FROM %lms_certificate_course
@@ -463,7 +463,7 @@ class Certificate
         $re_certificate = sql_query($query_certificate);
         while (list($id, $available_for_status, $minutes_required) = sql_fetch_row($re_certificate)) {
 
-            $cert[$id] = array('available_for_status' => $available_for_status, 'minutes_required' => $minutes_required);
+            $cert[$id] = ['available_for_status' => $available_for_status, 'minutes_required' => $minutes_required];
         }
         return $cert;
     }
@@ -471,7 +471,7 @@ class Certificate
     function getCourseExCertificate($id_course)
     {
 
-        $cert = array();
+        $cert = [];
         $query_certificate = "
 		SELECT id_certificate, available_for_status
 		FROM %lms_certificate_course
@@ -522,9 +522,9 @@ class Certificate
         $query_certificate .= ' ORDER BY course.available_for_status, c.name';
 
         $re = sql_query($query_certificate);
-        if (!$re) return array();
+        if (!$re) return [];
 
-        $list_of = array();
+        $list_of = [];
         while ($row = sql_fetch_row($re)) {
 
             $list_of[$row[CERT_ID_COURSE]][$row[CERT_ID]] = $row;
@@ -542,9 +542,9 @@ class Certificate
         if ($id_certificate !== false) $query_certificate .= " AND id_certificate = '" . $id_certificate . "' ";
 
         $re = sql_query($query_certificate);
-        if (!$re) return array();
+        if (!$re) return [];
 
-        $list_of = array();
+        $list_of = [];
         while (list($id_c, $number) = sql_fetch_row($re)) {
             $list_of[$id_c] = $number;
         }
@@ -564,9 +564,9 @@ class Certificate
             $query_certificate .= ' AND id_course IN ( ' . implode(',', $arr_course) . '';
         }
         $re = sql_query($query_certificate);
-        if (!$re) return array();
+        if (!$re) return [];
 
-        $list_of = array();
+        $list_of = [];
         while (list($id_course, $id_cert, $on_date) = sql_fetch_row($re)) {
 
             $list_of[$id_course][$id_cert] = $on_date;
@@ -585,9 +585,9 @@ class Certificate
 		WHERE ca.id_user = ' . (int)$id_user . ' AND ca.id_course = ' . (int)$id_course . ' ';
 
         $re = sql_query($query_certificate);
-        if (!$re) return array();
+        if (!$re) return [];
 
-        $list_of = array();
+        $list_of = [];
         while (list($id_course, $id_cert, $name) = sql_fetch_row($re)) {
 
             $list_of[$id_cert] = $name;
@@ -609,9 +609,9 @@ class Certificate
             $query_certificate .= ' AND id_course IN ( ' . implode(',', $arr_course) . '';
         }
         $re = sql_query($query_certificate);
-        if (!$re) return array();
+        if (!$re) return [];
 
-        $list_of = array();
+        $list_of = [];
         while (list($id_user, $id_course, $id_cert, $on_date) = sql_fetch_row($re)) {
 
             $list_of[$id_user][$id_cert]['on_date'] = $on_date;
@@ -629,9 +629,9 @@ class Certificate
 		WHERE id_course = '" . $id_course . "'
 		GROUP BY id_certificate ";
         $re = sql_query($query_certificate);
-        if (!$re) return array();
+        if (!$re) return [];
 
-        $list_of = array();
+        $list_of = [];
         while (list($id_cert, $num_of) = sql_fetch_row($re)) {
             $list_of[$id_cert] = $num_of;
         }
@@ -646,9 +646,9 @@ class Certificate
 		FROM ' . $GLOBALS['prefix_lms'] . "_certificate_assign
 		WHERE id_course = '" . $id_course . "' ";
         $re = sql_query($query_certificate);
-        if (!$re) return array();
+        if (!$re) return [];
 
-        $list_of = array();
+        $list_of = [];
         while (list($id_user, $id_cert, $on_date) = sql_fetch_row($re)) {
             $list_of[$id_user][$id_cert] = $on_date;
         }
@@ -791,8 +791,8 @@ class Certificate
         $cert_structure = fillSiteBaseUrlTag($cert_structure);
 
         $name = str_replace(
-            array('\\', '/', ':', '\'', '\*', '?', '"', '<', '>', '|'),
-            array('', '', '', '', '', '', '', '', '', ''),
+            ['\\', '/', ':', '\'', '\*', '?', '"', '<', '>', '|'],
+            ['', '', '', '', '', '', '', '', '', ''],
             $name
         );
 
@@ -928,7 +928,7 @@ class Certificate
 
     function getCourseForCertificate($id_certificate)
     {
-        $id_course = array();
+        $id_course = [];
 
         $query_id_course = 'SELECT cc.id_course' .
             ' FROM %lms_certificate_course AS cc JOIN %lms_course AS c ' .
@@ -981,7 +981,7 @@ class Certificate
         }
 
         // Get Certificate info
-        $info = array();
+        $info = [];
         $query = 'SELECT *' .
             ' FROM ' . $GLOBALS['prefix_lms'] . '_certificate_assign' .
             " WHERE id_certificate = '" . $id_certificate . "'" .
@@ -1008,7 +1008,7 @@ class Certificate
 
     function getCertificateInfo($id_certificate)
     {
-        $info = array();
+        $info = [];
         $query = 'SELECT id_certificate, name, description, base_language, cert_structure FROM ' . $GLOBALS['prefix_lms'] . '_certificate ';
         if (is_array($id_certificate) && count($id_certificate) > 0) {
             $query .= " WHERE id_certificate IN ('" . implode("','", $id_certificate) . "')";
@@ -1060,10 +1060,10 @@ class Certificate
 
     function getCertificateQuery($users = false, $id_cert = false, $year = false)
     {
-        $conditions = array();
+        $conditions = [];
 
         if ($users) {
-            if (is_numeric($users)) $users = array($users);
+            if (is_numeric($users)) $users = [$users];
             if (is_array($users)) $conditions[] = ' t3.idst IN (' . implode(',', $users) . ') ';
         }
 
@@ -1087,10 +1087,10 @@ class Certificate
 
     function getCertificateQueryTotal($users = false, $id_cert = false, $year = false)
     {
-        $conditions = array();
+        $conditions = [];
 
         if ($users) {
-            if (is_numeric($users)) $users = array($users);
+            if (is_numeric($users)) $users = [$users];
             if (is_array($users)) $conditions[] = ' t3.idst IN (' . implode(',', $users) . ') ';
         }
 
@@ -1115,10 +1115,10 @@ class Certificate
 
 function getCertificateQuery($users = false, $id_cert = false, $year = false)
 {
-    $conditions = array();
+    $conditions = [];
 
     if ($users) {
-        if (is_numeric($users)) $users = array($users);
+        if (is_numeric($users)) $users = [$users];
         if (is_array($users)) $conditions[] = ' t3.idst IN (' . implode(',', $users) . ') ';
     }
 
@@ -1142,10 +1142,10 @@ function getCertificateQuery($users = false, $id_cert = false, $year = false)
 
 function getCertificateQueryTotal($users = false, $id_cert = false, $year = false)
 {
-    $conditions = array();
+    $conditions = [];
 
     if ($users) {
-        if (is_numeric($users)) $users = array($users);
+        if (is_numeric($users)) $users = [$users];
         if (is_array($users)) $conditions[] = ' t3.idst IN (' . implode(',', $users) . ') ';
     }
 

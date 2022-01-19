@@ -1,10 +1,10 @@
 <?php
 $_subs_url = '&id_course='.(int)$id_course.($id_edition ? '&id_edition='.(int)$id_edition : '').($id_date ? '&id_date='.(int)$id_date : '');
-echo getTitleArea(array(
+echo getTitleArea([
 	'index.php?r='.$this->link_course.'/show' => Lang::t('_COURSES', 'admin_course_managment'),
 	'index.php?r='.$this->link.'/show'.$_subs_url => Lang::t('_SUBSCRIBE', 'subscribe').' : '.$course_name,
 	Lang::t('_SUBSCRIBE', 'subscribe').': '.Lang::t('_LEVELS', 'subscribe')
-));
+]);
 ?>
 <div class="std_block">
 <ul class="style_none">
@@ -12,7 +12,7 @@ echo getTitleArea(array(
 	<li><?php echo Lang::t('_USER_STATUS_SUBS', 'subscribe').': <b>'.(int)$num_subscribed.'</b>'; ?></li>
 </ul>
 <?php
-	$array_style = array(
+	$array_style = [
 		'userid' => '',
 		'fullname' =>  '',
 		'administrator' => 'image',
@@ -23,9 +23,9 @@ echo getTitleArea(array(
 		'ghost' => 'image',
 		'guest' => 'image',
 		'undo' => 'image'
-	);
+    ];
 
-	$array_header = array(
+	$array_header = [
 		'userid' => Lang::t('_USERNAME', 'subscribe'),
 		'fullname' =>  Lang::t('_FULLNAME', 'subscribe'),
 		'administrator' => '<a href="javascript:SelAll(\'7\');">'.$model->level[7].'</a>',
@@ -36,9 +36,9 @@ echo getTitleArea(array(
 		'ghost' => '<a href="javascript:SelAll(\'2\');">'.$model->level[2].'</a>',
 		'guest' => '<a href="javascript:SelAll(\'1\');">'.$model->level[1].'</a>',
 		'undo' => '<a href="javascript:SelAll(\'0\');">'.Lang::t('_UNDO', 'subscribe').'</a>'
-	);
+    ];
 
-	$array_content = array();
+	$array_content = [];
 
 	echo Form::openForm('choose_level', 'index.php?r='.$this->link.'/ins&amp;id_course='.$model->getIdCourse().'&amp;id_edition='.$model->getIdEdition().'&amp;id_date='.$model->getIdDate())
 		.Form::getHidden('send_alert', 'send_alert', $send_alert);
@@ -59,7 +59,7 @@ echo getTitleArea(array(
 	if (is_array($model->data)) {
 		foreach($model->data as $id_user => $user_info)
 		{
-			$array_content[] = array(
+			$array_content[] = [
 				'userid' => substr($user_info[ACL_INFO_USERID], 1),
 				'fullname' => $user_info[ACL_INFO_FIRSTNAME].' '.$user_info[ACL_INFO_LASTNAME],
 				'administrator' => Form::getInputRadio('user_level_sel_'.$id_user.'_7', 'user_level_sel['.$id_user.']', 7, false, ''),
@@ -70,18 +70,18 @@ echo getTitleArea(array(
 				'ghost' => Form::getInputRadio('user_level_sel_'.$id_user.'_2', 'user_level_sel['.$id_user.']', 2, false, ''),
 				'guest' => Form::getInputRadio('user_level_sel_'.$id_user.'_1', 'user_level_sel['.$id_user.']', 1, false, ''),
 				'undo' => Form::getInputRadio('user_level_sel_'.$id_user.'_0', 'user_level_sel['.$id_user.']', 0, false, '')
-			);
+            ];
 		}
 	}
 	
-	$this->widget('table', array(
+	$this->widget('table', [
 		'id'			=> 'subscribed_table',
 		'styles'	=> $array_style,
 		'header'	=> $array_header,
 		'data'		=> $array_content,
 		'summary'	=> Lang::t('_LEVELS', 'subscribe'),
 		'caption'	=> false//Lang::t('_LEVELS', 'subscribe')
-	));
+    ]);
 
 	echo Form::openButtonSpace();
 	echo Form::getButton('subscribe', 'subscribe', Lang::t('_SUBSCRIBE', 'subscribe'));

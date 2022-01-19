@@ -15,10 +15,10 @@ WaitingManagement.init({
 });
 </script>
 <?php
-echo getTitleArea(array(
+echo getTitleArea([
 	'index.php?r='. $this->link.'/show' => Lang::t('_ORGCHART', 'directory'),
 	Lang::t('_WAITING_USERS', 'admin_directory')
-));
+]);
 ?>
 <div class="std_block">
 <?php echo getBackUi('index.php?r='. $this->link.'/show', Lang::t('_BACK', 'standard')); ?>
@@ -64,7 +64,7 @@ $rel_action_bottom = '<a class="ico-wt-sprite subs_actv" id="confirm_multi_botto
 	.'<b id="num_users_selected_bottom">'.(int)(isset($num_users_selected) ? $num_users_selected : '0').'</b> '.Lang::t('_SELECTED', 'admin_directory')
 	.'</span>';
 
-$params = array(
+$params = [
 	'id' => 'waitingtable',
 	'ajaxUrl' => 'ajax.adm_server.php?r='. $this->link.'/getwaitinguserstabledata',
 	'rowsPerPage' => Get::sett('visuItem', 25),
@@ -72,30 +72,30 @@ $params = array(
 	'results' => Get::sett('visuItem', 25),
 	'sort' => 'userid',
 	'dir' => 'desc',
-	'columns' => array(
-			array('key' => 'userid', 'label' => Lang::t('_USERNAME', 'standard'), 'sortable' => true, 'formatter' => 'WaitingManagement.labelFormatter'),
-			array('key' => 'firstname', 'label' => Lang::t('_FIRSTNAME', 'standard'), 'sortable' => true, 'formatter' => 'WaitingManagement.labelFormatter'),
-			array('key' => 'lastname', 'label' => Lang::t('_LASTNAME', 'standard'), 'sortable' => true, 'formatter' => 'WaitingManagement.labelFormatter'),
-			array('key' => 'email', 'label' => Lang::t('_EMAIL', 'standard'), 'sortable' => true, 'formatter' => 'WaitingManagement.labelFormatter'),
-        array('key' => 'confirmed', 'label' => 'status', 'sortable' => true, 'formatter' => 'WaitingManagement.statusFormatter',),
-			array('key' => 'insert_date', 'label' => Lang::t('_DATE', 'admin_directory'), 'sortable' => true),
-			array('key' => 'inserted_by', 'label' => Lang::t('_BY', 'admin_directory'), 'sortable' => true),
-			array('key' => 'details', 'label' => $icon_details, 'formatter' => 'WaitingManagement.detailsFormatter', 'className' => 'img-cell'),
-			array('key' => 'confirm', 'label' => $icon_confirm, 'formatter' => 'WaitingManagement.confirmFormatter', 'className' => 'img-cell'),
-			array('key' => 'del', 'label' => $icon_delete, 'formatter' => 'doceboDelete', 'className' => 'img-cell')
-		),
-	'fields' => array('id', 'userid', 'firstname', 'lastname', 'email', 'confirmed', 'insert_date', 'inserted_by', 'del'),
+	'columns' => [
+			['key' => 'userid', 'label' => Lang::t('_USERNAME', 'standard'), 'sortable' => true, 'formatter' => 'WaitingManagement.labelFormatter'],
+			['key' => 'firstname', 'label' => Lang::t('_FIRSTNAME', 'standard'), 'sortable' => true, 'formatter' => 'WaitingManagement.labelFormatter'],
+			['key' => 'lastname', 'label' => Lang::t('_LASTNAME', 'standard'), 'sortable' => true, 'formatter' => 'WaitingManagement.labelFormatter'],
+			['key' => 'email', 'label' => Lang::t('_EMAIL', 'standard'), 'sortable' => true, 'formatter' => 'WaitingManagement.labelFormatter'],
+        ['key' => 'confirmed', 'label' => 'status', 'sortable' => true, 'formatter' => 'WaitingManagement.statusFormatter',],
+			['key' => 'insert_date', 'label' => Lang::t('_DATE', 'admin_directory'), 'sortable' => true],
+			['key' => 'inserted_by', 'label' => Lang::t('_BY', 'admin_directory'), 'sortable' => true],
+			['key' => 'details', 'label' => $icon_details, 'formatter' => 'WaitingManagement.detailsFormatter', 'className' => 'img-cell'],
+			['key' => 'confirm', 'label' => $icon_confirm, 'formatter' => 'WaitingManagement.confirmFormatter', 'className' => 'img-cell'],
+			['key' => 'del', 'label' => $icon_delete, 'formatter' => 'doceboDelete', 'className' => 'img-cell']
+    ],
+	'fields' => ['id', 'userid', 'firstname', 'lastname', 'email', 'confirmed', 'insert_date', 'inserted_by', 'del'],
 	'generateRequest' => 'WaitingManagement.requestBuilder',
-	'rel_actions' => array($rel_action_over, $rel_action_bottom),
+	'rel_actions' => [$rel_action_over, $rel_action_bottom],
 	'stdSelection' => true,
 	'delDisplayField' => 'userid',
 	'selectAllAdditionalFilter' => 'WaitingManagement.selectAllAdditionalFilter()',
-	'events' => array(
+	'events' => [
 			'initEvent' => 'WaitingManagement.initEvent',
 			'beforeRenderEvent' => 'WaitingManagement.beforeRenderEvent',
 			'postRenderEvent' => 'WaitingManagement.postRenderEvent'
-		)
-);
+    ]
+];
 
 $this->widget('table', $params);
 

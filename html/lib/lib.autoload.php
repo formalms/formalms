@@ -22,7 +22,7 @@ function docebo_autoload($classname) {
 	$classname = preg_replace('/[^a-zA-Z0-9\-\_]+/', '', $classname);
 
 	// fixed bases classes
-	$fixed = array(
+	$fixed = [
 		// Layout
 		'Layout'			=> _lib_.'/layout/lib.layout.php',
 		'LoginLayout'		=> _lib_.'/layout/lib.loginlayout.php',
@@ -75,9 +75,9 @@ function docebo_autoload($classname) {
 		'PluginManager'		=> _lib_.'/lib.pluginmanager.php',
          // lib jquery
         'jquerylib'         => _lib_.'/lib.jquerylib.php',
-        
 
-	);
+
+    ];
 
 	//search for a base class and include the file if found
 	if(isset($fixed[$classname])) {
@@ -86,27 +86,27 @@ function docebo_autoload($classname) {
 	}
 
 	//possibile path for autoloading classes
-	$path = array(
-		'adm' => array(
+	$path = [
+		'adm' => [
 			_adm_.'/models',
 			_adm_.'/controllers'
-		),
-		'alms' => array(
+        ],
+		'alms' => [
 			_lms_.'/admin/models',
 			_lms_.'/admin/controllers'
-		),
-		'lms' => array(
+        ],
+		'lms' => [
 			_lms_.'/models',
 			_lms_.'/controllers'
-		),
-		'lobj' => array(
+        ],
+		'lobj' => [
 			_lms_.'/models',
 			_lms_.'/controllers'
-		)
-	);
+        ]
+    ];
         
 	//parse classname for info and path
-	$location = array();
+	$location = [];
 	if(preg_match('/(Mobile|Adm|Alms|Lms|Acms|Cms|Lobj)Controller$/', $classname, $location)) {
 		// include controller file
 		$loc = ( isset($location[1]) ? strtolower($location[1]) : 'adm' );
@@ -125,7 +125,7 @@ function docebo_autoload($classname) {
 
 	// manage widgets classnames
 	if(preg_match ('/(Widget)/', $classname, $location)) {
-		$loc = _base_.'/widget/'.strtolower(str_replace(array('WidgetController', 'Widget'), array('', ''), $classname));
+		$loc = _base_.'/widget/'.strtolower(str_replace(['WidgetController', 'Widget'], ['', ''], $classname));
 		if(strpos($classname, 'Controller') !== false) {
 			// include controller file
 			$c_file = $loc.'/controller/'.$classname.'.php';

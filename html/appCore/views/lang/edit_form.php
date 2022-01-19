@@ -15,8 +15,8 @@ echo Form::openForm('upd_lang', 'ajax.adm_server.php?r=adm/lang/updatelang')
 		Lang::t('_ORIENTATION', 'admin_lang'),
 		'lang_direction',
 		'lang_direction',
-		array(	Lang::t('_DIRECTION_LTR', 'admin_lang') => 'ltr',
-				Lang::t('_DIRECTION_RTL', 'admin_lang') => 'rtl' ),
+		[Lang::t('_DIRECTION_LTR', 'admin_lang') => 'ltr',
+				Lang::t('_DIRECTION_RTL', 'admin_lang') => 'rtl'],
 		$lang->lang_direction
 	)
 	.Form::getTextfield(

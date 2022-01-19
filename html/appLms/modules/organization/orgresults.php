@@ -96,14 +96,14 @@ function getCompilationTable($id_user, $id_test)
 
             $tb = new Table(0, Lang::t('_HISTORIC_TABLE', 'organization'), Lang::t('_HISTORIC_TABLE', 'organization'));
 
-            $tb_h = array(Lang::t('_DATE', 'organization'), Lang::t('_SCORE', 'organization'));
-            $tb_s = array('align-center', 'align-center');
+            $tb_h = [Lang::t('_DATE', 'organization'), Lang::t('_SCORE', 'organization')];
+            $tb_s = ['align-center', 'align-center'];
 
             $tb->setColsStyle($tb_s);
             $tb->addHead($tb_h);
 
             while($row = sql_fetch_assoc($result))
-                $tb->addBody(array(Format::date($row['date_attempt'], 'datetime'), $row['score']));
+                $tb->addBody([Format::date($row['date_attempt'], 'datetime'), $row['score']]);
 
             cout(   $tb->getTable()
                     .'</div>', 'content');
@@ -123,7 +123,7 @@ function getCompilationTable($id_user, $id_test)
             FROM %lms_testtrack_quest
             WHERE idTrack = '".(int)$track_info['idTrack']."' ");
 
-            $quest_see = array();
+            $quest_see = [];
             while(list($id_q) = sql_fetch_row($re_visu_quest))
                 $quest_see[] = $id_q;
 
@@ -192,8 +192,8 @@ function getTrackingTable($id_user, $id_org) {
 	
 	$lang = DoceboLanguage::CreateInstance('organization', 'lms');
 	
-	$h_type = array('', '', 'image', 'image', '', 'nowrap', 'image', 'image nowrap');
-	$h_content = array(
+	$h_type = ['', '', 'image', 'image', '', 'nowrap', 'image', 'image nowrap'];
+	$h_content = [
 		$lang->def('_NAME'),
 		$lang->def('_STATUS'),
 		$lang->def('_SCORE'),
@@ -202,7 +202,7 @@ function getTrackingTable($id_user, $id_org) {
 		$lang->def('_TIME'),
 		$lang->def('_ATTEMPTS'),
 		''
-	);
+    ];
 
 	$tb->setColsStyle($h_type);
 	$tb->addHead($h_content);
@@ -211,7 +211,7 @@ function getTrackingTable($id_user, $id_org) {
 		" FROM ".$GLOBALS['prefix_lms']."_scorm_items_track  ".
 		" WHERE idscorm_organization=$id_org ".
 		" AND idUser=$id_user ";
-	$lessons_status = array();
+	$lessons_status = [];
 	$res = sql_query($query);
 	while (list($id, $s) = sql_fetch_row($res)) {
 		$lessons_status[$id] = $s;
@@ -231,7 +231,7 @@ function getTrackingTable($id_user, $id_org) {
 	$res = sql_query($qry);
 	while ($row = sql_fetch_assoc($res)) {
 		
-		$line = array();
+		$line = [];
 		
 		
 		$interactions = '<a href="index.php?modname=organization&op=scorm_interactions&amp;id_user='.$id_user.'&amp;id_org='.$id_org.'&amp;id_track='.$row['id_track'].'">'.$lang->def('_SHOW_INTERACTIONS').'</a>';
@@ -287,14 +287,14 @@ function getHistoryTable($id_user, $id_obj) {
 	
 	$lang = DoceboLanguage::CreateInstance('organization', 'lms');
 	
-	$h_type = array('', '', '', '', '');
-	$h_content = array(
+	$h_type = ['', '', '', '', ''];
+	$h_content = [
 		$lang->def('_ATTEMPT'),
 		$lang->def('_STATUS'),
 		$lang->def('_SCORE'),
 		$lang->def('_DATE'),
 		$lang->def('_TIME')
-	);
+    ];
 	
 	$tb->setColsStyle($h_type);
 	$tb->addHead($h_content);
@@ -307,7 +307,7 @@ function getHistoryTable($id_user, $id_obj) {
 	$res = sql_query($qry); $i=1;
 	while ($row = sql_fetch_assoc($res)) {
 		
-		$line = array();
+		$line = [];
 		
 		$line[] = $lang->def('_ATTEMPT').' '.$i;
 		$line[] = $row['lesson_status'];
@@ -345,12 +345,12 @@ function getInteractionsTable($id_user, $idtrack) {
 	
 	$id_org = Get::req('id_org', DOTY_INT, 0);
 	
-	$h_type = array('', '', '');
-	$h_content = array(
+	$h_type = ['', '', ''];
+	$h_content = [
 		$lang->def('_DESCRIPTION'),
 		$lang->def('_TYPE'),
 		$lang->def('_RESULT')
-	);
+    ];
 
 	$tb->setColsStyle($h_type);
 	$tb->addHead($h_content);
@@ -368,9 +368,9 @@ function getInteractionsTable($id_user, $idtrack) {
 	
 	$temp = $context->query('//interactions');
 	
-	$lines = array();
+	$lines = [];
 	for ($i=0; $i<$temp->length; $i++) {
-		$arr = array();
+		$arr = [];
 		$node =& $temp->item($i);
 		
 		//interaction index
@@ -400,7 +400,7 @@ function getInteractionsTable($id_user, $idtrack) {
 			if($arr['result'] == '1') $arr['result'] = 'true';
 			else $arr['result'] = 'false';
 			
-			$lines[$id] = array( $arr['description'], $arr['type'], $arr['result'] );
+			$lines[$id] = [$arr['description'], $arr['type'], $arr['result']];
 		}
 	
 	}

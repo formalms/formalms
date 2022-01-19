@@ -73,7 +73,7 @@ class Step2Controller extends StepController
     //TODO INSTALL_vs_UPGRADE: please share what you can
     function checkRequirements()
     {
-        $res = array();
+        $res = [];
 
         //TODO PHP7x: set const for Minimum PHP required version: 7.4
         //TODO PHP7x: set const for Maximum PHP suggested version: 7.4.x
@@ -181,18 +181,18 @@ class Step2Controller extends StepController
         $res = '';
 
         $platform_folders = $_SESSION['platform_arr'];
-        $file_to_check = array("config.php");
-        $dir_to_check = array();
-        $empty_dir_to_check = array();
+        $file_to_check = ["config.php"];
+        $dir_to_check = [];
+        $empty_dir_to_check = [];
 
         // common dir to check
-        $dir_to_check = array(
+        $dir_to_check = [
             'files/cache',
             'files/tmp',
             'files/common/comment',
             'files/common/iofiles',
             'files/common/users'
-        );
+        ];
 
         $current_version = $this->getCurrentVersion();
         if (version_compare($current_version, '3600', '>=') &&
@@ -204,8 +204,8 @@ class Step2Controller extends StepController
 
         foreach ($platform_folders as $platform_code => $dir_name) {
 
-            $specific_file_to_check = array();
-            $specific_dir_to_check = array();
+            $specific_file_to_check = [];
+            $specific_dir_to_check = [];
 
             if (!is_dir(_base_ . '/' . $dir_name . '/')) {
                 $install[$platform_code] = FALSE;
@@ -218,7 +218,7 @@ class Step2Controller extends StepController
 
                     case "lms":
                         {
-                            $specific_dir_to_check = array(
+                            $specific_dir_to_check = [
                                 'files/' . $dirprefix . 'Lms/certificate',
                                 'files/' . $dirprefix . 'Lms/course',
                                 'files/' . $dirprefix . 'Lms/forum',
@@ -231,24 +231,24 @@ class Step2Controller extends StepController
                                 'files/' . $dirprefix . 'Lms/scorm',
                                 'files/' . $dirprefix . 'Lms/sponsor',
                                 'files/' . $dirprefix . 'Lms/test'
-                            );
+                            ];
 
                             if ($dirprefix == 'app') {
                                 // new folders in formalms
                                 $specific_dir_to_check[] = 'files/' . $dirprefix . 'Lms/htmlpages';
                             }
-                            $empty_specific_dir_to_check = array();
+                            $empty_specific_dir_to_check = [];
                         }
                         break;
 
                     case "framework":
                         {
-                            $specific_dir_to_check = array(
+                            $specific_dir_to_check = [
                                 'files/' . $dirprefix . 'Core/field',
                                 'files/' . $dirprefix . 'Core/photo',
                                 'files/' . $dirprefix . 'Core/newsletter',
                                 'files/common/users'
-                            );
+                            ];
 
                         }
                         break;
@@ -264,7 +264,7 @@ class Step2Controller extends StepController
         }
 
         // Write permission
-        $checked_dir = array();
+        $checked_dir = [];
         foreach ($dir_to_check as $dir_name) {
 
             if (!is_dir(_base_ . '/' . $dir_name . '/')) {
@@ -279,7 +279,7 @@ class Step2Controller extends StepController
                 . '<ul class="info"><li class="err"><span>' . implode('</span></li><li class="err"><span>', $checked_dir) . '</span></li></ul>';
         }
 
-        $checked_file = array();
+        $checked_file = [];
         foreach ($file_to_check as $file_name) {
             if (!is_writable(_base_ . '/' . $file_name)) {
                 $checked_file[] = $file_name;

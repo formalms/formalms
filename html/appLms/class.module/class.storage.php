@@ -37,21 +37,21 @@ class Module_Storage extends LmsModule {
 	function loadExtraMenu() {}
 	
 	function getAllToken() {
-		return array( 
-			'view' => array( 	'code' => 'view',
+		return [
+			'view' => ['code' => 'view',
 								'name' => '_VIEW',
-								'image' => 'standard/view.png'),
-			'home' => array( 	'code' => 'home',
-								'name' => '_HOME'),
-			'lesson' => array( 	'code' => 'lesson',
-								'name' => '_LESSON'),
-			'public' => array( 	'code' => 'public',
-								'name' => '_PUBLIC')
-		);
+								'image' => 'standard/view.png'],
+			'home' => ['code' => 'home',
+								'name' => '_HOME'],
+			'lesson' => ['code' => 'lesson',
+								'name' => '_LESSON'],
+			'public' => ['code' => 'public',
+								'name' => '_PUBLIC']
+        ];
 	}
 
 	function getPermissionsForMenu($op) {
-		return array(
+		return [
 			1 => $this->selectPerm($op, 'view'),
 			2 => $this->selectPerm($op, 'view'),
 			3 => $this->selectPerm($op, 'view'),
@@ -59,7 +59,7 @@ class Module_Storage extends LmsModule {
 			5 => $this->selectPerm($op, 'view,home'),
 			6 => $this->selectPerm($op, 'view,home,lesson,public'),
 			7 => $this->selectPerm($op, 'view,home,lesson,public')
-		);
+        ];
 	}
 	
 	function getPermissionUi( $form_name, $perm ) {
@@ -73,8 +73,8 @@ class Module_Storage extends LmsModule {
 		$levels = CourseLevel::getLevels();
 		$tb = new Table(0, $lang->def('_VIEW_PERMISSION'), $lang->def('_EDIT_SETTINGS'));
 		
-		$c_head = array($lang->def('_LEVELS'));
-		$t_head = array('');
+		$c_head = [$lang->def('_LEVELS')];
+		$t_head = [''];
 		foreach($tokens as $k => $token) {
 			if($token['code'] != 'view') {
 				if(isset($token['image'])) {
@@ -97,7 +97,7 @@ class Module_Storage extends LmsModule {
 		foreach($levels as $lv => $levelname )
     {
 			
-			$c_body = array($levelname);
+			$c_body = [$levelname];
 			
 			foreach($tokens as $k => $token) {
 				if($token['code'] != 'view') {
@@ -120,7 +120,7 @@ class Module_Storage extends LmsModule {
 			}
 			$tb->addBody($c_body);
 		}
-		$c_select_all = array(''); 
+		$c_select_all = [''];
 		foreach($tokens as $k => $token) {
 			if($token['code'] != 'view') {
 				$c_select_all[] = '<img class="handover"'
@@ -143,11 +143,11 @@ class Module_Storage extends LmsModule {
 		
 		$tokens 	= $this->getAllToken();
 		$levels 	= CourseLevel::getLevels();
-		$perm 		= array();
+		$perm 		= [];
 		
 		foreach($levels as $lv => $levelname ) 
     {
-			$perm[$lv] = array();
+			$perm[$lv] = [];
 			foreach($tokens as $k => $token) {
 				
 				if(isset($_POST['perm'][$lv][$token['code']])) {

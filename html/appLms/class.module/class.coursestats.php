@@ -14,16 +14,16 @@
 class Module_Coursestats extends LmsModule {
 
 	function getAllToken() {
-			return array( 	'view' => array( 	'code' => 'view',
+			return ['view' => ['code' => 'view',
 								'name' => '_VIEW',
-								'image' => 'standard/view.png'), 
-					'view_all' => array( 	'code' => 'view_all',
+								'image' => 'standard/view.png'],
+					'view_all' => ['code' => 'view_all',
 								'name' => '_VIEW_ALL',
-								'image' => 'standard/moduser.png') );
+								'image' => 'standard/moduser.png']];
 	}
 
 	function getPermissionsForMenu($op) {
-		return array(
+		return [
 			1 => $this->selectPerm($op, ''),
 			2 => $this->selectPerm($op, ''),
 			3 => $this->selectPerm($op, ''),
@@ -31,7 +31,7 @@ class Module_Coursestats extends LmsModule {
 			5 => $this->selectPerm($op, 'view'),
 			6 => $this->selectPerm($op, 'view,view_all'),
 			7 => $this->selectPerm($op, 'view,view_all')
-		);
+        ];
 	}	
 }
 

@@ -1,8 +1,8 @@
 <?php
-echo getTitleArea(array(
+echo getTitleArea([
 	'index.php?r=alms/course/show' => Lang::t('_COURSES', 'admin_courses_managment'),
 	Lang::t('_UNSUBSCRIBE_REQUESTS', 'course')
-));
+]);
 ?>
 <div class="std_block">
 <?php echo getBackUi('index.php?r=alms/course/show', Lang::t('_BACK', 'standard')); ?>
@@ -44,7 +44,7 @@ $rel_action_bottom = '<a class="ico-wt-sprite subs_unassoc" id="confirm_multi_bo
 	.'<b id="num_subs_selected_bottom">'.(int)(isset($num_subs_selected) ? $num_subs_selected : '0').'</b> '.Lang::t('_SELECTED', 'admin_directory')
 	.'</span>';
 
-$params = array(
+$params = [
 	'id' => 'unsubscriberequests_table',
 	'ajaxUrl' => 'ajax.adm_server.php?r='. $this->link.'/getunsubscribetabledata',
 	'rowsPerPage' => Get::sett('visuItem', 25),
@@ -52,28 +52,28 @@ $params = array(
 	'results' => Get::sett('visuItem', 25),
 	'sort' => 'userid',
 	'dir' => 'desc',
-	'columns' => array(
-			array('key' => 'userid', 'label' => Lang::t('_USERNAME', 'standard'), 'sortable' => true, 'formatter' => 'UnsubscribeRequests.labelFormatter'),
-			array('key' => 'firstname', 'label' => Lang::t('_FIRSTNAME', 'standard'), 'sortable' => true, 'formatter' => 'UnsubscribeRequests.labelFormatter'),
-			array('key' => 'lastname', 'label' => Lang::t('_LASTNAME', 'standard'), 'sortable' => true, 'formatter' => 'UnsubscribeRequests.labelFormatter'),
-			array('key' => 'course_code', 'label' => Lang::t('_CODE', 'standard'), 'sortable' => true, 'formatter' => 'UnsubscribeRequests.labelFormatter'),
-			array('key' => 'course_name', 'label' => Lang::t('_NAME', 'standard'), 'sortable' => true, 'formatter' => 'UnsubscribeRequests.labelFormatter'),
-			array('key' => 'request_date', 'label' => Lang::t('_DATE', 'admin_directory'), 'sortable' => true),
-			array('key' => 'confirm', 'label' => $icon_confirm, 'formatter' => 'UnsubscribeRequests.confirmFormatter', 'className' => 'img-cell'),
-			array('key' => 'del', 'label' => $icon_delete, 'formatter' => 'doceboDelete', 'className' => 'img-cell')
-		),
-	'fields' => array('id', 'id_user', 'res_id', 'userid', 'firstname', 'lastname', 'email', 'course_name', 'course_code', 'request_date', 'r_type', 'del'),
+	'columns' => [
+			['key' => 'userid', 'label' => Lang::t('_USERNAME', 'standard'), 'sortable' => true, 'formatter' => 'UnsubscribeRequests.labelFormatter'],
+			['key' => 'firstname', 'label' => Lang::t('_FIRSTNAME', 'standard'), 'sortable' => true, 'formatter' => 'UnsubscribeRequests.labelFormatter'],
+			['key' => 'lastname', 'label' => Lang::t('_LASTNAME', 'standard'), 'sortable' => true, 'formatter' => 'UnsubscribeRequests.labelFormatter'],
+			['key' => 'course_code', 'label' => Lang::t('_CODE', 'standard'), 'sortable' => true, 'formatter' => 'UnsubscribeRequests.labelFormatter'],
+			['key' => 'course_name', 'label' => Lang::t('_NAME', 'standard'), 'sortable' => true, 'formatter' => 'UnsubscribeRequests.labelFormatter'],
+			['key' => 'request_date', 'label' => Lang::t('_DATE', 'admin_directory'), 'sortable' => true],
+			['key' => 'confirm', 'label' => $icon_confirm, 'formatter' => 'UnsubscribeRequests.confirmFormatter', 'className' => 'img-cell'],
+			['key' => 'del', 'label' => $icon_delete, 'formatter' => 'doceboDelete', 'className' => 'img-cell']
+    ],
+	'fields' => ['id', 'id_user', 'res_id', 'userid', 'firstname', 'lastname', 'email', 'course_name', 'course_code', 'request_date', 'r_type', 'del'],
 	'generateRequest' => 'UnsubscribeRequests.requestBuilder',
-	'rel_actions' => array($rel_action_over, $rel_action_bottom),
+	'rel_actions' => [$rel_action_over, $rel_action_bottom],
 	'stdSelection' => true,
 	'delDisplayField' => 'userid',
 	'selectAllAdditionalFilter' => 'UnsubscribeRequests.selectAllAdditionalFilter()',
-	'events' => array(
+	'events' => [
 			'initEvent' => 'UnsubscribeRequests.initEvent',
 			'beforeRenderEvent' => 'UnsubscribeRequests.beforeRenderEvent',
 			'postRenderEvent' => 'UnsubscribeRequests.postRenderEvent'
-		)
-);
+    ]
+];
 
 $this->widget('table', $params);
 

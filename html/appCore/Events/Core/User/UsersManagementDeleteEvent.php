@@ -22,7 +22,7 @@ class UsersManagementDeleteEvent extends Event
     {
         
         $this->user = null;
-        $this->users = array();
+        $this->users = [];
     }
 
     /**

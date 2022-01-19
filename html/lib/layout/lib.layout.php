@@ -25,7 +25,7 @@ class Layout
 
     public static function templateList()
     {
-        $templ_array = array();
+        $templ_array = [];
         $templ = dir(_templates_ . '/');
         while ($elem = $templ->read()) {
 
@@ -403,8 +403,8 @@ class Layout
             }
 
             // get select menu
-            $id_list = array();
-            $dropdown_menu = array();
+            $id_list = [];
+            $dropdown_menu = [];
             $query = "SELECT idMain AS id, name FROM %lms_menucourse_main WHERE idCourse = " . $_SESSION['idCourse'] . " ORDER BY sequence";
             $re_main = $db->query($query);
 
@@ -423,7 +423,7 @@ class Layout
 
                 $checkperm_under = false; //permesso di visualizzazione del menu principale
 
-                $slider_menu = array();
+                $slider_menu = [];
                 $query_menu = 'SELECT mo.idModule AS id, mo.module_name, mo.default_op, mo.default_name, mo.token_associated AS token, mo.mvc_path, under.idMain AS id_main, under.my_name
                             FROM %lms_module AS mo JOIN %lms_menucourse_under AS under ON (mo.idModule = under.idModule) WHERE under.idCourse = ' . $_SESSION['idCourse'] . '
                             AND under.idMain = ' . $main->id . ' ORDER BY under.idMain, under.sequence';
@@ -438,14 +438,14 @@ class Layout
 
                         $GLOBALS['module_assigned_name'][$obj->module_name] = ($obj->my_name != '' ? $obj->my_name : Lang::t($obj->default_name, 'menu_course'));
 
-                        $slider_menu[] = array(
+                        $slider_menu[] = [
                             'id_submenu' => $obj->id,
                             'name' => $GLOBALS['module_assigned_name'][$obj->module_name],
                             'selected' => ($obj->id === '' . $_SESSION['sel_module_id'] ? true : false),
                             'link' => ($obj->mvc_path != ''
                                 ? 'index.php?r=' . $obj->mvc_path . '&id_module_sel=' . $obj->id . '&id_main_sel=' . $obj->id_main
                                 : 'index.php?modname=' . $obj->module_name . '&op=' . $obj->default_op . '&id_module_sel=' . $obj->id . '&id_main_sel=' . $obj->id_main)
-                        );
+                        ];
 
                         $checkperm_under = true; // Posso visualizzare il menu principale
 
@@ -455,7 +455,7 @@ class Layout
 
                 if ($checkperm_under == true) { // Se ho almeno un permesso sul menu under, visualizzo il menu principale
 
-                    $dropdown_menu[] = array(
+                    $dropdown_menu[] = [
                         // 'submenu'=> array(),
                         'id_menu' => $main->id,
                         'slug' => strtolower(str_replace(' ', '-', $main->name)),
@@ -463,7 +463,7 @@ class Layout
                         'link' => $slider_menu[0]['link'],
                         'selected' => ($main->id === '' . $_SESSION['current_main_menu'] ? true : false),
                         'slider_menu' => $slider_menu
-                    );
+                    ];
 
                     $id_list[] = '"menu_lat_' . $main->id . '"';
                 }
@@ -483,12 +483,12 @@ class Layout
             $tot_complete = getStatStatusCount(
                 getLogUserId(),
                 $_SESSION['idCourse'],
-                array('completed', 'passed')
+                ['completed', 'passed']
             );
             $tot_failed = getStatStatusCount(
                 getLogUserId(),
                 $_SESSION['idCourse'],
-                array('failed')
+                ['failed']
             );
 
             $perc_complete     = round(($tot_complete / $total) * 100, 2);
@@ -543,7 +543,7 @@ class Layout
                 $tot_complete = getStatStatusCount(
                     getLogUserId(),
                     $_SESSION['idCourse'],
-                    array('completed', 'passed')
+                    ['completed', 'passed']
                 );
 
                 $tot_incomplete = $total - $tot_complete;
@@ -551,12 +551,12 @@ class Layout
                 $tot_passed = getStatStatusCount(
                     getLogUserId(),
                     $_SESSION['idCourse'],
-                    array('passed')
+                    ['passed']
                 );
                 $tot_failed = getStatStatusCount(
                     getLogUserId(),
                     $_SESSION['idCourse'],
-                    array('failed')
+                    ['failed']
                 );
 
                 $stats['course_stats']['materials'] = $total;

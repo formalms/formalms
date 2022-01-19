@@ -1,9 +1,9 @@
 <?php
-echo getTitleArea(array(
+echo getTitleArea([
 	'index.php?r=alms/enrollrules/show' => Lang::t('_ENROLLRULES', 'enrollrules'),
 	'index.php?r=alms/enrollrules/'.( $rule->rule_type == 'base' ? 'modbaseelem' : 'rule' ).'&amp;id_rule='.$rule->id_rule => Lang::t('_MANAGE', 'enrollrules').': '.$rule->title,
 	Lang::t('_COURSES', 'enrollrules')
-));
+]);
 ?>
 <div class="std_block">
 <?php

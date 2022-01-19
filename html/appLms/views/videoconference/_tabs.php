@@ -1,8 +1,8 @@
 <div style="margin:1em;">
 	<?php
-	$this->widget('lms_tab', array(
+	$this->widget('lms_tab', [
 		'active' => 'videoconference'
-	));
+    ]);
 
 	if(!$this->isTabActive('live') && !$this->isTabActive('planned') && !$this->isTabActive('history')) {
 		echo Lang::t('_NO_CONTENT', 'course');

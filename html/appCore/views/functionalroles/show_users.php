@@ -7,12 +7,12 @@ echo getBackUi('index.php?r=adm/functionalroles/show', Lang::t('_BACK', 'standar
 
 //--- SEARCH FILTER -------
 
-$this->widget('tablefilter', array(
+$this->widget('tablefilter', [
 	'id' => 'fncrole_users_filter',
 	'filter_text' => isset($filter_text) ? $filter_text : "",
 	'js_callback_set' => 'Users.setFilter',
 	'js_callback_reset' => 'Users.resetFilter'
-));
+]);
 
 
 //--- TABLE -------
@@ -20,13 +20,13 @@ $this->widget('tablefilter', array(
 $icon_del = '<span class="ico-sprite subs_del"><span>'.Lang::t('_DEL', 'standard').'</span></span>';
 $icon_chart = '<span class="ico-sprite subs_chart"><span>'.Lang::t('_GAP_ANALYSIS', 'fncroles').'</span></span>';
 
-$columns = array(
-	array('key' => 'userid', 'label' => Lang::t('_USERNAME', 'standard'), 'sortable' => true, 'formatter' => 'Users.labelFormatter'),
-	array('key' => 'firstname', 'label' => Lang::t('_FIRSTNAME', 'standard'), 'sortable' => true, 'formatter' => 'Users.labelFormatter'),
-	array('key' => 'lastname', 'label' => Lang::t('_LASTNAME', 'standard'), 'sortable' => true, 'formatter' => 'Users.labelFormatter'),
-	array('key' => 'gap', 'label' => $icon_chart, 'formatter' => 'Users.gapAnalisysFormatter', 'className' => 'img-cell')
-);
-if ($permissions['mod']) $columns[] = array('key' => 'del', 'label' => $icon_del, 'formatter' => 'Users.deleteFormatter', 'className' => 'img-cell');
+$columns = [
+	['key' => 'userid', 'label' => Lang::t('_USERNAME', 'standard'), 'sortable' => true, 'formatter' => 'Users.labelFormatter'],
+	['key' => 'firstname', 'label' => Lang::t('_FIRSTNAME', 'standard'), 'sortable' => true, 'formatter' => 'Users.labelFormatter'],
+	['key' => 'lastname', 'label' => Lang::t('_LASTNAME', 'standard'), 'sortable' => true, 'formatter' => 'Users.labelFormatter'],
+	['key' => 'gap', 'label' => $icon_chart, 'formatter' => 'Users.gapAnalisysFormatter', 'className' => 'img-cell']
+];
+if ($permissions['mod']) $columns[] = ['key' => 'del', 'label' => $icon_del, 'formatter' => 'Users.deleteFormatter', 'className' => 'img-cell'];
 
 
 
@@ -57,7 +57,7 @@ if ($permissions['mod']) {
 }
 
 
-$params = array(
+$params = [
 	'id'			=> 'users_table',
 	'ajaxUrl'		=> 'ajax.adm_server.php?r=adm/functionalroles/getusertabledata',
 	'rowsPerPage'	=> Get::sett('visuItem', 25),
@@ -67,16 +67,16 @@ $params = array(
 	'dir'			=> 'asc',
 	'generateRequest' => 'Users.requestBuilder',
 	'columns'		=> $columns,
-	'fields'		=> array('id', 'userid', 'firstname', 'lastname', 'del', 'is_group'),
+	'fields'		=> ['id', 'userid', 'firstname', 'lastname', 'del', 'is_group'],
 	'delDisplayField' => 'userid',
 	'stdSelection' => $permissions['mod'] ? true : false,
-	'rel_actions' => array($rel_action_over, $rel_action_bottom),
-	'events' => array(
+	'rel_actions' => [$rel_action_over, $rel_action_bottom],
+	'events' => [
 		'initEvent' => 'Users.initEvent',
 		'beforeRenderEvent' => 'Users.beforeRenderEvent',
 		'postRenderEvent' => 'Users.postRenderEvent'
-	)
-);
+    ]
+];
 
 
 

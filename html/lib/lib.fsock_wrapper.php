@@ -115,12 +115,12 @@ class FSock {
 			if(isset($tmp_url['path'])) $path = ($tmp_url['path'][0] == '/' ? '' : '/' ).$tmp_url['path'];
 			else $path = '/';
 
-			$arr_header = array(
+			$arr_header = [
 				'Host' => $tmp_url['host'],
 				'User-Agent' => $this->_user_agent,
 				'Content-type' => 'application/xml',
 				'Content-Length' => strlen($post_params)
-			);
+            ];
 
 			$request  = "POST ".$path." HTTP/1.1\r\n";
 			//$request .= "Host: ".$tmp_url['host']."\r\n";
@@ -180,7 +180,7 @@ class FSock {
 	 */
 	function _decode_header($str) {
 
-	    $out = array ();
+	    $out = [];
 	    $part = preg_split ( "/\r?\n/", $str, -1, PREG_SPLIT_NO_EMPTY );
 		for( $h = 0; $h < sizeof ( $part ); $h++ ) {
 

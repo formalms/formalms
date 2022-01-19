@@ -26,9 +26,9 @@ class PresenceLmsController extends LmsController
 		$this->id_date = Get::req('id_date', DOTY_INT, 0);
 		$this->model = new PresenceLms($_SESSION['idCourse'], $this->id_date);
 		$this->json = new Services_JSON();
-		$this->permissions = array(
+		$this->permissions = [
 			'view' => true
-		);
+        ];
 	}
 
 	protected function _getMessage($code)
@@ -64,10 +64,10 @@ class PresenceLmsController extends LmsController
 			$date_for_dropdown[$info_date['id_date']] = $info_date['code'].' - '.$info_date['name'].' ('.Format::date($info_date['date_begin'], 'date').')';
 
 		if($this->id_date == 0)
-			$this->render('presence_empty', array());
+			$this->render('presence_empty', []);
 		else
 		{
-			$params = array();
+			$params = [];
 			$params['model'] = $this->model;
 			$params['dropdown'] = $date_for_dropdown;
 			$params['tb'] = $this->model->getPresenceTable();

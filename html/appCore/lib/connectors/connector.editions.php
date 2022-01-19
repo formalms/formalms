@@ -25,27 +25,27 @@ class ConnectorEditions extends DoceboConnector {
   	var $last_error = "";
  	
  	// name, type
- 	var $all_cols = array( 
-        array( 'id_edition', 'int' ),
-		array( 'id_course', 'int' ),
-		array( 'code', 'text' ), 
-		array( 'name', 'text' ), 
-		array( 'description', 'text' ), 
-		array( 'status', 'text' ), 
-		array( 'date_begin', 'date' ), 
-		array( 'date_end', 'date' ), 
-		array( 'max_num_subscribe', 'int' ), 
-		array( 'min_num_subscribe', 'int' ), 
-		array( 'price', 'int' ), 
-		array( 'overbooking', 'int' ), 
-		array( 'can_subscribe', 'int' ), 
-		array( 'sub_date_begin', 'date' ), 
-		array( 'sub_date_end', 'date' )
-	);
+ 	var $all_cols = [
+        ['id_edition', 'int'],
+		['id_course', 'int'],
+		['code', 'text'],
+		['name', 'text'],
+		['description', 'text'],
+		['status', 'text'],
+		['date_begin', 'date'],
+		['date_end', 'date'],
+		['max_num_subscribe', 'int'],
+		['min_num_subscribe', 'int'],
+		['price', 'int'],
+		['overbooking', 'int'],
+		['can_subscribe', 'int'],
+		['sub_date_begin', 'date'],
+		['sub_date_end', 'date']
+    ];
 	
-	var $mandatory_cols = array('id_edition', 'id_course');
+	var $mandatory_cols = ['id_edition', 'id_course'];
 	
-	var $default_cols = array(
+	var $default_cols = [
 		'code' => '' , 
 		'name' => '' , 
 		'description' => '' , 
@@ -59,9 +59,9 @@ class ConnectorEditions extends DoceboConnector {
 		'can_subscribe' => '0' , 
 		'sub_date_begin' => '' , 
 		'sub_date_end' => ''
-    );
+    ];
 	
-	var $valid_filed_type 		= array( 'text','date','dropdown','yesno');
+	var $valid_filed_type 		= ['text','date','dropdown','yesno'];
 	
 	var $dbconn 				= NULL;
 	
@@ -74,7 +74,7 @@ class ConnectorEditions extends DoceboConnector {
 	//var $on_delete = 1;  // unactivate = 1, delete = 2
 	
 		
-	var $arr_id_inserted 		= array();
+	var $arr_id_inserted 		= [];
 	
 	var $first_row_header = '1';
 	
@@ -104,12 +104,12 @@ class ConnectorEditions extends DoceboConnector {
 	
 	function get_config() {
 		
-		return array(	'name' => $this->name,
+		return ['name' => $this->name,
 						'description' => $this->description,
 						'readwrite' => $this->readwrite,
                         'first_row_header' => $this->first_row_header/*,
 						'sendnotify' => $this->sendnotify, 
-						'on_delete' => $this->on_delete*/);
+						'on_delete' => $this->on_delete*/];
 	}
 	
 	function set_config( $params ) {
@@ -145,8 +145,8 @@ class ConnectorEditions extends DoceboConnector {
 		
 		$result = sql_query($query);
 		
-		$data = array();
-        $fields = array();
+		$data = [];
+        $fields = [];
         
         while ($col = sql_fetch_field($result)) {
             $fields[] = $col->name;
@@ -157,7 +157,7 @@ class ConnectorEditions extends DoceboConnector {
         }
 
         while($row = sql_fetch_array($result)) {
-            $_data = array();
+            $_data = [];
             foreach($fields as $field) {
                 switch($field) {
                     case 'date_end':
@@ -213,10 +213,10 @@ class ConnectorEditions extends DoceboConnector {
 		
 		$lang = DoceboLanguage::createInstance('course', 'lms');
 		
-		$col_descriptor = array();
+		$col_descriptor = [];
 		foreach($this->all_cols as $k => $col) {
 				
-			$col_descriptor[] = array(
+			$col_descriptor[] = [
 				DOCEBOIMPORT_COLNAME 		=> $lang->def('_'.strtoupper($col[0])),
 				DOCEBOIMPORT_COLID			=> $col[0],
 				DOCEBOIMPORT_COLMANDATORY 	=> ( array_search($col[0], $this->mandatory_cols) === FALSE 
@@ -226,7 +226,7 @@ class ConnectorEditions extends DoceboConnector {
 				DOCEBOIMPORT_DEFAULT 		=> ( $in = array_search($col[0], $this->default_cols) === FALSE 
 													? '' 
 													: $this->default_cols[$in] )
-			);
+            ];
 		}
 		return $col_descriptor;
 	}
@@ -239,7 +239,7 @@ class ConnectorEditions extends DoceboConnector {
 	
 
 	function get_next_row() {
-		$row = array();
+		$row = [];
 		if($this->first_row_header)
 		{
 			if($this->tot_row >= $this->position)
@@ -334,7 +334,7 @@ class ConnectorEditions extends DoceboConnector {
 
           function getIdCourseFromCode($code) {
             $query = "";
-            $ret = array();
+            $ret = [];
             $query = "select idCourse from %lms_course where code = '" . $code . "'";
             $rs = sql_query($query);
             $ret = sql_fetch_array($rs)['idCourse'];
@@ -349,7 +349,7 @@ class ConnectorEditions extends DoceboConnector {
   
   function getIdEditionFromCode($edition_code) {
     $query = "";
-    $ret = array();
+    $ret = [];
     $query = "select id_edition from %lms_course_editions where code = '" . $edition_code . "'" ;
     $rs = sql_query($query);
     $ret = sql_fetch_array($rs)['id_edition'];
@@ -477,20 +477,20 @@ class ConnectorEditionsUI extends DoceboConnectorUI {
 	  	$out .= $this->form->getRadioSet( 	$this->lang->def('_ACCESSTYPE'), 
 		  									$this->_get_base_name().'_readwrite', 
 											$this->_get_base_name().'[readwrite]',
-											array( 	$this->lang->def('_READ')  => '1', 
-													$this->lang->def('_WRITE') => '2'), 
+											[$this->lang->def('_READ')  => '1',
+													$this->lang->def('_WRITE') => '2'],
 											$this->post_params['readwrite']);
 		
 		$out .= $this->form->getRadioSet( 	$this->lang->def('_FIRST_ROW_HEADER'),
 											$this->_get_base_name().'_first_row_header',
 											$this->_get_base_name().'[first_row_header]',
-											array( 	$this->lang->def('_YES') => '1',
-													$this->lang->def('_NO') => '0'),
+											[$this->lang->def('_YES') => '1',
+													$this->lang->def('_NO') => '0'],
 											$this->post_params['first_row_header']);
 		return $out;
 	}
 }
 
 function editions_factory() {
-	return new ConnectorEditions(array());
+	return new ConnectorEditions([]);
 }

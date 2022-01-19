@@ -40,11 +40,11 @@ function loadHeaderHTMLEditor() {
 		break;*/
 
 		case 'yui':
-			$js = array(	'element'	=> 'element-beta-min.js',
+			$js = ['element'	=> 'element-beta-min.js',
 							'container'	=> 'container_core-min.js',
 							'menu'		=> 'menu-min.js',
 							'button'	=> 'button-min.js',
-							'editor'	=> 'editor-beta-min.js');
+							'editor'	=> 'editor-beta-min.js'];
 
 			YuiLib::load($js);
 

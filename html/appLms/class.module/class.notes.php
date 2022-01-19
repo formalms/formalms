@@ -20,15 +20,15 @@ class Module_Notes extends LmsModule {
 	}
 	
 	function getAllToken() {
-		return array( 
-			'view' => array( 	'code' => 'view',
+		return [
+			'view' => ['code' => 'view',
 								'name' => '_VIEW',
-								'image' => 'standard/view.png')
-		);
+								'image' => 'standard/view.png']
+        ];
 	}
 
 	function getPermissionsForMenu($op) {
-		return array(
+		return [
 			1 => $this->selectPerm($op, 'view'),
 			2 => $this->selectPerm($op, 'view'),
 			3 => $this->selectPerm($op, 'view'),
@@ -36,7 +36,7 @@ class Module_Notes extends LmsModule {
 			5 => $this->selectPerm($op, 'view'),
 			6 => $this->selectPerm($op, 'view'),
 			7 => $this->selectPerm($op, 'view')
-		);
+        ];
 	}
 
 }

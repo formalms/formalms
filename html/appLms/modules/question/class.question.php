@@ -666,12 +666,12 @@ class Question
 	{
 
 
-		return array(
+		return [
 			'quest' 	=> $num_quest . ' : displayUserResult() not defined ! ' . $this->getQuestionType() . '<br />',
 			'score'		=> 0,
 			'comment'	=> '',
 			'manual_assigned' => 0
-		);
+        ];
 	}
 
 	function importFromRaw($raw_quest, $id_test = false)
@@ -752,8 +752,8 @@ class Question
 		$oQuest->difficult 		= $difficult;
 		$oQuest->time_assigned 	= $time_assigned;
 
-		$oQuest->answers 		= array();
-		$oQuest->extra_info 	= array();
+		$oQuest->answers 		= [];
+		$oQuest->extra_info 	= [];
 
 		//retriving new answer
 		$re_answer = sql_query("
@@ -807,7 +807,7 @@ class Question
 
 		$result_quest = sql_query($query_quest);
 
-		$quests = array();
+		$quests = [];
 		while (list($idQuest, $type_quest, $title_quest) = sql_fetch_row($result_quest)) {
 			$quests[$idQuest]['idQuest'] = $idQuest;
 			$quests[$idQuest]['type_quest'] = $type_quest;
@@ -832,10 +832,10 @@ class Question
 
 		$result_answer = sql_query($query_answer);
 
-		$answers = array();
+		$answers = [];
 
 		while (list($id_answer, $is_correct, $answer) = sql_fetch_row($result_answer)) {
-			$answers[$idQuest][$id_answer] = array('idAnswer' => $id_answer, 'is_correct' => $is_correct, 'answer' => $answer);
+			$answers[$idQuest][$id_answer] = ['idAnswer' => $id_answer, 'is_correct' => $is_correct, 'answer' => $answer];
 		}
 
 		return $answers;
@@ -868,8 +868,8 @@ class QuestionRaw
 	var $quest_text 	= false;
 	var $difficult 		= 3;
 	var $time_assigned 	= 0;
-	var $answers 		= array();
-	var $extra_info 	= array();
+	var $answers 		= [];
+	var $extra_info 	= [];
 
 
 	function setCategoryFromName($category_name, $autocreate_categories = false)

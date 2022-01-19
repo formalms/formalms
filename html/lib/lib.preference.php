@@ -82,16 +82,16 @@ class UserPreferencesDb {
 		if($base_path == false) $base_path = " AND path_name LIKE '".$base_path."%' ";
 		$re_all_preferences = $this->_executeQuery($query_all_preferences);
 
-		$all_preferences = array();
+		$all_preferences = [];
 		while(list($path_name, $label, $default_value, $type, $visible, $load_at_startup) = sql_fetch_row($re_all_preferences)) {
 
-			$all_preferences[$path_name] = array(
+			$all_preferences[$path_name] = [
 				'path_name'			=> $path_name,
 				'label'				=> $label,
 				'default_value'		=> $default_value,
 				'type'				=> $type,
 				'visible'			=> $visible,
-				'load_at_startup'	=> $load_at_startup );
+				'load_at_startup'	=> $load_at_startup];
 		}
 		return $all_preferences;
 	}
@@ -117,17 +117,17 @@ class UserPreferencesDb {
 		ORDER BY sequence";
 		$re_preference = $this->_executeQuery($query_preference);
 
-		$preference = array();
+		$preference = [];
 		if( sql_num_rows($re_preference) > 0) {
 
 			list($path_name, $label, $default_value, $type, $visible, $load_at_startup) = sql_fetch_row($re_preference);
-			$preference = array(
+			$preference = [
 				'path_name'			=> $path_name,
 				'label'				=> $label,
 				'default_value'		=> $default_value,
 				'type'				=> $type,
 				'visible'			=> $visible,
-				'load_at_startup'	=> $load_at_startup );
+				'load_at_startup'	=> $load_at_startup];
 		} else {
 
 			return false;
@@ -150,7 +150,7 @@ class UserPreferencesDb {
 		ORDER BY sequence";
 		$re_preference = $this->_executeQuery($query_preference);
 
-		$preference = array();
+		$preference = [];
 		if( sql_num_rows($re_preference) > 0) {
 
 			list($default_value) = sql_fetch_row($re_preference);
@@ -276,7 +276,7 @@ class UserPreferencesDb {
 		}
 		$query_preferences .= "ORDER BY sequence";
 		$re_preferences = $this->_executeQuery($query_preferences);
-		$pref = array();
+		$pref = [];
 		while(list($path, $default_value, $user_value) = sql_fetch_row($re_preferences)) {
 
 			if($user_value === NULL) $pref[$path] = $default_value;
@@ -312,7 +312,7 @@ class UserPreferencesDb {
 		}
 		$query_preferences .= "ORDER BY sequence";
 		$re_preferences = $this->_executeQuery($query_preferences);
-		$pref = array();
+		$pref = [];
 		while(list($path, $default_value, $user_value) = sql_fetch_row($re_preferences)) {
 
 			if($user_value === NULL) $pref[$path] = $default_value;
@@ -354,19 +354,19 @@ class UserPreferencesDb {
 		}
 		$query_all_preferences .= " ORDER BY prdata.sequence";
 		$re_all_preferences = $this->_executeQuery($query_all_preferences);
-		$pref = array();
-		$all_preferences = array();
+		$pref = [];
+		$all_preferences = [];
 		while(list($path_name, $label, $default_value, $type, $visible, $load_at_startup, $user_value)
 			= sql_fetch_row($re_all_preferences)) {
 
-			$all_preferences[$path_name] = array(
+			$all_preferences[$path_name] = [
 				'path_name'			=> $path_name,
 				'label'				=> $label,
 				'default_value'		=> $default_value,
 				'type'				=> $type,
 				'visible'			=> $visible,
 				'load_at_startup'	=> $load_at_startup,
-				'user_value' 		=> ($user_value === NULL ? $default_value : $user_value ) );
+				'user_value' 		=> ($user_value === NULL ? $default_value : $user_value )];
 		}
 		return $all_preferences;
 	}
@@ -456,7 +456,7 @@ class UserPreferences {
 	var $_preferences;
 	var $base_name;
 	public $_admin_preference;
-	protected $admin_preference = array();
+	protected $admin_preference = [];
 
 	/**
 	 * class constructor
@@ -642,10 +642,10 @@ class UserPreferences {
 				};break;
 				case "layout_chooser" : {
 					//drop down hteditor
-					$layout = array(
+					$layout = [
 						'left' => Lang::t('_LAYOUT_LEFT'),
 						'over' => Lang::t('_LAYOUT_OVER'),
-						'right' => Lang::t('_LAYOUT_RIGHT'));
+						'right' => Lang::t('_LAYOUT_RIGHT')];
 					$value = ( $pref['user_value'] ? $pref['user_value'] : $pref['default_value'] );
 					$html .= Form::getLineBox( $lang->def($pref['label']),
 												$layout[$value] );
@@ -683,7 +683,7 @@ class UserPreferences {
 
 		$preferences = $this->_up_db->getFullPreferences($this->id_user, $only_visible, false, $base_path);
 
-		$html = array();
+		$html = [];
     foreach($preferences as $pref) {
 
 			// Navigation trought the preferences
@@ -694,7 +694,7 @@ class UserPreferences {
 					$lang_sel = $this->getLanguage();
 
 					$langs_var = Docebo::langManager()->getAllLangCode();
-					$langs = array();
+					$langs = [];
 					foreach($langs_var as $k => $v) {
 
 						$langs[$k] = $v;
@@ -729,10 +729,10 @@ class UserPreferences {
 				};break;
 				case "layout_chooser" : {
 					//drop down hteditor
-					$layout = array(
+					$layout = [
 						'left' => Lang::t('_LAYOUT_LEFT'),
 						'over' => Lang::t('_LAYOUT_OVER'),
-						'right' => Lang::t('_LAYOUT_RIGHT'));
+						'right' => Lang::t('_LAYOUT_RIGHT')];
 					$html[$pref['path_name']] = Form::getDropdown( $lang->def($pref['label']),
 												$this->base_name.'_'.$pref['path_name'],
 												$this->base_name.'['.$pref['path_name'].']',
@@ -866,7 +866,7 @@ class AdminPreference
 					." WHERE groupid LIKE '/framework/adminrules/%'";
 
 		$result = sql_query($query);
-		$res = array(0 => 0);
+		$res = [0 => 0];
 
 		while(list($idst) = sql_fetch_row($result))
 			$res[$idst] = $idst;
@@ -899,7 +899,7 @@ class AdminPreference
 					." AND idst = '".$idst_group."'";
 
 		$result = sql_query($query);
-		$res = array();
+		$res = [];
 
 		while(list($path, $value) = sql_fetch_row($result))
 			if($path === _RULES_LANG)
@@ -918,7 +918,7 @@ class AdminPreference
 					." AND idst = '".$idst."'";
 
 		$result = sql_query($query);
-		$res = array();
+		$res = [];
 
 		while(list($path, $value) = sql_fetch_row($result))
 			if($path === _RULES_LANG)
@@ -938,7 +938,7 @@ class AdminPreference
 					." ORDER BY sequence";
 
 		$result = sql_query($query);
-		$res = array();
+		$res = [];
 
 		while(list($path, $default, $type) = sql_fetch_row($result))
 		{
@@ -1072,7 +1072,7 @@ class AdminPreference
 
 		$result = sql_query($query);
 
-		$res = array();
+		$res = [];
 
 		while(list($idst) = sql_fetch_row($result))
 			$res[$idst] = $idst;
@@ -1086,7 +1086,7 @@ class AdminPreference
 				." WHERE idstAdmin = '".$idst."'";
 
 		$result = sql_query($query);
-		$res = array();
+		$res = [];
 		while(list($idst) = sql_fetch_row($result))
 			$res[] = $idst;
 
@@ -1097,9 +1097,9 @@ class AdminPreference
 	public function getMultipleAdminTree($idst_list)
 	{
 		//validate input - accept a single integer value or an array of values
-		if (is_numeric($idst_list)) $idst_list = array($idst_list);
+		if (is_numeric($idst_list)) $idst_list = [$idst_list];
 		if (!is_array($idst_list)) return false;
-		if (empty($idst_list)) return array();
+		if (empty($idst_list)) return [];
 
 		//compose query - $idst_list is now guaranteed to be a non-empty array.
 		//so we can perform implode() function on it without risking a sql error
@@ -1108,7 +1108,7 @@ class AdminPreference
 
 		//fetch data - the output will be a bi-dimensional array
 		//with the idsts of the admins as key values
-		$output = array();
+		$output = [];
 		while(list($idst_admin, $idst_user) = sql_fetch_row($res)) {
 			$output[$idst_admin] = $idst_user;
 		}
@@ -1178,13 +1178,13 @@ class AdminPreference
         $admin_groups   = $acl_man->getGroupsFromMixedIdst($admin_tree);
  
         // retrive parent groups
-        $tmp_admin_groups = array();
+        $tmp_admin_groups = [];
         foreach($admin_groups as $id_group) {
             $tmp_admin_groups = array_merge( $tmp_admin_groups, $acl_man->getGroupGDescendants($id_group) );
         }
         $admin_groups = $tmp_admin_groups;
  
-        $arr_query = array();
+        $arr_query = [];
         if(!empty($admin_users)) $arr_query[] = " $idst_field_name IN (".implode(',', $admin_users).") ";
         if(!empty($admin_groups))  $arr_query[] = " $idst_field_name IN ( SELECT idstMember FROM %adm_group_members WHERE idst IN (".implode(',', $admin_groups).") ) ";
          
@@ -1201,13 +1201,13 @@ class AdminPreference
 		$admin_users	= $acl_man->getUsersFromMixedIdst($admin_tree);
 		$admin_groups	= $acl_man->getGroupsFromMixedIdst($admin_tree);
 
-		$tree = array(
+		$tree = [
 			'users' => $admin_users,
 			'groups' => $admin_groups
-		);
+        ];
 
 		// retrive parent groups
-		$tmp_admin_groups = array();
+		$tmp_admin_groups = [];
 		foreach($admin_groups as $id_group) {
 			$tmp_admin_groups = array_merge( $tmp_admin_groups, $acl_man->getGroupGDescendants($id_group) );
 		}
@@ -1221,12 +1221,12 @@ class AdminPreference
 		else $query = " 0 ";
 
 
-		return array(
+		return [
 			'tree' => $tree,
 			'users' => $admin_userlist,
 			'groups' => $admin_groups,
 			'query' => $query
-		);
+        ];
 	}
 
 	public function getAdminCourse($idst)
@@ -1235,11 +1235,11 @@ class AdminPreference
 				." WHERE idst_user = '".$idst."'";
 
 		$result = sql_query($query);
-		$res = array(
-			'course' => array(),
-			'coursepath' => array(),
-			'catalogue' => array()
-		);
+		$res = [
+			'course' => [],
+			'coursepath' => [],
+			'catalogue' => []
+        ];
 		while(list($id_course, $type_of_entry) = sql_fetch_row($result))
 			$res[$type_of_entry][$id_course] = $id_course;
 
@@ -1254,7 +1254,7 @@ class AdminPreference
 			$cat_man = new Catalogue_Manager();
 			$user_catalogue = $cat_man->getUserAllCatalogueId($idst);
 			if(count($user_catalogue) > 0) {
-				$arr_courses = array();
+				$arr_courses = [];
 				foreach($user_catalogue as $id_cat) {
 					$catalogue_course =& $cat_man->getCatalogueCourse($id_cat);
 					$arr_courses = array_merge($arr_courses, $catalogue_course);
@@ -1272,9 +1272,9 @@ class AdminPreference
 	public function getMultipleAdminCourse($idst_list)
 	{
 		//validate input - accept a single integer value or an array of values
-		if (is_numeric($idst_list)) $idst_list = array($idst_list);
+		if (is_numeric($idst_list)) $idst_list = [$idst_list];
 		if (!is_array($idst_list)) return false;
-		if (empty($idst_list)) return array();
+		if (empty($idst_list)) return [];
 
 		//compose query - $idst_list is now guaranteed to be a non-empty array.
 		//so we can perform implode() function on it without risking a sql error
@@ -1284,14 +1284,14 @@ class AdminPreference
 		$res = sql_query($query);
 
 		//initialize output data
-		$output = array();
+		$output = [];
 		foreach ($idst_list as $idst_admin) {
-			$output[$idst_admin] = array(
-				'course'     => array(),
-				'coursepath' => array(),
-				'catalogue'  => array(),
-				'category'   => array()
-			);
+			$output[$idst_admin] = [
+				'course'     => [],
+				'coursepath' => [],
+				'catalogue'  => [],
+				'category'   => []
+            ];
 		}
 
 		//fetch data - the output will be a bi-dimensional array
@@ -1316,7 +1316,7 @@ class AdminPreference
 				." WHERE idst_user = '".$idst."' AND type_of_entry = 'classlocation'";
 
 		$result = sql_query($query);
-		$output = array();
+		$output = [];
 		while(list($id_entry, $type_of_entry) = sql_fetch_row($result))
 			$output[] = $id_entry;
 
@@ -1327,9 +1327,9 @@ class AdminPreference
 	public function getMultipleAdminClasslocation($idst_list)
 	{
 		//validate input - accept a single integer value or an array of values
-		if (is_numeric($idst_list)) $idst_list = array($idst_list);
+		if (is_numeric($idst_list)) $idst_list = [$idst_list];
 		if (!is_array($idst_list)) return false;
-		if (empty($idst_list)) return array();
+		if (empty($idst_list)) return [];
 
 		//compose query - $idst_list is now guaranteed to be a non-empty array.
 		//so we can perform implode() function on it without risking a sql error
@@ -1338,11 +1338,11 @@ class AdminPreference
 		$res = sql_query($query);
 
 		//initialize output data
-		$output = array();
+		$output = [];
 		foreach ($idst_list as $idst_admin) {
-			$output[$idst_admin] = array(
-				'classlocation'	=> array()
-			);
+			$output[$idst_admin] = [
+				'classlocation'	=> []
+            ];
 		}
 
 		//fetch data - the output will be a bi-dimensional array
@@ -1438,7 +1438,7 @@ class AdminPreference
 
 	public function saveAdminClasslocation($idst, $selection)
 	{
-		if (is_numeric($selection)) $selection = array( (int)$election );
+		if (is_numeric($selection)) $selection = [(int)$election];
 		if (!is_array($selection)) return false;
 		if (empty($selection)) return true;
 
@@ -1505,7 +1505,7 @@ class AdminPreference
 
 	public function removeAdminTree($idst, $idst_admin)
 	{
-		if (is_numeric($entries)) $entries = array( (int)$entries );
+		if (is_numeric($entries)) $entries = [(int)$entries];
 		if (!is_array($entries)) return false;
 		if (empty($entries)) return true;
 
@@ -1520,7 +1520,7 @@ class AdminPreference
 
 
 	protected function _addAdminEntries($entries, $idst_admin, $type) {
-		if (is_numeric($entries)) $entries = array( (int)$entries );
+		if (is_numeric($entries)) $entries = [(int)$entries];
 		if (!is_array($entries)) return false;
 		if (empty($entries)) return true;
 
@@ -1528,7 +1528,7 @@ class AdminPreference
 			." (id_entry, idst_user, type_of_entry) "
 			." VALUES ";
 
-		$list = array();
+		$list = [];
 		foreach ($entries as $entry) {
 			$list[] = "('".(int)$entry."', '".$idst_admin."', '".$type."')";
 		}
@@ -1548,7 +1548,7 @@ class AdminPreference
 class ControllerPreference extends AdminPreference
 {
     public function getUsers($id_controller) {
-	$ctrl_users = array();
+	$ctrl_users = [];
 	$admin_users = $this->getAdminUsers($id_controller);
 	$admin_users[]=$id_controller;
 	$ctrl_users = array_unique($admin_users);

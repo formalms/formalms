@@ -184,8 +184,8 @@ cout(
     // Setting static table with all courses
     if ($id_association > 0) {
         $tb_courses = new Table();
-        $cont_h = array( Lang::t('_CODE'), Lang::t('_COURSE_PATH_NAME'), Lang::t('_COURSE_PATH_DESCR') );
-        $type_h = array('', '', '');
+        $cont_h = [Lang::t('_CODE'), Lang::t('_COURSE_PATH_NAME'), Lang::t('_COURSE_PATH_DESCR')];
+        $type_h = ['', '', ''];
         $tb_courses->addHead($cont_h);
         $tb_courses->setColsStyle($type_h);
         require_once($GLOBALS['where_lms'].'/lib/lib.coursepath.php');
@@ -196,17 +196,17 @@ cout(
 
     $mtitle =  Lang::t("_COURSEPATH");
     $id_table = "coursepath_ft";
-    $arrTab = array(
-              array(
+    $arrTab = [
+              [
               "title"     => $title,
               "content"   => 
               ($id_association > 0 ? $tb_courses->getTable() : '')
               . "<table class='table table-striped table-bordered' style='width:100%' id='{$id_table}'>
                 </table>
-             "             
-          )
+             "
+              ]
 
-    );
+    ];
 
     TabContainer::printStartHeader();
     TabContainer::printNewTabHeader($arrTab);

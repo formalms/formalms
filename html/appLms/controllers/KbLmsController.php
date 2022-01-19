@@ -42,7 +42,7 @@ class KbLmsController extends LmsController {
 		$max = false;
 		$tot = 0;
 
-		$tag_cloud = array();
+		$tag_cloud = [];
 		foreach ($tag_count as $tag_id => $tag_info) {
 			$tot+=$tag_info['use_count'];
 
@@ -57,23 +57,23 @@ class KbLmsController extends LmsController {
 			$range = $max - $min + 1;
 			$pos = $range / $uc;
 			$class_size = round($max_class_size / $pos);
-			$tag_cloud[$tag_id] = array(
+			$tag_cloud[$tag_id] = [
 				'tag_name' => $tag_info['tag_name'],
 				'class_size' => $class_size,
-			);
+            ];
 		}
 
 		$course_filter_arr[-1] = Lang::t('_FILTER', 'kb');
 		$course_filter_arr+=$kb_model->getCoursesVisibleToUser();
 
 
-		$this->render('show', array(
+		$this->render('show', [
 			'filter_text' => $filter_text,
 			'initial_folders' => $initial_folders,
 			'tag_cloud' => $tag_cloud,
 			'course_filter_arr' => $course_filter_arr,
 			'url_select_folder' => 'ajax.server.php?r=kb/selFolder&folder_id=',
-		));
+        ]);
 	}
 
 	public function selFolder() {
@@ -152,8 +152,8 @@ class KbLmsController extends LmsController {
 
 		$tags = $kb_model->getAllTagsForResources($res_arr["id_arr"]);
 
-		$list = array();
-		$parent_id = array();
+		$list = [];
+		$parent_id = [];
 		foreach ($array_comm as $key => $value) {
 			$id = $array_comm[$key]['res_id'];
 			$r_env = $array_comm[$key]['r_env'];
@@ -183,9 +183,9 @@ class KbLmsController extends LmsController {
             $array_comm[$key]['r_type'] = $image;            
 		}
 
-		$kb_model->getParentInfo($parent_id, $array_comm, array('course_lo', 'communication', 'games'));
+		$kb_model->getParentInfo($parent_id, $array_comm, ['course_lo', 'communication', 'games']);
 
-		$result = array(
+		$result = [
 			'totalRecords' => $res_arr['count'],
 			'startIndex' => $start_index,
 			'sort' => $sort,
@@ -193,7 +193,7 @@ class KbLmsController extends LmsController {
 			'rowsPerPage' => $results,
 			'results' => count($array_comm),
 			'records' => $array_comm
-		);
+        ];
 
 		echo $this->json->encode($result);
 	}

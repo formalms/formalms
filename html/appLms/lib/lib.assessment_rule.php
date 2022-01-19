@@ -37,7 +37,7 @@ Class AssessmentRuleManager {
 
 
 	public function getRules() {
-		$res =array();
+		$res = [];
 
 		$fields ="*";
 		$qtxt ="SELECT ".$fields." FROM %lms_assessment_rule
@@ -182,7 +182,7 @@ Class AssessmentRuleManager {
 	
 
 	public function getRuleInfo($rule_id) {
-		$res =array();
+		$res = [];
 
 		$qtxt ="SELECT * FROM %lms_assessment_rule
 			WHERE rule_id='".(int)$rule_id."' LIMIT 0,1";
@@ -206,7 +206,7 @@ Class AssessmentRuleManager {
 
 		$res =true;
 
-		$where_score_arr =array();
+		$where_score_arr = [];
 		foreach($score_arr as $val) {
 			$where_score_arr[]="(category_id = '".(int)$val['category_id']."' ".
 				"AND from_score <= '".(int)$val['score']."' AND to_score >= '".(int)$val['score']."')";
@@ -227,7 +227,7 @@ Class AssessmentRuleManager {
 		$csm = new CourseSubscribe_Management();
 		$cmpman = new CompetencesAdm();
 
-		$feedback_txt = array();
+		$feedback_txt = [];
 		while($row=$this->db->fetch_assoc($q)) {
 			$course_arr = $json->decode($row['courses_list']);
 			$competence_arr = $json->decode($row['competences_list']);
@@ -247,16 +247,16 @@ Class AssessmentRuleManager {
 						$score =(isset($data['score']) ? $data['score'] : 0);
 						if ($score > 0) {
 							if (!$cmpman->userHasCompetence($c_id, Docebo::user()->getIdst())) {
-								$cmpman->assignCompetenceUsers($c_id, array(Docebo::user()->getIdst()=>$score));
+								$cmpman->assignCompetenceUsers($c_id, [Docebo::user()->getIdst()=>$score]);
 							}
 							else {
-								$cmpman->addScoreToUsers($c_id, array(Docebo::user()->getIdst()), $score);
+								$cmpman->addScoreToUsers($c_id, [Docebo::user()->getIdst()], $score);
 							}
 						}
 					}
 					else {
 						if (!$cmpman->userHasCompetence($c_id, Docebo::user()->getIdst())) {
-							$cmpman->assignCompetenceUsers($c_id, array(Docebo::user()->getIdst()=>1));
+							$cmpman->assignCompetenceUsers($c_id, [Docebo::user()->getIdst()=>1]);
 						}
 					}
 				}

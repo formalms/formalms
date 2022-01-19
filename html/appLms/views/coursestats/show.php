@@ -7,12 +7,12 @@ echo getTitleArea(Lang::t('_COURSESTATS', 'menu_course'));
 ?>
 <div class="std_block"><?php
 
-$columns = array(
-	array('key' => 'userid', 'label' => Lang::t('_USERNAME', 'standard'), 'sortable' => true, 'formatter' => 'CourseStats.useridFormatter', 'className' => 'min-cell'),
-	array('key' => 'fullname', 'label' => Lang::t('_NAME', 'standard'), 'sortable' => true, 'formatter' => 'CourseStats.fullnameFormatter', 'className' => 'min-cell'),
-	array('key' => 'level', 'label' => Lang::t('_LEVEL', 'standard'), 'sortable' => true, 'className' => 'min-cell'),
-	array('key' => 'status', 'label' => Lang::t('_STATUS', 'standard'), 'sortable' => true, 'className' => 'min-cell', 'editor' => 'CourseStats.statusEditor')
-);
+$columns = [
+	['key' => 'userid', 'label' => Lang::t('_USERNAME', 'standard'), 'sortable' => true, 'formatter' => 'CourseStats.useridFormatter', 'className' => 'min-cell'],
+	['key' => 'fullname', 'label' => Lang::t('_NAME', 'standard'), 'sortable' => true, 'formatter' => 'CourseStats.fullnameFormatter', 'className' => 'min-cell'],
+	['key' => 'level', 'label' => Lang::t('_LEVEL', 'standard'), 'sortable' => true, 'className' => 'min-cell'],
+	['key' => 'status', 'label' => Lang::t('_STATUS', 'standard'), 'sortable' => true, 'className' => 'min-cell', 'editor' => 'CourseStats.statusEditor']
+];
 
 foreach ($lo_list as $lo) {
 	$icon = '('.$lo->type.')';
@@ -21,12 +21,12 @@ foreach ($lo_list as $lo) {
 		case "poll": $link = '<a title="" href="index.php?r=coursestats/show_object&id_lo='.(int)$lo->id.'">'.$lo->title.'</a>'; break;
 		default: $link = $lo->title;
 	}
-	$columns[] = array('key' => 'lo_'.$lo->id, 'label' => $link.'<br />'.$icon, 'sortable' => false, 'formatter' => 'CourseStats.LOFormatter', 'className' => 'min-cell');
+	$columns[] = ['key' => 'lo_'.$lo->id, 'label' => $link.'<br />'.$icon, 'sortable' => false, 'formatter' => 'CourseStats.LOFormatter', 'className' => 'min-cell'];
 }
 
-$columns[] = array('key' => 'completed', 'label' => Lang::t('_COMPLETED', 'course'), 'sortable' => false, 'formatter' => 'CourseStats.completedFormatter', 'className' => 'min-cell');
+$columns[] = ['key' => 'completed', 'label' => Lang::t('_COMPLETED', 'course'), 'sortable' => false, 'formatter' => 'CourseStats.completedFormatter', 'className' => 'min-cell'];
 
-$fields = array('id', 'userid', 'firstname', 'lastname', 'level', 'status', 'status_id', 'completed');
+$fields = ['id', 'userid', 'firstname', 'lastname', 'level', 'status', 'status_id', 'completed'];
 foreach ($lo_list as $lo) {
 	$fields[] = 'lo_'.$lo->id;
 }

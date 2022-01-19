@@ -169,7 +169,7 @@ class TrackUser {
 		WHERE idCourse = '".$id_course."' AND active = 1 AND (lastTime) > '".$gap_time."'";
 		
 		$result=sql_query($query_time);
-		$who_is_online_list=array();
+		$who_is_online_list= [];
 		while ($row=sql_fetch_array($result)) {
 			$who_is_online_list[]=$row["idUser"];
 		};
@@ -181,7 +181,7 @@ class TrackUser {
 		
 		if(isset($_SESSION['is_ghost']) &&  $_SESSION['is_ghost'] === true) return  0;
 		
-		$last_access = array();
+		$last_access = [];
 		$query_time = "
 		SELECT idCourse, UNIX_TIMESTAMP(MAX(lastTime)) 
 		FROM ".$GLOBALS['prefix_lms']."_tracksession 

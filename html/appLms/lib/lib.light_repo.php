@@ -39,29 +39,29 @@ class LightRepoManager {
 	
 	var $_id_course;
 	
-	var $_field_repo = array(
+	var $_field_repo = [
 		LR_ID 		=> 'id_repository',
 		LR_IDCOURSE => 'id_course',
 		LR_TITLE 	=> 'repo_title',
 		LR_DESCR 	=> 'repo_descr',
 		LR_TEACHER_ALERT 	=> 'repo_teacher_alert'
-	);
+    ];
 	
-	var $_field_file = array(
+	var $_field_file = [
 		LR_FILE_ID 			=> 'id_file', 
 		LR_FILE_ID_REPO 	=> 'id_repository', 
 		LR_FILE_NAME 		=> 'file_name', 
 		LR_FILE_DESCR 		=> 'file_descr', 
 		LR_FILE_AUTHOR 		=> 'id_author', 
 		LR_FILE_POSTDATE 	=> 'post_date'
-	);
+    ];
 	
-	var $_field_user = array(
+	var $_field_user = [
 		LR_USER_ID_USER 	=> 'id_user', 
 		LR_USER_ID_REPO 	=> 'id_repo', 
 		LR_USER_LASTENTER 	=> 'last_enter', 
 		LR_USER_LOCKED 		=> 'repo_lock'
-	);
+    ];
 	
 	function LightRepoManager($id_user, $id_course) {
 		
@@ -114,7 +114,7 @@ class LightRepoManager {
 	
 		if($id_repo == 0) {
 			
-			$keys = array();
+			$keys = [];
 			foreach($data as $k => $v) { 
 				$keys[] = $this->_field_repo[$k]; 
 			}
@@ -234,7 +234,7 @@ class LightRepoManager {
 		
 		require_once($GLOBALS['where_lms'].'/lib/lib.course.php');
 		
-		$file_list = array();
+		$file_list = [];
 		$acl_man 		= Docebo::user()->getAclManager();
         $view_all_perm = checkPerm('view_all', true);
 		$course_man 	= new Man_Course();
@@ -255,7 +255,7 @@ class LightRepoManager {
 		
 	  foreach($users_list as $user )
     {
-			$file_list[$user[ACL_INFO_IDST]] = array();
+			$file_list[$user[ACL_INFO_IDST]] = [];
 			$file_list[$user[ACL_INFO_IDST]]['id_user'] = $user[ACL_INFO_IDST];
 			$file_list[$user[ACL_INFO_IDST]]['username'] = $acl_man->getConvertedUserName($user);
 		}
@@ -306,7 +306,7 @@ class LightRepoManager {
 	
 	function getFileInfo($arr_file) {
 		
-		if(!is_array($arr_file)) $arr_file = array($arr_file);
+		if(!is_array($arr_file)) $arr_file = [$arr_file];
 		$query = " SELECT ".implode(',', $this->_field_file)." "
 			." FROM ".$this->_tableFile()
 			." WHERE id_file IN ( ".implode(',', $arr_file)." ) ";

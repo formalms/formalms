@@ -13,7 +13,7 @@
 
 function load_categories() {
   $res = sql_query("SELECT * FROM %lms_report WHERE enabled=1");
-  $GLOBALS['report_categories'] = array();
+  $GLOBALS['report_categories'] = [];
   while ($row = sql_fetch_assoc($res)) {
     $GLOBALS['report_categories'][ $row['id_report'] ] = $row['report_name'];
   }
@@ -61,7 +61,7 @@ function report_save_schedulation($id_rep, $name, $period, $time, &$recipients) 
 		$id_sched = $row[0];
 	}
 	
-	$temp = array();
+	$temp = [];
 	foreach ($recipients as $value) {
 		$temp[] = '('.$id_sched.', '.$value.')';
 	}
@@ -134,7 +134,7 @@ function report_update_schedulation($id_sched, $name, $period, $time, &$recipien
 		$output = sql_query($qry2);
 		if ($output) {
 			//delete old recipients and replace with new ones
-			$temp = array();
+			$temp = [];
 			foreach ($recipients as $value) {
 				$temp[] = '('.$id_sched.', '.$value.')';
 			}		
@@ -209,12 +209,12 @@ function get_schedule_recipients($id_sched, $more_info = false) {
 
 	if ($res) {
 
-		$output = array(
-			'users' => array(),
-			'groups' => array(),
-			'folders' => array(),
-			'fncroles' => array()
-		);
+		$output = [
+			'users' => [],
+			'groups' => [],
+			'folders' => [],
+			'fncroles' => []
+        ];
 
 		while ($obj = sql_fetch_object($res)) {
 
@@ -267,7 +267,7 @@ function get_schedule_recipients($id_sched, $more_info = false) {
  * This returns an array $objectType => {translation}
  */
 function _getLOtranslations() {
-	$output = array();
+	$output = [];
 	$query = "SELECT objectType FROM %lms_lo_types";
 	$db = DbConn::getInstance();
 	$res = $db->query($query);
@@ -286,26 +286,26 @@ function getCommunicationsTable($selected = false) {
 		require_once(_base_.'/lib/lib.table.php');
 		$table = new Table();
 
-		$lang_type = array(
+		$lang_type = [
 			'none' => Lang::t('_NONE', 'communication'),
 			'file' => Lang::t('_LONAME_item', 'storage'),
 			'scorm' => Lang::t('_LONAME_scormorg', 'storage')
-		);
+        ];
 
-		$col_type = array('image','','','align_center','align_center','align_center');
-		$col_content = array(
+		$col_type = ['image','','','align_center','align_center','align_center'];
+		$col_content = [
 			Lang::t(''),
 			Lang::t('_TITLE'),
 			Lang::t('_DESCRIPTION'),
 			Lang::t('_DATE'),
 			Lang::t('_TYPE'),
 			//Lang::t('_COUNT_ACCESSIBILITY')
-		);
+        ];
 
 		$table->setColsStyle($col_type);
 		$table->addHead($col_content);
 
-		if (!is_array($selected)) $selected = array();
+		if (!is_array($selected)) $selected = [];
 		$query = "SELECT c.id_comm, c.title, c.description, c.publish_date, c.type_of, id_resource, COUNT(ca.id_comm) as access_entity "
 			." FROM %lms_communication AS c "
 			." LEFT JOIN %lms_communication_access AS ca ON (c.id_comm = ca.id_comm)"
@@ -314,7 +314,7 @@ function getCommunicationsTable($selected = false) {
 		$db = DbConn::getInstance();
 		$res = $db->query($query);
 		while ($obj = $db->fetch_obj($res)) {
-			$line = array();
+			$line = [];
 
 			$line[] = Form::getInputCheckbox(
 				'comm_selection_'.$obj->id_comm,    //id
@@ -342,8 +342,8 @@ function getGamesTable($selected = false) {
 
 		$lang_type= _getLOtranslations();
 
-		$col_type = array('image','','', '','align_center','align_center');
-		$col_content = array(
+		$col_type = ['image','','', '','align_center','align_center'];
+		$col_content = [
 			Lang::t(''),
 			Lang::t('_TITLE'),
 			Lang::t('_DESCRIPTION'),
@@ -351,12 +351,12 @@ function getGamesTable($selected = false) {
 			Lang::t('_TO'),
 			Lang::t('_TYPE'),
 			//Lang::t('_COUNT_ACCESSIBILITY')
-		);
+        ];
 
 		$table->setColsStyle($col_type);
 		$table->addHead($col_content);
 
-		if (!is_array($selected)) $selected = array();
+		if (!is_array($selected)) $selected = [];
 		$query = "SELECT c.id_game, c.title, c.description, c.start_date, c.end_date, "
 			." c.type_of, id_resource, COUNT(ca.id_game) as access_entity "
 			." FROM %lms_games AS c "
@@ -366,7 +366,7 @@ function getGamesTable($selected = false) {
 		$db = DbConn::getInstance();
 		$res = $db->query($query);
 		while ($obj = $db->fetch_obj($res)) {
-			$line = array();
+			$line = [];
 
 			$line[] = Form::getInputCheckbox(
 				'comp_selection_'.$obj->id_game,    //id

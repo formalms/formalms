@@ -29,10 +29,10 @@ class DashboardLmsController extends LmsController
     public function init()
     {
         $this->_mvc_name = "dashboard";
-        $this->permissions = array(
+        $this->permissions = [
             'view' => true,
             'mod' => true
-        );
+        ];
         /** @var Services_JSON json */
         $this->json = new Services_JSON();
         $this->model = new DashboardLms();

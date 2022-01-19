@@ -56,20 +56,20 @@ echo //Layout::bc(array(
 		</div>
 	</div>
 	<?php
-	$this->widget('table', array(
+	$this->widget('table', [
 		'id' => 'templatelayout',
 		'ajaxUrl' => 'ajax.adm_server.php?r=adm/templatelayout/tabledata',
-		'columns' => array(
-			array('key' => 'name', 'label' => Lang::t('_TEMPLATE_NAME', 'template'), 'sortable' => true),
-			array('key' => 'last_modify', 'label' => Lang::t('_LAST_MODIFY', 'template'), 'sortable' => true),
-			array('key' => 'mod', 'label' => '<span class="ico-sprite subs_mod"><span>'.Lang::t('_MOD', 'standard').'</span></span>', 'formatter' => 'TemplateLayout.modifyFormatter'),
-			array('key' => 'del', 'label' => '<span class="ico-sprite subs_del"><span>'.Lang::t('_DEL', 'standard').'</span></span>', 'formatter' => '"stdDelete"')
-		),
+		'columns' => [
+			['key' => 'name', 'label' => Lang::t('_TEMPLATE_NAME', 'template'), 'sortable' => true],
+			['key' => 'last_modify', 'label' => Lang::t('_LAST_MODIFY', 'template'), 'sortable' => true],
+			['key' => 'mod', 'label' => '<span class="ico-sprite subs_mod"><span>'.Lang::t('_MOD', 'standard').'</span></span>', 'formatter' => 'TemplateLayout.modifyFormatter'],
+			['key' => 'del', 'label' => '<span class="ico-sprite subs_del"><span>'.Lang::t('_DEL', 'standard').'</span></span>', 'formatter' => '"stdDelete"']
+        ],
 		'sort' => $sort,
 		'dir' => $dir,
-		'fields' => array('id', 'name', 'date_creation', 'last_modify', 'del'),
+		'fields' => ['id', 'name', 'date_creation', 'last_modify', 'del'],
 		'rel_actions' => '<a class="ico-wt-sprite subs_add" href="index.php?r=adm/templatelayout/create"><span>'.Lang::t('_ADD').'</span></a>',
 		'generateRequest' => 'TemplateLayout.requestBuilder',
-	));
+    ]);
 	?>
 </div>

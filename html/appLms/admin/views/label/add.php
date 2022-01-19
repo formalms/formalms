@@ -1,7 +1,7 @@
 <?php
-echo getTitleArea(array(
+echo getTitleArea([
 	'index.php?r=alms/label/show' => Lang::t('_LABELS', 'label'),
-	Lang::t('_ADD', 'label')));
+	Lang::t('_ADD', 'label')]);
 ?>
 <div class="std_block">
 

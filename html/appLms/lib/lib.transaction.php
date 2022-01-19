@@ -105,7 +105,7 @@ class Man_Transaction
 					." WHERE id_transaction = ".$id_transaction;
 
 		$result = sql_query($query);
-		$res = array();
+		$res = [];
 
 		while(list($id_course, $id_date) = sql_fetch_row($result))
 			if($id_date == 0)
@@ -157,7 +157,7 @@ class Man_Transaction
 					." LIMIT ".$limit.", ".Get::sett('visuItem');
 
 		$result = sql_query($query);
-		$res = array();
+		$res = [];
 
 		while($row = sql_fetch_assoc($result))
 			$res[] = $row;
@@ -236,7 +236,7 @@ class Man_Transaction
 					." WHERE idUser = ".$id_user;
 
 		$result = sql_query($query);
-		$courses = array();
+		$courses = [];
 
 		while(list($id_course) = sql_fetch_row($result))
 			$courses[$id_course] = $id_course;

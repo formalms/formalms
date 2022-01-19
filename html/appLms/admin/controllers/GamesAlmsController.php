@@ -23,13 +23,13 @@ class GamesAlmsController extends AlmsController {
 
 		$this->model = new GamesAlms();
 		$this->json = new Services_JSON();
-		$this->permissions = array(
+		$this->permissions = [
 			'view' => checkPerm('view', true, 'games', 'lms'),
 			'add' => checkPerm('mod', true, 'games', 'lms'),
 			'mod' => checkPerm('mod', true, 'games', 'lms'),
 			'del' => checkPerm('mod', true, 'games', 'lms'),
 			'subscribe' => checkPerm('subscribe', true, 'games', 'lms')
-		);
+        ];
 	}
 
 
@@ -48,9 +48,9 @@ class GamesAlmsController extends AlmsController {
 		if(isset($_GET['error'])) UIFeedback::error(Lang::t('_OPERATION_FAILURE', 'games'));
 		if(isset($_GET['success']))UIFeedback::info(Lang::t('_OPERATION_SUCCESSFUL', 'games'));
 
-		$this->render('show', array(
+		$this->render('show', [
 			'permissions' => $this->permissions
-		));
+        ]);
 	}
 
 	public function getlist() {
@@ -62,10 +62,10 @@ class GamesAlmsController extends AlmsController {
 		$filter_text	= Get::req('filter_text', DOTY_STRING, "");
 
 		$total_games = $this->model->total($filter_text);
-		$array_games = $this->model->findAll($start_index, $results, $sort, $dir, array('text' => $filter_text ) );
+		$array_games = $this->model->findAll($start_index, $results, $sort, $dir, ['text' => $filter_text]);
 
 
-		$games_id_arr =array();
+		$games_id_arr = [];
 		foreach($array_games as $key => $value) {
 			$type =$array_games[$key]['type_of'];
 			if ($type == 'file') {
@@ -76,10 +76,10 @@ class GamesAlmsController extends AlmsController {
 		require_once(_lms_.'/lib/lib.kbres.php');
 		$kbres =new KbRes();
 		$categorized_file_items =$kbres->getCategorizedResources($games_id_arr, "file", "games", true);
-		$categorized_file_items_id =(!empty($categorized_file_items) ? array_keys($categorized_file_items) : array());
+		$categorized_file_items_id =(!empty($categorized_file_items) ? array_keys($categorized_file_items) : []);
 
 
-		$list = array();
+		$list = [];
 		foreach($array_games as $key => $value) {
 			$array_games[$key]['id'] = $value['id_game'];
 			if($filter_text) {
@@ -117,7 +117,7 @@ class GamesAlmsController extends AlmsController {
 			$array_games[$key]['del'] = 'ajax.adm_server.php?r=alms/games/del&id_game='.$value['id_game'];
 		}
 
-		$result = array(
+		$result = [
 			'totalRecords' => $total_games,
 			'startIndex' => $start_index,
 			'sort' => $sort,
@@ -125,7 +125,7 @@ class GamesAlmsController extends AlmsController {
 			'rowsPerPage' => $results,
 			'results' => count($array_games),
 			'records' => $array_games
-		);
+        ];
 
 		$this->data = $this->json->encode($result);
 		echo $this->data;
@@ -133,36 +133,36 @@ class GamesAlmsController extends AlmsController {
 
 	protected function add($data = false) {
 		if (!$this->permissions['add']) {
-			$this->render('invalid', array(
+			$this->render('invalid', [
 				'message' => $this->_getMessage('no permission'),
 				'back_url' => 'index.php?r=alms/games/show'
-			));
+            ]);
 			return;
 		}
 
 		require_once(_base_.'/lib/lib.form.php');
 		if(!$data) {
-			$data = array(
+			$data = [
 				'title' => '',
 				'description' => '',
 				'start_date' => Format::date( date('Y-m-d'), 'date' ),
 				'end_date' => Format::date( date('Y-m-d'), 'date' ),
 				'type_of' => 'scorm'
-			);
+            ];
 		}
-		$this->render('add', array('data' => $data));
+		$this->render('add', ['data' => $data]);
 	}
 
 	protected function insert() {
 		if (!$this->permissions['add']) {
-			$this->render('invalid', array(
+			$this->render('invalid', [
 				'message' => $this->_getMessage('no permission'),
 				'back_url' => 'index.php?r=alms/games/show'
-			));
+            ]);
 			return;
 		}
 
-		$data = array();
+		$data = [];
 		$data['title']			= Get::req('title', DOTY_MIXED, '');
 		$data['start_date']		= Get::req('start_date', DOTY_MIXED, Format::date( date('Y-m-d'), 'date' ));
 		$data['end_date']		= Get::req('end_date', DOTY_MIXED, Format::date( date('Y-m-d'), 'date' ));
@@ -189,10 +189,10 @@ class GamesAlmsController extends AlmsController {
 
 	protected function add_obj() {
 		if (!$this->permissions['add']) {
-			$this->render('invalid', array(
+			$this->render('invalid', [
 				'message' => $this->_getMessage('no permission'),
 				'back_url' => 'index.php?r=alms/games/show'
-			));
+            ]);
 			return;
 		}
 		
@@ -212,10 +212,10 @@ class GamesAlmsController extends AlmsController {
 
 	protected function insert_obj() {
 		if (!$this->permissions['add']) {
-			$this->render('invalid', array(
+			$this->render('invalid', [
 				'message' => $this->_getMessage('no permission'),
 				'back_url' => 'index.php?r=alms/games/show'
-			));
+            ]);
 			return;
 		}
 		
@@ -244,10 +244,10 @@ class GamesAlmsController extends AlmsController {
 
 	protected function edit($data = false) {
 		if (!$this->permissions['mod']) {
-			$this->render('invalid', array(
+			$this->render('invalid', [
 				'message' => $this->_getMessage('no permission'),
 				'back_url' => 'index.php?r=alms/games/show'
-			));
+            ]);
 			return;
 		}
 
@@ -259,19 +259,19 @@ class GamesAlmsController extends AlmsController {
 		$data['start_date'] = Format::date($data['start_date'], 'date');
 		$data['end_date']	= Format::date($data['end_date'], 'date');
 
-		$this->render('mod', array('data' => $data));
+		$this->render('mod', ['data' => $data]);
 	}
 
 	protected function update() {
 		if (!$this->permissions['mod']) {
-			$this->render('invalid', array(
+			$this->render('invalid', [
 				'message' => $this->_getMessage('no permission'),
 				'back_url' => 'index.php?r=alms/games/show'
-			));
+            ]);
 			return;
 		}
 
-		$data = array();
+		$data = [];
 		$data['id_game']		= Get::req('id_game', DOTY_MIXED, '');
 		$data['title']			= Get::req('title', DOTY_MIXED, '');
 		$data['start_date']		= Get::req('start_date', DOTY_MIXED, Format::date( date('Y-m-d'), 'date' ));
@@ -297,10 +297,10 @@ class GamesAlmsController extends AlmsController {
 
 	protected function mod_obj() {
 		if (!$this->permissions['mod']) {
-			$this->render('invalid', array(
+			$this->render('invalid', [
 				'message' => $this->_getMessage('no permission'),
 				'back_url' => 'index.php?r=alms/games/show'
-			));
+            ]);
 			return;
 		}
 
@@ -328,10 +328,10 @@ class GamesAlmsController extends AlmsController {
 
 	protected function update_obj() {
 		if (!$this->permissions['mod']) {
-			$this->render('invalid', array(
+			$this->render('invalid', [
 				'message' => $this->_getMessage('no permission'),
 				'back_url' => 'index.php?r=alms/games/show'
-			));
+            ]);
 			return;
 		}
 
@@ -347,7 +347,7 @@ class GamesAlmsController extends AlmsController {
 
 	protected function del() {
 		if (!$this->permissions['del']) {
-			$output = array('success' => false, 'message' => $this->_getMessage('no permission'));
+			$output = ['success' => false, 'message' => $this->_getMessage('no permission')];
 			echo $this->json->encode($output);
 			return;
 		}
@@ -393,10 +393,10 @@ class GamesAlmsController extends AlmsController {
 	 */
 	protected function mod_user() {
 		if (!$this->permissions['subscribe']) {
-			$this->render('invalid', array(
+			$this->render('invalid', [
 				'message' => $this->_getMessage('no permission'),
 				'back_url' => 'index.php?r=alms/games/show'
-			));
+            ]);
 			return;
 		}
 
@@ -427,19 +427,19 @@ class GamesAlmsController extends AlmsController {
 			$user_selector->resetSelection($selection);
 		}
 		// render the user selector
-		$this->render('mod_user', array(
+		$this->render('mod_user', [
 			'id_game' => $id_game,
 			'user_selector' => $user_selector
-		));
+        ]);
 	}
 
 
 	public function categorize() {
 		if (!$this->permissions['mod']) {
-			$this->render('invalid', array(
+			$this->render('invalid', [
 				'message' => $this->_getMessage('no permission'),
 				'back_url' => 'index.php?r=alms/games/show'
-			));
+            ]);
 			return;
 		}
 
@@ -502,23 +502,23 @@ class GamesAlmsController extends AlmsController {
 			$data =$this->model->findByPk($id_game);
 			$data['item_id']=$id_game;
 
-			$this->render('categorize', array(
+			$this->render('categorize', [
 				'id_game' => $id_game,
 				'data'=>$data,
 				'r_param'=>'',
 				'back_url'=>'index.php?r=alms/games/show',
 				'form_url'=>'index.php?r=alms/games/categorize&amp;id_game='.$id_game,
-			));
+            ]);
 		}
 	}
 
 
 	public function categorize_sco($id_game, $data) {
 		if (!$this->permissions['mod']) {
-			$this->render('invalid', array(
+			$this->render('invalid', [
 				'message' => $this->_getMessage('no permission'),
 				'back_url' => 'index.php?r=alms/games/show'
-			));
+            ]);
 			return;
 		}
 
@@ -533,26 +533,26 @@ class GamesAlmsController extends AlmsController {
 
 			$row =sql_fetch_assoc($q);
 
-			$sco_data =array();
+			$sco_data = [];
 			$sco_data['item_id'] =$sco_id;
 			$sco_data['title'] =$row['title'];
 			$sco_data['type_of'] ='scoitem';
 			$sco_data['id_resource'] =$sco_id;
-			$this->render('categorize', array(
+			$this->render('categorize', [
 				'id_game' => $id_game,
 				'data'=>$sco_data,
 				'r_param'=>'chapter='.$row['identifierref'],
 				'back_url'=>'index.php?r=alms/games/categorize&amp;id_game='.$id_game,
 				//'form_url'=>'index.php?r=alms/games/save_sco_categorize',
 				'form_url'=>'index.php?r=alms/games/categorize&amp;id_game='.$id_game,
-			));
+            ]);
 		}
 		else {
-			$this->render('sco_table', array(
+			$this->render('sco_table', [
 				'id_game' => $id_game,
 				'id_resource' => $data['id_resource'],
 				'games_data' => $data,
-			));
+            ]);
 		}
 
 	}
@@ -560,10 +560,10 @@ class GamesAlmsController extends AlmsController {
 
 	public function save_sco_categorize() {
 		if (!$this->permissions['mod']) {
-			$this->render('invalid', array(
+			$this->render('invalid', [
 				'message' => $this->_getMessage('no permission'),
 				'back_url' => 'index.php?r=alms/games/show'
-			));
+            ]);
 			return;
 		}
 

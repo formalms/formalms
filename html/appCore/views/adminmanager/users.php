@@ -1,12 +1,12 @@
-<?php Get::title(array(
+<?php Get::title([
 	'index.php?r=adm/adminmanager/show' => Lang::t('_ADMIN_MANAGER', 'menu'),
 	Lang::t('_ASSIGN_USERS', 'adminmanager').' : '.$model->getAdminFullname($id_user)
-)); ?>
+]); ?>
 <div class="std_block">
 <?php
 echo Form::openForm('main_selector_form', 'index.php?r=adm/adminmanager/users&amp;id_user='.$id_user.'&');
 
-$this->widget('userselector', array(
+$this->widget('userselector', [
 	'id' => 'main_selector',
 	'show_user_selector' => true,
 	'show_group_selector' => true,
@@ -14,7 +14,7 @@ $this->widget('userselector', array(
 	'show_fncrole_selector' => true,
 	'initial_selection' => $user_alredy_subscribed,
 	'admin_filter' => true
-));
+]);
 
 echo Form::openButtonSpace()
 	.Form::getButton('okselector', 'okselector', Lang::t('_NEXT', 'standard'))

@@ -22,21 +22,21 @@ class LocationAlmsController extends AlmsController {
 
 	protected $json = false;
 	protected $model = false;
-	protected $perm = array();
+	protected $perm = [];
 
 	public function init() {
 		parent::init();
 
 		$this->json = new Services_JSON();
 		$this->model = new LocationAlms();
-		$this->perm = array(
+		$this->perm = [
 			'view' => checkPerm('view', true, 'location', 'lms'),
 			'mod' => checkPerm('mod', true, 'location', 'lms')
-		);
+        ];
 	}
 
 	public function showTask() {
-		$this->render('show', array());
+		$this->render('show', []);
 	}
 
 	public function addmask() {
@@ -45,20 +45,20 @@ class LocationAlmsController extends AlmsController {
 		$location->location = '';
 
 
-		$this->render('location_form', array('location' => $location));
+		$this->render('location_form', ['location' => $location]);
 
-		$params = array(
+		$params = [
 			'success' => true,
 			'header' => Lang::t('_ADD', 'standard'),
 			'body' => ob_get_clean()
-		);
+        ];
 		@ob_start();
 		echo $this->json->encode($params);
 	}
 
 	public function getlocation() {
 
-		$sortable = array('location');
+		$sortable = ['location'];
 
 		$startIndex = Get::req('startIndex', DOTY_INT, 0);
 		$results = Get::req('results', DOTY_INT, Get::sett('visuItem', 25));
@@ -84,7 +84,7 @@ class LocationAlmsController extends AlmsController {
 		$total = $this->model->getLocationTotal($filter);
 
 		//check if the user is a sub admin and has limited visibility on class locations
-		$admin_locations = array();
+		$admin_locations = [];
 		$ulevel = Docebo::user()->user_level;
 		if ($ulevel != ADMIN_GROUP_GODADMIN) {
 			$amodel = FALSE;
@@ -110,7 +110,7 @@ class LocationAlmsController extends AlmsController {
 			}
 		}
 
-		$output = array(
+		$output = [
 			'totalRecords' => $total,
 			'startIndex' => $startIndex,
 			'sort' => $sort,
@@ -118,7 +118,7 @@ class LocationAlmsController extends AlmsController {
 			'rowsPerPage' => 25,
 			'results' => count($location_list),
 			'records' => array_values($location_list)
-		);
+        ];
 		echo $this->json->encode($output);
 	}
 
@@ -146,19 +146,19 @@ class LocationAlmsController extends AlmsController {
 		$location = Get::req('location', DOTY_STRING, '');
 
 		if ($location <= 0 || !$this->_canAdminLocation(Docebo::user()->idst, $location)) {
-			$params = array('success' => false);
+			$params = ['success' => false];
 			echo $this->json->encode($params);
 			return;
 		}
 
 		$location_b = $this->model->getLocation($location);
 
-		$this->render('edit_form', array('location' => $location_b));
-		$params = array(
+		$this->render('edit_form', ['location' => $location_b]);
+		$params = [
 			'success' => true,
 			'header' => Lang::t('_MOD', 'standard'),
 			'body' => ob_get_clean()
-		);
+        ];
 		@ob_start();
 		echo $this->json->encode($params);
 	}
@@ -172,10 +172,10 @@ class LocationAlmsController extends AlmsController {
 
 			$answ = $this->model->updateLocation($location_id, $location_new);
 
-			$result = array(
+			$result = [
 				'success' => $answ,
 				'message' => ( $answ ? '' : Lang::t('_OPERATION_FAILED', 'standard') )
-			);
+            ];
 			echo $this->json->encode($result);
 		} else {
 			Lang::t('_OPERATION_FAILED', 'standard');
@@ -186,16 +186,16 @@ class LocationAlmsController extends AlmsController {
 
 		$location = Get::req('location', DOTY_STRING, '');
 		if ($location == '') {
-			$result = array('success' => false, 'message' => Lang::t('_NO_TITLE', 'standard'));
+			$result = ['success' => false, 'message' => Lang::t('_NO_TITLE', 'standard')];
 			echo $this->json->encode($result);
 			return;
 		}
 		$re = $this->model->insertLocation($location);
 
-		$result = array(
+		$result = [
 			'success' => $re,
 			'message' => ( $re ? '' : Lang::t('_OPERATION_FAILED', 'standard') )
-		);
+        ];
 		echo $this->json->encode($result);
 	}
 
@@ -203,7 +203,7 @@ class LocationAlmsController extends AlmsController {
 		$location = Get::req('location', DOTY_STRING, '');
 
 		if ($location <= 0 || !$this->_canAdminLocation(Docebo::user()->idst, $location)) {
-			$params = array('success' => false);
+			$params = ['success' => false];
 			echo $this->json->encode($params);
 			return;
 		}
@@ -213,10 +213,10 @@ class LocationAlmsController extends AlmsController {
 
 			$re = $this->model->delLocation($location);
 		}
-		$result = array(
+		$result = [
 			'success' => $re,
 			'message' => ( $re ? '' : Lang::t('_OPERATION_FAILED', 'standard') )
-		);
+        ];
 		echo $this->json->encode($result);
 	}
 
@@ -231,24 +231,24 @@ class LocationAlmsController extends AlmsController {
 		$language_list_diff = $language_list = $this->model->getLangCodeList();
 		array_unshift($language_list_diff, Lang::t('_NONE'));
 
-		$this->render('list', array(
+		$this->render('list', [
 			'lang_code' => $lang_code,
 			'module_list' => $module_list,
 			'language_list' => $language_list,
 			'language_list_diff' => $language_list_diff
-		));
+        ]);
 	}
 
 	public function show_classroom() {
 		$id_location = Get::req('id_location', DOTY_INT, 0);
 		$this->render('show_classroom',
-				array('id_location' => $id_location)
+				['id_location' => $id_location]
 		);
 	}
 
 	public function getclassroom() {
 
-		$sortable = array('classroom');
+		$sortable = ['classroom'];
 
 		$startIndex = Get::req('startIndex', DOTY_INT, 0);
 		$results = Get::req('results', DOTY_INT, Get::sett('visuItem', 25));
@@ -279,7 +279,7 @@ class LocationAlmsController extends AlmsController {
 			$classroom->classroom_del = 'ajax.adm_server.php?r=alms/location/delClassroom&amp;idClassroom=' . $classroom->id_classroom;
 		}
 
-		$output = array(
+		$output = [
 			'totalRecords' => $total,
 			'startIndex' => $startIndex,
 			'sort' => $sort,
@@ -287,7 +287,7 @@ class LocationAlmsController extends AlmsController {
 			'rowsPerPage' => 25,
 			'results' => count($classroom_list),
 			'records' => array_values($classroom_list)
-		);
+        ];
 		echo $this->json->encode($output);
 	}
 
@@ -302,10 +302,10 @@ class LocationAlmsController extends AlmsController {
 
 			$re = $this->model->delClassroom($classroom_id);
 		}
-		$result = array(
+		$result = [
 			'success' => $re,
 			'message' => ( $re ? '' : Lang::t('_OPERATION_FAILED', 'standard') )
-		);
+        ];
 		echo $this->json->encode($result);
 	}
 
@@ -316,10 +316,10 @@ class LocationAlmsController extends AlmsController {
 
 		$id_location = Get::req('id_location', DOTY_INT, 0);
 
-		$this->render('classroom_editmask', array(
+		$this->render('classroom_editmask', [
 			'id_location' => $id_location,
 			'_is_editing' => false
-		));
+        ]);
 	}
 
 	/**
@@ -347,10 +347,10 @@ class LocationAlmsController extends AlmsController {
 
 		$re = $this->model->InsertClassroomMod($name, $description, $id_location, $room, $street, $city, $state, $zip_code, $phone, $fax, $capacity, $disposition, $instrument, $available_instrument, $note, $responsable);
 
-		$result = array(
+		$result = [
 			'success' => $re,
 			'message' => ( $re ? '' : Lang::t('_OPERATION_FAILED', 'standard') )
-		);
+        ];
 		echo $this->json->encode($result);
 	}
 
@@ -368,12 +368,12 @@ class LocationAlmsController extends AlmsController {
 
 		$info = $re;
 
-		$this->render('classroom_editmask', array(
+		$this->render('classroom_editmask', [
 			'id_location' => $id_location,
 			'id_classroom' => $id_classroom,
 			'info' => $info,
 			'_is_editing' => true
-		));
+        ]);
 	}
 
 	/**
@@ -401,10 +401,10 @@ class LocationAlmsController extends AlmsController {
 
 		$re = $this->model->UpdateClassroomMod($name, $description, $id_location, $room, $street, $city, $state, $zip_code, $phone, $fax, $capacity, $disposition, $instrument, $available_instrument, $note, $responsable, $idc);
 
-		$result = array(
+		$result = [
 			'success' => $re,
 			'message' => ( $re ? '' : Lang::t('_OPERATION_FAILED', 'standard') )
-		);
+        ];
 		echo $this->json->encode($result);
 	}
 
@@ -417,11 +417,11 @@ class LocationAlmsController extends AlmsController {
 
 		$date_list = $this->model->getClassroomDates($id_classroom);
 
-		$this->render('show_calendar', array(
+		$this->render('show_calendar', [
 			'id_classroom' => $id_classroom,
 			'date_list' => $date_list,
 			'info' => $this->model->getClassroomDetails($id_classroom)
-		));
+        ]);
 	}
 
 	public function getclassroomdates() {
@@ -442,15 +442,15 @@ class LocationAlmsController extends AlmsController {
 		$date_list = $this->model->getClassroomDates2date($id_classroom, $date, $startIndex, $results, $sort, $dir, $filter);
 		$date_list_total = $this->model->getClassroomDateTotalDate($id_classroom, $date);
 
-		$output = array(
+		$output = [
 			'totalRecords' => $date_list_total,
 			'startIndex' => $startIndex,
 			'sort' => $sort,
 			'dir' => $dir,
 			'rowsPerPage' => 25,
 			'results' => count($date_list),
-			'records' => (!empty($date_list) ? array_values($date_list) : array() )
-		);
+			'records' => (!empty($date_list) ? array_values($date_list) : [])
+        ];
 		echo $this->json->encode($output);
 	}
 

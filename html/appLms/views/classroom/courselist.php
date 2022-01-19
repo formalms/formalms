@@ -11,7 +11,7 @@
 
 <?php endif; ?>
 
-<?php $unsubscribe_call_arr =array(); ?>
+<?php $unsubscribe_call_arr = []; ?>
 
 <?php foreach( $courselist as $course ) : ?>
 
@@ -49,7 +49,7 @@
 		<p class="course_support_info">
 			<?php
 			echo Lang::t($this->ustatus[ $course['user_status'] ], 'course').''
-				.Lang::t('_USER_LVL', 'course', array('[level]' => '<b>'.$this->levels[ $course['level'] ].'</b>'));
+				.Lang::t('_USER_LVL', 'course', ['[level]' => '<b>'.$this->levels[ $course['level'] ].'</b>']);
 			?>
 		</p>
 		<!-- p class="course_support_info" -->
@@ -64,7 +64,7 @@
 		<!-- /p -->
 		<?php if(!empty($access['expiring_in']) && $access['expiring_in'] < 30) : ?>
 			<p class="course_support_info">
-				<?php echo Lang::t('_EXPIRING_IN', 'course', array('[expiring_in]' => $access['expiring_in'])); ?>
+				<?php echo Lang::t('_EXPIRING_IN', 'course', ['[expiring_in]' => $access['expiring_in']]); ?>
 			</p>
 		<?php endif; ?>
 		<p class="course_support_info">
@@ -97,14 +97,14 @@
 						? '_COURSE_INTRO_WITH_MAX'
 						: '_COURSE_INTRO';
 
-					echo "<br />".Lang::t($_text_key, 'course', array(
+					echo "<br />".Lang::t($_text_key, 'course', [
 						'[course_type]'		=> $course['course_type'],
 						'[enrolled]'		=> $info->enrolled,
 						'[max_subscribe]' => property_exists($info, 'max_participants') ? $info->max_participants : 0,
 						'[course_status]'	=> ($info->overbooking > 0 && $info->max_participants > 0 && $info->students >= $info->max_participants)
 							? Lang::t('_USER_STATUS_OVERBOOKING', 'subscribe')
 							: $info->status,
-					));
+                        ]);
 
 
 					echo '</li>';

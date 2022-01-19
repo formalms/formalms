@@ -28,11 +28,11 @@ class SkebbySmsGateway implements SmsGatewayInterface
 
 
         if ($credit_result['status'] == 'success') {
-            return array(
+            return [
                 'credit_left' => $credit_result['credit_left'],
                 self::SMS_TYPE_CLASSIC => $credit_result['classic_sms'],
                 self::SMS_TYPE_BASIC => $credit_result['basic_sms'],
-            );
+            ];
         }
 
         if ($credit_result['status'] == 'failed') {
@@ -46,7 +46,7 @@ class SkebbySmsGateway implements SmsGatewayInterface
 
 
     public
-    function send($recipients = array(), $text, $type = SMS_TYPE_BASIC)
+    function send($recipients = [], $text, $type = SMS_TYPE_BASIC)
     {
 
         // ------------ SMS Classic dispatch --------------
@@ -144,12 +144,12 @@ class SkebbySmsGateway implements SmsGatewayInterface
     protected function do_post_request($url, $data, $optional_headers = null)
     {
         if (!function_exists('curl_init')) {
-            $params = array(
-                'http' => array(
+            $params = [
+                'http' => [
                     'method' => 'POST',
                     'content' => $data
-                )
-            );
+                ]
+            ];
             if ($optional_headers !== null) {
                 $params['http']['header'] = $optional_headers;
             }
@@ -190,7 +190,7 @@ class SkebbySmsGateway implements SmsGatewayInterface
         $url = 'http://gateway.skebby.it/api/send/smseasy/advanced/http.php';
 
         if (!is_array($recipients)) {
-            $recipients = array($recipients);
+            $recipients = [$recipients];
         }
 
         switch ($sms_type) {

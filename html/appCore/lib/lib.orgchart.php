@@ -40,7 +40,7 @@ class OrgChartManager {
 		
 		$folder_name = $this->tree_db->getFoldersCurrTranslationDoubleCheck($groups_id);
 		
-		$branch_name = array();
+		$branch_name = [];
     foreach($groups_id as $id => $groupid)
     {
 			

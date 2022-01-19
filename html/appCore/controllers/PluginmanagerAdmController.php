@@ -27,11 +27,11 @@ class PluginmanagerAdmController extends AdmController {
             default:
 
 		}
-        $this->render('show', array(
+        $this->render('show', [
                 'plugins' => $plugins,
                 'feedback' => $feedback,
                 'res' => $res
-            )
+            ]
         );
     }
 
@@ -113,11 +113,11 @@ class PluginmanagerAdmController extends AdmController {
         $settingAdm=new SettingAdm();
         $pg_adm=new PluginmanagerAdm();
         $plugin_info=$pg_adm->getPluginFromDB($plugin,'name');
-        $this->render('show_settings', array(
+        $this->render('show_settings', [
                 'setting_adm' => $settingAdm,
                 'plugin' =>$plugin,
                 'regroup' =>$plugin_info['regroup']
-            )
+            ]
         );
     }
 

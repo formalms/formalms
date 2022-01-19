@@ -202,8 +202,8 @@ class Title_Question extends Question {
 		FROM ".$GLOBALS['prefix_lms']	."_testquest 
 		WHERE idQuest = '".$this->id."'"));
 		
-		return array(	'quest' 	=> '<strong class="quest_title_review">'.$title_quest.'</strong>', 
+		return ['quest' 	=> '<strong class="quest_title_review">'.$title_quest.'</strong>',
 						'score'		=> false, 
-						'comment'	=> '' );
+						'comment'	=> ''];
 	}
 }

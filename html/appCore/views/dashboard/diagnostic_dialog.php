@@ -81,11 +81,11 @@ $html .= '</ul>';
 $html .= '</div>';
 
 if (isset($json)) {
-	$params = array(
+	$params = [
 		'success' => true,
 		'header' => $title,
 		'body' => $html
-	);
+    ];
 	echo $json->encode($params);
 } else {
 	echo getTitleArea($title);

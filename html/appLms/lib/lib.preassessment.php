@@ -46,11 +46,11 @@ define("RULE_GREATER", 	3);
  */
 class AssessmentList {
 
-	var $user_field = array(
+	var $user_field = [
 		USER_ASSES_ID 		=> 'id_assessment',
 		USER_ASSES_ID_USER 	=> 'id_user',
 		USER_ASSES_TYPE 	=> 'type_of'
-	);
+    ];
 
 	function tableUserAssessment() 	{ return $GLOBALS['prefix_lms'].'_assessment_user'; }
 
@@ -92,7 +92,7 @@ class AssessmentList {
 		if($id_assessment == 0) {
 
 			// create the course
-			$course_info = array(
+			$course_info = [
 				'code' 			=> $assessment_data['code'],
 				'name' 			=> $assessment_data['name'],
 				'description' 	=> $assessment_data['description'],
@@ -101,7 +101,7 @@ class AssessmentList {
 				'show_rules' 	=> 2,
 				'status' 		=> 2,
 				'direct_play' => 1
-			);
+            ];
 			$id_course = $this->man_course->addCourse($course_info);
 			if($id_course == false) return false;
 			$level_idst =& DoceboCourse::createCourseLevel($id_course);
@@ -111,20 +111,20 @@ class AssessmentList {
 			if($id_main == false) return false;
 
 			$re = true;
-			$perm = array();
-			$perm['7'] = array('view');
-			$perm['6'] = array('view');
-			$perm['3'] = array('view');
+			$perm = [];
+			$perm['7'] = ['view'];
+			$perm['6'] = ['view'];
+			$perm['3'] = ['view'];
 			$re &= $this->man_course->addModuleToCourse($id_course, $level_idst, $id_main, false, 'organization', 'organization', $perm );
 
-			$perm = array();
-			$perm['7'] = array('view', 'home', 'lesson', 'public');
-			$perm['6'] = array('view', 'home', 'lesson', 'public');
+			$perm = [];
+			$perm['7'] = ['view', 'home', 'lesson', 'public'];
+			$perm['6'] = ['view', 'home', 'lesson', 'public'];
 			$re &= $this->man_course->addModuleToCourse($id_course, $level_idst, $id_main, false, 'storage', 'display', $perm);
 
-			$perm = array();
-			$perm['7'] = array('view', 'mod');
-			$perm['6'] = array('view', 'mod');
+			$perm = [];
+			$perm['7'] = ['view', 'mod'];
+			$perm['6'] = ['view', 'mod'];
 			$re &= $this->man_course->addModuleToCourse($id_course, $level_idst, $id_main, false, 'coursereport', 'coursereport', $perm );
 
 			//after creating the assessment course, create directly the test LO
@@ -152,11 +152,11 @@ class AssessmentList {
 		} else {
 
 			// modify the course
-			$course_info = array(
+			$course_info = [
 				'code' 			=> $assessment_data['code'],
 				'name' 			=> $assessment_data['name'],
 				'description' 	=> $assessment_data['description']
-			);
+            ];
 			return $this->man_course->saveCourse($id_assessment, $course_info);
 		}
 	}
@@ -173,7 +173,7 @@ class AssessmentList {
 
 	function getAssessmentAdministrator($id_assessment) {
 
-		$users = array();
+		$users = [];
 		$query = "
 		SELECT ".implode(',', $this->user_field)."
 		FROM ".$this->tableUserAssessment()."
@@ -189,7 +189,7 @@ class AssessmentList {
 
 	function getAssessmentUser($id_assessment) {
 
-		$users = array();
+		$users = [];
 		$query = "
 		SELECT ".implode(',', $this->user_field)."
 		FROM ".$this->tableUserAssessment()."
@@ -221,7 +221,7 @@ class AssessmentList {
 			AND ".$this->user_field[USER_ASSES_ID_USER]." IN ( ".implode(',', $user_list)." ) ";
 		$re_query = $this->_query($query);
 
-		$user_assigned = array();
+		$user_assigned = [];
 		while($row = sql_fetch_row($re_query)) {
 
 			$user_assigned[$row[USER_ASSES_ID_USER]] = $row[USER_ASSES_TYPE];
@@ -341,7 +341,7 @@ class AssessmentList {
 
 	function getUserAssessmentSubsription($all_user_idst) {
 
-		$assess = array('course_list' => array(), 'level_number' => array());
+		$assess = ['course_list' => [], 'level_number' => []];
 		if(!is_array($all_user_idst) || count($all_user_idst) == 0) return $assess;
 
 		$query = "
@@ -364,14 +364,14 @@ class AssessmentList {
 
 class AssessmentRule {
 
-	var $rules_field = array(
+	var $rules_field = [
 		RULE_ID 		=> 'id_rule',
 		RULE_ID_ASSESS 	=> 'id_assessment',
 		RULE_TYPE 		=> 'rule_type',
 		RULE_SETTING 	=> 'rule_setting',
 		RULE_EFFECT 	=> 'rule_effect',
 		RULE_CASUALTIES => 'rule_casualities'
-	);
+    ];
 
 	/* function tableAssessmentRules() { return $GLOBALS['prefix_lms'].'_assessment_rules'; } */
 
@@ -450,7 +450,7 @@ class AssessmentRule {
 
 	function parseEffects($effects_string) {
 
-		$effects = array('course' => array(), 'coursepath' => array());
+		$effects = ['course' => [], 'coursepath' => []];
 		$eff_piece = explode('|', $effects_string);
 		if(isset($eff_piece[0]) && $eff_piece[0] != '') {
 			$temp = explode(';', $eff_piece[0]);
@@ -538,7 +538,7 @@ class AssessmentRule {
 
 	function getRelatedEffectForAssessments($arr_assessment) {
 
-		$effects_parsed 	= array('course' => array(), 'coursepath' => array());
+		$effects_parsed 	= ['course' => [], 'coursepath' => []];
 
 		$rules = $this->getAllRule($arr_assessment);
 		while($rule = $this->fetch_row($rules))	{
@@ -562,11 +562,11 @@ class AssessmentRule {
 	 */
 	function getCompleteEffectListForAssessmentWithUserResult($arr_assessment, $result_in_assessment) {
 
-		$effects_parsed 	= array('course' => array(), 'coursepath' => array());
-		$effects_to_apply 	= array('course' => array(), 'coursepath' => array());
-		$effects_not 		= array('course' => array(), 'coursepath' => array());
+		$effects_parsed 	= ['course' => [], 'coursepath' => []];
+		$effects_to_apply 	= ['course' => [], 'coursepath' => []];
+		$effects_not 		= ['course' => [], 'coursepath' => []];
 
-		$rule_match = array();
+		$rule_match = [];
 		$rules = $this->getAllRule($arr_assessment);
 		while($rule = $this->fetch_row($rules))	{
 
@@ -629,14 +629,14 @@ class AssessmentRule {
 				}
 			}
 		}
-		return array('parsed' => $effects_parsed, 'to_apply' => $effects_to_apply, 'not_done' => $effects_not);
+		return ['parsed' => $effects_parsed, 'to_apply' => $effects_to_apply, 'not_done' => $effects_not];
 	}
 
 	function getEffectForScore($id_assessment, $score) {
 
 		$rule_match 		= false;
 		$default_effects 	= false;
-		$effects_to_apply 	= array('course' => array(), 'coursepath' => array());
+		$effects_to_apply 	= ['course' => [], 'coursepath' => []];
 
 		$rules = $this->getAllRule($id_assessment);
 		while($rule = $this->fetch_row($rules))	{

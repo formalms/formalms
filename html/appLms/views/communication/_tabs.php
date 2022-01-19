@@ -1,9 +1,9 @@
 <div class="middlearea_container--margintop-small">
 	<?php
-	$lmstab = $this->widget('lms_tab', array(
+	$lmstab = $this->widget('lms_tab', [
 		'active' => 'communication',
 		'close' => false
-	));
+    ]);
 	?>
 	<div class="nested_tab" id="tab_content">
 		<div id="global_conf" class="yui-navset yui-navset-top">
@@ -26,14 +26,14 @@
 			<div class="yui-content">
 				<?php
 				// the tab are open in the content filder, now i can put my contents here easily
-				$columns = array(
-					array('key' => 'title', 'label' => Lang::t('_NAME', 'standard'), 'sortable' => true),
-					array('key' => 'publish_date', 'label' => Lang::t('_DATE', 'standard'), 'sortable' => true),
-					array('key' => 'description', 'label' => Lang::t('_TEXTOF')),
-					array('key' => 'play', 'label' => Lang::t('_PLAY', 'standard')),
-				);
+				$columns = [
+					['key' => 'title', 'label' => Lang::t('_NAME', 'standard'), 'sortable' => true],
+					['key' => 'publish_date', 'label' => Lang::t('_DATE', 'standard'), 'sortable' => true],
+					['key' => 'description', 'label' => Lang::t('_TEXTOF')],
+					['key' => 'play', 'label' => Lang::t('_PLAY', 'standard')],
+                ];
 
-				$params = array(
+				$params = [
 					'id'			=> 'communication',
 					'ajaxUrl'		=> 'ajax.server.php?r=communication/'.$ajax_action,
 					'rowsPerPage'	=> Get::sett('visuItem', 25),
@@ -42,11 +42,11 @@
 					'sort'			=> 'title',
 					'dir'			=> 'asc',
 					'columns'		=> $columns,
-					'fields' => array('id_comm', 'title', 'publish_date', 'description', 'play'),
-					'events' => array(
+					'fields' => ['id_comm', 'title', 'publish_date', 'description', 'play'],
+					'events' => [
 						'postRenderEvent' =>  "function() { lb.init(); }"
-					)
-				);
+                    ]
+                ];
 
 				$this->widget('table', $params);
 				?>

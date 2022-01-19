@@ -78,9 +78,9 @@ function deleteRoom($id_room, $room_type = false, $id_source = false) {
 
 function getRoomList($incl_room_type=FALSE, $excl_room_type=FALSE) {
 	
-	$res =array();
-	if (!is_array($incl_room_type)) { $incl_room_type =array(); }
-	if (!is_array($excl_room_type)) { $excl_room_type =array(); }
+	$res = [];
+	if (!is_array($incl_room_type)) { $incl_room_type = []; }
+	if (!is_array($excl_room_type)) { $excl_room_type = []; }
 
 	$room_qtxt ="SELECT id_room, room_name "
 		." FROM ".$GLOBALS["prefix_scs"]."_rules_room "

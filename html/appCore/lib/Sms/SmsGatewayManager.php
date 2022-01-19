@@ -9,7 +9,7 @@ class SmsGatewayManager
      * @return mixed
      * @throws SmsGatewayException
      */
-    public static function send($recipients = array(), $text, $type = null)
+    public static function send($recipients = [], $text, $type = null)
     {
         $smsGateway = self::getGateway();
         try {

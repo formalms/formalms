@@ -100,14 +100,14 @@ class ListView {
 	function _getCols() {
 		$totCol = $this->data->getFieldCount();
 		$fieldInfos = $this->data->getFieldsInfo();
-		$colInfos = array();
+		$colInfos = [];
 		foreach( $fieldInfos as $fname => $finfo ) {
-			$colInfos[] = array( 	'hLabel' => $fname,
+			$colInfos[] = ['hLabel' => $fname,
 						'hClass' => "",
 						'fieldClass' => "",
 						'data' => $fname,
 						'toDisplay' => true,
-						'sortable' => false );
+						'sortable' => false];
 		}
 		return $colInfos;
 	}
@@ -132,7 +132,7 @@ class ListView {
 		$this->data = &$data;
 		$this->rend = $rend;
 		$this->id = $id;
-		$this->itemSelected = array();
+		$this->itemSelected = [];
 		$this->lang =& DoceboLanguage::createInstance('standard','framework');
 		$this->startRow = Get::req('ini', DOTY_INT, 0);
 	}
@@ -210,7 +210,7 @@ class ListView {
 				if( $this->multiSelect && !in_array((int)$id, $this->itemSelected) ) {
 					$this->itemSelected[] = (int)$id;
 				} else
-					$this->itemSelected = array( (int)$id );
+					$this->itemSelected = [(int)$id];
 				$this->op = 'selectitem';
 			} else if( strstr( $nameField, $this->_getOpDeselectItemId() ) ) {
 				$id = substr( $nameField, strlen($this->_getOpDeselectItemId()) );

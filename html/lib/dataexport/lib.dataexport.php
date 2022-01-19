@@ -144,7 +144,7 @@ class DataColumnGroup {
 	public function __construct($key, $label, $subcolumns = false) {
 		$this->key = $key;
 		$this->label = $label;
-		$this->subColumns = array();
+		$this->subColumns = [];
 		if (is_array($subcolumns)) {
 			foreach ($subcolumns as $column) {
 				$this->addColumn($column);
@@ -191,7 +191,7 @@ class DataColumnGroup {
 	 * @return <array> all the keys for the subcolums setted
 	 */
 	public function getSubColumnsKeys() {
-		$keys = array();
+		$keys = [];
 		$i = 0;
 		$count = count($this->subColumns);
 		while ($i < $count) {
@@ -425,12 +425,12 @@ class DataWriter_Htm extends DataWriter {
 		$this->alternateLines = ($alternate ? true : false);
 		$this->lineCount = 0;
 
-		$this->style = array(
+		$this->style = [
 			'table' => '',
 			'thead' => '',
 			'tbody' => '',
 			'tfoot' => ''
-		);
+        ];
 	}
 
 	public function getType() { return DATATYPE_HTM; }
@@ -503,7 +503,7 @@ class DataWriter_Htm extends DataWriter {
 			}
 */
 			//create space for rows management
-			$headRows = array();
+			$headRows = [];
 			for ($i=0; $i<$depth; $i++) { $headRows[] = '';	}
 
 			//write the html in the headrows array
@@ -559,7 +559,7 @@ class DataWriter_Xml extends DataWriter {
 	public function __construct($caption = '') {
 		parent::__construct($caption);
 		$this->encode = "UTF-8";
-		$this->tags = array(
+		$this->tags = [
 			'table'       => 'exported',
 			'caption'     => 'title',
 			'head'        => 'header',
@@ -570,7 +570,7 @@ class DataWriter_Xml extends DataWriter {
 			'row'         => 'row',
 			'columndata'  => 'columndata',
 			'foot'        => 'footer'
-		);
+        ];
 	}
 
 	public function getType() { return DATATYPE_XML; }
@@ -708,12 +708,12 @@ protected $delimiter;
 				$i++;
 			}
 
-			$headRows = array();
-			for ($i=0; $i<$depth; $i++) { $headRows[] = array();	}
+			$headRows = [];
+			for ($i=0; $i<$depth; $i++) { $headRows[] = [];	}
 
 			$this->_renderColumns($headRows, 0, $columnSet);
 
-			$rowsOutput = array();
+			$rowsOutput = [];
 			for ($i=0; $i<count($headRows); $i++) {
 				$rowsOutput[] = implode($this->delimiter, $headRows[$i]).$this->rowDelimiter;
 			}
@@ -726,7 +726,7 @@ protected $delimiter;
 	public function renderLine(&$line) {
 		$output = '';
 
-		$values = array();
+		$values = [];
 		foreach ($line as $index => $value) {
 			//$formatted = str_replace($this->stringDelimiter, "\\".$this->stringDelimiter, htmlspecialchars_decode($value, ENT_QUOTES));
 			//$values[] = $this->stringDelimiter.str_replace($delimiter, "\\".$delimiter, $formatted).$this->stringDelimiter;
@@ -815,8 +815,8 @@ class DataExport {
 	public function __construct($type, $id, &$columns, &$dataSource) {
 		$this->id = (string)$id;
 		
-		if ($this->_validateColumns($columns)) $this->columns = $columns; else $this->columns = array();
-		$fields = array();
+		if ($this->_validateColumns($columns)) $this->columns = $columns; else $this->columns = [];
+		$fields = [];
 		$i = 0;
 		$count = count($this->columns);
 		while ($i < $count) {
@@ -879,7 +879,7 @@ class DataExport {
 
 		$this->_write($this->writer->openBody(), $print);
 		while ($row = $this->dataSource->fetchRow()) {
-			$line = array();
+			$line = [];
 			//check columns keys with row keys and filter the data
 			foreach ($this->fieldsList as $field=>$column) {
 				$value = '';

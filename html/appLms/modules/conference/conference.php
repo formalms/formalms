@@ -70,12 +70,12 @@ function conference_list(&$url) {
 		// list rooms active in this moment
 		$tb = new Table(0, $lang->def('_ROOMS_AVAILABLE'), $lang->def('_SUMMARY_ROOM_AVAILABLE'));
 
-		$cont_h = array($lang->def('_VIDEOCONFERENCE'),
+		$cont_h = [$lang->def('_VIDEOCONFERENCE'),
 						$lang->def('_START_DATE'),
 						$lang->def('_MEETING_HOURS'),
-						$lang->def('_ENTER'));
+						$lang->def('_ENTER')];
 
-		$type_h = array('table_main_colum', 'align_center nowrap', 'align_center nowrap', 'align_center');
+		$type_h = ['table_main_colum', 'align_center nowrap', 'align_center nowrap', 'align_center'];
 
 		if(checkPerm('mod', true))
 		{
@@ -102,7 +102,7 @@ function conference_list(&$url) {
 
 			$room_id = $room["id"];
 
-			$cont = array();
+			$cont = [];
 			$cont[]=$room["name"]." (".$room["room_type"].")";
 			$start_date=Format::date(date("Y-m-d H:i:s",$room["starttime"]), 'datetime');
 			$cont[]=$start_date;
@@ -227,10 +227,10 @@ function conference_startnewconf($url) {
 			);
 			Util::jump_to('index.php?modname=conference&amp;op=list');
 		} else {
-			$title_page = array(
+			$title_page = [
 			'index.php?modname=conference&amp;op=list' => $lang->def('_VIDEOCONFERENCE'),
 			$lang->def('_CREATE')
-		);
+            ];
 		$GLOBALS['page']->add(
 			getTitleArea($title_page, 'conference', $lang->def('_VIDEOCONFERENCE'))
 			.'<div class="std_block">'
@@ -245,7 +245,7 @@ function conference_startnewconf($url) {
 	$start_time['minute'] 	= date('i');
 	$start_date = importVar('start_date', false, date("Y-m-d H:i:s"));
 
-	$conf_system=array();
+	$conf_system= [];
 	//$conf_system[""]="";
 
 	$default_maxp=30;
@@ -380,10 +380,10 @@ function conference_delconf() {
 
 		Util::jump_to('index.php?modname=conference&amp;op=list');
 	} else {
-		$title_page = array(
+		$title_page = [
 			'index.php?modname=conference&amp;op=list' => $lang->def('_VIDEOCONFERENCE'),
 			$lang->def('_DEL')
-		);
+        ];
 		$GLOBALS['page']->add(
 			getTitleArea($title_page, 'conference', $lang->def('_VIDEOCONFERENCE'))
 			.'<div class="std_block">'
@@ -454,7 +454,7 @@ function conference_modconf($url = null)
 
         $lang =& DoceboLanguage::createInstance('conference', 'lms');
 
-        $conf_system=array();
+        $conf_system= [];
         //$conf_system[""]="";
         $default_maxp=30;
 
@@ -554,7 +554,7 @@ function modBooking()
 	require_once(_base_.'/lib/lib.form.php');
 	require_once(_base_.'/lib/lib.table.php');
 
-	YuiLib::load(array('selector' => 'selector-beta-min.js'));
+	YuiLib::load(['selector' => 'selector-beta-min.js']);
 
 	$lang =& DoceboLanguage::createInstance('conference', 'lms');
 
@@ -587,13 +587,13 @@ function modBooking()
 
 		$tb = new Table(0, $lang->def('_USER_BOOKED'), $lang->def('_USER_BOOKED'));
 
-		$cont_h = array($lang->def('_FULLNAME'),
+		$cont_h = [$lang->def('_FULLNAME'),
 						$lang->def('_BOOKING_DATE'),
-						'');
+						''];
 
-		$type_h = array(	'',
+		$type_h = ['',
 							'align_center',
-							'align_center');
+							'align_center'];
 
 		$tb->setColsStyle($type_h);
 		$tb->addHead($cont_h);
@@ -601,7 +601,7 @@ function modBooking()
 		$user_selected = 0;
 		$max_user_selectable = $conference->getRoomMaxParticipants($room_id);
 
-		$array_unchecked = array();
+		$array_unchecked = [];
 
 		cout(	Form::openForm('user_booking_form', 'index.php?modname=conference&amp;op=modbooking&amp;id='.$room_id));
 
@@ -609,7 +609,7 @@ function modBooking()
 		{
 			$user_info = $acl_man->getUser($user['idUser'], false);
 
-			$cont = array();
+			$cont = [];
 
 			if($user_info[ACL_INFO_FIRSTNAME] !== '' && $user_info[ACL_INFO_LASTNAME])
 				$cont[] = $user_info[ACL_INFO_FIRSTNAME].' '.$user_info[ACL_INFO_LASTNAME].' ('.$acl_man->relativeId($user_info[ACL_INFO_USERID]).')';
@@ -729,12 +729,12 @@ function showHistory()
 	{
 
 
-		$cont_h = array($lang->def('_VIDEOCONFERENCE'),
+		$cont_h = [$lang->def('_VIDEOCONFERENCE'),
 						$lang->def('_START_DATE'),
 						$lang->def('_MEETING_HOURS'),
-						'');
+						''];
 
-		$type_h = array('table_main_colum', 'align_center nowrap', 'align_center nowrap', 'image');
+		$type_h = ['table_main_colum', 'align_center nowrap', 'align_center nowrap', 'image'];
 
 		$tb->setColsStyle($type_h);
 		$tb->addHead($cont_h);
@@ -743,7 +743,7 @@ function showHistory()
 		{
 			$room_id = $room_info['id'];
 
-			$cont = array();
+			$cont = [];
 
 			$cont[] = $room_info['name']." (".$room_info['room_type'].")";
 
@@ -798,7 +798,7 @@ function showLog()
 	cout(	getTitleArea('')
 			.'<div class="std_block">', 'content');
 
-	$room_log = array();
+	$room_log = [];
 
 	switch($room_info['room_type'])
 	{
@@ -818,13 +818,13 @@ function showLog()
 
 	$tb = new Table(0, $lang->def('_ROOM_LOG'), $lang->def('_ROOM_LOG'));
 
-	$cont_h = array($lang->def('_FULLNAME'),
+	$cont_h = [$lang->def('_FULLNAME'),
 					$lang->def('_ROLE'),
 					$lang->def('_DATE'),
 					$lang->def('_TOTAL_TIME'),
-					$lang->def('_NUMBER_OF_ACCESS'));
+					$lang->def('_NUMBER_OF_ACCESS')];
 
-	$type_h = array('', '', '', '', '');
+	$type_h = ['', '', '', '', ''];
 
 	$tb->setColsStyle($type_h);
 	$tb->addHead($cont_h);
@@ -833,7 +833,7 @@ function showLog()
 	{
 		$user_info = $acl_man->getUser($log_row['idUser'], false);
 
-		$cont = array();
+		$cont = [];
 
 		if($user_info[ACL_INFO_FIRSTNAME] !== '' && $user_info[ACL_INFO_LASTNAME])
 			$cont[] = $user_info[ACL_INFO_FIRSTNAME].' '.$user_info[ACL_INFO_LASTNAME].' ('.$acl_man->relativeId($user_info[ACL_INFO_USERID]).')';

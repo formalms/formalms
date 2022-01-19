@@ -39,8 +39,8 @@ class DoceboUserNotifier extends DoceboEventConsumer {
 		$field_man = new FieldList();
 		$send_to_field = Get::sett('sms_cell_num_field');
 
-		$arr_mail_recipients = array();
-		$arr_sms_recipients = array();
+		$arr_mail_recipients = [];
+		$arr_sms_recipients = [];
 
 		// recover event information
 		$arr_recipients 	= explode( ',', $event->getProperty('recipientid') );
@@ -58,7 +58,7 @@ class DoceboUserNotifier extends DoceboEventConsumer {
 
 		// recove setting
 		$users_lang		= $acl_man->getSettingValueOfUsers('ui.language', false, true);
-		$users_sms 		= $field_man->showFieldForUserArr($idst_users, array($send_to_field));
+		$users_sms 		= $field_man->showFieldForUserArr($idst_users, [$send_to_field]);
 
 		// scan all users
 
@@ -125,8 +125,8 @@ class DoceboUserNotifier extends DoceboEventConsumer {
 			$base_body = $body;
 			if (isset($users_info[$id])) {
 				$base_body = str_replace(
-					array('[firstname]', '[lastname]', '[username]'),
-					array($users_info[$id][ACL_INFO_FIRSTNAME], $users_info[$id][ACL_INFO_LASTNAME], $acl_man->relativeId($users_info[$id][ACL_INFO_USERID]) ),
+					['[firstname]', '[lastname]', '[username]'],
+					[$users_info[$id][ACL_INFO_FIRSTNAME], $users_info[$id][ACL_INFO_LASTNAME], $acl_man->relativeId($users_info[$id][ACL_INFO_USERID])],
 					$base_body
 				);
 			}
@@ -137,10 +137,10 @@ class DoceboUserNotifier extends DoceboEventConsumer {
 				$subject,
 				$base_body,
 				$attachments,
-				array(
+				[
 					MAIL_REPLYTO => Get::sett('sender_event'),
 					MAIL_SENDER_ACLNAME => Get::sett('use_sender_aclname')
-				)
+                ]
 			);
 		}
 	}
@@ -163,13 +163,13 @@ function usernotifier_getUserEventChannel( $idst, $event_class ) {
 
 	$rs_manager = sql_query( $query );
 	if( $rs_manager === FALSE )
-		return array();
+		return [];
 	if( sql_num_rows($rs_manager) == 0 )
-		return array();
+		return [];
 
 	list($channel, $permission) = sql_fetch_row( $rs_manager );
 
-	$media = array();
+	$media = [];
 /*
 	if( $permission == 'not_used' ) {
 		return array();

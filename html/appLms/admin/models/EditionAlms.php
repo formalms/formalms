@@ -37,7 +37,7 @@ Class EditionAlms extends Model
 
 	public function getPerm()
 	{
-		return array('view' => 'standard/view.png');
+		return ['view' => 'standard/view.png'];
 	}
 
 	public function getIdCourse()
@@ -67,7 +67,7 @@ Class EditionAlms extends Model
 
 	protected function getEditionInfoFromPost()
 	{
-		$res = array(	'code' => Get::req('code', DOTY_MIXED, ''),
+		$res = ['code' => Get::req('code', DOTY_MIXED, ''),
 						'name' => Get::req('name', DOTY_MIXED, ''),
 						'description' => Get::req('description', DOTY_MIXED, ''),
 						'status' => Get::req('status', DOTY_INT, 0),
@@ -79,7 +79,7 @@ Class EditionAlms extends Model
 						'overbooking' => Get::req('overbooking', DOTY_INT, 0),
 						'can_subscribe' => Get::req('can_subscribe', DOTY_INT, 0),
 						'sub_date_begin' => Get::req('sub_date_begin', DOTY_MIXED, ''),
-						'sub_date_end' => Get::req('sub_date_end', DOTY_MIXED, ''));
+						'sub_date_end' => Get::req('sub_date_end', DOTY_MIXED, '')];
 
 		return $res;
 	}
@@ -116,7 +116,7 @@ Class EditionAlms extends Model
 
 		$result = sql_query($query);
 
-		$res = array();
+		$res = [];
 
 		while(list($id_edition) = sql_fetch_row($result))
 			$res[$id_edition] = $id_edition;

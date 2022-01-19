@@ -45,7 +45,7 @@ function setupFormDialogBox(
 	$idFilter,
 	$idParamName,
 	$confirmParamName,
-	$other = array() )
+	$other = [])
 {
 	addDialogLibraries();
 
@@ -61,7 +61,7 @@ function setupFormDialogBox(
 		"\t".'idParamName: "'.$idParamName.'", '."\n".
 		"\t".'confirmParamName: "'.$confirmParamName.'", '."\n".
 		"\t".'authentication: "'.Util::getSignature().'" '."\n";
-	$temp=array();
+	$temp= [];
 	foreach ($other as $key=>$val) {
 		if ($key!='' && !is_int($key)) {
 			$temp[] = $key.': '.(is_string($val) ? '"'.$val.'"' : $val);

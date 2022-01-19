@@ -44,23 +44,23 @@ class DoceboConnectorUserReport extends DoceboConnector {
 	var $lastaccess_list;
 	
 	// name, type
- 	var $all_cols = array( 
-		array( 'id_user', 'text' ), 
-		array( 'login', 'text' ), 
-		array( 'user_name', 'text' ), 
-		array( 'id_course', 'text' ), 
-		array( 'category', 'text' ), 
-        array( 'code', 'text' ),         
-		array( 'course', 'text' ), 
-		array( 'course_status', 'text' ), 
-		array( 'subscribe_date', 'datetime' ), 
-		array( 'begin_date', 'datetime' ), 
-		array( 'complete_date', 'datetime' ), 
-		array( 'user_status', 'text' ), 
-		array( 'score', 'text' )
-	);
+ 	var $all_cols = [
+		['id_user', 'text'],
+		['login', 'text'],
+		['user_name', 'text'],
+		['id_course', 'text'],
+		['category', 'text'],
+        ['code', 'text'],
+		['course', 'text'],
+		['course_status', 'text'],
+		['subscribe_date', 'datetime'],
+		['begin_date', 'datetime'],
+		['complete_date', 'datetime'],
+		['user_status', 'text'],
+		['score', 'text']
+    ];
 		
-	var $default_cols = array(	'id_user' 			=> '0', 
+	var $default_cols = ['id_user' 			=> '0',
 								'login' 			=> '', 
 								'user_name' 				=> '', 
 								'id_course' 		=> '0', 
@@ -72,7 +72,7 @@ class DoceboConnectorUserReport extends DoceboConnector {
 								'begin_date' 		=> '0000-00-00 00:00:00', 
 								'complete_date' 	=> '0000-00-00 00:00:00', 
 								'user_status' 		=> '', 
-								'score' 	=> '' );
+								'score' 	=> ''];
 	
 	
 	/**
@@ -92,8 +92,8 @@ class DoceboConnectorUserReport extends DoceboConnector {
 	}
 	
 	function get_config() {
-		return array( 	'name' => $this->name,
-						'description' => $this->description );
+		return ['name' => $this->name,
+						'description' => $this->description];
 	}
 	
 	function set_config( $params ) {
@@ -193,10 +193,10 @@ class DoceboConnectorUserReport extends DoceboConnector {
 		
 		$lang = DoceboLanguage::createInstance('userreport', 'lms');
 		
-		$col_descriptor = array();
+		$col_descriptor = [];
 		foreach($this->all_cols as $k => $col) {
 				
-			$col_descriptor[] = array(
+			$col_descriptor[] = [
 				DOCEBOIMPORT_COLNAME 		=> $lang->def('_'.strtoupper($col[0])),
 				DOCEBOIMPORT_COLID			=> $col[0],
 				DOCEBOIMPORT_COLMANDATORY 	=> false,
@@ -204,7 +204,7 @@ class DoceboConnectorUserReport extends DoceboConnector {
 				DOCEBOIMPORT_DEFAULT 		=> ( $in = array_search($col[0], $this->default_cols) === FALSE 
 													? '' 
 													: $this->default_cols[$in] )
-			);
+            ];
 		}
 		return $col_descriptor;
 	}
@@ -233,14 +233,14 @@ class DoceboConnectorUserReport extends DoceboConnector {
 		$result = sql_fetch_row($this->_query_result);
 		if(!$result) {
 			$this->_readed_end = true;
-			return array();
+			return [];
 		}
 		$this->row_index++;
 		
 		list($id_user, $login, $user_name, $id_course, $category,
 			$code, $name, $course_status, $subscribe_date, $date_first_access, $date_complete, $status_user, $score) = $result;
 		
-		$row = array(
+		$row = [
 			$id_user, 
 			$login,
             $user_name,
@@ -253,8 +253,8 @@ class DoceboConnectorUserReport extends DoceboConnector {
 			( $date_first_access !== NULL ? $date_first_access : '&nbsp;'), 
 			( $date_complete !== NULL ? $date_complete : '&nbsp;'), 
 			$this->_convertStatusUser($status_user),
-            $score 
-		);
+            $score
+        ];
 		
 		return $row;
 	}
@@ -263,7 +263,7 @@ class DoceboConnectorUserReport extends DoceboConnector {
 		
 		//$this->export_field_list
 		
-		$row = array();
+		$row = [];
 		if(!$this->_query_result) return false;
 		if(!$result = sql_fetch_row($this->_query_result)) {
 			$this->_readed_end = true;
@@ -274,7 +274,7 @@ class DoceboConnectorUserReport extends DoceboConnector {
         list($id_user, $login, $user_name, $id_course, $category,
             $code, $name, $course_status, $subscribe_date, $date_first_access, $date_complete, $status_user, $score) = $result;
         
-        $row = array(
+        $row = [
             $id_user, 
             $login,
             $user_name,
@@ -287,8 +287,8 @@ class DoceboConnectorUserReport extends DoceboConnector {
             ( $date_first_access !== NULL ? $date_first_access : '&nbsp;'), 
             ( $date_complete !== NULL ? $date_complete : '&nbsp;'), 
             $this->_convertStatusUser($status_user),
-            $score 
-        );
+            $score
+        ];
 
 		return $row;
 	}
@@ -438,7 +438,7 @@ class DoceboConnectorUserReportUI extends DoceboConnectorUI {
 
 function userreport_factory() {
 	
-	return new DoceboConnectorUserReport(array());
+	return new DoceboConnectorUserReport([]);
 }
 
 

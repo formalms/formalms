@@ -189,7 +189,7 @@ function mycourses(&$url) {
 	// career ------------------------------------------------------------------------
 	if($access_search_form) {
 		
-		$year_array = array(0 => $lang->def('_ALL_YEAR'));
+		$year_array = [0 => $lang->def('_ALL_YEAR')];
 		$query_year = "SELECT DISTINCT create_date" .
 			" FROM ".$GLOBALS['prefix_lms']."_course";
 		
@@ -244,7 +244,7 @@ function mycourses(&$url) {
 		$displayed = 0;
 		while(list($id_news, $publish_date, $title, $short_desc, $impo, $viewer) = sql_fetch_row($re_news)) {
 
-			$viewer = ( is_string($viewer) && $viewer != false ? unserialize($viewer) : array() );
+			$viewer = ( is_string($viewer) && $viewer != false ? unserialize($viewer) : []);
 			$intersect = array_intersect($user_assigned, $viewer);
 			if(!empty($intersect) || empty($viewer)) {
 
@@ -338,16 +338,16 @@ function userCourseList(&$url, $use_tab = true, $page_add = true) {
 
 
 
-	YuiLib::load(array(
+	YuiLib::load([
 		'animation' 		=> 'animation-min.js',
 		'dragdrop' 			=> 'dragdrop-min.js',
 		'button' 			=> 'button-min.js',
 		'container' 		=> 'container-min.js',
 		'my_window' 		=> 'windows.js'
-	), array(
+	], [
 		'container/assets/skins/sam' => 'container.css',
 		'button/assets/skins/sam' => 'button.css'
-	));
+	]);
 	
 	if ($page_add)
 		addJs($GLOBALS['where_lms_relative'].'/modules/coursecatalogue/', 'ajax.coursecatalogue.js');
@@ -381,28 +381,28 @@ function userCourseList(&$url, $use_tab = true, $page_add = true) {
 	}
 
 	// ------------------------------------------------------------------------
-	$course_stats = array(
+	$course_stats = [
 		'total' => 0,
 		'u_can_enter' => 0,
-		'with_status' => array(
+		'with_status' => [
 			CST_AVAILABLE => 0,
 			CST_EFFECTIVE => 0,
 			CST_CONCLUDED => 0,
 			CST_CANCELLED => 0
-		),
-		'with_ustatus' => array(
+		],
+		'with_ustatus' => [
 			_CUS_SUBSCRIBED => 0,
 			_CUS_BEGIN 		=> 0,
 			_CUS_END 		=> 0,
 			_CUS_SUSPEND 	=> 0,
-		),
-		'with_wstatus' => array(
+		],
+		'with_wstatus' => [
 			_CUS_RESERVED		=> 0,
-			_CUS_WAITING_LIST	=> 0),
-		'with_ulevel' => array(),
+			_CUS_WAITING_LIST	=> 0],
+		'with_ulevel' => [],
 		'expiring' => 0,
 		'cert_relesable' => 0
-	);
+	];
 	// ------------------------------------------------------------------------
 	
 	$filter = importVar('filter', false, 'total');
@@ -457,7 +457,7 @@ function userCourseList(&$url, $use_tab = true, $page_add = true) {
 		." FROM ".$GLOBALS['prefix_lms']."_courseuser AS u"
 		." WHERE idUser = '".getLogUserId()."'");
 	
-	$subscription = array();
+	$subscription = [];
 	while($cinfo = sql_fetch_assoc($subcourse_list)) {
 		
 		$subscription['course'][$cinfo['idCourse']] = $cinfo;
@@ -503,7 +503,7 @@ function userCourseList(&$url, $use_tab = true, $page_add = true) {
 	if ($tablist != '') {
 		
 		$arr_order_course = explode(',', $tablist );
-		$arr_temp = array();
+		$arr_temp = [];
 		foreach ($arr_order_course as $key=>$value) {
 			
 			switch ($value) {
@@ -540,7 +540,7 @@ function userCourseList(&$url, $use_tab = true, $page_add = true) {
 	
 	// --------------------------------------------------------------------------------
 	
-	$editions = array();
+	$editions = [];
 	if($re_edition)
 	while($edition_elem = sql_fetch_assoc($re_edition)) {
 		
@@ -556,7 +556,7 @@ function userCourseList(&$url, $use_tab = true, $page_add = true) {
 	
 	// -----------------------------------------------------------------------------
 	
-	$needed_info_for = array();
+	$needed_info_for = [];
 	if(!empty($subscription['course'])) {
 		
 		$id_course_list = array_keys($subscription['course']);
@@ -591,7 +591,7 @@ function userCourseList(&$url, $use_tab = true, $page_add = true) {
 			." AND u.absent = '0'"
 			." GROUP BY u.idCourse, u.edition_id ");
 	
-		$enrolled = array();
+		$enrolled = [];
 		while($cinfo = sql_fetch_assoc($enroll_list)) {
 			
 			$enrolled[$cinfo['idCourse']][$cinfo['edition_id']] = $cinfo['number'];
@@ -704,7 +704,7 @@ function userCourseList(&$url, $use_tab = true, $page_add = true) {
 	
 	while($cinfo = sql_fetch_assoc($re_course)) {
 		
-		$cinfo['edition_list'] 	= ( isset($editions[$cinfo['idCourse']]) ? $editions[$cinfo['idCourse']] : array() );
+		$cinfo['edition_list'] 	= ( isset($editions[$cinfo['idCourse']]) ? $editions[$cinfo['idCourse']] : []);
 		$cinfo['user_score'] 	= ( isset($user_score[$cinfo['idCourse']]) ? $user_score[$cinfo['idCourse']] : NULL );
 		$cinfo['enrolled'] 		= ( isset($enrolled[$cinfo['idCourse']]) ? $enrolled[$cinfo['idCourse']] : false );
 		
@@ -884,7 +884,7 @@ function userCourseList(&$url, $use_tab = true, $page_add = true) {
 		
 		// find course basilar information -------------------------------------
 		if(!empty($needed_info_for)) $course_info = $man_course->getAllCourses(false, false, $needed_info_for);
-		else $course_info = array();
+		else $course_info = [];
         
         foreach($coursepath as $id_path => 	$path) {
 			
@@ -912,8 +912,8 @@ function userCourseList(&$url, $use_tab = true, $page_add = true) {
 						
 						if($slot_info['min_selection'] > 0 && $slot_info['max_selection'] > 0) {
 							
-							$title = str_replace( 	array('[min_selection]', '[max_selection]'), 
-													array($slot_info['min_selection'], $slot_info['max_selection']), 
+							$title = str_replace( 	['[min_selection]', '[max_selection]'],
+													[$slot_info['min_selection'], $slot_info['max_selection']],
 													$lang->def('_COURSE_PATH_SLOT_MIN_MAX'));
 						} elseif($slot_info['max_selection'] > 0) {
 							
@@ -991,25 +991,25 @@ function dashmycourse(&$url, $lang, &$subscription, $cinfo, $index) {
 	require_once($GLOBALS['where_lms'].'/lib/lib.levels.php');
 	$lvl = CourseLevel::getLevels();
 	
-	$arr_status = array(_CUS_RESERVED 		=> $lang->def('_T_USER_STATUS_RESERVED'),
+	$arr_status = [_CUS_RESERVED 		=> $lang->def('_T_USER_STATUS_RESERVED'),
 						_CUS_WAITING_LIST 	=> $lang->def('_WAITING_USERS'),
 						_CUS_CONFIRMED 		=> $lang->def('_T_USER_STATUS_CONFIRMED'),
 						
 						_CUS_SUBSCRIBED 	=> $lang->def('_T_USER_STATUS_SUBS'),
 						_CUS_BEGIN 			=> $lang->def('_T_USER_STATUS_BEGIN'),
-						_CUS_END 			=> $lang->def('_T_USER_STATUS_END') );
+						_CUS_END 			=> $lang->def('_T_USER_STATUS_END')];
 	
 	DoceboLanguage::createInstance('course', 'lms');
 	
-	$arr_coursestatus = array(
+	$arr_coursestatus = [
 		CST_PREPARATION => $lang->def('_CST_PREPARATION', 'course', 'lms'), 
 		CST_AVAILABLE 	=> $lang->def('_CST_AVAILABLE', 'course', 'lms'), 
 		CST_EFFECTIVE 	=> $lang->def('_CST_CONFIRMED', 'course', 'lms'), 
 		CST_CONCLUDED 	=> $lang->def('_CST_CONCLUDED', 'course', 'lms'), 
-		CST_CANCELLED 	=> $lang->def('_CST_CANCELLED', 'course', 'lms') );
+		CST_CANCELLED 	=> $lang->def('_CST_CANCELLED', 'course', 'lms')];
 	
 	$course_type 	= $cinfo['course_type'];
-	$there_material	= array();
+	$there_material	= [];
 	
 	if($cinfo['img_othermaterial'] != '') $there_material[] = '&id_course='.$cinfo['idCourse'];
 	
@@ -1061,18 +1061,18 @@ function dashmycourse(&$url, $lang, &$subscription, $cinfo, $index) {
 		//if($cinfo['level'] >= 4) {
 		
 			$intest .= '<p class="course_support_info">'.
-				str_replace(	array('[course_type]', '[create_date]', '[enrolled]', '[course_status]'), 
-								array(	$course_type, 
+				str_replace(	['[course_type]', '[create_date]', '[enrolled]', '[course_status]'],
+								[$course_type,
 										createDateDistance($cinfo['create_date'], 'catalogue', true), 
 										( isset($cinfo['enrolled'][0]) ? $cinfo['enrolled'][0] : 0 ), 
-										$arr_coursestatus[$cinfo['course_status']]), 
+										$arr_coursestatus[$cinfo['course_status']]],
 								$lang->def('_COURSE_INTRO')).
 								
 				( $cinfo['date_begin'] != '0000-00-00' || $cinfo['date_end'] != '0000-00-00' 
 					? 
-						str_replace(	array('[date_begin]', '[date_end]'), 
-									array(	Format::date($cinfo['date_begin'], 'date'), 
-											Format::date($cinfo['date_end'], 'date')), 
+						str_replace(	['[date_begin]', '[date_end]'],
+									[Format::date($cinfo['date_begin'], 'date'),
+											Format::date($cinfo['date_end'], 'date')],
 									$lang->def('_COURSE_DATE'))
 					
 					: '' ).			
@@ -1082,8 +1082,8 @@ function dashmycourse(&$url, $lang, &$subscription, $cinfo, $index) {
 		if($cinfo['classrooms'] != '') {
 			
 			$intest .= '<p class="course_support_info">'.
-					str_replace(	array('[classrooms_name]', '[classrooms_location]'), 
-									array($cinfo['classrooms']['classroom'], $cinfo['classrooms']['location']), 
+					str_replace(	['[classrooms_name]', '[classrooms_location]'],
+									[$cinfo['classrooms']['classroom'], $cinfo['classrooms']['location']],
 									$lang->def('_IN_THE_CLASSROOM') 	)
 					.'</p>'; 
 		}
@@ -1162,19 +1162,19 @@ function dashmycourse(&$url, $lang, &$subscription, $cinfo, $index) {
 		//if($sub_info['level'] >= 4) {
 			
 			$intest .= '<p class="course_support_info">'
-				.str_replace(	array('[course_type]', '[create_date]', '[enrolled]', '[course_status]'), 
-								array(	$ed_info['edition_type'], 
+				.str_replace(	['[course_type]', '[create_date]', '[enrolled]', '[course_status]'],
+								[$ed_info['edition_type'],
 										createDateDistance($cinfo['create_date'], 'catalogue', true), 
 										$cinfo['enrolled'][$ed_id],
-										$arr_coursestatus[$ed_info['status']]), 
+										$arr_coursestatus[$ed_info['status']]],
 								$lang->def('_COURSE_INTRO'))
 				.'</p>';
 		//}
 		if($ed_info['classrooms'] != '') {
 			
 			$intest .= '<p class="course_support_info">'.
-					str_replace(	array('[classrooms_name]', '[classrooms_location]'), 
-									array($ed_info['classrooms']['classroom'], $ed_info['classrooms']['location']), 
+					str_replace(	['[classrooms_name]', '[classrooms_location]'],
+									[$ed_info['classrooms']['classroom'], $ed_info['classrooms']['location']],
 									$lang->def('_IN_THE_CLASSROOM') 	)
 					.'</p>'; 
 		}
@@ -1240,11 +1240,11 @@ function dashmycourse(&$url, $lang, &$subscription, $cinfo, $index) {
 			//if($sub_info['level'] >= 4) {
 			
 				$intest .= '<p class="course_support_info">'
-					.str_replace(	array('[course_type]', '[create_date]', '[enrolled]', '[course_status]'), 
-									array($ed_info['edition_type'], 
+					.str_replace(	['[course_type]', '[create_date]', '[enrolled]', '[course_status]'],
+									[$ed_info['edition_type'],
 											createDateDistance($cinfo['create_date'], 'catalogue', true), 
 											$cinfo['enrolled'][$ed_id],
-											$arr_coursestatus[$ed_info['status']]), 
+											$arr_coursestatus[$ed_info['status']]],
 									$lang->def('_COURSE_INTRO'))
 					.'</p>';
 			//}
@@ -1252,8 +1252,8 @@ function dashmycourse(&$url, $lang, &$subscription, $cinfo, $index) {
 			if($ed_info['classrooms'] != '') {
 				
 				$intest .= '<p class="course_support_info">'.
-						str_replace(	array('[classrooms_name]', '[classrooms_location]'), 
-										array($ed_info['classrooms']['classroom'], $ed_info['classrooms']['location']), 
+						str_replace(	['[classrooms_name]', '[classrooms_location]'],
+										[$ed_info['classrooms']['classroom'], $ed_info['classrooms']['location']],
 										$lang->def('_IN_THE_CLASSROOM') 	)
 						.'</p>'; 
 			}
@@ -1434,7 +1434,7 @@ function dashAcourse($id_course, $h_number) {
 	$where_edition 	= " WHERE idCourse = '".$id_course."' ";
 	$order_edition 	= " ORDER BY date_begin ";
 	$re_edition = sql_query($select_edition.$from_edition.$where_edition.$order_edition);
-	$editions = array();
+	$editions = [];
 	
 	if($re_edition)
 	while($edition_elem = sql_fetch_assoc($re_edition)) {
@@ -1458,7 +1458,7 @@ function dashAcourse($id_course, $h_number) {
 	}
 	
 	$cinfo['theacher_list'] = getSubscribed($cinfo['idCourse'], false, 6, true);
-	$cinfo['edition_list'] = ( isset($editions[$cinfo['idCourse']]) ? $editions[$cinfo['idCourse']] : array() );
+	$cinfo['edition_list'] = ( isset($editions[$cinfo['idCourse']]) ? $editions[$cinfo['idCourse']] : []);
 	$cinfo['edition_available'] = count($cinfo['edition_list']);
 	$cinfo['user_score'] = ( isset($user_score[$cinfo['idCourse']]) ? $user_score[$cinfo['idCourse']] : NULL );
 	

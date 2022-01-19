@@ -28,7 +28,7 @@ class SettingAdm extends Model
 
 	public function getPerm()
 	{
-		return array('view' => 'standard/view.png');
+		return ['view' => 'standard/view.png'];
 	}
 
 	/**
@@ -48,7 +48,7 @@ class SettingAdm extends Model
 
 		// $event = new \appCore\Events\Core\ConfigGetRegroupUnitsEvent();
 
-		$names = array(
+		$names = [
 			1 => 'Main_options',
 			3 => 'User',
 			4 => 'conf_lms',
@@ -61,7 +61,7 @@ class SettingAdm extends Model
 			11 => 'Sms',
 			12 => 'Social',
 			13 => 'Twig'
-		);
+        ];
 
 		if(SmtpAdm::isEnabledDatabase()) {
 			$names[SmtpAdm::SMTP_GROUP] = 'Smtp Settings';
@@ -76,7 +76,7 @@ class SettingAdm extends Model
 
 
 
-		$group = array();
+		$group = [];
 		while (list($id_regroup) = sql_fetch_row($re_regroup)) {
 			if (key_exists($id_regroup, $names)) {
 				$group[$id_regroup] = $names[$id_regroup];
@@ -173,7 +173,7 @@ class SettingAdm extends Model
 		$plat_man = &PlatformManager::createInstance();
 
 		$all_platform = $plat_man->getPlatformsInfo();
-		$code_list_home = array();
+		$code_list_home = [];
 
 		$html = Form::getOpenFieldset($lang->def('_LOAD_UNLOAD_PLATFORM'));
 		reset($all_platform);
@@ -265,12 +265,12 @@ class SettingAdm extends Model
 			while (list($pack, $var_name, $var_value, $value_type, $max_size) = sql_fetch_row($reSetting)) {
 				switch ($value_type) {
 					case "register_type": {
-							$layout = array(
+							$layout = [
 								"self" => Lang::t('_REGISTER_TYPE_SELF'),
 								"self_optin" => Lang::t('_REGISTER_TYPE_SELF_OPTIN'),
 								"moderate" => Lang::t('_REGISTER_TYPE_MODERATE'),
 								"admin" => Lang::t('_REGISTER_TYPE_ADMIN'),
-							);
+                            ];
 							echo Form::getDropdown(
 								Lang::t('_' . strtoupper($var_name), 'configuration'),
 								$var_name,
@@ -282,13 +282,13 @@ class SettingAdm extends Model
 						break;
 					case "registration_code_type": {
 
-							$layout = array(
+							$layout = [
 								"0" => Lang::t('_NONE'),
 								"tree_man" => Lang::t('_ASK_FOR_MANUAL_TREE_CODE'),
 								"tree_drop" => Lang::t('_ASK_FOR_DROPDOWN_TREE_CODE'),
 								// "tree_course" => Lang::t('_ASK_FOR_TREE_COURSE_CODE'),
 								"code_module" => Lang::t('_ASK_FOR_CODE_MODULE'),
-							);
+                            ];
 							echo Form::getDropdown(
 								Lang::t('_' . strtoupper($var_name), 'configuration'),
 								$var_name,
@@ -468,7 +468,7 @@ class SettingAdm extends Model
 								. '</div>'
 								. '</div>';
 
-							$row_item = str_replace(array("\r", "\n"), "", $row_item);
+							$row_item = str_replace(["\r", "\n"], "", $row_item);
 						}; ?>
 						</div>
 
@@ -519,11 +519,11 @@ class SettingAdm extends Model
 						break;
 					case "layout_chooser": {
 							//drop down hteditor
-							$layout = array(
+							$layout = [
 								'left' => Lang::t('_LAYOUT_LEFT'),
 								'over' => Lang::t('_LAYOUT_OVER'),
 								'right' => Lang::t('_LAYOUT_RIGHT')
-							);
+                            ];
 							echo Form::getDropdown(
 								Lang::t('_' . strtoupper($var_name), 'configuration'),
 								$var_name,
@@ -536,11 +536,11 @@ class SettingAdm extends Model
 						break;
 					case "pubflow_method_chooser": {
 							//drop down hteditor
-							$options = array(
+							$options = [
 								'onestate' => Lang::t('_PUBFLOW_ONESTATE'),
 								'twostate' => Lang::t('_PUBFLOW_TWOSTATE'),
 								'advanced' => Lang::t('_PUBFLOW_ADVANCED')
-							);
+                            ];
 							echo Form::getDropdown(
 								Lang::t('_' . strtoupper($var_name), 'configuration'),
 								$var_name,
@@ -556,7 +556,7 @@ class SettingAdm extends Model
 
 							$fl = new FieldList();
 							$all_fields = $fl->getAllFields();
-							$fields = array();
+							$fields = [];
 							foreach ($all_fields as $key => $val) {
 								$fields[$val[FIELD_INFO_ID]] = $val[FIELD_INFO_TRANSLATION];
 							}
@@ -571,13 +571,13 @@ class SettingAdm extends Model
 						}
 						break;
 					case "sel_sms_gateway": {
-							$options = array(
+							$options = [
 								'0' => Lang::t('_SMS_GATEWAY_AUTO'),
 								'1' => Lang::t('_SMS_GATEWAY_1'),
 								'2' => Lang::t('_SMS_GATEWAY_2'),
 								'3' => Lang::t('_SMS_GATEWAY_3'),
 								'4' => Lang::t('_SMS_GATEWAY_4')
-							);
+                            ];
 							echo Form::getDropdown(
 								Lang::t('_' . strtoupper($var_name), 'configuration'),
 								$var_name,
@@ -590,11 +590,11 @@ class SettingAdm extends Model
 						break;
 					case "layout_chooser": {
 							//drop down hteditor
-							$layout = array(
+							$layout = [
 								'left' => Lang::t('_LAYOUT_LEFT'),
 								'over' => Lang::t('_LAYOUT_OVER'),
 								'right' => Lang::t('_LAYOUT_RIGHT')
-							);
+                            ];
 							echo Form::getDropdown(
 								Lang::t('_' . strtoupper($var_name), 'configuration'),
 								$var_name,
@@ -606,10 +606,10 @@ class SettingAdm extends Model
 						};
 						break;
 					case "grpsel_chooser": {
-							$layout = array(
+							$layout = [
 								'group' => Lang::t('_GROUPS', 'configuration'),
 								'orgchart' => Lang::t('_ORGCHART', 'configuration')
-							);
+                            ];
 							echo Form::getDropdown(
 								Lang::t('_' . strtoupper($var_name), 'configuration'),
 								$var_name,
@@ -622,7 +622,7 @@ class SettingAdm extends Model
 						break;
 					case "tablist_mycourses": {
 							$arr_value = explode(',', $var_value);
-							$tab_list = array();
+							$tab_list = [];
 							$tab_list['status'] = Lang::t('_STATUS');
 							$tab_list['name'] = Lang::t('_NAME');
 							$tab_list['code'] = Lang::t('_CODE');
@@ -661,17 +661,17 @@ class SettingAdm extends Model
 						}
 						break;
 					case "rest_auth_sel_method": {
-							$value_set = array(
+							$value_set = [
 								Lang::t('_REST_AUTH_CODE', 'configuration') => 0,
 								Lang::t('_REST_AUTH_TOKEN', 'configuration') => 1,
 								Lang::t('_REST_AUTH_SECRET_KEY', 'configuration') => 2
-							);
+                            ];
 							echo Form::getRadioSet(Lang::t('_REST_AUTH_METHOD', 'configuration'), $var_name, 'option[' . $var_name . ']', $value_set, $var_value, $i_after);
 						}
 						break;
 
 					case "home_page_option": {
-							$tab_list = array();
+							$tab_list = [];
 							$tab_list['my_courses'] = Lang::t('_MY_COURSES');
 							$tab_list['catalogue'] = Lang::t('_CATALOGUE');
 							$tab_list['dashboard'] = Lang::t('_DASHBOARD');
@@ -737,10 +737,10 @@ class SettingAdm extends Model
 						break;
 					case "password_algorithms": {
 							//drop down hteditor
-							$layout = array(
+							$layout = [
 								1 => Lang::t('PASSWORD_BCRYPT'),
 								0 => Lang::t('PASSWORD_MD5')
-							);
+                            ];
 							echo Form::getDropdown(
 								Lang::t('_' . strtoupper($var_name), 'configuration'),
 								$var_name,
@@ -751,10 +751,10 @@ class SettingAdm extends Model
 						};
 						break;
 					case 'on_off': {
-							$layout = array(
+							$layout = [
 								'on' => Lang::t('ON'),
 								'off' => Lang::t('OFF')
-							);
+                            ];
 							echo Form::getDropdown(
 								Lang::t('_' . strtoupper($var_name), 'configuration'),
 								$var_name,
@@ -768,7 +768,7 @@ class SettingAdm extends Model
 					default: {
 							//string or int
 							echo Form::getTextfield(
-								Lang::t('_' . strtoupper($var_name), 'configuration', array(), false, false, $includeDisabledPlugins),
+								Lang::t('_' . strtoupper($var_name), 'configuration', [], false, false, $includeDisabledPlugins),
 								$var_name,
 								'option[' . $var_name . ']',
 								$max_size,
@@ -843,7 +843,7 @@ class SettingAdm extends Model
 					break;
 				case "tablist_coursecatalogue": {
 
-						$tab_selected = array();
+						$tab_selected = [];
 						foreach ($_POST['tablist'] as $tab_code => $v) {
 
 							$tab_selected[$tab_code] = 1;
@@ -853,7 +853,7 @@ class SettingAdm extends Model
 					break;
 
 				case "tablist_mycourses": {
-						$temp_arr = array();
+						$temp_arr = [];
 						for ($i = 0; $i < 3; $i++) {
 							$temp_var = $_POST['mycourses'][$i];
 							if ($temp_var != '' && !in_array($temp_var, $temp_arr)) //avoid repeated params

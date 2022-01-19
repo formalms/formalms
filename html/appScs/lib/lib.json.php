@@ -376,7 +376,7 @@ class Services_JSON
 
                 // treat as a JSON object
                 if (is_array($var) && count($var) && (array_keys($var) !== range(0, sizeof($var) - 1))) {
-                    $properties = array_map(array($this, 'name_value'),
+                    $properties = array_map([$this, 'name_value'],
                                             array_keys($var),
                                             array_values($var));
 
@@ -390,7 +390,7 @@ class Services_JSON
                 }
 
                 // treat it like a regular array
-                $elements = array_map(array($this, 'encode'), $var);
+                $elements = array_map([$this, 'encode'], $var);
 
                 foreach($elements as $element) {
                     if(Services_JSON::isError($element)) {
@@ -403,7 +403,7 @@ class Services_JSON
             case 'object':
                 $vars = get_object_vars($var);
 
-                $properties = array_map(array($this, 'name_value'),
+                $properties = array_map([$this, 'name_value'],
                                         array_keys($vars),
                                         array_values($vars));
 
@@ -452,7 +452,7 @@ class Services_JSON
     */
     function reduce_string($str)
     {
-        $str = preg_replace(array(
+        $str = preg_replace([
 
                 // eliminate single line comments in '// ...' form
                 '#^\s*//(.+)$#m',
@@ -463,7 +463,7 @@ class Services_JSON
                 // eliminate multi-line comments in '/* ... */' form, at end of string
                 '#/\*(.+)\*/\s*$#Us'
 
-            ), '', $str);
+        ], '', $str);
 
         // eliminate extraneous space
         return trim($str);
@@ -496,7 +496,7 @@ class Services_JSON
                 return null;
 
             default:
-                $m = array();
+                $m = [];
 
                 if (is_numeric($str)) {
                     // Lookie-loo, it's a number
@@ -611,21 +611,21 @@ class Services_JSON
                     // array, or object notation
 
                     if ($str[0] == '[') {
-                        $stk = array(SERVICES_JSON_IN_ARR);
-                        $arr = array();
+                        $stk = [SERVICES_JSON_IN_ARR];
+                        $arr = [];
                     } else {
                         if ($this->use & SERVICES_JSON_LOOSE_TYPE) {
-                            $stk = array(SERVICES_JSON_IN_OBJ);
-                            $obj = array();
+                            $stk = [SERVICES_JSON_IN_OBJ];
+                            $obj = [];
                         } else {
-                            $stk = array(SERVICES_JSON_IN_OBJ);
+                            $stk = [SERVICES_JSON_IN_OBJ];
                             $obj = new stdClass();
                         }
                     }
 
-                    array_push($stk, array('what'  => SERVICES_JSON_SLICE,
+                    array_push($stk, ['what'  => SERVICES_JSON_SLICE,
                                            'where' => 0,
-                                           'delim' => false));
+                                           'delim' => false]);
 
                     $chrs = substr($str, 1, -1);
                     $chrs = $this->reduce_string($chrs);
@@ -653,7 +653,7 @@ class Services_JSON
                             // found a comma that is not inside a string, array, etc.,
                             // OR we've reached the end of the character list
                             $slice = substr($chrs, $top['where'], ($c - $top['where']));
-                            array_push($stk, array('what' => SERVICES_JSON_SLICE, 'where' => ($c + 1), 'delim' => false));
+                            array_push($stk, ['what' => SERVICES_JSON_SLICE, 'where' => ($c + 1), 'delim' => false]);
                             //print("Found split at {$c}: ".substr($chrs, $top['where'], (1 + $c - $top['where']))."\n");
 
                             if (reset($stk) == SERVICES_JSON_IN_ARR) {
@@ -665,7 +665,7 @@ class Services_JSON
                                 // out the property name and set an
                                 // element in an associative array,
                                 // for now
-                                $parts = array();
+                                $parts = [];
                                 
                                 if (preg_match('/^\s*(["\'].*[^\\\]["\'])\s*:\s*(\S.*),?$/Uis', $slice, $parts)) {
                                     // "name":value pair
@@ -693,7 +693,7 @@ class Services_JSON
 
                         } elseif ((($chrs[$c] == '"') || ($chrs[$c] == "'")) && ($top['what'] != SERVICES_JSON_IN_STR)) {
                             // found a quote, and we are not inside a string
-                            array_push($stk, array('what' => SERVICES_JSON_IN_STR, 'where' => $c, 'delim' => $chrs[$c]));
+                            array_push($stk, ['what' => SERVICES_JSON_IN_STR, 'where' => $c, 'delim' => $chrs[$c]]);
                             //print("Found start of string at {$c}\n");
 
                         } elseif (($chrs[$c] == $top['delim']) &&
@@ -706,9 +706,9 @@ class Services_JSON
                             //print("Found end of string at {$c}: ".substr($chrs, $top['where'], (1 + 1 + $c - $top['where']))."\n");
 
                         } elseif (($chrs[$c] == '[') &&
-                                 in_array($top['what'], array(SERVICES_JSON_SLICE, SERVICES_JSON_IN_ARR, SERVICES_JSON_IN_OBJ))) {
+                                 in_array($top['what'], [SERVICES_JSON_SLICE, SERVICES_JSON_IN_ARR, SERVICES_JSON_IN_OBJ])) {
                             // found a left-bracket, and we are in an array, object, or slice
-                            array_push($stk, array('what' => SERVICES_JSON_IN_ARR, 'where' => $c, 'delim' => false));
+                            array_push($stk, ['what' => SERVICES_JSON_IN_ARR, 'where' => $c, 'delim' => false]);
                             //print("Found start of array at {$c}\n");
 
                         } elseif (($chrs[$c] == ']') && ($top['what'] == SERVICES_JSON_IN_ARR)) {
@@ -717,9 +717,9 @@ class Services_JSON
                             //print("Found end of array at {$c}: ".substr($chrs, $top['where'], (1 + $c - $top['where']))."\n");
 
                         } elseif (($chrs[$c] == '{') &&
-                                 in_array($top['what'], array(SERVICES_JSON_SLICE, SERVICES_JSON_IN_ARR, SERVICES_JSON_IN_OBJ))) {
+                                 in_array($top['what'], [SERVICES_JSON_SLICE, SERVICES_JSON_IN_ARR, SERVICES_JSON_IN_OBJ])) {
                             // found a left-brace, and we are in an array, object, or slice
-                            array_push($stk, array('what' => SERVICES_JSON_IN_OBJ, 'where' => $c, 'delim' => false));
+                            array_push($stk, ['what' => SERVICES_JSON_IN_OBJ, 'where' => $c, 'delim' => false]);
                             //print("Found start of object at {$c}\n");
 
                         } elseif (($chrs[$c] == '}') && ($top['what'] == SERVICES_JSON_IN_OBJ)) {
@@ -728,9 +728,9 @@ class Services_JSON
                             //print("Found end of object at {$c}: ".substr($chrs, $top['where'], (1 + $c - $top['where']))."\n");
 
                         } elseif (($substr_chrs_c_2 == '/*') &&
-                                 in_array($top['what'], array(SERVICES_JSON_SLICE, SERVICES_JSON_IN_ARR, SERVICES_JSON_IN_OBJ))) {
+                                 in_array($top['what'], [SERVICES_JSON_SLICE, SERVICES_JSON_IN_ARR, SERVICES_JSON_IN_OBJ])) {
                             // found a comment start, and we are in an array, object, or slice
-                            array_push($stk, array('what' => SERVICES_JSON_IN_CMT, 'where' => $c, 'delim' => false));
+                            array_push($stk, ['what' => SERVICES_JSON_IN_CMT, 'where' => $c, 'delim' => false]);
                             $c++;
                             //print("Found start of comment at {$c}\n");
 

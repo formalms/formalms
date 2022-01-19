@@ -36,7 +36,7 @@ class CoursepathLms extends Model {
 			." ORDER BY cp.path_name";
 		$result = sql_query($query);
 
-		$res = array();
+		$res = [];
 		while($row = sql_fetch_assoc($result)) {
 			$res[$row['id_path']] = $row;
 		}
@@ -86,7 +86,7 @@ class CoursepathLms extends Model {
 	}
 	
 
-	public function getCoursepathCourseDetails($array_coursepath = array(), $id_user = false)
+	public function getCoursepathCourseDetails($array_coursepath = [], $id_user = false)
 	{
 		$query =	"SELECT c.idCourse, c.name, c.course_type, c.course_edition, cu.status, cpc.prerequisites, cpc.id_path, cpc.sequence"
 					." FROM %lms_course AS c"
@@ -97,7 +97,7 @@ class CoursepathLms extends Model {
 					." ORDER BY cpc.id_path, cpc.sequence";
 
 		$result = sql_query($query);
-		$res = array();
+		$res = [];
 
 		while($row = sql_fetch_assoc($result))
 			$res[$row['id_path']][$row['idCourse']] = $row;
@@ -120,7 +120,7 @@ class CoursepathLms extends Model {
     
     
     public function getFilterYears($id_user) {
-        $output = array(0 => Lang::t("_ALL_YEARS", 'course'));
+        $output = [0 => Lang::t("_ALL_YEARS", 'course')];
         $db = DbConn::getInstance();
 
         $query = "SELECT DISTINCT YEAR(date_assign) AS inscr_year "

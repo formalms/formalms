@@ -29,27 +29,27 @@ class CalendarLmsController extends LmsController {
 
 	public function showTask() {
 
-		$this->render('_tabs', array());
+		$this->render('_tabs', []);
 	}
 
 	public function allTask() {
 
-		$this->render('calendar', array());
+		$this->render('calendar', []);
 	}
 
 	public function courseTask() {
 
-		$this->render('calendar', array());
+		$this->render('calendar', []);
 	}
 
 	public function communicationTask() {
 
-		$this->render('calendar', array());
+		$this->render('calendar', []);
 	}
 
 	public function videoconferenceTask() {
 
-		$this->render('calendar', array());
+		$this->render('calendar', []);
 	}
 
 }

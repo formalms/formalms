@@ -22,13 +22,13 @@ class CompetencesAdm extends Model {
 	}
 
 	public function getPerm()	{
-		return array(
+		return [
 			'view'						=> 'standard/view.png',
 			'add'							=> 'standard/add.png',
 			'mod'							=> 'standard/edit.png',
 			'del'							=> 'standard/delete.png',
 			'associate_user'	=> 'standard/moduser.png'
-		);
+        ];
 	}
 
 
@@ -66,18 +66,18 @@ class CompetencesAdm extends Model {
 
 
 	public function getCompetenceTypologies() {
-		return array(
+		return [
 			'skill' => Lang::t('_COMPETENCES_TYPOLOGY_SKILL', 'competences'),
 			'attitude' => Lang::t('_COMPETENCES_TYPOLOGY_ATTITUDE', 'competences'),
 			'knowledge' => Lang::t('_COMPETENCES_TYPOLOGY_KNOWLEDGE', 'competences')
-		);
+        ];
 	}
 
 	public function getCompetenceTypes() {
-		return array(
+		return [
 			'score' => Lang::t('_SCORE', 'competences'),
 			'flag' => Lang::t('_TYPE_FLAG', 'competences')
-		);
+        ];
 	}
 
 
@@ -96,7 +96,7 @@ class CompetencesAdm extends Model {
 		//count competences contained in each extracted node
 		$count_competences = $this->getCategoryCompetencesCount();
 
-		$output = array();
+		$output = [];
 		while(list($id, $translation, $level, $left, $right) = $this->db->fetch_row($res)) {
 			$label = $translation;
 			$is_leaf = ($right-$left) == 1;
@@ -104,14 +104,14 @@ class CompetencesAdm extends Model {
 			$style = false;
 		
 			//set node for output
-			$output[$id] = array(
+			$output[$id] = [
 				'id' => $id,
 				'label' => $label,
 				'is_leaf' => $is_leaf,
 				'count_content' => $count,
 				'count_objects' => (isset($count_competences[$id]) ? (int)$count_competences[$id] : 0),
 				'style' => $style
-			);
+            ];
 		}
 
 		return array_values($output);
@@ -122,7 +122,7 @@ class CompetencesAdm extends Model {
 	 * returns an ordered list of ids (like a path)
 	 */
 	public function getOpenedCategories($node_id, $language = false) {
-		$folders = array(0);
+		$folders = [0];
 		if (!$language) $language = getLanguage();
 		if ($node_id <= 0) return $folders;
 		list($ileft, $iright) = $this->getCategoryLimits($node_id);
@@ -139,7 +139,7 @@ class CompetencesAdm extends Model {
 
 
 	public function getInitialCategories($node_id, $language = false) {
-		$results = array();
+		$results = [];
 
 		$folders = $this->getOpenedCategories($node_id);
 		if ($folders === false) return false;
@@ -150,7 +150,7 @@ class CompetencesAdm extends Model {
 			if ($folder > 0) {
 				for ($i=0; $i<count($ref); $i++) {
 					if ($ref[$i]['node']['id'] == $folder) {
-						$ref[$i]['children'] = array();
+						$ref[$i]['children'] = [];
 						$ref =& $ref[$i]['children'];
 						break;
 					}
@@ -159,17 +159,17 @@ class CompetencesAdm extends Model {
 
 			$children = $this->getCategories($folder, $language);
 			foreach ($children as $child) {
-				$ref[] = array(
-					'node' => array(
+				$ref[] = [
+					'node' => [
 						'id' => $child['id'],
 						'label' => $child['label'],
 						'is_leaf' => $child['is_leaf'],
 						'count_content' => $child['count_content'],
 						'count_objects' => $child['count_objects'],
-						'options' => array(),
+						'options' => [],
 						'style' => false
-					)
-				);
+                    ]
+                ];
 			}
 		}
 
@@ -185,7 +185,7 @@ class CompetencesAdm extends Model {
 			." WHERE t1.id_category = '".(int)$id_category."' ORDER BY t2.translation";
 		$res = $this->db->query($query);
 
-		$output = array();
+		$output = [];
 		while ($obj = $this->db->fetch_obj($res)) {
 			$output[] = $obj;
 		}
@@ -195,7 +195,7 @@ class CompetencesAdm extends Model {
 
 
 	public function getCategoryCompetencesCount() {
-		$output = array();
+		$output = [];
 		$query = "SELECT id_category, COUNT(*) FROM ".$this->_getCompetencesTable()." GROUP BY id_category";
 		$res = $this->db->query($query);
 		while (list($id_category, $count) = $this->db->fetch_row($res)) {
@@ -232,7 +232,7 @@ class CompetencesAdm extends Model {
 		$query = "SELECT id_category FROM ".$this->_getCategoriesTable()." "
 			." WHERE iLeft >= ".(int)$left." AND iRight <= ".(int)$right;
 		$res = $this->db->query($query);
-		$output = array();
+		$output = [];
 		if ($id_category <= 0) $output[] = 0;
 		if ($res) {
 			while (list($sub) = $this->db->fetch_row($res))
@@ -285,7 +285,7 @@ class CompetencesAdm extends Model {
 
 	public function getCompetencesList($id_category, $descendants, $pagination, $filter = false) {
 		//check if descendants are requested
-		$categories = array();
+		$categories = [];
 		if ($descendants) {
 			//retrieve sub categories folders and their id
 			$categories = $this->getSubCategories($id_category);
@@ -295,7 +295,7 @@ class CompetencesAdm extends Model {
 		}
 
 		//validate pagination data
-		if (!is_array($pagination)) $pagination = array();
+		if (!is_array($pagination)) $pagination = [];
 		$_startIndex = (isset($pagination['startIndex']) ? (int)$pagination['startIndex'] : 0);
 	    $_results = (isset($pagination['results']) ? (int)$pagination['results'] : Get::sett('visuItem', 25));
 		$_sort = 't2.name';
@@ -338,7 +338,7 @@ class CompetencesAdm extends Model {
 		$res = $this->db->query($query);
 
 		//extract records from database
-		$output = array();
+		$output = [];
 		if ($res && $this->db->num_rows($res)>0) {
 			//$_arr_competences = array();
 			while ($obj = $this->db->fetch_obj($res)) {
@@ -347,7 +347,7 @@ class CompetencesAdm extends Model {
 
 			if (count($output) > 0) {
 				//count users with competence for every competence
-				$_users = array();
+				$_users = [];
 				$query = "SELECT id_competence, COUNT(*) as count FROM ".$this->_getCompetencesUsersTable()." "
 					." WHERE id_competence IN (".implode(",", array_keys($output)).") GROUP BY id_competence";
 				$res = $this->db->query($query);
@@ -359,7 +359,7 @@ class CompetencesAdm extends Model {
 				}
 
 				//for every competence, count courses assigned
-				$_courses = array();
+				$_courses = [];
 				$query = "SELECT id_competence, COUNT(*) as count FROM ".$this->_getCompetencesCoursesTable()." "
 					." WHERE id_competence IN (".implode(",", array_keys($output)).") GROUP BY id_competence";
 				$res = $this->db->query($query);
@@ -380,7 +380,7 @@ class CompetencesAdm extends Model {
 
 	public function getCompetencesTotal($id_category, $descendants, $filter = false) {
 		//check if descendants are requested
-		$categories = array();
+		$categories = [];
 		if ($descendants) {
 			//retrieve sub categories folders and their id
 			$categories = $this->getSubCategories($id_category);
@@ -418,7 +418,7 @@ class CompetencesAdm extends Model {
 
 
 	public function getAllCategories($language = false, $keys = false) {
-		$output = array();
+		$output = [];
 		$_language = (!$language ? getLanguage() : $language);
 		$query = "SELECT c.id_category, c.id_parent, c.level, c.iLeft, c.iRight, cl.name, cl.description, cl.lang_code "
 			." FROM ".$this->_getCategoriesTable()." as c "
@@ -442,7 +442,7 @@ class CompetencesAdm extends Model {
 	 * returns a flat list of all the competences, in a given language
 	 */
 	public function getAllCompetences($language = false, $keys = false) {
-		$output = array();
+		$output = [];
 		$_language = (!$language ? getLanguage() : $language);
 		$query = "SELECT c.id_competence, c.id_category, c.typology, c.type, cl.name, cl.description "
 			." FROM ".$this->_getCompetencesTable()." as c "
@@ -472,12 +472,12 @@ class CompetencesAdm extends Model {
 
 		//initialize languages array
 		$lang_codes = Docebo::langManager()->getAllLangCode();
-		$langs = array();
+		$langs = [];
 		for ($i=0; $i<count($lang_codes); $i++) {
-			$langs[$lang_codes[$i]] = array(
+			$langs[$lang_codes[$i]] = [
 				'name' => '',
 				'description' => ''
-			);
+            ];
 		}
 
 		//extract languages from database
@@ -519,12 +519,12 @@ class CompetencesAdm extends Model {
 
 		//initialize languages array
 		$lang_codes = Docebo::langManager()->getAllLangCode();
-		$langs = array();
+		$langs = [];
 		for ($i=0; $i<count($lang_codes); $i++) {
-			$langs[$lang_codes[$i]] = array(
+			$langs[$lang_codes[$i]] = [
 				'name' => '',
 				'description' => ''
-			);
+            ];
 		}
 
 		//extract languages from database
@@ -544,12 +544,12 @@ class CompetencesAdm extends Model {
 
 
 	public function getCompetencesInfo($arr_competences) {
-		if (is_numeric($arr_competences)) $arr_competences = array($arr_competences);
+		if (is_numeric($arr_competences)) $arr_competences = [$arr_competences];
 		if (!is_array($arr_competences)) return false;
-		if (count($arr_competences) <= 0) return array();
+		if (count($arr_competences) <= 0) return [];
 
 		//extract competence data
-		$output = array();
+		$output = [];
 		$query = "SELECT * FROM ".$this->_getCompetencesTable()." "
 			." WHERE id_competence IN (".implode(',', $arr_competences).")";
 		$res = $this->db->query($query);
@@ -563,14 +563,14 @@ class CompetencesAdm extends Model {
 
 		//initialize languages array
 		$lang_codes = Docebo::langManager()->getAllLangCode();
-		$_void_lang_arr = array();
+		$_void_lang_arr = [];
 		for ($i=0; $i<count($lang_codes); $i++) {
-			$_void_lang_arr[$lang_codes[$i]] = array(
+			$_void_lang_arr[$lang_codes[$i]] = [
 				'name' => '',
 				'description' => ''
-			);
+            ];
 		}
-		$langs = array();
+		$langs = [];
 		$_arr_competences = array_keys($output);
 		foreach ($_arr_competences as $id_competence) {
 			$langs[$id_competence] = $_void_lang_arr;
@@ -639,7 +639,7 @@ class CompetencesAdm extends Model {
 				$id = $this->db->insert_id();
 
 				//insert languages in database
-				$conditions = array();
+				$conditions = [];
 				foreach ($langs as $lang_code => $translation) { //TO DO: check if lang_code exists ...
 					$name = $translation['name'];
 					$description = $translation['description'];
@@ -661,7 +661,7 @@ class CompetencesAdm extends Model {
 	public function updateCategory($id_category, $langs) {
 		$output = false;
 
-		$prev_lang = array();
+		$prev_lang = [];
 		$re = $this->db->query("SELECT lang_code FROM ".$this->_getCategoriesLangTable()." WHERE id_category = ".(int)$id_category);
 		while(list($lang_code) = $this->db->fetch_row($re)) {
 			$prev_lang[$lang_code] = $lang_code;
@@ -776,7 +776,7 @@ class CompetencesAdm extends Model {
 				$id = $this->db->insert_id();
 
 				//insert languages in database
-				$conditions = array();
+				$conditions = [];
 				foreach ($params->langs as $lang_code => $translation) { //TO DO: check if lang_code exists ...
 					$name = $translation['name'];
 					$description = $translation['description'];
@@ -803,7 +803,7 @@ class CompetencesAdm extends Model {
 		//check if given id is valid
 		if ($id_competence <= 0) return false;
 
-		$conditions = array();
+		$conditions = [];
 
 		if (property_exists($params, 'id_category')) $conditions[] = " id_category = '".$params->id_category."' ";
 		if (property_exists($params, 'typology')) $conditions[] = " typology = '".$params->typology."' ";
@@ -823,7 +823,7 @@ class CompetencesAdm extends Model {
 			//insert languages in database
 			if (property_exists($params, 'langs')) {
 				$langs = Docebo::langManager()->getAllLangcode();
-				$arr_langs = array();
+				$arr_langs = [];
 				foreach ($langs as $lang_code) {
 					if (isset($params->langs[$lang_code])) {
 						$_name = $params->langs[$lang_code]['name'];
@@ -832,19 +832,19 @@ class CompetencesAdm extends Model {
 						$_name = "";
 						$_description = "";
 					}
-					$arr_langs[$lang_code] = array(
+					$arr_langs[$lang_code] = [
 						'name' => $_name,
 						'description' => $_description
-					);
+                    ];
 				}
 
-				$prev_lang = array();
+				$prev_lang = [];
 				$re = $this->db->query("SELECT lang_code FROM ".$this->_getCompetencesLangTable()." WHERE id_competence = ".(int)$id_competence);
 				while(list($lang_code) = $this->db->fetch_row($re)) {
 					$prev_lang[$lang_code] = $lang_code;
 				}
 
-				$conditions = array();
+				$conditions = [];
 				foreach ($arr_langs as $lang_code => $translation) { //TO DO: check if lang_code exists ...
 					$name = $translation['name'];
 					$description = $translation['description'];
@@ -927,9 +927,9 @@ class CompetencesAdm extends Model {
 		$output = false;
 		$query = "SELECT idst FROM ".$this->_getCompetencesRequiredTable()." WHERE id_competence = ".(int)$id_competence;
 		$res = $this->db->query($query);
-		$list = array();
+		$list = [];
 		if ($res) {
-			$output = array();
+			$output = [];
 			while (list($idst) = $this->db->fetch_row($res)) {
 				$list[] = $idst;
 			}
@@ -949,7 +949,7 @@ class CompetencesAdm extends Model {
 	public function getCompetenceUsersList($id_competence, $pagination, $filter = false) {
 
 		//validate pagination data
-		if (!is_array($pagination)) $pagination = array();
+		if (!is_array($pagination)) $pagination = [];
 		$_startIndex = (isset($pagination['startIndex']) ? (int)$pagination['startIndex'] : 0);
 		$_results = (isset($pagination['results']) ? (int)$pagination['results'] : Get::sett('visuItem', 25));
 		$_sort = 'u.userid';
@@ -990,7 +990,7 @@ class CompetencesAdm extends Model {
 			." LIMIT ".(int)$_startIndex.", ".(int)$_results;
 		$res = $this->db->query($query);
 
-		$output = array();
+		$output = [];
 		if ($res && $this->db->num_rows($res) > 0) {
 			while ($obj = $this->db->fetch_obj($res)) {
 				$output[] = $obj;
@@ -1043,7 +1043,7 @@ class CompetencesAdm extends Model {
 		}
 		$res = $this->db->query($query);
 		if ($res) {
-			$output = array();
+			$output = [];
 			while ($obj = $this->db->fetch_obj($res)) {
 				if ($userdata) {
 					$output[$obj->id_user] = $obj;
@@ -1062,7 +1062,7 @@ class CompetencesAdm extends Model {
 		if (count($users) <= 0) return true; //0 users operations always "successfull"
 
 		//set insert values for query
-		$values = array();
+		$values = [];
 		foreach ($users as $id_user => $score) {
 			if ($score > 0) {
 				$values[] = "("
@@ -1104,7 +1104,7 @@ class CompetencesAdm extends Model {
 
 	public function modifyCompetenceUsers($id_competence, $users, $params, $track = false) {
 		if ($id_competence <= 0) return false; //invalid competence
-		if (is_numeric($users)) $users = array($users);
+		if (is_numeric($users)) $users = [$users];
 		if (!is_array($users)) return false;
 		if (count($users) <= 0) return true;
 
@@ -1136,7 +1136,7 @@ class CompetencesAdm extends Model {
 
 	public function removeCompetenceUsers($id_competence, $users, $track = false) {
 		if ($id_competence <= 0) return false; //invalid competence
-		if (is_numeric($users)) $users = array($users);
+		if (is_numeric($users)) $users = [$users];
 		if (!is_array($users)) return false;
 		if (count($users) <= 0) return true;
 
@@ -1165,7 +1165,7 @@ class CompetencesAdm extends Model {
 	 * when a user is deleted, then remove all of his references in competences tables
 	 */
 	public function removeUsersFromCompetences($users) {
-		if (is_numeric($users)) $users = array($users);
+		if (is_numeric($users)) $users = [$users];
 		if (!is_array($users)) return false;
 		if (count($users) <= 0) return true;
 
@@ -1180,7 +1180,7 @@ class CompetencesAdm extends Model {
 	 */
 	public function addScoreToUsers($id_competence, $users, $score, $update_date = true, $track = false) {
 		if ($id_competence <= 0) return false; //invalid competence
-		if (is_numeric($users)) $users = array($users);
+		if (is_numeric($users)) $users = [$users];
 		if (!is_array($users)) return false;
 		if (count($users) <= 0) return true;
 
@@ -1210,7 +1210,7 @@ class CompetencesAdm extends Model {
 		if ($id_course <= 0) return false; //invalid course
 
 		//validate pagination data
-		if (!is_array($pagination)) $pagination = array();
+		if (!is_array($pagination)) $pagination = [];
 		$_startIndex = (isset($pagination['startIndex']) ? (int)$pagination['startIndex'] : 0);
 		$_results = (isset($pagination['results']) ? (int)$pagination['results'] : Get::sett('visuItem', 25));
 		$_sort = 'cl.name';
@@ -1251,7 +1251,7 @@ class CompetencesAdm extends Model {
 		$res = $this->db->query($query);
 
 		//extract records from database
-		$output = array();
+		$output = [];
 		if ($res && $this->db->num_rows($res)>0) {
 			while ($obj = $this->db->fetch_obj($res)) {
 				$output[] = $obj;
@@ -1297,7 +1297,7 @@ class CompetencesAdm extends Model {
 	public function getCourseCompetences($id_course, $details = false) {
 		if ($id_course <= 0) return false; //invalid course
 
-		$output = array();
+		$output = [];
 		$query = "SELECT * FROM ".$this->_getCompetencesCoursesTable()." WHERE id_course=".(int)$id_course;
 		$res = $this->db->query($query);
 		if ($res) {
@@ -1322,7 +1322,7 @@ class CompetencesAdm extends Model {
 		if (!is_array($scores)) return false; //invalid input
 		if (count($scores) <= 0) return true; //0 inputs operation always "successfull"
 
-		$values = array();
+		$values = [];
 		foreach ($scores as $id_competence=>$score) {
 			if ((int)$id_course > 0 && (int)$id_competence > 0)
 				$values[] = "(".(int)$id_course.", ".(int)$id_competence.", '".(float)$score."')";
@@ -1339,7 +1339,7 @@ class CompetencesAdm extends Model {
 	public function deleteCourseCompetences($id_course, $competences) {
 		if ($id_course <= 0) return false; //invalid course
 		if (is_numeric($competences) && $competences <= 0) return false; //invalid input
-		if (is_numeric($competences)) $competences = array($competences);
+		if (is_numeric($competences)) $competences = [$competences];
 		if (!is_array($competences)) return false; //invalid input
 		if (count($competences) <= 0) return true; //0 inputs operation always "successfull"
 
@@ -1402,7 +1402,7 @@ class CompetencesAdm extends Model {
 	 */
 	public function getUserCompetences($id_user, $fncroles = false) {
 		if ($id_user <= 0) return false;
-		$output = array();
+		$output = [];
 		$query = "SELECT * FROM ".$this->_getCompetencesUsersTable()." WHERE id_user=".(int)$id_user." AND score_got>0";
 		$res = $this->db->query($query);
 		if ($res) {
@@ -1442,14 +1442,14 @@ class CompetencesAdm extends Model {
 	 */
 	public function getCategoriesLangs() {
 		//initialize output
-		$output = array();
+		$output = [];
 		$lang_codes = Docebo::langManager()->getAllLangCode();
-		$_langs = array();
+		$_langs = [];
 		for ($i=0; $i<count($lang_codes); $i++) {
-			$_langs[$lang_codes[$i]] = array(
+			$_langs[$lang_codes[$i]] = [
 				'name' => '',
 				'description' => ''
-			);
+            ];
 		}
 		$query = "SELECT id_category FROM ".$this->_getCategoriesTable();
 		$res = $this->db->query($query);
@@ -1481,7 +1481,7 @@ class CompetencesAdm extends Model {
 
 	public function searchCompetencesByName($query, $limit) {
 		if ((int)$limit <= 0) $limit = Get::sett('visuItem', 25);
-		$output = array();
+		$output = [];
 
 		$query = "SELECT c.id_competence, cl.name, c.type, c.typology "
 			." FROM ".$this->_getCompetencesTable()." as c LEFT JOIN ".$this->_getCompetencesLangTable()." as cl "
@@ -1515,7 +1515,7 @@ class CompetencesAdm extends Model {
 			if (array_key_exists($id_competence, $ucomps)) { //check if the competence already exists for the user
 				$res = $this->addScoreToUsers($id_competence, $id_user, $competence->score);
 			} else {
-				$user_score = array($id_user => $competence->score);
+				$user_score = [$id_user => $competence->score];
 				$res = $this->assignCompetenceUsers($id_competence, $user_score);
 			}
 			
@@ -1552,7 +1552,7 @@ class CompetencesAdm extends Model {
 
 	public function trackOperation($id_competence, $users, $params) {
 		if ($id_competence <= 0) return false;
-		if (is_numeric($users)) $users = array((int)$users);
+		if (is_numeric($users)) $users = [(int)$users];
 		if (!is_array($users)) return false;
 		if (count($users) <= 0) return true;
 
@@ -1565,7 +1565,7 @@ class CompetencesAdm extends Model {
 		$_score_total = property_exists($params, 'score_total') ? (int)$params->score_total : 0; //the total score of the user at the moment of the tracking
 
 		if ($_operation == 'manual_addscore') { //assumes that score adding operation has already been executed
-			$new_scores = array();
+			$new_scores = [];
 			$query = "SELECT id_user, score_got FROM ".$this->_getCompetencesUsersTable()." "
 				." WHERE id_competence=".(int)$id_competence." AND id_user IN (".implode(",", $users).")";
 			$res = $this->db->query($query);
@@ -1574,7 +1574,7 @@ class CompetencesAdm extends Model {
 			}
 		}
 
-		$records = array();
+		$records = [];
 		foreach ($users as $id_user) {
 			if ($_operation == 'manual_addscore' && isset($new_scores[$id_user]))
 				$_score_total = $new_scores[$id_user];

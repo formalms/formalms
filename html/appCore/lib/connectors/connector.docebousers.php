@@ -32,7 +32,7 @@ class DoceboConnectorDoceboUsers extends DoceboConnector
 
     var $last_error = "";
 
-    var $all_cols = array('idst',
+    var $all_cols = ['idst',
         'userid',
         'firstname',
         'lastname',
@@ -43,9 +43,9 @@ class DoceboConnectorDoceboUsers extends DoceboConnector
         'templatename',
         'language',
         'valid',
-        'tree_code');
+        'tree_code'];
 
-    var $mandatory_cols = array('userid');
+    var $mandatory_cols = ['userid'];
 
     /**
      *
@@ -55,7 +55,7 @@ class DoceboConnectorDoceboUsers extends DoceboConnector
      * @var array  default_cols
      *
      */
-    var $default_cols = array('firstname' => '',
+    var $default_cols = ['firstname' => '',
         'lastname' => '',
         'pass' => '',
         'email' => '',
@@ -63,17 +63,17 @@ class DoceboConnectorDoceboUsers extends DoceboConnector
         'signature' => '',
         'templatename' => '',
         'language' => '',
-        'tree_code' => '');
+        'tree_code' => ''];
 
-    var $ignore_cols = array('idst',
+    var $ignore_cols = ['idst',
         'avatar',
         'lastenter',
         'valid',
         'pwd_expire_at',
         'level',
-        'register_date');
+        'register_date'];
 
-    var $valid_filed_type = array('textfield', 'date', 'dropdown', 'yesno', 'upload', 'freetext', 'country');
+    var $valid_filed_type = ['textfield', 'date', 'dropdown', 'yesno', 'upload', 'freetext', 'country'];
 
     /**
      *
@@ -141,7 +141,7 @@ class DoceboConnectorDoceboUsers extends DoceboConnector
 
     function get_config()
     {
-        return array('tree' => $this->tree,
+        return ['tree' => $this->tree,
             //'group' => $this->groupFilter,
             'canceled' => $this->canceled,
             'readwrite' => $this->readwrite,
@@ -151,7 +151,7 @@ class DoceboConnectorDoceboUsers extends DoceboConnector
             'preg_match_folder' => $this->preg_match_folder,
             'org_chart_destination' => $this->org_chart_destination,
             'pwd_force_change_policy' => $this->pwd_force_change_policy
-        );
+        ];
     }
 
     function set_config($params)
@@ -229,19 +229,19 @@ class DoceboConnectorDoceboUsers extends DoceboConnector
                 $mandatory = in_array($field_info['Field'], $this->mandatory_cols);
                 if (isset($this->default_cols[$field_info['Field']])) {
                     $this->cols_descriptor[] =
-                        array(DOCEBOIMPORT_COLNAME => $lang_dir->def('_DIRECTORY_FILTER_' . $field_info['Field']),
+                        [DOCEBOIMPORT_COLNAME => $lang_dir->def('_DIRECTORY_FILTER_' . $field_info['Field']),
                             DOCEBOIMPORT_COLID => $field_info['Field'],
                             DOCEBOIMPORT_COLMANDATORY => $mandatory,
                             DOCEBOIMPORT_DATATYPE => $field_info['Type'],
                             DOCEBOIMPORT_DEFAULT => $this->default_cols[$field_info['Field']]
-                        );
+                        ];
                 } else {
                     $this->cols_descriptor[] =
-                        array(DOCEBOIMPORT_COLNAME => $lang_dir->def('_DIRECTORY_FILTER_' . $field_info['Field']),
+                        [DOCEBOIMPORT_COLNAME => $lang_dir->def('_DIRECTORY_FILTER_' . $field_info['Field']),
                             DOCEBOIMPORT_COLID => $field_info['Field'],
                             DOCEBOIMPORT_COLMANDATORY => $mandatory,
                             DOCEBOIMPORT_DATATYPE => $field_info['Type']
-                        );
+                        ];
                 }
             }
         }
@@ -251,29 +251,29 @@ class DoceboConnectorDoceboUsers extends DoceboConnector
         foreach ($arr_fields as $field_id => $field_info) {
             if (in_array($field_info[FIELD_INFO_TYPE], $this->valid_filed_type)) {
                 $this->cols_descriptor[] =
-                    array(DOCEBOIMPORT_COLNAME => $field_info[FIELD_INFO_TRANSLATION],
+                    [DOCEBOIMPORT_COLNAME => $field_info[FIELD_INFO_TRANSLATION],
                         DOCEBOIMPORT_COLID => $field_id,
                         DOCEBOIMPORT_COLMANDATORY => FALSE,
                         DOCEBOIMPORT_DATATYPE => 'text',
                         DOCEBOIMPORT_DEFAULT => false
-                    );
+                    ];
             }
         }
 
         //Added tree_code field
         $this->cols_descriptor[] =
-            array(DOCEBOIMPORT_COLNAME => 'tree_code',
+            [DOCEBOIMPORT_COLNAME => 'tree_code',
                 DOCEBOIMPORT_COLID => 'tree_code',
                 DOCEBOIMPORT_COLMANDATORY => FALSE,
-                DOCEBOIMPORT_DATATYPE => 'text');
+                DOCEBOIMPORT_DATATYPE => 'text'];
 
         //Added language field
         $this->cols_descriptor[] =
-            array(DOCEBOIMPORT_COLNAME => Lang::t("_LANGUAGE"),
+            [DOCEBOIMPORT_COLNAME => Lang::t("_LANGUAGE"),
                 DOCEBOIMPORT_COLID => 'language',
                 DOCEBOIMPORT_COLMANDATORY => FALSE,
                 DOCEBOIMPORT_DATATYPE => 'text'
-            );
+            ];
 
         $this->arr_fields = $arr_fields;
 
@@ -433,7 +433,7 @@ class DoceboConnectorDoceboUsers extends DoceboConnector
     {
 
         $pdr = new PeopleDataRetriever($GLOBALS['dbConn'], $GLOBALS['prefix_fw']);
-        $pdr->idFilters = array(key($this->user_org_chart));
+        $pdr->idFilters = [key($this->user_org_chart)];
         next($this->user_org_chart);
         $this->data = $pdr->getRows();
         $row = sql_fetch_row($this->data); //print_r($row);
@@ -449,7 +449,7 @@ class DoceboConnectorDoceboUsers extends DoceboConnector
 
             if (is_numeric($field_id)) {
 
-                $p = $this->fl->fieldValue((int)$field_id, array($row[0]));
+                $p = $this->fl->fieldValue((int)$field_id, [$row[0]]);
                 $export[] = reset($p);
             } else {
 
@@ -523,9 +523,9 @@ class DoceboConnectorDoceboUsers extends DoceboConnector
         $arr_filter = [];
         foreach ($pk as $fieldname => $fieldvalue) {
             if (in_array($fieldname, $this->all_cols))
-                $arr_filter[] = array('fieldname' => $fieldname, 'field_type' => 'text', 'value' => $fieldvalue);
+                $arr_filter[] = ['fieldname' => $fieldname, 'field_type' => 'text', 'value' => $fieldvalue];
             else
-                $arr_filter[] = array(FIELD_INFO_ID => $fieldname, FIELD_INFO_TYPE => 'text', 'value' => $fieldvalue);
+                $arr_filter[] = [FIELD_INFO_ID => $fieldname, FIELD_INFO_TYPE => 'text', 'value' => $fieldvalue];
         }
         require_once(_adm_ . '/lib/lib.directory.php');
         $this->people_view = new PeopleListView();
@@ -746,7 +746,7 @@ class DoceboConnectorDoceboUsers extends DoceboConnector
 
                     // adding to enrollment rules for org, if any
                     $enrollrules = new EnrollrulesAlms();
-                    $users = array($idst);
+                    $users = [$idst];
                     $enrollrules->newRules('_NEW_IMPORTED_USER', $users, 'all', $id_dir);
                 }
             }
@@ -922,7 +922,7 @@ class DoceboConnectorDoceboUsers extends DoceboConnector
     {
         $this->people_view->data->resetFieldFilter();
         $this->people_view->data->resetCustomFilter();
-        $this->people_view->addFieldFilters(array(array('fieldname' => 'valid', 'value' => '1', 'field_type' => 'text')));
+        $this->people_view->addFieldFilters([['fieldname' => 'valid', 'value' => '1', 'field_type' => 'text']]);
         $this->people_view->data->addNotFilter($this->arr_idst_inserted);
 
         $idst_org = Docebo::user()->getAclManager()->getGroupST('oc_' . $this->org_chart_destination);
@@ -1025,7 +1025,7 @@ class DoceboConnectorDoceboUsersUI extends DoceboConnectorUI
                 $arr_selection = $this->directory->getSelection($post);
                 list($this->post_params['tree']) = $this->directory->getSelection($post);
             }
-            $this->directory->resetSelection(array($this->post_params['tree']));
+            $this->directory->resetSelection([$this->post_params['tree']]);
 
             $this->post_params['org_chart_destination'] =
                 isset($arr_new_params['org_chart_destination'])
@@ -1137,23 +1137,23 @@ class DoceboConnectorDoceboUsersUI extends DoceboConnectorUI
         $out .= $this->form->getRadioSet($this->lang->def('_ACCESSTYPE'),
             $this->_get_base_name() . '_readwrite',
             $this->_get_base_name() . '[readwrite]',
-            array($this->lang->def('_READ') => '1',
+            [$this->lang->def('_READ') => '1',
                 $this->lang->def('_WRITE') => '2',
-                $this->lang->def('_READWRITE') => '3'),
+                $this->lang->def('_READWRITE') => '3'],
             $this->post_params['readwrite']);
         // ---- access type read/write -----
         $out .= $this->form->getRadioSet($this->lang->def('_SENDNOTIFY'),
             $this->_get_base_name() . '_sendnotify',
             $this->_get_base_name() . '[sendnotify]',
-            array($this->lang->def('_SEND') => '1',
-                $this->lang->def('_DONTSEND') => '2'),
+            [$this->lang->def('_SEND') => '1',
+                $this->lang->def('_DONTSEND') => '2'],
             $this->post_params['sendnotify']);
         // ---- suspend users ----
         $out .= $this->form->getRadioSet($this->lang->def('_CANCELED_USERS'),
             $this->_get_base_name() . '_canceled',
             $this->_get_base_name() . '[canceled]',
-            array($this->lang->def('_SUSPENDED') => '1',
-                $this->lang->def('_DEL') => '2'),
+            [$this->lang->def('_SUSPENDED') => '1',
+                $this->lang->def('_DEL') => '2'],
             $this->post_params['canceled']);
 
         $out .= $this->form->getTextfield($this->lang->def('_PREG_MATCH_FOLDER'),
@@ -1165,12 +1165,12 @@ class DoceboConnectorDoceboUsersUI extends DoceboConnectorUI
         $out .= $this->form->getRadioSet(Lang::t('_FORCE_PASSWORD_CHANGE', 'admin_directory'),
             $this->_get_base_name() . '_pwd_force_change_policy',
             $this->_get_base_name() . '[pwd_force_change_policy]',
-            array(
+            [
                 Lang::t('_NO', 'standard') => 'false',
                 Lang::t('_YES', 'standard') => 'true',
                 Lang::t('_SERVERINFO', 'configuration') => 'by_setting',
                 Lang::t('_DO_NOTHING', 'preassessment') => 'do_nothing'
-            ),
+            ],
             $this->post_params['pwd_force_change_policy']);
 
         return $out;

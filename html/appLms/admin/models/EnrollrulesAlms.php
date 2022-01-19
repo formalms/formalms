@@ -13,7 +13,7 @@
 
 class EnrollrulesAlms extends Model {
 
-	protected $sortable = array('title', 'lang_code', 'creation_date');
+	protected $sortable = ['title', 'lang_code', 'creation_date'];
 
 	protected $db = false;
 	protected $json = false;
@@ -25,7 +25,7 @@ class EnrollrulesAlms extends Model {
 	}
 
 	public function getPerm() {
-		return array('view' => 'standard/view.png');
+		return ['view' => 'standard/view.png'];
 	}
 
 	/**
@@ -33,12 +33,12 @@ class EnrollrulesAlms extends Model {
 	 * @return array (keys -> type code, value -> code translation)
 	 */
 	public function ruleTypes() {
-		$types = array(
+		$types = [
 			'base' 		=> Lang::t('_BASE', 'enrollrules'),
 			'group'		=> Lang::t('_GROUPS', 'enrollrules'),
 			'orgchart' 	=> Lang::t('_ORGCHART', 'enrollrules'),
 			'fncrole' 	=> Lang::t('_FUNCTIONAL_ROLE', 'enrollrules')
-		);
+        ];
 		return $types;
 	}
 
@@ -61,7 +61,7 @@ class EnrollrulesAlms extends Model {
 			." LIMIT ".$start_index.", ".$results;
 		$result = $this->db->query($query);
 		
-		$res = array();
+		$res = [];
 		while($rule = $this->db->fetch_obj($result)) {
 			if($rule->lang_code == 'all') $rule->lang_code = Lang::t('_ALL', 'enrollrules');
 			if($rule->id_rule == 0) {
@@ -164,7 +164,7 @@ class EnrollrulesAlms extends Model {
 		}
 		$result = $this->db->query($query);
 		
-		$res = array();
+		$res = [];
 		while($entity = $this->db->fetch_obj($result)) {
 
 			$entity->course_list = $this->json->decode($entity->course_list);
@@ -178,16 +178,16 @@ class EnrollrulesAlms extends Model {
 		$entities = Docebo::langManager()->getAllLangCode();
 		array_unshift($entities, 'all');
 
-		$entities_name = array();
+		$entities_name = [];
 		foreach($entities as $i => $en) {
 			$ename = new stdClass();
 			$ename->id_entity	= $en;
 			$ename->title		= $en;
-			$ename->course_list = array();
+			$ename->course_list = [];
 
 			$entities_name[$ename->id_entity] = $ename;
 		}
-		if($only_existing) $entities_name = array();
+		if($only_existing) $entities_name = [];
 
 		$query = "SELECT id_rule, id_entity, course_list "
 			."FROM %adm_rules_entity "
@@ -208,7 +208,7 @@ class EnrollrulesAlms extends Model {
 
 	public function convertEntity($id_entities, $rule_type) {
 
-		$entities_name = array();
+		$entities_name = [];
 		if(empty($id_entities) && $rule_type != 'base') return $entities_name;
 		
 		switch($rule_type) {
@@ -245,10 +245,10 @@ class EnrollrulesAlms extends Model {
 			."FROM %adm_rules_entity "
 			."WHERE id_rule = ".(int)$id_rule."";
 		$result = $this->db->query($query);
-		$res = array(
-			'entities' => array(),
-			'entitity_rule' => array()
-		);
+		$res = [
+			'entities' => [],
+			'entitity_rule' => []
+        ];
 		while($entity = $this->db->fetch_obj($result)) {
 
 			$entity->course_list = $this->json->decode($entity->course_list);
@@ -292,8 +292,8 @@ class EnrollrulesAlms extends Model {
 	 */
 	public function getApplicableRuleForEntity($id_entities, $language = false) {
 
-		$rules = array();
-		$course_list = array();
+		$rules = [];
+		$course_list = [];
 		if(!$language) $language = getLanguage();
 		$query = "SELECT re.id_rule, re.course_list "
 			."FROM %adm_rules AS r JOIN %adm_rules_entity AS re "
@@ -308,16 +308,16 @@ class EnrollrulesAlms extends Model {
 			$entity_course_list = $this->json->decode($entity->course_list);
 			$course_list = array_merge($course_list, $entity_course_list);
 		}
-		return array(
+		return [
 			'rules' => $rules,
 			'course_list' => $course_list
-		);
+        ];
 	}
 
 	public function getApplicableRuleForEntityMultiLang($id_entities) {
 
-		$rules = array();
-		$course_list = array();
+		$rules = [];
+		$course_list = [];
 		$query = "SELECT re.id_rule, re.id_entity, r.lang_code, re.course_list "
 			."FROM %adm_rules AS r JOIN %adm_rules_entity AS re "
 			." ON (r.id_rule = re.id_rule) "
@@ -328,14 +328,14 @@ class EnrollrulesAlms extends Model {
 
 			$rules[] = $entity->id_rule.'_'.$entity->id_entity;
 			$entity_course_list = $this->json->decode($entity->course_list);
-			if(!isset($course_list[$entity->lang_code])) $course_list[$entity->lang_code] = array();
+			if(!isset($course_list[$entity->lang_code])) $course_list[$entity->lang_code] = [];
 			$course_list[$entity->lang_code] = array_merge($course_list[$entity->lang_code], $entity_course_list);
 		}
 
-		return array(
+		return [
 			'rules' => $rules,
 			'course_list' => $course_list
-		);
+        ];
 	}
 
 	/**
@@ -345,8 +345,8 @@ class EnrollrulesAlms extends Model {
 	 */
 	public function getApplicableRuleForNewUser($language = false) {
 
-		$rules = array();
-		$course_list = array();
+		$rules = [];
+		$course_list = [];
 		if(!$language) $language = getLanguage();
 		$query = "SELECT re.id_rule, re.id_entity, re.course_list "
 			."FROM %adm_rules AS r JOIN %adm_rules_entity AS re "
@@ -360,10 +360,10 @@ class EnrollrulesAlms extends Model {
 			$entity_course_list = $this->json->decode($entity->course_list);
 			$course_list = array_merge($course_list, $entity_course_list);
 		}
-		return array(
+		return [
 			'rules' => $rules,
 			'course_list' => $course_list
-		);
+        ];
 	}
 
 	/**
@@ -377,7 +377,7 @@ class EnrollrulesAlms extends Model {
 	public function newRules($log_action, $arr_user, $language = false, $id_org = false, $entities = false) {
 
 		$re = true;
-		$ent = array();
+		$ent = [];
 
 		$applicable = $this->getApplicableRuleForNewUser($language);
 		return $this->applyRules($log_action, $arr_user, $language, $id_org, $entities, $applicable);
@@ -395,7 +395,7 @@ class EnrollrulesAlms extends Model {
 	public function applyRules($log_action, $arr_user, $language = false, $id_org = false, $entities = false, $more_applicable = false) {
 
 		$re = true;
-		$ent = array();
+		$ent = [];
 		
 		if($id_org != 0 ) {
 
@@ -448,7 +448,7 @@ class EnrollrulesAlms extends Model {
 	// FORMA: Added param user_temp to use the user_temp table when the user is not confirmed (double optin)
 	public function applyRulesMultiLang($log_action, $arr_users, $id_org, $id_entity = false, $user_temp = false) {
 
-		$ent = array();
+		$ent = [];
 		if($id_org != false) {
 
 			$acl_man = Docebo::aclm();
@@ -479,8 +479,8 @@ class EnrollrulesAlms extends Model {
 
 		if(!$re_query) return false;
 		
-		$arr_users = array();
-		$langs = array();
+		$arr_users = [];
+		$langs = [];
 		$default_lang = getDefaultLanguage();
 		while(list($idst_user, $value) = $this->db->fetch_row($re_query)) {
 
@@ -494,7 +494,7 @@ class EnrollrulesAlms extends Model {
 		$cs = new CourseSubscribe_Management();
 		$applicable = $this->getApplicableRuleForEntityMultiLang($ent);
 		$course_list = $applicable['course_list'];
-		if(!isset($course_list['all'])) $course_list['all'] = array();
+		if(!isset($course_list['all'])) $course_list['all'] = [];
 
 		$this->db->start_transaction();
 		// create a entry log
@@ -514,7 +514,7 @@ class EnrollrulesAlms extends Model {
 
 	public function getLogs($start_index, $results, $sort, $dir) {
 
-		$sort = $this->clean_sort($sort, array('log_time'));
+		$sort = $this->clean_sort($sort, ['log_time']);
 		$dir = $this->clean_dir($dir);
 		
 		$query = "SELECT id_log, log_action, log_time, applied "
@@ -524,7 +524,7 @@ class EnrollrulesAlms extends Model {
 			."LIMIT ".$start_index.", ".$results;
 		$result = $this->db->query($query);
 
-		$res = array();
+		$res = [];
 		while($log = $this->db->fetch_obj($result)) {
 			
 			$res[] = $log;

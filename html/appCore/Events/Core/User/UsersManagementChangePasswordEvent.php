@@ -20,7 +20,7 @@ class UsersManagementChangePasswordEvent extends Event
      */
     public function __construct()
     {   
-        $this->user = array();
+        $this->user = [];
     }
 
     /**

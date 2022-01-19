@@ -13,7 +13,7 @@ class CoreMenu {
     public static function getList($platform, $only_active = true) {
 
         if(!is_array($platform)) {
-            $platform = array($platform);
+            $platform = [$platform];
         }
 
         $platform = implode(', ', array_map(function($pl) {
@@ -40,7 +40,7 @@ SQL;
 
         $res = sql_query($query);
         
-        $menu = array();
+        $menu = [];
         while($row = sql_fetch_object($res)) {
             $menu[] = $row;
         }
@@ -60,7 +60,7 @@ SQL;
     
     private static function buildMenuArray($menu, $parent = 0) {
 
-        $_menu = array();
+        $_menu = [];
         foreach($menu as &$item) {
             if((int)$item->idParent === $parent) {
                 $item->submenu  = self::buildMenuArray($menu, (int)$item->idMenu);
@@ -123,7 +123,7 @@ SQL;
 
         $url = Get::abs_path($to);
 
-        $query_url = array();
+        $query_url = [];
         if($mvc_path) {
             $query_url['r'] = $mvc_path;
         } elseif($module_name) {
@@ -180,7 +180,7 @@ SQL;
 
     public static function set($id, $values) {
 
-        $sets = array();
+        $sets = [];
         foreach($values as $field => $value) {
             $sets[] = "$field = '$value'";
         }
@@ -221,9 +221,9 @@ SQL;
      * @param int|null $idPlugin
      * @return int|false
      */
-    public static function addMenu($menu, $menuUnder = null, $roleMembers = array(), $idPlugin = null) {
+    public static function addMenu($menu, $menuUnder = null, $roleMembers = [], $idPlugin = null) {
 
-        $values = array();
+        $values = [];
         $values['name'] = "'{$menu['name']}'";
         $values['image'] = isset($menu['image']) ? "'{$menu['image']}'" : "''";
         if(isset($menu['isActive'])) $values['is_active'] = $menu['isActive'] ? "'true'" : "'false'";
@@ -257,7 +257,7 @@ SQL;
         $id = sql_insert_id();
 
         if($menuUnder) {
-            $values = array();
+            $values = [];
             $values['idMenu'] = $id;
             $values['default_name'] = "'{$menuUnder['defaultName']}'";
             $values['module_name'] = "'{$menuUnder['moduleName']}'";

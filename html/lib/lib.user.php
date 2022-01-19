@@ -43,7 +43,7 @@ class DoceboUser
     public $acl = NULL;
     public $userid;
     public $idst;
-    public $arrst = array();
+    public $arrst = [];
     public $preference;
 
     /* @var string */

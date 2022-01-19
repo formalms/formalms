@@ -1,9 +1,9 @@
 <?php
-echo getTitleArea(array(
+echo getTitleArea([
 	'index.php?modname=coursepath&amp;op=pathlist&amp;of_platform=lms' => Lang::t('_COURSEPATH', 'coursepath'),
 	'index.php?r='.$this->link.'/show_coursepath&id_path='.(int)$id_path => Lang::t('_SUBSCRIBE', 'subscribe').' : '.$path_name,
 	Lang::t('_CHOOSE_EDITION', 'subscribe')
-));
+]);
 ?>
 <div class="std_block">
 <?php
@@ -16,21 +16,21 @@ echo Form::getHidden('users_to_del', 'users_to_del', implode(",", $users_to_del)
 echo Form::getHidden('id_path', 'id_path', $id_path);
 
 //header css
-$_array_style = array(
+$_array_style = [
 	'course_name' => '',
 	'dropdown' => 'image'
-);
+];
 
 //editions table
 if (!empty($editions_list)) {
-	$_array_header = array(
+	$_array_header = [
 		'course_name' => Lang::t('_COURSE', 'course'),
 		'dropdown' => Lang::t('_EDITIONS', 'subscribe')
-	);
+    ];
 
-	$_array_content = array();
+	$_array_content = [];
 	foreach ($editions_list as $_info) {
-		$_array_content[] = array(
+		$_array_content[] = [
 			'course_name' => $_info['label'],
 			'dropdown' => Form::getInputDropdown(
 					'dropdown',
@@ -40,30 +40,30 @@ if (!empty($editions_list)) {
 					false,
 					''
 				)
-		);
+        ];
 	}
 
-	$this->widget('table', array(
+	$this->widget('table', [
 		'id'			=> 'editions_table',
 		'styles'	=> $_array_style,
 		'header'	=> $_array_header,
 		'data'		=> $_array_content,
 		'summary'	=> Lang::t('_CHOOSE_EDITIONS', 'subscribe'),
 		'caption'	=> false//Lang::t('', 'subscribe')
-	));
+    ]);
 }
 
 
 //classrooms table
 if (!empty($classrooms_list)) {
-	$_array_header = array(
+	$_array_header = [
 		'course_name' => Lang::t('_COURSE', 'course'),
 		'dropdown' => Lang::t('_CLASSROOMS', 'subscribe')
-	);
+    ];
 
-	$_array_content = array();
+	$_array_content = [];
 	foreach ($classrooms_list as $_info) {
-		$_array_content[] = array(
+		$_array_content[] = [
 			'course_name' => $_info['label'],
 			'dropdown' => Form::getInputDropdown(
 					'dropdown',
@@ -73,17 +73,17 @@ if (!empty($classrooms_list)) {
 					false,
 					''
 				)
-		);
+        ];
 	}
 
-	$this->widget('table', array(
+	$this->widget('table', [
 		'id'			=> 'classrooms_table',
 		'styles'	=> $_array_style,
 		'header'	=> $_array_header,
 		'data'		=> $_array_content,
 		'summary'	=> Lang::t('_CHOOSE_CLASSROOMS', 'subscribe'),
 		'caption'	=> false//Lang::t('', 'subscribe')
-	));
+    ]);
 }
 
 echo Form::openButtonSpace();

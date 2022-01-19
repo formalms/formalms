@@ -98,7 +98,7 @@ class ChatBooking {
 
 
 	function loadRoomSubscriptions($room_id, $where=FALSE) {
-		$res=array();
+		$res= [];
 
 		$fields="booking_id, platform, module, user_idst, approved";
 		$qtxt ="SELECT ".$fields." FROM ".$this->_getBookingTable()." ";
@@ -260,7 +260,7 @@ class RoomBooking
 		
 		$result = $this->dbconn->query($query);
 		
-		$res = array();
+		$res = [];
 		
 		while(list($id_user, $date, $valid) = $this->dbconn->fetch_row($result))
 		{

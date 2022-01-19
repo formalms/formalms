@@ -55,7 +55,7 @@ class DoceboConnectorCsv extends DoceboConnector
 
     function get_config()
     {
-        return array('filepattern' => $this->filename,
+        return ['filepattern' => $this->filename,
             'first_row_header' => $this->first_row_header,
             'field_delimiter' => $this->separator,
             'field_enclosure' => $this->enclosure,
@@ -63,7 +63,7 @@ class DoceboConnectorCsv extends DoceboConnector
             'readwrite' => $this->readwrite,
             'name' => $this->name,
             'description' => $this->description,
-            'subpattern' => $this->subpattern);
+            'subpattern' => $this->subpattern];
     }
 
     function set_config($params)
@@ -91,7 +91,7 @@ class DoceboConnectorCsv extends DoceboConnector
         $this->close();
 
         /* search for file with pattern */
-        $pat = str_replace(array("*", "?"), array(".*", ".{1}"), $this->filename);
+        $pat = str_replace(["*", "?"], [".*", ".{1}"], $this->filename);
         $arr_files = preg_ls(DOCEBOIMPORT_BASEDIR . $this->subpattern, false, '/' . $pat . '/');
         if (count($arr_files) == 0 && !$this->is_writeonly()) {
             //$this->last_error = 'file not found: '.DOCEBOIMPORT_BASEDIR.$this->filename;
@@ -207,11 +207,11 @@ class DoceboConnectorCsv extends DoceboConnector
     function get_cols_descripor()
     {
         foreach ($this->cols_descriptor as $colname) {
-            $arr_cols[] = array(DOCEBOIMPORT_COLNAME => $colname,
+            $arr_cols[] = [DOCEBOIMPORT_COLNAME => $colname,
                 DOCEBOIMPORT_COLMANDATORY => FALSE,
                 DOCEBOIMPORT_DATATYPE => 'text',
                 DOCEBOIMPORT_DEFAULT => ''
-            );
+            ];
         }
         return $arr_cols;
     }
@@ -345,7 +345,7 @@ class DoceboConnectorCsvUI extends DoceboConnectorUI
             if ($this->post_params['subpattern'] == '')
                 $this->post_params['subpattern'] = '';
             if ($this->post_params['field_def'] === NULL)
-                $this->post_params['field_def'] = array('field1', 'field2', 'field3');
+                $this->post_params['field_def'] = ['field1', 'field2', 'field3'];
         } else {
             // get previous values
             $this->post_params = Util::unserialize(urldecode($post[$this->_get_base_name()]['memory']));
@@ -464,8 +464,8 @@ class DoceboConnectorCsvUI extends DoceboConnectorUI
         $out .= $this->form->getRadioSet($this->lang->def('_ACCESSTYPE'),
             $this->_get_base_name() . '_readwrite',
             $this->_get_base_name() . '[readwrite]',
-            array($this->lang->def('_READ') => '1',
-                $this->lang->def('_WRITE') => '2'),
+            [$this->lang->def('_READ') => '1',
+                $this->lang->def('_WRITE') => '2'],
             $this->post_params['readwrite']);
 
         // ---- file pattern ----
@@ -479,8 +479,8 @@ class DoceboConnectorCsvUI extends DoceboConnectorUI
         $out .= $this->form->getRadioSet($this->lang->def('_FIELD_DEFINITION_TYPE'),
             $this->_get_base_name() . '_def_type',
             $this->_get_base_name() . '[field_def_type]',
-            array($this->lang->def('_MANUAL') => '1',
-                $this->lang->def('_BYEXAMPLE') => '2'),
+            [$this->lang->def('_MANUAL') => '1',
+                $this->lang->def('_BYEXAMPLE') => '2'],
             $this->post_params['field_def_type']
         );
         $out .= $this->form->getTextfield($this->lang->def('_FIELD_DELIMITER'),
@@ -503,8 +503,8 @@ class DoceboConnectorCsvUI extends DoceboConnectorUI
         $out .= $this->form->getRadioSet($this->lang->def('_FIRST_ROW_HEADER'),
             $this->_get_base_name() . '_first_row_header',
             $this->_get_base_name() . '[first_row_header]',
-            array($this->lang->def('_YES') => '1',
-                $this->lang->def('_NO') => '0'),
+            [$this->lang->def('_YES') => '1',
+                $this->lang->def('_NO') => '0'],
             $this->post_params['first_row_header']
         );
         return $out;
@@ -519,14 +519,14 @@ class DoceboConnectorCsvUI extends DoceboConnectorUI
             $enclosure);
         if ($this->post_params['field_def_type'] == '2') {
             $path = $GLOBALS['where_files_relative'] . '/common/iofiles/' . $this->post_params['subpattern'];
-            $pat = str_replace(array("*", "?"), array(".*", ".{1}"), $this->post_params['filepattern']);
+            $pat = str_replace(["*", "?"], [".*", ".{1}"], $this->post_params['filepattern']);
             $arr_files = preg_ls($path, false, '/' . $pat . '/');
             if (count($arr_files) == 0) {
-                $this->post_params['field_def'] = array("File not found: " . $pat);
+                $this->post_params['field_def'] = ["File not found: " . $pat];
             } else {
                 $hfile = @fopen($arr_files[0], 'r');
                 if ($hfile === FALSE) {
-                    $this->post_params['field_def'] = array("File not open: " . $arr_files[0]);
+                    $this->post_params['field_def'] = ["File not open: " . $arr_files[0]];
                 } else {
                     $this->post_params['field_def'] = fgetcsv($hfile, 1024, $this->post_params['field_delimiter'], $this->post_params['field_enclosure']);
                     $out .= $this->form->getLineBox($this->lang->def('_FILE_ANALYZED'),
@@ -549,7 +549,7 @@ class DoceboConnectorCsvUI extends DoceboConnectorUI
 
 function csv_factory()
 {
-    return new DoceboConnectorCsv(array());
+    return new DoceboConnectorCsv([]);
 }
 
 function preg_ls($path = ".", $rec = false, $pat = "/.*/")
@@ -559,7 +559,7 @@ function preg_ls($path = ".", $rec = false, $pat = "/.*/")
     if (!is_dir($path)) $path = dirname($path);
     if ($rec !== true) $rec = false;
     $d = dir($path);
-    $ret = array();
+    $ret = [];
     while (false !== ($e = $d->read())) {
         if (($e == ".") || ($e == "..")) continue;
         if ($rec && is_dir($path . "/" . $e)) {
@@ -570,7 +570,7 @@ function preg_ls($path = ".", $rec = false, $pat = "/.*/")
         if (strncmp($e, 'processed', 9) === 0) continue;
         $ret[] = $path . "/" . $e;
     }
-    return (empty ($ret) && preg_match($pat, basename($path))) ? array($path . "/") : $ret;
+    return (empty ($ret) && preg_match($pat, basename($path))) ? [$path . "/"] : $ret;
 }
 
 ?>

@@ -61,10 +61,10 @@ class HomepageAdm extends Model {
             if(($last_attempt + $time_before_reactive) > $now) {
                 
                 $wait_for = (int)((($last_attempt + $time_before_reactive) - $now) / 60);
-                return array(
+                return [
                     'max_login_attempt' => $max_login_attempts,
                     'wait_for'          => $wait_for
-                );
+                ];
             } else {
 
                 $this->user_manager->resetAttemptNumber();
@@ -77,7 +77,7 @@ class HomepageAdm extends Model {
     public function isSelfRegistrationActive() {
         
         $registration_type = $this->options->getOption("register_type");
-        $active_types = array("self", "self_optin", "moderate");
+        $active_types = ["self", "self_optin", "moderate"];
         
         return in_array($registration_type, $active_types);
     }
@@ -102,7 +102,7 @@ class HomepageAdm extends Model {
                 . " ORDER BY sequence ";
         $r = sql_query($query);
         
-        $external_pages = array();
+        $external_pages = [];
         while(list($id_page, $title) = sql_fetch_row($r)) {
             
             $external_pages[$id_page] = $title;
@@ -121,13 +121,13 @@ class HomepageAdm extends Model {
         $sender         = $this->options->getOption('mail_sender');
         $sender_name         = $this->options->getOption('mail_sender_name_from');
         $recipients     = $user_info[ACL_INFO_EMAIL];
-        $subject        = Lang::t("_LOST_USERID_TITLE", "register", array(), $acl_man->getSettingValueOfUsers('ui.language', array($user_info[ACL_INFO_IDST]))[$user_info[ACL_INFO_IDST]]);
-        $body           = Lang::t("_LOST_USERID_MAILTEXT", "register", array(
+        $subject        = Lang::t("_LOST_USERID_TITLE", "register", [], $acl_man->getSettingValueOfUsers('ui.language', [$user_info[ACL_INFO_IDST]])[$user_info[ACL_INFO_IDST]]);
+        $body           = Lang::t("_LOST_USERID_MAILTEXT", "register", [
             '[date_request]'    => date("d-m-Y"),
             '[url]'             => Get::site_url(),
             '[userid]'          => $acl_man->relativeId($user_info[ACL_INFO_USERID])
-        ), $acl_man->getSettingValueOfUsers('ui.language', array($user_info[ACL_INFO_IDST]))[$user_info[ACL_INFO_IDST]]);
-        $params         = array(MAIL_SENDER_ACLNAME => $sender_name);
+        ], $acl_man->getSettingValueOfUsers('ui.language', [$user_info[ACL_INFO_IDST]])[$user_info[ACL_INFO_IDST]]);
+        $params         = [MAIL_SENDER_ACLNAME => $sender_name];
         $mailer = FormaMailer::getInstance();
         if($mailer->SendMail($sender, [$recipients], $subject, $body, [], $params)) return SUCCESS_SEND_LOST_PWD;
         else return FAILURE_SEND_LOST_PWD;
@@ -157,12 +157,12 @@ class HomepageAdm extends Model {
         $sender         = $this->options->getOption('mail_sender');
         $sender_name    = $this->options->getOption('mail_sender_name_from');
         $recipients     = $user_info[ACL_INFO_EMAIL];
-        $subject        = Lang::t("_LOST_PWD_TITLE", "register", array(), $acl_man->getSettingValueOfUsers('ui.language', array($user_info[ACL_INFO_IDST]))[$user_info[ACL_INFO_IDST]]);
-        $body           = Lang::t("_LOST_PWD_MAILTEXT", "register", array(
+        $subject        = Lang::t("_LOST_PWD_TITLE", "register", [], $acl_man->getSettingValueOfUsers('ui.language', [$user_info[ACL_INFO_IDST]])[$user_info[ACL_INFO_IDST]]);
+        $body           = Lang::t("_LOST_PWD_MAILTEXT", "register", [
             '[link]'    => Get::site_url() . "index.php?r=" . _newpwd_ . "&code=" . $code,
             '[userid]'  => $acl_man->relativeId($user_info[ACL_INFO_USERID]),
-        ), $acl_man->getSettingValueOfUsers('ui.language', array($user_info[ACL_INFO_IDST]))[$user_info[ACL_INFO_IDST]]);
-        $params         = array(MAIL_SENDER_ACLNAME => $sender_name);
+        ], $acl_man->getSettingValueOfUsers('ui.language', [$user_info[ACL_INFO_IDST]])[$user_info[ACL_INFO_IDST]]);
+        $params         = [MAIL_SENDER_ACLNAME => $sender_name];
         
         $mailer = FormaMailer::getInstance();
 
@@ -185,11 +185,11 @@ class HomepageAdm extends Model {
     
     public function getNewPwdOptions() {
         
-        return array(
+        return [
             "pass_max_time_valid"   => $this->options->getOption("pass_max_time_valid"),
             "pass_min_char"         => $this->options->getOption("pass_min_char"),
             "pass_alfanumeric"      => $this->options->getOption("pass_alfanumeric")
-        );
+        ];
     }
     
     public function checkNewPwdValidity($pwd, $retype) {

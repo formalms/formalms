@@ -158,10 +158,10 @@ class TreeDb {
 	}
 
 	function _getArrBaseFields( $tname ) {
-		return array( 	'id' => $tname.'.'.$this->fields['id'],
+		return ['id' => $tname.'.'.$this->fields['id'],
 						'idParent' => $tname.'.'.$this->fields['idParent'],
 						'path' => $tname.'.'.$this->fields['path'],
-						'lev' => $tname.'.'.$this->fields['lev'] );
+						'lev' => $tname.'.'.$this->fields['lev']];
 	}
 
 	function _getOtherFields($tname = FALSE) { return ""; }
@@ -223,7 +223,7 @@ class TreeDb {
 		if( sql_num_rows( $rs ) === 0 ) {
 			return FALSE;
 		} else {
-			$result = array();
+			$result = [];
 			while( list($id) = sql_fetch_row( $rs ) )
 				$result[$id] = $id;
 		}
@@ -245,7 +245,7 @@ class TreeDb {
 		if( sql_num_rows( $rs ) === 0 ) {
 			return FALSE;
 		} else {
-			$result = array();
+			$result = [];
 			while( list($id) = sql_fetch_row( $rs ) )
 				$result[] = $id;
 		}
@@ -290,7 +290,7 @@ class TreeDb {
 	function getAllParentId( &$folder, &$tdb ) {
 
 		$path = $folder->getParentPath();
-		$arr_ancestors = array();
+		$arr_ancestors = [];
 		while($path != "") {
 
 			$parentFolder =& $tdb->getFolderByPath($path);
@@ -325,7 +325,7 @@ class TreeDb {
 	}
 
 	function &getRootFolder() {
-		$folder = new Folder( $this, array( 0, 0, "/root", 0) );
+		$folder = new Folder( $this, [0, 0, "/root", 0]);
 		return $folder;
 	}
 
@@ -420,7 +420,7 @@ class TreeDb {
 				." WHERE ".$this->fields['id']." IN ('".implode("','",$arr_id)."')";
 		$rs = $this->_executeQuery( $query )
 				or $this->_printSQLError( 'getPathFromFolderId: '. $query );
-		$arr_result = array();
+		$arr_result = [];
 		while( list( $idFolder, $path ) = sql_fetch_row($rs) ) {
 			$arr_result[$idFolder] = $path;
 		}

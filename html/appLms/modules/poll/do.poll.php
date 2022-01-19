@@ -47,10 +47,10 @@ function intro( $object_poll, $id_param ) {
 	$play_man 	= new PlayPollManagement($id_poll, getLogUserId(), $id_track, $poll_man);
 	$poll_info 	= $poll_man->getPollAllInfo();
 	
-	$page_title = array(
+	$page_title = [
 		Util::str_replace_once('&', '&amp;', $object_poll->back_url) => $lang->def('_TITLE'),
 		$poll_info['title']
-	);
+    ];
 	$GLOBALS['page']->add(
 		getTitleArea($page_title, 'poll')
 		.'<div class="std_block">'
@@ -252,7 +252,7 @@ function showResult( $object_poll, $id_param ) {
 		$poll_track->status = 'completed';
 		$poll_track->update();
 		
-		$poll_track->updateTrack($id_track, array('status' => 'valid'));
+		$poll_track->updateTrack($id_track, ['status' => 'valid']);
 	}
 	$GLOBALS['page']->add(
 		getTitleArea($lang->def('_TITLE').' : '.$poll_info['title'], 'poll')
@@ -307,7 +307,7 @@ function writePollReport( $id_poll, $id_param, $back_url, $mvc = false ) {
 
 	//is there any edition ?
 	if (sql_num_rows($res) > 0) {
-		$arr_editions = array(-1 => Lang::t('_FILTEREDITIONSELECTONEOPTION', 'stats', 'lms'));
+		$arr_editions = [-1 => Lang::t('_FILTEREDITIONSELECTONEOPTION', 'stats', 'lms')];
 
 		//list of editions for the dropdown, in the format: "[code] name (date_begin - date_end)"
 		while ($einfo = sql_fetch_object($res)) {
@@ -356,8 +356,8 @@ function writePollReport( $id_poll, $id_param, $back_url, $mvc = false ) {
 
 	//------------------------------------------------------------------------------
 
-	$user = array();
-	$tracks = array();
+	$user = [];
+	$tracks = [];
 
 	if ($editions_filter > 0) {
 		$query = "SELECT idUser FROM %lms_courseuser "
@@ -382,7 +382,7 @@ function writePollReport( $id_poll, $id_param, $back_url, $mvc = false ) {
 	if (!empty($tracks))
 		$valid_track = array_intersect($valid_track, $tracks);
 	elseif ($editions_filter != -1) {
-		$valid_track = array();
+		$valid_track = [];
 		$valid_track[] = 0;
 	}
 

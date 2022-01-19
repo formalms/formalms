@@ -47,13 +47,13 @@ class Report_User extends Report
 
     //var $rows_filter = array();
 
-    var $status_u = array();
-    var $status_c = array();
+    var $status_u = [];
+    var $status_c = [];
 
     var $page_title = false;
     var $use_mail = true;
 
-    var $courses_filter_definition = array();
+    var $courses_filter_definition = [];
 
     var $LO_types = false;
 
@@ -78,82 +78,82 @@ class Report_User extends Report
         $this->_set_columns_category(_RU_CATEGORY_GAMES, $this->lang->def('_RU_CAT_GAMES'), 'get_games_filter', 'show_report_games', '_get_games_query');
 
 
-        $this->status_c = array(
+        $this->status_c = [
             CST_PREPARATION => Lang::t('_CST_PREPARATION', 'course'),
             CST_AVAILABLE => Lang::t('_CST_AVAILABLE', 'course'),
             CST_EFFECTIVE => Lang::t('_CST_CONFIRMED', 'course'),
             CST_CONCLUDED => Lang::t('_CST_CONCLUDED', 'course'),
             CST_CANCELLED => Lang::t('_CST_CANCELLED', 'course')
-        );
+        ];
 
         $csub = new CourseSubscribe_Manager();
         $this->status_u = $csub->getUserStatus();
 
 
-        $this->courses_filter_definition = array(
-            array('key' => _COURSES_FILTER_SESSION_NUMBER, 'label' => $this->lang->def('_COURSES_FILTER_SESSION_NUMBER'), 'type' => _FILTER_INTEGER),
-            array('key' => _COURSES_FILTER_SCORE_INIT, 'label' => $this->lang->def('_COURSES_FILTER_SCORE_INIT'), 'type' => _FILTER_INTEGER),
-            array('key' => _COURSES_FILTER_SCORE_END, 'label' => $this->lang->def('_FINAL_SCORE'), 'type' => _FILTER_INTEGER),
-            array('key' => _COURSES_FILTER_SCORE_COURSE, 'label' => $this->lang->def('_COURSES_FILTER_SCORE_COURSE'), 'type' => _FILTER_INTEGER),
-            array('key' => _COURSES_FILTER_INSCRIPTION_DATE, 'label' => $this->lang->def('_COURSES_FILTER_INSCRIPTION_DATE'), 'type' => _FILTER_DATE),
-            array('key' => _COURSES_FILTER_FIRSTACCESS_DATE, 'label' => $this->lang->def('_DATE_FIRST_ACCESS'), 'type' => _FILTER_DATE),
-            array('key' => _COURSES_FILTER_END_DATE, 'label' => $this->lang->def('_COURSES_FILTER_END_DATE'), 'type' => _FILTER_DATE),
-            array('key' => _COURSES_FILTER_LASTACCESS_DATE, 'label' => $this->lang->def('_DATE_LAST_ACCESS'), 'type' => _FILTER_DATE)
-        );
+        $this->courses_filter_definition = [
+            ['key' => _COURSES_FILTER_SESSION_NUMBER, 'label' => $this->lang->def('_COURSES_FILTER_SESSION_NUMBER'), 'type' => _FILTER_INTEGER],
+            ['key' => _COURSES_FILTER_SCORE_INIT, 'label' => $this->lang->def('_COURSES_FILTER_SCORE_INIT'), 'type' => _FILTER_INTEGER],
+            ['key' => _COURSES_FILTER_SCORE_END, 'label' => $this->lang->def('_FINAL_SCORE'), 'type' => _FILTER_INTEGER],
+            ['key' => _COURSES_FILTER_SCORE_COURSE, 'label' => $this->lang->def('_COURSES_FILTER_SCORE_COURSE'), 'type' => _FILTER_INTEGER],
+            ['key' => _COURSES_FILTER_INSCRIPTION_DATE, 'label' => $this->lang->def('_COURSES_FILTER_INSCRIPTION_DATE'), 'type' => _FILTER_DATE],
+            ['key' => _COURSES_FILTER_FIRSTACCESS_DATE, 'label' => $this->lang->def('_DATE_FIRST_ACCESS'), 'type' => _FILTER_DATE],
+            ['key' => _COURSES_FILTER_END_DATE, 'label' => $this->lang->def('_COURSES_FILTER_END_DATE'), 'type' => _FILTER_DATE],
+            ['key' => _COURSES_FILTER_LASTACCESS_DATE, 'label' => $this->lang->def('_DATE_LAST_ACCESS'), 'type' => _FILTER_DATE]
+        ];
 
-        $this->LO_columns = array(
-            array('key' => 'userid', 'select' => false, 'group' => 'user', 'label' => Lang::t('_USERID', 'standard')),
-            array('key' => 'user_name', 'select' => true, 'group' => 'user', 'label' => Lang::t('_FULLNAME', 'standard')),
-            array('key' => 'email', 'select' => true, 'group' => 'user', 'label' => Lang::t('_EMAIL', 'standard')),
-            array('key' => 'suspended', 'select' => true, 'group' => 'user', 'label' => Lang::t('_SUSPENDED', 'standard')),
-            array('key' => '_CUSTOM_FIELDS_', 'select' => false, 'group' => 'user', 'label' => false),
-            array('key' => 'course_code', 'select' => false, 'group' => 'course', 'label' => $this->lang->def('_CODE')),
-            array('key' => 'course_name', 'select' => true, 'group' => 'course', 'label' => $this->lang->def('_COURSE_NAME')),
-            array('key' => 'course_status', 'select' => true, 'group' => 'course', 'label' => $this->lang->def('_STATUS')),
-            array('key' => 'lo_type', 'select' => true, 'group' => 'lo', 'label' => $this->lang->def('_LO_COL_TYPE')),
-            array('key' => 'lo_name', 'select' => true, 'group' => 'lo', 'label' => $this->lang->def('_TITLE')),
-            array('key' => 'lo_milestone', 'select' => true, 'group' => 'lo', 'label' => $this->lang->def('_LO_COL_MILESTONE')),
-            array('key' => 'firstAttempt', 'select' => true, 'group' => 'lo', 'label' => $this->lang->def('_LO_COL_FIRSTATT')),
-            array('key' => 'lastAttempt', 'select' => true, 'group' => 'lo', 'label' => $this->lang->def('_LO_COL_LASTATT')),
-            array('key' => 'lo_status', 'select' => true, 'group' => 'lo', 'label' => $this->lang->def('_STATUS')),
-            array('key' => 'lo_score', 'select' => true, 'group' => 'lo', 'label' => $this->lang->def('_SCORE')),
-            array('key' => 'lo_total_time', 'select' => true, 'group' => 'lo', 'label' => $this->lang->def('_TOTAL_TIME'))
-        );
+        $this->LO_columns = [
+            ['key' => 'userid', 'select' => false, 'group' => 'user', 'label' => Lang::t('_USERID', 'standard')],
+            ['key' => 'user_name', 'select' => true, 'group' => 'user', 'label' => Lang::t('_FULLNAME', 'standard')],
+            ['key' => 'email', 'select' => true, 'group' => 'user', 'label' => Lang::t('_EMAIL', 'standard')],
+            ['key' => 'suspended', 'select' => true, 'group' => 'user', 'label' => Lang::t('_SUSPENDED', 'standard')],
+            ['key' => '_CUSTOM_FIELDS_', 'select' => false, 'group' => 'user', 'label' => false],
+            ['key' => 'course_code', 'select' => false, 'group' => 'course', 'label' => $this->lang->def('_CODE')],
+            ['key' => 'course_name', 'select' => true, 'group' => 'course', 'label' => $this->lang->def('_COURSE_NAME')],
+            ['key' => 'course_status', 'select' => true, 'group' => 'course', 'label' => $this->lang->def('_STATUS')],
+            ['key' => 'lo_type', 'select' => true, 'group' => 'lo', 'label' => $this->lang->def('_LO_COL_TYPE')],
+            ['key' => 'lo_name', 'select' => true, 'group' => 'lo', 'label' => $this->lang->def('_TITLE')],
+            ['key' => 'lo_milestone', 'select' => true, 'group' => 'lo', 'label' => $this->lang->def('_LO_COL_MILESTONE')],
+            ['key' => 'firstAttempt', 'select' => true, 'group' => 'lo', 'label' => $this->lang->def('_LO_COL_FIRSTATT')],
+            ['key' => 'lastAttempt', 'select' => true, 'group' => 'lo', 'label' => $this->lang->def('_LO_COL_LASTATT')],
+            ['key' => 'lo_status', 'select' => true, 'group' => 'lo', 'label' => $this->lang->def('_STATUS')],
+            ['key' => 'lo_score', 'select' => true, 'group' => 'lo', 'label' => $this->lang->def('_SCORE')],
+            ['key' => 'lo_total_time', 'select' => true, 'group' => 'lo', 'label' => $this->lang->def('_TOTAL_TIME')]
+        ];
 
-        $this->TESTSTAT_columns = array(
-            array('key' => 'userid', 'select' => false, 'group' => 'user', 'label' => Lang::t('_USERID', 'standard')),
-            array('key' => 'user_name', 'select' => true, 'group' => 'user', 'label' => Lang::t('_FULLNAME', 'standard')),
-            array('key' => 'email', 'select' => true, 'group' => 'user', 'label' => Lang::t('_EMAIL', 'standard')),
-            array('key' => 'suspended', 'select' => true, 'group' => 'user', 'label' => Lang::t('_SUSPENDED', 'standard')),
-            array('key' => '_CUSTOM_FIELDS_', 'select' => false, 'group' => 'user', 'label' => false),
-            array('key' => 'course_code', 'select' => false, 'group' => 'course', 'label' => $this->lang->def('_CODE')),
-            array('key' => 'course_name', 'select' => true, 'group' => 'course', 'label' => $this->lang->def('_COURSE_NAME')),
-            array('key' => 'course_status', 'select' => true, 'group' => 'course', 'label' => $this->lang->def('_STATUS')),
-            array('key' => 'lo_name', 'select' => true, 'group' => 'lo', 'label' => $this->lang->def('_TITLE')),
-            array('key' => 'lo_status', 'select' => true, 'group' => 'lo', 'label' => $this->lang->def('_STATUS')),
-            array('key' => 'lo_score', 'select' => true, 'group' => 'lo', 'label' => $this->lang->def('_SCORE')),
-            array('key' => 'lo_date', 'select' => true, 'group' => 'lo', 'label' => $this->lang->def('_DATE'))
-        );
+        $this->TESTSTAT_columns = [
+            ['key' => 'userid', 'select' => false, 'group' => 'user', 'label' => Lang::t('_USERID', 'standard')],
+            ['key' => 'user_name', 'select' => true, 'group' => 'user', 'label' => Lang::t('_FULLNAME', 'standard')],
+            ['key' => 'email', 'select' => true, 'group' => 'user', 'label' => Lang::t('_EMAIL', 'standard')],
+            ['key' => 'suspended', 'select' => true, 'group' => 'user', 'label' => Lang::t('_SUSPENDED', 'standard')],
+            ['key' => '_CUSTOM_FIELDS_', 'select' => false, 'group' => 'user', 'label' => false],
+            ['key' => 'course_code', 'select' => false, 'group' => 'course', 'label' => $this->lang->def('_CODE')],
+            ['key' => 'course_name', 'select' => true, 'group' => 'course', 'label' => $this->lang->def('_COURSE_NAME')],
+            ['key' => 'course_status', 'select' => true, 'group' => 'course', 'label' => $this->lang->def('_STATUS')],
+            ['key' => 'lo_name', 'select' => true, 'group' => 'lo', 'label' => $this->lang->def('_TITLE')],
+            ['key' => 'lo_status', 'select' => true, 'group' => 'lo', 'label' => $this->lang->def('_STATUS')],
+            ['key' => 'lo_score', 'select' => true, 'group' => 'lo', 'label' => $this->lang->def('_SCORE')],
+            ['key' => 'lo_date', 'select' => true, 'group' => 'lo', 'label' => $this->lang->def('_DATE')]
+        ];
 
-        $this->delay_columns = array(
-            array('key' => 'userid', 'label' => Lang::t('_USERNAME', 'standard'), 'select' => false),
-            array('key' => 'lastname', 'label' => Lang::t('_LASTNAME', 'standard'), 'select' => true),
-            array('key' => 'firstname', 'label' => Lang::t('_FIRSTNAME', 'standard'), 'select' => true),
-            array('key' => 'email', 'label' => Lang::t('_EMAIL', 'standard'), 'select' => true),
-            array('key' => 'level', 'label' => Lang::t('_LEVEL', 'standard'), 'select' => true),
-            array('key' => 'status', 'label' => Lang::t('_STATUS', 'standard'), 'select' => true),
-            array('key' => 'date_subscription', 'label' => Lang::t('_DATE_INSCR', 'report'), 'select' => true),
-            array('key' => 'date_first_access', 'label' => Lang::t('_DATE_FIRST_ACCESS', 'standard'), 'select' => true),
-            array('key' => 'date_last_access', 'label' => Lang::t('_DATE_LAST_ACCESS', 'standard'), 'select' => true),
-            array('key' => 'date_complete', 'label' => Lang::t('_DATE_END', 'standard'), 'select' => true)
-        );
+        $this->delay_columns = [
+            ['key' => 'userid', 'label' => Lang::t('_USERNAME', 'standard'), 'select' => false],
+            ['key' => 'lastname', 'label' => Lang::t('_LASTNAME', 'standard'), 'select' => true],
+            ['key' => 'firstname', 'label' => Lang::t('_FIRSTNAME', 'standard'), 'select' => true],
+            ['key' => 'email', 'label' => Lang::t('_EMAIL', 'standard'), 'select' => true],
+            ['key' => 'level', 'label' => Lang::t('_LEVEL', 'standard'), 'select' => true],
+            ['key' => 'status', 'label' => Lang::t('_STATUS', 'standard'), 'select' => true],
+            ['key' => 'date_subscription', 'label' => Lang::t('_DATE_INSCR', 'report'), 'select' => true],
+            ['key' => 'date_first_access', 'label' => Lang::t('_DATE_FIRST_ACCESS', 'standard'), 'select' => true],
+            ['key' => 'date_last_access', 'label' => Lang::t('_DATE_LAST_ACCESS', 'standard'), 'select' => true],
+            ['key' => 'date_complete', 'label' => Lang::t('_DATE_END', 'standard'), 'select' => true]
+        ];
 
     }
 
     function getLOTypesTranslations()
     {
         if (!is_array($this->LO_types)) {
-            $this->LO_types = array();
+            $this->LO_types = [];
             $res = sql_query("SELECT objectType FROM %lms_lo_types");
             while (list($id_type) = sql_fetch_row($res)) {
                 switch ($id_type) {
@@ -218,10 +218,10 @@ class Report_User extends Report
     {
 
         if (!isset($_SESSION['report_tempdata']['rows_filter'])) {
-            $_SESSION['report_tempdata']['rows_filter'] = array(
-                'users' => array(),
+            $_SESSION['report_tempdata']['rows_filter'] = [
+                'users' => [],
                 'all_users' => false
-            );
+            ];
         }
 
         $back_url = $this->back_url;
@@ -328,14 +328,14 @@ class Report_User extends Report
 
         Form::loadDatefieldScript();
 
-        $time_belt = array(
+        $time_belt = [
             0 => $lang->def('_CUSTOM_BELT'),
             7 => $lang->def('_LAST_WEEK'),
             31 => $lang->def('_LAST_MONTH'),
             93 => $lang->def('_LAST_THREE_MONTH'),
             186 => $lang->def('_LAST_SIX_MONTH'),
             365 => $lang->def('_LAST_YEAR'),
-        );
+        ];
 
 
         //back to columns category selection
@@ -349,35 +349,35 @@ class Report_User extends Report
         require_once($GLOBALS['where_framework'] . '/lib/lib.field.php');
         $fman = new FieldList();
         $fields = $fman->getFlatAllFields();
-        $custom = array();
+        $custom = [];
         foreach ($fields as $key => $val) {
-            $custom[] = array('id' => $key, 'label' => $val, 'selected' => false);
+            $custom[] = ['id' => $key, 'label' => $val, 'selected' => false];
         }
 
         // organization custom fields
         require_once($GLOBALS['where_framework'] . '/lib/lib.customfield.php');
         $fman = new CustomFieldList();
         $fieldsOrg = $fman->getCustomFields('ORG_CHART');
-        $customOrg = array();
+        $customOrg = [];
         foreach ($fieldsOrg as $keyOrg => $valOrg) {
-            $customOrg[] = array('id' => $keyOrg, 'label' => $valOrg, 'selected' => false);
+            $customOrg[] = ['id' => $keyOrg, 'label' => $valOrg, 'selected' => false];
         }
         // course custom fielfs
         $fieldsCourse = $fman->getCustomFields('COURSE');
-        $customCourse = array();
+        $customCourse = [];
         foreach ($fieldsCourse as $keyCourse => $valCourse) {
-            $customCourse[] = array('id' => $keyCourse, 'label' => $valCourse, 'selected' => false);
+            $customCourse[] = ['id' => $keyCourse, 'label' => $valCourse, 'selected' => false];
         }
 
         //set $_POST data in $_SESSION['report_tempdata']
         if (!isset($_SESSION['report_tempdata']['columns_filter'])) {
-            $_SESSION['report_tempdata']['columns_filter'] = array(
+            $_SESSION['report_tempdata']['columns_filter'] = [
                 'org_chart_subdivision' => 0,
                 'all_courses' => true,
-                'selected_courses' => array(),
-                'sub_filters' => array(),
+                'selected_courses' => [],
+                'sub_filters' => [],
                 'filter_exclusive' => 1,
-                'showed_columns' => array(),
+                'showed_columns' => [],
                 'order_by' => 'userid',
                 'order_dir' => 'asc',
                 'show_suspended' => false,
@@ -385,7 +385,7 @@ class Report_User extends Report
                 'custom_fields_org' => $customOrg,
                 'custom_fields_course' => $customCourse,
                 'show_classrooms_editions' => false
-            );
+            ];
         }
         $ref =& $_SESSION['report_tempdata']['columns_filter']; //echo print_r($ref,true);
 
@@ -397,7 +397,7 @@ class Report_User extends Report
 
             // parse for date fields
 
-            $opt_type = array();
+            $opt_type = [];
             foreach ($this->courses_filter_definition as $fd) {
                 $opt_type[$fd['key']] = $fd['type'];
             }
@@ -410,43 +410,43 @@ class Report_User extends Report
                 }
             }
 
-            $temp = array(
+            $temp = [
                 'org_chart_subdivision' => (isset($_POST['org_chart_subdivision']) ? 1 : 0),
                 'all_courses' => ($_POST['all_courses'] == 1 ? true : false),
                 'selected_courses' => $selector->getSelection(),
-                'sub_filters' => (isset($_REQUEST['courses_filter']) ? $_REQUEST['courses_filter'] : array()),
+                'sub_filters' => (isset($_REQUEST['courses_filter']) ? $_REQUEST['courses_filter'] : []),
                 'filter_exclusive' => (isset($_POST['filter_exclusive']) ? $_POST['filter_exclusive'] : false),
-                'showed_columns' => (isset($_POST['cols']) ? $_POST['cols'] : array()),
+                'showed_columns' => (isset($_POST['cols']) ? $_POST['cols'] : []),
                 'order_by' => (isset($_POST['order_by']) ? $_POST['order_by'] : 'userid'),
                 'order_dir' => (isset($_POST['order_dir']) ? $_POST['order_dir'] : 'asc'),
                 'show_suspended' => (isset($_POST['show_suspended']) ? $_POST['show_suspended'] > 0 : false),
-                'custom_fields' => array(),
-                'custom_fields_org' => array(),
+                'custom_fields' => [],
+                'custom_fields_org' => [],
                 'show_classrooms_editions' => (isset($_POST['show_classrooms_editions']) && $_POST['show_classrooms_editions'] > 0 ? true : false)
-            );
+            ];
 
             foreach ($custom as $val) {
-                $temp['custom_fields'][] = array(
+                $temp['custom_fields'][] = [
                     'id' => $val['id'],
                     'label' => $val['label'],
                     'selected' => (isset($_POST['custom'][$val['id']]) ? true : false)
-                );
+                ];
             }
 
             foreach ($customOrg as $val) {
-                $temp['custom_fields_org'][] = array(
+                $temp['custom_fields_org'][] = [
                     'id' => $val['id'],
                     'label' => $val['label'],
                     'selected' => (isset($_POST['customorg'][$val['id']]) ? true : false)
-                );
+                ];
             }
 
             foreach ($customCourse as $val) {
-                $temp['custom_fields_course'][] = array(
+                $temp['custom_fields_course'][] = [
                     'id' => $val['id'],
                     'label' => $val['label'],
                     'selected' => (isset($_POST['customcourse'][$val['id']]) ? true : false)
-                );
+                ];
             }
             $ref = $temp;
         } else {
@@ -456,7 +456,7 @@ class Report_User extends Report
             if (!isset($ref['custom_fields'])) {
                 $ref['custom_fields'] = $custom;
             } else {
-                $t_arr = array();
+                $t_arr = [];
                 foreach ($custom as $val) {
                     $is_selected = FALSE;
                     foreach ($ref['custom_fields'] as $fieldrow) {
@@ -465,11 +465,11 @@ class Report_User extends Report
                             break;
                         }
                     }
-                    $t_arr[] = array(
+                    $t_arr[] = [
                         'id' => $val['id'],
                         'label' => $val['label'],
                         'selected' => $is_selected
-                    );
+                    ];
                 }
                 $ref['custom_fields'] = $t_arr;
             }
@@ -477,7 +477,7 @@ class Report_User extends Report
             if (!isset($ref['custom_fields_org'])) {
                 $ref['custom_fields_org'] = $customOrg;
             } else {
-                $t_arr = array();
+                $t_arr = [];
                 foreach ($customOrg as $val) {
                     $is_selected = FALSE;
                     foreach ($ref['custom_fields_org'] as $fieldrow) {
@@ -486,13 +486,13 @@ class Report_User extends Report
                             break;
                         }
                     }
-                    $t_arr[] = array(
+                    $t_arr[] = [
                         'id' => $val['id'],
                         'label' => $val['label'],
                         'selected' => $is_selected,
                         'translation' => $val['translation'],
                         'type_field' => $val['type_field']
-                    );
+                    ];
                 }
                 $ref['custom_fields_org'] = $t_arr;
             }
@@ -500,7 +500,7 @@ class Report_User extends Report
             if (!isset($ref['custom_fields_course'])) {
                 $ref['custom_fields_course'] = $customCourse;
             } else {
-                $t_arr = array();
+                $t_arr = [];
                 foreach ($customCourse as $val) {
                     $is_selected = FALSE;
                     foreach ($ref['custom_fields_course'] as $fieldrow) {
@@ -509,13 +509,13 @@ class Report_User extends Report
                             break;
                         }
                     }
-                    $t_arr[] = array(
+                    $t_arr[] = [
                         'id' => $val['id'],
                         'label' => $val['label'],
                         'selected' => $is_selected,
                         'translation' => $val['translation'],
                         'type_field' => $val['type_field']
-                    );
+                    ];
                 }
                 $ref['custom_fields_course'] = $t_arr;
             }
@@ -564,10 +564,10 @@ class Report_User extends Report
 
         $seldata = $this->courses_filter_definition;
 
-        $filter_cases = array(
+        $filter_cases = [
             '_FILTER_INTEGER' => _FILTER_INTEGER,
             '_FILTER_DATE' => _FILTER_DATE
-        );
+        ];
 
         $regset = Format::instance();
         $date_token = $regset->date_token;
@@ -613,7 +613,7 @@ class Report_User extends Report
                 $already .= '<span id="courses_filter_params_' . $index . '">';
 
                 //generate sign selection
-                $signs = array('<', '<=', '=', '>=', '>');
+                $signs = ['<', '<=', '=', '>=', '>'];
                 $already .= '<select name="courses_filter[' . $key . '][sign]">';
                 foreach ($signs as $k2 => $v2) {
                     if ($value['sign'] == $v2) $selected = ' selected="selected"'; else $selected = '';
@@ -814,7 +814,7 @@ class Report_User extends Report
         $box->title = Lang::t('_OTHER_OPTION', 'course');
         $box->description = false;
 
-        $sort_list = array(
+        $sort_list = [
             'userid' => Lang::t('_USERID', 'standard'),
             'firstname' => Lang::t('_FIRSTNAME', 'standard'),
             'lastname' => Lang::t('_LASTNAME', 'standard'),
@@ -827,11 +827,11 @@ class Report_User extends Report
             'date_first_access' => Lang::t('_DATE_FIRST_ACCESS', 'report'),
             'date_last_access' => Lang::t('_DATE_LAST_ACCESS', 'report'),
             'date_complete' => Lang::t('_DATE_END', 'standard')
-        );
-        $dir_list = array(
+        ];
+        $dir_list = [
             'asc' => Lang::t('_ORD_ASC_TITLE', 'standard'),
             'desc' => Lang::t('_ORD_DESC_TITLE', 'standard')
-        );
+        ];
 
         $sort_selected = array_key_exists($ref['order_by'], $sort_list) ? $ref['order_by'] : 'userid';
         $dir_selected = array_key_exists($ref['order_dir'], $dir_list) ? $ref['order_dir'] : 'asc';
@@ -864,16 +864,16 @@ class Report_User extends Report
             Util::jump_to($back_url);
         }
         if (Get::req('is_updating', DOTY_INT, 0) > 0) {
-            $_SESSION['report_tempdata']['columns_filter'] = array(
-                'filters_list' => Get::req('rc_filter', DOTY_MIXED, array()),
+            $_SESSION['report_tempdata']['columns_filter'] = [
+                'filters_list' => Get::req('rc_filter', DOTY_MIXED, []),
                 'exclusive' => (Get::req('rc_filter_exclusive', DOTY_INT, 0) > 0 ? true : false)
-            );
+            ];
         } else {
             if (!isset($_SESSION['report_tempdata']['columns_filter']))
-                $_SESSION['report_tempdata']['columns_filter'] = array(
-                    'filters_list' => array(),
+                $_SESSION['report_tempdata']['columns_filter'] = [
+                    'filters_list' => [],
                     'exclusive' => true
-                );
+                ];
         }
         $ref =& $_SESSION['report_tempdata']['columns_filter'];
 
@@ -888,15 +888,15 @@ class Report_User extends Report
         $cats = $cmodel->getAllCategories();
         $comps = $cmodel->getAllCompetences();
 
-        $optdata = array(
-            array(
+        $optdata = [
+            [
                 'name' => Lang::t('_COMPETENCES', 'competences'),
-                'rows' => array()
-            )
-        );
+                'rows' => []
+            ]
+        ];
         foreach ($comps as $key => $val) { //categories cycle
 
-            $temp = array();
+            $temp = [];
             $temp['id'] = $val->id_competence;
             $temp['name'] = $val->name;//str_replace("'", "\'", $value);
             $temp['type'] = $val->type;
@@ -989,7 +989,7 @@ class Report_User extends Report
 
 
                     // send mail
-                    $arr_recipients = array();
+                    $arr_recipients = [];
                     foreach ($mail_recipients as $recipient) {
                         $rec_data = $acl_man->getUser($recipient, false);
                         //mail($rec_data[ACL_INFO_EMAIL] , $subject, $body, $from.$header."\r\n");
@@ -1008,7 +1008,7 @@ class Report_User extends Report
             case 'send_mail':
                 {
                     require_once(_base_ . '/lib/lib.form.php');
-                    $mail_recipients = Get::req('mail_recipients', DOTY_MIXED, array());
+                    $mail_recipients = Get::req('mail_recipients', DOTY_MIXED, []);
                     cout(''//Form::openForm('course_selection', Util::str_replace_once('&', '&amp;', $jump_url))
                         . Form::openElementSpace()
                         . Form::getTextfield($lang->def('_SUBJECT'), 'mail_object', 'mail_object', 255)
@@ -1050,7 +1050,7 @@ class Report_User extends Report
         $output = '';
         $jump_url = '';
         $org_chart_subdivision = 0; // not implemented
-        $elem_selected = array();
+        $elem_selected = [];
 
         $lang =& DoceboLanguage::createInstance('report', 'framework');
         $acl_man = new DoceboACLManager();
@@ -1106,7 +1106,7 @@ class Report_User extends Report
             $admin_courses = $adminManager->getAdminCourse(Docebo::user()->getIdST());
             if (!$filter_allcourses) {
                 $rs = sql_query("SELECT idCourse FROM %lms_course");
-                $course_selected = array();
+                $course_selected = [];
                 while (list($id_course) = sql_fetch_row($rs)) {
                     $course_selected[] = $id_course;
                 }
@@ -1121,7 +1121,7 @@ class Report_User extends Report
 
                 $user_catalogue = $cat_man->getUserAllCatalogueId(Docebo::user()->getIdSt());
                 if (count($user_catalogue) > 0) {
-                    $courses = array(0);
+                    $courses = [0];
 
                     foreach ($user_catalogue as $id_cat) {
                         $catalogue_course =& $cat_man->getCatalogueCourse($id_cat, true);
@@ -1138,16 +1138,16 @@ class Report_User extends Report
 
                 if (!empty($admin_courses['course'])) {
                     $rs = sql_query("SELECT idCourse FROM %lms_course");
-                    $course_selected = array();
+                    $course_selected = [];
                     while (list($id_course) = sql_fetch_row($rs)) {
                         $course_selected[] = $id_course;
                     }
                     $_clist = array_values($admin_courses['course']);
                     $course_selected = array_intersect($course_selected, $_clist);
                 } else
-                    $course_selected = array();
+                    $course_selected = [];
             } else {
-                $array_courses = array();
+                $array_courses = [];
                 $array_courses = array_merge($array_courses, $admin_courses['course']);
 
                 if (!empty($admin_courses['coursepath'])) {
@@ -1168,14 +1168,14 @@ class Report_User extends Report
 
                 if (!empty($admin_courses['course'])) {
                     $rs = sql_query("SELECT idCourse FROM %lms_course");
-                    $course_selected = array();
+                    $course_selected = [];
                     while (list($id_course) = sql_fetch_row($rs)) {
                         $course_selected[] = $id_course;
                     }
                     $_clist = array_values($admin_courses['course']);
                     $course_selected = array_intersect($course_selected, $_clist);
                 } else
-                    $course_selected = array();
+                    $course_selected = [];
             }
 
             unset($admin_courses);
@@ -1189,7 +1189,7 @@ class Report_User extends Report
         }
         $show_classrooms_editions = isset($filter_columns['show_classrooms_editions']) ? (bool)$filter_columns['show_classrooms_editions'] : false;
 
-        $classrooms_editions_info = array();
+        $classrooms_editions_info = [];
         if ($show_classrooms_editions) {
             //retrieve classrooms info
             $query = "SELECT d.*, MIN(dd.date_begin) AS date_1, MAX(dd.date_end) AS date_2 "
@@ -1222,7 +1222,7 @@ class Report_User extends Report
                 $admin_tree = $adminManager->getAdminTree(Docebo::user()->getIdST());
 
                 $org_name_temp = $org_name;
-                $org_name = array();
+                $org_name = [];
                 foreach ($org_name_temp as $id => $value) {
                     if (isset($admin_tree[$id])) $org_name[$id] = $value;
                 }
@@ -1244,16 +1244,16 @@ class Report_User extends Report
         $re_category = sql_query("
 		SELECT idCategory, path
 		FROM " . $GLOBALS['prefix_lms'] . "_category");
-        $category_list = array(0 => $lang->def('_NONE'));
-        $category_path_list = array(0 => '/');
+        $category_list = [0 => $lang->def('_NONE')];
+        $category_path_list = [0 => '/'];
         while (list($id_cat, $name_cat) = sql_fetch_row($re_category)) {
             $category_list[$id_cat] = substr($name_cat, strrpos($name_cat, '/') + 1);
             $category_path_list[$id_cat] = substr($name_cat, 5, (strlen($name_cat) - 5)); //eliminates "/root"
         }
 
-        $time_list = array();
-        $session_list = array();
-        $lastaccess_list = array();
+        $time_list = [];
+        $session_list = [];
+        $lastaccess_list = [];
 
         $query = "
 		SELECT idUser, idCourse, COUNT(*), SUM(UNIX_TIMESTAMP(lastTime) - UNIX_TIMESTAMP(enterTime)), MAX(lastTime)
@@ -1532,10 +1532,10 @@ class Report_User extends Report
         $cols = $filter_columns['showed_columns'];
         $output = '';
 
-        $course_types_trans = array(
+        $course_types_trans = [
             'elearning' => Lang::t('_ELEARNING', 'standard'),
             'classroom' => Lang::t('_CLASSROOM', 'standard')
-        );
+        ];
 
         require_once(_lms_ . '/lib/lib.levels.php');
         $clevels = new CourseLevel();
@@ -1547,8 +1547,8 @@ class Report_User extends Report
 
         $buffer->openTable($lang->def('_RU_CAPTION'), $lang->def('_RU_CAPTION'));
 
-        $th1 = array();
-        $th2 = array();
+        $th1 = [];
+        $th2 = [];
 
         $colspanuser = 0;
         $th2[] = $lang->def('_USERNAME');
@@ -1580,9 +1580,9 @@ class Report_User extends Report
         $_users = $aclManager->getAllUsersFromSelection($filter_rows);
 
         // custom field for user
-        $field_values = array();
+        $field_values = [];
         $customcols =& $filter_columns['custom_fields'];
-        $custom_list = array();
+        $custom_list = [];
         foreach ($customcols as $val) {
             if ($val['selected']) {
                 $colspanuser++;
@@ -1592,13 +1592,13 @@ class Report_User extends Report
         }
         require_once($GLOBALS['where_framework'] . '/lib/lib.field.php');
         $fman = new FieldList();
-        $field_values = (!empty($custom_list)) ? $fman->getUsersFieldEntryData($_users, $custom_list) : array();
+        $field_values = (!empty($custom_list)) ? $fman->getUsersFieldEntryData($_users, $custom_list) : [];
 
         if (in_array('_TH_ORGANIZATION_CHART', $cols)) {
             $th2[] = Lang::t('_ORGCHART', 'standard');
             $colspanuser++;
             // org-chart custom fields
-            $field_values_org = array();
+            $field_values_org = [];
             $customcols_org =& $filter_columns['custom_fields_org'];
             foreach ($customcols_org as $val) {
                 if ($val['selected']) {
@@ -1644,9 +1644,9 @@ class Report_User extends Report
             $colspan1++;
         }
         //LRZ: custom field for course
-        $field_values_course = array();
+        $field_values_course = [];
         $customcols_course =& $filter_columns['custom_fields_course'];
-        $custom_list_course = array();
+        $custom_list_course = [];
 
         foreach ($customcols_course as $val) {
             if ($val['selected']) {
@@ -1737,19 +1737,19 @@ class Report_User extends Report
 
 
         //checkbox for mail
-        if ($this->use_mail) $th2[] = array(
+        if ($this->use_mail) $th2[] = [
             'style' => 'img-cell',
             'value' => $this->_loadEmailIcon()
-        );
+        ];
 
-        $th1 = array();
-        $th1[] = array('colspan' => $colspanuser, 'value' => $lang->def('_USERS'));
-        $th1[] = array('colspan' => $colspan1, 'value' => $lang->def('_COURSES'));
-        if ($show_classrooms_editions) $th1[] = array('colspan' => $colspan_classrooms_editions, 'value' => Lang::t('_CLASSROOM', 'standard'));
+        $th1 = [];
+        $th1[] = ['colspan' => $colspanuser, 'value' => $lang->def('_USERS')];
+        $th1[] = ['colspan' => $colspan1, 'value' => $lang->def('_COURSES')];
+        if ($show_classrooms_editions) $th1[] = ['colspan' => $colspan_classrooms_editions, 'value' => Lang::t('_CLASSROOM', 'standard')];
 
 
         // Luca
-        $th1[] = array('colspan' => $colspanLO, 'value' => $lang->def('_PROGRESS'));
+        $th1[] = ['colspan' => $colspanLO, 'value' => $lang->def('_PROGRESS')];
 
 
         $buffer->openHeader();
@@ -1789,7 +1789,7 @@ class Report_User extends Report
 
             //$draw_row = $exclusive;
             if (!isset($filter_columns['sub_filters'])) {
-                $filter_columns['sub_filters'] = array();
+                $filter_columns['sub_filters'] = [];
             }
 
             if (count($filter_columns['sub_filters']) <= 0) {
@@ -1871,7 +1871,7 @@ class Report_User extends Report
 
                 require_once($GLOBALS['where_framework'] . '/lib/lib.customfield.php');
                 $fman = new CustomFieldList();
-                $row = array();
+                $row = [];
                 $row[] = Docebo::aclm()->relativeId($userid);
                 if (in_array('_TH_LASTNAME', $cols)) $row[] = $lastname;
                 if (in_array('_TH_FIRSTNAME', $cols)) $row[] = $firstname;
@@ -2046,7 +2046,7 @@ class Report_User extends Report
 
         $output .= $buffer->get();
 
-        YuiLib::load(array('selector' => 'selector-beta-min.js'));
+        YuiLib::load(['selector' => 'selector-beta-min.js']);
 
 
         if ($this->use_mail) {
@@ -2196,7 +2196,7 @@ class Report_User extends Report
                     $header .= "X-Mailer: PHP/" . phpversion() . $GLOBALS['mail_br'];
 
                     // send mail
-                    $arr_recipients = array();
+                    $arr_recipients = [];
                     foreach ($mail_recipients as $recipient) {
                         $rec_data = $acl_man->getUser($recipient, false);
                         //mail($rec_data[ACL_INFO_EMAIL] , $subject, $body, $from.$header."\r\n");
@@ -2216,7 +2216,7 @@ class Report_User extends Report
             case 'send_mail':
                 {
                     require_once(_base_ . '/lib/lib.form.php');
-                    $mail_recipients = Get::req('mail_recipients', DOTY_MIXED, array());
+                    $mail_recipients = Get::req('mail_recipients', DOTY_MIXED, []);
                     cout(
                         ''//Form::openForm('course_selection', Util::str_replace_once('&', '&amp;', $jump_url))
                         . Form::openElementSpace()
@@ -2251,7 +2251,7 @@ class Report_User extends Report
         $rc_filters =& $ref['columns_filter']['filters_list'];
         $rc_exclusive = $ref['columns_filter']['exclusive'];
 
-        $final_arr = array();
+        $final_arr = [];
 
 
         $all_users = $ref['rows_filter']['all_users'];
@@ -2286,9 +2286,9 @@ class Report_User extends Report
         $table4 = "%adm_user";
 
         //extract all competneces for all selected users and store the data
-        $arr_data = array();
-        $arr_userids = array();
-        $arr_competences = array();
+        $arr_data = [];
+        $arr_userids = [];
+        $arr_competences = [];
         $language = getLanguage();
         $acl_man = Docebo::user()->getACLManager();
         $query = "SELECT t1.id_competence, t2.name, t3.id_user, t4.userid, t3.score_got "
@@ -2310,8 +2310,8 @@ class Report_User extends Report
 
         $cinfo = $cmodel->getCompetencesInfo($arr_competences);
         $ucount = 0;
-        $signs = array('0' => '<', '1' => '<=', '2' => '=', '3' => '>=', '4' => '>');
-        $conds = array();
+        $signs = ['0' => '<', '1' => '<=', '2' => '=', '3' => '>=', '4' => '>'];
+        $conds = [];
         $icon_actv = '<span class="ico-sprite subs_actv"><span>' . Lang::t('_COMPETENCE_OBTAINED', 'competences') . '</span></span>';
         $icon_email = $this->_loadEmailIcon();
 
@@ -2322,11 +2322,11 @@ class Report_User extends Report
         $buffer->openHeader();
 
         //set header
-        $_head = array(Lang::t('_USER', 'standard'));
+        $_head = [Lang::t('_USER', 'standard')];
         foreach ($arr_competences as $cid) {
-            $_head[] = array('style' => 'img-cell', 'value' => $cinfo[$cid]->langs[$language]['name']);
+            $_head[] = ['style' => 'img-cell', 'value' => $cinfo[$cid]->langs[$language]['name']];
         }
-        if ($this->use_mail) $_head[] = array('style' => 'img-cell', 'value' => $icon_email);
+        if ($this->use_mail) $_head[] = ['style' => 'img-cell', 'value' => $icon_email];
 
         //render header
         $buffer->addHeader($_head);
@@ -2400,22 +2400,22 @@ class Report_User extends Report
                 $ucount++;
 
                 //set line values
-                $line = array(
+                $line = [
                     $arr_userids[$id_user]
-                );
+                ];
                 foreach ($arr_competences as $id_competence) {
-                    $line[] = array(
+                    $line[] = [
                         'style' => 'img-cell',
                         'value' => (array_key_exists($id_competence, $ucomps) && $ucomps[$id_competence] > 0
                             ? ($cinfo[$id_competence]->type == 'score' ? '<b>' . $ucomps[$id_competence] . '</b>' : $icon_actv)
                             : '')
-                    );
+                    ];
                 }
                 if ($this->use_mail)
-                    $line[] = array(
+                    $line[] = [
                         'style' => 'img-cell',
                         'value' => '<div class="align_center">' . Form::getInputCheckbox('mail_' . $id_user, 'mail_recipients[]', $id_user, isset($_POST['select_all']), '') . '</div>'
-                    );
+                    ];
 
                 //render line
                 $buffer->addLine($line);
@@ -2448,7 +2448,7 @@ class Report_User extends Report
     protected function _check_delay_column($key)
     {
         //for beckward compatibility
-        $convert = array(
+        $convert = [
             '_LASTNAME' => 'lastname',
             '_NAME' => 'firstname',
             '_STATUS' => 'status',
@@ -2456,7 +2456,7 @@ class Report_User extends Report
             '_DATE_INSCR' => 'date_subscription',
             '_DATE_FIRST_ACCESS' => 'date_first_access',
             '_DATE_COURSE_COMPLETED' => 'date_course_completed'
-        );
+        ];
         return (isset($convert[$key]) ? $convert[$key] : $key);
     }
 
@@ -2480,7 +2480,7 @@ class Report_User extends Report
         $selector = new Selector_Course();
         if (isset($_POST['update_tempdata'])) {
             $selector->parseForState($_POST);
-            $temp = array(
+            $temp = [
                 'report_type_completed' => ($_POST['report_type'] == "course_completed" || $_POST['report_type'] == "both" ? true : false),//( isset($_POST['report_type_completed']) ? true : false ),
                 'report_type_started' => ($_POST['report_type'] == "course_started" || $_POST['report_type'] == "both" ? true : false),//( isset($_POST['report_type_started']) ? true : false ),
                 'day_from_subscription' => $_POST['day_from_subscription'],
@@ -2489,18 +2489,18 @@ class Report_User extends Report
                 'org_chart_subdivision' => (isset($_POST['org_chart_subdivision']) ? 1 : 0),
                 'all_courses' => ($_POST['all_courses'] == 1 ? true : false),
                 'selected_courses' => $selector->getSelection(),
-                'showed_columns' => (isset($_POST['cols']) ? $_POST['cols'] : array()),
+                'showed_columns' => (isset($_POST['cols']) ? $_POST['cols'] : []),
                 'order_by' => Get::req('order_by', DOTY_STRING, 'userid'),
                 'order_dir' => Get::req('order_dir', DOTY_STRING, 'asc'),
                 'show_suspended' => Get::req('show_suspended', DOTY_INT, 0) > 0,
-            );
+            ];
             $_SESSION['report_tempdata']['columns_filter'] = $temp; //$ref = $temp;
         } else {
             //first loading of this page -> prepare $_SESSION data structure
             //if (isset($_SESSION['report_update']) /* && is equal to id_report */) break;
 
             if (!isset($_SESSION['report_tempdata']['columns_filter'])) {
-                $_SESSION['report_tempdata']['columns_filter'] = array(//$ref = array(
+                $_SESSION['report_tempdata']['columns_filter'] = [//$ref = array(
                     'report_type_completed' => false,
                     'report_type_started' => false,
                     'day_from_subscription' => '',
@@ -2509,12 +2509,12 @@ class Report_User extends Report
                     'org_chart_subdivision' => 0,
                     'all_users' => false,
                     'all_courses' => true,
-                    'selected_courses' => array(),
-                    'showed_columns' => array(),
+                    'selected_courses' => [],
+                    'showed_columns' => [],
                     'order_by' => 'userid',
                     'order_dir' => 'asc',
                     'show_suspended' => false,
-                );
+                ];
             }
         }
         //filter setting done, go to next step
@@ -2530,11 +2530,11 @@ class Report_User extends Report
         cout(Form::getHidden('update_tempdata', 'update_tempdata', 1), 'content');
 
 
-        $array_report_type = array(
+        $array_report_type = [
             $lang->def('_COURSE_COMPLETED') => "course_completed",
             $lang->def('_COURSE_STARTED') => "course_started",
             $lang->def('_FILTER_ALL_CONDS') => "both"
-        );
+        ];
 
         //box for rpeort options
         $box = new ReportBox('delay_options_box');
@@ -2597,7 +2597,7 @@ class Report_User extends Report
         $box->body = Form::getOpenFieldset($lang->def('_SHOWED_COLUMNS'));
 
         //backward compatibility
-        $arr_check_columns = array();
+        $arr_check_columns = [];
         foreach ($ref['showed_columns'] as $_column_key) {
             $arr_check_columns[] = $this->_check_delay_column($_column_key);
         }
@@ -2622,7 +2622,7 @@ class Report_User extends Report
         $box->title = Lang::t('_OTHER_OPTION', 'course');
         $box->description = false;
 
-        $sort_list = array(
+        $sort_list = [
             'userid' => Lang::t('_USERID', 'standard'),
             'firstname' => Lang::t('_FIRSTNAME', 'standard'),
             'lastname' => Lang::t('_LASTNAME', 'standard'),
@@ -2632,11 +2632,11 @@ class Report_User extends Report
             'date_first_access' => Lang::t('_DATE_FIRST_ACCESS', 'standard'),
             'date_last_access' => Lang::t('_DATE_LAST_ACCESS', 'standard'),
             'date_complete' => Lang::t('_DATE_END', 'standard')
-        );
-        $dir_list = array(
+        ];
+        $dir_list = [
             'asc' => Lang::t('_ORD_ASC_TITLE', 'standard'),
             'desc' => Lang::t('_ORD_DESC_TITLE', 'standard')
-        );
+        ];
 
         $sort_selected = array_key_exists($ref['order_by'], $sort_list) ? $ref['order_by'] : 'userid';
         $dir_selected = array_key_exists($ref['order_dir'], $dir_list) ? $ref['order_dir'] : 'asc';
@@ -2689,7 +2689,7 @@ class Report_User extends Report
                     $header .= "X-Mailer: PHP/" . phpversion() . $GLOBALS['mail_br'];
 
                     // send mail
-                    $arr_recipients = array();
+                    $arr_recipients = [];
                     foreach ($mail_recipients as $recipient) {
                         $rec_data = $acl_man->getUser($recipient, false);
                         //mail($rec_data[ACL_INFO_EMAIL] , $subject, $body, $from.$header."\r\n");
@@ -2709,7 +2709,7 @@ class Report_User extends Report
             case 'send_mail':
                 {
                     require_once(_base_ . '/lib/lib.form.php');
-                    $mail_recipients = Get::req('mail_recipients', DOTY_MIXED, array());
+                    $mail_recipients = Get::req('mail_recipients', DOTY_MIXED, []);
                     cout(
                         ''//Form::openForm('course_selection', Util::str_replace_once('&', '&amp;', $jump_url))
                         . Form::openElementSpace()
@@ -2860,8 +2860,8 @@ class Report_User extends Report
 
             $re_course_user = sql_query($query_course_user);
 
-            $element_to_print = array();
-            $courses_codes = array();
+            $element_to_print = [];
+            $courses_codes = [];
 
             while (list($id_u, $id_c, $id_e, $date_inscr, $date_first_access, $date_complete, $status, $level,
                  $u_userid, $u_firstname, $u_lastname, $u_email, $u_valid) = sql_fetch_row($re_course_user)) {
@@ -2953,7 +2953,7 @@ class Report_User extends Report
 
                         $element_to_print[$id_c]['name'] = $course_info['name'];
                         $element_to_print[$id_c]['code'] = $course_info['code'];
-                        $element_to_print[$id_c]['data'][] = array(
+                        $element_to_print[$id_c]['data'][] = [
                             'idUser' => $id_u,
                             'idCourse' => $id_c,
                             'idCourseEdition' => $id_e,
@@ -2968,7 +2968,7 @@ class Report_User extends Report
                             'date_first_access' => $date_first_access,
                             'date_completed' => $date_complete,
                             'date_last_access' => $date_last_access
-                        );
+                        ];
 
                     }
 
@@ -2977,7 +2977,7 @@ class Report_User extends Report
             }
 
             //backward compatibility
-            $showed_columns = array();
+            $showed_columns = [];
             foreach ($cdata['showed_columns'] as $_column_key) {
                 $showed_columns[] = $this->_check_delay_column($_column_key);
             }
@@ -2994,7 +2994,7 @@ class Report_User extends Report
     }
 
 
-    function _printTable_delay($type, &$element_to_print, $showed_cols = array())
+    function _printTable_delay($type, &$element_to_print, $showed_cols = [])
     {
         if (!$type) $type = 'html';
 
@@ -3009,14 +3009,14 @@ class Report_User extends Report
             foreach ($element_to_print as $id_course => $info) {
                 $course_name = $info['name'];
 
-                $header = array();
+                $header = [];
                 foreach ($this->delay_columns as $delay_row) {
                     $index = $this->_check_delay_column($delay_row['key']); //backward compatibility
                     if (($delay_row['select'] && in_array($index, $showed_cols)) || !$delay_row['select']) {
                         $header[] = $delay_row['label'];
                     }
                 }
-                if ($this->use_mail) $header[] = array('style' => 'img-cell', 'value' => $this->_loadEmailIcon());
+                if ($this->use_mail) $header[] = ['style' => 'img-cell', 'value' => $this->_loadEmailIcon()];
 
                 $title = Lang::t('_COURSE', 'standard') . ': "' . $course_name . '" (' . $info['code'] . ')';
 
@@ -3033,7 +3033,7 @@ class Report_User extends Report
                 $i = 0;
                 foreach ($info['data'] as $user_info) {
 
-                    $line = array();
+                    $line = [];
 
                     foreach ($this->delay_columns as $delay_row) {
                         $index = $this->_check_delay_column($delay_row['key']); //backward compatibility
@@ -3047,12 +3047,12 @@ class Report_User extends Report
                                             $user_levels_trans = $clevels->getLevels();
                                             unset($clevels);
                                         }
-                                        $line[] = array('style' => 'align-center', 'value' => $user_levels_trans[$user_info['level']]);
+                                        $line[] = ['style' => 'align-center', 'value' => $user_levels_trans[$user_info['level']]];
                                     }
                                     break;
                                 case 'status':
                                     {
-                                        $line[] = array('style' => 'align-center', 'value' => $this->status_u[$user_info['status']]);
+                                        $line[] = ['style' => 'align-center', 'value' => $this->status_u[$user_info['status']]];
                                     }
                                     break;
                                 case 'date_subscription':
@@ -3063,7 +3063,7 @@ class Report_User extends Report
                                         if ($user_info[$index] == '0000-00-00 00:00:00' || $user_info[$index] == '') {
                                             $line[] = '';
                                         } else {
-                                            $line[] = array('style' => 'align-center', 'value' => Format::date($user_info[$index], 'datetime'));
+                                            $line[] = ['style' => 'align-center', 'value' => Format::date($user_info[$index], 'datetime')];
                                         }
                                     }
                                     break;
@@ -3079,10 +3079,10 @@ class Report_User extends Report
 
 
                     if ($this->use_mail) {
-                        $line[] = array(
+                        $line[] = [
                             'style' => 'img-cell',
                             'value' => '<div class="align_center">' . Form::getInputCheckbox('mail_' . $user_info['idUser'], 'mail_recipients[]', $user_info['idUser'], isset($_POST['select_all']), '') . '</div>'
-                        );
+                        ];
                     }
 
                     $buffer->addLine($line);
@@ -3149,25 +3149,25 @@ class Report_User extends Report
         $selector = new Selector_Course();
         if (isset($_POST['update_tempdata'])) {
             $selector->parseForState($_POST);
-            $temp = array(
+            $temp = [
                 //'org_chart_subdivision' 	=> (isset($_POST['org_chart_subdivision']) ? 1 : 0),
                 'all_courses' => ($_POST['all_courses'] == 1 ? true : false),
                 'selected_courses' => $selector->getSelection(),
-                'lo_types' => (isset($_POST['lo_types']) ? $_POST['lo_types'] : array()),
-                'lo_milestones' => (isset($_POST['lo_milestones']) ? $_POST['lo_milestones'] : array()),
-                'showed_columns' => (isset($_POST['cols']) ? $_POST['cols'] : array()),
-                'custom_fields' => array(),
+                'lo_types' => (isset($_POST['lo_types']) ? $_POST['lo_types'] : []),
+                'lo_milestones' => (isset($_POST['lo_milestones']) ? $_POST['lo_milestones'] : []),
+                'showed_columns' => (isset($_POST['cols']) ? $_POST['cols'] : []),
+                'custom_fields' => [],
                 'order_by' => Get::req('order_by', DOTY_STRING, 'userid'),
                 'order_dir' => Get::req('order_dir', DOTY_STRING, 'asc'),
                 'show_suspended' => Get::req('show_suspended', DOTY_INT, 0) > 0
-            );
+            ];
 
             foreach ($ref['custom_fields'] as $val) {
-                $temp['custom_fields'][] = array(
+                $temp['custom_fields'][] = [
                     'id' => $val['id'],
                     'label' => $val['label'],
                     'selected' => (isset($_POST['custom'][$val['id']]) ? true : false)
-                );
+                ];
             }
 
             $_SESSION['report_tempdata']['columns_filter'] = $temp;
@@ -3178,24 +3178,24 @@ class Report_User extends Report
             require_once(_adm_ . '/lib/lib.field.php');
             $fman = new FieldList();
             $fields = $fman->getFlatAllFields();
-            $custom = array();
+            $custom = [];
             foreach ($fields as $key => $val) {
-                $custom[] = array('id' => $key, 'label' => $val, 'selected' => false);
+                $custom[] = ['id' => $key, 'label' => $val, 'selected' => false];
             }
 
             if (!isset($_SESSION['report_tempdata']['columns_filter'])) {
-                $_SESSION['report_tempdata']['columns_filter'] = array(
+                $_SESSION['report_tempdata']['columns_filter'] = [
                     //'org_chart_subdivision' 	=> (isset($_POST['org_chart_subdivision']) ? 1 : 0),
                     'all_courses' => false,
                     'selected_courses' => $selector->getSelection(),
-                    'lo_types' => array(),
-                    'lo_milestones' => array(),
-                    'showed_columns' => array(),
+                    'lo_types' => [],
+                    'lo_milestones' => [],
+                    'showed_columns' => [],
                     'custom_fields' => $custom,
                     'order_by' => 'userid',
                     'order_dir' => 'asc',
                     'show_suspended' => 'show_suspended'
-                );
+                ];
             }
         }
 
@@ -3275,11 +3275,11 @@ class Report_User extends Report
         ;
 
         //box for columns selection
-        $arr_fieldset = array(
+        $arr_fieldset = [
             'user' => '',
             'course' => '',
             'lo' => ''
-        );
+        ];
 
         $box = new ReportBox('columns_selection');
         $box->title = $lang->def('_SELECT_THE_DATA_COL_NEEDED');
@@ -3346,7 +3346,7 @@ class Report_User extends Report
         $box->title = Lang::t('_OTHER_OPTION', 'course');
         $box->description = false;
 
-        $sort_list = array(
+        $sort_list = [
             'userid' => Lang::t('_USERID', 'standard'),
             'firstname' => Lang::t('_FIRSTNAME', 'standard'),
             'lastname' => Lang::t('_LASTNAME', 'standard'),
@@ -3357,11 +3357,11 @@ class Report_User extends Report
             'object_type' => Lang::t('_RU_LO_TYPES', 'report'),
             'first_attempt' => Lang::t('_LO_COL_FIRSTATT', 'report'),
             'last_attempt' => Lang::t('_LO_COL_LASTATT', 'report')
-        );
-        $dir_list = array(
+        ];
+        $dir_list = [
             'asc' => Lang::t('_ORD_ASC_TITLE', 'standard'),
             'desc' => Lang::t('_ORD_DESC_TITLE', 'standard')
-        );
+        ];
 
         $sort_selected = array_key_exists($ref['order_by'], $sort_list) ? $ref['order_by'] : 'userid';
         $dir_selected = array_key_exists($ref['order_dir'], $dir_list) ? $ref['order_dir'] : 'asc';
@@ -3411,7 +3411,7 @@ class Report_User extends Report
                     $header .= "X-Mailer: PHP/" . phpversion() . $GLOBALS['mail_br'];
 
                     // send mail
-                    $arr_recipients = array();
+                    $arr_recipients = [];
                     foreach ($mail_recipients as $recipient) {
                         $rec_data = $acl_man->getUser($recipient, false);
                         //mail($rec_data[ACL_INFO_EMAIL] , $subject, $body, $from.$header."\r\n");
@@ -3430,7 +3430,7 @@ class Report_User extends Report
             case 'send_mail':
                 {
                     require_once(_base_ . '/lib/lib.form.php');
-                    $mail_recipients = Get::req('mail_recipients', DOTY_MIXED, array());
+                    $mail_recipients = Get::req('mail_recipients', DOTY_MIXED, []);
                     cout(
                         ''//Form::openForm('course_selection', Util::str_replace_once('&', '&amp;', $jump_url))
                         . Form::openElementSpace()
@@ -3515,12 +3515,12 @@ class Report_User extends Report
             unset($admin_users);
         }
 
-        $temptypes = array();
+        $temptypes = [];
         foreach ($types as $val) {
             $temptypes[] = "'" . $val . "'";
         }
 
-        $tempmilestones = array();
+        $tempmilestones = [];
         foreach ($milestones as $val) {
             switch ($val) {
                 case _MILESTONE_NONE:
@@ -3542,7 +3542,7 @@ class Report_User extends Report
             }
         }
 
-        $colspans = array('user' => 0, 'course' => 0, 'lo' => 0);
+        $colspans = ['user' => 0, 'course' => 0, 'lo' => 0];
         foreach ($this->LO_columns as $val) {
             if ($val['select']) {
                 if (in_array($val['key'], $showed)) {
@@ -3567,8 +3567,8 @@ class Report_User extends Report
         //custom user fields
         require_once(_adm_ . '/lib/lib.field.php');
         $fman = new FieldList();
-        $field_values = array();
-        $temp_head2 = array();
+        $field_values = [];
+        $temp_head2 = [];
         foreach ($customcols as $val) {
             if ($val['selected']) {
                 $colspans['user']++;
@@ -3579,17 +3579,17 @@ class Report_User extends Report
 
         $lang = $this->lang;
 
-        $head1 = array();
-        $head1[] = array('colspan' => $colspans['user'], 'value' => $lang->def('_USER')); //_TH_USER
-        $head1[] = array('colspan' => $colspans['course'], 'value' => $lang->def('_COURSE')); //_TH_COURSE
-        $head1[] = array('colspan' => $colspans['lo'], 'value' => $lang->def('_LEARNING_OBJECTS'));
+        $head1 = [];
+        $head1[] = ['colspan' => $colspans['user'], 'value' => $lang->def('_USER')]; //_TH_USER
+        $head1[] = ['colspan' => $colspans['course'], 'value' => $lang->def('_COURSE')]; //_TH_COURSE
+        $head1[] = ['colspan' => $colspans['lo'], 'value' => $lang->def('_LEARNING_OBJECTS')];
         if ($this->use_mail)
-            $head1[] = array(
+            $head1[] = [
                 'style' => 'img-cell',
                 'value' => $this->_loadEmailIcon()
-            );
+            ];
 
-        $head2 = array();
+        $head2 = [];
         foreach ($this->LO_columns as $val) {
             if ($val['select']) {
                 if (in_array($val['key'], $showed)) {
@@ -3629,14 +3629,14 @@ class Report_User extends Report
 
         //retrieve LOs from courses
 
-        $score_arr = array(
-            'test' => array(),
-            'scorm' => array()
-        );
+        $score_arr = [
+            'test' => [],
+            'scorm' => []
+        ];
 
-        $total_time_arr = array(
-            'scorm' => array()
-        );
+        $total_time_arr = [
+            'scorm' => []
+        ];
 
         //retrieve test score
         $query = "SELECT t1.idOrg, t2.idUser, t1.idCourse, t2.score, t2.bonus_score, t2.score_status "
@@ -3735,7 +3735,7 @@ class Report_User extends Report
         $res = sql_query($query);
         while ($row = sql_fetch_assoc($res)) {
 
-            $temp = array();
+            $temp = [];
             foreach ($this->LO_columns as $val)
                 switch ($val['key']) {
                     case 'userid':
@@ -3905,19 +3905,19 @@ class Report_User extends Report
         if (isset($_POST['undo_filter'])) Util::jump_to($back_url);
 
         if (!isset($_SESSION['report_tempdata']['columns_filter'])) {
-            $_SESSION['report_tempdata']['columns_filter'] = array(
-                'comm_selection' => array(),
+            $_SESSION['report_tempdata']['columns_filter'] = [
+                'comm_selection' => [],
                 'all_communications' => false,
                 'comm_start_date' => '',
                 'comm_end_date' => ''
-            );
+            ];
         }
         $ref =& $_SESSION['report_tempdata']['columns_filter'];
 
 
         if (isset($_POST['update_tempdata'])) {
             $ref['all_communications'] = Get::req('all_communications', DOTY_INT, 0) > 0;
-            $ref['comm_selection'] = Get::req('comm_selection', DOTY_MIXED, array());
+            $ref['comm_selection'] = Get::req('comm_selection', DOTY_MIXED, []);
             $ref['comm_start_date'] = Format::dateDb(Get::req('comm_start_date', DOTY_STRING, ''), 'date');
             $ref['comm_end_date'] = Format::datedb(Get::req('comm_end_date', DOTY_STRING, ''), 'date');
         } else {
@@ -3970,11 +3970,11 @@ class Report_User extends Report
         $_ERR_NOCOMM = Lang::t('_EMPTY_SELECTION', 'report');
         $_ERR_NODATA = Lang::t('_NO_CONTENT', 'report');
 
-        $lang_type = array(
+        $lang_type = [
             'none' => Lang::t('_NONE', 'communication'),
             'file' => Lang::t('_LONAME_item', 'storage'),
             'scorm' => Lang::t('_LONAME_scormorg', 'storage')
-        );
+        ];
 
         $sel_all = $ref['rows_filter']['all_users'];
         $arr_selected_users = $ref['rows_filter']['users']; //list of users selected in the filter (users, groups and org.branches)
@@ -4018,7 +4018,7 @@ class Report_User extends Report
         if ($comm_all) {
             $query = "SELECT id_comm FROM %lms_communication";
             $res = $this->db->query($query);
-            $arR_selected_comm = array();
+            $arR_selected_comm = [];
             while (list($id_comm) = $this->db->fetch_row($res))
                 $arr_selected_comm[] = $id_comm;
         }
@@ -4055,20 +4055,20 @@ class Report_User extends Report
         }
 
         //set table properties and buffer
-        $head = array(
+        $head = [
             Lang::t('_COMMUNICATIONS_TITLE', 'report'),
             Lang::t('_COMMUNICATIONS_TYPE', 'report'),
             Lang::t('_DATE', 'report'),
             Lang::t('_USER', 'report'),
             Lang::t('_COMMUNICATIONS_HAS_SEEN', 'report'),
             Lang::t('_COMMUNICATIONS_VIEW_DATE', 'report')
-        );
+        ];
 
         if ($this->use_mail) {
-            $head[] = array(
+            $head[] = [
                 'style' => 'img-cell',
                 'value' => $this->_loadEmailIcon()//'<span class="ico-sprite subs_email"><span>'.Lang::t('_EMAIL').'</span></span>'
-            );
+            ];
         }
 
         $buffer = new ReportTablePrinter();
@@ -4084,7 +4084,7 @@ class Report_User extends Report
         //which selected communication has been seen by selected users?
         $_YES = Lang::t('_YES', 'standard');
         $_NO = Lang::t('_NO', 'standard');
-        $arr_viewed = array();
+        $arr_viewed = [];
         $query = "SELECT ct.idReference, c.title, c.type_of, c.publish_date, ct.status, "
             . " ct.dateAttempt, ct.idUser, u.userid, u.firstname, u.lastname "
             . " FROM (%lms_communication_track as ct "
@@ -4105,7 +4105,7 @@ class Report_User extends Report
 
 
         while ($obj = $this->db->fetch_obj($res)) {
-            $line = array();
+            $line = [];
 
             $line[] = $obj->title;
             $line[] = isset($lang_type[$obj->type_of]) ? $lang_type[$obj->type_of] : '';
@@ -4153,19 +4153,19 @@ class Report_User extends Report
         if (isset($_POST['undo_filter'])) Util::jump_to($back_url);
 
         if (!isset($_SESSION['report_tempdata']['columns_filter'])) {
-            $_SESSION['report_tempdata']['columns_filter'] = array(
-                'comp_selection' => array(),
+            $_SESSION['report_tempdata']['columns_filter'] = [
+                'comp_selection' => [],
                 'all_games' => false,
                 'comp_start_date' => '',
                 'comp_end_date' => ''
-            );
+            ];
         }
         $ref =& $_SESSION['report_tempdata']['columns_filter'];
 
 
         if (isset($_POST['update_tempdata'])) {
             $ref['all_games'] = Get::req('all_games', DOTY_INT, 0) > 0;
-            $ref['comp_selection'] = Get::req('comp_selection', DOTY_MIXED, array());
+            $ref['comp_selection'] = Get::req('comp_selection', DOTY_MIXED, []);
             $ref['comp_start_date'] = Format::dateDb(Get::req('comp_start_date', DOTY_STRING, ''), 'date');
             $ref['comp_end_date'] = Format::datedb(Get::req('comp_end_date', DOTY_STRING, ''), 'date');
         } else {
@@ -4227,7 +4227,7 @@ class Report_User extends Report
         $arr_selected_users = $ref['rows_filter']['users']; //list of users selected in the filter (users, groups and org.branches)
 
         $comp_all = isset($ref['columns_filter']['all_games']) ? $ref['columns_filter']['all_games'] : false;
-        $arr_selected_comp = isset($ref['columns_filter']['comp_selection']) ? $ref['columns_filter']['comp_selection'] : array();  //list of communications selected in the filter
+        $arr_selected_comp = isset($ref['columns_filter']['comp_selection']) ? $ref['columns_filter']['comp_selection'] : [];  //list of communications selected in the filter
 
         $start_date = isset($ref['columns_filter']['comp_start_date']) ? substr($ref['columns_filter']['comp_start_date'], 0, 10) : '';
         $end_date = isset($ref['columns_filter']['comp_end_date']) ? substr($ref['columns_filter']['comp_end_date'], 0, 10) : '';
@@ -4265,7 +4265,7 @@ class Report_User extends Report
         if ($comp_all) {
             $query = "SELECT id_game FROM %lms_games";
             $res = $this->db->query($query);
-            $arr_selected_comp = array();
+            $arr_selected_comp = [];
             while (list($id_game) = $this->db->fetch_row($res))
                 $arr_selected_comp[] = $id_game;
         }
@@ -4302,7 +4302,7 @@ class Report_User extends Report
         }
 
         //set table properties and buffer
-        $head = array(
+        $head = [
             Lang::t('_GAMES_TITLE', 'report'),
             Lang::t('_GAMES_TYPE', 'report'),
             Lang::t('_FROM', 'report'),
@@ -4314,13 +4314,13 @@ class Report_User extends Report
             Lang::t('_GAMES_CURRENT_SCORE', 'report'),
             Lang::t('_GAMES_MAX_SCORE', 'report'),
             Lang::t('_GAMES_NUM_ATTEMPTS', 'report')
-        );
+        ];
 
         if ($this->use_mail) {
-            $head[] = array(
+            $head[] = [
                 'style' => 'img-cell',
                 'value' => $this->_loadEmailIcon()//'<span class="ico-sprite subs_email"><span>'.Lang::t('_EMAIL').'</span></span>'
-            );
+            ];
         }
 
         $buffer = new ReportTablePrinter();
@@ -4336,7 +4336,7 @@ class Report_User extends Report
         //which selected communication has been seen by selected users?
         $_YES = Lang::t('_YES', 'standard');
         $_NO = Lang::t('_NO', 'standard');
-        $arr_viewed = array();
+        $arr_viewed = [];
         $query = "SELECT ct.idReference, c.title, c.type_of, c.start_date, c.end_date, ct.status, "
             . " ct.dateAttempt, ct.firstAttempt, ct.idUser, u.userid, u.firstname, u.lastname, "
             . " ct.current_score, ct.max_score, ct.num_attempts "
@@ -4357,7 +4357,7 @@ class Report_User extends Report
 
 
         while ($obj = $this->db->fetch_obj($res)) {
-            $line = array();
+            $line = [];
 
             $line[] = $obj->title;
             $line[] = isset($lang_type[$obj->type_of]) ? $lang_type[$obj->type_of] : '';
@@ -4415,23 +4415,23 @@ class Report_User extends Report
         $selector = new Selector_Course();
         if (isset($_POST['update_tempdata'])) {
             $selector->parseForState($_POST);
-            $temp = array(
+            $temp = [
                 //'org_chart_subdivision' 	=> (isset($_POST['org_chart_subdivision']) ? 1 : 0),
                 'all_courses' => ($_POST['all_courses'] == 1 ? true : false),
                 'selected_courses' => $selector->getSelection(),
-                'showed_columns' => (isset($_POST['cols']) ? $_POST['cols'] : array()),
-                'custom_fields' => array(),
+                'showed_columns' => (isset($_POST['cols']) ? $_POST['cols'] : []),
+                'custom_fields' => [],
                 'order_by' => Get::req('order_by', DOTY_STRING, 'userid'),
                 'order_dir' => Get::req('order_dir', DOTY_STRING, 'asc'),
                 'show_suspended' => Get::req('show_suspended', DOTY_INT, 0) > 0
-            );
+            ];
 
             foreach ($ref['custom_fields'] as $val) {
-                $temp['custom_fields'][] = array(
+                $temp['custom_fields'][] = [
                     'id' => $val['id'],
                     'label' => $val['label'],
                     'selected' => (isset($_POST['custom'][$val['id']]) ? true : false)
-                );
+                ];
             }
 
             $_SESSION['report_tempdata']['columns_filter'] = $temp;
@@ -4442,22 +4442,22 @@ class Report_User extends Report
             require_once(_adm_ . '/lib/lib.field.php');
             $fman = new FieldList();
             $fields = $fman->getFlatAllFields();
-            $custom = array();
+            $custom = [];
             foreach ($fields as $key => $val) {
-                $custom[] = array('id' => $key, 'label' => $val, 'selected' => false);
+                $custom[] = ['id' => $key, 'label' => $val, 'selected' => false];
             }
 
             if (!isset($_SESSION['report_tempdata']['columns_filter'])) {
-                $_SESSION['report_tempdata']['columns_filter'] = array(
+                $_SESSION['report_tempdata']['columns_filter'] = [
                     //'org_chart_subdivision' 	=> (isset($_POST['org_chart_subdivision']) ? 1 : 0),
                     'all_courses' => false,
                     'selected_courses' => $selector->getSelection(),
-                    'showed_columns' => array(),
+                    'showed_columns' => [],
                     'custom_fields' => $custom,
                     'order_by' => 'userid',
                     'order_dir' => 'asc',
                     'show_suspended' => 'show_suspended'
-                );
+                ];
             }
         }
 
@@ -4515,11 +4515,11 @@ class Report_User extends Report
         ;
 
         //box for columns selection
-        $arr_fieldset = array(
+        $arr_fieldset = [
             'user' => '',
             'course' => '',
             'lo' => ''
-        );
+        ];
 
         $box = new ReportBox('columns_selection');
         $box->title = $lang->def('_SELECT_THE_DATA_COL_NEEDED');
@@ -4586,7 +4586,7 @@ class Report_User extends Report
         $box->title = Lang::t('_OTHER_OPTION', 'course');
         $box->description = false;
 
-        $sort_list = array(
+        $sort_list = [
             'userid' => Lang::t('_USERID', 'standard'),
             'firstname' => Lang::t('_FIRSTNAME', 'standard'),
             'lastname' => Lang::t('_LASTNAME', 'standard'),
@@ -4597,11 +4597,11 @@ class Report_User extends Report
             'object_type' => Lang::t('_RU_LO_TYPES', 'report'),
             'first_attempt' => Lang::t('_LO_COL_FIRSTATT', 'report'),
             'last_attempt' => Lang::t('_LO_COL_LASTATT', 'report')
-        );
-        $dir_list = array(
+        ];
+        $dir_list = [
             'asc' => Lang::t('_ORD_ASC_TITLE', 'standard'),
             'desc' => Lang::t('_ORD_DESC_TITLE', 'standard')
-        );
+        ];
 
         $sort_selected = array_key_exists($ref['order_by'], $sort_list) ? $ref['order_by'] : 'userid';
         $dir_selected = array_key_exists($ref['order_dir'], $dir_list) ? $ref['order_dir'] : 'asc';
@@ -4651,7 +4651,7 @@ class Report_User extends Report
                     $header .= "X-Mailer: PHP/" . phpversion() . $GLOBALS['mail_br'];
 
                     // send mail
-                    $arr_recipients = array();
+                    $arr_recipients = [];
                     foreach ($mail_recipients as $recipient) {
                         $rec_data = $acl_man->getUser($recipient, false);
                         //mail($rec_data[ACL_INFO_EMAIL] , $subject, $body, $from.$header."\r\n");
@@ -4670,7 +4670,7 @@ class Report_User extends Report
             case 'send_mail':
                 {
                     require_once(_base_ . '/lib/lib.form.php');
-                    $mail_recipients = Get::req('mail_recipients', DOTY_MIXED, array());
+                    $mail_recipients = Get::req('mail_recipients', DOTY_MIXED, []);
                     cout(
                         ''//Form::openForm('course_selection', Util::str_replace_once('&', '&amp;', $jump_url))
                         . Form::openElementSpace()
@@ -4730,12 +4730,12 @@ class Report_User extends Report
             $users =& $acl_man->getAllUsersFromSelection($_rows['users']);
         }
 
-        $temptypes = array();
+        $temptypes = [];
         foreach ($types as $val) {
             $temptypes[] = "'" . $val . "'";
         }
 
-        $tempmilestones = array();
+        $tempmilestones = [];
         foreach ($milestones as $val) {
             switch ($val) {
                 case _MILESTONE_NONE:
@@ -4757,7 +4757,7 @@ class Report_User extends Report
             }
         }
 
-        $colspans = array('user' => 0, 'course' => 0, 'lo' => 0);
+        $colspans = ['user' => 0, 'course' => 0, 'lo' => 0];
         foreach ($this->TESTSTAT_columns as $val) {
             if ($val['select']) {
                 if (in_array($val['key'], $showed)) {
@@ -4782,8 +4782,8 @@ class Report_User extends Report
         //custom user fields
         require_once(_adm_ . '/lib/lib.field.php');
         $fman = new FieldList();
-        $field_values = array();
-        $temp_head2 = array();
+        $field_values = [];
+        $temp_head2 = [];
         foreach ($customcols as $val) {
             if ($val['selected']) {
                 $colspans['user']++;
@@ -4794,17 +4794,17 @@ class Report_User extends Report
 
         $lang = $this->lang;
 
-        $head1 = array();
-        $head1[] = array('colspan' => $colspans['user'], 'value' => $lang->def('_USER')); //_TH_USER
-        $head1[] = array('colspan' => $colspans['course'], 'value' => $lang->def('_COURSE')); //_TH_COURSE
-        $head1[] = array('colspan' => $colspans['lo'], 'value' => $lang->def('_LEARNING_OBJECTS'));
+        $head1 = [];
+        $head1[] = ['colspan' => $colspans['user'], 'value' => $lang->def('_USER')]; //_TH_USER
+        $head1[] = ['colspan' => $colspans['course'], 'value' => $lang->def('_COURSE')]; //_TH_COURSE
+        $head1[] = ['colspan' => $colspans['lo'], 'value' => $lang->def('_LEARNING_OBJECTS')];
         if ($this->use_mail)
-            $head1[] = array(
+            $head1[] = [
                 'style' => 'img-cell',
                 'value' => $this->_loadEmailIcon()
-            );
+            ];
 
-        $head2 = array();
+        $head2 = [];
         foreach ($this->TESTSTAT_columns as $val) {
             if ($val['select']) {
                 if (in_array($val['key'], $showed)) {
@@ -4844,10 +4844,10 @@ class Report_User extends Report
 
         //retrieve LOs from courses
 
-        $score_arr = array(
-            'test' => array(),
-            'scorm' => array()
-        );
+        $score_arr = [
+            'test' => [],
+            'scorm' => []
+        ];
 
         //retrieve test score
         $query = "SELECT t1.idOrg, t2.idUser, t1.idCourse, t4.score, t2.bonus_score, t2.score_status "
@@ -4953,7 +4953,7 @@ class Report_User extends Report
         $res = sql_query($query);
         while ($row = sql_fetch_assoc($res)) {
 
-            $temp = array();
+            $temp = [];
             foreach ($this->TESTSTAT_columns as $val) {
                 switch ($val['key']) {
                     case 'userid':

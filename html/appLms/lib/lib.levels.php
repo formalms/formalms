@@ -25,7 +25,7 @@ class CourseLevel {
 	function getLevels($op = '') {
 
 		$lang =& DoceboLanguage::createInstance('levels', 'lms');
-		return array(
+		return [
 			7 => $lang->def('_LEVEL_7'),		//'Admin'
 			6 => $lang->def('_LEVEL_6'),		//'Prof'
 			5 => $lang->def('_LEVEL_5'),		//'Mentor'
@@ -33,7 +33,7 @@ class CourseLevel {
 			3 => $lang->def('_LEVEL_3'),		//'Studente'
 			2 => $lang->def('_LEVEL_2'),		//'Ghost' (no track)
 			1 => $lang->def('_LEVEL_1'),		//'Guest'
-		);
+        ];
 	}
 
 

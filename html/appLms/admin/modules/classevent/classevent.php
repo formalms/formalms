@@ -30,7 +30,7 @@ function classEventMain() {
 
 	$back_ui_url="index.php?modname=classevent&amp;op=main";
 
-	$title_arr=array();
+	$title_arr= [];
 	$title_arr[$back_ui_url]=$lang->def("_CLASS_EVENT");
 	$res.=getTitleArea($title_arr, "classevent");
 	$res.="<div class=\"std_block\">\n";
@@ -48,7 +48,7 @@ function classEventMain() {
 	//addAjaxJs();
 	//addScriptaculousJs();
   YuiLib::load(
-    array('my_window'=>'windows.js')
+    ['my_window'=>'windows.js']
   );
 
 	$GLOBALS['page']->add("\n".'<script type="text/javascript" src="'.$GLOBALS['where_lms_relative'].'/modules/calendar/calendar.js"></script>'."\n"
@@ -129,7 +129,7 @@ function addeditClassEvent($id=0) {
 
 	$back_ui_url="index.php?modname=classevent&amp;op=main";
 
-	$title_arr=array();
+	$title_arr= [];
 	$title_arr[$back_ui_url]=$lang->def("_CLASS_EVENT");
 	$title_arr[]=$page_title;
 	$res.=getTitleArea($title_arr, "classevent");
@@ -198,7 +198,7 @@ function deleteClassEvent() {
 
 		$back_ui_url="index.php?modname=classevent&amp;op=main";
 
-		$title_arr=array();
+		$title_arr= [];
 		$title_arr[$back_ui_url]=$lang->def("_CLASS_EVENT");
 		$title_arr[]=$lang->def("_DEL").": ".$location;
 		$res.=getTitleArea($title_arr, "classevent");

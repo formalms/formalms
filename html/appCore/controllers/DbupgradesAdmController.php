@@ -27,9 +27,9 @@ class DbupgradesAdmController extends AdmController {
         
 	public function showTask() {
             
-            $this->render('show', array(
+            $this->render('show', [
                     'filter_text' => ""
-            ));
+            ]);
 
 	}
 
@@ -52,21 +52,21 @@ class DbupgradesAdmController extends AdmController {
 			}
 		}
 
-		$pagination = array(
+		$pagination = [
 			'startIndex' => $startIndex,
 			'results' => $results,
 			'sort' => $sort,
 			'dir' => $dir
-		);
+        ];
 
 		$list = $this->model->getDbUpgradesList($pagination, $filter);
 
 		//format models' data
-		$records = array();
+		$records = [];
 		$acl_man = Docebo::user()->getAclManager();
 		if (is_array($list)) {
 			foreach ($list as $record) {
-				$records[] = array(
+				$records[] = [
 					'script_id' => Layout::highlight($record->script_id, $filter),
 					'script_name' => Layout::highlight($record->script_name, $filter),
 					'script_description' => Layout::highlight($record->script_description, $filter),
@@ -74,11 +74,11 @@ class DbupgradesAdmController extends AdmController {
 					'core_version' => Layout::highlight($record->core_version, $filter),
 					'creation_date' => Format::date($record->creation_date, 'datetime'),
 					'execution_date' => Format::date($record->execution_date, 'datetime')
-				);
+                ];
 			}
 		}
 
-		$output = array(
+		$output = [
 			'startIndex' => $startIndex,
 			'recordsReturned' => count($records),
 			'sort' => $sort,
@@ -86,7 +86,7 @@ class DbupgradesAdmController extends AdmController {
 			'totalRecords' => $total,
 			'pageSize' => $rowsPerPage,
 			'records' => $records
-		);
+        ];
 
 		echo $this->json->encode($output);
 	}

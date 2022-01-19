@@ -1,10 +1,10 @@
 <?php
-Get::title(array(
+Get::title([
     'index.php?r=' . $base_link_course . '/show' => Lang::t('_COURSE', 'course'),
     ($id_course === false
         ? Lang::t('_NEW_COURSE', 'course')
         : Lang::t('_MOD', 'course') . ': ' . ($course['code'] !== '' ? '[' . $course['code'] . '] ' : '') . $course['name'])
-));
+]);
 
 //TODO: EVT_OBJECT (§)
 //$event = new \appLms\Events\Lms\CourseCreateAndUpdateEvent($id_course);

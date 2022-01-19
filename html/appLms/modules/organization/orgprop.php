@@ -86,7 +86,7 @@ function organization_property_prereqisites(&$treeView, $idItem, &$form, &$lang)
 	$GLOBALS['page']->add( $form->getOpenFieldset($lang->def('_PREREQUISITES')));
 	$treeView->selector_mode = TRUE;
 	$treeView->simple_selector = TRUE;
-	$treeView->itemDisabled = array($idItem);
+	$treeView->itemDisabled = [$idItem];
 	$GLOBALS['page']->add( $treeView->load() );
 	$GLOBALS['page']->add( $form->getCloseFieldset() );
 
@@ -129,8 +129,8 @@ function organization_property_settings(&$treeView, $idItem, &$form, &$lang) {
 		$form->getRadioSet( $lang->def( '_HIDDEN' ), 
 							'visibility', 
 							'visibility', 
-							array( 	$lang->def( '_NO' ) => "1",
-									$lang->def( '_YES' ) => "0"),
+							[$lang->def( '_NO' ) => "1",
+									$lang->def( '_YES' ) => "0"],
 							$values['visibility']) );
 	
 	
@@ -140,11 +140,11 @@ function organization_property_settings(&$treeView, $idItem, &$form, &$lang) {
 			$GLOBALS['page']->add( $form->getDropdown( $lang->def( '_PUBLISH' ),
 												"publish_for",
 												"publish_for",
-												array(
+												[
 													PF_ALL_USER => $lang->def('_ALL'),
 													PF_TEACHER => Lang::t('_LEVEL_6', 'levels'),
 													PF_ATTENDANCE => $lang->def('_ATTENDANCE')
-												),
+                                                ],
 												isset($values['publish_for'])?$values['publish_for']:"")
 							);
 		} else {
@@ -164,9 +164,9 @@ function organization_property_settings(&$treeView, $idItem, &$form, &$lang) {
 						);
 		
 		
-		$orgselfprerequisites = array( $lang->def( '_UNTIL_COMPLETED' ) => "incomplete",
+		$orgselfprerequisites = [$lang->def( '_UNTIL_COMPLETED' ) => "incomplete",
 											$lang->def( '_UNLIMITED' ) => "*",
-											$lang->def( '_ONLY_ONCE' ) => "NULL" );
+											$lang->def( '_ONLY_ONCE' ) => "NULL"];
 		
 		$GLOBALS['page']->add($form->getOpenCombo( $lang->def( '_PLAY_CHANCE' ) ) );
 		foreach($orgselfprerequisites as $name => $id ) {
@@ -196,8 +196,8 @@ function organization_property_settings(&$treeView, $idItem, &$form, &$lang) {
 				$form->getRadioSet( $lang->def( '_ORGISTERMINATOR' ), 
 									'isTerminator', 
 									'isTerminator', 
-									array( 	$lang->def( '_NO' ) => "0",
-											$lang->def( '_YES' ) => "1"),
+									[$lang->def( '_NO' ) => "0",
+											$lang->def( '_YES' ) => "1"],
 									$values['isTerminator']) );
 
 		$GLOBALS['page']->add( $form->getBreakRow() );
@@ -206,13 +206,13 @@ function organization_property_settings(&$treeView, $idItem, &$form, &$lang) {
 		$lo = createLO(	$values['objectType'], 
 						$values['idResource'], 
 						$values['idParam'], 
-						array() );
+						[]);
 		if( $lo->canBeMilestone() ) {
 			if( $values['milestone'] == '' ) 
 				$values['milestone'] = '-';
-			$arr_milestones = array( 	$lang->def( '_NO') => '-',
+			$arr_milestones = [$lang->def( '_NO') => '-',
 										$lang->def( '_ORGMILESTONE_START') => 'start',
-										$lang->def( '_ORGMILESTONE_END') => 'end' );
+										$lang->def( '_ORGMILESTONE_END') => 'end'];
 			$GLOBALS['page']->add( 
 					$form->getRadioSet( $lang->def( '_ORGMILESTONE' ), 
 										'milestone', 
@@ -291,7 +291,7 @@ function organization_property_settings(&$treeView, $idItem, &$form, &$lang) {
 		if( $arrParamsInfo !== FALSE ) {
 			require_once($GLOBALS['where_lms'].'/lib/lib.param.php');
 			$param_values = getLOParamArray( $values['idParam'] );
-			if( is_callable( array($lo,'renderCustomSettings') ) ) {
+			if( is_callable( [$lo,'renderCustomSettings']) ) {
 				$GLOBALS['page']->add( $lo->renderCustomSettings($param_values,
 																 $form,
 																 $lang
@@ -344,8 +344,8 @@ function organization_property_settings(&$treeView, $idItem, &$form, &$lang) {
 		$form->getRadioSet( $lang->def( '_IGNORE_SCORE' ), 
 							'ignoreScore', 
 							'ignoreScore', 
-							array( 	$lang->def( '_NO' ) => "0",
-									$lang->def( '_YES' ) => "1"),
+							[$lang->def( '_NO' ) => "0",
+									$lang->def( '_YES' ) => "1"],
 							$values['ignoreScore']) );
 
 	$GLOBALS['page']->add( $form->getBreakRow() );
@@ -377,12 +377,12 @@ function organization_property_catalogation(&$treeView, $idItem, &$form, &$lang)
 												) 
 							);
 	
-	$arr_diff = array( 	'1'	=>	$lang->def( '_DIFFICULT_VERYEASY' ),
+	$arr_diff = ['1'	=>	$lang->def( '_DIFFICULT_VERYEASY' ),
 						'2'	=>	$lang->def( '_DIFFICULT_EASY' ),
 						'3'	=>	$lang->def( '_DIFFICULT_MEDIUM' ),
 						'4'	=>	$lang->def( '_DIFFICULT_DIFFICULT'),
 						'5'	=>	$lang->def( '_DIFFICULT_VERYDIFFICULT')
-					);
+    ];
 	$selDiff = isset($values['difficult'])?$values['difficult']:"";
 	
 	$GLOBALS['page']->add( $form->getDropdown(	$lang->def( '_DIFFICULTY' ),
@@ -429,7 +429,7 @@ function organization_property_catalogation(&$treeView, $idItem, &$form, &$lang)
 function organization_property_common(&$treeView, $idItem, &$form, &$lang, &$folder) {
 
 	// extract info from POST data
-	$values = array();
+	$values = [];
 	$data = $folder->otherValues;
 	$values['title'] = ( isset($_POST['title']) ? stripslashes($_POST['title']) : $data[REPOFIELDTITLE] );
 	
@@ -533,7 +533,7 @@ function organization_access( &$treeView, $idItem ) {
 		$temp = $treeView->tdb->__getAccess($idItem);
 		$user_select->resetSelection($temp);
 
-		cout(getTitleArea(array('index.php?modname=storage&amp;org_access=1&amp;idItem='.$idItem.'&amp;stayon=1'=>$lang->def( '_ORG_ACCESS' ))) );
+		cout(getTitleArea(['index.php?modname=storage&amp;org_access=1&amp;idItem='.$idItem.'&amp;stayon=1'=>$lang->def( '_ORG_ACCESS' )]) );
 		cout('<div class="std_block">'.$lang->def( '_ASSIGN_USERS' ).':&nbsp;<span class="text_bold">'.$folder->otherValues[REPOFIELDTITLE].'</span>');
 
 		cout($user_select->loadSelector('index.php?modname=storage&org_access=1&idItem='.$idItem.'&stayon=1'));

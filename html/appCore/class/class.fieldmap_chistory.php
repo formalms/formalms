@@ -52,7 +52,7 @@ class FieldMapChistory extends FieldMap {
 
 
 	function getRawPredefinedFields() {
-		return array("description");
+		return ["description"];
 	}
 
 
@@ -67,7 +67,7 @@ class FieldMapChistory extends FieldMap {
 		require_once($GLOBALS["where_crm"]."/modules/contacthistory/lib.contacthistory.php");
 
 		$chdm=new ContactHistoryDataManager();
-		$data=array();
+		$data= [];
 
 
 		$company_id=(int)$predefined_data["company_id"];

@@ -35,7 +35,7 @@ class Boot
 
     public static $session_name = 'docebo_session';
 
-    private static $_boot_seq = array(
+    private static $_boot_seq = [
         BOOT_CONFIG => 'config',
         BOOT_UTILITY => 'utility',
         BOOT_DATABASE => 'database',
@@ -50,9 +50,9 @@ class Boot
         BOOT_DATETIME => 'dateTime',
         BOOT_TEMPLATE => 'template',
         BOOT_PAGE_WR => 'loadPageWriter'
-    );
+    ];
 
-    public static $log_array = array();
+    public static $log_array = [];
 
     /**
      * Load all the step requested
@@ -111,13 +111,13 @@ class Boot
     private static function config()
     {
 
-        $step_report = array();
+        $step_report = [];
 
         //unset all the globals that aren't php setted
         if (ini_get('register_globals')) {
 
             self::log("Unset all the globals that aren't php setted. (Emulate register global = off)");
-            $allowed = array('GLOBALS', '_GET', '_POST', '_COOKIE', '_FILES', '_ENV', '_SERVER', '_REQUEST');
+            $allowed = ['GLOBALS', '_GET', '_POST', '_COOKIE', '_FILES', '_ENV', '_SERVER', '_REQUEST'];
             foreach ($allowed as $elem) {
                 if (!isset($allowed[$elem])) unset($GLOBALS[$elem]);
             }
@@ -129,7 +129,7 @@ class Boot
 
         // detect globals overwrite (old php bug)
         self::log("Detect globals overwrite attempts.");
-        $list = array('GLOBALS', '_GET', '_POST', '_COOKIE', '_FILES', '_SESSION');
+        $list = ['GLOBALS', '_GET', '_POST', '_COOKIE', '_FILES', '_SESSION'];
         foreach ($list as $elem) {
             if (isset($_REQUEST[$elem])) die('Request overwrite attempt detected');
         }
@@ -137,11 +137,11 @@ class Boot
         //include config
         self::log("Include configuration file.");
 
-        $cfg = array();
+        $cfg = [];
         if (!file_exists(dirname(__FILE__) . '/../config.php')) {
             $path = _deeppath_
                 . str_replace(_base_, '.', constant('_base_'));
-            Header("Location: " . str_replace(array('//', '\\/', '/./'), '/', $path) . "/install/");
+            Header("Location: " . str_replace(['//', '\\/', '/./'], '/', $path) . "/install/");
         }
         require dirname(__FILE__) . '/../config.php';
         $GLOBALS['cfg'] = $cfg;
@@ -412,7 +412,7 @@ class Boot
     private static function anonFilteringInput()
     {
 
-        $step_report = array();
+        $step_report = [];
 
         // Convert ' and " (quote or unquote)
         self::log("Sanitize the input.");
@@ -422,13 +422,13 @@ class Boot
 
         // Whitelist some tags if we're a teacher in a course:
         if (isset($_SESSION['idCourse']) && $_SESSION['levelCourse'] >= 6) {
-            $filter_input->appendToWhitelist(array(
-                'tag' => array('object', 'param'),
-                'attrib' => array(
+            $filter_input->appendToWhitelist([
+                'tag' => ['object', 'param'],
+                'attrib' => [
                     'object.data', 'object.type', 'object.width',
                     'object.height', 'param.name', 'param.value',
-                ),
-            ));
+                ],
+            ]);
         }
 
         $filter_input->sanitize();
@@ -438,7 +438,7 @@ class Boot
     private static function filteringInput()
     {
 
-        $step_report = array();
+        $step_report = [];
 
         // todo: check if we can do in other way the same thing
         // save login password from modification
@@ -465,13 +465,13 @@ class Boot
 
             // Whitelist some tags if we're a teacher in a course:
             if (isset($_SESSION['idCourse']) && $_SESSION['levelCourse'] >= 6) {
-                $filter_input->appendToWhitelist(array(
-                    'tag' => array('object', 'param'),
-                    'attrib' => array(
+                $filter_input->appendToWhitelist([
+                    'tag' => ['object', 'param'],
+                    'attrib' => [
                         'object.data', 'object.type', 'object.width',
                         'object.height', 'param.name', 'param.value',
-                    ),
-                ));
+                    ],
+                ]);
             }
 
             $filter_input->sanitize();
@@ -556,10 +556,10 @@ class Boot
     {
 
         list($usec, $sec) = explode(" ", microtime());
-        $GLOBALS['start'] = array(
+        $GLOBALS['start'] = [
             'time' => ((float)$usec + (float)$sec),
             'memory' => function_exists('memory_get_usage') ? memory_get_usage() : 0
-        );
+        ];
     }
 
     public static function current_time()

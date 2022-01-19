@@ -35,7 +35,7 @@ function getLOParamArray( $idParam ) {
 			."WHERE idParam = '".(int)$idParam."'";
 	$rs = sql_query($query) or 
 			errorCommunication( 'getLOParam' );
-	$result = array();
+	$result = [];
 	while( list( $param_name, $param_value ) = sql_fetch_row($rs) )
 		$result[$param_name] = $param_value;
 	return $result;	

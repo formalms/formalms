@@ -113,9 +113,9 @@ function modRepo(&$url) {
 	}  
 	
 	cout(
-		getTitleArea(array(	$url->getUrl() => $lang->def('_TITLE_LIGHT_REPO'), 
+		getTitleArea([$url->getUrl() => $lang->def('_TITLE_LIGHT_REPO'),
 			( $id_repo == 0 ? $lang->def('_NEW_REPOSITORY') : $lang->def('_MOD').' '.$repo[LR_TITLE] )
-		), 'light_repo')
+        ], 'light_repo')
 		.'<div class="std_block">', 'content');
 	
 	// save modification if needed
@@ -196,7 +196,7 @@ function repoMyDetails(&$url, $passed_repo = 0) {
 	$file_man->setUserLastEnterInRepo($id_repo);
 	
 	$of_user = getLogUserId();
-	$page_title = array($url->getUrl() => $lang->def('_TITLE_LIGHT_REPO'), $repo[LR_TITLE]);
+	$page_title = [$url->getUrl() => $lang->def('_TITLE_LIGHT_REPO'), $repo[LR_TITLE]];
 	
 	$file_list = $file_man->getRepoFileListOfAuthor($id_repo, $of_user);
 	
@@ -214,14 +214,14 @@ function repoMyDetails(&$url, $passed_repo = 0) {
 	
 	$table = new Table(0, $lang->def('_CAPTION_USER_FILE_LIST'), $lang->def('_SUMMARY_USER_FILE_LIST'));
 	
-	$content_h = array(
+	$content_h = [
 		$lang->def('_FILENAME'),
 		$lang->def('_DESCRIPTION'),
 		$lang->def('_DATE'),
 		'<img src="'.getPathImage().'standard/edit.png" alt="'.$lang->def('_MOD').'" />',
 		'<img src="'.getPathImage().'standard/delete.png" alt="'.$lang->def('_DEL').'" />'
-	);
-	$type_h = array('', '', '', 'image', 'image');
+    ];
+	$type_h = ['', '', '', 'image', 'image'];
 	$table->addHead($content_h, $type_h);
 	
 	$url->addToStdQuery('id_repo='.$id_repo);
@@ -231,7 +231,7 @@ function repoMyDetails(&$url, $passed_repo = 0) {
 		// convert filename
 		$file[LR_FILE_NAME] = implode( '_', array_slice(explode('_', $file[LR_FILE_NAME]), 3) );
 		
-		$content = array();
+		$content = [];
 		
 		$content[] = ''
 			.'<a href="'.$url->getUrl('op=download_file&id_repo='.$id_repo.'&id_file='.$file[LR_FILE_ID]).'" title="'.$lang->def('_DOWNLOAD').''.strip_tags($file[LR_FILE_NAME]).'">'
@@ -319,10 +319,10 @@ function modFile(&$url) {
 					$subject,
 					$baseBody,
 					$attachments,
-					array(
+					[
 						MAIL_REPLYTO => Get::sett('sender_event'),
 						MAIL_SENDER_ACLNAME => Get::sett('use_sender_aclname')
-					)
+                    ]
 				);
 			}
 
@@ -333,11 +333,11 @@ function modFile(&$url) {
 	}
 	
 	$repo = $file_man->getRepoDetails($id_repo);
-	$page_title = array($url->getUrl() => $lang->def('_TITLE_LIGHT_REPO'), $url->getUrl('op='.( $mod_perm ? 'repo_manager_details' : 'repo_my_details' ).'&id_repo='.$id_repo) => $repo[LR_TITLE]);
+	$page_title = [$url->getUrl() => $lang->def('_TITLE_LIGHT_REPO'), $url->getUrl('op='.( $mod_perm ? 'repo_manager_details' : 'repo_my_details' ).'&id_repo='.$id_repo) => $repo[LR_TITLE]];
 	
 	if($id_file == 0) {
 		$page_title[] = $lang->def('_UPLOAD');
-		$file = array();
+		$file = [];
 		$file[LR_FILE_NAME] = false;
 		$file[LR_FILE_DESCR] = '';
 	} else {
@@ -410,7 +410,7 @@ function repoManagerDetails(&$url) {
 	$file_man->setUserLastEnterInRepo($id_repo);	
 	
 	cout(
-		getTitleArea( array($url->getUrl() => $lang->def('_TITLE_LIGHT_REPO'), $repo[LR_TITLE]), 'light_repo')
+		getTitleArea( [$url->getUrl() => $lang->def('_TITLE_LIGHT_REPO'), $repo[LR_TITLE]], 'light_repo')
 		.'<div class="std_block">', 'content');
 	
 	$last_enter = $file_man->getUserLastEnterInRepo($id_repo);
@@ -418,19 +418,19 @@ function repoManagerDetails(&$url) {
 	
 	$table = new Table(0, $lang->def('_CAPTION_USER_FILE_LIST'), $lang->def('_SUMMARY_USER_FILE_LIST'));
 	
-	$content_h = array(
+	$content_h = [
 		$lang->def('_USERNAME'),
 		$lang->def('_LOADED_FILE'),
 		$lang->def('_VIEW')
-	);
-	$type_h = array('', '', 'image');
+    ];
+	$type_h = ['', '', 'image'];
 	$table->addHead($content_h, $type_h);
 	
 	$url->addToStdQuery('id_repo='.$id_repo);
 	
   foreach($file_list as $file) {
 		
-		$content = array();
+		$content = [];
 		$content[] = $file['username'];
 		$content[] = ( isset($file['file_count']) ? $file['file_count'] : '0' )
 			.( isset($file['file_new']) ? '<b>('.$file['file_new'].$lang->def('_REPO_NEW_FILE').' )</b> ' : '' );
@@ -466,14 +466,14 @@ function repoUserDetails(&$url, $passed_repo = 0) {
 	$repo = $file_man->getRepoDetails($id_repo);
 	
 	if(checkPerm('mod', true)) { 
-		$page_title = array(
+		$page_title = [
 			$url->getUrl() => $lang->def('_TITLE_LIGHT_REPO'), 
 			$url->getUrl('op=repo_manager_details&id_repo='.$id_repo) => $repo[LR_TITLE],
 			$acl_man->getUserName($of_user)
-		);
+        ];
 	} else {
 		$of_user = getLogUserId();
-		$page_title = array($url->getUrl() => $lang->def('_TITLE_LIGHT_REPO'), $repo[LR_TITLE]);
+		$page_title = [$url->getUrl() => $lang->def('_TITLE_LIGHT_REPO'), $repo[LR_TITLE]];
 	}
 	$file_list = $file_man->getRepoFileListOfAuthor($id_repo, $of_user);
 	
@@ -483,21 +483,21 @@ function repoUserDetails(&$url, $passed_repo = 0) {
 	
 	$table = new Table(0, $lang->def('_CAPTION_USER_FILE_LIST'), $lang->def('_SUMMARY_USER_FILE_LIST'));
 	
-	$content_h = array(
+	$content_h = [
 		$lang->def('_FILENAME'),
 		$lang->def('_DESCRIPTION'),
 		$lang->def('_DATE'),
 		'<img src="'.getPathImage().'standard/download.png" alt="'.$lang->def('_DOWNLOAD').'" />',
 		'<img src="'.getPathImage().'standard/delete.png" alt="'.$lang->def('_DEL').'" />'
-	);
-	$type_h = array('', '', '', 'image', 'image');
+    ];
+	$type_h = ['', '', '', 'image', 'image'];
 	$table->addHead($content_h, $type_h);
 	
 	$url->addToStdQuery('id_repo='.$id_repo);
 	
 	while($file = sql_fetch_row($file_list)) {
 		
-		$content = array();
+		$content = [];
 		$content[] = implode( '_', array_slice(explode('_', $file[LR_FILE_NAME]), 3) );
 		
 		$content[] = $file[LR_FILE_DESCR];

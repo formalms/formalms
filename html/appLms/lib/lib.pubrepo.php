@@ -129,17 +129,17 @@ class PubRepo_ListView extends ListView {
 	
 	// utility function
 	function _createColInfo( $label, $hClass, $fieldClass, $data, $toDisplay, $sortable ) {
-		return array( 	'hLabel' => $label,
+		return ['hLabel' => $label,
 						'hClass' => $hClass,	
 						'fieldClass' => $fieldClass,	
 						'data' => $data,
 						'toDisplay' => $toDisplay,
-						'sortable' => $sortable );
+						'sortable' => $sortable];
 	}
 	
 	// overload
 	function _getCols() {
-		$colInfos = array();
+		$colInfos = [];
 		$colInfos[] = $this->_createColInfo( 'idObject','','','idObject',false, false );
 		$colInfos[] = $this->_createColInfo( 'idResource','','','idResource',false, false );
 		$colInfos[] = $this->_createColInfo( 'idCategory','','','idCategory',false, false );
@@ -158,7 +158,7 @@ class PubDirDb extends TreeDb {
 	function PubDirDb() {
 		
 		$this->table = $GLOBALS['prefix_lms'] . '_pubrepo_dir';
-		$this->fields = array( 'id' => 'id', 'idParent' => 'idParent', 'path' => 'path', 'lev' => 'lev' );
+		$this->fields = ['id' => 'id', 'idParent' => 'idParent', 'path' => 'path', 'lev' => 'lev'];
 	}
 }
 

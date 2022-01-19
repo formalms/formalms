@@ -57,13 +57,13 @@ function news()
         . 'title="' . $lang->def('_TITLE_IMPORTANT') . '" '
         . 'alt="' . $lang->def('_IMPORTANT') . '" />';
 
-    $type_h = array('image', '', '', 'news_short_td');
-    $cont_h = array(
+    $type_h = ['image', '', '', 'news_short_td'];
+    $cont_h = [
         $impo_gif,
         $lang->def('_DATE'),
         $lang->def('_TITLE'),
         $lang->def('_SHORTDESC')
-    );
+    ];
     if ($mod_perm) {
 
         $cont_h[] = '<img src="' . getPathImage() . 'standard/moduser.png" title="' . $lang->def('_RECIPIENTS') . '" '
@@ -81,12 +81,12 @@ function news()
     $tb->addHead($cont_h);
     while (list($id_news, $publish_date, $title, $short_desc, $impo) = sql_fetch_row($re_news)) {
 
-        $cont = array(
+        $cont = [
             ($impo ? $impo_gif : ''),
             Format::date($publish_date),
             $title,
             Util::cut($short_desc)
-        );
+        ];
         if ($mod_perm) {
 
             $cont[] = '<a href="index.php?modname=internal_news&amp;op=editviewer&amp;load=1&amp;id_news=' . $id_news . '" '
@@ -159,7 +159,7 @@ function editnews($load = false)
     $out->setWorkingZone('content');
 
     $id_news = importVar('id_news', true, 0);
-    $all_languages = array('-1' => Lang::t('_ALL', 'standard'));
+    $all_languages = ['-1' => Lang::t('_ALL', 'standard')];
     $all_languages += Docebo::langManager()->getAllLangCode();
 
     if ($load) {
@@ -178,10 +178,10 @@ function editnews($load = false)
         $lang_sel = getLanguage();
     }
 
-    $page_title = array(
+    $page_title = [
         'index.php?modname=internal_news&amp;op=news' => $lang->def('_NEWS'),
         ($load ? $lang->def('_MOD') : $lang->def('_NEW'))
-    );
+    ];
     $out->add(getTitleArea($page_title, 'news')
         . '<div class="std_block">'
         . getBackUi('index.php?modname=internal_news&amp;op=news', $lang->def('_BACK'))
@@ -227,10 +227,10 @@ function editviewer()
 
     $id_news = importVar('id_news', true, 0);
 
-    $page_title = array(
+    $page_title = [
         'index.php?modname=internal_news&amp;op=news' => $lang->def('_NEWS'),
         $lang->def('_RECIPIENTS')
-    );
+    ];
     $acl_manager = new DoceboACLManager();
     $user_select = new UserSelector();
 
@@ -250,7 +250,7 @@ function editviewer()
 
         $viewer = unserialize($viewer);
         if (is_array($viewer)) $user_select->resetSelection($viewer);
-        else $user_select->resetSelection(array());
+        else $user_select->resetSelection([]);
     }
     if (isset($_POST['cancelselector'])) {
 
@@ -345,10 +345,10 @@ function delnews()
 		WHERE idNews = '" . $id_news . "'"));
 
         $form = new Form();
-        $page_title = array(
+        $page_title = [
             'index.php?modname=internal_news&amp;op=news' => $lang->def('_NEWS'),
             $lang->def('_DEL')
-        );
+        ];
         $GLOBALS['page']->add(
             getTitleArea($page_title, 'admin_news')
             . '<div class="std_block">'

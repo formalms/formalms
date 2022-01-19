@@ -34,7 +34,7 @@ interface ICache {
 	 * )
 	 * @return bool true if the data was saved successfully, false otherwise
 	 */
-	public function set($key, $data, $options = array());
+	public function set($key, $data, $options = []);
 	
 	/**
 	 * Save a data value into the cache, only if the data is not saved
@@ -45,7 +45,7 @@ interface ICache {
 	 * )
 	 * @return bool true if the data was saved successfully, false otherwise 
 	 */
-	public function add($key, $value, $options = array());
+	public function add($key, $value, $options = []);
 	
 	/**
 	 * Retrive a previously saved value from the cache
@@ -64,7 +64,7 @@ interface ICache {
 	 * )
 	 * @return bool true if the data was saved successfully, false otherwise
 	 */
-	public function mset($keys, $values, $options = array());
+	public function mset($keys, $values, $options = []);
 	
 	/**
 	 * Retrive a multiple combination of keys and datas, this will help you in saving

@@ -20,18 +20,18 @@ Class QuestcategoryAlms extends Model {
 	}
 
 	public function getPerm() {
-		return array(
+		return [
 			'view' => 'standard/view.png',
 			'add' => '',
 			'mod' => '',
 			'del' => ''
-		);
+        ];
 	}
 
 
 	public function getQuestCategoriesList($pagination, $filter) {
 		//validate pagination data
-		if (!is_array($pagination)) $pagination = array();
+		if (!is_array($pagination)) $pagination = [];
 		$_startIndex = (isset($pagination['startIndex']) ? (int)$pagination['startIndex'] : 0);
 		$_results = (isset($pagination['results']) ? (int)$pagination['results'] : Get::sett('visuItem', 25));
 		$_sort = 'name';
@@ -68,7 +68,7 @@ Class QuestcategoryAlms extends Model {
 		$res = $this->db->query($query);
 
 		//extract records from database
-		$output = array();
+		$output = [];
 		if ($res && $this->db->num_rows($res)>0) {
 			while ($obj = $this->db->fetch_obj($res)) {
 				$output[] = $obj;
@@ -122,7 +122,7 @@ Class QuestcategoryAlms extends Model {
 			$query = "SELECT idCategory, COUNT(*) FROM %lms_testquest WHERE idCategory IN (".implode(",", $id).")";
 			$res = $this->db->query($query);
 			if ($res) {
-				$output = array();
+				$output = [];
 				foreach ($id as $id_category) $output[$id_category] = 0;
 				while (list($id_category, $used_test) = $this->db->fetch_row($res)) {
 					$output[$id_category] = $used_test;
@@ -149,7 +149,7 @@ Class QuestcategoryAlms extends Model {
 			$query = "SELECT id_category, COUNT(*) FROM %lms_pollquest WHERE id_category IN (".implode(",", $id).")";
 			$res = $this->db->query($query);
 			if ($res) {
-				$output = array();
+				$output = [];
 				foreach ($id as $id_category) $output[$id_category] = 0;
 				while (list($id_category, $used_test) = $this->db->fetch_row($res)) {
 					$output[$id_category] = $used_test;

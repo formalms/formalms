@@ -19,8 +19,8 @@ class GroupTestManagement {
 
 	function getTestInfo($id_tests) {
 
-		$tests = array();
-		if(empty($id_tests)) return array();
+		$tests = [];
+		if(empty($id_tests)) return [];
 		$query_test = "
 		SELECT idTest, title, point_required, show_only_status, show_score, point_type,	order_type, retain_answers_history
 		FROM ".$GLOBALS['prefix_lms']."_test 
@@ -45,7 +45,7 @@ class GroupTestManagement {
 
 		if(isset($this->_max_score_cache[$id_test])) return $this->_max_score_cache[$id_test];
 
-		$test = $this->getTestInfo(array($id_test));
+		$test = $this->getTestInfo([$id_test]);
 		if($test[$id_test]['point_type'] == '1') {
 			$this->_max_score_cache[$id_test] = '100';
 			return '100';
@@ -102,7 +102,7 @@ class GroupTestManagement {
 	 */
 	function &getTestsScores($id_tests, $id_students = false, $pure = false) {
 
-		$data = array();
+		$data = [];
 		if(empty($id_tests)) return $data;
 		if(empty($id_students)) $id_students = false;
 		$query_scores = "
@@ -136,7 +136,7 @@ class GroupTestManagement {
 	 */
 	function &getSimpleTestsScores($id_tests, $id_students = false, $pure = false) {
 
-		$data = array();
+		$data = [];
 		if(empty($id_tests)) return $data;
 		if(empty($id_students)) $id_students = false;
 		$query_scores = "
@@ -181,7 +181,7 @@ class GroupTestManagement {
 		WHERE idTest = '".$id_test."'";
 		$re_test = sql_query($query_test);
 		list($point_required, $show_only_status) = sql_fetch_row($re_test);
-		$old_scores =& $this->getTestsScores(array($id_test), false, true);
+		$old_scores =& $this->getTestsScores([$id_test], false, true);
 		$re = true;
     
 		foreach($users_scores as $idst_user => $score) {
@@ -221,7 +221,7 @@ class GroupTestManagement {
 			$track_info 	= $play_man->getTrackAllInfo();
 			$test_status  = $score >= $point_required ? 'passed' : 'failed';
 			if ($test_info['use_suspension']) {
-				$suspend_info = array();
+				$suspend_info = [];
 				if ($test_status == 'failed') {
 					$suspend_info['attempts_for_suspension'] = $track_info['attempts_for_suspension'] + 1;
 					if ($suspend_info['attempts_for_suspension'] >= $test_info['suspension_num_attempts']) {
@@ -971,7 +971,7 @@ class PlayTestManagement {
 					$json = new Services_JSON(SERVICES_JSON_LOOSE_TYPE);
 					$arr = $json->decode($order_info);
 
-					$queries = array();
+					$queries = [];
 					if (is_array($arr)) {
 						foreach ($arr as $value) {
 							if ((int)$value['selected']>0) {
@@ -995,7 +995,7 @@ class PlayTestManagement {
 					$json = new Services_JSON(SERVICES_JSON_LOOSE_TYPE);
 					$arr = $json->decode($cf_info);
 
-					$queries = array();
+					$queries = [];
 					if (is_array($arr)) {
 						foreach ($arr as $value) {
 							if ((int)$value['selected']>0) {
@@ -1057,7 +1057,7 @@ class PlayTestManagement {
 				};break;
 				case "3" : {
 
-          $cat_seen = array();
+          $cat_seen = [];
           $query_cat_seen = "
 			     SELECT idCategory, COUNT(*)
 			     FROM ".$GLOBALS['prefix_lms']."_testtrack_quest as ttq JOIN ".$GLOBALS['prefix_lms']."_testquest as tq
@@ -1070,7 +1070,7 @@ class PlayTestManagement {
 					$json = new Services_JSON(SERVICES_JSON_LOOSE_TYPE);
 					$arr = $json->decode($order_info);
 
-					$queries = array();
+					$queries = [];
 					if (is_array($arr)) {
 						foreach ($arr as $value) {
 						  if (!isset($cat_seen[$value['id_category']])) $cat_seen[$value['id_category']] = 0;

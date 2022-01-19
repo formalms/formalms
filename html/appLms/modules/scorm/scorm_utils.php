@@ -157,7 +157,7 @@ function getElementsArrayTrackingTemplate($pathelem, $scormVersion) {
 	$xmldoc = getXmlDocTrackingTemplate($scormVersion);
 	$elem = $xmldoc->getDocumentElement();
 	$increment = 1;
-	$resultArray = array();
+	$resultArray = [];
 	for($i = 0; $i < count($path) && $elem; $i += $increment) {
 		$step = $path[$i];
 		soap__dbgOut(" getElementsArrayTrackingTemplate procesing step = $step");
@@ -172,21 +172,21 @@ function getElementsArrayTrackingTemplate($pathelem, $scormVersion) {
 		switch( $step ) {
 			case '_count':
 				if( strlen($next) > 0 ) { 
-					$resultArray[] = array($step, false); // after _count can't be anything
+					$resultArray[] = [$step, false]; // after _count can't be anything
 				} elseif( $elem->getAttribute('index') != 'yes' ) {
-					$resultArray[] = array($step, false); // count on an uncountable element 
+					$resultArray[] = [$step, false]; // count on an uncountable element
 				} else {
-					$resultArray[] = array($step, true); // ok 
+					$resultArray[] = [$step, true]; // ok
 				}
 				return $resultArray;
 			break;
 			case '_children':
 				if( strlen($next) > 0 ) {
-					$resultArray[] = array($step, false); // after _children can't be anything
+					$resultArray[] = [$step, false]; // after _children can't be anything
 				} elseif( $elem->getAttribute('item') == 'yes' ) {
-					$resultArray[] = array($step, false); // can't get children of a terminal element
+					$resultArray[] = [$step, false]; // can't get children of a terminal element
 				} else {
-					$resultArray[] = array($step, true); // ok
+					$resultArray[] = [$step, true]; // ok
 				}
 				return $resultArray;
 			break;
@@ -214,9 +214,9 @@ function getElementsArrayTrackingTemplate($pathelem, $scormVersion) {
 			$name = $step;
 		}
 		if( $elem )
-			$resultArray[]=array($name,$elem);
+			$resultArray[]= [$name,$elem];
 		else
-			$resultArray[]=array($name,false);
+			$resultArray[]= [$name,false];
 	}
 	soap__dbgOut("-getElementsArrayTrackingTemplate");
 	return $resultArray;
@@ -323,8 +323,8 @@ function sumScormTime( $t1, $t2 ) {
 		// scorm 2004 format, break it
 		if($t2 == '' || $t2 == '0000:00:00.00') $t2 = 'P0000Y00M00DT0000H00M00S'; 
 		
-		$t1_s = array();
-		$t2_2 = array();
+		$t1_s = [];
+		$t2_2 = [];
 		$re1 = preg_match ('/^P((\d*)Y)?((\d*)M)?((\d*)D)?(T((\d*)H)?((\d*)M)?((\d*)(\.(\d{1,2}))?S)?)?$/', $t1, $t1_s );
 		if(strpos($t2, "P") === false) {
 			$a2 = explode(":", $t2);

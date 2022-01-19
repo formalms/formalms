@@ -79,7 +79,7 @@ switch ($op) {
 			aout("{\"index\":\"$index\",\"id\":\"$id\"}");
 		} else {
 		
-			$result = array();
+			$result = [];
 			$result['index'] = $index;
 			$result['error'] = 1;
 			$result['errormsg'] = Lang::t('_NOT_FREE', 'standard');

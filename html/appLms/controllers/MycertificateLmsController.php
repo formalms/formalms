@@ -44,7 +44,7 @@ class MycertificateLmsController extends LmsController
         
         $metaCertificates = $this->model->getMyMetaCertificates();
         $totalMetaCertificates = count($metaCertificates);
-        $this->render('show',array("metacertificates" => $this->json->encode($metaCertificates), "totalMetaCertificates" =>  $totalMetaCertificates, "id_user" => $this->id_user ));
+        $this->render('show', ["metacertificates" => $this->json->encode($metaCertificates), "totalMetaCertificates" =>  $totalMetaCertificates, "id_user" => $this->id_user]);
 
 /*
         //NEW Event Method
@@ -70,13 +70,13 @@ class MycertificateLmsController extends LmsController
         $sort = Get::req('sort', DOTY_MIXED, 'year');
         $dir = Get::req('dir', DOTY_STRING, "asc");
 
-        $pagination = array(
+        $pagination = [
             'startIndex' => $startIndex,
             'rowsPerPage' => $rowsPerPage,
             'results' => $results,
             'sort' => $sort,
             'dir' => $dir
-        );
+        ];
 
         if ($search = $_REQUEST['search']) {
             $pagination['search'] = $search['value'];
@@ -94,7 +94,7 @@ class MycertificateLmsController extends LmsController
         // return the number of certs released and not
         $total_filtered = $this->model->loadMyCertificates($pagination, true);
 
-        $result = array(
+        $result = [
             'recordsTotal' => $totalCertificates,
             'startIndex' => $startIndex,
             'sort' => $sort,
@@ -102,7 +102,7 @@ class MycertificateLmsController extends LmsController
             'rowsPerPage' => $rowsPerPage,
             'recordsFiltered' => $total_filtered,
             'data' => $certificates,
-        );
+        ];
 
         echo $this->json->encode($result);
     }

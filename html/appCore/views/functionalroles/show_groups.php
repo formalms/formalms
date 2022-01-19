@@ -1,9 +1,9 @@
 <?php
 
-echo getTitleArea(array(
+echo getTitleArea([
 	'index.php?r=adm/functionalroles/show' => Lang::t('_FUNCTIONAL_ROLE', 'fncroles'),
 	Lang::t('_MANAGE_GROUPS', 'fncroles')
-));
+]);
 
 ?>
 <script type="text/javascript">
@@ -64,16 +64,16 @@ YAHOO.util.Event.onDOMReady(function() {
 $icon_mod = '<span class="ico-sprite subs_mod"><span>'.Lang::t('_MOD', 'standard').'</span></span>';
 $icon_del = '<span class="ico-sprite subs_del"><span>'.Lang::t('_DEL', 'standard').'</span></span>';
 
-$columns = array(
-	array('key' => 'name', 'label' => Lang::t('_NAME', 'standard'), 'sortable' => true),
-	array('key' => 'description', 'label' => Lang::t('_DESCRIPTION', 'standard'), 'sortable' => true)
-);
-if ($permissions['mod']) $columns[] = array('key' => 'mod', 'label' => $icon_mod, 'formatter'=>'stdModify', 'className' => 'img-cell');
-if ($permissions['del']) $columns[] = array('key' => 'del', 'label' => $icon_del, 'formatter'=>'stdDelete', 'className' => 'img-cell');
+$columns = [
+	['key' => 'name', 'label' => Lang::t('_NAME', 'standard'), 'sortable' => true],
+	['key' => 'description', 'label' => Lang::t('_DESCRIPTION', 'standard'), 'sortable' => true]
+];
+if ($permissions['mod']) $columns[] = ['key' => 'mod', 'label' => $icon_mod, 'formatter'=>'stdModify', 'className' => 'img-cell'];
+if ($permissions['del']) $columns[] = ['key' => 'del', 'label' => $icon_del, 'formatter'=>'stdDelete', 'className' => 'img-cell'];
 
 
 
-$params = array(
+$params = [
 	'id'			=> 'groups_table',
 	'ajaxUrl'		=> 'ajax.adm_server.php?r=adm/functionalroles/getgrouptabledata',
 	'rowsPerPage'	=> Get::sett('visuItem', 25),
@@ -83,10 +83,10 @@ $params = array(
 	'dir'			=> 'asc',
 	'generateRequest' => 'Groups.requestBuilder',
 	'columns'		=> $columns,
-	'fields'		=> array('id', 'name', 'description', 'mod', 'del'),
+	'fields'		=> ['id', 'name', 'description', 'mod', 'del'],
 	'delDisplayField' => 'name',
 	'stdModifyRenderEvent' => 'Groups.dialogRenderEvent'
-);
+];
 
 if ($permissions['add']) {
 	$rel_action_over = '<a id="add_group_over" class="ico-wt-sprite subs_add" '
@@ -97,19 +97,19 @@ if ($permissions['add']) {
 		.'href="index.php?r=adm/functionalroles/add_group">'
 		.'<span>'.Lang::t('_ADD', 'fncroles').'</span></a>';
 
-	$params['rel_actions'] = array($rel_action_over, $rel_action_bottom);
+	$params['rel_actions'] = [$rel_action_over, $rel_action_bottom];
 
-	$this->widget('dialog', array(
+	$this->widget('dialog', [
 		'id' => 'add_group_dialog',
 		'dynamicContent' => true,
 		'ajaxUrl' => 'ajax.adm_server.php?r=adm/functionalroles/add_group',
 		'renderEvent' => 'Groups.dialogRenderEvent',
 		'callback' => 'function() { this.destroy(); DataTable_groups_table.refresh(); }',
-		'callEvents' => array(
-			array('caller' => 'add_group_over', 'event' => 'click'),
-			array('caller' => 'add_group_bottom', 'event' => 'click')
-		)
-	));
+		'callEvents' => [
+			['caller' => 'add_group_over', 'event' => 'click'],
+			['caller' => 'add_group_bottom', 'event' => 'click']
+        ]
+    ]);
 }
 
 $this->widget('table', $params);

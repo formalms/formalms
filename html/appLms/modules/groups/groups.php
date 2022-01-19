@@ -24,14 +24,14 @@ function groups() {
 	
 	// Retrive groups
 	$acl_man->setContext('/lms/course/'.$_SESSION['idCourse'].'/group');
-	$id_groups 	= $acl_man->getGroupsIdstFromBasePath('/lms/course/'.$_SESSION['idCourse'].'/group', array('course'));
+	$id_groups 	= $acl_man->getGroupsIdstFromBasePath('/lms/course/'.$_SESSION['idCourse'].'/group', ['course']);
 	if(!empty($id_groups)) $groups = $acl_man->getGroups($id_groups);
-	else $groups = array();
+	else $groups = [];
 	
 	// compose table
 	$tb = new Table(0, $lang->def('_GROUP_CAPTION'), $lang->def('_GROUP_CAPTION'));
-	$type_h = array('', '');
-	$cont_h = array($lang->def('_NAME'), $lang->def('_DESCRIPTION'));
+	$type_h = ['', ''];
+	$cont_h = [$lang->def('_NAME'), $lang->def('_DESCRIPTION')];
 	if($subs_perm) {
 		
 		$type_h[] = 'image';
@@ -56,8 +56,8 @@ function groups() {
 		$group_id = $acl_man->relativeId($group[ACL_INFO_GROUPID]);
 		if($group_id != 'alluser') {
 			
-			$cont = array(	$group_id, 
-							$group[ACL_INFO_GROUPDESCRIPTION]);
+			$cont = [$group_id,
+							$group[ACL_INFO_GROUPDESCRIPTION]];
 			if($subs_perm) {
 				
 				$cont[] = '<a href="index.php?modname=groups&amp;op=subscribe&amp;id_group='.$id_group.'&amp;load=1" '
@@ -121,10 +121,10 @@ function editgroup() {
 		$group_name = '';
 		$group_descr = '';
 	}
-	$page_title = array(
+	$page_title = [
 		'index.php?modname=groups&amp;op=groups' => $lang->def('_GROUPS'), 
 		( isset($_GET['id_group']) ? $lang->def('_MOD').' : '.$group_name : $lang->def('_CREATE'))
-	);
+    ];
 	$GLOBALS['page']->add(
 		getTitleArea($page_title, 'groups')
 		.'<div class="std_block">'
@@ -187,10 +187,10 @@ function delgroup() {
 		$group = $acl_man->getGroup($_GET['id_group'], false);
 		
 		$form = new Form();
-		$page_title = array(
+		$page_title = [
 			'index.php?modname=groups&amp;op=groups' => $lang->def('_GROUPS'), 
 			$lang->def('_DEL')
-		);
+        ];
 		$GLOBALS['page']->add(
 			getTitleArea($page_title, 'groups')
 			.'<div class="std_block">'
@@ -235,8 +235,8 @@ function subscribe() {
 	$user_select->setUserFilter('group',$arr_idstGroup);
 	
 	$user_select->setPageTitle( getTitleArea(
-		array('index.php?modname=groups&amp;op=groups' => $lang->def('_GROUPS'), 
-		$lang->def('_SUBSCRIBE_USER') ), 
+		['index.php?modname=groups&amp;op=groups' => $lang->def('_GROUPS'),
+		$lang->def('_SUBSCRIBE_USER')],
 	'groups'));
 	
 	$user_select->loadSelector('index.php?modname=groups&amp;op=subscribe&amp;id_group='.$id_group, 
