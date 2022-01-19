@@ -119,7 +119,7 @@ class Get
 			case DOTY_MVC: {
 
 					$value = preg_replace('/[^a-zA-Z0-9\-\_\/]+/', '', $value);
-					if ($value{0} === '/') $value = '';
+					if ($value[0] === '/') $value = '';
 				};
 				break;
 			case DOTY_MIXED:

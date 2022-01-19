@@ -195,7 +195,7 @@ function mycourses(&$url) {
 		
 		$result = sql_query($query_year);
 		while (list($year) = sql_fetch_row($result)) {
-			$year_array[$year{0}.$year{1}.$year{2}.$year{3}] = $year{0}.$year{1}.$year{2}.$year{3};
+			$year_array[$year[0].$year[1] .$year[2] .$year[3]] = $year[0].$year[1] .$year[2] .$year[3];
 		}
 		if(isset($year_array['0000'])) unset($year_array['0000']);
 		

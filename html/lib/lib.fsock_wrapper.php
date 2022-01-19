@@ -66,7 +66,7 @@ class FSock {
 
 			socket_set_timeout($sock, $this->_stream_timeout);
 
-			if(isset($tmp_url['path'])) $path = ($tmp_url['path']{0} == '/' ? '' : '/' ).$tmp_url['path'];
+			if(isset($tmp_url['path'])) $path = ($tmp_url['path'][0] == '/' ? '' : '/' ).$tmp_url['path'];
 			else $path = '/';
 
 		    $request  = "GET ".$path.$get_params." HTTP/1.1\r\n";
@@ -112,7 +112,7 @@ class FSock {
 
 			socket_set_timeout($sock, $this->_stream_timeout);
 
-			if(isset($tmp_url['path'])) $path = ($tmp_url['path']{0} == '/' ? '' : '/' ).$tmp_url['path'];
+			if(isset($tmp_url['path'])) $path = ($tmp_url['path'][0] == '/' ? '' : '/' ).$tmp_url['path'];
 			else $path = '/';
 
 			$arr_header = array(

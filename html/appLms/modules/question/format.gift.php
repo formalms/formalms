@@ -322,7 +322,7 @@ class qformat_gift {
         elseif ($answertext == '') {
             $question->qtype = 'extended_text';
         }
-        elseif ($answertext{0} == "#"){
+        elseif ($answertext[0] == "#"){
             $question->qtype = 'numerical';
 
 		} elseif (strpos($answertext, "~") !== false)  {

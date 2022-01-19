@@ -241,7 +241,7 @@ class DoceboACLManager
 
         if (strlen($id) == 0)
             return $id;
-        if ($id{0} == ACL_SEPARATOR)
+        if ($id[0] == ACL_SEPARATOR)
             return $id;
         return $this->context . $id;
     }
@@ -258,7 +258,7 @@ class DoceboACLManager
     function relativeId($id)
     {
         if (empty($id)) return $id;
-        if ($id{0} != ACL_SEPARATOR)
+        if ($id[0] != ACL_SEPARATOR)
             return $id;
         $max = (strlen($this->context) < strlen($id)) ? strlen($this->context) : strlen($id);
         if (strncmp($this->context, $id, $max) == 0)

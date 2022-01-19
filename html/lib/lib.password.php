@@ -180,14 +180,14 @@ class PasswordPolicies {
         return $this->valid;
     }
 
-    private function pass_min_char($password,$policy){
+    private static function pass_min_char($password,$policy){
         if(strlen($password) < $policy) {
             return Lang::t('_PASSWORD_TOO_SHORT', 'configuration');
         } else {
             return false;
         }
     }
-    private function pass_alfanumeric($password,$policy){
+    private static function pass_alfanumeric($password,$policy){
         if ($policy=="on"){
             if( !preg_match('/[a-z]/i', $password) || !preg_match('/[0-9]/', $password) ) {
                 return Lang::t('_ERR_PASSWORD_MUSTBE_ALPHA', 'configuration');
@@ -195,28 +195,28 @@ class PasswordPolicies {
         }
         return false;
     }
-    private function pass_min_digits($password,$policy){
+    private static function pass_min_digits($password,$policy){
         if (!preg_match('/[[:digit:]]/u', $password) < $policy) {
             return Lang::t('_ERR_PASSWORD_MIN_DIGITS', 'configuration');
         } else {
             return false;
         }
     }
-    private function pass_min_lower($password,$policy){
+    private static function pass_min_lower($password,$policy){
         if (!preg_match('/[[:lower:]]/u', $password) < $policy) {
             return Lang::t('_ERR_PASSWORD_MIN_LOWER', 'configuration');
         } else {
             return false;
         }
     }
-    private function pass_min_upper($password,$policy){
+    private static function pass_min_upper($password,$policy){
         if (!preg_match('/[[:upper:]]/u', $password) < $policy) {
             return Lang::t('_ERR_PASSWORD_MIN_UPPER', 'configuration');
         } else {
             return false;
         }
     }
-    private function pass_min_nonalphanum($password,$policy){
+    private static function pass_min_nonalphanum($password,$policy){
         if (!preg_match('/[^[:upper:][:lower:][:digit:]]/u', $password) < $policy) {
             return Lang::t('_ERR_PASSWORD_MIN_NONALPHANUM', 'configuration');
         } else {

@@ -188,7 +188,7 @@ function getTemplateList($set_keys = FALSE, $platform = FALSE) {
 	$templ = dir(_templates_ . "/");
 	while($elem = $templ->read()) {
 
-		if((is_dir(_templates_ . "/".$elem)) && ($elem != ".") && ($elem != "..") && ($elem != ".svn") && $elem{0} != '_' && checkTemplateVersion($elem)) {
+		if((is_dir(_templates_ . "/".$elem)) && ($elem != ".") && ($elem != "..") && ($elem != ".svn") && $elem[0] != '_' && checkTemplateVersion($elem)) {
 
 			if (!$set_keys) $templArray[] = $elem;
 			else $templArray[$elem] = $elem;

@@ -345,11 +345,11 @@ if(!Docebo::user()->isAnonymous())
 		$date = Format::date($event[EVENT_DATE], 'date');
 		$deadline = Format::date($event[EVENT_DEADLINE], 'date');
 		
-		$from_time_h = $event[EVENT_FROM_TIME]{0}.$event[EVENT_FROM_TIME]{1};
-		$from_time_m = $event[EVENT_FROM_TIME]{3}.$event[EVENT_FROM_TIME]{4};
+		$from_time_h = $event[EVENT_FROM_TIME][0].$event[EVENT_FROM_TIME][1];
+		$from_time_m = $event[EVENT_FROM_TIME][3] .$event[EVENT_FROM_TIME][4];
 		
-		$to_time_h = $event[EVENT_TO_TIME]{0}.$event[EVENT_TO_TIME]{1};
-		$to_time_m = $event[EVENT_TO_TIME]{3}.$event[EVENT_TO_TIME]{4};
+		$to_time_h = $event[EVENT_TO_TIME][0].$event[EVENT_TO_TIME][1];
+		$to_time_m = $event[EVENT_TO_TIME][3] .$event[EVENT_TO_TIME][4];
 		
 		$out->add
 		(

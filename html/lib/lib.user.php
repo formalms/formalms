@@ -591,7 +591,7 @@ class DoceboUser
      * Get refernce to DoceboACL
      * @return DoceboACL the DoceboACL object
      **/
-    public function &getACL()
+    public function getACL()
     {
         return $this->acl;
     }
@@ -600,7 +600,7 @@ class DoceboUser
      * Get refernce to DoceboACLManager
      * @return DoceboACLManager the DoceboACLManager object
      **/
-    public function &getACLManager()
+    public function getACLManager()
     {
         return $this->acl->getACLManager();
     }

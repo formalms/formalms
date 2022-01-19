@@ -308,7 +308,7 @@ class PrivacypolicyAdmController extends AdmController {
 		$output = array();
 		
 		$selection = str_replace(",,", ",", $selection);
-		if ($selection{0} == ",") $selection = substr($selection, 1);
+		if ($selection[0] == ",") $selection = substr($selection, 1);
 
 		if ($selection != "") {
 			$list = explode(",", $selection);

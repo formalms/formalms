@@ -88,7 +88,7 @@ class Learning_ScormOrg extends Learning_Object {
 		if($templ) {
 			while($elem = $templ->read()) {
 
-				if((is_dir($path.$elem)) && ($elem != ".") && ($elem != "..") && ($elem != ".svn") && $elem{0} != '_' ) {
+				if((is_dir($path.$elem)) && ($elem != ".") && ($elem != "..") && ($elem != ".svn") && $elem[0] != '_' ) {
 					$arr_templates[$elem] = $elem;
 				}
 			}

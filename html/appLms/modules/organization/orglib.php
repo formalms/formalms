@@ -1154,7 +1154,7 @@ class Org_TreeView extends RepoTreeView {
 			$this->op = 'display';
 		if (isset($arrayState['org_properties_ok'])) {
 			$arrayState['prerequisites'] = implode(',', $this->itemSelectedMulti);
-			if( $arrayState['prerequisites'] != '' && $arrayState['prerequisites']{0} == ',' ){
+			if( $arrayState['prerequisites'] != '' && $arrayState['prerequisites'][0] == ',' ){
 				$arrayState['prerequisites'] = substr($arrayState['prerequisites'], 1);
 			}
 			//LRZ: mem info for custom field of LO

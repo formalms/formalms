@@ -391,7 +391,7 @@ class Track_Object {
 		
 		if( is_string($arrId) )
 			if( strlen($arrId)>0 )
-				if( $arrId{0} == ',' )
+				if( $arrId[0] == ',' )
 					$arrId = substr($arrId,1);
 		if( $arrId == '' ) { 
 			return TRUE;

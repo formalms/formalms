@@ -29,7 +29,7 @@ class Layout
         $templ = dir(_templates_ . '/');
         while ($elem = $templ->read()) {
 
-            if ((is_dir(_templates_ . '/' . $elem)) && $elem{0} != "." && $elem{0} != '_') {
+            if ((is_dir(_templates_ . '/' . $elem)) && $elem[0] != "." && $elem[0] != '_') {
                 $templ_array[] = $elem;
             }
         }

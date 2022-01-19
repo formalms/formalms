@@ -55,7 +55,7 @@ class UserPreferencesDb {
 	/**
 	 * class construtor
 	 */
-	function UserPreferencesDb($_db_conn = NULL) {
+	function __construct($_db_conn = NULL) {
 
 		$this->_db_conn = $_db_conn;
 	}
@@ -462,7 +462,7 @@ class UserPreferences {
 	 * class constructor
 	 * @param int	$id_user the id of the user
 	 */
-	 function UserPreferences($id_user, $db_conn = NULL) {
+	 function __construct($id_user, $db_conn = NULL) {
 
 		$acl_man = new DoceboACLManager();
 

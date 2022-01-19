@@ -142,7 +142,7 @@ class QuestionPoll {
 	 */
 	function _checkScore( $score ) {
 		$score = preg_replace('/,/', '.', $score);
-		if( $score{0} == '.') $score = '0'.$score;
+		if( $score[0] == '.') $score = '0'.$score;
 		return $score;
 	}
 	
