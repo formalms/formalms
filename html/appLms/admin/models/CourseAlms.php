@@ -1,5 +1,7 @@
 <?php defined('IN_FORMA') or die('Direct access is forbidden');
 
+use UsermanagementAdm;
+
 /* ======================================================================== \
 |   FORMA - The E-Learning Suite                                            |
 |                                                                           |
@@ -1506,6 +1508,7 @@ class CourseAlms extends Model
         if (is_numeric($courses)) $courses = [(int)$courses];
         if (!is_array($courses) || empty($courses)) return false;
 
+        $usersFilterIds = $this->getAdminRelatedUserIds();
         $output = [];
         foreach ($courses as $idCourse) {
             $output[$idCourse] = 0;
@@ -1513,8 +1516,13 @@ class CourseAlms extends Model
 
         $query = 'SELECT idCourse, COUNT(*) as count FROM %lms_courseuser '
             . ' WHERE idCourse IN (' . implode(',', $courses) . ') '
-            . ' AND LEVEL = 3 AND waiting <= 0 and status = 0 '
-            . ' GROUP BY idCourse';
+            . ' AND LEVEL = 3 AND waiting <= 0 and status = 0 ';
+
+        if(count($usersFilterIds)) {
+            $query .= 'AND idUser in (' .implode(",", $usersFilterIds) . ')';
+        }
+
+        $query .= ' GROUP BY idCourse';
 
         $res = sql_query($query);
 
@@ -1575,35 +1583,54 @@ class CourseAlms extends Model
         return $row;
     }
 
+    public function getAdminRelatedUserIds()
+    {
+        $usermanagementAdm = new UsermanagementAdm();
+        $usersFilterIds = [];
+        $currentUser = Docebo::user();
+        if (ADMIN_GROUP_ADMIN == $currentUser->getUserLevelId()) {
+            $rootNode = $usermanagementAdm->getAdminFolder($currentUser->getIdst(), true);
+            $pagination['results'] = $usermanagementAdm->getTotalUsers($rootNode, true);
+		    $usersFilterIds = array_keys($usermanagementAdm->getUsersList($rootNode, true, $pagination));  
+        }
+
+        return $usersFilterIds;
+
+    }
+
+
+
     public function getListTototalUserCertificate($id_course, $id_certificate, $cf)
     {
         require_once(Forma::inc(_lms_ . '/lib/lib.certificate.php'));
         $regset = Format::instance();
+        $usermanagementAdm = new UsermanagementAdm();
         $date_format = $regset->date_token;
-
-        $tc = $GLOBALS['prefix_lms'] . '_certificate as c';
-        $tca = $GLOBALS['prefix_lms'] . '_certificate_assign as ca';
-        $tcc = $GLOBALS['prefix_lms'] . '_certificate_course as cc';
-        $tcu = $GLOBALS['prefix_lms'] . '_courseuser as cu';
-        $tu = $GLOBALS['prefix_fw'] . '_user as u';
+        $users = [];
+        
+        $usersFilterIds = $this->getAdminRelatedUserIds();
+        
 
         $query = "SELECT u.idst, u.userid, u.firstname, u.lastname,
                          DATE_FORMAT(cu.date_complete,'" . $date_format . "') as dateComplete, DATE_FORMAT(ca.on_date,'" . $date_format . "') onDate, cu.idUser as id_user,
                          cu.status , cu.idCourse, cc.id_certificate,
                          c.name as name_certificate"
-            . ' FROM ( ' . $tu . ' JOIN ' . $tcu . ' ON (u.idst = cu.idUser) ) '
-            . ' JOIN ' . $tcc . ' ON cc.id_course = cu.idCourse '
-            . ' JOIN ' . $tc . ' ON c.id_certificate = cc.id_certificate'
-            . ' LEFT JOIN ' . $tca . ' ON ( ca.id_course = cu.idCourse AND ca.id_user=cu.idUser AND ca.id_certificate = cc.id_certificate ) '
+            . ' FROM ( %adm_user as u JOIN %lms_courseuser as cu ON (u.idst = cu.idUser) ) '
+            . ' JOIN %lms_certificate_course as cc ON cc.id_course = cu.idCourse '
+            . ' JOIN %lms_certificate as c ON c.id_certificate = cc.id_certificate'
+            . ' LEFT JOIN %lms_certificate_assign as ca ON ( ca.id_course = cu.idCourse AND ca.id_user=cu.idUser AND ca.id_certificate = cc.id_certificate ) '
             . ' LEFT JOIN (SELECT iduser, idcourse, SUM( (UNIX_TIMESTAMP( lastTime ) - UNIX_TIMESTAMP( enterTime ) ) ) elapsed from learning_tracksession group by iduser, idcourse) t_elapsed on t_elapsed.idcourse=cu.idCourse and cu.idUser = t_elapsed.idUser '
             . ' WHERE 1 '
             . ($id_certificate != 0 ? ' AND cc.id_certificate = ' . $id_certificate : '')
             . ' AND coalesce(elapsed,0) >= coalesce(cc.minutes_required,0)*60 '
             . " AND cu.idCourse='" . (int)$id_course . "'";
 
+        if(count($usersFilterIds)) {
+            $query .= 'AND u.idst in (' .implode(",", $usersFilterIds) . ')';
+        }
+
         $res = sql_query($query);
-        $users = [];
-        $umodel = new UsermanagementAdm();
+      
 
         foreach ($res as $row) {
             $idst = $row['idst'];
@@ -1638,7 +1665,7 @@ class CourseAlms extends Model
                 'lastname' => $lastname, 'firstname' => $firstname
             ];
             // getting custom fields values
-            $cf_values = $umodel->getCustomFieldUserValues((int)$id_user);
+            $cf_values = $usermanagementAdm->getCustomFieldUserValues((int)$id_user);
             $cf = array_replace($cf, $cf_values);
             $user2 = [];
             foreach ($cf as $key => $value) {
