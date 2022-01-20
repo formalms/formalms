@@ -32,7 +32,7 @@ function createCourseMenuFromCustom($id_custom, $id_course, $group_idst) {
 		WHERE idCustom = '".$id_custom."'"
 	);
 	
-	$main_values = array();
+	$main_values = [];
 	$query_ins_main = "
 	INSERT INTO %lms_menucourse_main (idCourse, sequence, name, image ) VALUES";
 	while(list($id_main, $seq, $name, $image) = sql_fetch_row($re_main)) {
@@ -53,7 +53,7 @@ function createCourseMenuFromCustom($id_custom, $id_course, $group_idst) {
 		WHERE idCustom = '".$id_custom."'"
 	);
 
-	$module_values = array();
+	$module_values = [];
 	$re = true;
 	$query_ins_module = "INSERT INTO %lms_menucourse_under ( idCourse, idModule, idMain, sequence, my_name ) VALUES";
 	while(list($id_module, $id_main, $seq, $my_name) = sql_fetch_row($re_module)) {
@@ -89,7 +89,7 @@ function getAllCustom() {
 	ORDER BY title";
 	$re_custom = sql_query($query);
 	
-	$customs = array();
+	$customs = [];
 	while(list($id, $name) = sql_fetch_row($re_custom)) {
 		$customs[$id] = $name;
 	}
@@ -158,7 +158,7 @@ function getModuleNextSeq($id_main) {
 
 function cleanTokenFromModule($module_tokens) {
 	
-	$cleaned = array();
+	$cleaned = [];
 	foreach($module_tokens as $v => $element) {
 		$cleaned[] = $element['code'];
 	}
@@ -173,7 +173,7 @@ function cleanTokenFromModule($module_tokens) {
  */
 function &getCustomLevelSt($id_custom) {
 	
-	$map 		= array();
+	$map 		= [];
 	$levels 	= CourseLevel::getLevels();
 	$acl_man	=& Docebo::user()->getAclManager();
 	
@@ -197,7 +197,7 @@ function &getCustomLevelSt($id_custom) {
  */
 function &getModuleRoleSt($module_name, $all_token, $flip = false) {
 	
-	$map 		= array();
+	$map 		= [];
 	$levels 	= CourseLevel::getLevels();
 	$acl_man	=& Docebo::user()->getAclManager();
 	
@@ -223,7 +223,7 @@ function &getModuleRoleSt($module_name, $all_token, $flip = false) {
 function &createPermForCourse($group_idst, $id_course) {
 	
 	$base_perm = '/lms/course/private/';
-	$map 		= array();
+	$map 		= [];
 	$levels 	= CourseLevel::getLevels();
 	$acl_man	=& Docebo::user()->getAclManager();
 	$cut_at 	= strlen($base_perm);
@@ -232,7 +232,7 @@ function &createPermForCourse($group_idst, $id_course) {
 	
 	foreach($levels as $lv => $name_level) {
 		
-		$map[$lv] = array();
+		$map[$lv] = [];
 		$all_idst = $acl_man->getRolesContainer($group_idst[$lv], true);
 		
 		foreach($all_idst as $idst => $v) {
@@ -266,7 +266,7 @@ function createModuleRoleForCourse($id_course, $module_name, $tokens) {
 	$base_perm 	= '/lms/course/private/';
 	$acl_man	=& Docebo::user()->getAclManager();
 	
-	$role_and_id = array();
+	$role_and_id = [];
 	if(!is_array($tokens)) return $role_and_id;
 	
 	foreach($tokens as $token) {
@@ -291,7 +291,7 @@ function createModuleRoleForCourse($id_course, $module_name, $tokens) {
  */
 function &getAllModulesPermissionSt($group_idst, $idst_cast = false) {
 	
-	$old_perm 	= array();
+	$old_perm 	= [];
 	$levels 	= CourseLevel::getLevels();
 	$acl_man	=& Docebo::user()->getAclManager();
 	
@@ -305,7 +305,7 @@ function &getAllModulesPermissionSt($group_idst, $idst_cast = false) {
 		} else {
 			
 			$i = 0;
-			$old_perm[$lv] = array();
+			$old_perm[$lv] = [];
 			foreach($lv_perm as $idst => $v) {
 				
 				if(isset($idst_cast[$idst])) $old_perm[$lv][$idst] = 1;
@@ -327,7 +327,7 @@ function &fromTokenToSt(&$tokens, &$map_idst) {
 	
 	//$map_idst[$lv] = $group_info[ACL_INFO_IDST];
 	
-	$new_perm 	= array();
+	$new_perm 	= [];
 	$levels 	= CourseLevel::getLevels();
 	// convert all the permission from token code to idst
 	foreach($levels as $lv => $name_level) {
@@ -353,7 +353,7 @@ function &fromTokenToSt(&$tokens, &$map_idst) {
  */
 function &fromStToToken(&$map_idst_roles, &$token) {
 	
-	$convert 	= array();
+	$convert 	= [];
 	$levels 	= CourseLevel::getLevels();
 	
 	foreach($levels as $lv => $name_level) {
@@ -372,13 +372,13 @@ function &fromStToToken(&$map_idst_roles, &$token) {
 
  function &createPermForCoursebis($group_idst, $id_course, $id_principale) {
 	$base_perm = '/lms/course/private/'.$id_principale.'/';
-	$map 		= array();
+	$map 		= [];
 	$levels 	= CourseLevel::getLevels();
 	$acl_man	=& $GLOBALS['current_user']->getAclManager();
 	$cut_at 	= strlen($base_perm);
 	// find the idst of all the role of the selected module
 	foreach($levels as $lv => $name_level) {
-		$map[$lv] = array();
+		$map[$lv] = [];
 		$all_idst = $acl_man->getRolesContainer($group_idst[$lv], true);
 		foreach($all_idst as $idst => $v) {
 			$role_info 	= $acl_man->getRole($idst, false);

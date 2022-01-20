@@ -56,17 +56,17 @@ class DoceboConnector_CourseSap extends DoceboConnector {
 	var $lastaccess_list;
 	
 	// name, type
- 	var $all_cols = array( 
-		array( 'userid', 'text' ), 
-		array( 'cid', 'text' ), 
-		array( 'cod_course', 'text' ), 
-		array( 'year', 'text' ), 
-	);
+ 	var $all_cols = [
+		['userid', 'text'],
+		['cid', 'text'],
+		['cod_course', 'text'],
+		['year', 'text'],
+    ];
 		
-	var $default_cols = array(	'userid' 			=> '', 
+	var $default_cols = ['userid' 			=> '',
 								'cid' 				=> '', 
 								'cod_course' 		=> '', 
-								'year'              => '' );
+								'year'              => ''];
 	
 	
 	/**
@@ -86,9 +86,9 @@ class DoceboConnector_CourseSap extends DoceboConnector {
 	}
 	
 	function get_config() {
-		return array( 	'name' => $this->name,
+		return ['name' => $this->name,
 						'description' => $this->description,
-						'cid_field' => $this->cid_field );
+						'cid_field' => $this->cid_field];
 	}
 	
 	function set_config( $params ) {
@@ -196,23 +196,23 @@ class DoceboConnector_CourseSap extends DoceboConnector {
 		
 		$lang = DoceboLanguage::createInstance('userreport', 'lms');
 		
-		$col_descriptor = array();
+		$col_descriptor = [];
 		foreach($this->all_cols as $k => $col) {
 				
-			$col_descriptor[] = array(
+			$col_descriptor[] = [
 				DOCEBOIMPORT_COLNAME 		=> $lang->def('_'.strtoupper($col[0])),
 				DOCEBOIMPORT_COLID			=> $col[0],
 				DOCEBOIMPORT_COLMANDATORY 	=> false,
 				DOCEBOIMPORT_DATATYPE 		=> $col[1],
-				DOCEBOIMPORT_DEFAULT 		=> ( isset($this->default_cols[$col[0]]) ? $this->default_cols[$col[0]] : '' ) 
-			);
+				DOCEBOIMPORT_DEFAULT 		=> ( isset($this->default_cols[$col[0]]) ? $this->default_cols[$col[0]] : '' )
+            ];
 		}
 		return $col_descriptor;
 	}
 	
 	function get_first_row() {
 		
-		$default = array('','','','');
+		$default = ['','','',''];
 		if($this->first_row) return $this->first_row;
 		if(!$this->_query_result) return $default;
 		
@@ -228,11 +228,11 @@ class DoceboConnector_CourseSap extends DoceboConnector {
 		
 		if(!isset($this->_cid_list[$id_user])) return $default;
 		
-		$row = array(
+		$row = [
 			$this->_cid_list[$id_user],
 			$code, 
 			substr($date_complete, 0, 4)
-		);
+        ];
 		return $row;
 	}
 	
@@ -240,7 +240,7 @@ class DoceboConnector_CourseSap extends DoceboConnector {
 		
 		//$this->export_field_list
 		
-		$default = array('','','','');
+		$default = ['','','',''];
 		if(!$this->_query_result) return false;
 		if(!$result = sql_fetch_row($this->_query_result)) {
 			$this->_readed_end = true;
@@ -253,12 +253,12 @@ class DoceboConnector_CourseSap extends DoceboConnector {
 		if(!isset($this->_cid_list[$id_user])) return $default;
 		if(!$date_complete) return $default;
 		
-		$row = array(
+		$row = [
 			$id_user,
 			$this->_cid_list[$id_user], 
 			$code, 
 			substr($date_complete, 0, 4)
-		);
+        ];
 		return $row;
 	}
 	
@@ -418,7 +418,7 @@ class DoceboConnector_CourseSapUI extends DoceboConnectorUI {
 
 function coursesap_factory() {
 	
-	return new DoceboConnector_CourseSap(array());
+	return new DoceboConnector_CourseSap([]);
 }
 
 

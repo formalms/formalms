@@ -86,12 +86,12 @@ function ioTask_UIConnectorsList( &$module ) {
 	
 	$tb_connectors = new Table(Get::sett('visuItem'), $lang->def('_CONNECTORS_TITLE'), $lang->def('_CONNECTORS_TITLE'));
 	
-	$content_h 	= array(
+	$content_h 	= [
 		$lang->def('_TYPE'), 
 		$lang->def('_FILE'),
 		$lang->def('_CLASS')
-	);
-	$type_h	= array('', '', '');
+    ];
+	$type_h	= ['', '', ''];
 
 	$tb_connectors->setColsStyle($type_h);
 	$tb_connectors->addHead($content_h);
@@ -101,7 +101,7 @@ function ioTask_UIConnectorsList( &$module ) {
 		$out->add( "<!-- connection manager error: ". $connMgr->get_last_error() ." -->");
 	}
 	while( $connectors ) {
-		$cont = array();
+		$cont = [];
 		$cont[] = $connectors[CONNMGR_CONNTYPE_TYPE];
 		$cont[] = $connectors[CONNMGR_CONNTYPE_FILE];
 		$cont[] = $connectors[CONNMGR_CONNTYPE_CLASS];
@@ -183,21 +183,21 @@ function ioTask_UIConnectionsList( &$module ) {
 	
 	$tb_connections = new Table(Get::sett('visuItem'), $lang->def('_CONN_TITLE'), $lang->def('_CONN_TITLE'));
 	
-	$content_h 	= array(
+	$content_h 	= [
 		$lang->def('_NAME'), 
 		$lang->def('_DESCRIPTION'),
 		$lang->def('_TYPE'),
 		'<img src="'.getPathImage().'/standard/edit.png" alt="'.$lang->def('_MOD').'" title="'.$lang->def('_MOD').'"/>',
 		'<img src="'.getPathImage().'/standard/cancel.png" alt="'.$lang->def('_DEL').'" title="'.$lang->def('_DEL').'"/>'
-	);
-	$type_h	= array('', '', '', 'image', 'image');
+    ];
+	$type_h	= ['', '', '', 'image', 'image'];
 
 	$tb_connections->setColsStyle($type_h);
 	$tb_connections->addHead($content_h);
 	
 	$conn = $connMgr->get_first_connection();
 	while( $conn ) {
-		$cont = array();
+		$cont = [];
 		$cont[] = $conn[CONNMGR_CONN_NAME];
 		$cont[] = $conn[CONNMGR_CONN_DESCRIPTION];
 		$cont[] = $conn[CONNMGR_CONN_TYPE];
@@ -373,7 +373,7 @@ function ioTask_UITaskList( &$module ) {
 	
 	$tb_tasks = new Table(Get::sett('visuItem'), $lang->def('_TASKS'), $lang->def('_TASKS'));
 	
-	$content_h 	= array(
+	$content_h 	= [
 		$lang->def('_NAME'), 
 		$lang->def('_DESCRIPTION'),
 		$lang->def('_SOURCE'),
@@ -383,15 +383,15 @@ function ioTask_UITaskList( &$module ) {
 		'<img src="'.getPathImage().'/standard/play.png" alt="'.$lang->def('_TASK_RUN').'" title="'.$lang->def('_TASK_RUN').'"/>',
 		'<img src="'.getPathImage().'/standard/edit.png" alt="'.$lang->def('_MOD').'" title="'.$lang->def('_MOD').'"/>',
 		'<img src="'.getPathImage().'/standard/cancel.png" alt="'.$lang->def('_TASK_DEL').'" title="'.$lang->def('_DEL').'"/>'
-	);
-	$type_h	= array('', '', '', '', '', '', 'image', 'image', 'image');
+    ];
+	$type_h	= ['', '', '', '', '', '', 'image', 'image', 'image'];
 
 	$tb_tasks->setColsStyle($type_h);
 	$tb_tasks->addHead($content_h);
 	
 	$conn = $connMgr->get_first_task();
 	while( $conn ) {
-		$cont = array();
+		$cont = [];
 		$cont[] = $conn[CONNMGR_TASK_NAME];
 		$cont[] = $conn[CONNMGR_TASK_DESCRIPTION];
 		$cont[] = $conn[CONNMGR_TASK_SOURCE];
@@ -403,7 +403,7 @@ function ioTask_UITaskList( &$module ) {
 				$conn[CONNMGR_TASK_SCHEDULE]['um'] = $lang->def('_HOUR');
 			elseif( $conn[CONNMGR_TASK_SCHEDULE]['um'] == 'day' )
 				$conn[CONNMGR_TASK_SCHEDULE]['um'] = $lang->def('_DAY');
-			$cont[] = str_replace(	array('%interval%','%unit%'),
+			$cont[] = str_replace(	['%interval%','%unit%'],
 									array_values($conn[CONNMGR_TASK_SCHEDULE]),
 									$lang->def('_SCHEDULE_TYPE_INTERVAL_DATA'));
 		}
@@ -462,15 +462,15 @@ function ioTask_UITaskNew( &$module, $action, $subop ) {
 		$params = $connMgr->get_task_byID(key($action));
         $old_name = $params[0];
 	} else {
-		$params = array(CONNMGR_TASK_NAME => $lang->def('_TASK_NAME_EXAMPLE'),
+		$params = [CONNMGR_TASK_NAME => $lang->def('_TASK_NAME_EXAMPLE'),
 						CONNMGR_TASK_DESCRIPTION => '',
 						CONNMGR_TASK_SOURCE => '',
 						CONNMGR_TASK_DESTINATION => '',
 						CONNMGR_TASK_SCHEDTYPE => 'at',
-						CONNMGR_TASK_SCHEDULE => array('qt' => '12:27', 'um' => 'hour'),
+						CONNMGR_TASK_SCHEDULE => ['qt' => '12:27', 'um' => 'hour'],
 						CONNMGR_TASK_IMPORT_TYPE => TASK_IMPORT_TYPE_INSERTONLY,
-						CONNMGR_TASK_MAP => array()
-						);
+						CONNMGR_TASK_MAP => []
+        ];
 	}
 	
 	if( isset($_POST['step'])) { 
@@ -559,7 +559,7 @@ function ioTask_UITaskNew_step0( &$module, &$params ) {
 	$form = new Form();
 	
 	$arr_connections = $connMgr->get_all_connections_name();
-	$arr_options = array();
+	$arr_options = [];
 	foreach( $arr_connections as $conn_name ) 
 		$arr_options[$conn_name] = $conn_name;
 	
@@ -621,20 +621,20 @@ function ioTask_UITaskNew_step2( &$module, &$params ) {
 	$out->add($form->getRadioSet( 	$lang->def('_IMPORT_TYPE'), 
 		  							'task_import_type', 
 									'task_params['.CONNMGR_TASK_IMPORT_TYPE.']',
-									array( 	$lang->def('_IMPORT_TYPE_INSERTONLY')  => TASK_IMPORT_TYPE_INSERTONLY, 
-											$lang->def('_IMPORT_TYPE_INSERTREMOVE')  => TASK_IMPORT_TYPE_INSERTREMOVE), 
+									[$lang->def('_IMPORT_TYPE_INSERTONLY')  => TASK_IMPORT_TYPE_INSERTONLY,
+											$lang->def('_IMPORT_TYPE_INSERTREMOVE')  => TASK_IMPORT_TYPE_INSERTREMOVE],
 									$params[CONNMGR_TASK_IMPORT_TYPE]));
 	$out->add($form->getRadioSet( 	$lang->def('_SCHEDULE'),
 		  							'task_schedule_type', 
 									'task_params['.CONNMGR_TASK_SCHEDTYPE.']',
-									array( 	$lang->def('_SCHEDULE_TYPE_AT')  => 'at', 
-											$lang->def('_SCHEDULE_TYPE_INTERVAL')  => 'interval'), 
+									[$lang->def('_SCHEDULE_TYPE_AT')  => 'at',
+											$lang->def('_SCHEDULE_TYPE_INTERVAL')  => 'interval'],
 									$params[CONNMGR_TASK_SCHEDTYPE]));
 	$tmp_um = $form->getInputListbox('',
 									'task_schedule_um',
 									'task_params['.CONNMGR_TASK_SCHEDULE.'][um]',
-									array('hour'=>$lang->def('_HOUR'),'day'=>$lang->def('_DAY')),
-									array($params[CONNMGR_TASK_SCHEDULE]['um']),
+									['hour'=>$lang->def('_HOUR'),'day'=>$lang->def('_DAY')],
+									[$params[CONNMGR_TASK_SCHEDULE]['um']],
 									FALSE,
 									'');
 	$out->add($form->getTextfield(	$lang->def('_SCHEDULE'),

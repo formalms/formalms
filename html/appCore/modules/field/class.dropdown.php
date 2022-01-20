@@ -48,7 +48,7 @@ class Field_Dropdown extends Field {
 
 		$back_coded = htmlentities(urlencode($back));
 
-		$array_lang = array();
+		$array_lang = [];
 		$std_lang 		=& DoceboLanguage::createInstance('standard');
 		$lang 			=& DoceboLanguage::createInstance('field');
 		$array_lang 	= Docebo::langManager()->getAllLangCode();
@@ -235,7 +235,7 @@ class Field_Dropdown extends Field {
 		FROM ".$this->_getElementTable()."
 		WHERE idField = '".(int)$this->id_common."' AND lang_code = '".getLanguage()."'
 		ORDER BY sequence");
-		$option = array();
+		$option = [];
 		$option[0] = '';
 		while(list($id_common_son, $element) = sql_fetch_row($re_field_element)) {
 			$option[$id_common_son] = $element;
@@ -298,7 +298,7 @@ class Field_Dropdown extends Field {
 		FROM ".$this->_getElementTable()."
 		WHERE idField = '".(int)$this->id_common."' AND lang_code = '".getLanguage()."'
 		ORDER BY sequence");
-		$option = array();
+		$option = [];
 		//$option[0] = Lang::t('_DROPDOWN_NOVALUE', 'field', 'framework');
         $option[] =  $translation.($mandatory ? ' *' : '');
 		while(list($id_common_son, $element) = sql_fetch_row($re_field_element)) {
@@ -376,7 +376,7 @@ class Field_Dropdown extends Field {
 			$value = Field::getFieldValue_Filter( $_POST, $id_field, $field_prefix, '0' );
 		}
 
-		$option = array();
+		$option = [];
 		$option[0] = Lang::t('_DROPDOWN_NOVALUE', 'field');
 		if( is_array( $field_special ) ) {
 			foreach( $field_special as $key_opt => $label_opt ) {
@@ -587,11 +587,11 @@ class Field_Dropdown extends Field {
 
 
 	function storeDirectMultiple( $idst_users, $value, $is_id, $no_overwrite, $int_userid=TRUE ) {
-		if (is_numeric($idst_users)) $idst_users = array($idst_users);
+		if (is_numeric($idst_users)) $idst_users = [$idst_users];
 		if (!is_array($idst_users)) return false;
 		if (empty($idst_users)) return true;
 
-		$arr_existent = array();
+		$arr_existent = [];
 		$arr_new = $idst_users;
 
 		$query = "SELECT id_user, user_entry FROM ".$this->_getUserEntryTable()." "
@@ -616,7 +616,7 @@ class Field_Dropdown extends Field {
 			}
 
 			if (!empty($arr_new)) {
-				$insert_values = array();
+				$insert_values = [];
 				foreach ($arr_new as $idst) {
 					$insert_values[] = "(	'".(int)$idst."', '".(int)$this->id_common."', '0', '".$value."')";
 				}
@@ -768,19 +768,19 @@ class Field_Dropdown extends Field {
 			.'</div><br />');
 
 		$tb_son = new Table(0, $lang->def('_DROPDOWN_SON_CAPTION'));
-		$content_h 	= array(
+		$content_h 	= [
 			$lang->def('_DROPDOWN_ELEMENT'),
 			$img_up,
 			$img_down,
 			'<img src="'.getPathImage().'standard/edit.png" alt="'.$std_lang->def('_MOD').'" />',
 			'<img src="'.getPathImage().'standard/delete.png" alt="'.$std_lang->def('_DEL').'" />'
-		);
-		$type_h = array('','image','image','image','image');
+        ];
+		$type_h = ['','image','image','image','image'];
 		$tb_son->addHead($content_h, $type_h);
 		while(list($idSon, $elem) = sql_fetch_row($re_field)) {
 			$counter++;
 			
-			$content = array();
+			$content = [];
 			
 			$content[] = $elem;
 			
@@ -825,7 +825,7 @@ class Field_Dropdown extends Field {
 
 	function _edit_field() {
 
-		$array_lang = array();
+		$array_lang = [];
 		$std_lang 		=& DoceboLanguage::createInstance('standard');
 		$lang 			=& DoceboLanguage::createInstance('field');
 		$array_lang 	= Docebo::langManager()->getAllLangCode();
@@ -865,7 +865,7 @@ class Field_Dropdown extends Field {
 				return;
 			}
 
-			$existsing_translation = array();
+			$existsing_translation = [];
 			$re_trans = sql_query("
 			SELECT lang_code
 			FROM ".$this->_getMainTable()."
@@ -955,7 +955,7 @@ class Field_Dropdown extends Field {
 
 	function _add_son() {
 
-		$array_lang = array();
+		$array_lang = [];
 		$std_lang 		=& DoceboLanguage::createInstance('standard');
 		$lang 			=& DoceboLanguage::createInstance('field');
 		$array_lang 	= Docebo::langManager()->getAllLangCode();
@@ -1079,7 +1079,7 @@ class Field_Dropdown extends Field {
 		$std_lang 		=& DoceboLanguage::createInstance('standard');
 		$lang 			=& DoceboLanguage::createInstance('field');
 		$out 			=& $GLOBALS['page'];
-		$array_lang 	= array();
+		$array_lang 	= [];
 		$array_lang 	= Docebo::langManager()->getAllLangCode();
 
 		if(isset($_POST['undo'])) {
@@ -1111,7 +1111,7 @@ class Field_Dropdown extends Field {
 				return;
 			}
 
-			$existsing_translation = array();
+			$existsing_translation = [];
 			$re_trans = sql_query("
 			SELECT lang_code
 			FROM ".$this->_getElementTable()."
@@ -1269,7 +1269,7 @@ class Field_Dropdown extends Field {
 		if (!$language) $language = getLanguage();
 
 		if (!isset($GLOBALS['temp']['dropdown_cache_'.$this->id_common][$language])) {
-			$GLOBALS['temp']['dropdown_cache_'.$this->id_common][$language] = array();
+			$GLOBALS['temp']['dropdown_cache_'.$this->id_common][$language] = [];
 			$re_field = sql_query("
 				SELECT idSon, translation
 				FROM ".$this->_getElementTable()."
@@ -1302,7 +1302,7 @@ class Field_Dropdown extends Field {
 	function getFlatAllSon() {
 		$lang =& DoceboLanguage::createInstance('field');
 
-		$sons = array();
+		$sons = [];
 		//find available son
 		$re_field = sql_query("
 		SELECT idSon, idField, id_common_son, translation
@@ -1318,9 +1318,9 @@ class Field_Dropdown extends Field {
 	
 	function getClientClassObject() {
     $sons = $this->getFlatAllSon();
-    $temp=array();
+    $temp= [];
     foreach ($sons as $key=>$val) {
-      $temp2 = array();
+      $temp2 = [];
       foreach ($val as $k2=>$v2) {
         $temp2[] = '{value: "'.$k2.'", text: "'.$v2.'"}';
       }

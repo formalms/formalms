@@ -51,7 +51,7 @@ class DFileCache extends DCache {
 	 * )
 	 * @return bool true if the data was saved successfully, false otherwise
 	 */
-	public function set($key, $data, $options = array()) {
+	public function set($key, $data, $options = []) {
 		
 		// create a file and then save in it the cache
 		$cache_file = $this->fname($key);

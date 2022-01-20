@@ -15,14 +15,14 @@ include_once(_base_."/db/lib.docebodb.php");
 Class StepController {
 
 	public $step = 0;
-	public $err = array();
+	public $err = [];
 	
 	public function render() {
 		include_once(_upgrader_.'/views/Step'.(int)$this->step.'.php');
 	}
 
 	public function ajax_validate() {
-		$this->ajax_out(array('success'=>false, 'err'=>array(), 'ok'=>array()));
+		$this->ajax_out(['success'=>false, 'err'=> [], 'ok'=> []]);
 	}
 
 	protected function ajax_out($res_arr) {

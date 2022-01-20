@@ -1,10 +1,10 @@
     <div class="row">
         <div class="col-md-12">
                  <?php
-                $w = $this->widget('lms_tab', array(
+                $w = $this->widget('lms_tab', [
                     'active' => 'coursepath',
                     'close' => false
-                ));
+                ]);
                 
                 
                 
@@ -44,7 +44,7 @@
                 $_auxiliary = str_replace('class="form-control "', 'class="selectpicker"  data-selected-text-format="count > 1" data-width=""  data-actions-box="true"', $_auxiliary);
                 
                 
-                $this->widget('tablefilter', array(
+                $this->widget('tablefilter', [
                     'id' => 'coursepath_search',
                     'auxiliary_filter' => $_auxiliary,
                     'filter_text' => "",
@@ -52,7 +52,7 @@
                     'js_callback_reset' => 'coursepath_search_callback_reset',
                     'inline_filters' => $inline_filters,
                     'css_class' => 'nav'
-                ));
+                ]);
 
 
 

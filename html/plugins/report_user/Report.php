@@ -2655,7 +2655,7 @@ class Report extends \ReportPlugin
                     if ($day_from_subscription) {
 
                         if ($status_condition) {
-                            $user_timestamp = mktime('0', '0', '0', $date_inscr{5} . $date_inscr{6}, ($date_inscr{8} . $date_inscr{9}) + $day_from_subscription, $date_inscr{0} . $date_inscr{1} . $date_inscr{2} . $date_inscr{3});
+                            $user_timestamp = mktime('0', '0', '0', $date_inscr[5] . $date_inscr[6], ($date_inscr[8] . $date_inscr[9]) + $day_from_subscription, $date_inscr[0] . $date_inscr[1] . $date_inscr[2] . $date_inscr[3]);
                             if ($user_timestamp < $now_timestamp) $user_check = true;
                         }
                     }
@@ -2671,7 +2671,7 @@ class Report extends \ReportPlugin
                                     . " FROM " . $GLOBALS['prefix_lms'] . "_course_edition"
                                     . " WHERE idCourseEdition = '" . $id_e . "'";
                                 list ($date_end) = sql_fetch_row(sql_query($query));
-                                $user_timestamp = mktime('0', '0', '0', $date_end{5} . $date_end{6}, ($date_end{8} . $date_end{9}) - $day_until_course_end, $date_end{0} . $date_end{1} . $date_end{2} . $date_end{3});
+                                $user_timestamp = mktime('0', '0', '0', $date_end[5] . $date_end[6], ($date_end[8] . $date_end[9]) - $day_until_course_end, $date_end[0] . $date_end[1] . $date_end[2] . $date_end[3]);
                                 if ($user_timestamp < $now_timestamp) $user_check = true;
 
                             } else {
@@ -2680,7 +2680,7 @@ class Report extends \ReportPlugin
                                     . " FROM " . $GLOBALS['prefix_lms'] . "_course"
                                     . " WHERE idCourse = '" . $id_c . "'";
                                 list ($date_end) = sql_fetch_row(sql_query($query));
-                                $user_timestamp = mktime('0', '0', '0', $date_end{5} . $date_end{6}, ($date_end{8} . $date_end{9}) - $day_until_course_end, $date_end{0} . $date_end{1} . $date_end{2} . $date_end{3});
+                                $user_timestamp = mktime('0', '0', '0', $date_end[5] . $date_end[6], ($date_end[8] . $date_end[9]) - $day_until_course_end, $date_end[0] . $date_end[1] . $date_end[2] . $date_end[3]);
                                 if ($user_timestamp < $now_timestamp) $user_check = true;
 
                             }

@@ -30,7 +30,7 @@ function duplicateCourse()
 
 	$new_course_dup = 0;
 
-	$new_file_array = array();
+	$new_file_array = [];
 
 	if($list_sel['imgSponsor'] !== '')
 	{
@@ -152,7 +152,7 @@ function duplicateCourse()
 	}
 	function &getCourseLevelSt($id_course) {
 
-		$map 		= array();
+		$map 		= [];
 		$levels 	= CourseLevel::getLevels();
 		$acl_man	=& $GLOBALS['current_user']->getAclManager();
 
@@ -220,8 +220,8 @@ function duplicateCourse()
 	}
 
 	$nullVal = NULL;
-	$array_cor = array();
-	$map_org = array();
+	$array_cor = [];
+	$map_org = [];
 	$tree_course = new OrgDirDb($id_dupcourse);
 	$coll = $tree_course->getFoldersCollection( $nullVal );
 	while($folder = $coll->getNext()) {
@@ -395,9 +395,9 @@ switch ($op) {
 		$dt_man = new DateManager();
 
 		$json = new Services_JSON();
-		$output = array(
-			'courses' => array()
-		);
+		$output = [
+			'courses' => []
+        ];
 
 		$filter = Get::req('query', DOTY_STRING, "");
 		$results = Get::req('results', DOTY_INT, Get::sett('visuItem', 25));
@@ -420,46 +420,46 @@ switch ($op) {
 			if ($res) {
 				while (list($id_course, $code, $name, $course_type, $course_edition) = sql_fetch_row($res)) {
 					//construct record for course instance
-					$record = array(
+					$record = [
 						'cname' => ($code != "" ? '['.$code.'] ' : '').$name,
 						'id_course' => $id_course,
 						'code' => $code,
 						'name' => $name,
 						'code_highlight' => Layout::highlight($code, $filter),
 						'name_highlight' => Layout::highlight($name, $filter)
-					);
+                    ];
 
 					//detect if the course is of type classroom or has editions
 					//TO DO: optimization, do not put queries in iterations
 					if ($course_type == 'elearning' && $course_edition>0) {
 						$record['has_editions'] = true;
-						$_arr = array();
+						$_arr = [];
 						$_editions = $ed_man->getEdition($id_course);
 						foreach ($_editions as $_edition) {
-							$_arr[] = array(
+							$_arr[] = [
 								'id' => $_edition['id_edition'],
 								'code' => $_edition['code'],
 								'name' => $_edition['name'],
 								'date_begin' => $_edition['date_begin'],
 								'date_end' => $_edition['date_end'],
 								'display_name' => '['.$_edition['code'].'] '.$_edition['name'].' ('.Format::date($_edition['date_begin'], 'date').' - '.Format::date($_edition['date_end'], 'date').')'
-							);
+                            ];
 						}
 						$record['editions'] = $_arr;
 					}
 					if ($course_type == 'classroom') {
 						$record['has_classrooms'] = true;
-						$_arr = array();
+						$_arr = [];
 						$_dates = $dt_man->getCourseDate($id_course);
 						foreach ($_dates as $_date) {
-							$_arr[] = array(
+							$_arr[] = [
 								'id' => $_date['id_date'],
 								'code' => $_date['code'],
 								'name' => $_date['name'],
 								'date_begin' => $_date['date_begin'],
 								'date_end' => $_date['date_end'],
 								'display_name' => '['.$_date['code'].'] '.$_date['name'].' ('.Format::date($_date['date_begin'], 'date').' - '.Format::date($_date['date_end'], 'date').')'
-							);
+                            ];
 						}
 						$record['classrooms'] = $_arr;
 					}
@@ -477,7 +477,7 @@ switch ($op) {
 		require_once(_base_.'/lib/lib.json.php');
 		$json = new Services_JSON();
 		$res = duplicateCourse();
-		$output = array('success' => $res);
+		$output = ['success' => $res];
 		if (!$res) $output['message'] = Lang::t('_ERROR_WHILE_SAVING', 'standard');
 		aout($json->encode($output));
 	} break;

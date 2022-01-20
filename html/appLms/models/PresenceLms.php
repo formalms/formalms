@@ -25,15 +25,15 @@ class PresenceLms extends Model
 		$this->id_date = $id_date;
 		require_once(_lms_.'/admin/models/ClassroomAlms.php');
 		$this->classroom_model = new ClassroomAlms($this->id_course, $this->id_date);
-		$this->cache = array();
+		$this->cache = [];
 		$this->acl_man = $GLOBALS["current_user"]->getAclManager();
 	}
 
 	public function getPerm()
 	{
-		return array(
+		return [
 			'view' => 'standard/view.png'
-		);
+        ];
 	}
 
 	public function setIdDate($id_date)
@@ -50,7 +50,7 @@ class PresenceLms extends Model
 	public function getUserDateForCourse($id_user)
 	{
 		if($id_user == $this->acl_man->getAnonymousId())
-			return array();
+			return [];
 
 		$query =	"SELECT id_date"
 					." FROM %lms_course_date_user"
@@ -63,7 +63,7 @@ class PresenceLms extends Model
 					.")";
 
 		$result = sql_query($query);
-		$res = array();
+		$res = [];
 
 		while(list($id_date) = sql_fetch_row($result))
 			$res[] = $id_date;
@@ -83,7 +83,7 @@ class PresenceLms extends Model
 
 		$result = sql_query($query);
 
-		$res = array();
+		$res = [];
 
 		while($row = sql_fetch_assoc($result))
 		{
@@ -102,7 +102,7 @@ class PresenceLms extends Model
                     ." AND deleted = 0";
 
 		$result = sql_query($query);
-		$array_classroom = array();
+		$array_classroom = [];
 
 		while(list($id_classroom) = sql_fetch_row($result))
 			$array_classroom[$id_classroom] = $id_classroom;

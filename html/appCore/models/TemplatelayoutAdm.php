@@ -27,7 +27,7 @@ class TemplatelayoutAdm extends Model {
 
 	public function getPerm()
 	{
-		return array(	'view' => 'standard/view.png');
+		return ['view' => 'standard/view.png'];
 	}
 
 	protected function _getParam(&$params, $paramName, $default = false) {
@@ -67,7 +67,7 @@ class TemplatelayoutAdm extends Model {
 		$query .= " LIMIT ".(int)$startIndex.", ".(int)$results." ";
 
 		//extract data
-		$output = array();
+		$output = [];
 		$res = $this->db->query($query);
 		if ($res) while ($row = $this->db->fetch_obj($res)) $output[] = $row;
 

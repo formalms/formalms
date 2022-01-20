@@ -62,7 +62,7 @@ function sl_fopen($filename, $mode)
 {
     $uploadType = Get::cfg('uploadType');
 
-    $mfirst = $mode{0};
+    $mfirst = $mode[0];
     if ($uploadType == "ftp" && $mfirst != 'r') {
         return sl_fopen_ftp($filename, $mode);
     } elseif ($uploadType == "cgi") {

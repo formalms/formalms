@@ -99,7 +99,7 @@ class DashboardBlockFormItem
     private function objectToArray($data)
     {
         if (is_array($data) || is_object($data)) {
-            $result = array();
+            $result = [];
             foreach ($data as $key => $value) {
                 $result[$key] = $this->objectToArray($value);
             }

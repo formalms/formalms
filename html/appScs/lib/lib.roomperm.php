@@ -112,7 +112,7 @@ class RoomPermissions {
 
 
 	function getAllPerm() {
-		$res=array();
+		$res= [];
 
 		$fields="user_idst, perm";
 		$qtxt ="SELECT ".$fields." FROM ".$this->_getPermTable()." WHERE ";

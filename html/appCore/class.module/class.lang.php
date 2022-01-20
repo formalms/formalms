@@ -40,18 +40,18 @@ class Module_Lang extends Module {
 		
 		switch($op) {
 			case "lang" : {
-				return array( 
-					'view' => array( 	'code' => 'view',
+				return [
+					'view' => ['code' => 'view',
 										'name' => '_VIEW',
-										'image' => 'standard/view.png')
-				);
+										'image' => 'standard/view.png']
+                ];
 			};break;
 			case "importexport" : {
-				return array( 
-					'view' => array( 	'code' => 'view',
+				return [
+					'view' => ['code' => 'view',
 										'name' => '_VIEW',
-										'image' => 'standard/view.png')
-				);
+										'image' => 'standard/view.png']
+                ];
 			};break;
 		}
 	}

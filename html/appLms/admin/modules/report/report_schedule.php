@@ -44,7 +44,7 @@ function schedule_recipients($idrep) {
 			require_once($GLOBALS['where_lms'].'/lib/lib.report.php');
 			//save schedulation data in session
 			if (!isset($_SESSION['schedule_tempdata'])) {
-				$_SESSION['schedule_tempdata'] = array();
+				$_SESSION['schedule_tempdata'] = [];
 			}
 			
 			switch ($_POST['cron_radio']) {
@@ -156,13 +156,13 @@ function schedule_set($idrep, $checkperm = 'mod') {
 
 		//initialize session data for schedulation, if not updating
 		if (!isset($_SESSION['schedule_tempdata'])) {
-			$_SESSION['schedule_tempdata'] = array(
+			$_SESSION['schedule_tempdata'] = [
 				'name' => '',
 				'period' => 'day',
 				'period_info' => '',
 				'time' => '',
-				'recipients' => array()
-			);
+				'recipients' => []
+            ];
 		}
 		
 		$ref =& $_SESSION['schedule_tempdata'];
@@ -184,18 +184,18 @@ function schedule_set($idrep, $checkperm = 'mod') {
 		
 					
 		//create selections for crontab specification		
-		$month_days = array();
+		$month_days = [];
 		for ($i=1; $i<=31; $i++) {
 			$month_days[$i] = $i; //TO DO : format with 2 digits filling with 0
 		}
 		
-		$year_months = array();
+		$year_months = [];
 		for ($i=1; $i<=12; $i++) {
 			$year_months[$i] = $i; //TO DO : format with 2 digits filling with 0
 		}
 		
 		$lang_days =& DoceboLanguage::createInstance('calendar', 'lms');
-		$week_days = array(
+		$week_days = [
 			'0' => $lang_days->def('_SUNDAY'),
 			'1' => $lang_days->def('_MONDAY'),
 			'2' => $lang_days->def('_TUESDAY'),
@@ -203,7 +203,7 @@ function schedule_set($idrep, $checkperm = 'mod') {
 			'4' => $lang_days->def('_THURSDAY'),
 			'5' => $lang_days->def('_FRIDAY'),
 			'6' => $lang_days->def('_SATURDAY')
-		);
+        ];
 		
 		
 		$body .=
@@ -280,7 +280,7 @@ function modify_schedulation() {
 		$qry = "SELECT * FROM ".$GLOBALS['prefix_lms']."_report_schedule WHERE id_report_schedule=$id_sched";
 		$row = sql_fetch_assoc( sql_query($qry) );
 		
-		$recipients = array();
+		$recipients = [];
 		$qry = "SELECT * FROM ".$GLOBALS['prefix_lms']."_report_schedule_recipient WHERE id_report_schedule=$id_sched";
 		$recs = sql_query($qry);
 		while ($trow = sql_fetch_assoc($recs)) {
@@ -289,17 +289,17 @@ function modify_schedulation() {
 		
 		$period = explode(',', $row['period']);
 		$_SESSION['schedule_update'] = $id_sched; //integer value, <>0 and <>false
-		$_SESSION['schedule_tempdata'] = array(
+		$_SESSION['schedule_tempdata'] = [
 			'name' => $row['name'],
 			'period' => $period[0],
 			'period_info' => $period[1],
 			'time' => '',
 			'recipients' => $recipients
-		);
+        ];
 		
 		$rid = $row['id_report_filter'];
 		$_SESSION['report_saved'] = true;
-		$_SESSION['report_saved_data'] = array('id'=>$rid, 'name'=>getReportNameById($rid));
+		$_SESSION['report_saved_data'] = ['id'=>$rid, 'name'=>getReportNameById($rid)];
 	
 		schedule_report();
 	} else {
@@ -339,15 +339,15 @@ function get_period_text($period, $time) {
 	$output = '';
 	
 	$lang =& DoceboLanguage::createInstance('report', 'framework');
-	$texts = array(
+	$texts = [
 		'day'   => $lang->def('_REPORT_DAILY'),
 		'now'   => $lang->def('_REPORT_NOW'),
 		'week'  => $lang->def('_SCHED_TEXT_WEEK'),
 		'month' => $lang->def('_REPORT_MONTHLY')
-	);
+    ];
 	
 	$lang_days =& DoceboLanguage::createInstance('calendar', 'lms');
-	$week_days = array(
+	$week_days = [
 		'0' => $lang_days->def('_SUNDAY'),
 		'1' => $lang_days->def('_MONDAY'),
 		'2' => $lang_days->def('_TUESDAY'),
@@ -355,7 +355,7 @@ function get_period_text($period, $time) {
 		'4' => $lang_days->def('_THURSDAY'),
 		'5' => $lang_days->def('_FRIDAY'),
 		'6' => $lang_days->def('_SATURDAY')
-	);
+    ];
 	
 	$parts = explode(',', $period);
 	
@@ -406,8 +406,8 @@ function get_schedulations_table($idrep=false) {
 	
 	$tb = new Table(Get::sett('visu_course'));
 	$tb->initNavBar('ini', 'button');
-	$col_type = array('align_center','align_center','align_center','align_center','align_center','align_center');//,'image','image');
-	$col_content = array(
+	$col_type = ['align_center','align_center','align_center','align_center','align_center','align_center'];//,'image','image');
+	$col_content = [
 		$lang->def('_NAME'),
 		$lang->def('_TAB_REP_CREATOR'),
 		$lang->def('_CREATION_DATE'),
@@ -416,7 +416,7 @@ function get_schedulations_table($idrep=false) {
 		$lang->def('_ACTIVE')/*,
 		'<img src="'.getPathImage().'standard/edit.png" alt="'.$lang->def('_ALT_SCHED_MOD', 'standard').'" title="'.$lang->def('_MOD').'" />',
 		'<img src="'.getPathImage().'standard/delete.png" alt="'.$lang->def('_ALT_SCHED_DEL', 'standard').'" title="'.$lang->def('_DEL').'" />'*/
-	);
+    ];
 	
 	if ($can_mod) {
     $col_type[] = 'image';
@@ -456,14 +456,14 @@ function get_schedulations_table($idrep=false) {
 			$num_users = '<a href="'.$recipients_link.'" title="'.$lang->def('_RECIPIENTS').'" '.
 				'class="" id="show_recipients_'.$id.'">'.
 				$row['num_users'].'</a>';
-			$tb_content = array(
+			$tb_content = [
 				_SCHED_KEY_NAME     => $row['name'],
 				_SCHED_KEY_CREATOR  => $acl_man->relativeId($row['report_owner']),
 				_SCHED_KEY_CREATION => Format::date($row['creation_date']),
 				_SCHED_KEY_PERIOD   => get_period_text($row['period'], $row['time']),
 				_SCHED_KEY_NUMUSER  => $num_users,
 				_SCHED_KEY_ENABLED  => $enabled
-			);
+            ];
 			
 			if ($can_mod) {
         $tb_content[_SCHED_KEY_MOD] = $mod_link;

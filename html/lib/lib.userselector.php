@@ -28,11 +28,11 @@ class UserSelector {
 	public $show_fncrole_selector = TRUE;
 
 	public $requested_tab = FALSE;
-	public $group_filter = array();
-	public $user_filter = array();
+	public $group_filter = [];
+	public $user_filter = [];
 	public $learning_filter = 'none';
-	public $selection = array();
-	public $_extra_form = array();
+	public $selection = [];
+	public $_extra_form = [];
 	public $nFields = FALSE;
 
 	public $use_suspended = false;
@@ -72,7 +72,7 @@ class UserSelector {
 			$res.=implode("\n", $this->_extra_form);
 		}
 
-		$res.=Util::widget('userselector', array(
+		$res.=Util::widget('userselector', [
 			'id' => $id,
 			'id_org' => $this->id_org,
 			'org_type' => $this->org_type,
@@ -86,7 +86,7 @@ class UserSelector {
 			'learning_filter' => $this->learning_filter,
 			'use_suspended' => $this->use_suspended,
 			'nFields' => $this->nFields !== FALSE ? $this->nFields : 3
-		), true);
+        ], true);
 
 		$res.=Form::openButtonSpace();
 		$res.=Form::getButton('okselector', 'okselector', Lang::t('_SAVE', 'standard'));
@@ -109,14 +109,14 @@ class UserSelector {
 	 */
 	public function getSelection($arrayData = [], $selector_id=false) {
 		$selector_id = (empty($selector_id) ? 'main_selector' : $selector_id);
-		$userselector_input_post = Get::pReq('userselector_input', DOTY_MIXED, array());
-		$userselector_input_get = Get::gReq('userselector_input', DOTY_MIXED, array());
+		$userselector_input_post = Get::pReq('userselector_input', DOTY_MIXED, []);
+		$userselector_input_get = Get::gReq('userselector_input', DOTY_MIXED, []);
 		$userselector_input = array_merge($userselector_input_post, $userselector_input_get);
 		if (is_array($userselector_input) && isset($userselector_input[$selector_id])) {
 			if (!empty($userselector_input[$selector_id])) {
 				$this->selection = explode(',', $userselector_input[$selector_id]);
 			} else {
-				$this->selection = array();
+				$this->selection = [];
 			}
 		}
 		return $this->selection;
@@ -168,7 +168,7 @@ class UserSelector {
 	}
 
 	function resetFormInfo() {
-		$this->_extra_form = array();
+		$this->_extra_form = [];
 	}
 
 	function setNFields($nFields) {
@@ -192,12 +192,12 @@ class UserSelectorUtil {
 	 * @return array multidimensional array with data organized by type
 	 */
 	public function getInitialSelFromIdst($array) {
-		$res = array(
-			'user' => array(),
-			'group' => array(),
-			'orgchart' => array(),
-			'fncrole' => array()
-		);
+		$res = [
+			'user' => [],
+			'group' => [],
+			'orgchart' => [],
+			'fncrole' => []
+        ];
 
 		if(empty($array)) return $res;
 
@@ -215,7 +215,7 @@ class UserSelectorUtil {
 			if ($type == 'user') {
 				$res['user'][] = $row['idst'];
 			} else if ($type == 'group') {
-				$match = array();
+				$match = [];
 				if (preg_match('/^\\/oc([d])*_(\d)/', $item_id, $match) && $row["hidden"] == 'true') {
 					// org chart
 					$res['orgchart'][] = $row['idst'];
@@ -240,8 +240,8 @@ class UserSelectorUtil {
 	 * @return array
 	 */
 	public function getOrgChartIdst($oc_list) {
-		$res = array();
-		$oc_id_arr = array();
+		$res = [];
+		$oc_id_arr = [];
 		$oc_arr = explode(',', $oc_list);
 
 		foreach ($oc_arr as $oc) {
@@ -265,11 +265,11 @@ class UserSelectorUtil {
 	 * @return array
 	 */
 	public function getSelectionDiff($old_sel, $new_sel) {
-		$res = array(
-			'new' => array(),
-			'eql' => array(),
-			'rem' => array(),
-		);
+		$res = [
+			'new' => [],
+			'eql' => [],
+			'rem' => [],
+        ];
 		return $res;
 	}
 

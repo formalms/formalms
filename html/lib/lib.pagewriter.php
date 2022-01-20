@@ -33,11 +33,11 @@ class PageZone {
 	/** name ho the zone */
 	public $_name;
 	/** start block */
-	public $_startOut = array();
+	public $_startOut = [];
 	/** content block */
-	public $_contentOut = array();
+	public $_contentOut = [];
 	/** end block */
-	public $_endOut = array();
+	public $_endOut = [];
 
 	public $print_if_empty;
 
@@ -150,9 +150,9 @@ class PageZone {
 	 */
 	public function clean($full = true) {
 
-		if($full) $this->_startOut = array();
-		$this->_contentOut = array();
-		if($full) $this->_endOut = array();
+		if($full) $this->_startOut = [];
+		$this->_contentOut = [];
+		if($full) $this->_endOut = [];
 	}
 
 	/**
@@ -270,7 +270,7 @@ class PageWriter {
 	/**
 	 * array of zones
 	 **/
-	public $_zones = array();
+	public $_zones = [];
 
 	/**
 	 * PageWriter constructor
@@ -670,7 +670,7 @@ class emptyPageWriter extends PageWriter {
 function cout($text, $zone = false) {
 	if(isset($GLOBALS['page'])) $GLOBALS['page']->add($text, $zone);
 	else {
-		if(!isset($GLOBALS['pw_temp'][$zone])) $GLOBALS['pw_temp'][$zone] = array();
+		if(!isset($GLOBALS['pw_temp'][$zone])) $GLOBALS['pw_temp'][$zone] = [];
 		$GLOBALS['pw_temp'][$zone][] = $text;
 	}
 }

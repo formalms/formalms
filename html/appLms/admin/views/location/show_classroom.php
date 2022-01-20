@@ -3,10 +3,10 @@
 $_back_url = 'index.php?r=alms/location/show';
 $_add_url = 'index.php?r=alms/location/addclassroom&amp;id_location='.(int)$id_location;
 
-Get::title(array(
+Get::title([
 	$_back_url => Lang::t('_LOCATION', 'classroom'),
 	Lang::t('_CLASSROOM', 'classroom')
-));
+]);
 
 ?>
 <div class="std_block">
@@ -14,34 +14,34 @@ Get::title(array(
 
 echo getBackUi('index.php?r=alms/location/show', Lang::t('_BACK'));
 
-$this->widget('table', array(
+$this->widget('table', [
 	'id'			=> 'classroomlist',
 	'ajaxUrl'		=> 'ajax.adm_server.php?r=alms/location/getclassroom&location_id='.(int)$id_location,
 	'sort'			=> 'classroom',
-	'columns'		=> array(
-		array('key' => 'classroom',
+	'columns'		=> [
+		['key' => 'classroom',
 			'label' => Lang::t('_CLASSROOM', 'lms'),
-			'sortable' => true ),
-		array('key' => 'classroom_schedule',
+			'sortable' => true],
+		['key' => 'classroom_schedule',
 			'label' => '<span class="ico-sprite subs_wait"><span>'.Lang::t('_SCHEDULE', 'standard').'</span></span>',
 			'formatter' => 'Schedule.SchedFormatter',
-			'className' => 'img-cell' ),
-		array('key' => 'classroom_mod',
+			'className' => 'img-cell'],
+		['key' => 'classroom_mod',
 			'label' => '<span class="ico-sprite subs_mod"><span>'.Lang::t('_MOD', 'standard').'</span></span>',
 			'formatter' => 'Classroom.modFormatter',
-			'className' => 'img-cell' ),
-		array('key' => 'classroom_del',
+			'className' => 'img-cell'],
+		['key' => 'classroom_del',
 			'label' => '<span class="ico-sprite subs_del"><span>'.Lang::t('_DEL', 'standard').'</span></span>',
 			'formatter' => 'stdDelete',
-			'className' => 'img-cell' ),
-	),
-	'fields'		=> array('id_classroom','classroom', 'classroom_mod', 'classroom_del'),
+			'className' => 'img-cell'],
+    ],
+	'fields'		=> ['id_classroom','classroom', 'classroom_mod', 'classroom_del'],
 	'delDisplayField' => 'classroom',
-	'rel_actions'	=> array(
+	'rel_actions'	=> [
 		'<a id="addclassroom_top" href="'.$_add_url.'" class="ico-wt-sprite subs_add" title="'.Lang::t('_ADD', 'standard').'"><span>'.Lang::t('_ADD', 'standard').'</span></a>',
 		'<a id="addclassroom_bottom" href="'.$_add_url.'" class="ico-wt-sprite subs_add" title="'.Lang::t('_ADD', 'standard').'"><span>'.Lang::t('_ADD', 'standard').'</span></a>',
-	)
-));
+    ]
+]);
 
 echo getBackUi('index.php?r=alms/location/show', Lang::t('_BACK'));
 

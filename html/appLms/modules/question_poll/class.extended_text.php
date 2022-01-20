@@ -83,7 +83,7 @@ class ExtendedText_QuestionPoll extends QuestionPoll {
 			require_once($GLOBALS['where_lms'].'/lib/lib.questcategory.php');
 			$categories = Questcategory::getCategory();
 		//create array of difficult
-		$arr_dufficult = array(5 => '5 - '.$lang->def('_VERY_HARD'), 4 => '4 - '.$lang->def('_HARD'), 3 => '3 - '.$lang->def('_DIFFICULT_MEDIUM'), 2 => '2 - '.$lang->def('_DIFFICULT_EASY'), 1 => '1 - '.$lang->def('_DIFFICULT_VERYEASY'));
+		$arr_dufficult = [5 => '5 - '.$lang->def('_VERY_HARD'), 4 => '4 - '.$lang->def('_HARD'), 3 => '3 - '.$lang->def('_DIFFICULT_MEDIUM'), 2 => '2 - '.$lang->def('_DIFFICULT_EASY'), 1 => '1 - '.$lang->def('_DIFFICULT_VERYEASY')];
 		
 		$GLOBALS['page']->add(getTitleArea($lang->def('_POLL_SECTION'), 'poll')
 			.'<div class="std_block">'
@@ -136,7 +136,7 @@ class ExtendedText_QuestionPoll extends QuestionPoll {
 			require_once($GLOBALS['where_lms'].'/lib/lib.questcategory.php');
 			$categories = Questcategory::getCategory();
 		//create array of difficult
-		$arr_dufficult = array(5 => '5 - '.$lang->def('_VERY_HARD'), 4 => '4 - '.$lang->def('_HARD'), 3 => '3 - '.$lang->def('_DIFFICULT_MEDIUM'), 2 => '2 - '.$lang->def('_DIFFICULT_EASY'), 1 => '1 - '.$lang->def('_DIFFICULT_VERYEASY'));
+		$arr_dufficult = [5 => '5 - '.$lang->def('_VERY_HARD'), 4 => '4 - '.$lang->def('_HARD'), 3 => '3 - '.$lang->def('_DIFFICULT_MEDIUM'), 2 => '2 - '.$lang->def('_DIFFICULT_EASY'), 1 => '1 - '.$lang->def('_DIFFICULT_VERYEASY')];
 		
 		list($title_quest) = sql_fetch_row(sql_query("
 		SELECT title_quest  
@@ -388,10 +388,10 @@ class ExtendedText_QuestionPoll extends QuestionPoll {
 			.'</div>'
 			.'</div>';
 		
-		return array(	'quest' 	=> $quest, 
+		return ['quest' 	=> $quest,
 						'score'		=> $this->userScore($id_track, $number_time),
 						'comment'	=> '',
-						'manual_assigned' => ( $manual_assigned ? true : false ) );
+						'manual_assigned' => ( $manual_assigned ? true : false )];
 	}
 	
 		function playReport( $num_quest, $tot_tracks, &$valid_track ) {
@@ -406,8 +406,8 @@ class ExtendedText_QuestionPoll extends QuestionPoll {
 	
 		$result_quest = sql_query($query_quest);
 	
-		$type_h = array('');
-		$cont_h = array($lang->def('_ANSWER'));
+		$type_h = [''];
+		$cont_h = [$lang->def('_ANSWER')];
 		
 		list($id_quest, $title_quest) = sql_fetch_row($result_quest);
 	
@@ -425,7 +425,7 @@ class ExtendedText_QuestionPoll extends QuestionPoll {
 		$result_answer = sql_query($query_answer);
 	
 		while (list($answer) = sql_fetch_row($result_answer)) {
-			$cont = array();
+			$cont = [];
 			$cont[] = $answer;
 		
 			$tb->addBody($cont);

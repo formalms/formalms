@@ -38,7 +38,7 @@ function loadUnreaded ()
             $last_forum_access_time = 0;
             $no_entry = true;
         }
-        $unreaded = array ();
+        $unreaded = [];
         $reUnreaded = sql_query ("
 		SELECT t.idThread, t.idForum, m.generator, COUNT(m.idMessage)
 		FROM " . $GLOBALS[ 'prefix_lms' ] . "_forumthread AS t JOIN " . $GLOBALS[ 'prefix_lms' ] . "_forummessage AS m
@@ -164,7 +164,7 @@ function forum ()
 
         // show forum list in a table -----------------------------------------
         // table header
-        $type_h = array ( 'image' , 'image' , 'forumTitle' , 'align_center' , 'align_center' , 'align_center' , 'image' );
+        $type_h = ['image' , 'image' , 'forumTitle' , 'align_center' , 'align_center' , 'align_center' , 'image'];
         if ($mod_perm) {
             $type_h[] = 'image';
             $type_h[] = 'image';
@@ -175,14 +175,14 @@ function forum ()
         }
         $tb->setColsStyle ($type_h);
 
-        $cont_h = array (
+        $cont_h = [
             '<img src="' . getPathImage ('fw') . 'blank.png" title="' . $lang->def ('_EMOTICONS') . '" alt="' . $lang->def ('_EMOTICONS') . '" />' ,
             $lang->def ('_TITLE') ,
             $lang->def ('_DESCRIPTION') ,
             $lang->def ('_NUMTHREAD') ,
             $lang->def ('_NUMPOST') ,
             $lang->def ('_LASTPOST')
-        );
+        ];
         if ($mod_perm) {
             $cont_h[] = '<img src="' . getPathImage () . 'standard/down.png" title="' . $lang->def ('_MOVE_DOWN') . '" alt="' . $lang->def ('_DOWN') . '" />';
             $cont_h[] = '<img src="' . getPathImage () . 'standard/up.png" title="' . $lang->def ('_UP') . '" alt="' . $lang->def ('_UP') . '" />';
@@ -224,12 +224,12 @@ function forum ()
                 }
 
                 // NOTES: other content
-                $content = array (
+                $content = [
                     $emoticon_img ,
                     '<a' . $c_css . ' href="index.php?modname=public_forum&amp;op=thread&amp;idForum=' . $idF . '">' . $status . ' ' . $title . '</a>' ,
                     $descr ,
                     $num_thread . ($thread_notread ? '<div class="forum_notread">' . $thread_notread . ' ' . $lang->def ('_ADD') . '</div>' : '') ,
-                    $num_post . ($mess_notread ? '<div class="forum_notread">' . $mess_notread . ' ' . $lang->def ('_ADD') . '</div>' : '') );
+                    $num_post . ($mess_notread ? '<div class="forum_notread">' . $mess_notread . ' ' . $lang->def ('_ADD') . '</div>' : '')];
                 if (isset($last_post[ $idF ])) {
 
                     $author = $last_post[ $idF ][ 'author' ];
@@ -858,7 +858,7 @@ function modforumaccess ()
 		FROM " . $GLOBALS[ 'prefix_lms' ] . "_forum_access
 		WHERE idForum = '" . $id_forum . "'";
         $re_reader = sql_query ($query_reader);
-        $old_users = array ();
+        $old_users = [];
         while (list($id_user) = sql_fetch_row ($re_reader)) {
 
             $old_users[] = $id_user;
@@ -896,7 +896,7 @@ function modforumaccess ()
 		FROM " . $GLOBALS[ 'prefix_lms' ] . "_forum_access
 		WHERE idForum = '" . $id_forum . "'";
         $re_reader = sql_query ($query_reader);
-        $users = array ();
+        $users = [];
         while (list($id_user) = sql_fetch_row ($re_reader)) {
 
             $users[ $id_user ] = $id_user;
@@ -913,10 +913,10 @@ function modforumaccess ()
     $user_select->setUserFilter ('group' , $arr_idstGroup);
     $user_select->setGroupFilter ('path' , '/lms/course/' . $_SESSION[ 'idCourse' ] . '/group');
 
-    cout (getTitleArea (array (
+    cout (getTitleArea ([
             'index.php?modname=public_forum&amp;op=forum' => $lang->def ('_FORUM') ,
             $lang->def ('_FORUM_ACCESS') . ' "' . $forum_name . '" ' . $lang->def ('_TO') . ''
-        ) , 'forum')
+        ], 'forum')
         . '<div class="std_block">'
         , 'content');
     $user_select->loadSelector ('index.php?modname=public_forum&amp;op=modforumaccess&amp;idForum=' . $id_forum ,
@@ -942,7 +942,7 @@ function modforumaccess_old ()
 
     $ssel = new SimpleSelector(true , $lang);
 
-    $perm = array ();
+    $perm = [];
     $perm[ "view" ][ "img" ] = getPathImage () . "standard/view.png";
     $perm[ "view" ][ "alt" ] = $lang->def ("_VIEW");
     $perm[ "write" ][ "img" ] = getPathImage () . "standard/reply.png";
@@ -1033,7 +1033,7 @@ function modforumaccess_old ()
 
     if (! empty($page_body)) {
         // If we have only the page body, then better to add the area title.
-        $ta_array = array ();
+        $ta_array = [];
         $ta_array[ "index.php?modname=public_forum&amp;op=forum" ] = $lang->def ("_FORUM");
         $ta_array[] = $lang->def ('_FORUM_PERM');
 
@@ -1071,7 +1071,7 @@ function saveForumPerm ($idForum , $selected_items , $database_items)
             if ((isset($database_items[ $val ])) && (is_array ($database_items[ $val ])))
                 $to_rem = array_diff (array_keys ($database_items[ $val ]) , $selected_items[ $val ]);
             else
-                $to_rem = array ();
+                $to_rem = [];
             foreach ($to_rem as $pk => $pv) {
                 $acl_manager->removeFromRole ($idst , $pv);
             }
@@ -1085,14 +1085,14 @@ function saveForumPerm ($idForum , $selected_items , $database_items)
 
 function getForumPermList ()
 {
-    return array ( "view" , "write" , "upload" , /*"add", "mod", "del",*/
-        "moderate" );
+    return ["view" , "write" , "upload" , /*"add", "mod", "del",*/
+        "moderate"];
 }
 
 
 function loadForumSavedPerm ($idForum)
 {
-    $res = array ();
+    $res = [];
     $pl = getForumPermList ();
     $acl_manager =& Docebo::user ()->getACLManager ();
 
@@ -1102,7 +1102,7 @@ function loadForumSavedPerm ($idForum)
         $role = $acl_manager->getRole (false , $role_id);
 
         if (! $role) {
-            $res[ $val ] = array ();
+            $res[ $val ] = [];
         } else {
             $idst = $role[ ACL_INFO_IDST ];
             $res[ $val ] = array_flip ($acl_manager->getRoleMembers ($idst));
@@ -1237,10 +1237,10 @@ function thread ()
     if (isset($last_authors)) {
         $authors_names =& $acl_man->getUsers ($last_authors);
     }
-    $page_title = array (
+    $page_title = [
         'index.php?modname=public_forum&amp;op=forum' => $lang->def ('_FORUM') ,
         $title
-    );
+    ];
     $GLOBALS[ 'page' ]->add (
         getTitleArea ($page_title , 'forum')
         . '<div class="std_block">'
@@ -1262,7 +1262,7 @@ function thread ()
     $img_up = '<img src="' . getPathImage () . 'standard/ord_asc.png" alt="' . $lang->def ('_ORD_ASC') . '" />';
     $img_down = '<img src="' . getPathImage () . 'standard/ord_desc.png" alt="' . $lang->def ('_ORD_DESC') . '" />';
 
-    $cont_h = array (
+    $cont_h = [
         '<img src="' . getPathImage () . 'standard/msg_read.png" title="' . $lang->def ('_FREET') . '" alt="' . $lang->def ('_FREE') . '" />' ,
         '<a href="' . $jump_url . '&amp;ord=' . ($ord == 'obj' ? 'obji' : 'obj') . '" title="' . $lang->def ('_ORDER_BY') . '">'
         . ($ord == 'obj' ? $img_up : ($ord == 'obji' ? $img_down : '')) . $lang->def ('_THREAD') . '</a>' ,
@@ -1273,10 +1273,10 @@ function thread ()
         //$lang->def('_DATE'),
         '<a href="' . $jump_url . '&amp;ord=' . ($ord == 'post' ? 'posti' : 'post') . '" title="' . $lang->def ('_ORDER_BY') . '">'
         . ($ord == 'post' ? $img_up : ($ord == 'posti' ? $img_down : '')) . $lang->def ('_LASTPOST') . '</a>'
-    );
-    $type_h = array ( 'image' , '' , 'align_center' , 'align_center' , 'image' ,
+    ];
+    $type_h = ['image' , '' , 'align_center' , 'align_center' , 'image' ,
         //'align_center',
-        'align_center' );
+        'align_center'];
     if ($mod_perm || $moderate) {
 
         $cont_h[] = '<img src="' . getPathImage () . 'standard/edit.png" alt="' . $lang->def ('_MOD') . '" title="' . $lang->def ('_MOD') . '" />';
@@ -1375,7 +1375,7 @@ function thread ()
             } else {
                 $status = '<img src="' . getPathImage () . 'standard/msg_read.png" alt="' . $lang->def ('_FREE') . '" />';
             }
-            $content = array ( $status );
+            $content = [$status];
             //'<img src="'.getPathImage().'standard/important.png" alt="'.$lang->def('_IMPORTANT').'" />'
             $content_temp = ($erased && ! $mod_perm ?
                 '<div class="forumErased">' . $lang->def ('_OPERATION_SUCCESSFUL') . '</div>' :
@@ -1657,7 +1657,7 @@ function insthread ()
         $all_user_idst = $acl->getSTGroupsST (getLogUserId ());
         $all_user_idst[] = getLogUserId ();
 
-        $can_access = array ();
+        $can_access = [];
         $can_access = array_intersect ($members , $all_user_idst);
         if (! empty($can_access)) $continue = true;
     }
@@ -1741,15 +1741,15 @@ function insthread ()
     $msg_composer = new EventMessageComposer();
 
     $msg_composer->setSubjectLangText ('email' , '_SUBJECT_NOTIFY_THREAD' , false);
-    $msg_composer->setBodyLangText ('email' , '_NEW_THREAD_INSERT_IN_FORUM' , array ( '[url]' => Get::site_url() ,
+    $msg_composer->setBodyLangText ('email' , '_NEW_THREAD_INSERT_IN_FORUM' , ['[url]' => Get::site_url() ,
         '[course]' => PUBLIC_FORUM_COURSE_NAME ,
         '[forum_title]' => $forum_title ,
-        '[thread_title]' => $_POST[ 'title' ] ));
+        '[thread_title]' => $_POST[ 'title' ]]);
 
-    $msg_composer->setBodyLangText ('sms' , '_NEW_THREAD_INSERT_IN_FORUM_SMS' , array ( '[url]' => Get::site_url() ,
+    $msg_composer->setBodyLangText ('sms' , '_NEW_THREAD_INSERT_IN_FORUM_SMS' , ['[url]' => Get::site_url() ,
         '[course]' => PUBLIC_FORUM_COURSE_NAME ,
         '[forum_title]' => $forum_title ,
-        '[thread_title]' => $_POST[ 'title' ] ));
+        '[thread_title]' => $_POST[ 'title' ]]);
 
     launchNotify ('forum' , $id_forum , $lang->def ('_NEW_THREAD') , $msg_composer);
 
@@ -1792,11 +1792,11 @@ function modthread ()
 	WHERE idForum = '" . $id_forum . "'";
     list($forum_title , $locked_f) = sql_fetch_row (sql_query ($forum_query));
 
-    $page_title = array (
+    $page_title = [
         'index.php?modname=public_forum&amp;op=forum' => $lang->def ('_FORUM') ,
         'index.php?modname=public_forum&amp;op=thread&amp;idForum=' . $id_forum => $forum_title ,
         $lang->def ('_MOD')
-    );
+    ];
 
     $GLOBALS[ 'page' ]->add (
         getTitleArea ($page_title , 'forum')
@@ -1992,11 +1992,11 @@ function delthread ()
 		WHERE idForum = '" . $id_forum . "'";
         list($forum_title) = sql_fetch_row (sql_query ($forum_query));
 
-        $page_title = array (
+        $page_title = [
             'index.php?modname=public_forum&amp;op=forum' => $lang->def ('_FORUM') ,
             'index.php?modname=public_forum&amp;op=thread&amp;idForum=' . $id_forum => $forum_title ,
             $lang->def ('_DEL')
-        );
+        ];
         $GLOBALS[ 'page' ]->add (
             getTitleArea ($page_title , 'forum')
             . '<div class="std_block">'
@@ -2128,11 +2128,11 @@ function message ()
 		SET num_view = num_view + 1
 		WHERE idThread = '" . $id_thread . "'");
     }
-    $page_title = array (
+    $page_title = [
         'index.php?modname=public_forum&amp;op=forum' => $lang->def ('_FORUM') ,
         'index.php?modname=public_forum&amp;op=thread&amp;idForum=' . $id_forum => $forum_title ,
         $thread_title
-    );
+    ];
     if ($erased_t && ! $mod_perm && ! $moderate) {
 
         $GLOBALS[ 'page' ]->add (
@@ -2149,10 +2149,10 @@ function message ()
     while (list($msg_sema) = sql_fetch_row ($re_sema)) $forum_sema[ $msg_sema ] = 1;
 
     // Find post
-    $messages = array ();
-    $authors = array ();
-    $authors_names = array ();
-    $authors_info = array ();
+    $messages = [];
+    $authors = [];
+    $authors_names = [];
+    $authors_info = [];
     $re_message = sql_query ("
 	SELECT idMessage, posted, title, textof, attach, locked, author, modified_by, modified_by_on
 	FROM " . $GLOBALS[ 'prefix_lms' ] . "_forummessage
@@ -2180,12 +2180,12 @@ function message ()
 		GROUP BY u.idUser, u.level");
         while (list($id_u , $level_u , $num_post_a) = sql_fetch_row ($re_num_post)) {
 
-            $authors_info[ $id_u ] = array ( 'num_post' => $num_post_a , 'level' => $level_name[ $level_u ] );
+            $authors_info[ $id_u ] = ['num_post' => $num_post_a , 'level' => $level_name[ $level_u ]];
         }
         $profile_man->setCahceForUsers ($authors);
     }
-    $type_h = array ( 'forum_sender' , 'forum_text' );
-    $cont_h = array ( $lang->def ('_AUTHOR') , $lang->def ('_TEXTOF') );
+    $type_h = ['forum_sender' , 'forum_text'];
+    $cont_h = [$lang->def ('_AUTHOR') , $lang->def ('_TEXTOF')];
     $tb->setColsStyle ($type_h);
     $tb->addHead ($cont_h);
 
@@ -2287,7 +2287,7 @@ function message ()
                     . '</div>';
             }
         }
-        $content = array ( $sender , $msgtext );
+        $content = [$sender , $msgtext];
         $tb->addBody ($content);
 
         // some action that you can do with this message
@@ -2512,10 +2512,10 @@ function showMessageForAdd ($id_thread , $how_much)
     $tb = new Table(Get::sett ('visuItem') , $lang->def ('_CAPTION_FORUM_MESSAGE_ADD') , $lang->def ('_CAPTION_FORUM_MESSAGE_ADD'));
 
     // Find post
-    $messages = array ();
-    $authors = array ();
-    $authors_names = array ();
-    $authors_info = array ();
+    $messages = [];
+    $authors = [];
+    $authors_names = [];
+    $authors_info = [];
     $re_message = sql_query ("
 	SELECT idMessage, posted, title, textof, attach, locked, author, modified_by
 	FROM " . $GLOBALS[ 'prefix_lms' ] . "_forummessage
@@ -2541,10 +2541,10 @@ function showMessageForAdd ($id_thread , $how_much)
 	GROUP BY u.idUser, u.level");
     while (list($id_u , $level_u , $num_post_a) = sql_fetch_row ($re_num_post)) {
 
-        $authors_info[ $id_u ] = array ( 'num_post' => $num_post_a , 'level' => $level_name[ $level_u ] );
+        $authors_info[ $id_u ] = ['num_post' => $num_post_a , 'level' => $level_name[ $level_u ]];
     }
-    $type_h = array ( 'forum_sender' , 'forum_text' );
-    $cont_h = array ( $lang->def ('_AUTHOR') , $lang->def ('_TEXTOF') );
+    $type_h = ['forum_sender' , 'forum_text'];
+    $cont_h = [$lang->def ('_AUTHOR') , $lang->def ('_TEXTOF')];
     $tb->setColsStyle ($type_h);
     $tb->addHead ($cont_h);
 
@@ -2614,7 +2614,7 @@ function showMessageForAdd ($id_thread , $how_much)
                     . '</div>';
             }
         }
-        $content = array ( $sender , $msgtext );
+        $content = [$sender , $msgtext];
         $tb->addBody ($content);
     }
     $GLOBALS[ 'page' ]->add ($tb->getTable () , 'content');
@@ -2652,12 +2652,12 @@ function addmessage ()
 	WHERE idForum = '" . $id_forum . "'";
     list($forum_title , $locked_f) = sql_fetch_row (sql_query ($forum_query));
 
-    $page_title = array (
+    $page_title = [
         'index.php?modname=public_forum&amp;op=forum' => $lang->def ('_FORUM') ,
         'index.php?modname=public_forum&amp;op=thread&amp;idForum=' . $id_forum => $forum_title ,
         'index.php?modname=public_forum&amp;op=message&amp;idThread=' . $id_thread . '&amp;ini=' . $ini => $thread_title ,
         $lang->def ('_REPLY')
-    );
+    ];
     if (($erased_t || $locked_t) && ! $mod_perm && ! $moderate) {
 
         $GLOBALS[ 'page' ]->add (
@@ -2767,7 +2767,7 @@ function insmessage ()
         $all_user_idst = $acl->getSTGroupsST (getLogUserId ());
         $all_user_idst[] = getLogUserId ();
 
-        $can_access = array ();
+        $can_access = [];
         $can_access = array_intersect ($members , $all_user_idst);
         if (! empty($can_access)) $continue = true;
     }
@@ -2839,15 +2839,15 @@ function insmessage ()
     $msg_composer = new EventMessageComposer();
 
     $msg_composer->setSubjectLangText ('email' , '_SUBJECT_NOTIFY_MESSAGE' , false);
-    $msg_composer->setBodyLangText ('email' , '_NEW_MESSAGE_INSERT_IN_THREAD' , array ( '[url]' => Get::site_url() ,
+    $msg_composer->setBodyLangText ('email' , '_NEW_MESSAGE_INSERT_IN_THREAD' , ['[url]' => Get::site_url() ,
         '[course]' => PUBLIC_FORUM_COURSE_NAME ,
         '[forum_title]' => $forum_title ,
-        '[thread_title]' => $_POST[ 'title' ] ));
+        '[thread_title]' => $_POST[ 'title' ]]);
 
-    $msg_composer->setBodyLangText ('sms' , '_NEW_MESSAGE_INSERT_IN_THREAD_SMS' , array ( '[url]' => Get::site_url() ,
+    $msg_composer->setBodyLangText ('sms' , '_NEW_MESSAGE_INSERT_IN_THREAD_SMS' , ['[url]' => Get::site_url() ,
         '[course]' => PUBLIC_FORUM_COURSE_NAME ,
         '[forum_title]' => $forum_title ,
-        '[thread_title]' => $_POST[ 'title' ] ));
+        '[thread_title]' => $_POST[ 'title' ]]);
 
     launchNotify ('thread' , $id_thread , $lang->def ('_NEW_MESSAGE') , $msg_composer);
 
@@ -2898,12 +2898,12 @@ function modmessage ()
 	WHERE idForum = '" . $id_forum . "'";
     list($forum_title , $locked_f) = sql_fetch_row (sql_query ($forum_query));
 
-    $page_title = array (
+    $page_title = [
         'index.php?modname=public_forum&amp;op=forum' => $lang->def ('_FORUM') ,
         'index.php?modname=public_forum&amp;op=thread&amp;idForum=' . $id_forum => $forum_title ,
         'index.php?modname=public_forum&amp;op=message&amp;idThread=' . $id_thread . '&amp;ini=' . $ini => $thread_title ,
         $lang->def ('_MOD_MESSAGE')
-    );
+    ];
     if ($erased_t && ! $mod_perm && ! $moderate) {
 
         $GLOBALS[ 'page' ]->add (
@@ -3107,12 +3107,12 @@ function delmessage ()
         else Util::jump_to ('index.php?modname=public_forum&op=message&idThread=' . $id_thread . '&amp;result=ok');
     } else {
 
-        $page_title = array (
+        $page_title = [
             'index.php?modname=public_forum&amp;op=forum' => $lang->def ('_FORUM') ,
             'index.php?modname=public_forum&amp;op=thread&amp;idForum=' . $id_forum => $forum_title ,
             'index.php?modname=public_forum&amp;op=message&amp;idThread=' . $id_thread . '&amp;ini=' . $ini => $thread_title ,
             $lang->def ('_DEL')
-        );
+        ];
         $GLOBALS[ 'page' ]->add (
             getTitleArea ($page_title , 'forum')
             . '<div class="std_block">'
@@ -3234,7 +3234,7 @@ function forumsearch ()
 		WHERE f.idCourse = '" . (int) PUBLIC_FORUM_COURSE_ID . "' ";
 
     }
-    $forums = array ();
+    $forums = [];
     $re_forum = sql_query ($query_view_forum);
     while (list($id_f) = sql_fetch_row ($re_forum)) {
 
@@ -3243,10 +3243,10 @@ function forumsearch ()
     }
     if (empty($forums)) {
 
-        $page_title = array (
+        $page_title = [
             'index.php?modname=public_forum&amp;op=forum' => $lang->def ('_FORUM') ,
             $lang->def ('_SEARCH_RESULT_FOR') . ' : ' . $search_arg
-        );
+        ];
         $GLOBALS[ 'page' ]->add (
             getTitleArea ($page_title , 'forum')
             . '<div class="std_block">'
@@ -3321,10 +3321,10 @@ function forumsearch ()
         $authors_names =& $acl_man->getUsers ($last_authors);
     }
 
-    $page_title = array (
+    $page_title = [
         'index.php?modname=public_forum&amp;op=forum' => $lang->def ('_FORUM') ,
         $lang->def ('_SEARCH_RESULT_FOR') . ' : ' . $search_arg
-    );
+    ];
     $GLOBALS[ 'page' ]->add (
         getTitleArea ($page_title , 'forum')
         . '<div class="std_block">'
@@ -3346,7 +3346,7 @@ function forumsearch ()
     $img_up = '<img src="' . getPathImage () . 'standard/ord_asc.png" alt="' . $lang->def ('_ORD_ASC') . '" />';
     $img_down = '<img src="' . getPathImage () . 'standard/ord_desc.png" alt="' . $lang->def ('_ORD_DESC') . '" />';
 
-    $cont_h = array (
+    $cont_h = [
         '<img src="' . getPathImage () . 'standard/msg_read.png" title="' . $lang->def ('_FREET') . '" alt="' . $lang->def ('_FREE') . '" />' ,
         '<a href="' . $jump_url . '&amp;ord=' . ($ord == 'obj' ? 'obji' : 'obj') . '" title="' . $lang->def ('_ORDER_BY') . '">'
         . ($ord == 'obj' ? $img_up : ($ord == 'obji' ? $img_down : '')) . $lang->def ('_THREAD') . '</a>' ,
@@ -3357,10 +3357,10 @@ function forumsearch ()
         //$lang->def('_DATE'),
         '<a href="' . $jump_url . '&amp;ord=' . ($ord == 'post' ? 'posti' : 'post') . '" title="' . $lang->def ('_ORDER_BY') . '">'
         . ($ord == 'post' ? $img_up : ($ord == 'posti' ? $img_down : '')) . $lang->def ('_LASTPOST') . '</a>'
-    );
-    $type_h = array ( 'image' , '' , 'align_center' , 'align_center' , 'image' ,
+    ];
+    $type_h = ['image' , '' , 'align_center' , 'align_center' , 'image' ,
         //'align_center',
-        'align_center' );
+        'align_center'];
     if ($mod_perm) {
 
         $cont_h[] = '<img src="' . getPathImage () . 'standard/edit.png" alt="' . $lang->def ('_MOD') . '" title="' . $lang->def ('_MOD') . '" />';
@@ -3406,7 +3406,7 @@ function forumsearch ()
         } else {
             $status = '<img src="' . getPathImage () . 'standard/msg_read.png" alt="' . $lang->def ('_FREE') . '" />';
         }
-        $content = array ( $status );
+        $content = [$status];
         $content[] = ($erased && ! $mod_perm ?
             '<div class="forumErased">' . $lang->def ('_OPERATION_SUCCESSFUL') . '</div>' :
             '<a' . $c_css . ' href="index.php?modname=public_forum&amp;op=searchmessage&amp;idThread=' . $idT . '&amp;ini_thread=' . $ini_page . '">'
@@ -3492,11 +3492,11 @@ function forumsearchmessage ()
 		SET num_view = num_view + 1
 		WHERE idThread = '" . $id_thread . "'");
     }
-    $page_title = array (
+    $page_title = [
         'index.php?modname=public_forum&amp;op=forum' => $lang->def ('_FORUM') ,
         'index.php?modname=public_forum&amp;op=search&amp;ini=' . $ini_thread => $thread_title ,
         $lang->def ('_SEARCH_RESULT_FOR') . ' : ' . $search_arg
-    );
+    ];
     if ($erased_t && ! $mod_perm && ! $moderate) {
 
         $GLOBALS[ 'page' ]->add (
@@ -3513,10 +3513,10 @@ function forumsearchmessage ()
     while (list($msg_sema) = sql_fetch_row ($re_sema)) $forum_sema[ $msg_sema ] = 1;
 
     // Find post
-    $messages = array ();
-    $authors = array ();
-    $authors_names = array ();
-    $authors_info = array ();
+    $messages = [];
+    $authors = [];
+    $authors_names = [];
+    $authors_info = [];
     $re_message = sql_query ("
 	SELECT idMessage, posted, title, textof, attach, locked, author, modified_by, modified_by_on
 	FROM " . $GLOBALS[ 'prefix_lms' ] . "_forummessage
@@ -3542,10 +3542,10 @@ function forumsearchmessage ()
 	GROUP BY u.idUser, u.level");
     while (list($id_u , $level_u , $num_post_a) = sql_fetch_row ($re_num_post)) {
 
-        $authors_info[ $id_u ] = array ( 'num_post' => $num_post_a , 'level' => $level_name[ $level_u ] );
+        $authors_info[ $id_u ] = ['num_post' => $num_post_a , 'level' => $level_name[ $level_u ]];
     }
-    $type_h = array ( 'forum_sender' , 'forum_text' );
-    $cont_h = array ( $lang->def ('_AUTHOR') , $lang->def ('_TEXTOF') );
+    $type_h = ['forum_sender' , 'forum_text'];
+    $cont_h = [$lang->def ('_AUTHOR') , $lang->def ('_TEXTOF')];
     $tb->setColsStyle ($type_h);
     $tb->addHead ($cont_h);
 
@@ -3633,7 +3633,7 @@ function forumsearchmessage ()
                     . '</div>';
             }
         }
-        $content = array ( $sender , $msgtext );
+        $content = [$sender , $msgtext];
         $tb->addBody ($content);
 
         // some action that you can do with this message
@@ -3810,7 +3810,7 @@ function issetNotify ($notify_is_a , $id_notify , $id_user)
  */
 function getAllNotify ($id_user , $notify_is_a = false)
 {
-    $notify = array ();
+    $notify = [];
     $query_notify = "
 	SELECT id_notify, notify_is_a
 	FROM " . $GLOBALS[ 'prefix_lms' ] . "_forum_notifier
@@ -3829,7 +3829,7 @@ function launchNotify ($notify_is_a , $id_notify , $description , &$msg_composer
 
     require_once (_base_ . '/lib/lib.eventmanager.php');
 
-    $recipients = array ();
+    $recipients = [];
     $query_notify = "
 	SELECT id_user
 	FROM " . $GLOBALS[ 'prefix_lms' ] . "_forum_notifier
@@ -3896,8 +3896,8 @@ function moveThread ($id_thread , $id_forum)
 
             $result_3 = sql_query ($query_3);
 
-            $num_post_update = array ();
-            $num_thread_update = array ();
+            $num_post_update = [];
+            $num_thread_update = [];
 
             while (list($idForum , $num_thread_3 , $num_post_3) = sql_fetch_row ($result_3)) {
                 if ($idForum == $id_forum) {
@@ -3909,7 +3909,7 @@ function moveThread ($id_thread , $id_forum)
                 }
             }
 
-            $last_message_update = array ();
+            $last_message_update = [];
 
             $query_4 = "SELECT idMessage" .
                 " FROM " . $GLOBALS[ 'prefix_lms' ] . "_forummessage" .
@@ -3989,7 +3989,7 @@ function moveThread ($id_thread , $id_forum)
         $id_course = (int) PUBLIC_FORUM_COURSE_ID;
         $id_forum = importVar ('id_forum' , true , 0);
 
-        $list_forum = array ();
+        $list_forum = [];
 
         $query = "SELECT idForum, title" .
             " FROM " . $GLOBALS[ 'prefix_lms' ] . "_forum" .
@@ -4028,7 +4028,7 @@ function export ()
     $id_forum = Get::req ('idForum' , DOTY_INT , 0);
     $csv_string = '';
     $file_nme = '';
-    $tag_list = array ();
+    $tag_list = [];
 
     if ($id_forum) {
         $query = "SELECT idThread, title, num_post"
@@ -4039,8 +4039,8 @@ function export ()
 
         if (sql_num_rows ($result)) ;
         {
-            $tmp = array ();
-            $id_list = array ();
+            $tmp = [];
+            $id_list = [];
 
             while (list($id_thread , $thread_title , $num_post) = sql_fetch_row ($result)) {
                 $tmp[ 'int' ] = '"nomethread";"n.msg";"titolomsg";"autore";"data";"corpomsg";"allegato";"id_msg"';
@@ -4115,8 +4115,8 @@ function export ()
             list($forum_title) = sql_fetch_row (sql_query ($query_forum));
 
             $file_name = str_replace (
-                    array ( '\\' , '/' , ':' , '\'' , '\*' , '?' , '"' , '<' , '>' , '|' ) ,
-                    array ( '' , '' , '' , '' , '' , '' , '' , '' , '' , '' ) ,
+                    ['\\' , '/' , ':' , '\'' , '\*' , '?' , '"' , '<' , '>' , '|'],
+                    ['' , '' , '' , '' , '' , '' , '' , '' , '' , ''],
                     $forum_title) . '.csv';
 
             sendStrAsFile ($csv_string , $file_name);
@@ -4127,7 +4127,7 @@ function export ()
 
 function getEmoticonsArr ()
 {
-    return array (
+    return [
         'access' ,
         'agent' ,
         'amor' ,
@@ -4204,7 +4204,7 @@ function getEmoticonsArr ()
         'tounge_smile' ,
         'whatchutalkingabout_smile' ,
         'wink_smile' ,
-    );
+    ];
 }
 
 

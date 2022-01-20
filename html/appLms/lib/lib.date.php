@@ -263,7 +263,7 @@ class DateManager
         $res = [];
 
         if (empty($id_course) || $id_course <= 0) return $res;
-        if (is_numeric($id_course)) $id_course = array((int)$id_course);
+        if (is_numeric($id_course)) $id_course = [(int)$id_course];
         if (!is_array($id_course)) return false;
 
         $query = "SELECT dt.*, MIN(dy.date_begin) AS date_begin, MAX(dy.date_end) AS date_end, COUNT(dy.id_day) as num_day, COUNT(DISTINCT du.id_user) as user_subscribed"
@@ -711,7 +711,7 @@ class DateManager
 
     public function getDatesSubscribed($arr_id_date, $no_flat = false, $filter = '')
     {
-        if (is_numeric($arr_id_date)) $arr_id_date = array((int)$arr_id_date);
+        if (is_numeric($arr_id_date)) $arr_id_date = [(int)$arr_id_date];
         if (!is_array($arr_id_date)) return false;
         if (empty($arr_id_date)) return [];
 
@@ -843,22 +843,22 @@ class DateManager
 
     public function getStatusForDropdown()
     {
-        return array(_DATE_STATUS_PREPARATION => $this->lang->def('_CST_PREPARATION', 'course'),
+        return [_DATE_STATUS_PREPARATION => $this->lang->def('_CST_PREPARATION', 'course'),
             _DATE_STATUS_ACTIVE => $this->lang->def('_CST_AVAILABLE', 'course'),
             _DATE_STATUS_FINISHED => $this->lang->def('_CST_CONCLUDED', 'course'),
-            _DATE_STATUS_CANCELLED => $this->lang->def('_CST_CANCELLED', 'course'));
+            _DATE_STATUS_CANCELLED => $this->lang->def('_CST_CANCELLED', 'course')];
     }
 
     public function getTestTypeForDropdown()
     {
-        return array(_DATE_TEST_TYPE_WEB => $this->lang->def('_WEB_TEST'),
+        return [_DATE_TEST_TYPE_WEB => $this->lang->def('_WEB_TEST'),
             _DATE_TEST_TYPE_PAPER => $this->lang->def('_PAPER_TEST'),
-            _DATE_TEST_TYPE_NONE => $this->lang->def('_NONE'));
+            _DATE_TEST_TYPE_NONE => $this->lang->def('_NONE')];
     }
 
     public function getHours()
     {
-        return array('00' => '00',
+        return ['00' => '00',
             '01' => '01',
             '02' => '02',
             '03' => '03',
@@ -881,12 +881,12 @@ class DateManager
             '20' => '20',
             '21' => '21',
             '22' => '22',
-            '23' => '23');
+            '23' => '23'];
     }
 
     public function getMinutes()
     {
-        return array('00' => '00',
+        return ['00' => '00',
             '05' => '05',
             '10' => '10',
             '15' => '15',
@@ -897,7 +897,7 @@ class DateManager
             '40' => '40',
             '45' => '45',
             '50' => '50',
-            '55' => '55');
+            '55' => '55'];
     }
 
     public function getUserForPresence($id_date, $id_course = null)
@@ -1444,7 +1444,7 @@ class DateManager
                 list($num_student) = sql_fetch_row(sql_query($query));
             }
 
-            $res[] = array(
+            $res[] = [
                 'id_date' => $id_date,
                 'code' => $code,
                 'name' => $name,
@@ -1466,7 +1466,7 @@ class DateManager
                 'registro' => '<a href="index.php?r=alms/classroom/classroomDateDays&id_course=' . $id_course . '&amp;id_date=' . $id_date . '">' . Get::img('standard/date.png', Lang::t('_DAYS', 'course')) . '</a>'
 
 
-            );
+            ];
         }
 
         return $res;
@@ -1570,7 +1570,7 @@ class DateManager
             else
                 $user = '';
 
-            $res[] = array('sel' => '',
+            $res[] = ['sel' => '',
                 'id_user' => $id_user,
                 'userid' => $this->acl_man->relativeId($userid),
                 'fullname' => $user,
@@ -1580,7 +1580,7 @@ class DateManager
                 'date_begin_validity' => $date_begin_validity,
                 'date_expire_validity' => $date_expire_validity,
                 'overbooking' => in_array($id_user, $overbooking_users),
-                'del' => 'ajax.adm_server.php?r=alms/subscription/delPopUp&id_course=' . $id_course . '&id_date=' . $id_date . '&id_user=' . $id_user);
+                'del' => 'ajax.adm_server.php?r=alms/subscription/delPopUp&id_course=' . $id_course . '&id_date=' . $id_date . '&id_user=' . $id_user];
         }
 
         return $res;
@@ -1851,7 +1851,7 @@ class DateManager
     public function getDatesInfoByCourses($id_courses, $use_objects = false)
     {
         if (is_numeric($id_courses))
-            $arr = array((int)$id_courses);
+            $arr = [(int)$id_courses];
         elseif (is_array($id_courses) && count($id_courses) > 0)
             $arr =& $id_courses;
         else

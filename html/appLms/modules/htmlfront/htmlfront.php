@@ -81,10 +81,10 @@ function edithtml() {
 	
 	list($textof) = sql_fetch_row($re_htmlfront);
 	
-	$title_page = array(
+	$title_page = [
 		'index.php?modname=htmlfront&amp;op=showhtml' => $lang->def('_HTMLFRONT'), 
 		$lang->def('_MOD')
-	);
+    ];
 	$GLOBALS['page']->add(
 		getTitleArea($title_page, 'htmlfront')
 		.'<div class="std_block">'

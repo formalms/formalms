@@ -36,13 +36,13 @@ class CatalogLms extends Model
         $this->edition_man = new EditionManager();
         $this->classroom_man = new DateManager();
 
-        $this->cstatus = array(
+        $this->cstatus = [
             CST_PREPARATION => '_CST_PREPARATION',
             CST_AVAILABLE => '_CST_AVAILABLE',
             CST_EFFECTIVE => '_CST_CONFIRMED',
             CST_CONCLUDED => '_CST_CONCLUDED',
             CST_CANCELLED => '_CST_CANCELLED'
-        );
+        ];
 
         $this->acl_man = &Docebo::user()->getAclManager();
         $this->show_all_category = Get::sett('hide_empty_category') == 'off';
@@ -105,7 +105,7 @@ class CatalogLms extends Model
                 $filter = " AND course_type = '" . $type . "'";
                 $base_link = 'index.php?r=catalog/elearningCourse&amp;page=' . $page;
                 if (count($user_catalogue) > 0) {
-                    $courses = array();
+                    $courses = [];
 
                     foreach ($user_catalogue as $id_cat) {
                         $catalogue_course = &$cat_man->getCatalogueCourse($id_cat);
@@ -120,7 +120,7 @@ class CatalogLms extends Model
                 $filter = " AND course_type = '" . $type . "'";
                 $base_link = 'index.php?r=catalog/classroomCourse&amp;page=' . $page;
                 if (count($user_catalogue) > 0) {
-                    $courses = array();
+                    $courses = [];
 
                     foreach ($user_catalogue as $id_cat) {
                         $catalogue_course = &$cat_man->getCatalogueCourse($id_cat);
@@ -135,7 +135,7 @@ class CatalogLms extends Model
                 $filter = " AND create_date >= '" . date('Y-m-d', mktime(0, 0, 0, date('m'), ((int) date('d') - 7), date('Y'))) . "'";
                 $base_link = 'index.php?r=catalog/newCourse&amp;page=' . $page;
                 if (count($user_catalogue) > 0) {
-                    $courses = array();
+                    $courses = [];
 
                     foreach ($user_catalogue as $id_cat) {
                         $catalogue_course = &$cat_man->getCatalogueCourse($id_cat);
@@ -160,7 +160,7 @@ class CatalogLms extends Model
                 // var_dump($user_catalogue);
 
                 if (count($user_catalogue) > 0) {
-                    $courses = array();
+                    $courses = [];
 
                     foreach ($user_catalogue as $id_cat) {
                         $catalogue_course = &$cat_man->getCatalogueCourse($id_cat);
@@ -289,7 +289,7 @@ class CatalogLms extends Model
             case 'elearning':
                 $filter = " AND course_type = '" . $type . "'";
                 if (count($user_catalogue) > 0) {
-                    $courses = array();
+                    $courses = [];
 
                     foreach ($user_catalogue as $id_cat) {
                         $catalogue_course = &$cat_man->getCatalogueCourse($id_cat);
@@ -303,7 +303,7 @@ class CatalogLms extends Model
             case 'classroom':
                 $filter = " AND course_type = '" . $type . "'";
                 if (count($user_catalogue) > 0) {
-                    $courses = array();
+                    $courses = [];
 
                     foreach ($user_catalogue as $id_cat) {
                         $catalogue_course = &$cat_man->getCatalogueCourse($id_cat);
@@ -317,7 +317,7 @@ class CatalogLms extends Model
             case 'edition':
                 $filter = " AND course_edition = 1";
                 if (count($user_catalogue) > 0) {
-                    $courses = array();
+                    $courses = [];
 
                     foreach ($user_catalogue as $id_cat) {
                         $catalogue_course = &$cat_man->getCatalogueCourse($id_cat);
@@ -331,7 +331,7 @@ class CatalogLms extends Model
             case 'new':
                 $filter = " AND create_date >= '" . date('Y-m-d', mktime(0, 0, 0, date('m'), ((int)date('d') - 7), date('Y'))) . "'";
                 if (count($user_catalogue) > 0) {
-                    $courses = array();
+                    $courses = [];
 
                     foreach ($user_catalogue as $id_cat) {
                         $catalogue_course = &$cat_man->getCatalogueCourse($id_cat);
@@ -352,7 +352,7 @@ class CatalogLms extends Model
                 $filter = '';
 
                 if (count($user_catalogue) > 0) {
-                    $courses = array();
+                    $courses = [];
 
                     foreach ($user_catalogue as $id_cat) {
                         $catalogue_course = &$cat_man->getCatalogueCourse($id_cat);
@@ -455,7 +455,7 @@ class CatalogLms extends Model
             . " AND type_of_entry = 'coursepath'";
 
         $result = sql_query($query);
-        $res = array();
+        $res = [];
 
         while (list($id_path) = sql_fetch_row($result))
             $res[$id_path] = $id_path;
@@ -470,7 +470,7 @@ class CatalogLms extends Model
             . " WHERE idUser = '" . $id_user . "'";
 
         $result = sql_query($query);
-        $res = array();
+        $res = [];
 
         while (list($id_path) = sql_fetch_row($result))
             $res[$id_path] = $id_path;
@@ -522,7 +522,7 @@ class CatalogLms extends Model
     public function subscribeCoursePathInfo($id_path)
     {
 
-        $res = array();
+        $res = [];
 
         $res['success'] = true;
         $res['title'] = Lang::t('_COURSEPATH_SUBSCRIBE_WIN_TIT', 'catalogue');
@@ -580,7 +580,7 @@ class CatalogLms extends Model
                 return false;
             else {
                 //Controllo che l'utente non sia iscritto a tutte le edizioni future
-                $date_id = array();
+                $date_id = [];
 
                 $user_classroom = $this->classroom_man->getUserDates(Docebo::user()->getIdSt());
                 $classroom_full = $this->classroom_man->getFullDateForCourse($row['idCourse']);
@@ -599,7 +599,7 @@ class CatalogLms extends Model
                     if ($row['selling'] == 0)
                         return true;
                     else {
-                        $classroom_in_chart = array();
+                        $classroom_in_chart = [];
 
                         if (isset($_SESSION['lms_cart'][$row['idCourse']]['classroom']))
                             $classroom_in_chart = $_SESSION['lms_cart'][$row['idCourse']]['classroom'];
@@ -624,7 +624,7 @@ class CatalogLms extends Model
                 if ($row['selling'] == 0)
                     return true;
                 else {
-                    $edition_in_chart = array();
+                    $edition_in_chart = [];
 
                     if (isset($_SESSION['lms_cart'][$row['idCourse']]['editions']))
                         $edition_in_chart = $_SESSION['lms_cart'][$row['idCourse']]['editions'];
@@ -649,7 +649,7 @@ class CatalogLms extends Model
         foreach ($top_category as $id_key => $val) {
             if ($this->CategoryHasChildrenCourses($id_key, $val['iLeft'], $val['iRight'])) {
                 $this->children = $this->getMinorCategoryTree($id_key, $val['iLeft'], $val['iRight'], 2);
-                $global_tree[] = array('text' => $val['text'], "id_cat" => $id_key, 'nodes' => $this->children);
+                $global_tree[] = ['text' => $val['text'], "id_cat" => $id_key, 'nodes' => $this->children];
             }
         }
         return $global_tree;
@@ -665,7 +665,7 @@ class CatalogLms extends Model
         $res = [];
         $records = sql_query($q);
         while ($row = sql_fetch_assoc($records)) {
-            $res[$row['idCategory']] = array('text' => end(explode('/', $row['path'])), 'iLeft' => $row['iLeft'], 'iRight' => $row['iRight']);
+            $res[$row['idCategory']] = ['text' => end(explode('/', $row['path'])), 'iLeft' => $row['iLeft'], 'iRight' => $row['iRight']];
         }
 
         return $res;
@@ -682,10 +682,10 @@ class CatalogLms extends Model
             while ($row = sql_fetch_assoc($records)) {
                 // including only if there are courses starting from here
                 if ($this->CategoryHasChildrenCourses($row['idCategory'], $row['iLeft'], $row['iRight'])) {
-                    $res[$row['idCategory']] = array(
+                    $res[$row['idCategory']] = [
                         'text' => end(explode('/', $row['path'])),
                         'id_cat' => $row['idCategory']
-                    );
+                    ];
                     // getting all children of next level, if any
                     $children = $this->getMinorCategoryTree($row['idCategory'], $row['iLeft'], $row['iRight'], $row['lev'] + 1);
                     if ($children) {

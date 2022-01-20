@@ -26,12 +26,12 @@ class CertificateSubstitution
 
 	function getSubstitution()
 	{
-		return array();
+		return [];
 	}
 
 	function getSubstitutionTags()
 	{
-		return array();
+		return [];
 	}
 
 }

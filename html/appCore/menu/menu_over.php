@@ -65,7 +65,7 @@ function AdminBar()
                         <ul id="main-menu" class="sm sm-forma">
                         <li>'.GetCompanyLogo().'</li>';
 
-    $menu = CoreMenu::getList(array('framework', 'alms'));
+    $menu = CoreMenu::getList(['framework', 'alms']);
 
     $menu_html = "";
     foreach($menu as $menu_0) {

@@ -48,18 +48,18 @@ function modlinkgui( $object_link ) {
 		.'</div><br />', 'content');
 	$tableCat = new Table(0, '', $lang->def('_SUMMARY_LINK'));
 	
-	$contentH = array($lang->def('_QUESTION'), $lang->def('_URL'), 
+	$contentH = [$lang->def('_QUESTION'), $lang->def('_URL'),
 		'<img src="'.getPathImage().'standard/down.png" alt="'.$lang->def('_DOWN').'" title="'.$lang->def('_MOVE_DOWN').'" />',
 		'<img src="'.getPathImage().'standard/up.png" alt="'.$lang->def('_UP').'" title="'.$lang->def('_MOVE_UP').'" />',
 		'<img src="'.getPathImage().'standard/edit.png" alt="'.$lang->def('_MOD').'" title="'.$lang->def('_MOD').'" />',
-		'<img src="'.getPathImage().'standard/delete.png" alt="'.$lang->def('_DEL').'" title="'.$lang->def('_DEL').'" />');
-	$typeH = array('', 'image', 'image', 'image', 'image', 'image');
+		'<img src="'.getPathImage().'standard/delete.png" alt="'.$lang->def('_DEL').'" title="'.$lang->def('_DEL').'" />'];
+	$typeH = ['', 'image', 'image', 'image', 'image', 'image'];
 	$tableCat->setColsStyle($typeH);
 	$tableCat->addHead($contentH);
 	
 	$i = 1;
 	while(list($idLink, $title, $link_address, $seq) = sql_fetch_row($result)) {
-		$rowContent = array($seq.') '.$title, $link_address);
+		$rowContent = [$seq.') '.$title, $link_address];
 		if($i != $num_link) {
 			$rowContent[] = '<a href="index.php?modname=link&amp;op=movedown&amp;idLink='
 				.$idLink.'&amp;back_url='.$back_coded.'">'

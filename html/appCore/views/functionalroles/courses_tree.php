@@ -15,7 +15,7 @@ $html = "";
 $html .= '<div class="folder_tree">';
 $html .= '<div id="fncrole_show_courses"><ul>';
 foreach ($competences_info as $id_competence => $cinfo) {
-	$courses = isset($courses_info[$id_competence]) ? $courses_info[$id_competence] : array();
+	$courses = isset($courses_info[$id_competence]) ? $courses_info[$id_competence] : [];
 	
 	$html .= '<li class="expanded">';
 	$html .= $cinfo->langs[$language]['name'];
@@ -41,11 +41,11 @@ $html .= '</ul></div>';
 $html .= '</div>';
 
 if ($json) {
-	$output = array(
+	$output = [
 		'success' => true,
 		'header' => $title,
 		'body' => $html
-	);
+    ];
 	echo $json->encode($output);
 } else {
 	echo getTitle($title);

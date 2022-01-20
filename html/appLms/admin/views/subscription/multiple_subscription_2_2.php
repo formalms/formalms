@@ -1,8 +1,8 @@
 <br />
 
 <?php
-$title = array(	'index.php?r='.$this->link_course.'/show' => Lang::t('_COURSE', 'course'),
-				Lang::t('_MULTIPLE_SUBSCRIPTION', 'course'));
+$title = ['index.php?r='.$this->link_course.'/show' => Lang::t('_COURSE', 'course'),
+				Lang::t('_MULTIPLE_SUBSCRIPTION', 'course')];
 
 echo getTitleArea($title);
 ?>
@@ -15,14 +15,14 @@ echo getTitleArea($title);
 			.Form::getHidden('user_selection', 'user_selection', $user_selection)
 			.Form::getHidden('step', 'step', '3');
 
-	$this->widget(	'table', array(
+	$this->widget(	'table', [
 					'id'		=> 'edition_table',
 					//'styles'	=> $model->getEditionTableStyle(),
 					'header'	=> $model->getEditionTableHeader(),
 					'data'		=> $model->getEditionTableContent($courses),
 					'summary'	=> Lang::t('_COURSE', 'course'),
 					'caption'	=> Lang::t('_COURSE', 'course')
-				));
+    ]);
 
 	echo '<br /><br />';
 

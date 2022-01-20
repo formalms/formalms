@@ -22,8 +22,8 @@ else
 
 // ---------- Popup Menu ----------------------
 
-$menu_label 	= array();
-$menu_url 		= array();
+$menu_label 	= [];
+$menu_url 		= [];
 
 $menu_label["main"]=$lang->def("_LINK");
 $menu_url["main"]=$page_url."&amp;op=main";

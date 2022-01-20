@@ -48,14 +48,14 @@ class ClassroomAlmsController extends AlmsController
 
         $this->model = new ClassroomAlms($this->idCourse, $this->idDate);
 
-        $this->permissions = array(
+        $this->permissions = [
             'view' => checkPerm('view', true, 'course', 'lms'),
             'add' => checkPerm('add', true, 'course', 'lms'),
             'mod' => checkPerm('mod', true, 'course', 'lms'),
             'del' => checkPerm('del', true, 'course', 'lms'),
             'moderate' => checkPerm('moderate', true, 'course', 'lms'),
             'subscribe' => checkPerm('subscribe', true, 'course', 'lms')
-        );
+        ];
     }
 
     protected function _getMessage($code)
@@ -88,13 +88,13 @@ class ClassroomAlmsController extends AlmsController
                 break;
         }
 
-        $this->render('edition', array(
+        $this->render('edition', [
             'model' => $this->model,
             'permissions' => $this->permissions,
             'base_link_course' => $this->baseLinkCourse,
             'base_link_classroom' => $this->baseLinkClassroom,
             'course_name' => $course_name
-        ));
+        ]);
     }
 
     protected function getclassroomedition()
@@ -116,7 +116,7 @@ class ClassroomAlmsController extends AlmsController
 
         $array_edition = $evendData['editions'];
 
-        $result = array(
+        $result = [
             'totalRecords' => $total_course,
             'startIndex' => $start_index,
             'sort' => $sort,
@@ -124,7 +124,7 @@ class ClassroomAlmsController extends AlmsController
             'rowsPerPage' => $results,
             'results' => count($array_edition),
             'records' => $array_edition
-        );
+        ];
 
         $this->data = $this->json->encode($result);
 
@@ -149,31 +149,31 @@ class ClassroomAlmsController extends AlmsController
 
     protected function _getNodeActions($id_category, $is_leaf)
     {
-        $node_options = array();
+        $node_options = [];
 
-        $node_options[] = array(
+        $node_options[] = [
             'id' => 'mod_' . $id_category,
             'command' => 'modify',
             //'content' => '<img src="'.Get::tmpl_path().'images/standard/edit.png" alt="'.$lang->def('_MOD').'" title="'.$lang->def('_MOD').'" />'
             'icon' => 'standard/edit.png',
             'alt' => Lang::t('_MOD')
-        );
+        ];
 
         if ($is_leaf) {
-            $node_options[] = array(
+            $node_options[] = [
                 'id' => 'del_' . $id_category,
                 'command' => 'delete',
                 //'content' => '<img src="'.Get::tmpl_path().'images/standard/delete.png" alt="'.$lang->def('_DEL').'" title="'.$lang->def('_DEL').'" />'
                 'icon' => 'standard/delete.png',
                 'alt' => Lang::t('_DEL')
-            );
+            ];
         } else {
-            $node_options[] = array(
+            $node_options[] = [
                 'id' => 'del_' . $id_category,
                 'command' => false,
                 //'content' => '<img src="'.Get::tmpl_path().'images/blank.png" />'
                 'icon' => 'blank.png'
-            );
+            ];
         }
 
         return $node_options;
@@ -194,11 +194,11 @@ class ClassroomAlmsController extends AlmsController
                     $initial = Get::req('initial', DOTY_INT, 0);
 
                     $db = DbConn::getInstance();
-                    $result = array();
+                    $result = [];
                     if ($initial == 1) {
                         $treestatus = $this->_getSessionTreeData('c_category', 0);
                         $folders = $treecat->getOpenedFolders($treestatus);
-                        $result = array();
+                        $result = [];
 
                         $ref =& $result;
                         foreach ($folders as $folder) {
@@ -207,7 +207,7 @@ class ClassroomAlmsController extends AlmsController
                             if ($folder > 0) {
                                 for ($i = 0; $i < $countRef; $i++) {
                                     if ($ref[$i]['node']['id'] == $folder) {
-                                        $ref[$i]['children'] = array();
+                                        $ref[$i]['children'] = [];
                                         $ref =& $ref[$i]['children'];
                                         break;
                                     }
@@ -220,15 +220,15 @@ class ClassroomAlmsController extends AlmsController
                                 $node_options = $this->_getNodeActions($id_category, $is_leaf);
 
                                 $pathArray = explode('/', $path);
-                                $ref[] = array(
-                                    'node' => array(
+                                $ref[] = [
+                                    'node' => [
                                         'id' => $id_category,
                                         'label' => end($pathArray),
                                         'is_leaf' => $is_leaf,
                                         'count_content' => (int)(($right - $left - 1) / 2),
                                         'options' => $node_options
-                                    )
-                                );
+                                    ]
+                                ];
                             }
 
                         }
@@ -243,19 +243,19 @@ class ClassroomAlmsController extends AlmsController
                             $node_options = $this->_getNodeActions($id_category, $is_leaf);
 
                             $pathArray = explode('/', $path);
-                            $result[] = array(
+                            $result[] = [
                                 'id' => $id_category,
                                 'label' => end($pathArray),
                                 'is_leaf' => $is_leaf,
                                 'count_content' => (int)(($right - $left - 1) / 2),
                                 'options' => $node_options
-                            ); //change this
+                            ]; //change this
                         }
 
                     }
 
 
-                    $output = array('success' => true, 'nodes' => $result, 'initial' => ($initial == 1));
+                    $output = ['success' => true, 'nodes' => $result, 'initial' => ($initial == 1)];
                     echo $this->json->encode($output);
                 };
                 break;
@@ -272,7 +272,7 @@ class ClassroomAlmsController extends AlmsController
                     $node_id = Get::req('node_id', DOTY_INT, 0);
                     $new_name = Get::req('name', DOTY_STRING, false);
 
-                    $result = array('success' => false);
+                    $result = ['success' => false];
                     if ($new_name !== false) $result['success'] = $treecat->renameFolderById($node_id, $new_name);
                     if ($result['success']) $result['new_name'] = stripslashes($new_name);
 
@@ -286,7 +286,7 @@ class ClassroomAlmsController extends AlmsController
                     $node_id = Get::req('node_id', DOTY_INT, false);
                     $node_name = Get::req('name', DOTY_STRING, false); //no multilang required for categories
 
-                    $result = array();
+                    $result = [];
                     if ($node_id === false) {
                         $result['success'] = false;
                     } else {
@@ -296,13 +296,13 @@ class ClassroomAlmsController extends AlmsController
 
                         $result['success'] = $success;
                         if ($success) {
-                            $result['node'] = array(
+                            $result['node'] = [
                                 'id' => $new_node_id,
                                 'label' => $node_name,
                                 'is_leaf' => true,
                                 'count_content' => 0,
                                 'options' => $this->_getNodeActions($new_node_id, true)
-                            );
+                            ];
                         }
                     }
                     echo $this->json->encode($result);
@@ -312,7 +312,7 @@ class ClassroomAlmsController extends AlmsController
             case "delete":
                 {
                     $node_id = Get::req('node_id', DOTY_INT, 0);
-                    $result = array('success' => $treecat->deleteTreeById($node_id));
+                    $result = ['success' => $treecat->deleteTreeById($node_id)];
                     echo $this->json->encode($result);
                 };
                 break;
@@ -322,7 +322,7 @@ class ClassroomAlmsController extends AlmsController
                     $node_id = Get::req('node_id', DOTY_INT, 0);
                     $node_dest = Get::req('node_dest', DOTY_INT, 0);
 
-                    $result = array('success' => $treecat->move($node_id, $node_dest));
+                    $result = ['success' => $treecat->move($node_id, $node_dest)];
                     echo $this->json->encode($result);
                 };
                 break;
@@ -337,7 +337,7 @@ class ClassroomAlmsController extends AlmsController
                     if ($count > 0) $is_leaf = false;
                     $node_options = $this->_getNodeActions($node_id, $is_leaf);
 
-                    $result = array('success' => true, 'options' => $node_options, '_debug' => $count);
+                    $result = ['success' => true, 'options' => $node_options, '_debug' => $count];
                     echo $this->json->encode($result);
                 };
                 break;
@@ -503,10 +503,10 @@ class ClassroomAlmsController extends AlmsController
 
         $date_info = $this->model->getDateInfo();
 
-        $res = array('message' => Lang::t('_AREYOUSURE', 'course', array('[name]' => $date_info['name'], '[code]' => $date_info['code'])),
+        $res = ['message' => Lang::t('_AREYOUSURE', 'course', ['[name]' => $date_info['name'], '[code]' => $date_info['code']]),
             'title' => Lang::t('_DEL_COURSE_EDITION', 'course'),
             'action' => 'ajax.adm_server.php?r=' . $this->baseLinkClassroom . '/delclassroom&id_course=' . $this->model->getIdCourse() . '&id_date=' . $this->model->getIdDate(),
-            'success' => true);
+            'success' => true];
 
         $this->data = $this->json->encode($res);
 
@@ -520,7 +520,7 @@ class ClassroomAlmsController extends AlmsController
         }
         //Course info
 
-        $res = array('success' => $this->model->delClassroom());
+        $res = ['success' => $this->model->delClassroom()];
 
         $this->data = $this->json->encode($res);
 
@@ -534,7 +534,7 @@ class ClassroomAlmsController extends AlmsController
         }
         //Course info
 
-        $res = array('success' => $this->model->delCourse());
+        $res = ['success' => $this->model->delCourse()];
 
         $this->data = $this->json->encode($res);
 
@@ -577,7 +577,7 @@ class ClassroomAlmsController extends AlmsController
 
         ob_end_clean();
 
-        $array_date = array();
+        $array_date = [];
         print "<html><head><meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\"></head><body>";
         print $edition_name;
         print "<table border=1><tr><td><b>Username</b></td><td><b>" . Lang::t('_FULLNAME', 'standard') . "</b></td>";
@@ -631,12 +631,12 @@ class ClassroomAlmsController extends AlmsController
         $course_info = $cmodel->getInfo($this->idCourse, FALSE, $this->idDate);
         $course_name = ($course_info['code'] !== '' ? '[' . $course_info['code'] . '] ' : '') . $course_info['name'];
 
-        $this->render('presence', array(
+        $this->render('presence', [
             'model' => $this->model,
             'base_link_course' => $this->baseLinkCourse,
             'base_link_classroom' => $this->baseLinkClassroom,
             'course_name' => $course_name
-        ));
+        ]);
     }
 
     public function saveData()
@@ -662,7 +662,7 @@ class ClassroomAlmsController extends AlmsController
                     $res = sql_query($query);
                 }
 
-                echo $json->encode(array('success' => $res, 'new_value' => $new_value, 'old_value' => $old_value));
+                echo $json->encode(['success' => $res, 'new_value' => $new_value, 'old_value' => $old_value]);
                 break;
 
             case 'code':
@@ -676,7 +676,7 @@ class ClassroomAlmsController extends AlmsController
                     $res = sql_query($query);
                 }
 
-                echo $json->encode(array('success' => $res, 'new_value' => stripslashes($new_value), 'old_value' => stripslashes($old_value)));
+                echo $json->encode(['success' => $res, 'new_value' => stripslashes($new_value), 'old_value' => stripslashes($old_value)]);
                 break;
         }
     }

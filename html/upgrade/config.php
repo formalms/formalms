@@ -23,9 +23,9 @@ function versionSort($a, $b)
 }
 
 $readFolder = _upgrader_ . "/version/";
-$subFolders = array();
-$versions = array();
-$arrGlobal = array();
+$subFolders = [];
+$versions = [];
+$arrGlobal = [];
 if ($handle = opendir($readFolder)) {
     while ($file = readdir($handle)) {
         if (is_dir("{$readFolder}/{$file}")) {
@@ -42,7 +42,7 @@ closedir($handle);
 usort($versions, 'versionSort');
 
 // for reference old docebo ce versions
-$GLOBALS['cfg']['versions'] = array(
+$GLOBALS['cfg']['versions'] = [
     '3603' => '3.6.0.3  - Docebo CE',
     '3604' => '3.6.0.4 - Docebo CE',
     '3605' => '3.6.0.5 - Docebo CE',
@@ -52,7 +52,7 @@ $GLOBALS['cfg']['versions'] = array(
     '4030' => '4.0.3 - Docebo CE',
     '4040' => '4.0.4 - Docebo CE',
     '4050' => '4.0.5 - Docebo CE'
-);
+];
 
 foreach ($versions as $version) {
     $strJsonVer = file_get_contents("{$readFolder}/{$version}.json", 'r');
@@ -67,7 +67,7 @@ foreach ($versions as $version) {
 
 
 // for reference old docebo ce versions
-$GLOBALS['cfg']['docebo_versions'] = array(
+$GLOBALS['cfg']['docebo_versions'] = [
     '3603' => '3.6.0.3',
     '3604' => '3.6.0.4',
     '3605' => '3.6.0.5',
@@ -77,6 +77,6 @@ $GLOBALS['cfg']['docebo_versions'] = array(
     '4030' => '4.0.3',
     '4040' => '4.0.4',
     '4050' => '4.0.5',
-);
+];
 
 ?>

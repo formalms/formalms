@@ -113,15 +113,15 @@ $GLOBALS['debug'] = ""
 					. '<br/> ----<br>' . $GLOBALS['debug']
 					.'<br> -----' ;
 if ( ! $_SESSION['upgrade_ok']) {
-		$res =array('res'=>'Error', 'msg' => $GLOBALS['debug']);
+		$res = ['res'=>'Error', 'msg' => $GLOBALS['debug']];
 } else if ( ! $config_changed ) {
-		$res =array('res'=>'not_change', 'msg' => $GLOBALS['debug']);
+		$res = ['res'=>'not_change', 'msg' => $GLOBALS['debug']];
 } else if ( $config_saved ) {
-		$res =array('res'=>'saved', 'msg' => $GLOBALS['debug']);
+		$res = ['res'=>'saved', 'msg' => $GLOBALS['debug']];
 } else if ( ! $config_saved ) {
-		$res =array('res'=>'not_saved', 'msg' => $GLOBALS['debug']);
+		$res = ['res'=>'not_saved', 'msg' => $GLOBALS['debug']];
 } else {
-		$res =array('res'=>'Error', 'msg' => $GLOBALS['debug']);
+		$res = ['res'=>'Error', 'msg' => $GLOBALS['debug']];
 }
 
 // remove all the echo and put them in the debug zone

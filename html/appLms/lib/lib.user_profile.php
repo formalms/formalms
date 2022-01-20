@@ -129,7 +129,7 @@ class UserProfile {
 
 		$this->_setReference();
 
-		$options = array('user_use_avatar' => (Get::sett('user_use_avatar', 'on') == 'on' ? true : false));
+		$options = ['user_use_avatar' => (Get::sett('user_use_avatar', 'on') == 'on' ? true : false)];
 
 		$this->_use_avatar 	= $options['user_use_avatar'];
 
@@ -1105,7 +1105,7 @@ class UserProfileViewer {
 			$class_picture = 'image_limit_medium';
 			$max_dim = '150';
 		}
-		return array($class_picture, $max_dim);
+		return [$class_picture, $max_dim];
 	}
 
 	public function getAvailablePhotoAvatar($dimension = 'medium') {
@@ -1183,16 +1183,16 @@ class UserProfileViewer {
 		$from = Get::req('from', DOTY_INT, 0);
 		$viewer = $this->getViewer();
 
-		YuiLib::load(array(
+		YuiLib::load([
 			'animation' 		=> 'animation-min.js',
 			'dragdrop' 			=> 'dragdrop-min.js',
 			'button' 			=> 'button-min.js',
 			'container' 		=> 'container-min.js',
 			'my_window' 		=> 'windows.js'
-		), array(
+        ], [
 			'container/assets/skins/sam' => 'container.css',
 			'button/assets/skins/sam' => 'button.css'
-		));
+        ]);
 
 		//$pre = ( $reduced === true ? 'l_' : '' );
 
@@ -1200,13 +1200,13 @@ class UserProfileViewer {
 		$is_online 	= $this->_up_data_man->isOnline($this->_id_user);
 		//$send_msg 	= $this->_up_data_man->canSendMessage($this->_id_user, $viewer);
 
-		$action = array();
+		$action = [];
 
 		if($with_file) {
 
 			$files_info = $this->_up_data_man->getFileInfo($this->_id_user, $viewer);
 			$id_thread = Get::req('idThread', DOTY_INT, 0);
-			$file_type = array('image', 'video', 'audio', 'other');
+			$file_type = ['image', 'video', 'audio', 'other'];
 			$id_thread = Get::req('idThread', DOTY_INT, 0);
 			foreach($file_type as $type) {
 
@@ -1841,7 +1841,7 @@ class UserProfileViewer {
             $perm_message = true;
             require_once($GLOBALS['where_framework'] . '/lib/lib.message.php');
             $msg = new Man_Message();
-            $unread_num = $msg->getCountUnreaded(getLogUserId(), array(), '', true);
+            $unread_num = $msg->getCountUnreaded(getLogUserId(), [], '', true);
         }
 
         if ($ma->currentCanAccessObj('mo_7')) {
@@ -1986,7 +1986,7 @@ class UserProfileViewer {
 		list($class_picture, $this->max_dim_avatar) = $this->getPhotoLimit($picture);
 
 		// main container ---------------------------------------------------------------------
-		$data = array();
+		$data = [];
 		$data['display_name'] = $this->resolveUsername();
 
 		$data['avatar'] = ( ($this->user_info[ACL_INFO_AVATAR] != "")
@@ -2093,16 +2093,16 @@ class UserProfileViewer {
 
 			$lv_lang =& DoceboLanguage::createInstance('admin_directory', 'framework');
 			if(Docebo::user()->getUserLevelId() == ADMIN_GROUP_GODADMIN) {
-				$level_list = array(
+				$level_list = [
 					ADMIN_GROUP_GODADMIN => $lv_lang->def('_DIRECTORY_'.ADMIN_GROUP_GODADMIN),
 					ADMIN_GROUP_ADMIN	=> $lv_lang->def('_DIRECTORY_'.ADMIN_GROUP_ADMIN),
 					ADMIN_GROUP_USER 	=> $lv_lang->def('_DIRECTORY_'.ADMIN_GROUP_USER)
-				);
+                ];
 			} else {
 
-				$level_list = array(
+				$level_list = [
 					ADMIN_GROUP_USER 	=> $lv_lang->def('_DIRECTORY_'.ADMIN_GROUP_USER)
-				);
+                ];
 			}
 
 			$html .= Form::getDropdown(	$this->_lang->def('_LEVEL'),
@@ -2169,7 +2169,7 @@ class UserProfileViewer {
 	 */
 	function getFilledData() {
 
-		$std_filled = array(
+		$std_filled = [
 			'lastname' 		=> Get::req('up_lastname', DOTY_MIXED, '' ),
 			'firstname' 	=> Get::req('up_firstname', DOTY_MIXED, '' ),
 			'email' 		=> Get::req('up_email', DOTY_MIXED, '' ),
@@ -2178,7 +2178,7 @@ class UserProfileViewer {
 			'twitter_id' 		=> Get::pReq('twitter_id', DOTY_MIXED, '' ),
 			'linkedin_id' 		=> Get::pReq('linkedin_id', DOTY_MIXED, '' ),
 			'google_id' 		=> Get::pReq('google_id', DOTY_MIXED, '' ),
-		);
+        ];
 		if($this->_user_profile->godMode()) {
 			$std_filled['userid'] 		= Get::req('up_userid', DOTY_MIXED, '' );
 			$std_filled['new_pwd'] 		= Get::req('up_new_pwd', DOTY_MIXED, '' );
@@ -2356,17 +2356,17 @@ class UserProfileViewer {
 		require_once(_base_.'/lib/lib.form.php');
 
 		$this->loadUserData( $this->_id_user );
-		$policy_arr = array(
+		$policy_arr = [
 			PFL_POLICY_FREE => $this->_lang->def('_ALL'),
 			//PFL_ _FRIENDS => $this->_lang->def('_PFL_POLICY_FRIENDS'),
 			PFL_POLICY_TEACHER => $this->_lang->def('_PFL_POLICY_TEACHER'),
 			//PFL_POLICY_TEACHER_AND_FRIENDS => $this->_lang->def('_PFL_POLICY_TEACHER_AND_FRIENDS'),
 			PFL_POLICY_NOONE => $this->_lang->def('_PFL_POLICY_NOONE')
-		);
-		$reduced_policy_arr = array(
+        ];
+		$reduced_policy_arr = [
 			PFL_POLICY_FREE => $this->_lang->def('_ALL'),
 			//PFL_POLICY_TEACHER_AND_FRIENDS => $this->_lang->def('_PFL_POLICY_TEACHER_AND_FRIENDS')
-		);
+        ];
 
 		$field_policy 	= $this->_up_data_man->getFieldAccessList($this->_id_user);
 
@@ -2941,7 +2941,7 @@ class UserProfileViewer {
 		$lang_test =& DoceboLanguage::createInstance('test', 'lms');
 
 		$tb = new Table(0, $this->_lang->def('_USERCOURSE_CAPTION'), $this->_lang->def('_USERCOURSE_STATS_SUMMARY'));
-		$tb->addHead(array(
+		$tb->addHead([
 			$this->_lang->def('_CODE'),
 			$this->_lang->def('_COURSE_NAME'),
 			$this->_lang->def('_STATUS'),
@@ -2955,10 +2955,10 @@ class UserProfileViewer {
 			$this->_lang->def('_SCORE_INIT'),
 			$this->_lang->def('_SCORE_FINAL'),
 			str_replace(':', '', $lang_test->def('_TEST_TOTAL_SCORE'))
-		));
+        ]);
 
     foreach ($stats_data as $$id_cid => $info ) {
-			$tb->addBody(array(
+			$tb->addBody([
 				$info['course_code'],
 				$info['course_name'],
 				$info['course_status'],
@@ -2975,7 +2975,7 @@ class UserProfileViewer {
 				( isset($info['score_init']) ? $info['score_init'] : '' ),
 				( isset($info['score_final']) ? $info['score_final'] : '' ),
 				$info['point_do']
-			));
+            ]);
 		}
 
 		return $tb->getTable();
@@ -2988,7 +2988,7 @@ class UserProfileViewer {
 
 		$tb = new Table(0, Lang::t('_USERCOMPETENCES_CAPTION', 'profile'), Lang::t('_USERCOMPETENCES_SUMMARY', 'profile'));
 
-		$tb->addHead(array(
+		$tb->addHead([
 			Lang::t('_NAME', 'competences'),
 			Lang::t('_CATEGORY', 'competences'),
 			Lang::t('_TYPOLOGY', 'standard'),
@@ -2996,7 +2996,7 @@ class UserProfileViewer {
 			Lang::t('_SCORE', 'competences'),
 			Lang::t('_MANDATORY', 'competences'),
 			Lang::t('_GAP', 'fncroles')
-		), array('','','img-cell','img-cell','img-cell','img-cell','img-cell'));
+        ], ['','','img-cell','img-cell','img-cell','img-cell','img-cell']);
 
 		$icon_flag_ok = '<span class="ico-sprite subs_actv"><span>'.Lang::t('_MEET', 'competences').'</span></span>';
 		$icon_flag_no = '<span class="ico-sprite subs_noac"><span>'.Lang::t('_NOT_SATISFIED', 'competences').'</span></span>';
@@ -3046,7 +3046,7 @@ class UserProfileViewer {
 					$_gap .= '-';
 				}
 
-				$tb->addBody(array(
+				$tb->addBody([
 					$value->name,
 					$_category_name,
 					$_typologies[$value->typology],
@@ -3054,12 +3054,12 @@ class UserProfileViewer {
 					$_score,
 					$value->required ? $icon_active : '',
 					$_gap
-				));
+                ]);
 			}
 		} else {
-			$line = array(
-				array('colspan' => 5, 'value' => Lang::t('_NO_CONTENT', 'competences'))
-			);
+			$line = [
+				['colspan' => 5, 'value' => Lang::t('_NO_CONTENT', 'competences')]
+            ];
 			$tb->addBody($line);
 		}
 
@@ -3071,11 +3071,11 @@ class UserProfileViewer {
 
 		$tb = new Table(0, Lang::t('_FUNCTIONAL_ROLE', 'profile'), Lang::t('_FUNCTIONAL_ROLE', 'profile'));
 
-		$tb->addHead(array(
+		$tb->addHead([
 			Lang::t('_NAME', 'fncroles'),
 			Lang::t('_SCORE', 'fncroles'),
 			'<img src="'.Get::tmpl_path('base').'images/blank.png" />'
-		), array('', 'img-cell', 'img-cell'));
+        ], ['', 'img-cell', 'img-cell']);
 
 		$icon_flag_ok = '<span class="ico-sprite subs_actv"><span>'.Lang::t('_MEET', 'fncroles').'</span></span>';
 		$icon_flag_no = '<span class="ico-sprite fd_notice"><span>'.Lang::t('_NOT_SATISFIED', 'fncroles').'</span></span>';
@@ -3086,7 +3086,7 @@ class UserProfileViewer {
 				$obt = (int)$value->competences_obtained;
 				$req = (int)$value->competences_required;
 
-				$line = array();
+				$line = [];
 				$line[] = $value->name;
 				$line[] = '<b'.($obt < $req ? ' class="red"' : '').'>'.$obt.' / '.$req.'</b>';
 				$line[] = ($obt < $req ? $icon_flag_no : $icon_flag_ok);
@@ -3094,9 +3094,9 @@ class UserProfileViewer {
 				$tb->addBody($line);
 			}
 		} else {
-			$line = array(
-				array('colspan' => 3, 'value' => Lang::t('_NO_CONTENT', 'fncroles'))
-			);
+			$line = [
+				['colspan' => 3, 'value' => Lang::t('_NO_CONTENT', 'fncroles')]
+            ];
 			$tb->addBody($line);
 		}
 
@@ -3106,35 +3106,35 @@ class UserProfileViewer {
 
 	function getUserGroupsList(&$groups_data) {
 		$output = "";
-		$array_content_1 = array();
-		$array_content_2 = array();
+		$array_content_1 = [];
+		$array_content_2 = [];
 
 		if (is_array($groups_data)) {
 			if (isset($groups_data['folders']) && !empty($groups_data['folders'])) {
 				foreach($groups_data['folders'] as $idst => $label)
 				{
-				$array_content_1[] = array('folders' => $label);
+				$array_content_1[] = ['folders' => $label];
 				}
 
-				$array_style = array(
+				$array_style = [
 				'folders' => ''
-				);
+                ];
 
-				$array_header = array(
+				$array_header = [
 				'folders' => Lang::t('_DIRECTORY_MEMBERTYPETREE', 'admin_directory')
-				);
+                ];
 
 				asort($array_content_1);
 
 
-				$output.=Util::widget('table', array(
+				$output.=Util::widget('table', [
 				'id'		=> 'folders_table',
 				'styles'	=> $array_style,
 				'header'	=> $array_header,
 				'data'		=> $array_content_1,
 				//'summary'	=> Lang::t('_LEVELS', 'subscribe'),
 				'caption'	=> false//Lang::t('_LEVELS', 'subscribe')
-				), true);
+                ], true);
 			}
 
 
@@ -3142,27 +3142,27 @@ class UserProfileViewer {
 				if ($output != "") $output .= '<br /><br />';
 				foreach($groups_data['groups'] as $idst => $label)
 				{
-				$array_content_2[] = array('groups' => $label);
+				$array_content_2[] = ['groups' => $label];
 				}
 
-				$array_style = array(
+				$array_style = [
 				'groups' => ''
-				);
+                ];
 
-				$array_header = array(
+				$array_header = [
 				'groups' => Lang::t('_GROUPS', 'standard')
-				);
+                ];
 
 				asort($array_content_2);
 
-				$output.=Util::widget('table', array(
+				$output.=Util::widget('table', [
 				'id'		=> 'groups_table',
 				'styles'	=> $array_style,
 				'header'	=> $array_header,
 				'data'		=> $array_content_2,
 				//'summary'	=> Lang::t('_LEVELS', 'subscribe'),
 				'caption'	=> false//Lang::t('_LEVELS', 'subscribe')
-				), true);
+                ], true);
 			}
 		}
 
@@ -3309,7 +3309,7 @@ class UserProfileData {
 			$this->_teacher_data[$user]['pubblications'] = $pubb;
 		}
 
-		$teachers = Man_CourseUser::getUserWithLevelFilter(array('4', '5', '6', '7'), $arr_user);
+		$teachers = Man_CourseUser::getUserWithLevelFilter(['4', '5', '6', '7'], $arr_user);
     foreach($teachers as $id) {
 			$this->_teacher_data[$id]['is_teacher'] = true;
 		}
@@ -3504,7 +3504,7 @@ class UserProfileData {
 
 		if(isset($this->_teacher_data[$id_user]['is_teacher'])) return $this->_teacher_data[$id_user]['is_teacher'];
 
-		$re = Man_CourseUser::getUserWithLevelFilter(array('4', '5', '6', '7'), array($id_user));
+		$re = Man_CourseUser::getUserWithLevelFilter(['4', '5', '6', '7'], [$id_user]);
 		$this->_teacher_data[$id_user]['is_teacher'] = !empty($re);
 		return $this->_teacher_data[$id_user]['is_teacher'];
 	}
@@ -3589,11 +3589,11 @@ class UserProfileData {
 		$forum_post = $forum_lms->getUserForumPostLms($id_user);
 
 		$my_file = new MyFile($id_user);
-		$stats = array(
+		$stats = [
 			'forum_post' => $forum_post,
 			'blog_post' => 'unk',
 			'loaded_file' => 0
-		);
+        ];
 		return $stats;
 	}
 
@@ -3611,22 +3611,22 @@ class UserProfileData {
 		$is_friend 	= $this->isFriend($id_user, $viewer);
 
 		$field_man 		= new FieldList();
-		$field_founded 	= $field_man->getFieldsAndValueFromUser($id_user, false, false, array('standard'));
+		$field_founded 	= $field_man->getFieldsAndValueFromUser($id_user, false, false, ['standard']);
 
-		$field = array();
+		$field = [];
 		foreach($field_founded as $field_id => $value) {
 
 			if(isset($fal[$field_id])) {
 
 				if($this->getVisibilityResponse($fal[$field_id], $id_user, $viewer, $is_teacher, $is_friend)) {
 
-					$field[$field_id] = array(	'name' 	=> $value[0],
-												'value' => $value[1] );
+					$field[$field_id] = ['name' 	=> $value[0],
+												'value' => $value[1]];
 				}
 			} else {
 				if($id_user === Docebo::user()->getIdSt())
-					$field[$field_id] = array(	'name' 	=> $value[0],
-											'value' => $value[1] );
+					$field[$field_id] = ['name' 	=> $value[0],
+											'value' => $value[1]];
 			}
 		}
 		return $field;
@@ -3640,13 +3640,13 @@ class UserProfileData {
 		require_once($GLOBALS['where_framework'].'/lib/lib.field.php');
 
 		$field_man 		= new FieldList();
-		$field_founded 	= $field_man->getFieldsAndValueFromUser($id_user, false, true, array('standard'));
+		$field_founded 	= $field_man->getFieldsAndValueFromUser($id_user, false, true, ['standard']);
 
-		$field = array();
+		$field = [];
 		foreach($field_founded as $field_id => $value) {
 
-			$field[$field_id] = array(	'name' 	=> $value[0],
-										'value' => $value[1] );
+			$field[$field_id] = ['name' 	=> $value[0],
+										'value' => $value[1]];
 
 		}
 		return $field;
@@ -3666,9 +3666,9 @@ class UserProfileData {
 		$is_friend 	= $this->isFriend($id_user, $viewer);
 
 		$field_man 		= new FieldList();
-		$field_founded 	= $field_man->getFieldsAndValueFromUser($id_user, false, false, array('contact'));
+		$field_founded 	= $field_man->getFieldsAndValueFromUser($id_user, false, false, ['contact']);
 
-		$field = array();
+		$field = [];
 		foreach($field_founded as $id => $arr_value) {
 
 			if(isset($fal[$id])) {
@@ -3676,24 +3676,24 @@ class UserProfileData {
 				if($this->getVisibilityResponse($fal[$id], $id_user, $viewer, $is_teacher, $is_friend)) {
 
 					$ob =& $field_man->getFieldInstance($id, $arr_value[5], $arr_value[6]);
-                    $field[$id] = array(    'name'  => $arr_value[0],
+                    $field[$id] = ['name'  => $arr_value[0],
 											'value' => $arr_value[1],
 											'href' 	=> $ob->getIMBrowserHref($id_user, $arr_value[1]),
 											'image' => $ob->getIMBrowserImageSrc($id_user, $arr_value[1]),
 											'head'	=> $ob->getIMBrowserHead($id_user, $arr_value[1]),
 											'field_type' => $arr_value[4]
-										);
+                    ];
 				}
 			} else {
 
 				$ob =& $field_man->getFieldInstance($id, $arr_value[5], $arr_value[6]);
-				$field[$id] = array(	'name' 	=> $arr_value[0],
+				$field[$id] = ['name' 	=> $arr_value[0],
 										'value' => $arr_value[1],
 										'href' 	=> $ob->getIMBrowserHref($id_user, $arr_value[1]),
 										'image' => $ob->getIMBrowserImageSrc($id_user, $arr_value[1]),
 										'head'	=> $ob->getIMBrowserHead($id_user, $arr_value[1]),
 										'field_type' => $arr_value[4]
-									);
+                ];
 			}
 
 		}
@@ -3708,19 +3708,19 @@ class UserProfileData {
 		require_once($GLOBALS['where_framework'].'/lib/lib.field.php');
 
 		$field_man 		= new FieldList();
-		$field_founded 	= $field_man->getFieldsAndValueFromUser($id_user, false, false, array('contact'));
+		$field_founded 	= $field_man->getFieldsAndValueFromUser($id_user, false, false, ['contact']);
 
-		$field = array();
+		$field = [];
 		foreach($field_founded as $id => $arr_value) {
 
 			$ob =& $field_man->getFieldInstance($id, $arr_value[5], $arr_value[6]);
-			$field[$id] = array(	'name' 	=> $arr_value[0],
+			$field[$id] = ['name' 	=> $arr_value[0],
 									'value' => $arr_value[1],
 									'href' 	=> $ob->getIMBrowserHref($id_user, $arr_value[1]),
 									'image' => $ob->getIMBrowserImageSrc($id_user, $arr_value[1]),
 									'head'	=> $ob->getIMBrowserHead($id_user, $arr_value[1]),
 									'field_type' => $arr_value[4]
-								);
+            ];
 		}
 		return $field;
 	}
@@ -3737,7 +3737,7 @@ class UserProfileData {
 
 			return $field_man->playFieldsForUser( $id_user, false, false, true );
 		}
-		return $field_man->playFieldsForUser( $id_user, false, false, true, array('readonly') );
+		return $field_man->playFieldsForUser( $id_user, false, false, true, ['readonly']);
 	}
 
 	/**
@@ -3880,8 +3880,8 @@ class UserProfileData {
 	 */
 	function getUserProfileViewList($id_user, $limit) {
 
-		$user_list = array();
-		$id_list = array();
+		$user_list = [];
+		$id_list = [];
 
 		$query = "
 		SELECT id_viewer, date_view
@@ -3942,7 +3942,7 @@ class UserProfileData {
 		$is_friend 	= $this->isFriend($viewer, $id_user, true);
 		$is_teacher = $this->isTeacher($viewer);
 
-		$files_info = array();
+		$files_info = [];
 		require_once($GLOBALS['where_framework'].'/lib/lib.myfiles.php');
 		$user_file 	= new MyFilesPolicy(	$this->_user_profile->getIdUser(),
 											$this->getViewer(),
@@ -4074,12 +4074,12 @@ class UserProfileData {
 
 		require_once($GLOBALS['where_lms'].'/lib/lib.course.php');
 
-		$stats = array();
+		$stats = [];
 
 		$c_lang 	=& DoceboLanguage::CreateInstance('course', 'lms');
 		$lang =& DoceboLanguage::createInstance('course', 'lms');
 
-		$id_courses = array();
+		$id_courses = [];
 		$query_course_user = "
 		SELECT c.idCourse, c.code, c.name, c.status,
 			cu.status, cu.date_inscr, cu.date_first_access, cu.date_complete
@@ -4095,13 +4095,13 @@ class UserProfileData {
 			$stats[$id_c]['course_name'] 	= $name;
 			$stats[$id_c]['course_code'] 	= $code;
 
-			$course_status = array(
+			$course_status = [
 				CST_PREPARATION => $c_lang->def('_CST_PREPARATION', 'course', 'lms'),
 				CST_AVAILABLE 	=> $c_lang->def('_CST_AVAILABLE', 'course', 'lms'),
 				CST_EFFECTIVE 	=> $c_lang->def('_CST_CONFIRMED', 'course', 'lms'),
 				CST_CONCLUDED 	=> $c_lang->def('_CST_CONCLUDED', 'course', 'lms'),
 				CST_CANCELLED 	=> $c_lang->def('_CST_CANCELLED', 'course', 'lms')
-			);
+            ];
 
 			$stats[$id_c]['course_status'] = $course_status[$status];
 
@@ -4125,10 +4125,10 @@ class UserProfileData {
 
 		require_once($GLOBALS['where_lms'].'/lib/lib.coursereport.php');
 		$rep_man = new CourseReportManager();
-		$score_course = $rep_man->getUserFinalScore(array($id_user));
+		$score_course = $rep_man->getUserFinalScore([$id_user]);
 
-		$score_start = $org_man->getStartObjectScore(array($id_user), $id_courses);
-		$score_final = $org_man->getFinalObjectScore(array($id_user), $id_courses);
+		$score_start = $org_man->getStartObjectScore([$id_user], $id_courses);
+		$score_final = $org_man->getFinalObjectScore([$id_user], $id_courses);
     foreach($id_courses as $id_c) {    
 			if(isset($stats[$id_c])) {
 
@@ -4175,9 +4175,9 @@ class UserProfileData {
 		if (is_array($scores)) {
 			$info = $cmodel->getCompetencesInfo(array_keys($scores));
 		} else {
-			$info = array();
+			$info = [];
 		}
-		$output = array();
+		$output = [];
 		$lang_code = getLanguage();
 
 		foreach ($info as $id_competence => $cdata) {
@@ -4207,9 +4207,9 @@ class UserProfileData {
 		if (is_array($roles)) {
 			$info = $fmodel->getFunctionalRolesInfo(array_keys($roles));
 		} else {
-			$info = array();
+			$info = [];
 		}
-		$output = array();
+		$output = [];
 		$lang_code = getLanguage();
 
 		foreach ($info as $id_fncrole => $fdata) {
@@ -4233,10 +4233,10 @@ class UserProfileData {
 
 		$umodel = new UsermanagementAdm();
 
-		return array(
+		return [
 			'folders' => $umodel->getUserFolders($id_user),
 			'groups' => $umodel->getUserGroups($id_user)
-		);
+        ];
 	}
 
 

@@ -5,10 +5,10 @@ if (isset($id_competence))
 else
 	$_text = Lang::t('_ADD_COMPETENCE', 'competences');
 
-echo getTitleArea(array(
+echo getTitleArea([
 	'index.php?r=adm/competences/show' => Lang::t('_COMPETENCES', 'competences'),
 	$_text
-));
+]);
 
 ?>
 <div class="std_block">

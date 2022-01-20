@@ -119,7 +119,7 @@ class Get
 			case DOTY_MVC: {
 
 					$value = preg_replace('/[^a-zA-Z0-9\-\_\/]+/', '', $value);
-					if ($value{0} === '/') $value = '';
+					if ($value[0] === '/') $value = '';
 				};
 				break;
 			case DOTY_MIXED:
@@ -230,7 +230,7 @@ class Get
 		if (!defined('_' . $to . '_')) $to = 'base';
 		$path = _deeppath_
 			. str_replace(_base_, '.', constant('_' . $to . '_'));
-		return str_replace(array('//', '\\/', '/./'), '/', $path);
+		return str_replace(['//', '\\/', '/./'], '/', $path);
 	}
 
 	/**
@@ -258,7 +258,7 @@ class Get
 					break;
 			}
 		}
-		$folder = str_replace(array('//', '\\/', '/./'), '/', $folder);
+		$folder = str_replace(['//', '\\/', '/./'], '/', $folder);
 		$path = Get::site_url() . $folder;
 		return rtrim($path, '/') . '/';
 	}
@@ -468,7 +468,7 @@ class Get
 
 		$is_first = true;
 		if (!is_array($text_array))
-			$text_array = array($text_array);
+			$text_array = [$text_array];
 
 		$html = '<div class="title_block">' . "\n";
 		foreach ($text_array as $link => $title) {
@@ -553,13 +553,13 @@ class Get
 
 		$agent = strtolower($_SERVER['HTTP_USER_AGENT']);
 		$known_browser_arr = explode(" ", "firefox netscape konqueror epiphany mozilla safari opera mosaic lynx amaya omniweb msie chrome iphone");
-		$required = array(
-			"firefox"	=> array("gecko", "mozilla", "firefox"),
-			"netscape"	=> array("gecko", "mozilla", "netscape"),
-			"konqueror" => array("gecko", "mozilla", "konqueror"),
-			"epiphany"	=> array("gecko", "mozilla", "epiphany"),
-			"mozilla"	=> array("gecko", "mozilla")
-		);
+		$required = [
+			"firefox"	=> ["gecko", "mozilla", "firefox"],
+			"netscape"	=> ["gecko", "mozilla", "netscape"],
+			"konqueror" => ["gecko", "mozilla", "konqueror"],
+			"epiphany"	=> ["gecko", "mozilla", "epiphany"],
+			"mozilla"	=> ["gecko", "mozilla"]
+        ];
 
 		$founded = false;
 		foreach ($known_browser_arr as $browser) {
@@ -591,7 +591,7 @@ class Get
 	public static function user_acceptlang($main_only = true)
 	{
 
-		$lang_list = array();
+		$lang_list = [];
 		$main_langs = explode(",", $_SERVER["HTTP_ACCEPT_LANGUAGE"]);
 		foreach ($main_langs as $lang_set) {
 
@@ -614,7 +614,7 @@ class Get
 	public static function user_is_bot()
 	{
 
-		$to_test = array(
+		$to_test = [
 			"googlebot",		// Google
 			"scooter",			// Altavista
 			"altavista",		// Altavista UK
@@ -629,7 +629,7 @@ class Get
 			"msnbot",			// Msn Search (the hated)
 			"shinyseek",		// ShinySeek
 			"robozilla"			// dmoz.org
-		);
+        ];
 		$agent = strtolower($_SERVER["HTTP_USER_AGENT"]);
 		foreach ($to_test as $botname) {
 

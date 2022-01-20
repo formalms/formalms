@@ -313,7 +313,7 @@ Class Scorm_ItemsTrack {
 			return FALSE;
 		} 
 		if ( sql_num_rows($rs) == 0) {
-			$result = array();
+			$result = [];
 		    return $result;
 		} else {
 			$result = sql_fetch_row($rs);
@@ -335,7 +335,7 @@ Class Scorm_ItemsTrack {
 	 * FIXME: This function return only the first child!!!!
 	 **/
 	function getDescendantItems( $idReference, $idscorm_item, $idscorm_organization = null ) {
-		$result = array();
+		$result = [];
 		$childs = $this->getChildItems( $idReference, $idscorm_item, $idscorm_organization);
 		if($childs !== FALSE) {
 			foreach( $childs as $item ) {
@@ -466,12 +466,12 @@ Class Scorm_ItemsTrack {
                 $rsItemTrack = $this->getItemTrack($idUser,$idReference, NULL, $idResource);
                 if( $rsItemTrack !== FALSE ) {
                     $arrItemTrack = sql_fetch_assoc( $rsItemTrack );
-                    return array( TRUE, $arrItemTrack['idscorm_item_track'] );
+                    return [TRUE, $arrItemTrack['idscorm_item_track']];
                 } else if ($createOnFail) {
                         $this->createItemsTrack( $idUser, $idReference, $idResource );
                         $rsItemTrack = $this->getItemTrack( $idUser, $idReference, NULL, $idResource );
                         $arrItemTrack = sql_fetch_assoc( $rsItemTrack );
-                        return array( FALSE, $arrItemTrack['idscorm_item_track'] );
+                        return [FALSE, $arrItemTrack['idscorm_item_track']];
                 }
 		return FALSE;
 	}

@@ -24,7 +24,7 @@ class Dashboard_Framework extends Dashboard {
 
 	function getBoxContent() {
 
-		$html = array();
+		$html = [];
 		if(!checkPerm('view_org_chart', true, 'directory', 'framework')) return $html;
 
 		require_once(_base_.'/lib/lib.userselector.php');

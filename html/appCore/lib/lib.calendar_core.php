@@ -71,7 +71,7 @@ class DoceboCal_core {
 		$query="SELECT * FROM ".$GLOBALS['prefix_fw']."_calendar WHERE ".$where." ORDER BY start_date";
 		$result=sql_query($query);
 		
-		$calevents = array();
+		$calevents = [];
 		$i=0;
 		while ($row=sql_fetch_array($result)) {
 		

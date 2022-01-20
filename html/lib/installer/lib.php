@@ -68,17 +68,17 @@ function generateConfig($tpl_fn)
 
 function getPlatformArray()
 {
-    return array(
+    return [
         'framework' => 'appCore',
         'lms' => 'appLms',
         'scs' => 'appScs',
-    );
+    ];
 }
 
 
-function importSqlFile($fn, $allowed_err_codes = array())
+function importSqlFile($fn, $allowed_err_codes = [])
 {
-    $res = array('ok' => true, 'log' => '');
+    $res = ['ok' => true, 'log' => ''];
 
     $handle = fopen($fn, "r");
     $content = fread($handle, filesize($fn));
@@ -111,7 +111,7 @@ function importSqlFile($fn, $allowed_err_codes = array())
 
 function getToUpgradeArray()
 {
-    $to_upgrade_arr = array();
+    $to_upgrade_arr = [];
 
     foreach ($GLOBALS['cfg']['versions'] as $ver => $label) {
         if ($ver > $_SESSION['start_version']) {

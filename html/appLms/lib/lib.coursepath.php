@@ -21,11 +21,11 @@ class Selector_CoursePath {
 
 	var $show_filter = true;
 
-	var $filter = array();
+	var $filter = [];
 
 	var $current_page = '';
 
-	var $current_selection = array();
+	var $current_selection = [];
 
 	/**
 	 * Class constructor
@@ -51,11 +51,11 @@ class Selector_CoursePath {
 	 */
 	function getStatus() {
 
-		$status = array(
+		$status = [
 			'page' 					=> $this->current_page,
 			'filter' 				=> serialize($this->filter),
 			'show_filter' 			=> $this->show_filter,
-			'current_selection' 	=> serialize($this->current_selection) );
+			'current_selection' 	=> serialize($this->current_selection)];
 		return serialize($status);
 	}
 
@@ -166,7 +166,7 @@ class Selector_CoursePath {
 							." WHERE idUser = '".$id_user."'";
 
 				$result = sql_query($query);
-				$admin_courses['coursepath'] = array();
+				$admin_courses['coursepath'] = [];
 
 				while(list($id_path) = sql_fetch_row($result))
 					$admin_courses['coursepath'][$id_path] = $id_path;
@@ -194,22 +194,22 @@ class Selector_CoursePath {
 
 		$re_coursepath = sql_query($select.$query_coursepath);
 
-		$type_h = array('image', '', '', '');
-		$cont_h = array(
+		$type_h = ['image', '', '', ''];
+		$cont_h = [
 			'<span class="access-only">'.$lang->def('_SELECT').'</span>',
 			$lang->def('_NAME'),
 			$lang->def('_DESCRIPTION')
-		);
+        ];
 		$tb->setColsStyle($type_h);
 		$tb->addHead($cont_h);
 		while(list($id_path, $name, $descr) = sql_fetch_row($re_coursepath)) {
 
-			$tb_content = array(
+			$tb_content = [
 				Form::getInputCheckbox('new_coursepath_selected_'.$id_path, 'new_coursepath_selected['.$id_path.']', $id_path,
 					isset($this->current_selection[$id_path]), ''),
 				'<label for="new_coursepath_selected_'.$id_path.'">'.$name.'</label>',
 				'<label for="new_coursepath_selected_'.$id_path.'">'.$descr.'</label>'
-			);
+            ];
 			$tb->addBody($tb_content);
 			if(isset($this->current_selection[$id_path])) unset($this->current_selection[$id_path]);
 		}
@@ -256,29 +256,29 @@ class CoursePath_Manager {
 
 	var $aclManager;
 
-	var $_path_field = array(
+	var $_path_field = [
 		COURSEPATH_ID 		=> 'id_path',
 		COURSEPATH_CODE 	=> 'path_code',
 		COURSEPATH_NAME 	=> 'path_name',
 		COURSEPATH_DESCR 	=> 'path_descr',
 		COURSEPATH_METHOD 	=> 'subscribe_method'
-	);
+    ];
 
-	var $_cp_course_field = array(
+	var $_cp_course_field = [
 		CP_COURSE_ID_PATH 	=> 'id_path',
 		CP_COURSE_ID_ITEM 	=> 'id_item',
 		CP_COURSE_IN_SLOT 	=> 'in_slot',
 		CP_COURSE_PREREQ 	=> 'prerequisites',
 		CP_COURSE_SEQ 		=> 'sequence'
-	);
+    ];
 
-	var $_cp_slot_field = array(
+	var $_cp_slot_field = [
 		CP_SLOT_ID_SLOT 	=> 'id_slot',
 		CP_SLOT_ID_PATH 	=> 'id_path',
 		CP_SLOT_MIN 		=> 'min_selection',
 		CP_SLOT_MAX 		=> 'max_selection',
 		CP_SLOT_SEQ 		=> 'sequence'
-	);
+    ];
 
 	var $filter_in_path = false;
 
@@ -356,7 +356,7 @@ class CoursePath_Manager {
 			$where = "( ".$where." ) OR p.".$this->_path_field[COURSEPATH_ID]." IN (".implode(',', $this->filter_or_in_path).") ";
 		}
 
-		$coursepath = array();
+		$coursepath = [];
 		$repath = $this->_query($select.$from." WHERE ".$where.$group_by.$order_by.$limit);
 		while($row = sql_fetch_row($repath)) {
 
@@ -373,7 +373,7 @@ class CoursePath_Manager {
 	 */
 	function getCoursepathAllInfo($arr_id) {
 
-		$coursepath = array();
+		$coursepath = [];
 		$select = "
 		SELECT ".implode(',', $this->_path_field)."
 		FROM ".$this->_getPathTable()."
@@ -394,7 +394,7 @@ class CoursePath_Manager {
 	 */
 	function &getNames(&$coursepath) {
 
-		$re_coursepath = array();
+		$re_coursepath = [];
 		if(empty($coursepath)) return $re_coursepath;
 
 		$select = "
@@ -433,9 +433,9 @@ class CoursePath_Manager {
 	 **/
 	function getAllCourses($coursepaths) {
 
-		$courses = array();
-		if (is_numeric($coursepaths)) $coursepaths = array((int)$coursepaths);
-		if (empty($coursepaths)) return array();
+		$courses = [];
+		if (is_numeric($coursepaths)) $coursepaths = [(int)$coursepaths];
+		if (empty($coursepaths)) return [];
 		$query = "
 		SELECT DISTINCT id_item
 		FROM ".$this->_getPathCourseTable()."
@@ -456,9 +456,9 @@ class CoursePath_Manager {
 	 **/
 	function getAllCoursesInfo($coursepaths) {
 
-		$courses = array();
-		if (is_numeric($coursepaths)) $coursepaths = array((int)$coursepaths);
-		if (empty($coursepaths)) return array();
+		$courses = [];
+		if (is_numeric($coursepaths)) $coursepaths = [(int)$coursepaths];
+		if (empty($coursepaths)) return [];
 		$query = "
 		SELECT *
 		FROM ".$this->_getPathCourseTable()."
@@ -480,7 +480,7 @@ class CoursePath_Manager {
 	 **/
 	function getPathStructure($coursepaths) {
 
-		$path_struct['all_items'] = array();
+		$path_struct['all_items'] = [];
 		if(empty($coursepaths)) return $path_struct;
 
 		$query = "
@@ -491,8 +491,8 @@ class CoursePath_Manager {
 		$re_courses = $this->_query($query);
 		while(list($id_path, $in_slot, $id_item) = sql_fetch_row($re_courses)) {
 
-			if(!isset($courses[$id_path])) $courses[$id_path] = array();
-			if(!isset($courses[$id_path][$in_slot])) $courses[$id_path][$in_slot] = array();
+			if(!isset($courses[$id_path])) $courses[$id_path] = [];
+			if(!isset($courses[$id_path][$in_slot])) $courses[$id_path][$in_slot] = [];
 			$path_struct[$id_path][$in_slot][$id_item] = $id_item;
 
 			$path_struct['all_items'][$id_item] = $id_item;
@@ -503,7 +503,7 @@ class CoursePath_Manager {
 
 	function getPathCourses($id_path) {
 
-		$courses = array();
+		$courses = [];
 
 		$query = "
 		SELECT id_item, prerequisites, sequence
@@ -603,7 +603,7 @@ class CoursePath_Manager {
 
 		if(!is_array($arr_path)) {
 			$is_array = false;
-			$arr_path = array($arr_path);
+			$arr_path = [$arr_path];
 		} else $is_array = true;
 
 		$query_pathelem = "
@@ -613,28 +613,28 @@ class CoursePath_Manager {
 		ORDER BY sequence";
 		$repath_elem = sql_query($query_pathelem);
 
-		$info = array();
+		$info = [];
 		if($is_array) {
 			foreach($arr_path as $k => $idpath) {
-				$info[$idpath][0] = array('min_selection' => 0, 'max_selection' => 0);
+				$info[$idpath][0] = ['min_selection' => 0, 'max_selection' => 0];
 			}
 		} else {
-			$info[0] = array('min_selection' => 0, 'max_selection' => 0);
+			$info[0] = ['min_selection' => 0, 'max_selection' => 0];
 		}
 		while(list($id_path, $id_slot, $min_selection, $max_selection) = sql_fetch_row($repath_elem)) {
 
 			if($is_array) {
 
-				$info[$id_path][$id_slot] = array(
+				$info[$id_path][$id_slot] = [
 					'min_selection' => $min_selection,
 					'max_selection' => $max_selection
-				);
+                ];
 			} else {
 
-				$info[$id_slot] = array(
+				$info[$id_slot] = [
 					'min_selection' => $min_selection,
 					'max_selection' => $max_selection
-				);
+                ];
 			}
 		}
 		return $info;
@@ -649,7 +649,7 @@ class CoursePath_Manager {
 		ORDER BY sequence";
 		$repath_elem = sql_query($query_pathelem);
 
-		$info = array();
+		$info = [];
 		$info = sql_fetch_array($repath_elem);
 		return $info;
 	}
@@ -688,7 +688,7 @@ class CoursePath_Manager {
 		WHERE id_path = '".$id_path."'
 		ORDER BY in_slot, sequence";
 		$repath_elem = $this->_query($query_pathelem);
-		$info = array();
+		$info = [];
 		while(list($id_item, $in_slot, $prerequisites) = sql_fetch_row($repath_elem)) {
 
 			$info['course_list'][] = $id_item;
@@ -707,7 +707,7 @@ class CoursePath_Manager {
 			AND in_slot = '".$id_slot."'
 		ORDER BY sequence";
 		$repath_elem = $this->_query($query_pathelem);
-		$info = array();
+		$info = [];
 		while(list($id_item) = sql_fetch_row($repath_elem)) {
 
 			$info[$id_item] = $id_item;
@@ -757,7 +757,7 @@ class CoursePath_Manager {
 	 **/
 	function getSubscribed($id_path) {
 
-		$users = array();
+		$users = [];
 		$query = "
 		SELECT idUser
 		FROM ".$this->_getPathUserTable()."
@@ -776,7 +776,7 @@ class CoursePath_Manager {
 		
 		if (!empty($users)) {
 			$courses = $this->getPathCourses($id_path);
-			$completed = array();
+			$completed = [];
 			$query = "SELECT idUser, COUNT(*) "
 				." FROM %lms_courseuser "
 				." WHERE idCourse IN (".implode(",", array_values($courses)).") "
@@ -787,7 +787,7 @@ class CoursePath_Manager {
 				$completed[$id_user] = $num_completed;
 			}
 		
-			$insert_values = array();
+			$insert_values = [];
 			foreach($users as $id_user) {
 				$course_completed = isset($completed[$id_user]) ? (int)$completed[$id_user] : 0;
 				$insert_values[] = "( ".(int)$id_path.", ".(int)$id_user.", '".date("Y-m-d h:i:s")."', '".Docebo::user()->getIdst()."', '".$course_completed."' )";
@@ -810,7 +810,7 @@ class CoursePath_Manager {
 
 	function getUserSubscriptionsInfo($id_user, $exclude_waiting = false) {
 
-		$paths = array();
+		$paths = [];
 		$query = "
 		SELECT id_path, waiting
 		FROM ".$this->_getPathUserTable()."
@@ -820,7 +820,7 @@ class CoursePath_Manager {
 		$re_users = $this->_query($query);
 		while(list($id_path, $wait) = sql_fetch_row($re_users)) {
 
-			$paths[$id_path] = array('id_path' => $id_path, 'waiting' => $wait);
+			$paths[$id_path] = ['id_path' => $id_path, 'waiting' => $wait];
 		}
 		return $paths;
 	}
@@ -967,8 +967,8 @@ class CoursePath_Manager {
 		$db = DbConn::getInstance();
 
 		//retrieve all course's coursepaths
-		$arr_coursepath = array();
-		$arr_sequence = array();
+		$arr_coursepath = [];
+		$arr_sequence = [];
 		$query = "SELECT id_path, sequence FROM %lms_coursepath_courses WHERE id_item = ".(int)$id_course;
 		$cres = $db->query($query);
 		while (list($id_path, $sequence) = $db->fetch_row($cres)) {
@@ -996,7 +996,7 @@ class CoursePath_Manager {
 				if (trim($obj->prerequisites) != "") {
 					$arr_prerequisites = explode(",", $obj->prerequisites);
 					if (in_array($id_course."", $arr_prerequisites)) {
-						$arr_new_prereq = array();
+						$arr_new_prereq = [];
 						foreach ($arr_prerequisites as $_prereq) {
 							if ($_prereq != $id_course && $_prereq != "") {
 								$arr_new_prereq[] = $_prereq;

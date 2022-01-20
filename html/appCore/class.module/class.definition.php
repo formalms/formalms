@@ -42,10 +42,10 @@ class Module {
 		
 		$this->version = '1.0';
 		
-		$this->authors = array(	'Fabio Pirovano <fabio@docebo.it)', 
-								'Emanuele Sandri <esandri@tiscali.it>');
-		$this->mantainers = array(	'Fabio Pirovano <fabio@docebo.it)', 
-									'Emanuele Sandri <esandri@tiscali.it>');
+		$this->authors = ['Fabio Pirovano <fabio@docebo.it)',
+								'Emanuele Sandri <esandri@tiscali.it>'];
+		$this->mantainers = ['Fabio Pirovano <fabio@docebo.it)',
+									'Emanuele Sandri <esandri@tiscali.it>'];
 		
 		$this->descr_short = 'General module : '.$modname;
 		$this->descr_long = 'General module : '.$modname ;
@@ -117,7 +117,7 @@ class Module {
 	
 	function getVoiceMenu() {
 		
-		return array();
+		return [];
 	}
 	
 	function useExtraMenu() {
@@ -134,11 +134,11 @@ class Module {
 	// Function for permission managment
 	
 	function getAllToken($op) {
-		return array( 
-			'view' => array( 	'code' => 'view',
+		return [
+			'view' => ['code' => 'view',
 								'name' => '_VIEW',
-								'image' => 'standard/view.png')
-		);
+								'image' => 'standard/view.png']
+        ];
 	}
 	
 	function getPermissionUi( $module_name, $modname, $op, $form_name, $perm, $all_perm_tokens ) {
@@ -148,7 +148,7 @@ class Module {
 		
 		$tokens = $this->getAllToken($op);
 		
-		$c_body = array($module_name);
+		$c_body = [$module_name];
 		
 		foreach($all_perm_tokens as $k => $token) {
 			
@@ -171,7 +171,7 @@ class Module {
 	function getSelectedPermission($source_array, $modname, $op) {
 		
 		$tokens 	= $this->getAllToken($op);
-		$perm 		= array();
+		$perm 		= [];
 		
 		foreach($tokens as $k => $token) {
 				

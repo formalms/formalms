@@ -9,21 +9,21 @@ $_body .= Form::getRadioSet(
 	Lang::t('_FORMAT', 'standard'),
 	'report_format',
 	'dl',
-	array(
+	[
 		Lang::t('_EXPORT_HTML', 'report') => 'htm',
 	    Lang::t('_EXPORT_CSV', 'report') => 'csv',
 	    Lang::t('_EXPORT_XLS', 'report') => 'xls'
-	),
+    ],
    'htm'
 );
 $_body .= Form::closeForm();
 
 if (isset($json)) {
-	$output = array(
+	$output = [
 		'success' => true,
 		'header' => $_header,
 		'body' => $_body
-	);
+    ];
 	echo $json->encode($output);
 } else {
 	

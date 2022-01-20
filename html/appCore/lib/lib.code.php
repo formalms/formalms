@@ -99,7 +99,7 @@ class CodeManager
 
 		$result = sql_query($query);
 
-		$res = array();
+		$res = [];
 
 		while(list($id_code_group, $title, $description) = sql_fetch_row($result))
 		{
@@ -131,8 +131,8 @@ class CodeManager
 
 		list($title, $description) = sql_fetch_row(sql_query($query));
 
-		$res = array(	'title' => stripslashes($title),
-						'description' => stripslashes($description));
+		$res = ['title' => stripslashes($title),
+						'description' => stripslashes($description)];
 
 		return $res;
 	}
@@ -203,7 +203,7 @@ class CodeManager
 
 		$result = sql_query($query);
 
-		$res = array();
+		$res = [];
 
 		$counter = 0;
 
@@ -299,7 +299,7 @@ class CodeManager
 
 		$result = sql_query($query);
 
-		$res = array();
+		$res = [];
 
 		while (list($id_course) = sql_fetch_row($result))
 			$res[$id_course] = $id_course;
@@ -321,7 +321,7 @@ class CodeManager
 
 		$result = sql_query($query);
 
-		$res = array();
+		$res = [];
 
 		while (list($id_course) = sql_fetch_row($result))
 			$res[$id_course] = $id_course;
@@ -373,7 +373,7 @@ class CodeManager
 
 		$result = sql_query($query);
 
-		$res = array();
+		$res = [];
 
 		while (list($id_folder) = sql_fetch_row($result))
 			$res[$id_folder] = $id_folder;
@@ -616,9 +616,9 @@ class CodeManager
 
 		$result = sql_query($query);
 
-		$res = array(	'unlimited' => 0,
+		$res = ['unlimited' => 0,
 					'not_used' => 0,
-					'used' => 0);
+					'used' => 0];
 
 		while(list($used, $unlimited) = sql_fetch_row($result))
 		{
@@ -644,7 +644,7 @@ class CodeManager
 		else
 			$used_q = '-1';
 
-		$res = array();
+		$res = [];
 
 		$query =	"SELECT code"
 					." FROM ".$this->_getCodeTable()
@@ -680,7 +680,7 @@ class CodeManager
 					." WHERE 1";
 
 		$result = sql_query($query);
-		$res = array();
+		$res = [];
 
 		while(list($code) = sql_fetch_row($result))
 			$res[] = $code;

@@ -46,7 +46,7 @@ class Config_Lms extends Config {
 		."ORDER BY regroup ";
 		$re_regroup = sql_query($query_regroup);
 		
-		$group = array();
+		$group = [];
 		while(list($id_regroup) = sql_fetch_row($re_regroup))  {
 			
 			$group[$id_regroup] = $lang->def('_RG_FW_'.$id_regroup);
@@ -124,10 +124,10 @@ class Config_Lms extends Config {
 				};break;
 				case "layout_chooser" : {
 					//drop down hteditor
-					$layout = array(
+					$layout = [
 						'left' => Lang::t('_LAYOUT_LEFT'), 
 						'over' => Lang::t('_LAYOUT_OVER'), 
-						'right' => Lang::t('_LAYOUT_RIGHT'));
+						'right' => Lang::t('_LAYOUT_RIGHT')];
 					$html .= Form::getDropdown( $lang->def('_'.strtoupper($var_name)), 
 												$var_name, 
 												'option['.$var_name.']', 
@@ -135,10 +135,10 @@ class Config_Lms extends Config {
 												$var_value);
 				};break;
 				case "sel_news" : {
-					$mode = array(
+					$mode = [
 						'off' => Lang::t('_DONT_SHOW'), 
 						'link' => Lang::t('_SHOW_AS_LINK'), 
-						'block' => Lang::t('_SHOW_AS_BLOCK'));
+						'block' => Lang::t('_SHOW_AS_BLOCK')];
 					$html .= Form::getDropdown( $lang->def('_'.strtoupper($var_name)), 
 												$var_name, 
 												'option['.$var_name.']', 
@@ -170,11 +170,11 @@ class Config_Lms extends Config {
 					
 					$tab_selected = Util::unserialize(urldecode($var_value));
 				
-					$tab_list = array(
+					$tab_list = [
 						'time' 		=> $lang_c->def('_TAB_VIEW_TIME'),
 						'category' 	=> $lang_c->def('_TAB_VIEW_CATEGORY'),
 						'all' 		=> $lang_c->def('_ALL')
-					);
+                    ];
 					if(Get::sett('use_coursepath') == '1') {
 						$tab_list['pathcourse'] = $lang_c->def('_COURSEPATH');
 					}
@@ -195,11 +195,11 @@ class Config_Lms extends Config {
 				
 					$lang_c 	=& DoceboLanguage::createInstance('catalogue', 'lms');
 					
-					$tab_list = array(
+					$tab_list = [
 						'time' 		=> $lang_c->def('_TAB_VIEW_TIME'),
 						'category' 	=> $lang_c->def('_TAB_VIEW_CATEGORY'),
 						'all' 		=> $lang_c->def('_ALL')
-					);
+                    ];
 					if(Get::sett('use_coursepath') == '1') {
 						$tab_list['pathcourse'] = $lang_c->def('_COURSEPATH');
 					}
@@ -222,7 +222,7 @@ class Config_Lms extends Config {
 				  $arr_value = explode(',',$var_value);
 				  //$arr_value=array();
 				  
-				  $tab_list=array();
+				  $tab_list= [];
           $tab_list[''] = $lang->def('_MYCOURSES_NOTUSED');
           $tab_list['status'] = $lang->def('_STATUS');
           $tab_list['name'] = $lang->def('_NAME');
@@ -329,7 +329,7 @@ class Config_Lms extends Config {
 				};break;
 				case "tablist_coursecatalogue" : {
 					
-					$tab_selected = array();
+					$tab_selected = [];
 					foreach($_POST['tablist'] as $tab_code => $v) {
 						
 						$tab_selected[$tab_code] = 1;
@@ -338,7 +338,7 @@ class Config_Lms extends Config {
 				};break;
 				
 				case "tablist_mycourses" : {
-				  $temp_arr=array();
+				  $temp_arr= [];
 				  for ($i=0; $i<3; $i++) {
 				    $temp_var = $_POST['mycourses'][$i];
 				    if ($temp_var!='' && !in_array($temp_var,$temp_arr)) //avoid repeated params

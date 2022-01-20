@@ -48,14 +48,14 @@ class VideoconferenceLmsController extends LmsController {
 
 	public function showTask() {
 
-		$this->render('_tabs', array());
+		$this->render('_tabs', []);
 	}
 
 	public function live()
 	{
 		$tb = $this->getActiveTable();
 		
-		$this->render('conference', array('tb' => $tb));
+		$this->render('conference', ['tb' => $tb]);
 	}
 
 	public function getActiveTable()
@@ -69,28 +69,28 @@ class VideoconferenceLmsController extends LmsController {
 		require_once(_base_.'/lib/lib.table.php');
 		$tb = new Table(NULL, Lang::t('_ACTIVE', 'course'), Lang::t('_ACTIVE', 'course'));
 
-		$tb_h = array(	Lang::t('_VIDEOCONFERENCE', 'course'),
+		$tb_h = [Lang::t('_VIDEOCONFERENCE', 'course'),
 						Lang::t('_TYPE', 'course'),
 						Lang::t('_NAME', 'course'),
 						Lang::t('_START_DATE', 'course'),
 						Lang::t('_DATE_END', 'course'),
 						Lang::t('_HOURS', 'course'),
 						Lang::t('_MAX_PARTICIPANTS', 'conference'),
-						'');
-		$tb_s = array('','','','','','','','image');
+						''];
+		$tb_s = ['','','','','','','','image'];
 
 		$tb->setColsStyle($tb_s);
 		$tb->addHead($tb_h);
 
 		foreach($conference as $conference_info)
-			$tb->addBody(array(	$conference_info['name'],
+			$tb->addBody([$conference_info['name'],
 								$conference_info['room_type'],
 								$course_name[$conference_info['idCourse']],
 								Format::date(date('Y-m-d H:i:s', $conference_info['starttime']), 'datetime'),
 								Format::date(date('Y-m-d H:i:s', $conference_info['endtime']), 'datetime'),
 								$conference_info['meetinghours'],
 								$conference_info['maxparticipants'],
-								$conference_man->getUrl($conference_info['id'],$conference_info['room_type'])));
+								$conference_man->getUrl($conference_info['id'],$conference_info['room_type'])]);
 
 		return $tb;
 	}
@@ -99,7 +99,7 @@ class VideoconferenceLmsController extends LmsController {
 	{
 		$tb = $this->getPlannedTable();
 
-		$this->render('conference', array('tb' => $tb));
+		$this->render('conference', ['tb' => $tb]);
 	}
 
 	public function getPlannedTable()
@@ -110,26 +110,26 @@ class VideoconferenceLmsController extends LmsController {
 		require_once(_base_.'/lib/lib.table.php');
 		$tb = new Table(NULL, Lang::t('_PLANNED', 'course'), Lang::t('_ACTIVE', 'course'));
 
-		$tb_h = array(	Lang::t('_VIDEOCONFERENCE', 'course'),
+		$tb_h = [Lang::t('_VIDEOCONFERENCE', 'course'),
 						Lang::t('_TYPE', 'course'),
 						Lang::t('_NAME', 'course'),
 						Lang::t('_START_DATE', 'course'),
 						Lang::t('_DATE_END', 'course'),
 						Lang::t('_HOURS', 'course'),
-						Lang::t('_MAX_PARTICIPANTS', 'conference'));
-		$tb_s = array('','','','','','','');
+						Lang::t('_MAX_PARTICIPANTS', 'conference')];
+		$tb_s = ['','','','','','',''];
 
 		$tb->setColsStyle($tb_s);
 		$tb->addHead($tb_h);
 
 		foreach($conference as $conference_info)
-			$tb->addBody(array(	$conference_info['name'],
+			$tb->addBody([$conference_info['name'],
 								$conference_info['room_type'],
 								$course_name[$conference_info['idCourse']],
 								Format::date(date('Y-m-d H:i:s', $conference_info['starttime']), 'datetime'),
 								Format::date(date('Y-m-d H:i:s', $conference_info['endtime']), 'datetime'),
 								$conference_info['meetinghours'],
-								$conference_info['maxparticipants']));
+								$conference_info['maxparticipants']]);
 
 		return $tb;
 	}
@@ -138,7 +138,7 @@ class VideoconferenceLmsController extends LmsController {
 	{
 		$tb = $this->getHistoryTable();
 
-		$this->render('conference', array('tb' => $tb));
+		$this->render('conference', ['tb' => $tb]);
 	}
 
 	public function getHistoryTable()
@@ -149,26 +149,26 @@ class VideoconferenceLmsController extends LmsController {
 		require_once(_base_.'/lib/lib.table.php');
 		$tb = new Table(NULL, Lang::t('_HISTORY', 'course'), Lang::t('_ACTIVE', 'course'));
 
-		$tb_h = array(	Lang::t('_VIDEOCONFERENCE', 'course'),
+		$tb_h = [Lang::t('_VIDEOCONFERENCE', 'course'),
 						Lang::t('_TYPE', 'course'),
 						Lang::t('_NAME', 'course'),
 						Lang::t('_START_DATE', 'course'),
 						Lang::t('_DATE_END', 'course'),
 						Lang::t('_HOURS', 'course'),
-						Lang::t('_MAX_PARTICIPANTS', 'conference'));
-		$tb_s = array('','','','','','','');
+						Lang::t('_MAX_PARTICIPANTS', 'conference')];
+		$tb_s = ['','','','','','',''];
 
 		$tb->setColsStyle($tb_s);
 		$tb->addHead($tb_h);
 
 		foreach($conference as $conference_info)
-			$tb->addBody(array(	$conference_info['name'],
+			$tb->addBody([$conference_info['name'],
 								$conference_info['room_type'],
 								$course_name[$conference_info['idCourse']],
 								Format::date(date('Y-m-d H:i:s', $conference_info['starttime']), 'datetime'),
 								Format::date(date('Y-m-d H:i:s', $conference_info['endtime']), 'datetime'),
 								$conference_info['meetinghours'],
-								$conference_info['maxparticipants']));
+								$conference_info['maxparticipants']]);
 
 		return $tb;
 	}

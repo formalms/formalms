@@ -1,9 +1,9 @@
 <?php
 
-echo getTitleArea(array(
+echo getTitleArea([
 	'index.php?r='.$base_link_course.'/show' => Lang::t('_COURSE', 'course'),
 	Lang::t('_CERTIFICATE_ASSIGN_STATUS', 'course').' : '.$course_name
-));
+]);
 
 ?>
 <div class="std_block">

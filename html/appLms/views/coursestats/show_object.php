@@ -1,9 +1,9 @@
 <?php
 $base_url = 'index.php?r=coursestats/show';
-echo getTitleArea(array(
+echo getTitleArea([
 	$base_url => Lang::t('_COURSESTATS', 'menu_course'),
 	$info->LO_name
-));
+]);
 ?>
 <div class="std_block">
 <?php

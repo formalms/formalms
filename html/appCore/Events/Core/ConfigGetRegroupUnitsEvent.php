@@ -10,7 +10,7 @@ class ConfigGetRegroupUnitsEvent extends Event
 
     public function __construct()
     {
-        $this->groupUnits = array();
+        $this->groupUnits = [];
     }
 
     /**

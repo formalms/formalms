@@ -1,21 +1,21 @@
 <?php
 if (!$id_date && !$id_edition) {
-    Get::title(array(
+    Get::title([
         'index.php?r=' . $this->link_course . '/show' => Lang::t('_COURSES', 'course'),
         Lang::t('_SUBSCRIBE', 'subscribe') . ' : ' . $course_name
-    ));
+    ]);
 } elseif ($id_edition && !$id_date) {
-    Get::title(array(
+    Get::title([
         'index.php?r=' . $this->link_course . '/show' => Lang::t('_COURSE', 'course'),
         'index.php?r=' . $this->link_edition . '/show&amp;id_course=' . $id_course . '' => Lang::t('_EDITIONS', 'course'),
         Lang::t('_SUBSCRIBE', 'subscribe') . ' : ' . $course_name
-    ));
+    ]);
 } else {
-    Get::title(array(
+    Get::title([
         'index.php?r=' . $this->link_course . '/show' => Lang::t('_COURSE', 'course'),
         'index.php?r=' . $this->link_classroom . '/classroom&amp;id_course=' . $id_course . '' => Lang::t('_CLASSROOM', 'course'),
         Lang::t('_SUBSCRIBE', 'subscribe') . ' : ' . $course_name
-    ));
+    ]);
 }
 ?>
 <div class="std_block">
@@ -75,12 +75,12 @@ if (!$id_date && !$id_edition) {
             echo Form::getDropdown(Lang::t('_DIRECTORY_MEMBERTYPETREE', 'admin_directory'), 'filter_orgchart', 'filter_orgchart', $orgchart_list, (int)$filter_orgchart, $_orgchart_after);
             echo Form::getDatefield(Lang::t('_VALID_AT_DATE', 'subscribe'), 'filter_date_valid', 'filter_date_valid', $filter_date_valid);
 
-            $arr_filter = array(
+            $arr_filter = [
                 0 => Lang::t('_ALL', 'standard'),
                 1 => Lang::t('_ONLY_EXPIRED', 'subscribe'),
                 2 => Lang::t('_NOT_EXPIRED_WITH_DATE', 'subscribe'),
                 3 => Lang::t('_NOT_EXPIRED_WITHOUT_DATE', 'subscribe')
-            );
+            ];
             echo Form::getDropdown(Lang::t('_SHOW_ONLY', 'subscribe'), 'filter_show', 'filter_show', $arr_filter, $filter_show);
 
             //buttons
@@ -127,8 +127,8 @@ if (!$id_date && !$id_edition) {
     $icon_delete = '';
 
 
-    $dyn_labels = array();
-    $dyn_filter = array();
+    $dyn_labels = [];
+    $dyn_filter = [];
     for ($i = 0; $i < $num_var_fields; $i++) {
         $label = '<select id="_dyn_field_selector_' . $i . '" name="_dyn_field_selector[' . $i . ']">';
         foreach ($fieldlist as $key => $value) {
@@ -145,29 +145,29 @@ if (!$id_date && !$id_edition) {
     }
 
 
-    $columns = array();
-    $columns[] = array('key' => 'userid', 'label' => Lang::t('_USERNAME', 'subscribe'), 'sortable' => true, 'formatter' => 'Subscription.labelFormatter');
-    $columns[] = array('key' => 'fullname', 'label' => Lang::t('_FULLNAME', 'subscribe'), 'sortable' => true, 'formatter' => 'Subscription.labelFormatter');
+    $columns = [];
+    $columns[] = ['key' => 'userid', 'label' => Lang::t('_USERNAME', 'subscribe'), 'sortable' => true, 'formatter' => 'Subscription.labelFormatter'];
+    $columns[] = ['key' => 'fullname', 'label' => Lang::t('_FULLNAME', 'subscribe'), 'sortable' => true, 'formatter' => 'Subscription.labelFormatter'];
     for ($i = 0; $i < $num_var_fields; $i++) {
-        $columns[] = array('key' => '_dyn_field_' . $i, 'label' => $dyn_labels[$i]);
+        $columns[] = ['key' => '_dyn_field_' . $i, 'label' => $dyn_labels[$i]];
     }
-    $columns[] = array('key' => 'level', 'label' => Lang::t('_LEVEL', 'subscribe'), 'sortable' => true,
+    $columns[] = ['key' => 'level', 'label' => Lang::t('_LEVEL', 'subscribe'), 'sortable' => true,
         'formatter' => 'Subscription.levelFormatter',
-        'editor' => 'new YAHOO.widget.DropdownCellEditor({dropdownOptions:' . $level_list_js . '})');
-    $columns[] = array('key' => 'status', 'label' => Lang::t('_STATUS', 'subscribe'), 'sortable' => true,
+        'editor' => 'new YAHOO.widget.DropdownCellEditor({dropdownOptions:' . $level_list_js . '})'];
+    $columns[] = ['key' => 'status', 'label' => Lang::t('_STATUS', 'subscribe'), 'sortable' => true,
         'formatter' => 'Subscription.statusFormatter',
-        'editor' => 'new YAHOO.widget.DropdownCellEditor({dropdownOptions:' . $status_list_js . '})');
+        'editor' => 'new YAHOO.widget.DropdownCellEditor({dropdownOptions:' . $status_list_js . '})'];
 
 
-    $columns[] = array("key" => "date_begin", "label" => Lang::t("_DATE_BEGIN_VALIDITY", 'subscribe'), "sortable" => true, "formatter" => 'Subscription.dateFormatter',
-        "editor" => 'new YAHOO.widget.DateCellEditor({asyncSubmitter: Subscription.asyncSubmitter})', "className" => 'img-cell', "hidden" => $hidden_validity);
-    $columns[] = array("key" => "date_expire", "label" => Lang::t("_DATE_EXPIRE_VALIDITY", 'subscribe'), "sortable" => true, "formatter" => 'Subscription.dateFormatter',
-        "editor" => 'new YAHOO.widget.DateCellEditor({asyncSubmitter: Subscription.asyncSubmitter})', "className" => 'img-cell', "hidden" => $hidden_validity);
-    $columns[] = array("key" => "date_unset", "label" => $icon_unset, 'formatter' => 'Subscription.resetDatesFormatter', 'className' => 'img-cell', "hidden" => $hidden_validity);
+    $columns[] = ["key" => "date_begin", "label" => Lang::t("_DATE_BEGIN_VALIDITY", 'subscribe'), "sortable" => true, "formatter" => 'Subscription.dateFormatter',
+        "editor" => 'new YAHOO.widget.DateCellEditor({asyncSubmitter: Subscription.asyncSubmitter})', "className" => 'img-cell', "hidden" => $hidden_validity];
+    $columns[] = ["key" => "date_expire", "label" => Lang::t("_DATE_EXPIRE_VALIDITY", 'subscribe'), "sortable" => true, "formatter" => 'Subscription.dateFormatter',
+        "editor" => 'new YAHOO.widget.DateCellEditor({asyncSubmitter: Subscription.asyncSubmitter})', "className" => 'img-cell', "hidden" => $hidden_validity];
+    $columns[] = ["key" => "date_unset", "label" => $icon_unset, 'formatter' => 'Subscription.resetDatesFormatter', 'className' => 'img-cell', "hidden" => $hidden_validity];
 
-    $columns[] = array('key' => 'del', 'label' => Get::img('standard/delete.png', Lang::t('_DEL', 'subscribe')), 'formatter' => 'doceboDelete', 'className' => 'img-cell');
+    $columns[] = ['key' => 'del', 'label' => Get::img('standard/delete.png', Lang::t('_DEL', 'subscribe')), 'formatter' => 'doceboDelete', 'className' => 'img-cell'];
 
-    $tfields = array('id', 'userid', 'fullname', 'level', 'status', 'date_begin', 'date_expire', 'date_begin_timestamp', 'date_expire_timestamp', 'del', 'overbooking');
+    $tfields = ['id', 'userid', 'fullname', 'level', 'status', 'date_begin', 'date_expire', 'date_begin_timestamp', 'date_expire_timestamp', 'del', 'overbooking'];
     for ($i = 0; $i < $num_var_fields; $i++) {
         $tfields[] = '_dyn_field_' . $i;
     }
@@ -179,7 +179,7 @@ if (!$id_date && !$id_edition) {
         'hiddenValidity' => $hidden_validity
     ]);
 
-    $this->widget('table', array(
+    $this->widget('table', [
         'id' => 'subscribed_table',
         'ajaxUrl' => 'ajax.adm_server.php?r=' . $this->link . '/getlist&id_course=' . $id_course . '&id_edition=' . $id_edition . '&id_date=' . $id_date . '&',
         'rowsPerPage' => Get::sett('visuItem', 25),
@@ -191,16 +191,16 @@ if (!$id_date && !$id_edition) {
         'fields' => $tfields,
         'stdSelection' => true,
         'selectAllAdditionalFilter' => 'Subscription.selectAllAdditionalFilter()',
-        'rel_actions' => array($rel_action . $count_selected_over, $rel_action . $count_selected_bottom),
+        'rel_actions' => [$rel_action . $count_selected_over, $rel_action . $count_selected_bottom],
         'delDisplayField' => 'userid',
         'generateRequest' => 'Subscription.requestBuilder',
         'editorSaveEvent' => 'Subscription.editorSaveEvent',//'YAHOO.fastSubscribe.editorSaveEvent',
-        'events' => array(
+        'events' => [
             'initEvent' => 'Subscription.initEvent',
             'beforeRenderEvent' => 'Subscription.beforeRenderEvent',
             'postRenderEvent' => 'Subscription.postRenderEvent'
-        )
-    ));
+        ]
+    ]);
 
     echo $back_link;
     ?>

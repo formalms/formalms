@@ -11,7 +11,7 @@ class UserSelectorBeforeRenderEvent extends Event
     protected $columns;
     protected $fields;
 
-    public function __construct($idOrg, $userSelectorId, $columns = array(), $fields = array())
+    public function __construct($idOrg, $userSelectorId, $columns = [], $fields = [])
     {
         $this->idOrg = $idOrg;
         $this->userSelectorId = $userSelectorId;
@@ -38,7 +38,7 @@ class UserSelectorBeforeRenderEvent extends Event
         }
         $head = array_slice($this->columns, 0, $position);
         $tail = array_slice($this->columns, $position);
-        $this->columns = array_merge($head, array($column));
+        $this->columns = array_merge($head, [$column]);
         $this->columns = array_merge($this->columns, $tail);
 
     }

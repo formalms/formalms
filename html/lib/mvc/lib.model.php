@@ -13,7 +13,7 @@
 
 class Model {
 
-	public $_record = array();
+	public $_record = [];
 
 	public function  __construct() {}
 

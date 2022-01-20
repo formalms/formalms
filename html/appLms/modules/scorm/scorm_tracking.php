@@ -311,7 +311,7 @@ class Scorm_Tracking {
 		if( $aelem[count($aelem)-1][0] == '_children' ) {
 			soap__dbgOut(" Scorm_Tracking::getParam requested _children",SOAP_DBG_LEVEL_LOG,SOAP_DBG_FILTER_GETPARAM);
 			// the last token in name of requested param is _children
-			$result = array();
+			$result = [];
 			$childs = $aelem[count($aelem)-2][1]->getChildNodes();
 			
 			soap__dbgOut(" Scorm_Tracking::getParam # childs ".count($childs),SOAP_DBG_LEVEL_LOG,SOAP_DBG_FILTER_GETPARAM);
@@ -336,7 +336,7 @@ class Scorm_Tracking {
 					return $cnodes->getLength();
 				break;
 				case '_children':
-					$result = array();
+					$result = [];
 					$cnodes = $aelem[$i-1][1]->getChildNodes();
 					for( $iCNode = 0; $iCNode < $cnodes->getLength(); $iCNode++ ) {
 						$tmpItem = $cnodes->item($iCNode);
@@ -506,7 +506,7 @@ class Scorm_Tracking {
 	
 	function setParamXML( $xmldoc ) {
 		require_once Forma::inc(_lms_ . '/modules/scorm/scorm-'.$this->scormVersion.'.php');
-		$arrFields = array();
+		$arrFields = [];
 		$xpath = new DDomXPath($xmldoc);
 		foreach( $GLOBALS['xpathwritedb'] as $fieldName => $xpathquery ) {
 			$xpath_ns = $xpath->query( $xpathquery );

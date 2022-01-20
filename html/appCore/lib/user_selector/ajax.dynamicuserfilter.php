@@ -32,14 +32,14 @@ switch($op) {
     $user_to_check = Get::req('user', DOTY_INT, false);
     $lib = new DynamicUserFilter("dynfilter");
     $output = $lib->chechUser($user_to_check);
-    $x = array('response' => ($output ? 'true' : 'false'), '_value'=>$output, '_test' => $_testvar);
+    $x = ['response' => ($output ? 'true' : 'false'), '_value'=>$output, '_test' => $_testvar];
 		aout( $json->encode($x) );
   } break;
 
   case "filterusers": {
     $lib = new DynamicUserFilter("dynfilter");
     $temp = $lib->getUsers();
-    $output = array('response' => implode(', ', $temp), '_test'=>$_testvar, 'query' => $query );
+    $output = ['response' => implode(', ', $temp), '_test'=>$_testvar, 'query' => $query];
 		if ($output['response'] == "") $output['response'] = "Selezione vuota.";
 		aout( $json->encode($output) );
   } break;

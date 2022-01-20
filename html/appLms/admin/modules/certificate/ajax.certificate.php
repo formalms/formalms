@@ -20,7 +20,7 @@ $op = importVar('op', false, '');
 
 switch ($op) {
 	case "getpopup": {
-		$output = array('success' => true);
+		$output = ['success' => true];
 
 		$lang =& DoceboLanguage::createInstance('certificate', 'lms');
 		$head = Lang::t('_CERTIFICATES_GENERATION', 'certificate');
@@ -38,7 +38,7 @@ switch ($op) {
 	} break;
 
 	case "print": {
-		$output = array('success' => false);
+		$output = ['success' => false];
 		$id_certificate = Get::req('id_certificate', DOTY_INT, -1);
 		$id_course = Get::req('id_course', DOTY_INT, -1);
 		$id_user = Get::req('id_user', DOTY_INT, -1);

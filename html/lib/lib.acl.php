@@ -92,9 +92,9 @@ class DoceboACL {
 
 		if($user_idst == FALSE) $user_idst = $this->getUserST( $userid );
 
-		$arrST = array($user_idst);
-		$arrRoles = array();
-		$new_st = array($user_idst);
+		$arrST = [$user_idst];
+		$arrRoles = [];
+		$new_st = [$user_idst];
 		$loop_check = 0;
 		do {
 			$loop_check++;
@@ -127,9 +127,9 @@ class DoceboACL {
 	function getGroupAllST( $groupid, $filter = '' ) {
 		$group_idst = $this->getGroupST( $groupid );
 
-		$arrST = array($group_idst);
-		$arrRoles = array();
-		$new_st = array($group_idst);
+		$arrST = [$group_idst];
+		$arrRoles = [];
+		$new_st = [$group_idst];
 		$loop_check = 0;
 		do {
 			$loop_check++;
@@ -170,9 +170,9 @@ class DoceboACL {
 			$arrST = array_merge( $arrST, array_diff($arrResult, $arrST ));
 			$count++;
 		}*/
-		$arrST = array($idst);
-		$arrRoles = array();
-		$new_st = array($idst);
+		$arrST = [$idst];
+		$arrRoles = [];
+		$new_st = [$idst];
 		$loop_check = 0;
 		do {
 			$loop_check++;
@@ -193,7 +193,7 @@ class DoceboACL {
 	function getArrSTGroupsST( $arr_idst, $filter = '' ) {
 
 		$arrST = array_values($arr_idst);
-		$arrRoles = array();
+		$arrRoles = [];
 		$new_st = array_values($arr_idst);
 		$loop_check = 0;
 		do {
@@ -267,9 +267,9 @@ class DoceboACL {
 		if( in_array($idst,$idstMatch ) )
 			return TRUE;
 
-		$arrST = array($idst);
-		$arrRoles = array();
-		$new_st = array($idst);
+		$arrST = [$idst];
+		$arrRoles = [];
+		$new_st = [$idst];
 		$loop_check = 0;
 		do {
 			$loop_check++;
@@ -303,7 +303,7 @@ class DoceboACL {
 	 **/
 	function matchUserST( $userid, $st ) {
 		$idst = $this->getUserST( $userid );
-		return $this->_searchMatch( $idst, array($st) );
+		return $this->_searchMatch( $idst, [$st]);
 	}
 
 	/**
@@ -314,7 +314,7 @@ class DoceboACL {
 	 **/
 	function matchGroupST( $groupid, $st ) {
 		$idst = $this->getGroupST( $groupid );
-		return $this->_searchMatch( $idst, array($st) );
+		return $this->_searchMatch( $idst, [$st]);
 	}
 
 	/* NOTE: functions to test match with multiple security token */

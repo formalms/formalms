@@ -19,7 +19,7 @@ class UsersManagementCSVimportEvent extends Event
      */
     public function __construct()
     {
-        $this->users = array();
+        $this->users = [];
     }
 
     /**

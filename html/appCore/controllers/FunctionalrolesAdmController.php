@@ -25,13 +25,13 @@ Class FunctionalrolesAdmController extends AdmController {
 		require_once(_base_.'/lib/lib.json.php');
 		$this->json = new Services_JSON();
 		$this->model = new FunctionalrolesAdm();
-		$this->permissions = array(
+		$this->permissions = [
 			'view'		=> checkPerm('view', true, 'functionalroles'),					//view fncroles
 			'add'		=> checkPerm('mod', true, 'functionalroles'),						//add new fncroles
 			'mod'		=> checkPerm('mod', true, 'functionalroles'),						//edit fncroles
 			'del'		=> checkPerm('mod', true, 'functionalroles'),						//delete fncroles
 			'associate_user'	=> checkPerm('associate_user', true, 'functionalroles')	//add/remove users from fncroles
-		);
+        ];
 	}
 
 
@@ -79,11 +79,11 @@ Class FunctionalrolesAdmController extends AdmController {
 		Util::get_css('base-folder-tree.css', false, true);
 
 		//render view
-		$this->render('show', array(
+		$this->render('show', [
 			'permissions' => $this->permissions,
 			'selected_group' => 0, //unused, for the moment
 			'filter_text' => ""
-		));
+        ]);
 	}
 
 
@@ -97,10 +97,10 @@ Class FunctionalrolesAdmController extends AdmController {
 		$filter_text = Get::req('filter_text', DOTY_STRING, '');
 		$id_group = Get::req('id_group', DOTY_INT, 0);
 
-		$searchFilter = array(
+		$searchFilter = [
 			'text' => $filter_text,
 			'group' => $id_group
-		);
+        ];
 
 		//get total from database and validate the results count
 		$total = $this->model->getFunctionalRolesTotal($searchFilter);
@@ -113,18 +113,18 @@ Class FunctionalrolesAdmController extends AdmController {
 		}
 
 		//set pagination argument
-		$pagination = array(
+		$pagination = [
 			'startIndex' => $startIndex,
 			'results' => $results,
 			'sort' => $sort,
 			'dir' => $dir
-		);
+        ];
 
 		//read records from database
 		$list = $this->model->getFunctionalRolesList($pagination, $searchFilter);
 
 		//prepare the data for sending
-		$output_results = array();
+		$output_results = [];
 		if (is_array($list) && count($list)>0) {
 			foreach ($list as $idst=>$record) {
 				//format description field
@@ -138,7 +138,7 @@ Class FunctionalrolesAdmController extends AdmController {
 					: Layout::highlight($record->group_name, $filter_text);
 
 				//prepare output record
-				$output_results[] = array(
+				$output_results[] = [
 					'group' => $group_name,
 					'id' => $record->id_fncrole,
 					'name' => Layout::highlight($record->name, $filter_text),
@@ -148,11 +148,11 @@ Class FunctionalrolesAdmController extends AdmController {
 					//'courses' => property_exists($record, 'courses') ? $record->courses : 0,
 					'mod'		=> 'ajax.adm_server.php?r=adm/functionalroles/mod_fncrole&id='.(int)$record->id_fncrole,
 					'del'		=> 'ajax.adm_server.php?r=adm/functionalroles/del_fncrole&id='.(int)$record->id_fncrole,
-				);
+                ];
 			}
 		}
 
-		$output = array(
+		$output = [
 			'totalRecords' => $total,
 			'startIndex' => $startIndex,
 			'sort' => $sort,
@@ -160,7 +160,7 @@ Class FunctionalrolesAdmController extends AdmController {
 			'rowsPerPage' => $rowsPerPage,
 			'results' => count($list),
 			'records' => $output_results
-		);
+        ];
 
 		echo $this->json->encode($output);
 	}
@@ -168,10 +168,10 @@ Class FunctionalrolesAdmController extends AdmController {
 
 
 	public function show_groupsTask() {
-		$this->render('show_groups', array(
+		$this->render('show_groups', [
 			'permissions' => $this->permissions,
 			'filter_text' => ""
-		));
+        ]);
 	}
 
 
@@ -184,7 +184,7 @@ Class FunctionalrolesAdmController extends AdmController {
 		$dir = Get::req('dir', DOTY_STRING, "asc");
 		$filter_text = Get::req('filter_text', DOTY_STRING, '');
 
-		$searchFilter = array('text' => $filter_text);
+		$searchFilter = ['text' => $filter_text];
 
 		//get total from database and validate the results count
 		$total = $this->model->getGroupsTotal($searchFilter);
@@ -197,18 +197,18 @@ Class FunctionalrolesAdmController extends AdmController {
 		}
 
 		//set pagination argument
-		$pagination = array(
+		$pagination = [
 			'startIndex' => $startIndex,
 			'results' => $results,
 			'sort' => $sort,
 			'dir' => $dir
-		);
+        ];
 
 		//read records from database
 		$list = $this->model->getGroupsList($pagination, $searchFilter);
 
 		//prepare the data for sending
-		$output_results = array();
+		$output_results = [];
 		if (is_array($list) && count($list)>0) {
 			foreach ($list as $idst=>$record) {
 				//format description field
@@ -218,17 +218,17 @@ Class FunctionalrolesAdmController extends AdmController {
 				}
 
 				//prepare output record
-				$output_results[] = array(
+				$output_results[] = [
 					'id' => $record->id_group,
 					'name' => Layout::highlight($record->name, $filter_text),
 					'description' => Layout::highlight($description, $filter_text),
 					'mod'		=> 'ajax.adm_server.php?r=adm/functionalroles/mod_group&id='.(int)$record->id_group,
 					'del'		=> 'ajax.adm_server.php?r=adm/functionalroles/del_group&id='.(int)$record->id_group,
-				);
+                ];
 			}
 		}
 
-		$output = array(
+		$output = [
 			'totalRecords' => $total,
 			'startIndex' => $startIndex,
 			'sort' => $sort,
@@ -236,7 +236,7 @@ Class FunctionalrolesAdmController extends AdmController {
 			'rowsPerPage' => $rowsPerPage,
 			'results' => count($list),
 			'records' => $output_results
-		);
+        ];
 
 		echo $this->json->encode($output);
 	}
@@ -246,16 +246,16 @@ Class FunctionalrolesAdmController extends AdmController {
 	public function add_fncroleTask() {
 		//check permissions: we should have add privileges to create roles
 		if (!$this->permissions['add']) {
-			$output = array('success' => false, 'message' => $this->_getErrorMessage('no permission'));
+			$output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
 			echo $this->json->encode($output);
 			return;
 		}
 
-		$this->render('fncrole_editmask', array(
+		$this->render('fncrole_editmask', [
 			'title' => Lang::t('_ADD', 'fncroles'),
 			'groups_list' => $this->model->getGroupsDropdownList(),
 			'json' => $this->json
-		));
+        ]);
 	}
 
 
@@ -264,17 +264,17 @@ Class FunctionalrolesAdmController extends AdmController {
 	public function mod_fncroleTask() {
 		//check permissions: we should have mod privileges to edit roles
 		if (!$this->permissions['mod']) {
-			$output = array('success' => false, 'message' => $this->_getErrorMessage('no permission'));
+			$output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
 			echo $this->json->encode($output);
 			return;
 		}
 
 		$id_fncrole = Get::req('id', DOTY_INT, -1);
 		if ($id_fncrole <= 0) {
-			$output = array(
+			$output = [
 				'success' => false,
 				'message' => Lang::t('_INVALID_FNCROLE', 'fncroles')
-			);
+            ];
 			echo $this->json->encode($output);
 			return;
 		}
@@ -282,14 +282,14 @@ Class FunctionalrolesAdmController extends AdmController {
 		//retrieve category info (name and description
 		$info = $this->model->getFunctionalRoleInfo($id_fncrole);
 
-		$this->render('fncrole_editmask', array(
+		$this->render('fncrole_editmask', [
 			'title' => Lang::t('_MOD', 'fncroles'),
 			'id_fncrole' => $id_fncrole,
 			'id_group' => $info->id_group,
 			'fncrole_langs' => $info->langs,
 			'groups_list' => $this->model->getGroupsDropdownList(),
 			'json' => $this->json
-		));
+        ]);
 	}
 
 
@@ -297,15 +297,15 @@ Class FunctionalrolesAdmController extends AdmController {
 	public function add_groupTask() {
 		//check permissions: we should have add privileges to create groups
 		if (!$this->permissions['add']) {
-			$output = array('success' => false, 'message' => $this->_getErrorMessage('no permission'));
+			$output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
 			echo $this->json->encode($output);
 			return;
 		}
 
-		$this->render('group_editmask', array(
+		$this->render('group_editmask', [
 			'title' => Lang::t('_ADD', 'fncroles'),
 			'json' => $this->json
-		));
+        ]);
 	}
 
 
@@ -314,17 +314,17 @@ Class FunctionalrolesAdmController extends AdmController {
 	public function mod_groupTask() {
 		//check permissions: we should have mod privileges to edit groups
 		if (!$this->permissions['mod']) {
-			$output = array('success' => false, 'message' => $this->_getErrorMessage('no permission'));
+			$output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
 			echo $this->json->encode($output);
 			return;
 		}
 
 		$id_group = Get::req('id', DOTY_INT, -1);
 		if ($id_group <= 0) {
-			$output = array(
+			$output = [
 				'success' => false,
 				'message' => Lang::t('_INVALID_GROUP', 'fncroles')
-			);
+            ];
 			echo $this->json->encode($output);
 			return;
 		}
@@ -332,19 +332,19 @@ Class FunctionalrolesAdmController extends AdmController {
 		//retrieve category info (name and description
 		$info = $this->model->getGroupInfo($id_group);
 
-		$this->render('group_editmask', array(
+		$this->render('group_editmask', [
 			'title' => Lang::t('_MOD', 'fncroles'),
 			'id_group' => $id_group,
 			'group_langs' => $info->langs,
 			'json' => $this->json
-		));
+        ]);
 	}
 
 
 	public function add_fncrole_actionTask() {
 		//check permissions: we should have add privileges to create roles
 		if (!$this->permissions['add']) {
-			$output = array('success' => false, 'message' => $this->_getErrorMessage('no permission'));
+			$output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
 			echo $this->json->encode($output);
 			return;
 		}
@@ -352,33 +352,33 @@ Class FunctionalrolesAdmController extends AdmController {
 		//set up the data to insert into DB
 		$id_group = Get::req('id_group', DOTY_INT, 0);
 		if ($id_group < 0) $id_group = 0;
-		$names = Get::req('name', DOTY_MIXED, array());
-		$descriptions = Get::req('description', DOTY_MIXED, array());
-		$langs = array();
+		$names = Get::req('name', DOTY_MIXED, []);
+		$descriptions = Get::req('description', DOTY_MIXED, []);
+		$langs = [];
 
 		//validate inputs
 		if (is_array($names)) {
 			//prepare langs array
 			$lang_codes = Docebo::langManager()->getAllLangcode();
 			foreach ($lang_codes as $lang_code) {
-				$langs[$lang_code] = array(
+				$langs[$lang_code] = [
 					'name' => (isset($names[$lang_code]) ? $names[$lang_code] : ''),
 					'description' => (isset($descriptions[$lang_code]) ? $descriptions[$lang_code] : '')
-				);
+                ];
 			}
 		}
 
 		//insert data in the DB
 		$res = $this->model->createFunctionalRole($id_group, $langs);
 		if ($res) {
-			$output = array(
+			$output = [
 				'success' => true
-			);
+            ];
 		} else {
-			$output = array(
+			$output = [
 				'success' => false,
 				'message' => $this->_getErrorMessage('create fncrole')
-			);
+            ];
 		}
 		echo $this->json->encode($output);
 	}
@@ -387,39 +387,39 @@ Class FunctionalrolesAdmController extends AdmController {
 	public function add_group_actionTask() {
 		//check permissions: we should have add privileges to create groups
 		if (!$this->permissions['add']) {
-			$output = array('success' => false, 'message' => $this->_getErrorMessage('no permission'));
+			$output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
 			echo $this->json->encode($output);
 			return;
 		}
 
 		//set up the data to insert into DB
-		$names = Get::req('name', DOTY_MIXED, array());
-		$descriptions = Get::req('description', DOTY_MIXED, array());
-		$langs = array();
+		$names = Get::req('name', DOTY_MIXED, []);
+		$descriptions = Get::req('description', DOTY_MIXED, []);
+		$langs = [];
 
 		//validate inputs
 		if (is_array($names)) {
 			//prepare langs array
 			$lang_codes = Docebo::langManager()->getAllLangcode();
 			foreach ($lang_codes as $lang_code) {
-				$langs[$lang_code] = array(
+				$langs[$lang_code] = [
 					'name' => (isset($names[$lang_code]) ? $names[$lang_code] : ''),
 					'description' => (isset($descriptions[$lang_code]) ? $descriptions[$lang_code] : '')
-				);
+                ];
 			}
 		}
 
 		//insert data in the DB
 		$res = $this->model->createGroup($langs);
 		if ($res) {
-			$output = array(
+			$output = [
 				'success' => true
-			);
+            ];
 		} else {
-			$output = array(
+			$output = [
 				'success' => false,
 				'message' => $this->_getErrorMessage('create group')
-			);
+            ];
 		}
 		echo $this->json->encode($output);
 	}
@@ -428,7 +428,7 @@ Class FunctionalrolesAdmController extends AdmController {
 	public function mod_fncrole_actionTask() {
 		//check permissions: we should have mod privileges to edit roles
 		if (!$this->permissions['mod']) {
-			$output = array('success' => false, 'message' => $this->_getErrorMessage('no permission'));
+			$output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
 			echo $this->json->encode($output);
 			return;
 		}
@@ -436,39 +436,39 @@ Class FunctionalrolesAdmController extends AdmController {
 		//read inputs
 		$id_fncrole = Get::req('id_fncrole', DOTY_INT, -1);
 		if ($id_fncrole <= 0) {
-			$output = array(
+			$output = [
 				'success' => false,
 				'message' => $this->_getErrorMessage('invalid fncrole')
-			);
+            ];
 			echo $this->json->encode($output);
 			return;
 		}
 
 		$id_group = Get::req('id_group', DOTY_INT, 0);
-		$_lang_name = Get::req('name', DOTY_MIXED, array());
-		$_lang_desc = Get::req('description', DOTY_MIXED, array());
+		$_lang_name = Get::req('name', DOTY_MIXED, []);
+		$_lang_desc = Get::req('description', DOTY_MIXED, []);
 
-		$_arr_langs = array();
+		$_arr_langs = [];
 		$arr = Docebo::langManager()->getAllLangcode();
 		foreach ($arr as $lang_code) {
-			$_arr_langs[$lang_code] = array(
+			$_arr_langs[$lang_code] = [
 				'name' => (isset($_lang_name[$lang_code]) ? $_lang_name[$lang_code] : ''),
 				'description' => (isset($_lang_desc[$lang_code]) ? $_lang_desc[$lang_code] : '')
-			);
+            ];
 		}
 
 		//update data in DB
 		if ($id_group < 0) $id_group = 0;
 		$res = $this->model->updateFunctionalRole($id_fncrole, $id_group, $_arr_langs);
 		if ($res) {
-			$output = array(
+			$output = [
 				'success' => true
-			);
+            ];
 		} else {
-			$output = array(
+			$output = [
 				'success' => false,
 				'message' => $this->_getErrorMessage('edit fncrole')
-			);
+            ];
 		}
 		echo $this->json->encode($output);
 	}
@@ -477,7 +477,7 @@ Class FunctionalrolesAdmController extends AdmController {
 	public function mod_group_actionTask() {
 		//check permissions: we should have mod privileges to edit groups
 		if (!$this->permissions['mod']) {
-			$output = array('success' => false, 'message' => $this->_getErrorMessage('no permission'));
+			$output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
 			echo $this->json->encode($output);
 			return;
 		}
@@ -485,37 +485,37 @@ Class FunctionalrolesAdmController extends AdmController {
 		//read inputs
 		$id_group = Get::req('id_group', DOTY_INT, -1);
 		if ($id_group <= 0) {
-			$output = array(
+			$output = [
 				'success' => false,
 				'message' => $this->_getErrorMessage('invalid group')
-			);
+            ];
 			echo $this->json->encode($output);
 			return;
 		}
 
-		$_lang_name = Get::req('name', DOTY_MIXED, array());
-		$_lang_desc = Get::req('description', DOTY_MIXED, array());
+		$_lang_name = Get::req('name', DOTY_MIXED, []);
+		$_lang_desc = Get::req('description', DOTY_MIXED, []);
 
-		$_arr_langs = array();
+		$_arr_langs = [];
 		$arr = Docebo::langManager()->getAllLangcode();
 		foreach ($arr as $lang_code) {
-			$_arr_langs[$lang_code] = array(
+			$_arr_langs[$lang_code] = [
 				'name' => (isset($_lang_name[$lang_code]) ? $_lang_name[$lang_code] : ''),
 				'description' => (isset($_lang_desc[$lang_code]) ? $_lang_desc[$lang_code] : '')
-			);
+            ];
 		}
 
 		//update data in DB
 		$res = $this->model->updateGroup($id_group, $_arr_langs);
 		if ($res) {
-			$output = array(
+			$output = [
 				'success' => true
-			);
+            ];
 		} else {
-			$output = array(
+			$output = [
 				'success' => false,
 				'message' => $this->_getErrorMessage('edit group')
-			);
+            ];
 		}
 		echo $this->json->encode($output);
 	}
@@ -525,31 +525,31 @@ Class FunctionalrolesAdmController extends AdmController {
 	public function del_fncrole() {
 		//check permissions: we should have del privileges to remove roles
 		if (!$this->permissions['del']) {
-			$output = array('success' => false, 'message' => $this->_getErrorMessage('no permission'));
+			$output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
 			echo $this->json->encode($output);
 			return;
 		}
 
 		$id_fncrole = Get::req('id', DOTY_INT, -1);
 		if ($id_fncrole <= 0) {
-			$output = array(
+			$output = [
 				'success' => false,
 				'message' => $this->_getErrorMessage('invalid fncrole')
-			);
+            ];
 			echo $this->json->encode($output);
 			return;
 		}
 
 		$res = $this->model->deleteFunctionalRole($id_fncrole);
 		if ($res) {
-			$output = array(
+			$output = [
 				'success' => true
-			);
+            ];
 		} else {
-			$output = array(
+			$output = [
 				'success' => false,
 				'message' => $this->_getErrorMessage('delete fncrole')
-			);
+            ];
 		}
 		echo $this->json->encode($output);
 	}
@@ -558,31 +558,31 @@ Class FunctionalrolesAdmController extends AdmController {
 	public function del_group() {
 		//check permissions: we should have del privileges to remove role groups
 		if (!$this->permissions['del']) {
-			$output = array('success' => false, 'message' => $this->_getErrorMessage('no permission'));
+			$output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
 			echo $this->json->encode($output);
 			return;
 		}
 
 		$id_group = Get::req('id', DOTY_INT, -1);
 		if ($id_group <= 0) {
-			$output = array(
+			$output = [
 				'success' => false,
 				'message' => $this->_getErrorMessage('invalid group')
-			);
+            ];
 			echo $this->json->encode($output);
 			return;
 		}
 
 		$res = $this->model->deleteGroup($id_group);
 		if ($res) {
-			$output = array(
+			$output = [
 				'success' => true
-			);
+            ];
 		} else {
-			$output = array(
+			$output = [
 				'success' => false,
 				'message' => $this->_getErrorMessage('delete group')
-			);
+            ];
 		}
 		echo $this->json->encode($output);
 	}
@@ -596,17 +596,17 @@ Class FunctionalrolesAdmController extends AdmController {
 
 		$id_fncrole = Get::req('id', DOTY_INT, -1);
 		if ($id_fncrole <= 0) {
-			$this->render('invalid', array(
+			$this->render('invalid', [
 				'message' => $this->_getErrorMessage('invalid fncrole'),
 				'back_url' => $back_url
-			));
+            ]);
 			return;
 		}
 
-		$title_arr = array(
+		$title_arr = [
 			$back_url => Lang::t('_FUNCTIONAL_ROLE', 'fncroles'),
 			Lang::t('_USERS', 'fncroles').': <b>'.$this->model->getFunctionalRoleName($id_fncrole).'</b>'
-		);
+        ];
 
 		$result = Get::req('res', DOTY_ALPHANUM, '');
 		$result_message = "";
@@ -615,13 +615,13 @@ Class FunctionalrolesAdmController extends AdmController {
 			case "err_": $result_message = UIFeedback::error(Lang::t('_RESULT_USERS_ERR', 'fncroles'), true); break;
 		}
 
-		$this->render('show_users', array(
+		$this->render('show_users', [
 			'id_fncrole' => $id_fncrole,
 			'title_arr' => $title_arr,
 			'filter_text' => "",
 			'result_message' => $result_message,
 			'permissions' => $this->permissions
-		));
+        ]);
 	}
 
 
@@ -630,17 +630,17 @@ Class FunctionalrolesAdmController extends AdmController {
 
 		$id_fncrole = Get::req('id', DOTY_INT, -1);
 		if ($id_fncrole <= 0) {
-			$this->render('invalid', array(
+			$this->render('invalid', [
 				'message' => $this->_getErrorMessage('invalid fncrole'),
 				'back_url' => $back_url
-			));
+            ]);
 			return;
 		}
 
-		$title_arr = array(
+		$title_arr = [
 			$back_url => Lang::t('_FUNCTIONAL_ROLE', 'fncroles'),
 			Lang::t('_COMPETENCES', 'fncroles').': '.$this->model->getFunctionalRoleName($id_fncrole)
-		);
+        ];
 
 		$result = Get::req('res', DOTY_ALPHANUM, '');
 		$result_message = "";
@@ -649,14 +649,14 @@ Class FunctionalrolesAdmController extends AdmController {
 			case "err_competences": $result_message = UIFeedback::error(Lang::t('_OPERATION_FAILURE', 'fncroles'), true); break;
 		}
 
-		$this->render('show_competences', array(
+		$this->render('show_competences', [
 			'id_fncrole' => $id_fncrole,
 			'title_arr' => $title_arr,
 			'filter_text' => "",
 			'result_message' => $result_message,
 			'count' => $this->model->getManageCompetencesTotal($id_fncrole, false),
 			'permissions' => $this->permissions
-		));
+        ]);
 	}
 
 
@@ -667,9 +667,9 @@ Class FunctionalrolesAdmController extends AdmController {
 		//TO DO: if $id_fncrole <= 0 ...
 
 		$filter_text = Get::req('filter_text', DOTY_STRING, '');
-		$searchFilter = array(
+		$searchFilter = [
 			'text' => $filter_text
-		);
+        ];
 
 		$output = $this->model->getManageUsersAll($id_fncrole, $searchFilter);
 		echo $this->json->encode($output);
@@ -697,9 +697,9 @@ Class FunctionalrolesAdmController extends AdmController {
 		$dir = Get::req('dir', DOTY_STRING, "asc");
 		$filter_text = Get::req('filter_text', DOTY_STRING, '');
 
-		$searchFilter = array(
+		$searchFilter = [
 			'text' => $filter_text
-		);
+        ];
 
 		//get total from database and validate the results count
 		$total = $this->model->getManageUsersTotal($id_fncrole, $searchFilter);
@@ -712,34 +712,34 @@ Class FunctionalrolesAdmController extends AdmController {
 		}
 
 		//set pagination argument
-		$pagination = array(
+		$pagination = [
 			'startIndex' => $startIndex,
 			'results' => $results,
 			'sort' => $sort,
 			'dir' => $dir
-		);
+        ];
 
 		//read records from database
 		$list = $this->model->getManageUsersList($id_fncrole, $pagination, $searchFilter);
 
 		//prepare the data for sending
 		$acl_man = Docebo::user()->getAclManager();
-		$output_results = array();
+		$output_results = [];
 		if (is_array($list) && count($list)>0) {
 			foreach ($list as $idst=>$record) {
 				//prepare output record
-				$output_results[] = array(
+				$output_results[] = [
 					'id' => $record->idst,
 					'userid' => Layout::highlight($acl_man->relativeId($record->userid), $filter_text),
 					'lastname' => Layout::highlight($record->lastname, $filter_text),
 					'firstname' => Layout::highlight($record->firstname, $filter_text),
 					'del'		=> 'ajax.adm_server.php?r=adm/functionalroles/del_user&id_user='.(int)$record->idst.'&id_fncrole='.(int)$id_fncrole,
 					'is_group' => $record->is_group
-				);
+                ];
 			}
 		}
 
-		$output = array(
+		$output = [
 			'totalRecords' => $total,
 			'startIndex' => $startIndex,
 			'sort' => $sort,
@@ -747,7 +747,7 @@ Class FunctionalrolesAdmController extends AdmController {
 			'rowsPerPage' => $rowsPerPage,
 			'results' => count($list),
 			'records' => $output_results
-		);
+        ];
 
 		echo $this->json->encode($output);
 	}
@@ -765,9 +765,9 @@ Class FunctionalrolesAdmController extends AdmController {
 		$dir = Get::req('dir', DOTY_STRING, "asc");
 		$filter_text = Get::req('filter_text', DOTY_STRING, '');
 
-		$searchFilter = array(
+		$searchFilter = [
 			'text' => $filter_text
-		);
+        ];
 
 		//get total from database and validate the results count
 		$total = $this->model->getManageCompetencesTotal($id_fncrole, $searchFilter);
@@ -780,18 +780,18 @@ Class FunctionalrolesAdmController extends AdmController {
 		}
 
 		//set pagination argument
-		$pagination = array(
+		$pagination = [
 			'startIndex' => $startIndex,
 			'results' => $results,
 			'sort' => $sort,
 			'dir' => $dir
-		);
+        ];
 
 		//read records from database
 		$list = $this->model->getManageCompetencesList($id_fncrole, $pagination, $searchFilter);
 
 		//prepare the data for sending
-		$output_results = array();
+		$output_results = [];
 		if (is_array($list) && count($list)>0) {
 
 			$cmodel = new CompetencesAdm();
@@ -803,7 +803,7 @@ Class FunctionalrolesAdmController extends AdmController {
 				$_str = strip_tags($record->description);
 				$_description = strlen($_str)>100 ? substr($_str, 0, 97).'...' : $_str;
 
-				$output_results[] = array(
+				$output_results[] = [
 					'id' => $record->id_competence,
 					'category' => Layout::highlight($record->category, $filter_text),
 					'name' => Layout::highlight($record->name, $filter_text),
@@ -813,11 +813,11 @@ Class FunctionalrolesAdmController extends AdmController {
 					'score' => ($record->type == 'flag' ? '-' : $record->score),
 					'expiration' => $record->expiration > 0 ? $record->expiration : Lang::t('_NEVER', 'standard'),
 					'del'		=> 'ajax.adm_server.php?r=adm/functionalroles/del_competence&id_competence='.(int)$record->id_competence.'&id_fncrole='.(int)$id_fncrole,
-				);
+                ];
 			}
 		}
 
-		$output = array(
+		$output = [
 			'totalRecords' => $total,
 			'startIndex' => $startIndex,
 			'sort' => $sort,
@@ -825,7 +825,7 @@ Class FunctionalrolesAdmController extends AdmController {
 			'rowsPerPage' => $rowsPerPage,
 			'results' => count($list),
 			'records' => $output_results
-		);
+        ];
 
 		echo $this->json->encode($output);
 	}
@@ -843,10 +843,10 @@ Class FunctionalrolesAdmController extends AdmController {
 		//read inputs
 		$id_fncrole = Get::req('id_fncrole', DOTY_INT, -1);
 		if ($id_fncrole <= 0) {
-			$this->render('invalid', array(
+			$this->render('invalid', [
 				'message' => $this->_getErrorMessage('invalid fncrole'),
 				'back_url' => $base_url
-			));
+            ]);
 			return;
 		}
 
@@ -859,11 +859,11 @@ Class FunctionalrolesAdmController extends AdmController {
 		$name = $this->model->getFunctionalRoleName($id_fncrole);
 
 		//page_title
-		$page_title_arr = array(
+		$page_title_arr = [
 			$base_url => Lang::t('_FUNCTIONAL_ROLE', 'fncroles'),
 			$back_url => Lang::t('_USERS', 'fncroles').': '.$name,
 			Lang::t('_ASSIGN_USERS', 'fncroles')
-		);
+        ];
 
 		if (isset($_POST['cancelselector'])) {
 
@@ -911,7 +911,7 @@ Class FunctionalrolesAdmController extends AdmController {
 
 			//filter selectable user by sub-admin permission
 			$acl_man = Docebo::user()->getAclManager();
-			$user_selector->setUserFilter('exclude', array($acl_man->getAnonymousId()));
+			$user_selector->setUserFilter('exclude', [$acl_man->getAnonymousId()]);
 			if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
 				require_once(_base_.'/lib/lib.preference.php');
 				$adminManager = new AdminPreference();
@@ -958,10 +958,10 @@ Class FunctionalrolesAdmController extends AdmController {
 		//read inputs
 		$id_fncrole = Get::req('id_fncrole', DOTY_INT, -1);
 		if ($id_fncrole <= 0) {
-			$this->render('invalid', array(
+			$this->render('invalid', [
 				'message' => $this->_getErrorMessage('invalid fncrole'),
 				'back_url' => $base_url
-			));
+            ]);
 			return;
 		}
 
@@ -979,9 +979,9 @@ Class FunctionalrolesAdmController extends AdmController {
 
 		} elseif ($save !== false) {
 
-			$selection = Get::req('competences_selection', DOTY_MIXED, array());
+			$selection = Get::req('competences_selection', DOTY_MIXED, []);
 			$selection_str = (is_array($selection) && isset($selection['fncroles_competences_selector']) ? $selection['fncroles_competences_selector'] : "") ;
-			$competences_selected = $selection_str != "" ? explode(",", $selection_str) : array();
+			$competences_selected = $selection_str != "" ? explode(",", $selection_str) : [];
 			$competences_existent = $this->model->getCompetences($id_fncrole);
 
 			//retrieve newly selected users
@@ -998,18 +998,18 @@ Class FunctionalrolesAdmController extends AdmController {
 			Util::jump_to($back_url.'&res='.($res1 && $res2 ? 'ok_competences' : 'err_competences'));
 
 		} else {
-			$title_arr = array(
+			$title_arr = [
 				$base_url => Lang::t('_FUNCTIONAL_ROLE', 'fncroles'),
 				$back_url => Lang::t('_COMPETENCES', 'fncroles').': <b>'.$this->model->getFunctionalRoleName($id_fncrole).'</b>',
 				Lang::t('_ASSIGN', 'fncroles')
-			);
+            ];
 
 			//render the courses selector
-			$this->render('competences_selector', array(
+			$this->render('competences_selector', [
 				'id_fncrole' => $id_fncrole,
 				'title_arr' => $title_arr,
 				'selection' => $this->model->getCompetences($id_fncrole)
-			));
+            ]);
 		}
 	}
 
@@ -1017,14 +1017,14 @@ Class FunctionalrolesAdmController extends AdmController {
 	public function del_user() {
 		//check permissions: we should have mod privileges to remove users from the role group
 		if (!$this->permissions['mod']) {
-			$output = array('success' => false, 'message' => $this->_getErrorMessage('no permission'));
+			$output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
 			echo $this->json->encode($output);
 			return;
 		}
 
 		$id_fncrole = Get::req('id_fncrole', DOTY_INT, -1);
 		$id_user = Get::req('id_user', DOTY_INT, -1);
-		$output = array('success' => false);
+		$output = ['success' => false];
 		if ($id_fncrole <= 0) {
 			$output['message'] = $this->_getErrorMessage('invalid fncrole');
 			echo $this->json->encode($output);
@@ -1045,7 +1045,7 @@ Class FunctionalrolesAdmController extends AdmController {
 	public function del_users() {
 		//check permissions: we should have mod privileges to remove users from the role group
 		if (!$this->permissions['mod']) {
-			$output = array('success' => false, 'message' => $this->_getErrorMessage('no permission'));
+			$output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
 			echo $this->json->encode($output);
 			return;
 		}
@@ -1059,14 +1059,14 @@ Class FunctionalrolesAdmController extends AdmController {
 
 		$users_str = Get::req('users', DOTY_STRING, "");
 		if (!$users_str) {
-			$output = array('success' => false, 'message' => $this->_getErrorMessage('invalid input'));
+			$output = ['success' => false, 'message' => $this->_getErrorMessage('invalid input')];
 			echo $this->json->encode($output);
 			return;
 		}
 
 		$users = explode(",", $users_str);
 		if (empty($users)) {
-			$output = array('success' => false, 'message' => $this->_getErrorMessage('invalid input'));
+			$output = ['success' => false, 'message' => $this->_getErrorMessage('invalid input')];
 			echo $this->json->encode($output);
 			return;
 		}
@@ -1076,7 +1076,7 @@ Class FunctionalrolesAdmController extends AdmController {
 		$users_after = $this->model->getUsers($id_fncrole);
 		$users_deleted = array_diff($users_first, $users_after);
 
-		$output = array('success' => $res ? true : false);
+		$output = ['success' => $res ? true : false];
 		if (!$res) $output['message'] = $this->_getErrorMessage('server error');
 		else $output['list'] = array_values($users_deleted);
 
@@ -1087,14 +1087,14 @@ Class FunctionalrolesAdmController extends AdmController {
 	public function del_competence() {
 		//check permissions: we should have mod privileges to remove competences from the role group
 		if (!$this->permissions['mod']) {
-			$output = array('success' => false, 'message' => $this->_getErrorMessage('no permission'));
+			$output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
 			echo $this->json->encode($output);
 			return;
 		}
 
 		$id_fncrole = Get::req('id_fncrole', DOTY_INT, -1);
 		$id_competence = Get::req('id_competence', DOTY_INT, -1);
-		$output = array('success' => false);
+		$output = ['success' => false];
 		if ($id_fncrole <= 0) {
 			$output['message'] = $this->_getErrorMessage('invalid fncrole');
 			echo $this->json->encode($output);
@@ -1118,10 +1118,10 @@ Class FunctionalrolesAdmController extends AdmController {
 		//read inputs
 		$id_fncrole = Get::req('id_fncrole', DOTY_INT, -1);
 		if ($id_fncrole <= 0) {
-			$this->render('invalid', array(
+			$this->render('invalid', [
 				'message' => $this->_getErrorMessage('invalid fncrole'),
 				'back_url' => $base_url
-			));
+            ]);
 			return;
 		}
 
@@ -1135,22 +1135,22 @@ Class FunctionalrolesAdmController extends AdmController {
 
 		require_once(_base_.'/lib/lib.table.php');
 		$table = new Table();
-		$head_label = array(
+		$head_label = [
 			Lang::t('_NAME', 'standard'),
 			Lang::t('_DESCRIPTION', 'standard'),
 			Lang::t('_TYPOLOGY', 'competences'),
 			Lang::t('_TYPE', 'competences'),
 			Lang::t('_MIN_SCORE', 'comeptences'),
 			Lang::t('_EXPIRATION_DAYS', 'competences')
-		);
-		$head_style = array(
+        ];
+		$head_style = [
 			'',
 			'',
 			'img-cell',
 			'img-cell',
 			'img-cell',
 			'img-cell'
-		);
+        ];
 
 		$table->addHead($head_label, $head_style);
 
@@ -1161,7 +1161,7 @@ Class FunctionalrolesAdmController extends AdmController {
 		$properties = $this->model->getCompetencesProperties($list);
     foreach($cinfo as $key => $value)
     {
-			$line = array();
+			$line = [];
 
 			$line[] = $value->langs[$lang_code]['name'];
 			$line[] = $value->langs[$lang_code]['description'];
@@ -1176,9 +1176,9 @@ Class FunctionalrolesAdmController extends AdmController {
 			if ($value->type == 'score') $count_score++;
 		}
 
-		$foot = array(
-			array('colspan' => $count_score>0 ? 4 : 5)
-		);
+		$foot = [
+			['colspan' => $count_score>0 ? 4 : 5]
+        ];
 		if ($count_score > 0) {
 			//set score to all competences
 			$foot[] = Form::getInputTextfield('textfield', 'score_value', false, $_std_score, '', 255).'<br />'
@@ -1192,17 +1192,17 @@ Class FunctionalrolesAdmController extends AdmController {
 
 		$table->addFoot($foot);
 
-		$title_arr = array(
+		$title_arr = [
 			$base_url => Lang::t('_FUNCTIONAL_ROLE', 'fncroles'),
 			$back_url => Lang::t('_COMPETENCES', 'fncroles').': '.$this->model->getFunctionalRoleName($id_fncrole),
 			Lang::t('_PROPERTIES', 'fncroles')
-		);
+        ];
 
-		$this->render('man_competences_properties', array(
+		$this->render('man_competences_properties', [
 			'id_fncrole' => $id_fncrole,
 			'title_arr' => $title_arr,
 			'table' => $table
-		));
+        ]);
 
 	}
 
@@ -1213,10 +1213,10 @@ Class FunctionalrolesAdmController extends AdmController {
 		//read inputs
 		$id_fncrole = Get::req('id_fncrole', DOTY_INT, -1);
 		if ($id_fncrole <= 0) {
-			$this->render('invalid', array(
+			$this->render('invalid', [
 				'message' => $this->_getErrorMessage('invalid fncrole'),
 				'back_url' => $base_url
-			));
+            ]);
 			return;
 		}
 
@@ -1229,10 +1229,10 @@ Class FunctionalrolesAdmController extends AdmController {
 
 		$properties = Get::req('properties', DOTY_MIXED, false);
 		if ($properties === false || empty($properties)) {
-			$this->render('invalid', array(
+			$this->render('invalid', [
 				'message' => $this->_getErrorMessage('invalid input'),
 				'back_url' => $back_url
-			));
+            ]);
 			return;
 		}
 
@@ -1253,10 +1253,10 @@ Class FunctionalrolesAdmController extends AdmController {
 	public function show_coursesTask() {
 		$id_fncrole = Get::req('id', DOTY_INT, -1);
 		if ($id_fncrole <= 0) {
-			$this->render('invalid', array(
+			$this->render('invalid', [
 				'message' => Lang::t('_INVALID_FNCROLE', 'fncroles'),
 				'back_url' => $back_url
-			));
+            ]);
 			return;
 		}
 
@@ -1271,18 +1271,18 @@ Class FunctionalrolesAdmController extends AdmController {
 		}
 
 		$courses_info = $this->model->getCompetencesCoursesInfo($id_fncrole);
-		$title_arr = array(
+		$title_arr = [
 			'index.php?r=adm/functionalroles/show' => Lang::t('_FUNCTIONAL_ROLE', 'fncroles'),
 			Lang::t('_COURSES_FOR_COMPETENCES', 'course').': '.$this->model->getFunctionalRoleName($id_fncrole)
-		);
+        ];
 		
-		$this->render('competences_courses', array(
+		$this->render('competences_courses', [
 			'title' => $title_arr,
 			'language' => getLanguage(),
 			'competences_info' => $competences_info,
 			'courses_info' => $courses_info,
 			'json' => $this->json
-		));
+        ]);
 	}
 
 
@@ -1292,17 +1292,17 @@ Class FunctionalrolesAdmController extends AdmController {
 
 		$id_fncrole = Get::req('id', DOTY_INT, -1);
 		if ($id_fncrole <= 0) {
-			$this->render('invalid', array(
+			$this->render('invalid', [
 				'message' => $this->_getErrorMessage('invalid fncrole'),
 				'back_url' => $back_url
-			));
+            ]);
 			return;
 		}
 
-		$title_arr = array(
+		$title_arr = [
 			$back_url => Lang::t('_FUNCTIONAL_ROLE', 'fncroles'),
 			Lang::t('_GAP_ANALYSIS', 'fncroles').': '.$this->model->getFunctionalRoleName($id_fncrole)
-		);
+        ];
 
 		$result = Get::req('res', DOTY_ALPHANUM, '');
 		$result_message = "";
@@ -1320,27 +1320,27 @@ Class FunctionalrolesAdmController extends AdmController {
         require_once(_adm_ . '/lib/lib.field.php');
 
         $fman = new FieldList();
-        $fields = $fman->getFlatAllFields(array('framework', 'lms'));
+        $fields = $fman->getFlatAllFields(['framework', 'lms']);
 
-        $f_list = array(
+        $f_list = [
             'email' => Lang::t('_EMAIL', 'standard'),
             'lastenter' => Lang::t('_DATE_LAST_ACCESS', 'profile'),
             'register_date' => Lang::t('_DIRECTORY_FILTER_register_date', 'admin_directory'),
             'language' => Lang::t('_LANGUAGE', 'standard'),
             'level' => Lang::t('_LEVEL', 'standard')
-        );
+        ];
         $f_list = $f_list + $fields;
         $f_selected = $this->json->decode(Docebo::user()->getPreference('ui.directory.custom_columns'));
         if ($f_selected == false) {
-            $f_selected = array('email', 'lastenter', 'register_date');
+            $f_selected = ['email', 'lastenter', 'register_date'];
         }
 
-        $js_arr = array();
+        $js_arr = [];
         foreach ($f_list as $key => $value)
             $js_arr[] = $key . ': ' . $this->json->encode($value);
         $f_list_js = '{' . implode(',', $js_arr) . '}';
 
-        $this->render('gap_analisys', array(
+        $this->render('gap_analisys', [
 			'id_fncrole' => $id_fncrole,
 			'num_var_fields' => 1,
 			'fieldlist' => $f_list,
@@ -1349,12 +1349,12 @@ Class FunctionalrolesAdmController extends AdmController {
 			'title_arr' => $title_arr,
 			'filter_text' => "",
 			'result_message' => $result_message,
-			'advanced_filter' => array(
+			'advanced_filter' => [
 				'active' => false,
 				'gap_filter' => 0,
 				'expire_filter' => 0
-			)
-		));
+            ]
+        ]);
 	}
 
 
@@ -1372,11 +1372,11 @@ Class FunctionalrolesAdmController extends AdmController {
 		$show_gap = Get::req('gap', DOTY_INT, 0);
 		$show_expired = Get::req('expired', DOTY_INT, 0);
 		
-		$searchFilter = array(
+		$searchFilter = [
 			'text' => $filter_text,
 			'show_gap' => $show_gap,
 			'show_expired' => $show_expired
-		);
+        ];
         
         //get total from database and validate the results count
 		$total = $this->model->getGapTotal($id_fncrole, $searchFilter);
@@ -1393,26 +1393,26 @@ Class FunctionalrolesAdmController extends AdmController {
 			$searchFilter['dyn_filter'] = $dyn_filter;
 		}        
 
-        $var_fields = Get::req('_dyn_field', DOTY_MIXED, array());
+        $var_fields = Get::req('_dyn_field', DOTY_MIXED, []);
 		if (stristr($sort, '_dyn_field_') !== false) {
 			$index = str_replace('_dyn_field_', '', $sort);
 			$sort = $var_fields[(int)$index];
 		}
         
 		//set pagination argument
-		$pagination = array(
+		$pagination = [
 			'startIndex' => $startIndex,
 			'results' => $results,
 			'sort' => $sort,
 			'dir' => $dir
-		);
+        ];
 
 		//read records from database
 		$list = $this->model->getGapList($id_fncrole, $pagination, $searchFilter);
  
 		//prepare the data for sending
 		$acl_man = Docebo::user()->getAclManager();
-		$output_results = array();
+		$output_results = [];
 		if (is_array($list) && count($list)>0) {
 			foreach ($list as $idst=>$record) {
 				//prepare output record
@@ -1420,7 +1420,7 @@ Class FunctionalrolesAdmController extends AdmController {
 				$_not_obtained = $record->last_assign_date == "";
 				$_date_expire = $_not_obtained ? "" : date("Y-m-d H:i:s", fromDatetimeToTimestamp($record->last_assign_date) + $record->expiration * 86400);
 
-				$base_output_results = array(
+				$base_output_results = [
 					'idst' => $record->idst,
 					'userid' => Layout::highlight($acl_man->relativeId($record->userid), $filter_text),
 					'firstname' => Layout::highlight($record->firstname, $filter_text),
@@ -1436,7 +1436,7 @@ Class FunctionalrolesAdmController extends AdmController {
 
 					'date_expire' => $_not_obtained ? '' : ($record->expiration > 0 ? Format::date($_date_expire, 'datetime') : Lang::t('_NEVER', 'standard')),
 					'gap' => $record->gap,
-				);
+                ];
 
                 $dynamic_fields_value = $this->getDynamicFieldsValue($record, $var_fields);
                      
@@ -1451,7 +1451,7 @@ Class FunctionalrolesAdmController extends AdmController {
 			}
 		}
 
-		$output = array(
+		$output = [
 			'totalRecords' => $total,
 			'startIndex' => $startIndex,
 			'sort' => $sort,
@@ -1459,7 +1459,7 @@ Class FunctionalrolesAdmController extends AdmController {
 			'rowsPerPage' => $rowsPerPage,
 			'results' => count($list),
 			'records' => $output_results
-		);
+        ];
 
 		echo $this->json->encode($output);
 	}
@@ -1474,7 +1474,7 @@ Class FunctionalrolesAdmController extends AdmController {
 	}
 
     private function getDynamicFieldsValue($obj, $var_fields) {
-        $toReturn = array();
+        $toReturn = [];
         foreach ($var_fields as $i => $value) {
             if (is_numeric($value)) {
                 $name = '_custom_' . $value;
@@ -1493,7 +1493,7 @@ Class FunctionalrolesAdmController extends AdmController {
             if (!empty($date_fields) && in_array($value, $date_fields))
                 $content = Format::date(substr($content, 0, 10), 'date');
 
-            $toReturn[] = array('_dyn_field_' . $i => $content);
+            $toReturn[] = ['_dyn_field_' . $i => $content];
         }
         return $toReturn;
     }
@@ -1504,10 +1504,10 @@ Class FunctionalrolesAdmController extends AdmController {
 		$dir = Get::req('dir', DOTY_STRING, "asc");
         
 		if ($id_fncrole <= 0) {
-			$this->render('invalid', array(
+			$this->render('invalid', [
 				'message' => $this->_getErrorMessage('invalid fncrole'),
 				'back_url' => $back_url
-			));
+            ]);
 			return;
 		}
 
@@ -1517,7 +1517,7 @@ Class FunctionalrolesAdmController extends AdmController {
 			$searchFilter['dyn_filter'] = $dyn_filter;
 		}        
 
-        $var_fields = Get::req('_dyn_field', DOTY_MIXED, array());
+        $var_fields = Get::req('_dyn_field', DOTY_MIXED, []);
 		if (stristr($sort, '_dyn_field_') !== false) {
 			$index = str_replace('_dyn_field_', '', $sort);
 			$sort = $var_fields[(int)$index];
@@ -1538,12 +1538,12 @@ Class FunctionalrolesAdmController extends AdmController {
 
 		//retrieve data to export
 		$filter = false;
-		$pagination = array(
+		$pagination = [
 			'startIndex' => 0,
 			'results' => $this->model->getGapTotal($id_fncrole, $filter),
 			'sort' => $sort,
 			'dir' => $dir
-		);
+        ];
 		$list = $this->model->getGapList($id_fncrole, $pagination, $searchFilter);
 
 		//prepare the data for exporting
@@ -1559,19 +1559,19 @@ Class FunctionalrolesAdmController extends AdmController {
 				$_date_expire = $_not_obtained ? "" : date("Y-m-d H:i:s", fromDatetimeToTimestamp($record->last_assign_date) + $record->expiration * 86400);
 
 				//json encoding used for string formatting with double quotes ""
-				$line_head = array(
+				$line_head = [
 					$this->json->encode($record->competence_name),
 					$this->json->encode($acl_man->relativeId($record->userid)),
 					$this->json->encode($record->firstname),
 					$this->json->encode($record->lastname)
-                );
-                $line_tail = array(
+                ];
+                $line_tail = [
 					(int)$record->score_got,
 					(int)$record->score_requested,
 					(int)$record->gap*(-1),
 					($_not_obtained ? "" : $this->json->encode(Format::date($record->last_assign_date, 'datetime'))),
 					($_not_obtained ? "" : $this->json->encode($record->expiration > 0 ? Format::date($_date_expire, 'datetime') : Lang::t('_NEVER', 'standard')))
-				);
+                ];
                 
                 $dynamic_fields_value = $this->getDynamicFieldsValue($record, $var_fields);
                      
@@ -1605,17 +1605,17 @@ Class FunctionalrolesAdmController extends AdmController {
 		$dir = Get::req('dir', DOTY_STRING, "asc");        
         
 		if ($id_fncrole <= 0) {
-			$this->render('invalid', array(
+			$this->render('invalid', [
 				'message' => $this->_getErrorMessage('invalid fncrole'),
 				'back_url' => $back_url
-			));
+            ]);
 			return;
 		}
 		if ($id_user <= 0) {
-			$this->render('invalid', array(
+			$this->render('invalid', [
 				'message' => $this->_getErrorMessage('invalid user'),
 				'back_url' => $back_url
-			));
+            ]);
 			return;
 		}        
 
@@ -1635,18 +1635,18 @@ Class FunctionalrolesAdmController extends AdmController {
 		$_XLS_ENDLINE = "</td></tr>";        
        
 		//retrieve data to export
-		$filter =  array('user' => $id_user);
-		$pagination = array(
+		$filter =  ['user' => $id_user];
+		$pagination = [
 			'startIndex' => 0,
 			'results' => $this->model->getGapTotal($id_fncrole, $filter),
 			'sort' => $sort,
 			'dir' => $dir
-		);
+        ];
 		$list = $this->model->getGapList($id_fncrole, $pagination, $filter);
 
 		//prepare the data for exporting
 
-		$output_results = array();
+		$output_results = [];
 		if (is_array($list) && count($list)>0) {
             if ($format=='xls'){
                 $buffer .= "<head><meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\"></head><style>td, th { border:solid 1px black; } </style><body><table>";
@@ -1657,14 +1657,14 @@ Class FunctionalrolesAdmController extends AdmController {
 				$_date_expire = $_not_obtained ? "" : date("Y-m-d H:i:s", fromDatetimeToTimestamp($record->last_assign_date) + $record->expiration * 86400);
 
 				//json encoding used for string formatting with double quotes ""
-				$line = array(
+				$line = [
 					$this->json->encode($record->competence_name),
 					(int)$record->score_got,
 					(int)$record->score_requested,
 					(int)$record->gap*(-1),
 					($_not_obtained ? "" : $this->json->encode(Format::date($record->last_assign_date, 'datetime'))),
 					($_not_obtained ? "" : $this->json->encode($record->expiration > 0 ? Format::date($_date_expire, 'datetime') : Lang::t('_NEVER', 'standard')))
-				);
+                ];
 
                 if ($format == 'xls') {
                     $buffer .= $_XLS_STARTLINE;
@@ -1691,20 +1691,20 @@ Class FunctionalrolesAdmController extends AdmController {
 		$base_url = 'index.php?r=adm/functionalroles/show';
 		$id_fncrole = Get::req('id_fncrole', DOTY_INT, 0);
 		if ($id_fncrole <= 0) {
-			$this->render('invalid', array(
+			$this->render('invalid', [
 				'message' => $this->_getErrorMessage('invalid fncrole'),
 				'back_url' => $base_url
-			));
+            ]);
 			return;
 		}
 
 		$back_url = 'index.php?r=adm/functionalroles/man_users&id='.(int)$id_fncrole;
 		$id_user = Get::req('id_user', DOTY_INT, 0);
 		if ($id_user <= 0) {
-			$this->render('invalid', array(
+			$this->render('invalid', [
 				'message' => $this->_getErrorMessage('invalid user'),
 				'back_url' => $back_url
-			));
+            ]);
 			return;
 		}
 
@@ -1713,20 +1713,20 @@ Class FunctionalrolesAdmController extends AdmController {
 
 		//prepare page title
 		$acl_man = Docebo::user()->getACLManager();
-		$title_arr = array(
+		$title_arr = [
 			$base_url => Lang::t('_FUNCTIONAL_ROLE', 'fncroles'),
 			$back_url => Lang::t('_USERS', 'fncroles').': '.$this->model->getFunctionalRoleName($id_fncrole),
 			Lang::t('_GAP_ANALYSIS', 'fncroles').': <b>'.$acl_man->relativeId($acl_man->getUserid($id_user)).'</b>'
-		);
+        ];
 
 		//retrieve data for chart filling, and elaborate it
-		$raw_data = $this->model->getGapList($id_fncrole, array(
+		$raw_data = $this->model->getGapList($id_fncrole, [
 			'startIndex' => 0,
-			'results' => $this->model->getGapTotal($id_fncrole, array('user' => $id_user)),
+			'results' => $this->model->getGapTotal($id_fncrole, ['user' => $id_user]),
 			'sort' => "competence",
 			'dir' => "ASC"
-		), array('user' => $id_user));
-		$chart_data = array();
+        ], ['user' => $id_user]);
+		$chart_data = [];
 		foreach ($raw_data as $record) {
 
 			$_percent = 0.0;
@@ -1741,7 +1741,7 @@ Class FunctionalrolesAdmController extends AdmController {
 				$_percent = ($record->score != 0 ? (float)((-$record->gap / (float)$record->score)*100) : 0.0);
 			}
 
-			$chart_data[] = array(
+			$chart_data[] = [
 				'competence' => $this->json->encode($record->competence_name),
 				'type' => $this->json->encode($record->type),
 				'score_got' => (int)$record->score_got,
@@ -1749,17 +1749,17 @@ Class FunctionalrolesAdmController extends AdmController {
 				'gap_percent' => $_percent,
 				'gap_negative' => $record->gap > 0 ? $record->gap : 0,
 				'gap_positive' => $record->gap <= 0 ? abs($record->gap) : 0
-			);
+            ];
 		}
 
 		//rendere chart + table
-		$this->render('user_gap_analisys', array(
+		$this->render('user_gap_analisys', [
 			'id_fncrole' => $id_fncrole,
 			'id_user' => $id_user,
 			'title_arr' => $title_arr,
 			'chart_data' => $chart_data,
 			'from_gap' => Get::req('from_gap', DOTY_INT, 0) > 0
-		));
+        ]);
 
 	}
 
@@ -1775,7 +1775,7 @@ Class FunctionalrolesAdmController extends AdmController {
 		$sort = Get::req('sort', DOTY_STRING, "");
 		$dir = Get::req('dir', DOTY_STRING, "asc");
 		
-		$searchFilter = array('user' => $id_user);
+		$searchFilter = ['user' => $id_user];
 
 		//get total from database and validate the results count
 		$total = $this->model->getGapTotal($id_fncrole, $searchFilter);
@@ -1788,19 +1788,19 @@ Class FunctionalrolesAdmController extends AdmController {
 		}
 
 		//set pagination argument
-		$pagination = array(
+		$pagination = [
 			'startIndex' => $startIndex,
 			'results' => $results,
 			'sort' => $sort,
 			'dir' => $dir
-		);
+        ];
 
 		//read records from database
 		$list = $this->model->getGapList($id_fncrole, $pagination, $searchFilter);
 
 		//prepare the data for sending
 		$acl_man = Docebo::user()->getAclManager();
-		$output_results = array();
+		$output_results = [];
 		if (is_array($list) && count($list)>0) {
 			foreach ($list as $idst=>$record) {
 				//prepare output record
@@ -1808,7 +1808,7 @@ Class FunctionalrolesAdmController extends AdmController {
 				$_not_obtained = $record->last_assign_date == "";
 				$_date_expire = $_not_obtained ? "" : date("Y-m-d H:i:s", fromDatetimeToTimestamp($record->last_assign_date) + $record->expiration * 86400);
 
-				$output_results[] = array(
+				$output_results[] = [
 					'last_assign_date' => $_not_obtained ? "" : Format::date($record->last_assign_date, 'datetime'),
 					'score_req' => $record->score_requested,
 					'score_got' => $record->score_got,
@@ -1820,11 +1820,11 @@ Class FunctionalrolesAdmController extends AdmController {
 
 					'date_expire' => $_not_obtained ? '' : ($record->expiration > 0 ? Format::date($_date_expire, 'datetime') : Lang::t('_NEVER', 'standard')),
 					'gap' => $record->gap,
-				);
+                ];
 			}
 		}
 
-		$output = array(
+		$output = [
 			'totalRecords' => $total,
 			'startIndex' => $startIndex,
 			'sort' => $sort,
@@ -1832,7 +1832,7 @@ Class FunctionalrolesAdmController extends AdmController {
 			'rowsPerPage' => $rowsPerPage,
 			'results' => count($list),
 			'records' => $output_results
-		);
+        ];
 
 		echo $this->json->encode($output);
 	}
@@ -1841,15 +1841,15 @@ Class FunctionalrolesAdmController extends AdmController {
 	public function functionalroles_autocompleteTask() {
 		$query = Get::req('query', DOTY_STRING, '');
 		$results = Get::req('results', DOTY_INT, Get::sett('visuItem', 25));
-		$output = array('fncroles' => array());
+		$output = ['fncroles' => []];
 		if ($query != "") {
 			$fncroles = $this->model->searchFunctionalRolesByName($query, $results, false, true);
 			foreach ($fncroles as $fncrole) {
-				$output['fncroles'][] = array(
+				$output['fncroles'][] = [
 					'id_fncrole' => $fncrole->id_fncrole,
 					'name' => $fncrole->name,
 					'name_highlight' => Layout::highlight($fncrole->name, $query)
-				);
+                ];
 			}
 		}
 		echo $this->json->encode($output);

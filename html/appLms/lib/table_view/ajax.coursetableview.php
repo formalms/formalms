@@ -25,7 +25,7 @@ switch ($command) {
 		$sort = Get::req('sort', DOTY_ALPHANUM, 'name');
 		$dir = Get::req('dir', DOTY_ALPHANUM, 'asc');
 
-		$table_status = array();
+		$table_status = [];
 		$table_status['startIndex'] = $startIndex;
 		$table_status['sort'] = $sort;
 		$table_status['dir'] = $dir;
@@ -33,7 +33,7 @@ switch ($command) {
 
 		$filter = Get::req('filter', DOTY_MIXED, false);
 
-		$filter_status = array();
+		$filter_status = [];
 		if (isset($filter['c_category']['value'])) $filter_status['c_category'] = $filter['c_category']['value']; else $filter_status['c_category'] = $_SESSION['course_category']['filter_status']['c_category'];
 		if (isset($filter['c_filter']['value'])) $filter_status['c_filter'] = $filter['c_filter']['value']; else $filter_status['c_filter'] = $_SESSION['course_category']['filter_status']['c_filter'];
 		if (isset($filter['c_flatview']['value'])) $filter_status['c_flatview'] = $filter['c_flatview']['value']; else $filter_status['c_flatview'] = $_SESSION['course_category']['filter_status']['c_flatview'];
@@ -49,14 +49,14 @@ switch ($command) {
 
 		$num_edition = $edition_manager->getEditionNumber();
 
-		$course_status = array(
+		$course_status = [
 			CST_PREPARATION => $lang->def('_CST_PREPARATION'),
 			CST_AVAILABLE 	=> $lang->def('_CST_AVAILABLE'),
 			CST_EFFECTIVE 	=> $lang->def('_CST_CONFIRMED'),
 			CST_CONCLUDED 	=> $lang->def('_CST_CONCLUDED'),
 			CST_CANCELLED 	=> $lang->def('_CST_CANCELLED')
-		);
-		$courses = array();
+        ];
+		$courses = [];
 		$course_list =& $man_courses->getCoursesRequest($startIndex, $results, $sort, $dir, $filter);
 
 		require_once(_lms_.'/lib/lib.permission.php');
@@ -73,7 +73,7 @@ switch ($command) {
 			$highlight = false;
 			if (isset($filter['c_filter']['value']) && $filter['c_filter']['value'] != '') $highlight = true;
 
-			$courses[] = array(
+			$courses[] = [
 				'idCourse'	=> $row['idCourse'],
 				'code'		=> ($highlight ? highlightText($row['code'], $filter['c_filter']['value']) : $row['code']),
 				'name'		=> ($highlight ? highlightText($row['name'], $filter['c_filter']['value']) : $row['name']),
@@ -91,10 +91,10 @@ switch ($command) {
 				'dup' => '<a id="dup_'.$row['idCourse'].'" href="index.php?modname=course&amp;op=dup_course&id_course='.$row['idCourse'].'">'.Get::img('standard/dup.png', $lang->def('_MAKE_A_COPY')).'</a>',
 				'mod' => true,
 				'del' => true
-			);
+            ];
 		}				
 				
-		$output = array(
+		$output = [
 			'startIndex' => (int)$startIndex,
 			'recordsReturned' => count($courses),
 			'sort' => $sort,
@@ -103,7 +103,7 @@ switch ($command) {
 			'pageSize' => (int)$results,
 			//'totalFilteredRecords' => $man_courses->getCoursesCountFiltered($filter),
 			'records' => $courses
-		);
+        ];
 
 		$json = new Services_JSON();
 		aout($json->encode($output));
@@ -115,7 +115,7 @@ switch ($command) {
 	case 'del_row': {
 		require_once(_lms_.'/lib/lib.course.php');
 		
-		$output = array('success'=>false);
+		$output = ['success'=>false];
 
 		$id_course = Get::req('idrow', DOTY_INT, -1);
 		if ($id_course > 0) {
@@ -130,7 +130,7 @@ switch ($command) {
 
 
 	case 'set_name': {
-		$output = array('success' => false);
+		$output = ['success' => false];
 		$id_course = Get::req('id_course', DOTY_INT, false);
 		$new_name = Get::req('new_name', DOTY_STRING, '');
 
@@ -168,7 +168,7 @@ switch ($command) {
 					$res = sql_query($query);
 				}
 
-				aout($json->encode(array('success' => $res, 'new_value' => $new_value, 'old_value' => $old_value)));
+				aout($json->encode(['success' => $res, 'new_value' => $new_value, 'old_value' => $old_value]));
 			break;
 
 			case 'code':
@@ -183,7 +183,7 @@ switch ($command) {
 					$res = sql_query($query);
 				}
 
-				aout($json->encode(array('success' => $res, 'new_value' => stripslashes($new_value), 'old_value' => stripslashes($old_value))));
+				aout($json->encode(['success' => $res, 'new_value' => stripslashes($new_value), 'old_value' => stripslashes($old_value)]));
 			break;
 		}
 	break;

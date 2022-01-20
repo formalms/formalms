@@ -25,7 +25,7 @@ class DoceboConnectorDoceboAdmin extends DoceboConnector {
 	
   	public $last_error = '';
 	
-	public $cols_descriptor = array();
+	public $cols_descriptor = [];
 	
 	public $name = "";
 	public $description = "";
@@ -35,19 +35,19 @@ class DoceboConnectorDoceboAdmin extends DoceboConnector {
 	 */
 	public $db		= NULL;
 	public $aclm	= false;
-	public $data	= array();
-	public $org_chart	= array();
+	public $data	= [];
+	public $org_chart	= [];
 	public $root_oc = false;
 	public $root_ocd = false;
-	public $levels		= array();
+	public $levels		= [];
 	
 	public $m_ar 	= false;
-	public $admin_profiles	= array();
+	public $admin_profiles	= [];
 	
 	public $preference = false;
 	
 	public $m_pr 	= false;
-	public $public_profiles	= array();	
+	public $public_profiles	= [];
 
 	/**
 	 * This constructor require the source file name
@@ -61,51 +61,51 @@ class DoceboConnectorDoceboAdmin extends DoceboConnector {
 	  	if( $params !== NULL ) $this->set_config( $params );
 		
 		$this->aclm = Docebo::aclm();
-		$this->cols_descriptor = array(
-			array(
+		$this->cols_descriptor = [
+			[
 				DOCEBOIMPORT_COLNAME		=> Lang::t('_TYPE'),
 				DOCEBOIMPORT_COLID			=> 'admin_type',
 				DOCEBOIMPORT_COLMANDATORY	=> true,
 				DOCEBOIMPORT_DATATYPE		=> 'text',
 				DOCEBOIMPORT_DEFAULT		=> ''
-			),
-			array(
+            ],
+			[
 				DOCEBOIMPORT_COLNAME		=> Lang::t('_PROFILE'),
 				DOCEBOIMPORT_COLID			=> 'profile',
 				DOCEBOIMPORT_COLMANDATORY	=> true,
 				DOCEBOIMPORT_DATATYPE		=> 'text',
 				DOCEBOIMPORT_DEFAULT		=> ''
-			),
-			array(
+            ],
+			[
 				DOCEBOIMPORT_COLNAME		=> Lang::t('_USERNAME'),
 				DOCEBOIMPORT_COLID			=> 'username',
 				DOCEBOIMPORT_COLMANDATORY	=> true,
 				DOCEBOIMPORT_DATATYPE		=> 'text',
 				DOCEBOIMPORT_DEFAULT		=> ''
-			),
-			array(
+            ],
+			[
 				DOCEBOIMPORT_COLNAME		=> Lang::t('_FOLDER_NAME'),
 				DOCEBOIMPORT_COLID			=> 'folder_name',
 				DOCEBOIMPORT_COLMANDATORY	=> false,
 				DOCEBOIMPORT_DATATYPE		=> 'text',
 				DOCEBOIMPORT_DEFAULT		=> 'root'
-			),
-			array(
+            ],
+			[
 				DOCEBOIMPORT_COLNAME		=> Lang::t('_COURSEPATH'),
 				DOCEBOIMPORT_COLID			=> 'course_path',
 				DOCEBOIMPORT_COLMANDATORY	=> false,
 				DOCEBOIMPORT_DATATYPE		=> 'text',
 				DOCEBOIMPORT_DEFAULT		=> 'root'
-			),
-            array(
+            ],
+            [
                 DOCEBOIMPORT_COLNAME        => Lang::t('_CATALOGUE'),
                 DOCEBOIMPORT_COLID            => 'course_cat',
                 DOCEBOIMPORT_COLMANDATORY    => false,
                 DOCEBOIMPORT_DATATYPE        => 'text',
                 DOCEBOIMPORT_DEFAULT        => 'root'
-            )
-            
-		);
+            ]
+
+        ];
 	}
 
 	function get_configUI() {
@@ -113,10 +113,10 @@ class DoceboConnectorDoceboAdmin extends DoceboConnector {
 	}
 	
 	function get_config() {
-		return array(
+		return [
 			'name' => $this->name,
 			'description' => $this->description
-		);
+        ];
 	}
 	
 	function set_config( $params ) {
@@ -128,7 +128,7 @@ class DoceboConnectorDoceboAdmin extends DoceboConnector {
 		
 		$this->db = DbConn::getInstance();
 		
-		$this->org_chart = array();
+		$this->org_chart = [];
 		
 		// Cache org_chart group
 		$query = " SELECT oc.id_dir, oc.translation, oct.idst_oc, oct.idst_ocd "
@@ -194,7 +194,7 @@ class DoceboConnectorDoceboAdmin extends DoceboConnector {
 	 * @return integer the number of mandatory columns to import
 	**/
 	function get_tot_mandatory_cols() {
-		$result = array();
+		$result = [];
 		foreach( $this->cols_descriptor as $col ) {
 			if( $col[DOCEBOIMPORT_COLMANDATORY] )
 				$result[] = $col;
@@ -243,11 +243,11 @@ class DoceboConnectorDoceboAdmin extends DoceboConnector {
 			// associated org_chart ?
 			if($row['folder_name'] == 'root' && isset($this->root_ocd)) {
 				
-				$this->preference->saveAdminTree($user[ACL_INFO_IDST], array($this->root_ocd));
+				$this->preference->saveAdminTree($user[ACL_INFO_IDST], [$this->root_ocd]);
 			} elseif( isset($this->org_chart[ strtolower($row['folder_name']) ]) ) {
 				
 				$oc = $this->org_chart[ strtolower($row['folder_name']) ];
-				$this->preference->saveAdminTree($user[ACL_INFO_IDST], array($oc->idst_ocd));
+				$this->preference->saveAdminTree($user[ACL_INFO_IDST], [$oc->idst_ocd]);
 				
 			} else {
 				
@@ -256,17 +256,17 @@ class DoceboConnectorDoceboAdmin extends DoceboConnector {
 			
 			// associated courses by path
 			if($row['course_path'] == 'root') {
-				$this->preference->saveAdminCourse($user[ACL_INFO_IDST],  array(0), array(), array());
+				$this->preference->saveAdminCourse($user[ACL_INFO_IDST],  [0], [], []);
 			} elseif($row['course_path']!='') {
-				$this->preference->saveAdminCourse($user[ACL_INFO_IDST],  array(), array($this->getIDbyName($row['course_path'],'course_path')), array());
+				$this->preference->saveAdminCourse($user[ACL_INFO_IDST],  [], [$this->getIDbyName($row['course_path'],'course_path')], []);
 			}
 
             
             // associated courses by catalogue
             if($row['course_cat'] == 'root') {
-                $this->preference->saveAdminCourse($user[ACL_INFO_IDST],  array(0), array(), array());
+                $this->preference->saveAdminCourse($user[ACL_INFO_IDST],  [0], [], []);
             } elseif($row['course_cat']!='') {
-                $this->preference->saveAdminCourse($user[ACL_INFO_IDST],  array(), array(), array($this->getIDbyName($row['course_cat'],'course_cat') ));
+                $this->preference->saveAdminCourse($user[ACL_INFO_IDST],  [], [], [$this->getIDbyName($row['course_cat'],'course_cat')]);
             }            
             
 			$this->db->commit();
@@ -451,7 +451,7 @@ class DoceboConnectorDoceboAdminUI extends DoceboConnectorUI {
 }
 
 function doceboadmin_factory() {
-	return new DoceboConnectorDoceboAdmin(array());
+	return new DoceboConnectorDoceboAdmin([]);
 }
 
 ?>

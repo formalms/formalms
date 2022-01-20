@@ -1,8 +1,8 @@
 <?php
-echo getTitleArea(array(
+echo getTitleArea([
 	'index.php?modname=coursepath&amp;op=pathlist&amp;of_platform=lms' => Lang::t('_COURSEPATH', 'coursepath'),
 	Lang::t('_SUBSCRIBE', 'subscribe').' : '.$path_name
-));
+]);
 ?>
 <div class="std_block">
 <p id="fast_subscribe_result" class="container-feedback" style="visibility:hidden;"><span class="ico-wt-sprite fd_info"></span></p>
@@ -28,12 +28,12 @@ echo getTitleArea(array(
 			echo Form::getDropdown(Lang::t('_DIRECTORY_MEMBERTYPETREE', 'admin_directory'), 'filter_orgchart', 'filter_orgchart', $orgchart_list, (int)$filter_orgchart, $_orgchart_after);
 			echo Form::getDatefield(Lang::t('_VALID_AT_DATE', 'subscribe'), 'filter_date_valid', 'filter_date_valid', $filter_date_valid);
 
-			$arr_filter = array(
+			$arr_filter = [
 				0 => Lang::t('_ALL', 'standard'),
 				1 => Lang::t('_ONLY_EXPIRED', 'subscribe'),
 				2 => Lang::t('_NOT_EXPIRED_WITH_DATE', 'subscribe'),
 				3 => Lang::t('_NOT_EXPIRED_WITHOUT_DATE', 'subscribe')
-			);
+            ];
 			echo Form::getDropdown(Lang::t('_SHOW_ONLY', 'subscribe'), 'filter_show', 'filter_show', $arr_filter, $filter_show);
 
 			//buttons
@@ -68,20 +68,20 @@ $count_selected_bottom = '<span>'
 $icon_unset = '<span class="ico-sprite subs_cancel" title="'.Lang::t('_RESET_VALIDITY_DATES', 'subscribe').'"><span>'.Lang::t('_RESET_VALIDITY_DATES', 'subscribe').'</span></span>';
 $icon_delete = '<span class="ico-sprite subs_del"><span>'.Lang::t('_DEL', 'standard').'</span></span>';
 
-$columns = array(
-		array('key' => 'userid', 'label' => Lang::t('_USERNAME', 'subscribe'), 'sortable' => true, 'formatter' => 'Subscription.labelFormatter'),
-		array('key' => 'fullname', 'label' => Lang::t('_FULLNAME', 'subscribe'), 'sortable' => true, 'formatter' => 'Subscription.labelFormatter'),
-);
+$columns = [
+		['key' => 'userid', 'label' => Lang::t('_USERNAME', 'subscribe'), 'sortable' => true, 'formatter' => 'Subscription.labelFormatter'],
+		['key' => 'fullname', 'label' => Lang::t('_FULLNAME', 'subscribe'), 'sortable' => true, 'formatter' => 'Subscription.labelFormatter'],
+];
 
-$columns[] = array("key"=>"date_begin", "label"=>Lang::t("_DATE_BEGIN_VALIDITY", 'subscribe'), "sortable"=>true, "formatter" => 'Subscription.dateFormatter',
-	"editor"=>'new YAHOO.widget.DateCellEditor({asyncSubmitter: Subscription.asyncSubmitter})', "className"=>'img-cell');
-$columns[] = array("key"=>"date_expire", "label"=>Lang::t("_DATE_EXPIRE_VALIDITY", 'subscribe'), "sortable"=>true, "formatter" => 'Subscription.dateFormatter',
-	"editor"=>'new YAHOO.widget.DateCellEditor({asyncSubmitter: Subscription.asyncSubmitter})', "className"=>'img-cell');
-$columns[] = array("key"=>"date_unset", "label"=>$icon_unset, 'formatter' => 'Subscription.resetDatesFormatter', 'className' => 'img-cell');
+$columns[] = ["key"=>"date_begin", "label"=>Lang::t("_DATE_BEGIN_VALIDITY", 'subscribe'), "sortable"=>true, "formatter" => 'Subscription.dateFormatter',
+	"editor"=>'new YAHOO.widget.DateCellEditor({asyncSubmitter: Subscription.asyncSubmitter})', "className"=>'img-cell'];
+$columns[] = ["key"=>"date_expire", "label"=>Lang::t("_DATE_EXPIRE_VALIDITY", 'subscribe'), "sortable"=>true, "formatter" => 'Subscription.dateFormatter',
+	"editor"=>'new YAHOO.widget.DateCellEditor({asyncSubmitter: Subscription.asyncSubmitter})', "className"=>'img-cell'];
+$columns[] = ["key"=>"date_unset", "label"=>$icon_unset, 'formatter' => 'Subscription.resetDatesFormatter', 'className' => 'img-cell'];
 
-$columns[] = array('key' => 'del', 'label' => $icon_delete, 'formatter'=>'doceboDelete', 'className' => 'img-cell');
+$columns[] = ['key' => 'del', 'label' => $icon_delete, 'formatter'=>'doceboDelete', 'className' => 'img-cell'];
 
-$this->widget('table', array(
+$this->widget('table', [
 	'id'			=> 'subscribed_table',
 	'ajaxUrl'		=> 'ajax.adm_server.php?r='.$this->link.'/getlist_coursepath&id_path='.(int)$id_path,
 	'rowsPerPage'	=> Get::sett('visuItem', 25),
@@ -90,19 +90,19 @@ $this->widget('table', array(
 	'sort'			=> 'userid',
 	'dir'			=> 'asc',
 	'columns'		=> $columns,
-	'fields'		=> array('id', 'userid', 'fullname', 'date_begin', 'date_expire', 'date_begin_timestamp', 'date_expire_timestamp', 'del'),
+	'fields'		=> ['id', 'userid', 'fullname', 'date_begin', 'date_expire', 'date_begin_timestamp', 'date_expire_timestamp', 'del'],
 	'stdSelection' => true,
 	//'stdSelectionField' => '_checked',
 	'selectAllAdditionalFilter' => 'Subscription.selectAllAdditionalFilter()',
-	'rel_actions' => array($rel_action.$count_selected_over, $rel_action.$count_selected_bottom),
+	'rel_actions' => [$rel_action.$count_selected_over, $rel_action.$count_selected_bottom],
 	'delDisplayField' => 'userid',
 	'generateRequest' => 'Subscription.requestBuilder',
-	'events' => array(
+	'events' => [
 		'initEvent' => 'Subscription.initEvent',
 		'beforeRenderEvent' => 'Subscription.beforeRenderEvent',
 		'postRenderEvent' => 'Subscription.postRenderEvent'
-	)
-));
+    ]
+]);
 
 echo getBackUi($back_link, Lang::t('_BACK', 'standard'));
 ?>

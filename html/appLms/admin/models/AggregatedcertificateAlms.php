@@ -187,7 +187,7 @@ class AggregatedcertificateAlms extends Model
                 
         $rs = sql_query($query);   
         
-        $usersArr = array();
+        $usersArr = [];
         $i = 0;
         while($rows = sql_fetch_assoc($rs)) {
          
@@ -312,7 +312,7 @@ class AggregatedcertificateAlms extends Model
 
         $rs = sql_query($q);
 
-        $nodesArr = array();
+        $nodesArr = [];
 
         $i = 0;
         while($rows = sql_fetch_array($rs)){
@@ -465,7 +465,7 @@ class AggregatedcertificateAlms extends Model
             . " WHERE idMetaCertificate = " . $idMeta
             . " AND idUser = " . $idUser;
             
-        $idsArr = array();  // They can be from courses or coursepath
+        $idsArr = [];  // They can be from courses or coursepath
         $rs = sql_query($q); 
          while($row = sql_fetch_array($rs)){
             
@@ -498,7 +498,7 @@ class AggregatedcertificateAlms extends Model
             . " WHERE idUser = " . $idUser
             . " AND idMetaCertificate IN (" . implode( ', ', $idsMetacertArr ) . ")" ;
             
-        $idsArr = array();  // They can be from courses or coursepath
+        $idsArr = [];  // They can be from courses or coursepath
         $rs = sql_query($q); 
          while($row = sql_fetch_array($rs)){
             
@@ -518,7 +518,7 @@ class AggregatedcertificateAlms extends Model
             
          $rs = sql_query($q);
          
-         $idsCourseArr = array();
+         $idsCourseArr = [];
          
          while($row = sql_fetch_array($rs)){
             
@@ -547,7 +547,7 @@ class AggregatedcertificateAlms extends Model
         
         $rs = sql_query($q);
         
-        $usersArr = array();
+        $usersArr = [];
          
              while($row = sql_fetch_array($rs)){
                 
@@ -560,10 +560,10 @@ class AggregatedcertificateAlms extends Model
 
     function getTypeMetacert($id_metacert){
                 
-        $coursesTypeArr = array(
+        $coursesTypeArr = [
         AggregatedCertificate::AGGREGATE_CERTIFICATE_TYPE_COURSE => "course",
         AggregatedCertificate::AGGREGATE_CERTIFICATE_TYPE_COURSE_PATH => "coursepath"
-        );
+        ];
         
         
         foreach($coursesTypeArr as $key => $table) {

@@ -32,8 +32,8 @@ function view_area()
 
     $ma = new Man_MiddleArea();
     $disabled_list = $ma->getDisabledList();
-    $menu_on_slider = array('mo_7' => Lang::t('_MY_CERTIFICATE', 'menu_over'),
-        'mo_34' => Lang::t('_MYCOMPETENCES', 'menu_over'));
+    $menu_on_slider = ['mo_7' => Lang::t('_MY_CERTIFICATE', 'menu_over'),
+        'mo_34' => Lang::t('_MYCOMPETENCES', 'menu_over')];
 
     /* NEW MENU */
     $menu = CoreMenu::getList('lms', false);
@@ -63,7 +63,7 @@ HTML;
 
     // Tab list
     $tab_list = '';
-    $tab = array(
+    $tab = [
         'tb_elearning' => Lang::t('_ELEARNING', 'middlearea'),
         'tb_home' => Lang::t('_HOME', 'middlearea'),
         'tb_dashboard' => Lang::t('_DASHBOARD', 'middlearea'),
@@ -73,7 +73,7 @@ HTML;
         'tb_communication' => Lang::t('_COMMUNICATIONS', 'middlearea'),
         'tb_videoconference' => Lang::t('_VIDEOCONFERENCE', 'middlearea'),
         'tb_kb' => Lang::t('_CONTENT_LIBRARY', 'middlearea')
-    );
+    ];
 
 
     $pl = new PluginManager('');
@@ -101,7 +101,7 @@ HTML;
     }
     // Block List
     $block_list = '';
-    $block = array(
+    $block = [
         //'user_details_short' => Lang::t('_SIMPLE_USER_PROFILE', 'middlearea'),
         'user_details_full' => Lang::t('_PROFILE', 'profile'),
         'credits' => Lang::t('_CREDITS', 'middlearea'),
@@ -111,7 +111,7 @@ HTML;
         'course' => Lang::t('_SUBSCRIBE_COURSE', 'middlearea'),
         'news' => Lang::t('_NEWS', 'middlearea'),
         'mo_message' => Lang::t('_MESSAGES', 'menu_over')
-    );
+    ];
     $slider_options = array_merge($block, $menu_on_slider);
     foreach ($slider_options as $id => $name) {
 
@@ -263,7 +263,7 @@ function switch_menu_active()
     }
 
     if (!$is_homepage) {
-        $res = CoreMenu::set($id, array('is_active' => $menu->is_active === 'true' ? 'false' : true));
+        $res = CoreMenu::set($id, ['is_active' => $menu->is_active === 'true' ? 'false' : true]);
     } else {
         $res = false;
     }
@@ -322,10 +322,10 @@ function select_permission()
     }
 
 
-    cout(getTitleArea(array(
+    cout(getTitleArea([
             'index.php?modname=middlearea&amp;op=view_area' => $lang->def('_MIDDLE_AREA'),
             Lang::t('_VIEW_PERMISSION', 'standard')
-        ), 'middlearea')
+        ], 'middlearea')
         . '<div class="std_block">');
     $user_select->addFormInfo(Form::getHidden('obj_index', 'obj_index', $obj_index));
     $user_select->loadSelector('index.php?modname=middlearea&amp;op=select_permission',
@@ -371,7 +371,7 @@ function select_menu_permission()
     // try to load previous saved
     if (isset($_GET['load'])) {
         if (in_array(1, $members)) {
-            $members = array();
+            $members = [];
             $all = true;
         } else {
             $all = false;
@@ -384,7 +384,7 @@ function select_menu_permission()
         }
         $all = Get::req('all', DOTY_BOOL);
         if ($all) {
-            $selected = array(1);
+            $selected = [1];
         } else {
             $selected = $user_select->getSelection($_POST);
         }
@@ -395,13 +395,13 @@ function select_menu_permission()
     }
 
 
-    cout(getTitleArea(array(
+    cout(getTitleArea([
             'index.php?modname=middlearea&amp;op=view_area' => $lang->def('_MIDDLE_AREA'),
             Lang::t('_VIEW_PERMISSION', 'standard')
-        ), 'middlearea')
+        ], 'middlearea')
         . '<div class="std_block">');
     $user_select->addFormInfo(Form::getHidden('id', 'id', $id));
-    $user_select->addFormInfo(Form::getRadioHoriz(Lang::t('_SELECT'), 'all', 'all', array(Lang::t('_ALL') => 1, Lang::t('_MANUAL') => 0), (int)$all));
+    $user_select->addFormInfo(Form::getRadioHoriz(Lang::t('_SELECT'), 'all', 'all', [Lang::t('_ALL') => 1, Lang::t('_MANUAL') => 0], (int)$all));
     $user_select->addFormInfo('<script type="text/javascript">' .
         <<<JAVASCRIPT
 function switch_selection() {

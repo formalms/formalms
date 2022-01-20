@@ -27,7 +27,7 @@ class TestUpdateEvent extends Event
         $this->object_test = $object_test;
         $this->lang = $lang;
 
-        $this->formElements = array();
+        $this->formElements = [];
 
     }
 

@@ -106,12 +106,12 @@ class DoceboConnector_DoceboCourseUser extends DoceboConnector
     function get_config()
     {
 
-        return array('name' => $this->name,
+        return ['name' => $this->name,
             'description' => $this->description,
             'readwrite' => $this->readwrite,
             'sendnotify' => $this->sendnotify,
             'on_delete' => $this->on_delete,
-            'first_row_header' => $this->first_row_header);
+            'first_row_header' => $this->first_row_header];
     }
 
     /**
@@ -161,7 +161,7 @@ class DoceboConnector_DoceboCourseUser extends DoceboConnector
 
         $result = sql_query($query);
 
-        $data = array();
+        $data = [];
 
         $counter = 0;
 
@@ -279,9 +279,9 @@ class DoceboConnector_DoceboCourseUser extends DoceboConnector
 
         $re_course = sql_query($search_query);
         if (!$re_course) return false;
-        $vett_out = array();
+        $vett_out = [];
         while (list($translation, $code, $type_field) = sql_fetch_row($re_course)) {
-            $vett_out[] = array($translation, $type_field);
+            $vett_out[] = [$translation, $type_field];
         }
 
         return $vett_out;
@@ -299,9 +299,9 @@ class DoceboConnector_DoceboCourseUser extends DoceboConnector
 
         $re_course = sql_query($search_query);
         if (!$re_course) return false;
-        $vett_out = array();
+        $vett_out = [];
         while (list($translation, $code, $type_field) = sql_fetch_row($re_course)) {
-            $vett_out[] = array($translation, $type_field);
+            $vett_out[] = [$translation, $type_field];
         }
 
         return $vett_out;
@@ -319,9 +319,9 @@ class DoceboConnector_DoceboCourseUser extends DoceboConnector
 
         $re_course = sql_query($search_query);
         if (!$re_course) return false;
-        $vett_out = array();
+        $vett_out = [];
         while (list($translation, $code, $type_field, $id_field) = sql_fetch_row($re_course)) {
-            $vett_out[] = array($translation, $id_field, $type_field);
+            $vett_out[] = [$translation, $id_field, $type_field];
         }
 
         return $vett_out;
@@ -340,9 +340,9 @@ class DoceboConnector_DoceboCourseUser extends DoceboConnector
 
         $re_course = sql_query($search_query);
         if (!$re_course) return false;
-        $vett_out = array();
+        $vett_out = [];
         while (list($translation, $type_field, $id_field) = sql_fetch_row($re_course)) {
-            $vett_out[] = array($translation, $id_field, $type_field);
+            $vett_out[] = [$translation, $id_field, $type_field];
         }
 
         return $vett_out;
@@ -479,11 +479,11 @@ class DoceboConnector_DoceboCourseUser extends DoceboConnector
         // merge custom and value default - users
         $this->all_cols = array_merge($this->all_cols, $userCustomFields);
 
-        $col_descriptor = array();
+        $col_descriptor = [];
         foreach ($this->all_cols as $col) {
             $isMandatory = in_array($col[0], $this->mandatory_cols);
 
-            $col_descriptor[] = array(
+            $col_descriptor[] = [
                 DOCEBOIMPORT_COLNAME => $lang->def('_' . strtoupper($col[0])),
                 DOCEBOIMPORT_COLID => $col[0],
                 DOCEBOIMPORT_COLMANDATORY => $isMandatory,
@@ -491,7 +491,7 @@ class DoceboConnector_DoceboCourseUser extends DoceboConnector
                 DOCEBOIMPORT_DEFAULT => ($in = array_search($col[0], $this->default_cols) === FALSE
                     ? ''
                     : $this->default_cols[$in])
-            );
+            ];
         }
         return $col_descriptor;
     }
@@ -506,7 +506,7 @@ class DoceboConnector_DoceboCourseUser extends DoceboConnector
 
     function get_next_row()
     {
-        $row = array();
+        $row = [];
         if ($this->first_row_header) {
             if ($this->tot_row >= $this->position) {
                 $row = $this->all_data[$this->position];
@@ -557,7 +557,7 @@ class DoceboConnector_DoceboCourseUser extends DoceboConnector
         // if none cache course code info
         if ($this->course_cache === false) {
 
-            $this->course_cache = array();
+            $this->course_cache = [];
             $search_query = "
 			SELECT idCourse, code, name
 			FROM %lms_course";
@@ -571,18 +571,18 @@ class DoceboConnector_DoceboCourseUser extends DoceboConnector
         }
         // if userid not cached search for it in the database and populate cache
         if (!isset($this->userid_cache[$pk['userid']])) {
-            if ($this->userid_cache === false) $this->userid_cache = array();
+            if ($this->userid_cache === false) $this->userid_cache = [];
 
             $user = $this->acl_man->getUser(false, addslashes($pk['userid']));
             if ($user === false) return false;
 
             $this->userid_cache[$pk['userid']] = $user[ACL_INFO_IDST];
         }
-        return array(
+        return [
             'id_course' => (isset($this->course_cache[$pk['code']]) ? $this->course_cache[$pk['code']]['id'] : 0),
             'course_name' => (isset($this->course_cache[$pk['code']]) ? $this->course_cache[$pk['code']]['course_name'] : ''),
             'idst_user' => (isset($this->userid_cache[$pk['userid']]) ? $this->userid_cache[$pk['userid']] : 0)
-        );
+        ];
     }
 
     function add_row($row, $pk)
@@ -647,8 +647,8 @@ class DoceboConnector_DoceboCourseUser extends DoceboConnector
         if ($re_ins) {
             if ($this->sendnotify == 1) {
 
-                $array_subst = array('[url]' => Get::site_url(),
-                    '[course]' => $course_name);
+                $array_subst = ['[url]' => Get::site_url(),
+                    '[course]' => $course_name];
 
                 // message to user that is waiting
                 $msg_composer = new EventMessageComposer();
@@ -660,7 +660,7 @@ class DoceboConnector_DoceboCourseUser extends DoceboConnector
 
                 // send message to the user subscribed
                 createNewAlert('UserCourseRemoved', 'subscribe', 'remove', '1', 'User removed form a course',
-                    array($idst_user), $msg_composer);
+                    [$idst_user], $msg_composer);
             }
         }
         return $re_ins;
@@ -680,8 +680,8 @@ class DoceboConnector_DoceboCourseUser extends DoceboConnector
         if ($re_ins) {
             if ($this->sendnotify == 1) {
 
-                $array_subst = array('[url]' => Get::site_url(),
-                    '[course]' => $arr_id['course_name']);
+                $array_subst = ['[url]' => Get::site_url(),
+                    '[course]' => $arr_id['course_name']];
 
                 // message to user that is waiting
                 $msg_composer = new EventMessageComposer();
@@ -693,7 +693,7 @@ class DoceboConnector_DoceboCourseUser extends DoceboConnector
 
                 // send message to the user subscribed
                 createNewAlert('UserCourseRemoved', 'subscribe', 'remove', '1', 'User removed form a course',
-                    array($arr_id['idst_user']), $msg_composer);
+                    [$arr_id['idst_user']], $msg_composer);
             }
         }
         return $re_ins;
@@ -889,30 +889,30 @@ class DoceboConnectorUI_DoceboCourseUserUI extends DoceboConnectorUI
         $out .= $this->form->getRadioSet($this->lang->def('_ACCESSTYPE'),
             $this->_get_base_name() . '_readwrite',
             $this->_get_base_name() . '[readwrite]',
-            array($this->lang->def('_READ') => '1',
+            [$this->lang->def('_READ') => '1',
                 $this->lang->def('_WRITE') => '2',
-                $this->lang->def('_READWRITE') => '3'),
+                $this->lang->def('_READWRITE') => '3'],
             $this->post_params['readwrite']);
         // ---- on delete -> delete or unactivate -----
         $out .= $this->form->getRadioSet($this->lang->def('_CANCELED_COURSEUSER'),
             $this->_get_base_name() . '_on_delete',
             $this->_get_base_name() . '[on_delete]',
-            array($this->lang->def('_DEACTIVATE') => '1',
-                $this->lang->def('_DEL') => '2'),
+            [$this->lang->def('_DEACTIVATE') => '1',
+                $this->lang->def('_DEL') => '2'],
             $this->post_params['on_delete']);
         // ---- access type read/write -----
         $out .= $this->form->getRadioSet($this->lang->def('_SENDNOTIFY'),
             $this->_get_base_name() . '_sendnotify',
             $this->_get_base_name() . '[sendnotify]',
-            array($this->lang->def('_SEND') => '1',
-                $this->lang->def('_DONTSEND') => '2'),
+            [$this->lang->def('_SEND') => '1',
+                $this->lang->def('_DONTSEND') => '2'],
             $this->post_params['sendnotify']);
 
         $out .= $this->form->getRadioSet($this->lang->def('_FIRST_ROW_HEADER'),
             $this->_get_base_name() . '_first_row_header',
             $this->_get_base_name() . '[first_row_header]',
-            array($this->lang->def('_YES') => '1',
-                $this->lang->def('_NO') => '0'),
+            [$this->lang->def('_YES') => '1',
+                $this->lang->def('_NO') => '0'],
             $this->post_params['first_row_header']);
 
         return $out;
@@ -921,7 +921,7 @@ class DoceboConnectorUI_DoceboCourseUserUI extends DoceboConnectorUI
 
 function docebocourseuser_factory()
 {
-    return new DoceboConnector_DoceboCourseUser(array());
+    return new DoceboConnector_DoceboCourseUser([]);
 }
 
 ?>

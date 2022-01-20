@@ -41,17 +41,17 @@ function regional_settings() {
 	$table=new Table(Get::sett('visuItem'));
 	$out->add($table->OpenTable(""));
 
-	$head=array($lang->def("_REGION_CODE"), $lang->def("_DESCRIPTION"),
+	$head= [$lang->def("_REGION_CODE"), $lang->def("_DESCRIPTION"),
 		'<img src="'.getPathImage().'standard/edit.png" alt="'.$lang->def("_MOD").'" title="'.$lang->def("_MOD").'" />',
-		'<img src="'.getPathImage().'standard/delete.png" alt="'.$lang->def("_DEL").'" title="'.$lang->def("_DEL").'" />');
-	$head_type=array('', '', 'img', 'img');
+		'<img src="'.getPathImage().'standard/delete.png" alt="'.$lang->def("_DEL").'" title="'.$lang->def("_DEL").'" />'];
+	$head_type= ['', '', 'img', 'img'];
 
 
 	$out->add($table->WriteHeader($head, $head_type));
 
 	$tot=(count($arr) < ($ini+Get::sett('visuItem'))) ? count($arr) : $ini+Get::sett('visuItem');
 	for($i=$ini; $i<$tot; $i++ ) {
-		$rowcnt=array();
+		$rowcnt= [];
 		$rowcnt[]=$arr[$i];
 		$rowcnt[]=$regset->getRegionInfo($arr[$i], "description");
 		if ($mod_perm) {
@@ -113,7 +113,7 @@ function regset_editregion($region_id=FALSE) {
 	if ($region_id == "")
 		$region_id=FALSE;
 
-	$data=array();
+	$data= [];
 
 	if ($region_id === FALSE) {  // Add
 		$out->add($form->openForm("regset_form", "index.php?modname=regional_settings&amp;op=insnew"));
@@ -186,7 +186,7 @@ function regset_updregion() {
 
 function displaySettingFields(& $out, & $lang, & $form, $data) {
 	checkPerm('view');
-	$date_format_arr=array();
+	$date_format_arr= [];
 	$date_format_arr["d_m_Y"]=$lang->def("_DATE_FORMAT_DMY_LONG");
 	$date_format_arr["m_d_Y"]=$lang->def("_DATE_FORMAT_MDY_LONG");
 	$date_format_arr["Y_m_d"]=$lang->def("_DATE_FORMAT_YMD_LONG");
@@ -203,7 +203,7 @@ function displaySettingFields(& $out, & $lang, & $form, $data) {
 
 	// ------------------------------------------------------------------------
 
-	$date_sep_arr=array();
+	$date_sep_arr= [];
 	$date_sep_arr["-"]="-";
 	$date_sep_arr["/"]="/";
 	if (isset($data["date_sep"]))
@@ -215,7 +215,7 @@ function displaySettingFields(& $out, & $lang, & $form, $data) {
 
 	// ------------------------------------------------------------------------
 
-	$time_format_arr=array();
+	$time_format_arr= [];
 	$time_format_arr["H_i"]=$lang->def("_TIME_FORMAT_24");
 	$time_format_arr["h_i.a"]=$lang->def("_TIME_FORMAT_12");
 	$time_format_arr["H_i_s"]=$lang->def("_TIME_FORMAT_24_SEC");

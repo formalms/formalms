@@ -27,7 +27,7 @@ class SimpleSelector {
 
 	var $lang=NULL;
 	var $use_multi_sel=FALSE;
-	var $perm_list=array();
+	var $perm_list= [];
 
 	var $mdir=FALSE;
 
@@ -47,7 +47,7 @@ class SimpleSelector {
 		$this->mdir->use_multi_sel=$use_multi_sel;
 
 		if (!$use_multi_sel) {
-			$perm=array();
+			$perm= [];
 			$perm["view"]["img"]=getPathImage()."standard/view.png";
 			$perm["view"]["alt"]=$lang->def("_VIEW");
 
@@ -146,7 +146,7 @@ class SimpleSelector {
 				$this->saved_data=$data;
 			}
 			else {
-				$this->saved_data=array();
+				$this->saved_data= [];
 				$this->saved_data["view"]=array_flip($data);
 			}
 
@@ -170,8 +170,8 @@ class SimpleSelector {
 		$tab = new Table(100, $lang->def("_ORGCHART_TITLE"), $lang->def("_ORGCHART_SUMMARY"));
 		$form = new Form();
 		
-		$head_type = array('');
-		$head = array($lang->def("_ORGCHART_FOLDER_NAME"));
+		$head_type = [''];
+		$head = [$lang->def("_ORGCHART_FOLDER_NAME")];
 		
 		$url = $this->getLink("main");
 		
@@ -199,7 +199,7 @@ class SimpleSelector {
 		
 		while (list($id_org, $level, $translation) = sql_fetch_row($result))
 		{
-			$cont = array();
+			$cont = [];
 			
 			list($idst) = sql_fetch_row(sql_query("SELECT idst FROM ".$GLOBALS['prefix_fw']."_group WHERE groupid = '".('/oc_'.$id_org)."'")); 
 			
@@ -266,8 +266,8 @@ class SimpleSelector {
 		$vis_item=$GLOBALS["framework"]["visuItem"];
 		$tab=new Table(2, $lang->def("_SIMPLESEL_TITLE"), $lang->def("_SIMPLESEL_TITLE"));
 
-		$head_type=array('');
-		$head=array($lang->def("_USERS"));
+		$head_type= [''];
+		$head= [$lang->def("_USERS")];
 
 		foreach ($this->getPermList() as $key=>$val) {
 			$head_type[]="image";
@@ -289,7 +289,7 @@ class SimpleSelector {
 
 		foreach ($users_list as $idst=>$label) {
 
-			$rowcnt=array($label);
+			$rowcnt= [$label];
 
 			foreach ($this->getPermList() as $key=>$val) {
 				$chk=false;
@@ -335,7 +335,7 @@ class SimpleSelector {
 		$anonymous_idst=$acl_manger->getAnonymousId();
 		$regusers_idst=$acl_manger->getGroupRegisteredId();
 
-		$users_list=array();
+		$users_list= [];
 		$users_list[$anonymous_idst]= Lang::t("_ANONYMOUS_USERS", "standard");
 		$users_list[$regusers_idst]= Lang::t("_REGISTERED_USERS", "standard");
 
@@ -372,7 +372,7 @@ class SimpleSelector {
 
 		$acl_manger=Docebo::user()->getAclManager();
 		$regusers_idst=$acl_manger->getGroupRegisteredId();
-		$this->mdir->setUserFilter("group", array($regusers_idst));
+		$this->mdir->setUserFilter("group", [$regusers_idst]);
 
 		$url=$this->getLink("main", "stayon=1&amp;manual=1");
 		$this->mdir->loadSelector($url, $title, "", TRUE);
@@ -423,7 +423,7 @@ class SimpleSelector {
 						$res["selected"][$key][]=$idst;
 					}
 					else if (!isset($_POST[$key]))
-						$res["selected"][$key]=array();
+						$res["selected"][$key]= [];
 
 				}
 			}
@@ -438,7 +438,7 @@ class SimpleSelector {
 	function getSaveInfoOrg() {
 		$res = false;
 		
-		$user_list = array();
+		$user_list = [];
 		
 		$query = "SELECT t.idOrg, o.translation" .
 				" FROM ".$GLOBALS['prefix_fw']."_org_chart_tree AS t" .
@@ -470,7 +470,7 @@ class SimpleSelector {
 					$res["selected"][$key][]=$idst;
 				}
 				else if (!isset($_POST[$key]))
-					$res["selected"][$key]=array();
+					$res["selected"][$key]= [];
 
 			}
 		}

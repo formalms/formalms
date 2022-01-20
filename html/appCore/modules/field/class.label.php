@@ -28,7 +28,7 @@ class Field_Textlabel extends Field {
 
             $back_coded = htmlentities(urlencode($back));
 
-            $array_lang = array();
+            $array_lang = [];
             $std_lang 		=& DoceboLanguage::createInstance('standard');
             $lang 			=& DoceboLanguage::createInstance('field');
             $array_lang 	= Docebo::langManager()->getAllLangCode();
@@ -147,7 +147,7 @@ class Field_Textlabel extends Field {
     function edit( $back ) {
             $back_coded = htmlentities(urlencode($back));
 
-            $array_lang = array();
+            $array_lang = [];
             $std_lang 		=& DoceboLanguage::createInstance('standard');
             $lang 			=& DoceboLanguage::createInstance('field');
             $array_lang 	= Docebo::langManager()->getAllLangCode();
@@ -182,7 +182,7 @@ class Field_Textlabel extends Field {
                             return;
                     }*/
 
-                    $existsing_translation = array();
+                    $existsing_translation = [];
                     $re_trans = sql_query("
                     SELECT lang_code
                     FROM ".$this->_getMainTable()."
@@ -523,7 +523,7 @@ class Field_Textlabel extends Field {
                     id_common = '".(int)$this->id_common."' AND
                     id_common_son = '0'");
 
-            $lang_with_entry =array();
+            $lang_with_entry = [];
             if (($q) && (sql_num_rows($q) > 0)) {
                     $some_entry =TRUE;
                     while($row=sql_fetch_assoc($q)) {
@@ -571,7 +571,7 @@ class Field_Textlabel extends Field {
             }
             else {
 
-                    $ins_arr =array();
+                    $ins_arr = [];
 
                     $qtxt ="INSERT INTO ".$this->_getUserEntryTable()." ";
                     $qtxt.="(id_user, id_common, id_common_son, language, user_entry) VALUES ";
@@ -646,13 +646,13 @@ class Field_Textlabel extends Field {
 
 
     function storeDirectMultiple( $idst_users, $value, $is_id, $no_overwrite, $int_userid=TRUE ) {
-            if (is_numeric($idst_users)) $idst_users = array($idst_users);
+            if (is_numeric($idst_users)) $idst_users = [$idst_users];
             if (!is_array($idst_users)) return false;
             if (empty($idst_users)) return true;
 
             $value = addslashes(stripslashes($value));
 
-            $arr_existent = array();
+            $arr_existent = [];
             $arr_new = $idst_users;
 
             $query = "SELECT id_user, user_entry FROM ".$this->_getUserEntryTable()." "
@@ -677,7 +677,7 @@ class Field_Textlabel extends Field {
                     }
 
                     if (!empty($arr_new)) {
-                            $insert_values = array();
+                            $insert_values = [];
                             foreach ($arr_new as $idst) {
                                     $insert_values[] = "(	'".(int)$idst."', '".(int)$this->id_common."', '0', '".$value."')";
                             }
@@ -705,7 +705,7 @@ class Field_Textlabel extends Field {
                     id_common = '".(int)$this->id_common."' AND
                     id_common_son = '0'");
 
-            $lang_with_entry =array();
+            $lang_with_entry = [];
             if (($q) && (sql_num_rows($q) > 0)) {
                     $some_entry =TRUE;
                     while($row=sql_fetch_assoc($q)) {
@@ -754,7 +754,7 @@ class Field_Textlabel extends Field {
             }
             else {
 
-                    $ins_arr =array();
+                    $ins_arr = [];
 
                     $qtxt ="INSERT INTO ".$this->_getUserEntryTable()." ";
                     $qtxt.="(id_user, id_common, id_common_son, language, user_entry) VALUES ";

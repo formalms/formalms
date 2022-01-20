@@ -24,24 +24,24 @@ class ImportUser extends DoceboImport_Destination
 {
 
 	public $last_error = NULL;
-	public $mandatory_cols = array('userid');
-	public $default_cols = array(
+	public $mandatory_cols = ['userid'];
+	public $default_cols = [
 		'firstname' => '', 'lastname' => '', 'pass' => '',
 		'email' => '', 'avatar' => '',
 		'signature' => ''
-	);
-	public $ignore_cols = array(
+    ];
+	public $ignore_cols = [
 		'idst', 'avatar', 'lastenter', 'valid', 'pwd_expire_at', 'level', 'register_date', 'force_change',
 		'facebook_id', 'twitter_id', 'linkedin_id', 'google_id', 'signature', 'privacy_policy'
-	);
-	public $valid_filed_type = array('textfield', 'date', 'dropdown', 'yesno', 'freetext', 'country',	'gmail', 'icq', 'msn', 'skype', 'yahoo', 'codicefiscale', 'country');
+    ];
+	public $valid_filed_type = ['textfield', 'date', 'dropdown', 'yesno', 'freetext', 'country',	'gmail', 'icq', 'msn', 'skype', 'yahoo', 'codicefiscale', 'country'];
 	public $cols_descriptor = NULL;
 	public $dbconn = NULL;
 	public $tree = 0;
 	public $charset = '';
 
-	public $idst_imported = array();
-	public $orgchart = array();
+	public $idst_imported = [];
+	public $orgchart = [];
 
 	public $pwd_force_change_policy = "do_nothing";
 	public $set_password = "from_file";
@@ -102,56 +102,56 @@ class ImportUser extends DoceboImport_Destination
 			$this->last_error = Lang::t('_ORG_IMPORT_ERR_ERRORONQUERY') . $query . ' [' . sql_error($this->dbconn) . ']';
 			return FALSE;
 		}
-		$this->cols_descriptor = array();
+		$this->cols_descriptor = [];
 		while ($field_info = sql_fetch_array($rs)) {
 			if (!in_array($field_info['Field'], $this->ignore_cols)) {
 				$mandatory = in_array($field_info['Field'], $this->mandatory_cols);
 				if (isset($this->default_cols[$field_info['Field']])) {
 					$this->cols_descriptor[] =
-						array(
+						[
 							DOCEBOIMPORT_COLNAME => $lang_dir->def('_DIRECTORY_FILTER_' . $field_info['Field']),
 							DOCEBOIMPORT_COLID => $field_info['Field'],
 							DOCEBOIMPORT_COLMANDATORY => $mandatory,
 							DOCEBOIMPORT_DATATYPE => $field_info['Type'],
 							DOCEBOIMPORT_DEFAULT => $this->default_cols[$field_info['Field']]
-						);
+                        ];
 				} else {
 					$this->cols_descriptor[] =
-						array(
+						[
 							DOCEBOIMPORT_COLNAME => $lang_dir->def('_DIRECTORY_FILTER_' . $field_info['Field']),
 							DOCEBOIMPORT_COLID => $field_info['Field'],
 							DOCEBOIMPORT_COLMANDATORY => $mandatory,
 							DOCEBOIMPORT_DATATYPE => $field_info['Type']
-						);
+                        ];
 				}
 			}
 		}
-		$this->cols_descriptor[] = array(
+		$this->cols_descriptor[] = [
 			DOCEBOIMPORT_COLNAME => Lang::t('_FOLDER_NAME', 'standard'),
 			DOCEBOIMPORT_COLID => 'tree_name',
 			DOCEBOIMPORT_COLMANDATORY => false,
 			DOCEBOIMPORT_DATATYPE => 'text'
-		);
+        ];
 		
-		$this->cols_descriptor[] = array(
+		$this->cols_descriptor[] = [
 			DOCEBOIMPORT_COLNAME => Lang::t('_LANGUAGE', 'standard'),
 			DOCEBOIMPORT_COLID => 'language',
 			DOCEBOIMPORT_COLMANDATORY => false,
 			DOCEBOIMPORT_DATATYPE => 'text'
-		);
+        ];
 		
 		sql_free_result($rs);
 
 		foreach ($this->arr_fields as $field_id => $field_info) {
 			if (in_array($field_info[FIELD_INFO_TYPE], $this->valid_filed_type)) {
 				$this->cols_descriptor[] =
-					array(
+					[
 						DOCEBOIMPORT_COLNAME => $field_info[FIELD_INFO_TRANSLATION],
 						DOCEBOIMPORT_COLID => $field_id,
 						DOCEBOIMPORT_COLMANDATORY => FALSE,
 						DOCEBOIMPORT_DATATYPE => 'text',
 						DOCEBOIMPORT_DEFAULT => false
-					);
+                    ];
 			}
 		}
 		$this->userlevel = $acl_manager->getGroupST(ADMIN_GROUP_USER);
@@ -188,7 +188,7 @@ class ImportUser extends DoceboImport_Destination
 	 **/
 	function get_tot_mandatory_cols()
 	{
-		$result = array();
+		$result = [];
 		foreach ($this->cols_descriptor as $col) {
 			if ($col[DOCEBOIMPORT_COLMANDATORY])
 				$result[] = $col;
@@ -554,7 +554,7 @@ class ImportUser extends DoceboImport_Destination
 
 					// apply enroll rules
 					$enrollrules = new EnrollrulesAlms();
-					$enrollrules->newRules('_NEW_IMPORTED_USER', array($idst), 'all', $f->idOrg);
+					$enrollrules->newRules('_NEW_IMPORTED_USER', [$idst], 'all', $f->idOrg);
 				}
 			} elseif ($this->idst_group != $this->idst_oc) {
 
@@ -562,12 +562,12 @@ class ImportUser extends DoceboImport_Destination
 				$acl_manager->addToGroup($this->idst_desc, $idst);
 			}
 
-			$array_subst = array(
+			$array_subst = [
 				'[url]' => Get::site_url(),
 				'[userid]' => $userid,
 				'[password]' => $pass,
 				'[dynamic_link]' => getCurrentDomain($this->tree) ?: Get::site_url(),
-			);
+            ];
 			//send email alert
 			if (($this->send_alert && (!$is_an_update || $pass)) || $force_send_alert) {
 				$e_msg = new EventMessageComposer();
@@ -577,7 +577,7 @@ class ImportUser extends DoceboImport_Destination
 
 				$e_msg->setBodyLangText('sms', '_REGISTERED_USER_TEXT_SMS', $array_subst);
 
-				$recipients = array($idst);
+				$recipients = [$idst];
 				createNewAlert('UserNew', 'directory', 'edit', '1', 'New user created', $recipients, $e_msg, true);
 			}
 			//-save extra field------------------------------------------
@@ -633,18 +633,18 @@ class ImportGroupUser extends DoceboImport_Destination
 {
 
 	var $last_error = NULL;
-	var $cols_id			= array('userid', 'groupid');
-	var $cols_default		= array();
-	var $cols_mandatory		= array('userid', 'groupid');
-	var $cols_type			= array('userid' => 'text', 'groupid' => 'text');
-	var $cols_descriptor 	= array();
+	var $cols_id			= ['userid', 'groupid'];
+	var $cols_default		= [];
+	var $cols_mandatory		= ['userid', 'groupid'];
+	var $cols_type			= ['userid' => 'text', 'groupid' => 'text'];
+	var $cols_descriptor 	= [];
 	var $dbconn = NULL;
 	var $charset = '';
 
 	var $acl_man;
 
-	var $group_cache = array();
-	var $user_cache = array();
+	var $group_cache = [];
+	var $user_cache = [];
 
 	/**
 	 * constructor for forma users destination connection
@@ -661,28 +661,28 @@ class ImportGroupUser extends DoceboImport_Destination
 	function connect()
 	{
 
-		$this->cols_descriptor = array();
+		$this->cols_descriptor = [];
 		foreach ($this->cols_id as $k => $field_id) {
 
 			$mandatory = in_array($field_id, $this->cols_mandatory);
 
 			if (in_array($field_id, $this->cols_default)) {
 
-				$this->cols_descriptor[] = array(
+				$this->cols_descriptor[] = [
 					DOCEBOIMPORT_COLNAME 		=> Lang::t('_GROUPUSER_' . $field_id, 'organization_chart', 'framework'),
 					DOCEBOIMPORT_COLID 			=> $field_id,
 					DOCEBOIMPORT_COLMANDATORY 	=> in_array($field_id, $this->cols_mandatory),
 					DOCEBOIMPORT_DATATYPE 		=> $this->cols_type[$field_id],
 					DOCEBOIMPORT_DEFAULT => $this->default_cols[$field_id]
-				);
+                ];
 			} else {
 
-				$this->cols_descriptor[] = array(
+				$this->cols_descriptor[] = [
 					DOCEBOIMPORT_COLNAME 		=> Lang::t('_GROUPUSER_' . $field_id, 'organization_chart', 'framework'),
 					DOCEBOIMPORT_COLID 			=> $field_id,
 					DOCEBOIMPORT_COLMANDATORY 	=> in_array($field_id, $this->cols_mandatory),
 					DOCEBOIMPORT_DATATYPE 		=> $this->cols_type[$field_id]
-				);
+                ];
 			}
 		}
 		return TRUE;

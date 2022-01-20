@@ -29,7 +29,7 @@ define("AJCOMM_MODERATED", 	8);
 
 class AjaxComment {
 	
-	var $colums = array(
+	var $colums = [
 		AJCOMM_ID 			=> 'id_comment',
 		AJCOMM_RESTYPE 		=> 'resource_type',
 		AJCOMM_EXTKEY 		=> 'external_key',
@@ -39,7 +39,7 @@ class AjaxComment {
 		AJCOMM_TREE 		=> 'history_tree',
 		AJCOMM_PARENT 		=> 'id_parent',
 		AJCOMM_MODERATED 	=> 'moderated'
-	);
+    ];
 	
 	var $resource_type;
 	
@@ -93,7 +93,7 @@ class AjaxComment {
 	 */
 	function getCommentByResourceKey($ext_key, $from = false, $for = false) {
 		
-		$comments = array();
+		$comments = [];
 		$query = "
 		SELECT ".implode(', ', $this->colums)."
 		FROM ".$this->_comment_table."
@@ -116,7 +116,7 @@ class AjaxComment {
 	 */
 	function getCommentCountForResourceKey($ext_key) {
 		
-		$comments = array();
+		$comments = [];
 		$query = "
 		SELECT COUNT(*)
 		FROM ".$this->_comment_table."
@@ -134,7 +134,7 @@ class AjaxComment {
 	 */
 	function getResourceCommentCount() {
 		
-		$comments = array();
+		$comments = [];
 		$query = "
 		SELECT ".$this->colums[AJCOMM_EXTKEY].", COUNT(*)
 		FROM ".$this->_comment_table."
@@ -216,8 +216,8 @@ class AjaxComment {
 	 */
 	function updateComment($comment_key, $comment_data) {
 		
-		$update_key 	= array();
-		$update_data 	= array();
+		$update_key 	= [];
+		$update_data 	= [];
 		foreach($comment_key as $key => $value) {
 			$update_key[] = $this->colums[$key]." = '".$value."'";
 		}
@@ -297,7 +297,7 @@ class AjaxCommentRender {
 		
 		require_once(_base_.'/lib/lib.user_profile.php');
 	
-		$users = array();
+		$users = [];
 		$this->_data = $data;
     foreach( $this->_data as $id => $comment) { $users[] = $comment[AJCOMM_AUTHOR]; }
 		reset($this->_data);

@@ -48,19 +48,19 @@ function modfaqgui( $object_faq ) {
 		.'</div><br />', 'content');
 	$tableCat = new Table(0, '', $lang->def('_SUMMARY_FAQ'));
 	
-	$contentH = array($lang->def('_QUESTION'),
+	$contentH = [$lang->def('_QUESTION'),
 		'<img src="'.getPathImage().'standard/down.png" alt="'.$lang->def('_DOWN').'" title="'.$lang->def('_MOVE_DOWN').'" />',
 		'<img src="'.getPathImage().'standard/up.png" alt="'.$lang->def('_UP').'" title="'.$lang->def('_MOVE_UP').'" />',
 		'<img src="'.getPathImage().'standard/edit.png" alt="'.$lang->def('_MOD').'" title="'.$lang->def('_MOD').'" />', 
 		'<img src="'.getPathImage().'standard/delete.png" alt="'.$lang->def('_DEL').'" title="'.$lang->def('_DEL').'" />'
-	);
-	$typeH = array('', 'image', 'image', 'image', 'image');
+    ];
+	$typeH = ['', 'image', 'image', 'image', 'image'];
 	
 	$tableCat->setColsStyle($typeH);
 	$tableCat->addHead($contentH);
 	$i = 1;
 	while(list($idFaq, $title, $seq) = sql_fetch_row($result)) {
-		$rowContent = array($seq.') '.stripslashes($title));
+		$rowContent = [$seq.') '.stripslashes($title)];
 		if($i != $num_faq) {
 			$rowContent[] = '<a href="index.php?modname=faq&amp;op=movedown&amp;idFaq='
 				.$idFaq.'&amp;back_url='.$back_coded.'">'

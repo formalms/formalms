@@ -1,9 +1,9 @@
 <br />
 
 <?php
-$title = array(	'index.php?r='.$base_link_course.'/show' => Lang::t('_COURSE', 'course'),
+$title = ['index.php?r='.$base_link_course.'/show' => Lang::t('_COURSE', 'course'),
 				'index.php?r='.$base_link_edition.'/show&id_course='.$model->getIdCourse() => Lang::t('_EDITIONS', 'course'),
-				Lang::t('_MOD', 'course'));
+				Lang::t('_MOD', 'course')];
 
 echo getTitleArea($title);
 ?>

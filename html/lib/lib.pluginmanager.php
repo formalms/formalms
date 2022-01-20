@@ -12,7 +12,7 @@
 \ ======================================================================== */
 
 class PluginManager {
-	protected static $plugin_list = array();
+	protected static $plugin_list = [];
     public $category;
 
     /**
@@ -53,7 +53,7 @@ class PluginManager {
      * @param array $parameter
      * @return bool|mixed
      */
-    public function run_plugin($plugin, $method, $parameter=array()){
+    public function run_plugin($plugin, $method, $parameter= []){
         $category=$this->category;
         if ($category!="") {
             if (self::is_plugin_active($plugin)){
@@ -62,7 +62,7 @@ class PluginManager {
                     if(self::include_plugin_file($plugin, $category . '.php')) {
                         $namespace_class = "Plugin\\" . $plugin. "\\" . $category;
                         if (method_exists($namespace_class, $method)) {
-                            return call_user_func_array(array($namespace_class, $method), $parameter);
+                            return call_user_func_array([$namespace_class, $method], $parameter);
                         }
                     }
                 }
@@ -78,8 +78,8 @@ class PluginManager {
      * @param array $parameter
      * @return array|bool
      */
-    public function run($method, $parameter=array()){
-        $return=array();
+    public function run($method, $parameter= []){
+        $return= [];
         $category=$this->category;
         if ($category!="") {
             $plugin_list = self::get_all_plugins(true);
@@ -89,7 +89,7 @@ class PluginManager {
                     if(self::include_plugin_file($class_name['name'], $category . '.php')) {
                         $namespace_class = "Plugin\\" . $class_name['name'] . "\\" . $category;
                         if (method_exists($namespace_class, $method)) {
-                            $return[$class_name['name']] = call_user_func_array(array($namespace_class, $method), $parameter);
+                            $return[$class_name['name']] = call_user_func_array([$namespace_class, $method], $parameter);
                         }
                     }
                 }
@@ -106,7 +106,7 @@ class PluginManager {
      * @param array $parameter
      * @return bool
      */
-    public function get_plugin($plugin, $parameter=array()){
+    public function get_plugin($plugin, $parameter= []){
         $category=$this->category;
         if ($category!="") {
             if (self::is_plugin_active($plugin)) {
@@ -153,7 +153,7 @@ class PluginManager {
         
         $r = sql_query($query);        
         list($plugin,$controller,$model) = sql_fetch_row($r);
-        return array($plugin,$controller,$model);
+        return [$plugin,$controller,$model];
     }
 
     /**

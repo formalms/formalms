@@ -30,11 +30,11 @@ class DataRetriever {
 	function __construct( $dbConn, $prefix ) {
 		$this->dbConn = $dbConn;
 		$this->prefix = $prefix;
-		$this->orderCols = array();
+		$this->orderCols = [];
 	}
 
 	function setOrderCol( $filedName, $descendant ) {
-		$this->orderCols[] = array( $filedName, $descendant );
+		$this->orderCols[] = [$filedName, $descendant];
 	}
 
 	function getFieldCount() {
@@ -42,7 +42,7 @@ class DataRetriever {
 	}
 
 	function getFieldsInfo() {
-		$result = array();
+		$result = [];
 		while( ($fInfo = sql_fetch_field( $this->rs )) != NULL ) {
 			$result[$fInfo->name] = $fInfo;
 		}

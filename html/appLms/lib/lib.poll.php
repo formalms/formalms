@@ -203,7 +203,7 @@ class ReportPollManagement {
 			$query_track_info 	.= " AND status = '".$status."'";
 		}
 		$re_track_info 		= sql_query($query_track_info);
-		$polls_track = array();
+		$polls_track = [];
 		if(sql_num_rows($re_track_info)) {
 			while(list($id_track) = sql_fetch_row($re_track_info)) {
 				

@@ -47,7 +47,7 @@ class Config_Framework {
 		."ORDER BY regroup ";
 		$re_regroup = sql_query($query_regroup);
 
-		$names = array(
+		$names = [
 			1/*'main'*/		=> 'Main options',
 			2/*'view'*/		=> 'Display options',
 			3/*'user'*/		=> 'User',
@@ -59,9 +59,9 @@ class Config_Framework {
 			9/*'api'*/		=> 'Api',
 			10/*'google'*/	=> 'Google',
 			11/*'sms'*/		=> 'Sms',
-		);
+        ];
 
-		$descr = array(
+		$descr = [
 			1	=> 'Here you can find the main options for the platform.',
 			2	=> 'Qui puoi modificare le impostazioni che influenzano la visualizzazione dei dati, ad esempio il tema principale, la lingua di default, il numero di elementi per pagina.',
 			3	=> 'Qui puoi modificare tutte le opzioni che influenzano i dettagli dell\'utente, i metodi di autoregistrazione, le politiche reltive alle password e via dicendo.',
@@ -74,15 +74,15 @@ class Config_Framework {
 			10	=> 'Qui puoi impostare l\'interfacciamento con i moduli Google quali, ad esempio, codici per Google Analytics o codice applicazione per Google Maps e altri.',
 			11	=> 'Qui puoi impostare il gateway per l\'invio degli sms e visualizzare il credito residuo.',
 
-		);
+        ];
 
-		$group = array();
+		$group = [];
 		while(list($id_regroup) = sql_fetch_row($re_regroup))  {
 
-			$group[$id_regroup] = array(
+			$group[$id_regroup] = [
 				'name' => /*$lang->def('_CONF_NAME_'.$id_regroup).*/$names[$id_regroup],
 				'descr' =>  /*$lang->def('_CONF_DESCR_'.$id_regroup).*/$descr[$id_regroup]
-			);
+            ];
 		}
 		
 		return $group;
@@ -97,7 +97,7 @@ class Config_Framework {
 		$plat_man =& PlatformManager::createInstance();
 
 		$all_platform 		= $plat_man->getPlatformsInfo();
-		$code_list_home 	= array();
+		$code_list_home 	= [];
 
 		$html = Form::getOpenFieldset($lang->def('_LOAD_UNLOAD_PLATFORM'));
 		reset($all_platform);
@@ -177,7 +177,7 @@ class Config_Framework {
 			}
 		}
 
-		$drop_field = array();
+		$drop_field = [];
 		$drop_field = $field_man->getFlatAllFields(false, 'dropdown');
 		$drop_field[0] = $lang->def('_NO');
 
@@ -194,7 +194,7 @@ class Config_Framework {
 			$field_obj =& $field_man->getFieldInstance(Get::sett('templ_use_field'));
 			if($field_obj === NULL) return $html.getErrorUi('_ERROR_WITH_THIS_FIELD');
 
-			$assignement = array();
+			$assignement = [];
 			$query_template_assigned = "
 			SELECT ref_id, template_code
 			FROM ".$GLOBALS['prefix_fw']."_field_template
@@ -212,14 +212,14 @@ class Config_Framework {
 									$lang->def('_ASSIGN_DROPDOWN_VALUE_TEMPLATE'),
 									$lang->def('_ASSIGN_DROPDOWN_VALUE_TEMPLATE_SUMMARY'));
 
-			$cont_h = array($lang->def('_VALUE'), $lang->def('_TEMPLATE_VALUE'));
-			$type_h = array('','');
+			$cont_h = [$lang->def('_VALUE'), $lang->def('_TEMPLATE_VALUE')];
+			$type_h = ['',''];
 			$tb_son->setColsStyle($type_h);
 			$tb_son->addHead($cont_h);
       foreach($son_value as $id_son => $drop_son_name)
       {
 
-				$cont = array(
+				$cont = [
 					'<label for="template_selected_'.$id_son.'">'.$drop_son_name.'</label>',
 					Form::getInputDropdown(	'dropdown',
 											'template_selected_'.$id_son,
@@ -230,7 +230,7 @@ class Config_Framework {
 												: $default_template ),
 											''
 										)
-				);
+                ];
 				$tb_son->addBody($cont);
 			}
 			$html .= $tb_son->getTable();
@@ -320,11 +320,11 @@ class Config_Framework {
 
 				case "register_tree" :{
 
-					$register_possible_option = array(
+					$register_possible_option = [
 						'off' => $lang->def('_DONT_USE_TREE_REGISTRATION'),
 						'manual_insert' => $lang->def('_USE_WITH_MANUALEINSERT'),
 						'selection' => $lang->def('_USE_WITH_SELECTION')
-					);
+                    ];
 
 					$html .= Form::getDropdown( $lang->def('_'.strtoupper($var_name)),
 												$var_name,
@@ -408,10 +408,10 @@ class Config_Framework {
 				};break;
 				case "layout_chooser" : {
 					//drop down hteditor
-					$layout = array(
+					$layout = [
 						'left' => Lang::t('_LAYOUT_LEFT'),
 						'over' => Lang::t('_LAYOUT_OVER'),
-						'right' => Lang::t('_LAYOUT_RIGHT'));
+						'right' => Lang::t('_LAYOUT_RIGHT')];
 					$html .= Form::getDropdown( $lang->def('_'.strtoupper($var_name)),
 												$var_name,
 												'option['.$var_name.']',
@@ -421,10 +421,10 @@ class Config_Framework {
 				};break;
 				case "pubflow_method_chooser" : {
 					//drop down hteditor
-					$options = array(
+					$options = [
 						'onestate' => Lang::t('_PUBFLOW_ONESTATE'),
 						'twostate' => Lang::t('_PUBFLOW_TWOSTATE'),
-						'advanced' => Lang::t('_PUBFLOW_ADVANCED'));
+						'advanced' => Lang::t('_PUBFLOW_ADVANCED')];
 					$html .= Form::getDropdown( $lang->def('_'.strtoupper($var_name)),
 												$var_name,
 												'option['.$var_name.']',
@@ -437,7 +437,7 @@ class Config_Framework {
 
 					$fl=new FieldList();
 					$all_fields=$fl->getAllFields();
-					$fields=array();
+					$fields= [];
 					foreach($all_fields as $key=>$val) {
 						$fields[$val[FIELD_INFO_ID]]=$val[FIELD_INFO_TRANSLATION];
 					}
@@ -449,12 +449,12 @@ class Config_Framework {
 												$i_after);
 				} break;
 				case "sel_sms_gateway" : {
-					$options = array(
+					$options = [
 						'0' => Lang::t('_SMS_GATEWAY_AUTO'),
 						'1' => Lang::t('_SMS_GATEWAY_1'),
 						'2' => Lang::t('_SMS_GATEWAY_2'),
 						'3' => Lang::t('_SMS_GATEWAY_3'),
-						'4' => Lang::t('_SMS_GATEWAY_4'));
+						'4' => Lang::t('_SMS_GATEWAY_4')];
 					$html .= Form::getDropdown( $lang->def('_'.strtoupper($var_name)),
 												$var_name,
 												'option['.$var_name.']',
@@ -467,10 +467,10 @@ class Config_Framework {
 
 				case "layout_chooser" : {
 					//drop down hteditor
-					$layout = array(
+					$layout = [
 						'left' => Lang::t('_LAYOUT_LEFT'),
 						'over' => Lang::t('_LAYOUT_OVER'),
-						'right' => Lang::t('_LAYOUT_RIGHT'));
+						'right' => Lang::t('_LAYOUT_RIGHT')];
 					$html .= Form::getDropdown( $lang->def('_'.strtoupper($var_name)),
 												$var_name,
 												'option['.$var_name.']',
@@ -479,9 +479,9 @@ class Config_Framework {
 												$i_after);
 				};break;
 				case "grpsel_chooser" : {
-					$layout = array(
+					$layout = [
 						'group' => $lang->def('_GROUPS'),
-						'orgchart' => $lang->def('_ORGCHART'));
+						'orgchart' => $lang->def('_ORGCHART')];
 					$html .= Form::getDropdown( $lang->def('_'.strtoupper($var_name)),
 												$var_name,
 												'option['.$var_name.']',
@@ -496,11 +496,11 @@ class Config_Framework {
 
 					$tab_selected = Util::unserialize(urldecode($var_value));
 
-					$tab_list = array(
+					$tab_list = [
 						'time' 		=> $lang_c->def('_TAB_VIEW_TIME'),
 						'category' 	=> $lang_c->def('_TAB_VIEW_CATEGORY'),
 						'all' 		=> $lang_c->def('_ALL')
-					);
+                    ];
 					if(Get::sett('use_coursepath') == '1') {
 						$tab_list['pathcourse'] = $lang_c->def('_COURSEPATH');
 					}
@@ -521,11 +521,11 @@ class Config_Framework {
 
 					$lang_c 	=& DoceboLanguage::createInstance('catalogue', 'lms');
 
-					$tab_list = array(
+					$tab_list = [
 						'time' 		=> $lang_c->def('_TAB_VIEW_TIME'),
 						'category' 	=> $lang_c->def('_TAB_VIEW_CATEGORY'),
 						'all' 		=> $lang_c->def('_ALL')
-					);
+                    ];
 					if(Get::sett('use_coursepath') == '1') {
 						$tab_list['pathcourse'] = $lang_c->def('_COURSEPATH');
 					}
@@ -549,7 +549,7 @@ class Config_Framework {
 				  $arr_value = explode(',',$var_value);
 				  //$arr_value=array();
 
-				  $tab_list=array();
+				  $tab_list= [];
 				  $tab_list[''] = $lang->def('_MYCOURSES_NOTUSED');
 				  $tab_list['status'] = $lang->def('_STATUS');
 				  $tab_list['name'] = $lang->def('_NAME');
@@ -581,10 +581,10 @@ class Config_Framework {
 												$i_after);
 				} break;
 				case "rest_auth_sel_method": {
-					$value_set = array(
+					$value_set = [
 						$lang->def('_REST_AUTH_UCODE')=>0,
 						$lang->def('_REST_AUTH_TOKEN')=>1
-					);
+                    ];
 					$html .= Form::getRadioSet($lang->def('_REST_AUTH_SEL_METHOD'), $var_name, 'option['.$var_name.']', $value_set, $var_value, $i_after);
 				} break;
 				
@@ -683,7 +683,7 @@ class Config_Framework {
 				};break;
 				case "tablist_coursecatalogue" : {
 
-					$tab_selected = array();
+					$tab_selected = [];
 					foreach($_POST['tablist'] as $tab_code => $v) {
 
 						$tab_selected[$tab_code] = 1;
@@ -692,7 +692,7 @@ class Config_Framework {
 				};break;
 
 				case "tablist_mycourses" : {
-					$temp_arr=array();
+					$temp_arr= [];
 					for ($i=0; $i<3; $i++) {
 						$temp_var = $_POST['mycourses'][$i];
 						if ($temp_var!='' && !in_array($temp_var,$temp_arr)) //avoid repeated params

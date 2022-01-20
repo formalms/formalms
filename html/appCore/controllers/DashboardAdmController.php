@@ -33,7 +33,7 @@ Class DashboardAdmController extends AdmController {
 		YuiLib::load('autocomplete,tabview');
 
 
-		$this->permissions = array(
+		$this->permissions = [
 			'view' => checkPerm('view', true, 'dashboard', 'framework'),
 			'view_user' => checkPerm('view', true, 'usermanagement', 'framework'),
 			'add_user' => checkPerm('add', true, 'usermanagement', 'framework'),
@@ -48,7 +48,7 @@ Class DashboardAdmController extends AdmController {
 			'view_games' => checkPerm('view', true, 'games', 'lms'),
 			'add_games' => checkPerm('add', true, 'games', 'lms'),
 			'subscribe' => checkPerm('subscribe', true, 'course', 'lms'),
-		);
+        ];
 	}
 
 
@@ -84,7 +84,7 @@ Class DashboardAdmController extends AdmController {
 		Form::loadDatefieldScript();
 
 		//render view
-		$this->render('show', array(
+		$this->render('show', [
 			'diagnostic_problem' => $problem,
 			'lang_dir' => Lang::direction(),
 
@@ -113,36 +113,36 @@ Class DashboardAdmController extends AdmController {
 			'permissions' => $this->permissions,
 
 			'reports' => $arr_report
-		));
+        ]);
 	}
 
 	public function deactivate() {
-		$output = array("success" => $this->model->deactivateFeeds());
+		$output = ["success" => $this->model->deactivateFeeds()];
 		echo $this->json->encode($output);
 	}
 
 	public function activate() {
-		$output = array("success" => $this->model->activateFeeds());
+		$output = ["success" => $this->model->activateFeeds()];
 		echo $this->json->encode($output);
 	}
 
 
 
 	public function diagnostic_dialogTask(){
-		$this->render('diagnostic_dialog', array(
+		$this->render('diagnostic_dialog', [
 			'title' => Lang::t('_SERVERINFO', 'configuration'),
 			'php_conf' => ini_get_all(),
 			'sql_server_info' => sql_get_server_info(),
 			'sql_additional_info' => $this->model->getSqlInfo(),
 			'json' => $this->json
-		));
+        ]);
 	}
 
 	public function user_status_dialogTask() {
-		$this->render('user_status_dialog', array(
+		$this->render('user_status_dialog', [
 			'title' => Lang::t('_PROFILE', 'profile'),
 			'json' => $this->json
-		));
+        ]);
 	}
 
 	public function certificateTask() {
@@ -197,7 +197,7 @@ Class DashboardAdmController extends AdmController {
 		require_once(Forma::inc(_lms_.'/lib/lib.certificate.php'));
 		$cert = new Certificate();
 		$released = $cert->certificateStatus($id_user, $id_course);
-		$print = array();
+		$print = [];
 		foreach($released as $id_cert => $name) {
 			$print[] = '<a class="ico-wt-sprite subs_pdf" href="index.php?modname=certificate&certificate_id='.$id_cert.'&course_id='.$id_course.'&user_id='.$id_user.'&op=send_certificate&of_platform=lms">'
 				.'<span>'.$name.'</span>'
@@ -206,7 +206,7 @@ Class DashboardAdmController extends AdmController {
 
 		
         $res = $this->model->getDashBoardCertList($id_course, $id_user);
-		$relesable = array();
+		$relesable = [];
 		while (list($id_certificate, $name, $available_for_status, $user_status) = sql_fetch_row($res)) {
 			if($cert->canRelease( $available_for_status, $user_status ) && !isset($released[$id_certificate])) {
 				
@@ -233,10 +233,10 @@ Class DashboardAdmController extends AdmController {
 
 
 	public function exportformatTask() {
-		$this->render('export_dialog', array(
+		$this->render('export_dialog', [
 			'id_report' => Get::req('id_report', DOTY_INT, true),
 			'json' => $this->json
-		));
+        ]);
 	}
 
 

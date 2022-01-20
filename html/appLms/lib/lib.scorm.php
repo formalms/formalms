@@ -25,7 +25,7 @@ class GroupScormObjMan {
 	 */
 	function &getSimpleScormScores($id_scorms, $id_students = false) {
 		
-		$data = array();
+		$data = [];
 		if(empty($id_scorms)) return $data;
 		if(empty($id_students)) $id_students = false;
 		$query_scores = "

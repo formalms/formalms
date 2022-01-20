@@ -203,9 +203,9 @@ class DoceboImport_DestinationMySQL extends DoceboImport_Destination {
 			$this->last_error = 'Error on query: '.$query.' ['.sql_error($this->dbconn).']';
 			return FALSE;
 		}
-		$this->cols_descriptor = array();
+		$this->cols_descriptor = [];
 		if( $this->mandatory_cols === NULL )
-			$computed_mandatory_cols = array();
+			$computed_mandatory_cols = [];
 		while( $field_info = sql_fetch_array($rs) ) {
 			if( $this->mandatory_cols === NULL ) {
 				if($field_info['Null']!='YES') {
@@ -218,9 +218,9 @@ class DoceboImport_DestinationMySQL extends DoceboImport_Destination {
 				$mandatory = in_array($field_info['Field'], $this->mandatory_cols );
 			}
 			$this->cols_descriptor[] = 
-						array(  DOCEBOIMPORT_COLNAME => $field_info['Field'],
+						[DOCEBOIMPORT_COLNAME => $field_info['Field'],
 								DOCEBOIMPORT_COLMANDATORY => $mandatory,
-								DOCEBOIMPORT_DATATYPE => $field_info['Type'] );
+								DOCEBOIMPORT_DATATYPE => $field_info['Type']];
 		}
 		if( $this->mandatory_cols === NULL )
 			$this->mandatory_cols = $computed_mandatory_cols;
@@ -332,18 +332,18 @@ class DeceboImport_SourceCSV extends DoceboImport_Source {
 			echo 'no rows found on '.$this->filename;
 			return FALSE;
 		}
-		$this->cols_descriptor = array();
+		$this->cols_descriptor = [];
 		if( $this->first_row_header ) {
 			foreach( $row as $col_name ) {
-				$this->cols_descriptor[] = array( DOCEBOIMPORT_COLNAME => $col_name,
-											DOCEBOIMPORT_DATATYPE => DOCEBOIMPORT_DATATYPE_UNKNOWN );
+				$this->cols_descriptor[] = [DOCEBOIMPORT_COLNAME => $col_name,
+											DOCEBOIMPORT_DATATYPE => DOCEBOIMPORT_DATATYPE_UNKNOWN];
 			}
 			$this->row_index = 1;
 		} else {
 			// the column names will be the col number 0 ... n
 			for( $name = 0; $name < count($row); $name++ ) {
-				$this->cols_descriptor[] = array( DOCEBOIMPORT_COLNAME => (string)$name,
-											DOCEBOIMPORT_DATATYPE => DOCEBOIMPORT_DATATYPE_UNKNOWN );
+				$this->cols_descriptor[] = [DOCEBOIMPORT_COLNAME => (string)$name,
+											DOCEBOIMPORT_DATATYPE => DOCEBOIMPORT_DATATYPE_UNKNOWN];
 			}			
 		}
 		return TRUE;
@@ -480,7 +480,7 @@ class DoceboImport {
 		$src_cols = $this->source->get_cols_descripor();
 		$dst_cols = $this->destination->get_cols_descripor();
 
-		$combo_elements = array();
+		$combo_elements = [];
 		$combo_elements[DOCEBOIMPORT_IGNORE] = $lang->def('_IMPORT_IGNORE');
                 
 		foreach( $dst_cols as $col ) {
@@ -490,10 +490,10 @@ class DoceboImport {
 				$combo_elements[$col[DOCEBOIMPORT_COLNAME]] = $col[DOCEBOIMPORT_COLNAME];
 		}
 		
-		$table_dst_labels = array();
-		$table_dst_tocompare = array();
-		$table_src_labels = array();
-		$table_src_labels_type = array();
+		$table_dst_labels = [];
+		$table_dst_tocompare = [];
+		$table_src_labels = [];
+		$table_src_labels_type = [];
 		$count = 0;
 		foreach( $src_cols as $col ) {
 			$table_src_labels[] = $col[DOCEBOIMPORT_COLNAME];
@@ -554,14 +554,14 @@ class DoceboImport {
 	 *				in index 0 there are the total processed rows
 	**/
 	function doImport() {
-		$out = array(); 	// error list
+		$out = []; 	// error list
 		$dst_cols = $this->destination->get_cols_descripor();
 		$row = $this->source->get_first_row();
 		$i = 0;
 		$open_transaction = false;
 		while( $row !== FALSE ) {
-			$insrow = array();
-                        $tocompare = array();
+			$insrow = [];
+                        $tocompare = [];
 			for( $index = 0; $index < count($this->import_map); $index++ ) {
 				if( $this->import_map[$index] != DOCEBOIMPORT_IGNORE ) {
 					$insrow[$this->import_map[$index]] = $row[$index];

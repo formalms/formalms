@@ -23,41 +23,41 @@ class YuiLib {
 
 	private static $_use_skin = 'docebo';
 
-	private static $_css_loaded = array();
+	private static $_css_loaded = [];
 
-	private static $_js_loaded = array();
+	private static $_js_loaded = [];
 
-	private static $_css_map = array(
-		'base' => array(
+	private static $_css_map = [
+		'base' => [
 			'button.css',
 			'calendar.css',
 			'container.css',
 			'menu.css',
 			'resize.css'
-		),
-		'autocomplete' => array(
+        ],
+		'autocomplete' => [
 			'autocomplete.css'
-		),
-		'charts' => array(
+        ],
+		'charts' => [
 
-		),
-		'tabview' => array(
+        ],
+		'tabview' => [
 			'tabview.css'
-		),
-		'treeview' => array(
+        ],
+		'treeview' => [
 			'treeview.css'
-		),
-		'table' => array(
+        ],
+		'table' => [
 			'datatable.css',
 			'paginator.css'
-		),
-		'colorpicker' => array(
+        ],
+		'colorpicker' => [
 			'colorpicker.css'
-		)
-	);
+        ]
+    ];
 
-	private static $_js_map = array(
-		'base' => array(
+	private static $_js_map = [
+		'base' => [
 			'utilities/utilities.js',
 			'json/json-min.js',
 			'animation/animation-min.js',
@@ -69,34 +69,34 @@ class YuiLib {
 			'resize/resize-min.js',
 			'selector/selector-min.js',
 			'event-delegate/event-delegate-min.js',
-		),
-		'autocomplete' => array(
+        ],
+		'autocomplete' => [
 			'datasource/datasource-min.js',
 			'autocomplete/autocomplete-min.js'
-		),
-		'charts' => array(
+        ],
+		'charts' => [
 			'datasource/datasource-min.js',
 			'charts/charts-min.js',
 			'swf/swf-min.js'
-		),
-		'tabview' => array(
+        ],
+		'tabview' => [
 			// 'tabview/tabview-min.js'
 			'tabview/tabview.js'
-		),
-		'treeview' => array(
+        ],
+		'treeview' => [
 			'treeview/treeview-min.js'
-		),
-		'table' => array(
+        ],
+		'table' => [
 			'datasource/datasource-min.js',
 			'paginator/paginator-min.js',
 			'datatable/datatable-min.js',
 			'editor/editor-min.js'
-		),
-		'colorpicker' => array(
+        ],
+		'colorpicker' => [
 			'slider/slider-min.js',
 			'colorpicker/colorpicker-min.js'
-		)
-	);
+        ]
+    ];
 
 	/**
 	 * Load css and yui file
@@ -110,8 +110,8 @@ class YuiLib {
 		if(strpos($module_list, 'base') !== false) $module_list = 'base,'.$module_list;
 		$list = explode(',', $module_list);
 
-		$js_load = array();
-		$css_load = array();
+		$js_load = [];
+		$css_load = [];
 		foreach($list as $k => $module) {
 
 			if(isset(self::$_css_map[$module])) $css_load = array_unique(array_merge($css_load, self::$_css_map[$module]));

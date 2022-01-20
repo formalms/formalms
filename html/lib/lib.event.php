@@ -429,7 +429,7 @@ class DoceboEventConsumer {
 	**/
 	function getConsumerClassFile( $consumer_id ) {
 		if( $consumer_id == FALSE )
-			return array( $this->consumer_class, $this->consumer_file);
+			return [$this->consumer_class, $this->consumer_file];
 		$query = "SELECT consumer_class, consumer_file FROM ".$GLOBALS['prefix_fw']."_event_consumer"
 				." WHERE idConsumer = '".$consumer_id."'";
 		$rs = sql_query($query);

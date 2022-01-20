@@ -51,7 +51,7 @@ function upgradeConfig10300($config) {
  		if ( $sts != 1 )  $config_sts = $sts;
    }
 
-	return array($config_sts,$config);
+	return [$config_sts,$config];
 }
 
 // bug #3213
@@ -80,7 +80,7 @@ $1";
 
 	}
 
-	return array($sts,$_config);
+	return [$sts,$_config];
 }
 
 
@@ -100,7 +100,7 @@ function _update_cfg_keepalive($_config) {
 
 	}
 
-	return array($sts,$_config);
+	return [$sts,$_config];
 }
 
 // new feature #3628
@@ -119,7 +119,7 @@ function _update_cfg_customscripts($_config) {
 
 	}
 
-	return array($sts,$_config);
+	return [$sts,$_config];
 }
 
 // new feature #3632
@@ -129,7 +129,7 @@ function _update_cfg_plugin($_config) {
 	// config already upgraded
 	$sts = 1;	// no change required
 
-	return array($sts,$_config);
+	return [$sts,$_config];
 }
 
 // new feature #3629
@@ -155,7 +155,7 @@ function _update_cfg_tplengine($_config) {
 
 	}
 
-	return array($sts,$_config);
+	return [$sts,$_config];
 }
 
 

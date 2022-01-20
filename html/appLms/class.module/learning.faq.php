@@ -192,15 +192,15 @@ class Learning_Faq extends Learning_Object {
 		$output = false;
 		$query = "SELECT * FROM %lms_faq WHERE title LIKE '%".$key."%' OR question LIKE '%".$key."%' ORDER BY title";
 		$res = $this->db->query($query);
-		$results = array();
+		$results = [];
 		if ($res) {
-			$output = array();
+			$output = [];
 			while ($row = $this->db->fetch_obj($res)) {
-				$output[] = array(
+				$output[] = [
 					'id' => $row->idFaq,
 					'title' => $row->title,
 					'description' => $row->question
-				);
+                ];
 			}
 		}
 		return $output;

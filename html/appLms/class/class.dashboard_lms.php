@@ -31,7 +31,7 @@ class Dashboard_Lms extends Dashboard {
 		$course_stats = $course_man->getCoursesStats();
 		
 		$lang =& DoceboLanguage::createInstance('dashboard', 'framework');
-		$html = array();
+		$html = [];
 		$html[] = '<h2 class="inline">'.$lang->def('_COURSES_PANEL').'</h2>'
 			.'<p>'
 				.$lang->def('_TOTAL_COURSE').': <b>'.$course_stats['total'].'</b>;<br />'

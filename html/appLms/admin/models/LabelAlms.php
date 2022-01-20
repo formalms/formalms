@@ -31,10 +31,10 @@ class LabelAlms extends Model
 
 	public function getPerm()
 	{
-		return array(
+		return [
 			'view' => 'standard/view.png',
 			'mod' => 'standard/edit.png'
-		);
+        ];
 	}
 
 	public function getLabels($start_index, $results, $sort, $dir)
@@ -45,7 +45,7 @@ class LabelAlms extends Model
 					." ORDER BY sequence " ;
 		$result = sql_query($query);
 
-		$res = array();
+		$res = [];
 		while (list($id_common_label, $lang_code, $title, $description, $file, $sequence) = sql_fetch_row($result)) {
 			$res[$id_common_label][LABEL_ID_COMMON] = $id_common_label;
 			$res[$id_common_label][LABEL_LANG_CODE] = $lang_code;
@@ -146,7 +146,7 @@ class LabelAlms extends Model
 
 		$result = sql_query($query);
 
-		$res = array();
+		$res = [];
 
 		while (list($lang_code, $title, $description, $file) = sql_fetch_row($result))
 		{
@@ -221,9 +221,9 @@ class LabelAlms extends Model
 
 		$result = sql_query($query);
 		if($mod_course)
-			$res = array('0' => Lang::t('_NOT_ASSIGNED', 'label'));
+			$res = ['0' => Lang::t('_NOT_ASSIGNED', 'label')];
 		else
-			$res = array('0' => Lang::t('_ALL', 'label'));
+			$res = ['0' => Lang::t('_ALL', 'label')];
 
 		while(list($id_common_label, $title) = sql_fetch_row($result))
 			$res[$id_common_label] = $title;
@@ -244,7 +244,7 @@ class LabelAlms extends Model
 	
 	public function clearCourseLabel($id_course)
 	{
-		if (is_numeric($id_course)) $id_course = array( (int)$id_course );
+		if (is_numeric($id_course)) $id_course = [(int)$id_course];
 		if (!is_array($id_course)) return false;
 		if (empty($id_course)) return true;
 
@@ -279,7 +279,7 @@ class LabelAlms extends Model
 					." ORDER BY l.title";
 
 		$result = sql_query($query);
-		$res = array();
+		$res = [];
 
         // all my courses
         $res['-1']['title'] = Lang::t('_ALL_COURSES', 'standard');
@@ -313,8 +313,8 @@ class LabelAlms extends Model
 					." ORDER BY l.title";
 
 		$result = sql_query($query);
-		$res = array(	'-2' => Lang::t('_SELECT', 'label'),
-						'0' => Lang::t('_ALL', 'label'));
+		$res = ['-2' => Lang::t('_SELECT', 'label'),
+						'0' => Lang::t('_ALL', 'label')];
 
 		while(list($id_common_label, $title) = sql_fetch_row($result))
 			$res[$id_common_label] = $title;

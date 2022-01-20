@@ -1,6 +1,6 @@
 <?php
-	$array_title = array(	'index.php?r=adm/adminmanager/show' => Lang::t('_ADMIN_MANAGER', 'menu'),
-							Lang::t('_COURSES', 'adminmanager').' : '.$model->getAdminFullname($id_user));
+	$array_title = ['index.php?r=adm/adminmanager/show' => Lang::t('_ADMIN_MANAGER', 'menu'),
+							Lang::t('_COURSES', 'adminmanager').' : '.$model->getAdminFullname($id_user)];
 
 	echo getTitleArea($array_title)
 			.'<div class="std_block">'

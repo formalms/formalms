@@ -22,7 +22,7 @@
 if(!defined("IN_FORMA") && !defined("IN_AJAX")) die('You can\'t access directly');
 if($GLOBALS['current_user']->isAnonymous()) die('You can\'t access');
 
-$sortable = array('type_quest', 'title_quest', 'difficult', 'sequence');
+$sortable = ['type_quest', 'title_quest', 'difficult', 'sequence'];
 
 $op = Get::gReq('op', DOTY_ALPHANUM, '');
 switch($op) {
@@ -34,7 +34,7 @@ switch($op) {
 		$quest_category 	= Get::req('quest_category', DOTY_INT);
 		$quest_difficult 	= Get::req('quest_difficult', DOTY_INT);
 		$quest_type 		= Get::req('quest_type', DOTY_ALPHANUM);
-		$params_extracat=array();
+		$params_extracat= [];
 		$all_categories = $qbm->getExtraCategoriesList();
 		foreach ($all_categories as $key => $value) {
 		    $quest_extracategory= Get::req('quest_extracategory_'.$key, DOTY_INT);
@@ -54,7 +54,7 @@ switch($op) {
 
 		$re_quest = $qbm->resQuestList($quest_category, $quest_difficult, $quest_type, $params_extracat, $startIndex, $results, $sort, $dir);
 
-		$value = array();
+		$value = [];
 		while(list($id_q) = $qbm->fetch($re_quest)) {
 
 			$value[] = (int)$id_q;
@@ -74,7 +74,7 @@ switch($op) {
 		$qman = new QuestBankMan();
 		$result = $qman->delQuest($id_quest);
 
-		$value = array("result"=>$result, "id_quest"=>$id_quest, "row_quest"=>$row_quest, "error"=>$qman->last_error);
+		$value = ["result"=>$result, "id_quest"=>$id_quest, "row_quest"=>$row_quest, "error"=>$qman->last_error];
 
 		$json = new Services_JSON();
 		$output = $json->encode($value);
@@ -88,7 +88,7 @@ switch($op) {
 		$quest_category 	= Get::pReq('quest_category', DOTY_INT);
 		$quest_difficult 	= Get::pReq('quest_difficult', DOTY_INT);
 		$quest_type 		= Get::pReq('quest_type', DOTY_ALPHANUM);
-		$params_extracat=array();
+		$params_extracat= [];
 		$all_categories = $qbm->getExtraCategoriesList();
 		foreach ($all_categories as $key => $value) {
 		    $quest_extracategory= Get::pReq('quest_extracategory_'.$key, DOTY_INT);
@@ -118,25 +118,25 @@ switch($op) {
 			'results' => count($courses),
 			'records' => $courses_html
 			*/
-		$value = array(
+		$value = [
 			"totalRecords" => (int)$totalRecords,
 			"startIndex" => (int)$startIndex,
 			'sort' => 'category_quest',
 			'dir' => 'asc',
 			'rowsPerPage' => $results,
 			"results" => (int)$qbm->num_rows($re_quest),
-			"records" => array(),
+			"records" => [],
 			
 			"qc" => $quest_category,
 			"qd" => $quest_difficult,
 			"qt" => $quest_type,
 			"si" => $startIndex,
 			"re" => $results
-		);
+        ];
 
 		while(list($id_q, $id_c, $type, $title, $difficult, $time_assigned, $sequence, $extra_fields, $extra_values) = $qbm->fetch($re_quest)) {
 
-			$value['records'][] = array(
+			$value['records'][] = [
 				"id_quest" => $id_q,
 				"category_quest" => $id_c,
 				"type_quest" => $type,
@@ -145,7 +145,7 @@ switch($op) {
 				"sequence" => $sequence
 				, "extra_fields" => $extra_fields
 				, "extra_values" => $extra_values
-			);
+            ];
 		}
 
 		//require_once($GLOBALS['where_framework'].'/lib/lib.json.php');

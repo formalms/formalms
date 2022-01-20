@@ -228,7 +228,7 @@ class sys_forum {
 
 	} */
 
-	function get_current_url($exclude=array()) {
+	function get_current_url($exclude= []) {
 
 		$fn=basename($_SERVER["PHP_SELF"]);
 
@@ -310,7 +310,7 @@ class sys_forum {
 		WHERE author <> '1'
 		GROUP BY author");
 		
-		$authors = array();
+		$authors = [];
 		while( list($id_a, $num_post_a) = sql_fetch_row($reNumPost) ) {
 
 			$authors[$id_a] 	= $id_a;
@@ -319,8 +319,8 @@ class sys_forum {
 		$authors_info =& $acl_man->getUsers($authors);
 
 		$tab = new Table(0);
-		$contentH 	= array($this->lang->def("_AUTHOR"), $this->lang->def("_TEXTOF"));
-		$typeH 		= array('forum_sender', 'forum_text');
+		$contentH 	= [$this->lang->def("_AUTHOR"), $this->lang->def("_TEXTOF")];
+		$typeH 		= ['forum_sender', 'forum_text'];
 		$tab->setColsStyle($typeH);
 		$tab->addHead($contentH);
 
@@ -389,8 +389,8 @@ class sys_forum {
 						.'<img src="'.getPathImage().'standard/edit.png" alt="'.$this->lang->def("_MOD").'" title="'.$this->lang->def("_MOD").'" /></a>';
 			}
 			$action .= '</div>';
-			$tab->addBody( array($who, $mess) );
-			$tab->addBody( array('', $action) );
+			$tab->addBody( [$who, $mess]);
+			$tab->addBody( ['', $action]);
 		}
 
 		$action_row = '';
@@ -805,7 +805,7 @@ function get_sql_tk_str($tk, $table="", $sep=" AND ") {
 	if ($table != "")
 		$table.=".";
 
-	$where_arr=array();
+	$where_arr= [];
 
 	$where_arr[]=$table."key1='".$tk[1]."'";
 

@@ -45,7 +45,7 @@ class Field_Upload extends Field {
 
 		$back_coded = htmlentities(urlencode($back));
 
-		$array_lang = array();
+		$array_lang = [];
 		$std_lang 		=& DoceboLanguage::createInstance('standard');
 		$lang 			=& DoceboLanguage::createInstance('field');
 		$array_lang 	= Docebo::langManager()->getAllLangCode();
@@ -166,7 +166,7 @@ class Field_Upload extends Field {
 	function edit( $back ) {
 		$back_coded = htmlentities(urlencode($back));
 
-		$array_lang = array();
+		$array_lang = [];
 		$std_lang 		=& DoceboLanguage::createInstance('standard');
 		$lang 			=& DoceboLanguage::createInstance('field');
 		$array_lang 	= Docebo::langManager()->getAllLangCode();
@@ -201,7 +201,7 @@ class Field_Upload extends Field {
 				return;
 			}
 
-			$existsing_translation = array();
+			$existsing_translation = [];
 			$re_trans = sql_query("
 			SELECT lang_code
 			FROM ".$this->_getMainTable()."
@@ -459,8 +459,8 @@ class Field_Upload extends Field {
 		return Form::getRadioSet(	$label,
 									Field::getFieldId_Filter($id_field, $field_prefix),
 									Field::getFieldName_Filter($id_field, $field_prefix),
-									array( 	$lang->def('_YES') => 'true',
-											$lang->def('_NO') => 'false') ,
+									[$lang->def('_YES') => 'true',
+											$lang->def('_NO') => 'false'],
 									$value,
 									$other_after,
 									$other_before);

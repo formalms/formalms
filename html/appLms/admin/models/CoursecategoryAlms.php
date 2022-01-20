@@ -43,10 +43,10 @@ Class CoursecategoryAlms extends TreeModel {
 	}
 	
 	public function getPerm() {
-		return array(
+		return [
 			'add'		=> 'standard/add.png',
 			'mod'		=> 'standard/edit.png',
 			'del'		=> 'standard/rem.png'
-		);
+        ];
 	}
 }

@@ -43,7 +43,7 @@ class DDummyCache extends DCache {
 	 * )
 	 * @return bool true if the data was saved successfully, false otherwise
 	 */
-	public function set($key, $data, $options = array()) {
+	public function set($key, $data, $options = []) {
 		
 		return true;
 	}
@@ -68,7 +68,7 @@ class DDummyCache extends DCache {
 	 * )
 	 * @return bool true if the data was saved successfully, false otherwise
 	 */
-	public function mset($keys, $values, $options = array()) {
+	public function mset($keys, $values, $options = []) {
 		
 		return true;
 	}

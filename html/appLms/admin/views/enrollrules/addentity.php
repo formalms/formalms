@@ -1,9 +1,9 @@
 <?php
-Get::title(array(
+Get::title([
 	'index.php?r=alms/enrollrules/show' => Lang::t('_ENROLLRULES', 'enrollrules'),
 	'index.php?r=alms/enrollrules/rule&amp;'.$rule->id_rule => Lang::t('_MANAGE', 'enrollrules').': '.$rule->title,
 	$rule->rule_type_text
-));
+]);
 ?>
 <div class="std_block">
 <?php
@@ -12,7 +12,7 @@ echo getBackUi('index.php?r=alms/enrollrules/rule&amp;'.$rule->id_rule, Lang::t(
 echo Form::openForm('enrollrule_form', 'index.php?r=alms/enrollrules/addentity')
 	.Form::getHidden('id_rule', 'id_rule', $rule->id_rule);
 
-$this->widget('userselector', array(
+$this->widget('userselector', [
 	'id' => 'entity_selection',
 	'admin_filter' => true,
 	'can_select_root' => false,
@@ -21,7 +21,7 @@ $this->widget('userselector', array(
 	'show_orgchart_selector' => $orgchart,
 	'show_group_selector' => $group,
 	'initial_selection' => $init_selection
-));
+]);
 echo Form::openButtonSpace()
 	.Form::getButton('save', 'save', Lang::t('_SAVE', 'standard'))
 	.Form::getButton('undo', 'undo', Lang::t('_UNDO', 'standard'))

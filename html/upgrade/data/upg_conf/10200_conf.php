@@ -50,5 +50,5 @@ function upgradeConfig10200($config) {
 
 	}
 
-	return array($config_sts,$config);
+	return [$config_sts,$config];
 }

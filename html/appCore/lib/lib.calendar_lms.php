@@ -59,7 +59,7 @@ class DoceboCal_lms extends DoceboCal_core{
 
 		$result=sql_query($query);
 		//return sql_num_rows($result);
-		$calevents = array();
+		$calevents = [];
 		$i=0;
 		while ($row=sql_fetch_array($result)) {
 		

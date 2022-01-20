@@ -15,9 +15,9 @@ class FunctionalRoles_API extends API {
 					$output = $res;
 				}
 				else if ($res > 0) {
-					$output = array('success'=>true, 'id_role'=>$res);
+					$output = ['success'=>true, 'id_role'=>$res];
 				} else {
-					$output = array('success'=>false, 'message'=>'Error: unable to create new role.');
+					$output = ['success'=>false, 'message'=>'Error: unable to create new role.'];
 				}
 			} break;
 			case 'creategroup': {
@@ -26,9 +26,9 @@ class FunctionalRoles_API extends API {
 					$output = $res;
 				}
 				else if ($res > 0) {
-					$output = array('success'=>true, 'id_group'=>$res);
+					$output = ['success'=>true, 'id_group'=>$res];
 				} else {
-					$output = array('success'=>false, 'message'=>'Error: unable to create new role group.');
+					$output = ['success'=>false, 'message'=>'Error: unable to create new role group.'];
 				}
 			} break;
 			case 'deleterole': {
@@ -37,9 +37,9 @@ class FunctionalRoles_API extends API {
 					$output = $res;
 				}
 				else if ($res > 0) {
-					$output = array('success'=>true, 'deleted'=>$res);
+					$output = ['success'=>true, 'deleted'=>$res];
 				} else {
-					$output = array('success'=>false, 'message'=>'Error: unable to delete role.');
+					$output = ['success'=>false, 'message'=>'Error: unable to delete role.'];
 				}
 			} break;
 			case 'deletegroup': {
@@ -48,25 +48,25 @@ class FunctionalRoles_API extends API {
 					$output = $res;
 				}
 				else if ($res > 0) {
-					$output = array('success'=>true, 'deleted'=>$res);
+					$output = ['success'=>true, 'deleted'=>$res];
 				} else {
-					$output = array('success'=>false, 'message'=>'Error: unable to delete role group.');
+					$output = ['success'=>false, 'message'=>'Error: unable to delete role group.'];
 				}
 			} break;
 			case 'getroles': {
 				$res = $this->getFunctionalRolesList($_GET);
 				if (is_array($res)) {
-					$output = array('success'=>true, 'roles'=>$res);
+					$output = ['success'=>true, 'roles'=>$res];
 				} else {
-					$output = array('success'=>false, 'message'=>'Error: unable to get list roles.');
+					$output = ['success'=>false, 'message'=>'Error: unable to get list roles.'];
 				}
 			} break;
 			case 'getrolegroups': {
 				$res = $this->getRoleGroups($_GET);
 				if (is_array($res)) {
-					$output = array('success'=>true, 'groups'=>$res);
+					$output = ['success'=>true, 'groups'=>$res];
 				} else {
-					$output = array('success'=>false, 'message'=>'Error: unable to get list groups.');
+					$output = ['success'=>false, 'message'=>'Error: unable to get list groups.'];
 				}
 			} break;
 			case 'adduser': {
@@ -75,9 +75,9 @@ class FunctionalRoles_API extends API {
 					$output = $res;
 				}
 				else if ($res > 0) {
-					$output = array('success'=>true, 'result'=>$res);
+					$output = ['success'=>true, 'result'=>$res];
 				} else {
-					$output = array('success'=>false, 'message'=>'Error: unable to add user to fncrole.');
+					$output = ['success'=>false, 'message'=>'Error: unable to add user to fncrole.'];
 				}
 			} break;
                         
@@ -199,9 +199,9 @@ class FunctionalRoles_API extends API {
 		try {
 
 			$functionalrolesadm = new FunctionalrolesAdm();
-			$result = $functionalrolesadm->assignMembers($params["id_fncrole"], array(0=>$params["id_user"]));
+			$result = $functionalrolesadm->assignMembers($params["id_fncrole"], [0=>$params["id_user"]]);
 			$enrollrules = new EnrollrulesAlms();
-			$enrollrules->applyRulesMultiLang('_LOG_USERS_TO_FNCROLE', array(0=>$params["id_user"]), false, $params["id_fncrole"]);
+			$enrollrules->applyRulesMultiLang('_LOG_USERS_TO_FNCROLE', [0=>$params["id_user"]], false, $params["id_fncrole"]);
 			$result = $params["id_user"];
 				
 		} catch (Exception $e) {

@@ -28,7 +28,7 @@ function addpage($object_page) {
 		.'	my_filevalue = \'\';'."\n"
 		.'	if (document.getElementById(my_file))'."\n"
 		.'		my_filevalue = document.getElementById(my_file).value;'."\n"
-		.'	my_html = "'.str_replace(array("\r", "\r\n", "\n"), '', addslashes(Form::getFilefield($lang->def('_UPLOAD'), 'attach%%', 'attach%%'))).'";'."\n"
+		.'	my_html = "'.str_replace(["\r", "\r\n", "\n"], '', addslashes(Form::getFilefield($lang->def('_UPLOAD'), 'attach%%', 'attach%%'))).'";'."\n"
 		.'	if (my_filevalue != \'\') {'."\n"
 		.'		my_n=my_n+1;'."\n"
 		.'		my_html = my_html.replace(/%%/gi,my_n);'."\n"
@@ -111,14 +111,14 @@ function modpage( $object_page ) {
 	$path = '/appLms/htmlpages/';
 	$query = "SELECT * FROM ".$GLOBALS['prefix_lms']."_htmlpage_attachment WHERE idpage = ".$object_page->getId();
 	$res = sql_query($query);
-	$attachments = array();
+	$attachments = [];
 	if ($res) {
 		while ($row = sql_fetch_assoc($res)) {
-			$attachments[] = array(
+			$attachments[] = [
 				'id' => $row['id'],
 				'title' => $row['title'],
 				'file' => $GLOBALS['where_files_relative'].$path.$row['file']
-			);
+            ];
 		}
 	}
 	
@@ -142,7 +142,7 @@ function modpage( $object_page ) {
 		.'	my_filevalue = \'\';'."\n"
 		.'	if (document.getElementById(my_file))'."\n"
 		.'		my_filevalue = document.getElementById(my_file).value;'."\n"
-		.'	my_html = "'.str_replace(array("\r", "\r\n", "\n"), '', addslashes(Form::getFilefield($lang->def('_UPLOAD'), 'attach%%', 'attach%%'))).'";'."\n"
+		.'	my_html = "'.str_replace(["\r", "\r\n", "\n"], '', addslashes(Form::getFilefield($lang->def('_UPLOAD'), 'attach%%', 'attach%%'))).'";'."\n"
 		.'	if (my_filevalue != \'\') {'."\n"
 		.'		my_n=my_n+1;'."\n"
 		.'		my_html = my_html.replace(/%%/gi,my_n);'."\n"

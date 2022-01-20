@@ -20,21 +20,21 @@ class CommunicationAlms extends Model {
 	}
 
 	public function getPerm() {
-		return array(
+		return [
 			'view' => 'standard/view.png',
 			'add' => '',
 			'mod' => '',
 			'del' => '',
 			'subscribe' => ''
-		);
+        ];
 	}
 
 	public function findAll($start_index, $results, $sort, $dir, $filter = false, $id_category = false, $show_descendants = false) {
 
-		$sortable = array('title', 'description', 'type_of', 'publish_date');
+		$sortable = ['title', 'description', 'type_of', 'publish_date'];
 		$sortable = array_flip($sortable);
 
-		$_categories = array();
+		$_categories = [];
 		if ($id_category !== false) {
 			if ($show_descendants) {
 				$_categories = $this->getSubCategories($id_category);
@@ -42,7 +42,7 @@ class CommunicationAlms extends Model {
 			$_categories[] = (int)$id_category;
 		}
 
-		$records = array();
+		$records = [];
 		$qtxt = "SELECT c.id_comm, title, description, publish_date, type_of, id_resource, COUNT(ca.id_comm) as access_entity "
 			." FROM %lms_communication AS c "
 			." LEFT JOIN %lms_communication_access AS ca ON (c.id_comm = ca.id_comm)"
@@ -67,10 +67,10 @@ class CommunicationAlms extends Model {
 
 	public function findAllUnread($start_index, $results, $sort, $dir, $reader, $filter = false) {
 
-		$sortable = array('title', 'description', 'type_of', 'publish_date');
+		$sortable = ['title', 'description', 'type_of', 'publish_date'];
 		$sortable = array_flip($sortable);
 
-		$records = array();
+		$records = [];
 		$qtxt = "SELECT c.id_comm, title, description, publish_date, type_of, id_resource, COUNT(ca.id_comm) as access_entity "
 			." FROM ( %lms_communication AS c "
 			."	JOIN %lms_communication_access AS ca ON (c.id_comm = ca.id_comm) ) "
@@ -95,10 +95,10 @@ class CommunicationAlms extends Model {
 
 	public function findAllReaded($start_index, $results, $sort, $dir, $reader, $filter = false) {
 
-		$sortable = array('title', 'description', 'type_of', 'publish_date');
+		$sortable = ['title', 'description', 'type_of', 'publish_date'];
 		$sortable = array_flip($sortable);
 
-		$records = array();
+		$records = [];
 		$qtxt = "SELECT c.id_comm, title, description, publish_date, type_of, id_resource, COUNT(ca.id_comm) as access_entity "
 			." FROM ( %lms_communication AS c "
 			."	JOIN %lms_communication_access AS ca ON (c.id_comm = ca.id_comm) ) "
@@ -145,7 +145,7 @@ class CommunicationAlms extends Model {
 
 	public function total($filter = false, $id_category = false, $show_descendants = false) {
 
-		$sortable = array('title', 'description');
+		$sortable = ['title', 'description'];
 		$sortable = array_flip($sortable);
 
 		//validate filter
@@ -153,7 +153,7 @@ class CommunicationAlms extends Model {
 		if (is_string($filter)) $filter_text = $filter;
 		if (is_array($filter) && isset($filter['text'])) $fitler_text = $filter['text'];
 
-		$_categories = array();
+		$_categories = [];
 		if ($id_category !== false) {
 			if ($show_descendants) {
 				$_categories = $this->getSubCategories($id_category);
@@ -162,7 +162,7 @@ class CommunicationAlms extends Model {
 		}
 
 		//mount and execute query
-		$results = array();
+		$results = [];
 		$qtxt = "SELECT COUNT(*) "
 			." FROM %lms_communication "
 			." WHERE 1 "
@@ -230,7 +230,7 @@ class CommunicationAlms extends Model {
 
 	public function accessList($id_comm) {
 
-		$records = array();
+		$records = [];
 		$qtxt = "SELECT idst "
 			." FROM %lms_communication_access "
 			." WHERE id_comm = ".(int)$id_comm." ";
@@ -306,7 +306,7 @@ class CommunicationAlms extends Model {
 		//count competences contained in each extracted node
 		$count_competences = $this->getCategoryCommunicationsCount();
 
-		$output = array();
+		$output = [];
 		while(list($id, $translation, $level, $left, $right) = $this->db->fetch_row($res)) {
 			$label = $translation;
 			$is_leaf = ($right-$left) == 1;
@@ -314,14 +314,14 @@ class CommunicationAlms extends Model {
 			$style = false;
 
 			//set node for output
-			$output[$id] = array(
+			$output[$id] = [
 				'id' => $id,
 				'label' => $label,
 				'is_leaf' => $is_leaf,
 				'count_content' => $count,
 				'count_objects' => (isset($count_competences[$id]) ? (int)$count_competences[$id] : 0),
 				'style' => $style
-			);
+            ];
 		}
 
 		return array_values($output);
@@ -332,7 +332,7 @@ class CommunicationAlms extends Model {
 	 * returns an ordered list of ids (like a path)
 	 */
 	public function getOpenedCategories($node_id, $language = false) {
-		$folders = array(0);
+		$folders = [0];
 		if (!$language) $language = getLanguage();
 		if ($node_id <= 0) return $folders;
 		list($ileft, $iright) = $this->getCategoryLimits($node_id);
@@ -349,7 +349,7 @@ class CommunicationAlms extends Model {
 
 
 	public function getInitialCategories($node_id, $language = false) {
-		$results = array();
+		$results = [];
 
 		$folders = $this->getOpenedCategories($node_id);
 		if ($folders === false) return false;
@@ -360,7 +360,7 @@ class CommunicationAlms extends Model {
 			if ($folder > 0) {
 				for ($i=0; $i<count($ref); $i++) {
 					if ($ref[$i]['node']['id'] == $folder) {
-						$ref[$i]['children'] = array();
+						$ref[$i]['children'] = [];
 						$ref =& $ref[$i]['children'];
 						break;
 					}
@@ -369,17 +369,17 @@ class CommunicationAlms extends Model {
 
 			$children = $this->getCategories($folder, $language);
 			foreach ($children as $child) {
-				$ref[] = array(
-					'node' => array(
+				$ref[] = [
+					'node' => [
 						'id' => $child['id'],
 						'label' => $child['label'],
 						'is_leaf' => $child['is_leaf'],
 						'count_content' => $child['count_content'],
 						'count_objects' => $child['count_objects'],
-						'options' => array(),
+						'options' => [],
 						'style' => false
-					)
-				);
+                    ]
+                ];
 			}
 		}
 
@@ -388,7 +388,7 @@ class CommunicationAlms extends Model {
 
 
 	public function getCategoryCommunicationsCount() {
-		$output = array();
+		$output = [];
 		$query = "SELECT id_category, COUNT(*) FROM %lms_communication GROUP BY id_category";
 		$res = $this->db->query($query);
 		while (list($id_category, $count) = $this->db->fetch_row($res)) {
@@ -422,7 +422,7 @@ class CommunicationAlms extends Model {
 		$query = "SELECT id_category FROM %lms_communication_category "
 			." WHERE iLeft >= ".(int)$left." AND iRight <= ".(int)$right;
 		$res = $this->db->query($query);
-		$output = array();
+		$output = [];
 		if ($id_category <= 0) $output[] = 0;
 		if ($res) {
 			while (list($sub) = $this->db->fetch_row($res))
@@ -441,12 +441,12 @@ class CommunicationAlms extends Model {
 
 		//initialize languages array
 		$lang_codes = Docebo::langManager()->getAllLangCode();
-		$langs = array();
+		$langs = [];
 		for ($i=0; $i<count($lang_codes); $i++) {
-			$langs[$lang_codes[$i]] = array(
+			$langs[$lang_codes[$i]] = [
 				'name' => '',
 				'description' => ''
-			);
+            ];
 		}
 
 		//extract languages from database
@@ -494,7 +494,7 @@ class CommunicationAlms extends Model {
 				$id = $this->db->insert_id();
 
 				//insert languages in database
-				$conditions = array();
+				$conditions = [];
 				foreach ($langs as $lang_code => $translation) { //TO DO: check if lang_code exists ...
 					$name = $translation['name'];
 					//$description = $translation['description'];
@@ -518,7 +518,7 @@ class CommunicationAlms extends Model {
 
 		if ($id_category > 0) {
 
-			$prev_lang = array();
+			$prev_lang = [];
 			$re = $this->db->query("SELECT lang_code FROM %lms_communication_category_lang WHERE id_category = ".(int)$id_category);
 			while(list($lang_code) = $this->db->fetch_row($re)) {
 				$prev_lang[$lang_code] = $lang_code;

@@ -37,20 +37,20 @@ function mycompetences(&$url) {
 	require_once(_base_.'/lib/lib.table.php');
 	$table = new Table(Get::sett('visuItem'),Lang::t('_COMPETENCES'),Lang::t('_COMPETENCES'));
 	
-	$style_h = array('', '','image','image','image','image','image');
-	$label_h = array(
+	$style_h = ['', '','image','image','image','image','image'];
+	$label_h = [
 		Lang::t('_NAME', 'competences'),
 		Lang::t('_TYPOLOGY', 'competences'),
 		Lang::t('_TYPE', 'standard'),
 		Lang::t('_SCORE', 'competences'),
 		Lang::t('_DATE_LAST_COMPLETE', 'subscribe'),
 		Lang::t('_COMPETENCES_REQUIRED', 'competences')
-	);
+    ];
 	
 	$table->addHead($label_h, $style_h);
 
 	foreach ($ucomps_info as $id_competence => $cinfo) {
-		$line = array();
+		$line = [];
 
 		$line[] = $cinfo->langs[$language]['name'];
 		$line[] = $_typologies[$cinfo->typology];

@@ -252,12 +252,12 @@ class Module_Homerepo extends LmsModule {
 				$saveObj = new Session_Save();
 				$saveName = $saveObj->getName('crepo',true);
 				$folder = $this->treeView->tdb->getFolderById( $this->treeView->selectedFolder );
-				$saveData = array(	'repo' => 'homerepo',
+				$saveData = ['repo' => 'homerepo',
 									'id' => $this->treeView->getSelectedFolderId(),
 									'objectType' => $folder->otherValues[REPOFIELDOBJECTTYPE],
 									'name' => $folder->getFolderName(),
 									'idResource' => $folder->otherValues[REPOFIELDIDRESOURCE]
-								);
+                ];
 				$saveObj->save( $saveName, $saveData );
 				Util::jump_to( 'index.php?r=lms/lomanagerhomerepo/completeAction&op=display&crepo='.$saveName.'&'
 							.$this->treeView->_getOpCopyLOSel().'=1' );

@@ -71,14 +71,14 @@ YAHOO.util.Event.onDOMReady(function() {
 
 $icon_del = '<span class="ico-sprite subs_del"><span>'.Lang::t('_DEL', 'standard').'</span></span>';
 
-$columns = array(
-	array('key' => 'name', 'label' => Lang::t('_NAME', 'standard'), 'sortable' => true),
-	array('key' => 'description', 'label' => Lang::t('_DESCRIPTION', 'standard'), 'sortable' => true),
-	array('key' => 'typology', 'label' => Lang::t('_TYPOLOGY', 'standard'), 'sortable' => true),
-	array('key' => 'type', 'label' => Lang::t('_TYPE', 'standard'), 'sortable' => true),
-	array('key' => 'score', 'label' => Lang::t('_SCORE', 'competences'), 'sortable' => true, 'className' => 'img-cell', 'formatter' => 'CourseCompetences.scoreFormatter'),
-	array('key' => 'del', 'label' => $icon_del, 'formatter'=>'stdDelete', 'className' => 'img-cell')
-);
+$columns = [
+	['key' => 'name', 'label' => Lang::t('_NAME', 'standard'), 'sortable' => true],
+	['key' => 'description', 'label' => Lang::t('_DESCRIPTION', 'standard'), 'sortable' => true],
+	['key' => 'typology', 'label' => Lang::t('_TYPOLOGY', 'standard'), 'sortable' => true],
+	['key' => 'type', 'label' => Lang::t('_TYPE', 'standard'), 'sortable' => true],
+	['key' => 'score', 'label' => Lang::t('_SCORE', 'competences'), 'sortable' => true, 'className' => 'img-cell', 'formatter' => 'CourseCompetences.scoreFormatter'],
+	['key' => 'del', 'label' => $icon_del, 'formatter'=>'stdDelete', 'className' => 'img-cell']
+];
 
 $rel_action_over = '<a id="sel_course_competences_over" class="ico-wt-sprite subs_add" '
 	.'href="index.php?r='.$this->base_link_competence.'/assign_to_course&id_course='.(int)$id_course.'">'
@@ -94,7 +94,7 @@ $rel_action_bottom = '<a id="sel_course_competences_bottom" class="ico-wt-sprite
 	.'href="index.php?r='.$this->base_link_competence.'/mod_course_competences&id_course='.(int)$id_course.'">'
 	.'<span>'.Lang::t('_MOD', 'competences').'</span></a>' : '');
 
-$this->widget('table', array(
+$this->widget('table', [
 	'id'			=> 'course_competences_table',
 	'ajaxUrl'		=> 'ajax.adm_server.php?r='.$this->base_link_competence.'/getcoursetabledata',
 	'rowsPerPage'	=> Get::sett('visuItem', 25),
@@ -104,10 +104,10 @@ $this->widget('table', array(
 	'dir'			=> 'asc',
 	'generateRequest' => 'CourseCompetences.requestBuilder',
 	'columns'		=> $columns,
-	'fields'		=> array('id', 'name', 'description', 'typology', 'type', 'score', 'del'),
-	'rel_actions' => array($rel_action_over, $rel_action_bottom),
+	'fields'		=> ['id', 'name', 'description', 'typology', 'type', 'score', 'del'],
+	'rel_actions' => [$rel_action_over, $rel_action_bottom],
 	'delDisplayField' => 'name'
-));
+]);
 
 ?>
 </div>

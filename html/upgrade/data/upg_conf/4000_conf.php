@@ -63,5 +63,5 @@ function upgradeConfig4000($config) {
 
 	}
 
-	return array($config_sts,$config);
+	return [$config_sts,$config];
 }

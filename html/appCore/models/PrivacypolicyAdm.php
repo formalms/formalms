@@ -23,18 +23,18 @@ class PrivacypolicyAdm extends Model {
 	}
 
 	public function getPerm() {
-		return array(
+		return [
 			'view' => 'standard/view.png',
 			//'add'	=> 'standard/add.png',
 			'mod'  => 'standard/edit.png',
 			'del'  => 'standard/delete.png'
-		);
+        ];
 	}
 	
 
-	public function getPoliciesList($pagination = array(), $filter = false) {
+	public function getPoliciesList($pagination = [], $filter = false) {
 
-		if (!is_array($pagination)) $pagination = array();
+		if (!is_array($pagination)) $pagination = [];
 
 		$startIndex = (isset($pagination['startIndex']) ? $pagination['startIndex'] : 0);
 		$results = (isset($pagination['results']) ? $pagination['results'] : Get::sett('visuItem', 25));
@@ -72,8 +72,8 @@ class PrivacypolicyAdm extends Model {
 		$res = $this->db->query($query);
 
 		if ($res) {
-			$output = array();
-			$glist = array();
+			$output = [];
+			$glist = [];
 			while ($obj = $this->db->fetch_obj($res)) {
 				$obj->is_assigned = FALSE;  //questa
 				$output[$obj->id_policy] = $obj;
@@ -147,7 +147,7 @@ class PrivacypolicyAdm extends Model {
 		if ($res) {
 			$id_policy = $this->db->insert_id();
 			if ($id_policy) {
-				$query_translations = array();
+				$query_translations = [];
 				foreach ($lang_codes as $lang_code) {
 					if (isset($translations[$lang_code])) {
 						$query_translations[] = "(".$id_policy.", '".$lang_code."', '".$translations[$lang_code]."')";
@@ -200,7 +200,7 @@ class PrivacypolicyAdm extends Model {
             $query = "DELETE FROM %adm_privacypolicy_lang WHERE id_policy = ".(int)$id_policy;
             $res = $this->db->query($query);
             if ($res) {
-                $query_translations = array();
+                $query_translations = [];
                 foreach ($lang_codes as $lang_code) {
                     if (isset($translations[$lang_code])) {
                         $query_translations[] = "(".$id_policy.", '".$lang_code."', '".$translations[$lang_code]."')";
@@ -240,7 +240,7 @@ class PrivacypolicyAdm extends Model {
 		if ($res && $this->db->num_rows($res)>0) {
 			//initialize output
 			$lang_codes = Docebo::langManager()->getAllLangCode();
-			$output = array();
+			$output = [];
 			foreach ($lang_codes as $lang_code) {
 				$output[$lang_code] = "";
 			}
@@ -285,7 +285,7 @@ class PrivacypolicyAdm extends Model {
 			$query = "SELECT * FROM %adm_org_chart_tree WHERE associated_policy = ".(int)$id_policy;
 			$res = $this->db->query($query);
 			if ($res) {
-				$output = array();
+				$output = [];
 				while ($obj = $this->db->fetch_obj($res)) {
 					$output []= (int)$obj->idOrg;
 				}
@@ -302,7 +302,7 @@ class PrivacypolicyAdm extends Model {
 			." OR associated_policy > 0";
 		$res = $this->db->query($query);
 		if ($res) {
-			$output = array();
+			$output = [];
 			while ($obj = $this->db->fetch_obj($res)) {
 				$output[] = (int)$obj->idOrg;
 			}
@@ -317,7 +317,7 @@ class PrivacypolicyAdm extends Model {
 			." OR associated_policy <= 0";
 		$res = $this->db->query($query);
 		if ($res) {
-			$output = array();
+			$output = [];
 			while ($obj = $this->db->fetch_obj($res)) {
 				$output[] = (int)$obj->idOrg;
 			}
@@ -354,7 +354,7 @@ class PrivacypolicyAdm extends Model {
 
 
 	public function getUserPolicy($id_user) {
-		$output = array();
+		$output = [];
 		$query = "SELECT oct.idst_oc, oct.idst_ocd, oct.iLeft, oct.iRight, "
 			." oct.associated_policy, oct.lev, oct.idParent "
 			." FROM %adm_org_chart_tree AS oct "
@@ -364,7 +364,7 @@ class PrivacypolicyAdm extends Model {
             
 		$res = $this->db->query($query);
 		if (!$res) return FALSE;
-		$folders = array();
+		$folders = [];
 		if ($this->db->num_rows($res) > 0) {
 			while ($obj = $this->db->fetch_obj($res)) {
 				if ((int)$obj->associated_policy > 0) {

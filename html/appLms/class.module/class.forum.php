@@ -40,33 +40,33 @@ class Module_Forum extends LmsModule {
 	}
 	
 	function getAllToken() {
-		return array( 
-			'view' => array( 	'code' => 'view',
+		return [
+			'view' => ['code' => 'view',
 								'name' => '_VIEW',
-								'image' => 'standard/view.png'),
-			'write' => array( 	'code' => 'write',
+								'image' => 'standard/view.png'],
+			'write' => ['code' => 'write',
 								'name' => '_REPLY',
-								'image' => 'standard/reply.png'),
-			'upload' => array(	'code' => 'upload',
+								'image' => 'standard/reply.png'],
+			'upload' => ['code' => 'upload',
 								'name' => '_UPLOAD',
-								'image' => 'standard/download.png'),
-			'add' => array( 	'code' => 'add',
+								'image' => 'standard/download.png'],
+			'add' => ['code' => 'add',
 								'name' => '_ADD',
-								'image' => 'standard/add.png'),
-			'mod' => array( 	'code' => 'mod',
+								'image' => 'standard/add.png'],
+			'mod' => ['code' => 'mod',
 								'name' => '_MOD',
-								'image' => 'standard/edit.png'),
-			'del' => array( 	'code' => 'del',
+								'image' => 'standard/edit.png'],
+			'del' => ['code' => 'del',
 								'name' => '_DEL',
-								'image' => 'standard/delete.png'),
-			'moderate' => array('code' => 'moderate',
-								'name' => '_MODERATE')
-		);
+								'image' => 'standard/delete.png'],
+			'moderate' => ['code' => 'moderate',
+								'name' => '_MODERATE']
+        ];
 	}
 
 
 	function getPermissionsForMenu($op) {
-		return array(
+		return [
 			1 => $this->selectPerm($op, 'view'),
 			2 => $this->selectPerm($op, 'view'),
 			3 => $this->selectPerm($op, 'view,write,upload'),
@@ -74,7 +74,7 @@ class Module_Forum extends LmsModule {
 			5 => $this->selectPerm($op, 'view,write,upload,add,mod,del,moderate'),
 			6 => $this->selectPerm($op, 'view,write,upload,add,mod,del,moderate'),
 			7 => $this->selectPerm($op, 'view,write,upload,add,mod,del,moderate')
-		);
+        ];
 	}
 
 }

@@ -75,7 +75,7 @@ class StepManager {
 
 	public static function checkFirstStep() {
 		if (self::getCurrentStep() == 1 && empty($_SERVER['QUERY_STRING'])) {
-			$_SESSION =array();
+			$_SESSION = [];
 		}
 	}
 

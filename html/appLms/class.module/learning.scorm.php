@@ -56,10 +56,10 @@ class Learning_ScormOrg extends Learning_Object {
 
         $params = parent::getParamInfo();
 
-        $params = array_merge($params, array(
-            array('label' => 'Autoplay','param_name' => 'autoplay')
-          , array('label' => 'Template','param_name' => 'playertemplate')
-        ));
+        $params = array_merge($params, [
+            ['label' => 'Autoplay','param_name' => 'autoplay']
+          , ['label' => 'Template','param_name' => 'playertemplate']
+        ]);
         
         return $params;
 	}
@@ -74,21 +74,21 @@ class Learning_ScormOrg extends Learning_Object {
 		$out .= $form->getRadioSet( $lang->def( '_AUTOPLAY' ), 
 									'autoplay', 
 									'autoplay', 
-									array( 	$lang->def( '_NO' ) => "0",
-											$lang->def( '_YES' ) => "1"),
+									[$lang->def( '_NO' ) => "0",
+											$lang->def( '_YES' ) => "1"],
 									$autoplay
 								);
 
 
 		/* ------ dropdown template choiche ----- */
-		$arr_templates = array();
+		$arr_templates = [];
 		
 		$path = _templates_ . '/'.getTemplate().'/player_scorm/';
 		$templ = @dir($path);
 		if($templ) {
 			while($elem = $templ->read()) {
 
-				if((is_dir($path.$elem)) && ($elem != ".") && ($elem != "..") && ($elem != ".svn") && $elem{0} != '_' ) {
+				if((is_dir($path.$elem)) && ($elem != ".") && ($elem != "..") && ($elem != ".svn") && $elem[0] != '_' ) {
 					$arr_templates[$elem] = $elem;
 				}
 			}
@@ -158,7 +158,7 @@ class Learning_ScormOrg extends Learning_Object {
 		//		.'&idReference='.$idReference);
 	}
 
-	function env_play($id_reference, $back_url, $options = array()) {
+	function env_play($id_reference, $back_url, $options = []) {
 		require_once Forma::inc(_lms_.'/modules/scorm/scorm.php');
 		$this->id_reference = $id_reference;
 		$this->back_url = $back_url;
@@ -207,7 +207,7 @@ class Learning_ScormOrg extends Learning_Object {
 	 * @return array an array with the ids of all resources
 	 **/
 	function getMultipleResource( $idMultiResource ) {
-		$arrMultiResources = array();
+		$arrMultiResources = [];
 		$rs = sql_query("SELECT idscorm_organization "
 							." FROM ".$GLOBALS['prefix_lms']."_scorm_organizations "
 							." WHERE idscorm_package = '".(int)$idMultiResource."'");
@@ -230,15 +230,15 @@ class Learning_ScormOrg extends Learning_Object {
 		$output = false;
 		$query = "SELECT * FROM %lms_scorm_organizations WHERE title LIKE '%".$key."%' ORDER BY title";
 		$res = $this->db->query($query);
-		$results = array();
+		$results = [];
 		if ($res) {
-			$output = array();
+			$output = [];
 			while ($row = $this->db->fetch_obj($res)) {
-				$output[] = array(
+				$output[] = [
 					'id' => $row->idscorm_organization,
 					'title' => $row->title,
 					'description' => ''
-				);
+                ];
 			}
 		}
 		return $output;

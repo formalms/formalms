@@ -38,7 +38,7 @@ class Report {
 	var $usestandardtitle_rows = true;
 	//var $usestandardtitle_cols = true;
 
-	var $columns_categories = array();
+	var $columns_categories = [];
 
 	var $db = NULL;
 
@@ -71,19 +71,19 @@ class Report {
 
 	//******************************************************************************
 	function _set_columns_category($key, $name, $filter, $results, $get_data, $stdtitle=true) {
-		$this->columns_categories[$key] = array(
+		$this->columns_categories[$key] = [
 			'key'      => $key,
 			'name'     => $name,
 			'filter'   => $filter,
 			'show'     => $results,
 			'get_data' => $get_data,
 			'stdtitle' => $stdtitle
-		);
+        ];
 	}
 
 
 	function get_columns_categories() {
-		$temp = array();
+		$temp = [];
 		foreach ($this->columns_categories as $key=>$value) {
 			$temp[$key] = $value['name'];
 		}
@@ -174,7 +174,7 @@ class Report {
 
 		$re_people = $p_dr->getAllRowsIdst();
 
-		$user_selected = array();
+		$user_selected = [];
 		if(!$re_people) return $user_selected;
 
 		while(list($idst) = sql_fetch_row($re_people)) {
@@ -256,12 +256,12 @@ class ReportSessionManager {
 	}
 
 	function _initialize() {
-		$_SESSION[_REPORT_SESSION] = array(
+		$_SESSION[_REPORT_SESSION] = [
 			_RS_ID            => false,
 			_RS_ROWS_FILTER   => false,
 			_RS_COLS_CATEGORY => false,
 			_RS_COLS_FILTER   => false
-		);
+        ];
 	}
 
 	function setId($id) { $this->data[_RS_ID]=$id; }

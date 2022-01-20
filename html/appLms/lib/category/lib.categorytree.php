@@ -30,7 +30,7 @@ class CourseCategoryTree extends ClientTree {
 
 	public $sel_columns = "";
 
-	public $initial_selection = array();
+	public $initial_selection = [];
 
 	public $use_form_input = true;
 
@@ -54,15 +54,15 @@ class CourseCategoryTree extends ClientTree {
 
 	function init() {
 
-		YuiLib::load(array(
+		YuiLib::load([
 			'json'=>'json-min.js',
 			'container'=>'container_core-min.js', //menu
 			'menu'=>'menu-min.js', //menu
 			'button'=>'button-min.js', //dialog
-			'treeview'=>'treeview-min.js'),
-		array(
+			'treeview'=>'treeview-min.js'],
+		[
 			'assets/skins/sam' => 'skin.css'
-		));
+        ]);
 		cout(Util::get_css( 'base-folder-tree.css'), 'page_head');
 		cout(Util::get_js( 'appLms/lib/category/lib.categorytree.js' ), 'page_head');
 		Util::get_js(Get::rel_path('base').'/lib/lib.elem_selector.js', true, true);
@@ -73,19 +73,19 @@ class CourseCategoryTree extends ClientTree {
 	 * @param $data = an array of selected elements
 	 * @return void
 	 */
-	function setInitialSelection($data=array()) {
+	function setInitialSelection($data= []) {
 		if (is_array($data)) {
 			$this->initial_selection = $data;
 		} elseif (is_string($data)) {
 			$this->initial_selection = explode(",", $data);
 		} elseif (is_int($data)) {
-			$this->initial_selection = array($data);
+			$this->initial_selection = [$data];
 		}
 	}
 
 	//format ids or whatever is being used as strings
 	private function formatInitialSelection() {
-		$output = array();
+		$output = [];
 		foreach ($this->initial_selection as $val) {
 			$output[] = '"'.$val.'"';
 		}
@@ -102,7 +102,7 @@ class CourseCategoryTree extends ClientTree {
 
 		if(!$this->root_name) $this->root_name = $lang->def('_CATEGORY');
 
-		$out = array();
+		$out = [];
 		$out['js'] = ($tags ? '<script type="text/javascript">'."\n" : '').
 
 		//global var, if wanted
@@ -163,8 +163,8 @@ class CourseCategoryTree extends ClientTree {
 		$temp = ($param ? $param : Get::req($this->id."_input", DOTY_MIXED, false) );
 		$nodes = explode(',', $temp);
 
-		$output = array();
-		$branches = array();
+		$output = [];
+		$branches = [];
 		foreach ($nodes as $node) {
 
 			if (stristr($node, "d")) {

@@ -1,8 +1,8 @@
 <?php
-echo getTitleArea(array(
+echo getTitleArea([
 	'index.php?r=adm/competences/show' => Lang::t('_COMPETENCES', 'competences'),
 	Lang::t('_COMPETENCE_VIEW_USERS', 'competences')
-));
+]);
 ?>
 <div class="std_block">
 <?php echo Form::openForm('go_back', 'index.php?r=adm/competences/view_competence_report'); ?>

@@ -43,7 +43,7 @@ class DoceboUser
     public $acl = NULL;
     public $userid;
     public $idst;
-    public $arrst = array();
+    public $arrst = [];
     public $preference;
 
     /* @var string */
@@ -606,7 +606,7 @@ class DoceboUser
      * Get refernce to DoceboACL
      * @return DoceboACL the DoceboACL object
      **/
-    public function &getACL()
+    public function getACL()
     {
         return $this->acl;
     }
@@ -615,7 +615,7 @@ class DoceboUser
      * Get refernce to DoceboACLManager
      * @return DoceboACLManager the DoceboACLManager object
      **/
-    public function &getACLManager()
+    public function getACLManager()
     {
         return $this->acl->getACLManager();
     }

@@ -86,7 +86,7 @@ class DashboardBlockNewsLms extends DashboardBlockLms
 
 			while (list($idNews, $publishDate, $title, $shortDesc, $longDesc, $important, $viewer) = sql_fetch_row($re_news)) {
 
-				$viewer = (is_string($viewer) && $viewer != false ? unserialize($viewer) : array());
+				$viewer = (is_string($viewer) && $viewer != false ? unserialize($viewer) : []);
 				$intersect = array_intersect($user_assigned, $viewer);
 				if (!empty ($intersect) || empty ($viewer)) {
 

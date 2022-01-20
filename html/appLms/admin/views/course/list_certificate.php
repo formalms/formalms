@@ -31,10 +31,10 @@ cout('<script type="text/javascript">'.$vars.'</script>',"page_head");
     
 $back_label =  Lang::t('_CERTIFICATE_ASSIGN_STATUS', 'course');   
     
-echo getTitleArea(array(
+echo getTitleArea([
 	'index.php?r=alms/course/show' => $back_label,
 	$course_name
-));
+]);
 
 
   $print_button = '<div>'

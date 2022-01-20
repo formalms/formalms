@@ -77,7 +77,7 @@ class OrgDirDb extends RepoDirDb {
 		else
 			$this->idCourse = $idCourse;
 		parent::RepoDirDb($GLOBALS['prefix_lms'] . '_organization');
-		$this->fields = array('id' => 'idOrg', 'idParent' => 'idParent', 'path' => 'path', 'lev' => 'lev');
+		$this->fields = ['id' => 'idOrg', 'idParent' => 'idParent', 'path' => 'path', 'lev' => 'lev'];
 	}
 	// , '.$prefix.'_organization_access';
 	function setFilterTypes( $lotypes ) {
@@ -96,7 +96,7 @@ class OrgDirDb extends RepoDirDb {
 		if ($prerequisistes == '')
 			return NULL;
 		$arrPre = explode(',', $prerequisistes);
-		$arrResult = array();
+		$arrResult = [];
 		while (list($key, $val) = each($arrPre)) {
 			if (strncmp($val, $idItem, strlen($idItem)) != 0) {
 				$arrResult[] = $val;
@@ -429,7 +429,7 @@ class OrgDirDb extends RepoDirDb {
 		$lo = createLO( $this->org_objectType, 
 			$this->org_idResource,
 			NULL,
-						array() );
+						[]);
 		$arrParamsInfo = $lo->getParamInfo();
 		if ($arrParamsInfo !== FALSE) {
 			$param = current($arrParamsInfo);
@@ -612,12 +612,12 @@ class OrgDirDb extends RepoDirDb {
 
 		if (isset($arrData['accessGroups'])) {
 			if ($arrData['accessGroups'] == '')
-				$arrGroups = array();
+				$arrGroups = [];
 			else
 				$arrGroups = Util::unserialize(urldecode($arrData['accessGroups']));
 
 			if ($arrData['accessUsers'] == '')
-				$arrUsers = array();
+				$arrUsers = [];
 			else
 				$arrUsers = Util::unserialize(urldecode($arrData['accessUsers']));
 
@@ -630,7 +630,7 @@ class OrgDirDb extends RepoDirDb {
 			$lo = createLO(	$this->org_objectType,
 				$this->org_idResource,
 				$this->org_idParam,
-							array() );
+							[]);
 			$arrParamsInfo = $lo->getParamInfo();
 
 			if ($arrParamsInfo !== FALSE) {
@@ -738,7 +738,7 @@ class OrgDirDb extends RepoDirDb {
 			errorCommunication("ERROR in query " . $query);
 			exit(0);
 		} else {
-			$result = array();
+			$result = [];
 			while (list($id) = sql_fetch_row($rs))
 				$result[] = $id;
 			return $result;
@@ -884,7 +884,7 @@ class OrgDirDb extends RepoDirDb {
 			errorCommunication("Error in query " . $query);
 			exit(0);
 		}
-		$result = array();
+		$result = [];
 		while (list($idGroup, $groupName) = sql_fetch_row($rs))
 			$result[$idGroup] = $groupName;
 		return $result;
@@ -904,7 +904,7 @@ class OrgDirDb extends RepoDirDb {
 			errorCommunication("Error in query " . $query);
 			exit(0);
 		}
-		$result = array();
+		$result = [];
 		while (list($idUser, $userid) = sql_fetch_row($rs))
 			$result[$idUser] = $userid;
 		return $result;
@@ -915,7 +915,7 @@ class OrgDirDb extends RepoDirDb {
 		$query = "SELECT value FROM %lms_organization_access"
 			. " WHERE idOrgAccess = '" . (int)$idOrgAccess . "'";
 		$rs = sql_query($query);
-		$result = array();
+		$result = [];
 		while (list($id) = sql_fetch_row($rs))
 			$result[] = $id;
 		return $result;
@@ -949,7 +949,7 @@ class OrgDirDb extends RepoDirDb {
 				. " WHERE idOrgAccess = " . (int)$idOrgAccess;
 			$re_old_values = sql_query($query_old_values);
 
-			$old_relations = array();
+			$old_relations = [];
 			while (list($old_value, $old_relation) = sql_fetch_row($re_old_values)) {
 				$old_relations[$old_value] = $old_relation;
 			}
@@ -1028,19 +1028,19 @@ class Org_TreeView extends RepoTreeView {
 	function _getOpLockedId() { return 'locked_item_'; }
 
 	function _getOtherActions() {
-		if ($this->playOnly) return array();
+		if ($this->playOnly) return [];
 		$langRepo = &DoceboLanguage::createInstance('storage', 'lms');
 		if ($this->isFolderSelected()) {
 			$stackData = $this->getSelectedFolderData();
 			$arrData = $stackData['folder']->otherValues;
 			$isFolder = ($arrData[REPOFIELDOBJECTTYPE] === '');
 			if (!$isFolder)
-				return array();
+				return [];
 			/*array(	array($this->_getOpEditLO(), $langRepo->def('_MOD'), getPathImage().'standard/edit.png' ),
 								array($this->_getOpCopyLO(), $langRepo->def('_REPOCOPYLO'), getPathImage().'dup.png' )
 							);*/
 		}
-		return array(array($this->_getOpCreateLO(), $langRepo->def('_REPOCREATELO'), getPathImage() . 'standard/add.png'));
+		return [[$this->_getOpCreateLO(), $langRepo->def('_REPOCREATELO'), getPathImage() . 'standard/add.png']];
 	}
 
 	function canMove() { 
@@ -1060,7 +1060,7 @@ class Org_TreeView extends RepoTreeView {
 			$stackData = $this->getSelectedFolderData();
 			$arrData = $stackData['folder']->otherValues;
 			$isFolder = ($arrData[REPOFIELDOBJECTTYPE] === '');
-			if (!$isFolder) return array();
+			if (!$isFolder) return [];
 		}
 		return TRUE;
 	}
@@ -1109,7 +1109,7 @@ class Org_TreeView extends RepoTreeView {
 	}
 
 	function expandPath( $path ) {
-		$arrId = array();
+		$arrId = [];
 		$splitPath = explode('/', $path);
 		unset($splitPath[0]);
 		$path = '';
@@ -1154,7 +1154,7 @@ class Org_TreeView extends RepoTreeView {
 			$this->op = 'display';
 		if (isset($arrayState['org_properties_ok'])) {
 			$arrayState['prerequisites'] = implode(',', $this->itemSelectedMulti);
-			if( $arrayState['prerequisites'] != '' && $arrayState['prerequisites']{0} == ',' ){
+			if( $arrayState['prerequisites'] != '' && $arrayState['prerequisites'][0] == ',' ){
 				$arrayState['prerequisites'] = substr($arrayState['prerequisites'], 1);
 			}
 			//LRZ: mem info for custom field of LO
@@ -1824,7 +1824,7 @@ class Org_TreeView extends RepoTreeView {
 
 		$tree = $this->printState();
 		$coll = $this->_retrieveData();
-		$stack = array();
+		$stack = [];
 		$level = 0;
 		$count = 0;
 
@@ -1837,7 +1837,7 @@ class Org_TreeView extends RepoTreeView {
 
 		$tree .= '<table class="table table-striped table-hover">' . "\n";
 		$folder = $this->tdb->getRootFolder();
-		$stack[$level] = array();
+		$stack[$level] = [];
 		$stack[$level]['folder'] = $folder;
 		$stack[$level]['childs'] = $this->posTree[0];
 		$stack[$level]['isLast'] = TRUE;
@@ -1856,7 +1856,7 @@ class Org_TreeView extends RepoTreeView {
 			while ($folder = $coll->getNext()) {
 
 				list($key, $val) = each($stack[$level - 1]['childs']);
-				$stack[$level] = array();
+				$stack[$level] = [];
 				$stack[$level]['folder'] = $folder;
 				$stack[$level]['childs'] = $val;
 				$stack[$level]['isFirst'] = $isFirst;
@@ -1923,7 +1923,7 @@ class Org_TreeView extends RepoTreeView {
 		if ($currLev > 0 && $currLev == $maxLev) {
 			$arrData = $stack[$currLev]['folder']->otherValues;
 			if (is_array($arrData) && $arrData[REPOFIELDOBJECTTYPE] != '')
-				return array('TreeViewImage', 'lobject/' . $arrData[REPOFIELDOBJECTTYPE] . '.png', $arrData[REPOFIELDOBJECTTYPE]);
+				return ['TreeViewImage', 'lobject/' . $arrData[REPOFIELDOBJECTTYPE] . '.png', $arrData[REPOFIELDOBJECTTYPE]];
 		}
 		return parent::getImage($stack, $currLev, $maxLev);
 	}

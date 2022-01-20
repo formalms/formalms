@@ -29,7 +29,7 @@ function organization_categorize(&$treeView, $idItem) {
 		organization_jump_select_sco($treeView, $idItem, $folder, $data, $type);
 	}
 	else {
-		Util::widget('kbcategorize', array(
+		Util::widget('kbcategorize', [
 			'original_name'=>$data[REPOFIELDTITLE],
 			'r_item_id'=>$data[REPOFIELDIDRESOURCE],
 			'r_type'=>$type,
@@ -38,11 +38,11 @@ function organization_categorize(&$treeView, $idItem) {
 			'language'=>$language,
 			'back_url'=>'index.php?modname=storage&amp;op=display',
 			'form_url'=>'index.php?modname=storage&amp;op=display',
-			'form_extra_hidden'=>array(
+			'form_extra_hidden'=> [
 				//'stay_on_categorize'=>1,
 				'idItem'=>$idItem,
-			),
-		));
+            ],
+        ]);
 	}
 }
 
@@ -69,7 +69,7 @@ $form_url ='index.php?modname=storage&amp;op=display';
 
 	$row =sql_fetch_assoc($q);
 
-	Util::widget('kbcategorize', array(
+	Util::widget('kbcategorize', [
 		'original_name'=>$row['title'],
 		'r_item_id'=>(int)$sco_id,
 		'scormorg_id'=>(int)$idResource,
@@ -80,11 +80,11 @@ $form_url ='index.php?modname=storage&amp;op=display';
 		'language'=>$language,
 		'back_url'=>$back_url,
 		'form_url'=>$form_url,
-		'form_extra_hidden'=>array(
+		'form_extra_hidden'=> [
 			//'stay_on_categorize'=>1,
 			'idItem'=>$idItem,
-		),
-	));
+        ],
+    ]);
 
 }
 
@@ -148,7 +148,7 @@ function organization_select_sco() {
 	$idItem =Get::req('idItem', DOTY_INT, 0);
 	$scormorg_title =Get::req('scormorg_title', DOTY_STRING, '');
 
-	$title_arr=array();
+	$title_arr= [];
 	$title_arr['index.php?modname=storage&amp;op=display']=stripslashes($scormorg_title);
 	$title_arr[]=stripslashes($scormorg_title);
 	cout(getTitleArea($title_arr));
@@ -172,7 +172,7 @@ function organization_select_sco() {
 		.Form::closeForm();
 	$body.=Lang::t('_YOU_WILL_LOSE_PREVIOUS_CATEGORIZATION', 'kb');
 
-	$out.=Util::widget('dialog', array(
+	$out.=Util::widget('dialog', [
 		'id' => 'subcategorize_switch_dialog',
 		'dynamicContent' => false,
 		'dynamicAjaxUrl' => false,
@@ -180,10 +180,10 @@ function organization_select_sco() {
 		'header' => Lang::t('_AREYOUSURE', 'kb'),
 		'body' => $body,
 		'callback' => 'function() { this.destroy(); }',
-		'callEvents' => array(
-			array('caller' => 'subcategorize_switch', 'event' => 'click')
-		)
-	), true);
+		'callEvents' => [
+			['caller' => 'subcategorize_switch', 'event' => 'click']
+        ]
+    ], true);
 
 	cout($out);
 
@@ -200,15 +200,15 @@ function getScoItemsTable($id_org, $scormorg_title, $idItem) {
 
 	$id_org =(int)$id_org;
 
-	$h_type = array('', '', '', '', '', 'image');
-	$h_content = array(
+	$h_type = ['', '', '', '', '', 'image'];
+	$h_content = [
 		Lang::t('_NAME', 'organization'),
 		Lang::t('_TYPE', 'kb'),
 		Lang::t('_ENVIRONMENT', 'kb'),
 		Lang::t('_LANGUAGE', 'kb'),
 		Lang::t('_TAGS', 'kb'),
 		Lang::t('_CATEGORIZE', 'kb'),
-	);
+    ];
 
 	$tb->setColsStyle($h_type);
 	$tb->addHead($h_content);
@@ -222,8 +222,8 @@ function getScoItemsTable($id_org, $scormorg_title, $idItem) {
 
 	$q =sql_query($qry);
 	$i =0;
-	$data =array();
-	$sco_arr =array();
+	$data = [];
+	$sco_arr = [];
 	while ($row = sql_fetch_assoc($q)) {
 
 		$sco_id =$row["idscorm_item"];
@@ -242,11 +242,11 @@ function getScoItemsTable($id_org, $scormorg_title, $idItem) {
 	require_once(_lms_.'/lib/lib.kbres.php');
 	$kbres =new KbRes();
 	$categorized_sco =$kbres->getCategorizedResources($sco_arr, "scoitem", "course_lo", true);
-	$categorized_sco_id =(!empty($categorized_sco) ? array_keys($categorized_sco) : array());
+	$categorized_sco_id =(!empty($categorized_sco) ? array_keys($categorized_sco) : []);
 
 	foreach ($data as $row) {
 
-		$line = array();
+		$line = [];
 
 		$sco_id =$row["idscorm_item"];
 

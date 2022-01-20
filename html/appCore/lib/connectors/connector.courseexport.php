@@ -60,34 +60,34 @@ class DoceboConnectorCourseExport extends DoceboConnector {
 	
 	// name, type 
         // COURSE_TYPE, COURSE_EDITION
- 	var $all_cols = array( 
-		array( 'code', 'text' ), 
-		array( 'name', 'text' ), 
-		array( 'description', 'text' ), 
-		array( 'lang_code', 'text' ), 
-		array( 'status', 'text' ), 
-		array( 'subscribe_method', 'int' ), 
-		array( 'permCloseLO', 'int' ), 
-		array( 'difficult', 'dropdown' ), 
-		array( 'show_progress', 'int' ), 
-		array( 'show_time', 'int' ), 
-		array( 'medium_time', 'int'),
-		array( 'show_extra_info', 'int' ), 
-		array( 'show_rules', 'int' ), 
-		array( 'date_begin', 'date' ), 
-		array( 'date_end', 'date' ), 
-		array( 'valid_time', 'int' ), 
-		array( 'min_num_subscribe', 'int' ),
-		array( 'max_num_subscribe', 'int' ), 
-		array( 'selling', 'int' ), 
-		array( 'prize', 'int' ),
-		array( 'create_date', 'date' ),
-		array( 'id_course', 'int' ), 
-		array( 'course_type', 'dropdown' ), 
-		array( 'course_edition', 'int' )             
-	);
+ 	var $all_cols = [
+		['code', 'text'],
+		['name', 'text'],
+		['description', 'text'],
+		['lang_code', 'text'],
+		['status', 'text'],
+		['subscribe_method', 'int'],
+		['permCloseLO', 'int'],
+		['difficult', 'dropdown'],
+		['show_progress', 'int'],
+		['show_time', 'int'],
+		['medium_time', 'int'],
+		['show_extra_info', 'int'],
+		['show_rules', 'int'],
+		['date_begin', 'date'],
+		['date_end', 'date'],
+		['valid_time', 'int'],
+		['min_num_subscribe', 'int'],
+		['max_num_subscribe', 'int'],
+		['selling', 'int'],
+		['prize', 'int'],
+		['create_date', 'date'],
+		['id_course', 'int'],
+		['course_type', 'dropdown'],
+		['course_edition', 'int']
+    ];
 		
-	var $default_cols = array(	'description' 		=> '', 
+	var $default_cols = ['description' 		=> '',
 								'lang_code' 		=> '', 
 								'status' 		=> '0', 
 								'subscribe_method' 	=> '', 
@@ -108,7 +108,7 @@ class DoceboConnectorCourseExport extends DoceboConnector {
 								'create_date'		=> '0000-00-00',
 								'id_course'		=> '0',
                                                                 'course_type'           => 'elearning',
-                                                                'course_edition'        => '0');         
+                                                                'course_edition'        => '0'];
 
 	
 	/**
@@ -128,10 +128,10 @@ class DoceboConnectorCourseExport extends DoceboConnector {
 	}
 	
 	function get_config() {
-		return array('name' =>$this->name,
+		return ['name' =>$this->name,
 			'description' => $this->description,
 			'first_row_header' => $this->first_row_header
-		);
+        ];
 	}
 	
 	function set_config( $params ) {
@@ -174,7 +174,7 @@ class DoceboConnectorCourseExport extends DoceboConnector {
 		
 		$result = sql_query($query);
 		
-		$data = array();
+		$data = [];
 		
 		$counter = 0;
 		
@@ -300,13 +300,13 @@ class DoceboConnectorCourseExport extends DoceboConnector {
 	{
 		$lang = DoceboLanguage::createInstance('userreport', 'lms');
 		
-		$col_descriptor = array();
+		$col_descriptor = [];
 		
 		foreach($this->all_cols as $k => $col) {
 				
 			
 			
-			$col_descriptor[] = array(
+			$col_descriptor[] = [
 				DOCEBOIMPORT_COLNAME 		=> $lang->def('_'.strtoupper($col[0])),
 				DOCEBOIMPORT_COLID			=> $col[0],
 				DOCEBOIMPORT_COLMANDATORY 	=> false,
@@ -314,7 +314,7 @@ class DoceboConnectorCourseExport extends DoceboConnector {
 				DOCEBOIMPORT_DEFAULT 		=> ( $in = array_search($col[0], $this->default_cols) === FALSE 
 													? '' 
 													: $this->default_cols[$in] )
-			);
+            ];
 		}
 		return $col_descriptor;
 	}
@@ -328,7 +328,7 @@ class DoceboConnectorCourseExport extends DoceboConnector {
 	
 	function get_next_row()
 	{
-		$row = array();
+		$row = [];
 		if($this->first_row_header)
 		{
 			if($this->tot_row >= $this->position)
@@ -504,8 +504,8 @@ class DoceboConnectorCourseExportUI extends DoceboConnectorUI {
 		$out .= $this->form->getRadioSet( 	$this->lang->def('_FIRST_ROW_HEADER'),
 											$this->_get_base_name().'_first_row_header',
 											$this->_get_base_name().'[first_row_header]',
-											array( 	$this->lang->def('_YES') => '1',
-													$this->lang->def('_NO') => '0'),
+											[$this->lang->def('_YES') => '1',
+													$this->lang->def('_NO') => '0'],
 											$this->post_params['first_row_header']);
 		
 		return $out;
@@ -516,7 +516,7 @@ class DoceboConnectorCourseExportUI extends DoceboConnectorUI {
 
 function courseexport_factory() {
 	
-	return new DoceboConnectorCourseExport(array());
+	return new DoceboConnectorCourseExport([]);
 }
 
 

@@ -113,7 +113,7 @@ class DashboardBlockAnnouncementsLms extends DashboardBlockLms
 
 		$rs = $this->db->query($query);
 
-		$result = array();
+		$result = [];
 		while ($data = $this->db->fetch_assoc($rs)) {
 			$result[] = $data['idCourse'];
 		}
@@ -125,7 +125,7 @@ class DashboardBlockAnnouncementsLms extends DashboardBlockLms
 	{
 		require_once(_lms_ . '/lib/lib.coursepath.php');
 		$cp_man = new Coursepath_Manager();
-		$output = array();
+		$output = [];
 		$cp_list = $cp_man->getUserSubscriptionsInfo($id_user);
 		if (!empty($cp_list)) {
 			$cp_list = array_keys($cp_list);

@@ -21,7 +21,7 @@ class LangAdmController extends AdmController
     /** @var LangAdm $model */
     protected $model;
 
-    protected $perm = array();
+    protected $perm = [];
 
     public function init()
     {
@@ -29,10 +29,10 @@ class LangAdmController extends AdmController
 
         $this->json = new Services_JSON();
         $this->model = new LangAdm();
-        $this->perm = array(
+        $this->perm = [
             'view' => checkPerm('view', true, 'lang', 'framework'),
             'mod' => checkPerm('mod', true, 'lang', 'framework')
-        );
+        ];
     }
 
     public function showTask()
@@ -73,7 +73,7 @@ class LangAdmController extends AdmController
     public function getlang()
     {
 
-        $sortable = array('lang_code', 'lang_description', 'lang_direction', 'lang_stats');
+        $sortable = ['lang_code', 'lang_description', 'lang_direction', 'lang_stats'];
 
         $startIndex = Get::req('startIndex', DOTY_INT, 0);
         $results = Get::req('results', DOTY_INT, Get::sett('visuItem', 25));
@@ -104,7 +104,7 @@ class LangAdmController extends AdmController
             $lang_list[$i] = $lang;
         }
 
-        $output = array(
+        $output = [
             'totalRecords' => $total,
             'startIndex' => $startIndex,
             'sort' => $sort,
@@ -112,7 +112,7 @@ class LangAdmController extends AdmController
             'rowsPerPage' => 25,
             'results' => count($lang_list),
             'records' => array_values($lang_list)
-        );
+        ];
         echo $this->json->encode($output);
     }
 
@@ -125,13 +125,13 @@ class LangAdmController extends AdmController
         $lang->lang_direction = 'ltr';
         $lang->lang_browsercode = '';
 
-        $this->render('lang_form', array('lang' => $lang));
+        $this->render('lang_form', ['lang' => $lang]);
 
-        $params = array(
+        $params = [
             'success' => true,
             'header' => Lang::t('_ADD', 'standard'),
             'body' => ob_get_clean()
-        );
+        ];
         @ob_start();
         echo $this->json->encode($params);
     }
@@ -145,16 +145,16 @@ class LangAdmController extends AdmController
         $lang_browsercode = Get::req('lang_browsercode', DOTY_STRING, '');
 
         if ($lang_code == '') {
-            $result = array('success' => false, 'message' => Lang::t('_NO_TITLE', 'standard'));
+            $result = ['success' => false, 'message' => Lang::t('_NO_TITLE', 'standard')];
             echo $this->json->encode($result);
             return;
         }
         $re = $this->model->newLanguage($lang_code, $lang_description, $lang_direction, $lang_browsercode);
 
-        $result = array(
+        $result = [
             'success' => $re,
             'message' => ($re ? '' : Lang::t('_OPERATION_FAILED', 'standard'))
-        );
+        ];
         echo $this->json->encode($result);
     }
 
@@ -168,10 +168,10 @@ class LangAdmController extends AdmController
 
         $answ = $this->model->updateLanguage($lang_code, $lang_description, $lang_direction, $lang_browsercode);
 
-        $result = array(
+        $result = [
             'success' => $answ,
             'message' => ($answ ? '' : Lang::t('_OPERATION_FAILED', 'standard'))
-        );
+        ];
         echo $this->json->encode($result);
     }
 
@@ -181,12 +181,12 @@ class LangAdmController extends AdmController
         $lang_code = Get::req('lang_code', DOTY_STRING, '');
         $lang = $this->model->getLanguage($lang_code);
 
-        $this->render('edit_form', array('lang' => $lang));
-        $params = array(
+        $this->render('edit_form', ['lang' => $lang]);
+        $params = [
             'success' => true,
             'header' => Lang::t('_MOD', 'standard'),
             'body' => ob_get_clean()
-        );
+        ];
         @ob_start();
         echo $this->json->encode($params);
     }
@@ -200,13 +200,13 @@ class LangAdmController extends AdmController
         $lang->lang_direction = 'ltr';
         $lang->lang_browsercode = '';
 
-        $this->render('lang_form', array('lang' => $lang));
+        $this->render('lang_form', ['lang' => $lang]);
 
-        $params = array(
+        $params = [
             'success' => true,
             'header' => Lang::t('_ADD', 'standard'),
             'body' => ob_get_clean()
-        );
+        ];
         @ob_start();
         echo $this->json->encode($params);
     }
@@ -220,10 +220,10 @@ class LangAdmController extends AdmController
 
             $re = $this->model->delLanguage($lang_code);
         }
-        $result = array(
+        $result = [
             'success' => $re,
             'message' => ($re ? '' : Lang::t('_OPERATION_FAILED', 'standard'))
-        );
+        ];
         echo $this->json->encode($result);
     }
 
@@ -317,7 +317,7 @@ class LangAdmController extends AdmController
         $id_text = Get::req('id_text', DOTY_INT, 0);
 
         if ($id_text <= 0) {
-            echo $this->json->encode(array('success' => false));
+            echo $this->json->encode(['success' => false]);
             return;
         }
 
@@ -328,21 +328,21 @@ class LangAdmController extends AdmController
         $language = Get::req('language', DOTY_STRING, getLanguage());
 
         if ($new_value === $old_value) {
-            echo $this->json->encode(array('success' => true));
+            echo $this->json->encode(['success' => true]);
         } else {
 
             switch ($column) {
 
                 case 'translation_text': {
                         $res = $this->model->saveTranslation($id_text, $language, $new_value);
-                        $output = array('success' => $res ? true : false);
+                        $output = ['success' => $res ? true : false];
                         if ($res) $output['new_value'] = stripslashes($new_value);
                         echo $this->json->encode($output);
                     }
                     break;
 
                 default: {
-                        echo $this->json->encode(array('success' => false));
+                        echo $this->json->encode(['success' => false]);
                     }
                     break;
             }
@@ -379,7 +379,7 @@ class LangAdmController extends AdmController
 
         $lang_list = $this->model->getAll(false, false, $la_module, $la_text, $lang_code, $lang_code_diff, $only_empty, $sort, $dir, $plugin_id);
 
-        $this->render('list', array(
+        $this->render('list', [
             'lang_code' => $lang_code,
             'selected_language' => array_search(
                 $lang_code,
@@ -395,7 +395,7 @@ class LangAdmController extends AdmController
             'language_list_diff' => $language_list_diff,
             'plugins_ids' => $plugins_ids,
             'data' => $lang_list
-        ));
+        ]);
     }
 
     private function removeSearchRegex($searchString)
@@ -463,7 +463,7 @@ class LangAdmController extends AdmController
 
         $total_lang = $this->model->getCount($search, $la_text, $lang_code, $only_empty);
 
-        $res = array(
+        $res = [
             'recordsTotal' => $total_lang,
             'recordsFiltered' => $total_lang,
             'startIndex' => $start_index,
@@ -472,7 +472,7 @@ class LangAdmController extends AdmController
             'rowsPerPage' => $results,
             'results' => count($lang_list),
             'data' => $lang_list
-        );
+        ];
 
         echo $this->json->encode($res);
     }
@@ -488,11 +488,11 @@ class LangAdmController extends AdmController
         $old_value = urldecode(Get::req('old_value', DOTY_MIXED, ''));
 
         $re = $this->model->saveTranslation($id_text, $lang_code, $new_value);
-        $res = array(
+        $res = [
             'success' => $re,
             'new_value' => $new_value,
             'old_value' => $old_value
-        );
+        ];
 
         echo $this->json->encode($res);
     }
@@ -502,13 +502,13 @@ class LangAdmController extends AdmController
         $lang = new stdClass();
         $lang->lang_code = '';
 
-        $this->render('translatemask', array());
+        $this->render('translatemask', []);
 
-        $params = array(
+        $params = [
             'success' => true,
             'header' => Lang::t('_TRANSLATELANG', 'admin_lang'),
             'body' => ob_get_clean()
-        );
+        ];
         @ob_start();
         echo $this->json->encode($params);
     }
@@ -529,10 +529,10 @@ class LangAdmController extends AdmController
                 if ($translation != '') $re &= $this->model->insertTranslation($id_text, $lang_code, $translation);
             }
         }
-        $output = array(
+        $output = [
             'success' => ($re ? true : false),
             'message' => ($re ? Lang::t('_OPERATION_SUCCESSFUL', 'admin_lang') : Lang::t('_OPERATION_FAILURE', 'admin_lang')),
-        );
+        ];
         echo $this->json->encode($output);
     }
 
@@ -547,10 +547,10 @@ class LangAdmController extends AdmController
             $re = $this->model->updateTranslation($idText, $langModule, $translation);
         }
 
-        $output = array(
+        $output = [
             'success' => ($re ? true : false),
             'message' => ($re ? Lang::t('_OPERATION_SUCCESSFUL', 'admin_lang') : Lang::t('_OPERATION_FAILURE', 'admin_lang')),
-        );
+        ];
         echo $this->json->encode($output);
     }
 
@@ -559,10 +559,10 @@ class LangAdmController extends AdmController
         $id_text = Get::req('id_text', DOTY_INT, 0);
 
         $re = $this->model->deleteKey($id_text);
-        $res = array(
+        $res = [
             'success' => $re,
             'message' => ($re ? Lang::t('_OPERATION_SUCCESSFUL', 'admin_lang') : Lang::t('_UNABLE_TO_DELETE', 'standard')),
-        );
+        ];
 
         echo $this->json->encode($res);
     }

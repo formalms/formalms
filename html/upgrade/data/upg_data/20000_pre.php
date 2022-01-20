@@ -36,12 +36,12 @@ function preUpgrade20000() {
 
 function create_folders() {
 
-	$dirs_to_create=array();
+	$dirs_to_create= [];
 
 	// common dir to check
-	$dirs_to_create = array(
+	$dirs_to_create = [
 		'files/cache'
-		);
+    ];
 
 	foreach($dirs_to_create as $new_dir) {
 
@@ -63,10 +63,10 @@ function setRoles()
     //$query .= " where idcourse in (4,5)";
 
     $result = sql_query($query);
-    $res = array();
+    $res = [];
 
     require_once(_lib_.'/installer/lib.role.php');
-    $roleids = array();
+    $roleids = [];
     while (list($id_course) = sql_fetch_row($result)){
         $roleids[]='/lms/course/private/'.$id_course.'/statistic/view_all';
         $roleids[]='/lms/course/private/'.$id_course.'/stats/view_all_statuser';

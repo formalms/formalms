@@ -36,7 +36,7 @@ class AdminmanagerAdm extends Model
 
 	public function getPerm()
 	{
-		return array();
+		return [];
 	}
 
 	public function getAdminFullname($id_user)
@@ -90,7 +90,7 @@ class AdminmanagerAdm extends Model
 	public function loadAdmin($start_index, $results, $sort, $dir, $filter)
 	{
 		$array_idst = $this->acl_man->getGroupMembers($this->idst_admin_group);
-		$output = array();
+		$output = [];
 
 		if (!empty($array_idst)) {
 			$query_filter = "";
@@ -130,13 +130,13 @@ class AdminmanagerAdm extends Model
 
 			while (list($id_user, $userid, $firstname, $lastname, $id_group, $groupid) = sql_fetch_row($result))
 			{
-				$output[] = array(	'id_user' => $id_user,
+				$output[] = ['id_user' => $id_user,
 					'userid' => $userid,
 					'firstname' => $firstname,
 					'lastname' => $lastname,
 					'user_profile' => $groupid,
 					'idst_profile' => $id_group
-				);
+                ];
 			}
 		}
 

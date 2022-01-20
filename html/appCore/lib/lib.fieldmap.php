@@ -24,7 +24,7 @@ Class FieldMapManager {
 
 	var $map_table=FALSE;
 	var $map_from_table=FALSE;
-	var $resource_arr=array();
+	var $resource_arr= [];
 	var $field_map=FALSE;
 	var $map_extra_filter=FALSE;
 
@@ -76,7 +76,7 @@ Class FieldMapManager {
 
 
 	function setResourceList($resource_arr) {
-		$res=array();
+		$res= [];
 
 		if (!is_array($resource_arr)) {
 			$resource_arr=func_get_args();
@@ -154,7 +154,7 @@ Class FieldMapManager {
 
 
 	function loadFieldMap() {
-		$res=array("map"=>array(), "custom_fields"=>array());
+		$res= ["map"=> [], "custom_fields"=> []];
 
 		$extra_filter=$this->getMapExtraFilter();
 
@@ -182,7 +182,7 @@ Class FieldMapManager {
 
 
 	function getFieldMap() {
-		$res=array();
+		$res= [];
 
 		if ($this->field_map === FALSE) {
 			$res=$this->loadFieldMap();
@@ -197,7 +197,7 @@ Class FieldMapManager {
 
 
 	function getMappedFields($field_list, $id) {
-		$res=array();
+		$res= [];
 		$debug=FALSE;
 
 		require_once($GLOBALS["where_framework"]."/lib/lib.field.php");
@@ -210,13 +210,13 @@ Class FieldMapManager {
 		unset($field_map_info);
 
 		$fl->setFieldEntryTable($this->_getMapFromTable());
-		$user_field_arr=$fl->showFieldForUserArr(array($id), $field_list); // to cache: arr[id]=res
+		$user_field_arr=$fl->showFieldForUserArr([$id], $field_list); // to cache: arr[id]=res
 		if ($debug) { print_r($user_field_arr); } //--DEBUG--//
 
 		if (is_array($user_field_arr[$id]))
 	 		$field_val=$user_field_arr[$id];
 		else
-			$field_val=array();
+			$field_val= [];
 
 
 		// This way we are going to load only the information
@@ -230,7 +230,7 @@ Class FieldMapManager {
 
 		// $mro: Map Resource Object (array)
 		// We'll use this later to read predefined fields names
-		$mro=array();
+		$mro= [];
 		foreach($this->getResourceList("list") as $code=>$resource) {
 
 			require_once($resource["class_path"].$resource["class_file"]);

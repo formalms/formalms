@@ -37,7 +37,7 @@ class DashboardAdm extends Model
             $this->users_filter = $adminManager->getAdminUsers(Docebo::user()->getIdST());
 
             $all_courses = false;
-            $array_courses = array();
+            $array_courses = [];
             $admin_courses = $adminManager->getAdminCourse(Docebo::user()->getIdST());
             foreach ($admin_courses['course'] as $key => $id_course) {
                 if ($key > 0) {
@@ -51,7 +51,7 @@ class DashboardAdm extends Model
                 $cat_man = new Catalogue_Manager();
                 $user_catalogue = $cat_man->getUserAllCatalogueId(Docebo::user()->getIdSt());
                 if (count($user_catalogue) > 0) {
-                    $courses = array();
+                    $courses = [];
                     foreach ($user_catalogue as $id_cat) {
                         $catalogue_course =& $cat_man->getCatalogueCourse($id_cat, true);
                         if (empty($courses)) {
@@ -94,7 +94,7 @@ class DashboardAdm extends Model
 
     public function getPerm()
     {
-        return array('view' => 'standard/view.png');
+        return ['view' => 'standard/view.png'];
     }
 
     //----------------------------------------------------------------------------
@@ -118,8 +118,8 @@ class DashboardAdm extends Model
         $res = $this->db->query($query);
         list($sql_mode) = $this->db->fetch_row($res);
 
-        $info_character = array();
-        $info_collation = array();
+        $info_character = [];
+        $info_collation = [];
 
         //string sql_client_encoding ([ resource $link_identifier ] )
         $query = "SHOW VARIABLES LIKE 'character_set%'";
@@ -138,13 +138,13 @@ class DashboardAdm extends Model
         $res = $this->db->query($query);
         list($sql_timezone) = $this->db->fetch_row($res);
 
-        return array(
+        return [
             'sql_mode' => $sql_mode,
             'character_info' => $info_character,
             'collation_info' => $info_collation,
             'sql_timezone' => $sql_timezone
 
-        );
+        ];
     }
 
     public function updateVersion($old_version, $new_version)
@@ -161,11 +161,11 @@ class DashboardAdm extends Model
 
     public function getVersionExternalInfo()
     {
-        $version = array(
+        $version = [
             'db_version' => Get::sett('core_version'),
             'file_version' => _file_version_,
             'online_version' => ''
-        );
+        ];
 
         // check for differences beetween files and database version
         if (version_compare($version['file_version'], $version['db_version']) == 1) {
@@ -220,10 +220,10 @@ class DashboardAdm extends Model
     {
 
         $aclManager = Docebo::user()->getACLManager();
-        $users = array();
+        $users = [];
         if ($stats_required == false || empty($stats_required) || !is_array($stats_required)) {
-            $stats_required = array('all', 'suspended', 'register_today', 'register_yesterday', 'register_7d',
-                'now_online', 'inactive_30d', 'waiting', 'superadmin', 'admin', 'public_admin');
+            $stats_required = ['all', 'suspended', 'register_today', 'register_yesterday', 'register_7d',
+                'now_online', 'inactive_30d', 'waiting', 'superadmin', 'admin', 'public_admin'];
         }
         $stats_required = array_flip($stats_required);
 
@@ -299,11 +299,11 @@ class DashboardAdm extends Model
 
     public function getCoursesMonthsStats()
     {
-        $output = array(
+        $output = [
             'month_subs_1' => 0,
             'month_subs_2' => 0,
             'month_subs_3' => 0
-        );
+        ];
 
         //extract subscriptions for the last three months
         for ($i = 0; $i < 3; $i++) {
@@ -334,8 +334,8 @@ class DashboardAdm extends Model
 
     public function getUsersChartAccessData($how_many_days)
     {
-        $output = array();
-        $dates = array();
+        $output = [];
+        $dates = [];
 
         $today = date("Y-m-d");
         for ($i = $how_many_days - 1; $i >= 0; $i--) {//for ($i=0; $i<$how_many_days; $i++) {
@@ -370,7 +370,7 @@ class DashboardAdm extends Model
         }
 
         foreach ($dates as $date => $count) {
-            $output[] = array('x_axis' => $date, 'c' => $count);
+            $output[] = ['x_axis' => $date, 'c' => $count];
         }
 
         return $output;
@@ -378,8 +378,8 @@ class DashboardAdm extends Model
 
     public function getUsersChartRegisterData($how_many_days)
     {
-        $output = array();
-        $dates = array();
+        $output = [];
+        $dates = [];
 
         $today = date("Y-m-d");
         for ($i = $how_many_days - 1; $i >= 0; $i--) {//for ($i=0; $i<$how_many_days; $i++) {
@@ -408,7 +408,7 @@ class DashboardAdm extends Model
         }
 
         foreach ($dates as $date => $count) {
-            $output[] = array('x_axis' => $date, 'y_axis' => $count);
+            $output[] = ['x_axis' => $date, 'y_axis' => $count];
         }
 
         return $output;
@@ -418,8 +418,8 @@ class DashboardAdm extends Model
     {
         require_once(_base_.'/lib/lib.json.php');
         $json = new Services_JSON();
-        $output = array();
-        $dates = array();
+        $output = [];
+        $dates = [];
 
         $today = date("Y-m-d");
         for ($i = $how_many_days - 1; $i >= 0; $i--) {//for ($i=0; $i<$how_many_days; $i++) {
@@ -454,8 +454,8 @@ class DashboardAdm extends Model
             $date = date("Y-m-d", strtotime($last_access));
             if (isset($dates[$date])) $dates[$date]++;
         }
-        $outputCounts = array();
-        $outputDates = array();
+        $outputCounts = [];
+        $outputDates = [];
         foreach ($dates as $date => $count) {
             if (!is_array($count) && !is_array($date)) {
                 $outputCounts[] = $count;
@@ -463,15 +463,15 @@ class DashboardAdm extends Model
             }
         }
 
-        return array('x_axis' => $json->encode($outputDates), 'y_axis' => $json->encode($outputCounts));
+        return ['x_axis' => $json->encode($outputDates), 'y_axis' => $json->encode($outputCounts)];
     }
 
     public function getUsersChartRegisterDataJS($how_many_days)
     {
         require_once(_base_.'/lib/lib.json.php');
         $json = new Services_JSON();
-        $output = array();
-        $dates = array();
+        $output = [];
+        $dates = [];
 
         $today = date("Y-m-d");
         for ($i = $how_many_days - 1; $i >= 0; $i--) {//for ($i=0; $i<$how_many_days; $i++) {
@@ -499,8 +499,8 @@ class DashboardAdm extends Model
             if (isset($dates[$date])) $dates[$date]++;
         }
 
-        $outputCounts = array();
-        $outputDates = array();
+        $outputCounts = [];
+        $outputDates = [];
         foreach ($dates as $date => $count) {
             if (!is_array($count) && !is_array($date)) {
                 $outputCounts[] = $count;
@@ -508,13 +508,13 @@ class DashboardAdm extends Model
             }
         }
 
-        return array('x_axis' => $json->encode($outputDates), 'y_axis' => $json->encode($outputCounts));
+        return ['x_axis' => $json->encode($outputDates), 'y_axis' => $json->encode($outputCounts)];
     }
 
     public function getCoursesChartSubscriptionData($how_many_days)
     {
-        $output = array();
-        $dates = array();
+        $output = [];
+        $dates = [];
 
         $today = date("Y-m-d");
         for ($i = $how_many_days - 1; $i >= 0; $i--) {//for ($i=0; $i<$how_many_days; $i++) {
@@ -548,7 +548,7 @@ class DashboardAdm extends Model
         }
 
         foreach ($dates as $date => $count) {
-            $output[] = array('x_axis' => $date, 'y_axis' => $count);
+            $output[] = ['x_axis' => $date, 'y_axis' => $count];
         }
 
         return $output;
@@ -556,8 +556,8 @@ class DashboardAdm extends Model
 
     public function getCoursesChartStartAttendingData($how_many_days)
     {
-        $output = array();
-        $dates = array();
+        $output = [];
+        $dates = [];
 
         $today = date("Y-m-d");
         for ($i = $how_many_days - 1; $i >= 0; $i--) {//for ($i=0; $i<$how_many_days; $i++) {
@@ -591,7 +591,7 @@ class DashboardAdm extends Model
         }
 
         foreach ($dates as $date => $count) {
-            $output[] = array('x_axis' => $date, 'y_axis' => $count);
+            $output[] = ['x_axis' => $date, 'y_axis' => $count];
         }
 
         return $output;
@@ -599,8 +599,8 @@ class DashboardAdm extends Model
 
     public function getCoursesChartCompletedData($how_many_days)
     {
-        $output = array();
-        $dates = array();
+        $output = [];
+        $dates = [];
 
         $today = date("Y-m-d");
         for ($i = $how_many_days - 1; $i >= 0; $i--) {//for ($i=0; $i<$how_many_days; $i++) {
@@ -634,7 +634,7 @@ class DashboardAdm extends Model
         }
 
         foreach ($dates as $date => $count) {
-            $output[] = array('x_axis' => $date, 'y_axis' => $count);
+            $output[] = ['x_axis' => $date, 'y_axis' => $count];
         }
 
         return $output;
@@ -644,8 +644,8 @@ class DashboardAdm extends Model
     {
         require_once(_base_.'/lib/lib.json.php');
         $json = new Services_JSON();
-        $output = array();
-        $dates = array();
+        $output = [];
+        $dates = [];
 
         $today = date("Y-m-d");
         for ($i = $how_many_days - 1; $i >= 0; $i--) {//for ($i=0; $i<$how_many_days; $i++) {
@@ -679,8 +679,8 @@ class DashboardAdm extends Model
         }
 
 
-        $outputCounts = array();
-        $outputDates = array();
+        $outputCounts = [];
+        $outputDates = [];
         foreach ($dates as $date => $count) {
             if (!is_array($count) && !is_array($date)) {
                 $outputCounts[] = $count;
@@ -688,7 +688,7 @@ class DashboardAdm extends Model
             }
         }
 
-        return array('x_axis' => $json->encode($outputDates), 'y_axis' => $json->encode($outputCounts));
+        return ['x_axis' => $json->encode($outputDates), 'y_axis' => $json->encode($outputCounts)];
 
     }
 
@@ -696,8 +696,8 @@ class DashboardAdm extends Model
     {
         require_once(_base_.'/lib/lib.json.php');
         $json = new Services_JSON();
-        $output = array();
-        $dates = array();
+        $output = [];
+        $dates = [];
 
         $today = date("Y-m-d");
         for ($i = $how_many_days - 1; $i >= 0; $i--) {//for ($i=0; $i<$how_many_days; $i++) {
@@ -731,8 +731,8 @@ class DashboardAdm extends Model
         }
 
 
-        $outputCounts = array();
-        $outputDates = array();
+        $outputCounts = [];
+        $outputDates = [];
         foreach ($dates as $date => $count) {
             if (!is_array($count) && !is_array($date)) {
                 $outputCounts[] = $count;
@@ -740,15 +740,15 @@ class DashboardAdm extends Model
             }
         }
 
-        return array('x_axis' => $json->encode($outputDates), 'y_axis' => $json->encode($outputCounts));
+        return ['x_axis' => $json->encode($outputDates), 'y_axis' => $json->encode($outputCounts)];
     }
 
     public function getCoursesChartCompletedDataJS($how_many_days)
     {
         require_once(_base_.'/lib/lib.json.php');
         $json = new Services_JSON();
-        $output = array();
-        $dates = array();
+        $output = [];
+        $dates = [];
 
         $today = date("Y-m-d");
         for ($i = $how_many_days - 1; $i >= 0; $i--) {//for ($i=0; $i<$how_many_days; $i++) {
@@ -782,8 +782,8 @@ class DashboardAdm extends Model
         }
 
 
-        $outputCounts = array();
-        $outputDates = array();
+        $outputCounts = [];
+        $outputDates = [];
         foreach ($dates as $date => $count) {
             if (!is_array($count) && !is_array($date)) {
                 $outputCounts[] = $count;
@@ -791,12 +791,12 @@ class DashboardAdm extends Model
             }
         }
 
-        return array('x_axis' => $json->encode($outputDates), 'y_axis' => $json->encode($outputCounts));
+        return ['x_axis' => $json->encode($outputDates), 'y_axis' => $json->encode($outputCounts)];
     }
 
     public function getDashBoardReportList()
     {
-        $report_list = array();
+        $report_list = [];
         $where_cond = "";
         $user_idst = Docebo::user()->getIdSt();
         $user_level = Docebo::user()->getUserLevelId();

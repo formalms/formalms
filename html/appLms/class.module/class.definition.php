@@ -38,8 +38,8 @@ class LmsModule {
 		
 		$this->version = '1.0';
 		
-		$this->authors = array('Pirovano Fabio (gishell@tiscali.it)', 'Sandri Emanuele (emanuele@sandri.it)');
-		$this->mantainers = array('Pirovano Fabio (gishell@tiscali.it)', 'Sandri Emanuele (emanuele@sandri.it)');
+		$this->authors = ['Pirovano Fabio (gishell@tiscali.it)', 'Sandri Emanuele (emanuele@sandri.it)'];
+		$this->mantainers = ['Pirovano Fabio (gishell@tiscali.it)', 'Sandri Emanuele (emanuele@sandri.it)'];
 		
 		$this->descr_short = 'General module '.$modname;
 		$this->descr_long = 'General module '.$modname ;
@@ -114,7 +114,7 @@ class LmsModule {
 		//EFFECTS : return an array with extra menu voice for this module 
 		//			or an empty array(display only if this is the active module) 
 		
-		return array();
+		return [];
 	}
 	
 	function useExtraMenu() {
@@ -138,14 +138,14 @@ class LmsModule {
 	}
 	
 	function getAllToken() {
-		return array( 
-			'view' => array( 	'code' => 'view',
+		return [
+			'view' => ['code' => 'view',
 								'name' => '_VIEW',
-								'image' => 'standard/view.png'),
-			'view_all' => array( 	'code' => 'view_all',
+								'image' => 'standard/view.png'],
+			'view_all' => ['code' => 'view_all',
 						'name' => '_VIEW_ALL',
-						'image' => 'standard/moduser.png'),
-		);
+						'image' => 'standard/moduser.png'],
+        ];
 	}
 	
 	function getPermissionUi( $form_name, $perm, $module_op ) {
@@ -159,8 +159,8 @@ class LmsModule {
 		$levels = CourseLevel::getLevels();
 		$tb = new Table(0, $lang->def('_VIEW_PERMISSION'), $lang->def('_EDIT_SETTINGS'));
 		
-		$c_head = array($lang->def('_LEVELS'));
-		$t_head = array('');
+		$c_head = [$lang->def('_LEVELS')];
+		$t_head = [''];
 		foreach($tokens as $k => $token) {
 			if(isset($token['image'])) {
 				$c_head[] =  '<img src="'.getPathImage().$token['image'].'" alt="'.$lang_perm->def($token['name']).'"'
@@ -181,7 +181,7 @@ class LmsModule {
     foreach($levels as $lv => $levelname )
 		{
 			
-			$c_body = array($levelname);
+			$c_body = [$levelname];
 			
 			foreach($tokens as $k => $token) {
 				$c_body[] =  '<input class="check" type="checkbox" '
@@ -202,7 +202,7 @@ class LmsModule {
 			}
 			$tb->addBody($c_body);
 		}
-		$c_select_all = array(''); 
+		$c_select_all = [''];
 		foreach($tokens as $k => $token) {
 			
 			$c_select_all[] = '<img class="handover"'
@@ -224,10 +224,10 @@ class LmsModule {
 		
 		$tokens 	= $this->getAllToken($module_op);
 		$levels 	= CourseLevel::getLevels();
-		$perm 		= array();
+		$perm 		= [];
     foreach($levels as $lv => $levelname )		
     {
-			$perm[$lv] = array();
+			$perm[$lv] = [];
 			foreach($tokens as $k => $token) {
 				
 				if(isset($_POST['perm'][$lv][$token['code']])) {
@@ -240,7 +240,7 @@ class LmsModule {
 
 
 	function selectPerm($op, $list) {
-		$output = array();
+		$output = [];
 		if (is_string($list)) $list = explode(",", $list);
 		if (!is_array($list)) return $output;
 
@@ -255,7 +255,7 @@ class LmsModule {
 	}
 
 	function getPermissionsForMenu($op) {
-		return array(
+		return [
 			1 => $this->selectPerm($op, 'view'),
 			2 => $this->selectPerm($op, 'view'),
 			3 => $this->selectPerm($op, 'view'),
@@ -263,7 +263,7 @@ class LmsModule {
 			5 => $this->selectPerm($op, 'view'),
 			6 => $this->selectPerm($op, 'view'),
 			7 => $this->selectPerm($op, 'view')
-		);
+        ];
 	}
 
 }

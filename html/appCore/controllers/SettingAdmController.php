@@ -24,10 +24,10 @@ class SettingAdmController extends AdmController {
 
 
 		$active_tab = Get::req('active_tab', DOTY_MIXED, 1);
-		$this->render('show', array(
+		$this->render('show', [
 			'model' => $model,
 			'regroup' => $regroup,
-			'active_tab' => $active_tab)
+			'active_tab' => $active_tab]
 		);
 
 	}

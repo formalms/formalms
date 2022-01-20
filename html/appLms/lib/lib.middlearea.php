@@ -36,7 +36,7 @@ class Man_MiddleArea {
         list($idst_list) = sql_fetch_row($re_query);
         
         if($idst_list && is_string($idst_list)) return unserialize($idst_list);
-        return array();
+        return [];
     }     
     
     public function isDisabled($obj_index) {
@@ -78,7 +78,7 @@ class Man_MiddleArea {
     public function setHomePageMenu($obj_index) {
         if ($obj_index == 'mo_1' || $obj_index == 'mo_46') {
             
-            $idst_list = serialize(array());
+            $idst_list = serialize([]);
             $query = "UPDATE ".$this->_tableMA()."
             SET idst_list = '".$idst_list."', disabled = 0 
             WHERE obj_index = '".$obj_index."' ";
@@ -149,7 +149,7 @@ class Man_MiddleArea {
     
     public function getDisabledList() {
     
-        $disabled = array();
+        $disabled = [];
                 
         $query = "SELECT obj_index 
         FROM ".$this->_tableMA()." as t

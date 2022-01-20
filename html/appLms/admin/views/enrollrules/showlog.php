@@ -1,7 +1,7 @@
-<?php Get::title(array(
+<?php Get::title([
 	'index.php?r=alms/enrollrules/show' => Lang::t('_ENROLLRULES', 'enrollrules'),
 	Lang::t('_SHOW_LOGS', 'enrollrules')
-)); ?>
+]); ?>
 <div class="std_block">
 	<script type="text/javascript">
 	var EnrollLog = {
@@ -47,25 +47,25 @@
 	}
 	</script>
 <?php
-$this->widget('table', array(
+$this->widget('table', [
 	'id'			=> 'enrolllog',
 	'ajaxUrl'		=> 'ajax.adm_server.php?r=alms/enrollrules/getlog',
 	'sort'			=> 'log_time',
 	'dir'			=> 'desc',
-	'columns'		=> array(
+	'columns'		=> [
 		//array('key' => 'id_log', 'label' => Lang::t('_ID', 'enrollrules'), 'className' => 'min-cell'),
-		array('key' => 'log_time', 'label' => Lang::t('_DATE', 'enrollrules'), 'className' => 'min-cell'),
-		array('key' => 'log_action', 'label' => Lang::t('_TYPE', 'enrollrules')),
-		array('key' => 'log_detail', 'label' => Lang::t('_DETAILS', 'enrollrules'), 'className' => 'min-cell', 'formatter' => 'EnrollLog.details'),
-		array('key' => 'rollback', 'label' => ''.Lang::t('_ROLLBACK', 'enrollrules').'', 'className' => 'img-cell', 'formatter' => 'EnrollLog.rollback'),
-	),
-	'fields' => array('id_log', 'log_action', 'log_time', 'log_detail', 'rollback'),
+		['key' => 'log_time', 'label' => Lang::t('_DATE', 'enrollrules'), 'className' => 'min-cell'],
+		['key' => 'log_action', 'label' => Lang::t('_TYPE', 'enrollrules')],
+		['key' => 'log_detail', 'label' => Lang::t('_DETAILS', 'enrollrules'), 'className' => 'min-cell', 'formatter' => 'EnrollLog.details'],
+		['key' => 'rollback', 'label' => ''.Lang::t('_ROLLBACK', 'enrollrules').'', 'className' => 'img-cell', 'formatter' => 'EnrollLog.rollback'],
+    ],
+	'fields' => ['id_log', 'log_action', 'log_time', 'log_detail', 'rollback'],
 	'delDisplayField' => 'log_action',
-	'events' => array(
+	'events' => [
 		'beforeRenderEvent' => 'EnrollLog.tablebefore',
 		'postRenderEvent' => 'EnrollLog.tableafter'
-	)
-));
+    ]
+]);
 
 ?>
 </div>

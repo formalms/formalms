@@ -24,16 +24,16 @@
 class ExtendSelector {
 
 	/** extra selectors */
-	var $extra_sel=array();
+	var $extra_sel= [];
 
 	/** selected items */
-	var $selected_items=array();
+	var $selected_items= [];
 
 	/** selected items */
-	var $database_items=array();
+	var $database_items= [];
 
 	/** printed items */
-	var $printed_items=array();
+	var $printed_items= [];
 
 
 	/**
@@ -89,7 +89,7 @@ class ExtendSelector {
 			$old_sel=false;
 		foreach($valid_keys as $key=>$val) {
 			if ((!isset($this->printed_items)) || (!is_array($this->printed_items))) {
-				$this->printed_items=array();
+				$this->printed_items= [];
 			}
 			if ((isset($old_sel[$val])) && (is_array($old_sel[$val]))) {
 				$old_sel[$val]=array_diff($old_sel[$val], $this->printed_items);
@@ -99,10 +99,10 @@ class ExtendSelector {
 		if (is_array($old_sel)) {
 			foreach($valid_keys as $key=>$val) {
 				if ((!isset($this->selected_items[$val])) || (!is_array($this->selected_items[$val]))) {
-					$this->selected_items[$val]=array();
+					$this->selected_items[$val]= [];
 				}
 				if ((!isset($old_sel[$val])) || (!is_array($old_sel[$val]))) {
-					$old_sel[$val]=array();
+					$old_sel[$val]= [];
 				}
 				$this->selected_items[$val]=array_unique(array_merge($this->selected_items[$val], $old_sel[$val]));
 			}
@@ -112,7 +112,7 @@ class ExtendSelector {
 		if (isset($_POST[$pfx."_database_items"]))
 			$this->database_items=$this->getDatabaseItemsFromVar($_POST[$pfx."_database_items"]);
 		else
-			$this->database_items=array();
+			$this->database_items= [];
 
 
 	}
@@ -160,13 +160,13 @@ class ExtendSelector {
 		if (isset($serialized_var))
 			return Util::unserialize(urldecode($serialized_var));
 		else
-			return array();
+			return [];
 	}
 
 
 	function extendListRow($row_id) {
 
-		$res=array();
+		$res= [];
 		foreach ($this->extra_sel as $key=>$val) {
 			if ((isset($this->selected_items[$key])) && (is_array($this->selected_items[$key])))
 				$chk=(in_array($row_id, $this->selected_items[$key]) ? true : false);
@@ -181,7 +181,7 @@ class ExtendSelector {
 
 	function extendListHeader() {
 
-		$res=array();
+		$res= [];
 		foreach ($this->extra_sel as $key=>$val) {
 
 			$alt=$val["alt"];

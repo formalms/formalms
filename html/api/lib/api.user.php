@@ -124,7 +124,7 @@ class User_API extends API {
 			);
 			if ($reg_code_res['success'] == false) {
 				$this->aclManager->deleteUser($id_user);
-				$output = array('success'=>false, 'message'=>'Registration Code Error: '.$reg_code_res['msg']);
+				$output = ['success'=>false, 'message'=>'Registration Code Error: '.$reg_code_res['msg']];
 				$id_user =false;
 				return $output;
 			}
@@ -179,7 +179,7 @@ class User_API extends API {
 			}			
 			
 
-     	$entities = array();
+     	$entities = [];
 			if (isset($userdata['orgchart'])) {
 
 				$branches = explode(";", $userdata['orgchart']);
@@ -223,7 +223,7 @@ class User_API extends API {
             
 			$enrollrules = new EnrollrulesAlms();
 			$enrollrules->newRules('_NEW_USER',
-				array($id_user),
+				[$id_user],
 				$userdata['language'],
 				0, // idOrg
 				(!empty($entities) ? $entities : false)
@@ -249,17 +249,17 @@ class User_API extends API {
                     // Send Message
                     require_once(_base_.'/lib/lib.eventmanager.php');
 
-                    $array_subst = array(
+                    $array_subst = [
                             '[url]' => Get::site_url(),
                             '[userid]' => $userdata['userid'],
                             '[password]' => $userdata['password']
-                    );
+                    ];
 
                     $e_msg = new EventMessageComposer();
                     $e_msg->setSubjectLangText('email', '_REGISTERED_USER_SBJ', false);
                     $e_msg->setBodyLangText('email', '_REGISTERED_USER_TEXT', $array_subst );
 
-                    $recipients = array($id_user);
+                    $recipients = [$id_user];
 
                     if(!empty($recipients)) {
                                     createNewAlert( 'UserNewApi', 'directory', 'edit', '1', 'New user created API', $recipients, $e_msg  );
@@ -272,7 +272,7 @@ class User_API extends API {
 	public function updateUser($id_user, $userdata) {
 		
 		$acl_man = new DoceboACLManager();
-		$output = array();
+		$output = [];
 		
 		$user_data = $this->aclManager->getUser($id_user, false);
 
@@ -316,7 +316,7 @@ class User_API extends API {
 	public function getCustomFields($lang_code=false, $indexes=false) {
 
 		require_once(_adm_.'/lib/lib.field.php');
-		$output = array();
+		$output = [];
 		$fl = new FieldList();
 		$fields = $fl->getFlatAllFields(false, false, $lang_code);
 		foreach ($fields as $key=>$val) {
@@ -324,7 +324,7 @@ class User_API extends API {
 			if ($indexes)
 				$output[$key] = $val;
 			else
-				$output[]=array('id'=>$key, 'name'=>$val);
+				$output[]= ['id'=>$key, 'name'=>$val];
 		}
 		return $output;
 	}
@@ -337,13 +337,13 @@ class User_API extends API {
 		require_once(_adm_.'/lib/lib.field.php');
 
 		$user_data = $this->aclManager->getUser($id_user, false);
-		$output = array();
+		$output = [];
 		if (!$user_data) {
 			$output['success'] = false;
 			$output['message'] = 'Invalid user ID: '.$id_user.'.';
 			$output['details'] = false;
 		} else {
-			$user_details = array(
+			$user_details = [
 				'idst' => $user_data[ACL_INFO_IDST],
 				'userid' => $this->aclManager->relativeId($user_data[ACL_INFO_USERID]),
 				'firstname' => $user_data[ACL_INFO_FIRSTNAME],
@@ -354,14 +354,14 @@ class User_API extends API {
 				'pwd_expire_at' => $user_data[ACL_INFO_PWD_EXPIRE_AT],
 				'register_date' => $user_data[ACL_INFO_REGISTER_DATE],
 				'last_enter' => $user_data[ACL_INFO_LASTENTER]
-			);
+            ];
 
 			$field_man = new FieldList();
 			$field_data = $field_man->getFieldsAndValueFromUser($id_user, false, true);
 
-			$fields = array();
+			$fields = [];
 			foreach($field_data as $field_id => $value) {
-				$fields[] = array('id'=>$field_id, 'name'=>$value[0], 'value'=>$value[1]);
+				$fields[] = ['id'=>$field_id, 'name'=>$value[0], 'value'=>$value[1]];
 			}
 
 			$user_details['custom_fields'] = $fields;
@@ -438,19 +438,19 @@ class User_API extends API {
 	 * Return the complete user list
 	 */
 	private function getUsersList() {
-		$output = array();
+		$output = [];
 		$query = "SELECT idst, userid, firstname, lastname FROM %adm_user WHERE idst<>".$this->aclManager->getAnonymousId()." ORDER BY userid";
 		$res = $this->db->query($query);
 		if ($res) {
 			$output['success'] = true;
-			$output['users_list'] = array();
+			$output['users_list'] = [];
 			while($row = $this->db->fetch_assoc($res)) {
-				$output['users_list'][]=array(
+				$output['users_list'][]= [
 					'userid' => $this->aclManager->relativeId($row['userid']),
 					'idst' => $row['idst'],
 					'firstname' => $row['firstname'],
 					'lastname' => $row['lastname']
-				);
+                ];
 			}
 		} else {
 			$output['success'] = false;
@@ -463,11 +463,11 @@ class User_API extends API {
 	 * @param <type> $id_user delete the user
 	 */
 	private function deleteUser($id_user) {
-		$output = array();
+		$output = [];
 		if ($this->aclManager->deleteUser($id_user)) {
-			$output = array('success'=>true, 'message'=>'User #'.$id_user.' has been deleted.');
+			$output = ['success'=>true, 'message'=>'User #'.$id_user.' has been deleted.'];
 		} else {
-			$output = array('success'=>false, 'message'=>'Error: unable to delete user #'.$id_user.'.');
+			$output = ['success'=>false, 'message'=>'Error: unable to delete user #'.$id_user.'.'];
 		}
 		return $output;
 	}
@@ -475,13 +475,13 @@ class User_API extends API {
 
 	public function getMyCourses($id_user, $params=false) {
 		require_once(_lms_.'/lib/lib.course.php');
-		$output =array();		
+		$output = [];
 
 		$output['success']=true;
 
 
-		$search =array('cu.iduser = :id_user');
-		$search_params =array(':id_user' => $id_user);
+		$search = ['cu.iduser = :id_user'];
+		$search_params = [':id_user' => $id_user];
 
 		
 		if (!empty($params['filter'])) {
@@ -516,13 +516,13 @@ class User_API extends API {
 		//$output['log']=var_export($course_list, true);
 
 		foreach($course_list as $key=>$course_info) {
-			$output[]['course_info']=array(
+			$output[]['course_info']= [
 				'course_id'=>$course_info['idCourse'],
 				'course_name'=>str_replace('&', '&amp;', $course_info['name']),
 				'course_description'=>str_replace('&', '&amp;', $course_info['description']),
 				'course_link'=>Get::site_url()._folder_lms_.'/index.php?modname=course&amp;op=aula&amp;idCourse='.$course_info['idCourse'],
 				'user_status'=>$course_info['user_status'],
-			);
+            ];
 		}
 
 		return $output;
@@ -531,7 +531,7 @@ class User_API extends API {
 
 	public function KbSearch($id_user, $params) {
 		require_once(_lms_.'/lib/lib.course.php');
-		$output =array();
+		$output = [];
 
 		$output['success']=true;
 
@@ -559,7 +559,7 @@ class User_API extends API {
 
 
 	public function importExternalUsers($userdata, $from_email=false) {
-		$output =array('success'=>true);
+		$output = ['success'=>true];
 
 		$i =0;
 		foreach($userdata as $user_info) {
@@ -604,7 +604,7 @@ class User_API extends API {
 	 * @return array 
 	 */
 	public function countUsers($params) {
-		$output =array('success'=>true);
+		$output = ['success'=>true];
 		
 		$status =(!empty($params['status']) ? $params['status'] : 'all');
 		
@@ -634,7 +634,7 @@ class User_API extends API {
 	
 	
 	public function checkRegistrationCode($params) {
-		$output =array('success'=>true);
+		$output = ['success'=>true];
 		
 		$registration_code_type =$params['reg_code_type'];
 		$code =$params['reg_code'];
@@ -686,10 +686,10 @@ class User_API extends API {
 		
 		
 		if (!$res) {
-			$output =array(
+			$output = [
 				'success'=>false,
 				'message'=>'User not found'
-			);
+            ];
 		}
 		else {
 			$output['idst']=(int)$res[ACL_INFO_IDST];
@@ -747,18 +747,18 @@ class User_API extends API {
         
       $idst = $this->checkUsername($params);
       if (!array_key_exists("idst",$idst)) {
-        $output = array('success'=>false, 'message'=>'Id user not found'); 
+        $output = ['success'=>false, 'message'=>'Id user not found'];
       } else {
           if (!$this->isAdmin($idst['idst'])) {
-               $output = array('success'=>false, 'message'=>'User is not admin');  
+               $output = ['success'=>false, 'message'=>'User is not admin'];
           } else {
               $profile_id = $this->getProfilebyName($params['profile_name']);
               if(!$profile_id) {
-                  $output = array('success'=>false, 'message'=>'Input profile does not exist'); 
+                  $output = ['success'=>false, 'message'=>'Input profile does not exist'];
               } else {
                   $m = new AdminmanagerAdm();
                   $r = $m->saveSingleAdminAssociation($profile_id, $idst['idst']);
-                  $output = ($r) ? array('success'=>true, 'message'=>'Profile assigned') : array('success'=>false, 'message'=>'Profile not assigned');
+                  $output = ($r) ? ['success'=>true, 'message'=>'Profile assigned'] : ['success'=>false, 'message'=>'Profile not assigned'];
               }
           }    
       }
@@ -776,7 +776,7 @@ class User_API extends API {
     */
     public function admin_assignUsers($params, $op){
         
-        $output = array('success'=>false, 'message'=> $op.' user failed'); 
+        $output = ['success'=>false, 'message'=> $op.' user failed'];
         $selected_group = 0;
         // select group ID
         if (array_key_exists('group_name', $params)){
@@ -834,13 +834,13 @@ class User_API extends API {
                     }    
                     $r = $this->db->query($q);
                     if ($r) {
-                        $output = array('success'=>true, 'message'=>$op.' user success'); 
+                        $output = ['success'=>true, 'message'=>$op.' user success'];
                     }
                 } else {
-                    $output = array('success'=>fails, 'message'=>$op.' user has not an admin profile'); 
+                    $output = ['success'=>fails, 'message'=>$op.' user has not an admin profile'];
                 }        
             } else {
-                $output = array('success'=>fails, 'message'=>$op.' user is not an admin'); 
+                $output = ['success'=>fails, 'message'=>$op.' user is not an admin'];
             }
         }
         return $output;
@@ -891,12 +891,12 @@ class User_API extends API {
             $m = new AdminmanagerAdm();
             $r = $m->saveCoursesAssociation($admin,"",$coursepath,$catalogue);
             if ($r) {
-                $output = array('success'=>true, 'message'=>$op.' courses associated to admin');         
+                $output = ['success'=>true, 'message'=>$op.' courses associated to admin'];
             } else {
-                $output = array('success'=>fails, 'message'=>$op.' courses not associated to admin');         
+                $output = ['success'=>fails, 'message'=>$op.' courses not associated to admin'];
             }
         } else {
-            $output = array('success'=>fails, 'message'=>$op.' user is not an admin or has not ad admin profile');         
+            $output = ['success'=>fails, 'message'=>$op.' user is not an admin or has not ad admin profile'];
         }
         return $output;
         
@@ -937,7 +937,7 @@ class User_API extends API {
       
         
         // calcola idParent by code
-        $output = array();
+        $output = [];
         
         $idParent = $orgData['parent_org'];
         
@@ -946,17 +946,17 @@ class User_API extends API {
         include_once(_adm_."/models/UsermanagementAdm.php");
         $adm=new UsermanagementAdm();
         $idOrg=$adm->addFolder($idParent,$name,$orgData['code']);
-        if($idOrg) $output = array('success'=>true, 'message'=>$idOrg, 'name' => $name);
-        else $output = array('success'=>false, 'message'=>"Organizzazione:$name; idParent:$idParent; code:".$orgData['code']);
+        if($idOrg) $output = ['success'=>true, 'message'=>$idOrg, 'name' => $name];
+        else $output = ['success'=>false, 'message'=>"Organizzazione:$name; idParent:$idParent; code:".$orgData['code']];
         return $output;
       }
       
       
       function moveOrg($orgData){
-        $name=array('italian'=>$orgData['name']);
+        $name= ['italian'=>$orgData['name']];
         
       
-        $output = array();
+        $output = [];
         $output['success']=true;
         
         if (empty($orgData['code'])) {
@@ -979,8 +979,8 @@ class User_API extends API {
         include_once(_adm_."/models/UsermanagementAdm.php");
         $adm=new UsermanagementAdm();
         $idOrg=$adm->moveFolder($idSrcFolder,$idParentNew);
-        if($idOrg) $output = array('success'=>true, 'message'=>$idOrg);
-        else $output = array('success'=>false, 'message'=>"Organizzazione:$name; idParent:$idParentNew; code:".$orgData['code']);
+        if($idOrg) $output = ['success'=>true, 'message'=>$idOrg];
+        else $output = ['success'=>false, 'message'=>"Organizzazione:$name; idParent:$idParentNew; code:".$orgData['code']];
         
         
         $output['id_org'] = $idSrcFolder;
@@ -992,7 +992,7 @@ class User_API extends API {
     
     // associa utente ad organigramma
     function moveUserInOrg($params){
-         $output =array();
+         $output = [];
          $output['message']='';
          $id_user = $params['id_user'];
          
@@ -1041,7 +1041,7 @@ class User_API extends API {
     function removeUserFromOrg($params){
         
         
-         $output =array();
+         $output = [];
          $output['message']=' '.$params['id_user']." - " .$params['code_org'] ;        
         
         
@@ -1087,7 +1087,7 @@ class User_API extends API {
         $code_org = $params['code_org'];
         $name_org = $params['name_org'];
 
-        $output =array();
+        $output = [];
         $output['message']='rename org: '.$params['id_org']." - " .$params['code_org']." - ".$params['name_org'] ." - ".!empty($name_org);        
         
                 
@@ -1124,7 +1124,7 @@ class User_API extends API {
     function removeOrg($params){
         $id_org = $params['id_org'];
         
-        $output =array();
+        $output = [];
         $output['message']='remove org: '.$id_org;        
                 
         $output['success']=true;        
@@ -1192,9 +1192,9 @@ class User_API extends API {
 			case 'userslist': {
 				$list = $this->getUsersList();
 				if ($list['success'])
-					$output = array('success'=>true, 'list'=>$list['users_list']);
+					$output = ['success'=>true, 'list'=>$list['users_list']];
 				else
-					$output = array('success'=>false);
+					$output = ['success'=>false];
 			} break;
 
 			case 'userdetails': {
@@ -1203,15 +1203,15 @@ class User_API extends API {
 					if (is_numeric($params['idst'])) {
 						$res = $this->getUserDetails($params['idst']);
 						if (!$res) {
-							$output = array('success'=>false, 'message'=>"Error: unable to retrieve user details.");
+							$output = ['success'=>false, 'message'=>"Error: unable to retrieve user details."];
 						}else{
-							$output = array('success'=>true, 'details'=>$res['details']);
+							$output = ['success'=>true, 'details'=>$res['details']];
 						}
 					} else {
-						$output = array('success'=>false, 'message'=>'Invalid passed parameter.');
+						$output = ['success'=>false, 'message'=>'Invalid passed parameter.'];
 					}
 				} else {
-					$output = array('success'=>false, 'message'=>'No parameter provided.');
+					$output = ['success'=>false, 'message'=>'No parameter provided.'];
 				}
 			} break;
 
@@ -1220,9 +1220,9 @@ class User_API extends API {
 				if (isset($params['language'])) { $tmp_lang = $params['language']; } //check if a language has been specified
 				$res = $this->getCustomFields($tmp_lang);
 				if ($res != false) {
-					$output = array('success'=>true, 'custom_fields'=>$res);
+					$output = ['success'=>true, 'custom_fields'=>$res];
 				} else {
-					$output = array('success'=>false, 'message'=>'Error: unable to retrieve custom fields.');
+					$output = ['success'=>false, 'message'=>'Error: unable to retrieve custom fields.'];
 				}
 			} break;
 
@@ -1233,9 +1233,9 @@ class User_API extends API {
 					$output = $res;
 				}
 				else if ($res > 0) {
-					$output = array('success'=>true, 'idst'=>$res);
+					$output = ['success'=>true, 'idst'=>$res];
 				} else {
-					$output = array('success'=>false, 'message'=>'Error: unable to create new user.');
+					$output = ['success'=>false, 'message'=>'Error: unable to create new user.'];
 				}
 			} break;
 
@@ -1245,12 +1245,12 @@ class User_API extends API {
 					$res = $this->updateUser($params['idst'], $_POST);
 					
 					if ($res > 0) {
-						$output = array('success'=>true);
+						$output = ['success'=>true];
 					} elseif ($res < 0) {
-						$output = array('success'=>false, 'message'=>'Error: incorrect param idst.');
+						$output = ['success'=>false, 'message'=>'Error: incorrect param idst.'];
 					}
 				} else {
-					$output = array('success'=>false, 'message'=>'Error: user id to update has not been specified.');
+					$output = ['success'=>false, 'message'=>'Error: user id to update has not been specified.'];
 				}
 			} break;
 
@@ -1259,7 +1259,7 @@ class User_API extends API {
 				if (count($params)>0 && !isset($params['ext_not_found'])) { //params[0] should contain user id
 					$output = $this->deleteUser($params['idst'], $_POST);
 				} else {
-					$output = array('success'=>false, 'message'=>'Error: user id to update has not been specified.');
+					$output = ['success'=>false, 'message'=>'Error: user id to update has not been specified.'];
 				}
 			} break;
 
@@ -1267,7 +1267,7 @@ class User_API extends API {
 				$acl_man = new DoceboACLManager();
 				$idst = $acl_man->getUserST($params['userid']);
 				if (!$idst) {
-					$output = array('success'=>false, 'message'=>'Error: invalid userid: '.$params['userid'].'.');
+					$output = ['success'=>false, 'message'=>'Error: invalid userid: '.$params['userid'].'.'];
 				} else {
 					$output = $this->getUserDetails($idst);
 				}
@@ -1284,13 +1284,13 @@ class User_API extends API {
 					$acl_man = new DoceboACLManager();
 					$idst = $acl_man->getUserST($params['userid']);
 					if (!$idst) {
-						$output = array('success'=>false, 'message'=>'Error: invalid userid: '.$params['userid'].'.');
+						$output = ['success'=>false, 'message'=>'Error: invalid userid: '.$params['userid'].'.'];
 					} else {
 						$res = $this->updateUser($idst, $_POST);
-						$output = array('success'=>true);
+						$output = ['success'=>true];
 					}
 				} else {
-					$output = array('success'=>false, 'message'=>'Error: user id to update has not been specified.');
+					$output = ['success'=>false, 'message'=>'Error: user id to update has not been specified.'];
 				}
 			} break;
 

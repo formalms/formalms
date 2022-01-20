@@ -169,7 +169,7 @@ function checkTemplateVersion($template_name)
 {
 	require_once(Forma::inc(_adm_ . "/versions.php"));
 	$template_forma_version = readTemplateManifest($template_name, 'forma_version');
-	$check = array();
+	$check = [];
 	if ($template_forma_version) {
 
 		if (version_compare(_template_min_version_, $template_forma_version) <= 0) {
@@ -188,7 +188,7 @@ function getTemplateList($set_keys = FALSE, $platform = FALSE) {
 	$templ = dir(_templates_ . "/");
 	while($elem = $templ->read()) {
 
-		if((is_dir(_templates_ . "/".$elem)) && ($elem != ".") && ($elem != "..") && ($elem != ".svn") && $elem{0} != '_' && checkTemplateVersion($elem)) {
+		if((is_dir(_templates_ . "/".$elem)) && ($elem != ".") && ($elem != "..") && ($elem != ".svn") && $elem[0] != '_' && checkTemplateVersion($elem)) {
 
 			if (!$set_keys) $templArray[] = $elem;
 			else $templArray[$elem] = $elem;
@@ -296,7 +296,7 @@ function getTitleArea($text, $image = '', $alt_image = '', $ignore_glob = false)
 
 	$is_first = true;
 	if (!is_array($text))
-		$text = array($text);
+		$text = [$text];
 
 	// $html = '<div class="title_block">'."\n";
 	$html = '<div class="page-header">' . "\n";
@@ -523,7 +523,7 @@ function getModifyUi(
 function addLegendaEntry($entry)
 {
 
-	if (!isset($GLOBALS['_legenda'])) $GLOBALS['_legenda'] = array();
+	if (!isset($GLOBALS['_legenda'])) $GLOBALS['_legenda'] = [];
 	return $GLOBALS['_legenda'][] = $entry;
 }
 
@@ -533,7 +533,7 @@ function addLegendaEntry($entry)
 function emptyLegenda()
 {
 
-	if (!isset($GLOBALS['_legenda'])) $GLOBALS['_legenda'] = array();
+	if (!isset($GLOBALS['_legenda'])) $GLOBALS['_legenda'] = [];
 }
 
 /**
@@ -543,7 +543,7 @@ function getLegenda()
 {
 
 	$text = '';
-	if (!isset($GLOBALS['_legenda'])) $GLOBALS['_legenda'] = array();
+	if (!isset($GLOBALS['_legenda'])) $GLOBALS['_legenda'] = [];
 	if (is_array($GLOBALS['_legenda']) && count($GLOBALS['_legenda'])) {
 		$text = '<div id="legend" class="layout_legenda">
 				<div class="title">Legenda</div>' . "\n";

@@ -42,10 +42,10 @@ class TwigManager
     {
         $loader = new \Twig\Loader\FilesystemLoader();
         $debug = \Get::cfg('twig_debug', false);
-        $this->twig = new \Twig\Environment($loader, array(
+        $this->twig = new \Twig\Environment($loader, [
             'cache' => $debug ? false : _files_ . '/cache/twig',
             'debug' => $debug
-        ));
+        ]);
         $this->addDefaultPaths();
         $this->twig->addExtension(new FormExtension());
         $this->twig->addExtension(new GetExtension());

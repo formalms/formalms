@@ -51,11 +51,11 @@ function webpages() {
 	$nav_bar->setElementTotal($tot_pages);
 	
 	//-Table---------------------------------------------------------
-	$cont_h = array(
+	$cont_h = [
 		$lang->def('_TITLE'), 
 		'<img src="'.getPathImage().'webpages/home.png" alt="'.$lang->def('_ALT_HOME').'" title="'.$lang->def('_TITLE_HOME').'" />',
-		'<img src="'.getPathImage().'standard/publish.png" alt="'.$lang->def('_PUBLISH').'" title="'.$lang->def('_STATUS').'" />'	);
-	$type_h = array('', 'image', 'image', 'image');
+		'<img src="'.getPathImage().'standard/publish.png" alt="'.$lang->def('_PUBLISH').'" title="'.$lang->def('_STATUS').'" />'];
+	$type_h = ['', 'image', 'image', 'image'];
 	if($mod_perm) {
 		
 		$cont_h[] = '<img src="'.getPathImage().'standard/down.png" alt="'.$lang->def('_DOWN').'" title="'.$lang->def('_MOVE_DOWN').'" />';
@@ -74,10 +74,10 @@ function webpages() {
 	$i = 1;
 	while(list($id, $title, $publish, $in_home) = sql_fetch_row($re_pages)) {
 		
-		$cont = array(
+		$cont = [
 			$title, 
 			( $in_home ? '<img src="'.getPathImage().'webpages/home.png" alt="'.$lang->def('_ALT_HOME').'" title="'.$lang->def('_TITLE_HOME').'" />' : '')
-		);
+        ];
 		if($publish) {
 			$cont[] = '<a href="index.php?modname=webpages&amp;op=unpublish&amp;id_page='.$id.'" title="'.$lang->def('_PUBLISH').' : '.$title.'">'
 						.'<img src="'.getPathImage().'standard/publish.png" alt="'.$lang->def('_PUBLISH').' : '.$title.'" /></a>';
@@ -163,10 +163,10 @@ function editpages($load = false) {
 		$publish		= 0;
 		$in_home		= 0;
 	}
-	$page_title = array(
+	$page_title = [
 		'index.php?modname=webpages&amp;op=webpages' => $lang->def('_TITLE_WEBPAGES'), 
 		( $load ? $lang->def('_MOD') : $lang->def('_ADD_WEBPAGES') )
-	);
+    ];
 	$out->add(
 		getTitleArea($page_title, 'webpages')
 		.'<div class="std_block">'
@@ -274,10 +274,10 @@ function delpages() {
 	} else {
 		
 		$form = new Form();
-		$page_title = array(
+		$page_title = [
 			'index.php?modname=news&amp;op=news' => $lang->def('_NEWS'), 
 			$lang->def('_DEL')
-		);
+        ];
 		$GLOBALS['page']->add(
 			getTitleArea($page_title, 'admin_webpages')
 			.'<div class="std_block">'

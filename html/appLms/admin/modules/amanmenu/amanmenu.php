@@ -54,9 +54,9 @@ function mancustom() {
 		} 
 	}
 	$tb = new Table(0, $lang->def('_TB_CM_CAPTION'), $lang->def('_TB_CM_SUMMARY'));
-	$type_h 	= array('', '', 'image', 'image');
-	$content_h 	= array(
-		$lang->def('_TITLE'), $lang->def('_DESCRIPTION'));
+	$type_h 	= ['', '', 'image', 'image'];
+	$content_h 	= [
+		$lang->def('_TITLE'), $lang->def('_DESCRIPTION')];
 
 	if($mod_perm) {
 		$content_h[] = '<img src="'.getPathImage().'standard/dup.png" title="'.$lang->def('_MAKE_A_COPY').'" '
@@ -80,10 +80,10 @@ function mancustom() {
 	$tb->addHead($content_h);
 	while(list($id_custom, $title_custom, $text_custom) = sql_fetch_row($re_custom)) {
 		$title_custom = strip_tags($title_custom);
-		$content = array(
+		$content = [
 			'<a href="index.php?modname=amanmenu&amp;op=manmenu&amp;id_custom='.$id_custom.'" '
 				.' title="'.$lang->def('_MOD').' : '.$title_custom.'">'.$title_custom.'</a>', 
-			$text_custom);
+			$text_custom];
 
 		if($mod_perm) {
 			$content[] = '<a href="index.php?modname=amanmenu&op=addcustom&amp;duplicate='.$id_custom.'"'
@@ -131,9 +131,9 @@ function editcustom($load = false) {
 	$lang 		=& DoceboLanguage::createInstance('manmenu');
 	$mod_perm 	= checkPerm('mod', true);
 	
-	$page_title = array(
+	$page_title = [
 		'index.php?modname=amanmenu&amp;op=mancustom' => $lang->def('_TITLE_MANMENU')
-	);
+    ];
 	
 	if($load == false) {
 		
@@ -169,7 +169,7 @@ function editcustom($load = false) {
 		$out->add(Form::getHidden('id_custom', 'id_custom', $id_custom));
 	} else {
 		
-		$custom = array(0 => $lang->def('_NOT_ASSIGNED'));
+		$custom = [0 => $lang->def('_NOT_ASSIGNED')];
 		$query = "
 		SELECT idCustom, title 
 		FROM ".$GLOBALS['prefix_lms']."_menucustom 
@@ -233,7 +233,7 @@ function savecustom() {
 			FROM ".$GLOBALS['prefix_lms']."_menucustom_main
 			WHERE idCustom = '".$id_custom_from."'");
 			
-			$main_values = array();
+			$main_values = [];
 			$query_ins_main = "
 			INSERT INTO ".$GLOBALS['prefix_lms']."_menucustom_main (idMain, idCustom, sequence, name, image ) VALUES";
 			while(list($id_main, $seq, $name, $image) = sql_fetch_row($re_main)) {
@@ -251,7 +251,7 @@ function savecustom() {
 			FROM ".$GLOBALS['prefix_lms']."_menucustom_under
 			WHERE idCustom = '".$id_custom_from."'");
 			
-			$module_values = array();
+			$module_values = [];
 			$query_ins_module = "
 			INSERT INTO ".$GLOBALS['prefix_lms']."_menucustom_under ( idCustom, idModule, idMain, sequence, my_name ) VALUES";
 			while(list($id_module, $id_main, $seq, $my_name) = sql_fetch_row($re_module)) {
@@ -366,13 +366,13 @@ function manmenu() {
 	$tot_voice = sql_num_rows($re_voice);
 	
 	$tb = new Table(0, $lang->def('_TB_MANMENU_CAPTION'), $lang->def('_TB_MANMENU_SUMMARY'));
-	$content_h 	= array(
+	$content_h 	= [
 		//'<img src="'.getPathImage().'manmenu/symbol.png" title="'.$lang->def('_SYMBOL_TITLE').'" alt="'.$lang->def('_SYMBOL_TITLE').'" />',
 		$lang->def('_TITLE_MENUVOICE'), 
 		'<img src="'.getPathImage().'standard/down.png" title="'.$lang->def('_MOVE_DOWN').'" alt="'.$lang->def('_DOWN').'" />',
 		'<img src="'.getPathImage().'standard/up.png" title="'.$lang->def('_MOVE_UP').'" alt="'.$lang->def('_UP').'" />',
-		'<img src="'.getPathImage().'standard/modelem.png" title="'.$lang->def('_MODMODULE').'" alt="'.$lang->def('_MODMODULE').'" />');
-	$type_h 	= array(/*'image',*/ '', 'image', 'image', 'image');
+		'<img src="'.getPathImage().'standard/modelem.png" title="'.$lang->def('_MODMODULE').'" alt="'.$lang->def('_MODMODULE').'" />'];
+	$type_h 	= [/*'image',*/ '', 'image', 'image', 'image'];
 	if($mod_perm) {
 		$content_h[] = '<img src="'.getPathImage().'standard/edit.png" title="'.$lang->def('_MOD').'" alt="'.$lang->def('_MOD').'" />';
 		$type_h[] 	 = 'image';
@@ -386,10 +386,10 @@ function manmenu() {
 	while(list($id_m, $name, $image) = sql_fetch_row($re_voice)) {
 		
 		$strip_name = strip_tags(( Lang::isDef($name) ? $mo_lang->def($name) : $name ));
-		$content = array(
+		$content = [
 			/* '<img class="manmenu_symbol" src="'.getPathImage('lms').'menu/'.$image.'" alt="'.$strip_name.'" />', */
 			'<a href="index.php?modname=amanmenu&amp;op=manmodule&amp;id_main='.$id_m.'"'
-				.' title="'.$lang->def('_MODMODULE').'">'.( Lang::isDef($name) ? $mo_lang->def($name) : $name ).'</a>');
+				.' title="'.$lang->def('_MODMODULE').'">'.( Lang::isDef($name) ? $mo_lang->def($name) : $name ).'</a>'];
 		// Up and Down action
 		$content[] = ( $i != ($tot_voice - 1) ? '<a href="index.php?modname=amanmenu&amp;op=mdmenuvoice&amp;id_main='.$id_m.'"'
 				.' title="'.$lang->def('_MOVE_DOWN').' : '.$strip_name.'">'
@@ -429,10 +429,10 @@ function manmenu() {
 	// print out
 	$out->setWorkingZone('content');
 	
-	$page_title = array(
+	$page_title = [
 		'index.php?modname=amanmenu&amp;op=mancustom' => $lang->def('_TITLE_MANMENU'),
 		$title_custom
-	);
+    ];
 	$out->add(
 		getTitleArea($page_title, 'manmenu')
 		.'<div class="std_block">'
@@ -461,7 +461,7 @@ function editmenuvoice($load = false) {
 	$mo_lang 	=& DoceboLanguage::createInstance('menu', 'lms');
 	
 	// Find images
-	$all_images = array();
+	$all_images = [];
 	/*$templ = dir( Get::tmpl_path('lms').'/images/menu/');
 	while($elem = $templ->read()) {
 		if(ereg('.gif', $elem)) $all_images[$elem] = $elem;
@@ -489,11 +489,11 @@ function editmenuvoice($load = false) {
 	FROM ".$GLOBALS['prefix_lms']."_menucustom 
 	WHERE idCustom = '".$id_custom."'";
 	list($custom_name) = sql_fetch_row(sql_query($query_custom));
-	$page_title = array(
+	$page_title = [
 		'index.php?modname=amanmenu&amp;op=mancustom' => $lang->def('_TITLE_MANMENU'),
 		'index.php?modname=amanmenu&amp;op=manmenu&amp;id_custom='.$id_custom => $custom_name,
 		( $load ? $lang->def('_MOD') : $lang->def('_NEW') )
-	);
+    ];
 	$out->add(
 		getTitleArea($page_title, 'manmenu')
 		.'<div class="std_block">'
@@ -724,11 +724,11 @@ function manmodule() {
 	
 	$tb = new Table(0, $lang->def('_TB_MANMODULE_CAPTION'), $lang->def('_TB_MANMODULE_SUMMARY'));
 	
-	$content_h 	= array(
+	$content_h 	= [
 		$lang->def('_TITLE_MODULE'), 
 		'<img src="'.getPathImage().'standard/down.png" title="'.$lang->def('_MOVE_DOWN').'" alt="'.$lang->def('_DOWN').'" />',
-		'<img src="'.getPathImage().'standard/up.png" title="'.$lang->def('_MOVE_UP').'" alt="'.$lang->def('_UP').'" />');
-	$type_h 	= array('', 'image', 'image');
+		'<img src="'.getPathImage().'standard/up.png" title="'.$lang->def('_MOVE_UP').'" alt="'.$lang->def('_UP').'" />'];
+	$type_h 	= ['', 'image', 'image'];
 	if($mod_perm) {
 		$content_h[] = '<img src="'.getPathImage().'standard/edit.png" title="'.$lang->def('_EDIT_SETTINGS').'"'
 			.' alt="'.$lang->def('_EDIT_SETTINGS').'" />';
@@ -743,7 +743,7 @@ function manmodule() {
 	while(list($id_mod, $name_db, $my_name) = sql_fetch_row($re_module)) {
 		$name = ( $my_name != '' ? $my_name : $menu_lang->def($name_db) );
 		$strip_name = strip_tags($name);
-		$content = array($name);
+		$content = [$name];
 		
 		$content[] = ( $i != ($tot_module - 1) ? '<a href="index.php?modname=amanmenu&amp;op=mdmodule&amp;id_main='.$id_main.'&amp;id_module='.$id_mod.'"'
 				.' title="'.$lang->def('_MOVE_DOWN').' : '.$strip_name.'">'
@@ -768,8 +768,8 @@ function manmodule() {
 	setupHrefDialogBox('a[href*=delmodule]');
 	
 	$tb_free = new Table(0, $lang->def('_TB_FREE_MANMODULE_CAPTION'), $lang->def('_NOT_ASSIGNED'));
-	$c_free_h 	= array($lang->def('_TITLE_MODULE'));
-	$t_free_h 	= array('');
+	$c_free_h 	= [$lang->def('_TITLE_MODULE')];
+	$t_free_h 	= [''];
 	if($mod_perm) {
 		$c_free_h[] = $lang->def('_TITLE_GRABMODULE');
 		$t_free_h[] 	 = 'image';
@@ -781,7 +781,7 @@ function manmodule() {
 		$name = $menu_lang->def($name_db);
 		$strip_name = strip_tags($name);
 		
-		$content = array($name);
+		$content = [$name];
 		if($mod_perm) {
 			
 			$content[] = '<a href="index.php?modname=amanmenu&amp;op=addmodule&amp;id_main='.$id_main.'&amp;id_module='.$id_import_mod.'"'
@@ -792,11 +792,11 @@ function manmodule() {
 	}
 	// print out
 	
-	$page_title = array(
+	$page_title = [
 		'index.php?modname=amanmenu&amp;op=mancustom' => $lang->def('_TITLE_MANMENU'),
 		'index.php?modname=amanmenu&amp;op=manmenu&amp;id_custom='.$id_custom => $title_custom,
 		( Lang::isDef($title_main, 'menu') ? Lang::t($title_main, 'menu') : $title_main )
-	);
+    ];
 	$out->setWorkingZone('content');
 	$out->add(
 		getTitleArea($page_title, 'manmenu')
@@ -832,7 +832,7 @@ function editmodule($load = false) {
 	$id_main 	= importVar('id_main', true, 0);
 	$id_module 	= importVar('id_module', true, 0);
 	$acl_man 	=& Docebo::user()->getAclManager();
-	$perm		= array();
+	$perm		= [];
 	
 	// Load module info
 	$query_module = "
@@ -898,12 +898,12 @@ function editmodule($load = false) {
 		if($id_db_main == $id_main) $title_main = $main_name;
 	}
 	
-	$page_title = array(
+	$page_title = [
 		'index.php?modname=amanmenu&amp;op=mancustom' => $lang->def('_TITLE_MANMENU'),
 		'index.php?modname=amanmenu&amp;op=manmenu&amp;id_custom='.$id_custom => $custom_name,
 		'index.php?modname=amanmenu&amp;op=manmodule&amp;id_main='.$id_main => $title_main,
 		( $load ? $lang->def('_YOURE_WORKING_ON_MODULE') : $lang->def('_YOURE_IMPORTING') ).' : '.$name
-	);
+    ];
 	// Form
 	$out->add(
 		getTitleArea($page_title, 'manmenu')
@@ -988,7 +988,7 @@ function upmodule() {
 			$perm_to_del_idst[$lv] = array_diff_assoc($idst_old_perm[$lv], $idst_new_perm[$lv]);
 		} else {
 			
-			$perm_to_add_idst[$lv] = array();
+			$perm_to_add_idst[$lv] = [];
 			$perm_to_del_idst[$lv] = $idst_old_perm[$lv];
 		}
 	}

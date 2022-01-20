@@ -44,7 +44,7 @@ class QuestBankMan {
 
 	function getCategoryList($author = false) {
 
-		$cat_list = array();
+		$cat_list = [];
 		$qtxt = "SELECT idCategory, name "
 			."FROM ".$this->_table_category." ";
 			//."WHERE author = 0 ";
@@ -58,7 +58,7 @@ class QuestBankMan {
 	}
 	function getExtraCategoriesList() {
 
-		$cat_list = array();
+		$cat_list = [];
 		$qtxt = "  select cf.id_field, coalesce(cfl.translation, cf.code) name  from core_customfield cf";
 		$qtxt .= " left join core_customfield_lang cfl on cf.id_field = cfl.id_field and cfl.lang_code='".$this->user_language."'";
 		$qtxt .= " where cf.area_code='LO_TEST'";
@@ -71,7 +71,7 @@ class QuestBankMan {
 	}
 	function getExtraCategoryList($id_common) {
 
-		$cat_list = array();
+		$cat_list = [];
 		$qtxt = "  select cfs.id_field_son, coalesce(cfsl.translation, cfs.code) name from core_customfield_son cfs";
 		$qtxt .= " left join core_customfield_son_lang cfsl on cfs.id_field_son = cfsl.id_field_son and cfsl.lang_code='".$this->user_language."'";
 		$qtxt .= " where cfs.id_field=".$id_common;
@@ -86,7 +86,7 @@ class QuestBankMan {
 
 	function getQuestFromId($arr_quest) {
 
-		$quests = array();
+		$quests = [];
 		$qtxt ="
 		SELECT idQuest, type_quest
 		FROM ".$GLOBALS['prefix_lms']."_testquest
@@ -102,7 +102,7 @@ class QuestBankMan {
 
 	function resQuestList($quest_category = false, $quest_difficult = false, $type_quest = false, $params_quest_category = false, $start = false, $result = false, $sort = false, $dir = false) {
 
-		$cat_list = array();
+		$cat_list = [];
 		$qtxt = "SELECT idQuest, idCategory, type_quest, title_quest, difficult, time_assigned, sequence "
 			.", coalesce(group_concat(cfe.id_field), 0) extra_fields "
 			.", coalesce(group_concat(cfe.obj_entry), 0) extra_values "
@@ -136,7 +136,7 @@ class QuestBankMan {
 	//todo: aggiungere parametri params...
 	function totalQuestList($quest_category = false, $quest_difficult = false, $type_quest = false, $params_quest_category = false) {
 
-		$cat_list = array();
+		$cat_list = [];
 		$qtxt = "SELECT idQuest, idCategory, type_quest, title_quest, difficult, time_assigned "
 			.", coalesce(group_concat(cfe.id_field), 0) extra_fields "
 			.", coalesce(group_concat(cfe.obj_entry), 0) extra_values "
@@ -230,7 +230,7 @@ class QuestBankMan {
 
 	function import_quest($file_lines, $file_format, $id_test = 0, $id_category = 0, $autocreate_categories = false) {
 
-		$result = array();
+		$result = [];
 		switch($file_format) {
 			case 0 : {	// gift format -------------------
 
@@ -293,11 +293,11 @@ class QuestBankMan {
 
 	function supported_format() {
 
-		$formats = array(
+		$formats = [
 		   //-1 => Lang::t('_NEW_TEST', 'test'),
 		   0 => Lang::t('_GIFT', 'test')//,
 		   //1 => Lang::t('_MOODLE_XML', 'test')
-		);
+        ];
 		return $formats;
 	}
 
@@ -314,7 +314,7 @@ class QuestBank_Selector {
 		$this->all_category = $this->qb_man->getCategoryList(getLogUserId());
 		//#2269 see it2.php.net/array_unshift#78238
 		//array_unshift($this->all_category, $this->lang->def('_ALL_QUEST_CATEGORY'));
-		$aany_cat=array(0=>$this->lang->def('_ALL_QUEST_CATEGORY'));
+		$aany_cat= [0=>$this->lang->def('_ALL_QUEST_CATEGORY')];
 		$this->all_category = $aany_cat + $this->all_category;
 
 		//todo translate any
@@ -325,7 +325,7 @@ class QuestBank_Selector {
 		$this->all_categories = $this->qb_man->getExtraCategoriesList();
 		foreach ($this->all_categories as $key => $value) {
 		    $cat = $this->qb_man->getExtraCategoryList($key);
-			$aany_cat=array(0=>$str_any.' '.$value['name']);
+			$aany_cat= [0=>$str_any.' '.$value['name']];
 		    $this->all_categories[$key]['cat']= $aany_cat + $cat;
 		    //$this->all_categories[$key]['cat']=$cat;
 		}
@@ -334,16 +334,16 @@ class QuestBank_Selector {
 		//$aany_cat=array(0=>$this->lang->def('_ALL_QUEST_CATEGORY'));
 		// $this->all_categories = $aany_cat + $this->all_category;
 		
-		$this->all_difficult = array(
+		$this->all_difficult = [
 			0 => $this->lang->def('_ALL_DIFFICULT'),
 			5 => $this->lang->def('_VERY_HARD'),
 			4 => $this->lang->def('_HARD'),
 			3 => $this->lang->def('_DIFFICULT_MEDIUM'),
 			2 => $this->lang->def('_DIFFICULT_EASY'),
 			1 => $this->lang->def('_DIFFICULT_VERYEASY')
-		);
+        ];
 
-		$this->all_quest_type = array();
+		$this->all_quest_type = [];
 		$this->all_quest_type[0] = $this->lang->def('_ALL_QUEST_TYPE');
 		$this->all_quest_type_long[0] = $this->lang->def('_ALL_QUEST_TYPE');
 		$re_type = sql_query("

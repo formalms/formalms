@@ -38,10 +38,10 @@ class DoceboConnectorXmlOrgChart extends DoceboConnector {
 	}
 	
 	function get_config() {
-		return array( 	'filepattern' => $this->filename, 
+		return ['filepattern' => $this->filename,
 						'readwrite' => $this->readwrite,
 						'name' => $this->name,
-						'description' => $this->description );
+						'description' => $this->description];
 	}
 	
 	function set_config( $params ) {
@@ -61,7 +61,7 @@ class DoceboConnectorXmlOrgChart extends DoceboConnector {
 	function connect() {
 		$this->close();
 		/* search for file with pattern */
-		$pat = str_replace(array("*","?"),array(".*",".{1}"),$this->filename);
+		$pat = str_replace(["*","?"], [".*",".{1}"],$this->filename);
 		$arr_files = $this->_preg_ls (DOCEBOIMPORT_BASEDIR, false, '/^'.$pat.'/');
 		if( count( $arr_files ) == 0 ) {
 			//$this->last_error = 'file not found: '.DOCEBOIMPORT_BASEDIR.$this->filename;
@@ -129,13 +129,13 @@ class DoceboConnectorXmlOrgChart extends DoceboConnector {
 	function is_raw_producer() { return TRUE; }
 	
 	function _get_folder_data() {
-		$arr_data = array();
+		$arr_data = [];
 		$elem_folder = $this->folder_nodes->item($this->row_index);
 		if( $elem_folder === NULL )
 			return FALSE;
 		// extract folder title in other languages
 		$title_nodes = $elem_folder->getElementsByTagName('title');
-		$arr_data['lang_titles'] = array();
+		$arr_data['lang_titles'] = [];
 		for( $indexLang = 0; $indexLang < $title_nodes->length; $indexLang++ ) {
 			$elem_title = $title_nodes->item($indexLang);
 			$arr_data['lang_titles'][$elem_title->getAttribute('lang')] = $elem_title->firstChild->nodeValue;
@@ -156,7 +156,7 @@ class DoceboConnectorXmlOrgChart extends DoceboConnector {
 		}
 		if( $elem_fields !== NULL ) {
 			$field_nodes = $elem_fields->getElementsByTagName('field');
-			$arr_data['custom_fields'] = array();
+			$arr_data['custom_fields'] = [];
 			for( $indexField = 0; $indexField < $field_nodes->length; $indexField++ ) {
 				$elem_field = $field_nodes->item($indexField);
 				$field_name = FALSE;
@@ -189,10 +189,10 @@ class DoceboConnectorXmlOrgChart extends DoceboConnector {
 						$tagName = '';
 				}
 				if($field_name !== FALSE && $field_value !== FALSE )
-					$arr_data['custom_fields'][$field_name] = array('fvalue'=>$field_value, 'mandatory' => $field_mandatory );
+					$arr_data['custom_fields'][$field_name] = ['fvalue'=>$field_value, 'mandatory' => $field_mandatory];
 			}
 		}
-		$path_elem = array();
+		$path_elem = [];
 		$path_elem[] = $elem_folder->getAttribute('name');
         $arr_data['code']= $elem_folder->getAttribute('code');        
 		$parent = $elem_folder->parentNode;
@@ -243,7 +243,7 @@ class DoceboConnectorXmlOrgChart extends DoceboConnector {
 	   if (!is_dir ($path) ) $path=dirname ($path);
 	   if ($rec!==true) $rec=false;
 	   $d=dir ($path);
-	   $ret=array();
+	   $ret= [];
 	   while (false!== ($e=$d->read () ) ) {
 	       if ( ($e==".") || ($e=="..") ) continue;
 	       if ($rec && is_dir ($path."/".$e) ) {
@@ -254,7 +254,7 @@ class DoceboConnectorXmlOrgChart extends DoceboConnector {
 	       if (strncmp($e,'processed',9) === 0 ) continue;
 	       $ret[]=$path."/".$e;
 	   }
-	   return (empty ($ret) && preg_match ($pat,basename($path))) ? Array ($path."/") : $ret;
+	   return (empty ($ret) && preg_match ($pat,basename($path))) ? [$path."/"] : $ret;
 	}
 
 }
@@ -384,8 +384,8 @@ class DoceboConnectorXmlOrgChartUI extends DoceboConnectorUI {
 	  	$out .= $this->form->getRadioSet( 	$this->lang->def('_ACCESSTYPE'), 
 		  									$this->_get_base_name().'_readwrite', 
 											$this->_get_base_name().'[readwrite]',
-											array( 	$this->lang->def('_READ')  => '1', 
-													$this->lang->def('_WRITE') => '2'), 
+											[$this->lang->def('_READ')  => '1',
+													$this->lang->def('_WRITE') => '2'],
 											$this->post_params['readwrite']);
 		
 		// ---- file pattern ----
@@ -400,7 +400,7 @@ class DoceboConnectorXmlOrgChartUI extends DoceboConnectorUI {
 }
 
 function xmlorgchart_factory() {
-	return new DoceboConnectorXmlOrgChart(array());
+	return new DoceboConnectorXmlOrgChart([]);
 }
 
 ?>

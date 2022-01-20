@@ -22,8 +22,8 @@ else
 
 // ---------- Popup Menu ----------------------
 
-$menu_label 	= array();
-$menu_url 		= array();
+$menu_label 	= [];
+$menu_url 		= [];
 
 if(canAccessPersonalMedia()) {
 	$menu_label["personal"]=$lang->def("_PERSONAL_MEDIA");
@@ -151,10 +151,10 @@ function show_personal_media(& $out, & $lang) {
 		.'</script>', 'page_head');
 	//}
 
-	$head = array($lang->def("_PREVIEW"), $lang->def("_TYPE"), $lang->def("_FILENAME"));
+	$head = [$lang->def("_PREVIEW"), $lang->def("_TYPE"), $lang->def("_FILENAME")];
 	$head[] = "<img src=\"".getPathImage()."standard/download.png\" alt=\"".$lang->def("_ATTACHMENT")."\" title=\"".$lang->def("_ATTACHMENT")."\" />";
 	$head[] = "<img src=\"".getPathImage()."standard/delete.png\" alt=\"".$lang->def("_DEL")."\" title=\"".$lang->def("_DEL")."\" />";
-	$head_type = array('preview80', 'image', '', 'image', 'image');
+	$head_type = ['preview80', 'image', '', 'image', 'image'];
 
 	$tab->setColsStyle($head_type);
 	$tab->addHead($head, '');
@@ -172,7 +172,7 @@ function show_personal_media(& $out, & $lang) {
 	if (($q) && (sql_num_rows($q) > 0)) {
 		while($row = sql_fetch_array($q)) {
 			$site_url="http://".$_SERVER['HTTP_HOST'].$path.'/common/users/';
-			$rowcnt = array();
+			$rowcnt = [];
 
 			if (!empty($row["media_url"])) {
 				$rowcnt[]="&nbsp;";
@@ -501,7 +501,7 @@ function select_media(& $out, & $lang) {
 			$bad_path =$GLOBALS["where_framework_relative"]."/addons/players/";
 			$good_path =$core_url."addons/players/";
 			$code =str_replace($bad_path, $good_path, $code);
-			$content = array("code" => $code);
+			$content = ["code" => $code];
 			$embed_code = $json->encode($content);
 			$res.=$form->getHidden("embed_code", "embed_code", rawurlencode($embed_code));
 			$res.=$src;

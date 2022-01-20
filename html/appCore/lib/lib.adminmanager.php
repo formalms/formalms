@@ -64,7 +64,7 @@ class AdminManager {
 		$query = "SELECT idst FROM ".AdminManager::getAdminTreeTable()
 				." WHERE idstAdmin = '".(int)$adminidst."'";
 		$rs = $this->_executeQuery( $query );
-		$result = array();
+		$result = [];
 		if( $this->db->num_rows( $rs ) > 0 ) {
 			while(list($idstTree) = $this->db->fetch_row($rs)) {
 				$result[] = $idstTree;
@@ -111,7 +111,7 @@ class AdminManager {
 	function &fromRolePathToIdst($base_path, $module_tokens, $flip = false) {
 		
 		$acl_man =& Docebo::user()->getAclManager();
-		$map = array();
+		$map = [];
 		foreach($module_tokens as $k => $token ) {
 			
 			$code 		= $token['code'];
@@ -129,7 +129,7 @@ class AdminManager {
 	
 	function &modulePermissionAsToken($all_admin_permission, $all_module_idst) {
 		
-		$token = array();
+		$token = [];
 		foreach($all_module_idst as $code => $idst ) {
 			
 			if(isset($all_admin_permission[$idst])) {
@@ -144,7 +144,7 @@ class AdminManager {
 	function &convertTokenToIdst($token_to_convert, $map_convert, $flip = false) {
 		
 		$acl_man =& Docebo::user()->getAclManager();
-		$map = array();
+		$map = [];
 		foreach($token_to_convert as $code => $v ) {
 			
 			$id_role = $map_convert[$code];

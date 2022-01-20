@@ -29,20 +29,20 @@ if(!Docebo::user()->isAnonymous() && isset($_SESSION['idCourse'])) {
 
 	// recover main menu --------------------------------------------------------------------------------
 	$counter = 0;
-	$id_list = array();
-	$menu_module = array();
+	$id_list = [];
+	$menu_module = [];
 	
 	$query = "SELECT idMain AS id, name FROM %lms_menucourse_main WHERE idCourse = ".(int)$_SESSION['idCourse']." ORDER BY sequence";
 	$re_main = $db->query($query);
 	while($main = $db->fetch_obj($re_main)) {
 
-		$menu_module[$main->id] = array(
-			'submenu'=> array(),
-			'main'=> array(
+		$menu_module[$main->id] = [
+			'submenu'=> [],
+			'main'=> [
 				'name' => Lang::t($main->name, 'menu_course', false, false, $main->name ),
 				'link' => 'index.php?id_module_sel=0&amp;id_main_sel='.$main->id
-			)
-		);
+            ]
+        ];
 		$id_list[] = '"menu_lat_'.$main->id.'"';
 	}
 	
@@ -60,13 +60,13 @@ if(!Docebo::user()->isAnonymous() && isset($_SESSION['idCourse'])) {
 		if(checkPerm($obj->token, true, $obj->module_name)) {  
 			$GLOBALS['module_assigned_name'][$obj->module_name] = ( $obj->my_name != '' ? $obj->my_name : Lang::t($obj->default_name, 'menu_course') );
 			
-			$menu_module[$obj->id_main]['submenu'][$obj->id] = array(
+			$menu_module[$obj->id_main]['submenu'][$obj->id] = [
 				'name' => $GLOBALS['module_assigned_name'][$obj->module_name],
 				'link' => ( $obj->mvc_path != ''
 					? 'index.php?r='.$obj->mvc_path.'&amp;id_module_sel='.$obj->id.'&amp;id_main_sel='.$obj->id_main
 					: 'index.php?modname='.$obj->module_name.'&amp;op='.$obj->default_op.'&amp;id_module_sel='.$obj->id.'&amp;id_main_sel='.$obj->id_main
 				)
-			);
+            ];
 			$counter++;
 		} // end if checkPerm
 
@@ -128,7 +128,7 @@ if(!Docebo::user()->isAnonymous() && isset($_SESSION['idCourse'])) {
     
     //** id_main e' l'indice del menu principale 
     //** menu è il vettore interno 
-    $array_menu = array();
+    $array_menu = [];
     
 	foreach($menu_module as $id_main => $menu)
   {
@@ -249,7 +249,7 @@ if(!Docebo::user()->isAnonymous() && isset($_SESSION['idCourse'])) {
 
 
 		
-		$user_stats = array('head'=>array(),'body'=>array());
+		$user_stats = ['head'=> [],'body'=> []];
 		if(!isset($_SESSION['is_ghost']) || $_SESSION['is_ghost'] !== true) {
 			
 			if(Docebo::course()->getValue('show_time') == 1) {
@@ -362,10 +362,10 @@ if(!Docebo::user()->isAnonymous() && isset($_SESSION['idCourse'])) {
 										FALSE );
 			$tot_complete = getStatStatusCount(	getLogUserId(), 
 												$_SESSION['idCourse'],
-												array( 'completed', 'passed' ) );
+												['completed', 'passed']);
 			$tot_failed = getStatStatusCount(	getLogUserId(), 
 												$_SESSION['idCourse'],
-												array( 'failed' ) );
+												['failed']);
 			
 			
             $materiali = Lang::t("_PROGRESS_ALL", "course");
@@ -485,8 +485,8 @@ if(!Docebo::user()->isAnonymous() && isset($_SESSION['idCourse'])) {
     
 	if((Get::sett('use_tag', 'off') == 'on') && checkPerm('view', true, 'forum')) {
 	
-		YuiLib::load(array('tabview'=>'tabview-min.js')
-			, array('tabview/assets/skins/sam/' => 'tabview.css'));
+		YuiLib::load(['tabview'=>'tabview-min.js']
+			, ['tabview/assets/skins/sam/' => 'tabview.css']);
 			
 		require_once($GLOBALS['where_framework'].'/lib/lib.tags.php');
 		$tags = new Tags('*');

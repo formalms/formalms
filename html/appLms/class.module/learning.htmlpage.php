@@ -171,14 +171,14 @@ class Learning_Htmlpage extends Learning_Object {
 		$path = '/appLms/htmlpages/';
 		$query = "SELECT * FROM ".$GLOBALS['prefix_lms']."_htmlpage_attachment WHERE idpage = ".$id;
 		$res = sql_query($query);
-		$attachments = array();
+		$attachments = [];
 		if ($res) {
 			while ($row = sql_fetch_assoc($res)) {
-				$attachments[] = array(
+				$attachments[] = [
 					'id' => $row['id'],
 					'title' => $row['title'],
 					'file' => $GLOBALS['where_files_relative'].$path.$row['file']
-				);
+                ];
 			}
 		}
 			
@@ -254,15 +254,15 @@ class Learning_Htmlpage extends Learning_Object {
 		$output = false;
 		$query = "SELECT * FROM %lms_htmlpage WHERE title LIKE '%".$key."%' ORDER BY title";
 		$res = $this->db->query($query);
-		$results = array();
+		$results = [];
 		if ($res) {
-			$output = array();
+			$output = [];
 			while ($row = $this->db->fetch_obj($res)) {
-				$output[] = array(
+				$output[] = [
 					'id' => $row->idPage,
 					'title' => $row->title,
 					'description' => ''
-				);
+                ];
 			}
 		}
 		return $output;

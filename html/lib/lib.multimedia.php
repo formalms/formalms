@@ -308,24 +308,24 @@ function getMediaType($fname) {
 
 
 function getImageExtList() {
-	return array('bmp', 'jpg', 'jpeg', 'png', 'mng', 'gif', 'svg');
+	return ['bmp', 'jpg', 'jpeg', 'png', 'mng', 'gif', 'svg'];
 }
 
 
 function getFlashExtList() {
-	return array('swf');
+	return ['swf'];
 }
 
 
 function getVideoExtList() {
-	return array('avi', 'mpg', 'mpeg', 'divx', 'ogm', 'wmv', 'asf',
-        'mov', 'rm', 'mp4', '3gp', 'omf', 'qt', 'moov', 'flv', 'swf');
+	return ['avi', 'mpg', 'mpeg', 'divx', 'ogm', 'wmv', 'asf',
+        'mov', 'rm', 'mp4', '3gp', 'omf', 'qt', 'moov', 'flv', 'swf'];
 }
 
 
 function getAudioExtList() {
-	return array('mp3', 'wav', 'ogg', 'aif', 'aiff', 'aac', 'ac3',
-        'mpa', 'ram', 'wma');
+	return ['mp3', 'wav', 'ogg', 'aif', 'aiff', 'aac', 'ac3',
+        'mpa', 'ram', 'wma'];
 }
 
 
@@ -344,7 +344,7 @@ function getAudioExtList() {
  *               - frames
  */
 function getSwfInfoArray($fname) {
-	$res=array();
+	$res= [];
 	require_once($GLOBALS['where_framework']. '/addons/swfheader/swfheader.class.php');
 
 	$clean_fname=(strpos($fname, '?') !== FALSE ? preg_replace("/(\?.*)/", '', $fname) : $fname);

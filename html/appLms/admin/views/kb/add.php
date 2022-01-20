@@ -1,8 +1,8 @@
 <?php
-echo getTitleArea(array(
+echo getTitleArea([
 	'index.php?r=alms/kb/show' => Lang::t('_CONTENT_LIBRARY', 'kb'),
 	Lang::t('_ADD', 'kb')
-));
+]);
 ?>
 <div class="std_block">
 
@@ -110,20 +110,20 @@ YAHOO.util.Event.onDOMReady(function(e) {
 
 <?php
 
-$my_cols_def =array(
-		array('key' => 'title', 'label' => Lang::t('_TITLE', 'kb'), 'sortable' => true),
-		array('key' => 'r_type', 'label' => Lang::t('_TYPE', 'kb'), 'sortable' => true),
-		array('key' => 'env', 'label' => Lang::t('_ENVIRONMENT', 'kb'), 'sortable' => true),
-		array('key' => 'edit', 'label' => '<span class="ico-sprite subs_categorize"><span>'.Lang::t('_CATEGORIZE', 'kb').'</span></span>', 'formatter'=>'frm_categorize', 'className' => 'img-cell')
-);
+$my_cols_def = [
+		['key' => 'title', 'label' => Lang::t('_TITLE', 'kb'), 'sortable' => true],
+		['key' => 'r_type', 'label' => Lang::t('_TYPE', 'kb'), 'sortable' => true],
+		['key' => 'env', 'label' => Lang::t('_ENVIRONMENT', 'kb'), 'sortable' => true],
+		['key' => 'edit', 'label' => '<span class="ico-sprite subs_categorize"><span>'.Lang::t('_CATEGORIZE', 'kb').'</span></span>', 'formatter'=>'frm_categorize', 'className' => 'img-cell']
+];
 
 if ($type == 'scoitem') {
-	array_unshift($my_cols_def, array(
+	array_unshift($my_cols_def, [
 		'key' => 'scorm_title', 'label' => Lang::t('_CHAPTER_TITLE', 'kb'), 'sortable' => true
-	));
+    ]);
 }
 
-$this->widget('table', array(
+$this->widget('table', [
 	'id'			=> 'kb_table',
 	'ajaxUrl'		=> 'ajax.adm_server.php?r=alms/kb/getuncategorized',
 	'rowsPerPage'	=> Get::sett('visuItem', 25),
@@ -133,8 +133,8 @@ $this->widget('table', array(
 	'dir'			=> 'asc',
 	'generateRequest' => 'KbManagement.requestBuilder',
 	'columns'		=> $my_cols_def,
-	'fields'		=> array('scorm_title', 'title', 'r_type', 'env', 'edit', 'r_item_id'),
-));
+	'fields'		=> ['scorm_title', 'title', 'r_type', 'env', 'edit', 'r_item_id'],
+]);
 ?>
 
 

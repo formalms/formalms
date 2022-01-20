@@ -208,7 +208,7 @@ class ReportTablePrinter {
 			} break;
 			
 			case _CSV: {
-				$temp=array();
+				$temp= [];
 				foreach($head as $val) {
 					if (is_array($val)) {
 						$temp[] = $val['value'];
@@ -295,7 +295,7 @@ class ReportTablePrinter {
 			} break;
 			
 			case _CSV: {
-				$arr = array();
+				$arr = [];
 				foreach ($line as $val) {
 					$arr[] = (is_array($val) ? (isset($val['value']) ? $val['value'] : '') : $val);
 				}
@@ -335,7 +335,7 @@ class ReportTablePrinter {
 			} break;
 			
 			case _CSV: {
-				$temp=array();
+				$temp= [];
 				foreach($line as $val) {
 					if (is_array($val)) {
 						$temp[] = $val['value'];

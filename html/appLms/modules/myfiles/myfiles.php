@@ -58,20 +58,20 @@ function fileList(&$url) {
 						$lang->def('_MYFILES_CAPTION'),
 						$lang->def('_MYFILES_SUMMARY') );
 
-	$cont_h = array(
+	$cont_h = [
 		$lang->def('_TITLE'),
 		$lang->def('_FILE_POLICY'),
 		'<img src="'.getPathImage().'standard/edit.png" title="'.$lang->def('_MOD').'" alt="'.$lang->def('_MOD').'" />',
 		'<img src="'.getPathImage().'standard/delete.png" title="'.$lang->def('_REM_FILE').'" alt="'.$lang->def('_DEL').'" />'
-	);
-	$type_h = array('', 'image nowrap', 'image', 'image');
+    ];
+	$type_h = ['', 'image nowrap', 'image', 'image'];
 	$tb->setColsStyle($type_h);
 	$tb->addHead($cont_h);
 
 	$re_files = $file_man->getFileList($active_tab, false, MYFILE_TITLE);
 	while($file_info = $file_man->fetch_row($re_files)) {
 
-		$cont = array($file_info[MYFILE_TITLE] );
+		$cont = [$file_info[MYFILE_TITLE]];
 		switch($file_info[MYFILE_POLICY]) {
 			case MF_POLICY_FREE : 		$cont[] = $lang->def('_MF_POLICY_FREE');break;
 			case MF_POLICY_TEACHER : 	$cont[] = $lang->def('_MF_POLICY_TEACHER');break;
@@ -122,18 +122,18 @@ function modfiles(&$url) {
 		$file_policy 	= $f_info[MYFILE_POLICY];
 
 	}
-	$arr_policy = array(
+	$arr_policy = [
 		MF_POLICY_FREE 		=> $lang->def('_MF_POLICY_FREE'),
 		MF_POLICY_TEACHER 	=> $lang->def('_MF_POLICY_TEACHER'),
 		MF_POLICY_FRIENDS 	=> $lang->def('_MF_POLICY_FRIENDS'),
 		MF_POLICY_TEACHER_AND_FRIENDS => $lang->def('_MF_POLICY_TEACHER_AND_FRIENDS'),
 		MF_POLICY_NOONE 	=> $lang->def('_MF_POLICY_NOONE')
-	);
+    ];
 
-	$title_page = array(
+	$title_page = [
 		$url->getUrl('op=myfiles') => $lang->def('_MYFILE'),
 		$lang->def('_ADD_'.$area)
-	);
+    ];
 	$GLOBALS['page']->add(
 		getTitleArea($title_page, 'myfile')
 		.'<div class="std_block">'
@@ -198,10 +198,10 @@ function delfiles(&$url) {
 
 		$f_info = $file_man->getFileInfo($id_file);
 
-		$title_page = array(
+		$title_page = [
 			$url->getUrl('op=myfiles') => $lang->def('_MYFILE'),
 			$lang->def('_DEL').' : '.$f_info[MYFILE_TITLE]
-		);
+        ];
 		$GLOBALS['page']->add(
 			getTitleArea($title_page, 'myfile')
 			.'<div class="std_block">'

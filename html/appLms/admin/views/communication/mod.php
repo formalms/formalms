@@ -1,8 +1,8 @@
 <?php
-echo getTitleArea(array(
+echo getTitleArea([
 	'index.php?r=alms/communication/show' => Lang::t('_COMMUNICATIONS', 'communication'),
 	Lang::t('_MOD', 'communication')
-));
+]);
 ?>
 <div class="std_block">
 <?php

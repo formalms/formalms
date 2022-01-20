@@ -43,7 +43,7 @@ class MyFile {
 	 */
 	var $id_user;
 	
-	var $arr_field = array(
+	var $arr_field = [
 		MYFILE_ID_FILE 		=> 'id_file', 
 		MYFILE_AREA 		=> 'area', 
 		MYFILE_TITLE 		=> 'title', 
@@ -51,7 +51,7 @@ class MyFile {
 		MYFILE_FILE_NAME 	=> 'file_name', 
 		MYFILE_OWNER 		=> 'owner',
 		MYFILE_POLICY 		=> 'file_policy'
-	);
+    ];
 	
 	/**
 	 * return the name of the main table that contanins the file name
@@ -110,10 +110,10 @@ class MyFile {
 	 */
 	function getFilesAreas() {
 		
-		return array( 	'other' => '_MY_OTHER_FILES', 
+		return ['other' => '_MY_OTHER_FILES',
 						'image' => '_MY_IMAGES',
 						'audio' => '_MY_AUDIO',
-						'video' => '_MY_VIDEO' );
+						'video' => '_MY_VIDEO'];
 	}
 	
 	function getDefaultArea() {
@@ -336,7 +336,7 @@ class MyFilesPolicy extends MyFile {
 		if($this->_viewer_teacher != NULL) return $this->_viewer_teacher;
 		
 		require_once($GLOBALS['where_lms'].'/lib/lib.course.php');
-		$re = Man_CourseUser::getUserWithLevelFilter( array('4', '5', '6', '7'), array($this->_viewer) );
+		$re = Man_CourseUser::getUserWithLevelFilter( ['4', '5', '6', '7'], [$this->_viewer]);
 		$this->_viewer_teacher = !empty($re);
 		
 		return $this->_viewer_teacher;
@@ -344,7 +344,7 @@ class MyFilesPolicy extends MyFile {
 	
 	function getFileInfo($id_file) {
 		
-		$arr_policy = array( MF_POLICY_FREE );
+		$arr_policy = [MF_POLICY_FREE];
 		if($this->isViewerFriend() || $this->_viewer == $this->_id_user) {
 			$arr_policy[] = MF_POLICY_FRIENDS;
 			$arr_policy[] = MF_POLICY_TEACHER_AND_FRIENDS;
@@ -353,11 +353,11 @@ class MyFilesPolicy extends MyFile {
 			$arr_policy[] = MF_POLICY_TEACHER;
 			$arr_policy[] = MF_POLICY_TEACHER_AND_FRIENDS;
 		}
-		if($this->_viewer == $this->_id_user) $arr_policy = array(	MF_POLICY_FREE, 
+		if($this->_viewer == $this->_id_user) $arr_policy = [MF_POLICY_FREE,
 																	MF_POLICY_FRIENDS, 
 																	MF_POLICY_TEACHER,
 																	MF_POLICY_TEACHER_AND_FRIENDS, 
-																	MF_POLICY_NOONE );
+																	MF_POLICY_NOONE];
 		
 		$query = "
 		SELECT ".implode(', ', $this->arr_field)." 
@@ -373,7 +373,7 @@ class MyFilesPolicy extends MyFile {
 	
 	function getFileList($area = false, $order_by = false, $from = false, $num_elem = false) {
 		
-		$arr_policy = array( MF_POLICY_FREE );
+		$arr_policy = [MF_POLICY_FREE];
 		if($this->isViewerFriend() || $this->_viewer == $this->_id_user) {
 			$arr_policy[] = MF_POLICY_FRIENDS;
 			$arr_policy[] = MF_POLICY_TEACHER_AND_FRIENDS;
@@ -382,11 +382,11 @@ class MyFilesPolicy extends MyFile {
 			$arr_policy[] = MF_POLICY_TEACHER;
 			$arr_policy[] = MF_POLICY_TEACHER_AND_FRIENDS;
 		}
-		if($this->_viewer == $this->_id_user) $arr_policy = array(	MF_POLICY_FREE, 
+		if($this->_viewer == $this->_id_user) $arr_policy = [MF_POLICY_FREE,
 																	MF_POLICY_FRIENDS, 
 																	MF_POLICY_TEACHER,
 																	MF_POLICY_TEACHER_AND_FRIENDS, 
-																	MF_POLICY_NOONE );
+																	MF_POLICY_NOONE];
 		
 		$query = "
 		SELECT ".implode(', ', $this->arr_field)." 
@@ -422,7 +422,7 @@ class MyFilesPolicy extends MyFile {
 		}
 		
 		// extract data from database
-		$arr_policy = array( MF_POLICY_FREE );
+		$arr_policy = [MF_POLICY_FREE];
 		if($this->isViewerFriend() || $this->_viewer == $this->_id_user) {
 			$arr_policy[] = MF_POLICY_FRIENDS;
 			$arr_policy[] = MF_POLICY_TEACHER_AND_FRIENDS;
@@ -431,11 +431,11 @@ class MyFilesPolicy extends MyFile {
 			$arr_policy[] = MF_POLICY_TEACHER;
 			$arr_policy[] = MF_POLICY_TEACHER_AND_FRIENDS;
 		}
-		if($this->_viewer == $this->_id_user) $arr_policy = array(	MF_POLICY_FREE, 
+		if($this->_viewer == $this->_id_user) $arr_policy = [MF_POLICY_FREE,
 																	MF_POLICY_FRIENDS, 
 																	MF_POLICY_TEACHER,
 																	MF_POLICY_TEACHER_AND_FRIENDS, 
-																	MF_POLICY_NOONE );
+																	MF_POLICY_NOONE];
 		
 		$query = "
 		SELECT area, COUNT(*)
@@ -446,7 +446,7 @@ class MyFilesPolicy extends MyFile {
 		if($extra_filter !== false) $query .= $extra_filter;
 		$query .= " GROUP BY area ";
 		
-		$this->_file_number = array('total' => 0);
+		$this->_file_number = ['total' => 0];
 		if(!$re_query = $this->_query($query)) return '0';
 		while(list($in_area, $number) = $this->fetch_row($re_query)) {
 			
@@ -463,7 +463,7 @@ class MyFilesPolicy extends MyFile {
 	
 	function isFileAccessible($id_file) {
 	
-		$arr_policy = array( MF_POLICY_FREE );
+		$arr_policy = [MF_POLICY_FREE];
 		if($this->isViewerFriend()) {
 			$arr_policy[] = MF_POLICY_FRIENDS;
 			$arr_policy[] = MF_POLICY_TEACHER_AND_FRIENDS;
@@ -472,11 +472,11 @@ class MyFilesPolicy extends MyFile {
 			$arr_policy[] = MF_POLICY_TEACHER;
 			$arr_policy[] = MF_POLICY_TEACHER_AND_FRIENDS;
 		}
-		if($this->_viewer == $this->_id_user) $arr_policy = array(	MF_POLICY_FREE, 
+		if($this->_viewer == $this->_id_user) $arr_policy = [MF_POLICY_FREE,
 																	MF_POLICY_FRIENDS, 
 																	MF_POLICY_TEACHER,
 																	MF_POLICY_TEACHER_AND_FRIENDS, 
-																	MF_POLICY_NOONE );
+																	MF_POLICY_NOONE];
 		$query = "
 		SELECT ".implode(', ', $this->arr_field)." 
 		FROM ".$this->getFilesTable()." 
@@ -496,7 +496,7 @@ class MyFileSelector {
 	
 	function MyFileSelector() {
 		
-		$this->current_selection = array();
+		$this->current_selection = [];
 	}
 	
 	function getSelection() {
@@ -518,7 +518,7 @@ class MyFileSelector {
 		}
 		// add last selection
 		if(isset($_POST['displayed'])) $displayed = Util::unserialize(urldecode($_POST['displayed']));
-		else $displayed = array();
+		else $displayed = [];
 		if(isset($_POST['new_file_selected'])) {
 			
 			$displayed = array_diff($displayed, $_POST['new_file_selected']);
@@ -571,25 +571,25 @@ class MyFileSelector {
 							$lang->def('_MYFILES_CAPTION'), 
 							$lang->def('_MYFILES_SUMMARY') );
 		
-		$cont_h = array(
+		$cont_h = [
 			'<span class="access-only">'.$lang->def('_FILE_SELECTION').'</span>', 
 			$lang->def('_TITLE').'</label>'
-		);	
-		$type_h = array('image', '');
+        ];
+		$type_h = ['image', ''];
 		$tb->setColsStyle($type_h);
 		$tb->addHead($cont_h);
 		
-		$id_list = array();
+		$id_list = [];
 		$re_files = $file_man->getFileList($active_tab, false, MYFILE_TITLE);
 		while($file_info = $file_man->fetch_row($re_files)) {
 			
 			$id_file = $file_info[MYFILE_ID_FILE];
 			$id_list[$id_file] = $id_file;
-			$cont = array(
+			$cont = [
 				Form::getInputCheckbox('new_file_selected_'.$id_file, 'new_file_selected['.$id_file.']', $id_file, 
 					isset($this->current_selection[$id_file]), ''), 
 				'<label for="new_file_selected_'.$id_file.'">'.$file_info[MYFILE_TITLE].'</label>'
-			);	
+            ];
 			$tb->addBody($cont);
 		}
 		// print selector

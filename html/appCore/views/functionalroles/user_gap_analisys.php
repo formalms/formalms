@@ -58,7 +58,7 @@ var UserGapAnalisys = {
 	oChart: null,
 	initChart: function(oTable) {
 		var data = [<?php
-			$_arr = array();
+			$_arr = [];
 			foreach ($chart_data as $record) {
 				$_arr[] = '{competence: '.$record['competence'].', '
 					.'score_got: '.($record['score_got'] - $record['gap_positive']).', '
@@ -179,13 +179,13 @@ YAHOO.util.Event.onDOMReady(function(e) {
 $icon_history = '<span class="ico-sprite subs_elem"><span>'.Lang::t('_HISTORY', 'standard').'</span></span>';
 //$icon_del = '<span class="ico-sprite subs_del"><span>'.Lang::t('_UNASSIGN', 'competences').'</span></span>';
 
-$columns = array();
-$columns[] = array('key' => 'competence', 'label' => Lang::t('_COMPETENCE', 'competences'), 'sortable' => true);
-$columns[] = array('key' => 'score_got', 'label' => Lang::t('_SCORE', 'competences'), 'sortable' => true, 'formatter'=>'UserGapAnalisys.gotFormatter', 'className' => 'img-cell');
-$columns[] = array('key' => 'score_req', 'label' => Lang::t('_REQUIRED_SCORE', 'competences'), 'sortable' => true, 'formatter'=>'UserGapAnalisys.reqFormatter', 'className' => 'img-cell');
-$columns[] = array('key' => 'gap', 'label' => Lang::t('_GAP', 'fncroles'), 'sortable' => true, 'formatter'=>'UserGapAnalisys.gapFormatter', 'className' => 'img-cell');
-$columns[] = array('key' => 'last_assign_date', 'label' => Lang::t('_DATE_OBTAINED', 'competences'), 'sortable' => true, 'className' => 'img-cell');
-$columns[] = array('key' => 'date_expire', 'label' => Lang::t('_EXPIRATION_DATE', 'competences')/*, 'sortable' => true*/, 'formatter'=>'UserGapAnalisys.expireFormatter', 'className' => 'img-cell');
+$columns = [];
+$columns[] = ['key' => 'competence', 'label' => Lang::t('_COMPETENCE', 'competences'), 'sortable' => true];
+$columns[] = ['key' => 'score_got', 'label' => Lang::t('_SCORE', 'competences'), 'sortable' => true, 'formatter'=>'UserGapAnalisys.gotFormatter', 'className' => 'img-cell'];
+$columns[] = ['key' => 'score_req', 'label' => Lang::t('_REQUIRED_SCORE', 'competences'), 'sortable' => true, 'formatter'=>'UserGapAnalisys.reqFormatter', 'className' => 'img-cell'];
+$columns[] = ['key' => 'gap', 'label' => Lang::t('_GAP', 'fncroles'), 'sortable' => true, 'formatter'=>'UserGapAnalisys.gapFormatter', 'className' => 'img-cell'];
+$columns[] = ['key' => 'last_assign_date', 'label' => Lang::t('_DATE_OBTAINED', 'competences'), 'sortable' => true, 'className' => 'img-cell'];
+$columns[] = ['key' => 'date_expire', 'label' => Lang::t('_EXPIRATION_DATE', 'competences')/*, 'sortable' => true*/, 'formatter'=>'UserGapAnalisys.expireFormatter', 'className' => 'img-cell'];
 
 $rel_actions = '<a class="ico-wt-sprite subs_csv" title="'.Lang::t('_EXPORT_CSV', 'report').'" '
 	.'href="javascript: UserGapAnalisys.exportCSV(this);">'
@@ -200,7 +200,7 @@ $rel_actions = '<a class="ico-wt-sprite subs_csv" title="'.Lang::t('_EXPORT_CSV'
 	.'href="index.php?r=adm/functionalroles/export_gap&id_fncrole='.(int)$id_fncrole.'&format=xls">'
 	.'<span>'.Lang::t('_EXPORT_XLS', 'report').'</span></a>'*/;
 
-$this->widget('table', array(
+$this->widget('table', [
 	'id'			=> 'fncroles_usergap_table',
 	'ajaxUrl'		=> 'ajax.adm_server.php?r=adm/functionalroles/getusergaptabledata',
 	'rowsPerPage'	=> Get::sett('visuItem', 25),
@@ -211,8 +211,8 @@ $this->widget('table', array(
 	'generateRequest' => 'UserGapAnalisys.requestBuilder',
 	'columns'		=> $columns,
 	'rel_actions' => $rel_actions,    
-	'fields'		=> array('last_assign_date', 'date_expire', 'score_req', 'score_got', 'gap', 'competence', 'id_competence', 'is_expired', 'type')
-));
+	'fields'		=> ['last_assign_date', 'date_expire', 'score_req', 'score_got', 'gap', 'competence', 'id_competence', 'is_expired', 'type']
+]);
 
 ?>
 <?php echo getBackUi('index.php?r=adm/functionalroles/'.($from_gap ? 'man_users' : 'gap_analisys').'&id='.$id_fncrole, Lang::t('_BACK', 'standard')); ?>

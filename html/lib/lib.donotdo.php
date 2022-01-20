@@ -20,10 +20,10 @@
 
 define("_sep_", '--');
 
-$GLOBALS['clean_html'] = array();
+$GLOBALS['clean_html'] = [];
 $GLOBALS['clean_html']["framework"._sep_."configuration"._sep_."config"._sep_."google_stat_code"] = 1;
 
-$GLOBALS['clean_url'] = array();
+$GLOBALS['clean_url'] = [];
 $GLOBALS['clean_url']["framework"._sep_."configuration"._sep_."config"._sep_."url"] = 1;
 
 /**

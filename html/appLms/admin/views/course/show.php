@@ -3,7 +3,7 @@
 <?php
 
     //Categories tree
-    $languages = array(
+    $languages = [
     '_ROOT' => $root_name,
     '_NEW_FOLDER_NAME' => Lang::t('_NEW_CATEGORY', 'course'),
     '_MOD' => Lang::t('_MOD', 'course'),
@@ -22,7 +22,7 @@
     '_NEW_FOLDER' => Lang::t('_NEW_FOLDER', 'organization_chart'),
     '_DEL' => Lang::t('_DEL', 'standard'),
     '_AJAX_FAILURE' => Lang::t('_CONNECTION_ERROR', 'standard')
-);
+    ];
 
     //** CR : LR TABLE OF COURSE , RESPONSIVE **
     $modifica = $languages['_MOD'];
@@ -57,7 +57,7 @@
     //***********************
 
 
-$_tree_params = array(
+$_tree_params = [
 	'id' => 'category_tree',
 	'ajaxUrl' => 'ajax.adm_server.php?r='.$base_link_course.'/gettreedata',
 	'treeClass' => 'CourseFolderTree',
@@ -65,7 +65,7 @@ $_tree_params = array(
 	'languages' => $languages,
 	'initialSelectedNode' => $initial_selected_node,
 	'dragDrop' => true
-);
+];
 
 if ($permissions['add_category']) {
 	$rel_title = Lang::t('_NEW_CATEGORY', 'course');
@@ -97,54 +97,54 @@ echo	'<div class="quick_search_form">'
 		.'</div>'
 		.'</div>';
 
-$columns_arr = array(
-	array('key' => 'code', 'label' => Lang::t('_CODE', 'course'), 'sortable' => true),
-	array('key' => 'name', 'label' => Lang::t('_NAME', 'course'), 'sortable' => true),
-	array('key' => 'type', 'label' => Lang::t('_TYPE', 'course'), 'className' => 'min-cell'),
-	array('key' => 'students', 'label' => Lang::t('_STUDENTS', 'coursereport'), 'className' => 'img-cell1')
-);
+$columns_arr = [
+	['key' => 'code', 'label' => Lang::t('_CODE', 'course'), 'sortable' => true],
+	['key' => 'name', 'label' => Lang::t('_NAME', 'course'), 'sortable' => true],
+	['key' => 'type', 'label' => Lang::t('_TYPE', 'course'), 'className' => 'min-cell'],
+	['key' => 'students', 'label' => Lang::t('_STUDENTS', 'coursereport'), 'className' => 'img-cell1']
+];
 
 if ($permissions['moderate'])//if(checkPerm('moderate', true, 'course', 'lms'))
-	$columns_arr[] = array('key' => 'wait', 'label' => Lang::t('_WAITING', 'course'), 'className' => 'img-cell1');
+	$columns_arr[] = ['key' => 'wait', 'label' => Lang::t('_WAITING', 'course'), 'className' => 'img-cell1'];
 
 if ($permissions['subscribe'])//if(checkPerm('subscribe', true, 'course', 'lms'))
-	$columns_arr[] = array('key' => 'user', 'label' =>  Get::sprite('subs_users', Lang::t('_USER_STATUS_SUBS', 'course') ), 'className' => 'img-cell1');
+	$columns_arr[] = ['key' => 'user', 'label' =>  Get::sprite('subs_users', Lang::t('_USER_STATUS_SUBS', 'course') ), 'className' => 'img-cell1'];
 
 if ($permissions['view'])
-	$columns_arr[] = array('key' => 'edition', 'label' =>  Get::sprite('subs_date', Lang::t('_CLASSROOM_EDITION', 'course') ), 'className' => 'img-cel1l');
+	$columns_arr[] = ['key' => 'edition', 'label' =>  Get::sprite('subs_date', Lang::t('_CLASSROOM_EDITION', 'course') ), 'className' => 'img-cel1l'];
 
 $perm_assign = checkPerm('assign', true, 'certificate', 'lms');
 $perm_release = checkPerm('release', true, 'certificate', 'lms');
 
 if ($perm_assign) {
-	$columns_arr[] = array('key' => 'certificate', 'label' => Get::sprite('subs_pdf', Lang::t('_CERTIFICATE_ASSIGN_STATUS', 'course')), 'className' => 'img-cell1');
+	$columns_arr[] = ['key' => 'certificate', 'label' => Get::sprite('subs_pdf', Lang::t('_CERTIFICATE_ASSIGN_STATUS', 'course')), 'className' => 'img-cell1'];
 }
 
 if ($permissions['view_cert'] && $perm_release) {
-	$columns_arr[] = array('key' => 'certreleased', 'label' => Get::sprite('subs_print', Lang::t('_CERTIFICATE_RELEASE', 'course')), 'className' => 'img-cell1');
+	$columns_arr[] = ['key' => 'certreleased', 'label' => Get::sprite('subs_print', Lang::t('_CERTIFICATE_RELEASE', 'course')), 'className' => 'img-cell1'];
 }
 
 if ($permissions['mod']) {
-	$columns_arr[] = array('key' => 'competences', 'label' => Get::sprite('subs_competence', Lang::t('_COMPETENCES', 'course')), 'className' => 'img-cell1');
-	$columns_arr[] = array('key' => 'menu', 'label' => Get::sprite('subs_menu', Lang::t('_ASSIGN_MENU', 'course')), 'className' => 'img-cell1');
+	$columns_arr[] = ['key' => 'competences', 'label' => Get::sprite('subs_competence', Lang::t('_COMPETENCES', 'course')), 'className' => 'img-cell1'];
+	$columns_arr[] = ['key' => 'menu', 'label' => Get::sprite('subs_menu', Lang::t('_ASSIGN_MENU', 'course')), 'className' => 'img-cell1'];
 }
 
 if ($permissions['add'])
-	$columns_arr[] = array('key' => 'dup', 'label' => Get::sprite('subs_dup', Lang::t('_MAKE_A_COPY', 'course')), 'className' => 'img-cell1', 'formatter' => 'dup');
+	$columns_arr[] = ['key' => 'dup', 'label' => Get::sprite('subs_dup', Lang::t('_MAKE_A_COPY', 'course')), 'className' => 'img-cell1', 'formatter' => 'dup'];
 
 if ($permissions['mod'])
-	$columns_arr[] = array('key' => 'mod', 'label' => Get::sprite('subs_mod', Lang::t('_MOD', 'course')), 'className' => 'img-cell1');
+	$columns_arr[] = ['key' => 'mod', 'label' => Get::sprite('subs_mod', Lang::t('_MOD', 'course')), 'className' => 'img-cell1'];
 
 if ($permissions['del'] && !Get::cfg('demo_mode'))
-	$columns_arr[] = array('key' => 'del', 'label' => Get::sprite('subs_del', Lang::t('_DEL', 'course')), 'formatter'=>'doceboDelete', 'className' => 'img-cell1');
+	$columns_arr[] = ['key' => 'del', 'label' => Get::sprite('subs_del', Lang::t('_DEL', 'course')), 'formatter'=>'doceboDelete', 'className' => 'img-cell1'];
 
-$fields = array('id', 'code', 'name', 'type', 'type_id', 'students', 'wait', 'user', 'edition', 'certificate', 'certreleased', 'competences', 'menu', 'dup', 'mod', 'del');
+$fields = ['id', 'code', 'name', 'type', 'type_id', 'students', 'wait', 'user', 'edition', 'certificate', 'certreleased', 'competences', 'menu', 'dup', 'mod', 'del'];
 
 $event = Events::trigger('core.course.columns.listing', ['columns' => $columns_arr, 'fields' => $fields, 'permissions' => $permissions]);
 
 
 
-$_table_params = array(
+$_table_params = [
 	'id'			=> 'course_table',
 	'ajaxUrl'		=> 'ajax.adm_server.php?r='.$base_link_course.'/getcourselist',
 	'rowsPerPage'	=> Get::sett('visuItem', 25),
@@ -157,7 +157,7 @@ $_table_params = array(
 	'show' => 'table',
 	'delDisplayField' => 'name',
 	'generateRequest' => 'Courses.requestBuilder'
-);
+];
 
 $_table_params['rel_actions'] = '';
 

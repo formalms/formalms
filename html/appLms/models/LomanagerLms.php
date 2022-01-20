@@ -149,13 +149,13 @@ class LomanagerLms extends Model {
         $saveObj = new Session_Save();
         $saveName = $saveObj->getName('crepo',true);
         $folder = $this->tdb->getFolderById( (string)$id );
-        $saveData = array(
+        $saveData = [
             'repo' => $fromType,
             'id' => $id,
             'objectType' => $folder->otherValues[REPOFIELDOBJECTTYPE],
             'name' => $folder->otherValues[REPOFIELDTITLE],
             'idResource' => $folder->otherValues[REPOFIELDIDRESOURCE]
-        );
+        ];
         $saveObj->save( $saveName, $saveData );
         return true;
     }

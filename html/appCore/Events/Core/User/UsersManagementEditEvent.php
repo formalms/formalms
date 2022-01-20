@@ -23,8 +23,8 @@ class UsersManagementEditEvent extends Event
     public function __construct()
     {
         
-        $this->user = array();
-        $this->users = array();
+        $this->user = [];
+        $this->users = [];
         $this->type = null;
     }
 

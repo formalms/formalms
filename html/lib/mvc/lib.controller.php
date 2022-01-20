@@ -93,18 +93,18 @@ class Controller
         }
 
         $paths = $morePaths;
-        $extensions = array();
+        $extensions = [];
         if (method_exists($this, "templatePath")) {
             $paths[] = $this->templatePath();
         }
         $paths[] = $this->viewPath();
 
-        $tplengine = Get::cfg('template_engine', array());
+        $tplengine = Get::cfg('template_engine', []);
 
 
         foreach ($tplengine as $tplkey => $tpleng) {
             if (isset($tplengine[$tplkey]['ext']) && !is_array($tplengine[$tplkey]['ext'])) {
-                $tplengine[$tplkey]['ext'] = array($tplengine[$tplkey]['ext']);
+                $tplengine[$tplkey]['ext'] = [$tplengine[$tplkey]['ext']];
             }
             $extensions[$tplkey] = $tplengine[$tplkey]['ext'];
         }
@@ -113,10 +113,10 @@ class Controller
         if (isset($extensions['twig']) && !in_array(".html.twig", $extensions['twig'])) {
             $extensions['twig'][] = '.html.twig';
         } else {
-            $extensions['twig'] = array('.html.twig');
+            $extensions['twig'] = ['.html.twig'];
         }
 
-        $extensions['php'] = array(".php");
+        $extensions['php'] = [".php"];
 
 
         $extension = "";

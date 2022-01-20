@@ -21,7 +21,7 @@ Class ClassLocationManager {
 	var $prefix=NULL;
 	var $dbconn=NULL;
 
-	var $status_info=array();
+	var $status_info= [];
 
 
 	function ClassLocationManager($prefix="learning", $dbconn=NULL) {
@@ -82,8 +82,8 @@ Class ClassLocationManager {
 
 	function getClassLocationList($ini=FALSE, $vis_item=FALSE) {
 
-		$data_info=array();
-		$data_info["data_arr"]=array();
+		$data_info= [];
+		$data_info["data_arr"]= [];
 
 		$fields="*";
 		$qtxt ="SELECT ".$fields." FROM ".$this->_getMainTable()." ";
@@ -117,7 +117,7 @@ Class ClassLocationManager {
 
 
 	function getClassLocationArray($include_any=FALSE) {
-		$res=array();
+		$res= [];
 
 		$class_locations=$this->getClassLocationList(FALSE, FALSE);
 		$locations_list=$class_locations["data_arr"];
@@ -135,7 +135,7 @@ Class ClassLocationManager {
 
 
 	function loadClassLocationInfo($id) {
-		$res=array();
+		$res= [];
 
 		$fields="*";
 		$qtxt ="SELECT ".$fields." FROM ".$this->_getMainTable()." ";

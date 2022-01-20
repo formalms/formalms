@@ -31,8 +31,8 @@ function showgrade() {
 	$org_tests 		=& $report_man->getTest();
 	$tests_info		=& $test_man->getTestInfo($org_tests);
 
-	$i_test = array();
-	$i_test_report_id = array();
+	$i_test = [];
+	$i_test_report_id = [];
 
 	// XXX: Info for updates
 	$query_tot_report = "
@@ -72,9 +72,9 @@ function showgrade() {
 	}
 	$report_man->updateTestReport($org_tests);
 
-	$reports 	= array();
-	$id_test 	= array();
-	$id_report 	= array();
+	$reports 	= [];
+	$id_test 	= [];
+	$id_report 	= [];
 
 	// XXX: retrive all report info
 	$query_report = "
@@ -101,7 +101,7 @@ function showgrade() {
 
 	// XXX: retrive report and test score
 	$report_score 	=& $report_man->getReportsScores($id_report, getLogUserId());
-	$tests_score 	=& $test_man->getTestsScores($id_test, array(getLogUserId()));
+	$tests_score 	=& $test_man->getTestsScores($id_test, [getLogUserId()]);
 
 	// XXX: create table
 	$table = new Table(0, $lang->def('_GRADEBOOK_CAPTION'), $lang->def('_GRADEBOOK_SUMMARY'));
@@ -109,14 +109,14 @@ function showgrade() {
     //** CR : LR. TABLE RESPONSE **
     $table->setTableId("table_pagella");
         
-        $cont_h = array(
+        $cont_h = [
         $lang->def('_TITLE'),
         $lang->def('_SCORE_LAST_TEST'),
         $lang->def('_REQUIRED_SCORE'),
         $lang->def('_DATE_LAST_TEST'),
         $lang->def('_COMMENTS'),
         $lang->def('_SHOW_RESULTS')
-    );
+        ];
     
      $info_pagella .='<style>
                             @media
@@ -137,7 +137,7 @@ function showgrade() {
 
     //*************************************
     
-	$type_h = array('', 'align_center', 'align_center', '', '');
+	$type_h = ['', 'align_center', 'align_center', '', ''];
 
 
 	$table->setColsStyle($type_h);
@@ -237,13 +237,13 @@ function showgrade() {
         if($date == "") $date = "-";
         if($comment == "") $comment = "-";
         
-		$table->addBody(array(
+		$table->addBody([
 			$title,
 			( $score == '' ? $lang->def('_NOT_ASSIGNED') : $score.' '.$lang->def('_MAX_DIVISOR').' '.$maxscore ),
 			($report_info['source_of'] === 'scorm_item' ? "-" : $required),
 			$date,
 			$comment, 
-			$link_result."&nbsp"));
+			$link_result."&nbsp"]);
 	}
 	$out->add(
 		getTitleArea($lang->def('_GRADEBOOK_AREATITLE'), 'gradebook')
@@ -275,8 +275,8 @@ function coursereport() {
 	$org_tests 		=& $report_man->getTest();
 	$tests_info		=& $test_man->getTestInfo($org_tests);
 
-	$i_test = array();
-	$i_test_report_id = array();
+	$i_test = [];
+	$i_test_report_id = [];
 
 	// XXX: Info for updates
 	$query_tot_report = "
@@ -316,10 +316,10 @@ function coursereport() {
 	}
 	$report_man->updateTestReport($org_tests);
 
-	$reports 	= array();
-	$id_test 	= array();
-	$id_report 	= array();
-	$tests=array();
+	$reports 	= [];
+	$id_test 	= [];
+	$id_report 	= [];
+	$tests= [];
 
 	// XXX: retrive all report info
 	$query_report = "
@@ -431,7 +431,7 @@ function user_test_report($idUser, $idTest, $id_track) {
 	$manual_score 			= 0;
 	$quest_sequence_number 	= 1;
 	$report_test			= '';
-	$point_do_cat 			= array();
+	$point_do_cat 			= [];
 
 	if ($idTrack) {
 	if($question_random_number != 0) {
@@ -508,7 +508,7 @@ function user_test_report($idUser, $idTest, $id_track) {
 
 function draw_bar($data) {
 
-	$barcolors=array("#FF0000","#0FF70A","#FF7109","#0010E1","#00D5A0","#F2FB00","#FB00E0","#AB00FB");
+	$barcolors= ["#FF0000","#0FF70A","#FF7109","#0010E1","#00D5A0","#F2FB00","#FB00E0","#AB00FB"];
 
 	$GLOBALS['page']->add('<div class="coursereport-graph">', 'content');
 

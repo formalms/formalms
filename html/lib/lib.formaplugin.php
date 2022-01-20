@@ -115,7 +115,7 @@ abstract class FormaPlugin {
      * @param array $roleMembers
      * @return int|false
      */
-    public static function addMenu($menu, $menuUnder = null, $roleMembers = array()) {
+    public static function addMenu($menu, $menuUnder = null, $roleMembers = []) {
         return CoreMenu::addMenu($menu, $menuUnder, $roleMembers, self::getID());
     }
 

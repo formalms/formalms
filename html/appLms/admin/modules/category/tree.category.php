@@ -32,12 +32,12 @@ class TreeDb_CatDb extends TreeDb {
 	function TreeDb_CatDb($table_name) {
 		
 		$this->table = $table_name;
-		$this->fields = array( 
+		$this->fields = [
 			'id' => 'idCategory', 
 			'idParent' => 'idParent', 
 			'path' => 'path', 
 			'lev' => 'lev'
-		);
+        ];
 	}
 	
 	function _getOtherFields($tname = FALSE) {
@@ -157,9 +157,9 @@ class TreeView_CatView extends TreeView {
 		
 		if( $this->isFolderSelected() ) {
 			
-			return array();
+			return [];
 		}
-		return array();
+		return [];
 	}
 	
 	function getFolderPrintName( &$folder ) {
@@ -268,7 +268,7 @@ class TreeView_CatView extends TreeView {
 		
 		$this->lang = null;
 		
-		return array(	'tdb',
+		return ['tdb',
 						'id',
 						'posTree',
 						'posFlat',
@@ -276,7 +276,7 @@ class TreeView_CatView extends TreeView {
 						'compressList',
 						'selectedFolder',
 						'op',
-						'rootname' );
+						'rootname'];
 	}
 	
 	function __wakeup() {

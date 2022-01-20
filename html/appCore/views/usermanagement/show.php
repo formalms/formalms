@@ -24,7 +24,7 @@ if ($permissions['view_user'] && Get::sett('register_deleted_user', "off") == "o
  */
 if ($permissions['view_org']) {
 
-	$languages = array(
+	$languages = [
 		'_ROOT' => Get::sett('title_organigram_chart', Lang::t('_ORG_CHART', 'organization_chart') ),
 		'_YES' => Lang::t('_CONFIRM', 'organization_chart'),
 		'_NO' => Lang::t('_UNDO', 'organization_chart'),
@@ -34,7 +34,7 @@ if ($permissions['view_org']) {
 		'_NAME' => Lang::t('_NAME', 'standard'),
 		'_MOD' => Lang::t('_MOD', 'standard'),
 		'_DEL' => Lang::t('_DEL', 'standard')
-	);
+    ];
 
 	$tree_rel_action = ($permissions['add_org'] ?
         '<a class="ico-wt-sprite subs_add" id="add_org_folder" href="' . ($this->model->isFolderEnabled($selected_orgchart, Docebo::user()->getIdSt()) ? 'ajax.adm_server.php?r='. $this->link.'/addfolder_dialog&id='.(int)$selected_orgchart.'" ' : '" style="visibility:hidden"' )
@@ -47,7 +47,7 @@ if ($permissions['view_org']) {
 		.'<span>'.Lang::t('_ORG_CHART_IMPORT_USERS', 'organization_chart').'</span>'
 		.'</a>' : '');
 
-	$this->widget('tree', array(
+	$this->widget('tree', [
 		'id' => 'usertree',
 		'ajaxUrl' => 'ajax.adm_server.php?r='. $this->link.'/gettreedata',
 		'treeClass' => 'OrgFolderTree',
@@ -58,23 +58,23 @@ if ($permissions['view_org']) {
 		'show' => 'tree',
 		'dragDrop' => true,
 		'rel_action' => $tree_rel_action.$_other_links
-	));
+    ]);
 
 
 	/**
 	 * Add folder dialog
 	 */
 	if ($permissions['add_org']) {
-		$this->widget('dialog', array(
+		$this->widget('dialog', [
 			'id' => 'add_folder_dialog',
 			'dynamicContent' => true,
 			'ajaxUrl' => 'this.href',
 			'dynamicAjaxUrl' => true,
 			'callback' => 'UserManagement.addFolderCallback',
-			'callEvents' => array(
-				array('caller' => 'add_org_folder', 'event' => 'click')
-			)
-		));
+			'callEvents' => [
+				['caller' => 'add_org_folder', 'event' => 'click']
+            ]
+        ]);
 	}
 
 } else {
@@ -126,8 +126,8 @@ if ($permissions['view_user']) {
 /*
  * Table
  */
-$dyn_labels = array();
-$dyn_filter = array();
+$dyn_labels = [];
+$dyn_filter = [];
 for ($i=0; $i<$num_var_fields; $i++) {
 	$label = '<select id="_dyn_field_selector_'.$i.'" name="_dyn_field_selector['.$i.']">';
 	foreach ($fieldlist as $key => $value) {
@@ -150,28 +150,28 @@ $icon_suspend = '<span class="ico-sprite subs_unlocked" title="'.Lang::t('_SUSPE
 $icon_mod = '<span class="ico-sprite subs_mod" title="'.Lang::t('_MOD', 'standard').'"><span>'.Lang::t('_MOD', 'standard').'</span></span>';
 $icon_del = '<span class="ico-sprite subs_del" title="'.Lang::t('_DEL', 'standard').'"><span>'.Lang::t('_DEL', 'standard').'</span></span>';
 
-$columns_arr = array();
-$columns_arr[] = array('key' => 'userid', 'label' => Lang::t('_USERNAME'), 'sortable' => true, 'formatter' => 'UserManagement.labelFormatter');
-$columns_arr[] = array('key' => 'lastname', 'label' => Lang::t('_LASTNAME'), 'sortable' => true, 'formatter' => 'UserManagement.labelFormatter');
-$columns_arr[] = array('key' => 'firstname', 'label' => Lang::t('_FIRSTNAME'), 'sortable' => true, 'formatter' => 'UserManagement.labelFormatter');
+$columns_arr = [];
+$columns_arr[] = ['key' => 'userid', 'label' => Lang::t('_USERNAME'), 'sortable' => true, 'formatter' => 'UserManagement.labelFormatter'];
+$columns_arr[] = ['key' => 'lastname', 'label' => Lang::t('_LASTNAME'), 'sortable' => true, 'formatter' => 'UserManagement.labelFormatter'];
+$columns_arr[] = ['key' => 'firstname', 'label' => Lang::t('_FIRSTNAME'), 'sortable' => true, 'formatter' => 'UserManagement.labelFormatter'];
 for ($i=0; $i<$num_var_fields; $i++) {
-	$columns_arr[] = array('key' => '_dyn_field_'.$i, 'label' => $dyn_labels[$i]);
+	$columns_arr[] = ['key' => '_dyn_field_'.$i, 'label' => $dyn_labels[$i]];
 }
-$columns_arr[] = array('key' => 'profile', 'label' => $icon_profile, 'formatter' => 'UserManagement.profileFormatter', 'className' => 'img-cell');
-if ($permissions['associate_user']) $columns_arr[] = array('key' => 'unassoc', 'label' => $icon_orgbranch, 'formatter' => 'UserManagement.orgbranchFormatter', 'className' => 'img-cell');
-if ($permissions['mod_user']) $columns_arr[] = array('key' => 'valid', 'label' => $icon_suspend, 'formatter' => 'UserManagement.suspendFormatter', 'className' => 'img-cell');
-if ($permissions['mod_user']) $columns_arr[] = array('key' => 'mod', 'label' => $icon_mod, 'formatter' => 'doceboModify', 'className' => 'img-cell');
-if ($permissions['del_user'] && !Get::cfg('demo_mode')) $columns_arr[] = array('key' => 'del', 'label' => $icon_del, 'formatter' => 'doceboDelete', 'className' => 'img-cell');
+$columns_arr[] = ['key' => 'profile', 'label' => $icon_profile, 'formatter' => 'UserManagement.profileFormatter', 'className' => 'img-cell'];
+if ($permissions['associate_user']) $columns_arr[] = ['key' => 'unassoc', 'label' => $icon_orgbranch, 'formatter' => 'UserManagement.orgbranchFormatter', 'className' => 'img-cell'];
+if ($permissions['mod_user']) $columns_arr[] = ['key' => 'valid', 'label' => $icon_suspend, 'formatter' => 'UserManagement.suspendFormatter', 'className' => 'img-cell'];
+if ($permissions['mod_user']) $columns_arr[] = ['key' => 'mod', 'label' => $icon_mod, 'formatter' => 'doceboModify', 'className' => 'img-cell'];
+if ($permissions['del_user'] && !Get::cfg('demo_mode')) $columns_arr[] = ['key' => 'del', 'label' => $icon_del, 'formatter' => 'doceboDelete', 'className' => 'img-cell'];
 
 // Releated actions
 
 if ($permissions['add_user']) {
-	$languages = array(
+	$languages = [
 		'_ROOT' => Get::sett('title_organigram_chart', Lang::t('_ORG_CHART', 'organization_chart') ),
 		'_LOADING' => Lang::t('_LOADING', 'standard')
-	);
+    ];
 
-	$this->widget('tree', array(
+	$this->widget('tree', [
 		'id' => 'createuser_orgchart_tree',
 		'ajaxUrl' => 'ajax.adm_server.php?r='.$this->link.'/gettreedata_create',
 		'treeClass' => 'DialogOrgFolderTree',
@@ -180,11 +180,11 @@ if ($permissions['add_user']) {
 		'initialSelectedNode' => 0,
 		'show' => 'tree',
 		'useCheckboxes' => 'true',
-		'initialSelectorData' => array(0),
+		'initialSelectorData' => [0],
 		'setSelectedNodeOnServer' => false,
 		'hiddenSelection' => 'orgchart_hidden_selection',
 		'runtime' => true
-	));
+    ]);
 }
 
 $rel_action = ($permissions['add_user'] ? '<a class="ico-wt-sprite subs_add" href="ajax.adm_server.php?r='. $this->link.'/create">'
@@ -205,13 +205,13 @@ $rel_action_bottom = ' '
 	.'<b id="num_users_selected_bottom">'.(int)(isset($num_users_selected) ? $num_users_selected : '0').'</b> '.Lang::t('_SELECTED', 'admin_directory')
 	.'</span>';
 
-$arr_fields = array('id', 'userid', 'firstname', 'lastname', 'profile', 'unassoc', 'valid', 'mod', 'del');
+$arr_fields = ['id', 'userid', 'firstname', 'lastname', 'profile', 'unassoc', 'valid', 'mod', 'del'];
 for ($i=0; $i<$num_var_fields; $i++) {
 	$arr_fields[] = '_dyn_field_'.$i;
 }
 
 //render table
-$this->widget('table', array(
+$this->widget('table', [
 	'id' => 'usertable',
 	'ajaxUrl' => 'ajax.adm_server.php?r='. $this->link.'/gettabledata',
 	'sort' => 'userid',
@@ -220,16 +220,16 @@ $this->widget('table', array(
 	'stdSelection' => true,
 	'stdSelectionField' => '_checked',
 	'selectAllAdditionalFilter' => 'UserManagement.selectAllAdditionalFilter()',
-	'rel_actions' => array($rel_action.$rel_action_over, $rel_action.$rel_action_bottom),
+	'rel_actions' => [$rel_action.$rel_action_over, $rel_action.$rel_action_bottom],
 	'delDisplayField' => 'userid',
 	'stdDeleteCallbackEvent' => 'UserManagement.updateDeletedUsersTotal',
 	'generateRequest' => 'UserManagement.requestBuilder',
-	'events' => array(
+	'events' => [
 		'initEvent' => 'UserManagement.initEvent',
 		'beforeRenderEvent' => 'UserManagement.beforeRenderEvent',
 		'postRenderEvent' => 'UserManagement.postRenderEvent'
-	)
-));
+    ]
+]);
 
 //invisible form for export action
 echo Form::openForm('csv_form', "index.php?r=". $this->link."/csvexport");

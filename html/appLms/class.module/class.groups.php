@@ -20,21 +20,21 @@ class Module_Groups extends LmsModule {
 	}
 	
 	function getAllToken() {
-		return array( 
-			'view' => array( 	'code' => 'view',
+		return [
+			'view' => ['code' => 'view',
 								'name' => '_VIEW',
-								'image' => 'standard/view.png'), 
-			'mod' => array( 	'code' => 'mod',
+								'image' => 'standard/view.png'],
+			'mod' => ['code' => 'mod',
 								'name' => '_MOD',
-								'image' => 'standard/edit.png'),
-			'subscribe' => array( 	'code' => 'subscribe',
+								'image' => 'standard/edit.png'],
+			'subscribe' => ['code' => 'subscribe',
 								'name' => '_SUBSCRIBE',
-								'image' => 'standard/moduser.png')
-		);
+								'image' => 'standard/moduser.png']
+        ];
 	}
 
 	function getPermissionsForMenu($op) {
-		return array(
+		return [
 			1 => $this->selectPerm($op, 'view'),
 			2 => $this->selectPerm($op, 'view'),
 			3 => $this->selectPerm($op, 'view'),
@@ -42,7 +42,7 @@ class Module_Groups extends LmsModule {
 			5 => $this->selectPerm($op, 'view,mod'),
 			6 => $this->selectPerm($op, 'view,mod,subscribe'),
 			7 => $this->selectPerm($op, 'view,mod,subscribe')
-		);
+        ];
 	}
 	
 }

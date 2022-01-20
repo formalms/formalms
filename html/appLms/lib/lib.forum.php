@@ -31,7 +31,7 @@ class Man_Forum {
 		
 			
 		//$time_start = getmicrotime();
-		$unreaded = array();
+		$unreaded = [];
 		if(empty($courses)) return $unreaded;
 		
 		$reLast = sql_query("

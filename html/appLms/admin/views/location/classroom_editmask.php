@@ -1,8 +1,8 @@
-<?php Get::title(array(
+<?php Get::title([
 	'index.php?r=alms/location/show' => Lang::t('_LOCATION', 'classroom'),
 	'index.php?r=alms/location/show_classroom&amp;id_location='.( $_is_editing ? $info->location_id : $id_location ) => Lang::t('_CLASSROOM', 'classroom'),
 	Lang::t($_is_editing ? '_MOD' : '_ADD', 'standard')
-)); ?>
+]); ?>
 <div class="std_block">
 <?php
 	echo getBackUi('index.php?r=alms/location/show_classroom&amp;id_location='.( $_is_editing ? $info->location_id : $id_location ), Lang::t('_BACK'));

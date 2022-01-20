@@ -28,7 +28,7 @@ class CourseSubscribe {
 		$this->prefix=($prefix !== false ? $prefix : $GLOBALS["prefix_lms"]);
 		$this->dbconn=$dbconn;
 
-		$this->subscribe_info=array("course"=>array(), "edition"=>array());
+		$this->subscribe_info= ["course"=> [], "edition"=> []];
 	}
 
 
@@ -94,8 +94,8 @@ class CourseSubscribe {
 
 		$res=$this->getSubscribeInfo($course_id, $edition_id);
 
-		$look_for=array("allow_overbooking", "can_subscribe", "sub_start_date", "sub_end_date",
-		                "user_count", "waiting", "max_num_subscribe");
+		$look_for= ["allow_overbooking", "can_subscribe", "sub_start_date", "sub_end_date",
+		                "user_count", "waiting", "max_num_subscribe"];
 
 		foreach($look_for as $name) {
 			if (isset($data[$name])) {
@@ -109,9 +109,9 @@ class CourseSubscribe {
 	 * This is not private but you should use the getSubscribeInfo
 	 */
 	function loadSubscribeInfo($course_id, $edition_id=FALSE) {
-		$res=array();
-		$main_res=array();
-		$user_res=array();
+		$res= [];
+		$main_res= [];
+		$user_res= [];
 
 		if (!$this->_isEdition($edition_id)) {
 			$id_name="idCourse";

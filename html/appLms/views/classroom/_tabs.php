@@ -1,36 +1,36 @@
 <div style="margin:1em;">
 	<?php
-	$w = $this->widget('lms_tab', array(
+	$w = $this->widget('lms_tab', [
 		'active' => 'elearning',
 		'close' => false
-	));
+    ]);
 
 	// draw search
 	$_model = new ElearningLms();
 	$_auxiliary = Form::getInputDropdown('', 'course_search_filter_year', 'filter_year',
 		$_model->getFilterYears(Docebo::user()->getIdst()), 0, '');
 
-	$this->widget('tablefilter', array(
+	$this->widget('tablefilter', [
 		'id' => 'course_search',
 		'filter_text' => "",
 		'auxiliary_filter' => Lang::t('_SEARCH', 'standard').":&nbsp;&nbsp;&nbsp;".$_auxiliary,
 		'js_callback_set' => 'course_search_callback_set',
 		'js_callback_reset' => 'course_search_callback_reset',
 		'css_class' => 'tabs_filter'
-	));
+    ]);
 
 	$w->endWidget();
 	?>
 </div>
 
 <?php
-$prop =array(
+$prop = [
 	'id' => 'self_unsubscribe_dialog',
 	'dynamicContent' => true,
 	'ajaxUrl' => 'this.href',
 	'dynamicAjaxUrl' => true,
-	'callEvents' => array()
-);
+	'callEvents' => []
+];
 $this->widget('dialog', $prop);
 ?>
 

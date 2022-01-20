@@ -24,7 +24,7 @@ Class EditionLmsController extends LmsController
 		$id_course = Get::req('id_course', DOTY_INT, 0);
 
 		$model = new EditionLms($id_course);
-		$this->render('show', array('model' => $model));
+		$this->render('show', ['model' => $model]);
 	}
 
 	protected function geteditionlist()
@@ -43,13 +43,13 @@ Class EditionLmsController extends LmsController
 		$total_edition = $model->getEditionNumber();
 		$array_edition = $model->loadEdition($start_index, $results, $sort, $dir);
 
-		$result = array(	'totalRecords' => $total_edition,
+		$result = ['totalRecords' => $total_edition,
 							'startIndex' => $start_index,
 							'sort' => $sort,
 							'dir' => $dir,
 							'rowsPerPage' => $results,
 							'results' => count($array_edition),
-							'records' => $array_edition);
+							'records' => $array_edition];
 
 		$this->data = $this->json->encode($result);
 
@@ -76,7 +76,7 @@ Class EditionLmsController extends LmsController
 			Util::jump_to('index.php?r=edition/show&id_course='.$model->getIdCourse().'&result=err_ins');
 		}
 		else
-			$this->render('add', array('model' => $model, 'course_info' => $course_info));
+			$this->render('add', ['model' => $model, 'course_info' => $course_info]);
 	}
 
 	public function edit()
@@ -98,7 +98,7 @@ Class EditionLmsController extends LmsController
 			Util::jump_to('index.php?r=edition/show&id_course='.$model->getIdCourse().'&result=err_mod');
 		}
 		else
-			$this->render('edit', array('model' => $model, 'edition_info' => $edition_info));
+			$this->render('edit', ['model' => $model, 'edition_info' => $edition_info]);
 	}
 
 	public function del()
@@ -109,7 +109,7 @@ Class EditionLmsController extends LmsController
 
 		$model = new EditionLms($id_course, $id_edition);
 
-		$res = array('success' => $model->delEdition());
+		$res = ['success' => $model->delEdition()];
 
 		$this->data = $this->json->encode($res);
 

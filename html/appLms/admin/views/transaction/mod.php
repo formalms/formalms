@@ -1,6 +1,6 @@
 <?php
-	$array_title = array(	'index.php?r=alms/transaction/show' => Lang::t('_TRANSACTION', 'transaction'),
-							Lang::t('_MOD', 'transaction'));
+	$array_title = ['index.php?r=alms/transaction/show' => Lang::t('_TRANSACTION', 'transaction'),
+							Lang::t('_MOD', 'transaction')];
 
 	echo	getTitleArea($array_title)
 			.'<div class="std_block">';

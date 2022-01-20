@@ -285,10 +285,10 @@ function saveTrackStatusChange( $idUser, $idCourse, $status ) {
 		$acl_man =& Docebo::user()->getAclManager();
 		$teachers = Man_Course::getIdUserOfLevel($idCourse, '6');
 		
-		$array_subst = array(
+		$array_subst = [
 			'[user]' => $acl_man->getUserName($idUser),
 			'[course]' => $cd->getValue('name')
-		);
+        ];
 		
 		$msg_composer = new EventMessageComposer();
 

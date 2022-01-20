@@ -41,7 +41,7 @@ class Test_Charts {
 	var $fontPath = '';
 	var $imagePath = '';
 	var $valid = false;
-	var $values = array();
+	var $values = [];
 
 	var $settings = null;
 
@@ -72,13 +72,13 @@ class Test_Charts {
 		$this->settings->lineWidth = 4;
 		$this->settings->legendWidth = 200;
 
-		$this->settings->bgColor = array(230, 230, 230); //R, G, B
-		$this->settings->graphColor = array(255, 255, 255);
-		$this->settings->scaleColor = array(150, 150, 150);
-		$this->settings->lineColor = array(230, 230, 230);
-		$this->settings->tresholdColor = array(143, 55, 72);
-		$this->settings->legendColor = array(255, 255, 255);
-		$this->settings->titleColor = array(50, 50, 50);
+		$this->settings->bgColor = [230, 230, 230]; //R, G, B
+		$this->settings->graphColor = [255, 255, 255];
+		$this->settings->scaleColor = [150, 150, 150];
+		$this->settings->lineColor = [230, 230, 230];
+		$this->settings->tresholdColor = [143, 55, 72];
+		$this->settings->legendColor = [255, 255, 255];
+		$this->settings->titleColor = [50, 50, 50];
 
 		return true;
 	}
@@ -270,7 +270,7 @@ class Test_Charts {
 	}
 
 	function _getTestCategories() {
-		$categories = array();
+		$categories = [];
 		$query = "SELECT DISTINCT c.idCategory, c.name FROM ".$GLOBALS['prefix_lms']."_quest_category as c "
 			." JOIN ".$GLOBALS['prefix_lms']."_testquest as q ON (q.idCategory = c.idCategory AND q.idTest=".$this->idTest.")";
 		$res = sql_query($query);
@@ -285,7 +285,7 @@ class Test_Charts {
 		$res = sql_query($query);
 		list($idTrack) = sql_fetch_row($res);
 
-		$user_values = array();
+		$user_values = [];
 		$query = "SELECT tq.idCategory, SUM(ta.score_assigned) "
 			." FROM ".$GLOBALS['prefix_lms']."_testtrack_answer as ta JOIN ".$GLOBALS['prefix_lms']."_testquest as tq "
 			." ON (ta.idQuest = tq.idQuest) "
@@ -298,13 +298,13 @@ class Test_Charts {
 	
 	
 	function _getAverageStats() {
-		$tracks = array();
+		$tracks = [];
 		$query = "SELECT idTrack FROM ".$GLOBALS['prefix_lms']."_testtrack WHERE idTest=".$this->idTest;
 		$res = sql_query($query);
 		while (list($idTrack) = sql_fetch_row($res)) $tracks[] = $idTrack;
 
 		//TO DO: check count($tracks) ...
-		$average_values = array();
+		$average_values = [];
 		$query = "SELECT tq.idCategory, COUNT(DISTINCT ta.idTrack), SUM(ta.score_assigned) "
 			." FROM ".$GLOBALS['prefix_lms']."_testtrack_answer as ta JOIN ".$GLOBALS['prefix_lms']."_testquest as tq "
 			." ON (ta.idQuest = tq.idQuest) "
@@ -328,8 +328,8 @@ class Test_Charts {
 		$average_values = $this->_getAverageStats();
 //die('<pre>'.print_r($user_values, true).print_r($average_values, true).'</pre>');
 		$this->_openDataSet();
-		$cat_names = array();
-		$avg_values = array();
+		$cat_names = [];
+		$avg_values = [];
 		foreach ($user_values as $id_cat=>$value) {
 			$cat_names[] = $categories[$id_cat];
 			$avg_values[] = $average_values[$id_cat]; //ensure proper order to average values serie
@@ -377,11 +377,11 @@ class Test_Charts {
 		$this->_setChartTitle();
 
 		//set table
-		$cont_h = array('', $this->lang->def('_USER_TESTSCORE'), $this->lang->def('_AVERAGE_TESTSCORE'));
-		$type_h = array('', 'align_center', 'align_center');
+		$cont_h = ['', $this->lang->def('_USER_TESTSCORE'), $this->lang->def('_AVERAGE_TESTSCORE')];
+		$type_h = ['', 'align_center', 'align_center'];
 		$this->table->addHead($cont_h, $type_h);
 		foreach ($user_values as $idCategory=>$value) {
-			$line = array();
+			$line = [];
 			$line[] = $categories[$idCategory];
 			$line[] = $value;
 			$line[] = (isset($average_values[$idCategory]) ? $average_values[$idCategory] : 0);
@@ -403,7 +403,7 @@ class Test_Charts {
 		// Dataset definition
 		$this->_openDataSet();
 		foreach ($user_values as $idCategory=>$value) {
-			$this->dataSet->AddPoint(array($value), "serie_".$idCategory);
+			$this->dataSet->AddPoint([$value], "serie_".$idCategory);
 			if ($value>$max_value) $max_value = $value;
 			if ($value<$min_value) $min_value = $value;
 		}
@@ -435,11 +435,11 @@ class Test_Charts {
 		$this->_setChartTitle();
 
 		//set table
-		$cont_h = array('', $this->lang->def('_USER_TESTSCORE'), $this->lang->def('_AVERAGE_TESTSCORE'));
-		$type_h = array('', 'align_center', 'align_center');
+		$cont_h = ['', $this->lang->def('_USER_TESTSCORE'), $this->lang->def('_AVERAGE_TESTSCORE')];
+		$type_h = ['', 'align_center', 'align_center'];
 		$this->table->addHead($cont_h, $type_h);
 		foreach ($user_values as $idCategory=>$value) {
-			$line = array();
+			$line = [];
 			$line[] = $categories[$idCategory];
 			$line[] = $value;
 			$line[] = (isset($average_values[$idCategory]) ? $average_values[$idCategory] : 0);
@@ -457,11 +457,11 @@ class Test_Charts {
 		//[{"name":"Direttivo","ids":[14,15]},{"name":"Persuasivo","ids":[16,17]},{"name":"Partecipativo","ids":[18,19]},{"name":"Delegante","ids":[20,21]}]
 		if (property_exists($this->testInfo, 'couples')) $couples = $this->testInfo->couples; else return false;
 
-		$cat_names = array();
-		$values_1 = array();
-		$values_2 = array();
-		$type_h = array('');
-		$cont_h = array('');
+		$cat_names = [];
+		$values_1 = [];
+		$values_2 = [];
+		$type_h = [''];
+		$cont_h = [''];
 		foreach ($couples as $obj) {
 			$cat_names[] = $obj->name;
 			$values_1[] = $user_values[$obj->ids[1]] + $user_values[$obj->ids[0]];
@@ -509,11 +509,11 @@ class Test_Charts {
 		//set table
 		$this->table->addHead($cont_h, $type_h);
 		//frequency values
-		$frequency = array($this->lang->def('_FREQUENCY'));
+		$frequency = [$this->lang->def('_FREQUENCY')];
 		foreach ($values_1 as $value) $frequency[] = $value;
 		$this->table->addBody($frequency);
 		//efficacy values
-		$efficacy = array($this->lang->def('_EFFICACY'));
+		$efficacy = [$this->lang->def('_EFFICACY')];
 		foreach ($values_2 as $value) $efficacy[] = $value;
 		$this->table->addBody($efficacy);
 	}
@@ -532,7 +532,7 @@ class Test_Charts {
 
 		$this->_openDataSet();
 		foreach ($user_values as $idCategory=>$value) {
-			$this->dataSet->AddPoint(array($value), "serie_".$idCategory);
+			$this->dataSet->AddPoint([$value], "serie_".$idCategory);
 			if ($value>0) $max_value += $value;
 			if ($value<0) $min_value -= $value;
 		}
@@ -557,11 +557,11 @@ class Test_Charts {
 		$this->_setChartTitle();
 
 		//set table
-		$cont_h = array('', $this->lang->def('_USER_TESTSCORE'), $this->lang->def('_AVERAGE_TESTSCORE'));
-		$type_h = array('', 'align_center', 'align_center');
+		$cont_h = ['', $this->lang->def('_USER_TESTSCORE'), $this->lang->def('_AVERAGE_TESTSCORE')];
+		$type_h = ['', 'align_center', 'align_center'];
 		$this->table->addHead($cont_h, $type_h);
 		foreach ($user_values as $idCategory=>$value) {
-			$line = array();
+			$line = [];
 			$line[] = $categories[$idCategory];
 			$line[] = $value;
 			$line[] = (isset($average_values[$idCategory]) ? $average_values[$idCategory] : 0);

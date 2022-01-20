@@ -26,7 +26,7 @@ class Track_Poll extends Track_Object {
 		
 		$this->idResource = $idResource;
 		$this->idParams = $idParams;
-		if($back_url === NULL) $this->back_url = array();
+		if($back_url === NULL) $this->back_url = [];
 		else $this->back_url = $back_url;
 	}
 	
@@ -84,10 +84,10 @@ class Track_Poll extends Track_Object {
                 
                 $rsTrack = $this->getTrack($id_reference,$idResource,$idUser);
                 if( $rsTrack !== FALSE ) {
-                    return array( TRUE, $rsTrack );
+                    return [TRUE, $rsTrack];
                 } else if ($createOnFail) {
                         $rsTrack = $this->createNewTrack( $idUser, $idResource, $id_reference );
-                        return array( FALSE, $rsTrack );
+                        return [FALSE, $rsTrack];
                 }
 		return FALSE;
 	}

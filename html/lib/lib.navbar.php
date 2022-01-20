@@ -48,28 +48,28 @@ class NavBar {
 		if($kind_of == 'button') $this->kind_of = 'button';
 		else $this->kind_of = 'link';
 
-		$this->symbol = array(
-			'start' => array(
+		$this->symbol = [
+			'start' => [
 				'img' => '<img src="'.getPathImage('fw').'standard/start.gif" alt="'. Lang::t('_START').'" title="'. Lang::t('_START').'" />',
 				'src' => getPathImage('fw').'standard/start.gif',
 				'alt' => Lang::t('_START', $modname)
-			),
-			'prev' => array(
+            ],
+			'prev' => [
 				'img' => '<img src="'.getPathImage('fw').'standard/prev.gif" alt="'. Lang::t('_PREV').'" title="'. Lang::t('_PREV').'" />',
 				'src' => getPathImage('fw').'standard/prev.gif',
 				'alt' => Lang::t('_PREV', $modname)
-			),
-			'next' => array(
+            ],
+			'next' => [
 				'img' => '<img src="'.getPathImage('fw').'standard/next.gif" alt="'. Lang::t('_NEXT').'" title="'. Lang::t('_NEXT').'" />',
 				'src' => getPathImage('fw').'standard/next.gif',
 				'alt' => Lang::t('_NEXT', $modname)
-			),
-			'end' => array(
+            ],
+			'end' => [
 				'img' => '<img src="'.getPathImage('fw').'standard/end.gif" alt="'. Lang::t('_END').'" title="'. Lang::t('_END').'" />',
 				'src' => getPathImage('fw').'standard/end.gif',
 				'alt' => Lang::t('_END', $modname)
-			)
-		);
+            ]
+        ];
 	}
 
 	/**

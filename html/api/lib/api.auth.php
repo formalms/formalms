@@ -34,7 +34,7 @@ class Auth_API extends API {
 			case _AUTH_TOKEN: { $result = _AUTH_TOKEN_DESC; } break;
 			case _AUTH_SECRET_KEY: { $result = _AUTH_SECRET_KEY_DESC; } break;
 		}
-		$mode = array( 'success'=>($result != ''), 'method'=>$result );
+		$mode = ['success'=>($result != ''), 'method'=>$result];
 		return $mode;
 	}
 
@@ -90,13 +90,13 @@ class Auth_API extends API {
                         "('".$row->idst."', '".$level."', '".$token."', '".$now."', NULL, '".$expire."')";
                     $res = $this->db->query($query);
                 }
-                $result = array('success'=>true, 'token'=>$token, 'expire_at'=>$expire);
+                $result = ['success'=>true, 'token'=>$token, 'expire_at'=>$expire];
             } else {
-                $result = array('success'=>false, 'message'=>'Error: invalid auth.');
+                $result = ['success'=>false, 'message'=>'Error: invalid auth.'];
             }
 
 		} else {
-			$result = array('success'=>false, 'message'=>'Error: invalid auth.');
+			$result = ['success'=>false, 'message'=>'Error: invalid auth.'];
 		}
 		return $result;
 	}
@@ -110,7 +110,7 @@ class Auth_API extends API {
 
 		$auth_method = Get::sett('rest_auth_method', 'none');
 		if($auth_method != _REST_AUTH_TOKEN && $auth_method != _REST_AUTH_CODE) {
-			return array('success'=>false, 'message'=>'Error: Tokens are not used on this installation.');
+			return ['success'=>false, 'message'=>'Error: Tokens are not used on this installation.'];
 		}
 
     //** BUG 2466 FIXED - SOAP  AUTHENTICATION ERROR WITH GENERATED TOKEN **
@@ -126,19 +126,19 @@ class Auth_API extends API {
 
 		if ($username == false || $password === false) {
 			//error: no login data provided
-			return array('success'=>false, 'message'=>'Error: invalid login data provided.');
+			return ['success'=>false, 'message'=>'Error: invalid login data provided.'];
 		} else {
 
 			$res = $this->generateToken($username, $password, $third_party);
 			if ($res['success']) {
-				$output = array(
+				$output = [
 					'success'=>true,
 					'message'=>'You are authenticated.',
 					'token'=>$res['token'],
 					'expire_at'=>$res['expire_at']
-				);
+                ];
 			} else {
-				$output = array('success'=>false, 'message'=>'Error: invalid user.');
+				$output = ['success'=>false, 'message'=>'Error: invalid user.'];
 			}
 			return $output;
 		}

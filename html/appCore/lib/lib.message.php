@@ -66,7 +66,7 @@ class MessageModule {
 				break;
 		}
 
-		return(array($img_priority,$text_priority,$color_priority));
+		return([$img_priority,$text_priority,$color_priority]);
 	}
 
 	//operations functions
@@ -119,7 +119,7 @@ class MessageModule {
 		//$output .= Form::openForm('tab_advice', $form_url);
 
 		$course_man = new Man_Course();
-		$all_value = array(0 => Lang::t('_ALL_COURSES'));
+		$all_value = [0 => Lang::t('_ALL_COURSES')];
 		$all_courses = $course_man->getUserCourses( getLogUserId() );
 		$all_value = $all_value + $all_courses;
 
@@ -325,7 +325,7 @@ class MessageModule {
 		// 	'<span class="ico-sprite subs_del"><span>'.Lang::t('_DEL', 'standard').'</span></span>'
 		// );
 
-		$cont_h = array(
+		$cont_h = [
 			'<span class="glyphicon glyphicon-exclamation-sign" title="'.Lang::t('_PRIORITY', 'message').'"></span>',
 			'<span class="glyphicon glyphicon-folder-close" title="'.Lang::t('_UNREAD', 'message').'"></span>',
 			Lang::t('_TITLE', 'message'),
@@ -333,9 +333,9 @@ class MessageModule {
 			Lang::t('_SENDER', 'message'),
 			Lang::t('_DATE', 'message'),
 			'<span>'.Lang::t('_DEL', 'standard').'</span>'
-		);
+        ];
 
-		$type_h = array(
+		$type_h = [
 			'image hidden-xs',
 			'image hidden-xs',
 			'col-xs-5',
@@ -343,7 +343,7 @@ class MessageModule {
 			'col-xs-3',
 			'col-xs-3 message_posted',
 			'col-xs-1 image'
-		);
+        ];
 
 		$tb->setColsStyle($type_h);
 		$tb->addHead($cont_h);
@@ -359,7 +359,7 @@ class MessageModule {
 
 			list($img_priority,$text_priority,$color_priority) = self::decodePriority($priority);
 
-			$cont = array();
+			$cont = [];
 			// $cont[] = '<img src="'.getPathImage().'standard/'.$img_priority.'" '
 			// 	.'title="'.$text_priority.'" '
 			// 	.'alt="'.$text_priority.'" />';
@@ -528,22 +528,22 @@ class MessageModule {
 		// 	'<span class="ico-sprite subs_del"><span>'.Lang::t('_DEL', 'standard').'</span></span>'
 		// );
 
-		$cont_h = array(
+		$cont_h = [
 			'<span class="glyphicon glyphicon-exclamation-sign" title="'.Lang::t('_PRIORITY', 'message').'"></span>',
 			Lang::t('_TITLE', 'message'),
 			'<span class="glyphicon glyphicon-paperclip" title="'.Lang::t('_ATTACH_TITLE', 'message').'"></span>',
 			Lang::t('_DATE', 'message'),
 			Lang::t('_RECIPIENTS', 'message'),
 			'<span>'.Lang::t('_DEL', 'standard').'</span>'
-		);
+        ];
 
-		$type_h = array(
+		$type_h = [
 			'image hidden-xs',
 			'col-xs-5',
 			'image hidden-xs',
 			'col-xs-3 message_posted',
 			'col-xs-3 message_posted',
-			'col-xs-1 image');
+			'col-xs-1 image'];
 
 		$tb->setColsStyle($type_h);
 		$tb->addHead($cont_h);
@@ -552,7 +552,7 @@ class MessageModule {
 
 			list($img_priority,$text_priority,$color_priority) = self::decodePriority($priority);
 
-			$cont = array();
+			$cont = [];
 			// $cont[] = '<img src="'.getPathImage().'standard/'.$img_priority.'" '
 			// 	.'title="'.$text_priority.'" '
 			// 	.'alt="'.$text_priority.'" />';
@@ -684,10 +684,10 @@ class MessageModule {
 			$user_select->resetSelection($recipients);
 		}
 
-		$me = array(getLogUserId());
+		$me = [getLogUserId()];
 
 		$course_man = new Man_Course();
-		$all_value = array(0 => Lang::t('_ALL_COURSES'));
+		$all_value = [0 => Lang::t('_ALL_COURSES')];
 		$all_courses = $course_man->getUserCourses( getLogUserId() );
 		$all_value = $all_value + $all_courses;
 
@@ -737,8 +737,8 @@ class MessageModule {
 			: $um->getUrl(( $from == 'out' ? '&active_tab=outbox' : '' ));
 
 		$user_select->setPageTitle(
-			$this->messageGetTitleArea(array($title_url => Lang::t('_MESSAGES'),
-			Lang::t('_SEND') ),
+			$this->messageGetTitleArea([$title_url => Lang::t('_MESSAGES'),
+			Lang::t('_SEND')],
 			'forum'));
 
 		$load_url = $this->mvc_urls
@@ -785,8 +785,8 @@ class MessageModule {
 
 		$output = "";
 		$output .=
-			$this->messageGetTitleArea(array($title_url => Lang::t('_MESSAGES'),
-				Lang::t('_SEND')) ,'message')
+			$this->messageGetTitleArea([$title_url => Lang::t('_MESSAGES'),
+				Lang::t('_SEND')],'message')
 			.'<div class="std_block">';
 
 		if(isset($_POST['send'])) {
@@ -828,7 +828,7 @@ class MessageModule {
 				$send_to_idst =& $acl_man->getAllUsersFromIdst($user_selected);
 
 				$re = true;
-				$recip_alert = array();
+				$recip_alert = [];
 				if(is_array($send_to_idst)) {
 
 					$logged_user =  getLogUserId();
@@ -878,21 +878,21 @@ class MessageModule {
 
 						$msg_composer->setSubjectLangText('email', '_YOU_RECIVE_MSG_SUBJECT', false);
 						if ( !$is_course ) {
-							$msg_composer->setBodyLangText('email', '_YOU_RECIVE_MSG_TEXT', array(	'[url]' => _MESSAGE_PL_URL,
+							$msg_composer->setBodyLangText('email', '_YOU_RECIVE_MSG_TEXT', ['[url]' => _MESSAGE_PL_URL,
 																									'[course]' => $course_name,
-																									'[from]' => Docebo::user()->getUsername() ) );
+																									'[from]' => Docebo::user()->getUsername()]);
 
-							$msg_composer->setBodyLangText('sms', '_YOU_RECIVE_MSG_TEXT_SMS', array( '[url]' => _MESSAGE_PL_URL,
+							$msg_composer->setBodyLangText('sms', '_YOU_RECIVE_MSG_TEXT_SMS', ['[url]' => _MESSAGE_PL_URL,
 																									 '[course]' => $course_name,
-																									 '[from]' => Docebo::user()->getUsername() ) );
+																									 '[from]' => Docebo::user()->getUsername()]);
 						} else {
-							$msg_composer->setBodyLangText('email', '_YOU_RECIVE_MSG_TEXT_COURSE', array(	'[url]' => _MESSAGE_PL_URL,
+							$msg_composer->setBodyLangText('email', '_YOU_RECIVE_MSG_TEXT_COURSE', ['[url]' => _MESSAGE_PL_URL,
 																											'[course]' => $course_name,
-																											'[from]' => Docebo::user()->getUsername() ) );
+																											'[from]' => Docebo::user()->getUsername()]);
 
-							$msg_composer->setBodyLangText('sms', '_YOU_RECIVE_MSG_TEXT_SMS_COURSE', array(	'[url]' => _MESSAGE_PL_URL,
+							$msg_composer->setBodyLangText('sms', '_YOU_RECIVE_MSG_TEXT_SMS_COURSE', ['[url]' => _MESSAGE_PL_URL,
 																											'[course]' => $course_name,
-																											'[from]' => Docebo::user()->getUsername() ) );
+																											'[from]' => Docebo::user()->getUsername()]);
 						}
 
 						createNewAlert(	'MsgNewReceived', 'directory', 'moderate', '1', 'User group subscription to moderate',
@@ -906,13 +906,13 @@ class MessageModule {
 				Util::jump_to($jump_url);
 			}
 		}
-		$prio_arr = array(
+		$prio_arr = [
 			'5' => Lang::t('_VERYHIGH', 'message'),
 			'4' => Lang::t('_HIGH', 'message'),
 			'3' => Lang::t('_NORMAL', 'message'),
 			'2' => Lang::t('_LOW', 'message'),
 			'1' => Lang::t('_VERYLOW', 'message')
-		);
+        ];
 
 		$first = true;
 		$attach = '';
@@ -1104,10 +1104,10 @@ class MessageModule {
 			FROM %adm_message
 			WHERE idMessage = '".$_GET['id_message']."'"));
 
-			$page_title = array(
+			$page_title = [
 				$um->getUrl(( $from == 'out' ? '&active_tab=outbox' : '' )) => Lang::t('_MESSAGES'),
 				Lang::t('_DEL')
-			);
+            ];
 
 			$_filter = importVar('msg_course_filter');
 			$add_filter = '';
@@ -1173,10 +1173,10 @@ class MessageModule {
 		$title_url = $this->mvc_urls
 			? "index.php?r=message/show".( $from == 'out' ? '&active_tab=outbox' : '' )
 			: $um->getUrl(( $from == 'out' ? '&active_tab=outbox' : '' ));
-		$page_title = array(
+		$page_title = [
 			$title_url => Lang::t('_MESSAGES'),
 			Lang::t('_READ').' : '.$title
-		);
+        ];
 
 		$download_url = $this->mvc_urls
 			? 'index.php?r=message/download&id_message='.$_GET['id_message']
@@ -1264,7 +1264,7 @@ class MessageModule {
 
 	function quickSendMessage($sender, $recipients, $subject, $textof) {
 
-		if(!is_array($recipients)) $recipients = array($recipients);
+		if(!is_array($recipients)) $recipients = [$recipients];
 
 		$query_mess = "
 		INSERT INTO %adm_message
@@ -1352,7 +1352,7 @@ class Man_Message {
 	function getCountUnreaded($id_user, $courses, $last_access, $return_sum = false) {
 
 		if($return_sum === true) $unreaded = 0;
-		else $unreaded = array();
+		else $unreaded = [];
 
 		$query_unreaded = "
 		SELECT user.idCourse, COUNT(*)

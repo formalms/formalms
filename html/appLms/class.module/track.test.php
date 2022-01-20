@@ -41,7 +41,7 @@ class Track_Test extends Track_Object
 
         $this->idResource = $idResource;
         $this->idParams = $idParams;
-        if ($back_url === NULL) $this->back_url = array();
+        if ($back_url === NULL) $this->back_url = [];
         else $this->back_url = $back_url;
     }
 
@@ -102,7 +102,7 @@ class Track_Test extends Track_Object
 
         $re = sql_query($query_track);
 
-        $idTracks = array();
+        $idTracks = [];
         if (!sql_num_rows($re)) {
             return $idTracks;
         }
@@ -118,10 +118,10 @@ class Track_Test extends Track_Object
 
         $rsTrack = $this->getTrack($idResource, $idUser);
         if ($rsTrack !== FALSE) {
-            return array(TRUE, $rsTrack);
+            return [TRUE, $rsTrack];
         } else if ($createOnFail) {
             $rsTrack = $this->createNewTrack($idUser, $idResource, $idReference);
-            return array(FALSE, $rsTrack);
+            return [FALSE, $rsTrack];
         }
         return FALSE;
     }
@@ -182,7 +182,7 @@ class Track_Test extends Track_Object
 				idReference = '" . (int)$idReference . "'";
         $re_track = sql_query($query);
 
-        if (!sql_num_rows($re_track)) return array();
+        if (!sql_num_rows($re_track)) return [];
         else return sql_fetch_array($re_track);
     }
 
@@ -195,7 +195,7 @@ class Track_Test extends Track_Object
 			WHERE idTrack = '" . (int)$idTrack . "'";
         $re_track = sql_query($query);
 
-        if (!sql_num_rows($re_track)) return array();
+        if (!sql_num_rows($re_track)) return [];
         else return sql_fetch_array($re_track);
     }
 
@@ -260,9 +260,9 @@ class Track_Test extends Track_Object
     function getHeaderUserField()
     {
 
-        return array(
-            array('content' => _TEST_POINTDO, 'type' => 'align_right')
-        );
+        return [
+            ['content' => _TEST_POINTDO, 'type' => 'align_right']
+        ];
     }
 
     /**
@@ -272,14 +272,14 @@ class Track_Test extends Track_Object
     {
 
 
-        $field = array();
+        $field = [];
         $re_score = sql_query("
 		SELECT idUser, is_end, type_of_result, result 
 		FROM " . $GLOBALS['prefix_lms'] . "_testtrack 
 		WHERE idTest = '" . $this->idResource . "'");
         while (list($id_user, $is_end, $point_type, $point_do) = sql_fetch_row($re_score)) {
 
-            if ($is_end) $field[$id_user] = array($point_do . ($point_type ? '%' : ''));
+            if ($is_end) $field[$id_user] = [$point_do . ($point_type ? '%' : '')];
         }
         return $field;
     }
@@ -355,7 +355,7 @@ class Track_Test extends Track_Object
     public function getAnswers()
     {
         $res = sql_query("SELECT idQuest, idAnswer, score_assigned, more_info, number_time FROM %lms_testtrack_answer WHERE idTrack = '" . (int)$this->idTrack . "'");
-        $list = array();
+        $list = [];
         while (list($questId, $answerId, $score, $moreInfo, $numberTime) = sql_fetch_row($res)) {
             $list[$questId][$numberTime] = new Track_TestAnswer($this->idTrack, $questId, $answerId, $score, $moreInfo);
         }
@@ -414,7 +414,7 @@ class Track_Test extends Track_Object
 
         $result_track = sql_query($query_track);
 
-        $idTracks = array();
+        $idTracks = [];
         while (list($id_track) = sql_fetch_row($result_track)) {
             $idTracks[] = $id_track;
         }
@@ -443,10 +443,10 @@ class Track_Test extends Track_Object
 
         $result_track_answer = sql_query($query_track_answer);
 
-        $trackAnswers = array();
+        $trackAnswers = [];
         while (list($idQuest, $id_answer, $more_info) = sql_fetch_row($result_track_answer)) {
 
-            $trackAnswers[] = array("idQuest" => $idQuest,"idAnswer" => $id_answer,"more_info" => $more_info);
+            $trackAnswers[] = ["idQuest" => $idQuest,"idAnswer" => $id_answer,"more_info" => $more_info];
         }
 
         return $trackAnswers;

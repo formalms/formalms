@@ -66,8 +66,8 @@ class HomecatalogueLmsController extends LmsController
 		$nav_bar->setLink('index.php?r=homecatalogue/allCourse'.($id_cat > 1 ? '&amp;id_cat='.$id_cat : ''));
 
 		//$html = $this->model->getCourseList($active_tab, $page);   
-		$user_catalogue = array();//$this->model->getUserCatalogue(Docebo::user()->getIdSt());
-		$user_coursepath = array();//$this->model->getUserCoursepath(Docebo::user()->getIdSt());
+		$user_catalogue = [];//$this->model->getUserCatalogue(Docebo::user()->getIdSt());
+		$user_coursepath = [];//$this->model->getUserCoursepath(Docebo::user()->getIdSt());
 
         /*
 		echo '<div style="margin:1em;">';
@@ -87,7 +87,7 @@ class HomecatalogueLmsController extends LmsController
         echo '<div class="middlearea_container">';
 
         $this->render('catalog_header');
-        $this->render('catalog_tree', array('model' => $this->model, 'id_cat=' => $id_cat));
+        $this->render('catalog_tree', ['model' => $this->model, 'id_cat=' => $id_cat]);
                  
         echo '</div>';        
         
@@ -103,7 +103,7 @@ class HomecatalogueLmsController extends LmsController
               
        $result = $this->model->getCourseList($typeCourse,1);
            
-       $this->render('courselist', array( "result" => $result));
+       $this->render('courselist', ["result" => $result]);
 
     }     
     
@@ -124,20 +124,20 @@ class HomecatalogueLmsController extends LmsController
 		$nav_bar->setLink('index.php?r=homecatalogue/allCourse'.($id_cat > 1 ? '&amp;id_cat='.$id_cat : ''));
 
 		$html = $this->model->getCourseList($active_tab, $page);
-		$user_catalogue = array();//$this->model->getUserCatalogue(Docebo::user()->getIdSt());
-		$user_coursepath = array();//$this->model->getUserCoursepath(Docebo::user()->getIdSt());
+		$user_catalogue = [];//$this->model->getUserCatalogue(Docebo::user()->getIdSt());
+		$user_coursepath = [];//$this->model->getUserCoursepath(Docebo::user()->getIdSt());
 
 		echo '<div style="margin:1em;">';
 
-		$this->render('tab_start', array(	'user_catalogue' => $user_catalogue,
+		$this->render('tab_start', ['user_catalogue' => $user_catalogue,
 											'active_tab' => $active_tab,
 											'user_coursepath' => $user_coursepath,
 											'std_link' => 'index.php?r=homecatalogue/allCourse'.($page > 1 ? '&amp;page='.$page : ''),
-											'model' => $this->model_catalog));
-		$this->render('courselist', array(	'html' => $html,
-											'nav_bar' => $nav_bar));
-		$this->render('tab_end', array(	'std_link' => 'index.php?r=homecatalogue/allCourse'.($page > 1 ? '&amp;page='.$page : ''),
-										'model' => $this->model_catalog));
+											'model' => $this->model_catalog]);
+		$this->render('courselist', ['html' => $html,
+											'nav_bar' => $nav_bar]);
+		$this->render('tab_end', ['std_link' => 'index.php?r=homecatalogue/allCourse'.($page > 1 ? '&amp;page='.$page : ''),
+										'model' => $this->model_catalog]);
 		echo '</div>';
 	}
 
@@ -156,20 +156,20 @@ class HomecatalogueLmsController extends LmsController
 		$nav_bar->setLink('index.php?r=homecatalogue/allCourse'.($id_cat > 1 ? '&amp;id_cat='.$id_cat : ''));
 
 		$html = $this->model->getCourseList($active_tab, $page);
-		$user_catalogue = array();//$this->model->getUserCatalogue(Docebo::user()->getIdSt());
-		$user_coursepath = array();//$this->model->getUserCoursepath(Docebo::user()->getIdSt());
+		$user_catalogue = [];//$this->model->getUserCatalogue(Docebo::user()->getIdSt());
+		$user_coursepath = [];//$this->model->getUserCoursepath(Docebo::user()->getIdSt());
 
 		echo '<div style="margin:1em;">';
 
-		$this->render('tab_start', array(	'user_catalogue' => $user_catalogue,
+		$this->render('tab_start', ['user_catalogue' => $user_catalogue,
 											'active_tab' => $active_tab,
 											'user_coursepath' => $user_coursepath,
 											'std_link' => 'index.php?r=homecatalogue/allCourse'.($page > 1 ? '&amp;page='.$page : ''),
-											'model' => $this->model_catalog));
-		$this->render('courselist', array(	'html' => $html,
-											'nav_bar' => $nav_bar));
-		$this->render('tab_end', array(	'std_link' => 'index.php?r=homecatalogue/allCourse'.($page > 1 ? '&amp;page='.$page : ''),
-										'model' => $this->model_catalog));
+											'model' => $this->model_catalog]);
+		$this->render('courselist', ['html' => $html,
+											'nav_bar' => $nav_bar]);
+		$this->render('tab_end', ['std_link' => 'index.php?r=homecatalogue/allCourse'.($page > 1 ? '&amp;page='.$page : ''),
+										'model' => $this->model_catalog]);
 		echo '</div>';
 	}
 
@@ -188,20 +188,20 @@ class HomecatalogueLmsController extends LmsController
 		$nav_bar->setLink('index.php?r=homecatalogue/allCourse'.($id_cat > 1 ? '&amp;id_cat='.$id_cat : ''));
 
 		$html = $this->model->getCourseList($active_tab, $page);
-		$user_catalogue = array();//$this->model->getUserCatalogue(Docebo::user()->getIdSt());
-		$user_coursepath = array();//$this->model->getUserCoursepath(Docebo::user()->getIdSt());
+		$user_catalogue = [];//$this->model->getUserCatalogue(Docebo::user()->getIdSt());
+		$user_coursepath = [];//$this->model->getUserCoursepath(Docebo::user()->getIdSt());
 
 		echo '<div style="margin:1em;">';
 
-		$this->render('tab_start', array(	'user_catalogue' => $user_catalogue,
+		$this->render('tab_start', ['user_catalogue' => $user_catalogue,
 											'active_tab' => $active_tab,
 											'user_coursepath' => $user_coursepath,
 											'std_link' => 'index.php?r=homecatalogue/allCourse'.($page > 1 ? '&amp;page='.$page : ''),
-											'model' => $this->model_catalog));
-		$this->render('courselist', array(	'html' => $html,
-											'nav_bar' => $nav_bar));
-		$this->render('tab_end', array(	'std_link' => 'index.php?r=homecatalogue/allCourse'.($page > 1 ? '&amp;page='.$page : ''),
-										'model' => $this->model_catalog));
+											'model' => $this->model_catalog]);
+		$this->render('courselist', ['html' => $html,
+											'nav_bar' => $nav_bar]);
+		$this->render('tab_end', ['std_link' => 'index.php?r=homecatalogue/allCourse'.($page > 1 ? '&amp;page='.$page : ''),
+										'model' => $this->model_catalog]);
 		echo '</div>';
 	}
 

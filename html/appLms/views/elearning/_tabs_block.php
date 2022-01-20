@@ -39,10 +39,10 @@
 
                 $inline_filters = $html;
 
-				$w = $this->widget('lms_tab', array(
+				$w = $this->widget('lms_tab', [
 	     			'active' => 'elearning',
 	     			'close' => false
-	    		));
+                ]);
 
                 // select status course
                 $_model = new ElearningLms();
@@ -55,7 +55,7 @@
                 $_list_category = Form::getInputDropdown('', 'course_search_filter_cat', 'filter_cat', $_model->getListCategory(Docebo::user()->getIdst(),false), 0, '');
                 $_list_category = str_replace('class="form-control "', 'class="selectpicker"  data-selected-text-format="count > 1" data-width="" multiple data-actions-box="true"', $_list_category);
 
-                $this->widget('coursefilter', array(
+                $this->widget('coursefilter', [
                     'id' => 'course_search',
                     'filter_text' => "",
                     'list_category' => $_list_category,
@@ -64,7 +64,7 @@
                     'js_callback_set' => 'course_search_callback_set',
                     'js_callback_reset' => 'course_search_callback_reset',
                     'css_class' => 'nav'
-                ));
+                ]);
 				?>
                 
 

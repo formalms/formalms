@@ -83,7 +83,7 @@ class AuthenticationManager {
         require_once(_lms_ . '/lib/lib.track_user.php');
         TrackUser::logoutSessionCourseTrack();
         
-        $_SESSION = array();
+        $_SESSION = [];
         session_destroy();
 
         // recreate Anonymous user
@@ -126,7 +126,7 @@ class AuthenticationManager {
             $_SESSION['notuse_template'] = true;
         } 
         
-        if(isset($_SESSION['social'])) $this->plugin_manager->run_plugin($_SESSION['social']['plugin'], "setSocial", array("id" => $_SESSION['social']['data']['id']));
+        if(isset($_SESSION['social'])) $this->plugin_manager->run_plugin($_SESSION['social']['plugin'], "setSocial", ["id" => $_SESSION['social']['data']['id']]);
         
         if(self::_checkMandatoryFields())   return MANDATORY_FIELDS;
         if(self::_checkPwdElapsed())        return PWD_ELAPSED;        

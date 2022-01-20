@@ -39,8 +39,8 @@ class CartLms extends Model
 		$dir = Get::req('dir', DOTY_MIXED, 'asc');
 
 		$cart = $_SESSION['lms_cart'];
-		$order = array();
-		$cont = array();
+		$order = [];
+		$cont = [];
 
 		foreach($cart as $id_course => $extra)
 		{
@@ -165,7 +165,7 @@ class CartLms extends Model
 		else
 			asort($order);
 
-		$res = array();
+		$res = [];
 
 		foreach($order as $key => $not_needed)
 			if($old_key)

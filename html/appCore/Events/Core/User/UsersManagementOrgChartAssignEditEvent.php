@@ -22,7 +22,7 @@ class UsersManagementOrgChartAssignEditEvent extends Event
     public function __construct()
     {
         $this->user = null;
-        $this->users = array();
+        $this->users = [];
         $this->node = null;
     }
 

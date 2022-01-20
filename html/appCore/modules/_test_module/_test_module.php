@@ -23,15 +23,15 @@ function dispatch($op) {
 
 		case "tab" : {
 			YuiLib::load(
-				array('tabview'=>'tabview-min.js'),
-				array('tabview/assets/skins/sam/' => 'tabview.css')
+				['tabview'=>'tabview-min.js'],
+				['tabview/assets/skins/sam/' => 'tabview.css']
 			);
 			require_once($GLOBALS['where_framework'].'/lib/user_selector/lib.basetree.php');
 			require_once($GLOBALS['where_framework'].'/lib/user_selector/lib.groupselectortable.php');
 			require_once($GLOBALS['where_framework'].'/lib/user_selector/lib.userselectortable.php');
 			require_once($GLOBALS['where_framework'].'/lib/user_selector/lib.dynamicuserfilter.php');
 
-			cout(getTitleArea(array('Test manager e selettore utenti')));
+			cout(getTitleArea(['Test manager e selettore utenti']));
 			cout('<div class="std_block">');
 
 			$bt = new BaseTree('user_orgchart', false, false, _TREE_COLUMNS_TYPE_RADIO);
@@ -87,7 +87,7 @@ function dispatch($op) {
 			$selector->init();
 			$temp = $selector->get();
 
-			cout(getTitleArea(array('Selettore utenti completo')));
+			cout(getTitleArea(['Selettore utenti completo']));
 			cout('<div class="std_block">');
 
 			cout(Form::openForm('test', 'index.php?modname=_test_module&op=resp_to_form'));
@@ -120,11 +120,11 @@ function dispatch($op) {
 			$query = "SELECT * FROM core_user ORDER BY lastname LIMIT 0,20 ";
 			$source = new DataSource_Query($query);
 
-			$nameGroup = array();
+			$nameGroup = [];
 			$nameGroup[] = new DataColumn('lastname', $lang->def('_LASTNAME'));
 			$nameGroup[] = new DataColumn('firstname', $lang->def('_FIRSTNAME'));
 
-			$columns = array();
+			$columns = [];
 			$columns[] = new DataColumn('idst', $lang->def('_ID'));
 			$columns[] = new DataColumnGroup('name', $lang->def('_NAME'), $nameGroup);
 			$columns[] = new DataColumn('userid', $lang->def('_USERNAME'), 'formatter_userid');
@@ -146,10 +146,10 @@ function dispatch($op) {
 			$lang =& DoceboLanguage::CreateInstance('standard', 'framework');
 			$query = "SELECT * FROM core_user ORDER BY lastname LIMIT 0,20 ";
 			$source = new DataSource_Query($query);
-			$nameGroup = array();
+			$nameGroup = [];
 			$nameGroup[] = new DataColumn('lastname', $lang->def('_LASTNAME'));
 			$nameGroup[] = new DataColumn('firstname', $lang->def('_FIRSTNAME'));
-			$columns = array();
+			$columns = [];
 			$columns[] = new DataColumn('idst', $lang->def('_ID'));
 			$columns[] = new DataColumnGroup('name', $lang->def('_NAME'), $nameGroup);
 			$columns[] = new DataColumn('userid', $lang->def('_USERNAME'), 'formatter_userid');
@@ -178,13 +178,13 @@ function dispatch($op) {
 		case 'datatable': {
 				require_once(_lms_.'/lib/table_view/class.coursetableview.php');
 
-				$_temp_ = array(
-						array("idCourse"=>0, "code"=>"codice_001", "name"=>"nome_001", "status"=>"ok", "subscriptions"=>10),
-						array("idCourse"=>1, "code"=>"codice_002", "name"=>"nome_002", "status"=>"ok", "subscriptions"=>20),
-						array("idCourse"=>2, "code"=>"codice_003", "name"=>"nome_003", "status"=>"ok", "subscriptions"=>30),
-						array("idCourse"=>3, "code"=>"codice_004", "name"=>"nome_004", "status"=>"no", "subscriptions"=>40),
-						array("idCourse"=>4, "code"=>"codice_005", "name"=>"nome_005", "status"=>"ok", "subscriptions"=>50)
-				);
+				$_temp_ = [
+						["idCourse"=>0, "code"=>"codice_001", "name"=>"nome_001", "status"=>"ok", "subscriptions"=>10],
+						["idCourse"=>1, "code"=>"codice_002", "name"=>"nome_002", "status"=>"ok", "subscriptions"=>20],
+						["idCourse"=>2, "code"=>"codice_003", "name"=>"nome_003", "status"=>"ok", "subscriptions"=>30],
+						["idCourse"=>3, "code"=>"codice_004", "name"=>"nome_004", "status"=>"no", "subscriptions"=>40],
+						["idCourse"=>4, "code"=>"codice_005", "name"=>"nome_005", "status"=>"ok", "subscriptions"=>50]
+                ];
 
 
 				require_once(_lms_.'/lib/table_view/class.coursetableview.php');

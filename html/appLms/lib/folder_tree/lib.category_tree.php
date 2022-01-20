@@ -18,31 +18,31 @@
 
 function getNodeOptions($id_category, $is_leaf) {
 	$lang =& DoceboLanguage::CreateInstance('course', 'lms');
-	$node_options = array();
+	$node_options = [];
 
-	$node_options[] = array(
+	$node_options[] = [
 		'id' => 'mod_'.$id_category,
 		'command' => 'modify',
 		//'content' => '<img src="'.Get::tmpl_path().'images/standard/edit.png" alt="'.$lang->def('_MOD').'" title="'.$lang->def('_MOD').'" />'
 		'icon' => 'standard/edit.png',
 		'alt' => $lang->def('_MOD')
-	);
+    ];
 
 	if ($is_leaf) {
-		$node_options[] = array(
+		$node_options[] = [
 			'id' => 'del_'.$id_category,
 			'command' => 'delete',
 			//'content' => '<img src="'.Get::tmpl_path().'images/standard/delete.png" alt="'.$lang->def('_DEL').'" title="'.$lang->def('_DEL').'" />'
 			'icon' => 'standard/delete.png',
 			'alt' => $lang->def('_DEL')
-		);
+        ];
 	} else {
-		$node_options[] = array(
+		$node_options[] = [
 			'id' => 'del_'.$id_category,
 			'command' => false,
 			//'content' => '<img src="'.Get::tmpl_path().'images/blank.png" />'
 			'icon' => 'blank.png'
-		);
+        ];
 	}
 
 	return $node_options;

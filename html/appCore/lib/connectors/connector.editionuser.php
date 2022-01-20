@@ -29,22 +29,22 @@ class ConnectorEditionUser extends DoceboConnector {
  	var $sub_man = false;
  	
  	// name, type
- 	var $all_cols = array( 
-		array( 'course_code', 'text' ),
-		array( 'edition_code', 'text' ),
-		array( 'userid', 'text' ),
-		array( 'level', 'int' ),
-		array( 'date_subscription', 'date' ),
-        array( 'last_finish', 'text' )
-	);
+ 	var $all_cols = [
+		['course_code', 'text'],
+		['edition_code', 'text'],
+		['userid', 'text'],
+		['level', 'int'],
+		['date_subscription', 'date'],
+        ['last_finish', 'text']
+    ];
 	
-	var $mandatory_cols = array('course_code', 'edition_code', 'userid', 'level');
+	var $mandatory_cols = ['course_code', 'edition_code', 'userid', 'level'];
 	
-	var $default_cols = array( 	'course_code' => '', 
+	var $default_cols = ['course_code' => '',
 								'edition_code' => '', 
 								'userid' => '', 
 								'level' => '3',
-								'date_subscription' => false );
+								'date_subscription' => false];
 	
 	var $name 					= "";
 	var $description 			= "";
@@ -53,11 +53,11 @@ class ConnectorEditionUser extends DoceboConnector {
 	var $sendnotify = 1; // send notify = 1, don't send notify = 2
 	var $on_delete = 1;  // unactivate = 1, delete = 2
 		
-	var $arr_pair_inserted 	= array();
+	var $arr_pair_inserted 	= [];
 	
 	var $first_row_header = '1';
     
-    var $cache = array('courses' => array(), 'editions' => array(), 'users' => array());
+    var $cache = ['courses' => [], 'editions' => [], 'users' => []];
 	
 	/**
 	 * constructor
@@ -96,12 +96,12 @@ class ConnectorEditionUser extends DoceboConnector {
 	 **/	 	
 	function get_config() {
 		
-		return array(	'name' => $this->name,
+		return ['name' => $this->name,
 						'description' => $this->description,
 						'readwrite' => $this->readwrite,
 						'sendnotify' => $this->sendnotify, 
 						//'on_delete' => $this->on_delete,
-                        'first_row_header' => $this->first_row_header );
+                        'first_row_header' => $this->first_row_header];
 	}
 	
 	/**
@@ -150,7 +150,7 @@ class ConnectorEditionUser extends DoceboConnector {
 		
 		$result = sql_query($query);
 		
-		$data = array();
+		$data = [];
 		
 		$counter = 0;
 		
@@ -211,10 +211,10 @@ class ConnectorEditionUser extends DoceboConnector {
 		
 		$lang = DoceboLanguage::createInstance('subscribe', 'lms');
 		
-		$col_descriptor = array();
+		$col_descriptor = [];
 		foreach($this->all_cols as $k => $col) {
 				
-			$col_descriptor[] = array(
+			$col_descriptor[] = [
 				DOCEBOIMPORT_COLNAME 		=> $lang->def('_'.strtoupper($col[0])),
 				DOCEBOIMPORT_COLID			=> $col[0],
 				DOCEBOIMPORT_COLMANDATORY 	=> ( array_search($col[0], $this->mandatory_cols) === FALSE 
@@ -224,7 +224,7 @@ class ConnectorEditionUser extends DoceboConnector {
 				DOCEBOIMPORT_DEFAULT 		=> ( $in = array_search($col[0], $this->default_cols) === FALSE 
 													? '' 
 													: $this->default_cols[$in] )
-			);
+            ];
 		}
 		return $col_descriptor;
 	}
@@ -237,7 +237,7 @@ class ConnectorEditionUser extends DoceboConnector {
 	
 
 	function get_next_row() {
-		$row = array();
+		$row = [];
 		if($this->first_row_header)
 		{
 			if($this->tot_row >= $this->position)
@@ -321,11 +321,11 @@ class ConnectorEditionUser extends DoceboConnector {
             $id_user = $this->cache['users'][$userid];
         }
         
-        return array(
+        return [
                 'course'    => $id_course
               , 'edition'   => $id_edition
               , 'user'      => $id_user
-        );
+        ];
 	}
 
 	function add_row( $row, $pk ) {
@@ -478,23 +478,23 @@ class ConnectorUI_EditionUserUI extends DoceboConnectorUI {
 	  	$out .= $this->form->getRadioSet( 	$this->lang->def('_ACCESSTYPE'), 
 		  									$this->_get_base_name().'_readwrite', 
 											$this->_get_base_name().'[readwrite]',
-											array( 	$this->lang->def('_READ')  => '1', 
+											[$this->lang->def('_READ')  => '1',
 													$this->lang->def('_WRITE') => '2',
-													$this->lang->def('_READWRITE') => '3'), 
+													$this->lang->def('_READWRITE') => '3'],
 											$this->post_params['readwrite']);
 	  	// ---- access type read/write -----
 	  	$out .= $this->form->getRadioSet( 	$this->lang->def('_SENDNOTIFY'), 
 		  									$this->_get_base_name().'_sendnotify', 
 											$this->_get_base_name().'[sendnotify]',
-											array( 	$this->lang->def('_SEND')  => '1', 
-													$this->lang->def('_DONTSEND') => '2'), 
+											[$this->lang->def('_SEND')  => '1',
+													$this->lang->def('_DONTSEND') => '2'],
 											$this->post_params['sendnotify']);
 		
 		$out .= $this->form->getRadioSet( 	$this->lang->def('_FIRST_ROW_HEADER'),
 											$this->_get_base_name().'_first_row_header',
 											$this->_get_base_name().'[first_row_header]',
-											array( 	$this->lang->def('_YES') => '1',
-													$this->lang->def('_NO') => '0'),
+											[$this->lang->def('_YES') => '1',
+													$this->lang->def('_NO') => '0'],
 											$this->post_params['first_row_header']);
 											
 		return $out;
@@ -502,5 +502,5 @@ class ConnectorUI_EditionUserUI extends DoceboConnectorUI {
 }
 
 function editionuser_factory() {
-	return new ConnectorEditionUser(array());
+	return new ConnectorEditionUser([]);
 }

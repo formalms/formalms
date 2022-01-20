@@ -28,7 +28,7 @@ class ClassroomLms extends Model
      *                            array('u', 'c')
      * @return <string> the order to use in a ORDER BY clausole
      */
-    protected function _resolveOrder($t_name = array('', ''))
+    protected function _resolveOrder($t_name = ['', ''])
     {
         // read order for the course from database
         if ($this->_t_order == false) {
@@ -37,7 +37,7 @@ class ClassroomLms extends Model
             if ($t_order != false) {
 
                 $arr_order_course = explode(',', $t_order);
-                $arr_temp = array();
+                $arr_temp = [];
                 foreach ($arr_order_course as $key => $value) {
 
                     switch ($value) {
@@ -63,7 +63,7 @@ class ClassroomLms extends Model
         foreach ($t_name as $key => $value) {
             if ($value != '') $t_name[$key] = $value . '.';
         }
-        return str_replace(array('?u.', '?c.'), $t_name, $this->_t_order);
+        return str_replace(['?u.', '?c.'], $t_name, $this->_t_order);
     }
 
     public function compileWhere($conditions, $params)
@@ -71,7 +71,7 @@ class ClassroomLms extends Model
 
         if (!is_array($conditions)) return "1";
 
-        $where = array();
+        $where = [];
         $find = array_keys($params);
         foreach ($conditions as $key => $value) {
 
@@ -99,10 +99,10 @@ class ClassroomLms extends Model
             . " FROM %lms_course AS c "
             . " JOIN %lms_courseuser AS cu ON (c.idCourse = cu.idCourse) "
             . " WHERE " . $this->compileWhere($conditions, $params)
-            . " ORDER BY " . $this->_resolveOrder(array('cu', 'c'))
+            . " ORDER BY " . $this->_resolveOrder(['cu', 'c'])
         );
-        $result = array();
-        $courses = array();
+        $result = [];
+        $courses = [];
         while ($data = sql_fetch_assoc($query)) {
 
             $data['enrolled'] = 0;
@@ -130,11 +130,11 @@ class ClassroomLms extends Model
     public function getUserEditionsInfo($id_user, $courses)
     {
         if ((int)$id_user <= 0) return FALSE;
-        if (is_numeric($courses)) $courses = array($courses);
+        if (is_numeric($courses)) $courses = [$courses];
         if (!is_array($courses)) return FALSE;
-        if (empty($courses)) return array();
+        if (empty($courses)) return [];
 
-        $enrolled_arr = array();
+        $enrolled_arr = [];
         $qtxt = "SELECT d.id_course, d.id_date, COUNT(*) AS enrolled FROM
 			%lms_course_date_user as du
 			JOIN %lms_course_date d ON (du.id_date = d.id_date AND d.id_course IN (" . implode(",", $courses) . "))
@@ -150,10 +150,10 @@ class ClassroomLms extends Model
 
         array_unique($id_date_arr);
         if (empty($id_date_arr)) {
-            $id_date_arr = array(0);
+            $id_date_arr = [0];
         }
 
-        $date_arr = array();
+        $date_arr = [];
         $qtxt = "SELECT dd.id_date, MIN(dd.date_begin) AS date_begin, MAX(dd.date_end) AS date_end,
 			dd.pause_begin, dd.pause_end, c.idClassroom, c.name AS class_name,
 			GROUP_CONCAT(DISTINCT l.location SEPARATOR ', ') AS location, d.id_course
@@ -170,22 +170,22 @@ class ClassroomLms extends Model
         }
 
 
-        $dates_minmax = array();
+        $dates_minmax = [];
         $query_minmax = "SELECT id_date, MIN(date_begin) AS date_min, MAX(date_end) AS date_max "
             . " FROM %lms_course_date_day WHERE id_date IN (" . implode(',', $id_date_arr) . ") AND delete=0 GROUP BY id_date";
         $res_minmax = sql_query($query_minmax);
         while (list($id_date, $date_min, $date_max) = sql_fetch_row($res_minmax)) {
-            $dates_minmax[$id_date] = array($date_min, $date_max);
+            $dates_minmax[$id_date] = [$date_min, $date_max];
         }
 
-        $output = array();
+        $output = [];
         $query = "SELECT d.id_date, d.id_course, d.code, d.name, d.status, d.unsubscribe_date_limit
 			FROM %lms_course_date AS d
 			JOIN %lms_course_date_user AS du ON (du.id_date = d.id_date)
 			WHERE du.id_user = " . (int)$id_user . " AND d.id_course IN (" . implode(",", $courses) . ")";
 
 
-        $id_date_arr = array();
+        $id_date_arr = [];
         $res = sql_query($query);
         while ($obj = sql_fetch_object($res)) {
             if (isset($date_arr[$obj->id_date])) {
@@ -212,7 +212,7 @@ class ClassroomLms extends Model
 
     public function getFilterYears($id_user)
     {
-        $output = array(0 => Lang::t('_ALL', 'standard'));
+        $output = [0 => Lang::t('_ALL', 'standard')];
         $db = DbConn::getInstance();
         $query = "SELECT DISTINCT YEAR(dd.date_begin) AS inscr_year "
             . " FROM %lms_course_date_user AS du JOIN %lms_course_date_day AS dd "
@@ -231,7 +231,7 @@ class ClassroomLms extends Model
     public function getUserCoursesByYear($id_user, $year)
     {
         if ((int)$year <= 0) return false;
-        $output = array();
+        $output = [];
         $db = DbConn::getInstance();
         $date_1 = $year . '-01-01 00:00:00';
         $date_2 = $year . '-12-31 23:59:59';
@@ -254,7 +254,7 @@ class ClassroomLms extends Model
     {
         require_once(_lms_ . '/lib/lib.coursepath.php');
         $cp_man = new Coursepath_Manager();
-        $output = array();
+        $output = [];
         $cp_list = $cp_man->getUserSubscriptionsInfo($id_user);
         if (!empty($cp_list)) {
             $cp_list = array_keys($cp_list);

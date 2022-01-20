@@ -131,14 +131,14 @@ if(!Docebo::user()->isAnonymous())
 		$acl =& Docebo::user()->getAcl();
 		$user_idst = getLogUserId();
 		
-		$events = array();
+		$events = [];
 		
 		$events = $man_res->viewEvents($id_course, $order_by);
 		
 		if($events)
 		{
-			$cont_h = array
-			(
+			$cont_h =
+				[
 				(isset($_GET['order_by']) && $_GET['order_by'] == 'c.name, e.title' ? '<a href="index.php?modname=reservation&op=reservation&amp;active_tab=events&amp;order_by=c.name, e.title DESC">'.$lang->def('_TITLE').'</a>' : '<a href="index.php?modname=reservation&op=reservation&amp;active_tab=events&amp;order_by=c.name, e.title">'.$lang->def('_TITLE').'</a>'),
 				(isset($_GET['order_by']) && $_GET['order_by'] == 'c.name, l.name' ? '<a href="index.php?modname=reservation&op=reservation&amp;active_tab=events&amp;order_by=c.name, l.name DESC">'.$lang->def('_LOCATION').'</a>' : '<a href="index.php?modname=reservation&op=reservation&amp;active_tab=events&amp;order_by=c.name, l.name">'.$lang->def('_LOCATION').'</a>'),
 				(isset($_GET['order_by']) && $_GET['order_by'] == 'c.name, e.date' ? '<a href="index.php?modname=reservation&op=reservation&amp;active_tab=events&amp;order_by=c.name, e.date DESC">'.$lang->def('_DATE').'</a>' : '<a href="index.php?modname=reservation&op=reservation&amp;active_tab=events&amp;order_by=c.name, e.date">'.$lang->def('_DATE').'</a>'),
@@ -148,8 +148,8 @@ if(!Docebo::user()->isAnonymous())
 				$lang->def('_AVAILABLE_PLACES'),
 				(isset($_GET['order_by']) && $_GET['order_by'] == 'c.name, e.deadLine' ? '<a href="index.php?modname=reservation&op=reservation&amp;active_tab=events&amp;order_by=c.name, e.deadLine DESC">'.$lang->def('_DEADLINE').'</a>' : '<a href="index.php?modname=reservation&op=reservation&amp;active_tab=events&amp;order_by=c.name, e.deadLine">'.$lang->def('_DEADLINE').'</a>'),
 				$lang->def('_REGISTRATION')
-			);
-			$type_h = array('', '', '', '', '', '', '', '', '');
+				];
+			$type_h = ['', '', '', '', '', '', '', '', ''];
 			
 			$tb = new Table(100000);
 			$tb->setColsStyle($type_h);
@@ -184,7 +184,7 @@ if(!Docebo::user()->isAnonymous())
 						$tb->addHead($cont_h);
 					}
 					
-					$count = array();
+					$count = [];
 					
 					$count[] = $event[EVENT_TITLE];
 					if ($event[EVENT_ID_LABORATORY])
@@ -259,14 +259,14 @@ if(!Docebo::user()->isAnonymous())
 		$acl =& Docebo::user()->getAcl();
 		$user_idst = getLogUserId();
 		
-		$events = array();
+		$events = [];
 		
 		$events = $man_res->viewMyEvents($id_course, getLogUserId(), $order_by);
 		
 		if($events)
 		{
-			$cont_h = array
-			(
+			$cont_h =
+				[
 				(isset($_GET['order_by']) && $_GET['order_by'] == 'c.name, e.title' ? '<a href="index.php?modname=reservation&amp;op=reservation&amp;active_tab=my_events&amp;order_by=c.name, e.title DESC">'.$lang->def('_TITLE').'</a>' : '<a href="index.php?modname=reservation&op=reservation&amp;active_tab=my_events&amp;order_by=c.name, e.title">'.$lang->def('_TITLE').'</a>'),
 				(isset($_GET['order_by']) && $_GET['order_by'] == 'c.name, l.name' ? '<a href="index.php?modname=reservation&op=reservation&amp;active_tab=my_events&amp;order_by=c.name, l.name DESC">'.$lang->def('_LOCATION').'</a>' : '<a href="index.php?modname=reservation&op=reservation&amp;active_tab=my_events&amp;order_by=c.name, l.name">'.$lang->def('_LOCATION').'</a>'),
 				(isset($_GET['order_by']) && $_GET['order_by'] == 'c.name, e.date' ? '<a href="index.php?modname=reservation&amp;op=reservation&amp;active_tab=my_events&amp;order_by=c.name, e.date DESC">'.$lang->def('_DATE').'</a>' : '<a href="index.php?modname=reservation&op=reservation&amp;active_tab=my_events&amp;order_by=c.name, e.date">'.$lang->def('_DATE').'</a>'),
@@ -275,8 +275,8 @@ if(!Docebo::user()->isAnonymous())
 				$lang->def('_NUMBER_SUBSCRIBED'),
 				$lang->def('_AVAILABLE_PLACES'),
 				(isset($_GET['order_by']) && $_GET['order_by'] == 'c.name, e.deadLine' ? '<a href="index.php?modname=reservation&op=reservation&amp;active_tab=my_events&amp;order_by=c.name, e.deadLine DESC">'.$lang->def('_DEADLINE').'</a>' : '<a href="index.php?modname=reservation&op=reservation&amp;active_tab=my_events&amp;order_by=c.name, e.deadLine">'.$lang->def('_DEADLINE').'</a>'),
-			);
-			$type_h = array('', '', '', '', '', '', '', '');
+				];
+			$type_h = ['', '', '', '', '', '', '', ''];
 			
 			$tb = new Table(100000);
 			$tb->setColsStyle($type_h);
@@ -311,7 +311,7 @@ if(!Docebo::user()->isAnonymous())
 						$tb->addHead($cont_h);
 					}
 					
-					$count = array();
+					$count = [];
 					
 					$count[] = $event[EVENT_TITLE];
 					if ($event[EVENT_ID_LABORATORY])
@@ -368,21 +368,21 @@ if(!Docebo::user()->isAnonymous())
 		$acl =& Docebo::user()->getAcl();
 		$user_idst = getLogUserId();
 		
-		$events = array();
+		$events = [];
 		
 		$events = $man_res->viewPastEvents($id_course, getLogUserId(), $order_by);
 		
 		if($events)
 		{
-			$cont_h = array
-			(
+			$cont_h =
+				[
 				(isset($_GET['order_by']) && $_GET['order_by'] == 'c.name, e.title' ? '<a href="index.php?modname=reservation&op=reservation&amp;active_tab=past_events&amp;order_by=c.name, e.title DESC">'.$lang->def('_TITLE').'</a>' : '<a href="index.php?modname=reservation&op=reservation&amp;active_tab=past_events&amp;order_by=c.name, e.title">'.$lang->def('_TITLE').'</a>'),
 				(isset($_GET['order_by']) && $_GET['order_by'] == 'c.name, l.name' ? '<a href="index.php?modname=reservation&op=reservation&amp;active_tab=pastevents&amp;order_by=c.name, l.name DESC">'.$lang->def('_LOCATION').'</a>' : '<a href="index.php?modname=reservation&op=reservation&amp;active_tab=past_events&amp;order_by=c.name, l.name">'.$lang->def('_LOCATION').'</a>'),
 				(isset($_GET['order_by']) && $_GET['order_by'] == 'c.name, e.date' ? '<a href="index.php?modname=reservation&op=reservation&amp;active_tab=past_events&amp;order_by=c.name, e.date DESC">'.$lang->def('_DATE').'</a>' : '<a href="index.php?modname=reservation&op=reservation&amp;active_tab=past_events&amp;order_by=c.name, e.date">'.$lang->def('_DATE').'</a>'),
 				$lang->def('_NUMBER_SUBSCRIBED'),
 				(isset($_GET['order_by']) && $_GET['order_by'] == 'c.name, e.deadLine' ? '<a href="index.php?modname=reservation&op=reservation&amp;active_tab=past_events&amp;order_by=c.name, e.deadLine DESC">'.$lang->def('_DEADLINE').'</a>' : '<a href="index.php?modname=reservation&op=reservation&amp;active_tab=past_events&amp;order_by=c.name, e.deadLine">'.$lang->def('_DEADLINE').'</a>'),
-			);
-			$type_h = array('', '', '', '', '');
+				];
+			$type_h = ['', '', '', '', ''];
 			
 			$tb = new Table(100000);
 			$tb->setColsStyle($type_h);
@@ -417,7 +417,7 @@ if(!Docebo::user()->isAnonymous())
 						$tb->addHead($cont_h);
 					}
 					
-					$count = array();
+					$count = [];
 					
 					$count[] = $event[EVENT_TITLE];
 					if ($event[EVENT_ID_LABORATORY])
@@ -463,7 +463,7 @@ if(!Docebo::user()->isAnonymous())
 		$acl =& Docebo::user()->getAcl();
 		$user_idst = getLogUserId();
 		
-		$events = array();
+		$events = [];
 		
 		$events = $man_res->viewEventsForSubscribedTab($id_course, $order_by);
 		
@@ -482,21 +482,21 @@ if(!Docebo::user()->isAnonymous())
 		
 		if($events)
 		{
-			$cont_h = array
-			(
+			$cont_h =
+				[
 				(isset($_GET['order_by']) && $_GET['order_by'] == 'c.name, e.title' ? '<a href="index.php?modname=reservation&op=reservation&amp;active_tab=subscribed_user&amp;order_by=c.name, e.title DESC">'.$lang->def('_TITLE').'</a>' : '<a href="index.php?modname=reservation&op=reservation&amp;active_tab=subscribed_user&amp;order_by=c.name, e.title">'.$lang->def('_TITLE').'</a>'),
 				(isset($_GET['order_by']) && $_GET['order_by'] == 'c.name, l.name' ? '<a href="index.php?modname=reservation&op=reservation&amp;active_tab=subscribed_user&amp;order_by=c.name, l.name DESC">'.$lang->def('_LOCATION').'</a>' : '<a href="index.php?modname=reservation&op=reservation&amp;active_tab=subscribed_user&amp;order_by=c.name, l.name">'.$lang->def('_LOCATION').'</a>'),
 				(isset($_GET['order_by']) && $_GET['order_by'] == 'c.name, e.date' ? '<a href="index.php?modname=reservation&op=reservation&amp;active_tab=subscribed_user&amp;order_by=c.name, e.date DESC">'.$lang->def('_DATE').'</a>' : '<a href="index.php?modname=reservation&op=reservation&amp;active_tab=subscribed_user&amp;order_by=c.name, e.date">'.$lang->def('_DATE').'</a>'),
 				$lang->def('_NUMBER_SUBSCRIBED'),
 				(isset($_GET['order_by']) && $_GET['order_by'] == 'c.name, e.deadLine' ? '<a href="index.php?modname=reservation&op=reservation&amp;active_tab=subscribed_user&amp;order_by=c.name, e.deadLine DESC">'.$lang->def('_DEADLINE').'</a>' : '<a href="index.php?modname=reservation&op=reservation&amp;active_tab=subscribed_user&amp;order_by=c.name, e.deadLine">'.$lang->def('_DEADLINE').'</a>'),
-			);
-			$type_h = array('', '', '', '', '');
+				];
+			$type_h = ['', '', '', '', ''];
 			
 			if ($mod_perm)
 			{
-				$type_h = array('', '', '', '', '', 'image', 'image', 'image', 'image', 'image', 'image');
-				$cont_h = array
-				(
+				$type_h = ['', '', '', '', '', 'image', 'image', 'image', 'image', 'image', 'image'];
+				$cont_h =
+					[
 					(isset($_GET['order_by']) && $_GET['order_by'] == 'c.name, e.title' ? '<a href="index.php?modname=reservation&op=reservation&amp;active_tab=subscribed_user&amp;order_by=c.name, e.title DESC">'.$lang->def('_TITLE').'</a>' : '<a href="index.php?modname=reservation&op=reservation&amp;active_tab=subscribed_user&amp;order_by=c.name, e.title">'.$lang->def('_TITLE').'</a>'),
 					(isset($_GET['order_by']) && $_GET['order_by'] == 'c.name, l.name' ? '<a href="index.php?modname=reservation&op=reservation&amp;active_tab=subscribed_user&amp;order_by=c.name, l.name DESC">'.$lang->def('_LOCATION').'</a>' : '<a href="index.php?modname=reservation&op=reservation&amp;active_tab=subscribed_user&amp;order_by=c.name, l.name">'.$lang->def('_LOCATION').'</a>'),
 					(isset($_GET['order_by']) && $_GET['order_by'] == 'c.name, e.date' ? '<a href="index.php?modname=reservation&op=reservation&amp;active_tab=subscribed_user&amp;order_by=c.name, e.date DESC">'.$lang->def('_DATE').'</a>' : '<a href="index.php?modname=reservation&op=reservation&amp;active_tab=subscribed_user&amp;order_by=c.name, e.date">'.$lang->def('_DATE').'</a>'),
@@ -508,7 +508,7 @@ if(!Docebo::user()->isAnonymous())
 					'<img src="'.getPathImage().'/standard/edit.png" title="'.$lang->def('_MOD').'" alt="'.$lang->def('_MOD').'" />',
 					'<img src="'.getPathImage().'/standard/delete.png" title="'.$lang->def('ALT_DEL').'" alt="'.$lang->def('_DEL').'" />',
 					'<img src="'.getPathImage().'/standard/moduser.png" title="'.$lang->def('_SET_ROOM_VIEW_PERM').'" alt="'.$lang->def('_SET_ROOM_VIEW_PERM').'" />'
-				);
+					];
 			}
 			
 			$tb = new Table(100000);
@@ -539,7 +539,7 @@ if(!Docebo::user()->isAnonymous())
 					$tb->addHead($cont_h);
 				}
 				
-				$count = array();
+				$count = [];
 				
 				$count[] = $event[EVENT_TITLE];
 				if ($event[EVENT_ID_LABORATORY])
@@ -595,10 +595,10 @@ function viewUserEvent()
 		
 		$user_idst = getLogUserId();
 		
-		$user_subscribed = array();
+		$user_subscribed = [];
 		$user_sunscribed = $man_res->getSubscribedUserIdst($id_event);
 		
-		$user_info = array();
+		$user_info = [];
 		
 		$user_info =& $acl_man->getUsers($user_sunscribed);
 		
@@ -622,28 +622,28 @@ function viewUserEvent()
 			$ini = $tb->getSelectedElement();
 			
 			if ($GLOBALS['cfg']['reservation_exportcell_id']) {
-				$cont_h = array
-				(
+				$cont_h =
+					[
 					$lang->def('_USERNAME'),
 					$lang->def('_FIRSTNAME'),
 					$lang->def('_LASTNAME'),
 					$lang->def('_EMAIL'),
 					$lang->def('_CELLULARE'),
 					$lang->def('_SEND_MAIL', 'report'),
-				);
-				$type_h = array('', '', '', '', '','','');
+					];
+				$type_h = ['', '', '', '', '','',''];
 
 			} else {
-				$cont_h = array
-				(
+				$cont_h =
+					[
 					$lang->def('_USERNAME'),
 					$lang->def('_FIRSTNAME'),
 					$lang->def('_LASTNAME'),
 					$lang->def('_EMAIL'),
 					$lang->def('_SEND_MAIL', 'report'),
-				);
+					];
 
-				$type_h = array('', '', '', '', '','','');
+				$type_h = ['', '', '', '', '','',''];
 			}
 
 			
@@ -652,7 +652,7 @@ function viewUserEvent()
 			$counter = 0;
 			foreach ($user_info as $info_user)
 			{
-				$count = array();
+				$count = [];
 				if ($counter >= $ini && $counter < ($ini + 10))
 				{
 					if ($GLOBALS['cfg']['reservation_exportcell_id']) {
@@ -725,7 +725,7 @@ function viewUserEvent()
 			$recipients = $man_res->getEventUserMail($id_event);
 			$query = 'SELECT email FROM core_user WHERE idst = '.$id_user;
 			$result = sql_query($query);
-			$re = array();
+			$re = [];
 			while(list($subscribed) = sql_fetch_row($result))
 			{
 				$re[] = $subscribed;
@@ -740,7 +740,7 @@ function viewUserEvent()
 			//sendMail($recipients, $subject, $body, $sender);
 
 			$mailer = FormaMailer::getInstance();
-			$mailer->SendMail($sender, $re, $subject, $body,[], array(MAIL_REPLYTO => $sender, MAIL_SENDER_ACLNAME => false));
+			$mailer->SendMail($sender, $re, $subject, $body,[], [MAIL_REPLYTO => $sender, MAIL_SENDER_ACLNAME => false]);
 				
 			//Util::jump_to('index.php?modname=reservation&op=reservation&active_tab=events');
 			Util::jump_to('index.php?modname=reservation&op=view_user_event&id_event='.$id_event);
@@ -784,14 +784,14 @@ function viewUserEvent()
 		
 		$acl_man =& Docebo::user()->getAclManager();
 		
-		$user_subscribed = array();
+		$user_subscribed = [];
 		
 		$user_sunscribed = $man_res->getSubscribedUserIdst($id_event);
 		
-		$user_info = array();
+		$user_info = [];
 		$user_info =& $acl_man->getUsers($user_sunscribed);
 		
-		$event_info = array();
+		$event_info = [];
 		$event_info = $man_res->getEventInfo($id_event);
 		
 		$filename = $event_info[EVENT_TITLE];
@@ -1018,7 +1018,7 @@ function viewUserEvent()
 
 				$query = 'SELECT u.email FROM core_user as u, learning_courseuser as cu, learning_reservation_events as re WHERE re.idEvent = "'.$id_event.'" AND cu. idCOurse = re.idCourse AND cu.idUser = u.idst AND cu.level > 3';
 				$result = sql_query($query);				
-				$re = array();
+				$re = [];
 				while(list($subscribed) = sql_fetch_row($result))
 				{
 					$re[] = $subscribed;
@@ -1034,7 +1034,7 @@ function viewUserEvent()
 
 
 				$mailer = FormaMailer::getInstance();
-				$mailer->SendMail($sender, $re, $subject, $body,[], array(MAIL_REPLYTO => $sender, MAIL_SENDER_ACLNAME => false));
+				$mailer->SendMail($sender, $re, $subject, $body,[], [MAIL_REPLYTO => $sender, MAIL_SENDER_ACLNAME => false]);
 		
 				// end invio mail
 		
@@ -1130,10 +1130,10 @@ function viewUserEvent()
 		$man_res = new Man_Reservation();
 		$aclManager = new DoceboACLManager();
 		
-		$subscribed = array();
+		$subscribed = [];
 		$subscribed = $man_res->getSubscribedUserIdst($id_event);
 		
-		$subscribed_empty = array();
+		$subscribed_empty = [];
 		
 		$lang =& DoceboLanguage::CreateInstance('reservation');
 		$out =& $GLOBALS['page'];
@@ -1157,7 +1157,7 @@ function viewUserEvent()
 		$acl_man =& Docebo::user()->getAclManager();
 		
 		$arr_idstGroup = $aclManager->getGroupsIdstFromBasePath('/lms/course/'.(int)$_SESSION['idCourse'].'/subscribed/');
-		$me = array(getLogUserId());
+		$me = [getLogUserId()];
 		$user_select->setUserFilter('group',$arr_idstGroup);
 		$user_select->setGroupFilter('path', '/lms/course/'.$_SESSION['idCourse'].'/group');
 		
@@ -1185,10 +1185,10 @@ function viewUserEvent()
 		
 		$user_select = new UserSelector();
 		
-		$user_subscribed = array();
+		$user_subscribed = [];
 		$user_subscribed = $man_res->getSubscribedUserIdst($id_event);
 		
-		$user_selected = array();
+		$user_selected = [];
 		$user_selected = $user_select->getSelection($_POST);
 		
 		$wrong_result = false;
@@ -1403,18 +1403,18 @@ function viewUserEvent()
 			}
 		}
 		
-		$event = array();
+		$event = [];
 		
 		$event = $man_res->getEventInfo($id_event);
 		
 		$date = Format::date($event[EVENT_DATE], 'date');
 		$deadline = Format::date($event[EVENT_DEADLINE], 'date');
 		
-		$from_time_h = $event[EVENT_FROM_TIME]{0}.$event[EVENT_FROM_TIME]{1};
-		$from_time_m = $event[EVENT_FROM_TIME]{3}.$event[EVENT_FROM_TIME]{4};
+		$from_time_h = $event[EVENT_FROM_TIME][0].$event[EVENT_FROM_TIME][1];
+		$from_time_m = $event[EVENT_FROM_TIME][3] .$event[EVENT_FROM_TIME][4];
 		
-		$to_time_h = $event[EVENT_TO_TIME]{0}.$event[EVENT_TO_TIME]{1};
-		$to_time_m = $event[EVENT_TO_TIME]{3}.$event[EVENT_TO_TIME]{4};
+		$to_time_h = $event[EVENT_TO_TIME][0].$event[EVENT_TO_TIME][1];
+		$to_time_m = $event[EVENT_TO_TIME][3] .$event[EVENT_TO_TIME][4];
 		
 		$out->add
 		(
@@ -1502,7 +1502,7 @@ function viewUserEvent()
 		
 		$man_res = new Man_Reservation();
 		
-		$category = array();
+		$category = [];
 		$category = $man_res->viewCategory($id_course);
 		
 		$out->add(getTitleArea($lang->def('_CATEGORY')).'<div class="std_block">', 'content');
@@ -1524,28 +1524,28 @@ function viewUserEvent()
 			
 			$ini = $tb->getSelectedElement();
 			
-			$cont_h = array
-			(
+			$cont_h =
+				[
 				$lang->def('_NAME'),
-			);
-			$type_h = array('', '');
+				];
+			$type_h = ['', ''];
 			if ($mod_perm)
 			{
-				$type_h = array('', '', 'image', 'image');
-				$cont_h = array
-				(
+				$type_h = ['', '', 'image', 'image'];
+				$cont_h =
+					[
 					$lang->def('_NAME'),
 					$lang->def('_CATEGORY_MAX_SUBSCRIPTION'),
 					'<img src="'.getPathImage().'/standard/edit.png" title="'.$lang->def('_MOD').'" alt="'.$lang->def('_MOD').'" />',
 					'<img src="'.getPathImage().'/standard/delete.png" title="'.$lang->def('ALT_DEL').'" alt="'.$lang->def('_DEL').'" />'
-				);
+					];
 			}
 			$tb->setColsStyle($type_h);
 			$tb->addHead($cont_h);
 			
 			foreach($category as $categ)
 			{
-				$count = array();
+				$count = [];
 				
 				$count[] = $categ[CATEGORY_NAME];
 				
@@ -1800,11 +1800,11 @@ function viewUserEvent()
 		list($tot_classroom) = sql_fetch_row(sql_query($query_classroom_tot));
 	
 	
-		$type_h = array('', 'news_short_td', "image", "image");
-		$cont_h	= array(
+		$type_h = ['', 'news_short_td', "image", "image"];
+		$cont_h	= [
 		$lang->def('_NAME'),
 		$lang->def('_DESCRIPTION')
-		);
+		];
 		if($mod_perm) {
 			$cont_h[] = '<img src="'.getPathImage().'standard/edit.png" title="'.$lang->def('_TITLE_MOD_CLASSROOM').'" '
 							.'alt="'.$lang->def('_MOD').'" />';
@@ -1819,10 +1819,10 @@ function viewUserEvent()
 		$tb->addHead($cont_h);
 		while(list($idClassroom, $name, $descr) = sql_fetch_row($re_classroom)) {
 	
-			$cont = array(
+			$cont = [
 				$name,
 				$descr
-			);
+			];
 			if($mod_perm) {
 				$cont[] = '<a href="index.php?modname=reservation&amp;op=modclassroom&amp;idClassroom='.$idClassroom.'" '
 							.'title="'.$lang->def('_TITLE_MOD_CLASSROOM').' : '.$name.'">'
@@ -1904,10 +1904,10 @@ function viewUserEvent()
 			$responsable="";
 		}
 	
-		$page_title = array(
+		$page_title = [
 			'index.php?modname=classroom&amp;op=classroom' => $lang->def('_CLASSROOM'),
 			( $load ? $lang->def('_MOD_CLASSROOM') : $lang->def('_NEW_CLASSROOM') )
-		);
+		];
 		$out->add(getTitleArea($page_title, 'classroom', $lang->def('_ALT_CLASSROOMS'))
 				.'<div class="std_block">'
 				.getBackUi( 'index.php?modname=reservation&amp;op=classroom', $lang->def('_BACK') )
@@ -2038,10 +2038,10 @@ function viewUserEvent()
 			WHERE idClassroom = '".$idClassroom."'"));
 	
 			$form = new Form();
-			$page_title = array(
+			$page_title = [
 				'index.php?modname=reservation&amp;op=classroom' => $lang->def('_CLASSROOM'),
 				$lang->def('_DEL_CLASSROOM')
-			);
+			];
 			$GLOBALS['page']->add(
 				getTitleArea($page_title, 'classroom')
 				.'<div class="std_block">'
@@ -2110,7 +2110,7 @@ function setRoomViewPerm()
 		$mdir->show_orgchart_selector=FALSE;
 		
 		$arr_idstGroup = $acl_manager->getGroupsIdstFromBasePath('/lms/course/'.(int)$_SESSION['idCourse'].'/subscribed/');
-		$me = array(getLogUserId());
+		$me = [getLogUserId()];
 		$mdir->setUserFilter('exclude', $me);
 		$mdir->setUserFilter('group',$arr_idstGroup);
 		$mdir->setGroupFilter('path', '/lms/course/'.$_SESSION['idCourse'].'/group');
@@ -2151,7 +2151,7 @@ function reservationSendMail()
 		//sendMail($recipients, $subject, $body, $sender);
 
 		$mailer = FormaMailer::getInstance();
-		$mailer->SendMail($sender, [$recipients], Lang::t('_MAIL_OBJECT', 'register'), $body,[], array(MAIL_REPLYTO => $sender, MAIL_SENDER_ACLNAME => false));
+		$mailer->SendMail($sender, [$recipients], Lang::t('_MAIL_OBJECT', 'register'), $body,[], [MAIL_REPLYTO => $sender, MAIL_SENDER_ACLNAME => false]);
 				
 		Util::jump_to('index.php?modname=reservation&op=reservation&active_tab=events');
 	}
@@ -2207,25 +2207,25 @@ function infoLocation()
 	
 	$tb = new Table(15, $lang->def('_LOCATION_INFO'), $lang->def('_LOCATION_INFO'));
 	
-	$type_h = array('', '');
+	$type_h = ['', ''];
 	
 	$tb->setColsStyle($type_h);
 	
-	$tb->addBody(array('<b>'.$lang->def('_NAME').':</b>', $name));
-	$tb->addBody(array('<b>'.$lang->def('_DESCRIPTION').':</b>', $descr));
-	$tb->addBody(array('<b>'.$lang->def('_BUILDING_ROOM').':</b>', $room));
-	$tb->addBody(array('<b>'.$lang->def('_CAPACITY').':</b>', $capacity));
-	$tb->addBody(array('<b>'.$lang->def('_RESPONSABLE').':</b>', $responsable));
-	$tb->addBody(array('<b>'.$lang->def('_STREET').':</b>', $street));
-	$tb->addBody(array('<b>'.$lang->def('_CITY').':</b>', $city));
-	$tb->addBody(array('<b>'.$lang->def('_STATE').':</b>', $state));
-	$tb->addBody(array('<b>'.$lang->def('_ZIP_CODE').':</b>', $zip_code));
-	$tb->addBody(array('<b>'.$lang->def('_PHONE').':</b>', $phone));
-	$tb->addBody(array('<b>'.$lang->def('_FAX').':</b>', $fax));
-	$tb->addBody(array('<b>'.$lang->def('_DISPOSITION').':</b>', $disposition));
-	$tb->addBody(array('<b>'.$lang->def('_INSTRUMENT').':</b>', $instrument));
-	$tb->addBody(array('<b>'.$lang->def('_AVAILABLE_INSTRUMENT').':</b>', $available_instrument));
-	$tb->addBody(array('<b>'.$lang->def('_NOTES').':</b>', $note));
+	$tb->addBody(['<b>'.$lang->def('_NAME').':</b>', $name]);
+	$tb->addBody(['<b>'.$lang->def('_DESCRIPTION').':</b>', $descr]);
+	$tb->addBody(['<b>'.$lang->def('_BUILDING_ROOM').':</b>', $room]);
+	$tb->addBody(['<b>'.$lang->def('_CAPACITY').':</b>', $capacity]);
+	$tb->addBody(['<b>'.$lang->def('_RESPONSABLE').':</b>', $responsable]);
+	$tb->addBody(['<b>'.$lang->def('_STREET').':</b>', $street]);
+	$tb->addBody(['<b>'.$lang->def('_CITY').':</b>', $city]);
+	$tb->addBody(['<b>'.$lang->def('_STATE').':</b>', $state]);
+	$tb->addBody(['<b>'.$lang->def('_ZIP_CODE').':</b>', $zip_code]);
+	$tb->addBody(['<b>'.$lang->def('_PHONE').':</b>', $phone]);
+	$tb->addBody(['<b>'.$lang->def('_FAX').':</b>', $fax]);
+	$tb->addBody(['<b>'.$lang->def('_DISPOSITION').':</b>', $disposition]);
+	$tb->addBody(['<b>'.$lang->def('_INSTRUMENT').':</b>', $instrument]);
+	$tb->addBody(['<b>'.$lang->def('_AVAILABLE_INSTRUMENT').':</b>', $available_instrument]);
+	$tb->addBody(['<b>'.$lang->def('_NOTES').':</b>', $note]);
 	
 	$out->add(
 		$tb->getTable()

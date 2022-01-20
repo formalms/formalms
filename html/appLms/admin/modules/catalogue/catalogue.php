@@ -28,7 +28,7 @@ function catlist() {
 	$out 	=& $GLOBALS['page'];
 
 	$mod_perm	= checkPerm('mod', true);
-	$title_area = array($lang->def('_CATALOGUE') );
+	$title_area = [$lang->def('_CATALOGUE')];
 
 	// Retriving data
 	if(Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
@@ -79,12 +79,12 @@ function catlist() {
 	$tb_catalogue 	= new Table(0, false/*$lang->def('_CATALOGUE')*/, $lang->def('_CATALOGUE_SUMMARY'));
 
 	// Table intestation
-	$type_h = array('', '', 'image');
-	$cont_h = array(
+	$type_h = ['', '', 'image'];
+	$cont_h = [
 		$lang->def('_NAME'),
 		$lang->def('_DESCRIPTION'),
 		'<img src="'.getPathImage('fw').'standard/modelem.png" alt="'.$lang->def('_MOD').'" />'
-	);
+    ];
 	if($mod_perm) {
 		$type_h[] = 'image';
 		$cont_h[] = '<img src="'.getPathImage('fw').'standard/moduser.png" alt="'.$lang->def('_ASSIGN_USERS').'" />';
@@ -117,20 +117,20 @@ function catlist() {
 
 
 		if (courses_count($id) <> '0') {
-		$cont = array(
+		$cont = [
 			$name,
 			$description,
 			'<a href="index.php?modname=catalogue&amp;op=entrylist&amp;id='.$id.'" '
 				.'title="'.$lang->def('_MOD_ENTRY_CATALOGUE').' : '.strip_tags($name).'">'
 			.'<img src="'.getPathImage('fw').'standard/modelem.png" alt="'.$lang->def('_MOD').' : '
-			.strip_tags($name).'" /></a>' );
+			.strip_tags($name).'" /></a>'];
 		}
 		else
 		{
-		$cont = array(
+		$cont = [
 			$name,
 			$description,
-			'<a href="index.php?modname=catalogue&amp;op=entrylist&amp;id='.$id.'">'.Get::sprite('fd_notice', Lang::t('_MOD_ENTRY_CATALOGUE', 'catalogue').' : '.strip_tags($name)).'</a>' ) ;
+			'<a href="index.php?modname=catalogue&amp;op=entrylist&amp;id='.$id.'">'.Get::sprite('fd_notice', Lang::t('_MOD_ENTRY_CATALOGUE', 'catalogue').' : '.strip_tags($name)).'</a>'];
 		}
 
 
@@ -205,8 +205,8 @@ function mancatalogue($load_id = false) {
 	$lang	=& DoceboLanguage::createInstance('catalogue', 'lms');
 	$out 	=& $GLOBALS['page'];
 
-	$title_area = array(
-		'index.php?modname=catalogue&amp;op=catlist' => $lang->def('_CATALOGUE') );
+	$title_area = [
+		'index.php?modname=catalogue&amp;op=catlist' => $lang->def('_CATALOGUE')];
 
 	if($load_id === false) {
 
@@ -343,10 +343,10 @@ function entrylist() {
 	$cat_name = getCatalogueName($id_cat);
 
 	$mod_perm	= checkPerm('mod', true);
-	$title_area = array(
+	$title_area = [
 		'index.php?modname=catalogue&amp;op=catlist' => $lang->def('_CATALOGUE'),
 		$cat_name
-	);
+    ];
 	$tb_entry = new Table(/*0, $lang->def('_ENTRY_CAPTION'), $lang->def('_ENTRY_SUMMARY')*/);
 
 	$query_entry = "
@@ -355,8 +355,8 @@ function entrylist() {
 	WHERE idCatalogue = '".$id_cat."'";
 	$re_entry = sql_query($query_entry);
 
-	$courses 	= array();
-	$coursepath = array();
+	$courses 	= [];
+	$coursepath = [];
 	while(list($id, $t_o_entry)= sql_fetch_row($re_entry)) {
 
 		if($t_o_entry == 'course') 	$courses[$id] = $id;
@@ -367,8 +367,8 @@ function entrylist() {
 
 	$course_name =& getCoursesInfo($courses);
 
-	$cont_h = array($lang->def('_CODE'), $lang->def('_NAME'), $lang->def('_TYPE'));
-	$type_h = array('', '', '');
+	$cont_h = [$lang->def('_CODE'), $lang->def('_NAME'), $lang->def('_TYPE')];
+	$type_h = ['', '', ''];
 	if($mod_perm) {
 
 		$type_h[] = 'image';
@@ -396,7 +396,7 @@ function entrylist() {
 			$user_catalogue = $cat_man->getUserAllCatalogueId(Docebo::user()->getIdSt());
 			if(count($user_catalogue) > 0)
 			{
-				$courses = array(0);
+				$courses = [0];
 
 				foreach($user_catalogue as $id_cat)
 				{
@@ -414,7 +414,7 @@ function entrylist() {
 		}
 		else
 		{
-			$array_courses = array();
+			$array_courses = [];
 			$array_courses = array_merge($array_courses, $admin_courses['course']);
 
 			if(!empty($admin_courses['coursepath']))
@@ -441,7 +441,7 @@ function entrylist() {
 	if(is_array($course_name)) {
 		foreach($course_name as $course){
 
-			$cont = array($course['code'], $course['name'], $lang->def('_COURSE'));
+			$cont = [$course['code'], $course['name'], $lang->def('_COURSE')];
 			if($mod_perm) {
 				if(isset($admin_courses['course'][$course['id']]) || $all_courses)
 					$cont[] = '<a href="index.php?modname=catalogue&amp;op=delentry&amp;id_cat='.$id_cat.'&amp;type=course&amp;id_entry='.$course['id'].'" '
@@ -458,7 +458,7 @@ function entrylist() {
     foreach( $coursespath_name as $id => $coursepath )
     {
             
-            $cont = array($coursepath, $lang->def('_COURSEPATH'));
+            $cont = [$coursepath, $lang->def('_COURSEPATH')];
             // #bugfix 1141
             $tmp_code = $coursepath_man->getCoursepathInfo($id);
             $path_code =  $tmp_code['path_code'];
@@ -478,7 +478,7 @@ function entrylist() {
 		}
 	}
 
-	$select_entry = array('course' => $lang->def('_COURSE'), 'coursepath' => $lang->def('_COURSEPATH'));
+	$select_entry = ['course' => $lang->def('_COURSE'), 'coursepath' => $lang->def('_COURSEPATH')];
 	if ($mod_perm) {
 		$tb_entry->addActionAdd(
 			/*'<a href="index.php?modname=catalogue&amp;op=import&amp;id_cat='.$id_cat.'&amp;load=1" title="'.$lang->def('_IMPORT_NEW_ENTRY').'">'
@@ -552,8 +552,8 @@ function import() {
 	}
 	if(isset($_GET['load']) || isset($_POST['save_selection'])) {
 
-		$course_initial_sel = array();
-		$coursepath_initial_sel = array();
+		$course_initial_sel = [];
+		$coursepath_initial_sel = [];
 		$query = "
 		SELECT idEntry, type_of_entry
 		FROM ".$GLOBALS['prefix_lms']."_catalogue_entry
@@ -582,11 +582,11 @@ function import() {
 
 		Util::jump_to('index.php?modname=catalogue&amp;op=entrylist&amp;id='.$id_cat.'&amp;result='.( $re ? 'ok' : 'err' ));
 	}
-	$title_area = array(
+	$title_area = [
 		'index.php?modname=catalogue&amp;op=catlist' => $lang->def('_CATALOGUE'),
 		'index.php?modname=catalogue&amp;op=entrylist&amp;id='.$id_cat => getCatalogueName($id_cat),
 		$lang->def('_IMPORT_NEW_ENTRY').' '.$lang->def('_COURSE')
-	);
+    ];
 	$out->add(
 		getTitleArea($title_area, 'catalogue')
 		.'<div class="std_block">'
@@ -611,7 +611,7 @@ function delentry() {
 	$id_cat 		= importVar('id_cat', false);
 	$type_of_entry 	= importVar('type', false);
 	$id_entry 		= importVar('id_entry', true, 0);
-	$id_arr 		= array($id_entry);
+	$id_arr 		= [$id_entry];
 
 	$query_catalogue = "
 	SELECT idCatalogue
@@ -714,7 +714,7 @@ function modcatalogueassoc() {
 
 	if(isset($_POST['okselector'])) {
 
-		$old_members = array();
+		$old_members = [];
 		$re_members = sql_query("
 		SELECT idst_member
 		FROM ".$GLOBALS['prefix_lms']."_catalogue_member
@@ -736,7 +736,7 @@ function modcatalogueassoc() {
 
 	if(isset($_GET['load'])) {
 
-		$members = array();
+		$members = [];
 		$re_members = sql_query("
 		SELECT idst_member
 		FROM ".$GLOBALS['prefix_lms']."_catalogue_member
@@ -749,7 +749,7 @@ function modcatalogueassoc() {
 		$user_select->resetSelection($members);
 	}
 	$title_area = getTitleArea(
-		array('index.php?modname=catalogue&amp;op=catlist' => $lang->def('_CATALOGUE'),getCatalogueName($id_catalogue)),
+		['index.php?modname=catalogue&amp;op=catlist' => $lang->def('_CATALOGUE'),getCatalogueName($id_catalogue)],
 		'catalogue');
 	$user_select->setPageTitle($title_area);
 	$user_select->loadSelector('index.php?modname=catalogue&amp;op=modcatalogueassoc&amp;id_catalogue='.$id_catalogue,

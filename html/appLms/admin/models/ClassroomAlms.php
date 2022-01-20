@@ -39,7 +39,7 @@ class ClassroomAlms extends Model
 
     public function getPerm()
     {
-        return array('view' => 'standard/view.png');
+        return ['view' => 'standard/view.png'];
     }
 
     public function getClassroomsNumber($filter = false)
@@ -84,7 +84,7 @@ class ClassroomAlms extends Model
 
     public function getCategoryDescendants($id_category)
     {
-        $output = array();
+        $output = [];
 
         if ($id_category != 0) {
             $query = "SELECT iLeft, iRight FROM %lms_category WHERE idCategory=" . (int)$id_category;
@@ -148,7 +148,7 @@ class ClassroomAlms extends Model
 
     public function getDateInfoFromPost()
     {
-        $res = array();
+        $res = [];
 
         $res['code'] = Get::req('code', DOTY_MIXED, '');
         $res['name'] = Get::req('name', DOTY_MIXED, '');
@@ -164,7 +164,7 @@ class ClassroomAlms extends Model
         $res['sub_end_date'] = Get::req('sub_end_date', DOTY_MIXED, '');
         $res['unsubscribe_date_limit'] = Get::req('unsubscribe_date_limit', DOTY_MIXED, '');
 
-        $array_day = array();
+        $array_day = [];
 
         if ($res['date_selected'] !== '')
             $array_day = explode(',', $res['date_selected']);
@@ -180,21 +180,21 @@ class ClassroomAlms extends Model
 
         $tb = new Table(0, Lang::t('_DETAILS', 'course'), Lang::t('_DETAILS', 'course'));
 
-        $cont_h = array(Lang::t('_DAY', 'course'),
+        $cont_h = [Lang::t('_DAY', 'course'),
             Lang::t('_HOUR_BEGIN', 'course'),
             Lang::t('_PAUSE_BEGIN', 'course'),
             Lang::t('_PAUSE_END', 'course'),
             Lang::t('_HOUR_END', 'course'),
-            Lang::t('_CLASSROOM', 'course'));
+            Lang::t('_CLASSROOM', 'course')];
 
-        $type_h = array('align_center', 'align_center', 'align_center', 'align_center');
+        $type_h = ['align_center', 'align_center', 'align_center', 'align_center'];
 
         $classroom_array = $this->classroom_man->getClassroomForDropdown();
 
         $tb->setColsStyle($type_h);
         $tb->addHead($cont_h);
 
-        $days = array();
+        $days = [];
         if ((int)$id_date > 0) {
             $days = $this->classroom_man->getDateDayForControl($id_date);
         }
@@ -223,29 +223,29 @@ class ClassroomAlms extends Model
                 $classroom = 0;
             }
 
-            $classroom_array_checked = array();
+            $classroom_array_checked = [];
             $occupied = $this->getOccupiedClassrooms($array_day[$i]);
             foreach ($classroom_array as $key => $value) {
                 $classroom_array_checked[$key] = (in_array($key, $occupied) && $key != 0 ? '* ' : '') . $value;
             }
 
-            $tb->addBody(array(Format::date($array_day[$i], 'date'),
+            $tb->addBody([Format::date($array_day[$i], 'date'),
                 Form::getInputDropdown('', 'b_hours_' . $i, 'b_hours_' . $i, $this->classroom_man->getHours(), $b_hours, false) . ' : ' . Form::getInputDropdown('', 'b_minutes_' . $i, 'b_minutes_' . $i, $this->classroom_man->getMinutes(), $b_minutes, false),
                 Form::getInputDropdown('', 'pb_hours_' . $i, 'pb_hours_' . $i, $this->classroom_man->getHours(), $pb_hours, false) . ' : ' . Form::getInputDropdown('', 'pb_minutes_' . $i, 'pb_minutes_' . $i, $this->classroom_man->getMinutes(), $pb_minutes, false),
                 Form::getInputDropdown('', 'pe_hours_' . $i, 'pe_hours_' . $i, $this->classroom_man->getHours(), $pe_hours, false) . ' : ' . Form::getInputDropdown('', 'pe_minutes_' . $i, 'pe_minutes_' . $i, $this->classroom_man->getMinutes(), $pe_minutes, false),
                 Form::getInputDropdown('', 'e_hours_' . $i, 'e_hours_' . $i, $this->classroom_man->getHours(), $e_hours, false) . ' : ' . Form::getInputDropdown('', 'e_minutes_' . $i, 'e_minutes_' . $i, $this->classroom_man->getMinutes(), $e_minutes, false),
                 Form::getInputDropdown('', 'classroom_' . $i, 'classroom_' . $i, $classroom_array_checked, $classroom, false)
-            ));
+            ]);
         }
         if (count($array_day) > 1) {
-            $tb->addBody(array(
+            $tb->addBody([
                 Lang::t('_SET', 'course'),
                 Form::getInputDropdown('', 'b_hours', 'b_hours', $this->classroom_man->getHours(), '00', false) . ' : ' . Form::getInputDropdown('', 'b_minutes', 'b_minutes', $this->classroom_man->getMinutes(), '00', false),
                 Form::getInputDropdown('', 'pb_hours', 'pb_hours', $this->classroom_man->getHours(), '00', false) . ' : ' . Form::getInputDropdown('', 'pb_minutes', 'pb_minutes', $this->classroom_man->getMinutes(), '00', false),
                 Form::getInputDropdown('', 'pe_hours', 'pe_hours', $this->classroom_man->getHours(), '00', false) . ' : ' . Form::getInputDropdown('', 'pe_minutes', 'pe_minutes', $this->classroom_man->getMinutes(), '00', false),
                 Form::getInputDropdown('', 'e_hours', 'e_hours', $this->classroom_man->getHours(), '00', false) . ' : ' . Form::getInputDropdown('', 'e_minutes', 'e_minutes', $this->classroom_man->getMinutes(), '00', false),
                 Form::getInputDropdown('', 'classroom', 'classroom', $classroom_array, 0, false)
-            ));
+            ]);
         }
 
         $table = '<script type="text/javascript">'
@@ -304,7 +304,7 @@ class ClassroomAlms extends Model
     public function getDateInfo()
     {
         if (isset($_POST['back']))
-            $date_info = array();
+            $date_info = [];
         else
             $date_info = $this->classroom_man->getDateInfo($this->id_date);
 
@@ -416,10 +416,10 @@ class ClassroomAlms extends Model
 
         $tb = new Table(0, Lang::t('_ATTENDANCE', 'course'), Lang::t('_ATTENDANCE', 'course'));
 
-        $cont_h = array(Lang::t('_USERNAME', 'course'),
-            Lang::t('_FULLNAME', 'course'));
+        $cont_h = [Lang::t('_USERNAME', 'course'),
+            Lang::t('_FULLNAME', 'course')];
 
-        $type_h = array('', '');
+        $type_h = ['', ''];
 
         foreach ($day as $id_day => $day_info) {
             $cont_h[] = Format::date($day_info['date_begin'], 'date') . '<br />'
@@ -443,14 +443,14 @@ class ClassroomAlms extends Model
         $tb->setColsStyle($type_h);
         $tb->addHead($cont_h);
 
-        $array_user_id = array();
+        $array_user_id = [];
 
         foreach ($user as $id_user => $user_info) {
             reset($day);
 
             $array_user_id[] = $id_user;
 
-            $cont = array();
+            $cont = [];
 
             $cont[] = $user_info['userid'];
             $cont[] = $user_info['lastname'] . ' ' . $user_info['firstname'];
@@ -499,7 +499,7 @@ class ClassroomAlms extends Model
         foreach ($user as $id_user => $user_info) {
             $user[$id_user]['score'] = Get::req('score_' . $id_user, DOTY_INT, 0);
             $user[$id_user]['note'] = Get::req('note_' . $id_user, DOTY_MIXED, '');
-            $user[$id_user]['day_presence'] = array();
+            $user[$id_user]['day_presence'] = [];
 
             for ($i = 0; $i < count($day); $i++)
                 $user[$id_user]['day_presence'][$day[$i]['id_day']] = Get::req('date_' . $day[$i]['id_day'] . '_' . $id_user, DOTY_INT, 0);
@@ -518,10 +518,10 @@ class ClassroomAlms extends Model
      */
     public function checkDateAvailability($info)
     {
-        $output = array();
+        $output = [];
         if (!empty($info)) {
             //get class occupation
-            $classrooms = array();
+            $classrooms = [];
             foreach ($info as $day) {
                 if ($day['classroom'] > 0 && !in_array($day['classroom'], $classrooms))
                     $classrooms[] = $day['classroom'];
@@ -550,7 +550,7 @@ class ClassroomAlms extends Model
         if (!$date) return FALSE;
         if (!is_string($date) || strlen($date) < 10) return FALSE;
         $date = substr($date, 0, 10);
-        $output = array();
+        $output = [];
         $query = "SELECT DISTINCT(classroom) FROM %lms_course_date_day "
             . " WHERE date_begin <= '" . $date . " 23:59:59' AND date_end >= '" . $date . " 00:00:00'";
         $res = sql_query($query);

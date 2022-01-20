@@ -271,7 +271,7 @@ class DoceboDOMDocument extends DoceboDOMNode {
 			$result =& createDoceboDOMObject( domxml_open_file( $filename ) );
 			return $result;
 		} else {
-			$errors = array();
+			$errors = [];
 			$this->nodeRef = domxml_open_file( $filename,DOMXML_LOAD_PARSING ,$errors );
 			if(!empty($errors)) echo '<pre>'.print_R($errors);
 			return $this;

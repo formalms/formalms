@@ -1,6 +1,6 @@
 
 <?php
-$title_arr=array();
+$title_arr= [];
 $title_arr['index.php?r=alms/games/show']=Lang::t('_CONTEST', 'games');
 //$title_arr['index.php?r=alms/games/categorize&amp;id_game='.$id_game]=$games_data['title'];
 $title_arr[]=$games_data['title']; //Lang::t('_CATEGORIZE', 'kb');
@@ -15,15 +15,15 @@ echo(getTitleArea($title_arr));
 	$tb = new Table(Get::sett('visu_course'));
 
 
-	$h_type = array('', '', '', '', '', 'image');
-	$h_content = array(
+	$h_type = ['', '', '', '', '', 'image'];
+	$h_content = [
 		Lang::t('_NAME', 'organization'),
 		Lang::t('_TYPE', 'kb'),
 		Lang::t('_ENVIRONMENT', 'kb'),
 		Lang::t('_LANGUAGE', 'kb'),
 		Lang::t('_TAGS', 'kb'),
 		Lang::t('_CATEGORIZE', 'kb'),
-	);
+    ];
 
 	$tb->setColsStyle($h_type);
 	$tb->addHead($h_content);
@@ -37,8 +37,8 @@ echo(getTitleArea($title_arr));
 
 	$q =sql_query($qry);
 	$i =0;
-	$data =array();
-	$sco_arr =array();
+	$data = [];
+	$sco_arr = [];
 	while ($row = sql_fetch_assoc($q)) {
 
 		$sco_id =$row["idscorm_item"];
@@ -57,11 +57,11 @@ echo(getTitleArea($title_arr));
 	require_once(_lms_.'/lib/lib.kbres.php');
 	$kbres =new KbRes();
 	$categorized_sco =$kbres->getCategorizedResources($sco_arr, "scoitem", "games", true);
-	$categorized_sco_id =(!empty($categorized_sco) ? array_keys($categorized_sco) : array());
+	$categorized_sco_id =(!empty($categorized_sco) ? array_keys($categorized_sco) : []);
 
 	foreach ($data as $row) {
 
-		$line = array();
+		$line = [];
 
 		$sco_id =$row["idscorm_item"];
 
@@ -109,7 +109,7 @@ echo(getTitleArea($title_arr));
 		.Form::closeForm();
 	$body.=Lang::t('_YOU_WILL_LOSE_PREVIOUS_CATEGORIZATION', 'kb');
 
-	$this->widget('dialog', array(
+	$this->widget('dialog', [
 		'id' => 'subcategorize_switch_dialog',
 		'dynamicContent' => false,
 		'dynamicAjaxUrl' => false,
@@ -117,10 +117,10 @@ echo(getTitleArea($title_arr));
 		'header' => Lang::t('_AREYOUSURE', 'kb'),
 		'body' => $body,
 		'callback' => 'function() { this.destroy(); }',
-		'callEvents' => array(
-			array('caller' => 'subcategorize_switch', 'event' => 'click')
-		)
-	));
+		'callEvents' => [
+			['caller' => 'subcategorize_switch', 'event' => 'click']
+        ]
+    ]);
 
 ?>
 

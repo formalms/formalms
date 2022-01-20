@@ -327,7 +327,7 @@ class Timetable {
 	 * @return array like: array[]=>array[id, consumer, consumer_id, resource, resource_id, start_date, end_date]
 	 */
 	function getConsumerResources($consumer_code, $consumer_id, $start_date=FALSE, $end_date=FALSE, $resouce_code=FALSE) {
-		$res=array();
+		$res= [];
 
 		$consumer_code=substr($consumer_code, 0, 60);
 		$consumer_id=(int)$consumer_id;

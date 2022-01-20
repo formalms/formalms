@@ -23,7 +23,7 @@ class Tags {
 	
 	var $_private_tag_enabled = false;
 	
-	var $tags_founded = array();
+	var $tags_founded = [];
 	
 	function Tags($resource_type, $viewer = false) {
 		
@@ -55,8 +55,8 @@ class Tags {
 		$lang =& DoceboLanguage::createInstance('tags', 'framework');
 		
 		$this->tags_id = $tags_id;
-		YuiLib::load(array('autocomplete' => 'autocomplete-min.js', 'selector' => 'selector-beta-min.js'), 
-			array('assets/skins/sam'=>'autocomplete.css'));
+		YuiLib::load(['autocomplete' => 'autocomplete-min.js', 'selector' => 'selector-beta-min.js'],
+			['assets/skins/sam'=>'autocomplete.css']);
 		Util::get_js(Get::rel_path('adm').'/lib/lib.tags.js', true, true);
 		
 		// setup some thing that we need in the tag editor
@@ -94,7 +94,7 @@ class Tags {
 		ORDER BY tag_name";
 		$re = sql_query($query);
 		
-		$tags_founded = array();
+		$tags_founded = [];
 		while(list($id_tag, $tag_name, $occurences) = sql_fetch_row($re)) {
 			
 			$tags_founded[$id_tag] = $tag_name;
@@ -178,7 +178,7 @@ class Tags {
 		
 		// break tag list
 		
-		$tag_list = array();
+		$tag_list = [];
 		$tag_piece = explode(',', $str_tag);
 
 		foreach($tag_piece as $k => $v) { 
@@ -188,8 +188,8 @@ class Tags {
 		
 		// find id tag 
 		
-		$tag = array();
-		$founded_tag = array();
+		$tag = [];
+		$founded_tag = [];
 		$query = "SELECT id_tag, tag_name
 		FROM  ".$this->_tag_t." AS t
 		WHERE tag_name IN ( '".implode("', '", $tag_list)."' )";
@@ -203,7 +203,7 @@ class Tags {
 		
 		// recovering user tag for the resource
 		
-		$user_prev_tag = array();
+		$user_prev_tag = [];
 		$query = "SELECT id_tag
 		FROM  ".$this->_tagrel_t." 
 		WHERE resource_type = '".$this->resource_type."'  
@@ -278,7 +278,7 @@ class Tags {
 			sql_query($query);
 		}
 		
-		$this->loadResourcesTags(array($id_resource), false, $is_private);
+		$this->loadResourcesTags([$id_resource], false, $is_private);
 		$first = true;
 		$html = '';
 		if (!$is_private) {
@@ -298,7 +298,7 @@ class Tags {
 		if(!$this->_use_tag) return 0;
 
 		// if only one resource is passed as int transform in a array
-		if(!is_array($arr_resources)) $arr_resources = array($arr_resources);
+		if(!is_array($arr_resources)) $arr_resources = [$arr_resources];
 		if($id_user == false) $id_user = getLogUserId();
 
 		// find all the resource's tags with the occurences
@@ -313,12 +313,12 @@ class Tags {
 		$re = sql_query($query);
 
 		// save the tag in a class propiety
-		$this->tags_founded = array();
-		$this->private_tags_founded = array();
+		$this->tags_founded = [];
+		$this->private_tags_founded = [];
 		while(list($id_tag, $tag, $id_resource, $private, $occurences) = sql_fetch_row($re)) {
 			
-			if($private) $this->private_tags_founded[$id_resource][$id_tag] = array($tag, $occurences);
-			else $this->tags_founded[$id_resource][$id_tag] = array($tag, $occurences);
+			if($private) $this->private_tags_founded[$id_resource][$id_tag] = [$tag, $occurences];
+			else $this->tags_founded[$id_resource][$id_tag] = [$tag, $occurences];
 		}
 
 		// search for the user tags for the resource and highlight them
@@ -345,7 +345,7 @@ class Tags {
 		
 		if(!$this->_use_tag) return '';
 		
-		if(!is_array($arr_resources)) $arr_resources = array($arr_resources);;
+		if(!is_array($arr_resources)) $arr_resources = [$arr_resources];;
 		
 		$query = "SELECT t.tag_name, rel.id_resource, COUNT(*) as occurences
 		FROM  ".$this->_tag_t." AS t
@@ -356,19 +356,19 @@ class Tags {
 		GROUP BY rel.id_tag, rel.id_resource ";
 		$re = sql_query($query);
 		
-		$tags_founded = array();
+		$tags_founded = [];
 		while(list($tag, $id_resource, $occurences) = sql_fetch_row($re)) {
 			
-			$tags_founded[$id_resource] = array( $tag );
+			$tags_founded[$id_resource] = [$tag];
 		}
 		return $tags_founded;
 	}
 	
 	function getResourcesOccurrenceTags($arr_resources) {
 		
-		if(!$this->_use_tag) return array();
+		if(!$this->_use_tag) return [];
 		
-		if(!is_array($arr_resources)) $arr_resources = array($arr_resources);;
+		if(!is_array($arr_resources)) $arr_resources = [$arr_resources];;
 		
 		$query = "SELECT t.tag_name, rel.id_resource, COUNT(*) as occurences
 		FROM  ".$this->_tag_t." AS t
@@ -379,10 +379,10 @@ class Tags {
 		GROUP BY rel.id_tag, rel.id_resource ";
 		$re = sql_query($query);
 		
-		$tags_founded = array();
+		$tags_founded = [];
 		while(list($tag, $id_resource, $occurences) = sql_fetch_row($re)) {
 			
-			$tags_founded[$id_resource][$tag] = array( 'tag' => $tag, 'occurences' => $occurences );
+			$tags_founded[$id_resource][$tag] = ['tag' => $tag, 'occurences' => $occurences];
 		}
 		
 		return $tags_founded;
@@ -390,10 +390,10 @@ class Tags {
 	
 	function getResourceByTags($id_tags, $resource_type = false, $course_filter = false, $ini=false, $limit=false) {
 		
-		if(!$this->_use_tag) return array();
+		if(!$this->_use_tag) return [];
 		
-		$tags_founded = array();
-		$arr_resources = array();
+		$tags_founded = [];
+		$arr_resources = [];
 		
 		$query = "
 		SELECT COUNT(*)
@@ -418,7 +418,7 @@ class Tags {
 		
 		while(list($id_resource, $resource_type, $id_course, $title, $sample_text, $permalink, $occurences) = sql_fetch_row($re)) {
 			
-			$tags_founded['list'][$id_resource.'_'.$resource_type] = array(
+			$tags_founded['list'][$id_resource.'_'.$resource_type] = [
 									'id_resource' 	=> $id_resource, 
 									'resource_type' => $resource_type, 
 									'id_course'		=> $id_course, 
@@ -426,7 +426,7 @@ class Tags {
 									'sample_text' 	=> $sample_text, 
 									'permalink' 	=> $permalink, 
 									'occurences'	=> $occurences,
-									'related_tags'	=> array() );
+									'related_tags'	=> []];
 			
 			$arr_resources[$resource_type][$id_resource] = $id_resource;
 		}
@@ -458,7 +458,7 @@ class Tags {
 	
 	function getPopularTag($limit = false) {
 		
-		if(!$this->_use_tag) return array();
+		if(!$this->_use_tag) return [];
 		
 		if(!$limit) $limit = 5;
 		
@@ -472,7 +472,7 @@ class Tags {
 		LIMIT 0, ".$limit."";
 		$re = sql_query($query);
 		
-		$tags_founded = array();
+		$tags_founded = [];
 		while(list($tag, $occurences) = sql_fetch_row($re)) {
 			
 			$tags_founded[] = $tag;
@@ -482,7 +482,7 @@ class Tags {
 	
 	function getUserPopularTag($id_user, $limit = false) {
 		
-		if(!$this->_use_tag) return array();
+		if(!$this->_use_tag) return [];
 		
 		if(!$limit) $limit = 5;
 		
@@ -497,7 +497,7 @@ class Tags {
 		LIMIT 0, ".(int)$limit."";
 		$re = sql_query($query);
 		
-		$tags_founded = array();
+		$tags_founded = [];
 		while(list($tag, $occurences) = sql_fetch_row($re)) {
 			
 			$tags_founded[] = $tag;
@@ -551,10 +551,10 @@ class Tags {
 		$total_occurrences = 0;
 		$min = false;
 		$max = false;
-		$tags_founded = array();
+		$tags_founded = [];
 		while(list($id_tag, $tag, $occurences) = sql_fetch_row($re)) {
 			
-			$tags_founded[$id_tag] = array($tag, $occurences);
+			$tags_founded[$id_tag] = [$tag, $occurences];
 			$total_occurrences += $occurences;
 			
 			if($min > $occurences ) $min = $occurences;
@@ -587,7 +587,7 @@ class Tags {
 		
 		if(!$this->_use_tag) return true;
 		
-		if(!is_array($arr_res)) $arr_res = array($arr_res);
+		if(!is_array($arr_res)) $arr_res = [$arr_res];
 		
 		$re = false;
 		$query = "DELETE FROM ".$this->_tagrel_t

@@ -95,7 +95,7 @@ class ResourceModel {
 
 
 	function getResourceEntries($resource_id=FALSE, $start_date=FALSE, $end_date=FALSE, $consumer_filter=FALSE) {
-		$res=array();
+		$res= [];
 
 		$qtxt ="SELECT * FROM ".$this->getTimeTableTable()." WHERE ";
 		$qtxt.="resource='".$this->getResourceCode()."'";
@@ -126,7 +126,7 @@ class ResourceModel {
 
 
 	function getResourcesInUse($start_date=FALSE, $end_date=FALSE, $allow_partial=FALSE, $exclude_consumer_id=FALSE) {
-		$res=array();
+		$res= [];
 		$first =TRUE;
 
 		$qtxt ="SELECT * FROM ".$this->getTimeTableTable()." WHERE ";

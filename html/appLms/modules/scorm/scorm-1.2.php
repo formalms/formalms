@@ -42,7 +42,7 @@ define('SCORM_RTE_MAXTIMEALLOWED','cmi.student_data.max_time_allowed');
 define('SCORM_RTE_LAUNCH_DATA','cmi.launch_data');
 define('SCORM_RTE_TIMELIMITACTION','cmi.student_data.time_limit_action');
 
-$GLOBALS['xpathwritedb'] = array( 	'lesson_location' => '//cmi/core/lesson_location',
+$GLOBALS['xpathwritedb'] = ['lesson_location' => '//cmi/core/lesson_location',
 					'lesson_status' => '//cmi/core/lesson_status',
 					'entry' => '//cmi/core/entry',
 					'score_raw' => '//cmi/core/score/raw',
@@ -50,7 +50,7 @@ $GLOBALS['xpathwritedb'] = array( 	'lesson_location' => '//cmi/core/lesson_locat
 					'score_max' => '//cmi/core/score/max',
 					'exit' => '//cmi/core/exit',
 					'session_time' => '//cmi/core/session_time'
-					);
+];
 
 function scormInitializeParams($trackobj, $scormtype, $idscorm_item) {
 	

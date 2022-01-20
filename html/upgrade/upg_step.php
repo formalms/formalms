@@ -68,10 +68,10 @@ switch($upg_step) {
 	} break;
 	case "4": { // --- Upgrade trees (ileft / iright) ----------------------------
 		$GLOBALS['tree_st'] = '';
-		$tables = array(
+		$tables = [
 			'core_org_chart_tree' => 'idOrg',
 			'learning_category' => 'idCategory',
-		);
+        ];
 		foreach ($tables as $tab=>$p_key) {
 			populate($tab, $p_key);
 		}
@@ -132,31 +132,31 @@ function populate($table_name, $field_id) {
 
 	if(!$q) return false;
 
-	$table = array();
-	$GLOBALS['tree_st'] = array(
-		0 =>  array(
+	$table = [];
+	$GLOBALS['tree_st'] = [
+		0 =>  [
 			'id' => 0,
 			'id_parent' => 0,
 			'path' => '/root/',
-			'sons' => array(),
+			'sons' => [],
 			'left' => 0,
 			'right' => 0,
 			'iLeft' => 1,
 			'iRight' => sql_num_rows($q) * 2
-		)
-	);
+        ]
+    ];
 	while(list($id, $idParent, $path, $deep, $il, $ir) = sql_fetch_row($q)) {
 
-		$GLOBALS['tree_st'][$id] = array(
+		$GLOBALS['tree_st'][$id] = [
 			'id' => $id,
 			'id_parent' => $idParent,
 			'path' => $path,
-			'sons' => array(),
+			'sons' => [],
 			'left' => 0,
 			'right' => 0,
 			'iLeft' => $il,
 			'iRight' => $ir
-		);
+        ];
 
 		if(isset($GLOBALS['tree_st'][$idParent]) && $id != 0) {
 			$GLOBALS['tree_st'][$idParent]['sons'][$id] = $id;
@@ -169,7 +169,7 @@ function populate($table_name, $field_id) {
 	navigate(0);
 	if($table_name == 'core_org_chart_tree') {
 		// we need to update also idst_oc and idst_ocd
-		$idst_oc = array();
+		$idst_oc = [];
 		$qtxt ="SELECT idst, groupid FROM core_group WHERE groupid LIKE '/oc%' ";
 		$q = sql_query($qtxt);
 		while($row=sql_fetch_object($q)) {
@@ -288,7 +288,7 @@ function addUpgraderRoles() {
 function addMissingRoles() {
 	require_once(_lib_.'/installer/lib.role.php');
 
-	$role_nogroup = array(
+	$role_nogroup = [
 					'/lms/course/public/pusermanagement/view',
 					'/lms/course/public/pusermanagement/add',
 					'/lms/course/public/pusermanagement/mod',
@@ -306,27 +306,27 @@ function addMissingRoles() {
 					'/lms/course/private/quest_bank/view',
 					'/lms/course/private/reservation/mod',
 					'/lms/course/private/reservation/view'
-					);
+    ];
 	addRoles($role_nogroup);
 
 
-	$role_group = array(
+	$role_group = [
  					'/lms/course/private/coursecharts/view',
 					'/lms/course/private/coursestats/view'
-					);
+    ];
 	addRoles($role_group);
 
-	$role_group = array(
+	$role_group = [
 					'/lms/course/private/presence/view'
-					);
+    ];
 	addRoles($role_group);
 
 	// group '/framework/level/godadmin'
 	$groupId = getGroupIdst('/framework/level/godadmin');
-	$role_godadmin = array(
+	$role_godadmin = [
 					'/lms/course/public/pcertificate/view',
 					'/lms/course/public/pcertificate/mod'
-					);
+    ];
 	addRoles($role_godadmin, $groupId);
 
 
@@ -364,7 +364,7 @@ function updateSettings() {
 
 	// Store config (we'll keep only the core_setting table)
 	foreach($new_setting as $key=>$val) {
-		$fields = array();
+		$fields = [];
 		foreach ($val as $fk => $fv) {
 
 			if($fk == 'param_value') $fields[] = $fk."='".( isset($old_cfg[$fk]) ? $old_cfg[$fk][$fv] : $fv )."'";
@@ -382,7 +382,7 @@ function updateSettings() {
 
 
 function getSettingsArr($table) {
-	$res = array();
+	$res = [];
 
 	$qtxt = "SELECT * FROM ".$table." ORDER BY param_name";
 	$q=sql_query($qtxt);

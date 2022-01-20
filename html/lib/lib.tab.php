@@ -142,7 +142,7 @@ class TabView {
 	var $id;
 
 	/** @var array $arrTab array of tab elements*/
-	var $arrTab = array();
+	var $arrTab = [];
 
 	/** @var int $activeId id of the active tab in the array */
 	var $activeId = NULL;
@@ -227,7 +227,7 @@ class TabView {
 	 *	@return array state array of the TabView
 	**/
 	function getState() {
-		return array( $this->_getStateId() => $this->getActiveTab() );
+		return [$this->_getStateId() => $this->getActiveTab()];
 	}
 
 	/* ********************************** PRINT OUT FUNCTIONS ************************/

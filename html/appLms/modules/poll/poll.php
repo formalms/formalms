@@ -211,13 +211,13 @@ function modpollgui( $object_poll ) {
 	
 	$tab = new Table( 0, $caption, $lang->def('_POLL_SUMMARY'));
  
-	$tab->setColsStyle(array('image', 'image', '', 'image', 'image', 'image', 'image', 'image'));
+	$tab->setColsStyle(['image', 'image', '', 'image', 'image', 'image', 'image', 'image']);
 	$tab->addHead(
-		array($lang->def('_QUEST'), $lang->def('_TYPE'), $lang->def('_TITLE'), $lang->def('_POLL_QUEST_ORDER'), 
+		[$lang->def('_QUEST'), $lang->def('_TYPE'), $lang->def('_TITLE'), $lang->def('_POLL_QUEST_ORDER'),
 		'<img src="'.getPathImage().'standard/down.png" alt="'.$lang->def('_DOWN').'" longdesc="'.$lang->def('_DOWN').'" />',
 		'<img src="'.getPathImage().'standard/up.png" alt="'.$lang->def('_UP').'" longdesc="'.$lang->def('_UP').'" />',
 		'<img src="'.getPathImage().'standard/edit.png" alt="'.$lang->def('_MOD').'" longdesc="'.$lang->def('_MOD').'" />', 
-		'<img src="'.getPathImage().'standard/delete.png" alt="'.$lang->def('_DEL').'" longdesc="'.$lang->def('_POLL_REMPOLL').'" />' ));
+		'<img src="'.getPathImage().'standard/delete.png" alt="'.$lang->def('_DEL').'" longdesc="'.$lang->def('_POLL_REMPOLL').'" />']);
 	$i = 0;
 	$quest_num = 1;
 	$title_num = 1;
@@ -226,7 +226,7 @@ function modpollgui( $object_poll ) {
 	while(list($id_quest, $type, $title, $sequence, $page) = sql_fetch_row($re_quest)) {
 		
 		$last_type = $type;
-		$content = array(
+		$content = [
 		( (($type != 'break_page') && ($type != 'title')) ? '<span class="text_bold">'.($quest_num++).'</span>' : '' ),
 		$lang->def('_QUEST_ACRN_'.strtoupper($type)),
 		$title,
@@ -242,7 +242,7 @@ function modpollgui( $object_poll ) {
 			.'<img src="'.getPathImage().'standard/edit.png" alt="'.$lang->def('_MOD').' : '.$lang->def('_ROW').' '.($i + 1).'" longdesc="'.$lang->def('_MOD').'" /></a>' : '' ),
 		'<a href="index.php?modname=poll&amp;op=delquest&amp;id_quest='.$id_quest.$uri_back.'" title="'.$lang->def('_POLL_REMPOLL').'">'
 			.'<img src="'.getPathImage().'standard/delete.png" alt="'.$lang->def('_DEL').' : '.$lang->def('_ROW').' '.($i + 1).'" longdesc="'.$lang->def('_POLL_REMPOLL').'" /></a>',
-		);
+        ];
 		
 		$tab->addBody($content);
 		++$i;
@@ -499,12 +499,12 @@ function addquest() {
 	if(isset($_POST['add_poll_quest'])) {
 		//first enter
 		$type_quest = importVar('add_poll_quest');
-		$var_to_safe = array(
+		$var_to_safe = [
 			'id_quest' => 0,
 			'type_quest' => $type_quest,
 			'id_poll' => $id_poll,
 			'back_url' => urldecode(importVar('back_url'))
-		);
+        ];
 		$var_save = savePollStatus($var_to_safe);
 	}
 	else {
@@ -536,12 +536,12 @@ function modquest() {
 	
 	if(!isset($_POST['back_url'])) {
 		//first enter
-		$var_to_safe = array(
+		$var_to_safe = [
 			'id_quest' => $id_quest,
 			'type_quest' => $type_quest,
 			'id_poll' => $id_poll,
 			'back_url' => urldecode(importVar('back_url'))
-		);
+        ];
 		$var_save = savePollStatus($var_to_safe);
 	}
 	else {

@@ -1,7 +1,7 @@
-<?php echo getTitleArea(array(
+<?php echo getTitleArea([
 	'index.php?r='.$base_link_course.'/show' => Lang::t('_COURSE', 'course'),
 	Lang::t('_ASSIGN_MENU', 'course').' : '.$course_name
-)); ?>
+]); ?>
 <div class="std_block">
 <?php
 	echo	Form::openForm('certificate_form', 'index.php?r='.$base_link_course.'/menu')

@@ -64,14 +64,14 @@ class DoceboCal_lms_classroom extends DoceboCal_core{
 		}
 
 		$tt=new TimeTable();
-		$consumer_filter=array("course", "course_edition");
+		$consumer_filter= ["course", "course_edition"];
 		$entries=$tt->getResourceEntries("classroom", FALSE, $start_date, $end_date, $consumer_filter);
 
 		//return sql_num_rows($result);
-		$calevents = array();
+		$calevents = [];
 		$i=0;
-		$parts=array();
-		$loaded=array();
+		$parts= [];
+		$loaded= [];
 		foreach($entries as $row) {
 
 			$loaded[$row["consumer"]][$i]=$row["resource_id"];
@@ -122,7 +122,7 @@ class DoceboCal_lms_classroom extends DoceboCal_core{
 
 		$q=sql_query($qtxt);
 
-		$edition_info=array();
+		$edition_info= [];
 		$calevents_keys=array_flip($loaded["course_edition"]);
 		if (($q) && (sql_num_rows($q) > 0)) {
 			while($row=sql_fetch_assoc($q)) {
@@ -146,7 +146,7 @@ class DoceboCal_lms_classroom extends DoceboCal_core{
 
 		$q=sql_query($qtxt);
 
-		$course_info=array();
+		$course_info= [];
 		if (($q) && (sql_num_rows($q) > 0)) {
 			while($row=sql_fetch_assoc($q)) {
 

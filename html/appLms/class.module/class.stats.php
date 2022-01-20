@@ -37,28 +37,28 @@ class Module_Stats extends LmsModule {
 	function getAllToken($op = '') {
 		
 		if($op == 'statuser') {
-			return array( 'view_user' => array( 	'code' => 'view_user',
+			return ['view_user' => ['code' => 'view_user',
 								'name' => '_VIEW',
-								'image' => 'standard/view.png'),
-					'view_all_statuser' => array( 	'code' => 'view_all_statuser',
+								'image' => 'standard/view.png'],
+					'view_all_statuser' => ['code' => 'view_all_statuser',
 								'name' => '_VIEW_ALL',
-								'image' => 'standard/moduser.png')
-                            );
+								'image' => 'standard/moduser.png']
+            ];
 		} else {
 			
-			return array( 'view_course' => array( 	'code' => 'view_course',
+			return ['view_course' => ['code' => 'view_course',
 								'name' => '_VIEW',
-								'image' => 'standard/view.png') ,
-					'view_all_statcourse' => array( 	'code' => 'view_all_statcourse',
+								'image' => 'standard/view.png'],
+					'view_all_statcourse' => ['code' => 'view_all_statcourse',
 								'name' => '_VIEW_ALL',
-								'image' => 'standard/moduser.png')
-                            );
+								'image' => 'standard/moduser.png']
+            ];
 		}
 		
 	}
 
 	function getPermissionsForMenu($op) {
-		return array(
+		return [
 			1 => $this->selectPerm($op, ''),
 			2 => $this->selectPerm($op, ''),
 			3 => $this->selectPerm($op, ''),
@@ -66,7 +66,7 @@ class Module_Stats extends LmsModule {
 			5 => $this->selectPerm($op, 'view_user,view_course'),
 			6 => $this->selectPerm($op, 'view_user,view_course,view_all_statuser,view_all_statcourse'),
 			7 => $this->selectPerm($op, 'view_user,view_course,view_all_statuser,view_all_statcourse')
-		);
+        ];
 	}
 	
 }

@@ -1,11 +1,11 @@
 <div class="yui-t6">
 	<div class="yui-b">
 		<?php
-		$this->widget('lms_block', array(
+		$this->widget('lms_block', [
 			'zone' => 'right',
 			'link' => 'elearning/show',
 			'block_list' => $block_list
-		));
+        ]);
 		?>
 	</div>
 	<div id="yui-main">
@@ -14,9 +14,9 @@
 			<div style="margin:1em;">
 				<?php
 				$this->widget(
-					'lms_tab', array(
+					'lms_tab', [
 					'active' => 'elearning',
-					'close' => false));
+					'close' => false]);
 
 				echo '<div>';
 

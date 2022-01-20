@@ -104,7 +104,7 @@ class TestCompletedEvent extends Event
         require_once(_base_ . '/appCore/lib/Sms/SmsGatewayManager.php');
 
         try {
-            return \SmsGatewayManager::send(array($this->userPhoneNumber), strip_tags($messageText));
+            return \SmsGatewayManager::send([$this->userPhoneNumber], strip_tags($messageText));
 
         }
         catch (SmsGatewayException $e) {

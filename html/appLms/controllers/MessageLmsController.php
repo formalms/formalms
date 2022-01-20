@@ -46,7 +46,7 @@ class MessageLmsController extends LmsController {
 		messageDispatch("message", true);
 
 		//additional actions
-		$params = array('id'=>'delete');
+		$params = ['id'=>'delete'];
 		$this->render('_events', $params);
 	}
 
@@ -92,7 +92,7 @@ class MessageLmsController extends LmsController {
 		$success = false;
 		$id = Get::req('id', DOTY_INT, -1);
 		if ($id > 0) $success = $this->model->deleteMessage($id);
-		$output = array('success'=>$success);
+		$output = ['success'=>$success];
 		echo $this->json->encode($output);
 	}
 }

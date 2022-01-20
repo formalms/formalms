@@ -163,15 +163,15 @@ class Learning_Object {
 	 */
 	function getParamInfo() {
         
-        $params = array();
-        $this->plugin_manager->run('getParamInfo', array($this, &$params));
+        $params = [];
+        $this->plugin_manager->run('getParamInfo', [$this, &$params]);
         return $params;
     }
     
     function renderCustomSettings($arrParams, $form, $lang) {
         
         $out = '';		
-        $this->plugin_manager->run('renderCustomSettings', array($this, $arrParams, &$out));
+        $this->plugin_manager->run('renderCustomSettings', [$this, $arrParams, &$out]);
 
 		require_once(_adm_.'/lib/lib.customfield.php');
 		$fman = new CustomFieldList();
@@ -221,7 +221,7 @@ class Learning_Object {
 	 * @return array an array with the ids of all resources
 	 */
 	function getMultipleResource( $idMultiResource ) {
-		return array();
+		return [];
 	}
 	
 	/**
@@ -238,7 +238,7 @@ class Learning_Object {
 	 * @return array with results found
 	 */
 	function search( $key ) {
-		return array();
+		return [];
 	}
 
 

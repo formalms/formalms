@@ -10,7 +10,7 @@ class MyCertificateTabLoading extends Event
 
     public function __construct()
     {
-        $this->tabs = array();
+        $this->tabs = [];
     }
 
     /**

@@ -18,14 +18,14 @@ class CategoryTree extends TreeDb_CatDb {
 	// Constructor of CategoryTree class
 	function CategoryTree() {
 		$this->table = '%lms_category';
-		$this->fields = array(
+		$this->fields = [
 			'id' => 'idCategory',
 			'idParent' => 'idParent',
 			'path' => 'path',
 			'lev' => 'lev',
 			'iLeft' => 'iLeft',
 			'iRight' => 'iRight'
-		);
+        ];
 	}
 
 	function _getBaseFields($tname = FALSE) {
@@ -46,14 +46,14 @@ class CategoryTree extends TreeDb_CatDb {
 	}
 
 	function _getArrBaseFields( $tname ) {
-		return array(
+		return [
 			'id' => $tname.'.'.$this->fields['id'],
 			'idParent' => $tname.'.'.$this->fields['idParent'],
 			'path' => $tname.'.'.$this->fields['path'],
 			'lev' => $tname.'.'.$this->fields['lev'],
 			'iLeft' => $tname.'.'.$this->fields['iLeft'],
 			'iRight' => $tname.'.'.$this->fields['iRight']
-		);
+        ];
 	}
 
 	function _getOtherFields($tname = FALSE) { return ""; }
@@ -119,7 +119,7 @@ class CategoryTree extends TreeDb_CatDb {
 			return $false_var;
 		}
 		list($num_row) = sql_fetch_row($rs);
-		$folder = new Folder( $this, array( 0, 0, "/root", 0, 1, $num_row * 2 ), false, true );
+		$folder = new Folder( $this, [0, 0, "/root", 0, 1, $num_row * 2], false, true );
 		return $folder;
 		//return $this->getFolderById( 0 );
 	}
@@ -127,7 +127,7 @@ class CategoryTree extends TreeDb_CatDb {
 	function _addFolder( $idParent, $path, $level ) {
 		$fields = $this->_getArrBaseFields( $this->table );
 		$limits = $this->_getFolderLimits( $idParent );
-		$new_limits = array( 'iLeft' => $limits['iRight'], 'iRight' => $limits['iRight']);
+		$new_limits = ['iLeft' => $limits['iRight'], 'iRight' => $limits['iRight']];
 
 		//updating left limits
 		$query = "UPDATE ". $this->table
@@ -201,7 +201,7 @@ class CategoryTree extends TreeDb_CatDb {
 				return $false_var;
 			}
 			list($num_row) = sql_fetch_row($rs);
-			$result = array('iLeft'=> 1, 'iRight'=> $num_row * 2 );
+			$result = ['iLeft'=> 1, 'iRight'=> $num_row * 2];
 			return $result;
 		}
 		$fields = $this->_getArrBaseFields( $this->table );
@@ -310,7 +310,7 @@ class CategoryTree extends TreeDb_CatDb {
 		if( sql_num_rows( $rs ) === 0 ) {
 			return FALSE;
 		} else {
-			$result = array();
+			$result = [];
 			while( list($id) = sql_fetch_row( $rs ) )
 			$result[] = $id;
 		}
@@ -347,7 +347,7 @@ class CategoryTree extends TreeDb_CatDb {
 	function getAllParentId( &$folder, &$tdb ) {
 
 		$path = $folder->getParentPath();
-		$arr_ancestors = array();
+		$arr_ancestors = [];
 		while($path != "") {
 
 			$parentFolder =& $tdb->getFolderByPath($path);
@@ -392,7 +392,7 @@ class CategoryTree extends TreeDb_CatDb {
 		$query = "SELECT idCategory FROM ".$GLOBALS['prefix_lms']."_category ".
 				"WHERE iLeft <= ".$limits['iLeft']." AND iRight >= ".$limits['iRight']." AND idCategory > 0 ORDER BY iLeft";
 		$res = sql_query($query);
-		$folders = array(0);
+		$folders = [0];
 		while (list($id_cat) = sql_fetch_row($res)) { $folders[] = (int)$id_cat; }
 
 		return  $folders;

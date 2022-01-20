@@ -25,12 +25,12 @@ Class TimeperiodsAlmsController extends AlmsController {
 		require_once(_base_.'/lib/lib.json.php');
 		$this->json = new Services_JSON();
 		$this->model = new TimeperiodsAlms();
-		$this->permissions = array(
+		$this->permissions = [
 			'view'	=> checkPerm('view', true, 'timeperiods', 'lms'),
 			'add'	=> checkPerm('mod', true, 'timeperiods', 'lms'),
 			'mod'	=> checkPerm('mod', true, 'timeperiods', 'lms'),
 			'del'	=> checkPerm('mod', true, 'timeperiods', 'lms')
-		);
+        ];
 	}
 
 
@@ -55,9 +55,9 @@ Class TimeperiodsAlmsController extends AlmsController {
 		Form::loadDatefieldScript();
 
 		//prepare view to render
-		$params = array(
+		$params = [
 			'permissions' => $this->permissions
-		);
+        ];
 		$this->render('show', $params);
 	}
 
@@ -74,10 +74,10 @@ Class TimeperiodsAlmsController extends AlmsController {
 		$dir = Get::req('dir', DOTY_STRING, "asc");
 
 		$filter_text = Get::req('filter_text', DOTY_STRING, '');
-		$searchFilter = array(
+		$searchFilter = [
 			'text' => $filter_text
 			//... TO DO: make dates filtrable too
-		);
+        ];
 
 		//calculate total records to display
 		$total = $this->model->getTimePeriodsTotal($searchFilter);
@@ -91,10 +91,10 @@ Class TimeperiodsAlmsController extends AlmsController {
 
 		//get records from DB and format data
 		$list = $this->model->getTimePeriodsList($startIndex, $results, $sort, $dir, $searchFilter);
-		$output_records = array();
+		$output_records = [];
 		if (is_array($list) && count($list)>0) {
 			foreach ($list as $record) {
-				$output_records[] = array(
+				$output_records[] = [
 					'id'		=> (int)$record->id_period,
 					'title'	=> Layout::highlight($record->title, $filter_text),
 					'label' => Layout::highlight($record->label, $filter_text),
@@ -102,12 +102,12 @@ Class TimeperiodsAlmsController extends AlmsController {
 					'end_date' => Format::date($record->end_date, "date"),
 					'mod'		=> 'ajax.adm_server.php?r=alms/timeperiods/mod&id='.(int)$record->id_period,
 					'del'		=> 'ajax.adm_server.php?r=alms/timeperiods/del&id='.(int)$record->id_period,
-				);
+                ];
 			}
 		}
 
 		//prepare the output for the datatable
-		$output = array(
+		$output = [
 			'totalRecords' => $total,
 			'startIndex' => $startIndex,
 			'sort' => $sort,
@@ -115,7 +115,7 @@ Class TimeperiodsAlmsController extends AlmsController {
 			'rowsPerPage' => $rowsPerPage,
 			'results' => count($output_records),
 			'records' => $output_records
-		);
+        ];
 
 		echo $this->json->encode($output);
 	}
@@ -126,13 +126,13 @@ Class TimeperiodsAlmsController extends AlmsController {
 	 */
 	public function addTask() {
 		if (!$this->permissions['add']) {
-			$output = array('success' => false, 'message' => $this->_getMessage("no permission"));
+			$output = ['success' => false, 'message' => $this->_getMessage("no permission")];
 			echo $this->json->encode($output);
 		}
 
-		$this->render('add', array(
+		$this->render('add', [
 			'json' => $this->json
-		));
+        ]);
 	}
 
 
@@ -141,7 +141,7 @@ Class TimeperiodsAlmsController extends AlmsController {
 	 */
 	public function modTask() {
 		if (!$this->permissions['mod']) {
-			$output = array('success' => false, 'message' => $this->_getMessage("no permission"));
+			$output = ['success' => false, 'message' => $this->_getMessage("no permission")];
 			echo $this->json->encode($output);
 		}
 
@@ -151,10 +151,10 @@ Class TimeperiodsAlmsController extends AlmsController {
 		if ($id <= 0) {
 
 			//if invalid, output an error message
-			$output = array(
+			$output = [
 				'success' => false,
 				'message' => Lang::t('_INVALID_PERIOD_SPECIFIED')
-			);
+            ];
 			echo $this->json->encode($output);
 
 		} else {
@@ -163,13 +163,13 @@ Class TimeperiodsAlmsController extends AlmsController {
 			$record = $this->model->getTimePeriod($id);
 
 			//render the dialog content
-			$this->render('mod', array(
+			$this->render('mod', [
 				'id' => $id,
 				'title' => $record->title,
 				'start_date' => $record->start_date,
 				'end_date' => $record->end_date,
 				'json' => $this->json
-			));
+            ]);
 
 		}
 	}
@@ -180,12 +180,12 @@ Class TimeperiodsAlmsController extends AlmsController {
 	 */
 	public function addactionTask() {
 		if (!$this->permissions['add']) {
-			$output = array('success' => false, 'message' => $this->_getMessage("no permission"));
+			$output = ['success' => false, 'message' => $this->_getMessage("no permission")];
 			echo $this->json->encode($output);
 		}
 
 		//prepare output variable
-		$output = array('success' => false);
+		$output = ['success' => false];
 
 		$title = Get::req('title', DOTY_STRING, '');
 		$start_date = Get::req('start_date', DOTY_STRING, '');
@@ -211,12 +211,12 @@ Class TimeperiodsAlmsController extends AlmsController {
 	 */
 	public function modactionTask() {
 		if (!$this->permissions['mod']) {
-			$output = array('success' => false, 'message' => $this->_getMessage("no permission"));
+			$output = ['success' => false, 'message' => $this->_getMessage("no permission")];
 			echo $this->json->encode($output);
 		}
 
 		//prepare output variable
-		$output = array('success' => false);
+		$output = ['success' => false];
 
 		//read inputs and validate data
 		$id = Get::req('id', DOTY_INT, 0);
@@ -250,12 +250,12 @@ Class TimeperiodsAlmsController extends AlmsController {
 	 */
 	public function delTask() {
 		if (!$this->permissions['del']) {
-			$output = array('success' => false, 'message' => $this->_getMessage("no permission"));
+			$output = ['success' => false, 'message' => $this->_getMessage("no permission")];
 			echo $this->json->encode($output);
 		}
 
 		//prepare output variable
-		$output = array('success' => false);
+		$output = ['success' => false];
 
 		$id = Get::req('id', DOTY_INT, 0);
 		if ($id <= 0) {

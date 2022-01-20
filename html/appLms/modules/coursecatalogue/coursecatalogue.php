@@ -11,13 +11,13 @@
 |   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
-function coursecatalogue($id_block, $title, $option = array())
+function coursecatalogue($id_block, $title, $option = [])
 {
-	YuiLib::load(array('animation' => 'my_animation', 'container' => 'container-min', 'container' => 'container_core-min'));
+	YuiLib::load(['animation' => 'my_animation', 'container' => 'container-min', 'container' => 'container_core-min']);
 
 
 	if(!isset($_SESSION['chart']))
-		$_SESSION['chart'] = array();
+		$_SESSION['chart'] = [];
 
 	$id_course = Get::req('id_course', DOTY_INT, 0);
 	$action = Get::req('action', DOTY_STRING, '');
@@ -261,7 +261,7 @@ function controlCourse($course_info, $page, $id_catalogue, $id_category, $ini)
 		$man_date = new DateManager();
 
 		$user_date = $man_date->getUserDates(getLogUserId());
-		$date_id = array();
+		$date_id = [];
 		$date_full = $man_date->getFullDateForCourse($course_info['idCourse']);
 		$date_not_confirmed = $man_date->getNotConfirmetDateForCourse($course_info['idCourse']);
 
@@ -284,7 +284,7 @@ function controlCourse($course_info, $page, $id_catalogue, $id_category, $ini)
 		}
 		else
 		{
-			$date_in_chart = array();
+			$date_in_chart = [];
 
 			if(isset($_SESSION['chart'][$course_info['idCourse']]))
 				$date_in_chart = $_SESSION['chart'][$course_info['idCourse']]['dates'];
@@ -309,7 +309,7 @@ function controlCourse($course_info, $page, $id_catalogue, $id_category, $ini)
 
 			if(sql_num_rows($res))
 			{
-				$waiting_payment = array();
+				$waiting_payment = [];
 
 				while(list($id_date) = sql_fetch_row($query))
 					$waiting_payment[$id_date] = $id_date;
@@ -407,7 +407,7 @@ function subscribeToCourse($id_user, $id_course, $id_date = 0)
 				." WHERE idUser = ".$id_user;
 
 	$result = sql_query($query);
-	$courses = array();
+	$courses = [];
 
 	while(list($id_c) = sql_fetch_row($result))
 		$courses[$id_c] = $id_c;

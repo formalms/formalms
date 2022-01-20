@@ -12,10 +12,10 @@ $body .= '<div id="subscr_course_container"></div>';
 
 //hidden boxes for editions and classrooms dropdowns
 $body .= '<div id="editions_div" style="display:none;">';
-$body .= Form::getDropdown(Lang::t('_EDITIONS', 'course'), 'editions_sel', 'edition', array());
+$body .= Form::getDropdown(Lang::t('_EDITIONS', 'course'), 'editions_sel', 'edition', []);
 $body .= '</div>';
 $body.= '<div id="classrooms_div" style="display:none;">';
-$body .= Form::getDropdown(Lang::t('_CLASSROOMS', 'course'), 'classrooms_sel', 'classroom', array());
+$body .= Form::getDropdown(Lang::t('_CLASSROOMS', 'course'), 'classrooms_sel', 'classroom', []);
 $body .= '</div>';
 
 $body .= Form::getTextfield(Lang::t('_USER', 'standard'), 'subscr_userid', 'userid', 255, '');

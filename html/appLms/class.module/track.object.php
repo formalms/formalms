@@ -391,7 +391,7 @@ class Track_Object {
 		
 		if( is_string($arrId) )
 			if( strlen($arrId)>0 )
-				if( $arrId{0} == ',' )
+				if( $arrId[0] == ',' )
 					$arrId = substr($arrId,1);
 		if( $arrId == '' ) { 
 			return TRUE;
@@ -399,7 +399,7 @@ class Track_Object {
 			// in this brach we extract two array
 			// 1) $idList array of id for use in query
 			// 2) $arrPre array composed by $id => $status
-			$idList = array();
+			$idList = [];
 			$arrTokens = explode( ',', $arrId );
 			while( ($val = current( $arrTokens )) !== FALSE ) {
 				$arrPeer = explode( '=', $val );
@@ -545,14 +545,14 @@ class Track_Object {
 	 * @return array	an array with the header of extra colum
 	 */
 	function getHeaderUserField() {
-		return array();
+		return [];
 	}
 	
 	/**
 	 * @return array	an array with the extra colum
 	 */
 	function getUserField() {
-		return array();
+		return [];
 	}
 	
 	function updateObjectTitle($idResource, $objectType, $new_title) {

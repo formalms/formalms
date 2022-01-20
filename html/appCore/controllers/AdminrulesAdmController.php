@@ -37,9 +37,9 @@ class AdminrulesAdmController extends AdmController
 			case 'err': $result_message = UIFeedback::error (Lang::t('_OPERATION_FAILURE', 'standard')); break;
 		}
 
-		$this->render('show', array(
+		$this->render('show', [
 			'result_message' => $result_message
-		));
+        ]);
 	}
 
 	public function getGroups()
@@ -52,7 +52,7 @@ class AdminrulesAdmController extends AdmController
 		$total_group = $this->model->totalGroup();
 		$array_group = $this->model->loadGroup($start_index, $results, $sort, $dir);
 
-		$res = array(
+		$res = [
 			'totalRecords' => (int)$total_group,
 			'startIndex' => $start_index,
 			'sort' => $sort,
@@ -60,7 +60,7 @@ class AdminrulesAdmController extends AdmController
 			'rowsPerPage' => $results,
 			'results' => count($array_group),
 			'records' => $array_group
-		);
+        ];
 		
 		echo $this->json->encode($res);
 	}
@@ -70,7 +70,7 @@ class AdminrulesAdmController extends AdmController
 		if(Get::req('confirm', DOTY_INT, 0) == 1)
 		{
 			$name = Get::req('name', DOTY_MIXED, '');
-			$output = array();
+			$output = [];
 
 			if($name == '')
 				$name = Lang::t('_UNDEFINED', 'adminrules');
@@ -83,7 +83,7 @@ class AdminrulesAdmController extends AdmController
 		}
 		else
 		{
-			$output = array();
+			$output = [];
 		
 			$body =	Form::openForm('add_rules_form', 'ajax.adm_server.php?r=adm/adminrules/addGroup&confirm=1')
 					.Form::openElementSpace()
@@ -102,7 +102,7 @@ class AdminrulesAdmController extends AdmController
 	public function delGroup()
 	{
 		$idst = Get::req('idst', DOTY_INT, 0);
-		$output = array();
+		$output = [];
 
 		$result = $this->model->delGroup($idst);
 
@@ -117,12 +117,12 @@ class AdminrulesAdmController extends AdmController
 		$preference = new AdminPreference();
 
 		$idst = Get::req('idst', DOTY_INT, 0);
-		$output = array();
+		$output = [];
 
 		if(Get::req('confirm', DOTY_INT, 0) == 1)
 		{
 			$rules = $preference->getRules();
-			$new_rules = array();
+			$new_rules = [];
 
 			foreach($rules as $path => $info)
 			{
@@ -164,11 +164,11 @@ class AdminrulesAdmController extends AdmController
 		$preference = new AdminPreference();
 
 		$idst = Get::req('idst', DOTY_INT, 0);
-		$output = array();
+		$output = [];
 
 		if(Get::req('confirm', DOTY_INT, 0) == 1)
 		{
-			$new_lang = array();
+			$new_lang = [];
 			
 			if(isset($_POST['admin_lang']))
 				$new_lang = array_keys($_POST['admin_lang']);
@@ -205,12 +205,12 @@ class AdminrulesAdmController extends AdmController
 		$idst = Get::req('idst', DOTY_INT, 0);
         $active_tab = Get::req('active_tab', DOTY_INT, 0);
         
-        $menu = CoreMenu::getList(array('framework', 'alms'));
+        $menu = CoreMenu::getList(['framework', 'alms']);
         
         $result_message = "";
 		if(isset($_POST['save']))
 		{
-			$adm_perm = array();
+			$adm_perm = [];
 			if(isset($_POST['adm_perm'])){
 				$adm_perm = array_keys($_POST['adm_perm']);
                         }
@@ -223,13 +223,13 @@ class AdminrulesAdmController extends AdmController
 			Util::jump_to('index.php?r=adm/adminrules/show&res='.($res ? 'ok' : 'err'));
 		}
 
-		$this->render('menu', array(
+		$this->render('menu', [
 				'idst' => $idst,
 				'menu' => $menu,
 				'active_tab' => $active_tab,
 				'model' => $this->model,
 				'save_res' => $result_message
-		));
+        ]);
 	}
 
 	public function admin_manage()
@@ -237,10 +237,10 @@ class AdminrulesAdmController extends AdmController
 		$idst = Get::req('idst', DOTY_INT, 0);
                 
 		$this->render('admin_manage', 
-                        array(
+                        [
                             'idst' => $idst,
                             'back_link' => getBackUi('index.php?r=adm/adminrules/show', Lang::t('_BACK', 'standard')),
-                            'model' => $this->model));
+                            'model' => $this->model]);
 	}
 
 	public function getAdmins()
@@ -255,13 +255,13 @@ class AdminrulesAdmController extends AdmController
 		$total_group = $this->model->totalAdmin($idst);
 		$array_group = $this->model->loadAdmin($idst, $start_index, $results, $sort, $dir);
 
-		$res = array(	'totalRecords' => $total_group,
+		$res = ['totalRecords' => $total_group,
 						'startIndex' => $start_index,
 						'sort' => $sort,
 						'dir' => $dir,
 						'rowsPerPage' => $results,
 						'results' => count($array_group),
-						'records' => $array_group);
+						'records' => $array_group];
 
 		echo $this->json->encode($res);
 	}
@@ -307,13 +307,13 @@ class AdminrulesAdmController extends AdmController
 				$user_selector->resetSelection($user_alredy_subscribed);
 			}
 
-			$user_selector->setUserFilter('exclude', array($this->acl_man->getAnonymousId()));
+			$user_selector->setUserFilter('exclude', [$this->acl_man->getAnonymousId()]);
 			$arr_idst = $this->acl_man->getGroupsIdstFromBasePath('/framework/level/admin');
 			$user_selector->setUserFilter('group', $arr_idst);
 
-			$this->render('add_admin', array(	'idst' => $idst,
+			$this->render('add_admin', ['idst' => $idst,
 												'user_selector' => $user_selector,
-												'model' => $this->model));
+												'model' => $this->model]);
 		}
 	}
 
@@ -327,11 +327,11 @@ class AdminrulesAdmController extends AdmController
 
 		$result = $this->model->renameProfile($idst, $new_value);
 
-		$output = array(
+		$output = [
 			'success' => $result,
 			'new_value' => $new_value,
 			'old_value' => $old_value
-		);
+        ];
 
 		echo $this->json->encode($output);
 	}
@@ -347,7 +347,7 @@ class AdminrulesAdmController extends AdmController
 			$res = $this->acl_man->removeFromGroup($idst, $idst_member);
 		}
 
-		$output = array('success' => $res);
+		$output = ['success' => $res];
 		echo $this->json->encode($output);
 	}
 

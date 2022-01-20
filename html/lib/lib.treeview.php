@@ -79,15 +79,15 @@ class TreeView {
 	// lang object
 	var $lang = NULL;
 
-	protected $aclManager;
+	public $aclManager;
 
 	function __construct($tdb, $id, $rootname = 'root') {
 		$this->tdb = $tdb;
 		$this->id = $id;
-		$this->posTree = array(0);
-		$this->posFlat = array(0);
-		$this->expandList = array();
-		$this->compressList = array();
+		$this->posTree = [0];
+		$this->posFlat = [0];
+		$this->expandList = [];
+		$this->compressList = [];
 		$this->selectedFolder = 0;
 		$this->op = '';
 		$this->rootname = $rootname;
@@ -163,7 +163,7 @@ class TreeView {
 	function _getMoveImage() { return getPathImage().'treeview/move.png'; }
 	function _getMoveTargetLabel() { return Lang::t('_TARGETMOVEFOLDER', 'storage'); }
 
-	function _getOtherActions() { return array(); }
+	function _getOtherActions() { return []; }
 
 	function _getChildrens( $idFolder ) {
 		return $this->tdb->getChildrensIdById( $idFolder );
@@ -239,7 +239,7 @@ class TreeView {
 					$childrens = array_flip($childrens);
           foreach($childrens as $keynew => $valnew) {
 						if( !is_array( $tree[$key] ) )
-							$tree[$key] = array();
+							$tree[$key] = [];
 						if( isset( $tree[$key][$keynew] ) ) {
 							// ----- put this value in $childrens
 							if( is_array($tree[$key][$keynew]))
@@ -475,7 +475,7 @@ class TreeView {
 				if( is_array($childrensRoot) )
 				$this->posTree[0] = array_flip($childrensRoot);
 			}
-			$this->posFlat = array();
+			$this->posFlat = [];
 			$this->_visitArrayDeep($this->posTree, $this->posFlat, $this->expandList, $this->compressList);
 		} else {
 			// root is always expanded
@@ -484,7 +484,7 @@ class TreeView {
 				if( is_array($childrensRoot) )
 				$this->posTree[0] = array_flip($childrensRoot);
 			}
-			$this->posFlat = array();
+			$this->posFlat = [];
 			$this->_visitArrayDeep($this->posTree, $this->posFlat, $this->expandList, $this->compressList);
 		}
 		if( !in_array ( $this->selectedFolder,$this->posFlat ) ) {
@@ -521,12 +521,12 @@ class TreeView {
 		$isFirst = TRUE;
 		$tree = $this->printState();
 		$coll = $this->_retrieveData();
-		$stack = array();
+		$stack = [];
 		$level = 0;
 		$count = 0;
 
 		$folder = $this->tdb->getRootFolder();
-		$stack[$level] = array();
+		$stack[$level] = [];
 		$stack[$level]['folder'] = $folder;
 		$stack[$level]['childs'] = $this->posTree[0];
 		$stack[$level]['isLast'] = TRUE;
@@ -550,7 +550,7 @@ class TreeView {
         $key = key($stack[$level-1]['childs'] );
         $val = current($stack[$level-1]['childs'] );
         next($stack[$level-1]['childs'] );
-				$stack[$level] = array();
+				$stack[$level] = [];
 				$stack[$level]['folder'] = $folder;
 				$stack[$level]['childs'] = $val;
 				$stack[$level]['isFirst'] = $isFirst;
@@ -611,9 +611,9 @@ class TreeView {
 	}
 
 	function getState() {
-		return array( 	'selectedFolder' => $this->selectedFolder,
+		return ['selectedFolder' => $this->selectedFolder,
 						'itemToPlay' => $this->getItemToPlay(),
-						'posTree' => $this->posTree );
+						'posTree' => $this->posTree];
 	}
 
 	function setState( $arr_state ) {
@@ -796,7 +796,7 @@ class TreeView {
 				$imgAlt = $this->lang->def('_CONTINUE');
 			}
 		}
-		return array( $classImg, $imgFileName, $imgAlt);
+		return [$classImg, $imgFileName, $imgAlt];
 	}
 
 	function loadActions() {
@@ -913,7 +913,7 @@ class TreeView {
 
 		$this->lang = null;
 
-		return array(	'tdb',
+		return ['tdb',
 						'id',
 						'posTree',
 						'posFlat',
@@ -921,7 +921,7 @@ class TreeView {
 						'compressList',
 						'selectedFolder',
 						'op',
-						'rootname' );
+						'rootname'];
 	}
 
 	function __wakeup() {

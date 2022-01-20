@@ -2,7 +2,7 @@
 
 Class PageWriter {
 
-	protected $_cont = array('main'=>'');
+	protected $_cont = ['main'=>''];
 	protected $_zone ='main';
 	protected $_id ='';
 

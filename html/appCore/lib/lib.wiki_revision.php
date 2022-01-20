@@ -23,18 +23,18 @@ require_once ($GLOBALS["where_framework"] . "/lib/lib.revision.php");
 
 class WikiRevisionManager extends RevisionManager {
 
-	function WikiRevisionManager($default_keys_val = array (), $prefix = FALSE, $dbconn = NULL) {
+	function WikiRevisionManager($default_keys_val = [], $prefix = FALSE, $dbconn = NULL) {
 		$this->prefix = ($prefix !== FALSE ? $prefix : $GLOBALS["prefix_fw"]);
 		$this->dbconn = $dbconn;
 
-		$this->table_keys = array (
+		$this->table_keys = [
 			"wiki_id",
 			"page_id",
 			"language"
-		);
-		$this->table_extra_fields = array (
+        ];
+		$this->table_extra_fields = [
 			"content"
-		);
+        ];
 
 		parent :: RevisionManager($default_keys_val);
 	}
@@ -77,10 +77,10 @@ class WikiRevisionManager extends RevisionManager {
 		$fields .= (count($table_keys) > 0 ? ", " . implode(", ", $table_keys) : "");
 		$fields .= (count($table_extra_fields) > 0 ? ", " . implode(", ", $table_extra_fields) : "");
 		
-		$data_info = array();
-		$data_info['data_arr'] = array();
+		$data_info = [];
+		$data_info['data_arr'] = [];
 		$data_info['data_tot'] = 0;
-		$data_info['user'] = array();
+		$data_info['user'] = [];
 		
 		while(list($page_id, $max_version) = sql_fetch_row($result))
 		{

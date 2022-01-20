@@ -88,28 +88,28 @@ function notes() {
      
      //******************************************                   
 	
-	$contentH = array(
+	$contentH = [
 		( $ord == 'data' ? ( $inv == 'y' ? $img_up : $img_down ) : '' )
 			.'<a href="index.php?modname=notes&amp;op=notes'.$a_down.'"> '.$lang->def('_DATE').'</a>',
 		( $ord == 'title' ? ( $inv == 'y' ? $img_up : $img_down ) : ''  )
 			.'<a href="index.php?modname=notes&amp;op=notes&amp;ord=tit'.$a_down.'">'.$lang->def('_TITLE').'</a>',
 		'<img src="'.getPathImage().'standard/edit.png" title="'.$lang->def('_MOD').'" alt="'.$lang->def('_MOD').'" />', 
 		'<img src="'.getPathImage().'standard/delete.png" title="'.$lang->def('_DEL').'" alt="'.$lang->def('_DEL').'" />'
-	);	
-	$typeH = array('min-cell', '', 'image', 'image');
+    ];
+	$typeH = ['min-cell', '', 'image', 'image'];
 	$tb->setColsStyle($typeH);
 	$tb->addHead($contentH);
 	while(list( $idNotes, $data, $title ) = sql_fetch_row($reNotes)) {
 		
-		$content = array(
+		$content = [
 			Format::date($data), 
 			'<a href="index.php?modname=notes&amp;op=displaynotes&amp;idNotes='.$idNotes.'" title="'.$lang->def('_MORET').'">'.$title.'</a>',
 			'<a href="index.php?modname=notes&amp;op=modnotes&amp;idNotes='.$idNotes.'">
 				<img src="'.getPathImage().'standard/edit.png" title="'.$lang->def('_MOD').'" alt="'.$lang->def('_MOD').'" /></a>', 
 			'<a id="delnotes_'.$idNotes.'"'
 				.' href="index.php?modname=notes&amp;op=delnotes&amp;idNotes='.$idNotes.'"'
-				.' title="'.$lang->def('_TITLE').' : '.strip_tags(str_replace(array('"',"'"),'',$title)).'">
-				<img src="'.getPathImage().'standard/delete.png" alt="'.$lang->def('_DEL').'" /></a>' );
+				.' title="'.$lang->def('_TITLE').' : '.strip_tags(str_replace(['"',"'"],'',$title)).'">
+				<img src="'.getPathImage().'standard/delete.png" alt="'.$lang->def('_DEL').'" /></a>'];
 		$tb->addBody($content);
 	}
 	$tb->addActionAdd(
@@ -118,7 +118,7 @@ function notes() {
 		.$lang->def('_ADD_NOTES').'</a>'
 	);
 	$GLOBALS['page']->add(
-		getTitleArea(array($lang->def('_NOTES')), 'notes')
+		getTitleArea([$lang->def('_NOTES')], 'notes')
 		.'<div class="std_block">', 'content');
 	if(isset($_POST['result'])) {
 		switch($_POST['result']) {
@@ -148,10 +148,10 @@ function displaynotes() {
 	FROM ".$GLOBALS['prefix_lms']."_notes 
 	WHERE idNotes='".$_GET['idNotes']."' AND owner ='".getLogUserid()."' and idCourse='".$_SESSION['idCourse']."'"));
 	
-	$page_title = array(
+	$page_title = [
 		'index.php?modname=notes&amp;op=notes' => $lang->def('_NOTES'), 
 		$title
-	);
+    ];
 	$GLOBALS['page']->add(
 		getTitleArea($page_title, 'notes')
 		.'<div class="std_block">'
@@ -172,10 +172,10 @@ function addnotes() {
 	require_once(_base_.'/lib/lib.form.php');
 	$lang =& DoceboLanguage::createInstance('notes', 'lms');
 	
-	$title_page = array(
+	$title_page = [
 		'index.php?modname=notes&amp;op=notes' => $lang->def('_NOTES'), 
 		$lang->def('_ADD_NOTES')
-	);
+    ];
 	$GLOBALS['page']->add(
 		getTitleArea($title_page, 'notes')
 		.'<div class="std_block">'
@@ -226,13 +226,13 @@ function modnotes() {
 	require_once(_base_.'/lib/lib.form.php');
 	$lang =& DoceboLanguage::createInstance('notes', 'lms');
 	
-	$page_title = array(
+	$page_title = [
 		'index.php?modname=notes&amp;op=notes' => $lang->def('_NOTES'),
 		$lang->def('_MOD_NOTES')
-	);
+    ];
 	
 	$GLOBALS['page']->add(
-		getTitleArea(array(), 'notes')
+		getTitleArea([], 'notes')
 		.'<div class="std_block">'
 		.getBackUi( 'index.php?modname=notes&amp;op=notes', $lang->def('_BACK') )
 		
@@ -289,10 +289,10 @@ function delnotes() {
 		FROM ".$GLOBALS['prefix_lms']."_notes 
 		WHERE owner = '".getLogUserId()."' AND idNotes = '".(int)$_GET['idNotes']."'"));
 		
-		$title_page = array(
+		$title_page = [
 			'index.php?modname=notes&amp;op=notes' => $lang->def('_NOTES'), 
 			$lang->def('_DEL')
-		);
+        ];
 		$GLOBALS['page']->add( 
 			getTitleArea($title_page, 'notes')
 			.'<div class="std_block">'

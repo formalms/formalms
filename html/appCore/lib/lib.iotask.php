@@ -116,8 +116,8 @@ class DoceboConnectionManager {
         if( $rs_connection === FALSE )
             return FALSE;
         if( sql_num_rows($rs_connection) == 0 )
-            return array();
-        $arr_name = array();
+            return [];
+        $arr_name = [];
         while( list($name) = sql_fetch_row($rs_connection) )
             $arr_name[] = $name;
         return $arr_name;
@@ -270,7 +270,7 @@ class DoceboConnectionManager {
     function add_connector( $file ) {
         require_once($GLOBALS['where_framework'].'/lib/connectors/lib.connector.php');
         $directory = $GLOBALS['where_framework'].'/lib/connectors';
-        $scanned_directory = array_diff(scandir($directory), array('..', '.', 'index.htm', 'lib.connector.php'));
+        $scanned_directory = array_diff(scandir($directory), ['..', '.', 'index.htm', 'lib.connector.php']);
         if (!in_array($file,$scanned_directory)){
             echo "Specified connector doesn't exist"; die();
         } else {
@@ -335,7 +335,7 @@ class DoceboConnectionManager {
         if( $arr_result === FALSE )
             return FALSE;
         $schedule = explode(' ', $arr_result[CONNMGR_TASK_SCHEDULE]);
-        $arr_result[CONNMGR_TASK_SCHEDULE] = array('qt' => $schedule[0], 'um' => $schedule[1]);
+        $arr_result[CONNMGR_TASK_SCHEDULE] = ['qt' => $schedule[0], 'um' => $schedule[1]];
         return $arr_result;
     }
 
@@ -351,7 +351,7 @@ class DoceboConnectionManager {
         if( $arr_result === FALSE )
             return FALSE;
         $schedule = explode(' ', $arr_result[CONNMGR_TASK_SCHEDULE]);
-        $arr_result[CONNMGR_TASK_SCHEDULE] = array('qt' => $schedule[0], 'um' => $schedule[1]);
+        $arr_result[CONNMGR_TASK_SCHEDULE] = ['qt' => $schedule[0], 'um' => $schedule[1]];
         return $arr_result;
     }
 
@@ -373,7 +373,7 @@ class DoceboConnectionManager {
         $arr_result = sql_fetch_row($rs_task);
         $arr_result[CONNMGR_TASK_MAP] = Util::unserialize(urldecode($arr_result[CONNMGR_TASK_MAP]));
         $schedule = explode(' ', $arr_result[CONNMGR_TASK_SCHEDULE]);
-        $arr_result[CONNMGR_TASK_SCHEDULE] = array('qt' => $schedule[0], 'um' => $schedule[1]);
+        $arr_result[CONNMGR_TASK_SCHEDULE] = ['qt' => $schedule[0], 'um' => $schedule[1]];
         return $arr_result;
     }
 
@@ -633,7 +633,7 @@ class DoceboImport {
         $src_cols = $this->source->get_cols_descripor();
         $dst_cols = $this->destination->get_cols_descripor();
 
-        $combo_elements = array();
+        $combo_elements = [];
         foreach( $dst_cols as $col ) {
             if( isset($col[DOCEBOIMPORT_COLID]) )
                 $combo_elements[$col[DOCEBOIMPORT_COLID]] = $col[DOCEBOIMPORT_COLNAME];
@@ -643,9 +643,9 @@ class DoceboImport {
 
         $combo_elements[DOCEBOIMPORT_IGNORE] = $lang->def('_IMPORT_IGNORE');
 
-        $table_dst_labels = array();
-        $table_src_labels = array();
-        $table_src_labels_type = array();
+        $table_dst_labels = [];
+        $table_src_labels = [];
+        $table_src_labels_type = [];
         $count = 0;
         foreach( $src_cols as $col ) {
             $pk = '0';
@@ -702,8 +702,8 @@ class DoceboImport {
      *				in index 0 there are the total processed rows
      **/
     function doImport($import_type) {
-        $out = array(); 	// error list
-        $arr_pk = array();  // list of imported primary keys
+        $out = []; 	// error list
+        $arr_pk = [];  // list of imported primary keys
 
         $israw_import = $this->source->is_raw_producer();
 
@@ -717,11 +717,11 @@ class DoceboImport {
         while( $row !== FALSE ) {
             if( $israw_import ) {
                 if( !$this->destination->add_row($row, NULL) ) {
-                    $out[$this->source->get_row_index()] = array(array('raw'),$this->destination->get_error());
+                    $out[$this->source->get_row_index()] = [['raw'],$this->destination->get_error()];
                 }
             } else {
-                $insrow = array();
-                $pk = array(); 	// a primary keys is an array of arrays
+                $insrow = [];
+                $pk = []; 	// a primary keys is an array of arrays
                 // any element array is
                 // array( dst_colnameX => pk1, dst_colnameY => pk2 )
 
@@ -743,7 +743,7 @@ class DoceboImport {
                     }
                 }
                 if( !$this->destination->add_row($insrow, $pk) ) {
-                    $out[$this->source->get_row_index()] = array($pk,$this->destination->get_error());
+                    $out[$this->source->get_row_index()] = [$pk,$this->destination->get_error()];
                 }
             }
             $row = $this->source->get_next_row();
@@ -753,7 +753,7 @@ class DoceboImport {
         if( $import_type == TASK_IMPORT_TYPE_INSERTREMOVE ) {
             $count_deleted = $this->destination->delete_all_notinserted();
         }
-        $out[0] = array( 'inserted' => $this->source->get_row_index(), 'removed' => $count_deleted);
+        $out[0] = ['inserted' => $this->source->get_row_index(), 'removed' => $count_deleted];
         $this->source->close();
         $this->destination->close();
         return $out;

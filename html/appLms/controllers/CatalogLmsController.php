@@ -111,26 +111,26 @@ class CatalogLmsController extends LmsController
 
         echo '<div class="middlearea_container">';
 
-        $lmstab = $this->widget('lms_tab', array(
+        $lmstab = $this->widget('lms_tab', [
             'active' => 'catalog',
             'close' => false
-        ));
+        ]);
 
-        $this->render('tab_start', array(
+        $this->render('tab_start', [
             'user_catalogue' => $user_catalogue,
             'active_tab' => $active_tab,
             'user_coursepath' => $user_coursepath,
             'std_link' => 'index.php?r=catalog/newCourse' . ($page > 1 ? '&amp;page=' . $page : ''),
             'model' => $this->model
-        ));
-        $this->render('courselist', array(
+        ]);
+        $this->render('courselist', [
             'html' => $html,
             'nav_bar' => $nav_bar
-        ));
-        $this->render('tab_end', array(
+        ]);
+        $this->render('tab_end', [
             'std_link' => 'index.php?r=catalog/newCourse' . ($page > 1 ? '&amp;page=' . $page : ''),
             'model' => $this->model
-        ));
+        ]);
         $lmstab->endWidget();
 
         echo '</div>';
@@ -154,26 +154,26 @@ class CatalogLmsController extends LmsController
 
         echo '<div class="middlearea_container">';
 
-        $lmstab = $this->widget('lms_tab', array(
+        $lmstab = $this->widget('lms_tab', [
             'active' => 'catalog',
             'close' => false
-        ));
+        ]);
 
-        $this->render('tab_start', array(
+        $this->render('tab_start', [
             'user_catalogue' => $user_catalogue,
             'active_tab' => $active_tab,
             'user_coursepath' => $user_coursepath,
             'std_link' => 'index.php?r=catalog/elearningCourse' . ($page > 1 ? '&amp;page=' . $page : ''),
             'model' => $this->model
-        ));
-        $this->render('courselist', array(
+        ]);
+        $this->render('courselist', [
             'html' => $html,
             'nav_bar' => $nav_bar
-        ));
-        $this->render('tab_end', array(
+        ]);
+        $this->render('tab_end', [
             'std_link' => 'index.php?r=catalog/elearningCourse' . ($page > 1 ? '&amp;page=' . $page : ''),
             'model' => $this->model
-        ));
+        ]);
         $lmstab->endWidget();
 
         echo '</div>';
@@ -197,26 +197,26 @@ class CatalogLmsController extends LmsController
 
         echo '<div class="middlearea_container">';
 
-        $lmstab = $this->widget('lms_tab', array(
+        $lmstab = $this->widget('lms_tab', [
             'active' => 'catalog',
             'close' => false
-        ));
+        ]);
 
-        $this->render('tab_start', array(
+        $this->render('tab_start', [
             'user_catalogue' => $user_catalogue,
             'active_tab' => $active_tab,
             'user_coursepath' => $user_coursepath,
             'std_link' => 'index.php?r=catalog/classroomCourse' . ($page > 1 ? '&amp;page=' . $page : ''),
             'model' => $this->model
-        ));
-        $this->render('courselist', array(
+        ]);
+        $this->render('courselist', [
             'html' => $html,
             'nav_bar' => $nav_bar
-        ));
-        $this->render('tab_end', array(
+        ]);
+        $this->render('tab_end', [
             'std_link' => 'index.php?r=catalog/classroomCourse' . ($page > 1 ? '&amp;page=' . $page : ''),
             'model' => $this->model
-        ));
+        ]);
         $lmstab->endWidget();
 
         echo '</div>';
@@ -241,26 +241,26 @@ class CatalogLmsController extends LmsController
 
         echo '<div class="middlearea_container">';
 
-        $lmstab = $this->widget('lms_tab', array(
+        $lmstab = $this->widget('lms_tab', [
             'active' => 'catalog',
             'close' => false
-        ));
+        ]);
 
-        $this->render('tab_start', array(
+        $this->render('tab_start', [
             'user_catalogue' => $user_catalogue,
             'active_tab' => $active_tab . '_' . $id_cat,
             'user_coursepath' => $user_coursepath,
             'std_link' => 'index.php?r=catalog/catalogueCourse&amp;id_catalogue=' . $id_catalogue . ($page > 1 ? '&amp;page=' . $page : ''),
             'model' => $this->model
-        ));
-        $this->render('courselist', array(
+        ]);
+        $this->render('courselist', [
             'html' => $html,
             'nav_bar' => $nav_bar
-        ));
-        $this->render('tab_end', array(
+        ]);
+        $this->render('tab_end', [
             'std_link' => 'index.php?r=catalog/catalogueCourse&amp;id_catalogue=' . $id_catalogue . ($page > 1 ? '&amp;page=' . $page : ''),
             'model' => $this->model
-        ));
+        ]);
         $lmstab->endWidget();
 
         echo '</div>';
@@ -283,21 +283,21 @@ class CatalogLmsController extends LmsController
 
         echo '<div class="layout_colum_container">';
 
-        $lmstab = $this->widget('lms_tab', array(
+        $lmstab = $this->widget('lms_tab', [
             'active' => 'catalog',
             'close' => false
-        ));
+        ]);
 
-        $this->render('tab_start', array(
+        $this->render('tab_start', [
             'user_catalogue' => $user_catalogue,
             'active_tab' => $active_tab,
             'user_coursepath' => $user_coursepath
-        ));
-        $this->render('courselist', array(
+        ]);
+        $this->render('courselist', [
             'html' => $html,
             'nav_bar' => $nav_bar
-        ));
-        $this->render('tab_end', array());
+        ]);
+        $this->render('tab_end', []);
         $lmstab->endWidget();
 
         echo '</div>';
@@ -311,18 +311,18 @@ class CatalogLmsController extends LmsController
 
         echo '<div class="layout_colum_container">';
 
-        $lmstab = $this->widget('lms_tab', array(
+        $lmstab = $this->widget('lms_tab', [
             'active' => 'catalog',
             'close' => false
-        ));
+        ]);
 
-        $this->render('tab_start', array(
+        $this->render('tab_start', [
             'user_catalogue' => $user_catalogue,
             'active_tab' => $active_tab,
             'user_coursepath' => $user_coursepath
-        ));
-        $this->render('calendar', array());
-        $this->render('tab_end', array());
+        ]);
+        $this->render('calendar', []);
+        $this->render('tab_end', []);
         $lmstab->endWidget();
 
         echo '</div>';
@@ -345,8 +345,8 @@ class CatalogLmsController extends LmsController
         $id_catalogue = Get::req('id_catalogue', DOTY_INT, 0);
         $id_category = Get::req('id_category', DOTY_INT, 0);
         $res = $this->model->courseSelectionInfo($id_course);
-        $this->render('edition-modal', array("id_course" => $id_course, "available_classrooms" => $res['available_classrooms'], "teachers" => $res['teachers'],
-            "course_name" => $res['course_name'], "type_course" => $type_course, "id_catalogue" => $id_catalogue, "id_category" => $id_category));
+        $this->render('edition-modal', ["id_course" => $id_course, "available_classrooms" => $res['available_classrooms'], "teachers" => $res['teachers'],
+            "course_name" => $res['course_name'], "type_course" => $type_course, "id_catalogue" => $id_catalogue, "id_category" => $id_category]);
 
     }
 
@@ -428,7 +428,7 @@ class CatalogLmsController extends LmsController
             $acl = &Docebo::user()->getAcl();
             $acl_man = &$this->acl_man;
 
-            $recipients = array();
+            $recipients = [];
 
             // get all superadmins 
             // no mail to superadmin
@@ -502,12 +502,12 @@ class CatalogLmsController extends LmsController
 
             $recipients = array_unique($recipients);
 
-            $array_subst = array(
+            $array_subst = [
                 '[url]' => Get::site_url(),
                 '[course]' => $course_info['name'],
                 '[firstname]' => $userinfo[ACL_INFO_FIRSTNAME],
                 '[lastname]' => $userinfo[ACL_INFO_LASTNAME]
-            );
+            ];
             
             $msg_composer = new EventMessageComposer('subscribe', 'lms');
             if ($overbooking) {
@@ -587,11 +587,11 @@ class CatalogLmsController extends LmsController
             $subs_man = new CourseSubscribe_Management();
 
             $id_path = Get::req('id_path', DOTY_INT, 0);
-            $user_selected = Util::unserialize(urldecode(Get::req('users', DOTY_MIXED, array())));
+            $user_selected = Util::unserialize(urldecode(Get::req('users', DOTY_MIXED, [])));
 
-            $courses = $cpath_man->getAllCourses(array($id_path));
+            $courses = $cpath_man->getAllCourses([$id_path]);
 
-            $users_subsc = array($id_user);
+            $users_subsc = [$id_user];
 
             $re = $subs_man->multipleSubscribe($users_subsc, $courses, 3);
         }

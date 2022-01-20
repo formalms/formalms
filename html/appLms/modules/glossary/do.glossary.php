@@ -59,9 +59,9 @@ function play( $object_glos, $id_param ) {
 	$termsQuery .= ' ORDER BY term';
 	$reTerms = sql_query($termsQuery);
 
-	$page_title = array(
+	$page_title = [
 		$lang->def('_GLOSSARY')
-	);
+    ];
 
 	$GLOBALS['page']->add(
 		getTitleArea($page_title, 'glossary')

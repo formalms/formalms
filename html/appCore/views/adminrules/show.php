@@ -191,7 +191,7 @@ echo $result_message;
 $add_url = 'ajax.adm_server.php?r=adm/adminrules/addGroup';
 $rel_action = '<a class="ico-wt-sprite subs_add" href="'.$add_url.'" title="'.Lang::t('_ADD', 'standard').'"><span>'.Lang::t('_ADD', 'standard').'</span></a>';
 
-$this->widget('table', array(
+$this->widget('table', [
 	'id' => 'admin_rules_table',
 	'ajaxUrl' => 'ajax.adm_server.php?r=adm/adminrules/getGroups&',
 	'rowsPerPage' => Get::sett('visuItem', 25),
@@ -199,24 +199,24 @@ $this->widget('table', array(
 	'results' => Get::sett('visuItem', 25),
 	'sort' => 'groupid',
 	'dir' => 'asc',
-	'columns' => array(
-		array('key' => 'groupid', 'label' => Lang::t('_NAME', 'adminrules'), 'sortable' => true, 'editor' => 'new YAHOO.widget.TextboxCellEditor({asyncSubmitter: saveData})'),
-		array('key' => 'special', 'label' => Get::sprite('subs_conf', Lang::t('_SPECIAL_SETTING', 'adminrules')), 'className' => 'img-cell'),
-		array('key' => 'menu', 'label' => Get::sprite('subs_elem', Lang::t('_EDIT_SETTINGS', 'adminrules')), 'className' => 'img-cell'),
-		array('key' => 'lang', 'label' => Get::sprite('subs_lang', Lang::t('_LANG_SETTING', 'adminrules')), 'className' => 'img-cell'),
-		array('key' => 'admin_manage', 'label' => Get::sprite('subs_users', Lang::t('_MANAGE_SUBSCRIPTION', 'adminrules')), 'className' => 'img-cell'),
-		array('key' => 'del', 'label' => Get::sprite('subs_del', Lang::t('_DEL', 'standard')), 'formatter'=>'doceboDelete', 'className' => 'img-cell')
-	),
-	'fields' => array('id', 'idst', 'groupid', 'special', 'menu', 'lang', 'admin_manage', 'del'),
+	'columns' => [
+		['key' => 'groupid', 'label' => Lang::t('_NAME', 'adminrules'), 'sortable' => true, 'editor' => 'new YAHOO.widget.TextboxCellEditor({asyncSubmitter: saveData})'],
+		['key' => 'special', 'label' => Get::sprite('subs_conf', Lang::t('_SPECIAL_SETTING', 'adminrules')), 'className' => 'img-cell'],
+		['key' => 'menu', 'label' => Get::sprite('subs_elem', Lang::t('_EDIT_SETTINGS', 'adminrules')), 'className' => 'img-cell'],
+		['key' => 'lang', 'label' => Get::sprite('subs_lang', Lang::t('_LANG_SETTING', 'adminrules')), 'className' => 'img-cell'],
+		['key' => 'admin_manage', 'label' => Get::sprite('subs_users', Lang::t('_MANAGE_SUBSCRIPTION', 'adminrules')), 'className' => 'img-cell'],
+		['key' => 'del', 'label' => Get::sprite('subs_del', Lang::t('_DEL', 'standard')), 'formatter'=>'doceboDelete', 'className' => 'img-cell']
+    ],
+	'fields' => ['id', 'idst', 'groupid', 'special', 'menu', 'lang', 'admin_manage', 'del'],
 	'stdSelection' => false,
 	'rel_actions' => $rel_action,
 	'delDisplayField' => 'groupid',
-	'events' => array(
+	'events' => [
 		'beforeRenderEvent' => 'AdminProfile.beforeRenderEvent',
 		'postRenderEvent' => 'AdminProfile.postRenderEvent'
-	),
+    ],
 	'delDisplayField' => 'groupid'
-));
+]);
 
 ?>
 </div>

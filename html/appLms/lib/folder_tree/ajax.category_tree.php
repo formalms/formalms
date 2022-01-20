@@ -32,14 +32,14 @@ switch ($command) {
 		$initial = Get::req('initial', DOTY_INT, 0);
 
 //$initial = 0;
-		$result = array();
+		$result = [];
 		if ($initial==1) {
 
 			if (!isset($_SESSION['course_category']['filter_status']['c_category']))
 				$_SESSION['course_category']['filter_status']['c_category'] = 0;
 			$treestatus =& $_SESSION['course_category']['filter_status']['c_category'];
 
-			$result = array();
+			$result = [];
 			$folders = $treecat->getOpenedFolders( $treestatus );
 
 			$ref =& $result;
@@ -48,7 +48,7 @@ switch ($command) {
 				if ($folder > 0) {
 					for ($i=0; $i<count($ref); $i++) {
 						if ($ref[$i]['node']['id'] == $folder) {
-							$ref[$i]['children'] = array();
+							$ref[$i]['children'] = [];
 							$ref =& $ref[$i]['children'];
 							break;
 						}
@@ -59,15 +59,15 @@ switch ($command) {
 				while (list($id_category, $idParent, $path, $lev, $left, $right) = sql_fetch_row($childrens)) {
 					$is_leaf = ($right-$left) == 1;
 					$node_options = getNodeOptions($id_category, $is_leaf);
-					$ref[] = array(
-						'node' => array(
+					$ref[] = [
+						'node' => [
 							'id' => $id_category,
 							'label' => end(explode('/', $path)),
 							'is_leaf' => $is_leaf,
 							'count_content' => (int)(($right-$left-1)/2),
 							'options' => $node_options
-						)
-					);
+                        ]
+                    ];
 				}
 
 			}
@@ -82,19 +82,19 @@ switch ($command) {
 
 				$node_options = getNodeOptions($id_category, $is_leaf);
 
-				$result[] = array(
+				$result[] = [
 					'id' => $id_category,
 					'label' => end(explode('/', $path)),
 					'is_leaf' => $is_leaf,
 					'count_content' => (int)(($right-$left-1)/2),
 					'options' => $node_options
-				); //change this
+                ]; //change this
 			}
 
 		}
 
 
-		$output = array('success'=>true, 'nodes'=>$result, 'initial'=>($initial==1));
+		$output = ['success'=>true, 'nodes'=>$result, 'initial'=>($initial==1)];
 		aout( $json->encode($output) );
 	};break;
 
@@ -103,7 +103,7 @@ switch ($command) {
 		$node_id = Get::req('node_id', DOTY_INT, 0);
 		$new_name = Get::req('name', DOTY_STRING, false);
 
-		$result = array('success'=>false);
+		$result = ['success'=>false];
 		if ($new_name !== false) $result['success'] = $treecat->renameFolderById($node_id, $new_name);
 		if ($result['success']) $result['new_name'] = stripslashes($new_name);
 		aout( $json->encode($result) );
@@ -114,7 +114,7 @@ switch ($command) {
 		$node_id = Get::req('node_id', DOTY_INT, false);
 		$node_name = Get::req('name', DOTY_STRING, false); //no multilang required for categories
 
-		$result = array();
+		$result = [];
 		if ($node_id === false) {
 			$result['success'] = false;
 		} else {
@@ -124,13 +124,13 @@ switch ($command) {
 
 			$result['success'] = $success;
 			if ($success) {
-				$result['node'] = array(
+				$result['node'] = [
 					'id' => $new_node_id,
 					'label' => $node_name,
 					'is_leaf' => true,
 					'count_content' => 0,
 					'options' => getNodeOptions($new_node_id, true)
-				);
+                ];
 			}
 		}
 		aout( $json->encode($result) );
@@ -140,7 +140,7 @@ switch ($command) {
 
 		$node_id = Get::req('node_id', DOTY_INT, 0);
 
-		$result = array('success'=>$treecat->deleteTreeById($node_id));
+		$result = ['success'=>$treecat->deleteTreeById($node_id)];
 		aout( $json->encode($result) );
 	};break;
 
@@ -149,7 +149,7 @@ switch ($command) {
 		$src = Get::req('src', DOTY_INT, 0);
 		$dest = Get::req('dest', DOTY_INT, 0);
 
-		$result = array('success'=>$treecat->move($src, $dest));
+		$result = ['success'=>$treecat->move($src, $dest)];
 		aout( $json->encode($result) );
 	};break;
 
@@ -163,7 +163,7 @@ switch ($command) {
 		if ($count>0) $is_leaf = false;
 		$node_options = getNodeOptions($node_id, $is_leaf);
 
-		$result = array('success'=>true, 'options'=>$node_options, '_debug'=>$count);
+		$result = ['success'=>true, 'options'=>$node_options, '_debug'=>$count];
 		aout( $json->encode($result) );
 	};break;
 

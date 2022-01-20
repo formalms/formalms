@@ -88,7 +88,7 @@ abstract class DCache implements ICache {
 	 * )
 	 * @return bool true if the data was saved successfully, false otherwise
 	 */
-	public function set($key, $data, $options = array()) {
+	public function set($key, $data, $options = []) {
 		
 		return false;
 	}
@@ -102,7 +102,7 @@ abstract class DCache implements ICache {
 	 * )
 	 * @return bool true if the data was saved successfully, false otherwise 
 	 */
-	public function add($key, $value, $options = array()) {
+	public function add($key, $value, $options = []) {
 		
 		if(!$this->exist($key)) {
 			
@@ -131,7 +131,7 @@ abstract class DCache implements ICache {
 	 * )
 	 * @return bool true if the data was saved successfully, false otherwise
 	 */
-	public function mset($keys, $values, $options = array()) {
+	public function mset($keys, $values, $options = []) {
 		
 		foreach($keys as $i => $key) {
 			
@@ -148,7 +148,7 @@ abstract class DCache implements ICache {
 	 */
 	public function mget($keys) {
 		
-		$values = array();
+		$values = [];
 		foreach($keys as $i => $key) {
 			
 			$values[$key] = $this->get($key);

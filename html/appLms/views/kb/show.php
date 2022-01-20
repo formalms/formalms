@@ -11,10 +11,10 @@
 </script>
 <div class="middlearea_container">
 	<?php
-	$lmstab = $this->widget('lms_tab', array(
+	$lmstab = $this->widget('lms_tab', [
 				'active' => 'kb',
 				'close' => false
-			));
+    ]);
             
 	?>
 
@@ -70,7 +70,7 @@
                             
 							<!-- content table -->
                             <?php
-									$this->widget('table', array(
+									$this->widget('table', [
 										'id' => 'kb_table',
 										'ajaxUrl' => 'ajax.server.php?r=kb/getlist',
 										'rowsPerPage' => Get::sett('visuItem', 25),
@@ -79,20 +79,20 @@
 										'sort' => 'r_name',
 										'dir' => 'asc',
 										'generateRequest' => 'KbManagement.requestBuilder',
-										'events' => array(
+										'events' => [
 											'postRenderEvent' => 'function () { lb.init(); }',
-										),
-										'columns' => array(
-											array('key' => 'r_name', 'label' => Lang::t('_NAME', 'kb'), 'sortable' => true),
-											array('key' => 'r_type', 'label' => Lang::t('_TYPE', 'kb'), 'sortable' => true, 'className' => 'img-cell'),
+                                        ],
+										'columns' => [
+											['key' => 'r_name', 'label' => Lang::t('_NAME', 'kb'), 'sortable' => true],
+											['key' => 'r_type', 'label' => Lang::t('_TYPE', 'kb'), 'sortable' => true, 'className' => 'img-cell'],
 											//array('key' => 'r_env', 'label' => Lang::t('_ENVIRONMENT', 'kb'), 'sortable' => true),
-											array('key' => 'r_env_parent', 'label' => Lang::t('_CONTAINED_IN', 'kb'), 'sortable' => false),
-											array('key' => 'r_lang', 'label' => Lang::t('_LANGUAGE', 'kb'), 'sortable' => true),
-											array('key' => 'tags', 'label' => Lang::t('_TAGS', 'kb'), 'sortable' => false),
-											array('key' => 'play', 'label' => '<span class="ico-sprite subs_play"><span>' . Lang::t('_PLAY', 'storage') . '</span></span>', 'formatter' => 'frm_play', 'className' => 'img-cell'),
-										),
-										'fields' => array('res_id', 'r_name', 'r_type', 'r_env', 'r_env_parent', 'r_lang', 'tags', 'edit', 'force_visible', 'is_mobile'),
-									)
+											['key' => 'r_env_parent', 'label' => Lang::t('_CONTAINED_IN', 'kb'), 'sortable' => false],
+											['key' => 'r_lang', 'label' => Lang::t('_LANGUAGE', 'kb'), 'sortable' => true],
+											['key' => 'tags', 'label' => Lang::t('_TAGS', 'kb'), 'sortable' => false],
+											['key' => 'play', 'label' => '<span class="ico-sprite subs_play"><span>' . Lang::t('_PLAY', 'storage') . '</span></span>', 'formatter' => 'frm_play', 'className' => 'img-cell'],
+                                        ],
+										'fields' => ['res_id', 'r_name', 'r_type', 'r_env', 'r_env_parent', 'r_lang', 'tags', 'edit', 'force_visible', 'is_mobile'],
+                                        ]
                                     
                                     
                                     

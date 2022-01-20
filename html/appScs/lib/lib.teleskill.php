@@ -136,7 +136,7 @@ class Teleskill_Management
 
 		$xml_answer = $this->_sendXmlRequest($request);
 
-		if($xml_answer === false || $xml_answer === '') return array('errorcode' => -1, 'errormessage' => '', 'roomid' => '');
+		if($xml_answer === false || $xml_answer === '') return ['errorcode' => -1, 'errormessage' => '', 'roomid' => ''];
 
 		$dom_answer = new DoceboDOMDocument();
 		$dom_answer->loadXML( trim($xml_answer) );
@@ -151,7 +151,7 @@ class Teleskill_Management
 
 		if($e_code == 0) return true;
 
-		return array('errorcode' => $e_code, 'errormessage' => $e_msg, 'roomid' => '');
+		return ['errorcode' => $e_code, 'errormessage' => $e_msg, 'roomid' => ''];
 	}
 
 	/**
@@ -198,7 +198,7 @@ class Teleskill_Management
 
 		$xml_answer = trim($this->_sendXmlRequest($request));
 
-		if($xml_answer === false || $xml_answer === '') return array('errorcode' => -1, 'errormessage' => '', 'roomid' => '');
+		if($xml_answer === false || $xml_answer === '') return ['errorcode' => -1, 'errormessage' => '', 'roomid' => ''];
 
 		$dom_answer = new DoceboDOMDocument();
 		$dom_answer->loadXML( $xml_answer );
@@ -234,9 +234,9 @@ class Teleskill_Management
 			}
 		}
 
-		return array(	'errorcode' => $e_code,
+		return ['errorcode' => $e_code,
 						'errormessage' => $e_msg,
-						'roomid' => $roomid );
+						'roomid' => $roomid];
 	}
 
 	function getModUi($room_info)
@@ -333,7 +333,7 @@ class Teleskill_Management
 
 		$xml_answer = trim($this->_sendXmlRequest($request));
 
-		if($xml_answer === false || $xml_answer === '') return array('errorcode' => -1, 'errormessage' => '', 'roomid' => '');
+		if($xml_answer === false || $xml_answer === '') return ['errorcode' => -1, 'errormessage' => '', 'roomid' => ''];
 
 		$dom_answer = new DoceboDOMDocument();
 		$dom_answer->loadXML( $xml_answer );
@@ -368,8 +368,8 @@ class Teleskill_Management
 
 			}
 		}
-		return array(	'errorcode' => $e_code,
-						'errormessage' => $e_msg );
+		return ['errorcode' => $e_code,
+						'errormessage' => $e_msg];
 	}
 
 	/**
@@ -406,7 +406,7 @@ class Teleskill_Management
 
 		$xml_answer = trim($this->_sendXmlRequest($request));
 
-		if($xml_answer === false || $xml_answer === '') return array('errorcode' => -1, 'errormessage' => '', 'url' => '', 'fullroom' => 0);
+		if($xml_answer === false || $xml_answer === '') return ['errorcode' => -1, 'errormessage' => '', 'url' => '', 'fullroom' => 0];
 
 		$dom_answer = new DoceboDOMDocument();
 		$dom_answer->loadXML($xml_answer);
@@ -424,7 +424,7 @@ class Teleskill_Management
 		$log_url 	= $dnode_url->textContent;
 		$fullroom 	= $dnode_fullroom->textContent;
 
-		return array('errorcode' => $e_code, 'errormessage' => $e_msg, 'url' => $log_url, 'fullroom' => $fullroom);
+		return ['errorcode' => $e_code, 'errormessage' => $e_msg, 'url' => $log_url, 'fullroom' => $fullroom];
 	}
 
 	/**
@@ -453,7 +453,7 @@ class Teleskill_Management
 
 		$xml_answer = trim($this->_sendXmlRequest($request));
 
-		if($xml_answer === false || $xml_answer === '') return array('errorcode' => -1, 'errormessage' => '');
+		if($xml_answer === false || $xml_answer === '') return ['errorcode' => -1, 'errormessage' => ''];
 
 		$dom_answer = new DoceboDOMDocument();
 		$dom_answer->loadXML( $xml_answer );
@@ -472,7 +472,7 @@ class Teleskill_Management
 		$this->_query($room_open);
 
 
-		return array('errorcode' => $e_code, 'errormessage' => $e_msg);
+		return ['errorcode' => $e_code, 'errormessage' => $e_msg];
 	}
 
 	/**
@@ -599,7 +599,7 @@ class Teleskill_Management
 
 		$result = sql_query($query);
 
-		$res = array();
+		$res = [];
 
 		while($row = sql_fetch_assoc($result))
 			$res[] = $row;
@@ -630,7 +630,7 @@ class Teleskill_Management
 
 		$xml_answer = $this->_sendXmlRequest($request);
 
-		if($xml_answer === false || $xml_answer === '') return array('errorcode' => -1, 'errormessage' => '', 'roomid' => '');
+		if($xml_answer === false || $xml_answer === '') return ['errorcode' => -1, 'errormessage' => '', 'roomid' => ''];
 
 		//Test Answer
 		/*$xml_answer =	'<?xml version="1.0" encoding="utf-8"?'.'>'
@@ -664,7 +664,7 @@ class Teleskill_Management
 
 			if($dlist_sessions->length > 0)
 			{
-				$array_element = array();
+				$array_element = [];
 
 				for($i = 0; $i < $dlist_sessions->length; $i++)
 				{
@@ -719,7 +719,7 @@ class Teleskill_Management
 			return true;
 		}
 
-		return array('errorcode' => $e_code, 'errormessage' => $e_msg, 'roomid' => '');
+		return ['errorcode' => $e_code, 'errormessage' => $e_msg, 'roomid' => ''];
 	}
 }
 

@@ -38,26 +38,26 @@ class GamesLmsController extends LmsController {
 	public function showTask() {
 		
 		if(!$this->info['history'] && !$this->info['unread']) {
-			$this->render('emptygames', array());
+			$this->render('emptygames', []);
 			return;
 		}
 		if($this->info['history'] && !$this->info['unread']) Util::jump_to('index.php?r=lms/games/showhistory');
-		$this->render('_tabs', array(
+		$this->render('_tabs', [
 			'active_tab' => 'unread',
 			'ajax_action' => 'gettabledata',
 			'show_unread_tab' => $this->info['unread'],
 			'show_history_tab' => $this->info['history']
-		));
+        ]);
 	}
 
 	public function showhistoryTask() {
 
-		$this->render('_tabs', array(
+		$this->render('_tabs', [
 			'active_tab' => 'history',
 			'ajax_action' => 'gethistorydata',
 			'show_unread_tab' => $this->info['unread'],
 			'show_history_tab' => $this->info['history']
-		));
+        ]);
 	}
 
 	public function gettabledata() {
@@ -67,9 +67,9 @@ class GamesLmsController extends LmsController {
 		$dir = Get::req('dir', DOTY_MIXED, 'asc');
 
 		$model = new GamesAlms();
-		$games = $model->findAllUnread(0, 0, 'start_date', 'DESC', Docebo::user()->getId(), array(
+		$games = $model->findAllUnread(0, 0, 'start_date', 'DESC', Docebo::user()->getId(), [
 					'viewer' => Docebo::user()->getArrSt()
-				));
+        ]);
     foreach($games as $id => $games)    
     {
 
@@ -85,7 +85,7 @@ class GamesLmsController extends LmsController {
 					. Lang::t('_STANDINGS', 'games')
 					. '</span></a>';
 		}
-		$result = array(
+		$result = [
 			'totalRecords' => count($games),
 			'startIndex' => $start_index,
 			'sort' => $sort,
@@ -93,7 +93,7 @@ class GamesLmsController extends LmsController {
 			'rowsPerPage' => $results,
 			'results' => count($games),
 			'records' => $games
-		);
+        ];
 
 		$this->data = $this->json->encode($result);
 		echo $this->data;
@@ -106,10 +106,10 @@ class GamesLmsController extends LmsController {
 		$dir = Get::req('dir', DOTY_MIXED, 'asc');
 
 		$model = new GamesAlms();
-		$games = $model->findAllReaded(0, 0, 'start_date', 'DESC', Docebo::user()->getId(), array(
+		$games = $model->findAllReaded(0, 0, 'start_date', 'DESC', Docebo::user()->getId(), [
 					'viewer' => Docebo::user()->getArrSt()
-				));
-		$result = array(
+        ]);
+		$result = [
 			'totalRecords' => count($games),
 			'startIndex' => $start_index,
 			'sort' => $sort,
@@ -117,7 +117,7 @@ class GamesLmsController extends LmsController {
 			'rowsPerPage' => $results,
 			'results' => count($games),
 			'records' => $games
-		);
+        ];
 
 		$this->data = $this->json->encode($result);
 		echo $this->data;
@@ -129,23 +129,23 @@ class GamesLmsController extends LmsController {
 	public function newTask() {
 
 		$model = new GamesAlms();
-		$games = $model->findAllUnread(0, 0, 'start_date', 'DESC', Docebo::user()->getId(), array(
+		$games = $model->findAllUnread(0, 0, 'start_date', 'DESC', Docebo::user()->getId(), [
 					'viewer' => Docebo::user()->getArrSt()
-				));
-		$this->render('games', array(
+        ]);
+		$this->render('games', [
 			'games' => $games
-		));
+        ]);
 	}
 
 	public function historyTask() {
 
 		$model = new GamesAlms();
-		$games = $model->findAllReaded(0, 0, 'start_date', 'DESC', Docebo::user()->getId(), array(
+		$games = $model->findAllReaded(0, 0, 'start_date', 'DESC', Docebo::user()->getId(), [
 					'viewer' => Docebo::user()->getArrSt()
-				));
-		$this->render('games', array(
+        ]);
+		$this->render('games', [
 			'games' => $games
-		));
+        ]);
 	}
 
 	public function playTask() {
@@ -173,12 +173,12 @@ class GamesLmsController extends LmsController {
 
 		YuiLib::load('base,charts');
 
-		$this->render('standings', array(
+		$this->render('standings', [
 			'game' => $game,
 			'track' => $model->getUserStandings($game['id_game'], getLogUserId()),
 			'standings' => $model->getStandings($game['id_game'], 0, 30),
 			'chart_data' => $this->json->encode($model->getStandingsChartData($game['id_game'])),
-		));
+        ]);
 	}
 
 }

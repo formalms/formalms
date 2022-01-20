@@ -64,7 +64,7 @@ class RepoDirDb extends TreeDb {
 	// Constructor of RepoDirDb class
 	function RepoDirDb( $table_name ) {
 		$this->table = $table_name;
-		$this->fields = array( 'id' => 'idRepo', 'idParent' => 'idParent', 'path' => 'path', 'lev' => 'lev' );
+		$this->fields = ['id' => 'idRepo', 'idParent' => 'idParent', 'path' => 'path', 'lev' => 'lev'];
 	}
 
 	// , '.$prefix.'_repo_access';
@@ -462,7 +462,7 @@ class RepoDirDb extends TreeDb {
 }
 
 class RepoTreeView extends TreeView {
-	var $options = array();
+	var $options = [];
 	var $creatingObjectType = '';
 	var $withActions = FALSE;
 	var $pathToExpand = NULL;
@@ -473,9 +473,9 @@ class RepoTreeView extends TreeView {
 	
 	var $selector_mode = FALSE;
 	var $simple_selector = FALSE;
-	var $itemSelectedMulti = array();
+	var $itemSelectedMulti = [];
 	var $filter_nodes = FALSE;
-	var $printed_items = array();
+	var $printed_items = [];
 	
 	var $multi_choice = TRUE;
 	
@@ -530,7 +530,7 @@ class RepoTreeView extends TreeView {
 			$stackData = $this->getSelectedFolderData();
 			$arrData = $stackData['folder']->otherValues;
 			$isFolder = ($arrData[REPOFIELDOBJECTTYPE] === '');
-			if( !$isFolder ) return array();
+			if( !$isFolder ) return [];
 		}
 		return TRUE; 
 	}
@@ -576,12 +576,12 @@ class RepoTreeView extends TreeView {
 			$arrData = $stackData['folder']->otherValues;
 			$isFolder = ($arrData[REPOFIELDOBJECTTYPE] === '');
 			if( !$isFolder ) 
-				return array();
+				return [];
 				/* array(	array($this->_getOpEditLO(), Lang::t('_MOD', 'storage', 'lms'), getPathImage().'standard/edit.png' ),
 								array($this->_getOpCopyLO(), Lang::t('_REPOCOPYLO', 'storage', 'lms'), getPathImage().'standard/dup.png' )
 							);*/
 		}
-		return array( array($this->_getOpCreateLO(), Lang::t('_REPOCREATELO', 'storage'), getPathImage().'standard/add.png' )	);
+		return [[$this->_getOpCreateLO(), Lang::t('_REPOCREATELO', 'storage'), getPathImage().'standard/add.png']];
 	}
 	
 	function getFolderPrintName( &$folder ) {
@@ -589,7 +589,7 @@ class RepoTreeView extends TreeView {
 	}
 	
 	function expandPath( $path ) {
-		$arrId = array();
+		$arrId = [];
 		$splitPath = explode('/', $path);
 		unset( $splitPath[0] );
 		$path = '';
@@ -636,13 +636,13 @@ class RepoTreeView extends TreeView {
 	
 	function refreshTree() {
 		$this->refresh = TRUE;
-		$this->posFlat = array();
+		$this->posFlat = [];
 		$this->_visitArrayDeep($this->posTree, $this->posFlat, $this->expandList, $this->compressList);
 	}
 	
 	function selection_parseInput($arrayState) {
-		$itemSelectedMulti = array();
-		$printedItems = array();
+		$itemSelectedMulti = [];
+		$printedItems = [];
 		if( isset( $arrayState[$this->id] ) ) {
 			if( isset( $arrayState[$this->id][REPO_ID_SELECTIONSTATE] )) {
 				$this->itemSelectedMulti = Util::unserialize(urldecode($arrayState[$this->id][REPO_ID_SELECTIONSTATE]));
@@ -654,7 +654,7 @@ class RepoTreeView extends TreeView {
 				$printedItems = Util::unserialize(urldecode($arrayState[$this->id][REPO_ID_PRINTEDITEM]));
 			}
 			if( isset( $arrayState[$this->id][REPO_OP_SELECTMONO] )) {
-				$itemSelectedMulti = array($arrayState[$this->id][REPO_OP_SELECTMONO]);
+				$itemSelectedMulti = [$arrayState[$this->id][REPO_OP_SELECTMONO]];
 			}
 			if( isset( $arrayState[$this->id][REPO_OP_SELECTRADIO] )) {
 				foreach( $arrayState[$this->id][REPO_OP_SELECTRADIO] as $key => $val ) {
@@ -907,7 +907,7 @@ class RepoTreeView extends TreeView {
 		if( $currLev > 0 && $currLev == $maxLev ) {
 			$arrData = $stack[$currLev]['folder']->otherValues;
 			if( is_array($arrData) && $arrData[REPOFIELDOBJECTTYPE] != '' ) 
-				return array( 'TreeViewImage', 'lobject/'.$arrData[REPOFIELDOBJECTTYPE].'.png', $arrData[REPOFIELDOBJECTTYPE]);
+				return ['TreeViewImage', 'lobject/'.$arrData[REPOFIELDOBJECTTYPE].'.png', $arrData[REPOFIELDOBJECTTYPE]];
 		}	
 		return parent::getImage( $stack, $currLev, $maxLev );
 	}
@@ -970,7 +970,7 @@ class RepoTreeView extends TreeView {
 	
 	function load() {
 		if( $this->getOption(REPOOPTSHOWONLYFOLDER) === TRUE ) {
-			$this->tdb->setFilterTypes( array('') );
+			$this->tdb->setFilterTypes( ['']);
 			$this->refresh = TRUE;
 			// we must refresh
 			$this->_visitArrayDeep($this->posTree, $this->posFlat, $this->expandList, $this->compressList); 

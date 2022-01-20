@@ -41,18 +41,18 @@ class Admin_Lms extends Admin {
 		$re_menu = sql_query($query_menu);
 
 
-		$this->menu = array();
+		$this->menu = [];
 		while(list($idm, $id, $module_name, $name, $op, $token, $of_platform, $mvc_path) = sql_fetch_row($re_menu)) {
 
 			if($this->user->matchUserRole('/'.( $of_platform === NULL ? $this->platform : $of_platform ).'/admin/'.$module_name.'/'.$token)) {
-				 $this->menu[$idm][$id] = array('modname' => $module_name,
+				 $this->menu[$idm][$id] = ['modname' => $module_name,
 				 					'op' => $op,
 									'link' => ( $mvc_path == ''
 										? 'index.php?modname='.$module_name.'&op='.$op.'&of_platform='.( $of_platform === NULL ? $this->platform : $of_platform )
 										: 'index.php?r='.$mvc_path
 									),
 									'name' => ( $name != '' ? $lang->def($name, 'menu', 'lms') : $lang->def('_'.strtoupper($module_name), 'menu', 'lms') ),
-									'of_platform' => ( $of_platform === NULL ? $this->platform : $of_platform ) );
+									'of_platform' => ( $of_platform === NULL ? $this->platform : $of_platform )];
 			}
 		}
 
@@ -78,16 +78,16 @@ class Admin_Lms extends Admin {
 		$re_under = sql_query($query_under);
 
 
-		$menu = array();
+		$menu = [];
 		while(list($id_main, $module_name, $token, $name, $image, $collapse, $of_platform) = sql_fetch_row($re_under)) {
 
 			if(!isset($menu[$id_main]) && checkPerm($token, true, $module_name, ( $of_platform === NULL ? $this->platform : $of_platform ) )) {
 
-				$menu[$id_main] = array('link' => 'index.php?op=change_main&new_main='.$id_main.'&of_platform='.( $of_platform === NULL ? $this->platform : $of_platform ),
+				$menu[$id_main] = ['link' => 'index.php?op=change_main&new_main='.$id_main.'&of_platform='.( $of_platform === NULL ? $this->platform : $of_platform ),
 									'name' => ( $name != '' ? $lang->def($name, 'menu', 'lms')  : '' ),
 									'image' => 'area_title/'.$image,
 									'collapse' => ( $collapse == 'true' ? true : false ),
-									'of_platform' => ( $of_platform === NULL ? $this->platform : $of_platform ));
+									'of_platform' => ( $of_platform === NULL ? $this->platform : $of_platform )];
 			}
 		}
 		return $menu;
@@ -104,10 +104,10 @@ class Admin_Lms extends Admin {
 
 		list($name, $image) = sql_fetch_row($re_menu);
 
-		return array(
+		return [
 			'name' => ( $name != '' ? $lang->def($name, 'menu') : '' ),
 			'image' => getPathImage('framework').'area_title/'.$image
-		);
+        ];
 	 }
 
 	 /**

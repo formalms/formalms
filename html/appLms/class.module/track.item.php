@@ -55,7 +55,7 @@ class Track_Item extends Track_Object {
 		if($db->num_rows($rs)  > 0 ) {
 			
 			list($idTrack) = $db->fetch_row($rs);
-			return array( TRUE, $idTrack );
+			return [TRUE, $idTrack];
 		} else if( $createOnFail ) {
 			
 			$query = "INSERT INTO %lms_materials_track "
@@ -63,7 +63,7 @@ class Track_Item extends Track_Object {
 					."( ".(int)$id_resource.", ".(int)$id_reference." , ".(int)$id_user." ) ";
 			if(!$db->query( $query )) return false;
 			$idTrack = $db->insert_id();
-			return array(FALSE, $idTrack);
+			return [FALSE, $idTrack];
 		}
 		return FALSE;
 	}

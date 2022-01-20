@@ -41,7 +41,7 @@ class DApcCache extends DCache {
 	 * )
 	 * @return bool true if the data was saved successfully, false otherwise 
 	 */
-	public function add($key, $value, $options = array()) {
+	public function add($key, $value, $options = []) {
 		
 		return apc_add($key,$value,( isset($options['expire']) ? $options['expire'] : self::DEFAULT_EXPIRE ));;
 	}
@@ -55,7 +55,7 @@ class DApcCache extends DCache {
 	 * )
 	 * @return bool true if the data was saved successfully, false otherwise
 	 */
-	public function set($key, $data, $options = array()) {
+	public function set($key, $data, $options = []) {
 		
 		return apc_store($key,$value,( isset($options['expire']) ? $options['expire'] : self::DEFAULT_EXPIRE ));
 	}

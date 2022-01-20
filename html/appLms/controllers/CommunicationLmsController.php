@@ -37,26 +37,26 @@ class CommunicationLmsController extends LmsController {
 	public function showTask() {
 		
 		if(!$this->info['history'] && !$this->info['unread']) {
-			$this->render('emptycommunication', array());
+			$this->render('emptycommunication', []);
 			return;
 		}
 		if($this->info['history'] && !$this->info['unread']) Util::jump_to('index.php?r=lms/communication/showhistory');
-		$this->render('_tabs', array(
+		$this->render('_tabs', [
 			'active_tab' => 'unread',
 			'ajax_action' => 'gettabledata',
 			'show_unread_tab' => $this->info['unread'],
 			'show_history_tab' => $this->info['history']
-		));
+        ]);
 	}
 
 	public function showhistoryTask() {
 
-		$this->render('_tabs', array(
+		$this->render('_tabs', [
 			'active_tab' => 'history',
 			'ajax_action' => 'gethistorydata',
 			'show_unread_tab' => $this->info['unread'],
 			'show_history_tab' => $this->info['history']
-		));
+        ]);
 	}
 
 	public function gettabledata() {
@@ -66,9 +66,9 @@ class CommunicationLmsController extends LmsController {
 		$dir			= Get::req('dir', DOTY_MIXED, 'asc');
 		
 		$model = new CommunicationAlms();
-		$communications = $model->findAllUnread( 0, 0, 'publish_date', 'DESC', Docebo::user()->getId(), array(
+		$communications = $model->findAllUnread( 0, 0, 'publish_date', 'DESC', Docebo::user()->getId(), [
 			'viewer' => Docebo::user()->getArrSt()
-		));
+        ]);
     foreach($communications as $id => $comm)
 		{
 			//$communications[$id]['publish_date'] = Format::dateDistance($comm['publish_date']);
@@ -90,7 +90,7 @@ class CommunicationLmsController extends LmsController {
 				};break;
 			}
 		}
-		$result = array(
+		$result = [
 			'totalRecords' => count($communications),
 			'startIndex' => $start_index,
 			'sort' => $sort,
@@ -98,7 +98,7 @@ class CommunicationLmsController extends LmsController {
 			'rowsPerPage' => $results,
 			'results' => count($communications),
 			'records' => $communications
-		);
+        ];
 
 		$this->data = $this->json->encode($result);
 		echo $this->data;
@@ -111,9 +111,9 @@ class CommunicationLmsController extends LmsController {
 		$dir			= Get::req('dir', DOTY_MIXED, 'asc');
 
 		$model = new CommunicationAlms();
-		$communications = $model->findAllReaded( 0, 0, 'publish_date', 'DESC', Docebo::user()->getId(), array(
+		$communications = $model->findAllReaded( 0, 0, 'publish_date', 'DESC', Docebo::user()->getId(), [
 			'viewer' => Docebo::user()->getArrSt()
-		));
+        ]);
     foreach($communications as $id => $comm)     
     {
 			//$communications[$id]['publish_date'] = Format::dateDistance($comm['publish_date']);
@@ -135,7 +135,7 @@ class CommunicationLmsController extends LmsController {
 				};break;
 			}
 		}
-		$result = array(
+		$result = [
 			'totalRecords' => count($communications),
 			'startIndex' => $start_index,
 			'sort' => $sort,
@@ -143,7 +143,7 @@ class CommunicationLmsController extends LmsController {
 			'rowsPerPage' => $results,
 			'results' => count($communications),
 			'records' => $communications
-		);
+        ];
 
 		$this->data = $this->json->encode($result);
 		echo $this->data;
@@ -155,23 +155,23 @@ class CommunicationLmsController extends LmsController {
 	public function newTask() {
 
 		$model = new CommunicationAlms();
-		$communications = $model->findAllUnread( 0, 0, 'publish_date', 'DESC', Docebo::user()->getId(), array(
+		$communications = $model->findAllUnread( 0, 0, 'publish_date', 'DESC', Docebo::user()->getId(), [
 			'viewer' => Docebo::user()->getArrSt()
-		));
-		$this->render('communication', array(
+        ]);
+		$this->render('communication', [
 			'communications' => $communications
-		));
+        ]);
 	}
 
 	public function historyTask() {
 
 		$model = new CommunicationAlms();
-		$communications = $model->findAllReaded( 0, 0, 'publish_date', 'DESC', Docebo::user()->getId(), array(
+		$communications = $model->findAllReaded( 0, 0, 'publish_date', 'DESC', Docebo::user()->getId(), [
 			'viewer' => Docebo::user()->getArrSt()
-		));
-		$this->render('communication', array(
+        ]);
+		$this->render('communication', [
 			'communications' => $communications
-		));
+        ]);
 	}
 
 	public function playTask() {

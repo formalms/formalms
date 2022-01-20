@@ -1,8 +1,8 @@
-<?php Get::title(array(
+<?php Get::title([
 	'index.php?r='.$this->link_course.'/show' => Lang::t('_COURSES', 'admin_course_managment'),
 	'index.php?r='.$this->link.'/show&id_course='.(int)$id_course.($id_edition ? '&id_edition='.(int)$id_edition : '').($id_date ? '&id_date='.(int)$id_date : '') => Lang::t('_SUBSCRIBE', 'subscribe').' : '.$course_name,
 	Lang::t('_ADD', 'subscribe')
-)); ?>
+]); ?>
 <div class="std_block">
 <?php
 echo Form::openForm('main_selector_form', 'index.php?r='.$this->link.'/add&amp;id_course='.$model->getIdCourse().'&amp;id_edition='.$model->getIdEdition().'&amp;id_date='.$model->getIdDate().'&amp;jump=1');
@@ -14,7 +14,7 @@ echo Lang::t('_CHOOSE_SUBSCRIBE', 'subscribe').': <b>'.(trim($course_info['code'
 echo Form::getDropdown( Lang::t('_LEVEL', 'subscribe'),
 	'select_level_mode',
 	'select_level_mode',
-	array( 'manual' => Lang::t('_MANUAL', 'subscribe'), 'students' => Lang::t('_LEVEL_3', 'levels') ),
+	['manual' => Lang::t('_MANUAL', 'subscribe'), 'students' => Lang::t('_LEVEL_3', 'levels')],
 	'manual' );
 echo Form::getDatefield( Lang::t('_DATE_BEGIN_VALIDITY', 'subscribe'),
 	'set_date_begin_validity',
@@ -49,7 +49,7 @@ E.onDOMReady(function() {
 <br/>
 <br/>
 <?php
-$this->widget('userselector', array(
+$this->widget('userselector', [
 	'id' => 'main_selector',
 	'show_user_selector' => true,
 	'show_group_selector' => true,
@@ -57,7 +57,7 @@ $this->widget('userselector', array(
 	'show_fncrole_selector' => true,
 	'initial_selection' => $user_alredy_subscribed,
 	'admin_filter' => true
-));
+]);
 
 echo Form::openButtonSpace()
 	.Form::getInputCheckbox( 'send_alert', 'send_alert', 1, $send_alert, false )

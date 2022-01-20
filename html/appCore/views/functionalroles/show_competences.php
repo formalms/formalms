@@ -54,16 +54,16 @@ YAHOO.util.Event.onDOMReady(function() {
 
 $icon_del = '<span class="ico-sprite subs_del"><span>'.Lang::t('_DEL', 'standard').'</span></span>';
 
-$columns = array(
-	array('key' => 'category', 'label' => Lang::t('_CATEGORY', 'competences'), 'sortable' => true),
-	array('key' => 'name', 'label' => Lang::t('_NAME', 'standard'), 'sortable' => true),
-	array('key' => 'description', 'label' => Lang::t('_DESCRIPTION', 'standard'), 'sortable' => true),
-	array('key' => 'typology', 'label' => Lang::t('_TYPOLOGY', 'competences'), 'className' => 'img-cell', 'sortable' => true),
-	array('key' => 'type', 'label' => Lang::t('_TYPE', 'standard'), 'className' => 'img-cell', 'sortable' => true),
-	array('key' => 'score', 'label' => Lang::t('_MIN_SCORE', 'competences'), 'sortable' => true, 'className' => 'img-cell'),
-	array('key' => 'expiration', 'label' => Lang::t('_EXPIRATION_DAYS', 'competences'), 'sortable' => true, 'className' => 'img-cell'),
-	array('key' => 'del', 'label' => $icon_del, 'formatter'=>'stdDelete', 'className' => 'img-cell')
-);
+$columns = [
+	['key' => 'category', 'label' => Lang::t('_CATEGORY', 'competences'), 'sortable' => true],
+	['key' => 'name', 'label' => Lang::t('_NAME', 'standard'), 'sortable' => true],
+	['key' => 'description', 'label' => Lang::t('_DESCRIPTION', 'standard'), 'sortable' => true],
+	['key' => 'typology', 'label' => Lang::t('_TYPOLOGY', 'competences'), 'className' => 'img-cell', 'sortable' => true],
+	['key' => 'type', 'label' => Lang::t('_TYPE', 'standard'), 'className' => 'img-cell', 'sortable' => true],
+	['key' => 'score', 'label' => Lang::t('_MIN_SCORE', 'competences'), 'sortable' => true, 'className' => 'img-cell'],
+	['key' => 'expiration', 'label' => Lang::t('_EXPIRATION_DAYS', 'competences'), 'sortable' => true, 'className' => 'img-cell'],
+	['key' => 'del', 'label' => $icon_del, 'formatter'=>'stdDelete', 'className' => 'img-cell']
+];
 
 $rel_action_over = '<a id="sel_competences_over" class="ico-wt-sprite subs_add" '
 	.'href="index.php?r=adm/functionalroles/sel_competences&id_fncrole='.(int)$id_fncrole.'">'
@@ -79,7 +79,7 @@ $rel_action_bottom = '<a id="sel_competences_bottom" class="ico-wt-sprite subs_a
 	.'href="index.php?r=adm/functionalroles/man_competences_properties&id_fncrole='.(int)$id_fncrole.'">'
 	.'<span>'.Lang::t('_PROPERTIES', 'fncroles').'</span></a>' : '');
 
-$this->widget('table', array(
+$this->widget('table', [
 	'id'			=> 'competences_table',
 	'ajaxUrl'		=> 'ajax.adm_server.php?r=adm/functionalroles/getcompetencetabledata',
 	'rowsPerPage'	=> Get::sett('visuItem', 25),
@@ -89,10 +89,10 @@ $this->widget('table', array(
 	'dir'			=> 'asc',
 	'generateRequest' => 'Competences.requestBuilder',
 	'columns'		=> $columns,
-	'fields'		=> array('id', 'category', 'name', 'description', 'typology', 'type', 'score', 'expiration', 'del'),
-	'rel_actions' => array($rel_action_over, $rel_action_bottom),
+	'fields'		=> ['id', 'category', 'name', 'description', 'typology', 'type', 'score', 'expiration', 'del'],
+	'rel_actions' => [$rel_action_over, $rel_action_bottom],
 	'delDisplayField' => 'name'
-));
+]);
 
 ?>
 <?php echo getBackUi('index.php?r=adm/functionalroles/show', Lang::t('_BACK', 'standard')); ?>

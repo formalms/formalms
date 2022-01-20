@@ -30,17 +30,17 @@ class Module_Catalogue extends LmsAdminModule {
 	// Function for permission managment
 	
 	function getAllToken($op) {
-		return array( 
-			'view' => array( 	'code' => 'view',
+		return [
+			'view' => ['code' => 'view',
 								'name' => '_VIEW',
-								'image' => 'standard/view.png'),
-			'mod' => array( 	'code' => 'mod',
+								'image' => 'standard/view.png'],
+			'mod' => ['code' => 'mod',
 								'name' => '_MOD',
-								'image' => 'standard/edit.png'),
-			'subscribe' => array( 	'code' => 'associate',
+								'image' => 'standard/edit.png'],
+			'subscribe' => ['code' => 'associate',
 								'name' => '_ASSIGN_USERS',
-								'image' => 'standard/groups.gif')
-		);
+								'image' => 'standard/groups.gif']
+        ];
 	}
 }
 

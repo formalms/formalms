@@ -24,16 +24,16 @@ switch($op) {
 		$json = new Services_JSON();
 		$node_id = Get::req('query', DOTY_INT, 0);
 
-		$result = array();
+		$result = [];
 		$treecat = new Categorytree();
 		$re = $treecat->getChildrensById($node_id);
 		while (list($idCategory, $idParent, $path, $lev, $left, $right) = sql_fetch_row($re)) {
-			$result[] = array(
+			$result[] = [
 				'id' => $idCategory,
 				'label' => end(explode('/', $path)),
 				'is_leaf' => ($right-$left)==1,
 				'count_content' => ''
-			); //change this
+            ]; //change this
 		}
 		
 		aout( $json->encode($result) );
@@ -45,7 +45,7 @@ switch($op) {
 	case "getaddnodeform": {
     $url = Get::req('server_url', DOTY_ALPHANUM, false);
     $parent_id = Get::req('parent_id', DOTY_ALPHANUM, false);
-    $output = array();
+    $output = [];
     $output['body'] = '<form name="tree_addfolder_form" method="POST" action="'.$url.'">'.
 		'<input type="hidden" id="authentic_request_addfolder" name="authentic_request" value="'.Util::getSignature().'" />'.
       '<input type="hidden" name="op" value="add_folder" />'.
@@ -58,7 +58,7 @@ switch($op) {
 
 	case "add_folder": {
 
-		$output = array();
+		$output = [];
 
 		$output['success'] = true;
 		$output['folder_id'] = 666;
@@ -75,7 +75,7 @@ switch($op) {
 
 
 	case "del_folder": {
-		$output = array();
+		$output = [];
 
 		$output['success'] = true;
 		$json = new Services_JSON();

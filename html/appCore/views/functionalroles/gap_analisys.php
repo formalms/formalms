@@ -240,11 +240,11 @@ YAHOO.util.Event.onDOMReady(function() {
 				echo 'style="display: none;"';
 			?>>
 			<?php
-				$show_gap_values = array(
+				$show_gap_values = [
 					0 => Lang::t('_ALL', 'standard'),
 					1 => Lang::t('_GAP_ONLY', 'fncroles'),
 					2 => Lang::t('_NO_GAP_ONLY', 'fncroles')
-				);
+                ];
 				/*$show_expire_values = array(
 					0 => Lang::t('_ALL', 'standard'),
 					1 => Lang::t('_EXPIRED_ONLY', 'standard'),
@@ -268,8 +268,8 @@ $icon_history = '<span class="ico-sprite subs_elem"><span>'.Lang::t('_HISTORY', 
 //$icon_del = '<span class="ico-sprite subs_del"><span>'.Lang::t('_UNASSIGN', 'competences').'</span></span>';
 $icon_chart = '<span class="ico-sprite subs_chart"><span>'.Lang::t('_GAP_ANALYSIS', 'fncroles').'</span></span>';
 
-$dyn_labels = array();
-$dyn_filter = array();
+$dyn_labels = [];
+$dyn_filter = [];
 
 for ($i=0; $i<$num_var_fields; $i++) {
 	$label = '<select id="_dyn_field_selector_'.$i.'" name="_dyn_field_selector['.$i.']">';
@@ -286,20 +286,20 @@ for ($i=0; $i<$num_var_fields; $i++) {
 	$dyn_labels[$i] = $label;
 }
 
-$columns = array();
-$columns[] = array('key' => 'competence', 'label' => Lang::t('_COMPETENCE', 'competences'), 'sortable' => true);
-$columns[] = array('key' => 'userid', 'label' => Lang::t('_USER', 'standard'), 'sortable' => true);
-$columns[] = array('key' => 'lastname', 'label' => Lang::t('_LASTNAME', 'standard'), 'sortable' => true);
-$columns[] = array('key' => 'firstname', 'label' => Lang::t('_FIRSTNAME', 'standard'), 'sortable' => true);
+$columns = [];
+$columns[] = ['key' => 'competence', 'label' => Lang::t('_COMPETENCE', 'competences'), 'sortable' => true];
+$columns[] = ['key' => 'userid', 'label' => Lang::t('_USER', 'standard'), 'sortable' => true];
+$columns[] = ['key' => 'lastname', 'label' => Lang::t('_LASTNAME', 'standard'), 'sortable' => true];
+$columns[] = ['key' => 'firstname', 'label' => Lang::t('_FIRSTNAME', 'standard'), 'sortable' => true];
 for ($i=0; $i<$num_var_fields; $i++) {
-	$columns[] = array('key' => '_dyn_field_'.$i, 'label' => $dyn_labels[$i]);
+	$columns[] = ['key' => '_dyn_field_'.$i, 'label' => $dyn_labels[$i]];
 }
-$columns[] = array('key' => 'score_got', 'label' => Lang::t('_SCORE', 'competences'), 'sortable' => true, 'className' => 'img-cell');
-$columns[] = array('key' => 'score_req', 'label' => Lang::t('_REQUIRED_SCORE', 'competences'), 'sortable' => true, 'className' => 'img-cell');
-$columns[] = array('key' => 'gap', 'label' => Lang::t('_GAP', 'fncroles'), 'sortable' => true, 'formatter'=>'GapAnalisys.gapFormatter', 'className' => 'img-cell');
-$columns[] = array('key' => 'last_assign_date', 'label' => Lang::t('_DATE_OBTAINED', 'competences'), 'sortable' => true, 'className' => 'img-cell');
-$columns[] = array('key' => 'date_expire', 'label' => Lang::t('_EXPIRATION_DATE', 'competences')/*, 'sortable' => true*/, 'formatter'=>'GapAnalisys.expireFormatter', 'className' => 'img-cell');
-$columns[] = array('key' => 'gap_user', 'label' => $icon_chart, 'formatter' => 'GapAnalisys.userGapAnalisysFormatter', 'className' => 'img-cell');
+$columns[] = ['key' => 'score_got', 'label' => Lang::t('_SCORE', 'competences'), 'sortable' => true, 'className' => 'img-cell'];
+$columns[] = ['key' => 'score_req', 'label' => Lang::t('_REQUIRED_SCORE', 'competences'), 'sortable' => true, 'className' => 'img-cell'];
+$columns[] = ['key' => 'gap', 'label' => Lang::t('_GAP', 'fncroles'), 'sortable' => true, 'formatter'=>'GapAnalisys.gapFormatter', 'className' => 'img-cell'];
+$columns[] = ['key' => 'last_assign_date', 'label' => Lang::t('_DATE_OBTAINED', 'competences'), 'sortable' => true, 'className' => 'img-cell'];
+$columns[] = ['key' => 'date_expire', 'label' => Lang::t('_EXPIRATION_DATE', 'competences')/*, 'sortable' => true*/, 'formatter'=>'GapAnalisys.expireFormatter', 'className' => 'img-cell'];
+$columns[] = ['key' => 'gap_user', 'label' => $icon_chart, 'formatter' => 'GapAnalisys.userGapAnalisysFormatter', 'className' => 'img-cell'];
 
 $rel_actions = '<a class="ico-wt-sprite subs_csv" title="'.Lang::t('_EXPORT_CSV', 'report').'" '
 	.'href="javascript: GapAnalisys.exportCSV(this);">'
@@ -311,12 +311,12 @@ $rel_actions = '<a class="ico-wt-sprite subs_csv" title="'.Lang::t('_EXPORT_CSV'
 	.'href="index.php?r=adm/functionalroles/export_gap&id_fncrole='.(int)$id_fncrole.'&format=xls">'
 	.'<span>'.Lang::t('_EXPORT_XLS', 'report').'</span></a>'*/;
 
-$arr_fields = array('idst', 'userid', 'firstname', 'lastname', 'last_assign_date', 'date_expire', 'score_req', 'score_got', 'gap', 'competence', 'id_competence', 'is_expired');
+$arr_fields = ['idst', 'userid', 'firstname', 'lastname', 'last_assign_date', 'date_expire', 'score_req', 'score_got', 'gap', 'competence', 'id_competence', 'is_expired'];
 for ($i=0; $i<$num_var_fields; $i++) {
 	$arr_fields[] = '_dyn_field_'.$i;
 }
 
-$this->widget('table', array(
+$this->widget('table', [
 	'id'			=> 'fncroles_gap_table',
 	'ajaxUrl'		=> 'ajax.adm_server.php?r=adm/functionalroles/getgaptabledata',
 	'rowsPerPage'	=> Get::sett('visuItem', 25),
@@ -328,11 +328,11 @@ $this->widget('table', array(
 	'columns'		=> $columns,
 	'fields'		=> $arr_fields,
 	'rel_actions' => $rel_actions,
-    'events' => array(
+    'events' => [
 		'beforeRenderEvent' => 'GapAnalisys.beforeRenderEvent',
 		'postRenderEvent' => 'GapAnalisys.postRenderEvent'
-	)    
-));
+    ]
+]);
 
 ?>
 </div>

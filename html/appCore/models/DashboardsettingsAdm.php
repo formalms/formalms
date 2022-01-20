@@ -263,7 +263,7 @@ class DashboardsettingsAdm extends Model
         list($idst_list) = sql_fetch_row($re_query);
 
         if ($idst_list && is_string($idst_list)) return unserialize(($idst_list));
-        return array();
+        return [];
     }
 
 

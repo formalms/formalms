@@ -1,8 +1,8 @@
 <div class="middlearea_container">
 	<?php
-	$this->widget('lms_tab', array(
+	$this->widget('lms_tab', [
 		'active' => 'communication'
-	));
+    ]);
 	?>
 </div>
 <script type="text/javascript">

@@ -25,12 +25,12 @@ class LabelAlmsController extends AlmsController
 		$this->json = new Services_JSON();
 		$this->acl_man =& Docebo::user()->getAclManager();
 		$this->model = new LabelAlms();
-		$this->permissions = array(
+		$this->permissions = [
 			'view' => checkPerm('view', true, 'label', 'lms'),
 			'add' => true, //checkPerm('mod', true, 'label', 'lms'),
 			'mod' => true, //checkPerm('mod', true, 'label', 'lms'),
 			'del' => true, //checkPerm('mod', true, 'label', 'lms')
-		);
+        ];
 	}
 
 
@@ -51,10 +51,10 @@ class LabelAlmsController extends AlmsController
 		if(isset($_GET['err']) && $_GET['err'] !== '')
 			UIFeedback::error(Lang::t(strtoupper($_GET['err']), 'label'));
 
-		$params = array(
+		$params = [
 			'model' => $this->model,
 			'permissions' => $this->permissions
-		);
+        ];
 
 		$this->render('show', $params);
 	}
@@ -78,7 +78,7 @@ class LabelAlmsController extends AlmsController
 		$labels = $this->model->getLabels($start_index, $results, $sort, $dir);
 		$total_label = $this->model->getTotalLabelsCount();
 
-		$list = array();
+		$list = [];
 
 		$first = true;
 		$count = count($labels);
@@ -95,22 +95,22 @@ class LabelAlmsController extends AlmsController
 				$position .= 'last';
 			}
 
-			$list[] = array('id_common_label' => $value[LABEL_ID_COMMON],
+			$list[] = ['id_common_label' => $value[LABEL_ID_COMMON],
 							'title' => $value[LABEL_TITLE],
 							'description' => $this->_formatDescription($value[LABEL_DESCRIPTION], 100),
 							'position' => $position,
 							'sequence' => $value[LABEL_SEQUENCE],
 							'mod' => '<a href="index.php?r=alms/label/mod&amp;id_common_label='.$value[LABEL_ID_COMMON].'" title="'.Lang::t('_MOD', 'label').'">'.Get::img('standard/edit.png', Lang::t('_MOD', 'label')).'</a>',
-							'del' => 'ajax.adm_server.php?r=alms/label/dellabel&id_common_label='.$value[LABEL_ID_COMMON]);
+							'del' => 'ajax.adm_server.php?r=alms/label/dellabel&id_common_label='.$value[LABEL_ID_COMMON]];
 		}
 
-		$result = array('totalRecords' => $total_label,
+		$result = ['totalRecords' => $total_label,
 						'startIndex' => $start_index,
 						'sort' => $sort,
 						'dir' => $dir,
 						'rowsPerPage' => $results,
 						'results' => count($list),
-						'records' => $list);
+						'records' => $list];
 
 		echo $this->json->encode($result);
 	}
@@ -125,17 +125,17 @@ class LabelAlmsController extends AlmsController
 
 			$re = $this->model->move_down($id_common_label);
 		}
-		$res = array('success' => $re);
+		$res = ['success' => $re];
 		echo $this->json->encode($res);
 	}
 
 	public function add()
 	{
 		if (!$this->permissions['add']) {
-			$this->render('invalid', array(
+			$this->render('invalid', [
 				'message' => $this->_getMessage('no permission'),
 				'back_url' => 'index.php?r=alms/label/show'
-			));
+            ]);
 			return;
 		}
 
@@ -186,8 +186,8 @@ class LabelAlmsController extends AlmsController
 			Util::jump_to('index.php?r=alms/label/show&err=_err_insert');
 		}
 		
-		$params = array('model' => $this->model,
-						'all_languages' => $all_languages);
+		$params = ['model' => $this->model,
+						'all_languages' => $all_languages];
 
 		$this->render('add', $params);
 	}
@@ -195,10 +195,10 @@ class LabelAlmsController extends AlmsController
 	public function mod()
 	{
 		if (!$this->permissions['mod']) {
-			$this->render('invalid', array(
+			$this->render('invalid', [
 				'message' => $this->_getMessage('no permission'),
 				'back_url' => 'index.php?r=alms/label/show'
-			));
+            ]);
 			return;
 		}
 
@@ -267,10 +267,10 @@ class LabelAlmsController extends AlmsController
 
 		$label_info = $this->model->getLabelInfo($id_common_label);
 
-		$params = array('model' => $this->model,
+		$params = ['model' => $this->model,
 						'all_languages' => $all_languages,
 						'label_info' => $label_info,
-						'id_common_label' => $id_common_label);
+						'id_common_label' => $id_common_label];
 
 		$this->render('mod', $params);
 	}
@@ -278,14 +278,14 @@ class LabelAlmsController extends AlmsController
 	protected function dellabel()
 	{
 		if (!$this->permissions['del']) {
-			$output = array('success' => false, 'message' => $this->_getMessage("no permission"));
+			$output = ['success' => false, 'message' => $this->_getMessage("no permission")];
 			echo $this->json->encode($output);
 			return;
 		}
 
 		$id_common_label = Get::req('id_common_label', DOTY_INT, 0);
 
-		$res = array('success' => $this->model->delLabel($id_common_label));
+		$res = ['success' => $this->model->delLabel($id_common_label)];
 
 		$this->data = $this->json->encode($res);
 

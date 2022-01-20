@@ -58,11 +58,11 @@ $tabs = '<div id="tab_message">'
     . '</div>';
 
 if (isset($json)) {
-    $output = array(
+    $output = [
         'success' => true,
         'header' => $title,
         'body' => $tabs
-    );
+    ];
     echo $this->json->encode($output);
 } else {
     echo getTitleArea($title);

@@ -99,12 +99,12 @@ class Admin_Managment {
 		ORDER BY sequence";
 		$re_menu = sql_query($query_menu);
 		
-		$menu = array();
+		$menu = [];
 		while(list($id, $name, $image) = sql_fetch_row($re_menu)) {
 	 
-			$menu[$id] = array('name' => ( $name != '' ? $this->lang_over->def($name) : '' ),
+			$menu[$id] = ['name' => ( $name != '' ? $this->lang_over->def($name) : '' ),
 							'image' => '<img src="'.getPathImage($this->platform).'/menu/'.$image.'" alt="'
-									.( $name != '' ? $this->lang_over->def($name) : '' ).'" />');
+									.( $name != '' ? $this->lang_over->def($name) : '' ).'" />'];
 		}
 		return $menu;
 	}
@@ -197,8 +197,8 @@ class Admin_Managment {
 
 			if(sql_num_rows($re_menu)) {
 				
-				$all_tokens = array();
-				$name_menu = array();
+				$all_tokens = [];
+				$name_menu = [];
 				
 				$html .= '<div class="admin_menu_perm_modules">';
 				while(list($id, $son_of, $modname, $name, $op, $token, $class_file, $class_name, $of_platform) = sql_fetch_row($re_menu)) {
@@ -230,8 +230,8 @@ class Admin_Managment {
 				
 				$tb = new Table(0, '', $this->lang->def('_EDIT_SETTINGS'));
 				
-				$type 	= array('align_left');
-				$c_head = array();
+				$type 	= ['align_left'];
+				$c_head = [];
 				$c_head[] = ( $area_info['name'] != '' 
 					? $area_info['name'].' : '.$this->lang->def('_MODULE_NAME') 
 					: ( isset($name_menu[$id_page]) ? $name_menu[$id_page] : '') );

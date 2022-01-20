@@ -62,7 +62,7 @@ function newsletter()
 
     $lang_list = Docebo::langManager()->getAllLangCode();
     //array_unshift($lang_list, $lang->def("_DEFAULT"), $lang->def("_ALL"));
-    $lang_list = array(_ANY_LANG_CODE => $lang->def("_ALL")) + $lang_list;
+    $lang_list = [_ANY_LANG_CODE => $lang->def("_ALL")] + $lang_list;
 
     $out->add('<div id="file">'
         . $form->getHidden('file_number', 'file_number', '1')
@@ -127,7 +127,7 @@ function send_newsletter($send_id)
     $sender = Get::sett('sender_event');
     $file_array = $json->decode($info['file']);
 
-    $attach = array();
+    $attach = [];
 
     foreach ($file_array as $file)
         $attach[] = _files_ . $path . $file;
@@ -161,7 +161,7 @@ function send_newsletter($send_id)
 
         case "email":
             {
-                $tempemail = array();
+                $tempemail = [];
                 foreach ($user_info as $info) {
 
                     // Send the email: ------------------------------
@@ -176,7 +176,7 @@ function send_newsletter($send_id)
                 $mailer = FormaMailer::getInstance();
 
                 $mailer->SendMail($sender, $tempemail, $sub, $msg, $attach,
-                    array(MAIL_REPLYTO => $fromemail, MAIL_SENDER_ACLNAME => false));
+                    [MAIL_REPLYTO => $fromemail, MAIL_SENDER_ACLNAME => false]);
 
             }
             break;
@@ -190,9 +190,9 @@ function send_newsletter($send_id)
                 $acl_man =& Docebo::user()->getACLManager();
                 $field_man = new FieldList();
 
-                $arr_sms_recipients = array();
+                $arr_sms_recipients = [];
                 $send_to_field = Get::sett('sms_cell_num_field');
-                $users_sms = $field_man->showFieldForUserArr($arr_st, array($send_to_field));
+                $users_sms = $field_man->showFieldForUserArr($arr_st, [$send_to_field]);
                 $users_info = $acl_man->getUsers($arr_st);
                 foreach ($users_info as $user_dett) {
 
@@ -248,7 +248,7 @@ function getSendToIdst($id_send, $limit)
     checkPerm('view');
 
 
-    $res = array();
+    $res = [];
 
     $qtxt = "SELECT idst FROM " . $GLOBALS["prefix_fw"] . "_newsletter_sendto WHERE id_send='" . (int)$id_send . "' LIMIT " . $limit;
     $q = sql_query($qtxt);
@@ -337,7 +337,7 @@ function init_send()
     $savefile = '';
     $max_file = Get::req('file_number', DOTY_INT, 0);
 
-    $savefile = array();
+    $savefile = [];
     for ($i = 1; $i <= $max_file; $i++)
         if (isset($_FILES['file_' . $i]) && $_FILES['file_' . $i]['error'] == 0) {
             //$savefile = rand(0,100).'_'.time().'_'.$_FILES['file']['name'];
@@ -407,8 +407,8 @@ function get_send_info($send_id)
 
     $sel_lang = "";
     $send_type = "email";
-    $sel_groups = array();
-    $res = array();
+    $sel_groups = [];
+    $res = [];
 
     $qtxt = "SELECT * FROM " . $GLOBALS["prefix_fw"] . "_newsletter WHERE id='" . $send_id . "'";
     $q = sql_query($qtxt); //echo $qtxt;
@@ -477,7 +477,7 @@ function selSendTo()
     if (isset($_POST['okselector'])) {
         $arr_selection = $mdir->getSelection($_POST);
 
-        $send_to_idst = array();
+        $send_to_idst = [];
 
         foreach ($arr_selection as $idstMember) {
             $arr = Docebo::aclm()->getGroupAllUser($idstMember);
@@ -534,7 +534,7 @@ function selSendTo()
     } else {
 
         if (isset($_GET['load']))
-            $mdir->resetSelection(array());
+            $mdir->resetSelection([]);
 
         $url = "index.php?modname=newsletter&amp;op=selsendto&amp;id_send=" . $id_send . "&amp;stayon=1";
         $mdir->show_user_selector = TRUE;
@@ -552,10 +552,10 @@ function selSendTo()
         }
 
         // Exclude anonymous user!
-        $mdir->setUserFilter('exclude', array($acl_manager->getAnonymousId()));
+        $mdir->setUserFilter('exclude', [$acl_manager->getAnonymousId()]);
 
         $mdir->loadSelector($url,
-            array(Lang::t('_NEWSLETTER', 'admin_newsletter'), Lang::t('_RECIPIENTS', 'admin_newsletter')), "", TRUE);
+            [Lang::t('_NEWSLETTER', 'admin_newsletter'), Lang::t('_RECIPIENTS', 'admin_newsletter')], "", TRUE);
     }
 
 }
@@ -599,7 +599,7 @@ function add_to_array($arr, &$add_to)
 {
 
     if (!is_array($add_to))
-        $add_to = array();
+        $add_to = [];
 
     if (!is_array($arr))
         return 0;

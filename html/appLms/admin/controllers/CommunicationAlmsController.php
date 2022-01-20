@@ -23,7 +23,7 @@ class CommunicationAlmsController extends AlmsController {
 
 		$this->model = new CommunicationAlms();
 		$this->json = new Services_JSON();
-		$this->permissions = array(
+		$this->permissions = [
 			'view' => checkPerm('view', true, 'communication', 'lms'),
 			'add' => checkPerm('mod', true, 'communication', 'lms'),
 			'mod' => checkPerm('mod', true, 'communication', 'lms'),
@@ -32,11 +32,11 @@ class CommunicationAlmsController extends AlmsController {
 			'add_category' => checkPerm('mod', true, 'communication', 'lms'),
 			'mod_category' => checkPerm('mod', true, 'communication', 'lms'),
 			'del_category' => checkPerm('mod', true, 'communication', 'lms')
-		);
+        ];
 	}
 
 	protected function _getSessionValue($index, $default = false) {
-		if (!isset($_SESSION['communication'])) $_SESSION['communication'] = array();
+		if (!isset($_SESSION['communication'])) $_SESSION['communication'] = [];
 		return isset($_SESSION['communication'][$index]) ? $_SESSION['communication'][$index] : $default;
 	}
 
@@ -57,12 +57,12 @@ class CommunicationAlmsController extends AlmsController {
 		if(isset($_GET['error'])) UIFeedback::error(Lang::t('_OPERATION_FAILURE', 'communication'));
 		if(isset($_GET['success']))UIFeedback::info(Lang::t('_OPERATION_SUCCESSFUL', 'communication'));
 
-		$this->render('show', array(
+		$this->render('show', [
 			'selected_category' => 0,
 			'show_descendants' => true,
 			'filter_text' => "",
 			'permissions' => $this->permissions
-		));
+        ]);
 	}
 
 	public function getlist() {
@@ -76,13 +76,13 @@ class CommunicationAlmsController extends AlmsController {
 		$dir			= Get::req('dir', DOTY_MIXED, 'asc');
 		$filter_text	= Get::req('filter_text', DOTY_STRING, "");
 
-		$filter = array('text' => $filter_text );
+		$filter = ['text' => $filter_text];
 
 		$total_comm = $this->model->total($filter, $id_category, $show_descendants);
 		$array_comm = $this->model->findAll($start_index, $results, $sort, $dir, $filter, $id_category, $show_descendants );
 
 
-		$comm_id_arr =array();
+		$comm_id_arr = [];
 		foreach($array_comm as $key => $value) {
 			$type =$array_comm[$key]['type_of'];
 			if ($type == 'file') {
@@ -93,10 +93,10 @@ class CommunicationAlmsController extends AlmsController {
 		require_once(_lms_.'/lib/lib.kbres.php');
 		$kbres =new KbRes();
 		$categorized_file_items =$kbres->getCategorizedResources($comm_id_arr, "file", "communication", true);
-		$categorized_file_items_id =(!empty($categorized_file_items) ? array_keys($categorized_file_items) : array());
+		$categorized_file_items_id =(!empty($categorized_file_items) ? array_keys($categorized_file_items) : []);
 
 
-		$list = array();
+		$list = [];
 		foreach($array_comm as $key => $value) {
 			$array_comm[$key]['id'] = $value['id_comm'];
 			if($filter_text) {
@@ -134,7 +134,7 @@ class CommunicationAlmsController extends AlmsController {
 			$array_comm[$key]['del'] = 'ajax.adm_server.php?r=alms/communication/del&id_comm='.$value['id_comm'];
 		}
 
-		$result = array(
+		$result = [
 			'totalRecords' => $total_comm,
 			'startIndex' => $start_index,
 			'sort' => $sort,
@@ -142,7 +142,7 @@ class CommunicationAlmsController extends AlmsController {
 			'rowsPerPage' => $results,
 			'results' => count($array_comm),
 			'records' => $array_comm
-		);
+        ];
 
 		$this->data = $this->json->encode($result);
 		echo $this->data;
@@ -150,43 +150,43 @@ class CommunicationAlmsController extends AlmsController {
 	
 	protected function add($data = false) {
 		if (!$this->permissions['add']) {
-			$this->render('invalid', array(
+			$this->render('invalid', [
 				'message' => $this->_getMessage('no permission'),
 				'back_url' => 'index.php?r=alms/communication/show'
-			));
+            ]);
 			return;
 		}
 
 		require_once(_base_.'/lib/lib.form.php');
 		if(!$data) {
-			$data = array(
+			$data = [
 				'title' => '',
 				'description' => '',
 				'publish_date' => Format::date( date('Y-m-d'), 'date' ),
 				'type_of' => 'none',
 				'id_course' => 0,
 				'id_category' => Get::req('id', DOTY_INT, 0)
-			);
+            ];
 		}
 
-		$this->render('add', array(
+		$this->render('add', [
 			'data' => $data,
 			'course_name' => ""
-		));
+        ]);
 	}
 
 	protected function insert() {
 		if (!$this->permissions['add']) {
-			$this->render('invalid', array(
+			$this->render('invalid', [
 				'message' => $this->_getMessage('no permission'),
 				'back_url' => 'index.php?r=alms/communication/show'
-			));
+            ]);
 			return;
 		}
 
 		if (Get::req('undo', DOTY_MIXED, false) !== false) Util::jump_to('index.php?r=alms/communication/show');
 
-		$data = array();
+		$data = [];
 		$data['title']			= Get::req('title', DOTY_MIXED, '');
 		$data['publish_date']	= Get::req('publish_date', DOTY_MIXED, Format::date( date('Y-m-d'), 'date' ));
 		$data['description']	= Get::req('description', DOTY_MIXED, '');
@@ -209,10 +209,10 @@ class CommunicationAlmsController extends AlmsController {
 	
 	protected function add_obj() {
 		if (!$this->permissions['add']) {
-			$this->render('invalid', array(
+			$this->render('invalid', [
 				'message' => $this->_getMessage('no permission'),
 				'back_url' => 'index.php?r=alms/communication/show'
-			));
+            ]);
 			return;
 		}
 
@@ -241,10 +241,10 @@ class CommunicationAlmsController extends AlmsController {
 
 	protected function insert_obj() {
 		if (!$this->permissions['add']) {
-			$this->render('invalid', array(
+			$this->render('invalid', [
 				'message' => $this->_getMessage('no permission'),
 				'back_url' => 'index.php?r=alms/communication/show'
-			));
+            ]);
 			return;
 		}
 
@@ -272,10 +272,10 @@ class CommunicationAlmsController extends AlmsController {
 
 	protected function edit() {
 		if (!$this->permissions['mod']) {
-			$this->render('invalid', array(
+			$this->render('invalid', [
 				'message' => $this->_getMessage('no permission'),
 				'back_url' => 'index.php?r=alms/communication/show'
-			));
+            ]);
 			return;
 		}
 
@@ -291,24 +291,24 @@ class CommunicationAlmsController extends AlmsController {
 		$course_name = /*($cinfo['code'] ? "[".$cinfo['code']."] " : "").*/$cinfo['name'];
 		YuiLib::load('autocomplete');
 
-		$this->render('mod', array(
+		$this->render('mod', [
 			'data' => $data,
 			'course_name' => $course_name
-		));
+        ]);
 	}
 
 	protected function update() {
 		if (!$this->permissions['mod']) {
-			$this->render('invalid', array(
+			$this->render('invalid', [
 				'message' => $this->_getMessage('no permission'),
 				'back_url' => 'index.php?r=alms/communication/show'
-			));
+            ]);
 			return;
 		}
 
 		if (Get::req('undo', DOTY_MIXED, false) !== false) Util::jump_to('index.php?r=alms/communication/show');
 
-		$data = array();
+		$data = [];
 		$data['id_comm']		= Get::req('id_comm', DOTY_MIXED, '');
 		$data['title']			= Get::req('title', DOTY_MIXED, '');
 		$data['publish_date']	= Get::req('publish_date', DOTY_MIXED, Format::date( date('Y-m-d'), 'date' ));
@@ -332,10 +332,10 @@ class CommunicationAlmsController extends AlmsController {
 
 	protected function mod_obj() {
 		if (!$this->permissions['mod']) {
-			$this->render('invalid', array(
+			$this->render('invalid', [
 				'message' => $this->_getMessage('no permission'),
 				'back_url' => 'index.php?r=alms/communication/show'
-			));
+            ]);
 			return;
 		}
 
@@ -363,10 +363,10 @@ class CommunicationAlmsController extends AlmsController {
 
 	protected function update_obj() {
 		if (!$this->permissions['mod']) {
-			$this->render('invalid', array(
+			$this->render('invalid', [
 				'message' => $this->_getMessage('no permission'),
 				'back_url' => 'index.php?r=alms/communication/show'
-			));
+            ]);
 			return;
 		}
 
@@ -382,7 +382,7 @@ class CommunicationAlmsController extends AlmsController {
 
 	protected function del() {
 		if (!$this->permissions['del']) {
-			$output = array('success' => false, 'message' => $this->_getMessage('no permission'));
+			$output = ['success' => false, 'message' => $this->_getMessage('no permission')];
 			echo $this->json->encode($output);
 			return;
 		}
@@ -429,10 +429,10 @@ class CommunicationAlmsController extends AlmsController {
 	 */
 	protected function mod_user() {
 		if (!$this->permissions['subscribe']) {
-			$this->render('invalid', array(
+			$this->render('invalid', [
 				'message' => $this->_getMessage('no permission'),
 				'back_url' => 'index.php?r=alms/communication/show'
-			));
+            ]);
 			return;
 		}
 
@@ -463,19 +463,19 @@ class CommunicationAlmsController extends AlmsController {
 			$user_selector->resetSelection($selection);
 		}
 		// render the user selector
-		$this->render('mod_user', array(
+		$this->render('mod_user', [
 			'id_comm' => $id_comm,
 			'user_selector' => $user_selector
-		));
+        ]);
 	}
 
 
 	public function categorize() {
 		if (!$this->permissions['mod']) {
-			$this->render('invalid', array(
+			$this->render('invalid', [
 				'message' => $this->_getMessage('no permission'),
 				'back_url' => 'index.php?r=alms/communication/show'
-			));
+            ]);
 			return;
 		}
 
@@ -541,23 +541,23 @@ class CommunicationAlmsController extends AlmsController {
 			$data =$this->model->findByPk($id_comm);
 			$data['item_id']=$id_comm;
 
-			$this->render('categorize', array(
+			$this->render('categorize', [
 				'id_comm' => $id_comm,
 				'data'=>$data,
 				'r_param'=>'',
 				'back_url'=>'index.php?r=alms/communication/show',
 				'form_url'=>'index.php?r=alms/communication/categorize&amp;id_comm='.$id_comm,
-			));
+            ]);
 		}
 	}
 	
 
 	public function categorize_sco($id_comm, $data) {
 		if (!$this->permissions['mod']) {
-			$this->render('invalid', array(
+			$this->render('invalid', [
 				'message' => $this->_getMessage('no permission'),
 				'back_url' => 'index.php?r=alms/communication/show'
-			));
+            ]);
 			return;
 		}
 
@@ -572,26 +572,26 @@ class CommunicationAlmsController extends AlmsController {
 
 			$row =sql_fetch_assoc($q);
 
-			$sco_data =array();
+			$sco_data = [];
 			$sco_data['item_id'] =$sco_id;
 			$sco_data['title'] =$row['title'];
 			$sco_data['type_of'] ='scoitem';
 			$sco_data['id_resource'] =$sco_id;
-			$this->render('categorize', array(
+			$this->render('categorize', [
 				'id_comm' => $id_comm,
 				'data'=>$sco_data,
 				'r_param'=>'chapter='.$row['identifierref'],
 				'back_url'=>'index.php?r=alms/communication/categorize&amp;id_comm='.$id_comm,
 				//'form_url'=>'index.php?r=alms/communication/save_sco_categorize',
 				'form_url'=>'index.php?r=alms/communication/categorize&amp;id_comm='.$id_comm,
-			));
+            ]);
 		}
 		else {
-			$this->render('sco_table', array(
+			$this->render('sco_table', [
 				'id_comm' => $id_comm,
 				'id_resource' => $data['id_resource'],
 				'comm_data' => $data,
-			));
+            ]);
 		}
 
 	}
@@ -617,7 +617,7 @@ class CommunicationAlmsController extends AlmsController {
 
 	protected function _getNodeActions($node) {
 		if (!is_array($node)) return false; //unrecognized type for node data
-		$actions = array();
+		$actions = [];
 		$id_action = $node['id'];
 		$is_root = ($id_action == 0);
 
@@ -627,29 +627,29 @@ class CommunicationAlmsController extends AlmsController {
 
 		//rename action
 		if ($can_mod) {
-			$actions[] = array(
+			$actions[] = [
 				'id' => 'mod_'.$id_action,
 				'command' => 'modify',
 				'icon' => 'standard/edit.png',
 				'alt' => Lang::t('_MOD', 'standard')
-			);
+            ];
 		}
 
 		//delete action
 		if ($can_del) {
 			if ($node['is_leaf'] && $node['count_objects']<=0 && !$is_root) {
-				$actions[] = array(
+				$actions[] = [
 					'id' => 'del_'.$id_action,
 					'command' => 'delete',
 					'icon' => 'standard/delete.png',
 					'alt' => Lang::t('_DEL', 'standard')
-				);
+                ];
 			} else {
-				$actions[] = array(
+				$actions[] = [
 					'id' => 'del_'.$id_action,
 					'command' => false,
 					'icon' => 'blank.png'
-				);
+                ];
 			}
 		}
 
@@ -685,13 +685,13 @@ class CommunicationAlmsController extends AlmsController {
 
 					//set output
 					if (is_array($nodes)) {
-						$output = array(
+						$output = [
 							'success' => true,
 							'nodes' => $nodes,
 							'initial' => $initial
-						);
+                        ];
 					} else {
-						$output = array('success' => false);
+						$output = ['success' => false];
 					}
 				} else {
 					//extract node data
@@ -699,7 +699,7 @@ class CommunicationAlmsController extends AlmsController {
 
 					//if request is invalid, return error message ...
 					if (!is_array($nodes)) {
-						echo $this->json->encode(array('success' => false));
+						echo $this->json->encode(['success' => false]);
 						return;
 					}
 
@@ -708,11 +708,11 @@ class CommunicationAlmsController extends AlmsController {
 						$nodes[$i]['options'] = $this->_getNodeActions($nodes[$i]);
 					}
 					//set output
-					$output = array(
+					$output = [
 						'success' => true,
 						'nodes' => $nodes,
 						'initial' => $initial
-					);
+                    ];
 				}
 				echo $this->json->encode($output);
 			} break;
@@ -724,12 +724,12 @@ class CommunicationAlmsController extends AlmsController {
 			case "delete": {
 				//check permissions
 				if (!$this->permissions['mod']) {
-					$output = array('success' => false, 'message' => $this->_getMessage('no permission'));
+					$output = ['success' => false, 'message' => $this->_getMessage('no permission')];
 					echo $this->json->encode($output);
 					return;
 				}
 
-				$output = array('success' => false);
+				$output = ['success' => false];
 				$id = Get::req('node_id', DOTY_INT, -1);
 				if ($id > 0) $output['success'] = $this->model->deleteCategory($id);
 				echo $this->json->encode($output);
@@ -738,7 +738,7 @@ class CommunicationAlmsController extends AlmsController {
 			case "movefolder": {
 				//check permissions
 				if (!$this->permissions['mod']) {
-					$output = array('success' => false, 'message' => $this->_getMessage('no permission'));
+					$output = ['success' => false, 'message' => $this->_getMessage('no permission')];
 					echo $this->json->encode($output);
 					return;
 				}
@@ -751,43 +751,43 @@ class CommunicationAlmsController extends AlmsController {
 	public function add_categoryTask() {
 		//check permissions
 		if (!$this->permissions['add']) {
-			$output = array('success' => false, 'message' => $this->_getMessage('no permission'));
+			$output = ['success' => false, 'message' => $this->_getMessage('no permission')];
 			echo $this->json->encode($output);
 			return;
 		}
 
 		$id_parent = Get::req('id', DOTY_INT, -1);
 		if ($id_parent < 0) {
-			$output = array(
+			$output = [
 				'success' => false,
 				'message' => UIFeedback::perror($this->_getMessage("invalid category"))
-			);
+            ];
 			echo $this->json->encode($output);
 			return;
 		}
 
-		$this->render('category_editmask', array(
+		$this->render('category_editmask', [
 			'title' => Lang::t('_ADD', 'communication'),
 			'id_parent' => $id_parent,
 			'json' => $this->json
-		));
+        ]);
 	}
 
 
 	public function mod_categoryTask() {
 		//check permissions
 		if (!$this->permissions['mod']) {
-			$output = array('success' => false, 'message' => $this->_getMessage('no permission'));
+			$output = ['success' => false, 'message' => $this->_getMessage('no permission')];
 			echo $this->json->encode($output);
 			return;
 		}
 
 		$id_category = Get::req('id', DOTY_INT, -1);
 		if ($id_category <= 0) {
-			$output = array(
+			$output = [
 				'success' => false,
 				'message' => UIFeedback::perror($this->_getMessage("invalid category"))
-			);
+            ];
 			echo $this->json->encode($output);
 			return;
 		}
@@ -795,19 +795,19 @@ class CommunicationAlmsController extends AlmsController {
 		//retrieve category info (name and description
 		$info = $this->model->getCategoryInfo($id_category);
 
-		$this->render('category_editmask', array(
+		$this->render('category_editmask', [
 			'title' => Lang::t('_MOD', 'communication'),
 			'id_category' => $id_category,
 			'category_langs' => $info->langs,
 			'json' => $this->json
-		));
+        ]);
 	}
 
 
 	public function add_category_actionTask() {
 		//check permissions
 		if (!$this->permissions['add']) {
-			$output = array('success' => false, 'message' => $this->_getMessage('no permission'));
+			$output = ['success' => false, 'message' => $this->_getMessage('no permission')];
 			echo $this->json->encode($output);
 			return;
 		}
@@ -815,26 +815,26 @@ class CommunicationAlmsController extends AlmsController {
 		//set up the data to insert into DB
 		$id_parent = Get::req('id_parent', DOTY_INT, -1);
 		if ($id_parent < 0) {
-			$output = array(
+			$output = [
 				'success' => false,
 				'message' => UIFeedback::perror($this->_getMessage("invalid category"))
-			);
+            ];
 			echo $this->json->encode($output);
 			return;
 		}
-		$names = Get::req('name', DOTY_MIXED, array());
-		$descriptions = Get::req('description', DOTY_MIXED, array());
-		$langs = array();
+		$names = Get::req('name', DOTY_MIXED, []);
+		$descriptions = Get::req('description', DOTY_MIXED, []);
+		$langs = [];
 
 		//validate inputs
 		if (is_array($names)) {
 			//prepare langs array
 			$lang_codes = Docebo::langManager()->getAllLangcode();
 			foreach ($lang_codes as $lang_code) {
-				$langs[$lang_code] = array(
+				$langs[$lang_code] = [
 					'name' => (isset($names[$lang_code]) ? $names[$lang_code] : ''),
 					'description' => (isset($descriptions[$lang_code]) ? $descriptions[$lang_code] : '')
-				);
+                ];
 			}
 		}
 
@@ -842,23 +842,23 @@ class CommunicationAlmsController extends AlmsController {
 		$res = $this->model->createCategory($id_parent, $langs);
 		if ($res) {
 			//return node data to add in the treeview of the page
-			$nodedata = array(
+			$nodedata = [
 				'id' => $res,
 				'label' => $this->model->getCategoryName($res, getLanguage()),
 				'is_leaf' => true,
 				'count_objects' => 0
-			);
+            ];
 			$nodedata['options'] = $this->_getNodeActions($nodedata);
-			$output = array(
+			$output = [
 				'success' => true,
 				'node' => $nodedata,
 				'id_parent' => $id_parent
-			);
+            ];
 		} else {
-			$output = array(
+			$output = [
 				'success' => false,
 				'message' => UIFeedback::perror($this->_getMessage("create category"))
-			);
+            ];
 		}
 		echo $this->json->encode($output);
 	}
@@ -867,7 +867,7 @@ class CommunicationAlmsController extends AlmsController {
 	public function mod_category_actionTask() {
 		//check permissions
 		if (!$this->permissions['mod']) {
-			$output = array('success' => false, 'message' => $this->_getMessage('no permission'));
+			$output = ['success' => false, 'message' => $this->_getMessage('no permission')];
 			echo $this->json->encode($output);
 			return;
 		}
@@ -875,26 +875,26 @@ class CommunicationAlmsController extends AlmsController {
 		//set up the data to insert into DB
 		$id_category = Get::req('id_category', DOTY_INT, -1);
 		if ($id_category < 0) {
-			$output = array(
+			$output = [
 				'success' => false,
 				'message' => UIFeedback::perror($this->_getMessage("invalid category"))
-			);
+            ];
 			echo $this->json->encode($output);
 			return;
 		}
-		$names = Get::req('name', DOTY_MIXED, array());
-		$descriptions = Get::req('description', DOTY_MIXED, array());
-		$langs = array();
+		$names = Get::req('name', DOTY_MIXED, []);
+		$descriptions = Get::req('description', DOTY_MIXED, []);
+		$langs = [];
 
 		//validate inputs
 		if (is_array($names)) {
 			//prepare langs array
 			$lang_codes = Docebo::langManager()->getAllLangcode();
 			foreach ($lang_codes as $lang_code) {
-				$langs[$lang_code] = array(
+				$langs[$lang_code] = [
 					'name' => (isset($names[$lang_code]) ? $names[$lang_code] : ''),
 					'description' => (isset($descriptions[$lang_code]) ? $descriptions[$lang_code] : '')
-				);
+                ];
 			}
 		}
 
@@ -902,15 +902,15 @@ class CommunicationAlmsController extends AlmsController {
 		$res = $this->model->updateCategory($id_category, $langs);
 		if ($res) {
 			$_language = Get::req('lang', DOTY_ALPHANUM, getLanguage());
-			$output = array(
+			$output = [
 				'success' => true,
 				'new_name' => (isset($names[$lang_code]) ? $names[$lang_code] : '')
-			);
+            ];
 		} else {
-			$output = array(
+			$output = [
 				'success' => false,
 				'message' => UIFeedback::perror($this->_getMessage("edit category"))
-			);
+            ];
 		}
 		echo $this->json->encode($output);
 	}
@@ -919,7 +919,7 @@ class CommunicationAlmsController extends AlmsController {
 	public function move_categoryTask() {
 		//check permissions
 		if (!$this->permissions['mod']) {
-			$output = array('success' => false, 'message' => $this->_getMessage('no permission'));
+			$output = ['success' => false, 'message' => $this->_getMessage('no permission')];
 			echo $this->json->encode($output);
 			return;
 		}
@@ -927,7 +927,7 @@ class CommunicationAlmsController extends AlmsController {
 		$src = Get::req('src', DOTY_INT, -1);
 		$dest = Get::req('dest', DOTY_INT, -1);
 
-		$output = array();
+		$output = [];
 
 		if ($src <= 0 || $dest < 0) {
 			$output['success'] = false;

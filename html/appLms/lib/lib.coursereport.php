@@ -225,10 +225,10 @@ class CourseReportManager
     function &getReportsScores($reports_id, $id_user = false)
     {
 
-        $data = array();
+        $data = [];
         if (empty($reports_id) || !is_array($reports_id)) return $data;
         if ($id_user !== false && !is_array($id_user))
-            $id_user = array($id_user);
+            $id_user = [$id_user];
         if (!is_array($reports_id)) return $data;
         $query_scores = "
 			SELECT id_report, id_user, date_attempt, score, score_status, comment 
@@ -247,7 +247,7 @@ class CourseReportManager
     function saveReportScore($id_report, $users_scores, $date_attempts, $comments)
     {
 
-        $old_scores =& $this->getReportsScores(array($id_report));
+        $old_scores =& $this->getReportsScores([$id_report]);
         $re = true;
         foreach ($users_scores as $idst_user => $score) {
 
@@ -335,10 +335,10 @@ class CourseReportManager
     {
 
         if ($source['required_score'] > $source['max_score']) {
-            return array('error' => true,
-                'message' => Lang::t('_REQUIRED_MUST_BE_LESS_THEN_MAX', 'coursereport', 'lms'));
+            return ['error' => true,
+                'message' => Lang::t('_REQUIRED_MUST_BE_LESS_THEN_MAX', 'coursereport', 'lms')];
         }
-        return array('error' => false, 'message' => '');
+        return ['error' => false, 'message' => ''];
     }
 
     function addActivity($id_course, &$source)
@@ -423,7 +423,7 @@ class CourseReportManager
     function getAllUserFinalScore($id_user, $arr_courses = false)
     {
 
-        $re = array();
+        $re = [];
         $query_scores = "
 		SELECT s.id_user, r.id_course, s.score, s.score_status
 		FROM %lms_coursereport AS r
@@ -448,7 +448,7 @@ class CourseReportManager
     function getUserFinalScore($arr_users, $arr_courses = false)
     {
 
-        $re = array();
+        $re = [];
         $query_scores = "
 		SELECT s.id_user, r.id_course, s.score, s.score_status, r.max_score
 		FROM %lms_coursereport AS r
@@ -485,7 +485,7 @@ class CourseReportManager
         $db->start_transaction();
 
         //get all existing report for the course
-        $arr_id_report = array();
+        $arr_id_report = [];
         $query = "SELECT id_report FROM %lms_coursereport_score WHERE id_course = " . (int)$id_course;
         $res = $db->query($query);
         while (list($id_report) = $db->fetch_row($res)) {

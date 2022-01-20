@@ -29,12 +29,12 @@ function _decode(&$data)
 
 function unload_filter($temp = false)
 {
-    $_SESSION['report'] = array();
-    if ($temp) $_SESSION['report_tempdata'] = array();
+    $_SESSION['report'] = [];
+    if ($temp) $_SESSION['report_tempdata'] = [];
     if (isset($_SESSION['report_update'])) unset($_SESSION['report_update']);
 
     $_SESSION['report_saved'] = false;
-    $_SESSION['report_saved_data'] = array('id' => '', 'name' => '');
+    $_SESSION['report_saved_data'] = ['id' => '', 'name' => ''];
 }
 
 function load_filter($id, $tempdata = false, $update = false)
@@ -50,7 +50,7 @@ function load_filter($id, $tempdata = false, $update = false)
     $_SESSION['report'] = $temp;
 
     $_SESSION['report_saved'] = true;
-    $_SESSION['report_saved_data'] = array('id' => $id, 'name' => getReportNameById($id));
+    $_SESSION['report_saved_data'] = ['id' => $id, 'name' => getReportNameById($id)];
 
     if ($update) $_SESSION['report_update'] = $id;
     else $_SESSION['report_update'] = false;
@@ -86,7 +86,7 @@ function openreport($idrep = false)
         $obj_report = new $class_name($id_report);
     } else {
         $pg = new PluginManager('Report');
-        $obj_report = $pg->get_plugin($class_name, array($id_report));
+        $obj_report = $pg->get_plugin($class_name, [$id_report]);
     }
     return $obj_report;
 }
@@ -179,27 +179,27 @@ function get_report_table($url = '')
     $current_user = $acl_man->getUser(Docebo::user()->getIdst(), false);
 
     //dropdown data arrays
-    $authors = array(
+    $authors = [
         0 => '(' . $lang->def('_ALL') . ')', //recycle text key
         $current_user[ACL_INFO_IDST] => $acl_man->relativeId($current_user[ACL_INFO_USERID])
-    );
+    ];
     $query = "SELECT u.idst, u.userid FROM %lms_report_filter as r JOIN %adm_user as u ON (r.author=u.idst) WHERE u.idst<>" . Docebo::user()->getIdst() . " ORDER BY u.userid";
     $res = sql_query($query);
     while ($row = sql_fetch_assoc($res)) {
         $authors[$row['idst']] = $acl_man->relativeId($row['userid']);
     }
 
-    $arr_report_types = array(
+    $arr_report_types = [
         0 => '(' . $lang->def('_ALL') . ')'
-    );
+    ];
 
     //initializa session variable for filters
     if (!isset($_SESSION['report_admin_filter'])) {
-        $_SESSION['report_admin_filter'] = array(
+        $_SESSION['report_admin_filter'] = [
             'author' => 0,//array_key_exists(Docebo::user()->getIdst(), $authors) ? Docebo::user()->getIdst() : 0,
             'name' => '',
             'type' => 0
-        );
+        ];
     }
 
     if (Get::req('search', DOTY_MIXED, false) !== false) {
@@ -238,7 +238,7 @@ function get_report_table($url = '')
     //end filter
 
     //compose search query
-    $qconds = array();
+    $qconds = [];
     $query = "SELECT t1.*, t2.userid FROM %lms_report_filter as t1 LEFT JOIN %adm_user as t2 ON t1.author=t2.idst ";
     switch ($level) {
         case ADMIN_GROUP_GODADMIN :
@@ -277,11 +277,11 @@ function get_report_table($url = '')
 
     $tb = new Table(Get::sett('visu_course'));
     $tb->initNavBar('ini', 'button');
-    $col_type = array('', '', 'align_center', 'image', 'image', 'img-cell', 'img-cell', 'image');//,'image','image');
+    $col_type = ['', '', 'align_center', 'image', 'image', 'img-cell', 'img-cell', 'image'];//,'image','image');
 
 
     if (Get::sett('use_immediate_report') == 'on') {
-        $col_content = array(
+        $col_content = [
             $lang->def('_NAME'),
             $lang->def('_TAB_REP_CREATOR'),
             $lang->def('_CREATION_DATE'),
@@ -290,9 +290,9 @@ function get_report_table($url = '')
             '<img src="' . getPathImage() . 'standard/msg_unread.png" alt="' . $lang->def('_SEND_EMAIL') . '" title="' . $lang->def('_SEND_EMAIL') . '" />',
             '<span class="ico-sprite subs_csv" title="' . Lang::t('_EXPORT_CSV', 'report') . '"><span>' . Lang::t('_EXPORT_CSV', 'report') . '</span></span>',
             '<span class="ico-sprite subs_xls" title="' . Lang::t('_EXPORT_XLS', 'report') . '"><span>' . Lang::t('_EXPORT_XLS', 'report') . '</span></span>'
-        );
+        ];
     } else {
-        $col_content = array(
+        $col_content = [
             $lang->def('_NAME'),
             $lang->def('_TAB_REP_CREATOR'),
             $lang->def('_CREATION_DATE'),
@@ -300,7 +300,7 @@ function get_report_table($url = '')
             '<img src="' . getPathImage() . 'standard/view.png" alt="' . $lang->def('_VIEW') . '" title="' . $lang->def('_VIEW') . '" />',
             '<span class="ico-sprite subs_csv" title="' . Lang::t('_EXPORT_CSV', 'report') . '"><span>' . Lang::t('_EXPORT_CSV', 'report') . '</span></span>',
             '<span class="ico-sprite subs_xls" title="' . Lang::t('_EXPORT_XLS', 'report') . '"><span>' . Lang::t('_EXPORT_XLS', 'report') . '</span></span>'
-        );
+        ];
     }
 
     if ($level == ADMIN_GROUP_GODADMIN || $can_schedule) {
@@ -378,7 +378,7 @@ function get_report_table($url = '')
 
 
             if (Get::sett('use_immediate_report') == 'on') {
-                $tb_content = array(
+                $tb_content = [
                     _REP_KEY_NAME => $_name,
                     _REP_KEY_CREATOR => ($row['author'] == 0 ? '<div class="align_center">-</div>' : $acl_man->relativeId($row['userid'])),
                     _REP_KEY_CREATION => Format::date($row['creation_date']),
@@ -389,9 +389,9 @@ function get_report_table($url = '')
                     $export_link_xls,/*,
 				    _REP_KEY_MOD    => $mod_link,
 				    _REP_KEY_REM    => $rem_link*/
-                );
+                ];
             } else {
-                $tb_content = array(
+                $tb_content = [
                     _REP_KEY_NAME => $_name,
                     _REP_KEY_CREATOR => ($row['author'] == 0 ? '<div class="align_center">-</div>' : $acl_man->relativeId($row['userid'])),
                     _REP_KEY_CREATION => Format::date($row['creation_date']),
@@ -401,7 +401,7 @@ function get_report_table($url = '')
                     $export_link_xls,/*,
                     _REP_KEY_MOD    => $mod_link,
                     _REP_KEY_REM    => $rem_link*/
-                );
+                ];
             }
 
             if ($level == ADMIN_GROUP_GODADMIN || $can_schedule) {
@@ -510,10 +510,10 @@ function report_category()
     $lang =& DoceboLanguage::createInstance('report');
 
     $step_index = 0;
-    cout(getTitleArea(array(
+    cout(getTitleArea([
             'index.php?modname=report&amp;op=reportlist' => $lang->def('_REPORT'),
             $lang->def('_NEW')
-        ), 'report')
+        ], 'report')
         . '<div class="std_block">');
 
     $error = Get::req('err', DOTY_STRING, false);
@@ -525,7 +525,7 @@ function report_category()
             break;
     }
 
-    $temp = array();
+    $temp = [];
     foreach ($GLOBALS['report_categories'] as $key => $value) {
         $temp[$key] = $lang->def($value);
     }
@@ -569,11 +569,11 @@ function report_rows_filter()
     $obj_report->jump_url = 'index.php?modname=report&op=report_rows_filter';
     $obj_report->next_url = 'index.php?modname=report&op=report_sel_columns';
 
-    $page_title = getTitleArea(array(
+    $page_title = getTitleArea([
             'index.php?modname=report&amp;op=reportlist' => $lang->def('_REPORT'),
             'index.php?modname=report&amp;op=report_category' => $lang->def('_NEW'),
             $lang->def('_REPORT_SEL_ROWS')
-        ), 'report')
+        ], 'report')
         . '<div class="std_block">';
 
     if ($obj_report->usestandardtitle_rows) {
@@ -600,12 +600,12 @@ function report_sel_columns()
     $obj_report = openreport();
     $temp = $obj_report->get_columns_categories();
 
-    cout(getTitleArea(array(
+    cout(getTitleArea([
             'index.php?modname=report&amp;op=reportlist' => $lang->def('_REPORT'),
             'index.php?modname=report&amp;op=report_category' => $lang->def('_NEW'),//$obj_report->report_name,
             'index.php?modname=report&amp;op=report_rows_filter' => $lang->def('_REPORT_SEL_ROWS'),
             $lang->def('_REPORT_SEL_COLUMNS')
-        ))
+        ])
         . '<div class="std_block">'
         . Form::openForm('choose_category_form', 'index.php?modname=report&op=report_columns_filter&of_platform=lms')
         , 'content');
@@ -639,13 +639,13 @@ function report_columns_filter()
     $obj_report->next_url = 'index.php?modname=report&op=report_save';
 
     //page title
-    $page_title = getTitleArea(array(
+    $page_title = getTitleArea([
             'index.php?modname=report&amp;op=reportlist' => $lang->def('_REPORT'),
             'index.php?modname=report&amp;op=report_category' => $lang->def('_NEW'),
             'index.php?modname=report&amp;op=report_rows_filter' => $lang->def('_REPORT_SEL_ROWS'),
             'index.php?modname=report&amp;op=report_sel_columns' => $lang->def('_REPORT_SEL_COLUMNS'),
             $lang->def('_REPORT_COLUMNS')
-        ))
+        ])
         . '<div class="std_block">';
     //.  	getBackUi($obj_report->back_url, $lang->def('_BACK'), 'content');
 
@@ -708,16 +708,16 @@ function report_save_filter()
 function setup_report_js()
 {
 
-    YuiLib::load(array(
+    YuiLib::load([
         'animation' => 'animation-min.js',
         'dragdrop' => 'dragdrop-min.js',
         'button' => 'button-min.js',
         'container' => 'container-min.js',
         'my_window' => 'windows.js'
-    ), array(
+    ], [
         'container/assets/skins/sam' => 'container.css',
         'button/assets/skins/sam' => 'button.css'
-    ));
+    ]);
     Util::get_js(Get::rel_path('lms') . '/admin/modules/report/ajax.report.js', true, true);
 }
 
@@ -751,7 +751,7 @@ function report_show_results($idrep = false)
                 $obj_report = new $class_name($idrep);
             } else {
                 $pg = new PluginManager('Report');
-                $obj_report = $pg->get_plugin($class_name, array($idrep));
+                $obj_report = $pg->get_plugin($class_name, [$idrep]);
             }
         } else {
             reportlist();
@@ -781,7 +781,7 @@ function report_show_results($idrep = false)
             $obj_report = new $class_name($idrep);
         } else {
             $pg = new PluginManager('Report');
-            $obj_report = $pg->get_plugin($class_name, array($idrep));
+            $obj_report = $pg->get_plugin($class_name, [$idrep]);
         }
     }
 
@@ -813,7 +813,7 @@ function report_show_results($idrep = false)
         }
     }
 
-    cout(getTitleArea(array($start_url => $lang->def('_REPORT'), $filter_name), 'report')
+    cout(getTitleArea([$start_url => $lang->def('_REPORT'), $filter_name], 'report')
         . '<div class="std_block">'
         . getBackUi($start_url, $lang->def('_BACK_TO_LIST'), 'content'));
 
@@ -929,9 +929,9 @@ function schedulelist()
     $lang =& DoceboLanguage::createInstance('report');
 
     $idrep = Get::req('idrep', DOTY_INT, false);
-    cout(getTitleArea(array(
+    cout(getTitleArea([
         'index.php?modname=report&amp;op=reportlist' => $lang->def('_REPORT'),
-        $lang->def('_SCHEDULE') . '"<b>' . getReportNameById($idrep) . '</b>"')));
+        $lang->def('_SCHEDULE') . '"<b>' . getReportNameById($idrep) . '</b>"']));
 
     cout('<div class="std_block">');
     cout('<p><span class="glyphicon glyphicon-warning-sign"></span> ' . $lang->def('_WARNING_REPORT') . '<p><hr>');
@@ -956,10 +956,10 @@ function report_modify_name()
     $idrep = Get::req('modid', DOTY_INT, false);
     //if (!idrep) Util::jump_to(initial page ... )
 
-    $page_title = getTitleArea(array(
+    $page_title = getTitleArea([
         'index.php?modname=report&amp;op=reportlist' => $lang->def('_REPORT'),
         $lang->def('_MOD')
-    ), 'report'/*, $lang->def('_ALT_REPORT')*/);
+    ], 'report'/*, $lang->def('_ALT_REPORT')*/);
     cout($page_title . '<div class="std_block">');
 
     $info = get_update_info();
@@ -1010,11 +1010,11 @@ function report_modify_rows()
     $obj_report->jump_url = 'index.php?modname=report&op=modify_rows&modid=' . $idrep;
     $obj_report->next_url = 'index.php?modname=report&op=modify_cols&modid=' . $idrep;
 
-    $page_title = getTitleArea(array(
+    $page_title = getTitleArea([
             'index.php?modname=report&amp;op=reportlist' => $lang->def('_REPORT'),
             'index.php?modname=report&op=modify_name&modid=' . $idrep => $lang->def('_MOD'),
             $lang->def('_REPORT_MOD_ROWS')
-        ), 'report')
+        ], 'report')
         . '<div class="std_block">';
 
     /*$info = get_update_info();
@@ -1057,12 +1057,12 @@ function report_modify_columns()
     $obj_report->next_url = 'index.php?modname=report&op=report_save&modid=' . $idrep;
 
     //page title
-    $page_title = getTitleArea(array(
+    $page_title = getTitleArea([
             'index.php?modname=report&amp;op=reportlist' => $lang->def('_REPORT'),
             'index.php?modname=report&op=modify_name&modid=' . $idrep => $lang->def('_MOD'),
             'index.php?modname=report&op=modify_rows&modid=' . $idrep => $lang->def('_REPORT_MOD_ROWS'),
             $lang->def('_REPORT_MOD_COLUMNS')
-        ))
+        ])
         . '<div class="std_block">';
 
     /*$info = get_update_info();

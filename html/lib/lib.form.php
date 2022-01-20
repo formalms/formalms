@@ -183,8 +183,8 @@ class Form {
 	 */
 	public static function getInputTextfield( $css_text, $id, $name, $value, $alt_name, $maxlenght, $other_param = '' ) {
 
-		$search = array('"', '<', '>');
-		$replace = array('&quot;', '&lt;', '&gt;');
+		$search = ['"', '<', '>'];
+		$replace = ['&quot;', '&lt;', '&gt;'];
 		$value = str_replace($search, $replace, $value);
 
 		return '<input type="text" '
@@ -210,8 +210,8 @@ class Form {
 	 */
 	public static function getSearchInputTextfield( $css_text, $id, $name, $placeholder, $value, $alt_name, $maxlenght, $other_param = '' ) {
 
-		$search = array('"', '<', '>');
-		$replace = array('&quot;', '&lt;', '&gt;');
+		$search = ['"', '<', '>'];
+		$replace = ['&quot;', '&lt;', '&gt;'];
 		$value = str_replace($search, $replace, $value);
 
 		return '<input type="text" '
@@ -276,7 +276,7 @@ class Form {
 			YuiLib::load('calendar');
 			if ($date_format == false) { $regset = Format::instance(); $date_format = $regset->date_token; }
 
-			$arr_months = array(
+			$arr_months = [
 					Lang::t('_MONTH_01', 'calendar'),
 					Lang::t('_MONTH_02', 'calendar'),
 					Lang::t('_MONTH_03', 'calendar'),
@@ -289,8 +289,8 @@ class Form {
 					Lang::t('_MONTH_10', 'calendar'),
 					Lang::t('_MONTH_11', 'calendar'),
 					Lang::t('_MONTH_12', 'calendar')
-			);
-			$arr_months_short = array(
+            ];
+			$arr_months_short = [
 					Lang::t('_JAN', 'calendar'),
 					Lang::t('_FEB', 'calendar'),
 					Lang::t('_MAR', 'calendar'),
@@ -303,8 +303,8 @@ class Form {
 					Lang::t('_OCT', 'calendar'),
 					Lang::t('_NOV', 'calendar'),
 					Lang::t('_DEC', 'calendar')
-			);
-			$arr_days = array(
+            ];
+			$arr_days = [
 					Lang::t('_SUNDAY', 'calendar'),
 					Lang::t('_MONDAY', 'calendar'),
 					Lang::t('_TUESDAY', 'calendar'),
@@ -312,8 +312,8 @@ class Form {
 					Lang::t('_THURSDAY', 'calendar'),
 					Lang::t('_FRIDAY', 'calendar'),
 					Lang::t('_SATURDAY', 'calendar')
-			);
-			$arr_days_medium = array(
+            ];
+			$arr_days_medium = [
 					Lang::t('_SUN', 'calendar'),
 					Lang::t('_MON', 'calendar'),
 					Lang::t('_TUE', 'calendar'),
@@ -321,10 +321,10 @@ class Form {
 					Lang::t('_THU', 'calendar'),
 					Lang::t('_FRI', 'calendar'),
 					Lang::t('_SAT', 'calendar')
-			);
+            ];
 
-			$arr_days_short = array();
-			$arr_days_1char = array();
+			$arr_days_short = [];
+			$arr_days_1char = [];
 			foreach ($arr_days_medium as $day) {
 				$arr_days_short[] = substr($day, 0, 2);
 				$arr_days_1char[] = substr($day, 0, 1);
@@ -432,8 +432,8 @@ class Form {
 				.'<div id="calendar_menu_'.$id.'"><div id="calendar_container_'.$id.'"></div></div>';
 
 				if (defined("IS_AJAX")) {
-					if (!isset($GLOBALS['date_inputs'])) $GLOBALS['date_inputs'] = array();
-					$GLOBALS['date_inputs'][] = array($id, $date, $date_format);
+					if (!isset($GLOBALS['date_inputs'])) $GLOBALS['date_inputs'] = [];
+					$GLOBALS['date_inputs'][] = [$id, $date, $date_format];
 				} else {
 					$script = '<script type="text/javascript">'
 							.'YAHOO.util.Event.onDOMReady(function() {'
@@ -664,7 +664,7 @@ class Form {
 		$p_size = intval(ini_get('post_max_size'));
         $u_size = intval(ini_get('upload_max_filesize'));
         
-        $comparison = array($p_size, $u_size);
+        $comparison = [$p_size, $u_size];
         if(!is_null($max_size)) {
             $comparison[] = (int)$max_size;
         }
@@ -938,7 +938,7 @@ class Form {
 				$id,
 				$name,
 				$all_value,
-				($selected === FALSE)?array():$selected,
+				($selected === FALSE)? [] :$selected,
 				$multiple,
 				$other_param,
 				$other_after,
@@ -1013,7 +1013,7 @@ class Form {
 	 */
 	public static function getCheckboxSet( $group_name, $id, $name, $all_value , $selected = false, $other_after = '', $other_before = '' ) {
 
-		if($selected == false) $selected = array();
+		if($selected == false) $selected = [];
 		$count = 0;
 		$out = '<div class="form_line_l">'
 				.$other_before

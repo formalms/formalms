@@ -26,13 +26,13 @@ class FunctionalrolesAdm extends Model {
 	}
 
 	public function getPerm()	{
-		return array(
+		return [
 			'view'						=> 'standard/view.png',
 			'add'							=> 'standard/add.png',
 			'mod'							=> 'standard/edit.png',
 			'del'							=> 'standard/delete.png',
 			'associate_user'	=> 'standard/moduser.png'
-		);
+        ];
 	}
 
 
@@ -55,7 +55,7 @@ class FunctionalrolesAdm extends Model {
 	public function getFunctionalRolesList($pagination, $filter = false) {
 
 		//validate pagination data
-		if (!is_array($pagination)) $pagination = array();
+		if (!is_array($pagination)) $pagination = [];
 		$_startIndex = (isset($pagination['startIndex']) ? (int)$pagination['startIndex'] : 0);
 		$_results = (isset($pagination['results']) ? (int)$pagination['results'] : Get::sett('visuItem', 25));
 		$_sort = 'fl.name';
@@ -105,7 +105,7 @@ class FunctionalrolesAdm extends Model {
 		$res = $this->db->query($query);
 
 		//extract records from database
-		$output = array();
+		$output = [];
 		if ($res && $this->db->num_rows($res)>0) {
 
 			while ($obj = $this->db->fetch_obj($res)) {
@@ -125,7 +125,7 @@ class FunctionalrolesAdm extends Model {
 			unset($_arr_users);
 
 			//get competences count for every retrieved role
-			$_arr_competences = array();
+			$_arr_competences = [];
 			$query = "SELECT id_fncrole, COUNT(*) FROM ".$this->_getRolesCompetencesTable()." "
 				." WHERE id_fncrole IN (".implode(",", $_arr_fncroles).") "
 				." GROUP BY id_fncrole";
@@ -212,7 +212,7 @@ class FunctionalrolesAdm extends Model {
 		$res = $this->db->query($query);
 
 		//extract records from database
-		$output = array();
+		$output = [];
 		if ($res && $this->db->num_rows($res)>0) {
 			while (list($id_fncrole) = $this->db->fetch_row($res)) {
 				$output[] = $id_fncrole;
@@ -226,7 +226,7 @@ class FunctionalrolesAdm extends Model {
 	public function getGroupsList($pagination, $filter = false) {
 
 		//validate pagination data
-		if (!is_array($pagination)) $pagination = array();
+		if (!is_array($pagination)) $pagination = [];
 		$_startIndex = (isset($pagination['startIndex']) ? (int)$pagination['startIndex'] : 0);
 		$_results = (isset($pagination['results']) ? (int)$pagination['results'] : Get::sett('visuItem', 25));
 		$_sort = 'fgl.name';
@@ -267,7 +267,7 @@ class FunctionalrolesAdm extends Model {
 		$res = $this->db->query($query);
 
 		//extract records from database
-		$output = array();
+		$output = [];
 		if ($res && $this->db->num_rows($res)>0) {
 			//$_arr_competences = array();
 			while ($obj = $this->db->fetch_obj($res)) {
@@ -325,12 +325,12 @@ class FunctionalrolesAdm extends Model {
 
 		//initialize languages array
 		$lang_codes = Docebo::langManager()->getAllLangCode();
-		$langs = array();
+		$langs = [];
 		for ($i=0; $i<count($lang_codes); $i++) {
-			$langs[$lang_codes[$i]] = array(
+			$langs[$lang_codes[$i]] = [
 				'name' => '',
 				'description' => ''
-			);
+            ];
 		}
 
 		//extract grop's languages
@@ -366,12 +366,12 @@ class FunctionalrolesAdm extends Model {
 
 		//initialize languages array
 		$lang_codes = Docebo::langManager()->getAllLangCode();
-		$langs = array();
+		$langs = [];
 		for ($i=0; $i<count($lang_codes); $i++) {
-			$langs[$lang_codes[$i]] = array(
+			$langs[$lang_codes[$i]] = [
 				'name' => '',
 				'description' => ''
-			);
+            ];
 		}
 
 		//extract role's languages
@@ -417,7 +417,7 @@ class FunctionalrolesAdm extends Model {
 		$_language = ($language ? $language : getLanguage());
 
 		//initialize output
-		$output = array('0' => Lang::t('_NONE', 'fncroles'));
+		$output = ['0' => Lang::t('_NONE', 'fncroles')];
 
 		//extract groups names
 		$query = "SELECT fg.id_group, fgl.name FROM ".$this->_getGroupsTable()." as fg "
@@ -466,7 +466,7 @@ class FunctionalrolesAdm extends Model {
 		if ($res) {
 			if (is_array($langs)) {
 				//insert languages in database
-				$conditions = array();
+				$conditions = [];
 				foreach ($langs as $lang_code => $translation) { //TO DO: check if lang_code exists ...
 					$name = $translation['name'];
 					$description = $translation['description'];
@@ -499,7 +499,7 @@ class FunctionalrolesAdm extends Model {
 				$id = $this->db->insert_id();
 
 				//insert languages in database
-				$conditions = array();
+				$conditions = [];
 				foreach ($langs as $lang_code => $translation) { //TO DO: check if lang_code exists ...
 					$name = $translation['name'];
 					$description = $translation['description'];
@@ -550,7 +550,7 @@ class FunctionalrolesAdm extends Model {
 			//insert languages in database
 			if (is_array($langs)) {
 				$_langs = Docebo::langManager()->getAllLangcode();
-				$arr_langs = array();
+				$arr_langs = [];
 				foreach ($_langs as $lang_code) {
 					if (isset($langs[$lang_code])) {
 						$_name = $langs[$lang_code]['name'];
@@ -559,19 +559,19 @@ class FunctionalrolesAdm extends Model {
 						$_name = "";
 						$_description = "";
 					}
-					$arr_langs[$lang_code] = array(
+					$arr_langs[$lang_code] = [
 						'name' => $_name,
 						'description' => $_description
-					);
+                    ];
 				}
 
-				$prev_lang = array();
+				$prev_lang = [];
 				$re = $this->db->query("SELECT lang_code FROM ".$this->_getRolesLangTable()." WHERE id_fncrole = ".(int)$id_fncrole);
 				while(list($lang_code) = $this->db->fetch_row($re)) {
 					$prev_lang[$lang_code] = $lang_code;
 				}
 
-				$conditions = array();
+				$conditions = [];
 				foreach ($arr_langs as $lang_code => $translation) {
 					$name = $translation['name'];
 					$description = $translation['description'];
@@ -604,7 +604,7 @@ class FunctionalrolesAdm extends Model {
 
 		if (is_array($langs)) {
 			$langcodes = Docebo::langManager()->getAllLangcode();
-			$arr_langs = array();
+			$arr_langs = [];
 			foreach ($langcodes as $lang_code) {
 				if (isset($langs[$lang_code])) {
 					$_name = $langs[$lang_code]['name'];
@@ -613,19 +613,19 @@ class FunctionalrolesAdm extends Model {
 					$_name = "";
 					$_description = "";
 				}
-				$arr_langs[$lang_code] = array(
+				$arr_langs[$lang_code] = [
 					'name' => $_name,
 					'description' => $_description
-				);
+                ];
 			}
 
 			// retrive previous saved languages
-			$prev_lang = array();
+			$prev_lang = [];
 			$re = $this->db->query("SELECT lang_code FROM ".$this->_getGroupsLangTable()." WHERE id_group = ".(int)$id_group);
 			while(list($lang_code) = $this->db->fetch_row($re)) {
 				$prev_lang[$lang_code] = $lang_code;
 			}
-			$conditions = array();
+			$conditions = [];
 			foreach ($arr_langs as $lang_code => $translation) { //TO DO: check if lang_code exists ...
 				$name = $translation['name'];
 				$description = $translation['description'];
@@ -709,7 +709,7 @@ class FunctionalrolesAdm extends Model {
 
 	public function assignMembers($id_fncrole, $arr_idst) {
 		if ($id_fncrole <= 0) return false; //invalid role
-		if (is_numeric($arr_idst)) $arr_idst = array($arr_idst); //handle single user case
+		if (is_numeric($arr_idst)) $arr_idst = [$arr_idst]; //handle single user case
 		if (!is_array($arr_idst)) return false; //invalid user data
 		if (count($arr_idst) <= 0) return true; //0 users operation: always "successfull"
 
@@ -721,7 +721,7 @@ class FunctionalrolesAdm extends Model {
 
 	public function deleteMembers($id_fncrole, $arr_idst) {
 		if ($id_fncrole <= 0) return false; //invalid role
-		if (is_numeric($arr_idst)) $arr_idst = array($arr_idst); //handle single user case
+		if (is_numeric($arr_idst)) $arr_idst = [$arr_idst]; //handle single user case
 		if (!is_array($arr_idst)) return false; //invalid user data
 		if (count($arr_idst) <= 0) return true; //0 users operation: always "successfull"
 
@@ -738,7 +738,7 @@ class FunctionalrolesAdm extends Model {
 		$query = "SELECT * FROM ".$this->_getRolesCompetencesTable()." WHERE id_fncrole=".(int)$id_fncrole;
 		$res = $this->db->query($query);
 		if ($res) {
-			$output = array();
+			$output = [];
 			while ($obj = $this->db->fetch_obj($res)) {
 				$output[] = $obj->id_competence;
 			}
@@ -749,12 +749,12 @@ class FunctionalrolesAdm extends Model {
 
 	public function assignCompetences($id_fncrole, $competences) {
 		if ($id_fncrole <= 0) return false; //invalid role
-		if (is_numeric($competences)) $competences = array($competences); //handle single course case
+		if (is_numeric($competences)) $competences = [$competences]; //handle single course case
 		if (!is_array($competences)) return false; //invalid course data
 		if (count($competences) <= 0) return true; //0 courses operation: always "successfull"
 
 		//prepare query and insert data in DB
-		$values = array();
+		$values = [];
 		foreach ($competences as $id_competence) $values[] = "(".(int)$id_fncrole.", ".(int)$id_competence.")";
 		$query = "INSERT INTO ".$this->_getRolesCompetencesTable()." (id_fncrole, id_competence) "
 			." VALUES ".implode(",", $values);
@@ -765,7 +765,7 @@ class FunctionalrolesAdm extends Model {
 
 	public function deleteCompetences($id_fncrole, $competences) {
 		if ($id_fncrole <= 0) return false; //invalid role
-		if (is_numeric($competences)) $competences = array($competences); //handle single course case
+		if (is_numeric($competences)) $competences = [$competences]; //handle single course case
 		if (!is_array($competences)) return false; //invalid course data
 		if (count($competences) <= 0) return true; //0 courses operation: always "successfull"
 
@@ -793,7 +793,7 @@ class FunctionalrolesAdm extends Model {
 		if ($id_fncrole <= 0) return false; //invalid role
 
 		//validate pagination data
-		if (!is_array($pagination)) $pagination = array();
+		if (!is_array($pagination)) $pagination = [];
 		$_startIndex = (isset($pagination['startIndex']) ? (int)$pagination['startIndex'] : 0);
 		$_results = (isset($pagination['results']) ? (int)$pagination['results'] : Get::sett('visuItem', 25));
 		$_sort = 'u.userid';
@@ -833,7 +833,7 @@ class FunctionalrolesAdm extends Model {
 		$res = $this->db->query($query);
 
 		//extract records from database
-		$output = array();
+		$output = [];
 		if ($res && $this->db->num_rows($res)>0) {
 			while ($obj = $this->db->fetch_obj($res)) {
 				$obj->is_group = in_array($obj->idst, $g_users);
@@ -900,7 +900,7 @@ class FunctionalrolesAdm extends Model {
 		//extract total value database
 		$output = false;
 		if ($res) {
-			$output = array();
+			$output = [];
 			while (list($id_user) = $this->db->fetch_row($res)) {
 				$output[] = $id_user;
 			}
@@ -915,7 +915,7 @@ class FunctionalrolesAdm extends Model {
 		if ($id_fncrole <= 0) return false; //invalid role
 
 		//validate pagination data
-		if (!is_array($pagination)) $pagination = array();
+		if (!is_array($pagination)) $pagination = [];
 		$_startIndex = (isset($pagination['startIndex']) ? (int)$pagination['startIndex'] : 0);
 		$_results = (isset($pagination['results']) ? (int)$pagination['results'] : Get::sett('visuItem', 25));
 		$_sort = 'cl.name';
@@ -962,7 +962,7 @@ class FunctionalrolesAdm extends Model {
 		$res = $this->db->query($query);
 
 		//extract records from database
-		$output = array();
+		$output = [];
 		if ($res && $this->db->num_rows($res)>0) {
 			while ($obj = $this->db->fetch_obj($res)) {
 				$output[] = $obj;
@@ -1011,10 +1011,10 @@ class FunctionalrolesAdm extends Model {
 
 	public function getCompetencesProperties($arr_competences, $id_fncrole = false) {
 		if (is_numeric($arr_competences) && $arr_competences <= 0) return false;
-		if (is_numeric($arr_competences)) $arr_competences = array($arr_competences);
-		if (count($arr_competences) <= 0) return array();
+		if (is_numeric($arr_competences)) $arr_competences = [$arr_competences];
+		if (count($arr_competences) <= 0) return [];
 
-		$output = array();
+		$output = [];
 		$query = "SELECT * FROM ".$this->_getRolesCompetencesTable()." "
 			." WHERE id_competence IN (".implode(",", $arr_competences).")"
 			.($id_fncrole > 0 ? " AND id_fncrole=".(int)$id_fncrole : "");
@@ -1047,7 +1047,7 @@ class FunctionalrolesAdm extends Model {
 	public function getCompetencesCoursesInfo($id_fncrole) {
 		if ($id_fncrole <= 0) return false; //invalid input
 
-		$output = array();
+		$output = [];
 		$list = $this->getCompetences($id_fncrole);
 		if (count($list) > 0) {
 			$query = "SELECT cc.id_competence, cc.id_course, c.code, c.name, cc.score "
@@ -1058,12 +1058,12 @@ class FunctionalrolesAdm extends Model {
 
 			if ($res) {
 				while ($obj = $this->db->fetch_obj($res)) {
-					$output[$obj->id_competence][] = array(
+					$output[$obj->id_competence][] = [
 						'id_course' => $obj->id_course,
 						'code' => $obj->code,
 						'name' => $obj->name,
 						'score' => $obj->score,
-					);
+                    ];
 				}
 			}
 		}
@@ -1080,7 +1080,7 @@ class FunctionalrolesAdm extends Model {
 		if ($id_fncrole <= 0) return false; //invalid role
 
 		//validate pagination data
-		if (!is_array($pagination)) $pagination = array();
+		if (!is_array($pagination)) $pagination = [];
 		$_startIndex = (isset($pagination['startIndex']) ? (int)$pagination['startIndex'] : 0);
 		$_results = (isset($pagination['results']) ? (int)$pagination['results'] : Get::sett('visuItem', 25));
 		$_sort = 'competence_name';
@@ -1110,7 +1110,7 @@ class FunctionalrolesAdm extends Model {
 		//validate filter data and abjust query
 		$where_filter = "";
 		if (is_array($filter)) {
-			$conditions = array();
+			$conditions = [];
 
 			if (isset($filter['text']) && $filter['text'] != '') {
 				$conditions[] = " (cml.name LIKE '%".$filter['text']."%' "
@@ -1144,7 +1144,7 @@ class FunctionalrolesAdm extends Model {
 
 		//mount query
 		if (isset($filter['user']) && $filter['user']>0)
-			$_users = array($filter['user']);
+			$_users = [$filter['user']];
 		else
 			$_users = $this->getAllUsers($id_fncrole);
         $dynFilter = isset($filter['dyn_filter']) ? $filter['dyn_filter'] : false;
@@ -1187,7 +1187,7 @@ class FunctionalrolesAdm extends Model {
 		}
 
 		//extract records from database
-		$output = array();
+		$output = [];
 		if ($res && $this->db->num_rows($res)>0) {
 			while ($obj = $this->db->fetch_obj($res)) {
 				$output[] = $obj;
@@ -1309,7 +1309,7 @@ class FunctionalrolesAdm extends Model {
 		//validate filter data and abjust query
 		$where_filter = "";
 		if (is_array($filter)) {
-			$conditions = array();
+			$conditions = [];
 
 			if (isset($filter['text']) && $filter['text'] != '') {
 				$conditions[] = " (cml.name LIKE '%".$filter['text']."%' "
@@ -1343,7 +1343,7 @@ class FunctionalrolesAdm extends Model {
 
 		//mount query
 		if (isset($filter['user']) && $filter['user']>0)
-			$_users = array($filter['user']);
+			$_users = [$filter['user']];
 		else
 			$_users = $this->getAllUsers($id_fncrole);
 		
@@ -1373,12 +1373,12 @@ class FunctionalrolesAdm extends Model {
 
 
 	public function getAllFunctionalRoles($details = false) {
-		$output = array();
+		$output = [];
 		
 		//if details requested, extract languges
 		if ($details) {
 			//extract langs from DB
-			$langs = array();
+			$langs = [];
 			$query = "SELECT fl.* FROM ".$this->_getRolesTable()." as f JOIN ".$this->_getRolesLangTable()." as fl "
 				." ON (f.id_fncrole = fl.id_fncrole)";
 			$res = $this->db->query($query);
@@ -1402,17 +1402,17 @@ class FunctionalrolesAdm extends Model {
 				$t_obj->id_fncrole = $obj->idst;
 				if ($details) {
 
-					$arr_langs = array();
+					$arr_langs = [];
 					for ($i=0; $i<count($lang_codes); $i++) {
 						$arr_langs[$lang_codes[$i]] = isset($langs[$obj->idst][$lang_codes[$i]])
-							? array(
+							? [
 									'name' => $langs[$obj->idst][$lang_codes[$i]]['name'],
 									'description' => $langs[$obj->idst][$lang_codes[$i]]['description']
-								)
-							: array(
+                            ]
+							: [
 									'name' => '',
 									'description' => ''
-								);
+                            ];
 					}
 					$t_obj->langs = $arr_langs;
 					$t_obj->id_group = (int)$obj->id_group;
@@ -1433,12 +1433,12 @@ class FunctionalrolesAdm extends Model {
 	 * @return array
 	 */
 	public function getFunctionalRolesNames($arr_fncroles) {
-		if (is_numeric($arr_fncroles)) $arr_fncroles = array($arr_fncroles);
+		if (is_numeric($arr_fncroles)) $arr_fncroles = [$arr_fncroles];
 		if (!is_array($arr_fncroles)) return false;
-		if (count($arr_fncroles) <= 0) return array();
+		if (count($arr_fncroles) <= 0) return [];
 
 		//extract fnc role data
-		$output = array();
+		$output = [];
 		$query = "SELECT r.idst as id_fncrole, rl.name "
 			." FROM %adm_group as r "
 			." LEFT JOIN ".$this->_getRolesLangTable()." as rl "
@@ -1458,12 +1458,12 @@ class FunctionalrolesAdm extends Model {
 	 * @return array
 	 */
 	public function getFunctionalRolesInfo($arr_fncroles) {
-		if (is_numeric($arr_fncroles)) $arr_fncroles = array($arr_fncroles);
+		if (is_numeric($arr_fncroles)) $arr_fncroles = [$arr_fncroles];
 		if (!is_array($arr_fncroles)) return false;
-		if (count($arr_fncroles) <= 0) return array();
+		if (count($arr_fncroles) <= 0) return [];
 
 		//extract competence data
-		$output = array();
+		$output = [];
 		$query = "SELECT g.idst as id_fncrole, f.id_group "
 			." FROM %adm_group as g LEFT JOIN ".$this->_getRolesTable()." as f "
 			." ON (g.idst = f.id_fncrole AND g.groupid LIKE '/fncroles/%') "
@@ -1479,14 +1479,14 @@ class FunctionalrolesAdm extends Model {
 
 		//initialize languages array
 		$lang_codes = Docebo::langManager()->getAllLangCode();
-		$_void_lang_arr = array();
+		$_void_lang_arr = [];
 		for ($i=0; $i<count($lang_codes); $i++) {
-			$_void_lang_arr[$lang_codes[$i]] = array(
+			$_void_lang_arr[$lang_codes[$i]] = [
 				'name' => '',
 				'description' => ''
-			);
+            ];
 		}
-		$langs = array();
+		$langs = [];
 		$_arr_fncroles = array_keys($output);
 		foreach ($_arr_fncroles as $id_fncrole) {
 			$langs[$id_fncrole] = $_void_lang_arr;
@@ -1517,7 +1517,7 @@ class FunctionalrolesAdm extends Model {
 
 	public function getUserFunctionalRoles($id_user, $keys = false) {
 		if ($id_user <= 0) return false;
-		$output = array();
+		$output = [];
 		$cmodel = new CompetencesAdm();
 
 		//extract roles
@@ -1567,10 +1567,10 @@ class FunctionalrolesAdm extends Model {
 	public function getUserRequiredCompetences($id_user, $flat = false) {
 		if ($id_user <= 0) return false;
 
-		$output = array();
+		$output = [];
 
 		//extract user roles
-		$uroles = array();
+		$uroles = [];
 		$roles = $this->getAllFunctionalRoles(true);
 		foreach ($roles as $id_fncrole => $rdata) {
 			//check if the user has been assigned to this role
@@ -1601,7 +1601,7 @@ class FunctionalrolesAdm extends Model {
 
 	public function searchFunctionalRolesByName($query, $limit = false, $language = false, $filter = false) {
 		if ((int)$limit <= 0) $limit = Get::sett('visuItem', 25);
-		$output = array();
+		$output = [];
 
 		$_qfilter = "";
 		if ($filter) {

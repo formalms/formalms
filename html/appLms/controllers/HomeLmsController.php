@@ -22,7 +22,7 @@ class HomeLmsController extends LmsController {
 
         $ma = new Man_MiddleArea();
 
-		$block_list = array();
+		$block_list = [];
 		//if($ma->currentCanAccessObj('user_details_short')) $block_list['user_details_short'] = true;
 		if($ma->currentCanAccessObj('user_details_full')) $block_list['user_details_full'] = true;
 		if($ma->currentCanAccessObj('credits')) $block_list['credits'] = true;
@@ -33,14 +33,14 @@ class HomeLmsController extends LmsController {
 		list($titolo, $descrizione) = sql_fetch_row($re_home);
 
 		if(!empty($block_list))
-			$this->render('_tabs_block', array(
+			$this->render('_tabs_block', [
 				'active_tab' => 'home',
 				'_content' => "<div id=\"tabhome_title\"><h1>".$titolo."</h1></div><div id=\"tabhome_description\">".$descrizione."</div>",
-				'block_list' => $block_list));
+				'block_list' => $block_list]);
 		else
-			$this->render('_tabs', array(
+			$this->render('_tabs', [
 				'active_tab' => 'home',
-				'_content' => "<div id=\"tabhome_title\"><h1>".$titolo."</h1></div><div id=\"tabhome_description\">".$descrizione."</div>")
+				'_content' => "<div id=\"tabhome_title\"><h1>".$titolo."</h1></div><div id=\"tabhome_description\">".$descrizione."</div>"]
 			);
 	}
 }

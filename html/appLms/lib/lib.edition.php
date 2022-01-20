@@ -42,11 +42,11 @@ class EditionManager
         $this->acl_man = $acl_man =& Docebo::user()->getAclManager();
         $this->subscribe_man = new CourseSubscribe_Manager();
 
-        $this->status_list = array(CST_PREPARATION => Lang::t('_CST_PREPARATION', 'course'),
+        $this->status_list = [CST_PREPARATION => Lang::t('_CST_PREPARATION', 'course'),
             CST_AVAILABLE => Lang::t('_CST_AVAILABLE', 'course'),
             CST_EFFECTIVE => Lang::t('_CST_CONFIRMED', 'course'),
             CST_CONCLUDED => Lang::t('_CST_CONCLUDED', 'course'),
-            CST_CANCELLED => Lang::t('_CST_CANCELLED', 'course'));
+            CST_CANCELLED => Lang::t('_CST_CANCELLED', 'course')];
     }
 
     public function __destruct()
@@ -75,7 +75,7 @@ class EditionManager
                 . " WHERE 1"
                 . " GROUP BY id_course";
 
-            $res = array();
+            $res = [];
 
             $result = sql_query($query);
 
@@ -117,13 +117,13 @@ class EditionManager
         ($start_index === false ? '' : $query .= " LIMIT " . $start_index . ", " . $results);
 
         $result = sql_query($query);
-        $res = array();
+        $res = [];
 
         while (list($id_edition, $code, $name, $status, $date_begin, $date_end) = sql_fetch_row($result)) {
             $num_subscription = $this->getTotalUserSubscribed($id_course, $id_edition);
             $num_student = $this->getTotalStudentsSubscribed($id_course, $id_edition);
 
-            $res[] = array('id_course' => $id_course,
+            $res[] = ['id_course' => $id_course,
                 'id_edition' => $id_edition,
                 'code' => $code,
                 'name' => $name,
@@ -136,7 +136,7 @@ class EditionManager
                 'subscription' => '<a class="nounder" href="index.php?r=alms/subscription/show&amp;id_course=' . $id_course . '&amp;id_edition=' . $id_edition . '">'
                     . $num_subscription . ' ' . Get::img('course/subscribe.png', Lang::t('_SUBSCRIPTION', 'course')) . '</a>',
                 'edit' => '<a href="index.php?r=alms/edition/edit&amp;id_course=' . $id_course . '&amp;id_edition=' . $id_edition . '">' . Get::img('standard/edit.png', Lang::t('_MOD', 'course')) . '</a>',
-                'del' => 'ajax.adm_server.php?r=alms/edition/del&amp;id_course=' . $id_course . '&id_edition=' . $id_edition);
+                'del' => 'ajax.adm_server.php?r=alms/edition/del&amp;id_course=' . $id_course . '&id_edition=' . $id_edition];
         }
 
         return $res;
@@ -190,14 +190,14 @@ class EditionManager
     public function getEditionsInfo($id_editions, $use_objects = false)
     {
         if (is_numeric($id_editions))
-            $arr = array($id_editions);
+            $arr = [$id_editions];
         elseif (is_array($id_editions) && count($id_editions) > 0)
             $arr =& $id_editions;
         else
             return false;
 
         //Util::array_validate($arr, DOTY_INT);
-        $output = array();
+        $output = [];
         $query = "SELECT *"
             . " FROM " . $this->edition_table
             . " WHERE id_edition IN ('" . implode("','", $arr) . "')";
@@ -221,14 +221,14 @@ class EditionManager
     public function getEditionsInfoByCourses($id_courses, $use_objects = false)
     {
         if (is_numeric($id_courses))
-            $arr = array($id_courses);
+            $arr = [$id_courses];
         elseif (is_array($id_courses) && count($id_courses) > 0)
             $arr =& $id_courses;
         else
             return false;
 
         //Util::array_validate($arr, DOTY_INT);
-        $output = array();
+        $output = [];
         $query = "SELECT e.* "
             . " FROM " . $this->edition_table . " as e JOIN " . $this->course_table . " as c "
             . " ON (e.id_course = c.idCourse) "
@@ -304,7 +304,7 @@ class EditionManager
      */
     public function getEditionSubscribed($id_edition, $no_flat = false, $filter = '')
     {
-        if (is_numeric($id_edition)) $id_edition = array($id_edition);
+        if (is_numeric($id_edition)) $id_edition = [$id_edition];
         if (is_array($id_edition) && count($id_edition) > 0) {
             $query = "SELECT eu.id_user, eu.id_edition "
                 . " FROM " . $this->edition_user . " AS eu"
@@ -321,7 +321,7 @@ class EditionManager
                 if (isset($filter['text']) && $filter['text'] != "")
                     $query .= " AND (u.userid LIKE '%" . $filter['text'] . "%' OR u.firstname LIKE '%" . $filter['text'] . "%' OR u.lastname LIKE '%" . $filter['text'] . "%') ";
 
-                $arr_idst = array();
+                $arr_idst = [];
                 if (isset($filter['orgchart']) && $filter['orgchart'] > 0) {
                     $umodel = new UsermanagementAdm();
                     $use_desc = (isset($filter['descendants']) && $filter['descendants']);
@@ -341,7 +341,7 @@ class EditionManager
 
             $result = $this->db->query($query);
 
-            $res = array();
+            $res = [];
 
             while (list($id_user, $id_edition) = $this->db->fetch_row($result)) {
                 if ($no_flat)
@@ -364,14 +364,14 @@ class EditionManager
     public function getCourseEditions($courses, $no_flat = false)
     {
         if (is_numeric($courses)) {
-            $arr_courses = array($courses);
+            $arr_courses = [$courses];
         } elseif (is_array($courses) && count($courses) > 0) {
             $arr_courses =& $courses;
         } else {
             return false;
         }
 
-        $output = array();
+        $output = [];
         $query = "SELECT id_edition, id_course FROM " . $this->edition_table . " "
             . " WHERE id_course IN (" . implode(",", $arr_courses) . ")";
         $res = $this->db->query($query);
@@ -401,7 +401,7 @@ class EditionManager
             if (isset($filter['text']) && $filter['text'] != "")
                 $query .= " AND (u.userid LIKE '%" . $filter['text'] . "%' OR u.firstname LIKE '%" . $filter['text'] . "%' OR u.lastname LIKE '%" . $filter['text'] . "%') ";
 
-            $arr_idst = array();
+            $arr_idst = [];
             if (isset($filter['orgchart']) && $filter['orgchart'] > 0) {
                 $umodel = new UsermanagementAdm();
                 $use_desc = (isset($filter['descendants']) && $filter['descendants']);
@@ -479,7 +479,7 @@ class EditionManager
         ($start_index === false ? '' : $query .= " LIMIT " . $start_index . ", " . $results);
 
         $result = sql_query($query);
-        $res = array();
+        $res = [];
 
         while (list($id_user, $userid, $firstname, $lastname, $level, $status, $date_complete, $date_begin_validity, $date_expire_validity) = sql_fetch_row($result)) {
             if ($firstname !== '' && $lastname !== '')
@@ -491,7 +491,7 @@ class EditionManager
             else
                 $user = '';
 
-            $res[] = array('sel' => '',
+            $res[] = ['sel' => '',
                 'id_user' => $id_user,
                 'userid' => $this->acl_man->relativeId($userid),
                 'fullname' => $user,
@@ -500,7 +500,7 @@ class EditionManager
                 'date_complete' => $date_complete,
                 'date_begin_validity' => $date_begin_validity,
                 'date_expire_validity' => $date_expire_validity,
-                'del' => 'ajax.adm_server.php?r=alms/subscription/delPopUp&id_course=' . $id_course . '&id_edition=' . $id_edition . '&id_user=' . $id_user);
+                'del' => 'ajax.adm_server.php?r=alms/subscription/delPopUp&id_course=' . $id_course . '&id_edition=' . $id_edition . '&id_user=' . $id_user];
         }
 
         return $res;
@@ -520,7 +520,7 @@ class EditionManager
             if (isset($filter['text']) && $filter['text'] != "")
                 $query .= " AND (u.userid LIKE '%" . $filter['text'] . "%' OR u.firstname LIKE '%" . $filter['text'] . "%' OR u.lastname LIKE '%" . $filter['text'] . "%') ";
 
-            $arr_idst = array();
+            $arr_idst = [];
             if (isset($filter['orgchart']) && $filter['orgchart'] > 0) {
                 $umodel = new UsermanagementAdm();
                 $use_desc = (isset($filter['descendants']) && $filter['descendants']);
@@ -591,7 +591,7 @@ class EditionManager
             if (isset($filter['text']) && $filter['text'] != "")
                 $query .= " AND (u.userid LIKE '%" . $filter['text'] . "%' OR u.firstname LIKE '%" . $filter['text'] . "%' OR u.lastname LIKE '%" . $filter['text'] . "%') ";
 
-            $arr_idst = array();
+            $arr_idst = [];
             if (isset($filter['orgchart']) && $filter['orgchart'] > 0) {
                 $umodel = new UsermanagementAdm();
                 $use_desc = (isset($filter['descendants']) && $filter['descendants']);
@@ -762,7 +762,7 @@ class EditionManager
             . " AND id_course = " . (int)$id_course;
 
         $result = sql_query($query);
-        $res = array();
+        $res = [];
 
         while (list($id_edition) = sql_fetch_row($result))
             $res[] = $id_edition;
@@ -781,7 +781,7 @@ class EditionManager
             . " AND status NOT IN (" . CST_PREPARATION . ", " . CST_CONCLUDED . ", " . CST_CANCELLED . ")";
 
         $result = sql_query($query);
-        $res = array();
+        $res = [];
 
         while ($row = sql_fetch_assoc($result)) {
             $row['num_subscribed'] = $this->getTotalUserSubscribed($id_course, $row['id_edition']);
@@ -798,7 +798,7 @@ class EditionManager
             . " WHERE id_user = '" . $id_user . "'";
 
         $result = sql_query($query);
-        $res = array();
+        $res = [];
 
         while (list($id_edition) = sql_fetch_row($result))
             $res[$id_edition] = $id_edition;
@@ -813,7 +813,7 @@ class EditionManager
             . " WHERE id_course = '" . $id_course . "'";
 
         $result = sql_query($query);
-        $res = array();
+        $res = [];
 
         while (list($id_edition, $max_par) = sql_fetch_row($result)) {
             if ($max_par != 0) {
@@ -838,7 +838,7 @@ class EditionManager
             . " WHERE status IN (" . CST_PREPARATION . ", " . CST_CONCLUDED . ", " . CST_CANCELLED . ")";
 
         $result = sql_query($query);
-        $res = array();
+        $res = [];
 
         while (list($id_edition) = sql_fetch_row($result)) {
             $res[$id_edition] = $id_edition;

@@ -23,16 +23,16 @@ Class TransactionAlmsController extends AlmsController
 		$this->json = new Services_JSON();
 		$this->acl_man =& Docebo::user()->getAclManager();
 		$this->model = new TransactionAlms();
-		$this->permissions = array(
+		$this->permissions = [
 			'view'	=> checkPerm('view', true, 'transaction', 'lms'),
 			'mod'	=> checkPerm('mod', true, 'transaction', 'lms'),
 			'del'	=> checkPerm('mod', true, 'transaction', 'lms')
-		);
+        ];
 	}
 
 	public function getPerm()
 	{
-		return array();
+		return [];
 	}
 
 	public function show()
@@ -54,7 +54,7 @@ Class TransactionAlmsController extends AlmsController
 			}
 		}
 
-		$this->render('show', array());
+		$this->render('show', []);
 	}
 
 	public function getTransactionData()
@@ -68,14 +68,14 @@ Class TransactionAlmsController extends AlmsController
 		$total_transaction = $this->model->getTotalTransaction();
 		$array_transaction = $this->model->getTransaction($start_index, $results, $sort, $dir);
 
-		$result = array(
+		$result = [
 			'totalRecords' => $total_transaction,
 			'startIndex' => $start_index,
 			'sort' => $sort,
 			'dir' => $dir,
 			'rowsPerPage' => $results,
 			'results' => count($array_transaction),
-			'records' => $array_transaction);
+			'records' => $array_transaction];
 
 		echo $this->json->encode($result);
 	}
@@ -89,7 +89,7 @@ Class TransactionAlmsController extends AlmsController
 
 		if(isset($_POST['save']) || isset($_POST['not_paid']))
 		{
-			$product_to_activate = Get::req('product', DOTY_MIXED, array());
+			$product_to_activate = Get::req('product', DOTY_MIXED, []);
 			$id_user = Get::req('id_user', DOTY_MIXED, 0);
 
 			if($this->model->saveTransaction($product_to_activate, $id_trans, $id_user))
@@ -98,7 +98,7 @@ Class TransactionAlmsController extends AlmsController
                 
                 $trans = $this->model->getTransactionInfo($id_trans);
                 $products = $trans['product'];
-                $trans['product'] = array();
+                $trans['product'] = [];
                 foreach ($product_to_activate AS $key => $to_add) {
                     if ($to_add) {
                         $id = explode('_', $key);
@@ -130,27 +130,27 @@ Class TransactionAlmsController extends AlmsController
 
 		$tb = new Table(false, Lang::t('_DETAILS', 'transaction'), Lang::t('_DETAILS', 'transaction'));
 
-		$ts = array('', '', 'min-cell', 'image');
-		$th = array(	Lang::t('_CODE', 'transaction'),
+		$ts = ['', '', 'min-cell', 'image'];
+		$th = [Lang::t('_CODE', 'transaction'),
 						Lang::t('_NAME', 'transaction'),
 						Lang::t('_PRICE', 'transaction'),
-						Lang::t('_MARK_AS_PAID', 'transaction'));
+						Lang::t('_MARK_AS_PAID', 'transaction')];
 
 		$tb->setColsStyle($ts);
 		$tb->addHead($th);
 
 		foreach($transaction_info['product'] as $product_info)
 		{
-			$tb->addBody(array(	$product_info['code'],
+			$tb->addBody([$product_info['code'],
 								$product_info['name'],
 								$product_info['price'],
-								Form::getInputCheckbox('product_'.$product_info['id_course'].'_'.$product_info['id_date'].'_'.$product_info['id_edition'], 'product['.$product_info['id_course'].'_'.$product_info['id_date'].'_'.$product_info['id_edition'].']', 1, $product_info['activated'], ($product_info['activated'] ? ' disabled="disabled"' : ''))));
+								Form::getInputCheckbox('product_'.$product_info['id_course'].'_'.$product_info['id_date'].'_'.$product_info['id_edition'], 'product['.$product_info['id_course'].'_'.$product_info['id_date'].'_'.$product_info['id_edition'].']', 1, $product_info['activated'], ($product_info['activated'] ? ' disabled="disabled"' : ''))]);
 		}
 
-		$this->render('mod', array(	'transaction_info' => $transaction_info,
+		$this->render('mod', ['transaction_info' => $transaction_info,
 									'user_info' =>  $user_info,
 									'tb' => $tb,
-									'id_trans' => $id_trans));
+									'id_trans' => $id_trans]);
 	}
 }
 ?>

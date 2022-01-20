@@ -21,13 +21,13 @@ class UrlManager {
 
 	var $use_mod_rewrite=FALSE;
 	var $mod_rewrite_title=NULL;
-	var $mod_rewrite_url_items=array();
+	var $mod_rewrite_url_items= [];
 	var $mod_rewrite_url_pattern=NULL;
 
 	var $std_query=NULL;
-	var $query_items=array();
+	var $query_items= [];
 	var $query_map=FALSE;
-	var $ignore_items=array();
+	var $ignore_items= [];
 
 	var $std_base_url="index.php";
 	var $temp_std_base_url=FALSE;
@@ -127,7 +127,7 @@ class UrlManager {
 	 *
 	 */
 	function setStdQuery($query) {
-		$res=array();
+		$res= [];
 
 		if (is_array($query)) {
 			$res=$this->explodeQueryItems($query);
@@ -166,7 +166,7 @@ class UrlManager {
 	 *
 	 */
 	function addToStdQuery($query) {
-		$res=array();
+		$res= [];
 
 		$current=$this->getStdQuery();
 		$this->setStdQuery($query);
@@ -182,7 +182,7 @@ class UrlManager {
 	 *
 	 */
 	function updateStdQuery($key, $value) {
-		$res=array();
+		$res= [];
 
 		$res=$this->getStdQuery();
 		$map=$this->getQueryMap();
@@ -333,7 +333,7 @@ class UrlManager {
 			$this->setQueryItems($this->explodeQueryItems($items));
 		}
 		else {
-			$this->setQueryItems(array());
+			$this->setQueryItems([]);
 		}
 
 		if (!$this->getUseModRewrite()) { // mod_rewrite OFF
@@ -363,7 +363,7 @@ class UrlManager {
 	 *
 	 */
 	function explodeQueryItems($query) {
-		$other_items=array();
+		$other_items= [];
 		foreach ($query as $val) {
 			$current_item=explode("=", $val);
 			if (count($current_item) > 1)
@@ -376,7 +376,7 @@ class UrlManager {
 	 *
 	 */
 	function implodeQueryItems($query_items) {
-		$query=array();
+		$query= [];
 		foreach ($query_items as $key=>$val) {
 			$query[]=$key."=".$val;
 		}
@@ -440,10 +440,10 @@ class UrlManager {
 	 *
 	 */
 	function getOtherItemsStr($items) {
-		$from=array("-", "_");
-		$to=array("--", "__");
+		$from= ["-", "_"];
+		$to= ["--", "__"];
 
-		$mr_arr=array();
+		$mr_arr= [];
 		foreach($items as $key=>$val) {
 			$my_key=str_replace($from, $to, $key);
 			$my_val=str_replace($from, $to, $val);
@@ -491,7 +491,7 @@ class UrlManager {
 	 *
 	 */
 	function getCleanMrArray($mr_str, $sep) {
-		$mr_arr=array();
+		$mr_arr= [];
 
 		if (preg_match("/[".$sep."]{2,2}/", $mr_str)) { // Optimized ;)
 
@@ -512,7 +512,7 @@ class UrlManager {
 	 *
 	 */
 	function splitFromMap($str, $arr, $sep) {
-		$res=array();
+		$res= [];
 		$_OFFSET=1;
 
 		$i=0;

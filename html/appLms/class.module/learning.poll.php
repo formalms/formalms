@@ -216,15 +216,15 @@ class Learning_Poll extends Learning_Object {
 		$output = false;
 		$query = "SELECT * FROM %lms_poll WHERE title LIKE '%".$key."%' OR description LIKE '%".$key."%' ORDER BY title";
 		$res = $this->db->query($query);
-		$results = array();
+		$results = [];
 		if ($res) {
-			$output = array();
+			$output = [];
 			while ($row = $this->db->fetch_obj($res)) {
-				$output[] = array(
+				$output[] = [
 					'id' => $row->id_poll,
 					'title' => $row->title,
 					'description' => $row->description
-				);
+                ];
 			}
 		}
 		return $output;

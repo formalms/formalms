@@ -20,21 +20,21 @@ class GamesAlms extends Model {
 	}
 
 	public function getPerm() {
-		return array(
+		return [
 			'view' => 'standard/view.png',
 			'add' => '',
 			'mod' => '',
 			'del' => '',
 			'subscribe' => ''
-		);
+        ];
 	}
 
 	public function findAll($start_index, $results, $sort, $dir, $filter = false) {
 
-		$sortable = array('title', 'description', 'type_of', 'start_date', 'end_date');
+		$sortable = ['title', 'description', 'type_of', 'start_date', 'end_date'];
 		$sortable = array_flip($sortable);
 
-		$records = array();
+		$records = [];
 		$qtxt = "SELECT c.id_game, title, description, start_date, end_date, type_of, id_resource, COUNT(ca.id_game) as access_entity "
 			." FROM %lms_games AS c "
 			." LEFT JOIN %lms_games_access AS ca ON (c.id_game = ca.id_game)"
@@ -58,10 +58,10 @@ class GamesAlms extends Model {
 
 	public function findAllUnread($start_index, $results, $sort, $dir, $reader, $filter = false) {
 
-		$sortable = array('title', 'description', 'type_of', 'start_date', 'end_date');
+		$sortable = ['title', 'description', 'type_of', 'start_date', 'end_date'];
 		$sortable = array_flip($sortable);
 
-		$records = array();
+		$records = [];
 		$qtxt = "SELECT c.id_game, title, description, start_date, end_date, type_of, id_resource, COUNT(ca.id_game) as access_entity "
 			."	, ct.current_score, ct.max_score, ct.num_attempts, ct.status "
 			." FROM ( %lms_games AS c "
@@ -88,10 +88,10 @@ class GamesAlms extends Model {
 
 	public function findAllReaded($start_index, $results, $sort, $dir, $reader, $filter = false) {
 
-		$sortable = array('title', 'description', 'type_of', 'start_date', 'end_date');
+		$sortable = ['title', 'description', 'type_of', 'start_date', 'end_date'];
 		$sortable = array_flip($sortable);
 
-		$records = array();
+		$records = [];
 		$qtxt = "SELECT c.id_game, title, description, start_date, end_date, type_of, id_resource, COUNT(ca.id_game) as access_entity "
 			."	, ct.current_score, ct.max_score, ct.num_attempts "
 			." FROM ( %lms_games AS c "
@@ -139,10 +139,10 @@ class GamesAlms extends Model {
 
 	public function total($filter = false) {
 
-		$sortable = array('title', 'description');
+		$sortable = ['title', 'description'];
 		$sortable = array_flip($sortable);
 
-		$results = array();
+		$results = [];
 		$qtxt = "SELECT COUNT(*) "
 			." FROM %lms_games "
 			." WHERE 1 "
@@ -210,7 +210,7 @@ class GamesAlms extends Model {
 
 	public function accessList($id_game) {
 
-		$records = array();
+		$records = [];
 		$qtxt = "SELECT idst "
 			." FROM %lms_games_access "
 			." WHERE id_game = ".(int)$id_game." ";
@@ -256,7 +256,7 @@ class GamesAlms extends Model {
 	
 	public function getUserStandings($id_game, $id_user) {
 
-		$records = array();
+		$records = [];
 		$qtxt = "SELECT idReference, dateAttempt, firstAttempt, status, current_score, max_score, num_attempts "
 			." FROM %lms_games_track AS ct "
 			." WHERE idReference = ".(int)$id_game." "
@@ -270,7 +270,7 @@ class GamesAlms extends Model {
 	
 	public function getStandings($id_game, $start_index = 0, $results = false) {
 
-		$records = array();
+		$records = [];
 		$qtxt = "SELECT u.idst, u.userid, u.firstname, u.lastname, ct.current_score, ct.max_score, ct.num_attempts "
 			." FROM %lms_games_track AS ct JOIN %adm_user AS u ON ( ct.idUser = u.idst )"
 			." WHERE idReference = ".(int)$id_game." "
@@ -287,7 +287,7 @@ class GamesAlms extends Model {
 
 	public function getStandingsChartData($id_game) {
 
-		$records = array();
+		$records = [];
 		$qtxt = "SELECT ct.max_score, COUNT(u.idst) AS score_weight "
 			." FROM %lms_games_track AS ct JOIN %adm_user AS u ON ( ct.idUser = u.idst )"
 			." WHERE idReference = ".(int)$id_game." "
@@ -297,10 +297,10 @@ class GamesAlms extends Model {
 		
 		if(!$re) return $records;
 		while($row = $this->db->fetch_assoc($re)) {
-			$records[] = array(
+			$records[] = [
 				'x_axis' => $row['max_score'],
 				'y_axis' => $row['score_weight'],
-			);
+            ];
 		}
 		return $records;
 	}

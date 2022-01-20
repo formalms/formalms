@@ -27,16 +27,16 @@ class RevisionManager {
 	var $prefix=NULL;
 	var $dbconn=NULL;
 
-	var $table_keys=array();
-	var $default_keys_val=array();
+	var $table_keys= [];
+	var $default_keys_val= [];
 
 	/** Table default fields are: author, version and rev_date **/
-	var $table_extra_fields=array();
+	var $table_extra_fields= [];
 
-	var $revision_info=array();
+	var $revision_info= [];
 
 
-	function RevisionManager($default_keys_val=array(), $prefix=FALSE, $dbconn=NULL) {
+	function RevisionManager($default_keys_val= [], $prefix=FALSE, $dbconn=NULL) {
 		$this->prefix=($prefix !== FALSE ? $prefix : $GLOBALS["prefix_fw"]);
 		$this->dbconn=$dbconn;
 
@@ -117,7 +117,7 @@ class RevisionManager {
 
 
 	function getLastRevision() {
-		$res=array();
+		$res= [];
 
 		$table_keys=$this->getTableKeys();
 		$default_keys_val=$this->cleanInput($this->getDefaultKeysVal());
@@ -125,7 +125,7 @@ class RevisionManager {
 		$fields="*";
 		$qtxt ="SELECT ".$fields." FROM ".$this->_getRevisionTable()." WHERE ";
 
-		$where_arr=array();
+		$where_arr= [];
 		foreach($table_keys as $field_name) {
 			$where_arr[]=$field_name."='".$default_keys_val[$field_name]."'";
 		}
@@ -153,7 +153,7 @@ class RevisionManager {
 
 
 	function getEmptyRevision() {
-		$res=array();
+		$res= [];
 
 		$default_keys_val=$this->getDefaultKeysVal();
 		foreach($this->getTableKeys() as $field_name) {
@@ -174,7 +174,7 @@ class RevisionManager {
 
 
 	function loadRevision($version) {
-		$res=array();
+		$res= [];
 
 		$table_keys=$this->getTableKeys();
 		$default_keys_val=$this->cleanInput($this->getDefaultKeysVal());
@@ -183,7 +183,7 @@ class RevisionManager {
 		$qtxt ="SELECT ".$fields." FROM ".$this->_getRevisionTable()." ";
 		$qtxt.="WHERE version='".(int)$version."'";
 
-		$where_arr=array();
+		$where_arr= [];
 		foreach($table_keys as $field_name) {
 			$where_arr[]=$field_name."='".$default_keys_val[$field_name]."'";
 		}
@@ -219,9 +219,9 @@ class RevisionManager {
 
 	function getRevisionList($ini=FALSE, $vis_item=FALSE) {
 
-		$idst_arr=array();
-		$data_info=array();
-		$data_info["data_arr"]=array();
+		$idst_arr= [];
+		$data_info= [];
+		$data_info["data_arr"]= [];
 
 
 		$table_keys=$this->getTableKeys();
@@ -231,7 +231,7 @@ class RevisionManager {
 		$qtxt ="SELECT ".$fields." FROM ".$this->_getRevisionTable()." ";
 		$qtxt.="WHERE ";
 
-		$where_arr=array();
+		$where_arr= [];
 		foreach($table_keys as $field_name) {
 			$where_arr[]=$field_name."='".$default_keys_val[$field_name]."'";
 		}
@@ -284,7 +284,7 @@ class RevisionManager {
 		}
 
 		if (!is_array($data))
-			$data=array();
+			$data= [];
 
 		$default_keys_val=$this->getDefaultKeysVal();
 		foreach($this->getTableKeys() as $field_name) {
@@ -301,8 +301,8 @@ class RevisionManager {
 		$field_val ="'".(int)$version."', NOW()";
 
 
-		$field_list_arr=array();
-		$field_val_arr=array();
+		$field_list_arr= [];
+		$field_val_arr= [];
 		foreach($data as $key=>$val) {
 			$field_list_arr[]=$key;
 			$field_val_arr[]="'".$val."'";
@@ -342,9 +342,9 @@ class RevisionManager {
 
 	function getLatestRevisionListData($qtxt, $ini=FALSE, $vis_item=FALSE) {
 
-		$idst_arr=array();
-		$data_info=array();
-		$data_info["data_arr"]=array();
+		$idst_arr= [];
+		$data_info= [];
+		$data_info["data_arr"]= [];
 
 		$q=$this->_query($qtxt);
 
@@ -401,10 +401,10 @@ class RevisionManager {
 
 
 	function searchInLatestRevisionData($return_val, $data) {
-		$res=array("found"=>array());
+		$res= ["found"=> []];
 
 		$data_arr=$data["data_arr"];
-		$cached=array();
+		$cached= [];
 
 		foreach($data_arr as $row) {
 			$parent_id=$row[$return_val];
@@ -433,7 +433,7 @@ Class OldRevisionManager {
 	var $type=NULL;
 	var $parent_id=0;
 
-	var $revision_info=array();
+	var $revision_info= [];
 
 
 	function OldRevisionManager($type, $parent_id, $sub_key=FALSE, $prefix=FALSE, $dbconn=NULL) {
@@ -491,7 +491,7 @@ Class OldRevisionManager {
 
 
 	function getLastRevision() {
-		$res=array();
+		$res= [];
 
 		$fields="*";
 		$qtxt ="SELECT ".$fields." FROM ".$this->_getRevisionTable()." ";
@@ -519,7 +519,7 @@ Class OldRevisionManager {
 
 
 	function loadRevision($version) {
-		$res=array();
+		$res= [];
 
 		$fields="*";
 		$qtxt ="SELECT ".$fields." FROM ".$this->_getRevisionTable()." ";
@@ -552,7 +552,7 @@ Class OldRevisionManager {
 
 
 	function getEmptyRevision() {
-		$res=array();
+		$res= [];
 
 		$res["type"]=$this->getRevisionType();
 		$res["parent_id"]=$this->getParentId();
@@ -568,9 +568,9 @@ Class OldRevisionManager {
 
 	function getRevisionList($ini=FALSE, $vis_item=FALSE) {
 
-		$idst_arr=array();
-		$data_info=array();
-		$data_info["data_arr"]=array();
+		$idst_arr= [];
+		$data_info= [];
+		$data_info["data_arr"]= [];
 
 		$fields="*";
 		$qtxt ="SELECT ".$fields." FROM ".$this->_getRevisionTable()." ";
@@ -652,9 +652,9 @@ Class OldRevisionManager {
 		$type=$this->getRevisionType();
 		$sub_key=($use_subkey ? $this->getSubKey() : FALSE);
 
-		$idst_arr=array();
-		$data_info=array();
-		$data_info["data_arr"]=array();
+		$idst_arr= [];
+		$data_info= [];
+		$data_info["data_arr"]= [];
 
 		$fields ="type, parent_id, MAX(version) as version, sub_key, ";
 		$fields.="author, rev_date, content";
@@ -712,7 +712,7 @@ Class OldRevisionManager {
 	 * the current revision type and, if available, subkey.
 	 */
 	function searchInLatestRevision($search, $ini=FALSE, $vis_item=FALSE, $use_subkey=TRUE, $parent_id_in=FALSE) {
-		$res=array("found"=>array());
+		$res= ["found"=> []];
 
 		$data=$this->getLatestRevisionList($search, $ini, $vis_item, $use_subkey, $parent_id_in);
 		$data_arr=$data["data_arr"];

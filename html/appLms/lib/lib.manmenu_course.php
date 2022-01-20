@@ -27,7 +27,7 @@ function getAllCustom() {
 	ORDER BY title";
 	$re_custom = sql_query($query);
 	
-	$customs = array();
+	$customs = [];
 	while(list($id, $name) = sql_fetch_row($re_custom)) {
 		$customs[$id] = $name;
 	}
@@ -52,7 +52,7 @@ function getModuleNextSeq($id_main) {
  */
 function &getCourseLevelSt($id_course) {
 	
-	$map 		= array();
+	$map 		= [];
 	$levels 	= CourseLevel::getLevels();
 	$acl_man	=& Docebo::user()->getAclManager();
 	
@@ -76,7 +76,7 @@ function &getCourseLevelSt($id_course) {
  */
 function &getModuleRoleSt($module_name, $all_token, $flip = false) {
 	
-	$map 		= array();
+	$map 		= [];
 	$levels 	= CourseLevel::getLevels();
 	$acl_man	=& Docebo::user()->getAclManager();
 	
@@ -105,7 +105,7 @@ function &getModuleRoleSt($module_name, $all_token, $flip = false) {
  */
 function &getAllModulesPermissionSt($group_idst, $idst_cast = false) {
 	
-	$old_perm 	= array();
+	$old_perm 	= [];
 	$levels 	= CourseLevel::getLevels();
 	$acl_man	=& Docebo::user()->getAclManager();
 	
@@ -119,7 +119,7 @@ function &getAllModulesPermissionSt($group_idst, $idst_cast = false) {
 		} else {
 			
 			$i = 0;
-			$old_perm[$lv] = array();
+			$old_perm[$lv] = [];
 			foreach($lv_perm as $idst => $v) {
 				
 				if(isset($idst_cast[$idst])) $old_perm[$lv][$idst] = 1;
@@ -139,7 +139,7 @@ function &getAllModulesPermissionSt($group_idst, $idst_cast = false) {
  */
 function &fromTokenToSt(&$tokens, &$map_idst) {
 	
-	$new_perm 	= array();
+	$new_perm 	= [];
 	$levels 	= CourseLevel::getLevels();
 	// convert all the permission from token code to idst
 	foreach($levels as $lv => $name_level) {
@@ -165,7 +165,7 @@ function &fromTokenToSt(&$tokens, &$map_idst) {
  */
 function &fromStToToken(&$map_idst_roles, &$token) {
 	
-	$convert 	= array();
+	$convert 	= [];
 	$levels 	= CourseLevel::getLevels();
 	
 	foreach($levels as $lv => $name_level) {

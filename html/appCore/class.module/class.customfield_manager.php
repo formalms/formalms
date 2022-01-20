@@ -27,23 +27,23 @@ class Module_Customfield_Manager extends Module {
 	}
 	
 	function getAllToken() {
-		return array( 
-			'view' => array( 	'code' => 'view',
+		return [
+			'view' => ['code' => 'view',
 								'name' => '_VIEW',
-								'image' => 'standard/view.png'),
+								'image' => 'standard/view.png'],
 			
-			'add' => array( 	'code' => 'add',
+			'add' => ['code' => 'add',
 								'name' => '_ADD',
-								'image' => 'standard/add.png'),
+								'image' => 'standard/add.png'],
 			
-			'mod' => array( 	'code' => 'mod',
+			'mod' => ['code' => 'mod',
 								'name' => '_MOD',
-								'image' => 'standard/edit.png'),
+								'image' => 'standard/edit.png'],
 			
-			'del' => array( 	'code' => 'del',
+			'del' => ['code' => 'del',
 								'name' => '_DEL',
-								'image' => 'standard/delete.png')
-		);
+								'image' => 'standard/delete.png']
+        ];
 	}
 }
 

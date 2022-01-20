@@ -85,7 +85,7 @@ class TextEntry_Question extends Question {
 			require_once($GLOBALS['where_lms'].'/lib/lib.questcategory.php');
 			$categories = Questcategory::getCategory();
 		//writing difficult array
-		$arr_dufficult = array(5 => '5 - '.$lang->def('_VERY_HARD'), 4 => '4 - '.$lang->def('_HARD'), 3 => '3 - '.$lang->def('_DIFFICULT_MEDIUM'), 2 => '2 - '.$lang->def('_DIFFICULT_EASY'), 1 => '1 - '.$lang->def('_DIFFICULT_VERYEASY'));
+		$arr_dufficult = [5 => '5 - '.$lang->def('_VERY_HARD'), 4 => '4 - '.$lang->def('_HARD'), 3 => '3 - '.$lang->def('_DIFFICULT_MEDIUM'), 2 => '2 - '.$lang->def('_DIFFICULT_EASY'), 1 => '1 - '.$lang->def('_DIFFICULT_VERYEASY')];
 		
 		$GLOBALS['page']->add(getTitleArea($lang->def('_TEST_SECTION'), 'test')
 			.'<div class="std_block">'
@@ -213,7 +213,7 @@ class TextEntry_Question extends Question {
 				require_once($GLOBALS['where_lms'].'/lib/lib.questcategory.php');
 			$categories = Questcategory::getCategory();
 		//create array of difficult
-		$arr_dufficult = array(5 => '5 - '.$lang->def('_VERY_HARD'), 4 => '4 - '.$lang->def('_HARD'), 3 => '3 - '.$lang->def('_DIFFICULT_MEDIUM'), 2 => '2 - '.$lang->def('_DIFFICULT_EASY'), 1 => '1 - '.$lang->def('_DIFFICULT_VERYEASY'));
+		$arr_dufficult = [5 => '5 - '.$lang->def('_VERY_HARD'), 4 => '4 - '.$lang->def('_HARD'), 3 => '3 - '.$lang->def('_DIFFICULT_MEDIUM'), 2 => '2 - '.$lang->def('_DIFFICULT_EASY'), 1 => '1 - '.$lang->def('_DIFFICULT_VERYEASY')];
 		//load data
 		list($cat_sel, $title_quest, $diff_sel, $sel_time) = sql_fetch_row(sql_query("
 		SELECT idCategory, title_quest, difficult, time_assigned
@@ -604,9 +604,9 @@ class TextEntry_Question extends Question {
 			.'</div>'."\n"
 			.'</div>'."\n";
 		
-		return array(	'quest' 	=> $quest, 
+		return ['quest' 	=> $quest,
 						'score'		=> $this->userScore($id_track, $number_time),
-						'comment'	=> ( $com_is_correct != '' ? $com_is_correct.'<br />' : '' ).$comment );
+						'comment'	=> ( $com_is_correct != '' ? $com_is_correct.'<br />' : '' ).$comment];
 		
 	}
 
@@ -619,7 +619,7 @@ class TextEntry_Question extends Question {
 
         $result_track_answer = sql_query($query_track_answer);
 
-        $result = array();
+        $result = [];
         while (list($more_info) = sql_fetch_row($result_track_answer)) {
             $result[] = $more_info;
         }

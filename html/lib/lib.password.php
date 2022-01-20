@@ -32,15 +32,15 @@ class Password {
         $this->policies=PasswordPolicies::check($password);
         $this->password=$password;
         $this->algorithm_default=(int)Get::sett('pass_algorithm', PASSWORD_MD5);
-        $this->algorithm_options = array(
-            PASSWORD_BCRYPT=>array(
+        $this->algorithm_options = [
+            PASSWORD_BCRYPT=> [
                 'cost'=>10
-            )
-        );
-        $this->algorithm_functions = array(
+            ]
+        ];
+        $this->algorithm_functions = [
             PASSWORD_BCRYPT=>"password_verify_php",
             PASSWORD_MD5=>"password_verify_md5"
-        );
+        ];
     }
 
     /**
@@ -49,10 +49,10 @@ class Password {
      * @return array
      */
     public function info($password) {
-        $result=array(
+        $result= [
             'algorithm'=>null,
             'options'=>null
-        );
+        ];
         $info=password_get_info($password);
         if ($info['algo']==0){
             if (preg_match('/^[a-f0-9]{32}$/', $password)){
@@ -145,23 +145,23 @@ class Password {
 
 class PasswordPolicies {
     private $valid;
-    private $messages=array();
-    function __construct($valid,$messages=array()) {
+    private $messages= [];
+    function __construct($valid,$messages= []) {
         $this->valid=$valid;
         $this->messages=$messages;
     }
 
     static public function check($password){
-        $policies = array(
+        $policies = [
             'pass_min_char'=>Get::sett('pass_min_char'),
             'pass_alfanumeric'=>Get::sett('pass_alfanumeric'),
             'pass_min_digits'=>Get::sett('pass_min_digits'),
             'pass_min_lower'=>Get::sett('pass_min_lower'),
             'pass_min_upper'=>Get::sett('pass_min_upper'),
             'pass_min_nonalphanum'=>Get::sett('pass_min_nonalphanum')
-        );
+        ];
         $result=true;
-        $messages=array();
+        $messages= [];
         foreach ($policies as $policy=>$value){
             $message=self::$policy($password,$value);
             if (isset($value) && $message){
@@ -180,14 +180,14 @@ class PasswordPolicies {
         return $this->valid;
     }
 
-    private function pass_min_char($password,$policy){
+    private static function pass_min_char($password,$policy){
         if(strlen($password) < $policy) {
             return Lang::t('_PASSWORD_TOO_SHORT', 'configuration');
         } else {
             return false;
         }
     }
-    private function pass_alfanumeric($password,$policy){
+    private static function pass_alfanumeric($password,$policy){
         if ($policy=="on"){
             if( !preg_match('/[a-z]/i', $password) || !preg_match('/[0-9]/', $password) ) {
                 return Lang::t('_ERR_PASSWORD_MUSTBE_ALPHA', 'configuration');
@@ -195,28 +195,28 @@ class PasswordPolicies {
         }
         return false;
     }
-    private function pass_min_digits($password,$policy){
+    private static function pass_min_digits($password,$policy){
         if (!preg_match('/[[:digit:]]/u', $password) < $policy) {
             return Lang::t('_ERR_PASSWORD_MIN_DIGITS', 'configuration');
         } else {
             return false;
         }
     }
-    private function pass_min_lower($password,$policy){
+    private static function pass_min_lower($password,$policy){
         if (!preg_match('/[[:lower:]]/u', $password) < $policy) {
             return Lang::t('_ERR_PASSWORD_MIN_LOWER', 'configuration');
         } else {
             return false;
         }
     }
-    private function pass_min_upper($password,$policy){
+    private static function pass_min_upper($password,$policy){
         if (!preg_match('/[[:upper:]]/u', $password) < $policy) {
             return Lang::t('_ERR_PASSWORD_MIN_UPPER', 'configuration');
         } else {
             return false;
         }
     }
-    private function pass_min_nonalphanum($password,$policy){
+    private static function pass_min_nonalphanum($password,$policy){
         if (!preg_match('/[^[:upper:][:lower:][:digit:]]/u', $password) < $policy) {
             return Lang::t('_ERR_PASSWORD_MIN_NONALPHANUM', 'configuration');
         } else {

@@ -278,7 +278,7 @@ function modtestgui($object_test)
 
     $tab = new Table(0, $caption, $lang->def('_TEST_SUMMARY'));
 
-    $tab->setColsStyle(array('image', 'image', 'image', '', 'image', 'image', 'image', 'image'));
+    $tab->setColsStyle(['image', 'image', 'image', '', 'image', 'image', 'image', 'image']);
 
     $i = 0;
     $correct_sequence = 1;
@@ -301,7 +301,7 @@ function modtestgui($object_test)
         $fields_mask = $fman->playFieldsFlat($id_quest);
 
         if ($first) {
-            $arrHead = array();
+            $arrHead = [];
             array_push($arrHead, $lang->def('_QUEST'), $lang->def('_TYPE'), $lang->def('_CATEGORY'), $lang->def('_QUESTION'));
             // Customfields head
             foreach ($fields_mask as $field) {
@@ -322,7 +322,7 @@ function modtestgui($object_test)
 
         $last_type = $type;
 
-        $content = array();
+        $content = [];
         array_push(
             $content,
             ((($type != 'break_page') && ($type != 'title')) ? '<span class="text_bold">' . ($quest_num++) . '</span>' : ''),
@@ -700,12 +700,12 @@ function addquest()
     if (isset($_REQUEST['add_test_quest'])) {
         //first enter
         $type_quest = importVar('add_test_quest');
-        $var_to_safe = array(
+        $var_to_safe = [
             'idQuest' => 0,
             'type_quest' => $type_quest,
             'idTest' => $idTest,
             'back_url' => urldecode(importVar('back_url'))
-        );
+        ];
         $var_save = saveTestStatus($var_to_safe);
     } else {
         //other enter
@@ -745,12 +745,12 @@ function modquest()
 
     if (!isset($_POST['back_url'])) {
         //first enter
-        $var_to_safe = array(
+        $var_to_safe = [
             'idQuest' => $idQuest,
             'type_quest' => $type_quest,
             'idTest' => $idTest,
             'back_url' => urldecode(importVar('back_url'))
-        );
+        ];
         $var_save = saveTestStatus($var_to_safe);
     } else {
         //other enter
@@ -891,7 +891,7 @@ function defmodality()
     );
     //-order-----------------------------------------------------
 
-    $cat_info = array();
+    $cat_info = [];
     if ($order_info != '') {
         require_once(_base_ . '/lib/lib.json.php');
         $json = new Services_JSON(SERVICES_JSON_LOOSE_TYPE);
@@ -904,7 +904,7 @@ function defmodality()
     }
 
     $has_categories = false;
-    $categories = array();
+    $categories = [];
     $query = "SELECT tq.idCategory, qc.name, COUNT(tq.idcategory) FROM " . $GLOBALS['prefix_lms'] . "_testquest AS tq LEFT JOIN " . $GLOBALS['prefix_lms'] . "_quest_category AS qc "
         . " ON (tq.idCategory = qc.idCategory) WHERE idTest='" . (int) $idTest . "' GROUP BY tq.idCategory";
     $res = sql_query($query);
@@ -914,7 +914,7 @@ function defmodality()
             if ($id_cat == 0) $name_cat = $lang->def('_NO_CATEGORY');
             if (isset($cat_info[$id_cat])) $selected = $cat_info[$id_cat];
             else $selected = '0';
-            $categories[$id_cat] = array('name' => $name_cat, 'total' => $num_quest, 'selected' => (int) $selected);
+            $categories[$id_cat] = ['name' => $name_cat, 'total' => $num_quest, 'selected' => (int) $selected];
         }
     }
 
@@ -961,7 +961,7 @@ function defmodality()
         $input_field = Form::getInputTextfield('textfield_nowh', 'question_random_category_' . $key, 'question_random_category[' . $key . ']', $value['selected'], 4, '', '');
 
         $category_selector .= '<li><label for="question_random_category_' . $key . '">' . $value['name'] . ':</label> '
-            . str_replace(array('[random_quest]', '[tot_quest]'), array($input_field, $value['total']), $lang->def('_TEST_MM1_QUESTION_RANDOM_NUMBER'))
+            . str_replace(['[random_quest]', '[tot_quest]'], [$input_field, $value['total']], $lang->def('_TEST_MM1_QUESTION_RANDOM_NUMBER'))
             . '</li>';
     }
 
@@ -983,7 +983,7 @@ function defmodality()
     $fman->setFieldArea("LO_TEST");
     $fields_mask = $fman->playFieldsFlat();
 
-    $cust_info = array();
+    $cust_info = [];
     if ($cf_info != '') {
         require_once(_base_ . '/lib/lib.json.php');
         $json = new Services_JSON(SERVICES_JSON_LOOSE_TYPE);
@@ -1005,7 +1005,7 @@ function defmodality()
             $sel_quest = $cust_info[$key];
             $input_field = Form::getInputTextfield('textfield_nowh', 'question_random_customfield_' . $key, 'question_random_customfield[' . $key . ']', $sel_quest, $cust_order_type, '', '');
             $category_selector .= '<li><label for="question_random_customfield_' . $key . '">' . $value . ':</label> '
-                . str_replace(array('[random_quest]', '[tot_quest]'), array($input_field, $tot_quest), $lang->def('_TEST_MM1_QUESTION_RANDOM_NUMBER'))
+                . str_replace(['[random_quest]', '[tot_quest]'], [$input_field, $tot_quest], $lang->def('_TEST_MM1_QUESTION_RANDOM_NUMBER'))
                 . '</li>';
         }
         $category_selector .= '</ul>';
@@ -1242,10 +1242,10 @@ function updatemodality()
 
     $order_info = "";
     if ($_REQUEST['order_type'] == 3) {
-        $arr = array();
+        $arr = [];
         if (isset($_REQUEST['question_random_category']) && is_array($_REQUEST['question_random_category'])) {
             foreach ($_REQUEST['question_random_category'] as $key => $value) {
-                if ((int) $value > 0) $arr[] = array('id_category' => $key, 'selected' => (int) $value);
+                if ((int) $value > 0) $arr[] = ['id_category' => $key, 'selected' => (int) $value];
             }
         }
         $order_info = $json->encode($arr);
@@ -1253,10 +1253,10 @@ function updatemodality()
 
     $cf_info = "";
     if ($_REQUEST['order_type'] > 4) {
-        $arr = array();
+        $arr = [];
         if (isset($_REQUEST['question_random_customfield']) && is_array($_REQUEST['question_random_customfield'])) {
             foreach ($_REQUEST['question_random_customfield'] as $key => $value) {
-                if ((int) $value > 0) $arr[] = array('id_cf_son' => $key, 'selected' => (int) $value);
+                if ((int) $value > 0) $arr[] = ['id_cf_son' => $key, 'selected' => (int) $value];
             }
         }
         $cf_info = $json->encode($arr);
@@ -1571,11 +1571,11 @@ function modassigntime()
 
     //table header---------------------------------------------------
     $tab_quest = new Table(0, $lang->def('_TEST_SUMMARY'), $lang->def('_TEST_SUMMARY'));
-    $tab_quest->setColsStyle(array('image', 'image', '', 'image', 'image'));
-    $tab_quest->addHead(array(
+    $tab_quest->setColsStyle(['image', 'image', '', 'image', 'image']);
+    $tab_quest->addHead([
         $lang->def('_TEST_QUEST_ORDER'), $lang->def('_TYPE'), $lang->def('_QUESTION'), $lang->def('_DIFFICULTY'),
         $lang->def('_TEST_QUEST_TIME_ASSIGNED') . ' (' . $lang->def('_SECONDS') . ')'
-    ));
+    ]);
 
     $i = 1;
     $effective_time = $effective_difficult = 0;
@@ -1606,7 +1606,7 @@ function modassigntime()
             }
         }
 
-        $content = array(
+        $content = [
             $i++,
             $lang->def('_QUEST_ACRN_' . strtoupper($type_quest)),
             $title_quest,
@@ -1616,7 +1616,7 @@ function modassigntime()
                     '',
                     'new_difficult_quest_' . $idQuest,
                     'new_difficult_quest[' . $idQuest . ']',
-                    array(1 => 1, 2, 3, 4, 5),
+                    [1 => 1, 2, 3, 4, 5],
                     $difficult,
                     ''
                 ) :
@@ -1625,7 +1625,7 @@ function modassigntime()
                 '<label for="new_time_quest_' . $idQuest . '">' . $lang->def('_QUEST_TM2_SETTIME') . '</label>' .
                 '<input type="text" id="new_time_quest_' . $idQuest . '" name="new_time_quest[' . $idQuest . ']" value="' . $new_time . '" size="5" maxlength="4" alt="' . $lang->def('_QUEST_TM2_SETTIME') . '" />' :
                 '&nbsp;')
-        );
+        ];
         if ($difficult != 0) {
             $effective_time += $new_time;
             $effective_difficult += $difficult;
@@ -1818,7 +1818,7 @@ function modassignpoint()
         $query_question .= " ORDER BY q.sequence";
         $re_quest = sql_query($query_question);
 
-        $score_assign = array();
+        $score_assign = [];
         while (list($idQuest, $type_quest, $type_file, $type_class) = sql_fetch_row($re_quest)) {
 
 
@@ -1864,11 +1864,11 @@ function modassignpoint()
 
     //table header---------------------------------------------------
     $tab_quest = new Table(0, $lang->def('_TEST_SUMMARY'), $lang->def('_TEST_SUMMARY'));
-    $tab_quest->setColsStyle(array('image', 'image', '', 'image', 'image'));
-    $tab_quest->addHead(array(
+    $tab_quest->setColsStyle(['image', 'image', '', 'image', 'image']);
+    $tab_quest->addHead([
         $lang->def('_TEST_QUEST_ORDER'), $lang->def('_TYPE'), $lang->def('_QUESTION'),
         $lang->def('_DIFFICULTY'), $lang->def('_SCORE')
-    ));
+    ]);
 
     $i = 1;
     $effective_tot_score = $effective_difficult = 0;
@@ -1906,11 +1906,11 @@ function modassignpoint()
             }
         }
 
-        $content = array(
+        $content = [
             $i++,
             $lang->def('_QUEST_ACRN_' . strtoupper($type_quest)),
             $title_quest
-        );
+        ];
 
         if (isset($score_assign)) {
             $content[] = ($difficult ? $difficult : '&nbsp;');
@@ -1927,7 +1927,7 @@ function modassignpoint()
                     '',
                     'new_difficult_quest_' . $idQuest,
                     'new_difficult_quest[' . $idQuest . ']',
-                    array(1 => 1, 2, 3, 4, 5),
+                    [1 => 1, 2, 3, 4, 5],
                     $difficult,
                     ''
                 ) :
@@ -2013,7 +2013,7 @@ function importquest()
 
     unset($supported_format[-1]);
 
-    $title = array('index.php?modname=test&op=modtestgui&idTest=' . $idTest . '&back_url=' . $back_coded => $lang->def('_TEST_SECTION'), $lang->def('_IMPORT'));
+    $title = ['index.php?modname=test&op=modtestgui&idTest=' . $idTest . '&back_url=' . $back_coded => $lang->def('_TEST_SECTION'), $lang->def('_IMPORT')];
     cout(
         getTitleArea($title, 'quest_bank')
             . '<div class="std_block">'
@@ -2060,7 +2060,7 @@ function doimportquest()
 
     YuiLib::load('table');
 
-    $title = array('index.php?modname=test&op=modtestgui&idTest=' . $idTest . '&back_url=' . $back_coded => $lang->def('_QUEST_BANK'), $lang->def('_IMPORT'));
+    $title = ['index.php?modname=test&op=modtestgui&idTest=' . $idTest . '&back_url=' . $back_coded => $lang->def('_QUEST_BANK'), $lang->def('_IMPORT')];
     cout(
         getTitleArea($title, 'quest_bank')
             . '<div class="std_block yui-skin-docebo">'
@@ -2104,7 +2104,7 @@ function exportquest()
     $file_format = Get::req('export_quest_select', DOTY_INT, 0);
 
 
-    $quests = array();
+    $quests = [];
 
     $re_quest = sql_query("
     SELECT idQuest, type_quest 
@@ -2141,9 +2141,9 @@ function exportquestqb()
     unset($supported_format[-1]);
 
     require_once(_lms_ . '/lib/lib.questcategory.php');
-    $quest_categories = array(
+    $quest_categories = [
         0 => $lang->def('_NONE')
-    );
+    ];
     $cman = new Questcategory();
     $arr = $cman->getCategory();
     foreach ($arr as $id_category => $name_category) {
@@ -2152,7 +2152,7 @@ function exportquestqb()
     unset($arr);
 
 
-    $title = array('index.php?modname=test&op=modtestgui&idTest=' . $idTest . '&back_url=' . $back_coded => $lang->def('_TEST_SECTION'), $lang->def('_EXPORT'));
+    $title = ['index.php?modname=test&op=modtestgui&idTest=' . $idTest . '&back_url=' . $back_coded => $lang->def('_TEST_SECTION'), $lang->def('_EXPORT')];
     cout(
         getTitleArea($title, 'quest_bank')
             . '<div class="std_block">'
@@ -2273,10 +2273,10 @@ function feedbackman()
     $categories[0] = Lang::t('_TEST_TOTAL_SCORE', 'test');
 
 
-    $res .= getTitleArea(array(
+    $res .= getTitleArea([
         $back_link_url => Lang::t('_TEST_SECTION', 'test'),
         Lang::t('_FEEDBACK_MANAGEMENT', 'test')
-    ), 'test')
+        ], 'test')
         . '<div class="std_block">'
         . getBackUi($back_link_url, Lang::t('_BACK'));
 
@@ -2303,19 +2303,19 @@ function feedbackman()
                 $tb = new Table(0, false);
 
                 $tb->addHead(
-                    array(
+                    [
                         Lang::t('_SCORE', 'test'),
                         Lang::t('_FEEDBACK_TEXT', 'test'),
                         Get::sprite('subs_mod', Lang::t('_MOD', 'standard'), Lang::t('_MOD', 'standard')),
                         Get::sprite('subs_del', Lang::t('_DEL', 'standard'), Lang::t('_DEL', 'standard'))
                         //'<span class="ico-sprite subs_mod"><span>'.Lang::t('_MOD', 'standard').'</span></span>',
                         //'<span class="ico-sprite subs_del"><span>'.Lang::t('_DEL', 'standard').'</span></span>',
-                    ),
-                    array('', '', 'image', 'image')
+                    ],
+                    ['', '', 'image', 'image']
                 );
 
                 foreach ($data[$cat_id] as $row) {
-                    $row_ln = array();
+                    $row_ln = [];
                     $row_ln[] = $row['from_score'] . ' - ' . $row['to_score'];
                     $row_ln[] = $row['feedback_txt'];
                     $row_ln[] = '<a class="ico-sprite subs_mod" href="' .
@@ -2436,18 +2436,18 @@ function addfbkrule()
     }
 
 
-    $res .= getTitleArea(array(
+    $res .= getTitleArea([
         $back_link_url => Lang::t('_TEST_SECTION', 'test'),
         $url_base . 'feedbackman' => Lang::t('_FEEDBACK_MANAGEMENT', 'test'),
         Lang::t('_ADD_FEEDBACK_RULE', 'test')
-    ), 'test')
+        ], 'test')
         . '<div class="std_block">'
         . getBackUi($back_link_url, Lang::t('_BACK'));
 
 
     $form_url = '';
 
-    $data = array();
+    $data = [];
     $data['rule_id'] = false;
     $data['test_id'] = $id_test;
     $data['category_id'] = $cat_id;
@@ -2490,11 +2490,11 @@ function editfbkrule()
     }
 
 
-    $res .= getTitleArea(array(
+    $res .= getTitleArea([
         $back_link_url => Lang::t('_TEST_SECTION', 'test'),
         $url_base . 'feedbackman' => Lang::t('_FEEDBACK_MANAGEMENT', 'test'),
         Lang::t('_MOD', 'test')
-    ), 'test')
+        ], 'test')
         . '<div class="std_block">'
         . getBackUi($back_link_url, Lang::t('_BACK'));
 

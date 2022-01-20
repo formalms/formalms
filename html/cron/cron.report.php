@@ -357,7 +357,7 @@ if ($lock_stream) {
                     $temp = new $class_name($data['id_report']);
                 } else {
                     $pg = new PluginManager('Report');
-                    $temp = $pg->get_plugin(strtolower($class_name), array($data['id_report']));
+                    $temp = $pg->get_plugin(strtolower($class_name), [$data['id_report']]);
                 }
 
 

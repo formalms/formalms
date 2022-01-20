@@ -31,7 +31,7 @@ function tagslist() {
 	$resources = $tags->getResourceByTags($id_tag, false, false, $ini, Get::sett('visuItem'));
 
 	$GLOBALS['page']->add(
-		getTitleArea(array($lang->def('_TAGS')), 'tags')
+		getTitleArea([$lang->def('_TAGS')], 'tags')
 		.'<div class="std_block">'
 		.'<div class="tag_list">'
 	, 'content');

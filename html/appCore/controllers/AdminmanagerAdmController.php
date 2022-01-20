@@ -26,16 +26,16 @@ class AdminmanagerAdmController extends AdmController
 		$this->model = new AdminmanagerAdm();
 		$this->json = new Services_JSON();
 		$this->acl_man =& Docebo::user()->getAclManager();
-		$this->permissions = array(
+		$this->permissions = [
 			'view' => checkPerm('view', true, 'adminmanager'),
 			'assign_profile'  => checkPerm('mod', true, 'adminmanager'),
 			'assign_users' => checkPerm('mod', true, 'adminmanager'),
 			'assign_courses' => checkPerm('mod', true, 'adminmanager')
-		);
+        ];
 	}
 
 	protected function _getSessionValue($index, $default = false) {
-		if (!isset($_SESSION['adminmanager'])) $_SESSION['adminmanager'] = array();
+		if (!isset($_SESSION['adminmanager'])) $_SESSION['adminmanager'] = [];
 		return isset($_SESSION['adminmanager'][$index]) ? $_SESSION['adminmanager'][$index] : $default;
 	}
 
@@ -67,11 +67,11 @@ class AdminmanagerAdmController extends AdmController
 			$rules_list_js .= ']';
 		}
 
-		$this->render('show', array(
+		$this->render('show', [
 			'filter_text' => $this->_getSessionValue('filter', ""),
 			'permissions' => $this->permissions,
 			'rules_list_js' => $rules_list_js
-		));
+        ]);
 	}
 
 	public function getAdmin()
@@ -96,7 +96,7 @@ class AdminmanagerAdmController extends AdmController
 		$classlocations_info = $this->model->preference->getMultipleAdminClasslocation($idst_list);
 
 		//format data retrieved from model
-		$output_list = array();
+		$output_list = [];
 		foreach ($array_group as $value) {
 			$id_user = $value['id_user'];
 
@@ -110,7 +110,7 @@ class AdminmanagerAdmController extends AdmController
 
 			$userid = $this->acl_man->relativeId($value['userid']);
 
-			$output_list[] = array(
+			$output_list[] = [
 				'id_user' => $id_user,
 				'userid' => Layout::highlight($userid, $filter_text),
 				'firstname' => Layout::highlight($value['firstname'], $filter_text),
@@ -120,11 +120,11 @@ class AdminmanagerAdmController extends AdmController
 				'has_users' => $has_users ? 1 : 0,
 				'has_courses' => $has_courses ? 1 : 0,
 				'has_classlocations' => $has_classlocations ? 1 : 0
-			);
+            ];
 		}
 
 		//produce output for datatable
-		$output = array(
+		$output = [
 			'totalRecords' => $total_group,
 			'startIndex' => $start_index,
 			'sort' => $sort,
@@ -132,7 +132,7 @@ class AdminmanagerAdmController extends AdmController
 			'rowsPerPage' => $results,
 			'results' => count($output_list),
 			'records' => $output_list
-		);
+        ];
 
 		echo $this->json->encode($output);
 	}
@@ -143,7 +143,7 @@ class AdminmanagerAdmController extends AdmController
 
 		$_SESSION['adminmanager']['filter'] = $filter;
 
-		$res = array('success' => true, 'filter' => $filter);
+		$res = ['success' => true, 'filter' => $filter];
 
 		echo $this->json->encode($res);
 	}
@@ -153,7 +153,7 @@ class AdminmanagerAdmController extends AdmController
 		$id_user = Get::req('id_user', DOTY_INT, 0);
 		$idst_profile = Get::req('idst_profile', DOTY_INT, 0);
 
-		$output = array();
+		$output = [];
 		if ($idst_profile <= 0) {
 			$result = $this->model->removeAdminAssociation($id_user);
 			$output['success'] = $result;
@@ -207,12 +207,12 @@ class AdminmanagerAdmController extends AdmController
 				$user_selector->resetSelection($old_association);
 			}
 
-			$user_selector->setUserFilter('exclude', array($this->acl_man->getAnonymousId()));
+			$user_selector->setUserFilter('exclude', [$this->acl_man->getAnonymousId()]);
 
-			$this->render('users', array(	'id_user' => $id_user,
+			$this->render('users', ['id_user' => $id_user,
 											'user_selector' => $user_selector,
 											'model' => $this->model,
-											'user_alredy_subscribed' => $old_association));
+											'user_alredy_subscribed' => $old_association]);
 		}
 	}
 
@@ -240,10 +240,10 @@ class AdminmanagerAdmController extends AdmController
 			$catalogue_selected = $course_selector->getCatalogueSelection($_POST);
 
 			if(isset($_POST['all_courses']) && $_POST['all_courses'] == 1)
-				$course_selected = array(0);
+				$course_selected = [0];
 
 			if(isset($_POST['all_courses']) && $_POST['all_courses'] == -1)
-				$course_selected = array(-1);
+				$course_selected = [-1];
 
 			if($this->model->saveCoursesAssociation($id_user, $course_selected, $coursepath_selected, $catalogue_selected))
 				Util::jump_to('index.php?r=adm/adminmanager/show&res=ok_ins');
@@ -269,12 +269,12 @@ class AdminmanagerAdmController extends AdmController
 				}
 			}
 
-			$this->render('courses', array(
+			$this->render('courses', [
 				'id_user' => $id_user,
 				'all_courses' => $all_courses,
 				'course_selector' => $course_selector,
 				'model' => $this->model
-			));
+            ]);
 		}
 	}
 
@@ -282,13 +282,13 @@ class AdminmanagerAdmController extends AdmController
 	public function classlocationsTask() {
 		$id_user = Get::req('id_user', DOTY_INT, 0);
 		$selection = $this->model->loadClasslocationsSelection($id_user);
-		$this->render('classlocations', array(
+		$this->render('classlocations', [
 			'id_user' => $id_user,
 			'selection' => $selection,
 			'num_selected' => count($selection),
 			'filter_text' => "",
 			'model' => $this->model
-		));
+        ]);
 	}
 
 
@@ -301,7 +301,7 @@ class AdminmanagerAdmController extends AdmController
 		$selection_str = Get::req('selection', DOTY_STRING, "");
 
 		if (!$selection_str)
-			$selection = array();
+			$selection = [];
 		else
 			$selection = explode(",", $selection_str);
 
@@ -311,7 +311,7 @@ class AdminmanagerAdmController extends AdmController
 
 
 	public function selectallclasslocationsTask() {
-		$output = array();
+		$output = [];
 
 		//instantiate locations model
 		$lmodel = new LocationAlms();
@@ -339,9 +339,9 @@ class AdminmanagerAdmController extends AdmController
 		$dir = Get::req('dir', DOTY_STRING, "asc");
 		$filter_text = Get::req('filter_text', DOTY_STRING, '');
 
-		$searchFilter = array(
+		$searchFilter = [
 			'text' => $filter_text
-		);
+        ];
 
 		//instantiate model
 		$lmodel = new LocationAlms();
@@ -361,18 +361,18 @@ class AdminmanagerAdmController extends AdmController
 
 		//prepare the data for sending
 		$acl_man = Docebo::user()->getAclManager();
-		$output_results = array();
+		$output_results = [];
 		if (is_array($list) && count($list)>0) {
 			foreach ($list as $idst=>$record) {
 				//prepare output record
-				$output_results[] = array(
+				$output_results[] = [
 					'id' => $record->id_location,
 					'location' => $record->location
-				);
+                ];
 			}
 		}
 
-		$output = array(
+		$output = [
 			'totalRecords' => $total,
 			'startIndex' => $startIndex,
 			'sort' => $sort,
@@ -380,7 +380,7 @@ class AdminmanagerAdmController extends AdmController
 			'rowsPerPage' => $rowsPerPage,
 			'results' => count($list),
 			'records' => $output_results
-		);
+        ];
 
 		echo $this->json->encode($output);
 	}

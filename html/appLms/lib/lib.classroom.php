@@ -62,8 +62,8 @@ class ClassroomManager {
 		require_once($GLOBALS["where_lms"]."/lib/lib.classlocation.php");
 		$clm=new ClassLocationManager();
 
-		$data_info=array();
-		$data_info["data_arr"]=array();
+		$data_info= [];
+		$data_info["data_arr"]= [];
 
 		$fields="*";
 		$qtxt ="SELECT ".$fields." FROM ".$this->_getMainTable()." as t1, ";
@@ -105,7 +105,7 @@ class ClassroomManager {
 		require_once($GLOBALS["where_lms"]."/lib/lib.classlocation.php");
 		$clm = new ClassLocationManager();
 
-		$data_info = array();
+		$data_info = [];
 
 		$qtxt = "
 		SELECT t1.idClassroom, t1.name, t2.location 
@@ -120,13 +120,13 @@ class ClassroomManager {
 		
 		while(list($id, $name, $location) = sql_fetch_row($q)) {
 
-			$data_info[$id] = array('classroom' => $name, 'location' => $location);
+			$data_info[$id] = ['classroom' => $name, 'location' => $location];
 		}
 		return $data_info;
 	}
 	
 	function getClassroomArray($include_any=FALSE) {
-		$res=array();
+		$res= [];
 
 		$classrooms=$this->getClassroomList(FALSE, FALSE);
 		$rooms_list=$classrooms["data_arr"];
@@ -144,7 +144,7 @@ class ClassroomManager {
 
 
 	function loadClassroomInfo($id) {
-		$res=array();
+		$res= [];
 		require_once($GLOBALS["where_lms"]."/lib/lib.classlocation.php");
 		$clm = new ClassLocationManager();
 		

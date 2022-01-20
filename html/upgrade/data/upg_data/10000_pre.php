@@ -36,15 +36,15 @@ function preUpgrade10000() {
 
 function upgrade_folders() {
 
-	$dirs_to_move=array();
+	$dirs_to_move= [];
 
 	// common dir to check
-	$dirs_to_move = array(
-		array(	'old' => 'files/doceboLms',
-				'new' => 'files/appLms'),
-		array(	'old' => 'files/doceboCore',
-				'new' => 'files/appCore')
-		);
+	$dirs_to_move = [
+		['old' => 'files/doceboLms',
+				'new' => 'files/appLms'],
+		['old' => 'files/doceboCore',
+				'new' => 'files/appCore']
+    ];
 
 	foreach($dirs_to_move as $move_dir) {
 		   $GLOBALS['debug'] .=  "<br/>" . "Check Old folder '". $move_dir['old'] ."'";
@@ -63,12 +63,12 @@ function upgrade_folders() {
 
 function create_folders() {
 
-	$dirs_to_create=array();
+	$dirs_to_create= [];
 
 	// common dir to check
-	$dirs_to_create = array(
+	$dirs_to_create = [
 		'files/appLms/htmlpages'
-		);
+    ];
 
 	foreach($dirs_to_create as $new_dir) {
 

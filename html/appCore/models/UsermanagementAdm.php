@@ -35,7 +35,7 @@ class UsermanagementAdm extends Model
 
 	public function getPerm()
 	{
-		return array(
+		return [
 			'view'					=> 'standard/view.png',
 			'add'					=> 'standard/add.png',
 			'mod'					=> 'standard/edit.png',
@@ -46,7 +46,7 @@ class UsermanagementAdm extends Model
 			'add_org'				=> 'standard/add.png',
 			'mod_org'                               => 'standard/modadmin.png',
 			'del_org'				=> 'standard/delete.png'
-		);
+        ];
 	}
 
 	public function getOrgPath($idOrg)
@@ -60,7 +60,7 @@ class UsermanagementAdm extends Model
 			for ($i = 0; $i < count($list); $i++) $list[$i] = (int)$list[$i];
 
 			//languages
-			$names = array();
+			$names = [];
 			$query = "SELECT id_dir, translation FROM %adm_org_chart WHERE lang_code='" . getLanguage() . "'";
 			$res = $this->db->query($query);
 			while (list($id_dir, $translation) = $this->db->fetch_row($res)) {
@@ -87,12 +87,12 @@ class UsermanagementAdm extends Model
 
 	protected function _getOrgGroups($idOrg, $descendants)
 	{
-		$output = array();
+		$output = [];
 		if ($descendants) {
 			list($left, $right) = $this->getFolderLimits($idOrg);
 			$query = "SELECT idOrg FROM %adm_org_chart_tree WHERE iLeft>=" . $left . " AND iRight<=" . $right;
 			$res = $this->db->query($query);
-			$arr_org = array();
+			$arr_org = [];
 			while (list($id_org) = $this->db->fetch_row($res)) {
 				$arr_org[] = "'/oc_" . $id_org . "'";
 				$arr_org[] = "'/ocd_" . $id_org . "'";
@@ -118,12 +118,12 @@ class UsermanagementAdm extends Model
     public static function getOrgGroups($idOrg, $descendants)
     {
         $db = DbConn::getInstance();
-        $output = array();
+        $output = [];
         if ($descendants) {
             list($left, $right) = self::_getFolderLimits($idOrg);
             $query = "SELECT idOrg FROM %adm_org_chart_tree WHERE iLeft>=" . $left . " AND iRight<=" . $right;
             $res = $db->query($query);
-            $arr_org = array();
+            $arr_org = [];
             while (list($id_org) = $db->fetch_row($res)) {
                 $arr_org[] = "'/oc_" . $id_org . "'";
                 $arr_org[] = "'/ocd_" . $id_org . "'";
@@ -149,8 +149,8 @@ class UsermanagementAdm extends Model
 
 	public function _getRootGroups()
 	{
-		$output = array();
-		$arr_org = array("'/oc_0'", "'/ocd_0'");
+		$output = [];
+		$arr_org = ["'/oc_0'", "'/ocd_0'"];
 		$query = "SELECT idst FROM %adm_group WHERE groupid IN (" . implode(",", $arr_org) . ")";
 		$res = $this->db->query($query);
 		while (list($idg) = $this->db->fetch_row($res)) {
@@ -160,7 +160,7 @@ class UsermanagementAdm extends Model
 	}
 
 
-	public function getUsersList($idOrg, $descendants = false, $pagination = array(), $filter = false, $usersFilter = false, $learning_filter = 'none')
+	public function getUsersList($idOrg, $descendants = false, $pagination = [], $filter = false, $usersFilter = false, $learning_filter = 'none')
 	{
 
 		require_once(_adm_ . '/lib/lib.field.php');
@@ -173,7 +173,7 @@ class UsermanagementAdm extends Model
 		$fields = $fman->getAllFields();
 
 		//validate parameters
-		if (!is_array($pagination)) $pagination = array();
+		if (!is_array($pagination)) $pagination = [];
 
 		//read values for pagination, or use default if a value is not set
 		$startIndex = (isset($pagination['startIndex']) ? $pagination['startIndex'] : 0);
@@ -235,8 +235,8 @@ class UsermanagementAdm extends Model
 		$dynFilter		= isset($filter['dyn_filter']) ? $filter['dyn_filter'] : false;
 
 		//list of users idst to apply in main query as a filter
-		$admin_info['users'] = array();
-		$usersList = array();
+		$admin_info['users'] = [];
+		$usersList = [];
 
 		//detect admin level, if requested
 		$is_subadmin = false;
@@ -269,17 +269,17 @@ class UsermanagementAdm extends Model
 		$queryUserFilter_3 = "";
 		if ($is_subadmin && $is_dynfiltered) {
 			$t_arr = array_intersect($usersList, $admin_info['users']);
-			if (count($t_arr) <= 0) return array(); //return a 0-length array, because at this point the selection is void and no more query is necessary
+			if (count($t_arr) <= 0) return []; //return a 0-length array, because at this point the selection is void and no more query is necessary
 			$queryUserFilter_1 .= " ) AND u.idst IN (" . implode(',', $t_arr) . ") ";
 			$queryUserFilter_2 .= " ) AND gm.idstMember IN (" . implode(',', $t_arr) . ") ";
 			$queryUserFilter_3 .= " AND gm.idstMember IN (" . implode(',', $t_arr) . ") ";
 		} elseif ($is_subadmin && !$is_dynfiltered) {
-			if (count($admin_info['users']) <= 0) return array(); //if (count($admin_tree) <= 0) return array(); //return a 0-length array, because at this point the selection is void and no more query is necessary
+			if (count($admin_info['users']) <= 0) return []; //if (count($admin_tree) <= 0) return array(); //return a 0-length array, because at this point the selection is void and no more query is necessary
 			$queryUserFilter_1 .= " AND u.idst IN (" . implode(',', $admin_info['users']) . ") ) "; //" AND gm.idst IN (".implode(',', $admin_tree).") ) ";
 			$queryUserFilter_2 .= " AND u.idst IN (" . implode(',', $admin_info['users']) . ") ) "; //" AND gm.idst IN (".implode(',', $admin_tree).") ) ";
 			$queryUserFilter_3 .= " AND u.idst IN (" . implode(',', $admin_info['users']) . ") "; //" AND gm.idst IN (".implode(',', $admin_tree).") ";
 		} elseif (!$is_subadmin && $is_dynfiltered) {
-			if (count($usersList) <= 0) return array(); //return a 0-length array, because at this point the selection is void and no more query is necessary
+			if (count($usersList) <= 0) return []; //return a 0-length array, because at this point the selection is void and no more query is necessary
 			$queryUserFilter_1 .= " AND u.idst IN (" . implode(',', $usersList) . ") ) ";
 			$queryUserFilter_2 .= " AND u.idst IN (" . implode(',', $usersList) . ") ) ";
 			$queryUserFilter_3 .= " AND u.idst IN (" . implode(',', $usersList) . ") ";
@@ -300,7 +300,7 @@ class UsermanagementAdm extends Model
 						require_once(_lms_ . '/lib/lib.course.php');
 						$course_man = new Man_Course();
 						$all_courses = $course_man->getUserCourses(Docebo::user()->getIdSt());
-						$res = array();
+						$res = [];
 						foreach ($all_courses as $id_course => $name) {
 							$arr_idst_group = $this->aclManager->getGroupsIdstFromBasePath('/lms/course/' . $id_course . '/subscribed/');
 							$res = array_merge($res, $arr_idst_group);
@@ -330,7 +330,7 @@ class UsermanagementAdm extends Model
 		if ($idOrg != 0) {
 			$id_groups = $this->_getOrgGroups($idOrg, $descendants);
 			if ($is_subadmin) $id_groups = array_intersect($id_groups, $admin_info['groups']);
-			if (!$id_groups || (is_array($id_groups) && count($id_groups) <= 0)) return array();
+			if (!$id_groups || (is_array($id_groups) && count($id_groups) <= 0)) return [];
 		} else {
 			if ($is_subadmin) {
 				$id_groups = $admin_info['groups'];
@@ -488,12 +488,12 @@ class UsermanagementAdm extends Model
 				break;
 		}
 		// Retrive all the user selected
-		$users_rows = array();
+		$users_rows = [];
 
 		$res = $this->db->query($query);
 		while ($row = $this->db->fetch_obj($res)) {
 
-			$users_rows[$row->idst] = array(
+			$users_rows[$row->idst] = [
 				'idst' => $row->idst,
 				'userid' => $row->userid,
 				'firstname' => $row->firstname,
@@ -502,7 +502,7 @@ class UsermanagementAdm extends Model
 				'register_date' => $row->register_date,
 				'lastenter' => $row->lastenter,
 				'valid' => $row->valid
-			);
+            ];
 		} //end while
 
 		//retrieve which fields are required
@@ -520,7 +520,7 @@ class UsermanagementAdm extends Model
 				$countries = false;
 
 				//get values to add in the row
-				$custom_values = array();
+				$custom_values = [];
 				while ($frow = $this->db->fetch_obj($res_fields)) {
 					if (!in_array($frow->id_common, $custom_fields)) $custom_fields[] = $frow->id_common;
 
@@ -545,7 +545,7 @@ class UsermanagementAdm extends Model
 									//retrieve translations for dropdowns fields
 									$query_fields_sons = "SELECT idField, id_common_son, translation FROM %adm_field_son WHERE lang_code = '" . getLanguage() . "' ORDER BY idField, sequence";
 									$res_fields_sons = $this->db->query($query_fields_sons);
-									$field_sons = array();
+									$field_sons = [];
 									while ($fsrow = $this->db->fetch_obj($res_fields_sons)) {
 										$field_sons[$fsrow->idField][$fsrow->id_common_son] = $fsrow->translation;
 									}
@@ -562,7 +562,7 @@ class UsermanagementAdm extends Model
 									//retrieve translations for dropdowns fields
 									$query_fields_sons = "SELECT idField, id_common_son, translation FROM %adm_field_son WHERE lang_code = '" . getLanguage() . "' ORDER BY idField, sequence";
 									$res_fields_sons = $this->db->query($query_fields_sons);
-									$field_sons = array();
+									$field_sons = [];
 									while ($fsrow = $this->db->fetch_obj($res_fields_sons)) {
 										$field_sons[$fsrow->idField][$fsrow->id_common_son] = $fsrow->translation;
 									}
@@ -579,7 +579,7 @@ class UsermanagementAdm extends Model
 									//retrieve countries names
 									$query_countries = "SELECT id_country, name_country FROM %adm_country ORDER BY name_country";
 									$res_countries = $this->db->query($query_countries);
-									$countries = array();
+									$countries = [];
 									while ($crow = $this->db->fetch_obj($res_countries)) {
 										$countries[$crow->id_country] = $crow->name_country;
 									}
@@ -608,7 +608,7 @@ class UsermanagementAdm extends Model
 				$idst_org = $acl_man->getGroupST('oc_' . $idOrg);
 				$query = "SELECT idstMember FROM %adm_group_members WHERE idst = " . $idst_org . " AND idstMember IN (" . implode(",", array_keys($users_rows)) . ")";
 				$res = $this->db->query($query);
-				$arr_no_descendants = array();
+				$arr_no_descendants = [];
 				while (list($idst_user) = $this->db->fetch_row($res))
 					$arr_no_descendants[] = $idst_user;
 				foreach ($users_rows as $idst => $value)
@@ -655,8 +655,8 @@ class UsermanagementAdm extends Model
 		$acl_man->include_suspended = TRUE;
 
 		//list of users idst to apply in main query as a filter
-		$admin_info = array('users' => array());
-		$usersList = array();
+		$admin_info = ['users' => []];
+		$usersList = [];
 
 		$is_subadmin = false;
 		if ($usersFilter) {
@@ -737,7 +737,7 @@ class UsermanagementAdm extends Model
 						require_once(_lms_ . '/lib/lib.course.php');
 						$course_man = new Man_Course();
 						$all_courses = $course_man->getUserCourses(Docebo::user()->getIdSt());
-						$res = array();
+						$res = [];
 						foreach ($all_courses as $id_course => $name) {
 							$arr_idst_group = $this->aclManager->getGroupsIdstFromBasePath('/lms/course/' . $id_course . '/subscribed/');
 							$res = array_merge($res, $arr_idst_group);
@@ -771,8 +771,8 @@ class UsermanagementAdm extends Model
 		$dynFilter = isset($filter['dyn_filter']) ? $filter['dyn_filter'] : false;
 
 		//list of users idst to apply in main query as a filter
-		$admin_info = array('users' => array());
-		$usersList = array();
+		$admin_info = ['users' => []];
+		$usersList = [];
 
 		$acl_man = Docebo::user()->getACLManager();
 		$acl_man->include_suspended = TRUE;
@@ -824,13 +824,13 @@ class UsermanagementAdm extends Model
 		$queryUserFilter = "";
 		if ($is_subadmin && $is_dynfiltered) {
 			$t_arr = array_intersect($usersList, $admin_info['users']);
-			if (count($t_arr) <= 0) return array(); //return a 0-length array, because at this point the selection is void and no more query is necessary
+			if (count($t_arr) <= 0) return []; //return a 0-length array, because at this point the selection is void and no more query is necessary
 			$queryUserFilter .= " AND u.idst IN (" . implode(',', $t_arr) . ") ";
 		} elseif ($is_subadmin && !$is_dynfiltered) {
-			if (count($admin_info['users']) <= 0) return array(); //return a 0-length array, because at this point the selection is void and no more query is necessary
+			if (count($admin_info['users']) <= 0) return []; //return a 0-length array, because at this point the selection is void and no more query is necessary
 			$queryUserFilter .= " AND u.idst IN (" . implode(',', $admin_info['users']) . ") ";
 		} elseif (!$is_subadmin && $is_dynfiltered) {
-			if (count($usersList) <= 0) return array(); //return a 0-length array, because at this point the selection is void and no more query is necessary
+			if (count($usersList) <= 0) return []; //return a 0-length array, because at this point the selection is void and no more query is necessary
 			$queryUserFilter .= " AND u.idst IN (" . implode(',', $usersList) . ") ";
 		} //else: no filter to apply
 
@@ -839,7 +839,7 @@ class UsermanagementAdm extends Model
 		if ($idOrg != 0) {
 			$id_groups = $this->_getOrgGroups($idOrg, $descendants);
 			if ($is_subadmin) $id_groups = array_intersect($id_groups, $admin_info['groups']);
-			if (!$id_groups || (is_array($id_groups) && count($id_groups) <= 0)) return array();
+			if (!$id_groups || (is_array($id_groups) && count($id_groups) <= 0)) return [];
 		} else {
 			if ($is_subadmin) {
 				$id_groups = $admin_info['groups'];
@@ -872,7 +872,7 @@ class UsermanagementAdm extends Model
 		}
 
 		// Retrive all the user selected
-		$output = array();
+		$output = [];
 		$res = $this->db->query($query);
 		while (list($idst) = $this->db->fetch_row($res))
 			$output[] = $idst;
@@ -885,7 +885,7 @@ class UsermanagementAdm extends Model
 	{
 		require_once(_adm_ . '/lib/lib.field.php');
 
-		if (is_numeric($users)) $users = array((int)$users);
+		if (is_numeric($users)) $users = [(int)$users];
 		if (!is_array($users)) return false;
 
 		$fman = new FieldList();
@@ -904,10 +904,10 @@ class UsermanagementAdm extends Model
 		$res = $this->db->query($query);
 		if (!$res) return false;
 
-		$output = array();
+		$output = [];
 		$fetch = ($objs ? 'fetch_obj' : 'fetch_assoc');
 		while ($row = $this->db->$fetch($res)) {
-			$values = array();
+			$values = [];
 
 			if ($objs)
 				$row->level = $levels_idst[$row->level];
@@ -1099,7 +1099,7 @@ class UsermanagementAdm extends Model
 					if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
 						$subadmin_folder = $this->getAdminFolder(Docebo::user()->getIdst(), true);
 						if ($subadmin_folder > 0) {
-							if (!is_array($folders)) $folders = array();
+							if (!is_array($folders)) $folders = [];
 							$folders[] = $subadmin_folder;
 						}
 					}
@@ -1114,7 +1114,7 @@ class UsermanagementAdm extends Model
 							$acl_man->addToGroup($oc_sn, $user_idst);
 							$acl_man->addToGroup($ocd_sn, $user_idst);
 
-							$enrollrules->newRules('_NEW_USER', array($user_idst), $lang_code, $folder);
+							$enrollrules->newRules('_NEW_USER', [$user_idst], $lang_code, $folder);
 						}
 					}
 				}
@@ -1241,9 +1241,9 @@ class UsermanagementAdm extends Model
 	 */
 	public function deleteUsers($users)
 	{
-		$output = array();
+		$output = [];
 		if (is_numeric($users) && $users > 0) {
-			$users = array($users);
+			$users = [$users];
 		}
 		if (is_array($users)) {
 			$acl_man = Docebo::user()->getAclManager();
@@ -1292,14 +1292,14 @@ class UsermanagementAdm extends Model
 			$adminManager = new AdminPreference();
 			$admtree = $adminManager->getAdminTree($admin_idst);
 			$admtree = $acl_man->getGroupsFromMixedIdst($admtree);
-			$tmp_admin_tree = array();
+			$tmp_admin_tree = [];
 			foreach ($admtree as $id_group)
 				$tmp_admin_tree = array_merge($tmp_admin_tree, $acl_man->getGroupGDescendants($id_group));
 			$admtree = $tmp_admin_tree;
 			//$admtree = $this->aclManager->getGroupsFromMixedIdst($admtree);
 			//$admtree = $this->aclManager->getGroupGMembers($admtree);
-			$this->orgCache = array();
-			$orgtree = array();
+			$this->orgCache = [];
+			$orgtree = [];
 			if (count($admtree) > 0) {
 				$query = "SELECT idst, groupid FROM %adm_group WHERE idst IN (" . implode(',', $admtree) . ")"; //equal to getGroupsFromMixedIdst
 				$res = $this->db->query($query);
@@ -1316,7 +1316,7 @@ class UsermanagementAdm extends Model
 					$query = "SELECT idOrg, iLeft, iRight FROM %adm_org_chart_tree WHERE idOrg IN (" . implode(',', $orgtree) . ")";
 					$res = $this->db->query($query);
 					while (list($idorg, $left, $right) = $this->db->fetch_row($res)) {
-						$this->orgCache[$idorg] = array($left, $right);
+						$this->orgCache[$idorg] = [$left, $right];
 					}
 				}
 			}
@@ -1359,7 +1359,7 @@ class UsermanagementAdm extends Model
 			WHERE t1.idParent = '" . (int)$id_node . "' ORDER BY t2.translation";
 		$re = $this->db->query($search_query);
 
-		$output = array();
+		$output = [];
 		while (list($id, $path, $translation, $left, $right, $code) = $this->db->fetch_row($re)) {
 			$is_node_visible = true;
 
@@ -1398,7 +1398,7 @@ class UsermanagementAdm extends Model
 
 			//set node for output
 			if ($is_node_visible)
-				$output[] = array('id' => $id, 'label' => $label, 'is_leaf' => $is_leaf, 'count_content' => $count, 'style' => $style);
+				$output[] = ['id' => $id, 'label' => $label, 'is_leaf' => $is_leaf, 'count_content' => $count, 'style' => $style];
 		}
 
 		return array_values($output);
@@ -1407,7 +1407,7 @@ class UsermanagementAdm extends Model
 
 	public function getOrgChartInitialNodes($idOrg, $userFilter = false)
 	{
-		$results = array();
+		$results = [];
 
 		$is_subadmin = false;
 		if ($userFilter) {
@@ -1429,7 +1429,7 @@ class UsermanagementAdm extends Model
 			if ($folder > 0) {
 				for ($i = 0; $i < count($ref); $i++) {
 					if ($ref[$i]['node']['id'] == $folder) {
-						$ref[$i]['children'] = array();
+						$ref[$i]['children'] = [];
 						$ref = &$ref[$i]['children'];
 						break;
 					}
@@ -1458,14 +1458,14 @@ class UsermanagementAdm extends Model
 							$label = $code_label . $translation;
 							$is_leaf = false;
 							$count = $count_subnodes;
-							$node_options = array();
+							$node_options = [];
 							$style = 'disabled';
 						} else {
 							//not forbidden, check as normal
 							$label = $code_label . $translation; //end(explode('/', $path));
 							$is_leaf = !$has_visible_subnodes;
 							$count_subnodes = $count_subnodes;
-							$node_options = array();
+							$node_options = [];
 							$style = false;
 						}
 					}
@@ -1473,22 +1473,22 @@ class UsermanagementAdm extends Model
 
 					$is_leaf = ($right - $left) == 1;
 					$label = $code_label . $translation;
-					$node_options = array(); //getNodeOptions($id_org, $is_leaf);
+					$node_options = []; //getNodeOptions($id_org, $is_leaf);
 					$count_subnodes = (int)(($right - $left - 1) / 2);
 					$style = false;
 				}
 
 				if ($is_node_visible)
-					$ref[] = array(
-						'node' => array(
+					$ref[] = [
+						'node' => [
 							'id' => $id_org,
 							'label' => $label,
 							'is_leaf' => $is_leaf,
 							'count_content' => $count_subnodes,
 							'options' => $node_options,
 							'style' => $style
-						)
-					);
+                        ]
+                    ];
 			}
 		}
 
@@ -1498,7 +1498,7 @@ class UsermanagementAdm extends Model
 
 	public function getOrgchartIdstConversionTable()
 	{
-		$_arr_groupid = array('/oc_0', '/ocd_');
+		$_arr_groupid = ['/oc_0', '/ocd_'];
 
 		$query = "SELECT idOrg FROM %adm_org_chart_tree";
 		$res = $this->db->query($query);
@@ -1507,10 +1507,10 @@ class UsermanagementAdm extends Model
 			$_arr_groupid[] = '/ocd_' . $idOrg;
 		}
 
-		$output = array(
-			array(), //single groups (/oc_*)
-			array()  //descendants (/ocd_*)
-		);
+		$output = [
+			[], //single groups (/oc_*)
+			[]  //descendants (/ocd_*)
+        ];
 		$query = "SELECT * FROM %adm_group WHERE groupid IN ('" . implode("','", $_arr_groupid) . "')";
 		$res = $this->db->query($query);
 		while ($obj = $this->db->fetch_obj($res)) {
@@ -1573,7 +1573,7 @@ class UsermanagementAdm extends Model
 	 */
 	public function getOpenedFolders($idOrg)
 	{
-		$folders = array(0);
+		$folders = [0];
 		if ($idOrg <= 0) return $folders;
 		list($ileft, $iright) = $this->getFolderLimits($idOrg);
 		$query = "SELECT idOrg FROM %adm_org_chart_tree WHERE iLeft<=" . (int)$ileft . " AND iRight>=" . (int)$iright . " AND idOrg>0 ORDER BY iLeft";
@@ -1595,11 +1595,11 @@ class UsermanagementAdm extends Model
 	public function getAncestorInfoFolders($idOrg)
 	{
 
-		$folders = array(
-			'id_org' => array(),
-			'id_oc' => array(),
-			'id_ocd' => array(),
-		);
+		$folders = [
+			'id_org' => [],
+			'id_oc' => [],
+			'id_ocd' => [],
+        ];
 		if ($idOrg <= 0) return $folders;
 		list($ileft, $iright) = $this->getFolderLimits($idOrg);
 		$query = "SELECT idOrg, idst_oc, idst_ocd FROM %adm_org_chart_tree WHERE iLeft<=" . (int)$ileft . " AND iRight>=" . (int)$iright . " AND idOrg>0 ORDER BY iLeft";
@@ -1623,7 +1623,7 @@ class UsermanagementAdm extends Model
 	 */
 	public function getFolderGroups($idOrg)
 	{
-		$res = array();
+		$res = [];
 		$query = "SELECT idst_oc, idst_ocd FROM %adm_org_chart_tree
 			WHERE idOrg = '" . (int)$idOrg . "'";
 
@@ -1646,7 +1646,7 @@ class UsermanagementAdm extends Model
 	public function getAllFolders($use_as_key = false, $descendantof = false)
 	{
 
-		$folders = array();
+		$folders = [];
 		switch ($use_as_key) {
 			case 'code':
 				$use_as_key = 'code';
@@ -1693,10 +1693,10 @@ class UsermanagementAdm extends Model
 	public function getInfoFolders($id_groups, $language = false)
 	{
 
-		$folders = array(
-			'id_org' => array(),
-			'idst' => array()
-		);
+		$folders = [
+			'id_org' => [],
+			'idst' => []
+        ];
 
 		$groups = [];
 		foreach ($id_groups as $id_group) {
@@ -1733,7 +1733,7 @@ class UsermanagementAdm extends Model
 			if (count($userFilter) > 0) {
 				$query_filter .= " AND t1.idOrg IN (" . implode(',', $userFilter) . ")";
 			} else
-				return array();
+				return [];
 		}
 
 		$lang_code = ($language == false ? getLanguage() : $language);
@@ -1743,9 +1743,9 @@ class UsermanagementAdm extends Model
 			WHERE t1.idParent = '" . (int)$idOrg . "' " . $query_filter . " ORDER BY t2.translation";
 		$re = $this->db->query($search_query);
 
-		$output = array();
+		$output = [];
 		while (list($id, $parent, $path, $level, $ileft, $iright, $translation, $code) = $this->db->fetch_row($re)) {
-			$output[] = array(
+			$output[] = [
 				$id,
 				$parent,
 				$path,
@@ -1754,7 +1754,7 @@ class UsermanagementAdm extends Model
 				$iright,
 				$translation,
 				$code
-			);
+            ];
 		}
 
 		return $output;
@@ -1768,10 +1768,10 @@ class UsermanagementAdm extends Model
 			WHERE idOrg IN (" . implode(',', $org_list) . ") ";
 		$re = $this->db->query($search_query);
 
-		$output = array();
+		$output = [];
 		while (list($id, $oc, $ocd) = $this->db->fetch_row($re)) {
 
-			$output[$id] = array($oc, $ocd);
+			$output[$id] = [$oc, $ocd];
 		}
 		return $output;
 	}
@@ -1784,14 +1784,14 @@ class UsermanagementAdm extends Model
 		if ($idOrg <= 0) { //root node, not present in DB, but it's "virtual"
 			list($left, $right) = $this->getFolderLimits(0);
 			if ($array) {
-				return array(
+				return [
 					'idOrg' => 0,
 					'idParent' => 0,
 					'path' => '/root/',
 					'lev' => 0,
 					'iLeft' => $left,
 					'iRight' => $right
-				);
+                ];
 			} else {
 				$obj = new stdClass();
 				$obj->idOrg = 0;
@@ -1834,7 +1834,7 @@ class UsermanagementAdm extends Model
 	public function getAllFolderNames($only_with_code = false)
 	{
 
-		$tree_codes = array();
+		$tree_codes = [];
 		$query = "SELECT t1.idOrg, t1.code, t2.translation "
 			. "FROM %adm_org_chart_tree as t1 JOIN %adm_org_chart as t2 "
 			. "ON ( t1.idOrg = t2.id_dir ) "
@@ -1852,7 +1852,7 @@ class UsermanagementAdm extends Model
 	public function getAllFolderCode()
 	{
 
-		$tree_codes = array();
+		$tree_codes = [];
 		$query = "SELECT idOrg, code FROM %adm_org_chart_tree WHERE 1";
 		if (!$res = $this->db->query($query)) return $tree_codes;
 		while (list($id, $code) = $this->db->fetch_row($res)) {
@@ -1868,7 +1868,7 @@ class UsermanagementAdm extends Model
 	public function getFoldersFromCode($code)
 	{
 
-		$tree_folders = array();
+		$tree_folders = [];
 		$query = "SELECT idOrg FROM %adm_org_chart_tree WHERE code = '" . $code . "' ";
 		if (!$res = $this->db->query($query)) return $tree_folders;
 		while (list($id) = $this->db->fetch_row($res)) {
@@ -1888,7 +1888,7 @@ class UsermanagementAdm extends Model
 
 		$query = "SELECT * FROM %adm_org_chart WHERE id_dir=" . (int)$idOrg;
 		$res = $this->db->query($query);
-		$output = ($array ? array() : new stdClass());
+		$output = ($array ? [] : new stdClass());
 		while ($row = $this->db->fetch_obj($res)) {
 			if ($array)
 				$output[$row->lang_code] = $row->translation;
@@ -1941,7 +1941,7 @@ class UsermanagementAdm extends Model
 			$level = $parent->lev + 1;
 
 			//$this->db->query("START TRANSACTION");
-			$new_limits = array('iLeft' => $parent->iRight, 'iRight' => $parent->iRight);
+			$new_limits = ['iLeft' => $parent->iRight, 'iRight' => $parent->iRight];
 
 			//updating left limits
 			$query = "UPDATE %adm_org_chart_tree SET iRight=iRight+2 WHERE iRight>=" . $new_limits['iRight'];
@@ -1985,7 +1985,7 @@ class UsermanagementAdm extends Model
 				$res = $this->db->query($query);
 
 				//insert translations in database
-				$conditions = array();
+				$conditions = [];
 				foreach ($langs as $lang_code => $translation) { //TO DO: check if lang_code exists ...
 					$conditions[] = "(" . (int)$id . ", '" . $lang_code . "', '" . $translation . "')";
 				}
@@ -2011,14 +2011,14 @@ class UsermanagementAdm extends Model
 		if ($idOrg <= 0) return false;
 
 		list($left, $right) = $this->getFolderLimits($idOrg);
-		$limits = array('iLeft' => $left, 'iRight' => $right);
+		$limits = ['iLeft' => $left, 'iRight' => $right];
 		if ($onlyLeaf) {
 			if (((int)$limits['iRight'] - (int)$limits['iLeft']) > 1) return FALSE;
 		}
 
 		$query = "SELECT idOrg FROM %adm_org_chart_tree WHERE iLeft>=" . $limits['iLeft'] . " AND iRight<=" . $limits['iRight'];
 		$res = $this->db->query($query);
-		$nodes = array();
+		$nodes = [];
 		while (list($node) = $this->db->fetch_row($res)) $nodes[] = $node;
 
 		$query = "DELETE FROM %adm_org_chart_tree WHERE iLeft>=" . $limits['iLeft'] . " AND iRight<=" . $limits['iRight'];
@@ -2221,7 +2221,7 @@ class UsermanagementAdm extends Model
 		$output = false;
 		if (is_array($langs)) {
 			// retrive previous saved languages
-			$prev_lang = array();
+			$prev_lang = [];
 			$re = $this->db->query("SELECT lang_code FROM %adm_org_chart WHERE id_dir = " . (int)$idOrg);
 			while (list($lang_code) = $this->db->fetch_row($re)) {
 				$prev_lang[$lang_code] = $lang_code;
@@ -2299,7 +2299,7 @@ class UsermanagementAdm extends Model
 		$res = $this->db->query($query);
 
 		if ($res) {
-			$output = array();
+			$output = [];
 			while (list($user) = $this->db->fetch_row($res)) {
 				$output[] = $user;
 			}
@@ -2337,7 +2337,7 @@ class UsermanagementAdm extends Model
 	public function searchUsersByUserid($query, $limit = false, $filter = false)
 	{
 		if ((int)$limit <= 0) $limit = Get::sett('visuItem', 25);
-		$output = array();
+		$output = [];
 
 		$_qfilter = "";
 		if ($filter) {
@@ -2386,12 +2386,12 @@ class UsermanagementAdm extends Model
                 }
             }
 
-            $array_subst = array(
+            $array_subst = [
                 '[url]' => Get::site_url(),
                 '[userid]' => $this->aclManager->getUserid($userid),
                 '[dynamic_link]' => getCurrentDomain($reg_code) ?: Get::site_url(),
                 '[password]' => $new_password
-            );
+            ];
 
             require_once(_base_ . '/lib/lib.eventmanager.php');
             $msg_composer = new EventMessageComposer();
@@ -2401,8 +2401,8 @@ class UsermanagementAdm extends Model
 
             $msg_composer->setBodyLangText('sms', '_MODIFIED_USER_TEXT_SMS', $array_subst);
             if(!empty($new_password)){
-                $msg_composer->setBodyLangText('email', '_PASSWORD_CHANGED', array('[password]' => $new_password));
-                $msg_composer->setBodyLangText('sms', '_PASSWORD_CHANGED_SMS', array('[password]' => $new_password));
+                $msg_composer->setBodyLangText('email', '_PASSWORD_CHANGED', ['[password]' => $new_password]);
+                $msg_composer->setBodyLangText('sms', '_PASSWORD_CHANGED_SMS', ['[password]' => $new_password]);
             }
 
             createNewAlert(	'UserMod', 'directory', 'edit', '1', 'User '.$userid.' was modified',
@@ -2459,7 +2459,7 @@ class UsermanagementAdm extends Model
 		require_once(_base_ . '/lib/lib.platform.php');
 		require_once(_base_ . '/lib/lib.eventmanager.php');
 
-		if (is_numeric($arr_idst)) $arr_idst = array($arr_idst); //handle single user case
+		if (is_numeric($arr_idst)) $arr_idst = [$arr_idst]; //handle single user case
 		if (!is_array($arr_idst)) return false; //invalid user data
 		if (count($arr_idst) <= 0) return true; //0 users operation: always "successfull"
 
@@ -2467,7 +2467,7 @@ class UsermanagementAdm extends Model
 		$idst_oc = $this->aclManager->getGroupST('oc_0');
 		$idst_ocd = $this->aclManager->getGroupST('ocd_0');
 		$uinfo = $this->aclManager->getTempUsers($arr_idst, false);
-		$approved = array();
+		$approved = [];
 
 		foreach ($arr_idst as $idst) {
 			$res = $this->aclManager->registerUser(
@@ -2501,7 +2501,7 @@ class UsermanagementAdm extends Model
 
 		if (!empty($approved)) {
 			$pl_man = &PlatformManager::createInstance();
-			$array_subst = array('[url]' => Get::site_url()); //$GLOBALS[$pl_man->getHomePlatform()]['url']);
+			$array_subst = ['[url]' => Get::site_url()]; //$GLOBALS[$pl_man->getHomePlatform()]['url']);
 			$msg_composer2 = new EventMessageComposer();
 			$msg_composer2->setSubjectLangText('email', '_REGISTERED_USER_SBJ', false);
 			$msg_composer2->setBodyLangText('email', '_APPROVED_USER_TEXT', $array_subst);
@@ -2534,7 +2534,7 @@ class UsermanagementAdm extends Model
 
 		$res = $this->db->query($query);
 
-		$output = array();
+		$output = [];
 		if ($res) {
 			while (list($idst) = $this->db->fetch_row($res)) {
 				$output[] = (int)$idst;
@@ -2568,9 +2568,9 @@ class UsermanagementAdm extends Model
 		return $output;
 	}
 
-	public function getWaitingUsersList($pagination = array(), $filter = false)
+	public function getWaitingUsersList($pagination = [], $filter = false)
 	{
-		if (!is_array($pagination)) $pagination = array();
+		if (!is_array($pagination)) $pagination = [];
 
 		$startIndex = (isset($pagination['startIndex']) ? $pagination['startIndex'] : 0);
 		$results = (isset($pagination['results']) ? $pagination['results'] : Get::sett('visuItem', 25));
@@ -2630,7 +2630,7 @@ class UsermanagementAdm extends Model
 
 		$res = $this->db->query($query);
 
-		$output = array();
+		$output = [];
 		if ($res) {
 			while ($obj = $this->db->fetch_obj($res)) {
 				$output[] = $obj;
@@ -2666,9 +2666,9 @@ class UsermanagementAdm extends Model
 		return $output;
 	}
 
-	public function getDeletedUsersList($pagination = array(), $filter = false)
+	public function getDeletedUsersList($pagination = [], $filter = false)
 	{
-		if (!is_array($pagination)) $pagination = array();
+		if (!is_array($pagination)) $pagination = [];
 
 		$startIndex = (isset($pagination['startIndex']) ? $pagination['startIndex'] : 0);
 		$results = (isset($pagination['results']) ? $pagination['results'] : Get::sett('visuItem', 25));
@@ -2727,7 +2727,7 @@ class UsermanagementAdm extends Model
 
 		$res = $this->db->query($query);
 
-		$output = array();
+		$output = [];
 		if ($res) {
 			while ($obj = $this->db->fetch_obj($res)) {
 				$output[] = $obj;
@@ -2744,20 +2744,20 @@ class UsermanagementAdm extends Model
 	public function getOrgChartDropdownList($idstUser = null)
 	{
 
-		$output = array();
+		$output = [];
 		if ($idstUser == null) {
-			$output = array('0' => '(' . Lang::t('_ROOT', 'standard') . ')');
+			$output = ['0' => '(' . Lang::t('_ROOT', 'standard') . ')'];
 		} else {
 			$queryRoot = "SELECT count(G.idst) FROM %adm_admin_tree T JOIN %adm_group G WHERE T.idst = G.idst AND idstAdmin =" . $idstUser . " AND G.groupid = '/ocd_0'";
 			list($control) = $this->db->fetch_row($this->db->query($queryRoot));
 			if ($control < 0) {
-				$output = array('0' => '(' . Lang::t('_ROOT', 'standard') . ')');
+				$output = ['0' => '(' . Lang::t('_ROOT', 'standard') . ')'];
 			} else if ($control == 0  && Docebo::user()->getUserLevelId() == ADMIN_GROUP_GODADMIN) { //#3725
-				$output = array('0' => '(' . Lang::t('_ROOT', 'standard') . ')');
+				$output = ['0' => '(' . Lang::t('_ROOT', 'standard') . ')'];
 			}
 		}
 
-		$org_lang = array();
+		$org_lang = [];
 		$query = "SELECT * FROM %adm_org_chart WHERE lang_code = '" . getLanguage() . "'";
 		$res = $this->db->query($query);
 		while ($obj = $this->db->fetch_obj($res)) {
@@ -2788,7 +2788,7 @@ class UsermanagementAdm extends Model
 
 	public function updateMultipleUsers($users, $info)
 	{
-		if (is_numeric($users)) $users = array($users);
+		if (is_numeric($users)) $users = [$users];
 		if (!is_array($users)) return false;
 		if (count($users) <= 0) return true;
 
@@ -2797,7 +2797,7 @@ class UsermanagementAdm extends Model
 
 		$output = true;
 
-		$user_conditions = array();
+		$user_conditions = [];
 
 		if (property_exists($info, 'firstname')) $user_conditions[] = " firstname='" . $info->firstname . "' ";
 		if (property_exists($info, 'lastname')) $user_conditions[] = " lastname='" . $info->lastname . "' ";
@@ -2874,9 +2874,9 @@ class UsermanagementAdm extends Model
 	{
 		if (!$language) $language = getLanguage();
 
-		$output = array();
+		$output = [];
 
-		$groups = array();
+		$groups = [];
 		$query = "SELECT g.idst, g.groupid FROM %adm_group_members AS gm JOIN %adm_group AS g "
 			. " ON (gm.idst = g.idst AND g.hidden = 'true' AND g.groupid LIKE '/oc\_%') "
 			. " WHERE gm.idstMember = " . (int)$id_user . " ";
@@ -2888,8 +2888,8 @@ class UsermanagementAdm extends Model
 		}
 
 		//extract entire tree folders with translation
-		$folders = array();
-		$trans = array();
+		$folders = [];
+		$trans = [];
 		$query = "SELECT * FROM %adm_org_chart_tree AS ot JOIN %adm_org_chart AS o "
 			. " ON (ot.idOrg = o.id_dir AND o.lang_code = '" . $language . "') ORDER BY ot.path";
 		$res = $this->db->query($query);
@@ -2904,7 +2904,7 @@ class UsermanagementAdm extends Model
 				if (array_key_exists($idst, $folders)) {
 					$arr_path = explode('/', $folders[$idst]);
 					$str_path = "";
-					$arr_output = array();
+					$arr_output = [];
 					foreach ($arr_path as $index) {
 						$str_path .= '/' . $index;
 						$arr_output[] = $trans[$str_path];
@@ -2919,9 +2919,9 @@ class UsermanagementAdm extends Model
 
 	public function getUserGroups($id_user)
 	{
-		$output = array();
+		$output = [];
 
-		$groups = array();
+		$groups = [];
 		$query = "SELECT g.idst, g.groupid FROM %adm_group_members AS gm JOIN %adm_group AS g "
 			. " ON (gm.idst = g.idst AND g.hidden = 'false' AND g.type <> 'course') "
 			. " WHERE idstMember = " . (int)$id_user . " ";
@@ -2948,7 +2948,7 @@ class UsermanagementAdm extends Model
 		$adminManager	= new AdminPreference();
 		$admin_tree		= $adminManager->getAdminTree(Docebo::user()->getIdST());
 		$admin_tree		= $acl_man->getGroupsFromMixedIdst($admin_tree);
-		$tmp_admin_tree = array();
+		$tmp_admin_tree = [];
 		foreach ($admin_tree as $id_group)
 			$tmp_admin_tree = array_merge($tmp_admin_tree, $acl_man->getGroupGDescendants($id_group));
 		$admin_tree = $tmp_admin_tree;
@@ -2977,11 +2977,11 @@ class UsermanagementAdm extends Model
 	 */
 	public function getCustomFieldValues($users)
 	{
-		$output = array();
+		$output = [];
 
 		//validate input
 		if (empty($users)) return $output;
-		if (is_numeric($users)) $users = array((int)$users);
+		if (is_numeric($users)) $users = [(int)$users];
 		if (!is_array($users)) return false;
 
 		$query_std = "SELECT u.idst, u.email, u.register_date, u.lastenter "
@@ -2989,11 +2989,11 @@ class UsermanagementAdm extends Model
 			. " WHERE u.idst IN (" . implode(",", $users) . ")";
 		$res_std = $this->db->query($query_std);
 		while ($urow = $this->db->fetch_obj($res_std)) {
-			$output[$urow->idst] = array(
+			$output[$urow->idst] = [
 				'email' => $urow->email,
 				'register_date' => Format::date($urow->register_date, 'datetime'), //formatting should be placed in the controller
 				'lastenter' => Format::date($urow->lastenter, 'datetime') //formatting should be placed in the controller
-			);
+            ];
 		}
 
 		//user levels
@@ -3034,7 +3034,7 @@ class UsermanagementAdm extends Model
 		$countries = false;
 
 		//get values to add in the row
-		$custom_fields = array();
+		$custom_fields = [];
 		while ($frow = $this->db->fetch_obj($res_fields)) {
 			if (!in_array($frow->id_common, $custom_fields)) $custom_fields[] = $frow->id_common;
 
@@ -3076,7 +3076,7 @@ class UsermanagementAdm extends Model
 							//retrieve translations for dropdowns fields
 							$query_fields_sons = "SELECT idField, id_common_son, translation FROM %adm_field_son WHERE lang_code = '" . getLanguage() . "' ORDER BY idField, sequence";
 							$res_fields_sons = $this->db->query($query_fields_sons);
-							$field_sons = array();
+							$field_sons = [];
 							while ($fsrow = $this->db->fetch_obj($res_fields_sons)) {
 								$field_sons[$fsrow->idField][$fsrow->id_common_son] = $fsrow->translation;
 							}
@@ -3092,7 +3092,7 @@ class UsermanagementAdm extends Model
 							//retrieve countries names
 							$query_countries = "SELECT id_country, name_country FROM %adm_country ORDER BY name_country";
 							$res_countries = $this->db->query($query_countries);
-							$countries = array();
+							$countries = [];
 							while ($crow = $this->db->fetch_obj($res_countries)) {
 								$countries[$crow->id_country] = $crow->name_country;
 							}
@@ -3134,13 +3134,13 @@ class UsermanagementAdm extends Model
                  %adm_customfield_lang.lang_code = \'' . getLanguage() . '\' and area_code="ORG_CHART"';
 		$rs = sql_query($query) or
 			errorCommunication('getCustomFieldOrg');
-		$result = array();
+		$result = [];
 		while (list($id_field, $translation, $type_field) = sql_fetch_row($rs)) {
-			$arr = array(
+			$arr = [
 				'id_field' => $id_field,
 				'translation' => $translation,
 				'type_field' =>  $type_field
-			);
+            ];
 			$result[$id_field] = $arr;
 		}
 		return $result;
@@ -3152,7 +3152,7 @@ class UsermanagementAdm extends Model
             where %adm_customfield_son_lang.id_field_son=%adm_customfield_son.id_field_son and id_field=" . $id_field . " order by sequence ";
 		$rs = sql_query($query) or
 			errorCommunication('getLO_Custom_Value_Array');
-		$result = array();
+		$result = [];
 		while (list($id_field_son, $translation) = sql_fetch_row($rs)) {
 			$result[$id_field_son] = $translation;
 		}
@@ -3193,7 +3193,7 @@ class UsermanagementAdm extends Model
 		$query = "select id_field from %adm_customfield where area_code = 'ORG_CHART'";
 		$rs = sql_query($query) or
 			errorCommunication('getCustomOrg');
-		$result = array();
+		$result = [];
 		while (list($id_field, $translation) = sql_fetch_row($rs)) {
 			$result[$id_field] = $id_field;
 		}
@@ -3220,7 +3220,7 @@ class UsermanagementAdm extends Model
 	 */
 	public function getCustomFieldUserValues($user)
 	{
-		$output = array();
+		$output = [];
 
 
 		if (is_null($user)) return $output;

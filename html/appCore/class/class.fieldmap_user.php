@@ -49,18 +49,18 @@ class FieldMapUser extends FieldMap {
 
 
 	function getRawPredefinedFields() {
-		return array("name", "lastname", "userid");
+		return ["name", "lastname", "userid"];
 	}
 
 
 	function getCustomFields($with_prefix=TRUE) {
 		require_once($GLOBALS["where_framework"]."/lib/lib.field.php");
 
-		$res=array();
+		$res= [];
 		$fl=new FieldList();
 
 		$acl_manager=Docebo::user()->getAclManager();
-		$user_groups=array($acl_manager->getGroupRegisteredId());
+		$user_groups= [$acl_manager->getGroupRegisteredId()];
 
 		$pfx=($with_prefix ? $this->getPrefix()."custom_" : "");
 		$field_list=$fl->getFieldsFromIdst($user_groups);
@@ -89,7 +89,7 @@ class FieldMapUser extends FieldMap {
 		$acl =& Docebo::user()->getACL();
 		$acl_manager =& Docebo::user()->getAclManager();
 
-		$data=array();
+		$data= [];
 
 		$userid=$predefined_data["userid"];
 		$firstname=$predefined_data["firstname"];
@@ -130,7 +130,7 @@ class FieldMapUser extends FieldMap {
 
 			require_once($GLOBALS["where_framework"]."/lib/lib.field.php");
 
-			$res=array();
+			$res= [];
 			$fl=new FieldList();
 
 			$custom_fields=array_keys($this->getCustomFields(FALSE));

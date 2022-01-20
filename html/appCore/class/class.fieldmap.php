@@ -68,12 +68,12 @@ Class FieldMap {
 
 
 	function getRawPredefinedFields() {
-		return array();
+		return [];
 	}
 
 
 	function getPredefinedFields($with_prefix=TRUE) {
-		$res=array();
+		$res= [];
 
 		$pfx=($with_prefix ? $this->getPrefix()."predefined_" : "");
 		foreach($this->getRawPredefinedFields() as $code) {
@@ -85,7 +85,7 @@ Class FieldMap {
 
 
 	function getCustomFields($with_prefix=TRUE) {
-		return array();
+		return [];
 	}
 	
 

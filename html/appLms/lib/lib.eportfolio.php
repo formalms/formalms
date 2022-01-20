@@ -273,7 +273,7 @@ class Man_Eportfolio {
 	 */
 	function getEportfolio($id_portfolio) {
 		
-		$data = array();
+		$data = [];
 		if($id_portfolio == 0) return $data;
 		$query = "
 		SELECT id_portfolio, title, description, custom_pdp_descr, custom_competence_descr 
@@ -300,7 +300,7 @@ class Man_Eportfolio {
 	 */
 	function getAllEportfolio($filter_title = '', $ini = false, $limit = false) {
 		
-		$data = array();
+		$data = [];
 		$query = "
 		SELECT id_portfolio, title, description, custom_pdp_descr, custom_competence_descr 
 		FROM ".$this->getTableEpf()." ";
@@ -310,13 +310,13 @@ class Man_Eportfolio {
 		if(!$re_epf = $this->_query($query)) return $data;
 		while($row = sql_fetch_row($re_epf)) {
 			
-			$data[$row[0]] = array(
+			$data[$row[0]] = [
 				'id_portfolio'				=> $row[0], 
 				'title'						=> $row[1], 
 				'description' 				=> $row[2],
 				'custom_pdp_descr' 			=> $row[3],
 				'custom_competence_descr' 	=> $row[4]
-			);
+            ];
 		}
 		return $data;
 	}
@@ -332,7 +332,7 @@ class Man_Eportfolio {
 	 */
 	function getEportfolioInfo($arr_epf, $ini = false, $limit = false) {
 		
-		$data = array();
+		$data = [];
 		$query = "
 		SELECT id_portfolio, title, description, custom_pdp_descr, custom_competence_descr 
 		FROM ".$this->getTableEpf()." 
@@ -353,7 +353,7 @@ class Man_Eportfolio {
 	 */
 	function getQueryResultEportfolio($filter_title = '', $ini = false, $limit = false) {
 		
-		$data = array();
+		$data = [];
 		$query = "
 		SELECT id_portfolio, title, description, custom_pdp_descr, custom_competence_descr  
 		FROM ".$this->getTableEpf()." ";
@@ -391,7 +391,7 @@ class Man_Eportfolio {
 	 */
 	function getNumberOfAssociatedMember($arr_portfolio = false, $type_of_assoc = false) {
 		
-		$members = array();
+		$members = [];
 		$query = "SELECT id_portfolio, COUNT(*) 
 		FROM ".$this->getTableEpfMember()." 
 		WHERE 1 ";
@@ -420,8 +420,8 @@ class Man_Eportfolio {
 	 */
 	function getEportfolioAssignedTo($arr_members) {
 		
-		$portfoli['user'] = array();
-		$portfoli['admin'] = array();
+		$portfoli['user'] = [];
+		$portfoli['admin'] = [];
 		$re_members = $this->_query("
 		SELECT id_portfolio, user_is_admin 
 		FROM ".$this->getTableEpfMember()." 
@@ -443,7 +443,7 @@ class Man_Eportfolio {
 	 */
 	function &getAssociatedMember($id_portfolio) {
 		
-		$members = array();
+		$members = [];
 		$re_members = $this->_query("
 		SELECT idst_member 
 		FROM ".$this->getTableEpfMember()." 
@@ -464,7 +464,7 @@ class Man_Eportfolio {
 	 */
 	function &getAssociatedAdmin($id_portfolio) {
 		
-		$members = array();
+		$members = [];
 		$re_members = $this->_query("
 		SELECT idst_member
 		FROM ".$this->getTableEpfMember()." 
@@ -675,7 +675,7 @@ class Man_Eportfolio {
 	 */
 	function getPdpDetails($id_pdp) {
 		
-		$data = array();
+		$data = [];
 		$query = "
 		SELECT id_pdp, textof, allow_answer, max_answer, answer_mod_for_day, sequence, id_portfolio  
 		FROM ".$this->getTablePdp()." 
@@ -695,7 +695,7 @@ class Man_Eportfolio {
 	 */
 	function getQueryPdpOfEportfolio($id_portfolio, $from = false, $for = false) {
 		
-		$data = array();
+		$data = [];
 		$query = "
 		SELECT id_pdp, textof, allow_answer, max_answer, answer_mod_for_day, sequence, id_portfolio 
 		FROM ".$this->getTablePdp()." 
@@ -735,7 +735,7 @@ class Man_Eportfolio {
 	 */
 	function getNextPdpSequence($id_portfolio) {
 		
-		$data = array();
+		$data = [];
 		$query = "
 		SELECT MAX(sequence) 
 		FROM ".$this->getTablePdp()." 
@@ -870,7 +870,7 @@ class Man_Eportfolio {
 	 */
 	function getQueryPdpUserAnswer($id_pdp, $id_user) {
 		
-		$data = array();
+		$data = [];
 		$query = "
 		SELECT id_answer, id_user, id_pdp, textof, post_date 
 		FROM ".$this->getTablePdpAnswer()." 
@@ -891,7 +891,7 @@ class Man_Eportfolio {
 	 */
 	function getCountPdpUserAnswer($id_pdp, $id_user) {
 		
-		$data = array();
+		$data = [];
 		$query = "
 		SELECT COUNT(*)
 		FROM ".$this->getTablePdpAnswer()." 
@@ -912,7 +912,7 @@ class Man_Eportfolio {
 	 */
 	function getPdpAnswer($id_answer, $id_user) {
 		
-		$data = array();
+		$data = [];
 		$query = "
 		SELECT id_answer, id_user, id_pdp, textof, post_date 
 		FROM ".$this->getTablePdpAnswer()." 
@@ -972,7 +972,7 @@ class Man_Eportfolio {
 	 */ 
 	function getCompetenceDetails($id_competence) {
 		
-		$data = array();
+		$data = [];
 		$query = "
 		SELECT id_portfolio, textof, min_score, max_score, sequence, block_competence  
 		FROM ".$this->getTableCompetences()." 
@@ -998,7 +998,7 @@ class Man_Eportfolio {
 	 */
 	function getQueryCompetenceOfEportfolio($id_portfolio, $from = '', $for = '') {
 		
-		$data = array();
+		$data = [];
 		$query = "
 		SELECT id_competence, textof, min_score, max_score, sequence, block_competence 
 		FROM ".$this->getTableCompetences()." 
@@ -1038,7 +1038,7 @@ class Man_Eportfolio {
 	 */
 	function getNextCompetenceSequence($id_portfolio) {
 		
-		$data = array();
+		$data = [];
 		$query = "
 		SELECT MAX(sequence) 
 		FROM ".$this->getTableCompetences()." 
@@ -1179,7 +1179,7 @@ class Man_Eportfolio {
 	 */
 	function getDetailedCompetenceScore($id_portfolio, $estimated_user, $from_user = false) {
 		
-		$data = array();
+		$data = [];
 		$query = "
 		SELECT id_portfolio, id_competence, estimated_user, from_user, score, comment, status 
 		FROM ".$this->getTableScoreCompetences()." 
@@ -1208,7 +1208,7 @@ class Man_Eportfolio {
 		
 		// find the score alredy inserted by the from_user for the estimated_user
 		
-		$previous_exists = array();
+		$previous_exists = [];
 		$re_score = $this->getDetailedCompetenceScore($id_portfolio, $estimated_user, $from_user);
 		while($scores = sql_fetch_row($re_score)) {
 			
@@ -1545,7 +1545,7 @@ class Man_Eportfolio {
 	
 	function getPresentationAttach($id_presentation, $id_user) {
 		
-		$files = array();
+		$files = [];
 		$query = "
 		SELECT id_file
 		FROM ".$this->getTablePresentationAttach()."  
@@ -1753,8 +1753,8 @@ class EpfShowPresentation {
 		$tb = new Table(0, '', $lang->def('_SUMMARY_PDP_ANSWER'));
 		$tb->setTableStyle('epf_answer');
 		
-		$tb->setColsStyle(array('epf_post_date', '') );
-		$tb->addHead(array($lang->def('_POST_DATE'), $lang->def('_ANSWER')) );
+		$tb->setColsStyle(['epf_post_date', '']);
+		$tb->addHead([$lang->def('_POST_DATE'), $lang->def('_ANSWER')]);
 		
 		while($row = sql_fetch_row($re_pdp)) {
 			
@@ -1768,10 +1768,10 @@ class EpfShowPresentation {
 				$tb->setCaption($row[PDP_TEXTOF]);
 				$tb->emptyBody();
 				while($answer = sql_fetch_row($re_pdp_answer)) {
-					$cont = array(
+					$cont = [
 						Format::date($answer[PDP_ANSWER_POST_DATE], 'date'), 
 						$answer[PDP_ANSWER_TEXTOF]
-					);
+                    ];
 					$tb->addBody($cont);
 				}
 				$html .= $tb->getTable();
@@ -1797,7 +1797,7 @@ class EpfShowPresentation {
 		
 		$re_competence = $this->man_epf->getQueryCompetenceOfEportfolio($this->id_portfolio);
 		
-		$self_score = array();
+		$self_score = [];
 		// retrive only the score assigned to the user bby itself
 		$re_user_score = $this->man_epf->getDetailedCompetenceScore($this->id_portfolio, $this->id_user, $this->id_user);
 		
@@ -1815,16 +1815,16 @@ class EpfShowPresentation {
 		$tb = new Table(0, $lang->def('_CAPTION_COMPETENCE_SCORE'), $lang->def('_SUMMARY_COMPETENCE_SCORE'));
 		$tb->setTableStyle('epf_competence_score');
 		
-		$type_h = array('', 'competence_score', '');
-		$cont_h = array(	$lang->def('_TEXTOF_COMPETENCE'),
+		$type_h = ['', 'competence_score', ''];
+		$cont_h = [$lang->def('_TEXTOF_COMPETENCE'),
 							$lang->def('_SELF_EVALUATION'), 
-							$lang->def('_MY_COMMENT') );
+							$lang->def('_MY_COMMENT')];
 		
 		$tb->setColsStyle($type_h);
 		$tb->addHead($cont_h);
 		while($competence = sql_fetch_row($re_competence)) {
 			
-			$cont = array($competence[COMPETENCE_TEXTOF]);
+			$cont = [$competence[COMPETENCE_TEXTOF]];
 			if(isset($self_score[$competence[COMPETENCE_ID]])) {
 				
 				$cont[] = $self_score[$competence[COMPETENCE_ID]]['score'];
@@ -1888,14 +1888,14 @@ class EpfShowPresentation {
 		$tb = new Table(0, '', $lang->def('_SUMMARY_FILES'));
 		$tb->setTableStyle('epf_files');
 		
-		$tb->setColsStyle(array('') );
-		$tb->addHead(array($lang->def('_NAME')) );
+		$tb->setColsStyle(['']);
+		$tb->addHead([$lang->def('_NAME')]);
 		
 		while($row = sql_fetch_row($files_info)) {
 		
 			if($ext) $link = 'index.php?modname=eportfolio&amp;type=ext&amp;op=downloadfile&amp;id_presentation='.$this->id_presentation.'&amp;id_portfolio='.$this->id_portfolio.'&amp;id_user='.$this->id_user.'&amp;id_file='.$row[MYFILE_ID_FILE].'&amp;code='.$code.'&amp;no_redirect=1';
 			else $link = 'index.php?modname=eportfolio&amp;op=downloadfile&amp;id_portfolio='.$this->id_portfolio.'&amp;id_user='.$this->id_user.'&amp;id_file='.$row[MYFILE_ID_FILE];
-			$cont = array('<a href="'.$link.'">'.$row[MYFILE_TITLE].'</a>');
+			$cont = ['<a href="'.$link.'">'.$row[MYFILE_TITLE].'</a>'];
 			
 			$tb->addBody($cont);
 		}

@@ -39,12 +39,12 @@ final class LMSTemplateController extends TemplateController {
 
     private function showLogo() {
 
-        $this->render('logo', 'logo', array(
+        $this->render('logo', 'logo', [
             'user'          => $this->model->getUser()
           , 'logo'          => $this->model->getLogo()
           , 'currentPage'   => $this->model->getCurrentPage()
           , 'homePage'      => $this->model->getHomePage()
-        ));
+        ]);
     }
 
     private function notGeneratedCertificates() {
@@ -68,29 +68,29 @@ final class LMSTemplateController extends TemplateController {
     private function showMenu() {
         $ma = new Man_MiddleArea();
 
-        $this->render('menu', 'main-menu', array(
+        $this->render('menu', 'main-menu', [
             'user'          => $this->model->getUser()
           , 'menu'          => $this->model->getMenu()
           , 'currentPage'   => $this->model->getCurrentPage()
           , 'perm_certificate'   => $ma->currentCanAccessObj('mo_7')
           , 'notGeneratedCertificates'   => $this->notGeneratedCertificates()
           ,  'adminRoles' => [ADMIN_GROUP_GODADMIN,ADMIN_GROUP_ADMIN ]
-        ));
+        ]);
     }
 
     private function showCart() {
 
-        $this->render('cart', 'cart', array(
+        $this->render('cart', 'cart', [
             'user'          => $this->model->getUser()
           , 'cart'          => $this->model->getCart()
           , 'currentPage'   => $this->model->getCurrentPage()
-        ));
+        ]);
     }
 
     private function showProfile() {
 
 
-        $this->render('profile', 'profile', array(
+        $this->render('profile', 'profile', [
             'user'              => $this->model->getUser()
           , 'profile'           => $this->model->getProfile()
           , 'credits'           => $this->model->getCredits()
@@ -99,18 +99,18 @@ final class LMSTemplateController extends TemplateController {
           , 'news'              => $this->model->getNews()
           , 'languages'         => $this->model->getLanguages()
           , 'currentPage'       => $this->model->getCurrentPage()
-        ));
+        ]);
     }
 
     private function showHelpDesk() {
 
         // Temporary solution before helpdesk refactoring.        
-        $this->render('helpdesk_modal', 'helpdesk', array(
+        $this->render('helpdesk_modal', 'helpdesk', [
             'user'          => $this->model->getUser()
           , 'userDetails'   => $this->model->getUserDetails()
           , 'email'         => $this->model->getHelpDeskEmail()
           , 'currentPage'   => $this->model->getCurrentPage()
             , 'helpDeskEmail' => $this->model->getUserDetails()[ACL_in]
-        ));
+        ]);
     }
 }

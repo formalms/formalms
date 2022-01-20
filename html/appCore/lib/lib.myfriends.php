@@ -38,12 +38,12 @@ class MyFriends {
 	 */
 	var $_id_user;
 	
-	var $arr_field = array(
+	var $arr_field = [
 		MYFRIEND_ID_USER	=> 'id_user', 
 		MYFRIEND_ID_FRIEND 	=> 'id_friend', 
 		MYFRIEND_WAITING 	=> 'waiting',
-		MYFRIEND_REQUEST 	=> 'request_msg' 
-	);
+		MYFRIEND_REQUEST 	=> 'request_msg'
+    ];
 	
 	// methods -----------------------------------------------------------------------
 	
@@ -97,12 +97,12 @@ class MyFriends {
 		if($random_order !== false) $query .= " ORDER BY RAND() ";
 		if($limit !== false) $query .= " LIMIT 0,".$limit;
 		
-		$friends = array();
+		$friends = [];
 		if(!$re_query = $this->_query($query)) return $friends;
 		while(list($id,$waiting ) = $this->fetch_row($re_query)) {
 			
 			if($waiting === false || $only_id === true) $friends[$id] = $id;
-			else $friends[$id] = array('id' => $id, 'waiting' => $waiting );
+			else $friends[$id] = ['id' => $id, 'waiting' => $waiting];
 		}
 		return $friends;
 	}
@@ -123,7 +123,7 @@ class MyFriends {
 		FROM ".$this->_getFriendsTable()."
 		WHERE ".$this->arr_field[MYFRIEND_ID_USER]." = '".$this->_id_user."' ";
 		
-		$friends = array('waiting' => array(), 'effective' => array());
+		$friends = ['waiting' => [], 'effective' => []];
 		if(!$re_query = $this->_query($query)) return $friends;
 		while(list($id, $waiting) = $this->fetch_row($re_query)) {
 			
@@ -149,7 +149,7 @@ class MyFriends {
 		FROM ".$this->_getFriendsTable()."
 		WHERE ".$this->arr_field[MYFRIEND_ID_USER]." IN ( ".implode(',', $arr_user)." ) ";
 		
-		$friends = array('waiting' => array(), 'effective' => array());
+		$friends = ['waiting' => [], 'effective' => []];
 		if(!$re_query = $this->_query($query)) return $friends;
 		while(list($id_user, $friend, $waiting) = $this->fetch_row($re_query)) {
 			
@@ -190,7 +190,7 @@ class MyFriends {
 	*/
 	function controlPendentRequest()
 	{
-		$controlled_id = array();
+		$controlled_id = [];
 		$control_query = "
 			SELECT ".$this->arr_field[MYFRIEND_ID_USER]."
 			FROM ".$this->_getFriendsTable()."
@@ -229,11 +229,11 @@ class MyFriends {
 		WHERE ".$this->arr_field[MYFRIEND_ID_FRIEND]." = '".$this->_id_user."' 
 			 AND ".$this->arr_field[MYFRIEND_WAITING]." = '".MF_WAITING."'";
 		
-		$friends = array();
+		$friends = [];
 		if(!$re_query = $this->_query($query)) return $friends;
 		while(list($id, $request) = $this->fetch_row($re_query)) {
 			
-			$friends[$id] = array('id' => $id, 'request' => $request );
+			$friends[$id] = ['id' => $id, 'request' => $request];
 		}
 		return $friends;
 	}

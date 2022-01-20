@@ -1,8 +1,8 @@
 <br />
 
 <?php
-	$array_title = array(	'index.php?r=adm/adminrules/show' => Lang::t('_ADMIN_RULES', 'adminrules'),
-							Lang::t('_ADMIN_MANAGMENT', 'adminrules').' - '.$model->getGroupName($idst));
+	$array_title = ['index.php?r=adm/adminrules/show' => Lang::t('_ADMIN_RULES', 'adminrules'),
+							Lang::t('_ADMIN_MANAGMENT', 'adminrules').' - '.$model->getGroupName($idst)];
 
 	echo	getTitleArea($array_title)
 			.'<div class="std_block">';
@@ -13,7 +13,7 @@
         
         echo $back_link;
         
-        $this->widget('table', array(
+        $this->widget('table', [
                 'id'			=> 'admin_rules_table',
                 'ajaxUrl'		=> 'ajax.adm_server.php?r=adm/adminrules/getAdmins&idst='.$idst.'&',
                 'rowsPerPage'	=> Get::sett('visuItem', 25),
@@ -21,17 +21,17 @@
                 'results'		=> Get::sett('visuItem', 25),
                 'sort'			=> 'userid',
                 'dir'			=> 'asc',
-                'columns'		=> array(
-                        array('key' => 'userid', 'label' => Lang::t('_USERNAME', 'adminrules'), 'sortable' => true),
-                        array('key' => 'firstname', 'label' => Lang::t('_FIRSTNAME', 'adminrules'), 'sortable' => true),
-                        array('key' => 'lastname', 'label' => Lang::t('_LASTNAME', 'adminrules'), 'sortable' => true),
-                        array('key' => 'del', 'label' => Get::img('standard/delete.png', Lang::t('_DEL', 'adminrules')), 'formatter'=>'doceboDelete', 'className' => 'img-cell')
-                ),
-                'fields'		=> array('id_user', 'userid', 'firstname', 'lastname', 'del'),
+                'columns'		=> [
+                        ['key' => 'userid', 'label' => Lang::t('_USERNAME', 'adminrules'), 'sortable' => true],
+                        ['key' => 'firstname', 'label' => Lang::t('_FIRSTNAME', 'adminrules'), 'sortable' => true],
+                        ['key' => 'lastname', 'label' => Lang::t('_LASTNAME', 'adminrules'), 'sortable' => true],
+                        ['key' => 'del', 'label' => Get::img('standard/delete.png', Lang::t('_DEL', 'adminrules')), 'formatter'=>'doceboDelete', 'className' => 'img-cell']
+                ],
+                'fields'		=> ['id_user', 'userid', 'firstname', 'lastname', 'del'],
                 'stdSelection' => false,
                 'rel_actions' => $rel_action,
                 'delDisplayField' => 'userid'
-        ));
+        ]);
         
         echo $back_link;
 ?>

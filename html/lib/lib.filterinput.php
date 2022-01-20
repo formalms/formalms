@@ -22,7 +22,7 @@ class FilterInput
 
     protected $use_xss_clean = true;
 
-    protected $session_whitelist = array('tag' => array(), 'attrib' => array());
+    protected $session_whitelist = ['tag' => [], 'attrib' => []];
 
     public function __construct()
     {
@@ -153,7 +153,7 @@ class FilterInput
 
     public function getWhitelist($item_type)
     {
-        $res = array();
+        $res = [];
         if (!empty($this->session_whitelist[$item_type])) {
             $res = $this->session_whitelist[$item_type];
         }
@@ -180,7 +180,7 @@ class FilterInput
         $temp->set('Cache.SerializerPath', _files_ . '/cache/twig');
         $def = $temp->getHTMLDefinition();
         ksort($def->info);
-        $res = array();
+        $res = [];
         foreach ($def->info as $key => $value) {
             foreach ($value->attr as $attr => $attr_data) {
                 $res[] = $key . '.' . $attr;
@@ -232,7 +232,7 @@ class FilterInput
         $str = addslashes($str);
 
         // Standardize newlines
-        return str_replace(array("\r\n", "\r"), "\n", $str);
+        return str_replace(["\r\n", "\r"], "\n", $str);
     }
 
     /**
@@ -287,7 +287,7 @@ class FilterInput
                 {
 
                     // Run htmLawed
-                    $string = htmlawed($string, array('safe' => 1));
+                    $string = htmlawed($string, ['safe' => 1]);
                 };
                 break;
             case 'kses' :
@@ -296,8 +296,8 @@ class FilterInput
                     $allowedProtocols = ['http', 'https', 'ftp', 'mailto', 'color', 'background-color'];
                     // Run htmLawed
                     $config = HTMLPurifier_Config::createDefault();
-                    $allowed_elements = array();
-                    $allowed_attributes = array();
+                    $allowed_elements = [];
+                    $allowed_attributes = [];
                     foreach ($GLOBALS['allowed_html'] as $element => $attributes) {
                         $allowed_elements[$element] = true;
                         foreach ($attributes as $attribute => $x) {

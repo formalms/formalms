@@ -62,20 +62,20 @@ class DoceboConnectorCourseReport extends DoceboConnector {
 	
 	
 	// name, type
- 	var $all_cols = array( 
-        array( 'code', 'text' ), 
-        array( 'name', 'text' ), 
-		array( 'enrolled_number', 'int' ), 
-        array( 'no_begin', 'int' ),         
-		array( 'no_begin_perc', 'text' ), 
-        array( 'begin', 'int' ),         
-		array( 'begin_perc', 'text' ),
-        array( 'end_course', 'int' ), 
-		array( 'end_course_perc', 'text' ), 
-		array( 'time_in_course', 'text' ), 
-	);
+ 	var $all_cols = [
+        ['code', 'text'],
+        ['name', 'text'],
+		['enrolled_number', 'int'],
+        ['no_begin', 'int'],
+		['no_begin_perc', 'text'],
+        ['begin', 'int'],
+		['begin_perc', 'text'],
+        ['end_course', 'int'],
+		['end_course_perc', 'text'],
+		['time_in_course', 'text'],
+    ];
 		
-	var $default_cols = array(	'code' 			=> '', 
+	var $default_cols = ['code' 			=> '',
 								'name' 			=> '', 
 								'enrolled_number' 		=> '0',
                                 'no_begin'            => '0',                                
@@ -84,7 +84,7 @@ class DoceboConnectorCourseReport extends DoceboConnector {
                                 'begin_perc'     => '0%', 
                                 'end_course'   => '0', 
                                 'end_course_perc' 			=> '0%', 
-								'time_in_course' 		=> '00:00:00' );
+								'time_in_course' 		=> '00:00:00'];
 	
 	
 	/**
@@ -104,8 +104,8 @@ class DoceboConnectorCourseReport extends DoceboConnector {
 	}
 	
 	function get_config() {
-		return array( 	'name' => $this->name,
-						'description' => $this->description );
+		return ['name' => $this->name,
+						'description' => $this->description];
 	}
 	
 	function set_config( $params ) {
@@ -136,7 +136,7 @@ class DoceboConnectorCourseReport extends DoceboConnector {
 		$this->_readed_end = false;
 		$this->row_index = 0;
 		
-		$user_selected = array();
+		$user_selected = [];
 		if(!$re_people) {
 			
 			$this->_readed_end = true;
@@ -148,12 +148,12 @@ class DoceboConnectorCourseReport extends DoceboConnector {
 		
 		$this->users_info 		= $this->acl_man->getUsers($user_selected);
 		$this->id_courses 		= $course_man->getAllCourses();
-		$this->num_iscr 		= array();
-		$this->num_nobegin 		= array();
-		$this->num_itinere 		= array();
-		$this->num_end 			= array();
-		$this->time_in_course 	= array();
-		$effective_user = array();
+		$this->num_iscr 		= [];
+		$this->num_nobegin 		= [];
+		$this->num_itinere 		= [];
+		$this->num_end 			= [];
+		$this->time_in_course 	= [];
+		$effective_user = [];
 		
 		$query_course_user = "
 		SELECT cu.idUser, cu.idCourse, cu.date_first_access, cu.date_complete
@@ -252,10 +252,10 @@ class DoceboConnectorCourseReport extends DoceboConnector {
 		
 		$lang = DoceboLanguage::createInstance('userreport', 'lms');
 		
-		$col_descriptor = array();
+		$col_descriptor = [];
 		foreach($this->all_cols as $k => $col) {
 				
-			$col_descriptor[] = array(
+			$col_descriptor[] = [
 				DOCEBOIMPORT_COLNAME 		=> $lang->def('_'.strtoupper($col[0])),
 				DOCEBOIMPORT_COLID			=> $col[0],
 				DOCEBOIMPORT_COLMANDATORY 	=> false,
@@ -263,7 +263,7 @@ class DoceboConnectorCourseReport extends DoceboConnector {
 				DOCEBOIMPORT_DEFAULT 		=> ( $in = array_search($col[0], $this->default_cols) === FALSE 
 													? '' 
 													: $this->default_cols[$in] )
-			);
+            ];
 		}
 		return $col_descriptor;
 	}
@@ -278,9 +278,9 @@ class DoceboConnectorCourseReport extends DoceboConnector {
         $course_info = current($this->id_courses);        
        
 		
-		$row = array(
+		$row = [
 			$course_info['code'], 
-			$course_info['name'] );
+			$course_info['name']];
 		if( isset($this->num_iscr[$idc]) ) {	
 			
 			$row[] = $this->num_iscr[$idc];
@@ -345,7 +345,7 @@ class DoceboConnectorCourseReport extends DoceboConnector {
 	
 	function get_next_row() {
 		
-		$row = array();
+		$row = [];
         $course_info = next($this->id_courses);            
         if (!$course_info) {
             $this->_readed_end = true;
@@ -354,9 +354,9 @@ class DoceboConnectorCourseReport extends DoceboConnector {
         $this->row_index++;
         $idc = key($this->id_courses);
 		
-		$row = array(
+		$row = [
 			$course_info['code'], 
-			$course_info['name'] );
+			$course_info['name']];
 		if( isset($this->num_iscr[$idc]) ) {	
 			
 			$row[] = $this->num_iscr[$idc];
@@ -563,7 +563,7 @@ class DoceboConnectorCourseReportUI extends DoceboConnectorUI {
 
 function coursereport_factory() {
 	
-	return new DoceboConnectorCourseReport(array());
+	return new DoceboConnectorCourseReport([]);
 }
 
 

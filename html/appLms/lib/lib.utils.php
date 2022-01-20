@@ -42,7 +42,7 @@ function firstPage( $idMain = false ) {
 		
 		if(checkPerm($token, true, $module_name)) {
 		
-			return array('idModule'=> $id_module, 'idMain' => $main, 'modulename' => $module_name, 'op' => $default_op);
+			return ['idModule'=> $id_module, 'idMain' => $main, 'modulename' => $module_name, 'op' => $default_op];
 		}
 	}
 }

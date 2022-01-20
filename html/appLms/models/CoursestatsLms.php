@@ -21,7 +21,7 @@ class CoursestatsLms extends Model
 	public function  __construct()
 	{
 		$this->db = DbConn::getInstance();
-		$this->tables = array(
+		$this->tables = [
 			'organization'	=> '%lms_organization',
 			'commontrack'		=> '%lms_commontrack',
 			'user'					=> '%adm_user',
@@ -31,17 +31,17 @@ class CoursestatsLms extends Model
 			'scorm_tracking_history'           => '%lms_scorm_tracking_history',
 			'scorm_tracking' => '%lms_scorm_tracking'
 
-		);
-		$this->cache = array();
+        ];
+		$this->cache = [];
 	}
 
 
 	public function getPerm()
 	{
-		return array(
+		return [
 			'view' => 'standard/view.png',
 			'mod'  => 'standard/edit.png'
-		);
+        ];
 	}
 
 	//...
@@ -66,7 +66,7 @@ class CoursestatsLms extends Model
 			return $this->cache['lo_list'][$id_course];
 		}
 
-		$output = array();
+		$output = [];
 		$query = "SELECT * FROM " . $this->tables['organization'] . " "
 			. " WHERE idCourse=" . (int) $id_course . " ORDER BY path ASC";
 		$res = $this->db->query($query);
@@ -145,7 +145,7 @@ class CoursestatsLms extends Model
 		if ($res) {
 			while ($obj = $this->db->fetch_obj($res)) {
 				$output[$obj->idst] = $obj;
-				$output[$obj->idst]->lo_status = array(); //add property
+				$output[$obj->idst]->lo_status = []; //add property
 			}
 
 			//extract LOs status for the user (a subarray in the record)
@@ -276,7 +276,7 @@ class CoursestatsLms extends Model
 			$query .= "LIMIT " . $startIndex . ", " . $rowsPerPage;
 		}
 		//echo $query."\n";
-		$output = array();
+		$output = [];
 		$res = $this->db->query($query);
 
 		if ($res) {
@@ -379,7 +379,7 @@ class CoursestatsLms extends Model
 			$query .= "LIMIT " . $startIndex . ", " . $results;
 		}
 
-		$output = array();
+		$output = [];
 		$res = $this->db->query($query);
 		$history_table_html = '<table style="margin-left:auto; margin-right:auto;width:50%">';
 		if ($res) {
@@ -430,7 +430,7 @@ class CoursestatsLms extends Model
 
 	public function getLOScores($id_course, $id_user)
 	{
-		$output = array();
+		$output = [];
 
 		$query = "SELECT * FROM " . $this->tables['testtrack'] . "";
 		$res = $this->db->query($query);
@@ -587,7 +587,7 @@ class CoursestatsLms extends Model
 	public function getLOTypes()
 	{
 		if (!isset($this->cache['lo_types'])) {
-			$this->cache['lo_types'] = array();
+			$this->cache['lo_types'] = [];
 			$query = "SELECT * FROM " . $this->tables['lo_types'];
 			$res = $this->db->query($query);
 			if ($res) {
@@ -802,7 +802,7 @@ class CoursestatsLms extends Model
 	 */
 	public function getLOsTotalCompleted($id_course)
 	{
-		$output = array();
+		$output = [];
 		$lo_list = $this->getCourseLOs($id_course);
 		if (!empty($lo_list)) {
 			$query = "SELECT idReference, COUNT(*) FROM " . $this->tables['commontrack'] . " "
@@ -810,7 +810,7 @@ class CoursestatsLms extends Model
 				. " GROUP BY idReference";
 			$res = $this->db->query($query);
 			if ($res) {
-				$output = array();
+				$output = [];
 				foreach ($lo_list as $id_lo => $lo_info) $output[$id_lo] = 0;
 				while (list($id_lo, $count) = $this->db->fetch_row($res)) {
 					$output[$id_lo] = (int) $count;

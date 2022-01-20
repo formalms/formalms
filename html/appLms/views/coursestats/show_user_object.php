@@ -2,11 +2,11 @@
 $base_url = 'index.php?r=coursestats/show';
 $user_url = 'index.php?r=coursestats/show_user&id_user='.(int)$id_user;
 $back_url = $from_user ? $user_url : $base_url;
-echo getTitleArea(array(
+echo getTitleArea([
 	$base_url => Lang::t('_COURSESTATS', 'menu_course'),
 	$user_url => $info->userid,
 	$info->LO_name
-));
+]);
 ?>
 <div class="std_block">
 <?php if (isset($result_message)) echo $result_message; ?>

@@ -4,11 +4,11 @@ $body = "";
 $body .= $fields->playFieldsForUser($id_user, false, true);
 
 if (isset($json)) {
-	$output = array(
+	$output = [
 		'success' => true,
 		'header' => $title,
 		'body' => $body
-	);
+    ];
 	echo $this->json->encode($output);
 } else {
 	echo getTitleArea($title);

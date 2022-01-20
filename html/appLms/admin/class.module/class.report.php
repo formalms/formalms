@@ -31,19 +31,19 @@ class Module_Report extends LmsAdminModule {
 	
 	// Function for permission managment
 	function getAllToken($op) {
-		return array( 
-			'view' => array( 'code' => 'view',
+		return [
+			'view' => ['code' => 'view',
 							'name' => '_VIEW',
-							'image' => 'standard/view.png'),
+							'image' => 'standard/view.png'],
 			
-			'mod' => array( 'code' => 'mod',
+			'mod' => ['code' => 'mod',
 							'name' => '_MOD',
-							'image' => 'standard/edit.png'),
+							'image' => 'standard/edit.png'],
 			
-			'schedule' => array( 'code' => 'schedule',
+			'schedule' => ['code' => 'schedule',
 							'name' => '_SCHEDULE',
-							'image' => 'standard/schedule.png'),
-		);
+							'image' => 'standard/schedule.png'],
+        ];
 	}
 }
 

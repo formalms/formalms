@@ -21,12 +21,12 @@ Class QuestcategoryAlmsController extends AlmsController {
 		require_once(_base_.'/lib/lib.json.php');
 		$this->json = new Services_JSON();
 		$this->model = new QuestcategoryAlms();
-		$this->permissions = array(
+		$this->permissions = [
 			'view'			=> checkPerm('view', true, 'questcategory', 'lms'),
 			'add'				=> true,//checkPerm('add', true, 'questcategory', 'lms'),
 			'mod'				=> checkPerm('mod', true, 'questcategory', 'lms'),
 			'del'				=> true//checkPerm('del', true, 'questcategory', 'lms')
-		);
+        ];
 	}
 
 
@@ -42,10 +42,10 @@ Class QuestcategoryAlmsController extends AlmsController {
 	}
 
 	public function showTask() {
-		$this->render('show', array(
+		$this->render('show', [
 			'filter_text' => "",
 			'permissions' => $this->permissions
-		));
+        ]);
 	}
 
 
@@ -58,9 +58,9 @@ Class QuestcategoryAlmsController extends AlmsController {
 		$dir = Get::req('dir', DOTY_STRING, "asc");
 		$filter_text = Get::req('filter_text', DOTY_STRING, '');
 
-		$searchFilter = array(
+		$searchFilter = [
 			'text' => $filter_text
-		);
+        ];
 
 		//get total from database and validate the results count
 		$total = $this->model->getQuestCategoriesTotal($searchFilter);
@@ -73,22 +73,22 @@ Class QuestcategoryAlmsController extends AlmsController {
 		}
 
 		//set pagination argument
-		$pagination = array(
+		$pagination = [
 			'startIndex' => $startIndex,
 			'results' => $rowsPerPage,
 			'sort' => $sort,
 			'dir' => $dir
-		);
+        ];
 
 		//read records from database
 		$list = $this->model->getQuestCategoriesList($pagination, $searchFilter);
 
 		//prepare the data for sending
-		$output_results = array();
+		$output_results = [];
 		if (is_array($list) && count($list)>0) {
 
 			//check if categories are used in any test or poll
-			$id_list = array();
+			$id_list = [];
 			foreach ($list as $record) $id_list[] = $record->idCategory;
 			$used_test_arr = $this->model->getUsedInTests($id_list);
 			$used_poll_arr = $this->model->getUsedInPolls($id_list);
@@ -107,7 +107,7 @@ Class QuestcategoryAlmsController extends AlmsController {
 				$can_del = ($used_test<=0 && $used_poll<=0 && $this->permissions['del']);
 
 				//prepare output record
-				$output_results[] = array(
+				$output_results[] = [
 					'id' => $record->idCategory,
 					'name' => Layout::highlight($record->name, $filter_text),
 					'description' => Layout::highlight($description, $filter_text),
@@ -115,11 +115,11 @@ Class QuestcategoryAlmsController extends AlmsController {
 					'used_poll' => (int)$used_poll,
 					'mod'		=> $can_mod ? 'ajax.adm_server.php?r=alms/questcategory/edit&id='.(int)$record->idCategory : false,
 					'del'		=> $can_del ? 'ajax.adm_server.php?r=alms/questcategory/delete&id='.(int)$record->idCategory : false,
-				);
+                ];
 			}
 		}
 
-		$output = array(
+		$output = [
 			'totalRecords' => $total,
 			'startIndex' => $startIndex,
 			'sort' => $sort,
@@ -127,7 +127,7 @@ Class QuestcategoryAlmsController extends AlmsController {
 			'rowsPerPage' => $rowsPerPage,
 			'results' => count($list),
 			'records' => $output_results
-		);
+        ];
 
 		echo $this->json->encode($output);
 	}
@@ -135,20 +135,20 @@ Class QuestcategoryAlmsController extends AlmsController {
 
 	public function createTask() {
 		if (!$this->permissions['add']) {
-			$output = array('success' => false, 'message' => $this->_getMessage("no permission"));
+			$output = ['success' => false, 'message' => $this->_getMessage("no permission")];
 			echo $this->json->encode($output);
 			return;
 		}
 
-		$this->render('editmask', array(
+		$this->render('editmask', [
 			'json' => $this->json
-		));
+        ]);
 	}
 
 
 	public function create_actionTask() {
 		if (!$this->permissions['add']) {
-			$output = array('success' => false, 'message' => $this->_getMessage("no permission"));
+			$output = ['success' => false, 'message' => $this->_getMessage("no permission")];
 			echo $this->json->encode($output);
 			return;
 		}
@@ -156,12 +156,12 @@ Class QuestcategoryAlmsController extends AlmsController {
 		$name = Get::req('name', DOTY_STRING, "");
 		$description = Get::req('description', DOTY_STRING, "");
 		if ($name == "") {
-			$output = array('success' => false, 'message' => $this->_getMessage("invalid input"));
+			$output = ['success' => false, 'message' => $this->_getMessage("invalid input")];
 			echo $this->json->encode($output);
 			return;
 		}
 
-		$output = array();
+		$output = [];
 		$info = new stdClass();
 		$info->name = $name;
 		$info->description = $description;
@@ -174,31 +174,31 @@ Class QuestcategoryAlmsController extends AlmsController {
 
 	public function editTask() {
 		if (!$this->permissions['mod']) {
-			$output = array('success' => false, 'message' => $this->_getMessage("no permission"));
+			$output = ['success' => false, 'message' => $this->_getMessage("no permission")];
 			echo $this->json->encode($output);
 			return;
 		}
 
 		$id_questcategory = Get::req('id', DOTY_INT, 0);
 		if ($id_questcategory <= 0) {
-			$output = array('success' => false, 'message' => $this->_getMessage("invalid input"));
+			$output = ['success' => false, 'message' => $this->_getMessage("invalid input")];
 			echo $this->json->encode($output);
 			return;
 		}
 
 		$info = $this->model->getQuestCategoryInfo($id_questcategory);
-		$this->render('editmask', array(
+		$this->render('editmask', [
 			'id_questcategory' => $id_questcategory,
 			'name' => $info->name,
 			'description' => $info->description,
 			'json' => $this->json
-		));
+        ]);
 	}
 	
 
 	public function edit_actionTask() {
 		if (!$this->permissions['mod']) {
-			$output = array('success' => false, 'message' => $this->_getMessage("no permission"));
+			$output = ['success' => false, 'message' => $this->_getMessage("no permission")];
 			echo $this->json->encode($output);
 			return;
 		}
@@ -207,12 +207,12 @@ Class QuestcategoryAlmsController extends AlmsController {
 		$name = Get::req('name', DOTY_STRING, "");
 		$description = Get::req('description', DOTY_STRING, "");
 		if ($id_questcategory <= 0 || $name == "") {
-			$output = array('success' => false, 'message' => $this->_getMessage("invalid input"));
+			$output = ['success' => false, 'message' => $this->_getMessage("invalid input")];
 			echo $this->json->encode($output);
 			return;
 		}
 
-		$output = array();
+		$output = [];
 		$info = new stdClass();
 		$info->name = $name;
 		$info->description = $description;
@@ -225,14 +225,14 @@ Class QuestcategoryAlmsController extends AlmsController {
 
 	public function deleteTask() {
 		if (!$this->permissions['del']) {
-			$output = array('success' => false, 'message' => $this->_getMessage("no permission"));
+			$output = ['success' => false, 'message' => $this->_getMessage("no permission")];
 			echo $this->json->encode($output);
 			return;
 		}
 
 		$id_questcategory = Get::req('id', DOTY_INT, 0);
 		if ($id_questcategory <= 0) {
-			$output = array('success' => false, 'message' => $this->_getMessage("invalid input"));
+			$output = ['success' => false, 'message' => $this->_getMessage("invalid input")];
 			echo $this->json->encode($output);
 			return;
 		}
@@ -241,13 +241,13 @@ Class QuestcategoryAlmsController extends AlmsController {
 		$used_poll = $this->model->getUsedInPolls($id_questcategory);
 
 		if ($used_poll > 0 || $used_test > 0) {
-			$output = array('success' => false, 'message' => $this->_getMessage("category in use"));
+			$output = ['success' => false, 'message' => $this->_getMessage("category in use")];
 			echo $this->json->encode($output);
 			return;
 		}
 
 		$res = $this->model->deleteQuestCategory($id_questcategory);
-		$output = array('success' => $res ? true : false);
+		$output = ['success' => $res ? true : false];
 
 		echo $this->json->encode($output);
 	}

@@ -20,11 +20,11 @@ class Module_Course_Autoregistration extends LmsModule {
 	}
 	
 	function getAllToken() {
-		return array( 
-			'view' => array( 	'code' => 'view',
+		return [
+			'view' => ['code' => 'view',
 								'name' => '_VIEW',
-								'image' => 'standard/view.png'),
-		);
+								'image' => 'standard/view.png'],
+        ];
 	}
 }
 

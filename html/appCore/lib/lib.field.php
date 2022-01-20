@@ -124,7 +124,7 @@ class FieldList
 	function getArrFieldFromQuery($query_field)
 	{
 
-		$output = array();
+		$output = [];
 		$query = "SELECT ft.id_common, tft.type_field,  tft.type_file, tft.type_class"
 			. "  FROM " . $this->getFieldTable() . " AS ft"
 			. "  JOIN " . $this->getTypeFieldTable() . " AS tft"
@@ -133,12 +133,12 @@ class FieldList
 		if (!$rs = sql_query($query)) return false;
 		while (list($id_common, $type_field, $type_file, $type_class) = sql_fetch_row($rs)) {
 
-			$output[$id_common] = array(
+			$output[$id_common] = [
 				'id' => $id_common,
 				'type' => $type_field,
 				'file' => $type_file,
 				'class' => $type_class
-			);
+            ];
 		}
 		return $output;
 	}
@@ -201,7 +201,7 @@ class FieldList
 		}
 		$query .= " ORDER BY sequence";
 		$rs = sql_query($query);
-		$result = array();
+		$result = [];
 
 		while ($arr = sql_fetch_row($rs))
 			$result[$arr[FIELD_INFO_ID]] = $arr;
@@ -222,7 +222,7 @@ class FieldList
 		}
 		$query .= " ORDER BY sequence";
 		$rs = $db->query($query);
-		$result = array();
+		$result = [];
 
 		while ($arr = $db->fetch_row($rs))
 			$result[$arr[FIELD_INFO_ID]] = $arr[FIELD_INFO_TRANSLATION];
@@ -248,13 +248,13 @@ class FieldList
 			return $false_var;
 		}
 
-		$output = array();
+		$output = [];
 		while (list($id_common, $type_field, $name_field, $type_file, $type_class) = $db->fetch_row($rs)) {
-			$output[] = array(
+			$output[] = [
 				'id' => $id_common,
 				'type' => $type_field,
 				'name' => $name_field
-			);
+            ];
 		}
 		return $output;
 	}
@@ -281,7 +281,7 @@ class FieldList
 
 		$query .= "ORDER BY sequence";
 		$rs = sql_query($query);
-		$result = array();
+		$result = [];
 
 		while ($arr = sql_fetch_row($rs))
 			$result[$arr[FIELD_INFO_ID]] = $arr;
@@ -309,7 +309,7 @@ class FieldList
 			. "   AND gft.idst IN ('" . implode("','", $arr_idst) . "')"
 			. " ORDER BY ft.sequence";
 		$rs = sql_query($query);
-		$result = array();
+		$result = [];
 		while ($arr = sql_fetch_row($rs))
 			$result[$arr[FIELD_INFO_ID]] = $arr;
 		return $result;
@@ -354,7 +354,7 @@ class FieldList
 		$rs = sql_query($query);
 
 
-		$result = array();
+		$result = [];
 		while (list($id_common, $type_field, $type_file, $type_class, $translation, $mandatory, $useraccess) = sql_fetch_row($rs)) {
 			if (!class_exists($type_class)) {
 				require_once(Forma::inc($GLOBALS['where_framework'] . '/modules/field/' . $type_file));
@@ -365,7 +365,7 @@ class FieldList
 
 			$quest_obj->setMainTable($this->getFieldTable());
 
-			$result[$id_common] = array(
+			$result[$id_common] = [
 				0 => $translation,
 				1 => (!$this->getUseMultiLang() ? $quest_obj->show($id_user) : $quest_obj->showInLang($id_user, getLanguage())),
 				2 => $mandatory,
@@ -373,7 +373,7 @@ class FieldList
 				4 => $type_field,
 				5 => $type_file,
 				6 => $type_class
-			);
+            ];
 		}
 
 		return $result;
@@ -389,7 +389,7 @@ class FieldList
 	{
 		$fields = $this->getFieldsFromIdst($arr_idst, $use_group = TRUE, $platform = false);
 
-		$res = array();
+		$res = [];
 		foreach ($fields as $field) {
 			$res[$field[FIELD_INFO_ID]] = $field[$value_key];
 		}
@@ -412,7 +412,7 @@ class FieldList
 		WHERE id_common = " . (int) $id_field . "";
 		$rs = sql_query($query);
 
-		$result = array();
+		$result = [];
 		while (list($id, $value) = sql_fetch_row($rs))
 			$result[$id] = $value;
 		return $result;
@@ -454,7 +454,7 @@ class FieldList
 		if ($arr_field) $query .= " AND id_common IN ( " . implode(',', $arr_field) . " ) ";
 		$rs = sql_query($query);
 
-		$result = array();
+		$result = [];
 		while (list($id, $value) = sql_fetch_row($rs))
 			$result[$id] = $value;
 		return $result;
@@ -471,14 +471,14 @@ class FieldList
 	function getUsersFieldEntryData($users, $fields = false, $translate = true)
 	{
 
-		if (is_numeric($users)) $users = array($users);
+		if (is_numeric($users)) $users = [$users];
 		if (!is_array($users)) return false;
 
-		if (is_numeric($fields)) $fields = array($fields);
+		if (is_numeric($fields)) $fields = [$fields];
 		if (!is_array($fields)) $fields = false;
 
 		if ($translate) {
-			$sons_arr = array();
+			$sons_arr = [];
 			$sons_query = "SELECT idField, id_common_son, translation "
 				. " FROM %adm_field_son WHERE lang_code='" . Lang::get() . "' ";
 			if (!empty($fields)) $sons_query .= " AND idField IN (" . implode(',', $fields) . ")";
@@ -487,7 +487,7 @@ class FieldList
 				$sons_arr[$id_field][$id_son] = $translation;
 			}
 
-			$yesno_fields = array();
+			$yesno_fields = [];
 			$yn_query = "SELECT id_common FROM %adm_field WHERE type_field = 'yesno' ";
 			if (!empty($fields)) $yn_query .= " AND id_common IN ( " . implode(',', $fields) . " )";
 			$yn_rs = sql_query($yn_query);
@@ -503,7 +503,7 @@ class FieldList
 
 		$rs = sql_query($query);
 
-		$result = array();
+		$result = [];
 		while (list($id_user, $id_field, $value) = sql_fetch_row($rs)) {
 			if ($translate) {
 				if (array_key_exists($id_field, $sons_arr)) {
@@ -545,7 +545,7 @@ class FieldList
 		FROM " . $this->getFieldEntryTable() . "
 		WHERE id_common = '" . $id_field . "' AND user_entry = '" . $value_to_check . "'";
 		$rs = sql_query($query);
-		$result = array();
+		$result = [];
 		while (list($owner) = sql_fetch_row($rs))
 			$result[] = $owner;
 		return $result;
@@ -566,7 +566,7 @@ class FieldList
 		FROM " . $this->getFieldEntryTable() . "
 		WHERE id_common = '" . $id_field . "' AND user_entry LIKE '%" . $value_to_check . "%'";
 		$rs = sql_query($query);
-		$result = array();
+		$result = [];
 		while (list($owner) = sql_fetch_row($rs))
 			$result[] = $owner;
 		return $result;
@@ -697,7 +697,7 @@ class FieldList
 			. " AND ft.id_common = '" . $id_common . "'"
 			. " ORDER BY ft.sequence";
 
-		$res = array();
+		$res = [];
 		$rs = sql_query($query);
 		if (!$rs)
 			return $res;
@@ -733,7 +733,7 @@ class FieldList
 			. "   AND ft.id_common IN (" . implode(",", $id_field_arr) . ")"
 			. " ORDER BY ft.sequence";
 
-		$res = array();
+		$res = [];
 
 		$rs = sql_query($query);
 		if ($rs == false)
@@ -782,7 +782,7 @@ class FieldList
 			. "   AND ft.id_common = '" . $id_field . "'"
 			. " ORDER BY ft.sequence";
 
-		$res = array();
+		$res = [];
 
 		$rs = sql_query($query);
 		if ($rs == false)
@@ -909,7 +909,7 @@ class FieldList
 		$query .= " GROUP BY ft.id_common "
 			. " ORDER BY ft.sequence, gft.idst, gft.id_field";
 
-		$play_txt = array();
+		$play_txt = [];
 		$re_fields = sql_query($query);
 
 		$precompiled = FALSE;
@@ -1030,12 +1030,12 @@ class FieldList
         
         
         $acl = &Docebo::user()->getACL(); 
-        $error_message = array();
+        $error_message = [];
         
         // #BUG - 19799
         $acl_man = Docebo::user()->getAclManager();
         if (isset($_SESSION['usermanagement']['selected_node']) && $_SESSION['usermanagement']['selected_node'] != 0 ) {
-            $arr_idst = array();
+            $arr_idst = [];
             $tmp = $acl_man->getGroup(false, '/oc_' . $_SESSION['usermanagement']['selected_node']);
             $arr_idst[] = $tmp[0];
             $tmp = $acl_man->getGroup(false, '/ocd_' . $_SESSION['usermanagement']['selected_node']);
@@ -1154,7 +1154,7 @@ class FieldList
 			. "   AND gft.idst IN ('" . implode("','", $arr_idst) . "')"
 			. " GROUP BY ft.id_common ";
 
-		$error_message = array();
+		$error_message = [];
 
 		$mandatory_filled 	= true;
 		$field_valid 		= true;
@@ -1325,7 +1325,7 @@ class FieldList
 	function storeDirectFieldsForUsers($idst_users, $arr_fields, $is_id = FALSE, $int_userid = TRUE)
 	{
 
-		if (is_numeric($idst_users)) $idst_users = array($idst_users);
+		if (is_numeric($idst_users)) $idst_users = [$idst_users];
 		if (!is_array($idst_users)) return false;
 		if (empty($idst_users)) return true;
 
@@ -1392,7 +1392,7 @@ class FieldList
 		}
 
 		$play_txt = '';
-		$play_arr = array();
+		$play_arr = [];
 		$re_fields = sql_query($query);
 
 		while (list($id_common, $type_field, $type_file, $type_class) = sql_fetch_row($re_fields)) {
@@ -1511,7 +1511,7 @@ class FieldList
 			. "   AND ft.id_common IN ('" . implode("','", $arr_field) . "')"
 			. " GROUP BY ft.id_common ";
 
-		$filled_val = array();
+		$filled_val = [];
 		$re_fields = sql_query($query);
 		while (list($id_common, $translation, $type_field, $type_file, $type_class) = sql_fetch_row($re_fields)) {
 			if (!class_exists($type_class)) {
@@ -1549,7 +1549,7 @@ class FieldList
 		WHERE id_common = '" . $id_field . "'";
 		$rs = sql_query($query);
 
-		$result = array();
+		$result = [];
 		while ($data = sql_fetch_row($rs)) {
 
 			if ($associate_owner === true)  $result[$data[1]] = $data[0];
@@ -1618,7 +1618,7 @@ class FieldList
 	{
 
 		$save_result = true;
-		$arr_idst = array();
+		$arr_idst = [];
 		if ($arr_field !== FALSE) {
 
 			$to_remove = &$arr_field;
@@ -1635,7 +1635,7 @@ class FieldList
 					. "  FROM " . $this->getGroupFieldsTable() . " AS gft"
 					. " WHERE gft.idst IN ('" . implode("','", $allgroup_idst) . "')";
 				$rs = sql_query($query);
-				$result = array();
+				$result = [];
 				while (list($id) = sql_fetch_row($rs))
 					$all_field[$id] = $id;
 			}
@@ -1643,7 +1643,7 @@ class FieldList
 				. "  FROM " . $this->getGroupFieldsTable() . " AS gft"
 				. " WHERE gft.idst = '" . $id_group . "'";
 			$rs = sql_query($query);
-			$to_remove = array();
+			$to_remove = [];
 			while (list($id) = sql_fetch_row($rs)) {
 				if (!isset($all_field[$id])) $to_remove[] = $id;
 			}
@@ -1702,7 +1702,7 @@ class FieldList
 	 */
 	function quickSearchUsersFromEntry($fields, $method, $like, $search, $return_raw = FALSE)
 	{
-		$res = array();
+		$res = [];
 
 
 		if ((Get::sett('do_debug') == 'on') && (count($fields) != count($search))) {
@@ -1715,7 +1715,7 @@ class FieldList
 		$qtxt = "SELECT * FROM " . $this->getFieldEntryTable() . " ";
 		$qtxt .= "WHERE id_common IN (" . implode(",", $fields) . ") AND (";
 
-		$where_arr = array();
+		$where_arr = [];
 		foreach ($fields as $id_common) {
 
 			$where = "";
@@ -1750,9 +1750,9 @@ class FieldList
 
 		$q = sql_query($qtxt);
 
-		$raw_res = array();
-		$raw_res["field"] = array();
-		$raw_res["user"] = array();
+		$raw_res = [];
+		$raw_res["field"] = [];
+		$raw_res["user"] = [];
 		if (($q) && (sql_num_rows($q) > 0)) {
 			while ($row = sql_fetch_assoc($q)) {
 
@@ -1762,7 +1762,7 @@ class FieldList
 				// ----------------------------------------------------------
 
 				if (!isset($raw_res[$id_common]))
-					$raw_res["field"][$id_common] = array();
+					$raw_res["field"][$id_common] = [];
 
 				if (!in_array($id_user, $raw_res["field"][$id_common]))
 					$raw_res["field"][$id_common][] = $id_user;
@@ -1770,7 +1770,7 @@ class FieldList
 				// ----------------------------------------------------------
 
 				if (!isset($raw_res["user"][$id_user]))
-					$raw_res["user"][$id_user] = array();
+					$raw_res["user"][$id_user] = [];
 
 				if (!in_array($id_common, $raw_res["user"][$id_user]))
 					$raw_res["user"][$id_user][] = $id_common;
@@ -1823,7 +1823,7 @@ class FieldList
 			return $false_var;
 		}
 
-		$output = array();
+		$output = [];
 		while ($row = $db->fetch_assoc($rs)) $output[] = $row;
 		return $output;
 	}
@@ -1890,7 +1890,7 @@ class FieldList
 		$acl = new DoceboACL();
 		$user_groups = $acl->getUserGroupsST($id_user);
 
-		$output = array();
+		$output = [];
 
 		if (!empty($user_groups)) {
 			if (count($user_groups) > 2 && isset($user_groups[1]) && isset($user_groups[2])) {
@@ -1912,12 +1912,12 @@ class FieldList
 
 			if ($res) {
 				while ($obj = sql_fetch_object($res)) {
-					$output[$obj->id_common] = array(
+					$output[$obj->id_common] = [
 						'translation' => $obj->translation,
 						'type_field' => $obj->type_field,
 						'useraccess' => $obj->useraccess,
 						'user_entry' => $obj->user_entry
-					);
+                    ];
 				}
 			}
 		}
@@ -1933,7 +1933,7 @@ class FieldList
 		$query = "SELECT id_common FROM " . $this->getFieldTable() . " WHERE type_field = '" . $type . "'";
 		$res = sql_query($query);
 		if ($res) {
-			$output = array();
+			$output = [];
 			while (list($id_field) = sql_fetch_row($res)) {
 				$output[] = $id_field;
 			}
@@ -1947,10 +1947,10 @@ class FieldList
 	{
 		if ($id_admin <= 0) return false;
 
-		$output = array();
+		$output = [];
 
 		//retrieve admin's groups and read groups associated fields
-		$groups = array();
+		$groups = [];
 		$query = "SELECT gm.idst FROM %adm_group_members AS gm JOIN %adm_group AS g ON (gm.idst = g.idst) "
 			. " WHERE (g.groupid LIKE '/oc\_%' OR g.groupid LIKE '/ocd\_%' ) AND gm.idstMember = " . (int) $id_admin;
 		$res = sql_query($query);
@@ -1959,7 +1959,7 @@ class FieldList
 		}
 
 		if (!empty($groups)) {
-			$fields = array();
+			$fields = [];
 			$query = "SELECT * FROM " . $this->getGroupFieldsTable() . " "
 				. " WHERE idst IN (" . implode(",", $groups) . ") "
 				. " AND user_inherit = 1";

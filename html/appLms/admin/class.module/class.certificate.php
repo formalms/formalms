@@ -31,20 +31,20 @@ class Module_Certificate extends LmsAdminModule {
 
 	// Function for permission managment
 	function getAllToken($op) {
-		return array(
-			'view' => array( 	'code' => 'view',
+		return [
+			'view' => ['code' => 'view',
 								'name' => '_VIEW',
-								'image' => 'standard/view.png'),
-			'mod' => array( 	'code' => 'mod',
+								'image' => 'standard/view.png'],
+			'mod' => ['code' => 'mod',
 								'name' => '_MOD',
-								'image' => 'standard/edit.png'),
-			'assign' => array( 	'code' => 'assign',
+								'image' => 'standard/edit.png'],
+			'assign' => ['code' => 'assign',
 								'name' => '_ASSIGN',
-								'image' => 'standard/assign.png'),
-			'release' => array( 	'code' => 'release',
+								'image' => 'standard/assign.png'],
+			'release' => ['code' => 'release',
 								'name' => '_RELEASE',
-								'image' => 'standard/release.png')
-		);
+								'image' => 'standard/release.png']
+        ];
 	}
 }
 
