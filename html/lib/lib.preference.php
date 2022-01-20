@@ -1438,9 +1438,9 @@ class AdminPreference
 
 	public function saveAdminClasslocation($idst, $selection)
 	{
-		if (is_numeric($selection)) $selection = [(int)$election];
+		if (is_numeric($selection)) $selection = [(int)$selection];
 		if (!is_array($selection)) return false;
-		if (empty($selection)) return true;
+		//if (empty($selection)) return true; impedirebbe di cancellare tutte le location
 
 		if($this->clearAdminClasslocation($idst))
 		{
