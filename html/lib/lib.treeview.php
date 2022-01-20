@@ -79,7 +79,7 @@ class TreeView {
 	// lang object
 	var $lang = NULL;
 
-	protected $aclManager;
+	public $aclManager;
 
 	function __construct($tdb, $id, $rootname = 'root') {
 		$this->tdb = $tdb;

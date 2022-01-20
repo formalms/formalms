@@ -529,7 +529,7 @@ class DoceboConnectorDoceboUsers extends DoceboConnector
         }
         require_once(_adm_ . '/lib/lib.directory.php');
         $this->people_view = new PeopleListView();
-        $this->people_view->data = new PeopleDataRetriever();
+        $this->people_view->data =  new PeopleDataRetriever($GLOBALS['dbConn'], $GLOBALS['prefix_fw']);
         $this->people_view->data->idFilters = NULL;
         $this->people_view->data->resetFieldFilter();
         $this->people_view->data->resetCustomFilter();
