@@ -1523,16 +1523,24 @@ class CourseAlms extends Model
         }
 
         $query .= ' GROUP BY idCourse';
-
+  
         $res = sql_query($query);
 
         foreach ($res as $row) {
             $output[$row['idCourse']] = (int)$row['count'];
         }
 
-        $class_real_count = 'SELECT cu.idCourse as idCourse,COUNT(*) as count FROM %lms_courseuser AS cu JOIN %lms_course_date AS cd JOIN %lms_course_date_user AS cdu '
+    
+        $class_real_count = 'SELECT cu.idCourse as idCourse,COUNT(*) as count FROM %lms_courseuser AS cu 
+                JOIN %lms_course_date AS cd JOIN %lms_course_date_user AS cdu '
             . ' ON (cd.id_date = cdu.id_date AND cd.id_course = cu.idCourse AND cu.idUser = cdu.id_user) '
-            . ' WHERE cu.idCourse IN (' . implode(',', $courses) . ') AND cu.level = 3 and cu.status >= 1 and cu.status < 4 GROUP BY cu.idCourse';
+            . ' WHERE cu.idCourse IN (' . implode(',', $courses) . ') AND cu.level = 3 and cu.status >= 1 and cu.status < 4 '; 
+
+        if(count($usersFilterIds)) {
+            $class_real_count .= 'AND cu.idUser in (' .implode(",", $usersFilterIds) . ')';
+        }
+
+        $class_real_count .= 'GROUP BY cu.idCourse';
 
         $resClass = sql_query($class_real_count);
         foreach ($resClass as $row) {
