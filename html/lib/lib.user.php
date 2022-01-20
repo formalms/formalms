@@ -87,12 +87,12 @@ class DoceboUser
         } else {
             $this->idst = $this->acl->getUserST($userid);
         }
-        if (isset($_SESSION[$sprefix . '_stlist'])) {
+       if (isset($_SESSION[$sprefix . '_stlist'])) {
 
-            require_once(_base_ . '/lib/lib.json.php');
-            $json = new Services_JSON();
-            $this->arrst = $json->decode($_SESSION[$sprefix . '_stlist']);
-        }
+           require_once(_base_ . '/lib/lib.json.php');
+           $json = new Services_JSON();
+           $this->arrst = $json->decode($_SESSION[$sprefix . '_stlist']);
+       }
 
         $user_manager = new DoceboACLManager();
         $userInfo = $user_manager->getUser($this->idst, false);
@@ -110,20 +110,35 @@ class DoceboUser
 
         $this->load_user_role();
 
+        $this->initRole($this->arrst, $this->idst);
+
+    }
+
+    public function initRole($preset, $idst) {
         $aclManager =& $this->acl->getACLManager();
         $arr_levels_id = array_flip($aclManager->getAdminLevels());
         $arr_levels_idst = array_keys($arr_levels_id);
+        $level_st = array_intersect($arr_levels_idst, $preset);
+   
+        if (count($level_st) == 0) {
+            $this->user_level = false;
+            $lvl = current($level_st);
+        }
 
-        $level_st = array_intersect($arr_levels_idst, $this->arrst);
-        if (count($level_st) == 0) $this->user_level = false;
-        $lvl = current($level_st);
-        $query = "SELECT idst FROM %adm_group_members WHERE idstMember=" . (int)$this->idst . " AND idst IN (" . implode(",", $arr_levels_idst) . ")";
+        $query = "SELECT idst FROM %adm_group_members WHERE idstMember=" . (int)$idst . " AND idst IN (" . implode(",", $arr_levels_idst) . ")";
         $res = $this->db->query($query);
-        if ($res && $this->db->num_rows($res) > 0) list($lvl) = $this->db->fetch_row($res);
+        if ($res && $this->db->num_rows($res) > 0) {
+             list($lvl) = $this->db->fetch_row($res);
+         }
 
-        if (isset($arr_levels_id[$lvl])) $this->user_level = $arr_levels_id[$lvl];
-        else $this->user_level = array_search(ADMIN_GROUP_USER, $arr_levels_id);
+   
+        if (isset($arr_levels_id[$lvl])) {
+            $this->user_level = $arr_levels_id[$lvl];
+        } else {
+            $this->user_level = array_search(ADMIN_GROUP_USER, $arr_levels_id);
+        }
 
+        
     }
 
     public function load_user_role()

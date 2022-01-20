@@ -736,6 +736,7 @@ class UsermanagementAdmController extends AdmController
 
 	function deluser()
 	{
+		
 		//check permissions
 		if (!$this->permissions['del_user']) {
 			$output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
@@ -755,8 +756,8 @@ class UsermanagementAdmController extends AdmController
 				echo $this->json->encode($output);
 				return;
 			}
-
-            $userToDelete = new DoceboUser($id_user);
+		
+            $userToDelete = $this->retrieveUserWithRoleInfo($id_user);
 
             if (Docebo::user()->getUserLevelId() === ADMIN_GROUP_ADMIN && $userToDelete->getUserLevelId() === ADMIN_GROUP_GODADMIN) {
                 $output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
@@ -764,29 +765,27 @@ class UsermanagementAdmController extends AdmController
                 return;
             }
 
-			if ($acl_man->deleteUser($id_user)) {
-				$output = ['success' => true];
-				if (Get::sett('register_deleted_user', "off") == "on")
-					$output['total_deleted_users'] = $this->model->getDeletedUsersTotal();
-
-				// Increment the counter for users created by this admin:
-				if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
-					$admin_pref = new AdminPreference();
-					$pref = $admin_pref->getAdminRules(Docebo::user()->getIdSt());
-					if ($pref['admin_rules.limit_user_insert'] == 'on') {
-						$user_pref = new UserPreferences(Docebo::user()->getIdSt());
-						$user_created_count = (int) $user_pref->getPreference('user_created_count');
-						$user_created_count = $user_created_count - 1;
-						$user_pref->setPreference('user_created_count', $user_created_count);
-					}
+		if ($acl_man->deleteUser($id_user)) {
+			$output = ['success' => true];
+			if (Get::sett('register_deleted_user', "off") == "on")
+				$output['total_deleted_users'] = $this->model->getDeletedUsersTotal();
+			// Increment the counter for users created by this admin:
+			if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+				$admin_pref = new AdminPreference();
+				$pref = $admin_pref->getAdminRules(Docebo::user()->getIdSt());
+				if ($pref['admin_rules.limit_user_insert'] == 'on') {
+					$user_pref = new UserPreferences(Docebo::user()->getIdSt());
+					$user_created_count = (int) $user_pref->getPreference('user_created_count');
+					$user_created_count = $user_created_count - 1;
+					$user_pref->setPreference('user_created_count', $user_created_count);
 				}
-
-				// SET DELETE USER EVENT
-				//TODO: EVT_OBJECT (§)
-				//$event = new \appCore\Events\Core\User\UsersManagementDeleteEvent();
-				//$event->setUser($userToDelete);
-				//TODO: EVT_LAUNCH (&)
-				//\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementDeleteEvent::EVENT_NAME, $event);
+			}
+			// SET DELETE USER EVENT
+			//TODO: EVT_OBJECT (§)
+			//$event = new \appCore\Events\Core\User\UsersManagementDeleteEvent();
+			//$event->setUser($userToDelete);
+			//TODO: EVT_LAUNCH (&)
+			//\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementDeleteEvent::EVENT_NAME, $event);
 			} else {
 				$output = ['success' => false, 'message' => 'Error: unable to delete user #' . $id_user . '.'];
 			}
@@ -794,6 +793,19 @@ class UsermanagementAdmController extends AdmController
 			$output = ['success' => false, 'message' => 'invalid input'];
 		}
 		echo $this->json->encode($output);
+	}
+
+
+	public function retrieveUserWithRoleInfo($userId) {
+	
+		require_once(_base_ . '/lib/lib.acl.php');
+		$userInfo = new DoceboUser($userId);
+		$acl = new DoceboACL();
+		$arrst = $acl->getUserAllST(false, '', $userId);
+
+		$userInfo->initRole($arrst,$userId);
+
+		return $userInfo;
 	}
 
 	function delmultiuser()
@@ -817,7 +829,7 @@ class UsermanagementAdmController extends AdmController
 
 			$users = [];
 			foreach ($users_arr as $idst) {
-                $userToDelete = new DoceboUser($idst);
+				$userToDelete = $this->retrieveUserWithRoleInfo($idst);
                 $users [] = $userToDelete;
                 if (Docebo::user()->getUserLevelId() === ADMIN_GROUP_ADMIN && $userToDelete->getUserLevelId() === ADMIN_GROUP_GODADMIN) {
                     $output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
@@ -825,9 +837,6 @@ class UsermanagementAdmController extends AdmController
                     return;
                 }
 			}
-
-
-
 			$res = $this->model->deleteUsers($users_arr);
 
 			// SET DELETE USER MULTIPLE EVENT
