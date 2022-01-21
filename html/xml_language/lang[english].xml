@@ -1516,6 +1516,11 @@ Password: [password]]]></key>
       <module id="label">
         <key id="label&amp;_ALL_DESCRIPTION" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[All the courses you are enrolled in.]]></key>
       </module>
+      <module id="learningObjectContextMenu">
+        <key id="learningObjectContextMenu&amp;_COPY" attributes="" save_date="2022-01-21 17:32:30"><![CDATA[Copy]]></key>
+        <key id="learningObjectContextMenu&amp;_DELETE" attributes="" save_date="2022-01-21 17:34:21"><![CDATA[Delete]]></key>
+        <key id="learningObjectContextMenu&amp;_RENAME" attributes="" save_date="2022-01-21 17:33:47"><![CDATA[Rename]]></key>
+      </module>
       <module id="levels">
         <key id="levels&amp;_LEVEL_1" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Guest]]></key>
         <key id="levels&amp;_LEVEL_2" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Ghost]]></key>

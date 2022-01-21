@@ -1516,6 +1516,11 @@ Titolo: [thread_title]]]></key>
       <module id="label">
         <key id="label&amp;_ALL_DESCRIPTION" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Tutti i corsi a cui sei iscritto]]></key>
       </module>
+        <module id="learningObjectContextMenu">
+        <key id="learningObjectContextMenu&amp;_COPY" attributes="" save_date="2022-01-21 17:32:30"><![CDATA[Copia]]></key>
+        <key id="learningObjectContextMenu&amp;_DELETE" attributes="" save_date="2022-01-21 17:34:21"><![CDATA[Elimina]]></key>
+        <key id="learningObjectContextMenu&amp;_RENAME" attributes="" save_date="2022-01-21 17:33:47"><![CDATA[Rinomina]]></key>
+      </module>
       <module id="levels">
         <key id="levels&amp;_LEVEL_1" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Ospite]]></key>
         <key id="levels&amp;_LEVEL_2" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Ghost]]></key>
