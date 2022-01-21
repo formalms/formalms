@@ -90,7 +90,7 @@ function mycourses(&$url) {
 
 			require_once($GLOBALS['where_lms'].'/lib/lib.levels.php');
 
-			$lvl = CourseLevel::getLevels();
+			$lvl = CourseLevel::getTranslatedLevels();
 
 			foreach($course_stats['with_ulevel'] as $lvl_num => $quantity) {
 
@@ -651,7 +651,7 @@ function userCourseList(&$url, $use_tab = true, $page_add = true) {
 	
 	// page intest ------------------------------------------------------------
 	require_once($GLOBALS['where_lms'].'/lib/lib.levels.php');
-	$lvl = CourseLevel::getLevels();
+	$lvl = CourseLevel::getTranslatedLevels();
 			
 	$title = $lang->def('_COURSE_LIST');
 	switch($filter) {
@@ -989,7 +989,7 @@ function dashmyassess(&$url, $lang, $cinfo, $index) {
 function dashmycourse(&$url, $lang, &$subscription, $cinfo, $index) {
 	
 	require_once($GLOBALS['where_lms'].'/lib/lib.levels.php');
-	$lvl = CourseLevel::getLevels();
+	$lvl = CourseLevel::getTranslatedLevels();
 	
 	$arr_status = [_CUS_RESERVED 		=> $lang->def('_T_USER_STATUS_RESERVED'),
 						_CUS_WAITING_LIST 	=> $lang->def('_WAITING_USERS'),

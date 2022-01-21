@@ -51,12 +51,14 @@ class CourseLmsController extends LmsController
 
     public function infocourse()
     {
-        checkPerm('view_info');
+       
+        checkPerm('view_info', false, 'course');
+        
         try {
             $acl_man = Docebo::user()->getAclManager();
             $lang =& DoceboLanguage::createInstance('course');
             $course = $GLOBALS['course_descriptor']->getAllInfo();
-            $levels = [1=>'Guest',2=>'Ghost',3=>'Student',4=>'Tutor',5=>'Mentor',6=>'Instructor',7=>'Administrator'];
+            $levels = CourseLevel::getLevels();
         } catch (\Exception $exception) {
 
         }

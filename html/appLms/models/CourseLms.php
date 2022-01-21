@@ -156,7 +156,7 @@ class CourseLms extends Model
     public static function getCourseParsedData($course)
     {
         $path_course = $GLOBALS['where_files_relative'] . '/appLms/' . Get::sett('pathcourse') . '/';
-        $levels = CourseLevel::getLevels();
+        $levels = CourseLevel::getTranslatedLevels();
         $infoEnroll = self::getInfoEnroll($course['idCourse'], Docebo::user()->getIdSt());
 
         $parsedData = $course;

@@ -2480,7 +2480,7 @@ class Course_API extends API
         function &getCourseLevelSt($id_course)
         {
             $map = [];
-            $levels = CourseLevel::getLevels();
+            $levels = CourseLevel::getTranslatedLevels();
 
             // find all the group created for this menu custom for permission management
             foreach ($levels as $lv => $name_level) {

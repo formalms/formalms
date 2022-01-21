@@ -3492,7 +3492,7 @@ class SubscriptionAlmsController extends AlmsController
         $lang = &DoceboLanguage::CreateInstance('course', 'lms');
         $lang = &DoceboLanguage::CreateInstance('subscribe', 'lms');
         $acl_man = &Docebo::user()->getAclManager();
-        $levels = CourseLevel::getLevels();
+        $levels = CourseLevel::getTranslatedLevels();
 
         $waiting_users = &$man_course->getWaitingSubscribed($id_course, $edition_id);
         $users_name = &$acl_man->getUsers($waiting_users['all_users_id']);

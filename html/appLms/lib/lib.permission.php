@@ -20,6 +20,7 @@ function funAccess($functionname, $mode, $returnValue = false, $custom_mod_name 
 
 function checkPerm($mode, $return_value = false, $use_mod_name = false, $is_public = false) {
 	
+	
 	if($use_mod_name != false) $mod_name = $use_mod_name;
 	else $mod_name = $GLOBALS['modname'];
 	
@@ -34,6 +35,7 @@ function checkPerm($mode, $return_value = false, $use_mod_name = false, $is_publ
 		case "del" : $suff = 'del';break;
 		default:  $suff = $mode;
 	}
+	
 	$role = '/'.Get::cur_plat().'/'
 		.( isset($_SESSION['idCourse']) && $is_public == false ? 'course/private/'.$_SESSION['idCourse'].'/' : 'course/public/' )
 		.$mod_name.'/'.$suff;
@@ -41,7 +43,8 @@ function checkPerm($mode, $return_value = false, $use_mod_name = false, $is_publ
 		require_once(_lms_.'/lib/lib.track_user.php');
 		TrackUser::setActionTrack(getLogUserId(), $_SESSION['idCourse'], $mod_name, $suff);
 	}
-	
+
+
 	if(Docebo::user()->matchUserRole($role)) {
 		return true;
 	} else {

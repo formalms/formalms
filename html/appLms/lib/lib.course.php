@@ -650,7 +650,7 @@ class Man_Course
     {
 
         $map = [];
-        $levels = CourseLevel::getLevels();
+        $levels = CourseLevel::getTranslatedLevels();
         $acl_man =& Docebo::user()->getAclManager();
 
 
@@ -2184,7 +2184,7 @@ class DoceboCourse
         $subscribe_man = new CourseSubscribe_Manager();
 
         $map = [];
-        $levels = $subscribe_man->getUserLevel();//CourseLevel::getLevels();
+        $levels = $subscribe_man->getUserLevel();//CourseLevel::getTranslatedLevels();
         $acl_man =& Docebo::user()->getAclManager();
 
 
@@ -2219,7 +2219,7 @@ class DoceboCourse
         require_once(_lms_ . '/lib/lib.levels.php');
 
         $map = [];
-        $levels = CourseLevel::getLevels();
+        $levels = CourseLevel::getTranslatedLevels();
         $acl_man =& Docebo::user()->getAclManager();
 
         $idst_main = $acl_man->registerGroup('/lms/course/' . $idCourse . '/group/alluser',

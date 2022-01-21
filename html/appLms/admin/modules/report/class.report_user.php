@@ -1538,9 +1538,9 @@ class Report_User extends Report
         ];
 
         require_once(_lms_ . '/lib/lib.levels.php');
-        $clevels = new CourseLevel();
-        $user_levels_trans = $clevels->getLevels();
-        unset($clevels);
+
+        $user_levels_trans = CourseLevel::getTranslatedLevels();
+     
 
         require_once(_lms_ . '/admin/models/LabelAlms.php');
         $label_model = new LabelAlms();
@@ -3043,9 +3043,9 @@ class Report_User extends Report
                                     {
                                         if ($user_levels_trans === false) {
                                             require_once(_lms_ . '/lib/lib.levels.php');
-                                            $clevels = new CourseLevel();
-                                            $user_levels_trans = $clevels->getLevels();
-                                            unset($clevels);
+                                            
+                                            $user_levels_trans = CourseLevel::getTranslatedLevels();
+                                        
                                         }
                                         $line[] = ['style' => 'align-center', 'value' => $user_levels_trans[$user_info['level']]];
                                     }

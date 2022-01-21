@@ -70,7 +70,7 @@ class Module_Storage extends LmsModule {
 		$lang_perm =& DoceboLanguage::createInstance('permission');
 		
 		$tokens = $this->getAllToken();
-		$levels = CourseLevel::getLevels();
+		$levels = CourseLevel::getTranslatedLevels();
 		$tb = new Table(0, $lang->def('_VIEW_PERMISSION'), $lang->def('_EDIT_SETTINGS'));
 		
 		$c_head = [$lang->def('_LEVELS')];
@@ -142,7 +142,7 @@ class Module_Storage extends LmsModule {
 	function getSelectedPermission() {
 		
 		$tokens 	= $this->getAllToken();
-		$levels 	= CourseLevel::getLevels();
+		$levels 	= CourseLevel::getTranslatedLevels();
 		$perm 		= [];
 		
 		foreach($levels as $lv => $levelname ) 

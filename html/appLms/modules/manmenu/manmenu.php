@@ -549,7 +549,7 @@ function editmodule($load = false) {
 		
 		// Load actual module permission
 		
-		$levels = CourseLevel::getLevels();
+		$levels = CourseLevel::getTranslatedLevels();
 		$tokens = $module_obj->getAllToken($module_op);
 		
 		$map_level_idst	 	=& getCourseLevelSt($_SESSION['idCourse']);
@@ -634,7 +634,7 @@ function upmodule() {
 	//* Find permission to save or delete *************************//
 	//*************************************************************//
 	
-	$levels 			= CourseLevel::getLevels();
+	$levels 			= CourseLevel::getTranslatedLevels();
 	$all_token 			= $module_obj->getAllToken($def_op);
 	$new_token 			= $module_obj->getSelectedPermission($def_op);
 	// corresponding of token -> idst role
@@ -732,7 +732,7 @@ function removeModule($id_module, $id_main, $id_course) {
 	list($module_name, $name_db, $file_name, $class_name, $def_op) = sql_fetch_row(sql_query($query_module));
 	$module_obj =& createModule($module_name);
 	
-	$levels 			= CourseLevel::getLevels();
+	$levels 			= CourseLevel::getTranslatedLevels();
 	$all_token 			= $module_obj->getAllToken();
 	// corresponding of token -> idst role
 	$map_idst_token 	=& getModuleRoleSt($module_name, $all_token);

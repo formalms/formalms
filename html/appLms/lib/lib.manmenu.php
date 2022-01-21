@@ -67,7 +67,7 @@ function createCourseMenuFromCustom($id_custom, $id_course, $group_idst) {
 	//copy module permission
 	$group_of_from 	=& getCustomLevelSt($id_custom);
 	$perm_form 		=& createPermForCourse($group_of_from, $id_course);
-	$levels  		=  CourseLevel::getLevels();
+	$levels  		=  CourseLevel::getTranslatedLevels();
 	
 	foreach($levels as $lv => $name_level) {
 		
@@ -174,7 +174,7 @@ function cleanTokenFromModule($module_tokens) {
 function &getCustomLevelSt($id_custom) {
 	
 	$map 		= [];
-	$levels 	= CourseLevel::getLevels();
+	$levels 	= CourseLevel::getTranslatedLevels();
 	$acl_man	=& Docebo::user()->getAclManager();
 	
 	// find all the group created for this menu custom for permission management
@@ -198,7 +198,7 @@ function &getCustomLevelSt($id_custom) {
 function &getModuleRoleSt($module_name, $all_token, $flip = false) {
 	
 	$map 		= [];
-	$levels 	= CourseLevel::getLevels();
+	$levels 	= CourseLevel::getTranslatedLevels();
 	$acl_man	=& Docebo::user()->getAclManager();
 	
 	// find the idst of all the role of the selected module
@@ -224,7 +224,7 @@ function &createPermForCourse($group_idst, $id_course) {
 	
 	$base_perm = '/lms/course/private/';
 	$map 		= [];
-	$levels 	= CourseLevel::getLevels();
+	$levels 	= CourseLevel::getTranslatedLevels();
 	$acl_man	=& Docebo::user()->getAclManager();
 	$cut_at 	= strlen($base_perm);
 	
@@ -292,7 +292,7 @@ function createModuleRoleForCourse($id_course, $module_name, $tokens) {
 function &getAllModulesPermissionSt($group_idst, $idst_cast = false) {
 	
 	$old_perm 	= [];
-	$levels 	= CourseLevel::getLevels();
+	$levels 	= CourseLevel::getTranslatedLevels();
 	$acl_man	=& Docebo::user()->getAclManager();
 	
 	// find all the roles associated to the main groups
@@ -328,7 +328,7 @@ function &fromTokenToSt(&$tokens, &$map_idst) {
 	//$map_idst[$lv] = $group_info[ACL_INFO_IDST];
 	
 	$new_perm 	= [];
-	$levels 	= CourseLevel::getLevels();
+	$levels 	= CourseLevel::getTranslatedLevels();
 	// convert all the permission from token code to idst
 	foreach($levels as $lv => $name_level) {
 		
@@ -354,7 +354,7 @@ function &fromTokenToSt(&$tokens, &$map_idst) {
 function &fromStToToken(&$map_idst_roles, &$token) {
 	
 	$convert 	= [];
-	$levels 	= CourseLevel::getLevels();
+	$levels 	= CourseLevel::getTranslatedLevels();
 	
 	foreach($levels as $lv => $name_level) {
 		
@@ -373,7 +373,7 @@ function &fromStToToken(&$map_idst_roles, &$token) {
  function &createPermForCoursebis($group_idst, $id_course, $id_principale) {
 	$base_perm = '/lms/course/private/'.$id_principale.'/';
 	$map 		= [];
-	$levels 	= CourseLevel::getLevels();
+	$levels 	= CourseLevel::getTranslatedLevels();
 	$acl_man	=& $GLOBALS['current_user']->getAclManager();
 	$cut_at 	= strlen($base_perm);
 	// find the idst of all the role of the selected module

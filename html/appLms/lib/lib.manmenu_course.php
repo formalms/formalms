@@ -53,7 +53,7 @@ function getModuleNextSeq($id_main) {
 function &getCourseLevelSt($id_course) {
 	
 	$map 		= [];
-	$levels 	= CourseLevel::getLevels();
+	$levels 	= CourseLevel::getTranslatedLevels();
 	$acl_man	=& Docebo::user()->getAclManager();
 	
 	// find all the group created for this menu custom for permission management
@@ -77,7 +77,7 @@ function &getCourseLevelSt($id_course) {
 function &getModuleRoleSt($module_name, $all_token, $flip = false) {
 	
 	$map 		= [];
-	$levels 	= CourseLevel::getLevels();
+	$levels 	= CourseLevel::getTranslatedLevels();
 	$acl_man	=& Docebo::user()->getAclManager();
 	
 	// find the idst of all the role of the selected module
@@ -106,7 +106,7 @@ function &getModuleRoleSt($module_name, $all_token, $flip = false) {
 function &getAllModulesPermissionSt($group_idst, $idst_cast = false) {
 	
 	$old_perm 	= [];
-	$levels 	= CourseLevel::getLevels();
+	$levels 	= CourseLevel::getTranslatedLevels();
 	$acl_man	=& Docebo::user()->getAclManager();
 	
 	// find all the roles associated to the main groups
@@ -140,7 +140,7 @@ function &getAllModulesPermissionSt($group_idst, $idst_cast = false) {
 function &fromTokenToSt(&$tokens, &$map_idst) {
 	
 	$new_perm 	= [];
-	$levels 	= CourseLevel::getLevels();
+	$levels 	= CourseLevel::getTranslatedLevels();
 	// convert all the permission from token code to idst
 	foreach($levels as $lv => $name_level) {
 		
@@ -166,7 +166,7 @@ function &fromTokenToSt(&$tokens, &$map_idst) {
 function &fromStToToken(&$map_idst_roles, &$token) {
 	
 	$convert 	= [];
-	$levels 	= CourseLevel::getLevels();
+	$levels 	= CourseLevel::getTranslatedLevels();
 	
 	foreach($levels as $lv => $name_level) {
 		

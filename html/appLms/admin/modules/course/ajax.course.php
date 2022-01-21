@@ -153,7 +153,7 @@ function duplicateCourse()
 	function &getCourseLevelSt($id_course) {
 
 		$map 		= [];
-		$levels 	= CourseLevel::getLevels();
+		$levels 	= CourseLevel::getTranslatedLevels();
 		$acl_man	=& $GLOBALS['current_user']->getAclManager();
 
 		// find all the group created for this menu custom for permission management

@@ -1942,7 +1942,7 @@ class UserProfileViewer {
             if (count($course_stats['with_ulevel']) > 1) {
 
                 require_once($GLOBALS['where_lms'] . '/lib/lib.levels.php');
-                $lvl = CourseLevel::getLevels();
+                $lvl = CourseLevel::getTranslatedLevels();
                 foreach ($course_stats['with_ulevel'] as $lvl_num => $quantity) {
 
                     $html .= '<li class="list-group-item">' . str_replace('[level]', $lvl[$lvl_num], $this->_lang->def('_COURSE_AS')) . '<span class="badge">' . $quantity . '</span></li>';

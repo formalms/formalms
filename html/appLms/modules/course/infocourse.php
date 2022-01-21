@@ -103,7 +103,7 @@ function infocourse() {
 	
 	$acl_man 	= Docebo::user()->getAclManager();
 	$course 	= $GLOBALS['course_descriptor']->getAllInfo();
-	$levels 	= CourseLevel::getLevels();
+	$levels 	= CourseLevel::getTranslatedLevels();
 	
 	$status_lang = [
 		0 =>$lang->def('_NOACTIVE'), 
@@ -239,7 +239,7 @@ function modcourseinfo() {
 	$out 		=& $GLOBALS['page'];
 	$id_course 	= $_SESSION['idCourse'];
 	$form 		= new Form();
-	$levels 	= CourseLevel::getLevels();
+	$levels 	= CourseLevel::getTranslatedLevels();
 	$array_lang 	= Docebo::langManager()->getAllLangCode();
 	$difficult_lang = [
 		'veryeasy' => $lang->def('_DIFFICULT_VERYEASY'),

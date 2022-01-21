@@ -217,7 +217,7 @@ function savecustom() {
 		list($id_custom) = sql_fetch_row(sql_query("SELECT LAST_INSERT_ID()"));
 		
 		$acl_man = Docebo::user()->getAclManager();
-		$levels = CourseLevel::getLevels();
+		$levels = CourseLevel::getTranslatedLevels();
 		foreach($levels as $key => $value) {
 			$idst = $acl_man->registerGroup( '/lms/custom/'.$id_custom.'/'.$key, 
 									'for custom lms menu', 
@@ -270,7 +270,7 @@ function savecustom() {
 			//copy module permission
 			$group_of_from 	=& getCustomLevelSt($id_custom_from);
 			$perm_form 		=& getAllModulesPermissionSt($group_of_from);
-			$levels  		=  CourseLevel::getLevels();
+			$levels  		=  CourseLevel::getTranslatedLevels();
 			foreach($levels as $lv => $name_level) {
 				
 				foreach($perm_form[$lv] as $idrole => $v) {
@@ -864,7 +864,7 @@ function editmodule($load = false) {
 		
 		// Load actual module permission
 		
-		$levels = CourseLevel::getLevels();
+		$levels = CourseLevel::getTranslatedLevels();
 		$tokens = $module_obj->getAllToken($module_op);
 		
 		$map_level_idst	 	=& getCustomLevelSt($id_custom);
@@ -966,7 +966,7 @@ function upmodule() {
 	//* Find permission to save or delete *************************//
 	//*************************************************************//
 	
-	$levels 			= CourseLevel::getLevels();
+	$levels 			= CourseLevel::getTranslatedLevels();
 	$all_token 			= $module_obj->getAllToken($module_op);
 	$new_token 			= $module_obj->getSelectedPermission($module_op);
 	// corresponding of token -> idst role
@@ -1063,7 +1063,7 @@ function removeModule($id_module, $id_main, $id_custom) {
 	list($module_name, $name_db, $file_name, $class_name) = sql_fetch_row(sql_query($query_module));
 	$module_obj =& createLmsModule($module_name);
 	
-	$levels 			= CourseLevel::getLevels();
+	$levels 			= CourseLevel::getTranslatedLevels();
 	$all_token 			= $module_obj->getAllToken();
 	// corresponding of token -> idst role
 	$map_idst_token 	=& getModuleRoleSt($module_name, $all_token);

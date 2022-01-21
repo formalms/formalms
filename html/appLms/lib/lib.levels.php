@@ -22,7 +22,7 @@ class CourseLevel {
 	const COURSE_LEVEL_GUEST = 1;
 
 
-	function getLevels($op = '') {
+	public static function getTranslatedLevels($op = '') {
 
 		$lang =& DoceboLanguage::createInstance('levels', 'lms');
 		return [
@@ -35,6 +35,21 @@ class CourseLevel {
 			1 => $lang->def('_LEVEL_1'),		//'Guest'
         ];
 	}
+
+
+	public static function getLevels() {
+
+		return [
+			self::COURSE_LEVEL_ADMIN => 'Administrator',
+			self::COURSE_LEVEL_TEACHER => 'Instructor',
+			self::COURSE_LEVEL_MENTOR => 'Mentor',
+			self::COURSE_LEVEL_TUTOR => 'Tutor',
+			self::COURSE_LEVEL_STUDENT => 'Student',
+			self::COURSE_LEVEL_GHOST => 'Ghost',
+			self::COURSE_LEVEL_GUEST => 'Guest'
+        ];
+	}
+
 
 
 	function isTeacher($level) {

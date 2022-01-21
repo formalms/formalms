@@ -724,7 +724,7 @@ class CourseAlmsController extends AlmsController
             function &getCourseLevelSt($id_course)
             {
                 $map = [];
-                $levels = CourseLevel::getLevels();
+                $levels = CourseLevel::getTranslatedLevels();
 
                 // find all the group created for this menu custom for permission management
                 foreach ($levels as $lv => $name_level) {
@@ -1396,7 +1396,7 @@ class CourseAlmsController extends AlmsController
 
         require_once(_lms_ . '/lib/lib.levels.php');
         require_once(_lms_ . '/admin/models/LabelAlms.php');
-        $levels = CourseLevel::getLevels();
+        $levels = CourseLevel::getTranslatedLevels();
         $label_model = new LabelAlms();
 
         $array_lang = Docebo::langManager()->getAllLangCode();

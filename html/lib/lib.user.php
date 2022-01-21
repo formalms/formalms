@@ -561,8 +561,8 @@ class DoceboUser
     public function matchUserRole($roleid)
     {
 
+    
         if (!isset($GLOBALS['user_roles'])) $this->load_user_role();
-
         if ($this->user_level == ADMIN_GROUP_GODADMIN && $this->aclManager->getRole(false, $roleid) === FALSE) return TRUE;
 
         return isset($GLOBALS['user_roles'][$roleid]);

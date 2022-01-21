@@ -67,7 +67,7 @@ class ClassroomLmsController extends LmsController {
 			_CUS_BEGIN 			=> '_T_USER_STATUS_BEGIN',
 			_CUS_END 			=> '_T_USER_STATUS_END'
         ];
-		$this->levels = CourseLevel::getLevels();
+		$this->levels = CourseLevel::getTranslatedLevels();
 		$this->path_course = $GLOBALS['where_files_relative'].'/appLms/'.Get::sett('pathcourse').'/';
 
 		$upd = new UpdatesLms();

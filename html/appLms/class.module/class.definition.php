@@ -156,7 +156,7 @@ class LmsModule {
 		$lang_perm =& DoceboLanguage::createInstance('permission', 'framework');
 		
 		$tokens = $this->getAllToken($module_op);
-		$levels = CourseLevel::getLevels();
+		$levels = CourseLevel::getTranslatedLevels();
 		$tb = new Table(0, $lang->def('_VIEW_PERMISSION'), $lang->def('_EDIT_SETTINGS'));
 		
 		$c_head = [$lang->def('_LEVELS')];
@@ -223,7 +223,7 @@ class LmsModule {
 	function getSelectedPermission($module_op) {
 		
 		$tokens 	= $this->getAllToken($module_op);
-		$levels 	= CourseLevel::getLevels();
+		$levels 	= CourseLevel::getTranslatedLevels();
 		$perm 		= [];
     foreach($levels as $lv => $levelname )		
     {
