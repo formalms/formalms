@@ -28,7 +28,7 @@ if (!function_exists("report_log")) {
     {
         ob_end_flush();
         $curtime = date("d-m-Y G:i:s");
-        echo "[$curtime] $string" . PHP_EOL;
+        echo "[$curtime] $string" . PHP_EOL . "\r\n" . "\n";
         ob_start();
     }
 }
@@ -45,6 +45,29 @@ $GLOBALS['user_roles'][$roleid] = true;
 
 setLanguage('english');
 
+function getEmailForSchedule($schedule): array
+{
+    $recipients = [];
+    $emails = [];
+    $querySchedule = "SELECT id_user FROM %lms_report_schedule_recipient WHERE id_report_schedule=" . $schedule['id_report_schedule'];
+    $scheduleResult = sql_query($querySchedule);
+
+    foreach ($scheduleResult as $recipientItem) {
+        $recipients[] = $recipientItem['id_user']; //idst of the recipients
+    }
+
+    $recipients = Docebo::aclm()->getAllUsersFromSelection($recipients);
+    if (!empty($recipients)) {
+        $queryEmails = "SELECT email FROM %adm_user WHERE idst IN (" . implode(',', $recipients) . ") AND email<>'' AND valid = 1";
+        $emailsResult = sql_query($queryEmails);
+        foreach ($emailsResult as $emailItem) {
+            $emails[] = $emailItem['email'];
+        }
+    }
+    return $emails;
+}
+
+
 function getReportRecipients($id_rep)
 {
     $output = [];
@@ -52,8 +75,8 @@ function getReportRecipients($id_rep)
     $current_time = date('H:i');
 
     //check for daily
-    $recipients = [];
-    $querySchedule = "
+
+    $qry = "
 			SELECT * FROM %lms_report_schedule
 			WHERE period LIKE '%day%'
 			AND id_report_filter=$id_rep
@@ -61,28 +84,15 @@ function getReportRecipients($id_rep)
 			AND enabled = 1
 			AND (last_execution is null OR last_execution < CURDATE())
 		";
-    $scheduleResult = sql_query($querySchedule);
+    $res = sql_query($qry);
 
-    foreach ($scheduleResult as $scheduleRow) {
+    foreach ($res as $schedule) {
 
-        $queryScheduleRecipients = "SELECT id_user FROM %lms_report_schedule_recipient WHERE id_report_schedule=" . $scheduleRow['id_report_schedule'];
-        $recipientsResult = sql_query($queryScheduleRecipients);
-
-        foreach ($recipientsResult as $recipientRow) {
-            $recipients[] = $recipientRow['id_user']; //idst of the recipients
-        }
-
-        $recipients_flat = Docebo::aclm()->getAllUsersFromSelection($recipients);
-        if (!empty($recipients_flat)) {
-            $queryEmail = "SELECT email FROM %adm_user WHERE idst IN (" . implode(',', $recipients_flat) . ") AND email<>'' AND valid = 1";
-            $emailResult = sql_query($queryEmail);
-            foreach ($emailResult as $emailRow) {
-                $output[] = $emailRow['email'];
-            }
-
-            //registra la pianificazione tra quelle da eseguire
+        $emails = getEmailForSchedule($schedule);
+        if (count($emails) > 0) {
+            array_push($output, ...$emails);
             $selected_schedules[] = [
-                'id_report_schedule' => $scheduleRow['id_report_schedule'],
+                'id_report_schedule' => $schedule['id_report_schedule'],
                 'period' => 'day'
             ];
         }
@@ -91,36 +101,22 @@ function getReportRecipients($id_rep)
 
     //cerca i report da eseguire prima possibile
 
-    $recipients = [];
-    $querySchedule = "
+    $qry = "
 				SELECT * FROM %lms_report_schedule
 				WHERE period LIKE '%now%'
 				AND id_report_filter=$id_rep
 				AND enabled = 1
 			";
-    $scheduleResult = sql_query($querySchedule);
+    $res = sql_query($qry);
 
-    foreach ($scheduleResult as $scheduleRow) {
+    foreach ($res as $schedule) {
 
-        $queryScheduleRecipients = "SELECT id_user FROM %lms_report_schedule_recipient WHERE id_report_schedule=" . $scheduleRow['id_report_schedule'];
-        $recipientsResult = sql_query($queryScheduleRecipients);
-
-        foreach ($recipientsResult as $recipientRow) {
-            $recipients[] = $recipientRow['id_user']; //idst of the recipients
-        }
-
-        $recipients_flat = Docebo::aclm()->getAllUsersFromSelection($recipients);
-        if (!empty($recipients_flat)) {
-            $queryEmail = "SELECT email FROM %adm_user WHERE idst IN (" . implode(',', $recipients_flat) . ") AND email<>'' AND valid = 1";
-            $emailResult = sql_query($queryEmail);
-            foreach ($emailResult as $emailRow) {
-                $output[] = $emailRow['email'];
-            }
-
-            //registra la pianificazione tra quelle da eseguire
+        $emails = getEmailForSchedule($schedule);
+        if (count($emails) > 0) {
+            array_push($output, ...$emails);
             $selected_schedules[] = [
-                'id_report_schedule' => $scheduleRow['id_report_schedule'],
-                'period' => 'now'
+                'id_report_schedule' => $schedule['id_report_schedule'],
+                'period' => 'day'
             ];
         }
     }
@@ -128,38 +124,25 @@ function getReportRecipients($id_rep)
 
     //check for weekly
     $daynumber = date('w');
-    $recipients = [];
 
-    $querySchedule = "SELECT * FROM %lms_report_schedule
+    $qry = "
+				SELECT * FROM %lms_report_schedule
 				WHERE period LIKE '%week,$daynumber%'
 				AND id_report_filter=$id_rep
 				AND time < '$current_time'
 				AND enabled = 1
 				AND (last_execution is null OR last_execution < CURDATE())
 			";
-    $scheduleResult = sql_query($querySchedule);
+    $res = sql_query($qry);
 
-    foreach ($scheduleResult as $scheduleRow) {
+    foreach ($res as $schedule) {
 
-        $queryScheduleRecipients = "SELECT id_user FROM %lms_report_schedule_recipient WHERE id_report_schedule=" . $scheduleRow['id_report_schedule'];
-        $recipientsResult = sql_query($queryScheduleRecipients);
-
-        foreach ($recipientsResult as $recipientRow) {
-            $recipients[] = $recipientRow['id_user']; //idst of the recipients
-        }
-
-        $recipients_flat = Docebo::aclm()->getAllUsersFromSelection($recipients);
-        if (!empty($recipients_flat)) {
-            $queryEmail = "SELECT email FROM %adm_user WHERE idst IN (" . implode(',', $recipients_flat) . ") AND email<>'' AND valid = 1";
-            $emailResult = sql_query($queryEmail);
-            foreach ($emailResult as $emailRow) {
-                $output[] = $emailRow['email'];
-            }
-
-            //registra la pianificazione tra quelle da eseguire
+        $emails = getEmailForSchedule($schedule);
+        if (count($emails) > 0) {
+            array_push($output, ...$emails);
             $selected_schedules[] = [
-                'id_report_schedule' => $scheduleRow['id_report_schedule'],
-                'period' => 'week'
+                'id_report_schedule' => $schedule['id_report_schedule'],
+                'period' => 'day'
             ];
         }
     }
@@ -167,7 +150,7 @@ function getReportRecipients($id_rep)
     //check for monthly
     $monthdaynumber = date('j'); //today's day of the month, 1-31
     $monthdays = date('t'); //amount of days in current month 28-31
-    $recipients = [];
+
 
     $options = [];
     if ($monthdays < 31 && $monthdaynumber == $monthdays) { //if it's the last day of tehe month
@@ -186,29 +169,16 @@ function getReportRecipients($id_rep)
 			AND enabled = 1
 			AND (last_execution is null OR last_execution < CURDATE())
 		";
-    $scheduleResult = sql_query($querySchedule);
+    $res = sql_query($qry);
 
-    foreach ($scheduleResult as $scheduleRow) {
+    foreach ($res as $schedule) {
 
-        $queryScheduleRecipients = "SELECT id_user FROM %lms_report_schedule_recipient WHERE id_report_schedule=" . $scheduleRow['id_report_schedule'];
-        $recipientsResult = sql_query($queryScheduleRecipients);
-
-        foreach ($recipientsResult as $recipientRow) {
-            $recipients[] = $recipientRow['id_user']; //idst of the recipients
-        }
-
-        $recipients_flat = Docebo::aclm()->getAllUsersFromSelection($recipients);
-        if (!empty($recipients_flat)) {
-            $queryEmail = "SELECT email FROM %adm_user WHERE idst IN (" . implode(',', $recipients_flat) . ") AND email<>'' AND valid = 1";
-            $emailResult = sql_query($queryEmail);
-            foreach ($emailResult as $emailRow) {
-                $output[] = $emailRow['email'];
-            }
-
-            //registra la pianificazione tra quelle da eseguire
+        $emails = getEmailForSchedule($schedule);
+        if (count($emails) > 0) {
+            array_push($output, ...$emails);
             $selected_schedules[] = [
-                'id_report_schedule' => $scheduleRow['id_report_schedule'],
-                'period' => 'month'
+                'id_report_schedule' => $schedule['id_report_schedule'],
+                'period' => 'day'
             ];
         }
     }
@@ -247,6 +217,7 @@ function recursive_delete_directory($dir)
  */
 function update_schedules($schedules)
 {
+
     foreach ($schedules as $schedule) {
         $id_report_schedule = $schedule['id_report_schedule'];
         $period = $schedule['period'];
@@ -294,7 +265,7 @@ function parseBaseUrlFromRequest($atRoot = FALSE, $atCore = FALSE, $parse = FALS
 $report_persistence_days = Get::sett('report_persistence_days', 30);
 $report_max_email_size = Get::sett('report_max_email_size_MB', 0);
 $report_store_folder = Get::sett('report_storage_folder', '/' . _folder_files_ . '/common/report/');
-$base_url = getCurrentDomain();
+$base_url = Get::sett('url', '');
 if (empty($base_url)) {
     $base_url = parseBaseUrlFromRequest(true);
 }
@@ -304,7 +275,7 @@ $report_uuid_prefix = 'uuid';
 require_once(_base_ . '/lib/lib.upload.php');
 
 
-$mailer = DoceboMailer::getInstance();
+$mailer = FormaMailer::getInstance();
 
 require_once(_base_ . '/lib/lib.json.php');
 $json = new Services_JSON();
@@ -324,7 +295,7 @@ $lock_stream = !Get::cfg('CRON_SOCKET_SEMAPHORES', false) || @stream_socket_serv
 
 if ($lock_stream) {
 
-    while ($row = sql_fetch_assoc($res)) {
+    foreach ($res as $row) {
 
         $recipients_data = getReportRecipients($row['id_filter']);
         $recipients = $recipients_data['recipients'];
@@ -357,7 +328,7 @@ if ($lock_stream) {
                     $temp = new $class_name($data['id_report']);
                 } else {
                     $pg = new PluginManager('Report');
-                    $temp = $pg->get_plugin(strtolower($class_name), [$data['id_report']]);
+                    $temp = $pg->get_plugin(strtolower($class_name), array($data['id_report']));
                 }
 
 
@@ -378,6 +349,9 @@ if ($lock_stream) {
                 clearstatcache($path . $tmpfile);
                 $report_size = filesize($path . $tmpfile);
 
+                $attachment = $path . $tmpfile;
+                $attachmentName = $row['filter_name'] . '.xls';
+
                 //Checks if report should be sent by link or attachment
                 if ($report_size > $report_max_email_size * 1048576) {
 
@@ -386,7 +360,9 @@ if ($lock_stream) {
 
                     //Create report storage folder if not exists
                     if (!file_exists($abs_report_folder) || !is_dir($abs_report_folder)) {
-                        mkdir($abs_report_folder, '0777', true);
+                        if (!mkdir($abs_report_folder, '0777', true) && !is_dir($abs_report_folder)) {
+                            throw new \RuntimeException(sprintf('Directory "%s" was not created', $abs_report_folder));
+                        }
                     }
 
                     //Cleans report storage folder from expired reports
@@ -404,13 +380,15 @@ if ($lock_stream) {
                     }
 
                     //Computes an unique progressive ID and a token
-                    $uuid = uniqid($report_uuid_prefix . time());
-                    $token = uniqid();
+                    $uuid = uniqid($report_uuid_prefix . time(), true);
+                    $token = uniqid('', true);
 
                     //Computes report filename
                     $abs_report_folder .= "$uuid/$token/";
                     $report_url .= "$uuid/$token/";
-                    mkdir($abs_report_folder, 0777, true);
+                    if (!mkdir($abs_report_folder, 0777, true) && !is_dir($abs_report_folder)) {
+                        throw new \RuntimeException(sprintf('Directory "%s" was not created', $abs_report_folder));
+                    }
 
                     $async_report = $abs_report_folder . $tmpfile;
                     $report_url .= rawurlencode($tmpfile);
@@ -422,51 +400,40 @@ if ($lock_stream) {
                     $body = "You can download this report from <a href='$report_url'>here</a><br><br>
 								WARNING: This report will be available for $report_persistence_days days, after that it will be deleted from our system and it will not be accessible anymore.";
 
-
-                    if (!$mailer->SendMail(Get::sett('sender_event'), //sender
-                        $recipients, //recipients
-                        $subject, //subject
-                        $body //body
-                    )) {
-                        report_log($row['filter_name'] . ': Error while sending mail.' . $mailer->ErrorInfo);
-                    } else {
-                        report_log($row['filter_name'] . ': Mail sent to ' . implode(',', $recipients));
-
-                        update_schedules($schedules);
-
-                        report_log($row['filter_name'] . ': Schedule info updated');
-                    }
-
-
+                    $attachment = false;
+                    $attachmentName = false;
                 } else {
-                    $mailer->Subject = 'Sending scheduled report : ' . $row['filter_name'];
-
                     $subject = 'Sending scheduled report : ' . $row['filter_name'];
                     $body = date('Y-m-d H:i:s');
+                }
 
-                    if (!$mailer->SendMail(Get::sett('sender_event'), //sender
-                        $recipients, //recipients
-                        $subject, //subject
-                        $body, //body
-                        $path . $tmpfile, $row['filter_name'] . '.xls', //
-                        false    //params
-                    )) {
-                        report_log($row['filter_name'] . ': Error while sending mail.' . $mailer->ErrorInfo);
-                    } else {
-                        report_log($row['filter_name'] . ': Mail sent to ' . implode(',', $recipients));
+                $mailer->Subject = 'Sending scheduled report : ' . $row['filter_name'];
 
-                        update_schedules($schedules);
+                $error = false;
 
-                        report_log($row['filter_name'] . ': Schedule info updated');
-                    }
+                if (!$mailer->SendMail(Get::sett('sender_event'), //sender
+                    $recipients, //recipients
+                    $subject, //subject
+                    $body, //body
+                    [$attachmentName => $attachment],
+                //params
+                )) {
+                    report_log($row['filter_name'] . ': Error while sending mail.' . $mailer->ErrorInfo);
+                    $error = true;
+                } else {
+                    report_log($row['filter_name'] . ': Mail sent to ' . implode(' - ',$recipients));
+                }
+
+
+                if (!$error) {
+                    update_schedules($schedules);
+                    report_log($row['filter_name'] . ': Schedule info updated');
                 }
 
                 //delete temp file
                 unlink($path . $tmpfile . '');
             }
         }
-
-
     }
 
 } else {
