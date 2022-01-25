@@ -950,12 +950,24 @@ class TreeView_OrgView extends TreeView
                                     $preference = new UserPreferences($idst);
                                     $preference->savePreferences($_POST, 'ui.');
 
+                                    $uma = new UsermanagementAdm;
+                                    $reg_code = null;
+                                    if ($nodes = $uma->getUserFolders($idst)) {
+                                        $idst_oc = array_keys($nodes)[0];
+
+                                        if ($query = sql_query("SELECT idOrg FROM %adm_org_chart_tree WHERE idst_oc = $idst_oc LIMIT 1")) {
+                                            $reg_code = sql_fetch_object($query)->idOrg;
+                                        }
+                                    }
+
                                     require_once(_base_ . "/lib/lib.eventmanager.php");
                                     $pl_man =& PlatformManager::createInstance();
 
                                     $array_subst = ['[url]' => Get::site_url(),
                                         '[userid]' => $userid,
-                                        '[password]' => $pass];
+                                        '[password]' => $pass,
+                                        '[dynamic_link]' => getCurrentDomain($this->tree) ?: Get::site_url()
+                                    ];
                                     // message to user that is inserted
                                     $msg_composer = new EventMessageComposer();
 
