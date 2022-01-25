@@ -11,6 +11,29 @@ FORMA LMS
 RELEASE CHANGELOG
 
 ---------------------------------------------------------------------------------------
+forma.lms 3.0.2
+---------------------------------------------------------------------------------------
+Release date: 2022 january
+
+- #20016 - Fix Dynamic link does not work in user registration
+- ripristinate cron.report.php
+- #20015 - missing translations for context menu in LO
+- #20014 - impossible access to course tab detail for student
+- #20013 - empty selction in locations assignment not working
+- #20010 - reprise:fix for count students in class courses
+- #20011 - fix Iotask not suspend/delete users
+- #20012 - admin can delete superadmin
+- #20010 - filter admin id for list certificate and course students
+- #20006 - fix filter on aggregated certificates list and date on next courses widget
+- #20004 - fix duplicate events on calendar day
+- #19768 - fix break in foreach cycle that not permit to shows aggregate certificates
+- #19768 - add logic to show generated certificates whatever course status has
+- #20003 - fix API course updateUserSubscription does not set date_complete if status is END
+- #20001 - API updateDay give : Day does not exists although day exists
+- #19998 - fix check presence
+- #19996 - fix admin can delete super admin.
+
+---------------------------------------------------------------------------------------
 forma.lms 3.0.1
 ---------------------------------------------------------------------------------------
 Release date: 2021 december
