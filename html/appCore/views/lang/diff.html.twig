@@ -1,10 +1,23 @@
-
+{% if import_type == 'core' %}
+    {% set translatedDiffTitle = Lang_translate('_CORE_TRANSLATION', 'standard') %}
+{% else %}
+    {% set translatedDiffTitle = Lang_translate('_FILE_TRANSLATION', 'standard') %}
+{% endif %}
 <form id="import_diff">
     <table class="table table-bordered display" style="width:100%" id="langdiff"></table>
-    <button id="translate-btn" class="button btn btn-danger dahsboard__button--save js-save-block" type="submit">
-        <i class="fa fa-spinner fa-spin"></i>
-        {{ Lang_translate('_TRANSLATELANG', 'admin_lang') }}
-    </button>
+    <div style="display: flex; justify-content: flex-end">
+        <a href="index.php?r=adm/lang/show" id="undo-btn" class="button btn btn-secondary" role="button">
+            {{ Lang_translate('_UNDO', 'standard') }}
+        </a>
+        <button id="translate-btn" class="button btn btn-danger dahsboard__button--save js-save-block"
+                type="submit">
+            <i class="fa fa-spinner fa-spin"></i>
+            {{ Lang_translate('_TRANSLATELANG', 'admin_lang') }}
+        </button>
+        <a href="index.php?r=adm/lang/show" id="complete-btn" class="button btn btn-primary" role="button">
+            {{ Lang_translate('_CLOSE', 'standard') }}
+        </a>
+    </div>
 </form>
 
 </div>
@@ -18,8 +31,16 @@
             {data: 'text_module', title: '{{ Lang_translate('_MODULE', 'standard') }}', sortable: true},
             {data: 'text_key', title: '{{ Lang_translate('_KEY', 'standard') }}', sortable: true},
             {data: 'plugin_name', title: '{{ Lang_translate('_PLUGIN', 'standard') }}', sortable: true},
-            {data: 'translation_text', title: '{{ Lang_translate('_TRANSLATION', 'standard') }}', sortable: true},
-            {data: 'translation_text_diff', title: '{{ Lang_translate('_CORE_TRANSLATION', 'standard') }}', sortable: true}
+            {
+                data: 'translation_text',
+                title: '{{ Lang_translate('_CURRENT_TRANSLATION', 'standard') }}',
+                sortable: true
+            },
+            {
+                data: 'translation_text_diff',
+                title: '{{ translatedDiffTitle }}',
+                sortable: true
+            }
         ];
         var rows = [];
 
@@ -27,7 +48,7 @@
             rows.push(Object.assign({}, item));
         });
 
-        var t = $('#langdiff').FormaTable({
+        var diffTable = $('#langdiff').FormaTable({
             rowId: function (row) {
                 return row[0];
             },  // cambia
@@ -59,8 +80,8 @@
 
         var params = [];
 
-        $("#langdiff .select-checkbox, .buttons-select-all, .buttons-select-none").click(function(e) {
-            setTimeout(function() {
+        $("#langdiff .select-checkbox, .buttons-select-all, .buttons-select-none").click(function (e) {
+            setTimeout(function () {
                 if ($("#langdiff tr.selected").length > 0) {
                     $("#translate-btn").attr("disabled", false);
                 } else {
@@ -69,7 +90,7 @@
             }, 100);
         });
 
-        $('#import_diff').on('submit', function(e) {
+        $('#import_diff').on('submit', function (e) {
             e.preventDefault();
 
             if (!$("#langdiff tr.selected").length) {
@@ -77,11 +98,14 @@
             }
             params = [];
 
-            $(".table tr.selected").each(function(item) {
-                var idText = $(this).find("td:nth-child(2)").html();
-                var key = $(this).find("td:nth-child(4)").html();
-                var plugin = $(this).find("td:nth-child(5)").html();
-                var translation = $(this).find("td:nth-child(7)").html();
+            selectedRows = diffTable._datatable.rows({selected: true}).data();
+
+            selectedRows.each(function (item) {
+
+                var idText = item.id
+                var key = item.text_key
+                var plugin = item.plugin_name;
+                var translation = item.translation_text_diff
 
                 params.push({
                     idText,
@@ -98,16 +122,19 @@
             $.ajax({
                 type: 'POST',
                 url: 'ajax.adm_server.php?r=adm/lang/saveDiff',
-                data: { langKeys: params },
-                success: function(data) {
+                data: {langKeys: params},
+                success: function (data) {
                     var list = JSON.parse(data);
 
-                    list.forEach(function(item) {
-                        $("#langdiff tr.selected").each(function(row) {
-                            var rowId = $(this).find("td:nth-child(2)").html();
-                            if (rowId == item.langKey.idText && item.success) {
-                                $(this).removeClass('selected');
-                                $(this).find("td:first-child").removeClass('select-checkbox').html('\
+                    list.forEach(function (item) {
+                        diffTable._datatable.rows({selected: true}).every(function (rowIndex) {
+                            var row = diffTable._datatable.row(rowIndex);
+                            var data = row.data();
+
+                            if (data.id === item.langKey.idText && item.success) {
+                                row.deselect();
+                                let checkbox = $(this.node()).find('td.select-checkbox');
+                                checkbox.removeClass('select-checkbox').html('\
                                     <i class="fa fa-check" style="color: green;font-size: 2rem; display: block; text-align: center;"></i>\
                                 ');
                             }
