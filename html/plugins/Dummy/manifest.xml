@@ -8,4 +8,16 @@
 	<link>http://www.joint-tech.it/</link>
 	<license>GNU General Public License version 2</license>
 	<name>Dummy</name>
+	<forma_version>
+		<min>1.0</min>
+		<max>100.0</max>
+	</forma_version>
+	<!--
+	<dependencies>
+       <dependency>
+			<name>DropdownComplex</name>
+			<version>2.0.0</version>
+		</dependency>
+   </dependencies>
+   -->
 </plugin_manifest>
