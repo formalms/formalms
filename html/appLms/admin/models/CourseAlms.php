@@ -731,6 +731,7 @@ class CourseAlms extends Model
             $query_course .= ", autoregistration_code = '" . $data_params['course_autoregistration_code'] . "'";
         }
 
+
         if (!sql_query($query_course)) {
             // course save failed, delete uploaded file
             if ($file_sponsor != '') sl_unlink($path . $file_sponsor);
@@ -990,8 +991,8 @@ class CourseAlms extends Model
         $data_params = $data['parameters'];
 
         // update database ----------------------------------------------------
-        $query_course = '
-        UPDATE ' . $GLOBALS['prefix_lms'] . "_course
+        $query_course = "
+        UPDATE %lms_course
         SET code                = '" . $data_params['course_code'] . "',
             name                = '" . $data_params['course_name'] . "',
             idCategory          = '" . (int)$data_params['idCategory'] . "',

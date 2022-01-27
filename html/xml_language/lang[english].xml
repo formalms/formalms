@@ -582,6 +582,8 @@
         <key id="configuration&amp;_PLUGIN_ERROR_CORE_DEACTIVATE" attributes="" save_date="2017-07-31 10:45:44"><![CDATA[Plugin cannot be deactivated because it belongs to core]]></key>
         <key id="configuration&amp;_PLUGIN_ERROR_CORE_UNINSTALL" attributes="" save_date="2017-07-31 10:46:00"><![CDATA[Plugin cannot be uninstalled because it belongs to core]]></key>
         <key id="configuration&amp;_PLUGIN_ERROR_DEACTIVATE_DEPENDENCE" attributes="" save_date="2017-07-31 10:54:27"><![CDATA[Plugin cannot be deactivated because of dependent plugins]]></key>
+        <key id="configuration&amp;_PLUGIN_ERROR_ACTIVATE_DEPENDENCE" attributes="" save_date="2017-07-31 10:59:28"><![CDATA[Plugin is dependent on other plugins and cannot be activated]]></key>
+        <key id="configuration&amp;_PLUGIN_ERROR_ACTIVATE_UNSUITABLE_FORMA" attributes="" save_date="2017-07-31 10:59:28"><![CDATA[Plugin is not suitable with this installation version of Forma]]></key>
         <key id="configuration&amp;_PLUGIN_ERROR_NOT_ONLINE_UPDATE" attributes="" save_date="2017-07-31 10:50:40"><![CDATA[Plugin update online is not available]]></key>
         <key id="configuration&amp;_PLUGIN_ERROR_NO_DEPENDENCIES" attributes="" save_date="2017-07-31 10:46:44"><![CDATA[Plugin cannot be installed because of missing dependencies]]></key>
         <key id="configuration&amp;_PLUGIN_ERROR_OLD_VERSION" attributes="" save_date="2017-07-31 13:08:27"><![CDATA[Plugin files version does not match with forma.lms]]></key>
