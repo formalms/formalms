@@ -38,6 +38,7 @@ class PluginmanagerAdmController extends AdmController {
     // nuova
     public function getTableData() {
         $plugins = $this->model->getPlugins();
+    
         echo $this->json->encode([
 			'data' => array_values($plugins),
 			'recordsTotal' => count($plugins),

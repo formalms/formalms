@@ -23,7 +23,7 @@ class PluginmanagerAdm extends Model
     public function __construct()
     {
         $this->db = DbConn::getInstance();
-        $this->table = $GLOBALS['prefix_fw'] . '_plugin';
+        $this->table = '%adm_plugin';
         $this->plugin_core = [
             "FormaAuth"
         ];
@@ -73,6 +73,7 @@ class PluginmanagerAdm extends Model
      */
     public function getPluginFromDB($id, $type_id = "plugin_id")
     {
+
         switch ($type_id) {
             case "plugin_id":
                 $where_id = "  plugin_id = " . Get::filter($id, DOTY_INT);
@@ -126,62 +127,77 @@ class PluginmanagerAdm extends Model
 
     private function check_dependencies($manifest, $dependence = false)
     {
+        if($dependence) {
+            $manifest = $this->readPluginManifest($dependence);
+        }
         $forma_version = Get::sett("core_version");
-        $check = [];
-        if (key_exists('forma_version', $manifest)) {
-            if (key_exists('min', $manifest['forma_version'])) {
+        $check['dependencies'] = [];
+        $check['forma_version'] = [];
+        if (array_key_exists('forma_version', $manifest)) {
+            
+            if (array_key_exists('min', $manifest['forma_version'])) {
+            
                 if (version_compare($forma_version, $manifest['forma_version']['min']) < 0) {
-                    $check = ["forma.lms" => $manifest['forma_version']['min']];
+                    $check['forma_version'][] = ["name" => "forma.lms", "version" => $manifest['forma_version']['min']];
                 }
             }
-            if (key_exists('max', $manifest['forma_version'])) {
+            if (array_key_exists('max', $manifest['forma_version'])) {
                 if (version_compare($manifest['forma_version']['max'], $forma_version) < 0) {
-                    $check = ["name" => "forma.lms", "version" => $manifest['forma_version']['max']];
+                    $check['forma_version'][] = ["name" => "forma.lms", "version" => $manifest['forma_version']['max']];
                 }
             }
         }
-        if (key_exists('dependecies', $manifest)) {
+
+
+
+        if (array_key_exists('dependencies', $manifest)) {
+         
             $dependencies = $manifest['dependencies'];
-            $plugin_list = self::getActivePlugins();
+    
+            $plugin_list = $this->getActivePlugins();
             if ($dependence) {
                 unset($plugin_list[$dependence]);
             }
             if (isset($dependencies)) {
-                foreach ($dependencies as $name => $version) {
-                    if (key_exists($name, $plugin_list)) {
-                        $dependant_manifest = $this->readPluginManifest($name);
-                        if (version_compare($version, $dependant_manifest['version']) > 0) {
-                            $check = array_merge($dependencies, $check);
+                foreach ($dependencies as $dependency) {
+
+                    $name = $dependency['name'];
+                    $version = $dependency['version'];
+                    if (array_key_exists($name, $plugin_list)) {
+            
+                        $dependant_manifest = $this->getPluginFromDB($name, 'name');
+                        $dependency['active'] = $dependant_manifest['active'];
+                        if (version_compare($version, $dependant_manifest['version']) > 0 || $dependant_manifest['active']) {
+                       
+                            $check['dependencies'][] = $dependency;
                             break;
                         }
                     } else {
-                        $check = array_merge($dependencies, $check);
-                        if ($dependence) {
-                            $check = $check = array_merge(["name" => $manifest['name'], "version" => $manifest['version']], $check);
-                        }
+                 
+                        $check['dependencies'][] = $dependency;
+                       
                         break;
                     }
                 }
             }
         }
-        return (count($check) > 0) ? $check : false;
+
+        return $check;
     }
 
     private function is_dependence($name)
     {
         $dependencies = [];
-        foreach (self::getInstalledPlugins() as $file => $content) {
-
+        foreach ($this->getInstalledPlugins() as $file => $content) {
+        
             $manifest = $this->readPluginManifest($file);
-            if (is_array($dependence = $this->check_dependencies($manifest, $name))) {
-                $dependencies[$dependence['name']] = $dependence['version'];
-            }
+            
+            $dependencies = $this->check_dependencies($manifest, $name);
+            
         }
-        if (count($dependencies) > 0) {
-            return $dependencies;
-        } else {
-            return false;
-        }
+  
+      
+        return $dependencies; 
     }
 
     public function getInstalledPlugins()
@@ -250,10 +266,12 @@ class PluginmanagerAdm extends Model
     public function getPlugins($onlyActive = false)
     {
         $plugins = [];
+        $arrayDep = [];
         $dp = opendir(_plugins_);
         //read each plugin in folder
         while ($file = readdir($dp)) {
             if (!preg_match("/^\./", $file)) {
+                $tmpDependencies = [];
                 $manifest = $this->readPluginManifest($file);
                 //accept only plugins where manifest name is the folder name
                 if ($manifest['name'] == $file) {
@@ -272,9 +290,31 @@ class PluginmanagerAdm extends Model
                             $info['online'] = true;
                         }
                         if (!$onlyActive) {
+                        
                             //check if plugin is a dependence for other plugins
-                            $info['dependence_of'] = $this->is_dependence($info['name']);
-
+                            $tmpResults = $this->is_dependence($info['name']);
+                            $tmpDependencies = $tmpResults['dependencies'];
+                          
+                            if($info['active']) {
+                                foreach($tmpDependencies as $tmpDependency) {
+                                    $arrayDep[$tmpDependency['name']]['dependence_of'][$info['name']] = $tmpDependency['version'];
+                                }
+                            } else {
+                                foreach($tmpDependencies as $tmpDependency) {
+                                    if(!$tmpDependency['active']) {
+                                        $arrayDep[$info['name']]['dependence_of'][$tmpDependency['name']] = $tmpDependency['name'];
+                            
+                                    }
+                                }
+                            }
+                            
+                            if(count($tmpResults['forma_version'])) {
+                                $info['unsuitable_forma'] = true;
+                                $info['active'] = 0;
+                                $this->setupPlugin($info['name'], false);
+                            }
+                                
+                            
                             $plugins[$file] = $info;
                         } else {
                             if ($info['active'] == 1) {
@@ -283,15 +323,24 @@ class PluginmanagerAdm extends Model
                         }
                         // if plugin is not installed
                     } else if (!$onlyActive) {
+                      
                         // check if plugin depends from other plugins
-                        if (!is_array($dependencies = $this->check_dependencies($manifest))) {
+                        if (!count($dependencies = $this->check_dependencies($manifest)['dependencies'])) {
                             $manifest['dependencies_unsatisfied'] = false;
                         } else {
                             $manifest['dependencies_unsatisfied'] = $dependencies;
                         }
+            
                         $plugins[$file] = $manifest;
                     }
                 }
+            }
+        }
+     
+
+        foreach($plugins as $name => $manifest) {
+            if(isset($arrayDep[$name])) {
+                $plugins[$name]['dependence_of'] = $arrayDep[$name]['dependence_of'];
             }
         }
         closedir($dp);

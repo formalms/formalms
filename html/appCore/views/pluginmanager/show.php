@@ -47,13 +47,7 @@ $(function() {
                 if ($info['plugin_id']){
                     if ($info['core']==="0"){
                         if (!$info['version_error']){
-                            if ($info['dependence_of']){
-                                $dependencies = "";
-                                for (var $k = 0; $k < $info['dependence_of'].length; $k++) {
-                                    $dependencies += "\n" + $k + ": " + $info['dependence_of'][$k];
-                                }
-                                $install+='<div style="color: grey; cursor: help;" title=" <?php echo Lang::t('_PLUGIN_ERROR_UNINSTALL_DEPENDENCE', 'configuration')?>' + $dependencies + '"><?php echo Lang::t('_PLUGIN_UNINSTALL', 'configuration')?></div>';
-                            } else {
+                          
                                 $install+='<a class="forma-button forma-button--orange-hover"  href="javascript:askUninstall(\'index.php?r=adm/pluginmanager/uninstall'+'&plugin=' + $info['name'] + '\');"><?php echo Lang::t('_PLUGIN_UNINSTALL', 'configuration')?></a>';
                                 if ($info['update']){
                                     $error="";
@@ -62,7 +56,6 @@ $(function() {
                                     <?php endif; ?>
                                     $install+= ' <a class="forma-button forma-button--orange-hover" title="' + $error + '" style="color: #006d07;" href="index.php?r=adm/pluginmanager/update' + '&plugin=' + $info['name'] + ($info['online'] ? "&online=true" : "") + '"><?php echo Lang::t('_PLUGIN_UPDATE', 'configuration')?></a>';
                                 }
-                            }
                         }else {
                             $errors+= '<a class="forma-button forma-button--orange-hover" style="color: #c80014;" href="javascript:;"><?php echo Lang::t('_PLUGIN_ERROR_OLD_VERSION', 'configuration')?></a>';
                         }
@@ -88,27 +81,49 @@ $(function() {
             { title: '<?php echo Lang::t('_PLUGIN_ACTIVATE', 'configuration'); ?>', width: '5%', sortable: false, searchable: false, render: function(data, type, row, meta) {
                 $info = row
                 $activate="";
+                $dependencies = "";
+   
                 if ($info['plugin_id']){
                     if ($info['core']==="0"){
                         if (!$info['version_error']){
-                            if ($info['dependence_of']){
-                                $dependencies = "";
-                                for (var $k = 0; $k < $info['dependence_of'].length; $k++) {
-                                    $dependencies += "\n" + $k + ": " + $info['dependence_of'][$k];
+
+                           if($info['unsuitable_forma']) {
+                               $activate = '<div style="color: grey;cursor: help;" title="<?php echo Lang::t('_PLUGIN_ERROR_ACTIVATE_UNSUITABLE_FORMA', 'configuration')?>"><?php echo Lang::t('_PLUGIN_ACTIVATE', 'configuration')?></div>';
+                               return $activate;
+                           }
+
+                            if($info['dependence_of']) {
+                                var k = 1;
+                                for(const dependency in $info['dependence_of']) {
+                                    $dependencies += '\n' + k + ' : ' + dependency ;
+                                    k++;
                                 }
-                                $activate = '<div style="color: grey;cursor: help;" title="<?php echo Lang::t('_PLUGIN_ERROR_DEACTIVATE_DEPENDENCE', 'configuration')?> ' + $dependencies + '"><?php echo Lang::t('_PLUGIN_DEACTIVATE', 'configuration')?></div>';
-                            } else {
-                                //if active
-                                if ($info['active']=="1"){
-                                    $activate+=' <a class="forma-button forma-button--orange-hover"  href="index.php?r=adm/pluginmanager/deactivate'+'&plugin=' + $info['name'] + '"><?php echo Lang::t('_PLUGIN_DEACTIVATE', 'configuration')?></a>';
-                                    //if not active
-                                } else {
-                                    $activate+=' <a class="forma-button forma-button--orange-hover"  href="index.php?r=adm/pluginmanager/activate'+'&plugin=' + $info['name'] + '"><?php echo Lang::t('_PLUGIN_ACTIVATE', 'configuration')?></a>';
-                                }
+                                
                             }
+                            if ($info['active'] == '1'){
+                                $activate =' <a class="forma-button forma-button--orange-hover"  href="index.php?r=adm/pluginmanager/deactivate'+'&plugin=' + $info['name'] + '"><?php echo Lang::t('_PLUGIN_DEACTIVATE', 'configuration')?></a>';
+                          
+                                if($dependencies!="") {
+                                    $activate = '<div style="color: grey;cursor: help;" title="<?php echo Lang::t('_PLUGIN_ERROR_DEACTIVATE_DEPENDENCE', 'configuration')?> ' + $dependencies + '"><?php echo Lang::t('_PLUGIN_DEACTIVATE', 'configuration')?></div>';
+                        
+                                }
+                              
+                               
+                            } else {
+                                $activate =' <a class="forma-button forma-button--orange-hover"  href="index.php?r=adm/pluginmanager/activate'+'&plugin=' + $info['name'] + '"><?php echo Lang::t('_PLUGIN_ACTIVATE', 'configuration')?></a>';
+
+                                if($dependencies!="") {
+                                    $activate = '<div style="color: grey;cursor: help;" title="<?php echo Lang::t('_PLUGIN_ERROR_ACTIVATE_DEPENDENCE', 'configuration')?> ' + $dependencies + '"><?php echo Lang::t('_PLUGIN_ACTIVATE', 'configuration')?></div>';
+                        
+                                }
+                         
+                            }
+                        
                         }
                     }
                 }
+               
+                
                 return $activate;
         }},
         { title: '<?php echo Lang::t('_PRIORITY', 'configuration'); ?>', width: '150px', sortable: false, searchable: false, render: function(data, type, row, meta) {

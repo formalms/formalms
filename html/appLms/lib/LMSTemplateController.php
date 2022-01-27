@@ -50,19 +50,17 @@ final class LMSTemplateController extends TemplateController {
     private function notGeneratedCertificates() {
       $id_user = Docebo::user()->getIdSt();
       $model = new MycertificateLms($id_user);
-
+      $availables = 0;
       $certificates = $model->loadMyCertificates(false, false);
 
-
-
-      $availables = 0;
+    
       foreach ($certificates as $cert) {
         if ($cert[0] == '0000-00-00' || $cert[0] == '' ) { // $cert['on_date']
           $availables++;
         }
       }
 
-      return $availables+ $model->countAggrCertsToRelease();
+      return $availables + $model->countAggrCertsToRelease();
     }
 
     private function showMenu() {

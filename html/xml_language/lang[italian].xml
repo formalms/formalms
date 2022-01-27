@@ -583,7 +583,9 @@ La chat si aprirà in una finestra di pop-up]]></key>
         <key id="configuration&amp;_PLUGIN_DESCRIPTION" attributes="" save_date="2017-07-31 10:52:47"><![CDATA[Descrizione]]></key>
         <key id="configuration&amp;_PLUGIN_ERROR_CORE_DEACTIVATE" attributes="" save_date="2017-07-31 10:55:14"><![CDATA[Il plugin appartiene al core e non può essere disattivato]]></key>
         <key id="configuration&amp;_PLUGIN_ERROR_CORE_UNINSTALL" attributes="" save_date="2017-07-31 10:55:27"><![CDATA[Il plugin appartiene al core e non può essere disinstallato]]></key>
-        <key id="configuration&amp;_PLUGIN_ERROR_DEACTIVATE_DEPENDENCE" attributes="" save_date="2017-07-31 10:59:28"><![CDATA[Il plugin ha plugin dipendenti e non può essere disattivato]]></key>
+        <key id="configuration&amp;_PLUGIN_ERROR_DEACTIVATE_DEPENDENCE" attributes="" save_date="2017-07-31 10:59:28"><![CDATA[Il plugin è dipendente da altri plugin e non può essere attivato]]></key>
+        <key id="configuration&amp;_PLUGIN_ERROR_ACTIVATE_DEPENDENCE" attributes="" save_date="2017-07-31 10:59:28"><![CDATA[Il plugin ha plugin dipendenti e non può essere disattivato]]></key>
+        <key id="configuration&amp;_PLUGIN_ERROR_ACTIVATE_UNSUITABLE_FORMA" attributes="" save_date="2017-07-31 10:59:28"><![CDATA[Il plugin è incompatibile con la versione di Forma installata]]></key>
         <key id="configuration&amp;_PLUGIN_ERROR_NOT_ONLINE_UPDATE" attributes="" save_date="2017-07-31 10:55:54"><![CDATA[L'aggiornamento online del plugin non è disponibile]]></key>
         <key id="configuration&amp;_PLUGIN_ERROR_NO_DEPENDENCIES" attributes="" save_date="2017-07-31 11:00:05"><![CDATA[Il plugin dipendende da altri plugin mancanti e non può essere installato]]></key>
         <key id="configuration&amp;_PLUGIN_ERROR_OLD_VERSION" attributes="" save_date="2017-07-31 10:58:13"><![CDATA[La versione del plugin è incompatibile con la versione corrente di forma.lms]]></key>

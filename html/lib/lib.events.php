@@ -71,7 +71,7 @@ final class Events
      * @return void
      */
     public static function listen($eventName, $listener, $priority = self::PRIORITY_DEFAULT)
-    {
+    {   
         return self::getHandler()->listen($eventName, $listener, $priority);
     }
 }
