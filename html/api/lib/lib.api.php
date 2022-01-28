@@ -91,13 +91,15 @@ class API
      */
     public function checkAuthentication($code)
     {
+        $result = ['success' => false];
         //eliminates old token
         $query = "DELETE FROM %adm_rest_authentication WHERE expiry_date < NOW()";
         $this->db->query($query);
 
         if (!$this->needAuthentication) {
+            $result = ['success' => true];
             //no authentication needed for this module
-            return true;
+            return $result;
         }
 
         // ---- new auth method (alpha) 20110610 ---- [
@@ -105,7 +107,7 @@ class API
         $auth_method = Get::sett('rest_auth_method', 'none');
 
         // ]----
-        $result = ['success' => false];
+
         switch ($auth_method) {
             // use application's pre-set authentication code
             case _AUTH_UCODE:
@@ -116,8 +118,7 @@ class API
 
                     if ($code !== $auth_code && $headerAuth !== $auth_code) {
                         $result['message'] = 'Autentication code is not valid';
-                    }
-                    else {
+                    } else {
                         $result['success'] = true;
                     }
                 }
@@ -184,12 +185,13 @@ class API
         return $result;
     }
 
-    private function getValuesFromParams($params){
+    private function getValuesFromParams($params)
+    {
         $params_to_check = [];
         foreach ($params as $val) {
             if (is_array($val)) {
                 $values = $this->getValuesFromParams($val);
-                foreach ($values as $value){
+                foreach ($values as $value) {
                     $params_to_check[] = $value;
                 }
             } else {
@@ -208,7 +210,8 @@ class API
         return $this->$name($params);
     }
 
-    private function populateParams($params){
+    private function populateParams($params)
+    {
         $params = $this->fillParamsFrom($params, $_POST);
         $params = $this->checkExternalUser($params, $_POST);
         return $params;
@@ -216,26 +219,32 @@ class API
 
     static public function Execute($auth_code, $module, $function, $params)
     {
-
+        $result = ['success' => true, 'message' => ''];
         $class_name = $module . '_API';
         $file_name = Forma::inc(_base_ . '/api/lib/api.' . $module . '.php');
 
         if (!file_exists($file_name)) {
-            return false;
+            $result['success'] = false;
+            $result['message'] = sprintf('File not found : %s', $file_name);
         }
-
-        require_once($file_name);
-
-        if (!class_exists($class_name)) {
-            return false;
-        }
-        /** @var API $api_obj */
-        $api_obj = new $class_name();
-
-        $result = $api_obj->checkAuthentication($auth_code);
         if ($result['success']) {
-            $params = $api_obj->populateParams($params);
-            $result = $api_obj->call($function, $params);
+            require_once($file_name);
+
+            if (!class_exists($class_name)) {
+                $result['success'] = false;
+                $result['message'] = sprintf('Class not found : %s', $class_name);
+            }
+            if ($result['success']) {
+                /** @var API $api_obj */
+                $api_obj = new $class_name();
+
+                $result = $api_obj->checkAuthentication($auth_code);
+
+                if ($result['success']) {
+                    $params = $api_obj->populateParams($params);
+                    $result = $api_obj->call($function, $params);
+                }
+            }
         }
 
         return $result;
