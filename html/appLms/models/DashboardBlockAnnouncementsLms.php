@@ -166,7 +166,7 @@ class DashboardBlockAnnouncementsLms extends DashboardBlockLms
 		$adviceData = [
 			'idAdvice' => $advice['idAdvice'],
 			'title' => $advice['title'],
-			'description' => strip_tags($advice['description']),
+			'description' => html_entity_decode(strip_tags($advice['description'])),
 			'important' => $advice['important'],
 			'author' => $advice['author'],
 			'posted' => $advice['posted'],
