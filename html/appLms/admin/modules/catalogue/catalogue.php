@@ -645,7 +645,7 @@ function addToCatologue($memebers, $id_catalogue) {
 		$re &= sql_query($query_insert);
         
         // add event member, user in core_group_member
-        $data = Events::trigger('lms.catalog_entity.add', [
+        $data = Events::trigger('lms.catalog.member.assigned', [
             'idCatalogue' => $id_catalogue,
             'idst_member' => $id_m
         ]);         
@@ -663,20 +663,17 @@ function removeFromCatologue($memebers, $id_catalogue) {
 	reset($memebers);
   foreach($memebers as $id_m)  
   {
-
-        // remove event member
-        $data = Events::trigger('lms.catalog_entity.del', [
-            'idCatalogue' => $id_catalogue,
-            'idst_member' => $id_m
-        ]);       
-      
 		$query_delete = "
 		DELETE FROM ".$GLOBALS['prefix_lms']."_catalogue_member
 		WHERE idCatalogue = '".$id_catalogue."' AND idst_member = '".$id_m."'";
 		$re &= sql_query($query_delete);
-        
-        
-	}
+
+      // remove event member
+      $data = Events::trigger('lms.catalog.member.unassigned', [
+          'idCatalogue' => $id_catalogue,
+          'idst_member' => $id_m
+      ]);
+  }
 	reset($memebers);
 	return $re;
 }

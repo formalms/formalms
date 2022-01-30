@@ -421,7 +421,7 @@ function savecertificate()
         require_once(Forma::inc(_lms_ . '/lib/lib.certificate.php'));
         $certificate = new Certificate();
         $certificate_info = $certificate->getCertificateInfo($id_certificate);
-        Events::trigger('lms.certificater.created', ['id_certificate' => $id_certificate, 'certificate_info' => $certificate_info]);
+        Events::trigger('lms.certificate.created', ['id_certificate' => $id_certificate, 'certificate_info' => $certificate_info]);
 
         Util::jump_to('index.php?modname=certificate&op=elemcertificate&id_certificate=' . $id_certificate);
     }
@@ -448,7 +448,7 @@ function delcertificate()
         if (!sql_query($query_certificate)) Util::jump_to('index.php?modname=certificate&op=certificate&result=err_del');
         else {
 
-            Events::trigger('lms.certificater.created', ['id_certificate' => $id_certificate, 'certificate_info' => $certificate_info]);
+            Events::trigger('lms.certificate.created', ['id_certificate' => $id_certificate, 'certificate_info' => $certificate_info]);
 
             Util::jump_to('index.php?modname=certificate&op=certificate&result=ok');
         }

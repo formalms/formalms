@@ -29,21 +29,24 @@ $GLOBALS['UNFILTERED_POST'] = $_POST;
 require(_base_.'/lib/lib.bootstrap.php');
 Boot::init(BOOT_HOOKS);
 
+$GLOBALS['output'] = '';
+function rest_cout($string) { $GLOBALS['output'] .= $string; }
+
 // -----------------------------------------------------------------------------
 
-if(Get::sett('use_rest_api', 'off') != 'on') {
-	die('Error: API not enabled.');
+if(Get::sett('use_rest_api', 'off') !== 'on') {
+
+    rest_cout(RestAPI::HandleError('Error: API not enabled.', $GLOBALS['REST_API_ACCEPT']));
+    die();
 }
 
 require_once(_base_.'/api/lib/lib.api.php');
 require_once(_base_.'/api/lib/lib.rest.php');
- 
-$GLOBALS['output'] = '';
-function rest_cout($string) { $GLOBALS['output'] .= $string; }
 
 // parsing request
 if(!isset($_GET[_REST_PARAM_NAME])) {
-	die('Error: no input parameters.');
+    rest_cout(RestAPI::HandleError('Error: no input parameters.', $GLOBALS['REST_API_ACCEPT']));
+    die();
 }
 
 //code provided by the user in the request
@@ -52,15 +55,17 @@ $auth_code = Get::req('auth', DOTY_STRING, false);
 $rest_params = explode('/', $_GET[_REST_PARAM_NAME]);
 $numparams = count( $rest_params );
 if ($numparams < _REST_MINIMUM_PARAMS) {
-	
-	die('Error: not enough input parameters.');
+
+    rest_cout(RestAPI::HandleError('Error: not enough input parameters.', $GLOBALS['REST_API_ACCEPT']));
+    die();
 }
 $last_index = $numparams-1;
 
 // check if this is a valid call
 if ($rest_params[0]!='' || $rest_params[1]!=_REST_VALIDATOR_PARAM) {
 
-	die('Error: Invalid request.');
+    rest_cout(RestAPI::HandleError('Error: Invalid request.', $GLOBALS['REST_API_ACCEPT']));
+    die();
 }
 
 // you may force a different REQUEST_METHOD
@@ -119,6 +124,7 @@ while ($i<count($rest_params)) {//$numparams) {
 }
 
 $res = API::Execute($auth_code, $rest_module, $rest_function, $rest_subparams);
+
 
 if (!$res['success']) {
 	$err_msg = $res['message'];

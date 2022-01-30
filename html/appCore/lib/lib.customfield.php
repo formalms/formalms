@@ -140,7 +140,7 @@ class CustomFieldList
 			$query = "SELECT ft.id_field, tft.type_file, tft.type_class"
 				. "  FROM " . $this->getFieldTable() . " AS ft"
 				. "  JOIN " . $this->getTypeFieldTable() . " AS tft"
-				. " WHERE ft.id_field = '" . $id_field . "' AND ft.type_field = tft.type_field";
+				. " WHERE ft.id_field = " . Get::filter($id_field, DOTY_INT) . " AND ft.type_field = tft.type_field";
 			if (!$rs = sql_query($query)) {
 				$false_var = NULL;
 				return $false_var;
@@ -184,7 +184,7 @@ class CustomFieldList
 		$query = "SELECT ft.id_field, tft.type_file, tft.type_class"
 			. "  FROM " . $this->getFieldTable() . " AS ft"
 			. "  JOIN " . $this->getTypeFieldTable() . " AS tft"
-			. " WHERE ft.id_field = '" . $id_field . "' AND ft.type_field = tft.type_field";
+			. " WHERE ft.id_field = " . Get::filter($id_field, DOTY_INT) . " AND ft.type_field = tft.type_field";
 		if (!$rs = sql_query($query)) {
 			$false_var = NULL;
 			return $false_var;

@@ -298,7 +298,8 @@ class LangAdmController extends AdmController
 
                     $data = [
                         'body' => array_values($langList),
-                        'langCode' => $langCode
+                        'langCode' => $langCode,
+                        'import_type' => $importType
                     ];
 
                     $this->render('diff', $data);
@@ -322,21 +323,21 @@ class LangAdmController extends AdmController
         }
 
         //Update info
-        $new_value = Get::req('new_value', DOTY_MIXED, '');
-        $old_value = Get::req('old_value', DOTY_MIXED, '');
+        $newValue = Get::req('new_value', DOTY_MIXED, '');
+        $oldValue = Get::req('old_value', DOTY_MIXED, '');
         $column = Get::req('col', DOTY_STRING, '');
-        $language = Get::req('language', DOTY_STRING, getLanguage());
+        $language = Get::req('language', DOTY_STRING, Lang::get());
 
-        if ($new_value === $old_value) {
+        if ($newValue === $oldValue) {
             echo $this->json->encode(['success' => true]);
         } else {
 
             switch ($column) {
 
                 case 'translation_text': {
-                        $res = $this->model->saveTranslation($id_text, $language, $new_value);
+                        $res = $this->model->saveTranslation($id_text, $language, $newValue);
                         $output = ['success' => $res ? true : false];
-                        if ($res) $output['new_value'] = stripslashes($new_value);
+                        if ($res) $output['new_value'] = stripslashes($newValue);
                         echo $this->json->encode($output);
                     }
                     break;

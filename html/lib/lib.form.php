@@ -409,7 +409,8 @@ class Form {
 	}
 
 	public static function getInputDatetimefield( $css_field, $id, $name, $value = '', $date_format = FALSE, $sel_time = FALSE, $alt_name = '', $other_param = '' ) {
-	
+
+        $value = str_replace('/','-',$value);
 		$value =($value == '00-00-0000 00:00' ? '' : $value);
 	
 		if ($date_format == false) {
@@ -467,6 +468,7 @@ class Form {
 
 	public static function getInputDatefield( $css_field, $id, $name, $value = '', $date_format = FALSE, $sel_time = FALSE, $alt_name = '', $other_param = '' ) {
 
+        $value = str_replace('/','-',$value);
 		$value =($value == '00-00-0000' ? '' : $value);
 
 		if ($date_format == false) {
