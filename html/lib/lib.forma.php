@@ -1,5 +1,7 @@
 <?php defined("IN_FORMA") or die('Direct access is forbidden.');
 
+
+
 /* ======================================================================== \
 |   FORMA - The E-Learning Suite                                            |
 |                                                                           |
@@ -16,7 +18,7 @@ if (!class_exists('Model')) {
 }
 
 require_once _lib_ . '/lib.pluginmanager.php';
-
+require_once _base_ . '/Exceptions/PathNotFoundException.php';
 class Forma
 {
 
@@ -32,7 +34,32 @@ class Forma
         return Get::cfg('enable_customscripts', false) && empty($GLOBALS['notuse_customscript']) && empty($_SESSION['notuse_customscript']);
     }
 
-    /**
+     /**
+     * @param $path
+     * @param $file
+     * @param $pattern
+     * 
+     * @throws PathNotFoundException
+     * @return string
+     */
+    public static function include($path, $file, $pattern = '/[a-zA-Z0-9.]+\.php/')
+    {
+      
+        //clean file from injection in protocol xxxxxx.php
+        preg_match($pattern, $file, $matches);
+         
+        if(count($matches)) {
+            $path = $path . $matches[0];
+        } else {
+            throw new PathNotFoundException();
+        }
+               
+        return static::inc($path);
+
+    }
+
+    /** 
+     * @deprecated It will become private
      * @param $file
      * @return string
      */
@@ -63,7 +90,7 @@ class Forma
                 return $customscript_file;
             }
         }
-
+       
         return $file;
     }
 

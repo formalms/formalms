@@ -150,7 +150,7 @@ class CustomFieldList
 
 			$id_field = $id_field;
 		}
-		require_once($GLOBALS['where_framework'] . '/modules/customfield/' . $type_file);
+		require_once(Forma::include(_adm_  . '/modules/field/' , $type_file));
 		$quest_obj = new $type_class($id_field);
 
 		return $quest_obj;
@@ -191,7 +191,7 @@ class CustomFieldList
 		}
 
 		list($id_field, $type_file, $type_class) = sql_fetch_row($rs);
-		require_once($GLOBALS['where_framework'] . '/modules/customfield/' . $type_file);
+		require_once(Forma::include(_adm_  . '/modules/field/' , $type_file));
 		$quest_obj =  new $type_class($id_field);
 
 		return $quest_obj;
