@@ -115,9 +115,12 @@ class FieldList
 
 			$id_common = $id_field;
 		}
-		require_once(Forma::inc($GLOBALS['where_framework'] . '/modules/field/' . $type_file));
+	
+	
+		require_once(Forma::include(_adm_  . '/modules/field/' , $type_file));
+	
 		$quest_obj = new $type_class($id_common);
-
+		
 		return $quest_obj;
 	}
 
@@ -156,7 +159,7 @@ class FieldList
 		}
 
 		list($id_common, $type_file, $type_class) = sql_fetch_row($rs);
-		require_once(Forma::inc($GLOBALS['where_framework'] . '/modules/field/' . $type_file));
+		require_once(Forma::include(_adm_ . '/modules/field/' , $type_file));
 		$quest_obj =  new $type_class($id_common);
 
 		return $quest_obj;
@@ -376,6 +379,7 @@ class FieldList
             ];
 		}
 
+	
 		return $result;
 	}
 

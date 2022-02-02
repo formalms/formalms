@@ -763,6 +763,23 @@ class Field {
 		}
 	}
 
+	function getIMBrowserHref($id_user, $field_value) {
+
+		return '';
+	}
+
+	function getIMBrowserHead($id_user, $field_value) {
+
+		return '';
+
+	}
+
+	function getIMBrowserImageSrc($id_user, $field_value) {
+
+		return '';
+	
+	}
+
 }
 
 ?>

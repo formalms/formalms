@@ -3931,7 +3931,7 @@ class UserProfileData {
 	 */
 	function getUserContact($id_user, $god_admin = false) {
 
-		require_once($GLOBALS['where_framework'].'/lib/lib.field.php');
+		require_once(_adm_.'/lib/lib.field.php');
 
 		$viewer = $this->getViewer();
 
@@ -3944,31 +3944,30 @@ class UserProfileData {
 
 		$field = [];
 		foreach($field_founded as $id => $arr_value) {
-
+			$showField = false;
 			if(isset($fal[$id])) {
 
 				if($this->getVisibilityResponse($fal[$id], $id_user, $viewer, $is_teacher, $is_friend)) {
-
-					$ob =& $field_man->getFieldInstance($id, $arr_value[5], $arr_value[6]);
-                    $field[$id] = ['name'  => $arr_value[0],
-											'value' => $arr_value[1],
-											'href' 	=> $ob->getIMBrowserHref($id_user, $arr_value[1]),
-											'image' => $ob->getIMBrowserImageSrc($id_user, $arr_value[1]),
-											'head'	=> $ob->getIMBrowserHead($id_user, $arr_value[1]),
-											'field_type' => $arr_value[4]
-                    ];
+					$showField = true;
+				
 				}
 			} else {
 
-				$ob =& $field_man->getFieldInstance($id, $arr_value[5], $arr_value[6]);
-				$field[$id] = ['name' 	=> $arr_value[0],
-										'value' => $arr_value[1],
-										'href' 	=> $ob->getIMBrowserHref($id_user, $arr_value[1]),
-										'image' => $ob->getIMBrowserImageSrc($id_user, $arr_value[1]),
-										'head'	=> $ob->getIMBrowserHead($id_user, $arr_value[1]),
-										'field_type' => $arr_value[4]
-                ];
+				$showField = true;
 			}
+
+			if($showField) {
+
+				$ob =& $field_man->getFieldInstance($id, $arr_value[5], $arr_value[6]);
+				$field[$id] = ['name'  => $arr_value[0],
+									'value' => $arr_value[1],
+									'href' 	=> $ob->getIMBrowserHref($id_user, $arr_value[1]),
+									'image' => $ob->getIMBrowserImageSrc($id_user, $arr_value[1]),
+									'head'	=> $ob->getIMBrowserHead($id_user, $arr_value[1]),
+									'field_type' => $arr_value[4]
+				];
+			}
+			
 
 		}
 		return $field;
