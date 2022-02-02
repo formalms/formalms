@@ -395,10 +395,16 @@ class HomepageAdmController extends AdmController
 
         if (!Docebo::user()->isAnonymous()) self::redirect();
 
+        $redirection = [];
         $plugin = Get::req("plugin", DOTY_STRING, "");
+        $loginRedirect = Get::req("login_redirect", DOTY_STRING, null);
+
         $res = $this->model->login($plugin);
 
-        $redirection = [];
+        if(!is_null($loginRedirect)) {
+            $url = substr_replace($loginRedirect, "", 0, strlen(trim(dirname($_SERVER['SCRIPT_NAME']), DIRECTORY_SEPARATOR)) + 1);
+            Util::jump_to($url);
+        }
 
         switch ($res) {
 

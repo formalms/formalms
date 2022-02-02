@@ -20,13 +20,12 @@ use UserManagerOption;
 
 class Authentication extends \PluginAuthentication implements \PluginAuthenticationInterface {
 
-    public static function getLoginGUI()
+    public static function getLoginGUI($redirect = '')
     {
-
         return [
             'name' => 'FormaAuth',
             'type' => self::AUTH_TYPE_BASE,
-            'form' => Form::openForm("login_confirm", Get::rel_path("base") . "/index.php?r=" . _login_ . "&plugin=" . Plugin::getName())
+            'form' => Form::openForm("login_confirm", Get::rel_path("base") . "/index.php?r=" . _login_ . "&plugin=" . Plugin::getName() . $redirect)
                 //  . Form::getHidden("plugin", "plugin", "FormaAuth")
 				//  . Form::getTextfield(Lang::t("_USERNAME", "login"), "login_userid", "login_userid", 255)
 				. Form::getInputTextfield('', 'login_userid', 'login_userid', '', '', 255, 'placeholder="' . Lang::t("_USERNAME", "login") . '"')
