@@ -15,10 +15,11 @@
 if(Docebo::user()->isAnonymous()) { // !isset($_GET['no_redirect']) && !isset($_POST['no_redirect']) XXX: redirection???
     
     // save requested page in session to call it after login
-    $_SESSION["login_redirect"] = $_SERVER[REQUEST_URI];
-    
+    $loginRedirect = $_SERVER[REQUEST_URI];
+  
     // redirect to index
-    Util::jump_to(Get::rel_path("base"));
+
+    Util::jump_to(Get::rel_path("base") . "/index.php?login_redirect=" . $loginRedirect);
 }
 
 // get maintenence setting

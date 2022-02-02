@@ -51,9 +51,9 @@ class AuthenticationManager {
         $this->plugin_manager = new PluginManager("Authentication"); // TODO: nome categoria plugin come costante da plugin manager
     }
     
-    public function getLoginGUI() {
+    public function getLoginGUI($redirect = '') {
         
-        return $this->plugin_manager->run("getLoginGUI");
+        return $this->plugin_manager->run("getLoginGUI", [$redirect]);
     }
     
     public function login($plugin) {

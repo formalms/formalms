@@ -82,7 +82,7 @@ class Util  {
 
 		session_write_close();
 		
-        $url = Get::abs_path() . $relative_url . $anchor;
+        $url = Get::abs_path() . $relative_url . $anchor;  
         Header("Location: $url");
         
 		ob_clean();

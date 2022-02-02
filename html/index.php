@@ -110,18 +110,10 @@ if($req) {
 } else {
     
     // redirect to requested page (default: lms index)
-    
-    if(isset($_SESSION["login_redirect"])) {
-        
-        $url = substr_replace($_SESSION["login_redirect"], "", 0, strlen(trim(dirname($_SERVER['SCRIPT_NAME']), DIRECTORY_SEPARATOR)) + 1);
-        unset($_SESSION["login_redirect"]);
-        
-        Util::jump_to($url);
-    }
-    else {
+
+  
 
         Util::jump_to(_folder_lms_ . DIRECTORY_SEPARATOR);
-    }
 }
 
 // -----------------------------------------------------------------------------

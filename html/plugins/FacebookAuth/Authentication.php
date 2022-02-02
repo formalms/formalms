@@ -22,7 +22,7 @@ use Lang;
 
 class Authentication extends \PluginAuthentication implements \PluginAuthenticationInterface {
     
-    public static function getLoginGUI() {
+    public static function getLoginGUI($redirect = '') {
 
         $form = '';
         if(isset($_SESSION['social'])) {

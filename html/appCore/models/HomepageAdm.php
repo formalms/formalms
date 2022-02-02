@@ -27,8 +27,14 @@ class HomepageAdm extends Model {
     }
     
     public function getLoginGUI() {
+
+        $redirect = '';
+        $loginRedirect = Get::req("login_redirect", DOTY_MIXED, null);
+        if(!is_null($loginRedirect)) {
+            $redirect = "&login_redirect=". $loginRedirect;
+        }
         
-        return $this->authentication->getLoginGUI();
+        return $this->authentication->getLoginGUI($redirect);
     }
     
     public function login($plugin) {        

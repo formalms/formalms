@@ -8,7 +8,7 @@ interface PluginAuthenticationInterface {
     /*
      * Function creating the login GUI.
      */
-    static function getLoginGUI();
+    static function getLoginGUI($redirect = '');
     
     /*
      * Function returning the user who has logged in.
