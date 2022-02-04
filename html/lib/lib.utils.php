@@ -195,6 +195,8 @@ class Util  {
 		$authentic_request = Get::req('authentic_request', DOTY_STRING, '');
 		// signature from a ajax request
 		if(!$authentic_request && isset($_SERVER['HTTP_X_SIGNATURE'])) $authentic_request = $_SERVER['HTTP_X_SIGNATURE'];
+		// signature from SAML request
+		if(!$authentic_request) $authentic_request = Get::req('RelayState', DOTY_STRING, '');
 
 		if(!isset($_SESSION['mdsign']) || $authentic_request !== $_SESSION['mdsign']
 		) {
