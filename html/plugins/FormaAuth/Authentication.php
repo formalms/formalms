@@ -1,6 +1,6 @@
 <?php
 namespace Plugin\FormaAuth;
-defined("IN_FORMA") or die('Direct access is forbidden.');
+defined('IN_FORMA') or die('Direct access is forbidden.');
 
 /* ======================================================================== \
 |   FORMA - The E-Learning Suite                                            |
@@ -18,23 +18,23 @@ use Lang;
 use UserManager;
 use UserManagerOption;
 
-class Authentication extends \PluginAuthentication implements \PluginAuthenticationInterface {
+class Authentication extends \PluginAuthentication implements \PluginAuthenticationWithRedirectInterface {
 
     public static function getLoginGUI($redirect = '')
     {
         return [
             'name' => 'FormaAuth',
             'type' => self::AUTH_TYPE_BASE,
-            'form' => Form::openForm("login_confirm", Get::rel_path("base") . "/index.php?r=" . _login_ . "&plugin=" . Plugin::getName() . $redirect)
+            'form' => Form::openForm('login_confirm', Get::rel_path('base') . '/index.php?r=' . _login_ . '&plugin=' . Plugin::getName() . $redirect)
                 //  . Form::getHidden("plugin", "plugin", "FormaAuth")
 				//  . Form::getTextfield(Lang::t("_USERNAME", "login"), "login_userid", "login_userid", 255)
-				. Form::getInputTextfield('', 'login_userid', 'login_userid', '', '', 255, 'placeholder="' . Lang::t("_USERNAME", "login") . '"')
+				. Form::getInputTextfield('', 'login_userid', 'login_userid', '', '', 255, 'placeholder="' . Lang::t('_USERNAME', 'login') . '"')
 				//  . Form::getPassword(Lang::t("_PASSWORD", "login"), "login_pwd", "login_pwd", 255)
-                . Form::getInputPassword('', 'login_pwd', 'login_pwd', '', 255, 'placeholder="' . Lang::t("_PASSWORD", "login") . '"')
-                . (isset($_REQUEST["notuse_plugin"]) ? Form::getHidden("notuse_plugin", "notuse_plugin", "true") : "" )
-                . (isset($_REQUEST["notuse_customscript"]) ? Form::getHidden("notuse_customscript", "notuse_customscript", "true") : "" )
-                . (isset($_REQUEST["notuse_template"]) ? Form::getHidden("notuse_template", "notuse_template", "true") : "" )
-                . Form::getButton("login", "login", Lang::t("_LOGIN", "login"), 'forma-button forma-button--black')
+                . Form::getInputPassword('', 'login_pwd', 'login_pwd', '', 255, 'placeholder="' . Lang::t('_PASSWORD', 'login') . '"')
+                . (isset($_REQUEST['notuse_plugin']) ? Form::getHidden('notuse_plugin', 'notuse_plugin', 'true') : '')
+                . (isset($_REQUEST['notuse_customscript']) ? Form::getHidden('notuse_customscript', 'notuse_customscript', 'true') : '')
+                . (isset($_REQUEST['notuse_template']) ? Form::getHidden('notuse_template', 'notuse_template', 'true') : '')
+                . Form::getButton('login', 'login', Lang::t('_LOGIN', 'login'), 'forma-button forma-button--black')
                 . Form::closeForm()
         ];
     }
@@ -65,7 +65,7 @@ class Authentication extends \PluginAuthentication implements \PluginAuthenticat
         new UserManager(); // TODO: rimuovere workaround
         $options = new UserManagerOption();
 
-        $max_log_attempts = $options->getOption("max_log_attempt");
+        $max_log_attempts = $options->getOption('max_log_attempt');
 
         if($max_log_attempts) {
 
@@ -88,14 +88,14 @@ class Authentication extends \PluginAuthentication implements \PluginAuthenticat
         new UserManager(); // TODO: rimuovere workaround
         $options = new UserManagerOption();
 
-        $save_log_attempts = $options->getOption("save_log_attempt");
+        $save_log_attempts = $options->getOption('save_log_attempt');
 
         switch($save_log_attempts) {
-            case "after_max":
-		if($_SESSION['user_attempt_number'] > $options->getOption("max_log_attempt")) $save = true;
+            case 'after_max':
+		if($_SESSION['user_attempt_number'] > $options->getOption('max_log_attempt')) $save = true;
                 else $save = false;
                 break;
-            case "all":
+            case 'all':
                 $save = true;
                 break;
             default:
@@ -105,10 +105,10 @@ class Authentication extends \PluginAuthentication implements \PluginAuthenticat
 
         if($save) {
 
-            $query  = " INSERT INTO %adm_user_log_attempt"
-                    . " ( userid, attempt_at, attempt_number, user_ip )"
-                    . " VALUES"
-                    . " ("
+            $query  = ' INSERT INTO %adm_user_log_attempt'
+                    . ' ( userid, attempt_at, attempt_number, user_ip )'
+                    . ' VALUES'
+                    . ' ('
                     . "     '" . $username . "',"
                     . "     '" . date() . "',"
                     . "     '" . $_SESSION['user_attempt_number'] . "',"

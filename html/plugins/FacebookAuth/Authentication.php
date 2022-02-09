@@ -20,7 +20,7 @@ use Get;
 use Form;
 use Lang;
 
-class Authentication extends \PluginAuthentication implements \PluginAuthenticationInterface {
+class Authentication extends \PluginAuthentication implements \PluginAuthenticationWithRedirectInterface {
     
     public static function getLoginGUI($redirect = '') {
 
