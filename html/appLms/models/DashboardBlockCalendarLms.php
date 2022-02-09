@@ -157,22 +157,28 @@ class DashboardBlockCalendarLms extends DashboardBlockLms
         $query .= ' FROM %lms_course AS c '
             . ' JOIN %lms_courseuser AS cu ON (c.idCourse = cu.idCourse) ';
 
+        
         switch ($courseType) {
             case self::COURSE_TYPE_CLASSROOM:
-                $query .= ' JOIN %lms_course_date AS cd ON (c.idCourse = cd.id_course) ';
+                $query .= ' JOIN %lms_course_date AS cd ON (c.idCourse = cd.id_course) 
+                            JOIN %lms_course_date_day cdd ON cdd.id_date = cd.id_date ';
+                            if (null !== $startDate && !empty($startDate) && null !== $endDate && !empty($endDate)) { 
+                                $query .= 'AND cdd.date_begin BETWEEN CAST( "' . $startDate . '" AS DATE ) AND CAST( "' . $endDate . '" AS DATE )';
+                            }
                 break;
             case self::COURSE_TYPE_ELEARNING:
             default:
                 break;
         }
+    
 
         $query .= ' WHERE cu.iduser = ' . Docebo::user()->getId()
             . ' AND c.course_type = "' . $courseType . '"';
 
-        if (null !== $startDate && !empty($startDate) && null !== $endDate && !empty($endDate)) {
-            $query .= ' AND (( c.date_end BETWEEN CAST( "' . $startDate . '" AS DATE ) AND CAST( "' . $endDate . '" AS DATE ) ) 
-            OR ( c.date_begin BETWEEN CAST( "' . $startDate . '" AS DATE ) AND CAST( "' . $endDate . '" AS DATE ) ) )';
-        }
+        if (($courseType == self::COURSE_TYPE_ELEARNING) && null !== $startDate && !empty($startDate) && null !== $endDate && !empty($endDate)) {
+                $query .= ' AND (( c.date_end BETWEEN CAST( "' . $startDate . '" AS DATE ) AND CAST( "' . $endDate . '" AS DATE ) ) 
+                OR ( c.date_begin BETWEEN CAST( "' . $startDate . '" AS DATE ) AND CAST( "' . $endDate . '" AS DATE ) ) )';
+        } 
 
         if ($showCourseWithoutDates) {
             $query .= ' OR c.date_begin = 0000-00-00 OR c.date_end = 0000-00-00';
@@ -201,7 +207,7 @@ class DashboardBlockCalendarLms extends DashboardBlockLms
                 $query .= ' ORDER BY c.date_begin';
                 break;
         }
-
+     
         $rs = $this->db->query($query);
 
         $result = [];
