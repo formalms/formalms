@@ -170,7 +170,8 @@ class DashboardBlockCalendarLms extends DashboardBlockLms
             . ' AND c.course_type = "' . $courseType . '"';
 
         if (null !== $startDate && !empty($startDate) && null !== $endDate && !empty($endDate)) {
-            $query .= ' AND ( c.date_begin BETWEEN CAST("' . $startDate . '" AS DATE) AND CAST("' . $endDate . '" AS DATE) )';
+            $query .= ' AND (( c.date_end BETWEEN CAST( "' . $startDate . '" AS DATE ) AND CAST( "' . $endDate . '" AS DATE ) ) 
+            OR ( c.date_begin BETWEEN CAST( "' . $startDate . '" AS DATE ) AND CAST( "' . $endDate . '" AS DATE ) ) )';
         }
 
         if ($showCourseWithoutDates) {
@@ -284,8 +285,9 @@ class DashboardBlockCalendarLms extends DashboardBlockLms
         $dates = [];
         $courseData = $this->getDataFromCourse($course, true);
 
+     
         if ($course['course_type'] == self::COURSE_TYPE_CLASSROOM) {
-            $q = $this->db->query("
+            $result = $this->db->query("
                 SELECT cr.name AS class, cl.location, cdd.date_begin, cdd.date_end, c.name 
                 FROM %lms_course_date_day cdd 
                 INNER JOIN %lms_course_date cd ON cdd.id_date = cd.id_date 
@@ -298,12 +300,13 @@ class DashboardBlockCalendarLms extends DashboardBlockLms
             );
 
 
-            while ($row = $this->db->fetch_obj($q)) {
-                $courseData['endDate'] = $courseData['startDate'] = $row->date_begin;
-                $courseData['hourBegin'] = substr(explode(' ', $row->date_begin)[1], 0, 5);
-                $courseData['hourEnd'] = substr(explode(' ', $row->date_end)[1], 0, 5);
+            foreach ($result as $row) {
+                $courseData['endDate'] = $courseData['startDate'] = $row['date_begin'];
+                $courseData['hourBegin'] = substr(explode(' ', $row['date_begin'])[1], 0, 5);
+                $courseData['hourEnd'] = substr(explode(' ', $row['date_end'])[1], 0, 5);
                 $courseData['hours'] = $courseData['hourBegin'] . ' - ' . $courseData['hourEnd'];
-                $courseData['description'] = $row->name . '<br>' . $row->location . ' - ' . $row->class;
+                $courseData['description'] = $row['name'] . '<br>' . $row['location'] . ' - ' . $row['class'];
+      
                 $dates[] = $courseData;
             }
         } else if ($course['course_date_begin'] !== $course['course_date_end']) {
@@ -315,5 +318,23 @@ class DashboardBlockCalendarLms extends DashboardBlockLms
         }
 
         return $dates;
+    }
+
+    protected function getDataFromCourse($course, $status = true)
+    {
+        $courseData =  parent::getDataFromCourse($course);
+
+        if ($status){
+
+            $courseData['endDate'] = $courseData['startDate'];
+            $courseData['endDateString'] = $courseData['startDateString'];
+        }
+        else {
+            $courseData['startDate'] = $courseData['endDate'];
+            $courseData['startDateString'] = $courseData['endDateString'];
+        }
+
+        $courseData['status'] = $status;
+        return $courseData;
     }
 }

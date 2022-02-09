@@ -247,7 +247,7 @@ abstract class DashboardBlockLms extends Model
         return sprintf('%s.html.twig', $this->getViewFile());
     }
 
-    protected function getDataFromCourse($course, $status = true)
+    protected function getDataFromCourse($course)
     {
         $status_list = [
             0 => Lang::t('_CST_PREPARATION', 'course'),
@@ -257,14 +257,14 @@ abstract class DashboardBlockLms extends Model
             4 => Lang::t('_CST_CANCELLED', 'course')
         ];
 
-        $dateBegin = trim(str_replace('00:00:00', '', ($status ? $course['course_date_begin'] : $course['course_date_begin'])));
+        $dateBegin = trim(str_replace('00:00:00', '',  $course['course_date_begin']));
         if ($dateBegin === '0000-00-00') {
             $dateBegin = '';
         } else {
             $startDate = new DateTime($dateBegin);
         }
 
-        $dateEnd = trim(str_replace('00:00:00', '', ($status ? $course['course_date_end'] : $course['course_date_end'])));
+        $dateEnd = trim(str_replace('00:00:00', '', $course['course_date_end']));
         if ($dateEnd === '0000-00-00') {
             $dateEnd = '';
         } else {
@@ -299,7 +299,6 @@ abstract class DashboardBlockLms extends Model
             'hourBegin' => !empty($dateBegin) ? $hourBegin : '',
             'hourEnd' => !empty($dateEnd) ? $hourEnd : '',
             'type' => $course['course_type'],
-            'status' => $status,
             'nameCategory' => $this->getCategory($course['course_category_id']),
             'courseStatus' => $course['course_status'],
             'courseStatusString' => $status_list[(int)$course['course_status']],
