@@ -24,7 +24,7 @@ use DoceboUser;
 use Docebo;
 
 
-class Authentication extends \PluginAuthentication implements \PluginAuthenticationInterface {
+class Authentication extends \PluginAuthentication implements \PluginAuthenticationWithRedirectInterface {
     
     public static function getLoginGUI() {
         

@@ -21,7 +21,7 @@ use OAuth\Common\Consumer\Credentials;
 use Get;
 use Lang;
 use Form;
-class Authentication extends \PluginAuthentication implements \PluginAuthenticationInterface {
+class Authentication extends \PluginAuthentication implements \PluginAuthenticationWithRedirectInterface {
     
     public static function getLoginGUI() {
 

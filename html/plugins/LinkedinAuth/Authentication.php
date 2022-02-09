@@ -23,7 +23,7 @@ use Form;
 use Lang;
 use Docebo;
 
-class Authentication extends \PluginAuthentication implements \PluginAuthenticationInterface {
+class Authentication extends \PluginAuthentication implements \PluginAuthenticationWithRedirectInterface {
     
     public static function getLoginGUI() {
 

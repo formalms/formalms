@@ -557,6 +557,7 @@ class SettingAdm extends Model
 							$fl = new FieldList();
 							$all_fields = $fl->getAllFields();
 							$fields = [];
+                            $fields[''] = Lang::t('_NO_VALUE');
 							foreach ($all_fields as $key => $val) {
 								$fields[$val[FIELD_INFO_ID]] = $val[FIELD_INFO_TRANSLATION];
 							}
