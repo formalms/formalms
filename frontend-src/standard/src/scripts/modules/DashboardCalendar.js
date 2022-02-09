@@ -29,6 +29,11 @@ export const DashBoardCalendar = () => {
         eventSources: [
           {
             events: (fetchInfo, successCallback, failureCallback) => {
+              var dateSt = new Date(fetchInfo.startStr);
+              var startDate = dateSt.getFullYear()+'-' + ("0" + (dateSt.getMonth()+1)).slice(-2) + '-' + ("0"+dateSt.getDate()).slice(-2);
+              var dateEnd = new Date(fetchInfo.endStr);
+              var endDate = dateEnd.getFullYear() +'-' + ("0" + (dateEnd.getMonth()+1)).slice(-2) + '-' + ("0"+dateEnd.getDate()).slice(-2);
+           
               $.ajax({
                 type: 'post',
                 url: window.dashboardCalendarAjaxUrl,
@@ -36,7 +41,9 @@ export const DashBoardCalendar = () => {
                   blockAction: 'getElearningCalendar',
                   authentic_request: window.dashboardCalendarAjaxSignature,
                   block: 'DashboardBlockCalendarLms',
-                  dashboardLayoutId : window.dashboardLayoutId
+                  dashboardLayoutId : window.dashboardLayoutId,
+                  startDate: startDate,
+                  endDate: endDate
                 },
                 success: function (data) {
                   const parsedData = JSON.parse(data);
@@ -65,6 +72,11 @@ export const DashBoardCalendar = () => {
           },
           {
             events: (fetchInfo, successCallback, failureCallback) => {
+              var dateSt = new Date(fetchInfo.startStr);
+              var startDate = dateSt.getFullYear()+'-' + ("0" + (dateSt.getMonth()+1)).slice(-2) + '-' + ("0"+dateSt.getDate()).slice(-2);
+              var dateEnd = new Date(fetchInfo.endStr);
+              var endDate = dateEnd.getFullYear() +'-' + ("0" + (dateEnd.getMonth()+1)).slice(-2) + '-' + ("0"+dateEnd.getDate()).slice(-2);
+           
               $.ajax({
                 type: 'post',
                 url: window.dashboardCalendarAjaxUrl,
@@ -72,7 +84,9 @@ export const DashBoardCalendar = () => {
                   blockAction: 'getClassroomCalendar',
                   authentic_request: window.dashboardCalendarAjaxSignature,
                   block: 'DashboardBlockCalendarLms',
-                  dashboardLayoutId : window.dashboardLayoutId
+                  dashboardLayoutId : window.dashboardLayoutId,
+                  startDate: startDate,
+                  endDate: endDate
                 },
                 success: function (data) {
                   const parsedData = JSON.parse(data);
@@ -102,6 +116,11 @@ export const DashBoardCalendar = () => {
           },
           {
             events: (fetchInfo, successCallback, failureCallback) => {
+              var dateSt = new Date(fetchInfo.startStr);
+              var startDate = dateSt.getFullYear()+'-' + ("0" + (dateSt.getMonth()+1)).slice(-2) + '-' + ("0"+dateSt.getDate()).slice(-2);
+              var dateEnd = new Date(fetchInfo.endStr);
+              var endDate = dateEnd.getFullYear() +'-' + ("0" + (dateEnd.getMonth()+1)).slice(-2) + '-' + ("0"+dateEnd.getDate()).slice(-2);
+           
               $.ajax({
                 type: 'post',
                 url: window.dashboardCalendarAjaxUrl,
@@ -109,7 +128,9 @@ export const DashBoardCalendar = () => {
                   blockAction: 'getReservationCalendar',
                   authentic_request: window.dashboardCalendarAjaxSignature,
                   block: 'DashboardBlockCalendarLms',
-                  dashboardLayoutId : window.dashboardLayoutId
+                  dashboardLayoutId : window.dashboardLayoutId,
+                  startDate: startDate,
+                  endDate: endDate
                 },
                 success: function (data) {
                   const parsedData = JSON.parse(data);
