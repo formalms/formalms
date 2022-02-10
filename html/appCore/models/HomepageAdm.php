@@ -171,7 +171,19 @@ class HomepageAdm extends Model {
             if(!$this->user_manager->savePwdRandomCode($user_info[ACL_INFO_IDST], $code)) return FAILURE_SEND_LOST_PWD;
         }
 
+        $reg_code = null;
+        $uma = new UsermanagementAdm();
+        $nodes = $uma->getUserFolders($user_info[ACL_INFO_IDST]);
+        if ($nodes) {
+            $idst_oc = array_keys($nodes)[0];
 
+            $query = sql_query("SELECT idOrg FROM %adm_org_chart_tree WHERE idst_oc = $idst_oc LIMIT 1");
+            if ($query) {
+                $reg_code = sql_fetch_object($query)->idOrg;
+            }
+        }
+
+        $url = getCurrentDomain($reg_code) ?: Get::site_url();
         
         $sender         = $this->options->getOption('mail_sender');
         $sender_name    = $this->options->getOption('mail_sender_name_from');
@@ -179,6 +191,7 @@ class HomepageAdm extends Model {
         $subject        = Lang::t("_LOST_PWD_TITLE", "register", [], $acl_man->getSettingValueOfUsers('ui.language', [$user_info[ACL_INFO_IDST]])[$user_info[ACL_INFO_IDST]]);
         $body           = Lang::t("_LOST_PWD_MAILTEXT", "register", [
             '[link]'    => Get::site_url() . "index.php?r=" . _newpwd_ . "&code=" . $code,
+            '[dynamic_link]' => $url . 'index.php?r=' . _newpwd_ . '&code=' . $code,
             '[userid]'  => $acl_man->relativeId($user_info[ACL_INFO_USERID]),
         ], $acl_man->getSettingValueOfUsers('ui.language', [$user_info[ACL_INFO_IDST]])[$user_info[ACL_INFO_IDST]]);
         $params         = [MAIL_SENDER_ACLNAME => $sender_name];
