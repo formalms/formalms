@@ -521,9 +521,22 @@ class Course_API extends API
 
         if ($sendMailToUser) {
             // Send Message
+            $reg_code = null;
+            $uma = new UsermanagementAdm();
+            $nodes = $uma->getUserFolders($user_id);
+            if ($nodes) {
+                $idst_oc = array_keys($nodes)[0];
+
+                $query = sql_query("SELECT idOrg FROM %adm_org_chart_tree WHERE idst_oc = $idst_oc LIMIT 1");
+                if ($query) {
+                    $reg_code = sql_fetch_object($query)->idOrg;
+                }
+            }
 
 
-            $array_subst = ['[url]' => Get::site_url(),
+            $array_subst = [
+                '[url]' => Get::site_url(),
+                '[dynamic_link]' => getCurrentDomain($reg_code) ?: Get::site_url(),
                 '[course]' => $course_info['name']];
 
             $msg_composer = new EventMessageComposer();
