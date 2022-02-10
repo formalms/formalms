@@ -123,6 +123,18 @@ class HomepageAdm extends Model {
         $user_info = $acl_man->getUserByEmail($email);
         
         if(!$user_info) return USER_NOT_FOUND;
+
+        $reg_code = null;
+        $uma = new UsermanagementAdm();
+        $nodes = $uma->getUserFolders($user_info[ACL_INFO_IDST]);
+        if ($nodes) {
+            $idst_oc = array_keys($nodes)[0];
+
+            $query = sql_query("SELECT idOrg FROM %adm_org_chart_tree WHERE idst_oc = $idst_oc LIMIT 1");
+            if ($query) {
+                $reg_code = sql_fetch_object($query)->idOrg;
+            }
+        }
         
         $sender         = $this->options->getOption('mail_sender');
         $sender_name         = $this->options->getOption('mail_sender_name_from');
@@ -131,6 +143,7 @@ class HomepageAdm extends Model {
         $body           = Lang::t("_LOST_USERID_MAILTEXT", "register", [
             '[date_request]'    => date("d-m-Y"),
             '[url]'             => Get::site_url(),
+            '[dynamic_link]' => getCurrentDomain($reg_code) ?: Get::site_url(),
             '[userid]'          => $acl_man->relativeId($user_info[ACL_INFO_USERID])
         ], $acl_man->getSettingValueOfUsers('ui.language', [$user_info[ACL_INFO_IDST]])[$user_info[ACL_INFO_IDST]]);
         $params         = [MAIL_SENDER_ACLNAME => $sender_name];

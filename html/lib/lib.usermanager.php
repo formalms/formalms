@@ -299,8 +299,7 @@ class UserManager
                         $wait_for = (int)((($last_attempt + $this->_time_before_reactive) - time()) / 60);
                         if ($wait_for < 1) $wait_for = ' < 1';
 
-                        $advice = str_replace('[attempt]', $max_log_attempt, Lang::t('_REACH_NUMBERS_OF_ATTEMPT', 'user_managment'));
-                        $advice = str_replace('[time]', $wait_for, $advice);
+                        $advice = str_replace(['[attempt]', '[time]'], [...$max_log_attempt, $wait_for], Lang::t('_REACH_NUMBERS_OF_ATTEMPT', 'user_managment'));
                         $disable = true;
                         if ($save_log_attempt == 'after_max') $this->_saveLoginFailure($actual_attempt);
                     } else {
@@ -604,6 +603,18 @@ class UserManager
 
             if ($user_info !== false) {
 
+                $reg_code = null;
+                $uma = new UsermanagementAdm();
+                $nodes = $uma->getUserFolders($user_info[ACL_INFO_IDST]);
+                if ($nodes) {
+                    $idst_oc = array_keys($nodes)[0];
+
+                    $query = sql_query("SELECT idOrg FROM %adm_org_chart_tree WHERE idst_oc = $idst_oc LIMIT 1");
+                    if ($query) {
+                        $reg_code = sql_fetch_object($query)->idOrg;
+                    }
+                }
+
                 //compose e-mail --------------------------------------------
                 $mail_sender = $this->_option->getOption('mail_sender');
                 $mail_sender_name_from = $this->_option->getOption('mail_sender_name_from');
@@ -618,9 +629,7 @@ class UserManager
             $intestazione .= "X-Mailer: PHP/". phpversion().$GLOBALS['mail_br'];*/
 
                 $mail_text = $lang->def('_LOST_USERID_MAILTEXT');
-                $mail_text = str_replace('[date_request]', date("d-m-Y"), $mail_text);
-                $mail_text = str_replace('[url]', Get::site_url(), $mail_text);
-                $mail_text = str_replace('[userid]', $acl_man->relativeId($user_info[ACL_INFO_USERID]), $mail_text);
+                $mail_text = str_replace(['[date_request]', '[url]', '[dynamic_link]', '[userid]'], [date("d-m-Y"), Get::site_url(), getCurrentDomain($reg_code) ?: Get::site_url(), $acl_man->relativeId($user_info[ACL_INFO_USERID])], $mail_text);
 
                 //if(!@mail($user_info[ACL_INFO_EMAIL], $lang->def('_LOST_USERID_TITLE'), $mail_text, $from.$intestazione)) {
 
@@ -682,8 +691,23 @@ class UserManager
                     if (!$this->savePwdRandomCode($user_info[ACL_INFO_IDST], $code)) return $lang->def('_OPERATION_FAILURE');
                 }
 
+                $reg_code = null;
+                $uma = new UsermanagementAdm();
+                $nodes = $uma->getUserFolders($user_info[ACL_INFO_IDST]);
+                if ($nodes) {
+                    $idst_oc = array_keys($nodes)[0];
+
+                    $query = sql_query("SELECT idOrg FROM %adm_org_chart_tree WHERE idst_oc = $idst_oc LIMIT 1");
+                    if ($query) {
+                        $reg_code = sql_fetch_object($query)->idOrg;
+                    }
+                }
+
+                $dynamicUrl = getCurrentDomain($reg_code) ?: Get::site_url();
+
                 $link = Get::site_url() . $mail_url . '&amp;pwd=retrpwd&amp;code=' . $code;
-                $mail_text = str_replace('[link]', $link, $lang->def('_LOST_PWD_MAILTEXT'));
+                $dynamicLink = $dynamicUrl . $mail_url . '&amp;pwd=retrpwd&amp;code=' . $code;
+                $mail_text = str_replace(['[link]', '[dynamic_link]'], [$link, $dynamicLink], $lang->def('_LOST_PWD_MAILTEXT'));
 
 
                 $mailer = FormaMailer::getInstance();
@@ -1751,25 +1775,18 @@ class UserManagerRenderer
         $sender_name = $options['mail_sender_name_from'];
 
         // FIX BUG 399
-        //$link = str_replace('&amp;', '&', $opt_link.( strpos($opt_link, '?') === false ? '?' : '&' ).'random_code='.$random_code);
-        //$link = Get::site_url() . 'index.php?modname=login&op=register_opt&random_code=' . $random_code;
-        $dynamic_link = $link = getCurrentDomain($reg_code) ?: Get::site_url();
-        $link .= 'index.php?r=adm/homepage/signup&random_code=' . $random_code;
+        $dynamicUrl = getCurrentDomain($reg_code) ?: Get::site_url();
+        $url = Get::site_url();
+        $link = $url . 'index.php?r=adm/homepage/signup&random_code=' . $random_code;
+        $dynamicLink = $dynamicUrl . 'index.php?r=adm/homepage/signup&random_code=' . $random_code;
         // END FIX BUG 399
 
         $text = $lang->def('_REG_MAIL_TEXT');
-        $text = str_replace('[userid]', $_POST['register']['userid'], $text);
-        $text = str_replace('[firstname]', $_POST['register']['firstname'], $text);
-        $text = str_replace('[lastname]', $_POST['register']['lastname'], $text);
-        $text = str_replace('[password]', $_POST['register']['pwd'], $text);
-        $text = str_replace('[link]', '' . $link . '', $text);
-        $text = str_replace('[dynamic_link]', '' . $dynamic_link . '', $text);
-        $text = str_replace('[hour]', $options['hour_request_limit'], $text);
+        $text = str_replace(['[userid]', '[firstname]', '[lastname]', '[password]', '[link]', '[dynamic_link]', '[hour]'], [$_POST['register']['userid'], $_POST['register']['firstname'], $_POST['register']['lastname'], $_POST['register']['pwd'], '' . $link . '', '' . $dynamicLink . '', $options['hour_request_limit']], $text);
         $text = stripslashes($text);
 
         //check register_type != self (include all previous cases except the new one "self without opt-in")
         if (strcmp($options['register_type'], 'self') != 0) {
-
 
 
             $mailer = FormaMailer::getInstance();
@@ -1799,14 +1816,9 @@ class UserManagerRenderer
         //check register_type = self
         if (strcmp($options['register_type'], 'self') == 0) {
 
-            $text_self = $lang->def('_REG_MAIL_TEXT_SELF');
-            $text_self = str_replace('[userid]', $_POST['register']['userid'], $text_self);
-            $text_self = str_replace('[firstname]', $_POST['register']['firstname'], $text_self);
-            $text_self = str_replace('[lastname]', $_POST['register']['lastname'], $text_self);
-            $text_self = str_replace('[password]', $_POST['register']['pwd'], $text_self);
-            $text_self = str_replace('[link]', '' . $link . '', $text_self);
-            $text_self = str_replace('[dynamic_link]', '' . $dynamic_link . '', $text_self);
 
+            $text_self = $lang->def('_REG_MAIL_TEXT_SELF');
+            $text_self = str_replace(['[userid]', '[firstname]', '[lastname]', '[password]', '[link]', '[dynamic_link]'], [$_POST['register']['userid'], $_POST['register']['firstname'], $_POST['register']['lastname'], $_POST['register']['pwd'], '' . $link . '', '' . $dynamicLink . ''], $text_self);
 
 
             $mailer = FormaMailer::getInstance();

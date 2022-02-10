@@ -246,11 +246,25 @@ class User_API extends API {
 		}
 
                 if ($sendMailToUser) {
+
+                    $reg_code = null;
+                    $uma = new UsermanagementAdm();
+                    $nodes = $uma->getUserFolders($id_user);
+                    if ($nodes) {
+                        $idst_oc = array_keys($nodes)[0];
+
+                        $query = sql_query("SELECT idOrg FROM %adm_org_chart_tree WHERE idst_oc = $idst_oc LIMIT 1");
+                        if ($query) {
+                            $reg_code = sql_fetch_object($query)->idOrg;
+                        }
+                    }
+
                     // Send Message
                     require_once(_base_.'/lib/lib.eventmanager.php');
 
                     $array_subst = [
                             '[url]' => Get::site_url(),
+                            '[dynamic_link]' => getCurrentDomain($reg_code) ?: Get::site_url(),
                             '[userid]' => $userdata['userid'],
                             '[password]' => $userdata['password']
                     ];
