@@ -15,7 +15,7 @@ require_once($GLOBALS['where_lms'].'/class.module/track.object.php');
 
 class Track_Faq extends Track_Object {
 	
-	function Track_Faq( $idTrack ) {
+	function __construct( $idTrack ) {
 		$this->objectType = 'faq';
 		parent::Track_Object($idTrack);
 	}

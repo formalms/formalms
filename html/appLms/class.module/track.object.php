@@ -32,7 +32,7 @@ class Track_Object {
 	 * Table : learning_commontrack
 	 * idReference | idUser | idTrack | objectType | date_attempt  | status |
 	 **/
-	function Track_Object( $idTrack, $environment = false ) {
+	function __construct( $idTrack, $environment = false ) {
 
 		$this->environment = ( $environment ? $environment : 'course_lo' );
 		$this->_table = $this->getEnvironmentTable($environment);

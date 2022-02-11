@@ -20,7 +20,7 @@ class Track_Poll extends Track_Object {
 	 * Table : learning_commontrack
 	 * id_reference | idUser | id_track | objectType | date_attempt  | status |
 	 **/
-	function Track_Poll( $id_track, $idResource = false, $idParams = false, $back_url = NULL ) {
+	function __construct( $id_track, $idResource = false, $idParams = false, $back_url = NULL ) {
 		$this->objectType = 'poll';
 		parent::Track_Object($id_track);
 		

@@ -25,7 +25,7 @@ class Learning_Glossary extends Learning_Object {
 	 * function learning_Object()
 	 * class constructor
 	 **/
-	function Learning_Glossary( $id = NULL ) {
+	function __construct( $id = NULL ) {
 		
 		parent::Learning_Object( $id );
 		if( $id !== NULL ) {

@@ -24,7 +24,7 @@ class Learning_Faq extends Learning_Object {
 	/** 
 	 * object constructor
 	 **/
-	function Learning_Faq( $id = NULL ) {
+	function __construct( $id = NULL ) {
 		
 		parent::Learning_Object( $id );
 		if( $id !== NULL ) {

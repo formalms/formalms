@@ -17,7 +17,7 @@ class Module_Organization extends LmsModule {
 	var $select_destination = FALSE;
 
 	//class constructor
-	function Module_Organization($module_name = '') {
+	function __construct($module_name = '') {
 		parent::LmsModule('organization');
 	}
 

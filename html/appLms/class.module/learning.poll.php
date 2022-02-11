@@ -28,7 +28,7 @@ class Learning_Poll extends Learning_Object {
 	 * function learning_Test()
 	 * class constructor
 	 **/
-	function Learning_Poll( $id = NULL ) {
+	function __construct( $id = NULL ) {
 		parent::Learning_Object( $id );
 		if( $id !== NULL ) {
 			$res = $this->db->query("SELECT author, title FROM %lms_poll WHERE id_poll = '".(int)$id."'");
