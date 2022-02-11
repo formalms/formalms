@@ -722,6 +722,16 @@ class CoursestatsLmsController extends LmsController {
                 require_once(_lms_.'/class.module/track.test.php');
                 $itemtrack = new Track_Test(null);
                 break;
+            default: // plugin LO added management
+                $object_type = $lo_info->objectType;
+                $query = "SELECT classNameTrack, fileNameTrack FROM %lms_lo_types WHERE objectType = '$object_type'";
+                $res = sql_query($query);
+                if ($row = sql_fetch_row($res)) {
+                    list($classNameTrack, $fileNameTrack) = $row;
+                    require_once(Forma::inc(_lms_ . "/class.module/$fileNameTrack"));
+                    $itemtrack = new $classNameTrack(null);
+                }
+                break;                
         }
         
         list( $exist, $idTrack ) = $itemtrack->getIdTrack( $idReference, $id_user, $id_resource, TRUE );
