@@ -15,7 +15,7 @@ require_once($GLOBALS['where_lms'].'/class.module/track.object.php');
 
 class Track_Htmlpage extends Track_Object {
 	
-	function Track_Htmlpage( $idTrack ) {
+	function __construct( $idTrack ) {
 		$this->objectType = 'htmlpage';
 		parent::Track_Object($idTrack);
 	}

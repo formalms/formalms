@@ -29,7 +29,7 @@ class LmsModule {
 	var $descr_long;
 	
 	//class constructor
-	function LmsModule($module_name = '') {
+	function __construct($module_name = '') {
 		//EFFECTS: if a module_name is passed use it else use global reference
 		global $modname;
 		

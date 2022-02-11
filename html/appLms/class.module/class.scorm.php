@@ -14,7 +14,7 @@
 class Module_Scorm extends LmsModule {
 
 	//class constructor
-	function Module_Scorm($module_name = '') {
+	function __construct($module_name = '') {
 		
 		parent::LmsModule();
 	}

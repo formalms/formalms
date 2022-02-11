@@ -32,7 +32,7 @@ class Track_ScormOrg extends Track_Object {
 	 * Table : learning_commontrack
 	 * idReference | idUser | idTrack | objectType | date_attempt  | status |
 	 **/
-	function Track_ScormOrg( $idTrack, $idResource = false, $idParams = false, $back_url = NULL, $environment = false ) {
+	function __construct( $idTrack, $idResource = false, $idParams = false, $back_url = NULL, $environment = false ) {
 		$this->objectType = 'scormorg';
 		parent::Track_Object($idTrack, $environment);
 

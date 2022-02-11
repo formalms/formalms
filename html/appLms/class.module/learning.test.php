@@ -38,7 +38,7 @@ class Learning_Test extends Learning_Object {
 	 * function learning_Test()
 	 * class constructor
 	 **/
-	function Learning_Test( $id = NULL ) {
+	function __construct( $id = NULL ) {
 		parent::Learning_Object( $id );
 		$this->obj_type = 'test';
 		if( $id !== NULL ) {

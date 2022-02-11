@@ -16,7 +16,7 @@ require_once($GLOBALS['where_lms'].'/lib/lib.levels.php');
 class Module_Storage extends LmsModule {
 	
 	//class constructor
-	function Module_Storage($module_name = '') {
+	function __construct($module_name = '') {
 		//EFFECTS: if a module_name is passed use it else use global reference
 		global $modname;
 		

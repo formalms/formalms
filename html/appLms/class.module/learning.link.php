@@ -24,7 +24,7 @@ class Learning_Link extends Learning_Object {
 	/** 
 	 * object constructor
 	 **/
-	function Learning_Link( $id = NULL ) {
+	function __construct( $id = NULL ) {
 		
 		parent::Learning_Object( $id );
 		if( $id !== NULL ) {

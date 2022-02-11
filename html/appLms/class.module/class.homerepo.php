@@ -17,7 +17,7 @@ class Module_Homerepo extends LmsModule {
 	var $select_destination = FALSE;
 
 	//class constructor
-	function Module_Homerepo($module_name = '') {
+	function __construct($module_name = '') {
 		parent::LmsModule('homerepo');
 	}
 

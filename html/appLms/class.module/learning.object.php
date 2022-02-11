@@ -35,7 +35,7 @@ class Learning_Object {
 	 * function learning_Object()
 	 * class constructor
 	 **/
-	function Learning_Object( $id = NULL, $environment = false ) {
+	function __construct( $id = NULL, $environment = false ) {
 		$this->id = $id;
 		$this->environment = ( $environment ? $environment : 'course_lo' );
 		
