@@ -17,7 +17,7 @@ class Track_Link extends Track_Object {
 	
 	function Track_Link( $idTrack ) {
 		$this->objectType = 'link';
-		parent::Track_Object($idTrack);
+		parent::__construct($idTrack);
 	}
 
 	function getIdTrack( $idReference, $idUser, $idResource, $createOnFail = FALSE ) {

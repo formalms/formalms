@@ -29,7 +29,7 @@ class Track_Test extends Track_Object
     function __construct($idTrack, $idResource = false, $idParams = false, $back_url = NULL)
     {
         $this->objectType = 'test';
-        parent::Track_Object($idTrack);
+        parent::__construct($idTrack);
 
         $this->db = DbConn::getInstance();
         if ($idTrack !== NULL) {

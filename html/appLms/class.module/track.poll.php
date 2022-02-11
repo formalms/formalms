@@ -22,7 +22,7 @@ class Track_Poll extends Track_Object {
 	 **/
 	function __construct( $id_track, $idResource = false, $idParams = false, $back_url = NULL ) {
 		$this->objectType = 'poll';
-		parent::Track_Object($id_track);
+		parent::__construct($id_track);
 		
 		$this->idResource = $idResource;
 		$this->idParams = $idParams;

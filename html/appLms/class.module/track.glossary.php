@@ -17,7 +17,7 @@ class Track_Glossary extends Track_Object {
 	
 	function __construct( $idTrack ) {
 		$this->objectType = 'glossary';
-		parent::Track_Object($idTrack);
+		parent::__construct($idTrack);
 	}
 
 	function getIdTrack( $idReference, $idUser, $idResource, $createOnFail = FALSE ) {

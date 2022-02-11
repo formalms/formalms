@@ -17,7 +17,7 @@ class Track_Faq extends Track_Object {
 	
 	function __construct( $idTrack ) {
 		$this->objectType = 'faq';
-		parent::Track_Object($idTrack);
+		parent::__construct($idTrack);
 	}
 
 	function getIdTrack( $idReference, $idUser, $idResource, $createOnFail = FALSE ) {

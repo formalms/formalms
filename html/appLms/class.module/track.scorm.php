@@ -34,7 +34,7 @@ class Track_ScormOrg extends Track_Object {
 	 **/
 	function __construct( $idTrack, $idResource = false, $idParams = false, $back_url = NULL, $environment = false ) {
 		$this->objectType = 'scormorg';
-		parent::Track_Object($idTrack, $environment);
+		parent::__construct($idTrack, $environment);
 
 		$this->idResource = $idResource;
 		$this->idParams = $idParams;
