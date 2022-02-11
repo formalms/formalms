@@ -20,7 +20,7 @@ class Module_Storage extends LmsModule {
 		//EFFECTS: if a module_name is passed use it else use global reference
 		global $modname;
 		
-		parent::LmsModule();
+		parent::__construct();
 	}
 	
 	function loadHeader() {

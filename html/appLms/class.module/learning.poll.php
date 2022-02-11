@@ -29,7 +29,7 @@ class Learning_Poll extends Learning_Object {
 	 * class constructor
 	 **/
 	function __construct( $id = NULL ) {
-		parent::Learning_Object( $id );
+		parent::__construct( $id );
 		if( $id !== NULL ) {
 			$res = $this->db->query("SELECT author, title FROM %lms_poll WHERE id_poll = '".(int)$id."'");
 			if ($res && $this->db->num_rows($res)>0) {

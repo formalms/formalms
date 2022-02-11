@@ -16,7 +16,7 @@ class Module_Scorm extends LmsModule {
 	//class constructor
 	function __construct($module_name = '') {
 		
-		parent::LmsModule();
+		parent::__construct();
 	}
 	
 	function loadBody() {

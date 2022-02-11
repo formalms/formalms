@@ -27,7 +27,7 @@ class Learning_Glossary extends Learning_Object {
 	 **/
 	function __construct( $id = NULL ) {
 		
-		parent::Learning_Object( $id );
+		parent::__construct( $id );
 		if( $id !== NULL ) {
 			$res = $this->db->query("SELECT author, title FROM %lms_glossary WHERE idGlossary = '".$id."'");
 			if ($res && $this->db->num_rows($res)>0) {

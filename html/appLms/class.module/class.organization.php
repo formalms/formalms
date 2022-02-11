@@ -18,7 +18,7 @@ class Module_Organization extends LmsModule {
 
 	//class constructor
 	function __construct($module_name = '') {
-		parent::LmsModule('organization');
+		parent::__construct('organization');
 	}
 
 	function loadHeader() {

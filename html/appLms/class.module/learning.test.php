@@ -39,7 +39,7 @@ class Learning_Test extends Learning_Object {
 	 * class constructor
 	 **/
 	function __construct( $id = NULL ) {
-		parent::Learning_Object( $id );
+		parent::__construct( $id );
 		$this->obj_type = 'test';
 		if( $id !== NULL ) {
 			$res = $this->db->query("SELECT author, title, obj_type, retain_answers_history FROM %lms_test WHERE idTest = '".(int)$id."'");
