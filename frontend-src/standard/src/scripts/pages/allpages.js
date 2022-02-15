@@ -9,17 +9,22 @@ import { DashBoardCalendar } from '../modules/DashboardCalendar';
 import { DashboardVideo } from '../modules/DashboardVideo';
 import TeacherLearningObject from '../modules/TeacherLearningObject';
 import StudentLearningObject from '../modules/StudentLearningObject';
+import Lang from '../helpers/Lang';
 // eslint-disable-next-line no-unused-vars
 import FormaDropZone from './../components/Dropzone';
 import Axios from 'axios';
 
 
 var Page = (function() {
-
+  window.frontend.modules = {};
+  window.frontend.helpers = {};
   window.TeacherLearningObject = TeacherLearningObject;
   window.StudentLearningObject = StudentLearningObject;
-  window.FormaDropZone = FormaDropZone;
-  window.Axios = Axios;
+  window.frontend.modules.TeacherLearningObject = TeacherLearningObject;
+  window.frontend.modules.StudentLearningObject = StudentLearningObject  ;
+  window.frontend.modules.FormaDropZone = FormaDropZone;
+  window.frontend.helpers.Lang = Lang;
+  window.frontend.helpers.Axios = Axios;
 
   function setScroll(elem, action) {
     if (action === 'lock') {
