@@ -1,7 +1,7 @@
 
 /**
  * Lang
- * Translatio helper
+ * Translation helper
  */
 
 class Lang {
