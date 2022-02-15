@@ -250,6 +250,7 @@ $this->widget('table', $_table_params);
 var Courses = {
 
 	selectedFolder: <?php echo (int)$initial_selected_node; ?>,
+	selectedCourse: <?php echo (int)$idCourse; ?>,
 
 	requestBuilder: function(oState, oSelf) {
 		var sort, dir, startIndex, results;
@@ -263,6 +264,10 @@ var Courses = {
 			+ "&sort=" + sort
 			+ "&dir=" + dir
 			+	"&node_id=" + Courses.selectedFolder;
+
+		if(Courses.selectedCourse > 0) {
+			output += "&idCourse=" + Courses.selectedCourse
+		}
 		return output;
 	}
 }
