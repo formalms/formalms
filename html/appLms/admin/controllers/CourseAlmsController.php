@@ -156,6 +156,7 @@ class CourseAlmsController extends AlmsController
         $params['base_link_classroom'] = $this->base_link_classroom;
         $params['base_link_edition'] = $this->base_link_edition;
         $params['base_link_subscription'] = $this->base_link_subscription;
+        $params['idCourse'] = Get::req('idCourse', DOTY_MIXED, 0);
 
         $smodel = new SubscriptionAlms();
         $params['unsubscribe_requests'] = $smodel->countPendingUnsubscribeRequests();
@@ -420,6 +421,7 @@ class CourseAlmsController extends AlmsController
         $results = Get::req('results', DOTY_MIXED, Get::sett('visuItem', 25));
         $sort = Get::req('sort', DOTY_MIXED, 'userid');
         $dir = Get::req('dir', DOTY_MIXED, 'asc');
+        $idCourse = Get::req('idCourse', DOTY_MIXED, null);
 
         $id_category = Get::req('node_id', DOTY_INT, (int)$this->_getSessionTreeData('id_category', 0));
         $filter_text = $_SESSION['course_filter']['text'];
@@ -434,13 +436,15 @@ class CourseAlmsController extends AlmsController
         }
 
         $filter = [
-            'id_category' => $id_category,
+            'id_category' => !(is_null($idCourse)) ? null : $id_category,
             'classroom' => $classroom,
             'descendants' => $descendants,
             'waiting' => $waiting,
             'text' => $filter_text,
-            'open' => $filter_open
+            'open' => $filter_open,
+            'idCourse' => $idCourse
         ];
+
 
         $total_course = $this->model->getCourseNumber($filter);
         if ($start_index >= $total_course) {
@@ -450,6 +454,8 @@ class CourseAlmsController extends AlmsController
                 $start_index = $total_course - $results;
             }
         }
+
+      
         $course_res = $this->model->loadCourse($start_index, $results, $sort, $dir, $filter);
         $course_with_cert = $this->model->getCourseWithCertificate();
         $course_with_competence = $this->model->getCourseWithCompetence();

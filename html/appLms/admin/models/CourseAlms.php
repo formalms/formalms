@@ -195,8 +195,14 @@ class CourseAlms extends Model
                 $query .= ' AND idCourse IN (' . implode(',', $id_course_filter) . ')';
             }
 
-            if (isset($filter['classroom']) && $filter['classroom'])
-                $query .= " AND course_type = 'classroom'";
+            if (isset($filter['classroom']) && $filter['classroom']) {
+                  $query .= " AND course_type = 'classroom'";
+            }
+
+            if (isset($filter['idCourse']) && $filter['idCourse']) {
+                $query .= " AND idCourse = " .$filter['idCourse'];
+            }
+              
         }
 
         if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
@@ -255,6 +261,7 @@ class CourseAlms extends Model
             }
         }
 
+  
         list($res) = sql_fetch_row(sql_query($query));
 
         return $res;
@@ -332,6 +339,11 @@ class CourseAlms extends Model
 
             if (isset($filter['classroom']) && $filter['classroom'])
                 $query .= " AND course_type = 'classroom'";
+
+            if (isset($filter['idCourse']) && $filter['idCourse']) {
+                $query .= " AND c.idCourse = " .$filter['idCourse'];
+            }
+                  
         }
 
         if ($userlevelid != ADMIN_GROUP_GODADMIN) {
@@ -390,6 +402,7 @@ class CourseAlms extends Model
             . ' ORDER BY ' . $sort . ' ' . $dir;
 
 
+     
         if ((int)$results > 0) $query .= ' LIMIT ' . (int)$start_index . ', ' . (int)$results;
 
         return sql_query($query);
