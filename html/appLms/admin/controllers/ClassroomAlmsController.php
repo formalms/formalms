@@ -248,7 +248,7 @@ class ClassroomAlmsController extends AlmsController
 
                     $output = ['success' => true, 'nodes' => $result, 'initial' => ($initial == 1)];
                     echo $this->json->encode($output);
-                ;
+
                 break;
 
             case 'set_selected_node':
@@ -272,7 +272,7 @@ class ClassroomAlmsController extends AlmsController
                     }
 
                     echo $this->json->encode($result);
-                ;
+
                 break;
 
             case 'create':
@@ -301,14 +301,14 @@ class ClassroomAlmsController extends AlmsController
                         }
                     }
                     echo $this->json->encode($result);
-                ;
+
                 break;
 
             case 'delete':
                     $node_id = Get::req('node_id', DOTY_INT, 0);
                     $result = ['success' => $treecat->deleteTreeById($node_id)];
                     echo $this->json->encode($result);
-                ;
+
                 break;
 
             case 'move':
@@ -317,7 +317,7 @@ class ClassroomAlmsController extends AlmsController
 
                     $result = ['success' => $treecat->move($node_id, $node_dest)];
                     echo $this->json->encode($result);
-                ;
+
                 break;
 
             case 'options':
@@ -333,7 +333,7 @@ class ClassroomAlmsController extends AlmsController
 
                     $result = ['success' => true, 'options' => $node_options, '_debug' => $count];
                     echo $this->json->encode($result);
-                ;
+
                 break;
 
             //invalid command
@@ -343,6 +343,8 @@ class ClassroomAlmsController extends AlmsController
 
     public function addClassroom()
     {
+        require_once Forma::include(_adm_ . '/lib/', 'lib.customfield.php');
+        $customFields = [];
         if (isset($_POST['back']) || isset($_POST['undo'])) {
             Util::jump_to('index.php?r=' . $this->baseLinkClassroom . '/classroom&id_course=' . $this->model->getIdCourse());
         }
@@ -352,6 +354,20 @@ class ClassroomAlmsController extends AlmsController
             }
         }
         $course_info = $this->model->getCourseInfo();
+
+        // Visualizzazione CustomFields
+
+        $fman = new CustomFieldList();
+        $fman->setFieldArea('COURSE_CLASSROOM');
+
+        if ($fman->getNumberFieldbyArea() > 0) {
+            $customFields = $fman->playFieldsFlat($course_info['idCourse']);
+            foreach ($customFields as $key => $customField) {
+                if ($customField['type_field'] === 'dropdown') {
+                    $customFields[$key]['elems'] = $fman->getDropdownElems($customField['id']);
+                }
+            }
+        }
 
         $this->render('classroom', [
             'action' => sprintf('index.php?r=%s/addclassroom&id_course=%s', $this->baseLinkClassroom, $this->idCourse),
@@ -375,6 +391,7 @@ class ClassroomAlmsController extends AlmsController
                 'sub_end_date' => Get::req('sub_end_date', DOTY_STRING, ''),
                 'unsubscribe_date_limit' => Get::req('unsubscribe_date_limit', DOTY_STRING, ''),
             ],
+            'customFields' => $customFields,
             'availableStatuses' => $this->model->getStatusForDropdown(),
             'availableTestTypes' => $this->model->getTestTypeForDropdown(),
         ]);
@@ -382,6 +399,9 @@ class ClassroomAlmsController extends AlmsController
 
     public function updateClassroom()
     {
+        require_once Forma::include(_adm_ . '/lib/', 'lib.customfield.php');
+        $customFields = [];
+
         if (isset($_POST['back']) || isset($_POST['undo'])) {
             Util::jump_to('index.php?r=' . $this->baseLinkClassroom . '/classroom&id_course=' . $this->model->getIdCourse());
         }
@@ -391,6 +411,22 @@ class ClassroomAlmsController extends AlmsController
             }
         }
         $dateInfo = $this->model->getDateInfo();
+
+        // Visualizzazione CustomFields
+
+        $fman = new CustomFieldList();
+        $fman->setFieldArea('COURSE_CLASSROOM');
+
+        if ($fman->getNumberFieldbyArea() > 0) {
+            $customFields = $fman->playFieldsFlat($dateInfo['id_course']);
+            foreach ($customFields as $key => $customField) {
+                if ($customField['type_field'] === 'dropdown') {
+                    $customFields[$key]['elems'] = $fman->getDropdownElems($customField['id']);
+                }
+
+                $customFields[$key]['entry'] = $this->model->getCustomFieldsValue($this->idDate, $customField['id']);
+            }
+        }
 
         $this->render('classroom',
             [
@@ -416,6 +452,7 @@ class ClassroomAlmsController extends AlmsController
                     'dateBegin' => Format::date($dateInfo['date_begin'], 'date'),
                     'unsubscribe_date_limit' => Get::req('unsubscribe_date_limit', DOTY_STRING, Format::date($dateInfo['unsubscribe_date_limit'], 'date')),
                 ],
+                'customFields' => $customFields,
                 'availableStatuses' => $this->model->getStatusForDropdown(),
                 'availableTestTypes' => $this->model->getTestTypeForDropdown(),
             ]
@@ -494,12 +531,29 @@ class ClassroomAlmsController extends AlmsController
 
     protected function delclassroom()
     {
+        require_once Forma::include(_adm_ . '/lib/', 'lib.customfield.php');
+        $customFields = [];
+
         if (Get::cfg('demo_mode')) {
             exit('Cannot del course during demo mode.');
         }
         //Course info
 
-        $res = ['success' => $this->model->delClassroom()];
+        $fman = new CustomFieldList();
+        $fman->setFieldArea('COURSE_CLASSROOM');
+
+        if ($fman->getNumberFieldbyArea() > 0) {
+            $customFields = $fman->playFieldsFlat($this->model->getIdCourse());
+            foreach ($customFields as $key => $customField) {
+                if ($customField['type_field'] === 'dropdown') {
+                    $customFields[$key]['elems'] = $fman->getDropdownElems($customField['id']);
+                }
+
+                $customFields[$key]['entry'] = $this->model->getCustomFieldsValue($this->idDate, $customField['id']);
+            }
+        }
+
+        $res = ['success' => $this->model->delClassroom($customFields)];
 
         $this->data = $this->json->encode($res);
 

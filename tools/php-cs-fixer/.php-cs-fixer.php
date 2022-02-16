@@ -16,6 +16,17 @@ EOF;
 
 $finder = PhpCsFixer\Finder::create()
     ->exclude(__DIR__ . '/../../html/vendor')
+    ->exclude(__DIR__ . '/../../html/plugins')
+    ->in(__DIR__ . '/../../html/plugins/ConferenceBBB')
+    ->in(__DIR__ . '/../../html/plugins/Dummy')
+    ->in(__DIR__ . '/../../html/plugins/FacebookAuth')
+    ->in(__DIR__ . '/../../html/plugins/FormaAuth')
+    ->in(__DIR__ . '/../../html/plugins/GoogleAuth')
+    ->in(__DIR__ . '/../../html/plugins/LinkedinAuth')
+    ->in(__DIR__ . '/../../html/plugins/report_aggregate')
+    ->in(__DIR__ . '/../../html/plugins/report_course')
+    ->in(__DIR__ . '/../../html/plugins/report_user')
+    ->in(__DIR__ . '/../../html/plugins/TwitterAuth')
     ->in(__DIR__ . '/../../html/');
 
 return (new PhpCsFixer\Config())

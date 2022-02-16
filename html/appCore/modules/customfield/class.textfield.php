@@ -160,9 +160,8 @@ class Field_Textfield extends Field
 
         // Combo Box Con Area del campo
         $re_field = sql_query('
-                    SELECT area_code, area_name FROM '
-                    . $GLOBALS['prefix_fw']
-                    . '_customfield_area ORDER BY area_name');
+                    SELECT area_code, area_name FROM 
+                    %adm_customfield_area ORDER BY area_name');
         $field_av = [];
         $field_select = ['' => ''];
         while (list($area_code, $area_name) = sql_fetch_row($re_field)) {

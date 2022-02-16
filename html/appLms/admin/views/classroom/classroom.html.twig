@@ -45,6 +45,16 @@
         {{ Form_getDatefield( Lang_translate('_SUBSCRIPTION_DATE_BEGIN', 'course'), 'sub_start_date', 'sub_start_date', postData.sub_start_date ) }}
         {{ Form_getDatefield( Lang_translate('_SUBSCRIPTION_DATE_END', 'course'), 'sub_end_date', 'sub_end_date', postData.sub_end_date ) }}
         {{ Form_getDatefield( Lang_translate('_UNSUBSCRIBE_DATE_LIMIT', 'course'), 'unsubscribe_date_limit', 'unsubscribe_date_limit', postData.unsubscribe_date_limit) }}
+        {% for field in customFields %}
+        {% set id = [field['type_field'],"_",field['id']]|join %}
+        {% set name = [field['type_field'],"[",field['id'],"]"]|join %}
+            {% if field['type_field'] == 'textfield' %}
+                {{ Form_getTextfield( field['name'], id, name, 255, field['entry']) }}
+            {% endif %}
+            {% if field['type_field'] == 'dropdown' %}
+               {{ Form_getDropdown( field['name'], id, name, field['elems']|raw, field['entry']) }}
+            {% endif %}
+        {% endfor %}
         {{ Form_closeElementSpace() }}
         {{ Form_openButtonSpace() }}
         {{ Form_getButton('save', 'save', Lang_translate('_SAVE', 'course')) }}

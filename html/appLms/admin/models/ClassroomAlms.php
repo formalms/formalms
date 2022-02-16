@@ -163,6 +163,7 @@ class ClassroomAlms extends Model
     {
         $res = [];
 
+        $res['customFields'] = [];
         $res['code'] = Get::req('code', DOTY_MIXED, '');
         $res['name'] = Get::req('name', DOTY_MIXED, '');
         $res['max_par'] = Get::req('max_par', DOTY_INT, 0);
@@ -176,7 +177,8 @@ class ClassroomAlms extends Model
         $res['sub_start_date'] = Get::req('sub_start_date', DOTY_MIXED, '');
         $res['sub_end_date'] = Get::req('sub_end_date', DOTY_MIXED, '');
         $res['unsubscribe_date_limit'] = Get::req('unsubscribe_date_limit', DOTY_MIXED, '');
-
+        $res['customFields'] = array_replace($res['customFields'], Get::req('textfield', DOTY_MIXED, []));
+        $res['customFields'] = array_replace($res['customFields'], Get::req('dropdown', DOTY_MIXED, []));
         $array_day = [];
 
         if ($res['date_selected'] !== '') {
@@ -304,7 +306,13 @@ class ClassroomAlms extends Model
         $unsubscribe_date_limit = (!empty($unsubscribe_date_limit) ? Format::dateDb($unsubscribe_date_limit, 'date') : '0000-00-00') . ' 00:00:00';
 
         $id_date = $this->classroom_man->insDate($this->id_course, $date_info['code'], $date_info['name'], $date_info['description'], $date_info['mediumTime'], $date_info['maxNumSubscribes'], $date_info['price'], $date_info['overbooking'], $date_info['status'], $date_info['test'],
-            $sub_start_date, $sub_end_date, $unsubscribe_date_limit);
+        $sub_start_date, $sub_end_date, $unsubscribe_date_limit);
+
+        if (isset($date_info['customFields'])) {
+            foreach ($date_info['customFields'] as $idField => $customEntry) {
+                $this->classroom_man->addCustomFieldValue($id_date, $idField, $customEntry);
+            }
+        }
 
         if ($id_date) {
             if ($countDays > 0) {
@@ -326,6 +334,11 @@ class ClassroomAlms extends Model
         }
 
         return $date_info;
+    }
+
+    public function getCustomFieldsValue($idDate, $idField)
+    {
+        return $this->classroom_man->getCustomFieldValue($idDate, $idField);
     }
 
     public function getDateDay($idDate = null)
@@ -400,9 +413,9 @@ class ClassroomAlms extends Model
         return $this->classroom_man->updateDateDay($this->id_date, $days);
     }
 
-    public function delClassroom()
+    public function delClassroom($customFields = [])
     {
-        return $this->classroom_man->delDate($this->id_date);
+        return $this->classroom_man->delDate($this->id_date, $customFields);
     }
 
     public function delCourse()

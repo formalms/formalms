@@ -168,6 +168,39 @@ class DateManager
         return $result;
     }
 
+    // UPDATE or ADD a DATE CUSTOM FIELD VALUE
+    public function addCustomFieldValue($idDate, $id_field, $value)
+    {
+        // controlla se esiste il record, se esiste aggiorna altrimenti aggiungi
+        $res = $this->countCustomForItem($idDate, $id_field);
+        if ($res) {
+            //aggiornamento
+            $query = "UPDATE %adm_customfield_entry set obj_entry='" . $value . "' where id_obj=" . $idDate . " and id_field='" . $id_field . "'";
+            sql_query($query);
+        } else {
+            //inserimento
+            $query = 'INSERT INTO %adm_customfield_entry '
+                . '( id_field, id_obj, obj_entry)'
+                . ' VALUES '
+                . "( '" . ($id_field) . "' ," . intval($idDate) . " , '" . $value . "')";
+            sql_query($query);
+        }
+
+        return $res;
+    }
+
+    private function countCustomForItem($idDate, $id_field)
+    {
+        $query = 'select * from %adm_customfield_entry where id_obj=' . $idDate . ' and id_field=' . $id_field;
+        $rs = sql_query($query) or
+            errorCommunication('countCustomForItem');
+        if (sql_num_rows($rs) > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     private function clearDateDay($id_date)
     {
         $query = 'UPDATE %lms_course_date_day SET `deleted` = 1 WHERE `id_date` = ' . $id_date;
@@ -419,6 +452,22 @@ class DateManager
         return $res;
     }
 
+    public function getCustomFieldValue($idDate, $idField)
+    {
+        $query = 'SELECT obj_entry FROM %adm_customfield_entry '
+            . "WHERE id_field = '" . $idField . "'"
+            . '  AND id_obj = ' . $idDate;
+        $rs = sql_query($query) or
+            errorCommunication('getValueCustom');
+        if (sql_num_rows($rs) == 1) {
+            list($obj_entry) = sql_fetch_row($rs);
+
+            return $obj_entry;
+        } else {
+            return '';
+        }
+    }
+
     public function getDateDay($id_date)
     {
         $query = 'SELECT *, DATE_FORMAT(date_begin, "%d-%m-%Y") as date'
@@ -527,7 +576,7 @@ class DateManager
         return $calendarId;
     }
 
-    public function delDate($id_date)
+    public function delDate($id_date, $customFields = [])
     {
         $res = false;
 
@@ -565,6 +614,14 @@ class DateManager
                 . ' WHERE id_date = ' . $id_date;
 
             $res = sql_query($query);
+
+            if (count($customFields)) {
+                //cancello eventuali pendenze di custom field
+                foreach ($customFields as $customField) {
+                    $query = 'delete from %adm_customfield_entry where id_field = ' . $customField['id'] . ' and id_obj=' . $id_date;
+                    sql_query($query);
+                }
+            }
         }
 
         return $res;

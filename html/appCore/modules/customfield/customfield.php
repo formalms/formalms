@@ -25,16 +25,16 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 function field_create($type_field, $back)
 {
     checkPerm('add', false, 'field_manager');
-    $re_quest = sql_query('
+    $re_quest = sql_query("
 	SELECT type_file, type_class 
-	FROM ' . $GLOBALS['prefix_fw'] . "_customfield_type 
+	FROM %adm_customfield_type 
 	WHERE type_field = '" . $type_field . "'");
     if (!sql_num_rows($re_quest)) {
         return;
     }
     list($type_file, $type_class) = sql_fetch_row($re_quest);
 
-    require_once Forma::inc($GLOBALS['where_framework'] . '/modules/customfield/' . $type_file);
+    require_once Forma::include(_adm_ . '/modules/customfield/', $type_file);
 
     $quest_obj = new $type_class(0);
     $quest_obj->setUrl('index.php?modname=customfield&amp;op=manage&amp;fo=create');
@@ -45,16 +45,16 @@ function field_create($type_field, $back)
 function field_edit($type_field, $id_field, $back)
 {
     checkPerm('mod', false, 'field_manager');
-    $re_quest = sql_query('
+    $re_quest = sql_query("
 	SELECT type_file, type_class 
-	FROM ' . $GLOBALS['prefix_fw'] . "_customfield_type 
+	FROM %adm_customfield_type 
 	WHERE type_field = '" . $type_field . "'");
     if (!sql_num_rows($re_quest)) {
         return;
     }
     list($type_file, $type_class) = sql_fetch_row($re_quest);
 
-    require_once Forma::inc($GLOBALS['where_framework'] . '/modules/customfield/' . $type_file);
+    require_once Forma::include(_adm_ . '/modules/customfield/', $type_file);
 
     $quest_obj = new $type_class($id_field);
     $quest_obj->setUrl('index.php?modname=customfield&amp;op=manage&amp;fo=edit');
@@ -66,16 +66,16 @@ function field_del($type_field, $id_field, $back)
 {
     checkPerm('del', false, 'field_manager');
 
-    $re_quest = sql_query('
+    $re_quest = sql_query("
 	SELECT type_file, type_class 
-	FROM ' . $GLOBALS['prefix_fw'] . "_customfield_type 
+	FROM %adm_customfield_type 
 	WHERE type_field = '" . $type_field . "'");
     if (!sql_num_rows($re_quest)) {
         return;
     }
     list($type_file, $type_class) = sql_fetch_row($re_quest);
 
-    require_once Forma::inc($GLOBALS['where_framework'] . '/modules/customfield/' . $type_file);
+    require_once Forma::include(_adm_ . '/modules/customfield/', $type_file);
 
     $quest_obj = new $type_class($id_field);
     $quest_obj->setUrl('index.php?modname=customfield&amp;op=manage&amp;fo=del');
@@ -84,16 +84,16 @@ function field_del($type_field, $id_field, $back)
 
 function field_specialop($type_field, $id_field, $back)
 {
-    $re_quest = sql_query('
+    $re_quest = sql_query("
 	SELECT type_file, type_class 
-	FROM ' . $GLOBALS['prefix_fw'] . "_customfield_type 
+	FROM %adm_customfield_type 
 	WHERE type_field = '" . $type_field . "'");
     if (!sql_num_rows($re_quest)) {
         return;
     }
     list($type_file, $type_class) = sql_fetch_row($re_quest);
 
-    require_once Forma::inc($GLOBALS['where_framework'] . '/modules/customfield/' . $type_file);
+    require_once Forma::include(_adm_ . '/modules/customfield/', $type_file);
 
     $quest_obj = new $type_class($id_field);
     $quest_obj->setUrl('index.php?modname=customfield&amp;op=manage&amp;fo=special');

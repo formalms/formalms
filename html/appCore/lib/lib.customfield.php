@@ -13,12 +13,6 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-/*
- * @package admin-library
- * @subpackage field
- * @version  $Id:$
- */
-
 define('CUSTOMFIELDTABLE', '_customfield');
 define('CUSTOMFIELDLANGTABLE', '_customfield_lang');
 define('CUSTOMFIELDTYPETABLE', '_customfield_type');
@@ -290,6 +284,21 @@ class CustomFieldList
 
         while ($arr = $db->fetch_row($rs)) {
             $result[$arr[FIELD_INFO_ID]] = $arr[3];
+        }
+
+        return $result;
+    }
+
+    public function getDropdownElems($idField)
+    {
+        $query = 'select %adm_customfield_son_lang.id_field_son ,  translation from
+            %adm_customfield_son_lang  , %adm_customfield_son
+            where %adm_customfield_son_lang.id_field_son=%adm_customfield_son.id_field_son and id_field=' . $idField . ' order by sequence ';
+        $rs = sql_query($query) or
+            errorCommunication('getDropdown_elems');
+        $result = [];
+        while (list($id_field_son, $translation) = sql_fetch_row($rs)) {
+            $result[$id_field_son] = $translation;
         }
 
         return $result;
@@ -1097,7 +1106,7 @@ class CustomFieldList
             }
 
             $field_obj->setMainTable($this->getFieldTable());
-            $ret[$id_field] = ['id' => $id_field, 'code' => $code, 'name' => $name, 'code_value' => $field_obj->playFlat($idst_obj, true), 'value' => $field_obj->playFlat($idst_obj)];
+            $ret[$id_field] = ['id' => $id_field, 'type_field' => $type_field, 'code' => $code, 'name' => $name, 'code_value' => $field_obj->playFlat($idst_obj, true), 'value' => $field_obj->playFlat($idst_obj)];
         }
 
         return $ret;
