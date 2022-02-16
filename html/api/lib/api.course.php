@@ -163,10 +163,26 @@ class Course_API extends API
 
 
         foreach ($course_list as $course_info) {
+
+            $course_info['dates'] = [];
+
             if ($category = $course_info['idCategory']) {
                 $category = $course_man->getCategory($category)['path'];
             } else {
                 $category = null;
+            }
+
+            if($course_info['course_type'] === 'classroom') {
+                $classroom_man = new DateManager();
+                $course_dates = $classroom_man->getCourseDate($course_info['idCourse']);
+                
+                foreach($course_dates as $key => $course_date) {
+                    unset($course_dates[$key]['id_course']);
+                    $course_dates[$key]['days'] = array_values($classroom_man->getAllDateDay($course_date['id_date'], ['id_day','id_date']));
+                    
+                    $course_info['dates'] = array_values($course_dates);
+                }
+                
             }
             $response['courses'][] = [
                 'course_id' => $course_info['idCourse'],
@@ -188,7 +204,8 @@ class Course_API extends API
                 'course_link' => Get::site_url() . _folder_lms_ . "/index.php?modname=course&amp;op=aula&amp;idCourse={$course_info['idCourse']}",
                 'img_course' => $course_info['img_course'] ? Get::site_url() . _folder_files_ . '/' . _folder_lms_ . '/' . Get::sett('pathcourse') . $course_info['img_course'] : '',
                 'category_id' => $course_info['idCategory'],
-                'category' => $category
+                'category' => $category,
+                'dates' => $course_info['dates']
             ];
         }
 
@@ -233,7 +250,7 @@ class Course_API extends API
         $course = $course_man->getCourseInfo($courseId);
 
         foreach ($course_list[$courseId] as $key => $course_info) {
-            $response[]['course_info'] = [
+            $response['course_info'][] = [
                 'course_id' => $course['idCourse'],
                 'edition_id' => $course_info['id_edition'],
                 'code' => str_replace('&', '&amp;', $course_info['code']),
@@ -259,6 +276,7 @@ class Course_API extends API
 
     public function getClassrooms($params)
     {
+        
         $response = [];
 
         $response['success'] = true;
@@ -291,7 +309,7 @@ class Course_API extends API
         $course = $course_man->getCourseInfo($courseId);
 
         foreach ($course_list as $key => $course_info) {
-            $response[]['course_info'] = [
+            $response['course_info'][] = [
                 'course_id' => $course['idCourse'],
                 'date_id' => $course_info['id_date'],
                 'code' => str_replace('&', '&amp;', $course_info['code']),
@@ -1988,7 +2006,7 @@ class Course_API extends API
         //$output['query'] = $query;
         foreach ($res as $row) {
 
-            $response[]['lo_course'] = [
+            $response['lo_course'][] = [
                 'nome_lo' => $row['title'],
                 'nome_corso' => $row['name'],
                 'id_item' => $row['idOrg'],
@@ -2290,11 +2308,13 @@ class Course_API extends API
      */
     function getAnswerTest($params)
     {
+
+      
         $response = [];
 
         // recupera TRACK della risposta del test
         $db = DbConn::getInstance();
-        $qtxt = 'SELECT idTrack, idTest, date_end_attempt FROM learning_testtrack where idReference=' . $params['id_org'] . ' and idUser=' . $params['id_user'];
+        $qtxt = 'SELECT idTrack, idTest, date_end_attempt FROM learning_testtrack where idReference=' . $params['id_org'] . ' and idUser in (' . $params['id_users'] . ')';
         $q = $db->query($qtxt);
         $course_info = $db->fetch_assoc($q);
 
@@ -2310,7 +2330,7 @@ class Course_API extends API
 
 
         $response['success'] = true;
-        $response['id_user'] = $params['id_user'];
+        $response['id_users'] = $params['id_users'];
         $response['id_org'] = $params['id_org'];
         $response['date_end_attempt'] = $date_end_attempt;
 
