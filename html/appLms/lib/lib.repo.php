@@ -86,17 +86,19 @@ class RepoDirDb extends TreeDb {
 	// TreeDb to manage tree. In addition the table contains 
 	// title, objectType, idResource
 	function _getOtherFields($tname = FALSE) {
-		if( $tname === FALSE )
+		if( $tname === FALSE ) {
 			return ", title, objectType, idResource, idCategory, idUser, "
-					."idAuthor, version, difficult, description, language, "
-					."resource, objective, dateInsert";
-		else
-			return   ", ".$tname.".title,".$tname.".objectType,"
-					.$tname.".idResource, ".$tname.".idCategory, "
-					.$tname.".idUser, ".$tname.".idAuthor, ".$tname.".version, "
-					.$tname.".difficult, ".$tname.".description, "
-					.$tname.".language, ".$tname.".resource, "
-					.$tname.".objective, ".$tname.".dateInsert ";
+				. "idAuthor, version, difficult, description, language, "
+				. "resource, objective, dateInsert";
+		}
+		else {
+			return ", " . $tname . ".title," . $tname . ".objectType,"
+				. $tname . ".idResource, " . $tname . ".idCategory, "
+				. $tname . ".idUser, " . $tname . ".idAuthor, " . $tname . ".version, "
+				. $tname . ".difficult, " . $tname . ".description, "
+				. $tname . ".language, " . $tname . ".resource, "
+				. $tname . ".objective, " . $tname . ".dateInsert ";
+		}
 	}
 	
 	function _getOtherValues() {
@@ -168,11 +170,13 @@ class RepoDirDb extends TreeDb {
 	function _getFilter($tname = FALSE) {
 		$result = "";
 		if( $tname === FALSE ) {
-			if( $this->filterTypes !== NULL )
-				$result .= " AND (objectType IN ( '".implode("','",$this->filterTypes)."' ))";
+			if( $this->filterTypes !== NULL ) {
+				$result .= " AND (objectType IN ( '" . implode("','", $this->filterTypes) . "' ))";
+			}
 		} else {
-			if( $this->filterTypes !== NULL )
-				$result .= " AND (".$tname.".objectType IN ( '".implode("','",$this->filterTypes)."' ))";
+			if( $this->filterTypes !== NULL ) {
+				$result .= " AND (" . $tname . ".objectType IN ( '" . implode("','", $this->filterTypes) . "' ))";
+			}
 		}
 		/* TODO: ACL
 		if( $this->filterAccess !== FALSE ) 
@@ -209,13 +213,18 @@ class RepoDirDb extends TreeDb {
 		$folder = $this->getFolderById( $idFolder );
 		// $parent = $this->tdb->getFolderById( $folder->idParent );
 		$arrIdSiblings = $this->getChildrensIdById( $folder->idParent );
-		if( !is_array( $arrIdSiblings ) )
+		if( !is_array( $arrIdSiblings ) ) {
 			return;
+		}
 		$pos = array_search( $idFolder, $arrIdSiblings );
 		if( $pos === NULL || $pos === FALSE ) // prior to php 4.2.0 and after
+		{
 			return;
+		}
 		if( $pos == 0 ) // I know it's possible the merge with previous if but this is clear ...
+		{
 			return;
+		}
 		$folder2 = $this->getFolderById( $arrIdSiblings[$pos-1] );
 		$tmpArr = explode( '/', $folder->path );
 		$folderName = $tmpArr[count($tmpArr)-1];
@@ -230,13 +239,17 @@ class RepoDirDb extends TreeDb {
 		$folder = $this->getFolderById( $idFolder );
 		// $parent = $this->tdb->getFolderById( $folder->idParent );
 		$arrIdSiblings = $this->getChildrensIdById( $folder->idParent );
-		if( !is_array( $arrIdSiblings ) )
+		if( !is_array( $arrIdSiblings ) ) {
 			return;
+		}
 		$pos = array_search( $idFolder, $arrIdSiblings );
 		if( $pos === NULL || $pos === FALSE ) // prior to php 4.2.0 and after
+		{
 			return;
-		if( $pos == (count($arrIdSiblings)-1) ) 
+		}
+		if( $pos == (count($arrIdSiblings)-1) ) {
 			return;
+		}
 		$folder2 = $this->getFolderById( $arrIdSiblings[$pos+1] );
 		$tmpArr = explode( '/', $folder->path );
 		$folderName = $tmpArr[count($tmpArr)-1];
@@ -530,15 +543,18 @@ class RepoTreeView extends TreeView {
 			$stackData = $this->getSelectedFolderData();
 			$arrData = $stackData['folder']->otherValues;
 			$isFolder = ($arrData[REPOFIELDOBJECTTYPE] === '');
-			if( !$isFolder ) return [];
+			if( !$isFolder ) {
+				return [];
+			}
 		}
 		return TRUE; 
 	}
 	
 	function canDelete() { 
 		return FALSE;
-		if( !$this->isFolderSelected() )
+		if( !$this->isFolderSelected() ) {
 			return FALSE;
+		}
 		$data = $this->getSelectedFolderData();
 		if( $data['isLeaf'] === FALSE ) {
 			return FALSE;
@@ -553,20 +569,24 @@ class RepoTreeView extends TreeView {
 	function canInlineDelete() { return $this->withActions; }
 	
 	function canInlineMoveItem( &$stack, $level ) {
-		if( $level == 0 ) 
+		if( $level == 0 ) {
 			return FALSE;
+		}
 		return TRUE; 
 	}
 	function canInlineRenameItem( &$stack, $level ) {
 		return FALSE;
 	}
 	function canInlineDeleteItem( &$stack, $level ) {
-		if( $level == 0 ) 
+		if( $level == 0 ) {
 			return FALSE;
-		if( $stack[$level]['isLeaf'] === FALSE )
+		}
+		if( $stack[$level]['isLeaf'] === FALSE ) {
 			return FALSE;
-		else
+		}
+		else {
 			return TRUE;
+		}
 	}
 	
 	
@@ -575,8 +595,9 @@ class RepoTreeView extends TreeView {
 			$stackData = $this->getSelectedFolderData();
 			$arrData = $stackData['folder']->otherValues;
 			$isFolder = ($arrData[REPOFIELDOBJECTTYPE] === '');
-			if( !$isFolder ) 
+			if( !$isFolder ) {
 				return [];
+			}
 				/* array(	array($this->_getOpEditLO(), Lang::t('_MOD', 'storage', 'lms'), getPathImage().'standard/edit.png' ),
 								array($this->_getOpCopyLO(), Lang::t('_REPOCOPYLO', 'storage', 'lms'), getPathImage().'standard/dup.png' )
 							);*/
@@ -607,10 +628,12 @@ class RepoTreeView extends TreeView {
 	}
 	
 	function getOption( $option_name ) {
-		if( isset($this->options[$option_name]) ) 
+		if( isset($this->options[$option_name]) ) {
 			return $this->options[$option_name];
-		else
+		}
+		else {
 			return NULL;
+		}
 	}
 	
 	function beforeDeleteItem( &$folder ) {
@@ -628,8 +651,9 @@ class RepoTreeView extends TreeView {
 				// ---------------------------
 				$ret = $lo->del( $folder->otherValues[REPOFIELDIDRESOURCE] );
 				return $ret;
-			} else 
+			} else {
 				return TRUE;
+			}
 		}
 		return parent::beforeDeleteItem($folder);
 	}
@@ -663,7 +687,9 @@ class RepoTreeView extends TreeView {
 					list( $idst, $idst_desc ) = explode( '_', $key );
 					$printedItems[] = $idst;
 					$printedItems[] = $idst_desc;
-					if( $val != '' ) $itemSelectedMulti[] = $val;
+					if( $val != '' ) {
+						$itemSelectedMulti[] = $val;
+					}
 				}
 			}
 		}
@@ -686,25 +712,28 @@ class RepoTreeView extends TreeView {
 			if( isset($_GET['create_result']) ) {
                 switch ($_GET['create_result']) {
                     case '1':
-                        $idResource = (int)$_GET['id_lo'];
-                        $lo = createLO($this->creatingObjectType, $idResource);
-                        $this->tdb->addItem($this->getSelectedFolderId(),
-                            $lo->getTitle(), $lo->getObjectType(),
-                            $idResource,
-                            0, /* idCategory */
-                            0, /* idUser */
-                            getLogUserId(), /* idAuthor */
-                            '1.0' /* version */,
-                            '_DIFFICULT_MEDIUM', /* difficult */
-                            '', /* description */
-                            '', /* language */
-                            '', /* resource */
-                            '', /* objective */
-                            date("Y-m-d H:i:s"));
+                       $idResources = explode(',', $_GET['id_los']);
+
+                        foreach ($idResources as $idResource) {
+							$lo = createLO($this->creatingObjectType, $idResource);
+							$this->tdb->addItem($this->getSelectedFolderId(),
+								$lo->getTitle(), $lo->getObjectType(),
+								$idResource,
+								0, /* idCategory */
+								0, /* idUser */
+								getLogUserId(), /* idAuthor */
+								'1.0' /* version */,
+								'_DIFFICULT_MEDIUM', /* difficult */
+								'', /* description */
+								'', /* language */
+								'', /* resource */
+								'', /* objective */
+								date("Y-m-d H:i:s"));
+						}
                         $this->refresh = TRUE;
                         break;
                     case '2':
-                        $idMultiResource = (int)$_GET['id_lo'];
+                        $idMultiResource = (int)$_GET['id_los'];
                         $multiLo = createLO($this->creatingObjectType);
                         $arrIdResources = $multiLo->getMultipleResource($idMultiResource);
                         foreach ($arrIdResources as $idResource) {
@@ -830,33 +859,39 @@ class RepoTreeView extends TreeView {
 				$this->op = 'properties';
 				$this->opContextId = $id;
 			} 
-			else if( strstr( $nameField, $this->_getOpEditLOId() ) ) {
-				$id = substr( $nameField, strlen($this->_getOpEditLOId()));
-				if( strlen( $id ) > 0 ) {
-					$this->op = 'editLO';
-					$this->selectedFolder = $id;
+			else {
+				if (strstr($nameField, $this->_getOpEditLOId())) {
+					$id = substr($nameField, strlen($this->_getOpEditLOId()));
+					if (strlen($id) > 0) {
+						$this->op = 'editLO';
+						$this->selectedFolder = $id;
+					}
+				} else {
+					if (strstr($nameField, $this->_getOpCopyLOId())) {
+						$id = substr($nameField, strlen($this->_getOpCopyLOId()));
+						if (strlen($id) > 0) {
+							$this->op = 'copyLO';
+							$this->selectedFolder = $id;
+						}
+					}
 				}
-			} 
-			else if( strstr( $nameField, $this->_getOpCopyLOId() ) ) {
-				$id = substr( $nameField, strlen($this->_getOpCopyLOId()));
-				if( strlen( $id ) > 0 ) {
-					$this->op = 'copyLO';
-					$this->selectedFolder = $id;
-				}
-			} 
+			}
 		}
 		if( $this->pathToExpand != NULL ) {
-			if( is_array($this->expandList) ) 
+			if( is_array($this->expandList) ) {
 				$this->expandList = $this->expandList + $this->pathToExpand;
-			else
+			}
+			else {
 				$this->expandList = $this->pathToExpand;
+			}
 		}
 	}
 	
 	function printElement(&$stack, $level) {
 		$elem = parent::printElement($stack, $level);
-		if( $this->withActions == FALSE ) 
+		if( $this->withActions == FALSE ) {
 			return $elem;
+		}
 		if( $level > 0 ) {
 			$arrData = $stack[$level]['folder']->otherValues;
 			$isFolder = ($arrData[REPOFIELDOBJECTTYPE] === '');
@@ -906,8 +941,9 @@ class RepoTreeView extends TreeView {
 	function getImage( &$stack, $currLev, $maxLev ) {
 		if( $currLev > 0 && $currLev == $maxLev ) {
 			$arrData = $stack[$currLev]['folder']->otherValues;
-			if( is_array($arrData) && $arrData[REPOFIELDOBJECTTYPE] != '' ) 
-				return ['TreeViewImage', 'lobject/'.$arrData[REPOFIELDOBJECTTYPE].'.png', $arrData[REPOFIELDOBJECTTYPE]];
+			if( is_array($arrData) && $arrData[REPOFIELDOBJECTTYPE] != '' ) {
+				return ['TreeViewImage', 'lobject/' . $arrData[REPOFIELDOBJECTTYPE] . '.png', $arrData[REPOFIELDOBJECTTYPE]];
+			}
 		}	
 		return parent::getImage( $stack, $currLev, $maxLev );
 	}
@@ -929,10 +965,12 @@ class RepoTreeView extends TreeView {
 		while( list($objectType) = sql_fetch_row($rs) ) {
 			$out .=  '<label for="'.$objectType.'"><img src="'.getPathImage().'lobject/'.$objectType.'.png" alt="'.$objectType.'" '
 				.'title="'.$objectType.'" /></label> ';
-			if( $first ) 
-				$out .=  '<input type="radio" name="radiolo" value="'.$objectType.'" id="'.$objectType.'" checked="true"/>';
-			else
-				$out .=  '<input type="radio" name="radiolo" value="'.$objectType.'" id="'.$objectType.'"/>';
+			if( $first ) {
+				$out .= '<input type="radio" name="radiolo" value="' . $objectType . '" id="' . $objectType . '" checked="true"/>';
+			}
+			else {
+				$out .= '<input type="radio" name="radiolo" value="' . $objectType . '" id="' . $objectType . '"/>';
+			}
 			$out .=  ' <label for="'.$objectType.'">'. Lang::t('_LONAME_'.$objectType, 'storage').'</label>'
 				.'<br />';
 			$first = FALSE;
@@ -949,11 +987,15 @@ class RepoTreeView extends TreeView {
 		if( $this->isFolderSelected() ) {
 			$stackData = $this->getSelectedFolderData();
 			
-			if( !isset($stackData['folder']->otherValues) ) return Lang::t('_DEL');
+			if( !isset($stackData['folder']->otherValues) ) {
+				return Lang::t('_DEL');
+			}
 			
 			$arrData = $stackData['folder']->otherValues;
 			$isFolder = ($arrData[REPOFIELDOBJECTTYPE] === '');
-			if( !$isFolder ) return Lang::t('_DEL');
+			if( !$isFolder ) {
+				return Lang::t('_DEL');
+			}
 		}
 		return Lang::t('_DEL');
 	}
@@ -1015,18 +1057,21 @@ class RepoTreeView extends TreeView {
 	function setState( $arr_state ) {
 		
 		parent::setState($arr_state);
-		if( isset( $arr_state['creatingObjectType'] ) )
+		if( isset( $arr_state['creatingObjectType'] ) ) {
 			$this->creatingObjectType = $arr_state['creatingObjectType'];
+		}
 		
 	}
 	
 	function getFolderPrintOther( &$folder ) {
 		if( $this->selector_mode && $this->simple_selector && $folder->id != 0 ) {
-			if( array_search( $folder->id, $this->itemDisabled ) !== FALSE )
+			if( array_search( $folder->id, $this->itemDisabled ) !== FALSE ) {
 				return 'onclick="return false;"';
-			else
-				return 'onclick="var c = document.getElementById( \''.$folder->idtag.'\' );'
-					.'c.checked = !c.checked; return false;"';
+			}
+			else {
+				return 'onclick="var c = document.getElementById( \'' . $folder->idtag . '\' );'
+					. 'c.checked = !c.checked; return false;"';
+			}
 		}
 	}
 	
@@ -1034,25 +1079,30 @@ class RepoTreeView extends TreeView {
 		if( $this->selector_mode && $this->simple_selector && $folder->id != 0 ) { 
 			$this->printed_items[] = $folder->id;
 			$folder->idtag = $this->id.REPO_OP_SELECTITEM.'_'.$folder->id;
-			if( $this->multi_choice )
+			if( $this->multi_choice ) {
 				$out = '<input type="checkbox"'
-						.' class="Treeview_checkbox"'
-						.' id="'.$folder->idtag.'" '
-						.' name="'.$this->id.'['.REPO_OP_SELECTITEM.']['.$folder->id.']" '
-						.' value="'.$folder->id.'"';
-			else
+					. ' class="Treeview_checkbox"'
+					. ' id="' . $folder->idtag . '" '
+					. ' name="' . $this->id . '[' . REPO_OP_SELECTITEM . '][' . $folder->id . ']" '
+					. ' value="' . $folder->id . '"';
+			}
+			else {
 				$out = '<input type="radio"'
-						.' id="'.$folder->idtag.'" '
-						.' name="'.$this->id.'['.REPO_OP_SELECTMONO.']" '
-						.' value="'.$folder->id.'"';
-			if( array_search( $folder->id, $this->itemDisabled ) !== FALSE )
+					. ' id="' . $folder->idtag . '" '
+					. ' name="' . $this->id . '[' . REPO_OP_SELECTMONO . ']" '
+					. ' value="' . $folder->id . '"';
+			}
+			if( array_search( $folder->id, $this->itemDisabled ) !== FALSE ) {
 				$out .= ' disabled="disabled" ';
-			if( array_search( $folder->id, $this->itemSelectedMulti ) !== FALSE ) 
+			}
+			if( array_search( $folder->id, $this->itemSelectedMulti ) !== FALSE ) {
 				$out .= ' checked="checked" ';
+			}
 			$out .= ' />';
 			return $out;
-		} else 
+		} else {
 			return '';
+		}
 	}
 	
 }

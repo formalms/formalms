@@ -6,7 +6,7 @@ import FormaPlugin from './FormaPlugin';
  */
 class ModalElement extends FormaPlugin { 
 
-  constructor(modalClass = '', target = '#lms_main_container') {
+  constructor(modalClass = '', target = '') {
     super();
     this.ModalClass = modalClass;
     this.Target = target;

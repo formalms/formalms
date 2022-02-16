@@ -8,10 +8,10 @@ class LearningObject {
     
   }
 
-  scormLightbox(el, title, type) {
+  scormLightbox(src, title, type, modatTarget = '#lms_main_container') {
 
-    const lightbox = new ModalElement('scorm-modal');
-    lightbox.Content = `<iframe src="${el.getAttribute('href')}" frameborder="false" width="100%" height="100%" id="overlay_iframe" name="overlay_iframe">`;
+    const lightbox = new ModalElement('scorm-modal',modatTarget);
+    lightbox.Content = `<iframe src="${src}" frameborder="false" width="100%" height="100%" id="overlay_iframe" name="overlay_iframe">`;
     lightbox.Title = title;
     lightbox.OnClose = () => {
       try {
@@ -22,9 +22,11 @@ class LearningObject {
         }
       }
       const container = document.querySelector('*[data-container=' + type + ']');
-      container.dispatchEvent(new CustomEvent('refreshTree', {
-        detail: { selectedId: window.localStorage.getItem('selectedId') } 
-      }))
+      if (container) {
+        container.dispatchEvent(new CustomEvent('refreshTree', {
+          detail: {selectedId: window.localStorage.getItem('selectedId')}
+        }))
+      }
     } 
     lightbox.Open();
   }

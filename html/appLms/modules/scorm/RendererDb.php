@@ -96,14 +96,16 @@ class RendererDb extends RendererAbstract {
 					
 			$rs = sql_query( $query ) 
 				or die( "Error on RenderStartItem query = $query " . sql_error($this->dbconn));
-			if( sql_num_rows( $rs ) == 0 )
-				die( "Error on RenderStartItem query = $query record not found" );
+			if( sql_num_rows( $rs ) == 0 ) {
+				die("Error on RenderStartItem query = $query record not found");
+			}
 			list( $resInfo['uniqueid'] ) = sql_fetch_row( $rs );
 		} 
 		
 		// if this is the last child then the parent is ended
-		if( $itemInfo['isLast'] && $this->deep > 0 )
-		    $this->stack[$this->deep - 1]['isEnd'] = TRUE;
+		if( $itemInfo['isLast'] && $this->deep > 0 ) {
+			$this->stack[$this->deep - 1]['isEnd'] = TRUE;
+		}
 
 		/* set of information to be saved
 	 	 *      'identifier'

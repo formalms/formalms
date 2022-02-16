@@ -220,7 +220,7 @@ class GamesAlmsController extends AlmsController {
 		}
 		
 		$data['id_game'] = Get::req('id_game', DOTY_INT, 0);
-		$data['id_resource'] = Get::req('id_lo', DOTY_INT, 0);
+		$data['id_resource'] = Get::req('id_los', DOTY_INT, 0);
 		$create_result = Get::req('create_result', DOTY_INT, 0);
 		if($create_result >= 1) {
 
@@ -336,7 +336,7 @@ class GamesAlmsController extends AlmsController {
 		}
 
 		$data['id_game'] = Get::req('id_game', DOTY_INT, 0);
-		$data['id_resource'] = Get::req('id_lo', DOTY_INT, 0);
+		$data['id_resource'] = Get::req('id_los', DOTY_INT, 0);
 		$mod_result = Get::req('mod_result', DOTY_INT, 0);
 		if($mod_result >= 1) {
 

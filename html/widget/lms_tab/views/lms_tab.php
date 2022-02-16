@@ -48,7 +48,7 @@
     ?>
 
     <nav class="buttonsBar tabs-wrapper">
-        <ul class="nav nav-tabs hidden-xs slider-menu slider-menu--tabs">
+        <ul class="nav nav-tabs slider-menu slider-menu--tabs">
             <?php echo $tablist_items; ?>
         </ul>
     </nav>    
