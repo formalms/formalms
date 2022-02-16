@@ -417,7 +417,7 @@ class DateManager
         return $res;
     }
 
-    public function getAllDateDay($id_date)
+    public function getAllDateDay($id_date, $pattern = [])
     {
         $query = 'SELECT *, DATE_FORMAT(date_begin, "%d-%m-%Y") as date'
             . ' FROM %lms_course_date_day'
@@ -429,6 +429,9 @@ class DateManager
         $res = [];
 
         foreach ($result as $resultData) {
+            if(count($pattern)) {
+                $resultData = array_diff_key($resultData, array_flip($pattern));
+            }
             $res[] = $resultData;
         }
 

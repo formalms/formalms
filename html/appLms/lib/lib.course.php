@@ -62,7 +62,7 @@ class Selector_Course
         $lang =& DoceboLanguage::createInstance('course', 'lms');
 
         $this->show_filter = true;
-        $this->treeDB = new TreeDb_CatDb($GLOBALS['prefix_lms'] . '_category');
+        $this->treeDB = new TreeDb_CatDb('%lms_category');
         $this->treeview = new TreeView_CatView($this->treeDB, 'course_category', $lang->def('_CATEGORY'));
         $this->treeview->hideInlineAction();
     }
@@ -200,7 +200,7 @@ class Selector_Course
 		SELECT c.idCourse, c.code, c.name, c.description, c.status, c.difficult,
 			c.subscribe_method, c.permCloseLo, c.show_rules, c.max_num_subscribe ";
         $query_course = "
-		FROM " . $GLOBALS['prefix_lms'] . "_course AS c
+		FROM %lms_course AS c
 		WHERE " . ($with_assesment ? '1' : "c.course_type <> 'assessment'") .
             " AND c.idCategory IN ( " . (!$this->filter['course_flat'] ? $category_selected : implode(",", $id_categories)) . " )";
         if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
@@ -338,7 +338,7 @@ class Man_Course
 
     public function courseExists($idCourse)
     {
-        $query = "SELECT idCourse FROM " . $GLOBALS['prefix_lms'] . "_course WHERE idCourse = '" . $idCourse . "'";
+        $query = "SELECT idCourse FROM %lms_course WHERE idCourse = '" . $idCourse . "'";
         $re = sql_query($query);
 
         return sql_num_rows($re) > 0;
@@ -354,7 +354,7 @@ class Man_Course
 
         $query = "
 		SELECT *
-		FROM " . $GLOBALS['prefix_lms'] . "_course
+		FROM %lms_course
 		WHERE idCourse = '" . $idCourse . "'";
         $re = sql_query($query);
 
@@ -372,7 +372,7 @@ class Man_Course
 
         $query = "
 		SELECT *
-		FROM " . $GLOBALS['prefix_lms'] . "_course_edition
+		FROM %lms_course_edition
 		WHERE idCourseEdition = '" . $edition_id . "'";
         if (($course_id !== FALSE) && ($course_id > 0)) {
             $query .= " AND idCourse = '" . $course_id . "'";
@@ -394,7 +394,7 @@ class Man_Course
         $courses = [];
         $query_course = "
 		SELECT idCourse, code, name, description
-		FROM " . $GLOBALS['prefix_lms'] . "_course
+		FROM %lms_course
 		WHERE 1 ";
         if ($no_status) $query_course .= " AND status <> '" . CST_PREPARATION . "' ";
         if ($type_of !== 'assessment' && $type_of !== 'all' && $type_of !== 'edition') $query_course .= " AND course_type <> 'assessment' ";
@@ -431,7 +431,7 @@ class Man_Course
         }
 
         $query_course = "SELECT idCourse, name "
-            . " FROM " . $GLOBALS['prefix_lms'] . "_course "
+            . " FROM %lms_course "
             . " WHERE idCourse IN ( " . implode(',', $arr_courses) . " ) "
             . " ORDER BY name";
 
@@ -454,7 +454,7 @@ class Man_Course
 
         $query_course = "
 		SELECT name
-		FROM " . $GLOBALS['prefix_lms'] . "_course
+		FROM %lms_course
 		WHERE idCourse IN ( " . implode(',', $arr_courses) . " ) ";
         $query_course .= " ORDER BY name";
 
@@ -474,7 +474,7 @@ class Man_Course
         $courses = [];
         $query_course = "
 		SELECT COUNT(*)
-		FROM " . $GLOBALS['prefix_lms'] . "_course ";
+		FROM %lms_course ";
         if ($only_visible == true) $query_course .= " WHERE show_rules = 0";
 
         if (!$re_course = sql_query($query_course)) return 0;
@@ -493,10 +493,10 @@ class Man_Course
 
         $courses = [];
         $query_course = "
-		SELECT idCourse, idCategory, code, name, description, box_description, lang_code, status,
+		SELECT idCourse, idCategory, code, name, description, box_description, lang_code, status, course_type,
 			subscribe_method, mediumTime, show_rules, selling, prize, course_demo, create_date, course_edition,
 			can_subscribe, sub_start_date, sub_end_date, date_begin, date_end, img_course
-		FROM " . $GLOBALS['prefix_lms'] . "_course ";
+		FROM %lms_course ";
         if ($id_category !== false) $query_course .= " WHERE idCategory = '" . $id_category . "' ";
         $query_course .= " ORDER BY name";
         $re_course = sql_query($query_course);
@@ -518,7 +518,7 @@ class Man_Course
             $value[] = "'" . $v . "'";
         }
         $query_course = "
-		INSERT INTO " . $GLOBALS['prefix_lms'] . "_course
+		INSERT INTO %lms_course
 		( " . implode(',', $field) . " ) VALUES (" . implode(',', $value) . ") ";
 
         if (!sql_query($query_course)) return false;
@@ -541,7 +541,7 @@ class Man_Course
             $field[] = $key . " = '" . $v . "'";
         }
         $query_course = "
-		UPDATE " . $GLOBALS['prefix_lms'] . "_course
+		UPDATE %lms_course
 		SET " . implode(',', $field) . "
 		WHERE idCourse = '" . $idCourse . "' ";
         if (!sql_query($query_course)) return false;
@@ -617,7 +617,7 @@ class Man_Course
         } else {
             $query_courseuser = "
 			SELECT idUser, level, subscribed_by, status
-			FROM " . $GLOBALS['prefix_lms'] . "_courseuser
+			FROM %lms_courseuser
 			WHERE idCourse = '" . $idCourse . "' AND (waiting = '1' or status=4) AND  edition_id = '" . $edition_id . "'";
             $query_courseuser .= ($userlevelid != ADMIN_GROUP_GODADMIN
                 ? (!empty($admin_users) ? " AND idUser IN (" . implode(',', $admin_users) . ")" : " AND idUser IN (0)")
@@ -674,7 +674,7 @@ class Man_Course
         $users = [];
         $query_courseuser = "
 		SELECT c.idUser
-		FROM " . $GLOBALS['prefix_lms'] . "_courseuser AS c";
+		FROM %lms_courseuser AS c";
         $query_courseuser .= " WHERE c.idCourse = '" . $idCourse . "'";
         if ($idEdition)
             $query_courseuser .= " AND c.edition_id = '" . $idEdition . "'";
@@ -701,7 +701,7 @@ class Man_Course
         if (count($arr_users) == 0) return $id_users;
         $query_courseuser = "
 		SELECT idUser, level
-		FROM " . $GLOBALS['prefix_lms'] . "_courseuser
+		FROM %lms_courseuser
 		WHERE idCourse = '" . $idCourse . "'";
         if ($arr_users !== false) {
             $query_courseuser .= " AND idUser IN ( " . implode(',', $arr_users) . " )";
@@ -724,7 +724,7 @@ class Man_Course
         // List of  courses
         $re_courses = sql_query("
 		SELECT course.idCourse, course.name
-		FROM " . $GLOBALS['prefix_lms'] . "_course AS course JOIN " . $GLOBALS['prefix_lms'] . "_courseuser AS user
+		FROM %lms_course AS course JOIN %lms_courseuser AS user
 		WHERE course.idCourse = user.idCourse
 			AND user.idUser = '" . $id_user . "'");
 
@@ -741,8 +741,8 @@ class Man_Course
         $mods_names = [];
         $query_menu = "
 		SELECT mo.module_name, mo.default_op, mo.default_name, mo.token_associated, under.my_name
-		FROM " . $GLOBALS['prefix_lms'] . "_module AS mo JOIN
-			" . $GLOBALS['prefix_lms'] . "_menucourse_under AS under
+		FROM %lms_module AS mo JOIN
+        %lms_menucourse_under AS under
 		WHERE mo.idModule = under.idModule AND under.idCourse = '" . $idCourse . "'";
         $re_menu_voice = sql_query($query_menu);
         while (list($module_name, $default_op, $default_name, $token, $my_name) = sql_fetch_row($re_menu_voice)) {
@@ -759,7 +759,7 @@ class Man_Course
 
         $id_main = false;
         if (!sql_query("
-		INSERT INTO " . $GLOBALS['prefix_lms'] . "_menucourse_main ( idCourse, sequence, name, image )
+		INSERT INTO %lms_menucourse_main ( idCourse, sequence, name, image )
 			VALUES ( '" . $idCourse . "','0', '" . $name . "', '')")) return false;
         list($id_main) = sql_fetch_row(sql_query("SELECT LAST_INSERT_ID()"));
         return $id_main;
@@ -781,15 +781,15 @@ class Man_Course
     function addModuleToCourse($idCourse, $level_idst, $id_main, $id_m = false, $m_name = false, $d_op = false, $level_token_to_assign = false)
     {
 
-        require_once(_lms_ . '/lib/lib.manmenu.php');
-        require_once($GLOBALS['where_framework'] . '/lib/lib.istance.php');
+        require_once Forma::include(_lms_ . '/lib/', 'lib.manmenu.php');
+        require_once Forma::include(_adm_ . '/lib/', 'lib.istance.php');
 
         $acl_man =& Docebo::user()->getAclManager();
 
         $re = true;
         $query_menu = "
 		SELECT idModule, module_name, default_op, file_name, class_name
-		FROM " . $GLOBALS['prefix_lms'] . "_module
+		FROM %lms_module
 		WHERE 1";
         if ($id_m !== false) $query_menu .= " AND idModule = '" . $id_m . "' ";
         if ($m_name !== false) $query_menu .= " AND module_name = '" . $m_name . "' ";
@@ -815,8 +815,8 @@ class Man_Course
 
             } // end foreach
 
-            $re &= sql_query("INSERT INTO " . $GLOBALS['prefix_lms'] . "_menucourse_under ( idCourse, idModule, idMain, sequence, my_name )
-			VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++ . "', '')");
+            $re &= sql_query("INSERT INTO %lms_menucourse_under ( idCourse, idModule, idMain, sequence, my_name )
+VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++ . "', '')");
 
         } // end while
         return $re;
@@ -834,11 +834,11 @@ class Man_Course
     {
 
         $query_del = "
-		DELETE FROM " . $GLOBALS['prefix_lms'] . "_menucourse_main
+		DELETE FROM %lms_menucourse_main
 		WHERE idCourse = '" . $idCourse . "'";
 
         $query_del_voice = "
-		DELETE FROM " . $GLOBALS['prefix_lms'] . "_menucourse_under
+		DELETE FROM %lms_menucourse_under
 		WHERE idCourse = '" . $idCourse . "'";
 
         if (!sql_query($query_del)) return false;
@@ -899,7 +899,7 @@ class Man_Course
         }
 
         $query = "SELECT date_begin_validity, date_expire_validity, status, level"
-            . " FROM " . $GLOBALS['prefix_lms'] . "_courseuser"
+            . " FROM %lms_courseuser"
             . " WHERE idCourse = '" . $course['idCourse'] . "'"
             . " AND idUser = '" . getLogUserId() . "'";
 
@@ -1028,7 +1028,7 @@ class Man_Course
         $courses = [];
         $query_course = "
 		SELECT idCategory, COUNT(*)
-		FROM " . $GLOBALS['prefix_lms'] . "_course
+		FROM %lms_course
 		WHERE show_rules  = '" . $show_rules . "'
 		GROUP BY idCategory";
 
@@ -1046,7 +1046,7 @@ class Man_Course
         $count = [];
         $query_cat = "
 		SELECT idCategory, COUNT(*)
-		FROM " . $GLOBALS['prefix_lms'] . "_course
+		FROM %lms_course
 		WHERE show_rules = '0' " . (!Docebo::user()->isAnonymous() ? " OR show_rules = '1' " : "") . "
 		GROUP BY idCategory";
         $re_category = sql_query($query_cat);
@@ -1057,7 +1057,7 @@ class Man_Course
 
         $query_cat = "
 		SELECT idCategory, idParent
-		FROM " . $GLOBALS['prefix_lms'] . "_category ";
+		FROM %lms_category ";
         if ($id_parent !== false) $query_cat .= " WHERE idParent = '" . $id_parent . "' ";
         $query_cat .= " ORDER BY path DESC";
 
@@ -1078,7 +1078,7 @@ class Man_Course
         $categories = [];
         $query_cat = "
 		SELECT idCategory, idParent, lev, path, description
-		FROM " . $GLOBALS['prefix_lms'] . "_category
+		FROM %lms_category
 		WHERE idCategory = '" . $id_cat . "'";
 
         $re_category = sql_query($query_cat);
@@ -1091,7 +1091,7 @@ class Man_Course
         $categories = [];
         $query_cat = "
 		SELECT idCategory, idParent, lev, path, description
-		FROM " . $GLOBALS['prefix_lms'] . "_category  ";
+		FROM %lms_category  ";
         if ($id_parent !== false) {
             $query_cat .= " WHERE idParent = '" . $id_parent . "'";
             if ($also_itself !== false) $query_cat .= " OR idCategory = '" . $id_parent . "' ";
@@ -1123,7 +1123,7 @@ class Man_Course
         if (!$id_cat) return '';
         $query_cat = "
 		SELECT idParent, lev, path
-		FROM " . $GLOBALS['prefix_lms'] . "_category
+		FROM %lms_category
 		WHERE idCategory = '" . $id_cat . "'";
         if (!$re_category = sql_query($query_cat)) return '';
         list($id_parent, $lev, $path) = sql_fetch_row($re_category);
@@ -1171,14 +1171,14 @@ class Man_Course
                 if ($flat) {
                     //retrieve category's sub-categories ids
                     if ($filter['c_category']['value'] != 0) {
-                        $bounds_query = "SELECT iLeft, iRight FROM " . $GLOBALS['prefix_lms'] . "_category WHERE idCategory=" . $filter['c_category']['value'];
+                        $bounds_query = "SELECT iLeft, iRight FROM %lms_category WHERE idCategory=" . $filter['c_category']['value'];
                         $res = sql_query($bounds_query);
                         list($c_left, $c_right) = sql_fetch_row($res);
-                        $categories_query = "SELECT idCategory FROM " . $GLOBALS['prefix_lms'] . "_category WHERE iLeft>" . $c_left . " AND iRight<" . $c_right;
+                        $categories_query = "SELECT idCategory FROM %lms_category WHERE iLeft>" . $c_left . " AND iRight<" . $c_right;
                         $res = sql_query($categories_query);
                         while (list($sub_category) = sql_fetch_row($res)) $categories[] = (int)$sub_category;
                     } else {
-                        $categories_query = "SELECT idCategory FROM " . $GLOBALS['prefix_lms'] . "_category WHERE 1";
+                        $categories_query = "SELECT idCategory FROM %lms_category WHERE 1";
                         $res = sql_query($categories_query);
                         while (list($sub_category) = sql_fetch_row($res)) $categories[] = (int)$sub_category;
                     }
@@ -1216,7 +1216,7 @@ class Man_Course
                     $filter_conds .= " AND c.idCourse IN"
                         . " ("
                         . " SELECT idCourse"
-                        . " FROM " . $GLOBALS['prefix_lms'] . "_courseuser"
+                        . " FROM %lms_courseuser"
                         . " WHERE waiting = 1"
                         . " )";
                 }
@@ -1280,8 +1280,8 @@ class Man_Course
         }
 
         $query = "SELECT c.*, COUNT(cu.idUser) as subscriptions, SUM(cu.waiting) as pending "
-            . " FROM " . $GLOBALS['prefix_lms'] . "_course as c "
-            . " LEFT JOIN " . $GLOBALS['prefix_lms'] . "_courseuser as cu ON (c.idCourse=cu.idCourse) "
+            . " FROM %lms_course as c "
+            . " LEFT JOIN %lms_courseuser as cu ON (c.idCourse=cu.idCourse) "
             . " WHERE c.course_type = 'elearning' " . $filter_conds
             . ($is_subadmin && !$all_courses ? (!empty($admin_courses['course']) ? ' AND c.idCourse IN (' . implode(',', $admin_courses['course']) . ')' : ' AND c.idCourse = 0') : '')
             . ($is_subadmin ? " AND " . $adminManager->getAdminUsersQuery(Docebo::user()->getIdSt(), 'cu.idUser') : '')
@@ -1306,10 +1306,10 @@ class Man_Course
                 $categories = [(int)$filter['c_category']['value']];
                 if ($flat && $filter['c_category']['value'] != 0) {
                     //retrieve category's sub-categories ids
-                    $bounds_query = "SELECT iLeft, iRight FROM " . $GLOBALS['prefix_lms'] . "_category WHERE idCategory=" . $filter['c_category']['value'];
+                    $bounds_query = "SELECT iLeft, iRight FROM %lms_category WHERE idCategory=" . $filter['c_category']['value'];
                     $res = sql_query($bounds_query);
                     list($c_left, $c_right) = sql_fetch_row($res);
-                    $categories_query = "SELECT idCategory FROM " . $GLOBALS['prefix_lms'] . "_category WHERE iLeft>" . $c_left . " AND iRight<" . $c_right;
+                    $categories_query = "SELECT idCategory FROM %lms_category WHERE iLeft>" . $c_left . " AND iRight<" . $c_right;
                     $res = sql_query($categories_query);
                     while (list($sub_category) = sql_fetch_row($res)) $categories[] = (int)$sub_category;
                 }
@@ -1397,7 +1397,7 @@ class Man_Course
             $is_subadmin = true;
         }
 
-        $query = "SELECT COUNT(*) FROM " . $GLOBALS['prefix_lms'] . "_course AS c "
+        $query = "SELECT COUNT(*) FROM %lms_course AS c "
             . " WHERE course_type = 'elearning' " . $filter_conds
             . ($is_subadmin && !$all_courses ? (!empty($admin_courses['course']) ? ' AND c.idCourse IN (' . implode(',', $admin_courses['course']) . ')' : '') : '');
         $re_course = sql_query($query);
@@ -1409,7 +1409,7 @@ class Man_Course
     public function getClassroomsNumber($categories = false, $filter_text = false, $filter_waiting = false)
     {
         $query = "SELECT COUNT(*)"
-            . " FROM " . $GLOBALS['prefix_lms'] . "_course"
+            . " FROM %lms_course"
             . " WHERE course_type = 'classroom' ";
 
         if ($categories) {
@@ -1669,8 +1669,8 @@ class Man_CourseUser
     {
 
         $this->_db_conn = $db_conn;
-        $this->_table_course = $GLOBALS['prefix_lms'] . '_course';
-        $this->_table_user_subscription = $GLOBALS['prefix_lms'] . '_courseuser';
+        $this->_table_course = '%lms_course';
+        $this->_table_user_subscription = '%lms_courseuser';
 
     }
 
@@ -1758,8 +1758,8 @@ class Man_CourseUser
 		SELECT c.idCourse, c.idCategory, c.code, c.name, c.description,
 			c.date_begin, c.date_end, c.valid_time, c.status AS course_status, u.waiting,
 			c.userStatusOp, u.level, u.status as user_status, u.date_inscr, u.date_first_access, u.date_complete
-		FROM " . $GLOBALS['prefix_lms'] . "_course AS c JOIN
-			" . $GLOBALS['prefix_lms'] . "_courseuser AS u
+		FROM %lms_course AS c JOIN
+        %lms_courseuser AS u
 		WHERE c.idCourse = u.idCourse AND u.idUser = '" . $id_user . "'";
 
         if ($id_category !== false) $query_courses .= " AND c.idCategory = '" . $id_category . "' ";
@@ -1814,8 +1814,8 @@ class Man_CourseUser
         $courses = [];
         $query_courses = "
 		SELECT c.idCourse
-		FROM " . $GLOBALS['prefix_lms'] . "_course AS c JOIN
-			" . $GLOBALS['prefix_lms'] . "_courseuser AS u
+		FROM %lms_course AS c JOIN
+        %lms_courseuser AS u
 		WHERE c.idCourse = u.idCourse AND u.idUser = '" . $id_user . "'";
 
         if ($id_category !== false) $query_courses .= " AND c.idCategory = '" . $id_category . "' ";
@@ -1849,8 +1849,8 @@ class Man_CourseUser
         $courses = [];
         $query_courses = "
 		SELECT c.idCourse, c.code, c.name, c.description
-		FROM " . $GLOBALS['prefix_lms'] . "_course AS c JOIN
-			" . $GLOBALS['prefix_lms'] . "_courseuser AS u
+		FROM %lms_course AS c JOIN
+        %lms_courseuser AS u
 		WHERE c.idCourse = u.idCourse
 			AND u.idUser = '" . $id_user . "'
 			AND u.level = '" . $levelNumber . "'";
@@ -1882,7 +1882,7 @@ class Man_CourseUser
         $users = [];
         $query_courses = "
 		SELECT DISTINCT idUser
-		FROM " . $GLOBALS['prefix_lms'] . "_courseuser AS u
+		FROM %lms_courseuser AS u
 		WHERE ";
         if (is_array($level)) $query_courses .= " level IN ( " . implode(',', $level) . " ) ";
         else $query_courses .= " level = '" . $level . "'";
@@ -1904,7 +1904,7 @@ class Man_CourseUser
 
         $query_courseuser = "
 		SELECT idCourse, level, waiting, status
-		FROM " . $GLOBALS['prefix_lms'] . "_courseuser
+		FROM %lms_courseuser
 		WHERE idUser = '" . $id_user . "'";
         if ($exclude_waiting) $query_courseuser .= " AND waiting = 0";
         $re_courseuser = sql_query($query_courseuser);
@@ -1930,7 +1930,7 @@ class Man_CourseUser
         $courses = [];
         $query_courseuser = "
 		SELECT idCourse, score_given
-		FROM " . $GLOBALS['prefix_lms'] . "_courseuser
+		FROM %lms_courseuser
 		WHERE idUser = '" . $id_user . "' AND score_given IS NOT NULL ";
         $re_courseuser = sql_query($query_courseuser);
         while (list($idCourse, $score_given) = sql_fetch_row($re_courseuser)) {
@@ -1950,14 +1950,14 @@ class Man_CourseUser
         $acl_man =& Docebo::user()->getAclManager();
 
         $query_course = "SELECT idCourse" .
-            " FROM " . $GLOBALS['prefix_lms'] . "_course" .
+            " FROM %lms_course" .
             " WHERE autoregistration_code = '" . $code . "'"
             . " AND autoregistration_code <> ''";
 
         $result_course = sql_query($query_course);
 
         $query_course_active = "SELECT idCourse" .
-            " FROM " . $GLOBALS['prefix_lms'] . "_course" .
+            " FROM %lms_course" .
             " WHERE autoregistration_code = '" . $code . "'"
             . " AND autoregistration_code <> ''"
             . " AND (                       
@@ -1987,7 +1987,7 @@ class Man_CourseUser
     function checkCode($code)
     {
         $query_course = "SELECT idCourse" .
-            " FROM " . $GLOBALS['prefix_lms'] . "_course" .
+            " FROM %lms_course" .
             " WHERE autoregistration_code = '" . $code . "'";
         $result_course = sql_query($query_course);
 
@@ -2051,7 +2051,7 @@ class DoceboCourse
 
         $query_load = "
 		SELECT *
-		FROM " . $GLOBALS['prefix_lms'] . "_course
+		FROM %lms_course
 		WHERE idCourse = '" . $this->id_course . "'";
         $re_load = $this->_executeQuery($query_load);
         $this->course_info = sql_fetch_assoc($re_load);
@@ -2085,7 +2085,7 @@ class DoceboCourse
             $params[] = " " . $key . " = '" . $value . "'";
         }
         $query = "
-		UPDATE " . $GLOBALS['prefix_lms'] . "_course
+		UPDATE %lms_course
 		SET " . implode(',', $params)
             . " WHERE idCourse = '" . $this->id_course . "'";
         return $this->_executeQuery($query);
@@ -2095,13 +2095,13 @@ class DoceboCourse
     {
 
         $query = "
-		UPDATE " . $GLOBALS['prefix_lms'] . "_courseuser
+		UPDATE %lms_courseuser
 		SET score_given = " . $user_score_to_save . " "
             . " WHERE idCourse = '" . $this->id_course . "' AND idUser = '" . $id_user . "'";
         if (!$this->_executeQuery($query)) return false;
 
         $query = "
-		UPDATE " . $GLOBALS['prefix_lms'] . "_course
+		UPDATE %lms_course
 		SET course_vote  = course_vote  " . ($score > 0 ? '+' : '-') . abs($score) . " "
             . " WHERE idCourse = '" . $this->id_course . "'";
         if (!$this->_executeQuery($query)) return false;
@@ -2126,7 +2126,7 @@ class DoceboCourse
 
 		$members = $acl_man->getGroupAllUser($idst_group);*/
         $members = [];
-        $re_course = sql_query("SELECT idUser FROM " . $GLOBALS['prefix_lms'] . "_courseuser WHERE idCourse = '" . (int)$this->id_course . "'");
+        $re_course = sql_query("SELECT idUser FROM %lms_courseuser WHERE idCourse = '" . (int)$this->id_course . "'");
         while (list($idu) = sql_fetch_row($re_course)) {
             $members[$idu] = $idu;
         }
@@ -2260,7 +2260,7 @@ function getSubscribed($idCourse, $subdived_for_level = false, $id_level = false
 
     $query_courseuser = "
 	SELECT idUser, level, waiting
-	FROM " . $GLOBALS['prefix_lms'] . "_courseuser
+	FROM %lms_courseuser
 	WHERE idCourse = '" . $idCourse . "' AND edition_id='" . (int)$edition_id . "'";
     if ($exclude_waiting) $query_courseuser .= " AND waiting = 0";
     if ($id_level !== false) {
@@ -2303,9 +2303,9 @@ function getSubscribedInfo($idCourse, $subdived_for_level = false, $id_level = f
 
     $query_courseuser = "
 	SELECT c.idUser, c.level, c.waiting, c.status, c.absent
-	FROM " . $GLOBALS['prefix_lms'] . "_courseuser AS c";
+	FROM %lms_courseuser AS c";
     if ($sort || $user_filter !== '')
-        $query_courseuser .= " JOIN " . $GLOBALS['prefix_fw'] . "_user AS u ON u.idst = c.idUser";
+        $query_courseuser .= " JOIN %adm_user AS u ON u.idst = c.idUser";
     $query_courseuser .= " WHERE c.idCourse = '" . $idCourse . "'";
     if ($exclude_waiting) $query_courseuser .= " AND c.waiting = 0";
     if ($id_level !== false) {
@@ -2388,7 +2388,7 @@ function getSubscribedLevel($idCourse, $subdived_for_level = false, $id_level = 
 
     $query_courseuser = "
 	SELECT idUser, level, waiting
-	FROM " . $GLOBALS['prefix_lms'] . "_courseuser
+	FROM %lms_courseuser
 	WHERE idCourse = '" . $idCourse . "' AND edition_id='" . (int)$edition_id . "'";
     if ($id_level !== false) {
         $query_courseuser .= " AND level = '" . $id_level . "'";
@@ -2458,7 +2458,7 @@ function getCoursesInfo(&$courses)
 
     $select = "
 	SELECT idCourse, code, name, description
-	FROM " . $GLOBALS['prefix_lms'] . "_course
+	FROM %lms_course
 	WHERE idCourse IN (" . implode(',', $courses) . ")";
     $re_select = sql_query($select);
     while ($assoc = sql_fetch_assoc($re_select)) {
@@ -2481,7 +2481,7 @@ function getCoursesName(&$courses)
 
     $select = "
 	SELECT idCourse, name
-	FROM " . $GLOBALS['prefix_lms'] . "_course
+	FROM %lms_course
 	WHERE idCourse IN (" . implode(',', $courses) . ")";
     $re_select = sql_query($select);
     while (list($id, $name) = sql_fetch_row($re_select)) {
@@ -2498,7 +2498,7 @@ function isUserCourseSubcribed($id_user, $idCourse, $edition_id = FALSE)
     $course = [];
     $query_course = "
 	SELECT idCourse
-	FROM " . $GLOBALS['prefix_lms'] . "_courseuser
+	FROM %lms_courseuser
 	WHERE idUser = '" . $id_user . "' AND idCourse = '" . $idCourse . "'";
 
     if (($edition_id !== FALSE) && ($edition_id > 0)) {
@@ -2730,7 +2730,7 @@ function getModuleFromId($id_module)
 
     $query_menu = "
 	SELECT module_name, default_op
-	FROM " . $GLOBALS['prefix_lms'] . "_module
+	FROM %lms_module
 	WHERE idModule = " . (int)$id_module . " ";
 
     $re_module = sql_query($query_menu);
@@ -2752,9 +2752,9 @@ function firstPage($idMain = false)
 
     $query_main = "
 	SELECT module.idModule, main.idMain, module.module_name, module.default_op, module.token_associated, module.mvc_path
-	FROM ( " . $GLOBALS['prefix_lms'] . "_menucourse_main AS main JOIN
-		" . $GLOBALS['prefix_lms'] . "_menucourse_under AS un ) JOIN
-		" . $GLOBALS['prefix_lms'] . "_module AS module
+	FROM ( %lms_menucourse_main AS main JOIN
+    %lms_menucourse_under AS un ) JOIN
+    %lms_module AS module
 	WHERE main.idMain = un.idMain AND un.idModule = module.idModule
 		AND main.idCourse = '" . (int)$_SESSION['idCourse'] . "'
 		AND un.idCourse = '" . (int)$_SESSION['idCourse'] . "'
