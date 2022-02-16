@@ -1,4 +1,4 @@
-<?php defined("IN_FORMA") or die('Direct access is forbidden.');
+<?php defined('IN_FORMA') or die('Direct access is forbidden.');
 
 /* ======================================================================== \
 |   FORMA - The E-Learning Suite                                            |
@@ -12,7 +12,8 @@
 \ ======================================================================== */
 
 class CommunicationAlmsController extends AlmsController {
-	
+
+    /** @var CommunicationAlms */
 	protected $model = null;
 	protected $json = null;
 	protected $permissions = null;
@@ -36,7 +37,9 @@ class CommunicationAlmsController extends AlmsController {
 	}
 
 	protected function _getSessionValue($index, $default = false) {
-		if (!isset($_SESSION['communication'])) $_SESSION['communication'] = [];
+		if (!isset($_SESSION['communication'])) {
+            $_SESSION['communication'] = [];
+        }
 		return isset($_SESSION['communication'][$index]) ? $_SESSION['communication'][$index] : $default;
 	}
 
@@ -45,22 +48,26 @@ class CommunicationAlmsController extends AlmsController {
 	}
 
 	protected function _getMessage($code) {
-		$message = "";
+		$message = '';
 		switch ($code) {
-			case "no permission": $message = ""; break;
+			case 'no permission': $message = ''; break;
 		}
 		return $message;
 	}
 	
 	public function show() {
 
-		if(isset($_GET['error'])) UIFeedback::error(Lang::t('_OPERATION_FAILURE', 'communication'));
-		if(isset($_GET['success']))UIFeedback::info(Lang::t('_OPERATION_SUCCESSFUL', 'communication'));
+		if(isset($_GET['error'])) {
+            UIFeedback::error(Lang::t('_OPERATION_FAILURE', 'communication'));
+        }
+		if(isset($_GET['success'])) {
+            UIFeedback::info(Lang::t('_OPERATION_SUCCESSFUL', 'communication'));
+        }
 
 		$this->render('show', [
 			'selected_category' => 0,
 			'show_descendants' => true,
-			'filter_text' => "",
+			'filter_text' => '',
 			'permissions' => $this->permissions
         ]);
 	}
@@ -74,7 +81,7 @@ class CommunicationAlmsController extends AlmsController {
 		$results		= Get::req('results', DOTY_MIXED, Get::sett('visuItem', 25));
 		$sort			= Get::req('sort', DOTY_MIXED, 'title');
 		$dir			= Get::req('dir', DOTY_MIXED, 'asc');
-		$filter_text	= Get::req('filter_text', DOTY_STRING, "");
+		$filter_text	= Get::req('filter_text', DOTY_STRING, '');
 
 		$filter = ['text' => $filter_text];
 
@@ -92,7 +99,7 @@ class CommunicationAlmsController extends AlmsController {
 
 		require_once(_lms_.'/lib/lib.kbres.php');
 		$kbres =new KbRes();
-		$categorized_file_items =$kbres->getCategorizedResources($comm_id_arr, "file", "communication", true);
+		$categorized_file_items =$kbres->getCategorizedResources($comm_id_arr, 'file', 'communication', true);
 		$categorized_file_items_id =(!empty($categorized_file_items) ? array_keys($categorized_file_items) : []);
 
 
@@ -171,7 +178,7 @@ class CommunicationAlmsController extends AlmsController {
 
 		$this->render('add', [
 			'data' => $data,
-			'course_name' => ""
+			'course_name' => ''
         ]);
 	}
 
@@ -184,7 +191,9 @@ class CommunicationAlmsController extends AlmsController {
 			return;
 		}
 
-		if (Get::req('undo', DOTY_MIXED, false) !== false) Util::jump_to('index.php?r=alms/communication/show');
+		if (Get::req('undo', DOTY_MIXED, false) !== false) {
+            Util::jump_to('index.php?r=alms/communication/show');
+        }
 
 		$data = [];
 		$data['title']			= Get::req('title', DOTY_MIXED, '');
@@ -221,20 +230,23 @@ class CommunicationAlmsController extends AlmsController {
 		$back_url = 'index.php?r=alms/communication/insert_obj&id_comm='.$id_comm;
 
 		switch($data['type_of']) {
-			case "file" : {
+			case 'file' : {
 				require_once(_lms_.'/class.module/learning.item.php');
 				$l_obj = new Learning_Item();
 				$l_obj->create( $back_url );
-			};break;
-			case "scorm" : {
+			}
+                break;
+			case 'scorm' : {
 				require_once(_lms_.'/class.module/learning.scorm.php');
 				$l_obj = new Learning_ScormOrg();
 				$l_obj->create( $back_url );
-			};break;
-			case "none" :
+			}
+                break;
+			case 'none' :
 			default: {
 				Util::jump_to('index.php?r=alms/communication/show');
-			};break;
+			}
+            break;
 		}
 
 	}
@@ -306,7 +318,9 @@ class CommunicationAlmsController extends AlmsController {
 			return;
 		}
 
-		if (Get::req('undo', DOTY_MIXED, false) !== false) Util::jump_to('index.php?r=alms/communication/show');
+		if (Get::req('undo', DOTY_MIXED, false) !== false) {
+            Util::jump_to('index.php?r=alms/communication/show');
+        }
 
 		$data = [];
 		$data['id_comm']		= Get::req('id_comm', DOTY_MIXED, '');
@@ -344,19 +358,22 @@ class CommunicationAlmsController extends AlmsController {
 		$back_url = 'index.php?r=alms/communication/update_obj&id_comm='.$id_comm;
 
 		switch($data['type_of']) {
-			case "file" : {
+			case 'file' : {
 				require_once(_lms_.'/class.module/learning.item.php');
 				$l_obj = new Learning_Item();
 				$l_obj->edit( $data['id_resource'], $back_url );
-			};break;
-			case "scorm" : {
+			}
+                break;
+			case 'scorm' : {
 				//cannot be modified
 				Util::jump_to('index.php?r=alms/communication/show');
-			};break;
-			case "none" :
+			}
+                break;
+			case 'none' :
 			default: {
 				Util::jump_to('index.php?r=alms/communication/show');
-			};break;
+			}
+            break;
 		}
 
 	}
@@ -375,7 +392,9 @@ class CommunicationAlmsController extends AlmsController {
 		$mod_result = Get::req('mod_result', DOTY_INT, 0);
 		if($mod_result >= 1) {
 
-			if($this->model->save($data)) Util::jump_to('index.php?r=alms/communication/show&success=1');
+			if($this->model->save($data)) {
+                Util::jump_to('index.php?r=alms/communication/show&success=1');
+            }
 		}
 		Util::jump_to('index.php?r=alms/communication/show&error=1');
 	}
@@ -392,20 +411,23 @@ class CommunicationAlmsController extends AlmsController {
 
 		if($data['id_resource']) {
 			switch($data['type_of']) {
-				case "file" : {
+				case 'file' : {
 					require_once(_lms_.'/class.module/learning.item.php');
 					$l_obj = new Learning_Item();
 					$re = $l_obj->del($data['id_resource']);
-				};break;
-				case "scorm" : {
+				}
+                    break;
+				case 'scorm' : {
 					require_once(_lms_.'/class.module/learning.scorm.php');
 					$l_obj = new Learning_ScormOrg();
 					$re = $l_obj->del($data['id_resource']);
-				};break;
-				case "none" :
+				}
+                    break;
+				case 'none' :
 				default: {
 					$re = true;
-				};break;
+				}
+                break;
 			}
 		} else {
 			$re = true;
@@ -418,8 +440,9 @@ class CommunicationAlmsController extends AlmsController {
 				$kbres->deleteResourceFromItem($data['id_resource'], $data['type_of'], 'communication');
 			}
 		}
-		else
-			$output['success'] = false;
+		else {
+            $output['success'] = false;
+        }
 
 		echo $this->json->encode($output);
 	}
@@ -437,7 +460,9 @@ class CommunicationAlmsController extends AlmsController {
 		}
 
 		// undo selected
-		if(isset($_POST['cancelselector'])) Util::jump_to('index.php?r=alms/communication/show');
+		if(isset($_POST['cancelselector'])) {
+            Util::jump_to('index.php?r=alms/communication/show');
+        }
 
 		$id_comm = Get::req('id_comm', DOTY_INT, 0);
 		// instance of the user selector
@@ -454,8 +479,12 @@ class CommunicationAlmsController extends AlmsController {
 			$old_selection = $this->model->accessList($id_comm); //print_r($old_selection);
 			$new_selection 	= $user_selector->getSelection($_POST); /*print_r($_POST);*/ //print_r($new_selection); die();
 			//save
-			if($this->model->updateAccessList($id_comm, $old_selection, $new_selection)) Util::jump_to('index.php?r=alms/communication/show&success=1');
-			else Util::jump_to('index.php?r=alms/communication/show&error=1');
+			if($this->model->updateAccessList($id_comm, $old_selection, $new_selection)) {
+                Util::jump_to('index.php?r=alms/communication/show&success=1');
+            }
+			else {
+                Util::jump_to('index.php?r=alms/communication/show&error=1');
+            }
 		}
 		// load saved actions
 		if(isset($_GET['load'])) {
@@ -501,54 +530,57 @@ class CommunicationAlmsController extends AlmsController {
 			Util::jump_to('index.php?r=alms/communication/categorize&amp;id_comm='.$r_env_parent_id);
 			die();
 		}
-		else if (isset($_POST['org_categorize_save'])) {
+		else {
+            if (isset($_POST['org_categorize_save'])) {
 
-			$res_id =Get::req('res_id', DOTY_INT, 0);
-			$name =Get::req('r_name', DOTY_STRING, "");
-			$original_name =''; // won't update this field
-			$desc =Get::req('r_desc', DOTY_STRING, "");
-			$r_item_id =Get::req('r_item_id', DOTY_INT, 0);
-			$type =Get::req('r_type', DOTY_STRING, "");
-			$env =Get::req('r_env', DOTY_STRING, "");
-			$env_parent_id =Get::req('r_env_parent_id', DOTY_INT, 0);
-			$param =Get::req('r_param', DOTY_STRING, "");
-			$alt_desc ='';
-			$lang_id =Get::req('r_lang', DOTY_INT, "");
-			$lang_arr =Docebo::langManager()->getAllLangCode();
-			$lang =$lang_arr[$lang_id];
-			$force_visible =Get::req('force_visible', DOTY_INT, 0);
-			$is_mobile =Get::req('is_mobile', DOTY_INT, 0);
-			$folders =Get::req('h_selected_folders', DOTY_STRING, "");
-			$json_tags =Util::strip_slashes(Get::req('tag_list', DOTY_STRING, "[]"));
-			
-			$res_id =$kbres->saveResource($res_id, $name, $original_name, $desc, $r_item_id,
-				$type, $env, $env_parent_id, $param, $alt_desc, $lang, $force_visible,
-				$is_mobile,	$folders, $json_tags
-			);
+                $res_id = Get::req('res_id', DOTY_INT, 0);
+                $name = Get::req('r_name', DOTY_STRING, '');
+                $original_name = ''; // won't update this field
+                $desc = Get::req('r_desc', DOTY_STRING, '');
+                $r_item_id = Get::req('r_item_id', DOTY_INT, 0);
+                $type = Get::req('r_type', DOTY_STRING, '');
+                $env = Get::req('r_env', DOTY_STRING, '');
+                $env_parent_id = Get::req('r_env_parent_id', DOTY_INT, 0);
+                $param = Get::req('r_param', DOTY_STRING, '');
+                $alt_desc = '';
+                $lang_id = Get::req('r_lang', DOTY_INT, '');
+                $lang_arr = Docebo::langManager()->getAllLangCode();
+                $lang = $lang_arr[$lang_id];
+                $force_visible = Get::req('force_visible', DOTY_INT, 0);
+                $is_mobile = Get::req('is_mobile', DOTY_INT, 0);
+                $folders = Get::req('h_selected_folders', DOTY_STRING, '');
+                $json_tags = Util::strip_slashes(Get::req('tag_list', DOTY_STRING, '[]'));
 
-			Util::jump_to('index.php?r=alms/communication/show');
-		}
-		else if (isset($_POST['org_categorize_cancel'])) {
-			Util::jump_to('index.php?r=alms/communication/show');
-		}
-		else if ($data['type_of'] == 'scorm' && $r_data && $r_data['sub_categorize'] == 1) {
-			$this->categorize_sco($id_comm, $data);
-		}
-		/* else if ($data['type_of'] == 'scorm' && $r_data && $r_data['sub_categorize'] == -1) {
+                $res_id = $kbres->saveResource($res_id, $name, $original_name, $desc, $r_item_id,
+                    $type, $env, $env_parent_id, $param, $alt_desc, $lang, $force_visible,
+                    $is_mobile, $folders, $json_tags
+                );
+
+                Util::jump_to('index.php?r=alms/communication/show');
+            } else {
+                if (isset($_POST['org_categorize_cancel'])) {
+                    Util::jump_to('index.php?r=alms/communication/show');
+                } else {
+                    if ($data['type_of'] == 'scorm' && $r_data && $r_data['sub_categorize'] == 1) {
+                        $this->categorize_sco($id_comm, $data);
+                    } /* else if ($data['type_of'] == 'scorm' && $r_data && $r_data['sub_categorize'] == -1) {
 			$this->subcategorize_ask($id_comm, $data, $r_data);
 		} */
-		else {
-			$data =$this->model->findByPk($id_comm);
-			$data['item_id']=$id_comm;
+                    else {
+                        $data = $this->model->findByPk($id_comm);
+                        $data['item_id'] = $id_comm;
 
-			$this->render('categorize', [
-				'id_comm' => $id_comm,
-				'data'=>$data,
-				'r_param'=>'',
-				'back_url'=>'index.php?r=alms/communication/show',
-				'form_url'=>'index.php?r=alms/communication/categorize&amp;id_comm='.$id_comm,
-            ]);
-		}
+                        $this->render('categorize', [
+                            'id_comm' => $id_comm,
+                            'data' => $data,
+                            'r_param' => '',
+                            'back_url' => 'index.php?r=alms/communication/show',
+                            'form_url' => 'index.php?r=alms/communication/categorize&amp;id_comm=' . $id_comm,
+                        ]);
+                    }
+                }
+            }
+        }
 	}
 	
 
@@ -565,8 +597,8 @@ class CommunicationAlmsController extends AlmsController {
 
 		if ($sco_id > 0) {
 
-			$qtxt ="SELECT idscorm_item, title, identifierref FROM
-				".$GLOBALS['prefix_lms']."_scorm_items WHERE idscorm_item='".(int)$sco_id."'
+			$qtxt = 'SELECT idscorm_item, title, identifierref FROM
+				' .$GLOBALS['prefix_lms']."_scorm_items WHERE idscorm_item='".(int)$sco_id."'
 				AND idscorm_organization='".(int)$data['id_resource']."'";
 			$q =sql_query($qtxt);
 
@@ -616,7 +648,9 @@ class CommunicationAlmsController extends AlmsController {
 
 
 	protected function _getNodeActions($node) {
-		if (!is_array($node)) return false; //unrecognized type for node data
+		if (!is_array($node)) {
+            return false;
+        } //unrecognized type for node data
 		$actions = [];
 		$id_action = $node['id'];
 		$is_root = ($id_action == 0);
@@ -657,7 +691,9 @@ class CommunicationAlmsController extends AlmsController {
 	}
 
 	protected function _assignActions(&$nodes) {
-		if (!is_array($nodes)) return;
+		if (!is_array($nodes)) {
+            return;
+        }
 		for ($i=0; $i<count($nodes); $i++) {
 			$nodes[$i]['node']['options'] = $this->_getNodeActions($nodes[$i]['node']);
 			if (isset($nodes[$i]['children']) && count($nodes[$i]['children']) > 0) {
@@ -667,11 +703,11 @@ class CommunicationAlmsController extends AlmsController {
 	}
 
 	public function gettreedataTask() {
-		$command = Get::req('command', DOTY_ALPHANUM, "");
+		$command = Get::req('command', DOTY_ALPHANUM, '');
 
 		switch ($command) {
 
-			case "expand": {
+			case 'expand': {
 				$node_id = Get::req('node_id', DOTY_INT, 0);
 				$initial = (Get::req('initial', DOTY_INT, 0) > 0 ? true : false);
 
@@ -717,11 +753,11 @@ class CommunicationAlmsController extends AlmsController {
 				echo $this->json->encode($output);
 			} break;
 
-			case "set_selected_node": {
+			case 'set_selected_node': {
 				$this->_setSessionValue('selected_node', Get::Req('node_id', DOTY_INT, 0));
 			} break;
 
-			case "delete": {
+			case 'delete': {
 				//check permissions
 				if (!$this->permissions['mod']) {
 					$output = ['success' => false, 'message' => $this->_getMessage('no permission')];
@@ -731,11 +767,13 @@ class CommunicationAlmsController extends AlmsController {
 
 				$output = ['success' => false];
 				$id = Get::req('node_id', DOTY_INT, -1);
-				if ($id > 0) $output['success'] = $this->model->deleteCategory($id);
+				if ($id > 0) {
+                    $output['success'] = $this->model->deleteCategory($id);
+                }
 				echo $this->json->encode($output);
 			} break;
 
-			case "movefolder": {
+			case 'movefolder': {
 				//check permissions
 				if (!$this->permissions['mod']) {
 					$output = ['success' => false, 'message' => $this->_getMessage('no permission')];
@@ -760,7 +798,7 @@ class CommunicationAlmsController extends AlmsController {
 		if ($id_parent < 0) {
 			$output = [
 				'success' => false,
-				'message' => UIFeedback::perror($this->_getMessage("invalid category"))
+				'message' => UIFeedback::perror($this->_getMessage('invalid category'))
             ];
 			echo $this->json->encode($output);
 			return;
@@ -786,7 +824,7 @@ class CommunicationAlmsController extends AlmsController {
 		if ($id_category <= 0) {
 			$output = [
 				'success' => false,
-				'message' => UIFeedback::perror($this->_getMessage("invalid category"))
+				'message' => UIFeedback::perror($this->_getMessage('invalid category'))
             ];
 			echo $this->json->encode($output);
 			return;
@@ -817,7 +855,7 @@ class CommunicationAlmsController extends AlmsController {
 		if ($id_parent < 0) {
 			$output = [
 				'success' => false,
-				'message' => UIFeedback::perror($this->_getMessage("invalid category"))
+				'message' => UIFeedback::perror($this->_getMessage('invalid category'))
             ];
 			echo $this->json->encode($output);
 			return;
@@ -857,7 +895,7 @@ class CommunicationAlmsController extends AlmsController {
 		} else {
 			$output = [
 				'success' => false,
-				'message' => UIFeedback::perror($this->_getMessage("create category"))
+				'message' => UIFeedback::perror($this->_getMessage('create category'))
             ];
 		}
 		echo $this->json->encode($output);
@@ -877,7 +915,7 @@ class CommunicationAlmsController extends AlmsController {
 		if ($id_category < 0) {
 			$output = [
 				'success' => false,
-				'message' => UIFeedback::perror($this->_getMessage("invalid category"))
+				'message' => UIFeedback::perror($this->_getMessage('invalid category'))
             ];
 			echo $this->json->encode($output);
 			return;
@@ -909,7 +947,7 @@ class CommunicationAlmsController extends AlmsController {
 		} else {
 			$output = [
 				'success' => false,
-				'message' => UIFeedback::perror($this->_getMessage("edit category"))
+				'message' => UIFeedback::perror($this->_getMessage('edit category'))
             ];
 		}
 		echo $this->json->encode($output);
@@ -931,14 +969,16 @@ class CommunicationAlmsController extends AlmsController {
 
 		if ($src <= 0 || $dest < 0) {
 			$output['success'] = false;
-			$output['message'] = UIFeedback::perror($this->_getMessage("invalid category"));
+			$output['message'] = UIFeedback::perror($this->_getMessage('invalid category'));
 			echo $this->json->encode($output);
 			return;
 		}
 
 		$res = $this->model->moveCategory($src, $dest);
 		$output['success'] = $res ? true : false;
-		if (!$res) $output['message'] = UIFeedback::perror($this->_getMessage("move category"));
+		if (!$res) {
+            $output['message'] = UIFeedback::perror($this->_getMessage('move category'));
+        }
 		echo $this->json->encode($output);
 	}
 

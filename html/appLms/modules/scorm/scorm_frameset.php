@@ -42,9 +42,15 @@ if(!empty($GLOBALS['chapter'])) {
 	$start_from_chapter = Get::req('start_from_chapter', DOTY_MIXED, false);
 }
 
-if($autoplay == '') $autoplay = '1';
-if($playertemplate == '') $playertemplate = 'default';
-if($environment == false) $environment = 'course_lo';
+if($autoplay == '') {
+	$autoplay = '1';
+}
+if($playertemplate == '') {
+	$playertemplate = 'default';
+}
+if($environment == false) {
+	$environment = 'course_lo';
+}
 
 if($playertemplate != '') {
 	if(!file_exists(getPathTemplate().'player_scorm/'.$playertemplate.'/def_style.css')) {
@@ -54,7 +60,19 @@ if($playertemplate != '') {
 	$playertemplate = 'default';
 }
 
-$idscorm_organization = $idResource;
+switch ($environment){
+    case 'communication':
+        [$idscorm_organization,$lo_title] = sql_fetch_row(sql_query('SELECT idscorm_organization,title FROM %lms_scorm_organizations where idscorm_package='.$idResource));
+        break;
+    default:
+        $idscorm_organization = $idResource;
+        [$lo_title] = sql_fetch_row(sql_query(	"SELECT title"
+            ." FROM ".$GLOBALS['prefix_lms']."_organization"
+            ." WHERE idResource = '$idResource'"
+            ."   AND objectType = 'scormorg'"));
+        break;
+}
+
 $idUser = (int)getLogUserId();
 
 /*Start database connection***********************************************/
@@ -63,10 +81,7 @@ $idUser = (int)getLogUserId();
 $scormVersion = getScormVersion( 'idscorm_organization', $idscorm_organization);
 
 /* get object title */
-list($lo_title) = sql_fetch_row(sql_query(	"SELECT title"
-												." FROM ".$GLOBALS['prefix_lms']."_organization"
-											  	." WHERE idResource = '$idResource'"
-											  	."   AND objectType = 'scormorg'"));
+
 
 $itemtrack = new Scorm_ItemsTrack(null, $GLOBALS['prefix_lms']);
 $rsItemTrack = $itemtrack->getItemTrack($idUser,$idReference, NULL, $idscorm_organization);
@@ -93,8 +108,8 @@ if(!empty($GLOBALS['chapter'])) {
 	$isshow_tree = 'false';
 	$class_extension = '_hiddentree';
 } else {
-	$isshow_tree = ($nItem > 1) ? 'true':'false';
-	$class_extension = ($nItem > 1) ? '':'_hiddentree';
+	$isshow_tree = $nItem > 1 ? 'true':'false';
+	$class_extension = $nItem > 1 ? '':'_hiddentree';
 }
 
 
@@ -111,12 +126,14 @@ $cfg_keepalivetmo = Get::cfg('keepalivetmo', 0);	// minumum : 60 sec.
 if ( $cfg_keepalivetmo > 0 ) {
 	$keepalivetmo = $cfg_keepalivetmo;
 } else {
-	if ( $gc_maxlifetime > ( 15*60 )  ) {
-		$keepalivetmo = ( 14*60 ) ;
-	} else if ( $gc_maxlifetime >= ( 2 * 60 )  ){
-		$keepalivetmo = $gc_maxlifetime - 60;
+	if ( $gc_maxlifetime > 15*60) {
+		$keepalivetmo = 14*60;
 	} else {
-		$keepalivetmo = $gc_maxlifetime - 15;	// second
+		if ($gc_maxlifetime >= 2 * 60) {
+			$keepalivetmo = $gc_maxlifetime - 60;
+		} else {
+			$keepalivetmo = $gc_maxlifetime - 15;    // second
+		}
 	}
 }
 
@@ -129,8 +146,10 @@ echo '<head>';
 echo '	<title>'.$lo_title.'</title>';
 echo '	<link href="'.Get::tmpl_path().'/style/lms-scormplayer.css" rel="stylesheet" type="text/css" />';
 
-if(trim($playertemplate) != '') echo '	<link href="'.Get::tmpl_path().'/player_scorm/'.$playertemplate.'/def_style.css" rel="stylesheet" type="text/css" />';
-	
+if(trim($playertemplate) != '') {
+	echo '	<link href="' . Get::tmpl_path() . '/player_scorm/' . $playertemplate . '/def_style.css" rel="stylesheet" type="text/css" />';
+}
+
 	$rnd = 2007101900;
 	echo '<SCRIPT type="text/javascript" src="'.Get::rel_path('lms').'/modules/scorm/prototype.js'."?v=$rnd".'"></SCRIPT>'."\n";
 	echo '<SCRIPT type="text/javascript" src="'.Get::rel_path('lms').'/modules/scorm/ScormTypes.js'."?v=$rnd".'"></SCRIPT>'."\n";
@@ -192,7 +211,7 @@ echo '<body class="yui-skin-sam" id="page_head" class="'.$playertemplate.'" onun
 	</div>
 	<div id="separator" class="separator'.$class_extension.'" >
 		<a id="sep_command" href="#" onclick="showhidetree();">
-			<img src="'.$imagesPath.'../scorm/'.( ($nItem > 1) ? 'bt_sx' : 'bt_dx' ).'.png" alt="Expand/Collapse" />
+			<img src="'.$imagesPath.'../scorm/'.( $nItem > 1 ? 'bt_sx' : 'bt_dx' ).'.png" alt="Expand/Collapse" />
 		</a>
 	</div>
 	<div id="scocontent" class="scocontent'.$class_extension.'">

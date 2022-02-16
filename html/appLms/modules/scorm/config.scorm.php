@@ -18,8 +18,12 @@
  * @version $Id:$
  **/
 
-if(isset($_REQUEST['GLOBALS'])) die('GLOBALS overwrite attempt detected');
-if(!defined("IN_FORMA")) define("IN_FORMA", true);
+if(isset($_REQUEST['GLOBALS'])) {
+	die('GLOBALS overwrite attempt detected');
+}
+if(!defined('IN_FORMA')) {
+	define('IN_FORMA', true);
+}
 
 /** debugging defines **/
 define('SOAP_DBG_LEVEL_NONE',	99999);
@@ -42,11 +46,13 @@ define('SOAP_DBG_FILTER',SOAP_DBG_FILTER_NONE);
 
 function soap__dbgOut( $textOut, $level = SOAP_DBG_LEVEL_ALL, $filter = SOAP_DBG_FILTER_DEFAULT ) {
 	//return;
-	if( $level < SOAP_DBG_CUTLEVEL ) 
+	if( $level < SOAP_DBG_CUTLEVEL ) {
 		return;
-	if( !($filter & SOAP_DBG_FILTER) )
+	}
+	if( !($filter & SOAP_DBG_FILTER) ) {
 		return;
-	$fout = fopen(SOAP_DBG_OUTFILE, "a");
+	}
+	$fout = fopen(SOAP_DBG_OUTFILE, 'a');
 	if( is_array($textOut) ) {
 		fwrite($fout, print_r($textOut, true) );
 	} else {
@@ -68,7 +74,7 @@ require_once Forma::inc(_lms_ . '/modules/scorm/xmlwrapper.php');
 
 $scormws = 'modules/scorm/soaplms.php';
 $scormxmltree = 'modules/scorm/scormXmlTree.php';
-$scormserviceid = "urn:SOAPLMS";
+$scormserviceid = 'urn:SOAPLMS';
 
 function sl_sal_getUserId() {
 	return getLogUserId();
@@ -87,9 +93,9 @@ $sal_getUserId = 'sl_sal_getUserId';
 $sal_getUserName = 'sl_sal_getUserName';
 $sal_setValue = 'sal_wrapper';
 
-define("SPSCORM_E_DB_ERROR",100);
-define("SPSCORM_E_RECORDNOTFOUND",101);
-define("SPSCORM_E_INVALIDMANIFEST",102);
-define("SPSCORM_E_FILENOTFOND",103);
+define('SPSCORM_E_DB_ERROR',100);
+define('SPSCORM_E_RECORDNOTFOUND',101);
+define('SPSCORM_E_INVALIDMANIFEST',102);
+define('SPSCORM_E_FILENOTFOND',103);
 
 ?>
