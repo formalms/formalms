@@ -432,7 +432,7 @@ class SettingAdm extends Model
 									null,
 									null,
 									'option[' . $var_name . '][domain][]',
-									'https://',
+									'',
 									null,
 									$maxlenght,
 									null
@@ -477,6 +477,7 @@ class SettingAdm extends Model
 							var item = '<?php echo $row_item ?>';
 
 							$(function() {
+                                <?php $var_value = str_replace(["\r", "\n"], "", $var_value); ?>
 								var values = JSON.parse('<?php echo $var_value ?: '[]'; ?>');
 								var num_rows = values.length;
 
