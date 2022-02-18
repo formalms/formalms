@@ -1836,6 +1836,7 @@ class Org_TreeView extends RepoTreeView
     function getLoData($idLoList)
     {
 
+      
         if ($GLOBALS['course_descriptor']->getValue('course_type') == 'classroom') {
             require_once(_lms_ . '/lib/lib.date.php');
             $man_date = new DateManager();
@@ -1850,12 +1851,13 @@ class Org_TreeView extends RepoTreeView
 
         $res = [];
         $idx = 0;
+    
         foreach ($idLoList as $index => $idLo) {
 
             $node = [];
 
             $folder = $this->tdb->getFolderById($idLo);
-
+            //dump($idLo);
             // $event = new \appLms\Events\Lms\OrgPropertiesPrintEvent();
 
             // $event->setElement($folder);
@@ -1897,7 +1899,7 @@ class Org_TreeView extends RepoTreeView
             $node['typeId'] = $this->id;
 
             $node['title'] = $this->getFolderPrintName($folder);
-
+           
             $idCourse = $folder->otherValues[ORGFIELDIDCOURSE];
             $course = new DoceboCourse($idCourse);
 
@@ -1914,7 +1916,11 @@ class Org_TreeView extends RepoTreeView
 
             $node['isPrerequisitesSatisfied'] = $isPrerequisitesSatisfied; // && $event->getAccessible();
 
-            if ($folder->otherValues[ORGFIELD_PUBLISHFOR] == PF_TEACHER && $_SESSION['levelCourse'] <= 3) break;
+            if ($folder->otherValues[ORGFIELD_PUBLISHFOR] == PF_TEACHER && $_SESSION['levelCourse'] <= 3) 
+            {
+                
+                break;
+            }
 
             $node['active'] = false;
 
@@ -1938,16 +1944,20 @@ class Org_TreeView extends RepoTreeView
             //$node['is_folder']=count($this->tdb->getidLosIdById($folder->id)) != 0;
 
 
-            if ($folder->otherValues[ORGFIELD_PUBLISHFROM] != '' && $folder->otherValues[ORGFIELD_PUBLISHFROM] != '0000-00-00 00:00:00') {
+            if (($folder->otherValues[ORGFIELD_PUBLISHFROM] != '' && $folder->otherValues[ORGFIELD_PUBLISHFROM] != '0000-00-00 00:00:00') && ($_SESSION['levelCourse'] <= 3)) {
+           
                 if ($folder->otherValues[ORGFIELD_PUBLISHFROM] > date("Y-m-d H:i:s")) continue;
             }
-            if ($folder->otherValues[ORGFIELD_PUBLISHTO] != '' && $folder->otherValues[ORGFIELD_PUBLISHTO] != '0000-00-00 00:00:00') {
+            if (($folder->otherValues[ORGFIELD_PUBLISHTO] != '' && $folder->otherValues[ORGFIELD_PUBLISHTO] != '0000-00-00 00:00:00') && ($_SESSION['levelCourse'] <= 3)) {
+            
                 if ($folder->otherValues[ORGFIELD_PUBLISHTO] < date("Y-m-d H:i:s")) continue;
             }
 
             $status = Track_Object::getStatusFromId($folder->id, getLogUserId());
 
+       
             if ($folder->otherValues[ORGFIELD_PUBLISHFOR] == PF_TEACHER && $_SESSION['levelCourse'] <= 3) {
+              
                 continue;
             } else if ($folder->otherValues[ORGFIELD_PUBLISHFOR] == PF_ATTENDANCE && !$this->presence()) {
 
