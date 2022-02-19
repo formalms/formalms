@@ -710,11 +710,30 @@ class RepoTreeView extends TreeView {
 			// get result and id resource
 			$this->op = 'createLOEnd';
 			if( isset($_GET['create_result']) ) {
-                switch ($_GET['create_result']) {
-                    case '1':
-                       $idResources = explode(',', $_GET['id_los']);
-
-                        foreach ($idResources as $idResource) {
+				switch ($_GET['create_result']) {
+					case '1':
+						$idResource = (int)$_GET['id_lo'];
+						$lo = createLO($this->creatingObjectType, $idResource);
+						$this->tdb->addItem($this->getSelectedFolderId(),
+							$lo->getTitle(), $lo->getObjectType(),
+							$idResource,
+							0, /* idCategory */
+							0, /* idUser */
+							getLogUserId(), /* idAuthor */
+							'1.0' /* version */,
+							'_DIFFICULT_MEDIUM', /* difficult */
+							'', /* description */
+							'', /* language */
+							'', /* resource */
+							'', /* objective */
+							date("Y-m-d H:i:s"));
+						$this->refresh = TRUE;
+						break;
+					case '2':
+						$idMultiResource = (int)$_GET['id_lo'];
+						$multiLo = createLO($this->creatingObjectType);
+						$arrIdResources = $multiLo->getMultipleResource($idMultiResource);
+						foreach ($arrIdResources as $idResource) {
 							$lo = createLO($this->creatingObjectType, $idResource);
 							$this->tdb->addItem($this->getSelectedFolderId(),
 								$lo->getTitle(), $lo->getObjectType(),
@@ -730,54 +749,32 @@ class RepoTreeView extends TreeView {
 								'', /* objective */
 								date("Y-m-d H:i:s"));
 						}
-                        $this->refresh = TRUE;
-                        break;
-                    case '2':
-                        $idMultiResource = (int)$_GET['id_los'];
-                        $multiLo = createLO($this->creatingObjectType);
-                        $arrIdResources = $multiLo->getMultipleResource($idMultiResource);
-                        foreach ($arrIdResources as $idResource) {
-                            $lo = createLO($this->creatingObjectType, $idResource);
-                            $this->tdb->addItem($this->getSelectedFolderId(),
-                                $lo->getTitle(), $lo->getObjectType(),
-                                $idResource,
-                                0, /* idCategory */
-                                0, /* idUser */
-                                getLogUserId(), /* idAuthor */
-                                '1.0' /* version */,
-                                '_DIFFICULT_MEDIUM', /* difficult */
-                                '', /* description */
-                                '', /* language */
-                                '', /* resource */
-                                '', /* objective */
-                                date("Y-m-d H:i:s"));
-                        }
-                        $this->refresh = TRUE;
+						$this->refresh = TRUE;
 
-                        break;
-                    case '3':
+						break;
+					case '3':
 
-                        $idResources = explode(',', $_GET['id_los']);
+						$idResources = explode(',', $_GET['id_los']);
 
-                        foreach ($idResources as $idResource) {
-                            $lo = createLO($this->creatingObjectType, $idResource);
-                            $this->tdb->addItem($this->getSelectedFolderId(),
-                                $lo->getTitle(), $lo->getObjectType(),
-                                $idResource,
-                                0, /* idCategory */
-                                0, /* idUser */
-                                getLogUserId(), /* idAuthor */
-                                '1.0' /* version */,
-                                '_DIFFICULT_MEDIUM', /* difficult */
-                                '', /* description */
-                                '', /* language */
-                                '', /* resource */
-                                '', /* objective */
-                                date("Y-m-d H:i:s"));
-                        }
-                        $this->refresh = TRUE;
-                    default:
-                }
+						foreach ($idResources as $idResource) {
+							$lo = createLO($this->creatingObjectType, $idResource);
+							$this->tdb->addItem($this->getSelectedFolderId(),
+								$lo->getTitle(), $lo->getObjectType(),
+								$idResource,
+								0, /* idCategory */
+								0, /* idUser */
+								getLogUserId(), /* idAuthor */
+								'1.0' /* version */,
+								'_DIFFICULT_MEDIUM', /* difficult */
+								'', /* description */
+								'', /* language */
+								'', /* resource */
+								'', /* objective */
+								date("Y-m-d H:i:s"));
+						}
+						$this->refresh = TRUE;
+					default:
+				}
 			}
 		} elseif( isset( $arrayState[$this->_getOpEditLO()] ) ) {
 			$this->op = 'editLO';
