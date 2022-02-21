@@ -1,12 +1,5 @@
 <?php defined("IN_FORMA") or die('Direct access is forbidden.');
 require_once Forma::inc(_lib_ .'/Helpers/Filters/Course/FilterCourseManager.php');
-/* ======================================================================== \
-|   FORMA - The E-Learning Suite                                            |
-|                                                                           |
-|   Copyright (c) 2013 (Forma)                                              |
-|   http://www.formalms.org                                                 |
-|   License  http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt           |
-\ ======================================================================== */
 
 class MycoursesLmsController extends LmsController {
 
