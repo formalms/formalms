@@ -1,6 +1,17 @@
-<?php defined("IN_FORMA") or die('Direct access is forbidden.');
+<?php
 
+/*
+ * FORMA - The E-Learning Suite
+ *
+ * Copyright (c) 2013-2022 (Forma)
+ * https://www.formalms.org
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ *
+ * from docebo 4.0.5 CE 2008-2012 (c) docebo
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ */
 
+defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 class FilterInput
 {
@@ -9,7 +20,7 @@ class FilterInput
     /**
      * @var HTMLPurifier
      */
-    protected $htmlpurifier = NULL;
+    protected $htmlpurifier = null;
 
     protected $use_xss_clean = true;
 
@@ -26,47 +37,37 @@ class FilterInput
      * @copyright  (c) 2007-2008 Kohana Team
      * @license    http://kohanaphp.com/license.html
      */
-
     public function sanitize()
     {
         // load the tool that we want to use in the xss filtering process
         $this->loadTool();
 
         if (is_array($_GET) and count($_GET) > 0) {
-
             $_GET = $this->clean_input_data($_GET);
         }
         if (is_array($_POST) and count($_POST) > 0) {
-
             $_POST = $this->clean_input_data($_POST);
         }
         if (is_array($_COOKIE) and count($_COOKIE) > 0) {
-
             $_COOKIE = $this->clean_input_data($_COOKIE);
         }
         if (is_array($_FILES) and count($_FILES) > 0) {
-
             //$_FILES = $this->clean_input_data($_FILES, true);
         }
 
-        $_SERVER["REQUEST_URI"] = html_entity_decode($this->clean_input_data(urldecode($_SERVER["REQUEST_URI"])));
-        $_SERVER["QUERY_STRING"] = html_entity_decode($this->clean_input_data(urldecode($_SERVER["QUERY_STRING"])));
+        $_SERVER['REQUEST_URI'] = html_entity_decode($this->clean_input_data(urldecode($_SERVER['REQUEST_URI'])));
+        $_SERVER['QUERY_STRING'] = html_entity_decode($this->clean_input_data(urldecode($_SERVER['QUERY_STRING'])));
     }
-
 
     protected function loadTool()
     {
         // load the tool that we want to use in the xss filtering process
         switch ($this->tool) {
-            case "none" :
-                {
-
+            case 'none' :
                     //only used for a god admin
-                };
+                ;
                 break;
-            case "htmlpurifier" :
-                {
-
+            case 'htmlpurifier' :
                     //htmlpurifier  is the best class in order to clean and validate the user input
                     //his major drawback is that it requires a lot of resource to operate, so is better
                     //to use it only if really needed
@@ -92,19 +93,15 @@ class FilterInput
                     $config->set('HTML.TidyLevel', 'none');
                     $config->set('Cache.SerializerPath', _files_ . '/cache/twig');
                     $this->htmlpurifier = new HTMLPurifier($config);
-                };
+                ;
                 break;
             case 'htmlawed' :
-                {
-
                     //another class aganist xss
                     require_once _base_ . '/addons/htmlawed/htmlawed.php';
-                };
+                ;
                 break;
             case 'kses' :
             default:
-                {
-
                     if ($this->getWhitelist('tag')) {
                         foreach ($this->getWhitelist('tag') as $val) {
                             if (!isset($GLOBALS['allowed_html'][$val])) {
@@ -121,14 +118,14 @@ class FilterInput
                             $GLOBALS['allowed_html'][$tag][$attrib] = [];
                         }
                     }
-                };
+                ;
                 break;
         }
     }
 
-
     /**
-     * Append items (tag or attributes) to the session whitelist
+     * Append items (tag or attributes) to the session whitelist.
+     *
      * @param <array> $items ('tag'=>array(), 'attrib'=>array())
      */
     public function appendToWhitelist($items)
@@ -141,16 +138,15 @@ class FilterInput
         }
     }
 
-
     public function getWhitelist($item_type)
     {
         $res = [];
         if (!empty($this->session_whitelist[$item_type])) {
             $res = $this->session_whitelist[$item_type];
         }
+
         return $res;
     }
-
 
     protected function getHtmlPurifierDefaultElements()
     {
@@ -163,7 +159,6 @@ class FilterInput
 
         return $res;
     }
-
 
     protected function getHtmlPurifierDefaultAttributes()
     {
@@ -182,9 +177,9 @@ class FilterInput
         return $res;
     }
 
-
     /**
      * @param array $data
+     *
      * @return array
      */
     public function clean($data)
@@ -195,27 +190,27 @@ class FilterInput
         return $this->clean_input_data($data);
     }
 
-
     /**
      * This is a helper function. It escapes data and standardizes newline characters to '\n'.
      *
      * @param unknown_type  string to clean
-     * @return  string
+     *
+     * @return string
      */
     protected function clean_input_data($str, $is_files_arr = false)
     {
-
         if (is_array($str)) {
             $new_array = [];
             foreach ($str as $key => $val) {
-                if (!$is_files_arr || $key == 'tmp_name'){
+                if (!$is_files_arr || $key == 'tmp_name') {
                     $new_array[$this->clean_input_keys($key)] = $this->clean_input_data($val);
                 }
             }
+
             return $new_array;
         }
 
-        if ($this->use_xss_clean === TRUE) {
+        if ($this->use_xss_clean === true) {
             $str = $this->xss_clean($str);
         }
 
@@ -232,7 +227,8 @@ class FilterInput
      * only named with alpha-numeric text and a few other items.
      *
      * @param string  string to clean
-     * @return  string
+     *
+     * @return string
      */
     protected function clean_input_keys($str)
     {
@@ -246,11 +242,11 @@ class FilterInput
 
     public function xss_clean($data)
     {
-
         if (is_array($data)) {
             foreach ($data as $key => $val) {
                 $data[$key] = $this->xss_clean($val);
             }
+
             return $data;
         }
 
@@ -258,32 +254,27 @@ class FilterInput
         $string = $data;
 
         // Do not clean empty strings
-        if (trim($string) == '')
+        if (trim($string) == '') {
             return $string;
+        }
 
         switch ($this->tool) {
-            case "none" :
-                {
-
+            case 'none':
                     // Only used for a god admin
-                };
+                ;
                 break;
-            case 'htmlpurifier' :
-                {
+            case 'htmlpurifier':
                     // Run HTMLPurifier
                     $string = $this->htmlpurifier->purify($string);
-                };
+                ;
                 break;
-            case 'htmlawed' :
-                {
-
+            case 'htmlawed':
                     // Run htmLawed
                     $string = htmlawed($string, ['safe' => 1]);
-                };
+                ;
                 break;
-            case 'kses' :
-            default :
-                {
+            case 'kses':
+            default:
                     $allowedProtocols = ['http', 'https', 'ftp', 'mailto', 'color', 'background-color'];
                     // Run htmLawed
                     $config = HTMLPurifier_Config::createDefault();
@@ -301,18 +292,15 @@ class FilterInput
                         $config->set('URI.AllowedSchemes', $allowedProtocols);
                     }
                     $purifier = new HTMLPurifier($config);
-                    $string =  $purifier->purify($string);
-                }
+                    $string = $purifier->purify($string);
+
                 break;
         }
 
         return $string;
     }
 
-    /**
+    /*
      * End of khoana like functions.
      */
-
 }
-
-?>

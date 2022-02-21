@@ -1,14 +1,25 @@
 <?php
 
+/*
+ * FORMA - The E-Learning Suite
+ *
+ * Copyright (c) 2013-2022 (Forma)
+ * https://www.formalms.org
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ *
+ * from docebo 4.0.5 CE 2008-2012 (c) docebo
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ */
+
 class ReportLms extends Model
 {
     /**
-     * @var integer
+     * @var int
      */
     protected $idReport;
 
     /**
-     * @var integer
+     * @var int
      */
     protected $idCourse;
 
@@ -18,27 +29,27 @@ class ReportLms extends Model
     protected $title;
 
     /**
-     * @var integer
+     * @var int
      */
     protected $maxScore;
 
     /**
-     * @var integer
+     * @var int
      */
     protected $requiredScore;
 
     /**
-     * @var integer
+     * @var int
      */
     protected $weight;
 
     /**
-     * @var boolean
+     * @var bool
      */
     protected $showToUser;
 
     /**
-     * @var boolean
+     * @var bool
      */
     protected $useForFinal;
 
@@ -48,12 +59,12 @@ class ReportLms extends Model
     protected $sourceOf;
 
     /**
-     * @var integer
+     * @var int
      */
     protected $sequence;
 
     /**
-     * @var integer
+     * @var int
      */
     protected $idSource;
 
@@ -64,9 +75,9 @@ class ReportLms extends Model
 
     public function __construct($id_report = null, $title = '', $max_score = true, $required_score = true, $weight = true, $show_to_user = false, $use_for_final = false, $source_of = '', $id_source = 0, $show_in_detail = true)
     {
-        if ($id_report !== NULL) {
-            $query_report = "SELECT id_report,id_course, title, max_score, required_score, weight, show_to_user, use_for_final, source_of, id_source, show_in_detail
-                        FROM " . $GLOBALS['prefix_lms'] . "_coursereport
+        if ($id_report !== null) {
+            $query_report = 'SELECT id_report,id_course, title, max_score, required_score, weight, show_to_user, use_for_final, source_of, id_source, show_in_detail
+                        FROM ' . $GLOBALS['prefix_lms'] . "_coursereport
 	                    WHERE id_report = '" . $id_report . "'";
 
             $res = sql_query($query_report);
@@ -129,11 +140,13 @@ class ReportLms extends Model
 
     /**
      * @param int $idCourse
+     *
      * @return ReportLms
      */
     public function setIdCourse($idCourse)
     {
         $this->idCourse = $idCourse;
+
         return $this;
     }
 
@@ -202,7 +215,7 @@ class ReportLms extends Model
     }
 
     /**
-     * @param boolean $showToUser
+     * @param bool $showToUser
      */
     public function setShowToUser($showToUser)
     {
@@ -210,7 +223,7 @@ class ReportLms extends Model
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isShowToUser()
     {
@@ -222,11 +235,11 @@ class ReportLms extends Model
      */
     public function isShowToUserToString()
     {
-        return ($this->useForFinal ? 'true' : 'false');
+        return $this->useForFinal ? 'true' : 'false';
     }
 
     /**
-     * @param boolean $useForFinal
+     * @param bool $useForFinal
      */
     public function setUseForFinal($useForFinal)
     {
@@ -234,7 +247,7 @@ class ReportLms extends Model
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isUseForFinal()
     {
@@ -246,7 +259,7 @@ class ReportLms extends Model
      */
     public function isUseForFinalToString()
     {
-        return ($this->useForFinal ? 'true' : 'false');
+        return $this->useForFinal ? 'true' : 'false';
     }
 
     /**
@@ -307,11 +320,13 @@ class ReportLms extends Model
 
     /**
      * @param bool $showInDetail
+     *
      * @return ReportLms
      */
     public function setShowInDetail($showInDetail)
     {
         $this->showInDetail = $showInDetail;
+
         return $this;
     }
 
@@ -321,9 +336,10 @@ class ReportLms extends Model
 
         $res = sql_query($query_report);
 
-        if ($res){
+        if ($res) {
             return true;
         }
+
         return false;
     }
 }

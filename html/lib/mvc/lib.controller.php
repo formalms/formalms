@@ -1,32 +1,43 @@
-<?php defined("IN_FORMA") or die('Direct access is forbidden.');
+<?php
 
+/*
+ * FORMA - The E-Learning Suite
+ *
+ * Copyright (c) 2013-2022 (Forma)
+ * https://www.formalms.org
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ *
+ * from docebo 4.0.5 CE 2008-2012 (c) docebo
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ */
 
+defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 class Controller
 {
-
     protected $_mvc_name = 'controller';
 
     protected $_default_action = 'show';
 
     public function __construct($mvc_name = '')
     {
-
         $this->_mvc_name = $mvc_name;
 
         $this->init();
     }
 
     /**
-     * Initialize the istance of the controller, this method will be called from the constructor
+     * Initialize the istance of the controller, this method will be called from the constructor.
      */
     public function init()
     {
     }
 
     /**
-     * This method can be used in order to modify the standard task requested to the mvc
+     * This method can be used in order to modify the standard task requested to the mvc.
+     *
      * @param string $task the task requested
+     *
      * @return string the resulted task
      */
     public function parseTask($task)
@@ -37,12 +48,12 @@ class Controller
     /**
      * This method will be automatically called the index.php or ajax server and will try to call the requested action that need to be performed.
      * Before this method call the main script will empty the php bugger (ob_*) and will retrive all the information echoed reading it with
-     * a ob_get_clean() call, so if you need to reuse or reset the content printed you can read or clean the ob_* buffer
+     * a ob_get_clean() call, so if you need to reuse or reset the content printed you can read or clean the ob_* buffer.
+     *
      * @param string $task the task that must be performed
      */
     public function request($task = false)
     {
-
         $task = $this->parseTask($task);
 
         if ($task != false && method_exists($this, $task)) {
@@ -57,41 +68,40 @@ class Controller
     }
 
     /**
-     * This method will return the absolute path for the view inclusions
+     * This method will return the absolute path for the view inclusions.
+     *
      * @return string the absolute path to the view's files
      */
     public function viewPath()
     {
-
         return _base_ . '/views';
     }
 
     /**
-     * This method will render a specific view for this mvc
-     * @param string $view_name the name of the view, must be equal to a php file inside the view folder for this mvc without the .php extension
-     * @param array $data_for_view an array of data that will be passed to the view.
-     * @param bool $return if true the rendering will be returned instead of printed as an echo
-     * The view php scope will be the controller ($this) but you can pass data that will be extracted into the view scope. For example if you pass
-     * array(
-     *        'bar' => 'foo'
-     * ) you will have a $bar var inside the view with the value setted to 'foo'
+     * This method will render a specific view for this mvc.
+     *
+     * @param string $view_name     the name of the view, must be equal to a php file inside the view folder for this mvc without the .php extension
+     * @param array  $data_for_view an array of data that will be passed to the view
+     * @param bool   $return        if true the rendering will be returned instead of printed as an echo
+     *                              The view php scope will be the controller ($this) but you can pass data that will be extracted into the view scope. For example if you pass
+     *                              array(
+     *                              'bar' => 'foo'
+     *                              ) you will have a $bar var inside the view with the value setted to 'foo'
      */
     public function render($view_name, $data_for_view = false, $return = false, $morePaths = [])
     {
-
         if (is_array($data_for_view)) {
             extract($data_for_view, EXTR_SKIP);
         }
 
         $paths = $morePaths;
         $extensions = [];
-        if (method_exists($this, "templatePath")) {
+        if (method_exists($this, 'templatePath')) {
             $paths[] = $this->templatePath();
         }
         $paths[] = $this->viewPath();
 
         $tplengine = Get::cfg('template_engine', []);
-
 
         foreach ($tplengine as $tplkey => $tpleng) {
             if (isset($tplengine[$tplkey]['ext']) && !is_array($tplengine[$tplkey]['ext'])) {
@@ -100,19 +110,17 @@ class Controller
             $extensions[$tplkey] = $tplengine[$tplkey]['ext'];
         }
 
-
-        if (isset($extensions['twig']) && !in_array(".html.twig", $extensions['twig'])) {
+        if (isset($extensions['twig']) && !in_array('.html.twig', $extensions['twig'])) {
             $extensions['twig'][] = '.html.twig';
         } else {
             $extensions['twig'] = ['.html.twig'];
         }
 
-        $extensions['php'] = [".php"];
+        $extensions['php'] = ['.php'];
 
-
-        $extension = "";
-        $path = "";
-        $tplkey = "";
+        $extension = '';
+        $path = '';
+        $tplkey = '';
         foreach ($paths as $p) {
             foreach ($extensions as $k => $e) {
                 foreach ($e as $ext_string) {
@@ -124,16 +132,20 @@ class Controller
                         break;
                     }
                 }
-                if ($extension != "") break;
+                if ($extension != '') {
+                    break;
+                }
             }
-            if ($extension != "") break;
+            if ($extension != '') {
+                break;
+            }
         }
 
         switch ($tplkey) {
-            case "php":
-                include(Forma::inc($path . '/' . $this->_mvc_name . '/' . $view_name . $extension));
+            case 'php':
+                include Forma::inc($path . '/' . $this->_mvc_name . '/' . $view_name . $extension);
                 break;
-            case "twig":
+            case 'twig':
                 $path = Forma::inc($path . '/' . $this->_mvc_name . '/' . $view_name . $extension);
                 $view_path = dirname($path);
 
@@ -144,29 +156,31 @@ class Controller
                 break;
             default:
                 //die( 'FILENOTFOUND');
-                include(Forma::inc($this->viewPath() . '/' . $this->_mvc_name . '/' . $view_name . $extension));
+                include Forma::inc($this->viewPath() . '/' . $this->_mvc_name . '/' . $view_name . $extension);
                 break;
         }
 
         if ($return) {
             $content = ob_get_contents();
             @ob_clean();
+
             return $content;
         }
     }
 
     /**
      * This method will manage a widget (find them in the widget/ folder), the $widget_name must ber a valid widget name
-     *  (a folder name inside the widget/ folder for example), the widget class will be automatically istanced with the params setted
+     *  (a folder name inside the widget/ folder for example), the widget class will be automatically istanced with the params setted.
+     *
      * @param string $widget_name the widget name
-     * @param array $params the params that wil be passed to the widget
+     * @param array  $params      the params that wil be passed to the widget
+     *
      * @return Widget the widget instance
      */
     public static function widget($widget_name, $params = null)
     {
-
         $widget_name = strtolower($widget_name);
-        require_once(_base_ . '/widget/' . $widget_name . '/lib.' . $widget_name . '.php');
+        require_once _base_ . '/widget/' . $widget_name . '/lib.' . $widget_name . '.php';
 
         $widget_class = ucfirst($widget_name . 'Widget');
         // Instantiate the widget class
@@ -188,7 +202,7 @@ class Controller
     public function beginWidget($widget_name, $params = null)
     {
         $widget_name = strtolower($widget_name);
-        require_once(_base_ . '/widget/' . $widget_name . '/lib.' . $widget_name . '.php');
+        require_once _base_ . '/widget/' . $widget_name . '/lib.' . $widget_name . '.php';
 
         $widget_class = ucfirst($widget_name . 'Widget');
         // Instantiate the widget class
@@ -204,6 +218,4 @@ class Controller
         // Return the widget for further use
         return $widget_obj;
     }
-
 }
-

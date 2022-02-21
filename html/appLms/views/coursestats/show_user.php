@@ -2,10 +2,10 @@
 
 include Forma::inc(_lib_ . '/formatable/include.php');
 
-  $rel_actions = '<a href="index.php?r=coursestats/export_csv2&id_user='.$id_user.'" class="ico-wt-sprite subs_csv" title="'.Lang::t('_EXPORT_CSV', 'report').'">'
-          .'<span>'.Lang::t('_EXPORT_CSV', 'report').'</span></a>';
-  $rel_actions .= '<a href="index.php?r=coursestats/export_xls2&id_user='.$id_user.'" class="ico-wt-sprite subs_xls" title="'.Lang::t('_EXPORT_XLS', 'report').'">'
-          .'<span>'.Lang::t('_EXPORT_XLS', 'report').'</span></a>';
+  $rel_actions = '<a href="index.php?r=coursestats/export_csv2&id_user=' . $id_user . '" class="ico-wt-sprite subs_csv" title="' . Lang::t('_EXPORT_CSV', 'report') . '">'
+          . '<span>' . Lang::t('_EXPORT_CSV', 'report') . '</span></a>';
+  $rel_actions .= '<a href="index.php?r=coursestats/export_xls2&id_user=' . $id_user . '" class="ico-wt-sprite subs_xls" title="' . Lang::t('_EXPORT_XLS', 'report') . '">'
+          . '<span>' . Lang::t('_EXPORT_XLS', 'report') . '</span></a>';
 ?>
 <style type="text/css">
   table.dataTable {
@@ -18,24 +18,24 @@ include Forma::inc(_lib_ . '/formatable/include.php');
 <div class="std_block">
   <table style="width:100%">
     <tr>
-      <td colspan="1"><?php echo '<b>'.Lang::t('_USERNAME', 'standard').'</b>: '.$info->userid; ?></td>
-      <td colspan="2"><?php echo '<b>'.Lang::t('_NAME', 'standard').'</b>: '.$info->firstname.' '.$info->lastname; ?></td>
+      <td colspan="1"><?php echo '<b>' . Lang::t('_USERNAME', 'standard') . '</b>: ' . $info->userid; ?></td>
+      <td colspan="2"><?php echo '<b>' . Lang::t('_NAME', 'standard') . '</b>: ' . $info->firstname . ' ' . $info->lastname; ?></td>
     </tr>
     <tr>
-      <td><?php echo '<b>'.Lang::t('_STATUS', 'course').'</b>: '.$info->course_status; ?></td>
-      <td><?php echo '<b>'.Lang::t('_DATE_FIRST_ACCESS', 'course').'</b>: '.$info->first_access; ?></td>
-      <td><?php echo '<b>'.Lang::t('_COMPLETED', 'course').'</b>: '.$info->date_complete; ?></td>
+      <td><?php echo '<b>' . Lang::t('_STATUS', 'course') . '</b>: ' . $info->course_status; ?></td>
+      <td><?php echo '<b>' . Lang::t('_DATE_FIRST_ACCESS', 'course') . '</b>: ' . $info->first_access; ?></td>
+      <td><?php echo '<b>' . Lang::t('_COMPLETED', 'course') . '</b>: ' . $info->date_complete; ?></td>
     </tr>
   </table>
 
   <br><?php
-  echo $rel_actions;?>
+  echo $rel_actions; ?>
   <br><br>
 
   <table class="table table-striped table-bordered display" style="width:100%" id="coursestats"></table>
 
   <br><?php
-  echo $rel_actions;?>
+  echo $rel_actions; ?>
   <br><br>
 <?php
   echo getBackUi($base_url, Lang::t('_BACK', 'standard'));
@@ -64,13 +64,13 @@ $(function() {
                 edit: {
                     type: 'select',
                     options: {
-                        'failed': '<?php echo Lang::t('failed', 'standard');?>',
-                        'incomplete': '<?php echo Lang::t('incomplete', 'standard');?>',
-                        'not attempted': '<?php echo Lang::t('not_attempted', 'standard');?>',
-                        'attempted': '<?php echo Lang::t('attempted', 'standard');?>',
-                        'ab-initio': '<?php echo Lang::t('ab-initio', 'standard');?>',
-                        'completed': '<?php echo Lang::t('completed', 'standard');?>',
-                        'passed': '<?php echo Lang::t('passed', 'standard');?>'
+                        'failed': '<?php echo Lang::t('failed', 'standard'); ?>',
+                        'incomplete': '<?php echo Lang::t('incomplete', 'standard'); ?>',
+                        'not attempted': '<?php echo Lang::t('not_attempted', 'standard'); ?>',
+                        'attempted': '<?php echo Lang::t('attempted', 'standard'); ?>',
+                        'ab-initio': '<?php echo Lang::t('ab-initio', 'standard'); ?>',
+                        'completed': '<?php echo Lang::t('completed', 'standard'); ?>',
+                        'passed': '<?php echo Lang::t('passed', 'standard'); ?>'
                     }
                 } },
             { data: 'first_access', title: '<?php echo Lang::t('_DATE_FIRST_ACCESS', ''); ?>', sortable: true, edit: { type: 'date' } },
@@ -80,7 +80,7 @@ $(function() {
             { data: 'score', title: '<?php echo Lang::t('_SCORE', 'standard'); ?>', sortable: true } 
         ],
         ajax: {
-            url: "ajax.server.php?r=coursestats/getusertabledata&id_user=<?php echo $id_user;?>",
+            url: "ajax.server.php?r=coursestats/getusertabledata&id_user=<?php echo $id_user; ?>",
             type: "GET"
         },
         order: [[ 1, "asc" ]],
@@ -88,8 +88,8 @@ $(function() {
             url: "ajax.server.php?r=coursestats/user_inline_editor",
             type: "POST",
             data: {
-                id_user: <?php echo $id_user;?>,
-                id_course: <?php echo $id_course;?>
+                id_user: <?php echo $id_user; ?>,
+                id_course: <?php echo $id_course; ?>
             },
             id: 'id_lo'
         }

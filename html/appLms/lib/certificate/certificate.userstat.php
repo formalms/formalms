@@ -1,13 +1,23 @@
-<?php defined('IN_FORMA') or die('Direct access is forbidden.');
+<?php
 
+/*
+ * FORMA - The E-Learning Suite
+ *
+ * Copyright (c) 2013-2022 (Forma)
+ * https://www.formalms.org
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ *
+ * from docebo 4.0.5 CE 2008-2012 (c) docebo
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ */
 
+defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-require_once(dirname(__FILE__) . '/certificate.base.php');
+require_once dirname(__FILE__) . '/certificate.base.php';
 
 class CertificateSubs_UserStat extends CertificateSubstitution
 {
-
-    function getSubstitutionTags()
+    public function getSubstitutionTags()
     {
         $subs = [];
         if ($this->id_meta != 0) {
@@ -16,7 +26,7 @@ class CertificateSubs_UserStat extends CertificateSubstitution
             $subs['[meta_complete]'] = Lang::t('_META_COMPLETE', 'certificate');
             $subs['[meta_inscr]'] = Lang::t('_META_INSCR', 'certificate');
             $subs['[meta_access]'] = Lang::t('_META_ACCESS', 'certificate');
-            //$subs['[meta_level]'] = Lang::t('_LEVEL','certificate');
+        //$subs['[meta_level]'] = Lang::t('_LEVEL','certificate');
         } else {
             $subs['[user_level]'] = Lang::t('_LEVEL', 'certificate');
             $subs['[date_enroll]'] = Lang::t('_DATE_ENROLL', 'certificate');
@@ -36,25 +46,24 @@ class CertificateSubs_UserStat extends CertificateSubstitution
             $subs['[meta_assoc]'] = Lang::t('_META_ASSOC', 'certificate');
             $subs['[course_scorm_items]'] = Lang::t('_SCORM_ITEMS', 'certificate');
         }
+
         return $subs;
     }
 
-    function getSubstitution()
+    public function getSubstitution()
     {
-
         $subs = [];
 
         if ($this->id_meta != 0) {
-            require_once($GLOBALS['where_lms'] . '/lib/lib.course.php');
-            require_once($GLOBALS['where_lms'] . '/lib/lib.coursereport.php');
-            require_once($GLOBALS['where_lms'] . '/lib/lib.aggregated_certificate.php');
+            require_once $GLOBALS['where_lms'] . '/lib/lib.course.php';
+            require_once $GLOBALS['where_lms'] . '/lib/lib.coursereport.php';
+            require_once $GLOBALS['where_lms'] . '/lib/lib.aggregated_certificate.php';
 
             $aggCertLib = new AggregatedCertificate();
 
-
             $array_coursetype = ['elearning' => Lang::t('_COURSE_TYPE_ELEARNING', 'course', 'lms'),
                 'classroom' => Lang::t('_CLASSROOM', 'course', 'lms'),
-                'web_seminar' => Lang::t('Web seminar')];
+                'web_seminar' => Lang::t('Web seminar'), ];
 
             $course_time = 0;
             $blended_time = 0;
@@ -76,13 +85,13 @@ class CertificateSubs_UserStat extends CertificateSubstitution
                         . '<tbody>';
 
                     $path = $aggCertLib->getIdsCoursePath($this->id_meta, $this->id_user);
-                    require_once($GLOBALS['where_lms'] . '/lib/lib.coursepath.php');
+                    require_once $GLOBALS['where_lms'] . '/lib/lib.coursepath.php';
                     $coursePath_man = new CoursePath_Manager();
                     foreach ($path as $id_path) {
                         $courses = $coursePath_man->getAllCourses($id_path);
                         $courses_path_time = 0;
                         foreach ($courses as $id_course) {
-                            $query = 'SELECT date_complete, date_inscr, date_first_access FROM %lms_courseuser WHERE idCourse = \''.$id_course .'\' AND idUser = \''. $this->id_user .'\'';
+                            $query = 'SELECT date_complete, date_inscr, date_first_access FROM %lms_courseuser WHERE idCourse = \'' . $id_course . '\' AND idUser = \'' . $this->id_user . '\'';
 
                             list($date_complete_meta, $date_inscr_meta, $date_access_meta) = sql_fetch_row(sql_query($query));
 
@@ -105,7 +114,6 @@ class CertificateSubs_UserStat extends CertificateSubstitution
                             . '<td>' . $info_path['path_name'] . '</td>'
                             . '<td align="center">' . $courses_path_time . '</td>'
                             . '</tr>';
-
                     }
                     $table_blended .= '<tr>'
                         . '<td>' . Lang::t('_TOTAL_TIME') . '</td>'
@@ -127,7 +135,7 @@ class CertificateSubs_UserStat extends CertificateSubstitution
                         . '<tbody>';
                     $courses = $aggCertLib->getIdsCourse($this->id_meta, $this->id_user);
                     foreach ($courses as $id_course) {
-                        $query = sprintf("SELECT date_complete, date_inscr, date_first_access, level FROM %s WHERE idCourse = '%s' AND idUser = '%s'",'%lms_courseuser', $id_course, $this->id_user);
+                        $query = sprintf("SELECT date_complete, date_inscr, date_first_access, level FROM %s WHERE idCourse = '%s' AND idUser = '%s'", '%lms_courseuser', $id_course, $this->id_user);
 
                         list($date_complete_meta, $date_inscr_meta, $date_access_meta, $level) = sql_fetch_row(sql_query($query));
 
@@ -152,7 +160,7 @@ class CertificateSubs_UserStat extends CertificateSubstitution
                         $subs['[course_scorm_items]'] .= $this->getSubstitutionScormItems($id_course, $this->id_user);
                     }
                     $table_course .= '<tr>'
-                        . '<td align="right" style="font-size: 14px;">' . Lang::t('_TOTAL_TIME','report') . '</td>'
+                        . '<td align="right" style="font-size: 14px;">' . Lang::t('_TOTAL_TIME', 'report') . '</td>'
                         . '<td align="right" style="font-size: 14px;">' . $course_time . '</td>'
                         . '</tr>'
                         . '</tbody>'
@@ -170,7 +178,6 @@ class CertificateSubs_UserStat extends CertificateSubstitution
             sort($array_meta_inscr);
             sort($array_meta_access);
 
-
             $subs['[meta_complete]'] = Format::date($array_meta_complete[0], 'date');
             $subs['[meta_inscr]'] = Format::date($array_meta_inscr[0], 'date');
             $subs['[meta_access]'] = Format::date($array_meta_access[0], 'date');
@@ -181,15 +188,13 @@ class CertificateSubs_UserStat extends CertificateSubstitution
             $q = sql_query($sql);
             $meta = sql_fetch_object($q);
             $subs['[meta_assoc]'] = $meta->title;
-
         } else {
-            require_once($GLOBALS['where_lms'] . '/lib/lib.course.php');
+            require_once $GLOBALS['where_lms'] . '/lib/lib.course.php';
 
             $courseuser = new Man_CourseUser();
-            $course_stat =& $courseuser->getUserCourses($this->id_user, false, false, false, [$this->id_course]);
+            $course_stat = &$courseuser->getUserCourses($this->id_user, false, false, false, [$this->id_course]);
 
             if (isset($course_stat[$this->id_course])) {
-
                 $subs['[date_enroll]'] = Format::date($course_stat[$this->id_course]['date_inscr'], 'date');
                 $subs['[date_first_access]'] = Format::date($course_stat[$this->id_course]['date_first_access'], 'date');
                 $subs['[date_complete]'] = Format::date($course_stat[$this->id_course]['date_complete'], 'date');
@@ -197,7 +202,6 @@ class CertificateSubs_UserStat extends CertificateSubstitution
 
                 $subs['[user_level]'] = Lang::t('_LEVEL_' . $course_stat[$this->id_course]['level'], 'levels');
             } else {
-
                 $subs['[date_enroll]'] = '';
                 $subs['[date_first_access]'] = '';
                 $subs['[date_complete]'] = '';
@@ -205,18 +209,16 @@ class CertificateSubs_UserStat extends CertificateSubstitution
                 $subs['[user_level]'] = '';
             }
 
-            require_once($GLOBALS['where_lms'] . '/lib/lib.orgchart.php');
+            require_once $GLOBALS['where_lms'] . '/lib/lib.orgchart.php';
             $org_man = new OrganizationManagement($this->id_course);
 
             $score_start = $org_man->getStartObjectScore([$this->id_user], [$this->id_course]);
             $score_final = $org_man->getFinalObjectScore([$this->id_user], [$this->id_course]);
 
-
-            require_once($GLOBALS['where_lms'] . '/lib/lib.coursereport.php');
+            require_once $GLOBALS['where_lms'] . '/lib/lib.coursereport.php';
             $rep_man = new CourseReportManager();
 
             $score_course = $rep_man->getUserFinalScore([$this->id_user], [$this->id_course]);
-
 
             $subs['[test_score_start]'] = (isset($score_start[$this->id_course][$this->id_user]) ? $score_start[$this->id_course][$this->id_user]['score'] : '');
             $subs['[test_score_start_max]'] = (isset($score_start[$this->id_course][$this->id_user]) ? $score_start[$this->id_course][$this->id_user]['max_score'] : '');
@@ -228,14 +230,18 @@ class CertificateSubs_UserStat extends CertificateSubstitution
             $subs['[course_score_final]'] = (isset($score_course[$this->id_user][$this->id_course]) ? $score_course[$this->id_user][$this->id_course]['score'] : '');
             $subs['[course_score_final_max]'] = (isset($score_course[$this->id_user][$this->id_course]) ? $score_course[$this->id_user][$this->id_course]['max_score'] : '');
 
-            require_once($GLOBALS['where_lms'] . '/lib/lib.track_user.php');
+            require_once $GLOBALS['where_lms'] . '/lib/lib.track_user.php';
             $time_in = TrackUser::getUserTotalCourseTime($this->id_user, $this->id_course);
 
-            $hours = (int)($time_in / 3600);
-            $minutes = (int)(($time_in % 3600) / 60);
-            $seconds = (int)($time_in % 60);
-            if ($minutes < 10) $minutes = '0' . $minutes;
-            if ($seconds < 10) $seconds = '0' . $seconds;
+            $hours = (int) ($time_in / 3600);
+            $minutes = (int) (($time_in % 3600) / 60);
+            $seconds = (int) ($time_in % 60);
+            if ($minutes < 10) {
+                $minutes = '0' . $minutes;
+            }
+            if ($seconds < 10) {
+                $seconds = '0' . $seconds;
+            }
 
             $subs['[total_time]'] = $hours . 'h ' . $minutes . 'm ' . $seconds . 's';
             $subs['[total_time_hour]'] = $hours;
@@ -250,7 +256,6 @@ class CertificateSubs_UserStat extends CertificateSubstitution
 
     public function getSubstitutionScormItems($idUser, $idCourse)
     {
-
         $courseReportModel = new CoursereportLms($idCourse);
 
         $scormItemsTable = '<table width="100%" cellspacing="1" cellpadding="1" border="1" align="">'
@@ -263,7 +268,6 @@ class CertificateSubs_UserStat extends CertificateSubstitution
             . '<tbody>';
 
         foreach ($courseReportModel->getReportsFilteredBySourceOf(CoursereportLms::SOURCE_OF_SCOITEM) as $info_report) {
-
             $name = strip_tags($info_report->getTitle());
             $scormItem = new ScormLms($info_report->getIdSource(), $idUser);
 
@@ -272,7 +276,6 @@ class CertificateSubs_UserStat extends CertificateSubstitution
                 . '<td>' . $name . '</td>'
                 . '<td>' . $userScore . '</td>'
                 . '</tr>';
-
         }
 
         $scormItemsTable .= '</tbody>'
@@ -280,5 +283,4 @@ class CertificateSubs_UserStat extends CertificateSubstitution
 
         return $scormItemsTable;
     }
-
 }

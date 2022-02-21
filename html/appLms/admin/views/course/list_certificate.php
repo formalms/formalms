@@ -14,57 +14,53 @@ thead input {
 
 <?php
 
+require_once Forma::inc(_lms_ . '/lib/lib.subscribe.php');
+require_once Forma::inc(_lib_ . '/formatable/include.php');
 
-require_once(Forma::inc(_lms_.'/lib/lib.subscribe.php'));
-require_once(Forma::inc(_lib_ . '/formatable/include.php'));
+Util::get_js('../addons/jquery/datatables/Buttons-1.5.4/js/buttons.colVis.min.js', true, true);
+Util::get_js('../appLms/admin/modules/certificate/certificate.js', true, true);
 
-Util::get_js('../addons/jquery/datatables/Buttons-1.5.4/js/buttons.colVis.min.js',true, true);
-Util::get_js('../appLms/admin/modules/certificate/certificate.js',true, true);
+$vars = 'var ajax_url="ajax.adm_server.php?plf=lms&mn=certificate"; var _CLOSE="' . Lang::t('_CLOSE') . '"; var _STOP="' . Lang::t('_STOP') . '"; '
+    . 'var glob_id_certificate = 0, glob_id_course = ' . (int) $id_course . ';'
+    . 'var single_list = [' . (count($downloadables) ? '"' . implode('","', $downloadables) . '"' : '') . ']; '
+    . 'var reload_url = "' . str_replace('&amp;', '&', (isset(/*$form_url*/ $submit_url) ? /*$form_url*/ $submit_url : '')) . '", '
+    . '_ERROR_PARSE = "' . Lang::t('_OPERATION_FAILURE') . '", _SUCCESS = "' . Lang::t('_OPERATION_SUCCESSFUL') . '", '
+    . '_AREYOUSURE="' . Lang::t('_AREYOUSURE', 'standard') . '";';
+cout('<script type="text/javascript">' . $vars . '</script>', 'page_head');
 
-$vars = 'var ajax_url="ajax.adm_server.php?plf=lms&mn=certificate"; var _CLOSE="'.Lang::t('_CLOSE').'"; var _STOP="'.Lang::t('_STOP').'"; '
-    .'var glob_id_certificate = 0, glob_id_course = '.(int)$id_course.';'
-    .'var single_list = ['.(count($downloadables) ? '"'.implode('","', $downloadables).'"' : '').']; '
-    .'var reload_url = "'.str_replace('&amp;', '&', (isset(/*$form_url*/$submit_url) ? /*$form_url*/$submit_url : '')).'", '
-    .'_ERROR_PARSE = "'.Lang::t('_OPERATION_FAILURE').'", _SUCCESS = "'.Lang::t('_OPERATION_SUCCESSFUL').'", '
-    .'_AREYOUSURE="'.Lang::t('_AREYOUSURE', 'standard').'";';
-cout('<script type="text/javascript">'.$vars.'</script>',"page_head");
-    
-$back_label =  Lang::t('_CERTIFICATE_ASSIGN_STATUS', 'course');   
-    
+$back_label = Lang::t('_CERTIFICATE_ASSIGN_STATUS', 'course');
+
 echo getTitleArea([
-	'index.php?r=alms/course/show' => $back_label,
-	$course_name
+    'index.php?r=alms/course/show' => $back_label,
+    $course_name,
 ]);
 
-
   $print_button = '<div>'
-						.'<a id="print_selected_button_1" href="javascript:generate_all_certificate();">'
-							.Get::img('course/certificate.png', Lang::t('_GENERATE_ALL_SELECTED', 'certificate'))
-							.Lang::t('_GENERATE_ALL_SELECTED', 'certificate')
-						.'</a>'
-						.'&nbsp;&nbsp;&nbsp;'.
-						'<a id="download_selected_button_1" href="javascript:download_all_certificate();">'
-							.Get::img('course/certificate.png', Lang::t('_DOWNLOAD_ALL_SELECTED', 'certificate'))
-							.Lang::t('_DOWNLOAD_ALL_SELECTED', 'certificate')
-						.'</a>'
-				.'</div>';
+                        . '<a id="print_selected_button_1" href="javascript:generate_all_certificate();">'
+                            . Get::img('course/certificate.png', Lang::t('_GENERATE_ALL_SELECTED', 'certificate'))
+                            . Lang::t('_GENERATE_ALL_SELECTED', 'certificate')
+                        . '</a>'
+                        . '&nbsp;&nbsp;&nbsp;' .
+                        '<a id="download_selected_button_1" href="javascript:download_all_certificate();">'
+                            . Get::img('course/certificate.png', Lang::t('_DOWNLOAD_ALL_SELECTED', 'certificate'))
+                            . Lang::t('_DOWNLOAD_ALL_SELECTED', 'certificate')
+                        . '</a>'
+                . '</div>';
 
-  echo $print_button.'<br />';
+  echo $print_button . '<br />';
   echo "<div class='container-back'>";
-  switch  ($from) {
-      case "course":
-        echo "<a href='index.php?r=alms/course/certificate&amp;id_course=".$id_course."'>".Lang::t('_BACK', 'standard')."</a>";      
+  switch ($from) {
+      case 'course':
+        echo "<a href='index.php?r=alms/course/certificate&amp;id_course=" . $id_course . "'>" . Lang::t('_BACK', 'standard') . '</a>';
         break;
-      case "manage":
-        echo "<a href='index.php?modname=certificate&op=report_certificate&of_platform=lms&id_certificate=".$id_certificate."'>".Lang::t('_BACK', 'standard')."</a>";
+      case 'manage':
+        echo "<a href='index.php?modname=certificate&op=report_certificate&of_platform=lms&id_certificate=" . $id_certificate . "'>" . Lang::t('_BACK', 'standard') . '</a>';
         break;
       default:
-        echo "<a href='index.php?r=alms/course/show'>".Lang::t('_BACK', 'standard')."</a>";
+        echo "<a href='index.php?r=alms/course/show'>" . Lang::t('_BACK', 'standard') . '</a>';
   }
-  
-  echo "</div>"; 
- 
- 
+
+  echo '</div>';
 
 ?>
     
@@ -72,7 +68,7 @@ echo getTitleArea([
 <input type='hidden' id='sel_all' value='false'>
 
 <div class='std_block'>
-  <table id='table_certificate' data-id_course='<?= $id_course ?>' data-id_certificate='<?php echo $id_certificate ?>' class='table table-striped table-bordered' style='width:100%'></table>
+  <table id='table_certificate' data-id_course='<?php echo $id_course; ?>' data-id_certificate='<?php echo $id_certificate; ?>' class='table table-striped table-bordered' style='width:100%'></table>
   <script type="text/javascript">
     $.extend(jQuery.fn.dataTableExt.oSort, {
       "date-euro-pre": function(a) {
@@ -107,7 +103,7 @@ echo getTitleArea([
         return row.id_user + '-' + row.id_certificate;
       },
       deferRender: true,
-      data: <?php echo json_encode($data_certificate) ?>,
+      data: <?php echo json_encode($data_certificate); ?>,
       select: {
         style: 'multi',
         all: true
@@ -130,7 +126,7 @@ echo getTitleArea([
           data: 'edition',
           title: '<?php echo Lang::t('_EDITION', 'standard'); ?>',
           sortable: true,
-          visible: <?php echo (($course_type == 'classroom') ? 'true' : 'false') ?>
+          visible: <?php echo ($course_type == 'classroom') ? 'true' : 'false'; ?>
         },
         {
           data: 'username',
@@ -150,9 +146,9 @@ echo getTitleArea([
         <?php
         $hidden_fields_n = 6;
         foreach ($custom_fields as $key => $value) {
-          $hidden_fields_n++;
-          $hidden_fields_array[] = $hidden_fields_n;
-          echo "{data:'cf_$key', title:'" . addslashes($value) . "', sortable:true, visible: false}," . PHP_EOL;
+            ++$hidden_fields_n;
+            $hidden_fields_array[] = $hidden_fields_n;
+            echo "{data:'cf_$key', title:'" . addslashes($value) . "', sortable:true, visible: false}," . PHP_EOL;
         }
         ?> {
           data: 'status',
@@ -201,7 +197,7 @@ echo getTitleArea([
         }, // TBD converting to local time
         {
           data: 'cell_down_gen',
-          title: '<?php echo Get::sprite('subs_pdf', Lang::t('_TITLE_VIEW_CERT', 'certificate')) ?>',
+          title: '<?php echo Get::sprite('subs_pdf', Lang::t('_TITLE_VIEW_CERT', 'certificate')); ?>',
           sortable: true,
           searchable: false
         },
@@ -222,11 +218,11 @@ echo getTitleArea([
       stateSave: true,
       buttons: [{
           extend: 'colvis',
-          text: '<?= Lang::t('_CHANGEPOLICY', 'profile') ?>',
-          columns: '<?= implode(",", $hidden_fields_array) ?>',
+          text: '<?php echo Lang::t('_CHANGEPOLICY', 'profile'); ?>',
+          columns: '<?php echo implode(',', $hidden_fields_array); ?>',
         },
         {
-          text: '<?= Lang::t('_ADVANCED_SEARCH', 'standard') ?>',
+          text: '<?php echo Lang::t('_ADVANCED_SEARCH', 'standard'); ?>',
           action: function(e, dt, node, config) {
             cert_table.searchBar.show()
           }
@@ -246,14 +242,14 @@ echo getTitleArea([
 
       initDialogHref.call({
         elementsFilter: 'a[href*=del_report_certificate]',
-        title: '<?= Lang::t('_CONFIRM_DELETION') ?>',
-        okButton: '<?= Lang::t('_YES', 'standard') ?>',
-        cancelButton: '<?= Lang::t('_NO', 'standard') ?>',
+        title: '<?php echo Lang::t('_CONFIRM_DELETION'); ?>',
+        okButton: '<?php echo Lang::t('_YES', 'standard'); ?>',
+        cancelButton: '<?php echo Lang::t('_NO', 'standard'); ?>',
         composeBody: function(o) {
           if ((o.title).match(':')) return (o.title).replace(/:/, ':<b>') + '<b>'
           return o.title;
         },
-        authentication: '<?= Util::getSignature() ?>'
+        authentication: '<?php echo Util::getSignature(); ?>'
       })
       cert_table
     });
@@ -317,16 +313,11 @@ echo getTitleArea([
 
   <?php
 
-  require_once(_base_ . '/lib/lib.dialog.php');
+  require_once _base_ . '/lib/lib.dialog.php';
   setupHrefDialogBox('a[href*=del_report_certificate]', Lang::t('_CONFIRM_DELETION', 'iotask'), Lang::t('_YES', 'standard'), Lang::t('_NO', 'standard'));
-
-
-
 
   echo $print_button . '<br />';
 
-  echo "</div>";
-
-
+  echo '</div>';
 
   ?>

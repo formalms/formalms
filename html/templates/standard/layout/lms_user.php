@@ -38,22 +38,24 @@
 		<div id="header" class="layout_header">
 
 			<div class="user_panel">
-				<p><?php if (!Docebo::user()->isAnonymous()) echo '<b><span>'.Lang::t('_WELCOME', 'profile').', </span>'.Docebo::user()->getUserName().'</b>'; ?><br />
-					<?php echo Format::date(date("Y-m-d H:i:s")); ?><br />
+				<p><?php if (!Docebo::user()->isAnonymous()) {
+    echo '<b><span>' . Lang::t('_WELCOME', 'profile') . ', </span>' . Docebo::user()->getUserName() . '</b>';
+} ?><br />
+					<?php echo Format::date(date('Y-m-d H:i:s')); ?><br />
 					<span class="select-language"><?php echo Layout::change_lang(); ?></span>
 				</p>
-				<?php if (!Docebo::user()->isAnonymous()): ?>
+				<?php if (!Docebo::user()->isAnonymous()) { ?>
 				<ul>
 					<li><a class="identity" href="index.php?r=lms/profile/show">
 						<!-- <img src="<?php echo Layout::path(); ?>images/standard/identity.png" alt="" />&nbsp; -->
 						<span><?php echo Lang::t('_PROFILE', 'profile'); ?></span>
 					</a></li><li>
-					<a class="logout" href="<?php echo Get::rel_path("base") . "/index.php?r=" . _logout_; ?>">
+					<a class="logout" href="<?php echo Get::rel_path('base') . '/index.php?r=' . _logout_; ?>">
 						<!-- <img src="<?php echo Layout::path(); ?>images/standard/exit.png" alt="Left logo" />&nbsp; -->
 						<span><?php echo Lang::t('_LOGOUT', 'standard'); ?></span>
 					</a></li>
 				</ul>
-				<?php endif; ?>
+				<?php } ?>
 			</div>
 			<img class="left_logo" src="<?php echo Layout::path(); ?>images/company_logo.png" alt="Left logo" />
 			<?php echo Layout::zone('header'); ?>

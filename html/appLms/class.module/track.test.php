@@ -1,13 +1,23 @@
-<?php defined("IN_FORMA") or die('Direct access is forbidden.');
+<?php
 
+/*
+ * FORMA - The E-Learning Suite
+ *
+ * Copyright (c) 2013-2022 (Forma)
+ * https://www.formalms.org
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ *
+ * from docebo 4.0.5 CE 2008-2012 (c) docebo
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ */
 
+defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-require_once($GLOBALS['where_lms'] . '/class.module/track.object.php');
-require_once(Forma::inc(_lms_ . '/class.module/learning.test.php'));
+require_once $GLOBALS['where_lms'] . '/class.module/track.object.php';
+require_once Forma::inc(_lms_ . '/class.module/learning.test.php');
 
 class Track_Test extends Track_Object
 {
-
     protected $idTest;
 
     protected $number_of_attempt;
@@ -15,16 +25,16 @@ class Track_Test extends Track_Object
     /**
      * object constructor
      * Table : learning_commontrack
-     * idReference | idUser | idTrack | objectType | date_attempt  | status |
+     * idReference | idUser | idTrack | objectType | date_attempt  | status |.
      **/
-    function __construct($idTrack, $idResource = false, $idParams = false, $back_url = NULL)
+    public function __construct($idTrack, $idResource = false, $idParams = false, $back_url = null)
     {
         $this->objectType = 'test';
         parent::__construct($idTrack);
 
         $this->db = DbConn::getInstance();
-        if ($idTrack !== NULL) {
-            $res = $this->db->query("SELECT idTest, number_of_attempt FROM %lms_testtrack WHERE idTrack = '" . (int)$idTrack . "'");
+        if ($idTrack !== null) {
+            $res = $this->db->query("SELECT idTest, number_of_attempt FROM %lms_testtrack WHERE idTrack = '" . (int) $idTrack . "'");
             if ($res && $this->db->num_rows($res) > 0) {
                 list($this->idTest, $this->number_of_attempt) = $this->db->fetch_row($res);
             }
@@ -32,63 +42,68 @@ class Track_Test extends Track_Object
 
         $this->idResource = $idResource;
         $this->idParams = $idParams;
-        if ($back_url === NULL) $this->back_url = [];
-        else $this->back_url = $back_url;
+        if ($back_url === null) {
+            $this->back_url = [];
+        } else {
+            $this->back_url = $back_url;
+        }
     }
 
     /**
-     * function createTrack( $idUser, $idTest, $idReference, $attempt_number = 0  )
+     * function createTrack( $idUser, $idTest, $idReference, $attempt_number = 0  ).
      *
      * create a new row in the _testtrack table for tracking purpose
      *
-     * @param int $idUser the id of the user that display the object
-     * @param int $idTest the id of the test that is displayed
+     * @param int $idUser      the id of the user that display the object
+     * @param int $idTest      the id of the test that is displayed
      * @param int $idReference the idReference from the table of the lesson
      *
-     * @return int    idTrack if the row is created correctly otherwise false
+     * @return int idTrack if the row is created correctly otherwise false
      **/
-    function createNewTrack($idUser, $idTest, $idReference, $attempt_number = 0)
+    public function createNewTrack($idUser, $idTest, $idReference, $attempt_number = 0)
     {
-
-
-        $query = "
-		INSERT INTO " . $GLOBALS['prefix_lms'] . "_testtrack 
-		SET idUser = '" . (int)$idUser . "', 
-			idTest = '" . (int)$idTest . "', 
-			idReference = '" . (int)$idReference . "', 
-			date_attempt = '" . date("Y-m-d H:i:s") . "', 
-			date_end_attempt = '" . date("Y-m-d H:i:s") . "', 
+        $query = '
+		INSERT INTO ' . $GLOBALS['prefix_lms'] . "_testtrack 
+		SET idUser = '" . (int) $idUser . "', 
+			idTest = '" . (int) $idTest . "', 
+			idReference = '" . (int) $idReference . "', 
+			date_attempt = '" . date('Y-m-d H:i:s') . "', 
+			date_end_attempt = '" . date('Y-m-d H:i:s') . "', 
 			last_page_seen = '0', 
 			number_of_save = '0',
 			number_of_attempt = '" . $attempt_number . "'";
         if (!sql_query($query)) {
-
             return false;
         }
 
-        list($idTrack) = sql_fetch_row(sql_query("SELECT LAST_INSERT_ID()"));
-        if (!$idTrack) return false;
-        else return $idTrack;
+        list($idTrack) = sql_fetch_row(sql_query('SELECT LAST_INSERT_ID()'));
+        if (!$idTrack) {
+            return false;
+        } else {
+            return $idTrack;
+        }
     }
 
-    function getTrack($id_test, $id_user)
+    public function getTrack($id_test, $id_user)
     {
-
-        $query = "
+        $query = '
 		SELECT idTrack
-		FROM " . $GLOBALS['prefix_lms'] . "_testtrack 
+		FROM ' . $GLOBALS['prefix_lms'] . "_testtrack 
 		WHERE idUser = '" . $id_user . "' AND idTest = '" . $id_test . "'";
         $re = sql_query($query);
 
-        if (!sql_num_rows($re)) return false;
+        if (!sql_num_rows($re)) {
+            return false;
+        }
         list($id_track) = sql_fetch_row($re);
+
         return $id_track;
     }
 
     public static function getIdTracksFromTest($id_test)
     {
-        $query_track = "SELECT idTrack"
-            . " FROM " . $GLOBALS['prefix_lms'] . "_testtrack"
+        $query_track = 'SELECT idTrack'
+            . ' FROM ' . $GLOBALS['prefix_lms'] . '_testtrack'
             . " WHERE idTest = '" . $id_test . "'";
 
         $re = sql_query($query_track);
@@ -101,239 +116,264 @@ class Track_Test extends Track_Object
         while (list($id_track) = sql_fetch_row($re)) {
             $idTracks[] = $id_track;
         }
+
         return $idTracks;
     }
 
-    function getIdTrack($idReference, $idUser, $idResource, $createOnFail = FALSE)
+    public function getIdTrack($idReference, $idUser, $idResource, $createOnFail = false)
     {
-
         $rsTrack = $this->getTrack($idResource, $idUser);
-        if ($rsTrack !== FALSE) {
-            return [TRUE, $rsTrack];
-        } else if ($createOnFail) {
+        if ($rsTrack !== false) {
+            return [true, $rsTrack];
+        } elseif ($createOnFail) {
             $rsTrack = $this->createNewTrack($idUser, $idResource, $idReference);
-            return [FALSE, $rsTrack];
+
+            return [false, $rsTrack];
         }
-        return FALSE;
+
+        return false;
     }
 
     /**
-     * function isTrack( $idUser, $idTest, $idReference )
+     * function isTrack( $idUser, $idTest, $idReference ).
      *
      * control if exists at least one row in _testtrack table for tracking purpose
      *
-     * @param int $idUser the id of the user that display the object
-     * @param int $idTest the id of the test that is displayed
+     * @param int $idUser      the id of the user that display the object
+     * @param int $idTest      the id of the test that is displayed
      * @param int $idReference the idReference from the table of the lesson
      *
-     * @return int    true if the row exists otherwise false
+     * @return int true if the row exists otherwise false
      **/
-    function isTrack($idUser, $idTest, $idReference)
+    public function isTrack($idUser, $idTest, $idReference)
     {
-
-
-        $query = "
+        $query = '
 		SELECT COUNT(*) 
-		FROM " . $GLOBALS['prefix_lms'] . "_testtrack 
-		WHERE idUser = '" . (int)$idUser . "' AND 
-			idTest = '" . (int)$idTest . "' AND 
-			idReference = '" . (int)$idReference . "'";
+		FROM ' . $GLOBALS['prefix_lms'] . "_testtrack 
+		WHERE idUser = '" . (int) $idUser . "' AND 
+			idTest = '" . (int) $idTest . "' AND 
+			idReference = '" . (int) $idReference . "'";
         list($re_track) = sql_fetch_row(sql_query($query));
 
         return $re_track;
     }
 
     /**
-     * function getTrackInfo( $idUser, $idTest, $idReference )
+     * function getTrackInfo( $idUser, $idTest, $idReference ).
      *
      * return some information abiout a track
      *
-     * @param int $idUser the id of the user that display the object
-     * @param int $idTest the id of the test that is displayed
+     * @param int $idUser      the id of the user that display the object
+     * @param int $idTest      the id of the test that is displayed
      * @param int $idReference the idReference from the table of the lesson
      *
-     * @return array    return false if track doesn't exists, otherwise return an array with some info in this way:
-     *                    array (
-     *                        idTrack,
-     *                        date_attempt,
-     *                        date_end_attempt,
-     *                        last_page_seen,
-     *                        last_page_saved,
-     *                        number_of_save
-     *                    )
+     * @return array return false if track doesn't exists, otherwise return an array with some info in this way:
+     *               array (
+     *               idTrack,
+     *               date_attempt,
+     *               date_end_attempt,
+     *               last_page_seen,
+     *               last_page_saved,
+     *               number_of_save
+     *               )
      *
      **/
-    function getTrackInfo($idUser, $idTest, $idReference)
+    public function getTrackInfo($idUser, $idTest, $idReference)
     {
         $query = "
 			SELECT idTrack, date_attempt, date_end_attempt, last_page_seen, last_page_saved, number_of_save, number_of_attempt, attempts_for_suspension, suspended_until
 			FROM %lms_testtrack
-			WHERE idUser = '" . (int)$idUser . "' AND
-				idTest = '" . (int)$idTest . "' AND
-				idReference = '" . (int)$idReference . "'";
+			WHERE idUser = '" . (int) $idUser . "' AND
+				idTest = '" . (int) $idTest . "' AND
+				idReference = '" . (int) $idReference . "'";
         $re_track = sql_query($query);
 
-        if (!sql_num_rows($re_track)) return [];
-        else return sql_fetch_array($re_track);
+        if (!sql_num_rows($re_track)) {
+            return [];
+        } else {
+            return sql_fetch_array($re_track);
+        }
     }
 
-
-    function getTrackInfoById($idTrack)
+    public function getTrackInfoById($idTrack)
     {
         $query = "
 			SELECT idTrack, date_attempt, date_end_attempt, last_page_seen, last_page_saved, score, number_of_save, number_of_attempt, attempts_for_suspension, suspended_until
 			FROM %lms_testtrack
-			WHERE idTrack = '" . (int)$idTrack . "'";
+			WHERE idTrack = '" . (int) $idTrack . "'";
         $re_track = sql_query($query);
 
-        if (!sql_num_rows($re_track)) return [];
-        else return sql_fetch_array($re_track);
+        if (!sql_num_rows($re_track)) {
+            return [];
+        } else {
+            return sql_fetch_array($re_track);
+        }
     }
 
-
     /**
-     * function updateTrack( $idTrack, $new_info )
+     * function updateTrack( $idTrack, $new_info ).
      *
      * create a new row in the _testtrack table for tracking purpose
      *
-     * @param int $idTrack the track of the object
+     * @param int   $idTrack  the track of the object
      * @param array $new_info an array with the new information
      *
-     * @return bool    true if success false otherwise
+     * @return bool true if success false otherwise
      **/
-    function updateTrack($idTrack, $new_info)
+    public function updateTrack($idTrack, $new_info)
     {
-
-
         $first = true;
-        if (!is_array($new_info)) return true;
-        $query = "
-		UPDATE " . $GLOBALS['prefix_lms'] . "_testtrack 
-		SET ";
-        foreach ($new_info as $field_name => $field_value) {
-
-            $query .= ($first ? '' : ', ');
-            if ($field_value == NULL) $query .= $field_name . " = NULL ";
-            else  $query .= $field_name . " = '" . $field_value . "'";
-            if ($first) $first = false;
+        if (!is_array($new_info)) {
+            return true;
         }
-        $query .= " WHERE idTrack = '" . (int)$idTrack . "'";
+        $query = '
+		UPDATE ' . $GLOBALS['prefix_lms'] . '_testtrack 
+		SET ';
+        foreach ($new_info as $field_name => $field_value) {
+            $query .= ($first ? '' : ', ');
+            if ($field_value == null) {
+                $query .= $field_name . ' = NULL ';
+            } else {
+                $query .= $field_name . " = '" . $field_value . "'";
+            }
+            if ($first) {
+                $first = false;
+            }
+        }
+        $query .= " WHERE idTrack = '" . (int) $idTrack . "'";
 
-        if (isset($_POST['show_review'])) return true;
+        if (isset($_POST['show_review'])) {
+            return true;
+        }
 
-        if (!sql_query($query)) return false;
-        else return true;
+        if (!sql_query($query)) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
     /**
-     * print in standard output
+     * print in standard output.
      **/
-    function loadReport($idUser = false, $mvc = false)
+    public function loadReport($idUser = false, $mvc = false)
     {
-        require_once(Forma::inc(_lms_.'/modules/test/do.test.php'));
+        require_once Forma::inc(_lms_ . '/modules/test/do.test.php');
         if ($idUser) {
             $output = user_report($idUser, $this->idResource, $this->idParams, false, $mvc);
-            if ($mvc) return $output;
+            if ($mvc) {
+                return $output;
+            }
         }
     }
 
     /**
-     * @return bool    true if this object use extra colum in user report
+     * @return bool true if this object use extra colum in user report
      */
-    function otherUserField()
+    public function otherUserField()
     {
         return true;
     }
 
     /**
-     * @return array    an array with the header of extra colum
+     * @return array an array with the header of extra colum
      */
-    function getHeaderUserField()
+    public function getHeaderUserField()
     {
-
         return [
-            ['content' => _TEST_POINTDO, 'type' => 'align_right']
+            ['content' => _TEST_POINTDO, 'type' => 'align_right'],
         ];
     }
 
     /**
-     * @return array    an array with the extra colum
+     * @return array an array with the extra colum
      */
-    function getUserField()
+    public function getUserField()
     {
-
-
         $field = [];
-        $re_score = sql_query("
+        $re_score = sql_query('
 		SELECT idUser, is_end, type_of_result, result 
-		FROM " . $GLOBALS['prefix_lms'] . "_testtrack 
+		FROM ' . $GLOBALS['prefix_lms'] . "_testtrack 
 		WHERE idTest = '" . $this->idResource . "'");
         while (list($id_user, $is_end, $point_type, $point_do) = sql_fetch_row($re_score)) {
-
-            if ($is_end) $field[$id_user] = [$point_do . ($point_type ? '%' : '')];
+            if ($is_end) {
+                $field[$id_user] = [$point_do . ($point_type ? '%' : '')];
+            }
         }
+
         return $field;
     }
 
     /**
      * @return idTrack if exists or false
      **/
-    function deleteTrack($idTrack)
+    public function deleteTrack($idTrack)
     {
-		Events::trigger('lms.lo_user.deleting', [
+        Events::trigger('lms.lo_user.deleting', [
             'id_track' => $idTrack,
             'object_type' => 'test',
-			'environment' => 'course_lo',
-		]);
+            'environment' => 'course_lo',
+        ]);
 
-        $query = "DELETE FROM " . $GLOBALS['prefix_lms'] . "_commontrack "
-            . " WHERE idTrack='" . (int)$idTrack . "'"
+        $query = 'DELETE FROM ' . $GLOBALS['prefix_lms'] . '_commontrack '
+            . " WHERE idTrack='" . (int) $idTrack . "'"
             . "   AND objectType='test'";
-        if (!sql_query($query)) return false;
+        if (!sql_query($query)) {
+            return false;
+        }
 
-		Events::trigger('lms.lo_user.deleted', [
+        Events::trigger('lms.lo_user.deleted', [
             'id_track' => $idTrack,
             'object_type' => 'test',
-			'environment' => 'course_lo',
-		]);
+            'environment' => 'course_lo',
+        ]);
 
-        $query = "
-		DELETE FROM " . $GLOBALS['prefix_lms'] . "_testtrack 
-		WHERE idTrack='" . (int)$idTrack . "'";
+        $query = '
+		DELETE FROM ' . $GLOBALS['prefix_lms'] . "_testtrack 
+		WHERE idTrack='" . (int) $idTrack . "'";
 
-        if (sql_query($query)) return true;
-        else return false;
+        if (sql_query($query)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
-    function deleteTrackInfo($id_lo, $id_user)
+    public function deleteTrackInfo($id_lo, $id_user)
     {
-
-        $query = "SELECT idUser, idReference, idTrack FROM " . $this->_table .
-            " WHERE idUser=" . (int)$id_user . " AND idReference=" . (int)$id_lo .
+        $query = 'SELECT idUser, idReference, idTrack FROM ' . $this->_table .
+            ' WHERE idUser=' . (int) $id_user . ' AND idReference=' . (int) $id_lo .
             " AND objectType='test'";
         $res = sql_query($query);
         if ($res && sql_num_rows($res) > 0) {
-
             list($id_user, $id_lo, $id_track) = sql_fetch_row($res);
-            $query_question = "SELECT q.idQuest, q.type_quest, t.type_file, t.type_class "
-                . " FROM %lms_testquest AS q JOIN %lms_quest_type AS t "
+            $query_question = 'SELECT q.idQuest, q.type_quest, t.type_file, t.type_class '
+                . ' FROM %lms_testquest AS q JOIN %lms_quest_type AS t '
                 . " WHERE q.idTest = '" . $id_lo . "' AND q.type_quest = t.type_quest "
-                . " ORDER BY q.sequence";
+                . ' ORDER BY q.sequence';
             $re_quest = sql_query($query_question);
             while (list($idQuest, $type_quest, $type_file, $type_class) = sql_fetch_row($re_quest)) {
                 $quest_obj = new $type_class($idQuest);
-                if (!$quest_obj->deleteAnswer($id_track)) return false;
+                if (!$quest_obj->deleteAnswer($id_track)) {
+                    return false;
+                }
             }
 
             $query_page = "DELETE FROM %lms_testtrack_page WHERE idTrack = '" . $id_track . "'";
             $query_quest = "DELETE FROM %lms_testtrack_quest WHERE idTrack = '" . $id_track . "'";
-            if (!sql_query($query_page)) return false;
-            if (!sql_query($query_quest)) return false;
+            if (!sql_query($query_page)) {
+                return false;
+            }
+            if (!sql_query($query_quest)) {
+                return false;
+            }
 
             $re_update = $this->deleteTrack($id_track);
             if ($re_update) {
                 $re_common = parent::deleteTrackInfo($id_lo, $id_user);
-                if ($re_common) return true;
+                if ($re_common) {
+                    return true;
+                }
             }
         }
 
@@ -345,11 +385,12 @@ class Track_Test extends Track_Object
      */
     public function getAnswers()
     {
-        $res = sql_query("SELECT idQuest, idAnswer, score_assigned, more_info, number_time FROM %lms_testtrack_answer WHERE idTrack = '" . (int)$this->idTrack . "'");
+        $res = sql_query("SELECT idQuest, idAnswer, score_assigned, more_info, number_time FROM %lms_testtrack_answer WHERE idTrack = '" . (int) $this->idTrack . "'");
         $list = [];
         while (list($questId, $answerId, $score, $moreInfo, $numberTime) = sql_fetch_row($res)) {
             $list[$questId][$numberTime] = new Track_TestAnswer($this->idTrack, $questId, $answerId, $score, $moreInfo);
         }
+
         return $list;
     }
 
@@ -363,11 +404,13 @@ class Track_Test extends Track_Object
 
     /**
      * @param mixed $idTest
+     *
      * @return Track_Test
      */
     public function setIdTest($idTest)
     {
         $this->idTest = $idTest;
+
         return $this;
     }
 
@@ -376,16 +419,18 @@ class Track_Test extends Track_Object
      */
     public function getNumberOfAttempt()
     {
-        return (int)$this->number_of_attempt;
+        return (int) $this->number_of_attempt;
     }
 
     /**
      * @param mixed $number_of_attempt
+     *
      * @return Track_Test
      */
     public function setNumberOfAttempt($number_of_attempt)
     {
         $this->number_of_attempt = $number_of_attempt;
+
         return $this;
     }
 
@@ -394,14 +439,13 @@ class Track_Test extends Track_Object
         return new Learning_Test($this->getIdTest());
     }
 
-    static function getValidTestTrackFromTestAndUsers($idTest, $idStrudents)
+    public static function getValidTestTrackFromTestAndUsers($idTest, $idStrudents)
     {
-
-        $query_track = "SELECT idTrack"
-            . " FROM " . $GLOBALS['prefix_lms'] . "_testtrack"
+        $query_track = 'SELECT idTrack'
+            . ' FROM ' . $GLOBALS['prefix_lms'] . '_testtrack'
             . " WHERE idTest = '" . $idTest . "'"
             . " AND score_status = 'valid'"
-            . " AND idUser in (" . implode(",", $idStrudents) . ")";
+            . ' AND idUser in (' . implode(',', $idStrudents) . ')';
 
         $result_track = sql_query($query_track);
 
@@ -413,35 +457,32 @@ class Track_Test extends Track_Object
         return $idTracks;
     }
 
-    static function getValidTotalPlaysTestTrackFromTestAndUsers($idTest, $idStrudents)
+    public static function getValidTotalPlaysTestTrackFromTestAndUsers($idTest, $idStrudents)
     {
-
-        $query_total_play = "SELECT COUNT(*)"
-            . " FROM " . $GLOBALS['prefix_lms'] . "_testtrack"
+        $query_total_play = 'SELECT COUNT(*)'
+            . ' FROM ' . $GLOBALS['prefix_lms'] . '_testtrack'
             . " WHERE idTest = '" . $idTest . "'"
             . " AND score_status = 'valid'"
-            . " AND idUser in (" . implode(",", $idStrudents) . ")";
+            . ' AND idUser in (' . implode(',', $idStrudents) . ')';
 
         list($total_play) = sql_fetch_row(sql_query($query_total_play));
 
         return $total_play;
     }
 
-    static function getTestTrackAnswersFromTrack($idTrack){
-        $query_track_answer = "SELECT idQuest, idAnswer, more_info"
-            . " FROM " . $GLOBALS['prefix_lms'] . "_testtrack_answer"
+    public static function getTestTrackAnswersFromTrack($idTrack)
+    {
+        $query_track_answer = 'SELECT idQuest, idAnswer, more_info'
+            . ' FROM ' . $GLOBALS['prefix_lms'] . '_testtrack_answer'
             . " WHERE idTrack = '" . $idTrack . "' AND user_answer = 1";
 
         $result_track_answer = sql_query($query_track_answer);
 
         $trackAnswers = [];
         while (list($idQuest, $id_answer, $more_info) = sql_fetch_row($result_track_answer)) {
-
-            $trackAnswers[] = ["idQuest" => $idQuest,"idAnswer" => $id_answer,"more_info" => $more_info];
+            $trackAnswers[] = ['idQuest' => $idQuest, 'idAnswer' => $id_answer, 'more_info' => $more_info];
         }
 
         return $trackAnswers;
     }
 }
-
-?>

@@ -1,6 +1,6 @@
 <?php Get::title([
-	'index.php?r=alms/enrollrules/show' => Lang::t('_ENROLLRULES', 'enrollrules'),
-	Lang::t('_SHOW_LOGS', 'enrollrules')
+    'index.php?r=alms/enrollrules/show' => Lang::t('_ENROLLRULES', 'enrollrules'),
+    Lang::t('_SHOW_LOGS', 'enrollrules'),
 ]); ?>
 <div class="std_block">
 	<script type="text/javascript">
@@ -48,23 +48,23 @@
 	</script>
 <?php
 $this->widget('table', [
-	'id'			=> 'enrolllog',
-	'ajaxUrl'		=> 'ajax.adm_server.php?r=alms/enrollrules/getlog',
-	'sort'			=> 'log_time',
-	'dir'			=> 'desc',
-	'columns'		=> [
-		//array('key' => 'id_log', 'label' => Lang::t('_ID', 'enrollrules'), 'className' => 'min-cell'),
-		['key' => 'log_time', 'label' => Lang::t('_DATE', 'enrollrules'), 'className' => 'min-cell'],
-		['key' => 'log_action', 'label' => Lang::t('_TYPE', 'enrollrules')],
-		['key' => 'log_detail', 'label' => Lang::t('_DETAILS', 'enrollrules'), 'className' => 'min-cell', 'formatter' => 'EnrollLog.details'],
-		['key' => 'rollback', 'label' => ''.Lang::t('_ROLLBACK', 'enrollrules').'', 'className' => 'img-cell', 'formatter' => 'EnrollLog.rollback'],
+    'id' => 'enrolllog',
+    'ajaxUrl' => 'ajax.adm_server.php?r=alms/enrollrules/getlog',
+    'sort' => 'log_time',
+    'dir' => 'desc',
+    'columns' => [
+        //array('key' => 'id_log', 'label' => Lang::t('_ID', 'enrollrules'), 'className' => 'min-cell'),
+        ['key' => 'log_time', 'label' => Lang::t('_DATE', 'enrollrules'), 'className' => 'min-cell'],
+        ['key' => 'log_action', 'label' => Lang::t('_TYPE', 'enrollrules')],
+        ['key' => 'log_detail', 'label' => Lang::t('_DETAILS', 'enrollrules'), 'className' => 'min-cell', 'formatter' => 'EnrollLog.details'],
+        ['key' => 'rollback', 'label' => '' . Lang::t('_ROLLBACK', 'enrollrules') . '', 'className' => 'img-cell', 'formatter' => 'EnrollLog.rollback'],
     ],
-	'fields' => ['id_log', 'log_action', 'log_time', 'log_detail', 'rollback'],
-	'delDisplayField' => 'log_action',
-	'events' => [
-		'beforeRenderEvent' => 'EnrollLog.tablebefore',
-		'postRenderEvent' => 'EnrollLog.tableafter'
-    ]
+    'fields' => ['id_log', 'log_action', 'log_time', 'log_detail', 'rollback'],
+    'delDisplayField' => 'log_action',
+    'events' => [
+        'beforeRenderEvent' => 'EnrollLog.tablebefore',
+        'postRenderEvent' => 'EnrollLog.tableafter',
+    ],
 ]);
 
 ?>

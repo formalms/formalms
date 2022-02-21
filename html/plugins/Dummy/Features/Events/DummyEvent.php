@@ -1,15 +1,24 @@
 <?php
-//namespace appCore\Events\Core;
+
+/*
+ * FORMA - The E-Learning Suite
+ *
+ * Copyright (c) 2013-2022 (Forma)
+ * https://www.formalms.org
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ *
+ * from docebo 4.0.5 CE 2008-2012 (c) docebo
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ */
 
 use Symfony\Contracts\EventDispatcher\Event;
 
 /**
- * Class DummyEvent
- * @package appLms\Events\Core
+ * Class DummyEvent.
  */
 class DummyEvent extends Event
 {
-    const EVENT_NAME = 'core.dummy.event';
+    public const EVENT_NAME = 'core.dummy.event';
 
     private $foo;
 
@@ -36,5 +45,4 @@ class DummyEvent extends Event
     {
         return $this->foo;
     }
-
 }

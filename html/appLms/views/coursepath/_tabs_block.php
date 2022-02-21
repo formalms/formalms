@@ -3,23 +3,19 @@
                  <?php
                 $w = $this->widget('lms_tab', [
                     'active' => 'coursepath',
-                    'close' => false
+                    'close' => false,
                 ]);
-                
-                
-                
+
                 $_model = new CoursepathLms();
                 $count = 0;
                 $statusFilters = $_model->getFilterStatusLearningPath(Docebo::user()->getIdst());
 
                 $html = '<ul class="nav nav-pills">';
 
-                foreach($statusFilters as $key => $value )
-                {
-
-                    $html_code .= '    <option value="'.$key.'"'
-                        .((string)$key == (string)$selected ? ' selected="selected"' : '' )
-                        .'>'.$value.'</option>'."\n";
+                foreach ($statusFilters as $key => $value) {
+                    $html_code .= '    <option value="' . $key . '"'
+                        . ((string) $key == (string) $selected ? ' selected="selected"' : '')
+                        . '>' . $value . '</option>' . "\n";
 
                     if ($count === 0) {
                         $html .= '<li class="selected js-label-menu-filter" data-value="' . $key . '">';
@@ -29,33 +25,25 @@
 
                     $html .= '<a class="icon--filter-' . $key . '" href="#" >' . $value . '</a>';
                     $html .= '</li>';
-                    $count++;
+                    ++$count;
                 }
 
                 $html .= '</ul>';
 
                 $inline_filters = $html;
 
-                
-                
-               
-
                 $_auxiliary = Form::getInputDropdown('', 'coursepath_search_filter_year', 'filter_year', $_model->getFilterYears(Docebo::user()->getIdst()), 0, '');
                 $_auxiliary = str_replace('class="form-control "', 'class="selectpicker"  data-selected-text-format="count > 1" data-width=""  data-actions-box="true"', $_auxiliary);
-                
-                
+
                 $this->widget('tablefilter', [
                     'id' => 'coursepath_search',
                     'auxiliary_filter' => $_auxiliary,
-                    'filter_text' => "",
+                    'filter_text' => '',
                     'js_callback_set' => 'coursepath_search_callback_set',
                     'js_callback_reset' => 'coursepath_search_callback_reset',
                     'inline_filters' => $inline_filters,
-                    'css_class' => 'nav'
+                    'css_class' => 'nav',
                 ]);
-
-
-
 
                 ?>
          </div>
@@ -65,13 +53,13 @@
 
  <!-- DIV CONTENT COURSE-LIST  -->       
 <div  class="col-md-12" id="div_course">
-    <br><p align="center"><img src='<?php echo Layout::path() ?>images/standard/loadbar.gif'></p>
+    <br><p align="center"><img src='<?php echo Layout::path(); ?>images/standard/loadbar.gif'></p>
 </div>
  
 
 <script type="text/javascript">
 
-    var this_user = '<?php echo Docebo::user()->idst ?>';
+    var this_user = '<?php echo Docebo::user()->idst; ?>';
     $(function(){
         v = getCookie(this_user+'.my_coursepath.year');
         if (v != '') {$("#coursepath_search_filter_year").selectpicker('val', v);}
@@ -85,14 +73,14 @@
     });
     
     function saveCurrentFilter(){
-        var this_user = '<?php echo Docebo::user()->idst ?>'
+        var this_user = '<?php echo Docebo::user()->idst; ?>'
         var cyear = $("#coursepath_search_filter_year").selectpicker().val();
         setCookie(this_user+'.my_coursepath.year',cyear,60,"/")        
         
     }
 
     function clearCurrentFilter(){
-        var this_user = '<?php echo Docebo::user()->idst ?>'
+        var this_user = '<?php echo Docebo::user()->idst; ?>'
         setCookie(this_user+'.my_coursepath.year',"",-3650,"/")
     }
     
@@ -103,7 +91,7 @@
         var status = $('.js-label-menu-filter.selected').attr('data-value');
 
 
-        $("#div_course").html("<br><p align='center'><img src='<?php echo Layout::path() ?>images/standard/loadbar.gif'></p>");
+        $("#div_course").html("<br><p align='center'><img src='<?php echo Layout::path(); ?>images/standard/loadbar.gif'></p>");
         var posting = $.get( 'ajax.server.php',
                     {r: 'coursepath/all',
                      rnd:'<?php echo time(); ?>',

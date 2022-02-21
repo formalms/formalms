@@ -1,16 +1,27 @@
 <?php
+
+/*
+ * FORMA - The E-Learning Suite
+ *
+ * Copyright (c) 2013-2022 (Forma)
+ * https://www.formalms.org
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ *
+ * from docebo 4.0.5 CE 2008-2012 (c) docebo
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ */
+
 namespace appCore\Events\Core\User;
 
 use Symfony\Contracts\EventDispatcher\Event;
 
 /**
- * Class UsersManagementOrgChartDeleteNodeEvent
- * @package appLms\Events\Core
+ * Class UsersManagementOrgChartDeleteNodeEvent.
  */
 class UsersManagementOrgChartDeleteNodeEvent extends Event
 {
-    const EVENT_NAME = 'core.usersmanagementorgchartdeletenode.event';
-    
+    public const EVENT_NAME = 'core.usersmanagementorgchartdeletenode.event';
+
     /** @var array */
     protected $node;
 
@@ -18,7 +29,7 @@ class UsersManagementOrgChartDeleteNodeEvent extends Event
      * UsersManagementOrgChartDeleteNodeEvent constructor.
      */
     public function __construct()
-    {        
+    {
         $this->node = null;
     }
 
@@ -45,5 +56,4 @@ class UsersManagementOrgChartDeleteNodeEvent extends Event
     {
         return $this->node;
     }
-
 }

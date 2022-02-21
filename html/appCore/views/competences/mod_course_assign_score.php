@@ -4,7 +4,7 @@
 
 echo Form::openForm('sel_assign_score_form', 'index.php?r=adm/competences/mod_course_competences_action');
 
-echo Form::getHidden('id_course', 'id_course', (int)$id_course);
+echo Form::getHidden('id_course', 'id_course', (int) $id_course);
 
 echo $table->getTable();
 

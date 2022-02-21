@@ -1,28 +1,28 @@
 <?php Get::title([
-	'index.php?r='.$base_link_course.'/show' => Lang::t('_COURSE', 'course'),
-	'index.php?r='.$base_link_classroom.'/classroom&id_course='.$model->getIdCourse() => Lang::t('_CLASSROOM', 'course'),
-	Lang::t('_ATTENDANCE', 'course').' : '.$course_name
+    'index.php?r=' . $base_link_course . '/show' => Lang::t('_COURSE', 'course'),
+    'index.php?r=' . $base_link_classroom . '/classroom&id_course=' . $model->getIdCourse() => Lang::t('_CLASSROOM', 'course'),
+    Lang::t('_ATTENDANCE', 'course') . ' : ' . $course_name,
 ]); ?>
 <div class="std_block">
 
 <?php
-	YuiLib::load();
-	
-	/* Inserimento pulsante per esportazione della lista in excel */
-	echo	Form::openForm('excel_form', 'index.php?r='.$base_link_classroom.'/export&id_course='.$model->getIdCourse().'&amp;id_date='.$model->getIdDate())
-			.Form::getButton('export', 'export', Lang::t('_EXPORT_XLS', 'report'))
-			.Form::closeForm();
+    YuiLib::load();
 
-	echo	Form::openForm('presence_form', 'index.php?r='.$base_link_classroom.'/presence&id_course='.$model->getIdCourse().'&amp;id_date='.$model->getIdDate())
-			.Form::openElementSpace()
-			.($model->getTestType() == 1 ? Form::getTextfield(Lang::t('_MIN_SCORE', 'course'), 'score_min', 'score_min', 255, '') : '')
-			.$model->getPresenceTable()
-			.Form::closeElementSpace()
-			.Form::openButtonSpace()
-			.Form::getButton('save', 'save', Lang::t('_SAVE', 'course'))
-			.Form::getButton('undo', 'undo', Lang::t('_UNDO', 'course'))
-			.Form::closeElementSpace()
-			.Form::closeForm();
+    /* Inserimento pulsante per esportazione della lista in excel */
+    echo Form::openForm('excel_form', 'index.php?r=' . $base_link_classroom . '/export&id_course=' . $model->getIdCourse() . '&amp;id_date=' . $model->getIdDate())
+            . Form::getButton('export', 'export', Lang::t('_EXPORT_XLS', 'report'))
+            . Form::closeForm();
+
+    echo Form::openForm('presence_form', 'index.php?r=' . $base_link_classroom . '/presence&id_course=' . $model->getIdCourse() . '&amp;id_date=' . $model->getIdDate())
+            . Form::openElementSpace()
+            . ($model->getTestType() == 1 ? Form::getTextfield(Lang::t('_MIN_SCORE', 'course'), 'score_min', 'score_min', 255, '') : '')
+            . $model->getPresenceTable()
+            . Form::closeElementSpace()
+            . Form::openButtonSpace()
+            . Form::getButton('save', 'save', Lang::t('_SAVE', 'course'))
+            . Form::getButton('undo', 'undo', Lang::t('_UNDO', 'course'))
+            . Form::closeElementSpace()
+            . Form::closeForm();
 ?>
 
 <script type="text/javascript">
@@ -33,7 +33,7 @@ function controlMinScore(e){
 	var score = YAHOO.util.Dom.get('score_min').value;
 	if(score == '' && save == 1){
 		YAHOO.util.Event.preventDefault(e);
-		alert("<?php Lang::t('_MIN_SCORE_NOT_SET', 'course') ?>");
+		alert("<?php Lang::t('_MIN_SCORE_NOT_SET', 'course'); ?>");
 	}
 }
 

@@ -11,21 +11,21 @@
 </script>
 <div class="middlearea_container">
 	<?php
-	$lmstab = $this->widget('lms_tab', [
-				'active' => 'kb',
-				'close' => false
+    $lmstab = $this->widget('lms_tab', [
+                'active' => 'kb',
+                'close' => false,
     ]);
-            
-	?>
+
+    ?>
 
 <div class="quick_search_form navbar forma-quick-search-form"> 
         <div class="simple_search_box" id="usermanagement_simple_filter_options" style="display: block;">
             <?php
             echo Form::openForm('quick_search', '');
             echo Form::getInputDropdown('dropdown', 'course_filter', 'course_filter', $course_filter_arr, false, 'style="width: 50%;"') . "&nbsp;\n";
-            echo Form::getInputTextfield("search_t", "filter_text", "filter_text", $filter_text, '', 255, '');
-            echo Form::getButton("filter_set", "filter_set", Lang::t('_SEARCH', 'standard'), "search_b");
-            echo Form::getButton("filter_reset", "filter_reset", Lang::t('_RESET', 'standard'), "reset_b");
+            echo Form::getInputTextfield('search_t', 'filter_text', 'filter_text', $filter_text, '', 255, '');
+            echo Form::getButton('filter_set', 'filter_set', Lang::t('_SEARCH', 'standard'), 'search_b');
+            echo Form::getButton('filter_reset', 'filter_reset', Lang::t('_RESET', 'standard'), 'reset_b');
             echo Form::closeForm();
             ?>
         </div>
@@ -46,9 +46,9 @@
                 <div class="col-md-2" id="left_categories"><!--- left categories --->
                     <ul class="flat-categories">
                         <li><a href="#" id="folder_0"><?php echo Lang::t('_ALL_CATEGORIES', 'kb'); ?></a></li>
-                        <?php foreach ($initial_folders['folders'] as $folder): ?>
+                        <?php foreach ($initial_folders['folders'] as $folder) { ?>
                             <li><a href="#" id="folder_<?php echo $folder['id']; ?>"><?php echo $folder['name']; ?></a></li>
-                        <?php endforeach; ?>
+                        <?php } ?>
                     </ul>
                 </div>
                     
@@ -70,39 +70,31 @@
                             
 							<!-- content table -->
                             <?php
-									$this->widget('table', [
-										'id' => 'kb_table',
-										'ajaxUrl' => 'ajax.server.php?r=kb/getlist',
-										'rowsPerPage' => Get::sett('visuItem', 25),
-										'startIndex' => 0,
-										'results' => Get::sett('visuItem', 25),
-										'sort' => 'r_name',
-										'dir' => 'asc',
-										'generateRequest' => 'KbManagement.requestBuilder',
-										'events' => [
-											'postRenderEvent' => 'function () { lb.init(); }',
+                                    $this->widget('table', [
+                                        'id' => 'kb_table',
+                                        'ajaxUrl' => 'ajax.server.php?r=kb/getlist',
+                                        'rowsPerPage' => Get::sett('visuItem', 25),
+                                        'startIndex' => 0,
+                                        'results' => Get::sett('visuItem', 25),
+                                        'sort' => 'r_name',
+                                        'dir' => 'asc',
+                                        'generateRequest' => 'KbManagement.requestBuilder',
+                                        'events' => [
+                                            'postRenderEvent' => 'function () { lb.init(); }',
                                         ],
-										'columns' => [
-											['key' => 'r_name', 'label' => Lang::t('_NAME', 'kb'), 'sortable' => true],
-											['key' => 'r_type', 'label' => Lang::t('_TYPE', 'kb'), 'sortable' => true, 'className' => 'img-cell'],
-											//array('key' => 'r_env', 'label' => Lang::t('_ENVIRONMENT', 'kb'), 'sortable' => true),
-											['key' => 'r_env_parent', 'label' => Lang::t('_CONTAINED_IN', 'kb'), 'sortable' => false],
-											['key' => 'r_lang', 'label' => Lang::t('_LANGUAGE', 'kb'), 'sortable' => true],
-											['key' => 'tags', 'label' => Lang::t('_TAGS', 'kb'), 'sortable' => false],
-											['key' => 'play', 'label' => '<span class="ico-sprite subs_play"><span>' . Lang::t('_PLAY', 'storage') . '</span></span>', 'formatter' => 'frm_play', 'className' => 'img-cell'],
+                                        'columns' => [
+                                            ['key' => 'r_name', 'label' => Lang::t('_NAME', 'kb'), 'sortable' => true],
+                                            ['key' => 'r_type', 'label' => Lang::t('_TYPE', 'kb'), 'sortable' => true, 'className' => 'img-cell'],
+                                            //array('key' => 'r_env', 'label' => Lang::t('_ENVIRONMENT', 'kb'), 'sortable' => true),
+                                            ['key' => 'r_env_parent', 'label' => Lang::t('_CONTAINED_IN', 'kb'), 'sortable' => false],
+                                            ['key' => 'r_lang', 'label' => Lang::t('_LANGUAGE', 'kb'), 'sortable' => true],
+                                            ['key' => 'tags', 'label' => Lang::t('_TAGS', 'kb'), 'sortable' => false],
+                                            ['key' => 'play', 'label' => '<span class="ico-sprite subs_play"><span>' . Lang::t('_PLAY', 'storage') . '</span></span>', 'formatter' => 'frm_play', 'className' => 'img-cell'],
                                         ],
-										'fields' => ['res_id', 'r_name', 'r_type', 'r_env', 'r_env_parent', 'r_lang', 'tags', 'edit', 'force_visible', 'is_mobile'],
+                                        'fields' => ['res_id', 'r_name', 'r_type', 'r_env', 'r_env_parent', 'r_lang', 'tags', 'edit', 'force_visible', 'is_mobile'],
                                         ]
-                                    
-                                    
-                                    
-                                    
-                                    
-                                    
-                                    
-                                    
                                     );
-							?>
+                            ?>
                       
                             
 								</div><!--- middle_colum --->
@@ -113,13 +105,13 @@
                         
 							<div class="col-md-2"><!--- tags column --->
 								<p class="section_title"><?php echo Lang::t('_TAGS', 'kb'); ?></p>
-								<?php if (!empty($tag_cloud)): ?>
+								<?php if (!empty($tag_cloud)) { ?>
 									<ul class="tag_cloud" id="kb_tag_cloud">
-									<?php foreach ($tag_cloud as $tag_id => $info): ?>
+									<?php foreach ($tag_cloud as $tag_id => $info) { ?>
 										<li class="t<?php echo $info['class_size']; ?>"><a href="#" id="tag_<?php echo $tag_id; ?>"><?php echo $info['tag_name']; ?></a></li>
-									<?php endforeach; ?>
+									<?php } ?>
 									</ul>
-								<?php endif; ?>
+								<?php } ?>
 							</div>
                             
                             
@@ -133,7 +125,7 @@
 			</div>
 			<div class="nofloat"></div>
 <?php
-									$this->widget('yuilog');
-									$lmstab->endWidget(); 
+                                    $this->widget('yuilog');
+                                    $lmstab->endWidget();
 ?>
 </div>

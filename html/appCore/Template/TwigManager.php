@@ -1,8 +1,17 @@
 <?php
 
+/*
+ * FORMA - The E-Learning Suite
+ *
+ * Copyright (c) 2013-2022 (Forma)
+ * https://www.formalms.org
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ *
+ * from docebo 4.0.5 CE 2008-2012 (c) docebo
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ */
+
 namespace appCore\Template;
-
-
 
 use appCore\Template\Extensions\FormExtension;
 use appCore\Template\Extensions\GetExtension;
@@ -13,21 +22,15 @@ use appCore\Template\Extensions\UtilExtension;
 use appCore\Template\Extensions\YuiExtension;
 use appCore\Template\Services\ClientService;
 use Twig\Extension\ExtensionInterface;
-use Twig\Extension\OptimizerExtension;
-use Twig\Extensions\ArrayExtension;
-use Twig\Extensions\DateExtension;
-use Twig\Extensions\I18nExtension;
 use Twig\Extensions\IntlExtension;
-use Twig\Extensions\TextExtension;
 
 class TwigManager
 {
-
     private static $instance = null;
     private $twig = null;
 
     /**
-     * Singleton class, the constructor is private
+     * Singleton class, the constructor is private.
      */
     private function __construct()
     {
@@ -35,7 +38,7 @@ class TwigManager
         $debug = \Get::cfg('twig_debug', false);
         $this->twig = new \Twig\Environment($loader, [
             'cache' => $debug ? false : _files_ . '/cache/twig',
-            'debug' => $debug
+            'debug' => $debug,
         ]);
         $this->addDefaultPaths();
         $this->twig->addExtension(new FormExtension());
@@ -55,17 +58,19 @@ class TwigManager
     }
 
     /**
-     * Get the TwigManager instance
+     * Get the TwigManager instance.
      *
      * @param string $mvc_name
+     *
      * @return TwigManager
+     *
      * @throws Exception
      */
     public static function getInstance()
     {
         if (self::$instance == null) {
             $c = __CLASS__;
-            self::$instance = new $c;
+            self::$instance = new $c();
         }
 
         return self::$instance;
@@ -77,7 +82,7 @@ class TwigManager
             _adm_ . '/views',
             _lms_ . '/views',
             _lms_ . '/admin/views',
-            _templates_ . '/' . getTemplate() . '/layout'
+            _templates_ . '/' . getTemplate() . '/layout',
         ];
 
         foreach ($defaultPaths as $path) {
@@ -108,5 +113,4 @@ class TwigManager
     {
         return _files_ . '/cache/twig';
     }
-
 }

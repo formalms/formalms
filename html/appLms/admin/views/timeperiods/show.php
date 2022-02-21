@@ -5,44 +5,42 @@
 //Table
 
 $columns = [
-	['key' => 'title', 'label' => Lang::t('_NAME', 'standard'), 'sortable' => true],
-	//array('key' => 'label', 'label' => Lang::t('_TAG'), 'sortable' => true, 'editor' => 'YAHOO.courseCellEditor()'),
-	['key' => 'start_date', 'label' => Lang::t('_DATE_BEGIN'), 'sortable' => true/*, 'className' => 'img-cell'*/],
-	['key' => 'end_date', 'label' => Lang::t('_DATE_END'), 'sortable' => true/*, 'className' => 'img-cell'*/]
+    ['key' => 'title', 'label' => Lang::t('_NAME', 'standard'), 'sortable' => true],
+    //array('key' => 'label', 'label' => Lang::t('_TAG'), 'sortable' => true, 'editor' => 'YAHOO.courseCellEditor()'),
+    ['key' => 'start_date', 'label' => Lang::t('_DATE_BEGIN'), 'sortable' => true/*, 'className' => 'img-cell'*/],
+    ['key' => 'end_date', 'label' => Lang::t('_DATE_END'), 'sortable' => true/*, 'className' => 'img-cell'*/],
 ];
 
-
 if ($permissions['mod']) {
-	$icon = Get::img('standard/edit.png', Lang::t('_MOD', 'standard'));
-	$columns[] = ['key' => 'mod', 'label' => $icon, 'formatter'=>'doceboModify', 'className' => 'img-cell'];
+    $icon = Get::img('standard/edit.png', Lang::t('_MOD', 'standard'));
+    $columns[] = ['key' => 'mod', 'label' => $icon, 'formatter' => 'doceboModify', 'className' => 'img-cell'];
 }
 if ($permissions['del']) {
-	$icon = Get::img('standard/delete.png', Lang::t('_DEL', 'standard'));
-	$columns[] = ['key' => 'del', 'label' => $icon, 'formatter'=>'doceboDelete', 'className' => 'img-cell'];
+    $icon = Get::img('standard/delete.png', Lang::t('_DEL', 'standard'));
+    $columns[] = ['key' => 'del', 'label' => $icon, 'formatter' => 'doceboDelete', 'className' => 'img-cell'];
 }
 
-
 $params = [
-	'id'			=> 'timeperiods',
-	'ajaxUrl'		=> 'ajax.adm_server.php?r=alms/timeperiods/gettimeperiodslist',
-	'rowsPerPage'	=> Get::sett('visuItem', 25),
-	'startIndex'	=> 0,
-	'results'		=> Get::sett('visuItem', 25),
-	'sort'			=> 'title',
-	'dir'			=> 'asc',
-	'columns'		=> $columns,
-	'fields' => ['id', 'title', 'label', 'start_date', 'end_date', 'mod', 'del'],
-	'show' => 'table',
-	'generateRequest' => 'YAHOO.TimePeriods.requestBuilder',
-	'delDisplayField' => 'title'
+    'id' => 'timeperiods',
+    'ajaxUrl' => 'ajax.adm_server.php?r=alms/timeperiods/gettimeperiodslist',
+    'rowsPerPage' => Get::sett('visuItem', 25),
+    'startIndex' => 0,
+    'results' => Get::sett('visuItem', 25),
+    'sort' => 'title',
+    'dir' => 'asc',
+    'columns' => $columns,
+    'fields' => ['id', 'title', 'label', 'start_date', 'end_date', 'mod', 'del'],
+    'show' => 'table',
+    'generateRequest' => 'YAHOO.TimePeriods.requestBuilder',
+    'delDisplayField' => 'title',
 ];
 
 if ($permissions['add']) {
-	$rel_actions = [
-		'<a id="add_over" class="ico-wt-sprite subs_add" href="ajax.adm_server.php?r=alms/timeperiods/add"><span>'.Lang::t('_ADD', 'standard').'</span></a>',
-		'<a id="add_bott" class="ico-wt-sprite subs_add" href="ajax.adm_server.php?r=alms/timeperiods/add"><span>'.Lang::t('_ADD', 'standard').'</span></a>'
+    $rel_actions = [
+        '<a id="add_over" class="ico-wt-sprite subs_add" href="ajax.adm_server.php?r=alms/timeperiods/add"><span>' . Lang::t('_ADD', 'standard') . '</span></a>',
+        '<a id="add_bott" class="ico-wt-sprite subs_add" href="ajax.adm_server.php?r=alms/timeperiods/add"><span>' . Lang::t('_ADD', 'standard') . '</span></a>',
     ];
-	$params['rel_actions'] = $rel_actions;
+    $params['rel_actions'] = $rel_actions;
 }
 
 $this->widget('table', $params);

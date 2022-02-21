@@ -22,7 +22,6 @@ include Forma::inc(_lib_ . '/formatable/include.php');
 </style>
 <?php
 
-
 cout(
     getTitleArea($cert_name . ':&nbsp;' . Lang::t('_CERTIFICATE_AGGREGATE_ASSOCIATION', 'certificate'))
 );
@@ -57,14 +56,14 @@ cout(
                 "dataSrc": "",
             },
             language: {
-                "emptyTable": "<?= Lang::t('_NO_COURSE_FOUND', 'catalogue'); ?>",
-                "info": "<?= Lang::t('_INFO', 'datatable'); ?>",
-                "infoEmpty": "<?= Lang::t('_INFOEMPTY', 'datatable'); ?>",
+                "emptyTable": "<?php echo Lang::t('_NO_COURSE_FOUND', 'catalogue'); ?>",
+                "info": "<?php echo Lang::t('_INFO', 'datatable'); ?>",
+                "infoEmpty": "<?php echo Lang::t('_INFOEMPTY', 'datatable'); ?>",
                 select: {
                     rows: {
-                        0: "<?= Lang::t('_NO_ROWS_SELECTED', 'datatable'); ?>",
-                        1: "<?= Lang::t('_ONE_ROW_SELECTED', 'datatable'); ?>",
-                        _: "<?= Lang::t('_ROWS_SELECTED', 'datatable'); ?>",
+                        0: "<?php echo Lang::t('_NO_ROWS_SELECTED', 'datatable'); ?>",
+                        1: "<?php echo Lang::t('_ONE_ROW_SELECTED', 'datatable'); ?>",
+                        _: "<?php echo Lang::t('_ROWS_SELECTED', 'datatable'); ?>",
                     }
                 }
             },
@@ -81,19 +80,19 @@ cout(
                 },
                 {
                     data: 'codeCourse',
-                    title: "<?= Lang::t('_CODE') ?>",
+                    title: "<?php echo Lang::t('_CODE'); ?>",
                 },
                 {
                     data: 'nameCourse',
-                    title: "<?= Lang::t('_COURSE_NAME') ?>",
+                    title: "<?php echo Lang::t('_COURSE_NAME'); ?>",
                 },
                 {
                     data: 'pathCourse',
-                    title: "<?= Lang::t('_CATEGORY') ?>",
+                    title: "<?php echo Lang::t('_CATEGORY'); ?>",
                 },
                 {
                     data: 'stateCourse',
-                    title: "<?= Lang::t('_STATUS') ?>",
+                    title: "<?php echo Lang::t('_STATUS'); ?>",
                 }
             ],
             select: {
@@ -175,7 +174,7 @@ cout(
                         "node": node["idCategory"]
                     },
                     dataType: "json",
-                    url: "<?= 'ajax.adm_server.php?r=alms/aggregatedcertificate/getCourseList'?>",
+                    url: "<?php echo 'ajax.adm_server.php?r=alms/aggregatedcertificate/getCourseList'; ?>",
                     success: function (res) {
                         if (res !== null) {
                             course_ft._datatable.clear().rows.add(res).draw();
@@ -211,8 +210,8 @@ cout(
 
 <?php
 
-require_once('tab.php');
-require_once(_base_ . '/lib/lib.table.php');
+require_once 'tab.php';
+require_once _base_ . '/lib/lib.table.php';
 
 ?>
 
@@ -236,12 +235,10 @@ $id_table = 'course_ft';
 $arrTab = [
     [
         'title' => $title,
-        'content' =>
-            ($id_association > 0 ? $tb_courses->getTable() : '')
+        'content' => ($id_association > 0 ? $tb_courses->getTable() : '')
             . " <div id='treecategory'></div> "
-            . "<table class='table table-striped table-bordered' style='width:100%' id='{$id_table}'></table>"
-    ]
-
+            . "<table class='table table-striped table-bordered' style='width:100%' id='{$id_table}'></table>",
+    ],
 ];
 
 TabContainer::printStartHeader();

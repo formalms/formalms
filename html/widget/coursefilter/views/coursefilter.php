@@ -1,20 +1,16 @@
-<?php 
-$str_search = Lang::t("_SEARCH", 'standard'); 
-$str_elearning = Lang::t("_COURSE_TYPE_ELEARNING", 'course'); 
-$str_classroom = Lang::t("_CLASSROOM_COURSE", 'cart');
-$str_all = Lang::t("_ALL_COURSE_TYPE", 'course');
-
-
-
+<?php $str_search = Lang::t('_SEARCH', 'standard');
+$str_elearning = Lang::t('_COURSE_TYPE_ELEARNING', 'course');
+$str_classroom = Lang::t('_CLASSROOM_COURSE', 'cart');
+$str_all = Lang::t('_ALL_COURSE_TYPE', 'course');
 
 ?>
 
-<nav class="forma-quick-search-form filterBar quick_search_form navbar<?php echo isset($css_class) && $css_class != "" ? " " . $css_class : ""; ?>">
-    <?php //if ($common_options): ?>
+<nav class="forma-quick-search-form filterBar quick_search_form navbar<?php echo isset($css_class) && $css_class != '' ? ' ' . $css_class : ''; ?>">
+    <?php //if ($common_options):?>
         <div>
             <?php echo $common_options; ?>
         </div>
-    <?php //endif; ?>
+    <?php //endif;?>
 
     <div class="filterBar__legacyContainer">
 
@@ -28,7 +24,7 @@ $str_all = Lang::t("_ALL_COURSE_TYPE", 'course');
 
                 <div class="filterBar__mainsearch navbar-form form-group">
 
-                    <?php echo $list_category ? $list_category : ""; ?>
+                    <?php echo $list_category ? $list_category : ''; ?>
                     <select id="course_search_filter_type" name="filter_type" class="selectpicker" data-width=""
                             data-selected-text-format="count > 1" data-actions-box="true">
                         <option value="all"><?php echo $str_all; ?></option>
@@ -36,11 +32,11 @@ $str_all = Lang::t("_ALL_COURSE_TYPE", 'course');
                         <option value="classroom"><?php echo $str_classroom; ?></option>
                     </select>
 
-                    <?php echo $auxiliary_filter ? $auxiliary_filter : ""; ?>
-                    <?php echo $_label_list ? $_label_list : ""; ?>
+                    <?php echo $auxiliary_filter ? $auxiliary_filter : ''; ?>
+                    <?php echo $_label_list ? $_label_list : ''; ?>
                     
                     <script>
-                        var this_user = '<?php echo Docebo::user()->idst ?>';
+                        var this_user = '<?php echo Docebo::user()->idst; ?>';
                         $(function(){
                             v = getCookie(this_user+'.my_course.type');
                             if (v != '') {$("#course_search_filter_type").selectpicker('val', v );}
@@ -85,15 +81,15 @@ $str_all = Lang::t("_ALL_COURSE_TYPE", 'course');
                     
 
                     <div class="filterBar__searchAndReset input-group">
-                        <a href='#' class="filterBar__search" id='<?php echo $id; ?>_filter_set1'>Cerca<?php // echo Lang::t('_FILTER_APPLY', 'standard'); ?></a>
-                        <a href='#' class="filterBar__reset" id='<?php echo $id; ?>_filter_reset'>Azzera <?php //echo Lang::t('_FILTER_RESET', 'report'); ?></a>
+                        <a href='#' class="filterBar__search" id='<?php echo $id; ?>_filter_set1'>Cerca<?php // echo Lang::t('_FILTER_APPLY', 'standard');?></a>
+                        <a href='#' class="filterBar__reset" id='<?php echo $id; ?>_filter_reset'>Azzera <?php //echo Lang::t('_FILTER_RESET', 'report');?></a>
                     </div>
 
 
                     <div class="filterBar__searchInput input-group">
-                        <?php echo Form::getInputTextfield("form-control", $id . "_filter_text", "filter_text", $filter_text, '', 255, 'equired data-toggle="popover" data-content="' . Lang::t('_INSERT', 'standard') . " " . strtolower(Lang::t('_COURSE_NAME', 'standard')) . '" placeholder=' . $str_search); ?>
+                        <?php echo Form::getInputTextfield('form-control', $id . '_filter_text', 'filter_text', $filter_text, '', 255, 'equired data-toggle="popover" data-content="' . Lang::t('_INSERT', 'standard') . ' ' . strtolower(Lang::t('_COURSE_NAME', 'standard')) . '" placeholder=' . $str_search); ?>
                         <div class="input-group-btn">
-                            <button type="submit" class="btn btn-default" id="<?php echo $id . "_filter_set2"; ?>"
+                            <button type="submit" class="btn btn-default" id="<?php echo $id . '_filter_set2'; ?>"
                                     name="filter_set" title="<?php echo Lang::t('_SEARCH', 'standard'); ?>">
                                 <span class="glyphicon glyphicon-search"></span>
                             </button>
@@ -111,9 +107,9 @@ $str_all = Lang::t("_ALL_COURSE_TYPE", 'course');
 
 
 
-        <?php if ($inline_filters) : ?>
+        <?php if ($inline_filters) { ?>
           <div class="filterBar__buttons navbar-extra"><?php echo $inline_filters; ?></div>
-        <?php endif ?>
+        <?php } ?>
 
 
 
@@ -122,10 +118,10 @@ $str_all = Lang::t("_ALL_COURSE_TYPE", 'course');
         <div class="filterBar__mobile navbar-header">
             <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#filter-container">
                 <span class="filter-label filter-open">
-                    <?php echo Lang::t("_FILTER_TAB_OPEN", 'standard'); ?>
+                    <?php echo Lang::t('_FILTER_TAB_OPEN', 'standard'); ?>
                 </span>
                 <span class="filter-label filter-closed">
-                    <?php echo Lang::t("_FILTER_TAB_CLOSE", 'standard'); ?>
+                    <?php echo Lang::t('_FILTER_TAB_CLOSE', 'standard'); ?>
                 </span>
             </button>
         </div>
@@ -137,10 +133,10 @@ $str_all = Lang::t("_ALL_COURSE_TYPE", 'course');
 
 
 
-<?php if ($js_callback_set || $js_callback_reset): ?>
+<?php if ($js_callback_set || $js_callback_reset) { ?>
     <script type="text/javascript">
 
-            <?php if ($js_callback_set): ?>
+            <?php if ($js_callback_set) { ?>
 
             $("#<?php echo $id; ?>_filter_text").on('keydown', 
                 function(e){
@@ -160,19 +156,19 @@ $str_all = Lang::t("_ALL_COURSE_TYPE", 'course');
                     saveCurrentFilter();
                     <?php echo $js_callback_set; ?>();
             })
-            <?php endif; ?>
+            <?php } ?>
 
-            <?php if ($js_callback_reset): ?>
+            <?php if ($js_callback_reset) { ?>
              $("#<?php echo $id; ?>_filter_reset").click(
                 function(e) {
                     e.preventDefault();
                     <?php echo $js_callback_reset; ?>();
              }); 
-            <?php endif; ?>
+            <?php } ?>
 
         
 
         
         
     </script>
-<?php endif; ?>
+<?php } ?>

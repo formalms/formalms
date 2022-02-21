@@ -1,15 +1,24 @@
-<?php defined("IN_FORMA") or die('Direct access is forbidden.');
+<?php
 
+/*
+ * FORMA - The E-Learning Suite
+ *
+ * Copyright (c) 2013-2022 (Forma)
+ * https://www.formalms.org
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ *
+ * from docebo 4.0.5 CE 2008-2012 (c) docebo
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ */
 
+defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-require_once(__DIR__ . '/certificate.base.php');
+require_once __DIR__ . '/certificate.base.php';
 
 class CertificateSubs_User extends CertificateSubstitution
 {
-
-    function getSubstitutionTags()
+    public function getSubstitutionTags()
     {
-
         $subs = [];
         $subs['[meta_assoc]'] = Lang::t('_META_ASSOC', 'certificate', 'lms');
         $subs['[display_name]'] = Lang::t('_DISPLAY_NAME', 'certificate', 'lms');
@@ -18,7 +27,7 @@ class CertificateSubs_User extends CertificateSubstitution
         $subs['[lastname]'] = Lang::t('_LASTNAME', 'certificate', 'lms');
 
         //variable fields
-        require_once($GLOBALS['where_framework'] . '/lib/lib.field.php');
+        require_once $GLOBALS['where_framework'] . '/lib/lib.field.php';
         $temp = new FieldList();
         $fields = $temp->getFlatAllFields();
 
@@ -29,16 +38,15 @@ class CertificateSubs_User extends CertificateSubstitution
         return $subs;
     }
 
-    function getSubstitution()
+    public function getSubstitution()
     {
-
         $subs = [];
 
-        $aclman =& Docebo::user()->getAclManager();
+        $aclman = &Docebo::user()->getAclManager();
         $user = $aclman->getUser($this->id_user, false);
 
         if ($this->id_meta) {
-            $sql = "SELECT title, description FROM %lms_certificate_meta WHERE idMetaCertificate = " . $this->id_meta;
+            $sql = 'SELECT title, description FROM %lms_certificate_meta WHERE idMetaCertificate = ' . $this->id_meta;
             $query = sql_query($sql);
             list($title_meta, $description_meta) = sql_fetch_row($query);
 
@@ -56,12 +64,13 @@ class CertificateSubs_User extends CertificateSubstitution
         $subs['[lastname]'] = $user[ACL_INFO_LASTNAME];
 
         //variable fields
-        require_once($GLOBALS['where_framework'] . '/lib/lib.field.php');
+        require_once $GLOBALS['where_framework'] . '/lib/lib.field.php';
 
         $temp = new FieldList();
         $fields = $temp->getFlatAllFields();
-        foreach ($fields as $key => $value)
+        foreach ($fields as $key => $value) {
             $subs['[userfield_' . $key . ']'] = $temp->showFieldForUser($this->id_user, $key);
+        }
 
         return $subs;
     }

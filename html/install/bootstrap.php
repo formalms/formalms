@@ -1,40 +1,48 @@
 <?php
 
+/*
+ * FORMA - The E-Learning Suite
+ *
+ * Copyright (c) 2013-2022 (Forma)
+ * https://www.formalms.org
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ *
+ * from docebo 4.0.5 CE 2008-2012 (c) docebo
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ */
 
+@error_reporting(E_COMPILE_ERROR | E_ERROR | E_CORE_ERROR);
 
-@error_reporting(E_COMPILE_ERROR|E_ERROR|E_CORE_ERROR);
-
-session_name("docebo_session");
+session_name('docebo_session');
 session_start();
 define('IN_FORMA', true);
 define('INSTALL_ENV', 'install');
-define("_deeppath_", "../");
-require(dirname(__FILE__).'/../base.php');
-if (file_exists(_base_.'/config.php')) { require(_base_.'/config.php'); } // FOR upgrade import_lang
-define('_installer_', _base_.'/install');
+define('_deeppath_', '../');
+require dirname(__FILE__) . '/../base.php';
+if (file_exists(_base_ . '/config.php')) {
+    require _base_ . '/config.php';
+} // FOR upgrade import_lang
+define('_installer_', _base_ . '/install');
 
-include(_lib_.'/lib.forma.php');
-include(_lib_.'/lib.docebo.php');
-include(_lib_.'/installer/lib.php');
-include(_lib_.'/installer/lib.lang.php');
-include(_lib_.'/installer/lib.step.php');
-include(_lib_.'/installer/lib.pagewriter.php');
-include(_lib_.'/installer/lib.template.php');
+include _lib_ . '/lib.forma.php';
+include _lib_ . '/lib.docebo.php';
+include _lib_ . '/installer/lib.php';
+include _lib_ . '/installer/lib.lang.php';
+include _lib_ . '/installer/lib.step.php';
+include _lib_ . '/installer/lib.pagewriter.php';
+include _lib_ . '/installer/lib.template.php';
 PageWriter::init();
 
-include(_base_.'/lib/lib.get.php');
-include(_base_.'/lib/lib.utils.php');
-include(_base_.'/lib/lib.yuilib.php');
-include(_base_.'/lib/lib.form.php');
-
+include _base_ . '/lib/lib.get.php';
+include _base_ . '/lib/lib.utils.php';
+include _base_ . '/lib/lib.yuilib.php';
+include _base_ . '/lib/lib.form.php';
 
 $GLOBALS['page']->setZone('page_head');
 YuiLib::load();
 $GLOBALS['page']->setZone('main');
 
-
-$GLOBALS['page']->add(Util::get_css(getTemplatePath().'style/base.css', true), 'page_head');
-$GLOBALS['page']->add(Util::get_css(getTemplatePath().'style/form.css', true), 'page_head');
+$GLOBALS['page']->add(Util::get_css(getTemplatePath() . 'style/base.css', true), 'page_head');
+$GLOBALS['page']->add(Util::get_css(getTemplatePath() . 'style/form.css', true), 'page_head');
 $GLOBALS['page']->add(Util::get_js('./lib/base.js', true), 'page_head');
 $GLOBALS['page']->add(Util::get_js('../addons/yui/event-mouseenter/event-mouseenter-min.js', true), 'page_head');
-?>

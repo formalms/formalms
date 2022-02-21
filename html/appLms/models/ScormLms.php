@@ -1,14 +1,24 @@
 <?php
 
+/*
+ * FORMA - The E-Learning Suite
+ *
+ * Copyright (c) 2013-2022 (Forma)
+ * https://www.formalms.org
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ *
+ * from docebo 4.0.5 CE 2008-2012 (c) docebo
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ */
+
 /**
  * Created by PhpStorm.
  * User: giuseppenucifora
  * Date: 11/12/2016
- * Time: 15:22
+ * Time: 15:22.
  */
 class ScormLms extends Model
 {
-
     protected $idSource;
 
     protected $idUser;
@@ -33,7 +43,6 @@ class ScormLms extends Model
 
     public function __construct($id_source, $idUser = false)
     {
-
         $this->idSource = $id_source;
         $this->idUser = $idUser;
         $this->passed = 0;
@@ -43,9 +52,9 @@ class ScormLms extends Model
         $this->maxScore = 0;
         $this->minScore = 0;
 
-        $query_report = "
+        $query_report = '
 						SELECT *
-						FROM " . $GLOBALS['prefix_lms'] . "_scorm_tracking
+						FROM ' . $GLOBALS['prefix_lms'] . "_scorm_tracking
 						WHERE idscorm_item = '" . $this->idSource . "'";
 
         if ($idUser) {
@@ -60,7 +69,7 @@ class ScormLms extends Model
         $votominimo = 9999;
         $result = sql_query($query_report);
         while ($report = sql_fetch_assoc($result)) {
-            if ($report['score_raw'] != NULL) {
+            if ($report['score_raw'] != null) {
                 if ($report['score_raw'] > $votomassimo) {
                     $votomassimo = $report['score_raw'];
                 }
@@ -72,7 +81,7 @@ class ScormLms extends Model
                 $total = $total + 1;
 
                 if ($report['lesson_status'] == 'passed') {
-                    $passed++;
+                    ++$passed;
                 }
             }
 
@@ -82,24 +91,25 @@ class ScormLms extends Model
         $media = ($total == 0 ? '0' : $media / $total);
         $result = sql_query($query_report);
         $var = 0;
-        while ($report = sql_fetch_assoc($result))
-            if ($report['score_raw'] != NULL) {
+        while ($report = sql_fetch_assoc($result)) {
+            if ($report['score_raw'] != null) {
                 $var = $var + pow($media - $report['score_raw'], 2);
                 if ($this->idUser) {
                     $this->scoreRaw = $report['score_raw'];
                 }
             } else {
-                $this->scoreRaw = "-";
+                $this->scoreRaw = '-';
             }
+        }
         $varianza = ($total == 0 ? '0' : floor($var / $total));
 
         if ($votominimo == 9999) {
-            $votominimo = "";
+            $votominimo = '';
         }
 
         $this->passed = $passed;
         $this->notPassed = $total - $passed;
-        $this->notChecked = "-";
+        $this->notChecked = '-';
         $this->average = $media;
         $this->varianza = $varianza;
         $this->maxScore = $votomassimo;
@@ -194,8 +204,9 @@ class ScormLms extends Model
         return $this->idTrack;
     }
 
-    public function getHistory(){
-        $query_report = "SELECT * FROM " . $GLOBALS['prefix_lms'] . "_scorm_tracking_history
+    public function getHistory()
+    {
+        $query_report = 'SELECT * FROM ' . $GLOBALS['prefix_lms'] . "_scorm_tracking_history
 						                    WHERE idscorm_tracking = '" . $this->idTrack . "'";
 
         //echo $query_report;
@@ -204,5 +215,4 @@ class ScormLms extends Model
 
         return $num;
     }
-
 }

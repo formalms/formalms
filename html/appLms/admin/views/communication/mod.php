@@ -1,44 +1,44 @@
 <?php
 echo getTitleArea([
-	'index.php?r=alms/communication/show' => Lang::t('_COMMUNICATIONS', 'communication'),
-	Lang::t('_MOD', 'communication')
+    'index.php?r=alms/communication/show' => Lang::t('_COMMUNICATIONS', 'communication'),
+    Lang::t('_MOD', 'communication'),
 ]);
 ?>
 <div class="std_block">
 <?php
 echo Form::openForm('add_comm', 'index.php?r=alms/communication/update', false, false, 'multipart/form-data')
 
-	.Form::getHidden('id_comm', 'id_comm', Get::req('id_comm', DOTY_MIXED, $data['id_comm']) )
+    . Form::getHidden('id_comm', 'id_comm', Get::req('id_comm', DOTY_MIXED, $data['id_comm']))
 
-	.Form::openElementSpace()
-	.Form::getTextfield(Lang::t('_TITLE', 'communication'), 'title', 'title', 255, Get::req('title', DOTY_MIXED, $data['title']) )
-	.Form::getDatefield(Lang::t('_DATE', 'communication'), 'publish_date', 'publish_date', Get::req('publish_date', DOTY_MIXED, $data['publish_date']) )
-	
-	.Form::getTextarea(Lang::t('_DESCRIPTION', 'communication'), 'description', 'description', Get::req('description', DOTY_MIXED, $data['description']) )
-	.Form::getHidden('type_of', 'type_of', Get::req('type_of', DOTY_MIXED, $data['type_of']) )
+    . Form::openElementSpace()
+    . Form::getTextfield(Lang::t('_TITLE', 'communication'), 'title', 'title', 255, Get::req('title', DOTY_MIXED, $data['title']))
+    . Form::getDatefield(Lang::t('_DATE', 'communication'), 'publish_date', 'publish_date', Get::req('publish_date', DOTY_MIXED, $data['publish_date']))
+
+    . Form::getTextarea(Lang::t('_DESCRIPTION', 'communication'), 'description', 'description', Get::req('description', DOTY_MIXED, $data['description']))
+    . Form::getHidden('type_of', 'type_of', Get::req('type_of', DOTY_MIXED, $data['type_of']))
 /*
-	.Form::getTextfield(Lang::t('_COURSE', 'course'), 'set_course', 'set_course', 255, $course_name)
-	.'<div id="set_course_container"></div>'
-*/	
-	.'<div class="quick_search_form qsf_left">'
-	.'<div class="form_line_l">'
-	.'<label class="label_effect" for="set_course">'.Lang::t('_COURSE', 'course').'</label>&nbsp;'
-	.Form::getInputTextfield('search_t', 'set_course', 'set_course', $course_name, '', 255, '')
-	.'<div id="set_course_container"></div>'
-	.'</div>'
-	.'</div>'
+    .Form::getTextfield(Lang::t('_COURSE', 'course'), 'set_course', 'set_course', 255, $course_name)
+    .'<div id="set_course_container"></div>'
+*/
+    . '<div class="quick_search_form qsf_left">'
+    . '<div class="form_line_l">'
+    . '<label class="label_effect" for="set_course">' . Lang::t('_COURSE', 'course') . '</label>&nbsp;'
+    . Form::getInputTextfield('search_t', 'set_course', 'set_course', $course_name, '', 255, '')
+    . '<div id="set_course_container"></div>'
+    . '</div>'
+    . '</div>'
 
-	.Form::getHidden('id_course', 'id_course', $data['id_course'])
-	.Form::getHidden('id_category', 'id_category', $data['id_category'])
+    . Form::getHidden('id_course', 'id_course', $data['id_course'])
+    . Form::getHidden('id_category', 'id_category', $data['id_category'])
 
-	.Form::closeElementSpace()
+    . Form::closeElementSpace()
 
-	.Form::openButtonSpace()
-	.Form::getButton('save', 'save', Lang::t('_SAVE', 'communication') )
-	.Form::getButton('undo', 'undo', Lang::t('_UNDO', 'communication') )
-	.Form::closeButtonSpace()
+    . Form::openButtonSpace()
+    . Form::getButton('save', 'save', Lang::t('_SAVE', 'communication'))
+    . Form::getButton('undo', 'undo', Lang::t('_UNDO', 'communication'))
+    . Form::closeButtonSpace()
 
-	.Form::closeForm();
+    . Form::closeForm();
 ?>
 </div>
 <script type="text/javascript">

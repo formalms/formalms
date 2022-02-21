@@ -1,9 +1,19 @@
-<?php defined('IN_FORMA') or die('Direct access is forbidden.');
+<?php
 
+/*
+ * FORMA - The E-Learning Suite
+ *
+ * Copyright (c) 2013-2022 (Forma)
+ * https://www.formalms.org
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ *
+ * from docebo 4.0.5 CE 2008-2012 (c) docebo
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ */
 
+defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 //require_once(_base_.'/addons/phpmailer/language/phpmailer.lang-en.php'); // not need for phpmailer 5.2.
-
 
 //property name: multisending mode
 define('MAIL_MULTIMODE', 'multimode');
@@ -32,14 +42,11 @@ define('MAIL_HEADERS', 'headers');
 //specify if class properties should be reset after sending
 define('MAIL_RESET', 'reset');
 
-
 class FormaMailer extends PHPMailer\PHPMailer\PHPMailer
 {
     /** @var FormaMailer */
     private static $instance = null;
-    /**
-     * @var DoceboACLManager
-     */
+
     private DoceboACLManager $aclManager;
 
     //default config for phpmailer, to set any time we send a mail, except for user-defined params
@@ -48,7 +55,7 @@ class FormaMailer extends PHPMailer\PHPMailer\PHPMailer
     private string $mailTemplate = 'mail.html.twig';
 
     //the constructor
-    function __construct()
+    public function __construct()
     {
         $this->aclManager = new DoceboACLManager();
 
@@ -77,12 +84,10 @@ class FormaMailer extends PHPMailer\PHPMailer\PHPMailer
         if (self::$instance === null) {
             self::$instance = new FormaMailer();
         }
+
         return self::$instance;
     }
 
-    /**
-     * @param string $mailTemplate
-     */
     public function setMailTemplate(string $mailTemplate): void
     {
         $this->mailTemplate = $mailTemplate;
@@ -94,7 +99,7 @@ class FormaMailer extends PHPMailer\PHPMailer\PHPMailer
             _adm_ . '/views/mail',
             _lms_ . '/views/mail',
             _lms_ . '/admin/views/mail',
-            _templates_ . '/' . getTemplate() . '/layout/mail'
+            _templates_ . '/' . getTemplate() . '/layout/mail',
         ];
 
         if (getTemplate() !== 'standard') {
@@ -107,7 +112,6 @@ class FormaMailer extends PHPMailer\PHPMailer\PHPMailer
             }
         }
     }
-
 
     //convert html into plain txt in utf-8 avoiding the bug
     private function ConvertToPlain_UTF8(&$html)
@@ -131,9 +135,8 @@ class FormaMailer extends PHPMailer\PHPMailer\PHPMailer
         return $res;
     }
 
-
     //restore default configuration after sending mail
-    function ResetToDefault()
+    public function ResetToDefault()
     {
         $this->From = '';
         $this->FromName = '';
@@ -155,20 +158,16 @@ class FormaMailer extends PHPMailer\PHPMailer\PHPMailer
     }
 
     /**
-     * @param string $sender
-     * @param array $recipients
-     * @param string $subject
-     * @param string $body
-     * @param array $attachments
-     * @param array $params
      * @return array|false
+     *
      * @throws \PHPMailer\PHPMailer\Exception
      */
-    function SendMail(string $sender, array $recipients, string $subject, string $body, array $attachments = [], array $params = [])
+    public function SendMail(string $sender, array $recipients, string $subject, string $body, array $attachments = [], array $params = [])
     {
         $output = [];
         if (Get::cfg('demo_mode')) {
             $this->ResetToDefault();
+
             return false;
         }
 
@@ -233,7 +232,6 @@ class FormaMailer extends PHPMailer\PHPMailer\PHPMailer
             }
         }
         foreach ($replyTo as $value) {
-
             if ($params[MAIL_REPLYTO_ACLNAME]) {
                 $temp = $this->aclManager->getUserByEmail($value);
                 $this->AddReplyTo($value, $temp[ACL_INFO_FIRSTNAME] . ' ' . $temp[ACL_INFO_LASTNAME]);
@@ -257,19 +255,18 @@ class FormaMailer extends PHPMailer\PHPMailer\PHPMailer
 
         $this->Subject = $subject;
         if (isset($params[MAIL_HTML])) {
-
             $eventResponse = Events::trigger('core.mail.template.rendering',
                 [
                     'layout' => $this->mailTemplate,
                     'layoutPath' => '',
                     'subject' => $subject,
                     'body' => $body,
-                    'otherParams' => []
+                    'otherParams' => [],
                 ]
             );
 
             try {
-                if (!empty($eventResponse['path'])){
+                if (!empty($eventResponse['path'])) {
                     \appCore\Template\TwigManager::getInstance()->addPathInLoader($eventResponse['layoutPath']);
                 }
 
@@ -277,7 +274,7 @@ class FormaMailer extends PHPMailer\PHPMailer\PHPMailer
                     [
                         'subject' => $eventResponse['subject'],
                         'body' => $eventResponse['body'],
-                        'otherParams' => $eventResponse['otherParams']
+                        'otherParams' => $eventResponse['otherParams'],
                     ]
                 );
             } catch (\Exception $exception) {
@@ -289,17 +286,15 @@ class FormaMailer extends PHPMailer\PHPMailer\PHPMailer
                     'html' => $html,
                     'subject' => $subject,
                     'body' => $body,
-                    'otherParams' => $eventResponse['otherParams']
+                    'otherParams' => $eventResponse['otherParams'],
                 ]
             );
 
             $this->msgHTML($eventResponse['html']);
-
         } else {
             $this->Body = $body;
             $this->AltBody = $this->ConvertToPlain_UTF8($body);
         }
-
 
         // MAIL_RECIPIENTSCC
         if (isset($params[MAIL_RECIPIENTSCC])) {
@@ -308,7 +303,6 @@ class FormaMailer extends PHPMailer\PHPMailer\PHPMailer
                 try {
                     $this->addCC($user_mail_recipientscc);
                 } catch (\PHPMailer\PHPMailer\Exception $e) {
-
                 }
             }
         }
@@ -320,7 +314,6 @@ class FormaMailer extends PHPMailer\PHPMailer\PHPMailer
                 try {
                     $this->addBCC($user_mail_recipientsbcc);
                 } catch (\PHPMailer\PHPMailer\Exception $e) {
-
                 }
             }
         }
@@ -342,14 +335,12 @@ class FormaMailer extends PHPMailer\PHPMailer\PHPMailer
                 try {
                     $this->addBCC($user_ccn_for_system_emails);
                 } catch (\PHPMailer\PHPMailer\Exception $e) {
-
                 }
             }
         }
         //----------------------------------------------------------------------------
 
         foreach ($recipients as $recipient) {
-
             if ($params[MAIL_RECIPIENT_ACLNAME]) {
                 $temp = $this->aclManager->getUserByEmail($recipient);
                 $name = $temp[ACL_INFO_FIRSTNAME] . ' ' . $temp[ACL_INFO_LASTNAME];
@@ -371,7 +362,6 @@ class FormaMailer extends PHPMailer\PHPMailer\PHPMailer
                         break;
                 }
             } catch (\PHPMailer\PHPMailer\Exception $e) {
-
             }
 
             $sent = $this->send();
@@ -387,9 +377,9 @@ class FormaMailer extends PHPMailer\PHPMailer\PHPMailer
             $this->ClearAddresses();
         }
 
-
         //reset the class
         $this->ResetToDefault();
+
         return $output;
     }
 }

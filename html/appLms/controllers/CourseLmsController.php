@@ -1,57 +1,64 @@
-<?php defined("IN_FORMA") or die('Direct access is forbidden.');
+<?php
 
+/*
+ * FORMA - The E-Learning Suite
+ *
+ * Copyright (c) 2013-2022 (Forma)
+ * https://www.formalms.org
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ *
+ * from docebo 4.0.5 CE 2008-2012 (c) docebo
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ */
 
+defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-require_once(Forma::inc(_base_ . '/lib/lib.json.php'));
-require_once(Forma::inc(_base_ . '/lib/lib.user_profile.php'));
-require_once(Forma::inc(_adm_ . '/lib/lib.myfiles.php'));
+require_once Forma::inc(_base_ . '/lib/lib.json.php');
+require_once Forma::inc(_base_ . '/lib/lib.user_profile.php');
+require_once Forma::inc(_adm_ . '/lib/lib.myfiles.php');
 
 class CourseLmsController extends LmsController
 {
     /**
      * @var UserProfileData the instance of the profile data manager
-     * @access private
      */
-    var $userProfileDataManager;
+    public $userProfileDataManager;
 
     public function init()
     {
-        require_once(_adm_ . '/lib/lib.field.php');
+        require_once _adm_ . '/lib/lib.field.php';
 
-        /** @var Services_JSON json */
+        /* @var Services_JSON json */
         $this->json = new Services_JSON();
-        $this->_mvc_name = "course";
+        $this->_mvc_name = 'course';
         $this->permissions = [
             'view' => true,
-            'mod' => true
+            'mod' => true,
         ];
 
         $this->userProfileDataManager = new UserProfileData();
 
         if (!Docebo::user()->isAnonymous()) {
-
             define('_PATH_COURSE', '/appLms/' . Get::sett('pathcourse'));
 
-            require_once($GLOBALS['where_lms'] . '/lib/lib.levels.php');
-
+            require_once $GLOBALS['where_lms'] . '/lib/lib.levels.php';
         } elseif (!isset($_SESSION['idCourse'])) {
             errorCommunication($lang->def('_FIRSTACOURSE'));
-
-        } else echo "You can't access";
+        } else {
+            echo "You can't access";
+        }
     }
 
     public function infocourse()
     {
-       
         checkPerm('view_info', false, 'course');
-        
+
         try {
             $acl_man = Docebo::user()->getAclManager();
-            $lang =& DoceboLanguage::createInstance('course');
+            $lang = &DoceboLanguage::createInstance('course');
             $course = $GLOBALS['course_descriptor']->getAllInfo();
             $levels = CourseLevel::getLevels();
         } catch (\Exception $exception) {
-
         }
 
         $status_lang = [
@@ -59,7 +66,7 @@ class CourseLmsController extends LmsController
             1 => $lang->def('_ACTIVE'),
             2 => $lang->def('_CST_CONFIRMED'),
             3 => $lang->def('_CST_CONCLUDED'),
-            4 => $lang->def('_CST_CANCELLED')
+            4 => $lang->def('_CST_CANCELLED'),
         ];
 
         $difficult_lang = [
@@ -67,14 +74,14 @@ class CourseLmsController extends LmsController
             'easy' => $lang->def('_DIFFICULT_EASY'),
             'medium' => $lang->def('_DIFFICULT_MEDIUM'),
             'difficult' => $lang->def('_DIFFICULT_DIFFICULT'),
-            'verydifficult' => $lang->def('_DIFFICULT_VERYDIFFICULT')
+            'verydifficult' => $lang->def('_DIFFICULT_VERYDIFFICULT'),
         ];
 
         $subs_lang = [
             0 => $lang->def('_COURSE_S_GODADMIN'),
             1 => $lang->def('_COURSE_S_MODERATE'),
             2 => $lang->def('_COURSE_S_FREE'),
-            3 => $lang->def('_COURSE_S_SECURITY_CODE')
+            3 => $lang->def('_COURSE_S_SECURITY_CODE'),
         ];
 
         $course['difficulty_translate'] = $difficult_lang[$course['difficult']];
@@ -100,27 +107,23 @@ class CourseLmsController extends LmsController
 
             $course['quota'] = $quota;
         }
-        
+
         $obj_course = new DoceboCourse($_SESSION['idCourse']);
         $info_course = $obj_course->getAllInfo();
-        $id_date = CourseLms::getMyDateCourse($_SESSION['idCourse']);            
-        $info_date =  ($info_course['course_type']=='classroom' ? CourseLms::getInfoDate($id_date): '');
-        
-        foreach ($levels as $key => $level) {
+        $id_date = CourseLms::getMyDateCourse($_SESSION['idCourse']);
+        $info_date = ($info_course['course_type'] == 'classroom' ? CourseLms::getInfoDate($id_date) : '');
 
+        foreach ($levels as $key => $level) {
             if ($course['level_show_user'] & (1 << $key)) {
                 $course['show_users'] = true;
-                if($info_course['course_type']=='classroom'){
-                    
-                    if($_SESSION['levelCourse']==7){
-                        $users =& $acl_man->getUsersMappedData(Man_Course::getIdUserOfLevel($_SESSION['idCourse'], $key, $_SESSION['idEdition']));
-                    }else{
-                        $users =& $acl_man->getUsersMappedData(CourseLms::getIdUserOfLevelDate($_SESSION['idCourse'],$key, $id_date ));
-                        
+                if ($info_course['course_type'] == 'classroom') {
+                    if ($_SESSION['levelCourse'] == 7) {
+                        $users = &$acl_man->getUsersMappedData(Man_Course::getIdUserOfLevel($_SESSION['idCourse'], $key, $_SESSION['idEdition']));
+                    } else {
+                        $users = &$acl_man->getUsersMappedData(CourseLms::getIdUserOfLevelDate($_SESSION['idCourse'], $key, $id_date));
                     }
-                
-                }else{
-                    $users =& $acl_man->getUsersMappedData(Man_Course::getIdUserOfLevel($_SESSION['idCourse'], $key, $_SESSION['idEdition']));
+                } else {
+                    $users = &$acl_man->getUsersMappedData(Man_Course::getIdUserOfLevel($_SESSION['idCourse'], $key, $_SESSION['idEdition']));
                 }
                 $course[$level] = ['name' => $level, 'users' => $users];
             }
@@ -147,22 +150,20 @@ class CourseLmsController extends LmsController
 
             $course['cannot_enter'][] = $lang->def('_USER_STATUS_BEGIN');
             $course['cannot_enter'][] = $lang->def('_USER_STATUS_END');
-
         }
-        
+
         //checking if  message for enabled current user
         $ma = new Man_MiddleArea();
         $course['can_access_messages'] = $ma->currentCanAccessObj('mo_message');
-        
 
         $data = [
             'templatePath' => getPathTemplate(),
             'route' => [
                 'message' => ['url' => 'index.php?r=lms/message/directWrite'],
-                'profile' => ['url' => 'index.php?r=lms/course/viewprofile']
+                'profile' => ['url' => 'index.php?r=lms/course/viewprofile'],
             ],
             'course' => $course,
-            'info_date' => $info_date
+            'info_date' => $info_date,
         ];
 
         $this->render('infocourse', $data);
@@ -170,7 +171,7 @@ class CourseLmsController extends LmsController
 
     private function statusNoEnter($perm, $status)
     {
-        return ($perm & (1 << $status));
+        return $perm & (1 << $status);
     }
 
     public function viewprofile()
@@ -182,12 +183,10 @@ class CourseLmsController extends LmsController
         $user = $acl_man->getUser($idUser, false);
 
         $last_view = $this->userProfileDataManager->getUserProfileViewList($idUser, 15);
-        $friend_list =& $this->userProfileDataManager->getUserFriend($idUser);
+        $friend_list = &$this->userProfileDataManager->getUserFriend($idUser);
         $user_stat = $this->userProfileDataManager->getUserStats($idUser);
         $ma = new Man_MiddleArea();
         $can_access_messages = $ma->currentCanAccessObj('mo_message');
-        
-        
 
         $data = [
             'user' => $acl_man->getUserMappedData($user),
@@ -197,12 +196,11 @@ class CourseLmsController extends LmsController
             'templatePath' => getPathTemplate(),
             'route' => [
                 'message' => ['url' => 'index.php?r=lms/message/directWrite'],
-                'profile' => ['url' => 'index.php?r=lms/course/viewprofile']
+                'profile' => ['url' => 'index.php?r=lms/course/viewprofile'],
             ],
-            'can_access_messages' => $can_access_messages
+            'can_access_messages' => $can_access_messages,
         ];
 
         $this->render('viewprofile', $data);
     }
 }
-

@@ -1,5 +1,17 @@
-<?php defined("IN_FORMA") or die('Direct access is forbidden.');
+<?php
 
+/*
+ * FORMA - The E-Learning Suite
+ *
+ * Copyright (c) 2013-2022 (Forma)
+ * https://www.formalms.org
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ *
+ * from docebo 4.0.5 CE 2008-2012 (c) docebo
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ */
+
+defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 class LomanagerLmsController extends LmsController
 {
@@ -9,14 +21,14 @@ class LomanagerLmsController extends LmsController
     protected $json;
 
     /**
-     * @var LomanagerLms $model
+     * @var LomanagerLms
      */
     protected $model;
 
     public function init()
     {
         if (isset($_SESSION['idCourse'])) {
-            $this->idCourse = (int)$_SESSION['idCourse'];
+            $this->idCourse = (int) $_SESSION['idCourse'];
         }
         checkPerm('view', false, 'storage');
         $this->json = new Services_JSON();
@@ -31,6 +43,7 @@ class LomanagerLmsController extends LmsController
     /**
      * @param $idCourse
      * @param false $idFolder
+     *
      * @return array|void
      */
     protected function getFolders($idCourse, $idFolder = false)
@@ -71,25 +84,23 @@ class LomanagerLmsController extends LmsController
         $lo_types = $this->model->getLoTypes();
 
         $tabsControllers = [];
-            
-            
-        if (checkPerm('home', true, 'storage') ) {
+
+        if (checkPerm('home', true, 'storage')) {
             $tabsControllers[] = new LomanagerhomerepoLmsController();
         }
-		
-	    if (checkPerm('lesson', true, 'storage') ) {
+
+        if (checkPerm('lesson', true, 'storage')) {
             $tabsControllers[] = new LomanagerorganizationLmsController();
         }
 
-	    if (checkPerm('public', true, 'storage') ) {
+        if (checkPerm('public', true, 'storage')) {
             $tabsControllers[] = new LomanagerrepoLmsController();
         }
-		
+
         $tabs = [];
 
         /** @var LomanagerLmsController $controller */
         foreach ($tabsControllers as $controller) {
-
             $tabs[] = $controller->getTab();
         }
 
@@ -164,14 +175,14 @@ class LomanagerLmsController extends LmsController
                 $responseData[] = ['success' => $res, 'id' => $id];
             }
         }
-        die($this->json->encode($responseData));
+        exit($this->json->encode($responseData));
     }
 
     public function reorder()
     {
         $newParent = Get::req('newParent', DOTY_INT, false);
         $newOrderString = Get::req('newOrder', DOTY_STRING, false);
-        $newOrder = explode(",", $newOrderString);
+        $newOrder = explode(',', $newOrderString);
         $newOrder = array_filter($newOrder);
 
         $responseData = [];
@@ -180,7 +191,7 @@ class LomanagerLmsController extends LmsController
             $res = $this->model->reorder($id, $newParent, $newOrder ? $newOrder : null);
             $responseData = ['success' => $res, 'id' => $id];
         }
-        die($this->json->encode($responseData));
+        exit($this->json->encode($responseData));
     }
 
     public function edit()
@@ -192,7 +203,7 @@ class LomanagerLmsController extends LmsController
         $saveName = $saveObj->getName('organization' . $_SESSION['idCourse'], true);
         $saveObj->save($saveName, $this->model->getTreeView()->getState());
 
-        $folder = $this->model->getTdb()->getFolderById((string)$id);
+        $folder = $this->model->getTdb()->getFolderById((string) $id);
         $lo = createLO($folder->otherValues[REPOFIELDOBJECTTYPE]);
         $lo->edit($folder->otherValues[REPOFIELDIDRESOURCE], 'index.php?r=lms/lomanager/completeAction');
     }
@@ -228,7 +239,7 @@ class LomanagerLmsController extends LmsController
                 }
             }
         }
-        die($this->json->encode(true));
+        exit($this->json->encode(true));
     }
 
     public function completeAction()
@@ -241,7 +252,7 @@ class LomanagerLmsController extends LmsController
     {
         switch ($learningObject['type']) {
             case 'item':
-                $resource = DbConn::getInstance()->query("SELECT  title, path FROM %lms_materials_lesson WHERE idLesson = " . (int)$learningObject['resource']);
+                $resource = DbConn::getInstance()->query('SELECT  title, path FROM %lms_materials_lesson WHERE idLesson = ' . (int) $learningObject['resource']);
 
                 $result = DbConn::getInstance()->fetch_assoc($resource);
                 $fileTypeArray = explode('.', $result['path']);

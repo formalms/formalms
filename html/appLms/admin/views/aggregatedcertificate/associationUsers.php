@@ -1,20 +1,18 @@
 <?php
 
 cout(
-    getTitleArea($cert_name.':&nbsp;'.Lang::t('_CERTIFICATE_AGGREGATE_ASSOCIATION', 'certificate'))
+    getTitleArea($cert_name . ':&nbsp;' . Lang::t('_CERTIFICATE_AGGREGATE_ASSOCIATION', 'certificate'))
 );
 
-$op =   'aggregatedcertificate/'.(get::req('type_assoc',DOTY_INT) == 0 ? 'associationUsersCourses': 'associationUsersPath' );
+$op = 'aggregatedcertificate/' . (get::req('type_assoc', DOTY_INT) == 0 ? 'associationUsersCourses' : 'associationUsersPath');
 
 cout('<div class="std_block">');
 
-    $user_selection->loadSelector('index.php?r=alms/'.$op,
+    $user_selection->loadSelector('index.php?r=alms/' . $op,
         false,
-        Lang::t('_USER_FOR_META_CERTIFICATE_ASSIGN','certificate'),
+        Lang::t('_USER_FOR_META_CERTIFICATE_ASSIGN', 'certificate'),
     true);
 
-    
-   
 cout('</div>');
 
 ?>

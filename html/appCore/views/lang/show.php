@@ -187,27 +187,27 @@
 			},
 			{
 				data: 'lang_translate',
-				title: '<span class="ico-sprite subs_elem"><span><?php echo Lang::t("_TRANSLATELANG", "admin_lang"); ?></span></span>',
+				title: '<span class="ico-sprite subs_elem"><span><?php echo Lang::t('_TRANSLATELANG', 'admin_lang'); ?></span></span>',
 				sortable: true
 			},
 			{
 				data: 'lang_diff',
-				title: '<span class="ico-sprite subs_diff"><span><?php echo Lang::t("_DIFF_LANG", "admin_lang"); ?></span></span>',
+				title: '<span class="ico-sprite subs_diff"><span><?php echo Lang::t('_DIFF_LANG', 'admin_lang'); ?></span></span>',
 				sortable: true
 			},
 			{
 				data: 'lang_export',
-				title: '<span class="ico-sprite subs_download"><span><?php echo Lang::t("_EXPORT_XML", "admin_lang"); ?></span></span>',
+				title: '<span class="ico-sprite subs_download"><span><?php echo Lang::t('_EXPORT_XML', 'admin_lang'); ?></span></span>',
 				sortable: true
 			},
 			{
 				data: 'lang_mod',
-				title: '<span class="ico-sprite subs_mod"><span><?php echo Lang::t("_MOD", "admin_lang"); ?></span></span>',
+				title: '<span class="ico-sprite subs_mod"><span><?php echo Lang::t('_MOD', 'admin_lang'); ?></span></span>',
 				sortable: true
 			},
 			{
 				data: 'lang_del',
-				title: '<span class="ico-sprite subs_del"><span><?php echo Lang::t("_DEL", "admin_lang"); ?></span></span>',
+				title: '<span class="ico-sprite subs_del"><span><?php echo Lang::t('_DEL', 'admin_lang'); ?></span></span>',
 				sortable: true
 			}
 
@@ -215,15 +215,15 @@
 		var rows = [];
 
 		body.forEach(function(item, k) {
-			link = '<a id="' + item.id + '" href="' + item.lang_translate + '" class="ico-sprite subs_elem" title="<?php echo Lang::t("_TRANSLATELANG", "admin_lang"); ?>"><span></span></a>'
+			link = '<a id="' + item.id + '" href="' + item.lang_translate + '" class="ico-sprite subs_elem" title="<?php echo Lang::t('_TRANSLATELANG', 'admin_lang'); ?>"><span></span></a>'
 			item.lang_translate = link;
-			link = '<a id="' + item.id + '" href="' + item.lang_diff + '" class="ico-sprite subs_diff" title="<?php echo Lang::t("_DIFF_LANG", "admin_lang"); ?>"><span></span></a>'
+			link = '<a id="' + item.id + '" href="' + item.lang_diff + '" class="ico-sprite subs_diff" title="<?php echo Lang::t('_DIFF_LANG', 'admin_lang'); ?>"><span></span></a>'
 			item.lang_diff = link;
-			link = '<a id="' + item.id + '" href="' + item.lang_export + '" class="ico-sprite subs_download" title="<?php echo Lang::t("_EXPORT_XML", "admin_lang"); ?>"><span></span></a>'
+			link = '<a id="' + item.id + '" href="' + item.lang_export + '" class="ico-sprite subs_download" title="<?php echo Lang::t('_EXPORT_XML', 'admin_lang'); ?>"><span></span></a>'
 			item.lang_export = link;
-			link = '<a id="' + item.id + '" href="#" onclick="openModFunc(\'' + item.lang_code + '\')" class="ico-sprite subs_mod" title="<?php echo Lang::t("_MOD", "admin_lang"); ?>"><span></span></a>'
+			link = '<a id="' + item.id + '" href="#" onclick="openModFunc(\'' + item.lang_code + '\')" class="ico-sprite subs_mod" title="<?php echo Lang::t('_MOD', 'admin_lang'); ?>"><span></span></a>'
 			item.lang_mod = link;
-			link = '<a id="' + item.id + '" href="#" onclick="delFunc(\'' + item.lang_code + '\')" class="ico-sprite subs_del" title="<?php echo Lang::t("_DEL", "admin_lang"); ?>"><span></span></a>'
+			link = '<a id="' + item.id + '" href="#" onclick="delFunc(\'' + item.lang_code + '\')" class="ico-sprite subs_del" title="<?php echo Lang::t('_DEL', 'admin_lang'); ?>"><span></span></a>'
 			item.lang_del = link;
 
 			rows.push(Object.assign({}, item));

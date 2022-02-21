@@ -1,7 +1,7 @@
 <?php
 echo getTitleArea([
-	'index.php?r=alms/kb/show' => Lang::t('_CONTENT_LIBRARY', 'kb'),
-	Lang::t('_ADD', 'kb')
+    'index.php?r=alms/kb/show' => Lang::t('_CONTENT_LIBRARY', 'kb'),
+    Lang::t('_ADD', 'kb'),
 ]);
 ?>
 <div class="std_block">
@@ -23,7 +23,7 @@ YAHOO.namespace("KbManagement");
 
 var KbManagement = {
 	filterText :"",
-	res_type :"<?php $type; ?>",
+	res_type :"<?php ?>",
 
 	requestBuilder: function (oState, oSelf) {
 		var sort, dir, startIndex, results;
@@ -97,10 +97,10 @@ YAHOO.util.Event.onDOMReady(function(e) {
 	<div>
 		<div class="simple_search_box" id="usermanagement_simple_filter_options" style="display: block;">
 			<?php
-				echo Form::getInputTextfield("search_t", "filter_text", "filter_text", $filter_text, '', 255, '' );
-				echo Form::getButton("filter_set", "filter_set", Lang::t('_SEARCH', 'standard'), "search_b");
-				echo Form::getButton("filter_reset", "filter_reset", Lang::t('_RESET', 'standard'), "reset_b");
-			?>
+                echo Form::getInputTextfield('search_t', 'filter_text', 'filter_text', $filter_text, '', 255, '');
+                echo Form::getButton('filter_set', 'filter_set', Lang::t('_SEARCH', 'standard'), 'search_b');
+                echo Form::getButton('filter_reset', 'filter_reset', Lang::t('_RESET', 'standard'), 'reset_b');
+            ?>
 		</div>
 	</div>
 </div>
@@ -111,29 +111,29 @@ YAHOO.util.Event.onDOMReady(function(e) {
 <?php
 
 $my_cols_def = [
-		['key' => 'title', 'label' => Lang::t('_TITLE', 'kb'), 'sortable' => true],
-		['key' => 'r_type', 'label' => Lang::t('_TYPE', 'kb'), 'sortable' => true],
-		['key' => 'env', 'label' => Lang::t('_ENVIRONMENT', 'kb'), 'sortable' => true],
-		['key' => 'edit', 'label' => '<span class="ico-sprite subs_categorize"><span>'.Lang::t('_CATEGORIZE', 'kb').'</span></span>', 'formatter'=>'frm_categorize', 'className' => 'img-cell']
+        ['key' => 'title', 'label' => Lang::t('_TITLE', 'kb'), 'sortable' => true],
+        ['key' => 'r_type', 'label' => Lang::t('_TYPE', 'kb'), 'sortable' => true],
+        ['key' => 'env', 'label' => Lang::t('_ENVIRONMENT', 'kb'), 'sortable' => true],
+        ['key' => 'edit', 'label' => '<span class="ico-sprite subs_categorize"><span>' . Lang::t('_CATEGORIZE', 'kb') . '</span></span>', 'formatter' => 'frm_categorize', 'className' => 'img-cell'],
 ];
 
 if ($type == 'scoitem') {
-	array_unshift($my_cols_def, [
-		'key' => 'scorm_title', 'label' => Lang::t('_CHAPTER_TITLE', 'kb'), 'sortable' => true
+    array_unshift($my_cols_def, [
+        'key' => 'scorm_title', 'label' => Lang::t('_CHAPTER_TITLE', 'kb'), 'sortable' => true,
     ]);
 }
 
 $this->widget('table', [
-	'id'			=> 'kb_table',
-	'ajaxUrl'		=> 'ajax.adm_server.php?r=alms/kb/getuncategorized',
-	'rowsPerPage'	=> Get::sett('visuItem', 25),
-	'startIndex'	=> 0,
-	'results'		=> Get::sett('visuItem', 25),
-	'sort'			=> 'title',
-	'dir'			=> 'asc',
-	'generateRequest' => 'KbManagement.requestBuilder',
-	'columns'		=> $my_cols_def,
-	'fields'		=> ['scorm_title', 'title', 'r_type', 'env', 'edit', 'r_item_id'],
+    'id' => 'kb_table',
+    'ajaxUrl' => 'ajax.adm_server.php?r=alms/kb/getuncategorized',
+    'rowsPerPage' => Get::sett('visuItem', 25),
+    'startIndex' => 0,
+    'results' => Get::sett('visuItem', 25),
+    'sort' => 'title',
+    'dir' => 'asc',
+    'generateRequest' => 'KbManagement.requestBuilder',
+    'columns' => $my_cols_def,
+    'fields' => ['scorm_title', 'title', 'r_type', 'env', 'edit', 'r_item_id'],
 ]);
 ?>
 

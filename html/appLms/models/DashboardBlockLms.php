@@ -1,25 +1,32 @@
 <?php
 
+/*
+ * FORMA - The E-Learning Suite
+ *
+ * Copyright (c) 2013-2022 (Forma)
+ * https://www.formalms.org
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ *
+ * from docebo 4.0.5 CE 2008-2012 (c) docebo
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ */
 
-defined("IN_FORMA") or die('Direct access is forbidden.');
+defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-
-
-require_once(Forma::inc(_lms_ . '/models/DashboardBlockForm.php'));
-require_once(Forma::inc(_lms_ . '/models/DashboardBlockFormItem.php'));
+require_once Forma::inc(_lms_ . '/models/DashboardBlockForm.php');
+require_once Forma::inc(_lms_ . '/models/DashboardBlockFormItem.php');
 
 /**
- * Class DashboardLms
+ * Class DashboardLms.
  */
 abstract class DashboardBlockLms extends Model
 {
-    const TYPE_4COL = '4-col';
-    const TYPE_3COL = '3-col';
-    const TYPE_2COL = '2-col';
-    const TYPE_1COL = '1-col';
+    public const TYPE_4COL = '4-col';
+    public const TYPE_3COL = '3-col';
+    public const TYPE_2COL = '2-col';
+    public const TYPE_1COL = '1-col';
 
-    const ALLOWED_TYPES = [self::TYPE_4COL, self::TYPE_3COL, self::TYPE_2COL, self::TYPE_1COL];
-
+    public const ALLOWED_TYPES = [self::TYPE_4COL, self::TYPE_3COL, self::TYPE_2COL, self::TYPE_1COL];
 
     abstract public function getViewPath();
 
@@ -65,7 +72,6 @@ abstract class DashboardBlockLms extends Model
     /** @var bool */
     protected $firstInsert;
 
-
     public function __construct($jsonConfig)
     {
         parent::__construct();
@@ -83,7 +89,7 @@ abstract class DashboardBlockLms extends Model
     public function getForm()
     {
         return [
-            DashboardBlockForm::getFormItem($this, 'title', DashboardBlockForm::FORM_TYPE_TEXT, false)
+            DashboardBlockForm::getFormItem($this, 'title', DashboardBlockForm::FORM_TYPE_TEXT, false),
         ];
     }
 
@@ -97,11 +103,13 @@ abstract class DashboardBlockLms extends Model
 
     /**
      * @param int $order
+     *
      * @return DashboardBlockLms
      */
     public function setOrder($order)
     {
         $this->order = $order;
+
         return $this;
     }
 
@@ -115,11 +123,13 @@ abstract class DashboardBlockLms extends Model
 
     /**
      * @param bool $enabled
+     *
      * @return DashboardBlockLms
      */
     public function setEnabled($enabled)
     {
         $this->enabled = $enabled;
+
         return $this;
     }
 
@@ -133,6 +143,7 @@ abstract class DashboardBlockLms extends Model
 
     /**
      * @param string $type
+     *
      * @return DashboardBlockLms
      */
     public function setType($type)
@@ -141,6 +152,7 @@ abstract class DashboardBlockLms extends Model
             throw new LogicException(sprintf('Selected type is not allowed : %s', $type));
         }
         $this->type = $type;
+
         return $this;
     }
 
@@ -154,11 +166,13 @@ abstract class DashboardBlockLms extends Model
 
     /**
      * @param array $enabledActions
+     *
      * @return DashboardBlockLms
      */
     public function setEnabledActions($enabledActions)
     {
         $this->enabledActions = $enabledActions;
+
         return $this;
     }
 
@@ -172,11 +186,13 @@ abstract class DashboardBlockLms extends Model
 
     /**
      * @param mixed $data
+     *
      * @return DashboardBlockLms
      */
     public function setData($data)
     {
         $this->data = $data;
+
         return $this;
     }
 
@@ -212,20 +228,19 @@ abstract class DashboardBlockLms extends Model
             'ajaxUrl' => 'ajax.adm_server.php?r=lms/dashboard/ajaxAction',
             'postData' => [
                 'block' => get_class($this),
-                'signature' => Util::getSignature()
+                'signature' => Util::getSignature(),
             ],
             'data' => $this->getData(),
             'registeredActions' => $this->getRegisteredActions(),
             'enabledActions' => $this->getEnabledActions(),
             'templatePath' => getPathTemplate(),
             'allowedFileTypes' => $this->getAllowedFileTypes(),
-            'allowedFileMimeTypes' => $this->getAllowedFileMimeTypes()
+            'allowedFileMimeTypes' => $this->getAllowedFileMimeTypes(),
         ];
     }
 
     public function getSettingsCommonViewData()
     {
-
         $data = $this->getCommonViewData();
 
         $data['form'] = $this->getFormArray();
@@ -245,10 +260,10 @@ abstract class DashboardBlockLms extends Model
             1 => Lang::t('_CST_AVAILABLE', 'course'),
             2 => Lang::t('_CST_CONFIRMED', 'course'),
             3 => Lang::t('_CST_CONCLUDED', 'course'),
-            4 => Lang::t('_CST_CANCELLED', 'course')
+            4 => Lang::t('_CST_CANCELLED', 'course'),
         ];
 
-        $dateBegin = trim(str_replace('00:00:00', '',  $course['course_date_begin']));
+        $dateBegin = trim(str_replace('00:00:00', '', $course['course_date_begin']));
         if ($dateBegin === '0000-00-00') {
             $dateBegin = '';
         } else {
@@ -292,11 +307,11 @@ abstract class DashboardBlockLms extends Model
             'type' => $course['course_type'],
             'nameCategory' => $this->getCategory($course['course_category_id']),
             'courseStatus' => $course['course_status'],
-            'courseStatusString' => $status_list[(int)$course['course_status']],
+            'courseStatusString' => $status_list[(int) $course['course_status']],
             'description' => $course['course_box_description'],
             'img' => (!empty($course['course_img_course']) ? Get::site_url() . _folder_files_ . '/' . _folder_lms_ . '/' . Get::sett('pathcourse') . $course['course_img_course'] : ''),
             'hours' => $hourBeginString . (!empty($hourEndString) ? ' ' . $hourEndString : ''),
-            'dates' => []
+            'dates' => [],
         ];
 
         return $courseData;
@@ -348,12 +363,13 @@ abstract class DashboardBlockLms extends Model
 
     protected function getCategory($idCat)
     {
-        $query = "select path from %lms_category where idCategory=" . $idCat;
+        $query = 'select path from %lms_category where idCategory=' . $idCat;
         $res = $this->db->query($query);
-        $path = "";
+        $path = '';
         if ($res && $this->db->num_rows($res) > 0) {
             list($path) = $this->db->fetch_row($res);
         }
+
         return $path;
     }
 
@@ -368,10 +384,9 @@ abstract class DashboardBlockLms extends Model
             'firstname' => $user_info[ACL_INFO_FIRSTNAME],
             'lastname' => $user_info[ACL_INFO_LASTNAME],
             'email' => $user_info[ACL_INFO_EMAIL],
-            'avatar' => $user_info[ACL_INFO_AVATAR]
+            'avatar' => $user_info[ACL_INFO_AVATAR],
         ];
     }
-
 
     public function validate($data)
     {
@@ -382,6 +397,7 @@ abstract class DashboardBlockLms extends Model
                 //if ($formItem)
             }
         }
+
         return true;
     }
 
@@ -407,15 +423,13 @@ abstract class DashboardBlockLms extends Model
         return $allowedFileTypes;
     }
 
-
     public function getAllowedFileMimeTypes()
     {
-        require_once(_lib_ . '/lib.mimetype.php');
+        require_once _lib_ . '/lib.mimetype.php';
 
         $allowedFileTypes = $this->getAllowedFileTypes();
         $mimetypeArray = [];
         if (!empty($allowedFileTypes)) {
-
             foreach ($allowedFileTypes as $k => $v) { // remove extra spaces and set lower case
                 $ext = trim(strtolower($v));
                 $mt = mimetype($ext);

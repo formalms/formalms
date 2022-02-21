@@ -1,15 +1,26 @@
-<?php defined("IN_FORMA") or die('Direct access is forbidden.');
+<?php
 
+/*
+ * FORMA - The E-Learning Suite
+ *
+ * Copyright (c) 2013-2022 (Forma)
+ * https://www.formalms.org
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ *
+ * from docebo 4.0.5 CE 2008-2012 (c) docebo
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ */
 
+defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 function view_area()
 {
     checkPerm('view');
 
-    require_once(_lms_ . '/lib/lib.middlearea.php');
+    require_once _lms_ . '/lib/lib.middlearea.php';
 
-    $lang =& DoceboLanguage::createInstance('middlearea', 'lms');
-    $lc =& DoceboLanguage::createInstance('menu_course', 'lms');
+    $lang = &DoceboLanguage::createInstance('middlearea', 'lms');
+    $lc = &DoceboLanguage::createInstance('menu_course', 'lms');
 
     $query_menu = "SELECT mo.idModule, mo.default_name, module_name
     FROM %lms_module as mo WHERE mo.module_info IN ('all','user')
@@ -24,13 +35,13 @@ function view_area()
     $ma = new Man_MiddleArea();
     $disabled_list = $ma->getDisabledList();
     $menu_on_slider = ['mo_7' => Lang::t('_MY_CERTIFICATE', 'menu_over'),
-        'mo_34' => Lang::t('_MYCOMPETENCES', 'menu_over')];
+        'mo_34' => Lang::t('_MYCOMPETENCES', 'menu_over'), ];
 
     /* NEW MENU */
     $menu = CoreMenu::getList('lms', false);
-    
-    $active_icon = "subs_actv";
-    $noactive_icon = "subs_noac";
+
+    $active_icon = 'subs_actv';
+    $noactive_icon = 'subs_noac';
     $vp = Lang::t('_VIEW_PERMISSION', 'standard');
     $ea = Lang::t('_ENABLE_AREA', 'standard');
 
@@ -63,18 +74,16 @@ HTML;
         'tb_games' => Lang::t('_CONTEST', 'middlearea'),
         'tb_communication' => Lang::t('_COMMUNICATIONS', 'middlearea'),
         'tb_videoconference' => Lang::t('_VIDEOCONFERENCE', 'middlearea'),
-        'tb_kb' => Lang::t('_CONTENT_LIBRARY', 'middlearea')
+        'tb_kb' => Lang::t('_CONTENT_LIBRARY', 'middlearea'),
     ];
-
 
     $pl = new PluginManager('');
     $list_pl = $pl->get_all_plugins();
 
     foreach ($list_pl as $key) {
         $plugin_name = strtolower($key['name']);
-        $tab["tb_" . $plugin_name] = Lang::t('_' . strtoupper($key['name']), 'middlearea');
+        $tab['tb_' . $plugin_name] = Lang::t('_' . strtoupper($key['name']), 'middlearea');
     }
-
 
     $query_menu = "SELECT obj_index, is_home from %lms_middlearea where obj_index like 'tb_%' ORDER BY sequence";
     $re_tablist = sql_query($query_menu);
@@ -87,7 +96,7 @@ HTML;
             . '<a class="ico-sprite subs_location' . ($is_home ? '_green' : '') . '" href="' . $third_url . $id . '"><span>' . Lang::t('_VIEW_PERMISSION', 'standard') . '</span></a>'
             . ' <span>' . $name . '</span>'
             . ' <a class="ico-sprite subs_users" href="' . $base_url . $id . '"><span>' . Lang::t('_VIEW_PERMISSION', 'standard') . '</span></a>'
-            . ' <a class="ico-sprite subs_' . (isset($disabled_list[$id]) ? 'noac' : 'actv') . '" href="' . ($is_home ? "" : $second_url . $id) . '"><span>' . Lang::t('_ENABLE_AREA', 'middlearea') . '</span></a>'
+            . ' <a class="ico-sprite subs_' . (isset($disabled_list[$id]) ? 'noac' : 'actv') . '" href="' . ($is_home ? '' : $second_url . $id) . '"><span>' . Lang::t('_ENABLE_AREA', 'middlearea') . '</span></a>'
             . '</li>';
     }
     // Block List
@@ -101,11 +110,10 @@ HTML;
         //aggiunto box iscrizione corso
         'course' => Lang::t('_SUBSCRIBE_COURSE', 'middlearea'),
         'news' => Lang::t('_NEWS', 'middlearea'),
-        'mo_message' => Lang::t('_MESSAGES', 'menu_over')
+        'mo_message' => Lang::t('_MESSAGES', 'menu_over'),
     ];
     $slider_options = array_merge($block, $menu_on_slider);
     foreach ($slider_options as $id => $name) {
-
         $block_list .= '<div class="direct_block">'
             . '<span>' . $name . '</span>'
             . ' <a class="ico-sprite subs_users" href="' . $base_url . $id . '"><span>' . Lang::t('_VIEW_PERMISSION', 'standard') . '</span></a>'
@@ -113,12 +121,10 @@ HTML;
             . '</div><br/>';
     }
 
-
     cout(getTitleArea($lang->def('_MIDDLE_AREA'), 'middlearea')
         . '<div class="std_block">');
 
     cout('<h2>' . Lang::t('_MAN_MENU', 'menu') . '</h2>'
-
         . '<ul id="menu_label" class="action-list">'
         . $main_menu
         . '</ul>');
@@ -218,26 +224,23 @@ HTML;
 
 function switch_active()
 {
-
-    require_once($GLOBALS['where_lms'] . '/lib/lib.middlearea.php');
+    require_once $GLOBALS['where_lms'] . '/lib/lib.middlearea.php';
 
     $man_ma = new Man_MiddleArea();
 
     $obj_index = importVar('obj_index', false, '');
 
-    $lang =& DoceboLanguage::createInstance('middlearea', 'lms');
+    $lang = &DoceboLanguage::createInstance('middlearea', 'lms');
     $selected = $man_ma->getObjIdstList($obj_index);
     $man_ma->setObjIdstList($obj_index, $selected);
 
     $re = $man_ma->changeDisableStatus($obj_index);
-
 
     Util::jump_to('index.php?modname=middlearea&amp;op=view_area&amp;result=' . ($re ? 'ok' : 'err'));
 }
 
 function switch_menu_active()
 {
-
     $id = Get::req('id', DOTY_INT);
 
     $menu = CoreMenu::get($id);
@@ -262,28 +265,25 @@ function switch_menu_active()
     Util::jump_to('index.php?modname=middlearea&amp;op=view_area&amp;result=' . ($res ? 'ok' : 'err'));
 }
 
-
 function set_home_page()
 {
-    require_once($GLOBALS['where_lms'] . '/lib/lib.middlearea.php');
+    require_once $GLOBALS['where_lms'] . '/lib/lib.middlearea.php';
 
     $man_ma = new Man_MiddleArea();
     $obj_index = importVar('obj_index', false, '');
     $selected = $man_ma->setHomePageTab($obj_index);
     Util::jump_to('index.php?modname=middlearea&amp;op=view_area&amp;result=ok');
-
 }
-
 
 function select_permission()
 {
     checkPerm('view');
 
-    require_once($GLOBALS['where_lms'] . '/lib/lib.middlearea.php');
-    require_once(_base_ . '/lib/lib.userselector.php');
-    require_once(_base_ . '/lib/lib.form.php');
+    require_once $GLOBALS['where_lms'] . '/lib/lib.middlearea.php';
+    require_once _base_ . '/lib/lib.userselector.php';
+    require_once _base_ . '/lib/lib.form.php';
 
-    $lang =& DoceboLanguage::createInstance('middlearea', 'lms');
+    $lang = &DoceboLanguage::createInstance('middlearea', 'lms');
 
     $obj_index = importVar('obj_index', false, '');
 
@@ -293,29 +293,28 @@ function select_permission()
     $acl_manager = new DoceboACLManager();
     $user_select = new UserSelector();
 
-    $user_select->show_user_selector = TRUE;
-    $user_select->show_group_selector = TRUE;
-    $user_select->show_orgchart_selector = TRUE;
+    $user_select->show_user_selector = true;
+    $user_select->show_group_selector = true;
+    $user_select->show_orgchart_selector = true;
     $user_select->show_orgchart_simple_selector = false;
     //$user_select->multi_choice = TRUE;
 
     // try to load previous saved
     if (isset($_GET['load'])) {
-
         $selected = $man_ma->getObjIdstList($obj_index);
-        if (is_array($selected)) $user_select->resetSelection($selected);
+        if (is_array($selected)) {
+            $user_select->resetSelection($selected);
+        }
     }
     if (isset($_POST['okselector'])) {
-
         $selected = $user_select->getSelection($_POST);
         $re = $man_ma->setObjIdstList($obj_index, $selected);
         Util::jump_to('index.php?modname=middlearea&amp;op=view_area&amp;result=' . ($re ? 'ok' : 'err'));
     }
 
-
     cout(getTitleArea([
             'index.php?modname=middlearea&amp;op=view_area' => $lang->def('_MIDDLE_AREA'),
-            Lang::t('_VIEW_PERMISSION', 'standard')
+            Lang::t('_VIEW_PERMISSION', 'standard'),
         ], 'middlearea')
         . '<div class="std_block">');
     $user_select->addFormInfo(Form::getHidden('obj_index', 'obj_index', $obj_index));
@@ -327,17 +326,15 @@ function select_permission()
     cout('</div>');
 }
 
-
 function select_menu_permission()
 {
-
     checkPerm('view');
 
-    require_once($GLOBALS['where_lms'] . '/lib/lib.middlearea.php');
-    require_once(_base_ . '/lib/lib.userselector.php');
-    require_once(_base_ . '/lib/lib.form.php');
+    require_once $GLOBALS['where_lms'] . '/lib/lib.middlearea.php';
+    require_once _base_ . '/lib/lib.userselector.php';
+    require_once _base_ . '/lib/lib.form.php';
 
-    $lang =& DoceboLanguage::createInstance('middlearea', 'lms');
+    $lang = &DoceboLanguage::createInstance('middlearea', 'lms');
 
     $id = Get::req('id', DOTY_INT);
 
@@ -347,9 +344,9 @@ function select_menu_permission()
     $acl_manager = new DoceboACLManager();
     $user_select = new UserSelector();
 
-    $user_select->show_user_selector = TRUE;
-    $user_select->show_group_selector = TRUE;
-    $user_select->show_orgchart_selector = TRUE;
+    $user_select->show_user_selector = true;
+    $user_select->show_group_selector = true;
+    $user_select->show_orgchart_selector = true;
     $user_select->show_orgchart_simple_selector = false;
     //$user_select->multi_choice = TRUE;
 
@@ -385,14 +382,13 @@ function select_menu_permission()
         Util::jump_to('index.php?modname=middlearea&amp;op=view_area&amp;result=' . ($re ? 'ok' : 'err'));
     }
 
-
     cout(getTitleArea([
             'index.php?modname=middlearea&amp;op=view_area' => $lang->def('_MIDDLE_AREA'),
-            Lang::t('_VIEW_PERMISSION', 'standard')
+            Lang::t('_VIEW_PERMISSION', 'standard'),
         ], 'middlearea')
         . '<div class="std_block">');
     $user_select->addFormInfo(Form::getHidden('id', 'id', $id));
-    $user_select->addFormInfo(Form::getRadioHoriz(Lang::t('_SELECT'), 'all', 'all', [Lang::t('_ALL') => 1, Lang::t('_MANUAL') => 0], (int)$all));
+    $user_select->addFormInfo(Form::getRadioHoriz(Lang::t('_SELECT'), 'all', 'all', [Lang::t('_ALL') => 1, Lang::t('_MANUAL') => 0], (int) $all));
     $user_select->addFormInfo('<script type="text/javascript">' .
         <<<JAVASCRIPT
 function switch_selection() {
@@ -405,7 +401,7 @@ function switch_selection() {
 $(function() { switch_selection(); });
 $('input[name="all"]').change(switch_selection);
 JAVASCRIPT
-        . "</script>");
+        . '</script>');
     $user_select->loadSelector('index.php?modname=middlearea&op=select_menu_permission',
         false,
         false,
@@ -413,7 +409,6 @@ JAVASCRIPT
 
     cout('</div>');
 }
-
 
 //------------------------------------------------------------------------------
 
@@ -440,50 +435,41 @@ function view()
     cout('<script type="text/javascript">' . $script . '</script>', 'scripts');
 }
 
-
 /**
- * Dispatching
+ * Dispatching.
  **/
 function MiddleAreaDispatch($op)
 {
-
-    if (isset($_POST['cancelselector'])) $op = 'view_area';
-
-    switch ($op) {
-        case "select_permission" :
-            {
-                select_permission();
-            };
-            break;
-        case "switch_active" :
-            {
-                switch_active();
-            };
-            break;
-        case "select_menu_permission" :
-            {
-                select_menu_permission();
-            };
-            break;
-        case "switch_menu_active" :
-            {
-                switch_menu_active();
-            };
-            break;
-        case "set_home":
-        {
-            set_home_page();
-        }
-        case "view_area" :
-        default :
-            {
-                //view_area();
-                view_area();
-            };
-            break;
+    if (isset($_POST['cancelselector'])) {
+        $op = 'view_area';
     }
 
+    switch ($op) {
+        case 'select_permission':
+                select_permission();
+            ;
+            break;
+        case 'switch_active':
+                switch_active();
+            ;
+            break;
+        case 'select_menu_permission':
+                select_menu_permission();
+            ;
+            break;
+        case 'switch_menu_active':
+                switch_menu_active();
+            ;
+            break;
+        case 'set_home':
+            set_home_page();
 
+            // no break
+        case 'view_area':
+        default:
+                //view_area();
+                view_area();
+            ;
+            break;
+    }
 }
-
-?>

@@ -1,26 +1,32 @@
 <?php
 
+/*
+ * FORMA - The E-Learning Suite
+ *
+ * Copyright (c) 2013-2022 (Forma)
+ * https://www.formalms.org
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ *
+ * from docebo 4.0.5 CE 2008-2012 (c) docebo
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ */
 
-defined("IN_FORMA") or die('Direct access is forbidden.');
-
-
-
+defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 /**
- * Class DashboardBlockWelcomeLms
+ * Class DashboardBlockWelcomeLms.
  */
 class DashboardBlockWelcomeLms extends DashboardBlockLms
 {
-
     public function __construct($jsonConfig)
     {
         parent::__construct($jsonConfig);
     }
 
     public function parseConfig($jsonConfig)
-	{
-		$this->parseBaseConfig($jsonConfig);
-	}
+    {
+        $this->parseBaseConfig($jsonConfig);
+    }
 
     public function getAvailableTypesForBlock()
     {
@@ -28,7 +34,7 @@ class DashboardBlockWelcomeLms extends DashboardBlockLms
             DashboardBlockLms::TYPE_1COL,
             DashboardBlockLms::TYPE_2COL,
             DashboardBlockLms::TYPE_3COL,
-            DashboardBlockLms::TYPE_4COL
+            DashboardBlockLms::TYPE_4COL,
         ];
     }
 

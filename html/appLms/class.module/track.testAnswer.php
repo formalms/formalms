@@ -1,10 +1,20 @@
-<?php defined("IN_FORMA") or die('Direct access is forbidden.');
+<?php
 
+/*
+ * FORMA - The E-Learning Suite
+ *
+ * Copyright (c) 2013-2022 (Forma)
+ * https://www.formalms.org
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ *
+ * from docebo 4.0.5 CE 2008-2012 (c) docebo
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ */
 
+defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 class Track_TestAnswer
 {
-
     protected $trackId;
 
     protected $questId;
@@ -17,9 +27,10 @@ class Track_TestAnswer
 
     /**
      * Track_TestAnswer constructor.
+     *
      * @param $id
      */
-    function __construct($trackId, $questId, $answerId, $score, $moreInfo)
+    public function __construct($trackId, $questId, $answerId, $score, $moreInfo)
     {
         $this->trackId = $trackId;
         $this->questId = $questId;
@@ -28,8 +39,10 @@ class Track_TestAnswer
         $this->moreInfo = $moreInfo;
     }
 
-    public function getQuestion(){
-        $question =  new Question($this->questId);
+    public function getQuestion()
+    {
+        $question = new Question($this->questId);
+
         return $question;
     }
 
@@ -112,7 +125,4 @@ class Track_TestAnswer
     {
         $this->moreInfo = $moreInfo;
     }
-
 }
-
-?>

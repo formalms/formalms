@@ -1,10 +1,22 @@
-<?php defined("IN_FORMA") or die('Direct access is forbidden.');
+<?php
 
+/*
+ * FORMA - The E-Learning Suite
+ *
+ * Copyright (c) 2013-2022 (Forma)
+ * https://www.formalms.org
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ *
+ * from docebo 4.0.5 CE 2008-2012 (c) docebo
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ */
 
-require_once(_base_ . '/lib/lib.json.php');
+defined('IN_FORMA') or exit('Direct access is forbidden.');
+
+require_once _base_ . '/lib/lib.json.php';
 
 /**
- * Class DashboardLmsController
+ * Class DashboardLmsController.
  */
 class DashboardLmsController extends LmsController
 {
@@ -15,16 +27,17 @@ class DashboardLmsController extends LmsController
 
     /**
      * DashboardLmsController constructor.
+     *
      * @param $mvc_name
      */
     public function init()
     {
-        $this->_mvc_name = "dashboard";
+        $this->_mvc_name = 'dashboard';
         $this->permissions = [
             'view' => true,
-            'mod' => true
+            'mod' => true,
         ];
-        /** @var Services_JSON json */
+        /* @var Services_JSON json */
         $this->json = new Services_JSON();
         $this->model = new DashboardLms();
     }
@@ -33,33 +46,30 @@ class DashboardLmsController extends LmsController
     {
         checkPerm('view', true, $this->_mvc_name);
         $defaultLayout = $this->model->getDefaultLayout();
-        
+
         // manage permission template
         $idTemplate = $defaultLayout->getId();
         $listLayout = $this->model->getListLayout();
-        foreach($listLayout as $key => $name){
-            $check_perm = $this->model->currentCanAccessObj($key);    
-            if($check_perm){
-                $idTemplate = $key;                       
-                  break; 
-            }      
+        foreach ($listLayout as $key => $name) {
+            $check_perm = $this->model->currentCanAccessObj($key);
+            if ($check_perm) {
+                $idTemplate = $key;
+                break;
+            }
         }
-        
-        
+
         $blocks = [];
         $blockPaths = [];
-        
-        
-        
+
         if ($defaultLayout) {
             $blocks = $this->model->getBlocksViewData($idTemplate);
 
             /** @var DashboardBlockLms $block */
-            foreach ($this->model->getEnabledBlocks($idTemplate) as $block){
+            foreach ($this->model->getEnabledBlocks($idTemplate) as $block) {
                 $blockPaths[] = $block->getViewPath();
             }
         }
-        
+
         $this->render(
             'dashboard',
             [
@@ -91,6 +101,6 @@ class DashboardLmsController extends LmsController
         }
 
         echo json_encode($result);
-        die();
+        exit();
     }
 }

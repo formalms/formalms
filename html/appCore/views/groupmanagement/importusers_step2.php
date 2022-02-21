@@ -1,7 +1,7 @@
 <?php
-		echo getTitleArea(Lang::t('_ORG_CHART_IMPORT_USERS', 'organization_chart'), 'directory_group');
-		echo '<div class="std_block">';
-		echo getBackUi('index.php?r='.$this->link.'/show_users&id='.$id_group, Lang::t('_BACK', 'standard'));
+        echo getTitleArea(Lang::t('_ORG_CHART_IMPORT_USERS', 'organization_chart'), 'directory_group');
+        echo '<div class="std_block">';
+        echo getBackUi('index.php?r=' . $this->link . '/show_users&id=' . $id_group, Lang::t('_BACK', 'standard'));
 ?>
 
 <table>
@@ -24,6 +24,6 @@
 </table>
 
 <?php
-		echo getBackUi('index.php?r='.$this->link.'/show_users&id='.$id_group, Lang::t('_BACK', 'standard'));
-		echo '</div>';
+        echo getBackUi('index.php?r=' . $this->link . '/show_users&id=' . $id_group, Lang::t('_BACK', 'standard'));
+        echo '</div>';
 ?>

@@ -5,33 +5,33 @@
 
 			<div class="middlearea_container">
 				<?php
-				/*
-				$this->widget('lms_tab', array(
-					'active' => 'classroom'
-				));
-				*/
-				$w = $this->widget('lms_tab', [
-     			'active' => 'classroom',
-     			'close' => false
+                /*
+                $this->widget('lms_tab', array(
+                    'active' => 'classroom'
+                ));
+                */
+                $w = $this->widget('lms_tab', [
+                 'active' => 'classroom',
+                 'close' => false,
                 ]);
 
-    		// draw search
-				$_model = new ClassroomLms();
-				$_auxiliary = Form::getInputDropdown('', 'course_search_filter_year', 'filter_year',
-					$_model->getFilterYears(Docebo::user()->getIdst()), 0, '');
+            // draw search
+                $_model = new ClassroomLms();
+                $_auxiliary = Form::getInputDropdown('', 'course_search_filter_year', 'filter_year',
+                    $_model->getFilterYears(Docebo::user()->getIdst()), 0, '');
 
-				$this->widget('tablefilter', [
-					'id' => 'course_search',
-					'filter_text' => "",
-					// 'auxiliary_filter' => Lang::t('_SEARCH', 'standard').":&nbsp;&nbsp;&nbsp;".$_auxiliary,
-					'auxiliary_filter' => $_auxiliary,
-					'js_callback_set' => 'course_search_callback_set',
-					'js_callback_reset' => 'course_search_callback_reset',
-					'css_class' => 'tabs_filter'
+                $this->widget('tablefilter', [
+                    'id' => 'course_search',
+                    'filter_text' => '',
+                    // 'auxiliary_filter' => Lang::t('_SEARCH', 'standard').":&nbsp;&nbsp;&nbsp;".$_auxiliary,
+                    'auxiliary_filter' => $_auxiliary,
+                    'js_callback_set' => 'course_search_callback_set',
+                    'js_callback_reset' => 'course_search_callback_reset',
+                    'css_class' => 'tabs_filter',
                 ]);
 
-    		$w->endWidget();
-				?>
+            $w->endWidget();
+                ?>
 			</div>
 
 		</div>
@@ -43,7 +43,7 @@
         $this->widget('lms_block', [
             'zone' => 'right',
             'link' => 'elearning/show',
-            'block_list' => $block_list
+            'block_list' => $block_list,
         ]);
         ?>
     </div>    
@@ -53,11 +53,11 @@
 
 <?php
 $prop = [
-	'id' => 'self_unsubscribe_dialog',
-	'dynamicContent' => true,
-	'ajaxUrl' => 'this.href',
-	'dynamicAjaxUrl' => true,
-	'callEvents' => []
+    'id' => 'self_unsubscribe_dialog',
+    'dynamicContent' => true,
+    'ajaxUrl' => 'this.href',
+    'dynamicAjaxUrl' => true,
+    'callEvents' => [],
 ];
 $this->widget('dialog', $prop);
 ?>
@@ -101,7 +101,7 @@ $this->widget('dialog', $prop);
 	});
 	tabView.addTab(mytab);
 
-	<?php if($this->isTabActive('new')): ?>
+	<?php if ($this->isTabActive('new')) { ?>
 	mytab = new YAHOO.widget.Tab({
 	    label: '<?php echo Lang::t('_NEW', 'course'); ?>',
 	    dataSrc: 'ajax.server.php?r=classroom/new&rnd=<?php echo time(); ?>',
@@ -113,9 +113,9 @@ $this->widget('dialog', $prop);
 		this.set("cacheData", true);
 	});
 	tabView.addTab(mytab);
-	<?php endif; ?>
+	<?php } ?>
 
-	<?php if($this->isTabActive('inprogress')): ?>
+	<?php if ($this->isTabActive('inprogress')) { ?>
 	mytab = new YAHOO.widget.Tab({
 	    label: '<?php echo Lang::t('_USER_STATUS_BEGIN', 'course'); ?>',
 	    dataSrc: 'ajax.server.php?r=classroom/inprogress&rnd=<?php echo time(); ?>',
@@ -127,9 +127,9 @@ $this->widget('dialog', $prop);
 		this.set("cacheData", true);
 	});
 	tabView.addTab(mytab);
-	<?php endif; ?>
+	<?php } ?>
 
-	<?php if($this->isTabActive('completed')): ?>
+	<?php if ($this->isTabActive('completed')) { ?>
 	mytab = new YAHOO.widget.Tab({
 	    label: '<?php echo Lang::t('_COMPLETED', 'course'); ?>',
 	    dataSrc: 'ajax.server.php?r=classroom/completed&rnd=<?php echo time(); ?>',
@@ -141,7 +141,7 @@ $this->widget('dialog', $prop);
 		this.set("cacheData", true);
 	});
 	tabView.addTab(mytab);
-	<?php endif; ?>
+	<?php } ?>
 
 	tabView.appendTo('tab_content');
 	tabView.set('activeIndex', 0);

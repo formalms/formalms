@@ -1,4 +1,4 @@
-<?php   echo "page: <b>show</b>";  ?>
+<?php echo 'page: <b>show</b>'; ?>
 
 <div class="std_block">
     

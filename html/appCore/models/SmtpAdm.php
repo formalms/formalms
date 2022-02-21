@@ -1,6 +1,17 @@
-<?php defined("IN_FORMA") or die('Direct access is forbidden.');
+<?php
 
+/*
+ * FORMA - The E-Learning Suite
+ *
+ * Copyright (c) 2013-2022 (Forma)
+ * https://www.formalms.org
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ *
+ * from docebo 4.0.5 CE 2008-2012 (c) docebo
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ */
 
+defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 final class SmtpAdm extends Model
 {
@@ -49,7 +60,7 @@ final class SmtpAdm extends Model
      */
     protected $debug = 0;
 
-    const SMTP_GROUP = 14;
+    public const SMTP_GROUP = 14;
 
     /**
      * @var SmtpAdm
@@ -63,7 +74,7 @@ final class SmtpAdm extends Model
     {
         if (self::$instance == null) {
             $c = __CLASS__;
-            self::$instance = new $c;
+            self::$instance = new $c();
         }
 
         return self::$instance;
@@ -88,10 +99,9 @@ final class SmtpAdm extends Model
      */
     public function isUseSmtp()
     {
-        if ($this->useSmtp === 'on' || $this->useSmtp === 'true' || $this->useSmtp === true){
+        if ($this->useSmtp === 'on' || $this->useSmtp === 'true' || $this->useSmtp === true) {
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
@@ -125,10 +135,9 @@ final class SmtpAdm extends Model
      */
     public function isAutoTls()
     {
-        if ($this->autoTls === 'on' || $this->autoTls === 'true' || $this->autoTls === true){
+        if ($this->autoTls === 'on' || $this->autoTls === 'true' || $this->autoTls === true) {
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
@@ -157,7 +166,6 @@ final class SmtpAdm extends Model
         return $this->debug;
     }
 
-
     public static function isEnabledDatabase()
     {
         $smtpConfigIsEnabled = Get::cfg('use_smtp_database');
@@ -171,20 +179,17 @@ final class SmtpAdm extends Model
             default:
                 return false;
                 break;
-
         }
     }
 
     private function fetchData()
     {
         if (self::isEnabledDatabase()) {
-
-            $query_res = sql_query("SELECT * FROM " . $this->table . " WHERE regroup =" . self::SMTP_GROUP);
+            $query_res = sql_query('SELECT * FROM ' . $this->table . ' WHERE regroup =' . self::SMTP_GROUP);
 
             $rows = sql_num_rows($query_res);
 
-            for ($i = 0; $i < $rows; $i++) {
-
+            for ($i = 0; $i < $rows; ++$i) {
                 $row = sql_fetch_assoc($query_res);
 
                 $property = str_replace('smtp_', '', $row['param_name']);
@@ -198,15 +203,12 @@ final class SmtpAdm extends Model
                     } else {
                         $property .= ucfirst($value);
                     }
-                    $index++;
+                    ++$index;
                 }
 
                 $this->$property = $row['param_value'];
-
             }
-
         } else {
-
             $this->useSmtp = Get::cfg('use_smtp');
             $this->host = Get::cfg('smtp_host');
             $this->port = Get::cfg('smtp_port');
@@ -218,5 +220,3 @@ final class SmtpAdm extends Model
         }
     }
 }
-
-?>

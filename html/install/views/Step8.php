@@ -2,12 +2,12 @@
 
 <?php echo Lang::t('_INSTALLATION_COMPLETED'); ?>
 
-<?php if (!$_SESSION['config_saved']): ?>
+<?php if (!$_SESSION['config_saved']) { ?>
 <h3 style="color: red;"><?php echo Lang::t('_CONFIG_FILE_NOT_SAVED'); ?></h3>
 <ul class="info">
 	<li><a href="download_conf.php"><?php echo Lang::t('_DOWNLOAD_CONFIG'); ?></a></li>
 </ul>
-<?php endif; ?>
+<?php } ?>
 
 
 <h3><?php echo Lang::t('REMOVE_INSTALL_FOLDER'); ?></h3><br>

@@ -1,15 +1,25 @@
-<?php defined("IN_FORMA") or die('Direct access is forbidden.');
+<?php
 
+/*
+ * FORMA - The E-Learning Suite
+ *
+ * Copyright (c) 2013-2022 (Forma)
+ * https://www.formalms.org
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ *
+ * from docebo 4.0.5 CE 2008-2012 (c) docebo
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ */
 
+defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 class LangAdmController extends AdmController
 {
-
-    const IMPORT_TYPE_CORE = 'core';
-    const IMPORT_TYPE_FILE = 'file';
+    public const IMPORT_TYPE_CORE = 'core';
+    public const IMPORT_TYPE_FILE = 'file';
 
     protected $json;
-    /** @var LangAdm $model */
+    /** @var LangAdm */
     protected $model;
 
     protected $perm = [];
@@ -22,7 +32,7 @@ class LangAdmController extends AdmController
         $this->model = new LangAdm();
         $this->perm = [
             'view' => checkPerm('view', true, 'lang', 'framework'),
-            'mod' => checkPerm('mod', true, 'lang', 'framework')
+            'mod' => checkPerm('mod', true, 'lang', 'framework'),
         ];
     }
 
@@ -32,24 +42,23 @@ class LangAdmController extends AdmController
 
         $startIndex = Get::req('startIndex', DOTY_INT, 0);
         $results = Get::req('results', DOTY_INT, Get::sett('visuItem', 100));
-        $dir = Get::req('dir', DOTY_STRING, "asc");
+        $dir = Get::req('dir', DOTY_STRING, 'asc');
 
         $sort = 'lang_code';
         switch ($dir) {
-            case "desc": {
+            case 'desc':
                     $dir = 'desc';
-                };
+                ;
                 break;
-            default: {
+            default:
                     $dir = 'asc';
-                };
+                ;
                 break;
         }
 
         $lang_list = $this->model->getLangList($startIndex, $results, $sort, $dir);
         $total = $this->model->getLangTotal();
         foreach ($lang_list as $i => $lang) {
-
             $lang->lang_translate = 'index.php?r=adm/lang/list&amp;lang_code=' . $lang->lang_code;
             $lang->lang_export = 'index.php?r=adm/lang/export&amp;lang_code=' . $lang->lang_code;
             $lang->lang_diff = 'index.php?r=adm/lang/diff&amp;lang_code=' . $lang->lang_code;
@@ -63,30 +72,30 @@ class LangAdmController extends AdmController
 
     public function getlang()
     {
-
         $sortable = ['lang_code', 'lang_description', 'lang_direction', 'lang_stats'];
 
         $startIndex = Get::req('startIndex', DOTY_INT, 0);
         $results = Get::req('results', DOTY_INT, Get::sett('visuItem', 25));
-        $sort = Get::req('sort', DOTY_STRING, "");
-        $dir = Get::req('dir', DOTY_STRING, "asc");
+        $sort = Get::req('sort', DOTY_STRING, '');
+        $dir = Get::req('dir', DOTY_STRING, 'asc');
 
-        if (!in_array($sort, $sortable)) $sort = 'lang_code';
+        if (!in_array($sort, $sortable)) {
+            $sort = 'lang_code';
+        }
         switch ($dir) {
-            case "desc": {
+            case 'desc':
                     $dir = 'desc';
-                };
+                ;
                 break;
-            default: {
+            default:
                     $dir = 'asc';
-                };
+                ;
                 break;
         }
 
         $lang_list = $this->model->getLangList($startIndex, $results, $sort, $dir);
         $total = $this->model->getLangTotal();
         foreach ($lang_list as $i => $lang) {
-
             $lang->lang_translate = 'index.php?r=adm/lang/list&amp;lang_code=' . $lang->lang_code;
             $lang->lang_export = 'index.php?r=adm/lang/export&amp;lang_code=' . $lang->lang_code;
             $lang->lang_diff = 'index.php?r=adm/lang/diff&amp;lang_code=' . $lang->lang_code;
@@ -102,14 +111,13 @@ class LangAdmController extends AdmController
             'dir' => $dir,
             'rowsPerPage' => 25,
             'results' => count($lang_list),
-            'records' => array_values($lang_list)
+            'records' => array_values($lang_list),
         ];
         echo $this->json->encode($output);
     }
 
     public function addmask()
     {
-
         $lang = new stdClass();
         $lang->lang_code = '';
         $lang->lang_description = '';
@@ -121,7 +129,7 @@ class LangAdmController extends AdmController
         $params = [
             'success' => true,
             'header' => Lang::t('_ADD', 'standard'),
-            'body' => ob_get_clean()
+            'body' => ob_get_clean(),
         ];
         @ob_start();
         echo $this->json->encode($params);
@@ -129,7 +137,6 @@ class LangAdmController extends AdmController
 
     public function insertlang()
     {
-
         $lang_code = Get::req('lang_code', DOTY_STRING, '');
         $lang_description = Get::req('lang_description', DOTY_STRING, '');
         $lang_direction = Get::req('lang_direction', DOTY_STRING, 'ltr');
@@ -138,20 +145,20 @@ class LangAdmController extends AdmController
         if ($lang_code == '') {
             $result = ['success' => false, 'message' => Lang::t('_NO_TITLE', 'standard')];
             echo $this->json->encode($result);
+
             return;
         }
         $re = $this->model->newLanguage($lang_code, $lang_description, $lang_direction, $lang_browsercode);
 
         $result = [
             'success' => $re,
-            'message' => ($re ? '' : Lang::t('_OPERATION_FAILED', 'standard'))
+            'message' => ($re ? '' : Lang::t('_OPERATION_FAILED', 'standard')),
         ];
         echo $this->json->encode($result);
     }
 
     public function updatelang()
     {
-
         $lang_code = Get::req('lang_code', DOTY_STRING, '');
         $lang_description = Get::req('lang_description', DOTY_STRING, '');
         $lang_direction = Get::req('lang_direction', DOTY_STRING, 'ltr');
@@ -161,14 +168,13 @@ class LangAdmController extends AdmController
 
         $result = [
             'success' => $answ,
-            'message' => ($answ ? '' : Lang::t('_OPERATION_FAILED', 'standard'))
+            'message' => ($answ ? '' : Lang::t('_OPERATION_FAILED', 'standard')),
         ];
         echo $this->json->encode($result);
     }
 
     public function mod()
     {
-
         $lang_code = Get::req('lang_code', DOTY_STRING, '');
         $lang = $this->model->getLanguage($lang_code);
 
@@ -176,7 +182,7 @@ class LangAdmController extends AdmController
         $params = [
             'success' => true,
             'header' => Lang::t('_MOD', 'standard'),
-            'body' => ob_get_clean()
+            'body' => ob_get_clean(),
         ];
         @ob_start();
         echo $this->json->encode($params);
@@ -184,7 +190,6 @@ class LangAdmController extends AdmController
 
     public function savemask()
     {
-
         $lang = new stdClass();
         $lang->lang_code = '';
         $lang->lang_description = '';
@@ -196,7 +201,7 @@ class LangAdmController extends AdmController
         $params = [
             'success' => true,
             'header' => Lang::t('_ADD', 'standard'),
-            'body' => ob_get_clean()
+            'body' => ob_get_clean(),
         ];
         @ob_start();
         echo $this->json->encode($params);
@@ -208,12 +213,11 @@ class LangAdmController extends AdmController
 
         $re = false;
         if ($lang_code != '') {
-
             $re = $this->model->delLanguage($lang_code);
         }
         $result = [
             'success' => $re,
-            'message' => ($re ? '' : Lang::t('_OPERATION_FAILED', 'standard'))
+            'message' => ($re ? '' : Lang::t('_OPERATION_FAILED', 'standard')),
         ];
         echo $this->json->encode($result);
     }
@@ -229,15 +233,17 @@ class LangAdmController extends AdmController
     public function importTask()
     {
         $error = Get::req('error', DOTY_INT, 0);
-        if ($error) UIFeedback::error(Lang::t('_ERROR_UPLOAD', 'standard'));
+        if ($error) {
+            UIFeedback::error(Lang::t('_ERROR_UPLOAD', 'standard'));
+        }
 
         $this->render('import_mask', [
             'coreLangs' => $this->getFileSystemCoreLanguages(),
             'importTypes' => [
                 Lang::t('_IMPORT_FROM_CORE', 'standard') => self::IMPORT_TYPE_CORE,
-                Lang::t('_IMPORT_FROM_FILE', 'standard') => self::IMPORT_TYPE_FILE
+                Lang::t('_IMPORT_FROM_FILE', 'standard') => self::IMPORT_TYPE_FILE,
             ],
-            'defaultType' => self::IMPORT_TYPE_CORE
+            'defaultType' => self::IMPORT_TYPE_CORE,
         ]);
     }
 
@@ -245,8 +251,8 @@ class LangAdmController extends AdmController
     {
         $importType = Get::req('import_type', DOTY_STRING, false);
         $undo = Get::req('undo', DOTY_STRING, false);
-        $overwrite = (bool)Get::req('overwrite', DOTY_INT, 0);
-        $noadd_miss = (bool)Get::req('noadd_miss', DOTY_INT, 0);
+        $overwrite = (bool) Get::req('overwrite', DOTY_INT, 0);
+        $noadd_miss = (bool) Get::req('noadd_miss', DOTY_INT, 0);
         $langFile = Get::req('lang_id', DOTY_STRING, '');
 
         if (!empty($undo)) {
@@ -255,7 +261,6 @@ class LangAdmController extends AdmController
 
         switch ($importType) {
             case self::IMPORT_TYPE_CORE:
-
                 if (empty($langFile)) {
                     Util::jump_to('index.php?r=adm/lang/import&error=1');
                 }
@@ -263,7 +268,6 @@ class LangAdmController extends AdmController
                 $filePath = _base_ . '/xml_language/' . $langFile;
                 break;
             case self::IMPORT_TYPE_FILE:
-
                 $filePath = $_FILES['lang_file']['tmp_name'];
                 break;
             default:
@@ -278,7 +282,6 @@ class LangAdmController extends AdmController
         $langCode = $this->model->getFileLangCode($filePath);
 
         if ($overwrite) {
-
             $lang_list = $this->model->getLangList(0, 100, '', 'asc');
             if (array_key_exists($langCode, $lang_list)) {
                 require_once Forma::inc(_lib_ . '/formatable/include.php');
@@ -286,14 +289,14 @@ class LangAdmController extends AdmController
                 $langList = $this->model->getAllForDiff($filePath, $langCode);
 
                 if (count($langList) > 0) {
-
                     $data = [
                         'body' => array_values($langList),
                         'langCode' => $langCode,
-                        'import_type' => $importType
+                        'import_type' => $importType,
                     ];
 
                     $this->render('diff', $data);
+
                     return;
                 }
             }
@@ -310,6 +313,7 @@ class LangAdmController extends AdmController
 
         if ($id_text <= 0) {
             echo $this->json->encode(['success' => false]);
+
             return;
         }
 
@@ -322,20 +326,20 @@ class LangAdmController extends AdmController
         if ($newValue === $oldValue) {
             echo $this->json->encode(['success' => true]);
         } else {
-
             switch ($column) {
-
-                case 'translation_text': {
+                case 'translation_text':
                         $res = $this->model->saveTranslation($id_text, $language, $newValue);
                         $output = ['success' => $res ? true : false];
-                        if ($res) $output['new_value'] = stripslashes($newValue);
+                        if ($res) {
+                            $output['new_value'] = stripslashes($newValue);
+                        }
                         echo $this->json->encode($output);
-                    }
+
                     break;
 
-                default: {
+                default:
                         echo $this->json->encode(['success' => false]);
-                    }
+
                     break;
             }
         }
@@ -366,8 +370,11 @@ class LangAdmController extends AdmController
         $lang_code_diff = Get::req('lang_code_diff', DOTY_ALPHANUM, false);
         $only_empty = Get::req('only_empty', DOTY_MIXED, 0);
         $plugin_id = Get::req('plugin_id', DOTY_INT, false);
-        if ($only_empty === 'true') $only_empty = true;
-        else $only_empty = false;
+        if ($only_empty === 'true') {
+            $only_empty = true;
+        } else {
+            $only_empty = false;
+        }
 
         $lang_list = $this->model->getAll(false, false, $la_module, $la_text, $lang_code, $lang_code_diff, $only_empty, $sort, $dir, $plugin_id);
 
@@ -386,7 +393,7 @@ class LangAdmController extends AdmController
             'language_list' => $language_list,
             'language_list_diff' => $language_list_diff,
             'plugins_ids' => $plugins_ids,
-            'data' => $lang_list
+            'data' => $lang_list,
         ]);
     }
 
@@ -408,7 +415,6 @@ class LangAdmController extends AdmController
 
     public function getTask()
     {
-
         $start_index = Get::req('start', DOTY_INT, 0);
         $results = Get::req('length', DOTY_MIXED, Get::sett('visuItem', 250));
         $sort = $dir = null;
@@ -422,7 +428,6 @@ class LangAdmController extends AdmController
         $search = Get::req('search', DOTY_MIXED, false);
 
         $la_text = $this->removeSearchRegex($search['value']);
-
 
         $plugin_id = Get::req('plugin_id', DOTY_INT, false);
         $search = [];
@@ -448,8 +453,11 @@ class LangAdmController extends AdmController
         }
 
         $only_empty = Get::req('only_empty', DOTY_MIXED, 0);
-        if ($only_empty === 'true') $only_empty = true;
-        else $only_empty = false;
+        if ($only_empty === 'true') {
+            $only_empty = true;
+        } else {
+            $only_empty = false;
+        }
 
         $lang_list = $this->model->getAll($start_index, $results, $search, $la_text, $lang_code, $lang_code_diff, $only_empty, $sort, $dir, $plugin_id);
 
@@ -463,14 +471,14 @@ class LangAdmController extends AdmController
             'dir' => $dir,
             'rowsPerPage' => $results,
             'results' => count($lang_list),
-            'data' => $lang_list
+            'data' => $lang_list,
         ];
 
         echo $this->json->encode($res);
     }
 
     /**
-     * Inline editor server, here we will save the new trasnslation
+     * Inline editor server, here we will save the new trasnslation.
      */
     public function saveDataTask()
     {
@@ -483,7 +491,7 @@ class LangAdmController extends AdmController
         $res = [
             'success' => $re,
             'new_value' => $new_value,
-            'old_value' => $old_value
+            'old_value' => $old_value,
         ];
 
         echo $this->json->encode($res);
@@ -499,7 +507,7 @@ class LangAdmController extends AdmController
         $params = [
             'success' => true,
             'header' => Lang::t('_TRANSLATELANG', 'admin_lang'),
-            'body' => ob_get_clean()
+            'body' => ob_get_clean(),
         ];
         @ob_start();
         echo $this->json->encode($params);
@@ -507,18 +515,19 @@ class LangAdmController extends AdmController
 
     public function insertkey()
     {
-
         $lang_module = Get::req('lang_module', DOTY_MIXED, '');
         $lang_key = Get::req('lang_key', DOTY_MIXED, '');
 
         $id_text = $this->model->insertKey($lang_key, $lang_module, '');
-        if (!$id_text) $re = false;
-        else {
+        if (!$id_text) {
+            $re = false;
+        } else {
             $re = true;
 
             foreach ($_POST['translation'] as $lang_code => $translation) {
-
-                if ($translation != '') $re &= $this->model->insertTranslation($id_text, $lang_code, $translation);
+                if ($translation != '') {
+                    $re &= $this->model->insertTranslation($id_text, $lang_code, $translation);
+                }
             }
         }
         $output = [
@@ -530,7 +539,6 @@ class LangAdmController extends AdmController
 
     public function resetKey()
     {
-
         $idText = Get::req('id_text', DOTY_MIXED, '');
         $langModule = Get::req('lang_module', DOTY_MIXED, '');
         $translation = Get::req('translation', DOTY_MIXED, '');
@@ -574,7 +582,7 @@ class LangAdmController extends AdmController
 
         $data = [
             'body' => array_values($langList),
-            'langCode' => $langCode
+            'langCode' => $langCode,
         ];
 
         $this->render('diff', $data);
@@ -606,9 +614,7 @@ class LangAdmController extends AdmController
         $files = scandir(_langs_);
 
         foreach ($files as $file) {
-
             if (strpos($file, '.xml') !== false) {
-
                 $langs[$file] = $this->getLangNameFromFile($file);
             }
         }

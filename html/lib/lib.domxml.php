@@ -1,8 +1,19 @@
-<?php defined("IN_FORMA") or die('Direct access is forbidden.');
+<?php
 
+/*
+ * FORMA - The E-Learning Suite
+ *
+ * Copyright (c) 2013-2022 (Forma)
+ * https://www.formalms.org
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ *
+ * from docebo 4.0.5 CE 2008-2012 (c) docebo
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ */
 
+defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-/**
+/*
  * This package define classes for XML DOM compatibility with PHP < 5
  * In Docebo we use DOM API from PHP5 but you can use the platform also
  *	in PHP4. So in this package we redefine all the DOM API used in Docebo.
@@ -14,9 +25,8 @@
  * @author		Emanuele Sandri <emanuele (@) docebo (.) com>
 **/
 
-if( version_compare(phpversion(), "5.0.0") == -1 ) {
-	require_once( dirname(__FILE__).'/lib.domxml4.php' );
+if (version_compare(phpversion(), '5.0.0') == -1) {
+    require_once dirname(__FILE__) . '/lib.domxml4.php';
 } else {
-	require_once( dirname(__FILE__).'/lib.domxml5.php' );
+    require_once dirname(__FILE__) . '/lib.domxml5.php';
 }
-?>

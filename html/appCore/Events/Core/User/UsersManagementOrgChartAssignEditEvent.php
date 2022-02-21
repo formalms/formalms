@@ -1,16 +1,27 @@
 <?php
+
+/*
+ * FORMA - The E-Learning Suite
+ *
+ * Copyright (c) 2013-2022 (Forma)
+ * https://www.formalms.org
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ *
+ * from docebo 4.0.5 CE 2008-2012 (c) docebo
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ */
+
 namespace appCore\Events\Core\User;
 
 use Symfony\Contracts\EventDispatcher\Event;
 
 /**
- * Class UsersManagementOrgChartAssignEditEvent
- * @package appLms\Events\Core
+ * Class UsersManagementOrgChartAssignEditEvent.
  */
 class UsersManagementOrgChartAssignEditEvent extends Event
 {
-    const EVENT_NAME = 'core.usersmanagementorgchartadd.event';
-    
+    public const EVENT_NAME = 'core.usersmanagementorgchartadd.event';
+
     /** @var array */
     protected $user;
     protected $users;
@@ -84,5 +95,4 @@ class UsersManagementOrgChartAssignEditEvent extends Event
             'node' => $this->node,
         ];
     }
-
 }

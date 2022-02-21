@@ -1,16 +1,27 @@
 <?php
+
+/*
+ * FORMA - The E-Learning Suite
+ *
+ * Copyright (c) 2013-2022 (Forma)
+ * https://www.formalms.org
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ *
+ * from docebo 4.0.5 CE 2008-2012 (c) docebo
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ */
+
 namespace appCore\Events\Core\User;
 
 use Symfony\Contracts\EventDispatcher\Event;
 
 /**
- * Class UsersManagementShowEvent
- * @package appLms\Events\Core
+ * Class UsersManagementShowEvent.
  */
 class UsersManagementChangePasswordEvent extends Event
 {
-    const EVENT_NAME = 'core.usersmanagementchangepassword.event';
-    
+    public const EVENT_NAME = 'core.usersmanagementchangepassword.event';
+
     /** @var array */
     protected $user;
     protected $filledPwd;
@@ -19,7 +30,7 @@ class UsersManagementChangePasswordEvent extends Event
      * UsersManagementShowEvent constructor.
      */
     public function __construct()
-    {   
+    {
         $this->user = [];
     }
 
@@ -62,5 +73,4 @@ class UsersManagementChangePasswordEvent extends Event
             'filledPwd' => $this->filledPwd,
         ];
     }
-
 }

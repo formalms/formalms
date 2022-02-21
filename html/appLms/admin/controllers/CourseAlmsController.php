@@ -1,6 +1,17 @@
-<?php defined("IN_FORMA") or die("Direct access is forbidden");
+<?php
 
+/*
+ * FORMA - The E-Learning Suite
+ *
+ * Copyright (c) 2013-2022 (Forma)
+ * https://www.formalms.org
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ *
+ * from docebo 4.0.5 CE 2008-2012 (c) docebo
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ */
 
+defined('IN_FORMA') or exit('Direct access is forbidden');
 
 class CourseAlmsController extends AlmsController
 {
@@ -23,9 +34,9 @@ class CourseAlmsController extends AlmsController
     public function init()
     {
         parent::init();
-        require_once(_base_ . '/lib/lib.json.php');
+        require_once _base_ . '/lib/lib.json.php';
         $this->json = new Services_JSON();
-        $this->acl_man =& Docebo::user()->getAclManager();
+        $this->acl_man = &Docebo::user()->getAclManager();
         $this->model = new CourseAlms();
 
         $this->base_link_course = 'alms/course';
@@ -47,21 +58,22 @@ class CourseAlmsController extends AlmsController
             'mod_category' => checkPerm('mod', true, 'coursecategory', 'lms'),
             'del_category' => checkPerm('del', true, 'coursecategory', 'lms'),
             'view_cert' => checkPerm('view', true, 'certificate', 'lms'),
-            'mod_cert' => checkPerm('mod', true, 'certificate', 'lms')
+            'mod_cert' => checkPerm('mod', true, 'certificate', 'lms'),
         ];
     }
 
     protected function _getMessage($code)
     {
-        $message = "";
+        $message = '';
         switch ($code) {
-            case "no permission":
-                $message = "";
+            case 'no permission':
+                $message = '';
                 break;
-            case "":
-                $message = "";
+            case '':
+                $message = '';
                 break;
         }
+
         return $message;
     }
 
@@ -69,26 +81,27 @@ class CourseAlmsController extends AlmsController
     public function getlolist($p = 0, $sk = '')
     {
         if (isset($_GET['idCourse'])) {
-            $query_list = "SELECT * FROM %lms_organization WHERE idCourse = '" . (int)$_GET['idCourse'] . "' AND idParent = " . $p . " ORDER BY path ASC";
+            $query_list = "SELECT * FROM %lms_organization WHERE idCourse = '" . (int) $_GET['idCourse'] . "' AND idParent = " . $p . ' ORDER BY path ASC';
             $result_list = sql_query($query_list);
             if (sql_num_rows($result_list) > 0) {
-                if ($p == 0)
-                    echo "<div id='treeDiv' class='ygtv-checkbox'>";
-                echo "<ul>";
-                while ($lo = sql_fetch_array($result_list)) {
-                    echo "<li class=\"expanded\"> <input onclick='cascade(\"" . $lo['idOrg'] . "\")' class='" . $sk . "' type='checkbox' id='" . $lo['idOrg'] . "' name='lo_list[]' value='" . $lo['idOrg'] . "' checked='checked' /> <label for='" . $lo['idOrg'] . "'>" . $lo['title'] . "</label>";
-                    $this->getlolist($lo['idOrg'], $sk . " " . $lo['idOrg']);
-                    echo "</li>";
-                }
-                echo "</ul>";
                 if ($p == 0) {
-                    echo "</div>";
+                    echo "<div id='treeDiv' class='ygtv-checkbox'>";
+                }
+                echo '<ul>';
+                while ($lo = sql_fetch_array($result_list)) {
+                    echo "<li class=\"expanded\"> <input onclick='cascade(\"" . $lo['idOrg'] . "\")' class='" . $sk . "' type='checkbox' id='" . $lo['idOrg'] . "' name='lo_list[]' value='" . $lo['idOrg'] . "' checked='checked' /> <label for='" . $lo['idOrg'] . "'>" . $lo['title'] . '</label>';
+                    $this->getlolist($lo['idOrg'], $sk . ' ' . $lo['idOrg']);
+                    echo '</li>';
+                }
+                echo '</ul>';
+                if ($p == 0) {
+                    echo '</div>';
                 }
             }
-        } else
-            echo "Error";
+        } else {
+            echo 'Error';
+        }
     }
-
 
     public function show()
     {
@@ -108,9 +121,9 @@ class CourseAlmsController extends AlmsController
         }
 
         if (isset($_POST['c_filter_set'])) {
-            $classroom = (bool)Get::req('classroom', DOTY_INT, false);
-            $descendants = (bool)Get::req('descendants', DOTY_INT, false);
-            $waiting = (bool)Get::req('waiting', DOTY_INT, false);
+            $classroom = (bool) Get::req('classroom', DOTY_INT, false);
+            $descendants = (bool) Get::req('descendants', DOTY_INT, false);
+            $waiting = (bool) Get::req('waiting', DOTY_INT, false);
             $filter_text = Get::req('text', DOTY_STRING, '');
         } else {
             $classroom = $_SESSION['course_filter']['classroom'];
@@ -131,7 +144,7 @@ class CourseAlmsController extends AlmsController
             'waiting' => $waiting,
             'text' => $filter_text,
             'open' => $filter_open,
-            'id_category' => $this->_getSessionTreeData('id_category', 0)];
+            'id_category' => $this->_getSessionTreeData('id_category', 0), ];
 
         $_SESSION['course_filter']['text'] = $filter_text;
         $_SESSION['course_filter']['classroom'] = $classroom;
@@ -163,6 +176,7 @@ class CourseAlmsController extends AlmsController
         if (!isset($_SESSION['course_category']['filter_status'][$index])) {
             $_SESSION['course_category']['filter_status'][$index] = $default;
         }
+
         return $_SESSION['course_category']['filter_status'][$index];
     }
 
@@ -217,7 +231,7 @@ class CourseAlmsController extends AlmsController
                 'id' => 'mod_' . $id_category,
                 'command' => 'modify',
                 'icon' => 'standard/edit.png',
-                'alt' => Lang::t('_MOD')
+                'alt' => Lang::t('_MOD'),
             ];
         }
 
@@ -228,12 +242,12 @@ class CourseAlmsController extends AlmsController
                     'id' => 'del_' . $id_category,
                     'command' => 'delete',
                     'icon' => 'standard/delete.png',
-                    'alt' => Lang::t('_DEL')];
+                    'alt' => Lang::t('_DEL'), ];
             } else {
                 $node_options[] = [
                     'id' => 'del_' . $id_category,
                     'command' => false,
-                    'icon' => 'blank.png'];
+                    'icon' => 'blank.png', ];
             }
         }
 
@@ -242,12 +256,12 @@ class CourseAlmsController extends AlmsController
 
     public function gettreedata()
     {
-        require_once(_lms_ . '/lib/category/class.categorytree.php');
+        require_once _lms_ . '/lib/category/class.categorytree.php';
         $treecat = new Categorytree();
 
-        $command = Get::req('command', DOTY_ALPHANUM, "");
+        $command = Get::req('command', DOTY_ALPHANUM, '');
         switch ($command) {
-            case "expand":
+            case 'expand':
                 $node_id = Get::req('node_id', DOTY_INT, 0);
                 $initial = Get::req('initial', DOTY_INT, 0);
 
@@ -258,14 +272,14 @@ class CourseAlmsController extends AlmsController
                     $folders = $treecat->getOpenedFolders($treestatus);
                     $result = [];
 
-                    $ref =& $result;
+                    $ref = &$result;
                     foreach ($folders as $folder) {
                         if ($folder > 0) {
                             $count = count($ref);
-                            for ($i = 0; $i < $count; $i++) {
+                            for ($i = 0; $i < $count; ++$i) {
                                 if ($ref[$i]['node']['id'] == $folder) {
                                     $ref[$i]['children'] = [];
-                                    $ref =& $ref[$i]['children'];
+                                    $ref = &$ref[$i]['children'];
                                     break;
                                 }
                             }
@@ -281,11 +295,10 @@ class CourseAlmsController extends AlmsController
                                     'id' => $id_category,
                                     'label' => end($labelArray),
                                     'is_leaf' => $is_leaf,
-                                    'count_content' => (int)(($right - $left - 1) / 2),
-                                    'options' => $node_options]];
+                                    'count_content' => (int) (($right - $left - 1) / 2),
+                                    'options' => $node_options, ], ];
                         }
                     }
-
                 } else { //not initial selection, just an opened folder
                     $re = $treecat->getJoinedChildrensById($node_id);
                     while (list($id_category, $idParent, $path, $lev, $left, $right, $associated_courses) = $db->fetch_row($re)) {
@@ -297,8 +310,8 @@ class CourseAlmsController extends AlmsController
                             'id' => $id_category,
                             'label' => end($pathArray),
                             'is_leaf' => $is_leaf,
-                            'count_content' => (int)(($right - $left - 1) / 2),
-                            'options' => $node_options]; //change this
+                            'count_content' => (int) (($right - $left - 1) / 2),
+                            'options' => $node_options, ]; //change this
                     }
                 }
 
@@ -306,15 +319,18 @@ class CourseAlmsController extends AlmsController
                 echo $this->json->encode($output);
                 break;
 
-            case "set_selected_node":
+            case 'set_selected_node':
                 $id_node = Get::req('node_id', DOTY_INT, -1);
-                if ($id_node >= 0) $this->_setSessionTreeData('id_category', $id_node);
+                if ($id_node >= 0) {
+                    $this->_setSessionTreeData('id_category', $id_node);
+                }
                 break;
 
-            case "modify":
+            case 'modify':
                 if (!$this->permissions['mod_category']) {
-                    $output = ['success' => false, 'message' => $this->_getMessage("no permission")];
+                    $output = ['success' => false, 'message' => $this->_getMessage('no permission')];
                     echo $this->json->encode($output);
+
                     return;
                 }
 
@@ -322,17 +338,21 @@ class CourseAlmsController extends AlmsController
                 $new_name = Get::req('name', DOTY_STRING, false);
 
                 $result = ['success' => false];
-                if ($new_name !== false) $result['success'] = $treecat->renameFolderById($node_id, $new_name);
-                if ($result['success']) $result['new_name'] = stripslashes($new_name);
+                if ($new_name !== false) {
+                    $result['success'] = $treecat->renameFolderById($node_id, $new_name);
+                }
+                if ($result['success']) {
+                    $result['new_name'] = stripslashes($new_name);
+                }
 
                 echo $this->json->encode($result);
                 break;
 
-
-            case "create":
+            case 'create':
                 if (!$this->permissions['add_category']) {
-                    $output = ['success' => false, 'message' => $this->_getMessage("no permission")];
+                    $output = ['success' => false, 'message' => $this->_getMessage('no permission')];
                     echo $this->json->encode($output);
+
                     return;
                 }
 
@@ -340,29 +360,33 @@ class CourseAlmsController extends AlmsController
                 $node_name = Get::req('name', DOTY_STRING, false); //no multilang required for categories
 
                 $result = [];
-                if ($node_id === false)
+                if ($node_id === false) {
                     $result['success'] = false;
-                else {
+                } else {
                     $success = false;
                     $new_node_id = $treecat->addFolderById($node_id, $node_name);
-                    if ($new_node_id != false && $new_node_id > 0) $success = true;
+                    if ($new_node_id != false && $new_node_id > 0) {
+                        $success = true;
+                    }
 
                     $result['success'] = $success;
-                    if ($success)
+                    if ($success) {
                         $result['node'] = [
                             'id' => $new_node_id,
                             'label' => stripslashes($node_name),
                             'is_leaf' => true,
                             'count_content' => 0,
-                            'options' => $this->_getNodeActions($new_node_id, true)];
+                            'options' => $this->_getNodeActions($new_node_id, true), ];
+                    }
                 }
                 echo $this->json->encode($result);
                 break;
 
-            case "delete":
+            case 'delete':
                 if (!$this->permissions['del_category']) {
-                    $output = ['success' => false, 'message' => $this->_getMessage("no permission")];
+                    $output = ['success' => false, 'message' => $this->_getMessage('no permission')];
                     echo $this->json->encode($output);
+
                     return;
                 }
 
@@ -371,10 +395,11 @@ class CourseAlmsController extends AlmsController
                 echo $this->json->encode($result);
                 break;
 
-            case "move":
+            case 'move':
                 if (!$this->permissions['mod_category']) {
-                    $output = ['success' => false, 'message' => $this->_getMessage("no permission")];
+                    $output = ['success' => false, 'message' => $this->_getMessage('no permission')];
                     echo $this->json->encode($output);
+
                     return;
                 }
 
@@ -386,13 +411,15 @@ class CourseAlmsController extends AlmsController
                 echo $this->json->encode($result);
                 break;
 
-            case "options":
+            case 'options':
                 $node_id = Get::req('node_id', DOTY_INT, 0);
 
                 //get properties from DB
                 $count = $treecat->getChildrenCount($node_id);
                 $is_leaf = true;
-                if ($count > 0) $is_leaf = false;
+                if ($count > 0) {
+                    $is_leaf = false;
+                }
                 $node_options = $this->_getNodeActions($node_id, $is_leaf);
 
                 $result = ['success' => true, 'options' => $node_options, '_debug' => $count];
@@ -400,8 +427,6 @@ class CourseAlmsController extends AlmsController
                 break;
             //invalid command
             default:
-            {
-            }
         }
     }
 
@@ -414,7 +439,7 @@ class CourseAlmsController extends AlmsController
         $dir = Get::req('dir', DOTY_MIXED, 'asc');
         $idCourse = Get::req('idCourse', DOTY_MIXED, null);
 
-        $id_category = Get::req('node_id', DOTY_INT, (int)$this->_getSessionTreeData('id_category', 0));
+        $id_category = Get::req('node_id', DOTY_INT, (int) $this->_getSessionTreeData('id_category', 0));
         $filter_text = $_SESSION['course_filter']['text'];
         $classroom = $_SESSION['course_filter']['classroom'];
         $descendants = $_SESSION['course_filter']['descendants'];
@@ -433,9 +458,8 @@ class CourseAlmsController extends AlmsController
             'waiting' => $waiting,
             'text' => $filter_text,
             'open' => $filter_open,
-            'idCourse' => $idCourse
+            'idCourse' => $idCourse,
         ];
-
 
         $total_course = $this->model->getCourseNumber($filter);
         if ($start_index >= $total_course) {
@@ -446,7 +470,6 @@ class CourseAlmsController extends AlmsController
             }
         }
 
-      
         $course_res = $this->model->loadCourse($start_index, $results, $sort, $dir, $filter);
         $course_with_cert = $this->model->getCourseWithCertificate();
         $course_with_competence = $this->model->getCourseWithCompetence();
@@ -460,16 +483,14 @@ class CourseAlmsController extends AlmsController
                     $course_type = 'classroom';
                     break;
                 case 'elearning':
-                {
                     if ($row['course_edition'] > 0) {
                         $course_type = 'edition';
                     }
-                }
             }
 
-            $num_overbooking = (int)$this->model->getUserInOverbooking($row['idCourse']);
+            $num_overbooking = (int) $this->model->getUserInOverbooking($row['idCourse']);
 
-            $num_subscribed = (int)$row['subscriptions'] - ((int)$row['pending'] + $num_overbooking);
+            $num_subscribed = (int) $row['subscriptions'] - ((int) $row['pending'] + $num_overbooking);
 
             $list[$row['idCourse']] = [
                 'id' => $row['idCourse'],
@@ -518,17 +539,15 @@ class CourseAlmsController extends AlmsController
             }
         }
 
-
         $eventData = Events::trigger('core.course.data.listing',
             [
                 'coursesList' => $list,
                 'coursesResult' => $course_res,
                 'coursesWithCertificates' => $course_with_cert,
-                'coursesWithCompetences' => $course_with_competence
+                'coursesWithCompetences' => $course_with_competence,
             ]);
 
         $list = $eventData['coursesList'];
-
 
         $result = [
             'totalRecords' => $total_course,
@@ -537,17 +556,17 @@ class CourseAlmsController extends AlmsController
             'dir' => $dir,
             'rowsPerPage' => $results,
             'results' => count($list),
-            'records' => array_values($list)
+            'records' => array_values($list),
         ];
 
         echo $this->json->encode($result);
     }
 
-    protected function _createLO($objectType, $idResource = NULL)
+    protected function _createLO($objectType, $idResource = null)
     {
         if ($this->lo_types_cache === false) {
             $this->lo_types_cache = [];
-            $query = "SELECT objectType, className, fileName FROM %lms_lo_types";
+            $query = 'SELECT objectType, className, fileName FROM %lms_lo_types';
             $rs = sql_query($query);
             while (list($type, $className, $fileName) = sql_fetch_row($rs)) {
                 $this->lo_types_cache[$type] = [$className, $fileName];
@@ -558,19 +577,22 @@ class CourseAlmsController extends AlmsController
         $rs = sql_query( $query );
         list( $className, $fileName ) = sql_fetch_row( $rs );
         */
-        if (!isset($this->lo_types_cache[$objectType])) return NULL;
+        if (!isset($this->lo_types_cache[$objectType])) {
+            return null;
+        }
         list($className, $fileName) = $this->lo_types_cache[$objectType];
         require_once Forma::inc(_lms_ . '/class.module/' . $fileName);
-        $lo = new $className ($idResource);
+        $lo = new $className($idResource);
+
         return $lo;
     }
-
 
     public function dupcourse()
     {
         if (!$this->permissions['add']) {
-            $output = ['success' => false, 'message' => $this->_getMessage("no permission")];
+            $output = ['success' => false, 'message' => $this->_getMessage('no permission')];
             echo $this->json->encode($output);
+
             return;
         }
 
@@ -647,7 +669,7 @@ class CourseAlmsController extends AlmsController
 				create_date, security_code, imported_from_connection, course_quota, used_space, course_vote, allow_overbooking, can_subscribe,
 				sub_start_date, sub_end_date, advance, show_who_online, direct_play, autoregistration_code, use_logo_in_courselist )
 				VALUES
-				( '" . $list_sel['idCategory'] . "', '" . $list_sel['code'] . "', '" . "Copia di " . $list_sel['name'] . "', '" . $list_sel['description'] . "', '" . $list_sel['lang_code'] . "', '" . $list_sel['status'] . "', '" . $list_sel['level_show_user'] . "',
+				( '" . $list_sel['idCategory'] . "', '" . $list_sel['code'] . "', '" . 'Copia di ' . $list_sel['name'] . "', '" . $list_sel['description'] . "', '" . $list_sel['lang_code'] . "', '" . $list_sel['status'] . "', '" . $list_sel['level_show_user'] . "',
 				'" . $list_sel['subscribe_method'] . "', '" . $list_sel['linkSponsor'] . "', '" . $list_sel['imgSponsor'] . "', '" . $list_sel['img_course'] . "', '" . $list_sel['img_material'] . "', '" . $list_sel['img_othermaterial'] . "',
 				'" . $list_sel['course_demo'] . "', '" . $list_sel['mediumTime'] . "', '" . $list_sel['permCloseLO'] . "', '" . $list_sel['userStatusOp'] . "', '" . $list_sel['difficult'] . "', '" . $list_sel['show_progress'] . "', '" . $list_sel['show_time'] . "', '" . $list_sel['show_extra_info'] . "',
 				'" . $list_sel['show_rules'] . "', '" . $list_sel['valid_time'] . "', '" . $list_sel['max_num_subscribe'] . "', '" . $list_sel['min_num_subscribe'] . "',
@@ -660,19 +682,18 @@ class CourseAlmsController extends AlmsController
                 ob_clean();
                 ob_start();
                 echo $this->json->encode(['success' => false]);
-                die();
+                exit();
             }
 
             // the id of the new course created
             $new_id_course = $new_course_dup = sql_insert_id();
-
 
             //Create the new course file
             if (isset($_POST['image'])) {
                 $path = Get::sett('pathcourse');
                 $path = '/appLms/' . Get::sett('pathcourse') . (substr($path, -1) != '/' && substr($path, -1) != '\\' ? '/' : '');
 
-                require_once(_base_ . '/lib/lib.upload.php');
+                require_once _base_ . '/lib/lib.upload.php';
 
                 sl_open_fileoperations();
 
@@ -683,16 +704,15 @@ class CourseAlmsController extends AlmsController
                 sl_close_fileoperations();
             }
 
-
             //--- copy menu data -----------------------------------------------------
 
             // copy the old course menu into the new one
             $query_selmen = "SELECT * FROM %lms_menucourse_main WHERE idCourse = '" . $id_dupcourse . "' ";
             $result_selmen = sql_query($query_selmen);
             while ($list_selmen = sql_fetch_array($result_selmen)) {
-                $query_dupmen = "INSERT INTO %lms_menucourse_main " .
-                    " (idCourse, sequence, name, image) " .
-                    " VALUES " .
+                $query_dupmen = 'INSERT INTO %lms_menucourse_main ' .
+                    ' (idCourse, sequence, name, image) ' .
+                    ' VALUES ' .
                     " ( '" . $new_course_dup . "', '" . $list_selmen['sequence'] . "', '" . $list_selmen['name'] . "', '" . $list_selmen['image'] . "' )";
                 $result_dupmen = sql_query($query_dupmen);
                 $array_seq[$list_selmen['idMain']] = sql_insert_id();
@@ -709,14 +729,13 @@ class CourseAlmsController extends AlmsController
             }
             $result_dupmen = true;
             if (!empty($query_insert_list)) {
-                $query_dupmen = "INSERT INTO %lms_menucourse_under
+                $query_dupmen = 'INSERT INTO %lms_menucourse_under
 					(idMain, idCourse, sequence, idModule, my_name)
-					VALUES " . implode(",", $query_insert_list);
+					VALUES ' . implode(',', $query_insert_list);
                 $result_dupmen = sql_query($query_dupmen);
             }
 
             //--- end menu -----------------------------------------------------------
-
 
             function &getCourseLevelSt($id_course)
             {
@@ -725,9 +744,10 @@ class CourseAlmsController extends AlmsController
 
                 // find all the group created for this menu custom for permission management
                 foreach ($levels as $lv => $name_level) {
-                    $group_info = Docebo::aclm()->getGroup(FALSE, '/lms/course/' . $id_course . '/subscribed/' . $lv);
+                    $group_info = Docebo::aclm()->getGroup(false, '/lms/course/' . $id_course . '/subscribed/' . $lv);
                     $map[$lv] = $group_info[ACL_INFO_IDST];
                 }
+
                 return $map;
             }
 
@@ -736,16 +756,16 @@ class CourseAlmsController extends AlmsController
                 return true;
             }
 
-            require_once(_lms_ . '/lib/lib.course.php');
-            require_once(_lms_ . '/lib/lib.manmenu.php');
-            require_once(_lms_ . '/lib/lib.subscribe.php');
+            require_once _lms_ . '/lib/lib.course.php';
+            require_once _lms_ . '/lib/lib.manmenu.php';
+            require_once _lms_ . '/lib/lib.subscribe.php';
 
             $docebo_course = new DoceboCourse($id_dupcourse);
             $subscribe_man = new CourseSubscribe_Manager();
 
-            $group_idst =& $docebo_course->createCourseLevel($new_course_dup);
-            $group_of_from =& $docebo_course->getCourseLevel($id_dupcourse);
-            $perm_form =& createPermForCoursebis($group_of_from, $new_course_dup, $id_dupcourse);
+            $group_idst = &$docebo_course->createCourseLevel($new_course_dup);
+            $group_of_from = &$docebo_course->getCourseLevel($id_dupcourse);
+            $perm_form = &createPermForCoursebis($group_of_from, $new_course_dup, $id_dupcourse);
             $levels = $subscribe_man->getUserLevel();
 
             foreach ($levels as $lv => $name_level) {
@@ -755,7 +775,6 @@ class CourseAlmsController extends AlmsController
                     }
                 }
             }
-
 
             if (isset($_POST['certificate'])) {
                 // duplicate the certificate assigned
@@ -768,44 +787,39 @@ class CourseAlmsController extends AlmsController
                 }
                 $result_dupmen = true;
                 if (!empty($query_insert_list)) {
-                    $query_dupmen = "INSERT INTO %lms_certificate_course
+                    $query_dupmen = 'INSERT INTO %lms_certificate_course
 						(id_certificate, id_course, available_for_status, point_required)
-						VALUES " . implode(",", $query_insert_list);
+						VALUES ' . implode(',', $query_insert_list);
                     $result_dupmen = sql_query($query_dupmen);
                 }
             }
 
+            require_once Forma::inc(_lms_ . '/modules/organization/orglib.php');
+            require_once _lms_ . '/lib/lib.param.php';
+            require_once _lms_ . '/class.module/track.object.php';
+            require_once _lms_ . '/class.module/learning.object.php';
 
-            require_once(Forma::inc(_lms_ . '/modules/organization/orglib.php'));
-            require_once(_lms_ . '/lib/lib.param.php');
-            require_once(_lms_ . '/class.module/track.object.php');
-            require_once(_lms_ . '/class.module/learning.object.php');
-
-
-            $nullVal = NULL;
+            $nullVal = null;
             $id_orgs = [];
             $map_org = [];
 
             if (isset($_POST['lo'])) {
-
                 $org_map = [];
                 $id_orgs = [];
                 $prereq_map = [];
 
                 // retrive all the folders and object, the order by grant that folder are created before the elements contained in them
-                $query = "SELECT * FROM %lms_organization WHERE idCourse = " . (int)$id_dupcourse . " ORDER BY path ASC";
+                $query = 'SELECT * FROM %lms_organization WHERE idCourse = ' . (int) $id_dupcourse . ' ORDER BY path ASC';
                 $source_res = sql_query($query);
 
                 // Go trough all the entry of learning_organization
                 while ($source = sql_fetch_object($source_res)) {
                     // check if LO id is checked
                     if (in_array($source->idOrg, $_POST['lo_list'])) {
-
                         // if it's an object we must make a copy, if it's a folder we can create a row
                         // inside learning_orgation and save the id for later use
 
                         if ($source->objectType == '') {
-
                             // is a folder
                             // create a new row in learning_organization
                             $query_new_org = "INSERT INTO %lms_organization (
@@ -830,7 +844,6 @@ class CourseAlmsController extends AlmsController
                             // map for later use
                             $org_map['folder'][$source->idOrg] = $new_id_reference;
                         } else {
-
                             // is an object
                             // make a copy
                             $lo = $this->_createLO($source->objectType);
@@ -872,27 +885,27 @@ class CourseAlmsController extends AlmsController
                         }
                         // create a map for the olds and new idReferences
                         $id_orgs[$source->idOrg] = $new_id_reference;
-                        if ($source->prerequisites != '') $prereq_map[$new_id_reference] = $source->prerequisites;
+                        if ($source->prerequisites != '') {
+                            $prereq_map[$new_id_reference] = $source->prerequisites;
+                        }
                     }
-
                 }
 
                 // updates prerequisites
                 foreach ($prereq_map as $new_id_reference => $old_prerequisites) {
-
                     $new_prerequisites = [];
-                    $old_prerequisites = explode(",", $old_prerequisites);
+                    $old_prerequisites = explode(',', $old_prerequisites);
                     foreach ($old_prerequisites as $old_p) {
-
                         //a prerequisite can be a pure number or something like 7=NULL, or 7=incomplete
                         $old_id = intval($old_p);
-                        if (isset($id_orgs[$old_id])) $new_prerequisites[] = str_replace($old_id, $id_orgs[$old_id], $old_p);
+                        if (isset($id_orgs[$old_id])) {
+                            $new_prerequisites[] = str_replace($old_id, $id_orgs[$old_id], $old_p);
+                        }
                     }
                     if (!empty($new_prerequisites)) {
-
-                        $query_updcor = "UPDATE %lms_organization "
-                            . "SET prerequisites = '" . implode(",", $new_prerequisites) . "' "
-                            . "WHERE idOrg = " . $new_id_reference . " ";
+                        $query_updcor = 'UPDATE %lms_organization '
+                            . "SET prerequisites = '" . implode(',', $new_prerequisites) . "' "
+                            . 'WHERE idOrg = ' . $new_id_reference . ' ';
                         $result_upcor = sql_query($query_updcor);
                     }
                 }
@@ -908,25 +921,24 @@ class CourseAlmsController extends AlmsController
                 }
                 $result_dupmen = true;
                 if (!empty($query_insert_list)) {
-                    $query_dupmen = "INSERT INTO %lms_forum
+                    $query_dupmen = 'INSERT INTO %lms_forum
 						(idCourse, title, description, locked, sequence, emoticons)
-						VALUES " . implode(",", $query_insert_list);
+						VALUES ' . implode(',', $query_insert_list);
                     $result_dupmen = sql_query($query_dupmen);
                 }
 
                 //--- end forum --------------------------------------------------------
-
 
                 //--- copy coursereports data ------------------------------------------
 
                 //create a conversion table for tests and scoitems coursereports
                 $array_organization = [
                     'test' => [],
-                    'scoitem' => []
+                    'scoitem' => [],
                 ];
                 $arr_items_flat = [
                     'test' => [],
-                    'scoitem' => []
+                    'scoitem' => [],
                 ];
                 $query_org = "SELECT source_of, id_source
 					FROM %lms_coursereport WHERE id_course = '" . $id_dupcourse . "'
@@ -940,16 +952,15 @@ class CourseAlmsController extends AlmsController
                     }
                 }
 
-
                 if (!empty($arr_items_flat['scoitem'])) {
                     //retrieve idOrgs of scoitems' scormorgs
                     $arr_old_idorg = [];
                     $arr_old_ident = [];
-                    $query = "SELECT o.idOrg, o.idResource, s.idscorm_item, s.item_identifier
+                    $query = 'SELECT o.idOrg, o.idResource, s.idscorm_item, s.item_identifier
 						FROM %lms_organization AS o
 						JOIN %lms_scorm_items AS s
 						ON (o.idResource = s.idscorm_organization)
-						WHERE s.idscorm_item IN (" . implode(",", $arr_items_flat['scoitem']) . ")
+						WHERE s.idscorm_item IN (' . implode(',', $arr_items_flat['scoitem']) . ")
 						AND o.objectType = 'scormorg'";
                     $res = sql_query($query);
                     while (list($idOrg, $idResource, $idscorm_item, $item_identifier) = sql_fetch_row($res)) {
@@ -961,11 +972,11 @@ class CourseAlmsController extends AlmsController
                         foreach ($arr_old_idorg as $idOrg) {
                             $arr_new_idorg[] = $id_orgs[$idOrg];
                         }
-                        $query = "SELECT o.idOrg, o.idResource, s.idscorm_item, s.item_identifier
+                        $query = 'SELECT o.idOrg, o.idResource, s.idscorm_item, s.item_identifier
 							FROM %lms_organization AS o
 							JOIN %lms_scorm_items AS s
 							ON (o.idResource = s.idscorm_organization)
-							WHERE o.idOrg IN (" . implode(",", $arr_new_idorg) . ")
+							WHERE o.idOrg IN (' . implode(',', $arr_new_idorg) . ")
 							AND o.objectType = 'scormorg'";
                         $res = sql_query($query);
                         $new_to_old = array_flip($id_orgs);
@@ -983,22 +994,19 @@ class CourseAlmsController extends AlmsController
                 $query_selmenun = "SELECT * FROM %lms_coursereport WHERE id_course = '" . $id_dupcourse . "' ";
                 $result_selmenun = sql_query($query_selmenun);
                 while ($new_org = sql_fetch_array($result_selmenun)) {
-
                     $id_source_val = 0;
                     switch ($new_org['source_of']) {
                         case 'test':
-                            {
                                 $id_source_val = !isset($org_map['test'][$new_org['id_source']])
                                     ? 0
                                     : $org_map['test'][$new_org['id_source']];
-                            }
+
                             break;
                         case 'scoitem':
-                            {
-                                $id_source_val = !isset($array_organization['scoitem'][$new_org['id_source']]) || $array_organization['scoitem'][$new_org['id_source']] == ""
+                                $id_source_val = !isset($array_organization['scoitem'][$new_org['id_source']]) || $array_organization['scoitem'][$new_org['id_source']] == ''
                                     ? 0
                                     : $array_organization['scoitem'][$new_org['id_source']];
-                            }
+
                             break;
                     }
 
@@ -1010,13 +1018,12 @@ class CourseAlmsController extends AlmsController
 
                 $result_dupman = true;
                 if (!empty($query_insert_list)) {
-                    $query_dupmen = "INSERT INTO %lms_coursereport
+                    $query_dupmen = 'INSERT INTO %lms_coursereport
 						(id_course,title,max_score,required_score,weight,show_to_user,use_for_final,sequence,source_of,id_source)
-						VALUES " . implode(",", $query_insert_list);
+						VALUES ' . implode(',', $query_insert_list);
                     $result_dupmen = sql_query($query_dupmen);
                 }
                 //--- end coursereports ------------------------------------------------
-
 
                 //--- copy htmlfront data ----------------------------------------------
 
@@ -1029,19 +1036,17 @@ class CourseAlmsController extends AlmsController
 
                 $result_dupmen = true;
                 if (!empty($query_insert_list)) {
-                    $query_dupmen = "INSERT INTO %lms_htmlfront
+                    $query_dupmen = 'INSERT INTO %lms_htmlfront
 						(id_course, textof)
-						VALUES " . implode(",", $query_insert_list);
+						VALUES ' . implode(',', $query_insert_list);
                     $result_dupmen = sql_query($query_dupmen);
                 }
 
                 //--- end htmlfront ----------------------------------------------------
-
             }
 
-
             if (isset($_POST['advice'])) {
-                $query = "SELECT * FROM %lms_advice WHERE idCourse = " . (int)$id_dupcourse;
+                $query = 'SELECT * FROM %lms_advice WHERE idCourse = ' . (int) $id_dupcourse;
                 $result = sql_query($query);
 
                 if (sql_num_rows($result) > 0) {
@@ -1060,13 +1065,13 @@ class CourseAlmsController extends AlmsController
 
                     while ($row = sql_fetch_assoc($result)) {
                         $new_description = (!empty($id_orgs)) ? str_replace($array_sub, $array_replace, $row['description']) : $row['description'];
-                        $query_insert_list[] = "(NULL, " . (int)$new_course_dup . ", '" . $row['posted'] . "', " . (int)$row['author'] . ", '" . $row['title'] . "', '" . $new_description . "', " . (int)$row['important'] . ")";
+                        $query_insert_list[] = '(NULL, ' . (int) $new_course_dup . ", '" . $row['posted'] . "', " . (int) $row['author'] . ", '" . $row['title'] . "', '" . $new_description . "', " . (int) $row['important'] . ')';
                     }
 
                     if (!empty($query_insert_list)) {
-                        $query = "INSERT INTO %lms_advice
+                        $query = 'INSERT INTO %lms_advice
 							(idAdvice, idCourse, posted, author, title, description, important)
-							VALUES " . implode(",", $query_insert_list);
+							VALUES ' . implode(',', $query_insert_list);
                         sql_query($query);
                     }
                 }
@@ -1084,8 +1089,9 @@ class CourseAlmsController extends AlmsController
         if (!$perm_assign && !$this->permissions['mod']) {
             $this->render('invalid', [
                 'message' => $this->_getErrorMessage('no permission'),
-                'back_url' => 'index.php?r=' . $this->base_link_course . '/show'
+                'back_url' => 'index.php?r=' . $this->base_link_course . '/show',
             ]);
+
             return;
         }
 
@@ -1093,7 +1099,7 @@ class CourseAlmsController extends AlmsController
             Util::jump_to('index.php?r=' . $this->base_link_course . '/show');
         }
 
-        require_once(Forma::inc(_lms_ . '/lib/lib.certificate.php'));
+        require_once Forma::inc(_lms_ . '/lib/lib.certificate.php');
         $cert = new Certificate();
 
         $id_course = Get::req('id_course', DOTY_INT, 0);
@@ -1109,7 +1115,7 @@ class CourseAlmsController extends AlmsController
                 Util::jump_to('index.php?r=' . $this->base_link_course . '/show&res=_up_cert_ok');
             }
         } else {
-            require_once(_base_ . '/lib/lib.table.php');
+            require_once _base_ . '/lib/lib.table.php';
 
             $all_languages = Docebo::langManager()->getAllLanguages(true);
             $languages = [];
@@ -1117,7 +1123,7 @@ class CourseAlmsController extends AlmsController
                 $languages[$v['code']] = $v['description'];
             }
 
-            $query = "SELECT code, name, course_type"
+            $query = 'SELECT code, name, course_type'
                 . " FROM %lms_course WHERE idCourse = '" . $id_course . "'";
             $course = sql_fetch_array(sql_query($query));
 
@@ -1133,7 +1139,7 @@ class CourseAlmsController extends AlmsController
                 AVS_NOT_ASSIGNED => Lang::t('_NOT_ASSIGNED', 'course'),
                 AVS_ASSIGN_FOR_ALL_STATUS => Lang::t('_ASSIGN_FOR_ALL_STATUS', 'course'),
                 AVS_ASSIGN_FOR_STATUS_INCOURSE => Lang::t('_ASSIGN_FOR_STATUS_INCOURSE', 'course'),
-                AVS_ASSIGN_FOR_STATUS_COMPLETED => Lang::t('_ASSIGN_FOR_STATUS_COMPLETED', 'course')
+                AVS_ASSIGN_FOR_STATUS_COMPLETED => Lang::t('_ASSIGN_FOR_STATUS_COMPLETED', 'course'),
             ];
 
             $type_h = ['nowrap', 'nowrap', '', '', 'image'];
@@ -1142,7 +1148,7 @@ class CourseAlmsController extends AlmsController
                 Lang::t('_CERTIFICATE_LANGUAGE', 'course'),
                 Lang::t('_CERTIFICATE_ASSIGN_STATUS', 'course'),
                 //Lang::t('_CERTIFICATE_EX_ASSIGN_STATUS', 'course'),
-                Lang::t('_CERTIFICATE_RELEASED', 'course')
+                Lang::t('_CERTIFICATE_RELEASED', 'course'),
             ];
             $tb->setColsStyle($type_h);
             $tb->addHead($cont_h);
@@ -1166,7 +1172,7 @@ class CourseAlmsController extends AlmsController
                         $possible_status,
                         (isset($course_cert[$id_cert]['available_for_status']) ? $course_cert[$id_cert]['available_for_status'] : 0),
                         '')
-                    . "<br/>"
+                    . '<br/>'
                     . Lang::t('_ASSIGN_FOR_AT_LEAST_MINUTES', 'course') . ' '
                     . Form::getInputTextfield('dropdown_nowh',
                         'certificate_assign_minutes_' . $id_cert,
@@ -1195,19 +1201,19 @@ class CourseAlmsController extends AlmsController
                 'tb' => $tb,
                 'point_required' => $point_required,
                 'base_link_course' => $this->base_link_course,
-                'course_name' => $course_name
+                'course_name' => $course_name,
             ]);
         }
     }
-
 
     public function menu()
     {
         if (!$this->permissions['mod']) {
             $this->render('invalid', [
                 'message' => $this->_getErrorMessage('no permission'),
-                'back_url' => 'index.php?r=' . $this->base_link_course . '/show'
+                'back_url' => 'index.php?r=' . $this->base_link_course . '/show',
             ]);
+
             return;
         }
 
@@ -1219,31 +1225,31 @@ class CourseAlmsController extends AlmsController
         if (isset($_POST['assign'])) {
             $id_custom = Get::req('selected_menu', DOTY_INT, 0);
 
-            require_once($GLOBALS['where_lms'] . '/lib/lib.manmenu.php');
-            require_once($GLOBALS['where_lms'] . '/lib/lib.course.php');
+            require_once $GLOBALS['where_lms'] . '/lib/lib.manmenu.php';
+            require_once $GLOBALS['where_lms'] . '/lib/lib.course.php';
 
-            $acl_man =& Docebo::user()->getAclManager();
+            $acl_man = &Docebo::user()->getAclManager();
             $course_man = new Man_Course();
 
-            $levels =& $course_man->getCourseIdstGroupLevel($id_course);
+            $levels = &$course_man->getCourseIdstGroupLevel($id_course);
             if (empty($levels) || implode('', $levels) == '') {
-                $levels =& DoceboCourse::createCourseLevel($id_course);
+                $levels = &DoceboCourse::createCourseLevel($id_course);
             }
 
             $course_man->removeCourseRole($id_course);
             $course_man->removeCourseMenu($id_course);
-            $course_idst =& $course_man->getCourseIdstGroupLevel($id_course);
+            $course_idst = &$course_man->getCourseIdstGroupLevel($id_course);
 
             $result = createCourseMenuFromCustom($id_custom, $id_course, $course_idst);
 
             if ($_SESSION['idCourse'] == $id_course) {
-                $query = "SELECT module.idModule, main.idMain
-							FROM ( " . $GLOBALS['prefix_lms'] . "_menucourse_main AS main JOIN
-							" . $GLOBALS['prefix_lms'] . "_menucourse_under AS un ) JOIN
-							" . $GLOBALS['prefix_lms'] . "_module AS module
+                $query = 'SELECT module.idModule, main.idMain
+							FROM ( ' . $GLOBALS['prefix_lms'] . '_menucourse_main AS main JOIN
+							' . $GLOBALS['prefix_lms'] . '_menucourse_under AS un ) JOIN
+							' . $GLOBALS['prefix_lms'] . "_module AS module
 							WHERE main.idMain = un.idMain AND un.idModule = module.idModule
-							AND main.idCourse = '" . (int)$_SESSION['idCourse'] . "'
-							AND un.idCourse = '" . (int)$_SESSION['idCourse'] . "'
+							AND main.idCourse = '" . (int) $_SESSION['idCourse'] . "'
+							AND un.idCourse = '" . (int) $_SESSION['idCourse'] . "'
 							ORDER BY main.sequence, un.sequence
 							LIMIT 0,1";
 
@@ -1263,7 +1269,7 @@ class CourseAlmsController extends AlmsController
 
             Util::jump_to('index.php?r=' . $this->base_link_course . '/show&res=_up_menu_err');
         } else {
-            require_once($GLOBALS['where_lms'] . '/lib/lib.manmenu.php');
+            require_once $GLOBALS['where_lms'] . '/lib/lib.manmenu.php';
             $menu_custom = getAllCustom();
             $sel_custom = getAssociatedCustom($id_course);
 
@@ -1275,7 +1281,7 @@ class CourseAlmsController extends AlmsController
                 'sel_custom' => $sel_custom,
                 'id_course' => $id_course,
                 'base_link_course' => $this->base_link_course,
-                'course_name' => $course_name
+                'course_name' => $course_name,
             ]);
         }
     }
@@ -1285,22 +1291,22 @@ class CourseAlmsController extends AlmsController
         if (!$this->permissions['add']) {
             $this->render('invalid', [
                 'message' => $this->_getErrorMessage('no permission'),
-                'back_url' => 'index.php?r=' . $this->base_link_course . '/show'
+                'back_url' => 'index.php?r=' . $this->base_link_course . '/show',
             ]);
+
             return;
         }
 
-        if (isset($_POST['undo']))
+        if (isset($_POST['undo'])) {
             Util::jump_to('index.php?r=' . $this->base_link_course . '/show');
+        }
 
         if (isset($_POST['save'])) {
             //resolve course type
             if ($_POST['course_type'] == 'edition') {
-
                 $_POST['course_type'] = 'elearning';
                 $_POST['course_edition'] = 1;
             } else {
-
                 $_POST['course_edition'] = 0;
             }
 
@@ -1320,8 +1326,9 @@ class CourseAlmsController extends AlmsController
         if (!$this->permissions['mod']) {
             $this->render('invalid', [
                 'message' => $this->_getErrorMessage('no permission'),
-                'back_url' => 'index.php?r=' . $this->base_link_course . '/show'
+                'back_url' => 'index.php?r=' . $this->base_link_course . '/show',
             ]);
+
             return;
         }
 
@@ -1334,11 +1341,9 @@ class CourseAlmsController extends AlmsController
         if (isset($_POST['save'])) {
             //resolve course type
             if ($_POST['course_type'] == 'edition') {
-
                 $_POST['course_type'] = 'elearning';
                 $_POST['course_edition'] = 1;
             } else {
-
                 $_POST['course_edition'] = 0;
             }
 
@@ -1356,13 +1361,14 @@ class CourseAlmsController extends AlmsController
     public function delcourse()
     {
         if (!$this->permissions['del']) {
-            $output = ['success' => false, 'message' => $this->_getMessage("no permission")];
+            $output = ['success' => false, 'message' => $this->_getMessage('no permission')];
             echo $this->json->encode($output);
+
             return;
         }
 
         if (Get::cfg('demo_mode')) {
-            die('Cannot del course during demo mode.');
+            exit('Cannot del course during demo mode.');
         }
 
         if (isset($_GET['confirm'])) {
@@ -1384,15 +1390,16 @@ class CourseAlmsController extends AlmsController
         if (!$this->permissions[$perm_requested]) {
             $this->render('invalid', [
                 'message' => $this->_getErrorMessage('no permission'),
-                'back_url' => 'index.php?r=' . $this->base_link_course . '/show'
+                'back_url' => 'index.php?r=' . $this->base_link_course . '/show',
             ]);
+
             return;
         }
 
         YuiLib::load();
 
-        require_once(_lms_ . '/lib/lib.levels.php');
-        require_once(_lms_ . '/admin/models/LabelAlms.php');
+        require_once _lms_ . '/lib/lib.levels.php';
+        require_once _lms_ . '/admin/models/LabelAlms.php';
         $levels = CourseLevel::getTranslatedLevels();
         $label_model = new LabelAlms();
 
@@ -1405,29 +1412,29 @@ class CourseAlmsController extends AlmsController
             CST_AVAILABLE => Lang::t('_CST_AVAILABLE', 'course'),
             CST_EFFECTIVE => Lang::t('_CST_CONFIRMED', 'course'),
             CST_CONCLUDED => Lang::t('_CST_CONCLUDED', 'course'),
-            CST_CANCELLED => Lang::t('_CST_CANCELLED', 'course')];
+            CST_CANCELLED => Lang::t('_CST_CANCELLED', 'course'), ];
         //difficult ------------------------------------------------------------
         $difficult_lang = [
             'veryeasy' => Lang::t('_DIFFICULT_VERYEASY', 'course'),
             'easy' => Lang::t('_DIFFICULT_EASY', 'course'),
             'medium' => Lang::t('_DIFFICULT_MEDIUM', 'course'),
             'difficult' => Lang::t('_DIFFICULT_DIFFICULT', 'course'),
-            'verydifficult' => Lang::t('_DIFFICULT_VERYDIFFICULT', 'course')];
+            'verydifficult' => Lang::t('_DIFFICULT_VERYDIFFICULT', 'course'), ];
         //type of course -------------------------------------------------------
         $course_type = [
             'classroom' => Lang::t('_CLASSROOM', 'course'),
             'elearning' => Lang::t('_COURSE_TYPE_ELEARNING', 'course'),
-            'edition' => Lang::t('_COURSE_TYPE_EDITION', 'course')
+            'edition' => Lang::t('_COURSE_TYPE_EDITION', 'course'),
         ];
 
         $show_who_online = [
             0 => Lang::t('_DONT_SHOW', 'course'),
             _SHOW_COUNT => Lang::t('_SHOW_COUNT', 'course'),
-            _SHOW_INSTMSG => Lang::t('_SHOW_INSTMSG', 'course')];
+            _SHOW_INSTMSG => Lang::t('_SHOW_INSTMSG', 'course'), ];
 
         $hours = ['-1' => '- -', '0' => '00', '01', '02', '03', '04', '05', '06', '07', '08', '09',
             '10', '11', '12', '13', '14', '15', '16', '17', '18', '19',
-            '20', '21', '22', '23'];
+            '20', '21', '22', '23', ];
         $quarter = ['-1' => '- -', '00' => '00', '15' => '15', '30' => '30', '45' => '45'];
 
         $params = [
@@ -1441,11 +1448,11 @@ class CourseAlmsController extends AlmsController
             'show_who_online' => $show_who_online,
             'hours' => $hours,
             'quarter' => $quarter,
-            'model' => $this->model
+            'model' => $this->model,
         ];
 
         if ($id_course === false) {
-            require_once($GLOBALS['where_lms'] . '/lib/lib.manmenu.php');
+            require_once $GLOBALS['where_lms'] . '/lib/lib.manmenu.php';
             $menu_custom = getAllCustom();
             list($sel_custom) = current($menu_custom);
             reset($menu_custom);
@@ -1458,7 +1465,9 @@ class CourseAlmsController extends AlmsController
 
         $params['course'] = $this->model->getCourseModDetails($id_course);
         //resolve edition flag into type
-        if ($params['course']['course_edition'] == 1) $params['course']['course_type'] = 'edition';
+        if ($params['course']['course_edition'] == 1) {
+            $params['course']['course_type'] = 'edition';
+        }
 
         if ($id_course == false) {
             $params['has_editions_or_classrooms'] = false;
@@ -1467,13 +1476,13 @@ class CourseAlmsController extends AlmsController
         }
 
         if ($params['course']['hour_begin'] != '-1') {
-            $hb_sel = (int)substr($params['course']['hour_begin'], 0, 2);
+            $hb_sel = (int) substr($params['course']['hour_begin'], 0, 2);
             $qb_sel = substr($params['course']['hour_begin'], 3, 2);
         } else {
             $hb_sel = $qb_sel = '-1';
         }
         if ($params['course']['hour_end'] != '-1') {
-            $he_sel = (int)substr($params['course']['hour_end'], 0, 2);
+            $he_sel = (int) substr($params['course']['hour_end'], 0, 2);
             $qe_sel = substr($params['course']['hour_end'], 3, 2);
         } else {
             $he_sel = $qe_sel = '-1';
@@ -1484,25 +1493,22 @@ class CourseAlmsController extends AlmsController
         $params['qe_sel'] = $qe_sel;
         $params['base_link_course'] = $this->base_link_course;
 
-        $params['use_unsubscribe_date_limit'] = (bool)($params['course']['unsubscribe_date_limit'] != '');
-        $params['unsubscribe_date_limit'] = $params['course']['unsubscribe_date_limit'] != '' && $params['course']['unsubscribe_date_limit'] != "0000-00-00 00:00:00"
+        $params['use_unsubscribe_date_limit'] = (bool) ($params['course']['unsubscribe_date_limit'] != '');
+        $params['unsubscribe_date_limit'] = $params['course']['unsubscribe_date_limit'] != '' && $params['course']['unsubscribe_date_limit'] != '0000-00-00 00:00:00'
             ? Format::date($params['course']['unsubscribe_date_limit'], 'date')
-            : "";
+            : '';
 
         $this->render('maskcourse', $params);
     }
 
-
     public function list_certificate()
     {
-
         $id_course = Get::req('id_course', DOTY_INT, 0);
         $id_certificate = Get::req('id_certificate', DOTY_INT, 0);
         $from = Get::req('from');
         $op = Get::req('op');
 
-
-        require_once(Forma::inc(_adm_ . '/lib/lib.field.php'));
+        require_once Forma::inc(_adm_ . '/lib/lib.field.php');
         $fman = new FieldList();
         $custom_field_array = $fman->getFlatAllFields();
 
@@ -1511,7 +1517,6 @@ class CourseAlmsController extends AlmsController
         foreach ($data_certificate as $key => $value) {
             array_unshift($data_certificate[$key], '');
         }
-
 
         $course_info = $this->model->getCourseModDetails($id_course);
         $this->render(
@@ -1523,13 +1528,7 @@ class CourseAlmsController extends AlmsController
             'from' => $from,
             'data_certificate' => $data_certificate,
             'custom_fields' => $custom_field_array,
-            'op' => $op
-
+            'op' => $op,
         ]);
-
     }
-
-
 }
-
-?>

@@ -1,312 +1,334 @@
-<?php defined("IN_FORMA") or die('Direct access is forbidden.');
+<?php
 
+/*
+ * FORMA - The E-Learning Suite
+ *
+ * Copyright (c) 2013-2022 (Forma)
+ * https://www.formalms.org
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ *
+ * from docebo 4.0.5 CE 2008-2012 (c) docebo
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ */
 
+defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 /**
  * @version  $Id:$
+ *
  * @author	 Fabio Pirovano <fabio [at] docebo-com>
- * @package course
  */
+function displayCourseList(&$url, $order_type)
+{
+    require_once _base_ . '/lib/lib.form.php';
+    require_once _base_ . '/lib/lib.user_profile.php';
+    require_once _base_ . '/lib/lib.navbar.php';
+    require_once $GLOBALS['where_lms'] . '/lib/lib.preassessment.php';
+    require_once $GLOBALS['where_lms'] . '/lib/lib.catalogue.php';
+    require_once $GLOBALS['where_lms'] . '/lib/lib.course.php';
+    require_once $GLOBALS['where_lms'] . '/lib/lib.coursereport.php';
+    require_once $GLOBALS['where_framework'] . '/lib/lib.ajax_comment.php';
 
-function displayCourseList(&$url, $order_type) {
+    require_once $GLOBALS['where_lms'] . '/lib/lib.classroom.php';
 
-	require_once(_base_.'/lib/lib.form.php');
-	require_once(_base_.'/lib/lib.user_profile.php');
-	require_once(_base_.'/lib/lib.navbar.php');
-	require_once($GLOBALS['where_lms'].'/lib/lib.preassessment.php');
-	require_once($GLOBALS['where_lms'].'/lib/lib.catalogue.php');
-	require_once($GLOBALS['where_lms'].'/lib/lib.course.php');
-	require_once($GLOBALS['where_lms'].'/lib/lib.coursereport.php');
-	require_once($GLOBALS["where_framework"]."/lib/lib.ajax_comment.php");
+    // cahce classroom
+    $classroom_man = new ClassroomManager();
+    $classrooms = $classroom_man->getClassroomNameList();
 
-	require_once($GLOBALS['where_lms'].'/lib/lib.classroom.php');
+    $lang = &DoceboLanguage::createInstance('catalogue');
+    $lang_c = &DoceboLanguage::createInstance('course');
 
-	// cahce classroom
-	$classroom_man 	= new ClassroomManager();
-	$classrooms = $classroom_man->getClassroomNameList();
+    $nav_bar = new NavBar('ini', Get::sett('visuItem'), 0);
+    $man_course = new Man_Course();
 
-	$lang 	=& DoceboLanguage::createInstance('catalogue');
-	$lang_c =& DoceboLanguage::createInstance('course');
+    $id_parent = importVar('id_parent', false, 0);
 
-	$nav_bar 		= new NavBar('ini', Get::sett('visuItem'), 0);
-	$man_course 	= new Man_Course();
+    $nav_url = ($id_parent != 0 ? $url->getUrl('id_parent=' . $id_parent) : $url->getUrl());
+    $nav_bar->setLink($nav_url);
+    $ini = $nav_bar->getSelectedElement();
 
-	$id_parent = importVar('id_parent', false, 0);
+    $profile = new UserProfile(getLogUserId());
+    $profile->init('profile', 'framework', '', 'ap');
+    $profile->addStyleSheet('lms');
 
-	$nav_url = ( $id_parent != 0 ? $url->getUrl('id_parent='.$id_parent) : $url->getUrl() );
-	$nav_bar->setLink($nav_url);
-	$ini = $nav_bar->getSelectedElement();
+    // searching courses
+    $use_category = ($order_type == 'category');
 
-	$profile = new UserProfile( getLogUserId() );
-	$profile->init('profile', 'framework', '', 'ap');
-	$profile->addStyleSheet('lms');
-	
-	// searching courses
-	$use_category = ($order_type == 'category');
+    $select_course = ''
+    . ' SELECT c.idCourse, c.course_type, c.idCategory, c.code, c.name, c.description, c.lang_code, c.difficult, '
+    . '	c.subscribe_method, c.date_begin, c.date_end, c.max_num_subscribe, '
+    . '	c.selling, c.prize, c.create_date, c.status AS course_status, c.course_edition, '
+    . '	c.classrooms, c.img_material, c.course_demo, c.course_vote, COUNT(*) as enrolled, '
+    . '	c.can_subscribe, c.sub_start_date, c.sub_end_date, c.allow_overbooking, c.max_num_subscribe, c.min_num_subscribe, c.direct_play, '
+    . '	c.valid_time, c.userStatusOp, u.level, u.date_inscr, u.date_first_access, u.date_complete, u.status AS user_status, u.waiting, c.advance ';
 
-	$select_course = ""
-	." SELECT c.idCourse, c.course_type, c.idCategory, c.code, c.name, c.description, c.lang_code, c.difficult, "
-	."	c.subscribe_method, c.date_begin, c.date_end, c.max_num_subscribe, "
-	."	c.selling, c.prize, c.create_date, c.status AS course_status, c.course_edition, "
-	."	c.classrooms, c.img_material, c.course_demo, c.course_vote, COUNT(*) as enrolled, "
-	."	c.can_subscribe, c.sub_start_date, c.sub_end_date, c.allow_overbooking, c.max_num_subscribe, c.min_num_subscribe, c.direct_play, "
-	."	c.valid_time, c.userStatusOp, u.level, u.date_inscr, u.date_first_access, u.date_complete, u.status AS user_status, u.waiting, c.advance ";
+    $from_course = ' FROM ' . $GLOBALS['prefix_lms'] . '_course AS c '
+    . '	LEFT JOIN ' . $GLOBALS['prefix_lms'] . '_courseuser AS u '
+    . '		ON ( c.idCourse = u.idCourse ) ';
+    $where_course = " c.status <> '" . CST_PREPARATION . "' ";
 
-	$from_course = " FROM ".$GLOBALS['prefix_lms']."_course AS c "
-	."	LEFT JOIN ".$GLOBALS['prefix_lms']."_courseuser AS u "
-	."		ON ( c.idCourse = u.idCourse ) ";
-	$where_course 		= " c.status <> '".CST_PREPARATION."' ";
-	
-	if(Get::sett('catalogue_hide_ended') == 'on')
-	{
-		$where_course .=	" AND ( c.date_end = '0000-00-00'"
-							." OR c.date_end > '".date('Y-m-d')."' ) ";
-	}
-	
-	$group_by_course	= " GROUP BY c.idCourse ";
-	switch($order_type) {
-		case "mostscore" : $order_course = " ORDER BY c.course_vote DESC ";break;
-		case "popular" : $order_course = " ORDER BY enrolled DESC ";break;
-		case "recent" : $order_course = " ORDER BY c.create_date DESC ";break;
-		default : $order_course = " ORDER BY c.name ";
-	}
-	$limit_course 		= " LIMIT ".$ini.", ".Get::sett('visuItem');
-	$where_course .= " AND c.course_type <> 'assessment'";
+    if (Get::sett('catalogue_hide_ended') == 'on') {
+        $where_course .= " AND ( c.date_end = '0000-00-00'"
+                            . " OR c.date_end > '" . date('Y-m-d') . "' ) ";
+    }
 
-	if(Docebo::user()->isAnonymous()) $where_course .= " AND c.show_rules = 0";
-	else $where_course .= " AND c.show_rules  <> 2";
+    $group_by_course = ' GROUP BY c.idCourse ';
+    switch ($order_type) {
+        case 'mostscore': $order_course = ' ORDER BY c.course_vote DESC '; break;
+        case 'popular': $order_course = ' ORDER BY enrolled DESC '; break;
+        case 'recent': $order_course = ' ORDER BY c.create_date DESC '; break;
+        default: $order_course = ' ORDER BY c.name ';
+    }
+    $limit_course = ' LIMIT ' . $ini . ', ' . Get::sett('visuItem');
+    $where_course .= " AND c.course_type <> 'assessment'";
 
-	// maybe a must apply some filter to remove from the list some courses --------------
-	$cat_man 		= new Catalogue_Manager();
-	$catalogues 	=& $cat_man->getUserAllCatalogueId( getLogUserId() );
+    if (Docebo::user()->isAnonymous()) {
+        $where_course .= ' AND c.show_rules = 0';
+    } else {
+        $where_course .= ' AND c.show_rules  <> 2';
+    }
 
-	// at least one catalogue is assigned to this user
-	if(!empty($catalogues)) {
+    // maybe a must apply some filter to remove from the list some courses --------------
+    $cat_man = new Catalogue_Manager();
+    $catalogues = &$cat_man->getUserAllCatalogueId(getLogUserId());
 
-		$cat_courses = $cat_man->getAllCourseOfUser( getLogUserId() );
-		if(empty($cat_courses)) $where_course .= " AND 0 ";
-		else  $where_course .= " AND c.idCourse IN ( ".implode(',', $cat_courses)." ) ";
+    // at least one catalogue is assigned to this user
+    if (!empty($catalogues)) {
+        $cat_courses = $cat_man->getAllCourseOfUser(getLogUserId());
+        if (empty($cat_courses)) {
+            $where_course .= ' AND 0 ';
+        } else {
+            $where_course .= ' AND c.idCourse IN ( ' . implode(',', $cat_courses) . ' ) ';
+        }
+    } elseif (Get::sett('on_catalogue_empty') == 'off') {
+        $where_course .= ' AND 0 ';
+    }
 
-	} elseif(Get::sett('on_catalogue_empty') == 'off') {
-		$where_course .= " AND 0 ";
-	}
+    if (!Docebo::user()->isAnonymous()) {
+        if (!isset($_SESSION['cp_assessment_effect'])) {
+            $pa_man = new AssessmentList();
+            $arr_assessment = $pa_man->getUserAssessmentSubsription(Docebo::user()->getArrSt());
 
-	if(!Docebo::user()->isAnonymous()) {
+            $report = new CourseReportManager();
+            $user_result = $report->getAllUserFinalScore(getLogUserId(), $arr_assessment['course_list']);
 
-		if(!isset($_SESSION['cp_assessment_effect'])) {
+            $rule_man = new AssessmentRule();
+            $ass_elem = $rule_man->getCompleteEffectListForAssessmentWithUserResult($arr_assessment['course_list'], $user_result);
+            $_SESSION['cp_assessment_effect'] = urlencode(Util::serialize($ass_elem));
+        } else {
+            $ass_elem = Util::unserialize(urldecode($_SESSION['cp_assessment_effect']));
+        }
+        if (!empty($ass_elem['parsed']['course'])) {
+            $where_course = ' ( ( ' . $where_course . ' ) OR c.idCourse IN (' . implode(',', $ass_elem['parsed']['course']) . ') ) ';
+        }
+    }
 
-			$pa_man = new AssessmentList();
-			$arr_assessment = $pa_man->getUserAssessmentSubsription(Docebo::user()->getArrSt());
+    // apply search filter --------------------------------------------------------------
 
-			$report = new CourseReportManager();
-			$user_result = $report->getAllUserFinalScore(getLogUserId(), $arr_assessment['course_list']);
+    $s_searched = get_searched('simple_search', '');
+    $filter_lang = get_searched('filter_lang', 'all');
 
-			$rule_man = new AssessmentRule();
-			$ass_elem = $rule_man->getCompleteEffectListForAssessmentWithUserResult($arr_assessment['course_list'], $user_result);
-			$_SESSION['cp_assessment_effect'] = urlencode(Util::serialize($ass_elem));
-		} else {
+    $filter_date_begin = get_searched('filter_date_begin', '');
+    if ($filter_date_begin != '') {
+        $filter_date_begin = Format::dateDb($filter_date_begin, 'date') . ' 00:00:00';
+    }
 
-			$ass_elem = Util::unserialize(urldecode($_SESSION['cp_assessment_effect']));
-		}
-		if(!empty($ass_elem['parsed']['course'])) {
+    $filter_date_end = get_searched('filter_date_end', '');
+    if ($filter_date_end != '') {
+        $filter_date_end = Format::dateDb($filter_date_end, 'date') . ' 00:00:00';
+    }
 
-			$where_course = " ( ( ".$where_course." ) OR c.idCourse IN (".implode(',', $ass_elem['parsed']['course']).") ) ";
-		}
-	}
+    $all_lang = Docebo::langManager()->getAllLangCode();
 
-	// apply search filter --------------------------------------------------------------
+    if (must_search_filter()) {
+        if (trim($s_searched) != '') {
+            $where_course .= " AND ( c.code LIKE '%" . $s_searched . "%' "
+                        . " OR c.name LIKE '%" . $s_searched . "%' "
+                        . " OR c.description LIKE '%" . $s_searched . "%' ) ";
+        }
+        if ($filter_lang != 'all') {
+            $where_course .= " AND c.lang_code = '" . $all_lang[$filter_lang] . "' ";
+        }
+        if ($filter_date_begin != '') {
+            $where_course .= " AND ( c.date_begin >= '" . $filter_date_begin . "' OR c.course_edition = 1 ) ";
+        }
+        if ($filter_date_end != '') {
+            $where_course .= " AND ( c.date_end <= '" . $filter_date_end . "' OR c.course_edition = 1 ) ";
+        }
+    }
+    if ($use_category) {
+        $where_course .= " AND c.idCategory = '" . (int) $id_parent . "'";
+    }
 
-	$s_searched = get_searched('simple_search', '');
-	$filter_lang = get_searched('filter_lang', 'all');
+    $re_course = sql_query($select_course . $from_course . ' WHERE ' . $where_course . $group_by_course
+        . $order_course . $limit_course);
 
-	$filter_date_begin = get_searched('filter_date_begin', '');
-	if($filter_date_begin != '') $filter_date_begin = Format::dateDb($filter_date_begin, 'date').' 00:00:00';
+    list($course_number) = sql_fetch_row(sql_query('SELECT COUNT(*) '
+        . ' FROM ' . $GLOBALS['prefix_lms'] . '_course AS c '
+        . ' WHERE ' . $where_course));
+    $nav_bar->setElementTotal($course_number);
 
-	$filter_date_end = get_searched('filter_date_end', '');
-	if($filter_date_end != '') $filter_date_end = Format::dateDb($filter_date_end, 'date').' 00:00:00';
+    // retrive editions ----------------------------------------------------------------
+    $select_edition = ' SELECT e.* ';
+    $from_edition = ' FROM ' . $GLOBALS['prefix_lms'] . '_course_edition AS e';
+    $where_edition = " WHERE e.status <> '" . CST_PREPARATION . "' ";
 
-	$all_lang = Docebo::langManager()->getAllLangCode();
+    $where_edition .= " AND (e.date_begin > '" . date('Y-m-d H:i:s') . "' OR e.date_begin = '0000-00-00 00:00:00')";
 
-	if(must_search_filter()) {
+    $order_edition = ' ORDER BY date_begin ';
 
-		if(trim($s_searched) != '') {
-			$where_course .= " AND ( c.code LIKE '%".$s_searched."%' "
-						." OR c.name LIKE '%".$s_searched."%' "
-						." OR c.description LIKE '%".$s_searched."%' ) ";
-		}
-		if($filter_lang != 'all') { $where_course .= " AND c.lang_code = '".$all_lang[$filter_lang]."' "; }
-		if($filter_date_begin != '') { $where_course .= " AND ( c.date_begin >= '".$filter_date_begin."' OR c.course_edition = 1 ) ";  }
-		if($filter_date_end != '') { $where_course .= " AND ( c.date_end <= '".$filter_date_end."' OR c.course_edition = 1 ) "; }
+    if (must_search_filter()) {
+        if ($filter_date_begin != '') {
+            $where_edition .= " AND date_begin >= '" . $filter_date_begin . "' ";
+        }
+        if ($filter_date_end != '') {
+            $where_edition .= " AND date_end <= '" . $filter_date_end . "' ";
+        }
+    }
 
-	} 
-	if($use_category) $where_course .= " AND c.idCategory = '".(int)$id_parent."'";
+    $re_edition = sql_query($select_edition . $from_edition . $where_edition . $order_edition);
+    $editions = [];
+    if ($re_edition) {
+        while ($edition_elem = sql_fetch_assoc($re_edition)) {
+            $edition_elem['classrooms'] = (isset($classrooms[$edition_elem['classrooms']]) ? $classrooms[$edition_elem['classrooms']] : '');
+            $edition_elem['waiting'] = 0;
+            $edition_elem['user_count'] = 0;
+            $edition_elem['theacher_list'] = getSubscribed($edition_elem['idCourse'], false, 6, true, $edition_elem['idCourseEdition']);
+            $editions[$edition_elem['idCourse']][$edition_elem['idCourseEdition']] = $edition_elem;
+        }
+    }
 
-	$re_course = sql_query($select_course.$from_course." WHERE ".$where_course.$group_by_course
-		.$order_course.$limit_course);
-	
-	list($course_number) = sql_fetch_row(sql_query("SELECT COUNT(*) "
-		." FROM ".$GLOBALS['prefix_lms']."_course AS c "
-		." WHERE ".$where_course ));
-	$nav_bar->setElementTotal($course_number);
+    // retrive editions subscribed -----------------------------------------------------
+    $select_ed_count = 'SELECT u.idCourse, u.edition_id, sum(u.waiting) as waiting, COUNT(*) as user_count ';
+    $from_ed_count = ' FROM ' . $GLOBALS['prefix_lms'] . '_courseuser AS u';
+    $where_ed_count = ' WHERE u.edition_id <> 0 ' .
+            " AND u.level = '3'" .
+            " AND u.status IN ('" . _CUS_CONFIRMED . "', '" . _CUS_SUBSCRIBED . "', '" . _CUS_BEGIN . "', '" . _CUS_END . "', '" . _CUS_SUSPEND . "', '" . _CUS_WAITING_LIST . "')" .
+            " AND u.absent = '0'";
+    $group_ed_count = 'GROUP BY u.edition_id ';
+    $re_ed_count = sql_query($select_ed_count . $from_ed_count . $where_ed_count . $group_ed_count);
+    if ($re_ed_count) {
+        while ($ed_count_elem = sql_fetch_assoc($re_ed_count)) {
+            if (isset($editions[$ed_count_elem['idCourse']][$ed_count_elem['edition_id']])) {
+                $editions[$ed_count_elem['idCourse']][$ed_count_elem['edition_id']]['waiting'] = $ed_count_elem['waiting'];
+                $editions[$ed_count_elem['idCourse']][$ed_count_elem['edition_id']]['user_count'] = $ed_count_elem['user_count'];
+            }
+        }
+    }
 
-	// retrive editions ----------------------------------------------------------------
-	$select_edition = " SELECT e.* ";
-	$from_edition 	= " FROM ".$GLOBALS["prefix_lms"]."_course_edition AS e";
-	$where_edition 	= " WHERE e.status <> '".CST_PREPARATION."' ";
+    // retrive course subscription -----------------------------------------------------
+    $man_courseuser = new Man_CourseUser();
+    $usercourses = $man_courseuser->getUserSubscriptionsInfo(getLogUserId(), false);
+    $user_score = $man_courseuser->getUserCourseScored(getLogUserId());
 
-	$where_edition 	.= " AND (e.date_begin > '".date("Y-m-d H:i:s")."' OR e.date_begin = '0000-00-00 00:00:00')";
+    require_once $GLOBALS['where_lms'] . '/lib/lib.orgchart.php';
+    $first_is_scorm = OrganizationManagement::objectFilter(array_keys($usercourses), 'scormorg');
 
-	$order_edition 	= " ORDER BY date_begin ";
+    // load search form ----------------------------------------------------------------
 
-	if(must_search_filter()) {
+    $GLOBALS['page']->add(searchForm($url, $lang), 'content');
 
-		if($filter_date_begin != '') { $where_edition .= " AND date_begin >= '".$filter_date_begin."' "; }
-		if($filter_date_end != '') { $where_edition .= " AND date_end <= '".$filter_date_end."' "; }
-	}
+    if ($use_category && !must_search_filter()) {
+        // show category selection -----------------------------------------------------
+        $descendant = $man_course->getCategoryCourseAndSonCount();
+        $GLOBALS['page']->add(
+            '<p class="category_path">'
+                . '<b>' . $lang->def('_CATEGORY_PATH', 'course') . ' :</b> '
+            . $man_course->getCategoryPath($id_parent,
+                                            $lang->def('_MAIN_CATEGORY', 'course'),
+                                            $lang->def('_TITLE_CATEGORY_JUMP', 'course'),
+                                            $url->getUrl(),
+                                            'id_parent')
+            . '</p>', 'content');
 
-	$re_edition = sql_query($select_edition.$from_edition.$where_edition.$order_edition);
-	$editions = [];
-	if($re_edition)
-	while($edition_elem = sql_fetch_assoc($re_edition)) {
+        $categories = &$man_course->getCategoriesInfo($id_parent);
+        if (!empty($categories)) {
+            $GLOBALS['page']->add('<ul class="category_list">', 'content');
+            foreach ($categories as $id_cat => $cat) {
+                $GLOBALS['page']->add('<li' . (!isset($descendant[$id_cat]) ? ' class="empty_folder"' : '') . '>'
+                    . '<a href="' . $url->getUrl('id_parent=' . $id_cat) . '">' . $cat['name'] . '<br />'
+                    . '<b>' . str_replace(['[course]', '[category]'],
+                                        [(isset($descendant[$id_cat]['course']) ? $descendant[$id_cat]['course'] : 0),
+                                                (isset($descendant[$id_cat]['category']) ? $descendant[$id_cat]['category'] : 0), ],
+                                        $lang->def('_COURSE_CONTENT', 'course')) . '</b>'
+                    . '</a></li>', 'content');
+            }
+            $GLOBALS['page']->add(
+                '</ul>'
+                . '<div class="nofloat"></div>', 'content');
+        }
+    }
+    if (!$re_course || !sql_num_rows($re_course)) {
+        // no course found for the criteria --------------------------------------------
+        $GLOBALS['page']->add(
+            '<p class="no_course_found">' . $lang->def('_NO_COURSE_FOUND') . '</p>'
+            . '</div>', 'content');
 
-		$edition_elem['classrooms'] = ( isset($classrooms[$edition_elem['classrooms']]) ? $classrooms[$edition_elem['classrooms']] : '' );
-		$edition_elem['waiting'] = 0;
-		$edition_elem['user_count'] = 0;
-		$edition_elem['theacher_list'] = getSubscribed($edition_elem["idCourse"], false, 6, true, $edition_elem["idCourseEdition"]);
-		$editions[$edition_elem["idCourse"]][$edition_elem["idCourseEdition"]] = $edition_elem;
-	}
+        return;
+    }
 
-	// retrive editions subscribed -----------------------------------------------------
-	$select_ed_count 	= "SELECT u.idCourse, u.edition_id, sum(u.waiting) as waiting, COUNT(*) as user_count ";
-	$from_ed_count 		= " FROM ".$GLOBALS["prefix_lms"]."_courseuser AS u";
-	$where_ed_count 	= " WHERE u.edition_id <> 0 " .
-			" AND u.level = '3'" .
-			" AND u.status IN ('"._CUS_CONFIRMED."', '"._CUS_SUBSCRIBED."', '"._CUS_BEGIN."', '"._CUS_END."', '"._CUS_SUSPEND."', '"._CUS_WAITING_LIST."')" .
-			" AND u.absent = '0'";
-	$group_ed_count 	= "GROUP BY u.edition_id ";
-	$re_ed_count = sql_query($select_ed_count.$from_ed_count.$where_ed_count.$group_ed_count );
-	if($re_ed_count)
-	while($ed_count_elem = sql_fetch_assoc($re_ed_count)) {
+    $ax_comm = new AjaxComment('course', 'lms');
+    $comment_count = $ax_comm->getResourceCommentCount();
 
-		if(isset($editions[$ed_count_elem["idCourse"]][$ed_count_elem["edition_id"]])) {
-			$editions[$ed_count_elem["idCourse"]][$ed_count_elem["edition_id"]]['waiting'] = $ed_count_elem['waiting'];
-			$editions[$ed_count_elem["idCourse"]][$ed_count_elem["edition_id"]]['user_count'] = $ed_count_elem['user_count'];
-		}
-	}
+    $GLOBALS['page']->add($nav_bar->getNavBar($ini), 'content');
 
-	// retrive course subscription -----------------------------------------------------
-	$man_courseuser = new Man_CourseUser();
-	$usercourses = $man_courseuser->getUserSubscriptionsInfo(getLogUserId(), false);
-	$user_score = $man_courseuser->getUserCourseScored(getLogUserId());
-	
-	require_once($GLOBALS['where_lms'].'/lib/lib.orgchart.php');
-	$first_is_scorm = OrganizationManagement::objectFilter(array_keys($usercourses), 'scormorg');
+    $i = 0;
+    $direct_play = false;
+    while ($cinfo = sql_fetch_assoc($re_course)) {
+        if (must_search_filter()) {
+            $s_searched = get_searched('simple_search', '');
+            if ($s_searched != '') {
+                $cinfo['code'] = preg_replace('/' . $s_searched . '/i', '<b class="filter_evidence">' . $s_searched . '</b>', $cinfo['code']);
+                $cinfo['name'] = preg_replace('/' . $s_searched . '/i', '<b class="filter_evidence">' . $s_searched . '</b>', $cinfo['name']);
+                $cinfo['description'] = preg_replace('/' . $s_searched . '/i', '<b class="filter_evidence">' . $s_searched . '</b>', $cinfo['description']);
+            }
+        }
+        $cinfo['theacher_list'] = getSubscribed($cinfo['idCourse'], false, 6, true);
+        $cinfo['edition_list'] = (isset($editions[$cinfo['idCourse']]) ? $editions[$cinfo['idCourse']] : []);
+        $cinfo['edition_available'] = count($cinfo['edition_list']);
+        $cinfo['user_score'] = (isset($user_score[$cinfo['idCourse']]) ? $user_score[$cinfo['idCourse']] : null);
+        $cinfo['classrooms'] = (isset($classrooms[$cinfo['classrooms']]) ? $classrooms[$cinfo['classrooms']] : '');
+        if (isset($first_is_scorm[$cinfo['idCourse']])) {
+            $cinfo['first_is_scorm'] = $first_is_scorm[$cinfo['idCourse']];
+        } else {
+            $cinfo['first_is_scorm'] = false;
+        }
 
-	// load search form ----------------------------------------------------------------
+        if (isset($comment_count[$cinfo['idCourse']])) {
+            $cinfo['comment_count'] = $comment_count[$cinfo['idCourse']];
+        }
 
-	$GLOBALS['page']->add(searchForm($url, $lang), 'content');
+        $view = true;
+        if (must_search_filter()) {
+            if ($cinfo['course_edition'] == 1 && empty($cinfo['edition_list'])) {
+                $view = false;
+            }
+        }
+        if ($view) {
+            $GLOBALS['page']->add(dashcourse($url,
+                                        $lang_c,
+                                        $cinfo,
+                                        (isset($usercourses[$cinfo['idCourse']]) ? $usercourses[$cinfo['idCourse']] : false),
+                                        $i++), 'content');
+        }
+        if ($cinfo['direct_play'] == 1) {
+            $direct_play = true;
+        }
+    }
+    if ($direct_play) {
+        $GLOBALS['page']->add(''
+        . '	<link href="' . getPathTemplate() . '/style/shadowbox.css" rel="stylesheet" type="text/css" />'
 
-	if($use_category && !must_search_filter()) {
+        . '<script type="text/javascript" src="' . $GLOBALS['where_framework_relative'] . '/addons/shadowbox/shadowbox-yui.js"></script>' . "\n"
+        . '<script type="text/javascript" src="' . $GLOBALS['where_framework_relative'] . '/addons/shadowbox/shadowbox.js"></script>' . "\n", 'page_head');
 
-		// show category selection -----------------------------------------------------
-		$descendant = $man_course->getCategoryCourseAndSonCount();
-		$GLOBALS['page']->add(
-			'<p class="category_path">'
-				.'<b>'.$lang->def('_CATEGORY_PATH', 'course').' :</b> '
-			.$man_course->getCategoryPath(	$id_parent,
-											$lang->def('_MAIN_CATEGORY', 'course'),
-											$lang->def('_TITLE_CATEGORY_JUMP', 'course'),
-											$url->getUrl(),
-											'id_parent' )
-			.'</p>'
-		, 'content');
-
-		$categories =& $man_course->getCategoriesInfo($id_parent);
-		if(!empty($categories)) {
-
-			$GLOBALS['page']->add('<ul class="category_list">', 'content');
-            foreach( $categories as $id_cat => $cat ){
-
-				$GLOBALS['page']->add('<li'.( !isset($descendant[$id_cat])  ? ' class="empty_folder"' : '' ).'>'
-					.'<a href="'.$url->getUrl('id_parent='.$id_cat).'">'.$cat['name'].'<br />'
-					.'<b>'.str_replace(	['[course]', '[category]'],
-										[( isset($descendant[$id_cat]['course']) ? $descendant[$id_cat]['course'] : 0 ),
-												( isset($descendant[$id_cat]['category']) ? $descendant[$id_cat]['category'] : 0 )],
-										$lang->def('_COURSE_CONTENT', 'course')).'</b>'
-					.'</a></li>', 'content');
-			}
-			$GLOBALS['page']->add(
-				'</ul>'
-				.'<div class="nofloat"></div>', 'content');
-		}
-	}
-	if(!$re_course || !sql_num_rows($re_course)) {
-
-		// no course found for the criteria --------------------------------------------
-		$GLOBALS['page']->add(
-			'<p class="no_course_found">'.$lang->def('_NO_COURSE_FOUND').'</p>'
-			.'</div>', 'content');
-		return;
-	}
-
-	$ax_comm = new AjaxComment('course', 'lms');
-	$comment_count = $ax_comm->getResourceCommentCount();
-
-	$GLOBALS['page']->add($nav_bar->getNavBar($ini), 'content');
-
-	$i = 0;
-	$direct_play = false;
-	while($cinfo = sql_fetch_assoc($re_course)) {
-
-		if(must_search_filter()) {
-
-			$s_searched = get_searched('simple_search', '');
-			if($s_searched != '') {
-
-				$cinfo['code'] = preg_replace("/".$s_searched."/i", '<b class="filter_evidence">'.$s_searched.'</b>', $cinfo['code']);
-				$cinfo['name'] = preg_replace("/".$s_searched."/i", '<b class="filter_evidence">'.$s_searched.'</b>', $cinfo['name']);
-				$cinfo['description'] = preg_replace("/".$s_searched."/i", '<b class="filter_evidence">'.$s_searched.'</b>', $cinfo['description']);
-			}
-		}
-		$cinfo['theacher_list'] 	= getSubscribed($cinfo['idCourse'], false, 6, true);
-		$cinfo['edition_list'] 		= ( isset($editions[$cinfo['idCourse']]) ? $editions[$cinfo['idCourse']] : []);
-		$cinfo['edition_available'] = count($cinfo['edition_list']);
-		$cinfo['user_score'] 		= ( isset($user_score[$cinfo['idCourse']]) ? $user_score[$cinfo['idCourse']] : NULL );
-		$cinfo['classrooms'] 		= ( isset($classrooms[$cinfo['classrooms']]) ? $classrooms[$cinfo['classrooms']] : '' );
-		if(isset($first_is_scorm[$cinfo['idCourse']])) $cinfo['first_is_scorm'] = $first_is_scorm[$cinfo['idCourse']];
-		else $cinfo['first_is_scorm'] = false;
-		
-		if(isset($comment_count[$cinfo['idCourse']])) $cinfo['comment_count'] = $comment_count[$cinfo['idCourse']];
-
-		$view = true;
-		if(must_search_filter()) {
-
-			if($cinfo['course_edition'] == 1 && empty($cinfo['edition_list'])) {
-				$view = false;
-			}
-		}
-		if($view) $GLOBALS['page']->add(dashcourse(	$url,
-										$lang_c,
-										$cinfo,
-										( isset($usercourses[$cinfo['idCourse']]) ? $usercourses[$cinfo['idCourse']] : false ),
-										$i++), 'content');
-		if($cinfo['direct_play'] == 1)$direct_play = true;
-	}
-	if($direct_play) {
-		$GLOBALS['page']->add( ''
-		
-		.'	<link href="'.getPathTemplate().'/style/shadowbox.css" rel="stylesheet" type="text/css" />'
-		
-		.'<script type="text/javascript" src="'.$GLOBALS['where_framework_relative'].'/addons/shadowbox/shadowbox-yui.js"></script>'."\n"
-		.'<script type="text/javascript" src="'.$GLOBALS['where_framework_relative'].'/addons/shadowbox/shadowbox.js"></script>'."\n", 'page_head');
-		
-		$GLOBALS['page']->add( '<script type="text/javascript">
+        $GLOBALS['page']->add('<script type="text/javascript">
 	
 		YAHOO.util.Event.onDOMReady(function() {
 			var options = { listenOverlay:false, overlayOpacity:"0.8", 
-				loadingImage:"'.getPathImage('lms').'standard/loading.gif", overlayBgImage:"'.getPathImage('lms').'standard/overlay-85.png", 
-				text: {close: "'. Lang::t('_CLOSE').'", cancel: "'. Lang::t('_UNDO').'", loading:"'. Lang::t('_LOADING').'" },
-				onOpen: function (gallery) { window.onbeforeunload = function() { return "'. Lang::t('_CONFIRM_EXIT', 'organization', 'lms').'"; } }
+				loadingImage:"' . getPathImage('lms') . 'standard/loading.gif", overlayBgImage:"' . getPathImage('lms') . 'standard/overlay-85.png", 
+				text: {close: "' . Lang::t('_CLOSE') . '", cancel: "' . Lang::t('_UNDO') . '", loading:"' . Lang::t('_LOADING') . '" },
+				onOpen: function (gallery) { window.onbeforeunload = function() { return "' . Lang::t('_CONFIRM_EXIT', 'organization', 'lms') . '"; } }
 		    }; 
 			Shadowbox.init(options); 
 			Shadowbox.close = function() {
@@ -314,658 +336,625 @@ function displayCourseList(&$url, $order_type) {
 				window.frames[\'shadowbox_content\'].uiPlayer.closePlayer(true, window);
 			}
 		});
-		</script>' );
-	}
-	$GLOBALS['page']->add($nav_bar->getNavBar($ini), 'content');
+		</script>');
+    }
+    $GLOBALS['page']->add($nav_bar->getNavBar($ini), 'content');
 }
 
-function displayCoursePathList(&$url, $selected_tab) {
+function displayCoursePathList(&$url, $selected_tab)
+{
+    require_once _base_ . '/lib/lib.form.php';
+    require_once _base_ . '/lib/lib.user_profile.php';
+    require_once _base_ . '/lib/lib.navbar.php';
+    require_once $GLOBALS['where_lms'] . '/lib/lib.preassessment.php';
+    require_once $GLOBALS['where_lms'] . '/lib/lib.catalogue.php';
+    require_once $GLOBALS['where_lms'] . '/lib/lib.coursepath.php';
+    require_once $GLOBALS['where_lms'] . '/lib/lib.course.php';
+    require_once $GLOBALS['where_lms'] . '/lib/lib.preassessment.php';
+    require_once $GLOBALS['where_lms'] . '/lib/lib.coursereport.php';
 
-	require_once(_base_.'/lib/lib.form.php');
-	require_once(_base_.'/lib/lib.user_profile.php');
-	require_once(_base_.'/lib/lib.navbar.php');
-	require_once($GLOBALS['where_lms'].'/lib/lib.preassessment.php');
-	require_once($GLOBALS['where_lms'].'/lib/lib.catalogue.php');
-	require_once($GLOBALS['where_lms'].'/lib/lib.coursepath.php');
-	require_once($GLOBALS['where_lms'].'/lib/lib.course.php');
-	require_once($GLOBALS['where_lms'].'/lib/lib.preassessment.php');
-	require_once($GLOBALS['where_lms'].'/lib/lib.coursereport.php');
+    $lang = &DoceboLanguage::createInstance('catalogue');
+    $lang_c = &DoceboLanguage::createInstance('course');
 
-	$lang 	=& DoceboLanguage::createInstance('catalogue');
-	$lang_c =& DoceboLanguage::createInstance('course');
+    $nav_bar = new NavBar('ini', Get::sett('visuItem'), 0);
+    $nav_bar->setLink($url->getUrl());
+    $ini = $nav_bar->getSelectedElement();
 
-	$nav_bar = new NavBar('ini', Get::sett('visuItem'), 0);
-	$nav_bar->setLink($url->getUrl());
-	$ini = $nav_bar->getSelectedElement();
+    $course_man = new Man_Course();
+    $path_man = new CoursePath_Manager();
+    $cat_man = new Catalogue_Manager();
+    $man_courseuser = new Man_CourseUser();
 
-	$course_man 	= new Man_Course();
-	$path_man 		= new CoursePath_Manager();
-	$cat_man 		= new Catalogue_Manager();
-	$man_courseuser = new Man_CourseUser();
+    $profile = new UserProfile(getLogUserId());
+    $profile->init('profile', 'framework', '', 'ap');
+    $profile->addStyleSheet('lms');
 
+    $catalogues = &$cat_man->getUserAllCatalogueId(getLogUserId());
 
-	$profile = new UserProfile( getLogUserId() );
-	$profile->init('profile', 'framework', '', 'ap');
-	$profile->addStyleSheet('lms');
+    if (!empty($catalogues)) {
+        // at least one catalogue is assigned to this user
+        $cat_path = &$cat_man->getAllCoursepathOfUser(getLogUserId());
+        if (!empty($cat_path)) {
+            $path_man->filterInPath($cat_path);
+        }
+    } elseif (Get::sett('on_catalogue_empty') == 'off') {
+        $path_man->filterInPath([0]);
+    }
 
-	$catalogues 	=& $cat_man->getUserAllCatalogueId( getLogUserId() );
+    if (!Docebo::user()->isAnonymous()) {
+        if (!isset($_SESSION['cp_assessment_effect'])) {
+            $pa_man = new AssessmentList();
+            $arr_assessment = $pa_man->getUserAssessmentSubsription(Docebo::user()->getArrSt());
 
-	if(!empty($catalogues)) {
+            $report = new CourseReportManager();
+            $user_result = $report->getAllUserFinalScore(getLogUserId(), $arr_assessment['course_list']);
 
-		// at least one catalogue is assigned to this user
-		$cat_path =& $cat_man->getAllCoursepathOfUser( getLogUserId() );
-		if(!empty($cat_path)) $path_man->filterInPath($cat_path);
-	} elseif(Get::sett('on_catalogue_empty') == 'off') {
+            $rule_man = new AssessmentRule();
+            $ass_elem = $rule_man->getCompleteEffectListForAssessmentWithUserResult($arr_assessment['course_list'], $user_result);
+            $_SESSION['cp_assessment_effect'] = urlencode(Util::serialize($ass_elem));
+        } else {
+            $ass_elem = Util::unserialize(urldecode($_SESSION['cp_assessment_effect']));
+        }
+        if (!empty($ass_elem['parsed']['coursepath'])) {
+            $path_man->filterOrInPath($ass_elem['parsed']['coursepath']);
+        }
+    }
 
-		$path_man->filterInPath([0]);
-	}
+    // retrive all the classroorm
 
-	if(!Docebo::user()->isAnonymous()) {
+    // search for the coursepath ------------------------------------------------------
+    $coursepath = $path_man->getCoursepathList($ini, Get::sett('visuItem'));
+    if (empty($coursepath)) {
+        // no path found for the criteria ---------------------------------------------
+        $GLOBALS['page']->add('<p class="no_course_found">' . $lang->def('_NO_COURSE_FOUND') . '</p></div>', 'content');
 
-		if(!isset($_SESSION['cp_assessment_effect'])) {
+        return;
+    }
+    // find structures of the course path ---------------------------------------------
+    $courses = $path_man->getPathStructure(array_keys($coursepath));
+    $path_slot = $path_man->getPathSlot(array_keys($coursepath));
 
-			$pa_man = new AssessmentList();
-			$arr_assessment = $pa_man->getUserAssessmentSubsription(Docebo::user()->getArrSt());
+    // fin user subscription needed ---------------------------------------------------
+    $user_paths = &$path_man->getUserSubscriptionsInfo(getLogUserId(), false);
+    $usercourses = &$man_courseuser->getUserSubscriptionsInfo(getLogUserId(), false);
 
-			$report = new CourseReportManager();
-			$user_result = $report->getAllUserFinalScore(getLogUserId(), $arr_assessment['course_list']);
+    // find course basilar information ------------------------------------------------
+    $course_info = $course_man->getAllCourses(false, false, $courses['all_items'], true);
 
-			$rule_man = new AssessmentRule();
-			$ass_elem = $rule_man->getCompleteEffectListForAssessmentWithUserResult($arr_assessment['course_list'], $user_result);
-			$_SESSION['cp_assessment_effect'] = urlencode(Util::serialize($ass_elem));
-		} else {
-			$ass_elem = Util::unserialize(urldecode($_SESSION['cp_assessment_effect']));
-		}
-		if(!empty($ass_elem['parsed']['coursepath'])) {
-			$path_man->filterOrInPath($ass_elem['parsed']['coursepath']);
-		}
-	}
+    $GLOBALS['page']->add($nav_bar->getNavBar($ini), 'content');
 
-	// retrive all the classroorm
+    foreach ($coursepath as $id_path => $path) {
+        $html = '<div class="coursepath_container">';
 
-	// search for the coursepath ------------------------------------------------------
-	$coursepath = $path_man->getCoursepathList($ini, Get::sett('visuItem'));
-	if(empty($coursepath)) {
-		// no path found for the criteria ---------------------------------------------
-		$GLOBALS['page']->add('<p class="no_course_found">'.$lang->def('_NO_COURSE_FOUND').'</p></div>', 'content');
-		return;
-	}
-	// find structures of the course path ---------------------------------------------
-	$courses 		= $path_man->getPathStructure(array_keys($coursepath));
-	$path_slot 		= $path_man->getPathSlot(array_keys($coursepath));
+        $in_h = ' <span class="coursepath_subscribe">';
+        $can_subs = true;
+        if (isset($ass_elem['parsed']['coursepath'])) {
+            if (isset($ass_elem['not_done']['coursepath']) && in_array($id_path, $ass_elem['not_done']['coursepath'])) {
+                // the assosiacted preassessment is not done
+                $in_h .= ''; //$lang->def('_MUST_DO_PREASSESSMENT');
+                $can_subs = false;
+            } elseif (isset($ass_elem['to_apply']['coursepath']) && in_array($id_path, $ass_elem['to_apply']['coursepath'])) {
+                // the assosiacted preassessment suggest this coursepath
+                $in_h .= $lang->def('_PREASSESSMENT_SUGGESTION');
+            }
+        } else {
+            switch ($path[COURSEPATH_METHOD]) {
+                case METHOD_WAIT:  $in_h .= $lang->def('_METHOD_WAIT'); ; break;
+                case METHOD_AUTO:  $in_h .= $lang->def('_METHOD_AUTO'); ; break;
+                case METHOD_MANUAL:
+                default:  $in_h .= $lang->def('_METHOD_MANUAL'); $can_subs = false; ; break;
+            }
+        }
+        $in_h .= '</span>';
+        $in_h .= ' <span class="coursepath_status">';
+        if (isset($usercourses[$id_path])) {
+            // user is alredy subscribed to this coursepath
+            if ($usercourses[$id_path]['waiting']) {
+                $in_h .= $lang->def('_COURSEPATH_WAITING');
+            } else {
+                $in_h .= $lang->def('_USER_STATUS_SUBS');
+            }
+        }
+        $in_h .= '</span>';
+        // -------------------------------------------------------------
+        $html .= '<div class="coursepath_info_container">';
 
-	// fin user subscription needed ---------------------------------------------------
-	$user_paths 	=& $path_man->getUserSubscriptionsInfo(getLogUserId(), false);
-	$usercourses 	=& $man_courseuser->getUserSubscriptionsInfo(getLogUserId(), false);
+        $html .= '<h2 class="pathtitle">'
+            . $in_h
+            . ($path[COURSEPATH_CODE] != '' ? '[' . $path[COURSEPATH_CODE] . '] ' : '') . $path[COURSEPATH_NAME]
 
-	// find course basilar information ------------------------------------------------
-	$course_info = $course_man->getAllCourses(false, false, $courses['all_items'], true);
+            . '</h2>'
+            . '<p class="course_support_info">' . str_replace('[enrolled]', $path[CP_ENROLLED], $lang->def('_COURSEPATH_INTRO')) . '</p>';
 
-	$GLOBALS['page']->add($nav_bar->getNavBar($ini), 'content');
-	
-    foreach( $coursepath as $id_path => $path )
-    {
+        if (!isset($courses[$id_path]) || empty($courses[$id_path])) {
+            $html .= $lang->def('_NO_COURSE_ASSIGNED_TO_COURSEPATH') . '<br />';
+        } else {
+            // display the slots
+            foreach ($path_slot[$id_path]  as $id_slot => $slot_info) {
+                if ($id_slot == 0) {
+                    $html .= '<h4>' . $lang->def('_MANDATORY') . '</h4>';
+                    if (!empty($courses[$id_path][$id_slot])) {
+                        $html .= '<ul class="coursepath_mainslot">';
+                    }
+                } else {
+                    if ($slot_info['min_selection'] > 0 && $slot_info['max_selection'] > 0) {
+                        $title = str_replace(['[min_selection]', '[max_selection]'],
+                                                [$slot_info['min_selection'], $slot_info['max_selection']],
+                                                $lang->def('_COURSE_PATH_SLOT_MIN_MAX'));
+                    } elseif ($slot_info['max_selection'] > 0) {
+                        $title = str_replace('[max_selection]',
+                                                $slot_info['max_selection'],
+                                                $lang->def('_COURSE_PATH_SLOT_MAX'));
+                    } else {
+                        $title = $lang->def('_COURSE_PATH_SLOT');
+                    }
+                    $html .= '<h4>' . $title . '</h4>';
+                    if (!empty($courses[$id_path][$id_slot])) {
+                        $html .= '<ul class="coursepath_otherslot">';
+                    }
+                }
+                $i = 0;
+                foreach ($courses[$id_path][$id_slot] as $id => $v) {
+                    $html .= '<li class="path_course ' . ($i % 2 ? 'path_odd' : '') . '">'
+                        . '<a class="show_details_more" href="javascript:;" onclick="course_dash(this, \'' . $id . '\',\'info_' . $id_path . '_' . $id . '\', \'' . $can_subs . '\');">' . $lang->def('_DETAILS') . '</a>'
+                        . ($course_info[$id]['code'] != '' ? ' [' . $course_info[$id]['code'] . '] ' : '') . $course_info[$id]['name']
+                        . '<div id="info_' . $id_path . '_' . $id . '"></div>'
+                        . '</li>';
+                    ++$i;
+                }
+                if (!empty($courses[$id_path][$id_slot])) {
+                    $html .= '</ul>';
+                }
+            }
+        }
+        $html .= '</div>';
 
-		$html = '<div class="coursepath_container">';
+        $html .= '</div>';
 
-		$in_h = ' <span class="coursepath_subscribe">';
-		$can_subs = true;
-		if(isset($ass_elem['parsed']['coursepath'])) {
+        $GLOBALS['page']->add($html, 'content');
+    }
 
-			if(isset($ass_elem['not_done']['coursepath']) && in_array($id_path, $ass_elem['not_done']['coursepath'])) {
-
-				// the assosiacted preassessment is not done
-				$in_h .= '';//$lang->def('_MUST_DO_PREASSESSMENT');
-				$can_subs = false;
-			} elseif(isset($ass_elem['to_apply']['coursepath']) && in_array($id_path, $ass_elem['to_apply']['coursepath'])) {
-
-				// the assosiacted preassessment suggest this coursepath
-				$in_h .= $lang->def('_PREASSESSMENT_SUGGESTION');
-			}
-		} else {
-
-			switch($path[COURSEPATH_METHOD]) {
-				case METHOD_WAIT 	: { $in_h .= $lang->def('_METHOD_WAIT'); };break;
-				case METHOD_AUTO 	: { $in_h .= $lang->def('_METHOD_AUTO'); };break;
-				case METHOD_MANUAL 	:
-				default : { $in_h .= $lang->def('_METHOD_MANUAL'); $can_subs = false; };break;
-			}
-		}
-		$in_h .= '</span>';
-		$in_h .= ' <span class="coursepath_status">';
-		if(isset($usercourses[$id_path])) {
-			// user is alredy subscribed to this coursepath
-			if($usercourses[$id_path]['waiting']) {
-
-				$in_h .= $lang->def('_COURSEPATH_WAITING');
-			} else {
-
-				$in_h .= $lang->def('_USER_STATUS_SUBS');
-			}
-		}
-		$in_h .= '</span>';
-		// -------------------------------------------------------------
-		$html .= '<div class="coursepath_info_container">';
-
-		$html .= '<h2 class="pathtitle">'
-			.$in_h
-			.( $path[COURSEPATH_CODE] != '' ? '['.$path[COURSEPATH_CODE].'] ': '' ).$path[COURSEPATH_NAME]
-			
-			.'</h2>'
-			.'<p class="course_support_info">'.str_replace('[enrolled]', $path[CP_ENROLLED], $lang->def('_COURSEPATH_INTRO')).'</p>';
-			
-		if(!isset($courses[$id_path]) || empty($courses[$id_path])) {
-			$html .= $lang->def('_NO_COURSE_ASSIGNED_TO_COURSEPATH').'<br />';
-		} else {
-
-			// display the slots
-			foreach($path_slot[$id_path]  as $id_slot => $slot_info) {
-				if($id_slot == 0) {
-
-					$html .= '<h4>'.$lang->def('_MANDATORY').'</h4>';
-					if(!empty($courses[$id_path][$id_slot])) $html .= '<ul class="coursepath_mainslot">';
-				} else {
-
-					if($slot_info['min_selection'] > 0 && $slot_info['max_selection'] > 0) {
-
-						$title = str_replace( 	['[min_selection]', '[max_selection]'],
-												[$slot_info['min_selection'], $slot_info['max_selection']],
-												$lang->def('_COURSE_PATH_SLOT_MIN_MAX'));
-					} elseif($slot_info['max_selection'] > 0) {
-
-						$title = str_replace( 	'[max_selection]',
-												$slot_info['max_selection'],
-												$lang->def('_COURSE_PATH_SLOT_MAX'));
-					} else {
-
-						$title = $lang->def('_COURSE_PATH_SLOT');
-					}
-					$html .= '<h4>'.$title.'</h4>';
-					if(!empty($courses[$id_path][$id_slot])) $html .= '<ul class="coursepath_otherslot">';
-				}
-				$i = 0;
-                foreach($courses[$id_path][$id_slot] as $id => $v) {
-
-					$html .= '<li class="path_course '.( $i%2 ? 'path_odd' : '' ).'">'
-						.'<a class="show_details_more" href="javascript:;" onclick="course_dash(this, \''.$id.'\',\'info_'.$id_path.'_'.$id.'\', \''.$can_subs.'\');">'.$lang->def('_DETAILS').'</a>'
-						.( $course_info[$id]['code'] != '' ? ' ['.$course_info[$id]['code'].'] ' : '' ).$course_info[$id]['name']
-						.'<div id="info_'.$id_path.'_'.$id.'"></div>'
-						.'</li>';
-					$i++;
-				}
-				if(!empty($courses[$id_path][$id_slot])) $html .= '</ul>';
-			}
-			
-		}
-		$html .= '</div>';
-
-		$html .= '</div>';
-
-		$GLOBALS['page']->add($html, 'content');
-	}
-
-	$GLOBALS['page']->add($nav_bar->getNavBar($ini), 'content');
+    $GLOBALS['page']->add($nav_bar->getNavBar($ini), 'content');
 }
 
 /**
  * this course simply print the course box, we need to provide all the information ,
- * this function only display the information collected by other function
+ * this function only display the information collected by other function.
+ *
  * @param array $cinfo it must containt [ idCourse, code, name, description, create_date,
- * 						number_of_subscription, type_of, materials, demo, teacher_list, score, if_user_alredy_scored_this,
- * 						 prize, is_sell, alredy_subscribed, type_of_subscription
+ *                     number_of_subscription, type_of, materials, demo, teacher_list, score, if_user_alredy_scored_this,
+ *                     prize, is_sell, alredy_subscribed, type_of_subscription
  *
  * 						idCourse, course_type, idCategory, code, name, description, lang_code, difficult,
  *						subscribe_method, date_begin, date_end, max_num_subscribe,
  *						selling, prize, create_date, course_status, course_edition,
  *						classrooms, course_demo, course_vote, enrolled
- *
  * @param int $index the number of object visualized
  */
+function dashcourse(&$url, &$lang, &$cinfo, $uc_status, $index, $enable_actions = true, $h_number = 2)
+{
+    $has_edition = $cinfo['course_edition'];
 
-function dashcourse(&$url, &$lang, &$cinfo, $uc_status, $index, $enable_actions = true, $h_number = 2) {
+    YuiLib::load(['animation' => 'my_animation']);
 
-	$has_edition 	= $cinfo['course_edition'];
-	
-	YuiLib::load(['animation' => 'my_animation']);
-	
-	$course_type 	= $cinfo['course_type'];
-	$action 		= relationWithCourse($cinfo['idCourse'], $cinfo, $uc_status, false);
-	$there_material	= [];
+    $course_type = $cinfo['course_type'];
+    $action = relationWithCourse($cinfo['idCourse'], $cinfo, $uc_status, false);
+    $there_material = [];
 
-	$lang_c =& DoceboLanguage::createInstance('course', 'lms');
+    $lang_c = &DoceboLanguage::createInstance('course', 'lms');
 
-	if (!defined("_ECOM_CURRENCY")) {
-		$currency_label = getPLSetting("ecom", "currency_label", "");
-		define("_ECOM_CURRENCY", $currency_label);
-	}
+    if (!defined('_ECOM_CURRENCY')) {
+        $currency_label = getPLSetting('ecom', 'currency_label', '');
+        define('_ECOM_CURRENCY', $currency_label);
+    }
 
-	$cs = [
-		CST_PREPARATION => $lang_c->def('_CST_PREPARATION', 'course', 'lms'),
-		CST_AVAILABLE 	=> $lang_c->def('_CST_AVAILABLE', 'course', 'lms'),
-		CST_EFFECTIVE 	=> $lang_c->def('_CST_CONFIRMED', 'course', 'lms'),
-		CST_CONCLUDED 	=> $lang_c->def('_CST_CONCLUDED', 'course', 'lms'),
-		CST_CANCELLED 	=> $lang_c->def('_CST_CANCELLED', 'course', 'lms')];
+    $cs = [
+        CST_PREPARATION => $lang_c->def('_CST_PREPARATION', 'course', 'lms'),
+        CST_AVAILABLE => $lang_c->def('_CST_AVAILABLE', 'course', 'lms'),
+        CST_EFFECTIVE => $lang_c->def('_CST_CONFIRMED', 'course', 'lms'),
+        CST_CONCLUDED => $lang_c->def('_CST_CONCLUDED', 'course', 'lms'),
+        CST_CANCELLED => $lang_c->def('_CST_CANCELLED', 'course', 'lms'), ];
 
-	if($cinfo['img_material'] != '') $there_material[] = '&id_course='.$cinfo['idCourse'];
+    if ($cinfo['img_material'] != '') {
+        $there_material[] = '&id_course=' . $cinfo['idCourse'];
+    }
 
-	$html = '<div class="course_container'
-		.( Get::sett('use_social_courselist') == 'on' ? ' double_height' : ' normal_height' )
-		.( $index == 0 ? ' course_container_first' : '' ).'">';
-	$html .= '<div class="course_info_container">'
-			.'<h'.$h_number.'>'.
-		( $cinfo['lang_code'] ? '<img src="'.getPathImage('cms').'language/'.$cinfo['lang_code'].'.png" alt="'.$cinfo['lang_code'].'" /> ' : '' ).
-		//'['.$cinfo['code'].'] '.
-		$cinfo['name'].
-	'</h'.$h_number.'>';
+    $html = '<div class="course_container'
+        . (Get::sett('use_social_courselist') == 'on' ? ' double_height' : ' normal_height')
+        . ($index == 0 ? ' course_container_first' : '') . '">';
+    $html .= '<div class="course_info_container">'
+            . '<h' . $h_number . '>' .
+        ($cinfo['lang_code'] ? '<img src="' . getPathImage('cms') . 'language/' . $cinfo['lang_code'] . '.png" alt="' . $cinfo['lang_code'] . '" /> ' : '') .
+        //'['.$cinfo['code'].'] '.
+        $cinfo['name'] .
+    '</h' . $h_number . '>';
 
-	if($cinfo['classrooms'] != '') {
+    if ($cinfo['classrooms'] != '') {
+        $html .= str_replace(['[classrooms_name]', '[classrooms_location]'],
+                                [$cinfo['classrooms']['classroom'], $cinfo['classrooms']['location']],
+                                $lang->def('_IN_THE_CLASSROOM')
+                            );
+    }
+    // -----------------------------------------------------------------
+    if (!$has_edition) {
+        $html .= '<p class="course_support_info">';
+        // number of subscription not limited
+        if ($cinfo['max_num_subscribe'] == 0) {
+            $html .= str_replace(['[course_type]', '[create_date]', '[enrolled]', '[course_status]'],
+                            [$course_type, createDateDistance($cinfo['create_date'], 'catalogue', true), $cinfo['enrolled'], $cs[$cinfo['course_status']]],
+                            $lang->def('_COURSE_INTRO'))
+                    . ' [' . $cinfo['code'] . '] ';
+        } else {
+            // limited number of subscription
+            $html .= str_replace(['[course_type]', '[create_date]', '[enrolled]', '[course_status]', '[max_subscribe]'],
+                            [$course_type, createDateDistance($cinfo['create_date'], 'catalogue', true), $cinfo['enrolled'], $cs[$cinfo['course_status']], $cinfo['max_num_subscribe']],
+                            $lang->def('_COURSE_INTRO_WITH_MAX'));
 
-		$html .= str_replace(	['[classrooms_name]', '[classrooms_location]'],
-								[$cinfo['classrooms']['classroom'], $cinfo['classrooms']['location']],
-								$lang->def('_IN_THE_CLASSROOM')
-							);
-	}
-	// -----------------------------------------------------------------
-	if(!$has_edition) {
+            if ($cinfo['enrolled'] >= $cinfo['max_num_subscribe'] && $cinfo['allow_overbooking'] == '1') {
+            // limited number of subscription reached
+                $html .= '<br/>' . $lang->def('_CAN_JOIN_WAITING_LIST');
+            }
+        }
+        if ($cinfo['min_num_subscribe'] != 0) {
+            $html .= '<br/>' . str_replace('[min_subscribe]', $cinfo['min_num_subscribe'], $lang->def('_MIN_SUBSCRIBE_FOR_COURSE'));
+        }
+        $html .= '</p>';
+    }
+    // --------------------
+    if (trim($cinfo['description']) == '') {
+        $html .= '';
+    } elseif (strpos($cinfo['description'], '<p') === false) {
+        $html .= '<p class="course_description">' . $cinfo['description'] . '</p>';
+    } else {
+        $html .= '<div class="course_description">' . $cinfo['description'] . '</div>';
+    }
 
-		$html .= '<p class="course_support_info">';
-		// number of subscription not limited
-		if($cinfo['max_num_subscribe'] == 0) {
-
-			$html .=  str_replace(	['[course_type]', '[create_date]', '[enrolled]', '[course_status]'],
-							[$course_type, createDateDistance($cinfo['create_date'], 'catalogue', true), $cinfo['enrolled'], $cs[$cinfo['course_status']]],
-							$lang->def('_COURSE_INTRO'))
-					.' ['.$cinfo['code'].'] ';
-		} else {
-
-			// limited number of subscription
-			$html .=  str_replace(	['[course_type]', '[create_date]', '[enrolled]', '[course_status]', '[max_subscribe]'],
-							[$course_type, createDateDistance($cinfo['create_date'], 'catalogue', true), $cinfo['enrolled'], $cs[$cinfo['course_status']], $cinfo['max_num_subscribe']],
-							$lang->def('_COURSE_INTRO_WITH_MAX'));
-
-			if($cinfo['enrolled'] >= $cinfo['max_num_subscribe'] && $cinfo['allow_overbooking'] == '1') {
-
-			// limited number of subscription reached
-				$html .= '<br/>'.$lang->def('_CAN_JOIN_WAITING_LIST');
-			}
-		}
-		if($cinfo['min_num_subscribe'] != 0) {
-			$html .= '<br/>'.str_replace('[min_subscribe]', $cinfo['min_num_subscribe'], $lang->def('_MIN_SUBSCRIBE_FOR_COURSE'));
-		}
-		$html .= '</p>';
-	}
-	// --------------------
-	if(trim($cinfo['description']) == '')   $html .= '';
-	elseif(strpos($cinfo['description'], '<p') === false) $html .= '<p class="course_description">'.$cinfo['description'].'</p>';
-	else  $html .= '<div class="course_description">'.$cinfo['description'].'</div>';
-
-	if(empty($cinfo['edition_list']) && $has_edition) {
-
-		$html .= '<img src="'.getPathImage('lms').'coursecatalogue/editions.png" alt="'.$lang->def('_EDITIONs').'" /> '
-			.$lang->def('_NO_CONTENT');
-
-	} elseif($has_edition) {
-
-		// edition list actions ---------------------------------------------------
-		$html .= '<p class="editions_actions">';
-		$html .= '<img src="'.getPathImage('lms').'coursecatalogue/editions.png" alt="'.$lang->def('_EDITIONs').'" /> ';
-		$html .= '<a id="course_edition_'.$cinfo['idCourse'].'_open" class="course_editions_expand" href="javascript:;" onclick="
-			YAHOO.Animation.BlindIn(\'course_edition_'.$cinfo['idCourse'].'\', \'\');
-			YAHOO.util.Dom.get(\'course_edition_'.$cinfo['idCourse'].'_open\').style.display = \'none\';
-			YAHOO.util.Dom.get(\'course_edition_'.$cinfo['idCourse'].'_close\').style.display = \'inline\';
+    if (empty($cinfo['edition_list']) && $has_edition) {
+        $html .= '<img src="' . getPathImage('lms') . 'coursecatalogue/editions.png" alt="' . $lang->def('_EDITIONs') . '" /> '
+            . $lang->def('_NO_CONTENT');
+    } elseif ($has_edition) {
+        // edition list actions ---------------------------------------------------
+        $html .= '<p class="editions_actions">';
+        $html .= '<img src="' . getPathImage('lms') . 'coursecatalogue/editions.png" alt="' . $lang->def('_EDITIONs') . '" /> ';
+        $html .= '<a id="course_edition_' . $cinfo['idCourse'] . '_open" class="course_editions_expand" href="javascript:;" onclick="
+			YAHOO.Animation.BlindIn(\'course_edition_' . $cinfo['idCourse'] . '\', \'\');
+			YAHOO.util.Dom.get(\'course_edition_' . $cinfo['idCourse'] . '_open\').style.display = \'none\';
+			YAHOO.util.Dom.get(\'course_edition_' . $cinfo['idCourse'] . '_close\').style.display = \'inline\';
 			return false;">'
 
-			.str_replace(	['[edition_count]', '[edition_available]'],
-							[count($cinfo['edition_list']), $cinfo['edition_available']],
-							$lang->def('_SHOW_COURSE_EDITION'))
-		.'</a>';
+            . str_replace(['[edition_count]', '[edition_available]'],
+                            [count($cinfo['edition_list']), $cinfo['edition_available']],
+                            $lang->def('_SHOW_COURSE_EDITION'))
+        . '</a>';
 
-		$html .= '<a id="course_edition_'.$cinfo['idCourse'].'_close" class="course_editions_collapse" href="javascript:;" onclick="
-			YAHOO.Animation.BlindOut(\'course_edition_'.$cinfo['idCourse'].'\');
-			YAHOO.util.Dom.get(\'course_edition_'.$cinfo['idCourse'].'_close\').style.display = \'none\';
-			YAHOO.util.Dom.get(\'course_edition_'.$cinfo['idCourse'].'_open\').style.display = \'inline\';
+        $html .= '<a id="course_edition_' . $cinfo['idCourse'] . '_close" class="course_editions_collapse" href="javascript:;" onclick="
+			YAHOO.Animation.BlindOut(\'course_edition_' . $cinfo['idCourse'] . '\');
+			YAHOO.util.Dom.get(\'course_edition_' . $cinfo['idCourse'] . '_close\').style.display = \'none\';
+			YAHOO.util.Dom.get(\'course_edition_' . $cinfo['idCourse'] . '_open\').style.display = \'inline\';
 			return false;">'
 
-			.$lang->def('_HIDE_COURSE_EDITION')
-		.'</a>'
-		.'</p>';
+            . $lang->def('_HIDE_COURSE_EDITION')
+        . '</a>'
+        . '</p>';
 
-		// edition list show -------------------------------------------------------------------------
-		$html .= '<ul id="course_edition_'.$cinfo['idCourse'].'" class="course_editions">';
-    
-        foreach( $cinfo['edition_list'] as $id_edition => $ed_info ) {
+        // edition list show -------------------------------------------------------------------------
+        $html .= '<ul id="course_edition_' . $cinfo['idCourse'] . '" class="course_editions">';
 
-			if($ed_info['img_material'] != '') $there_material[] = '&id_course='.$cinfo['idCourse'].'&edition_id'.$ed_info['idCourseEdition'];
+        foreach ($cinfo['edition_list'] as $id_edition => $ed_info) {
+            if ($ed_info['img_material'] != '') {
+                $there_material[] = '&id_course=' . $cinfo['idCourse'] . '&edition_id' . $ed_info['idCourseEdition'];
+            }
 
-			$html .= '<li><b class="course_title">['.$ed_info['code'].'] '.$ed_info['name'].'</b><p>';
+            $html .= '<li><b class="course_title">[' . $ed_info['code'] . '] ' . $ed_info['name'] . '</b><p>';
 
-			if(($ed_info['date_begin'] != '0000-00-00' && $ed_info['date_end'] != '0000-00-00') || $ed_info['classrooms'] != '') {
-				$html .= $lang->def('_EDITIONS');
-			}
-			if($ed_info['date_begin'] != '0000-00-00' && $ed_info['date_end'] != '0000-00-00') {
-				$html .= ' '.str_replace(	['[date_begin]', '[date_end]'],
-										[Format::date($ed_info['date_begin'], 'date'),
-											Format::date($ed_info['date_end'], 'date')],
-										$lang->def('_EDTION_TIME'));
-			}
-			if($ed_info['classrooms'] != '') {
+            if (($ed_info['date_begin'] != '0000-00-00' && $ed_info['date_end'] != '0000-00-00') || $ed_info['classrooms'] != '') {
+                $html .= $lang->def('_EDITIONS');
+            }
+            if ($ed_info['date_begin'] != '0000-00-00' && $ed_info['date_end'] != '0000-00-00') {
+                $html .= ' ' . str_replace(['[date_begin]', '[date_end]'],
+                                        [Format::date($ed_info['date_begin'], 'date'),
+                                            Format::date($ed_info['date_end'], 'date'), ],
+                                        $lang->def('_EDTION_TIME'));
+            }
+            if ($ed_info['classrooms'] != '') {
+                $html .= str_replace(['[classrooms_name]', '[classrooms_location]'],
+                                            [$ed_info['classrooms']['classroom'], $ed_info['classrooms']['location']],
+                                            $lang->def('_IN_THE_CLASSROOM'));
+            }
+            if (($ed_info['date_begin'] != '0000-00-00' && $ed_info['date_end'] != '0000-00-00') || $ed_info['classrooms'] != '') {
+                $html .= '<br />';
+            }
+            if ($ed_info['max_num_subscribe'] == 0) {
+                $html .= str_replace(['[user_count]', '[waiting_count]', ' su [max_user]'],
+                                        [$ed_info['user_count'], $ed_info['waiting'], ''],
+                                        $lang->def('_USER_EDITION_SUBSCRIBE')) . '</p>';
+            } else {
+                $html .= str_replace(['[user_count]', '[waiting_count]', '[max_user]'],
+                                        [$ed_info['user_count'], $ed_info['waiting'], $ed_info['max_num_subscribe']],
+                                        $lang->def('_USER_EDITION_SUBSCRIBE')) . '</p>';
+            }
 
-				$html .= str_replace(	['[classrooms_name]', '[classrooms_location]'],
-											[$ed_info['classrooms']['classroom'], $ed_info['classrooms']['location']],
-											$lang->def('_IN_THE_CLASSROOM') 	);
-			}
-			if(($ed_info['date_begin'] != '0000-00-00' && $ed_info['date_end'] != '0000-00-00') || $ed_info['classrooms'] != '') {
-				$html .= '<br />';
-			}
-			if($ed_info['max_num_subscribe'] == 0)
-				$html .= str_replace(	['[user_count]', '[waiting_count]', ' su [max_user]'],
-										[$ed_info['user_count'], $ed_info['waiting'], ''],
-										$lang->def('_USER_EDITION_SUBSCRIBE') ).'</p>';
-			else
-				$html .= str_replace(	['[user_count]', '[waiting_count]', '[max_user]'],
-										[$ed_info['user_count'], $ed_info['waiting'], $ed_info['max_num_subscribe']],
-										$lang->def('_USER_EDITION_SUBSCRIBE') ).'</p>';
+            if (($ed_info['user_count'] != '' && $ed_info['date_end'] != '0000-00-00') || $ed_info['classrooms'] != '') {
+                $html .= '<br />';
+            }
 
-			if(($ed_info['user_count'] != '' && $ed_info['date_end'] != '0000-00-00') || $ed_info['classrooms'] != '') {
-				$html .= '<br />';
-			}
+            // number of subscription not limited
+            /*if($ed_info['max_num_subscribe'] == 0) {
 
-			// number of subscription not limited
-			/*if($ed_info['max_num_subscribe'] == 0) {
+                $html .= str_replace(	array('[user_count]', '[waiting_count]', ' su [max_user]'),
+                                        array($ed_info['user_count'], $ed_info['waiting'], ''),
+                                        $lang->def('_USER_EDITION_SUBSCRIBE') );
+            } else {
 
-				$html .= str_replace(	array('[user_count]', '[waiting_count]', ' su [max_user]'),
-										array($ed_info['user_count'], $ed_info['waiting'], ''),
-										$lang->def('_USER_EDITION_SUBSCRIBE') );
-			} else {
+                // limited number of subscription
+                $html .= str_replace(	array('[user_count]', '[max_subscribe]', '[waiting_count]'),
+                                        array($ed_info['user_count'], $ed_info['max_num_subscribe'], $ed_info['waiting']),
+                                        $lang->def('_USER_EDITION_SUBSCRIBE_WITH_MAX') );
 
-				// limited number of subscription
-				$html .= str_replace(	array('[user_count]', '[max_subscribe]', '[waiting_count]'),
-										array($ed_info['user_count'], $ed_info['max_num_subscribe'], $ed_info['waiting']),
-										$lang->def('_USER_EDITION_SUBSCRIBE_WITH_MAX') );
+                if($ed_info['user_count'] >= $ed_info['max_num_subscribe'] && $ed_info['allow_overbooking'] == '1') {
 
-				if($ed_info['user_count'] >= $ed_info['max_num_subscribe'] && $ed_info['allow_overbooking'] == '1') {
+                    // limited number of subscription reached
+                    $html .= '<br/>'.$lang->def('_CAN_JOIN_WAITING_LIST');
+                }
+            }
+            if($ed_info['min_num_subscribe'] != 0) {
+                $html .= '<br/>'.str_replace('[min_subscribe]', $cinfo['min_num_subscribe'], $lang->def('_MIN_SUBSCRIBE_FOR_EDITION'));
+            }
+            $html .= '</p>';*/
 
-					// limited number of subscription reached
-					$html .= '<br/>'.$lang->def('_CAN_JOIN_WAITING_LIST');
-				}
-			}
-			if($ed_info['min_num_subscribe'] != 0) {
-				$html .= '<br/>'.str_replace('[min_subscribe]', $cinfo['min_num_subscribe'], $lang->def('_MIN_SUBSCRIBE_FOR_EDITION'));
-			}
-			$html .= '</p>';*/
+            // theacher list ----------------------------------------------------------
+            if (Get::sett('use_social_courselist') == 'on') {
+                if (isset($ed_info['theacher_list']) && is_array($ed_info['theacher_list']) && !empty($ed_info['theacher_list'])) {
+                    $html .= '<h3 class="course_teacher_list">' . $lang->def('_THEACER_LIST') . '</h3>'
+                        . '<ul class="course_teacher_list">';
 
-			// theacher list ----------------------------------------------------------
-			if(Get::sett('use_social_courselist') == 'on') {
+                    foreach ($ed_info['theacher_list'] as $id_teach) {
+                        $profile = new UserProfile($id_teach);
+                        $profile->init('profile', 'framework', '', 'ap');
+                        $html .= '<li class="the_course">'
+                            . '<a href="' . $url->getUrl('op=showprofile&id_course=' . $cinfo['idCourse'] . '&id_user=' . $id_teach) . '">'
+                            . $profile->getUserPhotoOrAvatar('micro') . ' ' . $profile->resolveUsername()
+                            . '</a></li>';
+                    }
+                    $html .= '</ul>';
+                }
+            }
 
-				if(isset($ed_info['theacher_list']) && is_array($ed_info['theacher_list']) && !empty($ed_info['theacher_list'])) {
+            $html .= '</li>';
+        }
+        $html .= '</ul>';
 
-					$html .= '<h3 class="course_teacher_list">'.$lang->def('_THEACER_LIST').'</h3>'
-						.'<ul class="course_teacher_list">';
-          
-                    foreach($ed_info['theacher_list'] as $id_teach) {
-
-						$profile = new UserProfile( $id_teach );
-						$profile->init('profile', 'framework', '', 'ap');
-						$html .= '<li class="the_course">'
-							.'<a href="'.$url->getUrl('op=showprofile&id_course='.$cinfo['idCourse'].'&id_user='.$id_teach).'">'
-							.$profile->getUserPhotoOrAvatar('micro').' '.$profile->resolveUsername()
-							.'</a></li>';
-					}
-					$html .= '</ul>';
-				}
-			}
-
-			$html .= '</li>';
-		}
-		$html .= '</ul>';
-
-		$html .= '<script type="text/javascript">
-			YAHOO.util.Dom.get(\'course_edition_'.$cinfo['idCourse'].'\').style.display = \'none\';
-			YAHOO.util.Dom.get(\'course_edition_'.$cinfo['idCourse'].'_close\').style.display = \'none\';
+        $html .= '<script type="text/javascript">
+			YAHOO.util.Dom.get(\'course_edition_' . $cinfo['idCourse'] . '\').style.display = \'none\';
+			YAHOO.util.Dom.get(\'course_edition_' . $cinfo['idCourse'] . '_close\').style.display = \'none\';
 		</script>';
+    } elseif (Get::sett('use_social_courselist') == 'on') {
+        // theacher list ----------------------------------------------------------
+        if (isset($cinfo['theacher_list']) && is_array($cinfo['theacher_list']) && !empty($cinfo['theacher_list'])) {
+            $html .= '<h3 class="course_teacher_list">' . $lang->def('_THEACER_LIST') . '</h3>'
+                . '<ul class="course_teacher_list">';
+            foreach ($cinfo['theacher_list'] as $id_teach) {
+                $profile = new UserProfile($id_teach);
+                $profile->init('profile', 'framework', '', 'ap');
+                $html .= '<li>'
+                    . '<a href="' . $url->getUrl('op=showprofile&id_course=' . $cinfo['idCourse'] . '&id_user=' . $id_teach) . '">'
+                    . $profile->getUserPhotoOrAvatar('micro') . ' ' . $profile->resolveUsername()
+                    . '</a></li>';
+            }
+            $html .= '</ul>';
+        }
+    }
+    // course related extra option ---------------------------------------------
+    if (Get::sett('use_social_courselist') == 'on' || !empty($there_material) || ($cinfo['course_demo'] != '')) {
+        $html .= '<ul class="course_related_actions">';
+        if (Get::sett('use_social_courselist') == 'on') {
+            $html .= '<li class="course_comment">'
+                    . '<a href="javascript:;" onclick="openComment(\'' . $cinfo['idCourse'] . '\'); return false;">'
+                    . '<span>' . $lang->def('_COMMENTS') . ' ('
+                    . (isset($cinfo['comment_count']) ? $cinfo['comment_count'] : '0') . ')</span></a></li>';
+        }
+        // the course material -----------------------------------------------------------------
+        if (!empty($there_material)) {
+            if (count($there_material) == 1) {
+                // direct download of material -------------------------------------------------
+                $html .= '<li class="course_materials">'
+                    . '<a href="' . $url->getUrl('op=donwloadmaterials' . array_pop($there_material)) . '">'
+                    . '<span>' . $lang->def('_MATERIALS') . '</span></a></li>';
+            } else {
+                // popup download of material --------------------------------------------------
+                $html .= '<li class="course_materials">'
+                    . '<a href="javascript:;" onclick="openWindowWithAction(\'' . $cinfo['idCourse'] . '\', \'course_materials\'); return false;">'
+                    . '<span>' . $lang->def('_MATERIALS') . '</span></a></li>';
+            }
+        }
 
-	} elseif(Get::sett('use_social_courselist') == 'on') {
+        // the course demo link ----------------------------------------------------------------
+        if ($cinfo['course_demo'] != '') {
+            require_once _base_ . '/lib/lib.multimedia.php';
+            $ext = end(explode('.', $cinfo['course_demo']));
+            if (isPossibleEmbedPlay('/appLms/' . Get::sett('pathcourse'), $cinfo['course_demo'], $ext)) {
+                // play demo in popup ---------------------------------------------------------
+                $html .= '<li class="course_demo">'
+                    . '<a href="javascript:;" onclick="openWindowWithAction(\'' . $cinfo['idCourse'] . '\', \'play_demo\'); return false;">'
+                    . '<span>' . $lang->def('_DEMO') . '</span></a></li>';
+            } else {
+                // download demo --------------------------------------------------------------
+                $html .= '<li class="course_demo">'
+                    . '<a href="' . $url->getUrl('op=showdemo&id_course=' . $cinfo['idCourse']) . '">'
+                    . '<span>' . $lang->def('_DEMO') . '</span></a></li>';
+            }
+        }
+        $html .= '</ul>';
+    }
+    $html .= '</div>';
+    // score and subscribe action ----------------------------------------------
+    $html .= '<ul class="course_score">';
+    if ($enable_actions) {
+        if ($has_edition) {
+            list($edition_for_enter) = sql_fetch_row(sql_query('SELECT edition_id'
+                                                                    . ' FROM ' . $GLOBALS['prefix_lms'] . '_courseuser'
+                                                                    . " WHERE idUser = '" . getLogUserId() . "'"
+                                                                    . " AND idCourse = '" . $cinfo['idCourse'] . "'"
+                                                                    . ' ORDER BY edition_id DESC'
+                                                                    . ' LIMIT 0,1'));
+        }
 
-		// theacher list ----------------------------------------------------------
-		if(isset($cinfo['theacher_list']) && is_array($cinfo['theacher_list']) && !empty($cinfo['theacher_list'])) {
+        if ($cinfo['first_is_scorm'] != false && $cinfo['direct_play']) {
+            $lb_param = '';
+            if ($cinfo['first_is_scorm'][0] != '' && $cinfo['first_is_scorm'][0] != '0') {
+                $lb_param .= ';width=' . $cinfo['first_is_scorm'][0] . '';
+            }
 
-			$html .= '<h3 class="course_teacher_list">'.$lang->def('_THEACER_LIST').'</h3>'
-				.'<ul class="course_teacher_list">';
-            foreach($cinfo['theacher_list'] as $id_teach) {
+            if ($cinfo['first_is_scorm'][1] != '' && $cinfo['first_is_scorm'][1] != '0') {
+                $lb_param .= ';height=' . $cinfo['first_is_scorm'][1] . '';
+            }
+        }
+        if ($action[0] == 'subscribed') {
+            $access = Man_Course::canEnterCourse($cinfo);
+        }
+        $html .= '<li id="action_of_' . $cinfo['idCourse'] . '" class="third_action ' . $action[0] . '">'
+                /*
+                .(  '<a href="index.php?modname=course_autoregistration&op=course_autoregistration"'.' >'
+                            .$lang->def('_SUBSCRIBE')
+                            .'<br /></a>'
+                         )
+                */
+                . ($action[1] != false ? '<a href="javascript:;"'
+                    . ' onclick="openWindowWithAction(\'' . $cinfo['idCourse'] . '\', \'course_action_confirm' . ($has_edition ? '_edition' : '') . '\'); return false;">' : '')
+                . ($action[0] == 'subscribed' && $access['can']
+                    ? '<a href="index.php?modname=course&op=aula&idCourse=' . $cinfo['idCourse'] . ($has_edition ? '&amp;id_e=' . $edition_for_enter : '') . '"'
+                        . ($cinfo['direct_play'] == 1 && $cinfo['level'] <= 3 && $cinfo['first_is_scorm']
+                            ? ' rel="shadowbox' . $lb_param . '" title="' . $cinfo['name'] . '"'
+                            : ' title="' . $lang->def('_ENTER') . '"')
+                        . '>' . $lang->def('_ENTER') . '</a>'
+                    : $lang->def('_' . strtoupper($action[0])) . '<br />'
+                );
+        switch ($action[0]) {
+            case 'can_buy':
+            case 'can_reserve':  $html .= $cinfo['prize'] . ' ' . _ECOM_CURRENCY; ; break;
+        }
+        $html .= ($action[2] != false ? '<img src="' . getPathImage() . 'coursecatalogue/' . $action[2] . '" '
+                    . 'alt="' . $lang->def('_ALT_' . strtoupper($action[0])) . '"/>' : '')
+                . ($action[1] != false ? '</a>' : '')
+                . '</li>';
+    }
+    if (Get::sett('use_social_courselist') == 'on') {
+        $html .= '<li class="current_score"><span>' . $lang->def('_SCORE') . '</span><br />'
+            . '<strong id="course_score_' . $cinfo['idCourse'] . '">' . $cinfo['course_vote'] . '</strong></li>';
+        if ($uc_status != false && $uc_status['waiting'] == 0) {
+            $html .= '<li class="score_it">'
+                    . '<a class="good" href="javascript:;" '
+                        . 'onclick="course_vote(\'' . $cinfo['idCourse'] . '\', \'good\'); return false;" '
+                        . 'title="' . $lang->def('_VOTE_GOOD_TITLE') . '">'
 
-				$profile = new UserProfile( $id_teach );
-				$profile->init('profile', 'framework', '', 'ap');
-				$html .= '<li>'
-					.'<a href="'.$url->getUrl('op=showprofile&id_course='.$cinfo['idCourse'].'&id_user='.$id_teach).'">'
-					.$profile->getUserPhotoOrAvatar('micro').' '.$profile->resolveUsername()
-					.'</a></li>';
-			}
-			$html .= '</ul>';
-		}
+                        . '<img id="score_image_good_' . $cinfo['idCourse'] . '" src="' . getPathImage() . 'coursecatalogue/good'
+                            . ($cinfo['user_score'] == '1' ? '_grey' : '')
+                            . '.png" alt="' . $lang->def('_VOTE_GOOD_ALT') . ' : ' . strip_tags($cinfo['name']) . '" />'
+                    . '</a> '
+                    . '<a class="bad" href="javascript:;" '
+                        . 'onclick="course_vote(\'' . $cinfo['idCourse'] . '\', \'bad\'); return false;" '
+                        . 'title="' . $lang->def('_VOTE_BAD_TITLE') . '">'
 
-	}
-	// course related extra option ---------------------------------------------
-	if(Get::sett('use_social_courselist') == 'on' || !empty($there_material) || ($cinfo['course_demo'] != '')) {
+                        . '<img id="score_image_bad_' . $cinfo['idCourse'] . '" src="' . getPathImage() . 'coursecatalogue/bad'
+                            . ($cinfo['user_score'] == '-1' ? '_grey' : '')
+                            . '.png" alt="' . $lang->def('_VOTE_BAD_ALT') . ' : ' . strip_tags($cinfo['name']) . '" />'
+                    . '</a>'
+                . '</li>';
+        } else {
+            $html .= '<li class="score_it" id="score_action_' . $cinfo['idCourse'] . '">'
+                    . '<img src="' . getPathImage() . 'coursecatalogue/good_grey.png" alt="' . $lang->def('_VOTE_GOOD_ALT') . ' : ' . strip_tags($cinfo['name']) . '" /> '
+                    . '<img src="' . getPathImage() . 'coursecatalogue/bad_grey.png" alt="' . $lang->def('_VOTE_BAD_ALT') . ' : ' . strip_tags($cinfo['name']) . '" />'
+                . '</li>';
+        }
+    }
+    $html .= '</ul>';
+    $html .= '</div>';
 
-		$html .= '<ul class="course_related_actions">';
-		if(Get::sett('use_social_courselist') == 'on') {
-
-			$html .= '<li class="course_comment">'
-					.'<a href="javascript:;" onclick="openComment(\''.$cinfo['idCourse'].'\'); return false;">'
-					.'<span>'.$lang->def('_COMMENTS').' ('
-					.( isset($cinfo['comment_count']) ? $cinfo['comment_count'] : '0' ).')</span></a></li>';
-			
-		}
-		// the course material -----------------------------------------------------------------
-		if(!empty($there_material))  {
-
-			if(count($there_material) == 1) {
-
-				// direct download of material -------------------------------------------------
-				$html .= '<li class="course_materials">'
-					.'<a href="'.$url->getUrl('op=donwloadmaterials'.array_pop($there_material)).'">'
-					.'<span>'.$lang->def('_MATERIALS').'</span></a></li>';
-			} else {
-
-				// popup download of material --------------------------------------------------
-				$html .= '<li class="course_materials">'
-					.'<a href="javascript:;" onclick="openWindowWithAction(\''.$cinfo['idCourse'].'\', \'course_materials\'); return false;">'
-					.'<span>'.$lang->def('_MATERIALS').'</span></a></li>';
-			}
-		}
-
-		// the course demo link ----------------------------------------------------------------
-		if($cinfo['course_demo'] != '') {
-
-			require_once(_base_.'/lib/lib.multimedia.php');
-			$ext = end(explode('.', $cinfo['course_demo']));
-			if(isPossibleEmbedPlay('/appLms/'.Get::sett('pathcourse'), $cinfo['course_demo'], $ext)) {
-
-				// play demo in popup ---------------------------------------------------------
-				$html .= '<li class="course_demo">'
-					.'<a href="javascript:;" onclick="openWindowWithAction(\''.$cinfo['idCourse'].'\', \'play_demo\'); return false;">'
-					.'<span>'.$lang->def('_DEMO').'</span></a></li>';
-			} else {
-
-				// download demo --------------------------------------------------------------
-				$html .= '<li class="course_demo">'
-					.'<a href="'.$url->getUrl('op=showdemo&id_course='.$cinfo['idCourse']).'">'
-					.'<span>'.$lang->def('_DEMO').'</span></a></li>';
-			}
-		}
-		$html .= '</ul>';
-	}
-	$html .= '</div>';
-	// score and subscribe action ----------------------------------------------
-	$html .= '<ul class="course_score">';
-	if($enable_actions) {
-		if($has_edition)
-			list($edition_for_enter) = sql_fetch_row(sql_query(	"SELECT edition_id"
-																	." FROM ".$GLOBALS['prefix_lms']."_courseuser"
-																	." WHERE idUser = '".getLogUserId()."'"
-																	." AND idCourse = '".$cinfo['idCourse']."'"
-																	." ORDER BY edition_id DESC"
-																	." LIMIT 0,1"));
-		
-		
-		if($cinfo['first_is_scorm'] != false && $cinfo['direct_play']) {
-			$lb_param = "";
-			if($cinfo['first_is_scorm'][0] != '' && $cinfo['first_is_scorm'][0] != '0')
-					$lb_param .= ";width=".$cinfo['first_is_scorm'][0]."";
-	
-			if($cinfo['first_is_scorm'][1] != '' && $cinfo['first_is_scorm'][1] != '0')
-				$lb_param .= ";height=".$cinfo['first_is_scorm'][1]."";
-		}
-		if($action[0] == 'subscribed' ) {
-			
-			$access = Man_Course::canEnterCourse($cinfo);
-		}
-		$html .= '<li id="action_of_'.$cinfo['idCourse'].'" class="third_action '.$action[0].'">'
-				/*
-				.(  '<a href="index.php?modname=course_autoregistration&op=course_autoregistration"'.' >'
-							.$lang->def('_SUBSCRIBE')
-							.'<br /></a>'
-						 )
-				*/
-				.( $action[1] != false ? '<a href="javascript:;"'
-					.' onclick="openWindowWithAction(\''.$cinfo['idCourse'].'\', \'course_action_confirm'.( $has_edition ? '_edition' : '' ).'\'); return false;">' : '' )
-				.($action[0] == 'subscribed' && $access['can']
-					? '<a href="index.php?modname=course&op=aula&idCourse='.$cinfo['idCourse'].($has_edition ? '&amp;id_e='.$edition_for_enter : '').'"'
-						.($cinfo['direct_play'] == 1 && $cinfo['level'] <= 3 && $cinfo['first_is_scorm']
-							? ' rel="shadowbox'.$lb_param.'" title="'.$cinfo['name'].'"' 
-							: ' title="'.$lang->def('_ENTER').'"' )
-						.'>'.$lang->def('_ENTER').'</a>' 
-					: $lang->def('_'.strtoupper($action[0])).'<br />'
-				);
-		switch($action[0]) {
-			case "can_buy" :
-			case "can_reserve" : { $html .= $cinfo['prize'].' '._ECOM_CURRENCY; };break;
-		}
-		$html .= ( $action[2] != false ? '<img src="'.getPathImage().'coursecatalogue/'.$action[2].'" '
-					.'alt="'.$lang->def('_ALT_'.strtoupper($action[0])).'"/>' : '' )
-				.( $action[1] != false ? '</a>' : '' )
-				.'</li>';
-	}
-	if(Get::sett('use_social_courselist') == 'on') {
-
-		$html .= '<li class="current_score"><span>'.$lang->def('_SCORE').'</span><br />'
-			.'<strong id="course_score_'.$cinfo['idCourse'].'">'.$cinfo['course_vote'].'</strong></li>';
-		if($uc_status != false && $uc_status['waiting'] == 0)  {
-
-			$html .= '<li class="score_it">'
-					.'<a class="good" href="javascript:;" '
-						.'onclick="course_vote(\''.$cinfo['idCourse'].'\', \'good\'); return false;" '
-						.'title="'.$lang->def('_VOTE_GOOD_TITLE').'">'
-
-						.'<img id="score_image_good_'.$cinfo['idCourse'].'" src="'.getPathImage().'coursecatalogue/good'
-							.( $cinfo['user_score'] == '1' ? '_grey' : '' )
-							.'.png" alt="'.$lang->def('_VOTE_GOOD_ALT').' : '.strip_tags($cinfo['name']).'" />'
-					.'</a> '
-					.'<a class="bad" href="javascript:;" '
-						.'onclick="course_vote(\''.$cinfo['idCourse'].'\', \'bad\'); return false;" '
-						.'title="'.$lang->def('_VOTE_BAD_TITLE').'">'
-
-						.'<img id="score_image_bad_'.$cinfo['idCourse'].'" src="'.getPathImage().'coursecatalogue/bad'
-							.( $cinfo['user_score'] == '-1' ? '_grey' : '' )
-							.'.png" alt="'.$lang->def('_VOTE_BAD_ALT').' : '.strip_tags($cinfo['name']).'" />'
-					.'</a>'
-				.'</li>';
-		} else {
-
-			$html .= '<li class="score_it" id="score_action_'.$cinfo['idCourse'].'">'
-					.'<img src="'.getPathImage().'coursecatalogue/good_grey.png" alt="'.$lang->def('_VOTE_GOOD_ALT').' : '.strip_tags($cinfo['name']).'" /> '
-					.'<img src="'.getPathImage().'coursecatalogue/bad_grey.png" alt="'.$lang->def('_VOTE_BAD_ALT').' : '.strip_tags($cinfo['name']).'" />'
-				.'</li>';
-		}
-	}
-	$html .= '</ul>';
-	$html .= '</div>';
-	return $html;
+    return $html;
 }
 
-function must_search_filter() {
-
-	return ( isset($_SESSION['coursecatalogue']['in_search']) && $_SESSION['coursecatalogue']['in_search'] == true );
+function must_search_filter()
+{
+    return  isset($_SESSION['coursecatalogue']['in_search']) && $_SESSION['coursecatalogue']['in_search'] == true;
 }
 
-function get_searched($var, $default) {
+function get_searched($var, $default)
+{
+    $prefix = 'coursecatalogue';
+    if (isset($_POST['do_search'])) {
+        $_SESSION[$prefix]['in_search'] = true;
+    }
+    if (isset($_POST['reset_search'])) {
+        if (isset($_SESSION[$prefix])) {
+            $_SESSION[$prefix] = [];
+            unset($_SESSION[$prefix]);
+        }
 
-	$prefix = 'coursecatalogue';
-	if(isset($_POST['do_search'])) {
-		$_SESSION[$prefix]['in_search'] = true;
-	}
-	if(isset($_POST['reset_search'])) {
-		if(isset($_SESSION[$prefix])) {
+        return $default;
+    }
 
-			$_SESSION[$prefix] = [];
-			unset($_SESSION[$prefix]);
-		}
-		return $default;
-	}
+    if (isset($_POST[$var])) {
+        $_SESSION[$prefix][$var] = $_POST[$var];
 
-	if(isset($_POST[$var])) {
+        return $_POST[$var];
+    }
+    if (isset($_GET[$var])) {
+        $_SESSION[$prefix][$var] = $_GET[$var];
 
-		$_SESSION[$prefix][$var] = $_POST[$var];
-		return $_POST[$var];
-	}
-	if(isset($_GET[$var])) {
+        return $_GET[$var];
+    }
 
-		$_SESSION[$prefix][$var] = $_GET[$var];
-		return $_GET[$var];
-	}
-	return ( isset($_SESSION[$prefix][$var]) ? $_SESSION[$prefix][$var] : $default );
+    return  isset($_SESSION[$prefix][$var]) ? $_SESSION[$prefix][$var] : $default;
 }
 
-function searchForm(&$url, &$lang) {
+function searchForm(&$url, &$lang)
+{
+    //$filter_type = get_searched('filter_type', array('free'=>1, 'editions'=>1, 'sale'=>1));
 
-	//$filter_type = get_searched('filter_type', array('free'=>1, 'editions'=>1, 'sale'=>1));
+    $langs = Docebo::langManager()->getAllLangCode();
+    $all_lang = ['all' => $lang->def('_ALL_LANGUAGE')];
+    $all_lang = array_merge($all_lang, $langs);
 
-	$langs = Docebo::langManager()->getAllLangCode();
-	$all_lang = ['all' => $lang->def('_ALL_LANGUAGE')];
-	$all_lang = array_merge($all_lang, $langs);
+    $html = '';
+    $html .= Form::openForm('search_coursecatalogue', $url->getUrl())
 
-	$html = '';
-	$html .= Form::openForm('search_coursecatalogue', $url->getUrl())
+    . Form::getTextfield($lang->def('_WORD_TO_SEARCH'),
+                            'simple_search',
+                            'simple_search',
+                            '255',
+                            get_searched('simple_search', ''),
+                            false)
+    //.'<a id="advanced_search_link" class="adv_link" href="'.$url->getUrl().'" onclick="toggle_adv_search(); return false;">'.$lang->def('_ADVANCED_SEARCH').'</a>'
 
-	.Form::getTextfield(	$lang->def('_WORD_TO_SEARCH'),
-							'simple_search',
-							'simple_search',
-							'255',
-							get_searched('simple_search', ''),
-							false )
-	//.'<a id="advanced_search_link" class="adv_link" href="'.$url->getUrl().'" onclick="toggle_adv_search(); return false;">'.$lang->def('_ADVANCED_SEARCH').'</a>'
+    //.'<div id="advanced_search">'
+    . Form::getDropdown($lang->def('_FILTER'),
+                        'filter_lang',
+                        'filter_lang',
+                        $all_lang,
+                        get_searched('filter_lang', 'all'))
 
-	//.'<div id="advanced_search">'
-	.Form::getDropdown( $lang->def('_FILTER'),
-						'filter_lang',
-						'filter_lang',
-						$all_lang,
-						get_searched('filter_lang', 'all') )
-						
+    . '<div class="nofloat align_right">'
+    . Form::getButton('do_search', 'do_search', $lang->def('_SEARCH'), '')
+    . (isset($_SESSION['coursecatalogue']['in_search']) && $_SESSION['coursecatalogue']['in_search'] == true
+        ? ' ' . Form::getButton('reset_search', 'reset_search', $lang->def('_CANCEL'), '') : '')
+    . '</div>'
 
+    //.'</div>'
 
-	.'<div class="nofloat align_right">'
-	.Form::getButton('do_search', 'do_search', $lang->def('_SEARCH'), '')
-	.( isset($_SESSION['coursecatalogue']['in_search']) && $_SESSION['coursecatalogue']['in_search'] == true
-		? ' '.Form::getButton('reset_search', 'reset_search', $lang->def('_CANCEL'), '') : '')
-	.'</div>'
+    //.'<script type="text/javascript">
+    //	$(\'advanced_search\').style.display = \'none\';
+    //</script>'
+    . Form::closeForm();
 
-	//.'</div>'
-
-	//.'<script type="text/javascript">
-	//	$(\'advanced_search\').style.display = \'none\';
-	//</script>'
-	.Form:: closeForm();
-
-	return $html;
+    return $html;
 }
 
 /**
  * @return array 0 => can_buy		=> user can put the course in the cart
- * 					can_prenote 	=> user can
- * 					can_subscribe 	=> user can subscribe freely
- * 					can_reserve		=> user can put the course in the buyer cart
- * 					can_overbook	=> user can put the course in the buyer cart, but in overbooking
+ *               can_prenote 	=> user can
+ *               can_subscribe 	=> user can subscribe freely
+ *               can_reserve		=> user can put the course in the buyer cart
+ *               can_overbook	=> user can put the course in the buyer cart, but in overbooking
  *
  * 					impossible 		=> the user can do nothing with the course
  * 					in_cart 		=> the course is in the user cart
@@ -979,435 +968,417 @@ function searchForm(&$url, &$lang) {
  * 				1=> link for action
  * 				2=> associated icon
  * 				3=> if the subscrition is impossibile here you can find the problem
- *
  */
-function relationWithCourse($id_course, &$course, $uc_details, $edition_id = false) {
-
+function relationWithCourse($id_course, &$course, $uc_details, $edition_id = false)
+{
 // 	require_once($GLOBALS['where_ecom'].'/lib/lib.cart.php');
-// 	$cart =& Cart::createInstance();
-	
-	list($enrolled) = sql_fetch_row(sql_query("SELECT COUNT(*) FROM ".$GLOBALS['prefix_lms']."_courseuser WHERE idCourse = '".$id_course."' AND edition_id = '0'"));
-	
-	$course['enrolled'] = $enrolled;
-	
-	$base_link = 'index.php?modname='.( Docebo::user()->isAnonymous() ? 'login' : 'coursecatalogue' ).'&op=';
+    // 	$cart =& Cart::createInstance();
 
-	$bought_items 	=& getEcomItems();
-	$product_type 	= ( $edition_id !== FALSE ? "course_edition" : "course" );
-	$search_item 	= ( $edition_id !== FALSE ? $product_type."_".$edition_id : $product_type."_".$id_course );
+    list($enrolled) = sql_fetch_row(sql_query('SELECT COUNT(*) FROM ' . $GLOBALS['prefix_lms'] . "_courseuser WHERE idCourse = '" . $id_course . "' AND edition_id = '0'"));
 
-	if($uc_details != false) {
+    $course['enrolled'] = $enrolled;
 
-		// user is in relation with the course, alredy subscribed or waiting for admin approvation
-		switch($uc_details['waiting']) {
-			case '0' : return ['subscribed', false, false]; break;
-			case '1' : return ['waiting_admin', false, false]; break;
-			case '2' : return ['waiting_overbooking', false, false]; break;
-		}
-	}
-	switch($course['can_subscribe']) {
-		case "0" : { return ['impossible', false, false, 'subscribe_lock']; };break;
-		case "2" : {
-			$today = date("Y-m-d H:i:s");
-			if($course['sub_start_date'] != 'NULL' && strcmp($course['sub_start_date'], $today) > 0) return ['impossible', false, false, 'date_range'];
-			if( $course['sub_end_date'] != 'NULL' && strcmp($course['sub_end_date'], $today) < 0) return ['impossible', false, false, 'date_range'];
-		};break;
-	}
-	if($course['subscribe_method'] > 0) {
+    $base_link = 'index.php?modname=' . (Docebo::user()->isAnonymous() ? 'login' : 'coursecatalogue') . '&op=';
 
-		$pl_man =& PlatformManager::CreateInstance();
-		if(!$pl_man->isLoaded('ecom')) {
-			$course['selling'] = 0;
-		}
-		if($course['selling'] == 1) {
+    $bought_items = &getEcomItems();
+    $product_type = ($edition_id !== false ? 'course_edition' : 'course');
+    $search_item = ($edition_id !== false ? $product_type . '_' . $edition_id : $product_type . '_' . $id_course);
 
-			$ecom_type = getPLSetting("ecom", "ecom_type", "none");
-			if($ecom_type == "standard") {
+    if ($uc_details != false) {
+        // user is in relation with the course, alredy subscribed or waiting for admin approvation
+        switch ($uc_details['waiting']) {
+            case '0': return ['subscribed', false, false]; break;
+            case '1': return ['waiting_admin', false, false]; break;
+            case '2': return ['waiting_overbooking', false, false]; break;
+        }
+    }
+    switch ($course['can_subscribe']) {
+        case '0':  return ['impossible', false, false, 'subscribe_lock']; ; break;
+        case '2':
+            $today = date('Y-m-d H:i:s');
+            if ($course['sub_start_date'] != 'NULL' && strcmp($course['sub_start_date'], $today) > 0) {
+                return ['impossible', false, false, 'date_range'];
+            }
+            if ($course['sub_end_date'] != 'NULL' && strcmp($course['sub_end_date'], $today) < 0) {
+                return ['impossible', false, false, 'date_range'];
+            }
+        ; break;
+    }
+    if ($course['subscribe_method'] > 0) {
+        $pl_man = &PlatformManager::CreateInstance();
+        if (!$pl_man->isLoaded('ecom')) {
+            $course['selling'] = 0;
+        }
+        if ($course['selling'] == 1) {
+            $ecom_type = getPLSetting('ecom', 'ecom_type', 'none');
+            if ($ecom_type == 'standard') {
+                // maybe if the course is with edition there is an editon in the cart
+                if ($edition_id !== false && isset($course['edition_list']) && !empty($course['edition_list'])) {
+                    foreach ($course['edition_list'] as $id => $v) {
+                        if ($cart->isInCart($product_type . '_' . $id)) {
+                            // find in cart
+                            return ['in_cart', false, false];
+                        }
+                    }
+                    reset($course['edition_list']);
+                } else {
+                    if ($cart->isInCart($search_item)) {
+                        // find in cart
+                        return ['in_cart', false, false];
+                    }
+                }
 
-				// maybe if the course is with edition there is an editon in the cart
-				if($edition_id !== FALSE && isset($course['edition_list']) && !empty($course['edition_list'])) {
+                // max number of subscription ? overbooking ? ---------------------------------------
+                if ($course['max_num_subscribe'] != 0 && $course['max_num_subscribe'] <= $course['enrolled']) {
+                    if ($course['allow_overbooking'] == 1) {
+                        return ['can_overbook', $base_link . 'overbook&amp;id=' . $id_course, false];
+                    } else {
+                        return ['impossible', false, false, 'full_course'];
+                    }
+                }
 
-					foreach($course['edition_list'] as $id=>$v) {
-						if($cart->isInCart($product_type."_".$id)) {
-							// find in cart
-							return ['in_cart', false, false];
-						}
-					}
-					reset($course['edition_list']);
-				} else {
-					if($cart->isInCart($search_item)) {
-						// find in cart
-						return ['in_cart', false, false];
-					}
-				}
+                return ['can_buy', $base_link . 'addToCart&id=' . $id_course, 'can_buy.png'];
+            } elseif ($ecom_type == 'with_buyer') {
+                // ecom is with buyer --------------------------------------------------------------------------
 
-				// max number of subscription ? overbooking ? ---------------------------------------
-				if($course['max_num_subscribe'] != 0 && $course['max_num_subscribe'] <= $course['enrolled']) {
+                // maybe if the course is with edition there is an editon in the cart
+                if ($edition_id !== false && isset($course['edition_list']) && !empty($course['edition_list'])) {
+                    foreach ($course['edition_list'] as $id => $v) {
+                        if (isset($bought_items['reservation'][$product_type]) && in_array($product_type . '_' . $id, $bought_items['reservation'][$product_type])) {
+                            // find in bought item
+                            return ['waiting_payment', false, false];
+                        } elseif ($cart->isInCart($product_type . '_' . $id)) {
+                            // find in cart
+                            return ['in_cart', false, false];
+                        }
+                    }
+                    reset($course['edition_list']);
+                } else {
+                    // searching in the buyer assigned to the user the course
+                    if (isset($bought_items['reservation'][$product_type]) && in_array($search_item, $bought_items['reservation'][$product_type])) {
+                        return ['waiting_buyer', false, false];
+                    } elseif ($cart->isInCart($search_item)) {
+                        // find in cart
+                        return ['in_cart', false, false];
+                    }
+                }
 
-					if($course['allow_overbooking'] == 1) return ['can_overbook', $base_link.'overbook&amp;id='.$id_course, false];
-					else return ['impossible', false, false, 'full_course'];
-				}
-				return ['can_buy', $base_link.'addToCart&id='.$id_course, 'can_buy.png'];
-			} elseif($ecom_type == "with_buyer") {
+                // max number of subscription ? overbooking ? ---------------------------------------
+                if ($course['max_num_subscribe'] != 0 && $course['max_num_subscribe'] <= $course['enrolled']) {
+                    if ($course['allow_overbooking'] == 1) {
+                        return ['can_overbook', $base_link . 'overbook&amp;id=' . $id_course, false];
+                    } else {
+                        return ['impossible', false, false, 'full_course'];
+                    }
+                }
 
-				// ecom is with buyer --------------------------------------------------------------------------
+                return ['can_reserve', $base_link . 'reserve&amp;id=' . $id_course, 'can_prenote.png'];
+            }
+        } else {
+            if ($course['subscribe_method'] == 1) {
+                // max number of subscription ? overbooking ? ---------------------------------------
+                if ($course['max_num_subscribe'] != 0 && $course['max_num_subscribe'] <= $course['enrolled']) {
+                    if ($course['allow_overbooking'] == 1) {
+                        return ['can_overbook', false, false];
+                    } else {
+                        return ['impossible', false, false, 'full_course'];
+                    }
+                }
 
-				// maybe if the course is with edition there is an editon in the cart
-				if($edition_id !== FALSE && isset($course['edition_list']) && !empty($course['edition_list'])) {
+                return ['can_prenote', $base_link . 'subscribecourse&amp;id=' . $id_course, 'can_prenote.png'];
+            }
+            if ($course['subscribe_method'] == 2) {
+                // max number of subscription ? overbooking ? ---------------------------------------
+                if ($course['max_num_subscribe'] != 0 && $course['max_num_subscribe'] <= $course['enrolled']) {
+                    if ($course['allow_overbooking'] == 1) {
+                        return ['can_overbook', false, false];
+                    } else {
+                        return ['impossible', false, false, 'full_course'];
+                    }
+                }
 
-					foreach($course['edition_list'] as $id => $v)
-                    {
+                return ['can_subscribe', $base_link . 'subscribecourse&amp;id=' . $id_course, 'can_subscribe.png'];
+            }
+        }
+    }
 
-						if(isset($bought_items['reservation'][$product_type]) && in_array($product_type."_".$id, $bought_items['reservation'][$product_type])) {
-							// find in bought item
-							return ['waiting_payment', false, false];
-						} elseif($cart->isInCart($product_type."_".$id)) {
-							// find in cart
-							return ['in_cart', false, false];
-						}
-					}
-					reset($course['edition_list']);
-				} else {
-
-					// searching in the buyer assigned to the user the course
-					if(isset($bought_items['reservation'][$product_type]) && in_array($search_item, $bought_items['reservation'][$product_type])) {
-						return ['waiting_buyer', false, false];
-					} elseif($cart->isInCart($search_item)) {
-						// find in cart
-						return ['in_cart', false, false];
-					}
-				}
-
-				// max number of subscription ? overbooking ? ---------------------------------------
-				if($course['max_num_subscribe'] != 0 && $course['max_num_subscribe'] <= $course['enrolled']) {
-
-					if($course['allow_overbooking'] == 1) return ['can_overbook', $base_link.'overbook&amp;id='.$id_course, false];
-					else return ['impossible', false, false, 'full_course'];
-				}
-				return ['can_reserve', $base_link.'reserve&amp;id='.$id_course, 'can_prenote.png'];
-			}
-		} else {
-
-			if($course['subscribe_method'] == 1) {
-
-				// max number of subscription ? overbooking ? ---------------------------------------
-				if($course['max_num_subscribe'] != 0 && $course['max_num_subscribe'] <= $course['enrolled']) {
-
-					if($course['allow_overbooking'] == 1) return ['can_overbook', false, false];
-					else return ['impossible', false, false, 'full_course'];
-				}
-				return ['can_prenote', $base_link.'subscribecourse&amp;id='.$id_course, 'can_prenote.png'];
-			}
-			if($course['subscribe_method'] == 2) {
-
-				// max number of subscription ? overbooking ? ---------------------------------------
-				if($course['max_num_subscribe'] != 0 && $course['max_num_subscribe'] <= $course['enrolled']) {
-
-					if($course['allow_overbooking'] == 1) return ['can_overbook', false, false];
-					else return ['impossible', false, false, 'full_course'];
-				}
-				return ['can_subscribe', $base_link.'subscribecourse&amp;id='.$id_course, 'can_subscribe.png'];
-			}
-		}
-	}
-	return ['impossible', false, false, 'only_admin'];
+    return ['impossible', false, false, 'only_admin'];
 }
 
-function getCourseEditionList($course_id) {
-	$res="";
+function getCourseEditionList($course_id)
+{
+    $res = '';
 
-	require_once($GLOBALS['where_lms'].'/lib/lib.course.php');
+    require_once $GLOBALS['where_lms'] . '/lib/lib.course.php';
 
-	$lang_c =& DoceboLanguage::createInstance('catalogue');
-	$lang =& DoceboLanguage::createInstance('course');
+    $lang_c = &DoceboLanguage::createInstance('catalogue');
+    $lang = &DoceboLanguage::createInstance('course');
 
-	$man_course = new Man_Course();
-	$course = $man_course->getCourseInfo($course_id);
-	$course_name=$course["name"];
+    $man_course = new Man_Course();
+    $course = $man_course->getCourseInfo($course_id);
+    $course_name = $course['name'];
 
-	$subs_lang = [
-		0 => $lang->def('_COURSE_S_GODADMIN'),
-		1 => $lang->def('_COURSE_S_MODERATE'),
-		2 => $lang->def('_COURSE_S_FREE'),
-		3 => $lang->def('_COURSE_S_SECURITY_CODE')];
+    $subs_lang = [
+        0 => $lang->def('_COURSE_S_GODADMIN'),
+        1 => $lang->def('_COURSE_S_MODERATE'),
+        2 => $lang->def('_COURSE_S_FREE'),
+        3 => $lang->def('_COURSE_S_SECURITY_CODE'), ];
 
-	$qtxt ="SELECT t1.*, COUNT(t2.idUser) as enrolled FROM ".$GLOBALS["prefix_lms"]."_course_edition as t1 ";
-	$qtxt.="LEFT JOIN ".$GLOBALS['prefix_lms']."_courseuser AS t2 ON ( t1.idCourseEdition = t2.edition_id ) ";
-	$qtxt.="WHERE t1.idCourse='".(int)$course_id."'  ";
-	$qtxt.=" AND t1.status <> '".CST_PREPARATION."' ";
-	
-	$qtxt.=" AND (t1.date_begin > '".date("Y-m-d H:i:s")."' OR t1.date_begin = '0000-00-00 00:00:00')";
+    $qtxt = 'SELECT t1.*, COUNT(t2.idUser) as enrolled FROM ' . $GLOBALS['prefix_lms'] . '_course_edition as t1 ';
+    $qtxt .= 'LEFT JOIN ' . $GLOBALS['prefix_lms'] . '_courseuser AS t2 ON ( t1.idCourseEdition = t2.edition_id ) ';
+    $qtxt .= "WHERE t1.idCourse='" . (int) $course_id . "'  ";
+    $qtxt .= " AND t1.status <> '" . CST_PREPARATION . "' ";
 
-	$qtxt.=" GROUP BY t1.idCourseEdition ";
-	$qtxt.="ORDER BY t1.date_begin";
-	if(!$q=sql_query($qtxt)) return '';
+    $qtxt .= " AND (t1.date_begin > '" . date('Y-m-d H:i:s') . "' OR t1.date_begin = '0000-00-00 00:00:00')";
 
-	$html = '<ul class="course_editions">';
-	while($ed_info=sql_fetch_assoc($q)) {
+    $qtxt .= ' GROUP BY t1.idCourseEdition ';
+    $qtxt .= 'ORDER BY t1.date_begin';
+    if (!$q = sql_query($qtxt)) {
+        return '';
+    }
 
-		$html .= '<li><b>['.$ed_info['code'].'] '.$ed_info['name'].'</b><br/><p>';
+    $html = '<ul class="course_editions">';
+    while ($ed_info = sql_fetch_assoc($q)) {
+        $html .= '<li><b>[' . $ed_info['code'] . '] ' . $ed_info['name'] . '</b><br/><p>';
 
-		if(($ed_info['date_begin'] != '0000-00-00' && $ed_info['date_end'] != '0000-00-00') || $ed_info['classrooms'] != '') {
-			$html .= $lang->def('_EDITIONS');
-		}
-		if($ed_info['date_begin'] != '0000-00-00' && $ed_info['date_end'] != '0000-00-00') {
-			$html .= ' '.str_replace(	['[date_begin]', '[date_end]'],
-									[Format::date($ed_info['date_begin'], 'date'),
-										Format::date($ed_info['date_end'], 'date')],
-									$lang->def('_EDTION_TIME'));
-		}
-		$course['advance'] = $ed_info['advance'];
-		$course['prize'] = $ed_info['price'];
+        if (($ed_info['date_begin'] != '0000-00-00' && $ed_info['date_end'] != '0000-00-00') || $ed_info['classrooms'] != '') {
+            $html .= $lang->def('_EDITIONS');
+        }
+        if ($ed_info['date_begin'] != '0000-00-00' && $ed_info['date_end'] != '0000-00-00') {
+            $html .= ' ' . str_replace(['[date_begin]', '[date_end]'],
+                                    [Format::date($ed_info['date_begin'], 'date'),
+                                        Format::date($ed_info['date_end'], 'date'), ],
+                                    $lang->def('_EDTION_TIME'));
+        }
+        $course['advance'] = $ed_info['advance'];
+        $course['prize'] = $ed_info['price'];
 
-		$html .= '<div class="align_right">'
-			.getSubscribeActionLink($course_id, $course, $lang, $ed_info['idCourseEdition'])
-			.'</div>';
+        $html .= '<div class="align_right">'
+            . getSubscribeActionLink($course_id, $course, $lang, $ed_info['idCourseEdition'])
+            . '</div>';
 
-		$html .= '</li>';
-	}
-	$html .= '</ul>';
-	return $html;
+        $html .= '</li>';
+    }
+    $html .= '</ul>';
+
+    return $html;
 }
 
+function getCourseEditionTable($course_id)
+{
+    $res = '';
 
-function getCourseEditionTable($course_id) {
-	$res="";
+    require_once _base_ . '/lib/lib.table.php';
+    require_once $GLOBALS['where_lms'] . '/lib/lib.course.php';
 
-	require_once(_base_.'/lib/lib.table.php');
-	require_once($GLOBALS['where_lms'].'/lib/lib.course.php');
+    $lang_c = &DoceboLanguage::createInstance('catalogue');
+    $lang = &DoceboLanguage::createInstance('course');
 
-	$lang_c =& DoceboLanguage::createInstance('catalogue');
-	$lang =& DoceboLanguage::createInstance('course');
+    /*
+        $qtxt ="SELECT name FROM ".$GLOBALS["prefix_lms"]."_course ";
+        $qtxt.="WHERE idCourse = '".(int)$course_id."'";
+        list($course_name)=sql_fetch_row(sql_query($qtxt));
+    */
 
-/*
-	$qtxt ="SELECT name FROM ".$GLOBALS["prefix_lms"]."_course ";
-	$qtxt.="WHERE idCourse = '".(int)$course_id."'";
-	list($course_name)=sql_fetch_row(sql_query($qtxt));
-*/
+    $man_course = new Man_Course();
+    $course = $man_course->getCourseInfo($course_id);
+    $course_name = $course['name'];
 
-	$man_course = new Man_Course();
-	$course = $man_course->getCourseInfo($course_id);
-	$course_name=$course["name"];
+    $subs_lang = [
+        0 => $lang->def('_COURSE_S_GODADMIN'),
+        1 => $lang->def('_COURSE_S_MODERATE'),
+        2 => $lang->def('_COURSE_S_FREE'),
+        3 => $lang->def('_COURSE_S_SECURITY_CODE'), ];
 
-	$subs_lang = [
-		0 => $lang->def('_COURSE_S_GODADMIN'),
-		1 => $lang->def('_COURSE_S_MODERATE'),
-		2 => $lang->def('_COURSE_S_FREE'),
-		3 => $lang->def('_COURSE_S_SECURITY_CODE')];
+    $tab = new Table(0, $lang->def('_EDITIONS') . ': ' . $course_name, $lang->def('_EDITIONS'));
+    $tab->setTableStyle('edition_block');
 
-	$tab	= new Table(0, $lang->def('_EDITIONS').": ".$course_name, $lang->def('_EDITIONS'));
-	$tab->setTableStyle('edition_block');
+    $cont_h[] = $lang->def('_CODE');
+    $type_h[] = 'code_course';
 
-	$cont_h[] = $lang->def('_CODE');
-	$type_h[] = 'code_course';
+    $cont_h[] = $lang->def('_COURSE');
+    $type_h[] = '';
 
-	$cont_h[] = $lang->def('_COURSE');
-	$type_h[] = '';
+    $cont_h[] = $lang->def('_SUBSCRIBE_METHOD');
+    $type_h[] = 'image nowrap';
 
-	$cont_h[] = $lang->def('_SUBSCRIBE_METHOD');
-	$type_h[] = 'image nowrap';
+    $cont_h[] = $lang->def('_ENROL_COUNT');
+    $type_h[] = 'image nowrap';
 
-	$cont_h[] = $lang->def('_ENROL_COUNT');
-	$type_h[] = 'image nowrap';
+    $cont_h[] = $lang->def('_CREATION_DATE');
+    $type_h[] = 'image nowrap';
 
-	$cont_h[] = $lang->def('_CREATION_DATE');
-	$type_h[] = 'image nowrap';
+    $cont_h[] = $lang->def('_SUBSCRIPTION', 'course');
+    $type_h[] = 'image nowrap';
 
-	$cont_h[] = $lang->def('_SUBSCRIPTION', 'course');
-	$type_h[] = 'image nowrap';
+    $tab->setColsStyle($type_h);
+    $tab->addHead($cont_h);
 
+    $qtxt = 'SELECT t1.*, COUNT(t2.idUser) as enrolled ';
+    $qtxt .= 'FROM ' . $GLOBALS['prefix_lms'] . '_course_edition as t1 ';
+    $qtxt .= '	LEFT JOIN ' . $GLOBALS['prefix_lms'] . '_courseuser AS t2 ON ( t1.idCourseEdition = t2.edition_id ) ';
+    $qtxt .= "WHERE t1.idCourse='" . (int) $course_id . "' ";
+    $qtxt .= "	AND t1.status <> '" . CST_PREPARATION . "' ";
+    $qtxt .= 'GROUP BY t1.idCourseEdition  ';
+    $qtxt .= 'ORDER BY t1.date_begin '; //$res.=$qtxt;
 
-	$tab->setColsStyle($type_h);
-	$tab->addHead($cont_h);
+    $q = sql_query($qtxt);
 
-	$qtxt ="SELECT t1.*, COUNT(t2.idUser) as enrolled ";
-	$qtxt.="FROM ".$GLOBALS["prefix_lms"]."_course_edition as t1 ";
-	$qtxt.="	LEFT JOIN ".$GLOBALS['prefix_lms']."_courseuser AS t2 ON ( t1.idCourseEdition = t2.edition_id ) ";
-	$qtxt.="WHERE t1.idCourse='".(int)$course_id."' ";
-	$qtxt.="	AND t1.status <> '".CST_PREPARATION."' ";
-	$qtxt.="GROUP BY t1.idCourseEdition  ";
-	$qtxt.="ORDER BY t1.date_begin "; //$res.=$qtxt;
+    if (($q) && (sql_num_rows($q) > 0)) {
+        while ($row = sql_fetch_assoc($q)) {
+            $cont = [];
+            $cont[] = $row['code'];
 
-	$q=sql_query($qtxt);
+            $edition_id = $row['idCourseEdition'];
 
-	if (($q) && (sql_num_rows($q) > 0)) {
-		while($row=sql_fetch_assoc($q)) {
+            $url = 'index.php?modname=coursecatalogue&amp;op=editiondetails&amp;edition_id=' . $edition_id;
+            $url .= '&amp;course_id=' . $course_id;
+            $cont[] = '<a href="' . $url . '">' . $row['name'] . "</a>\n";
 
-			$cont= [];
-			$cont[]=$row["code"];
+            $cont[] = $subs_lang[$course['subscribe_method']];
+            $cont[] = $row['enrolled'];
+            $cont[] = createDateDistance($course['create_date'], 'coursecatalogue');
 
-			$edition_id=$row["idCourseEdition"];
+            $cont[] = getSubscribeActionLink($course_id, $course, $lang, $edition_id);
 
-			$url ="index.php?modname=coursecatalogue&amp;op=editiondetails&amp;edition_id=".$edition_id;
-			$url.="&amp;course_id=".$course_id;
-			$cont[]='<a href="'.$url.'">'.$row["name"]."</a>\n";
+            $tab->addBody($cont);
+        }
 
-			$cont[]=$subs_lang[$course["subscribe_method"]];
-			$cont[]=$row["enrolled"];
-			$cont[]=createDateDistance($course["create_date"], "coursecatalogue");
+        $res .= $tab->getTable();
+    } else {
+        $res = false;
+    }
 
-			$cont[]=getSubscribeActionLink($course_id, $course, $lang, $edition_id);
-
-			$tab->addBody($cont);
-		}
-
-		$res.=$tab->getTable();
-	}
-	else {
-		$res=FALSE;
-	}
-
-	return $res;
+    return $res;
 }
 
+function getSubscribeActionLink($id_course, $course, &$lang, $edition_id = false)
+{
+    $res = '';
 
-function getSubscribeActionLink($id_course, $course, & $lang, $edition_id=FALSE) {
-	$res="";
+    $bought_items = &getEcomItems(); //print_r($bought_items);
+    $product_type = ($edition_id !== false ? 'course_edition' : 'course');
+    $search_item = ($edition_id !== false ? $product_type . '_' . $edition_id : $product_type . '_' . $id_course);
 
-	$bought_items=& getEcomItems(); //print_r($bought_items);
-	$product_type=($edition_id !== FALSE ? "course_edition" : "course");
-	$search_item=($edition_id !== FALSE ? $product_type."_".$edition_id : $product_type."_".$id_course);
+    if (isUserCourseSubcribed(getLogUserId(), $id_course, $edition_id)) {
+        $res .= $lang->def('_SUBSCRIBED_T');
+    } elseif ($course['subscribe_method'] == 1 || $course['subscribe_method'] == 2 || $course['subscribe_method'] == 3) {
+        $ecom_type = getPLSetting('ecom', 'ecom_type', 'none');
 
+        $subscr_img = '<img src="' . getPathImage() . 'coursecatalogue/can_subscribe.png" alt="' . $lang->def('_SUBSCRIBE', 'catalogue') . '" />';
+        $selling_img = '<img src="' . getPathImage() . 'coursecatalogue/can_buy.png" alt="' . $lang->def('_GO_SELLING', 'catalogue') . '" />';
 
-	if(isUserCourseSubcribed(getLogUserId(), $id_course, $edition_id)) {
-		$res.=$lang->def('_SUBSCRIBED_T');
-	}
-	elseif($course['subscribe_method'] == 1 || $course['subscribe_method'] == 2 || $course['subscribe_method'] == 3) {
+        if (($course['selling'] == 1) && ($ecom_type == 'standard')) {
+            $action = 'transaction';
+            if (in_array($search_item, $bought_items[$action][$product_type])) {
+                $res .= 'x';
+            } else {
+                $url = 'index.php?modname=coursecatalogue&amp;op=addToCart&amp;id=' . $id_course;
+                $url .= ($edition_id !== false ? '&amp;course_edition=' . $edition_id : '');
+                $res .= '<a href="' . $url . '"'
+                    . 'title="' . $lang->def('_BUY_COURSE_T', 'catalogue') . '">' . $selling_img . ' ' . $lang->def('_BUY_COURSE', 'catalogue') . ' (' . $course['prize'] . ')' . '</a>';
+            }
+        } elseif (($course['selling'] == 1) && ($ecom_type == 'with_buyer')) {
+            $action = 'reservation';
+            $in_reservation = ((in_array($search_item, $bought_items[$action][$product_type])) ? true : false);
+            $in_transaction = ((in_array($search_item, $bought_items['transaction'][$product_type])) ? true : false);
+            if (($in_reservation) || ($in_transaction)) {
+                $res .= $lang->def('_WAITING_APPROVAL', 'catalogue');
+            } else {
+                $url = 'index.php?modname=coursecatalogue&amp;op=reserve&amp;id=' . $id_course;
+                $url .= ($edition_id !== false ? '&amp;course_edition=' . $edition_id : '');
+                $res .= '<a href="' . $url . '" '
+                    . 'title="' . $lang->def('_RESERVE_COURSE', 'catalogue') . '">' . $selling_img . ' ' . $lang->def('_RESERVE_COURSE') . ' (' . $course['prize'] . ')' . '</a>';
+            }
+        } else {
+            $url = 'index.php?modname=coursecatalogue&amp;op=subscribecourse&amp;id=' . $id_course;
+            $url .= ($edition_id !== false ? '&amp;edition_id=' . $edition_id : '');
+            $res .= '<a href="' . $url . '" '
+                . 'title="' . $lang->def('_SUBSCRIBE_COURSE_T', 'catalogue') . '">' . $subscr_img . ' ' . $lang->def('_SUBSCRIBE') . '</a>';
+        }
+    }
 
-		$ecom_type = getPLSetting("ecom", "ecom_type", "none");
-
-		$subscr_img = '<img src="'.getPathImage().'coursecatalogue/can_subscribe.png" alt="'.$lang->def('_SUBSCRIBE', 'catalogue').'" />';
-		$selling_img = '<img src="'.getPathImage().'coursecatalogue/can_buy.png" alt="'.$lang->def('_GO_SELLING', 'catalogue').'" />';
-
-		if (($course['selling'] == 1) && ($ecom_type == "standard")) {
-
-			$action="transaction";
-			if (in_array($search_item, $bought_items[$action][$product_type])) {
-				$res.="x";
-			}
-			else {
-				$url ='index.php?modname=coursecatalogue&amp;op=addToCart&amp;id='.$id_course;
-				$url.=($edition_id !== FALSE ? '&amp;course_edition='.$edition_id : "");
-				$res.='<a href="'.$url.'"'
-					.'title="'.$lang->def('_BUY_COURSE_T', 'catalogue').'">'.$selling_img.' '.$lang->def('_BUY_COURSE', 'catalogue').' ('.$course['prize'].')'.'</a>';
-			}
-
-		} else if (($course['selling'] == 1) && ($ecom_type == "with_buyer")) {
-
-			$action="reservation";
-			$in_reservation =((in_array($search_item, $bought_items[$action][$product_type])) ? TRUE : FALSE);
-			$in_transaction =((in_array($search_item, $bought_items["transaction"][$product_type])) ? TRUE : FALSE);
-			if (($in_reservation) || ($in_transaction)) {
-				$res.=$lang->def('_WAITING_APPROVAL', 'catalogue');
-			} else {
-				$url ='index.php?modname=coursecatalogue&amp;op=reserve&amp;id='.$id_course;
-				$url.=($edition_id !== FALSE ? '&amp;course_edition='.$edition_id : "");
-				$res.='<a href="'.$url.'" '
-					.'title="'.$lang->def('_RESERVE_COURSE', 'catalogue').'">'.$selling_img.' '.$lang->def('_RESERVE_COURSE').' ('.$course['prize'].')'.'</a>';
-			}
-
-		} else {
-
-			$url ='index.php?modname=coursecatalogue&amp;op=subscribecourse&amp;id='.$id_course;
-			$url.=($edition_id !== FALSE ? '&amp;edition_id='.$edition_id : "");
-			$res.='<a href="'.$url.'" '
-				.'title="'.$lang->def('_SUBSCRIBE_COURSE_T', 'catalogue').'">'.$subscr_img.' '.$lang->def('_SUBSCRIBE').'</a>';
-		}
-
-	}
-
-	return $res;
+    return $res;
 }
-
 
 /**
  * Load in a global variable an array with information on bought courses or edition
  * or their reservations if ecommerce is modered by a buyer.
  */
-function loadEcomItems() {
+function loadEcomItems()
+{
+    $GLOBALS['lms_bought_items'] = [];
+    $ecom_type = getPLSetting('ecom', 'ecom_type', 'none');
 
-	$GLOBALS["lms_bought_items"]= [];
-	$ecom_type=getPLSetting("ecom", "ecom_type", "none");
+    if ($ecom_type !== 'none') {
+        require_once $GLOBALS['where_ecom'] . '/admin/modules/reservation/lib.reservation.php';
 
-	if ($ecom_type !== "none") {
-		require_once($GLOBALS["where_ecom"]."/admin/modules/reservation/lib.reservation.php");
+        $res = [];
+        $user_id = getLogUserId();
 
-		$res= [];
-		$user_id=getLogUserId();
+        // --- Transactions:  ------------------------------------
 
-		// --- Transactions:  ------------------------------------
+        // TODO: move this on a ecom lib / class[*] :
+        $qtxt = 'SELECT * FROM ' . $GLOBALS['prefix_ecom'] . "_transaction_product WHERE id_user='" . $user_id . "'";
+        $q = sql_query($qtxt);
 
-		// TODO: move this on a ecom lib / class[*] :
-		$qtxt="SELECT * FROM ".$GLOBALS['prefix_ecom']."_transaction_product WHERE id_user='".$user_id."'";
-		$q=sql_query($qtxt);
+        $action = 'transaction';
+        $res[$action] = [];
+        if (($q) && (sql_num_rows($q) > 0)) {
+            while ($row = sql_fetch_assoc($q)) {
+                if ((!isset($res[$action][$row['type']])) || (!in_array($row['id_prod'], $res[$action][$row['type']]))) {
+                    $key = $row['id_prod'];
+                    $res[$action][$row['type']][$key] = $key;
+                }
+            }
+        }
 
-		$action="transaction";
-		$res[$action] = [];
-		if (($q) && (sql_num_rows($q) > 0)) {
-			while($row=sql_fetch_assoc($q)) {
+        // --- Reservations:  ------------------------------------
 
-				if ((!isset($res[$action][$row["type"]])) || (!in_array($row["id_prod"], $res[$action][$row["type"]]))) {
-					$key=$row["id_prod"];
-					$res[$action][$row["type"]][$key]=$key;
-				}
-			}
-		}
+        // [*]something like this:
+        $rm = new ReservationManager();
+        $data_info = $rm->getReservationList(false, false, "user_id='" . $user_id . "'");
+        $data_arr = &$data_info['data_arr'];
 
-		// --- Reservations:  ------------------------------------
+        $action = 'reservation';
+        $res[$action] = [];
+        foreach ($data_arr as $item) {
+            if ((!isset($res[$action][$item['type']])) || (!in_array($item['product_code'], $res[$action][$item['type']]))) {
+                $key = $item['product_code'];
+                $res[$action][$item['type']][$key] = $key;
+            }
+        }
 
-		// [*]something like this:
-		$rm=new ReservationManager();
-		$data_info=$rm->getReservationList(FALSE, FALSE, "user_id='".$user_id."'");
-		$data_arr=& $data_info["data_arr"];
-
-		$action="reservation";
-		$res[$action] = [];
-		foreach($data_arr as $item) {
-			if ((!isset($res[$action][$item["type"]])) || (!in_array($item["product_code"], $res[$action][$item["type"]]))) {
-				$key=$item["product_code"];
-				$res[$action][$item["type"]][$key]=$key;
-			}
-		}
-
-		$GLOBALS["lms_bought_items"]=$res;
-	}
-
+        $GLOBALS['lms_bought_items'] = $res;
+    }
 }
 
+function &getEcomItems()
+{
+    if (!isset($GLOBALS['lms_bought_items'])) {
+        loadEcomItems();
+    }
 
-function &getEcomItems() {
-
-	if (!isset($GLOBALS["lms_bought_items"])) {
-		loadEcomItems();
-	}
-
-	return $GLOBALS["lms_bought_items"];
+    return $GLOBALS['lms_bought_items'];
 }
-
 
 /**
- * Unset the global information about bought items
+ * Unset the global information about bought items.
  */
-function unsetEcomItems() {
-
-	if (isset($GLOBALS["lms_bought_items"])) {
-		unset($GLOBALS["lms_bought_items"]);
-	}
-
+function unsetEcomItems()
+{
+    if (isset($GLOBALS['lms_bought_items'])) {
+        unset($GLOBALS['lms_bought_items']);
+    }
 }
 
+function hasClassroom($type)
+{
+    if (($type == 'classroom') || ($type == 'blended')) {
+        $res = true;
+    } else {
+        $res = false;
+    }
 
-function hasClassroom($type) {
-
-	if (($type == "classroom") || ($type == "blended")) {
-		$res=TRUE;
-	}
-	else {
-		$res=FALSE;
-	}
-
-	return $res;
+    return $res;
 }
-
-
-?>

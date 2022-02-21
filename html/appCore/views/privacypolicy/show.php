@@ -2,16 +2,15 @@
 <?php echo getTitleArea(Lang::t('_PRIVACYPOLICIES', 'privacypolicies')); ?>
 <div class="std_block">
 
- <?php 
- if(isset ($_GET['res']) && intVal($_GET['res']) >0 ){  ?>
+ <?php if (isset($_GET['res']) && intval($_GET['res']) > 0) {  ?>
 <div class="alert alert-success alert-dismissible">
   <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
   <strong> <?php echo Lang::t('_OPERATION_SUCCESSFUL', 'standard'); ?>  </strong>
 </div>
 <?php
  }
- 
-if(isset ($_GET['res']) && intVal($_GET['res']) == 0 ){  ?>                         
+
+if (isset($_GET['res']) && intval($_GET['res']) == 0) {  ?>                         
 <div class="alert alert-danger alert-dismissible">
   <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
   <strong><?php echo Lang::t('_LABEL_ALERT', 'field'); ?></strong> <?php echo Lang::t('_OPERATION_FAILURE', 'standard'); ?>
@@ -24,94 +23,95 @@ if(isset ($_GET['res']) && intVal($_GET['res']) == 0 ){  ?>
 
 <?php
 
-if (isset($result_message)) echo $result_message;
+if (isset($result_message)) {
+    echo $result_message;
+}
 
 //--- SEARCH FILTER -------
 
 $this->widget('tablefilter', [
-	'id' => 'privacypolicies',
-	'filter_text' => $filter_text,
-	'js_callback_set' => 'PrivacyPolicis.setFilter',
-	'js_callback_reset' => 'PrivacyPolicies.resetFilter'
+    'id' => 'privacypolicies',
+    'filter_text' => $filter_text,
+    'js_callback_set' => 'PrivacyPolicis.setFilter',
+    'js_callback_reset' => 'PrivacyPolicies.resetFilter',
 ]);
-
 
 //--- TABLE -------
 
 $columns = [
-	['key' => 'name', 'label' => Lang::t('_NAME', 'standard'), 'sortable' => true]
+    ['key' => 'name', 'label' => Lang::t('_NAME', 'standard'), 'sortable' => true],
 ];
-if ($permissions['mod']) $columns[] = ['key' => 'assign', 'label' => Get::sprite('subs_elem', Lang::t('_ASSIGN', 'standard')), 'formatter' => 'PrivacyPolicies.assignformatter', 'className' => 'img-cell'];
-
+if ($permissions['mod']) {
+    $columns[] = ['key' => 'assign', 'label' => Get::sprite('subs_elem', Lang::t('_ASSIGN', 'standard')), 'formatter' => 'PrivacyPolicies.assignformatter', 'className' => 'img-cell'];
+}
 
 //if ($permissions['mod']) $columns[] = array('key' => 'mod', 'label' => Get::sprite('subs_mod', Lang::t('_MOD', 'standard')), 'formatter' => 'doceboModify', 'className' => 'img-cell');
-if ($permissions['mod']) $columns[] = ['key' => 'mod', 'label' => Get::sprite('subs_mod', Lang::t('_MOD', 'standard')), 'className' => 'img-cell'];
-if ($permissions['del']) $columns[] = ['key' => 'del', 'label' => Get::sprite('subs_del', Lang::t('_DEL', 'standard')), 'formatter' => 'doceboDelete', 'className' => 'img-cell'];
+if ($permissions['mod']) {
+    $columns[] = ['key' => 'mod', 'label' => Get::sprite('subs_mod', Lang::t('_MOD', 'standard')), 'className' => 'img-cell'];
+}
+if ($permissions['del']) {
+    $columns[] = ['key' => 'del', 'label' => Get::sprite('subs_del', Lang::t('_DEL', 'standard')), 'formatter' => 'doceboDelete', 'className' => 'img-cell'];
+}
 
 $params = [
-	'id' => 'policies_table',
-	'ajaxUrl' => 'ajax.adm_server.php?r=adm/privacypolicy/gettabledata',
-	'rowsPerPage' => Get::sett('visuItem', 25),
-	'startIndex' => 0,
-	'results' => Get::sett('visuItem', 25),
-	'sort' => 'name',
-	'dir' => 'asc',
-	//'checkableRows' => true,
-	'columns' => $columns,
-	'fields' => ['id', 'name', 'is_assigned', 'mod', 'del'],
-	'generateRequest' => 'PrivacyPolicies.requestBuilder',
-	'stdModifyRenderEvent' => 'PrivacyPolicies.dialogRenderEvent',
-	'delDisplayField' => 'name',
-	'events' => [
-		'beforeRenderEvent' => 'PrivacyPolicies.beforeRenderEvent',
-		'postRenderEvent' => 'PrivacyPolicies.postRenderEvent'
-    ]
+    'id' => 'policies_table',
+    'ajaxUrl' => 'ajax.adm_server.php?r=adm/privacypolicy/gettabledata',
+    'rowsPerPage' => Get::sett('visuItem', 25),
+    'startIndex' => 0,
+    'results' => Get::sett('visuItem', 25),
+    'sort' => 'name',
+    'dir' => 'asc',
+    //'checkableRows' => true,
+    'columns' => $columns,
+    'fields' => ['id', 'name', 'is_assigned', 'mod', 'del'],
+    'generateRequest' => 'PrivacyPolicies.requestBuilder',
+    'stdModifyRenderEvent' => 'PrivacyPolicies.dialogRenderEvent',
+    'delDisplayField' => 'name',
+    'events' => [
+        'beforeRenderEvent' => 'PrivacyPolicies.beforeRenderEvent',
+        'postRenderEvent' => 'PrivacyPolicies.postRenderEvent',
+    ],
 ];
 
 if ($permissions['add']) {
-	$add_link_title = Lang::t('_ADD', 'standard');
-	//$add_link_1 = '<a id="add_policy_link_1" class="ico-wt-sprite subs_add" href="ajax.adm_server.php?r=adm/privacypolicy/add" title="'.$add_link_title.'"><span>'.$add_link_title.'</span></a>';
-    $add_link_1 = '<a id="add_policy_link_1" class="ico-wt-sprite subs_add" href="index.php?r=adm/privacypolicy/add" title="'.$add_link_title.'"><span>'.$add_link_title.'</span></a>';
-	//$add_link_2 = '<a id="add_policy_link_2" class="ico-wt-sprite subs_add" href="ajax.adm_server.php?r=adm/privacypolicy/add" title="'.$add_link_title.'"><span>'.$add_link_title.'</span></a>';
-    $add_link_2 = '<a id="add_policy_link_2" class="ico-wt-sprite subs_add" href="index.php?r=adm/privacypolicy/add" title="'.$add_link_title.'"><span>'.$add_link_title.'</span></a>';
-	$params['rel_actions'] = [$add_link_1, $add_link_2];
-                      
-	$this->widget('dialog', [
-		//'id' => 'add_policy_dialog',
-		//'dynamicContent' => true,
-		//'ajaxUrl' => 'ajax.adm_server.php?r=adm/privacypolicy/add',
-		//'renderEvent' => 'PrivacyPolicies.dialogRenderEvent',
-		//'callback' => 'function() { this.destroy(); DataTable_policies_table.refresh(); }',
-		'callEvents' => [
-			['caller' => 'add_policy_link_1', 'event' => 'click'],
-			['caller' => 'add_policy_link_2', 'event' => 'click']
-        ]
+    $add_link_title = Lang::t('_ADD', 'standard');
+    //$add_link_1 = '<a id="add_policy_link_1" class="ico-wt-sprite subs_add" href="ajax.adm_server.php?r=adm/privacypolicy/add" title="'.$add_link_title.'"><span>'.$add_link_title.'</span></a>';
+    $add_link_1 = '<a id="add_policy_link_1" class="ico-wt-sprite subs_add" href="index.php?r=adm/privacypolicy/add" title="' . $add_link_title . '"><span>' . $add_link_title . '</span></a>';
+    //$add_link_2 = '<a id="add_policy_link_2" class="ico-wt-sprite subs_add" href="ajax.adm_server.php?r=adm/privacypolicy/add" title="'.$add_link_title.'"><span>'.$add_link_title.'</span></a>';
+    $add_link_2 = '<a id="add_policy_link_2" class="ico-wt-sprite subs_add" href="index.php?r=adm/privacypolicy/add" title="' . $add_link_title . '"><span>' . $add_link_title . '</span></a>';
+    $params['rel_actions'] = [$add_link_1, $add_link_2];
+
+    $this->widget('dialog', [
+        //'id' => 'add_policy_dialog',
+        //'dynamicContent' => true,
+        //'ajaxUrl' => 'ajax.adm_server.php?r=adm/privacypolicy/add',
+        //'renderEvent' => 'PrivacyPolicies.dialogRenderEvent',
+        //'callback' => 'function() { this.destroy(); DataTable_policies_table.refresh(); }',
+        'callEvents' => [
+            ['caller' => 'add_policy_link_1', 'event' => 'click'],
+            ['caller' => 'add_policy_link_2', 'event' => 'click'],
+        ],
     ]);
-    
-    
-     
 }
 
 $this->widget('table', $params);
 
-
 $this->widget('tree', [
-	'id' => 'assign_orgchart_tree',
-	'ajaxUrl' => 'ajax.adm_server.php?r=adm/usermanagement/gettreedata_create',
-	'treeClass' => 'DialogOrgFolderTree',
-	//'treeFile' => Get::rel_path('adm').'/views/usermanagement/orgchartfoldertree.js',
-	'languages' => [
-		'_ROOT' => Get::sett('title_organigram_chart', Lang::t('_ORG_CHART', 'organization_chart') )
+    'id' => 'assign_orgchart_tree',
+    'ajaxUrl' => 'ajax.adm_server.php?r=adm/usermanagement/gettreedata_create',
+    'treeClass' => 'DialogOrgFolderTree',
+    //'treeFile' => Get::rel_path('adm').'/views/usermanagement/orgchartfoldertree.js',
+    'languages' => [
+        '_ROOT' => Get::sett('title_organigram_chart', Lang::t('_ORG_CHART', 'organization_chart')),
     ],
-	'initialSelectedNode' => 0,
-	'show' => 'tree',
-	'useCheckboxes' => 'true',
-	'initialSelectorData' => [],
-	'setSelectedNodeOnServer' => false,
-	'hiddenSelection' => 'assign_orgchart_hidden_selection',
-	'runtime' => true
+    'initialSelectedNode' => 0,
+    'show' => 'tree',
+    'useCheckboxes' => 'true',
+    'initialSelectorData' => [],
+    'setSelectedNodeOnServer' => false,
+    'hiddenSelection' => 'assign_orgchart_hidden_selection',
+    'runtime' => true,
 ]);
-
 
 ?>      
 
@@ -249,7 +249,7 @@ var PrivacyPolicies = {
 PrivacyPolicies.init({
 	filterText: "<?php echo $filter_text; ?>",
 	langs: {
-		_ASSIGN: "<?php echo Lang::t('_ASSIGN_POLICY','privacypolicy'); ?>"
+		_ASSIGN: "<?php echo Lang::t('_ASSIGN_POLICY', 'privacypolicy'); ?>"
 	}
 });
 

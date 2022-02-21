@@ -1,30 +1,41 @@
-<?php defined("IN_FORMA") or die('Direct access is forbidden.');
+<?php
 
+/*
+ * FORMA - The E-Learning Suite
+ *
+ * Copyright (c) 2013-2022 (Forma)
+ * https://www.formalms.org
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ *
+ * from docebo 4.0.5 CE 2008-2012 (c) docebo
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ */
 
+defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-require_once(_base_.'/lib/lib.utils.php');
+require_once _base_ . '/lib/lib.utils.php';
 
 $page_url = getPopupBaseUrl();
 
-if ((isset($_GET["op"])) && ($_GET["op"] != ""))
-	$op=substr($_GET["op"], 0, 60);
-else
-	$op="main";
+if ((isset($_GET['op'])) && ($_GET['op'] != '')) {
+    $op = substr($_GET['op'], 0, 60);
+} else {
+    $op = 'main';
+}
 
 // ---------- Popup Menu ----------------------
 
-$menu_label 	= [];
-$menu_url 		= [];
+$menu_label = [];
+$menu_url = [];
 
-$menu_label["main"]=$lang->def("_LINK");
-$menu_url["main"]=$page_url."&amp;op=main";
+$menu_label['main'] = $lang->def('_LINK');
+$menu_url['main'] = $page_url . '&amp;op=main';
 
-
-if(isEditorInWiki()) {
-	$menu_label["wiki_new"]=$lang->def("_WIKI_PAGE_NEW");
-	$menu_url["wiki_new"]=$page_url."&amp;op=wiki_new";
-	$menu_label["wiki_sel"]=$lang->def("_WIKI_PAGE_SEL");
-	$menu_url["wiki_sel"]=$page_url."&amp;op=wiki_sel";
+if (isEditorInWiki()) {
+    $menu_label['wiki_new'] = $lang->def('_WIKI_PAGE_NEW');
+    $menu_url['wiki_new'] = $page_url . '&amp;op=wiki_new';
+    $menu_label['wiki_sel'] = $lang->def('_WIKI_PAGE_SEL');
+    $menu_url['wiki_sel'] = $page_url . '&amp;op=wiki_sel';
 }
 
 // ---------------------------------------------
@@ -34,297 +45,266 @@ drawMenu($menu_label, $menu_url, $op);
 // --------------------------------------------------------------------------------------------
 
 $GLOBALS['page']->add(
-		'<link href="'.$GLOBALS["where_templates_relative"].'/standard/style/base-old-treeview.css" rel="stylesheet" type="text/css" />'."\n",
-		'page_head');
+        '<link href="' . $GLOBALS['where_templates_relative'] . '/standard/style/base-old-treeview.css" rel="stylesheet" type="text/css" />' . "\n",
+        'page_head');
 
 $GLOBALS['page']->add(
-		 '<script type="text/javascript"> window.resizeTo(640, 480); </script>',
-		 'page_head');
+         '<script type="text/javascript"> window.resizeTo(640, 480); </script>',
+         'page_head');
 
 // --------------------------------------------------------------------------------------------
 
-define("_USER_FPATH_INTERNAL", "/common/users/");
-define("_USER_FPATH", $GLOBALS["where_files_relative"]._USER_FPATH_INTERNAL);
+define('_USER_FPATH_INTERNAL', '/common/users/');
+define('_USER_FPATH', $GLOBALS['where_files_relative'] . _USER_FPATH_INTERNAL);
 
-define("_FPATH", $GLOBALS["where_files_relative"]._FPATH_INTERNAL);
+define('_FPATH', $GLOBALS['where_files_relative'] . _FPATH_INTERNAL);
 
-define("_PPATH", $GLOBALS["where_files_relative"]._PPATH_INTERNAL);
-
+define('_PPATH', $GLOBALS['where_files_relative'] . _PPATH_INTERNAL);
 
 switch ($op) {
+    case 'main':
+        show_main($out, $lang);
+     break;
 
-	case "main": {
-		show_main($out, $lang);
-	} break;
+    case 'wiki_new':
+        showWikiNew($out, $lang);
+     break;
 
-	case "wiki_new": {
-		showWikiNew($out, $lang);
-	} break;
-
-	case "wiki_sel": {
-		showWikiSelect($out, $lang);
-	} break;
-
+    case 'wiki_sel':
+        showWikiSelect($out, $lang);
+     break;
 }
 
 // --------------------------------------------------------------------------------------------
 
+function show_main(&$out, &$lang)
+{
+    require_once _base_ . '/lib/lib.form.php';
 
+    $form = new Form();
 
+    $from = importVar('from');
+    $item_id = (int) importVar('item_id');
 
+    $res = '';
 
-function show_main(& $out, & $lang) {
+    addLinkPopupJS();
 
-	require_once(_base_."/lib/lib.form.php");
+    $base_url = getPopupBaseUrl();
+    $on_submit = 'onSubmit="insItem();" onReset="closePopup();"';
+    $res .= $form->openForm('popup_form', $base_url, false, false, '', $on_submit);
 
-	$form=new Form();
+    $res .= $form->openElementSpace();
 
-	$from=importVar("from");
-	$item_id=(int)importVar("item_id");
+    $type = getPopupSelType();
 
+    $url = 'http://';
+    $title = '';
+    $code = '';
 
-	$res="";
+    $res .= $form->getTextfield($lang->def('_TEXTOF'), 'code', 'code', 255, $code);
+    $res .= $form->getTextfield($lang->def('_URL'), 'url', 'url', 255, $url);
+    $res .= $form->getTextfield($lang->def('_TITLE'), 'title', 'title', 255, $title);
 
-	addLinkPopupJS();
+    $res .= $form->closeElementSpace();
 
-	$base_url =getPopupBaseUrl();
-	$on_submit ="onSubmit=\"insItem();\" onReset=\"closePopup();\"";
- 	$res.=$form->openForm("popup_form", $base_url, false, false, '', $on_submit);
+    $res .= $form->openButtonSpace();
+    $res .= $form->getButton('apply', 'apply', $lang->def('_SAVE'));
+    $res .= $form->getReset('undo', 'undo', $lang->def('_UNDO'));
+    $res .= $form->closeButtonSpace();
 
- 	$res.=$form->openElementSpace();
+    $res .= $form->closeForm();
 
-
-	$type=getPopupSelType();
-
-	$url="http://";
-	$title="";
-	$code="";
-
-	$res.=$form->getTextfield($lang->def("_TEXTOF"), "code", "code", 255, $code);
-	$res.=$form->getTextfield($lang->def("_URL"), "url", "url", 255, $url);
-	$res.=$form->getTextfield($lang->def("_TITLE"), "title", "title", 255, $title);
-
- 	$res.=$form->closeElementSpace();
-
-	$res.=$form->openButtonSpace();
-	$res.=$form->getButton('apply', 'apply', $lang->def('_SAVE'));
-	$res.=$form->getReset('undo', 'undo', $lang->def('_UNDO'));
-	$res.=$form->closeButtonSpace();
-
-	$res.=$form->closeForm();
-
-	$out->add($res);
-	addLinkPopupAfterJS();
+    $out->add($res);
+    addLinkPopupAfterJS();
 }
 
+function showWikiNew(&$out, &$lang)
+{
+    require_once _base_ . '/lib/lib.form.php';
 
+    $form = new Form();
 
-function showWikiNew(& $out, & $lang) {
+    $from = importVar('from');
+    $item_id = (int) importVar('item_id');
 
-	require_once(_base_."/lib/lib.form.php");
+    $title = '';
 
-	$form=new Form();
+    $res = '';
+    $url = getPopupBaseUrl() . '&amp;op=wiki_new';
 
-	$from=importVar("from");
-	$item_id=(int)importVar("item_id");
+    addLinkPopupJS();
 
-	$title="";
+    $res .= $form->openForm('popup_form', $url, false, false, '', 'onSubmit="insItem();" onReset="closePopup();"');
 
+    $res .= $form->openElementSpace();
 
-	$res="";
-	$url=getPopupBaseUrl()."&amp;op=wiki_new";
+    $type = getPopupSelType();
 
-	addLinkPopupJS();
+    $res .= $form->getTextfield($lang->def('_PAGE_TITLE'), 'title', 'title', 255);
+    //$res.=$form->getTextfield($lang->def("_EXTENDED_TITLE"), "ext_title", "ext_title", 255);
 
+    $res .= $form->closeElementSpace();
 
- 	$res.=$form->openForm("popup_form", $url, false, false, '', "onSubmit=\"insItem();\" onReset=\"closePopup();\"");
+    $res .= $form->openButtonSpace();
+    $res .= $form->getButton('apply', 'apply', $lang->def('_SAVE'));
+    $res .= $form->getReset('undo', 'undo', $lang->def('_UNDO'));
+    $res .= $form->closeButtonSpace();
 
- 	$res.=$form->openElementSpace();
+    $res .= $form->closeForm();
 
-
-	$type=getPopupSelType();
-
-
-	$res.=$form->getTextfield($lang->def("_PAGE_TITLE"), "title", "title", 255);
-	//$res.=$form->getTextfield($lang->def("_EXTENDED_TITLE"), "ext_title", "ext_title", 255);
-
- 	$res.=$form->closeElementSpace();
-
-	$res.=$form->openButtonSpace();
-	$res.=$form->getButton('apply', 'apply', $lang->def('_SAVE'));
-	$res.=$form->getReset('undo', 'undo', $lang->def('_UNDO'));
-	$res.=$form->closeButtonSpace();
-
-	$res.=$form->closeForm();
-
-	$out->add($res);
+    $out->add($res);
 }
 
+function showWikiSelect(&$out, &$lang)
+{
+    require_once _base_ . '/lib/lib.form.php';
+    require_once _base_ . '/lib/lib.urlmanager.php';
+    require_once $GLOBALS['where_framework'] . '/lib/lib.wiki.php';
 
+    $um = &UrlManager::getInstance();
+    $um->setStdQuery('sn=' . Get::cur_plat() . '&op=wiki_sel');
+    //$um->setBaseUrl($_SERVER["script_name"]);
 
-function showWikiSelect(& $out, & $lang) {
+    $wiki_id = getEditorWikiId();
+    $cwp = new CoreWikiPublic($wiki_id);
 
-	require_once(_base_."/lib/lib.form.php");
-	require_once(_base_.'/lib/lib.urlmanager.php');
-	require_once($GLOBALS["where_framework"]."/lib/lib.wiki.php");
+    $form = new Form();
 
-	$um =& UrlManager::getInstance();
-	$um->setStdQuery("sn=".Get::cur_plat()."&op=wiki_sel");
-	//$um->setBaseUrl($_SERVER["script_name"]);
+    $from = importVar('from');
+    $item_id = (int) importVar('item_id');
 
-	$wiki_id=getEditorWikiId();
-	$cwp =new CoreWikiPublic($wiki_id);
+    $title = '';
 
-	$form=new Form();
+    $res = '';
 
-	$from=importVar("from");
-	$item_id=(int)importVar("item_id");
+    $url = getPopupBaseUrl() . '&amp;op=wiki_sel';
 
-	$title="";
+    addLinkPopupJS();
 
+    $res .= $form->openForm('popup_form', $url, false, false, '', 'onReset="closePopup();"');
 
-	$res="";
+    $res .= $form->openElementSpace();
 
+    $type = getPopupSelType();
 
-	$url=getPopupBaseUrl()."&amp;op=wiki_sel";
+    /*
+        $res.=$form->getTextfield($lang->def("_PAGE_TITLE"), "title", "title", 255);
+        $res.=$form->getTextfield($lang->def("_EXTENDED_TITLE"), "ext_title", "ext_title", 255);
+        */
 
-	addLinkPopupJS();
+    $wiki_lang = $cwp->getWikiLanguage();
 
+    // TODO: change getLanguage() with the current wiki language;
+    // try to pass arguments in a better way, like using GET.. [?]
+    $wiki_page_db = new TreeDb_WikiDb($cwp->wikiManager->getWikiPageTable(), $cwp->wikiManager->getWikiPageInfoTable(), $wiki_id, $wiki_lang);
+    $treeView = new TreeView_WikiView($wiki_page_db, 'wiki_tree');
 
- 	$res.=$form->openForm("popup_form", $url, false, false, '', "onReset=\"closePopup();\"");
+    $treeView->hideAction();
+    $treeView->parsePositionData($_POST, $_POST, $_POST);
+    $folder_id = $treeView->getSelectedFolderId();
+    $folder_name = $treeView->getFolderPrintName($wiki_page_db->getFolderById($folder_id));
 
- 	$res.=$form->openElementSpace();
+    $res .= $treeView->autoLoad();
 
+    if ($folder_id > 0) {
+        $other_param = 'onClick="insItem();"';
+        $page_id = &$folder_id;
 
-	$type=getPopupSelType();
+        $page_info = $cwp->wikiManager->getPageInfo($wiki_id, $wiki_lang, false, $page_id);
+        $res .= $form->getHidden('title', 'title', $page_info['title']);
+        $res .= $form->getHidden('page_code', 'page_code', $page_info['page_code']);
+    } else {
+        $other_param = 'disabled="disabled"';
+    }
 
-/*
-	$res.=$form->getTextfield($lang->def("_PAGE_TITLE"), "title", "title", 255);
-	$res.=$form->getTextfield($lang->def("_EXTENDED_TITLE"), "ext_title", "ext_title", 255);
-	*/
+    $res .= $form->closeElementSpace();
 
-	$wiki_lang=$cwp->getWikiLanguage();
+    $res .= $form->openButtonSpace();
+    $res .= $form->getButton('apply', 'apply', $lang->def('_SAVE'), false, $other_param);
+    $res .= $form->getReset('undo', 'undo', $lang->def('_UNDO'));
+    $res .= $form->closeButtonSpace();
 
-	// TODO: change getLanguage() with the current wiki language;
-	// try to pass arguments in a better way, like using GET.. [?]
-	$wiki_page_db=new TreeDb_WikiDb($cwp->wikiManager->getWikiPageTable(), $cwp->wikiManager->getWikiPageInfoTable(),  $wiki_id, $wiki_lang);
-	$treeView=new TreeView_WikiView($wiki_page_db, 'wiki_tree');
+    $res .= $form->closeForm();
 
-	$treeView->hideAction();
-	$treeView->parsePositionData($_POST, $_POST, $_POST);
-	$folder_id=$treeView->getSelectedFolderId();
-	$folder_name=$treeView->getFolderPrintName($wiki_page_db->getFolderById($folder_id));
-
-	$res.=$treeView->autoLoad();
-
-
-	if ($folder_id > 0) {
-
-		$other_param ='onClick="insItem();"';
-		$page_id =& $folder_id;
-
-		$page_info=$cwp->wikiManager->getPageInfo($wiki_id, $wiki_lang, FALSE, $page_id);
-		$res.=$form->getHidden("title", "title", $page_info["title"]);
-		$res.=$form->getHidden("page_code", "page_code", $page_info["page_code"]);
-
-	}
-	else {
-		$other_param ='disabled="disabled"';
-	}
-
- 	$res.=$form->closeElementSpace();
-
-	$res.=$form->openButtonSpace();
-	$res.=$form->getButton('apply', 'apply', $lang->def('_SAVE'), FALSE, $other_param);
-	$res.=$form->getReset('undo', 'undo', $lang->def('_UNDO'));
-	$res.=$form->closeButtonSpace();
-
-	$res.=$form->closeForm();
-
-	$out->add($res);
+    $out->add($res);
 }
 
+function addLinkPopupJS()
+{
+    $res = '';
 
-function addLinkPopupJS() {
+    $sn = Get::cur_plat();
+    /*	if ($sn != "framework")
+            $src=$GLOBALS[$sn]["url"].$GLOBALS["where_files_relative"]."/".$src;
+        else
+            $src=$GLOBALS["url"].$GLOBALS["where_files_relative"]."/".$src; */
 
-	$res="";
+    $path = (strlen(dirname($_SERVER['PHP_SELF'])) != 1 ? dirname($_SERVER['PHP_SELF']) : '') . '/';
+    $path .= $GLOBALS['where_files_relative']; //."/";
 
-	$sn = Get::cur_plat();
-/*	if ($sn != "framework")
-		$src=$GLOBALS[$sn]["url"].$GLOBALS["where_files_relative"]."/".$src;
-	else
-		$src=$GLOBALS["url"].$GLOBALS["where_files_relative"]."/".$src; */
+    //-- test : //
+    //echo(cleanUrlPath("http://127.0.0.1:88/folder/folder/appCore//addons/./mod_media/../../../files/common/")); return 0;
 
-	$path =(strlen(dirname($_SERVER['PHP_SELF'])) != 1 ? dirname($_SERVER['PHP_SELF']) : '' ).'/';
-	$path.=$GLOBALS["where_files_relative"]; //."/";
+    //$site_url="http://".$_SERVER['HTTP_HOST'].$path;
+    //$src=cleanUrlPath($site_url.$src);
 
-	//-- test : //
-	//echo(cleanUrlPath("http://127.0.0.1:88/folder/folder/appCore//addons/./mod_media/../../../files/common/")); return 0;
+    //	$src=str_replace("//", "/", $src);
 
+    switch ($GLOBALS['popup']['editor']) {
+        case 'fck':  // ---------------------------------------- Fck Editor --------
+            $res .= addFckPopupJS();
+         break;
 
-	//$site_url="http://".$_SERVER['HTTP_HOST'].$path;
-	//$src=cleanUrlPath($site_url.$src);
+        case 'xinha':  // -------------------------------------- Xinha -------------
+            $res .= addXinhaPopupJS();
+         break;
 
-//	$src=str_replace("//", "/", $src);
+        case 'widgeditor':  // --------------------------------- widgEditor --------
+            $res .= addWidgPopupJS();
+         break;
+    }
 
-	switch ($GLOBALS["popup"]["editor"]) {
-
-		case "fck": { // ---------------------------------------- Fck Editor --------
-			$res.=addFckPopupJS();
-		} break;
-
-		case "xinha": { // -------------------------------------- Xinha -------------
-			$res.=addXinhaPopupJS();
-		} break;
-
-		case "widgeditor": { // --------------------------------- widgEditor --------
-			$res.=addWidgPopupJS();
-		} break;
-
-	}
-
-	$GLOBALS["page"]->add($res, "page_head");
+    $GLOBALS['page']->add($res, 'page_head');
 }
 
+function addLinkPopupAfterJS()
+{
+    $res = '';
+    $res .= "<script type=\"text/javascript\"><!--\n";
 
-function addLinkPopupAfterJS() {
-	$res="";
-	$res.= "<script type=\"text/javascript\"><!--\n";
+    switch ($GLOBALS['popup']['editor']) {
+        case 'fck':  // ---------------------------------------- Fck Editor --------
+            $res .= addFckLinkPopupAfterJS();
+         break;
 
-	switch ($GLOBALS["popup"]["editor"]) {
+        case 'xinha':  // -------------------------------------- Xinha -------------
+            $res .= addXinhaLinkPopupAfterJS();
+         break;
 
-		case "fck": { // ---------------------------------------- Fck Editor --------
-			$res.=addFckLinkPopupAfterJS();
-		} break;
+        case 'widgeditor':  // --------------------------------- widgEditor --------
+            $res .= addWidgLinkPopupAfterJS();
+         break;
+    }
 
-		case "xinha": { // -------------------------------------- Xinha -------------
-			$res.=addXinhaLinkPopupAfterJS();
-		} break;
-
-		case "widgeditor": { // --------------------------------- widgEditor --------
-			$res.=addWidgLinkPopupAfterJS();
-		} break;
-
-	}
-
-	$res.="--></script>\n";
-	$GLOBALS["page"]->add($res, "content");
+    $res .= "--></script>\n";
+    $GLOBALS['page']->add($res, 'content');
 }
 
+function getPopupCommonCode()
+{
+    $res = '';
 
-function getPopupCommonCode() {
-	$res="";
+    $res .= "function GetE( elementId )\n";
+    $res .= "{\n";
+    $res .= "return document.getElementById( elementId )  ;\n";
+    $res .= "}\n";
 
-	$res.="function GetE( elementId )\n";
-	$res.="{\n";
-	$res.="return document.getElementById( elementId )  ;\n";
-	$res.="}\n";
+    $res .= "function closePopup() {\n";
+    $res .= "window.close();\n";
+    $res .= "}\n";
 
-	$res.="function closePopup() {\n";
-	$res.="window.close();\n";
-	$res.="}\n";
-
-	$res.=<<<JS_END
+    $res .= <<<JS_END
 
 	function get_browser_obj() {
 		var Browser = {
@@ -381,43 +361,40 @@ function getPopupCommonCode() {
 		return attrib;
 	}
 JS_END;
-	$res.="\n";
+    $res .= "\n";
 
-	return $res;
+    return $res;
 }
 
+function addXinhaPopupJS()
+{
+    $relative_path = $GLOBALS['where_framework_relative'];
+    $relative_path .= (substr($GLOBALS['where_framework_relative'], -1) == '/' ? '' : '/');
 
-function addXinhaPopupJS() {
+    $res = '<script type="text/javascript" src="' . $relative_path;
+    $res .= "addons/xinha/popups/popup.js\"></script>\n";
 
-	$relative_path =$GLOBALS['where_framework_relative'];
-	$relative_path.=( substr($GLOBALS['where_framework_relative'], -1) == '/' ? '' : '/' );
+    $res .= "<script type=\"text/javascript\"><!--\n";
 
-	$res ="<script type=\"text/javascript\" src=\"".$relative_path;
-	$res.="addons/xinha/popups/popup.js\"></script>\n";
+    // ---------------------------------------------------------------------------
 
-	$res.= "<script type=\"text/javascript\"><!--\n";
+    $type = getPopupSelType();
 
-	// ---------------------------------------------------------------------------
+    switch ($type) {
+        case 'link':
+            $field_list = "['url', 'title', 'code']";
+         break;
 
-	$type=getPopupSelType();
+        case 'wiki_new':
+            $field_list = "['title']";
+         break;
 
-	switch ($type) {
+        case 'wiki_sel':
+            $field_list = "['title', 'page_code']";
+         break;
+    }
 
-		case "link": {
-			$field_list="['url', 'title', 'code']";
-		} break;
-
-		case "wiki_new": {
-			$field_list="['title']";
-		} break;
-
-		case "wiki_sel": {
-			$field_list="['title', 'page_code']";
-		} break;
-
-	}
-
-	$res.= <<<JS_END
+    $res .= <<<JS_END
 
 		function insItem() {
 		// pass data back to the calling window
@@ -433,58 +410,55 @@ function addXinhaPopupJS() {
 		return false;
 	}
 JS_END;
-/*
-	function insItem() {
-  var required = {
-    "f_url": i18n("You must enter the URL")
-  };
-  for (var i in required) {
-    var el = document.getElementById(i);
-    if (!el.value) {
-      alert(required[i]);
-      el.focus();
-      return false;
-    }
-  }
-  // pass data back to the calling window
-  var fields = ["title_text", "alt_text", "border"];
-  var param = new Object();
-  for (var i in fields) {
-    var id = fields[i];
-    var el = document.getElementById(id);
-    param[id] = el.value;
-  }
-  __dlg_close(param);
-  return false; */
+    /*
+        function insItem() {
+      var required = {
+        "f_url": i18n("You must enter the URL")
+      };
+      for (var i in required) {
+        var el = document.getElementById(i);
+        if (!el.value) {
+          alert(required[i]);
+          el.focus();
+          return false;
+        }
+      }
+      // pass data back to the calling window
+      var fields = ["title_text", "alt_text", "border"];
+      var param = new Object();
+      for (var i in fields) {
+        var id = fields[i];
+        var el = document.getElementById(id);
+        param[id] = el.value;
+      }
+      __dlg_close(param);
+      return false; */
 
-	// ---------------------------------------------------------------------------
-	$res.=getPopupCommonCode();
+    // ---------------------------------------------------------------------------
+    $res .= getPopupCommonCode();
 
-	$res.="--></script>\n";
+    $res .= "--></script>\n";
 
-	return $res;
-
+    return $res;
 }
 
+function addWidgPopupJS()
+{
+    $res = "<script type=\"text/javascript\"><!--\n";
 
-function addWidgPopupJS() {
+    // ---------------------------------------------------------------------------
 
-	$res = "<script type=\"text/javascript\"><!--\n";
+    $res .= "function insItem() {\n";
 
-	// ---------------------------------------------------------------------------
+    $res .= "var theToolbar 		= window.opener.widg.theToolbar;\n";
+    $res .= "var theWidgEditor 	= window.opener.widg.theWidgEditor;\n";
+    $res .= "var theIframe 		= window.opener.widg.theIframe;\n";
 
-	$res.="function insItem() {\n";
+    $type = getPopupSelType();
 
-	$res.="var theToolbar 		= window.opener.widg.theToolbar;\n";
-	$res.="var theWidgEditor 	= window.opener.widg.theWidgEditor;\n";
-	$res.="var theIframe 		= window.opener.widg.theIframe;\n";
-
-	$type=getPopupSelType();
-
-	switch ($type) {
-
-		case "link": {
-			$res.=<<<JS_END
+    switch ($type) {
+        case 'link':
+            $res .= <<<JS_END
 			var theCode 	= GetE('code').value;
 			var theHref 	= GetE('url').value;
 			var theTitle 	= GetE('title').value;
@@ -540,132 +514,125 @@ function addWidgPopupJS() {
 
 			}
 JS_END;
-		} break;
+         break;
+    }
 
-	}
+    $res .= "window.close();\n";
+    $res .= "}\n";
 
-	$res.="window.close();\n";
-	$res.="}\n";
+    $res .= "\n";
 
-	$res.="\n";
+    // ---------------------------------------------------------------------------
 
-	// ---------------------------------------------------------------------------
+    $res .= getPopupCommonCode();
 
-	$res.=getPopupCommonCode();
+    $res .= "--></script>\n";
 
-	$res.="--></script>\n";
-
-	return $res;
+    return $res;
 }
 
+function addFckPopupJS()
+{
+    $res = '';
 
-function addFckPopupJS() {
+    $res .= "<script type=\"text/javascript\"><!--\n";
 
-	$res="";
+    // ---------------------------------------------------------------------------
 
-	$res.="<script type=\"text/javascript\"><!--\n";
+    $res .= "function insItem() {\n";
 
-	// ---------------------------------------------------------------------------
+    $type = getPopupSelType();
 
-	$res.="function insItem() {\n";
+    switch ($type) {
+        case 'link':
+            $res .= "dialogArguments = window.opener.FCKLastDialogInfo ;\n";
+            $res .= "var oEditor		= dialogArguments.Editor ;\n";
+            $res .= "var FCK			= oEditor.FCK ;\n";
+            $res .= "var FCKLang		= oEditor.FCKLang ;\n";
+            $res .= "var FCKConfig	= oEditor.FCKConfig ;\n";
 
+            $res .= "var url = GetE('url').value;\n";
+            $res .= "var title = GetE('title').value;\n";
+            $res .= "var code = GetE('code').value;\n";
 
-	$type=getPopupSelType();
+            $res .= "// Get the selected item (if available).\n";
+            $res .= "var oItem = FCK.Selection.GetSelectedElement() ;\n";
 
-	switch ($type) {
+            $res .= "var bHasItem = ( oItem != null ) ;\n";
 
-		case "link": {
-			$res.="dialogArguments = window.opener.FCKLastDialogInfo ;\n";
-			$res.="var oEditor		= dialogArguments.Editor ;\n";
-			$res.="var FCK			= oEditor.FCK ;\n";
-			$res.="var FCKLang		= oEditor.FCKLang ;\n";
-			$res.="var FCKConfig	= oEditor.FCKConfig ;\n";
+            $res .= "if ( bHasItem ) {\n";
+            // $res.="FCK.Selection.Delete() ;\n";
+            $res .= "}\n";
 
-			$res.="var url = GetE('url').value;\n";
-			$res.="var title = GetE('title').value;\n";
-			$res.="var code = GetE('code').value;\n";
+            $res .= "oItem = FCK.CreateElement( 'A' ) ;\n";
 
-			$res.="// Get the selected item (if available).\n";
-			$res.="var oItem = FCK.Selection.GetSelectedElement() ;\n";
+            $res .= "oItem.href=url ;\n";
+            $res .= "oItem.innerHTML=code ;\n";
+            $res .= "oItem.title=title ;\n";
+            //$res.="oItem.alt=altTxt ;\n";
+         break;
 
-			$res.="var bHasItem = ( oItem != null ) ;\n";
+        case 'wiki_new':
+            $res .= "dialogArguments = window.opener.FCKLastDialogInfo ;\n";
+            $res .= "var oEditor		= dialogArguments.Editor ;\n";
+            $res .= "var FCK			= oEditor.FCK ;\n";
+            $res .= "var FCKLang		= oEditor.FCKLang ;\n";
+            $res .= "var FCKConfig	= oEditor.FCKConfig ;\n";
 
-			$res.="if ( bHasItem ) {\n";
-			// $res.="FCK.Selection.Delete() ;\n";
-			$res.="}\n";
+            $res .= "var title = GetE('title').value;\n";
 
-			$res.="oItem = FCK.CreateElement( 'A' ) ;\n";
+            //$res.="// Get the selected item (if available).\n";
+            //$res.="var oItem = FCK.Selection.GetSelectedElement() ;\n";
 
-			$res.="oItem.href=url ;\n";
-			$res.="oItem.innerHTML=code ;\n";
-			$res.="oItem.title=title ;\n";
-			//$res.="oItem.alt=altTxt ;\n";
-		} break;
+            $res .= "FCK.InsertHtml('[['+title+']]');\n";
+            $res .= "FCK.OnAfterSetHTML() ;\n";
+         break;
 
-		case "wiki_new": {
-			$res.="dialogArguments = window.opener.FCKLastDialogInfo ;\n";
-			$res.="var oEditor		= dialogArguments.Editor ;\n";
-			$res.="var FCK			= oEditor.FCK ;\n";
-			$res.="var FCKLang		= oEditor.FCKLang ;\n";
-			$res.="var FCKConfig	= oEditor.FCKConfig ;\n";
+        case 'wiki_sel':
+            $res .= "dialogArguments = window.opener.FCKLastDialogInfo ;\n";
+            $res .= "var oEditor		= dialogArguments.Editor ;\n";
+            $res .= "var FCK			= oEditor.FCK ;\n";
+            $res .= "var FCKLang		= oEditor.FCKLang ;\n";
+            $res .= "var FCKConfig	= oEditor.FCKConfig ;\n";
 
-			$res.="var title = GetE('title').value;\n";
+            $res .= "var title = GetE('title').value;\n";
+            $res .= "var page_code = GetE('page_code').value;\n";
 
-			//$res.="// Get the selected item (if available).\n";
-			//$res.="var oItem = FCK.Selection.GetSelectedElement() ;\n";
+            //$res.="// Get the selected item (if available).\n";
+            //$res.="var oItem = FCK.Selection.GetSelectedElement() ;\n";
 
-			$res.="FCK.InsertHtml('[['+title+']]');\n";
-			$res.="FCK.OnAfterSetHTML() ;\n";
-		} break;
+            $res .= "FCK.InsertHtml('[['+page_code+'|'+title+']]');\n";
+            $res .= "FCK.OnAfterSetHTML() ;\n";
+         break;
+    }
 
+    $res .= "window.close();\n";
+    $res .= "}\n\n";
 
-		case "wiki_sel": {
-			$res.="dialogArguments = window.opener.FCKLastDialogInfo ;\n";
-			$res.="var oEditor		= dialogArguments.Editor ;\n";
-			$res.="var FCK			= oEditor.FCK ;\n";
-			$res.="var FCKLang		= oEditor.FCKLang ;\n";
-			$res.="var FCKConfig	= oEditor.FCKConfig ;\n";
+    // ---------------------------------------------------------------------------
 
-			$res.="var title = GetE('title').value;\n";
-			$res.="var page_code = GetE('page_code').value;\n";
+    $res .= getPopupCommonCode();
 
-			//$res.="// Get the selected item (if available).\n";
-			//$res.="var oItem = FCK.Selection.GetSelectedElement() ;\n";
+    $res .= "--></script>\n";
 
-			$res.="FCK.InsertHtml('[['+page_code+'|'+title+']]');\n";
-			$res.="FCK.OnAfterSetHTML() ;\n";
-		} break;
-
-	}
-
-	$res.="window.close();\n";
-	$res.="}\n\n";
-
-	// ---------------------------------------------------------------------------
-
-	$res.=getPopupCommonCode();
-
-	$res.="--></script>\n";
-
-	return $res;
+    return $res;
 }
 
+function addXinhaLinkPopupAfterJS()
+{
+    $res = '';
 
-function addXinhaLinkPopupAfterJS() {
-	$res ="";
+    $type = getPopupSelType();
 
-	$type=getPopupSelType();
-
-	switch ($type) {
-
-		case "link": {
-			$res.='var code_field = GetE("code");'."\n";
-			$res.='var url_field = GetE("url");'."\n";
-			$res.='var title_field = GetE("title");'."\n";
-			$res.="var text = window.opener.old_text;\n";
-			$res.="var attrib = get_link_attrib(text);\n";
-			$res.="\n";
-			$res.=<<<JS_END
+    switch ($type) {
+        case 'link':
+            $res .= 'var code_field = GetE("code");' . "\n";
+            $res .= 'var url_field = GetE("url");' . "\n";
+            $res .= 'var title_field = GetE("title");' . "\n";
+            $res .= "var text = window.opener.old_text;\n";
+            $res .= "var attrib = get_link_attrib(text);\n";
+            $res .= "\n";
+            $res .= <<<JS_END
 				if (attrib != false) {
 					var attrib_arr = parse_attrib_string(attrib);
 				}
@@ -684,30 +651,28 @@ function addXinhaLinkPopupAfterJS() {
 					code_field.value = text;
 				}
 JS_END;
-			$res.="\n";
-		} break;
+            $res .= "\n";
+         break;
+    }
 
-	}
-
-	return $res;
+    return $res;
 }
 
+function addFckLinkPopupAfterJS()
+{
+    $res = '';
 
-function addFckLinkPopupAfterJS() {
-	$res ="";
+    $type = getPopupSelType();
 
-	$type=getPopupSelType();
-
-	switch ($type) {
-
-		case "link": {
-			$res.="dialogArguments = window.opener.FCKLastDialogInfo ;\n";
-			$res.="var oEditor		= dialogArguments.Editor ;\n";
-			$res.="var FCK			= oEditor.FCK ;\n";
-			$res.='var code_field = GetE("code");'."\n";
-			$res.='var url_field = GetE("url");'."\n";
-			$res.='var title_field = GetE("title");'."\n";
-			$res.=<<<JS_END
+    switch ($type) {
+        case 'link':
+            $res .= "dialogArguments = window.opener.FCKLastDialogInfo ;\n";
+            $res .= "var oEditor		= dialogArguments.Editor ;\n";
+            $res .= "var FCK			= oEditor.FCK ;\n";
+            $res .= 'var code_field = GetE("code");' . "\n";
+            $res .= 'var url_field = GetE("url");' . "\n";
+            $res .= 'var title_field = GetE("title");' . "\n";
+            $res .= <<<JS_END
 				browser = get_browser_obj();
 				if (browser.IE) {
 					var oRange = FCK.EditorDocument.selection.createRange() ;
@@ -732,31 +697,29 @@ function addFckLinkPopupAfterJS() {
 				}
 				code_field.value = text;
 JS_END;
-			$res.="\n";
-		} break;
+            $res .= "\n";
+         break;
+    }
 
-	}
-
-	return $res;
+    return $res;
 }
 
+function addWidgLinkPopupAfterJS()
+{
+    $res = '';
 
-function addWidgLinkPopupAfterJS() {
-	$res ="";
+    $type = getPopupSelType();
 
-	$type=getPopupSelType();
+    $res .= "var theToolbar 		= window.opener.widg.theToolbar;\n";
+    $res .= "var theWidgEditor 	= window.opener.widg.theWidgEditor;\n";
+    $res .= "var theIframe 		= window.opener.widg.theIframe;\n";
+    $res .= 'var code_field = GetE("code");' . "\n";
+    $res .= 'var url_field = GetE("url");' . "\n";
+    $res .= 'var title_field = GetE("title");' . "\n";
 
-	$res.="var theToolbar 		= window.opener.widg.theToolbar;\n";
-	$res.="var theWidgEditor 	= window.opener.widg.theWidgEditor;\n";
-	$res.="var theIframe 		= window.opener.widg.theIframe;\n";
-	$res.='var code_field = GetE("code");'."\n";
-	$res.='var url_field = GetE("url");'."\n";
-	$res.='var title_field = GetE("title");'."\n";
-
-	switch ($type) {
-
-		case "link": {
-			$res.=<<<JS_END
+    switch ($type) {
+        case 'link':
+            $res .= <<<JS_END
 				browser = get_browser_obj();
 				if (browser.IE) {
 					text = theIframe.contentWindow.document.selection;
@@ -769,61 +732,56 @@ function addWidgLinkPopupAfterJS() {
 				url_field.value = text.anchorNode.parentNode.getAttribute('href');
 				title_field.value = text.anchorNode.parentNode.getAttribute('title');
 JS_END;
-			$res.="\n";
-		} break;
+            $res .= "\n";
+         break;
+    }
 
-	}
-
-	return $res;
+    return $res;
 }
 
+function getPopupSelType()
+{
+    $res = 'link';
 
-function getPopupSelType() {
-	$res="link";
+    if ((isset($_GET['op'])) && (!empty($_GET['op']))) {
+        switch ($_GET['op']) {
+            case 'main':
+                $res = 'link';
+             break;
 
-	if ((isset($_GET["op"])) && (!empty($_GET["op"]))) {
-		switch($_GET["op"]) {
+            case 'wiki_new':
+                $res = 'wiki_new';
+             break;
 
-			case "main": {
-				$res ="link";
-			} break;
+            case 'wiki_sel':
+                $res = 'wiki_sel';
+             break;
+        }
+    }
 
-			case "wiki_new": {
-				$res ="wiki_new";
-			} break;
-
-			case "wiki_sel": {
-				$res ="wiki_sel";
-			} break;
-
-		}
-	}
-
-	return $res;
+    return $res;
 }
 
+function isEditorInWiki()
+{
+    $wiki_id = getEditorWikiId();
 
-function isEditorInWiki() {
+    $res = ($wiki_id > 0 ? true : false);
 
-	$wiki_id=getEditorWikiId();
-
-	$res=($wiki_id > 0 ? TRUE : FALSE);
-
-	return $res;
+    return $res;
 }
 
+function getEditorWikiId()
+{
+    $wiki_id = 0;
 
-function getEditorWikiId() {
-	$wiki_id=0;
+    if (isset($_SESSION['editor_in_wiki'])) {
+        $wiki_id = $_SESSION['editor_in_wiki'];
+    }
 
-	if (isset($_SESSION["editor_in_wiki"]))
-		$wiki_id=$_SESSION["editor_in_wiki"];
+    if (isset($_GET['wiki_id'])) {
+        $wiki_id = $_GET['wiki_id'];
+    }
 
-	if (isset($_GET["wiki_id"]))
-		$wiki_id=$_GET["wiki_id"];
-
-	return $wiki_id;
+    return $wiki_id;
 }
-
-
-?>

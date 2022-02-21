@@ -1,8 +1,19 @@
 <?php
 
-$body = "";
+/*
+ * FORMA - The E-Learning Suite
+ *
+ * Copyright (c) 2013-2022 (Forma)
+ * https://www.formalms.org
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ *
+ * from docebo 4.0.5 CE 2008-2012 (c) docebo
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ */
 
-$body .= Form::openForm('changepwd_form', 'ajax.adm_server.php?r='. $this->link.'/changepwd_action');
+$body = '';
+
+$body .= Form::openForm('changepwd_form', 'ajax.adm_server.php?r=' . $this->link . '/changepwd_action');
 
 $body .= Form::getHidden('changepwd_idst', 'idst', 0); //init with invalid idst: we have to choose it with autocomplete textfield
 $body .= '<div id="changepwd_userid_container"></div>';
@@ -14,12 +25,10 @@ $body .= Form::getCheckBox(Lang::t('_FORCE_PASSWORD_CHANGE', 'admin_directory'),
 $body .= Form::closeForm();
 
 if (isset($json)) {
-	$output['header'] = $title;
-	$output['body'] = $body;
-	echo $json->encode($output);
+    $output['header'] = $title;
+    $output['body'] = $body;
+    echo $json->encode($output);
 } else {
-	echo '<h2>'.$title.'</h2>';
-	echo $body;
+    echo '<h2>' . $title . '</h2>';
+    echo $body;
 }
-
-?>

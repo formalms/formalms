@@ -1,8 +1,19 @@
-<?php defined('IN_FORMA') or die('Direct access is forbidden.');
+<?php
 
+/*
+ * FORMA - The E-Learning Suite
+ *
+ * Copyright (c) 2013-2022 (Forma)
+ * https://www.formalms.org
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ *
+ * from docebo 4.0.5 CE 2008-2012 (c) docebo
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ */
 
+defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-require_once(_base_ . '/api/lib/lib.api.php');
+require_once _base_ . '/api/lib/lib.api.php';
 require_once Forma::inc(_lms_ . '/lib/lib.course.php');
 require_once Forma::inc(_lms_ . '/lib/lib.certificate.php');
 require_once Forma::inc(_lms_ . '/lib/lib.manmenu.php');
@@ -16,10 +27,10 @@ require_once Forma::inc(_lms_ . '/lib/category/class.categorytree.php');
 
 class Course_API extends API
 {
-
     /**
      * @param $date
      * @param string $format
+     *
      * @return bool
      */
     private function _validateDate($date, $format = 'd-m-Y')
@@ -41,7 +52,6 @@ class Course_API extends API
         if (!is_numeric($idDay)) {
             $response['success'] = false;
             $response['message'] = 'Missing or Wrong ID Day: ' . $params['id_day'];
-
         }
 
         return $response;
@@ -49,6 +59,7 @@ class Course_API extends API
 
     /**
      * @param $params
+     *
      * @return array
      */
     private function getAndValidateIdDateFromParams($params)
@@ -57,7 +68,7 @@ class Course_API extends API
 
         $response = [
             'success' => true,
-            'data' => $idDate
+            'data' => $idDate,
         ];
         if (empty($idDate)) {
             $response['success'] = false;
@@ -69,15 +80,16 @@ class Course_API extends API
 
     /**
      * @param $params
+     *
      * @return array
      */
     private function getAndValidateSendCalendarFromParams($params)
     {
-        $sendCalendar = (bool)($params['sendCalendar'] ?? false);
+        $sendCalendar = (bool) ($params['sendCalendar'] ?? false);
 
         $response = [
             'success' => true,
-            'data' => $sendCalendar
+            'data' => $sendCalendar,
         ];
 
         if (!is_bool($sendCalendar)) {
@@ -90,6 +102,7 @@ class Course_API extends API
 
     /**
      * @param $params
+     *
      * @return array
      */
     private function getAndValidateCourseIdCourseFromParams($params)
@@ -98,7 +111,7 @@ class Course_API extends API
 
         $response = [
             'success' => true,
-            'data' => $courseId
+            'data' => $courseId,
         ];
 
         if (empty($courseId)) {
@@ -118,11 +131,11 @@ class Course_API extends API
 
     /**
      * @param $params
+     *
      * @return array
      */
     private function validateIdDateExistsInCourseFromParams($params)
     {
-
         $courseId = $params['course_id'] ?? '';
 
         $idDate = $params['id_date'] ?? '';
@@ -134,7 +147,6 @@ class Course_API extends API
         $dates = $model->classroom_man->getCourseDate($courseId);
 
         if (!array_key_exists($idDate, $dates)) {
-
             $response['success'] = false;
             $response['message'] = 'Date does not exists in course';
         }
@@ -142,19 +154,16 @@ class Course_API extends API
         return $response;
     }
 
-
     public function getCourses($params)
     {
         $response = ['success' => true, 'courses' => []];
 
-        $id_category = isset($params['category']) ? (int)$params['category'] : false;
+        $id_category = isset($params['category']) ? (int) $params['category'] : false;
 
         $course_man = new Man_Course();
         $course_list = $course_man->getAllCoursesWithMoreInfo($id_category);
 
-
         foreach ($course_list as $course_info) {
-
             $course_info['dates'] = [];
 
             if ($category = $course_info['idCategory']) {
@@ -163,17 +172,16 @@ class Course_API extends API
                 $category = null;
             }
 
-            if($course_info['course_type'] === 'classroom') {
+            if ($course_info['course_type'] === 'classroom') {
                 $classroom_man = new DateManager();
                 $course_dates = $classroom_man->getCourseDate($course_info['idCourse']);
-                
-                foreach($course_dates as $key => $course_date) {
+
+                foreach ($course_dates as $key => $course_date) {
                     unset($course_dates[$key]['id_course']);
-                    $course_dates[$key]['days'] = array_values($classroom_man->getAllDateDay($course_date['id_date'], ['id_day','id_date']));
-                    
+                    $course_dates[$key]['days'] = array_values($classroom_man->getAllDateDay($course_date['id_date'], ['id_day', 'id_date']));
+
                     $course_info['dates'] = array_values($course_dates);
                 }
-                
             }
             $response['courses'][] = [
                 'course_id' => $course_info['idCourse'],
@@ -196,30 +204,27 @@ class Course_API extends API
                 'img_course' => $course_info['img_course'] ? Get::site_url() . _folder_files_ . '/' . _folder_lms_ . '/' . Get::sett('pathcourse') . $course_info['img_course'] : '',
                 'category_id' => $course_info['idCategory'],
                 'category' => $category,
-                'dates' => $course_info['dates']
+                'dates' => $course_info['dates'],
             ];
         }
-
 
         return $response;
     }
 
-
     //e-learning editions
     public function getEditions($params)
     {
-
         $response = [];
 
         $response['success'] = true;
 
-        $courseId = isset($params['course_id']) ? (int)$params['course_id'] : false;
+        $courseId = isset($params['course_id']) ? (int) $params['course_id'] : false;
         $course_code = isset($params['course_code']) ? $params['course_code'] : false;
 
         if (empty($courseId) && empty($course_code)) {
             return false;
-            // return array('success'=>true, 'debug'=>print_r($params, true));
-        } else if (empty($courseId) && !empty($course_code)) { // grab course info by code:
+        // return array('success'=>true, 'debug'=>print_r($params, true));
+        } elseif (empty($courseId) && !empty($course_code)) { // grab course info by code:
             $db = DbConn::getInstance();
             $qtxt = "SELECT * FROM %lms_course
 					WHERE code='" . $course_code . "'
@@ -227,7 +232,7 @@ class Course_API extends API
             $q = $db->query($qtxt);
             $course_info = $db->fetch_assoc($q);
             if (!empty($course_info)) {
-                $courseId = (int)$course_info['idCourse'];
+                $courseId = (int) $course_info['idCourse'];
             } else { // course not found
                 return false;
                 // return array('success'=>'true', 'debug'=>print_r($course_info));
@@ -264,21 +269,19 @@ class Course_API extends API
         return $response;
     }
 
-
     public function getClassrooms($params)
     {
-        
         $response = [];
 
         $response['success'] = true;
 
-        $courseId = isset($params['course_id']) ? (int)$params['course_id'] : false;
+        $courseId = isset($params['course_id']) ? (int) $params['course_id'] : false;
         $course_code = isset($params['course_code']) ? $params['course_code'] : false;
 
         if (empty($courseId) && empty($course_code)) {
             return false;
-            // return array('success'=>true, 'debug'=>print_r($params, true));
-        } else if (empty($courseId) && !empty($course_code)) { // grab course info by code:
+        // return array('success'=>true, 'debug'=>print_r($params, true));
+        } elseif (empty($courseId) && !empty($course_code)) { // grab course info by code:
             $db = DbConn::getInstance();
             $qtxt = "SELECT * FROM %lms_course
 					WHERE code='" . $course_code . "'
@@ -286,7 +289,7 @@ class Course_API extends API
             $q = $db->query($qtxt);
             $course_info = $db->fetch_assoc($q);
             if (!empty($course_info)) {
-                $courseId = (int)$course_info['idCourse'];
+                $courseId = (int) $course_info['idCourse'];
             } else { // course not found
                 return false;
                 // return array('success'=>'true', 'debug'=>print_r($course_info));
@@ -325,10 +328,8 @@ class Course_API extends API
         return $response;
     }
 
-
     protected function getUserLevelId($my_level)
     {
-
         if ($my_level === false) {
             return false;
         }
@@ -343,13 +344,11 @@ class Course_API extends API
             'guest' => 1,
         ];
 
-        return (int)$lev_arr[$my_level];
+        return (int) $lev_arr[$my_level];
     }
-
 
     protected function getUserStatusId($my_status)
     {
-
         if ($my_status === false) {
             return false;
         }
@@ -364,35 +363,31 @@ class Course_API extends API
             'overbooking' => _CUS_OVERBOOKING,
         ];
 
-        return (int)$lev_arr[$my_status];
+        return (int) $lev_arr[$my_status];
     }
-
 
     protected function fillCourseDataFromParams(
         &$params, &$db, &$courseId, &$edition_id, &$classroom_id,
         &$course_code, &$edition_code, &$classroom_code,
         &$course_info, &$edition_info, &$classroom_info, &$response
-    )
-    {
-
+    ) {
         // -- read course info / id ----------
 
         if (empty($courseId) && empty($course_code)) {
             return false;
-            // return array('success'=>true, 'debug'=>print_r($params, true));
-        } else if (empty($courseId) && !empty($course_code)) { // grab course info by code:
+        // return array('success'=>true, 'debug'=>print_r($params, true));
+        } elseif (empty($courseId) && !empty($course_code)) { // grab course info by code:
             $qtxt = "SELECT * FROM %lms_course
 					WHERE code='" . $course_code . "'
 					LIMIT 0,1";
             $q = $db->query($qtxt);
             $course_info = $db->fetch_assoc($q);
             if (!empty($course_info)) {
-                $courseId = (int)$course_info['idCourse'];
+                $courseId = (int) $course_info['idCourse'];
             } else { // course not found
                 return false;
-
             }
-        } else if (!empty($courseId)) {
+        } elseif (!empty($courseId)) {
             $qtxt = "SELECT * FROM %lms_course
 					WHERE idCourse='" . $courseId . "'
 					LIMIT 0,1";
@@ -404,7 +399,6 @@ class Course_API extends API
             }
         }
 
-
         // -- read edition info / id ----------
 
         if (!empty($edition_id) || !empty($edition_code)) {
@@ -415,15 +409,13 @@ class Course_API extends API
                 $q = $db->query($qtxt);
                 $edition_info = $db->fetch_assoc($q);
                 if (!empty($edition_info)) {
-                    $edition_id = (int)$edition_info['id_edition'];
+                    $edition_id = (int) $edition_info['id_edition'];
                 } else { // edition not found
                     return false;
                 }
-            } else if (!empty($edition_id)) {
-
+            } elseif (!empty($edition_id)) {
             }
         }
-
 
         // -- read classroom info / id ----------
 
@@ -435,19 +427,14 @@ class Course_API extends API
                 $q = $db->query($qtxt);
                 $classroom_info = $db->fetch_assoc($q);
                 if (!empty($classroom_info)) {
-                    $classroom_id = (int)$classroom_info['id_date'];
+                    $classroom_id = (int) $classroom_info['id_date'];
                 } else { // classroom not found
                     return false;
-
                 }
-            } else if (!empty($classroom_id)) {
-
+            } elseif (!empty($classroom_id)) {
             }
         }
-
-
     }
-
 
     public function addUserSubscription($params)
     {
@@ -455,23 +442,23 @@ class Course_API extends API
 
         $response['success'] = true;
 
-        if (empty($params['idst']) || (int)$params['idst'] <= 0) {
+        if (empty($params['idst']) || (int) $params['idst'] <= 0) {
             $response['success'] = false;
             $response['message'] = 'INVALID REQUEST';
+
             return $response;
         } else {
             $user_id = $params['idst'];
         }
 
-        $courseId = isset($params['course_id']) ? (int)$params['course_id'] : false;
+        $courseId = isset($params['course_id']) ? (int) $params['course_id'] : false;
         $course_code = isset($params['course_code']) ? $params['course_code'] : false;
-        $edition_id = isset($params['edition_id']) ? (int)$params['edition_id'] : false;
+        $edition_id = isset($params['edition_id']) ? (int) $params['edition_id'] : false;
         $edition_code = isset($params['edition_code']) ? $params['edition_code'] : false;
-        $classroom_id = isset($params['classroom_id']) ? (int)$params['classroom_id'] : false;
+        $classroom_id = isset($params['classroom_id']) ? (int) $params['classroom_id'] : false;
         $classroom_code = isset($params['classroom_code']) ? $params['classroom_code'] : false;
 
         $user_level = $this->getUserLevelId(isset($params['user_level']) ? $params['user_level'] : 'student');
-
 
         if (!isset($params['sendmail']) || $params['sendmail'] == '') {
             $sendMailToUser = false;
@@ -488,6 +475,7 @@ class Course_API extends API
         if (!$user_data) {
             $response['success'] = false;
             $response['message'] = 'NO_DATA_FOUND';
+
             return $response;
         }
 
@@ -503,9 +491,9 @@ class Course_API extends API
         if ($course_exists === false) {
             $response['success'] = false;
             $response['message'] = 'NO_DATA_FOUND';
+
             return $response;
         }
-
 
         // --------------- add user: -----------------------------------
 
@@ -542,11 +530,10 @@ class Course_API extends API
                 }
             }
 
-
             $array_subst = [
                 '[url]' => Get::site_url(),
                 '[dynamic_link]' => getCurrentDomain($reg_code) ?: Get::site_url(),
-                '[course]' => $course_info['name']];
+                '[course]' => $course_info['name'], ];
 
             $msg_composer = new EventMessageComposer();
             $msg_composer->setSubjectLangText('email', '_APPROVED_SUBSCRIBED_SUBJECT', false);
@@ -555,9 +542,8 @@ class Course_API extends API
             $recipients = [$user_id];
 
             if ($course_info['sendCalendar']) {
-
                 $uinfo = Docebo::aclm()->getUser($user_id, false);
-                $calendar = CalendarManager::getCalendarDataContainerForDateDays((int)$courseId, (int)$classroom_id, (int)$uinfo[ACL_INFO_IDST]);
+                $calendar = CalendarManager::getCalendarDataContainerForDateDays((int) $courseId, (int) $classroom_id, (int) $uinfo[ACL_INFO_IDST]);
                 $msg_composer->setAttachments([$calendar->getFile()]);
             }
 
@@ -565,34 +551,32 @@ class Course_API extends API
                 createNewAlert('UserCourseInsertedApi', 'subscribe', 'insert', '1', 'User subscribed API', $recipients, $msg_composer);
             }
         }
+
         return $response;
     }
 
-
     public function updateUserSubscription($params)
     {
-
         $response = [];
 
         $response['success'] = true;
 
-        if (empty($params['idst']) || (int)$params['idst'] <= 0) {
+        if (empty($params['idst']) || (int) $params['idst'] <= 0) {
             return false;
-            // return array('success'=>true, 'debug'=>print_r($params, true));
+        // return array('success'=>true, 'debug'=>print_r($params, true));
         } else {
             $user_id = $params['idst'];
         }
 
-        $courseId = isset($params['course_id']) ? (int)$params['course_id'] : false;
+        $courseId = isset($params['course_id']) ? (int) $params['course_id'] : false;
         $course_code = isset($params['course_code']) ? $params['course_code'] : false;
-        $edition_id = isset($params['edition_id']) ? (int)$params['edition_id'] : false;
+        $edition_id = isset($params['edition_id']) ? (int) $params['edition_id'] : false;
         $edition_code = isset($params['edition_code']) ? $params['edition_code'] : false;
-        $classroom_id = isset($params['classroom_id']) ? (int)$params['classroom_id'] : false;
+        $classroom_id = isset($params['classroom_id']) ? (int) $params['classroom_id'] : false;
         $classroom_code = isset($params['classroom_code']) ? $params['classroom_code'] : false;
 
         $user_level = $this->getUserLevelId(isset($params['user_level']) ? $params['user_level'] : false);
         $user_status = $this->getUserStatusId(isset($params['user_status']) ? $params['user_status'] : false);
-
 
         $acl_man = Docebo::user()->getAclManager();
         $course_man = new Man_Course();
@@ -608,15 +592,14 @@ class Course_API extends API
             $classroom_info, $response
         );
 
-
         // --------------- update user subscription: ------------------------
 
         $model = new SubscriptionAlms($courseId, $edition_id, $classroom_id);
         $docebo_course = new DoceboCourse($courseId);
         $level_idst = $docebo_course->getCourseLevel($courseId);
-        if (count($level_idst) == 0 || $level_idst[1] == '')
+        if (count($level_idst) == 0 || $level_idst[1] == '') {
             $level_idst = $docebo_course->createCourseLevel($courseId);
-
+        }
 
         $update_ok = true;
 
@@ -634,12 +617,10 @@ class Course_API extends API
             }
         }
 
-
         $status_arr = $model->getUserStatusList();
         // -- update status -----
         if (!empty($user_status)) {
             if (isset($status_arr[$user_status])) {
-
                 if ($model->updateUserStatus($user_id, $user_status)) {
                     // SET EDIT STATUS SUBSCRIPTION EVENT
                     // $event = new \appCore\Events\Core\Courses\CourseSubscriptionEditStatusEvent();
@@ -659,7 +640,6 @@ class Course_API extends API
             }
         }
 
-
         if (!$update_ok) {
             $response['success'] = false;
         } else {
@@ -669,30 +649,28 @@ class Course_API extends API
         return $response;
     }
 
-
     public function deleteUserSubscription($params)
     {
         $response = [];
 
         $response['success'] = true;
 
-        if (empty($params['idst']) || (int)$params['idst'] <= 0) {
+        if (empty($params['idst']) || (int) $params['idst'] <= 0) {
             return false;
-            // return array('success'=>true, 'debug'=>print_r($params, true));
+        // return array('success'=>true, 'debug'=>print_r($params, true));
         } else {
             $user_id = $params['idst'];
         }
 
-        $courseId = isset($params['course_id']) ? (int)$params['course_id'] : false;
+        $courseId = isset($params['course_id']) ? (int) $params['course_id'] : false;
         $course_code = isset($params['course_code']) ? $params['course_code'] : false;
-        $edition_id = isset($params['edition_id']) ? (int)$params['edition_id'] : false;
+        $edition_id = isset($params['edition_id']) ? (int) $params['edition_id'] : false;
         $edition_code = isset($params['edition_code']) ? $params['edition_code'] : false;
-        $classroom_id = isset($params['classroom_id']) ? (int)$params['classroom_id'] : false;
+        $classroom_id = isset($params['classroom_id']) ? (int) $params['classroom_id'] : false;
         $classroom_code = isset($params['classroom_code']) ? $params['classroom_code'] : false;
 
         $user_level = $this->getUserLevelId(isset($params['user_level']) ? $params['user_level'] : false);
         $user_status = $this->getUserStatusId(isset($params['user_status']) ? $params['user_status'] : false);
-
 
         $acl_man = Docebo::user()->getAclManager();
         $course_man = new Man_Course();
@@ -707,7 +685,6 @@ class Course_API extends API
             $edition_code, $classroom_code, $course_info, $edition_info,
             $classroom_info, $response
         );
-
 
         // --------------- delete user subscription: ------------------------
 
@@ -725,7 +702,6 @@ class Course_API extends API
             }
         }
 
-
         if (!$delete_ok) {
             $response['success'] = false;
         } else {
@@ -735,19 +711,17 @@ class Course_API extends API
         return $response;
     }
 
-
     public function subscribeUserWithCode($params)
     {
         $response = [];
 
         $response['success'] = true;
 
-        if (empty($params['idst']) || (int)$params['idst'] <= 0) {
+        if (empty($params['idst']) || (int) $params['idst'] <= 0) {
             return false;
         } else {
             $user_id = $params['idst'];
         }
-
 
         $registration_code_type = $params['reg_code_type'];
         $code = $params['reg_code'];
@@ -757,18 +731,18 @@ class Course_API extends API
         if (empty($registration_code_type) || empty($code)) {
             $response['success'] = false;
         } else {
-
-            if ($registration_code_type == 'tree_course') $code = substr($code, 10, 10);
+            if ($registration_code_type == 'tree_course') {
+                $code = substr($code, 10, 10);
+            }
 
             $course_registration_result = false;
             $man_course_user = new Man_CourseUser();
             $course_registration_result = $man_course_user->subscribeUserWithCode($code, $user_id);
 
-
             if ($course_registration_result <= 0) {
                 if ($course_registration_result == 0) {
                     $response['message'] = 'Invalid code';
-                } else if ($course_registration_result < 0) {
+                } elseif ($course_registration_result < 0) {
                     $response['message'] = 'Code already used';
                 }
                 $response['success'] = false;
@@ -777,17 +751,17 @@ class Course_API extends API
             }
         }
 
-
         return $response;
     }
 
-
     /**
      * dev: LRZ
-     * Get certificate by username
+     * Get certificate by username.
+     *
      * @param $params
      * - username
      * - course_id (optional)
+     *
      * @return array
      */
     public function getCertificateByUser($params)
@@ -802,9 +776,9 @@ class Course_API extends API
             $username = $params['username'];
         }
 
-
-        if (!empty($params['course_id'])) $id_course = (int)$params['course_id'];
-
+        if (!empty($params['course_id'])) {
+            $id_course = (int) $params['course_id'];
+        }
 
         $db = DbConn::getInstance();
         $qtxt = "SELECT idst, firstname, lastname  FROM core_user 
@@ -812,50 +786,47 @@ class Course_API extends API
         $q = $db->query($qtxt);
         $user_info = $db->fetch_assoc($q);
 
-        $response['idst'] = (int)$user_info['idst'];
+        $response['idst'] = (int) $user_info['idst'];
         $response['firstname'] = $user_info['firstname'];
         $response['lastname'] = $user_info['lastname'];
         $response['userid'] = $username;
-        if ($response['idst'] == 0) $response['message'] = 'User not found';
-
+        if ($response['idst'] == 0) {
+            $response['message'] = 'User not found';
+        }
 
         $qcert = 'select id_course, name, code, on_date, cert_file from  learning_certificate_assign, learning_course  where id_user=' . $response['idst'] . ' and idCourse=id_course';
-        if ($id_course > 0) $qcert = $qcert . ' and id_course=' . $id_course;
+        if ($id_course > 0) {
+            $qcert = $qcert . ' and id_course=' . $id_course;
+        }
         $qcert = $qcert . ' order by on_date desc';
-
 
         $response['certificate_list'] = [];
 
         $result = $db->query($qcert);
         foreach ($result as $row) {
-
             $response['certificate_list'][] = ['course_id' => $row['id_course'],
                 'course_code' => $row['code'],
                 'course_name' => $row['name'],
                 'date_generate' => $row['on_date'],
-                'cert_file' => Get::site_url() . 'files/appLms/certificate/' . $row['cert_file']
-
+                'cert_file' => Get::site_url() . 'files/appLms/certificate/' . $row['cert_file'],
             ];
-
         }
 
-
         return $response;
-
     }
-
 
     /**
      * dev: LRZ
-     * Get certificate by id_course
+     * Get certificate by id_course.
+     *
      * @param $params
      * - username  (optional)
      * - course_id
+     *
      * @return array
      */
     public function getCertificateByCourse($params)
     {
-
         $response = [];
 
         $response['success'] = true;
@@ -866,36 +837,37 @@ class Course_API extends API
             $id_course = $params['course_id'];
         }
 
-
-        if (!empty($params['username'])) $username = $params['username'];
-
+        if (!empty($params['username'])) {
+            $username = $params['username'];
+        }
 
         $db = DbConn::getInstance();
         $qtxt = 'SELECT idCourse, code, name, box_description  FROM learning_course 
-				WHERE idCourse=' . (int)$id_course;
+				WHERE idCourse=' . (int) $id_course;
         $q = $db->query($qtxt);
         $course_info = $db->fetch_assoc($q);
 
-        $response['course_id'] = (int)$id_course;
+        $response['course_id'] = (int) $id_course;
         $response['course_code'] = $course_info['code'];
         $response['course_name'] = $course_info['name'];
         // if ( strlen($course_info['box_description']) >=50 ){
         //     $course_info['box_description'] = substr($course_info['box_description'], 0, 47) . '...';
         // }
         $response['box_description'] = $course_info['box_description'];
-        if ((int)$course_info['idCourse'] == 0) $response['message'] = 'Course not found';
-
+        if ((int) $course_info['idCourse'] == 0) {
+            $response['message'] = 'Course not found';
+        }
 
         $qcert = 'select id_course, firstname, lastname, userid, idst, on_date, cert_file from  learning_certificate_assign, %adm_user   where id_course=' . $response['course_id'] . ' and id_user=idst';
-        if ($username != '') $qcert = $qcert . " and userid = '/" . $username . "'";
+        if ($username != '') {
+            $qcert = $qcert . " and userid = '/" . $username . "'";
+        }
         $qcert = $qcert . ' order by on_date desc';
-
 
         $response['certificate_list'] = [];
 
         $result = $db->query($qcert);
         foreach ($result as $row) {
-
             $field_man = new FieldList();
             $field_data = $field_man->getFieldsAndValueFromUser($row['idst'], false, true);
 
@@ -903,7 +875,6 @@ class Course_API extends API
             foreach ($field_data as $field_id => $value) {
                 $fields[] = ['id' => $field_id, 'name' => $value[0], 'value' => $value[1]];
             }
-
 
             $response['certificate_list'][] = [
                 'idst' => $row['idst'],
@@ -914,35 +885,27 @@ class Course_API extends API
 
                 'cert_file' => Get::site_url() . 'files/appLms/certificate/' . $row['cert_file'],
 
-                'custom_fields' => $fields
-
-
+                'custom_fields' => $fields,
             ];
-
         }
 
         return $response;
-
     }
-
 
     // ---------------------------------------------------------------------------
     // LRZ
     // Adding Course Category:
     // Input param:
     // category_id: category id of the parent category; category is created on root if no parent ID passed
-    // node_name: category name 
+    // node_name: category name
     public function addCategory($params)
     {
-
-        $category_id = isset($params['category_id']) ? (int)$params['category_id'] : 0;
+        $category_id = isset($params['category_id']) ? (int) $params['category_id'] : 0;
         $category_name = isset($params['name']) ? $params['name'] : false;
-
 
         if ($category_name == false) {
             $response = ['success' => false, 'message' => 'Wrong parameters'];
         } else {
-
             $treecat = new Categorytree();
 
             $new_category_id = $treecat->addFolderById($category_id, $category_name);
@@ -956,23 +919,18 @@ class Course_API extends API
         return $response;
     }
 
-
     private function getInfoCourseAdd()
     {
-
-
         $db = DbConn::getInstance();
         $qtxt = 'SELECT max(idCourse) as max_id  FROM learning_course ';
         $q = $db->query($qtxt);
         $course_info = $db->fetch_assoc($q);
 
         return $course_info['max_id'];
-
     }
 
     public function addCourse($params)
     {
-
         $response = [];
         $response['success'] = true;
 
@@ -1062,16 +1020,15 @@ class Course_API extends API
         $course = new CourseAlms();
         $res = $course->insCourse($params);
 
-
         if ($res['res'] == '_ok_course') {
             $id_course = $this->getInfoCourseAdd();
             $response['message'] = $res['res'] . ' -  ' . $params['course_type'];
             $response['course_id'] = $id_course;
-
         } else {
             $response['success'] = false;
             $response['message'] = 'Creation failed';
         }
+
         return $response;
     }
 
@@ -1116,7 +1073,6 @@ class Course_API extends API
         return $response;
     }
 
-
     private function getMaxDateDay($idDate)
     {
         $db = DbConn::getInstance();
@@ -1125,11 +1081,12 @@ class Course_API extends API
         $q = $db->query($query);
         $course_info = $db->fetch_assoc($q);
 
-        if ($course_info['max_id'] == null) return -1;
+        if ($course_info['max_id'] == null) {
+            return -1;
+        }
+
         return $course_info['max_id'];
-
     }
-
 
     private function insDateDayfromParams($idDate, $day_info)
     {
@@ -1143,15 +1100,14 @@ class Course_API extends API
 
         $query .= ' VALUES (' . $idDay . ', ' . $idDate . ', ' . $day_info[0]['classroom'] . ", '" . $day_info[0]['date_begin'] . "', '" . $day_info[0]['date_end'] . "', '" . $day_info[0]['pause_begin'] . "', '" . $day_info[0]['pause_end'] . "')";
 
-
         $res = sql_query($query);
 
-        if ($res)
+        if ($res) {
             return $idDay;
-        else
+        } else {
             return false;
+        }
     }
-
 
     private function saveNewDateFromParams($date_info, $arrayDay)
     {
@@ -1167,17 +1123,16 @@ class Course_API extends API
 
         $idDate = $date_info['id_date'];
 
-
-        if ($idDate)
+        if ($idDate) {
             return $this->insDateDayfromParams($idDate, $arrayDay);
-        else
+        } else {
             return false;
+        }
     }
-
 
     public function addDay($params)
     {
-        require_once(_lms_ . '/admin/models/ClassroomAlms.php');
+        require_once _lms_ . '/admin/models/ClassroomAlms.php';
 
         $response = $this->getAndValidateSendCalendarFromParams($params);
         $sendCalendar = $response['data'];
@@ -1198,7 +1153,6 @@ class Course_API extends API
 
         $error = false;
 
-   
         $model = new ClassroomAlms($courseId, $idDate);
 
         if (!empty($params['edition_date_selected']) && ($this->_validateDate($params['edition_date_selected']) || $this->_validateDate($params['edition_date_selected'], 'Y-m-d'))) {
@@ -1222,7 +1176,6 @@ class Course_API extends API
 
             $classRoom = array_key_exists('edition_classroom', $params) && !empty($params['edition_classroom']) && is_numeric($params['edition_classroom']) ? $params['edition_classroom'] : '0';
 
-
             $arrayDay['date_begin'] = $dateSelected . ' ' . $dateBeginHours . ':' . $dateBeginMinutes . ':00';
             $arrayDay['pause_begin'] = $dateSelected . ' ' . $datePauseBeginHours . ':' . $datePauseBeginMinutes . ':00';
             $arrayDay['pause_end'] = $dateSelected . ' ' . $datePauseEndHours . ':' . $datePauseEndMinutes . ':00';
@@ -1245,7 +1198,6 @@ class Course_API extends API
             if (!$error) {
                 $arrayDays[] = $arrayDay;
 
-              
                 $classroom_man = new DateManager();
                 $result = $classroom_man->updateDateDay($idDate, $arrayDays);
 
@@ -1259,7 +1211,6 @@ class Course_API extends API
                     $response['message'] = 'Error creating day';
                 }
             }
-
         } else {
             $response['success'] = false;
             $response['message'] = 'Date Selected is not valid';
@@ -1277,13 +1228,13 @@ class Course_API extends API
             }
         }
         unset($response['data']);
+
         return $response;
     }
 
-
     public function deleteDay($params)
     {
-        require_once(_lms_ . '/admin/models/ClassroomAlms.php');
+        require_once _lms_ . '/admin/models/ClassroomAlms.php';
 
         $response = $this->getAndValidateSendCalendarFromParams($params);
         $sendCalendar = $response['data'];
@@ -1315,12 +1266,11 @@ class Course_API extends API
 
         $dayExists = array_search($idDay, array_column($arrayDays, 'id'));
         if ($dayExists) {
-
             //unset($arrayDays[$idDay]);
             $result = $model->classroom_man->removeDateDay($idDate, [
                 [
-                    'day_id' => $idDay
-                ]
+                    'day_id' => $idDay,
+                ],
             ]);
 
             /*sort($arrayDays);
@@ -1336,7 +1286,6 @@ class Course_API extends API
                 if ($sendCalendar) {
                     $model->sendCalendarToAllSubscribers();
                 }
-
             } else {
                 $response['success'] = false;
                 $response['message'] = 'Error deleting day';
@@ -1348,9 +1297,9 @@ class Course_API extends API
 
         $response['days'] = $model->classroom_man->getDateDay($idDate);
         unset($response['data']);
+
         return $response;
     }
-
 
     public function updateCourse($params)
     {
@@ -1359,7 +1308,6 @@ class Course_API extends API
         if (!$response['success']) {
             return $response;
         }
-
 
         $course = new CourseAlms();
         $course_info = $course->getInfo($courseId);
@@ -1458,25 +1406,23 @@ class Course_API extends API
             unset($params['use_unsubscribe_date_limit']);
         }
 
-
         $res = $course->upCourse($courseId, $params);
-
 
         $response['course_id'] = $courseId;
 
         if ($res['res'] == '_ok_course') {
-
         } else {
             $response['success'] = false;
             $response['message'] = 'Update failed';
         }
+
         return $response;
     }
 
     // update an appointment related to an edition
     public function updateDay($params)
     {
-        require_once(_lms_ . '/admin/models/ClassroomAlms.php');
+        require_once _lms_ . '/admin/models/ClassroomAlms.php';
 
         $response = $this->getAndValidateSendCalendarFromParams($params);
         $sendCalendar = $response['data'];
@@ -1514,7 +1460,6 @@ class Course_API extends API
         $error = false;
         $dayExists = in_array($idDay, array_column($arrayDays, 'id'), true);
         if ($dayExists) {
-
             if (!empty($params['edition_date_selected']) && ($this->_validateDate($params['edition_date_selected']) || $this->_validateDate($params['edition_date_selected'], 'Y-m-d'))) {
                 if ($this->_validateDate($params['edition_date_selected'], 'Y-m-d')) {
                     $dateSelected = $params['edition_date_selected'];
@@ -1554,7 +1499,6 @@ class Course_API extends API
                     $arrayDays[$idDay]['date_end'] = $dateSelected . ' ' . $dateEndHours . ':' . $dateEndMinutes . ':00';
                     $arrayDays[$idDay]['classroom'] = $classRoom;
 
-
                     $classroom_man = new DateManager();
                     $result = $classroom_man->updateDateDay($idDate, $arrayDays);
 
@@ -1575,7 +1519,6 @@ class Course_API extends API
                 $response['success'] = false;
                 $response['message'] = 'Date Selected is not valid';
             }
-
         } else {
             $response['success'] = false;
             $response['message'] = 'Day does not exists';
@@ -1583,14 +1526,13 @@ class Course_API extends API
 
         $response['days'] = $model->classroom_man->getDateDay($idDate);
         unset($response['data']);
+
         return $response;
     }
-
 
     // update date
     public function updateClassroom($params)
     {
-
         $response = $this->getAndValidateIdDateFromParams($params);
         $idDate = $response['data'];
         if (!$response['success']) {
@@ -1611,7 +1553,6 @@ class Course_API extends API
         $params['classroom_sub_start_date'] = substr(Format::dateDb($params['classroom_sub_start_date'], 'date'), 0, 10);
         $params['classroom_sub_end_date'] = substr(Format::dateDb($params['classroom_sub_end_date'], 'date'), 0, 10);
         $params['classroom_unsubscribe_date_limit'] = substr(Format::dateDb($params['classroom_unsubscribe_date_limit'], 'date'), 0, 10);
-
 
         $res = $this->updateDate(
             $idDate,
@@ -1637,7 +1578,6 @@ class Course_API extends API
             $response['message'] = 'Error updating classroom<br>' . $idDate . '<br>- ' . $params['classroom_code'] . '<br>- ' . $params['classroom_name'];
         }
 
-
         return $response;
     }
 
@@ -1658,12 +1598,9 @@ class Course_API extends API
             . " unsubscribe_date_limit = '" . $unsubscribe_date_limit . "'"
             . ' WHERE id_date = ' . $idDate;
 
-
         return sql_query($query);
     }
 
-
-    // 
     public function deleteCourse($params)
     {
         $response = $this->getAndValidateCourseIdCourseFromParams($params);
@@ -1692,14 +1629,15 @@ class Course_API extends API
         return $response;
     }
 
-
     /* Delete a course
     *  Input param:
     *  $id_course: id of the course to delete
     */
     private function _delCourse($id_course)
     {
-        if ((int)$id_course <= 0) return false;
+        if ((int) $id_course <= 0) {
+            return false;
+        }
 
         $course_man = new Man_Course();
 
@@ -1712,7 +1650,7 @@ class Course_API extends API
 
         //remove course subscribed------------------------------------------
 
-        $levels =& $course_man->getCourseIdstGroupLevel($id_course);
+        $levels = &$course_man->getCourseIdstGroupLevel($id_course);
         foreach ($levels as $lv => $idst) {
             Docebo::aclm()->deleteGroup($idst);
         }
@@ -1722,70 +1660,85 @@ class Course_API extends API
         $course_man->removeCourseRole($id_course);
         $course_man->removeCourseMenu($id_course);
 
-        $query = "DELETE FROM %lms_courseuser WHERE idCourse = '" . (int)$id_course . "'";
+        $query = "DELETE FROM %lms_courseuser WHERE idCourse = '" . (int) $id_course . "'";
         $qres = sql_query($query);
-        if (!$qres) return false;
+        if (!$qres) {
+            return false;
+        }
 
         //--- remove course data ---------------------------------------------------
 
         $query_course = "SELECT imgSponsor, img_course, img_material, img_othermaterial, course_demo, course_type, has_editions
             FROM %lms_course
-            WHERE idCourse = '" . (int)$id_course . "'";
+            WHERE idCourse = '" . (int) $id_course . "'";
         $qres = sql_query($query_course);
         list($file_sponsor, $file_logo, $file_material, $file_othermaterial, $file_demo, $course_type, $course_edition) = sql_fetch_row($qres);
 
-
         $path = '/appLms/' . Get::sett('pathcourse');
-        if (substr($path, -1) != '/' && substr($path, -1) != '\\') $path .= '/';
+        if (substr($path, -1) != '/' && substr($path, -1) != '\\') {
+            $path .= '/';
+        }
         sl_open_fileoperations();
-        if ($file_sponsor != '') sl_unlink($path . $file_sponsor);
-        if ($file_logo != '') sl_unlink($path . $file_logo);
-        if ($file_material != '') sl_unlink($path . $file_material);
-        if ($file_othermaterial != '') sl_unlink($path . $file_othermaterial);
-        if ($file_demo != '') sl_unlink($path . $file_demo);
+        if ($file_sponsor != '') {
+            sl_unlink($path . $file_sponsor);
+        }
+        if ($file_logo != '') {
+            sl_unlink($path . $file_logo);
+        }
+        if ($file_material != '') {
+            sl_unlink($path . $file_material);
+        }
+        if ($file_othermaterial != '') {
+            sl_unlink($path . $file_othermaterial);
+        }
+        if ($file_demo != '') {
+            sl_unlink($path . $file_demo);
+        }
         sl_close_fileoperations();
 
         //if the scs exist delete course rooms
         if ($GLOBALS['where_scs'] !== false) {
-            require_once(_scs_ . '/lib/lib.room.php');
+            require_once _scs_ . '/lib/lib.room.php';
             $re = deleteRoom(false, 'course', $id_course);
         }
 
-
         //--- delete classroom or editions -----------------------------------------
         if ($course_type == 'classroom') {
-            require_once(_lms_ . '/admin/model/ClassroomAlms.php');
+            require_once _lms_ . '/admin/model/ClassroomAlms.php';
             $classroom_model = new ClassroomAlms($id_course);
 
             $classroom = $classroom_model->classroom_man->getDateIdForCourse($id_course);
 
-            foreach ($classroom as $idDate)
-                if (!$classroom_model->classroom_man->delDate($idDate))
+            foreach ($classroom as $idDate) {
+                if (!$classroom_model->classroom_man->delDate($idDate)) {
                     return false;
+                }
+            }
         } elseif ($course_edition == 1) {
-            require_once(_lms_ . '/admin/model/EditionAlms.php');
+            require_once _lms_ . '/admin/model/EditionAlms.php';
             $edition_model = new EditionAlms($id_course);
 
             $editions = $edition_model->classroom_man->getEditionIdFromCourse($id_course);
 
-            foreach ($editions as $id_edition)
-                if (!$edition_model->edition_man->delEdition($id_edition))
+            foreach ($editions as $id_edition) {
+                if (!$edition_model->edition_man->delEdition($id_edition)) {
                     return false;
+                }
+            }
         }
         //--- end classrooms or editions -------------------------------------------
 
-
         //--- clear LOs ------------------------------------------------------------
 
-        require_once(_lms_ . '/lib/lib.module.php');
-        require_once(_lms_ . '/lib/lib.param.php');
-        require_once(_lms_ . '/class.module/track.object.php');
+        require_once _lms_ . '/lib/lib.module.php';
+        require_once _lms_ . '/lib/lib.param.php';
+        require_once _lms_ . '/class.module/track.object.php';
 
         $arr_lo_param = [];
         $arr_lo_track = [];
         $arr_org_access = [];
 
-        $query = 'SELECT * FROM %lms_organization WHERE idCourse = ' . (int)$id_course;
+        $query = 'SELECT * FROM %lms_organization WHERE idCourse = ' . (int) $id_course;
         $ores = sql_query($query);
 
         while ($obj = sql_fetch_object($ores)) {
@@ -1804,13 +1757,11 @@ class Course_API extends API
         }
 
         //delete all organizations references for the course
-        $query = 'DELETE FROM %lms_organization WHERE idCourse = ' . (int)$id_course;
+        $query = 'DELETE FROM %lms_organization WHERE idCourse = ' . (int) $id_course;
         $res = sql_query($query);
 
-
-        $query = 'DELETE FROM %lms_course WHERE idCourse = ' . (int)$id_course;
+        $query = 'DELETE FROM %lms_course WHERE idCourse = ' . (int) $id_course;
         $res = sql_query($query);
-
 
         //delete LOs trackings
 
@@ -1834,39 +1785,33 @@ class Course_API extends API
 
         //--- end LOs --------------------------------------------------------------
 
-
         //--- clear coursepath references ------------------------------------------
-        require_once(_lms_ . '/lib/lib.coursepath.php');
+        require_once _lms_ . '/lib/lib.coursepath.php';
         $cman = new CoursePath_Manager();
         $cman->deleteCourseFromCoursePaths($id_course);
         //--- end coursepath references --------------------------------------------
-
 
         //--- clear certificates assignments ---------------------------------------
         $cman = new Certificate();
         $cman->deleteCourseCertificateAssignments($id_course);
         //--- end certificates assignments -----------------------------------------
 
-
         //--- clear labels ---------------------------------------------------------
         $lmodel = new LabelAlms();
         $lmodel->clearCourseLabel($id_course);
         //--- end labels -----------------------------------------------------------
 
-
         //--- clear advices --------------------------------------------------------
-        require_once(_lms_ . '/lib/lib.advice.php');
+        require_once _lms_ . '/lib/lib.advice.php';
         $aman = new Man_Advice();
         $aman->deleteAllCourseAdvices($id_course);
         //--- end advices ----------------------------------------------------------
 
-
         //--- clear coursereports --------------------------------------------------
-        require_once(_lms_ . '/lib/lib.coursereport.php');
+        require_once _lms_ . '/lib/lib.coursereport.php';
         $cman = new CourseReportManager();
         $cman->deleteAllReports($id_course);
         //--- end coursereports ----------------------------------------------------
-
 
         //--- clear competences ----------------------------------------------------
         $cmodel = new CompetencesAdm();
@@ -1874,12 +1819,14 @@ class Course_API extends API
         //--- end competences ------------------------------------------------------
 
         //remove customfield
-        if (!sql_query('DELETE FROM ' . $GLOBALS['prefix_fw'] . "_customfield_entry WHERE id_field IN (SELECT id_field FROM core_customfield WHERE area_code = 'COURSE') AND id_obj = '" . $id_course . "'"))
+        if (!sql_query('DELETE FROM ' . $GLOBALS['prefix_fw'] . "_customfield_entry WHERE id_field IN (SELECT id_field FROM core_customfield WHERE area_code = 'COURSE') AND id_obj = '" . $id_course . "'")) {
             return false;
+        }
 
         //--- finally delete course from courses table -----------------------------
-        if (!sql_query("DELETE FROM %lms_course WHERE idCourse = '" . $id_course . "'"))
+        if (!sql_query("DELETE FROM %lms_course WHERE idCourse = '" . $id_course . "'")) {
             return false;
+        }
 
         // $event = new \appLms\Events\Lms\CourseDeletedEvent($course);
         // \appCore\Events\DispatcherManager::dispatch($event::EVENT_NAME, $event);
@@ -1888,7 +1835,6 @@ class Course_API extends API
 
         return true;
     }
-
 
     /* Update the name of a course category
     *  Input param:
@@ -1902,21 +1848,22 @@ class Course_API extends API
 
         $response = [];
 
-
         if (empty($idCategory)) {
             $response['success'] = false;
             $response['message'] = 'Missing category ID: ' . $params['idCategory'];
+
             return $response;
         }
 
         if (empty($name)) {
             $response['success'] = false;
             $response['message'] = 'Missing category name: ' . $params['idCategory'];
+
             return $response;
         }
 
-        require_once(_lms_ . '/lib/category/class.categorytree.php');
-        require_once(_base_ . '/lib/lib.treedb.php');
+        require_once _lms_ . '/lib/category/class.categorytree.php';
+        require_once _base_ . '/lib/lib.treedb.php';
         $catClass = new CategoryTree();
         $classFolder = new Folder();
 
@@ -1926,19 +1873,13 @@ class Course_API extends API
             $response['success'] = true;
             $response['idCategory'] = $params['idCategory'];
             $response['message'] = 'success updating name category name ' . $params['idCategory'];
-
         } else {
             $response['success'] = false;
             $response['message'] = 'Error while update: ' . $params['idCategory'];
-
         }
 
-
         return $response;
-
-
     }
-
 
     // delete ILT Classroom edition
     public function deteleClassroom($params)
@@ -1955,7 +1896,7 @@ class Course_API extends API
             return $response;
         }
 
-        require_once(_lms_ . '/admin/models/CourseAlms.php');
+        require_once _lms_ . '/admin/models/CourseAlms.php';
         $model = new ClassroomAlms($courseId, $idDate);
 
         $res = ['success' => $model->delClassroom()];
@@ -1964,39 +1905,33 @@ class Course_API extends API
             $response['success'] = true;
             $response['id_date'] = $idDate;
             $response['message'] = 'success delete edition classroom';
-
         } else {
             $response['success'] = false;
             $response['id_date'] = $idDate;
             $response['message'] = 'Error delete edition classroom';
-
         }
 
         return $response;
-
     }
 
-
     /**
-     * list of lo for a course
+     * list of lo for a course.
+     *
      * @param <type> $id_course
      * GRIFO:LRZ
      */
     private function getLo($params)
     {
-
         $response = [];
         $query = 'SELECT lo.title,lo.idOrg,lo.idCourse,lo.visible,lo.objectType , lc.name
                      FROM learning_organization lo, learning_course lc
                      WHERE lo.idCourse = ' . $params['course_id'] . ' and lo.idCourse=lc.idCourse';
-
 
         $res = $this->db->query($query);
 
         $response['success'] = true;
         //$output['query'] = $query;
         foreach ($res as $row) {
-
             $response['lo_course'][] = [
                 'nome_lo' => $row['title'],
                 'nome_corso' => $row['name'],
@@ -2005,20 +1940,18 @@ class Course_API extends API
                 'visibile' => $row['visible'],
                 'tipo' => $row['objectType'],
                 'src' => 'appLms/index.php?modname=organization&amp;op=custom_playitem&amp;id_item=' . $row['idOrg'],
-                'id_item' => $row['idOrg']
+                'id_item' => $row['idOrg'],
             ];
         }
 
         return $response;
-
-
     }
 
     public function renameLearningObject($params)
     {
-        require_once(_lms_ . '/class.module/class.definition.php');
-        require_once(_lms_ . '/lib/lib.module.php');
-        #require_once(_lms_ . '/lib/lib.permission.php');
+        require_once _lms_ . '/class.module/class.definition.php';
+        require_once _lms_ . '/lib/lib.module.php';
+        //require_once(_lms_ . '/lib/lib.permission.php');
         $response = $this->validateRenameParams($params);
 
         if ($response['success']) {
@@ -2030,13 +1963,11 @@ class Course_API extends API
 
             $idUser = false;
             if (array_key_exists('idUser', $params) && !empty($params['idUser'])) {
-
                 $idUser = $params['idUser'];
                 $checkAuth = $this->authenticateUserById($idUser);
                 if (!$checkAuth) {
                     return $response['error'] = 'Not authenitcated user found';
                 }
-
             }
 
             $model = new LomanagerLms();
@@ -2048,19 +1979,16 @@ class Course_API extends API
                 'fromId' => $learningObjectId,
                 'idCourse' => $idCourse,
                 'idUser' => $idUser,
-                'success' => $result
+                'success' => $result,
             ];
-
-
         }
 
         return $response;
-
     }
 
     public function authenticateUserById($idUser)
     {
-        require_once(Forma::inc(_base_ . '/lib/lib.user.php'));
+        require_once Forma::inc(_base_ . '/lib/lib.user.php');
         $user_manager = new DoceboACLManager();
         $user_info = $user_manager->getUser($idUser, false);
 
@@ -2069,24 +1997,23 @@ class Course_API extends API
             $du = new DoceboUser($username, $prefix);
 
             $_SESSION['last_enter'] = $user_info[ACL_INFO_LASTENTER];
-            $du->setLastEnter(date("Y-m-d H:i:s"));
+            $du->setLastEnter(date('Y-m-d H:i:s'));
             $_SESSION['user_enter_mark'] = time();
             $du->loadUserSectionST();
             $du->SaveInSession();
-            $GLOBALS['current_user'] =& $du;
+            $GLOBALS['current_user'] = &$du;
+
             return $user_info;
         } else {
             return false;
         }
-
     }
 
     public function deleteLearningObjects($params)
     {
-
-        require_once(_lms_ . '/class.module/class.definition.php');
-        require_once(_lms_ . '/lib/lib.module.php');
-        require_once(_lms_ . '/lib/lib.permission.php');
+        require_once _lms_ . '/class.module/class.definition.php';
+        require_once _lms_ . '/lib/lib.module.php';
+        require_once _lms_ . '/lib/lib.permission.php';
         $response = $this->validateDeleteParams($params);
 
         if ($response['success']) {
@@ -2096,13 +2023,11 @@ class Course_API extends API
 
             $idUser = false;
             if (array_key_exists('idUser', $params) && !empty($params['idUser'])) {
-
                 $idUser = $params['idUser'];
                 $checkAuth = $this->authenticateUserById($idUser);
                 if (!$checkAuth) {
                     return $response['error'] = 'Not authenticated user found';
                 }
-
             }
             $learningObjectIds = explode(',', $params['learningObjectIds']);
 
@@ -2116,21 +2041,19 @@ class Course_API extends API
                         'fromId' => $learningObjectId,
                         'idCourse' => $idCourse,
                         'idUser' => $idUser,
-                        'success' => $result
+                        'success' => $result,
                     ];
                 }
             }
         }
 
         return $response;
-
     }
-
 
     public function copyLearningObjects($params)
     {
-        require_once(_lms_ . '/class.module/class.definition.php');
-        require_once(_lms_ . '/lib/lib.module.php');
+        require_once _lms_ . '/class.module/class.definition.php';
+        require_once _lms_ . '/lib/lib.module.php';
         $response = $this->validateCopyParams($params);
 
         if ($response['success']) {
@@ -2160,7 +2083,7 @@ class Course_API extends API
                             'toId' => $idReference,
                             'idCourse' => $idCourse,
                             'idUser' => $idUser,
-                            'success' => $idReference > 0
+                            'success' => $idReference > 0,
                         ];
                     }
                 }
@@ -2189,6 +2112,7 @@ class Course_API extends API
             $response['success'] = false;
             $response['message'] = 'To use ' . LomanagerLms::HOMEREPODIRDB . ' is necessary to send idUser param';
         }
+
         return $response;
     }
 
@@ -2212,7 +2136,7 @@ class Course_API extends API
             $response['message'] = 'Course not specified on deleting';
         } else {
             $course_man = new Man_Course();
-            $courseExists = $course_man->courseExists((int)$params['idCourse']);
+            $courseExists = $course_man->courseExists((int) $params['idCourse']);
             if (!$courseExists) {
                 $response['success'] = false;
                 $response['message'] = 'Course not found';
@@ -2242,7 +2166,7 @@ class Course_API extends API
             $response['message'] = 'New name not specified on renaming';
         }
 
-        if (!isset($params['learningObjectId']) || !(int)$params['learningObjectId'] > 0) {
+        if (!isset($params['learningObjectId']) || !(int) $params['learningObjectId'] > 0) {
             $response['success'] = false;
             $response['message'] = 'Learning Object not specified on renaming';
         }
@@ -2257,7 +2181,7 @@ class Course_API extends API
             $response['message'] = 'Course not specified on deleting';
         } else {
             $course_man = new Man_Course();
-            $courseExists = $course_man->courseExists((int)$params['idCourse']);
+            $courseExists = $course_man->courseExists((int) $params['idCourse']);
             if (!$courseExists) {
                 $response['success'] = false;
                 $response['message'] = 'Course not found';
@@ -2277,7 +2201,6 @@ class Course_API extends API
         return $response;
     }
 
-
     private function validateType(string $type)
     {
         switch ($type) {
@@ -2290,17 +2213,15 @@ class Course_API extends API
         }
     }
 
-
     /**
-     * answer of lerning object type test
+     * answer of lerning object type test.
+     *
      * @param <type> $id_course
      * @param <type> $id_org
      * GRIFO:LRZ
      */
-    function getAnswerTest($params)
+    public function getAnswerTest($params)
     {
-
-      
         $response = [];
 
         // recupera TRACK della risposta del test
@@ -2313,22 +2234,18 @@ class Course_API extends API
         $id_test = $course_info['idTest'];
         $date_end_attempt = $course_info['date_end_attempt'];
 
-
         $q_test = 'select lta.idQuest, lta.idAnswer , title_quest, score_assigned  , lta.idTrack as idTrack
                     from learning_testtrack_answer lta, learning_testquest ltq
                     where lta.idTrack=' . $id_track . ' 
                     and lta.idQuest=ltq.idQuest and lta.user_answer=1';
-
 
         $response['success'] = true;
         $response['id_users'] = $params['id_users'];
         $response['id_org'] = $params['id_org'];
         $response['date_end_attempt'] = $date_end_attempt;
 
-
         $result = $db->query($q_test);
         foreach ($result as $row) {
-
             $vett_quest_answer = [];
             $vett_quest_answer = $this->getAnswerQuest($row['idQuest'], $row['idAnswer']);
 
@@ -2342,18 +2259,12 @@ class Course_API extends API
                 'score_assigned' => $row['score_assigned'],
                 'answer' => $this->getAnswerQuest($row['idQuest'], $row['idAnswer']),
                 'response' => $this->getTrackAnswer($row['idTrack'], $row['idQuest']),
-                'esito' => $res_esito
-
+                'esito' => $res_esito,
             ];
-
         }
 
-
         return $response;
-
-
     }
-
 
     private function getTrackAnswer($idTrack, $idQuest)
     {
@@ -2368,13 +2279,12 @@ class Course_API extends API
             } else {
                 $response[] = $row['more_info'];
             }
-
         }
+
         return $response;
     }
 
-
-    function getAnswerQuest($idQuest, $idAnsw)
+    public function getAnswerQuest($idQuest, $idAnsw)
     {
         $db = DbConn::getInstance();
         $out = [];
@@ -2385,7 +2295,6 @@ class Course_API extends API
         $result = $db->query($q_ans);
 
         foreach ($result as $rowAnswer) {
-
             $answer = [];
             $answer['id_answer'] = $rowAnswer['idAnswer'];
             $answer['sequence'] = $rowAnswer['sequence'];
@@ -2394,14 +2303,13 @@ class Course_API extends API
 
             $out[] = $answer;
         }
+
         return $out;
     }
 
-
     // copia corso partendo dal course_id
-    function copyCourse($params)
+    public function copyCourse($params)
     {
-
         $id_dupcourse = $params['course_id'];
 
         // read the old course info dalla sorgente del corso selezionato
@@ -2409,16 +2317,15 @@ class Course_API extends API
         $result_sel = sql_query($query_sel);
         $list_sel = sql_fetch_array($result_sel);
 
-        foreach ($list_sel as $k => $v)
+        foreach ($list_sel as $k => $v) {
             $list_sel[$k] = sql_escape_string($v);
+        }
 
         $new_course_dup = 0;
 
         $new_file_array = [];
 
-
         if ($params['image'] == true) {
-
             $new_name_array = explode('_', str_replace('course_logo_', '', $list_sel['img_course']));
             //$filename = 'course_logo_'.mt_rand(0, 100).'_'.time().'_'.str_replace('course_logo_'.$new_name_array[0].'_'.$new_name_array[1].'_', '',$list_sel['img_course']);
             $filename = $list_sel['img_course'];
@@ -2428,7 +2335,6 @@ class Course_API extends API
             $list_sel['img_course'] = $filename;
         }
 
-
         if ($params['advice'] == true) {
             $new_name_array = explode('_', str_replace('course_sponsor_logo_', '', $list_sel['imgSponsor']));
             // $filename = 'course_sponsor_logo_'.mt_rand(0, 100).'_'.time().'_'.str_replace('course_sponsor_logo_'.$new_name_array[0].'_'.$new_name_array[1].'_', '',$list_sel['imgSponsor']);
@@ -2437,7 +2343,6 @@ class Course_API extends API
             $new_file_array[0]['new'] = $list_sel['imgSponsor'];
             $list_sel['imgSponsor'] = $filename;
         }
-
 
         // duplicate the entry of learning_course
         $query_ins = "INSERT INTO %lms_course
@@ -2465,9 +2370,9 @@ class Course_API extends API
             ob_clean();
             ob_start();
             $response['success'] = false;
+
             return $response;
         }
-
 
         //--- copy menu data -----------------------------------------------------
 
@@ -2500,7 +2405,6 @@ class Course_API extends API
             $result_dupmen = sql_query($query_dupmen);
         }
 
-
         function &getCourseLevelSt($id_course)
         {
             $map = [];
@@ -2508,9 +2412,10 @@ class Course_API extends API
 
             // find all the group created for this menu custom for permission management
             foreach ($levels as $lv => $name_level) {
-                $group_info = Docebo::aclm()->getGroup(FALSE, '/lms/course/' . $id_course . '/subscribed/' . $lv);
+                $group_info = Docebo::aclm()->getGroup(false, '/lms/course/' . $id_course . '/subscribed/' . $lv);
                 $map[$lv] = $group_info[ACL_INFO_IDST];
             }
+
             return $map;
         }
 
@@ -2522,9 +2427,9 @@ class Course_API extends API
         $docebo_course = new DoceboCourse($id_dupcourse);
         $subscribe_man = new CourseSubscribe_Manager();
 
-        $group_idst =& $docebo_course->createCourseLevel($new_course_dup);
-        $group_of_from =& $docebo_course->getCourseLevel($id_dupcourse);
-        $perm_form =& createPermForCoursebis($group_of_from, $new_course_dup, $id_dupcourse);
+        $group_idst = &$docebo_course->createCourseLevel($new_course_dup);
+        $group_of_from = &$docebo_course->getCourseLevel($id_dupcourse);
+        $perm_form = &createPermForCoursebis($group_of_from, $new_course_dup, $id_dupcourse);
         $levels = $subscribe_man->getUserLevel();
 
         foreach ($levels as $lv => $name_level) {
@@ -2534,7 +2439,6 @@ class Course_API extends API
                 }
             }
         }
-
 
         if ($params['certificate'] == true) {
             // duplicate the certificate assigned
@@ -2554,42 +2458,34 @@ class Course_API extends API
             }
         }
 
-
         require_once Forma::inc(_lms_ . '/modules/organization/orglib.php');
-        require_once(_lms_ . '/lib/lib.param.php');
-        require_once(_lms_ . '/class.module/track.object.php');
-        require_once(_lms_ . '/class.module/learning.object.php');
+        require_once _lms_ . '/lib/lib.param.php';
+        require_once _lms_ . '/class.module/track.object.php';
+        require_once _lms_ . '/class.module/learning.object.php';
 
-
-        $nullVal = NULL;
+        $nullVal = null;
         $id_orgs = [];
         $map_org = [];
-
 
         $response['lo'] = $params['lo'];
 
         if ($params['lo'] == 'true' || $params['lo'] == true) {
-
-
             $response['lo'] = true;
-
 
             $org_map = [];
             $id_orgs = [];
             $prereq_map = [];
 
             // retrive all the folders and object, the order by grant that folder are created before the elements contained in them
-            $query = 'SELECT * FROM %lms_organization WHERE idCourse = ' . (int)$id_dupcourse . ' ORDER BY path ASC';
+            $query = 'SELECT * FROM %lms_organization WHERE idCourse = ' . (int) $id_dupcourse . ' ORDER BY path ASC';
             $source_res = sql_query($query);
 
             // Go trough all the entry of learning_organization
             while ($source = sql_fetch_object($source_res)) {
-
                 // if it's an object we must make a copy, if it's a folder we can create a row
                 // inside learning_orgation and save the id for later use
 
                 if ($source->objectType == '') {
-
                     // is a folder
                     // create a new row in learning_organization
                     $query_new_org = "INSERT INTO %lms_organization (
@@ -2614,7 +2510,6 @@ class Course_API extends API
                     // map for later use
                     $org_map['folder'][$source->idOrg] = $new_id_reference;
                 } else {
-
                     // is an object
                     // make a copy
                     $lo = $this->_createLO($source->objectType);
@@ -2656,32 +2551,29 @@ class Course_API extends API
                 }
                 // create a map for the olds and new idReferences
                 $id_orgs[$source->idOrg] = $new_id_reference;
-                if ($source->prerequisites != '') $prereq_map[$new_id_reference] = $source->prerequisites;
-
-
+                if ($source->prerequisites != '') {
+                    $prereq_map[$new_id_reference] = $source->prerequisites;
+                }
             }
-
 
             // updates prerequisites
             foreach ($prereq_map as $new_id_reference => $old_prerequisites) {
-
                 $new_prerequisites = [];
                 $old_prerequisites = explode(',', $old_prerequisites);
                 foreach ($old_prerequisites as $old_p) {
-
                     //a prerequisite can be a pure number or something like 7=NULL, or 7=incomplete
                     $old_id = intval($old_p);
-                    if (isset($id_orgs[$old_id])) $new_prerequisites[] = str_replace($old_id, $id_orgs[$old_id], $old_p);
+                    if (isset($id_orgs[$old_id])) {
+                        $new_prerequisites[] = str_replace($old_id, $id_orgs[$old_id], $old_p);
+                    }
                 }
                 if (!empty($new_prerequisites)) {
-
                     $query_updcor = 'UPDATE %lms_organization '
                         . "SET prerequisites = '" . implode(',', $new_prerequisites) . "' "
                         . 'WHERE idOrg = ' . $new_id_reference . ' ';
                     $result_upcor = sql_query($query_updcor);
                 }
             }
-
 
             //--- copy htmlfront data ----------------------------------------------
             $query_insert_list = [];
@@ -2700,10 +2592,7 @@ class Course_API extends API
             }
 
             //--- end htmlfront ----------------------------------------------------
-
-
         }
-
 
         $response['success'] = true;
         $response['from_course_id'] = $id_dupcourse;
@@ -2711,13 +2600,10 @@ class Course_API extends API
         $response['new_course_name'] = 'Copia di ' . $list_sel['name'];
 
         return $response;
-
     }
 
-
-    function _createLO($objectType, $idResource = NULL)
+    public function _createLO($objectType, $idResource = null)
     {
-
         $lo_types_cache = [];
         $query = 'SELECT objectType, className, fileName FROM %lms_lo_types';
         $rs = sql_query($query);
@@ -2725,16 +2611,18 @@ class Course_API extends API
             $lo_types_cache[$type] = [$className, $fileName];
         }
 
-        if (!isset($lo_types_cache[$objectType])) return NULL;
+        if (!isset($lo_types_cache[$objectType])) {
+            return null;
+        }
         list($className, $fileName) = $lo_types_cache[$objectType];
-        require_once(_lms_ . '/class.module/' . $fileName);
-        $lo = new $className ($idResource);
+        require_once _lms_ . '/class.module/' . $fileName;
+        $lo = new $className($idResource);
+
         return $lo;
     }
 
-
-// assign meta certificate & course to user
-    function assignAggregateCertificateUsers($params)
+    // assign meta certificate & course to user
+    public function assignAggregateCertificateUsers($params)
     {
         $idAssociation = $params['association_id'] ?? '';
         $courses = (array_key_exists('courses', $params) && !empty($params['courses'])) ? explode(',', $params['courses']) : [];
@@ -2762,7 +2650,6 @@ class Course_API extends API
             return $response;
         }
 
-
         $response['success'] = true;
         foreach ($users as $idUser) {
             foreach ($courses as $idCourse) {
@@ -2776,17 +2663,16 @@ class Course_API extends API
                         'association_id' => $idAssociation,
                         'user_id' => $idUser,
                         'course_id' => $idCourse,
-                        'message' => $exception->getMessage()
+                        'message' => $exception->getMessage(),
                     ];
                 }
             }
         }
 
         return $response;
-
     }
 
-    function addAssociationAggregateCertificates($params)
+    public function addAssociationAggregateCertificates($params)
     {
         require_once Forma::inc(_lms_ . '/lib/lib.aggregated_certificate.php');
         $response = [];
@@ -2800,7 +2686,7 @@ class Course_API extends API
                     $certificateId = $aggregatedCertificatesRQItem['cert_id'] ?? '';
                     $nameAssociation = $aggregatedCertificatesRQItem['name_ass'] ?? '';
                     $descriptionAssociation = $aggregatedCertificatesRQItem['descr_ass'] ?? '';
-                    $certificateType = (int)($aggregatedCertificatesRQItem['type'] ?? 0);
+                    $certificateType = (int) ($aggregatedCertificatesRQItem['type'] ?? 0);
                     $courses = (array_key_exists('courses', $aggregatedCertificatesRQItem) && !empty($aggregatedCertificatesRQItem['courses'])) ? explode(',', $aggregatedCertificatesRQItem['courses']) : [];
                     $coursesPaths = (array_key_exists('course_paths', $aggregatedCertificatesRQItem) && !empty($aggregatedCertificatesRQItem['course_paths'])) ? explode(',', $aggregatedCertificatesRQItem['course_paths']) : [];
                     $users = (array_key_exists('users', $aggregatedCertificatesRQItem) && !empty($aggregatedCertificatesRQItem['users'])) ? explode(',', $aggregatedCertificatesRQItem['users']) : [];
@@ -2813,7 +2699,6 @@ class Course_API extends API
                     if (empty($nameAssociation)) {
                         $response['success'] = false;
                         $response['messages'][$index][] = 'Missing name_ass ' . $nameAssociation;
-
                     }
 
                     if ($certificateType === AggregatedCertificate::AGGREGATE_CERTIFICATE_TYPE_COURSE && empty($courses)) {
@@ -2874,7 +2759,7 @@ class Course_API extends API
                             'courses' => $courses,
                             'course_paths' => $coursesPaths,
                             'users' => $users,
-                            'id_new_association' => $idAssociation
+                            'id_new_association' => $idAssociation,
                         ];
                     } catch (Exception $exception) {
                         $response['success'] = false;
@@ -2884,25 +2769,24 @@ class Course_API extends API
             } else {
                 $response = [
                     'success' => false,
-                    'message' => 'Aggregated Certificates must be more than or equal to one'
+                    'message' => 'Aggregated Certificates must be more than or equal to one',
                 ];
             }
         } catch (Exception $exception) {
             $response = [
                 'success' => false,
-                'message' => $exception->getMessage()
+                'message' => $exception->getMessage(),
             ];
         }
 
         return $response;
     }
 
-    function removeAssociationCertificates($params)
+    public function removeAssociationCertificates($params)
     {
         $response = [];
         $response['success'] = true;
         try {
-
             $idCourse = $params['course_id'] ?? '';
 
             $course_man = new Man_Course();
@@ -2915,19 +2799,19 @@ class Course_API extends API
                 if ($result === false) {
                     $response = [
                         'success' => false,
-                        'message' => 'Error during remove certificate assign'
+                        'message' => 'Error during remove certificate assign',
                     ];
                 }
             } else {
                 $response = [
                     'success' => false,
-                    'message' => 'Course does not exists :' . $idCourse
+                    'message' => 'Course does not exists :' . $idCourse,
                 ];
             }
         } catch (\Exception $exception) {
             $response = [
                 'success' => false,
-                'message' => $exception->getMessage()
+                'message' => $exception->getMessage(),
             ];
         }
 
@@ -2935,12 +2819,11 @@ class Course_API extends API
     }
 
     // add association to meta certificate
-    function addAssociationCertificates($params)
+    public function addAssociationCertificates($params)
     {
         $response = [];
         $response['success'] = true;
         try {
-
             $idCourse = $params['course_id'] ?? '';
             $certificatesRQ = $params['certificates'] ?? [];
 
@@ -2948,7 +2831,6 @@ class Course_API extends API
             $courseExists = $course_man->courseExists($idCourse);
 
             if ($courseExists) {
-
                 $certificates = [];
 
                 $excellenceCertificates = [];
@@ -2957,7 +2839,6 @@ class Course_API extends API
 
                 if (count($certificatesRQ) > 0) {
                     foreach ($certificatesRQ as $certificatesRQItem) {
-
                         if (array_key_exists('id', $certificatesRQItem)) {
                             $certificates[$certificatesRQItem['id']] = $certificatesRQItem['status'] ?? 0;
                             $certificatesAssignMinutes[$certificatesRQItem['id']] = $certificatesRQItem['minutes'] ?? 0;
@@ -2974,25 +2855,25 @@ class Course_API extends API
                     if ($result === false) {
                         $response = [
                             'success' => false,
-                            'message' => 'Error during update certificate assign'
+                            'message' => 'Error during update certificate assign',
                         ];
                     }
                 } else {
                     $response = [
                         'success' => false,
-                        'message' => 'Certificates must be more than or equal to one'
+                        'message' => 'Certificates must be more than or equal to one',
                     ];
                 }
             } else {
                 $response = [
                     'success' => false,
-                    'message' => 'Course does not exists :' . $idCourse
+                    'message' => 'Course does not exists :' . $idCourse,
                 ];
             }
         } catch (\Exception $exception) {
             $response = [
                 'success' => false,
-                'message' => $exception->getMessage()
+                'message' => $exception->getMessage(),
             ];
         }
 
@@ -3000,7 +2881,8 @@ class Course_API extends API
     }
 
     /**
-     * put introduction of course
+     * put introduction of course.
+     *
      * @param <type> course_id
      * @param <type> text_intro
      * GRIFO:LRZ
@@ -3018,7 +2900,6 @@ class Course_API extends API
         $courseExists = $course_man->courseExists($courseId);
 
         if ($courseExists) {
-
             $courseLms = new CourseLms($courseId);
 
             try {
@@ -3028,14 +2909,13 @@ class Course_API extends API
                     $response['message'] = 'Error during insert/update intro page';
                 }
             } catch (\Exception $exception) {
-
                 $response['success'] = false;
                 $response['message'] = $exception->getMessage();
             }
         } else {
             $response = [
                 'success' => false,
-                'message' => 'Course does not exists : ' . $courseId
+                'message' => 'Course does not exists : ' . $courseId,
             ];
         }
 
@@ -3052,7 +2932,6 @@ class Course_API extends API
         $courseExists = $course_man->courseExists($courseId);
 
         if ($courseExists) {
-
             $courseLms = new CourseLms($courseId);
             try {
                 $result = $courseLms->deleteHtmlFront();
@@ -3061,14 +2940,13 @@ class Course_API extends API
                     $response['message'] = 'Error during remove intro page';
                 }
             } catch (\Exception $exception) {
-
                 $response['success'] = false;
                 $response['message'] = $exception->getMessage();
             }
         } else {
             $response = [
                 'success' => false,
-                'message' => 'Course does not exists : ' . $courseId
+                'message' => 'Course does not exists : ' . $courseId,
             ];
         }
 
@@ -3076,7 +2954,8 @@ class Course_API extends API
     }
 
     /**
-     * copy image cover from another course
+     * copy image cover from another course.
+     *
      * @param <type> course_id_from
      * @param <type> course_id_to
      * GRIFO:LRZ
@@ -3094,18 +2973,16 @@ class Course_API extends API
         $courseToExists = $course_man->courseExists($courseIdTo);
 
         if (empty($courseFromExists)) {
-
             return [
                 'success' => false,
-                'message' => 'Course From does not exists :' . $courseIdFrom
+                'message' => 'Course From does not exists :' . $courseIdFrom,
             ];
         }
 
         if (empty($courseToExists)) {
-
             return [
                 'success' => false,
-                'message' => 'Course To does not exists :' . $courseIdTo
+                'message' => 'Course To does not exists :' . $courseIdTo,
             ];
         }
 
@@ -3118,7 +2995,6 @@ class Course_API extends API
         $res = sql_query($sql_img);
         list($img_course) = sql_fetch_row($res);
 
-
         // associate img_course to course destination
         $sql_img = "update learning_course set img_course = '" . $img_course . "' where idCourse=" . $courseIdTo;
 
@@ -3127,7 +3003,7 @@ class Course_API extends API
         } catch (Exception $e) {
             $response = [
                 'success' => false,
-                'message' => $e->getMessage()
+                'message' => $e->getMessage(),
             ];
         }
 
@@ -3158,9 +3034,7 @@ class Course_API extends API
         return $response;
     }
 
-
     // ---------------------------------------------------------------------------
-
 
     public function call($name, $params)
     {
@@ -3170,268 +3044,230 @@ class Course_API extends API
             $params['idst'] = $params[0]; //params[0] should contain user idst
         }
 
-
         switch ($name) {
-
             case 'listCourses':
             case 'courses':
-                {
                     $response = $this->getCourses($params);
-                }
+
                 break;
 
             //e-learning editions
             case 'listEditions':
             case 'editions':
-                {
                     $response = $this->getEditions($params);
-                }
+
                 break;
 
             case 'listClassrooms':
             case 'classrooms':
-                {
                     $response = $this->getClassrooms($params);
-                }
+
                 break;
 
             case 'addUserSubscription':
             case 'addusersubscription':
-                {
                     if (!isset($params['ext_not_found'])) {
                         $response = $this->addUserSubscription($params);
                     }
-                }
+
                 break;
 
             case 'updateUserSubscription':
             case 'updateusersubscription':
-                {
                     if (!isset($params['ext_not_found'])) {
                         $response = $this->updateUserSubscription($params);
                     }
-                }
+
                 break;
 
             case 'deleteUserSubscription':
             case 'deleteusersubscription':
-                {
                     if (!isset($params['ext_not_found'])) {
                         $response = $this->deleteUserSubscription($params);
                     }
-                }
+
                 break;
 
             case 'subscribeUserWithCode':
             case 'subscribeuserwithcode':
-                {
                     if (!isset($params['ext_not_found'])) {
                         $response = $this->subscribeUserWithCode($params);
                     }
-                }
+
                 break;
 
             case 'getCertificateByUser':
             case 'getcertificatebyuser':
-                {
                     if (!isset($params['ext_not_found'])) {
-
                         $response = $this->getCertificateByUser($params);
                     }
-                }
+
                 break;
 
             case 'getCertificateByCourse':
             case 'getcertificatebycourse':
-                {
                     if (!isset($params['ext_not_found'])) {
-
                         $response = $this->getCertificateByCourse($params);
                     }
-                }
+
                 break;
 
-            // LRZ 
+            // LRZ
             case 'addCategory':
             case 'addcategory':
-                {
                     $response = $this->addCategory($params);
-                }
+
                 break;
 
             case 'updateCategory':
             case 'updatecategory':
-                {
                     $response = $this->updateCategory($params);
-                }
+
                 break;
 
             // COURSE API
             // add elearning or ILT course
             case 'addCourse':
             case 'addcourse':
-                {
                     $response = $this->addCourse($params);
-                }
+
                 break;
 
             case 'updateCourse':
             case 'updatecourse':
-                {
                     $response = $this->updateCourse($params);
-                }
+
                 break;
 
             case 'deleteCourse':
             case 'deletecourse':
-                {
                     $response = $this->deleteCourse($params);
-                }
+
                 break;
 
             case 'copyCourse':
             case 'copycourse':
-                {
                     $response = $this->copyCourse($params);
-                }
+
                 break;
 
             // CLASSROOM (ILT) API
             // add (ILT) classroom edition
             case 'addClassroom':
             case 'addclassroom':
-                {
                     $response = $this->addClassroom($params);
-                }
+
                 break;
 
             // update (ILT) classroom edition
             case 'updateClassroom':
             case 'updateclassroom':
-                {
                     $response = $this->updateClassroom($params);
-                }
+
                 break;
 
             case 'deleteClassroom':
             case 'deleteclassroom':
-                {
                     $response = $this->deteleClassroom($params);
-                }
+
                 break;
 
             // add appointment for classroom edition
             case 'addDay':
             case 'addday':
-                {
                     $response = $this->addDay($params);
-                }
+
                 break;
 
             // delete appointment for classroom edition
             case 'deleteDay':
             case 'deleteday':
-                {
                     $response = $this->deleteDay($params);
-                }
+
                 break;
 
             // update appointment for classroom edition
             case 'updateDay':
             case 'updateday':
-                {
                     $response = $this->updateDay($params);
-                }
+
                 break;
 
             // LO API
             case 'getLO':
             case 'getlo':
-                {
                     $response = $this->getLo($params);
-                }
+
                 break;
             case 'copyLearningObjects':
-                {
                     $response = $this->copyLearningObjects($params);
-                }
+
                 break;
             case 'renameLearningObject':
-                {
                     $response = $this->renameLearningObject($params);
-                }
+
                 break;
             case 'deleteLearningObjects':
-                {
                     $response = $this->deleteLearningObjects($params);
-                }
+
                 break;
             case 'getAnswerTest':
             case 'getanswertest':
-                {
                     $response = $this->getAnswerTest($params);
-                }
+
                 break;
 
-            //META CERTIFICATE 
+            //META CERTIFICATE
             case 'assignAggregateCertificateUsers':
             case 'assignAggregateCertificateUsers':
-                {
                     $response = $this->assignAggregateCertificateUsers($params);
-                }
+
                 break;
 
             case 'addAggregateCertificates':
             case 'addaggregatecertificates':
-                {
                     $response = $this->addAssociationAggregateCertificates($params);
-                }
+
                 break;
 
             case 'addCertificates':
             case 'addcertificates':
-                {
                     $response = $this->addAssociationCertificates($params);
-                }
+
                 break;
             case 'removeCertificates':
             case 'removecertificates':
-                {
                     $response = $this->removeAssociationCertificates($params);
-                }
+
                 break;
 
             // manage introduction module of course
             case 'putintroductioncourse':
             case 'putIntroductionCourse':
-                {
                     $response = $this->putIntroductionCourse($params);
-                }
+
                 break;
             case 'deleteintroductioncourse':
             case 'deleteIntroductionCourse':
-                {
                     $response = $this->deleteIntroductionCourse($params);
-                }
+
                 break;
 
             // copy image from course source
             case 'copyimgfromcourse':
             case 'copyImgFromCourse':
-                {
                     $response = $this->copyImgFromCourse($params);
-                }
+
                 break;
             case 'getCalendar':
             case 'getcalendar':
-                {
                     $response = $this->getCalendar($params);
-                }
+
                 break;
             default:
                 $response = parent::call($name, $params);
         }
+
         return $response;
     }
-
 }

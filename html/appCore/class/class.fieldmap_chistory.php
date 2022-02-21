@@ -1,91 +1,85 @@
-<?php defined("IN_FORMA") or die('Direct access is forbidden.');
+<?php
 
-
-
-/**
- * @package admin-core
- * @subpackage field
+/*
+ * FORMA - The E-Learning Suite
+ *
+ * Copyright (c) 2013-2022 (Forma)
+ * https://www.formalms.org
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ *
+ * from docebo 4.0.5 CE 2008-2012 (c) docebo
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  */
- 
-require_once($GLOBALS["where_framework"]."/class/class.fieldmap.php");
 
-class FieldMapChistory extends FieldMap {
+defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-	var $lang=NULL;
+require_once $GLOBALS['where_framework'] . '/class/class.fieldmap.php';
 
-	/**
-	 * class constructor
-	 */
-	function FieldMapChistory() {
+class FieldMapChistory extends FieldMap
+{
+    public $lang = null;
 
-		$this->lang=& DoceboLanguage::createInstance("company", "crm");
+    /**
+     * class constructor.
+     */
+    public function FieldMapChistory()
+    {
+        $this->lang = &DoceboLanguage::createInstance('company', 'crm');
 
-		parent::FieldMap();
-	}
+        parent::FieldMap();
+    }
 
+    public function _getMainTable()
+    {
+    }
 
-	function _getMainTable() {
+    public function getPrefix()
+    {
+        return 'chistory_';
+    }
 
-	}
+    public function getPredefinedFieldLabel($field_id)
+    {
+        $res['description'] = $this->lang->def('_CHISTORY_DESCRIPTION');
 
+        return $res[$field_id];
+    }
 
-	function getPrefix() {
-		return "chistory_";
-	}
+    public function getRawPredefinedFields()
+    {
+        return ['description'];
+    }
 
+    /**
+     * @param array $predefined_data
+     * @param array $custom_data
+     * @param int   $id              company id; if 0 a new company will be created
+     * @param bool  $dropdown_id     if true will take dropdown values as id;
+     *                               else will search the id starting from the value
+     */
+    public function saveFields($predefined_data, $custom_data = false, $id = 0, $dropdown_id = true)
+    {
+        require_once $GLOBALS['where_crm'] . '/modules/contacthistory/lib.contacthistory.php';
 
-	function getPredefinedFieldLabel($field_id) {
+        $chdm = new ContactHistoryDataManager();
+        $data = [];
 
-		$res["description"]=$this->lang->def("_CHISTORY_DESCRIPTION");
+        $company_id = (int) $predefined_data['company_id'];
 
-		return $res[$field_id];
-	}
+        $data['contact_id'] = (int) $id;
+        $data['title'] = $predefined_data['title'];
+        $data['description'] = $predefined_data['description'];
+        $data['reason'] = 0;
+        $data['type'] = $predefined_data['type'];
 
+        if (isset($predefined_data['meeting_date'])) {
+            $data['meeting_date'] = $predefined_data['meeting_date'];
+        } else {
+            $data['meeting_date'] = date('Y-m-d H:i:s');
+        }
 
-	function getRawPredefinedFields() {
-		return ["description"];
-	}
+        $chistory_id = $chdm->saveContactHistory($company_id, $data);
 
-
-	/**
-	 * @param array $predefined_data
-	 * @param array $custom_data
-	 * @param integer $id company id; if 0 a new company will be created
-	 * @param boolean $dropdown_id if true will take dropdown values as id;
-	 *                             else will search the id starting from the value.
-	 */
-	function saveFields($predefined_data, $custom_data=FALSE, $id=0, $dropdown_id=TRUE) {
-		require_once($GLOBALS["where_crm"]."/modules/contacthistory/lib.contacthistory.php");
-
-		$chdm=new ContactHistoryDataManager();
-		$data= [];
-
-
-		$company_id=(int)$predefined_data["company_id"];
-
-		$data["contact_id"]=(int)$id;
-		$data["title"]=$predefined_data["title"];
-		$data["description"]=$predefined_data["description"];
-		$data["reason"]=0;
-		$data["type"]=$predefined_data["type"];
-
-		if (isset($predefined_data["meeting_date"])) {
-			$data["meeting_date"]=$predefined_data["meeting_date"];
-		}
-		else {
-			$data["meeting_date"]=date("Y-m-d H:i:s");
-		}
-
-
-		$chistory_id=$chdm->saveContactHistory($company_id, $data);
-
-		return $chistory_id;
-	}
-
-
+        return $chistory_id;
+    }
 }
-
-
-
-
-?>

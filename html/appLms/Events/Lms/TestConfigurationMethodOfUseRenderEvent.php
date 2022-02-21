@@ -1,15 +1,26 @@
 <?php
 
+/*
+ * FORMA - The E-Learning Suite
+ *
+ * Copyright (c) 2013-2022 (Forma)
+ * https://www.formalms.org
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ *
+ * from docebo 4.0.5 CE 2008-2012 (c) docebo
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ */
+
 namespace appLms\Events\Lms;
 
 use Symfony\Contracts\EventDispatcher\Event;
 
 class TestConfigurationMethodOfUseRenderEvent extends Event
 {
-    const EVENT_SECTION_BASE = 0;
-    
-    const EVENT_NAME = 'lms.test.configuration_method_of_use_render';
-    
+    public const EVENT_SECTION_BASE = 0;
+
+    public const EVENT_NAME = 'lms.test.configuration_method_of_use_render';
+
     protected $formElementsSections;
     /**
      * @var null
@@ -19,82 +30,78 @@ class TestConfigurationMethodOfUseRenderEvent extends Event
      * @var null
      */
     protected $lang = null;
-    
-    public function __construct ($object_test , $lang)
+
+    public function __construct($object_test, $lang)
     {
         $this->object_test = $object_test;
         $this->lang = $lang;
-        
-        $this->formElementsSections[ self::EVENT_SECTION_BASE ] = [];
-        
+
+        $this->formElementsSections[self::EVENT_SECTION_BASE] = [];
     }
-    
+
     /**
      * @return null
      */
-    public function getLang ()
+    public function getLang()
     {
         return $this->lang;
     }
-    
+
     /**
      * @return null
      */
-    public function getObjectTest ()
+    public function getObjectTest()
     {
         return $this->object_test;
     }
-    
-    public function resetFormElementsForSection ($section)
+
+    public function resetFormElementsForSection($section)
     {
-        $this->formElementsSections[ $section ] = [];
+        $this->formElementsSections[$section] = [];
     }
-    
-    
-    /**
-     * @param array $formElements
-     * @param integer $section
-     */
-    public function setFormElementsForSection (array $formElements , int $section)
+
+    public function setFormElementsForSection(array $formElements, int $section)
     {
-        $this->formElementsSections[ $section ] = $formElements;
+        $this->formElementsSections[$section] = $formElements;
     }
-    
+
     /**
      * @return array
      */
-    public function getFormElements ()
+    public function getFormElements()
     {
         return $this->formElements;
     }
-    
+
     /**
-     * @param integer $section
+     * @param int $section
+     *
      * @return array
      */
-    public function getFormElementsForSection ( $section)
+    public function getFormElementsForSection($section)
     {
-        if (isset($this->formElementsSections[ $section ])) {
-            return $this->formElementsSections[ $section ];
+        if (isset($this->formElementsSections[$section])) {
+            return $this->formElementsSections[$section];
         }
+
         return [];
     }
-    
-    public function addFormElementForSection ($formElement , $section)
+
+    public function addFormElementForSection($formElement, $section)
     {
-        $this->formElementsSections[ $section ][] = $formElement;
+        $this->formElementsSections[$section][] = $formElement;
     }
-    
-    public function getElementString ()
+
+    public function getElementString()
     {
-        $formString = "";
-        
+        $formString = '';
+
         foreach ($this->formElementsSections as $section => $formElements) {
             foreach ($formElements as $formElement) {
                 $formString .= $formElement;
             }
         }
-        
+
         return $formString;
     }
 
@@ -109,5 +116,4 @@ class TestConfigurationMethodOfUseRenderEvent extends Event
             'lang' => $this->lang,
         ];
     }
-    
 }

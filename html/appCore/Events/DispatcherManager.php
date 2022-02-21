@@ -1,44 +1,60 @@
 <?php
+
+/*
+ * FORMA - The E-Learning Suite
+ *
+ * Copyright (c) 2013-2022 (Forma)
+ * https://www.formalms.org
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ *
+ * from docebo 4.0.5 CE 2008-2012 (c) docebo
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ */
+
 namespace appCore\Events;
 
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Contracts\EventDispatcher\Event;
 
-
-
-class DispatcherManager {
-
+class DispatcherManager
+{
     private static $instance = null;
     private $dispatcher = null;
 
     /**
-     * Singleton class, the constructor is private
+     * Singleton class, the constructor is private.
      */
-    private function __construct() {
+    private function __construct()
+    {
         $this->dispatcher = new EventDispatcher();
     }
 
     /**
-     * Get the DispatcherManager instance
-     * 
+     * Get the DispatcherManager instance.
+     *
      * @param string $mvc_name
+     *
      * @return DispatcherManager
+     *
      * @throws Exception
      */
-    public static function getInstance() {
+    public static function getInstance()
+    {
         if (self::$instance == null) {
             $c = __CLASS__;
-            self::$instance = new $c;
+            self::$instance = new $c();
         }
 
         return self::$instance;
     }
 
-    public static function dispatch($eventName, Event $event) {
-        return self::getInstance()->dispatcher->dispatch($event,$eventName);
+    public static function dispatch($eventName, Event $event)
+    {
+        return self::getInstance()->dispatcher->dispatch($event, $eventName);
     }
 
-    public static function addListener($eventName, $listener, $priority = 0) {
+    public static function addListener($eventName, $listener, $priority = 0)
+    {
         return self::getInstance()->dispatcher->addListener($eventName, $listener, $priority);
     }
 }

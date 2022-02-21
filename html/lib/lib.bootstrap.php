@@ -1,29 +1,39 @@
-<?php defined("IN_FORMA") or die('Direct access is forbidden.');
+<?php
 
+/*
+ * FORMA - The E-Learning Suite
+ *
+ * Copyright (c) 2013-2022 (Forma)
+ * https://www.formalms.org
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ *
+ * from docebo 4.0.5 CE 2008-2012 (c) docebo
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ */
 
+defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-define("BOOT_CONFIG", 0);
-define("BOOT_UTILITY", 1);
-define("BOOT_DATABASE", 2);
-define("BOOT_SETTING", 3);
-define("BOOT_PLUGINS", 4);
-define("BOOT_SESS_CKE", 5);
-define("BOOT_USER", 6);
-define("BOOT_INPUT", 7);
-define("BOOT_LANGUAGE", 8);
-define("BOOT_DATETIME", 9);
-define("BOOT_HOOKS", 10);
-define("BOOT_TEMPLATE", 11);
-define("BOOT_PAGE_WR", 12);
-define("BOOT_INPUT_ALT", 99);
+define('BOOT_CONFIG', 0);
+define('BOOT_UTILITY', 1);
+define('BOOT_DATABASE', 2);
+define('BOOT_SETTING', 3);
+define('BOOT_PLUGINS', 4);
+define('BOOT_SESS_CKE', 5);
+define('BOOT_USER', 6);
+define('BOOT_INPUT', 7);
+define('BOOT_LANGUAGE', 8);
+define('BOOT_DATETIME', 9);
+define('BOOT_HOOKS', 10);
+define('BOOT_TEMPLATE', 11);
+define('BOOT_PAGE_WR', 12);
+define('BOOT_INPUT_ALT', 99);
 
 /**
  * This class manage the startup operation needed.
- * The file 'concept' is the bootstrap of drupal, i really like the idea in which it work
+ * The file 'concept' is the bootstrap of drupal, i really like the idea in which it work.
  */
 class Boot
 {
-
     public static $session_name = 'docebo_session';
 
     private static $_boot_seq = [
@@ -40,13 +50,14 @@ class Boot
         BOOT_HOOKS => 'hooks',
         BOOT_DATETIME => 'dateTime',
         BOOT_TEMPLATE => 'template',
-        BOOT_PAGE_WR => 'loadPageWriter'
+        BOOT_PAGE_WR => 'loadPageWriter',
     ];
 
     public static $log_array = [];
 
     /**
-     * Load all the step requested
+     * Load all the step requested.
+     *
      * @param $load_option int or array, if you pass an int all the operation
      *                        with and index that is lower will be done,
      *                        if you pass an array you can tell the function
@@ -54,9 +65,7 @@ class Boot
      */
     public static function init($load_option = BOOT_PAGE_WR)
     {
-
         if (is_array($load_option)) {
-
             $last_step = BOOT_PAGE_WR;
             $step_list = $load_option;
         } else {
@@ -65,12 +74,12 @@ class Boot
             $step_list = self::$_boot_seq;
         }
         foreach ($step_list as $step_num => $step_method) {
-
             // custom boot sequence given, must retrive the correct method to call
-            if (is_array($load_option)) $step_method = self::$_boot_seq[$step_method];
+            if (is_array($load_option)) {
+                $step_method = self::$_boot_seq[$step_method];
+            }
 
             if ($last_step >= $step_num) {
-
                 self::log($step_num . ' ) ' . __CLASS__ . '->' . $step_method);
                 self::$step_method();
             }
@@ -79,11 +88,10 @@ class Boot
 
     /**
      * Load all the final operation, if something need to do some check or data
-     * manipulation before the page is return to the browser this is the place
+     * manipulation before the page is return to the browser this is the place.
      */
     public static function finalize()
     {
-
         if (isset($GLOBALS['current_user']) && Docebo::user()->isLoggedIn()) {
             Docebo::user()->SaveInSession();
         }
@@ -96,43 +104,46 @@ class Boot
      * - check for globals rewriting
      * - unset all the others globals
      * - load config file
-     * - setup php setting
+     * - setup php setting.
+     *
      * @return array
      */
     private static function config()
     {
-
         $step_report = [];
 
         //unset all the globals that aren't php setted
         if (ini_get('register_globals')) {
-
             self::log("Unset all the globals that aren't php setted. (Emulate register global = off)");
             $allowed = ['GLOBALS', '_GET', '_POST', '_COOKIE', '_FILES', '_ENV', '_SERVER', '_REQUEST'];
             foreach ($allowed as $elem) {
-                if (!isset($allowed[$elem])) unset($GLOBALS[$elem]);
+                if (!isset($allowed[$elem])) {
+                    unset($GLOBALS[$elem]);
+                }
             }
         }
 
         //start timer
-        self::log("Start timer and memory usage counter.");
+        self::log('Start timer and memory usage counter.');
         self::start();
 
         // detect globals overwrite (old php bug)
-        self::log("Detect globals overwrite attempts.");
+        self::log('Detect globals overwrite attempts.');
         $list = ['GLOBALS', '_GET', '_POST', '_COOKIE', '_FILES', '_SESSION'];
         foreach ($list as $elem) {
-            if (isset($_REQUEST[$elem])) die('Request overwrite attempt detected');
+            if (isset($_REQUEST[$elem])) {
+                exit('Request overwrite attempt detected');
+            }
         }
 
         //include config
-        self::log("Include configuration file.");
+        self::log('Include configuration file.');
 
         $cfg = [];
         if (!file_exists(dirname(__FILE__) . '/../config.php')) {
             $path = _deeppath_
                 . str_replace(_base_, '.', constant('_base_'));
-            Header("Location: " . str_replace(['//', '\\/', '/./'], '/', $path) . "/install/");
+            header('Location: ' . str_replace(['//', '\\/', '/./'], '/', $path) . '/install/');
         }
         require dirname(__FILE__) . '/../config.php';
         $GLOBALS['cfg'] = $cfg;
@@ -144,11 +155,11 @@ class Boot
         $GLOBALS['prefix_crm'] = $cfg['prefix_crm'];
 
         // setup some php.ini things
-        $step_report[] = "Setup some php.ini settings.";
+        $step_report[] = 'Setup some php.ini settings.';
         ini_set('arg_separator.output', '&amp;');
-        ini_set('session.cache_expire', (int)$cfg['session_lenght']);
+        ini_set('session.cache_expire', (int) $cfg['session_lenght']);
         ini_set('session.cache_limiter', 'none');
-        ini_set('session.cookie_lifetime', (int)$cfg['session_lenght']);
+        ini_set('session.cookie_lifetime', (int) $cfg['session_lenght']);
         ini_set('session.use_only_cookies', 1);
         ini_set('session.use_trans_sid', 0);
         ini_set('url_rewriter.tags', '');
@@ -164,7 +175,7 @@ class Boot
                     ini_set('memcached.sess_locking', '1');
                     break;
                 case 'redis':
-                    ini_set('session.save_handler',$cfg['session_save_handler'] );
+                    ini_set('session.save_handler', $cfg['session_save_handler']);
                     break;
                 default:
                     break;
@@ -179,10 +190,10 @@ class Boot
             $cfg['timezone'] = @date_default_timezone_get();
             date_default_timezone_set(@date_default_timezone_get());
         }
-        self::log("Time zone setted to TZ= " . @date_default_timezone_get());
+        self::log('Time zone setted to TZ= ' . @date_default_timezone_get());
 
         // debugging ?
-        self::log(($cfg['do_debug'] ? 'Enable (set: E_ALL) ' : 'Disable (set: E_COMPILE_ERROR|E_ERROR|E_CORE_ERROR)') . " error reporting.");
+        self::log(($cfg['do_debug'] ? 'Enable (set: E_ALL) ' : 'Disable (set: E_COMPILE_ERROR|E_ERROR|E_CORE_ERROR)') . ' error reporting.');
         if ($cfg['do_debug']) {
             @error_reporting(E_ALL);
             @ini_set('display_errors', 1);
@@ -191,16 +202,15 @@ class Boot
         }
 
         // todo: backward compatibility
-        $GLOBALS['where_framework_relative'] = (!defined("CORE") ? _deeppath_ : '') . _folder_adm_;
-        $GLOBALS['where_lms_relative'] = (!defined("LMS") ? _deeppath_ : '') . _folder_lms_;
+        $GLOBALS['where_framework_relative'] = (!defined('CORE') ? _deeppath_ : '') . _folder_adm_;
+        $GLOBALS['where_lms_relative'] = (!defined('LMS') ? _deeppath_ : '') . _folder_lms_;
         $GLOBALS['where_scs_relative'] = _deeppath_ . _folder_scs_;
         $GLOBALS['where_files_relative'] = _deeppath_ . _folder_files_;
-		$GLOBALS['where_templates_relative'] = _deeppath_._folder_templates_;
+        $GLOBALS['where_templates_relative'] = _deeppath_ . _folder_templates_;
 
         $GLOBALS['where_files_lms_relative'] = _deeppath_ . _folder_files_lms_;
         $GLOBALS['where_files_app_relative'] = _deeppath_ . _folder_files_app_;
         $GLOBALS['where_files_com_relative'] = _deeppath_ . _folder_files_com_;
-
 
         $GLOBALS['where_framework'] = _adm_;
         $GLOBALS['where_lms'] = _lms_;
@@ -219,24 +229,24 @@ class Boot
 
     /**
      * - load the error handling lib
-     * - load utility libraries (not all but some thing that help the programmers life)
+     * - load utility libraries (not all but some thing that help the programmers life).
+     *
      * @return array
      */
     private static function utility()
     {
-
         // composer autoload
-        self::log("Load composer autoload.");
-        require_once(_base_ . '/vendor/autoload.php');
+        self::log('Load composer autoload.');
+        require_once _base_ . '/vendor/autoload.php';
 
-        self::log("Include autoload file.");
+        self::log('Include autoload file.');
         require_once _base_ . '/lib/lib.autoload.php';
 
-        self::log("Include log file.");
+        self::log('Include log file.');
         require_once _base_ . '/lib/loggers/lib.logger.php';
 
         // config manager
-        self::log("Include configuration file.");
+        self::log('Include configuration file.');
         require_once _base_ . '/lib/lib.get.php';
         require_once Forma::inc(_base_ . '/lib/lib.utils.php');
 
@@ -245,87 +255,83 @@ class Boot
         \Patchwork\Utf8\Bootup::filterRequestInputs();
 
         // filter input
-        self::log("Load filter input library.");
+        self::log('Load filter input library.');
         require_once _base_ . '/lib/lib.filterinput.php';
 
         // yui
-        self::log("Load yui library.");
+        self::log('Load yui library.');
         require_once _base_ . '/lib/lib.yuilib.php';
 
         // template
-        self::log("Load template library.");
-        require_once(_base_ . '/lib/lib.template.php');
+        self::log('Load template library.');
+        require_once _base_ . '/lib/lib.template.php';
 
         // mimetype
-        self::log("Load mimetype library.");
-        require_once(_base_ . '/lib/lib.mimetype.php');
+        self::log('Load mimetype library.');
+        require_once _base_ . '/lib/lib.mimetype.php';
 
-        require_once(_lib_ . '/lib.acl.php');
+        require_once _lib_ . '/lib.acl.php';
 
-        self::log("Load mailer library.");
-        require_once(Forma::inc(_base_ . '/lib/lib.mailer.php'));
+        self::log('Load mailer library.');
+        require_once Forma::inc(_base_ . '/lib/lib.mailer.php');
 
-        self::log("Load Calendar library.");
-        require_once Forma::inc(_lib_ .'/calendar/CalendarManager.php');
-        require_once Forma::inc(_lib_ .'/calendar/CalendarDataContainer.php');
-        require_once Forma::inc(_lib_ .'/calendar/CalendarMailer.php');
-
+        self::log('Load Calendar library.');
+        require_once Forma::inc(_lib_ . '/calendar/CalendarManager.php');
+        require_once Forma::inc(_lib_ . '/calendar/CalendarDataContainer.php');
+        require_once Forma::inc(_lib_ . '/calendar/CalendarMailer.php');
     }
 
     /**
-     * - step to load the plugins
+     * - step to load the plugins.
      */
     private static function plugins()
     {
-
-        self::log("Initialize plugins.");
+        self::log('Initialize plugins.');
         PluginManager::initialize();
-
     }
 
     /**
-     * - step to load core and plugins' event listeners
+     * - step to load core and plugins' event listeners.
      */
     private static function hooks()
     {
-
-        self::log("Prepare core listeners.");
-        foreach (glob(_base_ . "/eventListeners/listeners.*.php") as $listeners) include $listeners;
+        self::log('Prepare core listeners.');
+        foreach (glob(_base_ . '/eventListeners/listeners.*.php') as $listeners) {
+            include $listeners;
+        }
 
         self::log("Prepare plugins' listeners.");
         PluginManager::hook();
-
     }
 
     /**
      * - load the appropiate database driver
      * - connect to the database
-     * - load setting from database
+     * - load setting from database.
+     *
      * @return array
      */
     private static function database()
     {
-
-        self::log("Load database funtion management library.");
+        self::log('Load database funtion management library.');
         require_once _base_ . '/db/lib.docebodb.php';
 
         // utf8 support
-        self::log("Connect to database.");
+        self::log('Connect to database.');
         DbConn::getInstance();
         if (!DbConn::$connected && file_exists(_base_ . '/install')) {
-
-            Header("Location: " . Get::rel_path('base') . "/install/");
+            header('Location: ' . Get::rel_path('base') . '/install/');
         }
     }
 
     /**
-     * - read the specific setting for the adm platform and for the current one
+     * - read the specific setting for the adm platform and for the current one.
+     *
      * @return null
      */
     private static function loadSetting()
     {
-
-        self::log(" Load settings from database.");
+        self::log(' Load settings from database.');
         Util::load_setting(Get::cfg('prefix_fw') . '_setting', 'framework');
 
         if (Get::sett('do_debug') === 'on') {
@@ -336,7 +342,8 @@ class Boot
     /**
      * - setup session configuration
      * - init session
-     * - read cookie information (not used right now)
+     * - read cookie information (not used right now).
+     *
      * @return array
      */
     private static function sessionCookie()
@@ -351,8 +358,9 @@ class Boot
         session_start();
 
         $session_time = Get::sett('ttlSession', 3600);
-        if (!isset($_SESSION['session_timeout']))
+        if (!isset($_SESSION['session_timeout'])) {
             $_SESSION['session_timeout'] = time();
+        }
         $session_time_passed = time() - $_SESSION['session_timeout'];
 
         if ($session_time_passed > $session_time && isset($_SESSION['logged_in']) && $_SESSION['logged_in']) {
@@ -368,20 +376,20 @@ class Boot
      *        user logged into the session (also manage the user login here ? will be usefull for kerberos
      *        and similar approach)
      * - load user personal data (language, date/time setting, template preference)
-     * - load user system data (role)
+     * - load user system data (role).
+     *
      * @return array
      */
     private static function user()
     {
-
         self::log("Load user from session '" . self::$session_name . "'");
 
         // load current user from session
-        require_once(_base_ . '/lib/lib.user.php');
-        $GLOBALS['current_user'] =& DoceboUser::createDoceboUserFromSession('public_area');
+        require_once _base_ . '/lib/lib.user.php';
+        $GLOBALS['current_user'] = &DoceboUser::createDoceboUserFromSession('public_area');
 
         // ip coerency check
-        self::log("Ip coerency check.");
+        self::log('Ip coerency check.');
         if (Get::sett('session_ip_control', 'on') == 'on') {
             $ip = $_SERVER['HTTP_X_FORWARDED_FOR'] ? $_SERVER['HTTP_X_FORWARDED_FOR'] : $_SERVER['REMOTE_ADDR'];
             if (strpos($ip, ',') !== false) {
@@ -392,21 +400,20 @@ class Boot
                 Util::jump_to(Get::rel_path('base') . '/index.php?msg=104');
                 //Util::fatal("logip: ".Docebo::user()->getLogIp()."<br/>"."addr: ".$_SERVER['REMOTE_ADDR']."<br/>".'Ip incoherent!');
                 //unlog the user
-                die();
+                exit();
             }
         }
         // Generate a session signature or regenerate it if needed
-        self::log("Generating session signature");
+        self::log('Generating session signature');
         Util::generateSignature();
     }
 
     private static function anonFilteringInput()
     {
-
         $step_report = [];
 
         // Convert ' and " (quote or unquote)
-        self::log("Sanitize the input.");
+        self::log('Sanitize the input.');
 
         $filter_input = new FilterInput();
         $filter_input->tool = Get::cfg('filter_tool', 'htmlpurifier');
@@ -423,12 +430,10 @@ class Boot
         }
 
         $filter_input->sanitize();
-
     }
 
     private static function filteringInput()
     {
-
         $step_report = [];
 
         // todo: check if we can do in other way the same thing
@@ -439,14 +444,13 @@ class Boot
         }
 
         // Convert ' and " (quote or unquote)
-        self::log("Sanitize the input.");
+        self::log('Sanitize the input.');
 
         if (Docebo::user()->getUserLevelId() == ADMIN_GROUP_GODADMIN) {
             $filter_input = new FilterInput();
             $filter_input->tool = 'none';
             $filter_input->sanitize();
         } else {
-
             $filter_input = new FilterInput();
             $filter_input->tool = Get::cfg('filter_tool', 'htmlpurifier');
 
@@ -467,7 +471,7 @@ class Boot
             $_POST['passIns'] = \voku\helper\UTF8::clean(stripslashes($password_login));
         }
 
-        if (!defined("IS_API") && !defined("IS_PAYPAL") && (strtoupper($_SERVER['REQUEST_METHOD']) === 'POST' || defined("IS_AJAX"))) {
+        if (!defined('IS_API') && !defined('IS_PAYPAL') && (strtoupper($_SERVER['REQUEST_METHOD']) === 'POST' || defined('IS_AJAX'))) {
             // If this is a post or a ajax request then we must have a signature attached
             Util::checkSignature();
         }
@@ -475,25 +479,26 @@ class Boot
 
     /**
      * - load language from source
-     * - set the system language looking at ( user preference, browser detect, user force )
+     * - set the system language looking at ( user preference, browser detect, user force ).
+     *
      * @return array
      */
     private static function language()
     {
+        self::log('Loading session language functions');
 
-        self::log("Loading session language functions");
-
-        require_once(Forma::inc(_i18n_ . '/lib.lang.php'));
+        require_once Forma::inc(_i18n_ . '/lib.lang.php');
         $sop = Get::req('sop', DOTY_ALPHANUM, false);
-        if (!$sop) $sop = Get::req('special', DOTY_ALPHANUM, false);
+        if (!$sop) {
+            $sop = Get::req('special', DOTY_ALPHANUM, false);
+        }
         switch ($sop) {
-            case "changelang" :
-                {
+            case 'changelang':
                     $new_lang = Get::req('new_lang', DOTY_ALPHANUM, false);
 
                     self::log("Sop 'changelang' intercepted, changing lang to : $new_lang");
                     Lang::set($new_lang, isset($_GET['logout']));
-                };
+                ;
                 break;
         }
 
@@ -502,65 +507,64 @@ class Boot
     }
 
     /**
-     * - load the user preference about the date and time display and GMT
+     * - load the user preference about the date and time display and GMT.
+     *
      * @return array
      */
     private static function dateTime()
     {
-
-        self::log("Loading regional settings functions");
+        self::log('Loading regional settings functions');
 
         // todo : change this class
-        require_once(_i18n_ . '/lib.format.php');
+        require_once _i18n_ . '/lib.format.php';
         Format::instance();
     }
 
     /**
      * - load the library needed for image / css / skin retrivial process
-     * - detect the user associated template ( webdomain | admin setting | user preference )
+     * - detect the user associated template ( webdomain | admin setting | user preference ).
+     *
      * @return array
      */
     private static function template()
     {
-
-        self::log("Include layout manager file.");
+        self::log('Include layout manager file.');
         require_once _lib_ . '/layout/lib.layout.php';
     }
 
     /**
      * - load the page writer, that is a output cache mechanism that allow the use of different
-     * - page-zone to be cached (head, menu, content)
+     * - page-zone to be cached (head, menu, content).
+     *
      * @return null
      */
     private static function loadPageWriter()
     {
-
-        self::log("Include page writer manager file.");
+        self::log('Include page writer manager file.');
         require_once _base_ . '/lib/lib.pagewriter.php';
     }
 
     public static function start()
     {
-
-        list($usec, $sec) = explode(" ", microtime());
+        list($usec, $sec) = explode(' ', microtime());
         $GLOBALS['start'] = [
-            'time' => ((float)$usec + (float)$sec),
-            'memory' => function_exists('memory_get_usage') ? memory_get_usage() : 0
+            'time' => ((float) $usec + (float) $sec),
+            'memory' => function_exists('memory_get_usage') ? memory_get_usage() : 0,
         ];
     }
 
     public static function current_time()
     {
+        list($usec, $sec) = explode(' ', microtime());
+        $now = ((float) $usec + (float) $sec);
 
-        list($usec, $sec) = explode(" ", microtime());
-        $now = ((float)$usec + (float)$sec);
         return $now - $GLOBALS['start']['time'];
     }
 
     public static function current_memory()
     {
-
         $current = function_exists('memory_get_usage') ? memory_get_usage() : 0;
+
         return $current - $GLOBALS['start']['memory'];
     }
 
@@ -571,21 +575,20 @@ class Boot
 
     public static function get_log($as_string = false)
     {
-        return ($as_string ? implode("\n", self::$log_array) : self::$log_array);
+        return $as_string ? implode("\n", self::$log_array) : self::$log_array;
     }
 
     public static function error_catcher($code, $message, $file, $line)
     {
-
         if ($code & error_reporting()) {
-
             restore_error_handler();
 
             echo "<h1 style=\"font-size:16px;font-family:Arial;\">PHP Error [$code]</h1>\n"
                 . "<p style=\"font-size:12px;font-family:Arial;\">$message ($file:$line)</p>\n";
 
-            if (isset($_SERVER['REQUEST_URI']))
+            if (isset($_SERVER['REQUEST_URI'])) {
                 echo '<p style="font-size:12px;font-family:Arial;">REQUEST_URI = ' . $_SERVER['REQUEST_URI'] . '</p>';
+            }
 
             echo '<table style="margin:0; padding:0; font-size:12px;font-family: Arial; border-spacing:0;">'
                 . '<tr>'
@@ -597,30 +600,31 @@ class Boot
 
             $trace = debug_backtrace();
             foreach ($trace as $i => $t) {
-
-                if (!isset($t['file']))
+                if (!isset($t['file'])) {
                     $t['file'] = 'unknown';
-                if (!isset($t['line']))
+                }
+                if (!isset($t['line'])) {
                     $t['line'] = 0;
-                if (!isset($t['function']))
+                }
+                if (!isset($t['function'])) {
                     $t['function'] = 'unknown';
+                }
 
                 echo '<tr><td style="width:5px;background:#eeeeee;color:gray;padding:3px 5px 3px 10px;border-right:1px solid gray;">' . $i . '</td>'
                     . '<td style="' . ($i % 2 ? 'background:#F7F7F7;' : '') . 'padding:3px 10px 3px 10px;">'
                     . "{$t['file']} ({$t['line']}) "
                     . '</td>'
                     . '<td style="' . ($i % 2 ? 'background:#F7F7F7;' : '') . 'padding:3px 10px 3px 10px;"><i>';
-                if (isset($t['object']) && is_object($t['object']))
+                if (isset($t['object']) && is_object($t['object'])) {
                     echo get_class($t['object']) . '->';
-                if ($t['function'] !== 'error_catcher')
+                }
+                if ($t['function'] !== 'error_catcher') {
                     echo "{$t['function']}</i>()<i>";
+                }
                 echo '</i></td></tr>';
             }
             echo '</table>';
-            die();
+            exit();
         }
     }
-
 }
-
-?>

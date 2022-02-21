@@ -1,16 +1,27 @@
 <?php
+
+/*
+ * FORMA - The E-Learning Suite
+ *
+ * Copyright (c) 2013-2022 (Forma)
+ * https://www.formalms.org
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ *
+ * from docebo 4.0.5 CE 2008-2012 (c) docebo
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ */
+
 namespace appLms\Events\Api;
 
 use Symfony\Contracts\EventDispatcher\Event;
 
 /**
- * Class ApiUserRegistrationEvent
- * @package appLms\Events\Api
+ * Class ApiUserRegistrationEvent.
  */
 class ApiUserRegistrationEvent extends Event
 {
-    const EVENT_NAME = 'api.registration.event';
-    
+    public const EVENT_NAME = 'api.registration.event';
+
     /** @var null */
     protected $id;
 
@@ -19,7 +30,7 @@ class ApiUserRegistrationEvent extends Event
      */
     public function __construct()
     {
-        $this->id = NULL;
+        $this->id = null;
     }
 
     /**
@@ -47,5 +58,4 @@ class ApiUserRegistrationEvent extends Event
             'id' => $this->id,
         ];
     }
-
 }

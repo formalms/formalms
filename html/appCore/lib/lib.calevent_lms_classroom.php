@@ -1,61 +1,70 @@
-<?php defined("IN_FORMA") or die('Direct access is forbidden.');
+<?php
 
-
-
-/**
- * @package  admin-library
- * @subpackage calendar
- * @version  $Id:$
+/*
+ * FORMA - The E-Learning Suite
+ *
+ * Copyright (c) 2013-2022 (Forma)
+ * https://www.formalms.org
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ *
+ * from docebo 4.0.5 CE 2008-2012 (c) docebo
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  */
 
-class DoceboCalEvent_lms_classroom extends DoceboCalEvent_core {
+defined('IN_FORMA') or exit('Direct access is forbidden.');
 
+/**
+ * @version  $Id:$
+ */
+class DoceboCalEvent_lms_classroom extends DoceboCalEvent_core
+{
+    public $idCourse;
 
-	var $idCourse;
+    public function assignVar()
+    {
+        $this->id = importVar('id');
+        $this->calEventClass = importVar('calEventClass');
+        $this->start_year = importVar('start_year');
+        $this->start_month = importVar('start_month');
+        $this->start_day = importVar('start_day');
 
-	function assignVar() {
-		$this->id=importVar("id");
-		$this->calEventClass=importVar("calEventClass");
-		$this->start_year=importVar("start_year");
-		$this->start_month=importVar("start_month");
-		$this->start_day=importVar("start_day");
+        $this->_year = $this->start_year;
+        $this->_month = $this->start_month;
+        $this->_day = $this->start_day;
 
-		$this->_year=$this->start_year;
-		$this->_month=$this->start_month;
-		$this->_day=$this->start_day;
+        $this->start_hour = importVar('start_hour');
+        $this->start_min = importVar('start_min');
+        $this->start_sec = importVar('start_sec');
+        $this->end_year = importVar('end_year');
+        $this->end_month = importVar('end_month');
+        $this->end_day = importVar('end_day');
+        $this->end_hour = importVar('end_hour');
+        $this->end_min = importVar('end_min');
+        $this->end_sec = importVar('end_sec');
 
-		$this->start_hour=importVar("start_hour");
-		$this->start_min=importVar("start_min");
-		$this->start_sec=importVar("start_sec");
-		$this->end_year=importVar("end_year");
-		$this->end_month=importVar("end_month");
-		$this->end_day=importVar("end_day");
-		$this->end_hour=importVar("end_hour");
-		$this->end_min=importVar("end_min");
-		$this->end_sec=importVar("end_sec");
+        $this->title = importVar('title');
+        $this->description = importVar('description');
+        $this->classroom = importVar('classroom');
 
-		$this->title=importVar("title");
-		$this->description=importVar("description");
-		$this->classroom=importVar("classroom");
+        $this->_owner = importVar('_owner');
+        if (!$this->_owner) {
+            $this->_owner == Docebo::user()->getIdSt();
+        }
 
-		$this->_owner=importVar("_owner");
-		if (!$this->_owner) $this->_owner==Docebo::user()->getIdSt();
+        $this->category = importVar('category');
+        $this->idCourse = (isset($_SESSION['idCourse']) ? $_SESSION['idCourse'] : 0);
+    }
 
-		$this->category=importVar("category");
-		$this->idCourse=(isset($_SESSION["idCourse"]) ? $_SESSION["idCourse"] : 0 );
-	}
+    public function getForm()
+    {
+        require_once $GLOBALS['where_lms'] . '/lib/lib.classroom.php';
+        $cm = new ClassroomManager();
 
-	function getForm() {
+        $class_arr = $cm->getClassroomArray();
+        $class_list = '[' . implode(',', addSurroundingQuotes($class_arr, '"')) . ']';
+        $class_keys = '[' . implode(',', addSurroundingQuotes(array_keys($class_arr), '"')) . ']';
 
-		require_once($GLOBALS["where_lms"]."/lib/lib.classroom.php");
-		$cm=new ClassroomManager();
-
-		$class_arr=$cm->getClassroomArray();
-		$class_list="[".implode(",", addSurroundingQuotes($class_arr, '"'))."]";
-		$class_keys="[".implode(",", addSurroundingQuotes(array_keys($class_arr), '"'))."]";
-
-
-		$form_obj='{
+        $form_obj = '{
 		"form":[
 			{"type":"structure","value":"row"},
 			{"type":"structure","value":"cell","field_class":"label"},
@@ -103,9 +112,9 @@ class DoceboCalEvent_lms_classroom extends DoceboCalEvent_core {
 			{"type":"structure","value":"/row"},
 			{"type":"structure","value":"row"},
 			{"type":"structure","value":"cell","field_class":"label"},
-			{"type":"label","value":"'. Lang::t("_CLASSROOM", "admin_classroom", "lms").'","translatevalue":"0"},
+			{"type":"label","value":"' . Lang::t('_CLASSROOM', 'admin_classroom', 'lms') . '","translatevalue":"0"},
 			{"type":"structure","value":"/cell"},
-			{"type":"structure","value":"cell","field_class":"field"},	{"type":"select","id":"classroom","value":'.$class_list.',"key":'.$class_keys.',"translatevalue":"0"},
+			{"type":"structure","value":"cell","field_class":"field"},	{"type":"select","id":"classroom","value":' . $class_list . ',"key":' . $class_keys . ',"translatevalue":"0"},
 			{"type":"structure","value":"/cell"},
 			{"type":"structure","value":"/row"},
 			{"type":"structure","value":"row"},
@@ -120,127 +129,123 @@ class DoceboCalEvent_lms_classroom extends DoceboCalEvent_core {
 
 		}';
 
-		return $form_obj;
-	}
+        return $form_obj;
+    }
 
-	function store() {
-		if ($this->getPerm()) {
-			
-			$start_date=$this->start_year."-".$this->start_month."-".$this->start_day." ".$this->start_hour.":".$this->start_min.":".$this->start_sec;
-			$end_date=$this->end_year."-".$this->end_month."-".$this->end_day." ".$this->end_hour.":".$this->end_min.":".$this->end_sec;
+    public function store()
+    {
+        if ($this->getPerm()) {
+            $start_date = $this->start_year . '-' . $this->start_month . '-' . $this->start_day . ' ' . $this->start_hour . ':' . $this->start_min . ':' . $this->start_sec;
+            $end_date = $this->end_year . '-' . $this->end_month . '-' . $this->end_day . ' ' . $this->end_hour . ':' . $this->end_min . ':' . $this->end_sec;
 
-			if ($this->id > 0) {
+            if ($this->id > 0) {
+                $action_add = false;
 
-				$action_add=FALSE;
+                $table = $GLOBALS['prefix_lms'] . '_classroom_calendar';
+                $qtxt = 'SELECT start_date, end_date FROM ' . $table . ' ';
+                $qtxt .= "WHERE id='" . (int) $this->id . "'";
 
-				$table =$GLOBALS['prefix_lms']."_classroom_calendar";
-				$qtxt ="SELECT start_date, end_date FROM ".$table." ";
-				$qtxt.="WHERE id='".(int)$this->id."'";
+                $q = sql_query($qtxt);
 
-				$q=sql_query($qtxt);
+                list($old_start_date, $old_end_date) = sql_fetch_row($q);
 
-				list($old_start_date, $old_end_date)=sql_fetch_row($q);
+                $query = 'UPDATE ' . $GLOBALS['prefix_lms'] . '_classroom_calendar SET ';
+            } else {
+                $action_add = true;
 
-				$query="UPDATE ".$GLOBALS['prefix_lms']."_classroom_calendar SET ";
-			}
-			else {
+                $old_start_date = $start_date;
+                $old_end_date = $end_date;
 
-				$action_add=TRUE;
+                $query = 'INSERT INTO ' . $GLOBALS['prefix_lms'] . "_classroom_calendar SET owner='" . Docebo::user()->getIdSt() . "',";
+            }
 
-				$old_start_date=$start_date;
-				$old_end_date=$end_date;
+            $query .= "start_date='" . $start_date . "',";
+            $query .= "end_date='" . $end_date . "',";
+            $query .= "classroom_id='" . (int) $this->classroom . "',";
+            $query .= "title='" . $this->title . "',";
+            $query .= "description='" . $this->description . "' ";
 
-				$query="INSERT INTO ".$GLOBALS['prefix_lms']."_classroom_calendar SET owner='".Docebo::user()->getIdSt()."',";
-			}
+            if ($this->id > 0) {
+                $query .= " WHERE id='" . $this->id . "'";
+            }
 
-			$query.="start_date='".$start_date."',";
-			$query.="end_date='".$end_date."',";
-			$query.="classroom_id='".(int)$this->classroom."',";
-			$query.="title='".$this->title."',";
-			$query.="description='".$this->description."' ";
+            $q = sql_query($query);
+            if (sql_error()) {
+                exit(sql_error() . '<br />' . $query);
+            }
 
-			if ($this->id > 0)
-				$query.=" WHERE id='".$this->id."'";
-			
-			$q=sql_query($query);
-			if (sql_error()) die(sql_error()."<br />".$query);
+            if ($q) {
+                if ($action_add) {
+                    $this->id = sql_insert_id();
+                }
 
+                // -- timetable setup ------------------------------------------------
+                require_once $GLOBALS['where_framework'] . '/lib/resources/lib.timetable.php';
+                $tt = new TimeTable();
 
-			if ($q) {
-				if ($action_add) {
-					$this->id = sql_insert_id();
-				}
+                $resource = 'classroom';
+                $resource_id = (int) $this->classroom;
+                $consumer = 'classroom_event';
+                $consumer_id = $this->id;
+                // -------------------------------------------------------------------
 
+                $save_ok = $tt->saveEvent(false, $start_date, $end_date, $old_start_date, $old_end_date, $resource, $resource_id, $consumer, $consumer_id);
 
-				// -- timetable setup ------------------------------------------------
-				require_once($GLOBALS["where_framework"]."/lib/resources/lib.timetable.php");
-				$tt=new TimeTable();
+                if (!$save_ok) {
+                    // Not very optimized but we're late :P
+                    $query = 'DELETE FROM ' . $GLOBALS['prefix_lms'] . "_classroom_calendar WHERE id='" . $this->id . "'";
+                    $q = sql_query($query);
+                    //$this->id=0;
+                    return false;
+                }
+            } else {
+                //$this->id=0;
+            }
 
-				$resource="classroom";
-				$resource_id=(int)$this->classroom;
-				$consumer="classroom_event";
-				$consumer_id=$this->id;
-				// -------------------------------------------------------------------
+            return $this->id;
+        } else {
+            return 0;
+        }
+    }
 
+    public function del()
+    {
+        if ($this->getPerm()) {
+            $start_date = $this->start_year . '-' . $this->start_month . '-' . $this->start_day . ' ' . $this->start_hour . ':' . $this->start_min . ':' . $this->start_sec;
+            $end_date = $this->end_year . '-' . $this->end_month . '-' . $this->end_day . ' ' . $this->end_hour . ':' . $this->end_min . ':' . $this->end_sec;
 
-				$save_ok=$tt->saveEvent(FALSE, $start_date, $end_date, $old_start_date, $old_end_date, $resource, $resource_id, $consumer, $consumer_id);
+            // -- timetable setup ------------------------------------------------
+            require_once $GLOBALS['where_framework'] . '/lib/resources/lib.timetable.php';
+            $tt = new TimeTable();
 
-				if (!$save_ok) {
-					// Not very optimized but we're late :P
-					$query="DELETE FROM ".$GLOBALS['prefix_lms']."_classroom_calendar WHERE id='".$this->id."'";
-					$q=sql_query($query);
-					//$this->id=0;
-					return false;
-				}
+            $resource = 'classroom';
+            $resource_id = (int) $this->classroom;
+            $consumer = 'classroom_event';
+            $consumer_id = $this->id;
+            // -------------------------------------------------------------------
 
-			} else {
-				//$this->id=0;
-			}
+            $delete_ok = $tt->deleteEvent(false, $resource, $resource_id, $consumer, $consumer_id, $start_date, $end_date);
 
-			return $this->id;
-		} else {
-			return 0;
-		}
-	}
+            if ($delete_ok) {
+                $query = 'DELETE FROM ' . $GLOBALS['prefix_lms'] . "_classroom_calendar WHERE id='" . $this->id . "'";
+                $q = sql_query($query);
 
-	function del() {
-		if ($this->getPerm()) {
+                $this->id = 0;
+            }
+        }
+    }
 
-			$start_date=$this->start_year."-".$this->start_month."-".$this->start_day." ".$this->start_hour.":".$this->start_min.":".$this->start_sec;
-			$end_date=$this->end_year."-".$this->end_month."-".$this->end_day." ".$this->end_hour.":".$this->end_min.":".$this->end_sec;
+    public function getPerm()
+    {
+        $permissions = 2;
 
-			// -- timetable setup ------------------------------------------------
-			require_once($GLOBALS["where_framework"]."/lib/resources/lib.timetable.php");
-			$tt=new TimeTable();
+        if ($permissions == 2) {
+            return 1;
+        }
+        if ($permissions == 1 and Docebo::user()->getIdSt() == $this->_owner) {
+            return 1;
+        }
 
-			$resource="classroom";
-			$resource_id=(int)$this->classroom;
-			$consumer="classroom_event";
-			$consumer_id=$this->id;
-			// -------------------------------------------------------------------
-
-
-			$delete_ok=$tt->deleteEvent(FALSE, $resource, $resource_id, $consumer, $consumer_id, $start_date, $end_date);
-
-			if ($delete_ok) {
-				$query="DELETE FROM ".$GLOBALS['prefix_lms']."_classroom_calendar WHERE id='".$this->id."'";
-				$q=sql_query($query);
-
-				$this->id=0;
-			}
-		};
-	}
-
-	function getPerm() {
-
-		$permissions=2;
-
-
-		if ($permissions==2) return 1;
-		if ($permissions==1 and Docebo::user()->getIdSt()==$this->_owner) return 1;
-
-		return 0;
-
-	}
+        return 0;
+    }
 }
-?>

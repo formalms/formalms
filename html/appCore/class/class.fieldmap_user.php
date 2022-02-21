@@ -1,149 +1,143 @@
-<?php defined("IN_FORMA") or die('Direct access is forbidden.');
+<?php
 
-
-
-/**
- * @package admin-core
- * @subpackage field
+/*
+ * FORMA - The E-Learning Suite
+ *
+ * Copyright (c) 2013-2022 (Forma)
+ * https://www.formalms.org
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ *
+ * from docebo 4.0.5 CE 2008-2012 (c) docebo
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  */
- 
-require_once($GLOBALS["where_framework"]."/class/class.fieldmap.php");
 
-class FieldMapUser extends FieldMap {
+defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-	var $lang=NULL;
+require_once $GLOBALS['where_framework'] . '/class/class.fieldmap.php';
 
-	/**
-	 * class constructor
-	 */
-	function FieldMapUser() {
+class FieldMapUser extends FieldMap
+{
+    public $lang = null;
 
-		$this->lang=& DoceboLanguage::createInstance("admin_directory", "framework");
+    /**
+     * class constructor.
+     */
+    public function FieldMapUser()
+    {
+        $this->lang = &DoceboLanguage::createInstance('admin_directory', 'framework');
 
-		parent::FieldMap();
-	}
+        parent::FieldMap();
+    }
 
+    public function getPrefix()
+    {
+        return 'user_';
+    }
 
-	function getPrefix() {
-		return "user_";
-	}
+    public function getPredefinedFieldLabel($field_id)
+    {
+        $res['name'] = $this->lang->def('_FIRSTNAME');
+        $res['lastname'] = $this->lang->def('_LASTNAME');
+        $res['userid'] = $this->lang->def('_USERNAME');
 
+        return $res[$field_id];
+    }
 
-	function getPredefinedFieldLabel($field_id) {
+    public function getRawPredefinedFields()
+    {
+        return ['name', 'lastname', 'userid'];
+    }
 
-		$res["name"]=$this->lang->def("_FIRSTNAME");
-		$res["lastname"]=$this->lang->def("_LASTNAME");
-		$res["userid"]=$this->lang->def("_USERNAME");
+    public function getCustomFields($with_prefix = true)
+    {
+        require_once $GLOBALS['where_framework'] . '/lib/lib.field.php';
 
-		return $res[$field_id];
-	}
+        $res = [];
+        $fl = new FieldList();
 
+        $acl_manager = Docebo::user()->getAclManager();
+        $user_groups = [$acl_manager->getGroupRegisteredId()];
 
-	function getRawPredefinedFields() {
-		return ["name", "lastname", "userid"];
-	}
+        $pfx = ($with_prefix ? $this->getPrefix() . 'custom_' : '');
+        $field_list = $fl->getFieldsFromIdst($user_groups);
 
+        foreach ($field_list as $field_id => $val) {
+            $res[$pfx . $field_id] = $val[FIELD_INFO_TRANSLATION];
+        }
 
-	function getCustomFields($with_prefix=TRUE) {
-		require_once($GLOBALS["where_framework"]."/lib/lib.field.php");
+        return $res;
+    }
 
-		$res= [];
-		$fl=new FieldList();
+    /**
+     * @param array $predefined_data
+     * @param array $custom_data
+     * @param int   $id              user id; if 0 a new user will be created
+     * @param bool  $dropdown_id     if true will take dropdown values as id;
+     *                               else will search the id starting from the value
+     */
+    public function saveFields($predefined_data, $custom_data, $id = 0, $dropdown_id = true)
+    {
+        require_once $GLOBALS['where_crm'] . '/modules/company/lib.company.php';
 
-		$acl_manager=Docebo::user()->getAclManager();
-		$user_groups= [$acl_manager->getGroupRegisteredId()];
+        // TODO: at this moment the function works only for user creation;
+        // does not update the user if it already exists
 
-		$pfx=($with_prefix ? $this->getPrefix()."custom_" : "");
-		$field_list=$fl->getFieldsFromIdst($user_groups);
+        $acl = &Docebo::user()->getACL();
+        $acl_manager = &Docebo::user()->getAclManager();
 
-		foreach($field_list as $field_id=>$val) {
-			$res[$pfx.$field_id]=$val[FIELD_INFO_TRANSLATION];
-		}
+        $data = [];
 
-		return $res;
-	}
+        $userid = $predefined_data['userid'];
+        $firstname = $predefined_data['firstname'];
+        $lastname = $predefined_data['lastname'];
+        $pass = $predefined_data['pass'];
+        $email = $predefined_data['email'];
 
+        if (!empty($userid)) {
+            $idst = $acl_manager->registerUser($userid, $firstname, $lastname,
+                                                            $pass, $email, '', '');
+        } else {
+            $idst = false;
+        }
 
-	/**
-	 * @param array $predefined_data
-	 * @param array $custom_data
-	 * @param integer $id user id; if 0 a new user will be created
-	 * @param boolean $dropdown_id if true will take dropdown values as id;
-	 *                             else will search the id starting from the value.
-	 */
-	function saveFields($predefined_data, $custom_data, $id=0, $dropdown_id=TRUE) {
-		require_once($GLOBALS["where_crm"]."/modules/company/lib.company.php");
+        if ($idst !== false) {
+            //  -- Add user to registered users group if not importing into root ---
 
-		// TODO: at this moment the function works only for user creation;
-		// does not update the user if it already exists
+            $idst_oc = $acl_manager->getGroup(false, '/oc_0');
+            $idst_oc = $idst_oc[ACL_INFO_IDST];
 
-		$acl =& Docebo::user()->getACL();
-		$acl_manager =& Docebo::user()->getAclManager();
+            $idst_ocd = $acl_manager->getGroup(false, '/ocd_0');
+            $idst_ocd = $idst_ocd[ACL_INFO_IDST];
 
-		$data= [];
+            $acl_manager->addToGroup($idst_oc, $idst);
+            $acl_manager->addToGroup($idst_ocd, $idst);
 
-		$userid=$predefined_data["userid"];
-		$firstname=$predefined_data["firstname"];
-		$lastname=$predefined_data["lastname"];
-		$pass=$predefined_data["pass"];
-		$email=$predefined_data["email"];
+            //  -------------------------------------------------------------------|
 
-		if (!empty($userid)) {
-			$idst = $acl_manager->registerUser($userid, $firstname, $lastname,
-															$pass, $email, '','');
-		}
-		else {
-			$idst=FALSE;
-		}
+            // add to group level
+            $userlevel = $acl_manager->getGroupST(ADMIN_GROUP_USER);
+            $acl_manager->addToGroup($userlevel, $idst);
 
-		if($idst !== false) {
+            // -- Custom fields ----------------------------------------------------
 
-			//  -- Add user to registered users group if not importing into root ---
+            require_once $GLOBALS['where_framework'] . '/lib/lib.field.php';
 
-			$idst_oc 			= $acl_manager->getGroup(false, '/oc_0');
-			$idst_oc 			= $idst_oc[ACL_INFO_IDST];
+            $res = [];
+            $fl = new FieldList();
 
-			$idst_ocd 			= $acl_manager->getGroup(false, '/ocd_0');
-			$idst_ocd 			= $idst_ocd[ACL_INFO_IDST];
+            $custom_fields = array_keys($this->getCustomFields(false));
+            $field_info_arr = $fl->getFieldsFromIdst($custom_fields);
 
-			$acl_manager->addToGroup($idst_oc, $idst);
-			$acl_manager->addToGroup($idst_ocd, $idst);
+            foreach ($custom_fields as $field_id) {
+                // store direct
+                if (isset($custom_data[$field_id])) {
+                    $field_obj = &$fl->getFieldInstance($field_id);
+                    //					$field_obj->setFieldEntryTable($company_entry_table);
+                    $field_obj->storeDirect($idst, $custom_data[$field_id], $dropdown_id, false, true);
+                }
+            }
+        }
 
-			//  -------------------------------------------------------------------|
-
-			// add to group level
-			$userlevel = $acl_manager->getGroupST(ADMIN_GROUP_USER);
-			$acl_manager->addToGroup($userlevel,$idst );
-
-
-
-			// -- Custom fields ----------------------------------------------------
-
-			require_once($GLOBALS["where_framework"]."/lib/lib.field.php");
-
-			$res= [];
-			$fl=new FieldList();
-
-			$custom_fields=array_keys($this->getCustomFields(FALSE));
-			$field_info_arr=$fl->getFieldsFromIdst($custom_fields);
-
-			foreach($custom_fields as $field_id) {
-
-				// store direct
-				if (isset($custom_data[$field_id])) {
-					$field_obj=& $fl->getFieldInstance($field_id);
-//					$field_obj->setFieldEntryTable($company_entry_table);
-					$field_obj->storeDirect($idst, $custom_data[$field_id], $dropdown_id, FALSE, TRUE );
-				}
-
-			}
-		}
-
-		return $idst;
-	}
-
-
+        return $idst;
+    }
 }
-
-
-?>

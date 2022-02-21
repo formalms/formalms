@@ -2,17 +2,17 @@
 
 <h3><?php echo Lang::t('_DATABASE'); ?></h3>
 <div id="import_db_info">
-	<span id="loading_db"><img src="<?php echo getTemplatePath() ?>images/loading.gif" alt="loading" /></span>
+	<span id="loading_db"><img src="<?php echo getTemplatePath(); ?>images/loading.gif" alt="loading" /></span>
 	<?php echo Lang::t('_DB_IMPORTING'); ?>
 </div>
 <br/>
 <div id="logs" style="white-space:pre;overflow:auto;max-height:200px;"></div>
 <h3><?php echo Lang::t('_LANGUAGES'); ?></h3>
 <div id="import_lang_info">
-	<?php foreach ($_SESSION["lang_install"] as $code => $ok): ?>
-			<span id="loading_img_<?php echo $code; ?>" style="visibility: hidden;"><img src="<?php echo getTemplatePath() ?>images/loading.gif" alt="loading" /></span>
+	<?php foreach ($_SESSION['lang_install'] as $code => $ok) { ?>
+			<span id="loading_img_<?php echo $code; ?>" style="visibility: hidden;"><img src="<?php echo getTemplatePath(); ?>images/loading.gif" alt="loading" /></span>
 			<span><?php echo ucfirst($code); ?></span>
-	<?php endforeach; ?>
+	<?php } ?>
 </div>
 <br/>
 <script type="text/javascript">
@@ -46,8 +46,8 @@
 
 	function importLanguages() {
 
-		var language =new Array('<?php echo implode("','", array_keys($_SESSION["lang_install"])); ?>');
-		var platform =new Array('<?php echo implode("','", array_keys($_SESSION["platform_arr"])); ?>');
+		var language =new Array('<?php echo implode("','", array_keys($_SESSION['lang_install'])); ?>');
+		var platform =new Array('<?php echo implode("','", array_keys($_SESSION['platform_arr'])); ?>');
 
 		var prev_lang ='';
 		var callback = {

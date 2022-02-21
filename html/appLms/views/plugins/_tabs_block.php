@@ -1,12 +1,12 @@
 <div class="yui-t6">
 	<div class="yui-b">
 		<?php
-		$this->widget('lms_block', [
-			'zone' => 'right',
-			'link' => 'plugins/show',
-			'block_list' => $block_list
+        $this->widget('lms_block', [
+            'zone' => 'right',
+            'link' => 'plugins/show',
+            'block_list' => $block_list,
         ]);
-		?>
+        ?>
 	</div>
 	<div id="yui-main">
 		<div class="yui-b">
@@ -14,16 +14,14 @@
 			<div class="middlearea_container">
 				<?php
 
-				$w = $this->widget('lms_tab', [
-     			'active' => 'plugins',
-     			'close' => false
+                $w = $this->widget('lms_tab', [
+                 'active' => 'plugins',
+                 'close' => false,
                 ]);
 
-    	
+            $w->endWidget();
 
-    		$w->endWidget();
-
-				?>
+                ?>
 			</div>
 
 		</div>

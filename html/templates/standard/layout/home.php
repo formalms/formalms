@@ -24,9 +24,9 @@
 		<?php echo Layout::zone('page_head'); ?>
 		<!-- Restyling -->
 		<?php
-		Util::get_js(Get::rel_path('base') . '../web/static/main.js', true, true);
-		Util::get_css(Get::rel_path('base') . '../web/static/main.css', true, true);
-		?>
+        Util::get_js(Get::rel_path('base') . '../web/static/main.js', true, true);
+        Util::get_css(Get::rel_path('base') . '../web/static/main.css', true, true);
+        ?>
 	</head>
 	<body class="yui-skin-docebo yui-skin-sam">
 		<!-- blind nav -->
@@ -34,7 +34,7 @@
 		<!-- header -->
 		<div class="header">
 			<div class="select-language">
-				<?php echo Lang::t('_CHANGELANG', 'register').': '.Layout::change_lang(); ?>
+				<?php echo Lang::t('_CHANGELANG', 'register') . ': ' . Layout::change_lang(); ?>
 			</div>
 			<!-- <h1 id="main_title"><a href="index.php"><?php echo Lang::t('_MAIN_TITLE', 'login'); ?></a></h1>-->
 			<a href="index.php"><img class="left_logo" src="<?php echo Layout::path(); ?>images/company_logo.png" alt="Left logo" /></a>

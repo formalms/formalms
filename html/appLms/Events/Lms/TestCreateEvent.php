@@ -1,11 +1,23 @@
 <?php
+
+/*
+ * FORMA - The E-Learning Suite
+ *
+ * Copyright (c) 2013-2022 (Forma)
+ * https://www.formalms.org
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ *
+ * from docebo 4.0.5 CE 2008-2012 (c) docebo
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ */
+
 namespace appLms\Events\Lms;
 
 use Symfony\Contracts\EventDispatcher\Event;
 
 class TestCreateEvent extends Event
 {
-    const EVENT_NAME = 'lms.test.create';
+    public const EVENT_NAME = 'lms.test.create';
 
     protected $formElements;
     /**
@@ -19,6 +31,7 @@ class TestCreateEvent extends Event
 
     /**
      * TestCreateEvent constructor.
+     *
      * @param \Learning_Test $object_test
      * @param $lang
      */
@@ -28,7 +41,6 @@ class TestCreateEvent extends Event
         $this->lang = $lang;
 
         $this->formElements = [];
-
     }
 
     /**
@@ -70,7 +82,7 @@ class TestCreateEvent extends Event
 
     public function getElementString()
     {
-        $formString = "";
+        $formString = '';
 
         foreach ($this->formElements as $formElement) {
             $formString .= $formElement;
@@ -90,5 +102,4 @@ class TestCreateEvent extends Event
             'lang' => $this->lang,
         ];
     }
-
 }

@@ -1,13 +1,23 @@
 <?php
+
+/*
+ * FORMA - The E-Learning Suite
+ *
+ * Copyright (c) 2013-2022 (Forma)
+ * https://www.formalms.org
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ *
+ * from docebo 4.0.5 CE 2008-2012 (c) docebo
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ */
+
 namespace appLms\Events\Lms;
 
-use Behat\Mink\Exception\Exception;
 use Symfony\Contracts\EventDispatcher\Event;
-use appCore\lib\Sms\SmsGatewayManager;
 
 class TestCompletedEvent extends Event
 {
-    const EVENT_NAME = 'lms.test.complete';
+    public const EVENT_NAME = 'lms.test.complete';
 
     /**
      * @var
@@ -44,7 +54,7 @@ class TestCompletedEvent extends Event
      */
     protected $testDate;
 
-    public function __construct($object_test,$user_id,$acl_man)
+    public function __construct($object_test, $user_id, $acl_man)
     {
         $this->test = $object_test;
         $this->userId = $user_id;
@@ -58,6 +68,7 @@ class TestCompletedEvent extends Event
     {
         $this->test = $test;
     }
+
     /**
      * @return mixed
      */
@@ -65,7 +76,6 @@ class TestCompletedEvent extends Event
     {
         return $this->test;
     }
-
 
     /**
      * @param mixed $userId
@@ -99,15 +109,13 @@ class TestCompletedEvent extends Event
         return $this->userPhoneNumber;
     }
 
-    public function sendMessage($messageText) {
-
-        require_once(_base_ . '/appCore/lib/Sms/SmsGatewayManager.php');
+    public function sendMessage($messageText)
+    {
+        require_once _base_ . '/appCore/lib/Sms/SmsGatewayManager.php';
 
         try {
             return \SmsGatewayManager::send([$this->userPhoneNumber], strip_tags($messageText));
-
-        }
-        catch (SmsGatewayException $e) {
+        } catch (SmsGatewayException $e) {
             return false;
         }
     }

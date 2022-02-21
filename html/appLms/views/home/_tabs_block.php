@@ -4,7 +4,7 @@
         <div>
             <?php
             $this->widget('lms_tab', [
-                'active' => 'home'
+                'active' => 'home',
             ]);
             ?>
         </div>

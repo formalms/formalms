@@ -28,7 +28,7 @@
 
 <div class="lang_sel_box">
 <?php
-	echo Form::getDropdown(Lang::t('_LANGUAGE').':', 'language', 'language', Lang::getLanguageList('language'), Lang::getSelLang());
+    echo Form::getDropdown(Lang::t('_LANGUAGE') . ':', 'language', 'language', Lang::getLanguageList('language'), Lang::getSelLang());
 ?>
 
 </div><div class="no_float"></div>

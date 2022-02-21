@@ -1,131 +1,144 @@
-<?php defined("IN_FORMA") or die('Direct access is forbidden.');
+<?php
 
+/*
+ * FORMA - The E-Learning Suite
+ *
+ * Copyright (c) 2013-2022 (Forma)
+ * https://www.formalms.org
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ *
+ * from docebo 4.0.5 CE 2008-2012 (c) docebo
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ */
 
+defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-class RoomPermissions {
+class RoomPermissions
+{
+    public $prefix = null;
+    public $dbconn = null;
+    public $room_id = '';
+    public $module = '';
 
-	var $prefix=NULL;
-	var $dbconn=NULL;
-	var $room_id="";
-	var $module="";
+    public function RoomPermissions($room_id, $module, $prefix = false, $dbconn = null)
+    {
+        $this->prefix = ($prefix !== false ? $prefix : $GLOBALS['prefix_scs']);
+        $this->dbconn = $dbconn;
+        $this->platform = Get::cur_plat();
+        $this->room_id = (int) $room_id;
+        $this->module = $module;
+    }
 
+    public function _executeQuery($query)
+    {
+        if ($this->dbconn === null) {
+            $rs = sql_query($query);
+        } else {
+            $rs = sql_query($query, $this->dbconn);
+        }
 
-	function RoomPermissions($room_id, $module, $prefix=FALSE, $dbconn=NULL) {
-		$this->prefix = ($prefix !== FALSE ? $prefix : $GLOBALS["prefix_scs"]);
-		$this->dbconn = $dbconn;
-		$this->platform = Get::cur_plat();
-		$this->room_id = (int)$room_id;
-		$this->module = $module;
-	}
+        return $rs;
+    }
 
+    public function _executeInsert($query)
+    {
+        if ($this->dbconn === null) {
+            if (!sql_query($query)) {
+                return false;
+            }
+        } else {
+            if (!sql_query($query, $this->dbconn)) {
+                return false;
+            }
+        }
+        if ($this->dbconn === null) {
+            return sql_insert_id();
+        } else {
+            return sql_insert_id($this->dbconn);
+        }
+    }
 
-	function _executeQuery( $query ) {
-		if( $this->dbconn === NULL )
-			$rs = sql_query( $query );
-		else
-			$rs = sql_query( $query, $this->dbconn );
-		return $rs;
-	}
+    public function _getPermTable()
+    {
+        return $this->prefix . '_chatperm';
+    }
 
+    public function getRoomId()
+    {
+        return (int) $this->room_id;
+    }
 
-	function _executeInsert( $query ) {
-		if( $this->dbconn === NULL ) {
-			if( !sql_query( $query ) )
-				return FALSE;
-		} else {
-			if( !sql_query( $query, $this->dbconn ) )
-				return FALSE;
-		}
-		if( $this->dbconn === NULL )
-			return sql_insert_id();
-		else
-			return sql_insert_id($this->dbconn);
-	}
+    public function setRoomId($room_id)
+    {
+        $this->room_id = (int) $room_id;
+    }
 
+    public function getModule()
+    {
+        return $this->module;
+    }
 
-	function _getPermTable() {
-		return $this->prefix."_chatperm";
-	}
+    public function addPerm($perm, $idst_arr)
+    {
+        $res = true;
 
+        if (empty($perm)) {
+            return false;
+        }
 
-	function getRoomId() {
-		return (int)$this->room_id;
-	}
+        foreach ($idst_arr as $user_idst) {
+            $qtxt = 'INSERT INTO ' . $this->_getPermTable() . ' (room_id, module, user_idst, perm) ';
+            $qtxt .= "VALUES ('" . $this->getRoomId() . "', '" . $this->getModule() . "', '" . $user_idst . "', '" . $perm . "')";
 
+            $q = $this->_executeQuery($qtxt);
+            if (!$q) {
+                $res = false;
+            }
+        }
 
-	function setRoomId($room_id) {
-		$this->room_id=(int)$room_id;
-	}
+        return $res;
+    }
 
-	function getModule() {
-		return $this->module;
-	}
+    public function removePerm($perm, $idst_arr)
+    {
+        $res = true;
 
+        if (empty($perm)) {
+            return false;
+        }
 
-	function addPerm($perm, $idst_arr) {
-		$res=TRUE;
+        if ((is_array($idst_arr)) && (count($idst_arr) > 0)) {
+            $qtxt = 'DELETE FROM ' . $this->_getPermTable() . " WHERE room_id='" . $this->getRoomId() . "' AND ";
+            $qtxt .= "module='" . $this->getModule() . "' AND perm='" . $perm . "' AND ";
+            $qtxt .= 'user_idst IN (' . implode(',', $idst_arr) . ')';
 
-		if (empty($perm))
-			return FALSE;
+            $q = $this->_executeQuery($qtxt);
+            if (!$q) {
+                $res = false;
+            }
+        }
 
-		foreach($idst_arr as $user_idst) {
-			$qtxt ="INSERT INTO ".$this->_getPermTable()." (room_id, module, user_idst, perm) ";
-			$qtxt.="VALUES ('".$this->getRoomId()."', '".$this->getModule()."', '".$user_idst."', '".$perm."')";
+        return $res;
+    }
 
-			$q=$this->_executeQuery($qtxt);
-			if (!$q)
-				$res=FALSE;
-		}
+    public function getAllPerm()
+    {
+        $res = [];
 
-		return $res;
-	}
+        $fields = 'user_idst, perm';
+        $qtxt = 'SELECT ' . $fields . ' FROM ' . $this->_getPermTable() . ' WHERE ';
+        $qtxt .= "room_id='" . $this->getRoomId() . "' AND module='" . $this->getModule() . "'";
 
+        $q = $this->_executeQuery($qtxt);
 
-	function removePerm($perm, $idst_arr) {
-		$res=TRUE;
+        if (($q) && (sql_num_rows($q) > 0)) {
+            while ($row = sql_fetch_assoc($q)) {
+                $user_idst = $row['user_idst'];
+                $perm = $row['perm'];
+                $res[$perm][$user_idst] = $user_idst;
+            }
+        }
 
-		if (empty($perm))
-			return FALSE;
-
-		if ((is_array($idst_arr)) && (count($idst_arr) > 0)) {
-
-			$qtxt ="DELETE FROM ".$this->_getPermTable()." WHERE room_id='".$this->getRoomId()."' AND ";
-			$qtxt.="module='".$this->getModule()."' AND perm='".$perm."' AND ";
-			$qtxt.="user_idst IN (".implode(",", $idst_arr).")";
-
-			$q=$this->_executeQuery($qtxt);
-			if (!$q)
-				$res=FALSE;
-		}
-
-		return $res;
-	}
-
-
-	function getAllPerm() {
-		$res= [];
-
-		$fields="user_idst, perm";
-		$qtxt ="SELECT ".$fields." FROM ".$this->_getPermTable()." WHERE ";
-		$qtxt.="room_id='".$this->getRoomId()."' AND module='".$this->getModule()."'";
-
-		$q=$this->_executeQuery($qtxt);
-
-		if (($q) && (sql_num_rows($q) > 0)) {
-			while ($row=sql_fetch_assoc($q)) {
-
-				$user_idst=$row["user_idst"];
-				$perm=$row["perm"];
-				$res[$perm][$user_idst]=$user_idst;
-
-			}
-		}
-
-		return $res;
-	}
-
-
+        return $res;
+    }
 }
-
-
-?>

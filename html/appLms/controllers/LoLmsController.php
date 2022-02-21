@@ -1,16 +1,27 @@
-<?php defined("IN_FORMA") or die('Direct access is forbidden.');
+<?php
 
+/*
+ * FORMA - The E-Learning Suite
+ *
+ * Copyright (c) 2013-2022 (Forma)
+ * https://www.formalms.org
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ *
+ * from docebo 4.0.5 CE 2008-2012 (c) docebo
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ */
+
+defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 class LoLmsController extends LmsController
 {
-
     public $name = 'lo';
 
     /** @var Services_JSON */
     protected $json;
 
     /**
-     * @var LoLms $model
+     * @var LoLms
      */
     protected $model;
 
@@ -18,7 +29,7 @@ class LoLmsController extends LmsController
 
     protected $idCourse;
 
-    function init()
+    public function init()
     {
         checkPerm('view', false, 'organization');
 
@@ -70,32 +81,33 @@ class LoLmsController extends LmsController
         foreach ($loData as $lo) {
             $id = $lo['id'];
             $lo['image_type'] = LomanagerLmsController::getLearningObjectIcon($lo);
-            $lo["actions"] = [];
-            $lo["visible_actions"] = [];
-            if (!$lo["is_folder"]) {
-                $lo["actions"][] = [
-                    "name" => "play",
-                    "active" => true,
-                    "type" => "link",
-                    "content" => "index.php?modname=organization&op=custom_playitem&id_item=$id",
-                    "showIcon" => false,
-                    "icon" => "icon-play",
-                    "label" => "Play",
+            $lo['actions'] = [];
+            $lo['visible_actions'] = [];
+            if (!$lo['is_folder']) {
+                $lo['actions'][] = [
+                    'name' => 'play',
+                    'active' => true,
+                    'type' => 'link',
+                    'content' => "index.php?modname=organization&op=custom_playitem&id_item=$id",
+                    'showIcon' => false,
+                    'icon' => 'icon-play',
+                    'label' => 'Play',
                 ];
                 if ($lo['track_detail']) {
-                    $lo["visible_actions"][] = [
-                        "name" => "tracking",
-                        "active" => true,
-                        "type" => "link",
-                        "content" => 'index.php?modname=organization&amp;op=track_details&amp;type=' . $lo['track_detail']["type"] . '&amp;id_user=' . $lo['track_detail']["is_user"] . '&amp;id_org=' . $lo['track_detail']["id_org"] . '"',
-                        "showIcon" => false,
-                        "icon" => "icon-chart",
-                        "label" => "Tracking",
+                    $lo['visible_actions'][] = [
+                        'name' => 'tracking',
+                        'active' => true,
+                        'type' => 'link',
+                        'content' => 'index.php?modname=organization&amp;op=track_details&amp;type=' . $lo['track_detail']['type'] . '&amp;id_user=' . $lo['track_detail']['is_user'] . '&amp;id_org=' . $lo['track_detail']['id_org'] . '"',
+                        'showIcon' => false,
+                        'icon' => 'icon-chart',
+                        'label' => 'Tracking',
                     ];
                 }
             }
             $results[] = $lo;
         }
+
         return $results;
     }
 
@@ -115,7 +127,7 @@ class LoLmsController extends LmsController
         $responseData['data'] = $this->model->getFolderTree();
         echo $this->json->encode($responseData);
         exit;
-    }/* 
+    }/*
 
     public function delete()
     {

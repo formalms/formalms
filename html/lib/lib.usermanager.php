@@ -1,8 +1,19 @@
-<?php defined("IN_FORMA") or die('Direct access is forbidden.');
+<?php
 
+/*
+ * FORMA - The E-Learning Suite
+ *
+ * Copyright (c) 2013-2022 (Forma)
+ * https://www.formalms.org
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ *
+ * from docebo 4.0.5 CE 2008-2012 (c) docebo
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ */
 
+defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-/**
+/*
  * This file contains some class that must be used in all the platofrm to perform the
  * register, lostpassword, lostuser, profile, login operations
  *
@@ -12,59 +23,58 @@
  * @author   Fabio Pirovano <fabio [at] docebo-com>
  */
 
-define("_LOG_OPT_GROUP", 3);
+define('_LOG_OPT_GROUP', 3);
 
 class UserManager
 {
-
     /**
-     * @var    string
+     * @var string
      */
-    var $_platform;
+    public $_platform;
 
     /**
      * @var string
      */
-    var $prefix;
+    public $prefix;
 
     /**
      * @var resource #id
      */
-    var $db_conn;
+    public $db_conn;
 
     /**
-     * @var    UserManagerAction
+     * @var UserManagerAction
      */
-    var $_action;
+    public $_action;
 
     /**
-     * @var    UserManagerRenderer
+     * @var UserManagerRenderer
      */
-    var $_render;
+    public $_render;
 
     /**
-     * @var    UserManagerOption
+     * @var UserManagerOption
      */
-    var $_option;
+    public $_option;
 
     /**
      * @var int (seconds)
      */
-    var $_time_before_reactive;
+    public $_time_before_reactive;
 
     /**
      * This is the class constructor, set the default value for the varaible and instance
-     * the class that it use
+     * the class that it use.
+     *
      * @param string $platform specified a different platform for localization
-     * @param string $prefix specified a prefix
-     * @param string $db_conn specified a db connection with the database
+     * @param string $prefix   specified a prefix
+     * @param string $db_conn  specified a db connection with the database
      */
-    function UserManager($platform = false, $prefix = false, $db_conn = false)
+    public function UserManager($platform = false, $prefix = false, $db_conn = false)
     {
-
         $this->_platform = ($platform !== false ? $platform : Get::cur_plat());
         $this->prefix = ($prefix !== false ? $prefix : $GLOBALS['prefix_fw']);
-        $this->db_conn = ($db_conn !== false ? $db_conn : NULL);
+        $this->db_conn = ($db_conn !== false ? $db_conn : null);
 
         $this->_action = new UserManagerAction($prefix, $db_conn);
         $this->_render = new UserManagerRenderer();
@@ -74,256 +84,260 @@ class UserManager
     }
 
     /**
-     * The name of the table in which the information of the failed attempt is stored
+     * The name of the table in which the information of the failed attempt is stored.
+     *
      * @return the name of the table
      */
-    function _getLogAttemptTable()
+    public function _getLogAttemptTable()
     {
-
         return $this->prefix . '_user_log_attempt';
     }
 
     /**
-     * simply execute a query
-     * @param string $query the query
+     * simply execute a query.
+     *
+     * @param string $query  the query
      * @param string $prefix specified a prefix
      * @param mixed     the result of sql_query
      */
-    function _executeQuery($query)
+    public function _executeQuery($query)
     {
-
-        if ($this->db_conn === NULL) {
+        if ($this->db_conn === null) {
             $re = sql_query($query);
         } else {
             $re = sql_query($query, $this->db_conn);
         }
+
         return $re;
     }
 
     /**
-     * return information about the login attempt for the user
-     * @return bool        return TRUE if the user is logged in correctly or if the user doesn't do any attempt
-     *                    return FALSE if the user log attempt is failed
+     * return information about the login attempt for the user.
+     *
+     * @return bool return TRUE if the user is logged in correctly or if the user doesn't do any attempt
+     *              return FALSE if the user log attempt is failed
      */
-    function _getLoginResult()
+    public function _getLoginResult()
     {
-
         if (UserManagerRenderer::loginAttempt()) {
-            if (Docebo::user()->isAnonymous()) return false;
-            else return true;
+            if (Docebo::user()->isAnonymous()) {
+                return false;
+            } else {
+                return true;
+            }
         } else {
-
             return true;
         }
     }
 
     /**
-     * return information about the login attempt for the user
-     * @return bool        return TRUE if the user as try to loggin
-     *                    return FALSE if the user dont'try to login
+     * return information about the login attempt for the user.
+     *
+     * @return bool return TRUE if the user as try to loggin
+     *              return FALSE if the user dont'try to login
      */
-    function loginAttempt()
+    public function loginAttempt()
     {
-
         return UserManagerRenderer::loginAttempt();
     }
 
     /**
-     * return information about the number of attempts
-     * @return int        return the number of attempt for the user
+     * return information about the number of attempts.
+     *
+     * @return int return the number of attempt for the user
      */
-    function getAttemptNumber()
+    public function getAttemptNumber()
     {
+        if (!isset($_SESSION['user_attempt_number'])) {
+            $_SESSION['user_attempt_number'] = 0;
+        }
 
-        if (!isset($_SESSION['user_attempt_number'])) $_SESSION['user_attempt_number'] = 0;
         return $_SESSION['user_attempt_number'];
     }
 
     /**
-     * return information about the last attempt
-     * @return int        return the time of last attempt
+     * return information about the last attempt.
+     *
+     * @return int return the time of last attempt
      */
-    function getLastAttemptTime()
+    public function getLastAttemptTime()
     {
+        if (!isset($_SESSION['user_attempt_lasttime'])) {
+            return 0;
+        }
 
-        if (!isset($_SESSION['user_attempt_lasttime'])) return 0;
         return $_SESSION['user_attempt_lasttime'];
     }
 
     /**
-     * increment and refresh attempt info
+     * increment and refresh attempt info.
+     *
      * @return nothing
      */
-    function _incAttemptNumber()
+    public function _incAttemptNumber()
     {
-
-        if (!isset($_SESSION['user_attempt_number'])) $_SESSION['user_attempt_number'] = 1;
-        else $_SESSION['user_attempt_number']++;
+        if (!isset($_SESSION['user_attempt_number'])) {
+            $_SESSION['user_attempt_number'] = 1;
+        } else {
+            ++$_SESSION['user_attempt_number'];
+        }
     }
 
-    function _updateLastAttemptTime()
+    public function _updateLastAttemptTime()
     {
-
         $_SESSION['user_attempt_lasttime'] = time();
     }
 
     /**
-     * reset the number of the attempt
+     * reset the number of the attempt.
+     *
      * @return nothing
      */
-    function resetAttemptNumber()
+    public function resetAttemptNumber()
     {
-
         $_SESSION['user_attempt_lasttime'] = 0;
         $_SESSION['user_attempt_number'] = 0;
     }
 
     /**
-     * save information about the failed login
-     * @return bool        true if succes false oterwise
+     * save information about the failed login.
+     *
+     * @return bool true if succes false oterwise
      */
-    function _saveLoginFailure($attempt_number)
+    public function _saveLoginFailure($attempt_number)
     {
-
-        $query = "
-		INSERT INTO " . $this->_getLogAttemptTable() . "
+        $query = '
+		INSERT INTO ' . $this->_getLogAttemptTable() . "
 		( userid, attempt_at, attempt_number, user_ip ) VALUES
 		( '" . $this->_render->getInserted('userid') . "',
-		  '" . date("Y-m-d H:i:s") . "',
+		  '" . date('Y-m-d H:i:s') . "',
 		  '" . $attempt_number . "',
 		  '" . $_SERVER['REMOTE_ADDR'] . "' )";
+
         return $this->_executeQuery($query);
     }
 
     // --------------------------------------------------
     // XXX: BEGIN function for a correct login mask
 
-    function getLoginInfo()
+    public function getLoginInfo()
     {
-
         return UserManagerRenderer::getLoginInfo();
     }
 
     /**
-     * @param string $what enum('link', 'button')
+     * @param string $what       enum('link', 'button')
      * @param string $info_about set the link ref for the link typre or the button name
      */
-    function setRegisterTo($what, $info_about)
+    public function setRegisterTo($what, $info_about)
     {
-
         return $this->_render->setRegisterTo($what, $info_about);
     }
 
     /**
-     * @return bool    if register is a button return true if is submit, false otherwise
+     * @return bool if register is a button return true if is submit, false otherwise
      */
-    function clickRegister()
+    public function clickRegister()
     {
-
         return $this->_render->clickRegister();
     }
 
     /**
-     * @param string $what enum('link', 'button')
+     * @param string $what       enum('link', 'button')
      * @param string $info_about set the link ref for the link typre or the button name
      */
-    function setLostpwdTo($what, $info_about)
+    public function setLostpwdTo($what, $info_about)
     {
-
         return $this->_render->setLostpwdTo($what, $info_about);
     }
 
     /**
-     * @return bool    if lostpwd is a button return true if is submit, false otherwise
+     * @return bool if lostpwd is a button return true if is submit, false otherwise
      */
-    function clickLostpwd()
+    public function clickLostpwd()
     {
-
         return $this->_render->clickLostpwd();
     }
 
     /**
-     * let the class save some info about the logi nof the user
+     * let the class save some info about the logi nof the user.
+     *
      * @return nothing
      */
-    function saveUserLoginData()
+    public function saveUserLoginData()
     {
-
         if ($this->_render->getInserted('remember') == true) {
-
             $this->_render->createRemember();
         }
         $this->_render->setAccessibility();
     }
 
     /**
-     * return information about the login attempt for the user
-     * @param string $jump_url an url for jump
-     * @param string $extra extra information to display in the field
+     * return information about the login attempt for the user.
      *
-     * @return bool        return TRUE if the user as try to loggin
-     *                    return FALSE if the user dont'try to login
+     * @param string $jump_url an url for jump
+     * @param string $extra    extra information to display in the field
+     *
+     * @return bool return TRUE if the user as try to loggin
+     *              return FALSE if the user dont'try to login
      */
-    function getLoginMask($jump_url, $extra = '')
+    public function getLoginMask($jump_url, $extra = '')
     {
-
         $advice = '';
         $disable = false;
 
-        if ($this->_render->clickDeleteRemember())
+        if ($this->_render->clickDeleteRemember()) {
             $this->_render->deleteRemember();
+        }
 
         // Control for max number of attempt for this user
         $max_log_attempt = $this->_option->getOption('max_log_attempt');
         $save_log_attempt = $this->_option->getOption('save_log_attempt');
 
         if ($max_log_attempt != 0) {
-
             if ($this->_getLoginResult() == false) {
-
                 $last_attempt = $this->getLastAttemptTime();
                 $actual_attempt = $this->getAttemptNumber();
                 if ($actual_attempt > $max_log_attempt) {
-
                     if (($last_attempt + $this->_time_before_reactive) > time()) {
-
-                        $wait_for = (int)((($last_attempt + $this->_time_before_reactive) - time()) / 60);
-                        if ($wait_for < 1) $wait_for = ' < 1';
+                        $wait_for = (int) ((($last_attempt + $this->_time_before_reactive) - time()) / 60);
+                        if ($wait_for < 1) {
+                            $wait_for = ' < 1';
+                        }
 
                         $advice = str_replace(['[attempt]', '[time]'], [...$max_log_attempt, $wait_for], Lang::t('_REACH_NUMBERS_OF_ATTEMPT', 'user_managment'));
                         $disable = true;
-                        if ($save_log_attempt == 'after_max') $this->_saveLoginFailure($actual_attempt);
+                        if ($save_log_attempt == 'after_max') {
+                            $this->_saveLoginFailure($actual_attempt);
+                        }
                     } else {
-
                         $this->resetAttemptNumber();
                     }
                 } else {
-
                     $this->_updateLastAttemptTime();
                     $this->_incAttemptNumber();
                 }
-                if ($save_log_attempt == 'all') $this->_saveLoginFailure($actual_attempt);
+                if ($save_log_attempt == 'all') {
+                    $this->_saveLoginFailure($actual_attempt);
+                }
             }
         }
 
         return $this->_render->getLoginMask($this->_platform, $advice, $extra, $disable, $this->_option->getOption('register_type'), $jump_url);
     }
 
-    function setLoginStyle($path_style)
+    public function setLoginStyle($path_style)
     {
-
         $this->_render->setStyleToUse($path_style);
     }
 
-    function hideLoginLanguageSelection()
+    public function hideLoginLanguageSelection()
     {
-
         $this->_render->hideLoginLanguageSelection();
     }
 
-    function hideLoginAccessibilityButton()
+    public function hideLoginAccessibilityButton()
     {
-
         $this->_render->hideLoginAccessibilityButton();
     }
 
@@ -331,11 +345,10 @@ class UserManager
     // --------------------------------------------------
 
     /**
-     * @return string    the html for the registration process in his various part
+     * @return string the html for the registration process in his various part
      */
-    function getRegister($opt_link)
+    public function getRegister($opt_link)
     {
-
         $options = [
             'lastfirst_mandatory' => $this->_option->getOption('lastfirst_mandatory'),
             'register_type' => $this->_option->getOption('register_type'),
@@ -346,8 +359,9 @@ class UserManager
             'privacy_policy' => $this->_option->getOption('privacy_policy'),
             'mail_sender' => $this->_option->getOption('mail_sender'),
             'mail_sender_name_from' => $this->_option->getOption('mail_sender_name_from'),
-            'field_tree' => $this->_option->getOption('field_tree')
+            'field_tree' => $this->_option->getOption('field_tree'),
         ];
+
         return $this->_render->getRegister(
             $this->_platform,
             $options,
@@ -355,7 +369,7 @@ class UserManager
         );
     }
 
-    function confirmRegister()
+    public function confirmRegister()
     {
         $options = [
             'lastfirst_mandatory' => $this->_option->getOption('lastfirst_mandatory'),
@@ -365,17 +379,17 @@ class UserManager
             'pass_min_char' => $this->_option->getOption('pass_min_char'),
             'hour_request_limit' => $this->_option->getOption('hour_request_limit'),
             'privacy_policy' => $this->_option->getOption('privacy_policy'),
-            'field_tree' => $this->_option->getOption('field_tree')
+            'field_tree' => $this->_option->getOption('field_tree'),
         ];
+
         return $this->_render->confirmRegister(
             $this->_platform,
             $options
         );
     }
 
-    function getElapsedPassword($jump_link)
+    public function getElapsedPassword($jump_link)
     {
-
         $option['pass_max_time_valid'] = $this->_option->getOption('pass_max_time_valid');
         $option['pass_min_char'] = $this->_option->getOption('pass_min_char');
         $option['pass_alfanumeric'] = $this->_option->getOption('pass_alfanumeric');
@@ -384,15 +398,13 @@ class UserManager
         return $this->_render->getElapsedPasswordMask($this->_platform, $option, $jump_link);
     }
 
-    function clickSaveElapsed()
+    public function clickSaveElapsed()
     {
-
         return $this->_render->clickSaveElapsed();
     }
 
-    function saveElapsedPassword()
+    public function saveElapsedPassword()
     {
-
         $option['pass_max_time_valid'] = $this->_option->getOption('pass_max_time_valid');
         $option['pass_min_char'] = $this->_option->getOption('pass_min_char');
         $option['pass_alfanumeric'] = $this->_option->getOption('pass_alfanumeric');
@@ -406,36 +418,33 @@ class UserManager
 
     /**
      * @param string $platform specified a different platform for localization
-     * @param string $prefix specified a prefix
-     * @param string $db_conn specified a db connection with the database
+     * @param string $prefix   specified a prefix
+     * @param string $db_conn  specified a db connection with the database
      *
-     * @return array    array(group_id => group_name) with the regroup unit
+     * @return array array(group_id => group_name) with the regroup unit
      */
-    function getRegroupUnit()
+    public function getRegroupUnit()
     {
-
         return $this->_option->getRegroupUnit();
     }
 
     /**
      * @param string    contains the group selected
      *
-     * @return    string    contains the displayable information for a selected group
+     * @return string contains the displayable information for a selected group
      */
-    function getPageWithElement($group_selected)
+    public function getPageWithElement($group_selected)
     {
-
         return $this->_option->getPageWithElement($group_selected);
     }
 
     /**
      * @param string    contains the group selected
      *
-     * @return    bool    true if the operation was successfull false otherwise
+     * @return bool true if the operation was successfull false otherwise
      */
-    function saveElement($group_selected)
+    public function saveElement($group_selected)
     {
-
         return $this->_option->saveElement($group_selected);
     }
 
@@ -446,44 +455,47 @@ class UserManager
     // XXX: BEGIN function for a correct lost password managment
 
     /**
-     * @return bool        true if the action to perform is show the lost password and login
+     * @return bool true if the action to perform is show the lost password and login
      */
-    function haveToLostpwdMask()
+    public function haveToLostpwdMask()
     {
+        if (!$this->haveToLostpwdConfirm() && !$this->haveToLostpwdAction()) {
+            return true;
+        }
 
-        if (!$this->haveToLostpwdConfirm() && !$this->haveToLostpwdAction()) return true;
         return false;
     }
 
     /**
-     * return html about the lost password and user
+     * return html about the lost password and user.
      *
-     * @return string    html
+     * @return string html
      */
-    function getLostpwdMask($jump_url)
+    public function getLostpwdMask($jump_url)
     {
-
         return $this->_render->getLostpwd($jump_url, $this->_platform);
     }
 
     /**
-     * @return bool        true if the action to perform is  confirm a new password request
+     * @return bool true if the action to perform is  confirm a new password request
      */
-    function haveToLostpwdConfirm()
+    public function haveToLostpwdConfirm()
     {
+        if (isset($_GET['pwd']) && $_GET['pwd'] == 'retrpwd') {
+            return true;
+        }
 
-        if (isset($_GET['pwd']) && $_GET['pwd'] == 'retrpwd') return true;
         return false;
     }
 
     /**
-     * return html about the lost password confirm and send email
+     * return html about the lost password confirm and send email.
      *
-     * @return string    html
+     * @return string html
      */
-    function performLostpwdConfirm()
+    public function performLostpwdConfirm()
     {
-        require_once(_base_ . '/lib/lib.form.php');
+        require_once _base_ . '/lib/lib.form.php';
 
         $out = &$GLOBALS['page'];
         $out->setWorkingZone('content');
@@ -495,9 +507,11 @@ class UserManager
         $random_code = Get::req('code', DOTY_MIXED, '');
         $exist_code = $this->getPwdRandomCode(false, $random_code);
 
-        if (!isset($_POST['send']))
-            if ($exist_code === false)
+        if (!isset($_POST['send'])) {
+            if ($exist_code === false) {
                 return $lang->def('_INVALID_RANDOM_CODE') . '<br/>';
+            }
+        }
 
         $acl_man = &Docebo::user()->getAclManager();
         $user_info = $acl_man->getUser($exist_code['idst_user'], false);
@@ -508,11 +522,12 @@ class UserManager
                     $this->deletePwdRandomCode($user_info[ACL_INFO_IDST], $random_code);
 
                     // update the password:
-                    if (!$acl_man->updateUser($user_info[ACL_INFO_IDST], FALSE, FALSE, FALSE, $_POST['new_password'], FALSE, FALSE, FALSE))
+                    if (!$acl_man->updateUser($user_info[ACL_INFO_IDST], false, false, false, $_POST['new_password'], false, false, false)) {
                         $out->add(getErrorUi($lang->def('_OPERATION_FAILURE')), 'content');
-                    else
+                    } else {
                         return $lang->def('_OPERATION_SUCCESSFUL')
                             . '<br/><a href="./index.php">' . $lang->def('_LOGIN') . '</a>';
+                    }
                 } else {
                     $out->add(getErrorUi($lang->def('_PASSWORD_TOO_SHORT')));
                     unset($_POST['send']);
@@ -525,8 +540,6 @@ class UserManager
 
         // form reinser pwd -----------------------------------------------------------------
         if ($user_info !== false && !isset($_POST['send'])) {
-
-
             $options['pass_max_time_valid'] = $this->_option->getOption('pass_max_time_valid');
             $options['pass_min_char'] = $this->_option->getOption('pass_min_char');
             $options['pass_alfanumeric'] = $this->_option->getOption('pass_alfanumeric');
@@ -560,40 +573,39 @@ class UserManager
                 . '<br/>',
                 'content'
             );
-        } else
+        } else {
             return $lang->def('_INVALID_RANDOM_CODE') . '<br/>';
+        }
     }
 
     /**
-     * @return bool        true if the action to perform is  to send email for recover user or password
+     * @return bool true if the action to perform is  to send email for recover user or password
      */
-    function haveToLostpwdAction()
+    public function haveToLostpwdAction()
     {
-
         return $this->_render->haveToLostpwdAction() || $this->_render->haveToLostuserAction();
     }
 
     /**
-     * return html about the lost password and user action and send email
+     * return html about the lost password and user action and send email.
      *
-     * @return string    html
+     * @return string html
      */
-    function performLostpwdAction($mail_url)
+    public function performLostpwdAction($mail_url)
     {
-
         $lang = DoceboLanguage::createInstance('register');
 
         //lost userid
         if ($this->_render->haveToLostuserAction()) {
-
             $mail = $this->_render->getLostUserParam();
-            if (preg_match("\r", $mail) || preg_match("\n", $mail)) die("This isn't a good email address !");
+            if (preg_match("\r", $mail) || preg_match("\n", $mail)) {
+                exit("This isn't a good email address !");
+            }
 
             $acl_man = &Docebo::user()->getAclManager();
             $user_info = $acl_man->getUserByEmail($mail);
 
             if ($user_info !== false) {
-
                 $reg_code = null;
                 $uma = new UsermanagementAdm();
                 $nodes = $uma->getUserFolders($user_info[ACL_INFO_IDST]);
@@ -620,10 +632,9 @@ class UserManager
             $intestazione .= "X-Mailer: PHP/". phpversion().$GLOBALS['mail_br'];*/
 
                 $mail_text = $lang->def('_LOST_USERID_MAILTEXT');
-                $mail_text = str_replace(['[date_request]', '[url]', '[dynamic_link]', '[userid]'], [date("d-m-Y"), Get::site_url(), getCurrentDomain($reg_code) ?: Get::site_url(), $acl_man->relativeId($user_info[ACL_INFO_USERID])], $mail_text);
+                $mail_text = str_replace(['[date_request]', '[url]', '[dynamic_link]', '[userid]'], [date('d-m-Y'), Get::site_url(), getCurrentDomain($reg_code) ?: Get::site_url(), $acl_man->relativeId($user_info[ACL_INFO_USERID])], $mail_text);
 
                 //if(!@mail($user_info[ACL_INFO_EMAIL], $lang->def('_LOST_USERID_TITLE'), $mail_text, $from.$intestazione)) {
-
 
                 $mailer = FormaMailer::getInstance();
                 $success = $mailer->SendMail(
@@ -633,7 +644,7 @@ class UserManager
                     $mail_text,
                     [],
                     [
-                        MAIL_SENDER_ACLNAME => $mail_sender_name_from
+                        MAIL_SENDER_ACLNAME => $mail_sender_name_from,
                     ]
                 );
 
@@ -643,21 +654,17 @@ class UserManager
                     return $lang->def('_MAIL_SEND_SUCCESSFUL') . '<br/>';
                 }
             } else {
-
                 return $lang->def('_INEXISTENT_USER') . '<br/>';
             }
         }
         //lost pwd
         if ($this->_render->haveToLostpwdAction()) {
-
             $userid = $this->_render->getLostPwdParam();
 
             $acl_man = &Docebo::user()->getAclManager();
             $user_info = $acl_man->getUser(false, $acl_man->absoluteId($userid));
 
-
             if ($user_info !== false) {
-
                 //compose e-mail --------------------------------------------
                 $mail_sender = $this->_option->getOption('mail_sender');
                 $mail_sender_name_from = $this->_option->getOption('mail_sender_name_from');
@@ -675,11 +682,13 @@ class UserManager
 
                 $exist_code = $this->getPwdRandomCode($user_info[ACL_INFO_IDST]);
                 if ($exist_code === false) {
-
-                    if (!$this->insertPwdRandomCode($user_info[ACL_INFO_IDST], $code)) return $lang->def('_OPERATION_FAILURE');
+                    if (!$this->insertPwdRandomCode($user_info[ACL_INFO_IDST], $code)) {
+                        return $lang->def('_OPERATION_FAILURE');
+                    }
                 } else {
-
-                    if (!$this->savePwdRandomCode($user_info[ACL_INFO_IDST], $code)) return $lang->def('_OPERATION_FAILURE');
+                    if (!$this->savePwdRandomCode($user_info[ACL_INFO_IDST], $code)) {
+                        return $lang->def('_OPERATION_FAILURE');
+                    }
                 }
 
                 $reg_code = null;
@@ -700,7 +709,6 @@ class UserManager
                 $dynamicLink = $dynamicUrl . $mail_url . '&amp;pwd=retrpwd&amp;code=' . $code;
                 $mail_text = str_replace(['[link]', '[dynamic_link]'], [$link, $dynamicLink], $lang->def('_LOST_PWD_MAILTEXT'));
 
-
                 $mailer = FormaMailer::getInstance();
                 $success = $mailer->SendMail(
                     $mail_sender,
@@ -709,85 +717,100 @@ class UserManager
                     $mail_text,
                     [],
                     [
-                        MAIL_SENDER_ACLNAME => $mail_sender_name_from
+                        MAIL_SENDER_ACLNAME => $mail_sender_name_from,
                     ]
                 );
 
                 if (!$success) {
                     return $lang->def('_OPERATION_FAILURE') . '<br/>';
                 } else {
-
                     return $lang->def('_MAIL_SEND_SUCCESSFUL_PWD') . '<br/>';
                 }
             } else {
-
                 return $lang->def('_INEXISTENT_USER') . '<br/>';
             }
         }
     }
 
-    function getPwdRandomCode($idst_user = false, $code = false)
+    public function getPwdRandomCode($idst_user = false, $code = false)
     {
-
         $code = sha1($code);
 
-        $query = "
+        $query = '
 		SELECT idst_user, random_code, request_date
-		FROM " . $this->prefix . "_pwd_recover
-		WHERE ";
-        if ($idst_user !== false) $query .= " idst_user = '" . $idst_user . "'";
-        elseif ($code !== false) $query .= " random_code = '" . $code . "'";
-        else return false;
+		FROM ' . $this->prefix . '_pwd_recover
+		WHERE ';
+        if ($idst_user !== false) {
+            $query .= " idst_user = '" . $idst_user . "'";
+        } elseif ($code !== false) {
+            $query .= " random_code = '" . $code . "'";
+        } else {
+            return false;
+        }
 
         $re = $this->_executeQuery($query);
-        if (!$re) return false;
-        if (sql_num_rows($re) <= 0) return false;
+        if (!$re) {
+            return false;
+        }
+        if (sql_num_rows($re) <= 0) {
+            return false;
+        }
+
         return sql_fetch_assoc($re);
     }
 
-    function insertPwdRandomCode($idst_user, $code)
+    public function insertPwdRandomCode($idst_user, $code)
     {
-
         $code = sha1($code);
 
-        $query = "
-		INSERT INTO " . $this->prefix . "_pwd_recover
-		( idst_user, random_code, request_date ) VALUES ( '" . $idst_user . "', '" . $code . "', '" . date("Y-m-d H:i:s") . "' )";
+        $query = '
+		INSERT INTO ' . $this->prefix . "_pwd_recover
+		( idst_user, random_code, request_date ) VALUES ( '" . $idst_user . "', '" . $code . "', '" . date('Y-m-d H:i:s') . "' )";
         $re = $this->_executeQuery($query);
 
-        if (!$re) return false;
+        if (!$re) {
+            return false;
+        }
+
         return true;
     }
 
-    function savePwdRandomCode($idst_user, $code)
+    public function savePwdRandomCode($idst_user, $code)
     {
-
         $code = sha1($code);
 
-        $query = "
-		UPDATE " . $this->prefix . "_pwd_recover
+        $query = '
+		UPDATE ' . $this->prefix . "_pwd_recover
 		SET random_code = '" . $code . "',
-			request_date = '" . date("Y-m-d H:i:s") . "'
+			request_date = '" . date('Y-m-d H:i:s') . "'
 		WHERE idst_user = '" . $idst_user . "'";
 
         $re = $this->_executeQuery($query);
-        if (!$re) return false;
+        if (!$re) {
+            return false;
+        }
+
         return true;
     }
 
-    function deletePwdRandomCode($idst_user = false, $code = false)
+    public function deletePwdRandomCode($idst_user = false, $code = false)
     {
-
         $code = sha1($code);
 
-        $query = "
-		DELETE FROM " . $this->prefix . "_pwd_recover
-		WHERE ";
-        if ($idst_user !== false) $query .= " idst_user = '" . $idst_user . "'";
-        elseif ($code !== false) $query .= " random_code = '" . $code . "'";
+        $query = '
+		DELETE FROM ' . $this->prefix . '_pwd_recover
+		WHERE ';
+        if ($idst_user !== false) {
+            $query .= " idst_user = '" . $idst_user . "'";
+        } elseif ($code !== false) {
+            $query .= " random_code = '" . $code . "'";
+        }
 
         $re = $this->_executeQuery($query);
-        if (!$re) return false;
+        if (!$re) {
+            return false;
+        }
+
         return true;
     }
 
@@ -797,9 +820,8 @@ class UserManager
     // -----------------------------------------
     // XXX: BEGIN function for a correct profile
 
-    function getProfile($id_user = false, $userid = false)
+    public function getProfile($id_user = false, $userid = false)
     {
-
         $acl_man = Docebo::user()->getAclManager();
 
         $user_info = &$acl_man->getUser($id_user, $userid);
@@ -810,12 +832,13 @@ class UserManager
     // XXX: END function for a correct profle
     // ---------------------------------------
 
-
     /**
-     * Check if a given registration code is valid
+     * Check if a given registration code is valid.
+     *
      * @param string $reg_code
      * @param string $registration_code_type
-     * @return boolean
+     *
+     * @return bool
      */
     public function checkRegistrationCode($reg_code, $registration_code_type)
     {
@@ -826,41 +849,37 @@ class UserManager
 
         if ($reg_code != '') {
             switch ($registration_code_type) {
-                case "0":
-                    { //nothin to do
-                    };
+                case '0':
+                     //nothin to do
+                    ;
                     break;
-                case "tree_course":
-                {
-
+                case 'tree_course':
                     //a mixed code, let's cut the tree part and go on with the tree_man and resolve here the course part
                     $course_code = substr(str_replace('-', '', $reg_code), 10, 10);
                     $reg_code = substr(str_replace('-', '', $reg_code), 0, 10);
 
                     //control course registration
-                    require_once(_lms_ . '/lib/lib.course.php');
+                    require_once _lms_ . '/lib/lib.course.php';
                     $man_course_user = new Man_CourseUser();
                     $jolly_code = Get::sett('jolly_course_code', '');
                     if ($jolly_code == '' || $jolly_code != $course_code) {
-
                         $course_registration_result = $man_course_user->checkCode($course_code);
                         if ($course_registration_result <= 0 && $code_is_mandatory) {
                             $res = false; // invalid code
                         }
                     }
-                } //procced with tree_man
-                case "tree_man":
-                    {
+                 //procced with tree_man
+                 // no break
+                case 'tree_man':
                         // resolving the tree_man
                         $array_folder = $uma->getFoldersFromCode($reg_code);
                         if (empty($array_folder) && $code_is_mandatory) {
                             $res = false; // invalid code
                         }
-                    };
+                    ;
                     break;
-                case "code_module":
-                    {
-                        require_once(_adm_ . '/lib/lib.code.php');
+                case 'code_module':
+                        require_once _adm_ . '/lib/lib.code.php';
                         $code_manager = new CodeManager();
                         $valid_code = $code_manager->controlCodeValidity($reg_code);
                         if ($valid_code == 0) {
@@ -868,29 +887,27 @@ class UserManager
                         } elseif ($valid_code == -1 && $code_is_mandatory) {
                             $res = false; // invalid code
                         }
-                    };
+                    ;
                     break;
-                case "tree_drop":
-                    {
+                case 'tree_drop':
                         // from the dropdown we will recive the id of the folder
                         $array_folder = [$reg_code => $reg_code];
                         $oc_folders = $uma->getOcFolders($array_folder);
                         if (empty($oc_folders)) {
                             $res = false; // invalid code
                         }
-                    };
+                    ;
                     break;
-                case "custom":
-                    {
+                case 'custom':
                         //Custom code
-                        require_once(_adm_ . '/lib/lib.field.php');
+                        require_once _adm_ . '/lib/lib.field.php';
                         $field_man = new FieldList();
 
                         $id_common_filed_1 = $field_man->getFieldIdCommonFromTranslation('Filiale');
                         $id_common_filed_2 = $field_man->getFieldIdCommonFromTranslation('Codice Concessionario');
-                        $query = "SELECT `translation`"
-                            . " FROM core_field_son"
-                            . " WHERE id_common_son = " . (int)$_POST['field_dropdown'][$id_common_filed_1]
+                        $query = 'SELECT `translation`'
+                            . ' FROM core_field_son'
+                            . ' WHERE id_common_son = ' . (int) $_POST['field_dropdown'][$id_common_filed_1]
                             . " AND lang_code = '" . getLanguage() . "'";
                         list($filed_1_translation) = sql_fetch_row(sql_query($query));
                         $code_part = substr($filed_1_translation, 1, 1);
@@ -901,12 +918,11 @@ class UserManager
                         if (empty($array_folder) && $code_is_mandatory) {
                             $res = false; // invalid code
                         }
-                    };
+                    ;
                     break;
                 default:
-                    {
                         $res = false; // invalid code type
-                    }
+
                     break;
             }
         } else {
@@ -919,41 +935,36 @@ class UserManager
 
 class UserManagerAction
 {
-
     /**
      * @var string
      */
-    var $prefix;
+    public $prefix;
 
     /**
      * @var resource #id
      */
-    var $db_conn;
+    public $db_conn;
 
-    function UserManagerAction($prefix = false, $db_conn = false)
+    public function UserManagerAction($prefix = false, $db_conn = false)
     {
-
         $this->prefix = ($prefix !== false ? $prefix : $GLOBALS['prefix_fw']);
-        $this->db_conn = ($db_conn !== false ? $db_conn : NULL);
+        $this->db_conn = ($db_conn !== false ? $db_conn : null);
     }
 }
 
 class UserManagerRenderer
 {
+    public $_register_type;
+    public $_register_info;
+    public $_lostpwd_type;
+    public $_lostpwd_info;
 
+    public $_style_to_use;
+    public $_show_accessibility_button;
+    public $_show_language_selection;
 
-    var $_register_type;
-    var $_register_info;
-    var $_lostpwd_type;
-    var $_lostpwd_info;
-
-    var $_style_to_use;
-    var $_show_accessibility_button;
-    var $_show_language_selection;
-
-    function UserManagerRenderer()
+    public function UserManagerRenderer()
     {
-
         $this->_register_type = '';
         $this->_register_info = '';
         $this->_lostpwd_type = '';
@@ -964,78 +975,80 @@ class UserManagerRenderer
         $this->_show_language_selection = true;
     }
 
-    function setStyleToUse($path_style)
+    public function setStyleToUse($path_style)
     {
-
         $this->_style_to_use = $path_style;
     }
 
-    function hideLoginAccessibilityButton()
+    public function hideLoginAccessibilityButton()
     {
-
         $this->_show_accessibility_button = false;
     }
 
-    function hideLoginLanguageSelection()
+    public function hideLoginLanguageSelection()
     {
-
         $this->_show_language_selection = false;
     }
 
     /**
      * @static
      * return if the user as attempt a login or not
-     * @return bool        return TRUE if the user as try to loggin
-     *                    return FALSE if the user dont'try to login
+     *
+     * @return bool return TRUE if the user as try to loggin
+     *              return FALSE if the user dont'try to login
      */
-    function loginAttempt()
+    public function loginAttempt()
     {
-
         return isset($_POST['login_userid']);
     }
 
     /**
      * @static
+     *
      * @param string    the name of the param required
      *
-     * @return mixed    the value of the param required
+     * @return mixed the value of the param required
      */
-    function getInserted($what)
+    public function getInserted($what)
     {
-
         switch ($what) {
-            case "userid":
-                return (isset($_POST['login_userid']) ? $_POST['login_userid'] : '');
+            case 'userid':
+                return isset($_POST['login_userid']) ? $_POST['login_userid'] : '';
                 break;
-            case "password":
-                return (isset($_POST['login_pwd']) ? $_POST['login_pwd'] : '');
+            case 'password':
+                return isset($_POST['login_pwd']) ? $_POST['login_pwd'] : '';
                 break;
             //case 'high_accessibility' : return ( isset($_POST['login_high_accessibility']) ? true : false );break;
             //case 'remember' : return ( isset($_POST['login_remember']) ? true : false );break;
-            case "language":
-                {
-                    if (!isset($_POST['login_lang'])) return '';
-                    if ($_POST['login_lang'] == 'default') return '';
+            case 'language':
+                    if (!isset($_POST['login_lang'])) {
+                        return '';
+                    }
+                    if ($_POST['login_lang'] == 'default') {
+                        return '';
+                    }
                     $all_languages = Docebo::langManager()->getAllLangCode();
+
                     return $all_languages[$_POST['login_lang']];
-                };
+                ;
                 break;
         }
+
         return '';
     }
 
     /**
      * @static
-     * @return array    array(    'userid'=>        the userid inserted,
-     *                            'password'=>    the password inserted,
-     *                            'lang=>'        the language selected )
+     *
+     * @return array array(    'userid'=>        the userid inserted,
+     *               'password'=>    the password inserted,
+     *               'lang=>'        the language selected )
      */
-    function getLoginInfo()
+    public function getLoginInfo()
     {
-
         $info = [
             'userid' => Get::req('login_userid', DOTY_STRING),
-            'password' => Get::req('login_pwd', DOTY_STRING)
+            'password' => Get::req('login_pwd', DOTY_STRING),
         ];
 
         $all_languages = Docebo::langManager()->getAllLangCode();
@@ -1056,34 +1069,36 @@ class UserManagerRenderer
 
     /**
      * @static
+     *
      * @return true if the action of delete remember is to perform or false
      */
-    function clickDeleteRemember()
+    public function clickDeleteRemember()
     {
+        if (isset($_GET['log_action']) && $_GET['log_action'] == 'deleteremember') {
+            return true;
+        }
 
-        if (isset($_GET['log_action']) && $_GET['log_action'] == 'deleteremember') return true;
         return false;
     }
 
-    function setAccessibility()
+    public function setAccessibility()
     {
-
         setAccessibilityStatus(isset($_POST['login_button_access']));
     }
 
     /**
-     * remember the user choice about the accessibility flag
+     * remember the user choice about the accessibility flag.
+     *
      * @return nothing
      */
-    function createRemember()
+    public function createRemember()
     {
-
         // set the cookie
         $cookie_path = cleanUrlPath(dirname($_SERVER['REQUEST_URI']) . '/' . $GLOBALS['where_config_relative'] . '/');
         $cookie_value = isset($_POST['login_high_accessibility']) ? 1 : 0;
 
         setcookie(
-            "docebo_cookie_data[high_accessibility]",
+            'docebo_cookie_data[high_accessibility]',
             $cookie_value,
             time() + (365 * 24 * 3600),    // for an entire year
             $cookie_path
@@ -1092,22 +1107,21 @@ class UserManagerRenderer
     }
 
     /**
-     * delete the user choice about the accessibility flag
+     * delete the user choice about the accessibility flag.
+     *
      * @return nothing
      */
-    function deleteRemember()
+    public function deleteRemember()
     {
-
         // delet the cookie if exists
         if (isset($_COOKIE['docebo_cookie_data']['high_accessibility'])) {
-
             $cookie_value = $_COOKIE['docebo_cookie_data']['high_accessibility'];
             unset($_COOKIE['docebo_cookie_data']['high_accessibility']);
             $cookie_path = cleanUrlPath(dirname($_SERVER['REQUEST_URI']) . '/'
                 . (isset($GLOBALS['where_config_relative']) ? $GLOBALS['where_config_relative'] . '/' : ''));
 
             setcookie(
-                "docebo_cookie_data[high_accessibility]",
+                'docebo_cookie_data[high_accessibility]',
                 $cookie_value,
                 time() - 36000,    // a lot of time ago
                 $cookie_path
@@ -1116,17 +1130,16 @@ class UserManagerRenderer
     }
 
     /**
-     * @param string $what enum('link', 'button')
+     * @param string $what       enum('link', 'button')
      * @param string $info_about set the link ref for the link type or the button name
      */
-    function setRegisterTo($what, $info_about)
+    public function setRegisterTo($what, $info_about)
     {
-
         switch ($what) {
-            case "link":
+            case 'link':
                 $this->_register_type = 'link';
                 break;
-            case "button":
+            case 'button':
                 $this->_register_type = 'button';
                 break;
         }
@@ -1134,30 +1147,28 @@ class UserManagerRenderer
     }
 
     /**
-     * @return bool    if register is a button return true if is submit, false otherwise
+     * @return bool if register is a button return true if is submit, false otherwise
      */
-    function clickRegister()
+    public function clickRegister()
     {
-
         if ($this->_register_type == 'button') {
-
             return isset($_POST[$this->_register_info]);
         }
+
         return false;
     }
 
     /**
-     * @param string $what enum('link', 'button')
+     * @param string $what       enum('link', 'button')
      * @param string $info_about set the link ref for the link type or the button name
      */
-    function setLostpwdTo($what, $info_about)
+    public function setLostpwdTo($what, $info_about)
     {
-
         switch ($what) {
-            case "link":
+            case 'link':
                 $this->_lostpwd_type = 'link';
                 break;
-            case "button":
+            case 'button':
                 $this->_lostpwd_type = 'button';
                 break;
         }
@@ -1165,20 +1176,19 @@ class UserManagerRenderer
     }
 
     /**
-     * @return bool    if register is a button return true if is submit, false otherwise
+     * @return bool if register is a button return true if is submit, false otherwise
      */
-    function clickLostpwd()
+    public function clickLostpwd()
     {
-
         if ($this->_lostpwd_type == 'button') {
-
             return isset($_POST[$this->_lostpwd_info]);
         }
+
         return false;
     }
 
     /**
-     * return html for the login mask
+     * return html for the login mask.
      *
      *    |-form_login_ext--------------------------------|
      *    |    |-form_login----------------------------|    |
@@ -1196,21 +1206,22 @@ class UserManagerRenderer
      *    |-----------------------------------------------|
      *
      * @param string $platform the platoform of which you want the login
-     * @param string $advice the text of an advice to dispaly
-     * @param string $extra wathever you want to display
-     * @param bool $disable disable the field
-     * @param bool $jump_url the url for the link
+     * @param string $advice   the text of an advice to dispaly
+     * @param string $extra    wathever you want to display
+     * @param bool   $disable  disable the field
+     * @param bool   $jump_url the url for the link
      *
-     * @return string    the html code for the login mask
+     * @return string the html code for the login mask
      */
-    function getLoginMask($platform, $advice = false, $extra = false, $disable = false, $register_type = 'no', $jump_url = '')
+    public function getLoginMask($platform, $advice = false, $extra = false, $disable = false, $register_type = 'no', $jump_url = '')
     {
-
-        require_once(_base_ . '/lib/lib.form.php');
+        require_once _base_ . '/lib/lib.form.php';
 
         $lang = DoceboLanguage::createInstance('login', $platform);
 
-        if (!isset($GLOBALS['login_tabindex'])) $GLOBALS['login_tabindex'] = 1;
+        if (!isset($GLOBALS['login_tabindex'])) {
+            $GLOBALS['login_tabindex'] = 1;
+        }
 
         $all_languages = Docebo::langManager()->getAllLangCode();
         $all_languages = array_merge(['default' => $lang->def('_LANGUAGE')], $all_languages);
@@ -1223,7 +1234,6 @@ class UserManagerRenderer
             . '<div class="form_login">';
 
         if (!$disable) {
-
             if (isset($GLOBALS['page'])) {
                 $GLOBALS['page']->add('<li><a href="#fieldset_login">' . $lang->def('_JUMP_TO_LOGIN') . '</a></li>', 'blind_navigation');
             }
@@ -1256,9 +1266,7 @@ class UserManagerRenderer
             $out .= '<div class="form_elem_button">'
                 . Form::getButton('login_button', 'login_button', $lang->def('_LOGIN'), 'yui-button', ' tabindex="' . $GLOBALS['login_tabindex']++ . '"');
             if ($this->_show_accessibility_button === true) {
-
                 if (Get::sett('accessibility') == 'on') {
-
                     $out .= '<br />'
                         . Form::getButton(
                             'login_button_access',
@@ -1284,41 +1292,37 @@ class UserManagerRenderer
         }
         $out .= '<p class="log_action">';
 
-
-        if ($register_type == "self" || $register_type == "moderate") {
-
-
+        if ($register_type == 'self' || $register_type == 'moderate') {
             switch ($this->_register_type) {
-                case "link":
-                    {
-                        if (Get::sett('register_with_code') == 'on')
+                case 'link':
+                        if (Get::sett('register_with_code') == 'on') {
                             $out .= '<a href="' . $this->_register_info . '">' . $lang->def('_LOG_REGISTER_WITH_CODE') . '</a>';
-                        else
+                        } else {
                             $out .= '<a href="' . $this->_register_info . '">' . $lang->def('_REGISTER') . '</a>';
-                    };
+                        }
+                    ;
                     break;
-                case "button":
-                    {
-                        if (Get::sett('register_with_code') == 'on')
+                case 'button':
+                        if (Get::sett('register_with_code') == 'on') {
                             $out .= Form::getButton('register_button', $this->_register_info, $lang->def('_LOG_REGISTER_WITH_CODE'), 'button_as_link');
-                        else
+                        } else {
                             $out .= Form::getButton('register_button', $this->_register_info, $lang->def('_REGISTER'), 'button_as_link');
-                    };
+                        }
+                    ;
                     break;
             }
         }
-        if ($this->_register_type != '' && $this->_lostpwd_type != '') $out .= '&nbsp;|&nbsp;';
+        if ($this->_register_type != '' && $this->_lostpwd_type != '') {
+            $out .= '&nbsp;|&nbsp;';
+        }
         switch ($this->_lostpwd_type) {
-
-            case "link":
-                {
+            case 'link':
                     $out .= '<a href="' . $this->_lostpwd_info . '">' . $lang->def('_LOG_LOSTPWD', 'login') . '</a>';
-                };
+                ;
                 break;
-            case "button":
-                {
+            case 'button':
                     $out .= Form::getButton('lostwd_button', $this->_lostpwd_info, $lang->def('_LOG_LOSTPWD'), 'button_as_link');
-                };
+                ;
                 break;
         }
         $out .= '</p>';
@@ -1328,15 +1332,15 @@ class UserManagerRenderer
         return $out;
     }
 
-
-    function getExtLoginMask($platform, $advice = false, $extra = false, $disable = false, $register_type = 'no', $jump_url = false)
+    public function getExtLoginMask($platform, $advice = false, $extra = false, $disable = false, $register_type = 'no', $jump_url = false)
     {
-
-        require_once(_base_ . '/lib/lib.form.php');
+        require_once _base_ . '/lib/lib.form.php';
 
         $lang = DoceboLanguage::createInstance('login', $platform);
 
-        if (!isset($GLOBALS['login_tabindex'])) $GLOBALS['login_tabindex'] = 1;
+        if (!isset($GLOBALS['login_tabindex'])) {
+            $GLOBALS['login_tabindex'] = 1;
+        }
 
         $all_languages = Docebo::langManager()->getAllLangCode();
         $all_languages = array_merge(['default' => $lang->def('_LANGUAGE')], $all_languages);
@@ -1344,7 +1348,6 @@ class UserManagerRenderer
         $out = '';
 
         if (!$disable) {
-
             if (isset($GLOBALS['page'])) {
                 $GLOBALS['page']->add('<li><a href="#fieldset_login">' . $lang->def('_JUMP_TO_LOGIN') . '</a></li>', 'blind_navigation');
             }
@@ -1373,36 +1376,34 @@ class UserManagerRenderer
     }
 
     /**
-     * This function must be called into a open form and it will execute the entire registration process for a user
+     * This function must be called into a open form and it will execute the entire registration process for a user.
+     *
      * @param string $platform the platform
-     * @param array $options (register_type, use_advanced_form, pass_alfanumeric,
-     *                                    pass_min_char, hour_request_limit, privacy_policy, mail_sender)
+     * @param array  $options  (register_type, use_advanced_form, pass_alfanumeric,
+     *                         pass_min_char, hour_request_limit, privacy_policy, mail_sender)
      * @param string $opt_link the link used as the base of the confirmation link in the confirm mail
      *
-     * @return string    html for the various art of the registration process
+     * @return string html for the various art of the registration process
      */
-    function getRegister($platform, $options, $opt_link)
+    public function getRegister($platform, $options, $opt_link)
     {
-
-        require_once(_base_ . '/lib/lib.form.php');
-        require_once(_base_ . '/lib/lib.table.php');
-        require_once($GLOBALS['where_framework'] . '/lib/lib.field.php');
+        require_once _base_ . '/lib/lib.form.php';
+        require_once _base_ . '/lib/lib.table.php';
+        require_once $GLOBALS['where_framework'] . '/lib/lib.field.php';
 
         $lang = &DoceboLanguage::createInstance('register', $platform);
 
-        if ($options['register_type'] != "self" && $options['register_type'] != "self_optin" && $options['register_type'] != "moderate") {
-
+        if ($options['register_type'] != 'self' && $options['register_type'] != 'self_optin' && $options['register_type'] != 'moderate') {
             return '<div class="register_noactive">' . Lang::t('_REG_NOT_ACTIVE', 'register', $platform) . '</div>';
         }
 
         $do = 'first_of_all';
         if (isset($_POST['next_step'])) {
-
             switch ($_POST['next_step']) {
-                case "special_field":
+                case 'special_field':
                     $do = 'special_field';
                     break;
-                case "opt_in":
+                case 'opt_in':
                     $do = 'opt_in';
                     break;
             }
@@ -1418,13 +1419,10 @@ class UserManagerRenderer
         }
 
         switch ($do) {
-            case "opt_in":
-                {
+            case 'opt_in':
                     if (is_array($errors) && count($errors) > 0) {
-
                         $this->error = true;
                     }
-
 
                     if ($this->error) {
                         if ($options['use_advanced_form'] == 'on' || Get::sett('register_with_code') == 'on') {
@@ -1435,13 +1433,10 @@ class UserManagerRenderer
                     } else {
                         $out = $this->_opt_in($options, $platform, $opt_link);
                     }
-                };
+                ;
                 break;
-            case "special_field":
-                {
-
+            case 'special_field':
                     if (is_array($errors) && count($errors) > 0) {
-
                         foreach ($errors as $key => $error) {
                             if (!is_numeric($key)) {
                                 $this->error = true;
@@ -1455,18 +1450,16 @@ class UserManagerRenderer
                         }
                     }
 
-
                     if ($this->error) {
                         $out = $this->_first_of_all($options, $platform, $errors);
                     } else {
                         $out = $this->_special_field($options, $platform, $opt_link, $errors);
                     }
-                };
+                ;
                 break;
-            case "first_of_all":
-                {
+            case 'first_of_all':
                     $out = $this->_first_of_all($options, $platform, $errors);
-                };
+                ;
                 break;
         }
 
@@ -1476,9 +1469,11 @@ class UserManagerRenderer
     // TODO: move this function in UserManager ?
 
     /**
-     * getCodeCourses
-     * @param int $reg_code
-     * @param boolean $byName
+     * getCodeCourses.
+     *
+     * @param int  $reg_code
+     * @param bool $byName
+     *
      * @return array
      */
     private function getCodeCourses($reg_code)
@@ -1510,12 +1505,14 @@ class UserManagerRenderer
     // TODO: move this function in UserManager ?
 
     /**
-     * processRegistrationCode
-     * @param AclManager $acl_man
+     * processRegistrationCode.
+     *
+     * @param AclManager       $acl_man
      * @param UserManagerAdmin $uma
-     * @param int $iduser
-     * @param string $reg_code
-     * @param string $registration_code_type
+     * @param int              $iduser
+     * @param string           $reg_code
+     * @param string           $registration_code_type
+     *
      * @return array 'success'=>boolean, 'msg'=>string
      */
     public function processRegistrationCode(&$acl_man, &$uma, $iduser, $reg_code, $registration_code_type)
@@ -1527,41 +1524,38 @@ class UserManagerRenderer
 
         if ($reg_code != '') {
             switch ($registration_code_type) {
-                case "0":
-                    { //nothin to do
-                    };
+                case '0':
+                     //nothin to do
+                    ;
                     break;
-                case "tree_course":
-                {
-
+                case 'tree_course':
                     //a mixed code, let's cut the tree part and go on with the tree_man and resolve here the course part
                     $course_code = substr(str_replace('-', '', $reg_code), 10, 10);
                     $reg_code = substr(str_replace('-', '', $reg_code), 0, 10);
 
                     //control course registration
-                    require_once(_lms_ . '/lib/lib.course.php');
+                    require_once _lms_ . '/lib/lib.course.php';
                     $man_course_user = new Man_CourseUser();
                     $jolly_code = Get::sett('jolly_course_code', '');
                     if ($jolly_code == '' || $jolly_code != $course_code) {
-
                         $course_registration_result = $man_course_user->subscribeUserWithCode($course_code, $iduser);
                         if ($course_registration_result <= 0 && $code_is_mandatory) {
-
                             $res['success'] = false;
                             $res['msg'] = $lang->def('_INVALID_CODE');
+
                             return $res;
                         }
                     }
-                } //procced with tree_man
-                case "tree_man":
-                    {
+                 //procced with tree_man
+                 // no break
+                case 'tree_man':
                         // resolving the tree_man
                         $org = sql_fetch_object(sql_query("SELECT idOrg FROM %adm_org_chart_tree WHERE code = '" . $reg_code . "'"));
                         $org_id = sql_fetch_object(sql_query("SELECT idOrg, code FROM %adm_org_chart_tree WHERE idOrg = '" . $reg_code . "' AND code IS NOT NULL"));
 
                         if ($org) {
                             $reg_id = $org->idOrg;
-                        } else if ($org_id) {
+                        } elseif ($org_id) {
                             $reg_id = $org_id->idOrg;
                             $reg_code = $org_id->code;
                         }
@@ -1571,60 +1565,56 @@ class UserManagerRenderer
                         $array_folder = [$reg_code => $reg_id];
 
                         if (empty($reg_id) && $code_is_mandatory) {
-
                             //invalid code
                             $res['success'] = false;
                             $res['msg'] = $lang->def('_INVALID_CODE');
+
                             return $res;
                         }
-                    };
+                    ;
                     break;
-                case "code_module":
-                    {
-                        require_once(_adm_ . '/lib/lib.code.php');
+                case 'code_module':
+                        require_once _adm_ . '/lib/lib.code.php';
                         $code_manager = new CodeManager();
                         $valid_code = $code_manager->controlCodeValidity($reg_code);
                         if ($valid_code == 1) {
-
                             $array_folder = $code_manager->getOrgAssociateWithCode($reg_code);
                             $array_course = $code_manager->getCourseAssociateWithCode($reg_code);
 
                             $code_manager->setCodeUsed($reg_code, $iduser);
                         } elseif ($valid_code == 0) {
-
                             //duplicated code entered
                             $res['success'] = false;
                             $res['msg'] = $lang->def('_CODE_ALREDY_USED');
+
                             return $res;
                         } elseif ($valid_code == -1 && $code_is_mandatory) {
-
                             //invalid code entered
                             $res['success'] = false;
                             $res['msg'] = $lang->def('_INVALID_CODE');
+
                             return $res;
                         }
-                    };
+                    ;
                     break;
-                case "tree_drop":
-                    {
+                case 'tree_drop':
                         $query = sql_query("SELECT code FROM %adm_org_chart_tree WHERE idOrg = $reg_code LIMIT 1");
                         $reg_code = sql_fetch_array($query)['code'];
                         $reg_code = substr(str_replace('-', '', $reg_code), 0, 10);
                         $array_course = $this->getCodeCourses($reg_code);
                         $array_folder = $uma->getFoldersFromCode($reg_code);
-                    };
+                    ;
                     break;
-                case "custom":
-                    {
+                case 'custom':
                         //Custom code
-                        require_once(_adm_ . '/lib/lib.field.php');
+                        require_once _adm_ . '/lib/lib.field.php';
                         $field_man = new FieldList();
 
                         $id_common_filed_1 = $field_man->getFieldIdCommonFromTranslation('Filiale');
                         $id_common_filed_2 = $field_man->getFieldIdCommonFromTranslation('Codice Concessionario');
-                        $query = "SELECT `translation`"
-                            . " FROM core_field_son"
-                            . " WHERE id_common_son = " . (int)$_POST['field_dropdown'][$id_common_filed_1]
+                        $query = 'SELECT `translation`'
+                            . ' FROM core_field_son'
+                            . ' WHERE id_common_son = ' . (int) $_POST['field_dropdown'][$id_common_filed_1]
                             . " AND lang_code = '" . getLanguage() . "'";
                         list($filed_1_translation) = sql_fetch_row(sql_query($query));
                         $code_part = substr($filed_1_translation, 1, 1);
@@ -1636,15 +1626,17 @@ class UserManagerRenderer
                             //invalid code
                             $res['success'] = false;
                             $res['msg'] = $lang->def('_INVALID_CODE');
+
                             return $res;
                         }
-                    };
+                    ;
                     break;
             }
         } elseif ($code_is_mandatory) {
             //invalid code
             $res['success'] = false;
             $res['msg'] = $lang->def('_INVALID_CODE');
+
             return $res;
         }
 
@@ -1665,7 +1657,7 @@ class UserManagerRenderer
         }
         // and in array_course the courses
         if (!empty($array_course)) {
-            require_once(_lms_ . '/lib/lib.subscribe.php');
+            require_once _lms_ . '/lib/lib.subscribe.php';
 
             foreach ($array_course as $id_course) {
                 $subscriber = new CourseSubscribe_Management();
@@ -1676,10 +1668,8 @@ class UserManagerRenderer
         return $res;
     }
 
-
-    function _opt_in($options, $platform, $opt_link)
+    public function _opt_in($options, $platform, $opt_link)
     {
-
         $lang = &DoceboLanguage::createInstance('register', $platform);
 
         // Check for error
@@ -1689,7 +1679,7 @@ class UserManagerRenderer
         $random_code = md5($_POST['register']['userid'] . mt_rand() . mt_rand() . mt_rand());
         // register as temporary user and send mail
         $acl_man = &Docebo::user()->getAclManager();
-        $iduser = "";
+        $iduser = '';
 
         $iduser = $acl_man->registerTempUser(
             $_POST['register']['userid'],
@@ -1701,7 +1691,6 @@ class UserManagerRenderer
         );
 
         if ($iduser === false) {
-
             $this->error = true;
 
             $errors = ['error' => $this->error, 'msg' => $lang->def('_OPERATION_FAILURE')];
@@ -1717,13 +1706,12 @@ class UserManagerRenderer
 
         // subscribe to groups -----------------------------------------
         if (isset($_POST['group_sel_implode'])) {
-
             $groups = explode(',', $_POST['group_sel_implode']);
             foreach ($groups as $idst) {
                 $acl_man->addToGroup($idst, $iduser);
                 // FORMA: added the inscription policy
                 $enrollrules = new EnrollrulesAlms();
-                $enrollrules->applyRulesMultiLang('_LOG_USERS_TO_GROUP', [(string)$iduser], false, (int)$idst, true);
+                $enrollrules->applyRulesMultiLang('_LOG_USERS_TO_GROUP', [(string) $iduser], false, (int) $idst, true);
                 // END FORMA
             }
         }
@@ -1733,8 +1721,9 @@ class UserManagerRenderer
 
         $code_is_mandatory = (Get::sett('mandatory_code', 'off') == 'on');
         $reg_code = Get::req('reg_code', DOTY_MIXED, '');
-        if ($registration_code_type === 'custom')
+        if ($registration_code_type === 'custom') {
             $reg_code = 'change_by_custom_operation';
+        }
 
         $array_folder = false;
         $uma = new UsermanagementAdm();
@@ -1744,10 +1733,11 @@ class UserManagerRenderer
             $this->error = true;
 
             $errors = ['registration' => false, 'error' => $this->error, 'msg' => $reg_code_res['msg']];
+
             return $errors;
         }
         // save language selected
-        require_once(_base_ . '/lib/lib.preference.php');
+        require_once _base_ . '/lib/lib.preference.php';
         $preference = new UserPreferences($iduser);
         $preference->setPreference('ui.language', Lang::get());
 
@@ -1759,7 +1749,7 @@ class UserManagerRenderer
         // Save Privacy
         $precompileLms = new PrecompileLms();
         $policy_id = $precompileLms->getPrivacyPolicyId();
-        $precompileLms->setAcceptingPolicy($iduser, $policy_id, TRUE);
+        $precompileLms->setAcceptingPolicy($iduser, $policy_id, true);
 
         // Send mail
         $admin_mail = $options['mail_sender'];
@@ -1778,16 +1768,12 @@ class UserManagerRenderer
 
         //check register_type != self (include all previous cases except the new one "self without opt-in")
         if (strcmp($options['register_type'], 'self') != 0) {
-
-
             $mailer = FormaMailer::getInstance();
 
             if (!$mailer->SendMail($admin_mail, [$_POST['register']['email']], Lang::t('_MAIL_OBJECT', 'register'), $text, [], [MAIL_REPLYTO => $admin_mail, MAIL_SENDER_ACLNAME => $sender_name])) {
-
-
                 if ($registration_code_type == 'code_module') {
                     // ok, the registration has failed, let's remove the user association form the code
-                    require_once(_base_ . '/appCore/lib/lib.code.php');
+                    require_once _base_ . '/appCore/lib/lib.code.php';
                     $code_manager = new CodeManager();
                     $code_manager->resetUserAssociation($code, $iduser);
                 }
@@ -1806,11 +1792,8 @@ class UserManagerRenderer
         $_GET['idst'] = $iduser;
         //check register_type = self
         if (strcmp($options['register_type'], 'self') == 0) {
-
-
             $text_self = $lang->def('_REG_MAIL_TEXT_SELF');
             $text_self = str_replace(['[userid]', '[firstname]', '[lastname]', '[password]', '[link]', '[dynamic_link]'], [$_POST['register']['userid'], $_POST['register']['firstname'], $_POST['register']['lastname'], $_POST['register']['pwd'], '' . $link . '', '' . $dynamicLink . ''], $text_self);
-
 
             $mailer = FormaMailer::getInstance();
             if (!$mailer->SendMail($admin_mail, [$_POST['register']['email']], Lang::t('_MAIL_OBJECT_SELF', 'register'), $text_self, [], [MAIL_REPLYTO => $admin_mail, MAIL_SENDER_ACLNAME => $sender_name])) {
@@ -1826,9 +1809,8 @@ class UserManagerRenderer
         return $errors;
     }
 
-    function _special_field($options, $platform, $opt_link, $errors)
+    public function _special_field($options, $platform, $opt_link, $errors)
     {
-
         $lang = &DoceboLanguage::createInstance('register', $platform);
 
         // Check for error
@@ -1840,59 +1822,56 @@ class UserManagerRenderer
         $code_is_mandatory = Get::sett('mandatory_code', 'off');
         $reg_code = Get::req('reg_code', DOTY_MIXED, '');
 
-        if ($registration_code_type === 'custom')
+        if ($registration_code_type === 'custom') {
             $reg_code = 'change_by_custom_operation';
+        }
 
         $array_folder = false;
         $folder_group = false;
         $uma = new UsermanagementAdm();
         if ($reg_code != '') {
             switch ($registration_code_type) {
-                case "0":
-                    { //nothin to do
-                    };
+                case '0':
+                     //nothin to do
+                    ;
                     break;
-                case "tree_course":
-                {
+                case 'tree_course':
                     //a mixed code, let's cut the tree part and go on with the tree_man
                     $reg_code = substr(str_replace('-', '', $reg_code), 0, 10);
-                } //procced with tree_man
-                case "tree_man":
-                    {
+                 //procced with tree_man
+                 // no break
+                case 'tree_man':
                         // resolving the tree_man
                         $uma = new UsermanagementAdm();
                         $reg_code = $this->getRegCodeFromNode($reg_code);
                         $array_folder = $uma->getFolderGroups($reg_code);
-                    };
+                    ;
                     break;
-                case "code_module":
-                    {
-                        require_once(_adm_ . '/lib/lib.code.php');
+                case 'code_module':
+                        require_once _adm_ . '/lib/lib.code.php';
                         $code_manager = new CodeManager();
                         $valid_code = $code_manager->controlCodeValidity($reg_code);
                         if ($valid_code == 1) {
                             $array_folder = $code_manager->getOrgAssociateWithCode($reg_code);
                         }
-                    };
+                    ;
                     break;
-                case "tree_drop":
-                    {
+                case 'tree_drop':
                         // from the dropdown we will recive the id of the folder
                         // then we get the oc and ocd
                         $array_folder = $uma->getFolderGroups($reg_code);
-                    };
+                    ;
                     break;
-                case "custom":
-                    {
+                case 'custom':
                         //Custom code
-                        require_once(_adm_ . '/lib/lib.field.php');
+                        require_once _adm_ . '/lib/lib.field.php';
                         $field_man = new FieldList();
 
                         $id_common_filed_1 = $field_man->getFieldIdCommonFromTranslation('Filiale');
                         $id_common_filed_2 = $field_man->getFieldIdCommonFromTranslation('Codice Concessionario');
-                        $query = "SELECT `translation`"
-                            . " FROM core_field_son"
-                            . " WHERE id_common_son = " . (int)$_POST['field_dropdown'][$id_common_filed_1]
+                        $query = 'SELECT `translation`'
+                            . ' FROM core_field_son'
+                            . ' WHERE id_common_son = ' . (int) $_POST['field_dropdown'][$id_common_filed_1]
                             . " AND lang_code = '" . getLanguage() . "'";
                         list($filed_1_translation) = sql_fetch_row(sql_query($query));
                         $code_part = substr($filed_1_translation, 1, 1);
@@ -1900,16 +1879,18 @@ class UserManagerRenderer
 
                         // resolving the tree_man
                         $array_folder = $uma->getFoldersFromCode($reg_code);
-                    };
+                    ;
                     break;
             }
         }
 
         if ($array_folder !== false) {
-            if ($folder_group === false)
+            if ($folder_group === false) {
                 $folder_group = [];
-            foreach ($array_folder as $id_org_folder)
+            }
+            foreach ($array_folder as $id_org_folder) {
                 $folder_group[] = Docebo::aclm()->getGroupST('/oc_' . $id_org_folder);
+            }
         }
 
         // find all the related extra field
@@ -1932,7 +1913,6 @@ class UserManagerRenderer
         );
 
         if ($play_field === false) {
-
             return $this->_opt_in($options, $platform, $opt_link);
         }
 
@@ -1980,12 +1960,12 @@ class UserManagerRenderer
             . Form::getButton('reg_button', 'reg_button', $lang->def('_REGISTER'), ' forma-button forma-button--black ')
             . '</div>'
             . '</div>';
+
         return $out;
     }
 
     private function _first_of_all($options, $platform, $errors = [])
     {
-
         $precompileLms = new PrecompileLms();
         $lang = &DoceboLanguage::createInstance('register', $platform);
 
@@ -2013,11 +1993,10 @@ class UserManagerRenderer
         $langs = Docebo::langManager()->getAllLangCode();
         $full_langs = [];
         foreach ($langs as $v) {
-
             $full_langs[$v] = $v;
         }
 
-        /** FIRST ROW */
+        /* FIRST ROW */
         $out .= '<div class="homepage__row homepage__row--form homepage__row--gray row-fluid">';
 
         /** USER ID */
@@ -2059,9 +2038,9 @@ class UserManagerRenderer
         $out .= '</div>';
 
         $out .= '</div>';
-        /** END FIRST ROW */
+        /* END FIRST ROW */
 
-        /** SECOND ROW */
+        /* SECOND ROW */
         $out .= '<div class="homepage__row homepage__row--form homepage__row--gray row-fluid">';
 
         /** FIRST NAME */
@@ -2115,9 +2094,9 @@ class UserManagerRenderer
             '</div>';
 
         $out .= '</div>';
-        /** END SECOND ROW */
+        /* END SECOND ROW */
 
-        /** THIRD ROW */
+        /* THIRD ROW */
         $out .= '<div class="homepage__row homepage__row--form homepage__row--gray row-fluid">';
 
         $error = (isset($errors) && $errors['pwd']);
@@ -2137,7 +2116,6 @@ class UserManagerRenderer
 
         $out .= '</div>';
 
-
         $out .= '<div class="col-xs-12 col-sm-6">'
             . Form::getInputPassword(
                 'form-control ' . ($error ? 'has-error' : ''),
@@ -2154,23 +2132,20 @@ class UserManagerRenderer
         $out .= '</div>';
 
         $out .= '</div>';
-        /** END THIRD ROW */
+        /* END THIRD ROW */
 
         $out .= Form::getHidden('sop', 'sop', 'changelang');
-
 
         $registration_code_type = Get::sett('registration_code_type', '0');
         $code_is_mandatory = Get::sett('mandatory_code', 'off');
         switch ($registration_code_type) {
-            case "0":
-                {
+            case '0':
                     //nothin to do
-                };
+                ;
                 break;
-            case "tree_course":
-            case "code_module":
-            case "tree_man":
-                {
+            case 'tree_course':
+            case 'code_module':
+            case 'tree_man':
                     // we must ask the user to insert a manual code
                     $out .= '<div class="homepage__row homepage__row--form homepage__row--gray row-fluid">
                             <div class="col-xs-12 col-sm-6">';
@@ -2186,10 +2161,9 @@ class UserManagerRenderer
 
                     $out .= '</div>
                 </div>';
-                };
+                ;
                 break;
-            case "tree_drop":
-                {
+            case 'tree_drop':
                     // we must show to the user a selection of code
                     $uma = new UsermanagementAdm();
                     $tree_names = ['-' => $lang->def('_CODE') . ($code_is_mandatory ? ' ' . $mand_span : '')];
@@ -2207,24 +2181,20 @@ class UserManagerRenderer
                         ) .
                         '</div>
                 </div>';
-                };
+                ;
                 break;
         }
 
-
         if ($options['use_advanced_form'] == 'off') {
-
             $extra_field = new FieldList();
             $extraFiledsOut = $extra_field->playFieldsForUser(0, false, false, true, false, false, false, true, $errors);
 
             $out .= $extraFiledsOut;
-        } else if ($options['use_advanced_form'] == 'on') {
-
+        } elseif ($options['use_advanced_form'] == 'on') {
             $acl_man = &Docebo::user()->getAclManager();
             $groups = &$acl_man->getAllGroupsId(['free', 'moderate']);
 
             if (!empty($groups)) {
-
                 $out .= '<div class="homepage__row homepage__row--gray">'
                     . $lang->def('_SUBSCRIBE')
                     . '</div>'
@@ -2257,9 +2227,7 @@ class UserManagerRenderer
             . '<p class="mCustomScrollbar" data-mcs-theme="minimal-dark">' . $precompileLms->getPrivacyPolicyText() . '</p>'
             . '</div>';
 
-
         if ($options['privacy_policy'] == 'on') {
-
             $error = (isset($errors) && $errors['privacy']);
             $errorMessage = $errors['privacy']['msg'];
             $out .= '<div class="homepage__row homepage__row--privacy">';
@@ -2291,15 +2259,14 @@ class UserManagerRenderer
             . '</div>';
 
         $out .= '<div class="homepage__row homepage__links">'
-            . '<a href="' . Get::rel_path("base") . '/index.php"><em>' . $lang->def('_LOGIN') . '</em></a>'
+            . '<a href="' . Get::rel_path('base') . '/index.php"><em>' . $lang->def('_LOGIN') . '</em></a>'
             . '</div>';
 
         return $out;
     }
 
-    function confirmRegister($platform, $options)
+    public function confirmRegister($platform, $options)
     {
-
         $lang = &DoceboLanguage::createInstance('register', $platform);
         $acl_man = &Docebo::user()->getAclManager();
         $acl = &Docebo::user()->getAcl();
@@ -2313,24 +2280,22 @@ class UserManagerRenderer
 
         $request = $acl_man->getTempUserInfo(false, $random_code);
 
-        if (time() > (fromDatetimeToTimestamp($request['request_on']) + (3600 * (int)$options['hour_request_limit']))) {
-
+        if (time() > (fromDatetimeToTimestamp($request['request_on']) + (3600 * (int) $options['hour_request_limit']))) {
             $out = '<div class="reg_err_data">' . $lang->def('_REG_ELAPSEDREQUEST', 'register') . '</div>';
-            $time_limit = time() - 3600 * ((int)$options['hour_request_limit']);
+            $time_limit = time() - 3600 * ((int) $options['hour_request_limit']);
 
             if (Get::sett('registration_code_type', '0') == 'code_module') {
-
                 // free the code from the old association
-                require_once(_adm_ . '/lib/lib.code.php');
+                require_once _adm_ . '/lib/lib.code.php';
                 $code_manager = new CodeManager();
                 $code_manager->resetUserAssociation($code, $request['idst']);
             }
             $acl_man->deleteTempUser(false, false, $time_limit, true);
+
             return $out;
         }
 
         if ($options['register_type'] == 'self' || $options['register_type'] == 'self_optin') {
-
             if ($acl_man->registerUser(
                 addslashes($request['userid']),            // $userid
                 addslashes($request['firstname']),        // $firstname
@@ -2354,14 +2319,14 @@ class UserManagerRenderer
 
                 $acl_man->updateUser(
                     $request['idst'],
-                    FALSE,
-                    FALSE,
-                    FALSE,
-                    FALSE,
-                    FALSE,
-                    FALSE,
-                    FALSE,
-                    date("Y-m-d H:i:s")
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    date('Y-m-d H:i:s')
                 );
 
                 // subscribe to base group
@@ -2378,9 +2343,8 @@ class UserManagerRenderer
                 $acl_man->addToGroup($idst_oc, $request['idst']);
                 $acl_man->addToGroup($idst_ocd, $request['idst']);
 
-
                 //  aggiunta notifica UserNewWaiting
-                require_once(_base_ . "/lib/lib.eventmanager.php");
+                require_once _base_ . '/lib/lib.eventmanager.php';
 
                 // set as recipients all who can approve a waiting user
                 $msg_c_new = new EventMessageComposer();
@@ -2406,20 +2370,18 @@ class UserManagerRenderer
                 }
                 // end
 
-
                 $out = '<div class="reg_success">' . $lang->def('_REG_YOUR_ABI_TO_ACCESS', 'register') . '</div>';
+
                 return $out;
             } else {
-
                 $out = '<div class="reg_err_data">' . $lang->def('_REG_CONFIRM_FAILED', 'register') . '</div>';
+
                 return $out;
             }
         } elseif ($options['register_type'] == 'moderate') {
-
             if ($acl_man->confirmTempUser($request['idst'])) {
-
                 if (Get::sett('use_code_module') == 'on') {
-                    require_once($GLOBALS['where_framework'] . '/lib/lib.code.php');
+                    require_once $GLOBALS['where_framework'] . '/lib/lib.code.php';
 
                     $code_manager = new CodeManager();
 
@@ -2431,7 +2393,7 @@ class UserManagerRenderer
 
                         if (count($array_course)) {
                             foreach ($array_course as $id_course) {
-                                require_once($GLOBALS['where_lms'] . '/lib/lib.subscribe.php');
+                                require_once $GLOBALS['where_lms'] . '/lib/lib.subscribe.php';
 
                                 $subscribe = new CourseSubscribe_Management();
 
@@ -2444,8 +2406,12 @@ class UserManagerRenderer
                                 $group = $acl_man->getGroup($id_folder, false);
                                 $group_d = $acl_man->getGroup(false, '/ocd_' . str_replace('/oc_', '', $group[ACL_INFO_GROUPID]));
 
-                                if ($group) $acl_man->addToGroup($group[ACL_INFO_IDST], $request['idst']);
-                                if ($group_d) $acl_man->addToGroup($group_d[ACL_INFO_IDST], $request['idst']);
+                                if ($group) {
+                                    $acl_man->addToGroup($group[ACL_INFO_IDST], $request['idst']);
+                                }
+                                if ($group_d) {
+                                    $acl_man->addToGroup($group_d[ACL_INFO_IDST], $request['idst']);
+                                }
                             }
                         }
                     }
@@ -2453,7 +2419,7 @@ class UserManagerRenderer
 
                 $out = '<div class="reg_success">' . Lang::t('_REG_WAIT_FOR_ADMIN_OK', 'register') . '</div>';
                 // send alert to admin that can approve
-                require_once(_base_ . "/lib/lib.eventmanager.php");
+                require_once _base_ . '/lib/lib.eventmanager.php';
 
                 // set as recipients all who can approve a waiting user
                 $msg_c_approve = new EventMessageComposer();
@@ -2477,25 +2443,26 @@ class UserManagerRenderer
                         $msg_c_approve
                     );
                 }
+
                 return $out;
             } else {
-
                 $out = '<div class="reg_err_data">' . $lang->def('_REG_CONFIRM_FAILED', 'register') . '</div>';
+
                 return $out;
             }
         }
     }
 
     /**
-     * Control the contents of the field
-     * @param array $source the values to check
+     * Control the contents of the field.
+     *
+     * @param array $source  the values to check
      * @param array $options the values needed for control
      *
-     * @return    array    ( [error]  => true o false , [msg] => error message)
+     * @return array ( [error]  => true o false , [msg] => error message)
      */
-    function _checkField($source, $options, $platform, $control_extra_field = true)
+    public function _checkField($source, $options, $platform, $control_extra_field = true)
     {
-
         $lang = &DoceboLanguage::createInstance('register', $platform);
 
         $errors = [];
@@ -2503,18 +2470,16 @@ class UserManagerRenderer
         // control if the inserted data is valid
         if ($options['privacy_policy'] === 'on') {
             if (!isset($source['register']['privacy'])) {
-
                 $error = [
                     'error' => true,
-                    'msg' => $lang->def('_ERR_POLICY_NOT_CHECKED')
+                    'msg' => $lang->def('_ERR_POLICY_NOT_CHECKED'),
                 ];
 
                 $errors['privacy'] = $error;
             } elseif ($source['register']['privacy'] != 'ok') {
-
                 $error = [
                     'error' => true,
-                    'msg' => $lang->def('_ERR_POLICY_NOT_CHECKED')
+                    'msg' => $lang->def('_ERR_POLICY_NOT_CHECKED'),
                 ];
 
                 $errors['privacy'] = $error;
@@ -2528,38 +2493,36 @@ class UserManagerRenderer
         if ($source['register']['email'] === '') {
             $error = [
                 'error' => true,
-                'msg' => $lang->def('_ERR_INVALID_MAIL')
+                'msg' => $lang->def('_ERR_INVALID_MAIL'),
             ];
 
             $errors['email'] = $error;
-        } else if (!preg_match("/^([a-z0-9_\-]|\\.[a-z0-9_])+@(([a-z0-9_\-]|\\.-)+\\.)+[a-z]{2,8}$/", $source['register']['email'])) {
+        } elseif (!preg_match("/^([a-z0-9_\-]|\\.[a-z0-9_])+@(([a-z0-9_\-]|\\.-)+\\.)+[a-z]{2,8}$/", $source['register']['email'])) {
             $error = [
                 'error' => true,
-                'msg' => $lang->def('_ERR_INVALID_MAIL')
+                'msg' => $lang->def('_ERR_INVALID_MAIL'),
             ];
 
             $errors['email'] = $error;
-        } else if (preg_match("[\r\n]+", $source['register']['email'])) {
+        } elseif (preg_match("[\r\n]+", $source['register']['email'])) {
             $error = [
                 'error' => true,
-                'msg' => $lang->def('_ERR_INVALID_MAIL')
+                'msg' => $lang->def('_ERR_INVALID_MAIL'),
             ];
 
             $errors['email'] = $error;
-        } else if ($acl_man->getUserByEmail($source['register']['email']) !== false) {
-
+        } elseif ($acl_man->getUserByEmail($source['register']['email']) !== false) {
             $error = [
                 'error' => true,
-                'msg' => $lang->def('_ERR_DUPLICATE_MAIL')
+                'msg' => $lang->def('_ERR_DUPLICATE_MAIL'),
             ];
 
             $errors['email'] = $error;
-        } else if (($tuser = $acl_man->getTempUserByEmail($source['register']['email'])) !== false) {
-
+        } elseif (($tuser = $acl_man->getTempUserByEmail($source['register']['email'])) !== false) {
             $msg = $lang->def('_ERR_DUPLICATE_RESEND');
             $error = [
                 'error' => true,
-                'msg' => $msg
+                'msg' => $msg,
             ];
 
             $errors['email'] = $error;
@@ -2569,21 +2532,18 @@ class UserManagerRenderer
         $user = $acl_man->getUserST($source['register']['userid']);
         $temp_user = $acl_man->getTempUserInfo($source['register']['userid']);
 
-
         if ($source['register']['userid'] === '' || $source['register']['userid'] === $lang->def('_REG_USERID_DEF')) {
-
             $error = [
                 'error' => true,
-                'msg' => $lang->def('_ERR_INVALID_USER')
+                'msg' => $lang->def('_ERR_INVALID_USER'),
             ];
 
             $errors['userid'] = $error;
         } // control if userid is duplicate
-        else if ($user !== false || $temp_user !== false) {
-
+        elseif ($user !== false || $temp_user !== false) {
             $error = [
                 'error' => true,
-                'msg' => $lang->def('_ERR_DUPLICATE_USER')
+                'msg' => $lang->def('_ERR_DUPLICATE_USER'),
             ];
 
             $errors['userid'] = $error;
@@ -2591,27 +2551,24 @@ class UserManagerRenderer
 
         // control password
         if (strlen($_POST['register']['pwd']) < $options['pass_min_char']) {
-
             $error = [
                 'error' => true,
-                'msg' => $lang->def('_PASSWORD_TOO_SHORT')
+                'msg' => $lang->def('_PASSWORD_TOO_SHORT'),
             ];
 
             $errors['pwd'] = $error;
-        } else if ($_POST['register']['pwd'] !== $source['register']['pwd_retype']) {
-
+        } elseif ($_POST['register']['pwd'] !== $source['register']['pwd_retype']) {
             $error = [
                 'error' => true,
-                'msg' => $lang->def('_ERR_PASSWORD_NO_MATCH')
+                'msg' => $lang->def('_ERR_PASSWORD_NO_MATCH'),
             ];
 
             $errors['pwd'] = $error;
-        } else if ($options['pass_alfanumeric'] === 'on') {
+        } elseif ($options['pass_alfanumeric'] === 'on') {
             if (!preg_match('/[a-z]/i', $source['register']['pwd']) || !preg_match('/[0-9]/', $source['register']['pwd'])) {
-
                 $error = [
                     'error' => true,
-                    'msg' => $lang->def('_ERR_PASSWORD_MUSTBE_ALPHA')
+                    'msg' => $lang->def('_ERR_PASSWORD_MUSTBE_ALPHA'),
                 ];
 
                 $errors['pwd'] = $error;
@@ -2620,10 +2577,9 @@ class UserManagerRenderer
 
         if ($options['lastfirst_mandatory'] == 'on') {
             if (trim($source['register']['firstname']) == '' || trim($source['register']['lastname']) == '') {
-
                 $error = [
                     'error' => true,
-                    'msg' => $lang->def('_SOME_MANDATORY_EMPTY')
+                    'msg' => $lang->def('_SOME_MANDATORY_EMPTY'),
                 ];
 
                 $errors['firstname'] = $error;
@@ -2632,9 +2588,7 @@ class UserManagerRenderer
             }
         }
 
-
         if ($control_extra_field) {
-
             $arr_idst = (isset($_POST['group_sel_implode']) ? explode(',', $_POST['group_sel_implode']) : false);
 
             if ($options['use_advanced_form'] == 'on' || Get::sett('register_with_code') == 'on') {
@@ -2649,11 +2603,9 @@ class UserManagerRenderer
                 }
             }
 
-
             $extra_field = new FieldList();
             $re_filled = $extra_field->isFilledFieldsForUserInRegistration(0, $arr_idst);
             if ($re_filled !== true) {
-
                 foreach ($re_filled as $key => $value) {
                     $errors[$key] = $value;
                 }
@@ -2666,12 +2618,11 @@ class UserManagerRenderer
     /**
      * @return string the html needed for the lost user / password mask
      */
-    function getLostpwd($jump_url, $platform)
+    public function getLostpwd($jump_url, $platform)
     {
-
         $lang = &DoceboLanguage::createInstance('register', $platform);
 
-        require_once(_base_ . '/lib/lib.form.php');
+        require_once _base_ . '/lib/lib.form.php';
 
         $html = '';
         // request form
@@ -2682,7 +2633,6 @@ class UserManagerRenderer
             . $lang->def('_LOST_INSTRUCTION_USER');
 
         if (Get::sett('ldap_used') == 'off') {
-
             $html .= Form::openForm('lost_user', $jump_url)
                 . Form::openElementSpace('form_right')
                 . Form::getLabel('email', $lang->def('_EMAIL'), 'text_bold')
@@ -2692,7 +2642,6 @@ class UserManagerRenderer
                 . Form::closeElementSpace()
                 . Form::closeForm();
         } else {
-
             $html .= '<div class="form_right"><span class="font_red">' . $lang->def('_LDAPACTIVE') . '</span></div>';
         }
         $html .= '</div>';
@@ -2711,47 +2660,55 @@ class UserManagerRenderer
             . Form::closeElementSpace()
             . Form::closeForm()
             . '</div>';
+
         return $html;
     }
 
     /**
-     * @return bool        true if the action to perform is  to send email for recover  password
+     * @return bool true if the action to perform is  to send email for recover  password
      */
-    function haveToLostUserAction()
+    public function haveToLostUserAction()
     {
+        if (isset($_POST['email_ins'])) {
+            return true;
+        }
 
-        if (isset($_POST['email_ins'])) return true;
         return false;
     }
 
-    function getLostUserParam()
+    public function getLostUserParam()
     {
+        if (isset($_POST['email'])) {
+            return $_POST['email'];
+        }
 
-        if (isset($_POST['email'])) return $_POST['email'];
         return false;
     }
 
     /**
-     * @return bool        true if the action to perform is  to send email for recover user
+     * @return bool true if the action to perform is  to send email for recover user
      */
-    function haveToLostpwdAction()
+    public function haveToLostpwdAction()
     {
+        if (isset($_POST['userid_ins'])) {
+            return true;
+        }
 
-        if (isset($_POST['userid_ins'])) return true;
         return false;
     }
 
-    function getLostPwdParam()
+    public function getLostPwdParam()
     {
+        if (isset($_POST['userid'])) {
+            return $_POST['userid'];
+        }
 
-        if (isset($_POST['userid'])) return $_POST['userid'];
         return false;
     }
 
-    function getRenderedProfile($user_info)
+    public function getRenderedProfile($user_info)
     {
-
-        require_once(_base_ . '/lib/lib.form.php');
+        require_once _base_ . '/lib/lib.form.php';
         $lang = &DoceboLanguage::createInstance('profile', 'framework');
 
         $path = Get::site_url() . $GLOBALS['where_files_relative'] . '/appCore/' . Get::sett('pathphoto');
@@ -2767,11 +2724,9 @@ class UserManagerRenderer
             . '<table class="profile_images">'
             . '<tr><td>';
         // NOTE: avatar
-        if ($user_info[ACL_INFO_AVATAR] != "") {
-
+        if ($user_info[ACL_INFO_AVATAR] != '') {
             $txt .= '<img class="profile_image" src="' . $path . $user_info[ACL_INFO_AVATAR] . '" alt="' . $lang->def('_AVATAR') . '" /><br />';
         } else {
-
             $txt .= '<div class="text_italic">' . $lang->def('_NOAVATAR') . '</div>';
         }
         // NOTE: signature
@@ -2779,13 +2734,13 @@ class UserManagerRenderer
             . '<div class="title">' . $lang->def('_SIGNATURE') . '</div>'
             . '<div class="profile_signature">' . $user_info[ACL_INFO_SIGNATURE] . '</div><br />' . "\n"
             . '</div>';
+
         return $txt;
     }
 
-    function getElapsedPasswordMask($platform, $options, $jump_link)
+    public function getElapsedPasswordMask($platform, $options, $jump_link)
     {
-
-        require_once(_base_ . '/lib/lib.form.php');
+        require_once _base_ . '/lib/lib.form.php';
 
         $lang = &DoceboLanguage::createInstance('register', $platform);
 
@@ -2793,8 +2748,11 @@ class UserManagerRenderer
 
         $html = '<ul class="instruction_list">';
 
-        if ($res == 2) $html .= '<li>' . $lang->def('_FORCE_CHANGE') . '</li>';
-        else $html .= '<li>' . $lang->def('_WHYCHANGEPWD', 'register') . '</li>';
+        if ($res == 2) {
+            $html .= '<li>' . $lang->def('_FORCE_CHANGE') . '</li>';
+        } else {
+            $html .= '<li>' . $lang->def('_WHYCHANGEPWD', 'register') . '</li>';
+        }
 
         if ($options['pass_max_time_valid']) {
             $html .= '<li>' . str_replace('[valid_for_day]', $options['pass_max_time_valid'], $lang->def('_NEWPWDVALID')) . '</li>';
@@ -2824,15 +2782,13 @@ class UserManagerRenderer
         return $html;
     }
 
-    function clickSaveElapsed()
+    public function clickSaveElapsed()
     {
-
         return isset($_POST['save_pwd']);
     }
 
-    function saveElapsedPassword($platform, $options)
+    public function saveElapsedPassword($platform, $options)
     {
-
         $lang = &DoceboLanguage::createInstance('register', $platform);
 
         $html = '';
@@ -2843,68 +2799,59 @@ class UserManagerRenderer
 
         $password = new Password($_POST['oldpwd']);
         if (!$password->verify($user_info[ACL_INFO_PASS])) {
-
             return [
                 'error' => true,
-                'msg' => getErrorUi($lang->def('_ERR_PWD_OLD'))
+                'msg' => getErrorUi($lang->def('_ERR_PWD_OLD')),
             ];
         }
         // control password
         if (strlen($_POST['newpwd']) < $options['pass_min_char']) {
-
             return [
                 'error' => true,
-                'msg' => getErrorUi($lang->def('_PASSWORD_TOO_SHORT'))
+                'msg' => getErrorUi($lang->def('_PASSWORD_TOO_SHORT')),
             ];
         }
         if ($_POST['newpwd'] != $_POST['repwd']) {
-
             return [
                 'error' => true,
-                'msg' => getErrorUi($lang->def('_ERR_PASSWORD_NO_MATCH'))
+                'msg' => getErrorUi($lang->def('_ERR_PASSWORD_NO_MATCH')),
             ];
         }
         if ($_POST['oldpwd'] == $_POST['newpwd']) {
-
             return [
                 'error' => true,
-                'msg' => getErrorUi($lang->def('_ERR_PWD_SAME_OLD'))
+                'msg' => getErrorUi($lang->def('_ERR_PWD_SAME_OLD')),
             ];
         }
         if ($options['pass_alfanumeric'] == 'on') {
             if (!preg_match('/[a-z]/i', $_POST['newpwd']) || !preg_match('/[0-9]/', $_POST['newpwd'])) {
-
                 return [
                     'error' => true,
-                    'msg' => getErrorUi($lang->def('_ERR_PASSWORD_MUSTBE_ALPHA'))
+                    'msg' => getErrorUi($lang->def('_ERR_PASSWORD_MUSTBE_ALPHA')),
                 ];
             }
         }
         //check password history
 
         if (Get::sett('user_pwd_history_length') != 0) {
-
             $new_pwd = $acl_man->encrypt($_POST['newpwd']);
             if ($user_info[ACL_INFO_PASS] == $new_pwd) {
-
                 return [
                     'error' => true,
-                    'msg' => getErrorUi(str_replace('[diff_pwd]', Get::sett('user_pwd_history_length'), $lang->def('_REG_PASS_MUST_DIFF')))
+                    'msg' => getErrorUi(str_replace('[diff_pwd]', Get::sett('user_pwd_history_length'), $lang->def('_REG_PASS_MUST_DIFF'))),
                 ];
             }
-            $re_pwd = sql_query("SELECT passw "
-                . " FROM " . $GLOBALS['prefix_fw'] . "_password_history"
-                . " WHERE idst_user = " . (int)$idst . ""
-                . " ORDER BY pwd_date DESC");
+            $re_pwd = sql_query('SELECT passw '
+                . ' FROM ' . $GLOBALS['prefix_fw'] . '_password_history'
+                . ' WHERE idst_user = ' . (int) $idst . ''
+                . ' ORDER BY pwd_date DESC');
 
             list($pwd_history) = sql_fetch_row($re_pwd);
-            for ($i = 0; $pwd_history && $i < Get::sett('user_pwd_history_length'); $i++) {
-
+            for ($i = 0; $pwd_history && $i < Get::sett('user_pwd_history_length'); ++$i) {
                 if ($pwd_history == $new_pwd) {
-
                     return [
                         'error' => true,
-                        'msg' => getErrorUi(str_replace('[diff_pwd]', Get::sett('user_pwd_history_length'), $lang->def('_REG_PASS_MUST_DIFF')))
+                        'msg' => getErrorUi(str_replace('[diff_pwd]', Get::sett('user_pwd_history_length'), $lang->def('_REG_PASS_MUST_DIFF'))),
                     ];
                 }
                 list($pwd_history) = sql_fetch_row($re_pwd);
@@ -2914,156 +2861,157 @@ class UserManagerRenderer
         // save the password
         $re = $acl_man->updateUser(
             $idst,
-            FALSE,
-            FALSE,
-            FALSE,
+            false,
+            false,
+            false,
             $_POST['newpwd'],
-            FALSE,
-            FALSE,
-            FALSE,
-            date("Y-m-d H:i:s"),
-            FALSE,
+            false,
+            false,
+            false,
+            date('Y-m-d H:i:s'),
+            false,
             0
         );
 
         return [
             'error' => false,
-            'msg' => ''
+            'msg' => '',
         ];
     }
 }
 
 class UserManagerOption
 {
-
-
     /**
      * @var string
      */
-    var $_table;
+    public $_table;
 
     /**
      * @var array
      */
-    var $_options;
+    public $_options;
 
     /**
-     * Class constructor
+     * Class constructor.
+     *
      * @param string $table secified a different table from the default one
      */
-    function UserManagerOption($table = false)
+    public function UserManagerOption($table = false)
     {
-
-        if ($table === false) $this->_table = $GLOBALS['prefix_fw'] . '_setting';
-        else $this->_table = $table;
+        if ($table === false) {
+            $this->_table = $GLOBALS['prefix_fw'] . '_setting';
+        } else {
+            $this->_table = $table;
+        }
 
         $this->_options = [];
     }
 
-
     /**
-     * load option form database
+     * load option form database.
+     *
      * @return nothing
-     * @access private
      */
-    function _loadOption()
+    public function _loadOption()
     {
-
-        $reSetting = sql_query("
+        $reSetting = sql_query('
 		SELECT param_name, param_value, value_type, max_size
-		FROM " . $this->_table . "
-		ORDER BY sequence");
+		FROM ' . $this->_table . '
+		ORDER BY sequence');
         while (list($var_name, $var_value, $value_type) = sql_fetch_row($reSetting)) {
-
             switch ($value_type) {
                 //if is int cast it
-                case "int":
-                    {
-                        $this->_options[$var_name] = (int)$var_value;
-                    };
+                case 'int':
+                        $this->_options[$var_name] = (int) $var_value;
+                    ;
                     break;
                 //if is enum switch value to on or off
-                case "enum":
-                    {
-                        if ($var_value == 'on') $this->_options[$var_name] = 'on';
-                        else $this->_options[$var_name] = 'off';
-                    };
+                case 'enum':
+                        if ($var_value == 'on') {
+                            $this->_options[$var_name] = 'on';
+                        } else {
+                            $this->_options[$var_name] = 'off';
+                        }
+                    ;
                     break;
                 //else simple assignament
                 default:
-                {
                     $this->_options[$var_name] = $var_value;
-                }
             }
         }
     }
 
     /**
-     * get all the available option
-     * @return array    array(ption_name => option_value)
+     * get all the available option.
+     *
+     * @return array array(ption_name => option_value)
      */
-    function getAllOption()
+    public function getAllOption()
     {
+        if (empty($this->_options)) {
+            $this->_loadOption();
+        }
 
-        if (empty($this->_options)) $this->_loadOption();
         return $this->_options;
     }
 
     /**
-     * get the value of a aspecific option
+     * get the value of a aspecific option.
+     *
      * @param string $option_name specified a different platform for localization
      *
-     * @return array    return the value for the option required if exists else return FALSE
+     * @return array return the value for the option required if exists else return FALSE
      */
-    function getOption($option_name)
+    public function getOption($option_name)
     {
+        if (empty($this->_options)) {
+            $this->_loadOption();
+        }
 
-        if (empty($this->_options)) $this->_loadOption();
-        return (isset($this->_options[$option_name]) ? $this->_options[$option_name] : false);
+        return isset($this->_options[$option_name]) ? $this->_options[$option_name] : false;
     }
 
     /**
      * @param string $platform specified a different platform for localization
-     * @param string $prefix specified a prefix
-     * @param string $db_conn specified a db connection with the database
+     * @param string $prefix   specified a prefix
+     * @param string $db_conn  specified a db connection with the database
      *
-     * @return array    array(group_id => group_name) with the regroup unit
+     * @return array array(group_id => group_name) with the regroup unit
      */
-    function getRegroupUnit()
+    public function getRegroupUnit()
     {
-
         return [
-            'user_manager' => Lang::t('_LOG_OPTION', 'user_managment')
+            'user_manager' => Lang::t('_LOG_OPTION', 'user_managment'),
         ];
     }
 
     /**
      * @param string    contains the group selected
      *
-     * @return    string    contains the displayable information for a selected group
+     * @return string contains the displayable information for a selected group
      */
-    function getPageWithElement($group_selected)
+    public function getPageWithElement($group_selected)
     {
+        if ($group_selected != 'user_manager') {
+            return '';
+        }
 
-        if ($group_selected != 'user_manager') return '';
-
-        require_once(_base_ . '/lib/lib.form.php');
+        require_once _base_ . '/lib/lib.form.php';
 
         $lang = &DoceboLanguage::createInstance('user_managment', 'framework');
 
-        $reSetting = sql_query("
+        $reSetting = sql_query('
 		SELECT param_name, param_value, value_type, max_size
-		FROM " . $this->_table . "
+		FROM ' . $this->_table . "
 		WHERE pack = 'log_option' AND
 			hide_in_modify = '0'
 		ORDER BY sequence");
 
         $html = '';
         while (list($var_name, $var_value, $value_type, $max_size) = sql_fetch_row($reSetting)) {
-
             switch ($value_type) {
-                case "register_type":
-                    {
+                case 'register_type':
                         //on off
 
                         $html .= Form::getOpenCombo($lang->def('_' . strtoupper($var_name)))
@@ -3104,16 +3052,14 @@ class UserManagerOption
                                 ($var_value == 'admin')
                             )
                             . Form::getCloseCombo();
-                    };
+                    ;
                     break;
 
-                case "register_tree":
-                    {
-
+                case 'register_tree':
                         $register_possible_option = [
                             'off' => $lang->def('_DONT_USE_TREE_REGISTRATION'),
                             'manual_insert' => $lang->def('_USE_WITH_MANUALEINSERT'),
-                            'selection' => $lang->def('_USE_WITH_SELECTION')
+                            'selection' => $lang->def('_USE_WITH_SELECTION'),
                         ];
 
                         $html .= Form::getDropdown(
@@ -3123,12 +3069,10 @@ class UserManagerOption
                             $register_possible_option,
                             $var_value
                         );
-                    };
+                    ;
                     break;
-                case "field_tree":
-                    {
-
-                        require_once($GLOBALS['where_framework'] . '/lib/lib.field.php');
+                case 'field_tree':
+                        require_once $GLOBALS['where_framework'] . '/lib/lib.field.php';
 
                         $fl = new FieldList();
                         $all_fields = $fl->getAllFields(false);
@@ -3143,10 +3087,9 @@ class UserManagerOption
                             $fields,
                             $var_value
                         );
-                    }
+
                     break;
-                case "save_log_attempt":
-                    {
+                case 'save_log_attempt':
                         //on off
 
                         $html .= Form::getOpenCombo($lang->def('_' . strtoupper($var_name)))
@@ -3178,10 +3121,9 @@ class UserManagerOption
                                 ($var_value == 'no')
                             )
                             . Form::getCloseCombo();
-                    };
+                    ;
                     break;
-                case "enum":
-                    {
+                case 'enum':
                         //on off
                         $html .= Form::openFormLine()
                             . Form::getInputCheckbox(
@@ -3194,11 +3136,10 @@ class UserManagerOption
                             . ' '
                             . Form::getLabel($var_name . '_on', $lang->def('_' . strtoupper($var_name)), 'label_bold')
                             . Form::closeFormLine();
-                    };
+                    ;
                     break;
                 //uncrypted password
-                case "password":
-                    {
+                case 'password':
                         $html .= Form::getPassword(
                             $lang->def('_' . strtoupper($var_name)),
                             $var_name,
@@ -3206,11 +3147,10 @@ class UserManagerOption
                             $max_size,
                             $var_value
                         );
-                    }
+
                     break;
                 //string or int
                 default:
-                {
                     $html .= Form::getTextfield(
                         $lang->def('_' . strtoupper($var_name)),
                         $var_name,
@@ -3218,59 +3158,58 @@ class UserManagerOption
                         $max_size,
                         $var_value
                     );
-                }
             }
         }
+
         return $html;
     }
 
     /**
      * @param string    contains the group selected
      *
-     * @return    bool    true if the operation was successfull false otherwise
+     * @return bool true if the operation was successfull false otherwise
      */
-    function saveElement($regroup)
+    public function saveElement($regroup)
     {
+        if ($regroup != 'user_manager') {
+            return true;
+        }
 
-        if ($regroup != 'user_manager') return true;
-
-        $reSetting = sql_query("
+        $reSetting = sql_query('
 		SELECT param_name, value_type
-		FROM " . $this->_table . "
+		FROM ' . $this->_table . "
 		WHERE pack = 'log_option' AND
 			hide_in_modify = '0'");
 
         $re = true;
         while (list($var_name, $value_type) = sql_fetch_row($reSetting)) {
-
             switch ($value_type) {
-
-                case "int":
-                    {
-                        $new_value = (int)$_POST['option'][$var_name];
-                    };
+                case 'int':
+                        $new_value = (int) $_POST['option'][$var_name];
+                    ;
                     break;
                 //if is enum switch value to on or off
-                case "enum":
-                    {
-                        if (isset($_POST['option'][$var_name])) $new_value = 'on';
-                        else $new_value = 'off';
-                    };
+                case 'enum':
+                        if (isset($_POST['option'][$var_name])) {
+                            $new_value = 'on';
+                        } else {
+                            $new_value = 'off';
+                        }
+                    ;
                     break;
                 //else simple assignament
                 default:
-                {
                     $new_value = $_POST['option'][$var_name];
-                }
             }
 
-            if (!sql_query("
-			UPDATE " . $this->_table . "
+            if (!sql_query('
+			UPDATE ' . $this->_table . "
 			SET param_value = '$new_value'
 			WHERE pack = 'log_option' AND param_name = '$var_name'")) {
                 $re = false;
             }
         }
+
         return $re;
     }
 }

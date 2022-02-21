@@ -4,7 +4,7 @@ echo getTitleArea($title_arr);
 <script type="text/javascript">
 var GapAnalisys = {
 
-	idFncrole: <?php echo (int)$id_fncrole; ?>,
+	idFncrole: <?php echo (int) $id_fncrole; ?>,
 	filterText: "<?php echo $filter_text; ?>",
 	showGap: <?php echo $advanced_filter['gap_filter']; ?>, //0 = all, 1 = only gaps, 2 = only non-gap
 	showExpired: <?php echo $advanced_filter['expire_filter']; ?>, //0 = all, 1 = only expired, 2 = only active
@@ -227,63 +227,64 @@ YAHOO.util.Event.onDOMReady(function() {
 	<div>
 		<div class="simple_search_box" id="competences_simple_filter_options" style="display: block;">
 			<?php
-				echo Form::getInputTextfield("search_t", "filter_text", "filter_text", $filter_text, '', 255, '' );
-				echo Form::getButton("filter_set", "filter_set", Lang::t('_SEARCH', 'standard'), "search_b");
-				echo Form::getButton("filter_reset", "filter_reset", Lang::t('_RESET', 'standard'), "reset_b");
-			?>
+                echo Form::getInputTextfield('search_t', 'filter_text', 'filter_text', $filter_text, '', 255, '');
+                echo Form::getButton('filter_set', 'filter_set', Lang::t('_SEARCH', 'standard'), 'search_b');
+                echo Form::getButton('filter_reset', 'filter_reset', Lang::t('_RESET', 'standard'), 'reset_b');
+            ?>
 		</div>
-		<a id="advanced_search" class="advanced_search" href="javascript:;"><?php echo Lang::t("_ADVANCED_SEARCH", 'standard'); ?></a>
+		<a id="advanced_search" class="advanced_search" href="javascript:;"><?php echo Lang::t('_ADVANCED_SEARCH', 'standard'); ?></a>
 		<div id="advanced_search_options" class="advanced_search_options" <?php
-			if ($advanced_filter['active'])
-				echo 'style="display: block;"';
-			else
-				echo 'style="display: none;"';
-			?>>
+            if ($advanced_filter['active']) {
+                echo 'style="display: block;"';
+            } else {
+                echo 'style="display: none;"';
+            }
+            ?>>
 			<?php
-				$show_gap_values = [
-					0 => Lang::t('_ALL', 'standard'),
-					1 => Lang::t('_GAP_ONLY', 'fncroles'),
-					2 => Lang::t('_NO_GAP_ONLY', 'fncroles')
+                $show_gap_values = [
+                    0 => Lang::t('_ALL', 'standard'),
+                    1 => Lang::t('_GAP_ONLY', 'fncroles'),
+                    2 => Lang::t('_NO_GAP_ONLY', 'fncroles'),
                 ];
-				/*$show_expire_values = array(
-					0 => Lang::t('_ALL', 'standard'),
-					1 => Lang::t('_EXPIRED_ONLY', 'standard'),
-					2 => Lang::t('_NOT_EXPIRED_ONLY', 'standard')
-				);*/
-				echo Form::getRadioHoriz(Lang::t('_FILTER', 'fncroles'), 'show_gap', 'show_gap', array_flip($show_gap_values), $advanced_filter['gap_filter']);
-				//echo Form::getRadioHoriz(Lang::t('_EXPIRE_FILTER', 'fncroles'), 'show_expire', 'show_expire', array_flip($show_expire_values), $advanced_filter['expire_filter']);
+                /*$show_expire_values = array(
+                    0 => Lang::t('_ALL', 'standard'),
+                    1 => Lang::t('_EXPIRED_ONLY', 'standard'),
+                    2 => Lang::t('_NOT_EXPIRED_ONLY', 'standard')
+                );*/
+                echo Form::getRadioHoriz(Lang::t('_FILTER', 'fncroles'), 'show_gap', 'show_gap', array_flip($show_gap_values), $advanced_filter['gap_filter']);
+                //echo Form::getRadioHoriz(Lang::t('_EXPIRE_FILTER', 'fncroles'), 'show_expire', 'show_expire', array_flip($show_expire_values), $advanced_filter['expire_filter']);
 
-				echo Form::openButtonSpace();
-				echo Form::getButton('set_advanced_filter', false, Lang::t('_SEARCH', 'standard'));
-				echo Form::getButton('reset_advanced_filter', false, Lang::t('_UNDO', 'standard'));
-				echo Form::closeButtonSpace();
-			?>
+                echo Form::openButtonSpace();
+                echo Form::getButton('set_advanced_filter', false, Lang::t('_SEARCH', 'standard'));
+                echo Form::getButton('reset_advanced_filter', false, Lang::t('_UNDO', 'standard'));
+                echo Form::closeButtonSpace();
+            ?>
 		</div>
 	</div>
 </div>
 
 <?php
 
-$icon_history = '<span class="ico-sprite subs_elem"><span>'.Lang::t('_HISTORY', 'standard').'</span></span>';
+$icon_history = '<span class="ico-sprite subs_elem"><span>' . Lang::t('_HISTORY', 'standard') . '</span></span>';
 //$icon_del = '<span class="ico-sprite subs_del"><span>'.Lang::t('_UNASSIGN', 'competences').'</span></span>';
-$icon_chart = '<span class="ico-sprite subs_chart"><span>'.Lang::t('_GAP_ANALYSIS', 'fncroles').'</span></span>';
+$icon_chart = '<span class="ico-sprite subs_chart"><span>' . Lang::t('_GAP_ANALYSIS', 'fncroles') . '</span></span>';
 
 $dyn_labels = [];
 $dyn_filter = [];
 
-for ($i=0; $i<$num_var_fields; $i++) {
-	$label = '<select id="_dyn_field_selector_'.$i.'" name="_dyn_field_selector['.$i.']">';
-	foreach ($fieldlist as $key => $value) {
-		 $label .= '<option value="'.$key.'"'
-			.( $selected[$i] == $key ? ' selected="selected"' : '' )
-			.'>'.$value.'</option>';
-	}
-	$label .= '</select>';
-	$label .= '<a id="_dyn_field_sort_'.$i.'" href="javascript:;">';
-	$label .= '<img src="'.Get::tmpl_path().'images/standard/sort.png" title="'.Lang::t('_SORT', 'standard').'" alt="'.Lang::t('_SORT', 'standard').'" />';
-	$label .= '</a>';
-	$dyn_filter[$i] = $selected[$i];
-	$dyn_labels[$i] = $label;
+for ($i = 0; $i < $num_var_fields; ++$i) {
+    $label = '<select id="_dyn_field_selector_' . $i . '" name="_dyn_field_selector[' . $i . ']">';
+    foreach ($fieldlist as $key => $value) {
+        $label .= '<option value="' . $key . '"'
+            . ($selected[$i] == $key ? ' selected="selected"' : '')
+            . '>' . $value . '</option>';
+    }
+    $label .= '</select>';
+    $label .= '<a id="_dyn_field_sort_' . $i . '" href="javascript:;">';
+    $label .= '<img src="' . Get::tmpl_path() . 'images/standard/sort.png" title="' . Lang::t('_SORT', 'standard') . '" alt="' . Lang::t('_SORT', 'standard') . '" />';
+    $label .= '</a>';
+    $dyn_filter[$i] = $selected[$i];
+    $dyn_labels[$i] = $label;
 }
 
 $columns = [];
@@ -291,47 +292,47 @@ $columns[] = ['key' => 'competence', 'label' => Lang::t('_COMPETENCE', 'competen
 $columns[] = ['key' => 'userid', 'label' => Lang::t('_USER', 'standard'), 'sortable' => true];
 $columns[] = ['key' => 'lastname', 'label' => Lang::t('_LASTNAME', 'standard'), 'sortable' => true];
 $columns[] = ['key' => 'firstname', 'label' => Lang::t('_FIRSTNAME', 'standard'), 'sortable' => true];
-for ($i=0; $i<$num_var_fields; $i++) {
-	$columns[] = ['key' => '_dyn_field_'.$i, 'label' => $dyn_labels[$i]];
+for ($i = 0; $i < $num_var_fields; ++$i) {
+    $columns[] = ['key' => '_dyn_field_' . $i, 'label' => $dyn_labels[$i]];
 }
 $columns[] = ['key' => 'score_got', 'label' => Lang::t('_SCORE', 'competences'), 'sortable' => true, 'className' => 'img-cell'];
 $columns[] = ['key' => 'score_req', 'label' => Lang::t('_REQUIRED_SCORE', 'competences'), 'sortable' => true, 'className' => 'img-cell'];
-$columns[] = ['key' => 'gap', 'label' => Lang::t('_GAP', 'fncroles'), 'sortable' => true, 'formatter'=>'GapAnalisys.gapFormatter', 'className' => 'img-cell'];
+$columns[] = ['key' => 'gap', 'label' => Lang::t('_GAP', 'fncroles'), 'sortable' => true, 'formatter' => 'GapAnalisys.gapFormatter', 'className' => 'img-cell'];
 $columns[] = ['key' => 'last_assign_date', 'label' => Lang::t('_DATE_OBTAINED', 'competences'), 'sortable' => true, 'className' => 'img-cell'];
-$columns[] = ['key' => 'date_expire', 'label' => Lang::t('_EXPIRATION_DATE', 'competences')/*, 'sortable' => true*/, 'formatter'=>'GapAnalisys.expireFormatter', 'className' => 'img-cell'];
+$columns[] = ['key' => 'date_expire', 'label' => Lang::t('_EXPIRATION_DATE', 'competences')/*, 'sortable' => true*/, 'formatter' => 'GapAnalisys.expireFormatter', 'className' => 'img-cell'];
 $columns[] = ['key' => 'gap_user', 'label' => $icon_chart, 'formatter' => 'GapAnalisys.userGapAnalisysFormatter', 'className' => 'img-cell'];
 
-$rel_actions = '<a class="ico-wt-sprite subs_csv" title="'.Lang::t('_EXPORT_CSV', 'report').'" '
-	.'href="javascript: GapAnalisys.exportCSV(this);">'
-	.'<span>'.Lang::t('_EXPORT_CSV', 'report').'</span></a>'
-    .'<a class="ico-wt-sprite subs_xls" title="'.Lang::t('_EXPORT_XLS', 'report').'" '
-	.'href="javascript: GapAnalisys.exportXLS(this);">'
-	.'<span>'.Lang::t('_EXPORT_XLS', 'report').'</span></a>'
-	/*.'<a class="ico-wt-sprite subs_xls" title="'.Lang::t('_EXPORT_XLS', 'report').'" '
-	.'href="index.php?r=adm/functionalroles/export_gap&id_fncrole='.(int)$id_fncrole.'&format=xls">'
-	.'<span>'.Lang::t('_EXPORT_XLS', 'report').'</span></a>'*/;
+$rel_actions = '<a class="ico-wt-sprite subs_csv" title="' . Lang::t('_EXPORT_CSV', 'report') . '" '
+    . 'href="javascript: GapAnalisys.exportCSV(this);">'
+    . '<span>' . Lang::t('_EXPORT_CSV', 'report') . '</span></a>'
+    . '<a class="ico-wt-sprite subs_xls" title="' . Lang::t('_EXPORT_XLS', 'report') . '" '
+    . 'href="javascript: GapAnalisys.exportXLS(this);">'
+    . '<span>' . Lang::t('_EXPORT_XLS', 'report') . '</span></a>'
+    /*.'<a class="ico-wt-sprite subs_xls" title="'.Lang::t('_EXPORT_XLS', 'report').'" '
+    .'href="index.php?r=adm/functionalroles/export_gap&id_fncrole='.(int)$id_fncrole.'&format=xls">'
+    .'<span>'.Lang::t('_EXPORT_XLS', 'report').'</span></a>'*/;
 
 $arr_fields = ['idst', 'userid', 'firstname', 'lastname', 'last_assign_date', 'date_expire', 'score_req', 'score_got', 'gap', 'competence', 'id_competence', 'is_expired'];
-for ($i=0; $i<$num_var_fields; $i++) {
-	$arr_fields[] = '_dyn_field_'.$i;
+for ($i = 0; $i < $num_var_fields; ++$i) {
+    $arr_fields[] = '_dyn_field_' . $i;
 }
 
 $this->widget('table', [
-	'id'			=> 'fncroles_gap_table',
-	'ajaxUrl'		=> 'ajax.adm_server.php?r=adm/functionalroles/getgaptabledata',
-	'rowsPerPage'	=> Get::sett('visuItem', 25),
-	'startIndex'	=> 0,
-	'results'		=> Get::sett('visuItem', 25),
-	'sort'			=> 'competence',
-	'dir'			=> 'asc',
-	'generateRequest' => 'GapAnalisys.requestBuilder',
-	'columns'		=> $columns,
-	'fields'		=> $arr_fields,
-	'rel_actions' => $rel_actions,
+    'id' => 'fncroles_gap_table',
+    'ajaxUrl' => 'ajax.adm_server.php?r=adm/functionalroles/getgaptabledata',
+    'rowsPerPage' => Get::sett('visuItem', 25),
+    'startIndex' => 0,
+    'results' => Get::sett('visuItem', 25),
+    'sort' => 'competence',
+    'dir' => 'asc',
+    'generateRequest' => 'GapAnalisys.requestBuilder',
+    'columns' => $columns,
+    'fields' => $arr_fields,
+    'rel_actions' => $rel_actions,
     'events' => [
-		'beforeRenderEvent' => 'GapAnalisys.beforeRenderEvent',
-		'postRenderEvent' => 'GapAnalisys.postRenderEvent'
-    ]
+        'beforeRenderEvent' => 'GapAnalisys.beforeRenderEvent',
+        'postRenderEvent' => 'GapAnalisys.postRenderEvent',
+    ],
 ]);
 
 ?>

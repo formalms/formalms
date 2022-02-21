@@ -1,41 +1,43 @@
-<?php defined("IN_FORMA") or die('Direct access is forbidden.');
+<?php
 
+/*
+ * FORMA - The E-Learning Suite
+ *
+ * Copyright (c) 2013-2022 (Forma)
+ * https://www.formalms.org
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ *
+ * from docebo 4.0.5 CE 2008-2012 (c) docebo
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ */
 
+defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 /**
- * @package admin-core
- * @subpackage resource
  * @version  $Id: $
  */
 // ----------------------------------------------------------------------------
 
-require_once($GLOBALS["where_framework"]."/lib/resources/lib.resource_model.php");
+require_once $GLOBALS['where_framework'] . '/lib/resources/lib.resource_model.php';
 
-class ResourceUser extends ResourceModel {
+class ResourceUser extends ResourceModel
+{
+    public function ResourceUser($prefix = false, $dbconn = null)
+    {
+        $this->setResourceCode('user');
+        parent::ResourceModel($prefix, $dbconn);
+    }
 
+    public function checkAvailability($resource_id, $start_date = false, $end_date = false)
+    {
+        $res = false;
 
-	function ResourceUser($prefix=FALSE, $dbconn=NULL) {
-		$this->setResourceCode("user");
-		parent::ResourceModel($prefix, $dbconn);
-	}
+        $found = $this->getResourceEntries((int) $resource_id, $start_date, $end_date);
 
+        if (count($found) < $this->getAllowedSimultaneously()) {
+            $res = true;
+        }
 
-	function checkAvailability($resource_id, $start_date=FALSE, $end_date=FALSE) {
-		$res=FALSE;
-
-		$found=$this->getResourceEntries((int)$resource_id, $start_date, $end_date);
-
-		if (count($found) < $this->getAllowedSimultaneously())
-			$res=TRUE;
-
-		return $res;
-	}
-
-
+        return $res;
+    }
 }
-
-
-
-
-
-?>

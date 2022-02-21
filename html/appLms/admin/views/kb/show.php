@@ -120,113 +120,113 @@ echo getTitleArea([Lang::t('_CONTENT_LIBRARY', 'kb')]);
 		<div>
 			<div class="simple_search_box" id="kb_simple_filter_options" style="display: block;">
 				<?php
-				echo Form::openForm('quick_search', 'javascript:;');
-				echo Form::getInputDropdown('dropdown', 'res_type_dd', 'res_type_dd', $res_type_dd_arr, false, '') . "&nbsp;\n";
-				echo Form::getInputDropdown('dropdown', 'categorized_filter', 'categorized_filter', $categorized_filter_arr, false, '') . "&nbsp;\n";
-				echo Form::getInputTextfield("search_t", "filter_text", "filter_text", $filter_text, '', 255, '');
-				echo Form::getButton("filter_set", "filter_set", Lang::t('_SEARCH', 'standard'), "search_b");
-				echo Form::getButton("filter_reset", "filter_reset", Lang::t('_RESET', 'standard'), "reset_b");
-				echo Form::closeForm();
-				?>
+                echo Form::openForm('quick_search', 'javascript:;');
+                echo Form::getInputDropdown('dropdown', 'res_type_dd', 'res_type_dd', $res_type_dd_arr, false, '') . "&nbsp;\n";
+                echo Form::getInputDropdown('dropdown', 'categorized_filter', 'categorized_filter', $categorized_filter_arr, false, '') . "&nbsp;\n";
+                echo Form::getInputTextfield('search_t', 'filter_text', 'filter_text', $filter_text, '', 255, '');
+                echo Form::getButton('filter_set', 'filter_set', Lang::t('_SEARCH', 'standard'), 'search_b');
+                echo Form::getButton('filter_reset', 'filter_reset', Lang::t('_RESET', 'standard'), 'reset_b');
+                echo Form::closeForm();
+                ?>
 			</div>
 		</div>
 	</div>
 	<div class="panel_left_small">
-		<span class="title"><?php echo(Lang::t('_ALL_CATEGORIES', 'kb')); ?></span>
+		<span class="title"><?php echo Lang::t('_ALL_CATEGORIES', 'kb'); ?></span>
 		<?php
-		/**
-		 * Tree
-		 */
-		$languages = [
-			'_ROOT' => Get::sett('title_kb_tree', Lang::t('_CATEGORY', 'kb')),
-			'_YES' => Lang::t('_CONFIRM', 'organization_chart'),
-			'_NO' => Lang::t('_UNDO', 'organization_chart'),
-			'_LOADING' => Lang::t('_LOADING', 'standard'),
-			'_NEW_FOLDER_NAME' => Lang::t('_ORGCHART_ADDNODE', 'organization_chart'),
-			'_AREYOUSURE' => Lang::t('_AREYOUSURE', 'organization_chart'),
-			'_NAME' => Lang::t('_NAME', 'standard'),
-			'_MOD' => Lang::t('_MOD', 'standard'),
-			'_DEL' => Lang::t('_DEL', 'standard')
+        /**
+         * Tree.
+         */
+        $languages = [
+            '_ROOT' => Get::sett('title_kb_tree', Lang::t('_CATEGORY', 'kb')),
+            '_YES' => Lang::t('_CONFIRM', 'organization_chart'),
+            '_NO' => Lang::t('_UNDO', 'organization_chart'),
+            '_LOADING' => Lang::t('_LOADING', 'standard'),
+            '_NEW_FOLDER_NAME' => Lang::t('_ORGCHART_ADDNODE', 'organization_chart'),
+            '_AREYOUSURE' => Lang::t('_AREYOUSURE', 'organization_chart'),
+            '_NAME' => Lang::t('_NAME', 'standard'),
+            '_MOD' => Lang::t('_MOD', 'standard'),
+            '_DEL' => Lang::t('_DEL', 'standard'),
         ];
 
-		$params = [
-			'id' => 'kbtree',
-			'ajaxUrl' => 'ajax.adm_server.php?r=alms/kb/gettreedata',
-			'treeClass' => 'KbFolderTree',
-			'treeFile' => Get::rel_path('lms') . '/admin/views/kb/kbfoldertree.js',
-			'languages' => $languages,
-			'initialSelectedNode' => (int) $selected_node,
-			'rootActions' => '',
-			'show' => 'tree',
-			'dragDrop' => true
+        $params = [
+            'id' => 'kbtree',
+            'ajaxUrl' => 'ajax.adm_server.php?r=alms/kb/gettreedata',
+            'treeClass' => 'KbFolderTree',
+            'treeFile' => Get::rel_path('lms') . '/admin/views/kb/kbfoldertree.js',
+            'languages' => $languages,
+            'initialSelectedNode' => (int) $selected_node,
+            'rootActions' => '',
+            'show' => 'tree',
+            'dragDrop' => true,
         ];
-		if ($permissions['add']) {
-			$params['rel_action'] =  '<a class="ico-wt-sprite subs_add" id="add_kb_folder" href="ajax.adm_server.php?r=alms/kb/addfolder_dialog&id=' . (int) $selected_node . '" '
-				. ' title="' . Lang::t('_ORGCHART_ADDNODE', 'organization_chart') . '">'
-				. '<span>' . Lang::t('_ORGCHART_ADDNODE', 'organization_chart') . '</span>'
-				. '</a>';
+        if ($permissions['add']) {
+            $params['rel_action'] = '<a class="ico-wt-sprite subs_add" id="add_kb_folder" href="ajax.adm_server.php?r=alms/kb/addfolder_dialog&id=' . (int) $selected_node . '" '
+                . ' title="' . Lang::t('_ORGCHART_ADDNODE', 'organization_chart') . '">'
+                . '<span>' . Lang::t('_ORGCHART_ADDNODE', 'organization_chart') . '</span>'
+                . '</a>';
 
-			/**
-			 * Add folder dialog
-			 */
-			$this->widget('dialog', [
-				'id' => 'add_folder_dialog',
-				'dynamicContent' => true,
-				'ajaxUrl' => 'function() { return YAHOO.util.Dom.get("add_kb_folder").href; }',
-				'dynamicAjaxUrl' => true,
-				'callback' => 'KbManagement.addFolderCallback',
-				'callEvents' => [
-					['caller' => 'add_kb_folder', 'event' => 'click']
-                ]
+            /*
+             * Add folder dialog
+             */
+            $this->widget('dialog', [
+                'id' => 'add_folder_dialog',
+                'dynamicContent' => true,
+                'ajaxUrl' => 'function() { return YAHOO.util.Dom.get("add_kb_folder").href; }',
+                'dynamicAjaxUrl' => true,
+                'callback' => 'KbManagement.addFolderCallback',
+                'callEvents' => [
+                    ['caller' => 'add_kb_folder', 'event' => 'click'],
+                ],
             ]);
-		}
+        }
 
-		$this->widget('tree', $params);
-	?>
+        $this->widget('tree', $params);
+    ?>
 	</div>
 	<div class="panel_right_big">
 	<?php
-		$columns = [
-			['key' => 'r_name', 'label' => Lang::t('_NAME', 'kb'), 'sortable' => true],
-			['key' => 'r_type', 'label' => Lang::t('_TYPE', 'kb'), 'sortable' => true, 'className' => 'img-cell'],
-			['key' => 'r_env', 'label' => Lang::t('_ENVIRONMENT', 'kb'), 'sortable' => true],
-			['key' => 'r_env_parent', 'label' => Lang::t('_CONTAINED_IN', 'kb'), 'sortable' => false],
-			['key' => 'r_lang', 'label' => Lang::t('_LANGUAGE', 'kb'), 'sortable' => true],
-			['key' => 'tags', 'label' => Lang::t('_TAGS', 'kb'), 'sortable' => false]
+        $columns = [
+            ['key' => 'r_name', 'label' => Lang::t('_NAME', 'kb'), 'sortable' => true],
+            ['key' => 'r_type', 'label' => Lang::t('_TYPE', 'kb'), 'sortable' => true, 'className' => 'img-cell'],
+            ['key' => 'r_env', 'label' => Lang::t('_ENVIRONMENT', 'kb'), 'sortable' => true],
+            ['key' => 'r_env_parent', 'label' => Lang::t('_CONTAINED_IN', 'kb'), 'sortable' => false],
+            ['key' => 'r_lang', 'label' => Lang::t('_LANGUAGE', 'kb'), 'sortable' => true],
+            ['key' => 'tags', 'label' => Lang::t('_TAGS', 'kb'), 'sortable' => false],
         ];
 
-		if ($permissions['mod']) {
-			$_title_categorize = Lang::t('_MOD', 'kb');
-			$_title_users = Lang::t('_SET_VISIBLE_TO_EVERYONE', 'kb');
-			$_sprite_categorize = Get::sprite('subs_categorize', $_title_categorize, $_title_categorize);
-			$_sprite_users = Get::sprite('subs_users', $_title_users, $_title_users);
-			$columns[] = ['key' => 'edit', 'label' => $_sprite_categorize, 'formatter' => 'frm_edit', 'className' => 'img-cell'];
-			$columns[] = ['key' => 'force_visible', 'label' => $_sprite_users, 'formatter' => 'fv_switch', 'className' => 'img-cell'];
-		}
+        if ($permissions['mod']) {
+            $_title_categorize = Lang::t('_MOD', 'kb');
+            $_title_users = Lang::t('_SET_VISIBLE_TO_EVERYONE', 'kb');
+            $_sprite_categorize = Get::sprite('subs_categorize', $_title_categorize, $_title_categorize);
+            $_sprite_users = Get::sprite('subs_users', $_title_users, $_title_users);
+            $columns[] = ['key' => 'edit', 'label' => $_sprite_categorize, 'formatter' => 'frm_edit', 'className' => 'img-cell'];
+            $columns[] = ['key' => 'force_visible', 'label' => $_sprite_users, 'formatter' => 'fv_switch', 'className' => 'img-cell'];
+        }
 
-		$_title_play = Lang::t('_PLAY', 'kb');
-		$_sprite_play = Get::sprite('subs_play', $_title_play, $_title_play);
-		$columns[] = ['key' => 'play', 'label' => $_sprite_play, 'formatter' => 'frm_play', 'className' => 'img-cell'];
+        $_title_play = Lang::t('_PLAY', 'kb');
+        $_sprite_play = Get::sprite('subs_play', $_title_play, $_title_play);
+        $columns[] = ['key' => 'play', 'label' => $_sprite_play, 'formatter' => 'frm_play', 'className' => 'img-cell'];
 
-		$this->widget('table', [
-			'id' => 'kb_table',
-			'ajaxUrl' => 'ajax.adm_server.php?r=alms/kb/getlist',
-			'rowsPerPage' => Get::sett('visuItem', 25),
-			'startIndex' => 0,
-			'results' => Get::sett('visuItem', 25),
-			'sort' => 'r_name',
-			'dir' => 'asc',
-			'generateRequest' => 'KbManagement.requestBuilder',
-			'events' => [
-				'postRenderEvent' => 'function () { lb.init(); }',
+        $this->widget('table', [
+            'id' => 'kb_table',
+            'ajaxUrl' => 'ajax.adm_server.php?r=alms/kb/getlist',
+            'rowsPerPage' => Get::sett('visuItem', 25),
+            'startIndex' => 0,
+            'results' => Get::sett('visuItem', 25),
+            'sort' => 'r_name',
+            'dir' => 'asc',
+            'generateRequest' => 'KbManagement.requestBuilder',
+            'events' => [
+                'postRenderEvent' => 'function () { lb.init(); }',
             ],
-			'columns' => $columns,
-			'fields' => [
-				'res_id', 'r_name', 'r_type', 'r_env', 'r_env_parent', 'r_lang', 'tags',
-				'edit', 'force_visible', 'is_mobile', 'is_categorized'
+            'columns' => $columns,
+            'fields' => [
+                'res_id', 'r_name', 'r_type', 'r_env', 'r_env_parent', 'r_lang', 'tags',
+                'edit', 'force_visible', 'is_mobile', 'is_categorized',
             ],
         ]);
-	?>
+    ?>
 	</div>
 	<div class="nofloat"></div>
 </div>

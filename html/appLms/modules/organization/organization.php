@@ -1,12 +1,22 @@
-<?php defined("IN_FORMA") or die('Direct access is forbidden.');
+<?php
 
+/*
+ * FORMA - The E-Learning Suite
+ *
+ * Copyright (c) 2013-2022 (Forma)
+ * https://www.formalms.org
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ *
+ * from docebo 4.0.5 CE 2008-2012 (c) docebo
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ */
 
+defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-require_once(Forma::inc(_lms_ . '/modules/organization/orglib.php'));
+require_once Forma::inc(_lms_ . '/modules/organization/orglib.php');
 
 function organization(&$treeView)
 {
-
     // contruct and initialize TreeView to manage organization
     /*$orgDb = new OrgDirDb();
     if( !checkPerm('lesson') ) {
@@ -18,23 +28,22 @@ function organization(&$treeView)
 
     $treeView->parsePositionData($_POST, $_POST, $_POST);*/
 
-
     // manage items addition
     if (isset($_GET['replay'])) {
         $treeView->op = 'playitem';
-    } else if (isset($_GET['itemdone'])) {
+    } elseif (isset($_GET['itemdone'])) {
         $treeView->op = 'itemdone';
-    } else if (isset($_POST['_orgrules_save']) || isset($_POST['_repoproperties_save'])) {
+    } elseif (isset($_POST['_orgrules_save']) || isset($_POST['_repoproperties_save'])) {
         $treeView->tdb->modifyItem($_POST, false, true);
         $treeView->op = '';
-    } else if (isset($_POST['_orgrules_cancel']) || isset($_POST['_repoproperties_cancel'])) {
+    } elseif (isset($_POST['_orgrules_cancel']) || isset($_POST['_repoproperties_cancel'])) {
         $treeView->op = '';
-    } else if (
+    } elseif (
         Get::req('op', DOTY_STRING, '') == 'org_select_sco' ||
         Get::req('op', DOTY_STRING, '') == 'org_categorize_sco'
     ) {
         $treeView->op = Get::req('op', DOTY_STRING, '');
-        require_once(dirname(__FILE__) . '/orgcategorize.php');
+        require_once dirname(__FILE__) . '/orgcategorize.php';
     }
 
     //echo $treeView->op;
@@ -51,7 +60,7 @@ function organization(&$treeView)
         case 'org_categorize':
         case 'org_opcategorize':
             // organization_rules( $treeView, $treeView->opContextId );
-            require_once(dirname(__FILE__) . '/orgcategorize.php');
+            require_once dirname(__FILE__) . '/orgcategorize.php';
             organization_categorize($treeView, $treeView->opContextId);
             break;
         case 'org_select_sco':
@@ -63,12 +72,12 @@ function organization(&$treeView)
         case 'org_properties':
         case 'org_opproperties':
             // organization_rules( $treeView, $treeView->opContextId );
-            require_once(Forma::inc(_lms_ . '/modules/organization/orgprop.php'));
+            require_once Forma::inc(_lms_ . '/modules/organization/orgprop.php');
             organization_property($treeView, $treeView->opContextId);
             break;
         case 'org_opaccess':
         case 'org_access':
-            require_once(Forma::inc(_lms_ . '/modules/organization/orgprop.php'));
+            require_once Forma::inc(_lms_ . '/modules/organization/orgprop.php');
             organization_access($treeView, $treeView->opContextId);
             break;
         case 'save':
@@ -86,9 +95,7 @@ function organization(&$treeView)
             organization_display($treeView);
             break;
     }
-
 }
-
 
 function organization_display(&$treeView)
 {
@@ -129,9 +136,9 @@ function organization_opfolder(&$treeView, $op)
 
 function organization_import(&$treeView)
 {
-    $lang =& DoceboLanguage::createInstance('organization', 'lms');
+    $lang = &DoceboLanguage::createInstance('organization', 'lms');
     global $modname, $op;
-    require_once($GLOBALS['where_lms'] . '/lib/lib.homerepo.php');
+    require_once $GLOBALS['where_lms'] . '/lib/lib.homerepo.php';
 
     // ----------------------------------
     $GLOBALS['page']->add('<div class="std_block">');
@@ -140,7 +147,7 @@ function organization_import(&$treeView)
         . '<input type="hidden" id="authentic_request_org" name="authentic_request" value="' . Util::getSignature() . '" />');
     // call pubrepo visualization to select items to import
     $GLOBALS['page']->add($treeView->printState());
-    $treeViewPR = manHomerepo(FALSE, TRUE, NULL, TRUE);
+    $treeViewPR = manHomerepo(false, true, null, true);
 
     $GLOBALS['page']->add('</form>');
 
@@ -166,7 +173,7 @@ function organization_import(&$treeView)
 function organization_play(&$treeView, $idItem)
 {
     global $modname, $op;
-    require_once($GLOBALS['where_lms'] . '/lib/lib.param.php');
+    require_once $GLOBALS['where_lms'] . '/lib/lib.param.php';
     $tdb = $treeView->getTreeDb();
     $item = $tdb->getFolderById($idItem);
     $values = $item->otherValues;
@@ -174,7 +181,7 @@ function organization_play(&$treeView, $idItem)
     $idResource = $values[REPOFIELDIDRESOURCE];
     $idParams = $values[ORGFIELDIDPARAM];
 
-    $param = $treeView->printState(FALSE);
+    $param = $treeView->printState(false);
     $back_url = 'index.php?modname=' . $modname . '&op=organization&itemdone=' . $idItem;
 
     $lo = createLO($objectType,
@@ -185,7 +192,6 @@ function organization_play(&$treeView, $idItem)
 
 function import()
 {
-
     $orgDb = new OrgDirDb();
     $treeView = new Org_TreeView($orgDb, $_SESSION['idCourse']);
     $treeView->parsePositionData($_POST, $_POST, $_POST);
@@ -204,15 +210,16 @@ function edit()
 
 function organization_showerror(&$treeView)
 {
-    $lang =& DoceboLanguage::createInstance('organization', 'lms');
+    $lang = &DoceboLanguage::createInstance('organization', 'lms');
     global $modname, $op;
     $GLOBALS['page']->add('<form id="orgshow" method="post"'
         . ' action="index.php?modname=' . $modname . '&amp;op=organization"'
         . ' >' . "\n"
         . '<input type="hidden" id="authentic_request_org" name="authentic_request" value="' . Util::getSignature() . '" />');
     $GLOBALS['page']->add('<div class="std_block">');
-    if ($treeView->error == TVERR_MOVEONDESCENDANT)
+    if ($treeView->error == TVERR_MOVEONDESCENDANT) {
         $GLOBALS['page']->add($lang->def('_ERROR_MOVEONDESCENDANT'));
+    }
     $GLOBALS['page']->add(' <img src="' . $treeView->_getCancelImage() . '" alt="' . $treeView->_getCancelAlt() . '" />'
         . '<input type="submit" class="LVAction" value="' . $treeView->_getCancelLabel() . '"'
         . ' name="' . $treeView->_getCancelId() . '" id="' . $treeView->_getCancelId() . '" />');
@@ -221,13 +228,11 @@ function organization_showerror(&$treeView)
 }
 
 /*switch( $op ) {
-	case "organization":
-	case "display":
-		organization();
-	break;
-	case "import":
-		import();
-	break;
+    case "organization":
+    case "display":
+        organization();
+    break;
+    case "import":
+        import();
+    break;
 }*/
-
-?>

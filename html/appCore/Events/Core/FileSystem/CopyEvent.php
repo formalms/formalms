@@ -1,15 +1,26 @@
 <?php
+
+/*
+ * FORMA - The E-Learning Suite
+ *
+ * Copyright (c) 2013-2022 (Forma)
+ * https://www.formalms.org
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ *
+ * from docebo 4.0.5 CE 2008-2012 (c) docebo
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ */
+
 namespace appCore\Events\Core\FileSystem;
 
 use Symfony\Contracts\EventDispatcher\Event;
 
 /**
- * Class CopyEvent
- * @package appCore\Events\Core\FileSystem
+ * Class CopyEvent.
  */
 class CopyEvent extends Event
 {
-    const EVENT_NAME = 'core.event.filesystem.copy';
+    public const EVENT_NAME = 'core.event.filesystem.copy';
 
     private $srcFile;
     private $dstFile;
@@ -17,6 +28,7 @@ class CopyEvent extends Event
 
     /**
      * CopyEvent constructor.
+     *
      * @param $srcFile
      * @param $dstFile
      */

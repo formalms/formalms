@@ -4,51 +4,50 @@
 
 <?php
 
-$empty_cart = '<a class="ico-wt-sprite subs_cancel" href="javascript:;" onclick="emptyCart();"><span>'.Lang::t('_EMPTY_CART', 'cart').'</span></a>';
-$del_sel = '<a class="ico-wt-sprite subs_del" href="javascript:;" onclick="delSelectedElement();"><span>'.Lang::t('_DEL_SELECTED_ELEMENT', 'cart').'</span></a>';
+$empty_cart = '<a class="ico-wt-sprite subs_cancel" href="javascript:;" onclick="emptyCart();"><span>' . Lang::t('_EMPTY_CART', 'cart') . '</span></a>';
+$del_sel = '<a class="ico-wt-sprite subs_del" href="javascript:;" onclick="delSelectedElement();"><span>' . Lang::t('_DEL_SELECTED_ELEMENT', 'cart') . '</span></a>';
 
-$rel_action = $empty_cart.' '.$del_sel;
+$rel_action = $empty_cart . ' ' . $del_sel;
 
 $this->widget('table', [
-	'id'			=> 'cart_table',
-	'ajaxUrl'		=> 'ajax.server.php?r=cart/getCartList',
-	'rowsPerPage'	=> 0,
-	'startIndex'	=> 0,
-	'results'		=> 0,
-	'sort'			=> 'name',
-	'dir'			=> 'asc',
-	'columns'		=> [
-		['key' => 'code', 'label' => Lang::t('_CODE', 'cart'), 'sortable' => true],
-		['key' => 'name', 'label' => Lang::t('_NAME', 'cart'), 'sortable' => true],
-		['key' => 'type', 'label' => Lang::t('_COURSE_TYPE', 'cart'), 'sortable' => true],
-		['key' => 'date_begin', 'label' => Lang::t('_DATE_BEGIN', 'cart'), 'sortable' => true],
-		['key' => 'date_end', 'label' => Lang::t('_DATE_END', 'cart'), 'sortable' => true],
-		['key' => 'price', 'label' => Lang::t('_COURSE_PRIZE', 'cart'), 'sortable' => true]
+    'id' => 'cart_table',
+    'ajaxUrl' => 'ajax.server.php?r=cart/getCartList',
+    'rowsPerPage' => 0,
+    'startIndex' => 0,
+    'results' => 0,
+    'sort' => 'name',
+    'dir' => 'asc',
+    'columns' => [
+        ['key' => 'code', 'label' => Lang::t('_CODE', 'cart'), 'sortable' => true],
+        ['key' => 'name', 'label' => Lang::t('_NAME', 'cart'), 'sortable' => true],
+        ['key' => 'type', 'label' => Lang::t('_COURSE_TYPE', 'cart'), 'sortable' => true],
+        ['key' => 'date_begin', 'label' => Lang::t('_DATE_BEGIN', 'cart'), 'sortable' => true],
+        ['key' => 'date_end', 'label' => Lang::t('_DATE_END', 'cart'), 'sortable' => true],
+        ['key' => 'price', 'label' => Lang::t('_COURSE_PRIZE', 'cart'), 'sortable' => true],
     ],
-	'fields'		=> ['id', 'code', 'name', 'type', 'date_begin', 'date_end', 'price', 'action'],
-	'show'			=> 'table',
-	'use_paginator' => false,
-	'print_table_below' => false,
-	'rel_actions'	=> $rel_action,
-	'stdSelection' => true,
+    'fields' => ['id', 'code', 'name', 'type', 'date_begin', 'date_end', 'price', 'action'],
+    'show' => 'table',
+    'use_paginator' => false,
+    'print_table_below' => false,
+    'rel_actions' => $rel_action,
+    'stdSelection' => true,
 ]);
-
 
 ?>
 
 <?php
-	$paypal_return_url =Get::site_url()._folder_lms_.'/paypal.php?op=ok';
-	$paypal_notify_url =Get::site_url()._folder_lms_.'/paypal.php';
+    $paypal_return_url = Get::site_url() . _folder_lms_ . '/paypal.php?op=ok';
+    $paypal_notify_url = Get::site_url() . _folder_lms_ . '/paypal.php';
 ?>
 
 <div class="total_container">
-	<p class="total_price cart_right"><?php echo Lang::t('_TOTAL', 'cart'); ?> : <span id="price"><?php echo $total_price ?></span> <?php echo (Get::sett('currency_symbol') !== '' ? Get::sett('currency_symbol') : '&eur;'); ?></p>
+	<p class="total_price cart_right"><?php echo Lang::t('_TOTAL', 'cart'); ?> : <span id="price"><?php echo $total_price; ?></span> <?php echo Get::sett('currency_symbol') !== '' ? Get::sett('currency_symbol') : '&eur;'; ?></p>
 	<div class="nofloat"></div>
 	<a class="ico-wt-sprite subs_categorize cart_right" href="javascript:;" onclick="makeOrderPopup();"><span class="order_now"><?php echo Lang::t('_ORDER_NOW', 'cart'); ?></span></a>
 	<form action="<?php echo $paypal_url; ?>" method="post" id="paypal_form">
 		<input type="hidden" name="cmd" value="_xclick" />
 		<input type="hidden" name="business" value="<?php echo Get::sett('paypal_mail', ''); ?>">
-		<input type="hidden" name="lc" value="<?php echo (Lang::lang_code() === 'italian' ? 'IT' : 'EN'); ?>">
+		<input type="hidden" name="lc" value="<?php echo Lang::lang_code() === 'italian' ? 'IT' : 'EN'; ?>">
 		<input type="hidden" name="item_name" value="<?php echo Lang::t('_ORDER_NUMBER', 'cart'); ?>" id="item_name">
 		<input type="hidden" name="item_number" value="0" id="id_transaction">
 		<input type="hidden" name="amount" value="0" id="total_price">
@@ -146,7 +145,7 @@ $this->widget('table', [
 						close: true,
 						visible: false,
 						constraintoviewport : true,
-						buttons : [{ text:'<?php echo Lang::t('_UNDO', 'standard') ?>', handler:function(){this.hide();} } ]
+						buttons : [{ text:'<?php echo Lang::t('_UNDO', 'standard'); ?>', handler:function(){this.hide();} } ]
 					 });
 		dialog.render(document.body);
 	}
@@ -156,12 +155,13 @@ $this->widget('table', [
 	function makeOrderPopup()
 	{
 		var title = '<?php echo Lang::t('_PAYMENT_SELECT', 'cart'); ?>';
-		var body = '<?php	$body = '<a href="index.php?r=cart/makeOrder&amp;wire=1">'.Get::img('standard/wire_payment.png').' '.Lang::t('_WIRE_PAYMENT', 'cart').'</a>';
-								if(Get::sett('paypal_mail', '') !== '')
-								$body .=	'<br/><br/>'
-											.'<a href="javascript:;" onclick="makeOrderPaypal();">'.Get::img('standard/PayPal.gif').' '.Lang::t('_PAY_WITH_PAYPAL', 'cart').'</a>';//'<a class="ico-wt-sprite subs_add" href="javascript:;" onclick="makeOrderPaypal();"><span class="order_now">'.Lang::t('_PAY_WITH_PAYPAL', 'cart').'</span></a>';
-							echo $body;
-					?>';
+		var body = '<?php	$body = '<a href="index.php?r=cart/makeOrder&amp;wire=1">' . Get::img('standard/wire_payment.png') . ' ' . Lang::t('_WIRE_PAYMENT', 'cart') . '</a>';
+                                if (Get::sett('paypal_mail', '') !== '') {
+                                    $body .= '<br/><br/>'
+                                            . '<a href="javascript:;" onclick="makeOrderPaypal();">' . Get::img('standard/PayPal.gif') . ' ' . Lang::t('_PAY_WITH_PAYPAL', 'cart') . '</a>';
+                                }//'<a class="ico-wt-sprite subs_add" href="javascript:;" onclick="makeOrderPaypal();"><span class="order_now">'.Lang::t('_PAY_WITH_PAYPAL', 'cart').'</span></a>';
+                            echo $body;
+                    ?>';
 
 		dialog.setHeader(title);
 		dialog.setBody(body);
@@ -228,7 +228,7 @@ $this->widget('table', [
 												{
 													var item_name = YAHOO.util.Dom.get('item_name');
 
-													item_name.value += ' ' + res.id_transaction; <?php // this must be the transaction id ?>
+													item_name.value += ' ' + res.id_transaction; <?php // this must be the transaction id?>
 
 													// var return_link = YAHOO.util.Dom.get('return_link');
 													// return_link.value = res.link; // + '&paypal_ok=1';
