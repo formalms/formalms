@@ -77,7 +77,7 @@ class GamesLmsController extends LmsController {
 			$game['end_date'] = Format::date($game['end_date'], 'date');
 
 			if (($game['type_of'] == "scorm") and (($game['status'] == "") or (($game['status'] <> "completed") and ($game['status'] <> "passed"))) )
-				$games[$id]['play'] = '<a class="ico-wt-sprite subs_play" rel="lightbox" href="index.php?r=games/play&amp;id_game=' . $game['id_game'] . '" title="' . $game['title'] . '"><span>' . Lang::t('_PLAY', 'games') . '</span></a>';
+				$games[$id]['play'] = '<a class="ico-wt-sprite subs_play js-scorm_lightbox" href="index.php?r=games/play&amp;id_game=' . $game['id_game'] . '" title="' . $game['title'] . '"><span>' . Lang::t('_PLAY', 'games') . '</span></a>';
 			else
 				$games[$id]['play'] = "";
 

@@ -96,7 +96,7 @@ class CommunicationLmsController extends LmsController
                     break;
                 case 'scorm' :
                     {
-                        $communications[$id]['play'] = '<a class="ico-wt-sprite subs_play lightbox" rel="" href="index.php?r=communication/play&amp;id_comm=' . $comm['id_comm'] . '" title="' . $comm['title'] . '"><span>'
+                        $communications[$id]['play'] = '<a class="ico-wt-sprite subs_play js-scorm_lightbox" rel="" href="index.php?r=communication/play&amp;id_comm=' . $comm['id_comm'] . '" title="' . $comm['title'] . '"><span>'
                             . Lang::t('_PLAY', 'communication')
                             . '</span></a>';
                     };
@@ -147,7 +147,7 @@ class CommunicationLmsController extends LmsController
                     break;
                 case 'scorm' :
                     {
-                        $communications[$id]['play'] = '<a class="ico-wt-sprite subs_play" rel="lightbox" href="index.php?r=communication/play&amp;id_comm=' . $comm['id_comm'] . '" title="' . $comm['title'] . '"><span>'
+                        $communications[$id]['play'] = '<a class="ico-wt-sprite subs_play js-scorm_lightbox" href="index.php?r=communication/play&amp;id_comm=' . $comm['id_comm'] . '" title="' . $comm['title'] . '"><span>'
                             . Lang::t('_PLAY', 'communication')
                             . '</span></a>';
                     };

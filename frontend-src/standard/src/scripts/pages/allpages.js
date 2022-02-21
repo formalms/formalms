@@ -69,7 +69,7 @@ var Page = (function () {
             }
 
 
-            $(document).on('click','.lightbox', function (e) {
+            $(document).on('click','.js-scorm_lightbox', function (e) {
                 e.preventDefault();
                 var _src = $(this).attr('href');
                 var _title = $(this).attr('title');
